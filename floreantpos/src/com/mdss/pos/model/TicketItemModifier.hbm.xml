@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping package="com.mdss.pos.model">
+	<class name="TicketItemModifier" table="TICKET_ITEM_MODIFIER" lazy="false">
+		<id name="id" column="ID" type="java.lang.Integer">
+			<generator class="identity"></generator>
+		</id>
+		
+		<property name="itemId" type="java.lang.Integer" column="ITEM_ID"></property>
+		<property name="groupId" type="java.lang.Integer" column="GROUP_ID"></property>
+		<property name="itemCount" type="java.lang.Integer" column="ITEM_COUNT" length="10" />
+		<property name="name" type="string" column="MODIFIER_NAME" length="30"></property>
+		<property name="unitPrice" type="java.lang.Double" column="MODIFIER_PRICE" length="52" />
+		<property name="extraUnitPrice" type="java.lang.Double" column="EXTRA_PRICE" length="52" />
+		<property name="taxRate" type="java.lang.Double" column="MODIFIER_TAX_RATE" length="52" />
+		<property name="modifierType" type="java.lang.Integer" column="MODIFIER_TYPE" />
+		<property name="totalAmount" type="java.lang.Double" column="TOTAL_PRICE" />
+		<property name="shouldPrintToKitchen" type="java.lang.Boolean" column="PRINT_TO_KITCHEN" >
+			<meta attribute="defaultValue">true</meta>
+		</property>
+		
+		<!--to keep track whether this item is printed-->
+		<property name="printedToKitchen" type="java.lang.Boolean" column="PRINTED_TO_KITCHEN" />
+
+		<many-to-one name="parent" class="com.mdss.pos.model.TicketItemModifierGroup">
+			<column name="ModifierGroup_ID"></column>
+		</many-to-one>
+	</class>
+</hibernate-mapping>

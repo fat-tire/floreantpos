@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping package="com.mdss.pos.model">
+	<class name="com.mdss.pos.model.Gratuity" table="GRATUITY" lazy="false">
+		
+		<id name="id" type="java.lang.Integer" column="ID">
+			<generator class="identity" />
+		</id>
+		
+		<version name="modifiedTime" column="MODIFIED_TIME" type="timestamp"></version>
+		
+		<property name="amount" type="java.lang.Double" column="AMOUNT" />
+		<property name="paid" type="java.lang.Boolean" column="PAID" />
+		
+		<many-to-one name="ticket" class="Ticket" column="TICKET_ID"/>
+		
+		<many-to-one name="owner" class="com.mdss.pos.model.User" lazy="false">
+			<column name="OWNER_ID" />
+		</many-to-one>
+
+		<many-to-one name="terminal" class="com.mdss.pos.model.Terminal" lazy="false">
+			<column name="TERMINAL_ID"></column>
+		</many-to-one>
+		<!-- Associations -->
+
+
+	</class>
+</hibernate-mapping>

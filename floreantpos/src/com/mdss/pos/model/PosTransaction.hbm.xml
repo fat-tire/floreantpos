@@ -1,0 +1,90 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping package="com.mdss.pos.model">
+	<class name="com.mdss.pos.model.PosTransaction" table="TRANSACTIONS" lazy="false" optimistic-lock="version">
+		
+		<id name="id" type="java.lang.Integer" column="ID">
+			<generator class="identity" />
+		</id>
+		
+		<discriminator column="PAYMENT_TYPE" type="string" length="20"></discriminator>
+		
+		<version name="modifiedTime" column="MODIFIED_TIME" type="timestamp"></version>
+
+		<property name="transactionTime" type="java.util.Date" column="TRANSACTION_TIME" length="10" />
+		
+		<property name="subtotalAmount" type="java.lang.Double" column="SUB_TOTAL" length="52" />
+		<property name="discountAmount" type="java.lang.Double" column="TOTAL_DISCOUNT" length="52" />
+		<property name="taxAmount" type="java.lang.Double" column="TOTAL_TAX" length="52" />
+		<property name="totalAmount" type="java.lang.Double" column="TOTAL_PRICE" length="52" />
+		<property name="gratuityAmount" type="java.lang.Double" column="GRATUITY_AMOUNT" length="52" />
+		
+		<!-- a transaction is marked as settled when drawer is resetted -->
+		<property name="drawerResetted" type="java.lang.Boolean" column="DRAWER_RESETTED" index="tran_drawer_resetted" />
+		
+		<!-- Associations -->
+
+		<!-- uni-directional many-to-one association to Terminal -->
+		<many-to-one name="terminal" class="com.mdss.pos.model.Terminal">
+			<column name="TERMINAL_ID" />
+		</many-to-one>
+		<!-- uni-directional one-to-one association to Ticket -->
+		
+		<many-to-one name="ticket" class="com.mdss.pos.model.Ticket">
+			<column name="TICKET_ID" />
+		</many-to-one>
+		
+		<!--set name="tickets" table="TRANSACTION_TICKET" inverse="false" lazy="true">
+			<key column="TICKET_ID"/>			
+			
+			<many-to-many class="Ticket"/>
+		</set-->
+		
+		<!-- uni-directional many-to-one association to User -->
+		<many-to-one name="user" class="com.mdss.pos.model.User">
+			<column name="USER_ID" />
+		</many-to-one>
+		
+		<subclass name="com.mdss.pos.model.CashTransaction" discriminator-value="CASH">
+		</subclass>
+		
+		<subclass name="com.mdss.pos.model.GiftCertificateTransaction" discriminator-value="GIFT_CERT">
+			<property name="faceValue" type="java.lang.Double" column="FACE_VALUE"/>
+			<property name="paidAmount" type="java.lang.Double" column="PAID_AMOUNT"/>
+			<property name="cashBackAmount" type="java.lang.Double" column="CASH_BACK_AMOUNT"/>
+		</subclass>
+		
+		<subclass name="com.mdss.pos.model.CreditCardTransaction" discriminator-value="CREDIT_CARD">
+			<property name="cardNumber" column="CARD_NUMBER" type="string" length="30"></property>
+			<property name="cardType" column="CARD_TYPE" type="string" length="30"></property>
+			
+		</subclass>
+		
+		<subclass name="com.mdss.pos.model.DebitCardTransaction" discriminator-value="DEBIT_CARD">
+			<property name="cardNumber" column="CARD_NUMBER" type="string" length="30"></property>
+			<property name="cardType" column="CARD_TYPE" type="string" length="30"></property>
+		</subclass>
+
+		<subclass name="com.mdss.pos.model.CashDropTransaction" discriminator-value="CASH_DROP">
+		</subclass>
+		
+		<subclass name="com.mdss.pos.model.RefundTransaction" discriminator-value="REFUND">
+		</subclass>
+		
+		<subclass name="com.mdss.pos.model.PayOutTransaction" discriminator-value="PAY_OUT">
+			<property name="note" type="string" length="255"></property>
+			<many-to-one name="reason" class="com.mdss.pos.model.PayoutReason" lazy="false">
+				<column name="REASON_ID"></column>
+			</many-to-one>
+			
+			<many-to-one name="recepient" class="com.mdss.pos.model.PayoutRecepient" lazy="false">
+				<column name="RECEPIENT_ID"></column>
+			</many-to-one>
+		</subclass>
+		
+		
+	</class>
+</hibernate-mapping>

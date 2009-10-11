@@ -1,0 +1,1 @@
+java -cp mds-pos.jar com.mdss.pos.util.DbCleaner

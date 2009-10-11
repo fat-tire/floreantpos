@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping package="com.mdss.pos.model">
+	<class name="com.mdss.pos.model.Terminal" table="TERMINAL" lazy="false" optimistic-lock="version">
+		
+		<id name="id" type="java.lang.Integer" column="ID">
+			<generator class="assigned" />
+		</id>
+		
+		<version name="modifiedTime" column="MODIFIED_TIME" type="timestamp"></version>
+
+		<property name="name" type="java.lang.String" column="NAME" length="60" />
+		<property name="openingBalance" type="java.lang.Double" column="OPENING_BALANCE" length="52" />
+		<property name="currentBalance" type="java.lang.Double" column="CURRENT_BALANCE" length="52" />
+
+		<!-- Associations -->
+
+
+	</class>
+</hibernate-mapping>

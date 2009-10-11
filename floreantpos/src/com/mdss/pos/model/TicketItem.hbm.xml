@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping package="com.mdss.pos.model">
+	<class name="com.mdss.pos.model.TicketItem" table="TICKET_ITEM" lazy="false" optimistic-lock="version">
+		
+		<id name="id" type="java.lang.Integer" column="ID">
+			<generator class="identity" />
+		</id>
+		
+		<version name="modifiedTime" column="MODIFIED_TIME" type="timestamp"></version>
+
+		<property name="itemId" type="java.lang.Integer" column="ITEM_ID"></property>
+		<property name="itemCount" type="java.lang.Integer" column="ITEM_COUNT" length="10" />
+				
+		<property name="name" type="string" column="ITEM_NAME" length="30"></property>
+		<property name="groupName" type="string" column="GROUP_NAME" length="20"></property>
+		<property name="categoryName" type="string" column="CATEGORY_NAME" length="20"></property>
+		
+		<property name="unitPrice" type="java.lang.Double" column="ITEM_PRICE" length="52" />
+		<property name="discountRate" type="java.lang.Double" column="DISCOUNT_RATE" length="52" />
+		<property name="taxRate" type="java.lang.Double" column="ITEM_TAX_RATE" length="52" />
+		
+		<property name="subtotalAmount" type="java.lang.Double" column="SUB_TOTAL" />
+		<property name="subtotalAmountWithoutModifiers" type="java.lang.Double" column="SUB_TOTAL_WITH_MODIFIERS" />
+		<property name="discountAmount" type="java.lang.Double" column="DISCOUNT" />
+		<property name="taxAmount" type="java.lang.Double" column="TAX_AMOUNT" />
+		<property name="taxAmountWithoutModifiers" type="java.lang.Double" column="TAX_AMOUNT_WITH_MODIFIERS" />
+		<property name="totalAmount" type="java.lang.Double" column="TOTAL_PRICE" />
+		<property name="totalAmountWithoutModifiers" type="java.lang.Double" column="TOTAL_PRICE_WITH_MODIFIERS" />
+		<property name="beverage" type="java.lang.Boolean" column="BEVERAGE"/>
+		<property name="shouldPrintToKitchen" type="java.lang.Boolean" column="PRINT_TO_KITCHEN">
+			<meta attribute="defaultValue">true</meta>
+		</property>
+		
+		<!--property name="totalPrice" type="java.lang.Double" column="TOTAL_PRICE" length="52" /-->
+		<property name="hasModifiers" type="java.lang.Boolean" column="HAS_MODIIERS" />
+
+		<!--to keep track whether this item is printed-->
+		<property name="printedToKitchen" type="java.lang.Boolean" column="PRINTED_TO_KITCHEN" />
+				
+		<list name="ticketItemModifierGroups" lazy="true" inverse="false" cascade="all">
+			<key>
+				<column name="TICKETITEM_ID" />
+			</key>
+			
+			<list-index column="ITEM_ORDER"></list-index>
+			
+			<one-to-many class="com.mdss.pos.model.TicketItemModifierGroup" />
+		</list>
+		
+		<!-- list name="modifiers" inverse="false" cascade="all" lazy="false">
+			<key column="TICKET_ITEM_ID"/>
+			<list-index column="INDEX_ORDER"/>
+			
+			<one-to-many class="TicketItemModifier"/>
+		</list-->
+		
+		<many-to-one name="ticket" class="com.mdss.pos.model.Ticket" not-null="true">
+			<column name="TICKET_ID" />
+		</many-to-one>
+	</class>
+</hibernate-mapping>

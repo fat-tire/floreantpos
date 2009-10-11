@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+    
+    <hibernate-mapping package="com.mdss.pos.model">
+        <class name="PrinterConfiguration" table="PRINTER_CONFIGURATION" lazy="false">
+            <id name="id" column="ID" type="java.lang.Integer">
+                <generator class="assigned"></generator>
+            </id>
+            
+            <property name="receiptPrinterName" column="RECEIPT_PRINTER" type="string" />
+            <property name="kitchenPrinterName" column="KITCHEN_PRINTER" type="string" />
+            <property name="printRecreiptWhenTicketSettled" column="PRWTS" type="java.lang.Boolean" >
+				<meta attribute="defaultValue">true</meta>
+			</property>
+            <property name="printKitchenWhenTicketSettled" column="PRWTP" type="java.lang.Boolean" >
+				<meta attribute="defaultValue">true</meta>
+			</property>
+            <property name="printReceiptWhenTicketPaid" column="PKWTS" type="java.lang.Boolean" >
+				<meta attribute="defaultValue">true</meta>
+			</property>
+            <property name="printKitchenWhenTicketPaid" column="PKWTP" type="java.lang.Boolean" >
+				<meta attribute="defaultValue">true</meta>
+			</property>
+            
+            <property name="useNormalPrinterForTicket" column="UNPFT" type="java.lang.Boolean" >
+				<meta attribute="defaultValue">false</meta>
+			</property>
+            <property name="useNormalPrinterForKitchen" column="UNPFK" type="java.lang.Boolean" >
+				<meta attribute="defaultValue">false</meta>
+			</property>
+			
+        </class>
+   </hibernate-mapping>

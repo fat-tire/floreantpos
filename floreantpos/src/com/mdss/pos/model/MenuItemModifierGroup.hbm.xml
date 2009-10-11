@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping package="com.mdss.pos.model">
+
+	<class name="com.mdss.pos.model.MenuItemModifierGroup" table="MENUITEM_MODIFIERGROUP" lazy="false" optimistic-lock="version">
+		
+		<id name="id" type="java.lang.Integer" column="ID">
+			<generator class="identity" />
+		</id>
+
+		<version name="modifiedTime" column="MODIFIED_TIME" type="timestamp"></version>
+		
+		<property name="minQuantity" type="java.lang.Integer" column="MIN_QUANTITY" />
+		<property name="maxQuantity" type="java.lang.Integer" column="MAX_QUANTITY"/>
+
+		<!-- Associations -->
+
+		<!-- bi-directional one-to-many association to ModifierItem -->
+		<many-to-one name="modifierGroup" class="MenuModifierGroup" column="MODIFIER_GROUP"/>
+		<many-to-one name="parentMenuItem" class="MenuItem" column="MENU_ITEM"/>
+	</class>
+</hibernate-mapping>

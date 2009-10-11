@@ -1,0 +1,440 @@
+# Ubuntu Human-Clearlooks Colorscheme
+#
+# Authors:
+# Kenneth Wimar <kwwii@ubuntu.com>
+# Conn O'Griofa <connogriofa@gmail.com>
+#
+# Feel free to modify and share!
+
+gtk_color_scheme = "fg_color:#101010\nbg_color:#efebe7\nbase_color:#fff\ntext_color:#1A1A1A\nselected_bg_color:#FFA443\nselected_fg_color:#1A1A1A\ntooltip_bg_color:#F5F5B5\ntooltip_fg_color:#000"
+
+style "clearlooks-default"
+{
+	########
+	# Style Properties
+	########
+	GtkButton      ::child-displacement-x = 1
+	GtkButton      ::child-displacement-y = 1
+	GtkButton      ::default-border       = { 0, 0, 0, 0 }
+	GtkCheckButton ::indicator-size       = 14
+
+	GtkPaned       ::handle-size          = 6
+
+	GtkRange       ::trough-border        = 0
+	GtkRange       ::slider-width         = 15
+	GtkRange       ::stepper-size         = 15
+
+	GtkScale       ::slider-length        = 30
+	GtkScale       ::trough-side-details  = 1	# Restores sliders
+	GtkScrollbar   ::min-slider-length    = 30
+
+	GtkMenuBar     ::internal-padding     = 0
+	GtkExpander    ::expander-size        = 16
+	GtkToolbar     ::internal-padding     = 1
+	GtkTreeView    ::expander-size        = 14
+	GtkTreeView    ::vertical-separator   = 0
+
+	GtkMenu        ::horizontal-padding   = 0
+	GtkMenu        ::vertical-padding     = 0
+
+	# Glow the tasklist by changing the color, instead of overlaying it with a rectangle
+	WnckTasklist   ::fade-overlay-rect    = 0
+
+	xthickness = 1
+	ythickness = 1
+
+
+	fg[NORMAL]        = @fg_color
+	fg[PRELIGHT]      = @fg_color
+	fg[SELECTED]      = @selected_fg_color
+	fg[ACTIVE]        = @fg_color
+	fg[INSENSITIVE]   = darker (@bg_color)
+
+	bg[NORMAL]        = @bg_color
+	bg[PRELIGHT]      = shade (1.02, @bg_color)
+	bg[SELECTED]	  = mix (0.25, @fg_color, @selected_bg_color)
+	bg[INSENSITIVE]   = @bg_color
+	bg[ACTIVE]        = shade (0.9, @bg_color)
+
+	base[NORMAL]      = @base_color
+	base[PRELIGHT]    = shade (0.95, @bg_color)
+	base[ACTIVE]      = shade (0.90, @bg_color)
+	base[SELECTED]    = mix(0.50, shade (1.05,@selected_bg_color), @tooltip_bg_color)
+	base[INSENSITIVE] = @bg_color
+
+	text[NORMAL]      = @text_color
+	text[PRELIGHT]    = @text_color
+	text[ACTIVE]      = @selected_fg_color
+	text[SELECTED]    = @selected_fg_color
+	text[INSENSITIVE] = darker (@bg_color)
+
+	engine "clearlooks" 
+	{
+		colorize_scrollbar = TRUE
+		reliefstyle        = 1
+		menubarstyle       = 2      # 0 = flat, 1 = sunken, 2 = flat gradient
+		toolbarstyle       = 0      # 0 = flat, 1 = enable effects
+		animation          = TRUE
+		radius		   = 2.0
+		style              = GUMMY
+
+		# Set a hint to disable backward compatibility fallbacks.
+		hint = "use-hints"
+	}
+}
+
+style "clearlooks-wide"
+{
+	bg[SELECTED]	  = @selected_bg_color
+	xthickness = 2
+	ythickness = 2
+}
+
+style "clearlooks-wider"
+{
+	bg[SELECTED]	  = @selected_bg_color
+	xthickness = 3
+	ythickness = 3
+}
+
+style "clearlooks-button" = "clearlooks-wider"
+{
+	bg[NORMAL]        = shade (0.98, @bg_color)
+	bg[PRELIGHT]      = shade (1.04, @bg_color)
+	bg[ACTIVE]        = shade (0.92, @bg_color)
+	engine "clearlooks" 
+	{
+	}
+}
+
+style "clearlooks-notebook"
+{
+	bg[ACTIVE]   = shade (0.92, @bg_color)
+	bg[SELECTED] = @selected_bg_color
+}
+
+style "clearlooks-tasklist" = "clearlooks-wide"
+{
+}
+
+style "clearlooks-menu" = "clearlooks-wider"
+{
+	bg[NORMAL] = shade (1.04, @bg_color)
+}
+
+style "clearlooks-menu-item" = "clearlooks-wider"
+{
+	fg[PRELIGHT] = @selected_fg_color
+	bg[PRELIGHT] = mix(0.70, shade (1.05,@selected_bg_color), @tooltip_bg_color)
+	bg[SELECTED] = mix(0.70, shade (1.05,@selected_bg_color), @tooltip_bg_color)
+
+	engine "clearlooks" 
+	{
+		radius = 1.5
+	}
+}
+
+style "clearlooks-separator-menu-item"
+{
+}
+
+style "clearlooks-treeview"
+{
+	bg[SELECTED] = @selected_bg_color
+
+	engine "clearlooks" {
+		hint = "treeview"
+	}
+}
+
+style "clearlooks-treeview-header" = "clearlooks-default"
+{
+	bg[SELECTED] = mix(0.50, shade (1.05,@selected_bg_color), @tooltip_bg_color)
+
+	engine "clearlooks" {
+		hint = "treeview-header"
+	}
+}
+
+style "clearlooks-frame-title"
+{
+	fg[NORMAL] = lighter (@fg_color)
+}
+
+style "clearlooks-tooltips" = "clearlooks-wider"
+{
+	bg[NORMAL] = @tooltip_bg_color
+	fg[NORMAL] = @tooltip_fg_color
+}
+
+style "clearlooks-progressbar"
+{
+	xthickness = 1
+	ythickness = 1
+
+	fg[PRELIGHT] = @selected_fg_color
+	bg[SELECTED] = @selected_bg_color
+
+	engine "clearlooks"
+	{
+		# Explicitly set the radius, for progress
+		# bars inside menuitems
+		hint	= "progressbar"
+	}
+}
+
+style "clearlooks-statusbar"
+{
+	engine "clearlooks"
+	{
+		hint	= "statusbar"
+	}
+}
+
+style "clearlooks-comboboxentry"
+{
+	# NOTE:
+	# If you set the appears-as-list option on comboboxes in the theme
+	# you should set this hint on the combobox instead.
+	engine "clearlooks"
+	{
+		hint	= "comboboxentry"
+	}
+}
+
+style "clearlooks-spinbutton"
+{
+	engine "clearlooks"
+	{
+		hint	= "spinbutton"
+	}
+}
+
+style "clearlooks-scale"
+{
+	engine "clearlooks"
+	{
+		hint	= "scale"
+		style	= CLASSIC
+	}
+}
+
+style "clearlooks-hscale"
+{
+	engine "clearlooks"
+	{
+		hint	= "hscale"
+	}
+}
+
+style "clearlooks-vscale"
+{
+	engine "clearlooks"
+	{
+		hint	= "vscale"
+	}
+}
+
+style "clearlooks-scrollbar"
+{
+	engine "clearlooks"
+	{
+		hint	= "scrollbar"
+		#style	= CLASSIC
+	}
+}
+
+style "clearlooks-hscrollbar"
+{
+	engine "clearlooks"
+	{
+		hint	= "hscrollbar"
+	}
+}
+
+style "clearlooks-vscrollbar"
+{
+	engine "clearlooks"
+	{
+		hint	= "vscrollbar"
+	}
+}
+
+style "clearlooks-menubar"
+{
+	engine "clearlooks"
+	{
+		hint	= "menubar"
+	}
+}
+
+style "clearlooks-nautilus-location"
+{
+	bg[NORMAL] = mix(0.50, shade (1.05,@selected_bg_color), @tooltip_bg_color)
+}
+
+style "metacity-frame"
+{
+	bg[SELECTED] = mix (0.25, @fg_color, @selected_bg_color)
+}
+
+style "clearlooks-radiocheck" = "clearlooks-default"
+{
+	text[PRELIGHT]	= @base_color # Text on Mouseover
+}
+
+style "panel"
+{
+	bg[SELECTED] = mix(0.70, shade (1.05,@selected_bg_color), @tooltip_bg_color)
+}
+
+#########################################
+# Matches
+#########################################
+
+# theme radio buttons and checkmarks
+class "GtkRadio*"                        		style "clearlooks-radiocheck"
+class "GtkCheck*"                           		style "clearlooks-radiocheck"
+
+# keep proper colour for Metacity
+class "MetaFrames" 					style "metacity-frame"
+class "GtkWindow"    			    		style "metacity-frame"
+
+# theme default style is applied to every widget
+class "GtkWidget"    					style "clearlooks-default"
+
+# Increase the x/ythickness in some widgets
+class "GtkToolbar"   					style "clearlooks-default" 
+class "GtkRange"     					style "clearlooks-wide"
+class "GtkFrame"     					style "clearlooks-wide"
+class "GtkSeparator" 					style "clearlooks-wide"
+class "GtkEntry"     					style "clearlooks-wider"
+
+class "GtkSpinButton"  					style "clearlooks-spinbutton"
+class "GtkScale"       					style "clearlooks-scale"
+class "GtkVScale"      					style "clearlooks-vscale"
+class "GtkHScale"      					style "clearlooks-hscale"
+class "GtkScrollbar"   					style "clearlooks-scrollbar"
+class "GtkVScrollbar"  					style "clearlooks-vscrollbar"
+class "GtkHScrollbar"  					style "clearlooks-hscrollbar"
+
+# General matching following, the order is choosen so that the right styles override each other
+# eg. progressbar needs to be more important then the menu match.
+
+# This is not perfect, it could be done better
+# (That is modify *every* widget in the notebook, and change those back that
+# we really don't want changed)
+widget_class "*<GtkNotebook>*<GtkEventBox>"     	style "clearlooks-notebook"
+widget_class "*<GtkNotebook>*<GtkDrawingArea>"  	style "clearlooks-notebook"
+widget_class "*<GtkNotebook>*<GtkLayout>"       	style "clearlooks-notebook"
+
+widget_class "*<GtkButton>"      			style "clearlooks-button"
+widget_class "*<GtkNotebook>"    			style "clearlooks-notebook"
+widget_class "*<GtkStatusbar>*"  			style "clearlooks-statusbar"
+
+widget_class "*<GtkComboBoxEntry>*"			style "clearlooks-comboboxentry"
+widget_class "*<GtkCombo>*"         			style "clearlooks-comboboxentry"
+
+widget_class "*<GtkMenuBar>*"           		style "clearlooks-menubar"
+widget_class "*<GtkMenu>*"              		style "clearlooks-menu"
+widget_class "*<GtkMenuItem>*"          		style "clearlooks-menu-item"
+widget_class "*<GtkSeparatorMenuItem>*" 		style "clearlooks-separator-menu-item"
+
+widget_class "*.<GtkFrame>.<GtkLabel>" 			style "clearlooks-frame-title"
+widget_class "*.<GtkTreeView>*"        			style "clearlooks-treeview"
+
+widget_class "*<GtkProgressBar>"       			style "clearlooks-progressbar"
+
+# Treeview header
+widget_class "*.<GtkTreeView>.<GtkButton>" 		style "clearlooks-treeview-header"
+widget_class "*.<GtkCTree>.<GtkButton>"    		style "clearlooks-treeview-header"
+widget_class "*.<GtkList>.<GtkButton>"     		style "clearlooks-treeview-header"
+widget_class "*.<GtkCList>.<GtkButton>"    		style "clearlooks-treeview-header"
+
+# Workarounds for Evolution
+widget_class "*.ETable.ECanvas"    			style "clearlooks-treeview-header"
+widget_class "*.ETree.ECanvas"    			style "clearlooks-treeview-header"
+
+# The window of the tooltip is called "gtk-tooltip"
+################################
+# FIXME:
+# This will not work if one embeds eg. a button into the tooltip.
+# As far as I can tell right now we will need to rework the theme
+# quite a bit to get this working correctly.
+# (It will involve setting different priorities, etc.)
+################################
+widget "gtk-tooltip*" 					style "clearlooks-tooltips"
+
+###################################################
+# Special cases and work arounds
+###################################################
+
+# Special case the nautilus-extra-view-widget
+# ToDo: A more generic approach for all applications that have a widget like this.
+widget "*.nautilus-extra-view-widget" 			style : highest "clearlooks-nautilus-location"
+
+# Work around for http://bugzilla.gnome.org/show_bug.cgi?id=382646
+# Note that the work around assumes that the combobox is _not_ in
+# appears-as-list mode.
+# Similar hack also in the menuitem style.
+# This style does not affect GtkComboBoxEntry, it does have an effect
+# on comboboxes in appears-as-list mode though.
+style "clearlooks-combobox-text-color-workaround"
+{
+	text[NORMAL]      = @fg_color
+	text[PRELIGHT]    = @fg_color
+	text[SELECTED]    = @selected_fg_color
+	text[ACTIVE]      = @fg_color
+	text[INSENSITIVE] = darker (@bg_color)
+}
+widget_class "*.<GtkComboBox>.<GtkCellView>"		style "clearlooks-combobox-text-color-workaround"
+
+style "clearlooks-menuitem-text-is-fg-color-workaround"
+{
+	text[NORMAL]        = @fg_color
+	text[PRELIGHT]      = @selected_fg_color
+	text[SELECTED]      = @selected_fg_color
+	text[ACTIVE]        = @fg_color
+	text[INSENSITIVE]   = darker (@bg_color)
+}
+
+widget "*.gtk-combobox-popup-menu.*"   			style "clearlooks-menuitem-text-is-fg-color-workaround"
+
+# Work around the usage of GtkLabel inside GtkListItems to display text.
+# This breaks because the label is shown on a background that is based on the
+# base color set.
+style "clearlooks-fg-is-text-color-workaround"
+{
+	fg[NORMAL]      = @text_color
+	fg[PRELIGHT]    = @text_color
+	fg[ACTIVE]      = @selected_fg_color
+	fg[SELECTED]    = @selected_fg_color
+	fg[INSENSITIVE] = darker (@bg_color)
+	bg[SELECTED]    = @selected_bg_color
+}
+
+widget_class "*<GtkListItem>*" 				style "clearlooks-fg-is-text-color-workaround"
+# The same problem also exists for GtkCList and GtkCTree
+# Only match GtkCList and not the parent widgets, because that would also change the headers.
+
+widget_class "*<GtkCList>" 				style "clearlooks-fg-is-text-color-workaround"
+
+style "clearlooks-evo-new-button-workaround"
+{
+
+	engine "clearlooks"
+	{
+		toolbarstyle = 0
+	}
+}
+widget_class "EShellWindow.GtkVBox.BonoboDock.BonoboDockBand.BonoboDockItem*" style "clearlooks-evo-new-button-workaround"
+
+# Theme panel elements
+widget "*PanelWidget*" 					style "panel"
+widget "*PanelApplet*" 					style "panel"
+widget "*fast-user-switch*"				style "panel"
+class "PanelApp*" 					style "panel"
+class "PanelToplevel*" 					style "panel"
+widget_class "*Mail*" 					style "panel"
+widget_class "*notif*" 					style "panel"
+widget_class "*Notif*" 					style "panel"

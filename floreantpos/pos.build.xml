@@ -1,0 +1,70 @@
+<project name="floreant-pos" default="jar">
+	<property name="src.dir" value="src"/>
+	<property name="out.dir" value="antbin"/>
+	<property name="dist.dir" value="dist"/>
+	<property name="jarfile" value="mds-pos.jar"/>
+
+	<target name="compile">
+		<mkdir dir="${out.dir}"/>
+		
+		<javac srcdir="${src.dir}" destdir="${out.dir}" source="1.5" target="1.5">
+			<classpath>
+				<fileset dir="lib">
+					<include name="**/*.jar" />
+				</fileset>
+			</classpath>
+		</javac>
+		
+		<copy todir="${out.dir}">
+			<fileset dir="${src.dir}">
+				<exclude name="**/*.java"/>
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="jar" depends="compile">
+		<mkdir dir="${dist.dir}"/>
+		<delete file="${dist.dir}/${jarfile}"></delete>
+		
+		<pathconvert property="jar.classpath" pathsep=" ">
+			<path>
+				<fileset dir="lib">
+					<include name="**/*.jar" />
+				</fileset>
+			</path>
+			<chainedmapper>
+				<flattenmapper />
+				<globmapper from="*" to="lib/*" />
+			</chainedmapper>
+		</pathconvert>
+		<jar destfile="${dist.dir}/${jarfile}" basedir="${out.dir}">
+			<manifest>
+				<attribute name="Main-Class" value="com.mdss.pos.main.Main" />
+				<attribute name="Class-Path" value="${jar.classpath}" />
+			</manifest>
+		</jar>
+	</target>
+	
+	<target name="dist" depends="jar">
+		<mkdir dir="${dist.dir}/lib"/>		
+		<copy todir="${dist.dir}/lib">
+			<fileset dir="lib" includes="*"/>
+		</copy>
+		<copy todir="${dist.dir}">
+			<fileset dir=".">
+				<include name="*.dll"/>
+				<include name="*.bat"/>
+				<include name="*.exe"/>
+			</fileset>
+		</copy>
+		
+	</target>
+	
+	<target name="clean">
+		<delete dir="${out.dir}"></delete>
+	</target>
+	
+	<target name="cleanall" depends="clean">
+		<delete dir="${dist.dir}"></delete>
+	</target>
+</project>

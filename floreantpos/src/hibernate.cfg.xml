@@ -1,0 +1,67 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC 
+	"-//Hibernate/Hibernate Configuration DTD//EN"
+	"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+	<session-factory>
+		<!-- property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property -->
+		<property name="hibernate.dialect">org.hibernate.dialect.DerbyDialect</property>
+		
+		<property name="hibernate.connection.driver_class">org.apache.derby.jdbc.ClientDriver</property>
+		<property name="hibernate.connection.url">jdbc:derby://localhost/posdb;create=true</property>
+		
+<!--		<property name="hibernate.connection.driver_class">org.apache.derby.jdbc.EmbeddedDriver</property>-->
+<!--		<property name="hibernate.connection.url">jdbc:derby:posdb;create=true</property>-->
+		
+		<property name="hibernate.connection.username">app</property>
+		<property name="hibernate.connection.password">sa</property>
+		<!-- property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property -->
+		<!-- property name="hibernate.connection.url">jdbc:mysql://localhost/pos</property -->
+		<property name="hbm2ddl.auto">update</property>
+		<property name="hibernate.connection.autocommit">false</property>
+		<property name="hibernate.max_fetch_depth">3</property>
+		<!--
+			property name="hibernate.c3p0.min_size">5</property>
+			<property name="hibernate.c3p0.max_size">20</property>
+			<property name="hibernate.c3p0.timeout">1800</property>
+			<property name="hibernate.c3p0.max_statements">50</property
+			//-->
+		<property name="show_sql">false</property>
+
+		
+		<mapping resource="com/mdss/pos/model/ActionHistory.hbm.xml" />
+		<mapping resource="com/mdss/pos/model/AttendenceHistory.hbm.xml" />
+		<mapping resource="com/mdss/pos/model/CashDrawerResetHistory.hbm.xml" />
+		<mapping resource="com/mdss/pos/model/CookingInstruction.hbm.xml" />
+		<mapping resource="com/mdss/pos/model/Coupon.hbm.xml" />
+		<mapping resource="com/mdss/pos/model/Discount.hbm.xml" />
+		<mapping resource="com/mdss/pos/model/Gratuity.hbm.xml" />
+		<mapping resource="com/mdss/pos/model/MenuCategory.hbm.xml" />
+		<mapping resource="com/mdss/pos/model/MenuGroup.hbm.xml" />
+		<mapping resource="com/mdss/pos/model/MenuItem.hbm.xml" />
+		<mapping resource="com/mdss/pos/model/MenuItemModifierGroup.hbm.xml" />
+		<mapping resource="com/mdss/pos/model/MenuItemShift.hbm.xml" />
+		<mapping resource="com/mdss/pos/model/MenuModifier.hbm.xml" />
+		<mapping resource="com/mdss/pos/model/MenuModifierGroup.hbm.xml" />
+		<mapping resource="com/mdss/pos/model/PayoutReason.hbm.xml" />
+		<mapping resource="com/mdss/pos/model/PayoutRecepient.hbm.xml" />
+		<mapping resource="com/mdss/pos/model/Restaurant.hbm.xml" />
+		<mapping resource="com/mdss/pos/model/RestaurantTable.hbm.xml" />
+		<mapping resource="com/mdss/pos/model/Shift.hbm.xml" />
+		<mapping resource="com/mdss/pos/model/Tax.hbm.xml" />
+		<mapping resource="com/mdss/pos/model/Terminal.hbm.xml" />
+		<mapping resource="com/mdss/pos/model/Ticket.hbm.xml" />
+		<mapping resource="com/mdss/pos/model/TicketCoupon.hbm.xml" />
+		<mapping resource="com/mdss/pos/model/TicketItem.hbm.xml" />
+		<mapping resource="com/mdss/pos/model/TicketItemModifier.hbm.xml" />
+		<mapping resource="com/mdss/pos/model/TicketItemModifierGroup.hbm.xml" />
+		<mapping resource="com/mdss/pos/model/PosTransaction.hbm.xml" />
+		<mapping resource="com/mdss/pos/model/User.hbm.xml" />
+		<mapping resource="com/mdss/pos/model/VoidReason.hbm.xml" />
+		<mapping resource="com/mdss/pos/model/DrawerPullReport.hbm.xml" />
+		<mapping resource="com/mdss/pos/model/PrinterConfiguration.hbm.xml" />
+		<mapping resource="com/mdss/pos/model/UserPermission.hbm.xml" />
+		<mapping resource="com/mdss/pos/model/UserType.hbm.xml" />
+	</session-factory>
+</hibernate-configuration>
