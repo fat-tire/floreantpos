@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+    
+    <hibernate-mapping package="com.floreantpos.model">
+        <class name="CookingInstruction" table="COOKING_INSTRUCTION" lazy="false">
+            <id name="id" column="ID" type="java.lang.Integer">
+                <generator class="identity"></generator>
+            </id>
+            
+            <property name="description" column="DESCRIPTION" type="string" length="60" ></property>
+        </class>
+   </hibernate-mapping>

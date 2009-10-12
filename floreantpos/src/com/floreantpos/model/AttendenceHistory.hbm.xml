@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping package="com.floreantpos.model">
+	<class name="com.floreantpos.model.AttendenceHistory" table="ATTENDENCE_HISTORY" lazy="false">
+		
+		<id name="id" type="java.lang.Integer" column="ID">
+			<generator class="identity" />
+		</id>
+		
+		<property name="clockInTime" type="java.util.Date" column="CLOCK_IN_TIME"></property>
+		<property name="clockOutTime" type="java.util.Date" column="CLOCK_OUT_TIME"></property>
+		<property name="clockInHour" type="java.lang.Short" column="CLOCK_IN_HOUR"></property>
+		<property name="clockOutHour" type="java.lang.Short" column="CLOCK_OUT_HOUR"></property>
+		<property name="clockedOut" type="java.lang.Boolean" column="CLOCKED_OUT"/>
+	
+		<!-- Associations -->
+		<many-to-one name="user" class="User" column="USER_ID">
+		
+		</many-to-one>
+		
+		<many-to-one name="shift" class="Shift" column="SHIFT_ID"></many-to-one>
+		<many-to-one name="terminal" class="Terminal" column="TERMINAL_ID"></many-to-one>
+
+	</class>
+</hibernate-mapping>

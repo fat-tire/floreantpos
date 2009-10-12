@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping package="com.floreantpos.model">
+	<class name="com.floreantpos.model.ActionHistory" table="ACTION_HISTORY" lazy="false">
+		
+		<id name="id" type="java.lang.Integer" column="ID">
+			<generator class="identity" />
+		</id>
+		
+		<property name="actionTime" type="java.util.Date" column="ACTION_TIME"></property>
+		<property name="actionName" type="string" column="ACTION_NAME"></property>
+		<property name="description" type="string" column="DESCRIPTION"></property>
+	
+		<!-- Associations -->
+		<many-to-one name="performer" class="User" column="USER_ID">
+		
+		</many-to-one>
+	</class>
+</hibernate-mapping>
