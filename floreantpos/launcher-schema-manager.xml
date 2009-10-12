@@ -15,6 +15,6 @@
     <maxVersion></maxVersion>
     <initialHeapSize>0</initialHeapSize>
     <maxHeapSize>0</maxHeapSize>
-    <args>-cp mds-pos.jar com.mdss.pos.main.SchemaManager</args>
+    <args>-cp mds-pos.jar com.floreantpos.main.SchemaManager</args>
   </jre>
 </launch4jConfig>

@@ -151,14 +151,14 @@
   <component name="FileEditorManager">
     <leaf>
       <file leaf-file-name="CouponSelectionForm.form" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/com/mdss/pos/ui/forms/CouponSelectionForm.form">
+        <entry file="file://$PROJECT_DIR$/src/com/floreantpos/ui/forms/CouponSelectionForm.form">
           <provider selected="true" editor-type-id="ui-designer">
             <state />
           </provider>
         </entry>
       </file>
       <file leaf-file-name="CouponSelectionForm.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/mdss/pos/ui/forms/CouponSelectionForm.java">
+        <entry file="file://$PROJECT_DIR$/src/com/floreantpos/ui/forms/CouponSelectionForm.java">
           <provider selected="true" editor-type-id="text-editor">
             <state line="53" column="18" selection-start="1725" selection-end="1725" vertical-scroll-proportion="0.3816568">
               <folding>
@@ -221,7 +221,7 @@
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewModuleNode" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
-          <option name="myItemId" value="com.mdss.pos.util" />
+          <option name="myItemId" value="com.floreantpos.util" />
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageElementNode" />
         </PATH_ELEMENT>
       </PATH>
@@ -235,7 +235,7 @@
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewModuleNode" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
-          <option name="myItemId" value="com.mdss.pos.ui.report" />
+          <option name="myItemId" value="com.floreantpos.ui.report" />
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageElementNode" />
         </PATH_ELEMENT>
       </PATH>
@@ -249,7 +249,7 @@
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewModuleNode" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
-          <option name="myItemId" value="com.mdss.pos.ui.forms" />
+          <option name="myItemId" value="com.floreantpos.ui.forms" />
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageElementNode" />
         </PATH_ELEMENT>
       </PATH>
@@ -263,7 +263,7 @@
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewModuleNode" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
-          <option name="myItemId" value="com.mdss.pos.ui.forms" />
+          <option name="myItemId" value="com.floreantpos.ui.forms" />
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageElementNode" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
@@ -435,7 +435,7 @@
       <option name="PORT" value="5005" />
     </configuration>
     <configuration default="false" name="PrinterDialog" type="Application" factoryName="Application" enabled="false" merge="false">
-      <option name="MAIN_CLASS_NAME" value="com.mdss.pos.ui.printer.PrinterDialog" />
+      <option name="MAIN_CLASS_NAME" value="com.floreantpos.ui.printer.PrinterDialog" />
       <option name="VM_PARAMETERS" value="" />
       <option name="PROGRAM_PARAMETERS" value="" />
       <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
@@ -451,7 +451,7 @@
       </method>
     </configuration>
     <configuration default="false" name="pos" type="Application" factoryName="Application" enabled="false" merge="false">
-      <option name="MAIN_CLASS_NAME" value="com.mdss.pos.main.Main" />
+      <option name="MAIN_CLASS_NAME" value="com.floreantpos.main.Main" />
       <option name="VM_PARAMETERS" value="" />
       <option name="PROGRAM_PARAMETERS" value="" />
       <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
@@ -685,33 +685,33 @@
     <option name="myLastEditedConfigurable" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/com/mdss/pos/ui/report/actions/SalesReportAction.java">
+    <entry file="file://$PROJECT_DIR$/src/com/floreantpos/ui/report/actions/SalesReportAction.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="38" column="31" selection-start="1012" selection-end="1012" vertical-scroll-proportion="0.76510066">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/mdss/pos/ui/report/HourlyLaborReportView.java">
+    <entry file="file://$PROJECT_DIR$/src/com/floreantpos/ui/report/HourlyLaborReportView.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="60" column="38" selection-start="2029" selection-end="2029" vertical-scroll-proportion="0.41034484">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/mdss/pos/ui/report/HourlyLaborReportView.form">
+    <entry file="file://$PROJECT_DIR$/src/com/floreantpos/ui/report/HourlyLaborReportView.form">
       <provider selected="true" editor-type-id="ui-designer">
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/mdss/pos/ui/report/SalesReport.java">
+    <entry file="file://$PROJECT_DIR$/src/com/floreantpos/ui/report/SalesReport.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="61" column="56" selection-start="2595" selection-end="2595" vertical-scroll-proportion="0.029310346">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/mdss/pos/model/dao/TicketDAO.java">
+    <entry file="file://$PROJECT_DIR$/src/com/floreantpos/model/dao/TicketDAO.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="298" column="31" selection-start="9932" selection-end="9932" vertical-scroll-proportion="0.46896553">
           <folding />
@@ -725,28 +725,28 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/mdss/pos/model/base/BaseAttendenceHistory.java">
+    <entry file="file://$PROJECT_DIR$/src/com/floreantpos/model/base/BaseAttendenceHistory.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="23" column="57" selection-start="816" selection-end="816" vertical-scroll-proportion="0.6607774">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/mdss/pos/model/AttendenceHistory.java">
+    <entry file="file://$PROJECT_DIR$/src/com/floreantpos/model/AttendenceHistory.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="4" column="46" selection-start="130" selection-end="130" vertical-scroll-proportion="0.116838485">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/mdss/pos/model/base/BaseTicketItem.java">
+    <entry file="file://$PROJECT_DIR$/src/com/floreantpos/model/base/BaseTicketItem.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="15" column="22" selection-start="369" selection-end="369" vertical-scroll-proportion="-1.0636042">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/mdss/pos/util/DbCleaner.java">
+    <entry file="file://$PROJECT_DIR$/src/com/floreantpos/util/DbCleaner.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="10" column="13" selection-start="227" selection-end="227" vertical-scroll-proportion="0.031835206">
           <folding />
@@ -760,19 +760,19 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/mdss/pos/ui/report/SalesExceptionReportView.java">
+    <entry file="file://$PROJECT_DIR$/src/com/floreantpos/ui/report/SalesExceptionReportView.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="15" column="28" selection-start="402" selection-end="402" vertical-scroll-proportion="0.33136094">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/mdss/pos/bo/ui/explorer/GratuityViewer2.form">
+    <entry file="file://$PROJECT_DIR$/src/com/floreantpos/bo/ui/explorer/GratuityViewer2.form">
       <provider selected="true" editor-type-id="ui-designer">
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/mdss/pos/ui/forms/CouponSelectionForm.java">
+    <entry file="file://$PROJECT_DIR$/src/com/floreantpos/ui/forms/CouponSelectionForm.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="53" column="18" selection-start="1725" selection-end="1725" vertical-scroll-proportion="0.3816568">
           <folding>
@@ -782,7 +782,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/mdss/pos/ui/forms/CouponSelectionForm.form">
+    <entry file="file://$PROJECT_DIR$/src/com/floreantpos/ui/forms/CouponSelectionForm.form">
       <provider selected="true" editor-type-id="ui-designer">
         <state />
       </provider>
