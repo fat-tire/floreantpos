@@ -18,6 +18,7 @@ import javax.swing.table.AbstractTableModel;
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
 
+import com.floreantpos.main.Application;
 import com.floreantpos.model.MenuGroup;
 import com.floreantpos.model.MenuItem;
 import com.floreantpos.model.MenuItemModifierGroup;
@@ -332,6 +333,8 @@ public class MenuItemForm extends BeanEditor implements ActionListener {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnNewTaxdoCreateNewTax(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewTaxdoCreateNewTax
+    	BeanEditorDialog dialog = new BeanEditorDialog(new TaxForm(), Application.getInstance().getBackOfficeWindow(), true);
+		dialog.open();
     }//GEN-LAST:event_btnNewTaxdoCreateNewTax
 
     private void btnNewModifierGroupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewModifierGroupActionPerformed
@@ -464,8 +467,8 @@ public class MenuItemForm extends BeanEditor implements ActionListener {
 		chkVisible.setSelected(menuItem.isVisible());
 		
 		if(menuItem.getId() == null) {
-			cbGroup.setSelectedIndex(0);
-			cbTax.setSelectedIndex(0);
+//			cbGroup.setSelectedIndex(0);
+//			cbTax.setSelectedIndex(0);
 		}
 		else {
 			cbGroup.setSelectedItem(menuItem.getParent());
