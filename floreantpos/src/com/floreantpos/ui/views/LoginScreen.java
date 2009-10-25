@@ -6,6 +6,7 @@
 
 package com.floreantpos.ui.views;
 
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
@@ -14,7 +15,6 @@ import javax.swing.border.EtchedBorder;
 import net.miginfocom.swing.MigLayout;
 
 import com.floreantpos.IconFactory;
-import com.floreantpos.swing.ImageComponent;
 
 /**
  *
@@ -24,7 +24,7 @@ public class LoginScreen extends JPanel {
 	public final static String VIEW_NAME = "LOGIN_VIEW";
 	
 	
-	private ImageComponent imageComponent;
+	private JLabel imageComponent;
 	private PasswordScreen passwordScreen;
     
 	
@@ -32,7 +32,7 @@ public class LoginScreen extends JPanel {
 	public LoginScreen() {
 		setLayout(new MigLayout("ins 20 10 20 10, fill","[fill,growprio 100,grow][]",""));
 		
-		imageComponent = new ImageComponent(IconFactory.getIcon("florent-pos.png").getImage());
+		imageComponent = new JLabel(IconFactory.getIcon("florent-pos.png"));
 		imageComponent.setBorder(new EtchedBorder());
 		
 		add(imageComponent, "spany,grow,flowx");
