@@ -19,11 +19,11 @@ import com.floreantpos.util.POSUtil;
 public class TaxForm extends BeanEditor {
     
     /** Creates new form TaxEditor */
-    public TaxForm() throws Exception {
+    public TaxForm() {
         this(new Tax());
     }
     
-    public TaxForm(Tax tax) throws Exception {
+    public TaxForm(Tax tax) {
     	initComponents();
     	
     	setBean(tax);
