@@ -1,4 +1,4 @@
-<project name="floreantpos" default="jar">
+<project name="floreantpos" default="dist">
 	<property name="src.dir" value="src"/>
 	<property name="out.dir" value="antbin"/>
 	<property name="dist.dir" value="dist"/>
@@ -58,10 +58,7 @@
 			</fileset>
 		</copy>
 		
-		<mkdir dir="${dist.dir}/posdb"/>	
-		<copy todir="${dist.dir}/posdb">
-			<fileset dir="posdb" includes="*"/>
-		</copy>
+		<unzip dest="${dist.dir}" src="posdb.zip"/>
 	</target>
 	
 	<target name="clean">
