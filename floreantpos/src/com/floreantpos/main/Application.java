@@ -62,7 +62,7 @@ public class Application {
 	private static SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM, yyyy");
 	private static ImageIcon applicationIcon;
 
-	public final static String VERSION = "2.5";
+	public final static String VERSION = "1.0";
 
 	private Application() {
 		applicationIcon = new ImageIcon(getClass().getResource("/icons/icon.png"));

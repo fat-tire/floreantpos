@@ -3,6 +3,8 @@
 	<property name="out.dir" value="antbin"/>
 	<property name="dist.dir" value="dist"/>
 	<property name="jarfile" value="floreantpos.jar"/>
+	<property name="app.name" value="floreantpos"/>
+	<property name="app.version" value="1.0"/>
 
 	<target name="compile">
 		<mkdir dir="${out.dir}"/>
@@ -46,6 +48,7 @@
 	</target>
 	
 	<target name="dist" depends="jar">
+		<delete file="${app.name}-${app.version}.zip" />
 		<mkdir dir="${dist.dir}/lib"/>		
 		<copy todir="${dist.dir}/lib">
 			<fileset dir="lib" includes="*"/>
@@ -59,6 +62,9 @@
 		</copy>
 		
 		<unzip dest="${dist.dir}" src="posdb.zip"/>
+		
+		<zip destfile="${app.name}-${app.version}.zip" basedir="${dist.dir}" />
+		<delete dir="${dist.dir}"></delete>
 	</target>
 	
 	<target name="clean">
