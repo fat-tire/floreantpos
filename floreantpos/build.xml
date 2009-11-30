@@ -1,10 +1,12 @@
 <project name="floreantpos" default="dist">
 	<property name="src.dir" value="src"/>
 	<property name="out.dir" value="antbin"/>
-	<property name="dist.dir" value="dist"/>
+	<property name="dist.base" value="dist"/>
+	<property name="dist.dir" value="${dist.base}/floreantpos"/>
 	<property name="jarfile" value="floreantpos.jar"/>
 	<property name="app.name" value="floreantpos"/>
 	<property name="app.version" value="1.0"/>
+	<property name="app.file" value="${dist.base}/${app.name}-${app.version}.zip"/>
 
 	<target name="compile">
 		<mkdir dir="${out.dir}"/>
@@ -25,8 +27,8 @@
 	</target>
 
 	<target name="jar" depends="compile">
+		<delete dir="${dist.base}"></delete>
 		<mkdir dir="${dist.dir}"/>
-		<delete file="${dist.dir}/${jarfile}"></delete>
 		
 		<pathconvert property="jar.classpath" pathsep=" ">
 			<path>
@@ -48,7 +50,7 @@
 	</target>
 	
 	<target name="dist" depends="jar">
-		<delete file="${app.name}-${app.version}.zip" />
+		<delete file="${app.file}" />
 		<mkdir dir="${dist.dir}/lib"/>		
 		<copy todir="${dist.dir}/lib">
 			<fileset dir="lib" includes="*"/>
@@ -58,13 +60,13 @@
 				<include name="*.dll"/>
 				<include name="*.bat"/>
 				<include name="*.exe"/>
+				<include name="*.sh"/>
 			</fileset>
 		</copy>
 		
 		<unzip dest="${dist.dir}" src="posdb.zip"/>
 		
-		<zip destfile="${app.name}-${app.version}.zip" basedir="${dist.dir}" />
-		<delete dir="${dist.dir}"></delete>
+		<zip destfile="${app.file}" basedir="${dist.base}" />
 	</target>
 	
 	<target name="clean">
@@ -72,6 +74,7 @@
 	</target>
 	
 	<target name="cleanall" depends="clean">
-		<delete dir="${dist.dir}"></delete>
+		<delete dir="${dist.base}"></delete>
+		<delete file="${app.file}"/>
 	</target>
 </project>
