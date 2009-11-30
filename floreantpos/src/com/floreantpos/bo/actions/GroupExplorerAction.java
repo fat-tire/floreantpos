@@ -25,17 +25,14 @@ public class GroupExplorerAction extends AbstractAction {
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		//BackOfficeWindow backOfficeWindow = Application.getInstance().getBackOfficeWindow();
-		//backOfficeWindow.getTabbedPane().addTab("Group exploere", new GroupExplorer());
-
 		BackOfficeWindow backOfficeWindow = Application.getInstance().getBackOfficeWindow();
 		JTabbedPane tabbedPane;
 		GroupExplorer group;
 		tabbedPane = backOfficeWindow.getTabbedPane();
-		int index = tabbedPane.indexOfTab("Group exploere");
+		int index = tabbedPane.indexOfTab("Group explorer");
 		if (index == -1) {
 			group = new GroupExplorer();
-			tabbedPane.addTab("Group exploere", group);
+			tabbedPane.addTab("Group explorer", group);
 		}
 		else {
 			group = (GroupExplorer) tabbedPane.getComponentAt(index);
