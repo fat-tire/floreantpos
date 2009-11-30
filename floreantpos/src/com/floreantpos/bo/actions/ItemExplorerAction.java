@@ -32,10 +32,10 @@ public class ItemExplorerAction extends AbstractAction {
 		JTabbedPane tabbedPane;
 		MenuItemExplorer item;
 		tabbedPane = backOfficeWindow.getTabbedPane();
-		int index = tabbedPane.indexOfTab("Item exploere");
+		int index = tabbedPane.indexOfTab("Item explorer");
 		if (index == -1) {
 			item = new MenuItemExplorer();
-			tabbedPane.addTab("Item exploere", item);
+			tabbedPane.addTab("Item explorer", item);
 		}
 		else {
 			item = (MenuItemExplorer) tabbedPane.getComponentAt(index);
