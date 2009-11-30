@@ -25,17 +25,14 @@ public class ModifierExplorerAction extends AbstractAction {
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		//BackOfficeWindow backOfficeWindow = Application.getInstance().getBackOfficeWindow();
-		//backOfficeWindow.getTabbedPane().addTab("Modifier exploere", new ModifierExplorer());
-
 		BackOfficeWindow backOfficeWindow = Application.getInstance().getBackOfficeWindow();
 		JTabbedPane tabbedPane;
 		ModifierExplorer modifier;
 		tabbedPane = backOfficeWindow.getTabbedPane();
-		int index = tabbedPane.indexOfTab("Modifier exploere");
+		int index = tabbedPane.indexOfTab("Modifier explorer");
 		if (index == -1) {
 			modifier = new ModifierExplorer();
-			tabbedPane.addTab("Modifier exploere", modifier);
+			tabbedPane.addTab("Modifier explorer", modifier);
 		}
 		else {
 			modifier = (ModifierExplorer) tabbedPane.getComponentAt(index);

@@ -25,17 +25,14 @@ public class ModifierGroupExplorerAction extends AbstractAction {
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		//BackOfficeWindow backOfficeWindow = Application.getInstance().getBackOfficeWindow();
-		//backOfficeWindow.getTabbedPane().addTab("Modifier Group exploere", new ModifierGroupExplorer());
-
 		BackOfficeWindow backOfficeWindow = Application.getInstance().getBackOfficeWindow();
 		JTabbedPane tabbedPane;
 		ModifierGroupExplorer mGroup;
 		tabbedPane = backOfficeWindow.getTabbedPane();
-		int index = tabbedPane.indexOfTab("Modifier Group exploere");
+		int index = tabbedPane.indexOfTab("Modifier Group explorer");
 		if (index == -1) {
 			mGroup = new ModifierGroupExplorer();
-			tabbedPane.addTab("Modifier Group exploere", mGroup);
+			tabbedPane.addTab("Modifier Group explorer", mGroup);
 		}
 		else {
 			mGroup = (ModifierGroupExplorer) tabbedPane.getComponentAt(index);

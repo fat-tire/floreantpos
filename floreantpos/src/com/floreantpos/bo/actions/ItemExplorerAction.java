@@ -25,9 +25,6 @@ public class ItemExplorerAction extends AbstractAction {
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		//BackOfficeWindow backOfficeWindow = Application.getInstance().getBackOfficeWindow();
-		//backOfficeWindow.getTabbedPane().addTab("Item exploere", new ItemExplorer());
-
 		BackOfficeWindow backOfficeWindow = Application.getInstance().getBackOfficeWindow();
 		JTabbedPane tabbedPane;
 		MenuItemExplorer item;
