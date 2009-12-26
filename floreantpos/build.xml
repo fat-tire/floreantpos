@@ -5,7 +5,7 @@
 	<property name="dist.dir" value="${dist.base}/floreantpos"/>
 	<property name="jarfile" value="floreantpos.jar"/>
 	<property name="app.name" value="floreantpos"/>
-	<property name="app.version" value="1.0_1"/>
+	<property name="app.version" value="1.0_2"/>
 	<property name="app.file" value="${dist.base}/${app.name}-${app.version}.zip"/>
 
 	<target name="compile">
