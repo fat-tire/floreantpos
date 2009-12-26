@@ -7,7 +7,6 @@ import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
-import org.hibernate.Transaction;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
@@ -41,7 +40,7 @@ public class AttendenceHistoryDAO extends BaseAttendenceHistoryDAO {
 
 			if (userType != null) {
 				criteria.createAlias(AttendenceHistory.PROP_USER, "u");
-				criteria.add(Restrictions.eq("u.userType", userType));
+				criteria.add(Restrictions.eq("u.newUserType", userType));
 			}
 			if (terminal != null) {
 				criteria.add(Restrictions.eq(Ticket.PROP_TERMINAL, terminal));
@@ -81,7 +80,7 @@ public class AttendenceHistoryDAO extends BaseAttendenceHistoryDAO {
 			
 			if (userType != null) {
 				criteria.createAlias(AttendenceHistory.PROP_USER, "u");
-				criteria.add(Restrictions.eq("u.userType", userType));
+				criteria.add(Restrictions.eq("u.newUserType", userType));
 			}
 			if (terminal != null) {
 				criteria.add(Restrictions.eq(Ticket.PROP_TERMINAL, terminal));
