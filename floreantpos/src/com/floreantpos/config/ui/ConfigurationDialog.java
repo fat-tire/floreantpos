@@ -36,8 +36,8 @@ public class ConfigurationDialog extends POSDialog implements ChangeListener, Ac
 		RestaurantConfigurationView restaurantConfigurationView = new RestaurantConfigurationView();
 		addView(restaurantConfigurationView);
 		
-		PrintConfigurationView printConfigurationView = new PrintConfigurationView();
-		addView(printConfigurationView);
+		//PrintConfigurationView printConfigurationView = new PrintConfigurationView();
+		addView(new PrintConfiguration());
 		
 		DrawerPullConfigurationView drawerPullConfigurationView = new DrawerPullConfigurationView();
 		addView(drawerPullConfigurationView);
