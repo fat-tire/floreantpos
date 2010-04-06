@@ -13,4 +13,21 @@ public enum PrinterType {
 	public String getName() {
 		return name;
 	}
+	
+	public static PrinterType fromString(String name) {
+		PrinterType[] values = values();
+		for (int i = 0; i < values.length; i++) {
+			PrinterType printerType = values[i];
+			if(printerType.getName().equals(name)) {
+				return printerType;
+			}
+		}
+		
+		return null;
+	}
+	
+	@Override
+	public String toString() {
+		return name;
+	}
 }

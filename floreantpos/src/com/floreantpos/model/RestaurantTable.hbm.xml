@@ -1,21 +1,13 @@
-<?xml version="1.0"?>
-<!DOCTYPE hibernate-mapping PUBLIC
-    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
-
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping package="com.floreantpos.model">
-	<class name="com.floreantpos.model.RestaurantTable" table="RESTAURANT_TABLE" lazy="false">
-		
-		<id name="id" type="java.lang.Integer" column="ID">
-			<generator class="identity" />
-		</id>
-
-		<property name="capacity" type="java.lang.Integer" column="CAPACITY" length="10" />
-		<property name="name" type="java.lang.String" column="NAME" length="60" />
-		<property name="booked" type="java.lang.Boolean" column="BOOKED" />
-
-		<!-- Associations -->
-
-
-	</class>
+  <class lazy="false" name="com.floreantpos.model.RestaurantTable" table="RESTAURANT_TABLE">
+    <id column="ID" name="id" type="java.lang.Integer">
+      <generator class="identity"/>
+    </id>
+    <property column="CAPACITY" length="10" name="capacity" type="java.lang.Integer"/>
+    <property column="NAME" length="60" name="name" type="java.lang.String"/>
+    <property column="BOOKED" name="booked" type="java.lang.Boolean"/>
+    <!-- Associations -->
+  </class>
 </hibernate-mapping>

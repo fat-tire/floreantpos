@@ -30,6 +30,26 @@ public class ApplicationConfig {
 		return pref;
 	}
 	
+	public static boolean getBoolean(String key, boolean defaultValue) {
+		return pref.getBoolean(key, defaultValue);
+	}
+	
+	public static String getString(String key) {
+		return pref.get(key, null);
+	}
+	
+	public static String getString(String key, String defaultValue) {
+		return pref.get(key, defaultValue);
+	}
+	
+	public static void put(String key, boolean value) {
+		pref.putBoolean(key, value);
+	}
+	
+	public static void put(String key, String value) {
+		pref.put(key, value);
+	}
+	
 	public static String getDatabaseURL() {
 		return pref.get(DATABASE_URL, "localhost");
 	}

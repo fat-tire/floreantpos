@@ -48,10 +48,10 @@ public class OthersView extends TransparentPanel {
         btnCookingInstruction = new com.floreantpos.swing.PosButton();
 
         setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Others", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
-        setPreferredSize(new java.awt.Dimension(120, 120));
+        setPreferredSize(new java.awt.Dimension(120, 140));
         setLayout(new java.awt.GridLayout(0, 1, 5, 5));
 
-        transparentPanel2.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 8, 0, 8));
+        transparentPanel2.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
         transparentPanel2.setPreferredSize(new java.awt.Dimension(140, 50));
         transparentPanel2.setLayout(new java.awt.GridLayout(1, 0, 5, 5));
 
@@ -81,7 +81,7 @@ public class OthersView extends TransparentPanel {
 
         add(transparentPanel2);
 
-        transparentPanel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 8, 0, 8));
+        transparentPanel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
         transparentPanel1.setLayout(new java.awt.GridLayout(1, 0, 5, 5));
 
         btnCustomerNumber.setText("CUSTOMER");

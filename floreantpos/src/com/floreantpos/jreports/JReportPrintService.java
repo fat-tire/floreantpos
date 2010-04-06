@@ -11,7 +11,9 @@ import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperPrintManager;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRTableModelDataSource;
+import net.sf.jasperreports.engine.print.JRPrinterAWT;
 import net.sf.jasperreports.engine.util.JRLoader;
+import net.sf.jasperreports.view.JasperViewer;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -28,44 +30,38 @@ public class JReportPrintService {
 	private static Log logger = LogFactory.getLog(JReportPrintService.class);
 
 	public static void printTicket(Ticket ticket) {
-		Restaurant restaurant = RestaurantDAO.getInstance().get(
-				Integer.valueOf(1));
+		Restaurant restaurant = RestaurantDAO.getInstance().get(Integer.valueOf(1));
 
 		HashMap map = new HashMap();
 		map.put("headerLine1", restaurant.getName());
 		map.put("headerLine2", restaurant.getAddressLine1());
 		map.put("headerLine3", restaurant.getAddressLine2());
 		map.put("headerLine4", restaurant.getAddressLine3());
-		map.put("headerLine5", restaurant.getTelephone());
+		map.put("headerLine5", "Tel: " + restaurant.getTelephone());
 
 		map.put("checkNo", "Chk#: " + ticket.getId());
 		map.put("tableNo", "Table#: " + ticket.getTableNumber());
-		map.put("guestCount", "Guests: " + ticket.getNumberOfGuests());
+		map.put("guestCount", "Guests #: " + ticket.getNumberOfGuests());
 		map.put("serverName", "Server: " + ticket.getOwner());
 		map.put("reportDate", "Date: " + Application.formatDate(new Date()));
-		map.put("grandSubtotal", Application.formatNumber(ticket
-				.getSubtotalAmount()));
-		map
-				.put("grandTotal", Application.formatNumber(ticket
-						.getTotalAmount()));
+		map.put("grandSubtotal", Application.formatNumber(ticket.getSubtotalAmount()));
+		map.put("grandTotal", Application.formatNumber(ticket.getTotalAmount()));
 		map.put("taxAmount", Application.formatNumber(ticket.getTaxAmount()));
 		if (ticket.getGratuity() != null) {
-			map.put("tipAmount", Application.formatNumber(ticket.getGratuity()
-					.getAmount()));
+			map.put("tipAmount", Application.formatNumber(ticket.getGratuity().getAmount()));
 		}
 
 		InputStream ticketReportStream = null;
 
 		try {
-			ticketReportStream = JReportPrintService.class
-					.getResourceAsStream("/com/floreantpos/jreports/TicketReceiptReport.jasper");
-			JasperReport ticketReport = (JasperReport) JRLoader
-					.loadObject(ticketReportStream);
+			//ticketReportStream = JReportPrintService.class.getResourceAsStream("/com/floreantpos/jreports/TicketReceiptReport.jrxml");
+			ticketReportStream = JReportPrintService.class.getResourceAsStream("/com/floreantpos/jreports/TicketReceiptReport.jasper");
 
-			JasperPrint jasperPrint = JasperFillManager.fillReport(
-					ticketReport, map, new JRTableModelDataSource(
-							new TicketDataSource(ticket)));
-			//JasperViewer.viewReport(jasperPrint, false);
+			//JasperReport ticketReport = JasperCompileManager.compileReport(ticketReportStream);
+			JasperReport ticketReport = (JasperReport) JRLoader.loadObject(ticketReportStream);
+
+			JasperPrint jasperPrint = JasperFillManager.fillReport(ticketReport, map, new JRTableModelDataSource(new TicketDataSource(ticket)));
+			JasperViewer.viewReport(jasperPrint, false);
 			JasperPrintManager.printReport(jasperPrint, false);
 
 		} catch (JRException e) {
@@ -79,8 +75,7 @@ public class JReportPrintService {
 	}
 
 	public static void printTicketToKitchen(Ticket ticket) {
-		Restaurant restaurant = RestaurantDAO.getInstance().get(
-				Integer.valueOf(1));
+		Restaurant restaurant = RestaurantDAO.getInstance().get(Integer.valueOf(1));
 
 		HashMap map = new HashMap();
 		map.put("headerLine1", restaurant.getName());
@@ -94,15 +89,13 @@ public class JReportPrintService {
 		InputStream ticketReportStream = null;
 
 		try {
-			ticketReportStream = JReportPrintService.class
-					.getResourceAsStream("/com/floreantpos/jreports/KitchenReceipt.jasper");
-			JasperReport ticketReport = (JasperReport) JRLoader
-					.loadObject(ticketReportStream);
+			ticketReportStream = JReportPrintService.class.getResourceAsStream("/com/floreantpos/jreports/KitchenReceipt.jasper");
+			JasperReport ticketReport = (JasperReport) JRLoader.loadObject(ticketReportStream);
 
-			JasperPrint jasperPrint = JasperFillManager.fillReport(
-					ticketReport, map, new JRTableModelDataSource(
-							new KitchenTicketDataSource(ticket)));
+			JasperPrint jasperPrint = JasperFillManager.fillReport(ticketReport, map, new JRTableModelDataSource(new KitchenTicketDataSource(ticket)));
 			//JasperViewer.viewReport(jasperPrint, false);
+
+			JRPrinterAWT.printToKitchen = true;
 			JasperPrintManager.printReport(jasperPrint, false);
 
 			//no exception, so print to kitchen successful.
@@ -127,12 +120,10 @@ public class JReportPrintService {
 					ticketItem.setPrintedToKitchen(true);
 				}
 
-				List<TicketItemModifierGroup> modifierGroups = ticketItem
-						.getTicketItemModifierGroups();
+				List<TicketItemModifierGroup> modifierGroups = ticketItem.getTicketItemModifierGroups();
 				if (modifierGroups != null) {
 					for (TicketItemModifierGroup modifierGroup : modifierGroups) {
-						List<TicketItemModifier> modifiers = modifierGroup
-								.getTicketItemModifiers();
+						List<TicketItemModifier> modifiers = modifierGroup.getTicketItemModifiers();
 						if (modifiers != null) {
 							for (TicketItemModifier modifier : modifiers) {
 								if (!modifier.isPrintedToKitchen()) {

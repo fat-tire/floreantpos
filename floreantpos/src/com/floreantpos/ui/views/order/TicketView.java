@@ -14,6 +14,7 @@ import java.text.NumberFormat;
 import javax.swing.JPanel;
 
 import com.floreantpos.PosException;
+import com.floreantpos.config.PrintConfig;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.ActionHistory;
 import com.floreantpos.model.MenuCategory;
@@ -355,11 +356,11 @@ public class TicketView extends JPanel {
 
 			saveOrder();
 
-			if (Application.getPrinterConfiguration().isPrintRecreiptWhenTicketSettled()) {
+			if (PrintConfig.isPrintReceiptWhenSetteled()) {
 				PosPrintService.printTicket(ticket);
 			}
 
-			if (Application.getPrinterConfiguration().isPrintKitchenWhenTicketSettled()) {
+			if (PrintConfig.isPrintKitchenWhenSetteled()) {
 				if (ticket.needsKitchenPrint()) {
 					PosPrintService.printToKitcken(ticket);
 				}

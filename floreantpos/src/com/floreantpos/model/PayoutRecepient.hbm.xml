@@ -1,14 +1,10 @@
-<?xml version="1.0"?>
-<!DOCTYPE hibernate-mapping PUBLIC
-    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
-    
-    <hibernate-mapping package="com.floreantpos.model" default-lazy="false">
-    	<class name="PayoutRecepient" table="PAYOUT_RECEPIENTS" lazy="false">
-    		<id name="id" column="ID" type="java.lang.Integer">
-    			<generator class="identity"></generator>
-    		</id>
-    		
-    		<property name="name" column="NAME" type="string" length="255"></property>
-    	</class>
-    </hibernate-mapping>
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping default-lazy="false" package="com.floreantpos.model">
+  <class lazy="false" name="PayoutRecepient" table="PAYOUT_RECEPIENTS">
+    <id column="ID" name="id" type="java.lang.Integer">
+      <generator class="identity"/>
+    </id>
+    <property column="NAME" length="255" name="name" type="string"/>
+  </class>
+</hibernate-mapping>

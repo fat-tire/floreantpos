@@ -30,7 +30,6 @@
 	<classpathentry kind="lib" path="lib/jaas.jar"/>
 	<classpathentry kind="lib" path="lib/jacc-1_0-fr.jar"/>
 	<classpathentry kind="lib" path="lib/jakarta-bcel-20050813.jar"/>
-	<classpathentry kind="lib" path="lib/jasperreports-1.2.6.jar"/>
 	<classpathentry kind="lib" path="lib/jaxen-1.1.jar"/>
 	<classpathentry kind="lib" path="lib/jcommon-1.0.0.jar"/>
 	<classpathentry kind="lib" path="lib/jgoodies-forms.jar"/>
@@ -53,6 +52,8 @@
 	<classpathentry kind="lib" path="lib/xalan.jar"/>
 	<classpathentry kind="lib" path="lib/xercesImpl.jar"/>
 	<classpathentry kind="lib" path="lib/xml-apis.jar"/>
+	<classpathentry kind="lib" path="lib/nimbus-snapshot-20090514.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="lib/jasperreports-3.7.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

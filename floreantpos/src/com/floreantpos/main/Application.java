@@ -81,8 +81,9 @@ public class Application {
 	public void start() {
 		try {
 			PlasticXPLookAndFeel.setMyCurrentTheme(new ExperienceBlue());
-			UIManager.setLookAndFeel(new PlasticXPLookAndFeel());
-			UIManager.put("ComboBox.is3DEnabled", Boolean.FALSE);
+			//UIManager.setLookAndFeel(new PlasticXPLookAndFeel());
+			UIManager.setLookAndFeel(new javax.swing.plaf.nimbus.NimbusLookAndFeel());
+			//UIManager.put("ComboBox.is3DEnabled", Boolean.FALSE);
 		} catch (Exception e) {
 		}
 
@@ -93,7 +94,7 @@ public class Application {
 		panel.add(rootView);
 
 		posWindow.setContentPane(panel);
-		posWindow.setSize(ApplicationConfig.getPreferences().getInt("wwidth", 800), ApplicationConfig.getPreferences().getInt("wheight", 600));
+		posWindow.setSize(ApplicationConfig.getPreferences().getInt("wwidth", 900), ApplicationConfig.getPreferences().getInt("wheight", 650));
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		posWindow.setLocation(ApplicationConfig.getPreferences().getInt("wlocx", ((screenSize.width - posWindow.getWidth()) >> 1)), ApplicationConfig.getPreferences().getInt("wlocy", ((screenSize.height - posWindow.getHeight()) >> 1)));
 		posWindow.setMinimumSize(new Dimension(800, 600));
@@ -273,9 +274,9 @@ public class Application {
 		return terminal;
 	}
 
-	public static PrinterConfiguration getPrinterConfiguration() {
-		return getInstance().printConfiguration;
-	}
+//	public static PrinterConfiguration getPrinterConfiguration() {
+//		return getInstance().printConfiguration;
+//	}
 
 	public static String formatNumber(Double number) {
 		if(number == null) {

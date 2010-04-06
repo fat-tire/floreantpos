@@ -51,7 +51,7 @@ public class CategoryView extends SelectionView implements ActionListener {
 		setBackVisible(false);
 		
 		categoryButtonGroup = new ButtonGroup();
-		setPreferredSize(new Dimension(135, 100));
+		setPreferredSize(new Dimension(160, 100));
 	}
 
 	public void initialize() {

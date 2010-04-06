@@ -1,31 +1,20 @@
-<?xml version="1.0"?>
-<!DOCTYPE hibernate-mapping PUBLIC
-    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
-
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping package="com.floreantpos.model">
-	<class name="com.floreantpos.model.Gratuity" table="GRATUITY" lazy="false">
-		
-		<id name="id" type="java.lang.Integer" column="ID">
-			<generator class="identity" />
-		</id>
-		
-		<version name="modifiedTime" column="MODIFIED_TIME" type="timestamp"></version>
-		
-		<property name="amount" type="java.lang.Double" column="AMOUNT" />
-		<property name="paid" type="java.lang.Boolean" column="PAID" />
-		
-		<many-to-one name="ticket" class="Ticket" column="TICKET_ID"/>
-		
-		<many-to-one name="owner" class="com.floreantpos.model.User" lazy="false">
-			<column name="OWNER_ID" />
-		</many-to-one>
-
-		<many-to-one name="terminal" class="com.floreantpos.model.Terminal" lazy="false">
-			<column name="TERMINAL_ID"></column>
-		</many-to-one>
-		<!-- Associations -->
-
-
-	</class>
+  <class lazy="false" name="com.floreantpos.model.Gratuity" table="GRATUITY">
+    <id column="ID" name="id" type="java.lang.Integer">
+      <generator class="identity"/>
+    </id>
+    <version column="MODIFIED_TIME" name="modifiedTime" type="timestamp"/>
+    <property column="AMOUNT" name="amount" type="java.lang.Double"/>
+    <property column="PAID" name="paid" type="java.lang.Boolean"/>
+    <many-to-one class="Ticket" column="TICKET_ID" name="ticket"/>
+    <many-to-one class="com.floreantpos.model.User" lazy="false" name="owner">
+      <column name="OWNER_ID"/>
+    </many-to-one>
+    <many-to-one class="com.floreantpos.model.Terminal" lazy="false" name="terminal">
+      <column name="TERMINAL_ID"/>
+    </many-to-one>
+    <!-- Associations -->
+  </class>
 </hibernate-mapping>

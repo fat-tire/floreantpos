@@ -10,11 +10,11 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.floreantpos.config.PrintConfig;
 import com.floreantpos.jreports.JReportPrintService;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.DrawerPullReport;
 import com.floreantpos.model.DrawerPullVoidTicketEntry;
-import com.floreantpos.model.PrinterConfiguration;
 import com.floreantpos.model.Restaurant;
 import com.floreantpos.model.Terminal;
 import com.floreantpos.model.Ticket;
@@ -191,17 +191,15 @@ public class PosPrintService {
 			@Override
 			public Object run() {
 				PosPrinter posPrinter = null;
-				PrinterConfiguration printerConfiguration = null;
 				try {
-					printerConfiguration = Application.getPrinterConfiguration();
-					if(printerConfiguration.isUseNormalPrinterForTicket()) {
+					if(PrintConfig.getReceiptPrinterType() == PrinterType.OS_PRINTER) {
 						JReportPrintService.printTicket(ticket);
 						return null;
 					}
 				
 					Restaurant restaurant = RestaurantDAO.getInstance().get(Integer.valueOf(1));
 
-					posPrinter = new PosPrinter(Application.getPrinterConfiguration().getReceiptPrinterName(), "CashDrawer");
+					posPrinter = new PosPrinter(PrintConfig.getJavaPosReceiptPrinterName(), PrintConfig.getCashDrawerName());
 
 					posPrinter.beginLine(PosPrinter.SIZE_0);
 					posPrinter.printText("\u001b|cA\u001b|2C" + restaurant.getName());
@@ -354,9 +352,6 @@ public class PosPrintService {
 				} catch(Exception x) {
 					logger.error("Error while printing ticket", x);
 				} finally {
-					if(printerConfiguration != null && printerConfiguration.isUseNormalPrinterForTicket()) {
-						return null;
-					}
 					if (posPrinter != null) {
 						posPrinter.finalize();
 					}
@@ -374,17 +369,15 @@ public class PosPrintService {
 			@Override
 			public Object run() {
 				PosPrinter posPrinter = null;
-				PrinterConfiguration printerConfiguration = null;
 				try {
-					printerConfiguration = Application.getPrinterConfiguration();
-					if(printerConfiguration.isUseNormalPrinterForKitchen()) {
+					if(PrintConfig.getKitchenPrinterType() == PrinterType.OS_PRINTER) {
 						JReportPrintService.printTicketToKitchen(ticket);
 						return null;
 					}
 				
 					Restaurant restaurant = RestaurantDAO.getInstance().get(Integer.valueOf(1));
 
-					posPrinter = new PosPrinter(Application.getPrinterConfiguration().getKitchenPrinterName(), "CashDrawer");
+					posPrinter = new PosPrinter(PrintConfig.getJavaPosKitchenPrinterName(), PrintConfig.getCashDrawerName());
 
 					posPrinter.beginLine(PosPrinter.SIZE_0);
 					posPrinter.printText("\u001b|cA\u001b|2C" + restaurant.getName());
@@ -471,9 +464,6 @@ public class PosPrintService {
 				} catch(Exception x) {
 					logger.error("Error while printing to kitchen", x);
 				} finally {
-					if(printerConfiguration != null && printerConfiguration.isUseNormalPrinterForKitchen()) {
-						return null;
-					}
 					if (posPrinter != null) {
 						posPrinter.finalize();
 					}
@@ -491,7 +481,7 @@ public class PosPrintService {
 		try {
 			Restaurant restaurant = RestaurantDAO.getInstance().get(Integer.valueOf(1));
 
-			posPrinter = new PosPrinter(Application.getPrinterConfiguration().getKitchenPrinterName(), "CashDrawer");
+			posPrinter = new PosPrinter(PrintConfig.getJavaPosKitchenPrinterName(), PrintConfig.getCashDrawerName());
 
 			posPrinter.beginLine(PosPrinter.SIZE_0);
 			posPrinter.printText("\u001b|cA\u001b|2C" + restaurant.getName());
@@ -565,7 +555,7 @@ public class PosPrintService {
 		PosPrinter posPrinter = null;
 		DecimalFormat decimalFormat = new DecimalFormat("0.00");
 		try {
-			posPrinter = new PosPrinter(Application.getPrinterConfiguration().getReceiptPrinterName(), "CashDrawer");
+			posPrinter = new PosPrinter(PrintConfig.getJavaPosReceiptPrinterName(), PrintConfig.getCashDrawerName());
 
 			printSeparator(posPrinter, '=');
 			printCentered(posPrinter, "Time: " + Application.formatDate(drawerPullReport.getReportTime()));
@@ -667,7 +657,7 @@ public class PosPrintService {
 		PosPrinter posPrinter = null;
 		DecimalFormat decimalFormat = new DecimalFormat("0.00");
 		try {
-			posPrinter = new PosPrinter(Application.getPrinterConfiguration().getReceiptPrinterName(), "CashDrawer");
+			posPrinter = new PosPrinter(PrintConfig.getJavaPosReceiptPrinterName(), PrintConfig.getCashDrawerName());
 
 			int c1 = 15;
 			int c2 = 20;
@@ -755,7 +745,7 @@ public class PosPrintService {
 		try {
 			Restaurant restaurant = RestaurantDAO.getInstance().get(Integer.valueOf(1));
 
-			posPrinter = new PosPrinter(Application.getPrinterConfiguration().getReceiptPrinterName(), "CashDrawer");
+			posPrinter = new PosPrinter(PrintConfig.getJavaPosReceiptPrinterName(), PrintConfig.getCashDrawerName());
 
 			posPrinter.beginLine(PosPrinter.SIZE_0);
 			posPrinter.printText("\u001b|cA\u001b|2C" + restaurant.getName());

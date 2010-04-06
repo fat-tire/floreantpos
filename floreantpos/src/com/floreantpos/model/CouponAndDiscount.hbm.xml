@@ -1,19 +1,15 @@
-<?xml version="1.0"?>
-<!DOCTYPE hibernate-mapping PUBLIC
-    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
-    
-    <hibernate-mapping package="com.floreantpos.model">
-        <class name="CouponAndDiscount" table="COUPON_AND_DISCOUNT" lazy="false">
-            <id name="id" column="ID" type="java.lang.Integer">
-                <generator class="identity"></generator>
-            </id>
-            
-            <property name="name" column="NAME" type="string" length="30" ></property>
-            <property name="type" column="TYPE" type="java.lang.Integer"></property>
-            <property name="value" column="VALUE" type="java.lang.Double"></property>
-            <property name="expiryDate" column="EXPIRY_DATE" type="java.util.Date"></property>
-            <property name="disabled" column="DISABLED" type="java.lang.Boolean"></property>
-            <property name="neverExpire" column="NEVER_EXPIRE" type="java.lang.Boolean"></property>
-        </class>
-   </hibernate-mapping>
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.floreantpos.model">
+  <class lazy="false" name="CouponAndDiscount" table="COUPON_AND_DISCOUNT">
+    <id column="ID" name="id" type="java.lang.Integer">
+      <generator class="identity"/>
+    </id>
+    <property column="NAME" length="30" name="name" type="string"/>
+    <property column="TYPE" name="type" type="java.lang.Integer"/>
+    <property column="VALUE" name="value" type="java.lang.Double"/>
+    <property column="EXPIRY_DATE" name="expiryDate" type="java.util.Date"/>
+    <property column="DISABLED" name="disabled" type="java.lang.Boolean"/>
+    <property column="NEVER_EXPIRE" name="neverExpire" type="java.lang.Boolean"/>
+  </class>
+</hibernate-mapping>

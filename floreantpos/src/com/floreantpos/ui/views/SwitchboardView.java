@@ -86,7 +86,6 @@ public class SwitchboardView extends JPanel implements ActionListener {
 
 		javax.swing.JPanel statusPanel = new javax.swing.JPanel();
 		lblUserName = new javax.swing.JLabel();
-		lblOpenTickets = new javax.swing.JLabel();
 		javax.swing.JPanel bottomPanel = new javax.swing.JPanel();
 		javax.swing.JPanel bottomLeftPanel = new javax.swing.JPanel();
 		openTicketList = new com.floreantpos.ui.TicketListView();
@@ -120,12 +119,6 @@ public class SwitchboardView extends JPanel implements ActionListener {
 		lblUserName.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 		lblUserName.setText("USER NAME");
 		statusPanel.add(lblUserName, java.awt.BorderLayout.PAGE_START);
-
-		lblOpenTickets.setFont(new java.awt.Font("Tahoma", 1, 18));
-		lblOpenTickets.setForeground(new java.awt.Color(0, 102, 102));
-		lblOpenTickets.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-		lblOpenTickets.setText("OPEN TICKETS");
-		statusPanel.add(lblOpenTickets, java.awt.BorderLayout.PAGE_END);
 
 		add(statusPanel, java.awt.BorderLayout.NORTH);
 
@@ -589,25 +582,6 @@ public class SwitchboardView extends JPanel implements ActionListener {
 
 	public void updateView() {
 		User user = Application.getCurrentUser();
-		lblUserName.setText("Welcome " + user.toString());
-
-		/*if (!user.isManager()) {
-		 btnManager.setVisible(false);
-		 }
-		 else {
-		 btnManager.setVisible(true);
-		 }
-		 if (user.isServer()) {
-		 btnBackOffice.setVisible(false);
-		 btnVoidTicket.setVisible(false);
-		 btnPayout.setVisible(false);
-		 }
-		 else {
-		 btnBackOffice.setVisible(true);
-		 btnVoidTicket.setVisible(true);
-		 btnPayout.setVisible(true);
-		 }*/
-
 		UserType userType = user.getNewUserType();
 		if (userType != null) {
 			Set<UserPermission> permissions = userType.getPermissions();
@@ -693,7 +667,7 @@ public class SwitchboardView extends JPanel implements ActionListener {
 		}
 		openTicketList.setTickets(openTickets);
 
-		lblOpenTickets.setText("You have " + openTickets.size() + " open tickets");
+		lblUserName.setText("Welcome " + user.toString() + ". You have " + openTickets.size() + " open tickets.");
 	}
 
 	// Variables declaration - do not modify//GEN-BEGIN:variables
@@ -713,7 +687,6 @@ public class SwitchboardView extends JPanel implements ActionListener {
 	private com.floreantpos.swing.PosButton btnSplitTicket;
 	private com.floreantpos.swing.PosButton btnTakeout;
 	private com.floreantpos.swing.PosButton btnVoidTicket;
-	private javax.swing.JLabel lblOpenTickets;
 	private javax.swing.JLabel lblUserName;
 	private com.floreantpos.ui.TicketListView openTicketList;
 

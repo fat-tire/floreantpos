@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<Form version="1.3" maxVersion="1.7" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
+  <AuxValues>
+    <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_generateFQN" type="java.lang.Boolean" value="true"/>
+    <AuxValue name="FormSettings_generateMnemonicsCode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_i18nAutoMode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_layoutCodeTarget" type="java.lang.Integer" value="1"/>
+    <AuxValue name="FormSettings_listenerGenerationStyle" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_variablesLocal" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_variablesModifier" type="java.lang.Integer" value="2"/>
+  </AuxValues>
+
+  <Layout>
+    <DimensionLayout dim="0">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Group type="102" attributes="0">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" attributes="0">
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                          <Component id="jPanel1" alignment="0" max="32767" attributes="1"/>
+                          <Component id="jPanel2" alignment="0" max="32767" attributes="1"/>
+                      </Group>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace min="-2" pref="102" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="chkPrintReceiptWhenTicketSettled" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="chkPrintReceiptWhenTicketPaid" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="chkPrintKitchenWhenTicketSettled" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="chkPrintKitchenWhenTicketPaid" alignment="0" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
+              </Group>
+              <EmptySpace max="32767" attributes="0"/>
+          </Group>
+      </Group>
+    </DimensionLayout>
+    <DimensionLayout dim="1">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Group type="102" alignment="0" attributes="0">
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="jPanel1" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="jPanel2" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="chkPrintReceiptWhenTicketSettled" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="chkPrintReceiptWhenTicketPaid" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="chkPrintKitchenWhenTicketSettled" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="chkPrintKitchenWhenTicketPaid" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
+          </Group>
+      </Group>
+    </DimensionLayout>
+  </Layout>
+  <SubComponents>
+    <Component class="javax.swing.JCheckBox" name="chkPrintReceiptWhenTicketSettled">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Print receipt when ticket settled"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JCheckBox" name="chkPrintReceiptWhenTicketPaid">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Print receipt when ticket paid"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JCheckBox" name="chkPrintKitchenWhenTicketSettled">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Print to kitchen when ticket settled"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JCheckBox" name="chkPrintKitchenWhenTicketPaid">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Print to kitchen when ticket paid"/>
+      </Properties>
+    </Component>
+    <Container class="javax.swing.JPanel" name="jPanel1">
+      <Properties>
+        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+          <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
+            <TitledBorder justification="1" position="2" title="Receipt Printer"/>
+          </Border>
+        </Property>
+      </Properties>
+
+      <Layout>
+        <DimensionLayout dim="0">
+          <Group type="103" groupAlignment="0" attributes="0">
+              <Group type="102" alignment="0" attributes="0">
+                  <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                      <Group type="102" alignment="0" attributes="1">
+                          <Component id="lblReceiptPrinterName" linkSize="2" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="tfReceiptPrinterName" max="32767" attributes="0"/>
+                      </Group>
+                      <Group type="102" alignment="1" attributes="0">
+                          <Component id="jLabel1" linkSize="2" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="cbReceiptPrinterType" min="-2" pref="182" max="-2" attributes="1"/>
+                      </Group>
+                  </Group>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="lblSelectReceiptPrinter" min="-2" max="-2" attributes="0"/>
+                      <Component id="lblReceiptCashDrawerName" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="tfReceiptCashDrawerName" pref="178" max="32767" attributes="0"/>
+                      <Component id="cbReceiptPrinterName" alignment="0" pref="178" max="32767" attributes="1"/>
+                  </Group>
+                  <EmptySpace max="-2" attributes="0"/>
+              </Group>
+          </Group>
+        </DimensionLayout>
+        <DimensionLayout dim="1">
+          <Group type="103" groupAlignment="0" attributes="0">
+              <Group type="102" alignment="1" attributes="0">
+                  <EmptySpace max="32767" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="cbReceiptPrinterType" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="lblSelectReceiptPrinter" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="cbReceiptPrinterName" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="lblReceiptPrinterName" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="tfReceiptPrinterName" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="lblReceiptCashDrawerName" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="tfReceiptCashDrawerName" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace max="-2" attributes="0"/>
+              </Group>
+          </Group>
+        </DimensionLayout>
+      </Layout>
+      <SubComponents>
+        <Component class="javax.swing.JLabel" name="lblReceiptCashDrawerName">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="CashDrawer:"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JTextField" name="tfReceiptCashDrawerName">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="CashDrawer"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="lblReceiptPrinterName">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Printer name:"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JTextField" name="tfReceiptPrinterName">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="PosPrinter"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JComboBox" name="cbReceiptPrinterName">
+          <Properties>
+            <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+              <StringArray count="0"/>
+            </Property>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JComboBox" name="cbReceiptPrinterType">
+          <Properties>
+            <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+              <StringArray count="0"/>
+            </Property>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="receiptPrinterSelectionChanged"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JLabel" name="jLabel1">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Printer Type:"/>
+          </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_VariableLocal" type="java.lang.Boolean" value="true"/>
+            <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="0"/>
+          </AuxValues>
+        </Component>
+        <Component class="javax.swing.JLabel" name="lblSelectReceiptPrinter">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Select Printer:"/>
+          </Properties>
+        </Component>
+      </SubComponents>
+    </Container>
+    <Container class="javax.swing.JPanel" name="jPanel2">
+      <Properties>
+        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+          <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
+            <TitledBorder justification="1" position="2" title="Kitchen Printer"/>
+          </Border>
+        </Property>
+      </Properties>
+
+      <Layout>
+        <DimensionLayout dim="0">
+          <Group type="103" groupAlignment="0" attributes="0">
+              <Group type="102" alignment="0" attributes="0">
+                  <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                      <Group type="102" alignment="0" attributes="1">
+                          <Component id="lblKitchenPrinterName" linkSize="3" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="tfKitchenPrinterName" max="32767" attributes="0"/>
+                      </Group>
+                      <Group type="102" alignment="1" attributes="0">
+                          <Component id="jLabel2" linkSize="3" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="cbKitchenPrinterType" min="-2" pref="182" max="-2" attributes="1"/>
+                      </Group>
+                  </Group>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <Component id="lblSelectKitchenPrinter" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="cbKitchenPrinterName" pref="178" max="32767" attributes="1"/>
+                  <EmptySpace max="-2" attributes="0"/>
+              </Group>
+          </Group>
+        </DimensionLayout>
+        <DimensionLayout dim="1">
+          <Group type="103" groupAlignment="0" attributes="0">
+              <Group type="102" alignment="1" attributes="0">
+                  <EmptySpace max="32767" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="cbKitchenPrinterType" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="lblSelectKitchenPrinter" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="cbKitchenPrinterName" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="lblKitchenPrinterName" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="tfKitchenPrinterName" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace max="-2" attributes="0"/>
+              </Group>
+          </Group>
+        </DimensionLayout>
+      </Layout>
+      <SubComponents>
+        <Component class="javax.swing.JLabel" name="lblKitchenPrinterName">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Printer name:"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JTextField" name="tfKitchenPrinterName">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="KitchenPrinter"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JComboBox" name="cbKitchenPrinterName">
+          <Properties>
+            <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+              <StringArray count="0"/>
+            </Property>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JComboBox" name="cbKitchenPrinterType">
+          <Properties>
+            <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+              <StringArray count="0"/>
+            </Property>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="kitchenPrinterTypeSelectionChanged"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JLabel" name="jLabel2">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Printer Type:"/>
+          </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_VariableLocal" type="java.lang.Boolean" value="true"/>
+            <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="0"/>
+          </AuxValues>
+        </Component>
+        <Component class="javax.swing.JLabel" name="lblSelectKitchenPrinter">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Select Printer:"/>
+          </Properties>
+        </Component>
+      </SubComponents>
+    </Container>
+  </SubComponents>
+</Form>

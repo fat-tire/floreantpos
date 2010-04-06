@@ -42,7 +42,7 @@ public abstract class SelectionView extends JPanel {
 
 		setLayout(new BorderLayout(5, 5));
 
-		MigLayout migLayout = new MigLayout("wrap 3", "fill,grow,shrink", "");
+		MigLayout migLayout = new MigLayout("ins 0,wrap 3", "fill,grow,shrink", "");
 		buttonsPanel = new JPanel(migLayout);
 
 		buttonScrollPane = new JScrollPane(buttonsPanel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
@@ -87,7 +87,7 @@ public abstract class SelectionView extends JPanel {
 
 		});
 
-		MigLayout migLayout2 = new MigLayout("fill,hidemode 3", "grow", "");
+		MigLayout migLayout2 = new MigLayout("ins 0,fill,hidemode 3", "grow", "");
 		JPanel southPanel = new JPanel(migLayout2);
 		southPanel.add(new JSeparator(JSeparator.HORIZONTAL), "wrap, span, grow, gaptop 5");
 
