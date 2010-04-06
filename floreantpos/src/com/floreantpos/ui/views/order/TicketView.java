@@ -406,9 +406,9 @@ public class TicketView extends JPanel {
 			throw new PosException("Ticket is empty.");
 		}
 
-		if (ticket.getBeverageCount() < ticket.getNumberOfGuests()) {
-			throw new PosException("Beverage count cannot be less than total number of guests.");
-		}
+//		if (ticket.getBeverageCount() < ticket.getNumberOfGuests()) {
+//			throw new PosException("Beverage count cannot be less than total number of guests.");
+//		}
 		ticket.calculatePrice();
 	}
 
