@@ -44,7 +44,7 @@ public class ConfigurationDialog extends POSDialog implements ChangeListener, Ac
 		
 		tabbedPane.addChangeListener(this);
 		
-		JPanel bottomPanel = new JPanel(new MigLayout("fillx,ins 0"));
+		JPanel bottomPanel = new JPanel(new MigLayout("fillx"));
 		bottomPanel.add(new JSeparator(), "span, grow");
 		
 		JButton btnOk = new JButton(CANCEL);

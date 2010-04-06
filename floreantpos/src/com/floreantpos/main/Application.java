@@ -81,9 +81,9 @@ public class Application {
 	public void start() {
 		try {
 			PlasticXPLookAndFeel.setMyCurrentTheme(new ExperienceBlue());
-			//UIManager.setLookAndFeel(new PlasticXPLookAndFeel());
-			UIManager.setLookAndFeel(new javax.swing.plaf.nimbus.NimbusLookAndFeel());
-			//UIManager.put("ComboBox.is3DEnabled", Boolean.FALSE);
+			UIManager.setLookAndFeel(new PlasticXPLookAndFeel());
+			//UIManager.setLookAndFeel(new javax.swing.plaf.nimbus.NimbusLookAndFeel());
+			UIManager.put("ComboBox.is3DEnabled", Boolean.FALSE);
 		} catch (Exception e) {
 		}
 

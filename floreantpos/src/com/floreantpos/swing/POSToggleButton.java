@@ -15,7 +15,7 @@ public class POSToggleButton extends JToggleButton {
 	static Insets margin = new Insets(1, 1, 1, 1);
 
 	static {
-		//UIManager.put("POSToggleButtonUI", "com.floreantpos.swing.POSToggleButtonUI");
+		UIManager.put("POSToggleButtonUI", "com.floreantpos.swing.POSToggleButtonUI");
 	}
 	
 	public POSToggleButton() {
@@ -30,13 +30,8 @@ public class POSToggleButton extends JToggleButton {
 		setMargin(margin);
 	}
 	
-//	@Override
-//	public ButtonUI getUI() {
-//		return ui;
-//	}
-	
-//	@Override
-//	public String getUIClassID() {
-//		return "POSToggleButtonUI";
-//	}
+	@Override
+	public String getUIClassID() {
+		return "POSToggleButtonUI";
+	}
 }

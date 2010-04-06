@@ -17,7 +17,7 @@ public class PosButton extends JButton {
 	static POSButtonUI ui = new POSButtonUI();
 
 	static {
-		//UIManager.put("PosButtonUI", "com.floreantpos.swing.POSButtonUI");
+		UIManager.put("PosButtonUI", "com.floreantpos.swing.POSButtonUI");
 	}
 
 	public PosButton() {
@@ -32,13 +32,8 @@ public class PosButton extends JButton {
 		setMargin(margin);
 	}
 
-	//	@Override
-	//	public ButtonUI getUI() {
-	//		return ui;
-	//	}
-
-//	@Override
-//	public String getUIClassID() {
-//		return "PosButtonUI";
-//	}
+	@Override
+	public String getUIClassID() {
+		return "PosButtonUI";
+	}
 }

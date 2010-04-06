@@ -71,7 +71,7 @@ public class CashPaymentView extends PaymentView {
         jPanel1.setLayout(new java.awt.BorderLayout());
 
         jPanel1.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createEmptyBorder(1, 5, 1, 5), javax.swing.BorderFactory.createTitledBorder("")));
-        jPanel1.setPreferredSize(new java.awt.Dimension(98, 65));
+        jPanel1.setPreferredSize(new java.awt.Dimension(98, 90));
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 18));
         jLabel1.setForeground(new java.awt.Color(204, 102, 0));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
