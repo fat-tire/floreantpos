@@ -362,7 +362,7 @@ public class PosPrintService {
 		Worker.post(job);
 	}
 	
-	public static void printToKitcken(final Ticket ticket) throws Exception {
+	public static void printToKitchen(final Ticket ticket) throws Exception {
 		Job job = new Job() {
 
 			@Override
