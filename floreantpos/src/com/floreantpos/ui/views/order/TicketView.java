@@ -16,18 +16,14 @@ import javax.swing.JPanel;
 import com.floreantpos.PosException;
 import com.floreantpos.config.PrintConfig;
 import com.floreantpos.main.Application;
-import com.floreantpos.model.ActionHistory;
 import com.floreantpos.model.MenuCategory;
 import com.floreantpos.model.MenuGroup;
 import com.floreantpos.model.MenuItem;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.TicketItemModifier;
-import com.floreantpos.model.dao.ActionHistoryDAO;
 import com.floreantpos.model.dao.MenuItemDAO;
-import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.print.PosPrintService;
-import com.floreantpos.swing.MessageDialog;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.views.SwitchboardView;
 import com.floreantpos.ui.views.order.actions.OrderListener;
@@ -354,7 +350,7 @@ public class TicketView extends JPanel {
 		try {
 			updateModel();
 
-			saveOrder();
+			OrderController.saveOrder(ticket);
 
 			if (PrintConfig.isPrintReceiptWhenSetteled()) {
 				PosPrintService.printTicket(ticket);
@@ -365,7 +361,7 @@ public class TicketView extends JPanel {
 					PosPrintService.printToKitcken(ticket);
 				}
 				ticket.clearDeletedItems();
-				saveOrder();
+				OrderController.saveOrder(ticket);
 			}
 			RootView.getInstance().showView(SwitchboardView.VIEW_NAME);
 		} catch (PosException x) {
@@ -379,45 +375,16 @@ public class TicketView extends JPanel {
 		RootView.getInstance().showView(SwitchboardView.VIEW_NAME);
 	}//GEN-LAST:event_doCancelOrder
 
-	private void saveOrder() {
-		try {
-			if (ticket == null)
-				return;
-
-			boolean newTicket = ticket.getId() == null;
-
-			TicketDAO ticketDAO = new TicketDAO();
-			ticketDAO.saveOrUpdate(ticket);
-
-			//			save the action
-			if (newTicket) {
-				ActionHistoryDAO.getInstance().saveHistory(Application.getCurrentUser(), ActionHistory.NEW_CHECK, "CHK#:" + ticket.getId());
-			}
-			else {
-				ActionHistoryDAO.getInstance().saveHistory(Application.getCurrentUser(), ActionHistory.EDIT_CHECK, "CHK#:" + ticket.getId());
-			}
-		} catch (Exception e) {
-			MessageDialog.showError(e);
-		}
-	}
-
 	private void updateModel() {
 		if (ticket.getTicketItems() == null || ticket.getTicketItems().size() == 0) {
 			throw new PosException("Ticket is empty.");
 		}
-
-//		if (ticket.getBeverageCount() < ticket.getNumberOfGuests()) {
-//			throw new PosException("Beverage count cannot be less than total number of guests.");
-//		}
 		ticket.calculatePrice();
 	}
 
 	private void doPayNow(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_doPayNow
 		try {
 			updateModel();
-
-			saveOrder();
-
 			firePayOrderSelected();
 		} catch (PosException e) {
 			POSMessageDialog.showError(e.getMessage());

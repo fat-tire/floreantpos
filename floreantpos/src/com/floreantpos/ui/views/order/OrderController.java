@@ -1,13 +1,17 @@
 package com.floreantpos.ui.views.order;
 
 import com.floreantpos.main.Application;
+import com.floreantpos.model.ActionHistory;
 import com.floreantpos.model.MenuCategory;
 import com.floreantpos.model.MenuGroup;
 import com.floreantpos.model.MenuItem;
 import com.floreantpos.model.MenuModifier;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketItem;
+import com.floreantpos.model.dao.ActionHistoryDAO;
 import com.floreantpos.model.dao.MenuItemDAO;
+import com.floreantpos.model.dao.TicketDAO;
+import com.floreantpos.swing.MessageDialog;
 import com.floreantpos.ui.dialog.PaymentTypeSelectionDialog;
 import com.floreantpos.ui.views.SettleTicketView;
 import com.floreantpos.ui.views.order.actions.CategorySelectionListener;
@@ -37,20 +41,20 @@ public class OrderController implements OrderListener, CategorySelectionListener
 	public void groupSelected(MenuGroup foodGroup) {
 		orderView.getItemView().setMenuGroup(foodGroup);
 		orderView.showView(MenuItemView.VIEW_NAME);
-		
-//		ItemView itemView = new ItemView();
-//		itemView.setMenuGroup(foodGroup);
-//		PanelTester.width = 600;
-//		PanelTester.height = 600;
-//		PanelTester.test(itemView);
+
+		//		ItemView itemView = new ItemView();
+		//		itemView.setMenuGroup(foodGroup);
+		//		PanelTester.width = 600;
+		//		PanelTester.height = 600;
+		//		PanelTester.test(itemView);
 	}
 
 	public void itemSelected(MenuItem menuItem) {
 		MenuItemDAO dao = new MenuItemDAO();
 		menuItem = dao.initialize(menuItem);
-		
+
 		boolean hasModifiers = (menuItem.getMenuItemModiferGroups() != null && menuItem.getMenuItemModiferGroups().size() > 0);
-		
+
 		TicketItem ticketItem = new TicketItem();
 		ticketItem.setItemId(menuItem.getId());
 		ticketItem.setItemCount(1);
@@ -59,13 +63,12 @@ public class OrderController implements OrderListener, CategorySelectionListener
 		ticketItem.setCategoryName(menuItem.getParent().getParent().getName());
 		ticketItem.setUnitPrice(menuItem.getPrice(Application.getInstance().getCurrentShift()));
 		ticketItem.setDiscountRate(menuItem.getDiscountRate());
-		ticketItem.setTaxRate(menuItem.getTax() == null ? 0: menuItem.getTax().getRate());
+		ticketItem.setTaxRate(menuItem.getTax() == null ? 0 : menuItem.getTax().getRate());
 		ticketItem.setHasModifiers(hasModifiers);
-		if(menuItem.getParent().getParent().isBeverage()) {
+		if (menuItem.getParent().getParent().isBeverage()) {
 			ticketItem.setBeverage(true);
 			ticketItem.setShouldPrintToKitchen(false);
-		}
-		else {
+		} else {
 			ticketItem.setBeverage(false);
 			ticketItem.setShouldPrintToKitchen(true);
 		}
@@ -75,32 +78,32 @@ public class OrderController implements OrderListener, CategorySelectionListener
 			ModifierView modifierView = orderView.getModifierView();
 			modifierView.setMenuItem(menuItem, ticketItem);
 			orderView.showView(ModifierView.VIEW_NAME);
-			
-//			ModifierView modifierView = new ModifierView();
-//			modifierView.setMenuItem(menuItem, ticketItem);
-//			PanelTester.width = 800;
-//			PanelTester.height = 600;
-//			PanelTester.test(modifierView);
+
+			//			ModifierView modifierView = new ModifierView();
+			//			modifierView.setMenuItem(menuItem, ticketItem);
+			//			PanelTester.width = 800;
+			//			PanelTester.height = 600;
+			//			PanelTester.test(modifierView);
 		}
 	}
 
 	public void modifierSelected(MenuItem parent, MenuModifier modifier) {
-//		TicketItemModifier itemModifier = new TicketItemModifier();
-//		itemModifier.setItemId(modifier.getId());
-//		itemModifier.setName(modifier.getName());
-//		itemModifier.setPrice(modifier.getPrice());
-//		itemModifier.setExtraPrice(modifier.getExtraPrice());
-//		itemModifier.setMinQuantity(modifier.getMinQuantity());
-//		itemModifier.setMaxQuantity(modifier.getMaxQuantity());
-//		itemModifier.setTaxRate(modifier.getTax() == null ? 0 : modifier.getTax().getRate());
-//		
-//		orderView.getTicketView().addModifier(itemModifier);
+		//		TicketItemModifier itemModifier = new TicketItemModifier();
+		//		itemModifier.setItemId(modifier.getId());
+		//		itemModifier.setName(modifier.getName());
+		//		itemModifier.setPrice(modifier.getPrice());
+		//		itemModifier.setExtraPrice(modifier.getExtraPrice());
+		//		itemModifier.setMinQuantity(modifier.getMinQuantity());
+		//		itemModifier.setMaxQuantity(modifier.getMaxQuantity());
+		//		itemModifier.setTaxRate(modifier.getTax() == null ? 0 : modifier.getTax().getRate());
+		//		
+		//		orderView.getTicketView().addModifier(itemModifier);
 	}
 
 	public void itemSelectionFinished(MenuGroup parent) {
 		MenuCategory menuCategory = parent.getParent();
 		GroupView groupView = orderView.getGroupView();
-		if(!menuCategory.equals(groupView.getMenuCategory())) {
+		if (!menuCategory.equals(groupView.getMenuCategory())) {
 			groupView.setMenuCategory(menuCategory);
 		}
 		orderView.showView(GroupView.VIEW_NAME);
@@ -109,7 +112,7 @@ public class OrderController implements OrderListener, CategorySelectionListener
 	public void modifierSelectionFiniched(MenuItem parent) {
 		MenuGroup menuGroup = parent.getParent();
 		MenuItemView itemView = orderView.getItemView();
-		if(!menuGroup.equals(itemView.getMenuGroup())) {
+		if (!menuGroup.equals(itemView.getMenuGroup())) {
 			itemView.setMenuGroup(menuGroup);
 		}
 		orderView.showView(MenuItemView.VIEW_NAME);
@@ -119,12 +122,34 @@ public class OrderController implements OrderListener, CategorySelectionListener
 		PaymentTypeSelectionDialog dialog = new PaymentTypeSelectionDialog();
 		dialog.setSize(250, 400);
 		dialog.open();
-		
+
 		if (!dialog.isCanceled()) {
-			SettleTicketView view = SettleTicketView.getInstance();
-			view.setPaymentView(dialog.getSelectedPaymentView());
-			view.setCurrentTicket(ticket);
-			RootView.getInstance().showView(SettleTicketView.VIEW_NAME);
+			try {
+				saveOrder(ticket);
+				SettleTicketView view = SettleTicketView.getInstance();
+				view.setPaymentView(dialog.getSelectedPaymentView());
+				view.setCurrentTicket(ticket);
+				RootView.getInstance().showView(SettleTicketView.VIEW_NAME);
+			} catch (Exception e) {
+				MessageDialog.showError(e);
+			}
+		}
+	}
+
+	public static void saveOrder(Ticket ticket) {
+		if (ticket == null)
+			return;
+
+		boolean newTicket = ticket.getId() == null;
+
+		TicketDAO ticketDAO = new TicketDAO();
+		ticketDAO.saveOrUpdate(ticket);
+
+		//			save the action
+		if (newTicket) {
+			ActionHistoryDAO.getInstance().saveHistory(Application.getCurrentUser(), ActionHistory.NEW_CHECK, "CHK#:" + ticket.getId());
+		} else {
+			ActionHistoryDAO.getInstance().saveHistory(Application.getCurrentUser(), ActionHistory.EDIT_CHECK, "CHK#:" + ticket.getId());
 		}
 	}
 }
