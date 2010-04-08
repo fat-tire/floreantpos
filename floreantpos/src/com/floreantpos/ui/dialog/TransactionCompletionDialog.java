@@ -122,11 +122,11 @@ public class TransactionCompletionDialog extends POSDialog {
 		lblDueAmount.setText(Application.formatNumber(dueAmount));
 		lblGratuityAmount.setText(Application.formatNumber(gratuityAmount));
 		
-		double chageDueAmount = tenderedAmount - dueAmountBeforePaid;
-		if(chageDueAmount < 0) {
-			chageDueAmount = 0;
+		double changeDueAmount = tenderedAmount - dueAmountBeforePaid;
+		if(changeDueAmount < 0) {
+			changeDueAmount = 0;
 		}
-		lblChangeDue.setText(Application.formatNumber(chageDueAmount));
+		lblChangeDue.setText(Application.formatNumber(changeDueAmount));
 	}
 	
 	private static TransactionCompletionDialog instance;
