@@ -114,7 +114,7 @@ public class MenuItemExplorer extends TransparentPanel {
 	}
 	
 	class MenuItemExplorerTableModel extends ListTableModel {
-		String[] columnNames = { "Id", "Name", "Price (" + currencySymbol + ")", "Visible", "Discount (%)", "Food Gooup", "Tax (%)" };
+		String[] columnNames = { "Id", "Name", "Price (" + currencySymbol + ")", "Visible", "Discount (%)", "Food Group", "Tax (%)" };
 
 		MenuItemExplorerTableModel(){
 			setColumnNames(columnNames);
