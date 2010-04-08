@@ -83,7 +83,8 @@ public class TransactionCompletionDialog extends POSDialog {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					for (Ticket ticket : tickets) {
-						PosPrintService.printMoneyReceipt(ticket);
+//						PosPrintService.printMoneyReceipt(ticket);
+						PosPrintService.printTicket(ticket);
 					}
 				}catch(Exception ee) {
 					POSMessageDialog.showError(Application.getPosWindow(), "There was an error while printing money receipt", ee);

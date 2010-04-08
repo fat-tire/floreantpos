@@ -1,7 +1,6 @@
 package com.floreantpos.print;
 
 import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -740,6 +739,7 @@ public class PosPrintService {
 		}
 	}
 
+	/*
 	public static void printMoneyReceipt(Ticket ticket) {
 		PosPrinter posPrinter = null;
 		try {
@@ -840,5 +840,5 @@ public class PosPrintService {
 				posPrinter.finalize();
 			}
 		}
-	}
+	}*/
 }

@@ -129,7 +129,7 @@ public abstract class PaymentView extends JPanel {
 			
 			try {
 				for (Ticket ticket : ticketsToSettle) {
-					PosPrintService.printMoneyReceipt(ticket);
+					PosPrintService.printTicket(ticket);
 				}
 			}catch(Exception ee) {
 				POSMessageDialog.showError(Application.getPosWindow(), "There was an error while printing money receipt", ee);
