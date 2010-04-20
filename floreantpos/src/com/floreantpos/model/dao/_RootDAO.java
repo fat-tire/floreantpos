@@ -43,7 +43,7 @@ import com.floreantpos.model.VoidReason;
 public abstract class _RootDAO extends com.floreantpos.model.dao._BaseRootDAO {
 
 	static {
-		initialize();
+		//initialize();
 	}
 /*
 	If you are using lazy loading, uncomment this
