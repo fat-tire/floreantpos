@@ -22,7 +22,7 @@ public class UserListDialog extends POSDialog {
     public UserListDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal, false);
         initComponents();
-        setTitle("User list");
+        setTitle(com.floreantpos.POSConstants.USER_LIST);
         
         List<User> userList = UserDAO.instance.findAll();
         cbUserList.setModel(new ListComboBoxModel(userList));
@@ -48,13 +48,13 @@ public class UserListDialog extends POSDialog {
         cbUserList = new javax.swing.JComboBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        titlePanel1.setTitle("PLEASE SELECT A USER");
+        titlePanel1.setTitle(com.floreantpos.POSConstants.SELECT_USER);
         getContentPane().add(titlePanel1, java.awt.BorderLayout.NORTH);
 
         transparentPanel1.setLayout(new java.awt.BorderLayout());
 
         btnOk.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/finish_32.png")));
-        btnOk.setText("OK");
+        btnOk.setText(com.floreantpos.POSConstants.OK);
         btnOk.setPreferredSize(new java.awt.Dimension(120, 50));
         btnOk.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -65,7 +65,7 @@ public class UserListDialog extends POSDialog {
         transparentPanel2.add(btnOk);
 
         btnCancel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cancel_32.png")));
-        btnCancel.setText("CANCEL");
+        btnCancel.setText(com.floreantpos.POSConstants.CANCEL);
         btnCancel.setPreferredSize(new java.awt.Dimension(120, 50));
         btnCancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

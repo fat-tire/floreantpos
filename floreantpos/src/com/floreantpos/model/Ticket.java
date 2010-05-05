@@ -89,9 +89,9 @@ public class Ticket extends BaseTicket {
 		if (getId() != null) {
 			title += "#" + getId();
 		}
-		title += " Server: " + getOwner();
-		title += " Create on:" + getCreateDateFormatted();
-		title += " Total: " + numberFormat.format(getTotalAmount());
+		title += " Server" + ": " + getOwner();
+		title += " Create on" + ":" + getCreateDateFormatted();
+		title += " Total" + ": " + numberFormat.format(getTotalAmount());
 
 		return title;
 	}

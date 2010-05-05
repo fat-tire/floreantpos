@@ -26,8 +26,8 @@ public class PaymentTypeSelectionView extends com.floreantpos.swing.TransparentP
     private void initComponents() {
         btnCashTransaction = new com.floreantpos.swing.PosButton();
 
-        setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Select Payment Type", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
-        btnCashTransaction.setText("Cash Transaction");
+        setBorder(javax.swing.BorderFactory.createTitledBorder(null, com.floreantpos.POSConstants.SELECT_PAYMENT_TYPE, javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
+        btnCashTransaction.setText(com.floreantpos.POSConstants.CASH_TRANSACTION);
         btnCashTransaction.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 doCashTransaction(evt);

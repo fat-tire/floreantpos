@@ -13,7 +13,7 @@ import com.floreantpos.main.Application;
 public class CookingInstructionExplorerAction extends AbstractAction {
 
 	public CookingInstructionExplorerAction() {
-		super("Cooking Instructions");
+		super(com.floreantpos.POSConstants.COOKING_INSTRUCTIONS);
 	}
 
 	public CookingInstructionExplorerAction(String name) {
@@ -29,10 +29,10 @@ public class CookingInstructionExplorerAction extends AbstractAction {
 		
 		CookingInstructionExplorer explorer = null;
 		JTabbedPane tabbedPane = backOfficeWindow.getTabbedPane();
-		int index = tabbedPane.indexOfTab("Cooking Instructions");
+		int index = tabbedPane.indexOfTab(com.floreantpos.POSConstants.COOKING_INSTRUCTIONS);
 		if (index == -1) {
 			explorer = new CookingInstructionExplorer();
-			tabbedPane.addTab("Cooking Instructions", explorer);
+			tabbedPane.addTab(com.floreantpos.POSConstants.COOKING_INSTRUCTIONS, explorer);
 		}
 		else {
 			explorer = (CookingInstructionExplorer) tabbedPane.getComponentAt(index);

@@ -31,11 +31,11 @@ public class DrawerPullConfigurationView extends ConfigurationView {
 			minutes[i] = Integer.valueOf(i);
 		}
 		
-		add(chkAutoDrawerPull = new JCheckBox("Auto drawer pull every day at:"), "wrap, span");
-		add(new JLabel("Hour:"), "");
+		add(chkAutoDrawerPull = new JCheckBox(com.floreantpos.POSConstants.AUTO_DRAWER_PULL_EVERY_DAY_AT_), "wrap, span");
+		add(new JLabel(com.floreantpos.POSConstants.HOUR + ":"), "");
 		add(cbHour = new JComboBox(hours), "");
 		
-		add(new JLabel("Min:"), "");
+		add(new JLabel("Min" + ":"), "");
 		add(cbMin = new JComboBox(minutes), "");
 	}
 

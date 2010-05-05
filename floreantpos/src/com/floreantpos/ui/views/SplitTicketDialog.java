@@ -6,19 +6,20 @@
 
 package com.floreantpos.ui.views;
 
+
 import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import com.floreantpos.POSConstants;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.ActionHistory;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.dao.ActionHistoryDAO;
 import com.floreantpos.model.dao.TicketDAO;
-import com.floreantpos.model.util.POSConstants;
 import com.floreantpos.ui.dialog.POSDialog;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.views.order.TicketForSplitView;
@@ -93,10 +94,10 @@ public class SplitTicketDialog extends POSDialog {
         ticket4Container = new org.jdesktop.swingx.JXImagePanel();
         ticketView4 = new com.floreantpos.ui.views.order.TicketForSplitView();
 
-        titlePanel1.setTitle("SPLIT TICKET");
+        titlePanel1.setTitle(com.floreantpos.POSConstants.SPLIT_TICKET);
         getContentPane().add(titlePanel1, java.awt.BorderLayout.NORTH);
 
-        btnFinish.setText("FINISH");
+        btnFinish.setText(com.floreantpos.POSConstants.FINISH);
         btnFinish.setPreferredSize(new java.awt.Dimension(140, 50));
         btnFinish.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -106,7 +107,7 @@ public class SplitTicketDialog extends POSDialog {
 
         transparentPanel1.add(btnFinish);
 
-        btnCancel.setText("CANCEL");
+        btnCancel.setText(com.floreantpos.POSConstants.CANCEL);
         btnCancel.setPreferredSize(new java.awt.Dimension(140, 50));
         btnCancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -124,7 +125,7 @@ public class SplitTicketDialog extends POSDialog {
 
         transparentPanel5.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 5, 2));
 
-        pOSTitleLabel1.setText("NUMBER OF SPLITS");
+        pOSTitleLabel1.setText(com.floreantpos.POSConstants.NUMBER_OF_SPLITS);
         transparentPanel5.add(pOSTitleLabel1);
 
         buttonGroup1.add(btnNumSplit2);
@@ -222,7 +223,7 @@ public class SplitTicketDialog extends POSDialog {
 			tx.commit();
 			
 			//save the action
-			ActionHistoryDAO.getInstance().saveHistory(Application.getCurrentUser(), ActionHistory.SPLIT_CHECK, "CHK#:"+mainTicketView.getTicket().getId());
+			ActionHistoryDAO.getInstance().saveHistory(Application.getCurrentUser(), ActionHistory.SPLIT_CHECK, com.floreantpos.POSConstants.CHK_NO + ":"+mainTicketView.getTicket().getId());
 			
 			dispose();
 		} catch (Exception e) {
@@ -230,7 +231,7 @@ public class SplitTicketDialog extends POSDialog {
 				tx.rollback();
 			} catch (Exception x) {
 			}
-			POSMessageDialog.showError(POSConstants.RESTART_ERROR_MESSAGE, e);
+			POSMessageDialog.showError(POSConstants.ERROR_MESSAGE, e);
 		} finally {
 			try {
 				session.close();
@@ -326,7 +327,7 @@ public class SplitTicketDialog extends POSDialog {
 	public void setTicket(Ticket ticket) {
 		this.ticket = ticket;
 		if (ticket != null)
-			lblTicketId.setText("ORIGINAL TICKET ID: " + ticket.getId());
+			lblTicketId.setText(com.floreantpos.POSConstants.ORIGINAL_TICKET_ID + ": " + ticket.getId());
 		mainTicketView.setTicket(ticket);
 	}
 }

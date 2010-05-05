@@ -63,7 +63,7 @@ public class PrinterSelector extends ConfigurationView {
 
 	@Override
 	public String getName() {
-		return "Select Printer";
+		return com.floreantpos.POSConstants.SELECT_PRINTER;
 	}
 
 	@Override

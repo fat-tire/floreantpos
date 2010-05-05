@@ -47,8 +47,8 @@ public class NewCookongInstructionDialog extends POSDialog implements ActionList
 		setLayout(new MigLayout());
 		
 		noteView = new NoteView();
-		btnOk = new PosButton("OK");
-		btnCancel = new PosButton("CANCEL");
+		btnOk = new PosButton(com.floreantpos.POSConstants.OK);
+		btnCancel = new PosButton(com.floreantpos.POSConstants.CANCEL);
 		add(noteView, "wrap, span, grow");
 		add(new JSeparator(), "wrap, span, grow");
 		add(btnOk, "al right,width 120, height 50");
@@ -83,10 +83,10 @@ public class NewCookongInstructionDialog extends POSDialog implements ActionList
 	public void actionPerformed(ActionEvent e) {
 		String actionCommand = e.getActionCommand();
 		
-		if("OK".equalsIgnoreCase(actionCommand)) {
+		if(com.floreantpos.POSConstants.OK.equalsIgnoreCase(actionCommand)) {
 			doOk();
 		}
-		else if("CANCEL".equalsIgnoreCase(actionCommand)) {
+		else if(com.floreantpos.POSConstants.CANCEL.equalsIgnoreCase(actionCommand)) {
 			doCancel();
 		}
 	}

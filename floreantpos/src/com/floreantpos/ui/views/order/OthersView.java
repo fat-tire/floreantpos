@@ -6,6 +6,7 @@
 
 package com.floreantpos.ui.views.order;
 
+import com.floreantpos.POSConstants;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketItem;
@@ -47,7 +48,7 @@ public class OthersView extends TransparentPanel {
         btnTableNumber = new com.floreantpos.swing.PosButton();
         btnCookingInstruction = new com.floreantpos.swing.PosButton();
 
-        setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Others", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
+        setBorder(javax.swing.BorderFactory.createTitledBorder(null, com.floreantpos.POSConstants.OTHERS, javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
         setPreferredSize(new java.awt.Dimension(120, 140));
         setLayout(new java.awt.GridLayout(0, 1, 5, 5));
 
@@ -55,7 +56,7 @@ public class OthersView extends TransparentPanel {
         transparentPanel2.setPreferredSize(new java.awt.Dimension(140, 50));
         transparentPanel2.setLayout(new java.awt.GridLayout(1, 0, 5, 5));
 
-        btnOrderInfo.setText("ORDER INFO");
+        btnOrderInfo.setText(com.floreantpos.POSConstants.ORDER_INFO);
         btnOrderInfo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnOrderInfoActionPerformed(evt);
@@ -63,7 +64,7 @@ public class OthersView extends TransparentPanel {
         });
         transparentPanel2.add(btnOrderInfo);
 
-        btnMisc.setText("MISC");
+        btnMisc.setText(com.floreantpos.POSConstants.MISC);
         btnMisc.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 doInsertMisc(evt);
@@ -71,7 +72,7 @@ public class OthersView extends TransparentPanel {
         });
         transparentPanel2.add(btnMisc);
 
-        btnPrintReceipt.setText("PRINT RECEIPT");
+        btnPrintReceipt.setText(com.floreantpos.POSConstants.PRINT_RECEIPT);
         btnPrintReceipt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnPrintReceiptActionPerformed(evt);
@@ -84,7 +85,7 @@ public class OthersView extends TransparentPanel {
         transparentPanel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
         transparentPanel1.setLayout(new java.awt.GridLayout(1, 0, 5, 5));
 
-        btnCustomerNumber.setText("CUSTOMER");
+        btnCustomerNumber.setText(com.floreantpos.POSConstants.CUSTOMER);
         btnCustomerNumber.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCustomerNumberActionPerformed(evt);
@@ -92,7 +93,7 @@ public class OthersView extends TransparentPanel {
         });
         transparentPanel1.add(btnCustomerNumber);
 
-        btnTableNumber.setText("TABLE");
+        btnTableNumber.setText(com.floreantpos.POSConstants.TABLE);
         btnTableNumber.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnTableNumberActionPerformed(evt);
@@ -100,7 +101,7 @@ public class OthersView extends TransparentPanel {
         });
         transparentPanel1.add(btnTableNumber);
 
-        btnCookingInstruction.setText("<html><body><center>COOKING INSTRUCTIONS</center></body></html>");
+        btnCookingInstruction.setText("<html><body><center>" + POSConstants.CAPITAL_COOKING_INSTRUCTIONS + "</center></body></html>");
         btnCookingInstruction.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCookingInstructionActionPerformed(evt);
@@ -113,7 +114,7 @@ public class OthersView extends TransparentPanel {
 
     private void btnCookingInstructionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCookingInstructionActionPerformed
     	CookingInstructionView cookingInstructionView = new CookingInstructionView(Application.getPosWindow(), true);
-    	cookingInstructionView.setTitle("Cooking Instructions");
+    	cookingInstructionView.setTitle(com.floreantpos.POSConstants.COOKING_INSTRUCTIONS);
     	cookingInstructionView.pack();
     	cookingInstructionView.setTicket(getCurrentTicket());
     	cookingInstructionView.open();
@@ -159,7 +160,7 @@ public class OthersView extends TransparentPanel {
     	int guestNumber = thisTicket.getNumberOfGuests();
     	
     	NumberSelectionDialog2 dialog = new NumberSelectionDialog2();
-		dialog.setTitle("Number of guests");
+		dialog.setTitle(com.floreantpos.POSConstants.NUMBER_OF_GUESTS);
 		dialog.setValue(guestNumber);
 		dialog.pack();
 		dialog.open();
@@ -170,7 +171,7 @@ public class OthersView extends TransparentPanel {
 		
 		guestNumber = (int) dialog.getValue();
 		if(guestNumber == 0) {
-			POSMessageDialog.showError(Application.getPosWindow(), "Guest number cannot be 0");
+			POSMessageDialog.showError(Application.getPosWindow(), com.floreantpos.POSConstants.GUEST_NUMBER_CANNOT_BE_0);
 			return;
 		}
 		
@@ -188,7 +189,7 @@ public class OthersView extends TransparentPanel {
     	int tableNumber = thisTicket.getTableNumber();
     	
     	NumberSelectionDialog2 dialog = new NumberSelectionDialog2();
-		dialog.setTitle("Table number");
+		dialog.setTitle(com.floreantpos.POSConstants.TABLE_NUMBER);
 		dialog.setValue(tableNumber);
 		dialog.pack();
 		dialog.open();
@@ -199,7 +200,7 @@ public class OthersView extends TransparentPanel {
 		
 		tableNumber = (int) dialog.getValue();
 		if(tableNumber == 0) {
-			POSMessageDialog.showError(Application.getPosWindow(), "Table number cannot be 0");
+			POSMessageDialog.showError(Application.getPosWindow(), com.floreantpos.POSConstants.TABLE_NUMBER_CANNOT_BE_0);
 			return;
 		}
 		
@@ -207,7 +208,7 @@ public class OthersView extends TransparentPanel {
 		Ticket otherTicket = dao.findTicketByTableNumber(tableNumber);
     	
     	if(otherTicket != null && !otherTicket.equals(thisTicket)) {
-    		POSMessageDialog.showError("The table is already occupied");
+    		POSMessageDialog.showError(com.floreantpos.POSConstants.TABLE_OCCUPIED);
     		return;
     	}
 
@@ -239,8 +240,8 @@ public class OthersView extends TransparentPanel {
     			btnCustomerNumber.setEnabled(true);
         		btnTableNumber.setEnabled(true);
         		
-	    		btnCustomerNumber.setText(currentTicket.getNumberOfGuests() + " Guests");
-	    		btnTableNumber.setText("Table #: " + currentTicket.getTableNumber());
+	    		btnCustomerNumber.setText(currentTicket.getNumberOfGuests() + " " + POSConstants.GUEST + "s");
+	    		btnTableNumber.setText(POSConstants.TABLE_NO + ": " + currentTicket.getTableNumber());
     		}
     	}
     }

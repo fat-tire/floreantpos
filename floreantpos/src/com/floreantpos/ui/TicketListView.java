@@ -92,7 +92,7 @@ public class TicketListView extends JPanel {
 	
 	private class TicketListTableModel extends ListTableModel {
 		public TicketListTableModel() {
-			super(new String[] {"ID", "TABLE", "SERVER", "CREATED", "TOTAL", "DUE"});
+			super(new String[] {com.floreantpos.POSConstants.ID, com.floreantpos.POSConstants.TABLE, com.floreantpos.POSConstants.SERVER, com.floreantpos.POSConstants.CREATED, com.floreantpos.POSConstants.TOTAL, com.floreantpos.POSConstants.DUE});
 		}
 		
 		public Object getValueAt(int rowIndex, int columnIndex) {

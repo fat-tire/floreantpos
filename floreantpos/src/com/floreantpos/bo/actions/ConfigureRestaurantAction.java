@@ -11,7 +11,7 @@ import com.floreantpos.main.Application;
 public class ConfigureRestaurantAction extends AbstractAction {
 
 	public ConfigureRestaurantAction() {
-		super("Configuration");
+		super(com.floreantpos.POSConstants.CONFIGURATION);
 	}
 
 	public ConfigureRestaurantAction(String name) {

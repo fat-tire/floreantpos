@@ -53,9 +53,9 @@ public class TicketExplorer extends TransparentPanel {
 	}
 	
 	class TicketExplorerTableModel extends AbstractTableModel {
-		String[] columnNames = {"Id", "Created by", "Create Time", "Settle Time", 
-								"Subtotal", "Discount", "Tax", "Total", 
-								"PAID", "VOID"
+		String[] columnNames = {com.floreantpos.POSConstants.ID, com.floreantpos.POSConstants.CREATED_BY, com.floreantpos.POSConstants.CREATE_TIME, com.floreantpos.POSConstants.SETTLE_TIME, 
+								com.floreantpos.POSConstants.SUBTOTAL, com.floreantpos.POSConstants.DISCOUNT, com.floreantpos.POSConstants.TAX, com.floreantpos.POSConstants.TOTAL, 
+								com.floreantpos.POSConstants.PAID, com.floreantpos.POSConstants.VOID
 		};
 		
 		public int getRowCount() {

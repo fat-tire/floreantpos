@@ -25,8 +25,8 @@ import com.floreantpos.ui.views.PasswordScreen;
 
 public class DatabaseConfigurationDialog extends POSDialog implements ActionListener {
 	private final String TEST = "TEST"; 
-	private final String SAVE = "SAVE"; 
-	private final String CLOSE = "CLOSE"; 
+	private final String SAVE = com.floreantpos.POSConstants.SAVE; 
+	private final String CLOSE = com.floreantpos.POSConstants.CLOSE; 
 	
 	private JTextField tfServerAddress;
 	private JTextField tfServerPort;
@@ -73,15 +73,15 @@ public class DatabaseConfigurationDialog extends POSDialog implements ActionList
 
 		add(titlePanel, "span, grow, wrap");
 		
-		add(new JLabel("Database Server Address:"));
+		add(new JLabel("Database Server Address" + ":"));
 		add(tfServerAddress, "grow, wrap");
-		add(new JLabel("Database Server Port:"));
+		add(new JLabel("Database Server Port" + ":"));
 		add(tfServerPort, "grow, wrap");
-		add(new JLabel("Database Name:"));
+		add(new JLabel("Database Name" + ":"));
 		add(tfDatabaseName, "grow, wrap");
-		add(new JLabel("User Name:"));
+		add(new JLabel("User Name" + ":"));
 		add(tfUserName, "grow, wrap");
-		add(new JLabel("Database Password:"));
+		add(new JLabel("Database Password" + ":"));
 		add(tfPassword, "grow, wrap");
 		add(new JSeparator(),"span, grow, gaptop 10");
 		

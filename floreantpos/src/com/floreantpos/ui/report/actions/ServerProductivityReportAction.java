@@ -13,7 +13,7 @@ import com.floreantpos.ui.report.ServerProductivityReportView;
 public class ServerProductivityReportAction extends AbstractAction {
 
 	public ServerProductivityReportAction() {
-		super("Server Productivity Report");
+		super(com.floreantpos.POSConstants.SERVER_PRODUCTIVITY_REPORT);
 	}
 
 	public ServerProductivityReportAction(String name) {
@@ -29,10 +29,10 @@ public class ServerProductivityReportAction extends AbstractAction {
 		JTabbedPane tabbedPane = window.getTabbedPane();
 		
 		ServerProductivityReportView reportView = null;
-		int index = tabbedPane.indexOfTab("Server Productivity Report");
+		int index = tabbedPane.indexOfTab(com.floreantpos.POSConstants.SERVER_PRODUCTIVITY_REPORT);
 		if (index == -1) {
 			reportView = new ServerProductivityReportView();
-			tabbedPane.addTab("Server Productivity Report", reportView);
+			tabbedPane.addTab(com.floreantpos.POSConstants.SERVER_PRODUCTIVITY_REPORT, reportView);
 		}
 		else {
 			reportView = (ServerProductivityReportView) tabbedPane.getComponentAt(index);

@@ -108,10 +108,10 @@ public class DiscountListDialog extends POSDialog implements ActionListener {
         try {
             int selectedRow = selectionModel.getLeadSelectionIndex();
             if (selectedRow < 0) {
-                POSMessageDialog.showError(this, "Please select the item to delete");
+                POSMessageDialog.showError(this, com.floreantpos.POSConstants.SELECT_ITEM_TO_DELETE);
                 return;
             }
-            if (ConfirmDeleteDialog.showMessage(this, "Sure want to delete?", "Delete") != ConfirmDeleteDialog.YES) {
+            if (ConfirmDeleteDialog.showMessage(this, com.floreantpos.POSConstants.CONFIRM_DELETE, com.floreantpos.POSConstants.DELETE) != ConfirmDeleteDialog.YES) {
                 return;
             }
 
@@ -167,12 +167,12 @@ public class DiscountListDialog extends POSDialog implements ActionListener {
         buttonOK = new PosButton();
         buttonOK.setIcon(new ImageIcon(getClass().getResource("/images/finish_32.png")));
         buttonOK.setPreferredSize(new Dimension(120, 50));
-        buttonOK.setText("OK");
+        buttonOK.setText(com.floreantpos.POSConstants.OK);
         panel2.add(buttonOK);
         buttonCancel = new PosButton();
         buttonCancel.setIcon(new ImageIcon(getClass().getResource("/images/cancel_32.png")));
         buttonCancel.setPreferredSize(new Dimension(120, 50));
-        buttonCancel.setText("Cancel");
+        buttonCancel.setText(com.floreantpos.POSConstants.CANCEL);
         panel2.add(buttonCancel);
         final JPanel panel3 = new JPanel();
         panel3.setLayout(new GridLayoutManager(1, 2, new Insets(0, 0, 0, 0), -1, -1));

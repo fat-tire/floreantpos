@@ -36,7 +36,7 @@ public class OpenTicketSummaryReport extends Report {
 		map.put("reportTitle", "============================ Open Ticket Summary =============================");
 		map.put("reportTime", ReportService.formatFullDate(new Date()));
 		//map.put("dateRange", Application.formatDate(date1) + " to " + Application.formatDate(date2));
-		map.put("terminalName", "All");
+		map.put("terminalName", com.floreantpos.POSConstants.ALL);
 		
 		JasperReport masterReport = (JasperReport) JRLoader.loadObject(OpenTicketSummaryReport.class.getResource("/com/floreantpos/ui/report/open_ticket_summary_report.jasper"));
 		JasperPrint print = JasperFillManager.fillReport(masterReport, map, new JRTableModelDataSource(reportModel));

@@ -34,9 +34,9 @@ public class MenuCategoryForm extends BeanEditor {
     public String getDisplayText() {
     	MenuCategory foodCategory = (MenuCategory) getBean();
     	if(foodCategory.getId() == null) {
-    		return "New menu category";
+    		return com.floreantpos.POSConstants.NEW_MENU_CATEGORY;
     	}
-    	return "Edit menu category";
+    	return com.floreantpos.POSConstants.EDIT_MENU_CATEGORY;
     }
     /** This method is called from within the constructor to
      * initialize the form.
@@ -51,13 +51,13 @@ public class MenuCategoryForm extends BeanEditor {
         tfName = new com.floreantpos.swing.FixedLengthTextField();
         chkBeverage = new javax.swing.JCheckBox();
 
-        jLabel1.setText("Name:");
+        jLabel1.setText(com.floreantpos.POSConstants.NAME + ":");
 
-        chkVisible.setText("Visible");
+        chkVisible.setText(com.floreantpos.POSConstants.VISIBLE);
         chkVisible.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
         chkVisible.setMargin(new java.awt.Insets(0, 0, 0, 0));
 
-        chkBeverage.setText("Beverage");
+        chkBeverage.setText(com.floreantpos.POSConstants.BEVERAGE);
         chkBeverage.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
         chkBeverage.setMargin(new java.awt.Insets(0, 0, 0, 0));
 

@@ -29,15 +29,15 @@ public class RestaurantConfigurationView extends ConfigurationView {
 	public RestaurantConfigurationView() {
 		setLayout(new MigLayout("align 50% 50%"));
 		
-		addRow("Restaurant Name:", tfRestaurantName, "w 300");
-		addRow("Address Line 1:", tfAddressLine1, "w 300");
-		addRow("Address Line 2:", tfAddressLine2, "w 300");
-		addRow("Address Line 3:", tfAddressLine3, "w 300");
-		addRow("Telephone:", tfTelephone, "w 150");
-		addRow("Capacity:", tfCapacity, "w 150");
-		addRow("Tables:", tfTable, "w 150");
-		addRow("Currency Name:", tfCurrencyName, "w 50");
-		addRow("Currency Symbol:", tfCurrencySymbol, "w 50");
+		addRow(com.floreantpos.POSConstants.RESTAURANT_NAME_, tfRestaurantName, "w 300");
+		addRow(com.floreantpos.POSConstants.ADDRESS_LINE1, tfAddressLine1, "w 300");
+		addRow(com.floreantpos.POSConstants.ADDRESS_LINE2, tfAddressLine2, "w 300");
+		addRow(com.floreantpos.POSConstants.ADDRESS_LINE3, tfAddressLine3, "w 300");
+		addRow(com.floreantpos.POSConstants.TELEPHONE + ":", tfTelephone, "w 150");
+		addRow(com.floreantpos.POSConstants.CAPACITY_, tfCapacity, "w 150");
+		addRow(com.floreantpos.POSConstants.TABLES + ":", tfTable, "w 150");
+		addRow(com.floreantpos.POSConstants.CURRENCY_NAME_, tfCurrencyName, "w 50");
+		addRow(com.floreantpos.POSConstants.CURRENCY_SYMBOL_, tfCurrencySymbol, "w 50");
 	}
 
 	@Override
@@ -66,7 +66,7 @@ public class RestaurantConfigurationView extends ConfigurationView {
 		currencySymbol = tfCurrencySymbol.getText();
 		
 		if(StringUtils.isEmpty(currencyName)) {
-			currencyName = "Dollar";
+			currencyName = com.floreantpos.POSConstants.DOLLAR;
 		}
 		if(StringUtils.isEmpty(currencySymbol)) {
 			currencySymbol = "$";
@@ -75,14 +75,14 @@ public class RestaurantConfigurationView extends ConfigurationView {
 		try {
 			capacity = Integer.parseInt(tfCapacity.getText());
 		} catch (Exception e) {
-			POSMessageDialog.showError(this, "Capacity is not valid.");
+			POSMessageDialog.showError(this, com.floreantpos.POSConstants.CAPACITY_IS_NOT_VALID_);
 			return false;
 		}
 
 		try {
 			tables = Integer.parseInt(tfTable.getText());
 		} catch (Exception e) {
-			POSMessageDialog.showError(this, "Number of tables is not valid.");
+			POSMessageDialog.showError(this, com.floreantpos.POSConstants.NUMBER_OF_TABLES_IS_NOT_VALID);
 			return false;
 		}
 
@@ -123,6 +123,6 @@ public class RestaurantConfigurationView extends ConfigurationView {
 	
 	@Override
 	public String getName() {
-		return "Restaurant Configuration";
+		return com.floreantpos.POSConstants.RESTAURANT_CONFIGURATION;
 	}
 }

@@ -60,7 +60,7 @@ public class ModifierGroupExplorer extends TransparentPanel {
 
 					table.repaint();
 				} catch (Throwable x) {
-					MessageDialog.showError("An error has occured, please restart the application", x);
+					MessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
 				}
 			}
 
@@ -79,7 +79,7 @@ public class ModifierGroupExplorer extends TransparentPanel {
 					MenuModifierGroup modifierGroup = (MenuModifierGroup) editor.getBean();
 					tableModel.addModifierGroup(modifierGroup);
 				} catch (Throwable x) {
-					MessageDialog.showError("An error has occured, please restart the application", x);
+					MessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
 				}
 
 			}
@@ -93,14 +93,14 @@ public class ModifierGroupExplorer extends TransparentPanel {
 					int index = table.getSelectedRow();
 					if (index < 0)
 						return;
-					if (ConfirmDeleteDialog.showMessage(ModifierGroupExplorer.this, "Sure Want to Delete?", "Delete") != ConfirmDeleteDialog.NO) {
+					if (ConfirmDeleteDialog.showMessage(ModifierGroupExplorer.this, com.floreantpos.POSConstants.CONFIRM_DELETE, com.floreantpos.POSConstants.DELETE) != ConfirmDeleteDialog.NO) {
 						MenuModifierGroup category = mGroupList.get(index);
 						ModifierGroupDAO modifierCategoryDAO = new ModifierGroupDAO();
 						modifierCategoryDAO.delete(category);
 						tableModel.deleteModifierGroup(category, index);
 					}
 				} catch (Throwable x) {
-					MessageDialog.showError("An error has occured, please restart the application", x);
+					MessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
 				}
 
 			}
@@ -114,7 +114,7 @@ public class ModifierGroupExplorer extends TransparentPanel {
 	}
 
 	class ModifierGroupExplorerTableModel extends AbstractTableModel {
-		String[] columnNames = { "Id", "Name" };
+		String[] columnNames = { com.floreantpos.POSConstants.ID, com.floreantpos.POSConstants.NAME };
 
 		public int getRowCount() {
 			if (mGroupList == null) {

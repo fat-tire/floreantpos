@@ -13,7 +13,7 @@ import com.floreantpos.ui.report.PayrollReportView;
 public class PayrollReportAction extends AbstractAction {
 
 	public PayrollReportAction() {
-		super("Payroll Report");
+		super(com.floreantpos.POSConstants.PAYROLL_REPORT);
 	}
 
 	public PayrollReportAction(String name) {
@@ -29,10 +29,10 @@ public class PayrollReportAction extends AbstractAction {
 		JTabbedPane tabbedPane = window.getTabbedPane();
 		
 		PayrollReportView reportView = null;
-		int index = tabbedPane.indexOfTab("Payroll Report");
+		int index = tabbedPane.indexOfTab(com.floreantpos.POSConstants.PAYROLL_REPORT);
 		if (index == -1) {
 			reportView = new PayrollReportView();
-			tabbedPane.addTab("Payroll Report", reportView);
+			tabbedPane.addTab(com.floreantpos.POSConstants.PAYROLL_REPORT, reportView);
 		}
 		else {
 			reportView = (PayrollReportView) tabbedPane.getComponentAt(index);

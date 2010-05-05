@@ -67,7 +67,7 @@ public class CashPaymentView extends PaymentView {
 
         setLayout(new java.awt.BorderLayout(5, 5));
 
-        setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Cash Transaction", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
+        setBorder(javax.swing.BorderFactory.createTitledBorder(null, com.floreantpos.POSConstants.CASH_TRANSACTION, javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
         jPanel1.setLayout(new java.awt.BorderLayout());
 
         jPanel1.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createEmptyBorder(1, 5, 1, 5), javax.swing.BorderFactory.createTitledBorder("")));

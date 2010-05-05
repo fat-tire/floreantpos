@@ -32,16 +32,16 @@ public class CouponExplorer extends TransparentPanel implements ActionListener {
 		setLayout(new BorderLayout(5,5));
 		add(new JScrollPane(explorerView));
 		
-		JButton addButton = new JButton("New");
-		addButton.setActionCommand("add");
+		JButton addButton = new JButton(com.floreantpos.POSConstants.NEW);
+		addButton.setActionCommand(com.floreantpos.POSConstants.ADD);
 		addButton.addActionListener(this);
 		
-		JButton editButton = new JButton("Edit");
-		editButton.setActionCommand("edit");
+		JButton editButton = new JButton(com.floreantpos.POSConstants.EDIT);
+		editButton.setActionCommand(com.floreantpos.POSConstants.EDIT);
 		editButton.addActionListener(this);
 
-		JButton deleteButton = new JButton("Delete");
-		deleteButton.setActionCommand("delete");
+		JButton deleteButton = new JButton(com.floreantpos.POSConstants.DELETE);
+		deleteButton.setActionCommand(com.floreantpos.POSConstants.DELETE);
 		deleteButton.addActionListener(this);
 
 		TransparentPanel panel = new TransparentPanel();
@@ -69,7 +69,7 @@ public class CouponExplorer extends TransparentPanel implements ActionListener {
 			CouponAndDiscount coupon = (CouponAndDiscount) editor.getBean();
 			explorerModel.addCoupon(coupon);
 		} catch (Exception x) {
-			MessageDialog.showError("An error has occured, could add coupon.", x);
+			MessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
 		}
 	}
 	
@@ -83,24 +83,24 @@ public class CouponExplorer extends TransparentPanel implements ActionListener {
 
 			explorerView.repaint();
 		} catch (Throwable x) {
-			MessageDialog.showError("An error has occured, could not update coupon.", x);
+			MessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
 		}
 	}
 	
 	private void deleteCoupon(int index, CouponAndDiscount coupon) {
 		try {
-			if (ConfirmDeleteDialog.showMessage(this, "Sure want to delete?", "Delete") == ConfirmDeleteDialog.YES) {
+			if (ConfirmDeleteDialog.showMessage(this, com.floreantpos.POSConstants.CONFIRM_DELETE, com.floreantpos.POSConstants.DELETE) == ConfirmDeleteDialog.YES) {
 				CouponAndDiscountDAO dao = new CouponAndDiscountDAO();
 				dao.delete(coupon);
 				explorerModel.deleteCoupon(coupon, index);
 			}
 		} catch (Exception x) {
-			MessageDialog.showError("An error has occured, could not delete coupon.", x);
+			MessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
 		}
 	}
 	
 	private class CouponExplorerTableModel extends AbstractTableModel {
-		String[] columnNames = {"NAME", "COUPON_TYPE", "COUPON_VALUE", "EXPIRY_DATE", "DISABLED", "NEVER_EXPIRE"};
+		String[] columnNames = {com.floreantpos.POSConstants.NAME, com.floreantpos.POSConstants.COUPON_TYPE, com.floreantpos.POSConstants.COUPON_VALUE, com.floreantpos.POSConstants.EXPIRY_DATE, com.floreantpos.POSConstants.DISABLED, com.floreantpos.POSConstants.NEVER_EXPIRE};
 		List<CouponAndDiscount> couponList;
 		
 		CouponExplorerTableModel(List<CouponAndDiscount> list) {
@@ -167,22 +167,22 @@ public class CouponExplorer extends TransparentPanel implements ActionListener {
 
 	public void actionPerformed(ActionEvent e) {
 		String actionCommand = e.getActionCommand();
-		if("add".equals(actionCommand)) {
+		if(com.floreantpos.POSConstants.ADD.equals(actionCommand)) {
 			addNewCoupon();
 		}
-		else if("edit".equals(actionCommand)) {
+		else if(com.floreantpos.POSConstants.EDIT.equals(actionCommand)) {
 			int index = explorerView.getSelectedRow();
 			if(index < 0) {
-				MessageDialog.showError("Please select the coupon to edit.");
+				MessageDialog.showError(com.floreantpos.POSConstants.SELECT_COUPON_TO_EDIT);
 				return;
 			}
 			CouponAndDiscount coupon = explorerModel.getCoupon(index);
 			editCoupon(coupon);
 		}
-		else if("delete".equals(actionCommand)) {
+		else if(com.floreantpos.POSConstants.DELETE.equals(actionCommand)) {
 			int index = explorerView.getSelectedRow();
 			if(index < 0) {
-				MessageDialog.showError("Please select the coupon to delete.");
+				MessageDialog.showError(com.floreantpos.POSConstants.SELECT_COUPON_TO_DELETE);
 				return;
 			}
 			CouponAndDiscount coupon = explorerModel.getCoupon(index);

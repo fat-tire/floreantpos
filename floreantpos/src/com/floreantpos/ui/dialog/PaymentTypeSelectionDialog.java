@@ -51,7 +51,7 @@ public class PaymentTypeSelectionDialog extends POSDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
-        titlePanel1.setTitle("SELECT PAYMENT TYPE");
+        titlePanel1.setTitle(com.floreantpos.POSConstants.SELECT_PAYMENT_TYPE);
         getContentPane().add(titlePanel1, java.awt.BorderLayout.NORTH);
 
         transparentPanel1.setLayout(new java.awt.BorderLayout(5, 5));
@@ -63,7 +63,7 @@ public class PaymentTypeSelectionDialog extends POSDialog {
         transparentPanel2.setPreferredSize(new java.awt.Dimension(100, 60));
         transparentPanel4.setLayout(new java.awt.GridLayout(1, 0, 5, 5));
 
-        btnCancel.setText("CANCEL");
+        btnCancel.setText(com.floreantpos.POSConstants.CANCEL);
         btnCancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCancelActionPerformed(evt);
@@ -80,7 +80,7 @@ public class PaymentTypeSelectionDialog extends POSDialog {
 
         transparentPanel3.setLayout(new java.awt.GridLayout(0, 1, 5, 5));
 
-        btnCash.setText("CASH TRANSACTION");
+        btnCash.setText(com.floreantpos.POSConstants.CASH_TRANSACTION);
         btnCash.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCashActionPerformed(evt);
@@ -88,7 +88,7 @@ public class PaymentTypeSelectionDialog extends POSDialog {
         });
         transparentPanel3.add(btnCash);
         
-        btnGiftCert.setText("GIFT CERTIFICATE");
+        btnGiftCert.setText(com.floreantpos.POSConstants.GIFT_CERTIFICATE);
         btnGiftCert.addActionListener(new java.awt.event.ActionListener() {
         	public void actionPerformed(java.awt.event.ActionEvent evt) {
         		btnGiftCertActionPerformed();
@@ -97,7 +97,7 @@ public class PaymentTypeSelectionDialog extends POSDialog {
 
         transparentPanel3.add(btnGiftCert);
 
-        btnCredit.setText("CREDIT CARD TRANSACTION");
+        btnCredit.setText(com.floreantpos.POSConstants.CREDIT_CARD_TRANSACTION);
         btnCredit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCreditActionPerformed(evt);
@@ -106,7 +106,7 @@ public class PaymentTypeSelectionDialog extends POSDialog {
 
         transparentPanel3.add(btnCredit);
 
-        btnDebit.setText("DEBIT CARD TRANSACTION");
+        btnDebit.setText(com.floreantpos.POSConstants.DEBIT_CARD_TRANSACTION);
         btnDebit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnDebitActionPerformed(evt);
@@ -115,7 +115,7 @@ public class PaymentTypeSelectionDialog extends POSDialog {
 
         transparentPanel3.add(btnDebit);
 
-        btnBankCheck.setText("BANK CHECK");
+        btnBankCheck.setText(com.floreantpos.POSConstants.BANK_CHECK);
         btnBankCheck.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnBankCheckActionPerformed(evt);

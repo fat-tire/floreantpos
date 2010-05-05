@@ -38,7 +38,7 @@ public class CategoryExplorer extends TransparentPanel {
 		setLayout(new BorderLayout(5,5));
 		add(new JScrollPane(table));
 		
-		JButton addButton = new JButton("Add");
+		JButton addButton = new JButton(com.floreantpos.POSConstants.ADD);
 		addButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -50,13 +50,13 @@ public class CategoryExplorer extends TransparentPanel {
 					MenuCategory foodCategory = (MenuCategory) editor.getBean();
 					tableModel.addCategory(foodCategory);
 				} catch (Exception x) {
-					MessageDialog.showError("An error has occured, please restart the application", x);
+					MessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
 				}
 			}
 			
 		});
 		
-		JButton editButton = new JButton("Edit");
+		JButton editButton = new JButton(com.floreantpos.POSConstants.EDIT);
 		editButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -74,12 +74,12 @@ public class CategoryExplorer extends TransparentPanel {
 
 					table.repaint();
 				} catch (Throwable x) {
-					MessageDialog.showError("An error has occured, please restart the application", x);
+					MessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
 				}
 			}
 			
 		});
-		JButton deleteButton = new JButton("Delete");
+		JButton deleteButton = new JButton(com.floreantpos.POSConstants.DELETE);
 		deleteButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -87,14 +87,14 @@ public class CategoryExplorer extends TransparentPanel {
 					if (index < 0)
 						return;
 
-					if (ConfirmDeleteDialog.showMessage(CategoryExplorer.this, "Sure Want to Delete?", "Delete") == ConfirmDeleteDialog.YES) {
+					if (ConfirmDeleteDialog.showMessage(CategoryExplorer.this, com.floreantpos.POSConstants.CONFIRM_DELETE, com.floreantpos.POSConstants.DELETE) == ConfirmDeleteDialog.YES) {
 						MenuCategory category = categoryList.get(index);
 						MenuCategoryDAO dao = new MenuCategoryDAO();
 						dao.delete(category);
 						tableModel.deleteCategory(category, index);
 					}
 				} catch (Exception x) {
-					MessageDialog.showError("An error has occured, please restart the application", x);
+					MessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
 				}
 			}
 			
@@ -108,7 +108,7 @@ public class CategoryExplorer extends TransparentPanel {
 	}
 	
 	class CategoryExplorerTableModel extends AbstractTableModel {
-		String[] columnNames = {"Id", "Name", "Beverage", "Visible"};
+		String[] columnNames = {com.floreantpos.POSConstants.ID, com.floreantpos.POSConstants.NAME, com.floreantpos.POSConstants.BEVERAGE, com.floreantpos.POSConstants.VISIBLE};
 		
 		public int getRowCount() {
 			if(categoryList == null) {

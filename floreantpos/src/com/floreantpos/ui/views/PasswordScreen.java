@@ -151,7 +151,7 @@ public class PasswordScreen extends JPanel {
 
 		posButton1.setAction(goAction);
 		posButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/clear_32.png"))); // NOI18N
-		posButton1.setText("CLEAR");
+		posButton1.setText(com.floreantpos.POSConstants.CLEAR);
 		posButton1.setFocusable(false);
 		posButton1.setPreferredSize(new java.awt.Dimension(90, 50));
 		buttonPanel.add(posButton1);
@@ -170,12 +170,12 @@ public class PasswordScreen extends JPanel {
 		jLabel1.setFont(new java.awt.Font("Tahoma", 1, 24));
 		jLabel1.setForeground(new java.awt.Color(204, 102, 0));
 		jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-		jLabel1.setText("ENTER YOUR USER ID");
+		jLabel1.setText(com.floreantpos.POSConstants.ENTER_YOUR_USER_ID);
 
 		jLabel2.setFont(new java.awt.Font("Tahoma", 1, 24));
 		jLabel2.setForeground(new java.awt.Color(204, 102, 0));
 		jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-		jLabel2.setText("ENTER YOUR PASSWORD");
+		jLabel2.setText(com.floreantpos.POSConstants.ENTER_YOUR_PASSWORD);
 
 		tfPassword.setFont(new java.awt.Font("Courier", 1, 18));
 		tfPassword.setHorizontalAlignment(javax.swing.JTextField.LEFT);
@@ -184,7 +184,7 @@ public class PasswordScreen extends JPanel {
 
 		jLabel4.setFont(new java.awt.Font("DejaVu Sans", 1, 24));
 		jLabel4.setForeground(new java.awt.Color(204, 102, 0));
-		jLabel4.setText("User Type:");
+		jLabel4.setText(com.floreantpos.POSConstants.USER_TYPE + ":");
 
 		cbUserType.setFont(new java.awt.Font("DejaVu Sans", 1, 18));
 
@@ -214,20 +214,20 @@ public class PasswordScreen extends JPanel {
 		jPanel3.setLayout(new java.awt.GridLayout(2, 0, 5, 5));
 
 		btnConfigureDatabase.setAction(goAction);
-		btnConfigureDatabase.setText("CONFIGURE DATABASE");
+		btnConfigureDatabase.setText(com.floreantpos.POSConstants.CONFIGURE_DATABASE);
 		btnConfigureDatabase.setFocusable(false);
 		jPanel3.add(btnConfigureDatabase);
 
 		btnLogin.setAction(goAction);
 		btnLogin.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/log_in_32.png"))); // NOI18N
-		btnLogin.setText("LOGIN");
+		btnLogin.setText(com.floreantpos.POSConstants.LOGIN);
 		btnLogin.setFocusable(false);
 		jPanel3.add(btnLogin);
 		jPanel3.add(jLabel3);
 
 		btnShutdown.setAction(goAction);
 		btnShutdown.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/shut_down_32.png"))); // NOI18N
-		btnShutdown.setText("SHUTDOWN");
+		btnShutdown.setText(com.floreantpos.POSConstants.SHUTDOWN);
 		btnShutdown.setFocusable(false);
 		jPanel3.add(btnShutdown);
 
@@ -257,7 +257,7 @@ public class PasswordScreen extends JPanel {
 		try {
 			userId = Integer.parseInt(tfUserId.getText());
 		} catch (Exception x) {
-			MessageDialog.showError("user id not valid");
+			MessageDialog.showError(com.floreantpos.POSConstants.USER_ID_NOT_VALID);
 			return;
 		}
 		char[] password = tfPassword.getPassword();
@@ -274,38 +274,38 @@ public class PasswordScreen extends JPanel {
 			
 			user = dao.findUser(userId, selectedUserType);
 			if(user == null) {
-				MessageDialog.showError("User not found");
+				MessageDialog.showError(com.floreantpos.POSConstants.USER_NOT_FOUND);
 				return;
 			}
 			
 			if (user.getNewUserType() != null) {
 				if (user == null) {
-					MessageDialog.showError("User not found");
+					MessageDialog.showError(com.floreantpos.POSConstants.USER_NOT_FOUND);
 					return;
 				}
 
 				if (user.getPassword() == null) {
-					MessageDialog.showError("Data error, user password is empty.");
+					MessageDialog.showError(com.floreantpos.POSConstants.EMPTY_PASSWORD);
 					return;
 				}
 				if (!user.getPassword().equalsIgnoreCase(newPass)) {
-					MessageDialog.showError("Wrong password");
+					MessageDialog.showError(com.floreantpos.POSConstants.WRONG_PASSWORD);
 					return;
 				}
 			}
 			else {
 				user = dao.findUser(userId);
 				if (user == null) {
-					MessageDialog.showError("User not found");
+					MessageDialog.showError(com.floreantpos.POSConstants.USER_NOT_FOUND);
 					return;
 				}
 
 				if (user.getPassword() == null) {
-					MessageDialog.showError("Data error, user password is empty.");
+					MessageDialog.showError(com.floreantpos.POSConstants.EMPTY_PASSWORD);
 					return;
 				}
 				if (!user.getPassword().equalsIgnoreCase(newPass)) {
-					MessageDialog.showError("Wrong password");
+					MessageDialog.showError(com.floreantpos.POSConstants.WRONG_PASSWORD);
 					return;
 				}
 				
@@ -313,7 +313,7 @@ public class PasswordScreen extends JPanel {
 
 			Shift currentShift = ShiftUtil.getCurrentShift();
 			if (currentShift == null) {
-				POSMessageDialog.showError(this, "No Shift is configured for this time, you cannot login");
+				POSMessageDialog.showError(this, com.floreantpos.POSConstants.NO_SHIFT_CONFIGURED);
 				return;
 			}
 
@@ -405,7 +405,7 @@ public class PasswordScreen extends JPanel {
 	Action goAction = new AbstractAction() {
 		public void actionPerformed(ActionEvent e) {
 			String command = e.getActionCommand();
-			if ("CLEAR".equals(command)) {
+			if (com.floreantpos.POSConstants.CLEAR.equals(command)) {
 				if (tfUserId.hasFocus()) {
 					tfUserId.setText("");
 				}
@@ -413,10 +413,10 @@ public class PasswordScreen extends JPanel {
 					tfPassword.setText("");
 				}
 			}
-			else if ("LOGIN".equals(command)) {
+			else if (com.floreantpos.POSConstants.LOGIN.equals(command)) {
 				doLogin();
 			}
-			else if ("SHUTDOWN".equals(command)) {
+			else if (com.floreantpos.POSConstants.SHUTDOWN.equals(command)) {
 				Application.getInstance().shutdownPOS();
 			}
 			else if ("DBCONFIG".equalsIgnoreCase(command)) {

@@ -13,7 +13,7 @@ import com.floreantpos.main.Application;
 public class GroupExplorerAction extends AbstractAction {
 
 	public GroupExplorerAction() {
-		super("Menu Groups");
+		super(com.floreantpos.POSConstants.MENU_GROUPS);
 	}
 
 	public GroupExplorerAction(String name) {
@@ -29,10 +29,10 @@ public class GroupExplorerAction extends AbstractAction {
 		JTabbedPane tabbedPane;
 		GroupExplorer group;
 		tabbedPane = backOfficeWindow.getTabbedPane();
-		int index = tabbedPane.indexOfTab("Group explorer");
+		int index = tabbedPane.indexOfTab(com.floreantpos.POSConstants.GROUP_EXPLORER);
 		if (index == -1) {
 			group = new GroupExplorer();
-			tabbedPane.addTab("Group explorer", group);
+			tabbedPane.addTab(com.floreantpos.POSConstants.GROUP_EXPLORER, group);
 		}
 		else {
 			group = (GroupExplorer) tabbedPane.getComponentAt(index);

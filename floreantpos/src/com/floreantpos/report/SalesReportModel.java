@@ -11,7 +11,7 @@ public class SalesReportModel extends AbstractTableModel {
 	private static DecimalFormat formatter = new DecimalFormat("#,##0.00");
 	private String currencySymbol;
 	
-	private String[] columnNames = {"Name", "Price", "QTY", "Tax", "Total"};
+	private String[] columnNames = {com.floreantpos.POSConstants.NAME, com.floreantpos.POSConstants.PRICE, com.floreantpos.POSConstants.QTY, com.floreantpos.POSConstants.TAX, com.floreantpos.POSConstants.TOTAL};
 	private List<ReportItem> items;
 	private double grandTotal;
 	

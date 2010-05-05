@@ -11,7 +11,7 @@ public class PayrollReportModel extends ListTableModel {
 	DecimalFormat decimalFormat = new DecimalFormat("0.00");
 
 	public PayrollReportModel() {
-		super(new String[] { "userID", "userName", "from", "to", "total", "rate", "payment", "userSSN" });
+		super(new String[] { "userID", "userName", "from", "to", com.floreantpos.POSConstants.TOTAL, "rate", "payment", "userSSN" });
 	}
 
 	public Object getValueAt(int rowIndex, int columnIndex) {

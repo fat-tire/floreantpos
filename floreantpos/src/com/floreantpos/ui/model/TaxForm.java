@@ -42,9 +42,9 @@ public class TaxForm extends BeanEditor {
         tfRate = new javax.swing.JFormattedTextField();
         jLabel3 = new javax.swing.JLabel();
 
-        jLabel1.setText("Name:");
+        jLabel1.setText(com.floreantpos.POSConstants.NAME + ":");
 
-        jLabel2.setText("Rate:");
+        jLabel2.setText(com.floreantpos.POSConstants.RATE + ":");
 
         tfRate.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
 
@@ -126,7 +126,7 @@ public class TaxForm extends BeanEditor {
 		
 		String name = tfName.getText();
     	if(POSUtil.isBlankOrNull(name)) {
-    		MessageDialog.showError("Name is required");
+    		MessageDialog.showError(com.floreantpos.POSConstants.NAME_REQUIRED);
     		return false;
     	}
 		
@@ -139,8 +139,8 @@ public class TaxForm extends BeanEditor {
 	public String getDisplayText() {
     	Tax tax = (Tax) getBean();
     	if(tax.getId() == null) {
-    		return "New tax rate";
+    		return com.floreantpos.POSConstants.NEW_TAX_RATE;
     	}
-    	return "Edit tax rate";
+    	return com.floreantpos.POSConstants.EDIT_TAX_RATE;
     }
 }

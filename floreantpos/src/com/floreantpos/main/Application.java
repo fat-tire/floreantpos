@@ -62,7 +62,7 @@ public class Application {
 	private static SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM, yyyy");
 	private static ImageIcon applicationIcon;
 
-	public final static String VERSION = "1.0_3";
+	public final static String VERSION = "1.0_2";
 
 	private Application() {
 		applicationIcon = new ImageIcon(getClass().getResource("/icons/icon.png"));
@@ -107,7 +107,7 @@ public class Application {
 	public void initDatabase() {
 		if(!ApplicationConfig.checkDatabaseConnection()) {
 			DatabaseConfigurationDialog dialog = new DatabaseConfigurationDialog(getPosWindow(), true);
-			dialog.setTitle("Database connection error, please configure your database");
+			dialog.setTitle(com.floreantpos.POSConstants.DATABASE_CONNECTION_ERROR);
 			dialog.setExitOnClose(true);
 			dialog.pack();
 			dialog.open();
@@ -115,7 +115,7 @@ public class Application {
 		
 
 		try {
-			((GlassPane) posWindow.getGlassPane()).setMessage("LOADING");
+			((GlassPane) posWindow.getGlassPane()).setMessage(com.floreantpos.POSConstants.LOADING);
 			_RootDAO.initialize();
 
 			int terminalId = ApplicationConfig.getTerminalId();
@@ -124,7 +124,7 @@ public class Application {
 			if (terminalId == -1) {
 				NumberSelectionDialog dialog = new NumberSelectionDialog();
 				dialog.setDecimalAllowed(false);
-				dialog.setTitle("Enter an ID for this terminal");
+				dialog.setTitle(com.floreantpos.POSConstants.ENTER_ID_FOR_TERMINAL);
 				dialog.setVisible(true);
 				terminalId = (int) dialog.getValue();
 			}
@@ -136,7 +136,7 @@ public class Application {
 				terminal2.setId(terminalId);
 				terminal2.setOpeningBalance(new Double(500));
 				terminal2.setCurrentBalance(new Double(500));
-				terminal2.setName("TERMINAL-" + terminalId);
+				terminal2.setName(com.floreantpos.POSConstants.TERMINAL + " - " + terminalId);
 				terminalDAO.saveOrUpdate(terminal2);
 			}
 			ApplicationConfig.setTerminalId(terminalId);
@@ -211,7 +211,7 @@ public class Application {
 	}
 
 	public void shutdownPOS() {
-		int option = JOptionPane.showOptionDialog(getPosWindow(), "Sure shutdown?", "Confirm shutdown", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+		int option = JOptionPane.showOptionDialog(getPosWindow(), com.floreantpos.POSConstants.SURE_SHUTDOWN_, com.floreantpos.POSConstants.CONFIRM_SHUTDOWN, JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
 		if(option != JOptionPane.YES_OPTION) {
 			return;
 		}

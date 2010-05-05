@@ -31,7 +31,7 @@ public class GroupView extends SelectionView {
     
     /** Creates new form GroupView */
     public GroupView() {
-        super("GROUPS");
+        super(com.floreantpos.POSConstants.GROUPS);
         
         setBackEnable(false);
     }

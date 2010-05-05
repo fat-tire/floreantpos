@@ -13,7 +13,7 @@ import com.floreantpos.ui.report.CreditCardReportView;
 public class CreditCardReportAction extends AbstractAction {
 
 	public CreditCardReportAction() {
-		super("Credit Card Report");
+		super(com.floreantpos.POSConstants.CREDIT_CARD_REPORT);
 	}
 
 	public CreditCardReportAction(String name) {
@@ -29,10 +29,10 @@ public class CreditCardReportAction extends AbstractAction {
 		JTabbedPane tabbedPane = window.getTabbedPane();
 		
 		CreditCardReportView reportView = null;
-		int index = tabbedPane.indexOfTab("Credit Card Report");
+		int index = tabbedPane.indexOfTab(com.floreantpos.POSConstants.CREDIT_CARD_REPORT);
 		if (index == -1) {
 			reportView = new CreditCardReportView();
-			tabbedPane.addTab("Credit Card Report", reportView);
+			tabbedPane.addTab(com.floreantpos.POSConstants.CREDIT_CARD_REPORT, reportView);
 		}
 		else {
 			reportView = (CreditCardReportView) tabbedPane.getComponentAt(index);

@@ -6,6 +6,7 @@
 
 package com.floreantpos.ui.views;
 
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Calendar;
@@ -17,6 +18,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
+import com.floreantpos.POSConstants;
 import com.floreantpos.bo.ui.BackOfficeWindow;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.ActionHistory;
@@ -29,7 +31,6 @@ import com.floreantpos.model.UserType;
 import com.floreantpos.model.dao.ActionHistoryDAO;
 import com.floreantpos.model.dao.AttendenceHistoryDAO;
 import com.floreantpos.model.dao.TicketDAO;
-import com.floreantpos.model.util.POSConstants;
 import com.floreantpos.print.PosPrintService;
 import com.floreantpos.services.PosTransactionService;
 import com.floreantpos.ui.dialog.ManagerDialog;
@@ -47,7 +48,7 @@ import com.floreantpos.ui.views.order.RootView;
  * @author  MShahriar
  */
 public class SwitchboardView extends JPanel implements ActionListener {
-	public final static String VIEW_NAME = "SWITCHBOARD";
+	public final static String VIEW_NAME = com.floreantpos.POSConstants.SWITCHBOARD;
 
 	private Timer ticketListUpdater;
 
@@ -124,7 +125,7 @@ public class SwitchboardView extends JPanel implements ActionListener {
 
 		bottomPanel.setLayout(new java.awt.BorderLayout());
 
-		bottomLeftPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "OPEN TICKETS AND ACTIVITY", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
+		bottomLeftPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, POSConstants.OPEN_TICKETS_AND_ACTIVITY, javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
 		bottomLeftPanel.setLayout(new java.awt.BorderLayout(5, 5));
 		bottomLeftPanel.add(openTicketList, java.awt.BorderLayout.CENTER);
 
@@ -132,57 +133,57 @@ public class SwitchboardView extends JPanel implements ActionListener {
 		activityPanel.setLayout(new java.awt.GridLayout(3, 0, 5, 5));
 
 		btnInfo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/settle_ticket_32.png")));
-		btnInfo.setText("INFO");
+		btnInfo.setText(POSConstants.CAPITAL_INFO);
 		btnInfo.setPreferredSize(new java.awt.Dimension(160, 60));
 		activityPanel.add(btnInfo);
 
 		btnNewTicket.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/new_ticket_32.png")));
-		btnNewTicket.setText("NEW");
+		btnNewTicket.setText(POSConstants.CAPITAL_NEW);
 		btnNewTicket.setPreferredSize(new java.awt.Dimension(120, 50));
 		activityPanel.add(btnNewTicket);
 
 		btnEditTicket.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/edit_ticket_32.png")));
-		btnEditTicket.setText("EDIT");
+		btnEditTicket.setText(POSConstants.CAPITAL_EDIT);
 		btnEditTicket.setPreferredSize(new java.awt.Dimension(120, 50));
 		activityPanel.add(btnEditTicket);
 
 		btnSplitTicket.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/split_32.png")));
-		btnSplitTicket.setText("SPLIT");
+		btnSplitTicket.setText(POSConstants.CAPITAL_SPLIT);
 		btnSplitTicket.setPreferredSize(new java.awt.Dimension(120, 50));
 		activityPanel.add(btnSplitTicket);
 
 		btnVoidTicket.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/void_ticket_32.png")));
-		btnVoidTicket.setText("VOID");
+		btnVoidTicket.setText(POSConstants.CAPITAL_VOID);
 		btnVoidTicket.setPreferredSize(new java.awt.Dimension(120, 50));
 		activityPanel.add(btnVoidTicket);
 
 		btnReopenTicket.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/edit_ticket_32.png")));
-		btnReopenTicket.setText("RE-OPEN");
+		btnReopenTicket.setText(POSConstants.CAPITAL_RE_OPEN);
 		btnReopenTicket.setPreferredSize(new java.awt.Dimension(120, 50));
 		activityPanel.add(btnReopenTicket);
 
 		btnSettleTicket.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/settle_ticket_32.png")));
-		btnSettleTicket.setText("SETTLE");
+		btnSettleTicket.setText(POSConstants.CAPITAL_SETTLE);
 		btnSettleTicket.setPreferredSize(new java.awt.Dimension(160, 60));
 		activityPanel.add(btnSettleTicket);
 
 		btnGroupSettle.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/settle_ticket_32.png")));
-		btnGroupSettle.setText("<html><body>GROUP<br>SETTLE</body></html>");
+		btnGroupSettle.setText("<html><body>" + POSConstants.CAPITAL_GROUP + "<br>" + POSConstants.CAPITAL_SETTLE + "</body></html>");
 		btnGroupSettle.setPreferredSize(new java.awt.Dimension(160, 60));
 		activityPanel.add(btnGroupSettle);
 
 		btnPayout.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pay_32.png")));
-		btnPayout.setText("PAY OUT");
+		btnPayout.setText(POSConstants.CAPITAL_PAY_OUT);
 		btnPayout.setPreferredSize(new java.awt.Dimension(160, 60));
 		activityPanel.add(btnPayout);
 
 		btnTakeout.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pay_32.png")));
-		btnTakeout.setText("TAKE OUT");
+		btnTakeout.setText(POSConstants.CAPITAL_TAKE_OUT);
 		btnTakeout.setPreferredSize(new java.awt.Dimension(160, 60));
 		activityPanel.add(btnTakeout);
 
 		btnPrintTicket.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/print_32.png")));
-		btnPrintTicket.setText("PRINT");
+		btnPrintTicket.setText(POSConstants.CAPITAL_PRINT);
 		btnPrintTicket.setPreferredSize(new java.awt.Dimension(120, 50));
 		activityPanel.add(btnPrintTicket);
 
@@ -194,18 +195,18 @@ public class SwitchboardView extends JPanel implements ActionListener {
 		bottomRightPanel.setPreferredSize(new java.awt.Dimension(200, 10));
 
 		btnShutdown.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/shut_down_32.png")));
-		btnShutdown.setText("SHUTDOWN");
+		btnShutdown.setText(POSConstants.CAPITAL_SHUTDOWN);
 
 		btnLogout.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/log_out_32.png")));
-		btnLogout.setText("LOGOUT");
+		btnLogout.setText(POSConstants.CAPITAL_LOGOUT);
 
-		btnBackOffice.setText("BACK-OFFICE");
+		btnBackOffice.setText(POSConstants.CAPITAL_BACK_OFFICE);
 
 		btnManager.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/user_32.png")));
-		btnManager.setText("MANAGER");
+		btnManager.setText(POSConstants.CAPITAL_MANAGER);
 
 		btnClockOut.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/log_out_32.png")));
-		btnClockOut.setText("CLOCK OUT");
+		btnClockOut.setText(POSConstants.CAPITAL_CLOCK_OUT);
 
 		org.jdesktop.layout.GroupLayout bottomRightPanelLayout = new org.jdesktop.layout.GroupLayout(bottomRightPanel);
 		bottomRightPanel.setLayout(bottomRightPanelLayout);
@@ -230,7 +231,7 @@ public class SwitchboardView extends JPanel implements ActionListener {
 
 	private void doReopenTicket() {
 		NumberSelectionDialog2 dialog = new NumberSelectionDialog2();
-		dialog.setTitle("Please enter ticket ID");
+		dialog.setTitle(POSConstants.ENTER_TICKET_ID);
 		dialog.pack();
 		dialog.open();
 
@@ -242,11 +243,11 @@ public class SwitchboardView extends JPanel implements ActionListener {
 		TicketDAO dao = new TicketDAO();
 		Ticket ticket = dao.get(Integer.valueOf(ticketId));
 		if (ticket == null) {
-			POSMessageDialog.showError("No ticket with ID " + ticketId + " found");
+			POSMessageDialog.showError(POSConstants.NO_TICKET_WITH_ID + " " + ticketId + " " + POSConstants.FOUND);
 			return;
 		}
 		if (!ticket.isClosed()) {
-			POSMessageDialog.showError("The ticket is not closed");
+			POSMessageDialog.showError(POSConstants.TICKET_IS_NOT_CLOSED);
 			return;
 		}
 
@@ -263,18 +264,18 @@ public class SwitchboardView extends JPanel implements ActionListener {
 			service.refundTicket(ticket);
 
 			//REOPEN ACTION
-			ActionHistoryDAO.getInstance().saveHistory(Application.getCurrentUser(), ActionHistory.REOPEN_CHECK, "CHK#:" + ticket.getId());
+			ActionHistoryDAO.getInstance().saveHistory(Application.getCurrentUser(), ActionHistory.REOPEN_CHECK, "CHK#" + ":" + ticket.getId());
 
 			JOptionPane.showMessageDialog(this, "<html><body>Please press <b>OK</b> after you refund amount " + amountMessage + "</body></html>");
 			ticket.setDrawerResetted(false);
 			editTicket(ticket);
 		} catch (Exception e) {
-			POSMessageDialog.showError(this, POSMessageDialog.ERROR_MESSAGE, e);
+			POSMessageDialog.showError(this, POSConstants.ERROR_MESSAGE, e);
 		}
 	}
 
 	private void doClockOut() {
-		int option = JOptionPane.showOptionDialog(this, "Are you sure you want to Clock Out?", "Confirm", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+		int option = JOptionPane.showOptionDialog(this, POSConstants.CONFIRM_CLOCK_OUT, POSConstants.CONFIRM, JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
 		if (option != JOptionPane.YES_OPTION) {
 			return;
 		}
@@ -324,7 +325,7 @@ public class SwitchboardView extends JPanel implements ActionListener {
 		try {
 			List<Ticket> selectedTickets = openTicketList.getSelectedTickets();
 			if (selectedTickets.size() == 0 || selectedTickets.size() > 1) {
-				POSMessageDialog.showMessage("Please select one ticket to settle.");
+				POSMessageDialog.showMessage(POSConstants.SELECT_ONE_TICKET_TO_SETTLE);
 				return;
 			}
 
@@ -343,14 +344,14 @@ public class SwitchboardView extends JPanel implements ActionListener {
 				RootView.getInstance().showView(SettleTicketView.VIEW_NAME);
 			}
 		} catch (Exception e) {
-			POSMessageDialog.showError(POSConstants.RESTART_ERROR_MESSAGE, e);
+			POSMessageDialog.showError(POSConstants.ERROR_MESSAGE, e);
 		}
 	}
 
 	private void doPrintTicket() {
 		List<Ticket> selectedTickets = openTicketList.getSelectedTickets();
 		if (selectedTickets.size() == 0 || selectedTickets.size() > 1) {
-			POSMessageDialog.showMessage("Please select one ticket to print.");
+			POSMessageDialog.showMessage(POSConstants.SELECT_ONE_TICKET_TO_PRINT);
 			return;
 		}
 
@@ -360,7 +361,7 @@ public class SwitchboardView extends JPanel implements ActionListener {
 			PosPrintService.printTicket(ticket);
 
 			//			PRINT ACTION
-			String actionMessage = "CHK#:" + ticket.getId();
+			String actionMessage = "CHK#" + ":" + ticket.getId();
 			ActionHistoryDAO.getInstance().saveHistory(Application.getCurrentUser(), ActionHistory.PRINT_CHECK, actionMessage);
 		} catch (Exception e) {
 			POSMessageDialog.showError(this, e.getMessage(), e);
@@ -371,14 +372,14 @@ public class SwitchboardView extends JPanel implements ActionListener {
 		try {
 			List<Ticket> selectedTickets = openTicketList.getSelectedTickets();
 			if (selectedTickets.size() == 0 || selectedTickets.size() > 1) {
-				POSMessageDialog.showMessage("Please select one ticket to void.");
+				POSMessageDialog.showMessage(POSConstants.SELECT_ONE_TICKET_TO_VOID);
 				return;
 			}
 
 			Ticket ticket = selectedTickets.get(0);
 
 			if (!ticket.getTotalAmount().equals(ticket.getDueAmount())) {
-				POSMessageDialog.showMessage("You cannot void the ticket since it is partially paid.");
+				POSMessageDialog.showMessage(POSConstants.PARTIAL_PAID_VOID_ERROR);
 				return;
 			}
 
@@ -393,7 +394,7 @@ public class SwitchboardView extends JPanel implements ActionListener {
 				updateView();
 			}
 		} catch (Exception e) {
-			POSMessageDialog.showError(POSConstants.RESTART_ERROR_MESSAGE, e);
+			POSMessageDialog.showError(POSConstants.ERROR_MESSAGE, e);
 		}
 	}
 
@@ -401,13 +402,13 @@ public class SwitchboardView extends JPanel implements ActionListener {
 		try {
 			List<Ticket> selectedTickets = openTicketList.getSelectedTickets();
 			if (selectedTickets.size() == 0 || selectedTickets.size() > 1) {
-				POSMessageDialog.showMessage("Please select one ticket to split.");
+				POSMessageDialog.showMessage(POSConstants.SELECT_ONE_TICKET_TO_SPLIT);
 				return;
 			}
 
 			Ticket ticket = selectedTickets.get(0);
 			if (!ticket.getTotalAmount().equals(ticket.getDueAmount())) {
-				POSMessageDialog.showMessage("You cannot void the ticket since it is partially paid.");
+				POSMessageDialog.showMessage(POSConstants.PARTIAL_PAID_VOID_ERROR);
 				return;
 			}
 
@@ -420,14 +421,14 @@ public class SwitchboardView extends JPanel implements ActionListener {
 
 			updateView();
 		} catch (Exception e) {
-			POSMessageDialog.showError(POSConstants.RESTART_ERROR_MESSAGE, e);
+			POSMessageDialog.showError(POSConstants.ERROR_MESSAGE, e);
 		}
 	}
 
 	private void doEditTicket() {
 		List<Ticket> selectedTickets = openTicketList.getSelectedTickets();
 		if (selectedTickets.size() == 0 || selectedTickets.size() > 1) {
-			POSMessageDialog.showMessage("Please select one ticket to edit.");
+			POSMessageDialog.showMessage(POSConstants.SELECT_ONE_TICKET_TO_EDIT);
 			return;
 		}
 
@@ -450,7 +451,7 @@ public class SwitchboardView extends JPanel implements ActionListener {
 
 	private void createNewTicket() {
 		NumberSelectionDialog2 dialog = new NumberSelectionDialog2();
-		dialog.setTitle("Please enter a table number");
+		dialog.setTitle(POSConstants.ENTER_A_TABLE_NUMBER);
 		dialog.pack();
 		dialog.open();
 
@@ -460,7 +461,7 @@ public class SwitchboardView extends JPanel implements ActionListener {
 
 		int tableNumber = (int) dialog.getValue();
 		if (tableNumber == 0) {
-			POSMessageDialog.showError(this, "Table number cannot be 0");
+			POSMessageDialog.showError(this, POSConstants.TABLE_NUMBER_CANNOT_BE_0);
 			return;
 		}
 
@@ -468,7 +469,7 @@ public class SwitchboardView extends JPanel implements ActionListener {
 
 		Ticket ticket = dao.findTicketByTableNumber(tableNumber);
 		if (ticket != null) {
-			int option = JOptionPane.showOptionDialog(this, "The table is already occupied, what do you want to do?", "Confirm", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, new String[] { "Create New Ticket", "Edit Existing Ticket", "Cancel" }, null);
+			int option = JOptionPane.showOptionDialog(this, POSConstants.THE_TABLE_IS_ALREADY_OCCUPIED_WHAT_DO_YOU_WANT_TO_DO, POSConstants.CONFIRM, JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, new String[] { "Create New Ticket", "Edit Existing Ticket", "Cancel" }, null);
 			if (option == JOptionPane.YES_OPTION) {
 				//createNewTicket();
 				//return;
@@ -483,7 +484,7 @@ public class SwitchboardView extends JPanel implements ActionListener {
 			}
 		}
 
-		dialog.setTitle("Please enter number of guest");
+		dialog.setTitle(POSConstants.ENTER_NUMBER_OF_GUEST);
 		dialog.setValue(0);
 		dialog.open();
 
@@ -492,7 +493,7 @@ public class SwitchboardView extends JPanel implements ActionListener {
 		}
 		int numberOfGuests = (int) dialog.getValue();
 		if (numberOfGuests == 0) {
-			POSMessageDialog.showError(this, "Guest number cannot be 0");
+			POSMessageDialog.showError(this, POSConstants.GUEST_NUMBER_CANNOT_BE_0);
 			return;
 		}
 
@@ -543,7 +544,7 @@ public class SwitchboardView extends JPanel implements ActionListener {
 	private void doShowTicketInfo() {
 		Ticket ticket = openTicketList.getSelectedTicket();
 		if (ticket == null) {
-			POSMessageDialog.showMessage("Please select a ticket from the open ticket list.");
+			POSMessageDialog.showMessage(POSConstants.SELECT_A_TICKET_FROM_THE_OPEN_TICKET_LIST);
 			return;
 		}
 		TicketDetailDialog dialog = new TicketDetailDialog(Application.getPosWindow(), true);
@@ -557,7 +558,7 @@ public class SwitchboardView extends JPanel implements ActionListener {
 	private void doGroupSettle() {
 		List<Ticket> selectedTickets = openTicketList.getSelectedTickets();
 		if (selectedTickets.size() < 2) {
-			POSMessageDialog.showError("You must select two or more ticket for group settle");
+			POSMessageDialog.showError(POSConstants.YOU_MUST_SELECT_TWO_OR_MORE_TICKET_FOR_GROUP_SETTLE);
 			return;
 		}
 
@@ -667,7 +668,7 @@ public class SwitchboardView extends JPanel implements ActionListener {
 		}
 		openTicketList.setTickets(openTickets);
 
-		lblUserName.setText("Welcome " + user.toString() + ". You have " + openTickets.size() + " open tickets.");
+		lblUserName.setText(POSConstants.WELCOME + " " + user.toString() + ". " + POSConstants.YOU + " " + POSConstants.HAVE + " " + openTickets.size() + " " + POSConstants.OPEN.toLowerCase() + " " + POSConstants.TICKETS);
 	}
 
 	// Variables declaration - do not modify//GEN-BEGIN:variables

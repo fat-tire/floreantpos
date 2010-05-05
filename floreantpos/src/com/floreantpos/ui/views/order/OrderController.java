@@ -147,9 +147,9 @@ public class OrderController implements OrderListener, CategorySelectionListener
 
 		//			save the action
 		if (newTicket) {
-			ActionHistoryDAO.getInstance().saveHistory(Application.getCurrentUser(), ActionHistory.NEW_CHECK, "CHK#:" + ticket.getId());
+			ActionHistoryDAO.getInstance().saveHistory(Application.getCurrentUser(), ActionHistory.NEW_CHECK, com.floreantpos.POSConstants.CHK_NO + ":" + ticket.getId());
 		} else {
-			ActionHistoryDAO.getInstance().saveHistory(Application.getCurrentUser(), ActionHistory.EDIT_CHECK, "CHK#:" + ticket.getId());
+			ActionHistoryDAO.getInstance().saveHistory(Application.getCurrentUser(), ActionHistory.EDIT_CHECK, com.floreantpos.POSConstants.CHK_NO + ":" + ticket.getId());
 		}
 	}
 }

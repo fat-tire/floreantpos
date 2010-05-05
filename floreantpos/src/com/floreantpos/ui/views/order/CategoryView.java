@@ -44,7 +44,7 @@ public class CategoryView extends SelectionView implements ActionListener {
 	
 	/** Creates new form CategoryView */
 	public CategoryView() {
-		super("CATEGORIES");
+		super(com.floreantpos.POSConstants.CATEGORIES);
 		
 		getButtonsPanel().setLayout(new MigLayout("wrap 1", "fill,grow,shrink", ""));
 		getButtonScrollPane().setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);

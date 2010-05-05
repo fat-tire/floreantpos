@@ -13,6 +13,7 @@ import javax.swing.JTextField;
 import net.miginfocom.swing.MigLayout;
 
 import com.floreantpos.IconFactory;
+import com.floreantpos.POSConstants;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.ui.TitlePanel;
 
@@ -43,7 +44,7 @@ public class NumberSelectionDialog2 extends POSDialog implements ActionListener 
 		tfNumber.setHorizontalAlignment(JTextField.RIGHT);
 		contentPane.add(tfNumber, "span 2, grow");
 
-		PosButton posButton = new PosButton("CLEAR ALL");
+		PosButton posButton = new PosButton(POSConstants.CLEAR_ALL);
 		posButton.addActionListener(this);
 		contentPane.add(posButton, "grow,shrink,wrap, height 55");
 
@@ -62,7 +63,7 @@ public class NumberSelectionDialog2 extends POSDialog implements ActionListener 
 				}
 				else {
 					posButton.setIcon(icon);
-					if ("CLEAR".equals(buttonText)) {
+					if (POSConstants.CLEAR.equals(buttonText)) {
 						posButton.setText(buttonText);
 					}
 				}
@@ -78,11 +79,11 @@ public class NumberSelectionDialog2 extends POSDialog implements ActionListener 
 		}
 		contentPane.add(new JSeparator(), "newline, grow, span, gaptop 20");
 
-		posButton = new PosButton("OK");
+		posButton = new PosButton(POSConstants.OK);
 		posButton.addActionListener(this);
 		contentPane.add(posButton, "skip 1, grow, height 55");
 
-		posButton = new PosButton("CANCEL");
+		posButton = new PosButton(POSConstants.CANCEL);
 		posButton.addActionListener(this);
 		contentPane.add(posButton, "grow, height 55");
 
@@ -90,7 +91,7 @@ public class NumberSelectionDialog2 extends POSDialog implements ActionListener 
 	
 	private void doOk() {
 		if (!validate(tfNumber.getText())) {
-			POSMessageDialog.showError("Invalid number");
+			POSMessageDialog.showError(POSConstants.INVALID_NUMBER);
 			return;
 		}
 		setCanceled(false);
@@ -126,7 +127,7 @@ public class NumberSelectionDialog2 extends POSDialog implements ActionListener 
 
 		s = s + number;
 		if (!validate(s)) {
-			POSMessageDialog.showError("Invalid number");
+			POSMessageDialog.showError(POSConstants.INVALID_NUMBER);
 			return;
 		}
 		tfNumber.setText(s);
@@ -136,7 +137,7 @@ public class NumberSelectionDialog2 extends POSDialog implements ActionListener 
 		if (isFloatingPoint() && tfNumber.getText().indexOf('.') < 0) {
 			String string = tfNumber.getText() + ".";
 			if (!validate(string)) {
-				POSMessageDialog.showError("Invalid number");
+				POSMessageDialog.showError(POSConstants.INVALID_NUMBER);
 				return;
 			}
 			tfNumber.setText(string);
@@ -146,16 +147,16 @@ public class NumberSelectionDialog2 extends POSDialog implements ActionListener 
 	public void actionPerformed(ActionEvent e) {
 		String actionCommand = e.getActionCommand();
 		
-		if("CANCEL".equalsIgnoreCase(actionCommand)) {
+		if(POSConstants.CANCEL.equalsIgnoreCase(actionCommand)) {
 			doCancel();
 		}
-		else if("OK".equalsIgnoreCase(actionCommand)) {
+		else if(POSConstants.OK.equalsIgnoreCase(actionCommand)) {
 			doOk();
 		}
-		else if (actionCommand.equals("CLEAR ALL")) {
+		else if (actionCommand.equals(POSConstants.CLEAR_ALL)) {
 			doClearAll();
 		}
-		else if (actionCommand.equals("CLEAR")) {
+		else if (actionCommand.equals(POSConstants.CLEAR)) {
 			doClear();
 		}
 		else if (actionCommand.equals(".")) {

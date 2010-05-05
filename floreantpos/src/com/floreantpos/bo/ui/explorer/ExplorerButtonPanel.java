@@ -36,9 +36,9 @@ public class ExplorerButtonPanel extends TransparentPanel {
 		addButton = new JButton();
 		deleteButton =new JButton();
 
-		editButton.setText("Edit");
-		addButton.setText("Add");
-		deleteButton.setText("Delete");
+		editButton.setText(com.floreantpos.POSConstants.EDIT);
+		addButton.setText(com.floreantpos.POSConstants.ADD);
+		deleteButton.setText(com.floreantpos.POSConstants.DELETE);
 	}
 
 	public JButton getAddButton() {

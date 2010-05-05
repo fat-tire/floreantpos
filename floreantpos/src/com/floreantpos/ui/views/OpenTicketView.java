@@ -42,7 +42,7 @@ public class OpenTicketView extends TransparentPanel implements ActionListener {
 		String[][] numbers = { { "7", "8", "9" }, 
 							   { "4", "5", "6" },
 							   { "1", "2", "3" }, 
-							   { "0", "GO" } };
+							   { "0", com.floreantpos.POSConstants.GO } };
 		int[][] gridwidths = { { 1, 1, 1 }, 
 							   { 1, 1, 1 }, 
 							   { 1, 1, 1 }, 
@@ -282,7 +282,7 @@ public class OpenTicketView extends TransparentPanel implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		String actionCommand = e.getActionCommand();
 
-		if (actionCommand.equals("GO")) {
+		if (actionCommand.equals(com.floreantpos.POSConstants.GO)) {
 			try {
 				TicketDAO dao = new TicketDAO();
 				int ticketId = 0;

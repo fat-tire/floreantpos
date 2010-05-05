@@ -43,7 +43,7 @@ public class AutoDrawerPullAction implements ActionListener {
 			else {
 				return;
 			}
-			((GlassPane) posWindow.getGlassPane()).setMessage("PERFORMING AUTO DRAWER PULL");
+			((GlassPane) posWindow.getGlassPane()).setMessage(com.floreantpos.POSConstants.PERFORMING_AUTO_DRAWER_PULL);
 			posWindow.setGlassPaneVisible(true);
 			DrawerPullReport report = ReportService.buildDrawerPullReport();
 
@@ -75,7 +75,7 @@ public class AutoDrawerPullAction implements ActionListener {
 				user.doClockIn(terminal, currentShift, currentTime);
 			}
 		} catch (Exception ex) {
-			POSMessageDialog.showError("An error occured while performing auto drawer pull", ex);
+			POSMessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, ex);
 		} finally {
 			posWindow.setGlassPaneVisible(false);
 		}

@@ -20,6 +20,7 @@ import javax.swing.border.TitledBorder;
 
 import net.miginfocom.swing.MigLayout;
 
+import com.floreantpos.POSConstants;
 import com.floreantpos.swing.PosButton;
 
 public abstract class SelectionView extends JPanel {
@@ -92,15 +93,15 @@ public abstract class SelectionView extends JPanel {
 		southPanel.add(new JSeparator(JSeparator.HORIZONTAL), "wrap, span, grow, gaptop 5");
 
 		btnBack = new PosButton();
-		btnBack.setText("BACK");
+		btnBack.setText(POSConstants.CAPITAL_BACK);
 		southPanel.add(btnBack, "grow,shrink, align center, height 50");
 
 		btnPrev = new PosButton();
-		btnPrev.setText("PREV");
+		btnPrev.setText(POSConstants.CAPITAL_PREV);
 		southPanel.add(btnPrev, "grow, align center, height 50");
 
 		btnNext = new PosButton();
-		btnNext.setText("NEXT");
+		btnNext.setText(POSConstants.CAPITAL_NEXT);
 		southPanel.add(btnNext, "grow, align center, height 50");
 
 		add(southPanel, BorderLayout.SOUTH);

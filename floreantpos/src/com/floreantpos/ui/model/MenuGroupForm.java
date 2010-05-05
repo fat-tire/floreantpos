@@ -57,11 +57,11 @@ public class MenuGroupForm extends BeanEditor {
         chkVisible = new javax.swing.JCheckBox();
         btnNewCategory = new javax.swing.JButton();
 
-        jLabel1.setText("Name:");
+        jLabel1.setText(com.floreantpos.POSConstants.NAME + ":");
 
-        jLabel2.setText("Category:");
+        jLabel2.setText(com.floreantpos.POSConstants.CATEGORY + ":");
 
-        chkVisible.setText("Visible");
+        chkVisible.setText(com.floreantpos.POSConstants.VISIBLE);
         chkVisible.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
         chkVisible.setMargin(new java.awt.Insets(0, 0, 0, 0));
 
@@ -121,7 +121,7 @@ public class MenuGroupForm extends BeanEditor {
 				model.setSelectedItem(foodCategory);
 			}
 		} catch (Exception x) {
-			MessageDialog.showError("An error has occured, please restart the application", x);
+			MessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
 		}
     }//GEN-LAST:event_doNewCategory
     

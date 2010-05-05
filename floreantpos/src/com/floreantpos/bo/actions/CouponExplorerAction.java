@@ -14,7 +14,7 @@ import com.floreantpos.swing.MessageDialog;
 public class CouponExplorerAction extends AbstractAction {
 
 	public CouponExplorerAction() {
-		super("Coupons & Discounts");
+		super(com.floreantpos.POSConstants.COUPONS_AND_DISCOUNTS);
 	}
 
 	public CouponExplorerAction(String name) {
@@ -31,18 +31,18 @@ public class CouponExplorerAction extends AbstractAction {
 
 			CouponExplorer explorer = null;
 			JTabbedPane tabbedPane = backOfficeWindow.getTabbedPane();
-			int index = tabbedPane.indexOfTab("Coupon & Discount Explorer");
+			int index = tabbedPane.indexOfTab(com.floreantpos.POSConstants.COUPON_DISCOUNT_EXPLORER);
 			if (index == -1) {
 				explorer = new CouponExplorer();
 				explorer.initData();
-				tabbedPane.addTab("Coupon & Discount Explorer", explorer);
+				tabbedPane.addTab(com.floreantpos.POSConstants.COUPON_DISCOUNT_EXPLORER, explorer);
 			}
 			else {
 				explorer = (CouponExplorer) tabbedPane.getComponentAt(index);
 			}
 			tabbedPane.setSelectedComponent(explorer);
 		} catch (Exception x) {
-			MessageDialog.showError("An unexpected error has occured, you may need to restart the application", x);
+			MessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
 		}
 	}
 

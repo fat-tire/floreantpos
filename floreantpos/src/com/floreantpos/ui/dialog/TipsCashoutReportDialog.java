@@ -25,7 +25,7 @@ public class TipsCashoutReportDialog extends POSDialog implements ActionListener
 		super(parent, modal);
 		this.report = report;
 		
-		setTitle("SERVER TIPS REPORT");
+		setTitle(com.floreantpos.POSConstants.SERVER_TIPS_REPORT);
 		
 		JPanel topPanel = new JPanel(new MigLayout("","[fill]",""));
 		topPanel.add(new JLabel("Server"));

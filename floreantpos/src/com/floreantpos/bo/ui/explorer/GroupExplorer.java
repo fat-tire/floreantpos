@@ -58,7 +58,7 @@ public class GroupExplorer extends TransparentPanel {
 						return;
 					table.repaint();
 				} catch (Exception x) {
-					MessageDialog.showError("An error has occured, please restart the application", x);
+					MessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
 				}
 			}
 
@@ -75,7 +75,7 @@ public class GroupExplorer extends TransparentPanel {
 					MenuGroup foodGroup = (MenuGroup) editor.getBean();
 					tableModel.addGroup(foodGroup);
 				} catch (Exception x) {
-					MessageDialog.showError("An error has occured, please restart the application", x);
+					MessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
 				}
 			}
 
@@ -87,14 +87,14 @@ public class GroupExplorer extends TransparentPanel {
 					int index = table.getSelectedRow();
 					if (index < 0)
 						return;
-					if (ConfirmDeleteDialog.showMessage(GroupExplorer.this, "Sure Want to Delete?", "Delete") != ConfirmDeleteDialog.NO) {
+					if (ConfirmDeleteDialog.showMessage(GroupExplorer.this, com.floreantpos.POSConstants.CONFIRM_DELETE, com.floreantpos.POSConstants.DELETE) != ConfirmDeleteDialog.NO) {
 						MenuGroup category = groupList.get(index);
 						MenuGroupDAO foodGroupDAO = new MenuGroupDAO();
 						foodGroupDAO.delete(category);
 						tableModel.deleteGroup(category, index);
 					}
 				} catch (Exception x) {
-					MessageDialog.showError("An error has occured, please restart the application", x);
+					MessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
 				}
 			}
 
@@ -109,7 +109,7 @@ public class GroupExplorer extends TransparentPanel {
 	}
 
 	class GroupExplorerTableModel extends AbstractTableModel {
-		String[] columnNames = { "Id", "Name", "Visible", "Menu Category" };
+		String[] columnNames = { com.floreantpos.POSConstants.ID, com.floreantpos.POSConstants.NAME, com.floreantpos.POSConstants.VISIBLE, com.floreantpos.POSConstants.MENU_CATEGORY };
 
 		public int getRowCount() {
 			if (groupList == null) {

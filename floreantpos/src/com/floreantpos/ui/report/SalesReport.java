@@ -50,7 +50,7 @@ public class SalesReport extends Report {
 		map.put("reportTitle", "================================= Sales Report ================================");
 		map.put("reportTime", ReportService.formatFullDate(new Date()));
 		map.put("dateRange", ReportService.formatShortDate(getStartDate()) + " to " + ReportService.formatShortDate(getEndDate()));
-		map.put("terminalName", "All");
+		map.put("terminalName", com.floreantpos.POSConstants.ALL);
 		map.put("itemDataSource", new JRTableModelDataSource(itemReportModel));
 		map.put("modifierDataSource", new JRTableModelDataSource(modifierReportModel));
 		map.put("currencySymbol", Application.getCurrencySymbol());

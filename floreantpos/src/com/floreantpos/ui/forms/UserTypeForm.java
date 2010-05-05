@@ -54,9 +54,9 @@ public class UserTypeForm extends BeanEditor {
         jScrollPane1 = new javax.swing.JScrollPane();
         listPermissions = new JCheckBoxList();
 
-        jLabel1.setText("Type Name:");
+        jLabel1.setText(com.floreantpos.POSConstants.TYPE_NAME + ":");
 
-        jLabel2.setText("Permissions:");
+        jLabel2.setText(com.floreantpos.POSConstants.PERMISSIONS + ":");
 
         jScrollPane1.setViewportView(listPermissions);
 
@@ -132,7 +132,7 @@ public class UserTypeForm extends BeanEditor {
 		
 		String name = tfTypeName.getText();
 		if(StringUtils.isEmpty(name)) {
-			throw new IllegalModelStateException("Type name cannot be empty.");
+			throw new IllegalModelStateException(com.floreantpos.POSConstants.TYPE_NAME_CANNOT_BE_EMPTY);
 		}
 		
 		userType.setName(name);

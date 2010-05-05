@@ -38,7 +38,7 @@ public class UserTypeExplorer extends TransparentPanel {
 		setLayout(new BorderLayout(5,5));
 		add(new JScrollPane(table));
 		
-		JButton addButton = new JButton("Add");
+		JButton addButton = new JButton(com.floreantpos.POSConstants.ADD);
 		addButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -50,13 +50,13 @@ public class UserTypeExplorer extends TransparentPanel {
 					UserType type = (UserType) editor.getBean();
 					tableModel.addType(type);
 				} catch (Exception x) {
-					MessageDialog.showError("An error has occured, please restart the application", x);
+					MessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
 				}
 			}
 			
 		});
 		
-		JButton editButton = new JButton("Edit");
+		JButton editButton = new JButton(com.floreantpos.POSConstants.EDIT);
 		editButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -75,12 +75,12 @@ public class UserTypeExplorer extends TransparentPanel {
 
 					table.repaint();
 				} catch (Throwable x) {
-					MessageDialog.showError("An error has occured, please restart the application", x);
+					MessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
 				}
 			}
 			
 		});
-		JButton deleteButton = new JButton("Delete");
+		JButton deleteButton = new JButton(com.floreantpos.POSConstants.DELETE);
 		deleteButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -88,14 +88,14 @@ public class UserTypeExplorer extends TransparentPanel {
 					if (index < 0)
 						return;
 
-					if (ConfirmDeleteDialog.showMessage(UserTypeExplorer.this, "Sure Want to Delete?", "Delete") == ConfirmDeleteDialog.YES) {
+					if (ConfirmDeleteDialog.showMessage(UserTypeExplorer.this, com.floreantpos.POSConstants.CONFIRM_DELETE, com.floreantpos.POSConstants.DELETE) == ConfirmDeleteDialog.YES) {
 						UserType category = typeList.get(index);
 						UserTypeDAO dao = new UserTypeDAO();
 						dao.delete(category);
 						tableModel.deleteCategory(category, index);
 					}
 				} catch (Exception x) {
-					MessageDialog.showError("An error has occured, please restart the application", x);
+					MessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
 				}
 			}
 			
@@ -109,7 +109,7 @@ public class UserTypeExplorer extends TransparentPanel {
 	}
 	
 	class UserTypeExplorerTableModel extends AbstractTableModel {
-		String[] columnNames = {"Type Name", "Permissions"};
+		String[] columnNames = {com.floreantpos.POSConstants.TYPE_NAME, com.floreantpos.POSConstants.PERMISSIONS};
 		
 		public int getRowCount() {
 			if(typeList == null) {

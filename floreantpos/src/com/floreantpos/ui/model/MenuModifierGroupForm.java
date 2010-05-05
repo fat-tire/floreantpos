@@ -46,7 +46,7 @@ public class MenuModifierGroupForm extends BeanEditor {
         jLabel1 = new javax.swing.JLabel();
         tfName = new com.floreantpos.swing.FixedLengthTextField();
 
-        jLabel1.setText("Name:");
+        jLabel1.setText(com.floreantpos.POSConstants.NAME + ":");
 
         tfName.setText("fixedLengthTextField1");
 
@@ -123,7 +123,7 @@ public class MenuModifierGroupForm extends BeanEditor {
 
 		String name = tfName.getText();
     	if(POSUtil.isBlankOrNull(name)) {
-    		MessageDialog.showError("Name is required");
+    		MessageDialog.showError(com.floreantpos.POSConstants.NAME_REQUIRED);
     		return false;
     	}
     	
@@ -136,8 +136,8 @@ public class MenuModifierGroupForm extends BeanEditor {
 	public String getDisplayText() {
     	MenuModifierGroup modifierGroup = (MenuModifierGroup) getBean();
     	if(modifierGroup.getId() == null) {
-    		return "New modifier group";
+    		return com.floreantpos.POSConstants.NEW_MODIFIER_GROUP;
     	}
-    	return "Edit modifier group";
+    	return com.floreantpos.POSConstants.EDIT_MODIFIER_GROUP;
     }
 }

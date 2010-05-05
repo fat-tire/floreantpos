@@ -15,7 +15,7 @@ import com.floreantpos.ui.dialog.POSMessageDialog;
 public class ViewGratuitiesAction extends AbstractAction {
 
 	public ViewGratuitiesAction() {
-		super("Gratuity Administration");
+		super(com.floreantpos.POSConstants.GRATUITY_ADMINISTRATION);
 	}
 
 	public ViewGratuitiesAction(String name) {
@@ -32,10 +32,10 @@ public class ViewGratuitiesAction extends AbstractAction {
 		try {
 			GratuityViewer2 explorer = null;
 			JTabbedPane tabbedPane = backOfficeWindow.getTabbedPane();
-			int index = tabbedPane.indexOfTab("Gratuity Administration");
+			int index = tabbedPane.indexOfTab(com.floreantpos.POSConstants.GRATUITY_ADMINISTRATION);
 			if (index == -1) {
 				explorer = new GratuityViewer2();
-				tabbedPane.addTab("Gratuity Administration", explorer);
+				tabbedPane.addTab(com.floreantpos.POSConstants.GRATUITY_ADMINISTRATION, explorer);
 			}
 			else {
 				explorer = (GratuityViewer2) tabbedPane.getComponentAt(index);
@@ -45,7 +45,7 @@ public class ViewGratuitiesAction extends AbstractAction {
 		} catch(PosException x) {
 			POSMessageDialog.showError(backOfficeWindow, x.getMessage(), x);
 		} catch (Exception ex) {
-			POSMessageDialog.showError(backOfficeWindow, "An error has occured", ex);
+			POSMessageDialog.showError(backOfficeWindow, com.floreantpos.POSConstants.ERROR_MESSAGE, ex);
 		}
 	}
 

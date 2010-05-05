@@ -6,6 +6,7 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import com.floreantpos.POSConstants;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.PosTransaction;
 import com.floreantpos.model.Ticket;
@@ -120,7 +121,7 @@ public abstract class PaymentView extends JPanel {
 			List<Ticket> ticketsToSettle = settleTicketView.getTicketsToSettle();
 			
 			if (ticketsToSettle.size() > 1 && tenderedAmount < dueAmountBeforePaid) {
-				MessageDialog.showError("You cannot partially pay multiple tickets.");
+				MessageDialog.showError(com.floreantpos.POSConstants.YOU_CANNOT_PARTIALLY_PAY_MULTIPLE_TICKETS_);
 				return;
 			}
 			
@@ -132,7 +133,7 @@ public abstract class PaymentView extends JPanel {
 					PosPrintService.printTicket(ticket);
 				}
 			}catch(Exception ee) {
-				POSMessageDialog.showError(Application.getPosWindow(), "There was an error while printing money receipt", ee);
+				POSMessageDialog.showError(Application.getPosWindow(), com.floreantpos.POSConstants.PRINT_ERROR, ee);
 			}
 			
 			/*if(Application.getPrinterConfiguration().isPrintReceiptWhenTicketPaid()) {
@@ -141,7 +142,7 @@ public abstract class PaymentView extends JPanel {
 						PosPrintService.printTicket(ticket);
 					}
 				}catch(Exception ee) {
-					POSMessageDialog.showError(Application.getPosWindow(), "There was an error while printing to kitchen", ee);
+					POSMessageDialog.showError(Application.getPosWindow(), com.floreantpos.POSConstants.THERE_WAS_AN_ERROR_WHILE_PRINTING_TO_KITCHEN, ee);
 				}
 			}
 			
@@ -154,7 +155,7 @@ public abstract class PaymentView extends JPanel {
 						ticket.clearDeletedItems();
 					}
 				}catch(Exception ee) {
-					POSMessageDialog.showError(Application.getPosWindow(), "There was an error while printing to kitchen", ee);
+					POSMessageDialog.showError(Application.getPosWindow(), com.floreantpos.POSConstants.THERE_WAS_AN_ERROR_WHILE_PRINTING_TO_KITCHEN, ee);
 				}
 			}*/
 			
@@ -174,7 +175,7 @@ public abstract class PaymentView extends JPanel {
 			dialog.open();
 			
 			if(dueAmount > 0.0) {
-				int option = JOptionPane.showConfirmDialog(Application.getPosWindow(), "A partial payment has been made, do you want to make another payment on this check?", "MDS-POS", JOptionPane.YES_NO_OPTION);
+				int option = JOptionPane.showConfirmDialog(Application.getPosWindow(), com.floreantpos.POSConstants.CONFIRM_PARTIAL_PAYMENT, com.floreantpos.POSConstants.MDS_POS, JOptionPane.YES_NO_OPTION);
 				if(option != JOptionPane.YES_OPTION) {
 					RootView.getInstance().showView(SwitchboardView.VIEW_NAME);
 					return;
@@ -193,7 +194,7 @@ public abstract class PaymentView extends JPanel {
 				RootView.getInstance().showView(SwitchboardView.VIEW_NAME);
 			}
 		} catch (Exception e) {
-			POSMessageDialog.showError(this, POSMessageDialog.ERROR_MESSAGE, e);
+			POSMessageDialog.showError(this, POSConstants.ERROR_MESSAGE, e);
 		}
 	}
 	

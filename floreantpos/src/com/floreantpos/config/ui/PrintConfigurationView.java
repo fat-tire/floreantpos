@@ -38,7 +38,7 @@ public class PrintConfigurationView extends ConfigurationView {
 
 	@Override
 	public String getName() {
-		return "Print Configuration";
+		return com.floreantpos.POSConstants.PRINT_CONFIGURATION;
 	}
 
 	@Override
@@ -191,21 +191,21 @@ public class PrintConfigurationView extends ConfigurationView {
         javax.swing.JLabel jLabel2 = new javax.swing.JLabel();
         lblSelectKitchenPrinter = new javax.swing.JLabel();
 
-        chkPrintReceiptWhenTicketSettled.setText("Print receipt when ticket settled");
+        chkPrintReceiptWhenTicketSettled.setText(com.floreantpos.POSConstants.PRINT_RECEIPT_WHEN_TICKET_SETTLED);
 
-        chkPrintReceiptWhenTicketPaid.setText("Print receipt when ticket paid");
+        chkPrintReceiptWhenTicketPaid.setText(com.floreantpos.POSConstants.PRINT_RECEIPT_WHEN_TICKET_PAID);
 
-        chkPrintKitchenWhenTicketSettled.setText("Print to kitchen when ticket settled");
+        chkPrintKitchenWhenTicketSettled.setText(com.floreantpos.POSConstants.PRINT_TO_KITCHEN_WHEN_TICKET_SETTLED);
 
-        chkPrintKitchenWhenTicketPaid.setText("Print to kitchen when ticket paid");
+        chkPrintKitchenWhenTicketPaid.setText(com.floreantpos.POSConstants.PRINT_TO_KITCHEN_WHEN_TICKET_PAID);
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Receipt Printer", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.TOP));
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, com.floreantpos.POSConstants.RECEIPT_PRINTER, javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.TOP));
 
-        lblReceiptCashDrawerName.setText("CashDrawer:");
+        lblReceiptCashDrawerName.setText(com.floreantpos.POSConstants.CASHDRAWER + ":");
 
         tfReceiptCashDrawerName.setText("CashDrawer");
 
-        lblReceiptPrinterName.setText("Printer name:");
+        lblReceiptPrinterName.setText(com.floreantpos.POSConstants.PRINTER_NAME_);
 
         tfReceiptPrinterName.setText("PosPrinter");
 
@@ -215,9 +215,9 @@ public class PrintConfigurationView extends ConfigurationView {
             }
         });
 
-        jLabel1.setText("Printer Type:");
+        jLabel1.setText(com.floreantpos.POSConstants.PRINTER_TYPE + ":");
 
-        lblSelectReceiptPrinter.setText("Select Printer:");
+        lblSelectReceiptPrinter.setText(com.floreantpos.POSConstants.SELECT_PRINTER + ":");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -266,7 +266,7 @@ public class PrintConfigurationView extends ConfigurationView {
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Kitchen Printer", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.TOP));
 
-        lblKitchenPrinterName.setText("Printer name:");
+        lblKitchenPrinterName.setText(com.floreantpos.POSConstants.PRINTER_NAME_);
 
         tfKitchenPrinterName.setText("KitchenPrinter");
 
@@ -276,9 +276,9 @@ public class PrintConfigurationView extends ConfigurationView {
             }
         });
 
-        jLabel2.setText("Printer Type:");
+        jLabel2.setText(com.floreantpos.POSConstants.PRINTER_TYPE + ":");
 
-        lblSelectKitchenPrinter.setText("Select Printer:");
+        lblSelectKitchenPrinter.setText(com.floreantpos.POSConstants.SELECT_PRINTER);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);

@@ -232,7 +232,7 @@ public class SalesDetailedReport {
 
 			switch (columnIndex) {
 				case 0:
-					return "DRAWER PULL #" + data.drawerPullId;
+					return com.floreantpos.POSConstants.DRAWER_PULL_ + data.drawerPullId;
 
 				case 1:
 					return data.getTicketCount();

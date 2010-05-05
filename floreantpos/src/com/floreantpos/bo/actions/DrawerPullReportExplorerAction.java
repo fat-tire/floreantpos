@@ -13,7 +13,7 @@ import com.floreantpos.main.Application;
 public class DrawerPullReportExplorerAction extends AbstractAction {
 
 	public DrawerPullReportExplorerAction() {
-		super("Drawer Pull Reports");
+		super(com.floreantpos.POSConstants.DRAWER_PULL_REPORTS);
 	}
 
 	public DrawerPullReportExplorerAction(String name) {
@@ -29,10 +29,10 @@ public class DrawerPullReportExplorerAction extends AbstractAction {
 		
 		DrawerPullReportExplorer explorer = null;
 		JTabbedPane tabbedPane = backOfficeWindow.getTabbedPane();
-		int index = tabbedPane.indexOfTab("Drawer Pull Reports");
+		int index = tabbedPane.indexOfTab(com.floreantpos.POSConstants.DRAWER_PULL_REPORTS);
 		if (index == -1) {
 			explorer = new DrawerPullReportExplorer();
-			tabbedPane.addTab("Drawer Pull Reports", explorer);
+			tabbedPane.addTab(com.floreantpos.POSConstants.DRAWER_PULL_REPORTS, explorer);
 		}
 		else {
 			explorer = (DrawerPullReportExplorer) tabbedPane.getComponentAt(index);

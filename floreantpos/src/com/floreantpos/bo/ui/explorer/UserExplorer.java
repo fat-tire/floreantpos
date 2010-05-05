@@ -36,7 +36,7 @@ public class UserExplorer extends TransparentPanel {
 		setLayout(new BorderLayout(5,5));
 		add(new JScrollPane(table));
 		
-		JButton addButton = new JButton("Add");
+		JButton addButton = new JButton(com.floreantpos.POSConstants.ADD);
 		addButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -54,12 +54,12 @@ public class UserExplorer extends TransparentPanel {
 					tableModel.addItem(user);
 				} catch (Exception x) {
 					x.printStackTrace();
-					MessageDialog.showError("An error has occured, please restart the application", x);
+					MessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
 				}
 			}
 			
 		});
-		JButton copyButton = new JButton("Copy");
+		JButton copyButton = new JButton(com.floreantpos.POSConstants.COPY);
 		copyButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -88,13 +88,13 @@ public class UserExplorer extends TransparentPanel {
 					User newUser = (User) editor.getBean();
 					tableModel.addItem(newUser);
 				} catch (Exception x) {
-					MessageDialog.showError("An error has occured, please restart the application", x);
+					MessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
 				}
 			}
 			
 		});
 		
-		JButton editButton = new JButton("Edit");
+		JButton editButton = new JButton(com.floreantpos.POSConstants.EDIT);
 		editButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -113,12 +113,12 @@ public class UserExplorer extends TransparentPanel {
 
 					tableModel.updateItem(index);
 				} catch (Throwable x) {
-					MessageDialog.showError("An error has occured, please restart the application", x);
+					MessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
 				}
 			}
 			
 		});
-		JButton deleteButton = new JButton("Delete");
+		JButton deleteButton = new JButton(com.floreantpos.POSConstants.DELETE);
 		deleteButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int index = table.getSelectedRow();
@@ -131,15 +131,15 @@ public class UserExplorer extends TransparentPanel {
 				}
 				
 				try {
-					if (ConfirmDeleteDialog.showMessage(UserExplorer.this, "Sure Want to Delete?", "Delete") == ConfirmDeleteDialog.YES) {
+					if (ConfirmDeleteDialog.showMessage(UserExplorer.this, com.floreantpos.POSConstants.CONFIRM_DELETE, com.floreantpos.POSConstants.DELETE) == ConfirmDeleteDialog.YES) {
 						UserDAO.getInstance().delete(user);
 						tableModel.deleteItem(index);
 					}
 				} catch(ConstraintViolationException x) {
-					String message = "User " + user.getFirstName() + " " + user.getLastName() + " (" + user.getNewUserType() + ") cannot be deleted because it is being used.";
+					String message = com.floreantpos.POSConstants.USER + " " + user.getFirstName() + " " + user.getLastName() + " (" + user.getNewUserType() + ") " + com.floreantpos.POSConstants.ERROR_MESSAGE;
 					MessageDialog.showError(message, x);
 				} catch (Exception x) {
-					MessageDialog.showError("An error has occured, you may need restart the application", x);
+					MessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
 				}
 			}
 			
@@ -156,7 +156,7 @@ public class UserExplorer extends TransparentPanel {
 	class UserTableModel extends ListTableModel {
 		
 		UserTableModel(List list){
-			super(new String[] {"ID", "First Name", "Last Name", "Type"}, list);
+			super(new String[] {com.floreantpos.POSConstants.ID, com.floreantpos.POSConstants.FIRST_NAME, com.floreantpos.POSConstants.LAST_NAME, com.floreantpos.POSConstants.TYPE}, list);
 		}
 		
 

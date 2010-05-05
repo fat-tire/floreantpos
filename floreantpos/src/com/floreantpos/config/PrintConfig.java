@@ -3,7 +3,7 @@ package com.floreantpos.config;
 import com.floreantpos.print.PrinterType;
 
 public class PrintConfig {
-	public final static String P_RECEIPT_PRINTER_TYPE = "RECEIPT_PRINTER_TYPE";
+	public final static String P_RECEIPT_PRINTER_TYPE =  "RECEIPT_PRINTER_TYPE";
 	public final static String P_OS_PRINTER_FOR_RECEIPT = "RECEIPT_OS_PRINTER_NAME";
 	public final static String P_JAVAPOS_PRINTER_FOR_RECEIPT = "RECEIPT_JAVAPOS_PRINTER_NAME";
 	public final static String P_CASH_DRAWER_NAME = "CASH_DRAWER_NAME";

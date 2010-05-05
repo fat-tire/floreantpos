@@ -65,7 +65,7 @@ public class ModifierExplorer extends TransparentPanel {
 
 					table.repaint();
 				} catch (Throwable x) {
-					MessageDialog.showError("An error has occured, please restart the application", x);
+					MessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
 				}
 			}
 		});
@@ -81,7 +81,7 @@ public class ModifierExplorer extends TransparentPanel {
 					MenuModifier modifier = (MenuModifier) editor.getBean();
 					tableModel.addModifier(modifier);
 				} catch (Throwable x) {
-					MessageDialog.showError("An error has occured, please restart the application", x);
+					MessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
 				}
 			}
 
@@ -93,14 +93,14 @@ public class ModifierExplorer extends TransparentPanel {
 					int index = table.getSelectedRow();
 					if (index < 0)
 						return;
-					if (ConfirmDeleteDialog.showMessage(ModifierExplorer.this, "Sure Want to Delete?", "Delete") != ConfirmDeleteDialog.NO) {
+					if (ConfirmDeleteDialog.showMessage(ModifierExplorer.this, com.floreantpos.POSConstants.CONFIRM_DELETE, com.floreantpos.POSConstants.DELETE) != ConfirmDeleteDialog.NO) {
 						MenuModifier category = modifierList.get(index);
 						ModifierDAO modifierDAO = new ModifierDAO();
 						modifierDAO.delete(category);
 						tableModel.deleteModifier(category, index);
 					}
 				} catch (Throwable x) {
-					MessageDialog.showError("An error has occured, please restart the application", x);
+					MessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
 				}
 
 			}
@@ -114,7 +114,8 @@ public class ModifierExplorer extends TransparentPanel {
 	}
 
 	class ModifierExplorerTableModel extends AbstractTableModel {
-		String[] columnNames = {"Id", "Name", "Price (" + currencySymbol + ")", "Extra Price", "Tax (%)", "Modifier Group" };
+		private static final String UNASSIGNED = "<unassigned>";
+		String[] columnNames = {com.floreantpos.POSConstants.ID, com.floreantpos.POSConstants.NAME, com.floreantpos.POSConstants.PRICE + " (" + currencySymbol + ")", com.floreantpos.POSConstants.EXTRA_PRICE, com.floreantpos.POSConstants.TAX + "(%)", com.floreantpos.POSConstants.MODIFIER_GROUP };
 
 		public int getRowCount() {
 			if (modifierList == null) {
@@ -158,13 +159,13 @@ public class ModifierExplorer extends TransparentPanel {
 					
 				case 4:
 					if(modifier.getTax() == null) {
-						return "<unassigned>";
+						return UNASSIGNED;
 					}
 					return Double.valueOf(modifier.getTax().getRate());
 					
 				case 5:
 					if(modifier.getModifierGroup() == null) {
-						return "<unassigned>";
+						return UNASSIGNED;
 					}
 					return modifier.getModifierGroup().getName();
 			}

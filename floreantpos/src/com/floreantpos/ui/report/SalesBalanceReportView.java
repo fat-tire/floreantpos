@@ -23,6 +23,7 @@ import net.sf.jasperreports.view.JRViewer;
 
 import org.jdesktop.swingx.JXDatePicker;
 
+import com.floreantpos.POSConstants;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.util.DateUtil;
 import com.floreantpos.report.SalesBalanceReport;
@@ -35,7 +36,7 @@ public class SalesBalanceReportView extends JPanel {
 	
 	private JXDatePicker fromDatePicker = new JXDatePicker();
 	private JXDatePicker toDatePicker = new JXDatePicker();
-	private JButton btnGo = new JButton("GO");
+	private JButton btnGo = new JButton(com.floreantpos.POSConstants.GO);
 	private JPanel reportContainer;
 	
 	public SalesBalanceReportView() {
@@ -43,9 +44,9 @@ public class SalesBalanceReportView extends JPanel {
 		
 		JPanel topPanel = new JPanel(new MigLayout());
 		
-		topPanel.add(new JLabel("From:"), "grow");
+		topPanel.add(new JLabel(com.floreantpos.POSConstants.FROM + ":"), "grow");
 		topPanel.add(fromDatePicker,"wrap");
-		topPanel.add(new JLabel("To:"), "grow");
+		topPanel.add(new JLabel(com.floreantpos.POSConstants.TO + ":"), "grow");
 		topPanel.add(toDatePicker,"wrap");
 		topPanel.add(btnGo, "skip 1, al right");
 		add(topPanel, BorderLayout.NORTH);
@@ -65,7 +66,7 @@ public class SalesBalanceReportView extends JPanel {
 				try {
 					viewReport();
 				} catch (Exception e1) {
-					POSMessageDialog.showError(SalesBalanceReportView.this, POSMessageDialog.ERROR_MESSAGE, e1);
+					POSMessageDialog.showError(SalesBalanceReportView.this, POSConstants.ERROR_MESSAGE, e1);
 				}
 			}
 			
@@ -77,7 +78,7 @@ public class SalesBalanceReportView extends JPanel {
 		Date toDate = toDatePicker.getDate();
 		
 		if(fromDate.after(toDate)) {
-			POSMessageDialog.showError(Application.getInstance().getBackOfficeWindow(), "From date cannot be greater than to date.");
+			POSMessageDialog.showError(Application.getInstance().getBackOfficeWindow(), com.floreantpos.POSConstants.FROM_DATE_CANNOT_BE_GREATER_THAN_TO_DATE_);
 			return;
 		}
 		

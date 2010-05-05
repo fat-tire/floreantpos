@@ -164,8 +164,8 @@ public class PosTransactionService {
 		
 		for (Ticket ticket : tickets) {
 //			SETTLE ACTION
-			String actionMessage = "CHK#:" + ticket.getId();
-			actionMessage += "; TOTAL:" + Application.formatNumber(ticket.getTotalAmount());
+			String actionMessage = com.floreantpos.POSConstants.CHK_NO + ":" + ticket.getId();
+			actionMessage += ";" +  com.floreantpos.POSConstants.TOTAL + ":" + Application.formatNumber(ticket.getTotalAmount());
 			ActionHistoryDAO.getInstance().saveHistory(Application.getCurrentUser(), ActionHistory.SETTLE_CHECK, actionMessage);
 		}
 	}

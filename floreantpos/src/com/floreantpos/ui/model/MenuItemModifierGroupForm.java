@@ -35,7 +35,7 @@ public class MenuItemModifierGroupForm extends BeanEditor {
 			List<MenuModifierGroup> groups = dao.findAll();
 			cbModifierGroups.setModel(new ListComboBoxModel(groups));
 		} catch (Exception e) {
-			throw new PosRuntimeException("Error while retrieving modfier group list.");
+			throw new PosRuntimeException(com.floreantpos.POSConstants.ERROR_MESSAGE);
 		}
     	
     	setBean(modifierGroup);
@@ -55,11 +55,11 @@ public class MenuItemModifierGroupForm extends BeanEditor {
         tfMinQuantity = new javax.swing.JTextField();
         tfMaxQuantity = new javax.swing.JTextField();
 
-        jLabel1.setText("Modifier Group:");
+        jLabel1.setText(com.floreantpos.POSConstants.MODIFIER_GROUP + ":");
 
-        jLabel2.setText("Min Quantity:");
+        jLabel2.setText(com.floreantpos.POSConstants.MIN_QUANTITY + ":");
 
-        jLabel3.setText("Max Quantity:");
+        jLabel3.setText(com.floreantpos.POSConstants.MAX_QUANTITY + ":");
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);
         this.setLayout(layout);
@@ -141,7 +141,7 @@ public class MenuItemModifierGroupForm extends BeanEditor {
 		
 		MenuModifierGroup group = (MenuModifierGroup) cbModifierGroups.getSelectedItem();
 		if(group == null) {
-			POSMessageDialog.showError(this, "Modifier group is required.");
+			POSMessageDialog.showError(this, com.floreantpos.POSConstants.MODIFIER_GROUP_REQUIRED);
 			return false;
 		}
 		MenuItemModifierGroup modifierGroup = (MenuItemModifierGroup) getBean();
@@ -156,10 +156,10 @@ public class MenuItemModifierGroupForm extends BeanEditor {
 	public String getDisplayText() {
 		MenuItemModifierGroup modifierGroup = (MenuItemModifierGroup) getBean();
 		if(modifierGroup.getId() == null) {
-			return "Add new modifier group in menu item.";
+			return com.floreantpos.POSConstants.ADD_NEW_MODIFIER_GROUP_IN_MENU_ITEM_;
 		}
 		
-		return "Edit modifier group in menu item.";
+		return com.floreantpos.POSConstants.EDIT_MODIFIER_GROUP_IN_MENU_ITEM_;
 	}
     
 	

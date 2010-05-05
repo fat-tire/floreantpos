@@ -75,32 +75,32 @@ public class TicketDetailView extends JPanel implements ActionListener {
 		setLayout(new BorderLayout(5, 5));
 
 		topPanel = new JPanel(new MigLayout("align 50%"));
-		addRow(topPanel, "Ticket ID:", tfTicketId = new JTextField());
-		addRow(topPanel, "Server ID:", tfServerId = new JTextField());
-		addRow(topPanel, "Server Name:", tfServerName = new JTextField());
-		addRow(topPanel, "Created:", tfCreateTime = new JTextField());
-		addRow(topPanel, "Terminal:", tfTerminal = new JTextField());
-		addRow(topPanel, "Table #:", tfTable = new JTextField());
-		addRow(topPanel, "Guest #:", tfGuests = new JTextField());
-		addRow(topPanel, "Subtotal:", tfSubtotal = new JTextField());
-		addRow(topPanel, "Discount:", tfTotalDiscount = new JTextField());
-		addRow(topPanel, "Tax:", tfTax = new JTextField());
-		addRow(topPanel, "Total:", tfTotal = new JTextField());
-		addRow(topPanel, "Due:", tfDue = new JTextField());
+		addRow(topPanel, com.floreantpos.POSConstants.TICKET_ID + ":", tfTicketId = new JTextField());
+		addRow(topPanel, com.floreantpos.POSConstants.SERVER_ID + ":", tfServerId = new JTextField());
+		addRow(topPanel, com.floreantpos.POSConstants.SERVER_NAME + ":", tfServerName = new JTextField());
+		addRow(topPanel, com.floreantpos.POSConstants.CREATED + ":", tfCreateTime = new JTextField());
+		addRow(topPanel, com.floreantpos.POSConstants.TERMINAL + ":", tfTerminal = new JTextField());
+		addRow(topPanel, com.floreantpos.POSConstants.TABLE_NO + ":", tfTable = new JTextField());
+		addRow(topPanel, com.floreantpos.POSConstants.GUEST + " #:", tfGuests = new JTextField());
+		addRow(topPanel, com.floreantpos.POSConstants.SUBTOTAL + ":", tfSubtotal = new JTextField());
+		addRow(topPanel, com.floreantpos.POSConstants.DISCOUNT + ":", tfTotalDiscount = new JTextField());
+		addRow(topPanel, com.floreantpos.POSConstants.TAX + ":", tfTax = new JTextField());
+		addRow(topPanel, com.floreantpos.POSConstants.TOTAL + ":", tfTotal = new JTextField());
+		addRow(topPanel, com.floreantpos.POSConstants.DUE + ":", tfDue = new JTextField());
 
 		add(topPanel, BorderLayout.CENTER);
 
 		balanceDuePanel = new JPanel(new MigLayout("align 50%"));
 		balanceDuePanel.add(new JSeparator(), "grow, span,w 320");
-		JLabel balanceDueTitle = new JLabel("BALANCE DUE");
+		JLabel balanceDueTitle = new JLabel(com.floreantpos.POSConstants.BALANCE_DUE);
 		balanceDuePanel.add(balanceDueTitle, "newline,grow,span");
 		balanceDuePanel.add(lblBalanceDue = new JLabel("0"), "newline,grow,span");
 
 		buttonPanel = new JPanel(new MigLayout("align 50%"));
 		buttonPanel.add(new JSeparator(), "newline, grow,span");
-		buttonPanel.add(btnApplyCoupon = new PosButton("COUPON & DISCOUNT"), "w 160, h 50, grow, span");
-		buttonPanel.add(btnViewDiscounts = new PosButton("VIEW DISCOUNTS"), "newline,w 160, h 50, ax 100%");
-		buttonPanel.add(btnTaxExempt = new POSToggleButton("TAX EXEMPT"), "w 160, h 50");
+		buttonPanel.add(btnApplyCoupon = new PosButton(com.floreantpos.POSConstants.COUPON_DISCOUNT), "w 160, h 50, grow, span");
+		buttonPanel.add(btnViewDiscounts = new PosButton(com.floreantpos.POSConstants.VIEW_DISCOUNTS), "newline,w 160, h 50, ax 100%");
+		buttonPanel.add(btnTaxExempt = new POSToggleButton(com.floreantpos.POSConstants.TAX_EXEMPT), "w 160, h 50");
 
 		JPanel bottomPanel = new JPanel(new BorderLayout(5, 5));
 		bottomPanel.add(balanceDuePanel);
@@ -159,7 +159,7 @@ public class TicketDetailView extends JPanel implements ActionListener {
 
 		boolean setTaxExempt = btnTaxExempt.isSelected();
 		if (setTaxExempt) {
-			int option = JOptionPane.showOptionDialog(this, "Are you sure you want to set tax exempt?", "Confirm", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+			int option = JOptionPane.showOptionDialog(this, com.floreantpos.POSConstants.CONFIRM_SET_TAX_EXEMPT, com.floreantpos.POSConstants.CONFIRM, JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
 			if (option != JOptionPane.YES_OPTION) {
 				return;
 			}
@@ -199,7 +199,7 @@ public class TicketDetailView extends JPanel implements ActionListener {
 				}
 			}
 		} catch (Exception e) {
-			POSMessageDialog.showError(this, "An error has occured", e);
+			POSMessageDialog.showError(this, com.floreantpos.POSConstants.ERROR_MESSAGE, e);
 		}
 	}//GEN-LAST:event_btnViewDiscountsdoViewDiscounts
 
@@ -207,7 +207,7 @@ public class TicketDetailView extends JPanel implements ActionListener {
 		try {
 			for (Ticket ticket : tickets) {
 				if(ticket.getCouponAndDiscounts() != null && ticket.getCouponAndDiscounts().size() > 0) {
-					POSMessageDialog.showError("Only one discount or coupon can be added.");
+					POSMessageDialog.showError(com.floreantpos.POSConstants.DISCOUNT_COUPON_LIMIT_);
 					return;
 				}
 			}
@@ -229,7 +229,7 @@ public class TicketDetailView extends JPanel implements ActionListener {
 				}
 			}
 		} catch (Exception e) {
-			POSMessageDialog.showError(this, "Failed to apply coupon, an error has occured", e);
+			POSMessageDialog.showError(this, com.floreantpos.POSConstants.ERROR_MESSAGE, e);
 		}
 	}//GEN-LAST:event_btnApplyCoupondoApplyCoupon
 

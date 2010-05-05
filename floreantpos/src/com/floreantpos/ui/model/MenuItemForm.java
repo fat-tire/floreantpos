@@ -114,9 +114,9 @@ public class MenuItemForm extends BeanEditor implements ActionListener {
         jScrollPane2 = new javax.swing.JScrollPane();
         shiftTable = new javax.swing.JTable();
 
-        jLabel1.setText("Name:");
+        jLabel1.setText(com.floreantpos.POSConstants.NAME + ":");
 
-        jLabel4.setText("Group:");
+        jLabel4.setText(com.floreantpos.POSConstants.GROUP + ":");
 
         btnNewGroup.setText("...");
         btnNewGroup.addActionListener(new java.awt.event.ActionListener() {
@@ -125,11 +125,11 @@ public class MenuItemForm extends BeanEditor implements ActionListener {
             }
         });
 
-        jLabel3.setText("Price:");
+        jLabel3.setText(com.floreantpos.POSConstants.PRICE + ":");
 
         tfPrice.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
 
-        jLabel6.setText("Tax:");
+        jLabel6.setText(com.floreantpos.POSConstants.TAX + ":");
 
         btnNewTax.setText("...");
         btnNewTax.addActionListener(new java.awt.event.ActionListener() {
@@ -138,11 +138,11 @@ public class MenuItemForm extends BeanEditor implements ActionListener {
             }
         });
 
-        jLabel2.setText("Discount Rate:");
+        jLabel2.setText(com.floreantpos.POSConstants.DISCOUNT_RATE + ":");
 
         jLabel5.setText("%");
 
-        chkVisible.setText("Visible");
+        chkVisible.setText(com.floreantpos.POSConstants.VISIBLE);
         chkVisible.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
         chkVisible.setMargin(new java.awt.Insets(0, 0, 0, 0));
 
@@ -210,9 +210,9 @@ public class MenuItemForm extends BeanEditor implements ActionListener {
                 .addContainerGap(157, Short.MAX_VALUE))
         );
 
-        jTabbedPane1.addTab("General", jPanel1);
+        jTabbedPane1.addTab(com.floreantpos.POSConstants.GENERAL, jPanel1);
 
-        btnNewModifierGroup.setText("Add");
+        btnNewModifierGroup.setText(com.floreantpos.POSConstants.ADD);
         btnNewModifierGroup.setActionCommand("AddModifierGroup");
         btnNewModifierGroup.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -220,10 +220,10 @@ public class MenuItemForm extends BeanEditor implements ActionListener {
             }
         });
 
-        btnDeleteModifierGroup.setText("Delete");
+        btnDeleteModifierGroup.setText(com.floreantpos.POSConstants.DELETE);
         btnDeleteModifierGroup.setActionCommand("DeleteModifierGroup");
 
-        btnEditModifierGroup.setText("Edit");
+        btnEditModifierGroup.setText(com.floreantpos.POSConstants.EDIT);
         btnEditModifierGroup.setActionCommand("EditModifierGroup");
 
         tableTicketItemModifierGroups.setModel(new javax.swing.table.DefaultTableModel(
@@ -269,11 +269,11 @@ public class MenuItemForm extends BeanEditor implements ActionListener {
                 .addContainerGap())
         );
 
-        jTabbedPane1.addTab("Modifier Groups", jPanel2);
+        jTabbedPane1.addTab(com.floreantpos.POSConstants.MODIFIER_GROUPS, jPanel2);
 
-        btnDeleteShift.setText("Delete Shift");
+        btnDeleteShift.setText(com.floreantpos.POSConstants.DELETE_SHIFT);
 
-        btnAddShift.setText("Add Shift");
+        btnAddShift.setText(com.floreantpos.POSConstants.ADD_SHIFT);
 
         shiftTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -313,7 +313,7 @@ public class MenuItemForm extends BeanEditor implements ActionListener {
                 .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jTabbedPane1.addTab("Shifts", jPanel3);
+        jTabbedPane1.addTab(com.floreantpos.POSConstants.SHIFTS, jPanel3);
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);
         this.setLayout(layout);
@@ -395,7 +395,7 @@ public class MenuItemForm extends BeanEditor implements ActionListener {
 				menuItemMGListModel.add(modifier);
 			}
 		} catch (Exception x) {
-			MessageDialog.showError("An error has occured, please restart the application", x);
+			MessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
 		}
     }
     
@@ -413,7 +413,7 @@ public class MenuItemForm extends BeanEditor implements ActionListener {
     			menuItemMGListModel.fireTableDataChanged();
     		}
     	} catch (Exception x) {
-    		MessageDialog.showError("An error has occured, please restart the application", x);
+    		MessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
     	}
     }
     private void deleteMenuItemModifierGroup() {
@@ -421,11 +421,11 @@ public class MenuItemForm extends BeanEditor implements ActionListener {
     		int index = tableTicketItemModifierGroups.getSelectedRow();
     		if(index < 0) return;
     		
-    		if(ConfirmDeleteDialog.showMessage(this, "Delete sure?", "Confirm") == ConfirmDeleteDialog.YES){
+    		if(ConfirmDeleteDialog.showMessage(this, com.floreantpos.POSConstants.CONFIRM_DELETE, com.floreantpos.POSConstants.CONFIRM) == ConfirmDeleteDialog.YES){
     			menuItemMGListModel.remove(index);
     		}
     	} catch (Exception x) {
-    		MessageDialog.showError("An error has occured, please restart the application", x);
+    		MessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
     	}
     }
     
@@ -438,7 +438,7 @@ public class MenuItemForm extends BeanEditor implements ActionListener {
 			MenuItemDAO menuItemDAO = new MenuItemDAO();
 			menuItemDAO.saveOrUpdate(menuItem);
 		} catch (Exception e) {
-			MessageDialog.showError("An error occured while saving food item...", e);
+			MessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, e);
 			return false;
 		}
 		return true;
@@ -480,7 +480,7 @@ public class MenuItemForm extends BeanEditor implements ActionListener {
 	protected boolean updateModel() {
 		String itemName = tfName.getText();
 		if(POSUtil.isBlankOrNull(itemName)) {
-			MessageDialog.showError("Name is required");
+			MessageDialog.showError(com.floreantpos.POSConstants.NAME_REQUIRED);
 			return false;
 		}
 		
@@ -502,13 +502,13 @@ public class MenuItemForm extends BeanEditor implements ActionListener {
 	public String getDisplayText() {
     	MenuItem foodItem = (MenuItem) getBean();
     	if(foodItem.getId() == null) {
-    		return "New menu item";
+    		return com.floreantpos.POSConstants.NEW_MENU_ITEM;
     	}
-    	return "Edit menu item";
+    	return com.floreantpos.POSConstants.EDIT_MENU_ITEM;
     }
 	
 	class MenuItemMGListModel extends AbstractTableModel {
-		String[] cn = {"Group Name", "Min Quantity", "Max Quantity"};
+		String[] cn = {com.floreantpos.POSConstants.GROUP_NAME, com.floreantpos.POSConstants.MIN_QUANTITY, com.floreantpos.POSConstants.MAX_QUANTITY};
 		
 		MenuItemMGListModel(){
 		}
@@ -576,7 +576,7 @@ public class MenuItemForm extends BeanEditor implements ActionListener {
 	
 	class ShiftTableModel extends AbstractTableModel {
 		List<MenuItemShift> shifts;
-		String[] cn = {"Start Time", "End Time", "Price"};
+		String[] cn = {com.floreantpos.POSConstants.START_TIME, com.floreantpos.POSConstants.END_TIME, com.floreantpos.POSConstants.PRICE};
 		Calendar calendar = Calendar.getInstance();
 		
 		ShiftTableModel(List<MenuItemShift> shifts){
@@ -683,10 +683,10 @@ public class MenuItemForm extends BeanEditor implements ActionListener {
 		else if(actionCommand.equals("DeleteModifierGroup")) {
 			deleteMenuItemModifierGroup();
 		}
-		else if(actionCommand.equals("Add Shift")) {
+		else if(actionCommand.equals(com.floreantpos.POSConstants.ADD_SHIFT)) {
 			addShift();
 		}
-		else if(actionCommand.equals("Delete Shift")) {
+		else if(actionCommand.equals(com.floreantpos.POSConstants.DELETE_SHIFT)) {
 			deleteShift();
 		}
 	}

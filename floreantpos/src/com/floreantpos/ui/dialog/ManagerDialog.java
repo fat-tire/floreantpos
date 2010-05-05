@@ -74,7 +74,7 @@ public class ManagerDialog extends JFrame {
         btnFinish = new com.floreantpos.swing.PosButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        titlePanel1.setTitle("MANAGER FUNCTION");
+        titlePanel1.setTitle(com.floreantpos.POSConstants.MANAGER_FUNCTION);
         getContentPane().add(titlePanel1, java.awt.BorderLayout.NORTH);
 
         transparentPanel4.setLayout(new java.awt.BorderLayout());
@@ -85,7 +85,7 @@ public class ManagerDialog extends JFrame {
         transparentPanel2.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
         transparentPanel3.setLayout(new java.awt.GridLayout(2, 2, 5, 5));
 
-        btnShowTips.setText("SERVER TIPS");
+        btnShowTips.setText(com.floreantpos.POSConstants.SERVER_TIPS);
         btnShowTips.setPreferredSize(new java.awt.Dimension(220, 60));
         btnShowTips.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -95,7 +95,7 @@ public class ManagerDialog extends JFrame {
 
         transparentPanel3.add(btnShowTips);
 
-        btnDrawerPullReport.setText("DRAWER PULL");
+        btnDrawerPullReport.setText(com.floreantpos.POSConstants.DRAWER_PULL);
         btnDrawerPullReport.setPreferredSize(new java.awt.Dimension(220, 60));
         btnDrawerPullReport.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -105,7 +105,7 @@ public class ManagerDialog extends JFrame {
 
         transparentPanel3.add(btnDrawerPullReport);
 
-        btnOpenTickets.setText("OPEN TICKETS");
+        btnOpenTickets.setText(com.floreantpos.POSConstants.OPEN_TICKETS);
         btnOpenTickets.setPreferredSize(new java.awt.Dimension(220, 60));
         btnOpenTickets.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -115,7 +115,7 @@ public class ManagerDialog extends JFrame {
 
         transparentPanel3.add(btnOpenTickets);
 
-        btnCashDrops.setText("DRAWER BLEED");
+        btnCashDrops.setText(com.floreantpos.POSConstants.DRAWER_BLEED);
         btnCashDrops.setPreferredSize(new java.awt.Dimension(220, 60));
         btnCashDrops.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -131,7 +131,7 @@ public class ManagerDialog extends JFrame {
 
         transparentPanel1.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
 
-        btnFinish.setText("FINISH");
+        btnFinish.setText(com.floreantpos.POSConstants.FINISH);
         btnFinish.setPreferredSize(new java.awt.Dimension(120, 60));
         btnFinish.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -162,7 +162,7 @@ public class ManagerDialog extends JFrame {
 					dialog.initDate();
 					dialog.open();
 				} catch (Exception e) {
-					POSMessageDialog.showError("An unexpected error has occured", e);
+					POSMessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, e);
 				} finally {
 					setGlassPaneVisible(false);
 				}
@@ -181,7 +181,7 @@ public class ManagerDialog extends JFrame {
 					OpenTicketsListDialog dialog = new OpenTicketsListDialog(ManagerDialog.this, true);
 					dialog.open();
 				} catch (Exception e) {
-					POSMessageDialog.showError("An unexpected error has occured", e);
+					POSMessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, e);
 				} finally {
 					setGlassPaneVisible(false);
 				}
@@ -202,14 +202,14 @@ public class ManagerDialog extends JFrame {
 				try {
 					setGlassPaneVisible(true);
 					DrawerPullReportDialog dialog = new DrawerPullReportDialog(ManagerDialog.this, true);
-					dialog.setTitle("DRAWER PULL");
+					dialog.setTitle(com.floreantpos.POSConstants.DRAWER_PULL);
 					dialog.initialize();
 					dialog.setSize(430, 500);
 					dialog.setResizable(false);
 					dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 					dialog.open();
 				} catch (Exception e) {
-					POSMessageDialog.showError("An unexpected error has occured", e);
+					POSMessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, e);
 				} finally {
 					setGlassPaneVisible(false);
 				}
@@ -233,15 +233,15 @@ public class ManagerDialog extends JFrame {
 					JXDatePicker fromDatePicker = new JXDatePicker();
 					JXDatePicker toDatePicker = new JXDatePicker();
 					
-					panel.add(new JLabel("Select User: "), "grow");
+					panel.add(new JLabel(com.floreantpos.POSConstants.SELECT_USER + ":"), "grow");
 					JComboBox userCombo = new JComboBox(new ListComboBoxModel(users));
 					panel.add(userCombo, "grow, wrap");
-					panel.add(new JLabel("From: "), "grow");
+					panel.add(new JLabel(com.floreantpos.POSConstants.FROM + ":"), "grow");
 					panel.add(fromDatePicker,"wrap");
-					panel.add(new JLabel("To: "), "grow");
+					panel.add(new JLabel(com.floreantpos.POSConstants.TO_), "grow");
 					panel.add(toDatePicker);
 					
-					int option = JOptionPane.showOptionDialog(ManagerDialog.this, panel, "Select Crieteria", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+					int option = JOptionPane.showOptionDialog(ManagerDialog.this, panel, com.floreantpos.POSConstants.SELECT_CRIETERIA, JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
 					if(option != JOptionPane.OK_OPTION) {
 						return null;
 					}
@@ -255,7 +255,7 @@ public class ManagerDialog extends JFrame {
 					dialog.setSize(400, 600);
 					dialog.open();
 				} catch (Exception e) {
-					POSMessageDialog.showError("An unexpected error has occured", e);
+					POSMessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, e);
 				} finally {
 					setGlassPaneVisible(false);
 				}

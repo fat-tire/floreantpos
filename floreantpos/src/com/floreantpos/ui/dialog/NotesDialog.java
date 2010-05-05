@@ -36,7 +36,7 @@ public class NotesDialog extends POSDialog {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         getContentPane().add(titlePanel, java.awt.BorderLayout.NORTH);
 
-        posButton1.setText("FINISH");
+        posButton1.setText(com.floreantpos.POSConstants.FINISH);
         posButton1.setPreferredSize(new java.awt.Dimension(120, 50));
         posButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -46,7 +46,7 @@ public class NotesDialog extends POSDialog {
 
         transparentPanel1.add(posButton1);
 
-        posButton2.setText("CANCEL");
+        posButton2.setText(com.floreantpos.POSConstants.CANCEL);
         posButton2.setPreferredSize(new java.awt.Dimension(120, 50));
         posButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

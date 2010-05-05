@@ -6,6 +6,7 @@
 
 package com.floreantpos.bo.ui;
 
+import com.floreantpos.POSConstants;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.Restaurant;
 import com.floreantpos.model.dao.RestaurantDAO;
@@ -24,7 +25,7 @@ public class RestaurantPropertyDialog extends POSDialog {
 	public RestaurantPropertyDialog() {
 		super(Application.getInstance().getBackOfficeWindow(), true);
 		
-		setTitle("Configure");
+		setTitle(com.floreantpos.POSConstants.CONFIGURE);
 		
 		initComponents();
 
@@ -62,24 +63,24 @@ public class RestaurantPropertyDialog extends POSDialog {
 
 		setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-		jLabel1.setText("Restaurant Name:");
+		jLabel1.setText(com.floreantpos.POSConstants.RESTAURANT_NAME + ":");
 
-		jLabel2.setText("Address Line1:");
+		jLabel2.setText(com.floreantpos.POSConstants.ADDRESS_LINE1 + ":");
 
-		jLabel3.setText("Address Line2:");
+		jLabel3.setText(com.floreantpos.POSConstants.ADDRESS_LINE2 + ":");
 
-		jLabel4.setText("Capacity:");
+		jLabel4.setText(com.floreantpos.POSConstants.CAPACITY + ":");
 
-		jLabel5.setText("Tables:");
+		jLabel5.setText(com.floreantpos.POSConstants.TABLES + ":");
 
-		btnCancel.setText("Close");
+		btnCancel.setText(com.floreantpos.POSConstants.CLOSE);
 		btnCancel.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				doClose(evt);
 			}
 		});
 
-		btnOk.setText("Save");
+		btnOk.setText(com.floreantpos.POSConstants.SAVE);
 		btnOk.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				doSave(evt);
@@ -140,14 +141,14 @@ public class RestaurantPropertyDialog extends POSDialog {
 			try {
 				capacity = Integer.parseInt(tfCapacity.getText());
 			} catch (Exception e) {
-				POSMessageDialog.showError(this, "Capacity is not valid.");
+				POSMessageDialog.showError(this, com.floreantpos.POSConstants.CAPACITY_IS_NOT_VALID_);
 				return;
 			}
 
 			try {
 				tables = Integer.parseInt(tfTables.getText());
 			} catch (Exception e) {
-				POSMessageDialog.showError(this, "Number of tables is not valid.");
+				POSMessageDialog.showError(this, com.floreantpos.POSConstants.NUMBER_OF_TABLES_IS_NOT_VALID);
 				return;
 			}
 
@@ -159,7 +160,7 @@ public class RestaurantPropertyDialog extends POSDialog {
 
 			dao.saveOrUpdate(restaurant);
 		} catch (Exception e) {
-			POSMessageDialog.showError(this, POSMessageDialog.ERROR_MESSAGE, e);
+			POSMessageDialog.showError(this, POSConstants.ERROR_MESSAGE, e);
 		}
 	}//GEN-LAST:event_doSave
 

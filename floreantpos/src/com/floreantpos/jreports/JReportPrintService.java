@@ -37,13 +37,13 @@ public class JReportPrintService {
 		map.put("headerLine2", restaurant.getAddressLine1());
 		map.put("headerLine3", restaurant.getAddressLine2());
 		map.put("headerLine4", restaurant.getAddressLine3());
-		map.put("headerLine5", "Tel: " + restaurant.getTelephone());
+		map.put("headerLine5", com.floreantpos.POSConstants.TEL + ": " + restaurant.getTelephone());
 
-		map.put("checkNo", "Chk#: " + ticket.getId());
-		map.put("tableNo", "Table#: " + ticket.getTableNumber());
-		map.put("guestCount", "Guests #: " + ticket.getNumberOfGuests());
-		map.put("serverName", "Server: " + ticket.getOwner());
-		map.put("reportDate", "Date: " + Application.formatDate(new Date()));
+		map.put("checkNo", com.floreantpos.POSConstants.CHK_NO + ticket.getId());
+		map.put("tableNo", com.floreantpos.POSConstants.TABLE_NO + ticket.getTableNumber());
+		map.put("guestCount", com.floreantpos.POSConstants.GUESTS_ + ticket.getNumberOfGuests());
+		map.put("serverName", com.floreantpos.POSConstants.SERVER + ": " + ticket.getOwner());
+		map.put("reportDate", com.floreantpos.POSConstants.DATE + ": " + Application.formatDate(new Date()));
 		map.put("grandSubtotal", Application.formatNumber(ticket.getSubtotalAmount()));
 		map.put("grandTotal", Application.formatNumber(ticket.getTotalAmount()));
 		map.put("taxAmount", Application.formatNumber(ticket.getTaxAmount()));
@@ -65,7 +65,7 @@ public class JReportPrintService {
 			JasperPrintManager.printReport(jasperPrint, false);
 
 		} catch (JRException e) {
-			logger.error("Error while printing to normal printer", e);
+			logger.error(com.floreantpos.POSConstants.PRINT_ERROR, e);
 		} finally {
 			try {
 				ticketReportStream.close();
@@ -80,11 +80,11 @@ public class JReportPrintService {
 		HashMap map = new HashMap();
 		map.put("headerLine1", restaurant.getName());
 
-		map.put("checkNo", "Chk#: " + ticket.getId());
-		map.put("tableNo", "Table#: " + ticket.getTableNumber());
-		map.put("guestCount", "Guests: " + ticket.getNumberOfGuests());
-		map.put("serverName", "Server: " + ticket.getOwner());
-		map.put("reportDate", "Date: " + Application.formatDate(new Date()));
+		map.put("checkNo", com.floreantpos.POSConstants.CHK_NO + ticket.getId());
+		map.put("tableNo", com.floreantpos.POSConstants.TABLE_NO + ticket.getTableNumber());
+		map.put("guestCount", com.floreantpos.POSConstants.GUESTS_ + ticket.getNumberOfGuests());
+		map.put("serverName", com.floreantpos.POSConstants.SERVER + ": " + ticket.getOwner());
+		map.put("reportDate", com.floreantpos.POSConstants.DATE + ": " + Application.formatDate(new Date()));
 
 		InputStream ticketReportStream = null;
 
@@ -103,7 +103,7 @@ public class JReportPrintService {
 			markItemsAsPrinted(ticket);
 
 		} catch (JRException e) {
-			logger.error("Error while printing to normal printer", e);
+			logger.error(com.floreantpos.POSConstants.PRINT_ERROR, e);
 		} finally {
 			try {
 				ticketReportStream.close();

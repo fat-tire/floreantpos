@@ -13,7 +13,7 @@ import com.floreantpos.ui.report.JournalReportView;
 public class JournalReportAction extends AbstractAction {
 
 	public JournalReportAction() {
-		super("Journal Report");
+		super(com.floreantpos.POSConstants.JOURNAL_REPORT);
 	}
 
 	public JournalReportAction(String name) {
@@ -29,10 +29,10 @@ public class JournalReportAction extends AbstractAction {
 		JTabbedPane tabbedPane = window.getTabbedPane();
 		
 		JournalReportView reportView = null;
-		int index = tabbedPane.indexOfTab("Journal Report");
+		int index = tabbedPane.indexOfTab(com.floreantpos.POSConstants.JOURNAL_REPORT);
 		if (index == -1) {
 			reportView = new JournalReportView();
-			tabbedPane.addTab("Journal Report", reportView);
+			tabbedPane.addTab(com.floreantpos.POSConstants.JOURNAL_REPORT, reportView);
 		}
 		else {
 			reportView = (JournalReportView) tabbedPane.getComponentAt(index);

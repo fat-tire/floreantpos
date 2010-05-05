@@ -66,12 +66,12 @@ public class NoteView extends JPanel implements ActionListener, ChangeListener {
 		eastPanel.add(toggleButton);
 
 		button = new PosButton();
-		button.setText("CLEAR");
+		button.setText(com.floreantpos.POSConstants.CLEAR);
 		button.addActionListener(this);
 		eastPanel.add(button);
 
 		button = new PosButton();
-		button.setText("CLEAR ALL");
+		button.setText(com.floreantpos.POSConstants.CLEAR_ALL);
 		button.addActionListener(this);
 		eastPanel.add(button);
 
@@ -98,22 +98,22 @@ public class NoteView extends JPanel implements ActionListener, ChangeListener {
 		note.requestFocus();
 		
 		String s = e.getActionCommand();
-		if (s.equals("OK")) {
+		if (s.equals(com.floreantpos.POSConstants.OK)) {
 			//canceled = false;
 			//dispose();
 		}
-		else if (s.equals("CANCEL")) {
+		else if (s.equals(com.floreantpos.POSConstants.CANCEL)) {
 			//canceled = true;
 			//dispose();
 		}
-		else if (s.equals("CLEAR")) {
+		else if (s.equals(com.floreantpos.POSConstants.CLEAR)) {
 			String str = note.getText();
 			if (str.length() > 0) {
 				str = str.substring(0, str.length() - 1);
 			}
 			note.setText(str);
 		}
-		else if (s.equals("CLEAR ALL")) {
+		else if (s.equals(com.floreantpos.POSConstants.CLEAR_ALL)) {
 			note.setText("");
 		}
 		else if (s.equals("SPACE")) {

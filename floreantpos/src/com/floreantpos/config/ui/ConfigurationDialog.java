@@ -15,13 +15,14 @@ import javax.swing.event.ChangeListener;
 
 import net.miginfocom.swing.MigLayout;
 
+import com.floreantpos.POSConstants;
 import com.floreantpos.PosException;
 import com.floreantpos.ui.dialog.POSDialog;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 
 public class ConfigurationDialog extends POSDialog implements ChangeListener, ActionListener {
-	private static final String OK = "Ok";
-	private static final String CANCEL = "Cancel";
+	private static final String OK = com.floreantpos.POSConstants.OK;
+	private static final String CANCEL = com.floreantpos.POSConstants.CANCEL;
 	private JTabbedPane tabbedPane = new JTabbedPane();
 	private List<ConfigurationView> views = new ArrayList<ConfigurationView>();
 	
@@ -78,7 +79,7 @@ public class ConfigurationDialog extends POSDialog implements ChangeListener, Ac
 			try {
 				view.initialize();
 			} catch (Exception e1) {
-				POSMessageDialog.showError(this, POSMessageDialog.ERROR_MESSAGE, e1);
+				POSMessageDialog.showError(this, POSConstants.ERROR_MESSAGE, e1);
 			}
 		}
 	}
@@ -95,7 +96,7 @@ public class ConfigurationDialog extends POSDialog implements ChangeListener, Ac
 			} catch (PosException x) {
 				POSMessageDialog.showError(this, x.getMessage());
 			} catch (Exception x) {
-				POSMessageDialog.showError(this, POSMessageDialog.ERROR_MESSAGE, x);
+				POSMessageDialog.showError(this, POSConstants.ERROR_MESSAGE, x);
 			}
 		}
 		else if(CANCEL.equalsIgnoreCase(e.getActionCommand())) {

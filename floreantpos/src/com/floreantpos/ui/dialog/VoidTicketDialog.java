@@ -6,9 +6,11 @@
 
 package com.floreantpos.ui.dialog;
 
+
 import java.awt.Frame;
 import java.util.List;
 
+import com.floreantpos.POSConstants;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.ActionHistory;
 import com.floreantpos.model.Ticket;
@@ -16,7 +18,6 @@ import com.floreantpos.model.VoidReason;
 import com.floreantpos.model.dao.ActionHistoryDAO;
 import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.model.dao.VoidReasonDAO;
-import com.floreantpos.model.util.POSConstants;
 import com.floreantpos.print.PosPrintService;
 import com.floreantpos.swing.ListComboBoxModel;
 
@@ -39,7 +40,7 @@ public class VoidTicketDialog extends POSDialog {
 			List<VoidReason> voidReasons = dao.findAll();
 			cbVoidReasons.setModel(new ListComboBoxModel(voidReasons));
 		} catch (Exception e) {
-			POSMessageDialog.showError("Cannot load void reasons", e);
+			POSMessageDialog.showError(com.floreantpos.POSConstants.CANNOT_LOAD_VOID_REASONS, e);
 		}
 		
 		setSize(794, 575);
@@ -76,7 +77,7 @@ public class VoidTicketDialog extends POSDialog {
         contentPane.setLayout(new java.awt.BorderLayout());
 
         titlePanel1.setPreferredSize(new java.awt.Dimension(400, 60));
-        titlePanel1.setTitle("VOID TICKET");
+        titlePanel1.setTitle(com.floreantpos.POSConstants.VOID_TICKET);
         contentPane.add(titlePanel1, java.awt.BorderLayout.NORTH);
 
         transparentPanel1.setLayout(new java.awt.BorderLayout());
@@ -105,11 +106,11 @@ public class VoidTicketDialog extends POSDialog {
             }
         });
 
-        chkItemsWasted.setText("ITEMS WASTED");
+        chkItemsWasted.setText(com.floreantpos.POSConstants.ITEMS_WASTED);
         chkItemsWasted.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
         chkItemsWasted.setMargin(new java.awt.Insets(0, 0, 0, 0));
 
-        jLabel1.setText("VOID REASON:");
+        jLabel1.setText(com.floreantpos.POSConstants.VOID_REASON + ":");
 
         org.jdesktop.layout.GroupLayout transparentPanel2Layout = new org.jdesktop.layout.GroupLayout(transparentPanel2);
         transparentPanel2.setLayout(transparentPanel2Layout);
@@ -152,7 +153,7 @@ public class VoidTicketDialog extends POSDialog {
         transparentPanel3.setLayout(new java.awt.BorderLayout());
 
         btnVoid.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/void_ticket_32.png"))); // NOI18N
-        btnVoid.setText("VOID");
+        btnVoid.setText(com.floreantpos.POSConstants.VOID);
         btnVoid.setPreferredSize(new java.awt.Dimension(140, 60));
         btnVoid.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -162,7 +163,7 @@ public class VoidTicketDialog extends POSDialog {
         transparentPanel4.add(btnVoid);
 
         btnCancel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cancel_32.png"))); // NOI18N
-        btnCancel.setText("CANCEL");
+        btnCancel.setText(com.floreantpos.POSConstants.CANCEL);
         btnCancel.setPreferredSize(new java.awt.Dimension(140, 60));
         btnCancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -184,7 +185,7 @@ public class VoidTicketDialog extends POSDialog {
     private void btnNewVoidReasonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewVoidReasonActionPerformed
     	try {
 			NotesDialog dialog = new NotesDialog((Frame) getOwner(), true);
-			dialog.setTitle("ENTER VOID REASON");
+			dialog.setTitle(com.floreantpos.POSConstants.ENTER_VOID_REASON);
 			dialog.pack();
 			dialog.open();
 
@@ -202,7 +203,7 @@ public class VoidTicketDialog extends POSDialog {
 				}
 			}
 		} catch (Throwable e) {
-			POSMessageDialog.showError(POSConstants.RESTART_ERROR_MESSAGE, e);
+			POSMessageDialog.showError(POSConstants.ERROR_MESSAGE, e);
 		}
     }//GEN-LAST:event_btnNewVoidReasonActionPerformed
 
@@ -231,11 +232,11 @@ public class VoidTicketDialog extends POSDialog {
 			canceled = false;
 			
 			//save the action
-			ActionHistoryDAO.getInstance().saveHistory(Application.getCurrentUser(), ActionHistory.VOID_CHECK, "CHK#:"+ticket.getId() +"; Total: " + Application.formatNumber(ticket.getTotalAmount()));
+			ActionHistoryDAO.getInstance().saveHistory(Application.getCurrentUser(), ActionHistory.VOID_CHECK, com.floreantpos.POSConstants.CHK_NO + ":"+ticket.getId() +"; Total" + ": " + Application.formatNumber(ticket.getTotalAmount()));
 			
 			dispose();
 		} catch (Exception e) {
-			POSMessageDialog.showError(POSMessageDialog.ERROR_MESSAGE, e);
+			POSMessageDialog.showError(POSConstants.ERROR_MESSAGE, e);
 		}
     }//GEN-LAST:event_btnVoidActionPerformed
     

@@ -42,7 +42,7 @@ public class NumberSelectionDialog extends POSDialog {
         posButton2 = new com.floreantpos.swing.PosButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Enter Amount");
+        setTitle(com.floreantpos.POSConstants.ENTER_AMOUNT);
 
         transparentPanel2.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
         transparentPanel2.setLayout(new java.awt.BorderLayout(5, 10));
@@ -58,7 +58,7 @@ public class NumberSelectionDialog extends POSDialog {
         jPanel1.setLayout(new java.awt.BorderLayout());
         jPanel1.add(jSeparator1, java.awt.BorderLayout.NORTH);
 
-        posButton1.setText("OK");
+        posButton1.setText(com.floreantpos.POSConstants.OK);
         posButton1.setPreferredSize(new java.awt.Dimension(120, 50));
         posButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -66,7 +66,7 @@ public class NumberSelectionDialog extends POSDialog {
             }
         });
 
-        posButton2.setText("CANCEL");
+        posButton2.setText(com.floreantpos.POSConstants.CANCEL);
         posButton2.setPreferredSize(new java.awt.Dimension(120, 50));
         posButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

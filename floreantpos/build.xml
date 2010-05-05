@@ -24,6 +24,13 @@
 				<exclude name="**/*.java"/>
 			</fileset>
 		</copy>
+		
+		<mkdir dir="${out.dir}/config"/>
+		<copy todir="${out.dir}/config">
+			<fileset dir="config">
+				<exclude name="**/*.java"/>
+			</fileset>
+		</copy>
 	</target>
 
 	<target name="jar" depends="compile">
@@ -44,7 +51,7 @@
 		<jar destfile="${dist.dir}/${jarfile}" basedir="${out.dir}">
 			<manifest>
 				<attribute name="Main-Class" value="com.floreantpos.main.Main" />
-				<attribute name="Class-Path" value="config ${jar.classpath}" />
+				<attribute name="Class-Path" value="${jar.classpath} messages.zip" />
 			</manifest>
 		</jar>
 	</target>
@@ -65,6 +72,10 @@
 		</copy>
 		
 		<unzip dest="${dist.dir}" src="posdb.zip"/>
+		
+		<zip destfile="${dist.dir}/messages.zip" basedir="config">
+			<include name="*.properties"/>
+		</zip>
 		
 		<zip destfile="${app.file}" basedir="${dist.base}" />
 	</target>

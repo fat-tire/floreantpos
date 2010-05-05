@@ -13,7 +13,7 @@ import com.floreantpos.ui.report.MenuUsageReportView;
 public class MenuUsageReportAction extends AbstractAction {
 
 	public MenuUsageReportAction() {
-		super("Menu Usage Report");
+		super(com.floreantpos.POSConstants.MENU_USAGE_REPORT);
 	}
 
 	public MenuUsageReportAction(String name) {
@@ -29,10 +29,10 @@ public class MenuUsageReportAction extends AbstractAction {
 		JTabbedPane tabbedPane = window.getTabbedPane();
 		
 		MenuUsageReportView reportView = null;
-		int index = tabbedPane.indexOfTab("Menu Usage Report");
+		int index = tabbedPane.indexOfTab(com.floreantpos.POSConstants.MENU_USAGE_REPORT);
 		if (index == -1) {
 			reportView = new MenuUsageReportView();
-			tabbedPane.addTab("Menu Usage Report", reportView);
+			tabbedPane.addTab(com.floreantpos.POSConstants.MENU_USAGE_REPORT, reportView);
 		}
 		else {
 			reportView = (MenuUsageReportView) tabbedPane.getComponentAt(index);

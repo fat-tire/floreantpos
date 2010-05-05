@@ -13,7 +13,7 @@ public class TicketReportModel extends AbstractTableModel {
 	private static SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM, yyyy");
 //	private String currencySymbol;
 	
-	private String[] columnNames = {"id", "date", "tableNum", "status", "total"};
+	private String[] columnNames = {com.floreantpos.POSConstants.ID, "date", "tableNum", "status", com.floreantpos.POSConstants.TOTAL};
 	private List<Ticket> items;
 	
 	public TicketReportModel() {
@@ -50,9 +50,9 @@ public class TicketReportModel extends AbstractTableModel {
 				
 			case 3:
 				if(ticket.isClosed()) {
-					return "Closed";
+					return com.floreantpos.POSConstants.CLOSED;
 				}
-				return "Open";
+				return com.floreantpos.POSConstants.OPEN;
 				
 			case 4:
 				return formatter.format(ticket.getTotalAmount());

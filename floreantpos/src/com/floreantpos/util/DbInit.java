@@ -38,7 +38,7 @@ public class DbInit {
 		TaxDAO.getInstance().saveOrUpdate(tax);
 		
 		Shift shift = new Shift();
-		shift.setName("General");
+		shift.setName(com.floreantpos.POSConstants.GENERAL);
 		Date shiftStartTime = ShiftUtil.buildShiftStartTime(0, 0, 0, 11, 59, 1);
 		Date shiftEndTime = ShiftUtil.buildShiftEndTime(0, 0, 0, 11, 59, 1);
 		
@@ -50,7 +50,7 @@ public class DbInit {
 		ShiftDAO.getInstance().saveOrUpdate(shift);
 		
 		UserType type = new UserType();
-		type.setName("Administrator");
+		type.setName(com.floreantpos.POSConstants.ADMINISTRATOR);
 		type.setPermissions(new HashSet<UserPermission>(Arrays.asList(UserPermission.permissions)));
 		UserTypeDAO.getInstance().saveOrUpdate(type);
 		
@@ -59,14 +59,14 @@ public class DbInit {
 		u.setSsn("123");
 		u.setPassword("123");
 		u.setFirstName("Test");
-		u.setLastName("User");
+		u.setLastName(com.floreantpos.POSConstants.USER);
 		u.setNewUserType(type);
 		
 		UserDAO dao = new UserDAO();
 		dao.saveOrUpdate(u);
 		
 		MenuCategory category = new MenuCategory();
-		category.setName("BEVERAGE");
+		category.setName(com.floreantpos.POSConstants.BEVERAGE);
 		category.setBeverage(Boolean.TRUE);
 		category.setVisible(Boolean.TRUE);
 		MenuCategoryDAO.getInstance().saveOrUpdate(category);

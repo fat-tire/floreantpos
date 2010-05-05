@@ -38,11 +38,11 @@ public class TicketDetailDialog extends POSDialog {
         ticketDetailView = new com.floreantpos.ui.views.TicketDetailView();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("TICKET DETAIL");
+        setTitle(com.floreantpos.POSConstants.TICKET_DETAIL);
 
-        titlePanel1.setTitle("TICKET DETAIL");
+        titlePanel1.setTitle(com.floreantpos.POSConstants.TICKET_DETAIL);
 
-        btnFinish.setText("OK");
+        btnFinish.setText(com.floreantpos.POSConstants.OK);
         btnFinish.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 doFinish(evt);

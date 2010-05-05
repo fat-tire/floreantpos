@@ -13,7 +13,7 @@ import com.floreantpos.main.Application;
 public class CategoryExplorerAction extends AbstractAction {
 
 	public CategoryExplorerAction() {
-		super("Menu Categories");
+		super(com.floreantpos.POSConstants.MENU_CATEGORIES);
 	}
 
 	public CategoryExplorerAction(String name) {
@@ -29,10 +29,10 @@ public class CategoryExplorerAction extends AbstractAction {
 		
 		CategoryExplorer explorer = null;
 		JTabbedPane tabbedPane = backOfficeWindow.getTabbedPane();
-		int index = tabbedPane.indexOfTab("Category explorer");
+		int index = tabbedPane.indexOfTab(com.floreantpos.POSConstants.CATEGORY_EXPLORER);
 		if (index == -1) {
 			explorer = new CategoryExplorer();
-			tabbedPane.addTab("Category explorer", explorer);
+			tabbedPane.addTab(com.floreantpos.POSConstants.CATEGORY_EXPLORER, explorer);
 		}
 		else {
 			explorer = (CategoryExplorer) tabbedPane.getComponentAt(index);

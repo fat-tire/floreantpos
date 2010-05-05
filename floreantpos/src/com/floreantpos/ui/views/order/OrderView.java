@@ -185,7 +185,7 @@ public class OrderView extends com.floreantpos.swing.TransparentPanel {
 			try {
 				categoryView.initialize();
 			}catch(Throwable t) {
-				POSMessageDialog.showError("An error has occured, please restart the application", t);
+				POSMessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, t);
 			}
 		}
 		else {

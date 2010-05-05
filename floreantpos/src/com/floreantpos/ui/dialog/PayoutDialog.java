@@ -54,7 +54,7 @@ public class PayoutDialog extends POSDialog {
 
         transparentPanel2.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT, 10, 5));
 
-        btnFinish.setText("FINISH");
+        btnFinish.setText(com.floreantpos.POSConstants.FINISH);
         btnFinish.setPreferredSize(new java.awt.Dimension(140, 50));
         btnFinish.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -64,7 +64,7 @@ public class PayoutDialog extends POSDialog {
 
         transparentPanel2.add(btnFinish);
 
-        btnCancel.setText("CANCEL");
+        btnCancel.setText(com.floreantpos.POSConstants.CANCEL);
         btnCancel.setPreferredSize(new java.awt.Dimension(140, 50));
         btnCancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -113,7 +113,7 @@ public class PayoutDialog extends POSDialog {
 			
 //			PAYOUT ACTION
 			String actionMessage = "";
-			actionMessage += "TOTAL:" + Application.formatNumber(payoutAmount);
+			actionMessage += "TOTAL" + ":" + Application.formatNumber(payoutAmount);
 			ActionHistoryDAO.getInstance().saveHistory(Application.getCurrentUser(), ActionHistory.PAY_OUT, actionMessage);
 			
 			dispose();

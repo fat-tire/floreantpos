@@ -38,7 +38,7 @@ public class POSDao {
 			if(tx != null) {
 				tx.rollback();
 			}
-			throw new PosException("Unnable to save " + o.getClass(), e);
+			throw new PosException(com.floreantpos.POSConstants.UNNABLE_TO_SAVE_ + o.getClass(), e);
 		} finally {
 			PosSessionFactory.closeSession();
 		}

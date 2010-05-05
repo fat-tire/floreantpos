@@ -38,17 +38,17 @@ public class CookingInstructionExplorer extends TransparentPanel {
 		setLayout(new BorderLayout(5,5));
 		add(new JScrollPane(table));
 		
-		JButton addButton = new JButton("Add");
+		JButton addButton = new JButton(com.floreantpos.POSConstants.ADD);
 		addButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					String instruction = JOptionPane.showInputDialog(Application.getInstance().getBackOfficeWindow(), "Enter instruction description");
+					String instruction = JOptionPane.showInputDialog(Application.getInstance().getBackOfficeWindow(), com.floreantpos.POSConstants.ENTER_INSTRUCTION_DESCRIPTION);
 					if(instruction == null) {
-						POSMessageDialog.showError(Application.getInstance().getBackOfficeWindow(), "Instruction cannot be empty");
+						POSMessageDialog.showError(Application.getInstance().getBackOfficeWindow(), com.floreantpos.POSConstants.INSTRUCTION_CANNOT_BE_EMPTY);
 						return;
 					}
 					if(instruction.length() > 60) {
-						POSMessageDialog.showError(Application.getInstance().getBackOfficeWindow(), "Instruction is too big, please try to limit it within 60 characters");
+						POSMessageDialog.showError(Application.getInstance().getBackOfficeWindow(), com.floreantpos.POSConstants.LONG_INSTRUCTION_ERROR);
 						return;
 					}
 					
@@ -58,13 +58,13 @@ public class CookingInstructionExplorer extends TransparentPanel {
 					
 					tableModel.add(cookingInstruction);
 				} catch (Exception x) {
-					MessageDialog.showError("An error has occured, please restart the application", x);
+					MessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
 				}
 			}
 			
 		});
 		
-		JButton editButton = new JButton("Edit");
+		JButton editButton = new JButton(com.floreantpos.POSConstants.EDIT);
 		editButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -73,26 +73,26 @@ public class CookingInstructionExplorer extends TransparentPanel {
 						return;
 					
 					CookingInstruction cookingInstruction = categoryList.get(index);
-					String instruction = JOptionPane.showInputDialog(Application.getInstance().getBackOfficeWindow(), "Enter instruction description", cookingInstruction.getDescription());
+					String instruction = JOptionPane.showInputDialog(Application.getInstance().getBackOfficeWindow(), com.floreantpos.POSConstants.ENTER_INSTRUCTION_DESCRIPTION, cookingInstruction.getDescription());
 
 					if(instruction == null) {
-						POSMessageDialog.showError(Application.getInstance().getBackOfficeWindow(), "Instruction cannot be empty");
+						POSMessageDialog.showError(Application.getInstance().getBackOfficeWindow(), com.floreantpos.POSConstants.INSTRUCTION_CANNOT_BE_EMPTY);
 						return;
 					}
 					if(instruction.length() > 60) {
-						POSMessageDialog.showError(Application.getInstance().getBackOfficeWindow(), "Instruction is too big, please try to limit it within 60 characters");
+						POSMessageDialog.showError(Application.getInstance().getBackOfficeWindow(), com.floreantpos.POSConstants.LONG_INSTRUCTION_ERROR);
 						return;
 					}
 					cookingInstruction.setDescription(instruction);
 					dao.saveOrUpdate(cookingInstruction);
 					table.repaint();
 				} catch (Throwable x) {
-					MessageDialog.showError("An error has occured, please restart the application", x);
+					MessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
 				}
 			}
 			
 		});
-		JButton deleteButton = new JButton("Delete");
+		JButton deleteButton = new JButton(com.floreantpos.POSConstants.DELETE);
 		deleteButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -100,13 +100,13 @@ public class CookingInstructionExplorer extends TransparentPanel {
 					if (index < 0)
 						return;
 
-					if (ConfirmDeleteDialog.showMessage(CookingInstructionExplorer.this, "Sure Want to Delete?", "Delete") == ConfirmDeleteDialog.YES) {
+					if (ConfirmDeleteDialog.showMessage(CookingInstructionExplorer.this, com.floreantpos.POSConstants.CONFIRM_DELETE, com.floreantpos.POSConstants.DELETE) == ConfirmDeleteDialog.YES) {
 						CookingInstruction cookingInstruction = categoryList.get(index);
 						dao.delete(cookingInstruction);
 						tableModel.delete(cookingInstruction, index);
 					}
 				} catch (Exception x) {
-					MessageDialog.showError("An error has occured, please restart the application", x);
+					MessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
 				}
 			}
 			
@@ -120,7 +120,7 @@ public class CookingInstructionExplorer extends TransparentPanel {
 	}
 	
 	class CookingInstructionTableModel extends AbstractTableModel {
-		String[] columnNames = {"Id", "Description"};
+		String[] columnNames = {com.floreantpos.POSConstants.ID, com.floreantpos.POSConstants.DESCRIPTION};
 		
 		public int getRowCount() {
 			if(categoryList == null) {

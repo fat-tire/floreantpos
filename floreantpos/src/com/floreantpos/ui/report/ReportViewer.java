@@ -49,15 +49,15 @@ public class ReportViewer extends javax.swing.JPanel {
 
         setLayout(new java.awt.BorderLayout(5, 5));
 
-        jLabel1.setText("Report Type:");
+        jLabel1.setText("Report Type" + ":");
 
-        cbReportType.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Previous Sale (After Drawer Reset)", "Current Sale (Before Drawer Reset)" }));
+        cbReportType.setModel(new javax.swing.DefaultComboBoxModel(new String[] { com.floreantpos.POSConstants.PREVIOUS_SALE_AFTER_DRAWER_RESET_, com.floreantpos.POSConstants.SALE_BEFORE_DRAWER_RESET }));
 
-        jLabel2.setText("Start Date:");
+        jLabel2.setText(com.floreantpos.POSConstants.START_DATE + ":");
 
-        jLabel3.setText("End Date:");
+        jLabel3.setText(com.floreantpos.POSConstants.END_DATE + ":");
 
-        btnRefresh.setText("Refresh");
+        btnRefresh.setText(com.floreantpos.POSConstants.REFRESH);
         btnRefresh.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 doRefreshReport(evt);
@@ -121,7 +121,7 @@ public class ReportViewer extends javax.swing.JPanel {
 		Date toDate = dpEndDate.getDate();
 		
 		if(fromDate.after(toDate)) {
-			POSMessageDialog.showError(Application.getInstance().getBackOfficeWindow(), "From date cannot be greater than to date.");
+			POSMessageDialog.showError(Application.getInstance().getBackOfficeWindow(), com.floreantpos.POSConstants.FROM_DATE_CANNOT_BE_GREATER_THAN_TO_DATE_);
 			return;
 		}
 		
@@ -145,9 +145,9 @@ public class ReportViewer extends javax.swing.JPanel {
 			}
 			
 		} catch (Exception e) {
-			MessageDialog.showError("Cannot load report, an error has occured", e);
+			MessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, e);
 		} catch(OutOfMemoryError e) {
-			MessageDialog.showError("Out of memory, please restart the application", e);
+			MessageDialog.showError(com.floreantpos.POSConstants.OUT_OF_MEMORY, e);
 		}
     }//GEN-LAST:event_doRefreshReport
     

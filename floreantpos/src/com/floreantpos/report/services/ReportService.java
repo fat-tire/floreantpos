@@ -129,11 +129,11 @@ public class ReportService {
 			Criteria criteria = session.createCriteria(MenuCategory.class);
 			List<MenuCategory> categories = criteria.list();
 			MenuCategory miscCategory = new MenuCategory();
-			miscCategory.setName("MISC");
+			miscCategory.setName(com.floreantpos.POSConstants.MISC);
 			categories.add(miscCategory);
 
 			for (MenuCategory category : categories) {
-				criteria = session.createCriteria(TicketItem.class, "item");
+				criteria = session.createCriteria(TicketItem.class, com.floreantpos.POSConstants.ITEM);
 				criteria.createCriteria("ticket", "t");
 				ProjectionList projectionList = Projections.projectionList();
 				projectionList.add(Projections.sum(TicketItem.PROP_ITEM_COUNT));
@@ -190,7 +190,7 @@ public class ReportService {
 			criteria = session.createCriteria(MenuCategory.class);
 			List<MenuCategory> categories = criteria.list();
 			MenuCategory miscCategory = new MenuCategory();
-			miscCategory.setName("MISC");
+			miscCategory.setName(com.floreantpos.POSConstants.MISC);
 			categories.add(miscCategory);
 			
 			for (User server : servers) {
@@ -234,7 +234,7 @@ public class ReportService {
 					data = new ServerProductivityReportData();
 					data.setServerName(server.getUserId() + "/" + server.toString());
 					
-					criteria = session.createCriteria(TicketItem.class, "item");
+					criteria = session.createCriteria(TicketItem.class, com.floreantpos.POSConstants.ITEM);
 					criteria.createCriteria(TicketItem.PROP_TICKET, "t");
 					
 					projectionList = Projections.projectionList();

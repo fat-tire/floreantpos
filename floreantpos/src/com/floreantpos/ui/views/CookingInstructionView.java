@@ -62,15 +62,15 @@ public class CookingInstructionView extends POSDialog implements ActionListener 
         jPanel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
         jPanel1.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
 
-        btnAdd.setText("ADD");
+        btnAdd.setText(com.floreantpos.POSConstants.ADD);
         btnAdd.setPreferredSize(new java.awt.Dimension(120, 50));
         jPanel1.add(btnAdd);
 
-        btnRemove.setText("REMOVE");
+        btnRemove.setText(com.floreantpos.POSConstants.REMOVE);
         btnRemove.setPreferredSize(new java.awt.Dimension(120, 50));
         jPanel1.add(btnRemove);
 
-        btnClose.setText("CLOSE");
+        btnClose.setText(com.floreantpos.POSConstants.CLOSE);
         btnClose.setPreferredSize(new java.awt.Dimension(120, 50));
         jPanel1.add(btnClose);
 
@@ -139,9 +139,9 @@ public class CookingInstructionView extends POSDialog implements ActionListener 
 
     public void actionPerformed(ActionEvent e) {
     	String actionCommand = e.getActionCommand();
-    	if("ADD".equals(actionCommand)) {
+    	if(com.floreantpos.POSConstants.ADD.equals(actionCommand)) {
     		
-			SelectCookongInstructionDialog dialog = new SelectCookongInstructionDialog(this, "Select cooking instruction", true);
+			SelectCookongInstructionDialog dialog = new SelectCookongInstructionDialog(this, com.floreantpos.POSConstants.SELECT_COOKING_INSTRUCTION, true);
 			dialog.pack();
 			dialog.open();
 			
@@ -155,7 +155,7 @@ public class CookingInstructionView extends POSDialog implements ActionListener 
     		ticket.addCookingInstruction(ticketCookingInstruction);
     		model.addElement(ticketCookingInstruction);
     	}
-    	if("REMOVE".equals(actionCommand)) {
+    	if(com.floreantpos.POSConstants.REMOVE.equals(actionCommand)) {
     		int selectedIndex = listCookingInstructions.getSelectedIndex();
     		if(selectedIndex < 0) {
     			return;
@@ -164,7 +164,7 @@ public class CookingInstructionView extends POSDialog implements ActionListener 
     		ticket.removeCookingInstruction(ticketCookingInstruction);
 			model.remove(selectedIndex);
     	}
-    	if("CLOSE".equals(actionCommand)) {
+    	if(com.floreantpos.POSConstants.CLOSE.equals(actionCommand)) {
     		setCanceled(false);
     		dispose();
     	}

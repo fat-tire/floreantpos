@@ -39,7 +39,7 @@ public class TitlePanel extends com.floreantpos.swing.TransparentPanel {
 
         lblTitle.setFont(getTitleFont());
         lblTitle.setForeground(getTitleColor());
-        lblTitle.setText("Title");
+        lblTitle.setText(com.floreantpos.POSConstants.TITLE);
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);
         this.setLayout(layout);

@@ -101,7 +101,7 @@ public class TicketForSplitView extends com.floreantpos.swing.TransparentPanel i
 
 		setLayout(new java.awt.BorderLayout(5, 5));
 
-		setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Ticket", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
+		setBorder(javax.swing.BorderFactory.createTitledBorder(null, com.floreantpos.POSConstants.TICKET, javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
 		setPreferredSize(new java.awt.Dimension(280, 463));
 		jPanel1.setLayout(new java.awt.BorderLayout(5, 5));
 
@@ -111,7 +111,7 @@ public class TicketForSplitView extends com.floreantpos.swing.TransparentPanel i
 
 		jLabel5.setFont(new java.awt.Font("Tahoma", 1, 12));
 		jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-		jLabel5.setText("Subtotal:");
+		jLabel5.setText(com.floreantpos.POSConstants.SUBTOTAL + ":");
 		gridBagConstraints = new java.awt.GridBagConstraints();
 		gridBagConstraints.gridx = 0;
 		gridBagConstraints.gridy = 1;
@@ -121,7 +121,7 @@ public class TicketForSplitView extends com.floreantpos.swing.TransparentPanel i
 
 		jLabel6.setFont(new java.awt.Font("Tahoma", 1, 12));
 		jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-		jLabel6.setText("Total:");
+		jLabel6.setText(com.floreantpos.POSConstants.TOTAL + ":");
 		gridBagConstraints = new java.awt.GridBagConstraints();
 		gridBagConstraints.gridx = 0;
 		gridBagConstraints.gridy = 4;
@@ -131,7 +131,7 @@ public class TicketForSplitView extends com.floreantpos.swing.TransparentPanel i
 
 		jLabel1.setFont(new java.awt.Font("Tahoma", 1, 12));
 		jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-		jLabel1.setText("Discount:");
+		jLabel1.setText(com.floreantpos.POSConstants.DISCOUNT + ":");
 		gridBagConstraints = new java.awt.GridBagConstraints();
 		gridBagConstraints.gridx = 0;
 		gridBagConstraints.gridy = 2;
@@ -141,7 +141,7 @@ public class TicketForSplitView extends com.floreantpos.swing.TransparentPanel i
 
 		jLabel2.setFont(new java.awt.Font("Tahoma", 1, 12));
 		jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-		jLabel2.setText("Tax:");
+		jLabel2.setText(com.floreantpos.POSConstants.TAX + ":");
 		gridBagConstraints = new java.awt.GridBagConstraints();
 		gridBagConstraints.gridx = 0;
 		gridBagConstraints.gridy = 3;

@@ -40,8 +40,8 @@ public class OpenTicketsListDialog extends POSDialog {
     public OpenTicketsListDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal, false);
         initComponents();
-        setTitle("ACTIVE TICKETS");
-        titlePanel.setTitle("ACTIVE TICKETS (BEFORE DRAWER RESET)");
+        setTitle(com.floreantpos.POSConstants.ACTIVE_TICKETS);
+        titlePanel.setTitle(com.floreantpos.POSConstants.ACTIVE_TICKETS_BEFORE_DRAWER_RESET);
         
         TicketDAO dao = new TicketDAO();
         openTickets = dao.findOpenTickets();
@@ -85,7 +85,7 @@ public class OpenTicketsListDialog extends POSDialog {
         transparentPanel3.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
 
         transparentPanel3.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 5));
-        btnVoid.setText("VOID");
+        btnVoid.setText(com.floreantpos.POSConstants.VOID);
         btnVoid.setPreferredSize(new java.awt.Dimension(100, 50));
         btnVoid.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -95,7 +95,7 @@ public class OpenTicketsListDialog extends POSDialog {
 
         transparentPanel3.add(btnVoid);
 
-        btnPrint.setText("PRINT");
+        btnPrint.setText(com.floreantpos.POSConstants.PRINT);
         btnPrint.setPreferredSize(new java.awt.Dimension(100, 50));
         btnPrint.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -115,7 +115,7 @@ public class OpenTicketsListDialog extends POSDialog {
 
         transparentPanel3.add(btnTransferServer);
 
-        btnClose.setText("CLOSE");
+        btnClose.setText(com.floreantpos.POSConstants.CLOSE);
         btnClose.setPreferredSize(new java.awt.Dimension(100, 50));
         btnClose.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -213,7 +213,7 @@ public class OpenTicketsListDialog extends POSDialog {
     private Ticket getSelectedTicket() {
     	int row = openTicketListTable.getSelectedRow();
     	if(row < 0) {
-    		POSMessageDialog.showError("Please select a ticket");
+    		POSMessageDialog.showError(com.floreantpos.POSConstants.SELECT_TICKET);
     		return null;
     	}
     	return openTickets.get(row);
@@ -241,7 +241,7 @@ public class OpenTicketsListDialog extends POSDialog {
 				}
 			}
 		} catch (Exception e) {
-			POSMessageDialog.showError("An error has occured");
+			POSMessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE);
 		}
     }//GEN-LAST:event_doTransferServer
 
@@ -309,16 +309,16 @@ public class OpenTicketsListDialog extends POSDialog {
 		public String getColumnName(int column) {
 			switch(column) {
 				case 0:
-					return "TICKET ID";
+					return com.floreantpos.POSConstants.TICKET_ID;
 					
 				case 1:
-					return "SERVER";
+					return com.floreantpos.POSConstants.SERVER;
 					
 				case 2:
-					return "DATE/TIME";
+					return com.floreantpos.POSConstants.DATE_TIME;
 					
 				case 3:
-					return "TOTAL";
+					return com.floreantpos.POSConstants.TOTAL;
 			}
 			return null;
 		}

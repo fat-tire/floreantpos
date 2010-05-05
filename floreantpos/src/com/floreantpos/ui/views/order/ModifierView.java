@@ -49,7 +49,7 @@ public class ModifierView extends SelectionView {
 
 	/** Creates new form GroupView */
 	public ModifierView() {
-		super("MODIFIERS");
+		super(com.floreantpos.POSConstants.MODIFIERS);
 	}
 
 
@@ -84,7 +84,7 @@ public class ModifierView extends SelectionView {
 			revalidate();
 			updateVisualRepresentation();
 		} catch (PosException e) {
-			POSMessageDialog.showError(this, "An error has occured", e);
+			POSMessageDialog.showError(this, com.floreantpos.POSConstants.ERROR_MESSAGE, e);
 		}
 	}
 
@@ -167,7 +167,7 @@ public class ModifierView extends SelectionView {
 		}
 
 		if (!requiredModifierAdded) {
-			int option = JOptionPane.showConfirmDialog(this, "Some required modifiers are not added, do you really want to go back?", "Confirm", JOptionPane.YES_NO_OPTION);
+			int option = JOptionPane.showConfirmDialog(this, com.floreantpos.POSConstants.REQUIRED_MODIFIERS_NOT_ADDED, com.floreantpos.POSConstants.CONFIRM, JOptionPane.YES_NO_OPTION);
 			if (option != JOptionPane.YES_OPTION) {
 				return;
 			}

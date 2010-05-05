@@ -13,7 +13,7 @@ import com.floreantpos.ui.report.SalesSummaryReportView;
 public class KeyStatisticsSalesReportAction extends AbstractAction {
 
 	public KeyStatisticsSalesReportAction() {
-		super("Sales Summary Report - Key Statistics");
+		super(com.floreantpos.POSConstants.SALES_SUMMARY_KEY_STATISTICS_REPORT);
 	}
 
 	public KeyStatisticsSalesReportAction(String name) {
@@ -29,11 +29,11 @@ public class KeyStatisticsSalesReportAction extends AbstractAction {
 		JTabbedPane tabbedPane = window.getTabbedPane();
 		
 		SalesSummaryReportView reportView = null;
-		int index = tabbedPane.indexOfTab("Sales Summary - Key Statistics");
+		int index = tabbedPane.indexOfTab(com.floreantpos.POSConstants.SALES_SUMMARY_KEY_STATISTICS);
 		if (index == -1) {
 			reportView = new SalesSummaryReportView();
 			reportView.setReportType(SalesSummaryReportView.REPORT_KEY_STATISTICS);
-			tabbedPane.addTab("Sales Summary - Key Statistics", reportView);
+			tabbedPane.addTab(com.floreantpos.POSConstants.SALES_SUMMARY_KEY_STATISTICS, reportView);
 		}
 		else {
 			reportView = (SalesSummaryReportView) tabbedPane.getComponentAt(index);

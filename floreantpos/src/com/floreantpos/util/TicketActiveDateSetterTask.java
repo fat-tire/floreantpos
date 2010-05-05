@@ -20,7 +20,7 @@ public class TicketActiveDateSetterTask extends TimerTask {
 		PosWindow posWindow = Application.getPosWindow();
 		GlassPane glassPane = (GlassPane) posWindow.getGlassPane();
 		try {
-			glassPane.setMessage("Updating system, please wait...");
+			glassPane.setMessage(com.floreantpos.POSConstants.UPDATING_SYSTEM_PLEASE_WAIT_);
 			glassPane.setVisible(true);
 			
 			Calendar currentTime = Calendar.getInstance();
@@ -42,7 +42,7 @@ public class TicketActiveDateSetterTask extends TimerTask {
 				}
 			}
 		} catch (Exception e) {
-			POSMessageDialog.showError(posWindow, "Error while updating ticket active date", e);
+			POSMessageDialog.showError(posWindow, com.floreantpos.POSConstants.ERROR_MESSAGE, e);
 		} finally {
 			glassPane.setVisible(false);
 		}

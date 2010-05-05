@@ -159,7 +159,7 @@ public class CreditCardReport {
 	public static class CreditCardReportTableModel extends ListTableModel {
 		
 		public CreditCardReportTableModel(List<CreditCardReportData> datas) {
-			super(new String[] {"refId", "cardType", "subtotal", "tips", "total"}, datas);
+			super(new String[] {"refId", "cardType", com.floreantpos.POSConstants.SUBTOTAL, "tips", com.floreantpos.POSConstants.TOTAL}, datas);
 		}
 		
 		

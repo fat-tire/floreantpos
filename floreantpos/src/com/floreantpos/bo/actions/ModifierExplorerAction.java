@@ -13,7 +13,7 @@ import com.floreantpos.main.Application;
 public class ModifierExplorerAction extends AbstractAction {
 
 	public ModifierExplorerAction() {
-		super("Menu Modifiers");
+		super(com.floreantpos.POSConstants.MENU_MODIFIERS);
 	}
 
 	public ModifierExplorerAction(String name) {
@@ -29,10 +29,10 @@ public class ModifierExplorerAction extends AbstractAction {
 		JTabbedPane tabbedPane;
 		ModifierExplorer modifier;
 		tabbedPane = backOfficeWindow.getTabbedPane();
-		int index = tabbedPane.indexOfTab("Modifier explorer");
+		int index = tabbedPane.indexOfTab(com.floreantpos.POSConstants.MODIFIER_EXPLORER);
 		if (index == -1) {
 			modifier = new ModifierExplorer();
-			tabbedPane.addTab("Modifier explorer", modifier);
+			tabbedPane.addTab(com.floreantpos.POSConstants.MODIFIER_EXPLORER, modifier);
 		}
 		else {
 			modifier = (ModifierExplorer) tabbedPane.getComponentAt(index);

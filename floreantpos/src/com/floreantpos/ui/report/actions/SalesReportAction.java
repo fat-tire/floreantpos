@@ -14,7 +14,7 @@ import com.floreantpos.ui.report.SalesReport;
 public class SalesReportAction extends AbstractAction {
 
 	public SalesReportAction() {
-		super("Sales Report");
+		super(com.floreantpos.POSConstants.SALES_REPORT);
 	}
 
 	public SalesReportAction(String name) {
@@ -30,10 +30,10 @@ public class SalesReportAction extends AbstractAction {
 		JTabbedPane tabbedPane = window.getTabbedPane();
 		
 		ReportViewer viewer = null;
-		int index = tabbedPane.indexOfTab("Sales Report");
+		int index = tabbedPane.indexOfTab(com.floreantpos.POSConstants.SALES_REPORT);
 		if (index == -1) {
 			viewer = new ReportViewer(new SalesReport());
-			tabbedPane.addTab("Sales Report", viewer);
+			tabbedPane.addTab(com.floreantpos.POSConstants.SALES_REPORT, viewer);
 		}
 		else {
 			viewer = (ReportViewer) tabbedPane.getComponentAt(index);

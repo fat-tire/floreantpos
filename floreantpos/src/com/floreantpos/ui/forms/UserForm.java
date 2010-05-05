@@ -65,13 +65,13 @@ public class UserForm extends BeanEditor {
 
 		setLayout(new java.awt.GridBagLayout());
 
-		jLabel1.setText("ID:");
+		jLabel1.setText("ID" + ":");
 		gridBagConstraints = new java.awt.GridBagConstraints();
 		gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
 		gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 0);
 		add(jLabel1, gridBagConstraints);
 
-		jLabel2.setText("SSN:");
+		jLabel2.setText("SSN" + ":");
 		gridBagConstraints = new java.awt.GridBagConstraints();
 		gridBagConstraints.gridx = 0;
 		gridBagConstraints.gridy = 1;
@@ -79,7 +79,7 @@ public class UserForm extends BeanEditor {
 		gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 0);
 		add(jLabel2, gridBagConstraints);
 
-		jLabel3.setText("First Name:");
+		jLabel3.setText("First Name" + ":");
 		gridBagConstraints = new java.awt.GridBagConstraints();
 		gridBagConstraints.gridx = 0;
 		gridBagConstraints.gridy = 2;
@@ -87,7 +87,7 @@ public class UserForm extends BeanEditor {
 		gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 0);
 		add(jLabel3, gridBagConstraints);
 
-		jLabel4.setText("Last Name:");
+		jLabel4.setText("Last Name" + ":");
 		gridBagConstraints = new java.awt.GridBagConstraints();
 		gridBagConstraints.gridx = 0;
 		gridBagConstraints.gridy = 3;
@@ -95,7 +95,7 @@ public class UserForm extends BeanEditor {
 		gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 0);
 		add(jLabel4, gridBagConstraints);
 
-		jLabel9.setText("Password:");
+		jLabel9.setText("Password" + ":");
 		gridBagConstraints = new java.awt.GridBagConstraints();
 		gridBagConstraints.gridx = 0;
 		gridBagConstraints.gridy = 4;
@@ -103,7 +103,7 @@ public class UserForm extends BeanEditor {
 		gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 0);
 		add(jLabel9, gridBagConstraints);
 
-		jLabel10.setText("Confirm Password:");
+		jLabel10.setText("Confirm Password" + ":");
 		gridBagConstraints = new java.awt.GridBagConstraints();
 		gridBagConstraints.gridx = 0;
 		gridBagConstraints.gridy = 5;
@@ -159,7 +159,7 @@ public class UserForm extends BeanEditor {
 		gridBagConstraints.insets = new java.awt.Insets(0, 5, 5, 0);
 		add(tfLastName, gridBagConstraints);
 
-		jLabel5.setText("Cost Per Hour:");
+		jLabel5.setText("Cost Per Hour" + ":");
 		gridBagConstraints = new java.awt.GridBagConstraints();
 		gridBagConstraints.gridx = 0;
 		gridBagConstraints.gridy = 6;
@@ -174,7 +174,7 @@ public class UserForm extends BeanEditor {
 		gridBagConstraints.insets = new java.awt.Insets(0, 5, 5, 0);
 		add(tfCostPerHour, gridBagConstraints);
 
-		jLabel6.setText("User Type:");
+		jLabel6.setText("User Type" + ":");
 		gridBagConstraints = new java.awt.GridBagConstraints();
 		gridBagConstraints.gridx = 0;
 		gridBagConstraints.gridy = 7;

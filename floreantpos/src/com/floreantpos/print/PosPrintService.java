@@ -221,27 +221,27 @@ public class PosPrintService {
 					posPrinter.endLine();
 
 					posPrinter.beginLine(PosPrinter.SIZE_0);
-					posPrinter.printText("Chk#: ");
+					posPrinter.printText(com.floreantpos.POSConstants.CHK_NO);
 					posPrinter.printText(String.valueOf(ticket.getId()));
 					posPrinter.endLine();
 
 					posPrinter.beginLine(PosPrinter.SIZE_0);
-					posPrinter.printText("Tbl#: ");
+					posPrinter.printText(com.floreantpos.POSConstants.TBL_);
 					posPrinter.printText(String.valueOf(ticket.getTableNumber()));
 					posPrinter.endLine();
 
 					posPrinter.beginLine(PosPrinter.SIZE_0);
-					posPrinter.printText("Guest#: ");
+					posPrinter.printText(com.floreantpos.POSConstants.GUEST + " #");
 					posPrinter.printText(String.valueOf(ticket.getNumberOfGuests()));
 					posPrinter.endLine();
 
 					posPrinter.beginLine(PosPrinter.SIZE_0);
-					posPrinter.printText("Srv : ");
+					posPrinter.printText(com.floreantpos.POSConstants.SRV_);
 					posPrinter.printText(String.valueOf(ticket.getOwner().getUserId() + "/" + ticket.getOwner()));
 					posPrinter.endLine();
 
 					posPrinter.beginLine(PosPrinter.SIZE_0);
-					posPrinter.printText("Date: ");
+					posPrinter.printText(com.floreantpos.POSConstants.DATE + ": ");
 					posPrinter.printText(Application.formatDate(new Date()));
 					posPrinter.endLine();
 
@@ -249,10 +249,10 @@ public class PosPrintService {
 					posPrinter.endLine();
 
 					posPrinter.beginLine(PosPrinter.SIZE_0);
-					printFirstColumn(posPrinter, "QTY", firstColumnLength);
-					printSecondColumn(posPrinter, "ITEM", firstColumnLength, secondColumnLength, false);
-					printThirdColumn(posPrinter, "UPRICE", thirdColumnLength);
-					printFourthColumn(posPrinter, "SUBTOTAL", fourthColumnLength);
+					printFirstColumn(posPrinter, com.floreantpos.POSConstants.QTY, firstColumnLength);
+					printSecondColumn(posPrinter, com.floreantpos.POSConstants.ITEM, firstColumnLength, secondColumnLength, false);
+					printThirdColumn(posPrinter, com.floreantpos.POSConstants.UPRICE, thirdColumnLength);
+					printFourthColumn(posPrinter, com.floreantpos.POSConstants.SUBTOTAL, fourthColumnLength);
 					posPrinter.endLine();
 
 					posPrinter.beginLine(PosPrinter.SIZE_0);
@@ -316,17 +316,17 @@ public class PosPrintService {
 					posPrinter.endLine();
 
 					posPrinter.beginLine(PosPrinter.SIZE_0);
-					posPrinter.printText(StringUtils.leftPad("SUB-TOTAL  :", 32));
+					posPrinter.printText(StringUtils.leftPad("SUB-TOTAL  " + ":", 32));
 					posPrinter.printText(StringUtils.leftPad(Application.formatNumber(ticket.getSubtotalAmount()), 10));
 					posPrinter.endLine();
 
 					posPrinter.beginLine(PosPrinter.SIZE_0);
-					posPrinter.printText(StringUtils.leftPad("TAX        :", 32));
+					posPrinter.printText(StringUtils.leftPad("TAX        " + ":", 32));
 					posPrinter.printText(StringUtils.leftPad(Application.formatNumber(ticket.getTaxAmount()), 10));
 					posPrinter.endLine();
 
 					posPrinter.beginLine(PosPrinter.SIZE_0);
-					posPrinter.printText(StringUtils.leftPad("GRAND TOTAL :", 32));
+					posPrinter.printText(StringUtils.leftPad("GRAND TOTAL " + ":", 32));
 					posPrinter.printText(StringUtils.leftPad(Application.formatNumber(ticket.getTotalAmount()), 10));
 					posPrinter.endLine();
 
@@ -334,13 +334,13 @@ public class PosPrintService {
 					posPrinter.endLine();
 
 					posPrinter.beginLine(PosPrinter.SIZE_0);
-					posPrinter.printText(StringUtils.leftPad("TIP :", 32));
+					posPrinter.printText(StringUtils.leftPad("TIP " + ":", 32));
 					if (ticket.getGratuity() != null) {
 						posPrinter.printText(StringUtils.leftPad(Application.formatNumber(ticket.getGratuity().getAmount()), 10));
 					}
 					posPrinter.endLine();
 					posPrinter.beginLine(PosPrinter.SIZE_0);
-					posPrinter.printText(StringUtils.leftPad("TOTAL :", 32));
+					posPrinter.printText(StringUtils.leftPad("TOTAL " + ":", 32));
 					posPrinter.endLine();
 
 					printCentered(posPrinter, "THANK YOU!!");
@@ -386,12 +386,12 @@ public class PosPrintService {
 					posPrinter.printText("Ticket #" + ticket.getId());
 					posPrinter.endLine();
 					posPrinter.beginLine(PosPrinter.SIZE_0);
-					posPrinter.printText("Srv : ");
+					posPrinter.printText(com.floreantpos.POSConstants.SRV_);
 					posPrinter.printText(String.valueOf(ticket.getOwner().getUserId() + "/" + ticket.getOwner()));
 					posPrinter.endLine();
 
 					posPrinter.beginLine(PosPrinter.SIZE_0);
-					posPrinter.printText("Date: ");
+					posPrinter.printText(com.floreantpos.POSConstants.DATE + ": ");
 					posPrinter.printText(Application.formatDate(new Date()));
 					posPrinter.endLine();
 
@@ -494,12 +494,12 @@ public class PosPrintService {
 			posPrinter.printText("Ticket #" + ticket.getId());
 			posPrinter.endLine();
 			posPrinter.beginLine(PosPrinter.SIZE_0);
-			posPrinter.printText("Srv : ");
+			posPrinter.printText(com.floreantpos.POSConstants.SRV_);
 			posPrinter.printText(String.valueOf(ticket.getOwner().getUserId() + "/" + ticket.getOwner()));
 			posPrinter.endLine();
 
 			posPrinter.beginLine(PosPrinter.SIZE_0);
-			posPrinter.printText("Date: ");
+			posPrinter.printText(com.floreantpos.POSConstants.DATE + ": ");
 			posPrinter.printText(Application.formatDate(new Date()));
 			posPrinter.endLine();
 
@@ -605,7 +605,7 @@ public class PosPrintService {
 			printColumnSeparator(posPrinter);
 			printColumn(posPrinter, "WAST", 4);
 			printColumnSeparator(posPrinter);
-			printColumn(posPrinter, "QTY", 6);
+			printColumn(posPrinter, com.floreantpos.POSConstants.QTY, 6);
 			printColumnSeparator(posPrinter);
 			printColumn(posPrinter, "AMOUNT", 7);
 			posPrinter.endLine();

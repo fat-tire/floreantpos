@@ -13,6 +13,7 @@ import java.text.NumberFormat;
 
 import javax.swing.JPanel;
 
+import com.floreantpos.POSConstants;
 import com.floreantpos.PosException;
 import com.floreantpos.config.PrintConfig;
 import com.floreantpos.main.Application;
@@ -91,7 +92,7 @@ public class TicketView extends JPanel {
 		jScrollPane1 = new javax.swing.JScrollPane();
 		ticketViewerTable = new com.floreantpos.ui.ticket.TicketViewerTable();
 
-		setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Ticket", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
+		setBorder(javax.swing.BorderFactory.createTitledBorder(null, com.floreantpos.POSConstants.TICKET, javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
 		setPreferredSize(new java.awt.Dimension(280, 463));
 		setLayout(new java.awt.BorderLayout(5, 5));
 
@@ -102,7 +103,7 @@ public class TicketView extends JPanel {
 
 		jLabel5.setFont(new java.awt.Font("Tahoma", 1, 12));
 		jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-		jLabel5.setText("Subtotal:");
+		jLabel5.setText(com.floreantpos.POSConstants.SUBTOTAL + ":");
 		gridBagConstraints = new java.awt.GridBagConstraints();
 		gridBagConstraints.gridx = 0;
 		gridBagConstraints.gridy = 1;
@@ -112,7 +113,7 @@ public class TicketView extends JPanel {
 
 		jLabel6.setFont(new java.awt.Font("Tahoma", 1, 12));
 		jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-		jLabel6.setText("Total:");
+		jLabel6.setText(com.floreantpos.POSConstants.TOTAL + ":");
 		gridBagConstraints = new java.awt.GridBagConstraints();
 		gridBagConstraints.gridx = 0;
 		gridBagConstraints.gridy = 3;
@@ -122,7 +123,7 @@ public class TicketView extends JPanel {
 
 		jLabel1.setFont(new java.awt.Font("Tahoma", 1, 12));
 		jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-		jLabel1.setText("Discount:");
+		jLabel1.setText(com.floreantpos.POSConstants.DISCOUNT + ":");
 		gridBagConstraints = new java.awt.GridBagConstraints();
 		gridBagConstraints.gridx = 0;
 		gridBagConstraints.gridy = 2;
@@ -132,7 +133,7 @@ public class TicketView extends JPanel {
 
 		jLabel2.setFont(new java.awt.Font("Tahoma", 1, 12));
 		jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-		jLabel2.setText("Tax:");
+		jLabel2.setText(com.floreantpos.POSConstants.TAX + ":");
 		gridBagConstraints = new java.awt.GridBagConstraints();
 		gridBagConstraints.gridx = 2;
 		gridBagConstraints.gridy = 2;
@@ -193,7 +194,7 @@ public class TicketView extends JPanel {
 		jPanel3.add(tfTotal, gridBagConstraints);
 
 		chkTaxExempt.setFont(new java.awt.Font("Tahoma", 1, 12));
-		chkTaxExempt.setText("Tax Exempt");
+		chkTaxExempt.setText(com.floreantpos.POSConstants.TAX_EXEMPT);
 		chkTaxExempt.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
 		chkTaxExempt.setFocusable(false);
 		chkTaxExempt.setMargin(new java.awt.Insets(0, 0, 0, 0));
@@ -210,7 +211,7 @@ public class TicketView extends JPanel {
 		bottomPanel.setLayout(new java.awt.GridBagLayout());
 
 		btnPay.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pay_32.png")));
-		btnPay.setText("PAY NOW");
+		btnPay.setText(com.floreantpos.POSConstants.PAY_NOW);
 		btnPay.setPreferredSize(new java.awt.Dimension(76, 45));
 		btnPay.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -225,7 +226,7 @@ public class TicketView extends JPanel {
 		bottomPanel.add(btnPay, gridBagConstraints);
 
 		btnCancel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cancel_32.png")));
-		btnCancel.setText("CANCEL");
+		btnCancel.setText(com.floreantpos.POSConstants.CANCEL);
 		btnCancel.setPreferredSize(new java.awt.Dimension(76, 45));
 		btnCancel.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -240,7 +241,7 @@ public class TicketView extends JPanel {
 		bottomPanel.add(btnCancel, gridBagConstraints);
 
 		btnFinish.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/finish_32.png")));
-		btnFinish.setText("FINISH");
+		btnFinish.setText(com.floreantpos.POSConstants.FINISH);
 		btnFinish.setPreferredSize(new java.awt.Dimension(76, 45));
 		btnFinish.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -313,7 +314,7 @@ public class TicketView extends JPanel {
 		jPanel5.add(btnScrollDown, gridBagConstraints);
 
 		btnDelete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/delete_32.png")));
-		btnDelete.setText("DELETE");
+		btnDelete.setText(com.floreantpos.POSConstants.DELETE);
 		btnDelete.setPreferredSize(new java.awt.Dimension(80, 17));
 		btnDelete.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -367,7 +368,7 @@ public class TicketView extends JPanel {
 		} catch (PosException x) {
 			POSMessageDialog.showError(x.getMessage());
 		} catch (Exception e) {
-			POSMessageDialog.showError(Application.getPosWindow(), POSMessageDialog.ERROR_MESSAGE, e);
+			POSMessageDialog.showError(Application.getPosWindow(), POSConstants.ERROR_MESSAGE, e);
 		}
 	}//GEN-LAST:event_doFinishOrder
 
@@ -377,7 +378,7 @@ public class TicketView extends JPanel {
 
 	private void updateModel() {
 		if (ticket.getTicketItems() == null || ticket.getTicketItems().size() == 0) {
-			throw new PosException("Ticket is empty.");
+			throw new PosException(com.floreantpos.POSConstants.TICKET_IS_EMPTY_);
 		}
 		ticket.calculatePrice();
 	}

@@ -30,7 +30,7 @@ public class NewMenuCategoryAction extends AbstractAction {
 			BeanEditorDialog dialog = new BeanEditorDialog(editor, Application.getInstance().getBackOfficeWindow(), true);
 			dialog.open();
 		} catch (Exception x) {
-			MessageDialog.showError("An error has occured, please restart the application", x);
+			MessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
 		}
 	}
 

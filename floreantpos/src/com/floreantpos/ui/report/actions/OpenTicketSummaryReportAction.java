@@ -14,7 +14,7 @@ import com.floreantpos.ui.report.ReportViewer;
 public class OpenTicketSummaryReportAction extends AbstractAction {
 
 	public OpenTicketSummaryReportAction() {
-		super("Open Ticket Summary");
+		super(com.floreantpos.POSConstants.OPEN_TICKET_SUMMARY);
 	}
 
 	public OpenTicketSummaryReportAction(String name) {
@@ -30,10 +30,10 @@ public class OpenTicketSummaryReportAction extends AbstractAction {
 		JTabbedPane tabbedPane = window.getTabbedPane();
 		
 		ReportViewer viewer = null;
-		int index = tabbedPane.indexOfTab("Open Ticket Summary");
+		int index = tabbedPane.indexOfTab(com.floreantpos.POSConstants.OPEN_TICKET_SUMMARY);
 		if (index == -1) {
 			viewer = new ReportViewer(new OpenTicketSummaryReport());
-			tabbedPane.addTab("Open Ticket Summary Report", viewer);
+			tabbedPane.addTab(com.floreantpos.POSConstants.OPEN_TICKET_SUMMARY_REPORT, viewer);
 		}
 		else {
 			viewer = (ReportViewer) tabbedPane.getComponentAt(index);

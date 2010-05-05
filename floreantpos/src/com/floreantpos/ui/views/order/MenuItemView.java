@@ -31,7 +31,7 @@ public class MenuItemView extends SelectionView {
 
 	/** Creates new form GroupView */
 	public MenuItemView() {
-		super("ITEMS");
+		super(com.floreantpos.POSConstants.ITEMS);
 	}
 
 

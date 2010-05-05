@@ -59,7 +59,7 @@ public class BeanEditorDialog extends javax.swing.JDialog implements WindowListe
 
 		jPanel2.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
 
-		btnOk.setText("Ok");
+		btnOk.setText(com.floreantpos.POSConstants.OK);
 		btnOk.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				performOk(evt);
@@ -68,7 +68,7 @@ public class BeanEditorDialog extends javax.swing.JDialog implements WindowListe
 
 		jPanel2.add(btnOk);
 
-		btnCancel.setText("Cancel");
+		btnCancel.setText(com.floreantpos.POSConstants.CANCEL);
 		btnCancel.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				performCancel(evt);

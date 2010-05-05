@@ -35,7 +35,7 @@ public class ShiftExplorer extends TransparentPanel {
 		setLayout(new BorderLayout(5,5));
 		add(new JScrollPane(table));
 		
-		JButton addButton = new JButton("Add");
+		JButton addButton = new JButton(com.floreantpos.POSConstants.ADD);
 		addButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -46,13 +46,13 @@ public class ShiftExplorer extends TransparentPanel {
 					Shift shift = dialog.getShift();
 					tableModel.addItem(shift);
 				} catch (Exception x) {
-					MessageDialog.showError("An error has occured, please restart the application", x);
+					MessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
 				}
 			}
 			
 		});
 		
-		JButton editButton = new JButton("Edit");
+		JButton editButton = new JButton(com.floreantpos.POSConstants.EDIT);
 		editButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -69,12 +69,12 @@ public class ShiftExplorer extends TransparentPanel {
 
 					tableModel.updateItem(index);
 				} catch (Throwable x) {
-					MessageDialog.showError("An error has occured, please restart the application", x);
+					MessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
 				}
 			}
 			
 		});
-		JButton deleteButton = new JButton("Delete");
+		JButton deleteButton = new JButton(com.floreantpos.POSConstants.DELETE);
 		deleteButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -82,13 +82,13 @@ public class ShiftExplorer extends TransparentPanel {
 					if (index < 0)
 						return;
 
-					if (ConfirmDeleteDialog.showMessage(ShiftExplorer.this, "Sure Want to Delete?", "Delete") == ConfirmDeleteDialog.YES) {
+					if (ConfirmDeleteDialog.showMessage(ShiftExplorer.this, com.floreantpos.POSConstants.CONFIRM_DELETE, com.floreantpos.POSConstants.DELETE) == ConfirmDeleteDialog.YES) {
 						User user = (User) tableModel.getRowData(index);
 						UserDAO.getInstance().delete(user);
 						tableModel.deleteItem(index);
 					}
 				} catch (Exception x) {
-					MessageDialog.showError("An error has occured, please restart the application", x);
+					MessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
 				}
 			}
 			
@@ -104,7 +104,7 @@ public class ShiftExplorer extends TransparentPanel {
 	class ShiftTableModel extends ListTableModel {
 		
 		ShiftTableModel(List list){
-			super(new String[] {"ID", "Name", "Start Time", "End Time"}, list);
+			super(new String[] {com.floreantpos.POSConstants.ID, com.floreantpos.POSConstants.NAME, com.floreantpos.POSConstants.START_TIME, com.floreantpos.POSConstants.END_TIME}, list);
 		}
 		
 

@@ -3,6 +3,7 @@ package com.floreantpos.report;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.floreantpos.POSConstants;
 import com.floreantpos.bo.ui.explorer.ListTableModel;
 import com.floreantpos.main.Application;
 
@@ -405,7 +406,16 @@ public class SalesStatistics {
 
 	public static class ShiftwiseDataTableModel extends ListTableModel {
 		public ShiftwiseDataTableModel(List<ShiftwiseSalesTableData> list) {
-			super(new String[] { "DayPart", "profitCenter", "Check", "Guest", "Entre", "Sales", "AvgChk", "AvgGst", "Percentage" }, list);
+			super(new String[] { POSConstants.DAYPART,
+					"profitCenter",
+					POSConstants.CHECK,
+					POSConstants.GUEST,
+					POSConstants.ENTER,
+					POSConstants.SALES,
+					POSConstants.AVGCHK,
+					POSConstants.AVERAGE_GUEST,
+					POSConstants.PERCENTAGE },
+					list);
 		}
 
 		public Object getValueAt(int rowIndex, int columnIndex) {

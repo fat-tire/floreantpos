@@ -63,7 +63,7 @@ public class MenuItemExplorer extends TransparentPanel {
 
 					table.repaint();
 				} catch (Throwable x) {
-					MessageDialog.showError("An error has occured, please restart the application", x);
+					MessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
 				}
 			}
 
@@ -80,7 +80,7 @@ public class MenuItemExplorer extends TransparentPanel {
 					MenuItem foodItem = (MenuItem) editor.getBean();
 					tableModel.addMenuItem(foodItem);
 				} catch (Throwable x) {
-					MessageDialog.showError("An error has occured, please restart the application", x);
+					MessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
 				}
 			}
 
@@ -93,14 +93,14 @@ public class MenuItemExplorer extends TransparentPanel {
 					if (index < 0)
 						return;
 
-					if (ConfirmDeleteDialog.showMessage(MenuItemExplorer.this, "Sure Want to Delete?", "Delete") != ConfirmDeleteDialog.NO) {
+					if (ConfirmDeleteDialog.showMessage(MenuItemExplorer.this, com.floreantpos.POSConstants.CONFIRM_DELETE, com.floreantpos.POSConstants.DELETE) != ConfirmDeleteDialog.NO) {
 						MenuItem category = itemList.get(index);
 						MenuItemDAO foodItemDAO = new MenuItemDAO();
 						foodItemDAO.delete(category);
 						tableModel.deleteMenuItem(category, index);
 					}
 				} catch (Throwable x) {
-					MessageDialog.showError("An error has occured, please restart the application", x);
+					MessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
 				}
 			}
 
@@ -114,7 +114,7 @@ public class MenuItemExplorer extends TransparentPanel {
 	}
 	
 	class MenuItemExplorerTableModel extends ListTableModel {
-		String[] columnNames = { "Id", "Name", "Price (" + currencySymbol + ")", "Visible", "Discount (%)", "Food Group", "Tax (%)" };
+		String[] columnNames = { com.floreantpos.POSConstants.ID, com.floreantpos.POSConstants.NAME, com.floreantpos.POSConstants.PRICE + " (" + currencySymbol + ")", com.floreantpos.POSConstants.VISIBLE, com.floreantpos.POSConstants.DISCOUNT + "(%)", com.floreantpos.POSConstants.FOOD_GROUP, com.floreantpos.POSConstants.TAX + " (%)" };
 
 		MenuItemExplorerTableModel(){
 			setColumnNames(columnNames);

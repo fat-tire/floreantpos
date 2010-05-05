@@ -133,7 +133,7 @@ public class CardPaymentView extends PaymentView {
 
 		setLayout(new java.awt.BorderLayout(0, 5));
 
-		setBorder(javax.swing.BorderFactory.createTitledBorder(null, "TITLE", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
+		setBorder(javax.swing.BorderFactory.createTitledBorder(null, com.floreantpos.POSConstants.TITLE, javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
 		transparentPanel3.setLayout(new java.awt.BorderLayout());
 
 		add(transparentPanel3, java.awt.BorderLayout.WEST);
@@ -152,7 +152,7 @@ public class CardPaymentView extends PaymentView {
 		transparentPanel5.add(btnChangePMethod);
 
 		btnCancel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cancel_32.png")));
-		btnCancel.setText("CANCEL");
+		btnCancel.setText(com.floreantpos.POSConstants.CANCEL);
 		btnCancel.setFocusable(false);
 		btnCancel.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -163,7 +163,7 @@ public class CardPaymentView extends PaymentView {
 		transparentPanel5.add(btnCancel);
 
 		btnSettle.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/settle_ticket_32.png")));
-		btnSettle.setText("SETTLE");
+		btnSettle.setText(com.floreantpos.POSConstants.SETTLE);
 		btnSettle.setFocusable(false);
 		btnSettle.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -247,7 +247,7 @@ public class CardPaymentView extends PaymentView {
 
 		posButton12.setAction(calAction);
 		posButton12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/clear_32.png")));
-		posButton12.setText("CLEAR");
+		posButton12.setText(com.floreantpos.POSConstants.CLEAR);
 		posButton12.setFocusable(false);
 		transparentPanel9.add(posButton12);
 
@@ -421,7 +421,7 @@ public class CardPaymentView extends PaymentView {
 			JTextField tf = getFocusedTextField();
 
 			String s = e.getActionCommand();
-			if (s.equals("CLEAR")) {
+			if (s.equals(com.floreantpos.POSConstants.CLEAR)) {
 				tf.setText("0");
 			}
 			else if (s.equals(".")) {

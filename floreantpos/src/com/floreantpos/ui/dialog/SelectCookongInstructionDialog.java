@@ -55,9 +55,9 @@ public class SelectCookongInstructionDialog extends POSDialog implements ActionL
 		
 		cbCookingInstructions = new JComboBox(cbModel);
 		cbCookingInstructions.setFont(cbCookingInstructions.getFont().deriveFont(16));
-		btnNew = new PosButton("NEW");
-		btnOk = new PosButton("OK");
-		btnCancel = new PosButton("CANCEL");
+		btnNew = new PosButton(com.floreantpos.POSConstants.NEW);
+		btnOk = new PosButton(com.floreantpos.POSConstants.OK);
+		btnCancel = new PosButton(com.floreantpos.POSConstants.CANCEL);
 		add(cbCookingInstructions, "wrap, span, grow, h 30");
 		add(new JSeparator(), "wrap, span, grow");
 		add(btnNew, "al right,width 120, height 30");
@@ -96,13 +96,13 @@ public class SelectCookongInstructionDialog extends POSDialog implements ActionL
 	public void actionPerformed(ActionEvent e) {
 		String actionCommand = e.getActionCommand();
 		
-		if("OK".equalsIgnoreCase(actionCommand)) {
+		if(com.floreantpos.POSConstants.OK.equalsIgnoreCase(actionCommand)) {
 			doOk();
 		}
-		else if("CANCEL".equalsIgnoreCase(actionCommand)) {
+		else if(com.floreantpos.POSConstants.CANCEL.equalsIgnoreCase(actionCommand)) {
 			doCancel();
 		}
-		else if("NEW".equalsIgnoreCase(actionCommand)) {
+		else if(com.floreantpos.POSConstants.NEW.equalsIgnoreCase(actionCommand)) {
 			doCreateNew();
 		}
 	}

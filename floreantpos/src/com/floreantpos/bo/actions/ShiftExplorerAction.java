@@ -13,7 +13,7 @@ import com.floreantpos.main.Application;
 public class ShiftExplorerAction extends AbstractAction {
 
 	public ShiftExplorerAction() {
-		super("Shifts");
+		super(com.floreantpos.POSConstants.SHIFTS);
 	}
 
 	public ShiftExplorerAction(String name) {
@@ -29,10 +29,10 @@ public class ShiftExplorerAction extends AbstractAction {
 		
 		ShiftExplorer explorer = null;
 		JTabbedPane tabbedPane = backOfficeWindow.getTabbedPane();
-		int index = tabbedPane.indexOfTab("Shifts");
+		int index = tabbedPane.indexOfTab(com.floreantpos.POSConstants.SHIFTS);
 		if (index == -1) {
 			explorer = new ShiftExplorer();
-			tabbedPane.addTab("Shifts", explorer);
+			tabbedPane.addTab(com.floreantpos.POSConstants.SHIFTS, explorer);
 		}
 		else {
 			explorer = (ShiftExplorer) tabbedPane.getComponentAt(index);

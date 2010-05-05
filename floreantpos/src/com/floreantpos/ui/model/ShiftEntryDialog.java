@@ -55,7 +55,7 @@ public class ShiftEntryDialog extends POSDialog {
 
     public ShiftEntryDialog(Shift shift) {
         super(Application.getInstance().getBackOfficeWindow(), true);
-        setTitle("New Shift");
+        setTitle(com.floreantpos.POSConstants.NEW_SHIFT);
 
         setContentPane(contentPane);
         getRootPane().setDefaultButton(buttonOK);
@@ -120,7 +120,7 @@ public class ShiftEntryDialog extends POSDialog {
         shiftEnd = ShiftUtil.buildShiftEndTime(hour1, min1, ampm1, hour2, min2, ampm2);
 
         if (!shiftEnd.after(shiftStart)) {
-            POSMessageDialog.showError(this, "Shift end time must be greater than shift start time");
+            POSMessageDialog.showError(this, com.floreantpos.POSConstants.SHIFT_END_TIME_MUST_BE_GREATER_THAN_SHIFT_START_TIME);
             return false;
         }
         return true;
@@ -133,7 +133,7 @@ public class ShiftEntryDialog extends POSDialog {
 
             ShiftDAO dao = new ShiftDAO();
             if (shift.getId() == null && dao.exists(shift.getName())) {
-                POSMessageDialog.showError(this, "A shift with that name already exists");
+                POSMessageDialog.showError(this, com.floreantpos.POSConstants.SHIFT_NAME_ALREADY_EXISTS);
                 return;
             }
             dao.saveOrUpdate(shift);
@@ -142,7 +142,7 @@ public class ShiftEntryDialog extends POSDialog {
 
             dispose();
         } catch (Exception e) {
-            POSMessageDialog.showError(this, "Error while saving shift state", e);
+            POSMessageDialog.showError(this, com.floreantpos.POSConstants.ERROR_SAVING_SHIFT_STATE, e);
         }
     }
 
@@ -238,10 +238,10 @@ public class ShiftEntryDialog extends POSDialog {
         panel2.setLayout(new GridLayoutManager(1, 2, new Insets(0, 0, 0, 0), -1, -1, true, false));
         panel1.add(panel2, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         buttonOK = new JButton();
-        buttonOK.setText("OK");
+        buttonOK.setText(com.floreantpos.POSConstants.OK);
         panel2.add(buttonOK, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         buttonCancel = new JButton();
-        buttonCancel.setText("Cancel");
+        buttonCancel.setText(com.floreantpos.POSConstants.CANCEL);
         panel2.add(buttonCancel, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JSeparator separator1 = new JSeparator();
         panel1.add(separator1, new GridConstraints(0, 0, 1, 2, GridConstraints.ANCHOR_SOUTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
@@ -249,51 +249,51 @@ public class ShiftEntryDialog extends POSDialog {
         panel3.setLayout(new GridLayoutManager(6, 5, new Insets(0, 0, 0, 0), -1, -1));
         contentPane.add(panel3, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         final JLabel label1 = new JLabel();
-        label1.setText("Start Time:");
+        label1.setText(com.floreantpos.POSConstants.START_TIME + ":");
         panel3.add(label1, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_SOUTHEAST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JSeparator separator2 = new JSeparator();
         panel3.add(separator2, new GridConstraints(1, 1, 1, 4, GridConstraints.ANCHOR_SOUTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         final JLabel label2 = new JLabel();
-        label2.setText("Hour:");
+        label2.setText(com.floreantpos.POSConstants.HOUR + ":");
         panel3.add(label2, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_EAST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         startHour = new JComboBox();
         panel3.add(startHour, new GridConstraints(2, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(75, 22), null, 0, false));
         final JLabel label3 = new JLabel();
-        label3.setText("Min:");
+        label3.setText(com.floreantpos.POSConstants.MIN + ":");
         panel3.add(label3, new GridConstraints(2, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         startMin = new JComboBox();
         panel3.add(startMin, new GridConstraints(2, 3, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         startAmPm = new JComboBox();
         final DefaultComboBoxModel defaultComboBoxModel1 = new DefaultComboBoxModel();
-        defaultComboBoxModel1.addElement("AM");
-        defaultComboBoxModel1.addElement("PM");
+        defaultComboBoxModel1.addElement(com.floreantpos.POSConstants.AM);
+        defaultComboBoxModel1.addElement(com.floreantpos.POSConstants.PM);
         startAmPm.setModel(defaultComboBoxModel1);
         panel3.add(startAmPm, new GridConstraints(2, 4, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JLabel label4 = new JLabel();
-        label4.setText("End Time:");
+        label4.setText(com.floreantpos.POSConstants.END_TIME + ":");
         panel3.add(label4, new GridConstraints(4, 0, 1, 1, GridConstraints.ANCHOR_SOUTHEAST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JSeparator separator3 = new JSeparator();
         panel3.add(separator3, new GridConstraints(4, 1, 1, 4, GridConstraints.ANCHOR_SOUTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, new Dimension(-1, 2), 0, false));
         final JLabel label5 = new JLabel();
-        label5.setText("Hour:");
+        label5.setText(com.floreantpos.POSConstants.HOUR + ":");
         panel3.add(label5, new GridConstraints(5, 0, 1, 1, GridConstraints.ANCHOR_EAST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         endHour = new JComboBox();
         panel3.add(endHour, new GridConstraints(5, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(75, 22), null, 0, false));
         final JLabel label6 = new JLabel();
-        label6.setText("Min:");
+        label6.setText(com.floreantpos.POSConstants.MIN + ":");
         panel3.add(label6, new GridConstraints(5, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         endMin = new JComboBox();
         panel3.add(endMin, new GridConstraints(5, 3, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         endAmPm = new JComboBox();
         final DefaultComboBoxModel defaultComboBoxModel2 = new DefaultComboBoxModel();
-        defaultComboBoxModel2.addElement("AM");
-        defaultComboBoxModel2.addElement("PM");
+        defaultComboBoxModel2.addElement(com.floreantpos.POSConstants.AM);
+        defaultComboBoxModel2.addElement(com.floreantpos.POSConstants.PM);
         endAmPm.setModel(defaultComboBoxModel2);
         panel3.add(endAmPm, new GridConstraints(5, 4, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final Spacer spacer2 = new Spacer();
         panel3.add(spacer2, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         final JLabel label7 = new JLabel();
-        label7.setText("Shift Name:");
+        label7.setText(com.floreantpos.POSConstants.SHIFT_NAME + ":");
         panel3.add(label7, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         tfShiftName = new JTextField();
         panel3.add(tfShiftName, new GridConstraints(0, 1, 1, 4, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));

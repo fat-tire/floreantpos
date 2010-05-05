@@ -53,8 +53,8 @@ public class NumberSelectionView extends TransparentPanel implements ActionListe
 		northPanel.add(tfNumber, BorderLayout.CENTER);
 		
 		PosButton btnClearAll = new PosButton();
-		btnClearAll.setText("CLEAR ALL");
-		btnClearAll.setActionCommand("CLEAR ALL");
+		btnClearAll.setText(com.floreantpos.POSConstants.CLEAR_ALL);
+		btnClearAll.setActionCommand(com.floreantpos.POSConstants.CLEAR_ALL);
 		btnClearAll.setPreferredSize(new Dimension(90, 50));
 		btnClearAll.addActionListener(this);
 		northPanel.add(btnClearAll, BorderLayout.EAST);
@@ -65,7 +65,7 @@ public class NumberSelectionView extends TransparentPanel implements ActionListe
         		{"7","8","9"},
         		{"4","5","6"},
         		{"1","2","3"},
-        		{".","0","CLEAR"}
+        		{".","0",com.floreantpos.POSConstants.CLEAR}
         };
         String[][] iconNames = new String[][] { 
         		{ "7_32.png", "8_32.png", "9_32.png" }, 
@@ -88,7 +88,7 @@ public class NumberSelectionView extends TransparentPanel implements ActionListe
 				}
 				else {
 					posButton.setIcon(icon);
-					if ("CLEAR".equals(buttonText)) {
+					if (com.floreantpos.POSConstants.CLEAR.equals(buttonText)) {
 						posButton.setText(buttonText);
 					}
 				}
@@ -109,10 +109,10 @@ public class NumberSelectionView extends TransparentPanel implements ActionListe
 
 	public void actionPerformed(ActionEvent e) {
 		String actionCommand = e.getActionCommand();
-		if(actionCommand.equals("CLEAR ALL")) {
+		if(actionCommand.equals(com.floreantpos.POSConstants.CLEAR_ALL)) {
 			tfNumber.setText("0");
 		}
-		else if(actionCommand.equals("CLEAR")) {
+		else if(actionCommand.equals(com.floreantpos.POSConstants.CLEAR)) {
 			String s = tfNumber.getText();
 			if(s.length() > 1) {
 				s = s.substring(0, s.length() - 1);

@@ -75,13 +75,13 @@ public class MenuModifierForm extends BeanEditor {
         cbModifierGroup = new javax.swing.JComboBox();
         btnPrintToKitchen = new javax.swing.JCheckBox();
 
-        jLabel2.setText("Price:");
+        jLabel2.setText(com.floreantpos.POSConstants.PRICE + ":");
 
-        jLabel1.setText("Name:");
+        jLabel1.setText(com.floreantpos.POSConstants.NAME + ":");
 
-        jLabel3.setText("Extra Price:");
+        jLabel3.setText(com.floreantpos.POSConstants.EXTRA_PRICE + ":");
 
-        jLabel5.setText("Tax Rate:");
+        jLabel5.setText(com.floreantpos.POSConstants.TAX_RATE + ":");
 
         tfExtraPrice.setText("0");
 
@@ -96,9 +96,9 @@ public class MenuModifierForm extends BeanEditor {
             }
         });
 
-        jLabel4.setText("Group:");
+        jLabel4.setText(com.floreantpos.POSConstants.GROUP + ":");
 
-        btnPrintToKitchen.setText("Print to kitchen");
+        btnPrintToKitchen.setText(com.floreantpos.POSConstants.PRINT_TO_KITCHEN);
         btnPrintToKitchen.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
         btnPrintToKitchen.setMargin(new java.awt.Insets(0, 0, 0, 0));
 
@@ -171,7 +171,7 @@ public class MenuModifierForm extends BeanEditor {
                 .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jTabbedPane1.addTab("General", jPanel1);
+        jTabbedPane1.addTab(com.floreantpos.POSConstants.GENERAL, jPanel1);
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);
         this.setLayout(layout);
@@ -203,7 +203,7 @@ public class MenuModifierForm extends BeanEditor {
 				model.setSelectedItem(tax);
 			}
 		} catch (Exception x) {
-			MessageDialog.showError("An error has occured, please restart the application", x);
+			MessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
 		}
 	}//GEN-LAST:event_btnNewTaxActionPerformed
 
@@ -233,7 +233,7 @@ public class MenuModifierForm extends BeanEditor {
 			ModifierDAO dao = new ModifierDAO();
 			dao.saveOrUpdate(modifier);
 		} catch (Exception e) {
-			MessageDialog.showError("An error has occured, could not save", e);
+			MessageDialog.showError(com.floreantpos.POSConstants.SAVE_ERROR, e);
 			return false;
 		}
 		return true;

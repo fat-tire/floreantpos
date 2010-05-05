@@ -61,7 +61,7 @@ public class SalesSummaryReportView extends javax.swing.JPanel {
 
 		TerminalDAO terminalDAO = new TerminalDAO();
 		List terminals = terminalDAO.findAll();
-		terminals.add(0, "ALL");
+		terminals.add(0, com.floreantpos.POSConstants.ALL);
 		cbTerminal.setModel(new ListComboBoxModel(terminals));
 	}
 
@@ -85,15 +85,15 @@ public class SalesSummaryReportView extends javax.swing.JPanel {
 		jSeparator1 = new javax.swing.JSeparator();
 		reportPanel = new javax.swing.JPanel();
 
-		jLabel1.setText("From:");
+		jLabel1.setText(com.floreantpos.POSConstants.FROM + ":");
 
-		jLabel2.setText("To:");
+		jLabel2.setText(com.floreantpos.POSConstants.TO + ":");
 
-		jLabel3.setText("User Type:");
+		jLabel3.setText(com.floreantpos.POSConstants.USER_TYPE + ":");
 
-		jLabel4.setText("Terminal:");
+		jLabel4.setText(com.floreantpos.POSConstants.TERMINAL + ":");
 
-		btnGo.setText("GO");
+		btnGo.setText(com.floreantpos.POSConstants.GO);
 		btnGo.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				showReport(evt);
@@ -134,13 +134,13 @@ public class SalesSummaryReportView extends javax.swing.JPanel {
 		toDate = toDatePicker.getDate();
 
 		if (fromDate.after(toDate)) {
-			POSMessageDialog.showError(Application.getInstance().getBackOfficeWindow(), "From date cannot be greater than to date.");
+			POSMessageDialog.showError(Application.getInstance().getBackOfficeWindow(), com.floreantpos.POSConstants.FROM_DATE_CANNOT_BE_GREATER_THAN_TO_DATE_);
 			return false;
 		}
 
 		dateDiff = (int) ((toDate.getTime() - fromDate.getTime()) * (1.15740741 * Math.pow(10, -8))) + 1;
 		userType = (UserType) cbUserType.getSelectedItem();
-//		if (userType.equalsIgnoreCase("all")) {
+//		if (userType.equalsIgnoreCase(com.floreantpos.POSConstants.ALL)) {
 //			userType = null;
 //		}
 		terminal = null;
@@ -188,7 +188,7 @@ public class SalesSummaryReportView extends javax.swing.JPanel {
 				showSalesAnalysisReport();
 			}
 		} catch (Exception e) {
-			POSMessageDialog.showError(this, "We are unnable to serve the request, pleas try again", e);
+			POSMessageDialog.showError(this, com.floreantpos.POSConstants.ERROR_MESSAGE, e);
 		}
 	}//GEN-LAST:event_showReport
 
@@ -198,18 +198,18 @@ public class SalesSummaryReportView extends javax.swing.JPanel {
 
 		Map properties = new HashMap();
 		ReportUtil.populateRestaurantProperties(properties);
-		properties.put("subtitle", "SALES SUMMARY REPORT");
+		properties.put("subtitle", com.floreantpos.POSConstants.SALES_SUMMARY_REPORT);
 		properties.put("reportTime", fullDateFormatter.format(new Date()));
 		properties.put("fromDate", shortDateFormatter.format(fromDate));
 		properties.put("toDate", shortDateFormatter.format(toDate));
 		if (userType == null) {
-			properties.put("reportType", "System Total");
+			properties.put("reportType", com.floreantpos.POSConstants.SYSTEM_TOTAL);
 		}
 		else {
 			properties.put("reportType", userType);
 		}
-		properties.put("shift", "All");
-		properties.put("centre", terminal == null ? "ALL" : terminal.getName());
+		properties.put("shift", com.floreantpos.POSConstants.ALL);
+		properties.put("centre", terminal == null ? com.floreantpos.POSConstants.ALL : terminal.getName());
 		properties.put("days", String.valueOf(dateDiff));
 
 		JasperReport report = (JasperReport) JRLoader.loadObject(getClass().getResource("/com/floreantpos/ui/report/sales_summary_report2.jasper"));
@@ -223,24 +223,24 @@ public class SalesSummaryReportView extends javax.swing.JPanel {
 
 		Map properties = new HashMap();
 		ReportUtil.populateRestaurantProperties(properties);
-		properties.put("subtitle", "SALES SUMMARY REPORT");
-		properties.put("Capacity", String.valueOf(summary.getCapacity()));
+		properties.put("subtitle", com.floreantpos.POSConstants.SALES_SUMMARY_REPORT);
+		properties.put(com.floreantpos.POSConstants.CAPACITY, String.valueOf(summary.getCapacity()));
 		properties.put("GuestCount", String.valueOf(summary.getGuestCount()));
 		properties.put("GuestPerSeat", Application.formatNumber(summary.getGuestPerSeat()));
 		properties.put("reportTime", fullDateFormatter.format(new Date()));
 		properties.put("fromDate", shortDateFormatter.format(fromDate));
 		properties.put("toDate", shortDateFormatter.format(toDate));
 		if (userType == null) {
-			properties.put("reportType", "System Total");
+			properties.put("reportType", com.floreantpos.POSConstants.SYSTEM_TOTAL);
 		}
 		else {
 			properties.put("reportType", userType);
 		}
-		properties.put("shift", "All");
-		properties.put("centre", terminal == null ? "ALL" : terminal.getName());
+		properties.put("shift", com.floreantpos.POSConstants.ALL);
+		properties.put("centre", terminal == null ? com.floreantpos.POSConstants.ALL : terminal.getName());
 		properties.put("days", String.valueOf(dateDiff));
 
-		properties.put("Capacity", String.valueOf(summary.getCapacity()));
+		properties.put(com.floreantpos.POSConstants.CAPACITY, String.valueOf(summary.getCapacity()));
 		properties.put("GuestCount", String.valueOf(summary.getGuestCount()));
 		properties.put("GuestPerSeat", Application.formatNumber(summary.getGuestPerCheck()));
 		properties.put("TableTrnOvr", Application.formatNumber(summary.getTableTurnOver()));
@@ -253,7 +253,7 @@ public class SalesSummaryReportView extends javax.swing.JPanel {
 		properties.put("MergeChecks", String.valueOf(" "));
 		properties.put("LaborHour", Application.formatNumber(summary.getLaborHour()));
 		properties.put("LaborSales", Application.formatNumber(summary.getGrossSale()));
-		properties.put("Tables", String.valueOf(summary.getTables()));
+		properties.put(com.floreantpos.POSConstants.TABLES, String.valueOf(summary.getTables()));
 		properties.put("CheckCount", String.valueOf(summary.getCheckCount()));
 		properties.put("GuestPerChecks", Application.formatNumber(summary.getGuestPerCheck()));
 		properties.put("TrnOvrTime", String.valueOf(" "));

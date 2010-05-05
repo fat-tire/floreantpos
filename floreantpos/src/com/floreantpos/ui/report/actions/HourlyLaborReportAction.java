@@ -13,7 +13,7 @@ import com.floreantpos.ui.report.HourlyLaborReportView;
 public class HourlyLaborReportAction extends AbstractAction {
 
 	public HourlyLaborReportAction() {
-		super("Hourly Labor Report");
+		super(com.floreantpos.POSConstants.HOURLY_LABOR_REPORT);
 	}
 
 	public HourlyLaborReportAction(String name) {
@@ -29,10 +29,10 @@ public class HourlyLaborReportAction extends AbstractAction {
 		JTabbedPane tabbedPane = window.getTabbedPane();
 		
 		HourlyLaborReportView reportView = null;
-		int index = tabbedPane.indexOfTab("Hourly Labor Report");
+		int index = tabbedPane.indexOfTab(com.floreantpos.POSConstants.HOURLY_LABOR_REPORT);
 		if (index == -1) {
 			reportView = new HourlyLaborReportView();
-			tabbedPane.addTab("Hourly Labor Report", reportView);
+			tabbedPane.addTab(com.floreantpos.POSConstants.HOURLY_LABOR_REPORT, reportView);
 		}
 		else {
 			reportView = (HourlyLaborReportView) tabbedPane.getComponentAt(index);

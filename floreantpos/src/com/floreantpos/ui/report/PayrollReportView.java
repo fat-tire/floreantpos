@@ -58,11 +58,11 @@ public class PayrollReportView extends TransparentPanel {
     //private JComboBox cbUserType;
 
     public PayrollReportView() {
-        //cbUserType.setModel(new DefaultComboBoxModel(new String[]{"ALL", "SERVER", "CASHIER", "MANAGER"}));
+        //cbUserType.setModel(new DefaultComboBoxModel(new String[]{com.floreantpos.POSConstants.ALL, com.floreantpos.POSConstants.SERVER, com.floreantpos.POSConstants.CASHIER, com.floreantpos.POSConstants.MANAGER}));
 
         TerminalDAO terminalDAO = new TerminalDAO();
         List terminals = terminalDAO.findAll();
-        terminals.add(0, "ALL");
+        terminals.add(0, com.floreantpos.POSConstants.ALL);
        // cbTerminal.setModel(new ListComboBoxModel(terminals));
 
 
@@ -81,12 +81,12 @@ public class PayrollReportView extends TransparentPanel {
         Date toDate = toDatePicker.getDate();
 
         if (fromDate.after(toDate)) {
-            POSMessageDialog.showError(Application.getInstance().getBackOfficeWindow(), "From date cannot be greater than to date.");
+            POSMessageDialog.showError(Application.getInstance().getBackOfficeWindow(), com.floreantpos.POSConstants.FROM_DATE_CANNOT_BE_GREATER_THAN_TO_DATE_);
             return;
         }
 
         /*String userType = (String) cbUserType.getSelectedItem();
-        if (userType.equalsIgnoreCase("all")) {
+        if (userType.equalsIgnoreCase(com.floreantpos.POSConstants.ALL)) {
             userType = null;
         }
         Terminal terminal = null;
@@ -167,13 +167,13 @@ public class PayrollReportView extends TransparentPanel {
         panel1.setLayout(new GridLayoutManager(6, 3, new Insets(0, 0, 0, 0), -1, -1));
         contentPane.add(panel1, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, 1, null, null, null, 0, false));
         final JLabel label1 = new JLabel();
-        label1.setText("From:");
+        label1.setText(com.floreantpos.POSConstants.FROM + ":");
         panel1.add(label1, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JLabel label2 = new JLabel();
-        label2.setText("To:");
+        label2.setText(com.floreantpos.POSConstants.TO + ":");
         panel1.add(label2, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         //final JLabel label3 = new JLabel();
-        //label3.setText("Terminal");
+        //label3.setText(com.floreantpos.POSConstants.TERMINAL);
         //panel1.add(label3, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         fromDatePicker = new JXDatePicker();
         panel1.add(fromDatePicker, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, new Dimension(147, 24), null, 0, false));
@@ -184,10 +184,10 @@ public class PayrollReportView extends TransparentPanel {
         //cbTerminal = new JComboBox();
         //panel1.add(cbTerminal, new GridConstraints(3, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(147, 22), null, 0, false));
         btnGo = new JButton();
-        btnGo.setText("GO");
+        btnGo.setText(com.floreantpos.POSConstants.GO);
         panel1.add(btnGo, new GridConstraints(4, 1, 1, 1, GridConstraints.ANCHOR_EAST, GridConstraints.FILL_NONE, 1, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(147, 23), null, 0, false));
         //final JLabel label4 = new JLabel();
-        //label4.setText("User Type:");
+        //label4.setText(com.floreantpos.POSConstants.USER_TYPE_);
         //panel1.add(label4, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         //cbUserType = new JComboBox();
         //panel1.add(cbUserType, new GridConstraints(2, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(147, 22), null, 0, false));

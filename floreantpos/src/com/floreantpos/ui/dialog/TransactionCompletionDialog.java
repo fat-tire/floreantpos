@@ -34,37 +34,37 @@ public class TransactionCompletionDialog extends POSDialog {
 	private TransactionCompletionDialog(Frame parent) {
 		super(parent, true);
 		
-		setTitle("Transaction Completed");
+		setTitle(com.floreantpos.POSConstants.TRANSACTION_COMPLETED);
 		
 		setLayout(new MigLayout("align 50% 0%, ins 20","[]20[]",""));
 		
-		add(createLabel("TOTAL AMOUNT:",JLabel.LEFT), "grow");
+		add(createLabel("TOTAL AMOUNT" + ":",JLabel.LEFT), "grow");
 		lblTotalAmount = createLabel("0.0",JLabel.RIGHT);
 		add(lblTotalAmount, "grow");
 		
-		add(createLabel("TENDERED AMOUNT:",JLabel.LEFT), "newline,grow");
+		add(createLabel("TENDERED AMOUNT" + ":",JLabel.LEFT), "newline,grow");
 		lblTenderedAmount = createLabel("0.0",JLabel.RIGHT);
 		add(lblTenderedAmount, "grow");
 		
 		add(new JSeparator(), "newline,span, grow");
 		
-		add(createLabel("PAID AMOUNT:",JLabel.LEFT), "newline,grow");
+		add(createLabel("PAID AMOUNT" + ":",JLabel.LEFT), "newline,grow");
 		lblPaidAmount = createLabel("0.0",JLabel.RIGHT);
 		add(lblPaidAmount, "grow");
 
-		add(createLabel("DUE AMOUNT:",JLabel.LEFT), "newline,grow");
+		add(createLabel("DUE AMOUNT" + ":",JLabel.LEFT), "newline,grow");
 		lblDueAmount = createLabel("0.0",JLabel.RIGHT);
 		add(lblDueAmount, "grow");
 		
 		add(new JSeparator(), "newline,span, grow");
 		
-		add(createLabel("GRATUITY AMOUNT:",JLabel.LEFT), "newline,grow");
+		add(createLabel("GRATUITY AMOUNT" + ":",JLabel.LEFT), "newline,grow");
 		lblGratuityAmount = createLabel("0.0",JLabel.RIGHT);
 		add(lblGratuityAmount, "grow");
 		
 		add(new JSeparator(), "newline,span, grow");
 		
-		add(createLabel("CHANGE DUE:",JLabel.LEFT), "grow");
+		add(createLabel("CHANGE DUE" + ":",JLabel.LEFT), "grow");
 		lblChangeDue = createLabel("0.0", JLabel.RIGHT);
 		add(lblChangeDue, "grow");
 		

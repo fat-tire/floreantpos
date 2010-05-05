@@ -57,20 +57,20 @@ public class PayOutView extends TransparentPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         tfNote = new javax.swing.JTextArea();
 
-        numberSelectionView.setTitle("AMOUNT PAID OUT");
+        numberSelectionView.setTitle(com.floreantpos.POSConstants.AMOUNT_PAID_OUT);
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 12));
-        jLabel1.setText("SELECT PAY OUT REASON");
+        jLabel1.setText(com.floreantpos.POSConstants.PAY_OUT_REASON);
 
         cbReason.setFont(new java.awt.Font("Tahoma", 1, 18));
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 12));
-        jLabel2.setText("SELECT PAY OUT RECEPIENT");
+        jLabel2.setText(com.floreantpos.POSConstants.SELECT_PAY_OUT_RECEPIENT);
 
         cbRecepient.setFont(new java.awt.Font("Tahoma", 1, 18));
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 12));
-        jLabel3.setText("NOTES");
+        jLabel3.setText(com.floreantpos.POSConstants.NOTES);
 
         btnAddNote.setText("...");
         btnAddNote.addActionListener(new java.awt.event.ActionListener() {
@@ -136,7 +136,7 @@ public class PayOutView extends TransparentPanel {
 
     private void btnAddNoteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddNoteActionPerformed
     	NotesDialog dialog = new NotesDialog(Application.getPosWindow(), true);
-    	dialog.setTitle("ENTER PAYOUT NOTE");
+    	dialog.setTitle(com.floreantpos.POSConstants.ENTER_PAYOUT_NOTE);
     	dialog.pack();
     	dialog.open();
     	

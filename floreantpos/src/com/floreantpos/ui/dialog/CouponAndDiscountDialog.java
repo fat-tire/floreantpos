@@ -141,13 +141,13 @@ public class CouponAndDiscountDialog extends POSDialog implements ActionListener
 
         jSeparator2.setOrientation(javax.swing.SwingConstants.VERTICAL);
 
-        jLabel1.setText("Coupon/Discount Name:");
+        jLabel1.setText("Coupon/Discount Name" + ":");
 
-        jLabel2.setText("Coupon/Discount Number:");
+        jLabel2.setText("Coupon/Discount Number" + ":");
 
-        jLabel3.setText("Coupon/Discount Type:");
+        jLabel3.setText("Coupon/Discount Type" + ":");
 
-        jLabel4.setText("Coupon/Discount Value:");
+        jLabel4.setText("Coupon/Discount Value" + ":");
 
         tfName.setEditable(false);
 

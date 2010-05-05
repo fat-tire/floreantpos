@@ -13,7 +13,7 @@ import com.floreantpos.ui.report.SalesExceptionReportView;
 public class SalesExceptionReportAction extends AbstractAction {
 
 	public SalesExceptionReportAction() {
-		super("Sales Exception Report");
+		super(com.floreantpos.POSConstants.SALES_EXCEPTION_REPORT);
 	}
 
 	public SalesExceptionReportAction(String name) {
@@ -29,10 +29,10 @@ public class SalesExceptionReportAction extends AbstractAction {
 		JTabbedPane tabbedPane = window.getTabbedPane();
 		
 		SalesExceptionReportView reportView = null;
-		int index = tabbedPane.indexOfTab("Sales Exception Report");
+		int index = tabbedPane.indexOfTab(com.floreantpos.POSConstants.SALES_EXCEPTION_REPORT);
 		if (index == -1) {
 			reportView = new SalesExceptionReportView();
-			tabbedPane.addTab("Sales Exception Report", reportView);
+			tabbedPane.addTab(com.floreantpos.POSConstants.SALES_EXCEPTION_REPORT, reportView);
 		}
 		else {
 			reportView = (SalesExceptionReportView) tabbedPane.getComponentAt(index);

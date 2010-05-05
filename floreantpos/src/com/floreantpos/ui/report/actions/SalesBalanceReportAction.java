@@ -13,7 +13,7 @@ import com.floreantpos.ui.report.SalesBalanceReportView;
 public class SalesBalanceReportAction extends AbstractAction {
 
 	public SalesBalanceReportAction() {
-		super("Sales Balance Report");
+		super(com.floreantpos.POSConstants.SALES_BALANCE_REPORT);
 	}
 
 	public SalesBalanceReportAction(String name) {
@@ -29,10 +29,10 @@ public class SalesBalanceReportAction extends AbstractAction {
 		JTabbedPane tabbedPane = window.getTabbedPane();
 		
 		SalesBalanceReportView reportView = null;
-		int index = tabbedPane.indexOfTab("Sales Balance Report");
+		int index = tabbedPane.indexOfTab(com.floreantpos.POSConstants.SALES_BALANCE_REPORT);
 		if (index == -1) {
 			reportView = new SalesBalanceReportView();
-			tabbedPane.addTab("Sales Balance Report", reportView);
+			tabbedPane.addTab(com.floreantpos.POSConstants.SALES_BALANCE_REPORT, reportView);
 		}
 		else {
 			reportView = (SalesBalanceReportView) tabbedPane.getComponentAt(index);
