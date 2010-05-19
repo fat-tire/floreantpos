@@ -17,6 +17,7 @@ import javax.swing.JTextField;
 
 import net.miginfocom.swing.MigLayout;
 
+import com.floreantpos.POSConstants;
 import com.floreantpos.config.ApplicationConfig;
 import com.floreantpos.ui.TitlePanel;
 import com.floreantpos.ui.dialog.POSDialog;
@@ -24,10 +25,10 @@ import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.views.PasswordScreen;
 
 public class DatabaseConfigurationDialog extends POSDialog implements ActionListener {
-	private final String TEST = "TEST"; 
-	private final String SAVE = com.floreantpos.POSConstants.SAVE; 
-	private final String CLOSE = com.floreantpos.POSConstants.CLOSE; 
 	
+	private static final String CLOSE = "close";
+	private static final String SAVE = "save";
+	private static final String TEST = "test";
 	private JTextField tfServerAddress;
 	private JTextField tfServerPort;
 	private JTextField tfDatabaseName;
@@ -87,9 +88,9 @@ public class DatabaseConfigurationDialog extends POSDialog implements ActionList
 		
 		btnTestConnection = new JButton("Test Connection");
 		btnTestConnection.setActionCommand(TEST);
-		btnFinish = new JButton("Finish");
+		btnFinish = new JButton(POSConstants.SAVE);
 		btnFinish.setActionCommand(SAVE);
-		btnExit = new JButton("Cancel");
+		btnExit = new JButton(POSConstants.CLOSE);
 		btnExit.setActionCommand(CLOSE);
 		
 		JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
