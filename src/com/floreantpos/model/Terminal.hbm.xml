@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.floreantpos.model">
+  <class lazy="false" name="com.floreantpos.model.Terminal" optimistic-lock="version" table="TERMINAL">
+    <id column="ID" name="id" type="java.lang.Integer">
+      <generator class="assigned"/>
+    </id>
+    <version column="MODIFIED_TIME" name="modifiedTime" type="timestamp"/>
+    <property column="NAME" length="60" name="name" type="java.lang.String"/>
+    <property column="OPENING_BALANCE" length="52" name="openingBalance" type="java.lang.Double"/>
+    <property column="CURRENT_BALANCE" length="52" name="currentBalance" type="java.lang.Double"/>
+    <!-- Associations -->
+  </class>
+</hibernate-mapping>

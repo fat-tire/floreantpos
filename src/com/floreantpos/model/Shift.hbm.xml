@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.floreantpos.model">
+  <class lazy="false" name="Shift" table="SHIFT">
+    <id column="ID" name="id" type="java.lang.Integer">
+      <generator class="identity"/>
+    </id>
+    <property column="NAME" length="60" name="name" not-null="true" type="string" unique="true"/>
+    <property column="START_TIME" name="startTime" type="java.util.Date"/>
+    <property column="END_TIME" name="endTime" type="java.util.Date"/>
+    <property column="SHIFT_LEN" name="shiftLength" type="java.lang.Long"/>
+  </class>
+</hibernate-mapping>

@@ -1,0 +1,20 @@
+<launch4jConfig>
+  <dontWrapJar>true</dontWrapJar>
+  <headerType>1</headerType>
+  <jar>mds-pos.jar</jar>
+  <outfile>D:\projects\mds-pos\schema-manager.exe</outfile>
+  <errTitle></errTitle>
+  <jarArgs></jarArgs>
+  <chdir>.</chdir>
+  <customProcName>true</customProcName>
+  <stayAlive>false</stayAlive>
+  <icon></icon>
+  <jre>
+    <path></path>
+    <minVersion>1.5.0</minVersion>
+    <maxVersion></maxVersion>
+    <initialHeapSize>0</initialHeapSize>
+    <maxHeapSize>0</maxHeapSize>
+    <args>-cp mds-pos.jar com.floreantpos.main.SchemaManager</args>
+  </jre>
+</launch4jConfig>

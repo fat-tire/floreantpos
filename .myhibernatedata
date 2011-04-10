@@ -1,0 +1,19 @@
+#
+#Mon Oct 02 11:57:53 BDT 2006
+springDaoFile=
+genVersionTag=false
+daoSFId=
+configFile=/mds-pos/src/hibernate.cfg.xml
+sessionFactoryId=
+profile=
+libInstallFolder=
+addLibs2Classpath=false
+jndiPath=
+genBasicCompId=false
+addLibs2Project=false
+keyGenerator=identity
+createConfigFile=true
+basePersistenceClass=
+version=3.0
+useJavaTypes=false
+reSettingsFile=/mds-pos/test/hibernate.reveng.xml

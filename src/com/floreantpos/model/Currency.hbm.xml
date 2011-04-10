@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.floreantpos.model">
+  <class lazy="false" name="com.floreantpos.model.Currency" optimistic-lock="version" table="CURRENCY">
+    <id column="ID" name="id" type="java.lang.Integer">
+      <generator class="assigned"/>
+    </id>
+    <version column="MODIFIED_TIME" name="modifiedTime" type="timestamp"/>
+    <property column="NAME" length="20" name="name" not-null="true" type="java.lang.String"/>
+    <property column="SYMBOL" length="10" name="symbol" type="java.lang.String"/>
+    <property column="DOLLAR_EXCHANGE_RATE" length="52" name="dollarExchangeRate" type="java.lang.Double">
+      <meta attribute="defaultValue">1</meta>
+    </property>
+    <!-- Associations -->
+  </class>
+</hibernate-mapping>

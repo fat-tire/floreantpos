@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping default-lazy="false" package="com.floreantpos.model">
+  <class lazy="false" name="Restaurant" table="RESTAURANT">
+    <id column="ID" name="id" type="java.lang.Integer">
+      <generator class="assigned"/>
+    </id>
+    <property column="NAME" length="40" name="name" type="string"/>
+    <property column="ADDRESS_LINE1" length="20" name="addressLine1" type="string"/>
+    <property column="ADDRESS_LINE2" length="20" name="addressLine2" type="string"/>
+    <property column="ADDRESS_LINE3" length="20" name="addressLine3" type="string"/>
+    <property column="TELEPHONE" length="16" name="telephone" type="string"/>
+    <property column="CAPACITY" name="capacity" type="java.lang.Integer"/>
+    <property column="TABLES" name="tables" type="java.lang.Integer"/>
+    <property column="AUTODRAWERPULLENABLE" name="autoDrawerPullEnable" type="java.lang.Boolean"/>
+    <property column="DRAWER_PULL_HOUR" name="drawerPullHour" type="java.lang.Integer"/>
+    <property column="DRAWER_PULL_MIN" name="drawerPullMin" type="java.lang.Integer"/>
+    <property column="CNAME" length="20" name="currencyName" type="string"/>
+    <property column="CSYMBOL" length="10" name="currencySymbol" type="string"/>
+  </class>
+</hibernate-mapping>

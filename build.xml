@@ -1,0 +1,91 @@
+<project name="floreantpos" default="dist">
+	<property name="src.dir" value="src"/>
+	<property name="out.dir" value="antbin"/>
+	<property name="dist.base" value="dist"/>
+	<property name="dist.dir" value="${dist.base}/floreantpos"/>
+	<property name="jarfile" value="floreantpos.jar"/>
+	<property name="app.name" value="floreantpos"/>
+	<property name="app.version" value="1.0_3"/>
+	<property name="app.file" value="${dist.base}/${app.name}-${app.version}.zip"/>
+
+	<target name="compile">
+		<mkdir dir="${out.dir}"/>
+		
+		<javac srcdir="${src.dir}" destdir="${out.dir}" source="1.5" target="1.5">
+			<classpath>
+				<fileset dir="lib">
+					<include name="**/*.jar" />
+				</fileset>
+			</classpath>
+		</javac>
+		
+		<copy todir="${out.dir}">
+			<fileset dir="${src.dir}">
+				<exclude name="**/*.java"/>
+			</fileset>
+		</copy>
+		
+		<mkdir dir="${out.dir}/config"/>
+		<copy todir="${out.dir}/config">
+			<fileset dir="config">
+				<exclude name="**/*.java"/>
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="jar" depends="compile">
+		<delete dir="${dist.base}"></delete>
+		<mkdir dir="${dist.dir}"/>
+		
+		<pathconvert property="jar.classpath" pathsep=" ">
+			<path>
+				<fileset dir="lib">
+					<include name="**/*.jar" />
+				</fileset>
+			</path>
+			<chainedmapper>
+				<flattenmapper />
+				<globmapper from="*" to="lib/*" />
+			</chainedmapper>
+		</pathconvert>
+		<jar destfile="${dist.dir}/${jarfile}" basedir="${out.dir}">
+			<manifest>
+				<attribute name="Main-Class" value="com.floreantpos.main.Main" />
+				<attribute name="Class-Path" value="${jar.classpath} messages.zip" />
+			</manifest>
+		</jar>
+	</target>
+	
+	<target name="dist" depends="jar">
+		<delete file="${app.file}" />
+		<mkdir dir="${dist.dir}/lib"/>		
+		<copy todir="${dist.dir}/lib">
+			<fileset dir="lib" includes="*"/>
+		</copy>
+		<copy todir="${dist.dir}">
+			<fileset dir=".">
+				<include name="*.dll"/>
+				<include name="*.bat"/>
+				<include name="*.exe"/>
+				<include name="*.sh"/>
+			</fileset>
+		</copy>
+		
+		<unzip dest="${dist.dir}" src="posdb.zip"/>
+		
+		<zip destfile="${dist.dir}/messages.zip" basedir="config">
+			<include name="*.properties"/>
+		</zip>
+		
+		<zip destfile="${app.file}" basedir="${dist.base}" />
+	</target>
+	
+	<target name="clean">
+		<delete dir="${out.dir}"></delete>
+	</target>
+	
+	<target name="cleanall" depends="clean">
+		<delete dir="${dist.base}"></delete>
+		<delete file="${app.file}"/>
+	</target>
+</project>

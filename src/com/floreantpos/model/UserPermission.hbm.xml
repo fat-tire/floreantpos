@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.floreantpos.model">
+  <class lazy="false" name="com.floreantpos.model.UserPermission" table="USER_PERMISSION">
+    <!--id name="id" column="ID" type="java.lang.Integer">
+			<generator class="identity"></generator>
+		</id-->
+    <id column="NAME" length="40" name="name" type="string">
+      <generator class="assigned"/>
+    </id>
+    <!--property name="name" type="java.lang.String" column="P_NAME" length="60" /-->
+  </class>
+</hibernate-mapping>
