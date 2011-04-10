@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.floreantpos.model">
+  <class lazy="false" name="CashDrawerResetHistory" table="CASH_DRAWER_RESET_HISTORY">
+    <id column="ID" name="id" type="java.lang.Integer">
+      <generator class="identity"/>
+    </id>
+    <property column="RESET_TIME" index="drawer_reset_time" name="resetTime" type="java.util.Date"/>
+    <one-to-one class="DrawerPullReport" lazy="false" name="drawerPullReport">
+            	
+            </one-to-one>
+    <many-to-one class="com.floreantpos.model.User" lazy="false" name="resetedBy">
+      <column name="USER_ID"/>
+    </many-to-one>
+  </class>
+</hibernate-mapping>

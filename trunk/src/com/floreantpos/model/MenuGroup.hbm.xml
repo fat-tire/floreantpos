@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.floreantpos.model">
+  <class lazy="false" name="com.floreantpos.model.MenuGroup" optimistic-lock="version" table="MENU_GROUP">
+    <id column="ID" name="id" type="java.lang.Integer">
+      <generator class="identity"/>
+    </id>
+    <version column="MODIFIED_TIME" name="modifiedTime" type="timestamp"/>
+    <property column="NAME" length="20" name="name" not-null="true" type="java.lang.String"/>
+    <!-- property name="image" type="java.sql.Blob" column="IMAGE" length="1048576" /-->
+    <property column="VISIBLE" index="menugroupvisible" name="visible" type="java.lang.Boolean"/>
+    <!-- Associations -->
+    <!-- uni-directional many-to-one association to FoodCategory -->
+    <many-to-one class="com.floreantpos.model.MenuCategory" lazy="false" name="parent">
+      <column name="CATEGORY_ID"/>
+    </many-to-one>
+  </class>
+</hibernate-mapping>

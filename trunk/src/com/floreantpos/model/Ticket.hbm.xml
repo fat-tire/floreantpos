@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.floreantpos.model">
+  <class lazy="false" name="com.floreantpos.model.Ticket" optimistic-lock="version" table="TICKET">
+    <id column="ID" name="id" type="java.lang.Integer">
+      <generator class="identity"/>
+    </id>
+    <version column="MODIFIED_TIME" name="modifiedTime" type="timestamp"/>
+    <property column="CREATE_DATE" index="ticketcreateDate" length="10" name="createDate" type="java.util.Date"/>
+    <property column="CLOSING_DATE" index="ticketclosingDate" length="10" name="closingDate" type="java.util.Date"/>
+    <property column="ACTIVE_DATE" index="ticketactiveDate" length="10" name="activeDate" type="java.util.Date"/>
+    <property column="CREATION_HOUR" index="creationHour" name="creationHour" type="java.lang.Integer"/>
+    <property column="PAID" index="ticketpaid" name="paid" type="java.lang.Boolean"/>
+    <property column="VOIDED" index="ticketvoided" name="voided" type="java.lang.Boolean"/>
+    <property column="VOID_REASON" name="voidReason" type="java.lang.String"/>
+    <property column="WASTED" name="wasted" type="java.lang.Boolean"/>
+    <!-- a ticket is marked as closed it is either paid or voided -->
+    <property column="SETTLED" index="ticketsettled" name="closed" type="java.lang.Boolean"/>
+    <property column="DRAWER_RESETTED" index="drawerresetted" name="drawerResetted" type="java.lang.Boolean"/>
+    <property column="SUB_TOTAL" length="52" name="subtotalAmount" type="java.lang.Double"/>
+    <property column="TOTAL_DISCOUNT" length="52" name="discountAmount" type="java.lang.Double"/>
+    <property column="TOTAL_TAX" length="52" name="taxAmount" type="java.lang.Double"/>
+    <property column="TOTAL_PRICE" length="52" name="totalAmount" type="java.lang.Double"/>
+    <property column="PAID_AMOUNT" length="52" name="paidAmount" type="java.lang.Double"/>
+    <property column="DUE_AMOUNT" length="52" name="dueAmount" type="java.lang.Double"/>
+    <!--tableNumber should be -1 for take out-->
+    <property column="TABLE_NUMBER" name="tableNumber" type="java.lang.Integer"/>
+    <property column="NUMBER_OF_GUESTS" name="numberOfGuests" type="java.lang.Integer"/>
+    <!-- property name="gratuityAmount" type="java.lang.Double" column="GRATUITY_AMOUNT" />
+		<property name="gratuityPaid" type="java.lang.Boolean" column="GRATUITY_PAID" /-->
+    <property column="TRANSACTION_TYPE" index="tickettransactionType" length="20" name="transactionType" type="string"/>
+    <property column="TRANSACTION_CODE" length="60" name="transactionCode" type="string"/>
+    <property column="BAR_CODE" length="60" name="barCode" type="string"/>
+    <property column="CARD_TYPE" length="60" name="cardType" type="string"/>
+    <property column="CARD_NUMBER" length="60" name="cardNumber" type="string"/>
+    <property column="IS_TAX_EXEMPT" name="taxExempt" type="java.lang.Boolean"/>
+    <property column="IS_RE_OPENED" name="reOpened" type="java.lang.Boolean"/>
+    <!-- Associations -->
+    <!-- uni-directional many-to-one association to RestaurantTable -->
+    <!-- many-to-one name="restaurantTable" class="com.floreantpos.model.RestaurantTable" lazy="false">
+			<column name="RESTAURANT_TABLE_ID" />
+		</many-to-one-->
+    <!-- bi-directional one-to-many association to TicketItem -->
+    <list cascade="all" inverse="false" lazy="true" name="ticketItems">
+      <key>
+        <column name="TICKET_ID"/>
+      </key>
+      <list-index column="ITEM_ORDER"/>
+      <one-to-many class="com.floreantpos.model.TicketItem"/>
+    </list>
+    <list cascade="all" inverse="false" lazy="true" name="couponAndDiscounts">
+      <key>
+        <column name="TICKET_ID"/>
+      </key>
+      <list-index column="D_ORDER"/>
+      <one-to-many class="com.floreantpos.model.TicketCouponAndDiscount"/>
+    </list>
+    <set cascade="all" inverse="false" lazy="true" name="cookingInstructions" table="TICKET_COOKING_INSTRUCTION">
+      <key column="TICKET_ID"/>
+      <composite-element class="TicketCookingInstruction">
+        <property length="60" name="description" type="string"/>
+        <property name="printedToKitchen" type="java.lang.Boolean"/>
+      </composite-element>
+    </set>
+    <!-- uni-directional many-to-one association to User -->
+    <many-to-one class="com.floreantpos.model.Shift" lazy="false" name="shift">
+      <column name="SHIFT_ID"/>
+    </many-to-one>
+    <many-to-one class="com.floreantpos.model.User" lazy="false" name="owner">
+      <column name="OWNER_ID"/>
+    </many-to-one>
+    <many-to-one cascade="all" class="com.floreantpos.model.Gratuity" lazy="false" name="gratuity">
+      <column name="GRATUITY_ID"/>
+    </many-to-one>
+    <many-to-one class="com.floreantpos.model.User" lazy="false" name="voidedBy">
+      <column name="VOID_BY_USER"/>
+    </many-to-one>
+    <many-to-one class="com.floreantpos.model.Terminal" lazy="false" name="terminal">
+      <column name="TERMINAL_ID"/>
+    </many-to-one>
+  </class>
+</hibernate-mapping>
