@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.floreantpos.model">
+  <class lazy="false" name="com.floreantpos.model.MenuItemModifierGroup" optimistic-lock="version" table="MENUITEM_MODIFIERGROUP">
+    <id column="ID" name="id" type="java.lang.Integer">
+      <generator class="identity"/>
+    </id>
+    <version column="MODIFIED_TIME" name="modifiedTime" type="timestamp"/>
+    <property column="MIN_QUANTITY" name="minQuantity" type="java.lang.Integer"/>
+    <property column="MAX_QUANTITY" name="maxQuantity" type="java.lang.Integer"/>
+    <!-- Associations -->
+    <!-- bi-directional one-to-many association to ModifierItem -->
+    <many-to-one class="MenuModifierGroup" column="MODIFIER_GROUP" name="modifierGroup"/>
+    <many-to-one class="MenuItem" column="MENU_ITEM" name="parentMenuItem"/>
+  </class>
+</hibernate-mapping>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.floreantpos.model">
+  <class lazy="false" name="com.floreantpos.model.TicketItemModifierGroup" optimistic-lock="version" table="TICKETITEM_MODIFIERGROUP">
+    <id column="ID" name="id" type="java.lang.Integer">
+      <generator class="identity"/>
+    </id>
+    <version column="MODIFIED_TIME" name="modifiedTime" type="timestamp"/>
+    <property column="GROUP_ID" name="modifierGroupId" type="java.lang.Integer"/>
+    <property column="MIN_QUANTITY" name="minQuantity" type="java.lang.Integer"/>
+    <property column="MAX_QUANTITY" name="maxQuantity" type="java.lang.Integer"/>
+    <many-to-one class="TicketItem" name="parent"/>
+    <list cascade="all" inverse="false" lazy="true" name="ticketItemModifiers">
+      <key>
+        <column name="TICKETITEMMODIFIERGROUP_ID"/>
+      </key>
+      <list-index column="ITEM_ORDER"/>
+      <one-to-many class="com.floreantpos.model.TicketItemModifier"/>
+    </list>
+  </class>
+</hibernate-mapping>

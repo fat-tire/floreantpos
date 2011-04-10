@@ -1,0 +1,19 @@
+Trying to change property 'svn:ignore' from 'antbin
+bin
+dist
+nbproject
+posdb
+' to 'antbin
+bin
+dist
+nbproject
+posdb
+database
+',
+but property already exists with value 'antbin
+bin
+dist
+nbproject
+posdb
+build
+'.

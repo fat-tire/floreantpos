@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.floreantpos.model">
+  <class lazy="false" name="com.floreantpos.model.MenuItem" optimistic-lock="version" table="MENU_ITEM">
+    <id column="ID" name="id" type="java.lang.Integer">
+      <generator class="identity"/>
+    </id>
+    <version column="MODIFIED_TIME" name="modifiedTime" type="timestamp"/>
+    <property column="NAME" length="30" name="name" not-null="true" type="java.lang.String"/>
+    <property column="PRICE" length="52" name="price" not-null="true" type="java.lang.Double"/>
+    <property column="DISCOUNT_RATE" length="52" name="discountRate" type="java.lang.Double"/>
+    <property column="VISIBLE" name="visible" type="java.lang.Boolean">
+      <meta attribute="defaultValue">true</meta>
+    </property>
+    <!-- uni-directional many-to-one association to FoodGroup -->
+    <many-to-one class="com.floreantpos.model.MenuGroup" name="parent">
+      <column name="GROUP_ID"/>
+    </many-to-one>
+    <list cascade="all" inverse="false" lazy="true" name="shifts" table="MENUITEM_SHIFT">
+      <key column="MENUITEM_ID"/>
+      <list-index column="SHIFT_ORDER"/>
+      <one-to-many class="MenuItemShift"/>
+    </list>
+    <list cascade="all" inverse="false" lazy="true" name="menuItemModiferGroups">
+      <key>
+        <column name="MENUITEM_MODIFIERGROUP_ID"/>
+      </key>
+      <list-index column="GR_ORDER"/>
+      <one-to-many class="MenuItemModifierGroup"/>
+    </list>
+    <!-- uni-directional many-to-one association to Tax -->
+    <many-to-one class="com.floreantpos.model.Tax" lazy="false" name="tax">
+      <column name="TAX_ID"/>
+    </many-to-one>
+  </class>
+</hibernate-mapping>

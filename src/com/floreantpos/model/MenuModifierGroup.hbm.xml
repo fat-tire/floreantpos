@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.floreantpos.model">
+  <class lazy="false" name="com.floreantpos.model.MenuModifierGroup" optimistic-lock="version" table="MENU_MODIFIER_GROUP">
+    <id column="ID" name="id" type="java.lang.Integer">
+      <generator class="identity"/>
+    </id>
+    <version column="MODIFIED_TIME" name="modifiedTime" type="timestamp"/>
+    <property column="NAME" length="60" name="name" type="java.lang.String"/>
+    <property column="ENABLED" index="mg_enable" name="enable" type="java.lang.Boolean"/>
+    <property column="EXCLUSIVED" name="exclusive" type="java.lang.Boolean"/>
+    <property column="REQUIRED" name="required" type="java.lang.Boolean"/>
+    <!-- Associations -->
+    <!-- bi-directional one-to-many association to ModifierItem -->
+    <set cascade="all" inverse="true" lazy="false" name="modifiers">
+      <key column="GROUP_ID"/>
+      <one-to-many class="com.floreantpos.model.MenuModifier"/>
+    </set>
+  </class>
+</hibernate-mapping>

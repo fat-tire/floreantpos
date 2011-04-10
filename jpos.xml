@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--DOCTYPE JposEntries PUBLIC "-//JavaPOS//DTD//EN" "jpos/res/jcl.dtd"-->
+
+<JposEntries>
+	<JposEntry logicalName="POSPrinter">
+	        <creation factoryClass="jp.co.epson.uposcommon.util.EpsonJposServiceInstanceFactory" serviceClass="jp.co.epson.upos.pntr.T88IIIService"/>
+	        <vendor name="SEIKO EPSON" url="http://www.epson.co.jp"/>
+	        <jpos category="POSPrinter" version="1.9.2"/>
+	        <product description="EPSON TM-T88III Printer Device Service" name="EPSON Services for JavaPOS(TM) Standard" url="http://www.epson.co.jp"/>
+
+	        <!--Other non JavaPOS required property (mostly vendor properties and bus specific properties i.e. RS232 )-->
+	        <prop name="Halftone" type="String" value="0"/>
+	        <prop name="PhysicalPrinterName" type="String" value="TM-T88III"/>
+	        <prop name="NVRAMControlLevel" type="String" value="1"/>
+	        <prop name="Stamp" type="String" value="0"/>
+	        <prop name="OutputCompleteType" type="String" value="2"/>
+	        <prop name="StatusThreadInterval" type="String" value="100"/>
+	        <prop name="OutputTimeout" type="String" value="500"/>
+	        <prop name="PortType" type="String" value="2"/>
+	        <prop name="OutputBufferSize" type="String" value="65536"/>
+	        <prop name="UsedNVRAM" type="String" value="0"/>
+	        <prop name="FirmRecordLog" type="String" value="1"/>
+	        <prop name="ReceiveTimeout" type="String" value="1000"/>
+	        <prop name="SlpReverseEject" type="String" value="0"/>
+	        <prop name="PortName" type="String" value="TM-T88III"/>
+	        <prop name="OfflineRetryIntervalTime" type="String" value="25"/>
+	        <prop name="DefaultSlpClampTime" type="String" value="0"/>
+	        <prop name="epson.trace.file" type="String" value="trace.log"/>
+	        <prop name="AsyncProcessingSize" type="String" value="2"/>
+	        <prop name="KanjiTwoWaysPrint" type="String" value="0"/>
+	        <prop name="PortInterfaceName" type="String" value="USB"/>
+	        <prop name="OutPipe" type="String" value="0"/>
+	        <prop name="U375Compatible" type="String" value="0"/>
+	        <prop name="PortNameType" type="String" value="0"/>
+	        <prop name="epson.tracing" type="String" value="true"/>
+	        <prop name="epson.trace.max.size" type="String" value="1000"/>
+	        <prop name="RecPaperSize" type="String" value="80"/>
+	        <prop name="DeviceDesc" type="String" value="EPSON TM-T88III POSPrinter"/>
+	        <prop name="PageModeExt" type="String" value="0"/>
+	        <prop name="SupportStatistics" type="String" value="1"/>
+	        <prop name="FirmProgressRange" type="String" value="10"/>
+	        <prop name="OutputErrorOption" type="String" value="0"/>
+	        <prop name="SupportFirmware" type="String" value="0"/>
+	        <prop name="InputTimeout" type="String" value="100"/>
+	        <prop name="AutoPowerOff" type="String" value="0"/>
+	        <prop name="SlpMoreColumns" type="String" value="0"/>
+	        <prop name="RecPaperType" type="String" value="0"/>
+	        <prop name="MemorySwitch" type="String" value="0"/>
+	        <prop name="ReadThreadInterval" type="String" value="-1"/>
+	        <prop name="QueuingOfflineTimeout" type="String" value="1000"/>
+	        <prop name="InitializeThreadTime" type="String" value="1000"/>
+	        <prop name="TwoColor" type="String" value="0"/>
+	        <prop name="TwoByteCharacter" type="String" value="0"/>
+	        <prop name="FirmLogFileSize" type="String" value="1000"/>
+	        <prop name="Peeler" type="String" value="0"/>
+	        <prop name="InPipe" type="String" value="1"/>
+	        <prop name="ConfigurationFile" type="String" value="epson/xml/Setting/TM-T88IIISetting.xml"/>
+	        <prop name="Custom1Color" type="String" value="0"/>
+	        <prop name="FirmNotifyAllProgressEvents" type="String" value="0"/>
+	        <prop name="InitializeResponseTimeout" type="String" value="1000"/>
+	        <prop name="ReceiveRetryTime" type="String" value="25"/>
+	        <prop name="PrinterTransmitTimeout" type="String" value="30000"/>
+	        <prop name="RecMoreColumns" type="String" value="0"/>
+	        <prop name="UsedInterCharacterSet" type="String" value="0"/>
+	        <prop name="WriteThreadInterval" type="String" value="-1"/>
+	        <prop name="RecNearEndSensor" type="String" value="1"/>
+	        <prop name="LogObject" type="String" value=""/>
+	        <prop name="Cutter" type="String" value="1"/>
+	        <prop name="PhysicalDevice" type="String" value="TM-T88III"/>
+	        <prop name="UsedPeeler" type="String" value="0"/>
+	        <prop name="FirmLogFileName" type="String" value="Firmware.log"/>
+	        <prop name="InputBufferSize" type="String" value="4096"/>
+	        <prop name="TransmitTimeout" type="String" value="5000"/>
+	        <prop name="OfflineCount" type="String" value="2"/>
+	        <prop name="TransmitRetryTime" type="String" value="100"/>
+	        <prop name="DirectIOEventTimeout" type="String" value="5000"/>
+	</JposEntry>
+	
+	<JposEntry logicalName="KitchenPrinter">
+		<creation factoryClass="jp.co.epson.uposcommon.util.EpsonJposServiceInstanceFactory" serviceClass="jp.co.epson.upos.pntr.T88IIIService"/>
+	        <vendor name="SEIKO EPSON" url="http://www.epson.co.jp"/>
+	        <jpos category="POSPrinter" version="1.9.2"/>
+	        <product description="EPSON TM-T88III Printer Device Service" name="EPSON Services for JavaPOS(TM) Standard" url="http://www.epson.co.jp"/>
+
+	        <!--Other non JavaPOS required property (mostly vendor properties and bus specific properties i.e. RS232 )-->
+	        <prop name="Halftone" type="String" value="0"/>
+	        <prop name="PhysicalPrinterName" type="String" value="TM-T88III"/>
+	        <prop name="NVRAMControlLevel" type="String" value="1"/>
+	        <prop name="Stamp" type="String" value="0"/>
+	        <prop name="OutputCompleteType" type="String" value="2"/>
+	        <prop name="StatusThreadInterval" type="String" value="100"/>
+	        <prop name="OutputTimeout" type="String" value="500"/>
+	        <prop name="PortType" type="String" value="2"/>
+	        <prop name="OutputBufferSize" type="String" value="65536"/>
+	        <prop name="UsedNVRAM" type="String" value="0"/>
+	        <prop name="FirmRecordLog" type="String" value="1"/>
+	        <prop name="ReceiveTimeout" type="String" value="1000"/>
+	        <prop name="SlpReverseEject" type="String" value="0"/>
+	        <prop name="PortName" type="String" value="TM-T88III"/>
+	        <prop name="OfflineRetryIntervalTime" type="String" value="25"/>
+	        <prop name="DefaultSlpClampTime" type="String" value="0"/>
+	        <prop name="epson.trace.file" type="String" value="trace.log"/>
+	        <prop name="AsyncProcessingSize" type="String" value="2"/>
+	        <prop name="KanjiTwoWaysPrint" type="String" value="0"/>
+	        <prop name="PortInterfaceName" type="String" value="USB"/>
+	        <prop name="OutPipe" type="String" value="0"/>
+	        <prop name="U375Compatible" type="String" value="0"/>
+	        <prop name="PortNameType" type="String" value="0"/>
+	        <prop name="epson.tracing" type="String" value="true"/>
+	        <prop name="epson.trace.max.size" type="String" value="1000"/>
+	        <prop name="RecPaperSize" type="String" value="80"/>
+	        <prop name="DeviceDesc" type="String" value="EPSON TM-T88III POSPrinter"/>
+	        <prop name="PageModeExt" type="String" value="0"/>
+	        <prop name="SupportStatistics" type="String" value="1"/>
+	        <prop name="FirmProgressRange" type="String" value="10"/>
+	        <prop name="OutputErrorOption" type="String" value="0"/>
+	        <prop name="SupportFirmware" type="String" value="0"/>
+	        <prop name="InputTimeout" type="String" value="100"/>
+	        <prop name="AutoPowerOff" type="String" value="0"/>
+	        <prop name="SlpMoreColumns" type="String" value="0"/>
+	        <prop name="RecPaperType" type="String" value="0"/>
+	        <prop name="MemorySwitch" type="String" value="0"/>
+	        <prop name="ReadThreadInterval" type="String" value="-1"/>
+	        <prop name="QueuingOfflineTimeout" type="String" value="1000"/>
+	        <prop name="InitializeThreadTime" type="String" value="1000"/>
+	        <prop name="TwoColor" type="String" value="0"/>
+	        <prop name="TwoByteCharacter" type="String" value="0"/>
+	        <prop name="FirmLogFileSize" type="String" value="1000"/>
+	        <prop name="Peeler" type="String" value="0"/>
+	        <prop name="InPipe" type="String" value="1"/>
+	        <prop name="ConfigurationFile" type="String" value="epson/xml/Setting/TM-T88IIISetting.xml"/>
+	        <prop name="Custom1Color" type="String" value="0"/>
+	        <prop name="FirmNotifyAllProgressEvents" type="String" value="0"/>
+	        <prop name="InitializeResponseTimeout" type="String" value="1000"/>
+	        <prop name="ReceiveRetryTime" type="String" value="25"/>
+	        <prop name="PrinterTransmitTimeout" type="String" value="30000"/>
+	        <prop name="RecMoreColumns" type="String" value="0"/>
+	        <prop name="UsedInterCharacterSet" type="String" value="0"/>
+	        <prop name="WriteThreadInterval" type="String" value="-1"/>
+	        <prop name="RecNearEndSensor" type="String" value="1"/>
+	        <prop name="LogObject" type="String" value=""/>
+	        <prop name="Cutter" type="String" value="1"/>
+	        <prop name="PhysicalDevice" type="String" value="TM-T88III"/>
+	        <prop name="UsedPeeler" type="String" value="0"/>
+	        <prop name="FirmLogFileName" type="String" value="Firmware.log"/>
+	        <prop name="InputBufferSize" type="String" value="4096"/>
+	        <prop name="TransmitTimeout" type="String" value="5000"/>
+	        <prop name="OfflineCount" type="String" value="2"/>
+	        <prop name="TransmitRetryTime" type="String" value="100"/>
+	        <prop name="DirectIOEventTimeout" type="String" value="5000"/>
+	</JposEntry>
+
+
+	<JposEntry logicalName="CashDrawer">
+		<creation factoryClass="jp.co.epson.uposcommon.util.EpsonJposServiceInstanceFactory" serviceClass="jp.co.epson.upos.drw.StandardService" />
+		<vendor name="SEIKO EPSON" url="http://www.epson.co.jp" />
+		<jpos category="CashDrawer" version="1.9.2" />
+		<product description="EPSON Standard CashDrawer Device Service" name="EPSON Services for JavaPOS(TM) Standard" url="http://www.epson.co.jp" />
+
+		<!--Other non JavaPOS required property (mostly vendor properties and bus specific properties i.e. RS232 )-->
+		<prop name="FlowType" type="String" value="1" />
+		<prop name="PhysicalPrinterName" type="String" value="TM-T88III" />
+		<prop name="PulseONTime" type="String" value="100" />
+		<prop name="StatusThreadInterval" type="String" value="100" />
+		<prop name="OutputTimeout" type="String" value="500" />
+		<prop name="PortType" type="String" value="0" />
+		<prop name="OutputBufferSize" type="String" value="4096" />
+		<prop name="ReceiveTimeout" type="String" value="1000" />
+		<prop name="PortName" type="String" value="COM1" />
+		<prop name="OfflineRetryIntervalTime" type="String" value="25" />
+		<prop name="DefaultSlpClampTime" type="String" value="0" />
+		<prop name="epson.trace.file" type="String" value="trace.log" />
+		<prop name="StopBits" type="String" value="0" />
+		<prop name="PulseStep" type="String" value="100" />
+		<prop name="ForceSend" type="String" value="0" />
+		<prop name="PortInterfaceName" type="String" value="Serial" />
+		<prop name="BitLength" type="String" value="8" />
+		<prop name="MultiDrawerStatusSupport" type="String" value="0" />
+		<prop name="Parity" type="String" value="0" />
+		<prop name="OpenPulseLevel" type="String" value="0" />
+		<prop name="epson.tracing" type="String" value="false" />
+		<prop name="epson.trace.max.size" type="String" value="1000" />
+		<prop name="DeviceDesc" type="String" value="EPSON Standard CashDrawer" />
+		<prop name="SupportStatistics" type="String" value="1" />
+		<prop name="InputTimeout" type="String" value="100" />
+		<prop name="MemorySwitch" type="String" value="0" />
+		<prop name="ReadThreadInterval" type="String" value="-1" />
+		<prop name="QueuingOfflineTimeout" type="String" value="1000" />
+		<prop name="InitializeThreadTime" type="String" value="1000" />
+		<prop name="BaudRate" type="String" value="9600" />
+		<prop name="ConfigurationFile" type="String" value="epson/xml/Setting/TM-T88IIISetting.xml" />
+		<prop name="PinNumber" type="String" value="0" />
+		<prop name="InitializeResponseTimeout" type="String" value="1000" />
+		<prop name="ReceiveRetryTime" type="String" value="25" />
+		<prop name="WriteThreadInterval" type="String" value="-1" />
+		<prop name="PulseOFFTime" type="String" value="400" />
+		<prop name="LogObject" type="String" value="" />
+		<prop name="PhysicalDevice" type="String" value="Standard" />
+		<prop name="InputBufferSize" type="String" value="84" />
+		<prop name="TransmitTimeout" type="String" value="5000" />
+		<prop name="OpenWaitTimeout" type="String" value="5000" />
+		<prop name="OfflineCount" type="String" value="2" />
+		<prop name="TransmitRetryTime" type="String" value="100" />
+	</JposEntry>
+
+</JposEntries>

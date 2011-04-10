@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.floreantpos.model">
+  <class lazy="false" name="DrawerPullReport" table="DRAWER_PULL_REPORT">
+    <id column="ID" name="id" type="java.lang.Integer">
+      <generator class="identity"/>
+    </id>
+    <property column="REPORT_TIME" index="drawer_report_time" name="reportTime" type="java.util.Date"/>
+    <property column="REG" length="15" name="reg" type="string"/>
+    <property column="TICKET_COUNT" name="ticketCount" type="java.lang.Integer"/>
+    <property column="BEGIN_CASH" name="beginCash" type="java.lang.Double"/>
+    <property column="NET_SALES" name="netSales" type="java.lang.Double"/>
+    <property column="SALES_TAX" name="salesTax" type="java.lang.Double"/>
+    <property column="CASH_TAX" name="cashTax" type="java.lang.Double"/>
+    <property column="TOTAL_REVENUE" name="totalRevenue" type="java.lang.Double"/>
+    <property column="GROSS_RECEIPTS" name="grossReceipts" type="java.lang.Double"/>
+    <property column="GIFTCERTRETURNCOUNT" name="giftCertReturnCount" type="java.lang.Integer"/>
+    <property column="GIFTCERTRETURNAMOUNT" name="giftCertReturnAmount" type="java.lang.Double"/>
+    <property column="GIFTCERTCHANGEAMOUNT" name="giftCertChangeAmount" type="java.lang.Double"/>
+    <property column="CASH_RECEIPT_NO" name="cashReceiptNumber" type="java.lang.Integer"/>
+    <property column="CASH_RECEIPT_AMOUNT" name="cashReceiptAmount" type="java.lang.Double"/>
+    <property column="CREDIT_CARD_RECEIPT_NO" name="creditCardReceiptNumber" type="java.lang.Integer"/>
+    <property column="CREDIT_CARD_RECEIPT_AMOUNT" name="creditCardReceiptAmount" type="java.lang.Double"/>
+    <property column="DEBIT_CARD_RECEIPT_NO" name="debitCardReceiptNumber" type="java.lang.Integer"/>
+    <property column="DEBIT_CARD_RECEIPT_AMOUNT" name="debitCardReceiptAmount" type="java.lang.Double"/>
+    <property column="RECEIPT_DIFFERENTIAL" name="receiptDifferential" type="java.lang.Double"/>
+    <property column="CASH_BACK" name="cashBack" type="java.lang.Double"/>
+    <property column="CASH_TIPS" name="cashTips" type="java.lang.Double"/>
+    <property column="CHARGED_TIPS" name="chargedTips" type="java.lang.Double"/>
+    <property column="TIPS_PAID" name="tipsPaid" type="java.lang.Double"/>
+    <property column="TIPS_DIFFERENTIAL" name="tipsDifferential" type="java.lang.Double"/>
+    <property column="PAY_OUT_NO" name="payOutNumber" type="java.lang.Integer"/>
+    <property column="PAY_OUT_AMOUNT" name="payOutAmount" type="java.lang.Double"/>
+    <property column="DRAWER_BLEED_NO" name="drawerBleedNumber" type="java.lang.Integer"/>
+    <property column="DRAWER_BLEED_AMOUNT" name="drawerBleedAmount" type="java.lang.Double"/>
+    <property column="DRAWER_ACCOUNTABLE" name="drawerAccountable" type="java.lang.Double"/>
+    <property column="CASH_TO_DEPOSIT" name="cashToDeposit" type="java.lang.Double"/>
+    <property column="VARIANCE" name="variance" type="java.lang.Double"/>
+    <set cascade="all" inverse="false" lazy="false" name="voidTickets">
+      <key column="DPREPORT_ID"/>
+      <composite-element class="DrawerPullVoidTicketEntry">
+        <property name="code" type="java.lang.Integer"/>
+        <property name="reason" type="java.lang.String"/>
+        <property name="hast" type="java.lang.String"/>
+        <property name="quantity" type="java.lang.Integer"/>
+        <property name="amount" type="java.lang.Double"/>
+      </composite-element>
+    </set>
+    <property name="totalVoidWst" type="java.lang.Double"/>
+    <property name="totalVoid" type="java.lang.Double"/>
+    <property name="totalDiscountCount" type="java.lang.Integer"/>
+    <property name="totalDiscountAmount" type="java.lang.Double"/>
+    <property name="totalDiscountSales" type="java.lang.Double"/>
+    <property name="totalDiscountGuest" type="java.lang.Integer"/>
+    <property name="totalDiscountPartySize" type="java.lang.Integer"/>
+    <property name="totalDiscountCheckSize" type="java.lang.Integer"/>
+    <property name="totalDiscountPercentage" type="java.lang.Double"/>
+    <property name="totalDiscountRatio" type="java.lang.Double"/>
+    <many-to-one class="com.floreantpos.model.Terminal" name="terminal">
+      <column name="TERMINAL_ID"/>
+    </many-to-one>
+  </class>
+</hibernate-mapping>
