@@ -29,25 +29,18 @@
 					<target>1.5</target>
 				</configuration>
 			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-dependency-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>copy-dependencies</id>
-						<phase>prepare-package</phase>
-						<goals>
-							<goal>copy-dependencies</goal>
-						</goals>
-						<configuration>
-							<outputDirectory>${project.build.directory}/lib</outputDirectory>
-							<overWriteReleases>false</overWriteReleases>
-							<overWriteSnapshots>false</overWriteSnapshots>
-							<overWriteIfNewer>true</overWriteIfNewer>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
+			<!--
+				<plugin> <groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId> <executions>
+				<execution> <id>copy-dependencies</id>
+				<phase>prepare-package</phase> <goals>
+				<goal>copy-dependencies</goal> </goals> <configuration>
+				<outputDirectory>${project.build.directory}/lib</outputDirectory>
+				<overWriteReleases>false</overWriteReleases>
+				<overWriteSnapshots>false</overWriteSnapshots>
+				<overWriteIfNewer>true</overWriteIfNewer> </configuration>
+				</execution> </executions> </plugin>
+			-->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
@@ -62,13 +55,41 @@
 				</configuration>
 			</plugin>
 
-			<!--
-				<plugin> <artifactId>maven-assembly-plugin</artifactId>
-				<configuration> <descriptorRefs> <descriptorRef>bin</descriptorRef>
-				</descriptorRefs> </configuration> <executions> <execution>
-				<phase>package</phase> <goals> <goal>single</goal> </goals>
-				</execution> </executions> </plugin>
-			-->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<version>2.2.1</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+						<configuration>
+							<descriptors>
+								<descriptor>resources/META-INF/mvn-assembly.xml</descriptor>
+							</descriptors>
+						</configuration>
+					</execution>
+				</executions>
+
+			</plugin>
+
+			<plugin>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>1.6</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<configuration>
+							<target>
+								<echo message="hello" />
+								<mkdir dir="maven.project.build.directory/dist" />
+							</target>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 
 
 		</plugins>
@@ -137,14 +158,16 @@
 			<groupId>org.apache.derby</groupId>
 			<artifactId>derby</artifactId>
 			<version>10.8.1.2</version>
+			<scope>provided</scope>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.apache.derby</groupId>
 			<artifactId>derbynet</artifactId>
 			<version>10.8.1.2</version>
+			<scope>provided</scope>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.apache.derby</groupId>
 			<artifactId>derbyclient</artifactId>
@@ -196,7 +219,7 @@
 			<artifactId>commons-lang</artifactId>
 			<version>2.6</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>commons-configuration</groupId>
 			<artifactId>commons-configuration</artifactId>
