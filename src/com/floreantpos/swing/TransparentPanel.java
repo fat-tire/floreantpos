@@ -9,10 +9,6 @@ import javax.swing.JPanel;
 
 public class TransparentPanel extends JPanel {
 	
-	static {
-		//UIManager.put("TransparentPanelUI", "com.floreantpos.swing.TransparentPanelUI");
-	}
-
 	public TransparentPanel(LayoutManager layout, boolean isDoubleBuffered) {
 		super(layout, isDoubleBuffered);
 		
@@ -35,9 +31,4 @@ public class TransparentPanel extends JPanel {
 		super();
 		setOpaque(false);
 	}
-	
-//	@Override
-//	public String getUIClassID() {
-//		return "TransparentPanelUI";
-//	}
 }

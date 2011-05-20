@@ -6,7 +6,7 @@
       <generator class="identity"/>
     </id>
     <version column="MODIFIED_TIME" name="modifiedTime" type="timestamp"/>
-    <property column="USER_ID" name="userId" type="java.lang.Integer"/>
+    <property column="USER_ID" name="userId" type="java.lang.Integer" unique="true"/>
     <!--property name="userType" column="USER_TYPE" type="string" length="20" /-->
     <property column="USER_PASS" length="16" name="password" not-null="true" type="string"/>
     <property column="FIRST_NAME" length="30" name="firstName" type="java.lang.String"/>

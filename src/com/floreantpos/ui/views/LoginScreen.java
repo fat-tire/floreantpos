@@ -42,11 +42,7 @@ public class LoginScreen extends JPanel {
 		add(passwordScreen, "width 200,growy 100");
 	}
 	
-	@Override
 	public void setVisible(boolean aFlag) {
-		if(aFlag) {
-			PasswordScreen.getInstance().setUserTypes();
-		}
 		super.setVisible(aFlag);
 	}
 }
