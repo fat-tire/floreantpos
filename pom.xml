@@ -27,20 +27,16 @@
 				<configuration>
 					<source>1.5</source>
 					<target>1.5</target>
+					<encoding>UTF-8</encoding>
 				</configuration>
 			</plugin>
-			<!--
-				<plugin> <groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-dependency-plugin</artifactId> <executions>
-				<execution> <id>copy-dependencies</id>
-				<phase>prepare-package</phase> <goals>
-				<goal>copy-dependencies</goal> </goals> <configuration>
-				<outputDirectory>${project.build.directory}/lib</outputDirectory>
-				<overWriteReleases>false</overWriteReleases>
-				<overWriteSnapshots>false</overWriteSnapshots>
-				<overWriteIfNewer>true</overWriteIfNewer> </configuration>
-				</execution> </executions> </plugin>
-			-->
+			<plugin>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>2.2</version>
+				<configuration>
+					<encoding>UTF-8</encoding>
+				</configuration>
+			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
@@ -224,6 +220,12 @@
 			<groupId>commons-configuration</groupId>
 			<artifactId>commons-configuration</artifactId>
 			<version>1.2</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>servlet-api</artifactId>
+					<groupId>javax.servlet</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<dependency>
@@ -251,11 +253,24 @@
 		</dependency>
 
 		<dependency>
-			<groupId>local</groupId>
+			<groupId>jpos</groupId>
 			<artifactId>jpos</artifactId>
 			<version>110</version>
-			<scope>system</scope>
-			<systemPath>${basedir}/lib/jpos-110.jar</systemPath>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>jpos</groupId>
+			<artifactId>jpos-controls</artifactId>
+			<version>110</version>
+			<scope>compile</scope>
 		</dependency>
 	</dependencies>
+
+	<repositories>
+		<repository>
+			<id>local-repo</id>
+			<url>file://${project.basedir}/local-lib</url>
+		</repository>
+	</repositories>
+
 </project>
