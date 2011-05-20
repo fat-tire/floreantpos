@@ -5,6 +5,8 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.prefs.Preferences;
 
+import org.apache.commons.configuration.ConfigurationException;
+import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.derby.jdbc.ClientDriver;
 
 import com.floreantpos.main.Application;
@@ -17,6 +19,16 @@ public class ApplicationConfig {
 	public static final String DATABASE_PASSWORD = "DATABASE_PASS";
 	
 	private final static Preferences pref = Preferences.userNodeForPackage(Application.class);
+	
+	private static PropertiesConfiguration configuration;
+	
+	static {
+		try {
+			configuration = new PropertiesConfiguration(ApplicationConfig.class.getResource("/floreantpos.properties"));
+		} catch (ConfigurationException e) {
+			e.printStackTrace();
+		}
+	}
 	
 	public static int getTerminalId() {
 		return pref.getInt("TERMINAL_ID", -1);
@@ -112,5 +124,9 @@ public class ApplicationConfig {
 	}
 	public static boolean checkDatabaseConnection() {
 		return checkDatabaseConnection(getDatabaseURL(), getDatabasePort(), getDatabaseName(), getDatabaseUser(), getDatabasePassword());
+	}
+
+	public static PropertiesConfiguration getConfiguration() {
+		return configuration;
 	}
 }
