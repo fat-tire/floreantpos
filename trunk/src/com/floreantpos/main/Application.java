@@ -1,6 +1,5 @@
 package com.floreantpos.main;
 
-import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Toolkit;
@@ -33,10 +32,8 @@ import com.floreantpos.model.dao.RestaurantDAO;
 import com.floreantpos.model.dao.TerminalDAO;
 import com.floreantpos.model.dao._RootDAO;
 import com.floreantpos.swing.GlassPane;
-import com.floreantpos.swing.TransparentPanel;
 import com.floreantpos.ui.dialog.NumberSelectionDialog;
 import com.floreantpos.ui.views.LoginScreen;
-import com.floreantpos.ui.views.PasswordScreen;
 import com.floreantpos.ui.views.order.RootView;
 import com.floreantpos.util.TicketActiveDateSetterTask;
 import com.jgoodies.looks.plastic.PlasticXPLookAndFeel;
@@ -79,21 +76,11 @@ public class Application {
 	}
 
 	public void start() {
-		try {
-			PlasticXPLookAndFeel.setPlasticTheme(new ExperienceBlue());
-			UIManager.setLookAndFeel(new PlasticXPLookAndFeel());
-			//UIManager.setLookAndFeel(new javax.swing.plaf.nimbus.NimbusLookAndFeel());
-			UIManager.put("ComboBox.is3DEnabled", Boolean.FALSE);
-		} catch (Exception ignored) {
-		}
+		setApplicationLook();
 
 		rootView = RootView.getInstance();
 
-		TransparentPanel panel = new TransparentPanel(new BorderLayout());
-		panel.setOpaque(true);
-		panel.add(rootView);
-
-		posWindow.setContentPane(panel);
+		posWindow.setContentPane(rootView);
 		posWindow.setSize(ApplicationConfig.getPreferences().getInt("wwidth", 900), ApplicationConfig.getPreferences().getInt("wheight", 650));
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		posWindow.setLocation(ApplicationConfig.getPreferences().getInt("wlocx", ((screenSize.width - posWindow.getWidth()) >> 1)), ApplicationConfig.getPreferences().getInt("wlocy", ((screenSize.height - posWindow.getHeight()) >> 1)));
@@ -104,9 +91,18 @@ public class Application {
 		initDatabase();
 	}
 
+	private void setApplicationLook() {
+		try {
+			PlasticXPLookAndFeel.setPlasticTheme(new ExperienceBlue());
+			UIManager.setLookAndFeel(new PlasticXPLookAndFeel());
+			UIManager.put("ComboBox.is3DEnabled", Boolean.FALSE);
+		} catch (Exception ignored) {
+		}
+	}
+
 	public void initDatabase() {
 		if(!ApplicationConfig.checkDatabaseConnection()) {
-			DatabaseConfigurationDialog dialog = new DatabaseConfigurationDialog(getPosWindow(), true);
+			DatabaseConfigurationDialog dialog = new DatabaseConfigurationDialog(getPosWindow(), false );
 			dialog.setTitle(com.floreantpos.POSConstants.DATABASE_CONNECTION_ERROR);
 			dialog.setExitOnClose(true);
 			dialog.pack();
@@ -148,8 +144,6 @@ public class Application {
 			}
 
 			refreshRestaurant();
-
-			PasswordScreen.getInstance().setUserTypes();
 
 			Calendar calendar = Calendar.getInstance();
 			calendar.set(Calendar.DAY_OF_MONTH, calendar.get(Calendar.DAY_OF_MONTH) + 1);

@@ -22,7 +22,6 @@ import com.floreantpos.config.ApplicationConfig;
 import com.floreantpos.ui.TitlePanel;
 import com.floreantpos.ui.dialog.POSDialog;
 import com.floreantpos.ui.dialog.POSMessageDialog;
-import com.floreantpos.ui.views.PasswordScreen;
 
 public class DatabaseConfigurationDialog extends POSDialog implements ActionListener {
 	
@@ -135,7 +134,6 @@ public class DatabaseConfigurationDialog extends POSDialog implements ActionList
 				ApplicationConfig.setDatabaseName(databaseName);
 				ApplicationConfig.setDatabaseUser(user);
 				ApplicationConfig.setDatabasePassword(pass);
-				PasswordScreen.getInstance().setUserTypes();
 				dispose();
 			}
 			else {

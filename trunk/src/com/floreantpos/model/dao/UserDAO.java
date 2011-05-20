@@ -17,7 +17,6 @@ import com.floreantpos.model.Shift;
 import com.floreantpos.model.Terminal;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.User;
-import com.floreantpos.model.UserType;
 
 public class UserDAO extends BaseUserDAO {
 	public final static UserDAO instance = new UserDAO();
@@ -36,50 +35,20 @@ public class UserDAO extends BaseUserDAO {
 			Criteria criteria = session.createCriteria(getReferenceClass());
 			criteria.add(Restrictions.eq(User.PROP_USER_ID, id));
 			
-			List list = criteria.list();
-			if(list.size() > 0) {
-				return (User) list.get(0);
+			Object result = criteria.uniqueResult();
+			if(result != null) {
+				return (User) result;
 			}
-			return null;
+			else {
+				//TODO: externalize string
+				throw new RuntimeException("User with id " + id + " not found");
+			}
 		} finally {
 			if (session != null) {
 				closeSession(session);
 			}
 		}
 	}
-//	public User findUser(int id, String type) {
-//		Session session = null;
-//
-//		try {
-//			session = getSession();
-//			Criteria criteria = session.createCriteria(getReferenceClass());
-//			criteria.add(Restrictions.eq(User.PROP_USER_ID, id));
-//			criteria.add(Restrictions.eq(User.PROP_USER_TYPE, type));
-//
-//			return (User) criteria.uniqueResult();
-//		} finally {
-//			if (session != null) {
-//				closeSession(session);
-//			}
-//		}
-//	}
-	public User findUser(int id, UserType userType) {
-		Session session = null;
-		
-		try {
-			session = getSession();
-			Criteria criteria = session.createCriteria(getReferenceClass());
-			criteria.add(Restrictions.eq(User.PROP_USER_ID, id));
-			criteria.add(Restrictions.eq(User.PROP_NEW_USER_TYPE, userType));
-			
-			return (User) criteria.uniqueResult();
-		} finally {
-			if (session != null) {
-				closeSession(session);
-			}
-		}
-	}
-	
 	public Integer findUserWithMaxId() {
 		Session session = null;
 		

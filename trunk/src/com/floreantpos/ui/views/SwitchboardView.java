@@ -109,21 +109,15 @@ public class SwitchboardView extends JPanel implements ActionListener {
 		btnManager = new com.floreantpos.swing.PosButton();
 		btnClockOut = new com.floreantpos.swing.PosButton();
 
-		setLayout(new java.awt.BorderLayout());
-
-		statusPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "CURRENT USER STATUS", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
-		statusPanel.setPreferredSize(new java.awt.Dimension(100, 80));
-		statusPanel.setLayout(new java.awt.BorderLayout());
+		setLayout(new java.awt.BorderLayout(10, 10));
 
 		lblUserName.setFont(new java.awt.Font("Tahoma", 1, 18));
-		lblUserName.setForeground(new java.awt.Color(0, 102, 102));
 		lblUserName.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-		lblUserName.setText("USER NAME");
 		statusPanel.add(lblUserName, java.awt.BorderLayout.PAGE_START);
 
 		add(statusPanel, java.awt.BorderLayout.NORTH);
 
-		bottomPanel.setLayout(new java.awt.BorderLayout());
+		bottomPanel.setLayout(new java.awt.BorderLayout(5,5));
 
 		bottomLeftPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, POSConstants.OPEN_TICKETS_AND_ACTIVITY, javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
 		bottomLeftPanel.setLayout(new java.awt.BorderLayout(5, 5));
