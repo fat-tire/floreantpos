@@ -155,23 +155,22 @@ public class PasswordScreen extends JPanel {
 		gridBagConstraints.gridx = 0;
 		gridBagConstraints.gridy = 1;
 		gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-		gridBagConstraints.ipady = 40;
+		gridBagConstraints.ipady = 80;
 		gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
 		gridBagConstraints.weightx = 1.0;
+		gridBagConstraints.weighty = 1.0;
 		add(buttonPanel, gridBagConstraints);
 
 		jPanel2.setOpaque(false);
 
-		jLabel1.setFont(new java.awt.Font("Tahoma", 1, 24));
+		jLabel1.setFont(new java.awt.Font("Tahoma", 1, 18));
 		jLabel1.setForeground(new java.awt.Color(204, 102, 0));
-		jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 		jLabel1.setText(com.floreantpos.POSConstants.ENTER_YOUR_USER_ID);
 
-		jLabel2.setFont(new java.awt.Font("Tahoma", 1, 24));
+		jLabel2.setFont(new java.awt.Font("Tahoma", 1, 18));
 		jLabel2.setForeground(new java.awt.Color(204, 102, 0));
-		jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+		jLabel2.setBackground(new java.awt.Color(204, 102, 0));
 		jLabel2.setText(com.floreantpos.POSConstants.ENTER_YOUR_PASSWORD);
-
 		tfPassword.setFont(new java.awt.Font("Courier", 1, 18));
 		tfPassword.setHorizontalAlignment(javax.swing.JTextField.LEFT);
 
@@ -185,8 +184,8 @@ public class PasswordScreen extends JPanel {
 		jPanel2.setLayout(jPanel2Layout);
 		jPanel2Layout.setHorizontalGroup(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(jLabel1,
 				org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 387, Short.MAX_VALUE).add(
-				jPanel2Layout.createSequentialGroup().addContainerGap().add(jLabel2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 363, Short.MAX_VALUE)
-						.addContainerGap()).add(org.jdesktop.layout.GroupLayout.TRAILING, tfPassword, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 387,
+				jPanel2Layout.createParallelGroup().add(jLabel2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 363, Short.MAX_VALUE)
+						).add(org.jdesktop.layout.GroupLayout.TRAILING, tfPassword, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 387,
 				Short.MAX_VALUE).add(tfUserId, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 387, Short.MAX_VALUE).add(jPanel2Layout.createSequentialGroup()));
 		jPanel2Layout.setVerticalGroup(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(
 				jPanel2Layout.createSequentialGroup().add(jLabel1).addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED).add(tfUserId,
@@ -273,7 +272,7 @@ public class PasswordScreen extends JPanel {
 			tfPassword.setText("");
 			application.getRootView().showView(SwitchboardView.VIEW_NAME);
 		} catch (Exception e1) {
-			MessageDialog.showError(e1);
+			MessageDialog.showError(e1.getMessage());
 		}
 	}
 
