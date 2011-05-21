@@ -3,3 +3,4 @@ Changes in version 1.1
 1. Make user id unique.
 2. Removed user type selection from login screen.
 3. Small change in Switchboard look.
+4. Disable print ticket when Finish is clicked in order screen.
