@@ -86,24 +86,6 @@
 				</executions>
 
 			</plugin>
-
-			<plugin>
-				<artifactId>maven-antrun-plugin</artifactId>
-				<version>1.6</version>
-				<executions>
-					<execution>
-						<phase>package</phase>
-						<configuration>
-							<target>
-								<echo message="hello" />
-								<mkdir dir="maven.project.build.directory/dist" />
-							</target>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-
-
 		</plugins>
 	</build>
 
