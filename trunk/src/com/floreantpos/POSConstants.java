@@ -12,7 +12,7 @@ public class POSConstants {
 	public static final String OPEN_TICKET_SUMMARY = Messages.getString("PosMessage.9"); //$NON-NLS-1$
 	public static final String DISCOUNT = Messages.getString("PosMessage.10"); //$NON-NLS-1$
 	public static final String ADD_SHIFT = Messages.getString("PosMessage.11"); //$NON-NLS-1$
-	public static final String AVERAGE_GUEST = Messages.getString("PosMessage.12"); //$NON-NLS-1$
+	public static final String AVERAGE_GUEST = "AvgGst"; //$NON-NLS-1$
 	public static final String SALES_SUMMARY_REPORT = Messages.getString("PosMessage.13"); //$NON-NLS-1$
 	public static final String USER_TYPES = Messages.getString("PosMessage.14"); //$NON-NLS-1$
 	public static final String SERVER_NAME = Messages.getString("PosMessage.15"); //$NON-NLS-1$
@@ -40,7 +40,7 @@ public class POSConstants {
 	public static final String CREATED = Messages.getString("PosMessage.37"); //$NON-NLS-1$
 	public static final String AMOUNT = Messages.getString("PosMessage.38"); //$NON-NLS-1$
 	public static final String PAY_OUT_REASON = Messages.getString("PosMessage.39"); //$NON-NLS-1$
-	public static final String SALES = Messages.getString("PosMessage.40"); //$NON-NLS-1$
+	public static final String SALES = "Sales"; //$NON-NLS-1$
 	public static final String SPLIT_TICKET = Messages.getString("PosMessage.41"); //$NON-NLS-1$
 	public static final String SELECT_PRINTER = Messages.getString("PosMessage.42"); //$NON-NLS-1$
 	public static final String SELECT_PAYMENT_TYPE = Messages.getString("PosMessage.43"); //$NON-NLS-1$
@@ -213,7 +213,7 @@ public class POSConstants {
 	public static final String DELETE = Messages.getString("PosMessage.210"); //$NON-NLS-1$
 	public static final String QTY = Messages.getString("PosMessage.211"); //$NON-NLS-1$
 	public static final String CONFIRM_DELETE = Messages.getString("PosMessage.212"); //$NON-NLS-1$
-	public static final String GUEST = Messages.getString("PosMessage.213"); //$NON-NLS-1$
+	public static final String GUEST = "Guest"; //$NON-NLS-1$
 	public static final String EMPTY_PASSWORD = Messages.getString("PosMessage.214"); //$NON-NLS-1$
 	public static final String TABLES = Messages.getString("PosMessage.215"); //$NON-NLS-1$
 	public static final String SWITCHBOARD = Messages.getString("PosMessage.216"); //$NON-NLS-1$
@@ -225,7 +225,7 @@ public class POSConstants {
 	public static final String PM = Messages.getString("PosMessage.222"); //$NON-NLS-1$
 	public static final String DRAWER_PULL_REPORTS = Messages.getString("PosMessage.223"); //$NON-NLS-1$
 	public static final String FINISH = Messages.getString("PosMessage.224"); //$NON-NLS-1$
-	public static final String CHECK = Messages.getString("PosMessage.225"); //$NON-NLS-1$
+	public static final String CHECK = "Check"; //$NON-NLS-1$
 	public static final String SETTLE_TIME = Messages.getString("PosMessage.226"); //$NON-NLS-1$
 	public static final String FROM = Messages.getString("PosMessage.227"); //$NON-NLS-1$
 	public static final String MISC = Messages.getString("PosMessage.228"); //$NON-NLS-1$
@@ -243,7 +243,7 @@ public class POSConstants {
 	public static final String PRINTER_NAME_ = Messages.getString("PosMessage.240"); //$NON-NLS-1$
 	public static final String UPRICE = Messages.getString("PosMessage.241"); //$NON-NLS-1$
 	public static final String UPDATING_SYSTEM_PLEASE_WAIT_ = Messages.getString("PosMessage.242"); //$NON-NLS-1$
-	public static final String AVGCHK = Messages.getString("PosMessage.243"); //$NON-NLS-1$
+	public static final String AVGCHK = "AvgChk"; //$NON-NLS-1$
 	public static final String TO_ = Messages.getString("PosMessage.244"); //$NON-NLS-1$
 	public static final String JOURNAL_REPORT = Messages.getString("PosMessage.245"); //$NON-NLS-1$
 	public static final String USER_TYPE_EXPLORER = Messages.getString("PosMessage.246"); //$NON-NLS-1$
@@ -281,7 +281,7 @@ public class POSConstants {
 	public static final String MODIFIER_GROUP = Messages.getString("PosMessage.278"); //$NON-NLS-1$
 	public static final String MDS_POS = Messages.getString("PosMessage.279"); //$NON-NLS-1$
 	public static final String PRICE_IS_NOT_VALID_ = Messages.getString("PosMessage.280"); //$NON-NLS-1$
-	public static final String ENTER = Messages.getString("PosMessage.281"); //$NON-NLS-1$
+	public static final String ENTER = "Enter"; //$NON-NLS-1$
 	public static final String ADDRESS_LINE3 = Messages.getString("PosMessage.282"); //$NON-NLS-1$
 	public static final String NUMBER_OF_PRINT_SERVICES_ = Messages.getString("PosMessage.283"); //$NON-NLS-1$
 	public static final String FROM_DATE_CANNOT_BE_GREATER_THAN_TO_DATE_ = Messages.getString("PosMessage.284"); //$NON-NLS-1$
@@ -298,7 +298,7 @@ public class POSConstants {
 	public static final String SERVER_TIPS = Messages.getString("PosMessage.295"); //$NON-NLS-1$
 	public static final String OPEN = Messages.getString("PosMessage.296"); //$NON-NLS-1$
 	public static final String CONFIRM = Messages.getString("PosMessage.297"); //$NON-NLS-1$
-	public static final String DAYPART = Messages.getString("PosMessage.298"); //$NON-NLS-1$
+	public static final String DAYPART = "DayPart"; //$NON-NLS-1$
 	public static final String BY_RANGE_ACTUAL = Messages.getString("PosMessage.299"); //$NON-NLS-1$
 	public static final String COUPONS_AND_DISCOUNTS = Messages.getString("PosMessage.300"); //$NON-NLS-1$
 	public static final String EXTRA_PRICE = Messages.getString("PosMessage.301"); //$NON-NLS-1$
@@ -309,7 +309,7 @@ public class POSConstants {
 	public static final String SERVER_TIPS_REPORT = Messages.getString("PosMessage.306"); //$NON-NLS-1$
 	public static final String DATABASE_CONNECTION_ERROR = Messages.getString("PosMessage.307"); //$NON-NLS-1$
 	public static final String NEW_MENU_CATEGORY = Messages.getString("PosMessage.308"); //$NON-NLS-1$
-	public static final String PERCENTAGE = Messages.getString("PosMessage.309"); //$NON-NLS-1$
+	public static final String PERCENTAGE = "Percentage"; //$NON-NLS-1$
 	public static final String WELCOME = Messages.getString("Switchboard.0"); //$NON-NLS-1$
 	public static final String OPEN_TICKETS_AND_ACTIVITY = Messages.getString("Switchboard.1"); //$NON-NLS-1$
 	public static final String TICKETS = Messages.getString("Switchboard.2"); //$NON-NLS-1$

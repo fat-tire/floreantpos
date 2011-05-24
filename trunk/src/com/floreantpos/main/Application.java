@@ -104,7 +104,7 @@ public class Application {
 		if(!ApplicationConfig.checkDatabaseConnection()) {
 			DatabaseConfigurationDialog dialog = new DatabaseConfigurationDialog(getPosWindow(), false );
 			dialog.setTitle(com.floreantpos.POSConstants.DATABASE_CONNECTION_ERROR);
-			dialog.setExitOnClose(true);
+			dialog.setExitOnClose(false);
 			dialog.pack();
 			dialog.open();
 		}
