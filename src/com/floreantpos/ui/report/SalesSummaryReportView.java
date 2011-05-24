@@ -224,7 +224,7 @@ public class SalesSummaryReportView extends javax.swing.JPanel {
 		Map properties = new HashMap();
 		ReportUtil.populateRestaurantProperties(properties);
 		properties.put("subtitle", com.floreantpos.POSConstants.SALES_SUMMARY_REPORT);
-		properties.put(com.floreantpos.POSConstants.CAPACITY, String.valueOf(summary.getCapacity()));
+		properties.put("Capacity", String.valueOf(summary.getCapacity()));
 		properties.put("GuestCount", String.valueOf(summary.getGuestCount()));
 		properties.put("GuestPerSeat", Application.formatNumber(summary.getGuestPerSeat()));
 		properties.put("reportTime", fullDateFormatter.format(new Date()));
@@ -234,13 +234,13 @@ public class SalesSummaryReportView extends javax.swing.JPanel {
 			properties.put("reportType", com.floreantpos.POSConstants.SYSTEM_TOTAL);
 		}
 		else {
-			properties.put("reportType", userType);
+			properties.put("reportType", userType.getName());
 		}
 		properties.put("shift", com.floreantpos.POSConstants.ALL);
 		properties.put("centre", terminal == null ? com.floreantpos.POSConstants.ALL : terminal.getName());
 		properties.put("days", String.valueOf(dateDiff));
 
-		properties.put(com.floreantpos.POSConstants.CAPACITY, String.valueOf(summary.getCapacity()));
+		properties.put("Capacity", String.valueOf(summary.getCapacity()));
 		properties.put("GuestCount", String.valueOf(summary.getGuestCount()));
 		properties.put("GuestPerSeat", Application.formatNumber(summary.getGuestPerCheck()));
 		properties.put("TableTrnOvr", Application.formatNumber(summary.getTableTurnOver()));
@@ -253,7 +253,7 @@ public class SalesSummaryReportView extends javax.swing.JPanel {
 		properties.put("MergeChecks", String.valueOf(" "));
 		properties.put("LaborHour", Application.formatNumber(summary.getLaborHour()));
 		properties.put("LaborSales", Application.formatNumber(summary.getGrossSale()));
-		properties.put(com.floreantpos.POSConstants.TABLES, String.valueOf(summary.getTables()));
+		properties.put("Tables", String.valueOf(summary.getTables()));
 		properties.put("CheckCount", String.valueOf(summary.getCheckCount()));
 		properties.put("GuestPerChecks", Application.formatNumber(summary.getGuestPerCheck()));
 		properties.put("TrnOvrTime", String.valueOf(" "));
