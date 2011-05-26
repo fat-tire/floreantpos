@@ -133,7 +133,7 @@ public class ReportService {
 			categories.add(miscCategory);
 
 			for (MenuCategory category : categories) {
-				criteria = session.createCriteria(TicketItem.class, com.floreantpos.POSConstants.ITEM);
+				criteria = session.createCriteria(TicketItem.class, "item");
 				criteria.createCriteria("ticket", "t");
 				ProjectionList projectionList = Projections.projectionList();
 				projectionList.add(Projections.sum(TicketItem.PROP_ITEM_COUNT));
@@ -234,7 +234,7 @@ public class ReportService {
 					data = new ServerProductivityReportData();
 					data.setServerName(server.getUserId() + "/" + server.toString());
 					
-					criteria = session.createCriteria(TicketItem.class, com.floreantpos.POSConstants.ITEM);
+					criteria = session.createCriteria(TicketItem.class, "item");
 					criteria.createCriteria(TicketItem.PROP_TICKET, "t");
 					
 					projectionList = Projections.projectionList();

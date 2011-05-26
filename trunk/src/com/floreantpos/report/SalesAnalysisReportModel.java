@@ -17,7 +17,7 @@ import com.floreantpos.main.Application;
 public class SalesAnalysisReportModel extends ListTableModel {
 
 	public SalesAnalysisReportModel(List<SalesAnalysisData> dataList) {
-		super(new String[] { "shiftName", "categoryName", "count", "gross", com.floreantpos.POSConstants.DISCOUNT, "netSales", "avgGross", "avgDiscount", "avgNet", "percentage" }, dataList);
+		super(new String[] { "shiftName", "categoryName", "count", "gross", "discount", "netSales", "avgGross", "avgDiscount", "avgNet", "percentage" }, dataList);
 	}
 
 	public Object getValueAt(int rowIndex, int columnIndex) {
