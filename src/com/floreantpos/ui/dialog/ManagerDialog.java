@@ -28,6 +28,7 @@ import com.floreantpos.model.dao.GratuityDAO;
 import com.floreantpos.model.dao.UserDAO;
 import com.floreantpos.swing.GlassPane;
 import com.floreantpos.swing.ListComboBoxModel;
+import com.floreantpos.ui.util.UiUtil;
 
 import foxtrot.Job;
 import foxtrot.Worker;
@@ -230,8 +231,8 @@ public class ManagerDialog extends JFrame {
 					JPanel panel = new JPanel(new MigLayout());
 					List<User> users = UserDAO.getInstance().findAll();
 					
-					JXDatePicker fromDatePicker = new JXDatePicker();
-					JXDatePicker toDatePicker = new JXDatePicker();
+					JXDatePicker fromDatePicker = UiUtil.getCurrentMonthStart();
+					JXDatePicker toDatePicker = UiUtil.getCurrentMonthEnd();
 					
 					panel.add(new JLabel(com.floreantpos.POSConstants.SELECT_USER + ":"), "grow");
 					JComboBox userCombo = new JComboBox(new ListComboBoxModel(users));

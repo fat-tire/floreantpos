@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>floreantpos</groupId>
 	<artifactId>floreantpos</artifactId>
-	<version>1.1-SNAPSHOT</version>
+	<version>1.2-SNAPSHOT</version>
 
 	<build>
 		<sourceDirectory>src</sourceDirectory>
@@ -121,7 +121,7 @@
 		<dependency>
 			<groupId>com.miglayout</groupId>
 			<artifactId>miglayout</artifactId>
-			<version>3.5.5</version>
+			<version>2.0</version>
 		</dependency>
 
 		<dependency>

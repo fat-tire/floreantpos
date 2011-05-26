@@ -13,7 +13,7 @@ public class TicketReportModel extends AbstractTableModel {
 	private static SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM, yyyy");
 //	private String currencySymbol;
 	
-	private String[] columnNames = {com.floreantpos.POSConstants.ID, "date", "tableNum", "status", com.floreantpos.POSConstants.TOTAL};
+	private String[] columnNames = {"id", "date", "tableNum", "status", "total"};
 	private List<Ticket> items;
 	
 	public TicketReportModel() {

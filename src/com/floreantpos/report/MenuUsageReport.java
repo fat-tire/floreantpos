@@ -145,7 +145,7 @@ public class MenuUsageReport {
 	public static class MenuUsageReportTableModel extends ListTableModel {
 
 		public MenuUsageReportTableModel(List<MenuUsageReportData> datas) {
-			super(new String[] { "category", "count", "grossSale", com.floreantpos.POSConstants.DISCOUNT, "netSale", "avgSale", "profit", "cost", "percentage" }, datas);
+			super(new String[] { "category", "count", "grossSale", "discount", "netSale", "avgSale", "profit", "cost", "percentage" }, datas);
 		}
 
 		public Object getValueAt(int rowIndex, int columnIndex) {

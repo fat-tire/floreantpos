@@ -28,11 +28,12 @@ import com.floreantpos.model.util.DateUtil;
 import com.floreantpos.report.CreditCardReport;
 import com.floreantpos.report.services.ReportService;
 import com.floreantpos.ui.dialog.POSMessageDialog;
+import com.floreantpos.ui.util.UiUtil;
 import com.floreantpos.util.PanelTester;
 
 public class CreditCardReportView extends JPanel {
-	private JXDatePicker fromDatePicker = new JXDatePicker();
-	private JXDatePicker toDatePicker = new JXDatePicker();
+	private JXDatePicker fromDatePicker = UiUtil.getCurrentMonthStart();
+	private JXDatePicker toDatePicker = UiUtil.getCurrentMonthEnd();
 	private JButton btnGo = new JButton(com.floreantpos.POSConstants.GO);
 	private JPanel reportContainer;
 	

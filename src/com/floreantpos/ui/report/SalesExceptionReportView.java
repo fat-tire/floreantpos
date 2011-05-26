@@ -31,13 +31,14 @@ import com.floreantpos.report.SalesExceptionReport;
 import com.floreantpos.report.SalesReportModelFactory;
 import com.floreantpos.report.services.ReportService;
 import com.floreantpos.ui.dialog.POSMessageDialog;
+import com.floreantpos.ui.util.UiUtil;
 
 public class SalesExceptionReportView extends JPanel {
 	private SimpleDateFormat fullDateFormatter = new SimpleDateFormat("yyyy MMM dd, hh:mm a");
 	private SimpleDateFormat shortDateFormatter = new SimpleDateFormat("yyyy MMM dd");
 	
-	private JXDatePicker fromDatePicker = new JXDatePicker();
-	private JXDatePicker toDatePicker = new JXDatePicker();
+	private JXDatePicker fromDatePicker = UiUtil.getCurrentMonthStart();
+	private JXDatePicker toDatePicker = UiUtil.getCurrentMonthEnd();
 	private JButton btnGo = new JButton(com.floreantpos.POSConstants.GO);
 	private JPanel reportContainer;
 	
