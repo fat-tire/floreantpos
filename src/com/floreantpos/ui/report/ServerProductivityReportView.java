@@ -28,10 +28,11 @@ import com.floreantpos.model.util.DateUtil;
 import com.floreantpos.report.ServerProductivityReport;
 import com.floreantpos.report.services.ReportService;
 import com.floreantpos.ui.dialog.POSMessageDialog;
+import com.floreantpos.ui.util.UiUtil;
 
 public class ServerProductivityReportView extends JPanel {
-	private JXDatePicker fromDatePicker = new JXDatePicker();
-	private JXDatePicker toDatePicker = new JXDatePicker();
+	private JXDatePicker fromDatePicker = UiUtil.getCurrentMonthStart();
+	private JXDatePicker toDatePicker = UiUtil.getCurrentMonthEnd();
 	private JButton btnGo = new JButton(com.floreantpos.POSConstants.GO);
 	private JPanel reportContainer;
 	

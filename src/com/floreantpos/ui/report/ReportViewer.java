@@ -11,6 +11,7 @@ import java.util.Date;
 import com.floreantpos.main.Application;
 import com.floreantpos.swing.MessageDialog;
 import com.floreantpos.ui.dialog.POSMessageDialog;
+import com.floreantpos.ui.util.UiUtil;
 
 /**
  *
@@ -41,8 +42,8 @@ public class ReportViewer extends javax.swing.JPanel {
         jLabel1 = new javax.swing.JLabel();
         cbReportType = new javax.swing.JComboBox();
         jLabel2 = new javax.swing.JLabel();
-        dpStartDate = new org.jdesktop.swingx.JXDatePicker();
-        dpEndDate = new org.jdesktop.swingx.JXDatePicker();
+        dpStartDate = UiUtil.getCurrentMonthStart();
+        dpEndDate = UiUtil.getCurrentMonthEnd();
         jLabel3 = new javax.swing.JLabel();
         btnRefresh = new javax.swing.JButton();
         reportPanel = new com.floreantpos.swing.TransparentPanel();
@@ -146,8 +147,6 @@ public class ReportViewer extends javax.swing.JPanel {
 			
 		} catch (Exception e) {
 			MessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, e);
-		} catch(OutOfMemoryError e) {
-			MessageDialog.showError(com.floreantpos.POSConstants.OUT_OF_MEMORY, e);
 		}
     }//GEN-LAST:event_doRefreshReport
     
@@ -171,11 +170,11 @@ public class ReportViewer extends javax.swing.JPanel {
 	public void setReport(Report report) {
 		this.report = report;
 		
-		if(report != null) {
-			cbReportType.setEnabled(report.isTypeSupported());
-			this.dpStartDate.setEnabled(report.isDateRangeSupported());
-			this.dpEndDate.setEnabled(report.isDateRangeSupported());
-		}
+//		if(report != null) {
+//			cbReportType.setEnabled(report.isTypeSupported());
+//			this.dpStartDate.setEnabled(report.isDateRangeSupported());
+//			this.dpEndDate.setEnabled(report.isDateRangeSupported());
+//		}
 	}
     
 }

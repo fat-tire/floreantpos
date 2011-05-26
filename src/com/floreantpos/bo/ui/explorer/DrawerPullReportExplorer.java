@@ -27,10 +27,11 @@ import com.floreantpos.model.util.DateUtil;
 import com.floreantpos.swing.TransparentPanel;
 import com.floreantpos.ui.PosTableRenderer;
 import com.floreantpos.ui.dialog.POSMessageDialog;
+import com.floreantpos.ui.util.UiUtil;
 
 public class DrawerPullReportExplorer extends TransparentPanel {
-	private JXDatePicker fromDatePicker = new JXDatePicker();
-	private JXDatePicker toDatePicker = new JXDatePicker();
+	private JXDatePicker fromDatePicker = UiUtil.getCurrentMonthStart();
+	private JXDatePicker toDatePicker = UiUtil.getCurrentMonthEnd();
 	private JButton btnGo = new JButton(com.floreantpos.POSConstants.GO);
 	private JButton btnEditActualAmount = new JButton(com.floreantpos.POSConstants.EDIT_ACTUAL_AMOUNT);
 	

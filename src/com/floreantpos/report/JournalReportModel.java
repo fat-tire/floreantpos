@@ -104,7 +104,7 @@ public class JournalReportModel {
 	public static class JournalReportTableModel extends ListTableModel {
 
 		public JournalReportTableModel(List<JournalReportData> datas) {
-			super(new String[] { "refId", com.floreantpos.POSConstants.TIME, "action", com.floreantpos.POSConstants.USER, "comment" }, datas);
+			super(new String[] { "refId", "time", "action", "user", "comment" }, datas);
 		}
 
 		public Object getValueAt(int rowIndex, int columnIndex) {

@@ -4,3 +4,8 @@ Changes in version 1.1
 2. Removed user type selection from login screen.
 3. Small change in Switchboard look.
 4. Disable print ticket when Finish is clicked in order screen.
+5. Fixed Sales summary report
+6. Fixed Sales Analysis report
+7. Fixed Menu Usage Report
+8. Fixed Server Productivity Report
+9. Fixed Journal Report

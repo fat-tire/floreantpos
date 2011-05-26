@@ -35,6 +35,7 @@ import com.floreantpos.report.SalesAnalysisReportModel.SalesAnalysisData;
 import com.floreantpos.report.SalesStatistics.ShiftwiseDataTableModel;
 import com.floreantpos.swing.ListComboBoxModel;
 import com.floreantpos.ui.dialog.POSMessageDialog;
+import com.floreantpos.ui.util.UiUtil;
 
 /**
  *
@@ -77,8 +78,8 @@ public class SalesSummaryReportView extends javax.swing.JPanel {
 		jLabel2 = new javax.swing.JLabel();
 		jLabel3 = new javax.swing.JLabel();
 		jLabel4 = new javax.swing.JLabel();
-		fromDatePicker = new org.jdesktop.swingx.JXDatePicker();
-		toDatePicker = new org.jdesktop.swingx.JXDatePicker();
+		fromDatePicker = UiUtil.getCurrentMonthStart();
+		toDatePicker = UiUtil.getCurrentMonthEnd();
 		cbUserType = new javax.swing.JComboBox();
 		cbTerminal = new javax.swing.JComboBox();
 		btnGo = new javax.swing.JButton();
