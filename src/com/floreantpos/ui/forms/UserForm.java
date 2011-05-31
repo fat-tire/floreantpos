@@ -239,8 +239,7 @@ public class UserForm extends BeanEditor {
 		UserDAO userDAO = UserDAO.getInstance();
 
 		if (!editMode) {
-			User user2 = userDAO.findUser(user.getUserId());
-			if (user2 != null) {
+			if (userDAO.isUserExist(user.getUserId())) {
 				POSMessageDialog.showError(this, "User with ID: " + user.getUserId() + " already exists.");
 				return false;
 			}

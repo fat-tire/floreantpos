@@ -215,7 +215,9 @@ public class VoidTicketDialog extends POSDialog {
     private void btnVoidActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVoidActionPerformed
     	try {
 			VoidReason voidReason = (VoidReason) cbVoidReasons.getSelectedItem();
-			ticket.setVoidReason(voidReason.getReasonText());
+			if(voidReason != null) {
+				ticket.setVoidReason(voidReason.getReasonText());
+			}
 			ticket.setWasted(chkItemsWasted.isSelected());
 			ticket.setVoidedBy(Application.getCurrentUser());
 			

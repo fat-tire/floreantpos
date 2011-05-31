@@ -17,6 +17,7 @@ import com.floreantpos.model.Shift;
 import com.floreantpos.model.Terminal;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.User;
+import com.floreantpos.util.UserNotFoundException;
 
 public class UserDAO extends BaseUserDAO {
 	public final static UserDAO instance = new UserDAO();
@@ -41,7 +42,7 @@ public class UserDAO extends BaseUserDAO {
 			}
 			else {
 				//TODO: externalize string
-				throw new RuntimeException("User with id " + id + " not found");
+				throw new UserNotFoundException("User with id " + id + " not found");
 			}
 		} finally {
 			if (session != null) {
@@ -49,6 +50,18 @@ public class UserDAO extends BaseUserDAO {
 			}
 		}
 	}
+	
+	public boolean isUserExist(int id) {
+		try {
+			User user  = findUser(id);
+			
+			return user != null;
+			
+		} catch (UserNotFoundException x) {
+			return false;
+		}
+	}
+	
 	public Integer findUserWithMaxId() {
 		Session session = null;
 		
