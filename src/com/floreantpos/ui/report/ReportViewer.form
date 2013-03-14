@@ -84,8 +84,8 @@
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
               <StringArray count="2">
-                <StringItem index="0" value="Previous Sale (After Drawer Reset)"/>
-                <StringItem index="1" value="Current Sale (Before Drawer Reset)"/>
+                <StringItem index="0" value="Previous Sale (Before Drawer Reset)"/>
+                <StringItem index="1" value="Current Sale (After Drawer Reset)"/>
               </StringArray>
             </Property>
           </Properties>
