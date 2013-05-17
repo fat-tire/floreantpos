@@ -98,7 +98,27 @@ public abstract class PaymentView extends JPanel {
 		}
 		return total;
 	}
-
+	
+	protected double calculateGratuity() {
+		List<Ticket> ticketsToSettle = settleTicketView.getTicketsToSettle();
+		if(ticketsToSettle == null) {
+			return 0;
+		}
+		
+		Ticket ticket = ticketsToSettle.get(0);
+		if(ticket.getTableNumber() == Ticket.TAKE_OUT) {
+			return 0.0;
+		}
+		
+		double dueAmount = getDueAmount();
+		double tips = getTotalGratuity();
+		if(tips == 0) {
+			tips = dueAmount * 0.15;
+		}
+		
+		return tips;
+	}
+	
 	public void changePaymentMethod() {
 		PaymentTypeSelectionDialog dialog = new PaymentTypeSelectionDialog();
 		dialog.setSize(250, 400);
@@ -113,7 +133,7 @@ public abstract class PaymentView extends JPanel {
 		}
 	}
 	
-	public void settleTickets(double tenderedAmount, double gratuityAmount, PosTransaction posTransaction, String cardType, String cardAuthorizationCode) {
+	public void settleTickets(final double tenderedAmount, final double gratuityAmount, PosTransaction posTransaction, String cardType, String cardAuthorizationCode) {
 		try {
 			double totalAmount = Double.parseDouble(Application.formatNumber(getTotalAmount()));
 			double dueAmountBeforePaid = Double.parseDouble(Application.formatNumber(getDueAmount()));
@@ -130,34 +150,11 @@ public abstract class PaymentView extends JPanel {
 			
 			try {
 				for (Ticket ticket : ticketsToSettle) {
-					PosPrintService.printTicket(ticket);
+					PosPrintService.printTicket(ticket, tenderedAmount);
 				}
 			}catch(Exception ee) {
 				POSMessageDialog.showError(Application.getPosWindow(), com.floreantpos.POSConstants.PRINT_ERROR, ee);
 			}
-			
-			/*if(Application.getPrinterConfiguration().isPrintReceiptWhenTicketPaid()) {
-				try {
-					for (Ticket ticket : ticketsToSettle) {
-						PosPrintService.printTicket(ticket);
-					}
-				}catch(Exception ee) {
-					POSMessageDialog.showError(Application.getPosWindow(), com.floreantpos.POSConstants.THERE_WAS_AN_ERROR_WHILE_PRINTING_TO_KITCHEN, ee);
-				}
-			}
-			
-			if(Application.getPrinterConfiguration().isPrintKitchenWhenTicketPaid()) {
-				try {
-					for (Ticket ticket : ticketsToSettle) {
-						if(ticket.needsKitchenPrint()) {
-							PosPrintService.printToKitcken(ticket);
-						}
-						ticket.clearDeletedItems();
-					}
-				}catch(Exception ee) {
-					POSMessageDialog.showError(Application.getPosWindow(), com.floreantpos.POSConstants.THERE_WAS_AN_ERROR_WHILE_PRINTING_TO_KITCHEN, ee);
-				}
-			}*/
 			
 			double paidAmount = Double.parseDouble(Application.formatNumber(getPaidAmount()));
 			double dueAmount = Double.parseDouble(Application.formatNumber(getDueAmount()));
@@ -196,6 +193,29 @@ public abstract class PaymentView extends JPanel {
 		} catch (Exception e) {
 			POSMessageDialog.showError(this, POSConstants.ERROR_MESSAGE, e);
 		}
+		
+		/*if(Application.getPrinterConfiguration().isPrintReceiptWhenTicketPaid()) {
+			try {
+				for (Ticket ticket : ticketsToSettle) {
+					PosPrintService.printTicket(ticket);
+				}
+			}catch(Exception ee) {
+				POSMessageDialog.showError(Application.getPosWindow(), com.floreantpos.POSConstants.THERE_WAS_AN_ERROR_WHILE_PRINTING_TO_KITCHEN, ee);
+			}
+		}
+		
+		if(Application.getPrinterConfiguration().isPrintKitchenWhenTicketPaid()) {
+			try {
+				for (Ticket ticket : ticketsToSettle) {
+					if(ticket.needsKitchenPrint()) {
+						PosPrintService.printToKitcken(ticket);
+					}
+					ticket.clearDeletedItems();
+				}
+			}catch(Exception ee) {
+				POSMessageDialog.showError(Application.getPosWindow(), com.floreantpos.POSConstants.THERE_WAS_AN_ERROR_WHILE_PRINTING_TO_KITCHEN, ee);
+			}
+		}*/
 	}
 	
 	public abstract void updateView();

@@ -131,7 +131,7 @@ public class OthersView extends TransparentPanel {
 
     private void btnPrintReceiptActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrintReceiptActionPerformed
     	try {
-			PosPrintService.printTicket(getCurrentTicket());
+			PosPrintService.printTicket(getCurrentTicket(), 0);
 		} catch (Exception e) {
 			POSMessageDialog.showError(Application.getPosWindow(), e.getMessage(), e);
 		} 

@@ -219,9 +219,9 @@ public class PosPrinter {
 		}
 		
 		try {
-			m_drawer.setDeviceEnabled(false);
-			m_drawer.release();
-			m_drawer.close();
+//			m_drawer.setDeviceEnabled(false);
+//			m_drawer.release();
+//			m_drawer.close();
 		} catch(Exception x) {
 			x.printStackTrace();
 		}

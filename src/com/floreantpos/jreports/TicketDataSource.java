@@ -28,8 +28,11 @@ public class TicketDataSource extends AbstractReportDataSource {
 		List<TicketItem> ticketItems = ticket.getTicketItems();
 		if (ticketItems != null) {
 			for (TicketItem ticketItem : ticketItems) {
-				Row row = new Row(ticketItem.getItemCount(), ticketItem.getName(), ticketItem.getUnitPrice(), ticketItem.getSubtotalAmountWithoutModifiers());
-				rows.add(row);
+				for (int i = 0; i < 30; i++) {
+					Row row = new Row(ticketItem.getItemCount(), ticketItem.getName(), ticketItem.getUnitPrice(), ticketItem.getSubtotalAmountWithoutModifiers());
+					rows.add(row);
+				}
+				
 				
 				List<TicketItemModifierGroup> modifierGroups = ticketItem.getTicketItemModifierGroups();
 				if (modifierGroups != null) {
@@ -46,7 +49,7 @@ public class TicketDataSource extends AbstractReportDataSource {
 									name = " - Extra " + name;
 									extra = true;
 								}
-								row = new Row();
+								Row row = new Row();
 								row.setItemCount(modifier.getItemCount());
 								row.setItemName(name);
 								if(extra) {
