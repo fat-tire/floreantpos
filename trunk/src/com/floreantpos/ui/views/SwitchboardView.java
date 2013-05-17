@@ -352,7 +352,7 @@ public class SwitchboardView extends JPanel implements ActionListener {
 		Ticket ticket = selectedTickets.get(0);
 		try {
 			ticket = TicketDAO.getInstance().initializeTicket(ticket);
-			PosPrintService.printTicket(ticket);
+			PosPrintService.printTicket(ticket, 0);
 
 			//			PRINT ACTION
 			String actionMessage = "CHK#" + ":" + ticket.getId();
