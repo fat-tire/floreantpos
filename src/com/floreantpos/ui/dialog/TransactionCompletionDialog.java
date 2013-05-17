@@ -40,33 +40,33 @@ public class TransactionCompletionDialog extends POSDialog {
 		
 		add(createLabel("TOTAL AMOUNT" + ":",JLabel.LEFT), "grow");
 		lblTotalAmount = createLabel("0.0",JLabel.RIGHT);
-		add(lblTotalAmount, "grow");
+		add(lblTotalAmount, "span, grow");
 		
 		add(createLabel("TENDERED AMOUNT" + ":",JLabel.LEFT), "newline,grow");
 		lblTenderedAmount = createLabel("0.0",JLabel.RIGHT);
-		add(lblTenderedAmount, "grow");
+		add(lblTenderedAmount, "span, grow");
 		
 		add(new JSeparator(), "newline,span, grow");
 		
 		add(createLabel("PAID AMOUNT" + ":",JLabel.LEFT), "newline,grow");
 		lblPaidAmount = createLabel("0.0",JLabel.RIGHT);
-		add(lblPaidAmount, "grow");
+		add(lblPaidAmount, "span, grow");
 
 		add(createLabel("DUE AMOUNT" + ":",JLabel.LEFT), "newline,grow");
 		lblDueAmount = createLabel("0.0",JLabel.RIGHT);
-		add(lblDueAmount, "grow");
+		add(lblDueAmount, "span, grow");
 		
 		add(new JSeparator(), "newline,span, grow");
 		
 		add(createLabel("GRATUITY AMOUNT" + ":",JLabel.LEFT), "newline,grow");
 		lblGratuityAmount = createLabel("0.0",JLabel.RIGHT);
-		add(lblGratuityAmount, "grow");
+		add(lblGratuityAmount, "span, grow");
 		
 		add(new JSeparator(), "newline,span, grow");
 		
 		add(createLabel("CHANGE DUE" + ":",JLabel.LEFT), "grow");
 		lblChangeDue = createLabel("0.0", JLabel.RIGHT);
-		add(lblChangeDue, "grow");
+		add(lblChangeDue, "span, grow");
 		
 		add(new JSeparator(), "sg mygroup,newline,span,grow");
 		PosButton btnClose = new PosButton("CLOSE");
@@ -84,7 +84,7 @@ public class TransactionCompletionDialog extends POSDialog {
 				try {
 					for (Ticket ticket : tickets) {
 //						PosPrintService.printMoneyReceipt(ticket);
-						PosPrintService.printTicket(ticket);
+						PosPrintService.printTicket(ticket, getTenderedAmount());
 					}
 				}catch(Exception ee) {
 					POSMessageDialog.showError(Application.getPosWindow(), "There was an error while printing money receipt", ee);
@@ -95,13 +95,13 @@ public class TransactionCompletionDialog extends POSDialog {
 		
 		add(btnPrintClose, "newline,skip, align 100%,h 50, w 120");
 		add(btnClose, "skip, align 100%,h 50, w 120");
-		setResizable(false);
+		//setResizable(false);
 	}
 	
 	protected JLabel createLabel(String text, int alignment) {
 		JLabel label = new JLabel(text);
-		label.setFont(new java.awt.Font("Tahoma", 1, 36));
-		label.setForeground(new java.awt.Color(255, 102, 0));
+		label.setFont(new java.awt.Font("Tahoma", 1, 24));
+		//label.setForeground(new java.awt.Color(255, 102, 0));
 		label.setHorizontalAlignment(alignment);
 		label.setText(text);
 		return label;
@@ -122,7 +122,7 @@ public class TransactionCompletionDialog extends POSDialog {
 		lblDueAmount.setText(Application.formatNumber(dueAmount));
 		lblGratuityAmount.setText(Application.formatNumber(gratuityAmount));
 		
-		double changeDueAmount = tenderedAmount - dueAmountBeforePaid;
+		double changeDueAmount = tenderedAmount - gratuityAmount - dueAmountBeforePaid;
 		if(changeDueAmount < 0) {
 			changeDueAmount = 0;
 		}

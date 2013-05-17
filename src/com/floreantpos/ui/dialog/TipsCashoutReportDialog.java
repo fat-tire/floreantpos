@@ -74,6 +74,7 @@ public class TipsCashoutReportDialog extends POSDialog implements ActionListener
 			try {
 				PosPrintService.printServerTipsReport(report);
 			}catch (Exception x) {
+				x.printStackTrace();
 				POSMessageDialog.showError(this, "Could not print\n" + x.getMessage());
 			}
 		}
