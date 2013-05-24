@@ -1,9 +1,19 @@
 package com.floreantpos.print;
 
 import java.text.DecimalFormat;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
+
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.engine.data.JRTableModelDataSource;
+import net.sf.jasperreports.engine.util.JRLoader;
+import net.sf.jasperreports.view.JasperViewer;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -11,9 +21,9 @@ import org.apache.commons.logging.LogFactory;
 
 import com.floreantpos.config.PrintConfig;
 import com.floreantpos.jreports.JReportPrintService;
+import com.floreantpos.jreports.KitchenTicketDataSource;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.DrawerPullReport;
-import com.floreantpos.model.DrawerPullVoidTicketEntry;
 import com.floreantpos.model.Restaurant;
 import com.floreantpos.model.Terminal;
 import com.floreantpos.model.Ticket;
@@ -551,105 +561,165 @@ public class PosPrintService {
 	}
 
 	public static void printDrawerPullReport(DrawerPullReport drawerPullReport, Terminal terminal) {
-		PosPrinter posPrinter = null;
-		DecimalFormat decimalFormat = new DecimalFormat("0.00");
+		
 		try {
-			posPrinter = new PosPrinter(PrintConfig.getJavaPosReceiptPrinterName(), PrintConfig.getCashDrawerName());
-
-			printSeparator(posPrinter, '=');
-			printCentered(posPrinter, "Time: " + Application.formatDate(drawerPullReport.getReportTime()));
-			printSeparator(posPrinter, '=');
-
-			posPrinter.printEmptyLine();
-
-			printDrawerPullLine(posPrinter, " NET SALES", decimalFormat.format(drawerPullReport.getNetSales()));
-			printDrawerPullLine(posPrinter, "+SALES TAX", decimalFormat.format(drawerPullReport.getSalesTax()));
-			printDrawerPullLine(posPrinter, "=TOTAL REVENUES", decimalFormat.format(drawerPullReport.getTotalRevenue()));
-			printDrawerPullLine(posPrinter, "+CHARGED TIPS", decimalFormat.format(drawerPullReport.getChargedTips()));
-			printSeparator(posPrinter, '-');
-			printDrawerPullLine(posPrinter, "=GROSS RECEIPTS", decimalFormat.format(drawerPullReport.getGrossReceipts()));
-			posPrinter.printEmptyLine();
-			printDrawerPullLine(posPrinter, "-CASH RECEIPTS (" + drawerPullReport.getCashReceiptNumber() + ")", decimalFormat.format(drawerPullReport.getCashReceiptAmount()));
-			printDrawerPullLine(posPrinter, "-CREDIT CARDS  (" + drawerPullReport.getCreditCardReceiptNumber() + ")", decimalFormat.format(drawerPullReport.getCreditCardReceiptAmount()));
-			printDrawerPullLine(posPrinter, "-DEBIT CARDS   (" + drawerPullReport.getDebitCardReceiptNumber() + ")", decimalFormat.format(drawerPullReport.getDebitCardReceiptAmount()));
-			printDrawerPullLine(posPrinter, "-GIFT RETURNS   (" + drawerPullReport.getGiftCertReturnCount() + ")", decimalFormat.format(drawerPullReport.getGiftCertReturnAmount()));
-			printDrawerPullLine(posPrinter, "+GIFT CERT. CHANGE" , decimalFormat.format(drawerPullReport.getGiftCertChangeAmount()));
-			printDrawerPullLine(posPrinter, "+CASH BACK", decimalFormat.format(drawerPullReport.getCashBack()));
-			printSeparator(posPrinter, '-');
-			printDrawerPullLine(posPrinter, "=RECEIPT DIFFERENTIAL", decimalFormat.format(drawerPullReport.getReceiptDifferential()));
-			posPrinter.printEmptyLine();
-			printDrawerPullLine(posPrinter, "+CHARGED TIPS", decimalFormat.format(drawerPullReport.getChargedTips()));
-			printDrawerPullLine(posPrinter, "-TIPS PAID", decimalFormat.format(drawerPullReport.getTipsPaid()));
-			printSeparator(posPrinter, '-');
-			printDrawerPullLine(posPrinter, "=TIPS DIFFERENTIAL", decimalFormat.format(drawerPullReport.getTipsDifferential()));
-			posPrinter.printEmptyLine();
-
-			printCentered(posPrinter, "CASH BALANCE");
-			printSeparator(posPrinter, '=');
-			printDrawerPullLine(posPrinter, "CASH  (" + drawerPullReport.getCashReceiptNumber() + ")", decimalFormat.format(drawerPullReport.getCashReceiptAmount()));
-			printDrawerPullLine(posPrinter, "-TIPS PAID", decimalFormat.format(drawerPullReport.getTipsPaid()));
-			printDrawerPullLine(posPrinter, "-PAY OUT       (" + drawerPullReport.getPayOutNumber() + ")", decimalFormat.format(drawerPullReport.getPayOutAmount()));
-			printDrawerPullLine(posPrinter, "-CASH BACK", decimalFormat.format(drawerPullReport.getCashBack()));
-			printDrawerPullLine(posPrinter, "+BEGIN CASH", decimalFormat.format(terminal.getOpeningBalance()));
-			printDrawerPullLine(posPrinter, "-DRAWER BLEED  (" + drawerPullReport.getDrawerBleedNumber() + ")", decimalFormat.format(drawerPullReport.getDrawerBleedAmount()));
-			printSeparator(posPrinter, '-');
-			printDrawerPullLine(posPrinter, "=DRAWER ACCOUNTABLE", decimalFormat.format(drawerPullReport.getDrawerAccountable()));
-			printDrawerPullLine(posPrinter, ">CASH TO DEPOSIT", decimalFormat.format(terminal.getCurrentBalance()));
-
-			printCentered(posPrinter, "=== EXCEPTIONS ===");
-			printCentered(posPrinter, "=== VOIDS/REFUNDS (Without Tax) ===");
-			posPrinter.beginLine(PosPrinter.SIZE_0);
-			printColumn(posPrinter, "CODE", 6);
-			printColumnSeparator(posPrinter);
-			printColumn(posPrinter, "REASON", 10);
-			printColumnSeparator(posPrinter);
-			printColumn(posPrinter, "WAST", 4);
-			printColumnSeparator(posPrinter);
-			printColumn(posPrinter, com.floreantpos.POSConstants.QTY, 6);
-			printColumnSeparator(posPrinter);
-			printColumn(posPrinter, "AMOUNT", 7);
-			posPrinter.endLine();
+			HashMap parameters = new HashMap();
 			
-			Set<DrawerPullVoidTicketEntry> voidTickets = drawerPullReport.getVoidTickets();
-			if (voidTickets != null) {
-				for (DrawerPullVoidTicketEntry entry : voidTickets) {
-					print1stColumn(posPrinter, String.valueOf(entry.getCode()), 6);
-					printColumnSeparator(posPrinter);
-					printColumn(posPrinter, entry.getReason(), 10);
-					printColumnSeparator(posPrinter);
-					printColumn(posPrinter, " ", 4);
-					printColumnSeparator(posPrinter);
-					printColumn(posPrinter, String.valueOf(entry.getQuantity()), 6);
-					printColumnSeparator(posPrinter);
-					printColumn(posPrinter, Application.formatNumber(entry.getAmount()), 7);
-				}
-			}
-			printSeparator(posPrinter, '=');
-			print1stColumn(posPrinter, "TOTAL VOIDS W/WST", 25);
-			printColumnSeparator(posPrinter);
-			printRightAlignedColumn(posPrinter, decimalFormat.format(drawerPullReport.getTotalVoidWst()), 15);
-			print1stColumn(posPrinter, "TOTAL VOIDS", 25);
-			printColumnSeparator(posPrinter);
-			printRightAlignedColumn(posPrinter, decimalFormat.format(drawerPullReport.getTotalVoid()), 15);
-			posPrinter.endLine();
+			parameters.put("totalVoid", drawerPullReport.getTotalVoid());
 			
-			posPrinter.printEmptyLine();
-			printLastColumn(posPrinter, "TOTAL DISCOUNT", 25);
-			printDiscountLine(posPrinter, "TOTAL COUNT", String.valueOf(drawerPullReport.getTotalDiscountCount()));
-			printDiscountLine(posPrinter, "TOTAL Dsct", Application.formatNumber(drawerPullReport.getTotalDiscountAmount()));
-			printDiscountLine(posPrinter, "TOTAL Sales", Application.formatNumber(drawerPullReport.getTotalDiscountSales()));
-			printDiscountLine(posPrinter, "TOTAL Guest", String.valueOf(drawerPullReport.getTotalDiscountGuest()));
-			printDiscountLine(posPrinter, "Party Size", String.valueOf(drawerPullReport.getTotalDiscountPartySize()));
-			printDiscountLine(posPrinter, "Check Size", String.valueOf(drawerPullReport.getTotalDiscountCheckSize()));
-			printDiscountLine(posPrinter, "Count [%]", String.valueOf(" "));
-			printDiscountLine(posPrinter, "Ration", String.valueOf(" "));
+			Restaurant restaurant = RestaurantDAO.getInstance().get(Integer.valueOf(1));
 			
-			posPrinter.printCutPartial();
-		} finally {
-			if (posPrinter != null) {
-				posPrinter.finalize();
-			}
+			parameters.put("headerLine1", restaurant.getName());
+			
+			JasperReport subReport = (JasperReport) JRLoader.loadObject(JReportPrintService.class.getResourceAsStream("/com/floreantpos/jreports/DrawerPullVoidReport.jasper"));
+			//JRBeanCollectionDataSource subReportDataSource = new JRBeanCollectionDataSource(drawerPullReport.getVoidTickets());
+			
+			
+			parameters.put("subreportParameter", subReport);
+			
+			JasperReport mainReport = (JasperReport) JRLoader.loadObject(JReportPrintService.class.getResourceAsStream("/com/floreantpos/jreports/DrawerPullJReport.jasper"));
+			JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(Arrays.asList(new DrawerPullReport[] {drawerPullReport}));
+			JasperPrint jasperPrint = JasperFillManager.fillReport(mainReport, parameters, dataSource);
+			JasperViewer.viewReport(jasperPrint, false);
+		
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
+		//Restaurant restaurant = RestaurantDAO.getInstance().get(Integer.valueOf(1));
+
+//		HashMap map = new HashMap();
+//		map.put("headerLine1", restaurant.getName());
+//
+//		map.put("checkNo", com.floreantpos.POSConstants.CHK_NO + ticket.getId());
+//		map.put("tableNo", com.floreantpos.POSConstants.TABLE_NO + ticket.getTableNumber());
+//		map.put("guestCount", com.floreantpos.POSConstants.GUESTS_ + ticket.getNumberOfGuests());
+//		map.put("serverName", com.floreantpos.POSConstants.SERVER + ": " + ticket.getOwner());
+//		map.put("reportDate", com.floreantpos.POSConstants.DATE + ": " + Application.formatDate(new Date()));
+//
+//		InputStream ticketReportStream = null;
+//
+//		try {
+//			ticketReportStream = JReportPrintService.class.getResourceAsStream("/com/floreantpos/jreports/KitchenReceipt.jasper");
+//			JasperReport ticketReport = (JasperReport) JRLoader.loadObject(ticketReportStream);
+//
+//			JasperPrint jasperPrint = JasperFillManager.fillReport(ticketReport, map, new JRTableModelDataSource(new KitchenTicketDataSource(ticket)));
+//			//JasperViewer.viewReport(jasperPrint, false);
+//
+//			JRPrinterAWT.printToKitchen = true;
+//			JasperPrintManager.printReport(jasperPrint, false);
+//
+//			//no exception, so print to kitchen successful.
+//			//now mark items as printed.
+//			markItemsAsPrinted(ticket);
+//
+//		} catch (JRException e) {
+//			logger.error(com.floreantpos.POSConstants.PRINT_ERROR, e);
+//		} finally {
+//			try {
+//				ticketReportStream.close();
+//			} catch (Exception x) {
+//			}
+//		}
+		
+//		PosPrinter posPrinter = null;
+//		DecimalFormat decimalFormat = new DecimalFormat("0.00");
+//		try {
+//			posPrinter = new PosPrinter(PrintConfig.getJavaPosReceiptPrinterName(), PrintConfig.getCashDrawerName());
+//
+//			printSeparator(posPrinter, '=');
+//			printCentered(posPrinter, "Time: " + Application.formatDate(drawerPullReport.getReportTime()));
+//			printSeparator(posPrinter, '=');
+//
+//			posPrinter.printEmptyLine();
+//
+//			printDrawerPullLine(posPrinter, " NET SALES", decimalFormat.format(drawerPullReport.getNetSales()));
+//			printDrawerPullLine(posPrinter, "+SALES TAX", decimalFormat.format(drawerPullReport.getSalesTax()));
+//			printDrawerPullLine(posPrinter, "=TOTAL REVENUES", decimalFormat.format(drawerPullReport.getTotalRevenue()));
+//			printDrawerPullLine(posPrinter, "+CHARGED TIPS", decimalFormat.format(drawerPullReport.getChargedTips()));
+//			printSeparator(posPrinter, '-');
+//			printDrawerPullLine(posPrinter, "=GROSS RECEIPTS", decimalFormat.format(drawerPullReport.getGrossReceipts()));
+//			posPrinter.printEmptyLine();
+//			printDrawerPullLine(posPrinter, "-CASH RECEIPTS (" + drawerPullReport.getCashReceiptNumber() + ")", decimalFormat.format(drawerPullReport.getCashReceiptAmount()));
+//			printDrawerPullLine(posPrinter, "-CREDIT CARDS  (" + drawerPullReport.getCreditCardReceiptNumber() + ")", decimalFormat.format(drawerPullReport.getCreditCardReceiptAmount()));
+//			printDrawerPullLine(posPrinter, "-DEBIT CARDS   (" + drawerPullReport.getDebitCardReceiptNumber() + ")", decimalFormat.format(drawerPullReport.getDebitCardReceiptAmount()));
+//			printDrawerPullLine(posPrinter, "-GIFT RETURNS   (" + drawerPullReport.getGiftCertReturnCount() + ")", decimalFormat.format(drawerPullReport.getGiftCertReturnAmount()));
+//			printDrawerPullLine(posPrinter, "+GIFT CERT. CHANGE" , decimalFormat.format(drawerPullReport.getGiftCertChangeAmount()));
+//			printDrawerPullLine(posPrinter, "+CASH BACK", decimalFormat.format(drawerPullReport.getCashBack()));
+//			printSeparator(posPrinter, '-');
+//			printDrawerPullLine(posPrinter, "=RECEIPT DIFFERENTIAL", decimalFormat.format(drawerPullReport.getReceiptDifferential()));
+//			posPrinter.printEmptyLine();
+//			printDrawerPullLine(posPrinter, "+CHARGED TIPS", decimalFormat.format(drawerPullReport.getChargedTips()));
+//			printDrawerPullLine(posPrinter, "-TIPS PAID", decimalFormat.format(drawerPullReport.getTipsPaid()));
+//			printSeparator(posPrinter, '-');
+//			printDrawerPullLine(posPrinter, "=TIPS DIFFERENTIAL", decimalFormat.format(drawerPullReport.getTipsDifferential()));
+//			posPrinter.printEmptyLine();
+//
+//			printCentered(posPrinter, "CASH BALANCE");
+//			printSeparator(posPrinter, '=');
+//			printDrawerPullLine(posPrinter, "CASH  (" + drawerPullReport.getCashReceiptNumber() + ")", decimalFormat.format(drawerPullReport.getCashReceiptAmount()));
+//			printDrawerPullLine(posPrinter, "-TIPS PAID", decimalFormat.format(drawerPullReport.getTipsPaid()));
+//			printDrawerPullLine(posPrinter, "-PAY OUT       (" + drawerPullReport.getPayOutNumber() + ")", decimalFormat.format(drawerPullReport.getPayOutAmount()));
+//			printDrawerPullLine(posPrinter, "-CASH BACK", decimalFormat.format(drawerPullReport.getCashBack()));
+//			printDrawerPullLine(posPrinter, "+BEGIN CASH", decimalFormat.format(terminal.getOpeningBalance()));
+//			printDrawerPullLine(posPrinter, "-DRAWER BLEED  (" + drawerPullReport.getDrawerBleedNumber() + ")", decimalFormat.format(drawerPullReport.getDrawerBleedAmount()));
+//			printSeparator(posPrinter, '-');
+//			printDrawerPullLine(posPrinter, "=DRAWER ACCOUNTABLE", decimalFormat.format(drawerPullReport.getDrawerAccountable()));
+//			printDrawerPullLine(posPrinter, ">CASH TO DEPOSIT", decimalFormat.format(terminal.getCurrentBalance()));
+//
+//			printCentered(posPrinter, "=== EXCEPTIONS ===");
+//			printCentered(posPrinter, "=== VOIDS/REFUNDS (Without Tax) ===");
+//			posPrinter.beginLine(PosPrinter.SIZE_0);
+//			printColumn(posPrinter, "CODE", 6);
+//			printColumnSeparator(posPrinter);
+//			printColumn(posPrinter, "REASON", 10);
+//			printColumnSeparator(posPrinter);
+//			printColumn(posPrinter, "WAST", 4);
+//			printColumnSeparator(posPrinter);
+//			printColumn(posPrinter, com.floreantpos.POSConstants.QTY, 6);
+//			printColumnSeparator(posPrinter);
+//			printColumn(posPrinter, "AMOUNT", 7);
+//			posPrinter.endLine();
+//			
+//			Set<DrawerPullVoidTicketEntry> voidTickets = drawerPullReport.getVoidTickets();
+//			if (voidTickets != null) {
+//				for (DrawerPullVoidTicketEntry entry : voidTickets) {
+//					print1stColumn(posPrinter, String.valueOf(entry.getCode()), 6);
+//					printColumnSeparator(posPrinter);
+//					printColumn(posPrinter, entry.getReason(), 10);
+//					printColumnSeparator(posPrinter);
+//					printColumn(posPrinter, " ", 4);
+//					printColumnSeparator(posPrinter);
+//					printColumn(posPrinter, String.valueOf(entry.getQuantity()), 6);
+//					printColumnSeparator(posPrinter);
+//					printColumn(posPrinter, Application.formatNumber(entry.getAmount()), 7);
+//				}
+//			}
+//			printSeparator(posPrinter, '=');
+//			print1stColumn(posPrinter, "TOTAL VOIDS W/WST", 25);
+//			printColumnSeparator(posPrinter);
+//			printRightAlignedColumn(posPrinter, decimalFormat.format(drawerPullReport.getTotalVoidWst()), 15);
+//			print1stColumn(posPrinter, "TOTAL VOIDS", 25);
+//			printColumnSeparator(posPrinter);
+//			printRightAlignedColumn(posPrinter, decimalFormat.format(drawerPullReport.getTotalVoid()), 15);
+//			posPrinter.endLine();
+//			
+//			posPrinter.printEmptyLine();
+//			printLastColumn(posPrinter, "TOTAL DISCOUNT", 25);
+//			printDiscountLine(posPrinter, "TOTAL COUNT", String.valueOf(drawerPullReport.getTotalDiscountCount()));
+//			printDiscountLine(posPrinter, "TOTAL Dsct", Application.formatNumber(drawerPullReport.getTotalDiscountAmount()));
+//			printDiscountLine(posPrinter, "TOTAL Sales", Application.formatNumber(drawerPullReport.getTotalDiscountSales()));
+//			printDiscountLine(posPrinter, "TOTAL Guest", String.valueOf(drawerPullReport.getTotalDiscountGuest()));
+//			printDiscountLine(posPrinter, "Party Size", String.valueOf(drawerPullReport.getTotalDiscountPartySize()));
+//			printDiscountLine(posPrinter, "Check Size", String.valueOf(drawerPullReport.getTotalDiscountCheckSize()));
+//			printDiscountLine(posPrinter, "Count [%]", String.valueOf(" "));
+//			printDiscountLine(posPrinter, "Ration", String.valueOf(" "));
+//			
+//			posPrinter.printCutPartial();
+//		} finally {
+//			if (posPrinter != null) {
+//				posPrinter.finalize();
+//			}
+//		}
 	}
 
 	public static void printServerTipsReport(TipsCashoutReport report) {
