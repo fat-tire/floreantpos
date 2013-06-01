@@ -273,16 +273,16 @@ public class CashPaymentView extends PaymentView {
 	}//GEN-LAST:event_btnChangePaymentActionPerformed
 
 	private void doFinish(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_doFinish
-		double dueAmount = getDueAmount();
+//		double dueAmount = getDueAmount();
 		double tenderedAmount = getTenderedAmount();
 		double gratuityAmount = getGratuityAmount();
 		
-		double totalAmount = dueAmount + gratuityAmount;
+//		double totalAmount = dueAmount + gratuityAmount;
 		
-		if(tenderedAmount < totalAmount) {
-			POSMessageDialog.showError(Application.getPosWindow(), "Tendered amount may not be less than " + totalAmount);
-			return;
-		}
+//		if(tenderedAmount < totalAmount) {
+//			POSMessageDialog.showError(Application.getPosWindow(), "Tendered amount may not be less than " + totalAmount);
+//			return;
+//		}
 		
 		settleTickets(tenderedAmount, gratuityAmount, new CashTransaction(), null, null);
 	}//GEN-LAST:event_doFinish

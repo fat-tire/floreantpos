@@ -1,14 +1,15 @@
 package com.floreantpos.print;
 
-import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
+import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperPrintManager;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.data.JRTableModelDataSource;
@@ -21,7 +22,6 @@ import org.apache.commons.logging.LogFactory;
 
 import com.floreantpos.config.PrintConfig;
 import com.floreantpos.jreports.JReportPrintService;
-import com.floreantpos.jreports.KitchenTicketDataSource;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.DrawerPullReport;
 import com.floreantpos.model.Restaurant;
@@ -32,7 +32,7 @@ import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.TicketItemModifier;
 import com.floreantpos.model.TicketItemModifierGroup;
 import com.floreantpos.model.TipsCashoutReport;
-import com.floreantpos.model.TipsCashoutReport.TipsCashoutReportData;
+import com.floreantpos.model.TipsCashoutReportTableModel;
 import com.floreantpos.model.dao.RestaurantDAO;
 
 import foxtrot.Job;
@@ -195,332 +195,336 @@ public class PosPrintService {
 	}
 
 	public static void printTicket(final Ticket ticket, final double paidAmount) throws Exception {
-		Job job = new Job() {
-
-			@Override
-			public Object run() {
-				PosPrinter posPrinter = null;
-				try {
-					if(PrintConfig.getReceiptPrinterType() == PrinterType.OS_PRINTER) {
-						JReportPrintService.printTicket(ticket, paidAmount);
-						return null;
-					}
-				
-					Restaurant restaurant = RestaurantDAO.getInstance().get(Integer.valueOf(1));
-
-					posPrinter = new PosPrinter(PrintConfig.getJavaPosReceiptPrinterName(), PrintConfig.getCashDrawerName());
-
-					posPrinter.beginLine(PosPrinter.SIZE_0);
-					posPrinter.printText("\u001b|cA\u001b|2C" + restaurant.getName());
-					posPrinter.endLine();
-
-					if (restaurant.getAddressLine1() != null) {
-						printCentered(posPrinter, restaurant.getAddressLine1());
-					}
-					if (restaurant.getAddressLine2() != null) {
-						printCentered(posPrinter, restaurant.getAddressLine2());
-					}
-					if (restaurant.getAddressLine3() != null) {
-						printCentered(posPrinter, restaurant.getAddressLine3());
-					}
-					if (restaurant.getTelephone() != null) {
-						printCentered(posPrinter, restaurant.getTelephone());
-					}
-
-					posPrinter.beginLine(PosPrinter.SIZE_0);
-					posPrinter.endLine();
-
-					posPrinter.beginLine(PosPrinter.SIZE_0);
-					posPrinter.printText(com.floreantpos.POSConstants.CHK_NO);
-					posPrinter.printText(String.valueOf(ticket.getId()));
-					posPrinter.endLine();
-
-					posPrinter.beginLine(PosPrinter.SIZE_0);
-					posPrinter.printText(com.floreantpos.POSConstants.TBL_);
-					posPrinter.printText(String.valueOf(ticket.getTableNumber()));
-					posPrinter.endLine();
-
-					posPrinter.beginLine(PosPrinter.SIZE_0);
-					posPrinter.printText(com.floreantpos.POSConstants.GUEST + " #");
-					posPrinter.printText(String.valueOf(ticket.getNumberOfGuests()));
-					posPrinter.endLine();
-
-					posPrinter.beginLine(PosPrinter.SIZE_0);
-					posPrinter.printText(com.floreantpos.POSConstants.SRV_);
-					posPrinter.printText(String.valueOf(ticket.getOwner().getUserId() + "/" + ticket.getOwner()));
-					posPrinter.endLine();
-
-					posPrinter.beginLine(PosPrinter.SIZE_0);
-					posPrinter.printText(com.floreantpos.POSConstants.DATE + ": ");
-					posPrinter.printText(Application.formatDate(new Date()));
-					posPrinter.endLine();
-
-					posPrinter.beginLine(PosPrinter.SIZE_0);
-					posPrinter.endLine();
-
-					posPrinter.beginLine(PosPrinter.SIZE_0);
-					printFirstColumn(posPrinter, com.floreantpos.POSConstants.QTY, firstColumnLength);
-					printSecondColumn(posPrinter, com.floreantpos.POSConstants.ITEM, firstColumnLength, secondColumnLength, false);
-					printThirdColumn(posPrinter, com.floreantpos.POSConstants.UPRICE, thirdColumnLength);
-					printFourthColumn(posPrinter, com.floreantpos.POSConstants.SUBTOTAL, fourthColumnLength);
-					posPrinter.endLine();
-
-					posPrinter.beginLine(PosPrinter.SIZE_0);
-					posPrinter.printText(StringUtils.leftPad("", totalLength, "_"));
-					posPrinter.endLine();
-
-					List<TicketItem> ticketItems = ticket.getTicketItems();
-					if (ticketItems != null) {
-						for (TicketItem ticketItem : ticketItems) {
-							posPrinter.beginLine(PosPrinter.SIZE_0);
-							printFirstColumn(posPrinter, String.valueOf(ticketItem.getItemCount()), firstColumnLength);
-
-							printSecondColumn(posPrinter, ticketItem.getName(), firstColumnLength, secondColumnLength, false);
-
-							printThirdColumn(posPrinter, Application.formatNumber(ticketItem.getUnitPrice()), thirdColumnLength);
-
-							printFourthColumn(posPrinter, Application.formatNumber(ticketItem.getSubtotalAmountWithoutModifiers()), fourthColumnLength);
-
-							posPrinter.endLine();
-
-							List<TicketItemModifierGroup> modifierGroups = ticketItem.getTicketItemModifierGroups();
-							if (modifierGroups != null) {
-								for (TicketItemModifierGroup modifierGroup : modifierGroups) {
-									List<TicketItemModifier> modifiers = modifierGroup.getTicketItemModifiers();
-									if (modifiers != null) {
-										for (TicketItemModifier modifier : modifiers) {
-											if (modifier.getTotalAmount() == 0) {
-												continue;
-											}
-											boolean extra = false;
-											String display = " - " + modifier.getName();
-											if (modifier.getModifierType() == TicketItemModifier.EXTRA_MODIFIER) {
-												display = " - Extra " + display;
-												extra = true;
-											}
-
-											posPrinter.beginLine(PosPrinter.SIZE_0);
-											printFirstColumn(posPrinter, String.valueOf(modifier.getItemCount()), firstColumnLength);
-
-											printSecondColumn(posPrinter, display, firstColumnLength, secondColumnLength, false);
-											if(extra) {
-												printThirdColumn(posPrinter, Application.formatNumber(modifier.getExtraUnitPrice()), thirdColumnLength);
-											}
-											else {
-												printThirdColumn(posPrinter, Application.formatNumber(modifier.getUnitPrice()), thirdColumnLength);
-											}
-
-											printFourthColumn(posPrinter, Application.formatNumber(modifier.getTotalAmount()), fourthColumnLength);
-
-											posPrinter.endLine();
-										}
-									}
-								}
-							}
-
-						}
-					}
-
-					posPrinter.beginLine(PosPrinter.SIZE_0);
-					posPrinter.printText(StringUtils.leftPad("", totalLength, "_"));
-					posPrinter.endLine();
-
-					posPrinter.beginLine(PosPrinter.SIZE_0);
-					posPrinter.printText(StringUtils.leftPad("SUB-TOTAL  " + ":", 32));
-					posPrinter.printText(StringUtils.leftPad(Application.formatNumber(ticket.getSubtotalAmount()), 10));
-					posPrinter.endLine();
-
-					posPrinter.beginLine(PosPrinter.SIZE_0);
-					posPrinter.printText(StringUtils.leftPad("TAX        " + ":", 32));
-					posPrinter.printText(StringUtils.leftPad(Application.formatNumber(ticket.getTaxAmount()), 10));
-					posPrinter.endLine();
-
-					posPrinter.beginLine(PosPrinter.SIZE_0);
-					posPrinter.printText(StringUtils.leftPad("GRAND TOTAL " + ":", 32));
-					posPrinter.printText(StringUtils.leftPad(Application.formatNumber(ticket.getTotalAmount()), 10));
-					posPrinter.endLine();
-
-					posPrinter.beginLine(PosPrinter.SIZE_0);
-					posPrinter.endLine();
-
-					posPrinter.beginLine(PosPrinter.SIZE_0);
-					posPrinter.printText(StringUtils.leftPad("TIP " + ":", 32));
-					if (ticket.getGratuity() != null) {
-						posPrinter.printText(StringUtils.leftPad(Application.formatNumber(ticket.getGratuity().getAmount()), 10));
-					}
-					posPrinter.endLine();
-					posPrinter.beginLine(PosPrinter.SIZE_0);
-					posPrinter.printText(StringUtils.leftPad("TOTAL " + ":", 32));
-					posPrinter.endLine();
-
-					printCentered(posPrinter, "THANK YOU!!");
-					printCentered(posPrinter, "PLEASE COME AGAIN!!!");
-
-					posPrinter.printCutPartial();
-					//posPrinter.openDrawer();
-				} catch(Exception x) {
-					logger.error("Error while printing ticket", x);
-				} finally {
-					if (posPrinter != null) {
-						posPrinter.finalize();
-					}
-				}
-				return null;
-			}
-		};
+		JReportPrintService.printTicket(ticket, paidAmount);
 		
-		Worker.post(job);
+//		Job job = new Job() {
+//
+//			@Override
+//			public Object run() {
+//				PosPrinter posPrinter = null;
+//				try {
+//					if(PrintConfig.getReceiptPrinterType() == PrinterType.OS_PRINTER) {
+//						JReportPrintService.printTicket(ticket, paidAmount);
+//						return null;
+//					}
+//				
+//					Restaurant restaurant = RestaurantDAO.getInstance().get(Integer.valueOf(1));
+//
+//					posPrinter = new PosPrinter(PrintConfig.getJavaPosReceiptPrinterName(), PrintConfig.getCashDrawerName());
+//
+//					posPrinter.beginLine(PosPrinter.SIZE_0);
+//					posPrinter.printText("\u001b|cA\u001b|2C" + restaurant.getName());
+//					posPrinter.endLine();
+//
+//					if (restaurant.getAddressLine1() != null) {
+//						printCentered(posPrinter, restaurant.getAddressLine1());
+//					}
+//					if (restaurant.getAddressLine2() != null) {
+//						printCentered(posPrinter, restaurant.getAddressLine2());
+//					}
+//					if (restaurant.getAddressLine3() != null) {
+//						printCentered(posPrinter, restaurant.getAddressLine3());
+//					}
+//					if (restaurant.getTelephone() != null) {
+//						printCentered(posPrinter, restaurant.getTelephone());
+//					}
+//
+//					posPrinter.beginLine(PosPrinter.SIZE_0);
+//					posPrinter.endLine();
+//
+//					posPrinter.beginLine(PosPrinter.SIZE_0);
+//					posPrinter.printText(com.floreantpos.POSConstants.CHK_NO);
+//					posPrinter.printText(String.valueOf(ticket.getId()));
+//					posPrinter.endLine();
+//
+//					posPrinter.beginLine(PosPrinter.SIZE_0);
+//					posPrinter.printText(com.floreantpos.POSConstants.TBL_);
+//					posPrinter.printText(String.valueOf(ticket.getTableNumber()));
+//					posPrinter.endLine();
+//
+//					posPrinter.beginLine(PosPrinter.SIZE_0);
+//					posPrinter.printText(com.floreantpos.POSConstants.GUEST + " #");
+//					posPrinter.printText(String.valueOf(ticket.getNumberOfGuests()));
+//					posPrinter.endLine();
+//
+//					posPrinter.beginLine(PosPrinter.SIZE_0);
+//					posPrinter.printText(com.floreantpos.POSConstants.SRV_);
+//					posPrinter.printText(String.valueOf(ticket.getOwner().getUserId() + "/" + ticket.getOwner()));
+//					posPrinter.endLine();
+//
+//					posPrinter.beginLine(PosPrinter.SIZE_0);
+//					posPrinter.printText(com.floreantpos.POSConstants.DATE + ": ");
+//					posPrinter.printText(Application.formatDate(new Date()));
+//					posPrinter.endLine();
+//
+//					posPrinter.beginLine(PosPrinter.SIZE_0);
+//					posPrinter.endLine();
+//
+//					posPrinter.beginLine(PosPrinter.SIZE_0);
+//					printFirstColumn(posPrinter, com.floreantpos.POSConstants.QTY, firstColumnLength);
+//					printSecondColumn(posPrinter, com.floreantpos.POSConstants.ITEM, firstColumnLength, secondColumnLength, false);
+//					printThirdColumn(posPrinter, com.floreantpos.POSConstants.UPRICE, thirdColumnLength);
+//					printFourthColumn(posPrinter, com.floreantpos.POSConstants.SUBTOTAL, fourthColumnLength);
+//					posPrinter.endLine();
+//
+//					posPrinter.beginLine(PosPrinter.SIZE_0);
+//					posPrinter.printText(StringUtils.leftPad("", totalLength, "_"));
+//					posPrinter.endLine();
+//
+//					List<TicketItem> ticketItems = ticket.getTicketItems();
+//					if (ticketItems != null) {
+//						for (TicketItem ticketItem : ticketItems) {
+//							posPrinter.beginLine(PosPrinter.SIZE_0);
+//							printFirstColumn(posPrinter, String.valueOf(ticketItem.getItemCount()), firstColumnLength);
+//
+//							printSecondColumn(posPrinter, ticketItem.getName(), firstColumnLength, secondColumnLength, false);
+//
+//							printThirdColumn(posPrinter, Application.formatNumber(ticketItem.getUnitPrice()), thirdColumnLength);
+//
+//							printFourthColumn(posPrinter, Application.formatNumber(ticketItem.getSubtotalAmountWithoutModifiers()), fourthColumnLength);
+//
+//							posPrinter.endLine();
+//
+//							List<TicketItemModifierGroup> modifierGroups = ticketItem.getTicketItemModifierGroups();
+//							if (modifierGroups != null) {
+//								for (TicketItemModifierGroup modifierGroup : modifierGroups) {
+//									List<TicketItemModifier> modifiers = modifierGroup.getTicketItemModifiers();
+//									if (modifiers != null) {
+//										for (TicketItemModifier modifier : modifiers) {
+//											if (modifier.getTotalAmount() == 0) {
+//												continue;
+//											}
+//											boolean extra = false;
+//											String display = " - " + modifier.getName();
+//											if (modifier.getModifierType() == TicketItemModifier.EXTRA_MODIFIER) {
+//												display = " - Extra " + display;
+//												extra = true;
+//											}
+//
+//											posPrinter.beginLine(PosPrinter.SIZE_0);
+//											printFirstColumn(posPrinter, String.valueOf(modifier.getItemCount()), firstColumnLength);
+//
+//											printSecondColumn(posPrinter, display, firstColumnLength, secondColumnLength, false);
+//											if(extra) {
+//												printThirdColumn(posPrinter, Application.formatNumber(modifier.getExtraUnitPrice()), thirdColumnLength);
+//											}
+//											else {
+//												printThirdColumn(posPrinter, Application.formatNumber(modifier.getUnitPrice()), thirdColumnLength);
+//											}
+//
+//											printFourthColumn(posPrinter, Application.formatNumber(modifier.getTotalAmount()), fourthColumnLength);
+//
+//											posPrinter.endLine();
+//										}
+//									}
+//								}
+//							}
+//
+//						}
+//					}
+//
+//					posPrinter.beginLine(PosPrinter.SIZE_0);
+//					posPrinter.printText(StringUtils.leftPad("", totalLength, "_"));
+//					posPrinter.endLine();
+//
+//					posPrinter.beginLine(PosPrinter.SIZE_0);
+//					posPrinter.printText(StringUtils.leftPad("SUB-TOTAL  " + ":", 32));
+//					posPrinter.printText(StringUtils.leftPad(Application.formatNumber(ticket.getSubtotalAmount()), 10));
+//					posPrinter.endLine();
+//
+//					posPrinter.beginLine(PosPrinter.SIZE_0);
+//					posPrinter.printText(StringUtils.leftPad("TAX        " + ":", 32));
+//					posPrinter.printText(StringUtils.leftPad(Application.formatNumber(ticket.getTaxAmount()), 10));
+//					posPrinter.endLine();
+//
+//					posPrinter.beginLine(PosPrinter.SIZE_0);
+//					posPrinter.printText(StringUtils.leftPad("GRAND TOTAL " + ":", 32));
+//					posPrinter.printText(StringUtils.leftPad(Application.formatNumber(ticket.getTotalAmount()), 10));
+//					posPrinter.endLine();
+//
+//					posPrinter.beginLine(PosPrinter.SIZE_0);
+//					posPrinter.endLine();
+//
+//					posPrinter.beginLine(PosPrinter.SIZE_0);
+//					posPrinter.printText(StringUtils.leftPad("TIP " + ":", 32));
+//					if (ticket.getGratuity() != null) {
+//						posPrinter.printText(StringUtils.leftPad(Application.formatNumber(ticket.getGratuity().getAmount()), 10));
+//					}
+//					posPrinter.endLine();
+//					posPrinter.beginLine(PosPrinter.SIZE_0);
+//					posPrinter.printText(StringUtils.leftPad("TOTAL " + ":", 32));
+//					posPrinter.endLine();
+//
+//					printCentered(posPrinter, "THANK YOU!!");
+//					printCentered(posPrinter, "PLEASE COME AGAIN!!!");
+//
+//					posPrinter.printCutPartial();
+//					//posPrinter.openDrawer();
+//				} catch(Exception x) {
+//					logger.error("Error while printing ticket", x);
+//				} finally {
+//					if (posPrinter != null) {
+//						posPrinter.finalize();
+//					}
+//				}
+//				return null;
+//			}
+//		};
+//		
+//		Worker.post(job);
 	}
 	
 	public static void printToKitchen(final Ticket ticket) throws Exception {
-		Job job = new Job() {
-
-			@Override
-			public Object run() {
-				PosPrinter posPrinter = null;
-				try {
-					if(PrintConfig.getKitchenPrinterType() == PrinterType.OS_PRINTER) {
-						JReportPrintService.printTicketToKitchen(ticket);
-						return null;
-					}
-				
-					Restaurant restaurant = RestaurantDAO.getInstance().get(Integer.valueOf(1));
-
-					posPrinter = new PosPrinter(PrintConfig.getJavaPosKitchenPrinterName(), PrintConfig.getCashDrawerName());
-
-					posPrinter.beginLine(PosPrinter.SIZE_0);
-					posPrinter.printText("\u001b|cA\u001b|2C" + restaurant.getName());
-					posPrinter.endLine();
-
-					posPrinter.beginLine(PosPrinter.SIZE_0);
-					posPrinter.printText("Ticket #" + ticket.getId());
-					posPrinter.endLine();
-					posPrinter.beginLine(PosPrinter.SIZE_0);
-					posPrinter.printText(com.floreantpos.POSConstants.SRV_);
-					posPrinter.printText(String.valueOf(ticket.getOwner().getUserId() + "/" + ticket.getOwner()));
-					posPrinter.endLine();
-
-					posPrinter.beginLine(PosPrinter.SIZE_0);
-					posPrinter.printText(com.floreantpos.POSConstants.DATE + ": ");
-					posPrinter.printText(Application.formatDate(new Date()));
-					posPrinter.endLine();
-
-					posPrinter.printEmptyLine();
-
-					posPrinter.beginLine(PosPrinter.SIZE_0);
-					printFirstColumn(posPrinter, "ITEM#", kitchenFirstColumnLength);
-					printSecondColumn(posPrinter, "ITEM NAME", kitchenFirstColumnLength, kitchenSecondColumnLength, false);
-					printFourthColumn(posPrinter, "UNIT", kitchenThirdColumnLength);
-					posPrinter.endLine();
-
-					List<TicketItem> ticketItems = ticket.getTicketItems();
-					for (TicketItem ticketItem : ticketItems) {
-						if (ticketItem.isShouldPrintToKitchen() && !ticketItem.isPrintedToKitchen()) {
-							printItemToKitchen(posPrinter, ticketItem);
-							ticketItem.setPrintedToKitchen(true);
-						}
-
-						List<TicketItemModifierGroup> ticketItemModifierGroups = ticketItem.getTicketItemModifierGroups();
-						if (ticketItemModifierGroups != null) {
-							for (TicketItemModifierGroup modifierGroup : ticketItemModifierGroups) {
-								List<TicketItemModifier> ticketItemModifiers = modifierGroup.getTicketItemModifiers();
-								if (ticketItemModifiers != null) {
-									for (TicketItemModifier modifier : ticketItemModifiers) {
-										if (modifier.isShouldPrintToKitchen() && !modifier.isPrintedToKitchen()) {
-											printModifierToKitchen(posPrinter, modifier);
-											modifier.setPrintedToKitchen(true);
-										}
-									}
-								}
-							}
-						}
-					}
-
-					posPrinter.printEmptyLine();
-
-					if (ticket.getDeletedItems() != null) {
-						List deletedItems = ticket.getDeletedItems();
-						for (Object object : deletedItems) {
-							if (object instanceof TicketItem) {
-								TicketItem item = (TicketItem) object;
-								if (item.isShouldPrintToKitchen()) {
-									printDeletedItem(posPrinter, item.getId());
-								}
-							}
-							else if (object instanceof TicketItemModifier) {
-								TicketItemModifier ticketItemModifier = (TicketItemModifier) object;
-								if (ticketItemModifier.isShouldPrintToKitchen()) {
-									printDeletedItem(posPrinter, ticketItemModifier.getId());
-								}
-							}
-						}
-					}
-
-					posPrinter.beginLine(PosPrinter.SIZE_0);
-					posPrinter.printText("\u001b|cA\u001b|2CINSTRUCTIONS");
-					posPrinter.endLine();
-
-					Set<TicketCookingInstruction> cookingInstructions = ticket.getCookingInstructions();
-					if (cookingInstructions != null) {
-						for (TicketCookingInstruction instruction : cookingInstructions) {
-							if (!instruction.isPrintedToKitchen()) {
-								printCentered(posPrinter, instruction.getDescription());
-								instruction.setPrintedToKitchen(true);
-							}
-						}
-					}
-					posPrinter.printCutPartial();
-				} catch(Exception x) {
-					logger.error("Error while printing to kitchen", x);
-				} finally {
-					if (posPrinter != null) {
-						posPrinter.finalize();
-					}
-				}
-				return null;
-			}
-			
-		};
+		JReportPrintService.printTicketToKitchen(ticket);
 		
-		Worker.post(job);
+//		Job job = new Job() {
+//
+//			@Override
+//			public Object run() {
+//				PosPrinter posPrinter = null;
+//				try {
+//					if(PrintConfig.getKitchenPrinterType() == PrinterType.OS_PRINTER) {
+//						JReportPrintService.printTicketToKitchen(ticket);
+//						return null;
+//					}
+//				
+//					Restaurant restaurant = RestaurantDAO.getInstance().get(Integer.valueOf(1));
+//
+//					posPrinter = new PosPrinter(PrintConfig.getJavaPosKitchenPrinterName(), PrintConfig.getCashDrawerName());
+//
+//					posPrinter.beginLine(PosPrinter.SIZE_0);
+//					posPrinter.printText("\u001b|cA\u001b|2C" + restaurant.getName());
+//					posPrinter.endLine();
+//
+//					posPrinter.beginLine(PosPrinter.SIZE_0);
+//					posPrinter.printText("Ticket #" + ticket.getId());
+//					posPrinter.endLine();
+//					posPrinter.beginLine(PosPrinter.SIZE_0);
+//					posPrinter.printText(com.floreantpos.POSConstants.SRV_);
+//					posPrinter.printText(String.valueOf(ticket.getOwner().getUserId() + "/" + ticket.getOwner()));
+//					posPrinter.endLine();
+//
+//					posPrinter.beginLine(PosPrinter.SIZE_0);
+//					posPrinter.printText(com.floreantpos.POSConstants.DATE + ": ");
+//					posPrinter.printText(Application.formatDate(new Date()));
+//					posPrinter.endLine();
+//
+//					posPrinter.printEmptyLine();
+//
+//					posPrinter.beginLine(PosPrinter.SIZE_0);
+//					printFirstColumn(posPrinter, "ITEM#", kitchenFirstColumnLength);
+//					printSecondColumn(posPrinter, "ITEM NAME", kitchenFirstColumnLength, kitchenSecondColumnLength, false);
+//					printFourthColumn(posPrinter, "UNIT", kitchenThirdColumnLength);
+//					posPrinter.endLine();
+//
+//					List<TicketItem> ticketItems = ticket.getTicketItems();
+//					for (TicketItem ticketItem : ticketItems) {
+//						if (ticketItem.isShouldPrintToKitchen() && !ticketItem.isPrintedToKitchen()) {
+//							printItemToKitchen(posPrinter, ticketItem);
+//							ticketItem.setPrintedToKitchen(true);
+//						}
+//
+//						List<TicketItemModifierGroup> ticketItemModifierGroups = ticketItem.getTicketItemModifierGroups();
+//						if (ticketItemModifierGroups != null) {
+//							for (TicketItemModifierGroup modifierGroup : ticketItemModifierGroups) {
+//								List<TicketItemModifier> ticketItemModifiers = modifierGroup.getTicketItemModifiers();
+//								if (ticketItemModifiers != null) {
+//									for (TicketItemModifier modifier : ticketItemModifiers) {
+//										if (modifier.isShouldPrintToKitchen() && !modifier.isPrintedToKitchen()) {
+//											printModifierToKitchen(posPrinter, modifier);
+//											modifier.setPrintedToKitchen(true);
+//										}
+//									}
+//								}
+//							}
+//						}
+//					}
+//
+//					posPrinter.printEmptyLine();
+//
+//					if (ticket.getDeletedItems() != null) {
+//						List deletedItems = ticket.getDeletedItems();
+//						for (Object object : deletedItems) {
+//							if (object instanceof TicketItem) {
+//								TicketItem item = (TicketItem) object;
+//								if (item.isShouldPrintToKitchen()) {
+//									printDeletedItem(posPrinter, item.getId());
+//								}
+//							}
+//							else if (object instanceof TicketItemModifier) {
+//								TicketItemModifier ticketItemModifier = (TicketItemModifier) object;
+//								if (ticketItemModifier.isShouldPrintToKitchen()) {
+//									printDeletedItem(posPrinter, ticketItemModifier.getId());
+//								}
+//							}
+//						}
+//					}
+//
+//					posPrinter.beginLine(PosPrinter.SIZE_0);
+//					posPrinter.printText("\u001b|cA\u001b|2CINSTRUCTIONS");
+//					posPrinter.endLine();
+//
+//					Set<TicketCookingInstruction> cookingInstructions = ticket.getCookingInstructions();
+//					if (cookingInstructions != null) {
+//						for (TicketCookingInstruction instruction : cookingInstructions) {
+//							if (!instruction.isPrintedToKitchen()) {
+//								printCentered(posPrinter, instruction.getDescription());
+//								instruction.setPrintedToKitchen(true);
+//							}
+//						}
+//					}
+//					posPrinter.printCutPartial();
+//				} catch(Exception x) {
+//					logger.error("Error while printing to kitchen", x);
+//				} finally {
+//					if (posPrinter != null) {
+//						posPrinter.finalize();
+//					}
+//				}
+//				return null;
+//			}
+//			
+//		};
+//		
+//		Worker.post(job);
 	}
 
 	public static void printVoidInfo(Ticket ticket) throws Exception {
-		PosPrinter posPrinter = null;
-		try {
-			Restaurant restaurant = RestaurantDAO.getInstance().get(Integer.valueOf(1));
-
-			posPrinter = new PosPrinter(PrintConfig.getJavaPosKitchenPrinterName(), PrintConfig.getCashDrawerName());
-
-			posPrinter.beginLine(PosPrinter.SIZE_0);
-			posPrinter.printText("\u001b|cA\u001b|2C" + restaurant.getName());
-			posPrinter.endLine();
-
-			posPrinter.beginLine(PosPrinter.SIZE_0);
-			posPrinter.printText("\u001b|cA\u001DB\1============VOIDED CHECK============\u001DB\0");
-			posPrinter.endLine();
-
-			posPrinter.beginLine(PosPrinter.SIZE_0);
-			posPrinter.printText("Ticket #" + ticket.getId());
-			posPrinter.endLine();
-			posPrinter.beginLine(PosPrinter.SIZE_0);
-			posPrinter.printText(com.floreantpos.POSConstants.SRV_);
-			posPrinter.printText(String.valueOf(ticket.getOwner().getUserId() + "/" + ticket.getOwner()));
-			posPrinter.endLine();
-
-			posPrinter.beginLine(PosPrinter.SIZE_0);
-			posPrinter.printText(com.floreantpos.POSConstants.DATE + ": ");
-			posPrinter.printText(Application.formatDate(new Date()));
-			posPrinter.endLine();
-
-			posPrinter.printEmptyLine();
-
-			posPrinter.printCutPartial();
-		} finally {
-			if (posPrinter != null) {
-				posPrinter.finalize();
-			}
-		}
+//		PosPrinter posPrinter = null;
+//		try {
+//			Restaurant restaurant = RestaurantDAO.getInstance().get(Integer.valueOf(1));
+//
+//			posPrinter = new PosPrinter(PrintConfig.getJavaPosKitchenPrinterName(), PrintConfig.getCashDrawerName());
+//
+//			posPrinter.beginLine(PosPrinter.SIZE_0);
+//			posPrinter.printText("\u001b|cA\u001b|2C" + restaurant.getName());
+//			posPrinter.endLine();
+//
+//			posPrinter.beginLine(PosPrinter.SIZE_0);
+//			posPrinter.printText("\u001b|cA\u001DB\1============VOIDED CHECK============\u001DB\0");
+//			posPrinter.endLine();
+//
+//			posPrinter.beginLine(PosPrinter.SIZE_0);
+//			posPrinter.printText("Ticket #" + ticket.getId());
+//			posPrinter.endLine();
+//			posPrinter.beginLine(PosPrinter.SIZE_0);
+//			posPrinter.printText(com.floreantpos.POSConstants.SRV_);
+//			posPrinter.printText(String.valueOf(ticket.getOwner().getUserId() + "/" + ticket.getOwner()));
+//			posPrinter.endLine();
+//
+//			posPrinter.beginLine(PosPrinter.SIZE_0);
+//			posPrinter.printText(com.floreantpos.POSConstants.DATE + ": ");
+//			posPrinter.printText(Application.formatDate(new Date()));
+//			posPrinter.endLine();
+//
+//			posPrinter.printEmptyLine();
+//
+//			posPrinter.printCutPartial();
+//		} finally {
+//			if (posPrinter != null) {
+//				posPrinter.finalize();
+//			}
+//		}
 	}
 
 	private static void printDeletedItem(PosPrinter posPrinter, int itemId) {
@@ -572,18 +576,18 @@ public class PosPrintService {
 			parameters.put("headerLine1", restaurant.getName());
 			
 			JasperReport subReport = (JasperReport) JRLoader.loadObject(JReportPrintService.class.getResourceAsStream("/com/floreantpos/jreports/DrawerPullVoidReport.jasper"));
-			//JRBeanCollectionDataSource subReportDataSource = new JRBeanCollectionDataSource(drawerPullReport.getVoidTickets());
-			
 			
 			parameters.put("subreportParameter", subReport);
 			
 			JasperReport mainReport = (JasperReport) JRLoader.loadObject(JReportPrintService.class.getResourceAsStream("/com/floreantpos/jreports/DrawerPullJReport.jasper"));
 			JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(Arrays.asList(new DrawerPullReport[] {drawerPullReport}));
 			JasperPrint jasperPrint = JasperFillManager.fillReport(mainReport, parameters, dataSource);
-			JasperViewer.viewReport(jasperPrint, false);
+			//JasperViewer.viewReport(jasperPrint, false);
+			JasperPrintManager.printReport(jasperPrint, false);
 		
 		} catch (Exception e) {
 			e.printStackTrace();
+			logger.error("error print drawer pull report", e);
 		}
 		//Restaurant restaurant = RestaurantDAO.getInstance().get(Integer.valueOf(1));
 
@@ -723,90 +727,117 @@ public class PosPrintService {
 	}
 
 	public static void printServerTipsReport(TipsCashoutReport report) {
-		PosPrinter posPrinter = null;
-		DecimalFormat decimalFormat = new DecimalFormat("0.00");
+		
 		try {
-			posPrinter = new PosPrinter(PrintConfig.getJavaPosReceiptPrinterName(), PrintConfig.getCashDrawerName());
-
-			int c1 = 15;
-			int c2 = 20;
-
-			printCentered(posPrinter, "TIPS CASH OUT REPORT");
-			printSeparator(posPrinter, '=');
-
-			posPrinter.printEmptyLine();
-
-			posPrinter.beginLine(PosPrinter.SIZE_0);
-			printFirstColumn(posPrinter, "Server", c1);
-			printSecondColumn(posPrinter, ": " + report.getServer(), c1, c2, false);
-			posPrinter.endLine();
-
-			posPrinter.beginLine(PosPrinter.SIZE_0);
-			printFirstColumn(posPrinter, "From", c1);
-			printSecondColumn(posPrinter, ": " + Application.formatDate(report.getFromDate()), c1, c2, false);
-			posPrinter.endLine();
-
-			posPrinter.beginLine(PosPrinter.SIZE_0);
-			printFirstColumn(posPrinter, "To", c1);
-			printSecondColumn(posPrinter, ": " + Application.formatDate(report.getToDate()), c1, c2, false);
-			posPrinter.endLine();
-			posPrinter.beginLine(PosPrinter.SIZE_0);
-			printFirstColumn(posPrinter, "Time", c1);
-			printSecondColumn(posPrinter, ": " + Application.formatDate(report.getReportTime()), c1, c2, false);
-			posPrinter.endLine();
-
-			List<TipsCashoutReportData> datas = report.getDatas();
-			if (datas == null) {
-				return;
-			}
-
-			posPrinter.beginLine(PosPrinter.SIZE_0);
-			printFirstColumn(posPrinter, "REF#", firstColumnLength);
-			printSecondColumn(posPrinter, "C/Type", firstColumnLength, secondColumnLength, false);
-			printThirdColumn(posPrinter, "Total", thirdColumnLength);
-			printFourthColumn(posPrinter, "Tips", fourthColumnLength);
-			posPrinter.endLine();
-
-			for (TipsCashoutReportData data : datas) {
-				posPrinter.beginLine(PosPrinter.SIZE_0);
-				printFirstColumn(posPrinter, String.valueOf(data.getTicketId()), firstColumnLength);
-				printSecondColumn(posPrinter, data.getSaleType(), firstColumnLength, secondColumnLength, false);
-				printThirdColumn(posPrinter, decimalFormat.format(data.getTicketTotal()), thirdColumnLength);
-				printFourthColumn(posPrinter, decimalFormat.format(data.getTips()), fourthColumnLength);
-				posPrinter.endLine();
-			}
-
-			posPrinter.beginLine(PosPrinter.SIZE_0);
-			printFirstColumn(posPrinter, "Transaction Count", c1);
-			printSecondColumn(posPrinter, ": " + (report.getDatas() == null ? "0" : String.valueOf(report.getDatas().size())), c1, c2, false);
-			posPrinter.endLine();
-			posPrinter.beginLine(PosPrinter.SIZE_0);
-			printFirstColumn(posPrinter, "Cash Tips", c1);
-			printSecondColumn(posPrinter, ": " + Application.formatNumber(report.getCashTipsAmount()), c1, c2, false);
-			posPrinter.endLine();
-			posPrinter.beginLine(PosPrinter.SIZE_0);
-			printFirstColumn(posPrinter, "Charged Tips", c1);
-			printSecondColumn(posPrinter, ": " + Application.formatNumber(report.getChargedTipsAmount()), c1, c2, false);
-			posPrinter.endLine();
-			posPrinter.beginLine(PosPrinter.SIZE_0);
-			printFirstColumn(posPrinter, "Total Tips", c1);
-			printSecondColumn(posPrinter, ": " + Application.formatNumber(report.getTotalTips()), c1, c2, false);
-			posPrinter.endLine();
-			posPrinter.beginLine(PosPrinter.SIZE_0);
-			printFirstColumn(posPrinter, "Average Tips", c1);
-			printSecondColumn(posPrinter, ": " + Application.formatNumber(report.getAverageTips()), c1, c2, false);
-			posPrinter.endLine();
-			posPrinter.beginLine(PosPrinter.SIZE_0);
-			printFirstColumn(posPrinter, "Tips Due", c1);
-			printSecondColumn(posPrinter, ": " + Application.formatNumber(report.getTipsDue()), c1, c2, false);
-			posPrinter.endLine();
-
-			posPrinter.printCutPartial();
-		} finally {
-			if (posPrinter != null) {
-				posPrinter.finalize();
-			}
+			HashMap parameters = new HashMap();
+			parameters.put("server", report.getServer());
+			parameters.put("fromDate", Application.formatDate(report.getFromDate()));
+			parameters.put("toDate", Application.formatDate(report.getToDate()));
+			parameters.put("reportDate", Application.formatDate(report.getReportTime()));
+			parameters.put("transactionCount", report.getDatas() == null ? "0" : "" + report.getDatas().size());
+			parameters.put("cashTips", Application.formatNumber(report.getCashTipsAmount()));
+			parameters.put("chargedTips", Application.formatNumber(report.getChargedTipsAmount()));
+			parameters.put("tipsDue", Application.formatNumber(report.getTipsDue()));
+			
+			Restaurant restaurant = RestaurantDAO.getInstance().get(Integer.valueOf(1));
+			
+			parameters.put("headerLine1", restaurant.getName());
+			
+			
+			JasperReport mainReport = (JasperReport) JRLoader.loadObject(JReportPrintService.class.getResourceAsStream("/com/floreantpos/jreports/ServerTipsReport.jasper"));
+			JRDataSource dataSource = new JRTableModelDataSource(new TipsCashoutReportTableModel(report.getDatas(), new String[] {"ticketId", "saleType", "ticketTotal", "tips"}));
+			JasperPrint jasperPrint = JasperFillManager.fillReport(mainReport, parameters, dataSource);
+			JasperViewer.viewReport(jasperPrint, false);
+		
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("error print tips report", e);
 		}
+		
+//		PosPrinter posPrinter = null;
+//		DecimalFormat decimalFormat = new DecimalFormat("0.00");
+//		try {
+//			posPrinter = new PosPrinter(PrintConfig.getJavaPosReceiptPrinterName(), PrintConfig.getCashDrawerName());
+//
+//			int c1 = 15;
+//			int c2 = 20;
+//
+//			printCentered(posPrinter, "TIPS CASH OUT REPORT");
+//			printSeparator(posPrinter, '=');
+//
+//			posPrinter.printEmptyLine();
+//
+//			posPrinter.beginLine(PosPrinter.SIZE_0);
+//			printFirstColumn(posPrinter, "Server", c1);
+//			printSecondColumn(posPrinter, ": " + report.getServer(), c1, c2, false);
+//			posPrinter.endLine();
+//
+//			posPrinter.beginLine(PosPrinter.SIZE_0);
+//			printFirstColumn(posPrinter, "From", c1);
+//			printSecondColumn(posPrinter, ": " + Application.formatDate(report.getFromDate()), c1, c2, false);
+//			posPrinter.endLine();
+//
+//			posPrinter.beginLine(PosPrinter.SIZE_0);
+//			printFirstColumn(posPrinter, "To", c1);
+//			printSecondColumn(posPrinter, ": " + Application.formatDate(report.getToDate()), c1, c2, false);
+//			posPrinter.endLine();
+//			posPrinter.beginLine(PosPrinter.SIZE_0);
+//			printFirstColumn(posPrinter, "Time", c1);
+//			printSecondColumn(posPrinter, ": " + Application.formatDate(report.getReportTime()), c1, c2, false);
+//			posPrinter.endLine();
+//
+//			List<TipsCashoutReportData> datas = report.getDatas();
+//			if (datas == null) {
+//				return;
+//			}
+//
+//			posPrinter.beginLine(PosPrinter.SIZE_0);
+//			printFirstColumn(posPrinter, "REF#", firstColumnLength);
+//			printSecondColumn(posPrinter, "C/Type", firstColumnLength, secondColumnLength, false);
+//			printThirdColumn(posPrinter, "Total", thirdColumnLength);
+//			printFourthColumn(posPrinter, "Tips", fourthColumnLength);
+//			posPrinter.endLine();
+//
+//			for (TipsCashoutReportData data : datas) {
+//				posPrinter.beginLine(PosPrinter.SIZE_0);
+//				printFirstColumn(posPrinter, String.valueOf(data.getTicketId()), firstColumnLength);
+//				printSecondColumn(posPrinter, data.getSaleType(), firstColumnLength, secondColumnLength, false);
+//				printThirdColumn(posPrinter, decimalFormat.format(data.getTicketTotal()), thirdColumnLength);
+//				printFourthColumn(posPrinter, decimalFormat.format(data.getTips()), fourthColumnLength);
+//				posPrinter.endLine();
+//			}
+//
+//			posPrinter.beginLine(PosPrinter.SIZE_0);
+//			printFirstColumn(posPrinter, "Transaction Count", c1);
+//			printSecondColumn(posPrinter, ": " + (report.getDatas() == null ? "0" : String.valueOf(report.getDatas().size())), c1, c2, false);
+//			posPrinter.endLine();
+//			posPrinter.beginLine(PosPrinter.SIZE_0);
+//			printFirstColumn(posPrinter, "Cash Tips", c1);
+//			printSecondColumn(posPrinter, ": " + Application.formatNumber(report.getCashTipsAmount()), c1, c2, false);
+//			posPrinter.endLine();
+//			posPrinter.beginLine(PosPrinter.SIZE_0);
+//			printFirstColumn(posPrinter, "Charged Tips", c1);
+//			printSecondColumn(posPrinter, ": " + Application.formatNumber(report.getChargedTipsAmount()), c1, c2, false);
+//			posPrinter.endLine();
+//			posPrinter.beginLine(PosPrinter.SIZE_0);
+//			printFirstColumn(posPrinter, "Total Tips", c1);
+//			printSecondColumn(posPrinter, ": " + Application.formatNumber(report.getTotalTips()), c1, c2, false);
+//			posPrinter.endLine();
+//			posPrinter.beginLine(PosPrinter.SIZE_0);
+//			printFirstColumn(posPrinter, "Average Tips", c1);
+//			printSecondColumn(posPrinter, ": " + Application.formatNumber(report.getAverageTips()), c1, c2, false);
+//			posPrinter.endLine();
+//			posPrinter.beginLine(PosPrinter.SIZE_0);
+//			printFirstColumn(posPrinter, "Tips Due", c1);
+//			printSecondColumn(posPrinter, ": " + Application.formatNumber(report.getTipsDue()), c1, c2, false);
+//			posPrinter.endLine();
+//
+//			posPrinter.printCutPartial();
+//		} finally {
+//			if (posPrinter != null) {
+//				posPrinter.finalize();
+//			}
+//		}
 	}
 
 	/*

@@ -57,6 +57,9 @@ public class JReportPrintService {
 			tipAmount = ticket.getGratuity().getAmount();
 			map.put("tipAmount", Application.formatNumber(tipAmount));
 		}
+		else {
+			map.put("tipAmount", "0");
+		}
 		
 		double netAmount = totalAmount + tipAmount;
 		double changedAmount = paidAmount - netAmount;
