@@ -41,7 +41,7 @@
 				<include>*.bat</include>
 			</includes>
 		</fileSet>
-		<fileSet>
+		<!-- <fileSet>
 			<directory>etc</directory>
 			<outputDirectory></outputDirectory>
 			<includes>
@@ -50,7 +50,7 @@
 			<excludes>
 				<exclude>*.bat</exclude>
 			</excludes>
-		</fileSet>
+		</fileSet> -->
 		<fileSet>
 			<directory>sample-db</directory>
 			<outputDirectory>sample-db</outputDirectory>
