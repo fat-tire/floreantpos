@@ -14,8 +14,8 @@ import com.floreantpos.model.Gratuity;
 import com.floreantpos.model.Terminal;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TipsCashoutReport;
+import com.floreantpos.model.TipsCashoutReportData;
 import com.floreantpos.model.User;
-import com.floreantpos.model.TipsCashoutReport.TipsCashoutReportData;
 import com.floreantpos.model.util.DateUtil;
 
 public class GratuityDAO extends BaseGratuityDAO {

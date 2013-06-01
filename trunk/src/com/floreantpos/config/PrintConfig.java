@@ -33,25 +33,25 @@ public class PrintConfig {
 		return ApplicationConfig.getString(P_OS_PRINTER_FOR_KITCHEN, "KitchenPrinter");
 	}
 
-	public static PrinterType getReceiptPrinterType() {
-		return PrinterType.fromString(ApplicationConfig.getString(P_RECEIPT_PRINTER_TYPE, PrinterType.OS_PRINTER.getName()));
-	}
+//	public static PrinterType getReceiptPrinterType() {
+//		return PrinterType.fromString(ApplicationConfig.getString(P_RECEIPT_PRINTER_TYPE, PrinterType.OS_PRINTER.getName()));
+//	}
+//
+//	public static PrinterType getKitchenPrinterType() {
+//		return PrinterType.fromString(ApplicationConfig.getString(P_KITCHEN_PRINTER_TYPE, PrinterType.OS_PRINTER.getName()));
+//	}
 
-	public static PrinterType getKitchenPrinterType() {
-		return PrinterType.fromString(ApplicationConfig.getString(P_KITCHEN_PRINTER_TYPE, PrinterType.OS_PRINTER.getName()));
-	}
-
-	public static String getJavaPosReceiptPrinterName() {
-		return ApplicationConfig.getString(P_JAVAPOS_PRINTER_FOR_RECEIPT, "POSPrinter");
-	}
-
-	public static String getJavaPosKitchenPrinterName() {
-		return ApplicationConfig.getString(P_JAVAPOS_PRINTER_FOR_KITCHEN, "KitchenPrinter");
-	}
-
-	public static String getCashDrawerName() {
-		return ApplicationConfig.getString(P_CASH_DRAWER_NAME, "CashDrawer");
-	}
+//	public static String getJavaPosReceiptPrinterName() {
+//		return ApplicationConfig.getString(P_JAVAPOS_PRINTER_FOR_RECEIPT, "POSPrinter");
+//	}
+//
+//	public static String getJavaPosKitchenPrinterName() {
+//		return ApplicationConfig.getString(P_JAVAPOS_PRINTER_FOR_KITCHEN, "KitchenPrinter");
+//	}
+//
+//	public static String getCashDrawerName() {
+//		return ApplicationConfig.getString(P_CASH_DRAWER_NAME, "CashDrawer");
+//	}
 
 	public static boolean isPrintReceiptWhenSetteled() {
 		return ApplicationConfig.getBoolean(P_PRINT_RECEIPT_WHEN_SETTELED, true);

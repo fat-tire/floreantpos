@@ -353,9 +353,9 @@ public class TicketView extends JPanel {
 
 			OrderController.saveOrder(ticket);
 
-//			if (PrintConfig.isPrintReceiptWhenSetteled()) {
-//				PosPrintService.printTicket(ticket);
-//			}
+			if (PrintConfig.isPrintReceiptWhenSetteled()) {
+				PosPrintService.printTicket(ticket, 0);
+			}
 
 			if (PrintConfig.isPrintKitchenWhenSetteled()) {
 				if (ticket.needsKitchenPrint()) {

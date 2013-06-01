@@ -67,7 +67,7 @@ public class OpenTicketsListDialog extends POSDialog {
         transparentPanel1 = new com.floreantpos.swing.TransparentPanel();
         transparentPanel3 = new com.floreantpos.swing.TransparentPanel();
         btnVoid = new com.floreantpos.swing.PosButton();
-        btnPrint = new com.floreantpos.swing.PosButton();
+//        btnPrint = new com.floreantpos.swing.PosButton();
         btnTransferServer = new com.floreantpos.swing.PosButton();
         btnClose = new com.floreantpos.swing.PosButton();
         transparentPanel4 = new com.floreantpos.swing.TransparentPanel();
@@ -95,15 +95,15 @@ public class OpenTicketsListDialog extends POSDialog {
 
         transparentPanel3.add(btnVoid);
 
-        btnPrint.setText(com.floreantpos.POSConstants.PRINT);
-        btnPrint.setPreferredSize(new java.awt.Dimension(100, 50));
-        btnPrint.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                doPrintTicket(evt);
-            }
-        });
-
-        transparentPanel3.add(btnPrint);
+//        btnPrint.setText(com.floreantpos.POSConstants.PRINT);
+//        btnPrint.setPreferredSize(new java.awt.Dimension(100, 50));
+//        btnPrint.addActionListener(new java.awt.event.ActionListener() {
+//            public void actionPerformed(java.awt.event.ActionEvent evt) {
+//                doPrintTicket(evt);
+//            }
+//        });
+//
+//        transparentPanel3.add(btnPrint);
 
         btnTransferServer.setText("<html><body><center>TRANSFER<br>SERVER</center></body></html>");
         btnTransferServer.setPreferredSize(new java.awt.Dimension(100, 50));
@@ -277,7 +277,7 @@ public class OpenTicketsListDialog extends POSDialog {
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.floreantpos.swing.PosButton btnClose;
-    private com.floreantpos.swing.PosButton btnPrint;
+//    private com.floreantpos.swing.PosButton btnPrint;
     private com.floreantpos.swing.PosButton btnScrollDown;
     private com.floreantpos.swing.PosButton btnScrollUp;
     private com.floreantpos.swing.PosButton btnTransferServer;

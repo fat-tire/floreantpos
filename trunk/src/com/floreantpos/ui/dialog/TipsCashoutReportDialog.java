@@ -15,6 +15,7 @@ import net.miginfocom.swing.MigLayout;
 
 import com.floreantpos.main.Application;
 import com.floreantpos.model.TipsCashoutReport;
+import com.floreantpos.model.TipsCashoutReportTableModel;
 import com.floreantpos.print.PosPrintService;
 import com.floreantpos.swing.PosButton;
 
@@ -47,7 +48,7 @@ public class TipsCashoutReportDialog extends POSDialog implements ActionListener
 		
 		add(topPanel, BorderLayout.NORTH);
 		
-		JTable table = new JTable(new TipsCashoutReport.TipsCashoutReportTableModel(report.getDatas()));
+		JTable table = new JTable(new TipsCashoutReportTableModel(report.getDatas()));
 		add(new JScrollPane(table));
 		
 		JPanel bottomPanel = new JPanel(new FlowLayout());
