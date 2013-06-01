@@ -252,7 +252,7 @@ public class ManagerDialog extends JFrame {
 					GratuityDAO gratuityDAO = new GratuityDAO();
 					TipsCashoutReport report = gratuityDAO.createReport(fromDatePicker.getDate(), toDatePicker.getDate(), (User) userCombo.getSelectedItem());
 					
-					TipsCashoutReportDialog dialog = new TipsCashoutReportDialog(report, ManagerDialog.this, true);
+					TipsCashoutReportDialog dialog = new TipsCashoutReportDialog(report, ManagerDialog.this, false);
 					dialog.setSize(400, 600);
 					dialog.open();
 				} catch (Exception e) {

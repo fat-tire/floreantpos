@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import com.floreantpos.bo.ui.explorer.ListTableModel;
-import com.floreantpos.main.Application;
 
 public class TipsCashoutReport {
 	private String server;
@@ -95,90 +93,6 @@ public class TipsCashoutReport {
 		averageTips = totalTips / datas.size();
 	}
 	
-	public static class TipsCashoutReportData {
-		private Integer ticketId;
-
-		private String saleType;
-
-		private Double ticketTotal;
-
-		private Double tips;
-		
-		private boolean paid;
-
-		public String getSaleType() {
-			return saleType;
-		}
-
-		public void setSaleType(String saleType) {
-			this.saleType = saleType;
-			if(this.saleType == null) {
-				this.saleType = "*CASH*";
-			}
-			else {
-				this.saleType = this.saleType.replaceAll("_", " ");
-			}
-		}
-
-		public Integer getTicketId() {
-			return ticketId;
-		}
-
-		public void setTicketId(Integer ticketId) {
-			this.ticketId = ticketId;
-		}
-
-		public Double getTicketTotal() {
-			return ticketTotal;
-		}
-
-		public void setTicketTotal(Double ticketTotal) {
-			this.ticketTotal = ticketTotal;
-		}
-
-		public Double getTips() {
-			return tips;
-		}
-
-		public void setTips(Double tips) {
-			this.tips = tips;
-		}
-
-		public boolean isPaid() {
-			return paid;
-		}
-
-		public void setPaid(boolean paid) {
-			this.paid = paid;
-		}
-	}
-	
-	public static class TipsCashoutReportTableModel extends ListTableModel {
-		public TipsCashoutReportTableModel(List<TipsCashoutReportData> datas) {
-			super(new String[] {"Ref#", "CD Type", "Total", "Tips"}, datas);
-		}
-
-		public Object getValueAt(int rowIndex, int columnIndex) {
-			TipsCashoutReportData data = (TipsCashoutReportData) rows.get(rowIndex);
-			
-			switch(columnIndex) {
-			case 0:
-				return data.getTicketId();
-				
-			case 1:
-				return data.getSaleType();
-				
-			case 2:
-				return Application.formatNumber(data.getTicketTotal());
-				
-			case 3:
-				return Application.formatNumber(data.getTips());
-			}
-			
-			return null;
-		}
-	}
-
 	public double getAverageTips() {
 		return averageTips;
 	}

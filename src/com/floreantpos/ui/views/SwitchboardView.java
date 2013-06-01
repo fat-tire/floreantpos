@@ -14,6 +14,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
+import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
@@ -33,6 +34,7 @@ import com.floreantpos.model.dao.AttendenceHistoryDAO;
 import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.print.PosPrintService;
 import com.floreantpos.services.PosTransactionService;
+import com.floreantpos.swing.PosButton;
 import com.floreantpos.ui.dialog.ManagerDialog;
 import com.floreantpos.ui.dialog.NumberSelectionDialog2;
 import com.floreantpos.ui.dialog.POSMessageDialog;
@@ -180,6 +182,15 @@ public class SwitchboardView extends JPanel implements ActionListener {
 		btnPrintTicket.setText(POSConstants.CAPITAL_PRINT);
 		btnPrintTicket.setPreferredSize(new java.awt.Dimension(120, 50));
 		activityPanel.add(btnPrintTicket);
+		
+		PosButton printToKitchenButton = new PosButton("PRINT TO KITCHEN");
+		printToKitchenButton.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				doPrintTicketToKitchen();
+			}
+		});
+		activityPanel.add(printToKitchenButton);
 
 		bottomLeftPanel.add(activityPanel, java.awt.BorderLayout.SOUTH);
 
@@ -353,6 +364,27 @@ public class SwitchboardView extends JPanel implements ActionListener {
 		try {
 			ticket = TicketDAO.getInstance().initializeTicket(ticket);
 			PosPrintService.printTicket(ticket, 0);
+			//PosPrintService.printToKitchen(ticket);
+
+			//			PRINT ACTION
+			String actionMessage = "CHK#" + ":" + ticket.getId();
+			ActionHistoryDAO.getInstance().saveHistory(Application.getCurrentUser(), ActionHistory.PRINT_CHECK, actionMessage);
+		} catch (Exception e) {
+			POSMessageDialog.showError(this, e.getMessage(), e);
+		}
+	}
+	
+	private void doPrintTicketToKitchen() {
+		List<Ticket> selectedTickets = openTicketList.getSelectedTickets();
+		if (selectedTickets.size() == 0 || selectedTickets.size() > 1) {
+			POSMessageDialog.showMessage(POSConstants.SELECT_ONE_TICKET_TO_PRINT);
+			return;
+		}
+
+		Ticket ticket = selectedTickets.get(0);
+		try {
+			ticket = TicketDAO.getInstance().initializeTicket(ticket);
+			PosPrintService.printToKitchen(ticket);
 
 			//			PRINT ACTION
 			String actionMessage = "CHK#" + ":" + ticket.getId();

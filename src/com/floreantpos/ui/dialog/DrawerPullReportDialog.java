@@ -55,7 +55,7 @@ public class DrawerPullReportDialog extends POSDialog {
     private Terminal terminal;
     
     public DrawerPullReportDialog(java.awt.Frame parent, boolean modal) {
-        super(parent, modal);
+        super(parent, false);
         initComponents();
     }
     
