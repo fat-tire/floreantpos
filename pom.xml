@@ -16,22 +16,16 @@
 			</resource>
 			<resource>
 				<directory>resources</directory>
+			</resource>
+			<resource>
+				<directory>config</directory>
+			</resource>
+			<resource>
+				<directory>filters</directory>
 				<filtering>true</filtering>
 				<includes>
 					<include>*.properties</include>
-					<include>*.xml</include>
 				</includes>
-				<excludes>
-					<exclude>log4j.properties</exclude>
-				</excludes>
-			</resource>
-			<resource>
-				<directory>resources</directory>
-				<filtering>false</filtering>
-				<excludes>
-					<exclude>*.properties</exclude>
-					<exclude>*.xml</exclude>
-				</excludes>
 			</resource>
 		</resources>
 		<plugins>

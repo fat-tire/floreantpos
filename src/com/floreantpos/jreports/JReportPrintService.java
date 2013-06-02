@@ -18,6 +18,7 @@ import net.sf.jasperreports.view.JasperViewer;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.floreantpos.POSConstants;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.Restaurant;
 import com.floreantpos.model.Ticket;
@@ -56,6 +57,11 @@ public class JReportPrintService {
 		if (ticket.getGratuity() != null) {
 			tipAmount = ticket.getGratuity().getAmount();
 			map.put("tipAmount", Application.formatNumber(tipAmount));
+		}
+		else if(ticket.getTableNumber() != Ticket.TAKE_OUT){
+			double dueAmount = ticket.getDueAmount();
+			double tips = dueAmount * 0.15;
+			map.put("tipAmount", Application.formatNumber(tips));
 		}
 		else {
 			map.put("tipAmount", "0");
