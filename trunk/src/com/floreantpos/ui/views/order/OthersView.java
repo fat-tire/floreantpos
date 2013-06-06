@@ -8,6 +8,7 @@ package com.floreantpos.ui.views.order;
 
 import com.floreantpos.POSConstants;
 import com.floreantpos.main.Application;
+import com.floreantpos.model.Gratuity;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.dao.TicketDAO;
@@ -131,7 +132,18 @@ public class OthersView extends TransparentPanel {
 
     private void btnPrintReceiptActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrintReceiptActionPerformed
     	try {
-			PosPrintService.printTicket(getCurrentTicket(), 0);
+			Ticket ticket = getCurrentTicket();
+			
+			if(ticket.getTableNumber() != Ticket.TAKE_OUT && ticket.getGratuity() == null) {
+				double dueAmount = ticket.getDueAmount();
+				double tips = dueAmount * 0.15;
+				
+				Gratuity gratuity = new Gratuity();
+				gratuity.setAmount(tips);
+				ticket.setGratuity(gratuity);
+			}
+			
+			PosPrintService.printTicket(ticket, 0);
 		} catch (Exception e) {
 			POSMessageDialog.showError(Application.getPosWindow(), e.getMessage(), e);
 		} 
