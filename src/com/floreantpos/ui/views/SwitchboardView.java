@@ -14,7 +14,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
-import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
@@ -24,6 +23,7 @@ import com.floreantpos.bo.ui.BackOfficeWindow;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.ActionHistory;
 import com.floreantpos.model.AttendenceHistory;
+import com.floreantpos.model.Gratuity;
 import com.floreantpos.model.Shift;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.User;
@@ -363,8 +363,18 @@ public class SwitchboardView extends JPanel implements ActionListener {
 		Ticket ticket = selectedTickets.get(0);
 		try {
 			ticket = TicketDAO.getInstance().initializeTicket(ticket);
+			
+			if(ticket.getTableNumber() != Ticket.TAKE_OUT && ticket.getGratuity() == null) {
+				double dueAmount = ticket.getDueAmount();
+				double tips = dueAmount * 0.15;
+				
+				Gratuity gratuity = new Gratuity();
+				gratuity.setAmount(tips);
+				ticket.setGratuity(gratuity);
+			}
+			
+			
 			PosPrintService.printTicket(ticket, 0);
-			//PosPrintService.printToKitchen(ticket);
 
 			//			PRINT ACTION
 			String actionMessage = "CHK#" + ":" + ticket.getId();
