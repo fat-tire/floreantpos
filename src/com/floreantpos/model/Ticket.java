@@ -183,7 +183,6 @@ public class Ticket extends BaseTicket {
 			totalAmount = 0;
 		}
 		
-		
 		setSubtotalAmount(subtotalAmount);
 		setDiscountAmount(discountAmount);
 
@@ -311,5 +310,23 @@ public class Ticket extends BaseTicket {
 		}
 
 		return false;
+	}
+	
+	public double createDefaultGratutity() {
+		if(getTableNumber() == TAKE_OUT) {
+			return 0;
+		}
+		
+		Gratuity gratuity = new Gratuity();
+		double tip = getDueAmount() * 0.15;
+		gratuity.setAmount(tip);
+		gratuity.setOwner(getOwner());
+		gratuity.setPaid(false);
+		gratuity.setTicket(this);
+		gratuity.setTerminal(getTerminal());
+		
+		setGratuity(gratuity);
+		
+		return tip;
 	}
 }

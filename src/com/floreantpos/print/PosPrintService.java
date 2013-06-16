@@ -1,10 +1,7 @@
 package com.floreantpos.print;
 
 import java.util.Arrays;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Set;
 
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JasperFillManager;
@@ -20,23 +17,17 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.floreantpos.config.PrintConfig;
 import com.floreantpos.jreports.JReportPrintService;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.DrawerPullReport;
 import com.floreantpos.model.Restaurant;
 import com.floreantpos.model.Terminal;
 import com.floreantpos.model.Ticket;
-import com.floreantpos.model.TicketCookingInstruction;
 import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.TicketItemModifier;
-import com.floreantpos.model.TicketItemModifierGroup;
 import com.floreantpos.model.TipsCashoutReport;
 import com.floreantpos.model.TipsCashoutReportTableModel;
 import com.floreantpos.model.dao.RestaurantDAO;
-
-import foxtrot.Job;
-import foxtrot.Worker;
 
 public class PosPrintService {
 	private static Log logger = LogFactory.getLog(PosPrintService.class);
