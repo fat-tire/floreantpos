@@ -86,7 +86,7 @@ public class GratuityDAO extends BaseGratuityDAO {
 			//criteria = criteria.createAlias(Ti, "t");
 			criteria.add(Restrictions.eq(Ticket.PROP_OWNER, user));
 			//criteria.add(Restrictions.eq(Ticket.PROP_DRAWER_RESETTED, Boolean.FALSE));
-			criteria.add(Restrictions.eq(Ticket.PROP_CLOSED, Boolean.TRUE));
+			//criteria.add(Restrictions.eq(Ticket.PROP_CLOSED, Boolean.TRUE));
 			criteria.add(Restrictions.ge(Ticket.PROP_CREATE_DATE, fromDate));
 			criteria.add(Restrictions.le(Ticket.PROP_CREATE_DATE, toDate));
 
