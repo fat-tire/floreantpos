@@ -380,7 +380,9 @@ public class TicketView extends JPanel {
 		if (ticket.getTicketItems() == null || ticket.getTicketItems().size() == 0) {
 			throw new PosException(com.floreantpos.POSConstants.TICKET_IS_EMPTY_);
 		}
+		
 		ticket.calculatePrice();
+		ticket.createDefaultGratutity();
 	}
 
 	private void doPayNow(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_doPayNow
