@@ -64,99 +64,99 @@ public abstract class _RootDAO extends com.floreantpos.model.dao._BaseRootDAO {
 	}
 */
 	
-	public static void initialize() {
-		Configuration configuration = new Configuration();
-		configuration = configuration.addClass(ActionHistory.class);
-		configuration = configuration.addClass(AttendenceHistory.class);
-		configuration = configuration.addClass(CashDrawerResetHistory.class);
-		configuration = configuration.addClass(CookingInstruction.class);
-		configuration = configuration.addClass(CouponAndDiscount.class);
-		configuration = configuration.addClass(Gratuity.class);
-		configuration = configuration.addClass(MenuCategory.class);
-		configuration = configuration.addClass(MenuGroup.class);
-		configuration = configuration.addClass(MenuItem.class);
-		configuration = configuration.addClass(MenuItemModifierGroup.class);
-		configuration = configuration.addClass(MenuItemShift.class);
-		configuration = configuration.addClass(MenuModifier.class);
-		configuration = configuration.addClass(MenuModifierGroup.class);
-		configuration = configuration.addClass(PayoutReason.class);
-		configuration = configuration.addClass(PayoutRecepient.class);
-		configuration = configuration.addClass(Restaurant.class);
-		configuration = configuration.addClass(RestaurantTable.class);
-		configuration = configuration.addClass(Shift.class);
-		configuration = configuration.addClass(Tax.class);
-		configuration = configuration.addClass(Terminal.class);
-		configuration = configuration.addClass(Ticket.class);
-		configuration = configuration.addClass(TicketCouponAndDiscount.class);
-		configuration = configuration.addClass(TicketItem.class);
-		configuration = configuration.addClass(TicketItemModifier.class);
-		configuration = configuration.addClass(TicketItemModifierGroup.class);
-		configuration = configuration.addClass(PosTransaction.class);
-		configuration = configuration.addClass(User.class);
-		configuration = configuration.addClass(VoidReason.class);
-		configuration = configuration.addClass(DrawerPullReport.class);
-		configuration = configuration.addClass(PrinterConfiguration.class);
-		configuration = configuration.addClass(UserPermission.class);
-		configuration = configuration.addClass(UserType.class);
-		
-		configuration = configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.DerbyDialect");
-		configuration = configuration.setProperty("hibernate.connection.driver_class", "org.apache.derby.jdbc.ClientDriver");
-		configuration = configuration.setProperty("hibernate.connection.url", ApplicationConfig.getConnectionURL());
-		configuration = configuration.setProperty("hibernate.connection.username", ApplicationConfig.getDatabaseUser());
-		configuration = configuration.setProperty("hibernate.connection.password", ApplicationConfig.getDatabasePassword());
-		configuration = configuration.setProperty("hibernate.hbm2ddl.auto", "update");
-		configuration = configuration.setProperty("hibernate.connection.autocommit", "false");
-		configuration = configuration.setProperty("hibernate.max_fetch_depth", "3");
-		configuration = configuration.setProperty("hibernate.show_sql", "false");
-		
-		setSessionFactory(configuration.buildSessionFactory());
-	}
-	
-	public static void dbCleanerInitialize() {
-		Configuration configuration = new Configuration();
-		configuration = configuration.addClass(ActionHistory.class);
-		configuration = configuration.addClass(AttendenceHistory.class);
-		configuration = configuration.addClass(CashDrawerResetHistory.class);
-		configuration = configuration.addClass(CookingInstruction.class);
-		configuration = configuration.addClass(CouponAndDiscount.class);
-		configuration = configuration.addClass(Gratuity.class);
-		configuration = configuration.addClass(MenuCategory.class);
-		configuration = configuration.addClass(MenuGroup.class);
-		configuration = configuration.addClass(MenuItem.class);
-		configuration = configuration.addClass(MenuItemModifierGroup.class);
-		configuration = configuration.addClass(MenuItemShift.class);
-		configuration = configuration.addClass(MenuModifier.class);
-		configuration = configuration.addClass(MenuModifierGroup.class);
-		configuration = configuration.addClass(PayoutReason.class);
-		configuration = configuration.addClass(PayoutRecepient.class);
-		configuration = configuration.addClass(Restaurant.class);
-		configuration = configuration.addClass(RestaurantTable.class);
-		configuration = configuration.addClass(Shift.class);
-		configuration = configuration.addClass(Tax.class);
-		configuration = configuration.addClass(Terminal.class);
-		configuration = configuration.addClass(Ticket.class);
-		configuration = configuration.addClass(TicketCouponAndDiscount.class);
-		configuration = configuration.addClass(TicketItem.class);
-		configuration = configuration.addClass(TicketItemModifier.class);
-		configuration = configuration.addClass(TicketItemModifierGroup.class);
-		configuration = configuration.addClass(PosTransaction.class);
-		configuration = configuration.addClass(User.class);
-		configuration = configuration.addClass(VoidReason.class);
-		configuration = configuration.addClass(DrawerPullReport.class);
-		configuration = configuration.addClass(PrinterConfiguration.class);
-		configuration = configuration.addClass(UserPermission.class);
-		configuration = configuration.addClass(UserType.class);
-		
-		configuration = configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.DerbyDialect");
-		configuration = configuration.setProperty("hibernate.connection.driver_class", "org.apache.derby.jdbc.ClientDriver");
-		configuration = configuration.setProperty("hibernate.connection.url", ApplicationConfig.getConnectionURL() + ";create=true");
-		configuration = configuration.setProperty("hibernate.connection.username", ApplicationConfig.getDatabaseUser());
-		configuration = configuration.setProperty("hibernate.connection.password", ApplicationConfig.getDatabasePassword());
-		configuration = configuration.setProperty("hibernate.hbm2ddl.auto", "create");
-		configuration = configuration.setProperty("hibernate.connection.autocommit", "false");
-		configuration = configuration.setProperty("hibernate.max_fetch_depth", "3");
-		configuration = configuration.setProperty("hibernate.show_sql", "false");
-		
-		setSessionFactory(configuration.buildSessionFactory());
-	}
+//	public static void initialize() {
+//		Configuration configuration = new Configuration();
+//		configuration = configuration.addClass(ActionHistory.class);
+//		configuration = configuration.addClass(AttendenceHistory.class);
+//		configuration = configuration.addClass(CashDrawerResetHistory.class);
+//		configuration = configuration.addClass(CookingInstruction.class);
+//		configuration = configuration.addClass(CouponAndDiscount.class);
+//		configuration = configuration.addClass(Gratuity.class);
+//		configuration = configuration.addClass(MenuCategory.class);
+//		configuration = configuration.addClass(MenuGroup.class);
+//		configuration = configuration.addClass(MenuItem.class);
+//		configuration = configuration.addClass(MenuItemModifierGroup.class);
+//		configuration = configuration.addClass(MenuItemShift.class);
+//		configuration = configuration.addClass(MenuModifier.class);
+//		configuration = configuration.addClass(MenuModifierGroup.class);
+//		configuration = configuration.addClass(PayoutReason.class);
+//		configuration = configuration.addClass(PayoutRecepient.class);
+//		configuration = configuration.addClass(Restaurant.class);
+//		configuration = configuration.addClass(RestaurantTable.class);
+//		configuration = configuration.addClass(Shift.class);
+//		configuration = configuration.addClass(Tax.class);
+//		configuration = configuration.addClass(Terminal.class);
+//		configuration = configuration.addClass(Ticket.class);
+//		configuration = configuration.addClass(TicketCouponAndDiscount.class);
+//		configuration = configuration.addClass(TicketItem.class);
+//		configuration = configuration.addClass(TicketItemModifier.class);
+//		configuration = configuration.addClass(TicketItemModifierGroup.class);
+//		configuration = configuration.addClass(PosTransaction.class);
+//		configuration = configuration.addClass(User.class);
+//		configuration = configuration.addClass(VoidReason.class);
+//		configuration = configuration.addClass(DrawerPullReport.class);
+//		configuration = configuration.addClass(PrinterConfiguration.class);
+//		configuration = configuration.addClass(UserPermission.class);
+//		configuration = configuration.addClass(UserType.class);
+//		
+//		configuration = configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.DerbyDialect");
+//		configuration = configuration.setProperty("hibernate.connection.driver_class", "org.apache.derby.jdbc.ClientDriver");
+//		configuration = configuration.setProperty("hibernate.connection.url", ApplicationConfig.getConnectionURL());
+//		configuration = configuration.setProperty("hibernate.connection.username", ApplicationConfig.getDatabaseUser());
+//		configuration = configuration.setProperty("hibernate.connection.password", ApplicationConfig.getDatabasePassword());
+//		configuration = configuration.setProperty("hibernate.hbm2ddl.auto", "update");
+//		configuration = configuration.setProperty("hibernate.connection.autocommit", "false");
+//		configuration = configuration.setProperty("hibernate.max_fetch_depth", "3");
+//		configuration = configuration.setProperty("hibernate.show_sql", "false");
+//		
+//		setSessionFactory(configuration.buildSessionFactory());
+//	}
+//	
+//	public static void dbCleanerInitialize() {
+//		Configuration configuration = new Configuration();
+//		configuration = configuration.addClass(ActionHistory.class);
+//		configuration = configuration.addClass(AttendenceHistory.class);
+//		configuration = configuration.addClass(CashDrawerResetHistory.class);
+//		configuration = configuration.addClass(CookingInstruction.class);
+//		configuration = configuration.addClass(CouponAndDiscount.class);
+//		configuration = configuration.addClass(Gratuity.class);
+//		configuration = configuration.addClass(MenuCategory.class);
+//		configuration = configuration.addClass(MenuGroup.class);
+//		configuration = configuration.addClass(MenuItem.class);
+//		configuration = configuration.addClass(MenuItemModifierGroup.class);
+//		configuration = configuration.addClass(MenuItemShift.class);
+//		configuration = configuration.addClass(MenuModifier.class);
+//		configuration = configuration.addClass(MenuModifierGroup.class);
+//		configuration = configuration.addClass(PayoutReason.class);
+//		configuration = configuration.addClass(PayoutRecepient.class);
+//		configuration = configuration.addClass(Restaurant.class);
+//		configuration = configuration.addClass(RestaurantTable.class);
+//		configuration = configuration.addClass(Shift.class);
+//		configuration = configuration.addClass(Tax.class);
+//		configuration = configuration.addClass(Terminal.class);
+//		configuration = configuration.addClass(Ticket.class);
+//		configuration = configuration.addClass(TicketCouponAndDiscount.class);
+//		configuration = configuration.addClass(TicketItem.class);
+//		configuration = configuration.addClass(TicketItemModifier.class);
+//		configuration = configuration.addClass(TicketItemModifierGroup.class);
+//		configuration = configuration.addClass(PosTransaction.class);
+//		configuration = configuration.addClass(User.class);
+//		configuration = configuration.addClass(VoidReason.class);
+//		configuration = configuration.addClass(DrawerPullReport.class);
+//		configuration = configuration.addClass(PrinterConfiguration.class);
+//		configuration = configuration.addClass(UserPermission.class);
+//		configuration = configuration.addClass(UserType.class);
+//		
+//		configuration = configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.DerbyDialect");
+//		configuration = configuration.setProperty("hibernate.connection.driver_class", "org.apache.derby.jdbc.ClientDriver");
+//		configuration = configuration.setProperty("hibernate.connection.url", ApplicationConfig.getConnectionURL() + ";create=true");
+//		configuration = configuration.setProperty("hibernate.connection.username", ApplicationConfig.getDatabaseUser());
+//		configuration = configuration.setProperty("hibernate.connection.password", ApplicationConfig.getDatabasePassword());
+//		configuration = configuration.setProperty("hibernate.hbm2ddl.auto", "create");
+//		configuration = configuration.setProperty("hibernate.connection.autocommit", "false");
+//		configuration = configuration.setProperty("hibernate.max_fetch_depth", "3");
+//		configuration = configuration.setProperty("hibernate.show_sql", "false");
+//		
+//		setSessionFactory(configuration.buildSessionFactory());
+//	}
 }

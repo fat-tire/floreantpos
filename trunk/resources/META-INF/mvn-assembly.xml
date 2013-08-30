@@ -18,8 +18,7 @@
 				<include>org.apache.derby:derby</include>
 				<include>org.apache.derby:derbynet</include>
 			</includes>
-			<outputFileNameMapping>${artifact.artifactId}.${artifact.extension}
-			</outputFileNameMapping>
+			<outputFileNameMapping>floreantpos</outputFileNameMapping>
 		</dependencySet>
 	</dependencySets>
 
