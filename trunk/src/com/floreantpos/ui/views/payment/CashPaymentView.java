@@ -9,6 +9,8 @@ package com.floreantpos.ui.views.payment;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
+import java.text.NumberFormat;
+import java.text.ParseException;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -17,7 +19,6 @@ import javax.swing.JTextField;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.CashTransaction;
 import com.floreantpos.swing.PosButton;
-import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.views.PaymentView;
 import com.floreantpos.ui.views.SwitchboardView;
 import com.floreantpos.ui.views.order.RootView;
@@ -273,18 +274,15 @@ public class CashPaymentView extends PaymentView {
 	}//GEN-LAST:event_btnChangePaymentActionPerformed
 
 	private void doFinish(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_doFinish
-//		double dueAmount = getDueAmount();
-		double tenderedAmount = getTenderedAmount();
-		double gratuityAmount = getGratuityAmount();
-		
-//		double totalAmount = dueAmount + gratuityAmount;
-		
-//		if(tenderedAmount < totalAmount) {
-//			POSMessageDialog.showError(Application.getPosWindow(), "Tendered amount may not be less than " + totalAmount);
-//			return;
-//		}
-		
-		settleTickets(tenderedAmount, gratuityAmount, new CashTransaction(), null, null);
+		try {
+			double tenderedAmount = getTenderedAmount();
+			double gratuityAmount = getGratuityAmount();
+
+			settleTickets(tenderedAmount, gratuityAmount,
+					new CashTransaction(), null, null);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}//GEN-LAST:event_doFinish
 
 	private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
@@ -399,11 +397,22 @@ public class CashPaymentView extends PaymentView {
 		tfAmountTendered.requestFocus();
 	}
 	
-	private double getTenderedAmount() {
-		return Double.parseDouble(tfAmountTendered.getText());
+	private double getTenderedAmount() throws ParseException {
+		NumberFormat numberFormat = NumberFormat.getInstance();
+		double doubleValue = numberFormat.parse(tfAmountTendered.getText()).doubleValue();
+		return doubleValue;
+		
+		//return Double.parseDouble(tfAmountTendered.getText());
 	}
 	
 	private double getGratuityAmount() {
-		return Double.parseDouble(tfGratuityAmount.getText());
+		try {
+			NumberFormat numberFormat = NumberFormat.getInstance();
+			return numberFormat.parse(tfGratuityAmount.getText()).doubleValue();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
+		//return Double.parseDouble(tfGratuityAmount.getText());
 	}
 }

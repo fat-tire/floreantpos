@@ -61,8 +61,8 @@ public class PosTransactionService {
 				ticket.setTerminal(terminal);
 				ticket.setCardNumber(cardAuthorizationCode);
 				
-				double paidAmount = Double.parseDouble(Application.formatNumber(ticket.getPaidAmount()));
-				double dueAmount = Double.parseDouble(Application.formatNumber(ticket.getDueAmount()));
+				double paidAmount = ticket.getPaidAmount();
+				double dueAmount = ticket.getDueAmount();
 				
 				if(tenderedAmount >= dueAmount) {
 					paidAmount += dueAmount;
