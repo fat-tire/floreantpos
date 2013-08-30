@@ -21,11 +21,10 @@ import com.floreantpos.model.dao.ShiftDAO;
 import com.floreantpos.model.dao.TaxDAO;
 import com.floreantpos.model.dao.UserDAO;
 import com.floreantpos.model.dao.UserTypeDAO;
-import com.floreantpos.model.dao._RootDAO;
 
 public class DbInit {
 	public static void main(String[] args) throws Exception {
-		_RootDAO.dbCleanerInitialize();
+		//_RootDAO.dbCleanerInitialize();
 		
 		Restaurant restaurant = new Restaurant();
 		restaurant.setId(Integer.valueOf(1));
