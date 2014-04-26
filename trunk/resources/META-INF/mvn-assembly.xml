@@ -45,8 +45,15 @@
 			<outputDirectory>sample-db</outputDirectory>
 			<includes>
 				<include>sample-db/lib/*</include>
-				<include>posdb/*</include>
-				<include>*</include>
+				<include>*.bat</include>
+				<include>*.sh</include>
+			</includes>
+		</fileSet>
+		<fileSet>
+			<directory>${project.build.directory}</directory>
+			<outputDirectory>sample-db</outputDirectory>
+			<includes>
+				<include>posdb/**/*</include>
 			</includes>
 		</fileSet>
 		<!-- adds jar package to the root directory of zip package -->
