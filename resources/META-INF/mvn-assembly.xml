@@ -18,7 +18,7 @@
 				<include>org.apache.derby:derby</include>
 				<include>org.apache.derby:derbynet</include>
 			</includes>
-			<outputFileNameMapping>floreantpos</outputFileNameMapping>
+			<outputFileNameMapping>${artifact.artifactId}.${artifact.extension}</outputFileNameMapping>
 		</dependencySet>
 	</dependencySets>
 
@@ -40,21 +40,13 @@
 				<include>*.bat</include>
 			</includes>
 		</fileSet>
-		<!-- <fileSet>
-			<directory>etc</directory>
-			<outputDirectory></outputDirectory>
-			<includes>
-				<include>*.*</include>
-			</includes>
-			<excludes>
-				<exclude>*.bat</exclude>
-			</excludes>
-		</fileSet> -->
 		<fileSet>
 			<directory>sample-db</directory>
 			<outputDirectory>sample-db</outputDirectory>
 			<includes>
-				<include>*.*</include>
+				<include>sample-db/lib/*</include>
+				<include>posdb/*</include>
+				<include>*</include>
 			</includes>
 		</fileSet>
 		<!-- adds jar package to the root directory of zip package -->
