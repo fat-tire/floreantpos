@@ -30,11 +30,11 @@ import com.floreantpos.model.User;
 import com.floreantpos.model.dao.PrinterConfigurationDAO;
 import com.floreantpos.model.dao.RestaurantDAO;
 import com.floreantpos.model.dao.TerminalDAO;
-import com.floreantpos.model.dao._RootDAO;
 import com.floreantpos.swing.GlassPane;
 import com.floreantpos.ui.dialog.NumberSelectionDialog;
 import com.floreantpos.ui.views.LoginScreen;
 import com.floreantpos.ui.views.order.RootView;
+import com.floreantpos.util.DatabaseUtil;
 import com.floreantpos.util.TicketActiveDateSetterTask;
 import com.jgoodies.looks.plastic.PlasticXPLookAndFeel;
 import com.jgoodies.looks.plastic.theme.ExperienceBlue;
@@ -101,18 +101,17 @@ public class Application {
 	}
 
 	public void initDatabase() {
-		if(!ApplicationConfig.checkDatabaseConnection()) {
-			DatabaseConfigurationDialog dialog = new DatabaseConfigurationDialog(getPosWindow(), false );
+		if(!DatabaseUtil.checkConnection()) {
+			DatabaseConfigurationDialog dialog = new DatabaseConfigurationDialog(getPosWindow(), true );
 			dialog.setTitle(com.floreantpos.POSConstants.DATABASE_CONNECTION_ERROR);
 			dialog.setExitOnClose(false);
 			dialog.pack();
 			dialog.open();
 		}
 
-
 		try {
 			((GlassPane) posWindow.getGlassPane()).setMessage(com.floreantpos.POSConstants.LOADING);
-			_RootDAO.initialize();
+			DatabaseUtil.initialize();
 
 			int terminalId = ApplicationConfig.getTerminalId();
 			logger.info("Terminal ID from configuration=" + terminalId);
@@ -160,6 +159,8 @@ public class Application {
 
 			java.util.Timer activeDateScheduler = new java.util.Timer();
 			activeDateScheduler.scheduleAtFixedRate(ticketActiveDateSetterTask, time, 86400*1000);
+		} catch (Exception e) {
+			logger.error(e);
 		} finally {
 			getPosWindow().setGlassPaneVisible(false);
 		}
