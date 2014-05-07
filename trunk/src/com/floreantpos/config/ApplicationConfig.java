@@ -1,13 +1,9 @@
 package com.floreantpos.config;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.util.prefs.Preferences;
 
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
-import org.apache.derby.jdbc.ClientDriver;
 
 import com.floreantpos.main.Application;
 
@@ -17,6 +13,10 @@ public class ApplicationConfig {
 	public static final String DATABASE_NAME = "DATABASE_NAME";
 	public static final String DATABASE_USER = "DATABASE_USER";
 	public static final String DATABASE_PASSWORD = "DATABASE_PASS";
+	public static final String CONNECTION_STRING = "CONNECTION_STRING";
+	public static final String HIBERNATE_DIALECT = "hibernate.dialect";
+	public static final String HIBERNATE_CONNECTION_DRIVER_CLASS = "hibernate.connection.driver_class";
+	public static final String DATABASE_PROVIDER_NAME = "DATABASE_PROVIDER_NAME";
 	
 	private final static Preferences pref = Preferences.userNodeForPackage(Application.class);
 	
@@ -66,8 +66,12 @@ public class ApplicationConfig {
 		return pref.get(DATABASE_URL, "localhost");
 	}
 
-	public static String getConnectionURL() {
-		return "jdbc:derby://" + getDatabaseURL() + ":" + getDatabasePort() + "/" + getDatabaseName(); 
+	public static String getConnectString() {
+		return pref.get(CONNECTION_STRING, ""); 
+	}
+	
+	public static void setConnectString(String connectionString) {
+		pref.put(CONNECTION_STRING, connectionString);
 	}
 	
 	public static void setDatabaseURL(String url) {
@@ -75,7 +79,7 @@ public class ApplicationConfig {
 	}
 	
 	public static String getDatabasePort() {
-		return pref.get(DATABASE_PORT, "1527");
+		return pref.get(DATABASE_PORT, null);
 	}
 	
 	public static void setDatabasePort(String port) {
@@ -106,26 +110,30 @@ public class ApplicationConfig {
 		pref.put(DATABASE_PASSWORD, password);
 	}
 	
-	public static boolean checkDatabaseConnection(String url, String port, String databaseName, String user, String password) {
-		url = "jdbc:derby://" + url + ":" + port + "/" + databaseName; 
-		
-		new ClientDriver();
-		Connection connection = null; 
-		try {
-			connection = DriverManager.getConnection(url, user, password);
-			return true;
-		} catch (SQLException e) {
-			return false;
-		} finally {
-			try {
-				connection.close();
-			}catch(Throwable t) {}
-		}
+	public static void setHibernateDialect(String dialect) {
+		pref.put(HIBERNATE_DIALECT, dialect);
 	}
-	public static boolean checkDatabaseConnection() {
-		return checkDatabaseConnection(getDatabaseURL(), getDatabasePort(), getDatabaseName(), getDatabaseUser(), getDatabasePassword());
+	
+	public static String getHibernateDialect() {
+		return pref.get(HIBERNATE_DIALECT, "");
 	}
-
+	
+	public static void setHibernateConnectionDriverClass(String driverClass) {
+		pref.put(HIBERNATE_CONNECTION_DRIVER_CLASS, driverClass);
+	}
+	
+	public static String getHibernateConnectionDriverClass() {
+		return pref.get(HIBERNATE_CONNECTION_DRIVER_CLASS, "");
+	}
+	
+	public static void setDatabaseProviderName(String databaseProviderName) {
+		pref.put(DATABASE_PROVIDER_NAME, databaseProviderName);
+	}
+	
+	public static String getDatabaseProviderName() {
+		return pref.get(DATABASE_PROVIDER_NAME, "");
+	}
+	
 	public static PropertiesConfiguration getConfiguration() {
 		return configuration;
 	}

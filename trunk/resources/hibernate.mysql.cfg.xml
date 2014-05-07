@@ -1,0 +1,59 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC 
+	"-//Hibernate/Hibernate Configuration DTD//EN"
+	"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+	<session-factory>
+		<!-- property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property -->
+		<property name="hibernate.dialect">org.hibernate.dialect.DerbyDialect</property>
+
+		<property name="hibernate.connection.driver_class">org.apache.derby.jdbc.ClientDriver</property>
+		<property name="hibernate.connection.url">jdbc:derby://localhost/posdb</property>
+
+		<!-- <property name="hibernate.connection.driver_class">org.apache.derby.jdbc.EmbeddedDriver</property> -->
+		<!-- <property name="hibernate.connection.url">jdbc:derby:posdb;create=true</property> -->
+
+		<property name="hibernate.connection.username">app</property>
+		<property name="hibernate.connection.password">sa</property>
+		<!-- property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property -->
+		<!-- property name="hibernate.connection.url">jdbc:mysql://localhost/pos</property -->
+		<property name="hbm2ddl.auto">update</property>
+		<property name="hibernate.connection.autocommit">false</property>
+		<property name="hibernate.max_fetch_depth">3</property>
+		<property name="show_sql">false</property>
+
+		<mapping resource="com/floreantpos/model/ActionHistory.hbm.xml" />
+		<mapping resource="com/floreantpos/model/AttendenceHistory.hbm.xml" />
+		<mapping resource="com/floreantpos/model/CashDrawerResetHistory.hbm.xml" />
+		<mapping resource="com/floreantpos/model/CookingInstruction.hbm.xml" />
+		<mapping resource="com/floreantpos/model/CouponAndDiscount.hbm.xml" />
+		<mapping resource="com/floreantpos/model/Gratuity.hbm.xml" />
+		<mapping resource="com/floreantpos/model/MenuCategory.hbm.xml" />
+		<mapping resource="com/floreantpos/model/MenuGroup.hbm.xml" />
+		<mapping resource="com/floreantpos/model/MenuItem.hbm.xml" />
+		<mapping resource="com/floreantpos/model/MenuItemModifierGroup.hbm.xml" />
+		<mapping resource="com/floreantpos/model/MenuItemShift.hbm.xml" />
+		<mapping resource="com/floreantpos/model/MenuModifier.hbm.xml" />
+		<mapping resource="com/floreantpos/model/MenuModifierGroup.hbm.xml" />
+		<mapping resource="com/floreantpos/model/PayoutReason.hbm.xml" />
+		<mapping resource="com/floreantpos/model/PayoutRecepient.hbm.xml" />
+		<mapping resource="com/floreantpos/model/Restaurant.hbm.xml" />
+		<mapping resource="com/floreantpos/model/RestaurantTable.hbm.xml" />
+		<mapping resource="com/floreantpos/model/Shift.hbm.xml" />
+		<mapping resource="com/floreantpos/model/Tax.hbm.xml" />
+		<mapping resource="com/floreantpos/model/Terminal.hbm.xml" />
+		<mapping resource="com/floreantpos/model/Ticket.hbm.xml" />
+		<mapping resource="com/floreantpos/model/TicketCouponAndDiscount.hbm.xml" />
+		<mapping resource="com/floreantpos/model/TicketItem.hbm.xml" />
+		<mapping resource="com/floreantpos/model/TicketItemModifier.hbm.xml" />
+		<mapping resource="com/floreantpos/model/TicketItemModifierGroup.hbm.xml" />
+		<mapping resource="com/floreantpos/model/PosTransaction.hbm.xml" />
+		<mapping resource="com/floreantpos/model/User.hbm.xml" />
+		<mapping resource="com/floreantpos/model/VoidReason.hbm.xml" />
+		<mapping resource="com/floreantpos/model/DrawerPullReport.hbm.xml" />
+		<mapping resource="com/floreantpos/model/PrinterConfiguration.hbm.xml" />
+		<mapping resource="com/floreantpos/model/UserPermission.hbm.xml" />
+		<mapping resource="com/floreantpos/model/UserType.hbm.xml" />
+	</session-factory>
+</hibernate-configuration>
