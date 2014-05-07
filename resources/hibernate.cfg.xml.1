@@ -7,13 +7,13 @@
 	<session-factory>
 		<!-- property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property -->
 		<property name="hibernate.dialect">org.hibernate.dialect.DerbyDialect</property>
-		
+
 		<property name="hibernate.connection.driver_class">org.apache.derby.jdbc.ClientDriver</property>
 		<property name="hibernate.connection.url">jdbc:derby://localhost/posdb</property>
-		
-<!--		<property name="hibernate.connection.driver_class">org.apache.derby.jdbc.EmbeddedDriver</property>-->
-<!--		<property name="hibernate.connection.url">jdbc:derby:posdb;create=true</property>-->
-		
+
+		<!-- <property name="hibernate.connection.driver_class">org.apache.derby.jdbc.EmbeddedDriver</property> -->
+		<!-- <property name="hibernate.connection.url">jdbc:derby:posdb;create=true</property> -->
+
 		<property name="hibernate.connection.username">app</property>
 		<property name="hibernate.connection.password">sa</property>
 		<!-- property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property -->
@@ -22,7 +22,7 @@
 		<property name="hibernate.connection.autocommit">false</property>
 		<property name="hibernate.max_fetch_depth">3</property>
 		<property name="show_sql">false</property>
-		
+
 		<mapping resource="com/floreantpos/model/ActionHistory.hbm.xml" />
 		<mapping resource="com/floreantpos/model/AttendenceHistory.hbm.xml" />
 		<mapping resource="com/floreantpos/model/CashDrawerResetHistory.hbm.xml" />

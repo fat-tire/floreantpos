@@ -1,5 +1,6 @@
 package com.floreantpos.config.ui;
 
+import java.awt.Cursor;
 import java.awt.Dialog;
 import java.awt.FlowLayout;
 import java.awt.Frame;
@@ -8,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -17,16 +19,18 @@ import javax.swing.JTextField;
 
 import net.miginfocom.swing.MigLayout;
 
+import org.apache.commons.lang.StringUtils;
+
+import com.floreantpos.Database;
 import com.floreantpos.POSConstants;
 import com.floreantpos.config.ApplicationConfig;
 import com.floreantpos.ui.TitlePanel;
 import com.floreantpos.ui.dialog.POSDialog;
-import com.floreantpos.ui.dialog.POSMessageDialog;
+import com.floreantpos.util.DatabaseUtil;
 
 public class DatabaseConfigurationDialog extends POSDialog implements ActionListener {
 	
 	private static final String CLOSE = "close";
-	private static final String SAVE = "save";
 	private static final String TEST = "test";
 	private JTextField tfServerAddress;
 	private JTextField tfServerPort;
@@ -34,8 +38,9 @@ public class DatabaseConfigurationDialog extends POSDialog implements ActionList
 	private JTextField tfUserName;
 	private JPasswordField tfPassword;
 	private JButton btnTestConnection;
-	private JButton btnFinish;
+	private JButton btnCreateDb;
 	private JButton btnExit;
+	private JComboBox databaseCombo;
 	
 	private TitlePanel titlePanel;
 	
@@ -43,22 +48,23 @@ public class DatabaseConfigurationDialog extends POSDialog implements ActionList
 
 	public DatabaseConfigurationDialog() throws HeadlessException {
 		super();
+		
+		setFieldValues();
+		addUIListeners();
 	}
 
 	public DatabaseConfigurationDialog(Dialog owner, boolean modal) {
 		super(owner, modal);
-	}
-
-	public DatabaseConfigurationDialog(Dialog owner, String title, boolean modal) {
-		super(owner, title, modal);
-	}
-
-	public DatabaseConfigurationDialog(Frame owner, boolean modal, boolean unDecorated) throws HeadlessException {
-		super(owner, modal, unDecorated);
+		
+		setFieldValues();
+		addUIListeners();
 	}
 
 	public DatabaseConfigurationDialog(Frame owner, boolean modal) throws HeadlessException {
 		super(owner, modal);
+		
+		setFieldValues();
+		addUIListeners();
 	}
 	
 	protected void initUI() {
@@ -70,9 +76,17 @@ public class DatabaseConfigurationDialog extends POSDialog implements ActionList
 		tfDatabaseName = new JTextField();
 		tfUserName = new JTextField();
 		tfPassword = new JPasswordField();
+		databaseCombo = new JComboBox(Database.values());
+
+		String databaseProviderName = ApplicationConfig.getDatabaseProviderName();
+		if(StringUtils.isNotEmpty(databaseProviderName)) {
+			databaseCombo.setSelectedItem(Database.getByProviderName(databaseProviderName));
+		}
 
 		add(titlePanel, "span, grow, wrap");
 		
+		add(new JLabel("Database: "));
+		add(databaseCombo, "grow, wrap");
 		add(new JLabel("Database Server Address" + ":"));
 		add(tfServerAddress, "grow, wrap");
 		add(new JLabel("Database Server Port" + ":"));
@@ -87,24 +101,49 @@ public class DatabaseConfigurationDialog extends POSDialog implements ActionList
 		
 		btnTestConnection = new JButton("Test Connection");
 		btnTestConnection.setActionCommand(TEST);
-		btnFinish = new JButton(POSConstants.SAVE);
-		btnFinish.setActionCommand(SAVE);
+		btnCreateDb = new JButton("Create Database Schema");
+		btnCreateDb.setActionCommand("CD");
 		btnExit = new JButton(POSConstants.CLOSE);
 		btnExit.setActionCommand(CLOSE);
 		
 		JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 		buttonPanel.add(btnTestConnection);
-		buttonPanel.add(btnFinish);
+		buttonPanel.add(btnCreateDb);
 		buttonPanel.add(btnExit);
 		
 		add(buttonPanel, "span, grow");
-		
+	}
+
+	private void addUIListeners() {
 		btnTestConnection.addActionListener(this);
-		btnFinish.addActionListener(this);
+		btnCreateDb.addActionListener(this);
 		btnExit.addActionListener(this);
 		
-		tfServerAddress.setText(ApplicationConfig.getDatabaseURL());
-		tfServerPort.setText(ApplicationConfig.getDatabasePort());
+		databaseCombo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Database selectedDb = (Database) databaseCombo.getSelectedItem();
+				String databasePort = ApplicationConfig.getDatabasePort();
+				if(StringUtils.isEmpty(databasePort)) {
+					databasePort = selectedDb.getDefaultPort();
+				}
+				
+				tfServerPort.setText(databasePort);
+			}
+		});
+	}
+
+	private void setFieldValues() {
+		Database selectedDb = (Database) databaseCombo.getSelectedItem();
+		
+		String databaseURL = ApplicationConfig.getDatabaseURL();
+		tfServerAddress.setText(databaseURL);
+		
+		String databasePort = ApplicationConfig.getDatabasePort();
+		if(StringUtils.isEmpty(databasePort)) {
+			databasePort = selectedDb.getDefaultPort();
+		}
+		
+		tfServerPort.setText(databasePort);
 		tfDatabaseName.setText(ApplicationConfig.getDatabaseName());
 		tfUserName.setText(ApplicationConfig.getDatabaseUser());
 		tfPassword.setText(ApplicationConfig.getDatabasePassword());
@@ -113,42 +152,66 @@ public class DatabaseConfigurationDialog extends POSDialog implements ActionList
 	public void actionPerformed(ActionEvent e) {
 		String command = e.getActionCommand();
 		
+		Database selectedDb = (Database) databaseCombo.getSelectedItem();
+		
+		String providerName = selectedDb.getProviderName();
 		String databaseURL = tfServerAddress.getText();
 		String databasePort = tfServerPort.getText();
 		String databaseName = tfDatabaseName.getText();
 		String user = tfUserName.getText();
 		String pass = new String(tfPassword.getPassword());
 		
+		String connectionString = selectedDb.getConnectString(databaseURL, databasePort, databaseName);
+		String hibernateDialect = selectedDb.getHibernateDialect();
+		String driverClass = selectedDb.getHibernateConnectionDriverClass();
+		
 		if(TEST.equalsIgnoreCase(command)) {
-			if(ApplicationConfig.checkDatabaseConnection(databaseURL, databasePort, databaseName, user, pass)) {
+			saveConfig(selectedDb, providerName, databaseURL, databasePort, databaseName, user, pass, connectionString, hibernateDialect);
+			
+			if(DatabaseUtil.checkConnection(connectionString, hibernateDialect, driverClass, user, pass)) {
 				JOptionPane.showMessageDialog(this, "Connection Successfull!");
 			}
 			else {
 				JOptionPane.showMessageDialog(this, "Connection Failed!");
 			}
 		}
-		else if(SAVE.equalsIgnoreCase(command)) {
-			if(ApplicationConfig.checkDatabaseConnection(databaseURL, databasePort, databaseName, user, pass)) {
-				ApplicationConfig.setDatabaseURL(databaseURL);
-				ApplicationConfig.setDatabasePort(databasePort);
-				ApplicationConfig.setDatabaseName(databaseName);
-				ApplicationConfig.setDatabaseUser(user);
-				ApplicationConfig.setDatabasePassword(pass);
-				dispose();
+		else if("CD".equals(command)) {
+			int i = JOptionPane.showConfirmDialog(this, "This will remove existing database schemas, if exists. Proceed?", "Warning", JOptionPane.YES_NO_OPTION);
+			if(i != JOptionPane.YES_OPTION) {
+				return;
+			}
+			
+			saveConfig(selectedDb, providerName, databaseURL, databasePort, databaseName, user, pass, connectionString, hibernateDialect);
+			
+			String connectionString2 = selectedDb.getCreateDbConnectString(databaseURL, databasePort, databaseName);
+			
+			this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+			boolean createDatabase = DatabaseUtil.createDatabase(connectionString2, hibernateDialect, driverClass, user, pass);
+			this.setCursor(Cursor.getDefaultCursor());
+			
+			if(createDatabase) {
+				JOptionPane.showMessageDialog(DatabaseConfigurationDialog.this, "Database created.");
 			}
 			else {
-				JOptionPane.showMessageDialog(this, "Connection Failed!");
+				JOptionPane.showMessageDialog(DatabaseConfigurationDialog.this, "Database creation failed.");
 			}
 		}
 		else if(CLOSE.equalsIgnoreCase(command)) {
-			if(exitOnClose) {
-				POSMessageDialog.showError("Database connection error, application will now exit.");
-				System.exit(1);
-			}
-			else {
-				dispose();
-			}
+			dispose();
 		}
+	}
+
+	private void saveConfig(Database selectedDb, String providerName, String databaseURL, String databasePort, String databaseName, String user, String pass,
+			String connectionString, String hibernateDialect) {
+		ApplicationConfig.setDatabaseProviderName(providerName);
+		ApplicationConfig.setHibernateConnectionDriverClass(selectedDb.getHibernateConnectionDriverClass());
+		ApplicationConfig.setHibernateDialect(hibernateDialect);
+		ApplicationConfig.setConnectString(connectionString);
+		ApplicationConfig.setDatabaseURL(databaseURL);
+		ApplicationConfig.setDatabasePort(databasePort);
+		ApplicationConfig.setDatabaseName(databaseName);
+		ApplicationConfig.setDatabaseUser(user);
+		ApplicationConfig.setDatabasePassword(pass);
 	}
 
 	public boolean isExitOnClose() {
