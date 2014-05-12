@@ -379,11 +379,7 @@ public class PasswordScreen extends JPanel {
 			} else if (com.floreantpos.POSConstants.SHUTDOWN.equals(command)) {
 				Application.getInstance().shutdownPOS();
 			} else if ("DBCONFIG".equalsIgnoreCase(command)) {
-				DatabaseConfigurationDialog dialog = new DatabaseConfigurationDialog(Application.getPosWindow(), true);
-				dialog.setTitle("Database connection error, please configure your database");
-				dialog.setExitOnClose(true);
-				dialog.pack();
-				dialog.open();
+				DatabaseConfigurationDialog.show(Application.getPosWindow());
 			} else {
 				if (tfUserId.hasFocus()) {
 					tfUserId.setText(tfUserId.getText() + command);
