@@ -102,11 +102,7 @@ public class Application {
 
 	public void initDatabase() {
 		if(!DatabaseUtil.checkConnection()) {
-			DatabaseConfigurationDialog dialog = new DatabaseConfigurationDialog(getPosWindow(), true );
-			dialog.setTitle(com.floreantpos.POSConstants.DATABASE_CONNECTION_ERROR);
-			dialog.setExitOnClose(false);
-			dialog.pack();
-			dialog.open();
+			DatabaseConfigurationDialog.show(posWindow);
 		}
 
 		try {
