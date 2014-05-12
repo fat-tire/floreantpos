@@ -24,6 +24,7 @@ import org.apache.commons.lang.StringUtils;
 import com.floreantpos.Database;
 import com.floreantpos.POSConstants;
 import com.floreantpos.config.ApplicationConfig;
+import com.floreantpos.main.Application;
 import com.floreantpos.ui.TitlePanel;
 import com.floreantpos.ui.dialog.POSDialog;
 import com.floreantpos.util.DatabaseUtil;
@@ -44,8 +45,6 @@ public class DatabaseConfigurationDialog extends POSDialog implements ActionList
 	
 	private TitlePanel titlePanel;
 	
-	private boolean exitOnClose;
-
 	public DatabaseConfigurationDialog() throws HeadlessException {
 		super();
 		
@@ -214,17 +213,18 @@ public class DatabaseConfigurationDialog extends POSDialog implements ActionList
 		ApplicationConfig.setDatabasePassword(pass);
 	}
 
-	public boolean isExitOnClose() {
-		return exitOnClose;
-	}
-
-	public void setExitOnClose(boolean exitOnClose) {
-		this.exitOnClose = exitOnClose;
-	}
-	
 	public void setTitle(String title) {
 		super.setTitle("Configure database");
 		
 		titlePanel.setTitle(title);
+	}
+	
+	public static DatabaseConfigurationDialog show(Frame parent) {
+		DatabaseConfigurationDialog dialog = new DatabaseConfigurationDialog(Application.getPosWindow(), true);
+		dialog.setTitle("Configure database");
+		dialog.pack();
+		dialog.open();
+		
+		return dialog;
 	}
 }
