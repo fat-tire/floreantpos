@@ -41,6 +41,7 @@ public class DatabaseConfigurationDialog extends POSDialog implements ActionList
 	private JButton btnTestConnection;
 	private JButton btnCreateDb;
 	private JButton btnExit;
+	private JButton btnSave;
 	private JComboBox databaseCombo;
 	
 	private TitlePanel titlePanel;
@@ -102,12 +103,15 @@ public class DatabaseConfigurationDialog extends POSDialog implements ActionList
 		btnTestConnection.setActionCommand(TEST);
 		btnCreateDb = new JButton("Create Database Schema");
 		btnCreateDb.setActionCommand("CD");
+		btnSave = new JButton("Save");
+		btnSave.setActionCommand("SAVE");
 		btnExit = new JButton(POSConstants.CLOSE);
 		btnExit.setActionCommand(CLOSE);
 		
 		JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 		buttonPanel.add(btnTestConnection);
 		buttonPanel.add(btnCreateDb);
+		buttonPanel.add(btnSave);
 		buttonPanel.add(btnExit);
 		
 		add(buttonPanel, "span, grow");
@@ -116,6 +120,7 @@ public class DatabaseConfigurationDialog extends POSDialog implements ActionList
 	private void addUIListeners() {
 		btnTestConnection.addActionListener(this);
 		btnCreateDb.addActionListener(this);
+		btnSave.addActionListener(this);
 		btnExit.addActionListener(this);
 		
 		databaseCombo.addActionListener(new ActionListener() {
@@ -165,6 +170,7 @@ public class DatabaseConfigurationDialog extends POSDialog implements ActionList
 		String driverClass = selectedDb.getHibernateConnectionDriverClass();
 		
 		if(TEST.equalsIgnoreCase(command)) {
+			Application.getInstance().setSystemInitialized(false);
 			saveConfig(selectedDb, providerName, databaseURL, databasePort, databaseName, user, pass, connectionString, hibernateDialect);
 			
 			if(DatabaseUtil.checkConnection(connectionString, hibernateDialect, driverClass, user, pass)) {
@@ -175,6 +181,8 @@ public class DatabaseConfigurationDialog extends POSDialog implements ActionList
 			}
 		}
 		else if("CD".equals(command)) {
+			Application.getInstance().setSystemInitialized(false);
+			
 			int i = JOptionPane.showConfirmDialog(this, "This will remove existing database schemas, if exists. Proceed?", "Warning", JOptionPane.YES_NO_OPTION);
 			if(i != JOptionPane.YES_OPTION) {
 				return;
@@ -194,6 +202,9 @@ public class DatabaseConfigurationDialog extends POSDialog implements ActionList
 			else {
 				JOptionPane.showMessageDialog(DatabaseConfigurationDialog.this, "Database creation failed.");
 			}
+		}
+		else if("SAVE".equalsIgnoreCase(command)) {
+			saveConfig(selectedDb, providerName, databaseURL, databasePort, databaseName, user, pass, connectionString, hibernateDialect);
 		}
 		else if(CLOSE.equalsIgnoreCase(command)) {
 			dispose();

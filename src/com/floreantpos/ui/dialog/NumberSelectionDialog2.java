@@ -228,4 +228,16 @@ public class NumberSelectionDialog2 extends POSDialog implements ActionListener 
 		tfNumber.setText(String.valueOf(defaultValue));
 	}
 
+	public static int takeIntInput(String title) {
+		NumberSelectionDialog2 dialog = new NumberSelectionDialog2();
+		dialog.setTitle(title);
+		dialog.pack();
+		dialog.open();
+
+		if (dialog.isCanceled()) {
+			return -1;
+		}
+		
+		return (int) dialog.getValue();
+	}
 }

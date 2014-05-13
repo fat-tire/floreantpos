@@ -37,7 +37,7 @@ public class LoginScreen extends JPanel {
 		
 		add(imageComponent, "spany,grow,flowx");
 		
-		passwordScreen = PasswordScreen.getInstance();
+		passwordScreen = new PasswordScreen();
 		passwordScreen.setBorder(new CompoundBorder(new EtchedBorder(), new EmptyBorder(5,5,12,5)));
 		add(passwordScreen, "width 200,growy 100");
 	}

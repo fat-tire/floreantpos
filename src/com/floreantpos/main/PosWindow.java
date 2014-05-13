@@ -16,4 +16,8 @@ public class PosWindow extends JFrame {
 	public void setGlassPaneVisible(boolean b) {
 		glassPane.setVisible(b);
 	}
+	
+	public void setGlassPaneMessage(String message) {
+		glassPane.setMessage(message);
+	}
 }
