@@ -31,10 +31,9 @@ import com.floreantpos.util.ShiftUtil;
  * @author MShahriar
  */
 public class PasswordScreen extends JPanel {
-	private static PasswordScreen instance;
 
 	/** Creates new form PasswordScreen */
-	private PasswordScreen() {
+	public PasswordScreen() {
 		initComponents();
 
 		btnConfigureDatabase.setAction(goAction);
@@ -246,7 +245,9 @@ public class PasswordScreen extends JPanel {
 
 	public void doLogin() {
 		try {
+			
 			Application application = Application.getInstance();
+			application.initializeSystem();
 
 			int userId = captureUserId();
 
@@ -271,8 +272,18 @@ public class PasswordScreen extends JPanel {
 			tfUserId.setText("");
 			tfPassword.setText("");
 			application.getRootView().showView(SwitchboardView.VIEW_NAME);
+			
 		} catch (Exception e1) {
-			MessageDialog.showError(e1.getMessage());
+			String message = e1.getMessage();
+			
+			if(message != null && message.contains("Cannot open connection")) {
+				MessageDialog.showError("Cannot open database connection, please check database configuration.");
+				DatabaseConfigurationDialog.show(Application.getPosWindow());
+			}
+			else {
+				MessageDialog.showError(e1.getMessage());
+			}
+			
 		}
 	}
 
@@ -399,12 +410,5 @@ public class PasswordScreen extends JPanel {
 		if (aFlag) {
 			tfUserId.requestFocus();
 		}
-	}
-
-	public static PasswordScreen getInstance() {
-		if (instance == null) {
-			instance = new PasswordScreen();
-		}
-		return instance;
 	}
 }

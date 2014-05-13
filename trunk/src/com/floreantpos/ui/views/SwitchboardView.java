@@ -19,6 +19,7 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 
 import com.floreantpos.POSConstants;
+import com.floreantpos.PosException;
 import com.floreantpos.bo.ui.BackOfficeWindow;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.ActionHistory;
@@ -33,7 +34,7 @@ import com.floreantpos.model.dao.ActionHistoryDAO;
 import com.floreantpos.model.dao.AttendenceHistoryDAO;
 import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.print.PosPrintService;
-import com.floreantpos.services.PosTransactionService;
+import com.floreantpos.services.TicketService;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.ui.dialog.ManagerDialog;
 import com.floreantpos.ui.dialog.NumberSelectionDialog2;
@@ -235,46 +236,41 @@ public class SwitchboardView extends JPanel implements ActionListener {
 	}// </editor-fold>//GEN-END:initComponents
 
 	private void doReopenTicket() {
-		NumberSelectionDialog2 dialog = new NumberSelectionDialog2();
-		dialog.setTitle(POSConstants.ENTER_TICKET_ID);
-		dialog.pack();
-		dialog.open();
-
-		if (dialog.isCanceled()) {
-			return;
-		}
-
-		int ticketId = (int) dialog.getValue();
-		TicketDAO dao = new TicketDAO();
-		Ticket ticket = dao.get(Integer.valueOf(ticketId));
-		if (ticket == null) {
-			POSMessageDialog.showError(POSConstants.NO_TICKET_WITH_ID + " " + ticketId + " " + POSConstants.FOUND);
-			return;
-		}
-		if (!ticket.isClosed()) {
-			POSMessageDialog.showError(POSConstants.TICKET_IS_NOT_CLOSED);
-			return;
-		}
-
-		String amount = Application.getCurrencySymbol() + Application.formatNumber(ticket.getTotalAmount());
-		String amountMessage = "<span style='color: red; font-weight: bold;'>" + amount + "</span>";
-		String message = "<html><body><h3>The ticket will be opened in edit mode. Before that, you must refund <br/>" + "amount " + amountMessage + " to keep the system stable. Do you wish to continue?</h3></body></html>";
-		int option = JOptionPane.showOptionDialog(this, message, "Warning", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, null, null);
-		if (option != JOptionPane.YES_OPTION) {
-			return;
-		}
-
 		try {
-			PosTransactionService service = PosTransactionService.getInstance();
-			service.refundTicket(ticket);
-
-			//REOPEN ACTION
-			ActionHistoryDAO.getInstance().saveHistory(Application.getCurrentUser(), ActionHistory.REOPEN_CHECK, "CHK#" + ":" + ticket.getId());
-
-			JOptionPane.showMessageDialog(this, "<html><body>Please press <b>OK</b> after you refund amount " + amountMessage + "</body></html>");
-			ticket.setDrawerResetted(false);
+			
+			int ticketId = NumberSelectionDialog2.takeIntInput(POSConstants.ENTER_TICKET_ID);
+			
+			if(ticketId == -1) {
+				return;
+			}
+			
+			Ticket ticket = TicketService.getTicket(ticketId);
+	
+			if (ticket == null) {
+				throw new PosException(POSConstants.NO_TICKET_WITH_ID + " " + ticketId + " " + POSConstants.FOUND);
+			}
+			
+			if (!ticket.isClosed()) {
+				throw new PosException(POSConstants.TICKET_IS_NOT_CLOSED);
+			}
+	
+			String ticketTotalAmount = Application.getCurrencySymbol() + Application.formatNumber(ticket.getTotalAmount());
+			String amountMessage = "<span style='color: red; font-weight: bold;'>" + ticketTotalAmount + "</span>";
+			String message = "<html><body>Ticket amount is " + ticketTotalAmount + ". To reopen ticket, you need to refund that amount to system.<br/>Please press <b>OK</b> after you refund amount " + amountMessage + "</body></html>";
+			
+			int option = JOptionPane.showOptionDialog(this, message, "Alert!", JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, null, null, null);
+			if (option != JOptionPane.OK_OPTION) {
+				return;
+			}
+		
+			TicketService.refundTicket(ticket);
 			editTicket(ticket);
-		} catch (Exception e) {
+			
+		} 
+		catch (PosException e) {
+			POSMessageDialog.showError(this, e.getLocalizedMessage());
+		}
+		catch (Exception e) {
 			POSMessageDialog.showError(this, POSConstants.ERROR_MESSAGE, e);
 		}
 	}

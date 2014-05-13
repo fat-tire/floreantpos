@@ -169,7 +169,9 @@ public class DatabaseUtil {
 	
 	public static void initialize() {
 		try {
-			_RootDAO.initialize();
+			
+			_RootDAO.reInitialize();
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			return;
