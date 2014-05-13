@@ -21,7 +21,6 @@ import org.apache.commons.logging.LogFactory;
 
 import com.floreantpos.bo.ui.BackOfficeWindow;
 import com.floreantpos.config.ApplicationConfig;
-import com.floreantpos.config.ui.DatabaseConfigurationDialog;
 import com.floreantpos.model.PrinterConfiguration;
 import com.floreantpos.model.Restaurant;
 import com.floreantpos.model.Shift;
@@ -30,7 +29,6 @@ import com.floreantpos.model.User;
 import com.floreantpos.model.dao.PrinterConfigurationDAO;
 import com.floreantpos.model.dao.RestaurantDAO;
 import com.floreantpos.model.dao.TerminalDAO;
-import com.floreantpos.swing.GlassPane;
 import com.floreantpos.ui.dialog.NumberSelectionDialog;
 import com.floreantpos.ui.views.LoginScreen;
 import com.floreantpos.ui.views.order.RootView;
@@ -58,13 +56,15 @@ public class Application {
 	private static DecimalFormat decimalFormat = new DecimalFormat("#,##0.00");
 	private static SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM, yyyy");
 	private static ImageIcon applicationIcon;
+	
+	private boolean systemInitialized;
+	private TicketActiveDateSetterTask ticketActiveDateSetterTask;
 
 	public final static String VERSION = ApplicationConfig.getConfiguration().getString("floreantpos.version");
 
 	private Application() {
 		applicationIcon = new ImageIcon(getClass().getResource("/icons/icon.png"));
 		posWindow = new PosWindow();
-		posWindow.setGlassPaneVisible(true);
 		posWindow.setTitle(getTitle());
 		posWindow.setIconImage(applicationIcon.getImage());
 		posWindow.addWindowListener(new WindowAdapter() {
@@ -81,14 +81,13 @@ public class Application {
 		rootView = RootView.getInstance();
 
 		posWindow.setContentPane(rootView);
-		posWindow.setSize(ApplicationConfig.getPreferences().getInt("wwidth", 900), ApplicationConfig.getPreferences().getInt("wheight", 650));
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		posWindow.setSize(ApplicationConfig.getPreferences().getInt("wwidth", (int) screenSize.getWidth()), ApplicationConfig.getPreferences().getInt("wheight", (int) screenSize.getHeight()));
+		
 		posWindow.setLocation(ApplicationConfig.getPreferences().getInt("wlocx", ((screenSize.width - posWindow.getWidth()) >> 1)), ApplicationConfig.getPreferences().getInt("wlocy", ((screenSize.height - posWindow.getHeight()) >> 1)));
 		posWindow.setMinimumSize(new Dimension(800, 600));
 		posWindow.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		posWindow.setVisible(true);
-
-		initDatabase();
 	}
 
 	private void setApplicationLook() {
@@ -99,67 +98,92 @@ public class Application {
 		} catch (Exception ignored) {
 		}
 	}
-
-	public void initDatabase() {
-		if(!DatabaseUtil.checkConnection()) {
-			DatabaseConfigurationDialog.show(posWindow);
+	
+	public void initializeSystem() {
+		if(isSystemInitialized()) {
+			return;
 		}
-
+		
 		try {
-			((GlassPane) posWindow.getGlassPane()).setMessage(com.floreantpos.POSConstants.LOADING);
+			
+			posWindow.setGlassPaneVisible(true);
+			posWindow.setGlassPaneMessage(com.floreantpos.POSConstants.LOADING);
+			
 			DatabaseUtil.initialize();
 
-			int terminalId = ApplicationConfig.getTerminalId();
-			logger.info("Terminal ID from configuration=" + terminalId);
-
-			if (terminalId == -1) {
-				NumberSelectionDialog dialog = new NumberSelectionDialog();
-				dialog.setDecimalAllowed(false);
-				dialog.setTitle(com.floreantpos.POSConstants.ENTER_ID_FOR_TERMINAL);
-				dialog.setVisible(true);
-				terminalId = (int) dialog.getValue();
-			}
-
-			TerminalDAO terminalDAO = new TerminalDAO();
-			Terminal terminal2 = terminalDAO.get(new Integer(terminalId));
-			if (terminal2 == null) {
-				terminal2 = new Terminal();
-				terminal2.setId(terminalId);
-				terminal2.setOpeningBalance(new Double(500));
-				terminal2.setCurrentBalance(new Double(500));
-				terminal2.setName(com.floreantpos.POSConstants.TERMINAL + " - " + terminalId);
-				terminalDAO.saveOrUpdate(terminal2);
-			}
-			ApplicationConfig.setTerminalId(terminalId);
-			this.terminal = terminal2;
-
-			printConfiguration = new PrinterConfigurationDAO().get(PrinterConfiguration.ID);
-			if(printConfiguration == null) {
-				printConfiguration = new PrinterConfiguration();
-			}
-
+			initTerminal();
+			initPrintConfig();
 			refreshRestaurant();
-
-			Calendar calendar = Calendar.getInstance();
-			calendar.set(Calendar.DAY_OF_MONTH, calendar.get(Calendar.DAY_OF_MONTH) + 1);
-			calendar.set(Calendar.HOUR_OF_DAY, 0);
-			calendar.set(Calendar.MINUTE, 0);
-			calendar.set(Calendar.SECOND, 0);
-
-			//SimpleDateFormat format = new SimpleDateFormat("yyyy MMM dd HH:mm:s a");
-			Date time = calendar.getTime();
-			//System.out.println("expected next launch: " + format.format(time));
-
-			TicketActiveDateSetterTask ticketActiveDateSetterTask = new TicketActiveDateSetterTask();
-			ticketActiveDateSetterTask.run();
-
-			java.util.Timer activeDateScheduler = new java.util.Timer();
-			activeDateScheduler.scheduleAtFixedRate(ticketActiveDateSetterTask, time, 86400*1000);
+			setTicketActiveSetterScheduler();
+			setSystemInitialized(true);
+			
 		} catch (Exception e) {
 			logger.error(e);
 		} finally {
-			getPosWindow().setGlassPaneVisible(false);
+			//getPosWindow().setGlassPaneVisible(false);
 		}
+	}
+
+	private void setTicketActiveSetterScheduler() {
+		Calendar calendar = Calendar.getInstance();
+		calendar.set(Calendar.DAY_OF_MONTH, calendar.get(Calendar.DAY_OF_MONTH) + 1);
+		calendar.set(Calendar.HOUR_OF_DAY, 0);
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.SECOND, 0);
+
+		Date time = calendar.getTime();
+
+		cancelTicketActiveTaskScheduler();
+		
+		ticketActiveDateSetterTask = new TicketActiveDateSetterTask();
+		ticketActiveDateSetterTask.run();
+
+		java.util.Timer activeDateScheduler = new java.util.Timer();
+		activeDateScheduler.scheduleAtFixedRate(ticketActiveDateSetterTask, time, 86400*1000);
+	}
+
+	public void cancelTicketActiveTaskScheduler() {
+		if(this.ticketActiveDateSetterTask != null) {
+			this.ticketActiveDateSetterTask.cancel();
+		}
+	}
+
+	private void initPrintConfig() {
+		printConfiguration = PrinterConfigurationDAO.getInstance().get(PrinterConfiguration.ID);
+		if(printConfiguration == null) {
+			printConfiguration = new PrinterConfiguration();
+		}
+	}
+
+	private void initTerminal() {
+		int terminalId = ApplicationConfig.getTerminalId();
+		
+		logger.info("Terminal ID from configuration=" + terminalId);
+
+		if (terminalId == -1) {
+			NumberSelectionDialog dialog = new NumberSelectionDialog();
+			dialog.setDecimalAllowed(false);
+			dialog.setTitle(com.floreantpos.POSConstants.ENTER_ID_FOR_TERMINAL);
+			dialog.setVisible(true);
+			
+			terminalId = (int) dialog.getValue();
+		}
+
+		Terminal terminal = TerminalDAO.getInstance().get(new Integer(terminalId));
+		if (terminal == null) {
+			
+			terminal = new Terminal();
+			terminal.setId(terminalId);
+			terminal.setOpeningBalance(new Double(500));
+			terminal.setCurrentBalance(new Double(500));
+			terminal.setName(com.floreantpos.POSConstants.TERMINAL + " - " + terminalId);
+			
+			TerminalDAO.getInstance().saveOrUpdate(terminal);
+		}
+		
+		ApplicationConfig.setTerminalId(terminalId);
+		
+		this.terminal = terminal;
 	}
 
 	public void refreshRestaurant() {
@@ -319,5 +343,13 @@ public class Application {
 			autoDrawerPullTimer.stop();
 			autoDrawerPullTimer = null;
 		}
+	}
+
+	public boolean isSystemInitialized() {
+		return systemInitialized;
+	}
+
+	public void setSystemInitialized(boolean systemInitialized) {
+		this.systemInitialized = systemInitialized;
 	}
 }
