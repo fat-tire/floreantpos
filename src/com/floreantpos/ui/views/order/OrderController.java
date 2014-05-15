@@ -34,13 +34,13 @@ public class OrderController implements OrderListener, CategorySelectionListener
 	}
 
 	public void categorySelected(MenuCategory foodCategory) {
-		orderView.getGroupView().setMenuCategory(foodCategory);
 		orderView.showView(GroupView.VIEW_NAME);
+		orderView.getGroupView().setMenuCategory(foodCategory);
 	}
 
 	public void groupSelected(MenuGroup foodGroup) {
-		orderView.getItemView().setMenuGroup(foodGroup);
 		orderView.showView(MenuItemView.VIEW_NAME);
+		orderView.getItemView().setMenuGroup(foodGroup);
 
 		//		ItemView itemView = new ItemView();
 		//		itemView.setMenuGroup(foodGroup);

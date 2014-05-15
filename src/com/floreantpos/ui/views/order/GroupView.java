@@ -52,6 +52,12 @@ public class GroupView extends SelectionView {
 		try {
 			MenuGroupDAO dao = new MenuGroupDAO();
 			List<MenuGroup> groups = dao.findEnabledByParent(foodCategory);
+			
+			if(groups.size() == 1) {
+				MenuGroup menuGroup = groups.get(0);
+				fireGroupSelected(menuGroup);
+				return;
+			}
 	        
 	        for (int i = 0; i < groups.size(); i++) {
 				MenuGroup foodGroup = groups.get(i);
