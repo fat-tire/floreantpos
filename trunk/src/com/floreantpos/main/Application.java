@@ -3,8 +3,6 @@ package com.floreantpos.main;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Toolkit;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -67,12 +65,6 @@ public class Application {
 		posWindow = new PosWindow();
 		posWindow.setTitle(getTitle());
 		posWindow.setIconImage(applicationIcon.getImage());
-		posWindow.addWindowListener(new WindowAdapter() {
-			public void windowClosing(WindowEvent e) {
-				shutdownPOS();
-
-			}
-		});
 	}
 
 	public void start() {
