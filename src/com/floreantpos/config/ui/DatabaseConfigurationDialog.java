@@ -13,9 +13,7 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JPasswordField;
 import javax.swing.JSeparator;
-import javax.swing.JTextField;
 
 import net.miginfocom.swing.MigLayout;
 
@@ -25,6 +23,8 @@ import com.floreantpos.Database;
 import com.floreantpos.POSConstants;
 import com.floreantpos.config.ApplicationConfig;
 import com.floreantpos.main.Application;
+import com.floreantpos.swing.POSPasswordField;
+import com.floreantpos.swing.POSTextField;
 import com.floreantpos.ui.TitlePanel;
 import com.floreantpos.ui.dialog.POSDialog;
 import com.floreantpos.util.DatabaseUtil;
@@ -33,11 +33,11 @@ public class DatabaseConfigurationDialog extends POSDialog implements ActionList
 	
 	private static final String CLOSE = "close";
 	private static final String TEST = "test";
-	private JTextField tfServerAddress;
-	private JTextField tfServerPort;
-	private JTextField tfDatabaseName;
-	private JTextField tfUserName;
-	private JPasswordField tfPassword;
+	private POSTextField tfServerAddress;
+	private POSTextField tfServerPort;
+	private POSTextField tfDatabaseName;
+	private POSTextField tfUserName;
+	private POSPasswordField tfPassword;
 	private JButton btnTestConnection;
 	private JButton btnCreateDb;
 	private JButton btnExit;
@@ -71,11 +71,11 @@ public class DatabaseConfigurationDialog extends POSDialog implements ActionList
 		setLayout(new MigLayout("fill","[][fill, grow]",""));
 	
 		titlePanel = new TitlePanel();
-		tfServerAddress = new JTextField();
-		tfServerPort = new JTextField();
-		tfDatabaseName = new JTextField();
-		tfUserName = new JTextField();
-		tfPassword = new JPasswordField();
+		tfServerAddress = new POSTextField();
+		tfServerPort = new POSTextField();
+		tfDatabaseName = new POSTextField();
+		tfUserName = new POSTextField();
+		tfPassword = new POSPasswordField();
 		databaseCombo = new JComboBox(Database.values());
 
 		String databaseProviderName = ApplicationConfig.getDatabaseProviderName();

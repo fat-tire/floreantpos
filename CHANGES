@@ -18,13 +18,14 @@ Changes in version 1.1
 8. Fixed Server Productivity Report
 9. Fixed Journal Report
 
-Version 1.4/1.5
+Version 1.4
 
 1. Added support to use MySQL database. Database configuration dialog now shows a drop down of
 database chooses from which user can select the database to use. Currently only MySQL and 
 Derby is supported.
 2. Added "Create Database Schema" button in Database configuration dialog. This button
 creates necessary databse schema and populate initial values.
-3. Added "Save" button in Database configuration dialog, to save current configuration.
-4. Previously, it was not possible to switch database without restarting the application.
+3. Added "Save" button in Database configuration dialog, to save current configuration, without using "Test Connection".
+4. Faster database connection.
+5. Previously, it was not possible to switch database without restarting the application.
 This is now fixed. User can switch database any time from login screen by configuring database.
