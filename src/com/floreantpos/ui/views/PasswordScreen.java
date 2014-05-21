@@ -23,6 +23,8 @@ import com.floreantpos.model.User;
 import com.floreantpos.model.dao.AttendenceHistoryDAO;
 import com.floreantpos.model.dao.UserDAO;
 import com.floreantpos.swing.MessageDialog;
+import com.floreantpos.swing.POSPasswordField;
+import com.floreantpos.swing.POSTextField;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.util.ShiftUtil;
 
@@ -65,8 +67,8 @@ public class PasswordScreen extends JPanel {
 		jPanel2 = new javax.swing.JPanel();
 		jLabel1 = new javax.swing.JLabel();
 		jLabel2 = new javax.swing.JLabel();
-		tfPassword = new javax.swing.JPasswordField();
-		tfUserId = new javax.swing.JTextField();
+		tfPassword = new POSPasswordField();
+		tfUserId = new POSTextField();
 		jLabel4 = new javax.swing.JLabel();
 		jPanel1 = new javax.swing.JPanel();
 		jPanel3 = new javax.swing.JPanel();
@@ -171,7 +173,7 @@ public class PasswordScreen extends JPanel {
 		jLabel2.setBackground(new java.awt.Color(204, 102, 0));
 		jLabel2.setText(com.floreantpos.POSConstants.ENTER_YOUR_PASSWORD);
 		tfPassword.setFont(new java.awt.Font("Courier", 1, 18));
-		tfPassword.setHorizontalAlignment(javax.swing.JTextField.LEFT);
+		tfPassword.setHorizontalAlignment(POSTextField.LEFT);
 
 		tfUserId.setFont(new java.awt.Font("Tahoma", 1, 18));
 
@@ -372,8 +374,8 @@ public class PasswordScreen extends JPanel {
 	private com.floreantpos.swing.PosButton posButton7;
 	private com.floreantpos.swing.PosButton posButton8;
 	private com.floreantpos.swing.PosButton posButton9;
-	private javax.swing.JPasswordField tfPassword;
-	private javax.swing.JTextField tfUserId;
+	private POSPasswordField tfPassword;
+	private POSTextField tfUserId;
 	// End of variables declaration//GEN-END:variables
 
 	Action goAction = new AbstractAction() {

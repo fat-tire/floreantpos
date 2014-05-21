@@ -61,6 +61,8 @@ public class BackOfficeWindow extends javax.swing.JFrame {
 
 	/** Creates new form BackOfficeWindow */
 	public BackOfficeWindow() {
+		setIconImage(Application.getApplicationIcon().getImage());
+		
 		initComponents();
 
 		createMenus();
