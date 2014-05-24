@@ -4,7 +4,7 @@ import org.apache.commons.lang.StringUtils;
 
 public enum Database {
 	DERBY("Derby", "jdbc:derby://<host>:<port>/<db>", "jdbc:derby://<host>:<port>/<db>;create=true", "1527", "org.apache.derby.jdbc.ClientDriver", "org.hibernate.dialect.DerbyDialect"),
-	MYSQL("MySQL", "jdbc:mysql://<host>:<port>/<db>", "", "3306", "com.mysql.jdbc.Driver", "org.hibernate.dialect.MySQLDialect");
+	MYSQL("MySQL", "jdbc:mysql://<host>:<port>/<db>", "jdbc:mysql://<host>:<port>/<db>", "3306", "com.mysql.jdbc.Driver", "org.hibernate.dialect.MySQLDialect");
 
 	private String providerName;
 	private String jdbcUrlFormat;
