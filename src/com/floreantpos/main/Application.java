@@ -112,7 +112,7 @@ public class Application {
 		} catch (Exception e) {
 			logger.error(e);
 		} finally {
-			//getPosWindow().setGlassPaneVisible(false);
+			getPosWindow().setGlassPaneVisible(false);
 		}
 	}
 

@@ -46,6 +46,9 @@ import com.floreantpos.ui.dialog.VoidTicketDialog;
 import com.floreantpos.ui.views.order.OrderView;
 import com.floreantpos.ui.views.order.RootView;
 
+import foxtrot.Job;
+import foxtrot.Worker;
+
 /**
  *
  * @author  MShahriar
@@ -768,7 +771,15 @@ public class SwitchboardView extends JPanel implements ActionListener {
 			doPayout();
 		}
 		if (source == btnPrintTicket) {
-			doPrintTicket();
+			Worker.post(new Job() {
+				
+				@Override
+				public Object run() {
+					doPrintTicket();
+					return "SUCCESS";
+				}
+			});
+			
 		}
 		if (source == btnReopenTicket) {
 			doReopenTicket();
