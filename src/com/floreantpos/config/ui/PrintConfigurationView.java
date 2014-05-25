@@ -25,7 +25,7 @@ import net.miginfocom.swing.MigLayout;
 
 import com.floreantpos.config.ApplicationConfig;
 import com.floreantpos.config.PrintConfig;
-import com.floreantpos.print.PrinterType;
+import com.floreantpos.ui.dialog.POSMessageDialog;
 
 /**
  *
@@ -45,11 +45,11 @@ public class PrintConfigurationView extends ConfigurationView {
 
 	@Override
 	public void initialize() throws Exception {
-		PrinterType[] values = PrinterType.values();
 //		cbReceiptPrinterType.setModel(new DefaultComboBoxModel(values));
 //		cbKitchenPrinterType.setModel(new DefaultComboBoxModel(values));
 
 		PrintService[] printServices = PrintServiceLookup.lookupPrintServices(null, null);
+		
 		cbReceiptPrinterName.setModel(new DefaultComboBoxModel(printServices));
 		cbKitchenPrinterName.setModel(new DefaultComboBoxModel(printServices));
 		
@@ -73,10 +73,19 @@ public class PrintConfigurationView extends ConfigurationView {
 		chkPrintKitchenWhenTicketPaid.setSelected(ApplicationConfig.getBoolean(PrintConfig.P_PRINT_KITCHEN_WHEN_PAID, false));
 		
 		setInitialized(true);
+		
+		if(printServices == null || printServices.length == 0) {
+			POSMessageDialog.showMessage("No printer is installed on your operating system. Please install printer and come back again.");
+		}
 	}
 
 	private void setSelectedPrinter(JComboBox whichPrinter, String propertyName) {
 		PrintService osDefaultPrinter = PrintServiceLookup.lookupDefaultPrintService();
+		
+		if(osDefaultPrinter == null) {
+			return;
+		}
+		
 		String receiptPrinterName = ApplicationConfig.getString(propertyName, osDefaultPrinter.getName());
 		
 		int printerCount = whichPrinter.getItemCount();
@@ -208,7 +217,11 @@ public class PrintConfigurationView extends ConfigurationView {
     	@Override
     	public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
     		JLabel listCellRendererComponent = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-    		listCellRendererComponent.setText(((PrintService) value).getName());
+    		PrintService printService = (PrintService) value;
+    		
+    		if(printService != null) {
+    			listCellRendererComponent.setText(printService.getName());
+    		}
     		
     		return listCellRendererComponent;
     	}
