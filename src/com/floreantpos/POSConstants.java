@@ -79,6 +79,7 @@ public class POSConstants {
 	public static final String CLOSED = Messages.getString("PosMessage.76"); //$NON-NLS-1$
 	public static final String SHUTDOWN = Messages.getString("PosMessage.77"); //$NON-NLS-1$
 	public static final String LOGIN = Messages.getString("PosMessage.78"); //$NON-NLS-1$
+	public static final String TERMINAL_SETUP = Messages.getString("PosMessage.TERMINAL_SETUP"); //$NON-NLS-1$
 	public static final String GO = Messages.getString("PosMessage.79"); //$NON-NLS-1$
 	public static final String RECEIPT_PRINTER = Messages.getString("PosMessage.80"); //$NON-NLS-1$
 	public static final String TYPE_NAME_CANNOT_BE_EMPTY = Messages.getString("PosMessage.81"); //$NON-NLS-1$
