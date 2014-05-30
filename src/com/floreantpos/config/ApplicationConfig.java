@@ -18,6 +18,11 @@ public class ApplicationConfig {
 	public static final String HIBERNATE_CONNECTION_DRIVER_CLASS = "hibernate.connection.driver_class";
 	public static final String DATABASE_PROVIDER_NAME = "DATABASE_PROVIDER_NAME";
 	
+	private static final String KITCHEN_PRINT_ON_ORDER_SETTLE = "kitchen_print_on_order_settle";
+	private static final String KITCHEN_PRINT_ON_ORDER_FINISH = "kitchen_print_on_order_finish";
+	private static final String PRINT_RECEIPT_ON_ORDER_SETTLE = "print_receipt_on_order_settle";
+	private static final String PRINT_RECEIPT_ON_ORDER_FINISH = "print_receipt_on_order_finish";
+	
 	private final static Preferences pref = Preferences.userNodeForPackage(Application.class);
 	
 	private static PropertiesConfiguration configuration;
@@ -132,6 +137,38 @@ public class ApplicationConfig {
 	
 	public static String getDatabaseProviderName() {
 		return pref.get(DATABASE_PROVIDER_NAME, "");
+	}
+	
+	public static boolean isPrintReceiptOnOrderFinish() {
+		return getBoolean(PRINT_RECEIPT_ON_ORDER_FINISH, false);
+	}
+	
+	public static void setPrintReceiptOnOrderFinish(boolean print) {
+		pref.putBoolean(PRINT_RECEIPT_ON_ORDER_FINISH, print);
+	}
+	
+	public static boolean isPrintReceiptOnOrderSettle() {
+		return getBoolean(PRINT_RECEIPT_ON_ORDER_SETTLE, false);
+	}
+	
+	public static void setPrintReceiptOnOrderSettle(boolean print) {
+		pref.putBoolean(PRINT_RECEIPT_ON_ORDER_SETTLE, print);
+	}
+	
+	public static boolean isPrintToKitchenOnOrderFinish() {
+		return getBoolean(KITCHEN_PRINT_ON_ORDER_FINISH, false);
+	}
+	
+	public static void setPrintToKitchenOnOrderFinish(boolean print) {
+		pref.putBoolean(KITCHEN_PRINT_ON_ORDER_FINISH, print);
+	}
+	
+	public static boolean isPrintToKitchenOnOrderSettle() {
+		return getBoolean(KITCHEN_PRINT_ON_ORDER_SETTLE, false);
+	}
+	
+	public static void setPrintToKitchenOnOrderSettle(boolean print) {
+		pref.putBoolean(KITCHEN_PRINT_ON_ORDER_SETTLE, print);
 	}
 	
 	public static PropertiesConfiguration getConfiguration() {

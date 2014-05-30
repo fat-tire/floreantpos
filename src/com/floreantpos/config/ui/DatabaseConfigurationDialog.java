@@ -68,7 +68,7 @@ public class DatabaseConfigurationDialog extends POSDialog implements ActionList
 	}
 	
 	protected void initUI() {
-		setLayout(new MigLayout("fill","[][fill, grow]",""));
+		getContentPane().setLayout(new MigLayout("fill","[][fill, grow]",""));
 	
 		titlePanel = new TitlePanel();
 		tfServerAddress = new POSTextField();
@@ -83,21 +83,21 @@ public class DatabaseConfigurationDialog extends POSDialog implements ActionList
 			databaseCombo.setSelectedItem(Database.getByProviderName(databaseProviderName));
 		}
 
-		add(titlePanel, "span, grow, wrap");
+		getContentPane().add(titlePanel, "span, grow, wrap");
 		
-		add(new JLabel("Database: "));
-		add(databaseCombo, "grow, wrap");
-		add(new JLabel("Database Server Address" + ":"));
-		add(tfServerAddress, "grow, wrap");
-		add(new JLabel("Database Server Port" + ":"));
-		add(tfServerPort, "grow, wrap");
-		add(new JLabel("Database Name" + ":"));
-		add(tfDatabaseName, "grow, wrap");
-		add(new JLabel("User Name" + ":"));
-		add(tfUserName, "grow, wrap");
-		add(new JLabel("Database Password" + ":"));
-		add(tfPassword, "grow, wrap");
-		add(new JSeparator(),"span, grow, gaptop 10");
+		getContentPane().add(new JLabel("Database: "));
+		getContentPane().add(databaseCombo, "grow, wrap");
+		getContentPane().add(new JLabel("Database Server Address" + ":"));
+		getContentPane().add(tfServerAddress, "grow, wrap");
+		getContentPane().add(new JLabel("Database Server Port" + ":"));
+		getContentPane().add(tfServerPort, "grow, wrap");
+		getContentPane().add(new JLabel("Database Name" + ":"));
+		getContentPane().add(tfDatabaseName, "grow, wrap");
+		getContentPane().add(new JLabel("User Name" + ":"));
+		getContentPane().add(tfUserName, "grow, wrap");
+		getContentPane().add(new JLabel("Database Password" + ":"));
+		getContentPane().add(tfPassword, "grow, wrap");
+		getContentPane().add(new JSeparator(),"span, grow, gaptop 10");
 		
 		btnTestConnection = new JButton("Test Connection");
 		btnTestConnection.setActionCommand(TEST);
@@ -114,7 +114,7 @@ public class DatabaseConfigurationDialog extends POSDialog implements ActionList
 		buttonPanel.add(btnSave);
 		buttonPanel.add(btnExit);
 		
-		add(buttonPanel, "span, grow");
+		getContentPane().add(buttonPanel, "span, grow");
 	}
 
 	private void addUIListeners() {

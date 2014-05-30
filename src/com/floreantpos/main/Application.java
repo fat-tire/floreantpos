@@ -19,6 +19,7 @@ import org.apache.commons.logging.LogFactory;
 
 import com.floreantpos.bo.ui.BackOfficeWindow;
 import com.floreantpos.config.ApplicationConfig;
+import com.floreantpos.config.ui.TerminalSetupDialog;
 import com.floreantpos.model.PrinterConfiguration;
 import com.floreantpos.model.Restaurant;
 import com.floreantpos.model.Shift;
@@ -92,6 +93,9 @@ public class Application {
 	}
 	
 	public void initializeSystem() {
+		TerminalSetupDialog d = new TerminalSetupDialog();
+		d.pack();
+		d.setVisible(true);
 		if(isSystemInitialized()) {
 			return;
 		}

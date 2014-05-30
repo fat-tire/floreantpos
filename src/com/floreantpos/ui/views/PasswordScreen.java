@@ -16,6 +16,7 @@ import javax.swing.JPanel;
 
 import com.floreantpos.POSConstants;
 import com.floreantpos.config.ui.DatabaseConfigurationDialog;
+import com.floreantpos.config.ui.TerminalSetupDialog;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.AttendenceHistory;
 import com.floreantpos.model.Shift;
@@ -27,6 +28,8 @@ import com.floreantpos.swing.POSPasswordField;
 import com.floreantpos.swing.POSTextField;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.util.ShiftUtil;
+import java.awt.Dimension;
+import com.floreantpos.swing.PosButton;
 
 /**
  * 
@@ -74,11 +77,10 @@ public class PasswordScreen extends JPanel {
 		jPanel3 = new javax.swing.JPanel();
 		btnConfigureDatabase = new com.floreantpos.swing.PosButton();
 		btnLogin = new com.floreantpos.swing.PosButton();
-		jLabel3 = new javax.swing.JLabel();
 		btnShutdown = new com.floreantpos.swing.PosButton();
 		jPanel4 = new javax.swing.JPanel();
 
-		setPreferredSize(new java.awt.Dimension(315, 400));
+		setPreferredSize(new Dimension(343, 524));
 		setLayout(new java.awt.GridBagLayout());
 
 		buttonPanel.setOpaque(false);
@@ -183,18 +185,22 @@ public class PasswordScreen extends JPanel {
 
 		org.jdesktop.layout.GroupLayout jPanel2Layout = new org.jdesktop.layout.GroupLayout(jPanel2);
 		jPanel2.setLayout(jPanel2Layout);
-		jPanel2Layout.setHorizontalGroup(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(jLabel1,
-				org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 387, Short.MAX_VALUE).add(
-				jPanel2Layout.createParallelGroup().add(jLabel2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 363, Short.MAX_VALUE)
-						).add(org.jdesktop.layout.GroupLayout.TRAILING, tfPassword, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 387,
-				Short.MAX_VALUE).add(tfUserId, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 387, Short.MAX_VALUE).add(jPanel2Layout.createSequentialGroup()));
+		jPanel2Layout.setHorizontalGroup(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+				.add(jLabel1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 387, Short.MAX_VALUE)
+				.add(jPanel2Layout.createParallelGroup().add(jLabel2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 363, Short.MAX_VALUE))
+				.add(org.jdesktop.layout.GroupLayout.TRAILING, tfPassword, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 387, Short.MAX_VALUE)
+				.add(tfUserId, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 387, Short.MAX_VALUE).add(jPanel2Layout.createSequentialGroup()));
 		jPanel2Layout.setVerticalGroup(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(
-				jPanel2Layout.createSequentialGroup().add(jLabel1).addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED).add(tfUserId,
-						org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 31, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE).addPreferredGap(
-						org.jdesktop.layout.LayoutStyle.RELATED).add(jLabel2).addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED,
-						org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).add(tfPassword, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE,
-						org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE).addPreferredGap(
-						org.jdesktop.layout.LayoutStyle.RELATED)));
+				jPanel2Layout
+						.createSequentialGroup()
+						.add(jLabel1)
+						.addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+						.add(tfUserId, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 31, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+						.addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+						.add(jLabel2)
+						.addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.add(tfPassword, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
+								org.jdesktop.layout.GroupLayout.PREFERRED_SIZE).addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)));
 
 		gridBagConstraints = new java.awt.GridBagConstraints();
 		gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
@@ -218,7 +224,11 @@ public class PasswordScreen extends JPanel {
 		btnLogin.setText(com.floreantpos.POSConstants.LOGIN);
 		btnLogin.setFocusable(false);
 		jPanel3.add(btnLogin);
-		jPanel3.add(jLabel3);
+
+		psbtnTerminalSetup = new PosButton();
+		psbtnTerminalSetup.setAction(goAction);
+		psbtnTerminalSetup.setText(POSConstants.TERMINAL_SETUP);
+		jPanel3.add(psbtnTerminalSetup);
 
 		btnShutdown.setAction(goAction);
 		btnShutdown.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/shut_down_32.png"))); // NOI18N
@@ -247,7 +257,7 @@ public class PasswordScreen extends JPanel {
 
 	public void doLogin() {
 		try {
-			
+
 			Application application = Application.getInstance();
 			application.initializeSystem();
 
@@ -274,18 +284,18 @@ public class PasswordScreen extends JPanel {
 			tfUserId.setText("");
 			tfPassword.setText("");
 			application.getRootView().showView(SwitchboardView.VIEW_NAME);
-			
+
 		} catch (Exception e1) {
 			String message = e1.getMessage();
-			
-			if(message != null && message.contains("Cannot open connection")) {
+
+			if (message != null && message.contains("Cannot open connection")) {
 				MessageDialog.showError("Cannot open database connection, please check database configuration.");
 				DatabaseConfigurationDialog.show(Application.getPosWindow());
 			}
 			else {
 				MessageDialog.showError(e1.getMessage());
 			}
-			
+
 		}
 	}
 
@@ -301,13 +311,16 @@ public class PasswordScreen extends JPanel {
 			if (userShift != null) {
 				if (!userShift.equals(currentShift)) {
 					reClockInUser(currentTime, user, currentShift);
-				} else if (userShift.getShiftLength() != null && (elaspedTimeSinceLastLogin >= userShift.getShiftLength())) {
+				}
+				else if (userShift.getShiftLength() != null && (elaspedTimeSinceLastLogin >= userShift.getShiftLength())) {
 					reClockInUser(currentTime, user, currentShift);
 				}
-			} else {
+			}
+			else {
 				user.doClockIn(application.getTerminal(), currentShift, currentTime);
 			}
-		} else {
+		}
+		else {
 			user.doClockIn(application.getTerminal(), currentShift, currentTime);
 		}
 	}
@@ -357,7 +370,6 @@ public class PasswordScreen extends JPanel {
 	private javax.swing.JPanel buttonPanel;
 	private javax.swing.JLabel jLabel1;
 	private javax.swing.JLabel jLabel2;
-	private javax.swing.JLabel jLabel3;
 	private javax.swing.JLabel jLabel4;
 	private javax.swing.JPanel jPanel1;
 	private javax.swing.JPanel jPanel2;
@@ -384,19 +396,31 @@ public class PasswordScreen extends JPanel {
 			if (com.floreantpos.POSConstants.CLEAR.equals(command)) {
 				if (tfUserId.hasFocus()) {
 					tfUserId.setText("");
-				} else if (tfPassword.hasFocus()) {
+				}
+				else if (tfPassword.hasFocus()) {
 					tfPassword.setText("");
 				}
-			} else if (com.floreantpos.POSConstants.LOGIN.equals(command)) {
+			}
+			else if (com.floreantpos.POSConstants.LOGIN.equals(command)) {
 				doLogin();
-			} else if (com.floreantpos.POSConstants.SHUTDOWN.equals(command)) {
+			}
+			else if (com.floreantpos.POSConstants.SHUTDOWN.equals(command)) {
 				Application.getInstance().shutdownPOS();
-			} else if ("DBCONFIG".equalsIgnoreCase(command)) {
+			}
+			else if ("DBCONFIG".equalsIgnoreCase(command)) {
 				DatabaseConfigurationDialog.show(Application.getPosWindow());
-			} else {
+			}
+			else if(POSConstants.TERMINAL_SETUP.equals(command)) {
+				TerminalSetupDialog dialog = new TerminalSetupDialog();
+				dialog.pack();
+				dialog.setLocationRelativeTo(Application.getPosWindow());
+				dialog.setVisible(true);
+			}
+			else {
 				if (tfUserId.hasFocus()) {
 					tfUserId.setText(tfUserId.getText() + command);
-				} else if (tfPassword.hasFocus()) {
+				}
+				else if (tfPassword.hasFocus()) {
 
 					String newPass = capturePassword();
 					newPass += command;
@@ -405,6 +429,7 @@ public class PasswordScreen extends JPanel {
 			}
 		}
 	};
+	private PosButton psbtnTerminalSetup;
 
 	@Override
 	public void setVisible(boolean aFlag) {
