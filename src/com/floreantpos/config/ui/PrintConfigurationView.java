@@ -67,10 +67,10 @@ public class PrintConfigurationView extends ConfigurationView {
 		setSelectedPrinter(cbReceiptPrinterName, PrintConfig.P_OS_PRINTER_FOR_RECEIPT);
 		setSelectedPrinter(cbKitchenPrinterName, PrintConfig.P_OS_PRINTER_FOR_KITCHEN);
 		
-		chkPrintReceiptWhenTicketSettled.setSelected(ApplicationConfig.getBoolean(PrintConfig.P_PRINT_RECEIPT_WHEN_SETTELED, true));
-		chkPrintReceiptWhenTicketPaid.setSelected(ApplicationConfig.getBoolean(PrintConfig.P_PRINT_RECEIPT_WHEN_PAID, false));
-		chkPrintKitchenWhenTicketSettled.setSelected(ApplicationConfig.getBoolean(PrintConfig.P_PRINT_KITCHEN_WHEN_SETTELED, false));
-		chkPrintKitchenWhenTicketPaid.setSelected(ApplicationConfig.getBoolean(PrintConfig.P_PRINT_KITCHEN_WHEN_PAID, false));
+		chkPrintReceiptWhenTicketSettled.setSelected(ApplicationConfig.getBoolean(PrintConfig.P_PRINT_RECEIPT_ON_ORDER_FINISH, true));
+		chkPrintReceiptWhenTicketPaid.setSelected(ApplicationConfig.getBoolean(PrintConfig.P_PRINT_RECEIPT_ON_ORDER_SETTLE, false));
+		chkPrintKitchenWhenTicketSettled.setSelected(ApplicationConfig.getBoolean(PrintConfig.P_PRINT_TO_KITCHEN_ON_ORDER_FINISH, false));
+		chkPrintKitchenWhenTicketPaid.setSelected(ApplicationConfig.getBoolean(PrintConfig.P_PRINT_TO_KITCHEN_ON_ORDER_SETTLE, false));
 		
 		setInitialized(true);
 		
@@ -110,59 +110,13 @@ public class PrintConfigurationView extends ConfigurationView {
 //		ApplicationConfig.put(PrintConfig.P_JAVAPOS_PRINTER_FOR_RECEIPT, tfReceiptPrinterName.getText());
 //		ApplicationConfig.put(PrintConfig.P_CASH_DRAWER_NAME, tfReceiptCashDrawerName.getText());
 //		ApplicationConfig.put(PrintConfig.P_JAVAPOS_PRINTER_FOR_KITCHEN, tfKitchenPrinterName.getText());
-		ApplicationConfig.put(PrintConfig.P_PRINT_KITCHEN_WHEN_PAID, chkPrintKitchenWhenTicketPaid.isSelected());
-		ApplicationConfig.put(PrintConfig.P_PRINT_KITCHEN_WHEN_SETTELED, chkPrintKitchenWhenTicketSettled.isSelected());
-		ApplicationConfig.put(PrintConfig.P_PRINT_RECEIPT_WHEN_PAID, chkPrintReceiptWhenTicketPaid.isSelected());
-		ApplicationConfig.put(PrintConfig.P_PRINT_RECEIPT_WHEN_SETTELED, chkPrintReceiptWhenTicketSettled.isSelected());
+		ApplicationConfig.put(PrintConfig.P_PRINT_TO_KITCHEN_ON_ORDER_FINISH, chkPrintKitchenWhenTicketPaid.isSelected());
+		ApplicationConfig.put(PrintConfig.P_PRINT_RECEIPT_ON_ORDER_SETTLE, chkPrintKitchenWhenTicketSettled.isSelected());
+		ApplicationConfig.put(PrintConfig.P_PRINT_RECEIPT_ON_ORDER_FINISH, chkPrintReceiptWhenTicketPaid.isSelected());
+		ApplicationConfig.put(PrintConfig.P_PRINT_RECEIPT_ON_ORDER_SETTLE, chkPrintReceiptWhenTicketSettled.isSelected());
 		
 		return true;
 	}
-
-//	private void setReceiptPrinterType(PrinterType printerType) {
-//		switch (printerType) {
-//			case OS_PRINTER:
-//				lblReceiptPrinterName.setEnabled(true);
-//				lblSelectReceiptPrinter.setEnabled(true);
-//				cbReceiptPrinterName.setEnabled(true);
-//				lblReceiptPrinterName.setEnabled(false);
-//				tfReceiptPrinterName.setEnabled(false);
-//				lblReceiptCashDrawerName.setEnabled(false);
-//				tfReceiptCashDrawerName.setEnabled(false);
-//				break;
-//				
-//			case JAVAPOS:
-//				lblReceiptPrinterName.setEnabled(false);
-//				lblSelectReceiptPrinter.setEnabled(false);
-//				cbReceiptPrinterName.setEnabled(false);
-//				lblReceiptPrinterName.setEnabled(true);
-//				tfReceiptPrinterName.setEnabled(true);
-//				lblReceiptCashDrawerName.setEnabled(true);
-//				tfReceiptCashDrawerName.setEnabled(true);
-//				break;
-//		}
-//	}
-	
-//	private void setKitchenPrinterType(PrinterType printerType) {
-//		switch (printerType) {
-//			case OS_PRINTER:
-//				lblKitchenPrinterName.setEnabled(true);
-//				lblSelectKitchenPrinter.setEnabled(true);
-//				cbKitchenPrinterName.setEnabled(true);
-//				lblKitchenPrinterName.setEnabled(false);
-//				tfKitchenPrinterName.setEnabled(false);
-//				break;
-//				
-//			case JAVAPOS:
-//				lblKitchenPrinterName.setEnabled(false);
-//				lblSelectKitchenPrinter.setEnabled(false);
-//				cbKitchenPrinterName.setEnabled(false);
-//				lblKitchenPrinterName.setEnabled(true);
-//				tfKitchenPrinterName.setEnabled(true);
-//				break;
-//		}
-//	}
-	
-	
 
 	/** This method is called from within the constructor to
 	 * initialize the form.
