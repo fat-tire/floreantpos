@@ -64,13 +64,13 @@ public class PrintConfigurationView extends ConfigurationView {
 //		tfReceiptCashDrawerName.setText(ApplicationConfig.getString(PrintConfig.P_CASH_DRAWER_NAME, "CashDrawer"));
 //		tfKitchenPrinterName.setText(ApplicationConfig.getString(PrintConfig.P_JAVAPOS_PRINTER_FOR_KITCHEN, "KitchenPrinter"));
 		
-		setSelectedPrinter(cbReceiptPrinterName, PrintConfig.P_OS_PRINTER_FOR_RECEIPT);
-		setSelectedPrinter(cbKitchenPrinterName, PrintConfig.P_OS_PRINTER_FOR_KITCHEN);
+		setSelectedPrinter(cbReceiptPrinterName, PrintConfig.RECEIPT_PRINTER_NAME);
+		setSelectedPrinter(cbKitchenPrinterName, PrintConfig.KITCHEN_PRINTER_NAME);
 		
-		chkPrintReceiptWhenTicketSettled.setSelected(ApplicationConfig.getBoolean(PrintConfig.P_PRINT_RECEIPT_ON_ORDER_FINISH, true));
-		chkPrintReceiptWhenTicketPaid.setSelected(ApplicationConfig.getBoolean(PrintConfig.P_PRINT_RECEIPT_ON_ORDER_SETTLE, false));
-		chkPrintKitchenWhenTicketSettled.setSelected(ApplicationConfig.getBoolean(PrintConfig.P_PRINT_TO_KITCHEN_ON_ORDER_FINISH, false));
-		chkPrintKitchenWhenTicketPaid.setSelected(ApplicationConfig.getBoolean(PrintConfig.P_PRINT_TO_KITCHEN_ON_ORDER_SETTLE, false));
+		chkPrintReceiptOnOrderFinish.setSelected(PrintConfig.isPrintReceiptOnOrderFinish());
+		chkPrintReceiptOnOrderSettle.setSelected(PrintConfig.isPrintReceiptOnOrderSettle());
+		chkPrintToKitchenOnOrderFinish.setSelected(PrintConfig.isPrintToKitchenOnOrderFinish());
+		chkPrintToKitchenOnOrderSettle.setSelected(PrintConfig.isPrintToKitchenOnOrderSettle());
 		
 		setInitialized(true);
 		
@@ -100,20 +100,16 @@ public class PrintConfigurationView extends ConfigurationView {
 
 	@Override
 	public boolean save() throws Exception {
-//		ApplicationConfig.put(PrintConfig.P_RECEIPT_PRINTER_TYPE, cbReceiptPrinterType.getSelectedItem().toString());
-//		ApplicationConfig.put(PrintConfig.P_KITCHEN_PRINTER_TYPE, cbKitchenPrinterType.getSelectedItem().toString());
-		
 		PrintService printService = (PrintService) cbReceiptPrinterName.getSelectedItem();
-		ApplicationConfig.put(PrintConfig.P_OS_PRINTER_FOR_RECEIPT, printService == null ? null : printService.getName());
+		ApplicationConfig.put(PrintConfig.RECEIPT_PRINTER_NAME, printService == null ? null : printService.getName());
 		printService = (PrintService) cbKitchenPrinterName.getSelectedItem();
-		ApplicationConfig.put(PrintConfig.P_OS_PRINTER_FOR_KITCHEN, printService == null ? null : printService.getName());
-//		ApplicationConfig.put(PrintConfig.P_JAVAPOS_PRINTER_FOR_RECEIPT, tfReceiptPrinterName.getText());
-//		ApplicationConfig.put(PrintConfig.P_CASH_DRAWER_NAME, tfReceiptCashDrawerName.getText());
-//		ApplicationConfig.put(PrintConfig.P_JAVAPOS_PRINTER_FOR_KITCHEN, tfKitchenPrinterName.getText());
-		ApplicationConfig.put(PrintConfig.P_PRINT_TO_KITCHEN_ON_ORDER_FINISH, chkPrintKitchenWhenTicketPaid.isSelected());
-		ApplicationConfig.put(PrintConfig.P_PRINT_RECEIPT_ON_ORDER_SETTLE, chkPrintKitchenWhenTicketSettled.isSelected());
-		ApplicationConfig.put(PrintConfig.P_PRINT_RECEIPT_ON_ORDER_FINISH, chkPrintReceiptWhenTicketPaid.isSelected());
-		ApplicationConfig.put(PrintConfig.P_PRINT_RECEIPT_ON_ORDER_SETTLE, chkPrintReceiptWhenTicketSettled.isSelected());
+		ApplicationConfig.put(PrintConfig.KITCHEN_PRINTER_NAME, printService == null ? null : printService.getName());
+		
+		PrintConfig.setPrintReceiptOnOrderFinish(chkPrintReceiptOnOrderFinish.isSelected());
+		PrintConfig.setPrintReceiptOnOrderSettle(chkPrintReceiptOnOrderSettle.isSelected());
+		
+		PrintConfig.setPrintToKitchenOnOrderFinish(chkPrintToKitchenOnOrderFinish.isSelected());
+		PrintConfig.setPrintToKitchenOnOrderSettle(chkPrintToKitchenOnOrderSettle.isSelected());
 		
 		return true;
 	}
@@ -140,31 +136,31 @@ public class PrintConfigurationView extends ConfigurationView {
         cbKitchenPrinterName = new javax.swing.JComboBox();
         add(cbKitchenPrinterName, "cell 1 1,growx");
         
-                chkPrintReceiptWhenTicketSettled = new javax.swing.JCheckBox();
+                chkPrintReceiptOnOrderFinish = new javax.swing.JCheckBox();
                 
-                        chkPrintReceiptWhenTicketSettled.setText(com.floreantpos.POSConstants.PRINT_RECEIPT_WHEN_TICKET_SETTLED);
-                        add(chkPrintReceiptWhenTicketSettled, "cell 1 2,alignx left,aligny top");
-        chkPrintReceiptWhenTicketPaid = new javax.swing.JCheckBox();
+                        chkPrintReceiptOnOrderFinish.setText("Print receipt on order settle");
+                        add(chkPrintReceiptOnOrderFinish, "cell 1 2,alignx left,aligny top");
+        chkPrintReceiptOnOrderSettle = new javax.swing.JCheckBox();
         
-                chkPrintReceiptWhenTicketPaid.setText(com.floreantpos.POSConstants.PRINT_RECEIPT_WHEN_TICKET_PAID);
-                add(chkPrintReceiptWhenTicketPaid, "cell 1 3,alignx left,aligny top");
-        chkPrintKitchenWhenTicketSettled = new javax.swing.JCheckBox();
+                chkPrintReceiptOnOrderSettle.setText("Print receipt on order finish");
+                add(chkPrintReceiptOnOrderSettle, "cell 1 3,alignx left,aligny top");
+        chkPrintToKitchenOnOrderFinish = new javax.swing.JCheckBox();
         
-                chkPrintKitchenWhenTicketSettled.setText(com.floreantpos.POSConstants.PRINT_TO_KITCHEN_WHEN_TICKET_SETTLED);
-                add(chkPrintKitchenWhenTicketSettled, "cell 1 4,alignx left,aligny top");
-        chkPrintKitchenWhenTicketPaid = new javax.swing.JCheckBox();
+                chkPrintToKitchenOnOrderFinish.setText("Print to kitchen on order settle");
+                add(chkPrintToKitchenOnOrderFinish, "cell 1 4,alignx left,aligny top");
+        chkPrintToKitchenOnOrderSettle = new javax.swing.JCheckBox();
         
-                chkPrintKitchenWhenTicketPaid.setText(com.floreantpos.POSConstants.PRINT_TO_KITCHEN_WHEN_TICKET_PAID);
-                add(chkPrintKitchenWhenTicketPaid, "cell 1 5,alignx left,aligny top");
+                chkPrintToKitchenOnOrderSettle.setText("Print to kitchen on order finish");
+                add(chkPrintToKitchenOnOrderSettle, "cell 1 5,alignx left,aligny top");
     }// </editor-fold>//GEN-END:initComponents
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox cbKitchenPrinterName;
     private javax.swing.JComboBox cbReceiptPrinterName;
-    private javax.swing.JCheckBox chkPrintKitchenWhenTicketPaid;
-    private javax.swing.JCheckBox chkPrintKitchenWhenTicketSettled;
-    private javax.swing.JCheckBox chkPrintReceiptWhenTicketPaid;
-    private javax.swing.JCheckBox chkPrintReceiptWhenTicketSettled;
+    private javax.swing.JCheckBox chkPrintToKitchenOnOrderSettle;
+    private javax.swing.JCheckBox chkPrintToKitchenOnOrderFinish;
+    private javax.swing.JCheckBox chkPrintReceiptOnOrderSettle;
+    private javax.swing.JCheckBox chkPrintReceiptOnOrderFinish;
     // End of variables declaration//GEN-END:variables
     
     private class PrintServiceComboRenderer extends DefaultListCellRenderer {

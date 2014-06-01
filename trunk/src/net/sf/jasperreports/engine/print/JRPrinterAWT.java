@@ -203,9 +203,9 @@ public class JRPrinterAWT implements Printable {
 			PrintService[] printServices = PrintServiceLookup.lookupPrintServices(null, null);
 			PrintService printService = PrintServiceLookup.lookupDefaultPrintService();
 			
-			String printerName = PrintConfig.getOsReceiptPrinterName();
+			String printerName = PrintConfig.getReceiptPrinterName();
 			if(printToKitchen) {
-				printerName = PrintConfig.getOsKitchenPrinterName();
+				printerName = PrintConfig.getKitchenPrinterName();
 			}
 			
 			for (int i = 0; i < printServices.length; i++) {

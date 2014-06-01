@@ -13,6 +13,8 @@ public class PosWindow extends JFrame implements WindowListener {
 	public PosWindow() {
 		setIconImage(Application.getApplicationIcon().getImage());
 		
+		addWindowListener(this);
+		
 		glassPane = new GlassPane();
 		glassPane.setOpacity(0.6f);
 		setGlassPane(glassPane);

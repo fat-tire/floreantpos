@@ -16,6 +16,7 @@ import com.floreantpos.IconFactory;
 import com.floreantpos.POSConstants;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.ui.TitlePanel;
+import java.awt.Dimension;
 
 public class NumberSelectionDialog2 extends POSDialog implements ActionListener {
 	private int defaultValue;
@@ -24,17 +25,18 @@ public class NumberSelectionDialog2 extends POSDialog implements ActionListener 
 	private JTextField tfNumber;
 
 	private boolean floatingPoint;
+	private PosButton posButton_1;
 
 	public NumberSelectionDialog2() {
 		setResizable(false);
 		
 		Container contentPane = getContentPane();
 
-		MigLayout layout = new MigLayout("fillx", "[60][60][60]", "");
+		MigLayout layout = new MigLayout("fillx", "[60px,fill][60px,fill][60px,fill]", "[][][][][]");
 		contentPane.setLayout(layout);
 
 		titlePanel = new TitlePanel();
-		contentPane.add(titlePanel, "span, grow, wrap, height 60");
+		contentPane.add(titlePanel, "spanx ,growy,height 60,wrap");
 
 		tfNumber = new JTextField();
 		tfNumber.setText(String.valueOf(defaultValue));
@@ -45,8 +47,9 @@ public class NumberSelectionDialog2 extends POSDialog implements ActionListener 
 		contentPane.add(tfNumber, "span 2, grow");
 
 		PosButton posButton = new PosButton(POSConstants.CLEAR_ALL);
+		posButton.setMinimumSize(new Dimension(25, 23));
 		posButton.addActionListener(this);
-		contentPane.add(posButton, "grow,shrink,wrap, height 55");
+		contentPane.add(posButton, "growy,height 55,wrap");
 
 		String[][] numbers = { { "7", "8", "9" }, { "4", "5", "6" }, { "1", "2", "3" }, { ".", "0", "CLEAR" } };
 		String[][] iconNames = new String[][] { { "7_32.png", "8_32.png", "9_32.png" }, { "4_32.png", "5_32.png", "6_32.png" }, { "1_32.png", "2_32.png", "3_32.png" },
@@ -77,15 +80,16 @@ public class NumberSelectionDialog2 extends POSDialog implements ActionListener 
 				contentPane.add(posButton, constraints);
 			}
 		}
-		contentPane.add(new JSeparator(), "newline, grow, span, gaptop 20");
+		contentPane.add(new JSeparator(), "newline,spanx ,growy,gapy 20");
 
 		posButton = new PosButton(POSConstants.OK);
 		posButton.addActionListener(this);
-		contentPane.add(posButton, "skip 1, grow, height 55");
+		contentPane.add(posButton, "skip 1,height 55,grow");
 
-		posButton = new PosButton(POSConstants.CANCEL);
-		posButton.addActionListener(this);
-		contentPane.add(posButton, "grow, height 55");
+		posButton_1 = new PosButton(POSConstants.CANCEL);
+		posButton_1.setMinimumSize(new Dimension(25, 23));
+		posButton_1.addActionListener(this);
+		contentPane.add(posButton_1, "height 55,grow");
 
 	}
 	
