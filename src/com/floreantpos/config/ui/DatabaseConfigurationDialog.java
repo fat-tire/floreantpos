@@ -45,6 +45,11 @@ public class DatabaseConfigurationDialog extends POSDialog implements ActionList
 	private JComboBox databaseCombo;
 	
 	private TitlePanel titlePanel;
+	private JLabel lblServerAddress;
+	private JLabel lblServerPort;
+	private JLabel lblDbName;
+	private JLabel lblUserName;
+	private JLabel lblDbPassword;
 	
 	public DatabaseConfigurationDialog() throws HeadlessException {
 		super();
@@ -87,15 +92,20 @@ public class DatabaseConfigurationDialog extends POSDialog implements ActionList
 		
 		getContentPane().add(new JLabel("Database: "));
 		getContentPane().add(databaseCombo, "grow, wrap");
-		getContentPane().add(new JLabel("Database Server Address" + ":"));
+		lblServerAddress = new JLabel("Database Server Address" + ":");
+		getContentPane().add(lblServerAddress);
 		getContentPane().add(tfServerAddress, "grow, wrap");
-		getContentPane().add(new JLabel("Database Server Port" + ":"));
+		lblServerPort = new JLabel("Database Server Port" + ":");
+		getContentPane().add(lblServerPort);
 		getContentPane().add(tfServerPort, "grow, wrap");
-		getContentPane().add(new JLabel("Database Name" + ":"));
+		lblDbName = new JLabel("Database Name" + ":");
+		getContentPane().add(lblDbName);
 		getContentPane().add(tfDatabaseName, "grow, wrap");
-		getContentPane().add(new JLabel("User Name" + ":"));
+		lblUserName = new JLabel("User Name" + ":");
+		getContentPane().add(lblUserName);
 		getContentPane().add(tfUserName, "grow, wrap");
-		getContentPane().add(new JLabel("Database Password" + ":"));
+		lblDbPassword = new JLabel("Database Password" + ":");
+		getContentPane().add(lblDbPassword);
 		getContentPane().add(tfPassword, "grow, wrap");
 		getContentPane().add(new JSeparator(),"span, grow, gaptop 10");
 		
@@ -126,6 +136,14 @@ public class DatabaseConfigurationDialog extends POSDialog implements ActionList
 		databaseCombo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Database selectedDb = (Database) databaseCombo.getSelectedItem();
+				
+				if(selectedDb == Database.DEMO_DATABASE) {
+					setFieldsVisible(false);
+					return;
+				}
+				
+				setFieldsVisible(true);
+				
 				String databasePort = ApplicationConfig.getDatabasePort();
 				if(StringUtils.isEmpty(databasePort)) {
 					databasePort = selectedDb.getDefaultPort();
@@ -151,6 +169,13 @@ public class DatabaseConfigurationDialog extends POSDialog implements ActionList
 		tfDatabaseName.setText(ApplicationConfig.getDatabaseName());
 		tfUserName.setText(ApplicationConfig.getDatabaseUser());
 		tfPassword.setText(ApplicationConfig.getDatabasePassword());
+		
+		if(selectedDb == Database.DEMO_DATABASE) {
+			setFieldsVisible(false);
+		}
+		else {
+			setFieldsVisible(true);
+		}
 	}
 	
 	public void actionPerformed(ActionEvent e) {
@@ -228,6 +253,23 @@ public class DatabaseConfigurationDialog extends POSDialog implements ActionList
 		super.setTitle("Configure database");
 		
 		titlePanel.setTitle(title);
+	}
+	
+	private void setFieldsVisible(boolean visible) {
+		lblServerAddress.setVisible(visible);
+		tfServerAddress.setVisible(visible);
+		
+		lblServerPort.setVisible(visible);
+		tfServerPort.setVisible(visible);
+		
+		lblDbName.setVisible(visible);
+		tfDatabaseName.setVisible(visible);
+		
+		lblUserName.setVisible(visible);
+		tfUserName.setVisible(visible);
+		
+		lblDbPassword.setVisible(visible);
+		tfPassword.setVisible(visible);
 	}
 	
 	public static DatabaseConfigurationDialog show(Frame parent) {
