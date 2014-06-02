@@ -44,9 +44,15 @@
 			<directory>sample-db</directory>
 			<outputDirectory>sample-db</outputDirectory>
 			<includes>
-				<include>sample-db/lib/*</include>
 				<include>*.bat</include>
 				<include>*.sh</include>
+			</includes>
+		</fileSet>
+		<fileSet>
+			<directory>sample-db/embedded-demo</directory>
+			<outputDirectory>sample-db/embedded-demo</outputDirectory>
+			<includes>
+				<include>**/*</include>
 			</includes>
 		</fileSet>
 		<fileSet>
