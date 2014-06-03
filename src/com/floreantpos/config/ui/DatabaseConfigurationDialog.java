@@ -31,7 +31,9 @@ import com.floreantpos.util.DatabaseUtil;
 
 public class DatabaseConfigurationDialog extends POSDialog implements ActionListener {
 	
-	private static final String CLOSE = "close";
+	private static final String CONFIGURE_DB = "CD";
+	private static final String SAVE = "SAVE";
+	private static final String CANCEL = "cancel";
 	private static final String TEST = "test";
 	private POSTextField tfServerAddress;
 	private POSTextField tfServerPort;
@@ -111,16 +113,16 @@ public class DatabaseConfigurationDialog extends POSDialog implements ActionList
 		
 		btnTestConnection = new JButton("Test Connection");
 		btnTestConnection.setActionCommand(TEST);
-		btnCreateDb = new JButton("Create Database Schema");
-		btnCreateDb.setActionCommand("CD");
 		btnSave = new JButton("Save");
-		btnSave.setActionCommand("SAVE");
-		btnExit = new JButton(POSConstants.CLOSE);
-		btnExit.setActionCommand(CLOSE);
+		btnSave.setActionCommand(SAVE);
+		btnExit = new JButton("Cancel");
+		btnExit.setActionCommand(CANCEL);
 		
 		JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		buttonPanel.add(btnTestConnection);
+		btnCreateDb = new JButton("Create Database Schema");
+		btnCreateDb.setActionCommand(CONFIGURE_DB);
 		buttonPanel.add(btnCreateDb);
+		buttonPanel.add(btnTestConnection);
 		buttonPanel.add(btnSave);
 		buttonPanel.add(btnExit);
 		
@@ -205,7 +207,7 @@ public class DatabaseConfigurationDialog extends POSDialog implements ActionList
 				JOptionPane.showMessageDialog(this, "Connection Failed!");
 			}
 		}
-		else if("CD".equals(command)) {
+		else if(CONFIGURE_DB.equals(command)) {
 			Application.getInstance().setSystemInitialized(false);
 			
 			int i = JOptionPane.showConfirmDialog(this, "This will remove existing database schemas, if exists. Proceed?", "Warning", JOptionPane.YES_NO_OPTION);
@@ -228,10 +230,11 @@ public class DatabaseConfigurationDialog extends POSDialog implements ActionList
 				JOptionPane.showMessageDialog(DatabaseConfigurationDialog.this, "Database creation failed.");
 			}
 		}
-		else if("SAVE".equalsIgnoreCase(command)) {
+		else if(SAVE.equalsIgnoreCase(command)) {
 			saveConfig(selectedDb, providerName, databaseURL, databasePort, databaseName, user, pass, connectionString, hibernateDialect);
+			dispose();
 		}
-		else if(CLOSE.equalsIgnoreCase(command)) {
+		else if(CANCEL.equalsIgnoreCase(command)) {
 			dispose();
 		}
 	}

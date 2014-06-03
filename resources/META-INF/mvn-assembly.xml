@@ -1,8 +1,9 @@
 <assembly>
 	<id>bin</id>
+	<includeBaseDirectory>true</includeBaseDirectory>
+	<baseDirectory>${project.build.finalName}-${project.version}</baseDirectory>
 	<formats>
 		<format>dir</format>
-		<format>zip</format>
 	</formats>
 
 	<dependencySets>
@@ -11,9 +12,8 @@
 			<unpack>false</unpack>
 		</dependencySet>
 		<dependencySet>
-			<outputDirectory>sample-db/lib</outputDirectory>
+			<outputDirectory>database/derby-server/lib</outputDirectory>
 			<unpack>false</unpack>
-			<scope>provided</scope>
 			<includes>
 				<include>org.apache.derby:derby</include>
 				<include>org.apache.derby:derbynet</include>
@@ -41,23 +41,23 @@
 			</includes>
 		</fileSet>
 		<fileSet>
-			<directory>sample-db</directory>
-			<outputDirectory>sample-db</outputDirectory>
+			<directory>database/derby-server</directory>
+			<outputDirectory>database/derby-server</outputDirectory>
 			<includes>
 				<include>*.bat</include>
 				<include>*.sh</include>
 			</includes>
 		</fileSet>
 		<fileSet>
-			<directory>sample-db/embedded-demo</directory>
-			<outputDirectory>sample-db/embedded-demo</outputDirectory>
+			<directory>database/derby-single</directory>
+			<outputDirectory>database/derby-single</outputDirectory>
 			<includes>
 				<include>**/*</include>
 			</includes>
 		</fileSet>
 		<fileSet>
 			<directory>${project.build.directory}</directory>
-			<outputDirectory>sample-db</outputDirectory>
+			<outputDirectory>database/derby-server</outputDirectory>
 			<includes>
 				<include>posdb/**/*</include>
 			</includes>
