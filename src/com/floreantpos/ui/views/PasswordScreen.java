@@ -226,6 +226,7 @@ public class PasswordScreen extends JPanel {
 		jPanel3.add(btnLogin);
 
 		psbtnTerminalSetup = new PosButton();
+		psbtnTerminalSetup.setVisible(false);
 		psbtnTerminalSetup.setAction(goAction);
 		psbtnTerminalSetup.setText(POSConstants.TERMINAL_SETUP);
 		jPanel3.add(psbtnTerminalSetup);

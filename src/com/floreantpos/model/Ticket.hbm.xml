@@ -35,6 +35,8 @@
     <property column="CARD_NUMBER" length="60" name="cardNumber" type="string"/>
     <property column="IS_TAX_EXEMPT" name="taxExempt" type="java.lang.Boolean"/>
     <property column="IS_RE_OPENED" name="reOpened" type="java.lang.Boolean"/>
+    <property column="SERVICE_CHARGE" name="serviceCharge" type="java.lang.Double"/>
+    
     <!-- Associations -->
     <!-- uni-directional many-to-one association to RestaurantTable -->
     <!-- many-to-one name="restaurantTable" class="com.floreantpos.model.RestaurantTable" lazy="false">

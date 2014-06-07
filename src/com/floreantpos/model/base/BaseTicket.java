@@ -1,6 +1,5 @@
 package com.floreantpos.model.base;
 
-import java.lang.Comparable;
 import java.io.Serializable;
 
 import com.floreantpos.model.TicketCookingInstruction;
@@ -15,7 +14,7 @@ import com.floreantpos.model.TicketCookingInstruction;
  *  table="TICKET"
  */
 
-public abstract class BaseTicket  implements Comparable, Serializable {
+public abstract class BaseTicket  implements Serializable {
 
 	public static String REF = "Ticket";
 	public static String PROP_BAR_CODE = "barCode";
@@ -49,6 +48,7 @@ public abstract class BaseTicket  implements Comparable, Serializable {
 	public static String PROP_VOIDED = "voided";
 	public static String PROP_TOTAL_AMOUNT = "totalAmount";
 	public static String PROP_PAID_AMOUNT = "paidAmount";
+	public static String PROP_SERVICE_CHARGE = "serviceCharge";
 
 
 	// constructors
@@ -101,6 +101,7 @@ public abstract class BaseTicket  implements Comparable, Serializable {
 	private java.lang.String cardNumber;
 	private java.lang.Boolean taxExempt;
 	private java.lang.Boolean reOpened;
+	private java.lang.Double serviceCharge;
 
 	// many to one
 	private com.floreantpos.model.Shift shift;
@@ -581,6 +582,23 @@ public abstract class BaseTicket  implements Comparable, Serializable {
 
 
 	/**
+	 * Return the value associated with the column: SERVICE_CHARGE
+	 */
+	public java.lang.Double getServiceCharge () {
+					return serviceCharge == null ? Double.valueOf(0) : serviceCharge;
+			}
+
+	/**
+	 * Set the value related to the column: SERVICE_CHARGE
+	 * @param serviceCharge the SERVICE_CHARGE value
+	 */
+	public void setServiceCharge (java.lang.Double serviceCharge) {
+		this.serviceCharge = serviceCharge;
+	}
+
+
+
+	/**
 	 * Return the value associated with the column: SHIFT_ID
 	 */
 	public com.floreantpos.model.Shift getShift () {
@@ -727,7 +745,6 @@ public abstract class BaseTicket  implements Comparable, Serializable {
 
 
 
-
 	public boolean equals (Object obj) {
 		if (null == obj) return false;
 		if (!(obj instanceof com.floreantpos.model.Ticket)) return false;
@@ -749,11 +766,6 @@ public abstract class BaseTicket  implements Comparable, Serializable {
 		return this.hashCode;
 	}
 
-	public int compareTo (Object obj) {
-		if (obj.hashCode() > hashCode()) return 1;
-		else if (obj.hashCode() < hashCode()) return -1;
-		else return 0;
-	}
 
 	public String toString () {
 		return super.toString();
