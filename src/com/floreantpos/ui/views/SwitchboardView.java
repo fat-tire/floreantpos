@@ -24,7 +24,6 @@ import com.floreantpos.bo.ui.BackOfficeWindow;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.ActionHistory;
 import com.floreantpos.model.AttendenceHistory;
-import com.floreantpos.model.Gratuity;
 import com.floreantpos.model.Shift;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.User;
@@ -362,16 +361,7 @@ public class SwitchboardView extends JPanel implements ActionListener {
 		Ticket ticket = selectedTickets.get(0);
 		try {
 			ticket = TicketDAO.getInstance().initializeTicket(ticket);
-			
-			if(ticket.getTableNumber() != Ticket.TAKE_OUT && ticket.getGratuity() == null) {
-				double dueAmount = ticket.getDueAmount();
-				double tips = dueAmount * 0.15;
-				
-				Gratuity gratuity = new Gratuity();
-				gratuity.setAmount(tips);
-				ticket.setGratuity(gratuity);
-			}
-			
+			ticket.calculateDefaultGratutity();
 			
 			PosPrintService.printTicket(ticket, 0);
 

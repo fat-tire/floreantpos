@@ -3,6 +3,7 @@ package com.floreantpos.main;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Toolkit;
+import java.io.File;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -27,7 +28,7 @@ import com.floreantpos.model.User;
 import com.floreantpos.model.dao.PrinterConfigurationDAO;
 import com.floreantpos.model.dao.RestaurantDAO;
 import com.floreantpos.model.dao.TerminalDAO;
-import com.floreantpos.ui.dialog.NumberSelectionDialog;
+import com.floreantpos.ui.dialog.NumberSelectionDialog2;
 import com.floreantpos.ui.views.LoginScreen;
 import com.floreantpos.ui.views.order.RootView;
 import com.floreantpos.util.DatabaseUtil;
@@ -153,9 +154,10 @@ public class Application {
 		logger.info("Terminal ID from configuration=" + terminalId);
 
 		if (terminalId == -1) {
-			NumberSelectionDialog dialog = new NumberSelectionDialog();
-			dialog.setDecimalAllowed(false);
+			NumberSelectionDialog2 dialog = new NumberSelectionDialog2();
 			dialog.setTitle(com.floreantpos.POSConstants.ENTER_ID_FOR_TERMINAL);
+			dialog.pack();
+			dialog.setLocationRelativeTo(getPosWindow());
 			dialog.setVisible(true);
 			
 			terminalId = (int) dialog.getValue();
@@ -343,5 +345,15 @@ public class Application {
 
 	public void setSystemInitialized(boolean systemInitialized) {
 		this.systemInitialized = systemInitialized;
+	}
+
+	public Restaurant getRestaurant() {
+		return restaurant;
+	}
+	
+	public static File getWorkingDir() {
+		File file = new File(Application.class.getProtectionDomain().getCodeSource().getLocation().getPath());
+		
+		return file.getParentFile();
 	}
 }
