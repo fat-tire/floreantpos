@@ -15,6 +15,7 @@ import net.sf.jasperreports.engine.print.JRPrinterAWT;
 import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.view.JasperViewer;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -33,6 +34,8 @@ public class JReportPrintService {
 	public static void printTicket(Ticket ticket, final double paidAmount) {
 		Restaurant restaurant = RestaurantDAO.getInstance().get(Integer.valueOf(1));
 		
+		Application.getWorkingDir();
+		
 		double totalAmount = ticket.getTotalAmount();
 		double tipAmount = 0;
 
@@ -42,7 +45,10 @@ public class JReportPrintService {
 		map.put("headerLine2", restaurant.getAddressLine1());
 		map.put("headerLine3", restaurant.getAddressLine2());
 		map.put("headerLine4", restaurant.getAddressLine3());
-		map.put("headerLine5", com.floreantpos.POSConstants.TEL + ": " + restaurant.getTelephone());
+		
+		if(StringUtils.isNotEmpty(restaurant.getTelephone())) {
+			map.put("headerLine5", com.floreantpos.POSConstants.TEL + ": " + restaurant.getTelephone());
+		}
 
 		map.put("checkNo", com.floreantpos.POSConstants.CHK_NO + ticket.getId());
 		map.put("tableNo", com.floreantpos.POSConstants.TABLE_NO + ticket.getTableNumber());
@@ -50,8 +56,12 @@ public class JReportPrintService {
 		map.put("serverName", com.floreantpos.POSConstants.SERVER + ": " + ticket.getOwner());
 		map.put("reportDate", com.floreantpos.POSConstants.DATE + ": " + Application.formatDate(new Date()));
 		map.put("grandSubtotal", Application.formatNumber(ticket.getSubtotalAmount()));
-		//map.put("grandTotal", Application.formatNumber(ticket.getTotalAmount()));
+		map.put("discountAmount", Application.formatNumber(ticket.getDiscountAmount()));
 		map.put("taxAmount", Application.formatNumber(ticket.getTaxAmount()));
+		
+		if(ticket.getServiceCharge() > 0.0) {
+			map.put("serviceCharge", Application.formatNumber(ticket.getServiceCharge()));
+		}
 		
 		if (ticket.getGratuity() != null) {
 			tipAmount = ticket.getGratuity().getAmount();
@@ -79,7 +89,8 @@ public class JReportPrintService {
 			JasperReport ticketReport = (JasperReport) JRLoader.loadObject(ticketReportStream);
 
 			JasperPrint jasperPrint = JasperFillManager.fillReport(ticketReport, map, new JRTableModelDataSource(new TicketDataSource(ticket)));
-			JasperPrintManager.printReport(jasperPrint, false);
+			//JasperPrintManager.printReport(jasperPrint, false);
+			JasperViewer.viewReport(jasperPrint, false);
 
 		} catch (Exception e) {
 //			e.printStackTrace();

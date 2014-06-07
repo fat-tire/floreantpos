@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.floreantpos.main.Application;
 import com.floreantpos.model.base.BaseTicket;
 
 public class Ticket extends BaseTicket {
@@ -168,7 +169,8 @@ public class Ticket extends BaseTicket {
 		double subtotalAmount = calculateSubtotalAmount();
 		double discountAmount = calculateDiscountAmount();
 		double taxAmount = calculateTax(subtotalAmount, discountAmount);
-		double totalAmount = subtotalAmount - discountAmount + taxAmount;
+		double serviceChargeAmount = calculateServiceCharge();
+		double totalAmount = subtotalAmount - discountAmount + taxAmount + serviceChargeAmount;
 		
 		if(subtotalAmount < 0 || Double.isNaN(subtotalAmount)) {
 			subtotalAmount = 0;
@@ -191,6 +193,7 @@ public class Ticket extends BaseTicket {
 			taxAmount = 0;
 		}
 		setTaxAmount(taxAmount);
+		setServiceCharge(serviceChargeAmount);
 		setTotalAmount(totalAmount);
 
 		double dueAmount = totalAmount - getPaidAmount();
@@ -312,13 +315,20 @@ public class Ticket extends BaseTicket {
 		return false;
 	}
 	
-	public double createDefaultGratutity() {
+	public double calculateDefaultGratutity() {
 		if(getTableNumber() == TAKE_OUT) {
 			return 0;
 		}
 		
+		Restaurant restaurant = Application.getInstance().getRestaurant();
+		double defaultGratuityPercentage = restaurant.getDefaultGratuityPercentage();
+		
+		if(defaultGratuityPercentage <= 0) {
+			return 0;
+		}
+		
 		Gratuity gratuity = new Gratuity();
-		double tip = getDueAmount() * 0.15;
+		double tip = getDueAmount() * (defaultGratuityPercentage / 100.0);
 		gratuity.setAmount(tip);
 		gratuity.setOwner(getOwner());
 		gratuity.setPaid(false);
@@ -328,5 +338,20 @@ public class Ticket extends BaseTicket {
 		setGratuity(gratuity);
 		
 		return tip;
+	}
+	
+	public double calculateServiceCharge() {
+		if(getTableNumber() == TAKE_OUT) {
+			return 0;
+		}
+		
+		Restaurant restaurant = Application.getInstance().getRestaurant();
+		double serviceChargePercentage = restaurant.getServiceChargePercentage();
+		
+		if(serviceChargePercentage > 0.0) {
+			return getDueAmount() * (serviceChargePercentage / 100.0);
+		}
+		
+		return 0;
 	}
 }
