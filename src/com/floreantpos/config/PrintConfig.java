@@ -15,42 +15,42 @@ public class PrintConfig {
 	public final static String P_PRINT_TO_KITCHEN_ON_ORDER_SETTLE = "PRINT_TO_KITCHEN_ON_ORDER_SETTLE";
 
 	public static String getReceiptPrinterName() {
-		return ApplicationConfig.getString(RECEIPT_PRINTER_NAME, "POSPrinter");
+		return AppConfig.getString(RECEIPT_PRINTER_NAME, "POSPrinter");
 	}
 
 	public static String getKitchenPrinterName() {
-		return ApplicationConfig.getString(KITCHEN_PRINTER_NAME, "KitchenPrinter");
+		return AppConfig.getString(KITCHEN_PRINTER_NAME, "KitchenPrinter");
 	}
 	
 	public static void setPrintReceiptOnOrderFinish(boolean print) {
-		ApplicationConfig.put(P_PRINT_RECEIPT_ON_ORDER_FINISH, print);
+		AppConfig.put(P_PRINT_RECEIPT_ON_ORDER_FINISH, print);
 	}
 
 	public static boolean isPrintReceiptOnOrderFinish() {
-		return ApplicationConfig.getBoolean(P_PRINT_RECEIPT_ON_ORDER_FINISH, true);
+		return AppConfig.getBoolean(P_PRINT_RECEIPT_ON_ORDER_FINISH, true);
 	}
 	
 	public static void setPrintReceiptOnOrderSettle(boolean print) {
-		ApplicationConfig.put(P_PRINT_RECEIPT_ON_ORDER_SETTLE, print);
+		AppConfig.put(P_PRINT_RECEIPT_ON_ORDER_SETTLE, print);
 	}
 
 	public static boolean isPrintReceiptOnOrderSettle() {
-		return ApplicationConfig.getBoolean(P_PRINT_RECEIPT_ON_ORDER_SETTLE, false);
+		return AppConfig.getBoolean(P_PRINT_RECEIPT_ON_ORDER_SETTLE, false);
 	}
 
 	public static void setPrintToKitchenOnOrderFinish(boolean print) {
-		ApplicationConfig.put(P_PRINT_TO_KITCHEN_ON_ORDER_FINISH, print);
+		AppConfig.put(P_PRINT_TO_KITCHEN_ON_ORDER_FINISH, print);
 	}
 	
 	public static boolean isPrintToKitchenOnOrderFinish() {
-		return ApplicationConfig.getBoolean(P_PRINT_TO_KITCHEN_ON_ORDER_FINISH, false);
+		return AppConfig.getBoolean(P_PRINT_TO_KITCHEN_ON_ORDER_FINISH, false);
 	}
 	
 	public static void setPrintToKitchenOnOrderSettle(boolean print) {
-		ApplicationConfig.put(P_PRINT_TO_KITCHEN_ON_ORDER_SETTLE, print);
+		AppConfig.put(P_PRINT_TO_KITCHEN_ON_ORDER_SETTLE, print);
 	}
 
 	public static boolean isPrintToKitchenOnOrderSettle() {
-		return ApplicationConfig.getBoolean(P_PRINT_TO_KITCHEN_ON_ORDER_SETTLE, false);
+		return AppConfig.getBoolean(P_PRINT_TO_KITCHEN_ON_ORDER_SETTLE, false);
 	}
 }

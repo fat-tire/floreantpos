@@ -9,6 +9,7 @@ import javax.swing.text.Document;
 public class POSTextField extends JTextField implements FocusListener {
 
 	public POSTextField() {
+		super(10);
 		addFocusListener(this);
 	}
 

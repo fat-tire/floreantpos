@@ -17,5 +17,7 @@
     <property column="DRAWER_PULL_MIN" name="drawerPullMin" type="java.lang.Integer"/>
     <property column="CNAME" length="20" name="currencyName" type="string"/>
     <property column="CSYMBOL" length="10" name="currencySymbol" type="string"/>
+    <property column="SC_PERCENTAGE" length="10" name="serviceChargePercentage" type="java.lang.Double"/>
+    <property column="GRATUITY_PERCENTAGE" length="10" name="defaultGratuityPercentage" type="java.lang.Double"/>
   </class>
 </hibernate-mapping>

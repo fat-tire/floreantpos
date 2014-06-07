@@ -21,7 +21,7 @@ import org.apache.commons.lang.StringUtils;
 
 import com.floreantpos.Database;
 import com.floreantpos.POSConstants;
-import com.floreantpos.config.ApplicationConfig;
+import com.floreantpos.config.AppConfig;
 import com.floreantpos.main.Application;
 import com.floreantpos.swing.POSPasswordField;
 import com.floreantpos.swing.POSTextField;
@@ -85,7 +85,7 @@ public class DatabaseConfigurationDialog extends POSDialog implements ActionList
 		tfPassword = new POSPasswordField();
 		databaseCombo = new JComboBox(Database.values());
 
-		String databaseProviderName = ApplicationConfig.getDatabaseProviderName();
+		String databaseProviderName = AppConfig.getDatabaseProviderName();
 		if(StringUtils.isNotEmpty(databaseProviderName)) {
 			databaseCombo.setSelectedItem(Database.getByProviderName(databaseProviderName));
 		}
@@ -146,7 +146,7 @@ public class DatabaseConfigurationDialog extends POSDialog implements ActionList
 				
 				setFieldsVisible(true);
 				
-				String databasePort = ApplicationConfig.getDatabasePort();
+				String databasePort = AppConfig.getDatabasePort();
 				if(StringUtils.isEmpty(databasePort)) {
 					databasePort = selectedDb.getDefaultPort();
 				}
@@ -159,18 +159,18 @@ public class DatabaseConfigurationDialog extends POSDialog implements ActionList
 	private void setFieldValues() {
 		Database selectedDb = (Database) databaseCombo.getSelectedItem();
 		
-		String databaseURL = ApplicationConfig.getDatabaseURL();
+		String databaseURL = AppConfig.getDatabaseURL();
 		tfServerAddress.setText(databaseURL);
 		
-		String databasePort = ApplicationConfig.getDatabasePort();
+		String databasePort = AppConfig.getDatabasePort();
 		if(StringUtils.isEmpty(databasePort)) {
 			databasePort = selectedDb.getDefaultPort();
 		}
 		
 		tfServerPort.setText(databasePort);
-		tfDatabaseName.setText(ApplicationConfig.getDatabaseName());
-		tfUserName.setText(ApplicationConfig.getDatabaseUser());
-		tfPassword.setText(ApplicationConfig.getDatabasePassword());
+		tfDatabaseName.setText(AppConfig.getDatabaseName());
+		tfUserName.setText(AppConfig.getDatabaseUser());
+		tfPassword.setText(AppConfig.getDatabasePassword());
 		
 		if(selectedDb == Database.DEMO_DATABASE) {
 			setFieldsVisible(false);
@@ -241,15 +241,15 @@ public class DatabaseConfigurationDialog extends POSDialog implements ActionList
 
 	private void saveConfig(Database selectedDb, String providerName, String databaseURL, String databasePort, String databaseName, String user, String pass,
 			String connectionString, String hibernateDialect) {
-		ApplicationConfig.setDatabaseProviderName(providerName);
-		ApplicationConfig.setHibernateConnectionDriverClass(selectedDb.getHibernateConnectionDriverClass());
-		ApplicationConfig.setHibernateDialect(hibernateDialect);
-		ApplicationConfig.setConnectString(connectionString);
-		ApplicationConfig.setDatabaseURL(databaseURL);
-		ApplicationConfig.setDatabasePort(databasePort);
-		ApplicationConfig.setDatabaseName(databaseName);
-		ApplicationConfig.setDatabaseUser(user);
-		ApplicationConfig.setDatabasePassword(pass);
+		AppConfig.setDatabaseProviderName(providerName);
+		AppConfig.setHibernateConnectionDriverClass(selectedDb.getHibernateConnectionDriverClass());
+		AppConfig.setHibernateDialect(hibernateDialect);
+		AppConfig.setConnectString(connectionString);
+		AppConfig.setDatabaseURL(databaseURL);
+		AppConfig.setDatabasePort(databasePort);
+		AppConfig.setDatabaseName(databaseName);
+		AppConfig.setDatabaseUser(user);
+		AppConfig.setDatabasePassword(pass);
 	}
 
 	public void setTitle(String title) {

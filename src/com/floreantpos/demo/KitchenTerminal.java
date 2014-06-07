@@ -1,9 +1,8 @@
 package com.floreantpos.demo;
 
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import java.awt.GridLayout;
-import java.awt.BorderLayout;
+
+import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import com.floreantpos.model.Ticket;
