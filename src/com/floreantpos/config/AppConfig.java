@@ -4,10 +4,11 @@ import java.util.prefs.Preferences;
 
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
+import org.apache.commons.configuration.XMLConfiguration;
 
 import com.floreantpos.main.Application;
 
-public class ApplicationConfig {
+public class AppConfig {
 	public static final String DATABASE_URL = "DATABASE_URL";
 	public static final String DATABASE_PORT = "DATABASE_PORT";
 	public static final String DATABASE_NAME = "DATABASE_NAME";
@@ -25,22 +26,29 @@ public class ApplicationConfig {
 	
 	private final static Preferences pref = Preferences.userNodeForPackage(Application.class);
 	
+	private static XMLConfiguration config;
+	
 	private static PropertiesConfiguration configuration;
 	
 	static {
 		try {
-			configuration = new PropertiesConfiguration(ApplicationConfig.class.getResource("/floreantpos.properties"));
+			configuration = new PropertiesConfiguration(AppConfig.class.getResource("/floreantpos.properties"));
+			config = (XMLConfiguration) new XMLConfiguration("config.xml");
+			config.setAutoSave(true);
+
 		} catch (ConfigurationException e) {
 			e.printStackTrace();
 		}
 	}
 	
 	public static int getTerminalId() {
-		return pref.getInt("TERMINAL_ID", -1);
+		return config.getInt("TERMINAL_ID", -1);
+		//return pref.getInt("TERMINAL_ID", -1);
 	}
 	
 	public static void setTerminalId(int id) {
-		pref.putInt("TERMINAL_ID", id);
+//		pref.putInt("TERMINAL_ID", id
+		config.setProperty("TERMINAL_ID", id);
 	}
 
 	public static Preferences getPreferences() {

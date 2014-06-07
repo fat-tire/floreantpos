@@ -9,7 +9,7 @@ import javax.swing.JPanel;
 
 import net.miginfocom.swing.MigLayout;
 
-import com.floreantpos.config.ApplicationConfig;
+import com.floreantpos.config.AppConfig;
 import com.floreantpos.swing.POSTextField;
 import com.floreantpos.swing.TitledView;
 import com.floreantpos.ui.dialog.POSMessageDialog;
@@ -28,11 +28,11 @@ public class TerminalConfigurationView extends TitledView implements UISaveHandl
 		
 		initComponents();
 		
-		tfTerminalNumber.setText(String.valueOf(ApplicationConfig.getTerminalId()));
-		cbxPrintReceiptOnOrderFinish.setSelected(ApplicationConfig.isPrintReceiptOnOrderFinish());
-		cbxPrintReceiptOnSettle.setSelected(ApplicationConfig.isPrintReceiptOnOrderSettle());
-		cbxPrintKitchenOnOrderFinish.setSelected(ApplicationConfig.isPrintToKitchenOnOrderFinish());
-		cbxPrintKitchenOnSettle.setSelected(ApplicationConfig.isPrintToKitchenOnOrderSettle());
+		tfTerminalNumber.setText(String.valueOf(AppConfig.getTerminalId()));
+		cbxPrintReceiptOnOrderFinish.setSelected(AppConfig.isPrintReceiptOnOrderFinish());
+		cbxPrintReceiptOnSettle.setSelected(AppConfig.isPrintReceiptOnOrderSettle());
+		cbxPrintKitchenOnOrderFinish.setSelected(AppConfig.isPrintToKitchenOnOrderFinish());
+		cbxPrintKitchenOnSettle.setSelected(AppConfig.isPrintToKitchenOnOrderSettle());
 		
 		
 	}
@@ -88,10 +88,10 @@ public class TerminalConfigurationView extends TitledView implements UISaveHandl
 			return;
 		}
 		
-		ApplicationConfig.setTerminalId(terminalNumber);
-		ApplicationConfig.setPrintReceiptOnOrderFinish(cbxPrintReceiptOnOrderFinish.isSelected());
-		ApplicationConfig.setPrintReceiptOnOrderSettle(cbxPrintKitchenOnSettle.isSelected());
-		ApplicationConfig.setPrintToKitchenOnOrderFinish(cbxPrintKitchenOnOrderFinish.isSelected());
-		ApplicationConfig.setPrintToKitchenOnOrderSettle(cbxPrintKitchenOnSettle.isSelected());
+		AppConfig.setTerminalId(terminalNumber);
+		AppConfig.setPrintReceiptOnOrderFinish(cbxPrintReceiptOnOrderFinish.isSelected());
+		AppConfig.setPrintReceiptOnOrderSettle(cbxPrintKitchenOnSettle.isSelected());
+		AppConfig.setPrintToKitchenOnOrderFinish(cbxPrintKitchenOnOrderFinish.isSelected());
+		AppConfig.setPrintToKitchenOnOrderSettle(cbxPrintKitchenOnSettle.isSelected());
 	}
 }

@@ -23,7 +23,7 @@ import javax.swing.JList;
 
 import net.miginfocom.swing.MigLayout;
 
-import com.floreantpos.config.ApplicationConfig;
+import com.floreantpos.config.AppConfig;
 import com.floreantpos.config.PrintConfig;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 
@@ -86,7 +86,7 @@ public class PrintConfigurationView extends ConfigurationView {
 			return;
 		}
 		
-		String receiptPrinterName = ApplicationConfig.getString(propertyName, osDefaultPrinter.getName());
+		String receiptPrinterName = AppConfig.getString(propertyName, osDefaultPrinter.getName());
 		
 		int printerCount = whichPrinter.getItemCount();
 		for(int i = 0; i < printerCount; i++) {
@@ -101,9 +101,9 @@ public class PrintConfigurationView extends ConfigurationView {
 	@Override
 	public boolean save() throws Exception {
 		PrintService printService = (PrintService) cbReceiptPrinterName.getSelectedItem();
-		ApplicationConfig.put(PrintConfig.RECEIPT_PRINTER_NAME, printService == null ? null : printService.getName());
+		AppConfig.put(PrintConfig.RECEIPT_PRINTER_NAME, printService == null ? null : printService.getName());
 		printService = (PrintService) cbKitchenPrinterName.getSelectedItem();
-		ApplicationConfig.put(PrintConfig.KITCHEN_PRINTER_NAME, printService == null ? null : printService.getName());
+		AppConfig.put(PrintConfig.KITCHEN_PRINTER_NAME, printService == null ? null : printService.getName());
 		
 		PrintConfig.setPrintReceiptOnOrderFinish(chkPrintReceiptOnOrderFinish.isSelected());
 		PrintConfig.setPrintReceiptOnOrderSettle(chkPrintReceiptOnOrderSettle.isSelected());

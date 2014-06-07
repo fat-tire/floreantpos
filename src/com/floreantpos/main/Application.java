@@ -18,7 +18,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.floreantpos.bo.ui.BackOfficeWindow;
-import com.floreantpos.config.ApplicationConfig;
+import com.floreantpos.config.AppConfig;
 import com.floreantpos.model.PrinterConfiguration;
 import com.floreantpos.model.Restaurant;
 import com.floreantpos.model.Shift;
@@ -58,7 +58,7 @@ public class Application {
 	private boolean systemInitialized;
 	private TicketActiveDateSetterTask ticketActiveDateSetterTask;
 
-	public final static String VERSION = ApplicationConfig.getConfiguration().getString("floreantpos.version");
+	public final static String VERSION = AppConfig.getConfiguration().getString("floreantpos.version");
 
 	private Application() {
 		applicationIcon = new ImageIcon(getClass().getResource("/icons/icon.png"));
@@ -74,9 +74,9 @@ public class Application {
 
 		posWindow.setContentPane(rootView);
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		posWindow.setSize(ApplicationConfig.getPreferences().getInt("wwidth", (int) screenSize.getWidth()), ApplicationConfig.getPreferences().getInt("wheight", (int) screenSize.getHeight()));
+		posWindow.setSize(AppConfig.getPreferences().getInt("wwidth", (int) screenSize.getWidth()), AppConfig.getPreferences().getInt("wheight", (int) screenSize.getHeight()));
 		
-		posWindow.setLocation(ApplicationConfig.getPreferences().getInt("wlocx", ((screenSize.width - posWindow.getWidth()) >> 1)), ApplicationConfig.getPreferences().getInt("wlocy", ((screenSize.height - posWindow.getHeight()) >> 1)));
+		posWindow.setLocation(AppConfig.getPreferences().getInt("wlocx", ((screenSize.width - posWindow.getWidth()) >> 1)), AppConfig.getPreferences().getInt("wlocy", ((screenSize.height - posWindow.getHeight()) >> 1)));
 		posWindow.setMinimumSize(new Dimension(800, 600));
 		posWindow.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		posWindow.setVisible(true);
@@ -148,7 +148,7 @@ public class Application {
 	}
 
 	private void initTerminal() {
-		int terminalId = ApplicationConfig.getTerminalId();
+		int terminalId = AppConfig.getTerminalId();
 		
 		logger.info("Terminal ID from configuration=" + terminalId);
 
@@ -173,7 +173,7 @@ public class Application {
 			TerminalDAO.getInstance().saveOrUpdate(terminal);
 		}
 		
-		ApplicationConfig.setTerminalId(terminalId);
+		AppConfig.setTerminalId(terminalId);
 		
 		this.terminal = terminal;
 	}
@@ -225,12 +225,12 @@ public class Application {
 
 		int width = posWindow.getWidth();
 		int height = posWindow.getHeight();
-		ApplicationConfig.getPreferences().putInt("wwidth", width);
-		ApplicationConfig.getPreferences().putInt("wheight", height);
+		AppConfig.getPreferences().putInt("wwidth", width);
+		AppConfig.getPreferences().putInt("wheight", height);
 
 		Point locationOnScreen = posWindow.getLocationOnScreen();
-		ApplicationConfig.getPreferences().putInt("wlocx", locationOnScreen.x);
-		ApplicationConfig.getPreferences().putInt("wlocy", locationOnScreen.y);
+		AppConfig.getPreferences().putInt("wlocx", locationOnScreen.x);
+		AppConfig.getPreferences().putInt("wlocy", locationOnScreen.y);
 
 		System.exit(0);
 	}

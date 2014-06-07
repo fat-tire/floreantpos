@@ -1,6 +1,7 @@
 package com.floreantpos.demo;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -9,13 +10,11 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.EtchedBorder;
+import javax.swing.border.LineBorder;
 
 import com.floreantpos.model.Ticket;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.ui.ticket.TicketViewerTable;
-import javax.swing.border.LineBorder;
-import java.awt.Color;
 
 public class KitchenTicketView extends JPanel {
 	private JLabel lblNewLabel;

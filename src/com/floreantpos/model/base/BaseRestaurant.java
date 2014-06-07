@@ -1,6 +1,5 @@
 package com.floreantpos.model.base;
 
-import java.lang.Comparable;
 import java.io.Serializable;
 
 
@@ -13,22 +12,24 @@ import java.io.Serializable;
  *  table="RESTAURANT"
  */
 
-public abstract class BaseRestaurant  implements Comparable, Serializable {
+public abstract class BaseRestaurant  implements Serializable {
 
 	public static String REF = "Restaurant";
+	public static String PROP_AUTO_DRAWER_PULL_ENABLE = "autoDrawerPullEnable";
+	public static String PROP_TELEPHONE = "telephone";
+	public static String PROP_DRAWER_PULL_MIN = "drawerPullMin";
+	public static String PROP_SERVICE_CHARGE_PERCENTAGE = "serviceChargePercentage";
+	public static String PROP_NAME = "name";
+	public static String PROP_DEFAULT_GRATUITY_PERCENTAGE = "defaultGratuityPercentage";
 	public static String PROP_CURRENCY_NAME = "currencyName";
+	public static String PROP_DRAWER_PULL_HOUR = "drawerPullHour";
+	public static String PROP_TABLES = "tables";
+	public static String PROP_ID = "id";
 	public static String PROP_CAPACITY = "capacity";
+	public static String PROP_ADDRESS_LINE1 = "addressLine1";
+	public static String PROP_ADDRESS_LINE2 = "addressLine2";
 	public static String PROP_ADDRESS_LINE3 = "addressLine3";
 	public static String PROP_CURRENCY_SYMBOL = "currencySymbol";
-	public static String PROP_TELEPHONE = "telephone";
-	public static String PROP_ADDRESS_LINE2 = "addressLine2";
-	public static String PROP_ADDRESS_LINE1 = "addressLine1";
-	public static String PROP_AUTO_DRAWER_PULL_ENABLE = "autoDrawerPullEnable";
-	public static String PROP_DRAWER_PULL_MIN = "drawerPullMin";
-	public static String PROP_TABLES = "tables";
-	public static String PROP_NAME = "name";
-	public static String PROP_DRAWER_PULL_HOUR = "drawerPullHour";
-	public static String PROP_ID = "id";
 
 
 	// constructors
@@ -66,6 +67,8 @@ public abstract class BaseRestaurant  implements Comparable, Serializable {
 	private java.lang.Integer drawerPullMin;
 	private java.lang.String currencyName;
 	private java.lang.String currencySymbol;
+	private java.lang.Double serviceChargePercentage;
+	private java.lang.Double defaultGratuityPercentage;
 
 
 
@@ -295,6 +298,39 @@ public abstract class BaseRestaurant  implements Comparable, Serializable {
 
 
 
+	/**
+	 * Return the value associated with the column: SC_PERCENTAGE
+	 */
+	public java.lang.Double getServiceChargePercentage () {
+					return serviceChargePercentage == null ? Double.valueOf(0) : serviceChargePercentage;
+			}
+
+	/**
+	 * Set the value related to the column: SC_PERCENTAGE
+	 * @param serviceChargePercentage the SC_PERCENTAGE value
+	 */
+	public void setServiceChargePercentage (java.lang.Double serviceChargePercentage) {
+		this.serviceChargePercentage = serviceChargePercentage;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: GRATUITY_PERCENTAGE
+	 */
+	public java.lang.Double getDefaultGratuityPercentage () {
+					return defaultGratuityPercentage == null ? Double.valueOf(0) : defaultGratuityPercentage;
+			}
+
+	/**
+	 * Set the value related to the column: GRATUITY_PERCENTAGE
+	 * @param defaultGratuityPercentage the GRATUITY_PERCENTAGE value
+	 */
+	public void setDefaultGratuityPercentage (java.lang.Double defaultGratuityPercentage) {
+		this.defaultGratuityPercentage = defaultGratuityPercentage;
+	}
+
+
 
 
 	public boolean equals (Object obj) {
@@ -318,11 +354,6 @@ public abstract class BaseRestaurant  implements Comparable, Serializable {
 		return this.hashCode;
 	}
 
-	public int compareTo (Object obj) {
-		if (obj.hashCode() > hashCode()) return 1;
-		else if (obj.hashCode() < hashCode()) return -1;
-		else return 0;
-	}
 
 	public String toString () {
 		return super.toString();
