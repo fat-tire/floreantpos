@@ -2,7 +2,7 @@ package com.floreantpos.model.dao;
 
 import org.hibernate.cfg.Configuration;
 
-import com.floreantpos.config.ApplicationConfig;
+import com.floreantpos.config.AppConfig;
 import com.floreantpos.model.ActionHistory;
 import com.floreantpos.model.AttendenceHistory;
 import com.floreantpos.model.CashDrawerResetHistory;
@@ -90,13 +90,13 @@ public abstract class _RootDAO extends com.floreantpos.model.dao._BaseRootDAO {
 		configuration = configuration.addClass(UserPermission.class);
 		configuration = configuration.addClass(UserType.class);
 
-		configuration = configuration.setProperty("hibernate.dialect", ApplicationConfig.getHibernateDialect());
-		configuration = configuration.setProperty("hibernate.connection.driver_class", ApplicationConfig.getHibernateConnectionDriverClass());
+		configuration = configuration.setProperty("hibernate.dialect", AppConfig.getHibernateDialect());
+		configuration = configuration.setProperty("hibernate.connection.driver_class", AppConfig.getHibernateConnectionDriverClass());
 		
-		configuration = configuration.setProperty("hibernate.connection.url", ApplicationConfig.getConnectString());
-		configuration = configuration.setProperty("hibernate.connection.username", ApplicationConfig.getDatabaseUser());
-		configuration = configuration.setProperty("hibernate.connection.password", ApplicationConfig.getDatabasePassword());
-		configuration = configuration.setProperty("hibernate.hbm2ddl.auto", "none");
+		configuration = configuration.setProperty("hibernate.connection.url", AppConfig.getConnectString());
+		configuration = configuration.setProperty("hibernate.connection.username", AppConfig.getDatabaseUser());
+		configuration = configuration.setProperty("hibernate.connection.password", AppConfig.getDatabasePassword());
+		configuration = configuration.setProperty("hibernate.hbm2ddl.auto", "update");
 		configuration = configuration.setProperty("hibernate.connection.autocommit", "false");
 		configuration = configuration.setProperty("hibernate.max_fetch_depth", "3");
 		configuration = configuration.setProperty("hibernate.show_sql", "false");

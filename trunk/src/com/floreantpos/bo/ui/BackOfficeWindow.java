@@ -34,7 +34,7 @@ import com.floreantpos.bo.actions.ShiftExplorerAction;
 import com.floreantpos.bo.actions.UserExplorerAction;
 import com.floreantpos.bo.actions.UserTypeExplorerAction;
 import com.floreantpos.bo.actions.ViewGratuitiesAction;
-import com.floreantpos.config.ApplicationConfig;
+import com.floreantpos.config.AppConfig;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.User;
 import com.floreantpos.model.UserPermission;
@@ -90,10 +90,10 @@ public class BackOfficeWindow extends javax.swing.JFrame {
 
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
-				ApplicationConfig.getPreferences().putInt("bwwidth", BackOfficeWindow.this.getWidth());
-				ApplicationConfig.getPreferences().putInt("bwheight", BackOfficeWindow.this.getHeight());
-				ApplicationConfig.getPreferences().putInt("bwx", BackOfficeWindow.this.getX());
-				ApplicationConfig.getPreferences().putInt("bwy", BackOfficeWindow.this.getY());
+				AppConfig.getPreferences().putInt("bwwidth", BackOfficeWindow.this.getWidth());
+				AppConfig.getPreferences().putInt("bwheight", BackOfficeWindow.this.getHeight());
+				AppConfig.getPreferences().putInt("bwx", BackOfficeWindow.this.getX());
+				AppConfig.getPreferences().putInt("bwy", BackOfficeWindow.this.getY());
 				Application.getInstance().setBackOfficeWindow(null);
 				dispose();
 			}
@@ -103,16 +103,16 @@ public class BackOfficeWindow extends javax.swing.JFrame {
 	}
 
 	private void positionWindow() {
-		int width = ApplicationConfig.getPreferences().getInt("bwwidth", 900);
-		int height = ApplicationConfig.getPreferences().getInt("bwheight", 650);
+		int width = AppConfig.getPreferences().getInt("bwwidth", 900);
+		int height = AppConfig.getPreferences().getInt("bwheight", 650);
 		setSize(width, height);
 		
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		int x = (screenSize.width - width) >> 1;
 		int y = (screenSize.height - height) >> 1;
 		
-		x = ApplicationConfig.getPreferences().getInt("bwx", x);
-		y = ApplicationConfig.getPreferences().getInt("bwy", y);
+		x = AppConfig.getPreferences().getInt("bwx", x);
+		y = AppConfig.getPreferences().getInt("bwy", y);
 		
 		setLocation(x, y);
 	}
