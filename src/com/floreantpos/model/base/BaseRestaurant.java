@@ -1,5 +1,6 @@
 package com.floreantpos.model.base;
 
+import java.lang.Comparable;
 import java.io.Serializable;
 
 
@@ -12,12 +13,13 @@ import java.io.Serializable;
  *  table="RESTAURANT"
  */
 
-public abstract class BaseRestaurant  implements Serializable {
+public abstract class BaseRestaurant  implements Comparable, Serializable {
 
 	public static String REF = "Restaurant";
 	public static String PROP_AUTO_DRAWER_PULL_ENABLE = "autoDrawerPullEnable";
 	public static String PROP_TELEPHONE = "telephone";
 	public static String PROP_DRAWER_PULL_MIN = "drawerPullMin";
+	public static String PROP_TICKET_FOOTER_MESSAGE = "ticketFooterMessage";
 	public static String PROP_SERVICE_CHARGE_PERCENTAGE = "serviceChargePercentage";
 	public static String PROP_NAME = "name";
 	public static String PROP_DEFAULT_GRATUITY_PERCENTAGE = "defaultGratuityPercentage";
@@ -69,6 +71,7 @@ public abstract class BaseRestaurant  implements Serializable {
 	private java.lang.String currencySymbol;
 	private java.lang.Double serviceChargePercentage;
 	private java.lang.Double defaultGratuityPercentage;
+	private java.lang.String ticketFooterMessage;
 
 
 
@@ -332,6 +335,24 @@ public abstract class BaseRestaurant  implements Serializable {
 
 
 
+	/**
+	 * Return the value associated with the column: TICKET_FOOTER
+	 */
+	public java.lang.String getTicketFooterMessage () {
+			return ticketFooterMessage;
+	}
+
+	/**
+	 * Set the value related to the column: TICKET_FOOTER
+	 * @param ticketFooterMessage the TICKET_FOOTER value
+	 */
+	public void setTicketFooterMessage (java.lang.String ticketFooterMessage) {
+		this.ticketFooterMessage = ticketFooterMessage;
+	}
+
+
+
+
 
 	public boolean equals (Object obj) {
 		if (null == obj) return false;
@@ -354,6 +375,11 @@ public abstract class BaseRestaurant  implements Serializable {
 		return this.hashCode;
 	}
 
+	public int compareTo (Object obj) {
+		if (obj.hashCode() > hashCode()) return 1;
+		else if (obj.hashCode() < hashCode()) return -1;
+		else return 0;
+	}
 
 	public String toString () {
 		return super.toString();

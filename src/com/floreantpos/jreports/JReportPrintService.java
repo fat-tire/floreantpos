@@ -45,6 +45,7 @@ public class JReportPrintService {
 		map.put("headerLine2", restaurant.getAddressLine1());
 		map.put("headerLine3", restaurant.getAddressLine2());
 		map.put("headerLine4", restaurant.getAddressLine3());
+		map.put("footerMessage", restaurant.getTicketFooterMessage());
 		
 		if(StringUtils.isNotEmpty(restaurant.getTelephone())) {
 			map.put("headerLine5", com.floreantpos.POSConstants.TEL + ": " + restaurant.getTelephone());
@@ -89,8 +90,8 @@ public class JReportPrintService {
 			JasperReport ticketReport = (JasperReport) JRLoader.loadObject(ticketReportStream);
 
 			JasperPrint jasperPrint = JasperFillManager.fillReport(ticketReport, map, new JRTableModelDataSource(new TicketDataSource(ticket)));
-			//JasperPrintManager.printReport(jasperPrint, false);
-			JasperViewer.viewReport(jasperPrint, false);
+			JasperPrintManager.printReport(jasperPrint, false);
+			//JasperViewer.viewReport(jasperPrint, false);
 
 		} catch (Exception e) {
 //			e.printStackTrace();
