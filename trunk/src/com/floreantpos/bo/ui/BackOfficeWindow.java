@@ -31,6 +31,7 @@ import com.floreantpos.bo.actions.ItemExplorerAction;
 import com.floreantpos.bo.actions.ModifierExplorerAction;
 import com.floreantpos.bo.actions.ModifierGroupExplorerAction;
 import com.floreantpos.bo.actions.ShiftExplorerAction;
+import com.floreantpos.bo.actions.TaxExplorerAction;
 import com.floreantpos.bo.actions.UserExplorerAction;
 import com.floreantpos.bo.actions.UserTypeExplorerAction;
 import com.floreantpos.bo.actions.ViewGratuitiesAction;
@@ -177,6 +178,7 @@ public class BackOfficeWindow extends javax.swing.JFrame {
 		explorerMenu.add(new ShiftExplorerAction());
 		explorerMenu.add(new CouponExplorerAction());
 		explorerMenu.add(new CookingInstructionExplorerAction());
+		explorerMenu.add(new TaxExplorerAction());
 		menuBar.add(explorerMenu);
 	}
 

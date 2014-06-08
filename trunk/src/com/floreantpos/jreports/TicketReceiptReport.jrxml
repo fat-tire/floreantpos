@@ -28,6 +28,7 @@
 	<parameter name="paidAmount" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="serviceCharge" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="discountAmount" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="footerMessage" class="java.lang.String" isForPrompting="false"/>
 	<field name="itemQty" class="java.lang.String"/>
 	<field name="itemName" class="java.lang.String"/>
 	<field name="itemUnitPrice" class="java.lang.String"/>
@@ -440,21 +441,7 @@
 		<band splitType="Stretch"/>
 	</pageFooter>
 	<lastPageFooter>
-		<band height="162" splitType="Prevent">
-			<staticText>
-				<reportElement key="staticText-10" x="0" y="121" width="175" height="30"/>
-				<box>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Center">
-					<font isBold="true" pdfFontName="Helvetica-Bold"/>
-				</textElement>
-				<text><![CDATA[THANK YOU!!!
-PLEASE COME AGAIN!!!]]></text>
-			</staticText>
+		<band height="155" splitType="Prevent">
 			<staticText>
 				<reportElement key="staticText-8" x="33" y="54" width="42" height="13">
 					<printWhenExpression><![CDATA[$P{tipAmount}!=null]]></printWhenExpression>
@@ -733,6 +720,18 @@ PLEASE COME AGAIN!!!]]></text>
 				<reportElement x="75" y="96" width="20" height="13"/>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{currencySymbol}+":"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="textField-1" x="1" y="125" width="174" height="30" isRemoveLineWhenBlank="true"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{footerMessage}]]></textFieldExpression>
 			</textField>
 		</band>
 	</lastPageFooter>
