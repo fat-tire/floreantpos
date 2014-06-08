@@ -27,9 +27,10 @@ public class RestaurantConfigurationView extends ConfigurationView {
 	private POSTextField tfCurrencySymbol;
 	private POSTextField tfServiceCharge;
 	private POSTextField tfDefaultGratuity;
+	private POSTextField tfTicketFooter;
 	
 	public RestaurantConfigurationView() {
-		setLayout(new MigLayout("", "[grow][grow][][grow]", "[grow][][][][][][][][][][][]"));
+		setLayout(new MigLayout("", "[grow][grow][][grow]", "[grow][][][][][][][][][][][][]"));
 		
 		JLabel lblNewLabel = new JLabel("Restaurant name:");
 		add(lblNewLabel, "cell 0 1,alignx trailing");
@@ -101,13 +102,19 @@ public class RestaurantConfigurationView extends ConfigurationView {
 		add(label, "cell 2 10");
 		
 		JLabel lblDefaultGratuity = new JLabel("Default gratuity:");
-		add(lblDefaultGratuity, "cell 0 11,alignx trailing");
+		add(lblDefaultGratuity, "flowy,cell 0 11,alignx trailing");
 		
 		tfDefaultGratuity = new POSTextField();
 		add(tfDefaultGratuity, "cell 1 11,growx");
 		
 		JLabel label_1 = new JLabel("%");
 		add(label_1, "cell 2 11");
+		
+		JLabel lblTicketFooterMessage = new JLabel("Ticket footer message:");
+		add(lblTicketFooterMessage, "cell 0 12,alignx trailing");
+		
+		tfTicketFooter = new POSTextField();
+		add(tfTicketFooter, "cell 1 12 3 1,growx");
 	}
 	
 	
@@ -183,6 +190,7 @@ public class RestaurantConfigurationView extends ConfigurationView {
 		restaurant.setCurrencySymbol(currencySymbol);
 		restaurant.setServiceChargePercentage(serviceCharge);
 		restaurant.setDefaultGratuityPercentage(gratuityPercentage);
+		restaurant.setTicketFooterMessage(tfTicketFooter.getText());
 		
 		dao.saveOrUpdate(restaurant);
 		
@@ -207,6 +215,7 @@ public class RestaurantConfigurationView extends ConfigurationView {
 		tfCurrencySymbol.setText(restaurant.getCurrencySymbol());
 		tfServiceCharge.setText(String.valueOf(restaurant.getServiceChargePercentage()));
 		tfDefaultGratuity.setText(String.valueOf(restaurant.getDefaultGratuityPercentage()));
+		tfTicketFooter.setText(restaurant.getTicketFooterMessage());
 		
 		setInitialized(true);
 	}

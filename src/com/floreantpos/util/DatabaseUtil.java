@@ -84,7 +84,9 @@ public class DatabaseUtil {
 			
 			Restaurant restaurant = new Restaurant();
 			restaurant.setId(Integer.valueOf(1));
-			restaurant.setName("Floreant");
+			restaurant.setName("Demo Restaurant");
+			restaurant.setAddressLine1("somewhere");
+			restaurant.setTelephone("+00demo");
 			RestaurantDAO.getInstance().saveOrUpdate(restaurant);
 			
 			Tax tax = new Tax();
