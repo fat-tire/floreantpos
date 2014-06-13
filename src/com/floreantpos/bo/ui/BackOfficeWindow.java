@@ -96,12 +96,16 @@ public class BackOfficeWindow extends javax.swing.JFrame {
 
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
-				AppConfig.getPreferences().putInt(WINDOW_WIDTH, BackOfficeWindow.this.getWidth()); 
-				AppConfig.getPreferences().putInt(WINDOW_HEIGHT, BackOfficeWindow.this.getHeight()); //$NON-NLS-1$
-				AppConfig.getPreferences().putInt(POSX, BackOfficeWindow.this.getX()); //$NON-NLS-1$
-				AppConfig.getPreferences().putInt(POSY, BackOfficeWindow.this.getY()); //$NON-NLS-1$
+				saveSizeAndLocation();
 				Application.getInstance().setBackOfficeWindow(null);
 				dispose();
+			}
+
+			private void saveSizeAndLocation() {
+				AppConfig.putInt(WINDOW_WIDTH, BackOfficeWindow.this.getWidth()); 
+				AppConfig.putInt(WINDOW_HEIGHT, BackOfficeWindow.this.getHeight()); //$NON-NLS-1$
+				AppConfig.putInt(POSX, BackOfficeWindow.this.getX()); //$NON-NLS-1$
+				AppConfig.putInt(POSY, BackOfficeWindow.this.getY()); //$NON-NLS-1$
 			}
 		});
 
@@ -109,16 +113,16 @@ public class BackOfficeWindow extends javax.swing.JFrame {
 	}
 
 	private void positionWindow() {
-		int width = AppConfig.getPreferences().getInt(WINDOW_WIDTH, 900); //$NON-NLS-1$
-		int height = AppConfig.getPreferences().getInt(WINDOW_HEIGHT, 650); //$NON-NLS-1$
+		int width = AppConfig.getInt(WINDOW_WIDTH, 900); //$NON-NLS-1$
+		int height = AppConfig.getInt(WINDOW_HEIGHT, 650); //$NON-NLS-1$
 		setSize(width, height);
 		
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		int x = (screenSize.width - width) >> 1;
 		int y = (screenSize.height - height) >> 1;
 		
-		x = AppConfig.getPreferences().getInt(POSX, x); //$NON-NLS-1$
-		y = AppConfig.getPreferences().getInt(POSY, y); //$NON-NLS-1$
+		x = AppConfig.getInt(POSX, x); //$NON-NLS-1$
+		y = AppConfig.getInt(POSY, y); //$NON-NLS-1$
 		
 		setLocation(x, y);
 	}
