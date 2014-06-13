@@ -136,7 +136,7 @@ public class UserExplorer extends TransparentPanel {
 						tableModel.deleteItem(index);
 					}
 				} catch(ConstraintViolationException x) {
-					String message = com.floreantpos.POSConstants.USER + " " + user.getFirstName() + " " + user.getLastName() + " (" + user.getNewUserType() + ") " + com.floreantpos.POSConstants.ERROR_MESSAGE;
+					String message = com.floreantpos.POSConstants.USER + " " + user.getFirstName() + " " + user.getLastName() + " (" + user.getNewUserType() + ") " + com.floreantpos.POSConstants.ERROR_MESSAGE; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 					MessageDialog.showError(message, x);
 				} catch (Exception x) {
 					MessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);

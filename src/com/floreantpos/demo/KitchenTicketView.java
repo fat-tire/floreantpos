@@ -10,7 +10,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
+import javax.swing.border.EtchedBorder;
+import javax.swing.border.MatteBorder;
 
 import com.floreantpos.model.Ticket;
 import com.floreantpos.swing.PosButton;
@@ -21,7 +22,7 @@ public class KitchenTicketView extends JPanel {
 	private TicketViewerTable ticketViewerTable;
 	
 	public KitchenTicketView() {
-		setBorder(new LineBorder(new Color(0, 0, 0)));
+		setBorder(new EtchedBorder(EtchedBorder.RAISED, null, null));
 		setLayout(new BorderLayout(0, 0));
 		
 		JPanel panel = new JPanel();
@@ -46,6 +47,7 @@ public class KitchenTicketView extends JPanel {
 		add(lblNewLabel, BorderLayout.NORTH);
 		
 		ticketViewerTable = new TicketViewerTable();
+		ticketViewerTable.setBorder(new MatteBorder(1, 0, 1, 0, (Color) Color.LIGHT_GRAY));
 		add(ticketViewerTable, BorderLayout.CENTER);
 		
 	}

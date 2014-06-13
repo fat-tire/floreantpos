@@ -35,7 +35,7 @@ public class TicketViewerTable extends JTable {
 		cellRenderer = new TicketTableCellRenderer();
 		
 		setGridColor(Color.LIGHT_GRAY);
-		setTableHeader(null);
+		//setTableHeader(null);
 		setSelectionModel(selectionModel);
 		setAutoscrolls(true);
 		setShowGrid(true);

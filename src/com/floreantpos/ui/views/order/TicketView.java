@@ -89,8 +89,8 @@ public class TicketView extends JPanel {
 		btnScrollDown = new com.floreantpos.swing.PosButton();
 		btnDelete = new com.floreantpos.swing.PosButton();
 		jPanel2 = new com.floreantpos.swing.TransparentPanel();
-		jScrollPane1 = new javax.swing.JScrollPane();
 		ticketViewerTable = new com.floreantpos.ui.ticket.TicketViewerTable();
+		jScrollPane1 = new javax.swing.JScrollPane(ticketViewerTable);
 
 		setBorder(javax.swing.BorderFactory.createTitledBorder(null, com.floreantpos.POSConstants.TICKET, javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
 		setPreferredSize(new java.awt.Dimension(280, 463));
@@ -336,11 +336,11 @@ public class TicketView extends JPanel {
 
 		jPanel2.setLayout(new java.awt.BorderLayout());
 
-		jScrollPane1.setBorder(null);
+//		jScrollPane1.setBorder(null);
 		jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		jScrollPane1.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
 		jScrollPane1.setPreferredSize(new java.awt.Dimension(180, 200));
-		jScrollPane1.setViewportView(ticketViewerTable);
+		//jScrollPane1.setViewportView(ticketViewerTable);
 
 		jPanel2.add(jScrollPane1, java.awt.BorderLayout.CENTER);
 

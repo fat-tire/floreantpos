@@ -145,7 +145,7 @@ public class CookingInstructionExplorer extends TransparentPanel {
 
 		public Object getValueAt(int rowIndex, int columnIndex) {
 			if(categoryList == null)
-				return "";
+				return ""; //$NON-NLS-1$
 			
 			CookingInstruction cookingInstruction = categoryList.get(rowIndex);
 			
