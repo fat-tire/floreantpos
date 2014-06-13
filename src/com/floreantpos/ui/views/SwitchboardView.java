@@ -7,11 +7,13 @@
 package com.floreantpos.ui.views;
 
 
+import java.awt.ComponentOrientation;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 import javax.swing.JOptionPane;
@@ -79,6 +81,8 @@ public class SwitchboardView extends JPanel implements ActionListener {
 		btnVoidTicket.addActionListener(this);
 
 		ticketListUpdater = new Timer(30 * 1000, new TicketListUpdaterTask());
+		
+		applyComponentOrientation(ComponentOrientation.getOrientation(Locale.getDefault()));
 	}
 
 	/** This method is called from within the constructor to

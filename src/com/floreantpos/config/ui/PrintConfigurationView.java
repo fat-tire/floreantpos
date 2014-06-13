@@ -122,7 +122,7 @@ public class PrintConfigurationView extends ConfigurationView {
 	@SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-        setLayout(new MigLayout("", "[][]", "[][][18px][18px][18px][18px]"));
+        setLayout(new MigLayout("", "[][grow,fill]", "[][][18px][18px][18px][18px]"));
         javax.swing.JLabel jLabel1 = new javax.swing.JLabel();
         add(jLabel1, "cell 0 0,alignx right");
         
