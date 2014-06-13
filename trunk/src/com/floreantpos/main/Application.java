@@ -1,8 +1,5 @@
 package com.floreantpos.main;
 
-import java.awt.Dimension;
-import java.awt.Point;
-import java.awt.Toolkit;
 import java.io.File;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -11,7 +8,6 @@ import java.util.Date;
 import java.util.Locale;
 
 import javax.swing.ImageIcon;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
 import javax.swing.UIManager;
@@ -21,6 +17,7 @@ import org.apache.commons.logging.LogFactory;
 
 import com.floreantpos.bo.ui.BackOfficeWindow;
 import com.floreantpos.config.AppConfig;
+import com.floreantpos.config.AppProperties;
 import com.floreantpos.model.PrinterConfiguration;
 import com.floreantpos.model.Restaurant;
 import com.floreantpos.model.Shift;
@@ -60,7 +57,7 @@ public class Application {
 	private boolean systemInitialized;
 	private TicketActiveDateSetterTask ticketActiveDateSetterTask;
 
-	public final static String VERSION = AppConfig.getConfiguration().getString("floreantpos.version");
+	public final static String VERSION = AppProperties.getVersion();
 
 	private Application() {
 		Locale.setDefault(Locale.forLanguageTag("ar-EG"));
@@ -77,13 +74,7 @@ public class Application {
 		rootView = RootView.getInstance();
 
 		posWindow.setContentPane(rootView);
-		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		posWindow.setSize(AppConfig.getPreferences().getInt("wwidth", (int) screenSize.getWidth()), AppConfig.getPreferences().getInt("wheight", (int) screenSize.getHeight()));
-		
-		posWindow.setLocation(AppConfig.getPreferences().getInt("wlocx", ((screenSize.width - posWindow.getWidth()) >> 1)), AppConfig.getPreferences().getInt("wlocy", ((screenSize.height - posWindow.getHeight()) >> 1)));
-		posWindow.setMinimumSize(new Dimension(800, 600));
-		posWindow.setSize(new Dimension(1024, 680));
-		posWindow.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		posWindow.setupSizeAndLocation();
 		posWindow.setVisible(true);
 	}
 
@@ -229,15 +220,8 @@ public class Application {
 			return;
 		}
 
-		int width = posWindow.getWidth();
-		int height = posWindow.getHeight();
-		AppConfig.getPreferences().putInt("wwidth", width);
-		AppConfig.getPreferences().putInt("wheight", height);
-
-		Point locationOnScreen = posWindow.getLocationOnScreen();
-		AppConfig.getPreferences().putInt("wlocx", locationOnScreen.x);
-		AppConfig.getPreferences().putInt("wlocy", locationOnScreen.y);
-
+		posWindow.saveSizeAndLocation();
+		
 		System.exit(0);
 	}
 
