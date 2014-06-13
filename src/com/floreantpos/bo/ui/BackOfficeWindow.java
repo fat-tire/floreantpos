@@ -60,6 +60,11 @@ import com.floreantpos.ui.report.actions.ServerProductivityReportAction;
  */
 public class BackOfficeWindow extends javax.swing.JFrame {
 
+	private static final String POSY = "bwy";//$NON-NLS-1$
+	private static final String POSX = "bwx";//$NON-NLS-1$
+	private static final String WINDOW_HEIGHT = "bwheight";//$NON-NLS-1$
+	private static final String WINDOW_WIDTH = "bwwidth";//$NON-NLS-1$
+
 	/** Creates new form BackOfficeWindow */
 	public BackOfficeWindow() {
 		setIconImage(Application.getApplicationIcon().getImage());
@@ -91,29 +96,29 @@ public class BackOfficeWindow extends javax.swing.JFrame {
 
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
-				AppConfig.getPreferences().putInt("bwwidth", BackOfficeWindow.this.getWidth());
-				AppConfig.getPreferences().putInt("bwheight", BackOfficeWindow.this.getHeight());
-				AppConfig.getPreferences().putInt("bwx", BackOfficeWindow.this.getX());
-				AppConfig.getPreferences().putInt("bwy", BackOfficeWindow.this.getY());
+				AppConfig.getPreferences().putInt(WINDOW_WIDTH, BackOfficeWindow.this.getWidth()); 
+				AppConfig.getPreferences().putInt(WINDOW_HEIGHT, BackOfficeWindow.this.getHeight()); //$NON-NLS-1$
+				AppConfig.getPreferences().putInt(POSX, BackOfficeWindow.this.getX()); //$NON-NLS-1$
+				AppConfig.getPreferences().putInt(POSY, BackOfficeWindow.this.getY()); //$NON-NLS-1$
 				Application.getInstance().setBackOfficeWindow(null);
 				dispose();
 			}
 		});
 
-		setTitle(Application.getTitle() + "- " + com.floreantpos.POSConstants.BACK_OFFICE);
+		setTitle(Application.getTitle() + "- " + com.floreantpos.POSConstants.BACK_OFFICE); //$NON-NLS-1$
 	}
 
 	private void positionWindow() {
-		int width = AppConfig.getPreferences().getInt("bwwidth", 900);
-		int height = AppConfig.getPreferences().getInt("bwheight", 650);
+		int width = AppConfig.getPreferences().getInt(WINDOW_WIDTH, 900); //$NON-NLS-1$
+		int height = AppConfig.getPreferences().getInt(WINDOW_HEIGHT, 650); //$NON-NLS-1$
 		setSize(width, height);
 		
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		int x = (screenSize.width - width) >> 1;
 		int y = (screenSize.height - height) >> 1;
 		
-		x = AppConfig.getPreferences().getInt("bwx", x);
-		y = AppConfig.getPreferences().getInt("bwy", y);
+		x = AppConfig.getPreferences().getInt(POSX, x); //$NON-NLS-1$
+		y = AppConfig.getPreferences().getInt(POSY, y); //$NON-NLS-1$
 		
 		setLocation(x, y);
 	}

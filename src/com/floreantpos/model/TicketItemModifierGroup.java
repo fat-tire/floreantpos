@@ -150,4 +150,16 @@ public class TicketItemModifierGroup extends BaseTicketItemModifierGroup {
 	public double getTotal() {
 		return getSubtotal() +  getTax();
 	}
+	
+	public void setPrintedToKitchen(boolean print) {
+		List<TicketItemModifier> modifiers = getTicketItemModifiers();
+		
+		if (modifiers != null) {
+			for (TicketItemModifier modifier : modifiers) {
+				if (!modifier.isPrintedToKitchen()) {
+					modifier.setPrintedToKitchen(true);
+				}
+			}
+		}
+	}
 }

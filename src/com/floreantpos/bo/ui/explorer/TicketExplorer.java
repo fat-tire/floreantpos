@@ -19,8 +19,8 @@ import com.floreantpos.swing.TransparentPanel;
 import com.floreantpos.ui.PosTableRenderer;
 
 public class TicketExplorer extends TransparentPanel {
-	private SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd yyyy, h:m a");
-	DecimalFormat numberFormat = new DecimalFormat("0.00");
+	private SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd yyyy, h:m a"); //$NON-NLS-1$
+	DecimalFormat numberFormat = new DecimalFormat("0.00"); //$NON-NLS-1$
 	
 	JXTable explorerTable;
 	private List<Ticket> tickets;
@@ -81,7 +81,7 @@ public class TicketExplorer extends TransparentPanel {
 
 		public Object getValueAt(int rowIndex, int columnIndex) {
 			if(tickets == null)
-				return "";
+				return ""; //$NON-NLS-1$
 			
 			Ticket ticket = tickets.get(rowIndex);
 			
@@ -99,7 +99,7 @@ public class TicketExplorer extends TransparentPanel {
 					if(ticket.getClosingDate() != null) {
 						return dateFormat.format(ticket.getClosingDate());
 					}
-					return "";
+					return ""; //$NON-NLS-1$
 					
 				case 4:
 					return Double.valueOf(ticket.getSubtotalAmount());

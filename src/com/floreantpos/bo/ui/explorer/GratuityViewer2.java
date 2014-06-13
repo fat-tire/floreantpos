@@ -17,6 +17,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JTable;
 
+import com.floreantpos.POSConstants;
 import com.floreantpos.PosException;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.ActionHistory;
@@ -87,7 +88,7 @@ public class GratuityViewer2 extends TransparentPanel implements ActionListener 
         contentPane = new JPanel();
         contentPane.setLayout(new GridLayoutManager(9, 3, new Insets(0, 0, 0, 0), -1, -1));
         final JLabel label1 = new JLabel();
-        label1.setText(com.floreantpos.POSConstants.SELECT_USER + ":");
+        label1.setText(com.floreantpos.POSConstants.SELECT_USER + POSConstants.COLON);
         contentPane.add(label1, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         cbUsers = new JComboBox();
         contentPane.add(cbUsers, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(406, 22), null, 0, false));
@@ -97,22 +98,19 @@ public class GratuityViewer2 extends TransparentPanel implements ActionListener 
         final JSeparator separator1 = new JSeparator();
         contentPane.add(separator1, new GridConstraints(1, 0, 1, 3, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JLabel label2 = new JLabel();
-        label2.setText(com.floreantpos.POSConstants.USER_ID + ":");
+        label2.setText(com.floreantpos.POSConstants.USER_ID + POSConstants.COLON);
         contentPane.add(label2, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         lblUserId = new JLabel();
-        lblUserId.setText("Label");
         contentPane.add(lblUserId, new GridConstraints(2, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(406, 14), null, 0, false));
         final JLabel label3 = new JLabel();
-        label3.setText(com.floreantpos.POSConstants.USER_NAME + ":");
+        label3.setText(com.floreantpos.POSConstants.USER_NAME + POSConstants.COLON);
         contentPane.add(label3, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         lblUserName = new JLabel();
-        lblUserName.setText("Label");
         contentPane.add(lblUserName, new GridConstraints(3, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(406, 14), null, 0, false));
         final JLabel label4 = new JLabel();
-        label4.setText(com.floreantpos.POSConstants.TOTAL_GRATUITY + ":");
+        label4.setText(com.floreantpos.POSConstants.TOTAL_GRATUITY + POSConstants.COLON);
         contentPane.add(label4, new GridConstraints(4, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         lblTotalGratuity = new JLabel();
-        lblTotalGratuity.setText("Label");
         contentPane.add(lblTotalGratuity, new GridConstraints(4, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(406, 14), null, 0, false));
         final JLabel label5 = new JLabel();
         label5.setText(com.floreantpos.POSConstants.DETAILS);
@@ -173,7 +171,7 @@ public class GratuityViewer2 extends TransparentPanel implements ActionListener 
             totalGratuity += gratuity.getAmount();
         }
         lblUserId.setText(String.valueOf(user.getUserId()));
-        lblUserName.setText(user.getFirstName() + " " + user.getLastName());
+        lblUserName.setText(user.getFirstName() + " " + user.getLastName()); //$NON-NLS-1$
         lblTotalGratuity.setText(Application.formatNumber(totalGratuity));
         gratuityTableModel.setRows(gratuities);
 

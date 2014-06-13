@@ -139,7 +139,7 @@ public class ModifierGroupExplorer extends TransparentPanel {
 
 		public Object getValueAt(int rowIndex, int columnIndex) {
 			if (mGroupList == null)
-				return "";
+				return ""; //$NON-NLS-1$
 
 			MenuModifierGroup mgroup = mGroupList.get(rowIndex);
 

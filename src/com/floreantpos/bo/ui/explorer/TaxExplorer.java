@@ -132,7 +132,7 @@ public class TaxExplorer extends TransparentPanel {
 
 		public Object getValueAt(int rowIndex, int columnIndex) {
 			if(taxList == null)
-				return "";
+				return ""; //$NON-NLS-1$
 			
 			Tax tax = taxList.get(rowIndex);
 			
