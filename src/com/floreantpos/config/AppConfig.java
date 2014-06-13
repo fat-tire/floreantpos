@@ -1,7 +1,6 @@
 package com.floreantpos.config;
 
 import java.io.File;
-import java.util.prefs.Preferences;
 
 import org.apache.commons.configuration.PropertiesConfiguration;
 
@@ -24,16 +23,10 @@ public class AppConfig {
 	private static final String PRINT_RECEIPT_ON_ORDER_SETTLE = "print_receipt_on_order_settle"; //$NON-NLS-1$
 	private static final String PRINT_RECEIPT_ON_ORDER_FINISH = "print_receipt_on_order_finish"; //$NON-NLS-1$
 	
-	private final static Preferences pref = Preferences.userNodeForPackage(Application.class);
-	
 	private static PropertiesConfiguration config;
-	
-	private static PropertiesConfiguration configuration;
 	
 	static {
 		try {
-			configuration = new PropertiesConfiguration(AppConfig.class.getResource("/floreantpos.properties")); //$NON-NLS-1$
-			
 			File workingDir = Application.getWorkingDir();
 			File configFile = new File(workingDir, "floreantpos.config.properties"); //$NON-NLS-1$
 			if(!configFile.exists()) {
@@ -56,12 +49,16 @@ public class AppConfig {
 		config.setProperty(TERMINAL_ID, id);
 	}
 
-	public static Preferences getPreferences() {
-		return pref;
-	}
-	
 	public static boolean getBoolean(String key, boolean defaultValue) {
 		return config.getBoolean(key, defaultValue);
+	}
+	
+	public static int getInt(String key, int defaultValue) {
+		return config.getInt(key, defaultValue);
+	}
+	
+	public static void putInt(String key, int value) {
+		config.setProperty(key, value);
 	}
 	
 	public static String getString(String key) {
@@ -182,9 +179,5 @@ public class AppConfig {
 	
 	public static void setPrintToKitchenOnOrderSettle(boolean print) {
 		config.setProperty(KITCHEN_PRINT_ON_ORDER_SETTLE, print);
-	}
-	
-	public static PropertiesConfiguration getConfiguration() {
-		return configuration;
 	}
 }

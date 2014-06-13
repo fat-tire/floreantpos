@@ -20,7 +20,6 @@ import net.miginfocom.swing.MigLayout;
 import org.apache.commons.lang.StringUtils;
 
 import com.floreantpos.Database;
-import com.floreantpos.POSConstants;
 import com.floreantpos.config.AppConfig;
 import com.floreantpos.main.Application;
 import com.floreantpos.swing.POSPasswordField;
@@ -185,7 +184,7 @@ public class DatabaseConfigurationDialog extends POSDialog implements ActionList
 		
 		Database selectedDb = (Database) databaseCombo.getSelectedItem();
 		
-		String providerName = selectedDb.getProviderName();
+		String providerName = selectedDb.getName();
 		String databaseURL = tfServerAddress.getText();
 		String databasePort = tfServerPort.getText();
 		String databaseName = tfDatabaseName.getText();

@@ -2,12 +2,14 @@ package com.floreantpos;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.floreantpos.config.AppConfig;
+
 public enum Database {
 	DEMO_DATABASE(Messages.getString("Database.DERBY_SINGLE"), "jdbc:derby:database/derby-single/posdb", "jdbc:derby:database/derby-single/posdb;create=true", "", "org.apache.derby.jdbc.EmbeddedDriver", "org.hibernate.dialect.DerbyDialect"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
 	DERBY_SERVER(Messages.getString("Database.DERBY_SERVER"), "jdbc:derby://<host>:<port>/<db>", "jdbc:derby://<host>:<port>/<db>;create=true", "51527", "org.apache.derby.jdbc.ClientDriver", "org.hibernate.dialect.DerbyDialect"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
 	MYSQL(Messages.getString("Database.MYSQL"), "jdbc:mysql://<host>:<port>/<db>", "jdbc:mysql://<host>:<port>/<db>", "3306", "com.mysql.jdbc.Driver", "org.hibernate.dialect.MySQLDialect"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
 
-	private String providerName;
+	private String name;
 	private String jdbcUrlFormat;
 	private String jdbcUrlFormatToCreateDb;
 	private String defaultPort;
@@ -15,7 +17,7 @@ public enum Database {
 	private String hibernateDialect;
 
 	private Database(String name, String jdbcURL, String jdbcURL2CreateDb, String defaultPort, String driverClass, String hibernateDialect) {
-		this.providerName = name;
+		this.name = name;
 		this.jdbcUrlFormat = jdbcURL;
 		this.jdbcUrlFormatToCreateDb = jdbcURL2CreateDb;
 		this.defaultPort = defaultPort;
@@ -49,8 +51,8 @@ public enum Database {
 		return connectionURL;
 	}
 
-	public String getProviderName() {
-		return providerName;
+	public String getName() {
+		return name;
 	}
 
 	public String getJdbcUrlFormat() {
@@ -60,10 +62,14 @@ public enum Database {
 	public String getDefaultPort() {
 		return defaultPort;
 	}
+	
+	public String getPort() {
+		return AppConfig.getString(getName() + ".port", getDefaultPort());
+	}
 
 	@Override
 	public String toString() {
-		return this.providerName;
+		return this.name;
 	}
 
 	public String getHibernateConnectionDriverClass() {
@@ -77,7 +83,7 @@ public enum Database {
 	public static Database getByProviderName(String providerName) {
 		Database[] databases = values();
 		for (Database database : databases) {
-			if(database.providerName.equals(providerName)) {
+			if(database.name.equals(providerName)) {
 				return database;
 			}
 		}
