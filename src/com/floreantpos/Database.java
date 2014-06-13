@@ -64,7 +64,7 @@ public enum Database {
 	}
 	
 	public String getPort() {
-		return AppConfig.getString(getName() + ".port", getDefaultPort());
+		return AppConfig.getString(getName() + ".port", getDefaultPort()); //$NON-NLS-1$
 	}
 
 	@Override

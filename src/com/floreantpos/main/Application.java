@@ -5,7 +5,6 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
 
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
@@ -60,7 +59,7 @@ public class Application {
 	public final static String VERSION = AppProperties.getVersion();
 
 	private Application() {
-		Locale.setDefault(Locale.forLanguageTag("ar-EG"));
+		//Locale.setDefault(Locale.forLanguageTag("ar-EG"));
 
 		applicationIcon = new ImageIcon(getClass().getResource("/icons/icon.png"));
 		posWindow = new PosWindow();
