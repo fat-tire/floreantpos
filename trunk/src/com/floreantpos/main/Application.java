@@ -8,6 +8,7 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -62,6 +63,8 @@ public class Application {
 	public final static String VERSION = AppConfig.getConfiguration().getString("floreantpos.version");
 
 	private Application() {
+		Locale.setDefault(Locale.forLanguageTag("ar-EG"));
+
 		applicationIcon = new ImageIcon(getClass().getResource("/icons/icon.png"));
 		posWindow = new PosWindow();
 		posWindow.setTitle(getTitle());
@@ -79,6 +82,7 @@ public class Application {
 		
 		posWindow.setLocation(AppConfig.getPreferences().getInt("wlocx", ((screenSize.width - posWindow.getWidth()) >> 1)), AppConfig.getPreferences().getInt("wlocy", ((screenSize.height - posWindow.getHeight()) >> 1)));
 		posWindow.setMinimumSize(new Dimension(800, 600));
+		posWindow.setSize(new Dimension(1024, 680));
 		posWindow.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		posWindow.setVisible(true);
 	}

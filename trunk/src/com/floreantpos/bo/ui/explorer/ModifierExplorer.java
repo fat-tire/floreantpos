@@ -114,8 +114,7 @@ public class ModifierExplorer extends TransparentPanel {
 	}
 
 	class ModifierExplorerTableModel extends AbstractTableModel {
-		private static final String UNASSIGNED = "<unassigned>";
-		String[] columnNames = {com.floreantpos.POSConstants.ID, com.floreantpos.POSConstants.NAME, com.floreantpos.POSConstants.PRICE + " (" + currencySymbol + ")", com.floreantpos.POSConstants.EXTRA_PRICE, com.floreantpos.POSConstants.TAX + "(%)", com.floreantpos.POSConstants.MODIFIER_GROUP };
+		String[] columnNames = {com.floreantpos.POSConstants.ID, com.floreantpos.POSConstants.NAME, com.floreantpos.POSConstants.PRICE + " (" + currencySymbol + ")", com.floreantpos.POSConstants.EXTRA_PRICE, com.floreantpos.POSConstants.TAX + "(%)", com.floreantpos.POSConstants.MODIFIER_GROUP }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 		public int getRowCount() {
 			if (modifierList == null) {
@@ -140,7 +139,7 @@ public class ModifierExplorer extends TransparentPanel {
 
 		public Object getValueAt(int rowIndex, int columnIndex) {
 			if (modifierList == null)
-				return "";
+				return ""; //$NON-NLS-1$
 
 			MenuModifier modifier = modifierList.get(rowIndex);
 
@@ -159,13 +158,13 @@ public class ModifierExplorer extends TransparentPanel {
 					
 				case 4:
 					if(modifier.getTax() == null) {
-						return UNASSIGNED;
+						return ""; //$NON-NLS-1$
 					}
 					return Double.valueOf(modifier.getTax().getRate());
 					
 				case 5:
 					if(modifier.getModifierGroup() == null) {
-						return UNASSIGNED;
+						return ""; //$NON-NLS-1$
 					}
 					return modifier.getModifierGroup().getName();
 			}

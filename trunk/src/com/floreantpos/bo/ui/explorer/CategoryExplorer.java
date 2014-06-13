@@ -133,7 +133,7 @@ public class CategoryExplorer extends TransparentPanel {
 
 		public Object getValueAt(int rowIndex, int columnIndex) {
 			if(categoryList == null)
-				return "";
+				return ""; //$NON-NLS-1$
 			
 			MenuCategory category = categoryList.get(rowIndex);
 			

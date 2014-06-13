@@ -63,15 +63,15 @@ public class RestaurantPropertyDialog extends POSDialog {
 
 		setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-		jLabel1.setText(com.floreantpos.POSConstants.RESTAURANT_NAME + ":");
+		jLabel1.setText(com.floreantpos.POSConstants.RESTAURANT_NAME + POSConstants.COLON);
 
-		jLabel2.setText(com.floreantpos.POSConstants.ADDRESS_LINE1 + ":");
+		jLabel2.setText(com.floreantpos.POSConstants.ADDRESS_LINE1 + POSConstants.COLON);
 
-		jLabel3.setText(com.floreantpos.POSConstants.ADDRESS_LINE2 + ":");
+		jLabel3.setText(com.floreantpos.POSConstants.ADDRESS_LINE2 + POSConstants.COLON);
 
-		jLabel4.setText(com.floreantpos.POSConstants.CAPACITY + ":");
+		jLabel4.setText(com.floreantpos.POSConstants.CAPACITY + POSConstants.COLON);
 
-		jLabel5.setText(com.floreantpos.POSConstants.TABLES + ":");
+		jLabel5.setText(com.floreantpos.POSConstants.TABLES + POSConstants.COLON);
 
 		btnCancel.setText(com.floreantpos.POSConstants.CLOSE);
 		btnCancel.addActionListener(new java.awt.event.ActionListener() {

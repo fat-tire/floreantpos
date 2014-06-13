@@ -11,7 +11,7 @@ public class IconFactory {
 		ImageIcon icon = iconCache.get(iconName);
 		if(icon == null) {
 			try {
-				icon = new ImageIcon(IconFactory.class.getResource("/images/" + iconName));
+				icon = new ImageIcon(IconFactory.class.getResource("/images/" + iconName)); //$NON-NLS-1$
 				iconCache.put(iconName, icon);
 			}catch(Exception x) {}
 		}

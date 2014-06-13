@@ -123,7 +123,7 @@ public class CouponExplorer extends TransparentPanel implements ActionListener {
 		}
 
 		public Object getValueAt(int row, int column) {
-			if(couponList == null) return "";
+			if(couponList == null) return ""; //$NON-NLS-1$
 			
 			CouponAndDiscount coupon = couponList.get(row);
 			switch(column) {

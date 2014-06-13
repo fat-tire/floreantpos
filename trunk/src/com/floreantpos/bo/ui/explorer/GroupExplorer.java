@@ -134,7 +134,7 @@ public class GroupExplorer extends TransparentPanel {
 
 		public Object getValueAt(int rowIndex, int columnIndex) {
 			if (groupList == null)
-				return "";
+				return ""; //$NON-NLS-1$
 
 			MenuGroup category = groupList.get(rowIndex);
 

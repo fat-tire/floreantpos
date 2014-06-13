@@ -345,12 +345,12 @@ public class Ticket extends BaseTicket {
 			return 0;
 		}
 		
-		Restaurant restaurant = Application.getInstance().getRestaurant();
-		double serviceChargePercentage = restaurant.getServiceChargePercentage();
-		
-		if(serviceChargePercentage > 0.0) {
-			return getDueAmount() * (serviceChargePercentage / 100.0);
-		}
+//		Restaurant restaurant = Application.getInstance().getRestaurant();
+//		double serviceChargePercentage = restaurant.getServiceChargePercentage();
+//		
+//		if(serviceChargePercentage > 0.0) {
+//			return getDueAmount() * (serviceChargePercentage / 100.0);
+//		}
 		
 		return 0;
 	}

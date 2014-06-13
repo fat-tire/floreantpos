@@ -134,7 +134,7 @@ public class UserTypeExplorer extends TransparentPanel {
 
 		public Object getValueAt(int rowIndex, int columnIndex) {
 			if(typeList == null)
-				return "";
+				return ""; //$NON-NLS-1$
 			
 			UserType userType = typeList.get(rowIndex);
 			

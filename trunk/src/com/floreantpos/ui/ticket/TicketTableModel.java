@@ -150,7 +150,7 @@ public class TicketTableModel extends AbstractTableModel {
 			List<TicketItem> ticketItems = ticket.getTicketItems();
 			boolean exists = false;
 			for (TicketItem item : ticketItems) {
-				if (item.getName().equals(ticketItem.getName())) {
+				if (item.getName().equals(ticketItem.getName()) && !item.isPrintedToKitchen()) {
 					int itemCount = item.getItemCount();
 					item.setItemCount(++itemCount);
 					exists = true;

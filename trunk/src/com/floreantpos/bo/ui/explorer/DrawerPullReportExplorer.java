@@ -35,7 +35,7 @@ public class DrawerPullReportExplorer extends TransparentPanel {
 	private JButton btnGo = new JButton(com.floreantpos.POSConstants.GO);
 	private JButton btnEditActualAmount = new JButton(com.floreantpos.POSConstants.EDIT_ACTUAL_AMOUNT);
 	
-	private static SimpleDateFormat dateTimeFormatter = new SimpleDateFormat("dd MMM, yyyy hh:mm a");
+	private static SimpleDateFormat dateTimeFormatter = new SimpleDateFormat("dd MMM, yyyy hh:mm a"); //$NON-NLS-1$
 
 	private JTable table;
 
@@ -44,11 +44,11 @@ public class DrawerPullReportExplorer extends TransparentPanel {
 
 		JPanel topPanel = new JPanel(new MigLayout());
 
-		topPanel.add(new JLabel(com.floreantpos.POSConstants.FROM), "grow");
-		topPanel.add(fromDatePicker, "wrap");
-		topPanel.add(new JLabel(com.floreantpos.POSConstants.TO), "grow");
-		topPanel.add(toDatePicker, "wrap");
-		topPanel.add(btnGo, "skip 1, al right");
+		topPanel.add(new JLabel(com.floreantpos.POSConstants.FROM), "grow"); //$NON-NLS-1$
+		topPanel.add(fromDatePicker, "wrap"); //$NON-NLS-1$
+		topPanel.add(new JLabel(com.floreantpos.POSConstants.TO), "grow"); //$NON-NLS-1$
+		topPanel.add(toDatePicker, "wrap"); //$NON-NLS-1$
+		topPanel.add(btnGo, "skip 1, al right"); //$NON-NLS-1$
 		add(topPanel, BorderLayout.NORTH);
 
 		add(new JScrollPane(table = new JTable(new DrawerPullExplorerTableModel(null))));
@@ -80,7 +80,7 @@ public class DrawerPullReportExplorer extends TransparentPanel {
 						return;
 					}
 					
-					String amountString = JOptionPane.showInputDialog(DrawerPullReportExplorer.this, com.floreantpos.POSConstants.ENTER_ACTUAL_AMOUNT + ":");
+					String amountString = JOptionPane.showInputDialog(DrawerPullReportExplorer.this, com.floreantpos.POSConstants.ENTER_ACTUAL_AMOUNT + ":"); //$NON-NLS-1$
 					if(amountString == null) {
 						return;
 					}
