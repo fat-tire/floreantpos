@@ -6,13 +6,18 @@
 
 package com.floreantpos.ui.views;
 
+import java.awt.ComponentOrientation;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JPanel;
+
+import net.miginfocom.swing.MigLayout;
 
 import com.floreantpos.POSConstants;
 import com.floreantpos.config.ui.DatabaseConfigurationDialog;
@@ -26,10 +31,9 @@ import com.floreantpos.model.dao.UserDAO;
 import com.floreantpos.swing.MessageDialog;
 import com.floreantpos.swing.POSPasswordField;
 import com.floreantpos.swing.POSTextField;
+import com.floreantpos.swing.PosButton;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.util.ShiftUtil;
-import java.awt.Dimension;
-import com.floreantpos.swing.PosButton;
 
 /**
  * 
@@ -43,6 +47,8 @@ public class PasswordScreen extends JPanel {
 
 		btnConfigureDatabase.setAction(goAction);
 		btnConfigureDatabase.setActionCommand("DBCONFIG");
+		
+		applyComponentOrientation(ComponentOrientation.getOrientation(Locale.getDefault()));
 	}
 
 	/**
@@ -53,8 +59,6 @@ public class PasswordScreen extends JPanel {
 	// <editor-fold defaultstate="collapsed"
 	// desc="Generated Code">//GEN-BEGIN:initComponents
 	private void initComponents() {
-		java.awt.GridBagConstraints gridBagConstraints;
-
 		buttonPanel = new javax.swing.JPanel();
 		posButton4 = new com.floreantpos.swing.PosButton();
 		posButton13 = new com.floreantpos.swing.PosButton();
@@ -73,96 +77,85 @@ public class PasswordScreen extends JPanel {
 		tfPassword = new POSPasswordField();
 		tfUserId = new POSTextField();
 		jLabel4 = new javax.swing.JLabel();
-		jPanel1 = new javax.swing.JPanel();
 		jPanel3 = new javax.swing.JPanel();
 		btnConfigureDatabase = new com.floreantpos.swing.PosButton();
 		btnLogin = new com.floreantpos.swing.PosButton();
 		btnShutdown = new com.floreantpos.swing.PosButton();
-		jPanel4 = new javax.swing.JPanel();
 
-		setPreferredSize(new Dimension(343, 524));
-		setLayout(new java.awt.GridBagLayout());
+		setPreferredSize(new Dimension(343, 593));
+		setLayout(new MigLayout("ins 0", "[343px,grow]", "[126px][270px][grow][110px]"));
 
 		buttonPanel.setOpaque(false);
 		buttonPanel.setPreferredSize(new java.awt.Dimension(280, 180));
-		buttonPanel.setLayout(new java.awt.GridLayout(0, 3, 5, 5));
+		buttonPanel.setLayout(new MigLayout("", "[111px][111px][111px]", "[60px][60px][60px][60px]"));
 
 		posButton4.setAction(goAction);
 		posButton4.setIcon(com.floreantpos.IconFactory.getIcon("7_32.png"));
 		posButton4.setActionCommand("7");
 		posButton4.setFocusable(false);
-		buttonPanel.add(posButton4);
+		buttonPanel.add(posButton4, "cell 0 0,grow");
 
 		posButton13.setAction(goAction);
 		posButton13.setIcon(com.floreantpos.IconFactory.getIcon("8_32.png"));
 		posButton13.setActionCommand("8");
 		posButton13.setFocusable(false);
-		buttonPanel.add(posButton13);
+		buttonPanel.add(posButton13, "cell 1 0,grow");
 
 		posButton12.setAction(goAction);
 		posButton12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/9_32.png"))); // NOI18N
 		posButton12.setActionCommand("9");
 		posButton12.setFocusable(false);
-		buttonPanel.add(posButton12);
+		buttonPanel.add(posButton12, "cell 2 0,grow");
 
 		posButton9.setAction(goAction);
 		posButton9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/4_32.png"))); // NOI18N
 		posButton9.setActionCommand("4");
 		posButton9.setFocusable(false);
-		buttonPanel.add(posButton9);
+		buttonPanel.add(posButton9, "cell 0 1,grow");
 
 		posButton10.setAction(goAction);
 		posButton10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/5_32.png"))); // NOI18N
 		posButton10.setActionCommand("5");
 		posButton10.setFocusable(false);
-		buttonPanel.add(posButton10);
+		buttonPanel.add(posButton10, "cell 1 1,grow");
 
 		posButton11.setAction(goAction);
 		posButton11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/6_32.png"))); // NOI18N
 		posButton11.setActionCommand("6");
 		posButton11.setFocusable(false);
-		buttonPanel.add(posButton11);
+		buttonPanel.add(posButton11, "cell 2 1,grow");
 
 		posButton8.setAction(goAction);
 		posButton8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/1_32.png"))); // NOI18N
 		posButton8.setActionCommand("1");
 		posButton8.setFocusable(false);
-		buttonPanel.add(posButton8);
+		buttonPanel.add(posButton8, "cell 0 2,grow");
 
 		posButton7.setAction(goAction);
 		posButton7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/2_32.png"))); // NOI18N
 		posButton7.setActionCommand("2");
 		posButton7.setFocusable(false);
-		buttonPanel.add(posButton7);
+		buttonPanel.add(posButton7, "cell 1 2,grow");
 
 		posButton6.setAction(goAction);
 		posButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/3_32.png"))); // NOI18N
 		posButton6.setActionCommand("3");
 		posButton6.setFocusable(false);
-		buttonPanel.add(posButton6);
+		buttonPanel.add(posButton6, "cell 2 2,grow");
 
 		posButton3.setAction(goAction);
 		posButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/0_32.png"))); // NOI18N
 		posButton3.setActionCommand("0");
 		posButton3.setFocusable(false);
-		buttonPanel.add(posButton3);
+		buttonPanel.add(posButton3, "cell 0 3,grow");
 
 		posButton1.setAction(goAction);
 		posButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/clear_32.png"))); // NOI18N
 		posButton1.setText(com.floreantpos.POSConstants.CLEAR);
 		posButton1.setFocusable(false);
 		posButton1.setPreferredSize(new java.awt.Dimension(90, 50));
-		buttonPanel.add(posButton1);
-
-		gridBagConstraints = new java.awt.GridBagConstraints();
-		gridBagConstraints.gridx = 0;
-		gridBagConstraints.gridy = 1;
-		gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-		gridBagConstraints.ipady = 80;
-		gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
-		gridBagConstraints.weightx = 1.0;
-		gridBagConstraints.weighty = 1.0;
-		add(buttonPanel, gridBagConstraints);
+		buttonPanel.add(posButton1, "cell 1 3,grow");
+		add(buttonPanel, "cell 0 1,grow");
 
 		jPanel2.setOpaque(false);
 
@@ -182,78 +175,43 @@ public class PasswordScreen extends JPanel {
 		jLabel4.setFont(new java.awt.Font("DejaVu Sans", 1, 24));
 		jLabel4.setForeground(new java.awt.Color(204, 102, 0));
 		jLabel4.setText(com.floreantpos.POSConstants.USER_TYPE + ":");
-
-		org.jdesktop.layout.GroupLayout jPanel2Layout = new org.jdesktop.layout.GroupLayout(jPanel2);
-		jPanel2.setLayout(jPanel2Layout);
-		jPanel2Layout.setHorizontalGroup(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-				.add(jLabel1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 387, Short.MAX_VALUE)
-				.add(jPanel2Layout.createParallelGroup().add(jLabel2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 363, Short.MAX_VALUE))
-				.add(org.jdesktop.layout.GroupLayout.TRAILING, tfPassword, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 387, Short.MAX_VALUE)
-				.add(tfUserId, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 387, Short.MAX_VALUE).add(jPanel2Layout.createSequentialGroup()));
-		jPanel2Layout.setVerticalGroup(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(
-				jPanel2Layout
-						.createSequentialGroup()
-						.add(jLabel1)
-						.addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-						.add(tfUserId, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 31, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-						.addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-						.add(jLabel2)
-						.addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-						.add(tfPassword, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
-								org.jdesktop.layout.GroupLayout.PREFERRED_SIZE).addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)));
-
-		gridBagConstraints = new java.awt.GridBagConstraints();
-		gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-		gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
-		gridBagConstraints.weightx = 1.0;
-		gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 0);
-		add(jPanel2, gridBagConstraints);
-
-		jPanel1.setLayout(new java.awt.BorderLayout());
+		add(jPanel2, "cell 0 0,growx,aligny top");
+		jPanel2.setLayout(new MigLayout("", "[343px]", "[22px][31px][22px][26px]"));
+		jPanel2.add(jLabel1, "cell 0 0,growx,aligny top");
+		jPanel2.add(jLabel2, "cell 0 2,growx,aligny top");
+		jPanel2.add(tfPassword, "cell 0 3,growx,aligny top");
+		jPanel2.add(tfUserId, "cell 0 1,grow");
 
 		jPanel3.setPreferredSize(new java.awt.Dimension(100, 105));
-		jPanel3.setLayout(new java.awt.GridLayout(2, 0, 5, 5));
+		jPanel3.setLayout(new MigLayout("", "[157px][157px]", "[45px][45px]"));
 
 		btnConfigureDatabase.setAction(goAction);
 		btnConfigureDatabase.setText(com.floreantpos.POSConstants.CONFIGURE_DATABASE);
 		btnConfigureDatabase.setFocusable(false);
-		jPanel3.add(btnConfigureDatabase);
+		jPanel3.add(btnConfigureDatabase, "cell 0 0,grow");
 
 		btnLogin.setAction(goAction);
 		btnLogin.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/log_in_32.png"))); // NOI18N
 		btnLogin.setText(com.floreantpos.POSConstants.LOGIN);
 		btnLogin.setFocusable(false);
-		jPanel3.add(btnLogin);
+		jPanel3.add(btnLogin, "cell 1 0,grow");
 
 		psbtnTerminalSetup = new PosButton();
 		psbtnTerminalSetup.setVisible(false);
+		
+		panel = new JPanel();
+		add(panel, "cell 0 2,grow");
 		psbtnTerminalSetup.setAction(goAction);
 		psbtnTerminalSetup.setText(POSConstants.TERMINAL_SETUP);
-		jPanel3.add(psbtnTerminalSetup);
+		jPanel3.add(psbtnTerminalSetup, "cell 0 1,grow");
 
 		btnShutdown.setAction(goAction);
 		btnShutdown.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/shut_down_32.png"))); // NOI18N
 		btnShutdown.setText(com.floreantpos.POSConstants.SHUTDOWN);
 		btnShutdown.setFocusable(false);
-		jPanel3.add(btnShutdown);
+		jPanel3.add(btnShutdown, "cell 1 1,grow");
 
-		jPanel1.add(jPanel3, java.awt.BorderLayout.SOUTH);
-
-		org.jdesktop.layout.GroupLayout jPanel4Layout = new org.jdesktop.layout.GroupLayout(jPanel4);
-		jPanel4.setLayout(jPanel4Layout);
-		jPanel4Layout.setHorizontalGroup(jPanel4Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(0, 387, Short.MAX_VALUE));
-		jPanel4Layout.setVerticalGroup(jPanel4Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(0, 64, Short.MAX_VALUE));
-
-		jPanel1.add(jPanel4, java.awt.BorderLayout.CENTER);
-
-		gridBagConstraints = new java.awt.GridBagConstraints();
-		gridBagConstraints.gridx = 0;
-		gridBagConstraints.gridy = 2;
-		gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-		gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
-		gridBagConstraints.weightx = 1.0;
-		gridBagConstraints.weighty = 1.0;
-		add(jPanel1, gridBagConstraints);
+		add(jPanel3, "cell 0 3,growx,aligny bottom");
 	}// </editor-fold>//GEN-END:initComponents
 
 	public void doLogin() {
@@ -372,10 +330,8 @@ public class PasswordScreen extends JPanel {
 	private javax.swing.JLabel jLabel1;
 	private javax.swing.JLabel jLabel2;
 	private javax.swing.JLabel jLabel4;
-	private javax.swing.JPanel jPanel1;
 	private javax.swing.JPanel jPanel2;
 	private javax.swing.JPanel jPanel3;
-	private javax.swing.JPanel jPanel4;
 	private com.floreantpos.swing.PosButton posButton1;
 	private com.floreantpos.swing.PosButton posButton10;
 	private com.floreantpos.swing.PosButton posButton11;
@@ -431,6 +387,7 @@ public class PasswordScreen extends JPanel {
 		}
 	};
 	private PosButton psbtnTerminalSetup;
+	private JPanel panel;
 
 	@Override
 	public void setVisible(boolean aFlag) {

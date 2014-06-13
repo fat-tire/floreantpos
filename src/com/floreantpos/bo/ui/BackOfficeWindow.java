@@ -6,6 +6,7 @@
 
 package com.floreantpos.bo.ui;
 
+import java.awt.ComponentOrientation;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -13,6 +14,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.Locale;
 import java.util.Set;
 
 import javax.swing.AbstractAction;
@@ -110,6 +112,7 @@ public class BackOfficeWindow extends javax.swing.JFrame {
 		});
 
 		setTitle(Application.getTitle() + "- " + com.floreantpos.POSConstants.BACK_OFFICE); //$NON-NLS-1$
+		applyComponentOrientation(ComponentOrientation.getOrientation(Locale.getDefault()));
 	}
 
 	private void positionWindow() {

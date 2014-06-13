@@ -12,7 +12,7 @@ import com.floreantpos.config.UIConfig;
 
 public class PosButton extends JButton {
 	public static Border border = new LineBorder(Color.BLACK, 1);
-	static Insets margin = new Insets(1, 1, 1, 1);
+	static Insets margin = new Insets(8, 5, 8, 5);
 
 	static POSButtonUI ui = new POSButtonUI();
 
