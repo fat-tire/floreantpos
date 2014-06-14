@@ -129,7 +129,7 @@ public class AppConfig {
 	}
 	
 	public static String getDatabaseProviderName() {
-		return config.getString(DATABASE_PROVIDER_NAME, Database.DEMO_DATABASE.getProviderName()); //$NON-NLS-1$
+		return config.getString(DATABASE_PROVIDER_NAME, Database.DERBY_SINGLE.getProviderName()); //$NON-NLS-1$
 	}
 	
 	public static Database getDefaultDatabase() {

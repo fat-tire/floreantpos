@@ -49,10 +49,10 @@
 			</includes>
 		</fileSet>
 		<fileSet>
-			<directory>database/derby-single</directory>
+			<directory>${project.build.directory}</directory>
 			<outputDirectory>database/derby-single</outputDirectory>
 			<includes>
-				<include>**/*</include>
+				<include>posdb/**/*</include>
 			</includes>
 		</fileSet>
 		<fileSet>
