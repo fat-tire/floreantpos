@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>floreantpos</groupId>
 	<artifactId>floreantpos</artifactId>
-	<version>1.4-SNAPSHOT</version>
+	<version>1.4-${buildNumber}</version>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -133,7 +133,6 @@
 						<phase>package</phase>
 						<configuration>
 							<target>
-								<echo message="after it0 ${project.version}" />
 								<zip
 									destfile="${project.build.directory}/${project.build.finalName}-${project.version}.zip"
 									basedir="${project.build.directory}/${project.build.finalName}-bin/${project.build.finalName}-${project.version}"></zip>
