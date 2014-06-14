@@ -7,6 +7,7 @@ import javax.swing.JOptionPane;
 
 import net.miginfocom.swing.MigLayout;
 
+import com.floreantpos.Messages;
 import com.floreantpos.model.Restaurant;
 import com.floreantpos.model.dao.RestaurantDAO;
 
@@ -19,7 +20,7 @@ public class DrawerPullConfigurationView extends ConfigurationView {
 	JCheckBox chkAutoDrawerPull;
 	
 	public DrawerPullConfigurationView() {
-		setLayout(new MigLayout("align 50% 50%"));
+		setLayout(new MigLayout("align 50% 50%")); //$NON-NLS-1$
 		
 		Integer[] hours = new Integer[24];
 		Integer[] minutes = new Integer[60];
@@ -31,12 +32,12 @@ public class DrawerPullConfigurationView extends ConfigurationView {
 			minutes[i] = Integer.valueOf(i);
 		}
 		
-		add(chkAutoDrawerPull = new JCheckBox(com.floreantpos.POSConstants.AUTO_DRAWER_PULL_EVERY_DAY_AT_), "wrap, span");
-		add(new JLabel(com.floreantpos.POSConstants.HOUR + ":"), "");
-		add(cbHour = new JComboBox(hours), "");
+		add(chkAutoDrawerPull = new JCheckBox(com.floreantpos.POSConstants.AUTO_DRAWER_PULL_EVERY_DAY_AT_), "wrap, span"); //$NON-NLS-1$
+		add(new JLabel(com.floreantpos.POSConstants.HOUR + ":"), ""); //$NON-NLS-1$ //$NON-NLS-2$
+		add(cbHour = new JComboBox(hours), ""); //$NON-NLS-1$
 		
-		add(new JLabel("Min" + ":"), "");
-		add(cbMin = new JComboBox(minutes), "");
+		add(new JLabel(Messages.getString("DrawerPullConfigurationView.MINUTE") + ":"), ""); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		add(cbMin = new JComboBox(minutes), ""); //$NON-NLS-1$
 	}
 
 	@Override
@@ -51,7 +52,7 @@ public class DrawerPullConfigurationView extends ConfigurationView {
 
 		dao.saveOrUpdate(restaurant);
 		
-		JOptionPane.showMessageDialog(this, "You must restart POS for the Auto drawer pull change to take effect");
+		JOptionPane.showMessageDialog(this, Messages.getString("DrawerPullConfigurationView.RESTART_MESSAGE")); //$NON-NLS-1$
 		return true;
 	}
 	
@@ -69,6 +70,6 @@ public class DrawerPullConfigurationView extends ConfigurationView {
 	
 	@Override
 	public String getName() {
-		return "Auto Drawer Pull Configuration";
+		return Messages.getString("DrawerPullConfigurationView.DRAWER_PULL_CONFIG"); //$NON-NLS-1$
 	}
 }
