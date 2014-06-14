@@ -159,7 +159,7 @@ public class DatabaseConfigurationDialog extends POSDialog implements ActionList
 	private void setFieldValues() {
 		Database selectedDb = (Database) databaseCombo.getSelectedItem();
 		
-		String databaseURL = AppConfig.getDatabaseURL();
+		String databaseURL = AppConfig.getDatabaseHost();
 		tfServerAddress.setText(databaseURL);
 		
 		String databasePort = AppConfig.getDatabasePort();
@@ -185,7 +185,7 @@ public class DatabaseConfigurationDialog extends POSDialog implements ActionList
 		
 		Database selectedDb = (Database) databaseCombo.getSelectedItem();
 		
-		String providerName = selectedDb.getEngineName();
+		String providerName = selectedDb.getProviderName();
 		String databaseURL = tfServerAddress.getText();
 		String databasePort = tfServerPort.getText();
 		String databaseName = tfDatabaseName.getText();
@@ -231,6 +231,7 @@ public class DatabaseConfigurationDialog extends POSDialog implements ActionList
 			}
 		}
 		else if(SAVE.equalsIgnoreCase(command)) {
+			Application.getInstance().setSystemInitialized(false);
 			saveConfig(selectedDb, providerName, databaseURL, databasePort, databaseName, user, pass, connectionString, hibernateDialect);
 			dispose();
 		}
@@ -242,10 +243,8 @@ public class DatabaseConfigurationDialog extends POSDialog implements ActionList
 	private void saveConfig(Database selectedDb, String providerName, String databaseURL, String databasePort, String databaseName, String user, String pass,
 			String connectionString, String hibernateDialect) {
 		AppConfig.setDatabaseProviderName(providerName);
-		AppConfig.setHibernateConnectionDriverClass(selectedDb.getHibernateConnectionDriverClass());
-		AppConfig.setHibernateDialect(hibernateDialect);
 		AppConfig.setConnectString(connectionString);
-		AppConfig.setDatabaseURL(databaseURL);
+		AppConfig.setDatabaseHost(databaseURL);
 		AppConfig.setDatabasePort(databasePort);
 		AppConfig.setDatabaseName(databaseName);
 		AppConfig.setDatabaseUser(user);
