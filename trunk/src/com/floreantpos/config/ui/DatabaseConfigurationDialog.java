@@ -139,7 +139,7 @@ public class DatabaseConfigurationDialog extends POSDialog implements ActionList
 			public void actionPerformed(ActionEvent e) {
 				Database selectedDb = (Database) databaseCombo.getSelectedItem();
 				
-				if(selectedDb == Database.DEMO_DATABASE) {
+				if(selectedDb == Database.DERBY_SINGLE) {
 					setFieldsVisible(false);
 					return;
 				}
@@ -172,7 +172,7 @@ public class DatabaseConfigurationDialog extends POSDialog implements ActionList
 		tfUserName.setText(AppConfig.getDatabaseUser());
 		tfPassword.setText(AppConfig.getDatabasePassword());
 		
-		if(selectedDb == Database.DEMO_DATABASE) {
+		if(selectedDb == Database.DERBY_SINGLE) {
 			setFieldsVisible(false);
 		}
 		else {
