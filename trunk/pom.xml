@@ -26,9 +26,7 @@
 			<resource>
 				<directory>resources</directory>
 			</resource>
-			<resource>
-				<directory>config</directory>
-			</resource>
+			<!-- <resource> <directory>config</directory> </resource> -->
 			<resource>
 				<directory>filters</directory>
 				<filtering>true</filtering>
@@ -89,6 +87,9 @@
 							<classpathPrefix>lib/</classpathPrefix>
 							<mainClass>com.floreantpos.main.Main</mainClass>
 						</manifest>
+						<manifestEntries>
+							<Class-Path>i18n/</Class-Path>
+						</manifestEntries>
 					</archive>
 				</configuration>
 			</plugin>
