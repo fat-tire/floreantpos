@@ -5,7 +5,6 @@ import java.io.File;
 import org.apache.commons.configuration.PropertiesConfiguration;
 
 import com.floreantpos.Database;
-import com.floreantpos.main.Application;
 
 public class AppConfig {
 	private static final String TERMINAL_ID = "terminal_id"; //$NON-NLS-1$
@@ -26,8 +25,8 @@ public class AppConfig {
 	
 	static {
 		try {
-			File workingDir = Application.getWorkingDir();
-			File configFile = new File(workingDir, "floreantpos.config.properties"); //$NON-NLS-1$
+			//File workingDir = Application.getWorkingDir();
+			File configFile = new File("floreantpos.config.properties"); //$NON-NLS-1$
 			if(!configFile.exists()) {
 				configFile.createNewFile();
 			}
