@@ -32,25 +32,25 @@ public class RestaurantConfigurationView extends ConfigurationView {
 	public RestaurantConfigurationView() {
 		setLayout(new MigLayout("", "[grow][grow][][grow]", "[grow][][][][][][][][][][][][]"));
 		
-		JLabel lblNewLabel = new JLabel("Restaurant name:");
+		JLabel lblNewLabel = new JLabel("Restaurant name" + ":");
 		add(lblNewLabel, "cell 0 1,alignx trailing");
 		
 		tfRestaurantName = new POSTextField();
 		add(tfRestaurantName, "cell 1 1 3 1,growx");
 		
-		JLabel lblAddressLine = new JLabel("Address line 1:");
+		JLabel lblAddressLine = new JLabel("Address line 1" + ":");
 		add(lblAddressLine, "cell 0 2,alignx trailing");
 		
 		tfAddressLine1 = new POSTextField();
 		add(tfAddressLine1, "cell 1 2 3 1,growx");
 		
-		JLabel lblAddressLine_1 = new JLabel("Address line 2:");
+		JLabel lblAddressLine_1 = new JLabel("Address line 2" + ":");
 		add(lblAddressLine_1, "cell 0 3,alignx trailing");
 		
 		tfAddressLine2 = new POSTextField();
 		add(tfAddressLine2, "cell 1 3 3 1,growx");
 		
-		JLabel lblAddressLine_2 = new JLabel("Address line 3:");
+		JLabel lblAddressLine_2 = new JLabel("Address line 3" + ":");
 		add(lblAddressLine_2, "cell 0 4,alignx trailing");
 		
 		tfAddressLine3 = new POSTextField();
@@ -74,16 +74,16 @@ public class RestaurantConfigurationView extends ConfigurationView {
 		tfTable = new POSTextField();
 		add(tfTable, "cell 3 7,growx");
 		
-		JLabel lblCurrencyName = new JLabel("Currency name:");
+		JLabel lblCurrencyName = new JLabel("Currency name" + ":");
 		add(lblCurrencyName, "cell 0 8,alignx trailing");
 		
-		JLabel lblTables = new JLabel("Tables:");
+		JLabel lblTables = new JLabel("Tables" + ":");
 		add(lblTables, "flowx,cell 2 7");
 		
 		tfCurrencyName = new POSTextField();
 		add(tfCurrencyName, "flowx,cell 1 8");
 		
-		JLabel lblCurrencySymbol = new JLabel("Currency symbol:");
+		JLabel lblCurrencySymbol = new JLabel("Currency symbol" + ":");
 		add(lblCurrencySymbol, "cell 2 8,alignx trailing");
 		
 		tfCurrencySymbol = new POSTextField();
@@ -92,7 +92,7 @@ public class RestaurantConfigurationView extends ConfigurationView {
 		JSeparator separator_1 = new JSeparator();
 		add(separator_1, "cell 0 9 4 1,growx");
 		
-		JLabel lblServiceCharge = new JLabel("Service Charge:");
+		JLabel lblServiceCharge = new JLabel("Service Charge" + ":");
 		add(lblServiceCharge, "cell 0 10,alignx trailing");
 		
 		tfServiceCharge = new POSTextField();
@@ -101,7 +101,7 @@ public class RestaurantConfigurationView extends ConfigurationView {
 		JLabel label = new JLabel("%");
 		add(label, "cell 2 10");
 		
-		JLabel lblDefaultGratuity = new JLabel("Default gratuity:");
+		JLabel lblDefaultGratuity = new JLabel("Default gratuity" + ":");
 		add(lblDefaultGratuity, "flowy,cell 0 11,alignx trailing");
 		
 		tfDefaultGratuity = new POSTextField();
@@ -110,7 +110,7 @@ public class RestaurantConfigurationView extends ConfigurationView {
 		JLabel label_1 = new JLabel("%");
 		add(label_1, "cell 2 11");
 		
-		JLabel lblTicketFooterMessage = new JLabel("Ticket footer message:");
+		JLabel lblTicketFooterMessage = new JLabel("Ticket footer message" + ":");
 		add(lblTicketFooterMessage, "cell 0 12,alignx trailing");
 		
 		tfTicketFooter = new POSTextField();

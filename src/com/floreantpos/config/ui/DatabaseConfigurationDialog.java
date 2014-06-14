@@ -20,6 +20,7 @@ import net.miginfocom.swing.MigLayout;
 import org.apache.commons.lang.StringUtils;
 
 import com.floreantpos.Database;
+import com.floreantpos.Messages;
 import com.floreantpos.config.AppConfig;
 import com.floreantpos.main.Application;
 import com.floreantpos.swing.POSPasswordField;
@@ -30,10 +31,10 @@ import com.floreantpos.util.DatabaseUtil;
 
 public class DatabaseConfigurationDialog extends POSDialog implements ActionListener {
 	
-	private static final String CONFIGURE_DB = "CD";
-	private static final String SAVE = "SAVE";
-	private static final String CANCEL = "cancel";
-	private static final String TEST = "test";
+	private static final String CONFIGURE_DB = "CD"; //$NON-NLS-1$
+	private static final String SAVE = "SAVE"; //$NON-NLS-1$
+	private static final String CANCEL = "cancel"; //$NON-NLS-1$
+	private static final String TEST = "test"; //$NON-NLS-1$
 	private POSTextField tfServerAddress;
 	private POSTextField tfServerPort;
 	private POSTextField tfDatabaseName;
@@ -74,7 +75,7 @@ public class DatabaseConfigurationDialog extends POSDialog implements ActionList
 	}
 	
 	protected void initUI() {
-		getContentPane().setLayout(new MigLayout("fill","[][fill, grow]",""));
+		getContentPane().setLayout(new MigLayout("fill","[][fill, grow]","")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	
 		titlePanel = new TitlePanel();
 		tfServerAddress = new POSTextField();
@@ -89,43 +90,43 @@ public class DatabaseConfigurationDialog extends POSDialog implements ActionList
 			databaseCombo.setSelectedItem(Database.getByProviderName(databaseProviderName));
 		}
 
-		getContentPane().add(titlePanel, "span, grow, wrap");
+		getContentPane().add(titlePanel, "span, grow, wrap"); //$NON-NLS-1$
 		
-		getContentPane().add(new JLabel("Database: "));
-		getContentPane().add(databaseCombo, "grow, wrap");
-		lblServerAddress = new JLabel("Database Server Address" + ":");
+		getContentPane().add(new JLabel(Messages.getString("DatabaseConfigurationDialog.8"))); //$NON-NLS-1$
+		getContentPane().add(databaseCombo, "grow, wrap"); //$NON-NLS-1$
+		lblServerAddress = new JLabel(Messages.getString("DatabaseConfigurationDialog.10") + ":"); //$NON-NLS-1$ //$NON-NLS-2$
 		getContentPane().add(lblServerAddress);
-		getContentPane().add(tfServerAddress, "grow, wrap");
-		lblServerPort = new JLabel("Database Server Port" + ":");
+		getContentPane().add(tfServerAddress, "grow, wrap"); //$NON-NLS-1$
+		lblServerPort = new JLabel(Messages.getString("DatabaseConfigurationDialog.13") + ":"); //$NON-NLS-1$ //$NON-NLS-2$
 		getContentPane().add(lblServerPort);
-		getContentPane().add(tfServerPort, "grow, wrap");
-		lblDbName = new JLabel("Database Name" + ":");
+		getContentPane().add(tfServerPort, "grow, wrap"); //$NON-NLS-1$
+		lblDbName = new JLabel(Messages.getString("DatabaseConfigurationDialog.16") + ":"); //$NON-NLS-1$ //$NON-NLS-2$
 		getContentPane().add(lblDbName);
-		getContentPane().add(tfDatabaseName, "grow, wrap");
-		lblUserName = new JLabel("User Name" + ":");
+		getContentPane().add(tfDatabaseName, "grow, wrap"); //$NON-NLS-1$
+		lblUserName = new JLabel(Messages.getString("DatabaseConfigurationDialog.19") + ":"); //$NON-NLS-1$ //$NON-NLS-2$
 		getContentPane().add(lblUserName);
-		getContentPane().add(tfUserName, "grow, wrap");
-		lblDbPassword = new JLabel("Database Password" + ":");
+		getContentPane().add(tfUserName, "grow, wrap"); //$NON-NLS-1$
+		lblDbPassword = new JLabel(Messages.getString("DatabaseConfigurationDialog.22") + ":"); //$NON-NLS-1$ //$NON-NLS-2$
 		getContentPane().add(lblDbPassword);
-		getContentPane().add(tfPassword, "grow, wrap");
-		getContentPane().add(new JSeparator(),"span, grow, gaptop 10");
+		getContentPane().add(tfPassword, "grow, wrap"); //$NON-NLS-1$
+		getContentPane().add(new JSeparator(),"span, grow, gaptop 10"); //$NON-NLS-1$
 		
-		btnTestConnection = new JButton("Test Connection");
+		btnTestConnection = new JButton(Messages.getString("DatabaseConfigurationDialog.26")); //$NON-NLS-1$
 		btnTestConnection.setActionCommand(TEST);
-		btnSave = new JButton("Save");
+		btnSave = new JButton(Messages.getString("DatabaseConfigurationDialog.27")); //$NON-NLS-1$
 		btnSave.setActionCommand(SAVE);
-		btnExit = new JButton("Cancel");
+		btnExit = new JButton(Messages.getString("DatabaseConfigurationDialog.28")); //$NON-NLS-1$
 		btnExit.setActionCommand(CANCEL);
 		
 		JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		btnCreateDb = new JButton("Create Database Schema");
+		btnCreateDb = new JButton(Messages.getString("DatabaseConfigurationDialog.29")); //$NON-NLS-1$
 		btnCreateDb.setActionCommand(CONFIGURE_DB);
 		buttonPanel.add(btnCreateDb);
 		buttonPanel.add(btnTestConnection);
 		buttonPanel.add(btnSave);
 		buttonPanel.add(btnExit);
 		
-		getContentPane().add(buttonPanel, "span, grow");
+		getContentPane().add(buttonPanel, Messages.getString("DatabaseConfigurationDialog.30")); //$NON-NLS-1$
 	}
 
 	private void addUIListeners() {
@@ -184,7 +185,7 @@ public class DatabaseConfigurationDialog extends POSDialog implements ActionList
 		
 		Database selectedDb = (Database) databaseCombo.getSelectedItem();
 		
-		String providerName = selectedDb.getName();
+		String providerName = selectedDb.getEngineName();
 		String databaseURL = tfServerAddress.getText();
 		String databasePort = tfServerPort.getText();
 		String databaseName = tfDatabaseName.getText();
@@ -200,16 +201,16 @@ public class DatabaseConfigurationDialog extends POSDialog implements ActionList
 			saveConfig(selectedDb, providerName, databaseURL, databasePort, databaseName, user, pass, connectionString, hibernateDialect);
 			
 			if(DatabaseUtil.checkConnection(connectionString, hibernateDialect, driverClass, user, pass)) {
-				JOptionPane.showMessageDialog(this, "Connection Successfull!");
+				JOptionPane.showMessageDialog(this, Messages.getString("DatabaseConfigurationDialog.31")); //$NON-NLS-1$
 			}
 			else {
-				JOptionPane.showMessageDialog(this, "Connection Failed!");
+				JOptionPane.showMessageDialog(this, Messages.getString("DatabaseConfigurationDialog.32")); //$NON-NLS-1$
 			}
 		}
 		else if(CONFIGURE_DB.equals(command)) {
 			Application.getInstance().setSystemInitialized(false);
 			
-			int i = JOptionPane.showConfirmDialog(this, "This will remove existing database schemas, if exists. Proceed?", "Warning", JOptionPane.YES_NO_OPTION);
+			int i = JOptionPane.showConfirmDialog(this, Messages.getString("DatabaseConfigurationDialog.33"), Messages.getString("DatabaseConfigurationDialog.34"), JOptionPane.YES_NO_OPTION); //$NON-NLS-1$ //$NON-NLS-2$
 			if(i != JOptionPane.YES_OPTION) {
 				return;
 			}
@@ -223,10 +224,10 @@ public class DatabaseConfigurationDialog extends POSDialog implements ActionList
 			this.setCursor(Cursor.getDefaultCursor());
 			
 			if(createDatabase) {
-				JOptionPane.showMessageDialog(DatabaseConfigurationDialog.this, "Database created.");
+				JOptionPane.showMessageDialog(DatabaseConfigurationDialog.this, Messages.getString("DatabaseConfigurationDialog.35")); //$NON-NLS-1$
 			}
 			else {
-				JOptionPane.showMessageDialog(DatabaseConfigurationDialog.this, "Database creation failed.");
+				JOptionPane.showMessageDialog(DatabaseConfigurationDialog.this, Messages.getString("DatabaseConfigurationDialog.36")); //$NON-NLS-1$
 			}
 		}
 		else if(SAVE.equalsIgnoreCase(command)) {
@@ -252,7 +253,7 @@ public class DatabaseConfigurationDialog extends POSDialog implements ActionList
 	}
 
 	public void setTitle(String title) {
-		super.setTitle("Configure database");
+		super.setTitle(Messages.getString("DatabaseConfigurationDialog.37")); //$NON-NLS-1$
 		
 		titlePanel.setTitle(title);
 	}
@@ -276,7 +277,7 @@ public class DatabaseConfigurationDialog extends POSDialog implements ActionList
 	
 	public static DatabaseConfigurationDialog show(Frame parent) {
 		DatabaseConfigurationDialog dialog = new DatabaseConfigurationDialog(Application.getPosWindow(), true);
-		dialog.setTitle("Configure database");
+		dialog.setTitle(Messages.getString("DatabaseConfigurationDialog.38")); //$NON-NLS-1$
 		dialog.pack();
 		dialog.open();
 		

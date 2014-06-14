@@ -30,9 +30,9 @@ public class ConfigurationDialog extends POSDialog implements ChangeListener, Ac
 	public ConfigurationDialog(Frame parent) {
 		super(parent, false);
 		
-		setLayout(new MigLayout("","","[fill,grow][]"));
+		setLayout(new MigLayout("","","[fill,grow][]")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		
-		add(tabbedPane , "grow");
+		add(tabbedPane , "grow"); //$NON-NLS-1$
 		
 		RestaurantConfigurationView restaurantConfigurationView = new RestaurantConfigurationView();
 		addView(restaurantConfigurationView);
@@ -45,17 +45,17 @@ public class ConfigurationDialog extends POSDialog implements ChangeListener, Ac
 		
 		tabbedPane.addChangeListener(this);
 		
-		JPanel bottomPanel = new JPanel(new MigLayout("fillx"));
-		bottomPanel.add(new JSeparator(), "span, grow");
+		JPanel bottomPanel = new JPanel(new MigLayout("fillx")); //$NON-NLS-1$
+		bottomPanel.add(new JSeparator(), "span, grow"); //$NON-NLS-1$
 		
 		JButton btnOk = new JButton(CANCEL);
 		btnOk.addActionListener(this);
-		bottomPanel.add(btnOk, "dock east, gaptop 5");
+		bottomPanel.add(btnOk, "dock east, gaptop 5"); //$NON-NLS-1$
 		JButton btnCancel = new JButton(OK);
 		btnCancel.addActionListener(this);
-		bottomPanel.add(btnCancel, "dock east, gapright 5, gaptop 5");
+		bottomPanel.add(btnCancel, "dock east, gapright 5, gaptop 5"); //$NON-NLS-1$
 		
-		add(bottomPanel, "newline,growx, gaptop 10");
+		add(bottomPanel, "newline,growx, gaptop 10"); //$NON-NLS-1$
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 	}
 	

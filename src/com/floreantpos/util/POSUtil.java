@@ -11,4 +11,8 @@ public class POSUtil {
 		}
 		return false;
 	}
+	
+	public static String escapePropertyKey(String propertyKey) {
+		return propertyKey.replaceAll("\\s+", "_");
+	}
 }
