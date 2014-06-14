@@ -4,6 +4,7 @@ import java.io.File;
 
 import org.apache.commons.configuration.PropertiesConfiguration;
 
+import com.floreantpos.Database;
 import com.floreantpos.main.Application;
 
 public class AppConfig {
@@ -14,8 +15,6 @@ public class AppConfig {
 	public static final String DATABASE_USER = "database_user"; //$NON-NLS-1$
 	public static final String DATABASE_PASSWORD = "database_pass"; //$NON-NLS-1$
 	public static final String CONNECTION_STRING = "connection_string"; //$NON-NLS-1$
-	public static final String HIBERNATE_DIALECT = "hibernate.dialect"; //$NON-NLS-1$
-	public static final String HIBERNATE_CONNECTION_DRIVER_CLASS = "hibernate.connection.driver_class"; //$NON-NLS-1$
 	public static final String DATABASE_PROVIDER_NAME = "database_provider_name"; //$NON-NLS-1$
 	
 	private static final String KITCHEN_PRINT_ON_ORDER_SETTLE = "kitchen_print_on_order_settle"; //$NON-NLS-1$
@@ -77,8 +76,12 @@ public class AppConfig {
 		config.setProperty(key, value);
 	}
 	
-	public static String getDatabaseURL() {
+	public static String getDatabaseHost() {
 		return config.getString(DATABASE_URL, "localhost"); //$NON-NLS-1$
+	}
+	
+	public static void setDatabaseHost(String url) {
+		config.setProperty(DATABASE_URL, url);
 	}
 
 	public static String getConnectString() {
@@ -87,10 +90,6 @@ public class AppConfig {
 	
 	public static void setConnectString(String connectionString) {
 		config.setProperty(CONNECTION_STRING, connectionString);
-	}
-	
-	public static void setDatabaseURL(String url) {
-		config.setProperty(DATABASE_URL, url);
 	}
 	
 	public static String getDatabasePort() {
@@ -125,28 +124,16 @@ public class AppConfig {
 		config.setProperty(DATABASE_PASSWORD, password);
 	}
 	
-	public static void setHibernateDialect(String dialect) {
-		config.setProperty(HIBERNATE_DIALECT, dialect);
-	}
-	
-	public static String getHibernateDialect() {
-		return config.getString(HIBERNATE_DIALECT, ""); //$NON-NLS-1$
-	}
-	
-	public static void setHibernateConnectionDriverClass(String driverClass) {
-		config.setProperty(HIBERNATE_CONNECTION_DRIVER_CLASS, driverClass);
-	}
-	
-	public static String getHibernateConnectionDriverClass() {
-		return config.getString(HIBERNATE_CONNECTION_DRIVER_CLASS, ""); //$NON-NLS-1$
-	}
-	
 	public static void setDatabaseProviderName(String databaseProviderName) {
 		config.setProperty(DATABASE_PROVIDER_NAME, databaseProviderName);
 	}
 	
 	public static String getDatabaseProviderName() {
-		return config.getString(DATABASE_PROVIDER_NAME, ""); //$NON-NLS-1$
+		return config.getString(DATABASE_PROVIDER_NAME, Database.DEMO_DATABASE.getProviderName()); //$NON-NLS-1$
+	}
+	
+	public static Database getDefaultDatabase() {
+		return Database.getByProviderName(getDatabaseProviderName());
 	}
 	
 	public static boolean isPrintReceiptOnOrderFinish() {
