@@ -2,6 +2,7 @@ package com.floreantpos.model.dao;
 
 import org.hibernate.cfg.Configuration;
 
+import com.floreantpos.Database;
 import com.floreantpos.config.AppConfig;
 import com.floreantpos.model.ActionHistory;
 import com.floreantpos.model.AttendenceHistory;
@@ -89,9 +90,11 @@ public abstract class _RootDAO extends com.floreantpos.model.dao._BaseRootDAO {
 		configuration = configuration.addClass(PrinterConfiguration.class);
 		configuration = configuration.addClass(UserPermission.class);
 		configuration = configuration.addClass(UserType.class);
+		
+		Database defaultDatabase = AppConfig.getDefaultDatabase();
 
-		configuration = configuration.setProperty("hibernate.dialect", AppConfig.getHibernateDialect());
-		configuration = configuration.setProperty("hibernate.connection.driver_class", AppConfig.getHibernateConnectionDriverClass());
+		configuration = configuration.setProperty("hibernate.dialect", defaultDatabase.getHibernateDialect());
+		configuration = configuration.setProperty("hibernate.connection.driver_class", defaultDatabase.getHibernateConnectionDriverClass());
 		
 		configuration = configuration.setProperty("hibernate.connection.url", AppConfig.getConnectString());
 		configuration = configuration.setProperty("hibernate.connection.username", AppConfig.getDatabaseUser());
