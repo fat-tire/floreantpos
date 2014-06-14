@@ -9,6 +9,7 @@ import javax.swing.JPanel;
 
 import net.miginfocom.swing.MigLayout;
 
+import com.floreantpos.Messages;
 import com.floreantpos.config.AppConfig;
 import com.floreantpos.swing.POSTextField;
 import com.floreantpos.swing.TitledView;
@@ -40,30 +41,30 @@ public class TerminalConfigurationView extends TitledView implements UISaveHandl
 	private void initComponents() {
 		JPanel contentPane = getContentPane();
 		
-		contentPane.setLayout(new MigLayout("gap 5px 15px", "[110px][245px]", "[19px][23px][23px][23px][23px]"));
+		contentPane.setLayout(new MigLayout("gap 5px 15px", "[110px][245px]", "[19px][23px][23px][23px][23px]")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		
-		JLabel lblTerminalNumber = new JLabel("Terminal number:");
-		contentPane.add(lblTerminalNumber, "cell 0 0,alignx left,aligny center");
+		JLabel lblTerminalNumber = new JLabel(Messages.getString("TerminalConfigurationView.TERMINAL_NUMBER")); //$NON-NLS-1$
+		contentPane.add(lblTerminalNumber, "cell 0 0,alignx left,aligny center"); //$NON-NLS-1$
 		
 		tfTerminalNumber = new POSTextField();
 		tfTerminalNumber.setColumns(10);
-		contentPane.add(tfTerminalNumber, "cell 1 0,growx,aligny top");
+		contentPane.add(tfTerminalNumber, "cell 1 0,growx,aligny top"); //$NON-NLS-1$
 		
-		cbxPrintReceiptOnOrderFinish = new JCheckBox("Print receipt on order finish");
+		cbxPrintReceiptOnOrderFinish = new JCheckBox(Messages.getString("TerminalConfigurationView.6")); //$NON-NLS-1$
 		cbxPrintReceiptOnOrderFinish.setMargin(new Insets(2, 0, 2, 2));
-		contentPane.add(cbxPrintReceiptOnOrderFinish, "cell 1 1,alignx left,aligny top");
+		contentPane.add(cbxPrintReceiptOnOrderFinish, "cell 1 1,alignx left,aligny top"); //$NON-NLS-1$
 		
-		cbxPrintReceiptOnSettle = new JCheckBox("Print receipt on order settle");
+		cbxPrintReceiptOnSettle = new JCheckBox(Messages.getString("TerminalConfigurationView.8")); //$NON-NLS-1$
 		cbxPrintReceiptOnSettle.setMargin(new Insets(2, 0, 2, 2));
-		contentPane.add(cbxPrintReceiptOnSettle, "cell 1 2,alignx left,aligny top");
+		contentPane.add(cbxPrintReceiptOnSettle, "cell 1 2,alignx left,aligny top"); //$NON-NLS-1$
 		
-		cbxPrintKitchenOnOrderFinish = new JCheckBox("Print to kitchen on order finish");
+		cbxPrintKitchenOnOrderFinish = new JCheckBox(Messages.getString("TerminalConfigurationView.10")); //$NON-NLS-1$
 		cbxPrintKitchenOnOrderFinish.setMargin(new Insets(2, 0, 2, 2));
-		contentPane.add(cbxPrintKitchenOnOrderFinish, "cell 1 3,alignx left,aligny top");
+		contentPane.add(cbxPrintKitchenOnOrderFinish, "cell 1 3,alignx left,aligny top"); //$NON-NLS-1$
 		
-		cbxPrintKitchenOnSettle = new JCheckBox("Print to kitchen on order settle");
+		cbxPrintKitchenOnSettle = new JCheckBox(Messages.getString("TerminalConfigurationView.12")); //$NON-NLS-1$
 		cbxPrintKitchenOnSettle.setMargin(new Insets(2, 0, 2, 2));
-		contentPane.add(cbxPrintKitchenOnSettle, "cell 1 4,alignx left,aligny top");
+		contentPane.add(cbxPrintKitchenOnSettle, "cell 1 4,alignx left,aligny top"); //$NON-NLS-1$
 	}
 	
 	public static void main(String[] args) {
@@ -84,7 +85,7 @@ public class TerminalConfigurationView extends TitledView implements UISaveHandl
 		try {
 			terminalNumber = Integer.parseInt(tfTerminalNumber.getText());
 		} catch(Exception x) {
-			POSMessageDialog.showError("Terminal number is not valid");
+			POSMessageDialog.showError(Messages.getString("TerminalConfigurationView.14")); //$NON-NLS-1$
 			return;
 		}
 		
