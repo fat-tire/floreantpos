@@ -114,7 +114,7 @@ public class DatabaseUtil {
 			User u = new User();
 			u.setUserId(123);
 			u.setSsn("123");
-			u.setPassword("123");
+			u.setSecretKey("7777");
 			u.setFirstName("Test");
 			u.setLastName(com.floreantpos.POSConstants.USER);
 			u.setNewUserType(type);

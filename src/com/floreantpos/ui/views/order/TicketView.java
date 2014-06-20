@@ -93,7 +93,7 @@ public class TicketView extends JPanel {
 		jScrollPane1 = new javax.swing.JScrollPane(ticketViewerTable);
 
 		setBorder(javax.swing.BorderFactory.createTitledBorder(null, com.floreantpos.POSConstants.TICKET, javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
-		setPreferredSize(new java.awt.Dimension(280, 463));
+		setPreferredSize(new java.awt.Dimension(420, 463));
 		setLayout(new java.awt.BorderLayout(5, 5));
 
 		jPanel1.setLayout(new java.awt.BorderLayout(5, 5));
