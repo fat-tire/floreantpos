@@ -44,5 +44,8 @@ public class LoginScreen extends JPanel {
 	
 	public void setVisible(boolean aFlag) {
 		super.setVisible(aFlag);
+		if(aFlag) {
+			passwordScreen.setFocus();
+		}
 	}
 }

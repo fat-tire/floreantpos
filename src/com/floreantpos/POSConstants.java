@@ -357,4 +357,6 @@ public class POSConstants {
 	public static final String CAPITAL_PREV = Messages.getString("SelectionView.2"); //$NON-NLS-1$
 	public static final String DEFAULT_TIPS_PERCENTAGE = Messages.getString("DEFAULT_TIPS_PERCENTAGE"); //$NON-NLS-1$
 	public static final String TAX_EXPLORER = Messages.getString("POSConstants.TAX_EXPLORER"); //$NON-NLS-1$
+
+	public static final String POS_MESSAGE_ERROR = "PosMessage.Error";
 }
