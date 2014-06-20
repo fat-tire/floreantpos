@@ -1,5 +1,6 @@
 package com.floreantpos.model.base;
 
+import java.lang.Comparable;
 import java.io.Serializable;
 
 
@@ -15,13 +16,13 @@ import java.io.Serializable;
 public abstract class BaseMenuItem  implements Comparable, Serializable {
 
 	public static String REF = "MenuItem";
-	public static String PROP_PRICE = "price";
-	public static String PROP_VISIBLE = "visible";
-	public static String PROP_PARENT = "parent";
-	public static String PROP_DISCOUNT_RATE = "discountRate";
 	public static String PROP_NAME = "name";
-	public static String PROP_ID = "id";
+	public static String PROP_PARENT = "parent";
+	public static String PROP_VISIBLE = "visible";
+	public static String PROP_DISCOUNT_RATE = "discountRate";
+	public static String PROP_PRICE = "price";
 	public static String PROP_TAX = "tax";
+	public static String PROP_ID = "id";
 
 
 	// constructors

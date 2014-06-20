@@ -2,9 +2,7 @@ package com.floreantpos.model.dao;
 
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
-
 import com.floreantpos.model.dao.UserDAO;
-
 import org.hibernate.criterion.Order;
 
 /**
@@ -40,27 +38,27 @@ public abstract class BaseUserDAO extends com.floreantpos.model.dao._RootDAO {
 		return (com.floreantpos.model.User) object;
 	}
 
-	public com.floreantpos.model.User get(java.lang.Integer key)
+	public com.floreantpos.model.User get(java.lang.String key)
 	{
 		return (com.floreantpos.model.User) get(getReferenceClass(), key);
 	}
 
-	public com.floreantpos.model.User get(java.lang.Integer key, Session s)
+	public com.floreantpos.model.User get(java.lang.String key, Session s)
 	{
 		return (com.floreantpos.model.User) get(getReferenceClass(), key, s);
 	}
 
-	public com.floreantpos.model.User load(java.lang.Integer key)
+	public com.floreantpos.model.User load(java.lang.String key)
 	{
 		return (com.floreantpos.model.User) load(getReferenceClass(), key);
 	}
 
-	public com.floreantpos.model.User load(java.lang.Integer key, Session s)
+	public com.floreantpos.model.User load(java.lang.String key, Session s)
 	{
 		return (com.floreantpos.model.User) load(getReferenceClass(), key, s);
 	}
 
-	public com.floreantpos.model.User loadInitialize(java.lang.Integer key, Session s) 
+	public com.floreantpos.model.User loadInitialize(java.lang.String key, Session s) 
 	{ 
 		com.floreantpos.model.User obj = load(key, s); 
 		if (!Hibernate.isInitialized(obj)) {
@@ -100,9 +98,9 @@ public abstract class BaseUserDAO extends com.floreantpos.model.dao._RootDAO {
 	 * @param user a transient instance of a persistent class 
 	 * @return the class identifier
 	 */
-	public java.lang.Integer save(com.floreantpos.model.User user)
+	public java.lang.String save(com.floreantpos.model.User user)
 	{
-		return (java.lang.Integer) super.save(user);
+		return (java.lang.String) super.save(user);
 	}
 
 	/**
@@ -113,9 +111,9 @@ public abstract class BaseUserDAO extends com.floreantpos.model.dao._RootDAO {
 	 * @param s the Session
 	 * @return the class identifier
 	 */
-	public java.lang.Integer save(com.floreantpos.model.User user, Session s)
+	public java.lang.String save(com.floreantpos.model.User user, Session s)
 	{
-		return (java.lang.Integer) save((Object) user, s);
+		return (java.lang.String) save((Object) user, s);
 	}
 
 	/**
@@ -169,7 +167,7 @@ public abstract class BaseUserDAO extends com.floreantpos.model.dao._RootDAO {
 	 * Session or a transient instance with an identifier associated with existing persistent state. 
 	 * @param id the instance ID to be removed
 	 */
-	public void delete(java.lang.Integer id)
+	public void delete(java.lang.String id)
 	{
 		delete((Object) load(id));
 	}
@@ -181,7 +179,7 @@ public abstract class BaseUserDAO extends com.floreantpos.model.dao._RootDAO {
 	 * @param id the instance ID to be removed
 	 * @param s the Session
 	 */
-	public void delete(java.lang.Integer id, Session s)
+	public void delete(java.lang.String id, Session s)
 	{
 		delete((Object) load(id, s), s);
 	}

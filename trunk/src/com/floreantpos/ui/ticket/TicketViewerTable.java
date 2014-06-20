@@ -1,6 +1,7 @@
 package com.floreantpos.ui.ticket;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Rectangle;
 
 import javax.swing.DefaultListSelectionModel;
@@ -35,27 +36,34 @@ public class TicketViewerTable extends JTable {
 		cellRenderer = new TicketTableCellRenderer();
 		
 		setGridColor(Color.LIGHT_GRAY);
-		//setTableHeader(null);
 		setSelectionModel(selectionModel);
 		setAutoscrolls(true);
 		setShowGrid(true);
 		setBorder(null);
 		setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
 
-		TableColumnModel columnModel = getColumnModel();
-		TableColumn column = null;
-
-		column = columnModel.getColumn(0);
-		column.setPreferredWidth(35);
-		column.setMaxWidth(35);
-		column.setMinWidth(35);
-
-		column = columnModel.getColumn(1);
-		column.setPreferredWidth(160);
-		column.setMaxWidth(160);
-		column.setMinWidth(160);
-
 		setTicket(ticket);
+		
+		setPreferredSize(new Dimension(420, 300));
+		resizeTableColumns();
+		
+		setRowHeight(40);
+	}
+
+	private void resizeTableColumns() {
+		setColumnWidth(0, 150);
+		setColumnWidth(1, 60);
+		setColumnWidth(1, 60);
+		setColumnWidth(1, 60);
+		setColumnWidth(4, 90);
+	}
+
+	private void setColumnWidth(int columnNumber, int width) {
+		TableColumn column = getColumnModel().getColumn(columnNumber);
+
+		column.setPreferredWidth(width);
+		column.setMaxWidth(width);
+		column.setMinWidth(width);
 	}
 	
 	@Override

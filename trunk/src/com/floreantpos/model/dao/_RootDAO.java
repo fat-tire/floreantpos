@@ -55,6 +55,10 @@ public abstract class _RootDAO extends com.floreantpos.model.dao._BaseRootDAO {
 	 * (SessionFactory) new
 	 * InitialContext().lookup("java:/{SessionFactoryName}"); }
 	 */
+	
+	public static void initialize(String configFileName, Configuration configuration) {
+		com.floreantpos.model.dao._RootDAO.setSessionFactory(configuration.buildSessionFactory());
+	}
 
 	public static Configuration getNewConfiguration(String configFileName) {
 		Configuration configuration = new Configuration();

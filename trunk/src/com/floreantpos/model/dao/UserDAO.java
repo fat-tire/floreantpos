@@ -51,6 +51,30 @@ public class UserDAO extends BaseUserDAO {
 		}
 	}
 	
+	public User findUserBySecretKey(String secretKey) {
+		Session session = null;
+		
+		try {
+			
+			session = getSession();
+			Criteria criteria = session.createCriteria(getReferenceClass());
+			criteria.add(Restrictions.eq(User.PROP_SECRET_KEY, secretKey));
+			
+			Object result = criteria.uniqueResult();
+			if(result != null) {
+				return (User) result;
+			}
+			else {
+				//TODO: externalize string
+				throw new UserNotFoundException("User not found");
+			}
+		} finally {
+			if (session != null) {
+				closeSession(session);
+			}
+		}
+	}
+	
 	public boolean isUserExist(int id) {
 		try {
 			User user  = findUser(id);

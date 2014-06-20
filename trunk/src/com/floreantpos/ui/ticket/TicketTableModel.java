@@ -18,7 +18,7 @@ public class TicketTableModel extends AbstractTableModel {
 	protected Ticket ticket;
 	protected final HashMap<String, Object> tableRows = new HashMap<String, Object>();
 
-	protected String[] columnNames = { "itemQuantity", "itemName", "itemSubtotalPrice" };
+	protected String[] columnNames = { "Item", "U/Price", "Unit", "Tax", "Value" };
 
 	private boolean forReciptPrint;
 	private boolean printCookingInstructions;
@@ -65,13 +65,21 @@ public class TicketTableModel extends AbstractTableModel {
 
 			switch (columnIndex) {
 				case 0:
-					return Integer.valueOf(ticketItem.getItemCount());
+					return ticketItem.getName();
+					
 
 				case 1:
-					return ticketItem.getName();
+					return String.valueOf(ticketItem.getUnitPrice());
 
 				case 2:
-					return Double.valueOf(ticketItem.getSubtotalAmountWithoutModifiers());
+					return ticketItem.getItemCount();
+					
+				case 3:
+					return ticketItem.getTaxAmountWithoutModifiers();
+					
+				case 4:
+					//return ticketItem.getTotalAmountWithoutModifiers();
+					return Double.valueOf(ticketItem.getSubtotalAmountWithoutModifiers() + ticketItem.getTaxAmount());
 			}
 		}
 
