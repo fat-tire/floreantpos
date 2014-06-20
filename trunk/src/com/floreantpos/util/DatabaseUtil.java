@@ -32,7 +32,7 @@ import com.floreantpos.model.dao._RootDAO;
 
 public class DatabaseUtil {
 	private static Log logger = LogFactory.getLog(DatabaseUtil.class);
-	
+
 	public static boolean checkConnection(String connectionString, String hibernateDialect, String hibernateConnectionDriverClass, String user, String password) {
 		Configuration configuration = _RootDAO.getNewConfiguration(null);
 
@@ -64,7 +64,7 @@ public class DatabaseUtil {
 			return false;
 		}
 	}
-	
+
 	public static boolean createDatabase(String connectionString, String hibernateDialect, String hibernateConnectionDriverClass, String user, String password) {
 		try {
 			Configuration configuration = _RootDAO.getNewConfiguration(null);
@@ -76,41 +76,41 @@ public class DatabaseUtil {
 			configuration = configuration.setProperty("hibernate.connection.username", user);
 			configuration = configuration.setProperty("hibernate.connection.password", password);
 			configuration = configuration.setProperty("hibernate.hbm2ddl.auto", "create");
-			
+
 			SchemaExport schemaExport = new SchemaExport(configuration);
 			schemaExport.create(false, true);
-			
+
 			_RootDAO.initialize();
-			
+
 			Restaurant restaurant = new Restaurant();
 			restaurant.setId(Integer.valueOf(1));
 			restaurant.setName("Demo Restaurant");
 			restaurant.setAddressLine1("somewhere");
 			restaurant.setTelephone("+00demo");
 			RestaurantDAO.getInstance().saveOrUpdate(restaurant);
-			
+
 			Tax tax = new Tax();
 			tax.setName("US");
 			tax.setRate(Double.valueOf(6));
 			TaxDAO.getInstance().saveOrUpdate(tax);
-			
+
 			Shift shift = new Shift();
 			shift.setName(com.floreantpos.POSConstants.GENERAL);
 			Date shiftStartTime = ShiftUtil.buildShiftStartTime(0, 0, 0, 11, 59, 1);
 			Date shiftEndTime = ShiftUtil.buildShiftEndTime(0, 0, 0, 11, 59, 1);
-			
+
 			shift.setStartTime(shiftStartTime);
 			shift.setEndTime(shiftEndTime);
 			long length = Math.abs(shiftStartTime.getTime() - shiftEndTime.getTime());
 
-	        shift.setShiftLength(Long.valueOf(length));
+			shift.setShiftLength(Long.valueOf(length));
 			ShiftDAO.getInstance().saveOrUpdate(shift);
-			
+
 			UserType type = new UserType();
 			type.setName(com.floreantpos.POSConstants.ADMINISTRATOR);
 			type.setPermissions(new HashSet<UserPermission>(Arrays.asList(UserPermission.permissions)));
 			UserTypeDAO.getInstance().saveOrUpdate(type);
-			
+
 			User u = new User();
 			u.setUserId(123);
 			u.setSsn("123");
@@ -118,28 +118,28 @@ public class DatabaseUtil {
 			u.setFirstName("Test");
 			u.setLastName(com.floreantpos.POSConstants.USER);
 			u.setNewUserType(type);
-			
+
 			UserDAO dao = new UserDAO();
 			dao.saveOrUpdate(u);
-			
+
 			MenuCategory category = new MenuCategory();
 			category.setName(com.floreantpos.POSConstants.BEVERAGE);
 			category.setBeverage(Boolean.TRUE);
 			category.setVisible(Boolean.TRUE);
 			MenuCategoryDAO.getInstance().saveOrUpdate(category);
-			
+
 			MenuCategory category2 = new MenuCategory();
 			category2.setName("BREAKFAST");
 			category2.setBeverage(Boolean.FALSE);
 			category2.setVisible(Boolean.TRUE);
 			MenuCategoryDAO.getInstance().saveOrUpdate(category2);
-			
+
 			MenuGroup group1 = new MenuGroup();
 			group1.setParent(category);
 			group1.setName("COLD BEVERAGE");
 			group1.setVisible(Boolean.TRUE);
 			MenuGroupDAO.getInstance().save(group1);
-			
+
 			MenuGroup group2 = new MenuGroup();
 			group2.setParent(category2);
 			group2.setName("FAVOURITE");
@@ -153,7 +153,7 @@ public class DatabaseUtil {
 			item1.setTax(tax);
 			item1.setVisible(Boolean.TRUE);
 			MenuItemDAO.getInstance().save(item1);
-			
+
 			MenuItem item2 = new MenuItem();
 			item2.setParent(group2);
 			item2.setName("Egg");
@@ -168,15 +168,16 @@ public class DatabaseUtil {
 			return false;
 		}
 	}
-	
-	public static void initialize() {
+
+	public static Configuration initialize() throws DatabaseConnectionException {
 		try {
 			
-			_RootDAO.reInitialize();
+			return _RootDAO.reInitialize();
 			
-		} catch (Exception e) {
-			e.printStackTrace();
-			return;
+		}catch (Exception e) {
+			logger.error(e);
+			throw new DatabaseConnectionException(e);
 		}
+
 	}
 }

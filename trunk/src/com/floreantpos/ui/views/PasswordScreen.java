@@ -9,13 +9,17 @@ package com.floreantpos.ui.views;
 import java.awt.ComponentOrientation;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 
 import net.miginfocom.swing.MigLayout;
 
@@ -30,14 +34,9 @@ import com.floreantpos.model.dao.AttendenceHistoryDAO;
 import com.floreantpos.model.dao.UserDAO;
 import com.floreantpos.swing.MessageDialog;
 import com.floreantpos.swing.POSPasswordField;
-import com.floreantpos.swing.POSTextField;
-import com.floreantpos.swing.PosButton;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.util.ShiftUtil;
 import com.floreantpos.util.UserNotFoundException;
-
-import javax.swing.SwingConstants;
-import javax.swing.JLabel;
 
 /**
  * 
@@ -80,6 +79,7 @@ public class PasswordScreen extends JPanel {
 		jLabel4 = new javax.swing.JLabel();
 		jPanel3 = new javax.swing.JPanel();
 		btnConfigureDatabase = new com.floreantpos.swing.PosButton();
+		btnConfigureDatabase.setMinimumSize(new Dimension(16, 50));
 		btnShutdown = new com.floreantpos.swing.PosButton();
 
 		setPreferredSize(new Dimension(360, 593));
@@ -173,9 +173,24 @@ public class PasswordScreen extends JPanel {
 		jLabel2.setText(com.floreantpos.POSConstants.ENTER_YOUR_PASSWORD);
 		jPanel2.add(jLabel2, "cell 0 0,growx,aligny top");
 		tfPassword = new POSPasswordField();
-		tfPassword.setEditable(false);
+		tfPassword.setFocusCycleRoot(true);
 		tfPassword.setFont(new java.awt.Font("Courier", 1, 18));
 		tfPassword.setHorizontalAlignment(SwingConstants.CENTER);
+		tfPassword.addKeyListener(new KeyListener() {
+			
+			@Override
+			public void keyTyped(KeyEvent e) {
+			}
+			
+			@Override
+			public void keyReleased(KeyEvent e) {
+				checkLogin(String.valueOf(e.getKeyChar()));
+			}
+			
+			@Override
+			public void keyPressed(KeyEvent e) {
+			}
+		});
 		jPanel2.add(tfPassword, "cell 0 1,growx,aligny top");
 
 		msgLabel = new JLabel("");
@@ -322,7 +337,7 @@ public class PasswordScreen extends JPanel {
 
 	Action goAction = new AbstractAction() {
 		public void actionPerformed(ActionEvent e) {
-			
+
 			String command = e.getActionCommand();
 			if (com.floreantpos.POSConstants.CLEAR.equals(command)) {
 				if (tfPassword.hasFocus()) {
@@ -354,33 +369,33 @@ public class PasswordScreen extends JPanel {
 
 	Action loginAction = new AbstractAction() {
 		public void actionPerformed(ActionEvent e) {
-			msgLabel.setText("");
-			
-			String command = e.getActionCommand();
-			tfPassword.setText(capturePassword() + command);
+			tfPassword.setText(capturePassword() + e.getActionCommand());
+			checkLogin(e.getActionCommand());
 
-			Thread thread = new Thread(new Runnable() {
-				@Override
-				public void run() {
-					String secretKey = capturePassword();
-					if (secretKey != null && secretKey.length() == 4) {
-						doLogin();
-						tfPassword.setText("");
-					}
-				}
-			});
-
-			thread.start();
 		}
 	};
 	private JPanel panel;
 	private JLabel msgLabel;
 
-	@Override
-	public void setVisible(boolean aFlag) {
-		super.setVisible(aFlag);
-		if (aFlag) {
-			tfPassword.requestFocus();
+	public void setFocus() {
+		tfPassword.setText("");
+		tfPassword.requestFocus();
+	}
+
+	private void checkLogin(String key) {
+		msgLabel.setText("");
+
+		String secretKey = capturePassword();
+		if (secretKey != null && secretKey.length() == 4) {
+			Thread loginThread = new Thread(new Runnable() {
+				@Override
+				public void run() {
+					doLogin();
+					tfPassword.setText("");
+				}
+			});
+
+			loginThread.start();
 		}
 	}
 }
