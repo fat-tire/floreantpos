@@ -34,6 +34,10 @@ import com.floreantpos.swing.POSTextField;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.util.ShiftUtil;
+import com.floreantpos.util.UserNotFoundException;
+
+import javax.swing.SwingConstants;
+import javax.swing.JLabel;
 
 /**
  * 
@@ -43,11 +47,12 @@ public class PasswordScreen extends JPanel {
 
 	/** Creates new form PasswordScreen */
 	public PasswordScreen() {
+		setMinimumSize(new Dimension(320, 10));
 		initComponents();
 
 		btnConfigureDatabase.setAction(goAction);
 		btnConfigureDatabase.setActionCommand("DBCONFIG");
-		
+
 		applyComponentOrientation(ComponentOrientation.getOrientation(Locale.getDefault()));
 	}
 
@@ -60,88 +65,83 @@ public class PasswordScreen extends JPanel {
 	// desc="Generated Code">//GEN-BEGIN:initComponents
 	private void initComponents() {
 		buttonPanel = new javax.swing.JPanel();
-		posButton4 = new com.floreantpos.swing.PosButton();
-		posButton13 = new com.floreantpos.swing.PosButton();
-		posButton12 = new com.floreantpos.swing.PosButton();
-		posButton9 = new com.floreantpos.swing.PosButton();
-		posButton10 = new com.floreantpos.swing.PosButton();
-		posButton11 = new com.floreantpos.swing.PosButton();
-		posButton8 = new com.floreantpos.swing.PosButton();
-		posButton7 = new com.floreantpos.swing.PosButton();
-		posButton6 = new com.floreantpos.swing.PosButton();
+		btn7 = new com.floreantpos.swing.PosButton();
+		btn8 = new com.floreantpos.swing.PosButton();
+		btn9 = new com.floreantpos.swing.PosButton();
+		btn4 = new com.floreantpos.swing.PosButton();
+		btn5 = new com.floreantpos.swing.PosButton();
+		btn6 = new com.floreantpos.swing.PosButton();
+		btn1 = new com.floreantpos.swing.PosButton();
+		btn2 = new com.floreantpos.swing.PosButton();
+		btn3 = new com.floreantpos.swing.PosButton();
 		posButton3 = new com.floreantpos.swing.PosButton();
 		posButton1 = new com.floreantpos.swing.PosButton();
 		jPanel2 = new javax.swing.JPanel();
-		jLabel1 = new javax.swing.JLabel();
-		jLabel2 = new javax.swing.JLabel();
-		tfPassword = new POSPasswordField();
-		tfUserId = new POSTextField();
 		jLabel4 = new javax.swing.JLabel();
 		jPanel3 = new javax.swing.JPanel();
 		btnConfigureDatabase = new com.floreantpos.swing.PosButton();
-		btnLogin = new com.floreantpos.swing.PosButton();
 		btnShutdown = new com.floreantpos.swing.PosButton();
 
-		setPreferredSize(new Dimension(343, 593));
-		setLayout(new MigLayout("ins 0", "[343px,grow]", "[126px][270px][grow][110px]"));
+		setPreferredSize(new Dimension(360, 593));
+		setLayout(new MigLayout("ins 0", "[400px,grow]", "[116px][270px][grow][110px]"));
 
 		buttonPanel.setOpaque(false);
 		buttonPanel.setPreferredSize(new java.awt.Dimension(280, 180));
 		buttonPanel.setLayout(new MigLayout("", "[111px][111px][111px]", "[60px][60px][60px][60px]"));
 
-		posButton4.setAction(goAction);
-		posButton4.setIcon(com.floreantpos.IconFactory.getIcon("7_32.png"));
-		posButton4.setActionCommand("7");
-		posButton4.setFocusable(false);
-		buttonPanel.add(posButton4, "cell 0 0,grow");
+		btn7.setAction(loginAction);
+		btn7.setIcon(com.floreantpos.IconFactory.getIcon("7_32.png"));
+		btn7.setActionCommand("7");
+		btn7.setFocusable(false);
+		buttonPanel.add(btn7, "cell 0 0,grow");
 
-		posButton13.setAction(goAction);
-		posButton13.setIcon(com.floreantpos.IconFactory.getIcon("8_32.png"));
-		posButton13.setActionCommand("8");
-		posButton13.setFocusable(false);
-		buttonPanel.add(posButton13, "cell 1 0,grow");
+		btn8.setAction(loginAction);
+		btn8.setIcon(com.floreantpos.IconFactory.getIcon("8_32.png"));
+		btn8.setActionCommand("8");
+		btn8.setFocusable(false);
+		buttonPanel.add(btn8, "cell 1 0,grow");
 
-		posButton12.setAction(goAction);
-		posButton12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/9_32.png"))); // NOI18N
-		posButton12.setActionCommand("9");
-		posButton12.setFocusable(false);
-		buttonPanel.add(posButton12, "cell 2 0,grow");
+		btn9.setAction(loginAction);
+		btn9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/9_32.png"))); // NOI18N
+		btn9.setActionCommand("9");
+		btn9.setFocusable(false);
+		buttonPanel.add(btn9, "cell 2 0,grow");
 
-		posButton9.setAction(goAction);
-		posButton9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/4_32.png"))); // NOI18N
-		posButton9.setActionCommand("4");
-		posButton9.setFocusable(false);
-		buttonPanel.add(posButton9, "cell 0 1,grow");
+		btn4.setAction(loginAction);
+		btn4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/4_32.png"))); // NOI18N
+		btn4.setActionCommand("4");
+		btn4.setFocusable(false);
+		buttonPanel.add(btn4, "cell 0 1,grow");
 
-		posButton10.setAction(goAction);
-		posButton10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/5_32.png"))); // NOI18N
-		posButton10.setActionCommand("5");
-		posButton10.setFocusable(false);
-		buttonPanel.add(posButton10, "cell 1 1,grow");
+		btn5.setAction(loginAction);
+		btn5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/5_32.png"))); // NOI18N
+		btn5.setActionCommand("5");
+		btn5.setFocusable(false);
+		buttonPanel.add(btn5, "cell 1 1,grow");
 
-		posButton11.setAction(goAction);
-		posButton11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/6_32.png"))); // NOI18N
-		posButton11.setActionCommand("6");
-		posButton11.setFocusable(false);
-		buttonPanel.add(posButton11, "cell 2 1,grow");
+		btn6.setAction(loginAction);
+		btn6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/6_32.png"))); // NOI18N
+		btn6.setActionCommand("6");
+		btn6.setFocusable(false);
+		buttonPanel.add(btn6, "cell 2 1,grow");
 
-		posButton8.setAction(goAction);
-		posButton8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/1_32.png"))); // NOI18N
-		posButton8.setActionCommand("1");
-		posButton8.setFocusable(false);
-		buttonPanel.add(posButton8, "cell 0 2,grow");
+		btn1.setAction(loginAction);
+		btn1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/1_32.png"))); // NOI18N
+		btn1.setActionCommand("1");
+		btn1.setFocusable(false);
+		buttonPanel.add(btn1, "cell 0 2,grow");
 
-		posButton7.setAction(goAction);
-		posButton7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/2_32.png"))); // NOI18N
-		posButton7.setActionCommand("2");
-		posButton7.setFocusable(false);
-		buttonPanel.add(posButton7, "cell 1 2,grow");
+		btn2.setAction(loginAction);
+		btn2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/2_32.png"))); // NOI18N
+		btn2.setActionCommand("2");
+		btn2.setFocusable(false);
+		buttonPanel.add(btn2, "cell 1 2,grow");
 
-		posButton6.setAction(goAction);
-		posButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/3_32.png"))); // NOI18N
-		posButton6.setActionCommand("3");
-		posButton6.setFocusable(false);
-		buttonPanel.add(posButton6, "cell 2 2,grow");
+		btn3.setAction(loginAction);
+		btn3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/3_32.png"))); // NOI18N
+		btn3.setActionCommand("3");
+		btn3.setFocusable(false);
+		buttonPanel.add(btn3, "cell 2 2,grow");
 
 		posButton3.setAction(goAction);
 		posButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/0_32.png"))); // NOI18N
@@ -159,28 +159,28 @@ public class PasswordScreen extends JPanel {
 
 		jPanel2.setOpaque(false);
 
-		jLabel1.setFont(new java.awt.Font("Tahoma", 1, 18));
-		jLabel1.setForeground(new java.awt.Color(204, 102, 0));
-		jLabel1.setText(com.floreantpos.POSConstants.ENTER_YOUR_USER_ID);
+		jLabel4.setFont(new java.awt.Font("DejaVu Sans", 1, 24));
+		jLabel4.setForeground(new java.awt.Color(204, 102, 0));
+		jLabel4.setText(com.floreantpos.POSConstants.USER_TYPE + ":");
+		add(jPanel2, "cell 0 0,growx,aligny top");
+		jPanel2.setLayout(new MigLayout("", "[343px]", "[22px][31px][30px]"));
+		jLabel2 = new javax.swing.JLabel();
+		jLabel2.setHorizontalAlignment(SwingConstants.CENTER);
 
 		jLabel2.setFont(new java.awt.Font("Tahoma", 1, 18));
 		jLabel2.setForeground(new java.awt.Color(204, 102, 0));
 		jLabel2.setBackground(new java.awt.Color(204, 102, 0));
 		jLabel2.setText(com.floreantpos.POSConstants.ENTER_YOUR_PASSWORD);
+		jPanel2.add(jLabel2, "cell 0 0,growx,aligny top");
+		tfPassword = new POSPasswordField();
+		tfPassword.setEditable(false);
 		tfPassword.setFont(new java.awt.Font("Courier", 1, 18));
-		tfPassword.setHorizontalAlignment(POSTextField.LEFT);
+		tfPassword.setHorizontalAlignment(SwingConstants.CENTER);
+		jPanel2.add(tfPassword, "cell 0 1,growx,aligny top");
 
-		tfUserId.setFont(new java.awt.Font("Tahoma", 1, 18));
-
-		jLabel4.setFont(new java.awt.Font("DejaVu Sans", 1, 24));
-		jLabel4.setForeground(new java.awt.Color(204, 102, 0));
-		jLabel4.setText(com.floreantpos.POSConstants.USER_TYPE + ":");
-		add(jPanel2, "cell 0 0,growx,aligny top");
-		jPanel2.setLayout(new MigLayout("", "[343px]", "[22px][31px][22px][26px]"));
-		jPanel2.add(jLabel1, "cell 0 0,growx,aligny top");
-		jPanel2.add(jLabel2, "cell 0 2,growx,aligny top");
-		jPanel2.add(tfPassword, "cell 0 3,growx,aligny top");
-		jPanel2.add(tfUserId, "cell 0 1,grow");
+		msgLabel = new JLabel("");
+		msgLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		jPanel2.add(msgLabel, "cell 0 2,grow");
 
 		jPanel3.setPreferredSize(new java.awt.Dimension(100, 105));
 		jPanel3.setLayout(new MigLayout("", "[157px][157px]", "[45px][45px]"));
@@ -188,28 +188,16 @@ public class PasswordScreen extends JPanel {
 		btnConfigureDatabase.setAction(goAction);
 		btnConfigureDatabase.setText(com.floreantpos.POSConstants.CONFIGURE_DATABASE);
 		btnConfigureDatabase.setFocusable(false);
-		jPanel3.add(btnConfigureDatabase, "cell 0 0,grow");
+		jPanel3.add(btnConfigureDatabase, "cell 0 0 2 1,grow");
 
-		btnLogin.setAction(goAction);
-		btnLogin.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/log_in_32.png"))); // NOI18N
-		btnLogin.setText(com.floreantpos.POSConstants.LOGIN);
-		btnLogin.setFocusable(false);
-		jPanel3.add(btnLogin, "cell 1 0,grow");
-
-		psbtnTerminalSetup = new PosButton();
-		psbtnTerminalSetup.setVisible(false);
-		
 		panel = new JPanel();
 		add(panel, "cell 0 2,grow");
-		psbtnTerminalSetup.setAction(goAction);
-		psbtnTerminalSetup.setText(POSConstants.TERMINAL_SETUP);
-		jPanel3.add(psbtnTerminalSetup, "cell 0 1,grow");
 
 		btnShutdown.setAction(goAction);
 		btnShutdown.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/shut_down_32.png"))); // NOI18N
 		btnShutdown.setText(com.floreantpos.POSConstants.SHUTDOWN);
 		btnShutdown.setFocusable(false);
-		jPanel3.add(btnShutdown, "cell 1 1,grow");
+		jPanel3.add(btnShutdown, "cell 0 1 2 1,grow");
 
 		add(jPanel3, "cell 0 3,growx,aligny bottom");
 	}// </editor-fold>//GEN-END:initComponents
@@ -220,15 +208,10 @@ public class PasswordScreen extends JPanel {
 			Application application = Application.getInstance();
 			application.initializeSystem();
 
-			int userId = captureUserId();
-
-			String newPass = capturePassword();
+			String secretKey = capturePassword();
 
 			UserDAO dao = new UserDAO();
-			User user = dao.findUser(userId);
-			if (!user.getPassword().equalsIgnoreCase(newPass)) {
-				throw new RuntimeException(POSConstants.WRONG_PASSWORD);
-			}
+			User user = dao.findUserBySecretKey(secretKey);
 
 			Shift currentShift = ShiftUtil.getCurrentShift();
 			if (currentShift == null) {
@@ -240,10 +223,11 @@ public class PasswordScreen extends JPanel {
 			application.setCurrentUser(user);
 			application.setCurrentShift(currentShift);
 
-			tfUserId.setText("");
 			tfPassword.setText("");
 			application.getRootView().showView(SwitchboardView.VIEW_NAME);
 
+		} catch (UserNotFoundException e) {
+			msgLabel.setText("Login failed, please try again...");
 		} catch (Exception e1) {
 			String message = e1.getMessage();
 
@@ -290,14 +274,6 @@ public class PasswordScreen extends JPanel {
 		return newPass;
 	}
 
-	private int captureUserId() {
-		try {
-			return Integer.parseInt(tfUserId.getText());
-		} catch (Exception x) {
-			throw new RuntimeException(POSConstants.USER_ID_NOT_VALID);
-		}
-	}
-
 	private void reClockInUser(Calendar currentTime, User user, Shift currentShift) {
 		POSMessageDialog.showMessage("You will be clocked out from previous Shift");
 
@@ -324,37 +300,32 @@ public class PasswordScreen extends JPanel {
 
 	// Variables declaration - do not modify//GEN-BEGIN:variables
 	private com.floreantpos.swing.PosButton btnConfigureDatabase;
-	private com.floreantpos.swing.PosButton btnLogin;
 	private com.floreantpos.swing.PosButton btnShutdown;
 	private javax.swing.JPanel buttonPanel;
-	private javax.swing.JLabel jLabel1;
 	private javax.swing.JLabel jLabel2;
 	private javax.swing.JLabel jLabel4;
 	private javax.swing.JPanel jPanel2;
 	private javax.swing.JPanel jPanel3;
 	private com.floreantpos.swing.PosButton posButton1;
-	private com.floreantpos.swing.PosButton posButton10;
-	private com.floreantpos.swing.PosButton posButton11;
-	private com.floreantpos.swing.PosButton posButton12;
-	private com.floreantpos.swing.PosButton posButton13;
+	private com.floreantpos.swing.PosButton btn5;
+	private com.floreantpos.swing.PosButton btn6;
+	private com.floreantpos.swing.PosButton btn9;
+	private com.floreantpos.swing.PosButton btn8;
 	private com.floreantpos.swing.PosButton posButton3;
-	private com.floreantpos.swing.PosButton posButton4;
-	private com.floreantpos.swing.PosButton posButton6;
-	private com.floreantpos.swing.PosButton posButton7;
-	private com.floreantpos.swing.PosButton posButton8;
-	private com.floreantpos.swing.PosButton posButton9;
+	private com.floreantpos.swing.PosButton btn7;
+	private com.floreantpos.swing.PosButton btn3;
+	private com.floreantpos.swing.PosButton btn2;
+	private com.floreantpos.swing.PosButton btn1;
+	private com.floreantpos.swing.PosButton btn4;
 	private POSPasswordField tfPassword;
-	private POSTextField tfUserId;
 	// End of variables declaration//GEN-END:variables
 
 	Action goAction = new AbstractAction() {
 		public void actionPerformed(ActionEvent e) {
+			
 			String command = e.getActionCommand();
 			if (com.floreantpos.POSConstants.CLEAR.equals(command)) {
-				if (tfUserId.hasFocus()) {
-					tfUserId.setText("");
-				}
-				else if (tfPassword.hasFocus()) {
+				if (tfPassword.hasFocus()) {
 					tfPassword.setText("");
 				}
 			}
@@ -367,33 +338,49 @@ public class PasswordScreen extends JPanel {
 			else if ("DBCONFIG".equalsIgnoreCase(command)) {
 				DatabaseConfigurationDialog.show(Application.getPosWindow());
 			}
-			else if(POSConstants.TERMINAL_SETUP.equals(command)) {
+			else if (POSConstants.TERMINAL_SETUP.equals(command)) {
 				TerminalSetupDialog dialog = new TerminalSetupDialog();
 				dialog.pack();
 				dialog.setLocationRelativeTo(Application.getPosWindow());
 				dialog.setVisible(true);
 			}
 			else {
-				if (tfUserId.hasFocus()) {
-					tfUserId.setText(tfUserId.getText() + command);
-				}
-				else if (tfPassword.hasFocus()) {
-
-					String newPass = capturePassword();
-					newPass += command;
-					tfPassword.setText(newPass);
-				}
+				String newPass = capturePassword();
+				newPass += command;
+				tfPassword.setText(newPass);
 			}
 		}
 	};
-	private PosButton psbtnTerminalSetup;
+
+	Action loginAction = new AbstractAction() {
+		public void actionPerformed(ActionEvent e) {
+			msgLabel.setText("");
+			
+			String command = e.getActionCommand();
+			tfPassword.setText(capturePassword() + command);
+
+			Thread thread = new Thread(new Runnable() {
+				@Override
+				public void run() {
+					String secretKey = capturePassword();
+					if (secretKey != null && secretKey.length() == 4) {
+						doLogin();
+						tfPassword.setText("");
+					}
+				}
+			});
+
+			thread.start();
+		}
+	};
 	private JPanel panel;
+	private JLabel msgLabel;
 
 	@Override
 	public void setVisible(boolean aFlag) {
 		super.setVisible(aFlag);
 		if (aFlag) {
-			tfUserId.requestFocus();
+			tfPassword.requestFocus();
 		}
 	}
 }

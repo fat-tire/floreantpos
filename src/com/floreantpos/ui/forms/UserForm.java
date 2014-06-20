@@ -16,6 +16,7 @@ import com.floreantpos.model.UserType;
 import com.floreantpos.model.dao.UserDAO;
 import com.floreantpos.model.dao.UserTypeDAO;
 import com.floreantpos.model.util.IllegalModelStateException;
+import com.floreantpos.swing.FixedLengthDocument;
 import com.floreantpos.ui.BeanEditor;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.util.POSUtil;
@@ -52,8 +53,8 @@ public class UserForm extends BeanEditor {
 		jLabel4 = new javax.swing.JLabel();
 		jLabel9 = new javax.swing.JLabel();
 		jLabel10 = new javax.swing.JLabel();
-		tfPassword1 = new javax.swing.JPasswordField();
-		tfPassword2 = new javax.swing.JPasswordField();
+		tfPassword1 = new javax.swing.JPasswordField(new FixedLengthDocument(4), "", 10);
+		tfPassword2 = new javax.swing.JPasswordField(new FixedLengthDocument(4), "", 10);
 		tfId = new javax.swing.JTextField();
 		tfSsn = new javax.swing.JTextField();
 		tfFirstName = new javax.swing.JTextField();
@@ -95,7 +96,7 @@ public class UserForm extends BeanEditor {
 		gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 0);
 		add(jLabel4, gridBagConstraints);
 
-		jLabel9.setText("Password" + ":");
+		jLabel9.setText("Secret Key");
 		gridBagConstraints = new java.awt.GridBagConstraints();
 		gridBagConstraints.gridx = 0;
 		gridBagConstraints.gridy = 4;
@@ -103,7 +104,7 @@ public class UserForm extends BeanEditor {
 		gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 0);
 		add(jLabel9, gridBagConstraints);
 
-		jLabel10.setText("Confirm Password" + ":");
+		jLabel10.setText("Confirm Secret Key");
 		gridBagConstraints = new java.awt.GridBagConstraints();
 		gridBagConstraints.gridx = 0;
 		gridBagConstraints.gridy = 5;
@@ -280,26 +281,28 @@ public class UserForm extends BeanEditor {
 		String ssn = tfSsn.getText();
 		String firstName = tfFirstName.getText();
 		String lastName = tfLastName.getText();
-		String password1 = new String(tfPassword1.getPassword());
-		String password2 = new String(tfPassword2.getPassword());
+		String secretKey1 = new String(tfPassword1.getPassword());
+		String secretKey2 = new String(tfPassword2.getPassword());
 
-		if (POSUtil.isBlankOrNull(ssn)) {
-			throw new IllegalModelStateException("SSN cannot be empty");
-		}
 		if (POSUtil.isBlankOrNull(firstName)) {
 			throw new IllegalModelStateException("First name cannot be empty");
 		}
 		if (POSUtil.isBlankOrNull(lastName)) {
 			throw new IllegalModelStateException("Last name cannot be empty");
 		}
-		if (POSUtil.isBlankOrNull(password1)) {
-			throw new IllegalModelStateException("Password1 cannot be empty");
+		if (POSUtil.isBlankOrNull(secretKey1)) {
+			throw new IllegalModelStateException("Secret key cannot be empty");
 		}
-		if (POSUtil.isBlankOrNull(password2)) {
-			throw new IllegalModelStateException("Password2 cannot be empty");
+		if (POSUtil.isBlankOrNull(secretKey2)) {
+			throw new IllegalModelStateException("Secret key cannot be empty");
 		}
-		if (!password1.equals(password2)) {
-			throw new IllegalModelStateException("Password did not match");
+		if (!secretKey1.equals(secretKey2)) {
+			throw new IllegalModelStateException("Secret key did not match");
+		}
+		
+		User userBySecretKey = UserDAO.getInstance().findUserBySecretKey(secretKey1);
+		if(userBySecretKey != null) {
+			throw new IllegalModelStateException("Secret key must be unique. An user with the secret key already exists.");
 		}
 
 		double cost = 0;
@@ -317,7 +320,7 @@ public class UserForm extends BeanEditor {
 		user.setUserId(id);
 		user.setFirstName(firstName);
 		user.setLastName(lastName);
-		user.setPassword(password1);
+		user.setSecretKey(secretKey1);
 
 		setBean(user);
 		return true;
@@ -349,8 +352,8 @@ public class UserForm extends BeanEditor {
 		tfLastName.setText(data.getLastName());
 		//tfCostPerHour.setText(data.getCostPerHour() == null ? "" : data.getCostPerHour().toString());
 		//cbUserType.setSelectedItem(data.getUserType());
-		tfPassword1.setText(data.getPassword());
-		tfPassword2.setText(data.getPassword());
+		tfPassword1.setText(data.getSecretKey());
+		tfPassword2.setText(data.getSecretKey());
 
 		cbUserType.setSelectedItem(data.getNewUserType());
 		tfCostPerHour.setText(data.getCostPerHour() == null ? "" : data.getCostPerHour().toString());
