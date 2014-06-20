@@ -111,8 +111,10 @@ public abstract class _RootDAO extends com.floreantpos.model.dao._BaseRootDAO {
 		return configuration;
 	}
 	
-	public static void reInitialize() {
+	public static Configuration reInitialize() {
 		Configuration configuration = getNewConfiguration(null);
 		com.floreantpos.model.dao._RootDAO.setSessionFactory(configuration.buildSessionFactory());
+		
+		return configuration;
 	}
 }

@@ -14,9 +14,12 @@ import javax.swing.UIManager;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.floreantpos.Messages;
+import com.floreantpos.POSConstants;
 import com.floreantpos.bo.ui.BackOfficeWindow;
 import com.floreantpos.config.AppConfig;
 import com.floreantpos.config.AppProperties;
+import com.floreantpos.config.ui.DatabaseConfigurationDialog;
 import com.floreantpos.model.PrinterConfiguration;
 import com.floreantpos.model.Restaurant;
 import com.floreantpos.model.Shift;
@@ -28,6 +31,7 @@ import com.floreantpos.model.dao.TerminalDAO;
 import com.floreantpos.ui.dialog.NumberSelectionDialog2;
 import com.floreantpos.ui.views.LoginScreen;
 import com.floreantpos.ui.views.order.RootView;
+import com.floreantpos.util.DatabaseConnectionException;
 import com.floreantpos.util.DatabaseUtil;
 import com.floreantpos.util.TicketActiveDateSetterTask;
 import com.jgoodies.looks.plastic.PlasticXPLookAndFeel;
@@ -49,8 +53,8 @@ public class Application {
 
 	private static Application instance;
 
-	private static DecimalFormat decimalFormat = new DecimalFormat("#,##0.00");
-	private static SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM, yyyy");
+	private static DecimalFormat decimalFormat = new DecimalFormat("#,##0.00"); //$NON-NLS-1$
+	private static SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM, yyyy"); //$NON-NLS-1$
 	private static ImageIcon applicationIcon;
 	
 	private boolean systemInitialized;
@@ -61,7 +65,7 @@ public class Application {
 	private Application() {
 		//Locale.setDefault(Locale.forLanguageTag("ar-EG"));
 
-		applicationIcon = new ImageIcon(getClass().getResource("/icons/icon.png"));
+		applicationIcon = new ImageIcon(getClass().getResource("/icons/icon.png")); //$NON-NLS-1$
 		posWindow = new PosWindow();
 		posWindow.setTitle(getTitle());
 		posWindow.setIconImage(applicationIcon.getImage());
@@ -75,13 +79,15 @@ public class Application {
 		posWindow.setContentPane(rootView);
 		posWindow.setupSizeAndLocation();
 		posWindow.setVisible(true);
+		
+		initializeSystem();
 	}
 
 	private void setApplicationLook() {
 		try {
 			PlasticXPLookAndFeel.setPlasticTheme(new ExperienceBlue());
 			UIManager.setLookAndFeel(new PlasticXPLookAndFeel());
-			UIManager.put("ComboBox.is3DEnabled", Boolean.FALSE);
+			UIManager.put("ComboBox.is3DEnabled", Boolean.FALSE); //$NON-NLS-1$
 		} catch (Exception ignored) {
 		}
 	}
@@ -96,7 +102,14 @@ public class Application {
 			posWindow.setGlassPaneVisible(true);
 			posWindow.setGlassPaneMessage(com.floreantpos.POSConstants.LOADING);
 			
-			DatabaseUtil.initialize();
+			if(!DatabaseUtil.checkConnection(DatabaseUtil.initialize())) {
+				int option = JOptionPane.showConfirmDialog(getPosWindow(), Messages.getString("Application.0"), Messages.getString(POSConstants.POS_MESSAGE_ERROR), JOptionPane.YES_NO_OPTION); //$NON-NLS-1$ //$NON-NLS-2$
+				if(option == JOptionPane.YES_OPTION) {
+					DatabaseConfigurationDialog.show(Application.getPosWindow());
+				}
+				
+				return;
+			}
 
 			initTerminal();
 			initPrintConfig();
@@ -104,7 +117,14 @@ public class Application {
 			setTicketActiveSetterScheduler();
 			setSystemInitialized(true);
 			
-		} catch (Exception e) {
+		} 
+		catch (DatabaseConnectionException e) {
+			int option = JOptionPane.showConfirmDialog(getPosWindow(), Messages.getString("Application.0"), Messages.getString(POSConstants.POS_MESSAGE_ERROR), JOptionPane.YES_NO_OPTION); //$NON-NLS-1$ //$NON-NLS-2$
+			if(option == JOptionPane.YES_OPTION) {
+				DatabaseConfigurationDialog.show(Application.getPosWindow());
+			}
+		}
+		catch (Exception e) {
 			logger.error(e);
 		} finally {
 			getPosWindow().setGlassPaneVisible(false);
@@ -145,8 +165,6 @@ public class Application {
 	private void initTerminal() {
 		int terminalId = AppConfig.getTerminalId();
 		
-		logger.info("Terminal ID from configuration=" + terminalId);
-
 		if (terminalId == -1) {
 			NumberSelectionDialog2 dialog = new NumberSelectionDialog2();
 			dialog.setTitle(com.floreantpos.POSConstants.ENTER_ID_FOR_TERMINAL);
@@ -164,7 +182,7 @@ public class Application {
 			terminal.setId(terminalId);
 			terminal.setOpeningBalance(new Double(500));
 			terminal.setCurrentBalance(new Double(500));
-			terminal.setName(com.floreantpos.POSConstants.TERMINAL + " - " + terminalId);
+			terminal.setName(com.floreantpos.POSConstants.TERMINAL + " - " + terminalId); //$NON-NLS-1$
 			
 			TerminalDAO.getInstance().saveOrUpdate(terminal);
 		}
@@ -276,18 +294,18 @@ public class Application {
 
 	public static String formatNumber(Double number) {
 		if(number == null) {
-			return "0.00";
+			return "0.00"; //$NON-NLS-1$
 		}
 
 		String value = decimalFormat.format(number);
-		if(value.equals("-0.00")) {
-			return "0.00";
+		if(value.equals("-0.00")) { //$NON-NLS-1$
+			return "0.00"; //$NON-NLS-1$
 		}
 		return value;
 	}
 
 	public static String getTitle() {
-		return "Floreant POS - Version " + VERSION;
+		return "Floreant POS - Version " + VERSION; //$NON-NLS-1$
 	}
 
 	public static ImageIcon getApplicationIcon() {
