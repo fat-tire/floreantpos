@@ -18,8 +18,10 @@ public abstract class BaseMenuItem  implements Comparable, Serializable {
 	public static String REF = "MenuItem";
 	public static String PROP_NAME = "name";
 	public static String PROP_PARENT = "parent";
+	public static String PROP_SHOW_IMAGE_ONLY = "showImageOnly";
 	public static String PROP_VISIBLE = "visible";
 	public static String PROP_DISCOUNT_RATE = "discountRate";
+	public static String PROP_IMAGE = "image";
 	public static String PROP_PRICE = "price";
 	public static String PROP_TAX = "tax";
 	public static String PROP_ID = "id";
@@ -68,6 +70,8 @@ public abstract class BaseMenuItem  implements Comparable, Serializable {
 	private java.lang.Double price;
 	private java.lang.Double discountRate;
 	private java.lang.Boolean visible;
+	private byte[] image;
+	private java.lang.Boolean showImageOnly;
 
 	// many to one
 	private com.floreantpos.model.MenuGroup parent;
@@ -191,6 +195,40 @@ public abstract class BaseMenuItem  implements Comparable, Serializable {
 	public static String getVisibleDefaultValue () {
 		return "true";
 	}
+
+
+	/**
+	 * Return the value associated with the column: IMAGE
+	 */
+	public byte[] getImage () {
+			return image;
+	}
+
+	/**
+	 * Set the value related to the column: IMAGE
+	 * @param image the IMAGE value
+	 */
+	public void setImage (byte[] image) {
+		this.image = image;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: SHOW_IMAGE_ONLY
+	 */
+	public java.lang.Boolean isShowImageOnly () {
+					return showImageOnly == null ? Boolean.FALSE : showImageOnly;
+			}
+
+	/**
+	 * Set the value related to the column: SHOW_IMAGE_ONLY
+	 * @param showImageOnly the SHOW_IMAGE_ONLY value
+	 */
+	public void setShowImageOnly (java.lang.Boolean showImageOnly) {
+		this.showImageOnly = showImageOnly;
+	}
+
 
 
 	/**

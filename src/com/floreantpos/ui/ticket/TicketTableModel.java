@@ -1,6 +1,5 @@
 package com.floreantpos.ui.ticket;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -288,18 +287,6 @@ public class TicketTableModel extends AbstractTableModel {
 			return null;
 
 		return tableRows.get(String.valueOf(index));
-	}
-
-	public int indexOf(Object o) {
-		Collection collection = tableRows.values();
-		int i = 0;
-		for (Iterator iter = collection.iterator(); iter.hasNext();) {
-			if (iter.next() == o) {
-				//return i;
-			}
-			++i;
-		}
-		return 0;
 	}
 
 	public JTable getTable() {

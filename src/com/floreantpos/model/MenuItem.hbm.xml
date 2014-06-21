@@ -12,6 +12,10 @@
     <property column="VISIBLE" name="visible" type="java.lang.Boolean">
       <meta attribute="defaultValue">true</meta>
     </property>
+    <property name="image" column="IMAGE" not-null="false" type="binary" length="20480"/>
+    <property name="showImageOnly" column="SHOW_IMAGE_ONLY" type="java.lang.Boolean"/>
+    <!-- <property name="smallImage" column="SMALL_IMAGE" length="120" not-null="false" type="string"/>
+    <property name="largeImage" column="LARGE_IMAGE" length="120" not-null="false" type="string"/> -->
     <!-- uni-directional many-to-one association to FoodGroup -->
     <many-to-one class="com.floreantpos.model.MenuGroup" name="parent">
       <column name="GROUP_ID"/>

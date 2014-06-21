@@ -20,6 +20,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
+import net.miginfocom.swing.MigLayout;
+
 import com.floreantpos.POSConstants;
 import com.floreantpos.PosException;
 import com.floreantpos.bo.ui.BackOfficeWindow;
@@ -193,7 +195,7 @@ public class SwitchboardView extends JPanel implements ActionListener {
 		bottomPanel.add(bottomLeftPanel, java.awt.BorderLayout.CENTER);
 
 		bottomRightPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "OTHERS", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
-		bottomRightPanel.setPreferredSize(new java.awt.Dimension(200, 10));
+		bottomRightPanel.setPreferredSize(new java.awt.Dimension(180, 10));
 
 		btnShutdown.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/shut_down_32.png")));
 		btnShutdown.setText(POSConstants.CAPITAL_SHUTDOWN);
@@ -209,23 +211,13 @@ public class SwitchboardView extends JPanel implements ActionListener {
 		btnClockOut.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/log_out_32.png")));
 		btnClockOut.setText(POSConstants.CAPITAL_CLOCK_OUT);
 
-		org.jdesktop.layout.GroupLayout bottomRightPanelLayout = new org.jdesktop.layout.GroupLayout(bottomRightPanel);
-		bottomRightPanel.setLayout(bottomRightPanelLayout);
-		bottomRightPanelLayout.setHorizontalGroup(bottomRightPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(
-				bottomRightPanelLayout.createSequentialGroup().addContainerGap().add(
-						bottomRightPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(btnShutdown, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 168, Short.MAX_VALUE).add(btnLogout, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 168, Short.MAX_VALUE).add(btnClockOut,
-								org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 168, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE).add(btnBackOffice, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 168, Short.MAX_VALUE).add(btnManager, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 168, Short.MAX_VALUE))
-						.addContainerGap()));
-		bottomRightPanelLayout.setVerticalGroup(bottomRightPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(
-				org.jdesktop.layout.GroupLayout.TRAILING,
-				bottomRightPanelLayout.createSequentialGroup().addContainerGap(39, Short.MAX_VALUE).add(btnManager, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE).addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED).add(
-						btnBackOffice, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE).addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED).add(btnClockOut, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE,
-						org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE).addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED).add(btnLogout, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
-						org.jdesktop.layout.GroupLayout.PREFERRED_SIZE).addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED).add(btnShutdown, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 58, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE).addContainerGap()));
-
-		bottomRightPanelLayout.linkSize(new java.awt.Component[] { btnBackOffice, btnClockOut, btnLogout, btnManager, btnShutdown }, org.jdesktop.layout.GroupLayout.VERTICAL);
-
 		bottomPanel.add(bottomRightPanel, java.awt.BorderLayout.EAST);
+		bottomRightPanel.setLayout(new MigLayout("aligny bottom, insets 1 2 1 2, gapy 10", "[170px]", "[][][][][]"));
+		bottomRightPanel.add(btnShutdown, "cell 0 4,grow");
+		bottomRightPanel.add(btnLogout, "cell 0 3,grow");
+		bottomRightPanel.add(btnClockOut, "cell 0 2,grow");
+		bottomRightPanel.add(btnBackOffice, "cell 0 1,grow");
+		bottomRightPanel.add(btnManager, "cell 0 0,grow");
 
 		add(bottomPanel, java.awt.BorderLayout.CENTER);
 	}// </editor-fold>//GEN-END:initComponents
