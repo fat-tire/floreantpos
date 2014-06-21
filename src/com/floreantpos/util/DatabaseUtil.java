@@ -75,7 +75,7 @@ public class DatabaseUtil {
 			configuration = configuration.setProperty("hibernate.connection.url", connectionString);
 			configuration = configuration.setProperty("hibernate.connection.username", user);
 			configuration = configuration.setProperty("hibernate.connection.password", password);
-			configuration = configuration.setProperty("hibernate.hbm2ddl.auto", "update");
+			configuration = configuration.setProperty("hibernate.hbm2ddl.auto", "create");
 
 			SchemaExport schemaExport = new SchemaExport(configuration);
 			schemaExport.create(false, true);
