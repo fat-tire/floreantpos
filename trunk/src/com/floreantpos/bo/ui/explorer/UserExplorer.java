@@ -74,7 +74,7 @@ public class UserExplorer extends TransparentPanel {
 					user2.setNewUserType(user.getNewUserType());
 					user2.setFirstName(user.getFirstName());
 					user2.setLastName(user.getLastName());
-					user2.setSecretKey(user.getSecretKey());
+					user2.setPassword(user.getPassword());
 					user2.setSsn(user.getSsn());
 					
 					UserForm editor = new UserForm();
