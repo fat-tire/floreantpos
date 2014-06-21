@@ -19,8 +19,22 @@ public class User extends BaseUser {
 	/**
 	 * Constructor for primary key
 	 */
-	public User (java.lang.String secretKey) {
-		super(secretKey);
+	public User (java.lang.Integer autoId) {
+		super(autoId);
+	}
+
+	/**
+	 * Constructor for required fields
+	 */
+	public User (
+		java.lang.Integer autoId,
+		java.lang.String password,
+		java.lang.String ssn) {
+
+		super (
+			autoId,
+			password,
+			ssn);
 	}
 
 	/*[CONSTRUCTOR MARKER END]*/

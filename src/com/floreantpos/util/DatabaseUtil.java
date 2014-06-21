@@ -75,7 +75,7 @@ public class DatabaseUtil {
 			configuration = configuration.setProperty("hibernate.connection.url", connectionString);
 			configuration = configuration.setProperty("hibernate.connection.username", user);
 			configuration = configuration.setProperty("hibernate.connection.password", password);
-			configuration = configuration.setProperty("hibernate.hbm2ddl.auto", "create");
+			configuration = configuration.setProperty("hibernate.hbm2ddl.auto", "update");
 
 			SchemaExport schemaExport = new SchemaExport(configuration);
 			schemaExport.create(false, true);
@@ -114,7 +114,7 @@ public class DatabaseUtil {
 			User u = new User();
 			u.setUserId(123);
 			u.setSsn("123");
-			u.setSecretKey("7777");
+			u.setPassword("7777");
 			u.setFirstName("Test");
 			u.setLastName(com.floreantpos.POSConstants.USER);
 			u.setNewUserType(type);
