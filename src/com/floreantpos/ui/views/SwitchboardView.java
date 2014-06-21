@@ -132,62 +132,51 @@ public class SwitchboardView extends JPanel implements ActionListener {
 		bottomLeftPanel.setLayout(new java.awt.BorderLayout(5, 5));
 		bottomLeftPanel.add(openTicketList, java.awt.BorderLayout.CENTER);
 
-		activityPanel.setPreferredSize(new java.awt.Dimension(655, 160));
+		activityPanel.setPreferredSize(new java.awt.Dimension(655, 150));
 		activityPanel.setLayout(new java.awt.GridLayout(3, 0, 5, 5));
 
 		btnInfo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/settle_ticket_32.png")));
 		btnInfo.setText(POSConstants.CAPITAL_INFO);
-		btnInfo.setPreferredSize(new java.awt.Dimension(160, 60));
 		activityPanel.add(btnInfo);
 
 		btnNewTicket.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/new_ticket_32.png")));
 		btnNewTicket.setText(POSConstants.CAPITAL_NEW);
-		btnNewTicket.setPreferredSize(new java.awt.Dimension(120, 50));
 		activityPanel.add(btnNewTicket);
 
 		btnEditTicket.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/edit_ticket_32.png")));
 		btnEditTicket.setText(POSConstants.CAPITAL_EDIT);
-		btnEditTicket.setPreferredSize(new java.awt.Dimension(120, 50));
 		activityPanel.add(btnEditTicket);
 
 		btnSplitTicket.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/split_32.png")));
 		btnSplitTicket.setText(POSConstants.CAPITAL_SPLIT);
-		btnSplitTicket.setPreferredSize(new java.awt.Dimension(120, 50));
 		activityPanel.add(btnSplitTicket);
 
 		btnVoidTicket.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/void_ticket_32.png")));
 		btnVoidTicket.setText(POSConstants.CAPITAL_VOID);
-		btnVoidTicket.setPreferredSize(new java.awt.Dimension(120, 50));
 		activityPanel.add(btnVoidTicket);
 
 		btnReopenTicket.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/edit_ticket_32.png")));
 		btnReopenTicket.setText(POSConstants.CAPITAL_RE_OPEN);
-		btnReopenTicket.setPreferredSize(new java.awt.Dimension(120, 50));
 		activityPanel.add(btnReopenTicket);
 
 		btnSettleTicket.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/settle_ticket_32.png")));
 		btnSettleTicket.setText(POSConstants.CAPITAL_SETTLE);
-		btnSettleTicket.setPreferredSize(new java.awt.Dimension(160, 60));
 		activityPanel.add(btnSettleTicket);
 
 		btnGroupSettle.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/settle_ticket_32.png")));
 		btnGroupSettle.setText("<html><body>" + POSConstants.CAPITAL_GROUP + "<br>" + POSConstants.CAPITAL_SETTLE + "</body></html>");
-		btnGroupSettle.setPreferredSize(new java.awt.Dimension(160, 60));
 		activityPanel.add(btnGroupSettle);
 
 		btnPayout.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pay_32.png")));
 		btnPayout.setText(POSConstants.CAPITAL_PAY_OUT);
-		btnPayout.setPreferredSize(new java.awt.Dimension(160, 60));
 		activityPanel.add(btnPayout);
 
 		btnTakeout.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pay_32.png")));
 		btnTakeout.setText(POSConstants.CAPITAL_TAKE_OUT);
-		btnTakeout.setPreferredSize(new java.awt.Dimension(160, 60));
 		activityPanel.add(btnTakeout);
 
 		btnPrintTicket.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/print_32.png")));
 		btnPrintTicket.setText(POSConstants.CAPITAL_PRINT);
-		btnPrintTicket.setPreferredSize(new java.awt.Dimension(120, 50));
 		activityPanel.add(btnPrintTicket);
 		
 		PosButton printToKitchenButton = new PosButton("PRINT TO KITCHEN");
