@@ -183,7 +183,12 @@ public class PasswordScreen extends JPanel {
 			
 			@Override
 			public void keyReleased(KeyEvent e) {
-				checkLogin(String.valueOf(e.getKeyChar()));
+				if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+					doLogin();
+				}
+				else {
+					checkLogin(String.valueOf(e.getKeyChar()));
+				}
 			}
 			
 			@Override
