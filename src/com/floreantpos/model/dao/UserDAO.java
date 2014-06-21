@@ -58,16 +58,10 @@ public class UserDAO extends BaseUserDAO {
 			
 			session = getSession();
 			Criteria criteria = session.createCriteria(getReferenceClass());
-			criteria.add(Restrictions.eq(User.PROP_SECRET_KEY, secretKey));
+			criteria.add(Restrictions.eq(User.PROP_PASSWORD, secretKey));
 			
 			Object result = criteria.uniqueResult();
-			if(result != null) {
-				return (User) result;
-			}
-			else {
-				//TODO: externalize string
-				throw new UserNotFoundException("User not found");
-			}
+			return (User) result;
 		} finally {
 			if (session != null) {
 				closeSession(session);

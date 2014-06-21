@@ -18,7 +18,8 @@ public abstract class BaseUser  implements Comparable, Serializable {
 	public static String REF = "User";
 	public static String PROP_LAST_CLOCK_IN_TIME = "lastClockInTime";
 	public static String PROP_CURRENT_TERMINAL = "currentTerminal";
-	public static String PROP_SECRET_KEY = "secretKey";
+	public static String PROP_PASSWORD = "password";
+	public static String PROP_AUTO_ID = "autoId";
 	public static String PROP_NEW_USER_TYPE = "newUserType";
 	public static String PROP_FIRST_NAME = "firstName";
 	public static String PROP_COST_PER_HOUR = "costPerHour";
@@ -37,8 +38,22 @@ public abstract class BaseUser  implements Comparable, Serializable {
 	/**
 	 * Constructor for primary key
 	 */
-	public BaseUser (java.lang.String secretKey) {
-		this.setSecretKey(secretKey);
+	public BaseUser (java.lang.Integer autoId) {
+		this.setAutoId(autoId);
+		initialize();
+	}
+
+	/**
+	 * Constructor for required fields
+	 */
+	public BaseUser (
+		java.lang.Integer autoId,
+		java.lang.String password,
+		java.lang.String ssn) {
+
+		this.setAutoId(autoId);
+		this.setPassword(password);
+		this.setSsn(ssn);
 		initialize();
 	}
 
@@ -49,12 +64,13 @@ public abstract class BaseUser  implements Comparable, Serializable {
 	private int hashCode = Integer.MIN_VALUE;
 
 	// primary key
-	private java.lang.String secretKey;
+	private java.lang.Integer autoId;
 
 	 java.util.Date modifiedTime;
 
 	// fields
 	private java.lang.Integer userId;
+	private java.lang.String password;
 	private java.lang.String firstName;
 	private java.lang.String lastName;
 	private java.lang.String ssn;
@@ -72,19 +88,19 @@ public abstract class BaseUser  implements Comparable, Serializable {
 	/**
 	 * Return the unique identifier of this class
      * @hibernate.id
-     *  generator-class="assigned"
-     *  column="SECRET_KEY"
+     *  generator-class="identity"
+     *  column="AUTO_ID"
      */
-	public java.lang.String getSecretKey () {
-		return secretKey;
+	public java.lang.Integer getAutoId () {
+		return autoId;
 	}
 
 	/**
 	 * Set the unique identifier of this class
-	 * @param secretKey the new ID
+	 * @param autoId the new ID
 	 */
-	public void setSecretKey (java.lang.String secretKey) {
-		this.secretKey = secretKey;
+	public void setAutoId (java.lang.Integer autoId) {
+		this.autoId = autoId;
 		this.hashCode = Integer.MIN_VALUE;
 	}
 
@@ -121,6 +137,23 @@ public abstract class BaseUser  implements Comparable, Serializable {
 	 */
 	public void setUserId (java.lang.Integer userId) {
 		this.userId = userId;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: USER_PASS
+	 */
+	public java.lang.String getPassword () {
+			return password;
+	}
+
+	/**
+	 * Set the value related to the column: USER_PASS
+	 * @param password the USER_PASS value
+	 */
+	public void setPassword (java.lang.String password) {
+		this.password = password;
 	}
 
 
@@ -285,16 +318,16 @@ public abstract class BaseUser  implements Comparable, Serializable {
 		if (!(obj instanceof com.floreantpos.model.User)) return false;
 		else {
 			com.floreantpos.model.User user = (com.floreantpos.model.User) obj;
-			if (null == this.getSecretKey() || null == user.getSecretKey()) return false;
-			else return (this.getSecretKey().equals(user.getSecretKey()));
+			if (null == this.getAutoId() || null == user.getAutoId()) return false;
+			else return (this.getAutoId().equals(user.getAutoId()));
 		}
 	}
 
 	public int hashCode () {
 		if (Integer.MIN_VALUE == this.hashCode) {
-			if (null == this.getSecretKey()) return super.hashCode();
+			if (null == this.getAutoId()) return super.hashCode();
 			else {
-				String hashStr = this.getClass().getName() + ":" + this.getSecretKey().hashCode();
+				String hashStr = this.getClass().getName() + ":" + this.getAutoId().hashCode();
 				this.hashCode = hashStr.hashCode();
 			}
 		}

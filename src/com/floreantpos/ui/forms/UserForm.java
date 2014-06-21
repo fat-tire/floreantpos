@@ -320,7 +320,7 @@ public class UserForm extends BeanEditor {
 		user.setUserId(id);
 		user.setFirstName(firstName);
 		user.setLastName(lastName);
-		user.setSecretKey(secretKey1);
+		user.setPassword(secretKey1);
 
 		setBean(user);
 		return true;
@@ -352,8 +352,8 @@ public class UserForm extends BeanEditor {
 		tfLastName.setText(data.getLastName());
 		//tfCostPerHour.setText(data.getCostPerHour() == null ? "" : data.getCostPerHour().toString());
 		//cbUserType.setSelectedItem(data.getUserType());
-		tfPassword1.setText(data.getSecretKey());
-		tfPassword2.setText(data.getSecretKey());
+		tfPassword1.setText(data.getPassword());
+		tfPassword2.setText(data.getPassword());
 
 		cbUserType.setSelectedItem(data.getNewUserType());
 		tfCostPerHour.setText(data.getCostPerHour() == null ? "" : data.getCostPerHour().toString());
