@@ -13,6 +13,7 @@ import javax.swing.JComponent;
 
 import com.floreantpos.model.Ticket;
 import com.floreantpos.ui.dialog.POSMessageDialog;
+import java.awt.Dimension;
 
 /**
  *
@@ -70,6 +71,7 @@ public class OrderView extends com.floreantpos.swing.TransparentPanel {
     private void initComponents() {
         categoryView = new com.floreantpos.ui.views.order.CategoryView();
         ticketView = new com.floreantpos.ui.views.order.TicketView();
+        ticketView.setPreferredSize(new Dimension(380, 463));
         jPanel1 = new com.floreantpos.swing.TransparentPanel();
         midContainer = new com.floreantpos.swing.TransparentPanel();
         othersView = new com.floreantpos.ui.views.order.OthersView();

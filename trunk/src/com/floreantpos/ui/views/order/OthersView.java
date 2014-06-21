@@ -19,6 +19,7 @@ import com.floreantpos.ui.dialog.NumberSelectionDialog2;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.dialog.TicketDetailDialog;
 import com.floreantpos.ui.views.CookingInstructionView;
+import java.awt.Dimension;
 
 /**
  *
@@ -50,11 +51,9 @@ public class OthersView extends TransparentPanel {
         btnCookingInstruction = new com.floreantpos.swing.PosButton();
 
         setBorder(javax.swing.BorderFactory.createTitledBorder(null, com.floreantpos.POSConstants.OTHERS, javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
-        setPreferredSize(new java.awt.Dimension(120, 140));
         setLayout(new java.awt.GridLayout(0, 1, 5, 5));
 
         transparentPanel2.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
-        transparentPanel2.setPreferredSize(new java.awt.Dimension(140, 50));
         transparentPanel2.setLayout(new java.awt.GridLayout(1, 0, 5, 5));
 
         btnOrderInfo.setText(com.floreantpos.POSConstants.ORDER_INFO);

@@ -2,7 +2,6 @@ package com.floreantpos.ui.views.order;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -24,8 +23,6 @@ import com.floreantpos.POSConstants;
 import com.floreantpos.swing.PosButton;
 
 public abstract class SelectionView extends JPanel {
-	private static final Dimension buttonSize = new Dimension(85, 60);
-
 	private JPanel buttonsPanel;
 
 	private com.floreantpos.swing.PosButton btnBack;
@@ -43,11 +40,10 @@ public abstract class SelectionView extends JPanel {
 
 		setLayout(new BorderLayout(5, 5));
 
-		MigLayout migLayout = new MigLayout("wrap 3", "fill,grow,shrink", "");
+		MigLayout migLayout = new MigLayout("wrap 4", "", "");
 		buttonsPanel = new JPanel(migLayout);
 
 		buttonScrollPane = new JScrollPane(buttonsPanel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		//JScrollPane scrollPane = new JScrollPane(buttonsPanel);
 		buttonScrollPane.setBorder(null);
 		buttonScrollPane.setOpaque(false);
 		buttonScrollPane.getViewport().setOpaque(false);
@@ -118,7 +114,6 @@ public abstract class SelectionView extends JPanel {
 			Component c = components[i];
 			if (c instanceof JButton) {
 				JButton button = (JButton) c;
-				//button.setIcon(null);
 				button.setPreferredSize(null);
 
 				ActionListener[] actionListeners = button.getActionListeners();
@@ -133,15 +128,15 @@ public abstract class SelectionView extends JPanel {
 	}
 
 	public void addButton(AbstractButton button) {
-		button.setPreferredSize(buttonSize);
+		//button.setPreferredSize(buttonSize);
 		button.setText("<html><body><center>" + button.getText() + "</center></body></html>");
-		buttonsPanel.add(button, "height 60px");
+		buttonsPanel.add(button);
 	}
 
 	public void addButton(JButton button, String text) {
 		button.setText("<html><body><center>" + text + "</center></body></html>");
-		button.setPreferredSize(buttonSize);
-		buttonsPanel.add(button, "height 50px");
+		//button.setPreferredSize(buttonSize);
+		buttonsPanel.add(button);
 	}
 
 	public void addSeparator(String text) {

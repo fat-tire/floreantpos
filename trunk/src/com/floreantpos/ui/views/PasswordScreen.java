@@ -79,11 +79,10 @@ public class PasswordScreen extends JPanel {
 		jLabel4 = new javax.swing.JLabel();
 		jPanel3 = new javax.swing.JPanel();
 		btnConfigureDatabase = new com.floreantpos.swing.PosButton();
-		btnConfigureDatabase.setMinimumSize(new Dimension(16, 50));
 		btnShutdown = new com.floreantpos.swing.PosButton();
 
 		setPreferredSize(new Dimension(360, 593));
-		setLayout(new MigLayout("ins 0", "[400px,grow]", "[116px][270px][grow][110px]"));
+		setLayout(new MigLayout("ins 0", "[400px,grow]", "[116px][270px][grow][fill]"));
 
 		buttonPanel.setOpaque(false);
 		buttonPanel.setPreferredSize(new java.awt.Dimension(280, 180));
@@ -198,12 +197,12 @@ public class PasswordScreen extends JPanel {
 		jPanel2.add(msgLabel, "cell 0 2,grow");
 
 		jPanel3.setPreferredSize(new java.awt.Dimension(100, 105));
-		jPanel3.setLayout(new MigLayout("", "[157px][157px]", "[45px][45px]"));
+		jPanel3.setLayout(new MigLayout("", "[grow,fill]", "[][]"));
 
 		btnConfigureDatabase.setAction(goAction);
 		btnConfigureDatabase.setText(com.floreantpos.POSConstants.CONFIGURE_DATABASE);
 		btnConfigureDatabase.setFocusable(false);
-		jPanel3.add(btnConfigureDatabase, "cell 0 0 2 1,grow");
+		jPanel3.add(btnConfigureDatabase, "cell 0 0,grow");
 
 		panel = new JPanel();
 		add(panel, "cell 0 2,grow");
@@ -212,7 +211,7 @@ public class PasswordScreen extends JPanel {
 		btnShutdown.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/shut_down_32.png"))); // NOI18N
 		btnShutdown.setText(com.floreantpos.POSConstants.SHUTDOWN);
 		btnShutdown.setFocusable(false);
-		jPanel3.add(btnShutdown, "cell 0 1 2 1,grow");
+		jPanel3.add(btnShutdown, "cell 0 1,grow");
 
 		add(jPanel3, "cell 0 3,growx,aligny bottom");
 	}// </editor-fold>//GEN-END:initComponents
