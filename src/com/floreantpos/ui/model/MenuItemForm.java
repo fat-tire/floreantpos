@@ -6,15 +6,29 @@
 
 package com.floreantpos.ui.model;
 
+import java.awt.BorderLayout;
 import java.awt.Dialog;
+import java.awt.Dimension;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JFileChooser;
+import javax.swing.JLabel;
+import javax.swing.border.EtchedBorder;
 import javax.swing.table.AbstractTableModel;
 
+import net.miginfocom.swing.MigLayout;
+
+import org.apache.commons.io.FileUtils;
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
 
@@ -34,8 +48,10 @@ import com.floreantpos.swing.MessageDialog;
 import com.floreantpos.ui.BeanEditor;
 import com.floreantpos.ui.dialog.BeanEditorDialog;
 import com.floreantpos.ui.dialog.ConfirmDeleteDialog;
+import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.util.POSUtil;
 import com.floreantpos.util.ShiftUtil;
+import javax.swing.SwingConstants;
 
 /**
  *
@@ -47,8 +63,43 @@ public class MenuItemForm extends BeanEditor implements ActionListener {
 	/** Creates new form FoodItemEditor */
 	public MenuItemForm() throws Exception {
 		this(new MenuItem());
+	}
 
-        tfDiscountRate.setDocument(new DoubleDocument());
+	protected void doSelectImageFile() {
+		JFileChooser fileChooser = new JFileChooser();
+		fileChooser.setMultiSelectionEnabled(false);
+		fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+		
+		int option = fileChooser.showOpenDialog(null);
+		
+		if(option == JFileChooser.APPROVE_OPTION) {
+			File imageFile = fileChooser.getSelectedFile();
+			try {
+				byte[] itemImage = FileUtils.readFileToByteArray(imageFile);
+				int imageSize = itemImage.length / 1024;
+				
+				if(imageSize > 20) {
+					POSMessageDialog.showMessage("The image is too large. Please select an image within 20 KB in size");
+					itemImage = null;
+					return;
+				}
+				
+				ImageIcon imageIcon = new ImageIcon(new ImageIcon(itemImage).getImage().getScaledInstance(80, 80, Image.SCALE_SMOOTH));
+				lblImagePreview.setIcon(imageIcon);
+				
+				MenuItem menuItem = (MenuItem) getBean();
+				menuItem.setImage(itemImage);
+				
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	protected void doClearImage() {
+		MenuItem menuItem = (MenuItem) getBean();
+		menuItem.setImage(null);
+		lblImagePreview.setIcon(null);
 	}
 
 	public MenuItemForm(MenuItem menuItem) throws Exception {
@@ -75,6 +126,55 @@ public class MenuItemForm extends BeanEditor implements ActionListener {
 		btnAddShift.addActionListener(this);
 		btnDeleteShift.addActionListener(this);
 		
+		tfDiscountRate.setDocument(new DoubleDocument());
+        jPanel1.setLayout(new MigLayout("", "[104px][100px,grow][][49px]", "[19px][25px][19px][19px][][][25px][15px]"));
+        jPanel1.add(jLabel3, "cell 0 2,alignx left,aligny center");
+        jPanel1.add(jLabel4, "cell 0 1,alignx left,aligny center");
+        
+        JLabel lblImage = new JLabel("Image:");
+        lblImage.setHorizontalAlignment(SwingConstants.TRAILING);
+        jPanel1.add(lblImage, "cell 0 4,aligny center");
+        setLayout(new BorderLayout(0, 0));
+        
+        lblImagePreview = new JLabel("");
+        lblImagePreview.setHorizontalAlignment(JLabel.CENTER);
+        lblImagePreview.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+        lblImagePreview.setPreferredSize(new Dimension(60, 120));
+        jPanel1.add(lblImagePreview, "cell 1 4,grow");
+        
+        JButton btnSelectImage = new JButton("...");
+        btnSelectImage.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		doSelectImageFile();
+        	}
+        });
+        jPanel1.add(btnSelectImage, "cell 2 4");
+        
+        btnClearImage = new JButton("Clear");
+        btnClearImage.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		doClearImage();
+        	}
+        });
+        jPanel1.add(btnClearImage, "cell 3 4");
+        
+        cbShowTextWithImage = new JCheckBox("Show image only");
+        cbShowTextWithImage.setActionCommand("Show Text with Image");
+        jPanel1.add(cbShowTextWithImage, "cell 1 5 3 1");
+        jPanel1.add(jLabel6, "cell 0 6,alignx left,aligny center");
+        jPanel1.add(jLabel2, "cell 0 3,alignx left,aligny center");
+        jPanel1.add(jLabel1, "cell 0 0,alignx left,aligny center");
+        jPanel1.add(tfName, "cell 1 0 3 1,growx,aligny top");
+        jPanel1.add(cbGroup, "cell 1 1,growx,aligny top");
+        jPanel1.add(btnNewGroup, "cell 3 1,growx,aligny top");
+        jPanel1.add(tfDiscountRate, "cell 1 3,growx,aligny top");
+        jPanel1.add(cbTax, "cell 1 6,growx,aligny top");
+        jPanel1.add(tfPrice, "cell 1 2,growx,aligny top");
+        jPanel1.add(chkVisible, "cell 1 7,alignx left,aligny top");
+        jPanel1.add(btnNewTax, "cell 2 6,alignx left,aligny top");
+        jPanel1.add(jLabel5, "cell 2 3");
+        add(jTabbedPane1);
+		
 		setBean(menuItem);
 	}
 
@@ -89,16 +189,21 @@ public class MenuItemForm extends BeanEditor implements ActionListener {
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
+        jLabel1.setHorizontalAlignment(SwingConstants.TRAILING);
         tfName = new com.floreantpos.swing.FixedLengthTextField();
         jLabel4 = new javax.swing.JLabel();
+        jLabel4.setHorizontalAlignment(SwingConstants.TRAILING);
         cbGroup = new javax.swing.JComboBox();
         btnNewGroup = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
+        jLabel3.setHorizontalAlignment(SwingConstants.TRAILING);
         tfPrice = new javax.swing.JFormattedTextField();
         jLabel6 = new javax.swing.JLabel();
+        jLabel6.setHorizontalAlignment(SwingConstants.TRAILING);
         cbTax = new javax.swing.JComboBox();
         btnNewTax = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
+        jLabel2.setHorizontalAlignment(SwingConstants.TRAILING);
         jLabel5 = new javax.swing.JLabel();
         tfDiscountRate = new javax.swing.JTextField();
         chkVisible = new javax.swing.JCheckBox();
@@ -145,70 +250,6 @@ public class MenuItemForm extends BeanEditor implements ActionListener {
         chkVisible.setText(com.floreantpos.POSConstants.VISIBLE);
         chkVisible.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
         chkVisible.setMargin(new java.awt.Insets(0, 0, 0, 0));
-
-        org.jdesktop.layout.GroupLayout jPanel1Layout = new org.jdesktop.layout.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(jLabel3)
-                    .add(jPanel1Layout.createSequentialGroup()
-                        .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                            .add(jLabel4)
-                            .add(jLabel6)
-                            .add(jLabel2)
-                            .add(jLabel1))
-                        .add(17, 17, 17)
-                        .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                            .add(tfName, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 365, Short.MAX_VALUE)
-                            .add(jPanel1Layout.createSequentialGroup()
-                                .add(cbGroup, 0, 312, Short.MAX_VALUE)
-                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                                .add(btnNewGroup))
-                            .add(jPanel1Layout.createSequentialGroup()
-                                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
-                                    .add(tfDiscountRate)
-                                    .add(org.jdesktop.layout.GroupLayout.TRAILING, cbTax, 0, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .add(org.jdesktop.layout.GroupLayout.TRAILING, tfPrice, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 162, Short.MAX_VALUE)
-                                    .add(chkVisible))
-                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                                    .add(btnNewTax)
-                                    .add(jLabel5))))))
-                .addContainerGap())
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(jLabel1)
-                    .add(tfName, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(jLabel4)
-                    .add(btnNewGroup)
-                    .add(cbGroup, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(jLabel3)
-                    .add(tfPrice, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(jLabel2)
-                    .add(jLabel5)
-                    .add(tfDiscountRate, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(cbTax, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(btnNewTax)
-                    .add(jLabel6))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(chkVisible)
-                .addContainerGap(157, Short.MAX_VALUE))
-        );
 
         jTabbedPane1.addTab(com.floreantpos.POSConstants.GENERAL, jPanel1);
 
@@ -314,22 +355,6 @@ public class MenuItemForm extends BeanEditor implements ActionListener {
         );
 
         jTabbedPane1.addTab(com.floreantpos.POSConstants.SHIFTS, jPanel3);
-
-        org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(layout.createSequentialGroup()
-                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .add(jTabbedPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(layout.createSequentialGroup()
-                .addContainerGap()
-                .add(jTabbedPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 346, Short.MAX_VALUE)
-                .addContainerGap())
-        );
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnNewTaxdoCreateNewTax(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewTaxdoCreateNewTax
@@ -384,6 +409,9 @@ public class MenuItemForm extends BeanEditor implements ActionListener {
     // End of variables declaration//GEN-END:variables
     private List<MenuItemModifierGroup> menuItemModifierGroups;
 	private MenuItemMGListModel menuItemMGListModel;
+	private JLabel lblImagePreview;
+	private JButton btnClearImage;
+	private JCheckBox cbShowTextWithImage;
     
     private void addMenuItemModifierGroup() {
     	try {
@@ -465,6 +493,11 @@ public class MenuItemForm extends BeanEditor implements ActionListener {
 		tfPrice.setValue(Double.valueOf(menuItem.getPrice()));
 		tfDiscountRate.setText(String.valueOf(menuItem.getDiscountRate()));
 		chkVisible.setSelected(menuItem.isVisible());
+		cbShowTextWithImage.setSelected(menuItem.isShowImageOnly());
+		if(menuItem.getImage() != null) {
+			ImageIcon imageIcon = new ImageIcon(new ImageIcon(menuItem.getImage()).getImage().getScaledInstance(60, 60, Image.SCALE_SMOOTH));
+			lblImagePreview.setIcon(imageIcon);
+		}
 		
 		if(menuItem.getId() == null) {
 //			cbGroup.setSelectedIndex(0);
@@ -490,6 +523,7 @@ public class MenuItemForm extends BeanEditor implements ActionListener {
 		menuItem.setPrice(Double.valueOf(tfPrice.getValue().toString()).doubleValue());
 		menuItem.setTax((Tax) cbTax.getSelectedItem());
 		menuItem.setVisible(chkVisible.isSelected());
+		menuItem.setShowImageOnly(cbShowTextWithImage.isSelected());
 		
         try {
             menuItem.setDiscountRate(Double.parseDouble(tfDiscountRate.getText()));

@@ -5,11 +5,12 @@ import java.awt.Dimension;
 import java.awt.Rectangle;
 
 import javax.swing.DefaultListSelectionModel;
+import javax.swing.JFrame;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
-import javax.swing.table.TableColumnModel;
 
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketItem;
@@ -40,22 +41,21 @@ public class TicketViewerTable extends JTable {
 		setAutoscrolls(true);
 		setShowGrid(true);
 		setBorder(null);
-		setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
 
 		setTicket(ticket);
 		
-		setPreferredSize(new Dimension(420, 300));
+		setRowHeight(20);
 		resizeTableColumns();
 		
-		setRowHeight(40);
+		setPreferredSize(new Dimension(380, 280));
 	}
 
 	private void resizeTableColumns() {
-		setColumnWidth(0, 150);
-		setColumnWidth(1, 60);
-		setColumnWidth(1, 60);
-		setColumnWidth(1, 60);
-		setColumnWidth(4, 90);
+//		setColumnWidth(0, 180);
+		setColumnWidth(1, 50);
+		setColumnWidth(2, 30);
+		setColumnWidth(3, 60);
+		setColumnWidth(4, 75);
 	}
 
 	private void setColumnWidth(int columnNumber, int width) {
@@ -269,5 +269,24 @@ public class TicketViewerTable extends JTable {
 		selectionModel.addSelectionInterval(index, index);
 		Rectangle cellRect = getCellRect(index, 0, false);
 		scrollRectToVisible(cellRect);
+	}
+	
+	public static void main(String[] args) {
+		Ticket ticket = new Ticket(5);
+		TicketItem ticketItem = new TicketItem(5);
+		ticketItem.setName("Coke Coke Coke Coke Coke");
+		ticketItem.setUnitPrice(999.99);
+		ticketItem.setItemCount(999);
+		ticketItem.setTotalAmount(99999.99);
+		ticketItem.setSubtotalAmount(99999.99);
+		ticket.addToticketItems(ticketItem);
+		
+		
+		TicketViewerTable table = new TicketViewerTable(ticket);
+		JFrame frame = new JFrame();
+		frame.add(new JScrollPane(table));
+		frame.setSize(400, 400);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setVisible(true);
 	}
 }
