@@ -9,12 +9,14 @@ package com.floreantpos.ui.views.order;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.Vector;
 
+import javax.swing.AbstractButton;
 import javax.swing.JOptionPane;
 
 import com.floreantpos.PosException;
@@ -25,6 +27,7 @@ import com.floreantpos.model.MenuModifierGroup;
 import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.TicketItemModifier;
 import com.floreantpos.model.TicketItemModifierGroup;
+import com.floreantpos.model.dao.MenuItemDAO;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.views.order.actions.ModifierSelectionListener;
@@ -44,6 +47,8 @@ public class ModifierView extends SelectionView {
 //	private final static ImageIcon normalIcon = IconFactory.getIcon("normalModifier16.png");
 //	private final static ImageIcon noIcon = IconFactory.getIcon("noModifier16.png");
 //	private final static ImageIcon extraIcon = IconFactory.getIcon("extraModifier16.png");
+	
+	private int separatorCount;
 
 	public static final String VIEW_NAME = "MODIFIER_VIEW";
 
@@ -62,30 +67,46 @@ public class ModifierView extends SelectionView {
 		this.parentTicketItem = ticketItem;
 		
 		reset();
+		buttonMap.clear();
+		separatorCount = 0;
 
-		//MenuItemDAO dao = new MenuItemDAO();
+		MenuItemDAO dao = new MenuItemDAO();
 		try {
 			List<MenuItemModifierGroup> menuItemModifierGroups = menuItem.getMenuItemModiferGroups();
 
+			List itemList = new ArrayList();
+			
 			for (Iterator<MenuItemModifierGroup> iter = menuItemModifierGroups.iterator(); iter.hasNext();) {
 				MenuItemModifierGroup menuItemModifierGroup = iter.next();
 				MenuModifierGroup group = menuItemModifierGroup.getModifierGroup();
-				addSeparator(group.getName());
+				
+				itemList.add(group.getName());
+				//addSeparator(group.getName());
 
 				Set<MenuModifier> modifiers = group.getModifiers();
 				for (MenuModifier modifier : modifiers) {
 					modifier.setMenuItemModifierGroup(menuItemModifierGroup);
-					ModifierButton modifierButton = new ModifierButton(modifier);
-					String key = modifier.getId() + "_" + modifier.getModifierGroup().getId();
-					buttonMap.put(key, modifierButton);
-					addButton(modifierButton);
+					//addButton(modifierButton);
 				}
+				
+				itemList.addAll(modifiers);
 			}
-			revalidate();
-			updateVisualRepresentation();
+			
+			setItems(itemList);
+			
 		} catch (PosException e) {
 			POSMessageDialog.showError(this, com.floreantpos.POSConstants.ERROR_MESSAGE, e);
 		}
+	}
+	
+	@Override
+	protected AbstractButton createItemButton(Object item) {
+		MenuModifier modifier = (MenuModifier) item;
+		ModifierButton modifierButton = new ModifierButton(modifier);
+		String key = modifier.getId() + "_" + modifier.getModifierGroup().getId();
+		buttonMap.put(key, modifierButton);
+		
+		return modifierButton;
 	}
 
 	public void addModifierSelectionListener(ModifierSelectionListener listener) {

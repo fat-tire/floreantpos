@@ -15,8 +15,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
+import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
-import javax.swing.JScrollPane;
 
 import net.miginfocom.swing.MigLayout;
 
@@ -44,10 +44,10 @@ public class CategoryView extends SelectionView implements ActionListener {
 	
 	/** Creates new form CategoryView */
 	public CategoryView() {
-		super(com.floreantpos.POSConstants.CATEGORIES);
+		super(com.floreantpos.POSConstants.CATEGORIES, 120, 55);
 		
 		getButtonsPanel().setLayout(new MigLayout("wrap 1", "fill,grow,shrink", ""));
-		getButtonScrollPane().setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+		//getButtonScrollPane().setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
 		setBackVisible(false);
 		
 		categoryButtonGroup = new ButtonGroup();
@@ -61,28 +61,42 @@ public class CategoryView extends SelectionView implements ActionListener {
 		List<MenuCategory> categories = categoryDAO.findBevegares();
 		categories.addAll(categoryDAO.findNonBevegares());
 		
-		CategoryButton selectedButton = null;
-		MenuCategory selectedCategory = null;
+		setItems(categories);
 		
-		for (int i = 0; i < categories.size(); i++) {
-			MenuCategory menuCategory = categories.get(i);
-			CategoryButton button = new CategoryButton(this,menuCategory);
-			categoryButtonGroup.add(button);
-			
-			buttonMap.put(String.valueOf(menuCategory.getId()), button);
-			
-			addButton(button);
-			
-			if(i == 0) {
-				selectedButton = button;
-				selectedCategory = menuCategory;
-			}
-		}
+//		CategoryButton selectedButton = null;
+//		MenuCategory selectedCategory = null;
+//		
+//		for (int i = 0; i < categories.size(); i++) {
+//			MenuCategory menuCategory = categories.get(i);
+//			CategoryButton button = new CategoryButton(this,menuCategory);
+//			categoryButtonGroup.add(button);
+//			
+//			buttonMap.put(String.valueOf(menuCategory.getId()), button);
+//			
+//			addButton(button);
+//			
+//			if(i == 0) {
+//				selectedButton = button;
+//				selectedCategory = menuCategory;
+//			}
+//		}
+//		
+//		if(selectedButton != null && selectedCategory != null) {
+//			selectedButton.setSelected(true);
+//			fireCategorySelected(selectedCategory);
+//		}
+	}
+	
+	@Override
+	protected AbstractButton createItemButton(Object item) {
+		MenuCategory menuCategory = (MenuCategory) item;
 		
-		if(selectedButton != null && selectedCategory != null) {
-			selectedButton.setSelected(true);
-			fireCategorySelected(selectedCategory);
-		}
+		CategoryButton button = new CategoryButton(this,menuCategory);
+		categoryButtonGroup.add(button);
+		
+		buttonMap.put(String.valueOf(menuCategory.getId()), button);
+		
+		return button;
 	}
 	
 	public void addCategorySelectionListener(CategorySelectionListener listener) {
@@ -108,13 +122,11 @@ public class CategoryView extends SelectionView implements ActionListener {
 	
 	private static class CategoryButton extends POSToggleButton {
 		MenuCategory foodCategory;
-		private final static Dimension buttonDimension = new Dimension(120, 55);;
 		
 		CategoryButton(CategoryView view, MenuCategory foodCategory) {
 			this.foodCategory = foodCategory;
+			setText("<html><body><center>" + foodCategory.getName() + "</center></body></html>");
 			
-			setText(foodCategory.getName());
-			setPreferredSize(buttonDimension);
 			addActionListener(view);
 		}
 	}
