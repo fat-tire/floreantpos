@@ -2,87 +2,60 @@ package com.floreantpos.ui.views.order;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
+import java.util.List;
 
 import javax.swing.AbstractButton;
-import javax.swing.JButton;
+import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollBar;
-import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.border.TitledBorder;
 
 import net.miginfocom.swing.MigLayout;
 
+import org.jdesktop.swingx.JXTitledSeparator;
+
 import com.floreantpos.POSConstants;
 import com.floreantpos.swing.PosButton;
 
-public abstract class SelectionView extends JPanel {
+public abstract class SelectionView extends JPanel implements ComponentListener {
+	private final static int HORIZONTAL_GAP = 5;
+	private final static int VERTICAL_GAP = 5;
+
+	private Dimension buttonSize;
+
 	private JPanel buttonsPanel;
+
+	private List items;
+	
+	private int previousBlockIndex = -1;
+	private int currentBlockIndex = 0;
+	private int nextBlockIndex;
 
 	private com.floreantpos.swing.PosButton btnBack;
 	private com.floreantpos.swing.PosButton btnNext;
 	private com.floreantpos.swing.PosButton btnPrev;
-	private JScrollBar verticalScrollBar;
 
-	private JScrollPane buttonScrollPane;
+	public SelectionView(String title, int buttonWidth, int buttonHeight) {
+		this.buttonSize = new Dimension(buttonWidth, buttonHeight);
 
-	public SelectionView(String title) {
 		TitledBorder border = new TitledBorder(title);
 		border.setTitleJustification(TitledBorder.CENTER);
 
 		setBorder(border);
 
-		setLayout(new BorderLayout(5, 5));
+		setLayout(new BorderLayout(HORIZONTAL_GAP, VERTICAL_GAP));
 
-		MigLayout migLayout = new MigLayout("wrap 4", "", "");
-		buttonsPanel = new JPanel(migLayout);
-
-		buttonScrollPane = new JScrollPane(buttonsPanel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		buttonScrollPane.setBorder(null);
-		buttonScrollPane.setOpaque(false);
-		buttonScrollPane.getViewport().setOpaque(false);
-		verticalScrollBar = buttonScrollPane.getVerticalScrollBar();
-		verticalScrollBar.setBlockIncrement(250);
-		add(buttonScrollPane);
-
-		buttonsPanel.addComponentListener(new ComponentListener() {
-
-			public void componentResized(ComponentEvent e) {
-				int value = verticalScrollBar.getValue();
-				int min = verticalScrollBar.getMinimum();
-				int max = verticalScrollBar.getMaximum();
-				int inc = verticalScrollBar.getBlockIncrement(0);
-
-				if (value <= min) {
-					btnPrev.setEnabled(false);
-				}
-				else {
-					btnPrev.setEnabled(true);
-				}
-				if ((value + inc) >= max) {
-					btnNext.setEnabled(false);
-				}
-				else {
-					btnNext.setEnabled(true);
-				}
-			}
-
-			public void componentMoved(ComponentEvent e) {
-			}
-
-			public void componentShown(ComponentEvent e) {
-			}
-
-			public void componentHidden(ComponentEvent e) {
-			}
-
-		});
+		buttonsPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, HORIZONTAL_GAP, VERTICAL_GAP));
+		buttonsPanel.addComponentListener(this);
+		add(buttonsPanel);
 
 		MigLayout migLayout2 = new MigLayout("fill,hidemode 3", "grow", "");
 		JPanel southPanel = new JPanel(migLayout2);
@@ -106,14 +79,45 @@ public abstract class SelectionView extends JPanel {
 		btnBack.addActionListener(action);
 		btnPrev.addActionListener(action);
 		btnNext.addActionListener(action);
+
 	}
 
+	public SelectionView(String title) {
+		this(title, 100, 100);
+	}
+
+	public void setItems(List items) {
+		this.items = items;
+		currentBlockIndex = 0;
+		nextBlockIndex = 0;
+		
+		renderItems();
+	}
+
+	public List getItems() {
+		return items;
+	}
+
+	public Dimension getButtonSize() {
+		return buttonSize;
+	}
+
+	public void setButtonSize(Dimension buttonSize) {
+		this.buttonSize = buttonSize;
+	}
+
+	protected abstract AbstractButton createItemButton(Object item);
+
 	public void reset() {
+		//btnBack.setEnabled(false);
+		btnNext.setEnabled(false);
+		btnPrev.setEnabled(false);
+		
 		Component[] components = buttonsPanel.getComponents();
 		for (int i = 0; i < components.length; i++) {
 			Component c = components[i];
-			if (c instanceof JButton) {
-				JButton button = (JButton) c;
+			if (c instanceof AbstractButton) {
+				AbstractButton button = (AbstractButton) c;
 				button.setPreferredSize(null);
 
 				ActionListener[] actionListeners = button.getActionListeners();
@@ -127,103 +131,118 @@ public abstract class SelectionView extends JPanel {
 		buttonsPanel.removeAll();
 	}
 
+	private void renderItems() {
+		reset();
+
+		if (this.items == null || items.size() == 0) {
+			return;
+		}
+
+		Dimension size = buttonsPanel.getSize();
+		Dimension itemButtonSize = getButtonSize();
+
+		int horizontalButtonCount = getButtonCount(size.width, getButtonSize().width);
+		int verticalButtonCount = getButtonCount(size.height, getButtonSize().height);
+		
+		buttonsPanel.setLayout(new MigLayout("alignx 50%, wrap " + horizontalButtonCount));
+		
+		//TODO: REVISE CODE
+		int totalItem = horizontalButtonCount * verticalButtonCount;
+		
+		previousBlockIndex = currentBlockIndex - totalItem;
+		nextBlockIndex = currentBlockIndex + totalItem;
+		
+		int separatorCount = getSeparatorCount();
+		if(separatorCount > 0) {
+			totalItem = totalItem - (separatorCount * horizontalButtonCount);
+			previousBlockIndex = currentBlockIndex - totalItem;
+			nextBlockIndex = currentBlockIndex + totalItem + separatorCount;
+		}
+		
+		try {
+			for (int i = currentBlockIndex; i < nextBlockIndex; i++) {
+
+				Object item = items.get(i);
+
+				if (item instanceof String) {
+					addSeparator(item.toString());
+					continue;
+				}
+
+				AbstractButton itemButton = createItemButton(item);
+				buttonsPanel.add(itemButton, "width " + itemButtonSize.width + "!, height " + itemButtonSize.height + "!");
+
+				if (i == items.size() - 1) {
+					break;
+				}
+			}
+		} catch (Exception e) {
+			// TODO: fix it.
+		}
+		
+		if(previousBlockIndex >= 0 && currentBlockIndex != 0) {
+			btnPrev.setEnabled(true);
+		}
+		
+		if(nextBlockIndex < items.size() - 1) {
+			btnNext.setEnabled(true);
+		}
+		
+		revalidate();
+		repaint();
+	}
+	
+	protected int getSeparatorCount() {
+		if(!(this instanceof ModifierView)) {
+			return 0;
+		}
+		
+		int count = 0;
+		for(int i = currentBlockIndex; i < nextBlockIndex; i++) {
+			if(i == items.size() - 1) {
+				break;
+			}
+			
+			if(items.get(i) instanceof String) {
+				++count;
+			}
+		}
+		return count;
+	}
+
 	public void addButton(AbstractButton button) {
-		//button.setPreferredSize(buttonSize);
+		button.setPreferredSize(buttonSize);
 		button.setText("<html><body><center>" + button.getText() + "</center></body></html>");
 		buttonsPanel.add(button);
 	}
 
-	public void addButton(JButton button, String text) {
-		button.setText("<html><body><center>" + text + "</center></body></html>");
-		//button.setPreferredSize(buttonSize);
-		buttonsPanel.add(button);
-	}
-
 	public void addSeparator(String text) {
+		JPanel pabel = new JPanel();
+		TitledBorder titledBorder = BorderFactory.createTitledBorder(text);
+		
+		
 		JLabel label = new JLabel(text);
-		//label.setForeground(Color.RED);
 		label.setFont(label.getFont().deriveFont(Font.BOLD));
-		buttonsPanel.add(new JSeparator(), "newline, span, split 3, growx");
-		buttonsPanel.add(label, "gapbottom 1");
-		buttonsPanel.add(new JSeparator(), "gapleft rel, growx");
-	}
-
-	private int scrollByBlock(JScrollBar scrollbar, int direction) {
-		// This method is called from BasicScrollPaneUI to implement wheel
-		// scrolling, and also from scrollByBlock().
-		int oldValue = scrollbar.getValue();
-		int blockIncrement = scrollbar.getBlockIncrement();
-		int delta = blockIncrement * ((direction > 0) ? +1 : -1);
-		int newValue = oldValue + delta;
-
-		// Check for overflow.
-		if (delta > 0 && newValue < oldValue) {
-			newValue = scrollbar.getMaximum();
-		}
-		else if (delta < 0 && newValue > oldValue) {
-			newValue = scrollbar.getMinimum();
-		}
-
-		return newValue;
-
+		buttonsPanel.add(new JXTitledSeparator(text, JLabel.CENTER), "newline, span, growx, height 100!");
+//		buttonsPanel.add(new JSeparator(), "newline, span, split 3, growx, height 100!");
+//		buttonsPanel.add(label, "gapbottom 1, height 100!");
+//		buttonsPanel.add(new JSeparator(), "gapleft rel, growx, height 100!");
 	}
 
 	private void scrollDown() {
-		int scrollUnit = scrollByBlock(verticalScrollBar, 1);
-		verticalScrollBar.setValue(scrollUnit);
-		//scrollUnit = scrollByBlock(verticalScrollBar, 1);
-
-		int value = verticalScrollBar.getValue();
-		int min = verticalScrollBar.getMinimum();
-
-		if (value < scrollUnit) {
-			btnNext.setEnabled(false);
-		}
-		else {
-			btnNext.setEnabled(true);
-		}
-
-		if (value <= min) {
-			btnPrev.setEnabled(false);
-		}
-		else {
-			btnPrev.setEnabled(true);
-		}
-		/*
-		 if ((value + inc) >= max) {
-		 btnNext.setEnabled(false);
-		 }
-		 else {
-		 btnNext.setEnabled(true);
-		 }*/
+		currentBlockIndex = nextBlockIndex;
+		renderItems();
 	}
 
 	private void scrollUp() {
-		int scrollUnit = scrollByBlock(verticalScrollBar, 0);
-		verticalScrollBar.setValue(scrollUnit);
-
-		int value = verticalScrollBar.getValue();
-		int min = verticalScrollBar.getMinimum();
-		int max = verticalScrollBar.getMaximum();
-		int inc = verticalScrollBar.getBlockIncrement(0);
-
-		if (value <= min) {
-			btnPrev.setEnabled(false);
-		}
-		else {
-			btnPrev.setEnabled(true);
-		}
-		if ((value + inc) >= max) {
-			btnNext.setEnabled(false);
-		}
-		else {
-			btnNext.setEnabled(true);
-		}
+		currentBlockIndex = previousBlockIndex;
+		renderItems();
 	}
 
 	public void setBackEnable(boolean enable) {
 		btnBack.setEnabled(enable);
 	}
+
 	public void setBackVisible(boolean enable) {
 		btnBack.setVisible(enable);
 	}
@@ -251,19 +270,22 @@ public abstract class SelectionView extends JPanel {
 		return buttonsPanel;
 	}
 
-	public JScrollPane getButtonScrollPane() {
-		return buttonScrollPane;
+	private int getButtonCount(int containerSize, int itemSize) {
+		int buttonCount = containerSize / itemSize;
+		buttonCount = (containerSize - ((containerSize / itemSize) * 5)) / itemSize;
+		return buttonCount;
 	}
 
-	//	public static void main(String[] args) throws Exception {
-	//		javax.swing.ImageIcon image = new javax.swing.ImageIcon(ButtonsView.class.getResource("/images/noModifier.png"));
-	//		//BufferedImage image = ImageIO.read(ButtonsView.class.getResourceAsStream("/images/noModifier.png"));
-	//		BufferedImage image2 = new BufferedImage(image.getIconWidth() / 2, image.getIconHeight() / 2, BufferedImage.TYPE_INT_ARGB);
-	//		Graphics graphics = image2.getGraphics();
-	//		//graphics.drawImage(image.getImage(),0,0,image.getIconWidth() / 2, image.getIconHeight() / 2, null);
-	//		
-	//		FileOutputStream out = new FileOutputStream("src/images/empty16.png");
-	//		ImageIO.write(image2, "png", out);
-	//		out.close();
-	//	}
+	public void componentResized(ComponentEvent e) {
+		renderItems();
+	}
+
+	public void componentMoved(ComponentEvent e) {
+	}
+
+	public void componentShown(ComponentEvent e) {
+	}
+
+	public void componentHidden(ComponentEvent e) {
+	}
 }

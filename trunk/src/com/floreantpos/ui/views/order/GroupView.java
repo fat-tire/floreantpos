@@ -11,6 +11,8 @@ import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.Vector;
 
+import javax.swing.JButton;
+
 import com.floreantpos.model.MenuCategory;
 import com.floreantpos.model.MenuGroup;
 import com.floreantpos.model.dao.MenuGroupDAO;
@@ -58,14 +60,22 @@ public class GroupView extends SelectionView {
 				fireGroupSelected(menuGroup);
 				return;
 			}
-	        
-	        for (int i = 0; i < groups.size(); i++) {
-				MenuGroup foodGroup = groups.get(i);
-				GroupButton button = new GroupButton(foodGroup);
-				addButton(button);
-			}
-	        revalidate();
-	        repaint();
+
+//			int v = 0;
+//			List<MenuGroup> groups2 = new ArrayList<MenuGroup>();
+//			for (MenuGroup menuGroup : groups) {
+//				String name = menuGroup.getName();
+//				for (int i = 0; i < 30; i++) {
+//					MenuGroup menuGroup2 = new MenuGroup(menuGroup.getId());
+//					menuGroup2.setParent(menuGroup.getParent());
+//					menuGroup2.setName(name + (++v));
+//					groups2.add(menuGroup2);
+//				}
+//			}
+//			
+//			setItems(groups2);
+			
+			setItems(groups);
 		} catch (Exception e) {
 			MessageDialog.showError(e);
 		}
@@ -85,6 +95,14 @@ public class GroupView extends SelectionView {
 		}
 	}
 	
+	@Override
+	protected JButton createItemButton(Object item) {
+		MenuGroup menuGroup = (MenuGroup) item;
+		GroupButton button = new GroupButton(menuGroup);
+		
+		return button;
+	}
+	
 	
 	private class GroupButton extends PosButton implements ActionListener {
 		MenuGroup foodGroup;
@@ -92,7 +110,7 @@ public class GroupView extends SelectionView {
 		GroupButton(MenuGroup foodGroup) {
 			this.foodGroup = foodGroup;
 			
-			setText(foodGroup.getName());
+			setText("<html><body><center>" + foodGroup.getName() + "</center></body></html>");
 			addActionListener(this);
 		}
 

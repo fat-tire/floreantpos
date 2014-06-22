@@ -13,6 +13,7 @@ import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.Vector;
 
+import javax.swing.AbstractButton;
 import javax.swing.SwingConstants;
 
 import com.floreantpos.PosException;
@@ -37,6 +38,8 @@ public class MenuItemView extends SelectionView {
 	/** Creates new form GroupView */
 	public MenuItemView() {
 		super(com.floreantpos.POSConstants.ITEMS);
+		
+		setBackEnable(false);
 	}
 
 	public MenuGroup getMenuGroup() {
@@ -55,17 +58,28 @@ public class MenuItemView extends SelectionView {
 		MenuItemDAO dao = new MenuItemDAO();
 		try {
 			List<MenuItem> items = dao.findByParent(menuGroup, false);
-
-			for (int i = 0; i < items.size(); i++) {
-				MenuItem menuItem = items.get(i);
-				ItemButton itemButton = new ItemButton(menuItem);
-				addButton(itemButton);
-			}
-			revalidate();
-			repaint();
+			setBackEnable(items.size() > 0);
+			
+			setItems(items);
+			
+//			for (int i = 0; i < items.size(); i++) {
+//				MenuItem menuItem = items.get(i);
+//				ItemButton itemButton = new ItemButton(menuItem);
+//				addButton(itemButton);
+//			}
+//			revalidate();
+//			repaint();
 		} catch (PosException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	@Override
+	protected AbstractButton createItemButton(Object item) {
+		MenuItem menuItem = (MenuItem) item;
+		ItemButton itemButton = new ItemButton(menuItem);
+		
+		return itemButton;
 	}
 
 	public void addItemSelectionListener(ItemSelectionListener listener) {
@@ -89,7 +103,7 @@ public class MenuItemView extends SelectionView {
 	}
 
 	private class ItemButton extends PosButton implements ActionListener {
-		private static final int BUTTON_SIZE = 120;
+		private static final int BUTTON_SIZE = 100;
 		MenuItem foodItem;
 
 		ItemButton(MenuItem foodItem) {
@@ -111,12 +125,12 @@ public class MenuItemView extends SelectionView {
 					
 					ImageIcon imageIcon = new ImageIcon(new ImageIcon(foodItem.getImage()).getImage().getScaledInstance(w, h, Image.SCALE_SMOOTH));
 					setIcon(imageIcon);
-					setText(foodItem.getName());
+					setText("<html><body><center>" + foodItem.getName() + "</center></body></html>");
 				}
 				
 			}
 			else {
-				setText(foodItem.getName());
+				setText("<html><body><center>" + foodItem.getName() + "</center></body></html>");
 			}
 			
 			setPreferredSize(new Dimension(BUTTON_SIZE, BUTTON_SIZE));
