@@ -3,6 +3,8 @@ package com.floreantpos.ui.ticket;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
@@ -35,12 +37,12 @@ public class TicketTableModel extends AbstractTableModel {
 
 	public int getRowCount() {
 		int size = tableRows.size();
-		if (forReciptPrint) {
-			return size;
-		}
-		if (size < 30) {
-			size = 30;
-		}
+		// if (forReciptPrint) {
+		// return size;
+		// }
+		// if (size < 30) {
+		// size = 30;
+		// }
 		return size;
 	}
 
@@ -63,22 +65,21 @@ public class TicketTableModel extends AbstractTableModel {
 			TicketItem ticketItem = (TicketItem) value;
 
 			switch (columnIndex) {
-				case 0:
-					return ticketItem.getName();
-					
+			case 0:
+				return ticketItem.getName();
 
-				case 1:
-					return String.valueOf(ticketItem.getUnitPrice());
+			case 1:
+				return String.valueOf(ticketItem.getUnitPrice());
 
-				case 2:
-					return ticketItem.getItemCount();
-					
-				case 3:
-					return ticketItem.getTaxAmountWithoutModifiers();
-					
-				case 4:
-					//return ticketItem.getTotalAmountWithoutModifiers();
-					return Double.valueOf(ticketItem.getSubtotalAmountWithoutModifiers() + ticketItem.getTaxAmount());
+			case 2:
+				return ticketItem.getItemCount();
+
+			case 3:
+				return ticketItem.getTaxAmountWithoutModifiers();
+
+			case 4:
+				// return ticketItem.getTotalAmountWithoutModifiers();
+				return Double.valueOf(ticketItem.getSubtotalAmountWithoutModifiers() + ticketItem.getTaxAmount());
 			}
 		}
 
@@ -86,29 +87,29 @@ public class TicketTableModel extends AbstractTableModel {
 			TicketItemModifier modifier = (TicketItemModifier) value;
 
 			switch (columnIndex) {
-				case 0:
-					if (modifier.getModifierType() == TicketItemModifier.NO_MODIFIER) {
-						return null;
-					}
-					return Integer.valueOf(modifier.getItemCount());
+			case 1:
+				if (modifier.getModifierType() == TicketItemModifier.NO_MODIFIER) {
+					return null;
+				}
+				return Integer.valueOf(modifier.getItemCount());
 
-				case 1:
-					String display = modifier.getName();
-					if (modifier.getModifierType() == TicketItemModifier.NO_MODIFIER) {
-						display = " - No " + display;
-						return display;
-					}
-					else if (modifier.getModifierType() == TicketItemModifier.EXTRA_MODIFIER) {
-						display = " - Extra " + display;
-						return display;
-					}
-					return " - " + display;
+			case 0:
+				String display = modifier.getName();
+				if (modifier.getModifierType() == TicketItemModifier.NO_MODIFIER) {
+					display = " - No " + display;
+					return display;
+				}
+				else if (modifier.getModifierType() == TicketItemModifier.EXTRA_MODIFIER) {
+					display = " - Extra " + display;
+					return display;
+				}
+				return " - " + display;
 
-				case 2:
-					if (modifier.getModifierType() == TicketItemModifier.NO_MODIFIER) {
-						return null;
-					}
-					return modifier.getTotalAmount();
+			case 4:
+				if (modifier.getModifierType() == TicketItemModifier.NO_MODIFIER) {
+					return null;
+				}
+				return modifier.getTotalAmount();
 			}
 		}
 
@@ -145,32 +146,39 @@ public class TicketTableModel extends AbstractTableModel {
 		}
 	}
 
-	public void addTicketItem(TicketItem ticketItem) {
-		if (ticketItem.isHasModifiers()) {
-			List<TicketItem> ticketItems = ticket.getTicketItems();
-			ticketItems.add(ticketItem);
+	public int addTicketItem(TicketItem ticketItem) {
 
-			calculateRows();
-			fireTableDataChanged();
+		if (ticketItem.isHasModifiers()) {
+			return addTicketItemToTicket(ticketItem);
 		}
-		else {
-			List<TicketItem> ticketItems = ticket.getTicketItems();
-			boolean exists = false;
-			for (TicketItem item : ticketItems) {
-				if (item.getName().equals(ticketItem.getName()) && !item.isPrintedToKitchen()) {
-					int itemCount = item.getItemCount();
-					item.setItemCount(++itemCount);
-					exists = true;
-					table.repaint();
-					return;
-				}
+
+		Set<Entry<String, Object>> entries = tableRows.entrySet();
+		for (Entry<String, Object> entry : entries) {
+
+			if (!(entry.getValue() instanceof TicketItem)) {
+				continue;
 			}
-			if (!exists) {
-				ticket.addToticketItems(ticketItem);
-				calculateRows();
-				fireTableDataChanged();
+
+			TicketItem t = (TicketItem) entry.getValue();
+			
+			if (ticketItem.getName().equals(t.getName())) {
+				t.setItemCount(t.getItemCount() + 1);
+
+				table.repaint();
+
+				return Integer.parseInt(entry.getKey());
 			}
 		}
+
+		return addTicketItemToTicket(ticketItem);
+	}
+
+	private int addTicketItemToTicket(TicketItem ticketItem) {
+		ticket.addToticketItems(ticketItem);
+		calculateRows();
+		fireTableDataChanged();
+
+		return tableRows.size() - 1;
 	}
 
 	public void addAllTicketItem(TicketItem ticketItem) {
@@ -223,11 +231,11 @@ public class TicketTableModel extends AbstractTableModel {
 			TicketItemModifier modifier = (TicketItemModifier) iter.next();
 			if (modifier.getItemId() == modifierToDelete.getItemId()) {
 				iter.remove();
-				
-				if(modifier.isPrintedToKitchen()) {
+
+				if (modifier.isPrintedToKitchen()) {
 					ticket.addDeletedItems(modifier);
 				}
-				
+
 				calculateRows();
 				fireTableDataChanged();
 				return;
@@ -249,11 +257,11 @@ public class TicketTableModel extends AbstractTableModel {
 				TicketItem item = (TicketItem) iter.next();
 				if (item.getTableRowNum() == rowNum) {
 					iter.remove();
-					
-					if(item.isPrintedToKitchen()) {
+
+					if (item.isPrintedToKitchen()) {
 						ticket.addDeletedItems(item);
 					}
-					
+
 					break;
 				}
 			}
@@ -268,8 +276,8 @@ public class TicketTableModel extends AbstractTableModel {
 					TicketItemModifier element = (TicketItemModifier) iterator.next();
 					if (itemModifier.getTableRowNum() == element.getTableRowNum()) {
 						iterator.remove();
-						
-						if(element.isPrintedToKitchen()) {
+
+						if (element.isPrintedToKitchen()) {
 							ticket.addDeletedItems(element);
 						}
 					}
@@ -304,7 +312,7 @@ public class TicketTableModel extends AbstractTableModel {
 	public void setTicket(Ticket ticket) {
 		this.ticket = ticket;
 
-		calculateRows();
+		update();
 	}
 
 	public void update() {
