@@ -18,8 +18,6 @@ import java.util.Vector;
 import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
 
-import net.miginfocom.swing.MigLayout;
-
 import org.apache.log4j.Logger;
 
 import com.floreantpos.model.MenuCategory;
@@ -46,8 +44,6 @@ public class CategoryView extends SelectionView implements ActionListener {
 	public CategoryView() {
 		super(com.floreantpos.POSConstants.CATEGORIES, 120, 55);
 		
-		getButtonsPanel().setLayout(new MigLayout("wrap 1", "fill,grow,shrink", ""));
-		//getButtonScrollPane().setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
 		setBackVisible(false);
 		
 		categoryButtonGroup = new ButtonGroup();
@@ -63,28 +59,11 @@ public class CategoryView extends SelectionView implements ActionListener {
 		
 		setItems(categories);
 		
-//		CategoryButton selectedButton = null;
-//		MenuCategory selectedCategory = null;
-//		
-//		for (int i = 0; i < categories.size(); i++) {
-//			MenuCategory menuCategory = categories.get(i);
-//			CategoryButton button = new CategoryButton(this,menuCategory);
-//			categoryButtonGroup.add(button);
-//			
-//			buttonMap.put(String.valueOf(menuCategory.getId()), button);
-//			
-//			addButton(button);
-//			
-//			if(i == 0) {
-//				selectedButton = button;
-//				selectedCategory = menuCategory;
-//			}
-//		}
-//		
-//		if(selectedButton != null && selectedCategory != null) {
-//			selectedButton.setSelected(true);
-//			fireCategorySelected(selectedCategory);
-//		}
+		CategoryButton categoryButton = (CategoryButton) buttonsPanel.getComponent(0);
+		if(categoryButton != null) {
+			categoryButton.setSelected(true);
+			fireCategorySelected(categoryButton.foodCategory);
+		}
 	}
 	
 	@Override
