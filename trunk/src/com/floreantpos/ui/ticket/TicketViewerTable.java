@@ -1,7 +1,6 @@
 package com.floreantpos.ui.ticket;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Rectangle;
 
 import javax.swing.DefaultListSelectionModel;
@@ -46,8 +45,6 @@ public class TicketViewerTable extends JTable {
 		
 		setRowHeight(20);
 		resizeTableColumns();
-		
-		setPreferredSize(new Dimension(380, 280));
 	}
 
 	private void resizeTableColumns() {
@@ -208,9 +205,9 @@ public class TicketViewerTable extends JTable {
 
 	public void addTicketItem(TicketItem ticketItem) {
 		ticketItem.setTicket(getTicket());
-		model.addTicketItem(ticketItem);
+		int addTicketItem = model.addTicketItem(ticketItem);
 		
-		int actualRowCount = getActualRowCount() - 1;
+		int actualRowCount = addTicketItem;//getActualRowCount() - 1;
 		selectionModel.addSelectionInterval(actualRowCount, actualRowCount);
 		Rectangle cellRect = getCellRect(actualRowCount, 0, false);
 		scrollRectToVisible(cellRect);

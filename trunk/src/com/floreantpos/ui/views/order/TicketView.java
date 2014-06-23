@@ -338,7 +338,7 @@ public class TicketView extends JPanel {
 
 //		jScrollPane1.setBorder(null);
 		jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		jScrollPane1.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+		jScrollPane1.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 		jScrollPane1.setPreferredSize(new java.awt.Dimension(180, 200));
 		//jScrollPane1.setViewportView(ticketViewerTable);
 
