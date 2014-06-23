@@ -34,7 +34,7 @@ public class TicketDAO extends BaseTicketDAO {
 
 	public Ticket initializeTicket(Ticket ticket) {
 		Session session = createNewSession();
-		Ticket newTicket = (Ticket) session.merge(ticket);
+		Ticket newTicket = (Ticket) session.get(getReferenceClass(), ticket.getId());
 		Hibernate.initialize(newTicket.getTicketItems());
 		Hibernate.initialize(newTicket.getCouponAndDiscounts());
 		Hibernate.initialize(newTicket.getCookingInstructions());
