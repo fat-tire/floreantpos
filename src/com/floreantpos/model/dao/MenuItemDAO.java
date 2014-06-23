@@ -58,6 +58,7 @@ public class MenuItemDAO extends BaseMenuItemDAO {
 			
 			return criteria.list();
 		} catch (Exception e) {
+			e.printStackTrace();
 			throw new PosException("Error occured while finding food items");
 		} finally {
 			if (session != null) {
