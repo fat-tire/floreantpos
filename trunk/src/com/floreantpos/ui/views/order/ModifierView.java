@@ -7,6 +7,7 @@
 package com.floreantpos.ui.views.order;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -19,6 +20,8 @@ import java.util.Vector;
 import javax.swing.AbstractButton;
 import javax.swing.JOptionPane;
 
+import net.miginfocom.swing.MigLayout;
+
 import com.floreantpos.PosException;
 import com.floreantpos.model.MenuItem;
 import com.floreantpos.model.MenuItemModifierGroup;
@@ -27,7 +30,6 @@ import com.floreantpos.model.MenuModifierGroup;
 import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.TicketItemModifier;
 import com.floreantpos.model.TicketItemModifierGroup;
-import com.floreantpos.model.dao.MenuItemDAO;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.views.order.actions.ModifierSelectionListener;
@@ -70,7 +72,6 @@ public class ModifierView extends SelectionView {
 		buttonMap.clear();
 		separatorCount = 0;
 
-		MenuItemDAO dao = new MenuItemDAO();
 		try {
 			List<MenuItemModifierGroup> menuItemModifierGroups = menuItem.getMenuItemModiferGroups();
 
@@ -81,12 +82,10 @@ public class ModifierView extends SelectionView {
 				MenuModifierGroup group = menuItemModifierGroup.getModifierGroup();
 				
 				itemList.add(group.getName());
-				//addSeparator(group.getName());
 
 				Set<MenuModifier> modifiers = group.getModifiers();
 				for (MenuModifier modifier : modifiers) {
 					modifier.setMenuItemModifierGroup(menuItemModifierGroup);
-					//addButton(modifierButton);
 				}
 				
 				itemList.addAll(modifiers);
@@ -97,6 +96,90 @@ public class ModifierView extends SelectionView {
 		} catch (PosException e) {
 			POSMessageDialog.showError(this, com.floreantpos.POSConstants.ERROR_MESSAGE, e);
 		}
+	}
+	
+	protected void renderItems() {
+		reset();
+
+		if (this.items == null || items.size() == 0) {
+			return;
+		}
+
+		Dimension size = buttonsPanel.getSize();
+		Dimension itemButtonSize = getButtonSize();
+		
+		
+
+		int horizontalButtonCount = getButtonCount(size.width, getButtonSize().width);
+		int verticalButtonCount = getButtonCount(size.height, getButtonSize().height);
+		
+		buttonsPanel.setLayout(new MigLayout("alignx 50%, wrap " + horizontalButtonCount));
+		
+		//TODO: REVISE CODE
+		int totalItem = horizontalButtonCount * verticalButtonCount;
+		
+		previousBlockIndex = currentBlockIndex - totalItem + separatorCount;
+		nextBlockIndex = currentBlockIndex + totalItem;
+		
+		int spCount = getSeparatorCount();
+		
+		if(spCount > 0) {
+			verticalButtonCount = getButtonCount(size.height - (spCount * 40), getButtonSize().height);
+			
+			totalItem = horizontalButtonCount * verticalButtonCount;
+			previousBlockIndex = (currentBlockIndex - totalItem) + spCount;
+			nextBlockIndex = currentBlockIndex + totalItem + spCount;
+		}
+		
+		try {
+			for (int i = currentBlockIndex; i < nextBlockIndex; i++) {
+
+				Object item = items.get(i);
+
+				if (item instanceof String) {
+					addSeparator(item.toString());
+					continue;
+				}
+
+				AbstractButton itemButton = createItemButton(item);
+				buttonsPanel.add(itemButton, "width " + itemButtonSize.width + "!, height " + itemButtonSize.height + "!");
+
+				if (i == items.size() - 1) {
+					break;
+				}
+			}
+		} catch (Exception e) {
+			// TODO: fix it.
+		}
+		
+		if(previousBlockIndex >= 0 && currentBlockIndex != 0) {
+			btnPrev.setEnabled(true);
+		}
+		
+		if(nextBlockIndex < items.size()) {
+			btnNext.setEnabled(true);
+		}
+		separatorCount = spCount;
+		revalidate();
+		repaint();
+	}
+	
+	protected int getSeparatorCount() {
+		if(!(this instanceof ModifierView)) {
+			return 0;
+		}
+		
+		int count = 0;
+		for(int i = currentBlockIndex; i < nextBlockIndex; i++) {
+			if(i == items.size() - 1) {
+				break;
+			}
+			
+			if(items.get(i) instanceof String) {
+				++count;
+			}
+		}
+		return count;
 	}
 	
 	@Override
