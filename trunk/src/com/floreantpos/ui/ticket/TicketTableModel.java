@@ -69,7 +69,7 @@ public class TicketTableModel extends AbstractTableModel {
 				return ticketItem.getName();
 
 			case 1:
-				return String.valueOf(ticketItem.getUnitPrice());
+				return ticketItem.getUnitPrice();
 
 			case 2:
 				return ticketItem.getItemCount();
@@ -79,7 +79,7 @@ public class TicketTableModel extends AbstractTableModel {
 
 			case 4:
 				// return ticketItem.getTotalAmountWithoutModifiers();
-				return Double.valueOf(ticketItem.getSubtotalAmountWithoutModifiers() + ticketItem.getTaxAmount());
+				return Double.valueOf(ticketItem.getSubtotalAmountWithoutModifiers() + ticketItem.getTaxAmountWithoutModifiers());
 			}
 		}
 
@@ -87,12 +87,6 @@ public class TicketTableModel extends AbstractTableModel {
 			TicketItemModifier modifier = (TicketItemModifier) value;
 
 			switch (columnIndex) {
-			case 2:
-				if (modifier.getModifierType() == TicketItemModifier.NO_MODIFIER) {
-					return null;
-				}
-				return Integer.valueOf(modifier.getItemCount());
-
 			case 0:
 				String display = modifier.getName();
 				if (modifier.getModifierType() == TicketItemModifier.NO_MODIFIER) {
@@ -105,11 +99,48 @@ public class TicketTableModel extends AbstractTableModel {
 				}
 				return " - " + display;
 
+			case 1:
+				if (modifier.getModifierType() == TicketItemModifier.NO_MODIFIER) {
+					return null;
+				}
+				if (modifier.getModifierType() == TicketItemModifier.NORMAL_MODIFIER) {
+					return modifier.getUnitPrice();
+				}
+				if (modifier.getModifierType() == TicketItemModifier.EXTRA_MODIFIER) {
+					return modifier.getExtraUnitPrice();
+				}
+
+			case 2:
+				if (modifier.getModifierType() == TicketItemModifier.NO_MODIFIER) {
+					return null;
+				}
+				return Integer.valueOf(modifier.getItemCount());
+
+			case 3:
+				if (modifier.getModifierType() == TicketItemModifier.NO_MODIFIER) {
+					return null;
+				}
+				if (modifier.getModifierType() == TicketItemModifier.NORMAL_MODIFIER) {
+					return (modifier.getUnitPrice() * modifier.getItemCount()) * (modifier.getTaxRate() / 100);
+				}
+				if (modifier.getModifierType() == TicketItemModifier.EXTRA_MODIFIER) {
+					return (modifier.getExtraUnitPrice() * modifier.getItemCount()) * (modifier.getTaxRate() / 100);
+				}
+
 			case 4:
 				if (modifier.getModifierType() == TicketItemModifier.NO_MODIFIER) {
 					return null;
 				}
-				return modifier.getTotalAmount();
+				
+				double taxAmount = 0;
+				if (modifier.getModifierType() == TicketItemModifier.NORMAL_MODIFIER) {
+					taxAmount = (modifier.getUnitPrice() * modifier.getItemCount()) * (modifier.getTaxRate() / 100);
+				}
+				if (modifier.getModifierType() == TicketItemModifier.EXTRA_MODIFIER) {
+					taxAmount = (modifier.getExtraUnitPrice() * modifier.getItemCount()) * (modifier.getTaxRate() / 100);
+				}
+				
+				return modifier.getTotalAmount() + taxAmount;
 			}
 		}
 
@@ -160,7 +191,7 @@ public class TicketTableModel extends AbstractTableModel {
 			}
 
 			TicketItem t = (TicketItem) entry.getValue();
-			
+
 			if (ticketItem.getName().equals(t.getName())) {
 				t.setItemCount(t.getItemCount() + 1);
 
