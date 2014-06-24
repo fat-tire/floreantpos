@@ -87,7 +87,7 @@ public class TicketTableModel extends AbstractTableModel {
 			TicketItemModifier modifier = (TicketItemModifier) value;
 
 			switch (columnIndex) {
-			case 1:
+			case 2:
 				if (modifier.getModifierType() == TicketItemModifier.NO_MODIFIER) {
 					return null;
 				}
