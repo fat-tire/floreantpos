@@ -56,9 +56,13 @@ public class RootView extends com.floreantpos.swing.TransparentPanel {
 	public OrderView getOrderView() {
 		return orderView;
 	}
-
+	
 	public void setOrderView(OrderView orderView) {
 		this.orderView = orderView;
+	}
+	
+	public LoginScreen getLoginScreen() {
+		return loginScreen;
 	}
 
 	public SwitchboardView getSwitchboadView() {
