@@ -248,6 +248,10 @@ public class PasswordScreen extends JPanel {
 
 			UserDAO dao = new UserDAO();
 			User user = dao.findUserBySecretKey(secretKey);
+			
+			if(user == null) {
+				throw new UserNotFoundException();
+			}
 
 			Shift currentShift = ShiftUtil.getCurrentShift();
 			if (currentShift == null) {
@@ -272,7 +276,7 @@ public class PasswordScreen extends JPanel {
 				DatabaseConfigurationDialog.show(Application.getPosWindow());
 			}
 			else {
-				MessageDialog.showError(e1.getMessage());
+				MessageDialog.showError("We are sorry, and unexpected error has occuered");
 			}
 
 		}
