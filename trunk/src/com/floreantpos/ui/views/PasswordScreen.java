@@ -173,7 +173,11 @@ public class PasswordScreen extends JPanel {
 		jLabel4.setForeground(new java.awt.Color(204, 102, 0));
 		jLabel4.setText(com.floreantpos.POSConstants.USER_TYPE + ":");
 		add(jPanel2, "cell 0 0,growx,aligny top");
-		jPanel2.setLayout(new MigLayout("", "[343px]", "[22px][31px][30px]"));
+		jPanel2.setLayout(new MigLayout("", "[343px]", "[][22px][31px][30px]"));
+		
+		lblTerminalId = new JLabel("TERMINAL ID:");
+		lblTerminalId.setHorizontalAlignment(SwingConstants.CENTER);
+		jPanel2.add(lblTerminalId, "cell 0 0,growx");
 		jLabel2 = new javax.swing.JLabel();
 		jLabel2.setHorizontalAlignment(SwingConstants.CENTER);
 
@@ -181,7 +185,7 @@ public class PasswordScreen extends JPanel {
 		jLabel2.setForeground(new java.awt.Color(204, 102, 0));
 		jLabel2.setBackground(new java.awt.Color(204, 102, 0));
 		jLabel2.setText(com.floreantpos.POSConstants.ENTER_YOUR_PASSWORD);
-		jPanel2.add(jLabel2, "cell 0 0,growx,aligny top");
+		jPanel2.add(jLabel2, "cell 0 1,growx,aligny top");
 		tfPassword = new POSPasswordField();
 		tfPassword.setFocusCycleRoot(true);
 		tfPassword.setFont(new java.awt.Font("Courier", 1, 18));
@@ -206,11 +210,11 @@ public class PasswordScreen extends JPanel {
 			public void keyPressed(KeyEvent e) {
 			}
 		});
-		jPanel2.add(tfPassword, "cell 0 1,growx,aligny top");
+		jPanel2.add(tfPassword, "cell 0 2,growx,aligny top");
 
 		msgLabel = new JLabel("");
 		msgLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		jPanel2.add(msgLabel, "cell 0 2,grow");
+		jPanel2.add(msgLabel, "cell 0 3,grow");
 
 		jPanel3.setPreferredSize(new java.awt.Dimension(100, 105));
 		jPanel3.setLayout(new MigLayout("", "[grow,fill]", "[][]"));
@@ -230,6 +234,8 @@ public class PasswordScreen extends JPanel {
 		jPanel3.add(btnShutdown, "cell 0 1,grow");
 
 		add(jPanel3, "cell 0 3,growx,aligny bottom");
+		
+		lblTerminalId.setText("");
 	}// </editor-fold>//GEN-END:initComponents
 
 	public void doLogin() {
@@ -302,6 +308,10 @@ public class PasswordScreen extends JPanel {
 		char[] password = tfPassword.getPassword();
 		String newPass = new String(password);
 		return newPass;
+	}
+	
+	public void setTerminalId(int terminalId) {
+		lblTerminalId.setText("TERMINAL ID: " + terminalId);
 	}
 
 	private void reClockInUser(Calendar currentTime, User user, Shift currentShift) {
@@ -392,6 +402,7 @@ public class PasswordScreen extends JPanel {
 	private JPanel panel;
 	private JLabel msgLabel;
 	private PosButton psbtnLogin;
+	private JLabel lblTerminalId;
 
 	public void setFocus() {
 		tfPassword.setText("");
