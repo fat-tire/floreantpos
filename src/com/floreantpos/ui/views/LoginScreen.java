@@ -48,4 +48,8 @@ public class LoginScreen extends JPanel {
 			passwordScreen.setFocus();
 		}
 	}
+
+	public void setTerminalId(int terminalId) {
+		passwordScreen.setTerminalId(terminalId);
+	}
 }

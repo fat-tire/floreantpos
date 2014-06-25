@@ -5,6 +5,7 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Random;
 
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
@@ -28,7 +29,6 @@ import com.floreantpos.model.User;
 import com.floreantpos.model.dao.PrinterConfigurationDAO;
 import com.floreantpos.model.dao.RestaurantDAO;
 import com.floreantpos.model.dao.TerminalDAO;
-import com.floreantpos.ui.dialog.NumberSelectionDialog2;
 import com.floreantpos.ui.views.LoginScreen;
 import com.floreantpos.ui.views.order.RootView;
 import com.floreantpos.util.DatabaseConnectionException;
@@ -166,13 +166,16 @@ public class Application {
 		int terminalId = AppConfig.getTerminalId();
 		
 		if (terminalId == -1) {
-			NumberSelectionDialog2 dialog = new NumberSelectionDialog2();
-			dialog.setTitle(com.floreantpos.POSConstants.ENTER_ID_FOR_TERMINAL);
-			dialog.pack();
-			dialog.setLocationRelativeTo(getPosWindow());
-			dialog.setVisible(true);
+//			NumberSelectionDialog2 dialog = new NumberSelectionDialog2();
+//			dialog.setTitle(com.floreantpos.POSConstants.ENTER_ID_FOR_TERMINAL);
+//			dialog.pack();
+//			dialog.setLocationRelativeTo(getPosWindow());
+//			dialog.setVisible(true);
+//			
+//			terminalId = (int) dialog.getValue();
 			
-			terminalId = (int) dialog.getValue();
+			Random random = new Random();
+			terminalId = random.nextInt(10000) + 1;
 		}
 
 		Terminal terminal = TerminalDAO.getInstance().get(new Integer(terminalId));
@@ -188,6 +191,7 @@ public class Application {
 		}
 		
 		AppConfig.setTerminalId(terminalId);
+		RootView.getInstance().getLoginScreen().setTerminalId(terminalId);
 		
 		this.terminal = terminal;
 	}

@@ -84,7 +84,7 @@ public class AppConfig {
 	}
 
 	public static String getConnectString() {
-		return config.getString(CONNECTION_STRING, "");  //$NON-NLS-1$
+		return config.getString(CONNECTION_STRING, Database.DERBY_SINGLE.getConnectString("", "", ""));  //$NON-NLS-1$
 	}
 	
 	public static void setConnectString(String connectionString) {
