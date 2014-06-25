@@ -157,7 +157,7 @@ public abstract class SelectionView extends JPanel implements ComponentListener 
 				Object item = items.get(i);
 
 				AbstractButton itemButton = createItemButton(item);
-				buttonsPanel.add(itemButton);//, "width " + itemButtonSize.width + "!, height " + itemButtonSize.height + "!");
+				buttonsPanel.add(itemButton, "width " + itemButtonSize.width + "!, height " + itemButtonSize.height + "!");
 
 				if (i == items.size() - 1) {
 					break;
