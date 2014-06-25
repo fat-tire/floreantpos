@@ -9,6 +9,7 @@ package com.floreantpos.ui.views;
 import java.awt.ComponentOrientation;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.Calendar;
@@ -34,6 +35,7 @@ import com.floreantpos.model.dao.AttendenceHistoryDAO;
 import com.floreantpos.model.dao.UserDAO;
 import com.floreantpos.swing.MessageDialog;
 import com.floreantpos.swing.POSPasswordField;
+import com.floreantpos.swing.PosButton;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.util.ShiftUtil;
 import com.floreantpos.util.UserNotFoundException;
@@ -86,7 +88,7 @@ public class PasswordScreen extends JPanel {
 
 		buttonPanel.setOpaque(false);
 		buttonPanel.setPreferredSize(new java.awt.Dimension(280, 180));
-		buttonPanel.setLayout(new MigLayout("", "[111px][111px][111px]", "[60px][60px][60px][60px]"));
+		buttonPanel.setLayout(new MigLayout("", "[111px][111px][111px,grow]", "[60px][60px][60px][60px]"));
 
 		btn7.setAction(loginAction);
 		btn7.setIcon(com.floreantpos.IconFactory.getIcon("7_32.png"));
@@ -155,6 +157,15 @@ public class PasswordScreen extends JPanel {
 		posButton1.setPreferredSize(new java.awt.Dimension(90, 50));
 		buttonPanel.add(posButton1, "cell 1 3,grow");
 		add(buttonPanel, "cell 0 1,grow");
+		
+		psbtnLogin = new PosButton();
+		psbtnLogin.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				doLogin();
+			}
+		});
+		psbtnLogin.setText("LOGIN");
+		buttonPanel.add(psbtnLogin, "cell 2 3,grow");
 
 		jPanel2.setOpaque(false);
 
@@ -380,6 +391,7 @@ public class PasswordScreen extends JPanel {
 	};
 	private JPanel panel;
 	private JLabel msgLabel;
+	private PosButton psbtnLogin;
 
 	public void setFocus() {
 		tfPassword.setText("");
