@@ -56,8 +56,14 @@ public class JReportPrintService {
 		map.put("serverName", com.floreantpos.POSConstants.SERVER + ": " + ticket.getOwner());
 		map.put("reportDate", com.floreantpos.POSConstants.DATE + ": " + Application.formatDate(new Date()));
 		map.put("grandSubtotal", Application.formatNumber(ticket.getSubtotalAmount()));
-		map.put("discountAmount", Application.formatNumber(ticket.getDiscountAmount()));
-		map.put("taxAmount", Application.formatNumber(ticket.getTaxAmount()));
+		
+		if(ticket.getDiscountAmount() > 0.0) {
+			map.put("discountAmount", Application.formatNumber(ticket.getDiscountAmount()));
+		}
+		
+		if(ticket.getTaxAmount() > 0.0) {
+			map.put("taxAmount", Application.formatNumber(ticket.getTaxAmount()));
+		}
 		
 		if(ticket.getServiceCharge() > 0.0) {
 			map.put("serviceCharge", Application.formatNumber(ticket.getServiceCharge()));
@@ -66,9 +72,6 @@ public class JReportPrintService {
 		if (ticket.getGratuity() != null) {
 			tipAmount = ticket.getGratuity().getAmount();
 			map.put("tipAmount", Application.formatNumber(tipAmount));
-		}
-		else {
-			map.put("tipAmount", Application.formatNumber(0.0));
 		}
 		
 		double netAmount = totalAmount + tipAmount;
