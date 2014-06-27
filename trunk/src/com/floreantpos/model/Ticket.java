@@ -112,42 +112,46 @@ public class Ticket extends BaseTicket {
 	}
 
 	private double calculateSubtotalAmount() {
-		double subtotal = 0;
+		double subtotalAmount = 0;
 
 		List<TicketItem> ticketItems = getTicketItems();
 		if (ticketItems == null) {
-			return subtotal;
+			return subtotalAmount;
 		}
 
 		for (TicketItem ticketItem : ticketItems) {
-			subtotal += ticketItem.calculateSubtotal(true);
+			subtotalAmount += ticketItem.calculateSubtotal(true);
 		}
+		
+		subtotalAmount = fixInvalidAmount(subtotalAmount);
 
-		return subtotal;
+		return subtotalAmount;
 	}
 
 	private double calculateDiscountAmount() {
-		double subtotal = getSubtotalAmount();
-		double totalDiscount = 0;
+		double subtotalAmount = getSubtotalAmount();
+		double discountAmount = 0;
 
 		List<TicketItem> ticketItems = getTicketItems();
 		if (ticketItems != null) {
 			for (TicketItem ticketItem : ticketItems) {
-				totalDiscount += ticketItem.calculateDiscount();
+				discountAmount += ticketItem.calculateDiscount();
 			}
 		}
 
 		List<TicketCouponAndDiscount> discounts = getCouponAndDiscounts();
 		if (discounts != null) {
 			for (TicketCouponAndDiscount discount : discounts) {
-				totalDiscount += calculateDiscountFromType(discount, subtotal);
+				discountAmount += calculateDiscountFromType(discount, subtotalAmount);
 			}
 		}
+		
+		discountAmount = fixInvalidAmount(discountAmount);
 
-		return totalDiscount;
+		return discountAmount;
 	}
 
-	private double calculateTax(double subtotalAmount, double discountAmount) {
+	private double calculateTax() {
 		List<TicketItem> ticketItems = getTicketItems();
 		if (ticketItems == null) {
 			return 0;
@@ -158,35 +162,33 @@ public class Ticket extends BaseTicket {
 			tax += ticketItem.calculateTax(true);
 		}
 		
-		double subtotalAfterDiscount = subtotalAmount - discountAmount;
+		double subtotalAfterDiscount = getSubtotalAmount() - getTaxAmount();
 
-		tax = (subtotalAfterDiscount * tax) / subtotalAmount; 
+		tax = (subtotalAfterDiscount * tax) / getSubtotalAmount(); 
 		
+		return fixInvalidAmount(tax);
+	}
+
+	private double fixInvalidAmount(double tax) {
+		if(tax < 0 || Double.isNaN(tax)) {
+			tax = 0;
+		}
 		return tax;
 	}
 
 	public void calculatePrice() {
 		double subtotalAmount = calculateSubtotalAmount();
 		double discountAmount = calculateDiscountAmount();
-		double taxAmount = calculateTax(subtotalAmount, discountAmount);
-		double serviceChargeAmount = calculateServiceCharge();
-		double totalAmount = subtotalAmount - discountAmount + taxAmount + serviceChargeAmount;
-		
-		if(subtotalAmount < 0 || Double.isNaN(subtotalAmount)) {
-			subtotalAmount = 0;
-		}
-		if(discountAmount < 0 || Double.isNaN(discountAmount)) {
-			discountAmount = 0;
-		}
-		if(taxAmount < 0 || Double.isNaN(taxAmount)) {
-			taxAmount = 0;
-		}
-		if(totalAmount < 0 || Double.isNaN(totalAmount)) {
-			totalAmount = 0;
-		}
 		
 		setSubtotalAmount(subtotalAmount);
 		setDiscountAmount(discountAmount);
+		
+		double taxAmount = calculateTax();
+		double serviceChargeAmount = calculateServiceCharge();
+		double totalAmount = subtotalAmount - discountAmount + taxAmount + serviceChargeAmount;
+		
+		totalAmount = fixInvalidAmount(totalAmount);
+		
 
 		if (isTaxExempt()) {
 			totalAmount = totalAmount - taxAmount;
@@ -348,10 +350,12 @@ public class Ticket extends BaseTicket {
 		Restaurant restaurant = Application.getInstance().getRestaurant();
 		double serviceChargePercentage = restaurant.getServiceChargePercentage();
 		
+		double serviceCharge = 0.0;
+		
 		if(serviceChargePercentage > 0.0) {
-			return getDueAmount() * (serviceChargePercentage / 100.0);
+			serviceCharge = (getSubtotalAmount() - getDiscountAmount()) * (serviceChargePercentage / 100.0);
 		}
 		
-		return 0;
+		return fixInvalidAmount(serviceCharge);
 	}
 }
