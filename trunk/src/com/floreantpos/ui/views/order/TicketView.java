@@ -6,12 +6,16 @@
 
 package com.floreantpos.ui.views.order;
 
+import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+
+import net.miginfocom.swing.MigLayout;
 
 import com.floreantpos.POSConstants;
 import com.floreantpos.PosException;
@@ -67,17 +71,7 @@ public class TicketView extends JPanel {
 		jPanel1 = new com.floreantpos.swing.TransparentPanel();
 		jSeparator1 = new javax.swing.JSeparator();
 		jPanel3 = new com.floreantpos.swing.TransparentPanel();
-		jLabel5 = new javax.swing.JLabel();
-		jLabel6 = new javax.swing.JLabel();
-		jLabel1 = new javax.swing.JLabel();
-		jLabel2 = new javax.swing.JLabel();
 		jSeparator2 = new javax.swing.JSeparator();
-		jSeparator3 = new javax.swing.JSeparator();
-		tfSubtotal = new javax.swing.JTextField();
-		tfTax = new javax.swing.JTextField();
-		tfDiscount = new javax.swing.JTextField();
-		tfTotal = new javax.swing.JTextField();
-		chkTaxExempt = new javax.swing.JCheckBox();
 		bottomPanel = new com.floreantpos.swing.TransparentPanel();
 		btnPay = new com.floreantpos.swing.PosButton();
 		btnCancel = new com.floreantpos.swing.PosButton();
@@ -98,113 +92,88 @@ public class TicketView extends JPanel {
 
 		jPanel1.setLayout(new java.awt.BorderLayout(5, 5));
 		jPanel1.add(jSeparator1, java.awt.BorderLayout.CENTER);
-
-		jPanel3.setLayout(new java.awt.GridBagLayout());
-
-		jLabel5.setFont(new java.awt.Font("Tahoma", 1, 12));
-		jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-		jLabel5.setText(com.floreantpos.POSConstants.SUBTOTAL + ":");
-		gridBagConstraints = new java.awt.GridBagConstraints();
-		gridBagConstraints.gridx = 0;
-		gridBagConstraints.gridy = 1;
-		gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-		gridBagConstraints.insets = new java.awt.Insets(3, 5, 0, 0);
-		jPanel3.add(jLabel5, gridBagConstraints);
-
-		jLabel6.setFont(new java.awt.Font("Tahoma", 1, 12));
-		jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-		jLabel6.setText(com.floreantpos.POSConstants.TOTAL + ":");
-		gridBagConstraints = new java.awt.GridBagConstraints();
-		gridBagConstraints.gridx = 0;
-		gridBagConstraints.gridy = 3;
-		gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-		gridBagConstraints.insets = new java.awt.Insets(0, 5, 3, 0);
-		jPanel3.add(jLabel6, gridBagConstraints);
-
-		jLabel1.setFont(new java.awt.Font("Tahoma", 1, 12));
-		jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-		jLabel1.setText(com.floreantpos.POSConstants.DISCOUNT + ":");
-		gridBagConstraints = new java.awt.GridBagConstraints();
-		gridBagConstraints.gridx = 0;
-		gridBagConstraints.gridy = 2;
-		gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-		gridBagConstraints.insets = new java.awt.Insets(0, 5, 0, 0);
-		jPanel3.add(jLabel1, gridBagConstraints);
-
-		jLabel2.setFont(new java.awt.Font("Tahoma", 1, 12));
-		jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-		jLabel2.setText(com.floreantpos.POSConstants.TAX + ":");
-		gridBagConstraints = new java.awt.GridBagConstraints();
-		gridBagConstraints.gridx = 2;
-		gridBagConstraints.gridy = 2;
-		gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-		gridBagConstraints.insets = new java.awt.Insets(0, 5, 0, 0);
-		jPanel3.add(jLabel2, gridBagConstraints);
-		gridBagConstraints = new java.awt.GridBagConstraints();
-		gridBagConstraints.gridx = 0;
-		gridBagConstraints.gridy = 6;
-		gridBagConstraints.gridwidth = java.awt.GridBagConstraints.REMAINDER;
-		gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-		gridBagConstraints.weightx = 1.0;
-		jPanel3.add(jSeparator2, gridBagConstraints);
-		gridBagConstraints = new java.awt.GridBagConstraints();
-		gridBagConstraints.gridx = 0;
-		gridBagConstraints.gridy = 0;
-		gridBagConstraints.gridwidth = java.awt.GridBagConstraints.REMAINDER;
-		gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-		gridBagConstraints.weightx = 1.0;
-		jPanel3.add(jSeparator3, gridBagConstraints);
-
-		tfSubtotal.setEditable(false);
-		tfSubtotal.setFont(new java.awt.Font("Tahoma", 1, 12));
-		gridBagConstraints = new java.awt.GridBagConstraints();
-		gridBagConstraints.gridwidth = java.awt.GridBagConstraints.REMAINDER;
-		gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-		gridBagConstraints.weightx = 1.0;
-		gridBagConstraints.insets = new java.awt.Insets(3, 5, 0, 5);
-		jPanel3.add(tfSubtotal, gridBagConstraints);
-
-		tfTax.setEditable(false);
-		tfTax.setFont(new java.awt.Font("Tahoma", 1, 12));
-		gridBagConstraints = new java.awt.GridBagConstraints();
-		gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-		gridBagConstraints.weightx = 1.0;
-		gridBagConstraints.insets = new java.awt.Insets(3, 5, 0, 5);
-		jPanel3.add(tfTax, gridBagConstraints);
-
-		tfDiscount.setEditable(false);
-		tfDiscount.setFont(new java.awt.Font("Tahoma", 1, 12));
-		gridBagConstraints = new java.awt.GridBagConstraints();
-		gridBagConstraints.gridx = 1;
-		gridBagConstraints.gridy = 2;
-		gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-		gridBagConstraints.weightx = 1.0;
-		gridBagConstraints.insets = new java.awt.Insets(3, 5, 0, 5);
-		jPanel3.add(tfDiscount, gridBagConstraints);
-
-		tfTotal.setEditable(false);
-		tfTotal.setFont(new java.awt.Font("Tahoma", 1, 12));
-		gridBagConstraints = new java.awt.GridBagConstraints();
-		gridBagConstraints.gridx = 1;
-		gridBagConstraints.gridy = 3;
-		gridBagConstraints.gridwidth = java.awt.GridBagConstraints.REMAINDER;
-		gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-		gridBagConstraints.weightx = 1.0;
-		gridBagConstraints.insets = new java.awt.Insets(3, 5, 3, 5);
-		jPanel3.add(tfTotal, gridBagConstraints);
-
-		chkTaxExempt.setFont(new java.awt.Font("Tahoma", 1, 12));
-		chkTaxExempt.setText(com.floreantpos.POSConstants.TAX_EXEMPT);
-		chkTaxExempt.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
-		chkTaxExempt.setFocusable(false);
-		chkTaxExempt.setMargin(new java.awt.Insets(0, 0, 0, 0));
-		gridBagConstraints = new java.awt.GridBagConstraints();
-		gridBagConstraints.gridx = 1;
-		gridBagConstraints.gridy = 4;
-		gridBagConstraints.gridwidth = java.awt.GridBagConstraints.REMAINDER;
-		gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-		gridBagConstraints.insets = new java.awt.Insets(0, 5, 3, 0);
-		jPanel3.add(chkTaxExempt, gridBagConstraints);
+		jPanel3.setLayout(new MigLayout("alignx trailing,fill", "[][grow][][]", "[][][][][][][][]"));
+		jLabel5 = new javax.swing.JLabel();
+		
+				jLabel5.setFont(new java.awt.Font("Tahoma", 1, 12));
+				jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+				jLabel5.setText(com.floreantpos.POSConstants.SUBTOTAL + ":");
+				jPanel3.add(jLabel5, "cell 1 1,growx,aligny center");
+		tfSubtotal = new javax.swing.JTextField();
+		tfSubtotal.setHorizontalAlignment(SwingConstants.TRAILING);
+		
+				tfSubtotal.setEditable(false);
+				tfSubtotal.setFont(new java.awt.Font("Tahoma", 1, 12));
+				jPanel3.add(tfSubtotal, "cell 3 1,growx,aligny center");
+		jLabel1 = new javax.swing.JLabel();
+		
+				jLabel1.setFont(new java.awt.Font("Tahoma", 1, 12));
+				jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+				jLabel1.setText(com.floreantpos.POSConstants.DISCOUNT + ":");
+				jPanel3.add(jLabel1, "cell 1 2,growx,aligny center");
+		
+		label = new JLabel(" (-)");
+		label.setHorizontalAlignment(SwingConstants.TRAILING);
+		jPanel3.add(label, "cell 2 2,alignx trailing");
+		tfDiscount = new javax.swing.JTextField();
+		tfDiscount.setHorizontalAlignment(SwingConstants.TRAILING);
+		
+				tfDiscount.setEditable(false);
+				tfDiscount.setFont(new java.awt.Font("Tahoma", 1, 12));
+				jPanel3.add(tfDiscount, "cell 3 2,growx,aligny center");
+		jLabel2 = new javax.swing.JLabel();
+		
+				jLabel2.setFont(new java.awt.Font("Tahoma", 1, 12));
+				jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+				jLabel2.setText(com.floreantpos.POSConstants.TAX + ":");
+				jPanel3.add(jLabel2, "cell 1 3,growx,aligny center");
+		
+		label_1 = new JLabel("(+)");
+		label_1.setHorizontalAlignment(SwingConstants.TRAILING);
+		jPanel3.add(label_1, "cell 2 3,alignx trailing");
+		tfTax = new javax.swing.JTextField();
+		tfTax.setHorizontalAlignment(SwingConstants.TRAILING);
+		
+				tfTax.setEditable(false);
+				tfTax.setFont(new java.awt.Font("Tahoma", 1, 12));
+				jPanel3.add(tfTax, "cell 3 3,growx,aligny center");
+		
+		lblServiceCharge = new JLabel();
+		lblServiceCharge.setText("Service Charge:");
+		lblServiceCharge.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblServiceCharge.setFont(new Font("Dialog", Font.BOLD, 12));
+		jPanel3.add(lblServiceCharge, "cell 1 4,alignx trailing");
+		
+		label_2 = new JLabel("(+)");
+		label_2.setHorizontalAlignment(SwingConstants.TRAILING);
+		jPanel3.add(label_2, "cell 2 4,alignx trailing");
+		
+		tfServiceCharge = new JTextField();
+		tfServiceCharge.setHorizontalAlignment(SwingConstants.TRAILING);
+		tfServiceCharge.setEditable(false);
+		jPanel3.add(tfServiceCharge, "cell 3 4,growx,aligny center");
+		tfServiceCharge.setColumns(10);
+		jLabel6 = new javax.swing.JLabel();
+		
+				jLabel6.setFont(new java.awt.Font("Tahoma", 1, 12));
+				jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+				jLabel6.setText(com.floreantpos.POSConstants.TOTAL + ":");
+				jPanel3.add(jLabel6, "cell 1 5,growx,aligny center");
+		tfTotal = new javax.swing.JTextField();
+		tfTotal.setHorizontalAlignment(SwingConstants.TRAILING);
+		
+				tfTotal.setEditable(false);
+				tfTotal.setFont(new java.awt.Font("Tahoma", 1, 12));
+				jPanel3.add(tfTotal, "cell 3 5,growx,aligny center");
+		chkTaxExempt = new javax.swing.JCheckBox();
+		
+				chkTaxExempt.setFont(new java.awt.Font("Tahoma", 1, 12));
+				chkTaxExempt.setText(com.floreantpos.POSConstants.TAX_EXEMPT);
+				chkTaxExempt.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
+				chkTaxExempt.setFocusable(false);
+				chkTaxExempt.setMargin(new java.awt.Insets(0, 0, 0, 0));
+				jPanel3.add(chkTaxExempt, "cell 3 6,growx,aligny center");
+		jPanel3.add(jSeparator2, "cell 0 7 4 1,growx,aligny center");
 
 		jPanel1.add(jPanel3, java.awt.BorderLayout.NORTH);
 
@@ -460,12 +429,16 @@ public class TicketView extends JPanel {
 	private javax.swing.JScrollPane jScrollPane1;
 	private javax.swing.JSeparator jSeparator1;
 	private javax.swing.JSeparator jSeparator2;
-	private javax.swing.JSeparator jSeparator3;
 	private javax.swing.JTextField tfDiscount;
 	private javax.swing.JTextField tfSubtotal;
 	private javax.swing.JTextField tfTax;
 	private javax.swing.JTextField tfTotal;
 	private com.floreantpos.ui.ticket.TicketViewerTable ticketViewerTable;
+	private JTextField tfServiceCharge;
+	private JLabel label;
+	private JLabel label_1;
+	private JLabel label_2;
+	private JLabel lblServiceCharge;
 
 	// End of variables declaration//GEN-END:variables
 
@@ -490,7 +463,7 @@ public class TicketView extends JPanel {
 		ticketViewerTable.removeModifier(parent, modifier);
 	}
 
-	private NumberFormat numberFormat = new DecimalFormat("0.00");
+//	private NumberFormat numberFormat = new DecimalFormat("0.00");
 
 	public void updateAllView() {
 		ticketViewerTable.updateView();
@@ -506,6 +479,7 @@ public class TicketView extends JPanel {
 			tfSubtotal.setText("");
 			tfDiscount.setText("");
 			tfTax.setText("");
+			tfServiceCharge.setText("");
 			tfTotal.setText("");
 
 			return;
@@ -513,24 +487,20 @@ public class TicketView extends JPanel {
 
 		ticket.calculatePrice();
 
-		//		double calculatedSubtotalPrice = ticket.getCalculatedSubtotalPrice();
-		//		double discount = ticket.getCalculatedTotalDiscount();
-		//		double calculatedTax = ticket.getCalculatedTax();
-		//		double calculatedTotalPrice = ticket.getCalculatedTotalPrice();
+		tfSubtotal.setText(Application.formatNumber(ticket.getSubtotalAmount()));
+		tfDiscount.setText(Application.formatNumber(ticket.getDiscountAmount()));
 
-		tfSubtotal.setText(numberFormat.format(ticket.getSubtotalAmount()));
-		tfDiscount.setText(numberFormat.format(ticket.getDiscountAmount()));
-
+		tfTax.setText(Application.formatNumber(ticket.getTaxAmount()));
+		
 		if (ticket.isTaxExempt()) {
-			tfTax.setText("0");
 			chkTaxExempt.setSelected(true);
 		}
 		else {
-			tfTax.setText(numberFormat.format(ticket.getTaxAmount()));
 			chkTaxExempt.setSelected(false);
 		}
 
-		tfTotal.setText(numberFormat.format(ticket.getTotalAmount()));
+		tfServiceCharge.setText(Application.formatNumber(ticket.getServiceCharge()));
+		tfTotal.setText(Application.formatNumber(ticket.getTotalAmount()));
 	}
 
 	public void addOrderListener(OrderListener listenre) {

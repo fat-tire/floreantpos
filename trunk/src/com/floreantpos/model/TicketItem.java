@@ -2,6 +2,7 @@ package com.floreantpos.model;
 
 import java.util.List;
 
+import com.floreantpos.main.Application;
 import com.floreantpos.model.base.BaseTicketItem;
 
 public class TicketItem extends BaseTicketItem {
@@ -72,7 +73,8 @@ public class TicketItem extends BaseTicketItem {
 	}
 
 	double calculateSubtotal(boolean includeModifierPrice) {
-		double subTotalAmount = getUnitPrice() * getItemCount();
+		double subTotalAmount = Application.roundToTwoDigit(getUnitPrice() * getItemCount());
+		
 		setSubtotalAmountWithoutModifiers(subTotalAmount);
 
 		if (includeModifierPrice) {
@@ -82,6 +84,7 @@ public class TicketItem extends BaseTicketItem {
 					subTotalAmount += ticketItemModifierGroup.getSubtotal();
 				}
 			}
+			subTotalAmount = Application.roundToTwoDigit(subTotalAmount);
 			setSubtotalAmount(subTotalAmount);
 		}
 
@@ -96,18 +99,19 @@ public class TicketItem extends BaseTicketItem {
 		if (discountRate > 0) {
 			discount = subtotal * discountRate / 100.0;
 		}
+		discount = Application.roundToTwoDigit(discount);
 		setDiscountAmount(discount);
 		return discount;
 	}
 
 	double calculateTax(boolean includeModifierTax) {
-		double subtotalItemPrice = calculateSubtotal(false) - calculateDiscount();
+		double subtotalItemPrice = Application.roundToTwoDigit(calculateSubtotal(false) - calculateDiscount());
 
 		double taxRate = getTaxRate();
 		double tax = 0;
 
 		if (taxRate > 0) {
-			tax = subtotalItemPrice * taxRate / 100.0;
+			tax = Application.roundToTwoDigit(subtotalItemPrice * taxRate / 100.0);
 		}
 		setTaxAmountWithoutModifiers(tax);
 
@@ -118,6 +122,8 @@ public class TicketItem extends BaseTicketItem {
 					tax += ticketItemModifierGroup.getTax();
 				}
 			}
+			
+			tax = Application.roundToTwoDigit(tax);
 			setTaxAmount(tax);
 		}
 
@@ -125,7 +131,7 @@ public class TicketItem extends BaseTicketItem {
 	}
 
 	double calculateTotal(boolean includeModifiers) {
-		double totalPrice = getUnitPrice() * getItemCount();
+		double totalPrice = Application.roundToTwoDigit(getUnitPrice() * getItemCount());
 
 		totalPrice -= calculateDiscount();
 
@@ -136,6 +142,7 @@ public class TicketItem extends BaseTicketItem {
 			tax = totalPrice * taxRate / 100.0;
 		}
 		totalPrice += tax;
+		totalPrice = Application.roundToTwoDigit(totalPrice);
 		setTotalAmountWithoutModifiers(totalPrice);
 
 		if (includeModifiers) {
@@ -145,6 +152,8 @@ public class TicketItem extends BaseTicketItem {
 					totalPrice += ticketItemModifierGroup.getTotal();
 				}
 			}
+			
+			totalPrice = Application.roundToTwoDigit(totalPrice);
 			setTotalAmount(totalPrice);
 		}
 
