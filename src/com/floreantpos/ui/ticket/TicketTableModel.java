@@ -37,12 +37,12 @@ public class TicketTableModel extends AbstractTableModel {
 
 	public int getRowCount() {
 		int size = tableRows.size();
-		// if (forReciptPrint) {
-		// return size;
-		// }
-		// if (size < 30) {
-		// size = 30;
-		// }
+		if (forReciptPrint) {
+			return size;
+		}
+		if (size < 30) {
+			size = 30;
+		}
 		return size;
 	}
 
@@ -131,7 +131,7 @@ public class TicketTableModel extends AbstractTableModel {
 				if (modifier.getModifierType() == TicketItemModifier.NO_MODIFIER) {
 					return null;
 				}
-				
+
 				double taxAmount = 0;
 				if (modifier.getModifierType() == TicketItemModifier.NORMAL_MODIFIER) {
 					taxAmount = (modifier.getUnitPrice() * modifier.getItemCount()) * (modifier.getTaxRate() / 100);
@@ -139,7 +139,7 @@ public class TicketTableModel extends AbstractTableModel {
 				if (modifier.getModifierType() == TicketItemModifier.EXTRA_MODIFIER) {
 					taxAmount = (modifier.getExtraUnitPrice() * modifier.getItemCount()) * (modifier.getTaxRate() / 100);
 				}
-				
+
 				return modifier.getTotalAmount() + taxAmount;
 			}
 		}

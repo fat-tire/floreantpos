@@ -1,5 +1,6 @@
 package com.floreantpos.model.dao;
 
+import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.cfg.Configuration;
 
 import com.floreantpos.Database;
@@ -61,7 +62,7 @@ public abstract class _RootDAO extends com.floreantpos.model.dao._BaseRootDAO {
 	}
 
 	public static Configuration getNewConfiguration(String configFileName) {
-		Configuration configuration = new Configuration();
+		AnnotationConfiguration configuration = new AnnotationConfiguration();
 		configuration = configuration.addClass(ActionHistory.class);
 		configuration = configuration.addClass(AttendenceHistory.class);
 		configuration = configuration.addClass(CashDrawerResetHistory.class);
