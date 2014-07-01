@@ -125,7 +125,7 @@ public class Ticket extends BaseTicket {
 		
 		subtotalAmount = fixInvalidAmount(subtotalAmount);
 
-		return subtotalAmount;
+		return Application.roundToTwoDigit(subtotalAmount);
 	}
 
 	private double calculateDiscountAmount() {
@@ -148,10 +148,14 @@ public class Ticket extends BaseTicket {
 		
 		discountAmount = fixInvalidAmount(discountAmount);
 
-		return discountAmount;
+		return Application.roundToTwoDigit(discountAmount);
 	}
 
 	private double calculateTax() {
+		if (isTaxExempt()) {
+			return 0;
+		}
+		
 		List<TicketItem> ticketItems = getTicketItems();
 		if (ticketItems == null) {
 			return 0;
@@ -162,11 +166,11 @@ public class Ticket extends BaseTicket {
 			tax += ticketItem.calculateTax(true);
 		}
 		
-		double subtotalAfterDiscount = getSubtotalAmount() - getTaxAmount();
+		//double subtotalAfterDiscount = getSubtotalAmount() - getTaxAmount();
 
-		tax = (subtotalAfterDiscount * tax) / getSubtotalAmount(); 
+		//tax = (subtotalAfterDiscount * tax) / getSubtotalAmount(); 
 		
-		return fixInvalidAmount(tax);
+		return Application.roundToTwoDigit(fixInvalidAmount(tax));
 	}
 
 	private double fixInvalidAmount(double tax) {
@@ -184,22 +188,19 @@ public class Ticket extends BaseTicket {
 		setDiscountAmount(discountAmount);
 		
 		double taxAmount = calculateTax();
+		setTaxAmount(taxAmount);
+		
 		double serviceChargeAmount = calculateServiceCharge();
 		double totalAmount = subtotalAmount - discountAmount + taxAmount + serviceChargeAmount;
 		
 		totalAmount = fixInvalidAmount(totalAmount);
 		
 
-		if (isTaxExempt()) {
-			totalAmount = totalAmount - taxAmount;
-			taxAmount = 0;
-		}
-		setTaxAmount(taxAmount);
 		setServiceCharge(serviceChargeAmount);
-		setTotalAmount(totalAmount);
+		setTotalAmount(Application.roundToTwoDigit(totalAmount));
 
 		double dueAmount = totalAmount - getPaidAmount();
-		setDueAmount(dueAmount);
+		setDueAmount(Application.roundToTwoDigit(dueAmount));
 	}
 
 	public double calculateDiscountFromType(TicketCouponAndDiscount coupon, double subtotal) {
@@ -353,9 +354,9 @@ public class Ticket extends BaseTicket {
 		double serviceCharge = 0.0;
 		
 		if(serviceChargePercentage > 0.0) {
-			serviceCharge = (getSubtotalAmount() - getDiscountAmount()) * (serviceChargePercentage / 100.0);
+			serviceCharge = (getSubtotalAmount() - getDiscountAmount() + getTaxAmount()) * (serviceChargePercentage / 100.0);
 		}
 		
-		return fixInvalidAmount(serviceCharge);
+		return Application.roundToTwoDigit(fixInvalidAmount(serviceCharge));
 	}
 }

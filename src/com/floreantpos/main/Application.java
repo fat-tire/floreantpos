@@ -1,6 +1,8 @@
 package com.floreantpos.main;
 
 import java.io.File;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -364,5 +366,11 @@ public class Application {
 		File file = new File(Application.class.getProtectionDomain().getCodeSource().getLocation().getPath());
 		
 		return file.getParentFile();
+	}
+	
+	public static double roundToTwoDigit(double value) {
+	    BigDecimal bd = new BigDecimal(value);
+	    bd = bd.setScale(2, RoundingMode.HALF_UP);
+	    return bd.doubleValue();
 	}
 }
