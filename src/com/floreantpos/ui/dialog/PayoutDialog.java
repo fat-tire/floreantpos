@@ -16,6 +16,7 @@ import com.floreantpos.model.PayoutRecepient;
 import com.floreantpos.model.Terminal;
 import com.floreantpos.model.dao.ActionHistoryDAO;
 import com.floreantpos.model.dao.PayOutTransactionDAO;
+import com.floreantpos.util.NumberUtil;
 
 /**
  *
@@ -113,7 +114,7 @@ public class PayoutDialog extends POSDialog {
 			
 //			PAYOUT ACTION
 			String actionMessage = "";
-			actionMessage += "TOTAL" + ":" + Application.formatNumber(payoutAmount);
+			actionMessage += "TOTAL" + ":" + NumberUtil.formatNumber(payoutAmount);
 			ActionHistoryDAO.getInstance().saveHistory(Application.getCurrentUser(), ActionHistory.PAY_OUT, actionMessage);
 			
 			dispose();

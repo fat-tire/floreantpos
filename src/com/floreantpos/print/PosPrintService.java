@@ -28,6 +28,7 @@ import com.floreantpos.model.TicketItemModifier;
 import com.floreantpos.model.TipsCashoutReport;
 import com.floreantpos.model.TipsCashoutReportTableModel;
 import com.floreantpos.model.dao.RestaurantDAO;
+import com.floreantpos.util.NumberUtil;
 
 public class PosPrintService {
 	private static Log logger = LogFactory.getLog(PosPrintService.class);
@@ -726,9 +727,9 @@ public class PosPrintService {
 			parameters.put("toDate", Application.formatDate(report.getToDate()));
 			parameters.put("reportDate", Application.formatDate(report.getReportTime()));
 			parameters.put("transactionCount", report.getDatas() == null ? "0" : "" + report.getDatas().size());
-			parameters.put("cashTips", Application.formatNumber(report.getCashTipsAmount()));
-			parameters.put("chargedTips", Application.formatNumber(report.getChargedTipsAmount()));
-			parameters.put("tipsDue", Application.formatNumber(report.getTipsDue()));
+			parameters.put("cashTips", NumberUtil.formatNumber(report.getCashTipsAmount()));
+			parameters.put("chargedTips", NumberUtil.formatNumber(report.getChargedTipsAmount()));
+			parameters.put("tipsDue", NumberUtil.formatNumber(report.getTipsDue()));
 			
 			Restaurant restaurant = RestaurantDAO.getInstance().get(Integer.valueOf(1));
 			

@@ -46,6 +46,7 @@ import com.floreantpos.swing.ListComboBoxModel;
 import com.floreantpos.swing.TransparentPanel;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.util.UiUtil;
+import com.floreantpos.util.NumberUtil;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
@@ -268,13 +269,13 @@ public class HourlyLaborReportView extends TransparentPanel {
 
             properties.put("totalChecks", String.valueOf(grandTotalChecks));
             properties.put("totalGuests", String.valueOf(grandTotalGuests));
-            properties.put("totalSales", Application.formatNumber(grandTotalSales));
-            properties.put("totalMHr", Application.formatNumber(grandTotalMHr));
-            properties.put("totalLabor", Application.formatNumber(grandTotalLabor));
-            properties.put("totalSalesPerMhr", Application.formatNumber(grandTotalSalesPerMHr));
-            properties.put("totalGuestsPerMhr", Application.formatNumber(grandTotalCheckPerMHr));
-            properties.put("totalCheckPerMHr", Application.formatNumber(grandTotalGuestsPerMHr));
-            properties.put("totalLaborCost", Application.formatNumber(grandTotalLaborCost));
+            properties.put("totalSales", NumberUtil.formatNumber(grandTotalSales));
+            properties.put("totalMHr", NumberUtil.formatNumber(grandTotalMHr));
+            properties.put("totalLabor", NumberUtil.formatNumber(grandTotalLabor));
+            properties.put("totalSalesPerMhr", NumberUtil.formatNumber(grandTotalSalesPerMHr));
+            properties.put("totalGuestsPerMhr", NumberUtil.formatNumber(grandTotalCheckPerMHr));
+            properties.put("totalCheckPerMHr", NumberUtil.formatNumber(grandTotalGuestsPerMHr));
+            properties.put("totalLaborCost", NumberUtil.formatNumber(grandTotalLaborCost));
 
             properties.put("hourlyReport", hourlyReport);
             properties.put("hourlyReportDatasource", new JRTableModelDataSource(new HourlyLaborReportModel(rows)));

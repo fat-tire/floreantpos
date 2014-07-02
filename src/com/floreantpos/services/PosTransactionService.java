@@ -21,6 +21,7 @@ import com.floreantpos.model.Ticket;
 import com.floreantpos.model.User;
 import com.floreantpos.model.dao.ActionHistoryDAO;
 import com.floreantpos.model.dao.GenericDAO;
+import com.floreantpos.util.NumberUtil;
 
 public class PosTransactionService {
 	private static PosTransactionService paymentService = new PosTransactionService();
@@ -165,7 +166,7 @@ public class PosTransactionService {
 		for (Ticket ticket : tickets) {
 //			SETTLE ACTION
 			String actionMessage = com.floreantpos.POSConstants.CHK_NO + ":" + ticket.getId();
-			actionMessage += ";" +  com.floreantpos.POSConstants.TOTAL + ":" + Application.formatNumber(ticket.getTotalAmount());
+			actionMessage += ";" +  com.floreantpos.POSConstants.TOTAL + ":" + NumberUtil.formatNumber(ticket.getTotalAmount());
 			ActionHistoryDAO.getInstance().saveHistory(Application.getCurrentUser(), ActionHistory.SETTLE_CHECK, actionMessage);
 		}
 	}

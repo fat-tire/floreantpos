@@ -13,7 +13,7 @@ import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 
-import com.floreantpos.main.Application;
+import com.floreantpos.util.NumberUtil;
 
 public class PosTableRenderer extends DefaultTableCellRenderer {
 	private static final SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd yyyy, h:m a");
@@ -54,7 +54,7 @@ public class PosTableRenderer extends DefaultTableCellRenderer {
 		String text = value.toString();
 		
 		if(value instanceof Double || value instanceof Float) {
-			text = Application.formatNumber(((java.lang.Number) value).doubleValue());
+			text = NumberUtil.formatNumber(((java.lang.Number) value).doubleValue());
 			setHorizontalAlignment(SwingConstants.RIGHT);
 		}
 		else if(value instanceof Integer) {

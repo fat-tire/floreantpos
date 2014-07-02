@@ -48,6 +48,7 @@ import com.floreantpos.ui.dialog.TicketDetailDialog;
 import com.floreantpos.ui.dialog.VoidTicketDialog;
 import com.floreantpos.ui.views.order.OrderView;
 import com.floreantpos.ui.views.order.RootView;
+import com.floreantpos.util.NumberUtil;
 
 import foxtrot.Job;
 import foxtrot.Worker;
@@ -241,7 +242,7 @@ public class SwitchboardView extends JPanel implements ActionListener {
 				throw new PosException(POSConstants.TICKET_IS_NOT_CLOSED);
 			}
 	
-			String ticketTotalAmount = Application.getCurrencySymbol() + Application.formatNumber(ticket.getTotalAmount());
+			String ticketTotalAmount = Application.getCurrencySymbol() + NumberUtil.formatNumber(ticket.getTotalAmount());
 			String amountMessage = "<span style='color: red; font-weight: bold;'>" + ticketTotalAmount + "</span>";
 			String message = "<html><body>Ticket amount is " + ticketTotalAmount + ". To reopen ticket, you need to refund that amount to system.<br/>Please press <b>OK</b> after you refund amount " + amountMessage + "</body></html>";
 			

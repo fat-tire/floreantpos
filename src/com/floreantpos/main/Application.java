@@ -1,9 +1,6 @@
 package com.floreantpos.main;
 
 import java.io.File;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -55,7 +52,6 @@ public class Application {
 
 	private static Application instance;
 
-	private static DecimalFormat decimalFormat = new DecimalFormat("#,##0.00"); //$NON-NLS-1$
 	private static SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM, yyyy"); //$NON-NLS-1$
 	private static ImageIcon applicationIcon;
 	
@@ -298,18 +294,6 @@ public class Application {
 //		return getInstance().printConfiguration;
 //	}
 
-	public static String formatNumber(Double number) {
-		if(number == null) {
-			return "0.00"; //$NON-NLS-1$
-		}
-
-		String value = decimalFormat.format(number);
-		if(value.equals("-0.00")) { //$NON-NLS-1$
-			return "0.00"; //$NON-NLS-1$
-		}
-		return value;
-	}
-
 	public static String getTitle() {
 		return "Floreant POS - Version " + VERSION; //$NON-NLS-1$
 	}
@@ -366,11 +350,5 @@ public class Application {
 		File file = new File(Application.class.getProtectionDomain().getCodeSource().getLocation().getPath());
 		
 		return file.getParentFile();
-	}
-	
-	public static double roundToTwoDigit(double value) {
-	    BigDecimal bd = new BigDecimal(value);
-	    bd = bd.setScale(2, RoundingMode.HALF_UP);
-	    return bd.doubleValue();
 	}
 }

@@ -26,6 +26,7 @@ import com.floreantpos.model.CouponAndDiscount;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketCouponAndDiscount;
 import com.floreantpos.model.dao.CouponAndDiscountDAO;
+import com.floreantpos.util.NumberUtil;
 
 /**
  *
@@ -47,7 +48,7 @@ public class CouponAndDiscountDialog extends POSDialog implements ActionListener
 			public void insertUpdate(DocumentEvent e) {
 				try {
 					double totalDiscount = Double.parseDouble(tfValue.getText());
-					lblTotalDiscount.setText(Application.formatNumber(totalDiscount));
+					lblTotalDiscount.setText(NumberUtil.formatNumber(totalDiscount));
 				} catch (Exception x) {
 				}
 			}
@@ -55,7 +56,7 @@ public class CouponAndDiscountDialog extends POSDialog implements ActionListener
 			public void removeUpdate(DocumentEvent e) {
 				try {
 					double totalDiscount = Double.parseDouble(tfValue.getText());
-					lblTotalDiscount.setText(Application.formatNumber(totalDiscount));
+					lblTotalDiscount.setText(NumberUtil.formatNumber(totalDiscount));
 				} catch (Exception x) {
 				}
 			}
@@ -63,7 +64,7 @@ public class CouponAndDiscountDialog extends POSDialog implements ActionListener
 			public void changedUpdate(DocumentEvent e) {
 				try {
 					double totalDiscount = Double.parseDouble(tfValue.getText());
-					lblTotalDiscount.setText(Application.formatNumber(totalDiscount));
+					lblTotalDiscount.setText(NumberUtil.formatNumber(totalDiscount));
 				} catch (Exception x) {
 				}
 			}
@@ -290,7 +291,7 @@ public class CouponAndDiscountDialog extends POSDialog implements ActionListener
         
         if(!dialog.isCanceled()) {
         	double value = dialog.getValue();
-        	tfValue.setText(Application.formatNumber(value));
+        	tfValue.setText(NumberUtil.formatNumber(value));
         }
     }//GEN-LAST:event_doEnterValue
 
@@ -379,7 +380,7 @@ public class CouponAndDiscountDialog extends POSDialog implements ActionListener
 
 		tfNumber.setText(String.valueOf(coupon.getId()));
 		tfType.setText(CouponAndDiscount.COUPON_TYPE_NAMES[coupon.getType()]);
-		tfValue.setText(Application.formatNumber(coupon.getValue()));
+		tfValue.setText(NumberUtil.formatNumber(coupon.getValue()));
 		
 		double totalDiscount = 0;
 		double subtotal = ticket.getSubtotalAmount();
@@ -392,7 +393,7 @@ public class CouponAndDiscountDialog extends POSDialog implements ActionListener
 		totalDiscount = ticket.calculateDiscountFromType(ticketCoupon, subtotal);
 		ticketCoupon.setValue(totalDiscount);
 
-		lblTotalDiscount.setText(Application.formatNumber(totalDiscount));
+		lblTotalDiscount.setText(NumberUtil.formatNumber(totalDiscount));
 	}
 
 	public void valueChanged(ListSelectionEvent e) {

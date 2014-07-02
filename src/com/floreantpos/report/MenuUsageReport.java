@@ -5,7 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.floreantpos.bo.ui.explorer.ListTableModel;
-import com.floreantpos.main.Application;
+import com.floreantpos.util.NumberUtil;
 
 public class MenuUsageReport {
 	private Date fromDate;
@@ -159,17 +159,17 @@ public class MenuUsageReport {
 				return String.valueOf(data.getCount());
 
 			case 2:
-				return Application.formatNumber(data.getGrossSales());
+				return NumberUtil.formatNumber(data.getGrossSales());
 
 			case 3:
-				return Application.formatNumber(data.getDiscount());
+				return NumberUtil.formatNumber(data.getDiscount());
 
 			case 4:
-				return Application.formatNumber(data.getNetSales());
+				return NumberUtil.formatNumber(data.getNetSales());
 			case 5:
 				return " ";//Application.formatNumber(data.getAvgSales());
 			case 6:
-				return Application.formatNumber(data.getProfit());
+				return NumberUtil.formatNumber(data.getProfit());
 			case 7:
 				return " ";//Application.formatNumber(data.getCostPercentage());
 			case 8:

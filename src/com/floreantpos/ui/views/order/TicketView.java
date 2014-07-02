@@ -32,6 +32,7 @@ import com.floreantpos.print.PosPrintService;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.views.SwitchboardView;
 import com.floreantpos.ui.views.order.actions.OrderListener;
+import com.floreantpos.util.NumberUtil;
 
 /**
  *
@@ -487,10 +488,10 @@ public class TicketView extends JPanel {
 
 		ticket.calculatePrice();
 
-		tfSubtotal.setText(Application.formatNumber(ticket.getSubtotalAmount()));
-		tfDiscount.setText(Application.formatNumber(ticket.getDiscountAmount()));
+		tfSubtotal.setText(NumberUtil.formatNumber(ticket.getSubtotalAmount()));
+		tfDiscount.setText(NumberUtil.formatNumber(ticket.getDiscountAmount()));
 
-		tfTax.setText(Application.formatNumber(ticket.getTaxAmount()));
+		tfTax.setText(NumberUtil.formatNumber(ticket.getTaxAmount()));
 		
 		if (ticket.isTaxExempt()) {
 			chkTaxExempt.setSelected(true);
@@ -499,8 +500,8 @@ public class TicketView extends JPanel {
 			chkTaxExempt.setSelected(false);
 		}
 
-		tfServiceCharge.setText(Application.formatNumber(ticket.getServiceCharge()));
-		tfTotal.setText(Application.formatNumber(ticket.getTotalAmount()));
+		tfServiceCharge.setText(NumberUtil.formatNumber(ticket.getServiceCharge()));
+		tfTotal.setText(NumberUtil.formatNumber(ticket.getTotalAmount()));
 	}
 
 	public void addOrderListener(OrderListener listenre) {

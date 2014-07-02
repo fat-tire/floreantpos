@@ -2,8 +2,8 @@ package com.floreantpos.model;
 
 import java.util.List;
 
-import com.floreantpos.main.Application;
 import com.floreantpos.model.base.BaseTicketItemModifier;
+import com.floreantpos.util.NumberUtil;
 
 public class TicketItemModifier extends BaseTicketItemModifier {
 	private static final long serialVersionUID = 1L;
@@ -57,13 +57,28 @@ public class TicketItemModifier extends BaseTicketItemModifier {
 		}
 		return count;
 	}
+	
+	public void calculatePrice() {
+		calculateSubTotal();
+		calculateTax();
+		setTotalAmount(NumberUtil.roundToTwoDigit(calculateTotal()));
+	}
 
-	double calculateTotal() {
+	private void calculateTax() {
+		double tax = getSubTotalAmount() * (getTaxRate() / 100);
+		setTaxAmount(NumberUtil.roundToTwoDigit(tax));
+	}
+	
+	private double calculateTotal() {
+		return getSubTotalAmount() + getTaxAmount();
+	}
+
+	private double calculateSubTotal() {
 		double total = 0;
 
 		TicketItemModifierGroup ticketItemModifierGroup = getParent();
 		if (ticketItemModifierGroup == null) {
-			setTotalAmount(total);
+			setSubTotalAmount(total);
 			return total;
 		}
 
@@ -101,9 +116,9 @@ public class TicketItemModifier extends BaseTicketItemModifier {
 
 		total = normalItemCount * getUnitPrice();
 		total += extraItemCount * getExtraUnitPrice();
-		total = Application.roundToTwoDigit(total);
+		total = NumberUtil.roundToTwoDigit(total);
 		
-		setTotalAmount(total);
+		setSubTotalAmount(total);
 		return total;
 	}
 }

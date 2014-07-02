@@ -14,6 +14,7 @@ import com.floreantpos.main.Application;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.print.PosPrintService;
 import com.floreantpos.swing.PosButton;
+import com.floreantpos.util.NumberUtil;
 
 public class TransactionCompletionDialog extends POSDialog {
 	private List<Ticket> tickets;
@@ -116,17 +117,17 @@ public class TransactionCompletionDialog extends POSDialog {
 	}
 
 	public void updateView() {
-		lblTotalAmount.setText(Application.formatNumber(totalAmount));
-		lblTenderedAmount.setText(Application.formatNumber(tenderedAmount));
-		lblPaidAmount.setText(Application.formatNumber(paidAmount));
-		lblDueAmount.setText(Application.formatNumber(dueAmount));
-		lblGratuityAmount.setText(Application.formatNumber(gratuityAmount));
+		lblTotalAmount.setText(NumberUtil.formatNumber(totalAmount));
+		lblTenderedAmount.setText(NumberUtil.formatNumber(tenderedAmount));
+		lblPaidAmount.setText(NumberUtil.formatNumber(paidAmount));
+		lblDueAmount.setText(NumberUtil.formatNumber(dueAmount));
+		lblGratuityAmount.setText(NumberUtil.formatNumber(gratuityAmount));
 		
 		double changeDueAmount = tenderedAmount - gratuityAmount - dueAmountBeforePaid;
 		if(changeDueAmount < 0) {
 			changeDueAmount = 0;
 		}
-		lblChangeDue.setText(Application.formatNumber(changeDueAmount));
+		lblChangeDue.setText(NumberUtil.formatNumber(changeDueAmount));
 	}
 	
 	private static TransactionCompletionDialog instance;

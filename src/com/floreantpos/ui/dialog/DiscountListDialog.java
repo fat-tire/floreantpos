@@ -28,6 +28,7 @@ import com.floreantpos.model.CouponAndDiscount;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketCouponAndDiscount;
 import com.floreantpos.swing.PosButton;
+import com.floreantpos.util.NumberUtil;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
@@ -256,7 +257,7 @@ public class DiscountListDialog extends POSDialog implements ActionListener {
 
                 case 2:
                     if (discountObject instanceof TicketCouponAndDiscount) {
-                        return Application.formatNumber(((TicketCouponAndDiscount) discountObject).getValue());
+                        return NumberUtil.formatNumber(((TicketCouponAndDiscount) discountObject).getValue());
                     }
                     return null;
             }

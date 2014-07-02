@@ -32,6 +32,7 @@ import com.floreantpos.swing.PosButton;
 import com.floreantpos.ui.dialog.CouponAndDiscountDialog;
 import com.floreantpos.ui.dialog.DiscountListDialog;
 import com.floreantpos.ui.dialog.POSMessageDialog;
+import com.floreantpos.util.NumberUtil;
 
 /**
  *
@@ -277,13 +278,13 @@ public class TicketDetailView extends JPanel implements ActionListener {
 			tfGuests.setText(String.valueOf(ticket.getNumberOfGuests()));
 			tfTable.setText(String.valueOf(ticket.getTableNumber()));
 			tfTerminal.setText(ticket.getTerminal().getName());
-			tfSubtotal.setText(currencySymbol + Application.formatNumber(ticket.getSubtotalAmount()));
-			tfTotalDiscount.setText(currencySymbol + Application.formatNumber(ticket.getDiscountAmount()));
-			tfTax.setText(currencySymbol + Application.formatNumber(ticket.getTaxAmount()));
-			tfTotal.setText(currencySymbol + Application.formatNumber(ticket.getTotalAmount()));
-			tfDue.setText(currencySymbol + Application.formatNumber(ticket.getDueAmount()));
+			tfSubtotal.setText(currencySymbol + NumberUtil.formatNumber(ticket.getSubtotalAmount()));
+			tfTotalDiscount.setText(currencySymbol + NumberUtil.formatNumber(ticket.getDiscountAmount()));
+			tfTax.setText(currencySymbol + NumberUtil.formatNumber(ticket.getTaxAmount()));
+			tfTotal.setText(currencySymbol + NumberUtil.formatNumber(ticket.getTotalAmount()));
+			tfDue.setText(currencySymbol + NumberUtil.formatNumber(ticket.getDueAmount()));
 
-			lblBalanceDue.setText(Application.formatNumber(ticket.getDueAmount()));
+			lblBalanceDue.setText(NumberUtil.formatNumber(ticket.getDueAmount()));
 			btnTaxExempt.setSelected(ticket.isTaxExempt());
 			btnApplyCoupon.setEnabled(true);
 			return;
@@ -330,12 +331,12 @@ public class TicketDetailView extends JPanel implements ActionListener {
 		tfGuests.setText(String.valueOf(totalGuests));
 		tfTable.setText(tableNumber);
 		tfTerminal.setText(terminal);
-		tfSubtotal.setText(currencySymbol + Application.formatNumber(subtotal));
-		tfTotalDiscount.setText(currencySymbol + Application.formatNumber(discount));
-		tfTax.setText(currencySymbol + Application.formatNumber(tax));
-		tfTotal.setText(currencySymbol + Application.formatNumber(total));
+		tfSubtotal.setText(currencySymbol + NumberUtil.formatNumber(subtotal));
+		tfTotalDiscount.setText(currencySymbol + NumberUtil.formatNumber(discount));
+		tfTax.setText(currencySymbol + NumberUtil.formatNumber(tax));
+		tfTotal.setText(currencySymbol + NumberUtil.formatNumber(total));
 
-		lblBalanceDue.setText(Application.formatNumber(total));
+		lblBalanceDue.setText(NumberUtil.formatNumber(total));
 
 		if (taxExemptTicketCount == tickets.size()) {
 			btnTaxExempt.setSelected(true);

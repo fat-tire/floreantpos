@@ -26,6 +26,7 @@ import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.TicketItemModifierGroup;
 import com.floreantpos.model.User;
 import com.floreantpos.model.dao.RestaurantDAO;
+import com.floreantpos.util.NumberUtil;
 
 public class JReportPrintService {
 	private static Log logger = LogFactory.getLog(JReportPrintService.class);
@@ -55,23 +56,23 @@ public class JReportPrintService {
 		map.put("guestCount", com.floreantpos.POSConstants.GUESTS_ + ticket.getNumberOfGuests());
 		map.put("serverName", com.floreantpos.POSConstants.SERVER + ": " + ticket.getOwner());
 		map.put("reportDate", com.floreantpos.POSConstants.DATE + ": " + Application.formatDate(new Date()));
-		map.put("grandSubtotal", Application.formatNumber(ticket.getSubtotalAmount()));
+		map.put("grandSubtotal", NumberUtil.formatNumber(ticket.getSubtotalAmount()));
 		
 		if(ticket.getDiscountAmount() > 0.0) {
-			map.put("discountAmount", Application.formatNumber(ticket.getDiscountAmount()));
+			map.put("discountAmount", NumberUtil.formatNumber(ticket.getDiscountAmount()));
 		}
 		
 		if(ticket.getTaxAmount() > 0.0) {
-			map.put("taxAmount", Application.formatNumber(ticket.getTaxAmount()));
+			map.put("taxAmount", NumberUtil.formatNumber(ticket.getTaxAmount()));
 		}
 		
 		if(ticket.getServiceCharge() > 0.0) {
-			map.put("serviceCharge", Application.formatNumber(ticket.getServiceCharge()));
+			map.put("serviceCharge", NumberUtil.formatNumber(ticket.getServiceCharge()));
 		}
 		
 		if (ticket.getGratuity() != null) {
 			tipAmount = ticket.getGratuity().getAmount();
-			map.put("tipAmount", Application.formatNumber(tipAmount));
+			map.put("tipAmount", NumberUtil.formatNumber(tipAmount));
 		}
 		
 		double netAmount = totalAmount + tipAmount;
@@ -81,9 +82,9 @@ public class JReportPrintService {
 			changedAmount = 0;
 		}
 		
-		map.put("netAmount", Application.formatNumber(netAmount));
-		map.put("paidAmount", Application.formatNumber(paidAmount));
-		map.put("changedAmount", Application.formatNumber(changedAmount));
+		map.put("netAmount", NumberUtil.formatNumber(netAmount));
+		map.put("paidAmount", NumberUtil.formatNumber(paidAmount));
+		map.put("changedAmount", NumberUtil.formatNumber(changedAmount));
 
 		InputStream ticketReportStream = null;
 
@@ -203,10 +204,10 @@ public class JReportPrintService {
 		map.put("guestCount", com.floreantpos.POSConstants.GUESTS_ + ticket.getNumberOfGuests());
 		map.put("serverName", com.floreantpos.POSConstants.SERVER + ": " + ticket.getOwner());
 		map.put("reportDate", com.floreantpos.POSConstants.DATE + ": " + Application.formatDate(new Date()));
-		map.put("grandSubtotal", Application.formatNumber(ticket.getSubtotalAmount()));
-		map.put("grandTotal", Application.formatNumber(ticket.getTotalAmount()));
-		map.put("taxAmount", Application.formatNumber(ticket.getTaxAmount()));
-		map.put("tipAmount", Application.formatNumber(10.0));
+		map.put("grandSubtotal", NumberUtil.formatNumber(ticket.getSubtotalAmount()));
+		map.put("grandTotal", NumberUtil.formatNumber(ticket.getTotalAmount()));
+		map.put("taxAmount", NumberUtil.formatNumber(ticket.getTaxAmount()));
+		map.put("tipAmount", NumberUtil.formatNumber(10.0));
 		map.put("totalWithTip", "999");
 
 		InputStream ticketReportStream = null;

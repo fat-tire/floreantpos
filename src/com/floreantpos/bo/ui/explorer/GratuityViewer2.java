@@ -29,6 +29,7 @@ import com.floreantpos.model.dao.UserDAO;
 import com.floreantpos.swing.ListComboBoxModel;
 import com.floreantpos.swing.TransparentPanel;
 import com.floreantpos.ui.dialog.POSMessageDialog;
+import com.floreantpos.util.NumberUtil;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 
@@ -155,7 +156,7 @@ public class GratuityViewer2 extends TransparentPanel implements ActionListener 
                     return gratuity.getTicket().getId();
 
                 case 3:
-                    return Application.formatNumber(gratuity.getAmount());
+                    return NumberUtil.formatNumber(gratuity.getAmount());
             }
             return null;
         }
@@ -172,7 +173,7 @@ public class GratuityViewer2 extends TransparentPanel implements ActionListener 
         }
         lblUserId.setText(String.valueOf(user.getUserId()));
         lblUserName.setText(user.getFirstName() + " " + user.getLastName()); //$NON-NLS-1$
-        lblTotalGratuity.setText(Application.formatNumber(totalGratuity));
+        lblTotalGratuity.setText(NumberUtil.formatNumber(totalGratuity));
         gratuityTableModel.setRows(gratuities);
 
         if (gratuities.size() > 0) {
