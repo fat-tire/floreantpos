@@ -120,27 +120,29 @@ public class TicketTableModel extends AbstractTableModel {
 				if (modifier.getModifierType() == TicketItemModifier.NO_MODIFIER) {
 					return null;
 				}
-				if (modifier.getModifierType() == TicketItemModifier.NORMAL_MODIFIER) {
-					return (modifier.getUnitPrice() * modifier.getItemCount()) * (modifier.getTaxRate() / 100);
-				}
-				if (modifier.getModifierType() == TicketItemModifier.EXTRA_MODIFIER) {
-					return (modifier.getExtraUnitPrice() * modifier.getItemCount()) * (modifier.getTaxRate() / 100);
-				}
+				
+				return  modifier.getTotalAmount() * (modifier.getTaxRate() / 100);
+//				if (modifier.getModifierType() == TicketItemModifier.NORMAL_MODIFIER) {
+//					return (modifier.getUnitPrice() * modifier.getItemCount()) * (modifier.getTaxRate() / 100);
+//				}
+//				if (modifier.getModifierType() == TicketItemModifier.EXTRA_MODIFIER) {
+//					return (modifier.getExtraUnitPrice() * modifier.getItemCount()) * (modifier.getTaxRate() / 100);
+//				}
 
 			case 4:
 				if (modifier.getModifierType() == TicketItemModifier.NO_MODIFIER) {
 					return null;
 				}
 
-				double taxAmount = 0;
-				if (modifier.getModifierType() == TicketItemModifier.NORMAL_MODIFIER) {
-					taxAmount = (modifier.getUnitPrice() * modifier.getItemCount()) * (modifier.getTaxRate() / 100);
-				}
-				if (modifier.getModifierType() == TicketItemModifier.EXTRA_MODIFIER) {
-					taxAmount = (modifier.getExtraUnitPrice() * modifier.getItemCount()) * (modifier.getTaxRate() / 100);
-				}
+//				double taxAmount = 0;
+//				if (modifier.getModifierType() == TicketItemModifier.NORMAL_MODIFIER) {
+//					taxAmount = modifier.getTotalAmount() * (modifier.getTaxRate() / 100);
+//				}
+//				if (modifier.getModifierType() == TicketItemModifier.EXTRA_MODIFIER) {
+//					taxAmount = modifier.getTotalAmount() * (modifier.getTaxRate() / 100);
+//				}
 
-				return modifier.getTotalAmount() + taxAmount;
+				return modifier.getTotalAmount() + (modifier.getTotalAmount() * (modifier.getTaxRate() / 100));
 			}
 		}
 
