@@ -2,6 +2,7 @@ package com.floreantpos.model;
 
 import java.util.List;
 
+import com.floreantpos.main.Application;
 import com.floreantpos.model.base.BaseTicketItemModifier;
 
 public class TicketItemModifier extends BaseTicketItemModifier {
@@ -100,7 +101,8 @@ public class TicketItemModifier extends BaseTicketItemModifier {
 
 		total = normalItemCount * getUnitPrice();
 		total += extraItemCount * getExtraUnitPrice();
-
+		total = Application.roundToTwoDigit(total);
+		
 		setTotalAmount(total);
 		return total;
 	}
