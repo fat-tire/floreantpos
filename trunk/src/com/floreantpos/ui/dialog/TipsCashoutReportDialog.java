@@ -18,6 +18,7 @@ import com.floreantpos.model.TipsCashoutReport;
 import com.floreantpos.model.TipsCashoutReportTableModel;
 import com.floreantpos.print.PosPrintService;
 import com.floreantpos.swing.PosButton;
+import com.floreantpos.util.NumberUtil;
 
 public class TipsCashoutReportDialog extends POSDialog implements ActionListener {
 	private final TipsCashoutReport report;
@@ -40,9 +41,9 @@ public class TipsCashoutReportDialog extends POSDialog implements ActionListener
 		topPanel.add(new JLabel("Transaction Count"));
 		topPanel.add(new JLabel(": " + (report.getDatas() == null ? "0" : String.valueOf(report.getDatas().size()))), "wrap");
 		topPanel.add(new JLabel("Cash Tips"));
-		topPanel.add(new JLabel(": " + Application.formatNumber(report.getCashTipsAmount())), "wrap");
+		topPanel.add(new JLabel(": " + NumberUtil.formatNumber(report.getCashTipsAmount())), "wrap");
 		topPanel.add(new JLabel("Charged Tips"));
-		topPanel.add(new JLabel(": " + Application.formatNumber(report.getChargedTipsAmount())), "wrap");
+		topPanel.add(new JLabel(": " + NumberUtil.formatNumber(report.getChargedTipsAmount())), "wrap");
 		topPanel.add(new JLabel("Tips Due"));
 		topPanel.add(new JLabel(": " + report.getTipsDue()), "wrap");
 		

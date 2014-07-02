@@ -14,13 +14,13 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JTextField;
 
-import com.floreantpos.main.Application;
 import com.floreantpos.model.GiftCertificateTransaction;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.views.PaymentView;
 import com.floreantpos.ui.views.SwitchboardView;
 import com.floreantpos.ui.views.order.RootView;
+import com.floreantpos.util.NumberUtil;
 
 /**
  *
@@ -401,6 +401,6 @@ public class GiftCertificatePaymentView extends PaymentView {
 	@Override
 	public void updateView() {
 		tfFaceValue.setText("50.0");
-		tfAmountTendered.setText(Application.formatNumber(getDueAmount()));
+		tfAmountTendered.setText(NumberUtil.formatNumber(getDueAmount()));
 	}
 }

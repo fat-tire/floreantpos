@@ -36,6 +36,7 @@ import com.floreantpos.report.SalesStatistics.ShiftwiseDataTableModel;
 import com.floreantpos.swing.ListComboBoxModel;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.util.UiUtil;
+import com.floreantpos.util.NumberUtil;
 
 /**
  *
@@ -227,7 +228,7 @@ public class SalesSummaryReportView extends javax.swing.JPanel {
 		properties.put("subtitle", com.floreantpos.POSConstants.SALES_SUMMARY_REPORT);
 		properties.put("Capacity", String.valueOf(summary.getCapacity()));
 		properties.put("GuestCount", String.valueOf(summary.getGuestCount()));
-		properties.put("GuestPerSeat", Application.formatNumber(summary.getGuestPerSeat()));
+		properties.put("GuestPerSeat", NumberUtil.formatNumber(summary.getGuestPerSeat()));
 		properties.put("reportTime", fullDateFormatter.format(new Date()));
 		properties.put("fromDate", shortDateFormatter.format(fromDate));
 		properties.put("toDate", shortDateFormatter.format(toDate));
@@ -243,32 +244,32 @@ public class SalesSummaryReportView extends javax.swing.JPanel {
 
 		properties.put("Capacity", String.valueOf(summary.getCapacity()));
 		properties.put("GuestCount", String.valueOf(summary.getGuestCount()));
-		properties.put("GuestPerSeat", Application.formatNumber(summary.getGuestPerCheck()));
-		properties.put("TableTrnOvr", Application.formatNumber(summary.getTableTurnOver()));
-		properties.put("AVGGuest", Application.formatNumber(summary.getAvgGuest()));
+		properties.put("GuestPerSeat", NumberUtil.formatNumber(summary.getGuestPerCheck()));
+		properties.put("TableTrnOvr", NumberUtil.formatNumber(summary.getTableTurnOver()));
+		properties.put("AVGGuest", NumberUtil.formatNumber(summary.getAvgGuest()));
 		properties.put("OpenChecks", String.valueOf(summary.getOpenChecks()));
 		properties.put("VOIDChecks", String.valueOf(summary.getVoidChecks()));
 		properties.put("OPPDChecks", String.valueOf(" "));
 		properties.put("TRNGChecks", String.valueOf(" "));
 		properties.put("ROPNChecks", String.valueOf(summary.getRopnChecks()));
 		properties.put("MergeChecks", String.valueOf(" "));
-		properties.put("LaborHour", Application.formatNumber(summary.getLaborHour()));
-		properties.put("LaborSales", Application.formatNumber(summary.getGrossSale()));
+		properties.put("LaborHour", NumberUtil.formatNumber(summary.getLaborHour()));
+		properties.put("LaborSales", NumberUtil.formatNumber(summary.getGrossSale()));
 		properties.put("Tables", String.valueOf(summary.getTables()));
 		properties.put("CheckCount", String.valueOf(summary.getCheckCount()));
-		properties.put("GuestPerChecks", Application.formatNumber(summary.getGuestPerCheck()));
+		properties.put("GuestPerChecks", NumberUtil.formatNumber(summary.getGuestPerCheck()));
 		properties.put("TrnOvrTime", String.valueOf(" "));
-		properties.put("AVGChecks", Application.formatNumber(summary.getAvgCheck()));
-		properties.put("OPENAmount", Application.formatNumber(summary.getOpenAmount()));
-		properties.put("VOIDAmount", Application.formatNumber(summary.getVoidAmount()));
+		properties.put("AVGChecks", NumberUtil.formatNumber(summary.getAvgCheck()));
+		properties.put("OPENAmount", NumberUtil.formatNumber(summary.getOpenAmount()));
+		properties.put("VOIDAmount", NumberUtil.formatNumber(summary.getVoidAmount()));
 		properties.put("PAIDChecks", String.valueOf(summary.getPaidChecks()));
 		properties.put("TRNGAmount", String.valueOf(" "));
-		properties.put("ROPNAmount", Application.formatNumber(summary.getRopnAmount()));
+		properties.put("ROPNAmount", NumberUtil.formatNumber(summary.getRopnAmount()));
 		properties.put("NTaxChecks", String.valueOf(summary.getNtaxChecks()));
-		properties.put("NTaxAmount", Application.formatNumber(summary.getNtaxAmount()));
+		properties.put("NTaxAmount", NumberUtil.formatNumber(summary.getNtaxAmount()));
 		properties.put("MergeAmount", String.valueOf(" "));
-		properties.put("Labor", Application.formatNumber(summary.getLaborCost()));
-		properties.put("LaborCost", Application.formatNumber((summary.getLaborCost() / summary.getGrossSale()) * 100));
+		properties.put("Labor", NumberUtil.formatNumber(summary.getLaborCost()));
+		properties.put("LaborCost", NumberUtil.formatNumber((summary.getLaborCost() / summary.getGrossSale()) * 100));
 
 		JasperReport report = (JasperReport) JRLoader.loadObject(getClass().getResource("/com/floreantpos/ui/report/sales_summary_report1.jasper"));
 		JasperPrint print = JasperFillManager.fillReport(report, properties, new JRTableModelDataSource(new ShiftwiseDataTableModel(summary.getSalesTableDataList())));

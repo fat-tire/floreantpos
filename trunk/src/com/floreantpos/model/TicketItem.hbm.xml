@@ -15,12 +15,12 @@
     <property column="DISCOUNT_RATE" length="52" name="discountRate" type="java.lang.Double"/>
     <property column="ITEM_TAX_RATE" length="52" name="taxRate" type="java.lang.Double"/>
     <property column="SUB_TOTAL" name="subtotalAmount" type="java.lang.Double"/>
-    <property column="SUB_TOTAL_WITH_MODIFIERS" name="subtotalAmountWithoutModifiers" type="java.lang.Double"/>
+    <property column="SUB_TOTAL_WITHOUT_MODIFIERS" name="subtotalAmountWithoutModifiers" type="java.lang.Double"/>
     <property column="DISCOUNT" name="discountAmount" type="java.lang.Double"/>
     <property column="TAX_AMOUNT" name="taxAmount" type="java.lang.Double"/>
-    <property column="TAX_AMOUNT_WITH_MODIFIERS" name="taxAmountWithoutModifiers" type="java.lang.Double"/>
+    <property column="TAX_AMOUNT_WITHOUT_MODIFIERS" name="taxAmountWithoutModifiers" type="java.lang.Double"/>
     <property column="TOTAL_PRICE" name="totalAmount" type="java.lang.Double"/>
-    <property column="TOTAL_PRICE_WITH_MODIFIERS" name="totalAmountWithoutModifiers" type="java.lang.Double"/>
+    <property column="TOTAL_PRICE_WITHOUT_MODIFIERS" name="totalAmountWithoutModifiers" type="java.lang.Double"/>
     <property column="BEVERAGE" name="beverage" type="java.lang.Boolean"/>
     <property column="PRINT_TO_KITCHEN" name="shouldPrintToKitchen" type="java.lang.Boolean">
       <meta attribute="defaultValue">true</meta>

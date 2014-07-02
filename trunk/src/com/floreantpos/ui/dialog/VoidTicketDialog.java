@@ -20,6 +20,7 @@ import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.model.dao.VoidReasonDAO;
 import com.floreantpos.print.PosPrintService;
 import com.floreantpos.swing.ListComboBoxModel;
+import com.floreantpos.util.NumberUtil;
 
 /**
  *
@@ -234,7 +235,7 @@ public class VoidTicketDialog extends POSDialog {
 			canceled = false;
 			
 			//save the action
-			ActionHistoryDAO.getInstance().saveHistory(Application.getCurrentUser(), ActionHistory.VOID_CHECK, com.floreantpos.POSConstants.CHK_NO + ":"+ticket.getId() +"; Total" + ": " + Application.formatNumber(ticket.getTotalAmount()));
+			ActionHistoryDAO.getInstance().saveHistory(Application.getCurrentUser(), ActionHistory.VOID_CHECK, com.floreantpos.POSConstants.CHK_NO + ":"+ticket.getId() +"; Total" + ": " + NumberUtil.formatNumber(ticket.getTotalAmount()));
 			
 			dispose();
 		} catch (Exception e) {

@@ -78,8 +78,7 @@ public class TicketTableModel extends AbstractTableModel {
 				return ticketItem.getTaxAmountWithoutModifiers();
 
 			case 4:
-				// return ticketItem.getTotalAmountWithoutModifiers();
-				return Double.valueOf(ticketItem.getSubtotalAmountWithoutModifiers() + ticketItem.getTaxAmountWithoutModifiers());
+				return ticketItem.getTotalAmountWithoutModifiers();
 			}
 		}
 
@@ -121,7 +120,7 @@ public class TicketTableModel extends AbstractTableModel {
 					return null;
 				}
 				
-				return  modifier.getTotalAmount() * (modifier.getTaxRate() / 100);
+				return  modifier.getTaxAmount();
 //				if (modifier.getModifierType() == TicketItemModifier.NORMAL_MODIFIER) {
 //					return (modifier.getUnitPrice() * modifier.getItemCount()) * (modifier.getTaxRate() / 100);
 //				}
@@ -142,7 +141,7 @@ public class TicketTableModel extends AbstractTableModel {
 //					taxAmount = modifier.getTotalAmount() * (modifier.getTaxRate() / 100);
 //				}
 
-				return modifier.getTotalAmount() + (modifier.getTotalAmount() * (modifier.getTaxRate() / 100));
+				return modifier.getTotalAmount();
 			}
 		}
 

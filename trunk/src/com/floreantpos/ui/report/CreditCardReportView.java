@@ -29,6 +29,7 @@ import com.floreantpos.report.CreditCardReport;
 import com.floreantpos.report.services.ReportService;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.util.UiUtil;
+import com.floreantpos.util.NumberUtil;
 import com.floreantpos.util.PanelTester;
 
 public class CreditCardReportView extends JPanel {
@@ -94,10 +95,10 @@ public class CreditCardReportView extends JPanel {
 		map.put("reportTime", ReportService.formatFullDate(new Date()));
 		
 		map.put("salesCount", String.valueOf(report.getTotalSalesCount()));
-		map.put("totalSales", Application.formatNumber(report.getTotalSales()));
-		map.put("netTips", Application.formatNumber(report.getNetTips()));
-		map.put("netTipsPaid", Application.formatNumber(report.getTipsPaid()));
-		map.put("netCharge", Application.formatNumber(report.getNetCharge()));
+		map.put("totalSales", NumberUtil.formatNumber(report.getTotalSales()));
+		map.put("netTips", NumberUtil.formatNumber(report.getNetTips()));
+		map.put("netTipsPaid", NumberUtil.formatNumber(report.getTipsPaid()));
+		map.put("netCharge", NumberUtil.formatNumber(report.getNetCharge()));
 		
 		JasperReport jasperReport = (JasperReport) JRLoader.loadObject(getClass().getResource("/com/floreantpos/ui/report/credit_card_report.jasper"));
 		JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map, new JRTableModelDataSource(report.getTableModel()));

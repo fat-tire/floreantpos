@@ -5,7 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.floreantpos.bo.ui.explorer.ListTableModel;
-import com.floreantpos.main.Application;
+import com.floreantpos.util.NumberUtil;
 
 public class CreditCardReport {
 	private Date fromDate;
@@ -174,13 +174,13 @@ public class CreditCardReport {
 				return data.getCardType();
 				
 			case 2:
-				return Application.formatNumber(data.getSubtotal());
+				return NumberUtil.formatNumber(data.getSubtotal());
 				
 			case 3:
-				return Application.formatNumber(data.getTips());
+				return NumberUtil.formatNumber(data.getTips());
 				
 			case 4:
-				return Application.formatNumber(data.getTotal());
+				return NumberUtil.formatNumber(data.getTotal());
 			}
 			
 			return null;
