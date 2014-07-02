@@ -1,5 +1,6 @@
 package com.floreantpos.model.base;
 
+import java.lang.Comparable;
 import java.io.Serializable;
 
 
@@ -15,18 +16,20 @@ import java.io.Serializable;
 public abstract class BaseTicketItemModifier  implements Comparable, Serializable {
 
 	public static String REF = "TicketItemModifier";
+	public static String PROP_SUB_TOTAL_AMOUNT = "subTotalAmount";
 	public static String PROP_PARENT = "parent";
 	public static String PROP_ITEM_ID = "itemId";
 	public static String PROP_ITEM_COUNT = "itemCount";
 	public static String PROP_TAX_RATE = "taxRate";
 	public static String PROP_UNIT_PRICE = "unitPrice";
+	public static String PROP_TAX_AMOUNT = "taxAmount";
 	public static String PROP_GROUP_ID = "groupId";
 	public static String PROP_NAME = "name";
-	public static String PROP_SHOULD_PRINT_TO_KITCHEN = "shouldPrintToKitchen";
 	public static String PROP_PRINTED_TO_KITCHEN = "printedToKitchen";
+	public static String PROP_SHOULD_PRINT_TO_KITCHEN = "shouldPrintToKitchen";
 	public static String PROP_EXTRA_UNIT_PRICE = "extraUnitPrice";
-	public static String PROP_TOTAL_AMOUNT = "totalAmount";
 	public static String PROP_ID = "id";
+	public static String PROP_TOTAL_AMOUNT = "totalAmount";
 	public static String PROP_MODIFIER_TYPE = "modifierType";
 
 
@@ -61,7 +64,9 @@ public abstract class BaseTicketItemModifier  implements Comparable, Serializabl
 	private java.lang.Double extraUnitPrice;
 	private java.lang.Double taxRate;
 	private java.lang.Integer modifierType;
+	private java.lang.Double subTotalAmount;
 	private java.lang.Double totalAmount;
+	private java.lang.Double taxAmount;
 	private java.lang.Boolean shouldPrintToKitchen;
 	private java.lang.Boolean printedToKitchen;
 
@@ -229,6 +234,23 @@ public abstract class BaseTicketItemModifier  implements Comparable, Serializabl
 
 
 	/**
+	 * Return the value associated with the column: SUBTOTAL_PRICE
+	 */
+	public java.lang.Double getSubTotalAmount () {
+					return subTotalAmount == null ? Double.valueOf(0) : subTotalAmount;
+			}
+
+	/**
+	 * Set the value related to the column: SUBTOTAL_PRICE
+	 * @param subTotalAmount the SUBTOTAL_PRICE value
+	 */
+	public void setSubTotalAmount (java.lang.Double subTotalAmount) {
+		this.subTotalAmount = subTotalAmount;
+	}
+
+
+
+	/**
 	 * Return the value associated with the column: TOTAL_PRICE
 	 */
 	public java.lang.Double getTotalAmount () {
@@ -241,6 +263,23 @@ public abstract class BaseTicketItemModifier  implements Comparable, Serializabl
 	 */
 	public void setTotalAmount (java.lang.Double totalAmount) {
 		this.totalAmount = totalAmount;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: TAX_AMOUNT
+	 */
+	public java.lang.Double getTaxAmount () {
+					return taxAmount == null ? Double.valueOf(0) : taxAmount;
+			}
+
+	/**
+	 * Set the value related to the column: TAX_AMOUNT
+	 * @param taxAmount the TAX_AMOUNT value
+	 */
+	public void setTaxAmount (java.lang.Double taxAmount) {
+		this.taxAmount = taxAmount;
 	}
 
 

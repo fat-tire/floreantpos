@@ -10,6 +10,7 @@ import java.util.Set;
 
 import com.floreantpos.main.Application;
 import com.floreantpos.model.base.BaseTicket;
+import com.floreantpos.util.NumberUtil;
 
 public class Ticket extends BaseTicket {
 	private static final long serialVersionUID = 1L;
@@ -110,77 +111,17 @@ public class Ticket extends BaseTicket {
 		}
 		return count;
 	}
-
-	private double calculateSubtotalAmount() {
-		double subtotalAmount = 0;
-
-		List<TicketItem> ticketItems = getTicketItems();
-		if (ticketItems == null) {
-			return subtotalAmount;
-		}
-
-		for (TicketItem ticketItem : ticketItems) {
-			subtotalAmount += ticketItem.calculateSubtotal(true);
-		}
-		
-		subtotalAmount = fixInvalidAmount(subtotalAmount);
-
-		return Application.roundToTwoDigit(subtotalAmount);
-	}
-
-	private double calculateDiscountAmount() {
-		double subtotalAmount = getSubtotalAmount();
-		double discountAmount = 0;
-
-		List<TicketItem> ticketItems = getTicketItems();
-		if (ticketItems != null) {
-			for (TicketItem ticketItem : ticketItems) {
-				discountAmount += ticketItem.calculateDiscount();
-			}
-		}
-
-		List<TicketCouponAndDiscount> discounts = getCouponAndDiscounts();
-		if (discounts != null) {
-			for (TicketCouponAndDiscount discount : discounts) {
-				discountAmount += calculateDiscountFromType(discount, subtotalAmount);
-			}
-		}
-		
-		discountAmount = fixInvalidAmount(discountAmount);
-
-		return Application.roundToTwoDigit(discountAmount);
-	}
-
-	private double calculateTax() {
-		if (isTaxExempt()) {
-			return 0;
-		}
-		
-		List<TicketItem> ticketItems = getTicketItems();
-		if (ticketItems == null) {
-			return 0;
-		}
-
-		double tax = 0;
-		for (TicketItem ticketItem : ticketItems) {
-			tax += ticketItem.calculateTax(true);
-		}
-		
-		//double subtotalAfterDiscount = getSubtotalAmount() - getTaxAmount();
-
-		//tax = (subtotalAfterDiscount * tax) / getSubtotalAmount(); 
-		
-		return Application.roundToTwoDigit(fixInvalidAmount(tax));
-	}
-
-	private double fixInvalidAmount(double tax) {
-		if(tax < 0 || Double.isNaN(tax)) {
-			tax = 0;
-		}
-		return tax;
-	}
-
+	
 	public void calculatePrice() {
+		List<TicketItem> ticketItems = getTicketItems();
+		if (ticketItems == null) {
+			return;
+		}
+
+		for (TicketItem ticketItem : ticketItems) {
+			ticketItem.calculatePrice();
+		}
+		
 		double subtotalAmount = calculateSubtotalAmount();
 		double discountAmount = calculateDiscountAmount();
 		
@@ -197,10 +138,75 @@ public class Ticket extends BaseTicket {
 		
 
 		setServiceCharge(serviceChargeAmount);
-		setTotalAmount(Application.roundToTwoDigit(totalAmount));
+		setTotalAmount(NumberUtil.roundToTwoDigit(totalAmount));
 
 		double dueAmount = totalAmount - getPaidAmount();
-		setDueAmount(Application.roundToTwoDigit(dueAmount));
+		setDueAmount(NumberUtil.roundToTwoDigit(dueAmount));
+	}
+
+	private double calculateSubtotalAmount() {
+		double subtotalAmount = 0;
+
+		List<TicketItem> ticketItems = getTicketItems();
+		if (ticketItems == null) {
+			return subtotalAmount;
+		}
+
+		for (TicketItem ticketItem : ticketItems) {
+			subtotalAmount += ticketItem.getSubtotalAmount();
+		}
+		
+		subtotalAmount = fixInvalidAmount(subtotalAmount);
+
+		return NumberUtil.roundToTwoDigit(subtotalAmount);
+	}
+
+	private double calculateDiscountAmount() {
+		double subtotalAmount = getSubtotalAmount();
+		double discountAmount = 0;
+
+		List<TicketItem> ticketItems = getTicketItems();
+		if (ticketItems != null) {
+			for (TicketItem ticketItem : ticketItems) {
+				discountAmount += ticketItem.getDiscountAmount();
+			}
+		}
+
+		List<TicketCouponAndDiscount> discounts = getCouponAndDiscounts();
+		if (discounts != null) {
+			for (TicketCouponAndDiscount discount : discounts) {
+				discountAmount += calculateDiscountFromType(discount, subtotalAmount);
+			}
+		}
+		
+		discountAmount = fixInvalidAmount(discountAmount);
+
+		return NumberUtil.roundToTwoDigit(discountAmount);
+	}
+
+	private double calculateTax() {
+		if (isTaxExempt()) {
+			return 0;
+		}
+		
+		List<TicketItem> ticketItems = getTicketItems();
+		if (ticketItems == null) {
+			return 0;
+		}
+
+		double tax = 0;
+		for (TicketItem ticketItem : ticketItems) {
+			tax += ticketItem.getTaxAmount();
+		}
+		
+		return NumberUtil.roundToTwoDigit(fixInvalidAmount(tax));
+	}
+
+	private double fixInvalidAmount(double tax) {
+		if(tax < 0 || Double.isNaN(tax)) {
+			tax = 0;
+		}
+		return tax;
 	}
 
 	public double calculateDiscountFromType(TicketCouponAndDiscount coupon, double subtotal) {
@@ -249,7 +255,7 @@ public class Ticket extends BaseTicket {
 
 		case CouponAndDiscount.PERCENTAGE_PER_ITEM:
 			for (TicketItem item : ticketItems) {
-				discount += ((item.calculateSubtotal(false) * couponValue) / 100.0);
+				discount += ((item.getSubtotalAmountWithoutModifiers() * couponValue) / 100.0);
 			}
 			break;
 
@@ -357,6 +363,6 @@ public class Ticket extends BaseTicket {
 			serviceCharge = (getSubtotalAmount() - getDiscountAmount() + getTaxAmount()) * (serviceChargePercentage / 100.0);
 		}
 		
-		return Application.roundToTwoDigit(fixInvalidAmount(serviceCharge));
+		return NumberUtil.roundToTwoDigit(fixInvalidAmount(serviceCharge));
 	}
 }

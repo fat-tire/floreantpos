@@ -3,11 +3,11 @@ package com.floreantpos.jreports;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.floreantpos.main.Application;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.TicketItemModifier;
 import com.floreantpos.model.TicketItemModifierGroup;
+import com.floreantpos.util.NumberUtil;
 
 
 public class TicketDataSource extends AbstractReportDataSource {
@@ -80,10 +80,10 @@ public class TicketDataSource extends AbstractReportDataSource {
 			return item.getItemName();
 			
 		case 2:
-			return Application.formatNumber(item.getUnitPrice());
+			return NumberUtil.formatNumber(item.getUnitPrice());
 			
 		case 3:
-			return Application.formatNumber(item.getSubtotalAmount());
+			return NumberUtil.formatNumber(item.getSubtotalAmount());
 		}
 		
 		return null;

@@ -3,7 +3,7 @@ package com.floreantpos.model;
 import java.util.List;
 
 import com.floreantpos.bo.ui.explorer.ListTableModel;
-import com.floreantpos.main.Application;
+import com.floreantpos.util.NumberUtil;
 
 public class TipsCashoutReportTableModel extends ListTableModel {
 	public TipsCashoutReportTableModel(List<TipsCashoutReportData> datas) {
@@ -25,10 +25,10 @@ public class TipsCashoutReportTableModel extends ListTableModel {
 			return data.getSaleType();
 			
 		case 2:
-			return Application.formatNumber(data.getTicketTotal());
+			return NumberUtil.formatNumber(data.getTicketTotal());
 			
 		case 3:
-			return Application.formatNumber(data.getTips());
+			return NumberUtil.formatNumber(data.getTips());
 		}
 		
 		return null;

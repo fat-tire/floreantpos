@@ -13,7 +13,9 @@
     <property column="EXTRA_PRICE" length="52" name="extraUnitPrice" type="java.lang.Double"/>
     <property column="MODIFIER_TAX_RATE" length="52" name="taxRate" type="java.lang.Double"/>
     <property column="MODIFIER_TYPE" name="modifierType" type="java.lang.Integer"/>
+    <property column="SUBTOTAL_PRICE" name="subTotalAmount" type="java.lang.Double"/>
     <property column="TOTAL_PRICE" name="totalAmount" type="java.lang.Double"/>
+    <property column="TAX_AMOUNT" name="taxAmount" type="java.lang.Double"/>
     <property column="PRINT_TO_KITCHEN" name="shouldPrintToKitchen" type="java.lang.Boolean">
       <meta attribute="defaultValue">true</meta>
     </property>

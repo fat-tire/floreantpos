@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.floreantpos.POSConstants;
 import com.floreantpos.bo.ui.explorer.ListTableModel;
-import com.floreantpos.main.Application;
+import com.floreantpos.util.NumberUtil;
 
 public class SalesStatistics {
 	private int capacity;
@@ -438,16 +438,16 @@ public class SalesStatistics {
 					return " ";
 
 				case 5:
-					return Application.formatNumber(data.getTotalSales());
+					return NumberUtil.formatNumber(data.getTotalSales());
 
 				case 6:
-					return Application.formatNumber(data.getAvgChecks());
+					return NumberUtil.formatNumber(data.getAvgChecks());
 
 				case 7:
-					return Application.formatNumber(data.getAvgGuests());
+					return NumberUtil.formatNumber(data.getAvgGuests());
 
 				case 8:
-					return Application.formatNumber(data.getPercentage());
+					return NumberUtil.formatNumber(data.getPercentage());
 			}
 			return null;
 		}

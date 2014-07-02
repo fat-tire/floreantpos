@@ -2,8 +2,8 @@ package com.floreantpos.model;
 
 import java.util.List;
 
-import com.floreantpos.main.Application;
 import com.floreantpos.model.base.BaseTicketItem;
+import com.floreantpos.util.NumberUtil;
 
 public class TicketItem extends BaseTicketItem {
 	private static final long serialVersionUID = 1L;
@@ -72,10 +72,37 @@ public class TicketItem extends BaseTicketItem {
 		return ticketItemModifierGroup;
 	}
 
-	double calculateSubtotal(boolean includeModifierPrice) {
-		double subTotalAmount = Application.roundToTwoDigit(getUnitPrice() * getItemCount());
+	public void calculatePrice() {
+		List<TicketItemModifierGroup> ticketItemModifierGroups = getTicketItemModifierGroups();
+		if (ticketItemModifierGroups != null) {
+			for (TicketItemModifierGroup ticketItemModifierGroup : ticketItemModifierGroups) {
+				ticketItemModifierGroup.calculatePrice();
+			}
+		}
 		
-		setSubtotalAmountWithoutModifiers(subTotalAmount);
+		setSubtotalAmount(NumberUtil.roundToTwoDigit(calculateSubtotal(true)));
+		setSubtotalAmountWithoutModifiers(NumberUtil.roundToTwoDigit(calculateSubtotal(false)));
+		setDiscountAmount(NumberUtil.roundToTwoDigit(calculateDiscount()));
+		setTaxAmount(NumberUtil.roundToTwoDigit(calculateTax(true)));
+		setTaxAmountWithoutModifiers(NumberUtil.roundToTwoDigit(calculateTax(false)));
+		setTotalAmount(NumberUtil.roundToTwoDigit(calculateTotal(true)));
+		setTotalAmountWithoutModifiers(NumberUtil.roundToTwoDigit(calculateTotal(false)));
+	}
+	
+//	public double calculateSubtotal() {
+//		double subtotal = NumberUtil.roundToTwoDigit(calculateSubtotal(true));
+//		
+//		return subtotal;
+//	}
+//	
+//	public double calculateSubtotalWithoutModifiers() {
+//		double subtotalWithoutModifiers = NumberUtil.roundToTwoDigit(calculateSubtotal(false));
+//		
+//		return subtotalWithoutModifiers;
+//	}
+	
+	private double calculateSubtotal(boolean includeModifierPrice) {
+		double subTotalAmount = NumberUtil.roundToTwoDigit(getUnitPrice() * getItemCount());
 
 		if (includeModifierPrice) {
 			List<TicketItemModifierGroup> ticketItemModifierGroups = getTicketItemModifierGroups();
@@ -84,37 +111,53 @@ public class TicketItem extends BaseTicketItem {
 					subTotalAmount += ticketItemModifierGroup.getSubtotal();
 				}
 			}
-			subTotalAmount = Application.roundToTwoDigit(subTotalAmount);
-			setSubtotalAmount(subTotalAmount);
 		}
 
 		return subTotalAmount;
 	}
 
-	double calculateDiscount() {
-		double subtotal = calculateSubtotal(false);
+	private double calculateDiscount() {
+		double subtotalWithoutModifiers = getSubtotalAmountWithoutModifiers();
 		double discountRate = getDiscountRate();
 
 		double discount = 0;
 		if (discountRate > 0) {
-			discount = subtotal * discountRate / 100.0;
+			discount = subtotalWithoutModifiers * discountRate / 100.0;
 		}
-		discount = Application.roundToTwoDigit(discount);
-		setDiscountAmount(discount);
+		
 		return discount;
 	}
+	
+//	public double calculateTax() {
+//		double tax = NumberUtil.roundToTwoDigit(calculateTax(true));
+//		setTaxAmount(tax);
+//		
+//		return tax;
+//	}
+//	
+//	public double calculateTaxWithoutModifiers() {
+//		double tax = NumberUtil.roundToTwoDigit(calculateTax(false));
+//		setTaxAmountWithoutModifiers(tax);
+//		
+//		return tax;
+//	}
 
-	double calculateTax(boolean includeModifierTax) {
-		double subtotalItemPrice = Application.roundToTwoDigit(calculateSubtotal(false) - calculateDiscount());
+	private double calculateTax(boolean includeModifierTax) {
+		double subtotal = 0;
+		
+		subtotal = getSubtotalAmountWithoutModifiers();
+		
+		double discount = getDiscountAmount();
+		
+		subtotal = subtotal - discount;
 
 		double taxRate = getTaxRate();
 		double tax = 0;
 
 		if (taxRate > 0) {
-			tax = Application.roundToTwoDigit(subtotalItemPrice * taxRate / 100.0);
+			tax = subtotal * (taxRate / 100.0);
 		}
-		setTaxAmountWithoutModifiers(tax);
-
+		
 		if (includeModifierTax) {
 			List<TicketItemModifierGroup> ticketItemModifierGroups = getTicketItemModifierGroups();
 			if (ticketItemModifierGroups != null) {
@@ -122,41 +165,70 @@ public class TicketItem extends BaseTicketItem {
 					tax += ticketItemModifierGroup.getTax();
 				}
 			}
-			
-			tax = Application.roundToTwoDigit(tax);
-			setTaxAmount(tax);
 		}
 
 		return tax;
 	}
+	
+//	public double calculateTotal() {
+//		double total = calculateTotal(true);
+//		total = NumberUtil.roundToTwoDigit(total);
+//		
+//		setTotalAmount(total);
+//		
+//		return total;
+//	}
+//	
+//	public double calculateTotalWithoutModifiers() {
+//		double total = calculateTotal(false);
+//		total = NumberUtil.roundToTwoDigit(total);
+//		
+//		setTotalAmountWithoutModifiers(total);
+//		
+//		return total;
+//	}
 
-	double calculateTotal(boolean includeModifiers) {
-		double totalPrice = Application.roundToTwoDigit(getUnitPrice() * getItemCount());
-
-		totalPrice -= calculateDiscount();
-
-		double taxRate = getTaxRate();
-
-		double tax = 0;
-		if (taxRate > 0) {
-			tax = totalPrice * taxRate / 100.0;
+	private double calculateTotal(boolean includeModifiers) {
+		double total = 0;
+		
+		if(includeModifiers) {
+			total = getSubtotalAmount() - getDiscountAmount() + getTaxAmount();
 		}
-		totalPrice += tax;
-		totalPrice = Application.roundToTwoDigit(totalPrice);
-		setTotalAmountWithoutModifiers(totalPrice);
-
-		if (includeModifiers) {
-			List<TicketItemModifierGroup> ticketItemModifierGroups = getTicketItemModifierGroups();
-			if (ticketItemModifierGroups != null) {
-				for (TicketItemModifierGroup ticketItemModifierGroup : ticketItemModifierGroups) {
-					totalPrice += ticketItemModifierGroup.getTotal();
-				}
-			}
-			
-			totalPrice = Application.roundToTwoDigit(totalPrice);
-			setTotalAmount(totalPrice);
+		else {
+			total = getSubtotalAmountWithoutModifiers() - getDiscountAmount() + getTaxAmountWithoutModifiers();
 		}
-
-		return totalPrice;
+		
+		return total;
+		
+		
+		
+		
+//		double totalPrice = NumberUtil.roundToTwoDigit(getUnitPrice() * getItemCount());
+//
+//		totalPrice -= calculateDiscount();
+//
+//		double taxRate = getTaxRate();
+//
+//		double tax = 0;
+//		if (taxRate > 0) {
+//			tax = totalPrice * taxRate / 100.0;
+//		}
+//		totalPrice += tax;
+//		totalPrice = NumberUtil.roundToTwoDigit(totalPrice);
+//		setTotalAmountWithoutModifiers(totalPrice);
+//
+//		if (includeModifiers) {
+//			List<TicketItemModifierGroup> ticketItemModifierGroups = getTicketItemModifierGroups();
+//			if (ticketItemModifierGroups != null) {
+//				for (TicketItemModifierGroup ticketItemModifierGroup : ticketItemModifierGroups) {
+//					totalPrice += ticketItemModifierGroup.getTotal();
+//				}
+//			}
+//			
+//			totalPrice = NumberUtil.roundToTwoDigit(totalPrice);
+//			setTotalAmount(totalPrice);
+//		}
+//
+//		return totalPrice;
 	}
 }

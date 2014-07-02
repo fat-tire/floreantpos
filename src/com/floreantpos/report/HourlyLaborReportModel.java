@@ -3,8 +3,8 @@ package com.floreantpos.report;
 import java.util.List;
 
 import com.floreantpos.bo.ui.explorer.ListTableModel;
-import com.floreantpos.main.Application;
 import com.floreantpos.ui.report.HourlyLaborReportView.LaborReportData;
+import com.floreantpos.util.NumberUtil;
 
 /**
  * Created by IntelliJ IDEA.
@@ -39,25 +39,25 @@ public class HourlyLaborReportModel extends ListTableModel {
 				return String.valueOf(reportData.getNoOfGuests());
 				
 			case 3:
-				return Application.formatNumber(reportData.getSales());
+				return NumberUtil.formatNumber(reportData.getSales());
 				
 			case 4:
-				return Application.formatNumber(reportData.getManHour());
+				return NumberUtil.formatNumber(reportData.getManHour());
 				
 			case 5:
-				return Application.formatNumber(reportData.getLabor());
+				return NumberUtil.formatNumber(reportData.getLabor());
 				
 			case 6:
-				return Application.formatNumber(reportData.getSalesPerMHr());
+				return NumberUtil.formatNumber(reportData.getSalesPerMHr());
 				
 			case 7:
-				return Application.formatNumber(reportData.getGuestsPerMHr());
+				return NumberUtil.formatNumber(reportData.getGuestsPerMHr());
 				
 			case 8:
-				return Application.formatNumber(reportData.getCheckPerMHr());
+				return NumberUtil.formatNumber(reportData.getCheckPerMHr());
 				
 			case 9:
-				return Application.formatNumber(reportData.getLaborCost());
+				return NumberUtil.formatNumber(reportData.getLaborCost());
 		}
 		return null; 
 	}

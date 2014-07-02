@@ -31,6 +31,7 @@ import com.floreantpos.swing.FocusedTextField;
 import com.floreantpos.swing.TransparentPanel;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.views.order.RootView;
+import com.floreantpos.util.NumberUtil;
 
 /**
  *
@@ -65,7 +66,7 @@ public class CardPaymentView extends PaymentView {
 				} catch (Exception x) {
 				}
 				cardAmount = getDueAmount();
-				tfCardAmount.setText(Application.formatNumber(cardAmount + gratuity));
+				tfCardAmount.setText(NumberUtil.formatNumber(cardAmount + gratuity));
 			}
 
 			public void insertUpdate(DocumentEvent e) {
@@ -441,7 +442,7 @@ public class CardPaymentView extends PaymentView {
 					Toolkit.getDefaultToolkit().beep();
 					return;
 				}
-				tfCardAmount.setText(Application.formatNumber(amount + gAmount));
+				tfCardAmount.setText(NumberUtil.formatNumber(amount + gAmount));
 			}
 		}
 	};
@@ -527,9 +528,9 @@ public class CardPaymentView extends PaymentView {
 		double dueAmount = getDueAmount();
 		double tips = calculateGratuity();
 		
-		tfDueAmount.setText(Application.formatNumber(dueAmount));
-		tfGratuityAmount.setText(Application.formatNumber(tips));
-		tfCardAmount.setText(Application.formatNumber(dueAmount + tips));
+		tfDueAmount.setText(NumberUtil.formatNumber(dueAmount));
+		tfGratuityAmount.setText(NumberUtil.formatNumber(tips));
+		tfCardAmount.setText(NumberUtil.formatNumber(dueAmount + tips));
 		
 	}
 }

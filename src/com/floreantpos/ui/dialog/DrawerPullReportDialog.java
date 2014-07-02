@@ -42,6 +42,7 @@ import com.floreantpos.print.PosPrintService;
 import com.floreantpos.report.services.ReportService;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.ui.TitlePanel;
+import com.floreantpos.util.NumberUtil;
 
 /**
  *
@@ -337,7 +338,7 @@ public class DrawerPullReportDialog extends POSDialog {
 		Set<DrawerPullVoidTicketEntry> voidTickets = drawerPullReport.getVoidTickets();
 		if(voidTickets != null) {
 			for (DrawerPullVoidTicketEntry entry : voidTickets) {
-				addExceptionTableRow(table, String.valueOf(entry.getCode()), entry.getReason(), " ", String.valueOf(entry.getQuantity()), Application.formatNumber(entry.getAmount()));
+				addExceptionTableRow(table, String.valueOf(entry.getCode()), entry.getReason(), " ", String.valueOf(entry.getQuantity()), NumberUtil.formatNumber(entry.getAmount()));
 			}
 		}
 		addExceptionTableSeparator(table);
@@ -356,8 +357,8 @@ public class DrawerPullReportDialog extends POSDialog {
 		table.addAttribute("width", "100%");
 		addTableRow(table, "TOTAL DISCOUNT/COUPON", "");
 		addDiscountTableRow(table, "TOTAL COUNT", String.valueOf(drawerPullReport.getTotalDiscountCount()));
-		addDiscountTableRow(table, "TOTAL Dsct", Application.formatNumber(drawerPullReport.getTotalDiscountAmount()));
-		addDiscountTableRow(table, "TOTAL Sales", Application.formatNumber(drawerPullReport.getTotalDiscountSales()));
+		addDiscountTableRow(table, "TOTAL Dsct", NumberUtil.formatNumber(drawerPullReport.getTotalDiscountAmount()));
+		addDiscountTableRow(table, "TOTAL Sales", NumberUtil.formatNumber(drawerPullReport.getTotalDiscountSales()));
 		addDiscountTableRow(table, "TOTAL Guest", String.valueOf(drawerPullReport.getTotalDiscountGuest()));
 		addDiscountTableRow(table, "Party Size", String.valueOf(drawerPullReport.getTotalDiscountPartySize()));
 		addDiscountTableRow(table, "Check Size", String.valueOf(drawerPullReport.getTotalDiscountCheckSize()));

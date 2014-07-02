@@ -5,7 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.floreantpos.bo.ui.explorer.ListTableModel;
-import com.floreantpos.main.Application;
+import com.floreantpos.util.NumberUtil;
 
 public class ServerProductivityReport {
 	//GST_GROSS=total sales
@@ -232,31 +232,31 @@ public class ServerProductivityReport {
 				return String.valueOf(data.getTotalGuestCount());
 
 			case 4:
-				return Application.formatNumber(data.getTotalSales());
+				return NumberUtil.formatNumber(data.getTotalSales());
 
 			case 5:
-				return Application.formatNumber(data.getNetSales());
+				return NumberUtil.formatNumber(data.getNetSales());
 			
 			case 6:
-				return Application.formatNumber(data.getAverageNetSales());
+				return NumberUtil.formatNumber(data.getAverageNetSales());
 			
 			case 7:
-				return Application.formatNumber(data.getTotalAllocation());
+				return NumberUtil.formatNumber(data.getTotalAllocation());
 			
 			case 8:
-				return Application.formatNumber(data.getGrossSales());
+				return NumberUtil.formatNumber(data.getGrossSales());
 			
 			case 9:
-				return Application.formatNumber(data.getSalesDiscount());
+				return NumberUtil.formatNumber(data.getSalesDiscount());
 			
 			case 10:
-				return Application.formatNumber(data.getAverageCheck());
+				return NumberUtil.formatNumber(data.getAverageCheck());
 			
 			case 11:
-				return Application.formatNumber(data.getAverageGuest());
+				return NumberUtil.formatNumber(data.getAverageGuest());
 				
 			case 12:
-				return Application.formatNumber(data.getAllocation());
+				return NumberUtil.formatNumber(data.getAllocation());
 				
 			case 13:
 				return String.valueOf(data.getCheckCount());
