@@ -25,7 +25,7 @@ public class CreditCardReportAction extends AbstractAction {
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		BackOfficeWindow window = Application.getInstance().getBackOfficeWindow();
+		BackOfficeWindow window = BackOfficeWindow.getInstance();
 		JTabbedPane tabbedPane = window.getTabbedPane();
 		
 		CreditCardReportView reportView = null;

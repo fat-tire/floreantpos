@@ -12,9 +12,9 @@ import javax.swing.table.TableCellRenderer;
 
 import org.jdesktop.swingx.JXTable;
 
+import com.floreantpos.bo.ui.BOMessageDialog;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.dao.TicketDAO;
-import com.floreantpos.swing.MessageDialog;
 import com.floreantpos.swing.TransparentPanel;
 import com.floreantpos.ui.PosTableRenderer;
 
@@ -48,7 +48,7 @@ public class TicketExplorer extends TransparentPanel {
 			explorerTable.packAll();
 			explorerTable.repaint();
 		} catch (Exception e) {
-			MessageDialog.showError(e);
+		BOMessageDialog.showError(e);
 		}
 	}
 	

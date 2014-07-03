@@ -10,10 +10,10 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 
-import com.floreantpos.main.Application;
+import com.floreantpos.bo.ui.BOMessageDialog;
+import com.floreantpos.bo.ui.BackOfficeWindow;
 import com.floreantpos.model.MenuGroup;
 import com.floreantpos.model.dao.MenuGroupDAO;
-import com.floreantpos.swing.MessageDialog;
 import com.floreantpos.swing.TransparentPanel;
 import com.floreantpos.ui.PosTableRenderer;
 import com.floreantpos.ui.dialog.BeanEditorDialog;
@@ -52,13 +52,13 @@ public class GroupExplorer extends TransparentPanel {
 					MenuGroup category = groupList.get(index);
 
 					MenuGroupForm editor = new MenuGroupForm(category);
-					BeanEditorDialog dialog = new BeanEditorDialog(editor, Application.getInstance().getBackOfficeWindow(), true);
+					BeanEditorDialog dialog = new BeanEditorDialog(editor, BackOfficeWindow.getInstance(), true);
 					dialog.open();
 					if (dialog.isCanceled())
 						return;
 					table.repaint();
 				} catch (Exception x) {
-					MessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
+				BOMessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
 				}
 			}
 
@@ -68,14 +68,14 @@ public class GroupExplorer extends TransparentPanel {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					MenuGroupForm editor = new MenuGroupForm();
-					BeanEditorDialog dialog = new BeanEditorDialog(editor, Application.getInstance().getBackOfficeWindow(), true);
+					BeanEditorDialog dialog = new BeanEditorDialog(editor, BackOfficeWindow.getInstance(), true);
 					dialog.open();
 					if (dialog.isCanceled())
 						return;
 					MenuGroup foodGroup = (MenuGroup) editor.getBean();
 					tableModel.addGroup(foodGroup);
 				} catch (Exception x) {
-					MessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
+				BOMessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
 				}
 			}
 
@@ -94,7 +94,7 @@ public class GroupExplorer extends TransparentPanel {
 						tableModel.deleteGroup(category, index);
 					}
 				} catch (Exception x) {
-					MessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
+				BOMessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
 				}
 			}
 

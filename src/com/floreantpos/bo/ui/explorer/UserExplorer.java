@@ -11,10 +11,10 @@ import javax.swing.JTable;
 
 import org.hibernate.exception.ConstraintViolationException;
 
-import com.floreantpos.main.Application;
+import com.floreantpos.bo.ui.BOMessageDialog;
+import com.floreantpos.bo.ui.BackOfficeWindow;
 import com.floreantpos.model.User;
 import com.floreantpos.model.dao.UserDAO;
-import com.floreantpos.swing.MessageDialog;
 import com.floreantpos.swing.TransparentPanel;
 import com.floreantpos.ui.PosTableRenderer;
 import com.floreantpos.ui.dialog.BeanEditorDialog;
@@ -46,7 +46,7 @@ public class UserExplorer extends TransparentPanel {
 					if(userWithMaxId != null) {
 						editor.setId(new Integer(userWithMaxId.intValue() + 1));
 					}
-					BeanEditorDialog dialog = new BeanEditorDialog(editor, Application.getInstance().getBackOfficeWindow(), true);
+					BeanEditorDialog dialog = new BeanEditorDialog(editor, BackOfficeWindow.getInstance(), true);
 					dialog.open();
 					if (dialog.isCanceled())
 						return;
@@ -54,7 +54,7 @@ public class UserExplorer extends TransparentPanel {
 					tableModel.addItem(user);
 				} catch (Exception x) {
 					x.printStackTrace();
-					MessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
+				BOMessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
 				}
 			}
 			
@@ -80,7 +80,7 @@ public class UserExplorer extends TransparentPanel {
 					UserForm editor = new UserForm();
 					editor.setEditMode(false);
 					editor.setBean(user2);
-					BeanEditorDialog dialog = new BeanEditorDialog(editor, Application.getInstance().getBackOfficeWindow(), true);
+					BeanEditorDialog dialog = new BeanEditorDialog(editor, BackOfficeWindow.getInstance(), true);
 					dialog.open();
 					if (dialog.isCanceled())
 						return;
@@ -88,7 +88,7 @@ public class UserExplorer extends TransparentPanel {
 					User newUser = (User) editor.getBean();
 					tableModel.addItem(newUser);
 				} catch (Exception x) {
-					MessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
+				BOMessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
 				}
 			}
 			
@@ -106,14 +106,14 @@ public class UserExplorer extends TransparentPanel {
 					UserForm editor = new UserForm();
 					editor.setEditMode(true);
 					editor.setBean(user);
-					BeanEditorDialog dialog = new BeanEditorDialog(editor, Application.getInstance().getBackOfficeWindow(), true);
+					BeanEditorDialog dialog = new BeanEditorDialog(editor, BackOfficeWindow.getInstance(), true);
 					dialog.open();
 					if (dialog.isCanceled())
 						return;
 
 					tableModel.updateItem(index);
 				} catch (Throwable x) {
-					MessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
+				BOMessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
 				}
 			}
 			
@@ -137,9 +137,9 @@ public class UserExplorer extends TransparentPanel {
 					}
 				} catch(ConstraintViolationException x) {
 					String message = com.floreantpos.POSConstants.USER + " " + user.getFirstName() + " " + user.getLastName() + " (" + user.getNewUserType() + ") " + com.floreantpos.POSConstants.ERROR_MESSAGE; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-					MessageDialog.showError(message, x);
+				BOMessageDialog.showError(message, x);
 				} catch (Exception x) {
-					MessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
+				BOMessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
 				}
 			}
 			

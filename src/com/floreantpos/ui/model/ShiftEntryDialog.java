@@ -21,7 +21,7 @@ import javax.swing.JSeparator;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 
-import com.floreantpos.main.Application;
+import com.floreantpos.bo.ui.BackOfficeWindow;
 import com.floreantpos.model.Shift;
 import com.floreantpos.model.dao.ShiftDAO;
 import com.floreantpos.ui.dialog.POSDialog;
@@ -54,7 +54,7 @@ public class ShiftEntryDialog extends POSDialog {
     }
 
     public ShiftEntryDialog(Shift shift) {
-        super(Application.getInstance().getBackOfficeWindow(), true);
+        super(BackOfficeWindow.getInstance(), true);
         setTitle(com.floreantpos.POSConstants.NEW_SHIFT);
 
         setContentPane(contentPane);

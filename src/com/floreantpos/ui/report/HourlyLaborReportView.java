@@ -31,7 +31,7 @@ import net.sf.jasperreports.view.JRViewer;
 
 import org.jdesktop.swingx.JXDatePicker;
 
-import com.floreantpos.main.Application;
+import com.floreantpos.bo.ui.BackOfficeWindow;
 import com.floreantpos.model.Shift;
 import com.floreantpos.model.Terminal;
 import com.floreantpos.model.Ticket;
@@ -91,7 +91,7 @@ public class HourlyLaborReportView extends TransparentPanel {
         Date toDate = toDatePicker.getDate();
 
         if (fromDate.after(toDate)) {
-            POSMessageDialog.showError(Application.getInstance().getBackOfficeWindow(), com.floreantpos.POSConstants.FROM_DATE_CANNOT_BE_GREATER_THAN_TO_DATE_);
+            POSMessageDialog.showError(BackOfficeWindow.getInstance(), com.floreantpos.POSConstants.FROM_DATE_CANNOT_BE_GREATER_THAN_TO_DATE_);
             return;
         }
 

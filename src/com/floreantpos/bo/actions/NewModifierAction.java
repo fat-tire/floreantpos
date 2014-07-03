@@ -5,8 +5,8 @@ import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 import javax.swing.Icon;
 
-import com.floreantpos.main.Application;
-import com.floreantpos.swing.MessageDialog;
+import com.floreantpos.bo.ui.BOMessageDialog;
+import com.floreantpos.bo.ui.BackOfficeWindow;
 import com.floreantpos.ui.dialog.BeanEditorDialog;
 import com.floreantpos.ui.model.MenuModifierForm;
 
@@ -27,10 +27,10 @@ public class NewModifierAction extends AbstractAction {
 	public void actionPerformed(ActionEvent e) {
 		try {
 			MenuModifierForm editor = new MenuModifierForm();
-			BeanEditorDialog dialog = new BeanEditorDialog(editor, Application.getInstance().getBackOfficeWindow(), true);
+			BeanEditorDialog dialog = new BeanEditorDialog(editor, BackOfficeWindow.getInstance(), true);
 			dialog.open();
 		} catch (Exception x) {
-			MessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
+			BOMessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
 		}
 	}
 

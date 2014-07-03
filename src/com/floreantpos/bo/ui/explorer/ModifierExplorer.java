@@ -12,10 +12,11 @@ import javax.swing.table.AbstractTableModel;
 
 import org.jdesktop.swingx.JXTable;
 
+import com.floreantpos.bo.ui.BOMessageDialog;
+import com.floreantpos.bo.ui.BackOfficeWindow;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.MenuModifier;
 import com.floreantpos.model.dao.ModifierDAO;
-import com.floreantpos.swing.MessageDialog;
 import com.floreantpos.swing.TransparentPanel;
 import com.floreantpos.ui.PosTableRenderer;
 import com.floreantpos.ui.dialog.BeanEditorDialog;
@@ -58,14 +59,14 @@ public class ModifierExplorer extends TransparentPanel {
 					MenuModifier modifier = modifierList.get(index);
 
 					MenuModifierForm editor = new MenuModifierForm(modifier);
-					BeanEditorDialog dialog = new BeanEditorDialog(editor, Application.getInstance().getBackOfficeWindow(), true);
+					BeanEditorDialog dialog = new BeanEditorDialog(editor, BackOfficeWindow.getInstance(), true);
 					dialog.open();
 					if (dialog.isCanceled())
 						return;
 
 					table.repaint();
 				} catch (Throwable x) {
-					MessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
+				BOMessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
 				}
 			}
 		});
@@ -74,14 +75,14 @@ public class ModifierExplorer extends TransparentPanel {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					MenuModifierForm editor = new MenuModifierForm();
-					BeanEditorDialog dialog = new BeanEditorDialog(editor, Application.getInstance().getBackOfficeWindow(), true);
+					BeanEditorDialog dialog = new BeanEditorDialog(editor, BackOfficeWindow.getInstance(), true);
 					dialog.open();
 					if (dialog.isCanceled())
 						return;
 					MenuModifier modifier = (MenuModifier) editor.getBean();
 					tableModel.addModifier(modifier);
 				} catch (Throwable x) {
-					MessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
+				BOMessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
 				}
 			}
 
@@ -100,7 +101,7 @@ public class ModifierExplorer extends TransparentPanel {
 						tableModel.deleteModifier(category, index);
 					}
 				} catch (Throwable x) {
-					MessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
+				BOMessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
 				}
 
 			}

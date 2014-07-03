@@ -8,7 +8,6 @@ import javax.swing.JTabbedPane;
 
 import com.floreantpos.bo.ui.BackOfficeWindow;
 import com.floreantpos.bo.ui.explorer.CookingInstructionExplorer;
-import com.floreantpos.main.Application;
 
 public class CookingInstructionExplorerAction extends AbstractAction {
 
@@ -25,7 +24,7 @@ public class CookingInstructionExplorerAction extends AbstractAction {
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		BackOfficeWindow backOfficeWindow = Application.getInstance().getBackOfficeWindow();
+		BackOfficeWindow backOfficeWindow = BackOfficeWindow.getInstance();
 		
 		CookingInstructionExplorer explorer = null;
 		JTabbedPane tabbedPane = backOfficeWindow.getTabbedPane();

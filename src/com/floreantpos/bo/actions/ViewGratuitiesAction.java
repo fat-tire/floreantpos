@@ -7,10 +7,9 @@ import javax.swing.Icon;
 import javax.swing.JTabbedPane;
 
 import com.floreantpos.PosException;
+import com.floreantpos.bo.ui.BOMessageDialog;
 import com.floreantpos.bo.ui.BackOfficeWindow;
 import com.floreantpos.bo.ui.explorer.GratuityViewer2;
-import com.floreantpos.main.Application;
-import com.floreantpos.ui.dialog.POSMessageDialog;
 
 public class ViewGratuitiesAction extends AbstractAction {
 
@@ -27,7 +26,7 @@ public class ViewGratuitiesAction extends AbstractAction {
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		BackOfficeWindow backOfficeWindow = Application.getInstance().getBackOfficeWindow();
+		BackOfficeWindow backOfficeWindow = BackOfficeWindow.getInstance();
 		
 		try {
 			GratuityViewer2 explorer = null;
@@ -43,9 +42,9 @@ public class ViewGratuitiesAction extends AbstractAction {
 			tabbedPane.setSelectedComponent(explorer);
 			
 		} catch(PosException x) {
-			POSMessageDialog.showError(backOfficeWindow, x.getMessage(), x);
+			BOMessageDialog.showError(backOfficeWindow, x.getMessage(), x);
 		} catch (Exception ex) {
-			POSMessageDialog.showError(backOfficeWindow, com.floreantpos.POSConstants.ERROR_MESSAGE, ex);
+			BOMessageDialog.showError(backOfficeWindow, com.floreantpos.POSConstants.ERROR_MESSAGE, ex);
 		}
 	}
 
