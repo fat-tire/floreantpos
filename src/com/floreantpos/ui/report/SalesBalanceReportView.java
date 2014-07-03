@@ -24,7 +24,7 @@ import net.sf.jasperreports.view.JRViewer;
 import org.jdesktop.swingx.JXDatePicker;
 
 import com.floreantpos.POSConstants;
-import com.floreantpos.main.Application;
+import com.floreantpos.bo.ui.BackOfficeWindow;
 import com.floreantpos.model.util.DateUtil;
 import com.floreantpos.report.SalesBalanceReport;
 import com.floreantpos.report.services.ReportService;
@@ -80,7 +80,7 @@ public class SalesBalanceReportView extends JPanel {
 		Date toDate = toDatePicker.getDate();
 		
 		if(fromDate.after(toDate)) {
-			POSMessageDialog.showError(Application.getInstance().getBackOfficeWindow(), com.floreantpos.POSConstants.FROM_DATE_CANNOT_BE_GREATER_THAN_TO_DATE_);
+			POSMessageDialog.showError(BackOfficeWindow.getInstance(), com.floreantpos.POSConstants.FROM_DATE_CANNOT_BE_GREATER_THAN_TO_DATE_);
 			return;
 		}
 		

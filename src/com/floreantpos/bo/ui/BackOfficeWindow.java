@@ -66,6 +66,8 @@ public class BackOfficeWindow extends javax.swing.JFrame {
 	private static final String POSX = "bwx";//$NON-NLS-1$
 	private static final String WINDOW_HEIGHT = "bwheight";//$NON-NLS-1$
 	private static final String WINDOW_WIDTH = "bwwidth";//$NON-NLS-1$
+	
+	private static BackOfficeWindow instance;
 
 	/** Creates new form BackOfficeWindow */
 	public BackOfficeWindow() {
@@ -98,16 +100,7 @@ public class BackOfficeWindow extends javax.swing.JFrame {
 
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
-				saveSizeAndLocation();
-				Application.getInstance().setBackOfficeWindow(null);
-				dispose();
-			}
-
-			private void saveSizeAndLocation() {
-				AppConfig.putInt(WINDOW_WIDTH, BackOfficeWindow.this.getWidth()); 
-				AppConfig.putInt(WINDOW_HEIGHT, BackOfficeWindow.this.getHeight()); //$NON-NLS-1$
-				AppConfig.putInt(POSX, BackOfficeWindow.this.getX()); //$NON-NLS-1$
-				AppConfig.putInt(POSY, BackOfficeWindow.this.getY()); //$NON-NLS-1$
+				close();
 			}
 		});
 
@@ -245,6 +238,28 @@ public class BackOfficeWindow extends javax.swing.JFrame {
 
 	public javax.swing.JTabbedPane getTabbedPane() {
 		return tabbedPane;
+	}
+	
+	private void saveSizeAndLocation() {
+		AppConfig.putInt(WINDOW_WIDTH, BackOfficeWindow.this.getWidth()); 
+		AppConfig.putInt(WINDOW_HEIGHT, BackOfficeWindow.this.getHeight()); //$NON-NLS-1$
+		AppConfig.putInt(POSX, BackOfficeWindow.this.getX()); //$NON-NLS-1$
+		AppConfig.putInt(POSY, BackOfficeWindow.this.getY()); //$NON-NLS-1$
+	}
+	
+	public void close() {
+		saveSizeAndLocation();
+		instance = null;
+		dispose();
+	}
+
+	public static BackOfficeWindow getInstance() {
+		if(instance == null) {
+			instance = new BackOfficeWindow();
+			Application.getInstance().setBackOfficeWindow(instance);
+		}
+		
+		return instance;
 	}
 
 }

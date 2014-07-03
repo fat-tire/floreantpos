@@ -8,7 +8,6 @@ import javax.swing.JTabbedPane;
 
 import com.floreantpos.bo.ui.BackOfficeWindow;
 import com.floreantpos.bo.ui.explorer.ShiftExplorer;
-import com.floreantpos.main.Application;
 
 public class ShiftExplorerAction extends AbstractAction {
 
@@ -25,7 +24,7 @@ public class ShiftExplorerAction extends AbstractAction {
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		BackOfficeWindow backOfficeWindow = Application.getInstance().getBackOfficeWindow();
+		BackOfficeWindow backOfficeWindow = BackOfficeWindow.getInstance();
 		
 		ShiftExplorer explorer = null;
 		JTabbedPane tabbedPane = backOfficeWindow.getTabbedPane();

@@ -6,10 +6,9 @@ import javax.swing.AbstractAction;
 import javax.swing.Icon;
 import javax.swing.JTabbedPane;
 
+import com.floreantpos.bo.ui.BOMessageDialog;
 import com.floreantpos.bo.ui.BackOfficeWindow;
 import com.floreantpos.bo.ui.explorer.CouponExplorer;
-import com.floreantpos.main.Application;
-import com.floreantpos.swing.MessageDialog;
 
 public class CouponExplorerAction extends AbstractAction {
 
@@ -27,7 +26,7 @@ public class CouponExplorerAction extends AbstractAction {
 
 	public void actionPerformed(ActionEvent e) {
 		try {
-			BackOfficeWindow backOfficeWindow = Application.getInstance().getBackOfficeWindow();
+			BackOfficeWindow backOfficeWindow = BackOfficeWindow.getInstance();
 
 			CouponExplorer explorer = null;
 			JTabbedPane tabbedPane = backOfficeWindow.getTabbedPane();
@@ -42,7 +41,7 @@ public class CouponExplorerAction extends AbstractAction {
 			}
 			tabbedPane.setSelectedComponent(explorer);
 		} catch (Exception x) {
-			MessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
+			BOMessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
 		}
 	}
 

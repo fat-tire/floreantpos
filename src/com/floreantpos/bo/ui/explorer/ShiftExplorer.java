@@ -9,11 +9,11 @@ import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
+import com.floreantpos.bo.ui.BOMessageDialog;
 import com.floreantpos.model.Shift;
 import com.floreantpos.model.User;
 import com.floreantpos.model.dao.ShiftDAO;
 import com.floreantpos.model.dao.UserDAO;
-import com.floreantpos.swing.MessageDialog;
 import com.floreantpos.swing.TransparentPanel;
 import com.floreantpos.ui.PosTableRenderer;
 import com.floreantpos.ui.dialog.ConfirmDeleteDialog;
@@ -46,7 +46,7 @@ public class ShiftExplorer extends TransparentPanel {
 					Shift shift = dialog.getShift();
 					tableModel.addItem(shift);
 				} catch (Exception x) {
-					MessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
+				BOMessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
 				}
 			}
 			
@@ -69,7 +69,7 @@ public class ShiftExplorer extends TransparentPanel {
 
 					tableModel.updateItem(index);
 				} catch (Throwable x) {
-					MessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
+				BOMessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
 				}
 			}
 			
@@ -88,7 +88,7 @@ public class ShiftExplorer extends TransparentPanel {
 						tableModel.deleteItem(index);
 					}
 				} catch (Exception x) {
-					MessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
+				BOMessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
 				}
 			}
 			

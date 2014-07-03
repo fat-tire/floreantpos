@@ -8,7 +8,6 @@ import javax.swing.JTabbedPane;
 
 import com.floreantpos.bo.ui.BackOfficeWindow;
 import com.floreantpos.bo.ui.explorer.UserTypeExplorer;
-import com.floreantpos.main.Application;
 
 public class UserTypeExplorerAction extends AbstractAction {
 
@@ -25,7 +24,7 @@ public class UserTypeExplorerAction extends AbstractAction {
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		BackOfficeWindow backOfficeWindow = Application.getInstance().getBackOfficeWindow();
+		BackOfficeWindow backOfficeWindow = BackOfficeWindow.getInstance();
 		
 		UserTypeExplorer explorer = null;
 		JTabbedPane tabbedPane = backOfficeWindow.getTabbedPane();

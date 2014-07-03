@@ -21,12 +21,12 @@ import net.miginfocom.swing.MigLayout;
 import org.jdesktop.swingx.JXDatePicker;
 
 import com.floreantpos.POSConstants;
+import com.floreantpos.bo.ui.BOMessageDialog;
 import com.floreantpos.model.DrawerPullReport;
 import com.floreantpos.model.dao.DrawerPullReportDAO;
 import com.floreantpos.model.util.DateUtil;
 import com.floreantpos.swing.TransparentPanel;
 import com.floreantpos.ui.PosTableRenderer;
-import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.util.UiUtil;
 
 public class DrawerPullReportExplorer extends TransparentPanel {
@@ -65,7 +65,7 @@ public class DrawerPullReportExplorer extends TransparentPanel {
 				try {
 					viewReport();
 				} catch (Exception e1) {
-					POSMessageDialog.showError(DrawerPullReportExplorer.this, POSConstants.ERROR_MESSAGE, e1);
+					BOMessageDialog.showError(DrawerPullReportExplorer.this, POSConstants.ERROR_MESSAGE, e1);
 				}
 			}
 
@@ -76,7 +76,7 @@ public class DrawerPullReportExplorer extends TransparentPanel {
 				try {
 					int selectedRow = table.getSelectedRow();
 					if(selectedRow < 0) {
-						JOptionPane.showMessageDialog(DrawerPullReportExplorer.this, com.floreantpos.POSConstants.SELECT_DRAWER_PULL_TO_EDIT, com.floreantpos.POSConstants.MDS_POS, JOptionPane.ERROR_MESSAGE);
+						BOMessageDialog.showError(DrawerPullReportExplorer.this, com.floreantpos.POSConstants.SELECT_DRAWER_PULL_TO_EDIT);
 						return;
 					}
 					
@@ -88,7 +88,7 @@ public class DrawerPullReportExplorer extends TransparentPanel {
 					try {
 						amount = Double.parseDouble(amountString);
 					}catch(Exception x) {
-						JOptionPane.showMessageDialog(DrawerPullReportExplorer.this, com.floreantpos.POSConstants.INVALID_AMOUNT, com.floreantpos.POSConstants.MDS_POS, JOptionPane.ERROR_MESSAGE);
+						BOMessageDialog.showError(DrawerPullReportExplorer.this, com.floreantpos.POSConstants.INVALID_AMOUNT);
 						return;
 					}
 					
@@ -100,7 +100,7 @@ public class DrawerPullReportExplorer extends TransparentPanel {
 					dao.saveOrUpdate(report);
 					model.updateItem(selectedRow);
 				} catch (Exception e1) {
-					POSMessageDialog.showError(DrawerPullReportExplorer.this, POSConstants.ERROR_MESSAGE, e1);
+					BOMessageDialog.showError(DrawerPullReportExplorer.this, POSConstants.ERROR_MESSAGE, e1);
 				}
 			}
 			
@@ -118,7 +118,7 @@ public class DrawerPullReportExplorer extends TransparentPanel {
 			List<DrawerPullReport> list = new DrawerPullReportDAO().findReports(fromDate, toDate);
 			table.setModel(new DrawerPullExplorerTableModel(list));
 		} catch (Exception e) {
-			POSMessageDialog.showError(this, POSConstants.ERROR_MESSAGE, e);
+			BOMessageDialog.showError(this, POSConstants.ERROR_MESSAGE, e);
 		}
 	}
 

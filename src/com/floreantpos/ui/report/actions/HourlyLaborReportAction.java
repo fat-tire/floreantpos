@@ -25,7 +25,7 @@ public class HourlyLaborReportAction extends AbstractAction {
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		BackOfficeWindow window = Application.getInstance().getBackOfficeWindow();
+		BackOfficeWindow window = BackOfficeWindow.getInstance();
 		JTabbedPane tabbedPane = window.getTabbedPane();
 		
 		HourlyLaborReportView reportView = null;

@@ -25,7 +25,7 @@ public class SalesExceptionReportAction extends AbstractAction {
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		BackOfficeWindow window = Application.getInstance().getBackOfficeWindow();
+		BackOfficeWindow window = BackOfficeWindow.getInstance();
 		JTabbedPane tabbedPane = window.getTabbedPane();
 		
 		SalesExceptionReportView reportView = null;

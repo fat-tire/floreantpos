@@ -8,7 +8,6 @@ import javax.swing.JTabbedPane;
 
 import com.floreantpos.bo.ui.BackOfficeWindow;
 import com.floreantpos.bo.ui.explorer.ModifierGroupExplorer;
-import com.floreantpos.main.Application;
 
 public class ModifierGroupExplorerAction extends AbstractAction {
 
@@ -25,7 +24,7 @@ public class ModifierGroupExplorerAction extends AbstractAction {
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		BackOfficeWindow backOfficeWindow = Application.getInstance().getBackOfficeWindow();
+		BackOfficeWindow backOfficeWindow = BackOfficeWindow.getInstance();
 		JTabbedPane tabbedPane;
 		ModifierGroupExplorer mGroup;
 		tabbedPane = backOfficeWindow.getTabbedPane();

@@ -7,7 +7,6 @@
 package com.floreantpos.bo.ui;
 
 import com.floreantpos.POSConstants;
-import com.floreantpos.main.Application;
 import com.floreantpos.model.Restaurant;
 import com.floreantpos.model.dao.RestaurantDAO;
 import com.floreantpos.ui.dialog.POSDialog;
@@ -23,7 +22,7 @@ public class RestaurantPropertyDialog extends POSDialog {
 
 	/** Creates new form RestaurantPropertyDialog */
 	public RestaurantPropertyDialog() {
-		super(Application.getInstance().getBackOfficeWindow(), true);
+		super(BackOfficeWindow.getInstance(), true);
 		
 		setTitle(com.floreantpos.POSConstants.CONFIGURE);
 		

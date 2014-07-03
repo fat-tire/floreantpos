@@ -23,15 +23,15 @@ import net.sf.jasperreports.engine.data.JRTableModelDataSource;
 import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.view.JRViewer;
 
-import com.floreantpos.main.Application;
+import com.floreantpos.bo.ui.BackOfficeWindow;
 import com.floreantpos.model.Terminal;
 import com.floreantpos.model.UserType;
 import com.floreantpos.model.dao.SalesSummaryDAO;
 import com.floreantpos.model.dao.TerminalDAO;
 import com.floreantpos.model.dao.UserTypeDAO;
 import com.floreantpos.report.SalesAnalysisReportModel;
-import com.floreantpos.report.SalesStatistics;
 import com.floreantpos.report.SalesAnalysisReportModel.SalesAnalysisData;
+import com.floreantpos.report.SalesStatistics;
 import com.floreantpos.report.SalesStatistics.ShiftwiseDataTableModel;
 import com.floreantpos.swing.ListComboBoxModel;
 import com.floreantpos.ui.dialog.POSMessageDialog;
@@ -136,7 +136,7 @@ public class SalesSummaryReportView extends javax.swing.JPanel {
 		toDate = toDatePicker.getDate();
 
 		if (fromDate.after(toDate)) {
-			POSMessageDialog.showError(Application.getInstance().getBackOfficeWindow(), com.floreantpos.POSConstants.FROM_DATE_CANNOT_BE_GREATER_THAN_TO_DATE_);
+			POSMessageDialog.showError(BackOfficeWindow.getInstance(), com.floreantpos.POSConstants.FROM_DATE_CANNOT_BE_GREATER_THAN_TO_DATE_);
 			return false;
 		}
 

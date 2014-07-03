@@ -23,6 +23,7 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
+import javax.swing.SwingConstants;
 import javax.swing.border.EtchedBorder;
 import javax.swing.table.AbstractTableModel;
 
@@ -32,7 +33,7 @@ import org.apache.commons.io.FileUtils;
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
 
-import com.floreantpos.main.Application;
+import com.floreantpos.bo.ui.BackOfficeWindow;
 import com.floreantpos.model.MenuGroup;
 import com.floreantpos.model.MenuItem;
 import com.floreantpos.model.MenuItemModifierGroup;
@@ -51,7 +52,6 @@ import com.floreantpos.ui.dialog.ConfirmDeleteDialog;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.util.POSUtil;
 import com.floreantpos.util.ShiftUtil;
-import javax.swing.SwingConstants;
 
 /**
  *
@@ -358,7 +358,7 @@ public class MenuItemForm extends BeanEditor implements ActionListener {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnNewTaxdoCreateNewTax(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewTaxdoCreateNewTax
-    	BeanEditorDialog dialog = new BeanEditorDialog(new TaxForm(), Application.getInstance().getBackOfficeWindow(), true);
+    	BeanEditorDialog dialog = new BeanEditorDialog(new TaxForm(), BackOfficeWindow.getInstance(), true);
 		dialog.open();
     }//GEN-LAST:event_btnNewTaxdoCreateNewTax
 
