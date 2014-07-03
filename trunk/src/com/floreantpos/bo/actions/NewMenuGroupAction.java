@@ -5,7 +5,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 import javax.swing.Icon;
 
-import com.floreantpos.main.Application;
+import com.floreantpos.bo.ui.BackOfficeWindow;
 import com.floreantpos.ui.dialog.BeanEditorDialog;
 import com.floreantpos.ui.model.MenuGroupForm;
 
@@ -25,7 +25,7 @@ public class NewMenuGroupAction extends AbstractAction {
 
 	public void actionPerformed(ActionEvent e) {
 		MenuGroupForm editor = new MenuGroupForm();
-		BeanEditorDialog dialog = new BeanEditorDialog(editor, Application.getInstance().getBackOfficeWindow(), true);
+		BeanEditorDialog dialog = new BeanEditorDialog(editor, BackOfficeWindow.getInstance(), true);
 		dialog.open();
 	}
 

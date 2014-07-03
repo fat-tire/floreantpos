@@ -19,6 +19,7 @@ import javax.swing.JTable;
 
 import com.floreantpos.POSConstants;
 import com.floreantpos.PosException;
+import com.floreantpos.bo.ui.BOMessageDialog;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.ActionHistory;
 import com.floreantpos.model.Gratuity;
@@ -28,7 +29,6 @@ import com.floreantpos.model.dao.GratuityDAO;
 import com.floreantpos.model.dao.UserDAO;
 import com.floreantpos.swing.ListComboBoxModel;
 import com.floreantpos.swing.TransparentPanel;
-import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.util.NumberUtil;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
@@ -205,7 +205,7 @@ public class GratuityViewer2 extends TransparentPanel implements ActionListener 
                 ActionHistoryDAO.getInstance().saveHistory(Application.getCurrentUser(), ActionHistory.PAY_TIPS, actionMessage);
 
             } catch (PosException ex) {
-                POSMessageDialog.showError(contentPane, ex.getMessage(), ex);
+                BOMessageDialog.showError(contentPane, ex.getMessage(), ex);
             }
         }
     }

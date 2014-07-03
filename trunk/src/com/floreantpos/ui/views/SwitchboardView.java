@@ -293,7 +293,7 @@ public class SwitchboardView extends JPanel implements ActionListener {
 	}
 
 	private synchronized void doShowBackoffice() {
-		BackOfficeWindow window = Application.getInstance().getBackOfficeWindow();
+		BackOfficeWindow window = BackOfficeWindow.getInstance();
 		if (window == null) {
 			window = new BackOfficeWindow();
 			Application.getInstance().setBackOfficeWindow(window);

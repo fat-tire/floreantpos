@@ -5,8 +5,8 @@ import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 import javax.swing.Icon;
 
+import com.floreantpos.bo.ui.BackOfficeWindow;
 import com.floreantpos.config.ui.ConfigurationDialog;
-import com.floreantpos.main.Application;
 
 public class ConfigureRestaurantAction extends AbstractAction {
 
@@ -23,7 +23,7 @@ public class ConfigureRestaurantAction extends AbstractAction {
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		ConfigurationDialog dialog = new ConfigurationDialog(Application.getInstance().getBackOfficeWindow());
+		ConfigurationDialog dialog = new ConfigurationDialog(BackOfficeWindow.getInstance());
 		dialog.pack();
 		dialog.open();
 	}

@@ -10,10 +10,10 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 
-import com.floreantpos.main.Application;
+import com.floreantpos.bo.ui.BOMessageDialog;
+import com.floreantpos.bo.ui.BackOfficeWindow;
 import com.floreantpos.model.MenuModifierGroup;
 import com.floreantpos.model.dao.ModifierGroupDAO;
-import com.floreantpos.swing.MessageDialog;
 import com.floreantpos.swing.TransparentPanel;
 import com.floreantpos.ui.PosTableRenderer;
 import com.floreantpos.ui.dialog.BeanEditorDialog;
@@ -53,14 +53,14 @@ public class ModifierGroupExplorer extends TransparentPanel {
 					MenuModifierGroup category = mGroupList.get(index);
 
 					MenuModifierGroupForm editor = new MenuModifierGroupForm(category);
-					BeanEditorDialog dialog = new BeanEditorDialog(editor, Application.getInstance().getBackOfficeWindow(), true);
+					BeanEditorDialog dialog = new BeanEditorDialog(editor, BackOfficeWindow.getInstance(), true);
 					dialog.open();
 					if (dialog.isCanceled())
 						return;
 
 					table.repaint();
 				} catch (Throwable x) {
-					MessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
+				BOMessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
 				}
 			}
 
@@ -72,14 +72,14 @@ public class ModifierGroupExplorer extends TransparentPanel {
 
 				try {
 					MenuModifierGroupForm editor = new MenuModifierGroupForm();
-					BeanEditorDialog dialog = new BeanEditorDialog(editor, Application.getInstance().getBackOfficeWindow(), true);
+					BeanEditorDialog dialog = new BeanEditorDialog(editor, BackOfficeWindow.getInstance(), true);
 					dialog.open();
 					if (dialog.isCanceled())
 						return;
 					MenuModifierGroup modifierGroup = (MenuModifierGroup) editor.getBean();
 					tableModel.addModifierGroup(modifierGroup);
 				} catch (Throwable x) {
-					MessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
+				BOMessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
 				}
 
 			}
@@ -100,7 +100,7 @@ public class ModifierGroupExplorer extends TransparentPanel {
 						tableModel.deleteModifierGroup(category, index);
 					}
 				} catch (Throwable x) {
-					MessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
+				BOMessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
 				}
 
 			}

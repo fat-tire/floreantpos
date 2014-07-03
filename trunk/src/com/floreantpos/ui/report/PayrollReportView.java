@@ -10,9 +10,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -28,13 +26,11 @@ import net.sf.jasperreports.view.JRViewer;
 
 import org.jdesktop.swingx.JXDatePicker;
 
-import com.floreantpos.main.Application;
-import com.floreantpos.model.Terminal;
+import com.floreantpos.bo.ui.BackOfficeWindow;
 import com.floreantpos.model.dao.AttendenceHistoryDAO;
 import com.floreantpos.model.dao.TerminalDAO;
 import com.floreantpos.report.PayrollReportData;
 import com.floreantpos.report.PayrollReportModel;
-import com.floreantpos.swing.ListComboBoxModel;
 import com.floreantpos.swing.TransparentPanel;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.util.UiUtil;
@@ -82,7 +78,7 @@ public class PayrollReportView extends TransparentPanel {
         Date toDate = toDatePicker.getDate();
 
         if (fromDate.after(toDate)) {
-            POSMessageDialog.showError(Application.getInstance().getBackOfficeWindow(), com.floreantpos.POSConstants.FROM_DATE_CANNOT_BE_GREATER_THAN_TO_DATE_);
+            POSMessageDialog.showError(BackOfficeWindow.getInstance(), com.floreantpos.POSConstants.FROM_DATE_CANNOT_BE_GREATER_THAN_TO_DATE_);
             return;
         }
 

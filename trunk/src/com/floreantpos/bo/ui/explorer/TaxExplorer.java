@@ -11,10 +11,10 @@ import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 
 import com.floreantpos.POSConstants;
-import com.floreantpos.main.Application;
+import com.floreantpos.bo.ui.BOMessageDialog;
+import com.floreantpos.bo.ui.BackOfficeWindow;
 import com.floreantpos.model.Tax;
 import com.floreantpos.model.dao.TaxDAO;
-import com.floreantpos.swing.MessageDialog;
 import com.floreantpos.swing.TransparentPanel;
 import com.floreantpos.ui.PosTableRenderer;
 import com.floreantpos.ui.dialog.BeanEditorDialog;
@@ -44,14 +44,14 @@ public class TaxExplorer extends TransparentPanel {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					MenuCategoryForm editor = new MenuCategoryForm();
-					BeanEditorDialog dialog = new BeanEditorDialog(editor, Application.getInstance().getBackOfficeWindow(), true);
+					BeanEditorDialog dialog = new BeanEditorDialog(editor, BackOfficeWindow.getInstance(), true);
 					dialog.open();
 					if (dialog.isCanceled())
 						return;
 
 					tableModel.addCategory((Tax) editor.getBean());
 				} catch (Exception x) {
-					MessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
+				BOMessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
 				}
 			}
 			
@@ -67,14 +67,14 @@ public class TaxExplorer extends TransparentPanel {
 
 					Tax tax = taxList.get(index);
 
-					BeanEditorDialog dialog = new BeanEditorDialog(new TaxForm(tax), Application.getInstance().getBackOfficeWindow(), true);
+					BeanEditorDialog dialog = new BeanEditorDialog(new TaxForm(tax), BackOfficeWindow.getInstance(), true);
 					dialog.open();
 					if (dialog.isCanceled())
 						return;
 
 					table.repaint();
 				} catch (Throwable x) {
-					MessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
+				BOMessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
 				}
 			}
 			
@@ -93,7 +93,7 @@ public class TaxExplorer extends TransparentPanel {
 						tableModel.deleteCategory(tax, index);
 					}
 				} catch (Exception x) {
-					MessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
+				BOMessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
 				}
 			}
 			
