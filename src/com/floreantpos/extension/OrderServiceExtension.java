@@ -8,5 +8,6 @@ public interface OrderServiceExtension extends Plugin {
 	String getName();
 	String getDescription();
 	
+	void init();
 	void createNewTicket(String ticketType) throws TicketAlreadyExistsException;
 }
