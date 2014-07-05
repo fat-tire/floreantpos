@@ -1,9 +1,8 @@
 package com.floreantpos.swing;
 
 
-import javax.swing.JTextField;
 
-public class FixedLengthTextField extends JTextField {
+public class FixedLengthTextField extends FocusedTextField {
 	private FixedLengthDocument fixedLengthDocument;
 	
 	public FixedLengthTextField() {

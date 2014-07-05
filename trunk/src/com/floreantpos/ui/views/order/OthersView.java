@@ -19,7 +19,6 @@ import com.floreantpos.ui.dialog.NumberSelectionDialog2;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.dialog.TicketDetailDialog;
 import com.floreantpos.ui.views.CookingInstructionView;
-import java.awt.Dimension;
 
 /**
  *
@@ -133,7 +132,7 @@ public class OthersView extends TransparentPanel {
     	try {
 			Ticket ticket = getCurrentTicket();
 			
-			if(ticket.getTableNumber() != Ticket.TAKE_OUT && ticket.getGratuity() == null) {
+			if(Ticket.DINE_IN.equals(ticket.getTicketType()) && ticket.getGratuity() == null) {
 				double dueAmount = ticket.getDueAmount();
 				double tips = dueAmount * 0.15;
 				
@@ -240,7 +239,7 @@ public class OthersView extends TransparentPanel {
     
     public void updateView() {
     	if(currentTicket != null) {
-    		if(currentTicket.getTableNumber() == Ticket.TAKE_OUT) {
+    		if(!Ticket.DINE_IN.equals(currentTicket.getTicketType())) {
     			btnCustomerNumber.setText("");
         		btnTableNumber.setText("");
         		

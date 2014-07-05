@@ -1,5 +1,6 @@
 package com.floreantpos.model.base;
 
+import java.lang.Comparable;
 import java.io.Serializable;
 
 import com.floreantpos.model.TicketCookingInstruction;
@@ -14,11 +15,11 @@ import com.floreantpos.model.TicketCookingInstruction;
  *  table="TICKET"
  */
 
-public abstract class BaseTicket  implements Serializable {
+public abstract class BaseTicket  implements Comparable, Serializable {
 
 	public static String REF = "Ticket";
-	public static String PROP_BAR_CODE = "barCode";
 	public static String PROP_RE_OPENED = "reOpened";
+	public static String PROP_BAR_CODE = "barCode";
 	public static String PROP_VOID_REASON = "voidReason";
 	public static String PROP_DUE_AMOUNT = "dueAmount";
 	public static String PROP_TRANSACTION_TYPE = "transactionType";
@@ -30,8 +31,10 @@ public abstract class BaseTicket  implements Serializable {
 	public static String PROP_CARD_TYPE = "cardType";
 	public static String PROP_CREATION_HOUR = "creationHour";
 	public static String PROP_DRAWER_RESETTED = "drawerResetted";
+	public static String PROP_CUSTOMER = "customer";
 	public static String PROP_CARD_NUMBER = "cardNumber";
 	public static String PROP_OWNER = "owner";
+	public static String PROP_DELIVERY_DATE = "deliveryDate";
 	public static String PROP_GRATUITY = "gratuity";
 	public static String PROP_TABLE_NUMBER = "tableNumber";
 	public static String PROP_TERMINAL = "terminal";
@@ -42,6 +45,7 @@ public abstract class BaseTicket  implements Serializable {
 	public static String PROP_TAX_AMOUNT = "taxAmount";
 	public static String PROP_SUBTOTAL_AMOUNT = "subtotalAmount";
 	public static String PROP_VOIDED_BY = "voidedBy";
+	public static String PROP_TICKET_TYPE = "ticketType";
 	public static String PROP_TAX_EXEMPT = "taxExempt";
 	public static String PROP_ID = "id";
 	public static String PROP_WASTED = "wasted";
@@ -79,6 +83,7 @@ public abstract class BaseTicket  implements Serializable {
 	private java.util.Date createDate;
 	private java.util.Date closingDate;
 	private java.util.Date activeDate;
+	private java.util.Date deliveryDate;
 	private java.lang.Integer creationHour;
 	private java.lang.Boolean paid;
 	private java.lang.Boolean voided;
@@ -102,6 +107,7 @@ public abstract class BaseTicket  implements Serializable {
 	private java.lang.Boolean taxExempt;
 	private java.lang.Boolean reOpened;
 	private java.lang.Double serviceCharge;
+	private java.lang.String ticketType;
 
 	// many to one
 	private com.floreantpos.model.Shift shift;
@@ -109,6 +115,7 @@ public abstract class BaseTicket  implements Serializable {
 	private com.floreantpos.model.Gratuity gratuity;
 	private com.floreantpos.model.User voidedBy;
 	private com.floreantpos.model.Terminal terminal;
+	private com.floreantpos.model.Customer customer;
 
 	// collections
 	private java.util.List<com.floreantpos.model.TicketItem> ticketItems;
@@ -203,6 +210,23 @@ public abstract class BaseTicket  implements Serializable {
 	 */
 	public void setActiveDate (java.util.Date activeDate) {
 		this.activeDate = activeDate;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: DELIVEERY_DATE
+	 */
+	public java.util.Date getDeliveryDate () {
+			return deliveryDate;
+	}
+
+	/**
+	 * Set the value related to the column: DELIVEERY_DATE
+	 * @param deliveryDate the DELIVEERY_DATE value
+	 */
+	public void setDeliveryDate (java.util.Date deliveryDate) {
+		this.deliveryDate = deliveryDate;
 	}
 
 
@@ -599,6 +623,23 @@ public abstract class BaseTicket  implements Serializable {
 
 
 	/**
+	 * Return the value associated with the column: TICKET_TYPE
+	 */
+	public java.lang.String getTicketType () {
+			return ticketType;
+	}
+
+	/**
+	 * Set the value related to the column: TICKET_TYPE
+	 * @param ticketType the TICKET_TYPE value
+	 */
+	public void setTicketType (java.lang.String ticketType) {
+		this.ticketType = ticketType;
+	}
+
+
+
+	/**
 	 * Return the value associated with the column: SHIFT_ID
 	 */
 	public com.floreantpos.model.Shift getShift () {
@@ -684,6 +725,23 @@ public abstract class BaseTicket  implements Serializable {
 
 
 	/**
+	 * Return the value associated with the column: CUSTOMER_ID
+	 */
+	public com.floreantpos.model.Customer getCustomer () {
+			return customer;
+	}
+
+	/**
+	 * Set the value related to the column: CUSTOMER_ID
+	 * @param customer the CUSTOMER_ID value
+	 */
+	public void setCustomer (com.floreantpos.model.Customer customer) {
+		this.customer = customer;
+	}
+
+
+
+	/**
 	 * Return the value associated with the column: ticketItems
 	 */
 	public java.util.List<com.floreantpos.model.TicketItem> getTicketItems () {
@@ -745,6 +803,7 @@ public abstract class BaseTicket  implements Serializable {
 
 
 
+
 	public boolean equals (Object obj) {
 		if (null == obj) return false;
 		if (!(obj instanceof com.floreantpos.model.Ticket)) return false;
@@ -766,6 +825,11 @@ public abstract class BaseTicket  implements Serializable {
 		return this.hashCode;
 	}
 
+	public int compareTo (Object obj) {
+		if (obj.hashCode() > hashCode()) return 1;
+		else if (obj.hashCode() < hashCode()) return -1;
+		else return 0;
+	}
 
 	public String toString () {
 		return super.toString();

@@ -106,7 +106,8 @@ public abstract class PaymentView extends JPanel {
 		}
 		
 		Ticket ticket = ticketsToSettle.get(0);
-		if(ticket.getTableNumber() == Ticket.TAKE_OUT) {
+		
+		if(!Ticket.DINE_IN.equals(ticket.getTicketType())) {
 			return 0.0;
 		}
 		
