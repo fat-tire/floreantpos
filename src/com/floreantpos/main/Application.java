@@ -11,6 +11,9 @@ import javax.swing.JOptionPane;
 import javax.swing.Timer;
 import javax.swing.UIManager;
 
+import net.xeoh.plugins.base.PluginManager;
+import net.xeoh.plugins.base.impl.PluginManagerFactory;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -40,6 +43,8 @@ public class Application {
 	private static Log logger = LogFactory.getLog(Application.class);
 
 	private Timer autoDrawerPullTimer;
+	
+	private PluginManager pluginManager;
 
 	private Terminal terminal;
 	private PosWindow posWindow;
@@ -70,6 +75,10 @@ public class Application {
 	}
 
 	public void start() {
+		pluginManager = PluginManagerFactory.createPluginManager();
+		//pluginManager.addPluginsFrom(ClassURI.CLASSPATH);
+		pluginManager.addPluginsFrom(new File("plugins/").toURI());
+		
 		setApplicationLook();
 
 		rootView = RootView.getInstance();
@@ -344,6 +353,10 @@ public class Application {
 
 	public Restaurant getRestaurant() {
 		return restaurant;
+	}
+	
+	public static PluginManager getPluginManager() {
+		return getInstance().pluginManager;
 	}
 	
 	public static File getWorkingDir() {

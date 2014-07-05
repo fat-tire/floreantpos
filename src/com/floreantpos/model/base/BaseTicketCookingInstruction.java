@@ -1,5 +1,6 @@
 package com.floreantpos.model.base;
 
+import java.lang.Comparable;
 import java.io.Serializable;
 
 
@@ -12,7 +13,7 @@ import java.io.Serializable;
  *  table="TICKET"
  */
 
-public abstract class BaseTicketCookingInstruction  implements Serializable {
+public abstract class BaseTicketCookingInstruction  implements Comparable, Serializable {
 
 	public static String REF = "TicketCookingInstruction";
 	public static String PROP_PRINTED_TO_KITCHEN = "printedToKitchen";
@@ -74,6 +75,12 @@ public abstract class BaseTicketCookingInstruction  implements Serializable {
 
 
 
+
+	public int compareTo (Object obj) {
+		if (obj.hashCode() > hashCode()) return 1;
+		else if (obj.hashCode() < hashCode()) return -1;
+		else return 0;
+	}
 
 	public String toString () {
 		return super.toString();

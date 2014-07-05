@@ -14,21 +14,27 @@ import com.floreantpos.util.NumberUtil;
 
 public class Ticket extends BaseTicket {
 	private static final long serialVersionUID = 1L;
-	public final static int TAKE_OUT = -1;
+	// public final static int TAKE_OUT = -1;
 
-	/*[CONSTRUCTOR MARKER BEGIN]*/
-	public Ticket () {
+	public final static String DINE_IN = "DINE IN";
+	public final static String TAKE_OUT = "TAKE OUT";
+	public final static String ONLINE_ORDER = "ONLINE ORDER";
+	public final static String HOME_DELIVERY = "HOME DELIVERY";
+	public final static String DRIVE_THROUGH = "DRIVE THROUGH";
+
+	/* [CONSTRUCTOR MARKER BEGIN] */
+	public Ticket() {
 		super();
 	}
 
 	/**
 	 * Constructor for primary key
 	 */
-	public Ticket (java.lang.Integer id) {
+	public Ticket(java.lang.Integer id) {
 		super(id);
 	}
 
-	/*[CONSTRUCTOR MARKER END]*/
+	/* [CONSTRUCTOR MARKER END] */
 
 	private static SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd yyyy, h:m a");
 	private DecimalFormat numberFormat = new DecimalFormat("0.00");
@@ -111,7 +117,7 @@ public class Ticket extends BaseTicket {
 		}
 		return count;
 	}
-	
+
 	public void calculatePrice() {
 		List<TicketItem> ticketItems = getTicketItems();
 		if (ticketItems == null) {
@@ -121,21 +127,20 @@ public class Ticket extends BaseTicket {
 		for (TicketItem ticketItem : ticketItems) {
 			ticketItem.calculatePrice();
 		}
-		
+
 		double subtotalAmount = calculateSubtotalAmount();
 		double discountAmount = calculateDiscountAmount();
-		
+
 		setSubtotalAmount(subtotalAmount);
 		setDiscountAmount(discountAmount);
-		
+
 		double taxAmount = calculateTax();
 		setTaxAmount(taxAmount);
-		
+
 		double serviceChargeAmount = calculateServiceCharge();
 		double totalAmount = subtotalAmount - discountAmount + taxAmount + serviceChargeAmount;
-		
+
 		totalAmount = fixInvalidAmount(totalAmount);
-		
 
 		setServiceCharge(serviceChargeAmount);
 		setTotalAmount(NumberUtil.roundToTwoDigit(totalAmount));
@@ -155,7 +160,7 @@ public class Ticket extends BaseTicket {
 		for (TicketItem ticketItem : ticketItems) {
 			subtotalAmount += ticketItem.getSubtotalAmount();
 		}
-		
+
 		subtotalAmount = fixInvalidAmount(subtotalAmount);
 
 		return NumberUtil.roundToTwoDigit(subtotalAmount);
@@ -178,7 +183,7 @@ public class Ticket extends BaseTicket {
 				discountAmount += calculateDiscountFromType(discount, subtotalAmount);
 			}
 		}
-		
+
 		discountAmount = fixInvalidAmount(discountAmount);
 
 		return NumberUtil.roundToTwoDigit(discountAmount);
@@ -188,7 +193,7 @@ public class Ticket extends BaseTicket {
 		if (isTaxExempt()) {
 			return 0;
 		}
-		
+
 		List<TicketItem> ticketItems = getTicketItems();
 		if (ticketItems == null) {
 			return 0;
@@ -198,12 +203,12 @@ public class Ticket extends BaseTicket {
 		for (TicketItem ticketItem : ticketItems) {
 			tax += ticketItem.getTaxAmount();
 		}
-		
+
 		return NumberUtil.roundToTwoDigit(fixInvalidAmount(tax));
 	}
 
 	private double fixInvalidAmount(double tax) {
-		if(tax < 0 || Double.isNaN(tax)) {
+		if (tax < 0 || Double.isNaN(tax)) {
 			tax = 0;
 		}
 		return tax;
@@ -323,19 +328,19 @@ public class Ticket extends BaseTicket {
 
 		return false;
 	}
-	
+
 	public double calculateDefaultGratutity() {
-		if(getTableNumber() == TAKE_OUT) {
+		if (!DINE_IN.equals(getTicketType())) {
 			return 0;
 		}
-		
+
 		Restaurant restaurant = Application.getInstance().getRestaurant();
 		double defaultGratuityPercentage = restaurant.getDefaultGratuityPercentage();
-		
-		if(defaultGratuityPercentage <= 0) {
+
+		if (defaultGratuityPercentage <= 0) {
 			return 0;
 		}
-		
+
 		Gratuity gratuity = new Gratuity();
 		double tip = getDueAmount() * (defaultGratuityPercentage / 100.0);
 		gratuity.setAmount(tip);
@@ -343,26 +348,46 @@ public class Ticket extends BaseTicket {
 		gratuity.setPaid(false);
 		gratuity.setTicket(this);
 		gratuity.setTerminal(getTerminal());
-		
+
 		setGratuity(gratuity);
-		
+
 		return tip;
 	}
-	
+
 	public double calculateServiceCharge() {
-		if(getTableNumber() == TAKE_OUT) {
+		if (!DINE_IN.equals(getTicketType())) {
 			return 0;
 		}
-		
+
 		Restaurant restaurant = Application.getInstance().getRestaurant();
 		double serviceChargePercentage = restaurant.getServiceChargePercentage();
-		
+
 		double serviceCharge = 0.0;
-		
-		if(serviceChargePercentage > 0.0) {
+
+		if (serviceChargePercentage > 0.0) {
 			serviceCharge = (getSubtotalAmount() - getDiscountAmount() + getTaxAmount()) * (serviceChargePercentage / 100.0);
 		}
-		
+
 		return NumberUtil.roundToTwoDigit(fixInvalidAmount(serviceCharge));
+	}
+
+	public static boolean isDineIn(String type) {
+		return DINE_IN.equals(type);
+	}
+
+	public static boolean isOnlineOrder(String type) {
+		return ONLINE_ORDER.equals(type);
+	}
+
+	public static boolean isHomeDelivery(String type) {
+		return HOME_DELIVERY.equals(type);
+	}
+
+	public static boolean isTakeOut(String type) {
+		return TAKE_OUT.equals(type);
+	}
+
+	public static boolean isDriveThrough(String type) {
+		return DRIVE_THROUGH.equals(type);
 	}
 }

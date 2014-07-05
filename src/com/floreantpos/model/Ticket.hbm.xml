@@ -9,6 +9,7 @@
     <property column="CREATE_DATE" index="ticketcreateDate" length="10" name="createDate" type="java.util.Date"/>
     <property column="CLOSING_DATE" index="ticketclosingDate" length="10" name="closingDate" type="java.util.Date"/>
     <property column="ACTIVE_DATE" index="ticketactiveDate" length="10" name="activeDate" type="java.util.Date"/>
+    <property column="DELIVEERY_DATE" index="deliveryDate" length="10" name="deliveryDate" type="java.util.Date"/>
     <property column="CREATION_HOUR" index="creationHour" name="creationHour" type="java.lang.Integer"/>
     <property column="PAID" index="ticketpaid" name="paid" type="java.lang.Boolean"/>
     <property column="VOIDED" index="ticketvoided" name="voided" type="java.lang.Boolean"/>
@@ -37,11 +38,9 @@
     <property column="IS_RE_OPENED" name="reOpened" type="java.lang.Boolean"/>
     <property column="SERVICE_CHARGE" name="serviceCharge" type="java.lang.Double"/>
     
+    <property name="ticketType" column="TICKET_TYPE" length="12" type="string" />
+    
     <!-- Associations -->
-    <!-- uni-directional many-to-one association to RestaurantTable -->
-    <!-- many-to-one name="restaurantTable" class="com.floreantpos.model.RestaurantTable" lazy="false">
-			<column name="RESTAURANT_TABLE_ID" />
-		</many-to-one-->
     <!-- bi-directional one-to-many association to TicketItem -->
     <list cascade="all" inverse="false" lazy="true" name="ticketItems">
       <key>
@@ -79,6 +78,9 @@
     </many-to-one>
     <many-to-one class="com.floreantpos.model.Terminal" lazy="false" name="terminal">
       <column name="TERMINAL_ID"/>
+    </many-to-one>
+    <many-to-one class="com.floreantpos.model.Customer" lazy="false" name="customer">
+      <column name="CUSTOMER_ID"/>
     </many-to-one>
   </class>
 </hibernate-mapping>

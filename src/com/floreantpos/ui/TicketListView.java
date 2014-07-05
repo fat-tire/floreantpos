@@ -13,6 +13,7 @@ import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.TableColumnModel;
 
+import com.floreantpos.POSConstants;
 import com.floreantpos.bo.ui.explorer.ListTableModel;
 import com.floreantpos.model.Ticket;
 
@@ -92,7 +93,8 @@ public class TicketListView extends JPanel {
 	
 	private class TicketListTableModel extends ListTableModel {
 		public TicketListTableModel() {
-			super(new String[] {com.floreantpos.POSConstants.ID, com.floreantpos.POSConstants.TABLE, com.floreantpos.POSConstants.SERVER, com.floreantpos.POSConstants.CREATED, com.floreantpos.POSConstants.TOTAL, com.floreantpos.POSConstants.DUE});
+			super(new String[] {POSConstants.ID, POSConstants.TABLE, POSConstants.SERVER, 
+					POSConstants.CREATED, POSConstants.TICKET_DELIVERY_DATE, POSConstants.TICKET_TYPE, POSConstants.TOTAL, POSConstants.DUE});
 		}
 		
 		public Object getValueAt(int rowIndex, int columnIndex) {
@@ -103,7 +105,12 @@ public class TicketListView extends JPanel {
 					return Integer.valueOf(ticket.getId());
 					
 				case 1:
-					return Integer.valueOf(ticket.getTableNumber());
+					Integer tableNumber = ticket.getTableNumber();
+					if(tableNumber == -1) {
+						return null;
+					}
+				
+					return Integer.valueOf(tableNumber);
 					
 				case 2:
 					return String.valueOf(ticket.getOwner());
@@ -112,9 +119,15 @@ public class TicketListView extends JPanel {
 					return ticket.getCreateDate();
 					
 				case 4:
-					return ticket.getTotalAmount();
+					return ticket.getDeliveryDate();
 					
 				case 5:
+					return ticket.getTicketType();
+					
+				case 6:
+					return ticket.getTotalAmount();
+					
+				case 7:
 					return ticket.getDueAmount();
 					
 			}
@@ -123,4 +136,33 @@ public class TicketListView extends JPanel {
 		}
 		
 	}
+	
+//	private class TicketListTableCellRenderer extends PosTableRenderer {
+//		@Override
+//		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+//			Component rendererComponent = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+//			
+//			if(isSelected || value == null) {
+//				return rendererComponent;
+//			}
+//			
+//			if(Ticket.isDineIn(value.toString())) {
+//				rendererComponent.setBackground(SwitchboardView.DINE_IN_COLOR);
+//			}
+//			else if(Ticket.isDriveThrough(value.toString())) {
+//				rendererComponent.setBackground(SwitchboardView.DRIVE_THROUGH_COLOR);
+//			}
+//			else if(Ticket.isOnlineOrder(value.toString())) {
+//				rendererComponent.setBackground(SwitchboardView.ONLINE_ORDER_COLOR);
+//			}
+//			else if(Ticket.isHomeDelivery(value.toString())) {
+//				rendererComponent.setBackground(SwitchboardView.HOME_DELIVERY_COLOR);
+//			}
+//			else if(Ticket.isTakeOut(value.toString())) {
+//				rendererComponent.setBackground(SwitchboardView.TAKE_OUT_COLOR);
+//			}
+//			
+//			return rendererComponent;
+//		}
+//	}
 }

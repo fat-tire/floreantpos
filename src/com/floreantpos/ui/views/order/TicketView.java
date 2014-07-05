@@ -15,6 +15,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
+import org.hibernate.StaleObjectStateException;
+
 import net.miginfocom.swing.MigLayout;
 
 import com.floreantpos.POSConstants;
@@ -335,7 +337,11 @@ public class TicketView extends JPanel {
 				OrderController.saveOrder(ticket);
 			}
 			RootView.getInstance().showView(SwitchboardView.VIEW_NAME);
-		} catch (PosException x) {
+		} catch (StaleObjectStateException e) {
+			POSMessageDialog.showError("It seems the ticket has been modified by some other person or terminal. Save failed.");
+			return;
+		} 
+		catch (PosException x) {
 			POSMessageDialog.showError(x.getMessage());
 		} catch (Exception e) {
 			POSMessageDialog.showError(Application.getPosWindow(), POSConstants.ERROR_MESSAGE, e);
