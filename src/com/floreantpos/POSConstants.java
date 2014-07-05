@@ -321,7 +321,7 @@ public class POSConstants {
 	public static final String YOU_MUST_SELECT_TWO_OR_MORE_TICKET_FOR_GROUP_SETTLE = Messages.getString("Switchboard.5"); //$NON-NLS-1$
 	public static final String SELECT_A_TICKET_FROM_THE_OPEN_TICKET_LIST = Messages.getString("Switchboard.6"); //$NON-NLS-1$
 	public static final String ENTER_NUMBER_OF_GUEST = Messages.getString("Switchboard.7"); //$NON-NLS-1$
-	public static final String THE_TABLE_IS_ALREADY_OCCUPIED_WHAT_DO_YOU_WANT_TO_DO = Messages.getString("Switchboard.8"); //$NON-NLS-1$
+	public static final String EDIT_TICKET_CONFIRMATION = Messages.getString("Switchboard.8"); //$NON-NLS-1$
 	public static final String ENTER_A_TABLE_NUMBER = Messages.getString("Switchboard.9"); //$NON-NLS-1$
 	public static final String SELECT_ONE_TICKET_TO_EDIT = Messages.getString("Switchboard.10"); //$NON-NLS-1$
 	public static final String SELECT_ONE_TICKET_TO_SPLIT = Messages.getString("Switchboard.11"); //$NON-NLS-1$
@@ -357,6 +357,8 @@ public class POSConstants {
 	public static final String CAPITAL_PREV = Messages.getString("SelectionView.2"); //$NON-NLS-1$
 	public static final String DEFAULT_TIPS_PERCENTAGE = Messages.getString("DEFAULT_TIPS_PERCENTAGE"); //$NON-NLS-1$
 	public static final String TAX_EXPLORER = Messages.getString("POSConstants.TAX_EXPLORER"); //$NON-NLS-1$
+	public static final String TICKET_DELIVERY_DATE = Messages.getString("POSConstants.TICKET_DELIVERY_DATE"); //$NON-NLS-1$
+	public static final String TICKET_TYPE = Messages.getString("POSConstants.TICKET_TYPE"); //$NON-NLS-1$
 
 	public static final String POS_MESSAGE_ERROR = "PosMessage.Error";
 }

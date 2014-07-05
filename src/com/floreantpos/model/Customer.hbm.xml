@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.floreantpos.model">
+	<class lazy="false" name="com.floreantpos.model.Customer" table="CUSTOMER">
+
+		<id column="AUTO_ID" name="autoId" type="java.lang.Integer">
+			<generator class="identity" />
+		</id>
+		
+		<version column="MODIFIED_TIME" name="modifiedTime" type="timestamp" />
+		
+		<property name="loyaltyNo" column="LOYALTY_NO" length="30" type="string" />
+		<property name="telephoneNo" column="TELEPHONE_NO" length="30" type="string" />
+		<property name="email" column="EMAIL" length="40" type="string" />
+		<property name="name" column="NAME" length="60" type="string" />
+		<property name="ssn" column="SSN" length="30" type="string" />
+		<property name="address" column="ADDRESS" length="120" type="string" />
+		<property name="city" column="CITY" length="30" type="string" />
+		<property name="state" column="STATE" length="30" type="string" />
+		<property name="zipCode" column="ZIP_CODE" length="10" type="string" />
+		<property name="country" column="COUNTRY" length="30" type="string" />
+		<property name="vip" column="VIP" type="java.lang.Boolean" />
+		<property name="creditLimit" column="CREDIT_LIMIT" type="java.lang.Double" />
+		<property name="creditSpent" column="CREDIT_SPENT" type="java.lang.Double" />
+		<property name="creditCardNo" column="CREDIT_CARD_NO" length="30" type="string" />
+		<property name="note" column="NOTE" length="255" type="string" />
+
+	</class>
+</hibernate-mapping>

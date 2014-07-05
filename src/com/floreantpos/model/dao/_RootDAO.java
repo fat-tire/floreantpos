@@ -10,6 +10,7 @@ import com.floreantpos.model.AttendenceHistory;
 import com.floreantpos.model.CashDrawerResetHistory;
 import com.floreantpos.model.CookingInstruction;
 import com.floreantpos.model.CouponAndDiscount;
+import com.floreantpos.model.Customer;
 import com.floreantpos.model.DrawerPullReport;
 import com.floreantpos.model.Gratuity;
 import com.floreantpos.model.MenuCategory;
@@ -95,6 +96,7 @@ public abstract class _RootDAO extends com.floreantpos.model.dao._BaseRootDAO {
 		configuration = configuration.addClass(PrinterConfiguration.class);
 		configuration = configuration.addClass(UserPermission.class);
 		configuration = configuration.addClass(UserType.class);
+		configuration = configuration.addClass(Customer.class);
 		
 		Database defaultDatabase = AppConfig.getDefaultDatabase();
 
