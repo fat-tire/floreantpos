@@ -9,6 +9,7 @@ import com.floreantpos.ui.dialog.BeanEditorDialog;
 public abstract class BeanEditor extends com.floreantpos.swing.TransparentPanel {
 	protected Object bean;
 	protected BeanEditorDialog editorDialog;
+	protected boolean editMode;
 	
 	public BeanEditor(LayoutManager layout, boolean isDoubleBuffered) {
 		super(layout, isDoubleBuffered);
@@ -51,5 +52,13 @@ public abstract class BeanEditor extends com.floreantpos.swing.TransparentPanel 
 
 	public void setEditorDialog(BeanEditorDialog editorDialog) {
 		this.editorDialog = editorDialog;
+	}
+
+	public boolean isEditMode() {
+		return editMode;
+	}
+
+	public void setEditMode(boolean editMode) {
+		this.editMode = editMode;
 	}
 }

@@ -20,6 +20,10 @@ public class DefaultOrderServiceExtension implements OrderServiceExtension {
 	public String getDescription() {
 		return "Default order handler";
 	}
+	
+	@Override
+	public void init() {
+	}
 
 	@Override
 	public void createNewTicket(String ticketType) throws TicketAlreadyExistsException {
