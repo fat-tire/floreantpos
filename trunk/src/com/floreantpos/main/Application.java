@@ -78,6 +78,7 @@ public class Application {
 		pluginManager = PluginManagerFactory.createPluginManager();
 		//pluginManager.addPluginsFrom(ClassURI.CLASSPATH);
 		pluginManager.addPluginsFrom(new File("plugins/").toURI());
+		pluginManager.addPluginsFrom(new File("/home/mshahriar/git/oro/target/classes").toURI());
 		
 		setApplicationLook();
 

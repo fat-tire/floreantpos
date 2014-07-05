@@ -20,5 +20,10 @@ public class Customer extends BaseCustomer {
 	}
 
 /*[CONSTRUCTOR MARKER END]*/
-
+	
+	@Override
+	public String toString() {
+		String name = getName();
+		return name;
+	}
 }
