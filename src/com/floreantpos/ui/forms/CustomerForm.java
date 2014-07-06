@@ -232,6 +232,9 @@ public class CustomerForm extends BeanEditor {
 
 	@Override
 	public String getDisplayText() {
-		return null;
+		if(editMode) {
+			return "Edit customer";
+		}
+		return "Create customer";
 	}
 }
