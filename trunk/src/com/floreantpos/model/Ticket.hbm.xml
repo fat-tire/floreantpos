@@ -38,7 +38,7 @@
     <property column="IS_RE_OPENED" name="reOpened" type="java.lang.Boolean"/>
     <property column="SERVICE_CHARGE" name="serviceCharge" type="java.lang.Double"/>
     
-    <property name="ticketType" column="TICKET_TYPE" length="12" type="string" />
+    <property name="ticketType" column="TICKET_TYPE" length="20" type="string" />
     
     <!-- Associations -->
     <!-- bi-directional one-to-many association to TicketItem -->
