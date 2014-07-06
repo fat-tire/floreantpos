@@ -19,7 +19,7 @@ public class Ticket extends BaseTicket {
 	public final static String DINE_IN = "DINE IN";
 	public final static String TAKE_OUT = "TAKE OUT";
 	public final static String ONLINE_ORDER = "ONLINE ORDER";
-	public final static String HOME_DELIVERY = "HOME DELIVERY";
+	public final static String HOME_DELIVERY = "HOME DELIVER";
 	public final static String DRIVE_THROUGH = "DRIVE THRU";
 
 	/* [CONSTRUCTOR MARKER BEGIN] */
