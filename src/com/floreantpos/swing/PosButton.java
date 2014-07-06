@@ -1,14 +1,10 @@
 package com.floreantpos.swing;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
@@ -35,7 +31,6 @@ public class PosButton extends JButton {
 
 		setFocusPainted(false);
 		setMargin(margin);
-		setPreferredSize(new Dimension(60, 45));
 	}
 
 	@Override
@@ -43,20 +38,23 @@ public class PosButton extends JButton {
 		return "PosButtonUI";
 	}
 
-	public static void main(String[] args) {
-		JFrame frame = new JFrame();
-		final PosButton button = new PosButton("TEST");
-		frame.add(button, BorderLayout.NORTH);
-		button.addActionListener(new ActionListener() {
+	@Override
+	public Dimension getPreferredSize() {
+		Dimension size = super.getPreferredSize();
 
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				System.out.println(button.getPreferredSize());
-				System.out.println(button.getSize());
-			}
-		});
+		if (isPreferredSizeSet()) {
+			return size;
+		}
 
-		frame.setSize(600, 400);
-		frame.setVisible(true);
+		if (ui != null) {
+			size = ui.getPreferredSize(this);
+		}
+		
+		if(size != null) {
+			size.setSize(size.width + 20, 45);
+		}
+		
+		
+		return (size != null) ? size : super.getPreferredSize();
 	}
 }

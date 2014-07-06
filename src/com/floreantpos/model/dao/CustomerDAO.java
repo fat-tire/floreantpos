@@ -23,7 +23,7 @@ public class CustomerDAO extends BaseCustomerDAO {
 		try {
 			session = getSession();
 			Criteria criteria = session.createCriteria(getReferenceClass());
-			criteria.add(Restrictions.like(field, value));
+			criteria.add(Restrictions.like(field, "%" + value + "%"));
 
 			return criteria.list();
 			
