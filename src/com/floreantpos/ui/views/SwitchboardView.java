@@ -6,7 +6,6 @@
 
 package com.floreantpos.ui.views;
 
-import java.awt.Color;
 import java.awt.ComponentOrientation;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -62,12 +61,6 @@ import foxtrot.Worker;
 public class SwitchboardView extends JPanel implements ActionListener {
 	public final static String VIEW_NAME = com.floreantpos.POSConstants.SWITCHBOARD;
 
-	public final static Color DINE_IN_COLOR = Color.WHITE;
-	public final static Color TAKE_OUT_COLOR = Color.GREEN;
-	public final static Color HOME_DELIVERY_COLOR = Color.YELLOW;
-	public final static Color ONLINE_ORDER_COLOR = Color.YELLOW.darker();
-	public final static Color DRIVE_THROUGH_COLOR = Color.GREEN.darker();
-
 	private Timer ticketListUpdater;
 
 	/** Creates new form SwitchboardView */
@@ -112,7 +105,6 @@ public class SwitchboardView extends JPanel implements ActionListener {
 		openTicketList = new com.floreantpos.ui.TicketListView();
 		javax.swing.JPanel activityPanel = new javax.swing.JPanel();
 		btnNewTicket = new com.floreantpos.swing.PosButton();
-		btnNewTicket.setBackground(DINE_IN_COLOR);
 		btnEditTicket = new com.floreantpos.swing.PosButton();
 		btnVoidTicket = new com.floreantpos.swing.PosButton();
 		btnPayout = new com.floreantpos.swing.PosButton();
@@ -146,25 +138,36 @@ public class SwitchboardView extends JPanel implements ActionListener {
 		btnNewTicket.setText("DINE IN");
 		activityPanel.add(btnNewTicket);
 		btnTakeout = new com.floreantpos.swing.PosButton();
-		btnTakeout.setBackground(TAKE_OUT_COLOR);
 
 		btnTakeout.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pay_32.png")));
 		btnTakeout.setText(POSConstants.CAPITAL_TAKE_OUT);
 		activityPanel.add(btnTakeout);
 
 		btnOnlineOrder = new PosButton();
-		btnOnlineOrder.setBackground(ONLINE_ORDER_COLOR);
+		btnOnlineOrder.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				doTakeout(Ticket.ONLINE_ORDER);
+			}
+		});
 		btnOnlineOrder.setText("ONLINE ORDER");
 		activityPanel.add(btnOnlineOrder);
 
 		btnHomeDelivery = new PosButton();
-		btnHomeDelivery.setBackground(HOME_DELIVERY_COLOR);
+		btnHomeDelivery.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				doTakeout(Ticket.HOME_DELIVERY);
+			}
+		});
 		btnHomeDelivery.setText("HOME DELIVERY");
 		activityPanel.add(btnHomeDelivery);
 
 		btnDriveThrough = new PosButton();
-		btnDriveThrough.setBackground(DRIVE_THROUGH_COLOR);
-		btnDriveThrough.setText("DRIVE THROUGH");
+		btnDriveThrough.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				doTakeout(Ticket.DRIVE_THROUGH);
+			}
+		});
+		btnDriveThrough.setText("DRIVE THRU");
 		activityPanel.add(btnDriveThrough);
 
 		btnEditTicket.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/edit_ticket_32.png")));
@@ -204,6 +207,58 @@ public class SwitchboardView extends JPanel implements ActionListener {
 		activityPanel.add(btnPrintTicket);
 
 		bottomLeftPanel.add(activityPanel, java.awt.BorderLayout.SOUTH);
+
+		psbtnCustSelect = new PosButton();
+		psbtnCustSelect.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				OrderServiceExtension orderServiceExtension = Application.getPluginManager().getPlugin(OrderServiceExtension.class);
+
+				if (orderServiceExtension == null) {
+					POSMessageDialog.showError("ORO order extension is needed for this");
+					return;
+				}
+
+				List<Ticket> selectedTickets = openTicketList.getSelectedTickets();
+				if (selectedTickets.size() == 0 || selectedTickets.size() > 1) {
+					POSMessageDialog.showMessage(POSConstants.SELECT_ONE_TICKET_TO_EDIT);
+					return;
+				}
+
+				Ticket ticket = selectedTickets.get(0);
+
+				orderServiceExtension.setCustomerToTicket(ticket);
+				openTicketList.revalidate();
+				openTicketList.repaint();
+			}
+		});
+		psbtnCustSelect.setText("CUST. SELECT");
+		activityPanel.add(psbtnCustSelect);
+
+		psbtnDeliveryndate = new PosButton();
+		psbtnDeliveryndate.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				OrderServiceExtension orderServiceExtension = Application.getPluginManager().getPlugin(OrderServiceExtension.class);
+
+				if (orderServiceExtension == null) {
+					POSMessageDialog.showError("ORO order extension is needed for this");
+					return;
+				}
+
+				List<Ticket> selectedTickets = openTicketList.getSelectedTickets();
+				if (selectedTickets.size() == 0 || selectedTickets.size() > 1) {
+					POSMessageDialog.showMessage(POSConstants.SELECT_ONE_TICKET_TO_EDIT);
+					return;
+				}
+
+				Ticket ticket = selectedTickets.get(0);
+
+				orderServiceExtension.setDeliveryDate(ticket);
+				openTicketList.revalidate();
+				openTicketList.repaint();
+			}
+		});
+		psbtnDeliveryndate.setText("DELI. DATE");
+		activityPanel.add(psbtnDeliveryndate);
 
 		bottomPanel.add(bottomLeftPanel, java.awt.BorderLayout.CENTER);
 
@@ -472,12 +527,12 @@ public class SwitchboardView extends JPanel implements ActionListener {
 		}
 	}
 
-	private void doTakeout() {
+	private void doTakeout(String titcketType) {
 		Application application = Application.getInstance();
 
 		Ticket ticket = new Ticket();
 		ticket.setTableNumber(-1);
-		ticket.setTicketType(Ticket.TAKE_OUT);
+		ticket.setTicketType(titcketType);
 		ticket.setTerminal(application.getTerminal());
 		ticket.setOwner(Application.getCurrentUser());
 		ticket.setShift(application.getCurrentShift());
@@ -638,6 +693,8 @@ public class SwitchboardView extends JPanel implements ActionListener {
 	private PosButton btnOnlineOrder;
 	private PosButton btnHomeDelivery;
 	private PosButton btnDriveThrough;
+	private PosButton psbtnCustSelect;
+	private PosButton psbtnDeliveryndate;
 
 	// End of variables declaration//GEN-END:variables
 
@@ -704,7 +761,7 @@ public class SwitchboardView extends JPanel implements ActionListener {
 			doSplitTicket();
 		}
 		if (source == btnTakeout) {
-			doTakeout();
+			doTakeout(Ticket.TAKE_OUT);
 		}
 		if (source == btnVoidTicket) {
 			doVoidTicket();
