@@ -62,4 +62,9 @@ public class DefaultOrderServiceExtension implements OrderServiceExtension {
 		RootView.getInstance().showView(OrderView.VIEW_NAME);
 	}
 
+	@Override
+	public void setCustomerToTicket(Ticket ticket) {
+	}
+	
+	public void setDeliveryDate(Ticket ticket) {};
 }
