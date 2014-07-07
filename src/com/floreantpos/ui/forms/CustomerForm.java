@@ -210,7 +210,7 @@ public class CustomerForm extends BeanEditor {
 		
 		if(customer == null) {
 			customer = new Customer();
-			this.bean = customer;
+			setBean(customer, false);
 		}
 		
 		customer.setName(tfName.getText());

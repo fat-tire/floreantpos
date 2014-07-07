@@ -10,7 +10,7 @@ public abstract class BeanEditor extends com.floreantpos.swing.TransparentPanel 
 	protected Object bean;
 	protected BeanEditorDialog editorDialog;
 	protected boolean editMode;
-	
+
 	public BeanEditor(LayoutManager layout, boolean isDoubleBuffered) {
 		super(layout, isDoubleBuffered);
 	}
@@ -26,11 +26,15 @@ public abstract class BeanEditor extends com.floreantpos.swing.TransparentPanel 
 	public BeanEditor() {
 		super();
 	}
-	
+
 	public abstract boolean save();
+
 	public abstract void dispose();
+
 	protected abstract void updateView();
+
 	protected abstract boolean updateModel() throws IllegalModelStateException;
+
 	public abstract String getDisplayText();
 
 	public Object getBean() {
@@ -38,10 +42,16 @@ public abstract class BeanEditor extends com.floreantpos.swing.TransparentPanel 
 	}
 
 	public void setBean(Object bean) {
-		this.bean = bean;
-		updateView();
+		setBean(bean, true);
 	}
-	
+
+	public void setBean(Object bean, boolean updateView) {
+		this.bean = bean;
+
+		if (updateView)
+			updateView();
+	}
+
 	public Frame getParentFrame() {
 		return (Frame) editorDialog.getOwner();
 	}
