@@ -17,7 +17,6 @@ import java.util.Set;
 
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.Timer;
 
 import net.miginfocom.swing.MigLayout;
 
@@ -61,7 +60,7 @@ import foxtrot.Worker;
 public class SwitchboardView extends JPanel implements ActionListener {
 	public final static String VIEW_NAME = com.floreantpos.POSConstants.SWITCHBOARD;
 
-	private Timer ticketListUpdater;
+//	private Timer ticketListUpdater;
 
 	/** Creates new form SwitchboardView */
 	public SwitchboardView() {
@@ -83,7 +82,7 @@ public class SwitchboardView extends JPanel implements ActionListener {
 		btnTakeout.addActionListener(this);
 		btnVoidTicket.addActionListener(this);
 
-		ticketListUpdater = new Timer(30 * 1000, new TicketListUpdaterTask());
+//		ticketListUpdater = new Timer(30 * 1000, new TicketListUpdaterTask());
 
 		applyComponentOrientation(ComponentOrientation.getOrientation(Locale.getDefault()));
 	}
@@ -701,14 +700,17 @@ public class SwitchboardView extends JPanel implements ActionListener {
 	@Override
 	public void setVisible(boolean aFlag) {
 		super.setVisible(aFlag);
-
-		if (aFlag) {
-			updateView();
-			ticketListUpdater.start();
-		}
-		else {
-			ticketListUpdater.stop();
-		}
+		
+		if(aFlag)
+		updateTicketList();
+		
+//		if (aFlag) {
+//			updateView();
+//			ticketListUpdater.start();
+//		}
+//		else {
+//			ticketListUpdater.stop();
+//		}
 	}
 
 	public void actionPerformed(ActionEvent e) {
