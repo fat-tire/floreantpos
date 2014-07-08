@@ -59,7 +59,9 @@ import foxtrot.Worker;
  */
 public class SwitchboardView extends JPanel implements ActionListener {
 	public final static String VIEW_NAME = com.floreantpos.POSConstants.SWITCHBOARD;
-
+	
+	private OrderServiceExtension orderServiceExtension;
+	
 //	private Timer ticketListUpdater;
 
 	/** Creates new form SwitchboardView */
@@ -82,6 +84,14 @@ public class SwitchboardView extends JPanel implements ActionListener {
 		btnTakeout.addActionListener(this);
 		btnVoidTicket.addActionListener(this);
 
+		orderServiceExtension = Application.getPluginManager().getPlugin(OrderServiceExtension.class);
+
+		if (orderServiceExtension == null) {
+			btnHomeDelivery.setEnabled(false);
+			btnOnlineOrder.setEnabled(false);
+
+			orderServiceExtension = new DefaultOrderServiceExtension();
+		}
 //		ticketListUpdater = new Timer(30 * 1000, new TicketListUpdaterTask());
 
 		applyComponentOrientation(ComponentOrientation.getOrientation(Locale.getDefault()));
@@ -145,7 +155,7 @@ public class SwitchboardView extends JPanel implements ActionListener {
 		btnOnlineOrder = new PosButton();
 		btnOnlineOrder.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				doTakeout(Ticket.ONLINE_ORDER);
+				doHomeDelivery(Ticket.ONLINE_ORDER);
 			}
 		});
 		btnOnlineOrder.setText("ONLINE ORDER");
@@ -154,7 +164,7 @@ public class SwitchboardView extends JPanel implements ActionListener {
 		btnHomeDelivery = new PosButton();
 		btnHomeDelivery.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				doTakeout(Ticket.HOME_DELIVERY);
+				doHomeDelivery(Ticket.HOME_DELIVERY);
 			}
 		});
 		btnHomeDelivery.setText("HOME DELIVERY");
@@ -206,58 +216,6 @@ public class SwitchboardView extends JPanel implements ActionListener {
 		activityPanel.add(btnPrintTicket);
 
 		bottomLeftPanel.add(activityPanel, java.awt.BorderLayout.SOUTH);
-
-		psbtnCustSelect = new PosButton();
-		psbtnCustSelect.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				OrderServiceExtension orderServiceExtension = Application.getPluginManager().getPlugin(OrderServiceExtension.class);
-
-				if (orderServiceExtension == null) {
-					POSMessageDialog.showError("ORO order extension is needed for this");
-					return;
-				}
-
-				List<Ticket> selectedTickets = openTicketList.getSelectedTickets();
-				if (selectedTickets.size() == 0 || selectedTickets.size() > 1) {
-					POSMessageDialog.showMessage(POSConstants.SELECT_ONE_TICKET_TO_EDIT);
-					return;
-				}
-
-				Ticket ticket = selectedTickets.get(0);
-
-				orderServiceExtension.setCustomerToTicket(ticket);
-				openTicketList.revalidate();
-				openTicketList.repaint();
-			}
-		});
-		psbtnCustSelect.setText("CUST. SELECT");
-		activityPanel.add(psbtnCustSelect);
-
-		psbtnDeliveryndate = new PosButton();
-		psbtnDeliveryndate.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				OrderServiceExtension orderServiceExtension = Application.getPluginManager().getPlugin(OrderServiceExtension.class);
-
-				if (orderServiceExtension == null) {
-					POSMessageDialog.showError("ORO order extension is needed for this");
-					return;
-				}
-
-				List<Ticket> selectedTickets = openTicketList.getSelectedTickets();
-				if (selectedTickets.size() == 0 || selectedTickets.size() > 1) {
-					POSMessageDialog.showMessage(POSConstants.SELECT_ONE_TICKET_TO_EDIT);
-					return;
-				}
-
-				Ticket ticket = selectedTickets.get(0);
-
-				orderServiceExtension.setDeliveryDate(ticket);
-				openTicketList.revalidate();
-				openTicketList.repaint();
-			}
-		});
-		psbtnDeliveryndate.setText("DELI. DATE");
-		activityPanel.add(psbtnDeliveryndate);
 
 		bottomPanel.add(bottomLeftPanel, java.awt.BorderLayout.CENTER);
 
@@ -505,12 +463,24 @@ public class SwitchboardView extends JPanel implements ActionListener {
 	}
 
 	private void doCreateNewTicket(final String ticketType) {
-		OrderServiceExtension orderServiceExtension = Application.getPluginManager().getPlugin(OrderServiceExtension.class);
+		OrderServiceExtension orderServiceExtension = new DefaultOrderServiceExtension();
 
-		if (orderServiceExtension == null) {
-			orderServiceExtension = new DefaultOrderServiceExtension();
+		try {
+
+			orderServiceExtension.createNewTicket(ticketType);
+
+		} catch (TicketAlreadyExistsException e) {
+
+			int option = JOptionPane.showOptionDialog(Application.getPosWindow(), POSConstants.EDIT_TICKET_CONFIRMATION, POSConstants.CONFIRM,
+					JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+			if (option == JOptionPane.YES_OPTION) {
+				editTicket(e.getTicket());
+				return;
+			}
 		}
-
+	}
+	
+	protected void doHomeDelivery(String ticketType) {
 		try {
 
 			orderServiceExtension.createNewTicket(ticketType);
@@ -692,8 +662,6 @@ public class SwitchboardView extends JPanel implements ActionListener {
 	private PosButton btnOnlineOrder;
 	private PosButton btnHomeDelivery;
 	private PosButton btnDriveThrough;
-	private PosButton psbtnCustSelect;
-	private PosButton psbtnDeliveryndate;
 
 	// End of variables declaration//GEN-END:variables
 

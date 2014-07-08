@@ -336,7 +336,7 @@ public class PasswordScreen extends JPanel {
 			attendenceHistory.setTerminal(application.getTerminal());
 			attendenceHistory.setShift(user.getCurrentShift());
 		}
-
+		//TODO: Fix stale object exception error
 		user.doClockOut(attendenceHistory, currentShift, currentTime);
 
 		user.doClockIn(application.getTerminal(), currentShift, currentTime);
