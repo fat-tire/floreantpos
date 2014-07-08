@@ -25,8 +25,10 @@ public abstract class BaseTicket  implements Comparable, Serializable {
 	public static String PROP_TRANSACTION_TYPE = "transactionType";
 	public static String PROP_DISCOUNT_AMOUNT = "discountAmount";
 	public static String PROP_CREATE_DATE = "createDate";
+	public static String PROP_DELIVERY_CHARGE = "deliveryCharge";
 	public static String PROP_NUMBER_OF_GUESTS = "numberOfGuests";
 	public static String PROP_PAID = "paid";
+	public static String PROP_SHIPPING_ADDRESS = "shippingAddress";
 	public static String PROP_ACTIVE_DATE = "activeDate";
 	public static String PROP_CARD_TYPE = "cardType";
 	public static String PROP_CREATION_HOUR = "creationHour";
@@ -107,6 +109,8 @@ public abstract class BaseTicket  implements Comparable, Serializable {
 	private java.lang.Boolean taxExempt;
 	private java.lang.Boolean reOpened;
 	private java.lang.Double serviceCharge;
+	private java.lang.Double deliveryCharge;
+	private java.lang.String shippingAddress;
 	private java.lang.String ticketType;
 
 	// many to one
@@ -618,6 +622,40 @@ public abstract class BaseTicket  implements Comparable, Serializable {
 	 */
 	public void setServiceCharge (java.lang.Double serviceCharge) {
 		this.serviceCharge = serviceCharge;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: DELIVERY_CHARGE
+	 */
+	public java.lang.Double getDeliveryCharge () {
+					return deliveryCharge == null ? Double.valueOf(0) : deliveryCharge;
+			}
+
+	/**
+	 * Set the value related to the column: DELIVERY_CHARGE
+	 * @param deliveryCharge the DELIVERY_CHARGE value
+	 */
+	public void setDeliveryCharge (java.lang.Double deliveryCharge) {
+		this.deliveryCharge = deliveryCharge;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: SHIPPING_ADDRESS
+	 */
+	public java.lang.String getShippingAddress () {
+			return shippingAddress;
+	}
+
+	/**
+	 * Set the value related to the column: SHIPPING_ADDRESS
+	 * @param shippingAddress the SHIPPING_ADDRESS value
+	 */
+	public void setShippingAddress (java.lang.String shippingAddress) {
+		this.shippingAddress = shippingAddress;
 	}
 
 

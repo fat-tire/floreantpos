@@ -23,14 +23,14 @@ public class Ticket extends BaseTicket {
 	public final static String DRIVE_THROUGH = "DRIVE THRU";
 
 	/* [CONSTRUCTOR MARKER BEGIN] */
-	public Ticket() {
+	public Ticket () {
 		super();
 	}
 
 	/**
 	 * Constructor for primary key
 	 */
-	public Ticket(java.lang.Integer id) {
+	public Ticket (java.lang.Integer id) {
 		super(id);
 	}
 
