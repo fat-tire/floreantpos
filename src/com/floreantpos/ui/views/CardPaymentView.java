@@ -124,7 +124,7 @@ public class CardPaymentView extends PaymentView {
 				jLabel3.setFont(new Font("Dialog", Font.BOLD, 12));
 				transparentPanel.add(jLabel3, "cell 0 3,alignx right");
 				jLabel3.setText("AUTHORIZATION CODE");
-				tfAuthorizationCode = new FocusedTextField(false);
+				tfAuthorizationCode = new FocusedTextField();
 				tfAuthorizationCode.setHorizontalAlignment(SwingConstants.RIGHT);
 				tfAuthorizationCode.setColumns(20);
 				transparentPanel.add(tfAuthorizationCode, "cell 2 3,alignx center");
@@ -271,8 +271,6 @@ public class CardPaymentView extends PaymentView {
 	 */
 	// <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:initComponents
 	private void initComponents() {
-		java.awt.GridBagConstraints gridBagConstraints;
-
 		buttonGroup1 = new javax.swing.ButtonGroup();
 		transparentPanel5 = new com.floreantpos.swing.TransparentPanel();
 		btnChangePMethod = new com.floreantpos.swing.PosButton();
