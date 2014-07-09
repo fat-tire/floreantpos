@@ -3,17 +3,17 @@ package com.floreantpos.ui.forms;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 
+import net.miginfocom.swing.MigLayout;
+
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.StaleObjectStateException;
-
-import net.miginfocom.swing.MigLayout;
 
 import com.floreantpos.bo.ui.BOMessageDialog;
 import com.floreantpos.model.Customer;
 import com.floreantpos.model.dao.CustomerDAO;
 import com.floreantpos.model.util.IllegalModelStateException;
+import com.floreantpos.swing.DoubleTextField;
 import com.floreantpos.swing.FixedLengthTextField;
-import com.floreantpos.swing.FocusedTextField;
 import com.floreantpos.ui.BeanEditor;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.util.PosGuiUtil;
@@ -27,8 +27,8 @@ public class CustomerForm extends BeanEditor {
 	private FixedLengthTextField tfZip;
 	private FixedLengthTextField tfCountry;
 	private FixedLengthTextField tfCreditCardNo;
-	private FocusedTextField tfCreditLimit;
-	private FocusedTextField tfCreditSpent;
+	private DoubleTextField tfCreditLimit;
+	private DoubleTextField tfCreditSpent;
 	private JCheckBox cbVip;
 	private FixedLengthTextField tfName;
 	private FixedLengthTextField tfPhone;
@@ -88,13 +88,13 @@ public class CustomerForm extends BeanEditor {
 		JLabel lblCreditLimit = new JLabel("Credit Limit:");
 		add(lblCreditLimit, "cell 0 8,alignx trailing");
 		
-		tfCreditLimit = new FocusedTextField(true);
+		tfCreditLimit = new DoubleTextField();
 		add(tfCreditLimit, "cell 1 8,growx");
 		
 		JLabel lblCreditSpent = new JLabel("Credit Spent:");
 		add(lblCreditSpent, "cell 0 9,alignx trailing");
 		
-		tfCreditSpent = new FocusedTextField(true);
+		tfCreditSpent = new DoubleTextField();
 		add(tfCreditSpent, "cell 1 9,growx");
 		
 		JLabel lblSsn = new JLabel("SSN:");
