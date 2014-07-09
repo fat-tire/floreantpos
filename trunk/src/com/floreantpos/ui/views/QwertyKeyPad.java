@@ -37,14 +37,15 @@ public class QwertyKeyPad extends JPanel implements ActionListener, ChangeListen
 	public QwertyKeyPad() {
 		createUI();
 		
-		Dimension size = new Dimension(613, 206);
+		//Dimension size = new Dimension(613, 206);
+		Dimension size = new Dimension(552, 180);
 		setMinimumSize(size);
 		setPreferredSize(size);
 		setMaximumSize(size);
 	}
 
 	private void createUI() {
-		setLayout(new BorderLayout(5, 5));
+		setLayout(new BorderLayout(0,0));
 
 
 		TransparentPanel centerPanel = new TransparentPanel(new GridLayout(0,1,2,2));

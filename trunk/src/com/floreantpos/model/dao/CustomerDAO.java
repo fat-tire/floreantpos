@@ -2,8 +2,10 @@ package com.floreantpos.model.dao;
 
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.Restrictions;
 
 import com.floreantpos.model.Customer;
@@ -16,14 +18,25 @@ public class CustomerDAO extends BaseCustomerDAO {
 	public CustomerDAO() {
 	}
 
-	public List<Customer> findBy(String field, String value) {
+	public List<Customer> findBy(String phone, String loyalty, String name) {
 		Session session = null;
 		
 
 		try {
 			session = getSession();
 			Criteria criteria = session.createCriteria(getReferenceClass());
-			criteria.add(Restrictions.like(field, "%" + value + "%"));
+			Disjunction disjunction = Restrictions.disjunction();
+			
+			if(StringUtils.isNotEmpty(phone))
+				disjunction.add(Restrictions.like(Customer.PROP_TELEPHONE_NO, "%" + phone + "%"));
+			
+			if(StringUtils.isNotEmpty(loyalty))
+				disjunction.add(Restrictions.like(Customer.PROP_LOYALTY_NO, "%" + loyalty + "%"));
+			
+			if(StringUtils.isNotEmpty(name))
+				disjunction.add(Restrictions.like(Customer.PROP_NAME, "%" + name + "%"));
+			
+			criteria.add(disjunction);
 
 			return criteria.list();
 			
