@@ -20,6 +20,7 @@ public abstract class BaseCustomer  implements Comparable, Serializable {
 	public static String PROP_NOTE = "note";
 	public static String PROP_COUNTRY = "country";
 	public static String PROP_TELEPHONE_NO = "telephoneNo";
+	public static String PROP_DOB = "dob";
 	public static String PROP_ZIP_CODE = "zipCode";
 	public static String PROP_SSN = "ssn";
 	public static String PROP_CITY = "city";
@@ -30,8 +31,8 @@ public abstract class BaseCustomer  implements Comparable, Serializable {
 	public static String PROP_ADDRESS = "address";
 	public static String PROP_AUTO_ID = "autoId";
 	public static String PROP_CREDIT_CARD_NO = "creditCardNo";
-	public static String PROP_LOYALTY_NO = "loyaltyNo";
 	public static String PROP_CREDIT_LIMIT = "creditLimit";
+	public static String PROP_LOYALTY_NO = "loyaltyNo";
 
 
 	// constructors
@@ -63,6 +64,7 @@ public abstract class BaseCustomer  implements Comparable, Serializable {
 	private java.lang.String telephoneNo;
 	private java.lang.String email;
 	private java.lang.String name;
+	private java.lang.String dob;
 	private java.lang.String ssn;
 	private java.lang.String address;
 	private java.lang.String city;
@@ -180,6 +182,23 @@ public abstract class BaseCustomer  implements Comparable, Serializable {
 	 */
 	public void setName (java.lang.String name) {
 		this.name = name;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: DOB
+	 */
+	public java.lang.String getDob () {
+			return dob;
+	}
+
+	/**
+	 * Set the value related to the column: DOB
+	 * @param dob the DOB value
+	 */
+	public void setDob (java.lang.String dob) {
+		this.dob = dob;
 	}
 
 

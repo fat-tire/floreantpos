@@ -13,6 +13,7 @@
 		<property name="telephoneNo" column="TELEPHONE_NO" length="30" type="string" />
 		<property name="email" column="EMAIL" length="40" type="string" />
 		<property name="name" column="NAME" length="60" type="string" />
+		<property name="dob" column="DOB" length="16" type="string" />
 		<property name="ssn" column="SSN" length="30" type="string" />
 		<property name="address" column="ADDRESS" length="120" type="string" />
 		<property name="city" column="CITY" length="30" type="string" />

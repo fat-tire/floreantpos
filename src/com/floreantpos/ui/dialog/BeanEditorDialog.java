@@ -10,6 +10,7 @@ import java.awt.Frame;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
+import com.floreantpos.swing.PosSmallButton;
 import com.floreantpos.ui.BeanEditor;
 
 /**
@@ -19,6 +20,10 @@ import com.floreantpos.ui.BeanEditor;
 public class BeanEditorDialog extends javax.swing.JDialog implements WindowListener {
 	protected BeanEditor beanEditor;
 	private boolean canceled = false;
+	
+	public BeanEditorDialog() {
+		this(null, true);
+	}
 
 	/** Creates new form OkCancelDialog */
 	public BeanEditorDialog(java.awt.Frame parent, boolean modal) {
@@ -46,8 +51,8 @@ public class BeanEditorDialog extends javax.swing.JDialog implements WindowListe
 		jPanel1 = new com.floreantpos.swing.TransparentPanel();
 		jSeparator1 = new javax.swing.JSeparator();
 		jPanel2 = new com.floreantpos.swing.TransparentPanel();
-		btnOk = new javax.swing.JButton();
-		btnCancel = new javax.swing.JButton();
+		btnOk = new PosSmallButton();
+		btnCancel = new PosSmallButton();
 		beanEditorContainer = new com.floreantpos.swing.TransparentPanel();
 
 		setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -114,8 +119,8 @@ public class BeanEditorDialog extends javax.swing.JDialog implements WindowListe
 
 	// Variables declaration - do not modify//GEN-BEGIN:variables
 	private com.floreantpos.swing.TransparentPanel beanEditorContainer;
-	private javax.swing.JButton btnCancel;
-	private javax.swing.JButton btnOk;
+	private PosSmallButton btnCancel;
+	private PosSmallButton btnOk;
 	private com.floreantpos.swing.TransparentPanel jPanel1;
 	private com.floreantpos.swing.TransparentPanel jPanel2;
 	private javax.swing.JSeparator jSeparator1;

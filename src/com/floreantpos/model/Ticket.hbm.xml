@@ -38,7 +38,9 @@
     <property column="IS_RE_OPENED" name="reOpened" type="java.lang.Boolean"/>
     <property column="SERVICE_CHARGE" name="serviceCharge" type="java.lang.Double"/>
     <property column="DELIVERY_CHARGE" name="deliveryCharge" type="java.lang.Double"/>
-    <property column="SHIPPING_ADDRESS" name="shippingAddress" length="120" type="string"/>
+    <property column="DELIVERY_ADDRESS" name="deliveryAddress" length="120" type="string"/>
+    <property column="CUSTOMER_PICKEUP" name="customerWillPickup" type="java.lang.Boolean"/>
+    <property column="DELIVERY_EXTRA_INFO" name="extraDeliveryInfo"  type="string"/>
     
     <property name="ticketType" column="TICKET_TYPE" length="20" type="string" />
     
@@ -71,6 +73,9 @@
     </many-to-one>
     <many-to-one class="com.floreantpos.model.User" lazy="false" name="owner">
       <column name="OWNER_ID"/>
+    </many-to-one>
+    <many-to-one class="com.floreantpos.model.User" lazy="false" name="assignedDriver">
+      <column name="DRIVER_ID"/>
     </many-to-one>
     <many-to-one cascade="all" class="com.floreantpos.model.Gratuity" lazy="false" name="gratuity">
       <column name="GRATUITY_ID"/>
