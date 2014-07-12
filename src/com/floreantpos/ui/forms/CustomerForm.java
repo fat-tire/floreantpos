@@ -2,6 +2,7 @@ package com.floreantpos.ui.forms;
 
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 import net.miginfocom.swing.MigLayout;
 
@@ -16,107 +17,108 @@ import com.floreantpos.swing.DoubleTextField;
 import com.floreantpos.swing.FixedLengthTextField;
 import com.floreantpos.ui.BeanEditor;
 import com.floreantpos.ui.dialog.POSMessageDialog;
+import com.floreantpos.ui.views.QwertyKeyPad;
 import com.floreantpos.util.PosGuiUtil;
 
 public class CustomerForm extends BeanEditor {
-	private FixedLengthTextField tfSSN;
 	private FixedLengthTextField tfLoyaltyNo;
 	private FixedLengthTextField tfAddress;
 	private FixedLengthTextField tfCity;
 	private FixedLengthTextField tfState;
-	private FixedLengthTextField tfZip;
 	private FixedLengthTextField tfCountry;
-	private FixedLengthTextField tfCreditCardNo;
 	private DoubleTextField tfCreditLimit;
-	private DoubleTextField tfCreditSpent;
 	private JCheckBox cbVip;
 	private FixedLengthTextField tfName;
 	private FixedLengthTextField tfPhone;
 	private FixedLengthTextField tfEmail;
+	private JLabel lblDob;
+	private FixedLengthTextField tfDoB;
+	private JPanel panel;
+	private QwertyKeyPad qwertyKeyPad;
 	
 	public CustomerForm() {
-		setLayout(new MigLayout("", "[45px][114px,grow]", "[19px][][][][][][][][][][]"));
+		setLayout(new MigLayout("", "[][grow][][][][grow]", "[19px][][][][][][][grow]"));
 		
 		JLabel lblName = new JLabel("Name:");
 		add(lblName, "cell 0 0,alignx trailing,aligny center");
 		
 		tfName = new FixedLengthTextField(60);
+		tfName.setLength(60);
 		add(tfName, "cell 1 0,growx,aligny top");
+		
+		lblDob = new JLabel("Date of Birth");
+		add(lblDob, "cell 2 0 2 1");
+		
+		tfDoB = new FixedLengthTextField();
+		tfDoB.setLength(16);
+		add(tfDoB, "cell 4 0 2 1,growx");
 		
 		JLabel lblPhone = new JLabel("Phone:");
 		add(lblPhone, "cell 0 1,alignx trailing");
 		
 		tfPhone = new FixedLengthTextField(30);
+		tfPhone.setLength(30);
 		add(tfPhone, "cell 1 1,growx");
 		
-		JLabel lblEmail = new JLabel("EMail:");
-		add(lblEmail, "cell 0 2,alignx trailing");
+		JLabel lblEmail = new JLabel("E-mail:");
+		add(lblEmail, "cell 2 1 2 1,alignx trailing");
 		
 		tfEmail = new FixedLengthTextField(40);
-		add(tfEmail, "flowx,cell 1 2,growx");
+		tfEmail.setLength(40);
+		add(tfEmail, "flowx,cell 4 1 2 1,growx");
 		
 		JLabel lblLoyaltyNo = new JLabel("Loyalty No:");
-		add(lblLoyaltyNo, "cell 0 3,alignx trailing");
+		add(lblLoyaltyNo, "cell 0 2,alignx trailing");
 		
 		tfLoyaltyNo = new FixedLengthTextField(30);
-		add(tfLoyaltyNo, "cell 1 3,growx");
+		tfLoyaltyNo.setLength(30);
+		add(tfLoyaltyNo, "cell 1 2,growx");
 		
 		JLabel lblAddress = new JLabel("Address:");
-		add(lblAddress, "cell 0 4,alignx trailing");
+		add(lblAddress, "cell 0 3,alignx trailing");
 		
 		tfAddress = new FixedLengthTextField(120);
-		add(tfAddress, "cell 1 4,growx");
+		tfAddress.setLength(120);
+		add(tfAddress, "cell 1 3 5 1,growx");
 		
-		JLabel lblCitytown = new JLabel("City/Town:");
-		add(lblCitytown, "cell 0 5,alignx trailing");
+		JLabel lblCitytown = new JLabel("City:");
+		add(lblCitytown, "cell 0 4,alignx trailing");
 		
 		tfCity = new FixedLengthTextField(30);
-		add(tfCity, "flowx,cell 1 5,growx");
+		tfCity.setLength(30);
+		add(tfCity, "flowx,cell 1 4,growx");
 		
-		JLabel lblStatezipCode = new JLabel("State/ZIP Code:");
-		add(lblStatezipCode, "cell 0 6,alignx trailing");
-		
-		tfZip = new FixedLengthTextField(10);
-		add(tfZip, "flowx,cell 1 6,growx");
-		
-		JLabel lblCreditCardNo = new JLabel("Credit Card No:");
-		add(lblCreditCardNo, "cell 0 7,alignx trailing");
-		
-		tfCreditCardNo = new FixedLengthTextField(30);
-		add(tfCreditCardNo, "cell 1 7,growx");
-		
-		JLabel lblCreditLimit = new JLabel("Credit Limit:");
-		add(lblCreditLimit, "cell 0 8,alignx trailing");
-		
-		tfCreditLimit = new DoubleTextField();
-		add(tfCreditLimit, "cell 1 8,growx");
-		
-		JLabel lblCreditSpent = new JLabel("Credit Spent:");
-		add(lblCreditSpent, "cell 0 9,alignx trailing");
-		
-		tfCreditSpent = new DoubleTextField();
-		add(tfCreditSpent, "cell 1 9,growx");
-		
-		JLabel lblSsn = new JLabel("SSN:");
-		add(lblSsn, "cell 1 2,alignx trailing");
-		
-		tfSSN = new FixedLengthTextField(30);
-		add(tfSSN, "cell 1 2,growx,aligny top");
-		
-		JLabel lblStatecountry = new JLabel("State/Country:");
-		add(lblStatecountry, "cell 1 5,alignx trailing");
+		JLabel lblStatecountry = new JLabel("State:");
+		add(lblStatecountry, "flowx,cell 2 4,alignx trailing");
 		
 		tfState = new FixedLengthTextField(30);
-		add(tfState, "cell 1 5,growx");
+		tfState.setColumns(2);
+		tfState.setLength(30);
+		add(tfState, "cell 3 4");
 		
 		JLabel lblCountry = new JLabel("Country:");
-		add(lblCountry, "cell 1 6,alignx trailing");
+		add(lblCountry, "cell 4 4,alignx trailing");
 		
 		tfCountry = new FixedLengthTextField(30);
-		add(tfCountry, "cell 1 6,growx");
+		tfCountry.setLength(30);
+		add(tfCountry, "cell 5 4,growx");
+		
+		JLabel lblCreditLimit = new JLabel("Credit Limit:");
+		add(lblCreditLimit, "cell 0 5,alignx trailing");
+		
+		tfCreditLimit = new DoubleTextField();
+		tfCreditLimit.setColumns(10);
+		add(tfCreditLimit, "cell 1 5,growx");
 		
 		cbVip = new JCheckBox("VIP");
-		add(cbVip, "cell 1 10");
+		cbVip.setFocusable(false);
+		add(cbVip, "cell 1 6");
+		
+		panel = new JPanel();
+		add(panel, "cell 0 7 6 1,grow");
+		
+		qwertyKeyPad = new QwertyKeyPad();
+		panel.add(qwertyKeyPad);
 	}
 	
 	public void setFieldsEditable(boolean editable) {
@@ -126,11 +128,7 @@ public class CustomerForm extends BeanEditor {
 		tfLoyaltyNo.setEditable(editable);
 		tfAddress.setEditable(editable);
 		tfCity.setEditable(editable);
-		tfZip.setEditable(editable);
-		tfCreditCardNo.setEditable(editable);
 		tfCreditLimit.setEditable(editable);
-		tfCreditSpent.setEditable(editable);
-		tfSSN.setEditable(editable);
 		tfState.setEditable(editable);
 		tfCountry.setEditable(editable);
 		cbVip.setEnabled(editable);
@@ -166,15 +164,11 @@ public class CustomerForm extends BeanEditor {
 			tfAddress.setText(customer.getAddress());
 			tfCity.setText(customer.getCity());
 			tfCountry.setText(customer.getCountry());
-			tfCreditCardNo.setText(customer.getCreditCardNo());
 			tfCreditLimit.setText(String.valueOf(customer.getCreditLimit()));
-			tfCreditSpent.setText(String.valueOf(customer.getCreditSpent()));
 			tfEmail.setText(customer.getEmail());
 			tfLoyaltyNo.setText(customer.getLoyaltyNo());
 			tfPhone.setText(customer.getTelephoneNo());
-			tfSSN.setText(customer.getSsn());
 			tfState.setText(customer.getState());
-			tfZip.setText(customer.getZipCode());
 			cbVip.setSelected(customer.isVip());
 		}
 		else {
@@ -182,15 +176,11 @@ public class CustomerForm extends BeanEditor {
 			tfAddress.setText("");
 			tfCity.setText("");
 			tfCountry.setText("");
-			tfCreditCardNo.setText("");
 			tfCreditLimit.setText("");
-			tfCreditSpent.setText("");
 			tfEmail.setText("");
 			tfLoyaltyNo.setText("");
 			tfPhone.setText("");
-			tfSSN.setText("");
 			tfState.setText("");
-			tfZip.setText("");
 			cbVip.setSelected(false);
 		}
 	}
@@ -218,13 +208,10 @@ public class CustomerForm extends BeanEditor {
 		customer.setCity(tfCity.getText());
 		customer.setCountry(tfCountry.getText());
 		customer.setCreditLimit(PosGuiUtil.parseDouble(tfCreditLimit));
-		customer.setCreditSpent(PosGuiUtil.parseDouble(tfCreditSpent));
 		customer.setEmail(tfEmail.getText());
 		customer.setLoyaltyNo(tfLoyaltyNo.getText());
 		customer.setTelephoneNo(tfPhone.getText());
-		customer.setSsn(tfSSN.getText());
 		customer.setState(tfState.getText());
-		customer.setZipCode(tfZip.getText());
 		customer.setVip(cbVip.isSelected());
 		
 		return true;
