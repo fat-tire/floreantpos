@@ -20,6 +20,11 @@ import com.floreantpos.swing.FixedLengthDocument;
 import com.floreantpos.ui.BeanEditor;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.util.POSUtil;
+import net.miginfocom.swing.MigLayout;
+import javax.swing.JLabel;
+import com.floreantpos.swing.POSTextField;
+import com.floreantpos.swing.FixedLengthTextField;
+import javax.swing.JCheckBox;
 
 /**
  * 
@@ -35,6 +40,9 @@ public class UserForm extends BeanEditor {
 		List<UserType> userTypes = dao.findAll();
 
 		cbUserType.setModel(new DefaultComboBoxModel(userTypes.toArray()));
+		
+		cbIsDriver = new JCheckBox("Is Driver");
+		add(cbIsDriver, "cell 1 9");
 	}
 
 	/**
@@ -63,133 +71,49 @@ public class UserForm extends BeanEditor {
 		tfCostPerHour = new javax.swing.JTextField();
 		jLabel6 = new javax.swing.JLabel();
 		cbUserType = new javax.swing.JComboBox();
+		setLayout(new MigLayout("", "[134px][204px,grow]", "[19px][][19px][19px][19px][19px][19px][19px][24px][]"));
 
-		setLayout(new java.awt.GridBagLayout());
+		jLabel1.setText("ID");
+		add(jLabel1, "cell 0 0,alignx trailing,aligny center");
+		
+		lblPhone = new JLabel("Phone");
+		add(lblPhone, "cell 0 1,alignx trailing");
+		
+		tfPhone = new FixedLengthTextField();
+		tfPhone.setLength(20);
+		tfPhone.setColumns(20);
+		add(tfPhone, "cell 1 1");
 
-		jLabel1.setText("ID" + ":");
-		gridBagConstraints = new java.awt.GridBagConstraints();
-		gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-		gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 0);
-		add(jLabel1, gridBagConstraints);
+		jLabel2.setText("SSN");
+		add(jLabel2, "cell 0 2,alignx trailing,aligny center");
 
-		jLabel2.setText("SSN" + ":");
-		gridBagConstraints = new java.awt.GridBagConstraints();
-		gridBagConstraints.gridx = 0;
-		gridBagConstraints.gridy = 1;
-		gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-		gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 0);
-		add(jLabel2, gridBagConstraints);
+		jLabel3.setText("First Name");
+		add(jLabel3, "cell 0 3,alignx trailing,aligny center");
 
-		jLabel3.setText("First Name" + ":");
-		gridBagConstraints = new java.awt.GridBagConstraints();
-		gridBagConstraints.gridx = 0;
-		gridBagConstraints.gridy = 2;
-		gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-		gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 0);
-		add(jLabel3, gridBagConstraints);
-
-		jLabel4.setText("Last Name" + ":");
-		gridBagConstraints = new java.awt.GridBagConstraints();
-		gridBagConstraints.gridx = 0;
-		gridBagConstraints.gridy = 3;
-		gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-		gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 0);
-		add(jLabel4, gridBagConstraints);
+		jLabel4.setText("Last Name");
+		add(jLabel4, "cell 0 4,alignx trailing,aligny center");
 
 		jLabel9.setText("Secret Key");
-		gridBagConstraints = new java.awt.GridBagConstraints();
-		gridBagConstraints.gridx = 0;
-		gridBagConstraints.gridy = 4;
-		gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-		gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 0);
-		add(jLabel9, gridBagConstraints);
+		add(jLabel9, "cell 0 5,alignx trailing,aligny center");
 
 		jLabel10.setText("Confirm Secret Key");
-		gridBagConstraints = new java.awt.GridBagConstraints();
-		gridBagConstraints.gridx = 0;
-		gridBagConstraints.gridy = 5;
-		gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-		gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 0);
-		add(jLabel10, gridBagConstraints);
-		gridBagConstraints = new java.awt.GridBagConstraints();
-		gridBagConstraints.gridx = 1;
-		gridBagConstraints.gridy = 4;
-		gridBagConstraints.gridwidth = 4;
-		gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-		gridBagConstraints.ipadx = 1;
-		gridBagConstraints.insets = new java.awt.Insets(0, 5, 5, 0);
-		add(tfPassword1, gridBagConstraints);
-		gridBagConstraints = new java.awt.GridBagConstraints();
-		gridBagConstraints.gridx = 1;
-		gridBagConstraints.gridy = 5;
-		gridBagConstraints.gridwidth = 4;
-		gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-		gridBagConstraints.ipadx = 1;
-		gridBagConstraints.insets = new java.awt.Insets(0, 5, 4, 0);
-		add(tfPassword2, gridBagConstraints);
-		gridBagConstraints = new java.awt.GridBagConstraints();
-		gridBagConstraints.gridx = 1;
-		gridBagConstraints.gridy = 0;
-		gridBagConstraints.gridwidth = 4;
-		gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-		gridBagConstraints.ipadx = 100;
-		gridBagConstraints.insets = new java.awt.Insets(0, 5, 5, 0);
-		add(tfId, gridBagConstraints);
-		gridBagConstraints = new java.awt.GridBagConstraints();
-		gridBagConstraints.gridx = 1;
-		gridBagConstraints.gridy = 1;
-		gridBagConstraints.gridwidth = 4;
-		gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-		gridBagConstraints.ipadx = 100;
-		gridBagConstraints.insets = new java.awt.Insets(0, 5, 5, 0);
-		add(tfSsn, gridBagConstraints);
-		gridBagConstraints = new java.awt.GridBagConstraints();
-		gridBagConstraints.gridx = 1;
-		gridBagConstraints.gridy = 2;
-		gridBagConstraints.gridwidth = 6;
-		gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-		gridBagConstraints.ipadx = 200;
-		gridBagConstraints.insets = new java.awt.Insets(0, 5, 5, 0);
-		add(tfFirstName, gridBagConstraints);
-		gridBagConstraints = new java.awt.GridBagConstraints();
-		gridBagConstraints.gridx = 1;
-		gridBagConstraints.gridy = 3;
-		gridBagConstraints.gridwidth = 6;
-		gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-		gridBagConstraints.ipadx = 200;
-		gridBagConstraints.insets = new java.awt.Insets(0, 5, 5, 0);
-		add(tfLastName, gridBagConstraints);
+		add(jLabel10, "cell 0 6,alignx trailing,aligny center");
+		add(tfPassword1, "cell 1 5,growx,aligny center");
+		add(tfPassword2, "cell 1 6,growx,aligny center");
+		add(tfId, "cell 1 0,growx,aligny center");
+		add(tfSsn, "cell 1 2,growx,aligny center");
+		add(tfFirstName, "cell 1 3,growx,aligny center");
+		add(tfLastName, "cell 1 4,growx,aligny center");
 
-		jLabel5.setText("Cost Per Hour" + ":");
-		gridBagConstraints = new java.awt.GridBagConstraints();
-		gridBagConstraints.gridx = 0;
-		gridBagConstraints.gridy = 6;
-		gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-		gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 0);
-		add(jLabel5, gridBagConstraints);
-		gridBagConstraints = new java.awt.GridBagConstraints();
-		gridBagConstraints.gridx = 1;
-		gridBagConstraints.gridy = 6;
-		gridBagConstraints.gridwidth = 4;
-		gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-		gridBagConstraints.insets = new java.awt.Insets(0, 5, 5, 0);
-		add(tfCostPerHour, gridBagConstraints);
+		jLabel5.setText("Cost Per Hour");
+		add(jLabel5, "cell 0 7,alignx trailing,aligny center");
+		add(tfCostPerHour, "cell 1 7,growx,aligny center");
 
-		jLabel6.setText("User Type" + ":");
-		gridBagConstraints = new java.awt.GridBagConstraints();
-		gridBagConstraints.gridx = 0;
-		gridBagConstraints.gridy = 7;
-		gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-		add(jLabel6, gridBagConstraints);
+		jLabel6.setText("User Type");
+		add(jLabel6, "cell 0 8,alignx trailing,aligny center");
 
 		cbUserType.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Manager", "Cashier", "Server" }));
-		gridBagConstraints = new java.awt.GridBagConstraints();
-		gridBagConstraints.gridx = 1;
-		gridBagConstraints.gridy = 7;
-		gridBagConstraints.gridwidth = 4;
-		gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-		gridBagConstraints.insets = new java.awt.Insets(0, 5, 0, 0);
-		add(cbUserType, gridBagConstraints);
+		add(cbUserType, "cell 1 8,growx,aligny center");
 	}// </editor-fold>//GEN-END:initComponents
 
 	// Variables declaration - do not modify//GEN-BEGIN:variables
@@ -226,6 +150,9 @@ public class UserForm extends BeanEditor {
 	}
 
 	private boolean editMode;
+	private JLabel lblPhone;
+	private FixedLengthTextField tfPhone;
+	private JCheckBox cbIsDriver;
 
 	@Override
 	public boolean save() {

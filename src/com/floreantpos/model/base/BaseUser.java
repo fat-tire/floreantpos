@@ -17,17 +17,19 @@ public abstract class BaseUser  implements Comparable, Serializable {
 
 	public static String REF = "User";
 	public static String PROP_LAST_CLOCK_IN_TIME = "lastClockInTime";
-	public static String PROP_CURRENT_TERMINAL = "currentTerminal";
 	public static String PROP_PASSWORD = "password";
-	public static String PROP_AUTO_ID = "autoId";
 	public static String PROP_NEW_USER_TYPE = "newUserType";
-	public static String PROP_FIRST_NAME = "firstName";
-	public static String PROP_COST_PER_HOUR = "costPerHour";
 	public static String PROP_USER_ID = "userId";
 	public static String PROP_LAST_NAME = "lastName";
+	public static String PROP_SSN = "ssn";
+	public static String PROP_PHONE_NO = "phoneNo";
+	public static String PROP_DRIVER = "driver";
+	public static String PROP_CURRENT_TERMINAL = "currentTerminal";
+	public static String PROP_AUTO_ID = "autoId";
+	public static String PROP_FIRST_NAME = "firstName";
+	public static String PROP_COST_PER_HOUR = "costPerHour";
 	public static String PROP_CLOCKED_IN = "clockedIn";
 	public static String PROP_CURRENT_SHIFT = "currentShift";
-	public static String PROP_SSN = "ssn";
 
 
 	// constructors
@@ -77,6 +79,8 @@ public abstract class BaseUser  implements Comparable, Serializable {
 	private java.lang.Double costPerHour;
 	private java.lang.Boolean clockedIn;
 	private java.util.Date lastClockInTime;
+	private java.lang.String phoneNo;
+	private java.lang.Boolean driver;
 
 	// many to one
 	private com.floreantpos.model.Shift currentShift;
@@ -256,6 +260,40 @@ public abstract class BaseUser  implements Comparable, Serializable {
 	 */
 	public void setLastClockInTime (java.util.Date lastClockInTime) {
 		this.lastClockInTime = lastClockInTime;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: PHONE_NO
+	 */
+	public java.lang.String getPhoneNo () {
+			return phoneNo;
+	}
+
+	/**
+	 * Set the value related to the column: PHONE_NO
+	 * @param phoneNo the PHONE_NO value
+	 */
+	public void setPhoneNo (java.lang.String phoneNo) {
+		this.phoneNo = phoneNo;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: IS_DRIVER
+	 */
+	public java.lang.Boolean isDriver () {
+					return driver == null ? Boolean.FALSE : driver;
+			}
+
+	/**
+	 * Set the value related to the column: IS_DRIVER
+	 * @param driver the IS_DRIVER value
+	 */
+	public void setDriver (java.lang.Boolean driver) {
+		this.driver = driver;
 	}
 
 
