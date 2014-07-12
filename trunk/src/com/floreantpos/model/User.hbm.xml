@@ -15,7 +15,10 @@
     <!--property name="image" type="java.sql.Blob" column="IMAGE" length="1048576" /-->
     <property column="COST_PER_HOUR" name="costPerHour" type="java.lang.Double"/>
     <property column="CLOCKED_IN" name="clockedIn" type="java.lang.Boolean"/>
+    
     <property column="LAST_CLOCK_IN_TIME" name="lastClockInTime" type="java.util.Date"/>
+    <property column="PHONE_NO" name="phoneNo" length="20" type="string"/>
+    <property column="IS_DRIVER" name="driver" type="java.lang.Boolean"/>
     <!-- Associations -->
     <many-to-one class="Shift" column="SHIFT_ID" name="currentShift"/>
     <many-to-one class="Terminal" name="currentTerminal"/>
