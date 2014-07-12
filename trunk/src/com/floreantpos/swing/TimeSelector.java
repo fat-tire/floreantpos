@@ -23,15 +23,15 @@ public class TimeSelector extends JPanel {
 		add(lblHour, "cell 0 0,alignx trailing");
 		
 		tfHour = new IntegerTextField();
-		tfHour.setColumns(5);
-		add(tfHour, "cell 1 0,grow");
+		tfHour.setColumns(2);
+		add(tfHour, "cell 1 0,growy");
 
 		JLabel lblMin = new JLabel("Min:");
 		add(lblMin, "cell 2 0,alignx trailing");
 		
 		tfMin = new IntegerTextField();
-		tfMin.setColumns(5);
-		add(tfMin, "cell 3 0,grow");
+		tfMin.setColumns(2);
+		add(tfMin, "cell 3 0,growy");
 
 		rbAM = new JRadioButton("AM");
 		add(rbAM, "cell 4 0");
@@ -71,18 +71,10 @@ public class TimeSelector extends JPanel {
 
 	public int getSelectedHour() {
 		if(tfHour.isEmpty()) {
-			//POSMessageDialog.showError("Please enter hour.");
-			//throw new RuntimeException("No hour selected");
-			
 			return -1;
 		}
 		
 		int hour = tfHour.getInteger();
-		
-//		if(hour < 1 || hour > 12) {
-//			//POSMessageDialog.showError("Please enter hour from 1 to 12.");
-//			throw new RuntimeException("Hour not valid");
-//		}
 		
 		return hour;
 	}
@@ -95,18 +87,10 @@ public class TimeSelector extends JPanel {
 	
 	public int getSelectedMin() {
 		if(tfMin.isEmpty()) {
-			//POSMessageDialog.showError("Please enter minute.");
-			//throw new RuntimeException("No minute selected");
-			
 			return -1;
 		}
 		
 		int hour = tfMin.getInteger();
-		
-//		if(hour < 1 || hour > 12) {
-//			//POSMessageDialog.showError("Please enter minute from 1 to 59.");
-//			throw new RuntimeException("Minute not valid");
-//		}
 		
 		return hour;
 	}
@@ -121,5 +105,12 @@ public class TimeSelector extends JPanel {
 		}
 		
 		return Calendar.PM;
+	}
+	
+	public void setEnable(boolean enable) {
+		tfHour.setEnabled(enable);
+		tfMin.setEnabled(enable);
+		rbAM.setEnabled(enable);
+		rbPM.setEnabled(enable);
 	}
 }

@@ -28,10 +28,11 @@ public abstract class BaseTicket  implements Comparable, Serializable {
 	public static String PROP_DELIVERY_CHARGE = "deliveryCharge";
 	public static String PROP_NUMBER_OF_GUESTS = "numberOfGuests";
 	public static String PROP_PAID = "paid";
-	public static String PROP_SHIPPING_ADDRESS = "shippingAddress";
 	public static String PROP_ACTIVE_DATE = "activeDate";
 	public static String PROP_CARD_TYPE = "cardType";
+	public static String PROP_ASSIGNED_DRIVER = "assignedDriver";
 	public static String PROP_CREATION_HOUR = "creationHour";
+	public static String PROP_CUSTOMER_WILL_PICKUP = "customerWillPickup";
 	public static String PROP_DRAWER_RESETTED = "drawerResetted";
 	public static String PROP_CUSTOMER = "customer";
 	public static String PROP_CARD_NUMBER = "cardNumber";
@@ -43,6 +44,7 @@ public abstract class BaseTicket  implements Comparable, Serializable {
 	public static String PROP_CLOSED = "closed";
 	public static String PROP_CLOSING_DATE = "closingDate";
 	public static String PROP_TRANSACTION_CODE = "transactionCode";
+	public static String PROP_DELIVERY_ADDRESS = "deliveryAddress";
 	public static String PROP_SHIFT = "shift";
 	public static String PROP_TAX_AMOUNT = "taxAmount";
 	public static String PROP_SUBTOTAL_AMOUNT = "subtotalAmount";
@@ -54,6 +56,7 @@ public abstract class BaseTicket  implements Comparable, Serializable {
 	public static String PROP_VOIDED = "voided";
 	public static String PROP_TOTAL_AMOUNT = "totalAmount";
 	public static String PROP_PAID_AMOUNT = "paidAmount";
+	public static String PROP_EXTRA_DELIVERY_INFO = "extraDeliveryInfo";
 	public static String PROP_SERVICE_CHARGE = "serviceCharge";
 
 
@@ -110,12 +113,15 @@ public abstract class BaseTicket  implements Comparable, Serializable {
 	private java.lang.Boolean reOpened;
 	private java.lang.Double serviceCharge;
 	private java.lang.Double deliveryCharge;
-	private java.lang.String shippingAddress;
+	private java.lang.String deliveryAddress;
+	private java.lang.Boolean customerWillPickup;
+	private java.lang.String extraDeliveryInfo;
 	private java.lang.String ticketType;
 
 	// many to one
 	private com.floreantpos.model.Shift shift;
 	private com.floreantpos.model.User owner;
+	private com.floreantpos.model.User assignedDriver;
 	private com.floreantpos.model.Gratuity gratuity;
 	private com.floreantpos.model.User voidedBy;
 	private com.floreantpos.model.Terminal terminal;
@@ -644,18 +650,52 @@ public abstract class BaseTicket  implements Comparable, Serializable {
 
 
 	/**
-	 * Return the value associated with the column: SHIPPING_ADDRESS
+	 * Return the value associated with the column: DELIVERY_ADDRESS
 	 */
-	public java.lang.String getShippingAddress () {
-			return shippingAddress;
+	public java.lang.String getDeliveryAddress () {
+			return deliveryAddress;
 	}
 
 	/**
-	 * Set the value related to the column: SHIPPING_ADDRESS
-	 * @param shippingAddress the SHIPPING_ADDRESS value
+	 * Set the value related to the column: DELIVERY_ADDRESS
+	 * @param deliveryAddress the DELIVERY_ADDRESS value
 	 */
-	public void setShippingAddress (java.lang.String shippingAddress) {
-		this.shippingAddress = shippingAddress;
+	public void setDeliveryAddress (java.lang.String deliveryAddress) {
+		this.deliveryAddress = deliveryAddress;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: CUSTOMER_PICKEUP
+	 */
+	public java.lang.Boolean isCustomerWillPickup () {
+					return customerWillPickup == null ? Boolean.FALSE : customerWillPickup;
+			}
+
+	/**
+	 * Set the value related to the column: CUSTOMER_PICKEUP
+	 * @param customerWillPickup the CUSTOMER_PICKEUP value
+	 */
+	public void setCustomerWillPickup (java.lang.Boolean customerWillPickup) {
+		this.customerWillPickup = customerWillPickup;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: DELIVERY_EXTRA_INFO
+	 */
+	public java.lang.String getExtraDeliveryInfo () {
+			return extraDeliveryInfo;
+	}
+
+	/**
+	 * Set the value related to the column: DELIVERY_EXTRA_INFO
+	 * @param extraDeliveryInfo the DELIVERY_EXTRA_INFO value
+	 */
+	public void setExtraDeliveryInfo (java.lang.String extraDeliveryInfo) {
+		this.extraDeliveryInfo = extraDeliveryInfo;
 	}
 
 
@@ -707,6 +747,23 @@ public abstract class BaseTicket  implements Comparable, Serializable {
 	 */
 	public void setOwner (com.floreantpos.model.User owner) {
 		this.owner = owner;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: DRIVER_ID
+	 */
+	public com.floreantpos.model.User getAssignedDriver () {
+			return assignedDriver;
+	}
+
+	/**
+	 * Set the value related to the column: DRIVER_ID
+	 * @param assignedDriver the DRIVER_ID value
+	 */
+	public void setAssignedDriver (com.floreantpos.model.User assignedDriver) {
+		this.assignedDriver = assignedDriver;
 	}
 
 
