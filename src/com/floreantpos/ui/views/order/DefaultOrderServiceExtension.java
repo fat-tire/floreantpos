@@ -66,5 +66,10 @@ public class DefaultOrderServiceExtension implements OrderServiceExtension {
 	public void setCustomerToTicket(Ticket ticket) {
 	}
 	
-	public void setDeliveryDate(Ticket ticket) {};
+	public void setDeliveryDate(Ticket ticket) {}
+
+	@Override
+	public void assignDriver(Ticket ticket) {
+		
+	};
 }

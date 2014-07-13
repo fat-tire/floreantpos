@@ -18,7 +18,7 @@ public class Ticket extends BaseTicket {
 
 	public final static String DINE_IN = "DINE IN";
 	public final static String TAKE_OUT = "TAKE OUT";
-	public final static String ONLINE_ORDER = "ONLINE ORDER";
+	public final static String PICKUP = "PICKUP";
 	public final static String HOME_DELIVERY = "HOME DELIVER";
 	public final static String DRIVE_THROUGH = "DRIVE THRU";
 
@@ -376,7 +376,7 @@ public class Ticket extends BaseTicket {
 	}
 
 	public static boolean isOnlineOrder(String type) {
-		return ONLINE_ORDER.equals(type);
+		return PICKUP.equals(type);
 	}
 
 	public static boolean isHomeDelivery(String type) {

@@ -13,4 +13,5 @@ public interface OrderServiceExtension extends Plugin {
 	void createNewTicket(String ticketType) throws TicketAlreadyExistsException;
 	void setCustomerToTicket(Ticket ticket);
 	void setDeliveryDate(Ticket ticket);
+	void assignDriver(Ticket ticket);
 }
