@@ -31,6 +31,14 @@ public class TicketDAO extends BaseTicketDAO {
 	 */
 	public TicketDAO() {
 	}
+	
+	public Ticket refresh(Ticket ticket) {
+		Session session = createNewSession();
+		super.refresh(ticket, session);
+		session.close();
+		
+		return ticket;
+	}
 
 	public Ticket initializeTicket(Ticket ticket) {
 		Session session = createNewSession();

@@ -28,13 +28,11 @@ public class User extends BaseUser {
 	 */
 	public User (
 		java.lang.Integer autoId,
-		java.lang.String password,
-		java.lang.String ssn) {
+		java.lang.String password) {
 
 		super (
 			autoId,
-			password,
-			ssn);
+			password);
 	}
 
 	/*[CONSTRUCTOR MARKER END]*/
