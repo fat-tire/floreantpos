@@ -11,7 +11,7 @@
     <property column="USER_PASS" length="16" name="password" not-null="true" unique="true" type="string"/>
     <property column="FIRST_NAME" length="30" name="firstName" type="java.lang.String"/>
     <property column="LAST_NAME" length="30" name="lastName" type="java.lang.String"/>
-    <property column="SSN" length="30" name="ssn" not-null="true" type="java.lang.String"/>
+    <property column="SSN" length="30" name="ssn" type="java.lang.String"/>
     <!--property name="image" type="java.sql.Blob" column="IMAGE" length="1048576" /-->
     <property column="COST_PER_HOUR" name="costPerHour" type="java.lang.Double"/>
     <property column="CLOCKED_IN" name="clockedIn" type="java.lang.Boolean"/>
@@ -19,6 +19,7 @@
     <property column="LAST_CLOCK_IN_TIME" name="lastClockInTime" type="java.util.Date"/>
     <property column="PHONE_NO" name="phoneNo" length="20" type="string"/>
     <property column="IS_DRIVER" name="driver" type="java.lang.Boolean"/>
+    <property column="AVAILABLE_FOR_DELIVERY" name="availableForDelivery" type="java.lang.Boolean"/>
     <!-- Associations -->
     <many-to-one class="Shift" column="SHIFT_ID" name="currentShift"/>
     <many-to-one class="Terminal" name="currentTerminal"/>

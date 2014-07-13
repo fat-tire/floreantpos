@@ -25,6 +25,7 @@ public abstract class BaseUser  implements Comparable, Serializable {
 	public static String PROP_PHONE_NO = "phoneNo";
 	public static String PROP_DRIVER = "driver";
 	public static String PROP_CURRENT_TERMINAL = "currentTerminal";
+	public static String PROP_AVAILABLE_FOR_DELIVERY = "availableForDelivery";
 	public static String PROP_AUTO_ID = "autoId";
 	public static String PROP_FIRST_NAME = "firstName";
 	public static String PROP_COST_PER_HOUR = "costPerHour";
@@ -50,12 +51,10 @@ public abstract class BaseUser  implements Comparable, Serializable {
 	 */
 	public BaseUser (
 		java.lang.Integer autoId,
-		java.lang.String password,
-		java.lang.String ssn) {
+		java.lang.String password) {
 
 		this.setAutoId(autoId);
 		this.setPassword(password);
-		this.setSsn(ssn);
 		initialize();
 	}
 
@@ -81,6 +80,7 @@ public abstract class BaseUser  implements Comparable, Serializable {
 	private java.util.Date lastClockInTime;
 	private java.lang.String phoneNo;
 	private java.lang.Boolean driver;
+	private java.lang.Boolean availableForDelivery;
 
 	// many to one
 	private com.floreantpos.model.Shift currentShift;
@@ -294,6 +294,23 @@ public abstract class BaseUser  implements Comparable, Serializable {
 	 */
 	public void setDriver (java.lang.Boolean driver) {
 		this.driver = driver;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: AVAILABLE_FOR_DELIVERY
+	 */
+	public java.lang.Boolean isAvailableForDelivery () {
+					return availableForDelivery == null ? Boolean.FALSE : availableForDelivery;
+			}
+
+	/**
+	 * Set the value related to the column: AVAILABLE_FOR_DELIVERY
+	 * @param availableForDelivery the AVAILABLE_FOR_DELIVERY value
+	 */
+	public void setAvailableForDelivery (java.lang.Boolean availableForDelivery) {
+		this.availableForDelivery = availableForDelivery;
 	}
 
 

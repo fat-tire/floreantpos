@@ -20,6 +20,8 @@ import javax.swing.JPanel;
 
 import net.miginfocom.swing.MigLayout;
 
+import org.apache.commons.logging.LogFactory;
+
 import com.floreantpos.POSConstants;
 import com.floreantpos.PosException;
 import com.floreantpos.bo.ui.BackOfficeWindow;
@@ -89,7 +91,8 @@ public class SwitchboardView extends JPanel implements ActionListener {
 		if (orderServiceExtension == null) {
 			btnHomeDelivery.setEnabled(false);
 			btnOnlineOrder.setEnabled(false);
-
+			btnAssignDriver.setEnabled(false);
+			
 			orderServiceExtension = new DefaultOrderServiceExtension();
 		}
 //		ticketListUpdater = new Timer(30 * 1000, new TicketListUpdaterTask());
@@ -155,10 +158,10 @@ public class SwitchboardView extends JPanel implements ActionListener {
 		btnOnlineOrder = new PosButton();
 		btnOnlineOrder.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				doHomeDelivery(Ticket.ONLINE_ORDER);
+				doHomeDelivery(Ticket.PICKUP);
 			}
 		});
-		btnOnlineOrder.setText("ONLINE ORDER");
+		btnOnlineOrder.setText("PICKUP");
 		activityPanel.add(btnOnlineOrder);
 
 		btnHomeDelivery = new PosButton();
@@ -216,6 +219,15 @@ public class SwitchboardView extends JPanel implements ActionListener {
 		activityPanel.add(btnPrintTicket);
 
 		bottomLeftPanel.add(activityPanel, java.awt.BorderLayout.SOUTH);
+		
+		btnAssignDriver = new PosButton();
+		btnAssignDriver.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				doAssignDriver();
+			}
+		});
+		btnAssignDriver.setText("<html>ASSIGN<br/>DRIVER</html>");
+		activityPanel.add(btnAssignDriver);
 
 		bottomPanel.add(bottomLeftPanel, java.awt.BorderLayout.CENTER);
 
@@ -247,6 +259,31 @@ public class SwitchboardView extends JPanel implements ActionListener {
 
 		add(bottomPanel, java.awt.BorderLayout.CENTER);
 	}// </editor-fold>//GEN-END:initComponents
+
+	protected void doAssignDriver() {
+		try {
+			List<Ticket> selectedTickets = openTicketList.getSelectedTickets();
+			if (selectedTickets.size() == 0 || selectedTickets.size() > 1) {
+				POSMessageDialog.showMessage("Please select a ticket to assign");
+				return;
+			}
+
+			Ticket ticket = selectedTickets.get(0);
+
+			if (!Ticket.HOME_DELIVERY.equals(ticket.getTicketType())) {
+				POSMessageDialog.showError("Driver can be assigned only for Home Delivery");
+				return;
+			}
+
+			TicketDAO.getInstance().refresh(ticket);
+
+			orderServiceExtension.assignDriver(ticket);
+		} catch (Exception e) {
+			e.printStackTrace();
+			POSMessageDialog.showError(e.getMessage());
+			LogFactory.getLog(SwitchboardView.class).error(e);
+		}
+	}
 
 	private void doReopenTicket() {
 		try {
@@ -463,8 +500,6 @@ public class SwitchboardView extends JPanel implements ActionListener {
 	}
 
 	private void doCreateNewTicket(final String ticketType) {
-		OrderServiceExtension orderServiceExtension = new DefaultOrderServiceExtension();
-
 		try {
 
 			orderServiceExtension.createNewTicket(ticketType);
@@ -662,6 +697,7 @@ public class SwitchboardView extends JPanel implements ActionListener {
 	private PosButton btnOnlineOrder;
 	private PosButton btnHomeDelivery;
 	private PosButton btnDriveThrough;
+	private PosButton btnAssignDriver;
 
 	// End of variables declaration//GEN-END:variables
 

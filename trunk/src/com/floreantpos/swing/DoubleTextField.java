@@ -4,7 +4,7 @@ package com.floreantpos.swing;
 public class DoubleTextField extends FocusedTextField {
 
 	public DoubleTextField() {
-		setDocument(new IntegerDocument());
+		setDocument(new DoubleDocument());
 	}
 	
 	public double getDouble() {
