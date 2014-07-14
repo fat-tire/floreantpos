@@ -39,56 +39,56 @@ public class CustomerForm extends BeanEditor {
 	public CustomerForm() {
 		setLayout(new MigLayout("", "[][grow][][][][grow]", "[19px][][][][][][][grow]"));
 		
-		JLabel lblName = new JLabel("Name:");
+		JLabel lblName = new JLabel("Name");
 		add(lblName, "cell 0 0,alignx trailing,aligny center");
 		
 		tfName = new FixedLengthTextField(60);
 		tfName.setLength(60);
 		add(tfName, "cell 1 0,growx,aligny top");
 		
-		lblDob = new JLabel("Date of Birth");
+		lblDob = new JLabel("DoB (MM/DD/YYYY)");
 		add(lblDob, "cell 2 0 2 1");
 		
 		tfDoB = new FixedLengthTextField();
 		tfDoB.setLength(16);
 		add(tfDoB, "cell 4 0 2 1,growx");
 		
-		JLabel lblPhone = new JLabel("Phone:");
+		JLabel lblPhone = new JLabel("Phone");
 		add(lblPhone, "cell 0 1,alignx trailing");
 		
 		tfPhone = new FixedLengthTextField(30);
 		tfPhone.setLength(30);
 		add(tfPhone, "cell 1 1,growx");
 		
-		JLabel lblEmail = new JLabel("E-mail:");
+		JLabel lblEmail = new JLabel("E-mail");
 		add(lblEmail, "cell 2 1 2 1,alignx trailing");
 		
 		tfEmail = new FixedLengthTextField(40);
 		tfEmail.setLength(40);
 		add(tfEmail, "flowx,cell 4 1 2 1,growx");
 		
-		JLabel lblLoyaltyNo = new JLabel("Loyalty No:");
+		JLabel lblLoyaltyNo = new JLabel("Loyalty No");
 		add(lblLoyaltyNo, "cell 0 2,alignx trailing");
 		
 		tfLoyaltyNo = new FixedLengthTextField(30);
 		tfLoyaltyNo.setLength(30);
 		add(tfLoyaltyNo, "cell 1 2,growx");
 		
-		JLabel lblAddress = new JLabel("Address:");
+		JLabel lblAddress = new JLabel("Address");
 		add(lblAddress, "cell 0 3,alignx trailing");
 		
 		tfAddress = new FixedLengthTextField(120);
 		tfAddress.setLength(120);
 		add(tfAddress, "cell 1 3 5 1,growx");
 		
-		JLabel lblCitytown = new JLabel("City:");
+		JLabel lblCitytown = new JLabel("City");
 		add(lblCitytown, "cell 0 4,alignx trailing");
 		
 		tfCity = new FixedLengthTextField(30);
 		tfCity.setLength(30);
 		add(tfCity, "flowx,cell 1 4,growx");
 		
-		JLabel lblStatecountry = new JLabel("State:");
+		JLabel lblStatecountry = new JLabel("State");
 		add(lblStatecountry, "flowx,cell 2 4,alignx trailing");
 		
 		tfState = new FixedLengthTextField(30);
@@ -96,17 +96,19 @@ public class CustomerForm extends BeanEditor {
 		tfState.setLength(30);
 		add(tfState, "cell 3 4");
 		
-		JLabel lblCountry = new JLabel("Country:");
+		JLabel lblCountry = new JLabel("Country");
 		add(lblCountry, "cell 4 4,alignx trailing");
 		
 		tfCountry = new FixedLengthTextField(30);
+		tfCountry.setText("USA");
 		tfCountry.setLength(30);
 		add(tfCountry, "cell 5 4,growx");
 		
-		JLabel lblCreditLimit = new JLabel("Credit Limit:");
+		JLabel lblCreditLimit = new JLabel("Credit Limit ($)");
 		add(lblCreditLimit, "cell 0 5,alignx trailing");
 		
 		tfCreditLimit = new DoubleTextField();
+		tfCreditLimit.setText("500.00");
 		tfCreditLimit.setColumns(10);
 		add(tfCreditLimit, "cell 1 5,growx");
 		
@@ -132,6 +134,7 @@ public class CustomerForm extends BeanEditor {
 		tfState.setEditable(editable);
 		tfCountry.setEditable(editable);
 		cbVip.setEnabled(editable);
+		tfDoB.setEditable(editable);
 	}
 
 	@Override
@@ -161,6 +164,7 @@ public class CustomerForm extends BeanEditor {
 		
 		if(customer != null) {
 			tfName.setText(customer.getName());
+			tfDoB.setText(customer.getDob());
 			tfAddress.setText(customer.getAddress());
 			tfCity.setText(customer.getCity());
 			tfCountry.setText(customer.getCountry());
@@ -173,6 +177,7 @@ public class CustomerForm extends BeanEditor {
 		}
 		else {
 			tfName.setText("");
+			tfDoB.setText("");
 			tfAddress.setText("");
 			tfCity.setText("");
 			tfCountry.setText("");
@@ -204,6 +209,7 @@ public class CustomerForm extends BeanEditor {
 		}
 		
 		customer.setName(tfName.getText());
+		customer.setDob(tfDoB.getText());
 		customer.setAddress(tfAddress.getText());
 		customer.setCity(tfCity.getText());
 		customer.setCountry(tfCountry.getText());

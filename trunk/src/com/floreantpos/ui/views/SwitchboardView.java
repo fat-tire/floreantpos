@@ -501,8 +501,8 @@ public class SwitchboardView extends JPanel implements ActionListener {
 
 	private void doCreateNewTicket(final String ticketType) {
 		try {
-
-			orderServiceExtension.createNewTicket(ticketType);
+			OrderServiceExtension orderService = new DefaultOrderServiceExtension();
+			orderService.createNewTicket(ticketType);
 
 		} catch (TicketAlreadyExistsException e) {
 
@@ -774,11 +774,11 @@ public class SwitchboardView extends JPanel implements ActionListener {
 		}
 	}
 
-	private class TicketListUpdaterTask implements ActionListener {
-
-		public void actionPerformed(ActionEvent e) {
-			updateTicketList();
-		}
-
-	}
+//	private class TicketListUpdaterTask implements ActionListener {
+//
+//		public void actionPerformed(ActionEvent e) {
+//			updateTicketList();
+//		}
+//
+//	}
 }
