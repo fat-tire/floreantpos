@@ -193,7 +193,7 @@ public class TicketTableModel extends AbstractTableModel {
 
 			TicketItem t = (TicketItem) entry.getValue();
 
-			if (ticketItem.getName().equals(t.getName())) {
+			if (ticketItem.getName().equals(t.getName()) && !t.isPrintedToKitchen()) {
 				t.setItemCount(t.getItemCount() + 1);
 
 				table.repaint();

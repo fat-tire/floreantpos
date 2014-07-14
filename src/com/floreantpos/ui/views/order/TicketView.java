@@ -50,6 +50,7 @@ public class TicketView extends JPanel {
 		initComponents();
 
 		chkTaxExempt.setEnabled(false);
+		ticketViewerTable.setRowHeight(35);
 		ticketViewerTable.getRenderer().setInTicketScreen(true);
 		ticketViewerTable.addMouseListener(new MouseAdapter() {
 
