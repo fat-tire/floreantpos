@@ -96,7 +96,7 @@ public class TicketListView extends JPanel {
 
 	private class TicketListTableModel extends ListTableModel {
 		public TicketListTableModel() {
-			super(new String[] { POSConstants.ID, POSConstants.TABLE, POSConstants.SERVER, POSConstants.CREATED, POSConstants.CUSTOMER,
+			super(new String[] { POSConstants.ID, "TBL", POSConstants.SERVER, POSConstants.CREATED, POSConstants.CUSTOMER,
 					POSConstants.TICKET_DELIVERY_DATE, POSConstants.TICKET_TYPE, POSConstants.TOTAL, POSConstants.DUE });
 		}
 
@@ -108,12 +108,7 @@ public class TicketListView extends JPanel {
 				return Integer.valueOf(ticket.getId());
 
 			case 1:
-				Integer tableNumber = ticket.getTableNumber();
-				if (tableNumber == -1) {
-					return null;
-				}
-
-				return Integer.valueOf(tableNumber);
+				return ticket.getTableNumber();
 
 			case 2:
 				return String.valueOf(ticket.getOwner());
@@ -127,7 +122,7 @@ public class TicketListView extends JPanel {
 					return ticket.getCustomer().getTelephoneNo();
 				}
 
-				return null;
+				return "Guest";
 
 			case 5:
 				return ticket.getDeliveryDate();
