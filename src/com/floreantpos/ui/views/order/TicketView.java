@@ -7,31 +7,43 @@
 package com.floreantpos.ui.views.order;
 
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.List;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-
-import org.hibernate.StaleObjectStateException;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import net.miginfocom.swing.MigLayout;
+
+import org.hibernate.StaleObjectStateException;
 
 import com.floreantpos.POSConstants;
 import com.floreantpos.PosException;
 import com.floreantpos.config.PrintConfig;
 import com.floreantpos.main.Application;
+import com.floreantpos.model.CookingInstruction;
+import com.floreantpos.model.ITicketItem;
 import com.floreantpos.model.MenuCategory;
 import com.floreantpos.model.MenuGroup;
 import com.floreantpos.model.MenuItem;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketItem;
+import com.floreantpos.model.TicketItemCookingInstruction;
 import com.floreantpos.model.TicketItemModifier;
+import com.floreantpos.model.dao.CookingInstructionDAO;
 import com.floreantpos.model.dao.MenuItemDAO;
 import com.floreantpos.print.PosPrintService;
+import com.floreantpos.swing.PosButton;
+import com.floreantpos.ui.dialog.BeanEditorDialog;
 import com.floreantpos.ui.dialog.POSMessageDialog;
+import com.floreantpos.ui.views.CookingInstructionSelectionView;
 import com.floreantpos.ui.views.SwitchboardView;
 import com.floreantpos.ui.views.order.actions.OrderListener;
 import com.floreantpos.util.NumberUtil;
@@ -50,14 +62,38 @@ public class TicketView extends JPanel {
 		initComponents();
 
 		chkTaxExempt.setEnabled(false);
+		btnAddCookingInstruction.setEnabled(false);
+		btnIncreaseAmount.setEnabled(false);
+		btnDecreaseAmount.setEnabled(false);
+		
 		ticketViewerTable.setRowHeight(35);
 		ticketViewerTable.getRenderer().setInTicketScreen(true);
 		ticketViewerTable.addMouseListener(new MouseAdapter() {
-
 			public void mouseClicked(MouseEvent e) {
 				if (e.getClickCount() == 2) {
 					updateSelectionView();
 				}
+			}
+
+		});
+
+		ticketViewerTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+			@Override
+			public void valueChanged(ListSelectionEvent e) {
+				
+				
+				Object selected = ticketViewerTable.getSelected();
+				if(!(selected instanceof ITicketItem)) {
+					return;
+				}
+				
+				ITicketItem item = (ITicketItem) selected;
+				
+				Boolean printedToKitchen = item.isPrintedToKitchen();
+				
+				btnAddCookingInstruction.setEnabled(item.canAddCookingInstruction());
+				btnIncreaseAmount.setEnabled(!printedToKitchen);
+				btnDecreaseAmount.setEnabled(!printedToKitchen);
 			}
 
 		});
@@ -70,13 +106,11 @@ public class TicketView extends JPanel {
 	 */
 	// <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:initComponents
 	private void initComponents() {
-		java.awt.GridBagConstraints gridBagConstraints;
-
 		jPanel1 = new com.floreantpos.swing.TransparentPanel();
-		jSeparator1 = new javax.swing.JSeparator();
 		jPanel3 = new com.floreantpos.swing.TransparentPanel();
 		jSeparator2 = new javax.swing.JSeparator();
 		bottomPanel = new com.floreantpos.swing.TransparentPanel();
+		bottomPanel.setOpaque(true);
 		btnPay = new com.floreantpos.swing.PosButton();
 		btnCancel = new com.floreantpos.swing.PosButton();
 		btnFinish = new com.floreantpos.swing.PosButton();
@@ -85,103 +119,99 @@ public class TicketView extends JPanel {
 		btnDecreaseAmount = new com.floreantpos.swing.PosButton();
 		btnScrollUp = new com.floreantpos.swing.PosButton();
 		btnScrollDown = new com.floreantpos.swing.PosButton();
-		btnDelete = new com.floreantpos.swing.PosButton();
 		jPanel2 = new com.floreantpos.swing.TransparentPanel();
 		ticketViewerTable = new com.floreantpos.ui.ticket.TicketViewerTable();
 		jScrollPane1 = new javax.swing.JScrollPane(ticketViewerTable);
 
-		setBorder(javax.swing.BorderFactory.createTitledBorder(null, com.floreantpos.POSConstants.TICKET, javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
+		setBorder(javax.swing.BorderFactory.createTitledBorder(null, com.floreantpos.POSConstants.TICKET, javax.swing.border.TitledBorder.CENTER,
+				javax.swing.border.TitledBorder.DEFAULT_POSITION));
 		setPreferredSize(new java.awt.Dimension(420, 463));
 		setLayout(new java.awt.BorderLayout(5, 5));
-
-		jPanel1.setLayout(new java.awt.BorderLayout(5, 5));
-		jPanel1.add(jSeparator1, java.awt.BorderLayout.CENTER);
+		jPanel1.setLayout(new MigLayout("insets 0", "[grow,fill]", "[grow][grow][grow]"));
 		jPanel3.setLayout(new MigLayout("alignx trailing,fill", "[][grow][][]", "[][][][][][][][]"));
 		jLabel5 = new javax.swing.JLabel();
-		
-				jLabel5.setFont(new java.awt.Font("Tahoma", 1, 12));
-				jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-				jLabel5.setText(com.floreantpos.POSConstants.SUBTOTAL + ":");
-				jPanel3.add(jLabel5, "cell 1 1,growx,aligny center");
+
+		jLabel5.setFont(new java.awt.Font("Tahoma", 1, 12));
+		jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+		jLabel5.setText(com.floreantpos.POSConstants.SUBTOTAL + ":");
+		jPanel3.add(jLabel5, "cell 1 1,growx,aligny center");
 		tfSubtotal = new javax.swing.JTextField();
 		tfSubtotal.setHorizontalAlignment(SwingConstants.TRAILING);
-		
-				tfSubtotal.setEditable(false);
-				tfSubtotal.setFont(new java.awt.Font("Tahoma", 1, 12));
-				jPanel3.add(tfSubtotal, "cell 3 1,growx,aligny center");
+
+		tfSubtotal.setEditable(false);
+		tfSubtotal.setFont(new java.awt.Font("Tahoma", 1, 12));
+		jPanel3.add(tfSubtotal, "cell 3 1,growx,aligny center");
 		jLabel1 = new javax.swing.JLabel();
-		
-				jLabel1.setFont(new java.awt.Font("Tahoma", 1, 12));
-				jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-				jLabel1.setText(com.floreantpos.POSConstants.DISCOUNT + ":");
-				jPanel3.add(jLabel1, "cell 1 2,growx,aligny center");
-		
+
+		jLabel1.setFont(new java.awt.Font("Tahoma", 1, 12));
+		jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+		jLabel1.setText(com.floreantpos.POSConstants.DISCOUNT + ":");
+		jPanel3.add(jLabel1, "cell 1 2,growx,aligny center");
+
 		label = new JLabel(" (-)");
 		label.setHorizontalAlignment(SwingConstants.TRAILING);
 		jPanel3.add(label, "cell 2 2,alignx trailing");
 		tfDiscount = new javax.swing.JTextField();
 		tfDiscount.setHorizontalAlignment(SwingConstants.TRAILING);
-		
-				tfDiscount.setEditable(false);
-				tfDiscount.setFont(new java.awt.Font("Tahoma", 1, 12));
-				jPanel3.add(tfDiscount, "cell 3 2,growx,aligny center");
+
+		tfDiscount.setEditable(false);
+		tfDiscount.setFont(new java.awt.Font("Tahoma", 1, 12));
+		jPanel3.add(tfDiscount, "cell 3 2,growx,aligny center");
 		jLabel2 = new javax.swing.JLabel();
-		
-				jLabel2.setFont(new java.awt.Font("Tahoma", 1, 12));
-				jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-				jLabel2.setText(com.floreantpos.POSConstants.TAX + ":");
-				jPanel3.add(jLabel2, "cell 1 3,growx,aligny center");
-		
+
+		jLabel2.setFont(new java.awt.Font("Tahoma", 1, 12));
+		jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+		jLabel2.setText(com.floreantpos.POSConstants.TAX + ":");
+		jPanel3.add(jLabel2, "cell 1 3,growx,aligny center");
+
 		label_1 = new JLabel("(+)");
 		label_1.setHorizontalAlignment(SwingConstants.TRAILING);
 		jPanel3.add(label_1, "cell 2 3,alignx trailing");
 		tfTax = new javax.swing.JTextField();
 		tfTax.setHorizontalAlignment(SwingConstants.TRAILING);
-		
-				tfTax.setEditable(false);
-				tfTax.setFont(new java.awt.Font("Tahoma", 1, 12));
-				jPanel3.add(tfTax, "cell 3 3,growx,aligny center");
-		
+
+		tfTax.setEditable(false);
+		tfTax.setFont(new java.awt.Font("Tahoma", 1, 12));
+		jPanel3.add(tfTax, "cell 3 3,growx,aligny center");
+
 		lblServiceCharge = new JLabel();
 		lblServiceCharge.setText("Service Charge:");
 		lblServiceCharge.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblServiceCharge.setFont(new Font("Dialog", Font.BOLD, 12));
 		jPanel3.add(lblServiceCharge, "cell 1 4,alignx trailing");
-		
+
 		label_2 = new JLabel("(+)");
 		label_2.setHorizontalAlignment(SwingConstants.TRAILING);
 		jPanel3.add(label_2, "cell 2 4,alignx trailing");
-		
+
 		tfServiceCharge = new JTextField();
 		tfServiceCharge.setHorizontalAlignment(SwingConstants.TRAILING);
 		tfServiceCharge.setEditable(false);
 		jPanel3.add(tfServiceCharge, "cell 3 4,growx,aligny center");
 		tfServiceCharge.setColumns(10);
 		jLabel6 = new javax.swing.JLabel();
-		
-				jLabel6.setFont(new java.awt.Font("Tahoma", 1, 12));
-				jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-				jLabel6.setText(com.floreantpos.POSConstants.TOTAL + ":");
-				jPanel3.add(jLabel6, "cell 1 5,growx,aligny center");
+
+		jLabel6.setFont(new java.awt.Font("Tahoma", 1, 12));
+		jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+		jLabel6.setText(com.floreantpos.POSConstants.TOTAL + ":");
+		jPanel3.add(jLabel6, "cell 1 5,growx,aligny center");
 		tfTotal = new javax.swing.JTextField();
 		tfTotal.setHorizontalAlignment(SwingConstants.TRAILING);
-		
-				tfTotal.setEditable(false);
-				tfTotal.setFont(new java.awt.Font("Tahoma", 1, 12));
-				jPanel3.add(tfTotal, "cell 3 5,growx,aligny center");
+
+		tfTotal.setEditable(false);
+		tfTotal.setFont(new java.awt.Font("Tahoma", 1, 12));
+		jPanel3.add(tfTotal, "cell 3 5,growx,aligny center");
 		chkTaxExempt = new javax.swing.JCheckBox();
-		
-				chkTaxExempt.setFont(new java.awt.Font("Tahoma", 1, 12));
-				chkTaxExempt.setText(com.floreantpos.POSConstants.TAX_EXEMPT);
-				chkTaxExempt.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
-				chkTaxExempt.setFocusable(false);
-				chkTaxExempt.setMargin(new java.awt.Insets(0, 0, 0, 0));
-				jPanel3.add(chkTaxExempt, "cell 3 6,growx,aligny center");
+
+		chkTaxExempt.setFont(new java.awt.Font("Tahoma", 1, 12));
+		chkTaxExempt.setText(com.floreantpos.POSConstants.TAX_EXEMPT);
+		chkTaxExempt.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
+		chkTaxExempt.setFocusable(false);
+		chkTaxExempt.setMargin(new java.awt.Insets(0, 0, 0, 0));
+		jPanel3.add(chkTaxExempt, "cell 3 6,growx,aligny center");
 		jPanel3.add(jSeparator2, "cell 0 7 4 1,growx,aligny center");
 
-		jPanel1.add(jPanel3, java.awt.BorderLayout.NORTH);
-
-		bottomPanel.setLayout(new java.awt.GridBagLayout());
+		jPanel1.add(jPanel3, "cell 0 0,growx,aligny top");
 
 		btnPay.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pay_32.png")));
 		btnPay.setText(com.floreantpos.POSConstants.PAY_NOW);
@@ -191,12 +221,8 @@ public class TicketView extends JPanel {
 				doPayNow(evt);
 			}
 		});
-		gridBagConstraints = new java.awt.GridBagConstraints();
-		gridBagConstraints.gridwidth = 2;
-		gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-		gridBagConstraints.weightx = 1.0;
-		gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 0);
-		bottomPanel.add(btnPay, gridBagConstraints);
+		bottomPanel.setLayout(new MigLayout("insets 0", "[202px,grow][202px,grow]", "[45px][45px]"));
+		bottomPanel.add(btnPay, "cell 0 0 2 1,grow");
 
 		btnCancel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cancel_32.png")));
 		btnCancel.setText(com.floreantpos.POSConstants.CANCEL);
@@ -206,12 +232,7 @@ public class TicketView extends JPanel {
 				doCancelOrder(evt);
 			}
 		});
-		gridBagConstraints = new java.awt.GridBagConstraints();
-		gridBagConstraints.gridx = 0;
-		gridBagConstraints.gridy = 1;
-		gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-		gridBagConstraints.weightx = 1.0;
-		bottomPanel.add(btnCancel, gridBagConstraints);
+		bottomPanel.add(btnCancel, "cell 0 1,grow");
 
 		btnFinish.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/finish_32.png")));
 		btnFinish.setText(com.floreantpos.POSConstants.FINISH);
@@ -221,17 +242,9 @@ public class TicketView extends JPanel {
 				doFinishOrder(evt);
 			}
 		});
-		gridBagConstraints = new java.awt.GridBagConstraints();
-		gridBagConstraints.gridx = 1;
-		gridBagConstraints.gridy = 1;
-		gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-		gridBagConstraints.weightx = 1.0;
-		gridBagConstraints.insets = new java.awt.Insets(0, 5, 0, 0);
-		bottomPanel.add(btnFinish, gridBagConstraints);
+		bottomPanel.add(btnFinish, "cell 1 1,grow");
 
-		jPanel1.add(bottomPanel, java.awt.BorderLayout.SOUTH);
-
-		jPanel5.setLayout(new java.awt.GridBagLayout());
+		jPanel1.add(bottomPanel, "cell 0 2,growx,aligny top");
 
 		btnIncreaseAmount.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/add_user_32.png")));
 		btnIncreaseAmount.setPreferredSize(new java.awt.Dimension(76, 45));
@@ -240,10 +253,8 @@ public class TicketView extends JPanel {
 				doIncreaseAmount(evt);
 			}
 		});
-		gridBagConstraints = new java.awt.GridBagConstraints();
-		gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-		gridBagConstraints.weightx = 1.0;
-		jPanel5.add(btnIncreaseAmount, gridBagConstraints);
+		jPanel5.setLayout(new MigLayout("insets 0", "[133px,grow][133px,grow][133px,grow]", "[45px][45px]"));
+		jPanel5.add(btnIncreaseAmount, "cell 0 0,grow");
 
 		btnDecreaseAmount.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/minus_32.png")));
 		btnDecreaseAmount.setPreferredSize(new java.awt.Dimension(76, 45));
@@ -252,11 +263,7 @@ public class TicketView extends JPanel {
 				doDecreaseAmount(evt);
 			}
 		});
-		gridBagConstraints = new java.awt.GridBagConstraints();
-		gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-		gridBagConstraints.weightx = 1.0;
-		gridBagConstraints.insets = new java.awt.Insets(0, 5, 0, 0);
-		jPanel5.add(btnDecreaseAmount, gridBagConstraints);
+		jPanel5.add(btnDecreaseAmount, "cell 1 0,grow");
 
 		btnScrollUp.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/up_32.png")));
 		btnScrollUp.setPreferredSize(new java.awt.Dimension(76, 45));
@@ -265,11 +272,7 @@ public class TicketView extends JPanel {
 				doScrollUp(evt);
 			}
 		});
-		gridBagConstraints = new java.awt.GridBagConstraints();
-		gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-		gridBagConstraints.weightx = 1.0;
-		gridBagConstraints.insets = new java.awt.Insets(0, 5, 0, 0);
-		jPanel5.add(btnScrollUp, gridBagConstraints);
+		jPanel5.add(btnScrollUp, "cell 2 0,grow");
 
 		btnScrollDown.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/down_32.png")));
 		btnScrollDown.setPreferredSize(new java.awt.Dimension(76, 45));
@@ -278,13 +281,7 @@ public class TicketView extends JPanel {
 				doScrollDown(evt);
 			}
 		});
-		gridBagConstraints = new java.awt.GridBagConstraints();
-		gridBagConstraints.gridx = 2;
-		gridBagConstraints.gridy = 1;
-		gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-		gridBagConstraints.weightx = 1.0;
-		gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 0);
-		jPanel5.add(btnScrollDown, gridBagConstraints);
+		btnDelete = new com.floreantpos.swing.PosButton();
 
 		btnDelete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/delete_32.png")));
 		btnDelete.setText(com.floreantpos.POSConstants.DELETE);
@@ -294,22 +291,26 @@ public class TicketView extends JPanel {
 				doDeleteSelection(evt);
 			}
 		});
-		gridBagConstraints = new java.awt.GridBagConstraints();
-		gridBagConstraints.gridx = 0;
-		gridBagConstraints.gridy = 1;
-		gridBagConstraints.gridwidth = 2;
-		gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-		gridBagConstraints.weightx = 1.0;
-		gridBagConstraints.insets = new java.awt.Insets(5, 0, 0, 0);
-		jPanel5.add(btnDelete, gridBagConstraints);
 
-		jPanel1.add(jPanel5, java.awt.BorderLayout.CENTER);
+		btnAddCookingInstruction = new PosButton();
+		btnAddCookingInstruction.setEnabled(false);
+		btnAddCookingInstruction.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				doAddCookingInstruction();
+			}
+		});
+		btnAddCookingInstruction.setText("<html><center>ADD COOKING<br/>INSTRUCTION</center></html>");
+		jPanel5.add(btnAddCookingInstruction, "cell 0 1,grow");
+		jPanel5.add(btnDelete, "cell 1 1,grow");
+		jPanel5.add(btnScrollDown, "cell 2 1,grow");
+
+		jPanel1.add(jPanel5, "cell 0 1,growx,aligny top");
 
 		add(jPanel1, java.awt.BorderLayout.SOUTH);
 
 		jPanel2.setLayout(new java.awt.BorderLayout());
 
-//		jScrollPane1.setBorder(null);
+		//		jScrollPane1.setBorder(null);
 		jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		jScrollPane1.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 		jScrollPane1.setPreferredSize(new java.awt.Dimension(180, 200));
@@ -319,6 +320,44 @@ public class TicketView extends JPanel {
 
 		add(jPanel2, java.awt.BorderLayout.CENTER);
 	}// </editor-fold>//GEN-END:initComponents
+
+	protected void doAddCookingInstruction() {
+
+		try {
+			Object object = ticketViewerTable.getSelected();
+			if (!(object instanceof TicketItem)) {
+				POSMessageDialog.showError("Please select and item");
+				return;
+			}
+
+			TicketItem ticketItem = (TicketItem) object;
+
+			if (ticketItem.isPrintedToKitchen()) {
+				POSMessageDialog.showError("Cooking instruction cannot be added to item already printed to kitchen");
+				return;
+			}
+
+			List<CookingInstruction> list = CookingInstructionDAO.getInstance().findAll();
+			CookingInstructionSelectionView cookingInstructionSelectionView = new CookingInstructionSelectionView();
+			BeanEditorDialog dialog = new BeanEditorDialog(cookingInstructionSelectionView, Application.getPosWindow(), true);
+			dialog.setBean(list);
+			dialog.setSize(450, 300);
+			dialog.setLocationRelativeTo(Application.getPosWindow());
+			dialog.setVisible(true);
+
+			if (dialog.isCanceled()) {
+				return;
+			}
+
+			List<TicketItemCookingInstruction> instructions = cookingInstructionSelectionView.getTicketItemCookingInstructions();
+			ticketItem.addCookingInstructions(instructions);
+
+			ticketViewerTable.updateView();
+		} catch (Exception e) {
+			e.printStackTrace();
+			POSMessageDialog.showError(e.getMessage());
+		}
+	}
 
 	private void doFinishOrder(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_doFinishOrder
 		try {
@@ -341,8 +380,7 @@ public class TicketView extends JPanel {
 		} catch (StaleObjectStateException e) {
 			POSMessageDialog.showError("It seems the ticket has been modified by some other person or terminal. Save failed.");
 			return;
-		} 
-		catch (PosException x) {
+		} catch (PosException x) {
 			POSMessageDialog.showError(x.getMessage());
 		} catch (Exception e) {
 			POSMessageDialog.showError(Application.getPosWindow(), POSConstants.ERROR_MESSAGE, e);
@@ -357,7 +395,7 @@ public class TicketView extends JPanel {
 		if (ticket.getTicketItems() == null || ticket.getTicketItems().size() == 0) {
 			throw new PosException(com.floreantpos.POSConstants.TICKET_IS_EMPTY_);
 		}
-		
+
 		ticket.calculatePrice();
 		ticket.calculateDefaultGratutity();
 	}
@@ -435,7 +473,6 @@ public class TicketView extends JPanel {
 	private com.floreantpos.swing.TransparentPanel jPanel3;
 	private com.floreantpos.swing.TransparentPanel jPanel5;
 	private javax.swing.JScrollPane jScrollPane1;
-	private javax.swing.JSeparator jSeparator1;
 	private javax.swing.JSeparator jSeparator2;
 	private javax.swing.JTextField tfDiscount;
 	private javax.swing.JTextField tfSubtotal;
@@ -447,6 +484,7 @@ public class TicketView extends JPanel {
 	private JLabel label_1;
 	private JLabel label_2;
 	private JLabel lblServiceCharge;
+	private PosButton btnAddCookingInstruction;
 
 	// End of variables declaration//GEN-END:variables
 
@@ -471,7 +509,7 @@ public class TicketView extends JPanel {
 		ticketViewerTable.removeModifier(parent, modifier);
 	}
 
-//	private NumberFormat numberFormat = new DecimalFormat("0.00");
+	//	private NumberFormat numberFormat = new DecimalFormat("0.00");
 
 	public void updateAllView() {
 		ticketViewerTable.updateView();
@@ -499,7 +537,7 @@ public class TicketView extends JPanel {
 		tfDiscount.setText(NumberUtil.formatNumber(ticket.getDiscountAmount()));
 
 		tfTax.setText(NumberUtil.formatNumber(ticket.getTaxAmount()));
-		
+
 		if (ticket.isTaxExempt()) {
 			chkTaxExempt.setSelected(true);
 		}
