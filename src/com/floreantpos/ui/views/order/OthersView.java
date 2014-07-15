@@ -18,7 +18,6 @@ import com.floreantpos.ui.dialog.MiscTicketItemDialog;
 import com.floreantpos.ui.dialog.NumberSelectionDialog2;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.dialog.TicketDetailDialog;
-import com.floreantpos.ui.views.CookingInstructionView;
 
 /**
  *
@@ -47,7 +46,6 @@ public class OthersView extends TransparentPanel {
         transparentPanel1 = new com.floreantpos.swing.TransparentPanel();
         btnCustomerNumber = new com.floreantpos.swing.PosButton();
         btnTableNumber = new com.floreantpos.swing.PosButton();
-        btnCookingInstruction = new com.floreantpos.swing.PosButton();
 
         setBorder(javax.swing.BorderFactory.createTitledBorder(null, com.floreantpos.POSConstants.OTHERS, javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
         setLayout(new java.awt.GridLayout(0, 1, 5, 5));
@@ -100,24 +98,8 @@ public class OthersView extends TransparentPanel {
         });
         transparentPanel1.add(btnTableNumber);
 
-        btnCookingInstruction.setText("<html><body><center>" + POSConstants.CAPITAL_COOKING_INSTRUCTIONS + "</center></body></html>");
-        btnCookingInstruction.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCookingInstructionActionPerformed(evt);
-            }
-        });
-        transparentPanel1.add(btnCookingInstruction);
-
         add(transparentPanel1);
     }// </editor-fold>//GEN-END:initComponents
-
-    private void btnCookingInstructionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCookingInstructionActionPerformed
-    	CookingInstructionView cookingInstructionView = new CookingInstructionView(Application.getPosWindow(), true);
-    	cookingInstructionView.setTitle(com.floreantpos.POSConstants.COOKING_INSTRUCTIONS);
-    	cookingInstructionView.pack();
-    	cookingInstructionView.setTicket(getCurrentTicket());
-    	cookingInstructionView.open();
-    }//GEN-LAST:event_btnCookingInstructionActionPerformed
 
     private void doInsertMisc(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_doInsertMisc
     	MiscTicketItemDialog dialog = new MiscTicketItemDialog(Application.getPosWindow(), true);
@@ -225,9 +207,6 @@ public class OthersView extends TransparentPanel {
     	thisTicket.setTableNumber(tableNumber);
 		updateView();
     }
-    
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private com.floreantpos.swing.PosButton btnCookingInstruction;
     private com.floreantpos.swing.PosButton btnCustomerNumber;
     private com.floreantpos.swing.PosButton btnMisc;
     private com.floreantpos.swing.PosButton btnOrderInfo;
