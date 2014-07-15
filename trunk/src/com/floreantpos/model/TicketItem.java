@@ -1,11 +1,13 @@
 package com.floreantpos.model;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import com.floreantpos.model.base.BaseTicketItem;
 import com.floreantpos.util.NumberUtil;
 
-public class TicketItem extends BaseTicketItem {
+public class TicketItem extends BaseTicketItem implements ITicketItem {
 	private static final long serialVersionUID = 1L;
 
 	/*[CONSTRUCTOR MARKER BEGIN]*/
@@ -43,10 +45,54 @@ public class TicketItem extends BaseTicketItem {
 	public void setTableRowNum(int tableRowNum) {
 		this.tableRowNum = tableRowNum;
 	}
+	
+	public boolean canAddCookingInstruction() {
+		if(isPrintedToKitchen())
+			return false;
+		
+		return true;
+	}
 
 	@Override
 	public String toString() {
 		return getName();
+	}
+	
+	public void addCookingInstruction(TicketItemCookingInstruction cookingInstruction) {
+		List<TicketItemCookingInstruction> cookingInstructions = getCookingInstructions();
+		
+		if (cookingInstructions == null) {
+			cookingInstructions = new ArrayList<TicketItemCookingInstruction>(2);
+			setCookingInstructions(cookingInstructions);
+		}
+
+		cookingInstructions.add(cookingInstruction);
+	}
+	
+	public void addCookingInstructions(List<TicketItemCookingInstruction> instructions) {
+		List<TicketItemCookingInstruction> cookingInstructions = getCookingInstructions();
+		
+		if (cookingInstructions == null) {
+			cookingInstructions = new ArrayList<TicketItemCookingInstruction>(2);
+			setCookingInstructions(cookingInstructions);
+		}
+		
+		cookingInstructions.addAll(instructions);
+	}
+	
+	public void removeCookingInstruction(TicketItemCookingInstruction itemCookingInstruction) {
+		List<TicketItemCookingInstruction> cookingInstructions2 = getCookingInstructions();
+		if(cookingInstructions2 == null) {
+			return;
+		}
+		
+		for (Iterator iterator = cookingInstructions2.iterator(); iterator.hasNext();) {
+			TicketItemCookingInstruction ticketItemCookingInstruction = (TicketItemCookingInstruction) iterator.next();
+			if(ticketItemCookingInstruction.getTableRowNum() == itemCookingInstruction.getTableRowNum()) {
+				iterator.remove();
+				return;
+			}
+		}
 	}
 
 	public TicketItemModifierGroup findTicketItemModifierGroup(MenuModifier menuModifier, boolean createNew) {

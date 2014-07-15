@@ -11,6 +11,7 @@ import javax.swing.table.AbstractTableModel;
 
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketItem;
+import com.floreantpos.model.TicketItemCookingInstruction;
 import com.floreantpos.model.TicketItemModifier;
 import com.floreantpos.model.TicketItemModifierGroup;
 
@@ -121,27 +122,24 @@ public class TicketTableModel extends AbstractTableModel {
 				}
 				
 				return  modifier.getTaxAmount();
-//				if (modifier.getModifierType() == TicketItemModifier.NORMAL_MODIFIER) {
-//					return (modifier.getUnitPrice() * modifier.getItemCount()) * (modifier.getTaxRate() / 100);
-//				}
-//				if (modifier.getModifierType() == TicketItemModifier.EXTRA_MODIFIER) {
-//					return (modifier.getExtraUnitPrice() * modifier.getItemCount()) * (modifier.getTaxRate() / 100);
-//				}
 
 			case 4:
 				if (modifier.getModifierType() == TicketItemModifier.NO_MODIFIER) {
 					return null;
 				}
 
-//				double taxAmount = 0;
-//				if (modifier.getModifierType() == TicketItemModifier.NORMAL_MODIFIER) {
-//					taxAmount = modifier.getTotalAmount() * (modifier.getTaxRate() / 100);
-//				}
-//				if (modifier.getModifierType() == TicketItemModifier.EXTRA_MODIFIER) {
-//					taxAmount = modifier.getTotalAmount() * (modifier.getTaxRate() / 100);
-//				}
-
 				return modifier.getTotalAmount();
+			}
+		}
+		
+		if(value instanceof TicketItemCookingInstruction) {
+			TicketItemCookingInstruction ci = (TicketItemCookingInstruction) value;
+			switch (columnIndex) {
+				case 0:
+					return "   " + ci.getDescription();
+
+				default:
+					break;
 			}
 		}
 
@@ -173,6 +171,15 @@ public class TicketTableModel extends AbstractTableModel {
 							rowNum++;
 						}
 					}
+				}
+			}
+			
+			List<TicketItemCookingInstruction> cookingInstructions = ticketItem.getCookingInstructions();
+			if(cookingInstructions != null) {
+				for (TicketItemCookingInstruction ticketItemCookingInstruction : cookingInstructions) {
+					ticketItemCookingInstruction.setTableRowNum(rowNum);
+					tableRows.put(String.valueOf(rowNum), ticketItemCookingInstruction);
+					rowNum++;
 				}
 			}
 		}
@@ -314,6 +321,23 @@ public class TicketTableModel extends AbstractTableModel {
 						}
 					}
 				}
+			}
+		}
+		else if (object instanceof TicketItemCookingInstruction) {
+			TicketItemCookingInstruction cookingInstruction = (TicketItemCookingInstruction) object;
+			int tableRowNum = cookingInstruction.getTableRowNum();
+			
+			TicketItem ticketItem = null;
+			while(tableRowNum > 0) {
+				Object object2 = tableRows.get(String.valueOf(--tableRowNum));
+				if(object2 instanceof TicketItem) {
+					ticketItem = (TicketItem) object2;
+					break;
+				}
+			}
+			
+			if(ticketItem != null) {
+				ticketItem.removeCookingInstruction(cookingInstruction);
 			}
 		}
 

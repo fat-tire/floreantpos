@@ -5,7 +5,7 @@ import java.util.List;
 import com.floreantpos.model.base.BaseTicketItemModifier;
 import com.floreantpos.util.NumberUtil;
 
-public class TicketItemModifier extends BaseTicketItemModifier {
+public class TicketItemModifier extends BaseTicketItemModifier implements ITicketItem {
 	private static final long serialVersionUID = 1L;
 
 	public final static int MODIFIER_NOT_INITIALIZED = 0;
@@ -40,6 +40,10 @@ public class TicketItemModifier extends BaseTicketItemModifier {
 	@Override
 	public String toString() {
 		return getName();
+	}
+	
+	public boolean canAddCookingInstruction() {
+		return false;
 	}
 
 	private int getPreviousItemsCount() {
