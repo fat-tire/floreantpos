@@ -23,6 +23,7 @@ import com.floreantpos.main.Application;
 import com.floreantpos.model.Restaurant;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketItem;
+import com.floreantpos.model.TicketItemCookingInstruction;
 import com.floreantpos.model.TicketItemModifierGroup;
 import com.floreantpos.model.User;
 import com.floreantpos.model.dao.RestaurantDAO;
@@ -157,6 +158,13 @@ public class JReportPrintService {
 				if (modifierGroups != null) {
 					for (TicketItemModifierGroup modifierGroup : modifierGroups) {
 						modifierGroup.setPrintedToKitchen(true);
+					}
+				}
+				
+				List<TicketItemCookingInstruction> cookingInstructions = ticketItem.getCookingInstructions();
+				if(cookingInstructions != null) {
+					for (TicketItemCookingInstruction ticketItemCookingInstruction : cookingInstructions) {
+						ticketItemCookingInstruction.setPrintedToKitchen(true);
 					}
 				}
 			}
