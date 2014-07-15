@@ -15,7 +15,7 @@
 
 	<build>
 		<sourceDirectory>src</sourceDirectory>
-		<finalName>floreantpos-${buildNumber}</finalName>
+		<finalName>floreantpos</finalName>
 		<resources>
 			<resource>
 				<directory>src</directory>
@@ -134,7 +134,7 @@
 						<configuration>
 							<target>
 								<zip
-									destfile="${project.build.directory}/${project.build.finalName}.zip"
+									destfile="${project.build.directory}/${project.build.finalName}-${buildNumber}.zip"
 									basedir="${project.build.directory}/${project.build.finalName}-bin/${project.build.finalName}"></zip>
 							</target>
 						</configuration>
