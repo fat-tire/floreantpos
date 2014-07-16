@@ -1,4 +1,4 @@
-package com.floreantpos.jreports;
+package com.floreantpos.report;
 
 import java.util.List;
 

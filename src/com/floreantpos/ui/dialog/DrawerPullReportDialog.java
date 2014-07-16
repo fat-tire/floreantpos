@@ -39,7 +39,7 @@ import com.floreantpos.model.Terminal;
 import com.floreantpos.model.User;
 import com.floreantpos.model.dao.TerminalDAO;
 import com.floreantpos.print.PosPrintService;
-import com.floreantpos.report.services.ReportService;
+import com.floreantpos.report.service.ReportService;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.ui.TitlePanel;
 import com.floreantpos.util.NumberUtil;

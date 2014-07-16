@@ -41,7 +41,7 @@ import com.floreantpos.model.dao.ShiftDAO;
 import com.floreantpos.model.dao.TerminalDAO;
 import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.report.HourlyLaborReportModel;
-import com.floreantpos.report.services.ReportService;
+import com.floreantpos.report.service.ReportService;
 import com.floreantpos.swing.ListComboBoxModel;
 import com.floreantpos.swing.TransparentPanel;
 import com.floreantpos.ui.dialog.POSMessageDialog;

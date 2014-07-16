@@ -1,4 +1,4 @@
-package com.floreantpos.jreports;
+package com.floreantpos.report;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,30 +7,31 @@ import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.TicketItemModifier;
 import com.floreantpos.model.TicketItemModifierGroup;
-import com.floreantpos.util.NumberUtil;
 
 
-public class TicketDataSource extends AbstractReportDataSource {
+public class KitchenTicketDataSource extends AbstractReportDataSource {
 
-	public TicketDataSource() {
-		super(new String[] {"itemQty", "itemName", "itemUnitPrice", "itemSubtotal"});
+	public KitchenTicketDataSource() {
+		super(new String[] {"itemNo", "itemName", "itemQty"});
 	}
 	
-	public TicketDataSource(Ticket ticket) {
-		super(new String[] {"itemQty", "itemName", "itemUnitPrice", "itemSubtotal"});
+	public KitchenTicketDataSource(Ticket ticket) {
+		super(new String[] {"itemNo", "itemName", "itemQty"});
 		
 		setTicket(ticket);
 	}
 
-	private void setTicket(Ticket ticket) {
+	public void setTicket(Ticket ticket) {
 		ArrayList<Row> rows = new ArrayList<Row>();
 		
 		List<TicketItem> ticketItems = ticket.getTicketItems();
 		if (ticketItems != null) {
 			for (TicketItem ticketItem : ticketItems) {
-				Row row = new Row(ticketItem.getItemCount(), ticketItem.getName(), ticketItem.getUnitPrice(), ticketItem.getSubtotalAmountWithoutModifiers());
-				rows.add(row);
-				
+				if(ticketItem.isShouldPrintToKitchen() && !ticketItem.isPrintedToKitchen()) {
+					Row row1 = new Row(ticketItem.getItemCount(), ticketItem.getName(), ticketItem.getId());
+					rows.add(row1);
+				}
+				ticketItem.setPrintedToKitchen(true);
 				
 				List<TicketItemModifierGroup> modifierGroups = ticketItem.getTicketItemModifierGroups();
 				if (modifierGroups != null) {
@@ -38,25 +39,19 @@ public class TicketDataSource extends AbstractReportDataSource {
 						List<TicketItemModifier> modifiers = modifierGroup.getTicketItemModifiers();
 						if (modifiers != null) {
 							for (TicketItemModifier modifier : modifiers) {
-								if (modifier.getTotalAmount() == 0) {
+								if(!modifier.isShouldPrintToKitchen() || modifier.isPrintedToKitchen()) {
 									continue;
 								}
-								boolean extra = false;
+								modifier.setPrintedToKitchen(true);
+								
 								String name = " - " + modifier.getName();
 								if (modifier.getModifierType() == TicketItemModifier.EXTRA_MODIFIER) {
 									name = " - Extra " + name;
-									extra = true;
 								}
-								row = new Row();
+								Row row = new Row();
 								row.setItemCount(modifier.getItemCount());
 								row.setItemName(name);
-								if(extra) {
-									row.setUnitPrice(modifier.getExtraUnitPrice());
-								}
-								else {
-									row.setUnitPrice(modifier.getUnitPrice());
-								}
-								row.setSubtotalAmount(modifier.getTotalAmount());
+								row.setItemNo(modifier.getId());
 								rows.add(row);
 							}
 						}
@@ -74,16 +69,13 @@ public class TicketDataSource extends AbstractReportDataSource {
 		
 		switch(columnIndex) {
 		case 0:
-			return String.valueOf(item.getItemCount());
+			return String.valueOf(item.getItemNo());
 			
 		case 1:
 			return item.getItemName();
 			
 		case 2:
-			return NumberUtil.formatNumber(item.getUnitPrice());
-			
-		case 3:
-			return NumberUtil.formatNumber(item.getSubtotalAmount());
+			return String.valueOf(item.getItemCount());
 		}
 		
 		return null;
@@ -92,46 +84,43 @@ public class TicketDataSource extends AbstractReportDataSource {
 	private class Row {
 		private int itemCount;
 		private String itemName;
-		private double unitPrice;
-		private double subtotalAmount;
+		private int itemNo;
 		
 		public Row() {
 			super();
 		}
-		
-		public Row(int itemCount, String itemName, double unitPrice, double subtotalAmount) {
+
+		public Row(int itemCount, String itemName, int itemNo) {
 			super();
 			this.itemCount = itemCount;
 			this.itemName = itemName;
-			this.unitPrice = unitPrice;
-			this.subtotalAmount = subtotalAmount;
+			this.itemNo = itemNo;
 		}
-
-
 
 		public int getItemCount() {
 			return itemCount;
 		}
+
 		public void setItemCount(int itemCount) {
 			this.itemCount = itemCount;
 		}
+
 		public String getItemName() {
 			return itemName;
 		}
+
 		public void setItemName(String itemName) {
 			this.itemName = itemName;
 		}
-		public double getSubtotalAmount() {
-			return subtotalAmount;
+
+		public int getItemNo() {
+			return itemNo;
 		}
-		public void setSubtotalAmount(double subtotalAmount) {
-			this.subtotalAmount = subtotalAmount;
+
+		public void setItemNo(int itemNo) {
+			this.itemNo = itemNo;
 		}
-		public double getUnitPrice() {
-			return unitPrice;
-		}
-		public void setUnitPrice(double unitPrice) {
-			this.unitPrice = unitPrice;
-		}
+		
+		
 	}
 }

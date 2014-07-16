@@ -1,6 +1,6 @@
 package com.floreantpos.test;
 
-import com.floreantpos.jreports.AbstractReportDataSource;
+import com.floreantpos.report.AbstractReportDataSource;
 
 public class TestDS extends AbstractReportDataSource {
 	

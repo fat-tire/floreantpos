@@ -17,7 +17,6 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.floreantpos.jreports.JReportPrintService;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.DrawerPullReport;
 import com.floreantpos.model.Restaurant;
@@ -28,6 +27,7 @@ import com.floreantpos.model.TicketItemModifier;
 import com.floreantpos.model.TipsCashoutReport;
 import com.floreantpos.model.TipsCashoutReportTableModel;
 import com.floreantpos.model.dao.RestaurantDAO;
+import com.floreantpos.report.JReportPrintService;
 import com.floreantpos.util.NumberUtil;
 
 public class PosPrintService {
@@ -567,11 +567,11 @@ public class PosPrintService {
 			
 			parameters.put("headerLine1", restaurant.getName());
 			
-			JasperReport subReport = (JasperReport) JRLoader.loadObject(JReportPrintService.class.getResourceAsStream("/com/floreantpos/jreports/DrawerPullVoidReport.jasper"));
+			JasperReport subReport = (JasperReport) JRLoader.loadObject(JReportPrintService.class.getResourceAsStream("/com/floreantpos/report/DrawerPullVoidReport.jasper"));
 			
 			parameters.put("subreportParameter", subReport);
 			
-			JasperReport mainReport = (JasperReport) JRLoader.loadObject(JReportPrintService.class.getResourceAsStream("/com/floreantpos/jreports/DrawerPullJReport.jasper"));
+			JasperReport mainReport = (JasperReport) JRLoader.loadObject(JReportPrintService.class.getResourceAsStream("/com/floreantpos/report/DrawerPullJReport.jasper"));
 			JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(Arrays.asList(new DrawerPullReport[] {drawerPullReport}));
 			JasperPrint jasperPrint = JasperFillManager.fillReport(mainReport, parameters, dataSource);
 			//JasperViewer.viewReport(jasperPrint, false);
@@ -595,7 +595,7 @@ public class PosPrintService {
 //		InputStream ticketReportStream = null;
 //
 //		try {
-//			ticketReportStream = JReportPrintService.class.getResourceAsStream("/com/floreantpos/jreports/KitchenReceipt.jasper");
+//			ticketReportStream = JReportPrintService.class.getResourceAsStream("/com/floreantpos/report/KitchenReceipt.jasper");
 //			JasperReport ticketReport = (JasperReport) JRLoader.loadObject(ticketReportStream);
 //
 //			JasperPrint jasperPrint = JasperFillManager.fillReport(ticketReport, map, new JRTableModelDataSource(new KitchenTicketDataSource(ticket)));
@@ -736,7 +736,7 @@ public class PosPrintService {
 			parameters.put("headerLine1", restaurant.getName());
 			
 			
-			JasperReport mainReport = (JasperReport) JRLoader.loadObject(JReportPrintService.class.getResourceAsStream("/com/floreantpos/jreports/ServerTipsReport.jasper"));
+			JasperReport mainReport = (JasperReport) JRLoader.loadObject(JReportPrintService.class.getResourceAsStream("/com/floreantpos/report/ServerTipsReport.jasper"));
 			JRDataSource dataSource = new JRTableModelDataSource(new TipsCashoutReportTableModel(report.getDatas(), new String[] {"ticketId", "saleType", "ticketTotal", "tips"}));
 			JasperPrint jasperPrint = JasperFillManager.fillReport(mainReport, parameters, dataSource);
 			JasperViewer.viewReport(jasperPrint, false);
