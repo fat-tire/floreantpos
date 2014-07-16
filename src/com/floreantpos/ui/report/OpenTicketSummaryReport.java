@@ -14,7 +14,7 @@ import net.sf.jasperreports.view.JRViewer;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.report.TicketReportModel;
-import com.floreantpos.report.services.ReportService;
+import com.floreantpos.report.service.ReportService;
 
 public class OpenTicketSummaryReport extends Report {
 

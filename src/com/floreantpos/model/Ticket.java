@@ -3,6 +3,7 @@ package com.floreantpos.model;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -45,6 +46,21 @@ public class Ticket extends BaseTicket {
 	public void setCreateDate(Date createDate) {
 		super.setCreateDate(createDate);
 		super.setActiveDate(createDate);
+	}
+	
+	@Override
+	public Date getDeliveryDate() {
+		Date deliveryDate = super.getDeliveryDate();
+		
+		if(deliveryDate == null) {
+			deliveryDate = getCreateDate();
+			Calendar c = Calendar.getInstance();
+			c.setTime(deliveryDate);
+			c.add(Calendar.MINUTE, 10);
+			deliveryDate = c.getTime();
+		}
+		
+		return deliveryDate;
 	}
 
 	public void addCookingInstruction(TicketCookingInstruction instruction) {

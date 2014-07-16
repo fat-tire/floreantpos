@@ -26,7 +26,7 @@ import com.floreantpos.POSConstants;
 import com.floreantpos.bo.ui.BackOfficeWindow;
 import com.floreantpos.model.util.DateUtil;
 import com.floreantpos.report.CreditCardReport;
-import com.floreantpos.report.services.ReportService;
+import com.floreantpos.report.service.ReportService;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.util.UiUtil;
 import com.floreantpos.util.NumberUtil;

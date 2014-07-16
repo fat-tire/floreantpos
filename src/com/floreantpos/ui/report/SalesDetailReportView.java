@@ -29,7 +29,7 @@ import com.floreantpos.bo.ui.BackOfficeWindow;
 import com.floreantpos.model.util.DateUtil;
 import com.floreantpos.report.SalesDetailedReport;
 import com.floreantpos.report.SalesReportModelFactory;
-import com.floreantpos.report.services.ReportService;
+import com.floreantpos.report.service.ReportService;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.util.UiUtil;
 

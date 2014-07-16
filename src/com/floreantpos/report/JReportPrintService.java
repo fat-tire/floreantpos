@@ -1,4 +1,4 @@
-package com.floreantpos.jreports;
+package com.floreantpos.report;
 
 import java.io.InputStream;
 import java.util.Date;
@@ -90,7 +90,7 @@ public class JReportPrintService {
 		InputStream ticketReportStream = null;
 
 		try {
-			ticketReportStream = JReportPrintService.class.getResourceAsStream("/com/floreantpos/jreports/TicketReceiptReport.jasper");
+			ticketReportStream = JReportPrintService.class.getResourceAsStream("/com/floreantpos/report/TicketReceiptReport.jasper");
 			JasperReport ticketReport = (JasperReport) JRLoader.loadObject(ticketReportStream);
 
 			JasperPrint jasperPrint = JasperFillManager.fillReport(ticketReport, map, new JRTableModelDataSource(new TicketDataSource(ticket)));
@@ -123,7 +123,7 @@ public class JReportPrintService {
 		InputStream ticketReportStream = null;
 
 		try {
-			ticketReportStream = JReportPrintService.class.getResourceAsStream("/com/floreantpos/jreports/KitchenReceipt.jasper");
+			ticketReportStream = JReportPrintService.class.getResourceAsStream("/com/floreantpos/report/KitchenReceipt.jasper");
 			JasperReport ticketReport = (JasperReport) JRLoader.loadObject(ticketReportStream);
 
 			JasperPrint jasperPrint = JasperFillManager.fillReport(ticketReport, map, new JRTableModelDataSource(new KitchenTicketDataSource(ticket)));
@@ -221,7 +221,7 @@ public class JReportPrintService {
 		InputStream ticketReportStream = null;
 
 		try {
-			ticketReportStream = JReportPrintService.class.getResourceAsStream("/com/floreantpos/jreports/TicketReceiptReport.jasper");
+			ticketReportStream = JReportPrintService.class.getResourceAsStream("/com/floreantpos/report/TicketReceiptReport.jasper");
 			JasperReport ticketReport = (JasperReport) JRLoader.loadObject(ticketReportStream);
 
 			JasperPrint jasperPrint = JasperFillManager.fillReport(ticketReport, map,  new JRTableModelDataSource(new TicketDataSource(ticket)));

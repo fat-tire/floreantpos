@@ -136,7 +136,7 @@ public class TicketTableModel extends AbstractTableModel {
 			TicketItemCookingInstruction ci = (TicketItemCookingInstruction) value;
 			switch (columnIndex) {
 				case 0:
-					return "   " + ci.getDescription();
+					return "   * " + ci.getDescription();
 
 				default:
 					break;
