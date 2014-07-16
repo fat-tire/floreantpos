@@ -6,6 +6,8 @@
 
 package com.floreantpos.ui.views.order;
 
+import javax.swing.JDialog;
+
 import com.floreantpos.POSConstants;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.Gratuity;
@@ -16,8 +18,9 @@ import com.floreantpos.print.PosPrintService;
 import com.floreantpos.swing.TransparentPanel;
 import com.floreantpos.ui.dialog.MiscTicketItemDialog;
 import com.floreantpos.ui.dialog.NumberSelectionDialog2;
+import com.floreantpos.ui.dialog.POSDialog;
 import com.floreantpos.ui.dialog.POSMessageDialog;
-import com.floreantpos.ui.dialog.TicketDetailDialog;
+import com.floreantpos.ui.views.TicketReceiptView;
 
 /**
  *
@@ -56,7 +59,7 @@ public class OthersView extends TransparentPanel {
         btnOrderInfo.setText(com.floreantpos.POSConstants.ORDER_INFO);
         btnOrderInfo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnOrderInfoActionPerformed(evt);
+                doViewOrderInfo();
             }
         });
         transparentPanel2.add(btnOrderInfo);
@@ -129,17 +132,25 @@ public class OthersView extends TransparentPanel {
 		} 
     }//GEN-LAST:event_btnPrintReceiptActionPerformed
 
-    private void btnOrderInfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOrderInfoActionPerformed
-//    	for (OtherViewListener listener : listeners) {
-//			listener.showOrderInfo();
-//		}
-    	TicketDetailDialog dialog = new TicketDetailDialog(Application.getPosWindow(), true);
-    	dialog.setTicket(getCurrentTicket());
-    	dialog.open();
+    private void doViewOrderInfo() {//GEN-FIRST:event_btnOrderInfoActionPerformed
+    	Ticket ticket = getCurrentTicket();
+    	TicketReceiptView receiptView = new TicketReceiptView(ticket, 0);
+    	receiptView.createUI();
     	
-    	if(!dialog.isCanceled()) {
-    		OrderView.getInstance().getTicketView().updateView();
-    	}
+    	POSDialog dialog = new POSDialog();
+    	dialog.add(receiptView);
+    	dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+    	dialog.setSize(400, 500);
+    	dialog.setLocationRelativeTo(Application.getPosWindow());
+    	dialog.setVisible(true);
+    	
+//    	TicketDetailDialog dialog = new TicketDetailDialog(Application.getPosWindow(), true);
+//    	dialog.setTicket(getCurrentTicket());
+//    	dialog.open();
+//    	
+//    	if(!dialog.isCanceled()) {
+//    		OrderView.getInstance().getTicketView().updateView();
+//    	}
     	
     }//GEN-LAST:event_btnOrderInfoActionPerformed
 
