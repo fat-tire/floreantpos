@@ -1,4 +1,4 @@
-package com.floreantpos.report.services;
+package com.floreantpos.report.service;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

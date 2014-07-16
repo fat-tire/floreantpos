@@ -25,7 +25,7 @@ import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.report.ReportItem;
 import com.floreantpos.report.SalesReportModel;
 import com.floreantpos.report.SalesReportModelFactory;
-import com.floreantpos.report.services.ReportService;
+import com.floreantpos.report.service.ReportService;
 
 public class SalesReport extends Report {
 	private SalesReportModel itemReportModel;

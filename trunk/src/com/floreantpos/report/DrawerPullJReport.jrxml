@@ -10,7 +10,7 @@
 	<import value="net.sf.jasperreports.engine.data.*"/>
 	<parameter name="netSales" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
-		<defaultValueExpression><![CDATA["/home/mshahriar/workspace/floreantpos/src/com/floreantpos/jreports/"]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA["/home/mshahriar/workspace/floreantpos/src/com/floreantpos/report/"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="subreportParameter" class="net.sf.jasperreports.engine.JasperReport" isForPrompting="false"/>
 	<parameter name="headerLine1" class="java.lang.String" isForPrompting="false"/>
