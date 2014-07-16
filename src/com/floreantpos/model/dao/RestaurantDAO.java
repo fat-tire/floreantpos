@@ -1,5 +1,7 @@
 package com.floreantpos.model.dao;
 
+import com.floreantpos.model.Restaurant;
+
 
 
 public class RestaurantDAO extends BaseRestaurantDAO {
@@ -9,5 +11,7 @@ public class RestaurantDAO extends BaseRestaurantDAO {
 	 */
 	public RestaurantDAO () {}
 
-
+	public static Restaurant getWorkingRestaurant() {
+		return getInstance().get(Integer.valueOf(1));
+	}
 }
