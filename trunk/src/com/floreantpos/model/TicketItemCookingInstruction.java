@@ -27,4 +27,34 @@ public class TicketItemCookingInstruction extends BaseTicketItemCookingInstructi
 	public boolean canAddCookingInstruction() {
 		return false;
 	}
+	
+	@Override
+	public String toString() {
+		return getDescription();
+	}
+	
+	@Override
+	public String getNameDisplay() {
+		return "   * " + getDescription();
+	}
+
+	@Override
+	public Double getUnitPriceDisplay() {
+		return null;
+	}
+
+	@Override
+	public Integer getItemCountDisplay() {
+		return null;
+	}
+
+	@Override
+	public Double getTaxAmountWithoutModifiersDisplay() {
+		return null;
+	}
+
+	@Override
+	public Double getTotalAmountWithoutModifiersDisplay() {
+		return null;
+	}
 }

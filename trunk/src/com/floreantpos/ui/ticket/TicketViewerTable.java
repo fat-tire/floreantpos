@@ -16,16 +16,17 @@ import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.TicketItemModifier;
 
 public class TicketViewerTable extends JTable {
-	private TicketTableModel model;
+	
+	private TicketViewerTableModel model;
 	private DefaultListSelectionModel selectionModel;
-	private TicketTableCellRenderer cellRenderer;
+	private TicketViewerTableCellRenderer cellRenderer;
 
 	public TicketViewerTable() {
 		this(null);
 	}
 
 	public TicketViewerTable(Ticket ticket) {
-		model = new TicketTableModel();
+		model = new TicketViewerTableModel();
 		model.setTable(this);
 
 		setModel(model);
@@ -33,7 +34,7 @@ public class TicketViewerTable extends JTable {
 		selectionModel = new DefaultListSelectionModel();
 		selectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-		cellRenderer = new TicketTableCellRenderer();
+		cellRenderer = new TicketViewerTableCellRenderer();
 		
 		setGridColor(Color.LIGHT_GRAY);
 		setSelectionModel(selectionModel);
@@ -68,7 +69,7 @@ public class TicketViewerTable extends JTable {
 		return cellRenderer;
 	}
 	
-	public TicketTableCellRenderer getRenderer() {
+	public TicketViewerTableCellRenderer getRenderer() {
 		return cellRenderer;
 	}
 
