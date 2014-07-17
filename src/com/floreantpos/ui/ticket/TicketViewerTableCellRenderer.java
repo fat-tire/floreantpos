@@ -10,7 +10,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 
 import com.floreantpos.model.ITicketItem;
 
-public class TicketTableCellRenderer extends DefaultTableCellRenderer {
+public class TicketViewerTableCellRenderer extends DefaultTableCellRenderer {
 	private static final DecimalFormat numberFormat = new DecimalFormat("0.00");
 	private boolean inTicketScreen = false;
 
@@ -18,7 +18,7 @@ public class TicketTableCellRenderer extends DefaultTableCellRenderer {
 	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 		Component rendererComponent = super.getTableCellRendererComponent(table, value, isSelected, false, row, column);
 
-		TicketTableModel model = (TicketTableModel) table.getModel();
+		TicketViewerTableModel model = (TicketViewerTableModel) table.getModel();
 		Object object = model.get(row);
 
 		if (!inTicketScreen || isSelected) {

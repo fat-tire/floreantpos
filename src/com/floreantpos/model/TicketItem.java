@@ -277,4 +277,29 @@ public class TicketItem extends BaseTicketItem implements ITicketItem {
 //
 //		return totalPrice;
 	}
+
+	@Override
+	public String getNameDisplay() {
+		return getName();
+	}
+
+	@Override
+	public Double getUnitPriceDisplay() {
+		return getUnitPrice();
+	}
+
+	@Override
+	public Integer getItemCountDisplay() {
+		return getItemCount();
+	}
+
+	@Override
+	public Double getTaxAmountWithoutModifiersDisplay() {
+		return getTaxAmountWithoutModifiers();
+	}
+
+	@Override
+	public Double getTotalAmountWithoutModifiersDisplay() {
+		return getTotalAmountWithoutModifiers();
+	}
 }
