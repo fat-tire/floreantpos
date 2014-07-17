@@ -75,22 +75,20 @@ public class JReportPrintService {
 		double tipAmount = 0;
 
 		HashMap map = new HashMap();
-		map.put("currencySymbol", Application.getCurrencySymbol());
-//		map.put("headerLine1", restaurant.getName());
-//		map.put("headerLine2", restaurant.getAddressLine1());
-//		map.put("headerLine3", restaurant.getAddressLine2());
-//		map.put("headerLine4", restaurant.getAddressLine3());
+		String currencySymbol = Application.getCurrencySymbol();
+		
+		map.put("currencySymbol", currencySymbol);
+		map.put("headerLine1", restaurant.getName());
+		map.put("headerLine2", restaurant.getAddressLine1());
+		map.put("headerLine3", restaurant.getAddressLine2());
+		map.put("headerLine4", restaurant.getAddressLine3());
 		map.put("footerMessage", restaurant.getTicketFooterMessage());
 		map.put("showHeaderSeparator", Boolean.TRUE);
-		map.put("terminal", "Terminal#: 9999");
-
-		if (StringUtils.isNotEmpty(restaurant.getTelephone())) {
-//			map.put("headerLine5", com.floreantpos.POSConstants.TEL + ": " + restaurant.getTelephone());
-		}
-
-		map.put("checkNo", com.floreantpos.POSConstants.CHK_NO + ticket.getId());
-		map.put("tableNo", com.floreantpos.POSConstants.TABLE_NO + ticket.getTableNumber());
-		map.put("guestCount", com.floreantpos.POSConstants.GUESTS_ + ticket.getNumberOfGuests());
+		map.put("headerLine5", com.floreantpos.POSConstants.TEL + ": " + restaurant.getTelephone());
+		map.put("terminal", "Terminal#: " + Application.getInstance().getTerminal().getId());
+		map.put("checkNo", com.floreantpos.POSConstants.CHK_NO + ": " + ticket.getId());
+		map.put("tableNo", com.floreantpos.POSConstants.TABLE_NO + ": " + ticket.getTableNumber());
+		map.put("guestCount", com.floreantpos.POSConstants.GUESTS_ + ": " + ticket.getNumberOfGuests());
 		map.put("serverName", com.floreantpos.POSConstants.SERVER + ": " + ticket.getOwner());
 		map.put("reportDate", com.floreantpos.POSConstants.DATE + ": " + Application.formatDate(new Date()));
 		map.put("grandSubtotal", NumberUtil.formatNumber(ticket.getSubtotalAmount()));
@@ -118,10 +116,22 @@ public class JReportPrintService {
 		if (changedAmount < 0) {
 			changedAmount = 0;
 		}
+		
+		map.put("totalText", "Total " + currencySymbol);
+		map.put("discountText", "Discount " + currencySymbol);
+		map.put("taxText", "Tax " + currencySymbol);
+		map.put("serviceChargeText", "Service Charge " + currencySymbol);
+		map.put("tipsText", "Tips " + currencySymbol);
+		map.put("netAmountText", "Net Amount " + currencySymbol);
+		map.put("paidAmountText", "Paid Amount " + currencySymbol);
+		map.put("changeAmountText", "Change Amount " + currencySymbol);
 
 		map.put("netAmount", NumberUtil.formatNumber(netAmount));
 		map.put("paidAmount", NumberUtil.formatNumber(paidAmount));
 		map.put("changedAmount", NumberUtil.formatNumber(changedAmount));
+		
+		map.put("showFooter", Boolean.TRUE);
+		
 		return map;
 	}
 
@@ -188,71 +198,71 @@ public class JReportPrintService {
 		}
 	}
 
-//	public static void main(String[] args) {
-//		Ticket ticket = new Ticket(100);
-//		ticket.setTableNumber(1);
-//		ticket.setNumberOfGuests(2);
-//		ticket.setSubtotalAmount(100.0);
-//		ticket.setTotalAmount(112.0);
-//		ticket.setTaxAmount(12.0);
-//
-//		TicketItem item = new TicketItem(0);
-//		item.setBeverage(true);
-//		item.setCategoryName("bev");
-//		item.setItemCount(2);
-//
-//		ticket.getTicketItems().add(item);
-//
-//		User user = new User();
-//		user.setFirstName("Test");
-//		user.setLastName("user");
-//
-//		ticket.setOwner(user);
-//
-//		Restaurant restaurant = new Restaurant();
-//		restaurant.setName("test resturant");
-//		restaurant.setAddressLine1("a");
-//		restaurant.setAddressLine2("b");
-//		restaurant.setAddressLine3("c");
-//		restaurant.setTelephone("000");
-//
-//		HashMap map = new HashMap();
-//		map.put("headerLine1", restaurant.getName());
-//		map.put("headerLine2", restaurant.getAddressLine1());
-//		map.put("headerLine3", restaurant.getAddressLine2());
-//		map.put("headerLine4", restaurant.getAddressLine3());
-//		map.put("headerLine5", com.floreantpos.POSConstants.TEL + ": " + restaurant.getTelephone());
-//
-//		map.put("checkNo", com.floreantpos.POSConstants.CHK_NO + ticket.getId());
-//		map.put("tableNo", com.floreantpos.POSConstants.TABLE_NO + ticket.getTableNumber());
-//		map.put("guestCount", com.floreantpos.POSConstants.GUESTS_ + ticket.getNumberOfGuests());
-//		map.put("serverName", com.floreantpos.POSConstants.SERVER + ": " + ticket.getOwner());
-//		map.put("reportDate", com.floreantpos.POSConstants.DATE + ": " + Application.formatDate(new Date()));
-//		map.put("grandSubtotal", NumberUtil.formatNumber(ticket.getSubtotalAmount()));
-//		map.put("grandTotal", NumberUtil.formatNumber(ticket.getTotalAmount()));
-//		map.put("taxAmount", NumberUtil.formatNumber(ticket.getTaxAmount()));
-//		map.put("tipAmount", NumberUtil.formatNumber(10.0));
-//		map.put("totalWithTip", "999");
-//
-//		InputStream ticketReportStream = null;
-//
-//		try {
-//			ticketReportStream = JReportPrintService.class.getResourceAsStream(FILE_RECEIPT_REPORT);
-//			JasperReport ticketReport = (JasperReport) JRLoader.loadObject(ticketReportStream);
-//
-//			JasperPrint jasperPrint = JasperFillManager.fillReport(ticketReport, map, new JRTableModelDataSource(new TicketDataSource(ticket)));
-//			//JasperPrintManager.printReport(jasperPrint, false);
-//
-//			JasperViewer.viewReport(jasperPrint);
-//
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			logger.error(com.floreantpos.POSConstants.PRINT_ERROR, e);
-//		} finally {
-//			try {
-//				ticketReportStream.close();
-//			} catch (Exception x) {
-//			}
-//		}
-//	}
+	//	public static void main(String[] args) {
+	//		Ticket ticket = new Ticket(100);
+	//		ticket.setTableNumber(1);
+	//		ticket.setNumberOfGuests(2);
+	//		ticket.setSubtotalAmount(100.0);
+	//		ticket.setTotalAmount(112.0);
+	//		ticket.setTaxAmount(12.0);
+	//
+	//		TicketItem item = new TicketItem(0);
+	//		item.setBeverage(true);
+	//		item.setCategoryName("bev");
+	//		item.setItemCount(2);
+	//
+	//		ticket.getTicketItems().add(item);
+	//
+	//		User user = new User();
+	//		user.setFirstName("Test");
+	//		user.setLastName("user");
+	//
+	//		ticket.setOwner(user);
+	//
+	//		Restaurant restaurant = new Restaurant();
+	//		restaurant.setName("test resturant");
+	//		restaurant.setAddressLine1("a");
+	//		restaurant.setAddressLine2("b");
+	//		restaurant.setAddressLine3("c");
+	//		restaurant.setTelephone("000");
+	//
+	//		HashMap map = new HashMap();
+	//		map.put("headerLine1", restaurant.getName());
+	//		map.put("headerLine2", restaurant.getAddressLine1());
+	//		map.put("headerLine3", restaurant.getAddressLine2());
+	//		map.put("headerLine4", restaurant.getAddressLine3());
+	//		map.put("headerLine5", com.floreantpos.POSConstants.TEL + ": " + restaurant.getTelephone());
+	//
+	//		map.put("checkNo", com.floreantpos.POSConstants.CHK_NO + ticket.getId());
+	//		map.put("tableNo", com.floreantpos.POSConstants.TABLE_NO + ticket.getTableNumber());
+	//		map.put("guestCount", com.floreantpos.POSConstants.GUESTS_ + ticket.getNumberOfGuests());
+	//		map.put("serverName", com.floreantpos.POSConstants.SERVER + ": " + ticket.getOwner());
+	//		map.put("reportDate", com.floreantpos.POSConstants.DATE + ": " + Application.formatDate(new Date()));
+	//		map.put("grandSubtotal", NumberUtil.formatNumber(ticket.getSubtotalAmount()));
+	//		map.put("grandTotal", NumberUtil.formatNumber(ticket.getTotalAmount()));
+	//		map.put("taxAmount", NumberUtil.formatNumber(ticket.getTaxAmount()));
+	//		map.put("tipAmount", NumberUtil.formatNumber(10.0));
+	//		map.put("totalWithTip", "999");
+	//
+	//		InputStream ticketReportStream = null;
+	//
+	//		try {
+	//			ticketReportStream = JReportPrintService.class.getResourceAsStream(FILE_RECEIPT_REPORT);
+	//			JasperReport ticketReport = (JasperReport) JRLoader.loadObject(ticketReportStream);
+	//
+	//			JasperPrint jasperPrint = JasperFillManager.fillReport(ticketReport, map, new JRTableModelDataSource(new TicketDataSource(ticket)));
+	//			//JasperPrintManager.printReport(jasperPrint, false);
+	//
+	//			JasperViewer.viewReport(jasperPrint);
+	//
+	//		} catch (Exception e) {
+	//			e.printStackTrace();
+	//			logger.error(com.floreantpos.POSConstants.PRINT_ERROR, e);
+	//		} finally {
+	//			try {
+	//				ticketReportStream.close();
+	//			} catch (Exception x) {
+	//			}
+	//		}
+	//	}
 }

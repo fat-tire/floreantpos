@@ -1,11 +1,8 @@
 package com.floreantpos.ui.ticket;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map.Entry;
-import java.util.Set;
 
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
@@ -17,35 +14,34 @@ import com.floreantpos.model.TicketItemCookingInstruction;
 import com.floreantpos.model.TicketItemModifier;
 import com.floreantpos.model.TicketItemModifierGroup;
 
-public class TicketViewerTableModel extends AbstractTableModel {
+public class TodoTicketViewerTableModel extends AbstractTableModel {
 	private JTable table;
 	protected Ticket ticket;
-	protected final HashMap<String, ITicketItem> tableRows = new LinkedHashMap<String, ITicketItem>();
+
+	private List<ITicketItem> items = new ArrayList<ITicketItem>();
 
 	protected String[] columnNames = { "Item", "U/Price", "Unit", "Tax", "Value" };
 
 	private boolean forReciptPrint;
 	private boolean printCookingInstructions;
 
-	public TicketViewerTableModel() {
+	public TodoTicketViewerTableModel() {
 	}
 
-	public TicketViewerTableModel(Ticket ticket) {
+	public TodoTicketViewerTableModel(Ticket ticket) {
 		setTicket(ticket);
 	}
 
 	public int getItemCount() {
-		return tableRows.size();
+		return items.size();
 	}
 
 	public int getRowCount() {
-		int size = tableRows.size();
-		
-		return size;
+		return items.size();
 	}
 
 	public int getActualRowCount() {
-		return tableRows.size();
+		return items.size();
 	}
 
 	public int getColumnCount() {
@@ -58,9 +54,9 @@ public class TicketViewerTableModel extends AbstractTableModel {
 	}
 
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		ITicketItem ticketItem = tableRows.get(String.valueOf(rowIndex));
-		
-		if(ticketItem == null) {
+		ITicketItem ticketItem = items.get(rowIndex);
+
+		if (ticketItem == null) {
 			return null;
 		}
 
@@ -85,7 +81,35 @@ public class TicketViewerTableModel extends AbstractTableModel {
 	}
 
 	private void calculateRows() {
-		TicketItemRowCreator.calculateTicketRows(ticket, tableRows);
+		items.clear();
+
+		if (ticket == null || ticket.getTicketItems() == null)
+			return;
+
+		List<TicketItem> ticketItems = ticket.getTicketItems();
+		for (TicketItem ticketItem : ticketItems) {
+
+			items.add(ticketItem);
+
+			List<TicketItemModifierGroup> ticketItemModifierGroups = ticketItem.getTicketItemModifierGroups();
+			if (ticketItemModifierGroups != null) {
+				for (TicketItemModifierGroup ticketItemModifierGroup : ticketItemModifierGroups) {
+					List<TicketItemModifier> ticketItemModifiers = ticketItemModifierGroup.getTicketItemModifiers();
+					if (ticketItemModifiers != null) {
+						for (TicketItemModifier itemModifier : ticketItemModifiers) {
+							items.add(itemModifier);
+						}
+					}
+				}
+			}
+
+			List<TicketItemCookingInstruction> cookingInstructions = ticketItem.getCookingInstructions();
+			if (cookingInstructions != null) {
+				for (TicketItemCookingInstruction ticketItemCookingInstruction : cookingInstructions) {
+					items.add(ticketItemCookingInstruction);
+				}
+			}
+		}
 	}
 
 	public int addTicketItem(TicketItem ticketItem) {
@@ -94,21 +118,21 @@ public class TicketViewerTableModel extends AbstractTableModel {
 			return addTicketItemToTicket(ticketItem);
 		}
 
-		Set<Entry<String, ITicketItem>> entries = tableRows.entrySet();
-		for (Entry<String, ITicketItem> entry : entries) {
+		for (int row = 0; row < items.size(); row++) {
+			ITicketItem iTicketItem = items.get(row);
 
-			if (!(entry.getValue() instanceof TicketItem)) {
+			if (!(iTicketItem instanceof TicketItem)) {
 				continue;
 			}
 
-			TicketItem t = (TicketItem) entry.getValue();
+			TicketItem t = (TicketItem) iTicketItem;
 
 			if (ticketItem.getName().equals(t.getName()) && !t.isPrintedToKitchen()) {
 				t.setItemCount(t.getItemCount() + 1);
 
 				table.repaint();
 
-				return Integer.parseInt(entry.getKey());
+				return Integer.valueOf(row);
 			}
 		}
 
@@ -120,7 +144,7 @@ public class TicketViewerTableModel extends AbstractTableModel {
 		calculateRows();
 		fireTableDataChanged();
 
-		return tableRows.size() - 1;
+		return items.size() - 1;
 	}
 
 	public void addAllTicketItem(TicketItem ticketItem) {
@@ -186,12 +210,13 @@ public class TicketViewerTableModel extends AbstractTableModel {
 	}
 
 	public Object delete(int index) {
-		if (index < 0 || index >= tableRows.size())
+		if (index < 0 || index >= items.size())
 			return null;
 
-		Object object = tableRows.get(String.valueOf(index));
-		if (object instanceof TicketItem) {
-			TicketItem ticketItem = (TicketItem) object;
+		ITicketItem iTicketItem = items.get(index);
+		
+		if (iTicketItem instanceof TicketItem) {
+			TicketItem ticketItem = (TicketItem) iTicketItem;
 			int rowNum = ticketItem.getTableRowNum();
 
 			List<TicketItem> ticketItems = ticket.getTicketItems();
@@ -208,8 +233,8 @@ public class TicketViewerTableModel extends AbstractTableModel {
 				}
 			}
 		}
-		else if (object instanceof TicketItemModifier) {
-			TicketItemModifier itemModifier = (TicketItemModifier) object;
+		else if (iTicketItem instanceof TicketItemModifier) {
+			TicketItemModifier itemModifier = (TicketItemModifier) iTicketItem;
 			TicketItemModifierGroup ticketItemModifierGroup = itemModifier.getParent();
 			List<TicketItemModifier> ticketItemModifiers = ticketItemModifierGroup.getTicketItemModifiers();
 
@@ -226,34 +251,36 @@ public class TicketViewerTableModel extends AbstractTableModel {
 				}
 			}
 		}
-		else if (object instanceof TicketItemCookingInstruction) {
-			TicketItemCookingInstruction cookingInstruction = (TicketItemCookingInstruction) object;
-			int tableRowNum = cookingInstruction.getTableRowNum();
-
-			TicketItem ticketItem = null;
-			while (tableRowNum > 0) {
-				Object object2 = tableRows.get(String.valueOf(--tableRowNum));
-				if (object2 instanceof TicketItem) {
-					ticketItem = (TicketItem) object2;
-					break;
-				}
-			}
-
-			if (ticketItem != null) {
-				ticketItem.removeCookingInstruction(cookingInstruction);
-			}
-		}
+//		else if (iTicketItem instanceof TicketItemCookingInstruction) {
+//			TicketItemCookingInstruction cookingInstruction = (TicketItemCookingInstruction) iTicketItem;
+//			int tableRowNum = cookingInstruction.getTableRowNum();
+//
+//			TicketItem ticketItem = null;
+//			while (tableRowNum > 0) {
+//				Object object2 = tableRows.get(String.valueOf(--tableRowNum));
+//				if (object2 instanceof TicketItem) {
+//					ticketItem = (TicketItem) object2;
+//					break;
+//				}
+//			}
+//
+//			if (ticketItem != null) {
+//				ticketItem.removeCookingInstruction(cookingInstruction);
+//			}
+//		}
 
 		calculateRows();
 		fireTableDataChanged();
-		return object;
+		return iTicketItem;
 	}
 
 	public Object get(int index) {
-		if (index < 0 || index >= tableRows.size())
-			return null;
+		//		if (index < 0 || index >= tableRows.size())
+		//			return null;
+		//
+		//		return tableRows.get(String.valueOf(index));
 
-		return tableRows.get(String.valueOf(index));
+		return null;
 	}
 
 	public JTable getTable() {
