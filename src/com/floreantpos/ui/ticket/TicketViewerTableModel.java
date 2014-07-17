@@ -9,26 +9,27 @@ import java.util.Set;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 
+import com.floreantpos.model.ITicketItem;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.TicketItemCookingInstruction;
 import com.floreantpos.model.TicketItemModifier;
 import com.floreantpos.model.TicketItemModifierGroup;
 
-public class TicketTableModel extends AbstractTableModel {
+public class TicketViewerTableModel extends AbstractTableModel {
 	private JTable table;
 	protected Ticket ticket;
-	protected final HashMap<String, Object> tableRows = new HashMap<String, Object>();
+	protected final HashMap<String, ITicketItem> tableRows = new HashMap<String, ITicketItem>();
 
 	protected String[] columnNames = { "Item", "U/Price", "Unit", "Tax", "Value" };
 
 	private boolean forReciptPrint;
 	private boolean printCookingInstructions;
 
-	public TicketTableModel() {
+	public TicketViewerTableModel() {
 	}
 
-	public TicketTableModel(Ticket ticket) {
+	public TicketViewerTableModel(Ticket ticket) {
 		setTicket(ticket);
 	}
 
@@ -61,87 +62,109 @@ public class TicketTableModel extends AbstractTableModel {
 	}
 
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		Object value = tableRows.get(String.valueOf(rowIndex));
-		if (value instanceof TicketItem) {
-			TicketItem ticketItem = (TicketItem) value;
-
-			switch (columnIndex) {
-			case 0:
-				return ticketItem.getName();
-
-			case 1:
-				return ticketItem.getUnitPrice();
-
-			case 2:
-				return ticketItem.getItemCount();
-
-			case 3:
-				return ticketItem.getTaxAmountWithoutModifiers();
-
-			case 4:
-				return ticketItem.getTotalAmountWithoutModifiers();
-			}
-		}
-
-		if (value instanceof TicketItemModifier) {
-			TicketItemModifier modifier = (TicketItemModifier) value;
-
-			switch (columnIndex) {
-			case 0:
-				String display = modifier.getName();
-				if (modifier.getModifierType() == TicketItemModifier.NO_MODIFIER) {
-					display = " - No " + display;
-					return display;
-				}
-				else if (modifier.getModifierType() == TicketItemModifier.EXTRA_MODIFIER) {
-					display = " - Extra " + display;
-					return display;
-				}
-				return " - " + display;
-
-			case 1:
-				if (modifier.getModifierType() == TicketItemModifier.NO_MODIFIER) {
-					return null;
-				}
-				if (modifier.getModifierType() == TicketItemModifier.NORMAL_MODIFIER) {
-					return modifier.getUnitPrice();
-				}
-				if (modifier.getModifierType() == TicketItemModifier.EXTRA_MODIFIER) {
-					return modifier.getExtraUnitPrice();
-				}
-
-			case 2:
-				if (modifier.getModifierType() == TicketItemModifier.NO_MODIFIER) {
-					return null;
-				}
-				return Integer.valueOf(modifier.getItemCount());
-
-			case 3:
-				if (modifier.getModifierType() == TicketItemModifier.NO_MODIFIER) {
-					return null;
-				}
-				
-				return  modifier.getTaxAmount();
-
-			case 4:
-				if (modifier.getModifierType() == TicketItemModifier.NO_MODIFIER) {
-					return null;
-				}
-
-				return modifier.getTotalAmount();
-			}
-		}
+		ITicketItem ticketItem = tableRows.get(String.valueOf(rowIndex));
 		
-		if(value instanceof TicketItemCookingInstruction) {
-			TicketItemCookingInstruction ci = (TicketItemCookingInstruction) value;
-			switch (columnIndex) {
-				case 0:
-					return "   * " + ci.getDescription();
-
-				default:
-					break;
-			}
+		if(ticketItem == null) {
+			return null;
 		}
+
+		switch (columnIndex) {
+			case 0:
+				return ticketItem.getNameDisplay();
+
+			case 1:
+				return ticketItem.getUnitPriceDisplay();
+
+			case 2:
+				return ticketItem.getItemCountDisplay();
+
+			case 3:
+				return ticketItem.getTaxAmountWithoutModifiersDisplay();
+
+			case 4:
+				return ticketItem.getTotalAmountWithoutModifiersDisplay();
+		}
+
+		//		if (value instanceof TicketItem) {
+		//			TicketItem ticketItem = (TicketItem) value;
+		//
+		//			switch (columnIndex) {
+		//				case 0:
+		//					return ticketItem.getName();
+		//
+		//				case 1:
+		//					return ticketItem.getUnitPrice();
+		//
+		//				case 2:
+		//					return ticketItem.getItemCount();
+		//
+		//				case 3:
+		//					return ticketItem.getTaxAmountWithoutModifiers();
+		//
+		//				case 4:
+		//					return ticketItem.getTotalAmountWithoutModifiers();
+		//			}
+		//		}
+		//
+		//		if (value instanceof TicketItemModifier) {
+		//			TicketItemModifier modifier = (TicketItemModifier) value;
+		//
+		//			switch (columnIndex) {
+		//				case 0:
+		//					String display = modifier.getName();
+		//					if (modifier.getModifierType() == TicketItemModifier.NO_MODIFIER) {
+		//						display = " - No " + display;
+		//						return display;
+		//					}
+		//					else if (modifier.getModifierType() == TicketItemModifier.EXTRA_MODIFIER) {
+		//						display = " - Extra " + display;
+		//						return display;
+		//					}
+		//					return " - " + display;
+		//
+		//				case 1:
+		//					if (modifier.getModifierType() == TicketItemModifier.NO_MODIFIER) {
+		//						return null;
+		//					}
+		//					if (modifier.getModifierType() == TicketItemModifier.NORMAL_MODIFIER) {
+		//						return modifier.getUnitPrice();
+		//					}
+		//					if (modifier.getModifierType() == TicketItemModifier.EXTRA_MODIFIER) {
+		//						return modifier.getExtraUnitPrice();
+		//					}
+		//
+		//				case 2:
+		//					if (modifier.getModifierType() == TicketItemModifier.NO_MODIFIER) {
+		//						return null;
+		//					}
+		//					return Integer.valueOf(modifier.getItemCount());
+		//
+		//				case 3:
+		//					if (modifier.getModifierType() == TicketItemModifier.NO_MODIFIER) {
+		//						return null;
+		//					}
+		//
+		//					return modifier.getTaxAmount();
+		//
+		//				case 4:
+		//					if (modifier.getModifierType() == TicketItemModifier.NO_MODIFIER) {
+		//						return null;
+		//					}
+		//
+		//					return modifier.getTotalAmount();
+		//			}
+		//		}
+		//
+		//		if (value instanceof TicketItemCookingInstruction) {
+		//			TicketItemCookingInstruction ci = (TicketItemCookingInstruction) value;
+		//			switch (columnIndex) {
+		//				case 0:
+		//					return "   * " + ci.getDescription();
+		//
+		//				default:
+		//					break;
+		//			}
+		//		}
 
 		return null;
 	}
@@ -173,9 +196,9 @@ public class TicketTableModel extends AbstractTableModel {
 					}
 				}
 			}
-			
+
 			List<TicketItemCookingInstruction> cookingInstructions = ticketItem.getCookingInstructions();
-			if(cookingInstructions != null) {
+			if (cookingInstructions != null) {
 				for (TicketItemCookingInstruction ticketItemCookingInstruction : cookingInstructions) {
 					ticketItemCookingInstruction.setTableRowNum(rowNum);
 					tableRows.put(String.valueOf(rowNum), ticketItemCookingInstruction);
@@ -191,8 +214,8 @@ public class TicketTableModel extends AbstractTableModel {
 			return addTicketItemToTicket(ticketItem);
 		}
 
-		Set<Entry<String, Object>> entries = tableRows.entrySet();
-		for (Entry<String, Object> entry : entries) {
+		Set<Entry<String, ITicketItem>> entries = tableRows.entrySet();
+		for (Entry<String, ITicketItem> entry : entries) {
 
 			if (!(entry.getValue() instanceof TicketItem)) {
 				continue;
@@ -326,17 +349,17 @@ public class TicketTableModel extends AbstractTableModel {
 		else if (object instanceof TicketItemCookingInstruction) {
 			TicketItemCookingInstruction cookingInstruction = (TicketItemCookingInstruction) object;
 			int tableRowNum = cookingInstruction.getTableRowNum();
-			
+
 			TicketItem ticketItem = null;
-			while(tableRowNum > 0) {
+			while (tableRowNum > 0) {
 				Object object2 = tableRows.get(String.valueOf(--tableRowNum));
-				if(object2 instanceof TicketItem) {
+				if (object2 instanceof TicketItem) {
 					ticketItem = (TicketItem) object2;
 					break;
 				}
 			}
-			
-			if(ticketItem != null) {
+
+			if (ticketItem != null) {
 				ticketItem.removeCookingInstruction(cookingInstruction);
 			}
 		}

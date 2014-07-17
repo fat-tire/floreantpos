@@ -6,28 +6,28 @@ import com.floreantpos.model.base.BaseTicketItemModifier;
 import com.floreantpos.util.NumberUtil;
 
 public class TicketItemModifier extends BaseTicketItemModifier implements ITicketItem {
-	private static final long serialVersionUID = 1L;
+	private static final long	serialVersionUID			= 1L;
 
-	public final static int MODIFIER_NOT_INITIALIZED = 0;
-	public final static int NORMAL_MODIFIER = 1;
-	public final static int NO_MODIFIER = 2;
-	public final static int EXTRA_MODIFIER = 3;
+	public final static int		MODIFIER_NOT_INITIALIZED	= 0;
+	public final static int		NORMAL_MODIFIER				= 1;
+	public final static int		NO_MODIFIER					= 2;
+	public final static int		EXTRA_MODIFIER				= 3;
 
 	/*[CONSTRUCTOR MARKER BEGIN]*/
-	public TicketItemModifier () {
+	public TicketItemModifier() {
 		super();
 	}
 
 	/**
 	 * Constructor for primary key
 	 */
-	public TicketItemModifier (java.lang.Integer id) {
+	public TicketItemModifier(java.lang.Integer id) {
 		super(id);
 	}
 
 	/*[CONSTRUCTOR MARKER END]*/
 
-	private int tableRowNum;
+	private int	tableRowNum;
 
 	public int getTableRowNum() {
 		return tableRowNum;
@@ -41,7 +41,7 @@ public class TicketItemModifier extends BaseTicketItemModifier implements ITicke
 	public String toString() {
 		return getName();
 	}
-	
+
 	public boolean canAddCookingInstruction() {
 		return false;
 	}
@@ -61,7 +61,7 @@ public class TicketItemModifier extends BaseTicketItemModifier implements ITicke
 		}
 		return count;
 	}
-	
+
 	public void calculatePrice() {
 		calculateSubTotal();
 		calculateTax();
@@ -72,7 +72,7 @@ public class TicketItemModifier extends BaseTicketItemModifier implements ITicke
 		double tax = getSubTotalAmount() * (getTaxRate() / 100);
 		setTaxAmount(NumberUtil.roundToTwoDigit(tax));
 	}
-	
+
 	private double calculateTotal() {
 		return getSubTotalAmount() + getTaxAmount();
 	}
@@ -121,8 +121,66 @@ public class TicketItemModifier extends BaseTicketItemModifier implements ITicke
 		total = normalItemCount * getUnitPrice();
 		total += extraItemCount * getExtraUnitPrice();
 		total = NumberUtil.roundToTwoDigit(total);
-		
+
 		setSubTotalAmount(total);
 		return total;
+	}
+
+	@Override
+	public String getNameDisplay() {
+		String display = getName();
+
+		if (getModifierType() == TicketItemModifier.NO_MODIFIER) {
+			display = " - No " + display;
+			return display;
+		}
+		else if (getModifierType() == TicketItemModifier.EXTRA_MODIFIER) {
+			display = " - Extra " + display;
+			return display;
+		}
+
+		return " - " + display;
+	}
+
+	@Override
+	public Double getUnitPriceDisplay() {
+		if (getModifierType() == TicketItemModifier.NO_MODIFIER) {
+			return null;
+		}
+		if (getModifierType() == TicketItemModifier.NORMAL_MODIFIER) {
+			return getUnitPrice();
+		}
+		if (getModifierType() == TicketItemModifier.EXTRA_MODIFIER) {
+			return getExtraUnitPrice();
+		}
+
+		return null;
+	}
+
+	@Override
+	public Integer getItemCountDisplay() {
+		if (getModifierType() == TicketItemModifier.NO_MODIFIER) {
+			return null;
+		}
+		
+		return getItemCount();
+	}
+
+	@Override
+	public Double getTaxAmountWithoutModifiersDisplay() {
+		if (getModifierType() == TicketItemModifier.NO_MODIFIER) {
+			return null;
+		}
+
+		return getTaxAmount();
+	}
+
+	@Override
+	public Double getTotalAmountWithoutModifiersDisplay() {
+		if (getModifierType() == TicketItemModifier.NO_MODIFIER) {
+			return null;
+		}
+
+		return getTotalAmount();
 	}
 }
