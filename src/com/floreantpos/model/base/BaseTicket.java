@@ -3,8 +3,6 @@ package com.floreantpos.model.base;
 import java.lang.Comparable;
 import java.io.Serializable;
 
-import com.floreantpos.model.TicketCookingInstruction;
-
 
 /**
  * This is an object that contains data related to the TICKET table.
@@ -47,6 +45,7 @@ public abstract class BaseTicket  implements Comparable, Serializable {
 	public static String PROP_DELIVERY_ADDRESS = "deliveryAddress";
 	public static String PROP_SHIFT = "shift";
 	public static String PROP_TAX_AMOUNT = "taxAmount";
+	public static String PROP_TENDERED_AMOUNT = "tenderedAmount";
 	public static String PROP_SUBTOTAL_AMOUNT = "subtotalAmount";
 	public static String PROP_VOIDED_BY = "voidedBy";
 	public static String PROP_TICKET_TYPE = "ticketType";
@@ -100,6 +99,7 @@ public abstract class BaseTicket  implements Comparable, Serializable {
 	private java.lang.Double discountAmount;
 	private java.lang.Double taxAmount;
 	private java.lang.Double totalAmount;
+	private java.lang.Double tenderedAmount;
 	private java.lang.Double paidAmount;
 	private java.lang.Double dueAmount;
 	private java.lang.Integer tableNumber;
@@ -130,7 +130,6 @@ public abstract class BaseTicket  implements Comparable, Serializable {
 	// collections
 	private java.util.List<com.floreantpos.model.TicketItem> ticketItems;
 	private java.util.List<com.floreantpos.model.TicketCouponAndDiscount> couponAndDiscounts;
-	private java.util.Set<TicketCookingInstruction> cookingInstructions;
 
 
 
@@ -424,6 +423,23 @@ public abstract class BaseTicket  implements Comparable, Serializable {
 	 */
 	public void setTotalAmount (java.lang.Double totalAmount) {
 		this.totalAmount = totalAmount;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: TENDERED_AMOUNT
+	 */
+	public java.lang.Double getTenderedAmount () {
+					return tenderedAmount == null ? Double.valueOf(0) : tenderedAmount;
+			}
+
+	/**
+	 * Set the value related to the column: TENDERED_AMOUNT
+	 * @param tenderedAmount the TENDERED_AMOUNT value
+	 */
+	public void setTenderedAmount (java.lang.Double tenderedAmount) {
+		this.tenderedAmount = tenderedAmount;
 	}
 
 
@@ -876,23 +892,6 @@ public abstract class BaseTicket  implements Comparable, Serializable {
 	public void addTocouponAndDiscounts (com.floreantpos.model.TicketCouponAndDiscount ticketCouponAndDiscount) {
 		if (null == getCouponAndDiscounts()) setCouponAndDiscounts(new java.util.ArrayList<com.floreantpos.model.TicketCouponAndDiscount>());
 		getCouponAndDiscounts().add(ticketCouponAndDiscount);
-	}
-
-
-
-	/**
-	 * Return the value associated with the column: cookingInstructions
-	 */
-	public java.util.Set<TicketCookingInstruction> getCookingInstructions () {
-			return cookingInstructions;
-	}
-
-	/**
-	 * Set the value related to the column: cookingInstructions
-	 * @param cookingInstructions the cookingInstructions value
-	 */
-	public void setCookingInstructions (java.util.Set<TicketCookingInstruction> cookingInstructions) {
-		this.cookingInstructions = cookingInstructions;
 	}
 
 

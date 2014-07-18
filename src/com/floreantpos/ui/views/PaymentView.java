@@ -136,6 +136,8 @@ public abstract class PaymentView extends JPanel {
 	
 	public void settleTickets(final double tenderedAmount, final double gratuityAmount, PosTransaction posTransaction, String cardType, String cardAuthorizationCode) {
 		try {
+			setTenderAmount(tenderedAmount);
+			
 			double totalAmount = getTotalAmount();
 			double dueAmountBeforePaid = getDueAmount();
 			
@@ -219,5 +221,16 @@ public abstract class PaymentView extends JPanel {
 		}*/
 	}
 	
+	private void setTenderAmount(double tenderedAmount) {
+		List<Ticket> ticketsToSettle = settleTicketView.getTicketsToSettle();
+		if(ticketsToSettle == null) {
+			return;
+		}
+		
+		for (Ticket ticket : ticketsToSettle) {
+			ticket.setTenderedAmount(tenderedAmount);
+		}
+	}
+
 	public abstract void updateView();
 }

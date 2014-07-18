@@ -8,6 +8,7 @@ import net.sf.jasperreports.engine.JasperPrint;
 
 import com.floreantpos.model.Ticket;
 import com.floreantpos.report.JReportPrintService;
+import com.floreantpos.report.TicketPrintProperties;
 
 public class TicketReceiptView extends JPanel {
 
@@ -31,8 +32,8 @@ public class TicketReceiptView extends JPanel {
 	public void createUI() {
 		try {
 			setLayout(new BorderLayout());
-			
-			JasperPrint jasperPrint = JReportPrintService.createPrintableReceipt(ticket, 0);
+			TicketPrintProperties printProperties = new TicketPrintProperties("*** KITCHEN ***", false, false, false);
+			JasperPrint jasperPrint = JReportPrintService.createPrint(ticket, printProperties);
 			net.sf.jasperreports.swing.JRViewer jrViewer = new net.sf.jasperreports.swing.JRViewer(jasperPrint);
 			jrViewer.setToolbarVisible(false);
 			jrViewer.setStatusbarVisible(false);
