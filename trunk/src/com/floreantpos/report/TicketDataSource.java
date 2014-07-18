@@ -8,7 +8,10 @@ import com.floreantpos.model.Ticket;
 import com.floreantpos.ui.ticket.TicketItemRowCreator;
 
 public class TicketDataSource extends AbstractReportDataSource {
-
+	
+	boolean includeModifiers = true;
+	boolean includeCookingInstructions = true;
+	
 	public TicketDataSource() {
 		super(new String[] { "itemName", "itemQty", "itemSubtotal" });
 	}
@@ -18,12 +21,22 @@ public class TicketDataSource extends AbstractReportDataSource {
 
 		setTicket(ticket);
 	}
+	
+	public TicketDataSource(Ticket ticket, boolean includeModifiers, boolean includeCookingInstructions) {
+		super(new String[] { "itemName", "itemQty", "itemSubtotal" });
+		
+		this.includeModifiers = includeModifiers;
+		this.includeCookingInstructions = includeCookingInstructions;
+		
+		setTicket(ticket);
+		
+	}
 
 	private void setTicket(Ticket ticket) {
 		ArrayList<ITicketItem> rows = new ArrayList<ITicketItem>();
 
 		LinkedHashMap<String, ITicketItem> tableRows = new LinkedHashMap<String, ITicketItem>();
-		TicketItemRowCreator.calculateTicketRows(ticket, tableRows);
+		TicketItemRowCreator.calculateTicketRows(ticket, tableRows, includeModifiers, includeCookingInstructions);
 
 		rows.addAll(tableRows.values());
 		setRows(rows);
