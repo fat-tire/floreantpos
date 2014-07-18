@@ -6,6 +6,9 @@ public class TicketPrintProperties {
 	private boolean showHeader;
 	private boolean showFooter;
 	private boolean showSubtotal;
+	
+	boolean printModifers = true;
+	boolean printCookingInstructions = true;
 
 	public TicketPrintProperties() {
 		super();
@@ -49,5 +52,21 @@ public class TicketPrintProperties {
 
 	public void setShowSubtotal(boolean showSubtotal) {
 		this.showSubtotal = showSubtotal;
+	}
+
+	public boolean isPrintModifers() {
+		return printModifers;
+	}
+
+	public void setPrintModifers(boolean printModifers) {
+		this.printModifers = printModifers;
+	}
+
+	public boolean isPrintCookingInstructions() {
+		return printCookingInstructions;
+	}
+
+	public void setPrintCookingInstructions(boolean printCookingInstructions) {
+		this.printCookingInstructions = printCookingInstructions;
 	}
 }
