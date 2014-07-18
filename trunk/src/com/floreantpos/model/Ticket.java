@@ -7,7 +7,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import com.floreantpos.main.Application;
 import com.floreantpos.model.base.BaseTicket;
@@ -61,22 +60,6 @@ public class Ticket extends BaseTicket {
 		}
 		
 		return deliveryDate;
-	}
-
-	public void addCookingInstruction(TicketCookingInstruction instruction) {
-		if (getCookingInstructions() == null) {
-			setCookingInstructions(new HashSet<TicketCookingInstruction>());
-		}
-
-		getCookingInstructions().add(instruction);
-	}
-
-	public void removeCookingInstruction(TicketCookingInstruction instruction) {
-		if (getCookingInstructions() == null) {
-			return;
-		}
-
-		getCookingInstructions().remove(instruction);
 	}
 
 	@Override
@@ -331,13 +314,13 @@ public class Ticket extends BaseTicket {
 					}
 				}
 			}
-		}
-
-		Set<TicketCookingInstruction> cookingInstructions = getCookingInstructions();
-		if (cookingInstructions != null) {
-			for (TicketCookingInstruction cookingInstruction : cookingInstructions) {
-				if (!cookingInstruction.isPrintedToKitchen()) {
-					return true;
+			
+			List<TicketItemCookingInstruction> cookingInstructions = item.getCookingInstructions();
+			if(cookingInstructions != null) {
+				for (TicketItemCookingInstruction ticketItemCookingInstruction : cookingInstructions) {
+					if(!ticketItemCookingInstruction.isPrintedToKitchen()) {
+						return true;
+					}
 				}
 			}
 		}
