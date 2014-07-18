@@ -22,6 +22,7 @@
     <property column="TOTAL_DISCOUNT" length="52" name="discountAmount" type="java.lang.Double"/>
     <property column="TOTAL_TAX" length="52" name="taxAmount" type="java.lang.Double"/>
     <property column="TOTAL_PRICE" length="52" name="totalAmount" type="java.lang.Double"/>
+    <property column="TENDERED_AMOUNT" length="52" name="tenderedAmount" type="java.lang.Double"/>
     <property column="PAID_AMOUNT" length="52" name="paidAmount" type="java.lang.Double"/>
     <property column="DUE_AMOUNT" length="52" name="dueAmount" type="java.lang.Double"/>
     <!--tableNumber should be -1 for take out-->
@@ -60,13 +61,7 @@
       <list-index column="D_ORDER"/>
       <one-to-many class="com.floreantpos.model.TicketCouponAndDiscount"/>
     </list>
-    <set cascade="all" inverse="false" lazy="true" name="cookingInstructions" table="TICKET_COOKING_INSTRUCTION">
-      <key column="TICKET_ID"/>
-      <composite-element class="TicketCookingInstruction">
-        <property length="60" name="description" type="string"/>
-        <property name="printedToKitchen" type="java.lang.Boolean"/>
-      </composite-element>
-    </set>
+    
     <!-- uni-directional many-to-one association to User -->
     <many-to-one class="com.floreantpos.model.Shift" lazy="false" name="shift">
       <column name="SHIFT_ID"/>

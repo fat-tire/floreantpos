@@ -84,7 +84,6 @@ public class TransactionCompletionDialog extends POSDialog {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					for (Ticket ticket : tickets) {
-//						PosPrintService.printMoneyReceipt(ticket);
 						PosPrintService.printTicket(ticket, getTenderedAmount());
 					}
 				}catch(Exception ee) {

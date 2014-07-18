@@ -187,7 +187,7 @@ public class PosPrintService {
 	}
 
 	public static void printTicket(final Ticket ticket, final double paidAmount) throws Exception {
-		JReportPrintService.printTicket(ticket, paidAmount);
+		JReportPrintService.printTicket(ticket);
 		
 //		Job job = new Job() {
 //
