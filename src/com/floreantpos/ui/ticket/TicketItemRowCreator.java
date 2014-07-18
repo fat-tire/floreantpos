@@ -12,6 +12,10 @@ import com.floreantpos.model.TicketItemModifierGroup;
 
 public class TicketItemRowCreator {
 	public static void calculateTicketRows(Ticket ticket, Map<String, ITicketItem> tableRows) {
+		calculateTicketRows(ticket, tableRows, true, true);
+	}
+	
+	public static void calculateTicketRows(Ticket ticket, Map<String, ITicketItem> tableRows, boolean includeModifiers, boolean includeCookingInstructions) {
 		tableRows.clear();
 
 		int rowNum = 0;
@@ -25,28 +29,42 @@ public class TicketItemRowCreator {
 			tableRows.put(String.valueOf(rowNum), ticketItem);
 			rowNum++;
 
-			List<TicketItemModifierGroup> ticketItemModifierGroups = ticketItem.getTicketItemModifierGroups();
-			if (ticketItemModifierGroups != null) {
-				for (TicketItemModifierGroup ticketItemModifierGroup : ticketItemModifierGroups) {
-					List<TicketItemModifier> ticketItemModifiers = ticketItemModifierGroup.getTicketItemModifiers();
-					if (ticketItemModifiers != null) {
-						for (TicketItemModifier itemModifier : ticketItemModifiers) {
-							itemModifier.setTableRowNum(rowNum);
-							tableRows.put(String.valueOf(rowNum), itemModifier);
-							rowNum++;
-						}
+			if(includeModifiers) {
+				rowNum = includeModifiers(ticketItem, tableRows, rowNum);
+			}
+
+			if(includeCookingInstructions) {
+				rowNum = includeCookintInstructions(ticketItem, tableRows, rowNum);
+			}
+		}
+	}
+
+	private static int includeCookintInstructions(TicketItem ticketItem, Map<String, ITicketItem> tableRows, int rowNum) {
+		List<TicketItemCookingInstruction> cookingInstructions = ticketItem.getCookingInstructions();
+		if (cookingInstructions != null) {
+			for (TicketItemCookingInstruction ticketItemCookingInstruction : cookingInstructions) {
+				ticketItemCookingInstruction.setTableRowNum(rowNum);
+				tableRows.put(String.valueOf(rowNum), ticketItemCookingInstruction);
+				rowNum++;
+			}
+		}
+		return rowNum;
+	}
+
+	private static int includeModifiers(TicketItem ticketItem, Map<String, ITicketItem> tableRows, int rowNum) {
+		List<TicketItemModifierGroup> ticketItemModifierGroups = ticketItem.getTicketItemModifierGroups();
+		if (ticketItemModifierGroups != null) {
+			for (TicketItemModifierGroup ticketItemModifierGroup : ticketItemModifierGroups) {
+				List<TicketItemModifier> ticketItemModifiers = ticketItemModifierGroup.getTicketItemModifiers();
+				if (ticketItemModifiers != null) {
+					for (TicketItemModifier itemModifier : ticketItemModifiers) {
+						itemModifier.setTableRowNum(rowNum);
+						tableRows.put(String.valueOf(rowNum), itemModifier);
+						rowNum++;
 					}
 				}
 			}
-
-			List<TicketItemCookingInstruction> cookingInstructions = ticketItem.getCookingInstructions();
-			if (cookingInstructions != null) {
-				for (TicketItemCookingInstruction ticketItemCookingInstruction : cookingInstructions) {
-					ticketItemCookingInstruction.setTableRowNum(rowNum);
-					tableRows.put(String.valueOf(rowNum), ticketItemCookingInstruction);
-					rowNum++;
-				}
-			}
 		}
+		return rowNum;
 	}
 }

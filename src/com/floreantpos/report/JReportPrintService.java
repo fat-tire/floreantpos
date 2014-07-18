@@ -52,13 +52,16 @@ public class JReportPrintService {
 
 		final String FILE_RECEIPT_REPORT = "/com/floreantpos/report/TicketReceiptReport.jasper";
 
-		return createJasperPrint(FILE_RECEIPT_REPORT, map, new JRTableModelDataSource(new TicketDataSource(ticket)));
+		TicketDataSource dataSource = new TicketDataSource(ticket, printProperties.isPrintModifers(), printProperties.isPrintCookingInstructions());
+		return createJasperPrint(FILE_RECEIPT_REPORT, map, new JRTableModelDataSource(dataSource));
 	}
 
 	public static void printTicket(Ticket ticket) {
 		try {
 
 			TicketPrintProperties printProperties = new TicketPrintProperties("*** PACKAGER RECEIPT ***", true, true, true);
+			printProperties.setPrintCookingInstructions(false);
+			
 			JasperPrint jasperPrint = createPrint(ticket, printProperties);
 			JasperPrintManager.printReport(jasperPrint, false);
 
@@ -78,7 +81,7 @@ public class JReportPrintService {
 		map.put("currencySymbol", currencySymbol);
 		map.put("receiptType", printProperties.getReceiptTypeName());
 		map.put("showSubtotal", Boolean.valueOf(printProperties.isShowSubtotal()));
-		map.put("showHeaderSeparator", Boolean.valueOf(printProperties.isShowHeader()));
+		map.put("showHeaderSeparator", Boolean.TRUE);
 		map.put("showFooter", Boolean.valueOf(printProperties.isShowFooter()));
 		
 		map.put("terminal", "Terminal#: " + Application.getInstance().getTerminal().getId());
@@ -145,6 +148,7 @@ public class JReportPrintService {
 			
 			TicketPrintProperties printProperties = new TicketPrintProperties("*** KITCHEN ***", false, false, false);
 			JasperPrint jasperPrint = createPrint(ticket, printProperties);
+			jasperPrint.setName("Kitchen print");
 			JasperPrintManager.printReport(jasperPrint, false);
 
 			//no exception, so print to kitchen successful.
