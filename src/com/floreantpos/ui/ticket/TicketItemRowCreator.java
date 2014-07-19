@@ -16,6 +16,10 @@ public class TicketItemRowCreator {
 	}
 	
 	public static void calculateTicketRows(Ticket ticket, Map<String, ITicketItem> tableRows, boolean includeModifiers, boolean includeCookingInstructions) {
+		calculateTicketRows(ticket, tableRows, false, includeModifiers, includeCookingInstructions);
+	}
+	
+	public static void calculateTicketRows(Ticket ticket, Map<String, ITicketItem> tableRows, boolean kitchenPrint, boolean includeModifiers, boolean includeCookingInstructions) {
 		tableRows.clear();
 
 		int rowNum = 0;
@@ -25,6 +29,11 @@ public class TicketItemRowCreator {
 
 		List<TicketItem> ticketItems = ticket.getTicketItems();
 		for (TicketItem ticketItem : ticketItems) {
+			
+			if(kitchenPrint && ticketItem.isPrintedToKitchen()) {
+				continue;
+			}
+			
 			ticketItem.setTableRowNum(rowNum);
 			tableRows.put(String.valueOf(rowNum), ticketItem);
 			rowNum++;
