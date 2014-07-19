@@ -193,7 +193,7 @@ public class Application {
 			terminal.setId(terminalId);
 			terminal.setOpeningBalance(new Double(500));
 			terminal.setCurrentBalance(new Double(500));
-			terminal.setName(com.floreantpos.POSConstants.TERMINAL + " - " + terminalId); //$NON-NLS-1$
+			terminal.setName(String.valueOf(terminalId)); //$NON-NLS-1$
 			
 			TerminalDAO.getInstance().saveOrUpdate(terminal);
 		}
