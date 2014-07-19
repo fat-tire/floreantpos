@@ -11,6 +11,7 @@ public class TicketDataSource extends AbstractReportDataSource {
 	
 	boolean includeModifiers = true;
 	boolean includeCookingInstructions = true;
+	boolean kitchenPrint = true;
 	
 	public TicketDataSource() {
 		super(new String[] { "itemName", "itemQty", "itemSubtotal" });
@@ -22,9 +23,10 @@ public class TicketDataSource extends AbstractReportDataSource {
 		setTicket(ticket);
 	}
 	
-	public TicketDataSource(Ticket ticket, boolean includeModifiers, boolean includeCookingInstructions) {
+	public TicketDataSource(Ticket ticket, boolean kitchenPrint, boolean includeModifiers, boolean includeCookingInstructions) {
 		super(new String[] { "itemName", "itemQty", "itemSubtotal" });
 		
+		this.kitchenPrint = kitchenPrint;
 		this.includeModifiers = includeModifiers;
 		this.includeCookingInstructions = includeCookingInstructions;
 		
@@ -36,7 +38,7 @@ public class TicketDataSource extends AbstractReportDataSource {
 		ArrayList<ITicketItem> rows = new ArrayList<ITicketItem>();
 
 		LinkedHashMap<String, ITicketItem> tableRows = new LinkedHashMap<String, ITicketItem>();
-		TicketItemRowCreator.calculateTicketRows(ticket, tableRows, includeModifiers, includeCookingInstructions);
+		TicketItemRowCreator.calculateTicketRows(ticket, tableRows, kitchenPrint, includeModifiers, includeCookingInstructions);
 
 		rows.addAll(tableRows.values());
 		setRows(rows);
