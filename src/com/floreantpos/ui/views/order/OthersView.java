@@ -258,7 +258,7 @@ public class OthersView extends TransparentPanel {
 				btnTableNumber.setEnabled(true);
 
 				btnCustomerNumber.setText(currentTicket.getNumberOfGuests() + " " + POSConstants.GUEST + "s");
-				btnTableNumber.setText(POSConstants.TABLE_NO + ": " + currentTicket.getTableNumber());
+				btnTableNumber.setText(POSConstants.RECEIPT_REPORT_TABLE_NO_LABEL + ": " + currentTicket.getTableNumber());
 			}
 		}
 	}

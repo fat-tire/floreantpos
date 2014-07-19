@@ -80,8 +80,8 @@ public class TicketDetailView extends JPanel implements ActionListener {
 		addRow(topPanel, com.floreantpos.POSConstants.SERVER_ID + ":", tfServerId = new JTextField());
 		addRow(topPanel, com.floreantpos.POSConstants.SERVER_NAME + ":", tfServerName = new JTextField());
 		addRow(topPanel, com.floreantpos.POSConstants.CREATED + ":", tfCreateTime = new JTextField());
-		addRow(topPanel, com.floreantpos.POSConstants.TERMINAL + ":", tfTerminal = new JTextField());
-		addRow(topPanel, com.floreantpos.POSConstants.TABLE_NO + ":", tfTable = new JTextField());
+		addRow(topPanel, com.floreantpos.POSConstants.TERMINAL_LABEL + ":", tfTerminal = new JTextField());
+		addRow(topPanel, com.floreantpos.POSConstants.RECEIPT_REPORT_TABLE_NO_LABEL + ":", tfTable = new JTextField());
 		addRow(topPanel, com.floreantpos.POSConstants.GUEST + " #:", tfGuests = new JTextField());
 		addRow(topPanel, com.floreantpos.POSConstants.SUBTOTAL + ":", tfSubtotal = new JTextField());
 		addRow(topPanel, com.floreantpos.POSConstants.DISCOUNT + ":", tfTotalDiscount = new JTextField());
