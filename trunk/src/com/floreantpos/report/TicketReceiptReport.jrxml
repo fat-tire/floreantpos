@@ -409,7 +409,7 @@
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="14" splitType="Prevent">
+		<band height="14" splitType="Stretch">
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement key="textField" x="0" y="0" width="76" height="12" isRemoveLineWhenBlank="true"/>
 				<box>
