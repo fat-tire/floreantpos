@@ -4,7 +4,7 @@
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="307"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -254,7 +254,7 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Monospaced" size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<font fontName="Monospaced" size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{headerLine1}]]></textFieldExpression>
 			</textField>
@@ -462,7 +462,7 @@
 		<band splitType="Prevent"/>
 	</lastPageFooter>
 	<summary>
-		<band height="141" splitType="Stretch">
+		<band height="168" splitType="Stretch">
 			<textField isBlankWhenNull="true">
 				<reportElement key="staticText-8" x="5" y="58" width="87" height="13">
 					<printWhenExpression><![CDATA[$P{tipAmount}!=null]]></printWhenExpression>
@@ -647,7 +647,7 @@
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{discountAmount}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement key="textField-1" x="0" y="129" width="148" height="12" isRemoveLineWhenBlank="true">
+				<reportElement key="textField-1" x="0" y="139" width="148" height="12" isRemoveLineWhenBlank="true">
 					<printWhenExpression><![CDATA[$P{showFooter}==true]]></printWhenExpression>
 				</reportElement>
 				<box>
