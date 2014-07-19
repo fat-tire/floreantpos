@@ -96,7 +96,7 @@ public class JReportPrintService {
 			map.put("headerLine2", restaurant.getAddressLine1());
 			map.put("headerLine3", restaurant.getAddressLine2());
 			map.put("headerLine4", restaurant.getAddressLine3());
-			map.put("headerLine5", com.floreantpos.POSConstants.TEL + ": " + restaurant.getTelephone());
+			map.put("headerLine5", restaurant.getTelephone());
 		}
 
 		if (printProperties.isShowFooter()) {
