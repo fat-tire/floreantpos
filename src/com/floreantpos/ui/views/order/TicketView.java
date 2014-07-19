@@ -369,13 +369,13 @@ public class TicketView extends JPanel {
 				PosPrintService.printTicket(ticket, 0);
 			}
 
-			//if (PrintConfig.isPrintToKitchenOnOrderFinish()) {
-			//	if (ticket.needsKitchenPrint()) {
+			if (PrintConfig.isPrintToKitchenOnOrderFinish()) {
+				if (ticket.needsKitchenPrint()) {
 					PosPrintService.printToKitchen(ticket);
-			//	}
-			//	ticket.clearDeletedItems();
-			//	OrderController.saveOrder(ticket);
-			//}
+				}
+				ticket.clearDeletedItems();
+				OrderController.saveOrder(ticket);
+			}
 			RootView.getInstance().showView(SwitchboardView.VIEW_NAME);
 		} catch (StaleObjectStateException e) {
 			POSMessageDialog.showError("It seems the ticket has been modified by some other person or terminal. Save failed.");
