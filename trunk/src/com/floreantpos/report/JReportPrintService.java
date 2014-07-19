@@ -18,6 +18,7 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.floreantpos.POSConstants;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.Restaurant;
 import com.floreantpos.model.Ticket;
@@ -28,6 +29,29 @@ import com.floreantpos.model.dao.RestaurantDAO;
 import com.floreantpos.util.NumberUtil;
 
 public class JReportPrintService {
+	private static final String TIP_AMOUNT = "tipAmount";
+	private static final String SERVICE_CHARGE = "serviceCharge";
+	private static final String TAX_AMOUNT = "taxAmount";
+	private static final String DISCOUNT_AMOUNT = "discountAmount";
+	private static final String HEADER_LINE5 = "headerLine5";
+	private static final String HEADER_LINE4 = "headerLine4";
+	private static final String HEADER_LINE3 = "headerLine3";
+	private static final String HEADER_LINE2 = "headerLine2";
+	private static final String HEADER_LINE1 = "headerLine1";
+	private static final String REPORT_DATE = "reportDate";
+	private static final String SERVER_NAME = "serverName";
+	private static final String GUEST_COUNT = "guestCount";
+	private static final String TABLE_NO = "tableNo";
+	private static final String CHECK_NO = "checkNo";
+	private static final String TERMINAL = "terminal";
+	private static final String SHOW_FOOTER = "showFooter";
+	private static final String SHOW_HEADER_SEPARATOR = "showHeaderSeparator";
+	private static final String SHOW_SUBTOTAL = "showSubtotal";
+	private static final String RECEIPT_TYPE = "receiptType";
+	private static final String SUB_TOTAL_TEXT = "subTotalText";
+	private static final String QUANTITY_TEXT = "quantityText";
+	private static final String ITEM_TEXT = "itemText";
+	private static final String CURRENCY_SYMBOL = "currencySymbol";
 	private static Log logger = LogFactory.getLog(JReportPrintService.class);
 
 	public static JasperPrint createJasperPrint(String reportFile, Map<String, String> properties, JRDataSource dataSource) throws Exception {
@@ -78,43 +102,46 @@ public class JReportPrintService {
 
 		HashMap map = new HashMap();
 		String currencySymbol = Application.getCurrencySymbol();
-		map.put("currencySymbol", currencySymbol);
-		map.put("receiptType", printProperties.getReceiptTypeName());
-		map.put("showSubtotal", Boolean.valueOf(printProperties.isShowSubtotal()));
-		map.put("showHeaderSeparator", Boolean.TRUE);
-		map.put("showFooter", Boolean.valueOf(printProperties.isShowFooter()));
+		map.put(CURRENCY_SYMBOL, currencySymbol);
+		map.put(ITEM_TEXT, POSConstants.RECEIPT_REPORT_ITEM_LABEL);
+		map.put(QUANTITY_TEXT, POSConstants.RECEIPT_REPORT_QUANTITY_LABEL);
+		map.put(SUB_TOTAL_TEXT, POSConstants.RECEIPT_REPORT_SUBTOTAL_LABEL);
+		map.put(RECEIPT_TYPE, printProperties.getReceiptTypeName());
+		map.put(SHOW_SUBTOTAL, Boolean.valueOf(printProperties.isShowSubtotal()));
+		map.put(SHOW_HEADER_SEPARATOR, Boolean.TRUE);
+		map.put(SHOW_FOOTER, Boolean.valueOf(printProperties.isShowFooter()));
 		
-		map.put("terminal", "Terminal#: " + Application.getInstance().getTerminal().getId());
-		map.put("checkNo", com.floreantpos.POSConstants.CHK_NO + ": " + ticket.getId());
-		map.put("tableNo", com.floreantpos.POSConstants.TABLE_NO + ": " + ticket.getTableNumber());
-		map.put("guestCount", com.floreantpos.POSConstants.GUESTS_ + ": " + ticket.getNumberOfGuests());
-		map.put("serverName", com.floreantpos.POSConstants.SERVER + ": " + ticket.getOwner());
-		map.put("reportDate", com.floreantpos.POSConstants.DATE + ": " + Application.formatDate(new Date()));
+		map.put(TERMINAL, POSConstants.RECEIPT_REPORT_TERMINAL_LABEL + Application.getInstance().getTerminal().getId());
+		map.put(CHECK_NO, POSConstants.RECEIPT_REPORT_TICKET_NO_LABEL + ticket.getId());
+		map.put(TABLE_NO, POSConstants.RECEIPT_REPORT_TABLE_NO_LABEL + ticket.getTableNumber());
+		map.put(GUEST_COUNT, POSConstants.RECEIPT_REPORT_GUEST_NO_LABEL + ticket.getNumberOfGuests());
+		map.put(SERVER_NAME, POSConstants.RECEIPT_REPORT_SERVER_LABEL + ticket.getOwner());
+		map.put(REPORT_DATE, POSConstants.RECEIPT_REPORT_DATE_LABEL + Application.formatDate(new Date()));
 
 		if (printProperties.isShowHeader()) {
-			map.put("headerLine1", restaurant.getName());
-			map.put("headerLine2", restaurant.getAddressLine1());
-			map.put("headerLine3", restaurant.getAddressLine2());
-			map.put("headerLine4", restaurant.getAddressLine3());
-			map.put("headerLine5", restaurant.getTelephone());
+			map.put(HEADER_LINE1, restaurant.getName());
+			map.put(HEADER_LINE2, restaurant.getAddressLine1());
+			map.put(HEADER_LINE3, restaurant.getAddressLine2());
+			map.put(HEADER_LINE4, restaurant.getAddressLine3());
+			map.put(HEADER_LINE5, restaurant.getTelephone());
 		}
 
 		if (printProperties.isShowFooter()) {
 			if (ticket.getDiscountAmount() > 0.0) {
-				map.put("discountAmount", NumberUtil.formatNumber(ticket.getDiscountAmount()));
+				map.put(DISCOUNT_AMOUNT, NumberUtil.formatNumber(ticket.getDiscountAmount()));
 			}
 
 			if (ticket.getTaxAmount() > 0.0) {
-				map.put("taxAmount", NumberUtil.formatNumber(ticket.getTaxAmount()));
+				map.put(TAX_AMOUNT, NumberUtil.formatNumber(ticket.getTaxAmount()));
 			}
 
 			if (ticket.getServiceCharge() > 0.0) {
-				map.put("serviceCharge", NumberUtil.formatNumber(ticket.getServiceCharge()));
+				map.put(SERVICE_CHARGE, NumberUtil.formatNumber(ticket.getServiceCharge()));
 			}
 
 			if (ticket.getGratuity() != null) {
 				tipAmount = ticket.getGratuity().getAmount();
-				map.put("tipAmount", NumberUtil.formatNumber(tipAmount));
+				map.put(TIP_AMOUNT, NumberUtil.formatNumber(tipAmount));
 			}
 
 			double netAmount = totalAmount + tipAmount;
@@ -124,14 +151,14 @@ public class JReportPrintService {
 				changedAmount = 0;
 			}
 
-			map.put("totalText", "Total " + currencySymbol);
-			map.put("discountText", "Discount " + currencySymbol);
-			map.put("taxText", "Tax " + currencySymbol);
-			map.put("serviceChargeText", "Service Charge " + currencySymbol);
-			map.put("tipsText", "Tips " + currencySymbol);
-			map.put("netAmountText", "Net Amount " + currencySymbol);
-			map.put("paidAmountText", "Paid Amount " + currencySymbol);
-			map.put("changeAmountText", "Change Amount " + currencySymbol);
+			map.put("totalText", POSConstants.RECEIPT_REPORT_TOTAL_LABEL + currencySymbol);
+			map.put("discountText", POSConstants.RECEIPT_REPORT_DISCOUNT_LABEL + currencySymbol);
+			map.put("taxText", POSConstants.RECEIPT_REPORT_TAX_LABEL + currencySymbol);
+			map.put("serviceChargeText", POSConstants.RECEIPT_REPORT_SERVICE_CHARGE_LABEL + currencySymbol);
+			map.put("tipsText", POSConstants.RECEIPT_REPORT_TIPS_LABEL + currencySymbol);
+			map.put("netAmountText", POSConstants.RECEIPT_REPORT_NETAMOUNT_LABEL + currencySymbol);
+			map.put("paidAmountText", POSConstants.RECEIPT_REPORT_PAIDAMOUNT_LABEL + currencySymbol);
+			map.put("changeAmountText", POSConstants.RECEIPT_REPORT_CHANGEAMOUNT_LABEL + currencySymbol);
 
 			map.put("netAmount", NumberUtil.formatNumber(netAmount));
 			map.put("paidAmount", NumberUtil.formatNumber(ticket.getTenderedAmount()));

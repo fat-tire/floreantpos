@@ -235,7 +235,7 @@ public class VoidTicketDialog extends POSDialog {
 			canceled = false;
 			
 			//save the action
-			ActionHistoryDAO.getInstance().saveHistory(Application.getCurrentUser(), ActionHistory.VOID_CHECK, com.floreantpos.POSConstants.CHK_NO + ":"+ticket.getId() +"; Total" + ": " + NumberUtil.formatNumber(ticket.getTotalAmount()));
+			ActionHistoryDAO.getInstance().saveHistory(Application.getCurrentUser(), ActionHistory.VOID_CHECK, com.floreantpos.POSConstants.RECEIPT_REPORT_TICKET_NO_LABEL + ":"+ticket.getId() +"; Total" + ": " + NumberUtil.formatNumber(ticket.getTotalAmount()));
 			
 			dispose();
 		} catch (Exception e) {
