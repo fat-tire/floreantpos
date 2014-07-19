@@ -172,7 +172,7 @@ public class PosTransactionService {
 		
 		for (Ticket ticket : tickets) {
 //			SETTLE ACTION
-			String actionMessage = com.floreantpos.POSConstants.CHK_NO + ":" + ticket.getId();
+			String actionMessage = com.floreantpos.POSConstants.RECEIPT_REPORT_TICKET_NO_LABEL + ":" + ticket.getId();
 			actionMessage += ";" +  com.floreantpos.POSConstants.TOTAL + ":" + NumberUtil.formatNumber(ticket.getTotalAmount());
 			ActionHistoryDAO.getInstance().saveHistory(Application.getCurrentUser(), ActionHistory.SETTLE_CHECK, actionMessage);
 		}

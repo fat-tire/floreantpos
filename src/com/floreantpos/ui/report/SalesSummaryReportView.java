@@ -93,7 +93,7 @@ public class SalesSummaryReportView extends javax.swing.JPanel {
 
 		jLabel3.setText(com.floreantpos.POSConstants.USER_TYPE + ":");
 
-		jLabel4.setText(com.floreantpos.POSConstants.TERMINAL + ":");
+		jLabel4.setText(com.floreantpos.POSConstants.TERMINAL_LABEL + ":");
 
 		btnGo.setText(com.floreantpos.POSConstants.GO);
 		btnGo.addActionListener(new java.awt.event.ActionListener() {

@@ -223,7 +223,7 @@ public class SplitTicketDialog extends POSDialog {
 			tx.commit();
 			
 			//save the action
-			ActionHistoryDAO.getInstance().saveHistory(Application.getCurrentUser(), ActionHistory.SPLIT_CHECK, com.floreantpos.POSConstants.CHK_NO + ":"+mainTicketView.getTicket().getId());
+			ActionHistoryDAO.getInstance().saveHistory(Application.getCurrentUser(), ActionHistory.SPLIT_CHECK, com.floreantpos.POSConstants.RECEIPT_REPORT_TICKET_NO_LABEL + ":"+mainTicketView.getTicket().getId());
 			
 			dispose();
 		} catch (Exception e) {
