@@ -246,7 +246,15 @@ public class TicketViewerTable extends JTable {
 	}
 	
 	public void updateView() {
+		int selectedRow = getSelectedRow();
+		
 		model.update();
+		
+		try {
+			getSelectionModel().setSelectionInterval(selectedRow, selectedRow);
+		}catch (Exception e) {
+			// do nothing
+		}
 	}
 	
 	public int getActualRowCount() {

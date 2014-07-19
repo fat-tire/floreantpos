@@ -348,7 +348,7 @@ public class TicketView extends JPanel {
 			if (dialog.isCanceled()) {
 				return;
 			}
-
+			
 			List<TicketItemCookingInstruction> instructions = cookingInstructionSelectionView.getTicketItemCookingInstructions();
 			ticketItem.addCookingInstructions(instructions);
 
