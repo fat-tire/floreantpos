@@ -15,11 +15,13 @@ import net.sf.jasperreports.engine.data.JRTableModelDataSource;
 import net.sf.jasperreports.engine.util.JRLoader;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.floreantpos.POSConstants;
 import com.floreantpos.main.Application;
+import com.floreantpos.model.Customer;
 import com.floreantpos.model.Restaurant;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketItem;
@@ -76,7 +78,8 @@ public class JReportPrintService {
 
 		final String FILE_RECEIPT_REPORT = "/com/floreantpos/report/TicketReceiptReport.jasper";
 
-		TicketDataSource dataSource = new TicketDataSource(ticket, printProperties.isKitchenPrint(), printProperties.isPrintModifers(), printProperties.isPrintCookingInstructions());
+		TicketDataSource dataSource = new TicketDataSource(ticket, printProperties.isKitchenPrint(), printProperties.isPrintModifers(),
+				printProperties.isPrintCookingInstructions());
 		return createJasperPrint(FILE_RECEIPT_REPORT, map, new JRTableModelDataSource(dataSource));
 	}
 
@@ -86,13 +89,29 @@ public class JReportPrintService {
 			TicketPrintProperties printProperties = new TicketPrintProperties("*** PACKAGER RECEIPT ***", true, true, true);
 			printProperties.setKitchenPrint(false);
 			printProperties.setPrintCookingInstructions(false);
-			
+
 			JasperPrint jasperPrint = createPrint(ticket, printProperties);
 			JasperPrintManager.printReport(jasperPrint, false);
 
 		} catch (Exception e) {
 			logger.error(com.floreantpos.POSConstants.PRINT_ERROR, e);
 		}
+	}
+
+	private static void beginRow(StringBuilder html) {
+		html.append("<div>");
+	}
+
+	private static void endRow(StringBuilder html) {
+		html.append("</div>");
+	}
+
+	private static void addColumn(StringBuilder html, String columnText) {
+		html.append("<span>" + columnText + "</span>");
+	}
+
+	private static void addColumnRightAlign(StringBuilder html, String columnText) {
+		html.append("<span style='width: 100%; text-align: right; background: red; float: right;'>" + columnText + "</span>");
 	}
 
 	public static HashMap populateTicketProperties(Ticket ticket, TicketPrintProperties printProperties) {
@@ -111,13 +130,77 @@ public class JReportPrintService {
 		map.put(SHOW_SUBTOTAL, Boolean.valueOf(printProperties.isShowSubtotal()));
 		map.put(SHOW_HEADER_SEPARATOR, Boolean.TRUE);
 		map.put(SHOW_FOOTER, Boolean.valueOf(printProperties.isShowFooter()));
-		
+
 		map.put(TERMINAL, POSConstants.RECEIPT_REPORT_TERMINAL_LABEL + Application.getInstance().getTerminal().getId());
 		map.put(CHECK_NO, POSConstants.RECEIPT_REPORT_TICKET_NO_LABEL + ticket.getId());
 		map.put(TABLE_NO, POSConstants.RECEIPT_REPORT_TABLE_NO_LABEL + ticket.getTableNumber());
 		map.put(GUEST_COUNT, POSConstants.RECEIPT_REPORT_GUEST_NO_LABEL + ticket.getNumberOfGuests());
 		map.put(SERVER_NAME, POSConstants.RECEIPT_REPORT_SERVER_LABEL + ticket.getOwner());
 		map.put(REPORT_DATE, POSConstants.RECEIPT_REPORT_DATE_LABEL + Application.formatDate(new Date()));
+
+		StringBuilder ticketHeaderBuilder = new StringBuilder();
+		ticketHeaderBuilder.append("<html>");
+
+		beginRow(ticketHeaderBuilder);
+		addColumn(ticketHeaderBuilder, POSConstants.RECEIPT_REPORT_TERMINAL_LABEL + Application.getInstance().getTerminal().getId());
+		endRow(ticketHeaderBuilder);
+
+		beginRow(ticketHeaderBuilder);
+		addColumn(ticketHeaderBuilder, POSConstants.RECEIPT_REPORT_TICKET_NO_LABEL + ticket.getId());
+		endRow(ticketHeaderBuilder);
+		
+		beginRow(ticketHeaderBuilder);
+		addColumn(ticketHeaderBuilder, "OT: " + ticket.getTicketType());
+		endRow(ticketHeaderBuilder);
+
+		if (Ticket.DINE_IN.equalsIgnoreCase(ticket.getTicketType())) {
+			beginRow(ticketHeaderBuilder);
+			addColumn(ticketHeaderBuilder, POSConstants.RECEIPT_REPORT_TABLE_NO_LABEL + ticket.getTableNumber());
+			endRow(ticketHeaderBuilder);
+
+			beginRow(ticketHeaderBuilder);
+			addColumn(ticketHeaderBuilder, POSConstants.RECEIPT_REPORT_GUEST_NO_LABEL + ticket.getNumberOfGuests());
+			endRow(ticketHeaderBuilder);
+		}
+
+		beginRow(ticketHeaderBuilder);
+		addColumn(ticketHeaderBuilder, POSConstants.RECEIPT_REPORT_SERVER_LABEL + ticket.getOwner());
+		endRow(ticketHeaderBuilder);
+
+		beginRow(ticketHeaderBuilder);
+		addColumn(ticketHeaderBuilder, POSConstants.RECEIPT_REPORT_DATE_LABEL + Application.formatDate(new Date()));
+		endRow(ticketHeaderBuilder);
+
+		beginRow(ticketHeaderBuilder);
+		addColumn(ticketHeaderBuilder, "");
+		endRow(ticketHeaderBuilder);
+
+		if (!Ticket.DINE_IN.equalsIgnoreCase(ticket.getTicketType())) {
+			Customer customer = ticket.getCustomer();
+			if (customer != null) {
+				if (StringUtils.isNotEmpty(customer.getName())) {
+					beginRow(ticketHeaderBuilder);
+					addColumn(ticketHeaderBuilder, "CN: " + customer.getName());
+					endRow(ticketHeaderBuilder);
+				}
+
+				if (StringUtils.isNotEmpty(customer.getTelephoneNo())) {
+					beginRow(ticketHeaderBuilder);
+					addColumn(ticketHeaderBuilder, "C.PH: " + customer.getTelephoneNo());
+					endRow(ticketHeaderBuilder);
+				}
+			}
+
+			if (StringUtils.isNotEmpty(ticket.getDeliveryAddress())) {
+				beginRow(ticketHeaderBuilder);
+				addColumn(ticketHeaderBuilder, "DA: " + ticket.getDeliveryAddress());
+				endRow(ticketHeaderBuilder);
+			}
+		}
+
+		ticketHeaderBuilder.append("</html>");
+
+		map.put("ticketHeader", ticketHeaderBuilder.toString());
 
 		if (printProperties.isShowHeader()) {
 			map.put(HEADER_LINE1, restaurant.getName());
@@ -168,12 +251,18 @@ public class JReportPrintService {
 			map.put("footerMessage", restaurant.getTicketFooterMessage());
 		}
 
+		String htmlString = "<html>";
+		htmlString += "<bold>some text</bold>";
+		htmlString += "</html>";
+
+		map.put("testParam", htmlString);
+
 		return map;
 	}
 
 	public static void printTicketToKitchen(Ticket ticket) {
 		try {
-			
+
 			TicketPrintProperties printProperties = new TicketPrintProperties("*** KITCHEN ***", false, false, false);
 			printProperties.setKitchenPrint(true);
 			JasperPrint jasperPrint = createPrint(ticket, printProperties);
@@ -183,7 +272,7 @@ public class JReportPrintService {
 			//no exception, so print to kitchen successful.
 			//now mark items as printed.
 			markItemsAsPrinted(ticket);
-			
+
 		} catch (Exception e) {
 			logger.error(com.floreantpos.POSConstants.PRINT_ERROR, e);
 		}
