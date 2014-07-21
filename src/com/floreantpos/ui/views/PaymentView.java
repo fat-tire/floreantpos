@@ -1,6 +1,5 @@
 package com.floreantpos.ui.views;
 
-import java.awt.LayoutManager;
 import java.util.List;
 
 import javax.swing.JOptionPane;
@@ -21,18 +20,6 @@ import com.floreantpos.ui.views.order.RootView;
 public abstract class PaymentView extends JPanel {
 	protected SettleTicketView settleTicketView;
 	
-	public PaymentView(LayoutManager layout, boolean isDoubleBuffered) {
-		super(layout, isDoubleBuffered);
-	}
-
-	public PaymentView(LayoutManager layout) {
-		super(layout);
-	}
-
-	public PaymentView(boolean isDoubleBuffered) {
-		super(isDoubleBuffered);
-	}
-
 	public PaymentView() {
 		super();
 	}

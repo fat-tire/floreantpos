@@ -7,10 +7,10 @@
 package com.floreantpos.ui.views;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
+import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -18,15 +18,19 @@ import java.util.List;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
-import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 
 import net.miginfocom.swing.MigLayout;
+import net.sf.jasperreports.engine.JasperPrint;
 
 import com.floreantpos.main.Application;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketCouponAndDiscount;
 import com.floreantpos.model.dao.TicketDAO;
+import com.floreantpos.report.JReportPrintService;
+import com.floreantpos.report.TicketPrintProperties;
 import com.floreantpos.swing.POSToggleButton;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.ui.dialog.CouponAndDiscountDialog;
@@ -47,22 +51,8 @@ public class TicketDetailView extends JPanel implements ActionListener {
 	private com.floreantpos.swing.PosButton btnViewDiscounts;
 
 	private javax.swing.JLabel lblBalanceDue;
-	private javax.swing.JTextField tfCreateTime;
-	private javax.swing.JTextField tfGuests;
-	private javax.swing.JTextField tfServerId;
-	private javax.swing.JTextField tfServerName;
-	private javax.swing.JTextField tfSubtotal;
-	private javax.swing.JTextField tfTable;
-	private javax.swing.JTextField tfTax;
-	private javax.swing.JTextField tfTerminal;
-	private javax.swing.JTextField tfTicketId;
-	private javax.swing.JTextField tfTotal;
-	private javax.swing.JTextField tfDue;
-	private javax.swing.JTextField tfTotalDiscount;
 
 	private SettleTicketView settleTicketView;
-
-	private SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd yy, hh:mm a");
 
 	private JPanel topPanel;
 	private JPanel balanceDuePanel;
@@ -75,33 +65,27 @@ public class TicketDetailView extends JPanel implements ActionListener {
 
 		setLayout(new BorderLayout(5, 5));
 
-		topPanel = new JPanel(new MigLayout("align 50%"));
-		addRow(topPanel, com.floreantpos.POSConstants.TICKET_ID + ":", tfTicketId = new JTextField());
-		addRow(topPanel, com.floreantpos.POSConstants.SERVER_ID + ":", tfServerId = new JTextField());
-		addRow(topPanel, com.floreantpos.POSConstants.SERVER_NAME + ":", tfServerName = new JTextField());
-		addRow(topPanel, com.floreantpos.POSConstants.CREATED + ":", tfCreateTime = new JTextField());
-		addRow(topPanel, com.floreantpos.POSConstants.TERMINAL_LABEL + ":", tfTerminal = new JTextField());
-		addRow(topPanel, com.floreantpos.POSConstants.RECEIPT_REPORT_TABLE_NO_LABEL + ":", tfTable = new JTextField());
-		addRow(topPanel, com.floreantpos.POSConstants.GUEST + " #:", tfGuests = new JTextField());
-		addRow(topPanel, com.floreantpos.POSConstants.SUBTOTAL + ":", tfSubtotal = new JTextField());
-		addRow(topPanel, com.floreantpos.POSConstants.DISCOUNT + ":", tfTotalDiscount = new JTextField());
-		addRow(topPanel, com.floreantpos.POSConstants.TAX + ":", tfTax = new JTextField());
-		addRow(topPanel, com.floreantpos.POSConstants.TOTAL + ":", tfTotal = new JTextField());
-		addRow(topPanel, com.floreantpos.POSConstants.DUE + ":", tfDue = new JTextField());
-
+		topPanel = new JPanel(new GridLayout());
 		add(topPanel, BorderLayout.CENTER);
 
-		balanceDuePanel = new JPanel(new MigLayout("align 50%"));
-		balanceDuePanel.add(new JSeparator(), "grow, span,w 320");
+		balanceDuePanel = new JPanel(new GridLayout(0, 1, 5, 5));
+		
 		JLabel balanceDueTitle = new JLabel(com.floreantpos.POSConstants.BALANCE_DUE);
-		balanceDuePanel.add(balanceDueTitle, "newline,grow,span");
-		balanceDuePanel.add(lblBalanceDue = new JLabel("0"), "newline,grow,span");
+		balanceDueTitle.setFont(new Font("Dialog", Font.BOLD, 16));
+		balanceDueTitle.setHorizontalAlignment(SwingConstants.CENTER);
+		balanceDuePanel.add(balanceDueTitle);
+		
+		lblBalanceDue = new JLabel("0");
+		lblBalanceDue.setFont(new Font("Dialog", Font.BOLD, 16));
+		lblBalanceDue.setHorizontalAlignment(SwingConstants.CENTER);
+		balanceDuePanel.add(lblBalanceDue);
+		
+		balanceDuePanel.add(new JSeparator(JSeparator.HORIZONTAL));
 
-		buttonPanel = new JPanel(new MigLayout("align 50%"));
-		buttonPanel.add(new JSeparator(), "newline, grow,span");
-		buttonPanel.add(btnApplyCoupon = new PosButton(com.floreantpos.POSConstants.COUPON_DISCOUNT), "w 160, h 50, grow, span");
-		buttonPanel.add(btnViewDiscounts = new PosButton(com.floreantpos.POSConstants.VIEW_DISCOUNTS), "newline,w 160, h 50, ax 100%");
-		buttonPanel.add(btnTaxExempt = new POSToggleButton(com.floreantpos.POSConstants.TAX_EXEMPT), "w 160, h 50");
+		buttonPanel = new JPanel();
+		buttonPanel.add(btnApplyCoupon = new PosButton(com.floreantpos.POSConstants.COUPON_DISCOUNT));
+		buttonPanel.add(btnViewDiscounts = new PosButton(com.floreantpos.POSConstants.VIEW_DISCOUNTS));
+		buttonPanel.add(btnTaxExempt = new POSToggleButton(com.floreantpos.POSConstants.TAX_EXEMPT));
 
 		JPanel bottomPanel = new JPanel(new BorderLayout(5, 5));
 		bottomPanel.add(balanceDuePanel);
@@ -111,35 +95,9 @@ public class TicketDetailView extends JPanel implements ActionListener {
 
 		setOpaque(false);
 
-		balanceDueTitle.setFont(new java.awt.Font("Tahoma", 1, 36));
-		balanceDueTitle.setForeground(new java.awt.Color(255, 102, 0));
-		balanceDueTitle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-
-		lblBalanceDue.setFont(new java.awt.Font("Tahoma", 1, 36));
-		lblBalanceDue.setForeground(new java.awt.Color(255, 102, 0));
-		lblBalanceDue.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-		lblBalanceDue.setText("0.0");
-
 		btnApplyCoupon.addActionListener(this);
 		btnTaxExempt.addActionListener(this);
 		btnViewDiscounts.addActionListener(this);
-	}
-
-	private JLabel createLabel(String text) {
-		JLabel label = new JLabel(text);
-		label.setHorizontalAlignment(JLabel.RIGHT);
-		return label;
-	}
-
-	private JTextField createTextField(JTextField textField) {
-		textField.setEditable(false);
-		textField.setBackground(Color.white);
-		return textField;
-	}
-
-	private void addRow(JPanel panel, String title, JTextField textField) {
-		panel.add(createLabel(title), "newline, height pref");
-		panel.add(createTextField(textField), "w 250,height pref");
 	}
 
 	protected double getTotalAmount() {
@@ -242,109 +200,58 @@ public class TicketDetailView extends JPanel implements ActionListener {
 	}
 
 	public void clearView() {
-		tfTicketId.setText("");
-		tfServerName.setText("");
-		tfCreateTime.setText("");
-		tfGuests.setText("");
-		tfTable.setText("");
-		tfTerminal.setText("");
-		tfSubtotal.setText("");
-		tfTotalDiscount.setText("");
-		tfTax.setText("");
-		tfTotal.setText("");
-		tfDue.setText("");
-
-		lblBalanceDue.setText("0.0");
+		topPanel.removeAll();
 	}
 
 	private void updateView() {
-		List<Ticket> tickets = getTickets();
-
-		if (tickets.size() <= 0) {
+		try {
 			clearView();
-			return;
-		}
+			
+			List<Ticket> tickets = getTickets();
 
-		String currencySymbol = Application.getCurrencySymbol();
-
-		if (tickets.size() == 1) {
-			Ticket ticket = tickets.get(0);
-			if (ticket.getId() != null) {
-				tfTicketId.setText(ticket.getId().toString());
+			int totalTicket = tickets.size();
+			
+			if (totalTicket <= 0) {
+				return;
 			}
-			tfServerId.setText(String.valueOf(ticket.getOwner().getUserId()));
-			tfServerName.setText(ticket.getOwner().toString());
-			tfCreateTime.setText(dateFormat.format(ticket.getCreateDate()));
-			tfGuests.setText(String.valueOf(ticket.getNumberOfGuests()));
-			tfTable.setText(String.valueOf(ticket.getTableNumber()));
-			tfTerminal.setText(ticket.getTerminal().getName());
-			tfSubtotal.setText(currencySymbol + NumberUtil.formatNumber(ticket.getSubtotalAmount()));
-			tfTotalDiscount.setText(currencySymbol + NumberUtil.formatNumber(ticket.getDiscountAmount()));
-			tfTax.setText(currencySymbol + NumberUtil.formatNumber(ticket.getTaxAmount()));
-			tfTotal.setText(currencySymbol + NumberUtil.formatNumber(ticket.getTotalAmount()));
-			tfDue.setText(currencySymbol + NumberUtil.formatNumber(ticket.getDueAmount()));
+			
+			int taxExemptTicketCount = 0;
+			double totalDue = 0;
+			
+			JPanel reportPanel = new JPanel(new MigLayout("wrap 1, ax 50%","",""));
+			JScrollPane scrollPane = new JScrollPane(reportPanel);
+			scrollPane.getVerticalScrollBar().setUnitIncrement(20);
 
-			lblBalanceDue.setText(NumberUtil.formatNumber(ticket.getDueAmount()));
-			btnTaxExempt.setSelected(ticket.isTaxExempt());
-			btnApplyCoupon.setEnabled(true);
-			return;
-		}
+			for (Iterator iter = tickets.iterator(); iter.hasNext();) {
+				Ticket ticket = (Ticket) iter.next();
+				totalDue += ticket.getDueAmount();
+				
+				TicketPrintProperties printProperties = new TicketPrintProperties("*** ORDER " + ticket.getId() + " ***", false, true, true);
+				JasperPrint jasperPrint = JReportPrintService.createPrint(ticket, printProperties);
 
-		Ticket firstTicket = tickets.get(0);
-		String idString = "";
-		int serverId = firstTicket.getOwner().getUserId();
-		String serverName = firstTicket.getOwner().toString();
-		String createTime = "<variant>";
-		int totalGuests = 0;
-		String tableNumber = "<variant>";
-		String terminal = firstTicket.getTerminal().getName();
-		double subtotal = 0;
-		double discount = 0;
-		double tax = 0;
-		double total = 0;
-		int taxExemptTicketCount = 0;
-
-		for (Iterator iter = tickets.iterator(); iter.hasNext();) {
-			Ticket ticket = (Ticket) iter.next();
-
-			if (ticket.getId() != null) {
-				idString += ticket.getId();
-				if (iter.hasNext()) {
-					idString += ", ";
+				TicketReceiptView receiptView = new TicketReceiptView(jasperPrint);
+				reportPanel.add(receiptView.getReportPanel());
+				
+				if(ticket.isTaxExempt()) {
+					taxExemptTicketCount++;
 				}
 			}
-			totalGuests += ticket.getNumberOfGuests();
-			subtotal += ticket.getSubtotalAmount();
-			discount += ticket.getDiscountAmount();
-			tax += ticket.getTaxAmount();
-			total += ticket.getTotalAmount();
-
-			if (ticket.isTaxExempt()) {
-				taxExemptTicketCount++;
+			
+			topPanel.add(scrollPane, BorderLayout.CENTER);
+			lblBalanceDue.setText(Application.getCurrencySymbol() + " " + NumberUtil.roundToTwoDigit(totalDue));
+			
+			if (taxExemptTicketCount == tickets.size()) {
+				btnTaxExempt.setSelected(true);
 			}
+			else {
+				btnTaxExempt.setSelected(false);
+			}
+			
+			btnApplyCoupon.setEnabled(totalTicket == 1);
+			
+		} catch (Exception e) {
+			POSMessageDialog.showError(e.getMessage());
 		}
-
-		tfTicketId.setText(idString);
-		tfServerId.setText(String.valueOf(serverId));
-		tfServerName.setText(serverName);
-		tfCreateTime.setText(createTime);
-		tfGuests.setText(String.valueOf(totalGuests));
-		tfTable.setText(tableNumber);
-		tfTerminal.setText(terminal);
-		tfSubtotal.setText(currencySymbol + NumberUtil.formatNumber(subtotal));
-		tfTotalDiscount.setText(currencySymbol + NumberUtil.formatNumber(discount));
-		tfTax.setText(currencySymbol + NumberUtil.formatNumber(tax));
-		tfTotal.setText(currencySymbol + NumberUtil.formatNumber(total));
-
-		lblBalanceDue.setText(NumberUtil.formatNumber(total));
-
-		if (taxExemptTicketCount == tickets.size()) {
-			btnTaxExempt.setSelected(true);
-		}
-		else {
-			btnTaxExempt.setSelected(false);
-		}
-		btnApplyCoupon.setEnabled(false);
 	}
 
 	// Variables declaration - do not modify//GEN-BEGIN:variables

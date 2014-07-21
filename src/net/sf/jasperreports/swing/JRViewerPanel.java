@@ -998,4 +998,8 @@ public class JRViewerPanel extends JPanel implements JRHyperlinkListener, JRView
 				break;
 		}
 	}
+	
+	public JPanel getReportPanel() {
+		return pnlInScroll;
+	}
 }

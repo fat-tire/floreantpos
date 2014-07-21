@@ -364,7 +364,7 @@ public class Ticket extends BaseTicket {
 		double serviceCharge = 0.0;
 
 		if (serviceChargePercentage > 0.0) {
-			serviceCharge = (getSubtotalAmount() - getDiscountAmount() + getTaxAmount()) * (serviceChargePercentage / 100.0);
+			serviceCharge = (getSubtotalAmount() - getDiscountAmount()) * (serviceChargePercentage / 100.0);
 		}
 
 		return NumberUtil.roundToTwoDigit(fixInvalidAmount(serviceCharge));
