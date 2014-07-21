@@ -228,6 +228,15 @@ public class SwitchboardView extends JPanel implements ActionListener {
 		});
 		btnAssignDriver.setText("<html>ASSIGN<br/>DRIVER</html>");
 		activityPanel.add(btnAssignDriver);
+		
+		btnFinishOrder = new PosButton();
+		btnFinishOrder.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				doFinishOrder();
+			}
+		});
+		btnFinishOrder.setText("FINISH ORDER");
+		activityPanel.add(btnFinishOrder);
 
 		bottomPanel.add(bottomLeftPanel, java.awt.BorderLayout.CENTER);
 
@@ -259,6 +268,21 @@ public class SwitchboardView extends JPanel implements ActionListener {
 
 		add(bottomPanel, java.awt.BorderLayout.CENTER);
 	}// </editor-fold>//GEN-END:initComponents
+
+	protected void doFinishOrder() {
+		List<Ticket> selectedTickets = openTicketList.getSelectedTickets();
+		if (selectedTickets.size() == 0 || selectedTickets.size() > 1) {
+			POSMessageDialog.showMessage("Please select a ticket.");
+			return;
+		}
+		
+		Ticket ticket = selectedTickets.get(0);
+
+		if (!Ticket.HOME_DELIVERY.equals(ticket.getTicketType())) {
+			POSMessageDialog.showError("Driver can be assigned only for Home Delivery");
+			return;
+		}
+	}
 
 	protected void doAssignDriver() {
 		try {
@@ -698,6 +722,7 @@ public class SwitchboardView extends JPanel implements ActionListener {
 	private PosButton btnHomeDelivery;
 	private PosButton btnDriveThrough;
 	private PosButton btnAssignDriver;
+	private PosButton btnFinishOrder;
 
 	// End of variables declaration//GEN-END:variables
 
