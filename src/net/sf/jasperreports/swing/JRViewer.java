@@ -39,6 +39,7 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 
 import net.sf.jasperreports.engine.JRConstants;
 import net.sf.jasperreports.engine.JRException;
@@ -262,5 +263,9 @@ public class JRViewer extends javax.swing.JPanel implements JRViewerListener {
 	
 	public void setStatusbarVisible(boolean visible) {
 		lblStatus.setVisible(visible);
+	}
+	
+	public JPanel getReportPanel() {
+		return pnlMain.getReportPanel();
 	}
 }
