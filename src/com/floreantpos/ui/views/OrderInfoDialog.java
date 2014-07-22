@@ -14,6 +14,7 @@ public class OrderInfoDialog extends POSDialog {
 	
 	public OrderInfoDialog(OrderInfoView view) {
 		this.view = view;
+		setTitle("ORDER PREVIEW");
 		
 		createUI();
 	}
