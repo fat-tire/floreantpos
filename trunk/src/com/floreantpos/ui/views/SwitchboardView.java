@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
+import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -436,6 +437,7 @@ public class SwitchboardView extends JPanel implements ActionListener {
 			OrderInfoView view = new OrderInfoView(tickets);
 			OrderInfoDialog dialog = new OrderInfoDialog(view);
 			dialog.setSize(400, 600);
+			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setLocationRelativeTo(Application.getPosWindow());
 			dialog.setVisible(true);
 			

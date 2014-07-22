@@ -87,7 +87,7 @@ public class JReportPrintService {
 	public static void printTicket(Ticket ticket) {
 		try {
 
-			TicketPrintProperties printProperties = new TicketPrintProperties("*** PACKAGER RECEIPT ***", true, true, true);
+			TicketPrintProperties printProperties = new TicketPrintProperties("*** PAYMENT RECEIPT ***", true, true, true);
 			printProperties.setKitchenPrint(false);
 			printProperties.setPrintCookingInstructions(false);
 
@@ -266,7 +266,7 @@ public class JReportPrintService {
 					SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd yyyy, h:m a");
 					
 					beginRow(ticketHeaderBuilder);
-					addColumn(ticketHeaderBuilder, dateFormat.format(ticket.getDeliveryDate()));
+					addColumn(ticketHeaderBuilder, "Finish date: " + dateFormat.format(ticket.getDeliveryDate()));
 					endRow(ticketHeaderBuilder);
 				}
 			}
