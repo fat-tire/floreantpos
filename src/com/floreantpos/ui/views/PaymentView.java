@@ -9,7 +9,7 @@ import com.floreantpos.POSConstants;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.PosTransaction;
 import com.floreantpos.model.Ticket;
-import com.floreantpos.print.PosPrintService;
+import com.floreantpos.report.JReportPrintService;
 import com.floreantpos.services.PosTransactionService;
 import com.floreantpos.swing.MessageDialog;
 import com.floreantpos.ui.dialog.POSMessageDialog;
@@ -135,13 +135,20 @@ public abstract class PaymentView extends JPanel {
 				return;
 			}
 			
-			PosTransactionService service = PosTransactionService.getInstance();
-			service.settleTickets(ticketsToSettle, tenderedAmount, gratuityAmount, posTransaction, cardType, cardAuthorizationCode);
-			
 			try {
 				for (Ticket ticket : ticketsToSettle) {
-					PosPrintService.printTicket(ticket, tenderedAmount);
+					ticket.setTenderedAmount(tenderedAmount);
+					
+					if(ticket.needsKitchenPrint()) {
+						JReportPrintService.printTicketToKitchen(ticket);
+					}
+					
+					JReportPrintService.printTicket(ticket);
 				}
+				
+				PosTransactionService service = PosTransactionService.getInstance();
+				service.settleTickets(ticketsToSettle, tenderedAmount, gratuityAmount, posTransaction, cardType, cardAuthorizationCode);
+				
 			}catch(Exception ee) {
 				POSMessageDialog.showError(Application.getPosWindow(), com.floreantpos.POSConstants.PRINT_ERROR, ee);
 			}
