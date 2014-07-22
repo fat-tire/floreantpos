@@ -26,7 +26,6 @@ import org.hibernate.StaleObjectStateException;
 
 import com.floreantpos.POSConstants;
 import com.floreantpos.PosException;
-import com.floreantpos.config.PrintConfig;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.CookingInstruction;
 import com.floreantpos.model.ITicketItem;
@@ -361,22 +360,25 @@ public class TicketView extends JPanel {
 
 	private void doFinishOrder(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_doFinishOrder
 		try {
+			
 			updateModel();
 
 			OrderController.saveOrder(ticket);
 
-			if (PrintConfig.isPrintReceiptOnOrderFinish()) {
-				PosPrintService.printTicket(ticket, 0);
-			}
+//			if (PrintConfig.isPrintReceiptOnOrderFinish()) {
+//				PosPrintService.printTicket(ticket, 0);
+//			}
 
-			if (PrintConfig.isPrintToKitchenOnOrderFinish()) {
+//			if (PrintConfig.isPrintToKitchenOnOrderFinish()) {
 				if (ticket.needsKitchenPrint()) {
 					PosPrintService.printToKitchen(ticket);
 				}
 				ticket.clearDeletedItems();
 				OrderController.saveOrder(ticket);
-			}
+//			}
+				
 			RootView.getInstance().showView(SwitchboardView.VIEW_NAME);
+			
 		} catch (StaleObjectStateException e) {
 			POSMessageDialog.showError("It seems the ticket has been modified by some other person or terminal. Save failed.");
 			return;
