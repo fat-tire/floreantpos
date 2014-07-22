@@ -6,11 +6,10 @@
 
 package com.floreantpos.ui.views.order;
 
-import java.awt.Dimension;
+import java.util.ArrayList;
+import java.util.List;
 
-import javax.swing.JOptionPane;
-
-import net.sf.jasperreports.engine.JasperPrint;
+import javax.swing.JDialog;
 
 import com.floreantpos.POSConstants;
 import com.floreantpos.main.Application;
@@ -19,13 +18,12 @@ import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.print.PosPrintService;
-import com.floreantpos.report.JReportPrintService;
-import com.floreantpos.report.TicketPrintProperties;
 import com.floreantpos.swing.TransparentPanel;
 import com.floreantpos.ui.dialog.MiscTicketItemDialog;
 import com.floreantpos.ui.dialog.NumberSelectionDialog2;
 import com.floreantpos.ui.dialog.POSMessageDialog;
-import com.floreantpos.ui.views.TicketReceiptView;
+import com.floreantpos.ui.views.OrderInfoDialog;
+import com.floreantpos.ui.views.OrderInfoView;
 
 /**
  *
@@ -50,7 +48,6 @@ public class OthersView extends TransparentPanel {
 		transparentPanel2 = new com.floreantpos.swing.TransparentPanel();
 		btnOrderInfo = new com.floreantpos.swing.PosButton();
 		btnMisc = new com.floreantpos.swing.PosButton();
-		btnPrintReceipt = new com.floreantpos.swing.PosButton();
 		transparentPanel1 = new com.floreantpos.swing.TransparentPanel();
 		btnCustomerNumber = new com.floreantpos.swing.PosButton();
 		btnTableNumber = new com.floreantpos.swing.PosButton();
@@ -77,14 +74,6 @@ public class OthersView extends TransparentPanel {
 			}
 		});
 		transparentPanel2.add(btnMisc);
-
-		btnPrintReceipt.setText(com.floreantpos.POSConstants.PRINT_RECEIPT);
-		btnPrintReceipt.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				btnPrintReceiptActionPerformed(evt);
-			}
-		});
-		transparentPanel2.add(btnPrintReceipt);
 
 		add(transparentPanel2);
 
@@ -119,42 +108,19 @@ public class OthersView extends TransparentPanel {
 		}
 	}//GEN-LAST:event_doInsertMisc
 
-	private void btnPrintReceiptActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrintReceiptActionPerformed
-		try {
-			Ticket ticket = getCurrentTicket();
-
-			if (Ticket.DINE_IN.equals(ticket.getTicketType()) && ticket.getGratuity() == null) {
-				double dueAmount = ticket.getDueAmount();
-				double tips = dueAmount * 0.15;
-
-				Gratuity gratuity = new Gratuity();
-				gratuity.setAmount(tips);
-				ticket.setGratuity(gratuity);
-			}
-
-			PosPrintService.printTicket(ticket, 0);
-		} catch (Exception e) {
-			POSMessageDialog.showError(Application.getPosWindow(), e.getMessage(), e);
-		}
-	}//GEN-LAST:event_btnPrintReceiptActionPerformed
-
 	private void doViewOrderInfo() {//GEN-FIRST:event_btnOrderInfoActionPerformed
 		try {
 			Ticket ticket = getCurrentTicket();
-			TicketPrintProperties printProperties = new TicketPrintProperties("*** ORDER INFO ***", false, false, false);
-			JasperPrint jasperPrint = JReportPrintService.createPrint(ticket, printProperties);
-
-			TicketReceiptView receiptView = new TicketReceiptView(jasperPrint);
-			receiptView.setPreferredSize(new Dimension(400, 500));
 			
-			JOptionPane.showMessageDialog(Application.getPosWindow(), receiptView, "Order Info", JOptionPane.INFORMATION_MESSAGE);
-
-//			POSDialog dialog = new POSDialog();
-//			dialog.add(receiptView);
-//			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-//			dialog.setSize(400, 500);
-//			dialog.setLocationRelativeTo(Application.getPosWindow());
-//			dialog.setVisible(true);
+			List<Ticket> tickets = new ArrayList<Ticket>();
+			tickets.add(ticket);
+			
+			OrderInfoView view = new OrderInfoView(tickets);
+			OrderInfoDialog dialog = new OrderInfoDialog(view);
+			dialog.setSize(400, 600);
+			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+			dialog.setLocationRelativeTo(Application.getPosWindow());
+			dialog.setVisible(true);
 
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -237,7 +203,6 @@ public class OthersView extends TransparentPanel {
 	private com.floreantpos.swing.PosButton btnCustomerNumber;
 	private com.floreantpos.swing.PosButton btnMisc;
 	private com.floreantpos.swing.PosButton btnOrderInfo;
-	private com.floreantpos.swing.PosButton btnPrintReceipt;
 	private com.floreantpos.swing.PosButton btnTableNumber;
 	private com.floreantpos.swing.TransparentPanel transparentPanel1;
 	private com.floreantpos.swing.TransparentPanel transparentPanel2;
