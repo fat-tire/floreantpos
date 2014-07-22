@@ -192,6 +192,8 @@ public class JReportPrintService {
 	}
 
 	private static StringBuilder buildTicketHeader(Ticket ticket, TicketPrintProperties printProperties) {
+		SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd yyyy, h:m a");
+		
 		StringBuilder ticketHeaderBuilder = new StringBuilder();
 		ticketHeaderBuilder.append("<html>");
 		
@@ -222,7 +224,7 @@ public class JReportPrintService {
 		endRow(ticketHeaderBuilder);
 
 		beginRow(ticketHeaderBuilder);
-		addColumn(ticketHeaderBuilder, POSConstants.RECEIPT_REPORT_DATE_LABEL + Application.formatDate(new Date()));
+		addColumn(ticketHeaderBuilder, POSConstants.RECEIPT_REPORT_DATE_LABEL + dateFormat.format(new Date()));
 		endRow(ticketHeaderBuilder);
 
 		beginRow(ticketHeaderBuilder);
@@ -263,8 +265,6 @@ public class JReportPrintService {
 				}
 				
 				if(ticket.getDeliveryDate() != null) {
-					SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd yyyy, h:m a");
-					
 					beginRow(ticketHeaderBuilder);
 					addColumn(ticketHeaderBuilder, "Finish date: " + dateFormat.format(ticket.getDeliveryDate()));
 					endRow(ticketHeaderBuilder);
