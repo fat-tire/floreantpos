@@ -11,14 +11,17 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 import net.miginfocom.swing.MigLayout;
+import net.sf.jasperreports.engine.JasperPrint;
 
 import org.apache.commons.logging.LogFactory;
 
@@ -27,17 +30,16 @@ import com.floreantpos.PosException;
 import com.floreantpos.bo.ui.BackOfficeWindow;
 import com.floreantpos.extension.OrderServiceExtension;
 import com.floreantpos.main.Application;
-import com.floreantpos.model.ActionHistory;
 import com.floreantpos.model.AttendenceHistory;
 import com.floreantpos.model.Shift;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.User;
 import com.floreantpos.model.UserPermission;
 import com.floreantpos.model.UserType;
-import com.floreantpos.model.dao.ActionHistoryDAO;
 import com.floreantpos.model.dao.AttendenceHistoryDAO;
 import com.floreantpos.model.dao.TicketDAO;
-import com.floreantpos.print.PosPrintService;
+import com.floreantpos.report.JReportPrintService;
+import com.floreantpos.report.TicketPrintProperties;
 import com.floreantpos.services.TicketService;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.ui.dialog.ManagerDialog;
@@ -78,7 +80,7 @@ public class SwitchboardView extends JPanel implements ActionListener {
 		btnManager.addActionListener(this);
 		btnNewTicket.addActionListener(this);
 		btnPayout.addActionListener(this);
-		btnPrintTicket.addActionListener(this);
+		btnOrderInfo.addActionListener(this);
 		btnReopenTicket.addActionListener(this);
 		btnSettleTicket.addActionListener(this);
 		btnShutdown.addActionListener(this);
@@ -120,7 +122,7 @@ public class SwitchboardView extends JPanel implements ActionListener {
 		btnEditTicket = new com.floreantpos.swing.PosButton();
 		btnVoidTicket = new com.floreantpos.swing.PosButton();
 		btnPayout = new com.floreantpos.swing.PosButton();
-		btnPrintTicket = new com.floreantpos.swing.PosButton();
+		btnOrderInfo = new com.floreantpos.swing.PosButton();
 		javax.swing.JPanel bottomRightPanel = new javax.swing.JPanel();
 		btnShutdown = new com.floreantpos.swing.PosButton();
 		btnLogout = new com.floreantpos.swing.PosButton();
@@ -214,9 +216,8 @@ public class SwitchboardView extends JPanel implements ActionListener {
 		btnPayout.setText(POSConstants.CAPITAL_PAY_OUT);
 		activityPanel.add(btnPayout);
 
-		btnPrintTicket.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/print_32.png")));
-		btnPrintTicket.setText(POSConstants.CAPITAL_PRINT);
-		activityPanel.add(btnPrintTicket);
+		btnOrderInfo.setText(POSConstants.ORDER_INFO);
+		activityPanel.add(btnOrderInfo);
 
 		bottomLeftPanel.add(activityPanel, java.awt.BorderLayout.SOUTH);
 		
@@ -425,25 +426,36 @@ public class SwitchboardView extends JPanel implements ActionListener {
 	}
 
 	private void doPrintTicket() {
-		List<Ticket> selectedTickets = openTicketList.getSelectedTickets();
-		if (selectedTickets.size() == 0 || selectedTickets.size() > 1) {
-			POSMessageDialog.showMessage(POSConstants.SELECT_ONE_TICKET_TO_PRINT);
-			return;
-		}
-
-		Ticket ticket = selectedTickets.get(0);
 		try {
-			ticket = TicketDAO.getInstance().initializeTicket(ticket);
-			ticket.calculateDefaultGratutity();
-
-			PosPrintService.printTicket(ticket, 0);
-
-			// PRINT ACTION
-			String actionMessage = "CHK#" + ":" + ticket.getId();
-			ActionHistoryDAO.getInstance().saveHistory(Application.getCurrentUser(), ActionHistory.PRINT_CHECK, actionMessage);
+			List<Ticket> tickets = openTicketList.getSelectedTickets();
+			if (tickets.size() == 0) {
+				POSMessageDialog.showMessage(POSConstants.SELECT_ONE_TICKET_TO_PRINT);
+				return;
+			}
+			
+			OrderInfoView view = new OrderInfoView(tickets);
+			OrderInfoDialog dialog = new OrderInfoDialog(view);
+			dialog.setSize(400, 600);
+			dialog.setLocationRelativeTo(Application.getPosWindow());
+			dialog.setVisible(true);
+			
 		} catch (Exception e) {
-			POSMessageDialog.showError(this, e.getMessage(), e);
+			e.printStackTrace();
 		}
+
+//		Ticket ticket = selectedTickets.get(0);
+//		try {
+//			ticket = TicketDAO.getInstance().initializeTicket(ticket);
+//			ticket.calculateDefaultGratutity();
+//
+//			PosPrintService.printTicket(ticket, 0);
+//
+//			// PRINT ACTION
+//			String actionMessage = "CHK#" + ":" + ticket.getId();
+//			ActionHistoryDAO.getInstance().saveHistory(Application.getCurrentUser(), ActionHistory.PRINT_CHECK, actionMessage);
+//		} catch (Exception e) {
+//			POSMessageDialog.showError(this, e.getMessage(), e);
+//		}
 	}
 
 	private void doVoidTicket() {
@@ -709,7 +721,7 @@ public class SwitchboardView extends JPanel implements ActionListener {
 	private com.floreantpos.swing.PosButton btnManager;
 	private com.floreantpos.swing.PosButton btnNewTicket;
 	private com.floreantpos.swing.PosButton btnPayout;
-	private com.floreantpos.swing.PosButton btnPrintTicket;
+	private com.floreantpos.swing.PosButton btnOrderInfo;
 	private com.floreantpos.swing.PosButton btnReopenTicket;
 	private com.floreantpos.swing.PosButton btnSettleTicket;
 	private com.floreantpos.swing.PosButton btnShutdown;
@@ -768,7 +780,7 @@ public class SwitchboardView extends JPanel implements ActionListener {
 		if (source == btnPayout) {
 			doPayout();
 		}
-		if (source == btnPrintTicket) {
+		if (source == btnOrderInfo) {
 			Worker.post(new Job() {
 
 				@Override
