@@ -21,6 +21,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.floreantpos.POSConstants;
+import com.floreantpos.config.PrintConfig;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.Customer;
 import com.floreantpos.model.Restaurant;
@@ -64,7 +65,7 @@ public class JReportPrintService {
 
 			ticketReportStream = JReportPrintService.class.getResourceAsStream(reportFile);
 			JasperReport ticketReport = (JasperReport) JRLoader.loadObject(ticketReportStream);
-
+			
 			JasperPrint jasperPrint = JasperFillManager.fillReport(ticketReport, properties, dataSource);
 
 			return jasperPrint;
@@ -92,6 +93,7 @@ public class JReportPrintService {
 			printProperties.setPrintCookingInstructions(false);
 
 			JasperPrint jasperPrint = createPrint(ticket, printProperties);
+			jasperPrint.setProperty("printerName", PrintConfig.getReceiptPrinterName());
 			JasperPrintManager.printReport(jasperPrint, false);
 
 		} catch (Exception e) {
@@ -179,10 +181,12 @@ public class JReportPrintService {
 			map.put("tipsText", POSConstants.RECEIPT_REPORT_TIPS_LABEL + currencySymbol);
 			map.put("netAmountText", POSConstants.RECEIPT_REPORT_NETAMOUNT_LABEL + currencySymbol);
 			map.put("paidAmountText", POSConstants.RECEIPT_REPORT_PAIDAMOUNT_LABEL + currencySymbol);
+			map.put("dueAmountText", POSConstants.RECEIPT_REPORT_DUEAMOUNT_LABEL + currencySymbol);
 			map.put("changeAmountText", POSConstants.RECEIPT_REPORT_CHANGEAMOUNT_LABEL + currencySymbol);
 
 			map.put("netAmount", NumberUtil.formatNumber(netAmount));
 			map.put("paidAmount", NumberUtil.formatNumber(ticket.getTenderedAmount()));
+			map.put("dueAmount", NumberUtil.formatNumber(ticket.getDueAmount()));
 			map.put("changedAmount", NumberUtil.formatNumber(changedAmount));
 			map.put("grandSubtotal", NumberUtil.formatNumber(ticket.getSubtotalAmount()));
 			map.put("footerMessage", restaurant.getTicketFooterMessage());
@@ -192,7 +196,7 @@ public class JReportPrintService {
 	}
 
 	private static StringBuilder buildTicketHeader(Ticket ticket, TicketPrintProperties printProperties) {
-		SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd yyyy, h:m a");
+		SimpleDateFormat dateFormat = new SimpleDateFormat("M/d/yy, h:m a");
 		
 		StringBuilder ticketHeaderBuilder = new StringBuilder();
 		ticketHeaderBuilder.append("<html>");
@@ -266,7 +270,7 @@ public class JReportPrintService {
 				
 				if(ticket.getDeliveryDate() != null) {
 					beginRow(ticketHeaderBuilder);
-					addColumn(ticketHeaderBuilder, "Finish date: " + dateFormat.format(ticket.getDeliveryDate()));
+					addColumn(ticketHeaderBuilder, "Delivery: " + dateFormat.format(ticket.getDeliveryDate()));
 					endRow(ticketHeaderBuilder);
 				}
 			}
@@ -282,7 +286,8 @@ public class JReportPrintService {
 			TicketPrintProperties printProperties = new TicketPrintProperties("*** KITCHEN ***", false, false, false);
 			printProperties.setKitchenPrint(true);
 			JasperPrint jasperPrint = createPrint(ticket, printProperties);
-			jasperPrint.setName("Kitchen print");
+			jasperPrint.setName("KitchenReceipt");
+			jasperPrint.setProperty("printerName", PrintConfig.getKitchenPrinterName());
 			JasperPrintManager.printReport(jasperPrint, false);
 
 			//no exception, so print to kitchen successful.

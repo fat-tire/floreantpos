@@ -47,8 +47,6 @@ import net.sf.jasperreports.engine.util.JRGraphEnvInitializer;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.floreantpos.config.PrintConfig;
-
 /**
  * @author Teodor Danciu (teodord@users.sourceforge.net)
  * @version $Id: JRPrinterAWT.java 3124 2009-10-12 20:49:43Z lucianc $
@@ -56,8 +54,7 @@ import com.floreantpos.config.PrintConfig;
 public class JRPrinterAWT implements Printable {
 	private static final Log log = LogFactory.getLog(JRPrinterAWT.class);
 	
-	public static boolean printToKitchen;
-
+	private static String printerName;
 	/**
 	 *
 	 */
@@ -99,6 +96,7 @@ public class JRPrinterAWT implements Printable {
 			throw new JRException("Invalid page index range : " + firstPageIndex + " - " + lastPageIndex + " of " + jasperPrint.getPages().size());
 		}
 
+		printerName = jasperPrint.getProperty("printerName");
 		pageOffset = firstPageIndex;
 
 		PrinterJob printJob = PrinterJob.getPrinterJob();
@@ -109,7 +107,7 @@ public class JRPrinterAWT implements Printable {
 		PageFormat pageFormat = printJob.defaultPage();
 		Paper paper = pageFormat.getPaper();
 
-		printJob.setJobName("JasperReports - " + jasperPrint.getName());
+		printJob.setJobName(jasperPrint.getName());
 
 		switch (jasperPrint.getOrientation()) {
 			case JRReport.ORIENTATION_LANDSCAPE: {
@@ -203,11 +201,6 @@ public class JRPrinterAWT implements Printable {
 			PrintService[] printServices = PrintServiceLookup.lookupPrintServices(null, null);
 			PrintService printService = PrintServiceLookup.lookupDefaultPrintService();
 			
-			String printerName = PrintConfig.getReceiptPrinterName();
-			if(printToKitchen) {
-				printerName = PrintConfig.getKitchenPrinterName();
-			}
-			
 			for (int i = 0; i < printServices.length; i++) {
 				PrintService service = printServices[i];
 				if(service.getName().equals(printerName)) {
@@ -217,7 +210,6 @@ public class JRPrinterAWT implements Printable {
 			}
 			
 			job.setPrintService(printService);
-			printToKitchen = false;
 		} catch (PrinterException e) {
 		}
 	}
