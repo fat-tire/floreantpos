@@ -4,7 +4,6 @@ public class ShiftException extends RuntimeException {
 
 	public ShiftException() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public ShiftException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
