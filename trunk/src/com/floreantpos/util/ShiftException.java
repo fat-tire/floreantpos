@@ -6,10 +6,6 @@ public class ShiftException extends RuntimeException {
 		super();
 	}
 
-	public ShiftException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
-		super(message, cause, enableSuppression, writableStackTrace);
-	}
-
 	public ShiftException(String message, Throwable cause) {
 		super(message, cause);
 	}
