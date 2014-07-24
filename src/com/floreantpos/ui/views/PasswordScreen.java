@@ -22,6 +22,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
+import org.apache.commons.logging.LogFactory;
+
 import net.miginfocom.swing.MigLayout;
 
 import com.floreantpos.POSConstants;
@@ -37,6 +39,7 @@ import com.floreantpos.swing.MessageDialog;
 import com.floreantpos.swing.POSPasswordField;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.ui.dialog.POSMessageDialog;
+import com.floreantpos.util.ShiftException;
 import com.floreantpos.util.ShiftUtil;
 import com.floreantpos.util.UserNotFoundException;
 
@@ -157,7 +160,7 @@ public class PasswordScreen extends JPanel {
 		posButton1.setPreferredSize(new java.awt.Dimension(90, 50));
 		buttonPanel.add(posButton1, "cell 1 3,grow");
 		add(buttonPanel, "cell 0 1,grow");
-		
+
 		psbtnLogin = new PosButton();
 		psbtnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -174,7 +177,7 @@ public class PasswordScreen extends JPanel {
 		jLabel4.setText(com.floreantpos.POSConstants.USER_TYPE + ":");
 		add(jPanel2, "cell 0 0,growx,aligny top");
 		jPanel2.setLayout(new MigLayout("", "[343px]", "[][22px][31px][30px]"));
-		
+
 		lblTerminalId = new JLabel("TERMINAL ID:");
 		lblTerminalId.setHorizontalAlignment(SwingConstants.CENTER);
 		jPanel2.add(lblTerminalId, "cell 0 0,growx");
@@ -191,21 +194,21 @@ public class PasswordScreen extends JPanel {
 		tfPassword.setFont(new java.awt.Font("Courier", 1, 18));
 		tfPassword.setHorizontalAlignment(SwingConstants.CENTER);
 		tfPassword.addKeyListener(new KeyListener() {
-			
+
 			@Override
 			public void keyTyped(KeyEvent e) {
 			}
-			
+
 			@Override
 			public void keyReleased(KeyEvent e) {
-				if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 					doLogin();
 				}
 				else {
 					checkLogin(String.valueOf(e.getKeyChar()));
 				}
 			}
-			
+
 			@Override
 			public void keyPressed(KeyEvent e) {
 			}
@@ -234,7 +237,7 @@ public class PasswordScreen extends JPanel {
 		jPanel3.add(btnShutdown, "cell 0 1,grow");
 
 		add(jPanel3, "cell 0 3,growx,aligny bottom");
-		
+
 		lblTerminalId.setText("");
 	}// </editor-fold>//GEN-END:initComponents
 
@@ -248,14 +251,14 @@ public class PasswordScreen extends JPanel {
 
 			UserDAO dao = new UserDAO();
 			User user = dao.findUserBySecretKey(secretKey);
-			
-			if(user == null) {
+
+			if (user == null) {
 				throw new UserNotFoundException();
 			}
 
 			Shift currentShift = ShiftUtil.getCurrentShift();
 			if (currentShift == null) {
-				throw new RuntimeException(POSConstants.NO_SHIFT_CONFIGURED);
+				throw new ShiftException(POSConstants.NO_SHIFT_CONFIGURED);
 			}
 
 			adjustUserShift(user, currentShift);
@@ -267,8 +270,13 @@ public class PasswordScreen extends JPanel {
 			application.getRootView().showView(SwitchboardView.VIEW_NAME);
 
 		} catch (UserNotFoundException e) {
+			LogFactory.getLog(Application.class).error(e);
 			msgLabel.setText("Login failed, please try again...");
+		} catch (ShiftException e) {
+			LogFactory.getLog(Application.class).error(e);
+			MessageDialog.showError(e.getMessage());
 		} catch (Exception e1) {
+			LogFactory.getLog(Application.class).error(e1);
 			String message = e1.getMessage();
 
 			if (message != null && message.contains("Cannot open connection")) {
@@ -313,7 +321,7 @@ public class PasswordScreen extends JPanel {
 		String newPass = new String(password);
 		return newPass;
 	}
-	
+
 	public void setTerminalId(int terminalId) {
 		lblTerminalId.setText("TERMINAL ID: " + terminalId);
 	}

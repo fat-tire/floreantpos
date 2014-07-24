@@ -1,6 +1,8 @@
 package com.floreantpos.main;
 
 import java.io.File;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -31,6 +33,7 @@ import com.floreantpos.model.User;
 import com.floreantpos.model.dao.PrinterConfigurationDAO;
 import com.floreantpos.model.dao.RestaurantDAO;
 import com.floreantpos.model.dao.TerminalDAO;
+import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.views.LoginScreen;
 import com.floreantpos.ui.views.order.RootView;
 import com.floreantpos.util.DatabaseConnectionException;
@@ -41,9 +44,11 @@ import com.jgoodies.looks.plastic.theme.ExperienceBlue;
 
 public class Application {
 	private static Log logger = LogFactory.getLog(Application.class);
+	
+	private boolean developmentMode = false;
 
 	private Timer autoDrawerPullTimer;
-	
+
 	private PluginManager pluginManager;
 
 	private Terminal terminal;
@@ -59,7 +64,7 @@ public class Application {
 
 	private static SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM, yyyy"); //$NON-NLS-1$
 	private static ImageIcon applicationIcon;
-	
+
 	private boolean systemInitialized;
 	private TicketActiveDateSetterTask ticketActiveDateSetterTask;
 
@@ -76,10 +81,12 @@ public class Application {
 
 	public void start() {
 		pluginManager = PluginManagerFactory.createPluginManager();
-		//pluginManager.addPluginsFrom(ClassURI.CLASSPATH);
 		pluginManager.addPluginsFrom(new File("plugins/").toURI());
-		//pluginManager.addPluginsFrom(new File("/home/mshahriar/project/oro/target/classes").toURI());
 		
+		if(developmentMode) {
+			pluginManager.addPluginsFrom(new File("/home/mshahriar/project/oro/target/classes").toURI());
+		}
+
 		setApplicationLook();
 
 		rootView = RootView.getInstance();
@@ -87,7 +94,7 @@ public class Application {
 		posWindow.setContentPane(rootView);
 		posWindow.setupSizeAndLocation();
 		posWindow.setVisible(true);
-		
+
 		initializeSystem();
 	}
 
@@ -95,44 +102,47 @@ public class Application {
 		try {
 			PlasticXPLookAndFeel.setPlasticTheme(new ExperienceBlue());
 			UIManager.setLookAndFeel(new PlasticXPLookAndFeel());
+			//UIManager.setLookAndFeel(new NimbusLookAndFeel());
 			UIManager.put("ComboBox.is3DEnabled", Boolean.FALSE); //$NON-NLS-1$
 		} catch (Exception ignored) {
 		}
 	}
-	
+
 	public void initializeSystem() {
-		if(isSystemInitialized()) {
+		if (isSystemInitialized()) {
 			return;
 		}
-		
+
 		try {
-			
+
 			posWindow.setGlassPaneVisible(true);
 			posWindow.setGlassPaneMessage(com.floreantpos.POSConstants.LOADING);
-			
-			if(!DatabaseUtil.checkConnection(DatabaseUtil.initialize())) {
-				int option = JOptionPane.showConfirmDialog(getPosWindow(), Messages.getString("Application.0"), Messages.getString(POSConstants.POS_MESSAGE_ERROR), JOptionPane.YES_NO_OPTION); //$NON-NLS-1$ //$NON-NLS-2$
-				if(option == JOptionPane.YES_OPTION) {
-					DatabaseConfigurationDialog.show(Application.getPosWindow());
-				}
-				
-				return;
-			}
+
+			DatabaseUtil.checkConnection(DatabaseUtil.initialize());
 
 			initTerminal();
 			initPrintConfig();
 			refreshRestaurant();
 			setTicketActiveSetterScheduler();
 			setSystemInitialized(true);
-			
-		} 
-		catch (DatabaseConnectionException e) {
-			int option = JOptionPane.showConfirmDialog(getPosWindow(), Messages.getString("Application.0"), Messages.getString(POSConstants.POS_MESSAGE_ERROR), JOptionPane.YES_NO_OPTION); //$NON-NLS-1$ //$NON-NLS-2$
-			if(option == JOptionPane.YES_OPTION) {
-				DatabaseConfigurationDialog.show(Application.getPosWindow());
+
+		} catch (DatabaseConnectionException e) {
+			StringWriter writer = new StringWriter();
+			e.printStackTrace(new PrintWriter(writer));
+
+			if (writer.toString().contains("Another instance of Derby may have already booted")) {
+				POSMessageDialog.showError("Another FloreantPOS instance may be already running.\n" + "Multiple instances cannot be run in Derby single mode");
+
+				return;
 			}
-		}
-		catch (Exception e) {
+			else {
+				int option = JOptionPane.showConfirmDialog(getPosWindow(),
+						Messages.getString("Application.0"), Messages.getString(POSConstants.POS_MESSAGE_ERROR), JOptionPane.YES_NO_OPTION); //$NON-NLS-1$ //$NON-NLS-2$
+				if (option == JOptionPane.YES_OPTION) {
+					DatabaseConfigurationDialog.show(Application.getPosWindow());
+				}
+			}
+		} catch (Exception e) {
 			logger.error(e);
 		} finally {
 			getPosWindow().setGlassPaneVisible(false);
@@ -149,70 +159,70 @@ public class Application {
 		Date time = calendar.getTime();
 
 		cancelTicketActiveTaskScheduler();
-		
+
 		ticketActiveDateSetterTask = new TicketActiveDateSetterTask();
 		ticketActiveDateSetterTask.run();
 
 		java.util.Timer activeDateScheduler = new java.util.Timer();
-		activeDateScheduler.scheduleAtFixedRate(ticketActiveDateSetterTask, time, 86400*1000);
+		activeDateScheduler.scheduleAtFixedRate(ticketActiveDateSetterTask, time, 86400 * 1000);
 	}
 
 	public void cancelTicketActiveTaskScheduler() {
-		if(this.ticketActiveDateSetterTask != null) {
+		if (this.ticketActiveDateSetterTask != null) {
 			this.ticketActiveDateSetterTask.cancel();
 		}
 	}
 
 	private void initPrintConfig() {
 		printConfiguration = PrinterConfigurationDAO.getInstance().get(PrinterConfiguration.ID);
-		if(printConfiguration == null) {
+		if (printConfiguration == null) {
 			printConfiguration = new PrinterConfiguration();
 		}
 	}
 
 	private void initTerminal() {
 		int terminalId = AppConfig.getTerminalId();
-		
+
 		if (terminalId == -1) {
-//			NumberSelectionDialog2 dialog = new NumberSelectionDialog2();
-//			dialog.setTitle(com.floreantpos.POSConstants.ENTER_ID_FOR_TERMINAL);
-//			dialog.pack();
-//			dialog.setLocationRelativeTo(getPosWindow());
-//			dialog.setVisible(true);
-//			
-//			terminalId = (int) dialog.getValue();
-			
+			//			NumberSelectionDialog2 dialog = new NumberSelectionDialog2();
+			//			dialog.setTitle(com.floreantpos.POSConstants.ENTER_ID_FOR_TERMINAL);
+			//			dialog.pack();
+			//			dialog.setLocationRelativeTo(getPosWindow());
+			//			dialog.setVisible(true);
+			//			
+			//			terminalId = (int) dialog.getValue();
+
 			Random random = new Random();
 			terminalId = random.nextInt(10000) + 1;
 		}
 
 		Terminal terminal = TerminalDAO.getInstance().get(new Integer(terminalId));
 		if (terminal == null) {
-			
+
 			terminal = new Terminal();
 			terminal.setId(terminalId);
 			terminal.setOpeningBalance(new Double(500));
 			terminal.setCurrentBalance(new Double(500));
 			terminal.setName(String.valueOf(terminalId)); //$NON-NLS-1$
-			
+
 			TerminalDAO.getInstance().saveOrUpdate(terminal);
 		}
-		
+
 		AppConfig.setTerminalId(terminalId);
 		RootView.getInstance().getLoginScreen().setTerminalId(terminalId);
-		
+
 		this.terminal = terminal;
 	}
 
 	public void refreshRestaurant() {
 		RestaurantDAO restaurantDAO = RestaurantDAO.getInstance();
 		this.restaurant = restaurantDAO.get(Integer.valueOf(1));
-		if(restaurant.isAutoDrawerPullEnable() && autoDrawerPullTimer == null) {
+		if (restaurant.isAutoDrawerPullEnable() && autoDrawerPullTimer == null) {
 			autoDrawerPullTimer = new Timer(60 * 1000, new AutoDrawerPullAction());
 			autoDrawerPullTimer.start();
 		}
 		else {
-			if(autoDrawerPullTimer != null) {
+			if (autoDrawerPullTimer != null) {
 				autoDrawerPullTimer.stop();
 				autoDrawerPullTimer = null;
 			}
@@ -221,7 +231,7 @@ public class Application {
 
 	public static String getCurrencyName() {
 		Application application = getInstance();
-		if(application.restaurant == null) {
+		if (application.restaurant == null) {
 			application.refreshRestaurant();
 		}
 		return application.restaurant.getCurrencyName();
@@ -229,7 +239,7 @@ public class Application {
 
 	public static String getCurrencySymbol() {
 		Application application = getInstance();
-		if(application.restaurant == null) {
+		if (application.restaurant == null) {
 			application.refreshRestaurant();
 		}
 		return application.restaurant.getCurrencySymbol();
@@ -244,13 +254,14 @@ public class Application {
 	}
 
 	public void shutdownPOS() {
-		int option = JOptionPane.showOptionDialog(getPosWindow(), com.floreantpos.POSConstants.SURE_SHUTDOWN_, com.floreantpos.POSConstants.CONFIRM_SHUTDOWN, JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
-		if(option != JOptionPane.YES_OPTION) {
+		int option = JOptionPane.showOptionDialog(getPosWindow(), com.floreantpos.POSConstants.SURE_SHUTDOWN_, com.floreantpos.POSConstants.CONFIRM_SHUTDOWN,
+				JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+		if (option != JOptionPane.YES_OPTION) {
 			return;
 		}
 
 		posWindow.saveSizeAndLocation();
-		
+
 		System.exit(0);
 	}
 
@@ -285,9 +296,9 @@ public class Application {
 		return getInstance().posWindow;
 	}
 
-//	public BackOfficeWindow getBackOfficeWindow() {
-//		return backOfficeWindow;
-//	}
+	//	public BackOfficeWindow getBackOfficeWindow() {
+	//		return backOfficeWindow;
+	//	}
 
 	public void setBackOfficeWindow(BackOfficeWindow backOfficeWindow) {
 		this.backOfficeWindow = backOfficeWindow;
@@ -300,9 +311,9 @@ public class Application {
 		return terminal;
 	}
 
-//	public static PrinterConfiguration getPrinterConfiguration() {
-//		return getInstance().printConfiguration;
-//	}
+	//	public static PrinterConfiguration getPrinterConfiguration() {
+	//		return getInstance().printConfiguration;
+	//	}
 
 	public static String getTitle() {
 		return "Floreant POS - Version " + VERSION; //$NON-NLS-1$
@@ -329,8 +340,8 @@ public class Application {
 	}
 
 	public void setAutoDrawerPullEnable(boolean enable) {
-		if(enable) {
-			if(autoDrawerPullTimer != null) {
+		if (enable) {
+			if (autoDrawerPullTimer != null) {
 				return;
 			}
 			else {
@@ -355,14 +366,22 @@ public class Application {
 	public Restaurant getRestaurant() {
 		return restaurant;
 	}
-	
+
 	public static PluginManager getPluginManager() {
 		return getInstance().pluginManager;
 	}
-	
+
 	public static File getWorkingDir() {
 		File file = new File(Application.class.getProtectionDomain().getCodeSource().getLocation().getPath());
-		
+
 		return file.getParentFile();
+	}
+
+	public boolean isDevelopmentMode() {
+		return developmentMode;
+	}
+
+	public void setDevelopmentMode(boolean developmentMode) {
+		this.developmentMode = developmentMode;
 	}
 }

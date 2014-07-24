@@ -33,7 +33,7 @@ import com.floreantpos.model.dao._RootDAO;
 public class DatabaseUtil {
 	private static Log logger = LogFactory.getLog(DatabaseUtil.class);
 
-	public static boolean checkConnection(String connectionString, String hibernateDialect, String hibernateConnectionDriverClass, String user, String password) {
+	public static void checkConnection(String connectionString, String hibernateDialect, String hibernateConnectionDriverClass, String user, String password) throws DatabaseConnectionException {
 		Configuration configuration = _RootDAO.getNewConfiguration(null);
 
 		configuration = configuration.setProperty("hibernate.dialect", hibernateDialect);
@@ -43,25 +43,22 @@ public class DatabaseUtil {
 		configuration = configuration.setProperty("hibernate.connection.username", user);
 		configuration = configuration.setProperty("hibernate.connection.password", password);
 
-		return checkConnection(configuration);
+		checkConnection(configuration);
 	}
 
-	public static boolean checkConnection() {
+	public static void checkConnection() throws DatabaseConnectionException {
 		Configuration configuration = _RootDAO.getNewConfiguration(null);
-		return checkConnection(configuration);
+		checkConnection(configuration);
 	}
 
-	public static boolean checkConnection(Configuration configuration) {
+	public static void checkConnection(Configuration configuration) throws DatabaseConnectionException {
 		try {
 			SessionFactory sessionFactory = configuration.buildSessionFactory();
 			Session session = sessionFactory.openSession();
 			session.beginTransaction();
 			session.close();
-
-			return true;
 		} catch (Exception e) {
-			logger.error(e);
-			return false;
+			throw new DatabaseConnectionException(e);
 		}
 	}
 
