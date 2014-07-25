@@ -243,7 +243,8 @@ public class PasswordScreen extends JPanel {
 
 	public void doLogin() {
 		try {
-
+			tfPassword.setEnabled(false);
+			
 			Application application = Application.getInstance();
 			application.initializeSystem();
 
@@ -286,7 +287,9 @@ public class PasswordScreen extends JPanel {
 			else {
 				MessageDialog.showError("We are sorry, and unexpected error has occuered");
 			}
-
+		} finally {
+			tfPassword.setEnabled(true);
+			tfPassword.requestFocus();
 		}
 	}
 
@@ -344,9 +347,7 @@ public class PasswordScreen extends JPanel {
 			attendenceHistory.setTerminal(application.getTerminal());
 			attendenceHistory.setShift(user.getCurrentShift());
 		}
-		//TODO: Fix stale object exception error
 		user.doClockOut(attendenceHistory, currentShift, currentTime);
-
 		user.doClockIn(application.getTerminal(), currentShift, currentTime);
 	}
 
