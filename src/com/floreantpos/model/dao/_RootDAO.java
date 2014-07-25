@@ -1,5 +1,6 @@
 package com.floreantpos.model.dao;
 
+import org.hibernate.Session;
 import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.cfg.Configuration;
 
@@ -119,5 +120,11 @@ public abstract class _RootDAO extends com.floreantpos.model.dao._BaseRootDAO {
 		com.floreantpos.model.dao._RootDAO.setSessionFactory(configuration.buildSessionFactory());
 		
 		return configuration;
+	}
+	
+	public void refresh(Object obj) {
+		Session session = createNewSession();
+		super.refresh(obj, session);
+		session.close();
 	}
 }
