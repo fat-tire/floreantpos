@@ -55,6 +55,7 @@ public class TicketForSplitView extends com.floreantpos.swing.TransparentPanel i
 		column.setMinWidth(60);
 
 		ticket = new Ticket();
+		ticket.setPriceIncludesTax(Application.getInstance().isPriceIncludesTax());
 		ticket.setTerminal(Application.getInstance().getTerminal());
 		ticket.setOwner(Application.getCurrentUser());
 		ticket.setShift(Application.getInstance().getCurrentShift());

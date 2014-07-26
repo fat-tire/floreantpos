@@ -40,6 +40,8 @@ public class Ticket extends BaseTicket {
 	private DecimalFormat numberFormat = new DecimalFormat("0.00");
 
 	private List deletedItems;
+	
+	private boolean priceIncludesTax;
 
 	@Override
 	public void setCreateDate(Date createDate) {
@@ -118,6 +120,8 @@ public class Ticket extends BaseTicket {
 	}
 
 	public void calculatePrice() {
+		priceIncludesTax = Application.getInstance().isPriceIncludesTax();
+		
 		List<TicketItem> ticketItems = getTicketItems();
 		if (ticketItems == null) {
 			return;
@@ -137,7 +141,14 @@ public class Ticket extends BaseTicket {
 		setTaxAmount(taxAmount);
 
 		double serviceChargeAmount = calculateServiceCharge();
-		double totalAmount = subtotalAmount - discountAmount + taxAmount + serviceChargeAmount;
+		double totalAmount = 0;
+		
+		if(priceIncludesTax) {
+			totalAmount = subtotalAmount - discountAmount + serviceChargeAmount;
+		}
+		else {
+			totalAmount = subtotalAmount - discountAmount + taxAmount + serviceChargeAmount;
+		}
 
 		totalAmount = fixInvalidAmount(totalAmount);
 
@@ -388,5 +399,13 @@ public class Ticket extends BaseTicket {
 
 	public static boolean isDriveThrough(String type) {
 		return DRIVE_THROUGH.equals(type);
+	}
+
+	public boolean isPriceIncludesTax() {
+		return priceIncludesTax;
+	}
+
+	public void setPriceIncludesTax(boolean priceIncludesTax) {
+		this.priceIncludesTax = priceIncludesTax;
 	}
 }

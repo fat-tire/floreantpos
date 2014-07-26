@@ -44,6 +44,7 @@ import com.floreantpos.model.dao.MenuItemDAO;
 import com.floreantpos.model.dao.TaxDAO;
 import com.floreantpos.swing.ComboBoxModel;
 import com.floreantpos.swing.DoubleDocument;
+import com.floreantpos.swing.DoubleTextField;
 import com.floreantpos.swing.FixedLengthDocument;
 import com.floreantpos.swing.MessageDialog;
 import com.floreantpos.ui.BeanEditor;
@@ -197,7 +198,7 @@ public class MenuItemForm extends BeanEditor implements ActionListener {
         btnNewGroup = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         jLabel3.setHorizontalAlignment(SwingConstants.TRAILING);
-        tfPrice = new javax.swing.JFormattedTextField();
+        tfPrice = new DoubleTextField();
         jLabel6 = new javax.swing.JLabel();
         jLabel6.setHorizontalAlignment(SwingConstants.TRAILING);
         cbTax = new javax.swing.JComboBox();
@@ -405,7 +406,7 @@ public class MenuItemForm extends BeanEditor implements ActionListener {
     private javax.swing.JTable tableTicketItemModifierGroups;
     private javax.swing.JTextField tfDiscountRate;
     private com.floreantpos.swing.FixedLengthTextField tfName;
-    private javax.swing.JFormattedTextField tfPrice;
+    private DoubleTextField tfPrice;
     // End of variables declaration//GEN-END:variables
     private List<MenuItemModifierGroup> menuItemModifierGroups;
 	private MenuItemMGListModel menuItemMGListModel;
@@ -490,7 +491,7 @@ public class MenuItemForm extends BeanEditor implements ActionListener {
 		}
 		
 		tfName.setText(menuItem.getName());
-		tfPrice.setValue(Double.valueOf(menuItem.getPrice()));
+		tfPrice.setText(String.valueOf(menuItem.getPrice()));
 		tfDiscountRate.setText(String.valueOf(menuItem.getDiscountRate()));
 		chkVisible.setSelected(menuItem.isVisible());
 		cbShowTextWithImage.setSelected(menuItem.isShowImageOnly());
@@ -520,7 +521,7 @@ public class MenuItemForm extends BeanEditor implements ActionListener {
 		MenuItem menuItem = (MenuItem) getBean();
 		menuItem.setName(itemName);
 		menuItem.setParent((MenuGroup) cbGroup.getSelectedItem());
-		menuItem.setPrice(Double.valueOf(tfPrice.getValue().toString()).doubleValue());
+		menuItem.setPrice(Double.valueOf(tfPrice.getText()));
 		menuItem.setTax((Tax) cbTax.getSelectedItem());
 		menuItem.setVisible(chkVisible.isSelected());
 		menuItem.setShowImageOnly(cbShowTextWithImage.isSelected());

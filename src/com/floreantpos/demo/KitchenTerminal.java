@@ -7,6 +7,7 @@ import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
+import com.floreantpos.main.Application;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketItem;
 import com.jgoodies.looks.plastic.PlasticXPLookAndFeel;
@@ -64,9 +65,10 @@ public class KitchenTerminal extends JPanel {
 
 	private Ticket createTicket(String[] itemNames, int[] itemCounts, double[] unitPrices) {
 		Ticket ticket1 = new Ticket();
-		
+		ticket1.setPriceIncludesTax(Application.getInstance().isPriceIncludesTax());
 		for (int i = 0; i < itemNames.length; i++) {
 			TicketItem ticketItem = new TicketItem(1);
+			ticketItem.setPriceIncludesTax(ticket1.isPriceIncludesTax());
 			ticketItem.setName(itemNames[i]);
 			ticketItem.setItemCount(itemCounts[i]);
 			ticketItem.setUnitPrice(unitPrices[i]);

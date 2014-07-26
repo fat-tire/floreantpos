@@ -4,13 +4,13 @@ import java.awt.Color;
 import java.awt.Rectangle;
 
 import javax.swing.DefaultListSelectionModel;
-import javax.swing.JFrame;
-import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 
+import com.floreantpos.main.Application;
+import com.floreantpos.model.Restaurant;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.TicketItemModifier;
@@ -26,11 +26,8 @@ public class TicketViewerTable extends JTable {
 	}
 
 	public TicketViewerTable(Ticket ticket) {
-		model = new TicketViewerTableModel();
-		model.setTable(this);
-
-		setModel(model);
-
+		setTicket(ticket);
+		
 		selectionModel = new DefaultListSelectionModel();
 		selectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
@@ -41,8 +38,6 @@ public class TicketViewerTable extends JTable {
 		setAutoscrolls(true);
 		setShowGrid(true);
 		setBorder(null);
-
-		setTicket(ticket);
 		
 		setRowHeight(20);
 		resizeTableColumns();
@@ -197,7 +192,15 @@ public class TicketViewerTable extends JTable {
 	}
 
 	public void setTicket(Ticket ticket) {
-		model.setTicket(ticket);
+		model = new TicketViewerTableModel(ticket);
+		model.setTable(this);
+		
+		Restaurant restaurant = Application.getInstance().getRestaurant();
+		if(restaurant != null) {
+			model.setPriceIncludesTax(restaurant.isItemPriceIncludesTax());
+		}
+		
+		setModel(model);
 	}
 
 	public Ticket getTicket() {
@@ -275,24 +278,5 @@ public class TicketViewerTable extends JTable {
 		selectionModel.addSelectionInterval(index, index);
 		Rectangle cellRect = getCellRect(index, 0, false);
 		scrollRectToVisible(cellRect);
-	}
-	
-	public static void main(String[] args) {
-		Ticket ticket = new Ticket(5);
-		TicketItem ticketItem = new TicketItem(5);
-		ticketItem.setName("Coke Coke Coke Coke Coke");
-		ticketItem.setUnitPrice(999.99);
-		ticketItem.setItemCount(999);
-		ticketItem.setTotalAmount(99999.99);
-		ticketItem.setSubtotalAmount(99999.99);
-		ticket.addToticketItems(ticketItem);
-		
-		
-		TicketViewerTable table = new TicketViewerTable(ticket);
-		JFrame frame = new JFrame();
-		frame.add(new JScrollPane(table));
-		frame.setSize(400, 400);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setVisible(true);
 	}
 }
