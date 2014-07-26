@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import com.floreantpos.main.Application;
 import com.floreantpos.model.base.BaseTicketItem;
 import com.floreantpos.util.NumberUtil;
 
@@ -35,6 +36,8 @@ public class TicketItem extends BaseTicketItem implements ITicketItem {
 	}
 
 	/*[CONSTRUCTOR MARKER END]*/
+	
+	private boolean priceIncludesTax;
 
 	private int tableRowNum;
 
@@ -119,6 +122,8 @@ public class TicketItem extends BaseTicketItem implements ITicketItem {
 	}
 
 	public void calculatePrice() {
+		priceIncludesTax = Application.getInstance().isPriceIncludesTax();
+		
 		List<TicketItemModifierGroup> ticketItemModifierGroups = getTicketItemModifierGroups();
 		if (ticketItemModifierGroups != null) {
 			for (TicketItemModifierGroup ticketItemModifierGroup : ticketItemModifierGroups) {
@@ -174,20 +179,6 @@ public class TicketItem extends BaseTicketItem implements ITicketItem {
 		return discount;
 	}
 	
-//	public double calculateTax() {
-//		double tax = NumberUtil.roundToTwoDigit(calculateTax(true));
-//		setTaxAmount(tax);
-//		
-//		return tax;
-//	}
-//	
-//	public double calculateTaxWithoutModifiers() {
-//		double tax = NumberUtil.roundToTwoDigit(calculateTax(false));
-//		setTaxAmountWithoutModifiers(tax);
-//		
-//		return tax;
-//	}
-
 	private double calculateTax(boolean includeModifierTax) {
 		double subtotal = 0;
 		
@@ -201,7 +192,12 @@ public class TicketItem extends BaseTicketItem implements ITicketItem {
 		double tax = 0;
 
 		if (taxRate > 0) {
-			tax = subtotal * (taxRate / 100.0);
+			if (priceIncludesTax) {
+				tax = subtotal - (subtotal / (1 + (taxRate / 100.0)));
+			}
+			else {
+				tax = subtotal * (taxRate / 100.0);
+			}
 		}
 		
 		if (includeModifierTax) {
@@ -215,67 +211,28 @@ public class TicketItem extends BaseTicketItem implements ITicketItem {
 
 		return tax;
 	}
-	
-//	public double calculateTotal() {
-//		double total = calculateTotal(true);
-//		total = NumberUtil.roundToTwoDigit(total);
-//		
-//		setTotalAmount(total);
-//		
-//		return total;
-//	}
-//	
-//	public double calculateTotalWithoutModifiers() {
-//		double total = calculateTotal(false);
-//		total = NumberUtil.roundToTwoDigit(total);
-//		
-//		setTotalAmountWithoutModifiers(total);
-//		
-//		return total;
-//	}
 
 	private double calculateTotal(boolean includeModifiers) {
 		double total = 0;
 		
 		if(includeModifiers) {
-			total = getSubtotalAmount() - getDiscountAmount() + getTaxAmount();
+			if(priceIncludesTax) {
+				total = getSubtotalAmount() - getDiscountAmount();
+			}
+			else {
+				total = getSubtotalAmount() - getDiscountAmount() + getTaxAmount();
+			}
 		}
 		else {
-			total = getSubtotalAmountWithoutModifiers() - getDiscountAmount() + getTaxAmountWithoutModifiers();
+			if(priceIncludesTax) {
+				total = getSubtotalAmountWithoutModifiers() - getDiscountAmount();
+			}
+			else {
+				total = getSubtotalAmountWithoutModifiers() - getDiscountAmount() + getTaxAmountWithoutModifiers();
+			}
 		}
 		
 		return total;
-		
-		
-		
-		
-//		double totalPrice = NumberUtil.roundToTwoDigit(getUnitPrice() * getItemCount());
-//
-//		totalPrice -= calculateDiscount();
-//
-//		double taxRate = getTaxRate();
-//
-//		double tax = 0;
-//		if (taxRate > 0) {
-//			tax = totalPrice * taxRate / 100.0;
-//		}
-//		totalPrice += tax;
-//		totalPrice = NumberUtil.roundToTwoDigit(totalPrice);
-//		setTotalAmountWithoutModifiers(totalPrice);
-//
-//		if (includeModifiers) {
-//			List<TicketItemModifierGroup> ticketItemModifierGroups = getTicketItemModifierGroups();
-//			if (ticketItemModifierGroups != null) {
-//				for (TicketItemModifierGroup ticketItemModifierGroup : ticketItemModifierGroups) {
-//					totalPrice += ticketItemModifierGroup.getTotal();
-//				}
-//			}
-//			
-//			totalPrice = NumberUtil.roundToTwoDigit(totalPrice);
-//			setTotalAmount(totalPrice);
-//		}
-//
-//		return totalPrice;
 	}
 
 	@Override
@@ -301,5 +258,13 @@ public class TicketItem extends BaseTicketItem implements ITicketItem {
 	@Override
 	public Double getTotalAmountWithoutModifiersDisplay() {
 		return getTotalAmountWithoutModifiers();
+	}
+
+	public boolean isPriceIncludesTax() {
+		return priceIncludesTax;
+	}
+
+	public void setPriceIncludesTax(boolean priceIncludesTax) {
+		this.priceIncludesTax = priceIncludesTax;
 	}
 }

@@ -573,6 +573,7 @@ public class SwitchboardView extends JPanel implements ActionListener {
 		Application application = Application.getInstance();
 
 		Ticket ticket = new Ticket();
+		ticket.setPriceIncludesTax(application.isPriceIncludesTax());
 		ticket.setTableNumber(-1);
 		ticket.setTicketType(titcketType);
 		ticket.setTerminal(application.getTerminal());

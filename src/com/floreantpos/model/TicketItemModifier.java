@@ -2,6 +2,7 @@ package com.floreantpos.model;
 
 import java.util.List;
 
+import com.floreantpos.main.Application;
 import com.floreantpos.model.base.BaseTicketItemModifier;
 import com.floreantpos.util.NumberUtil;
 
@@ -26,6 +27,8 @@ public class TicketItemModifier extends BaseTicketItemModifier implements ITicke
 	}
 
 	/*[CONSTRUCTOR MARKER END]*/
+	
+	boolean priceIncludesTax;
 
 	private int	tableRowNum;
 
@@ -63,6 +66,8 @@ public class TicketItemModifier extends BaseTicketItemModifier implements ITicke
 	}
 
 	public void calculatePrice() {
+		priceIncludesTax = Application.getInstance().isPriceIncludesTax();
+		
 		calculateSubTotal();
 		calculateTax();
 		setTotalAmount(NumberUtil.roundToTwoDigit(calculateTotal()));
@@ -70,10 +75,24 @@ public class TicketItemModifier extends BaseTicketItemModifier implements ITicke
 
 	private void calculateTax() {
 		double tax = getSubTotalAmount() * (getTaxRate() / 100);
+		double subtotal = getSubTotalAmount();
+		double taxRate = getTaxRate();
+		
+		if(priceIncludesTax) {
+			tax = getSubTotalAmount() * (getTaxRate() / 100);
+		}
+		else {
+			tax = subtotal * (taxRate / 100);
+		}
+		
 		setTaxAmount(NumberUtil.roundToTwoDigit(tax));
 	}
 
 	private double calculateTotal() {
+		if(priceIncludesTax) {
+			return getSubTotalAmount();
+		}
+		
 		return getSubTotalAmount() + getTaxAmount();
 	}
 
@@ -182,5 +201,13 @@ public class TicketItemModifier extends BaseTicketItemModifier implements ITicke
 		}
 
 		return getTotalAmount();
+	}
+
+	public boolean isPriceIncludesTax() {
+		return priceIncludesTax;
+	}
+
+	public void setPriceIncludesTax(boolean priceIncludesTax) {
+		this.priceIncludesTax = priceIncludesTax;
 	}
 }

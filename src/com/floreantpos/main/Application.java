@@ -38,6 +38,7 @@ import com.floreantpos.ui.views.LoginScreen;
 import com.floreantpos.ui.views.order.RootView;
 import com.floreantpos.util.DatabaseConnectionException;
 import com.floreantpos.util.DatabaseUtil;
+import com.floreantpos.util.POSUtil;
 import com.floreantpos.util.TicketActiveDateSetterTask;
 import com.jgoodies.looks.plastic.PlasticXPLookAndFeel;
 import com.jgoodies.looks.plastic.theme.ExperienceBlue;
@@ -383,5 +384,14 @@ public class Application {
 
 	public void setDevelopmentMode(boolean developmentMode) {
 		this.developmentMode = developmentMode;
+	}
+	
+	public boolean isPriceIncludesTax() {
+		Restaurant restaurant = getRestaurant();
+		if(restaurant == null) {
+			return false;
+		}
+		
+		return POSUtil.getBoolean(restaurant.isItemPriceIncludesTax());
 	}
 }

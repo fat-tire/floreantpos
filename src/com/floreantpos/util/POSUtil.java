@@ -15,4 +15,12 @@ public class POSUtil {
 	public static String escapePropertyKey(String propertyKey) {
 		return propertyKey.replaceAll("\\s+", "_");
 	}
+	
+	public static boolean getBoolean(Boolean b) {
+		if(b == null) {
+			return false;
+		}
+		
+		return b;
+	}
 }
