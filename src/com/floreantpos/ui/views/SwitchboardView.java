@@ -434,6 +434,11 @@ public class SwitchboardView extends JPanel implements ActionListener {
 				return;
 			}
 			
+			for(int i = 0; i < tickets.size(); i++) {
+				Ticket ticket = tickets.get(i);
+				tickets.set(i, TicketDAO.getInstance().initializeTicket(ticket));
+			}
+			
 			OrderInfoView view = new OrderInfoView(tickets);
 			OrderInfoDialog dialog = new OrderInfoDialog(view);
 			dialog.setSize(400, 600);

@@ -64,7 +64,7 @@ public class TicketView extends JPanel {
 		btnAddCookingInstruction.setEnabled(false);
 		btnIncreaseAmount.setEnabled(false);
 		btnDecreaseAmount.setEnabled(false);
-		
+
 		ticketViewerTable.setRowHeight(35);
 		ticketViewerTable.getRenderer().setInTicketScreen(true);
 		ticketViewerTable.addMouseListener(new MouseAdapter() {
@@ -79,17 +79,16 @@ public class TicketView extends JPanel {
 		ticketViewerTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
-				
-				
+
 				Object selected = ticketViewerTable.getSelected();
-				if(!(selected instanceof ITicketItem)) {
+				if (!(selected instanceof ITicketItem)) {
 					return;
 				}
-				
+
 				ITicketItem item = (ITicketItem) selected;
-				
+
 				Boolean printedToKitchen = item.isPrintedToKitchen();
-				
+
 				btnAddCookingInstruction.setEnabled(item.canAddCookingInstruction());
 				btnIncreaseAmount.setEnabled(!printedToKitchen);
 				btnDecreaseAmount.setEnabled(!printedToKitchen);
@@ -347,7 +346,7 @@ public class TicketView extends JPanel {
 			if (dialog.isCanceled()) {
 				return;
 			}
-			
+
 			List<TicketItemCookingInstruction> instructions = cookingInstructionSelectionView.getTicketItemCookingInstructions();
 			ticketItem.addCookingInstructions(instructions);
 
@@ -360,25 +359,19 @@ public class TicketView extends JPanel {
 
 	private void doFinishOrder(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_doFinishOrder
 		try {
-			
+
 			updateModel();
 
 			OrderController.saveOrder(ticket);
 
-//			if (PrintConfig.isPrintReceiptOnOrderFinish()) {
-//				PosPrintService.printTicket(ticket, 0);
-//			}
+			if (ticket.needsKitchenPrint()) {
+				PosPrintService.printToKitchen(ticket);
+			}
+			ticket.clearDeletedItems();
+			OrderController.saveOrder(ticket);
 
-//			if (PrintConfig.isPrintToKitchenOnOrderFinish()) {
-				if (ticket.needsKitchenPrint()) {
-					PosPrintService.printToKitchen(ticket);
-				}
-				ticket.clearDeletedItems();
-				OrderController.saveOrder(ticket);
-//			}
-				
 			RootView.getInstance().showView(SwitchboardView.VIEW_NAME);
-			
+
 		} catch (StaleObjectStateException e) {
 			POSMessageDialog.showError("It seems the ticket has been modified by some other person or terminal. Save failed.");
 			return;

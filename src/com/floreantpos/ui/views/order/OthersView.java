@@ -13,11 +13,9 @@ import javax.swing.JDialog;
 
 import com.floreantpos.POSConstants;
 import com.floreantpos.main.Application;
-import com.floreantpos.model.Gratuity;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.dao.TicketDAO;
-import com.floreantpos.print.PosPrintService;
 import com.floreantpos.swing.TransparentPanel;
 import com.floreantpos.ui.dialog.MiscTicketItemDialog;
 import com.floreantpos.ui.dialog.NumberSelectionDialog2;

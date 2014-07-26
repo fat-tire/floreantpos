@@ -12,7 +12,6 @@ import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperPrintManager;
 
 import com.floreantpos.model.Ticket;
-import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.report.JReportPrintService;
 import com.floreantpos.report.TicketPrintProperties;
 
@@ -34,9 +33,6 @@ public class OrderInfoView extends JPanel {
 		for (int i = 0; i < tickets.size(); i++) {
 			Ticket ticket = (Ticket) tickets.get(i);
 			
-			ticket = TicketDAO.getInstance().initializeTicket(ticket);
-			tickets.set(i, ticket);
-
 			TicketPrintProperties printProperties = new TicketPrintProperties("*** ORDER " + ticket.getId() + " ***", false, true, true);
 			JasperPrint jasperPrint = JReportPrintService.createPrint(ticket, printProperties);
 
