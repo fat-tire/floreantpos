@@ -22,12 +22,16 @@ public class TicketViewerTableModel extends AbstractTableModel {
 	protected Ticket ticket;
 	protected final HashMap<String, ITicketItem> tableRows = new LinkedHashMap<String, ITicketItem>();
 
-	protected String[] columnNames = { "Item", "U/Price", "Unit", "Tax", "Value" };
+	private boolean priceIncludesTax = false;
+	
+	protected String[] excludingTaxColumnNames = { "Item", "U/Price", "Unit", "Tax", "Price" };
+	protected String[] includingTaxColumnNames = { "Item", "U/Price", "Unit", "Price" };
 
 	private boolean forReciptPrint;
 	private boolean printCookingInstructions;
 
 	public TicketViewerTableModel() {
+		this(null);
 	}
 
 	public TicketViewerTableModel(Ticket ticket) {
@@ -49,12 +53,20 @@ public class TicketViewerTableModel extends AbstractTableModel {
 	}
 
 	public int getColumnCount() {
-		return columnNames.length;
+		if(priceIncludesTax) {
+			return includingTaxColumnNames.length;
+		}
+		
+		return excludingTaxColumnNames.length;
 	}
 
 	@Override
 	public String getColumnName(int column) {
-		return columnNames[column];
+		if(priceIncludesTax) {
+			return includingTaxColumnNames[column];
+		}
+		
+		return excludingTaxColumnNames[column];
 	}
 
 	public Object getValueAt(int rowIndex, int columnIndex) {
@@ -75,6 +87,10 @@ public class TicketViewerTableModel extends AbstractTableModel {
 				return ticketItem.getItemCountDisplay();
 
 			case 3:
+				if(priceIncludesTax) {
+					return ticketItem.getTotalAmountWithoutModifiersDisplay();
+				}
+				
 				return ticketItem.getTaxAmountWithoutModifiersDisplay();
 
 			case 4:
@@ -293,5 +309,13 @@ public class TicketViewerTableModel extends AbstractTableModel {
 
 	public void setPrintCookingInstructions(boolean printCookingInstructions) {
 		this.printCookingInstructions = printCookingInstructions;
+	}
+
+	public boolean isPriceIncludesTax() {
+		return priceIncludesTax;
+	}
+
+	public void setPriceIncludesTax(boolean priceIncludesTax) {
+		this.priceIncludesTax = priceIncludesTax;
 	}
 }

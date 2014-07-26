@@ -11,7 +11,10 @@ import com.floreantpos.model.Restaurant;
 import com.floreantpos.model.dao.RestaurantDAO;
 import com.floreantpos.swing.POSTextField;
 import com.floreantpos.ui.dialog.POSMessageDialog;
+import com.floreantpos.util.POSUtil;
+
 import javax.swing.JSeparator;
+import javax.swing.JCheckBox;
 
 public class RestaurantConfigurationView extends ConfigurationView {
 	private RestaurantDAO dao;
@@ -28,9 +31,10 @@ public class RestaurantConfigurationView extends ConfigurationView {
 	private POSTextField tfServiceCharge;
 	private POSTextField tfDefaultGratuity;
 	private POSTextField tfTicketFooter;
+	private JCheckBox cbPriceIncludingTax;
 	
 	public RestaurantConfigurationView() {
-		setLayout(new MigLayout("", "[grow][grow][][grow]", "[grow][][][][][][][][][][][][]"));
+		setLayout(new MigLayout("", "[grow][grow][][grow]", "[grow][][][][][][][][][][][][][][][]"));
 		
 		JLabel lblNewLabel = new JLabel("Restaurant name" + ":");
 		add(lblNewLabel, "cell 0 1,alignx trailing");
@@ -62,59 +66,66 @@ public class RestaurantConfigurationView extends ConfigurationView {
 		tfTelephone = new POSTextField();
 		add(tfTelephone, "cell 1 5 2 1,growx");
 		
+		cbPriceIncludingTax = new JCheckBox("Price including tax");
+		add(cbPriceIncludingTax, "cell 1 6 2 1");
+		
 		JSeparator separator = new JSeparator();
-		add(separator, "cell 0 6 4 1,growx");
+		add(separator, "cell 0 7 4 1,growx");
 		
 		JLabel lblCapacity = new JLabel("Capacity:");
-		add(lblCapacity, "cell 0 7,alignx trailing");
+		add(lblCapacity, "cell 0 8,alignx trailing");
 		
 		tfCapacity = new POSTextField();
-		add(tfCapacity, "cell 1 7,growx");
+		add(tfCapacity, "cell 1 8,growx");
 		
 		tfTable = new POSTextField();
-		add(tfTable, "cell 3 7,growx");
+		add(tfTable, "cell 3 8,growx");
 		
 		JLabel lblCurrencyName = new JLabel("Currency name" + ":");
-		add(lblCurrencyName, "cell 0 8,alignx trailing");
+		add(lblCurrencyName, "cell 0 9,alignx trailing");
 		
 		JLabel lblTables = new JLabel("Tables" + ":");
-		add(lblTables, "flowx,cell 2 7");
+		add(lblTables, "flowx,cell 2 8");
 		
 		tfCurrencyName = new POSTextField();
-		add(tfCurrencyName, "flowx,cell 1 8");
+		add(tfCurrencyName, "flowx,cell 1 9");
 		
 		JLabel lblCurrencySymbol = new JLabel("Currency symbol" + ":");
-		add(lblCurrencySymbol, "cell 2 8,alignx trailing");
+		add(lblCurrencySymbol, "cell 2 9,alignx trailing");
 		
 		tfCurrencySymbol = new POSTextField();
-		add(tfCurrencySymbol, "cell 3 8,growx");
+		add(tfCurrencySymbol, "cell 3 9,growx");
 		
 		JSeparator separator_1 = new JSeparator();
-		add(separator_1, "cell 0 9 4 1,growx");
+		add(separator_1, "cell 0 10 4 1,growx");
 		
 		JLabel lblServiceCharge = new JLabel("Service Charge" + ":");
-		add(lblServiceCharge, "cell 0 10,alignx trailing");
+		add(lblServiceCharge, "cell 0 11,alignx trailing");
 		
 		tfServiceCharge = new POSTextField();
-		add(tfServiceCharge, "cell 1 10,growx");
+		add(tfServiceCharge, "cell 1 11,growx");
 		
 		JLabel label = new JLabel("%");
-		add(label, "cell 2 10");
+		add(label, "cell 2 11");
 		
 		JLabel lblDefaultGratuity = new JLabel("Default gratuity" + ":");
-		add(lblDefaultGratuity, "flowy,cell 0 11,alignx trailing");
+		add(lblDefaultGratuity, "flowy,cell 0 12,alignx trailing");
 		
 		tfDefaultGratuity = new POSTextField();
-		add(tfDefaultGratuity, "cell 1 11,growx");
+		add(tfDefaultGratuity, "cell 1 12,growx");
 		
 		JLabel label_1 = new JLabel("%");
-		add(label_1, "cell 2 11");
+		add(label_1, "cell 2 12");
 		
 		JLabel lblTicketFooterMessage = new JLabel("Ticket footer message" + ":");
-		add(lblTicketFooterMessage, "cell 0 12,alignx trailing");
+		add(lblTicketFooterMessage, "cell 0 13,alignx trailing");
 		
 		tfTicketFooter = new POSTextField();
-		add(tfTicketFooter, "cell 1 12 3 1,growx");
+		add(tfTicketFooter, "cell 1 13 3 1,growx");
+		
+		JSeparator separator_2 = new JSeparator();
+		
+		add(separator_2, "cell 0 14 4 1,growx");
 	}
 	
 	
@@ -191,6 +202,7 @@ public class RestaurantConfigurationView extends ConfigurationView {
 		restaurant.setServiceChargePercentage(serviceCharge);
 		restaurant.setDefaultGratuityPercentage(gratuityPercentage);
 		restaurant.setTicketFooterMessage(tfTicketFooter.getText());
+		restaurant.setItemPriceIncludesTax(cbPriceIncludingTax.isSelected());
 		
 		dao.saveOrUpdate(restaurant);
 		
@@ -216,6 +228,7 @@ public class RestaurantConfigurationView extends ConfigurationView {
 		tfServiceCharge.setText(String.valueOf(restaurant.getServiceChargePercentage()));
 		tfDefaultGratuity.setText(String.valueOf(restaurant.getDefaultGratuityPercentage()));
 		tfTicketFooter.setText(restaurant.getTicketFooterMessage());
+		cbPriceIncludingTax.setSelected(POSUtil.getBoolean(restaurant.isItemPriceIncludesTax()));
 		
 		setInitialized(true);
 	}

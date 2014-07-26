@@ -17,6 +17,7 @@ public abstract class BaseRestaurant  implements Comparable, Serializable {
 
 	public static String REF = "Restaurant";
 	public static String PROP_AUTO_DRAWER_PULL_ENABLE = "autoDrawerPullEnable";
+	public static String PROP_ITEM_PRICE_INCLUDES_TAX = "itemPriceIncludesTax";
 	public static String PROP_TELEPHONE = "telephone";
 	public static String PROP_DRAWER_PULL_MIN = "drawerPullMin";
 	public static String PROP_TICKET_FOOTER_MESSAGE = "ticketFooterMessage";
@@ -72,6 +73,7 @@ public abstract class BaseRestaurant  implements Comparable, Serializable {
 	private java.lang.Double serviceChargePercentage;
 	private java.lang.Double defaultGratuityPercentage;
 	private java.lang.String ticketFooterMessage;
+	private java.lang.Boolean itemPriceIncludesTax;
 
 
 
@@ -348,6 +350,23 @@ public abstract class BaseRestaurant  implements Comparable, Serializable {
 	 */
 	public void setTicketFooterMessage (java.lang.String ticketFooterMessage) {
 		this.ticketFooterMessage = ticketFooterMessage;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: PRICE_INCLUDES_TAX
+	 */
+	public java.lang.Boolean isItemPriceIncludesTax () {
+					return itemPriceIncludesTax == null ? Boolean.FALSE : itemPriceIncludesTax;
+			}
+
+	/**
+	 * Set the value related to the column: PRICE_INCLUDES_TAX
+	 * @param itemPriceIncludesTax the PRICE_INCLUDES_TAX value
+	 */
+	public void setItemPriceIncludesTax (java.lang.Boolean itemPriceIncludesTax) {
+		this.itemPriceIncludesTax = itemPriceIncludesTax;
 	}
 
 
