@@ -11,6 +11,7 @@ import net.miginfocom.swing.MigLayout;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperPrintManager;
 
+import com.floreantpos.config.PrintConfig;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.report.JReportPrintService;
 import com.floreantpos.report.TicketPrintProperties;
@@ -50,6 +51,7 @@ public class OrderInfoView extends JPanel {
 			
 			TicketPrintProperties printProperties = new TicketPrintProperties("*** ORDER " + ticket.getId() + " ***", false, true, true);
 			JasperPrint jasperPrint = JReportPrintService.createPrint(ticket, printProperties);
+			jasperPrint.setProperty("printerName", PrintConfig.getReceiptPrinterName());
 			JasperPrintManager.printReport(jasperPrint, false);
 		}
 	}
