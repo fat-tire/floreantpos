@@ -33,7 +33,9 @@ import org.apache.commons.io.FileUtils;
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
 
+import com.floreantpos.Messages;
 import com.floreantpos.bo.ui.BackOfficeWindow;
+import com.floreantpos.main.Application;
 import com.floreantpos.model.MenuGroup;
 import com.floreantpos.model.MenuItem;
 import com.floreantpos.model.MenuItemModifierGroup;
@@ -128,20 +130,27 @@ public class MenuItemForm extends BeanEditor implements ActionListener {
 		btnDeleteShift.addActionListener(this);
 		
 		tfDiscountRate.setDocument(new DoubleDocument());
-        jPanel1.setLayout(new MigLayout("", "[104px][100px,grow][][49px]", "[19px][25px][19px][19px][][][25px][15px]"));
-        jPanel1.add(jLabel3, "cell 0 2,alignx left,aligny center");
+        jPanel1.setLayout(new MigLayout("", "[104px][100px,grow][][49px]", "[19px][25px][][19px][19px][][][25px][15px]"));
+        
+        lblBuyPrice = new JLabel(Messages.getString("LABEL_BUY_PRICE"));
+        jPanel1.add(lblBuyPrice, "cell 0 2");
+        
+        tfBuyPrice = new DoubleTextField();
+        tfBuyPrice.setHorizontalAlignment(SwingConstants.TRAILING);
+        jPanel1.add(tfBuyPrice, "cell 1 2,growx");
+        jPanel1.add(jLabel3, "cell 0 3,alignx left,aligny center");
         jPanel1.add(jLabel4, "cell 0 1,alignx left,aligny center");
         
         JLabel lblImage = new JLabel("Image:");
         lblImage.setHorizontalAlignment(SwingConstants.TRAILING);
-        jPanel1.add(lblImage, "cell 0 4,aligny center");
+        jPanel1.add(lblImage, "cell 0 5,aligny center");
         setLayout(new BorderLayout(0, 0));
         
         lblImagePreview = new JLabel("");
         lblImagePreview.setHorizontalAlignment(JLabel.CENTER);
         lblImagePreview.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
         lblImagePreview.setPreferredSize(new Dimension(60, 120));
-        jPanel1.add(lblImagePreview, "cell 1 4,grow");
+        jPanel1.add(lblImagePreview, "cell 1 5,grow");
         
         JButton btnSelectImage = new JButton("...");
         btnSelectImage.addActionListener(new ActionListener() {
@@ -149,7 +158,7 @@ public class MenuItemForm extends BeanEditor implements ActionListener {
         		doSelectImageFile();
         	}
         });
-        jPanel1.add(btnSelectImage, "cell 2 4");
+        jPanel1.add(btnSelectImage, "cell 2 5");
         
         btnClearImage = new JButton("Clear");
         btnClearImage.addActionListener(new ActionListener() {
@@ -157,23 +166,23 @@ public class MenuItemForm extends BeanEditor implements ActionListener {
         		doClearImage();
         	}
         });
-        jPanel1.add(btnClearImage, "cell 3 4");
+        jPanel1.add(btnClearImage, "cell 3 5");
         
         cbShowTextWithImage = new JCheckBox("Show image only");
         cbShowTextWithImage.setActionCommand("Show Text with Image");
-        jPanel1.add(cbShowTextWithImage, "cell 1 5 3 1");
-        jPanel1.add(jLabel6, "cell 0 6,alignx left,aligny center");
-        jPanel1.add(jLabel2, "cell 0 3,alignx left,aligny center");
+        jPanel1.add(cbShowTextWithImage, "cell 1 6 3 1");
+        jPanel1.add(jLabel6, "cell 0 7,alignx left,aligny center");
+        jPanel1.add(jLabel2, "cell 0 4,alignx left,aligny center");
         jPanel1.add(jLabel1, "cell 0 0,alignx left,aligny center");
         jPanel1.add(tfName, "cell 1 0 3 1,growx,aligny top");
         jPanel1.add(cbGroup, "cell 1 1,growx,aligny top");
         jPanel1.add(btnNewGroup, "cell 3 1,growx,aligny top");
-        jPanel1.add(tfDiscountRate, "cell 1 3,growx,aligny top");
-        jPanel1.add(cbTax, "cell 1 6,growx,aligny top");
-        jPanel1.add(tfPrice, "cell 1 2,growx,aligny top");
-        jPanel1.add(chkVisible, "cell 1 7,alignx left,aligny top");
-        jPanel1.add(btnNewTax, "cell 2 6,alignx left,aligny top");
-        jPanel1.add(jLabel5, "cell 2 3");
+        jPanel1.add(tfDiscountRate, "cell 1 4,growx,aligny top");
+        jPanel1.add(cbTax, "cell 1 7,growx,aligny top");
+        jPanel1.add(tfPrice, "cell 1 3,growx,aligny top");
+        jPanel1.add(chkVisible, "cell 1 8,alignx left,aligny top");
+        jPanel1.add(btnNewTax, "cell 2 7,alignx left,aligny top");
+        jPanel1.add(jLabel5, "cell 2 4");
         add(jTabbedPane1);
 		
 		setBean(menuItem);
@@ -206,7 +215,8 @@ public class MenuItemForm extends BeanEditor implements ActionListener {
         jLabel2 = new javax.swing.JLabel();
         jLabel2.setHorizontalAlignment(SwingConstants.TRAILING);
         jLabel5 = new javax.swing.JLabel();
-        tfDiscountRate = new javax.swing.JTextField();
+        tfDiscountRate = new DoubleTextField();
+        tfDiscountRate.setHorizontalAlignment(SwingConstants.TRAILING);
         chkVisible = new javax.swing.JCheckBox();
         jPanel2 = new javax.swing.JPanel();
         btnNewModifierGroup = new javax.swing.JButton();
@@ -220,9 +230,8 @@ public class MenuItemForm extends BeanEditor implements ActionListener {
         jScrollPane2 = new javax.swing.JScrollPane();
         shiftTable = new javax.swing.JTable();
 
-        jLabel1.setText(com.floreantpos.POSConstants.NAME + ":");
-
-        jLabel4.setText(com.floreantpos.POSConstants.GROUP + ":");
+        jLabel1.setText(Messages.getString("LABEL_NAME"));
+        jLabel4.setText(Messages.getString("LABEL_GROUP"));
 
         btnNewGroup.setText("...");
         btnNewGroup.addActionListener(new java.awt.event.ActionListener() {
@@ -231,11 +240,16 @@ public class MenuItemForm extends BeanEditor implements ActionListener {
             }
         });
 
-        jLabel3.setText(com.floreantpos.POSConstants.PRICE + ":");
+        if(Application.getInstance().isPriceIncludesTax()) {
+        	jLabel3.setText(Messages.getString("LABEL_SALES_PRICE_INCLUDING_TAX"));
+        }
+        else {
+        	jLabel3.setText(Messages.getString("LABEL_SALES_PRICE_EXCLUDING_TAX"));
+        }
 
         tfPrice.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
 
-        jLabel6.setText(com.floreantpos.POSConstants.TAX + ":");
+        jLabel6.setText(Messages.getString("LABEL_TAX"));
 
         btnNewTax.setText("...");
         btnNewTax.addActionListener(new java.awt.event.ActionListener() {
@@ -404,7 +418,7 @@ public class MenuItemForm extends BeanEditor implements ActionListener {
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTable shiftTable;
     private javax.swing.JTable tableTicketItemModifierGroups;
-    private javax.swing.JTextField tfDiscountRate;
+    private DoubleTextField tfDiscountRate;
     private com.floreantpos.swing.FixedLengthTextField tfName;
     private DoubleTextField tfPrice;
     // End of variables declaration//GEN-END:variables
@@ -413,6 +427,8 @@ public class MenuItemForm extends BeanEditor implements ActionListener {
 	private JLabel lblImagePreview;
 	private JButton btnClearImage;
 	private JCheckBox cbShowTextWithImage;
+	private JLabel lblBuyPrice;
+	private DoubleTextField tfBuyPrice;
     
     private void addMenuItemModifierGroup() {
     	try {

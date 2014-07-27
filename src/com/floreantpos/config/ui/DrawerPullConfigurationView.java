@@ -70,6 +70,6 @@ public class DrawerPullConfigurationView extends ConfigurationView {
 	
 	@Override
 	public String getName() {
-		return Messages.getString("DrawerPullConfigurationView.DRAWER_PULL_CONFIG"); //$NON-NLS-1$
+		return Messages.getString("CONFIG_TAB_DRAWERPULL"); //$NON-NLS-1$
 	}
 }

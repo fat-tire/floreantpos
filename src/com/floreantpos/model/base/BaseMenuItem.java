@@ -16,6 +16,7 @@ import java.io.Serializable;
 public abstract class BaseMenuItem  implements Comparable, Serializable {
 
 	public static String REF = "MenuItem";
+	public static String PROP_BUY_PRICE = "buyPrice";
 	public static String PROP_NAME = "name";
 	public static String PROP_PARENT = "parent";
 	public static String PROP_SHOW_IMAGE_ONLY = "showImageOnly";
@@ -46,10 +47,12 @@ public abstract class BaseMenuItem  implements Comparable, Serializable {
 	public BaseMenuItem (
 		java.lang.Integer id,
 		java.lang.String name,
+		java.lang.Double buyPrice,
 		java.lang.Double price) {
 
 		this.setId(id);
 		this.setName(name);
+		this.setBuyPrice(buyPrice);
 		this.setPrice(price);
 		initialize();
 	}
@@ -67,6 +70,7 @@ public abstract class BaseMenuItem  implements Comparable, Serializable {
 
 	// fields
 	private java.lang.String name;
+	private java.lang.Double buyPrice;
 	private java.lang.Double price;
 	private java.lang.Double discountRate;
 	private java.lang.Boolean visible;
@@ -135,6 +139,23 @@ public abstract class BaseMenuItem  implements Comparable, Serializable {
 	 */
 	public void setName (java.lang.String name) {
 		this.name = name;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: BUY_PRICE
+	 */
+	public java.lang.Double getBuyPrice () {
+					return buyPrice == null ? Double.valueOf(0) : buyPrice;
+			}
+
+	/**
+	 * Set the value related to the column: BUY_PRICE
+	 * @param buyPrice the BUY_PRICE value
+	 */
+	public void setBuyPrice (java.lang.Double buyPrice) {
+		this.buyPrice = buyPrice;
 	}
 
 

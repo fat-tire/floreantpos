@@ -92,7 +92,7 @@ public class Application {
 
 		rootView = RootView.getInstance();
 
-		posWindow.setContentPane(rootView);
+		posWindow.getContentPane().add(rootView);
 		posWindow.setupSizeAndLocation();
 		posWindow.setVisible(true);
 
@@ -227,6 +227,13 @@ public class Application {
 				autoDrawerPullTimer.stop();
 				autoDrawerPullTimer = null;
 			}
+		}
+		
+		if(restaurant.isItemPriceIncludesTax()) {
+			posWindow.setStatus("Tax is included in item price");
+		}
+		else {
+			posWindow.setStatus("Tax is not included in item price");
 		}
 	}
 

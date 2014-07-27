@@ -108,7 +108,7 @@ public class POSConstants {
 	
 	public static final String NEW_TAX_RATE = Messages.getString("PosMessage.103"); //$NON-NLS-1$
 	public static final String HOURLY_LABOR_REPORT = Messages.getString("PosMessage.104"); //$NON-NLS-1$
-	public static final String PRINT_CONFIGURATION = Messages.getString("PosMessage.105"); //$NON-NLS-1$
+	
 	public static final String GIFT_CERTIFICATE = Messages.getString("PosMessage.106"); //$NON-NLS-1$
 	public static final String AMOUNT_PAID_OUT = Messages.getString("PosMessage.107"); //$NON-NLS-1$
 	public static final String AM = Messages.getString("PosMessage.108"); //$NON-NLS-1$
@@ -270,7 +270,7 @@ public class POSConstants {
 	public static final String COOKING_INSTRUCTIONS = Messages.getString("PosMessage.265"); //$NON-NLS-1$
 	public static final String LAST_NAME = Messages.getString("PosMessage.266"); //$NON-NLS-1$
 	public static final String TYPE_NAME = Messages.getString("PosMessage.267"); //$NON-NLS-1$
-	public static final String RESTAURANT_CONFIGURATION = Messages.getString("PosMessage.268"); //$NON-NLS-1$
+	
 	public static final String CASH_TRANSACTION = Messages.getString("PosMessage.269"); //$NON-NLS-1$
 	public static final String ENTER_VOID_REASON = Messages.getString("PosMessage.270"); //$NON-NLS-1$
 	public static final String DRAWER_PULL_ = Messages.getString("PosMessage.271"); //$NON-NLS-1$
@@ -360,6 +360,10 @@ public class POSConstants {
 	public static final String TICKET_TYPE = Messages.getString("POSConstants.TICKET_TYPE"); //$NON-NLS-1$
 
 	public static final String POS_MESSAGE_ERROR = "PosMessage.Error";
+	
+	public static final String CONFIG_TAB_RESTAURANT = Messages.getString("CONFIG_TAB_RESTAURANT"); //$NON-NLS-1$
+	public static final String CONFIG_TAB_TAX = Messages.getString("CONFIG_TAB_TAX"); //$NON-NLS-1$
+	public static final String CONFIG_TAB_PRINT = Messages.getString("CONFIG_TAB_PRINT"); //$NON-NLS-1$
 	
 	public static final String RECEIPT_REPORT_TERMINAL_LABEL = Messages.getString("RECEIPT_REPORT_TERMINAL_LABEL"); //$NON-NLS-1$
 	public static final String RECEIPT_REPORT_TICKET_NO_LABEL = Messages.getString("RECEIPT_REPORT_TICKET_NO_LABEL"); //$NON-NLS-1$
