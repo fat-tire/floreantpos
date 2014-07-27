@@ -40,7 +40,7 @@ public class PrintConfigurationView extends ConfigurationView {
 
 	@Override
 	public String getName() {
-		return com.floreantpos.POSConstants.PRINT_CONFIGURATION;
+		return com.floreantpos.POSConstants.CONFIG_TAB_PRINT;
 	}
 
 	@Override

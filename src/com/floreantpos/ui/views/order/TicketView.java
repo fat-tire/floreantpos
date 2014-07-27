@@ -106,7 +106,6 @@ public class TicketView extends JPanel {
 	private void initComponents() {
 		jPanel1 = new com.floreantpos.swing.TransparentPanel();
 		jPanel3 = new com.floreantpos.swing.TransparentPanel();
-		jSeparator2 = new javax.swing.JSeparator();
 		bottomPanel = new com.floreantpos.swing.TransparentPanel();
 		bottomPanel.setOpaque(true);
 		btnPay = new com.floreantpos.swing.PosButton();
@@ -126,79 +125,67 @@ public class TicketView extends JPanel {
 		setPreferredSize(new java.awt.Dimension(420, 463));
 		setLayout(new java.awt.BorderLayout(5, 5));
 		jPanel1.setLayout(new MigLayout("insets 0", "[grow,fill]", "[grow][grow][grow]"));
-		jPanel3.setLayout(new MigLayout("alignx trailing,fill", "[][grow][][]", "[][][][][][][][]"));
+		jPanel3.setLayout(new MigLayout("alignx trailing,fill", "[grow][]", "[][][][][][][][]"));
 		jLabel5 = new javax.swing.JLabel();
 
 		jLabel5.setFont(new java.awt.Font("Tahoma", 1, 12));
 		jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
 		jLabel5.setText(com.floreantpos.POSConstants.SUBTOTAL + ":");
-		jPanel3.add(jLabel5, "cell 1 1,growx,aligny center");
+		jPanel3.add(jLabel5, "cell 0 1,growx,aligny center");
 		tfSubtotal = new javax.swing.JTextField();
 		tfSubtotal.setHorizontalAlignment(SwingConstants.TRAILING);
 
 		tfSubtotal.setEditable(false);
 		tfSubtotal.setFont(new java.awt.Font("Tahoma", 1, 12));
-		jPanel3.add(tfSubtotal, "cell 3 1,growx,aligny center");
+		jPanel3.add(tfSubtotal, "cell 1 1,growx,aligny center");
 		jLabel1 = new javax.swing.JLabel();
 
 		jLabel1.setFont(new java.awt.Font("Tahoma", 1, 12));
 		jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
 		jLabel1.setText(com.floreantpos.POSConstants.DISCOUNT + ":");
-		jPanel3.add(jLabel1, "cell 1 2,growx,aligny center");
-
-		label = new JLabel(" (-)");
-		label.setHorizontalAlignment(SwingConstants.TRAILING);
-		jPanel3.add(label, "cell 2 2,alignx trailing");
+		jPanel3.add(jLabel1, "cell 0 2,growx,aligny center");
 		tfDiscount = new javax.swing.JTextField();
 		tfDiscount.setHorizontalAlignment(SwingConstants.TRAILING);
 
 		tfDiscount.setEditable(false);
 		tfDiscount.setFont(new java.awt.Font("Tahoma", 1, 12));
-		jPanel3.add(tfDiscount, "cell 3 2,growx,aligny center");
+		jPanel3.add(tfDiscount, "cell 1 2,growx,aligny center");
 		jLabel2 = new javax.swing.JLabel();
 
 		jLabel2.setFont(new java.awt.Font("Tahoma", 1, 12));
 		jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
 		jLabel2.setText(com.floreantpos.POSConstants.TAX + ":");
-		jPanel3.add(jLabel2, "cell 1 3,growx,aligny center");
-
-		label_1 = new JLabel("(+)");
-		label_1.setHorizontalAlignment(SwingConstants.TRAILING);
-		jPanel3.add(label_1, "cell 2 3,alignx trailing");
+		jPanel3.add(jLabel2, "cell 0 3,growx,aligny center");
 		tfTax = new javax.swing.JTextField();
 		tfTax.setHorizontalAlignment(SwingConstants.TRAILING);
 
 		tfTax.setEditable(false);
 		tfTax.setFont(new java.awt.Font("Tahoma", 1, 12));
-		jPanel3.add(tfTax, "cell 3 3,growx,aligny center");
+		jPanel3.add(tfTax, "cell 1 3,growx,aligny center");
 
 		lblServiceCharge = new JLabel();
 		lblServiceCharge.setText("Service Charge:");
 		lblServiceCharge.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblServiceCharge.setFont(new Font("Dialog", Font.BOLD, 12));
-		jPanel3.add(lblServiceCharge, "cell 1 4,alignx trailing");
-
-		label_2 = new JLabel("(+)");
-		label_2.setHorizontalAlignment(SwingConstants.TRAILING);
-		jPanel3.add(label_2, "cell 2 4,alignx trailing");
+		jPanel3.add(lblServiceCharge, "cell 0 4,alignx trailing");
 
 		tfServiceCharge = new JTextField();
 		tfServiceCharge.setHorizontalAlignment(SwingConstants.TRAILING);
 		tfServiceCharge.setEditable(false);
-		jPanel3.add(tfServiceCharge, "cell 3 4,growx,aligny center");
+		jPanel3.add(tfServiceCharge, "cell 1 4,growx,aligny center");
 		tfServiceCharge.setColumns(10);
 		jLabel6 = new javax.swing.JLabel();
 
 		jLabel6.setFont(new java.awt.Font("Tahoma", 1, 12));
 		jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
 		jLabel6.setText(com.floreantpos.POSConstants.TOTAL + ":");
-		jPanel3.add(jLabel6, "cell 1 5,growx,aligny center");
+		jPanel3.add(jLabel6, "cell 0 5,growx,aligny center");
 		tfTotal = new javax.swing.JTextField();
 		tfTotal.setHorizontalAlignment(SwingConstants.TRAILING);
 
 		tfTotal.setEditable(false);
 		tfTotal.setFont(new java.awt.Font("Tahoma", 1, 12));
-		jPanel3.add(tfTotal, "cell 3 5,growx,aligny center");
+		jPanel3.add(tfTotal, "cell 1 5,growx,aligny center");
 		chkTaxExempt = new javax.swing.JCheckBox();
 
 		chkTaxExempt.setFont(new java.awt.Font("Tahoma", 1, 12));
@@ -206,8 +193,7 @@ public class TicketView extends JPanel {
 		chkTaxExempt.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
 		chkTaxExempt.setFocusable(false);
 		chkTaxExempt.setMargin(new java.awt.Insets(0, 0, 0, 0));
-		jPanel3.add(chkTaxExempt, "cell 3 6,growx,aligny center");
-		jPanel3.add(jSeparator2, "cell 0 7 4 1,growx,aligny center");
+		jPanel3.add(chkTaxExempt, "cell 1 6,growx,aligny center");
 
 		jPanel1.add(jPanel3, "cell 0 0,growx,aligny top");
 
@@ -317,6 +303,7 @@ public class TicketView extends JPanel {
 		jPanel2.add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
 		add(jPanel2, java.awt.BorderLayout.CENTER);
+		
 	}// </editor-fold>//GEN-END:initComponents
 
 	protected void doAddCookingInstruction() {
@@ -468,16 +455,12 @@ public class TicketView extends JPanel {
 	private com.floreantpos.swing.TransparentPanel jPanel3;
 	private com.floreantpos.swing.TransparentPanel jPanel5;
 	private javax.swing.JScrollPane jScrollPane1;
-	private javax.swing.JSeparator jSeparator2;
 	private javax.swing.JTextField tfDiscount;
 	private javax.swing.JTextField tfSubtotal;
 	private javax.swing.JTextField tfTax;
 	private javax.swing.JTextField tfTotal;
 	private com.floreantpos.ui.ticket.TicketViewerTable ticketViewerTable;
 	private JTextField tfServiceCharge;
-	private JLabel label;
-	private JLabel label_1;
-	private JLabel label_2;
 	private JLabel lblServiceCharge;
 	private PosButton btnAddCookingInstruction;
 
@@ -525,13 +508,19 @@ public class TicketView extends JPanel {
 
 			return;
 		}
+		
 
 		ticket.calculatePrice();
 
 		tfSubtotal.setText(NumberUtil.formatNumber(ticket.getSubtotalAmount()));
 		tfDiscount.setText(NumberUtil.formatNumber(ticket.getDiscountAmount()));
 
-		tfTax.setText(NumberUtil.formatNumber(ticket.getTaxAmount()));
+		if(Application.getInstance().isPriceIncludesTax()) {
+			tfTax.setText("INCLUDED");
+		}
+		else {
+			tfTax.setText(NumberUtil.formatNumber(ticket.getTaxAmount()));
+		}
 
 		if (ticket.isTaxExempt()) {
 			chkTaxExempt.setSelected(true);

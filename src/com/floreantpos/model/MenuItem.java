@@ -25,11 +25,13 @@ public class MenuItem extends BaseMenuItem {
 	public MenuItem (
 		java.lang.Integer id,
 		java.lang.String name,
+		java.lang.Double buyPrice,
 		java.lang.Double price) {
 
 		super (
 			id,
 			name,
+			buyPrice,
 			price);
 	}
 
