@@ -241,7 +241,7 @@ public class PasswordScreen extends JPanel {
 		lblTerminalId.setText("");
 	}// </editor-fold>//GEN-END:initComponents
 
-	public void doLogin() {
+	public synchronized void doLogin() {
 		try {
 			tfPassword.setEnabled(false);
 			
@@ -272,6 +272,7 @@ public class PasswordScreen extends JPanel {
 
 		} catch (UserNotFoundException e) {
 			LogFactory.getLog(Application.class).error(e);
+			POSMessageDialog.showError("User not found");
 			msgLabel.setText("Login failed, please try again...");
 		} catch (ShiftException e) {
 			LogFactory.getLog(Application.class).error(e);

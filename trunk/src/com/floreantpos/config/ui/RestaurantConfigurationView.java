@@ -1,6 +1,7 @@
 package com.floreantpos.config.ui;
 
 import javax.swing.JLabel;
+import javax.swing.JSeparator;
 
 import net.miginfocom.swing.MigLayout;
 
@@ -11,10 +12,6 @@ import com.floreantpos.model.Restaurant;
 import com.floreantpos.model.dao.RestaurantDAO;
 import com.floreantpos.swing.POSTextField;
 import com.floreantpos.ui.dialog.POSMessageDialog;
-import com.floreantpos.util.POSUtil;
-
-import javax.swing.JSeparator;
-import javax.swing.JCheckBox;
 
 public class RestaurantConfigurationView extends ConfigurationView {
 	private RestaurantDAO dao;
@@ -31,7 +28,6 @@ public class RestaurantConfigurationView extends ConfigurationView {
 	private POSTextField tfServiceCharge;
 	private POSTextField tfDefaultGratuity;
 	private POSTextField tfTicketFooter;
-	private JCheckBox cbPriceIncludingTax;
 	
 	public RestaurantConfigurationView() {
 		setLayout(new MigLayout("", "[grow][grow][][grow]", "[grow][][][][][][][][][][][][][][][]"));
@@ -65,9 +61,6 @@ public class RestaurantConfigurationView extends ConfigurationView {
 		
 		tfTelephone = new POSTextField();
 		add(tfTelephone, "cell 1 5 2 1,growx");
-		
-		cbPriceIncludingTax = new JCheckBox("Price including tax");
-		add(cbPriceIncludingTax, "cell 1 6 2 1");
 		
 		JSeparator separator = new JSeparator();
 		add(separator, "cell 0 7 4 1,growx");
@@ -122,10 +115,6 @@ public class RestaurantConfigurationView extends ConfigurationView {
 		
 		tfTicketFooter = new POSTextField();
 		add(tfTicketFooter, "cell 1 13 3 1,growx");
-		
-		JSeparator separator_2 = new JSeparator();
-		
-		add(separator_2, "cell 0 14 4 1,growx");
 	}
 	
 	
@@ -202,7 +191,6 @@ public class RestaurantConfigurationView extends ConfigurationView {
 		restaurant.setServiceChargePercentage(serviceCharge);
 		restaurant.setDefaultGratuityPercentage(gratuityPercentage);
 		restaurant.setTicketFooterMessage(tfTicketFooter.getText());
-		restaurant.setItemPriceIncludesTax(cbPriceIncludingTax.isSelected());
 		
 		dao.saveOrUpdate(restaurant);
 		
@@ -228,13 +216,12 @@ public class RestaurantConfigurationView extends ConfigurationView {
 		tfServiceCharge.setText(String.valueOf(restaurant.getServiceChargePercentage()));
 		tfDefaultGratuity.setText(String.valueOf(restaurant.getDefaultGratuityPercentage()));
 		tfTicketFooter.setText(restaurant.getTicketFooterMessage());
-		cbPriceIncludingTax.setSelected(POSUtil.getBoolean(restaurant.isItemPriceIncludesTax()));
 		
 		setInitialized(true);
 	}
 	
 	@Override
 	public String getName() {
-		return com.floreantpos.POSConstants.RESTAURANT_CONFIGURATION;
+		return com.floreantpos.POSConstants.CONFIG_TAB_RESTAURANT;
 	}
 }

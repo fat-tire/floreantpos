@@ -8,13 +8,13 @@ import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
-import javax.swing.JSeparator;
 import javax.swing.JTabbedPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import net.miginfocom.swing.MigLayout;
 
+import com.floreantpos.Messages;
 import com.floreantpos.POSConstants;
 import com.floreantpos.PosException;
 import com.floreantpos.ui.dialog.POSDialog;
@@ -29,13 +29,16 @@ public class ConfigurationDialog extends POSDialog implements ChangeListener, Ac
 	
 	public ConfigurationDialog(Frame parent) {
 		super(parent, false);
+		setTitle(Messages.getString("CONFIGURATION_WINDOW_TITLE")); //$NON-NLS-1$
 		
-		setLayout(new MigLayout("","","[fill,grow][]")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		setLayout(new MigLayout("fill")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		
-		add(tabbedPane , "grow"); //$NON-NLS-1$
+		add(tabbedPane, "span, grow" ); //$NON-NLS-1$
 		
 		RestaurantConfigurationView restaurantConfigurationView = new RestaurantConfigurationView();
 		addView(restaurantConfigurationView);
+		
+		addView(new TaxConfigurationView());
 		
 		//PrintConfigurationView printConfigurationView = new PrintConfigurationView();
 		addView(new PrintConfigurationView());
@@ -46,7 +49,6 @@ public class ConfigurationDialog extends POSDialog implements ChangeListener, Ac
 		tabbedPane.addChangeListener(this);
 		
 		JPanel bottomPanel = new JPanel(new MigLayout("fillx")); //$NON-NLS-1$
-		bottomPanel.add(new JSeparator(), "span, grow"); //$NON-NLS-1$
 		
 		JButton btnOk = new JButton(CANCEL);
 		btnOk.addActionListener(this);

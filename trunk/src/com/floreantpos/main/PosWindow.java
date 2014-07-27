@@ -1,5 +1,6 @@
 package com.floreantpos.main;
 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Toolkit;
@@ -7,6 +8,9 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+
+import org.jdesktop.swingx.JXStatusBar;
 
 import com.floreantpos.config.AppConfig;
 import com.floreantpos.swing.GlassPane;
@@ -18,6 +22,8 @@ public class PosWindow extends JFrame implements WindowListener {
 	private static final String WWIDTH = "wwidth"; //$NON-NLS-1$
 	
 	private GlassPane glassPane;
+	private JXStatusBar statusBar;
+	private JLabel statusLabel;
 	
 	public PosWindow() {
 		setIconImage(Application.getApplicationIcon().getImage());
@@ -27,6 +33,16 @@ public class PosWindow extends JFrame implements WindowListener {
 		glassPane = new GlassPane();
 		glassPane.setOpacity(0.6f);
 		setGlassPane(glassPane);
+		
+		statusBar = new JXStatusBar();
+		getContentPane().add(statusBar, BorderLayout.SOUTH);
+		
+		statusLabel = new JLabel("");
+		statusBar.add(statusLabel, JXStatusBar.Constraint.ResizeBehavior.FILL);
+	}
+	
+	public void setStatus(String status) {
+		statusLabel.setText(status);
 	}
 	
 	public void setupSizeAndLocation() {
