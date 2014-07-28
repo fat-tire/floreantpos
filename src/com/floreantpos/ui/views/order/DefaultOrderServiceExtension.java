@@ -73,4 +73,9 @@ public class DefaultOrderServiceExtension implements OrderServiceExtension {
 	public void assignDriver(Ticket ticket) {
 		
 	};
+	
+	@Override
+	public boolean finishOrder(Ticket ticket) {
+		return false;
+	}
 }

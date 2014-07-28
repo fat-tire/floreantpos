@@ -88,8 +88,10 @@ public class SwitchboardView extends JPanel implements ActionListener {
 
 		if (orderServiceExtension == null) {
 			btnHomeDelivery.setEnabled(false);
-			btnOnlineOrder.setEnabled(false);
+			btnPickup.setEnabled(false);
+			btnDriveThrough.setEnabled(false);
 			btnAssignDriver.setEnabled(false);
+			btnFinishOrder.setEnabled(false);
 			
 			orderServiceExtension = new DefaultOrderServiceExtension();
 		}
@@ -153,14 +155,14 @@ public class SwitchboardView extends JPanel implements ActionListener {
 		btnTakeout.setText(POSConstants.CAPITAL_TAKE_OUT);
 		activityPanel.add(btnTakeout);
 
-		btnOnlineOrder = new PosButton();
-		btnOnlineOrder.addActionListener(new ActionListener() {
+		btnPickup = new PosButton();
+		btnPickup.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				doHomeDelivery(Ticket.PICKUP);
 			}
 		});
-		btnOnlineOrder.setText("PICKUP");
-		activityPanel.add(btnOnlineOrder);
+		btnPickup.setText("PICKUP");
+		activityPanel.add(btnPickup);
 
 		btnHomeDelivery = new PosButton();
 		btnHomeDelivery.addActionListener(new ActionListener() {
@@ -275,22 +277,9 @@ public class SwitchboardView extends JPanel implements ActionListener {
 		
 		Ticket ticket = selectedTickets.get(0);
 
-		if (Ticket.DINE_IN.equals(ticket.getTicketType())) {
-			POSMessageDialog.showError("Please select tickets of type HOME DELIVERY or PICKUP or DRIVE THRU");
-			return;
+		if(orderServiceExtension.finishOrder(ticket)) {
+			updateTicketList();
 		}
-		
-		int option = JOptionPane.showOptionDialog(Application.getPosWindow(), "Ticket# " + ticket.getId() + " will be closed.", "Confirm", 
-				JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, null, null, null);
-		
-		if(option != JOptionPane.OK_OPTION) {
-			return;
-		}
-		
-		ticket.setClosed(true);
-		TicketDAO.getInstance().saveOrUpdate(ticket);
-		
-		updateTicketList();
 	}
 
 	protected void doAssignDriver() {
@@ -307,9 +296,18 @@ public class SwitchboardView extends JPanel implements ActionListener {
 				POSMessageDialog.showError("Driver can be assigned only for Home Delivery");
 				return;
 			}
+			
+			User assignedDriver = ticket.getAssignedDriver();
+			if(assignedDriver != null) {
+				int option = JOptionPane.showOptionDialog(Application.getPosWindow(), "Driver already assigned. Do you want to reassign?", "Confirm", 
+						JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+				
+				if(option != JOptionPane.YES_OPTION) {
+					return;
+				}
+			}
 
 			TicketDAO.getInstance().refresh(ticket);
-
 			orderServiceExtension.assignDriver(ticket);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -745,7 +743,7 @@ public class SwitchboardView extends JPanel implements ActionListener {
 	private com.floreantpos.swing.PosButton btnVoidTicket;
 	private javax.swing.JLabel lblUserName;
 	private com.floreantpos.ui.TicketListView openTicketList;
-	private PosButton btnOnlineOrder;
+	private PosButton btnPickup;
 	private PosButton btnHomeDelivery;
 	private PosButton btnDriveThrough;
 	private PosButton btnAssignDriver;
