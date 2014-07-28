@@ -91,7 +91,7 @@ public class SwitchboardView extends JPanel implements ActionListener {
 			btnPickup.setEnabled(false);
 			btnDriveThrough.setEnabled(false);
 			btnAssignDriver.setEnabled(false);
-			btnFinishOrder.setEnabled(false);
+			btnCloseOrder.setEnabled(false);
 			
 			orderServiceExtension = new DefaultOrderServiceExtension();
 		}
@@ -228,14 +228,14 @@ public class SwitchboardView extends JPanel implements ActionListener {
 		btnAssignDriver.setText("<html>ASSIGN<br/>DRIVER</html>");
 		activityPanel.add(btnAssignDriver);
 		
-		btnFinishOrder = new PosButton();
-		btnFinishOrder.addActionListener(new ActionListener() {
+		btnCloseOrder = new PosButton();
+		btnCloseOrder.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				doFinishOrder();
+				doCloseOrder();
 			}
 		});
-		btnFinishOrder.setText("FINISH ORDER");
-		activityPanel.add(btnFinishOrder);
+		btnCloseOrder.setText("CLOSE ORDER");
+		activityPanel.add(btnCloseOrder);
 
 		bottomPanel.add(bottomLeftPanel, java.awt.BorderLayout.CENTER);
 
@@ -268,7 +268,7 @@ public class SwitchboardView extends JPanel implements ActionListener {
 		add(bottomPanel, java.awt.BorderLayout.CENTER);
 	}// </editor-fold>//GEN-END:initComponents
 
-	protected void doFinishOrder() {
+	protected void doCloseOrder() {
 		List<Ticket> selectedTickets = openTicketList.getSelectedTickets();
 		if (selectedTickets.size() == 0 || selectedTickets.size() > 1) {
 			POSMessageDialog.showMessage("Please select a ticket.");
@@ -747,7 +747,7 @@ public class SwitchboardView extends JPanel implements ActionListener {
 	private PosButton btnHomeDelivery;
 	private PosButton btnDriveThrough;
 	private PosButton btnAssignDriver;
-	private PosButton btnFinishOrder;
+	private PosButton btnCloseOrder;
 
 	// End of variables declaration//GEN-END:variables
 
