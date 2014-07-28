@@ -576,7 +576,6 @@ public class PosPrintService {
 			JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(Arrays.asList(new DrawerPullReport[] {drawerPullReport}));
 			JasperPrint jasperPrint = JasperFillManager.fillReport(mainReport, parameters, dataSource);
 			jasperPrint.setProperty("printerName", PrintConfig.getReceiptPrinterName());
-			//JasperViewer.viewReport(jasperPrint, false);
 			JasperPrintManager.printReport(jasperPrint, false);
 		
 		} catch (Exception e) {

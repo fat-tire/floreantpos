@@ -11,7 +11,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
@@ -19,10 +18,8 @@ import java.util.Set;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 
 import net.miginfocom.swing.MigLayout;
-import net.sf.jasperreports.engine.JasperPrint;
 
 import org.apache.commons.logging.LogFactory;
 
@@ -39,8 +36,6 @@ import com.floreantpos.model.UserPermission;
 import com.floreantpos.model.UserType;
 import com.floreantpos.model.dao.AttendenceHistoryDAO;
 import com.floreantpos.model.dao.TicketDAO;
-import com.floreantpos.report.JReportPrintService;
-import com.floreantpos.report.TicketPrintProperties;
 import com.floreantpos.services.TicketService;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.ui.dialog.ManagerDialog;
@@ -280,10 +275,22 @@ public class SwitchboardView extends JPanel implements ActionListener {
 		
 		Ticket ticket = selectedTickets.get(0);
 
-		if (!Ticket.HOME_DELIVERY.equals(ticket.getTicketType())) {
-			POSMessageDialog.showError("Driver can be assigned only for Home Delivery");
+		if (Ticket.DINE_IN.equals(ticket.getTicketType())) {
+			POSMessageDialog.showError("Please select tickets of type HOME DELIVERY or PICKUP or DRIVE THRU");
 			return;
 		}
+		
+		int option = JOptionPane.showOptionDialog(Application.getPosWindow(), "Ticket# " + ticket.getId() + " will be closed.", "Confirm", 
+				JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, null, null, null);
+		
+		if(option != JOptionPane.OK_OPTION) {
+			return;
+		}
+		
+		ticket.setClosed(true);
+		TicketDAO.getInstance().saveOrUpdate(ticket);
+		
+		updateTicketList();
 	}
 
 	protected void doAssignDriver() {
