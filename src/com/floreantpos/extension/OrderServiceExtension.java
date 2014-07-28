@@ -14,4 +14,5 @@ public interface OrderServiceExtension extends Plugin {
 	void setCustomerToTicket(Ticket ticket);
 	void setDeliveryDate(Ticket ticket);
 	void assignDriver(Ticket ticket);
+	boolean finishOrder(Ticket ticket);
 }
