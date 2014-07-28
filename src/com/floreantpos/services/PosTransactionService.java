@@ -72,7 +72,7 @@ public class PosTransactionService {
 					dueAmount = 0;
 					
 					ticket.setPaid(true);
-					ticket.setClosed(true);
+					closeTicketIfApplicable(ticket);
 				}
 				else {
 					paidAmount += tenderedAmount;
@@ -175,6 +175,12 @@ public class PosTransactionService {
 			String actionMessage = com.floreantpos.POSConstants.RECEIPT_REPORT_TICKET_NO_LABEL + ":" + ticket.getId();
 			actionMessage += ";" +  com.floreantpos.POSConstants.TOTAL + ":" + NumberUtil.formatNumber(ticket.getTotalAmount());
 			ActionHistoryDAO.getInstance().saveHistory(Application.getCurrentUser(), ActionHistory.SETTLE_CHECK, actionMessage);
+		}
+	}
+
+	private void closeTicketIfApplicable(Ticket ticket) {
+		if(Ticket.DINE_IN.equals(ticket.getTicketType())) {
+			ticket.setClosed(true);
 		}
 	}
 
