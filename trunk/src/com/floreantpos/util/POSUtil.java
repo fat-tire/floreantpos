@@ -23,4 +23,12 @@ public class POSUtil {
 		
 		return b;
 	}
+	
+	public static double getDouble(Double d) {
+		if(d == null) {
+			return 0;
+		}
+		
+		return d;
+	}
 }

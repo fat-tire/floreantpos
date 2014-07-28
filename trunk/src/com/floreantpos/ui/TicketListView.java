@@ -97,7 +97,7 @@ public class TicketListView extends JPanel {
 	private class TicketListTableModel extends ListTableModel {
 		public TicketListTableModel() {
 			super(new String[] { POSConstants.ID, "TBL", POSConstants.SERVER, POSConstants.CREATED, POSConstants.CUSTOMER,
-					POSConstants.TICKET_DELIVERY_DATE, POSConstants.TICKET_TYPE, POSConstants.TOTAL, POSConstants.DUE });
+					POSConstants.TICKET_DELIVERY_DATE, POSConstants.TICKET_TYPE, "STATUS", POSConstants.TOTAL, POSConstants.DUE });
 		}
 
 		public Object getValueAt(int rowIndex, int columnIndex) {
@@ -133,11 +133,29 @@ public class TicketListView extends JPanel {
 				}
 				
 				return ticket.getTicketType();
-
+				
 			case 7:
-				return ticket.getTotalAmount();
+				if(Ticket.DINE_IN.equals(ticket.getTicketType())) {
+					return "Open";
+				}
+				else if(Ticket.PICKUP.equals(ticket.getTicketType())) {
+					return "Will pickup";
+				}
+				else if(Ticket.HOME_DELIVERY.equals(ticket.getTicketType())) {
+					if(ticket.getAssignedDriver() == null) {
+						return "Driver not assigned";
+					}
+					return "Driver assigned";
+				}
+				else if(Ticket.DRIVE_THROUGH.equals(ticket.getTicketType())) {
+					return "Not delivered";
+				}
+				return "Open";
 
 			case 8:
+				return ticket.getTotalAmount();
+
+			case 9:
 				return ticket.getDueAmount();
 
 			}
