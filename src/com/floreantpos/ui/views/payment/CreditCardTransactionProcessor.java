@@ -20,9 +20,9 @@ public class CreditCardTransactionProcessor {
 			throw new RuntimeException("Invalid card string");
 		}
 
-//		private static String apiLoginID = "6tuU4N3H";
-//	    private static String transactionKey = "4k6955x3T8bCVPVm"; 
-	    
+		//		private static String apiLoginID = "6tuU4N3H";
+		//	    private static String transactionKey = "4k6955x3T8bCVPVm"; 
+
 		String apiLoginID = CardConfig.getMerchantAccount();
 		String transactionKey = CardConfig.getMerchantPass();
 		//String MD5Value = "paltalk123";
@@ -60,12 +60,12 @@ public class CreditCardTransactionProcessor {
 			return result.getAuthCode();
 		}
 		else if (result.isDeclined()) {
-			throw new Exception("Card declined");
+			throw new Exception("Card declined" + result.getResponseReasonCodes().get(0).getReasonText());
 			//POSMessageDialog.showMessage("Declined.</br>");
 			//System.out.println(result.getResponseReasonCodes().get(0) + " : " + result.getResponseReasonCodes().get(0).getReasonText());
 		}
 		else {
-			throw new Exception("Card error");
+			throw new Exception("Card error" + result.getResponseReasonCodes().get(0).getReasonText());
 			//POSMessageDialog.showMessage("Error.</br>");
 			//System.out.println(result.getResponseReasonCodes().get(0) + " : " + result.getResponseReasonCodes().get(0).getReasonText());
 		}

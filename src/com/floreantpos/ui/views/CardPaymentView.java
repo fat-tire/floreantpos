@@ -101,6 +101,7 @@ public class CardPaymentView extends PaymentView {
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
+				POSMessageDialog.showError(e.getMessage());
 			}
 		}
 	}
