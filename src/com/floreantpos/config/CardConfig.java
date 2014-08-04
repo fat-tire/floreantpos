@@ -72,4 +72,12 @@ public class CardConfig {
 
 		return string;
 	}
+	
+	public static boolean isSandboxMode() {
+		return AppConfig.getBoolean("sandboxMode", true);
+	}
+	
+	public static void setSandboxMode(boolean sandbosMode) {
+		AppConfig.put("sandboxMode", sandbosMode);
+	}
 }
