@@ -11,6 +11,8 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.math.BigDecimal;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -21,6 +23,13 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+import net.authorize.Environment;
+import net.authorize.Merchant;
+import net.authorize.TransactionType;
+import net.authorize.aim.Transaction;
+import net.authorize.aim.cardpresent.Result;
+import net.authorize.data.creditcard.CardType;
+import net.authorize.data.creditcard.CreditCard;
 import net.miginfocom.swing.MigLayout;
 
 import com.floreantpos.main.Application;
@@ -82,10 +91,10 @@ public class CardPaymentView extends PaymentView {
 			}
 
 		});
-		
+
 		lblCSymbol3 = new JLabel("");
 		transparentPanel.add(lblCSymbol3, "cell 1 0,alignx trailing");
-		
+
 		tfDueAmount = new FocusedTextField();
 		tfDueAmount.setHorizontalAlignment(SwingConstants.RIGHT);
 		tfDueAmount.setFont(new Font("Dialog", Font.BOLD, 12));
@@ -97,165 +106,211 @@ public class CardPaymentView extends PaymentView {
 		jLabel1.setText("GRATUITY AMOUNT");
 		lblCSymbol1 = new javax.swing.JLabel();
 		transparentPanel.add(lblCSymbol1, "cell 1 1");
-		
-				
-				tfGratuityAmount = new FocusedTextField();
-				tfGratuityAmount.setHorizontalAlignment(SwingConstants.RIGHT);
-				tfGratuityAmount.setColumns(20);
-				transparentPanel.add(tfGratuityAmount, "cell 2 1,growx");
-				
-						tfGratuityAmount.setFont(new Font("Dialog", Font.BOLD, 12));
-						tfGratuityAmount.setText("0");
-						jLabel2 = new javax.swing.JLabel();
-						jLabel2.setFont(new Font("Dialog", Font.BOLD, 12));
-						transparentPanel.add(jLabel2, "cell 0 2,alignx right");
-						jLabel2.setText("AMOUNT TO BE CHARGED");
-						lblCSymbol2 = new javax.swing.JLabel();
-						transparentPanel.add(lblCSymbol2, "cell 1 2");
-						
+
+		tfGratuityAmount = new FocusedTextField();
+		tfGratuityAmount.setHorizontalAlignment(SwingConstants.RIGHT);
+		tfGratuityAmount.setColumns(20);
+		transparentPanel.add(tfGratuityAmount, "cell 2 1,growx");
+
+		tfGratuityAmount.setFont(new Font("Dialog", Font.BOLD, 12));
+		tfGratuityAmount.setText("0");
+		jLabel2 = new javax.swing.JLabel();
+		jLabel2.setFont(new Font("Dialog", Font.BOLD, 12));
+		transparentPanel.add(jLabel2, "cell 0 2,alignx right");
+		jLabel2.setText("AMOUNT TO BE CHARGED");
+		lblCSymbol2 = new javax.swing.JLabel();
+		transparentPanel.add(lblCSymbol2, "cell 1 2");
+
 		tfCardAmount = new FocusedTextField();
 		tfCardAmount.setHorizontalAlignment(SwingConstants.RIGHT);
 		tfCardAmount.setColumns(20);
 		transparentPanel.add(tfCardAmount, "cell 2 2,growx");
+
+		tfCardAmount.setFont(new Font("Dialog", Font.BOLD, 12));
+		tfCardAmount.setText("0");
+		jLabel3 = new javax.swing.JLabel();
+		jLabel3.setFont(new Font("Dialog", Font.BOLD, 12));
+		transparentPanel.add(jLabel3, "cell 0 3,alignx right");
+		jLabel3.setText("AUTHORIZATION CODE");
+		tfAuthorizationCode = new FocusedTextField();
+		tfAuthorizationCode.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				processCard();
+			}
+		});
+		tfAuthorizationCode.setHorizontalAlignment(SwingConstants.RIGHT);
+		tfAuthorizationCode.setColumns(20);
+		transparentPanel.add(tfAuthorizationCode, "cell 2 3,alignx center");
+
+		tfAuthorizationCode.setFont(new Font("Dialog", Font.BOLD, 12));
+		tfAuthorizationCode.setText("0");
+
+		TransparentPanel transparentPanel_1 = new TransparentPanel();
+		transparentPanel8.add(transparentPanel_1);
+		transparentPanel_1.setLayout(new BorderLayout(5, 5));
+		transparentPanel10 = new com.floreantpos.swing.TransparentPanel();
+		transparentPanel_1.add(transparentPanel10, BorderLayout.WEST);
+		btnMasterCard = new com.floreantpos.swing.POSToggleButton();
+		btnVisa = new com.floreantpos.swing.POSToggleButton();
+		btnEmEx = new com.floreantpos.swing.POSToggleButton();
+		btnDiscover = new com.floreantpos.swing.POSToggleButton();
+
+		transparentPanel10.setLayout(new java.awt.GridLayout(0, 1, 5, 5));
+
+		buttonGroup1.add(btnMasterCard);
+		btnMasterCard.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/master_card.PNG")));
+		btnMasterCard.setSelected(true);
+		btnMasterCard.setActionCommand("MASTER_CARD");
+		btnMasterCard.setPreferredSize(new java.awt.Dimension(90, 0));
+		transparentPanel10.add(btnMasterCard);
+
+		buttonGroup1.add(btnVisa);
+		btnVisa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/visa_card.PNG")));
+		btnVisa.setActionCommand("VISA_CARD");
+		btnVisa.setPreferredSize(new java.awt.Dimension(90, 0));
+		transparentPanel10.add(btnVisa);
+
+		buttonGroup1.add(btnEmEx);
+		btnEmEx.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/am_ex_card.PNG")));
+		btnEmEx.setActionCommand("EMEX_CARD");
+		btnEmEx.setPreferredSize(new java.awt.Dimension(90, 0));
+		transparentPanel10.add(btnEmEx);
+
+		buttonGroup1.add(btnDiscover);
+		btnDiscover.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/discover_card.PNG")));
+		btnDiscover.setActionCommand("DISCOVER_CARD");
+		btnDiscover.setPreferredSize(new java.awt.Dimension(90, 0));
+		transparentPanel10.add(btnDiscover);
+		transparentPanel9 = new com.floreantpos.swing.TransparentPanel();
+		transparentPanel_1.add(transparentPanel9, BorderLayout.CENTER);
+		posButton1 = new com.floreantpos.swing.PosButton();
+		posButton2 = new com.floreantpos.swing.PosButton();
+		posButton3 = new com.floreantpos.swing.PosButton();
+		posButton4 = new com.floreantpos.swing.PosButton();
+		posButton5 = new com.floreantpos.swing.PosButton();
+		posButton6 = new com.floreantpos.swing.PosButton();
+		posButton9 = new com.floreantpos.swing.PosButton();
+		posButton8 = new com.floreantpos.swing.PosButton();
+		posButton7 = new com.floreantpos.swing.PosButton();
+		posButton10 = new com.floreantpos.swing.PosButton();
+		posButton11 = new com.floreantpos.swing.PosButton();
+		posButton12 = new com.floreantpos.swing.PosButton();
+
+		transparentPanel9.setLayout(new java.awt.GridLayout(0, 3, 5, 5));
+
+		posButton1.setAction(calAction);
+		posButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/7_32.png")));
+		posButton1.setActionCommand("7");
+		posButton1.setFocusable(false);
+		transparentPanel9.add(posButton1);
+
+		posButton2.setAction(calAction);
+		posButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/8_32.png")));
+		posButton2.setActionCommand("8");
+		posButton2.setFocusable(false);
+		transparentPanel9.add(posButton2);
+
+		posButton3.setAction(calAction);
+		posButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/9_32.png")));
+		posButton3.setActionCommand("9");
+		posButton3.setFocusable(false);
+		transparentPanel9.add(posButton3);
+
+		posButton4.setAction(calAction);
+		posButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/4_32.png")));
+		posButton4.setActionCommand("4");
+		posButton4.setFocusable(false);
+		transparentPanel9.add(posButton4);
+
+		posButton5.setAction(calAction);
+		posButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/5_32.png")));
+		posButton5.setActionCommand("5");
+		posButton5.setFocusable(false);
+		transparentPanel9.add(posButton5);
+
+		posButton6.setAction(calAction);
+		posButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/6_32.png")));
+		posButton6.setActionCommand("6");
+		posButton6.setFocusable(false);
+		transparentPanel9.add(posButton6);
+
+		posButton9.setAction(calAction);
+		posButton9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/1_32.png")));
+		posButton9.setActionCommand("1");
+		posButton9.setFocusable(false);
+		transparentPanel9.add(posButton9);
+
+		posButton8.setAction(calAction);
+		posButton8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/2_32.png")));
+		posButton8.setActionCommand("2");
+		posButton8.setFocusable(false);
+		transparentPanel9.add(posButton8);
+
+		posButton7.setAction(calAction);
+		posButton7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/3_32.png")));
+		posButton7.setActionCommand("3");
+		posButton7.setFocusable(false);
+		transparentPanel9.add(posButton7);
+
+		posButton10.setAction(calAction);
+		posButton10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/dot_32.png")));
+		posButton10.setActionCommand(".");
+		posButton10.setFocusable(false);
+		transparentPanel9.add(posButton10);
+
+		posButton11.setAction(calAction);
+		posButton11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/0_32.png")));
+		posButton11.setActionCommand("0");
+		posButton11.setFocusable(false);
+		transparentPanel9.add(posButton11);
+
+		posButton12.setAction(calAction);
+		posButton12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/clear_32.png")));
+		posButton12.setText(com.floreantpos.POSConstants.CLEAR);
+		posButton12.setFocusable(false);
+		transparentPanel9.add(posButton12);
+	}
+
+	protected void processCard() {
+		POSMessageDialog.showMessage("Processing: " + tfAuthorizationCode.getText());
 		
-				tfCardAmount.setFont(new Font("Dialog", Font.BOLD, 12));
-				tfCardAmount.setText("0");
-				jLabel3 = new javax.swing.JLabel();
-				jLabel3.setFont(new Font("Dialog", Font.BOLD, 12));
-				transparentPanel.add(jLabel3, "cell 0 3,alignx right");
-				jLabel3.setText("AUTHORIZATION CODE");
-				tfAuthorizationCode = new FocusedTextField();
-				tfAuthorizationCode.setHorizontalAlignment(SwingConstants.RIGHT);
-				tfAuthorizationCode.setColumns(20);
-				transparentPanel.add(tfAuthorizationCode, "cell 2 3,alignx center");
-				
-						tfAuthorizationCode.setFont(new Font("Dialog", Font.BOLD, 12));
-						tfAuthorizationCode.setText("0");
-						
-						TransparentPanel transparentPanel_1 = new TransparentPanel();
-						transparentPanel8.add(transparentPanel_1);
-						transparentPanel_1.setLayout(new BorderLayout(5, 5));
-						transparentPanel10 = new com.floreantpos.swing.TransparentPanel();
-						transparentPanel_1.add(transparentPanel10, BorderLayout.WEST);
-						btnMasterCard = new com.floreantpos.swing.POSToggleButton();
-						btnVisa = new com.floreantpos.swing.POSToggleButton();
-						btnEmEx = new com.floreantpos.swing.POSToggleButton();
-						btnDiscover = new com.floreantpos.swing.POSToggleButton();
-						
-								transparentPanel10.setLayout(new java.awt.GridLayout(0, 1, 5, 5));
-								
-										buttonGroup1.add(btnMasterCard);
-										btnMasterCard.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/master_card.PNG")));
-										btnMasterCard.setSelected(true);
-										btnMasterCard.setActionCommand("MASTER_CARD");
-										btnMasterCard.setPreferredSize(new java.awt.Dimension(90, 0));
-										transparentPanel10.add(btnMasterCard);
-										
-												buttonGroup1.add(btnVisa);
-												btnVisa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/visa_card.PNG")));
-												btnVisa.setActionCommand("VISA_CARD");
-												btnVisa.setPreferredSize(new java.awt.Dimension(90, 0));
-												transparentPanel10.add(btnVisa);
-												
-														buttonGroup1.add(btnEmEx);
-														btnEmEx.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/am_ex_card.PNG")));
-														btnEmEx.setActionCommand("EMEX_CARD");
-														btnEmEx.setPreferredSize(new java.awt.Dimension(90, 0));
-														transparentPanel10.add(btnEmEx);
-														
-																buttonGroup1.add(btnDiscover);
-																btnDiscover.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/discover_card.PNG")));
-																btnDiscover.setActionCommand("DISCOVER_CARD");
-																btnDiscover.setPreferredSize(new java.awt.Dimension(90, 0));
-																transparentPanel10.add(btnDiscover);
-																transparentPanel9 = new com.floreantpos.swing.TransparentPanel();
-																transparentPanel_1.add(transparentPanel9, BorderLayout.CENTER);
-																posButton1 = new com.floreantpos.swing.PosButton();
-																posButton2 = new com.floreantpos.swing.PosButton();
-																posButton3 = new com.floreantpos.swing.PosButton();
-																posButton4 = new com.floreantpos.swing.PosButton();
-																posButton5 = new com.floreantpos.swing.PosButton();
-																posButton6 = new com.floreantpos.swing.PosButton();
-																posButton9 = new com.floreantpos.swing.PosButton();
-																posButton8 = new com.floreantpos.swing.PosButton();
-																posButton7 = new com.floreantpos.swing.PosButton();
-																posButton10 = new com.floreantpos.swing.PosButton();
-																posButton11 = new com.floreantpos.swing.PosButton();
-																posButton12 = new com.floreantpos.swing.PosButton();
-																
-																		transparentPanel9.setLayout(new java.awt.GridLayout(0, 3, 5, 5));
-																		
-																				posButton1.setAction(calAction);
-																				posButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/7_32.png")));
-																				posButton1.setActionCommand("7");
-																				posButton1.setFocusable(false);
-																				transparentPanel9.add(posButton1);
-																				
-																						posButton2.setAction(calAction);
-																						posButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/8_32.png")));
-																						posButton2.setActionCommand("8");
-																						posButton2.setFocusable(false);
-																						transparentPanel9.add(posButton2);
-																						
-																								posButton3.setAction(calAction);
-																								posButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/9_32.png")));
-																								posButton3.setActionCommand("9");
-																								posButton3.setFocusable(false);
-																								transparentPanel9.add(posButton3);
-																								
-																										posButton4.setAction(calAction);
-																										posButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/4_32.png")));
-																										posButton4.setActionCommand("4");
-																										posButton4.setFocusable(false);
-																										transparentPanel9.add(posButton4);
-																										
-																												posButton5.setAction(calAction);
-																												posButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/5_32.png")));
-																												posButton5.setActionCommand("5");
-																												posButton5.setFocusable(false);
-																												transparentPanel9.add(posButton5);
-																												
-																														posButton6.setAction(calAction);
-																														posButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/6_32.png")));
-																														posButton6.setActionCommand("6");
-																														posButton6.setFocusable(false);
-																														transparentPanel9.add(posButton6);
-																														
-																																posButton9.setAction(calAction);
-																																posButton9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/1_32.png")));
-																																posButton9.setActionCommand("1");
-																																posButton9.setFocusable(false);
-																																transparentPanel9.add(posButton9);
-																																
-																																		posButton8.setAction(calAction);
-																																		posButton8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/2_32.png")));
-																																		posButton8.setActionCommand("2");
-																																		posButton8.setFocusable(false);
-																																		transparentPanel9.add(posButton8);
-																																		
-																																				posButton7.setAction(calAction);
-																																				posButton7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/3_32.png")));
-																																				posButton7.setActionCommand("3");
-																																				posButton7.setFocusable(false);
-																																				transparentPanel9.add(posButton7);
-																																				
-																																						posButton10.setAction(calAction);
-																																						posButton10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/dot_32.png")));
-																																						posButton10.setActionCommand(".");
-																																						posButton10.setFocusable(false);
-																																						transparentPanel9.add(posButton10);
-																																						
-																																								posButton11.setAction(calAction);
-																																								posButton11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/0_32.png")));
-																																								posButton11.setActionCommand("0");
-																																								posButton11.setFocusable(false);
-																																								transparentPanel9.add(posButton11);
-																																								
-																																										posButton12.setAction(calAction);
-																																										posButton12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/clear_32.png")));
-																																										posButton12.setText(com.floreantpos.POSConstants.CLEAR);
-																																										posButton12.setFocusable(false);
-																																										transparentPanel9.add(posButton12);
+		String apiLoginID = "6tuU4N3H";
+		String transactionKey = "4k6955x3T8bCVPVm";
+		String MD5Value = "paltalk123";
+
+		Merchant merchant = Merchant.createMerchant(Environment.SANDBOX, apiLoginID, transactionKey);
+		merchant.setDeviceType(net.authorize.DeviceType.VIRTUAL_TERMINAL);
+		merchant.setMarketType(net.authorize.MarketType.RETAIL);
+		merchant.setMD5Value(MD5Value);
+
+		// Create credit card
+		CreditCard creditCard = CreditCard.createCreditCard();
+		creditCard.setCardType(CardType.VISA);
+
+		String[] tracks = tfAuthorizationCode.getText().split(";");
+
+		//  creditCard.setTrack1("%B411111111111111^CARDUSER/JOHN^1803101000000000020000831000000?");
+		// creditCard.setTrack2(";4111111111111111=1803101000020000831?");
+		creditCard.setTrack1(tracks[0]);
+		creditCard.setTrack2(";" + tracks[1]);
+
+		// Create transaction
+		Transaction authCaptureTransaction = merchant.createAIMTransaction(TransactionType.AUTH_CAPTURE, new BigDecimal(10.0));
+		authCaptureTransaction.setCreditCard(creditCard);
+
+		Result<Transaction> result = (Result<Transaction>) merchant.postTransaction(authCaptureTransaction);
+
+		if (result.isApproved()) {
+			POSMessageDialog.showMessage("Approved!</br>"+"Transaction Id: " + result.getTransId());
+		}
+		else if (result.isDeclined()) {
+			POSMessageDialog.showMessage("Declined.</br>");
+			System.out.println(result.getResponseReasonCodes().get(0) + " : " + result.getResponseReasonCodes().get(0).getReasonText());
+		}
+		else {
+			POSMessageDialog.showMessage("Error.</br>");
+			System.out.println(result.getResponseReasonCodes().get(0) + " : " + result.getResponseReasonCodes().get(0).getReasonText());
+		}
 	}
 
 	Dimension preferredSize = new Dimension(380, 100);
@@ -280,7 +335,8 @@ public class CardPaymentView extends PaymentView {
 
 		setLayout(new java.awt.BorderLayout(0, 5));
 
-		setBorder(javax.swing.BorderFactory.createTitledBorder(null, com.floreantpos.POSConstants.TITLE, javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
+		setBorder(javax.swing.BorderFactory.createTitledBorder(null, com.floreantpos.POSConstants.TITLE, javax.swing.border.TitledBorder.CENTER,
+				javax.swing.border.TitledBorder.DEFAULT_POSITION));
 
 		transparentPanel5.setLayout(new java.awt.GridLayout(1, 0, 5, 5));
 
@@ -319,11 +375,11 @@ public class CardPaymentView extends PaymentView {
 
 		add(transparentPanel5, java.awt.BorderLayout.SOUTH);
 		transparentPanel8.setLayout(new BorderLayout(10, 10));
-		
+
 		transparentPanel = new TransparentPanel();
 		transparentPanel8.add(transparentPanel, BorderLayout.NORTH);
 		transparentPanel.setLayout(new MigLayout("", "[][grow][]", "[][][][]"));
-		
+
 		lblTotal = new JLabel("DUE AMOUNT");
 		lblTotal.setFont(new Font("Dialog", Font.BOLD, 12));
 		transparentPanel.add(lblTotal, "cell 0 0,alignx right");
@@ -361,7 +417,7 @@ public class CardPaymentView extends PaymentView {
 
 			String authorizationCode = tfAuthorizationCode.getText();
 			if (getCardType() == CARD_TYPE_CREDIT) {
-				
+
 				settleTickets(tenderedAmount, gratuityAmount, new CreditCardTransaction(), getWhichCard(), authorizationCode);
 			}
 			if (getCardType() == CARD_TYPE_DEBIT) {
@@ -522,13 +578,13 @@ public class CardPaymentView extends PaymentView {
 		lblCSymbol1.setText(currencySymbol);
 		lblCSymbol2.setText(currencySymbol);
 		lblCSymbol3.setText(currencySymbol);
-		
+
 		double dueAmount = getDueAmount();
 		double tips = calculateGratuity();
-		
+
 		tfDueAmount.setText(NumberUtil.formatNumber(dueAmount));
 		tfGratuityAmount.setText(NumberUtil.formatNumber(tips));
 		tfCardAmount.setText(NumberUtil.formatNumber(dueAmount + tips));
-		
+
 	}
 }
