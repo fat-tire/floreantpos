@@ -11,6 +11,7 @@ import com.floreantpos.config.CardConfig;
 import com.floreantpos.model.CardReader;
 import com.floreantpos.model.MerchantGateway;
 import com.floreantpos.swing.POSTextField;
+import javax.swing.JCheckBox;
 
 public class CardConfigurationView extends ConfigurationView {
 	//private List<String>
@@ -19,13 +20,14 @@ public class CardConfigurationView extends ConfigurationView {
 	private JComboBox cbGateway;
 	private JComboBox cbCardReader;
 	private JPasswordField tfMerchantPass;
+	private JCheckBox cbSandboxMode;
 
 	public CardConfigurationView() {
 		createUI();
 	}
 
 	private void createUI() {
-		setLayout(new MigLayout("", "[][grow]", "[][][][]"));
+		setLayout(new MigLayout("", "[][grow]", "[][][][][]"));
 
 		JLabel lblMagneticCardReader = new JLabel("Magnetic Card Reader");
 		add(lblMagneticCardReader, "cell 0 0,alignx trailing");
@@ -53,6 +55,9 @@ public class CardConfigurationView extends ConfigurationView {
 
 		tfMerchantPass = new JPasswordField();
 		add(tfMerchantPass, "cell 1 3,growx");
+		
+		cbSandboxMode = new JCheckBox("Sandbox mode");
+		add(cbSandboxMode, "cell 1 4");
 	}
 
 	@Override
@@ -65,6 +70,8 @@ public class CardConfigurationView extends ConfigurationView {
 		
 		CardConfig.setMerchantAccount(tfMerchantAccount.getText());
 		CardConfig.setMerchantPass(new String(tfMerchantPass.getPassword()));
+		
+		CardConfig.setSandboxMode(cbSandboxMode.isSelected());
 		
 		return true;
 	}
@@ -86,6 +93,8 @@ public class CardConfigurationView extends ConfigurationView {
 		if (merchantPass != null) {
 			tfMerchantPass.setText(merchantPass);
 		}
+		
+		cbSandboxMode.setSelected(CardConfig.isSandboxMode());
 
 		setInitialized(true);
 	}
