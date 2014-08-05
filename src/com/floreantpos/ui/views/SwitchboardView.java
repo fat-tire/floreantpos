@@ -25,6 +25,7 @@ import org.apache.commons.logging.LogFactory;
 
 import com.floreantpos.POSConstants;
 import com.floreantpos.PosException;
+import com.floreantpos.actions.SettleTicketAction;
 import com.floreantpos.bo.ui.BackOfficeWindow;
 import com.floreantpos.extension.OrderServiceExtension;
 import com.floreantpos.main.Application;
@@ -59,10 +60,10 @@ import foxtrot.Worker;
  */
 public class SwitchboardView extends JPanel implements ActionListener {
 	public final static String VIEW_NAME = com.floreantpos.POSConstants.SWITCHBOARD;
-	
+
 	private OrderServiceExtension orderServiceExtension;
-	
-//	private Timer ticketListUpdater;
+
+	//	private Timer ticketListUpdater;
 
 	/** Creates new form SwitchboardView */
 	public SwitchboardView() {
@@ -92,10 +93,10 @@ public class SwitchboardView extends JPanel implements ActionListener {
 			btnDriveThrough.setEnabled(false);
 			btnAssignDriver.setEnabled(false);
 			btnCloseOrder.setEnabled(false);
-			
+
 			orderServiceExtension = new DefaultOrderServiceExtension();
 		}
-//		ticketListUpdater = new Timer(30 * 1000, new TicketListUpdaterTask());
+		//		ticketListUpdater = new Timer(30 * 1000, new TicketListUpdaterTask());
 
 		applyComponentOrientation(ComponentOrientation.getOrientation(Locale.getDefault()));
 	}
@@ -218,7 +219,7 @@ public class SwitchboardView extends JPanel implements ActionListener {
 		activityPanel.add(btnOrderInfo);
 
 		bottomLeftPanel.add(activityPanel, java.awt.BorderLayout.SOUTH);
-		
+
 		btnAssignDriver = new PosButton();
 		btnAssignDriver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -227,7 +228,7 @@ public class SwitchboardView extends JPanel implements ActionListener {
 		});
 		btnAssignDriver.setText("<html>ASSIGN<br/>DRIVER</html>");
 		activityPanel.add(btnAssignDriver);
-		
+
 		btnCloseOrder = new PosButton();
 		btnCloseOrder.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -274,10 +275,10 @@ public class SwitchboardView extends JPanel implements ActionListener {
 			POSMessageDialog.showMessage("Please select a ticket.");
 			return;
 		}
-		
+
 		Ticket ticket = selectedTickets.get(0);
 
-		if(orderServiceExtension.finishOrder(ticket)) {
+		if (orderServiceExtension.finishOrder(ticket)) {
 			updateTicketList();
 		}
 	}
@@ -296,13 +297,13 @@ public class SwitchboardView extends JPanel implements ActionListener {
 				POSMessageDialog.showError("Driver can be assigned only for Home Delivery");
 				return;
 			}
-			
+
 			User assignedDriver = ticket.getAssignedDriver();
-			if(assignedDriver != null) {
-				int option = JOptionPane.showOptionDialog(Application.getPosWindow(), "Driver already assigned. Do you want to reassign?", "Confirm", 
+			if (assignedDriver != null) {
+				int option = JOptionPane.showOptionDialog(Application.getPosWindow(), "Driver already assigned. Do you want to reassign?", "Confirm",
 						JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
-				
-				if(option != JOptionPane.YES_OPTION) {
+
+				if (option != JOptionPane.YES_OPTION) {
 					return;
 				}
 			}
@@ -406,6 +407,7 @@ public class SwitchboardView extends JPanel implements ActionListener {
 
 	private void doSettleTicket() {
 		try {
+			
 			List<Ticket> selectedTickets = openTicketList.getSelectedTickets();
 			if (selectedTickets.size() == 0 || selectedTickets.size() > 1) {
 				POSMessageDialog.showMessage(POSConstants.SELECT_ONE_TICKET_TO_SETTLE);
@@ -413,19 +415,11 @@ public class SwitchboardView extends JPanel implements ActionListener {
 			}
 
 			Ticket ticket = selectedTickets.get(0);
-
-			PaymentTypeSelectionDialog dialog = new PaymentTypeSelectionDialog();
-			dialog.setSize(250, 400);
-			dialog.open();
-
-			if (!dialog.isCanceled()) {
-				ticket = TicketDAO.getInstance().initializeTicket(ticket);
-
-				SettleTicketView view = SettleTicketView.getInstance();
-				view.setPaymentView(dialog.getSelectedPaymentView());
-				view.setCurrentTicket(ticket);
-				RootView.getInstance().showView(SettleTicketView.VIEW_NAME);
+			
+			if (new SettleTicketAction(ticket).execute()) {
+				updateTicketList();
 			}
+			
 		} catch (Exception e) {
 			POSMessageDialog.showError(POSConstants.ERROR_MESSAGE, e);
 		}
@@ -438,36 +432,36 @@ public class SwitchboardView extends JPanel implements ActionListener {
 				POSMessageDialog.showMessage(POSConstants.SELECT_ONE_TICKET_TO_PRINT);
 				return;
 			}
-			
-			for(int i = 0; i < tickets.size(); i++) {
+
+			for (int i = 0; i < tickets.size(); i++) {
 				Ticket ticket = tickets.get(i);
 				tickets.set(i, TicketDAO.getInstance().initializeTicket(ticket));
 			}
-			
+
 			OrderInfoView view = new OrderInfoView(tickets);
 			OrderInfoDialog dialog = new OrderInfoDialog(view);
 			dialog.setSize(400, 600);
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setLocationRelativeTo(Application.getPosWindow());
 			dialog.setVisible(true);
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-//		Ticket ticket = selectedTickets.get(0);
-//		try {
-//			ticket = TicketDAO.getInstance().initializeTicket(ticket);
-//			ticket.calculateDefaultGratutity();
-//
-//			PosPrintService.printTicket(ticket, 0);
-//
-//			// PRINT ACTION
-//			String actionMessage = "CHK#" + ":" + ticket.getId();
-//			ActionHistoryDAO.getInstance().saveHistory(Application.getCurrentUser(), ActionHistory.PRINT_CHECK, actionMessage);
-//		} catch (Exception e) {
-//			POSMessageDialog.showError(this, e.getMessage(), e);
-//		}
+		//		Ticket ticket = selectedTickets.get(0);
+		//		try {
+		//			ticket = TicketDAO.getInstance().initializeTicket(ticket);
+		//			ticket.calculateDefaultGratutity();
+		//
+		//			PosPrintService.printTicket(ticket, 0);
+		//
+		//			// PRINT ACTION
+		//			String actionMessage = "CHK#" + ":" + ticket.getId();
+		//			ActionHistoryDAO.getInstance().saveHistory(Application.getCurrentUser(), ActionHistory.PRINT_CHECK, actionMessage);
+		//		} catch (Exception e) {
+		//			POSMessageDialog.showError(this, e.getMessage(), e);
+		//		}
 	}
 
 	private void doVoidTicket() {
@@ -562,7 +556,7 @@ public class SwitchboardView extends JPanel implements ActionListener {
 			}
 		}
 	}
-	
+
 	protected void doHomeDelivery(String ticketType) {
 		try {
 
@@ -627,10 +621,11 @@ public class SwitchboardView extends JPanel implements ActionListener {
 				selectedTickets.set(i, ticket);
 			}
 
-			SettleTicketView view = SettleTicketView.getInstance();
-			view.setPaymentView(dialog.getSelectedPaymentView());
-			view.setTicketsToSettle(selectedTickets);
-			RootView.getInstance().showView(SettleTicketView.VIEW_NAME);
+			SettleTicketView posDialog = new SettleTicketView();
+			posDialog.setTicketsToSettle(selectedTickets);
+			posDialog.setSize(800, 600);
+			posDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+			posDialog.open();
 		}
 	}
 
@@ -754,17 +749,17 @@ public class SwitchboardView extends JPanel implements ActionListener {
 	@Override
 	public void setVisible(boolean aFlag) {
 		super.setVisible(aFlag);
-		
-		if(aFlag)
-		updateTicketList();
-		
-//		if (aFlag) {
-//			updateView();
-//			ticketListUpdater.start();
-//		}
-//		else {
-//			ticketListUpdater.stop();
-//		}
+
+		if (aFlag)
+			updateTicketList();
+
+		//		if (aFlag) {
+		//			updateView();
+		//			ticketListUpdater.start();
+		//		}
+		//		else {
+		//			ticketListUpdater.stop();
+		//		}
 	}
 
 	public void actionPerformed(ActionEvent e) {
@@ -824,11 +819,11 @@ public class SwitchboardView extends JPanel implements ActionListener {
 		}
 	}
 
-//	private class TicketListUpdaterTask implements ActionListener {
-//
-//		public void actionPerformed(ActionEvent e) {
-//			updateTicketList();
-//		}
-//
-//	}
+	//	private class TicketListUpdaterTask implements ActionListener {
+	//
+	//		public void actionPerformed(ActionEvent e) {
+	//			updateTicketList();
+	//		}
+	//
+	//	}
 }

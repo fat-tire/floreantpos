@@ -12,31 +12,27 @@ public class TicketItem extends BaseTicketItem implements ITicketItem {
 	private static final long serialVersionUID = 1L;
 
 	/*[CONSTRUCTOR MARKER BEGIN]*/
-	public TicketItem () {
+	public TicketItem() {
 		super();
 	}
 
 	/**
 	 * Constructor for primary key
 	 */
-	public TicketItem (java.lang.Integer id) {
+	public TicketItem(java.lang.Integer id) {
 		super(id);
 	}
 
 	/**
 	 * Constructor for required fields
 	 */
-	public TicketItem (
-		java.lang.Integer id,
-		com.floreantpos.model.Ticket ticket) {
+	public TicketItem(java.lang.Integer id, com.floreantpos.model.Ticket ticket) {
 
-		super (
-			id,
-			ticket);
+		super(id, ticket);
 	}
 
 	/*[CONSTRUCTOR MARKER END]*/
-	
+
 	private boolean priceIncludesTax;
 
 	private int tableRowNum;
@@ -48,22 +44,30 @@ public class TicketItem extends BaseTicketItem implements ITicketItem {
 	public void setTableRowNum(int tableRowNum) {
 		this.tableRowNum = tableRowNum;
 	}
-	
+
 	public boolean canAddCookingInstruction() {
-		if(isPrintedToKitchen())
+		if (isPrintedToKitchen())
 			return false;
-		
+
 		return true;
+	}
+
+	public java.lang.Double getTaxAmount() {
+		if(getTicket().isTaxExempt()) {
+			return 0.0;
+		}
+		
+		return super.getTaxAmount();
 	}
 
 	@Override
 	public String toString() {
 		return getName();
 	}
-	
+
 	public void addCookingInstruction(TicketItemCookingInstruction cookingInstruction) {
 		List<TicketItemCookingInstruction> cookingInstructions = getCookingInstructions();
-		
+
 		if (cookingInstructions == null) {
 			cookingInstructions = new ArrayList<TicketItemCookingInstruction>(2);
 			setCookingInstructions(cookingInstructions);
@@ -71,27 +75,27 @@ public class TicketItem extends BaseTicketItem implements ITicketItem {
 
 		cookingInstructions.add(cookingInstruction);
 	}
-	
+
 	public void addCookingInstructions(List<TicketItemCookingInstruction> instructions) {
 		List<TicketItemCookingInstruction> cookingInstructions = getCookingInstructions();
-		
+
 		if (cookingInstructions == null) {
 			cookingInstructions = new ArrayList<TicketItemCookingInstruction>(2);
 			setCookingInstructions(cookingInstructions);
 		}
-		
+
 		cookingInstructions.addAll(instructions);
 	}
-	
+
 	public void removeCookingInstruction(TicketItemCookingInstruction itemCookingInstruction) {
 		List<TicketItemCookingInstruction> cookingInstructions2 = getCookingInstructions();
-		if(cookingInstructions2 == null) {
+		if (cookingInstructions2 == null) {
 			return;
 		}
-		
+
 		for (Iterator iterator = cookingInstructions2.iterator(); iterator.hasNext();) {
 			TicketItemCookingInstruction ticketItemCookingInstruction = (TicketItemCookingInstruction) iterator.next();
-			if(ticketItemCookingInstruction.getTableRowNum() == itemCookingInstruction.getTableRowNum()) {
+			if (ticketItemCookingInstruction.getTableRowNum() == itemCookingInstruction.getTableRowNum()) {
 				iterator.remove();
 				return;
 			}
@@ -123,14 +127,14 @@ public class TicketItem extends BaseTicketItem implements ITicketItem {
 
 	public void calculatePrice() {
 		priceIncludesTax = Application.getInstance().isPriceIncludesTax();
-		
+
 		List<TicketItemModifierGroup> ticketItemModifierGroups = getTicketItemModifierGroups();
 		if (ticketItemModifierGroups != null) {
 			for (TicketItemModifierGroup ticketItemModifierGroup : ticketItemModifierGroups) {
 				ticketItemModifierGroup.calculatePrice();
 			}
 		}
-		
+
 		setSubtotalAmount(NumberUtil.roundToTwoDigit(calculateSubtotal(true)));
 		setSubtotalAmountWithoutModifiers(NumberUtil.roundToTwoDigit(calculateSubtotal(false)));
 		setDiscountAmount(NumberUtil.roundToTwoDigit(calculateDiscount()));
@@ -139,19 +143,19 @@ public class TicketItem extends BaseTicketItem implements ITicketItem {
 		setTotalAmount(NumberUtil.roundToTwoDigit(calculateTotal(true)));
 		setTotalAmountWithoutModifiers(NumberUtil.roundToTwoDigit(calculateTotal(false)));
 	}
-	
-//	public double calculateSubtotal() {
-//		double subtotal = NumberUtil.roundToTwoDigit(calculateSubtotal(true));
-//		
-//		return subtotal;
-//	}
-//	
-//	public double calculateSubtotalWithoutModifiers() {
-//		double subtotalWithoutModifiers = NumberUtil.roundToTwoDigit(calculateSubtotal(false));
-//		
-//		return subtotalWithoutModifiers;
-//	}
-	
+
+	//	public double calculateSubtotal() {
+	//		double subtotal = NumberUtil.roundToTwoDigit(calculateSubtotal(true));
+	//		
+	//		return subtotal;
+	//	}
+	//	
+	//	public double calculateSubtotalWithoutModifiers() {
+	//		double subtotalWithoutModifiers = NumberUtil.roundToTwoDigit(calculateSubtotal(false));
+	//		
+	//		return subtotalWithoutModifiers;
+	//	}
+
 	private double calculateSubtotal(boolean includeModifierPrice) {
 		double subTotalAmount = NumberUtil.roundToTwoDigit(getUnitPrice() * getItemCount());
 
@@ -175,17 +179,17 @@ public class TicketItem extends BaseTicketItem implements ITicketItem {
 		if (discountRate > 0) {
 			discount = subtotalWithoutModifiers * discountRate / 100.0;
 		}
-		
+
 		return discount;
 	}
-	
+
 	private double calculateTax(boolean includeModifierTax) {
 		double subtotal = 0;
-		
+
 		subtotal = getSubtotalAmountWithoutModifiers();
-		
+
 		double discount = getDiscountAmount();
-		
+
 		subtotal = subtotal - discount;
 
 		double taxRate = getTaxRate();
@@ -199,7 +203,7 @@ public class TicketItem extends BaseTicketItem implements ITicketItem {
 				tax = subtotal * (taxRate / 100.0);
 			}
 		}
-		
+
 		if (includeModifierTax) {
 			List<TicketItemModifierGroup> ticketItemModifierGroups = getTicketItemModifierGroups();
 			if (ticketItemModifierGroups != null) {
@@ -214,9 +218,9 @@ public class TicketItem extends BaseTicketItem implements ITicketItem {
 
 	private double calculateTotal(boolean includeModifiers) {
 		double total = 0;
-		
-		if(includeModifiers) {
-			if(priceIncludesTax) {
+
+		if (includeModifiers) {
+			if (priceIncludesTax) {
 				total = getSubtotalAmount() - getDiscountAmount();
 			}
 			else {
@@ -224,14 +228,14 @@ public class TicketItem extends BaseTicketItem implements ITicketItem {
 			}
 		}
 		else {
-			if(priceIncludesTax) {
+			if (priceIncludesTax) {
 				total = getSubtotalAmountWithoutModifiers() - getDiscountAmount();
 			}
 			else {
 				total = getSubtotalAmountWithoutModifiers() - getDiscountAmount() + getTaxAmountWithoutModifiers();
 			}
 		}
-		
+
 		return total;
 	}
 

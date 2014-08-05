@@ -15,7 +15,7 @@ import org.apache.commons.lang.StringUtils;
 import com.floreantpos.config.CardConfig;
 
 public class CreditCardTransactionProcessor {
-	public static String processUsingMercuryNet(String cardTracks, double tenderedAmount, CardType cardType) throws Exception {
+	public static String processUsingAuthorizeDotNet(String cardTracks, double tenderedAmount, CardType cardType) throws Exception {
 		if (StringUtils.isEmpty(cardTracks)) {
 			throw new RuntimeException("Invalid card string");
 		}
