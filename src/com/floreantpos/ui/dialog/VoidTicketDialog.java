@@ -34,8 +34,6 @@ public class VoidTicketDialog extends POSDialog {
         super(parent, modal, true);
         initComponents();
         
-        ticketDetailView.setButtonPanelVisible(false);
-        
         try {
 			VoidReasonDAO dao = new VoidReasonDAO();
 			List<VoidReason> voidReasons = dao.findAll();
@@ -95,7 +93,6 @@ public class VoidTicketDialog extends POSDialog {
         jPanel2.setOpaque(false);
         jPanel2.setLayout(new java.awt.BorderLayout());
 
-        ticketDetailView.setBalanceDuePanelVisible(false);
         jPanel2.add(ticketDetailView, java.awt.BorderLayout.CENTER);
 
         transparentPanel2.setPreferredSize(new java.awt.Dimension(0, 80));

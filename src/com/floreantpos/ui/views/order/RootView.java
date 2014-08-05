@@ -6,7 +6,6 @@ import java.awt.Component;
 import javax.swing.border.EmptyBorder;
 
 import com.floreantpos.ui.views.LoginScreen;
-import com.floreantpos.ui.views.OpenTicketView;
 import com.floreantpos.ui.views.SettleTicketView;
 import com.floreantpos.ui.views.SwitchboardView;
 
@@ -17,7 +16,6 @@ public class RootView extends com.floreantpos.swing.TransparentPanel {
 	private SwitchboardView switchboardView;
 	private OrderView orderView;
 	private SettleTicketView paymentView;
-	private OpenTicketView openTicketView;
 
 	
 	private static RootView instance;
@@ -36,11 +34,8 @@ public class RootView extends com.floreantpos.swing.TransparentPanel {
 		orderView.init();
 		addView(OrderView.VIEW_NAME, orderView);
 		
-		paymentView = SettleTicketView.getInstance();
-		addView(SettleTicketView.VIEW_NAME, paymentView);
-		
-		openTicketView = new OpenTicketView();
-		addView(OpenTicketView.VIEW_NAME, openTicketView);
+		//paymentView = SettleTicketView.getInstance();
+		//addView(SettleTicketView.VIEW_NAME, paymentView);
 		
 		showView(LoginScreen.VIEW_NAME);
 	}
