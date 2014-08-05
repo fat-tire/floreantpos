@@ -1,5 +1,6 @@
 package com.floreantpos.ui.views.order;
 
+import com.floreantpos.actions.SettleTicketAction;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.ActionHistory;
 import com.floreantpos.model.MenuCategory;
@@ -11,9 +12,8 @@ import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.dao.ActionHistoryDAO;
 import com.floreantpos.model.dao.MenuItemDAO;
 import com.floreantpos.model.dao.TicketDAO;
-import com.floreantpos.swing.MessageDialog;
-import com.floreantpos.ui.dialog.PaymentTypeSelectionDialog;
 import com.floreantpos.ui.views.SettleTicketView;
+import com.floreantpos.ui.views.SwitchboardView;
 import com.floreantpos.ui.views.order.actions.CategorySelectionListener;
 import com.floreantpos.ui.views.order.actions.GroupSelectionListener;
 import com.floreantpos.ui.views.order.actions.ItemSelectionListener;
@@ -68,7 +68,8 @@ public class OrderController implements OrderListener, CategorySelectionListener
 		if (menuItem.getParent().getParent().isBeverage()) {
 			ticketItem.setBeverage(true);
 			ticketItem.setShouldPrintToKitchen(false);
-		} else {
+		}
+		else {
 			ticketItem.setBeverage(false);
 			ticketItem.setShouldPrintToKitchen(true);
 		}
@@ -119,20 +120,8 @@ public class OrderController implements OrderListener, CategorySelectionListener
 	}
 
 	public void payOrderSelected(Ticket ticket) {
-		PaymentTypeSelectionDialog dialog = new PaymentTypeSelectionDialog();
-		dialog.setSize(250, 400);
-		dialog.open();
-
-		if (!dialog.isCanceled()) {
-			try {
-				saveOrder(ticket);
-				SettleTicketView view = SettleTicketView.getInstance();
-				view.setPaymentView(dialog.getSelectedPaymentView());
-				view.setCurrentTicket(ticket);
-				RootView.getInstance().showView(SettleTicketView.VIEW_NAME);
-			} catch (Exception e) {
-				MessageDialog.showError(e);
-			}
+		if (new SettleTicketAction(ticket).execute()) {
+			RootView.getInstance().showView(SwitchboardView.VIEW_NAME);
 		}
 	}
 
@@ -147,9 +136,12 @@ public class OrderController implements OrderListener, CategorySelectionListener
 
 		//			save the action
 		if (newTicket) {
-			ActionHistoryDAO.getInstance().saveHistory(Application.getCurrentUser(), ActionHistory.NEW_CHECK, com.floreantpos.POSConstants.RECEIPT_REPORT_TICKET_NO_LABEL + ":" + ticket.getId());
-		} else {
-			ActionHistoryDAO.getInstance().saveHistory(Application.getCurrentUser(), ActionHistory.EDIT_CHECK, com.floreantpos.POSConstants.RECEIPT_REPORT_TICKET_NO_LABEL + ":" + ticket.getId());
+			ActionHistoryDAO.getInstance().saveHistory(Application.getCurrentUser(), ActionHistory.NEW_CHECK,
+					com.floreantpos.POSConstants.RECEIPT_REPORT_TICKET_NO_LABEL + ":" + ticket.getId());
+		}
+		else {
+			ActionHistoryDAO.getInstance().saveHistory(Application.getCurrentUser(), ActionHistory.EDIT_CHECK,
+					com.floreantpos.POSConstants.RECEIPT_REPORT_TICKET_NO_LABEL + ":" + ticket.getId());
 		}
 	}
 }

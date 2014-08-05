@@ -96,12 +96,11 @@ public class CardPaymentView extends PaymentView {
 		if (CardConfig.getMerchantGateway() == MerchantGateway.AUTHORIZE_NET) {
 			try {
 				if(validateInput()) {
-					String authorizationCode = CreditCardTransactionProcessor.processUsingMercuryNet(cardString, tenderedAmount, CardType.VISA);
+					String authorizationCode = CreditCardTransactionProcessor.processUsingAuthorizeDotNet(cardString, tenderedAmount, CardType.VISA);
 					doSettle(authorizationCode);
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
-				POSMessageDialog.showError(e.getMessage());
 			}
 		}
 	}
@@ -407,7 +406,6 @@ public class CardPaymentView extends PaymentView {
 	}//GEN-LAST:event_btnCancelActionPerformed
 
 	private void btnChangePMethodActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChangePMethodActionPerformed
-		changePaymentMethod();
 	}//GEN-LAST:event_btnChangePMethodActionPerformed
 
 	private JTextField getFocusedTextField() {

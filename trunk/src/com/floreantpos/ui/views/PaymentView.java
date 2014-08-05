@@ -107,19 +107,19 @@ public abstract class PaymentView extends JPanel {
 		return tips;
 	}
 	
-	public void changePaymentMethod() {
-		PaymentTypeSelectionDialog dialog = new PaymentTypeSelectionDialog();
-		dialog.setSize(250, 400);
-		dialog.open();
-		if (!dialog.isCanceled()) {
-			SettleTicketView view = SettleTicketView.getInstance();
-			view.setPaymentView(dialog.getSelectedPaymentView());
-			
-			view.setTicketsToSettle(settleTicketView.getTicketsToSettle());
-			
-			RootView.getInstance().showView(SettleTicketView.VIEW_NAME);
-		}
-	}
+//	public void changePaymentMethod() {
+//		PaymentTypeSelectionDialog dialog = new PaymentTypeSelectionDialog();
+//		dialog.setSize(250, 400);
+//		dialog.open();
+//		if (!dialog.isCanceled()) {
+//			SettleTicketView view = SettleTicketView.getInstance();
+//			view.setPaymentView(dialog.getSelectedPaymentView());
+//			
+//			view.setTicketsToSettle(settleTicketView.getTicketsToSettle());
+//			
+//			RootView.getInstance().showView(SettleTicketView.VIEW_NAME);
+//		}
+//	}
 	
 	public void settleTickets(final double tenderedAmount, final double gratuityAmount, PosTransaction posTransaction, String cardType, String cardAuthorizationCode) {
 		try {
@@ -180,7 +180,7 @@ public abstract class PaymentView extends JPanel {
 				paymentTypeSelectionDialog.open();
 
 				if (!paymentTypeSelectionDialog.isCanceled()) {
-					settleTicketView.setPaymentView(paymentTypeSelectionDialog.getSelectedPaymentView());
+					//settleTicketView.setPaymentView(paymentTypeSelectionDialog.getSelectedPaymentView());
 					settleTicketView.setTicketsToSettle(ticketsToSettle);
 				}
 			}

@@ -19,7 +19,6 @@ public class TicketDetailDialog extends POSDialog {
         super(parent, modal);
         initComponents();
         
-        ticketDetailView.setDiscountPanelVisible(true);
         setResizable(false);
         pack();
     }
@@ -48,9 +47,6 @@ public class TicketDetailDialog extends POSDialog {
                 doFinish(evt);
             }
         });
-
-        ticketDetailView.setBalanceDuePanelVisible(false);
-        ticketDetailView.setDiscountPanelVisible(false);
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -106,12 +102,5 @@ public class TicketDetailDialog extends POSDialog {
 		ticketDetailView.setTicket(ticket);
 	}
 
-	public void setBalanceDuePanelVisible(boolean b) {
-		ticketDetailView.setBalanceDuePanelVisible(b);
-	}
-	
-	public void setButtonPanelVisible(boolean b) {
-		ticketDetailView.setButtonPanelVisible(b);
-	}
     
 }
