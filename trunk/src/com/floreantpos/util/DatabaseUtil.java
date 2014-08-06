@@ -11,6 +11,8 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.classic.Session;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 
+import com.floreantpos.inventory.model.InventoryGroup;
+import com.floreantpos.inventory.model.dao.InventoryGroupDAO;
 import com.floreantpos.model.MenuCategory;
 import com.floreantpos.model.MenuGroup;
 import com.floreantpos.model.MenuItem;
@@ -176,5 +178,15 @@ public class DatabaseUtil {
 			throw new DatabaseConnectionException(e);
 		}
 
+	}
+	
+	public static void main(String[] args) throws Exception {
+		initialize();
+		
+		InventoryGroup group = new InventoryGroup();
+		group.setName("Test group");
+		
+		InventoryGroupDAO dao = new InventoryGroupDAO();
+		dao.saveOrUpdate(group);
 	}
 }

@@ -6,6 +6,15 @@ import org.hibernate.cfg.Configuration;
 
 import com.floreantpos.Database;
 import com.floreantpos.config.AppConfig;
+import com.floreantpos.inventory.model.InventoryGroup;
+import com.floreantpos.inventory.model.InventoryItem;
+import com.floreantpos.inventory.model.InventoryLocation;
+import com.floreantpos.inventory.model.InventoryMetaCode;
+import com.floreantpos.inventory.model.InventoryTransaction;
+import com.floreantpos.inventory.model.InventoryTransactionType;
+import com.floreantpos.inventory.model.InventoryUnit;
+import com.floreantpos.inventory.model.InventoryVendor;
+import com.floreantpos.inventory.model.InventoryWarehouse;
 import com.floreantpos.model.ActionHistory;
 import com.floreantpos.model.AttendenceHistory;
 import com.floreantpos.model.CashDrawerResetHistory;
@@ -99,6 +108,8 @@ public abstract class _RootDAO extends com.floreantpos.model.dao._BaseRootDAO {
 		configuration = configuration.addClass(UserType.class);
 		configuration = configuration.addClass(Customer.class);
 		
+		configuration = configureInventoryClasses(configuration);
+		
 		Database defaultDatabase = AppConfig.getDefaultDatabase();
 
 		configuration = configuration.setProperty("hibernate.dialect", defaultDatabase.getHibernateDialect());
@@ -112,6 +123,20 @@ public abstract class _RootDAO extends com.floreantpos.model.dao._BaseRootDAO {
 		configuration = configuration.setProperty("hibernate.max_fetch_depth", "3");
 		configuration = configuration.setProperty("hibernate.show_sql", "false");
 
+		return configuration;
+	}
+	
+	private static AnnotationConfiguration configureInventoryClasses(AnnotationConfiguration configuration) {
+		configuration = configuration.addClass(InventoryGroup.class);
+		configuration = configuration.addClass(InventoryItem.class);
+		configuration = configuration.addClass(InventoryLocation.class);
+		configuration = configuration.addClass(InventoryMetaCode.class);
+		configuration = configuration.addClass(InventoryTransaction.class);
+		configuration = configuration.addClass(InventoryTransactionType.class);
+		configuration = configuration.addClass(InventoryUnit.class);
+		configuration = configuration.addClass(InventoryVendor.class);
+		configuration = configuration.addClass(InventoryWarehouse.class);
+		
 		return configuration;
 	}
 	
