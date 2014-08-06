@@ -12,13 +12,13 @@ import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.dao.ActionHistoryDAO;
 import com.floreantpos.model.dao.MenuItemDAO;
 import com.floreantpos.model.dao.TicketDAO;
-import com.floreantpos.ui.views.SettleTicketView;
 import com.floreantpos.ui.views.SwitchboardView;
 import com.floreantpos.ui.views.order.actions.CategorySelectionListener;
 import com.floreantpos.ui.views.order.actions.GroupSelectionListener;
 import com.floreantpos.ui.views.order.actions.ItemSelectionListener;
 import com.floreantpos.ui.views.order.actions.ModifierSelectionListener;
 import com.floreantpos.ui.views.order.actions.OrderListener;
+import com.floreantpos.ui.views.payment.SettleTicketView;
 
 public class OrderController implements OrderListener, CategorySelectionListener, GroupSelectionListener, ItemSelectionListener, ModifierSelectionListener {
 	private OrderView orderView;

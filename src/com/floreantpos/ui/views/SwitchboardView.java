@@ -48,6 +48,7 @@ import com.floreantpos.ui.dialog.VoidTicketDialog;
 import com.floreantpos.ui.views.order.DefaultOrderServiceExtension;
 import com.floreantpos.ui.views.order.OrderView;
 import com.floreantpos.ui.views.order.RootView;
+import com.floreantpos.ui.views.payment.SettleTicketView;
 import com.floreantpos.util.NumberUtil;
 import com.floreantpos.util.TicketAlreadyExistsException;
 

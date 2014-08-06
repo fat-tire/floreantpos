@@ -31,8 +31,6 @@ public class TicketDetailView extends JPanel {
 
 	public final static String VIEW_NAME = "TICKET_DETAIL";
 
-	private SettleTicketView settleTicketView;
-
 	private JPanel topPanel;
 
 	private List<Ticket> tickets;
@@ -91,14 +89,6 @@ public class TicketDetailView extends JPanel {
 
 	// End of variables declaration//GEN-END:variables
 
-
-	public SettleTicketView getSettleTicketView() {
-		return settleTicketView;
-	}
-
-	public void setSettleTicketView(SettleTicketView settleTicketView) {
-		this.settleTicketView = settleTicketView;
-	}
 
 	public List<Ticket> getTickets() {
 		return tickets;
