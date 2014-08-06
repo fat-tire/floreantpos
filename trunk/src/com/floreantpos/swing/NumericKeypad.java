@@ -1,9 +1,12 @@
 package com.floreantpos.swing;
 
+import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.event.EventListenerList;
 
 import com.floreantpos.swing.event.KeypadEvent;
@@ -230,4 +233,13 @@ public class NumericKeypad extends javax.swing.JComponent {
 		return isProtected;
 	}
 
+	public static void main(String[] args) {
+		JPanel p = new JPanel(new BorderLayout());
+		p.add(new NumericKeypad());
+		JFrame frame = new JFrame();
+		frame.add(p);
+		frame.pack();
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setVisible(true);
+	}
 }

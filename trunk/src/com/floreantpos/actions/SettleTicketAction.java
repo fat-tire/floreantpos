@@ -8,7 +8,7 @@ import javax.swing.JDialog;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.ui.dialog.POSMessageDialog;
-import com.floreantpos.ui.views.SettleTicketView;
+import com.floreantpos.ui.views.payment.SettleTicketView;
 
 public class SettleTicketAction extends AbstractAction {
 
