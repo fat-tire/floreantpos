@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.floreantpos.model.inventory">
+  <class lazy="false" name="com.floreantpos.model.inventory.InventoryWarehouse" optimistic-lock="version" table="INVENTORY_WAREHOUSE">
+    <id column="ID" name="id" type="java.lang.Integer">
+      <generator class="identity"/>
+    </id>
+    <version column="MODIFIED_TIME" name="modifiedTime" type="timestamp"/>
+    
+    <property column="NAME" length="60" name="name" not-null="true" type="java.lang.String"/>
+    <property column="VISIBLE" name="visible" type="java.lang.Boolean"/>
+    
+  </class>
+</hibernate-mapping>

@@ -39,6 +39,15 @@ import com.floreantpos.model.User;
 import com.floreantpos.model.UserPermission;
 import com.floreantpos.model.UserType;
 import com.floreantpos.model.VoidReason;
+import com.floreantpos.model.inventory.InventoryGroup;
+import com.floreantpos.model.inventory.InventoryItem;
+import com.floreantpos.model.inventory.InventoryLocation;
+import com.floreantpos.model.inventory.InventoryMetaCode;
+import com.floreantpos.model.inventory.InventoryTransaction;
+import com.floreantpos.model.inventory.InventoryTransactionType;
+import com.floreantpos.model.inventory.InventoryUnit;
+import com.floreantpos.model.inventory.InventoryVendor;
+import com.floreantpos.model.inventory.InventoryWarehouse;
 
 public abstract class _RootDAO extends com.floreantpos.model.dao._BaseRootDAO {
 
@@ -118,15 +127,15 @@ public abstract class _RootDAO extends com.floreantpos.model.dao._BaseRootDAO {
 	}
 	
 	private static AnnotationConfiguration configureInventoryClasses(AnnotationConfiguration configuration) {
-//		configuration = configuration.addClass(InventoryGroup.class);
-//		configuration = configuration.addClass(InventoryItem.class);
-//		configuration = configuration.addClass(InventoryLocation.class);
-//		configuration = configuration.addClass(InventoryMetaCode.class);
-//		configuration = configuration.addClass(InventoryTransaction.class);
-//		configuration = configuration.addClass(InventoryTransactionType.class);
-//		configuration = configuration.addClass(InventoryUnit.class);
-//		configuration = configuration.addClass(InventoryVendor.class);
-//		configuration = configuration.addClass(InventoryWarehouse.class);
+		configuration = configuration.addClass(InventoryGroup.class);
+		configuration = configuration.addClass(InventoryItem.class);
+		configuration = configuration.addClass(InventoryLocation.class);
+		configuration = configuration.addClass(InventoryMetaCode.class);
+		configuration = configuration.addClass(InventoryTransaction.class);
+		configuration = configuration.addClass(InventoryTransactionType.class);
+		configuration = configuration.addClass(InventoryUnit.class);
+		configuration = configuration.addClass(InventoryVendor.class);
+		configuration = configuration.addClass(InventoryWarehouse.class);
 		
 		return configuration;
 	}
