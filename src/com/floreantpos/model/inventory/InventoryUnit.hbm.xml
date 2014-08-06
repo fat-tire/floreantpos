@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.floreantpos.model.inventory">
+  <class lazy="false" name="com.floreantpos.model.inventory.InventoryUnit" optimistic-lock="version" table="INVENTORY_UNIT">
+    <id column="ID" name="id" type="java.lang.Integer">
+      <generator class="identity"/>
+    </id>
+    <version column="MODIFIED_TIME" name="modifiedTime" type="timestamp"/>
+    
+    <property column="SHORT_NAME" name="shortName" type="string"/>
+    <property column="LONG_NAME" name="longName" type="string" />
+    <property column="ALT_NAME" name="alternativeName" type="string" />
+    <property column="CONV_FACTOR1" name="conversionFactor1" type="string" />
+    <property column="CONV_FACTOR2" name="conversionFactor2" type="string" />
+    <property column="CONV_FACTOR3" name="conversionFactor3" type="string" />
+    
+    
+    
+  </class>
+</hibernate-mapping>
