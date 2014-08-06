@@ -1,4 +1,4 @@
-package com.floreantpos.ui.views;
+package com.floreantpos.ui.views.payment;
 
 import java.awt.BorderLayout;
 import java.util.ArrayList;
@@ -23,8 +23,8 @@ import com.floreantpos.ui.dialog.POSDialog;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.dialog.PaymentTypeSelectionDialog;
 import com.floreantpos.ui.dialog.SwipeCardDialog;
-import com.floreantpos.ui.views.payment.CashPaymentView;
-import com.floreantpos.ui.views.payment.CreditCardTransactionProcessor;
+import com.floreantpos.ui.views.SwitchboardView;
+import com.floreantpos.ui.views.TicketDetailView;
 
 public class SettleTicketView extends POSDialog {
 	public final static String VIEW_NAME = "PAYMENT_VIEW";
@@ -35,7 +35,7 @@ public class SettleTicketView extends POSDialog {
 	private com.floreantpos.swing.TransparentPanel rightPanel = new com.floreantpos.swing.TransparentPanel(new BorderLayout());
 
 	private TicketDetailView ticketDetailView;
-	private CashPaymentView paymentView;
+	private PaymentView paymentView;
 	protected List<Ticket> ticketsToSettle;
 
 	public SettleTicketView() {
@@ -45,10 +45,7 @@ public class SettleTicketView extends POSDialog {
 		getContentPane().setLayout(new BorderLayout(5, 5));
 
 		ticketDetailView = new TicketDetailView();
-		ticketDetailView.setSettleTicketView(this);
-
-		paymentView = new CashPaymentView();
-		paymentView.setSettleTicketView(this);
+		paymentView = new PaymentView(this);
 
 		leftPanel.add(ticketDetailView);
 		rightPanel.add(paymentView);

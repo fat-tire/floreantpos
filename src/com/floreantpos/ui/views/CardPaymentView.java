@@ -42,7 +42,7 @@ import com.floreantpos.util.NumberUtil;
  *
  * @author  MShahriar
  */
-public class CardPaymentView extends PaymentView {
+public class CardPaymentView  {
 	public final static int CARD_TYPE_CREDIT = 0;
 	public final static int CARD_TYPE_DEBIT = 1;
 
@@ -61,33 +61,33 @@ public class CardPaymentView extends PaymentView {
 	public CardPaymentView() {
 		initComponents();
 
-		DoubleDocument gratuityDocument = new DoubleDocument();
-		gratuityDocument.addDocumentListener(new DocumentListener() {
-			void updatePayAmount() {
-				double cardAmount = 0;
-				double gratuity = 0;
-
-				try {
-					gratuity = Double.parseDouble(tfGratuityAmount.getText());
-				} catch (Exception x) {
-				}
-				cardAmount = getDueAmount();
-				tfCardAmount.setText(NumberUtil.formatNumber(cardAmount + gratuity));
-			}
-
-			public void insertUpdate(DocumentEvent e) {
-				updatePayAmount();
-			}
-
-			public void removeUpdate(DocumentEvent e) {
-				updatePayAmount();
-			}
-
-			public void changedUpdate(DocumentEvent e) {
-				updatePayAmount();
-			}
-
-		});
+//		DoubleDocument gratuityDocument = new DoubleDocument();
+//		gratuityDocument.addDocumentListener(new DocumentListener() {
+//			void updatePayAmount() {
+//				double cardAmount = 0;
+//				double gratuity = 0;
+//
+//				try {
+//					gratuity = Double.parseDouble(tfGratuityAmount.getText());
+//				} catch (Exception x) {
+//				}
+//				cardAmount = getDueAmount();
+//				tfCardAmount.setText(NumberUtil.formatNumber(cardAmount + gratuity));
+//			}
+//
+//			public void insertUpdate(DocumentEvent e) {
+//				updatePayAmount();
+//			}
+//
+//			public void removeUpdate(DocumentEvent e) {
+//				updatePayAmount();
+//			}
+//
+//			public void changedUpdate(DocumentEvent e) {
+//				updatePayAmount();
+//			}
+//
+//		});
 	}
 
 	protected void processCard() {
@@ -118,259 +118,259 @@ public class CardPaymentView extends PaymentView {
 	 */
 	// <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:initComponents
 	private void initComponents() {
-		buttonGroup1 = new javax.swing.ButtonGroup();
-		transparentPanel5 = new com.floreantpos.swing.TransparentPanel();
-		btnChangePMethod = new com.floreantpos.swing.PosButton();
-		btnCancel = new com.floreantpos.swing.PosButton();
-		btnSettle = new com.floreantpos.swing.PosButton();
-		transparentPanel8 = new com.floreantpos.swing.TransparentPanel();
-
-		setLayout(new java.awt.BorderLayout(0, 5));
-
-		setBorder(javax.swing.BorderFactory.createTitledBorder(null, com.floreantpos.POSConstants.TITLE, javax.swing.border.TitledBorder.CENTER,
-				javax.swing.border.TitledBorder.DEFAULT_POSITION));
-
-		transparentPanel5.setLayout(new java.awt.GridLayout(1, 0, 5, 5));
-
-		transparentPanel5.setPreferredSize(new java.awt.Dimension(100, 60));
-		btnChangePMethod.setText("<html><body><p align='center'>CHANGE PAYMENT METHOD</p></body></html>");
-		btnChangePMethod.setFocusable(false);
-		btnChangePMethod.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				btnChangePMethodActionPerformed(evt);
-			}
-		});
-
-		transparentPanel5.add(btnChangePMethod);
-
-		btnCancel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cancel_32.png")));
-		btnCancel.setText(com.floreantpos.POSConstants.CANCEL);
-		btnCancel.setFocusable(false);
-		btnCancel.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				btnCancelActionPerformed(evt);
-			}
-		});
-
-		transparentPanel5.add(btnCancel);
-
-		btnSettle.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/settle_ticket_32.png")));
-		btnSettle.setText(com.floreantpos.POSConstants.SETTLE);
-		btnSettle.setFocusable(false);
-		btnSettle.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				if(validateInput()) {
-					doSettle(null);
-				}
-			}
-		});
-
-		transparentPanel5.add(btnSettle);
-
-		add(transparentPanel5, java.awt.BorderLayout.SOUTH);
-		transparentPanel8.setLayout(new BorderLayout(10, 10));
-
-		transparentPanel = new TransparentPanel();
-		transparentPanel8.add(transparentPanel, BorderLayout.NORTH);
-		transparentPanel.setLayout(new MigLayout("", "[][grow][]", "[][][][]"));
-
-		lblTotal = new JLabel("DUE AMOUNT");
-		lblTotal.setFont(new Font("Dialog", Font.BOLD, 12));
-		transparentPanel.add(lblTotal, "cell 0 0,alignx right");
-
-		add(transparentPanel8, java.awt.BorderLayout.CENTER);
-		
-		lblCSymbol3 = new JLabel("");
-		transparentPanel.add(lblCSymbol3, "cell 1 0,alignx trailing");
-
-		tfDueAmount = new FocusedTextField();
-		tfDueAmount.setHorizontalAlignment(SwingConstants.RIGHT);
-		tfDueAmount.setFont(new Font("Dialog", Font.BOLD, 12));
-		tfDueAmount.setEditable(false);
-		transparentPanel.add(tfDueAmount, "cell 2 0,growx");
-		jLabel1 = new javax.swing.JLabel();
-		jLabel1.setFont(new Font("Dialog", Font.BOLD, 12));
-		transparentPanel.add(jLabel1, "cell 0 1,alignx right");
-		jLabel1.setText("GRATUITY AMOUNT");
-		lblCSymbol1 = new javax.swing.JLabel();
-		transparentPanel.add(lblCSymbol1, "cell 1 1");
-
-		tfGratuityAmount = new FocusedTextField();
-		tfGratuityAmount.setHorizontalAlignment(SwingConstants.RIGHT);
-		tfGratuityAmount.setColumns(20);
-		transparentPanel.add(tfGratuityAmount, "cell 2 1,growx");
-
-		tfGratuityAmount.setFont(new Font("Dialog", Font.BOLD, 12));
-		tfGratuityAmount.setText("0");
-		jLabel2 = new javax.swing.JLabel();
-		jLabel2.setFont(new Font("Dialog", Font.BOLD, 12));
-		transparentPanel.add(jLabel2, "cell 0 2,alignx right");
-		jLabel2.setText("AMOUNT TO BE CHARGED");
-		lblCSymbol2 = new javax.swing.JLabel();
-		transparentPanel.add(lblCSymbol2, "cell 1 2");
-
-		tfCardAmount = new FocusedTextField();
-		tfCardAmount.setHorizontalAlignment(SwingConstants.RIGHT);
-		tfCardAmount.setColumns(20);
-		transparentPanel.add(tfCardAmount, "cell 2 2,growx");
-
-		tfCardAmount.setFont(new Font("Dialog", Font.BOLD, 12));
-		tfCardAmount.setText("0");
-		jLabel3 = new javax.swing.JLabel();
-		jLabel3.setFont(new Font("Dialog", Font.BOLD, 12));
-		transparentPanel.add(jLabel3, "cell 0 3,alignx right");
-		jLabel3.setText("SWIPE CARD HERE");
-		tfAuthorizationCode = new FocusedTextField();
-		tfAuthorizationCode.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				processCard();
-			}
-		});
-		tfAuthorizationCode.setHorizontalAlignment(SwingConstants.RIGHT);
-		tfAuthorizationCode.setColumns(20);
-		transparentPanel.add(tfAuthorizationCode, "cell 2 3,alignx center");
-
-		tfAuthorizationCode.setFont(new Font("Dialog", Font.BOLD, 12));
-
-		TransparentPanel transparentPanel_1 = new TransparentPanel();
-		transparentPanel8.add(transparentPanel_1);
-		transparentPanel_1.setLayout(new BorderLayout(5, 5));
-		transparentPanel10 = new com.floreantpos.swing.TransparentPanel();
-		transparentPanel_1.add(transparentPanel10, BorderLayout.WEST);
-		btnMasterCard = new com.floreantpos.swing.POSToggleButton();
-		btnVisa = new com.floreantpos.swing.POSToggleButton();
-		btnEmEx = new com.floreantpos.swing.POSToggleButton();
-		btnDiscover = new com.floreantpos.swing.POSToggleButton();
-
-		transparentPanel10.setLayout(new java.awt.GridLayout(0, 1, 5, 5));
-
-		buttonGroup1.add(btnMasterCard);
-		btnMasterCard.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/master_card.PNG")));
-		btnMasterCard.setSelected(true);
-		btnMasterCard.setActionCommand("MASTER_CARD");
-		btnMasterCard.setPreferredSize(new java.awt.Dimension(90, 0));
-		transparentPanel10.add(btnMasterCard);
-
-		buttonGroup1.add(btnVisa);
-		btnVisa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/visa_card.PNG")));
-		btnVisa.setActionCommand("VISA_CARD");
-		btnVisa.setPreferredSize(new java.awt.Dimension(90, 0));
-		transparentPanel10.add(btnVisa);
-
-		buttonGroup1.add(btnEmEx);
-		btnEmEx.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/am_ex_card.PNG")));
-		btnEmEx.setActionCommand("EMEX_CARD");
-		btnEmEx.setPreferredSize(new java.awt.Dimension(90, 0));
-		transparentPanel10.add(btnEmEx);
-
-		buttonGroup1.add(btnDiscover);
-		btnDiscover.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/discover_card.PNG")));
-		btnDiscover.setActionCommand("DISCOVER_CARD");
-		btnDiscover.setPreferredSize(new java.awt.Dimension(90, 0));
-		transparentPanel10.add(btnDiscover);
-		transparentPanel9 = new com.floreantpos.swing.TransparentPanel();
-		transparentPanel_1.add(transparentPanel9, BorderLayout.CENTER);
-		posButton1 = new com.floreantpos.swing.PosButton();
-		posButton2 = new com.floreantpos.swing.PosButton();
-		posButton3 = new com.floreantpos.swing.PosButton();
-		posButton4 = new com.floreantpos.swing.PosButton();
-		posButton5 = new com.floreantpos.swing.PosButton();
-		posButton6 = new com.floreantpos.swing.PosButton();
-		posButton9 = new com.floreantpos.swing.PosButton();
-		posButton8 = new com.floreantpos.swing.PosButton();
-		posButton7 = new com.floreantpos.swing.PosButton();
-		posButton10 = new com.floreantpos.swing.PosButton();
-		posButton11 = new com.floreantpos.swing.PosButton();
-		posButton12 = new com.floreantpos.swing.PosButton();
-
-		transparentPanel9.setLayout(new java.awt.GridLayout(0, 3, 5, 5));
-
-		posButton1.setAction(calAction);
-		posButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/7_32.png")));
-		posButton1.setActionCommand("7");
-		posButton1.setFocusable(false);
-		transparentPanel9.add(posButton1);
-
-		posButton2.setAction(calAction);
-		posButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/8_32.png")));
-		posButton2.setActionCommand("8");
-		posButton2.setFocusable(false);
-		transparentPanel9.add(posButton2);
-
-		posButton3.setAction(calAction);
-		posButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/9_32.png")));
-		posButton3.setActionCommand("9");
-		posButton3.setFocusable(false);
-		transparentPanel9.add(posButton3);
-
-		posButton4.setAction(calAction);
-		posButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/4_32.png")));
-		posButton4.setActionCommand("4");
-		posButton4.setFocusable(false);
-		transparentPanel9.add(posButton4);
-
-		posButton5.setAction(calAction);
-		posButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/5_32.png")));
-		posButton5.setActionCommand("5");
-		posButton5.setFocusable(false);
-		transparentPanel9.add(posButton5);
-
-		posButton6.setAction(calAction);
-		posButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/6_32.png")));
-		posButton6.setActionCommand("6");
-		posButton6.setFocusable(false);
-		transparentPanel9.add(posButton6);
-
-		posButton9.setAction(calAction);
-		posButton9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/1_32.png")));
-		posButton9.setActionCommand("1");
-		posButton9.setFocusable(false);
-		transparentPanel9.add(posButton9);
-
-		posButton8.setAction(calAction);
-		posButton8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/2_32.png")));
-		posButton8.setActionCommand("2");
-		posButton8.setFocusable(false);
-		transparentPanel9.add(posButton8);
-
-		posButton7.setAction(calAction);
-		posButton7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/3_32.png")));
-		posButton7.setActionCommand("3");
-		posButton7.setFocusable(false);
-		transparentPanel9.add(posButton7);
-
-		posButton10.setAction(calAction);
-		posButton10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/dot_32.png")));
-		posButton10.setActionCommand(".");
-		posButton10.setFocusable(false);
-		transparentPanel9.add(posButton10);
-
-		posButton11.setAction(calAction);
-		posButton11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/0_32.png")));
-		posButton11.setActionCommand("0");
-		posButton11.setFocusable(false);
-		transparentPanel9.add(posButton11);
-
-		posButton12.setAction(calAction);
-		posButton12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/clear_32.png")));
-		posButton12.setText(com.floreantpos.POSConstants.CLEAR);
-		posButton12.setFocusable(false);
-		transparentPanel9.add(posButton12);
+//		buttonGroup1 = new javax.swing.ButtonGroup();
+//		transparentPanel5 = new com.floreantpos.swing.TransparentPanel();
+//		btnChangePMethod = new com.floreantpos.swing.PosButton();
+//		btnCancel = new com.floreantpos.swing.PosButton();
+//		btnSettle = new com.floreantpos.swing.PosButton();
+//		transparentPanel8 = new com.floreantpos.swing.TransparentPanel();
+//
+//		setLayout(new java.awt.BorderLayout(0, 5));
+//
+//		setBorder(javax.swing.BorderFactory.createTitledBorder(null, com.floreantpos.POSConstants.TITLE, javax.swing.border.TitledBorder.CENTER,
+//				javax.swing.border.TitledBorder.DEFAULT_POSITION));
+//
+//		transparentPanel5.setLayout(new java.awt.GridLayout(1, 0, 5, 5));
+//
+//		transparentPanel5.setPreferredSize(new java.awt.Dimension(100, 60));
+//		btnChangePMethod.setText("<html><body><p align='center'>CHANGE PAYMENT METHOD</p></body></html>");
+//		btnChangePMethod.setFocusable(false);
+//		btnChangePMethod.addActionListener(new java.awt.event.ActionListener() {
+//			public void actionPerformed(java.awt.event.ActionEvent evt) {
+//				btnChangePMethodActionPerformed(evt);
+//			}
+//		});
+//
+//		transparentPanel5.add(btnChangePMethod);
+//
+//		btnCancel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cancel_32.png")));
+//		btnCancel.setText(com.floreantpos.POSConstants.CANCEL);
+//		btnCancel.setFocusable(false);
+//		btnCancel.addActionListener(new java.awt.event.ActionListener() {
+//			public void actionPerformed(java.awt.event.ActionEvent evt) {
+//				btnCancelActionPerformed(evt);
+//			}
+//		});
+//
+//		transparentPanel5.add(btnCancel);
+//
+//		btnSettle.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/settle_ticket_32.png")));
+//		btnSettle.setText(com.floreantpos.POSConstants.SETTLE);
+//		btnSettle.setFocusable(false);
+//		btnSettle.addActionListener(new java.awt.event.ActionListener() {
+//			public void actionPerformed(java.awt.event.ActionEvent evt) {
+//				if(validateInput()) {
+//					doSettle(null);
+//				}
+//			}
+//		});
+//
+//		transparentPanel5.add(btnSettle);
+//
+//		add(transparentPanel5, java.awt.BorderLayout.SOUTH);
+//		transparentPanel8.setLayout(new BorderLayout(10, 10));
+//
+//		transparentPanel = new TransparentPanel();
+//		transparentPanel8.add(transparentPanel, BorderLayout.NORTH);
+//		transparentPanel.setLayout(new MigLayout("", "[][grow][]", "[][][][]"));
+//
+//		lblTotal = new JLabel("DUE AMOUNT");
+//		lblTotal.setFont(new Font("Dialog", Font.BOLD, 12));
+//		transparentPanel.add(lblTotal, "cell 0 0,alignx right");
+//
+//		add(transparentPanel8, java.awt.BorderLayout.CENTER);
+//		
+//		lblCSymbol3 = new JLabel("");
+//		transparentPanel.add(lblCSymbol3, "cell 1 0,alignx trailing");
+//
+//		tfDueAmount = new FocusedTextField();
+//		tfDueAmount.setHorizontalAlignment(SwingConstants.RIGHT);
+//		tfDueAmount.setFont(new Font("Dialog", Font.BOLD, 12));
+//		tfDueAmount.setEditable(false);
+//		transparentPanel.add(tfDueAmount, "cell 2 0,growx");
+//		jLabel1 = new javax.swing.JLabel();
+//		jLabel1.setFont(new Font("Dialog", Font.BOLD, 12));
+//		transparentPanel.add(jLabel1, "cell 0 1,alignx right");
+//		jLabel1.setText("GRATUITY AMOUNT");
+//		lblCSymbol1 = new javax.swing.JLabel();
+//		transparentPanel.add(lblCSymbol1, "cell 1 1");
+//
+//		tfGratuityAmount = new FocusedTextField();
+//		tfGratuityAmount.setHorizontalAlignment(SwingConstants.RIGHT);
+//		tfGratuityAmount.setColumns(20);
+//		transparentPanel.add(tfGratuityAmount, "cell 2 1,growx");
+//
+//		tfGratuityAmount.setFont(new Font("Dialog", Font.BOLD, 12));
+//		tfGratuityAmount.setText("0");
+//		jLabel2 = new javax.swing.JLabel();
+//		jLabel2.setFont(new Font("Dialog", Font.BOLD, 12));
+//		transparentPanel.add(jLabel2, "cell 0 2,alignx right");
+//		jLabel2.setText("AMOUNT TO BE CHARGED");
+//		lblCSymbol2 = new javax.swing.JLabel();
+//		transparentPanel.add(lblCSymbol2, "cell 1 2");
+//
+//		tfCardAmount = new FocusedTextField();
+//		tfCardAmount.setHorizontalAlignment(SwingConstants.RIGHT);
+//		tfCardAmount.setColumns(20);
+//		transparentPanel.add(tfCardAmount, "cell 2 2,growx");
+//
+//		tfCardAmount.setFont(new Font("Dialog", Font.BOLD, 12));
+//		tfCardAmount.setText("0");
+//		jLabel3 = new javax.swing.JLabel();
+//		jLabel3.setFont(new Font("Dialog", Font.BOLD, 12));
+//		transparentPanel.add(jLabel3, "cell 0 3,alignx right");
+//		jLabel3.setText("SWIPE CARD HERE");
+//		tfAuthorizationCode = new FocusedTextField();
+//		tfAuthorizationCode.addActionListener(new ActionListener() {
+//			public void actionPerformed(ActionEvent e) {
+//				processCard();
+//			}
+//		});
+//		tfAuthorizationCode.setHorizontalAlignment(SwingConstants.RIGHT);
+//		tfAuthorizationCode.setColumns(20);
+//		transparentPanel.add(tfAuthorizationCode, "cell 2 3,alignx center");
+//
+//		tfAuthorizationCode.setFont(new Font("Dialog", Font.BOLD, 12));
+//
+//		TransparentPanel transparentPanel_1 = new TransparentPanel();
+//		transparentPanel8.add(transparentPanel_1);
+//		transparentPanel_1.setLayout(new BorderLayout(5, 5));
+//		transparentPanel10 = new com.floreantpos.swing.TransparentPanel();
+//		transparentPanel_1.add(transparentPanel10, BorderLayout.WEST);
+//		btnMasterCard = new com.floreantpos.swing.POSToggleButton();
+//		btnVisa = new com.floreantpos.swing.POSToggleButton();
+//		btnEmEx = new com.floreantpos.swing.POSToggleButton();
+//		btnDiscover = new com.floreantpos.swing.POSToggleButton();
+//
+//		transparentPanel10.setLayout(new java.awt.GridLayout(0, 1, 5, 5));
+//
+//		buttonGroup1.add(btnMasterCard);
+//		btnMasterCard.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/master_card.PNG")));
+//		btnMasterCard.setSelected(true);
+//		btnMasterCard.setActionCommand("MASTER_CARD");
+//		btnMasterCard.setPreferredSize(new java.awt.Dimension(90, 0));
+//		transparentPanel10.add(btnMasterCard);
+//
+//		buttonGroup1.add(btnVisa);
+//		btnVisa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/visa_card.PNG")));
+//		btnVisa.setActionCommand("VISA_CARD");
+//		btnVisa.setPreferredSize(new java.awt.Dimension(90, 0));
+//		transparentPanel10.add(btnVisa);
+//
+//		buttonGroup1.add(btnEmEx);
+//		btnEmEx.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/am_ex_card.PNG")));
+//		btnEmEx.setActionCommand("EMEX_CARD");
+//		btnEmEx.setPreferredSize(new java.awt.Dimension(90, 0));
+//		transparentPanel10.add(btnEmEx);
+//
+//		buttonGroup1.add(btnDiscover);
+//		btnDiscover.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/discover_card.PNG")));
+//		btnDiscover.setActionCommand("DISCOVER_CARD");
+//		btnDiscover.setPreferredSize(new java.awt.Dimension(90, 0));
+//		transparentPanel10.add(btnDiscover);
+//		transparentPanel9 = new com.floreantpos.swing.TransparentPanel();
+//		transparentPanel_1.add(transparentPanel9, BorderLayout.CENTER);
+//		posButton1 = new com.floreantpos.swing.PosButton();
+//		posButton2 = new com.floreantpos.swing.PosButton();
+//		posButton3 = new com.floreantpos.swing.PosButton();
+//		posButton4 = new com.floreantpos.swing.PosButton();
+//		posButton5 = new com.floreantpos.swing.PosButton();
+//		posButton6 = new com.floreantpos.swing.PosButton();
+//		posButton9 = new com.floreantpos.swing.PosButton();
+//		posButton8 = new com.floreantpos.swing.PosButton();
+//		posButton7 = new com.floreantpos.swing.PosButton();
+//		posButton10 = new com.floreantpos.swing.PosButton();
+//		posButton11 = new com.floreantpos.swing.PosButton();
+//		posButton12 = new com.floreantpos.swing.PosButton();
+//
+//		transparentPanel9.setLayout(new java.awt.GridLayout(0, 3, 5, 5));
+//
+//		posButton1.setAction(calAction);
+//		posButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/7_32.png")));
+//		posButton1.setActionCommand("7");
+//		posButton1.setFocusable(false);
+//		transparentPanel9.add(posButton1);
+//
+//		posButton2.setAction(calAction);
+//		posButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/8_32.png")));
+//		posButton2.setActionCommand("8");
+//		posButton2.setFocusable(false);
+//		transparentPanel9.add(posButton2);
+//
+//		posButton3.setAction(calAction);
+//		posButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/9_32.png")));
+//		posButton3.setActionCommand("9");
+//		posButton3.setFocusable(false);
+//		transparentPanel9.add(posButton3);
+//
+//		posButton4.setAction(calAction);
+//		posButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/4_32.png")));
+//		posButton4.setActionCommand("4");
+//		posButton4.setFocusable(false);
+//		transparentPanel9.add(posButton4);
+//
+//		posButton5.setAction(calAction);
+//		posButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/5_32.png")));
+//		posButton5.setActionCommand("5");
+//		posButton5.setFocusable(false);
+//		transparentPanel9.add(posButton5);
+//
+//		posButton6.setAction(calAction);
+//		posButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/6_32.png")));
+//		posButton6.setActionCommand("6");
+//		posButton6.setFocusable(false);
+//		transparentPanel9.add(posButton6);
+//
+//		posButton9.setAction(calAction);
+//		posButton9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/1_32.png")));
+//		posButton9.setActionCommand("1");
+//		posButton9.setFocusable(false);
+//		transparentPanel9.add(posButton9);
+//
+//		posButton8.setAction(calAction);
+//		posButton8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/2_32.png")));
+//		posButton8.setActionCommand("2");
+//		posButton8.setFocusable(false);
+//		transparentPanel9.add(posButton8);
+//
+//		posButton7.setAction(calAction);
+//		posButton7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/3_32.png")));
+//		posButton7.setActionCommand("3");
+//		posButton7.setFocusable(false);
+//		transparentPanel9.add(posButton7);
+//
+//		posButton10.setAction(calAction);
+//		posButton10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/dot_32.png")));
+//		posButton10.setActionCommand(".");
+//		posButton10.setFocusable(false);
+//		transparentPanel9.add(posButton10);
+//
+//		posButton11.setAction(calAction);
+//		posButton11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/0_32.png")));
+//		posButton11.setActionCommand("0");
+//		posButton11.setFocusable(false);
+//		transparentPanel9.add(posButton11);
+//
+//		posButton12.setAction(calAction);
+//		posButton12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/clear_32.png")));
+//		posButton12.setText(com.floreantpos.POSConstants.CLEAR);
+//		posButton12.setFocusable(false);
+//		transparentPanel9.add(posButton12);
 		
 
 	}// </editor-fold>//GEN-END:initComponents
 
 	private void doSettle(String authorizationCode) {//GEN-FIRST:event_btnSettleActionPerformed
-		try {
-			if (getCardType() == CARD_TYPE_CREDIT) {
-				settleTickets(tenderedAmount, gratuityAmount, new CreditCardTransaction(), getWhichCard(), authorizationCode);
-			}
-			if (getCardType() == CARD_TYPE_DEBIT) {
-				settleTickets(tenderedAmount, gratuityAmount, new DebitCardTransaction(), getWhichCard(), authorizationCode);
-			}
-		} catch (Exception e) {
-			POSMessageDialog.showError("An unexpected error has occured, you may need to restart the application", e);
-		}
+//		try {
+//			if (getCardType() == CARD_TYPE_CREDIT) {
+//				settleTickets(tenderedAmount, gratuityAmount, new CreditCardTransaction(), getWhichCard(), authorizationCode);
+//			}
+//			if (getCardType() == CARD_TYPE_DEBIT) {
+//				settleTickets(tenderedAmount, gratuityAmount, new DebitCardTransaction(), getWhichCard(), authorizationCode);
+//			}
+//		} catch (Exception e) {
+//			POSMessageDialog.showError("An unexpected error has occured, you may need to restart the application", e);
+//		}
 	}//GEN-LAST:event_btnSettleActionPerformed
 
 	private boolean validateInput() {
@@ -424,52 +424,52 @@ public class CardPaymentView extends PaymentView {
 
 	private Action calAction = new AbstractAction() {
 		public void actionPerformed(ActionEvent e) {
-			JTextField tf = getFocusedTextField();
-
-			String s = e.getActionCommand();
-			if (s.equals(com.floreantpos.POSConstants.CLEAR)) {
-				tf.setText("0");
-			}
-			else if (s.equals(".")) {
-				if (tf == tfAuthorizationCode) {
-					return;
-				}
-				if (tf.getText().indexOf('.') < 0) {
-					tf.setText(tf.getText() + ".");
-				}
-			}
-			else {
-				String string = tf.getText();
-				int index = string.indexOf('.');
-				if (index < 0) {
-					double value = 0;
-					try {
-						value = Double.parseDouble(string);
-					} catch (NumberFormatException x) {
-						Toolkit.getDefaultToolkit().beep();
-					}
-					if (value == 0) {
-						tf.setText(s);
-					}
-					else {
-						tf.setText(string + s);
-					}
-				}
-				else {
-					tf.setText(string + s);
-				}
-			}
-			if (tf == tfGratuityAmount) {
-				double gAmount = 0;
-				double amount = getDueAmount();
-				try {
-					gAmount = Double.parseDouble(tfGratuityAmount.getText());
-				} catch (NumberFormatException x) {
-					Toolkit.getDefaultToolkit().beep();
-					return;
-				}
-				tfCardAmount.setText(NumberUtil.formatNumber(amount + gAmount));
-			}
+//			JTextField tf = getFocusedTextField();
+//
+//			String s = e.getActionCommand();
+//			if (s.equals(com.floreantpos.POSConstants.CLEAR)) {
+//				tf.setText("0");
+//			}
+//			else if (s.equals(".")) {
+//				if (tf == tfAuthorizationCode) {
+//					return;
+//				}
+//				if (tf.getText().indexOf('.') < 0) {
+//					tf.setText(tf.getText() + ".");
+//				}
+//			}
+//			else {
+//				String string = tf.getText();
+//				int index = string.indexOf('.');
+//				if (index < 0) {
+//					double value = 0;
+//					try {
+//						value = Double.parseDouble(string);
+//					} catch (NumberFormatException x) {
+//						Toolkit.getDefaultToolkit().beep();
+//					}
+//					if (value == 0) {
+//						tf.setText(s);
+//					}
+//					else {
+//						tf.setText(string + s);
+//					}
+//				}
+//				else {
+//					tf.setText(string + s);
+//				}
+//			}
+//			if (tf == tfGratuityAmount) {
+//				double gAmount = 0;
+//				double amount = getDueAmount();
+//				try {
+//					gAmount = Double.parseDouble(tfGratuityAmount.getText());
+//				} catch (NumberFormatException x) {
+//					Toolkit.getDefaultToolkit().beep();
+//					return;
+//				}
+//				tfCardAmount.setText(NumberUtil.formatNumber(amount + gAmount));
+//			}
 		}
 	};
 
@@ -520,20 +520,20 @@ public class CardPaymentView extends PaymentView {
 	public void setCardType(int cardType) {
 		this.cardType = cardType;
 
-		if (cardType == CARD_TYPE_DEBIT) {
-			btnEmEx.setVisible(false);
-			btnDiscover.setVisible(false);
-			TitledBorder titledBorder = new TitledBorder("Debit Card Transaction");
-			titledBorder.setTitleJustification(TitledBorder.CENTER);
-			setBorder(titledBorder);
-		}
-		else {
-			btnEmEx.setVisible(true);
-			btnDiscover.setVisible(true);
-			TitledBorder titledBorder = new TitledBorder("Credit Card Transaction");
-			titledBorder.setTitleJustification(TitledBorder.CENTER);
-			setBorder(titledBorder);
-		}
+//		if (cardType == CARD_TYPE_DEBIT) {
+//			btnEmEx.setVisible(false);
+//			btnDiscover.setVisible(false);
+//			TitledBorder titledBorder = new TitledBorder("Debit Card Transaction");
+//			titledBorder.setTitleJustification(TitledBorder.CENTER);
+//			setBorder(titledBorder);
+//		}
+//		else {
+//			btnEmEx.setVisible(true);
+//			btnDiscover.setVisible(true);
+//			TitledBorder titledBorder = new TitledBorder("Credit Card Transaction");
+//			titledBorder.setTitleJustification(TitledBorder.CENTER);
+//			setBorder(titledBorder);
+//		}
 	}
 
 	public String getWhichCard() {
@@ -544,21 +544,20 @@ public class CardPaymentView extends PaymentView {
 		this.whichCard = whichCard;
 	}
 
-	@Override
 	public void updateView() {
-		String currencySymbol = Application.getCurrencySymbol();
-		lblCSymbol1.setText(currencySymbol);
-		lblCSymbol2.setText(currencySymbol);
-		lblCSymbol3.setText(currencySymbol);
-
-		double dueAmount = getDueAmount();
-		double tips = calculateGratuity();
-
-		tfDueAmount.setText(NumberUtil.formatNumber(dueAmount));
-		tfGratuityAmount.setText(NumberUtil.formatNumber(tips));
-		tfCardAmount.setText(NumberUtil.formatNumber(dueAmount + tips));
-		
-		tfAuthorizationCode.requestFocus();
+//		String currencySymbol = Application.getCurrencySymbol();
+//		lblCSymbol1.setText(currencySymbol);
+//		lblCSymbol2.setText(currencySymbol);
+//		lblCSymbol3.setText(currencySymbol);
+//
+//		double dueAmount = getDueAmount();
+//		double tips = calculateGratuity();
+//
+//		tfDueAmount.setText(NumberUtil.formatNumber(dueAmount));
+//		tfGratuityAmount.setText(NumberUtil.formatNumber(tips));
+//		tfCardAmount.setText(NumberUtil.formatNumber(dueAmount + tips));
+//		
+//		tfAuthorizationCode.requestFocus();
 
 	}
 	

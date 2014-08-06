@@ -6,8 +6,8 @@ import java.awt.Component;
 import javax.swing.border.EmptyBorder;
 
 import com.floreantpos.ui.views.LoginScreen;
-import com.floreantpos.ui.views.SettleTicketView;
 import com.floreantpos.ui.views.SwitchboardView;
+import com.floreantpos.ui.views.payment.SettleTicketView;
 
 public class RootView extends com.floreantpos.swing.TransparentPanel {
 	private CardLayout layout = new CardLayout();
