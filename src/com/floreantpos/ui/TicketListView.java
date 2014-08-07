@@ -129,16 +129,15 @@ public class TicketListView extends JPanel {
 
 			case 6:
 				if(StringUtils.isEmpty(ticket.getTicketType())) {
+					ticket.setTicketType(Ticket.DINE_IN);
+					
 					return Ticket.DINE_IN;
 				}
 				
 				return ticket.getTicketType();
 				
 			case 7:
-				if(Ticket.DINE_IN.equals(ticket.getTicketType())) {
-					return "Open";
-				}
-				else if(Ticket.PICKUP.equals(ticket.getTicketType())) {
+				if(Ticket.PICKUP.equals(ticket.getTicketType())) {
 					return "Will pickup";
 				}
 				else if(Ticket.HOME_DELIVERY.equals(ticket.getTicketType())) {
@@ -150,6 +149,11 @@ public class TicketListView extends JPanel {
 				else if(Ticket.DRIVE_THROUGH.equals(ticket.getTicketType())) {
 					return "Not delivered";
 				}
+				
+				if(ticket.isPaid()) {
+					return "Paid";
+				}
+				
 				return "Open";
 
 			case 8:

@@ -8,23 +8,30 @@ import javax.swing.JOptionPane;
 
 import net.authorize.data.creditcard.CardType;
 
+import com.floreantpos.POSConstants;
 import com.floreantpos.config.CardConfig;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.CashTransaction;
 import com.floreantpos.model.CreditCardTransaction;
 import com.floreantpos.model.MerchantGateway;
 import com.floreantpos.model.PaymentType;
+import com.floreantpos.model.PosTransaction;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketCouponAndDiscount;
 import com.floreantpos.model.dao.TicketDAO;
+import com.floreantpos.report.JReportPrintService;
+import com.floreantpos.services.PosTransactionService;
+import com.floreantpos.swing.MessageDialog;
 import com.floreantpos.ui.dialog.CouponAndDiscountDialog;
 import com.floreantpos.ui.dialog.DiscountListDialog;
 import com.floreantpos.ui.dialog.POSDialog;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.dialog.PaymentTypeSelectionDialog;
 import com.floreantpos.ui.dialog.SwipeCardDialog;
+import com.floreantpos.ui.dialog.TransactionCompletionDialog;
 import com.floreantpos.ui.views.SwitchboardView;
 import com.floreantpos.ui.views.TicketDetailView;
+import com.floreantpos.ui.views.order.RootView;
 
 public class SettleTicketView extends POSDialog {
 	public final static String VIEW_NAME = "PAYMENT_VIEW";
@@ -130,6 +137,19 @@ public class SettleTicketView extends POSDialog {
 		paymentView.updateView();
 	}//GEN-LAST:event_doTaxExempt
 
+	protected double getTotalAmount() {
+		List<Ticket> ticketsToSettle = getTicketsToSettle();
+		if (ticketsToSettle == null) {
+			return 0;
+		}
+
+		double total = 0;
+		for (Ticket ticket : ticketsToSettle) {
+			total += ticket.getTotalAmount();
+		}
+		return total;
+	}
+
 	public void doViewDiscounts() {//GEN-FIRST:event_btnViewDiscountsdoViewDiscounts
 		try {
 			List<Ticket> tickets = getTicketsToSettle();
@@ -167,15 +187,16 @@ public class SettleTicketView extends POSDialog {
 
 			switch (dialog.getSelectedPaymentType()) {
 				case CASH:
-					paymentView.settleTickets(tenderedAmount, gratuityAmount, new CashTransaction(), null, null);
-					setCanceled(false);
-					dispose();
+					if (settleTickets(tenderedAmount, gratuityAmount, new CashTransaction(), null, null)) {
+						setCanceled(false);
+						dispose();
+					}
 					break;
 
 				case VISA:
 					payUsingCard(PaymentType.VISA, tenderedAmount, gratuityAmount);
 					break;
-					
+
 				case MASTER_CARD:
 					payUsingCard(PaymentType.MASTER_CARD, tenderedAmount, gratuityAmount);
 					break;
@@ -186,6 +207,74 @@ public class SettleTicketView extends POSDialog {
 
 		} catch (Exception e) {
 			e.printStackTrace();
+		}
+	}
+
+	public boolean settleTickets(final double tenderedAmount, final double gratuityAmount, PosTransaction posTransaction, String cardType,
+			String cardAuthorizationCode) {
+		try {
+			setTenderAmount(tenderedAmount);
+
+			double totalAmount = getTotalAmount();
+			double dueAmountBeforePaid = paymentView.getDueAmount();
+
+			List<Ticket> ticketsToSettle = getTicketsToSettle();
+
+			if (ticketsToSettle.size() > 1 && tenderedAmount < dueAmountBeforePaid) {
+				MessageDialog.showError(com.floreantpos.POSConstants.YOU_CANNOT_PARTIALLY_PAY_MULTIPLE_TICKETS_);
+				return false;
+			}
+
+			try {
+				for (Ticket ticket : ticketsToSettle) {
+					ticket.setTenderedAmount(tenderedAmount);
+
+					if (ticket.needsKitchenPrint()) {
+						JReportPrintService.printTicketToKitchen(ticket);
+					}
+
+					JReportPrintService.printTicket(ticket);
+				}
+
+				PosTransactionService.getInstance().settleTickets(ticketsToSettle, tenderedAmount, gratuityAmount, posTransaction, cardType,
+						cardAuthorizationCode);
+
+			} catch (Exception ee) {
+				POSMessageDialog.showError(Application.getPosWindow(), com.floreantpos.POSConstants.PRINT_ERROR, ee);
+			}
+
+			double paidAmount = paymentView.getPaidAmount();
+			double dueAmount = paymentView.getDueAmount();
+
+			TransactionCompletionDialog dialog = TransactionCompletionDialog.getInstance();
+			dialog.setTickets(ticketsToSettle);
+			dialog.setTenderedAmount(tenderedAmount);
+			dialog.setTotalAmount(totalAmount);
+			dialog.setPaidAmount(paidAmount);
+			dialog.setDueAmount(dueAmount);
+			dialog.setDueAmountBeforePaid(dueAmountBeforePaid);
+			dialog.setGratuityAmount(gratuityAmount);
+			dialog.updateView();
+			dialog.pack();
+			dialog.open();
+
+			if (dueAmount > 0.0) {
+				int option = JOptionPane.showConfirmDialog(Application.getPosWindow(), com.floreantpos.POSConstants.CONFIRM_PARTIAL_PAYMENT,
+						com.floreantpos.POSConstants.MDS_POS, JOptionPane.YES_NO_OPTION);
+				if (option != JOptionPane.YES_OPTION) {
+					RootView.getInstance().showView(SwitchboardView.VIEW_NAME);
+					return true;
+				}
+
+				setTicketsToSettle(ticketsToSettle);
+				return false;
+			}
+			else {
+				return true;
+			}
+		} catch (Exception e) {
+			POSMessageDialog.showError(this, POSConstants.ERROR_MESSAGE, e);
+			return false;
 		}
 	}
 
@@ -201,11 +290,22 @@ public class SettleTicketView extends POSDialog {
 
 		if (CardConfig.getMerchantGateway() == MerchantGateway.AUTHORIZE_NET) {
 			String authorizationCode = CreditCardTransactionProcessor.processUsingAuthorizeDotNet(cardString, tenderedAmount, CardType.VISA);
-			paymentView.settleTickets(tenderedAmount, gratuityAmount, new CreditCardTransaction(), cardType.toString(), authorizationCode);
+			settleTickets(tenderedAmount, gratuityAmount, new CreditCardTransaction(), cardType.toString(), authorizationCode);
 		}
-		
+
 		setCanceled(false);
 		dispose();
+	}
+
+	private void setTenderAmount(double tenderedAmount) {
+		List<Ticket> ticketsToSettle = getTicketsToSettle();
+		if (ticketsToSettle == null) {
+			return;
+		}
+
+		for (Ticket ticket : ticketsToSettle) {
+			ticket.setTenderedAmount(tenderedAmount);
+		}
 	}
 
 	public void updatePaymentView() {

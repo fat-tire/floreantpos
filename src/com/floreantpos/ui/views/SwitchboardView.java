@@ -534,6 +534,11 @@ public class SwitchboardView extends JPanel implements ActionListener {
 	}
 
 	private void editTicket(Ticket ticket) {
+		if(ticket.isPaid()) {
+			POSMessageDialog.showMessage("Paid ticket cannot be edited");
+			return;
+		}
+		
 		// initialize the ticket.
 		ticket = TicketDAO.getInstance().initializeTicket(ticket);
 
