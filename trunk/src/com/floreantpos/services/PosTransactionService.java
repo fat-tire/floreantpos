@@ -179,7 +179,7 @@ public class PosTransactionService {
 	}
 
 	private void closeTicketIfApplicable(Ticket ticket) {
-		if(Ticket.DINE_IN.equals(ticket.getTicketType())) {
+		if(Ticket.DINE_IN.equals(ticket.getTicketType()) || Ticket.TAKE_OUT.equals(ticket.getTicketType())) {
 			ticket.setClosed(true);
 		}
 	}

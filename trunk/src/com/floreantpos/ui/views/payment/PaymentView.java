@@ -10,26 +10,14 @@ import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import net.miginfocom.swing.MigLayout;
 
-import com.floreantpos.POSConstants;
-import com.floreantpos.main.Application;
-import com.floreantpos.model.PosTransaction;
 import com.floreantpos.model.Ticket;
-import com.floreantpos.report.JReportPrintService;
-import com.floreantpos.services.PosTransactionService;
-import com.floreantpos.swing.MessageDialog;
 import com.floreantpos.swing.POSToggleButton;
 import com.floreantpos.swing.PosButton;
-import com.floreantpos.ui.dialog.POSMessageDialog;
-import com.floreantpos.ui.dialog.PaymentTypeSelectionDialog;
-import com.floreantpos.ui.dialog.TransactionCompletionDialog;
-import com.floreantpos.ui.views.SwitchboardView;
-import com.floreantpos.ui.views.order.RootView;
 import com.floreantpos.util.NumberUtil;
 
 public class PaymentView extends JPanel {
@@ -199,10 +187,10 @@ public class PaymentView extends JPanel {
 		jPanel4.add(btnViewCoupons, "cell 1 1,grow");
 
 		btnFinish = new com.floreantpos.swing.PosButton();
-		jPanel4.add(btnFinish, "cell 0 2,grow");
-		btnFinish.setText("FINISH");
+		jPanel4.add(btnFinish, "cell 1 2,grow");
+		btnFinish.setText("PAY");
 		btnCancel = new com.floreantpos.swing.PosButton();
-		jPanel4.add(btnCancel, "cell 1 2,grow");
+		jPanel4.add(btnCancel, "cell 0 2,grow");
 		btnCancel.setText("CANCEL");
 		btnCancel.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -396,19 +384,6 @@ public class PaymentView extends JPanel {
 		this.settleTicketView = settleTicketView;
 	}
 
-	protected double getTotalAmount() {
-		List<Ticket> ticketsToSettle = settleTicketView.getTicketsToSettle();
-		if (ticketsToSettle == null) {
-			return 0;
-		}
-
-		double total = 0;
-		for (Ticket ticket : ticketsToSettle) {
-			total += ticket.getTotalAmount();
-		}
-		return total;
-	}
-
 	protected double getPaidAmount() {
 		List<Ticket> ticketsToSettle = settleTicketView.getTicketsToSettle();
 		if (ticketsToSettle == null) {
@@ -471,110 +446,5 @@ public class PaymentView extends JPanel {
 		return tips;
 	}
 
-	public void settleTickets(final double tenderedAmount, final double gratuityAmount, PosTransaction posTransaction, String cardType,
-			String cardAuthorizationCode) {
-		try {
-			setTenderAmount(tenderedAmount);
-
-			double totalAmount = getTotalAmount();
-			double dueAmountBeforePaid = getDueAmount();
-
-			List<Ticket> ticketsToSettle = settleTicketView.getTicketsToSettle();
-
-			if (ticketsToSettle.size() > 1 && tenderedAmount < dueAmountBeforePaid) {
-				MessageDialog.showError(com.floreantpos.POSConstants.YOU_CANNOT_PARTIALLY_PAY_MULTIPLE_TICKETS_);
-				return;
-			}
-
-			try {
-				for (Ticket ticket : ticketsToSettle) {
-					ticket.setTenderedAmount(tenderedAmount);
-
-					if (ticket.needsKitchenPrint()) {
-						JReportPrintService.printTicketToKitchen(ticket);
-					}
-
-					JReportPrintService.printTicket(ticket);
-				}
-
-				PosTransactionService service = PosTransactionService.getInstance();
-				service.settleTickets(ticketsToSettle, tenderedAmount, gratuityAmount, posTransaction, cardType, cardAuthorizationCode);
-
-			} catch (Exception ee) {
-				POSMessageDialog.showError(Application.getPosWindow(), com.floreantpos.POSConstants.PRINT_ERROR, ee);
-			}
-
-			double paidAmount = getPaidAmount();
-			double dueAmount = getDueAmount();
-
-			TransactionCompletionDialog dialog = TransactionCompletionDialog.getInstance();
-			dialog.setTickets(ticketsToSettle);
-			dialog.setTenderedAmount(tenderedAmount);
-			dialog.setTotalAmount(totalAmount);
-			dialog.setPaidAmount(paidAmount);
-			dialog.setDueAmount(dueAmount);
-			dialog.setDueAmountBeforePaid(dueAmountBeforePaid);
-			dialog.setGratuityAmount(gratuityAmount);
-			dialog.updateView();
-			dialog.pack();
-			dialog.open();
-
-			if (dueAmount > 0.0) {
-				int option = JOptionPane.showConfirmDialog(Application.getPosWindow(), com.floreantpos.POSConstants.CONFIRM_PARTIAL_PAYMENT,
-						com.floreantpos.POSConstants.MDS_POS, JOptionPane.YES_NO_OPTION);
-				if (option != JOptionPane.YES_OPTION) {
-					RootView.getInstance().showView(SwitchboardView.VIEW_NAME);
-					return;
-				}
-
-				PaymentTypeSelectionDialog paymentTypeSelectionDialog = new PaymentTypeSelectionDialog();
-				paymentTypeSelectionDialog.setSize(250, 400);
-				paymentTypeSelectionDialog.open();
-
-				if (!paymentTypeSelectionDialog.isCanceled()) {
-					//settleTicketView.setPaymentView(paymentTypeSelectionDialog.getSelectedPaymentView());
-					settleTicketView.setTicketsToSettle(ticketsToSettle);
-				}
-			}
-			else {
-				RootView.getInstance().showView(SwitchboardView.VIEW_NAME);
-			}
-		} catch (Exception e) {
-			POSMessageDialog.showError(this, POSConstants.ERROR_MESSAGE, e);
-		}
-
-		/*if(Application.getPrinterConfiguration().isPrintReceiptWhenTicketPaid()) {
-			try {
-				for (Ticket ticket : ticketsToSettle) {
-					PosPrintService.printTicket(ticket);
-				}
-			}catch(Exception ee) {
-				POSMessageDialog.showError(Application.getPosWindow(), com.floreantpos.POSConstants.THERE_WAS_AN_ERROR_WHILE_PRINTING_TO_KITCHEN, ee);
-			}
-		}
-		
-		if(Application.getPrinterConfiguration().isPrintKitchenWhenTicketPaid()) {
-			try {
-				for (Ticket ticket : ticketsToSettle) {
-					if(ticket.needsKitchenPrint()) {
-						PosPrintService.printToKitcken(ticket);
-					}
-					ticket.clearDeletedItems();
-				}
-			}catch(Exception ee) {
-				POSMessageDialog.showError(Application.getPosWindow(), com.floreantpos.POSConstants.THERE_WAS_AN_ERROR_WHILE_PRINTING_TO_KITCHEN, ee);
-			}
-		}*/
-	}
-
-	private void setTenderAmount(double tenderedAmount) {
-		List<Ticket> ticketsToSettle = settleTicketView.getTicketsToSettle();
-		if (ticketsToSettle == null) {
-			return;
-		}
-
-		for (Ticket ticket : ticketsToSettle) {
-			ticket.setTenderedAmount(tenderedAmount);
-		}
-	}
+	
 }
