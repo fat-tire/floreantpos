@@ -3,6 +3,7 @@ package com.floreantpos.util;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -14,18 +15,22 @@ import org.hibernate.tool.hbm2ddl.SchemaExport;
 import com.floreantpos.model.MenuCategory;
 import com.floreantpos.model.MenuGroup;
 import com.floreantpos.model.MenuItem;
+import com.floreantpos.model.PosTransaction;
 import com.floreantpos.model.Restaurant;
 import com.floreantpos.model.Shift;
 import com.floreantpos.model.Tax;
+import com.floreantpos.model.Ticket;
 import com.floreantpos.model.User;
 import com.floreantpos.model.UserPermission;
 import com.floreantpos.model.UserType;
 import com.floreantpos.model.dao.MenuCategoryDAO;
 import com.floreantpos.model.dao.MenuGroupDAO;
 import com.floreantpos.model.dao.MenuItemDAO;
+import com.floreantpos.model.dao.PosTransactionDAO;
 import com.floreantpos.model.dao.RestaurantDAO;
 import com.floreantpos.model.dao.ShiftDAO;
 import com.floreantpos.model.dao.TaxDAO;
+import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.model.dao.UserDAO;
 import com.floreantpos.model.dao.UserTypeDAO;
 import com.floreantpos.model.dao._RootDAO;
@@ -176,5 +181,19 @@ public class DatabaseUtil {
 			throw new DatabaseConnectionException(e);
 		}
 
+	}
+	
+	public static void main(String[] args) throws Exception {
+		initialize();
+		
+		List<PosTransaction> findAll = PosTransactionDAO.getInstance().findAll();
+		for (PosTransaction posTransaction : findAll) {
+			PosTransactionDAO.getInstance().delete(posTransaction);
+		}
+		
+		List<Ticket> list = TicketDAO.getInstance().findAll();
+		for (Ticket ticket : list) {
+			TicketDAO.getInstance().delete(ticket);
+		}
 	}
 }
