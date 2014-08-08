@@ -10,9 +10,12 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.TitledBorder;
+
+import net.miginfocom.swing.MigLayout;
 
 import com.floreantpos.main.Application;
 import com.floreantpos.model.PaymentType;
@@ -40,15 +43,29 @@ public class PaymentTypeSelectionDialog extends POSDialog {
 	 */
 	// <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:initComponents
 	private void initComponents() {
-		JPanel content = new JPanel(new GridLayout(0, 1, 5, 5));
+		JPanel content = new JPanel(new MigLayout("gap 5px 20px, fill"));
 		content.setBorder(new EmptyBorder(5, 5, 5, 5));
 		
-		PaymentType[] values = PaymentType.values();
-		for (int i = 0; i < values.length; i++) {
-			content.add(new PaymentSelectionButton(values[i]));
-		}
+		JPanel genericPanel = new JPanel(new GridLayout(1, 0, 15, 15));
+		genericPanel.add(new PaymentSelectionButton(PaymentType.CASH), "grow,wrap");
+		genericPanel.add(new PaymentSelectionButton(PaymentType.GIFT_CERTIFICATE));
+		content.add(genericPanel, "height 60px, wrap, growx");
 		
-		content.add(new JLabel());
+		JPanel creditCardPanel = new JPanel(new GridLayout(1, 0, 10, 10));
+		creditCardPanel.add(new PaymentSelectionButton(PaymentType.CREDIT_VISA));
+		creditCardPanel.add(new PaymentSelectionButton(PaymentType.CREDIT_MASTER_CARD));
+		creditCardPanel.add(new PaymentSelectionButton(PaymentType.CREDIT_AMEX));
+		creditCardPanel.add(new PaymentSelectionButton(PaymentType.CREDIT_DISCOVERY));
+		
+		creditCardPanel.setBorder(new CompoundBorder(new TitledBorder("CREDIT CARD"), new EmptyBorder(10, 10, 10, 10)));
+		content.add(creditCardPanel, "wrap, height 110px, growx");
+		
+		JPanel debitCardPanel = new JPanel(new GridLayout(1, 0, 10, 10));
+		debitCardPanel.add(new PaymentSelectionButton(PaymentType.DEBIT_VISA));
+		debitCardPanel.add(new PaymentSelectionButton(PaymentType.DEBIT_MASTER_CARD));
+		
+		debitCardPanel.setBorder(new CompoundBorder(new TitledBorder("DEBIT CARD"), new EmptyBorder(10, 10, 10, 10)));
+		content.add(debitCardPanel, "wrap, height 110px, growx");
 		
 		PosButton cancel = new PosButton("CANCEL");
 		cancel.addActionListener(new ActionListener() {
@@ -60,7 +77,7 @@ public class PaymentTypeSelectionDialog extends POSDialog {
 			}
 		});
 		
-		content.add(cancel);
+		content.add(cancel, "alignx center, gaptop 20px");
 		
 		add(content);
 
@@ -78,7 +95,13 @@ public class PaymentTypeSelectionDialog extends POSDialog {
 		
 		public PaymentSelectionButton(PaymentType p) {
 			paymentType = p;
-			setText(p.toString());
+			
+			if (p.getImageFile() != null) {
+				setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/" + p.getImageFile())));
+			}
+			else {
+				setText(p.getDisplayString());
+			}
 			
 			addActionListener(this);
 		}

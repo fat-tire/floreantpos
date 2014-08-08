@@ -55,8 +55,7 @@ public class PaymentView extends JPanel {
 		this.settleTicketView = settleTicketView;
 		
 		initComponents();
-
-		tfAmountTendered.setText("0");
+		
 	}
 
 	private void initComponents() {
@@ -79,10 +78,11 @@ public class PaymentView extends JPanel {
 		jLabel5 = new javax.swing.JLabel();
 		jLabel6 = new javax.swing.JLabel();
 		tfDueAmount = new com.floreantpos.swing.FocusedTextField();
+		tfDueAmount.setFocusable(false);
 		tfGratuityAmount = new com.floreantpos.swing.FocusedTextField();
 		tfAmountTendered = new com.floreantpos.swing.FocusedTextField();
 
-		setLayout(new MigLayout("", "[456px]", "[73px][251px][grow,fill][][shrink 0]"));
+		setLayout(new MigLayout("", "[]", "[73px][251px][grow,fill][][shrink 0]"));
 
 		calcButtonPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 5, 0, 5));
 		calcButtonPanel.setLayout(new java.awt.GridLayout(0, 3, 5, 5));
@@ -160,7 +160,7 @@ public class PaymentView extends JPanel {
 		calcButtonPanel.add(posButton12);
 
 		add(calcButtonPanel, "cell 0 1,grow");
-		jPanel4.setLayout(new MigLayout("", "[222px][222px]", "[][][]"));
+		jPanel4.setLayout(new MigLayout("", "", "[][][]"));
 
 		btnTaxExempt = new POSToggleButton(com.floreantpos.POSConstants.TAX_EXEMPT);
 		btnTaxExempt.addActionListener(new ActionListener() {
@@ -208,8 +208,7 @@ public class PaymentView extends JPanel {
 
 		add(jPanel4, "cell 0 4,grow");
 
-		transparentPanel1.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createEmptyBorder(1, 5, 1, 5),
-				javax.swing.BorderFactory.createTitledBorder("")));
+		transparentPanel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 15, 15, 15));
 
 		jLabel4.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
 		jLabel4.setText("DUE AMOUNT:");
@@ -222,60 +221,20 @@ public class PaymentView extends JPanel {
 
 		tfDueAmount.setEditable(false);
 		tfDueAmount.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-		tfDueAmount.setText("focusedTextField1");
-		tfDueAmount.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
 
 		tfGratuityAmount.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-		tfGratuityAmount.setText("focusedTextField2");
-		tfGratuityAmount.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
 
 		tfAmountTendered.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-		tfAmountTendered.setText("focusedTextField3");
-		tfAmountTendered.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-
-		javax.swing.GroupLayout transparentPanel1Layout = new javax.swing.GroupLayout(transparentPanel1);
-		transparentPanel1.setLayout(transparentPanel1Layout);
-		transparentPanel1Layout.setHorizontalGroup(transparentPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(
-				transparentPanel1Layout
-						.createSequentialGroup()
-						.addGroup(
-								transparentPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-										.addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING)
-										.addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING)
-										.addComponent(jLabel6, javax.swing.GroupLayout.Alignment.TRAILING))
-						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-						.addGroup(
-								transparentPanel1Layout
-										.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-										.addComponent(tfDueAmount, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-										.addComponent(tfGratuityAmount, javax.swing.GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE)
-										.addComponent(tfAmountTendered, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE,
-												Short.MAX_VALUE))));
-		transparentPanel1Layout.setVerticalGroup(transparentPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(
-				transparentPanel1Layout
-						.createSequentialGroup()
-						.addGroup(
-								transparentPanel1Layout
-										.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-										.addComponent(jLabel4)
-										.addComponent(tfDueAmount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE,
-												javax.swing.GroupLayout.PREFERRED_SIZE))
-						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-						.addGroup(
-								transparentPanel1Layout
-										.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-										.addComponent(jLabel5)
-										.addComponent(tfGratuityAmount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE,
-												javax.swing.GroupLayout.PREFERRED_SIZE))
-						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-						.addGroup(
-								transparentPanel1Layout
-										.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-										.addComponent(jLabel6)
-										.addComponent(tfAmountTendered, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE,
-												javax.swing.GroupLayout.PREFERRED_SIZE))));
 
 		add(transparentPanel1, "cell 0 0,growx,aligny top");
+		
+		transparentPanel1.setLayout(new MigLayout("", "[][grow,fill]", "[19px][19px][19px]"));
+		transparentPanel1.add(jLabel4, "cell 0 0,alignx right,aligny center");
+		transparentPanel1.add(jLabel5, "cell 0 1,alignx right,aligny center");
+		transparentPanel1.add(jLabel6, "cell 0 2,alignx left,aligny center");
+		transparentPanel1.add(tfDueAmount, "cell 1 0,growx,aligny top");
+		transparentPanel1.add(tfGratuityAmount, "cell 1 1,growx,aligny top");
+		transparentPanel1.add(tfAmountTendered, "cell 1 2,growx,aligny top");
 	}// </editor-fold>//GEN-END:initComponents
 
 	protected void doTaxExempt() {
@@ -291,10 +250,6 @@ public class PaymentView extends JPanel {
 	}//GEN-LAST:event_btnCancelActionPerformed
 
 	// End of variables declaration//GEN-END:variables
-
-	public void resetView() {
-		tfAmountTendered.setText("0");
-	}
 
 	Action calAction = new AbstractAction() {
 		public void actionPerformed(ActionEvent e) {
@@ -354,15 +309,13 @@ public class PaymentView extends JPanel {
 		tfDueAmount.setText(NumberUtil.formatNumber(dueAmount));
 		tfGratuityAmount.setText(NumberUtil.formatNumber(tips));
 		tfAmountTendered.setText(NumberUtil.formatNumber(dueAmount + tips));
-		tfAmountTendered.requestFocus();
+		
 	}
 
 	public double getTenderedAmount() throws ParseException {
 		NumberFormat numberFormat = NumberFormat.getInstance();
 		double doubleValue = numberFormat.parse(tfAmountTendered.getText()).doubleValue();
 		return doubleValue;
-
-		//return Double.parseDouble(tfAmountTendered.getText());
 	}
 
 	public double getGratuityAmount() {
@@ -373,7 +326,6 @@ public class PaymentView extends JPanel {
 			e.printStackTrace();
 			return 0;
 		}
-		//return Double.parseDouble(tfGratuityAmount.getText());
 	}
 
 	public SettleTicketView getSettleTicketView() {
@@ -444,6 +396,10 @@ public class PaymentView extends JPanel {
 		}
 
 		return tips;
+	}
+
+	public void setDefaultFocus() {
+		tfAmountTendered.requestFocus();
 	}
 
 	
