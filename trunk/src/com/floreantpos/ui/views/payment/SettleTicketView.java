@@ -185,6 +185,14 @@ public class SettleTicketView extends POSDialog {
 
 			double tenderedAmount = paymentView.getTenderedAmount();
 			double gratuityAmount = paymentView.getGratuityAmount();
+			
+			int option = JOptionPane.showOptionDialog(this, "<html>You are going to process <b>" + Application.getCurrencySymbol() + tenderedAmount
+					+ "</b>.<br/><br/>If you are sure press <b>Ok</b>, otherwise press <b>Cancel</b>.<br/><br/></html>", "Confirm", JOptionPane.OK_CANCEL_OPTION, 
+					JOptionPane.INFORMATION_MESSAGE, null, null, null);
+			
+			if(option != JOptionPane.OK_OPTION) {
+				return;
+			}
 
 			switch (dialog.getSelectedPaymentType()) {
 				case CASH:
