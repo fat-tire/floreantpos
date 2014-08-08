@@ -1,5 +1,7 @@
 package com.floreantpos.model;
 
+import net.authorize.data.creditcard.CardType;
+
 public enum MerchantGateway {
 	
 	AUTHORIZE_NET("Authorize.net"),
@@ -13,6 +15,14 @@ public enum MerchantGateway {
 	
 	public String getDisplayString() {
 		return displayString;
+	}
+	
+	public boolean isCardTypeSupported(String cardName) {
+		if (this == AUTHORIZE_NET) {
+			return CardType.findByValue(cardName) != CardType.UNKNOWN;
+		}
+		
+		return false;
 	}
 	
 	@Override
