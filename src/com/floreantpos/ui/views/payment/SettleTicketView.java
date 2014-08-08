@@ -176,7 +176,8 @@ public class SettleTicketView extends POSDialog {
 		try {
 
 			PaymentTypeSelectionDialog dialog = new PaymentTypeSelectionDialog();
-			dialog.setSize(250, 400);
+			dialog.setResizable(false);
+			dialog.pack();
 			dialog.open();
 			if (dialog.isCanceled()) {
 				return;
@@ -193,12 +194,12 @@ public class SettleTicketView extends POSDialog {
 					}
 					break;
 
-				case VISA:
-					payUsingCard(PaymentType.VISA, tenderedAmount, gratuityAmount);
+				case CREDIT_VISA:
+					payUsingCard(PaymentType.CREDIT_VISA, tenderedAmount, gratuityAmount);
 					break;
 
-				case MASTER_CARD:
-					payUsingCard(PaymentType.MASTER_CARD, tenderedAmount, gratuityAmount);
+				case CREDIT_MASTER_CARD:
+					payUsingCard(PaymentType.CREDIT_MASTER_CARD, tenderedAmount, gratuityAmount);
 					break;
 
 				default:
@@ -333,5 +334,12 @@ public class SettleTicketView extends POSDialog {
 
 	public TicketDetailView getTicketDetailView() {
 		return ticketDetailView;
+	}
+	
+	@Override
+	public void open() {
+		super.open();
+		
+		paymentView.setDefaultFocus();
 	}
 }

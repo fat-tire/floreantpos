@@ -14,6 +14,7 @@ import java.util.List;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.border.EmptyBorder;
 
 import net.miginfocom.swing.MigLayout;
 import net.sf.jasperreports.engine.JasperPrint;
@@ -39,6 +40,7 @@ public class TicketDetailView extends JPanel {
 	public TicketDetailView() {
 
 		setLayout(new BorderLayout(5, 5));
+		setBorder(new EmptyBorder(15, 15, 15, 15));
 
 		topPanel = new JPanel(new GridLayout());
 		add(topPanel, BorderLayout.CENTER);
