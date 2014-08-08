@@ -182,19 +182,22 @@ public class SettleTicketView extends POSDialog {
 			if (dialog.isCanceled()) {
 				return;
 			}
-
+			
+			PaymentType paymentType = dialog.getSelectedPaymentType();
+			String cardName = paymentType.getDisplayString();
+			
 			double tenderedAmount = paymentView.getTenderedAmount();
 			double gratuityAmount = paymentView.getGratuityAmount();
-			
+
 			int option = JOptionPane.showOptionDialog(this, "<html>You are going to process <b>" + Application.getCurrencySymbol() + tenderedAmount
-					+ "</b>.<br/><br/>If you are sure press <b>Ok</b>, otherwise press <b>Cancel</b>.<br/><br/></html>", "Confirm", JOptionPane.OK_CANCEL_OPTION, 
-					JOptionPane.INFORMATION_MESSAGE, null, null, null);
-			
-			if(option != JOptionPane.OK_OPTION) {
+					+ "</b>.<br/><br/>If you are sure press <b>Ok</b>, otherwise press <b>Cancel</b>.<br/><br/></html>", "Confirm",
+					JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, null, null, null);
+
+			if (option != JOptionPane.OK_OPTION) {
 				return;
 			}
 
-			switch (dialog.getSelectedPaymentType()) {
+			switch (paymentType) {
 				case CASH:
 					if (settleTickets(tenderedAmount, gratuityAmount, new CashTransaction(), null, null)) {
 						setCanceled(false);
@@ -203,11 +206,15 @@ public class SettleTicketView extends POSDialog {
 					break;
 
 				case CREDIT_VISA:
-					payUsingCard(PaymentType.CREDIT_VISA, tenderedAmount, gratuityAmount);
+				case CREDIT_MASTER_CARD:
+				case CREDIT_AMEX:
+				case CREDIT_DISCOVERY:
+					payUsingCard(cardName, tenderedAmount, gratuityAmount);
 					break;
 
-				case CREDIT_MASTER_CARD:
-					payUsingCard(PaymentType.CREDIT_MASTER_CARD, tenderedAmount, gratuityAmount);
+				case DEBIT_VISA:
+				case DEBIT_MASTER_CARD:
+					payUsingCard(cardName, tenderedAmount, gratuityAmount);
 					break;
 
 				default:
@@ -287,7 +294,12 @@ public class SettleTicketView extends POSDialog {
 		}
 	}
 
-	private void payUsingCard(PaymentType cardType, final double tenderedAmount, final double gratuityAmount) throws Exception {
+	private void payUsingCard(String cardName, final double tenderedAmount, final double gratuityAmount) throws Exception {
+		if (!CardConfig.getMerchantGateway().isCardTypeSupported(cardName)) {
+			POSMessageDialog.showError("<html>Card <b>" + cardName + "</b> not supported.</html>");
+			return;
+		}
+		
 		SwipeCardDialog swipeCardDialog = new SwipeCardDialog();
 		swipeCardDialog.pack();
 		swipeCardDialog.open();
@@ -298,8 +310,10 @@ public class SettleTicketView extends POSDialog {
 		String cardString = swipeCardDialog.getCardString();
 
 		if (CardConfig.getMerchantGateway() == MerchantGateway.AUTHORIZE_NET) {
-			String authorizationCode = CreditCardTransactionProcessor.processUsingAuthorizeDotNet(cardString, tenderedAmount, CardType.VISA);
-			settleTickets(tenderedAmount, gratuityAmount, new CreditCardTransaction(), cardType.toString(), authorizationCode);
+			CardType authorizeNetCardType = CardType.findByValue(cardName);
+
+			String authorizationCode = CreditCardTransactionProcessor.processUsingAuthorizeDotNet(cardString, tenderedAmount, authorizeNetCardType);
+			settleTickets(tenderedAmount, gratuityAmount, new CreditCardTransaction(), cardName, authorizationCode);
 		}
 
 		setCanceled(false);
@@ -343,11 +357,9 @@ public class SettleTicketView extends POSDialog {
 	public TicketDetailView getTicketDetailView() {
 		return ticketDetailView;
 	}
-	
+
 	@Override
 	public void open() {
 		super.open();
-		
-		paymentView.setDefaultFocus();
 	}
 }

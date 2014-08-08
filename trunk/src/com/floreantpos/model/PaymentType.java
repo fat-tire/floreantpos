@@ -1,9 +1,9 @@
 package com.floreantpos.model;
 
 public enum PaymentType {
-	CASH("CASH"), DEBIT_VISA("VISA", "visa_card.png"), DEBIT_MASTER_CARD("MASTER CARD", "master_card.png"), 
-	CREDIT_VISA("VISA", "visa_card.png"), CREDIT_MASTER_CARD("MASTER CARD", "master_card.png"), 
-	CREDIT_AMEX("AMEX", "am_ex_card.png"), CREDIT_DISCOVERY("DISCOVER", "discover_card.png"), 
+	CASH("CASH"), DEBIT_VISA("Visa", "visa_card.png"), DEBIT_MASTER_CARD("MasterCard", "master_card.png"), 
+	CREDIT_VISA("Visa", "visa_card.png"), CREDIT_MASTER_CARD("MasterCard", "master_card.png"), 
+	CREDIT_AMEX("Amex", "am_ex_card.png"), CREDIT_DISCOVERY("Discover", "discover_card.png"), 
 	GIFT_CERTIFICATE("GIFT CERTIFICATE");
 
 	private String displayString;
