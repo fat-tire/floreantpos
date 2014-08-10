@@ -21,7 +21,8 @@ public class CardConfig {
 	}
 
 	public static CardReader getCardReader() {
-		return CardReader.fromString(AppConfig.getString(CARD_READER));
+		String string = AppConfig.getString(CARD_READER, "SWIPE");
+		return CardReader.fromString(string);
 	}
 
 	public static void setMerchantGateway(MerchantGateway gateway) {
@@ -35,7 +36,7 @@ public class CardConfig {
 	public static MerchantGateway getMerchantGateway() {
 		String gateway = AppConfig.getString(MERCHANT_GATEWAY);
 		if (StringUtils.isEmpty(gateway)) {
-			return null;
+			return MerchantGateway.AUTHORIZE_NET;
 		}
 
 		return MerchantGateway.valueOf(gateway);
@@ -46,7 +47,7 @@ public class CardConfig {
 	}
 
 	public static String getMerchantAccount() {
-		return AppConfig.getString(MERCHANT_ACCOUNT);
+		return AppConfig.getString(MERCHANT_ACCOUNT, "6tuU4N3H");
 	}
 
 	public static void setMerchantPass(String pass) {
@@ -70,7 +71,7 @@ public class CardConfig {
 			return AESencrp.decrypt(string);
 		}
 
-		return string;
+		return "4k6955x3T8bCVPVm";
 	}
 	
 	public static boolean isSandboxMode() {
