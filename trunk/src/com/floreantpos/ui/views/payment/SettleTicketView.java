@@ -6,14 +6,10 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 
-import net.authorize.data.creditcard.CardType;
-
 import com.floreantpos.POSConstants;
 import com.floreantpos.config.CardConfig;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.CashTransaction;
-import com.floreantpos.model.CreditCardTransaction;
-import com.floreantpos.model.MerchantGateway;
 import com.floreantpos.model.PaymentType;
 import com.floreantpos.model.PosTransaction;
 import com.floreantpos.model.Ticket;
@@ -27,13 +23,12 @@ import com.floreantpos.ui.dialog.DiscountListDialog;
 import com.floreantpos.ui.dialog.POSDialog;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.dialog.PaymentTypeSelectionDialog;
-import com.floreantpos.ui.dialog.SwipeCardDialog;
 import com.floreantpos.ui.dialog.TransactionCompletionDialog;
 import com.floreantpos.ui.views.SwitchboardView;
 import com.floreantpos.ui.views.TicketDetailView;
 import com.floreantpos.ui.views.order.RootView;
 
-public class SettleTicketView extends POSDialog {
+public class SettleTicketView extends POSDialog implements CardInputListener {
 	public final static String VIEW_NAME = "PAYMENT_VIEW";
 
 	private String previousViewName = SwitchboardView.VIEW_NAME;
@@ -44,6 +39,12 @@ public class SettleTicketView extends POSDialog {
 	private TicketDetailView ticketDetailView;
 	private PaymentView paymentView;
 	protected List<Ticket> ticketsToSettle;
+
+	private double tenderedAmount;
+
+	private double gratuityAmount;
+
+	private String cardName;
 
 	public SettleTicketView() {
 		super(Application.getPosWindow(), true);
@@ -182,23 +183,23 @@ public class SettleTicketView extends POSDialog {
 			if (dialog.isCanceled()) {
 				return;
 			}
-			
+
 			PaymentType paymentType = dialog.getSelectedPaymentType();
-			String cardName = paymentType.getDisplayString();
-			
-			double tenderedAmount = paymentView.getTenderedAmount();
-			double gratuityAmount = paymentView.getGratuityAmount();
+			cardName = paymentType.getDisplayString();
 
-			int option = JOptionPane.showOptionDialog(this, "<html>You are going to process <b>" + Application.getCurrencySymbol() + tenderedAmount
-					+ "</b>.<br/><br/>If you are sure press <b>Ok</b>, otherwise press <b>Cancel</b>.<br/><br/></html>", "Confirm",
-					JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, null, null, null);
-
-			if (option != JOptionPane.OK_OPTION) {
-				return;
-			}
+			tenderedAmount = paymentView.getTenderedAmount();
+			gratuityAmount = paymentView.getGratuityAmount();
 
 			switch (paymentType) {
 				case CASH:
+					ConfirmPayDialog confirmPayDialog = new ConfirmPayDialog();
+					confirmPayDialog.setAmount(tenderedAmount);
+					confirmPayDialog.open();
+					
+					if (confirmPayDialog.isCanceled()) {
+						return;
+					}
+					
 					if (settleTickets(tenderedAmount, gratuityAmount, new CashTransaction(), null, null)) {
 						setCanceled(false);
 						dispose();
@@ -299,25 +300,11 @@ public class SettleTicketView extends POSDialog {
 			POSMessageDialog.showError("<html>Card <b>" + cardName + "</b> not supported.</html>");
 			return;
 		}
-		
-		SwipeCardDialog swipeCardDialog = new SwipeCardDialog();
+
+		SwipeCardDialog swipeCardDialog = new SwipeCardDialog(this);
 		swipeCardDialog.pack();
 		swipeCardDialog.open();
 
-		if (swipeCardDialog.isCanceled()) {
-			return;
-		}
-		String cardString = swipeCardDialog.getCardString();
-
-		if (CardConfig.getMerchantGateway() == MerchantGateway.AUTHORIZE_NET) {
-			CardType authorizeNetCardType = CardType.findByValue(cardName);
-
-			String authorizationCode = CreditCardTransactionProcessor.processUsingAuthorizeDotNet(cardString, tenderedAmount, authorizeNetCardType);
-			settleTickets(tenderedAmount, gratuityAmount, new CreditCardTransaction(), cardName, authorizationCode);
-		}
-
-		setCanceled(false);
-		dispose();
 	}
 
 	private void setTenderAmount(double tenderedAmount) {
@@ -361,5 +348,43 @@ public class SettleTicketView extends POSDialog {
 	@Override
 	public void open() {
 		super.open();
+	}
+
+	@Override
+	public void cardInputted(CardInputter inputter) {
+		try {
+			if (inputter instanceof SwipeCardDialog) {
+				ConfirmPayDialog confirmPayDialog = new ConfirmPayDialog();
+				confirmPayDialog.setAmount(tenderedAmount);
+				confirmPayDialog.open();
+				
+				if (confirmPayDialog.isCanceled()) {
+					return;
+				}
+//				SwipeCardDialog swipeCardDialog = (SwipeCardDialog) inputter;
+//
+//				String cardString = swipeCardDialog.getCardString();
+//
+//				if (CardConfig.getMerchantGateway() == MerchantGateway.AUTHORIZE_NET) {
+//					CardType authorizeNetCardType = CardType.findByValue(cardName);
+//
+//					String authorizationCode = CreditCardTransactionProcessor.processUsingAuthorizeDotNet(cardString, tenderedAmount, authorizeNetCardType);
+//					settleTickets(tenderedAmount, gratuityAmount, new CreditCardTransaction(), cardName, authorizationCode);
+//				}
+//
+//				setCanceled(false);
+//				dispose();
+				
+				POSMessageDialog.showMessage("swipe");
+			}
+			else if(inputter instanceof ManualCardEntryDialog) {
+				POSMessageDialog.showMessage("manual");
+			}
+			else if (inputter instanceof AuthorizationCodeDialog) {
+				POSMessageDialog.showMessage("authorization");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }
