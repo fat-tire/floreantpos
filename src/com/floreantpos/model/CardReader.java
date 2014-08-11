@@ -4,8 +4,8 @@ import org.apache.commons.lang.StringUtils;
 
 public enum CardReader {
 	SWIPE("Swipe"),
-	INTELLIGENT("Intelligent"),
-	KEYBOARD_ONLY("Keyboard Only");
+	MANUAL("Manual"),
+	EXTERNAL_TERMINAL("External Terminal");
 	
 	private String type;
 	

@@ -28,7 +28,7 @@ public class ManualCardEntryDialog extends POSDialog implements CardInputter {
 	private void createUI() {
 		JPanel panel = new JPanel();
 		getContentPane().add(panel, BorderLayout.CENTER);
-		panel.setLayout(new MigLayout("", "[][grow]", "[][][][][][]"));
+		panel.setLayout(new MigLayout("", "[][grow]", "[][][][][][][]"));
 		
 		JLabel lblCardNumber = new JLabel("Card Number");
 		panel.add(lblCardNumber, "cell 0 0,alignx trailing");
@@ -36,33 +36,43 @@ public class ManualCardEntryDialog extends POSDialog implements CardInputter {
 		POSTextField tfCardNumber = new POSTextField();
 		panel.add(tfCardNumber, "cell 1 0,growx");
 		
-		DateEntryView dateEntryView = new DateEntryView();
-		dateEntryView.setBorder(new TitledBorder(null, "Expiery Date", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panel.add(dateEntryView, "cell 0 1 2 1,gapx 16px,growy");
+		JLabel lblExpieryMonth = new JLabel("Expiery Month");
+		panel.add(lblExpieryMonth, "cell 0 1,alignx trailing");
+		
+		POSTextField tfExpMonth = new POSTextField();
+		tfExpMonth.setColumns(4);
+		panel.add(tfExpMonth, "cell 1 1");
+		
+		JLabel lblExpieryYear = new JLabel("Expiery Year");
+		panel.add(lblExpieryYear, "cell 0 2,alignx trailing");
+		
+		POSTextField tfExpYear = new POSTextField();
+		tfExpYear.setColumns(4);
+		panel.add(tfExpYear, "cell 1 2");
 		
 		JLabel lblZipCode = new JLabel("ZIP Code");
-		panel.add(lblZipCode, "cell 0 2,alignx trailing");
+		panel.add(lblZipCode, "cell 0 3,alignx trailing");
 		
 		POSTextField tfZipCode = new POSTextField();
-		panel.add(tfZipCode, "cell 1 2,growx");
+		panel.add(tfZipCode, "cell 1 3,growx");
 		
 		JLabel lblNewLabel = new JLabel("Card Value Code");
-		panel.add(lblNewLabel, "cell 0 3,alignx trailing");
+		panel.add(lblNewLabel, "cell 0 4,alignx trailing");
 		
 		POSTextField tfCardValueCode = new POSTextField();
-		panel.add(tfCardValueCode, "cell 1 3,growx");
+		panel.add(tfCardValueCode, "cell 1 4,growx");
 		
 		JLabel lblNameOnCard = new JLabel("Name on Card");
-		panel.add(lblNameOnCard, "cell 0 4,alignx trailing");
+		panel.add(lblNameOnCard, "cell 0 5,alignx trailing");
 		
 		POSTextField tfCardName = new POSTextField();
-		panel.add(tfCardName, "cell 1 4,growx");
+		panel.add(tfCardName, "cell 1 5,growx");
 		
 		JLabel lblAddress = new JLabel("Address");
-		panel.add(lblAddress, "cell 0 5,alignx trailing,gapbottom 50px");
+		panel.add(lblAddress, "cell 0 6,alignx trailing");
 		
 		POSTextField tfCardAddress = new POSTextField();
-		panel.add(tfCardAddress, "cell 1 5,growx");
+		panel.add(tfCardAddress, "cell 1 6,growx");
 		
 		JPanel panel_1 = new JPanel();
 		getContentPane().add(panel_1, BorderLayout.SOUTH);

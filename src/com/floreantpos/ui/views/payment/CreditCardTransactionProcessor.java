@@ -10,16 +10,12 @@ import net.authorize.aim.cardpresent.Result;
 import net.authorize.data.creditcard.CardType;
 import net.authorize.data.creditcard.CreditCard;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.validator.routines.CreditCardValidator;
 
 import com.floreantpos.config.CardConfig;
 
 public class CreditCardTransactionProcessor {
 	public static String processUsingAuthorizeDotNet(String cardTracks, double tenderedAmount, CardType cardType) throws Exception {
-		if (StringUtils.isEmpty(cardTracks)) {
-			throw new RuntimeException("Invalid card string");
-		}
-
 		//		private static String apiLoginID = "6tuU4N3H";
 		//	    private static String transactionKey = "4k6955x3T8bCVPVm"; 
 
@@ -37,6 +33,9 @@ public class CreditCardTransactionProcessor {
 		merchant.setMarketType(net.authorize.MarketType.RETAIL);
 		//merchant.setMD5Value(MD5Value);
 
+		
+		
+		
 		// Create credit card
 		CreditCard creditCard = CreditCard.createCreditCard();
 		creditCard.setCardType(cardType);
@@ -69,5 +68,12 @@ public class CreditCardTransactionProcessor {
 			//POSMessageDialog.showMessage("Error.</br>");
 			//System.out.println(result.getResponseReasonCodes().get(0) + " : " + result.getResponseReasonCodes().get(0).getReasonText());
 		}
+	}
+	
+	public static void main(String[] args) {
+		//%B4111111111111111^SHAH/RIAR^1803101000000000020000831000000?;4111111111111111=1803101000020000831?
+		Object valid = CreditCardValidator.VISA_VALIDATOR.validate("4111111111111111^SHAH/RIAR^1803101000000000020000831000000?;4111111111111111=1803101000020000831?");
+		
+		System.out.println(valid);
 	}
 }

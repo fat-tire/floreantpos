@@ -23,11 +23,11 @@ import com.floreantpos.util.NumberUtil;
 public class PaymentView extends JPanel {
 	protected SettleTicketView settleTicketView;
 
+	private PosButton btnGratuity;
 	private com.floreantpos.swing.PosButton btnCancel;
 	private com.floreantpos.swing.PosButton btnFinish;
 	private com.floreantpos.swing.TransparentPanel calcButtonPanel;
 	private javax.swing.JLabel jLabel4;
-	private javax.swing.JLabel jLabel5;
 	private javax.swing.JLabel jLabel6;
 	private com.floreantpos.swing.TransparentPanel jPanel4;
 	private com.floreantpos.swing.PosButton posButton1;
@@ -44,7 +44,6 @@ public class PaymentView extends JPanel {
 	private com.floreantpos.swing.PosButton posButton9;
 	private com.floreantpos.swing.FocusedTextField tfAmountTendered;
 	private com.floreantpos.swing.FocusedTextField tfDueAmount;
-	private com.floreantpos.swing.FocusedTextField tfGratuityAmount;
 	private com.floreantpos.swing.TransparentPanel transparentPanel1;
 	private POSToggleButton btnTaxExempt;
 	private PosButton btnCoupon;
@@ -75,11 +74,9 @@ public class PaymentView extends JPanel {
 		jPanel4 = new com.floreantpos.swing.TransparentPanel();
 		transparentPanel1 = new com.floreantpos.swing.TransparentPanel();
 		jLabel4 = new javax.swing.JLabel();
-		jLabel5 = new javax.swing.JLabel();
 		jLabel6 = new javax.swing.JLabel();
 		tfDueAmount = new com.floreantpos.swing.FocusedTextField();
 		tfDueAmount.setFocusable(false);
-		tfGratuityAmount = new com.floreantpos.swing.FocusedTextField();
 		tfAmountTendered = new com.floreantpos.swing.FocusedTextField();
 
 		setLayout(new MigLayout("", "[]", "[73px][251px][grow,fill][][shrink 0]"));
@@ -160,15 +157,25 @@ public class PaymentView extends JPanel {
 		calcButtonPanel.add(posButton12);
 
 		add(calcButtonPanel, "cell 0 1,grow");
-		jPanel4.setLayout(new MigLayout("", "", "[][][]"));
+		jPanel4.setLayout(new MigLayout("", "[][]", "[][][]"));
 
 		btnTaxExempt = new POSToggleButton(com.floreantpos.POSConstants.TAX_EXEMPT);
+		btnTaxExempt.setText("TAX EXEMPT");
 		btnTaxExempt.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				settleTicketView.doTaxExempt(btnTaxExempt.isSelected());
 			}
 		});
-		jPanel4.add(btnTaxExempt, "cell 0 0 2 1,grow");
+		
+		btnGratuity = new PosButton();
+		btnGratuity.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				doSetGratuity();
+			}
+		});
+		btnGratuity.setText("GRATUITY");
+		jPanel4.add(btnGratuity, "cell 0 0,growx");
+		jPanel4.add(btnTaxExempt, "cell 1 0,grow");
 
 		btnCoupon = new PosButton(com.floreantpos.POSConstants.COUPON_DISCOUNT);
 		btnCoupon.addActionListener(new ActionListener() {
@@ -213,29 +220,27 @@ public class PaymentView extends JPanel {
 		jLabel4.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
 		jLabel4.setText("DUE AMOUNT:");
 
-		jLabel5.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-		jLabel5.setText("GRATUITY AMOUNT:");
-
 		jLabel6.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
 		jLabel6.setText("TENDERED AMOUNT:");
 
 		tfDueAmount.setEditable(false);
 		tfDueAmount.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
 
-		tfGratuityAmount.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-
 		tfAmountTendered.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
 
 		add(transparentPanel1, "cell 0 0,growx,aligny top");
 		
-		transparentPanel1.setLayout(new MigLayout("", "[][grow,fill]", "[19px][19px][19px]"));
+		transparentPanel1.setLayout(new MigLayout("", "[][grow,fill]", "[19px][19px]"));
 		transparentPanel1.add(jLabel4, "cell 0 0,alignx right,aligny center");
-		transparentPanel1.add(jLabel5, "cell 0 1,alignx right,aligny center");
-		transparentPanel1.add(jLabel6, "cell 0 2,alignx left,aligny center");
+		transparentPanel1.add(jLabel6, "cell 0 1,alignx left,aligny center");
 		transparentPanel1.add(tfDueAmount, "cell 1 0,growx,aligny top");
-		transparentPanel1.add(tfGratuityAmount, "cell 1 1,growx,aligny top");
-		transparentPanel1.add(tfAmountTendered, "cell 1 2,growx,aligny top");
+		transparentPanel1.add(tfAmountTendered, "cell 1 1,growx,aligny top");
 	}// </editor-fold>//GEN-END:initComponents
+
+	protected void doSetGratuity() {
+		//DoubleTextField gratuityInputField = new DoubleTextField();
+		//JOptionPane.showi
+	}
 
 	protected void doTaxExempt() {
 	}
@@ -254,10 +259,6 @@ public class PaymentView extends JPanel {
 	Action calAction = new AbstractAction() {
 		public void actionPerformed(ActionEvent e) {
 			JTextField textField = tfAmountTendered;
-
-			if (tfGratuityAmount.hasFocus()) {
-				textField = tfGratuityAmount;
-			}
 
 			PosButton button = (PosButton) e.getSource();
 			String s = button.getActionCommand();
@@ -304,11 +305,9 @@ public class PaymentView extends JPanel {
 		}
 
 		double dueAmount = getDueAmount();
-		double tips = calculateGratuity();
 
 		tfDueAmount.setText(NumberUtil.formatNumber(dueAmount));
-		tfGratuityAmount.setText(NumberUtil.formatNumber(tips));
-		tfAmountTendered.setText(NumberUtil.formatNumber(dueAmount + tips));
+		tfAmountTendered.setText(NumberUtil.formatNumber(dueAmount));
 		
 	}
 
@@ -316,16 +315,6 @@ public class PaymentView extends JPanel {
 		NumberFormat numberFormat = NumberFormat.getInstance();
 		double doubleValue = numberFormat.parse(tfAmountTendered.getText()).doubleValue();
 		return doubleValue;
-	}
-
-	public double getGratuityAmount() {
-		try {
-			NumberFormat numberFormat = NumberFormat.getInstance();
-			return numberFormat.parse(tfGratuityAmount.getText()).doubleValue();
-		} catch (Exception e) {
-			e.printStackTrace();
-			return 0;
-		}
 	}
 
 	public SettleTicketView getSettleTicketView() {
@@ -375,27 +364,6 @@ public class PaymentView extends JPanel {
 			}
 		}
 		return total;
-	}
-
-	protected double calculateGratuity() {
-		List<Ticket> ticketsToSettle = settleTicketView.getTicketsToSettle();
-		if (ticketsToSettle == null) {
-			return 0;
-		}
-
-		Ticket ticket = ticketsToSettle.get(0);
-
-		if (!Ticket.DINE_IN.equals(ticket.getTicketType())) {
-			return 0.0;
-		}
-
-		double dueAmount = getDueAmount();
-		double tips = getTotalGratuity();
-		if (tips == 0) {
-			tips = dueAmount * 0.15;
-		}
-
-		return tips;
 	}
 
 	public void setDefaultFocus() {
