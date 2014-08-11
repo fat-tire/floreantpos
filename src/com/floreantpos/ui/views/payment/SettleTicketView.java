@@ -6,10 +6,17 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 
+import org.apache.commons.lang.StringUtils;
+
+import net.authorize.data.creditcard.CardType;
+
 import com.floreantpos.POSConstants;
 import com.floreantpos.config.CardConfig;
 import com.floreantpos.main.Application;
+import com.floreantpos.model.CardReader;
 import com.floreantpos.model.CashTransaction;
+import com.floreantpos.model.CreditCardTransaction;
+import com.floreantpos.model.MerchantGateway;
 import com.floreantpos.model.PaymentType;
 import com.floreantpos.model.PosTransaction;
 import com.floreantpos.model.Ticket;
@@ -188,7 +195,7 @@ public class SettleTicketView extends POSDialog implements CardInputListener {
 			cardName = paymentType.getDisplayString();
 
 			tenderedAmount = paymentView.getTenderedAmount();
-			gratuityAmount = paymentView.getGratuityAmount();
+			gratuityAmount = 0;
 
 			switch (paymentType) {
 				case CASH:
@@ -300,10 +307,32 @@ public class SettleTicketView extends POSDialog implements CardInputListener {
 			POSMessageDialog.showError("<html>Card <b>" + cardName + "</b> not supported.</html>");
 			return;
 		}
+		
+		CardReader cardReader = CardConfig.getCardReader();
+		switch (cardReader) {
+			case SWIPE:
+				SwipeCardDialog swipeCardDialog = new SwipeCardDialog(this);
+				swipeCardDialog.pack();
+				swipeCardDialog.open();
+				break;
+				
+			case MANUAL:
+				ManualCardEntryDialog dialog = new ManualCardEntryDialog(this);
+				dialog.pack();
+				dialog.open();
+				break;
+				
+			case EXTERNAL_TERMINAL:
+				AuthorizationCodeDialog authorizationCodeDialog = new AuthorizationCodeDialog(this);
+				authorizationCodeDialog.pack();
+				authorizationCodeDialog.open();
+				break;
 
-		SwipeCardDialog swipeCardDialog = new SwipeCardDialog(this);
-		swipeCardDialog.pack();
-		swipeCardDialog.open();
+			default:
+				break;
+		}
+
+		
 
 	}
 
@@ -354,6 +383,13 @@ public class SettleTicketView extends POSDialog implements CardInputListener {
 	public void cardInputted(CardInputter inputter) {
 		try {
 			if (inputter instanceof SwipeCardDialog) {
+				SwipeCardDialog swipeCardDialog = (SwipeCardDialog) inputter;
+				String cardString = swipeCardDialog.getCardString();
+				
+				if (StringUtils.isEmpty(cardString) || cardString.length() < 16) {
+					throw new RuntimeException("Invalid card string");
+				}
+				
 				ConfirmPayDialog confirmPayDialog = new ConfirmPayDialog();
 				confirmPayDialog.setAmount(tenderedAmount);
 				confirmPayDialog.open();
@@ -361,21 +397,16 @@ public class SettleTicketView extends POSDialog implements CardInputListener {
 				if (confirmPayDialog.isCanceled()) {
 					return;
 				}
-//				SwipeCardDialog swipeCardDialog = (SwipeCardDialog) inputter;
-//
-//				String cardString = swipeCardDialog.getCardString();
-//
-//				if (CardConfig.getMerchantGateway() == MerchantGateway.AUTHORIZE_NET) {
-//					CardType authorizeNetCardType = CardType.findByValue(cardName);
-//
-//					String authorizationCode = CreditCardTransactionProcessor.processUsingAuthorizeDotNet(cardString, tenderedAmount, authorizeNetCardType);
-//					settleTickets(tenderedAmount, gratuityAmount, new CreditCardTransaction(), cardName, authorizationCode);
-//				}
-//
-//				setCanceled(false);
-//				dispose();
-				
-				POSMessageDialog.showMessage("swipe");
+
+				if (CardConfig.getMerchantGateway() == MerchantGateway.AUTHORIZE_NET) {
+					CardType authorizeNetCardType = CardType.findByValue(cardName);
+
+					String authorizationCode = CreditCardTransactionProcessor.processUsingAuthorizeDotNet(cardString, tenderedAmount, authorizeNetCardType);
+					settleTickets(tenderedAmount, gratuityAmount, new CreditCardTransaction(), cardName, authorizationCode);
+				}
+
+				setCanceled(false);
+				dispose();
 			}
 			else if(inputter instanceof ManualCardEntryDialog) {
 				POSMessageDialog.showMessage("manual");
@@ -385,6 +416,7 @@ public class SettleTicketView extends POSDialog implements CardInputListener {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+			POSMessageDialog.showError(e.getMessage());
 		}
 	}
 }

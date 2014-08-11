@@ -380,7 +380,6 @@ public class TicketView extends JPanel {
 		}
 
 		ticket.calculatePrice();
-		ticket.calculateDefaultGratutity();
 	}
 
 	private void doPayNow(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_doPayNow
