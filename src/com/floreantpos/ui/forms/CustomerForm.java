@@ -15,9 +15,9 @@ import com.floreantpos.model.dao.CustomerDAO;
 import com.floreantpos.model.util.IllegalModelStateException;
 import com.floreantpos.swing.DoubleTextField;
 import com.floreantpos.swing.FixedLengthTextField;
+import com.floreantpos.swing.QwertyKeyPad;
 import com.floreantpos.ui.BeanEditor;
 import com.floreantpos.ui.dialog.POSMessageDialog;
-import com.floreantpos.ui.views.QwertyKeyPad;
 import com.floreantpos.util.PosGuiUtil;
 
 public class CustomerForm extends BeanEditor {
