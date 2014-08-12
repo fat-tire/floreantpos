@@ -10,8 +10,6 @@ import net.authorize.aim.cardpresent.Result;
 import net.authorize.data.creditcard.CardType;
 import net.authorize.data.creditcard.CreditCard;
 
-import org.apache.commons.validator.routines.CreditCardValidator;
-
 import com.floreantpos.config.CardConfig;
 
 public class CreditCardTransactionProcessor {
@@ -72,8 +70,8 @@ public class CreditCardTransactionProcessor {
 	
 	public static void main(String[] args) {
 		//%B4111111111111111^SHAH/RIAR^1803101000000000020000831000000?;4111111111111111=1803101000020000831?
-		Object valid = CreditCardValidator.VISA_VALIDATOR.validate("4111111111111111^SHAH/RIAR^1803101000000000020000831000000?;4111111111111111=1803101000020000831?");
+		//Object valid = CreditCardValidator.VISA_VALIDATOR.validate("4111111111111111^SHAH/RIAR^1803101000000000020000831000000?;4111111111111111=1803101000020000831?");
 		
-		System.out.println(valid);
+		//System.out.println(valid);
 	}
 }

@@ -11,6 +11,30 @@ public class CardConfig {
 	private static final String MERCHANT_ACCOUNT = "MerchantAccount";
 	private static final String MERCHANT_GATEWAY = "MerchantGateway";
 	private static final String CARD_READER = "CARD_READER";
+	
+	public static boolean isSwipeCardSupported() {
+		return AppConfig.getBoolean("support-swipe-card", true);
+	}
+	
+	public static void setSwipeCardSupported(boolean b) {
+		AppConfig.put("support-swipe-card", b);
+	}
+	
+	public static boolean isManualEntrySupported() {
+		return AppConfig.getBoolean("support-card-manual-entry", true);
+	}
+	
+	public static void setManualEntrySupported(boolean b) {
+		AppConfig.put("support-card-manual-entry", b);
+	}
+	
+	public static boolean isExtTerminalSupported() {
+		return AppConfig.getBoolean("support-ext-terminal", true);
+	}
+	
+	public static void setExtTerminalSupported(boolean b) {
+		AppConfig.put("support-ext-terminal", b);
+	}
 
 	public static void setCardReader(CardReader card) {
 		if (card == null) {
