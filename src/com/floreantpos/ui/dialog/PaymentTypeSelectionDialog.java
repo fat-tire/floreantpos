@@ -104,6 +104,7 @@ public class PaymentTypeSelectionDialog extends POSDialog {
 			}
 			
 			addActionListener(this);
+			setEnabled(paymentType.isSupported());
 		}
 
 		@Override

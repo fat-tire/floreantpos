@@ -5,6 +5,8 @@ import com.floreantpos.ui.dialog.POSDialog;
 import java.awt.BorderLayout;
 import javax.swing.JPasswordField;
 import javax.swing.JPanel;
+
+import com.floreantpos.config.CardConfig;
 import com.floreantpos.swing.PosButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -86,6 +88,13 @@ public class SwipeCardDialog extends POSDialog implements CardInputter {
 		});
 		passwordField.setColumns(30);
 		panel_1.add(passwordField);
+		
+		if (!CardConfig.isManualEntrySupported()) {
+			btnManualEntry.setEnabled(false);
+		}
+		if(!CardConfig.isExtTerminalSupported()) {
+			btnEnterAuthorizationCode.setEnabled(false);
+		}
 	}
 
 	protected void openAuthorizationEntryDialog() {
