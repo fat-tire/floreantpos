@@ -15,7 +15,9 @@ import javax.swing.JTextField;
 
 import net.miginfocom.swing.MigLayout;
 
+import com.floreantpos.model.Gratuity;
 import com.floreantpos.model.Ticket;
+import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.swing.POSToggleButton;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.util.NumberUtil;
@@ -238,8 +240,7 @@ public class PaymentView extends JPanel {
 	}// </editor-fold>//GEN-END:initComponents
 
 	protected void doSetGratuity() {
-		//DoubleTextField gratuityInputField = new DoubleTextField();
-		//JOptionPane.showi
+		settleTicketView.doSetGratuity();
 	}
 
 	protected void doTaxExempt() {

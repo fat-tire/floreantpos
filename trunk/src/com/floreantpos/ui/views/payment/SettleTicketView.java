@@ -6,16 +6,18 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 
-import org.apache.commons.lang.StringUtils;
-
 import net.authorize.data.creditcard.CardType;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.floreantpos.POSConstants;
+import com.floreantpos.PosException;
 import com.floreantpos.config.CardConfig;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.CardReader;
 import com.floreantpos.model.CashTransaction;
 import com.floreantpos.model.CreditCardTransaction;
+import com.floreantpos.model.Gratuity;
 import com.floreantpos.model.MerchantGateway;
 import com.floreantpos.model.PaymentType;
 import com.floreantpos.model.PosTransaction;
@@ -48,8 +50,6 @@ public class SettleTicketView extends POSDialog implements CardInputListener {
 	protected List<Ticket> ticketsToSettle;
 
 	private double tenderedAmount;
-
-	private double gratuityAmount;
 
 	private String cardName;
 
@@ -144,6 +144,30 @@ public class SettleTicketView extends POSDialog implements CardInputListener {
 		ticketDetailView.updateView();
 		paymentView.updateView();
 	}//GEN-LAST:event_doTaxExempt
+	
+	public void doSetGratuity() {
+		GratuityInputDialog d = new GratuityInputDialog();
+		d.pack();
+		d.open();
+		
+		if(d.isCanceled()) {
+			return;
+		}
+		
+		double gratuityAmount = d.getGratuityAmount();
+		Gratuity gratuity = new Gratuity();
+		gratuity.setAmount(gratuityAmount);
+		
+		List<Ticket> tickets = getTicketsToSettle();
+		Ticket ticket = tickets.get(0);
+		
+		ticket.setGratuity(gratuity);
+		ticket.calculatePrice();
+		TicketDAO.getInstance().saveOrUpdate(ticket);
+		
+		ticketDetailView.updateView();
+		paymentView.updateView();
+	}
 
 	protected double getTotalAmount() {
 		List<Ticket> ticketsToSettle = getTicketsToSettle();
@@ -195,7 +219,6 @@ public class SettleTicketView extends POSDialog implements CardInputListener {
 			cardName = paymentType.getDisplayString();
 
 			tenderedAmount = paymentView.getTenderedAmount();
-			gratuityAmount = 0;
 
 			switch (paymentType) {
 				case CASH:
@@ -207,7 +230,7 @@ public class SettleTicketView extends POSDialog implements CardInputListener {
 						return;
 					}
 					
-					if (settleTickets(tenderedAmount, gratuityAmount, new CashTransaction(), null, null)) {
+					if (settleTickets(tenderedAmount, new CashTransaction(), null, null)) {
 						setCanceled(false);
 						dispose();
 					}
@@ -217,12 +240,12 @@ public class SettleTicketView extends POSDialog implements CardInputListener {
 				case CREDIT_MASTER_CARD:
 				case CREDIT_AMEX:
 				case CREDIT_DISCOVERY:
-					payUsingCard(cardName, tenderedAmount, gratuityAmount);
+					payUsingCard(cardName, tenderedAmount);
 					break;
 
 				case DEBIT_VISA:
 				case DEBIT_MASTER_CARD:
-					payUsingCard(cardName, tenderedAmount, gratuityAmount);
+					payUsingCard(cardName, tenderedAmount);
 					break;
 
 				default:
@@ -234,7 +257,7 @@ public class SettleTicketView extends POSDialog implements CardInputListener {
 		}
 	}
 
-	public boolean settleTickets(final double tenderedAmount, final double gratuityAmount, PosTransaction posTransaction, String cardType,
+	public boolean settleTickets(final double tenderedAmount, PosTransaction posTransaction, String cardType,
 			String cardAuthorizationCode) {
 		try {
 			setTenderAmount(tenderedAmount);
@@ -260,8 +283,8 @@ public class SettleTicketView extends POSDialog implements CardInputListener {
 					JReportPrintService.printTicket(ticket);
 				}
 
-				PosTransactionService.getInstance().settleTickets(ticketsToSettle, tenderedAmount, gratuityAmount, posTransaction, cardType,
-						cardAuthorizationCode);
+				PosTransactionService transactionService = PosTransactionService.getInstance();
+				transactionService.settleTickets(ticketsToSettle, tenderedAmount, posTransaction, cardType,	cardAuthorizationCode);
 
 			} catch (Exception ee) {
 				POSMessageDialog.showError(Application.getPosWindow(), com.floreantpos.POSConstants.PRINT_ERROR, ee);
@@ -277,7 +300,7 @@ public class SettleTicketView extends POSDialog implements CardInputListener {
 			dialog.setPaidAmount(paidAmount);
 			dialog.setDueAmount(dueAmount);
 			dialog.setDueAmountBeforePaid(dueAmountBeforePaid);
-			dialog.setGratuityAmount(gratuityAmount);
+			//dialog.setGratuityAmount(gratuityAmount);
 			dialog.updateView();
 			dialog.pack();
 			dialog.open();
@@ -302,7 +325,7 @@ public class SettleTicketView extends POSDialog implements CardInputListener {
 		}
 	}
 
-	private void payUsingCard(String cardName, final double tenderedAmount, final double gratuityAmount) throws Exception {
+	private void payUsingCard(String cardName, final double tenderedAmount) throws Exception {
 		if (!CardConfig.getMerchantGateway().isCardTypeSupported(cardName)) {
 			POSMessageDialog.showError("<html>Card <b>" + cardName + "</b> not supported.</html>");
 			return;
@@ -382,6 +405,8 @@ public class SettleTicketView extends POSDialog implements CardInputListener {
 	@Override
 	public void cardInputted(CardInputter inputter) {
 		try {
+			CardType authorizeNetCardType = CardType.findByValue(cardName);
+			
 			if (inputter instanceof SwipeCardDialog) {
 				SwipeCardDialog swipeCardDialog = (SwipeCardDialog) inputter;
 				String cardString = swipeCardDialog.getCardString();
@@ -399,20 +424,31 @@ public class SettleTicketView extends POSDialog implements CardInputListener {
 				}
 
 				if (CardConfig.getMerchantGateway() == MerchantGateway.AUTHORIZE_NET) {
-					CardType authorizeNetCardType = CardType.findByValue(cardName);
-
-					String authorizationCode = CreditCardTransactionProcessor.processUsingAuthorizeDotNet(cardString, tenderedAmount, authorizeNetCardType);
-					settleTickets(tenderedAmount, gratuityAmount, new CreditCardTransaction(), cardName, authorizationCode);
+					String authorizationCode = AuthorizeDoNetProcessor.process(cardString, tenderedAmount, authorizeNetCardType);
+					settleTickets(tenderedAmount, new CreditCardTransaction(), cardName, authorizationCode);
 				}
 
 				setCanceled(false);
 				dispose();
 			}
 			else if(inputter instanceof ManualCardEntryDialog) {
-				POSMessageDialog.showMessage("manual");
+				ManualCardEntryDialog mDialog = (ManualCardEntryDialog) inputter;
+				String cardNumber = mDialog.getCardNumber();
+				String expMonth = mDialog.getExpMonth();
+				String expYear = mDialog.getExpYear();
+				
+				String authorizationCode = AuthorizeDoNetProcessor.process(cardNumber, expMonth, expYear, tenderedAmount, authorizeNetCardType);
+				POSMessageDialog.showMessage(authorizationCode);
+				settleTickets(tenderedAmount, new CreditCardTransaction(), cardName, authorizationCode);
 			}
 			else if (inputter instanceof AuthorizationCodeDialog) {
-				POSMessageDialog.showMessage("authorization");
+				AuthorizationCodeDialog authDialog = (AuthorizationCodeDialog) inputter;
+				String authorizationCode = authDialog.getAuthorizationCode();
+				if(StringUtils.isEmpty(authorizationCode)) {
+					throw new PosException("Invalid authorization code");
+				}
+				
+				settleTickets(tenderedAmount, new CreditCardTransaction(), null, authorizationCode);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

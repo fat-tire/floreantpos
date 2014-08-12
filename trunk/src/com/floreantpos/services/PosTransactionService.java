@@ -13,7 +13,6 @@ import com.floreantpos.model.CashTransaction;
 import com.floreantpos.model.CreditCardTransaction;
 import com.floreantpos.model.DebitCardTransaction;
 import com.floreantpos.model.GiftCertificateTransaction;
-import com.floreantpos.model.Gratuity;
 import com.floreantpos.model.PosTransaction;
 import com.floreantpos.model.RefundTransaction;
 import com.floreantpos.model.Terminal;
@@ -27,7 +26,7 @@ import com.floreantpos.util.NumberUtil;
 public class PosTransactionService {
 	private static PosTransactionService paymentService = new PosTransactionService();
 
-	public void settleTickets(List<Ticket> tickets, double tenderedAmount, double gratuityAmount, PosTransaction transaction, String cardType, String cardAuthorizationCode) throws Exception {
+	public void settleTickets(List<Ticket> tickets, double tenderedAmount, PosTransaction transaction, String cardType, String cardAuthorizationCode) throws Exception {
 		Application application = Application.getInstance();
 		User currentUser = Application.getCurrentUser();
 		Terminal terminal = application.getTerminal();
@@ -39,7 +38,6 @@ public class PosTransactionService {
 		
 		try {
 			Date currentDate = new Date();
-			boolean gratuityPaid = false;
 			
 			session = dao.getSession();
 			tx = session.beginTransaction();
@@ -84,19 +82,6 @@ public class PosTransactionService {
 				ticket.setPaidAmount(paidAmount);
 				ticket.setDueAmount(dueAmount);
 				
-				if (!gratuityPaid && gratuityAmount > 0) {
-					Gratuity gratuity = new Gratuity();
-					gratuity.setAmount(gratuityAmount);
-					gratuity.setOwner(ticket.getOwner());
-					gratuity.setPaid(false);
-					gratuity.setTicket(ticket);
-					gratuity.setTerminal(ticket.getTerminal());
-					
-					ticket.setGratuity(gratuity);
-					
-					gratuityPaid = true;
-				}
-
 				PosTransaction posTransaction = null;
 				if (transaction instanceof CashTransaction) {
 					posTransaction = new CashTransaction();
