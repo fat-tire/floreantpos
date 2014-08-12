@@ -3,9 +3,16 @@ package com.floreantpos.config.ui;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.EtchedBorder;
 
 public abstract class ConfigurationView extends JPanel {
 	private boolean initialized = false;
+	
+	public ConfigurationView() {
+		setBorder(new CompoundBorder(new EtchedBorder(), new EmptyBorder(10, 10, 10, 10)));
+	}
 	
 	protected JLabel createLabel(String text) {
 		JLabel label = new JLabel(text);
