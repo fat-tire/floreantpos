@@ -15,6 +15,7 @@ import com.floreantpos.ui.TitlePanel;
 import com.floreantpos.ui.dialog.POSDialog;
 
 public class GratuityInputDialog extends POSDialog {
+	private DoubleTextField doubleTextField;
 	public GratuityInputDialog() {
 		
 		TitlePanel titlePanel = new TitlePanel();
@@ -25,7 +26,7 @@ public class GratuityInputDialog extends POSDialog {
 		getContentPane().add(panel, BorderLayout.CENTER);
 		panel.setLayout(new MigLayout("", "[224px,grow,fill]", "[19px][][]"));
 		
-		DoubleTextField doubleTextField = new DoubleTextField();
+		doubleTextField = new DoubleTextField();
 		doubleTextField.setColumns(20);
 		panel.add(doubleTextField, "cell 0 0,alignx left,height 30px,aligny top");
 		
@@ -53,4 +54,7 @@ public class GratuityInputDialog extends POSDialog {
 		panel.add(psbtnCancel, "cell 0 2");
 	}
 
+	public double getGratuityAmount() {
+		return doubleTextField.getDouble();
+	}
 }
