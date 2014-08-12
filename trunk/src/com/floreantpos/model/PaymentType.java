@@ -1,5 +1,7 @@
 package com.floreantpos.model;
 
+import com.floreantpos.config.CardConfig;
+
 public enum PaymentType {
 	CASH("CASH"), DEBIT_VISA("Visa", "visa_card.png"), DEBIT_MASTER_CARD("MasterCard", "master_card.png"), 
 	CREDIT_VISA("Visa", "visa_card.png"), CREDIT_MASTER_CARD("MasterCard", "master_card.png"), 
@@ -38,4 +40,14 @@ public enum PaymentType {
 	public void setImageFile(String imageFile) {
 		this.imageFile = imageFile;
 	};
+	
+	public boolean isSupported() {
+		switch (this) {
+		case CASH:
+			return true;
+
+		default:
+			return CardConfig.isSwipeCardSupported() || CardConfig.isManualEntrySupported() || CardConfig.isExtTerminalSupported();
+		}
+	}
 }

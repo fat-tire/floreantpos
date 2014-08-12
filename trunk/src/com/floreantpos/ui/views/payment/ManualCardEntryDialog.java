@@ -1,18 +1,20 @@
 package com.floreantpos.ui.views.payment;
 
-import com.floreantpos.ui.dialog.POSDialog;
-import javax.swing.JPanel;
 import java.awt.BorderLayout;
-import net.miginfocom.swing.MigLayout;
-import javax.swing.JLabel;
-import com.floreantpos.swing.POSTextField;
-import com.floreantpos.ui.views.DateEntryView;
-import javax.swing.border.TitledBorder;
-import com.floreantpos.swing.PosButton;
-import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import com.floreantpos.ui.TitlePanel;
+import java.awt.event.ActionListener;
+
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JSeparator;
+
+import net.miginfocom.swing.MigLayout;
+
+import com.floreantpos.config.CardConfig;
+import com.floreantpos.swing.POSTextField;
+import com.floreantpos.swing.PosButton;
+import com.floreantpos.ui.TitlePanel;
+import com.floreantpos.ui.dialog.POSDialog;
 
 public class ManualCardEntryDialog extends POSDialog implements CardInputter {
 	private CardInputListener cardInputListener;
@@ -124,6 +126,13 @@ public class ManualCardEntryDialog extends POSDialog implements CardInputter {
 		TitlePanel titlePanel = new TitlePanel();
 		titlePanel.setTitle("Enter Card Manually");
 		getContentPane().add(titlePanel, BorderLayout.NORTH);
+		
+		if (!CardConfig.isSwipeCardSupported()) {
+			btnSwipeCard.setEnabled(false);
+		}
+		if(!CardConfig.isExtTerminalSupported()) {
+			btnEnterAuthorizationCode.setEnabled(false);
+		}
 	}
 
 	protected void openAuthorizationCodeEntryDialog() {
