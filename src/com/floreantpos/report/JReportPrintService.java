@@ -167,7 +167,7 @@ public class JReportPrintService {
 				map.put(TIP_AMOUNT, NumberUtil.formatNumber(tipAmount));
 			}
 
-			double netAmount = totalAmount + tipAmount;
+			double netAmount = totalAmount;
 			double changedAmount = ticket.getTenderedAmount() - netAmount;
 
 			if (changedAmount < 0) {

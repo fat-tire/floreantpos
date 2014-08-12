@@ -18,6 +18,9 @@ import com.floreantpos.ui.dialog.POSDialog;
 
 public class ManualCardEntryDialog extends POSDialog implements CardInputter {
 	private CardInputListener cardInputListener;
+	private POSTextField tfCardNumber;
+	private POSTextField tfExpMonth;
+	private POSTextField tfExpYear;
 	
 	public ManualCardEntryDialog(CardInputListener cardInputListener) {
 		this.cardInputListener = cardInputListener;
@@ -35,45 +38,54 @@ public class ManualCardEntryDialog extends POSDialog implements CardInputter {
 		JLabel lblCardNumber = new JLabel("Card Number");
 		panel.add(lblCardNumber, "cell 0 0,alignx trailing");
 		
-		POSTextField tfCardNumber = new POSTextField();
-		panel.add(tfCardNumber, "cell 1 0,growx");
+		tfCardNumber = new POSTextField();
+		tfCardNumber.setColumns(20);
+		panel.add(tfCardNumber, "cell 1 0");
 		
 		JLabel lblExpieryMonth = new JLabel("Expiery Month");
 		panel.add(lblExpieryMonth, "cell 0 1,alignx trailing");
 		
-		POSTextField tfExpMonth = new POSTextField();
+		tfExpMonth = new POSTextField();
 		tfExpMonth.setColumns(4);
 		panel.add(tfExpMonth, "cell 1 1");
 		
 		JLabel lblExpieryYear = new JLabel("Expiery Year");
 		panel.add(lblExpieryYear, "cell 0 2,alignx trailing");
 		
-		POSTextField tfExpYear = new POSTextField();
+		tfExpYear = new POSTextField();
 		tfExpYear.setColumns(4);
 		panel.add(tfExpYear, "cell 1 2");
 		
 		JLabel lblZipCode = new JLabel("ZIP Code");
+		lblZipCode.setVisible(false);
 		panel.add(lblZipCode, "cell 0 3,alignx trailing");
 		
 		POSTextField tfZipCode = new POSTextField();
+		tfZipCode.setVisible(false);
 		panel.add(tfZipCode, "cell 1 3,growx");
 		
 		JLabel lblNewLabel = new JLabel("Card Value Code");
+		lblNewLabel.setVisible(false);
 		panel.add(lblNewLabel, "cell 0 4,alignx trailing");
 		
 		POSTextField tfCardValueCode = new POSTextField();
+		tfCardValueCode.setVisible(false);
 		panel.add(tfCardValueCode, "cell 1 4,growx");
 		
 		JLabel lblNameOnCard = new JLabel("Name on Card");
+		lblNameOnCard.setVisible(false);
 		panel.add(lblNameOnCard, "cell 0 5,alignx trailing");
 		
 		POSTextField tfCardName = new POSTextField();
+		tfCardName.setVisible(false);
 		panel.add(tfCardName, "cell 1 5,growx");
 		
 		JLabel lblAddress = new JLabel("Address");
+		lblAddress.setVisible(false);
 		panel.add(lblAddress, "cell 0 6,alignx trailing");
 		
 		POSTextField tfCardAddress = new POSTextField();
+		tfCardAddress.setVisible(false);
 		panel.add(tfCardAddress, "cell 1 6,growx");
 		
 		JPanel panel_1 = new JPanel();
@@ -160,4 +172,15 @@ public class ManualCardEntryDialog extends POSDialog implements CardInputter {
 		swipeCardDialog.open();
 	}
 
+	public String getCardNumber() {
+		return tfCardNumber.getText();
+	}
+	
+	public String getExpMonth() {
+		return tfExpMonth.getText();
+	}
+	
+	public String getExpYear() {
+		return tfExpYear.getText();
+	}
 }
