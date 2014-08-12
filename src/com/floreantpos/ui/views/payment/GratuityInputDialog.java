@@ -14,8 +14,10 @@ import com.floreantpos.swing.PosButton;
 import com.floreantpos.ui.TitlePanel;
 import com.floreantpos.ui.dialog.POSDialog;
 import com.floreantpos.swing.NumericKeypad;
+import javax.swing.SwingConstants;
 
 public class GratuityInputDialog extends POSDialog {
+	private DoubleTextField doubleTextField;
 	public GratuityInputDialog() {
 		
 		TitlePanel titlePanel = new TitlePanel();
@@ -24,7 +26,13 @@ public class GratuityInputDialog extends POSDialog {
 		
 		JPanel panel = new JPanel();
 		getContentPane().add(panel, BorderLayout.CENTER);
-		panel.setLayout(new MigLayout("", "[224px,grow,fill]", "[19px][][][]"));
+		panel.setLayout(new MigLayout("", "[224px,grow,fill]", "[19px][grow,fill][][]"));
+		
+		doubleTextField = new DoubleTextField();
+		doubleTextField.setHorizontalAlignment(SwingConstants.TRAILING);
+		doubleTextField.setFocusCycleRoot(true);
+		doubleTextField.setColumns(20);
+		panel.add(doubleTextField, "cell 0 0,alignx left,height 30px,aligny top");
 		
 		NumericKeypad numericKeypad = new NumericKeypad();
 		panel.add(numericKeypad, "cell 0 1");
@@ -33,6 +41,7 @@ public class GratuityInputDialog extends POSDialog {
 		panel.add(separator, "cell 0 2,growx,gapy 50px");
 		
 		PosButton psbtnOk = new PosButton();
+		psbtnOk.setFocusable(false);
 		psbtnOk.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				setCanceled(false);
@@ -43,6 +52,7 @@ public class GratuityInputDialog extends POSDialog {
 		panel.add(psbtnOk, "flowx,cell 0 3");
 		
 		PosButton psbtnCancel = new PosButton();
+		psbtnCancel.setFocusable(false);
 		psbtnCancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				setCanceled(true);
@@ -54,6 +64,6 @@ public class GratuityInputDialog extends POSDialog {
 	}
 
 	public double getGratuityAmount() {
-		return 0;//doubleTextField.getDouble();
+		return doubleTextField.getDouble();
 	}
 }
