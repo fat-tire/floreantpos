@@ -147,7 +147,8 @@ public class SettleTicketView extends POSDialog implements CardInputListener {
 	
 	public void doSetGratuity() {
 		GratuityInputDialog d = new GratuityInputDialog();
-		d.pack();
+		d.setSize(300, 500);
+		d.setResizable(false);
 		d.open();
 		
 		if(d.isCanceled()) {

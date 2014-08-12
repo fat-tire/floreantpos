@@ -15,6 +15,7 @@ import com.floreantpos.swing.POSTextField;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.ui.TitlePanel;
 import com.floreantpos.ui.dialog.POSDialog;
+import com.floreantpos.swing.QwertyKeyPad;
 
 public class ManualCardEntryDialog extends POSDialog implements CardInputter {
 	private CardInputListener cardInputListener;
@@ -33,7 +34,7 @@ public class ManualCardEntryDialog extends POSDialog implements CardInputter {
 	private void createUI() {
 		JPanel panel = new JPanel();
 		getContentPane().add(panel, BorderLayout.CENTER);
-		panel.setLayout(new MigLayout("", "[][grow]", "[][][][][][][]"));
+		panel.setLayout(new MigLayout("", "[][grow]", "[][][][][][][][grow]"));
 		
 		JLabel lblCardNumber = new JLabel("Card Number");
 		panel.add(lblCardNumber, "cell 0 0,alignx trailing");
@@ -56,37 +57,40 @@ public class ManualCardEntryDialog extends POSDialog implements CardInputter {
 		tfExpYear.setColumns(4);
 		panel.add(tfExpYear, "cell 1 2");
 		
-		JLabel lblZipCode = new JLabel("ZIP Code");
-		lblZipCode.setVisible(false);
-		panel.add(lblZipCode, "cell 0 3,alignx trailing");
+//		JLabel lblZipCode = new JLabel("ZIP Code");
+//		lblZipCode.setVisible(false);
+//		panel.add(lblZipCode, "cell 0 3,alignx trailing");
+//		
+//		POSTextField tfZipCode = new POSTextField();
+//		tfZipCode.setVisible(false);
+//		panel.add(tfZipCode, "cell 1 3,growx");
+//		
+//		JLabel lblNewLabel = new JLabel("Card Value Code");
+//		lblNewLabel.setVisible(false);
+//		panel.add(lblNewLabel, "cell 0 4,alignx trailing");
+//		
+//		POSTextField tfCardValueCode = new POSTextField();
+//		tfCardValueCode.setVisible(false);
+//		panel.add(tfCardValueCode, "cell 1 4,growx");
+//		
+//		JLabel lblNameOnCard = new JLabel("Name on Card");
+//		lblNameOnCard.setVisible(false);
+//		panel.add(lblNameOnCard, "cell 0 5,alignx trailing");
+//		
+//		POSTextField tfCardName = new POSTextField();
+//		tfCardName.setVisible(false);
+//		panel.add(tfCardName, "cell 1 5,growx");
+//		
+//		JLabel lblAddress = new JLabel("Address");
+//		lblAddress.setVisible(false);
+//		panel.add(lblAddress, "cell 0 6,alignx trailing");
+//		
+//		POSTextField tfCardAddress = new POSTextField();
+//		tfCardAddress.setVisible(false);
+//		panel.add(tfCardAddress, "cell 1 6,growx");
 		
-		POSTextField tfZipCode = new POSTextField();
-		tfZipCode.setVisible(false);
-		panel.add(tfZipCode, "cell 1 3,growx");
-		
-		JLabel lblNewLabel = new JLabel("Card Value Code");
-		lblNewLabel.setVisible(false);
-		panel.add(lblNewLabel, "cell 0 4,alignx trailing");
-		
-		POSTextField tfCardValueCode = new POSTextField();
-		tfCardValueCode.setVisible(false);
-		panel.add(tfCardValueCode, "cell 1 4,growx");
-		
-		JLabel lblNameOnCard = new JLabel("Name on Card");
-		lblNameOnCard.setVisible(false);
-		panel.add(lblNameOnCard, "cell 0 5,alignx trailing");
-		
-		POSTextField tfCardName = new POSTextField();
-		tfCardName.setVisible(false);
-		panel.add(tfCardName, "cell 1 5,growx");
-		
-		JLabel lblAddress = new JLabel("Address");
-		lblAddress.setVisible(false);
-		panel.add(lblAddress, "cell 0 6,alignx trailing");
-		
-		POSTextField tfCardAddress = new POSTextField();
-		tfCardAddress.setVisible(false);
-		panel.add(tfCardAddress, "cell 1 6,growx");
+		QwertyKeyPad qwertyKeyPad = new QwertyKeyPad();
+		panel.add(qwertyKeyPad, "cell 0 7 2 1,grow");
 		
 		JPanel panel_1 = new JPanel();
 		getContentPane().add(panel_1, BorderLayout.SOUTH);

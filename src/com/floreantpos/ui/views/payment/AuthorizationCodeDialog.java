@@ -11,6 +11,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import com.floreantpos.ui.TitlePanel;
 import javax.swing.JSeparator;
+import com.floreantpos.swing.QwertyKeyPad;
 
 public class AuthorizationCodeDialog extends POSDialog implements CardInputter {
 	private CardInputListener cardInputListener;
@@ -28,7 +29,7 @@ public class AuthorizationCodeDialog extends POSDialog implements CardInputter {
 	private void createUI() {
 		JPanel panel = new JPanel();
 		getContentPane().add(panel, BorderLayout.CENTER);
-		panel.setLayout(new MigLayout("", "[][grow]", "[50]"));
+		panel.setLayout(new MigLayout("", "[][grow]", "[50][grow]"));
 		
 		JLabel lblAuthorizationCode = new JLabel("Authorization Code");
 		panel.add(lblAuthorizationCode, "cell 0 0,alignx trailing");
@@ -36,6 +37,9 @@ public class AuthorizationCodeDialog extends POSDialog implements CardInputter {
 		tfAuthorizationCode = new FocusedTextField();
 		tfAuthorizationCode.setColumns(12);
 		panel.add(tfAuthorizationCode, "cell 1 0,growx");
+		
+		QwertyKeyPad qwertyKeyPad = new QwertyKeyPad();
+		panel.add(qwertyKeyPad, "cell 0 1 2 1,grow");
 		
 		JPanel panel_1 = new JPanel();
 		getContentPane().add(panel_1, BorderLayout.SOUTH);
