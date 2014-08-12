@@ -1,4 +1,4 @@
-package com.floreantpos.ui.views;
+package com.floreantpos.swing;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -19,9 +19,6 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.text.JTextComponent;
 
-import com.floreantpos.swing.POSToggleButton;
-import com.floreantpos.swing.PosButton;
-import com.floreantpos.swing.TransparentPanel;
 
 public class QwertyKeyPad extends JPanel implements ActionListener, ChangeListener {
 	Font buttonFont = getFont().deriveFont(Font.BOLD, 24);
