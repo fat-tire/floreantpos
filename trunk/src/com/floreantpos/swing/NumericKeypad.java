@@ -1,6 +1,8 @@
 package com.floreantpos.swing;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
@@ -8,6 +10,7 @@ import javax.swing.Action;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.event.EventListenerList;
+import javax.swing.text.JTextComponent;
 
 import com.floreantpos.swing.event.KeypadEvent;
 import com.floreantpos.swing.event.KeypadEventListener;
@@ -54,39 +57,27 @@ public class NumericKeypad extends javax.swing.JComponent {
 	// GEN-BEGIN:initComponents
 	// <editor-fold defaultstate="collapsed" desc="Generated Code">
 	private void initComponents() {
-
-		displayPanel = new javax.swing.JPanel();
-		txtInput = new javax.swing.JTextField();
 		keypadPanel = new javax.swing.JPanel();
 		posButton7 = new com.floreantpos.swing.PosButton();
+		posButton7.setFocusable(false);
 		posButton8 = new com.floreantpos.swing.PosButton();
+		posButton8.setFocusable(false);
 		posButton9 = new com.floreantpos.swing.PosButton();
+		posButton9.setFocusable(false);
 		posButton4 = new com.floreantpos.swing.PosButton();
+		posButton4.setFocusable(false);
 		posButton5 = new com.floreantpos.swing.PosButton();
+		posButton5.setFocusable(false);
 		posButton6 = new com.floreantpos.swing.PosButton();
+		posButton6.setFocusable(false);
 		posButton1 = new com.floreantpos.swing.PosButton();
+		posButton1.setFocusable(false);
 		posButton2 = new com.floreantpos.swing.PosButton();
+		posButton2.setFocusable(false);
 		posButton3 = new com.floreantpos.swing.PosButton();
-		spacerLabel1 = new javax.swing.JLabel();
+		posButton3.setFocusable(false);
 		posButton0 = new com.floreantpos.swing.PosButton();
-		spacerLabel2 = new javax.swing.JLabel();
-		actionpadPanel = new javax.swing.JPanel();
-		posButton10 = new com.floreantpos.swing.PosButton();
-		posButton12 = new com.floreantpos.swing.PosButton();
-
-		txtInput.setBackground(new java.awt.Color(240, 240, 240));
-		txtInput.setEditable(false);
-		txtInput.setFont(new java.awt.Font("Tahoma", 1, 18));
-		txtInput.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-		txtInput.setFocusable(false);
-		txtInput.setVerifyInputWhenFocusTarget(false);
-
-		org.jdesktop.layout.GroupLayout displayPanelLayout = new org.jdesktop.layout.GroupLayout(displayPanel);
-		displayPanel.setLayout(displayPanelLayout);
-		displayPanelLayout.setHorizontalGroup(displayPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(
-				org.jdesktop.layout.GroupLayout.TRAILING, txtInput, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 368, Short.MAX_VALUE));
-		displayPanelLayout.setVerticalGroup(displayPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(txtInput,
-				org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 30, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE));
+		posButton0.setFocusable(false);
 
 		keypadPanel.setLayout(new java.awt.GridLayout(4, 3, 5, 5));
 
@@ -134,52 +125,33 @@ public class NumericKeypad extends javax.swing.JComponent {
 		posButton3.setIcon(com.floreantpos.IconFactory.getIcon("3_32.png"));
 		posButton3.setActionCommand("3");
 		keypadPanel.add(posButton3);
-		keypadPanel.add(spacerLabel1);
+
+		btnDot = new PosButton();
+		btnDot.setFocusable(false);
+		btnDot.setAction(goAction);
+		btnDot.setActionCommand(".");
+		btnDot.setIcon(com.floreantpos.IconFactory.getIcon("dot_32.png"));
+		keypadPanel.add(btnDot);
 
 		posButton0.setAction(goAction);
 		posButton0.setIcon(com.floreantpos.IconFactory.getIcon("0_32.png"));
 		posButton0.setActionCommand("0");
 		keypadPanel.add(posButton0);
-		keypadPanel.add(spacerLabel2);
-
-		actionpadPanel.setLayout(new java.awt.GridLayout(1, 1, 5, 0));
+		setLayout(new BorderLayout(0, 0));
+		posButton10 = new com.floreantpos.swing.PosButton();
+		posButton10.setFocusable(false);
+		keypadPanel.add(posButton10);
 
 		posButton10.setAction(goAction);
 		posButton10.setIcon(com.floreantpos.IconFactory.getIcon("clear_32.png"));
 		posButton10.setText("CLEAR");
-		actionpadPanel.add(posButton10);
-
-		posButton12.setAction(goAction);
-		posButton12.setIcon(com.floreantpos.IconFactory.getIcon("next_32.png"));
-		posButton12.setText("ENTER");
-		actionpadPanel.add(posButton12);
-
-		org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);
-		this.setLayout(layout);
-		layout.setHorizontalGroup(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-				.add(displayPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-				.add(keypadPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 368, Short.MAX_VALUE)
-				.add(actionpadPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 368, Short.MAX_VALUE));
-		layout.setVerticalGroup(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(
-				layout.createSequentialGroup()
-						.add(displayPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
-								org.jdesktop.layout.GroupLayout.PREFERRED_SIZE).addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-						.add(keypadPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 218, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-						.addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-						.add(actionpadPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 51, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-						.addContainerGap()));
+		add(keypadPanel, BorderLayout.CENTER);
 	}// </editor-fold>
-	// GEN-END:initComponents
 
-	// GEN-BEGIN:variables
-	// Variables declaration - do not modify
-	private javax.swing.JPanel actionpadPanel;
-	private javax.swing.JPanel displayPanel;
 	private javax.swing.JPanel keypadPanel;
 	private com.floreantpos.swing.PosButton posButton0;
 	private com.floreantpos.swing.PosButton posButton1;
 	private com.floreantpos.swing.PosButton posButton10;
-	private com.floreantpos.swing.PosButton posButton12;
 	private com.floreantpos.swing.PosButton posButton2;
 	private com.floreantpos.swing.PosButton posButton3;
 	private com.floreantpos.swing.PosButton posButton4;
@@ -188,38 +160,30 @@ public class NumericKeypad extends javax.swing.JComponent {
 	private com.floreantpos.swing.PosButton posButton7;
 	private com.floreantpos.swing.PosButton posButton8;
 	private com.floreantpos.swing.PosButton posButton9;
-	private javax.swing.JLabel spacerLabel1;
-	private javax.swing.JLabel spacerLabel2;
-	private javax.swing.JTextField txtInput;
 	// End of variables declaration//GEN-END:variables
 
 	Action goAction = new AbstractAction() {
 		public void actionPerformed(ActionEvent e) {
-			String command = e.getActionCommand();
-			if (com.floreantpos.POSConstants.CLEAR.equals(command)) {
-				fireKeypadEvent(KeypadEvent.CLEAR_TRIGGERED);
-				txtInput.setText("");
-				setText("");
+			Component focusOwner = KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
+			JTextComponent focusedTextComponent = null;
+
+			if (!(focusOwner instanceof JTextComponent)) {
+				return;
 			}
-			else if (com.floreantpos.POSConstants.ENTER.equals(command)) {
-				fireKeypadEvent(KeypadEvent.ENTER_TRIGGERED);
+
+			focusedTextComponent = (JTextComponent) focusOwner;
+
+			String command = e.getActionCommand();
+
+			if (com.floreantpos.POSConstants.CLEAR.equals(command)) {
+				focusedTextComponent.setText("");
 			}
 			else {
-				fireKeypadEvent(KeypadEvent.TEXT_CHANGED);
-				setText(getText() + command);
+				focusedTextComponent.setText(focusedTextComponent.getText() + command);
 			}
 		}
 	};
-
-	public void setText(String text) {
-		this.text = text;
-		if (isProtected()) {
-			txtInput.setText(text.replaceAll(".", "*"));
-		}
-		else {
-			txtInput.setText(text);
-		}
-	}
+	private PosButton btnDot;
 
 	public String getText() {
 		return text;
@@ -237,7 +201,7 @@ public class NumericKeypad extends javax.swing.JComponent {
 		JPanel p = new JPanel(new BorderLayout());
 		p.add(new NumericKeypad());
 		JFrame frame = new JFrame();
-		frame.add(p);
+		frame.getContentPane().add(p);
 		frame.pack();
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
