@@ -35,7 +35,7 @@ import com.floreantpos.swing.FocusedTextField;
 import com.floreantpos.swing.TransparentPanel;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.views.order.RootView;
-import com.floreantpos.ui.views.payment.CreditCardTransactionProcessor;
+import com.floreantpos.ui.views.payment.AuthorizeDoNetProcessor;
 import com.floreantpos.util.NumberUtil;
 
 /**
@@ -96,7 +96,7 @@ public class CardPaymentView  {
 		if (CardConfig.getMerchantGateway() == MerchantGateway.AUTHORIZE_NET) {
 			try {
 				if(validateInput()) {
-					String authorizationCode = CreditCardTransactionProcessor.processUsingAuthorizeDotNet(cardString, tenderedAmount, CardType.VISA);
+					String authorizationCode = AuthorizeDoNetProcessor.process(cardString, tenderedAmount, CardType.VISA);
 					doSettle(authorizationCode);
 				}
 			} catch (Exception e) {
