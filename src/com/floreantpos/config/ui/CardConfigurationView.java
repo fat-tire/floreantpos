@@ -129,7 +129,7 @@ public class CardConfigurationView extends ConfigurationView {
 			readers.add(CardReader.EXTERNAL_TERMINAL);
 		}
 		
-		cbCardReader.setModel(new DefaultComboBoxModel<CardReader>(readers));
+		cbCardReader.setModel(createComboBoxModel(readers));
 		if (readers.contains(currentReader)) {
 			cbCardReader.setSelectedItem(currentReader);
 		}
@@ -161,6 +161,14 @@ public class CardConfigurationView extends ConfigurationView {
 			tfMerchantPass.setEnabled(false);
 			cbSandboxMode.setEnabled(false);
 		}
+	}
+
+	private DefaultComboBoxModel<CardReader> createComboBoxModel(Vector items) {
+		DefaultComboBoxModel model = new DefaultComboBoxModel();
+		for (Object object : items) {
+			model.addElement(object);
+		}
+		return model;
 	}
 
 	@Override
