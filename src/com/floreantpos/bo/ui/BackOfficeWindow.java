@@ -38,6 +38,7 @@ import com.floreantpos.bo.actions.UserExplorerAction;
 import com.floreantpos.bo.actions.UserTypeExplorerAction;
 import com.floreantpos.bo.actions.ViewGratuitiesAction;
 import com.floreantpos.config.AppConfig;
+import com.floreantpos.extension.InventoryPlugin;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.User;
 import com.floreantpos.model.UserPermission;
@@ -151,8 +152,29 @@ public class BackOfficeWindow extends javax.swing.JFrame {
 				createReportMenu(menuBar);
 			}
 		}
+		
+		createInventoryMenus(menuBar);
 
 		setJMenuBar(menuBar);
+	}
+
+	private void createInventoryMenus(JMenuBar menuBar) {
+		InventoryPlugin plugin = Application.getPluginManager().getPlugin(InventoryPlugin.class);
+		if(plugin == null) {
+			return;
+		}
+		
+		AbstractAction[] actions = plugin.getActions();
+		if(actions == null) {
+			return;
+		}
+		
+		JMenu inventoryMenu = new JMenu("Inventory");
+		for (AbstractAction abstractAction : actions) {
+			inventoryMenu.add(abstractAction);
+		}
+
+		menuBar.add(inventoryMenu);
 	}
 
 	private void createReportMenu(JMenuBar menuBar) {
