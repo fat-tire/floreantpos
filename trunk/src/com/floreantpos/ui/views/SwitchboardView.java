@@ -28,7 +28,6 @@ import com.floreantpos.PosException;
 import com.floreantpos.actions.SettleTicketAction;
 import com.floreantpos.bo.ui.BackOfficeWindow;
 import com.floreantpos.extension.OrderServiceExtension;
-import com.floreantpos.extension.OrostockExtension;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.AttendenceHistory;
 import com.floreantpos.model.Shift;
@@ -43,11 +42,13 @@ import com.floreantpos.swing.PosButton;
 import com.floreantpos.ui.dialog.ManagerDialog;
 import com.floreantpos.ui.dialog.NumberSelectionDialog2;
 import com.floreantpos.ui.dialog.POSMessageDialog;
+import com.floreantpos.ui.dialog.PaymentTypeSelectionDialog;
 import com.floreantpos.ui.dialog.PayoutDialog;
 import com.floreantpos.ui.dialog.VoidTicketDialog;
 import com.floreantpos.ui.views.order.DefaultOrderServiceExtension;
 import com.floreantpos.ui.views.order.OrderView;
 import com.floreantpos.ui.views.order.RootView;
+import com.floreantpos.ui.views.payment.SettleTicketView;
 import com.floreantpos.util.NumberUtil;
 import com.floreantpos.util.TicketAlreadyExistsException;
 
@@ -608,34 +609,29 @@ public class SwitchboardView extends JPanel implements ActionListener {
 	}
 
 	private void doGroupSettle() {
-//		List<Ticket> selectedTickets = openTicketList.getSelectedTickets();
-//		if (selectedTickets.size() < 2) {
-//			POSMessageDialog.showError(POSConstants.YOU_MUST_SELECT_TWO_OR_MORE_TICKET_FOR_GROUP_SETTLE);
-//			return;
-//		}
-//
-//		PaymentTypeSelectionDialog dialog = new PaymentTypeSelectionDialog();
-//		dialog.setSize(250, 400);
-//		dialog.open();
-//
-//		if (!dialog.isCanceled()) {
-//
-//			for (int i = 0; i < selectedTickets.size(); i++) {
-//				Ticket ticket = selectedTickets.get(i);
-//				ticket = TicketDAO.getInstance().initializeTicket(ticket);
-//				selectedTickets.set(i, ticket);
-//			}
-//
-//			SettleTicketView posDialog = new SettleTicketView();
-//			posDialog.setTicketsToSettle(selectedTickets);
-//			posDialog.setSize(800, 600);
-//			posDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-//			posDialog.open();
-//		}
-		
-		OrostockExtension extension = Application.getPluginManager().getPlugin(OrostockExtension.class);
-		if(extension != null) {
-			extension.viewSampleForm();
+		List<Ticket> selectedTickets = openTicketList.getSelectedTickets();
+		if (selectedTickets.size() < 2) {
+			POSMessageDialog.showError(POSConstants.YOU_MUST_SELECT_TWO_OR_MORE_TICKET_FOR_GROUP_SETTLE);
+			return;
+		}
+
+		PaymentTypeSelectionDialog dialog = new PaymentTypeSelectionDialog();
+		dialog.setSize(250, 400);
+		dialog.open();
+
+		if (!dialog.isCanceled()) {
+
+			for (int i = 0; i < selectedTickets.size(); i++) {
+				Ticket ticket = selectedTickets.get(i);
+				ticket = TicketDAO.getInstance().initializeTicket(ticket);
+				selectedTickets.set(i, ticket);
+			}
+
+			SettleTicketView posDialog = new SettleTicketView();
+			posDialog.setTicketsToSettle(selectedTickets);
+			posDialog.setSize(800, 600);
+			posDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+			posDialog.open();
 		}
 	}
 
