@@ -14,6 +14,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.table.TableColumnModel;
 
 import org.apache.commons.lang.StringUtils;
+import org.jdesktop.swingx.JXTable;
 
 import com.floreantpos.POSConstants;
 import com.floreantpos.bo.ui.explorer.ListTableModel;
@@ -21,7 +22,7 @@ import com.floreantpos.model.Customer;
 import com.floreantpos.model.Ticket;
 
 public class TicketListView extends JPanel {
-	private JTable table;
+	private JXTable table;
 	private TicketListTableModel tableModel;
 
 	public TicketListView() {
@@ -80,7 +81,12 @@ public class TicketListView extends JPanel {
 	// tableModel.
 	// }
 
-	private class TicketListTable extends JTable {
+	private class TicketListTable extends JXTable {
+		
+		public TicketListTable() {
+			setColumnControlVisible(true);
+		}
+		
 		@Override
 		public void changeSelection(int rowIndex, int columnIndex, boolean toggle, boolean extend) {
 			ListSelectionModel selectionModel = getSelectionModel();

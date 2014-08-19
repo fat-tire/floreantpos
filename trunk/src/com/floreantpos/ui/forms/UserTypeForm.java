@@ -98,9 +98,6 @@ public class UserTypeForm extends BeanEditor {
     private JCheckBoxList listPermissions;
     private javax.swing.JTextField tfTypeName;
     // End of variables declaration//GEN-END:variables
-	@Override
-	public void dispose() {
-	}
 
 	@Override
 	public String getDisplayText() {

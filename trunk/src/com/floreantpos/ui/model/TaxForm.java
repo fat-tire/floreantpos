@@ -110,10 +110,6 @@ public class TaxForm extends BeanEditor {
 	}
 
 	@Override
-	public void dispose() {
-	}
-
-	@Override
 	protected void updateView() {
 		Tax tax = (Tax) getBean();
 		tfName.setText(tax.getName());

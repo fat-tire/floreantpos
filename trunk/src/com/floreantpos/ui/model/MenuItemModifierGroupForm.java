@@ -114,10 +114,6 @@ public class MenuItemModifierGroupForm extends BeanEditor {
 	}
 
 	@Override
-	public void dispose() {
-	}
-
-	@Override
 	protected void updateView() {
 		MenuItemModifierGroup modifierGroup = (MenuItemModifierGroup) getBean();
 		if(modifierGroup == null) return;

@@ -18,7 +18,6 @@ public abstract class ListTableModel extends AbstractTableModel {
 	}
 
 	public ListTableModel(String[] names, List rows) {
-		super();
 		columnNames = names;
 		this.rows = rows;
 	}

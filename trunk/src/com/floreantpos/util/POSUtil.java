@@ -32,6 +32,14 @@ public class POSUtil {
 
 		return d;
 	}
+	
+	public static double getInteger(Integer d) {
+		if (d == null) {
+			return 0;
+		}
+		
+		return d;
+	}
 
 	public static int parseInteger(String s, String parseErrorMessage) {
 		try {

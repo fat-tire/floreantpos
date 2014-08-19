@@ -490,10 +490,6 @@ public class MenuItemForm extends BeanEditor implements ActionListener {
 	}
 
 	@Override
-	public void dispose() {
-	}
-
-	@Override
 	protected void updateView() {
 		MenuItem menuItem = (MenuItem) getBean();
 		
