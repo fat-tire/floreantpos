@@ -33,5 +33,9 @@ public class InventoryWarehouse extends BaseInventoryWarehouse {
 
 /*[CONSTRUCTOR MARKER END]*/
 
-
+	@Override
+	public String toString() {
+		return getName();
+	}
+	
 }
