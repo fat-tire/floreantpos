@@ -69,10 +69,6 @@ public class CouponForm extends BeanEditor {
     }
 
     @Override
-    public void dispose() {
-    }
-
-    @Override
     protected void updateView() {
         CouponAndDiscount coupon = (CouponAndDiscount) getBean();
         if (coupon == null) return;

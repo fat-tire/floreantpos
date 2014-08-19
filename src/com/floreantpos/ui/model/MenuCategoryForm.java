@@ -151,8 +151,4 @@ public class MenuCategoryForm extends BeanEditor {
 			return false;
 		}
 	}
-
-	@Override
-	public void dispose() {
-	}
 }

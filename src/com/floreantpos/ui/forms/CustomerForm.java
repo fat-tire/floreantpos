@@ -155,10 +155,6 @@ public class CustomerForm extends BeanEditor {
 	}
 
 	@Override
-	public void dispose() {
-	}
-
-	@Override
 	protected void updateView() {
 		Customer customer = (Customer) getBean();
 		

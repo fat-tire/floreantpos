@@ -29,7 +29,7 @@ public abstract class BeanEditor extends com.floreantpos.swing.TransparentPanel 
 
 	public abstract boolean save();
 
-	public abstract void dispose();
+	//public abstract void dispose();
 
 	protected abstract void updateView();
 

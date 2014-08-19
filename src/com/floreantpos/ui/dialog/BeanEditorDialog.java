@@ -94,7 +94,6 @@ public class BeanEditorDialog extends javax.swing.JDialog implements WindowListe
 	@Override
 	public void dispose() {
 		if (beanEditor != null) {
-			beanEditor.dispose();
 			beanEditor = null;
 		}
 

@@ -240,10 +240,6 @@ public class MenuModifierForm extends BeanEditor {
 	}
 
 	@Override
-	public void dispose() {
-	}
-
-	@Override
 	protected void updateView() {
 		MenuModifier modifier = (MenuModifier) getBean();
 		
