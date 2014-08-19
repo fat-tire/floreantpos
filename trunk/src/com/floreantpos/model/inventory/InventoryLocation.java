@@ -33,5 +33,9 @@ public class InventoryLocation extends BaseInventoryLocation {
 
 /*[CONSTRUCTOR MARKER END]*/
 
+	@Override
+	public String toString() {
+		return getName();
+	}
 
 }

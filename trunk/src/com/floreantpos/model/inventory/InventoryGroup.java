@@ -33,5 +33,8 @@ public class InventoryGroup extends BaseInventoryGroup {
 
 /*[CONSTRUCTOR MARKER END]*/
 
-
+	@Override
+	public String toString() {
+		return getName();
+	}
 }
