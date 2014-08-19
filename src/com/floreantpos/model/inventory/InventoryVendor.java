@@ -32,6 +32,11 @@ public class InventoryVendor extends BaseInventoryVendor {
 	}
 
 /*[CONSTRUCTOR MARKER END]*/
+	
+	@Override
+	public String toString() {
+		return getName();
+	}
 
 
 }
