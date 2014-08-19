@@ -62,11 +62,6 @@ public class CookingInstructionSelectionView extends BeanEditor {
 	}
 
 	@Override
-	public void dispose() {
-
-	}
-
-	@Override
 	protected void updateView() {
 		List<CookingInstruction> cookingInstructions = (List<CookingInstruction>) getBean();
 		table.setModel(new CookingInstructionTableModel(cookingInstructions));

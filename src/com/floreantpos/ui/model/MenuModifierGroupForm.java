@@ -93,10 +93,6 @@ public class MenuModifierGroupForm extends BeanEditor {
 	}
 
 	@Override
-	public void dispose() {
-	}
-
-	@Override
 	protected void updateView() {
 		MenuModifierGroup group = (MenuModifierGroup) getBean();
 		

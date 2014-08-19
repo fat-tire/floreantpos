@@ -151,10 +151,6 @@ public class MenuGroupForm extends BeanEditor {
 	}
 
 	@Override
-	public void dispose() {
-	}
-
-	@Override
 	protected void updateView() {
 		MenuGroup foodGroup = (MenuGroup) getBean();
 		if(foodGroup == null) {

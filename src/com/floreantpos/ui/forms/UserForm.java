@@ -142,10 +142,6 @@ public class UserForm extends BeanEditor {
 	private FixedLengthTextField tfSsn;
 
 	// End of variables declaration//GEN-END:variables
-	@Override
-	public void dispose() {
-
-	}
 
 	@Override
 	public String getDisplayText() {
