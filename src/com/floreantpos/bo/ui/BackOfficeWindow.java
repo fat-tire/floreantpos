@@ -8,10 +8,8 @@ package com.floreantpos.bo.ui;
 
 import java.awt.ComponentOrientation;
 import java.awt.Dimension;
+import java.awt.Insets;
 import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.Locale;
@@ -21,7 +19,6 @@ import javax.swing.AbstractAction;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
-import javax.swing.JPopupMenu;
 
 import com.floreantpos.bo.actions.CategoryExplorerAction;
 import com.floreantpos.bo.actions.ConfigureRestaurantAction;
@@ -56,6 +53,7 @@ import com.floreantpos.ui.report.actions.SalesDetailReportAction;
 import com.floreantpos.ui.report.actions.SalesExceptionReportAction;
 import com.floreantpos.ui.report.actions.SalesReportAction;
 import com.floreantpos.ui.report.actions.ServerProductivityReportAction;
+import com.jidesoft.swing.JideTabbedPane;
 
 /**
  *
@@ -67,36 +65,18 @@ public class BackOfficeWindow extends javax.swing.JFrame {
 	private static final String POSX = "bwx";//$NON-NLS-1$
 	private static final String WINDOW_HEIGHT = "bwheight";//$NON-NLS-1$
 	private static final String WINDOW_WIDTH = "bwwidth";//$NON-NLS-1$
-	
+
 	private static BackOfficeWindow instance;
 
 	/** Creates new form BackOfficeWindow */
 	public BackOfficeWindow() {
 		setIconImage(Application.getApplicationIcon().getImage());
-		
+
 		initComponents();
 
 		createMenus();
-
-		tabbedPane.addMouseListener(new MouseAdapter() {
-			public void mouseClicked(MouseEvent e) {
-				if (e.getButton() == MouseEvent.BUTTON3) {
-					JPopupMenu menu = new JPopupMenu();
-					menu.add(new AbstractAction(com.floreantpos.POSConstants.CLOSE) {
-
-						public void actionPerformed(ActionEvent e) {
-							int index = tabbedPane.getSelectedIndex();
-							tabbedPane.remove(index);
-						}
-
-					});
-					menu.show(tabbedPane, e.getX(), e.getY());
-				}
-			}
-		});
-
 		positionWindow();
-		
+
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
 		addWindowListener(new WindowAdapter() {
@@ -113,14 +93,14 @@ public class BackOfficeWindow extends javax.swing.JFrame {
 		int width = AppConfig.getInt(WINDOW_WIDTH, 900); //$NON-NLS-1$
 		int height = AppConfig.getInt(WINDOW_HEIGHT, 650); //$NON-NLS-1$
 		setSize(width, height);
-		
+
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		int x = (screenSize.width - width) >> 1;
 		int y = (screenSize.height - height) >> 1;
-		
+
 		x = AppConfig.getInt(POSX, x); //$NON-NLS-1$
 		y = AppConfig.getInt(POSY, y); //$NON-NLS-1$
-		
+
 		setLocation(x, y);
 	}
 
@@ -142,17 +122,17 @@ public class BackOfficeWindow extends javax.swing.JFrame {
 			createReportMenu(menuBar);
 		}
 		else {
-			if(permissions != null && permissions.contains(UserPermission.PERFORM_ADMINISTRATIVE_TASK)) {
+			if (permissions != null && permissions.contains(UserPermission.PERFORM_ADMINISTRATIVE_TASK)) {
 				createAdminMenu(menuBar);
 			}
-			if(permissions != null && permissions.contains(UserPermission.VIEW_EXPLORERS)) {
+			if (permissions != null && permissions.contains(UserPermission.VIEW_EXPLORERS)) {
 				createExplorerMenu(menuBar);
 			}
-			if(permissions != null && permissions.contains(UserPermission.VIEW_REPORTS)) {
+			if (permissions != null && permissions.contains(UserPermission.VIEW_REPORTS)) {
 				createReportMenu(menuBar);
 			}
 		}
-		
+
 		createInventoryMenus(menuBar);
 
 		setJMenuBar(menuBar);
@@ -160,15 +140,15 @@ public class BackOfficeWindow extends javax.swing.JFrame {
 
 	private void createInventoryMenus(JMenuBar menuBar) {
 		InventoryPlugin plugin = Application.getPluginManager().getPlugin(InventoryPlugin.class);
-		if(plugin == null) {
+		if (plugin == null) {
 			return;
 		}
-		
+
 		AbstractAction[] actions = plugin.getActions();
-		if(actions == null) {
+		if (actions == null) {
 			return;
 		}
-		
+
 		JMenu inventoryMenu = new JMenu("Inventory");
 		for (AbstractAction abstractAction : actions) {
 			inventoryMenu.add(abstractAction);
@@ -226,7 +206,10 @@ public class BackOfficeWindow extends javax.swing.JFrame {
 	 */
 	private void initComponents() {
 		jPanel1 = new javax.swing.JPanel();
-		tabbedPane = new javax.swing.JTabbedPane();
+		tabbedPane = new JideTabbedPane();
+		tabbedPane.setTabShape(JideTabbedPane.SHAPE_WINDOWS);
+		tabbedPane.setShowCloseButtonOnTab(true);
+		tabbedPane.setTabInsets(new Insets(5, 5, 5, 5));
 
 		getContentPane().setLayout(new java.awt.BorderLayout(5, 0));
 
@@ -254,21 +237,21 @@ public class BackOfficeWindow extends javax.swing.JFrame {
 
 	// Variables declaration - do not modify//GEN-BEGIN:variables
 	private javax.swing.JPanel jPanel1;
-	private javax.swing.JTabbedPane tabbedPane;
+	private JideTabbedPane tabbedPane;
 
 	// End of variables declaration//GEN-END:variables
 
 	public javax.swing.JTabbedPane getTabbedPane() {
 		return tabbedPane;
 	}
-	
+
 	private void saveSizeAndLocation() {
-		AppConfig.putInt(WINDOW_WIDTH, BackOfficeWindow.this.getWidth()); 
+		AppConfig.putInt(WINDOW_WIDTH, BackOfficeWindow.this.getWidth());
 		AppConfig.putInt(WINDOW_HEIGHT, BackOfficeWindow.this.getHeight()); //$NON-NLS-1$
 		AppConfig.putInt(POSX, BackOfficeWindow.this.getX()); //$NON-NLS-1$
 		AppConfig.putInt(POSY, BackOfficeWindow.this.getY()); //$NON-NLS-1$
 	}
-	
+
 	public void close() {
 		saveSizeAndLocation();
 		instance = null;
@@ -276,11 +259,11 @@ public class BackOfficeWindow extends javax.swing.JFrame {
 	}
 
 	public static BackOfficeWindow getInstance() {
-		if(instance == null) {
+		if (instance == null) {
 			instance = new BackOfficeWindow();
 			Application.getInstance().setBackOfficeWindow(instance);
 		}
-		
+
 		return instance;
 	}
 
