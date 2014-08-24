@@ -3,23 +3,33 @@ package com.floreantpos.ui.views.payment;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.URL;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.List;
 
+import javax.json.Json;
+import javax.json.JsonObject;
+import javax.json.JsonReader;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import net.miginfocom.swing.MigLayout;
 
-import com.floreantpos.model.Gratuity;
+import org.apache.commons.lang.StringUtils;
+
+import com.floreantpos.bo.ui.BackOfficeWindow;
+import com.floreantpos.model.Customer;
 import com.floreantpos.model.Ticket;
+import com.floreantpos.model.dao.CustomerDAO;
 import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.swing.POSToggleButton;
 import com.floreantpos.swing.PosButton;
+import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.util.NumberUtil;
 
 public class PaymentView extends JPanel {
@@ -56,7 +66,7 @@ public class PaymentView extends JPanel {
 		this.settleTicketView = settleTicketView;
 		
 		initComponents();
-		
+		btnUseKalaId.setActionCommand("0");
 	}
 
 	private void initComponents() {
@@ -159,7 +169,7 @@ public class PaymentView extends JPanel {
 		calcButtonPanel.add(posButton12);
 
 		add(calcButtonPanel, "cell 0 1,grow");
-		jPanel4.setLayout(new MigLayout("", "[][]", "[][][]"));
+		jPanel4.setLayout(new MigLayout("", "[][]", "[][][][]"));
 
 		btnTaxExempt = new POSToggleButton(com.floreantpos.POSConstants.TAX_EXEMPT);
 		btnTaxExempt.setText("TAX EXEMPT");
@@ -175,9 +185,33 @@ public class PaymentView extends JPanel {
 				doSetGratuity();
 			}
 		});
+		
+		btnMyKalaDiscount = new PosButton();
+		btnMyKalaDiscount.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				settleTicketView.makeMyKalaDiscount();
+			}
+		});
+		
+		btnUseKalaId = new PosButton();
+		btnUseKalaId.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String actionCommand = e.getActionCommand();
+				if("0".equals(actionCommand)) {
+					useKalaId();
+				}
+				else {
+					removeKalaId();
+				}
+			}
+		});
+		btnUseKalaId.setText("USE KALA ID");
+		jPanel4.add(btnUseKalaId, "cell 0 0,growx");
+		btnMyKalaDiscount.setText("MY KALA DISCOUNT");
+		jPanel4.add(btnMyKalaDiscount, "cell 1 0,growx");
 		btnGratuity.setText("GRATUITY");
-		jPanel4.add(btnGratuity, "cell 0 0,growx");
-		jPanel4.add(btnTaxExempt, "cell 1 0,grow");
+		jPanel4.add(btnGratuity, "cell 0 1,growx");
+		jPanel4.add(btnTaxExempt, "cell 1 1,grow");
 
 		btnCoupon = new PosButton(com.floreantpos.POSConstants.COUPON_DISCOUNT);
 		btnCoupon.addActionListener(new ActionListener() {
@@ -185,7 +219,7 @@ public class PaymentView extends JPanel {
 				settleTicketView.doApplyCoupon();
 			}
 		});
-		jPanel4.add(btnCoupon, "cell 0 1,grow");
+		jPanel4.add(btnCoupon, "cell 0 2,grow");
 
 		btnViewCoupons = new PosButton(com.floreantpos.POSConstants.VIEW_DISCOUNTS);
 		btnViewCoupons.addActionListener(new ActionListener() {
@@ -193,13 +227,13 @@ public class PaymentView extends JPanel {
 				settleTicketView.doViewDiscounts();
 			}
 		});
-		jPanel4.add(btnViewCoupons, "cell 1 1,grow");
+		jPanel4.add(btnViewCoupons, "cell 1 2,grow");
 
 		btnFinish = new com.floreantpos.swing.PosButton();
-		jPanel4.add(btnFinish, "cell 1 2,grow");
+		jPanel4.add(btnFinish, "cell 1 3,grow");
 		btnFinish.setText("PAY");
 		btnCancel = new com.floreantpos.swing.PosButton();
-		jPanel4.add(btnCancel, "cell 0 2,grow");
+		jPanel4.add(btnCancel, "cell 0 3,grow");
 		btnCancel.setText("CANCEL");
 		btnCancel.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -238,6 +272,69 @@ public class PaymentView extends JPanel {
 		transparentPanel1.add(tfDueAmount, "cell 1 0,growx,aligny top");
 		transparentPanel1.add(tfAmountTendered, "cell 1 1,growx,aligny top");
 	}// </editor-fold>//GEN-END:initComponents
+
+	protected void removeKalaId() {
+		Ticket ticket = settleTicketView.getTicketsToSettle().get(0);
+		ticket.setCustomer(null);
+		TicketDAO.getInstance().saveOrUpdate(ticket);
+		btnUseKalaId.setText("USE MYKALA ID");
+		btnUseKalaId.setActionCommand("0");
+		
+		POSMessageDialog.showMessage("My Kala Id removed");
+	}
+
+	public void useKalaId() {
+		try {
+			String mykalaid = JOptionPane.showInputDialog("Enter mykala id:");
+
+			if (StringUtils.isEmpty(mykalaid)) {
+				return;
+			}
+
+			String getUserInfoURL = "http://cloud.floreantpos.org/triliant/api_user_detail.php?kala_id=" + mykalaid;
+
+			JsonReader reader = Json.createReader(new URL(getUserInfoURL).openStream());
+			JsonObject object = reader.readObject();
+			
+			boolean success = Boolean.valueOf(object.get("success").toString());
+			if(success) {
+				
+				String phone = object.getString("phone1");
+				CustomerDAO dao = CustomerDAO.getInstance();
+				
+				List<Customer> customers = dao.findBy(phone, null, null);
+				Customer customer = null;
+				if(customers.size() > 0) {
+					customer = customers.get(0);
+				}
+				else {
+					customer = new Customer();
+					customer.setTelephoneNo(phone);
+					customer.setName(object.getString("first_name") + " " + object.getString("last_name"));
+					customer.addProperty("mykalaid", object.getString("id"));
+					dao.save(customer);
+				}
+				
+				Ticket ticket = settleTicketView.getTicketsToSettle().get(0);
+				ticket.setCustomer(customer);
+				TicketDAO.getInstance().saveOrUpdate(ticket);
+				
+				btnUseKalaId.setActionCommand("1");
+				btnUseKalaId.setText("REMOVE MYKALA ID");
+				
+				POSMessageDialog.showMessage("My Kala Id set successful");
+			} 
+			
+			else {
+				POSMessageDialog.showError(BackOfficeWindow.getInstance(), object.getString("message").toString());
+			}
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			POSMessageDialog.showError(BackOfficeWindow.getInstance(), e.getMessage());
+		}
+	}
 
 	protected void doSetGratuity() {
 		settleTicketView.doSetGratuity();
@@ -294,6 +391,8 @@ public class PaymentView extends JPanel {
 			}
 		}
 	};
+	private PosButton btnMyKalaDiscount;
+	private PosButton btnUseKalaId;
 
 	public void updateView() {
 		List<Ticket> tickets = settleTicketView.getTicketsToSettle();

@@ -9,7 +9,7 @@
         </id>
         <version column="MODIFIED_TIME" name="modifiedTime" type="timestamp"/>
 
-        <property column="NAME" length="60" name="name" not-null="true" type="java.lang.String"/>
+        <property column="NAME" length="60" name="name" not-null="true" unique="true" type="java.lang.String"/>
         <property column="BARCODE" length="30" name="barcode" type="java.lang.String"/>
         <property column="PACKSIZE_DESC" length="30" name="packSizeDescription" type="java.lang.String"/>
         <property column="TOT_ITEM_PER_PACKSIZE" name="itemPerPackSize" type="java.lang.Integer"/>

@@ -1,9 +1,13 @@
 package com.floreantpos.ui.views.payment;
 
 import java.awt.BorderLayout;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.json.Json;
+import javax.json.JsonObject;
+import javax.json.JsonReader;
 import javax.swing.JOptionPane;
 
 import net.authorize.data.creditcard.CardType;
@@ -12,11 +16,13 @@ import org.apache.commons.lang.StringUtils;
 
 import com.floreantpos.POSConstants;
 import com.floreantpos.PosException;
+import com.floreantpos.bo.ui.BackOfficeWindow;
 import com.floreantpos.config.CardConfig;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.CardReader;
 import com.floreantpos.model.CashTransaction;
 import com.floreantpos.model.CreditCardTransaction;
+import com.floreantpos.model.Customer;
 import com.floreantpos.model.Gratuity;
 import com.floreantpos.model.MerchantGateway;
 import com.floreantpos.model.PaymentType;
@@ -456,4 +462,54 @@ public class SettleTicketView extends POSDialog implements CardInputListener {
 			POSMessageDialog.showError(e.getMessage());
 		}
 	}
+
+	public void makeMyKalaDiscount() {
+		try {
+			String mykalaid = null;
+			
+			Ticket ticket = getTicketsToSettle().get(0);
+			Customer customer = ticket.getCustomer();
+			if(customer != null && customer.hasProperty("mykalaid")) {
+				mykalaid = customer.getProperty("mykalaid");
+			}
+			else {
+				mykalaid = JOptionPane.showInputDialog("Enter mykala id:");
+			}
+
+			if (StringUtils.isEmpty(mykalaid)) {
+				return;
+			}
+
+			String getUserInfoURL = "http://cloud.floreantpos.org/triliant/api_user_detail.php?kala_id=" + mykalaid;
+
+			JsonReader reader = Json.createReader(new URL(getUserInfoURL).openStream());
+			JsonObject object = reader.readObject();
+			
+			boolean success = Boolean.valueOf(object.get("success").toString());
+			if(success) {
+				String message = object.getString("message").toString();
+				message += "\n" + "You have earned " + object.getString("points") + " points";
+				message += "\n" + "Your coupon number is " + object.getString("coupon");
+				
+				int option = JOptionPane.showOptionDialog(Application.getPosWindow(), message, "", 
+						JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, new String[] {"REDEEM", "CANCEL"}, "REDEEM");
+				
+				if(option != JOptionPane.OK_OPTION) {
+					return;
+				}
+				
+				
+			} 
+			
+			else {
+				POSMessageDialog.showError(BackOfficeWindow.getInstance(), object.getString("message").toString());
+			}
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			POSMessageDialog.showError(BackOfficeWindow.getInstance(), e.getMessage());
+		}
+	}
+
 }
