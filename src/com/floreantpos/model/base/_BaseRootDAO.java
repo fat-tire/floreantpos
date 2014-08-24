@@ -1,4 +1,4 @@
-package com.floreantpos.model.dao;
+package com.floreantpos.model.base;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -66,7 +66,7 @@ public abstract class _BaseRootDAO {
 	/**
 	 * Set the session factory
 	 */
-	public static void setSessionFactory (SessionFactory sessionFactory) {
+	protected static void setSessionFactory (SessionFactory sessionFactory) {
 		setSessionFactory(
 			(String) null,
 			sessionFactory);
@@ -75,7 +75,7 @@ public abstract class _BaseRootDAO {
 	/**
 	 * Set the session factory
 	 */
-	public static void setSessionFactory (String configFileName, SessionFactory sf) {
+	protected static void setSessionFactory (String configFileName, SessionFactory sf) {
 		if (null == configFileName) {
 			sessionFactory = sf;
 		}

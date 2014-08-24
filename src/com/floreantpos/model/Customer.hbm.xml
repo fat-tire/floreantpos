@@ -26,5 +26,10 @@
 		<property name="creditCardNo" column="CREDIT_CARD_NO" length="30" type="string" />
 		<property name="note" column="NOTE" length="255" type="string" />
 
+		<map name="properties" cascade="all" lazy="false">
+			<key column="id"/>
+        	<index column="property_name" type="string"/>
+            <element column="property_value" type="string"/>
+		</map>
 	</class>
 </hibernate-mapping>

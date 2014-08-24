@@ -1,6 +1,7 @@
 package com.floreantpos.model.inventory;
 
 import com.floreantpos.model.inventory.base.BaseInventoryGroup;
+import com.floreantpos.util.POSUtil;
 
 
 
@@ -32,6 +33,11 @@ public class InventoryGroup extends BaseInventoryGroup {
 	}
 
 /*[CONSTRUCTOR MARKER END]*/
+	
+	@Override
+	public Boolean isVisible() {
+		return POSUtil.getBoolean(super.isVisible(), true);
+	}
 
 	@Override
 	public String toString() {
