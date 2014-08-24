@@ -5,9 +5,9 @@ import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
-public abstract class ListTableModel extends AbstractTableModel {
+public abstract class ListTableModel<E> extends AbstractTableModel {
 	protected String[] columnNames;
-	protected List rows;
+	protected List<E> rows;
 	
 	public ListTableModel() {
 		super();
@@ -17,7 +17,7 @@ public abstract class ListTableModel extends AbstractTableModel {
 		columnNames = names;
 	}
 
-	public ListTableModel(String[] names, List rows) {
+	public ListTableModel(String[] names, List<E> rows) {
 		columnNames = names;
 		this.rows = rows;
 	}
@@ -30,11 +30,11 @@ public abstract class ListTableModel extends AbstractTableModel {
 		this.columnNames = columnNames;
 	}
 
-	public List getRows() {
+	public List<E> getRows() {
 		return rows;
 	}
 
-	public void setRows(List rows) {
+	public void setRows(List<E> rows) {
 		this.rows = rows;
 		fireTableDataChanged();
 	}
@@ -59,11 +59,11 @@ public abstract class ListTableModel extends AbstractTableModel {
 		return false;
 	}
 	
-	public Object getRowData(int row) {
+	public E getRowData(int row) {
 		return rows.get(row);
 	}
 
-	public void addItem(Object data) {
+	public void addItem(E data) {
 		if(rows == null) {
 			rows = new ArrayList();
 		}

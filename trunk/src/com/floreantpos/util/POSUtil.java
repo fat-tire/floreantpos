@@ -24,6 +24,14 @@ public class POSUtil {
 
 		return b;
 	}
+	
+	public static boolean getBoolean(Boolean b, boolean defaultValue) {
+		if (b == null) {
+			return defaultValue;
+		}
+		
+		return b;
+	}
 
 	public static double getDouble(Double d) {
 		if (d == null) {
