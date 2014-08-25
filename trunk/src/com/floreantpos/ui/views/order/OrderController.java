@@ -120,9 +120,8 @@ public class OrderController implements OrderListener, CategorySelectionListener
 	}
 
 	public void payOrderSelected(Ticket ticket) {
-		if (new SettleTicketAction(ticket).execute()) {
-			RootView.getInstance().showView(SwitchboardView.VIEW_NAME);
-		}
+		RootView.getInstance().showView(SwitchboardView.VIEW_NAME);
+		new SettleTicketAction(ticket).execute();
 	}
 
 	public static void saveOrder(Ticket ticket) {
