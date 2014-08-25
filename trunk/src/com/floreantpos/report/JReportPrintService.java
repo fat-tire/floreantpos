@@ -190,6 +190,20 @@ public class JReportPrintService {
 			map.put("changedAmount", NumberUtil.formatNumber(changedAmount));
 			map.put("grandSubtotal", NumberUtil.formatNumber(ticket.getSubtotalAmount()));
 			map.put("footerMessage", restaurant.getTicketFooterMessage());
+			
+			String messageString = "<html>";
+			if(ticket.getCustomer() != null) {
+				Customer customer = ticket.getCustomer();
+				if(customer.hasProperty("mykalaid")) {
+					messageString += "<br/>Customer: " + customer.getName();
+				}
+			}
+			if(ticket.hasProperty("mykaladiscount")) {
+				messageString += "<br/>My Kala point: " + ticket.getProperty("mykalapoing");
+				messageString += "<br/>My Kala discount: " + ticket.getDiscountAmount();
+			}
+			messageString += "</html>";
+			map.put("additionalProperties", messageString);
 		}
 
 		return map;
