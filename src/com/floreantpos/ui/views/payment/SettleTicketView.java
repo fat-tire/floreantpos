@@ -464,6 +464,17 @@ public class SettleTicketView extends POSDialog implements CardInputListener {
 			POSMessageDialog.showError(e.getMessage());
 		}
 	}
+	
+	public boolean hasMyKalaId() {
+		Ticket ticket = getTicketsToSettle().get(0);
+		
+		Customer customer = ticket.getCustomer();
+		if(customer != null && customer.hasProperty("mykalaid")) {
+			return true;
+		}
+
+		return false;
+	}
 
 	public void makeMyKalaDiscount() {
 		try {
@@ -516,6 +527,8 @@ public class SettleTicketView extends POSDialog implements CardInputListener {
 				coupon.setValue(offerPercentage * 100.0);
 				ticket.addTocouponAndDiscounts(coupon);
 				ticket.addProperty("mykaladiscount", "true");
+				ticket.addProperty("mykalapoing", object.getString("points"));
+				ticket.addProperty("mykaladiscountpercentage", object.getString("offer"));
 
 				updateModel();
 				

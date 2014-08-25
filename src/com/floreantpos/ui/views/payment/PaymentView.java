@@ -410,6 +410,11 @@ public class PaymentView extends JPanel {
 		tfDueAmount.setText(NumberUtil.formatNumber(dueAmount));
 		tfAmountTendered.setText(NumberUtil.formatNumber(dueAmount));
 		
+		if(settleTicketView.hasMyKalaId()) {
+			btnUseKalaId.setText("REMOVE MYKALA ID");
+			btnUseKalaId.setActionCommand("1");
+		}
+		
 	}
 
 	public double getTenderedAmount() throws ParseException {
