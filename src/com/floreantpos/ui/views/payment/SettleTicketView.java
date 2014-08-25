@@ -484,7 +484,7 @@ public class SettleTicketView extends POSDialog implements CardInputListener {
 			
 			boolean mykaladiscountPaid = POSUtil.getBoolean(ticket.getProperty("mykaladiscount"));
 			if(mykaladiscountPaid) {
-				POSMessageDialog.showError("My kala discount already added");
+				POSMessageDialog.showError("Kala user already added $" + ticket.getDiscountAmount() + " discount");
 				return;
 			}
 			
