@@ -21,6 +21,7 @@ import com.floreantpos.config.CardConfig;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.CardReader;
 import com.floreantpos.model.CashTransaction;
+import com.floreantpos.model.CouponAndDiscount;
 import com.floreantpos.model.CreditCardTransaction;
 import com.floreantpos.model.Customer;
 import com.floreantpos.model.Gratuity;
@@ -42,6 +43,7 @@ import com.floreantpos.ui.dialog.TransactionCompletionDialog;
 import com.floreantpos.ui.views.SwitchboardView;
 import com.floreantpos.ui.views.TicketDetailView;
 import com.floreantpos.ui.views.order.RootView;
+import com.floreantpos.util.POSUtil;
 
 public class SettleTicketView extends POSDialog implements CardInputListener {
 	public final static String VIEW_NAME = "PAYMENT_VIEW";
@@ -468,6 +470,13 @@ public class SettleTicketView extends POSDialog implements CardInputListener {
 			String mykalaid = null;
 			
 			Ticket ticket = getTicketsToSettle().get(0);
+			
+			boolean mykaladiscountPaid = POSUtil.getBoolean(ticket.getProperty("mykaladiscount"));
+			if(mykaladiscountPaid) {
+				POSMessageDialog.showError("My kala discount already added");
+				return;
+			}
+			
 			Customer customer = ticket.getCustomer();
 			if(customer != null && customer.hasProperty("mykalaid")) {
 				mykalaid = customer.getProperty("mykalaid");
@@ -498,7 +507,21 @@ public class SettleTicketView extends POSDialog implements CardInputListener {
 					return;
 				}
 				
+				String offerString = object.getString("offer").replaceAll("%", "");
+				double offerPercentage = Double.parseDouble(offerString);
 				
+				TicketCouponAndDiscount coupon = new TicketCouponAndDiscount();
+				coupon.setName("mykala_offer_" + object.getString("kala_id"));
+				coupon.setType(CouponAndDiscount.PERCENTAGE_PER_ORDER);
+				coupon.setValue(offerPercentage * 100.0);
+				ticket.addTocouponAndDiscounts(coupon);
+				ticket.addProperty("mykaladiscount", "true");
+
+				updateModel();
+				
+				TicketDAO.getInstance().saveOrUpdate(ticket);
+				ticketDetailView.updateView();
+				paymentView.updateView();
 			} 
 			
 			else {

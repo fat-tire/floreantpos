@@ -311,9 +311,10 @@ public class PaymentView extends JPanel {
 					customer = new Customer();
 					customer.setTelephoneNo(phone);
 					customer.setName(object.getString("first_name") + " " + object.getString("last_name"));
-					customer.addProperty("mykalaid", object.getString("id"));
 					dao.save(customer);
 				}
+				
+				customer.addProperty("mykalaid", object.getString("id"));
 				
 				Ticket ticket = settleTicketView.getTicketsToSettle().get(0);
 				ticket.setCustomer(customer);

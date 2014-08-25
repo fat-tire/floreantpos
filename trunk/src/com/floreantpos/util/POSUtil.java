@@ -17,6 +17,13 @@ public class POSUtil {
 		return propertyKey.replaceAll("\\s+", "_");
 	}
 
+	public static boolean getBoolean(String b) {
+		if (b == null) {
+			return false;
+		}
+		
+		return Boolean.valueOf(b);
+	}
 	public static boolean getBoolean(Boolean b) {
 		if (b == null) {
 			return false;
