@@ -12,6 +12,7 @@ import java.util.List;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.base.BaseTicket;
 import com.floreantpos.util.NumberUtil;
+import com.floreantpos.util.POSUtil;
 
 public class Ticket extends BaseTicket {
 	private static final long serialVersionUID = 1L;
@@ -553,5 +554,11 @@ public class Ticket extends BaseTicket {
 		}
 
 		return getProperties().get(key);
+	}
+	
+	public boolean isPropertyValueTrue(String propertyName) {
+		String property = getProperty(propertyName);
+		
+		return POSUtil.getBoolean(property);
 	}
 }

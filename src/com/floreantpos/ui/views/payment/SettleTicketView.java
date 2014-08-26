@@ -1,6 +1,8 @@
 package com.floreantpos.ui.views.payment;
 
 import java.awt.BorderLayout;
+import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +16,6 @@ import net.authorize.data.creditcard.CardType;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.math.RandomUtils;
 
 import com.floreantpos.POSConstants;
 import com.floreantpos.PosException;
@@ -232,35 +233,35 @@ public class SettleTicketView extends POSDialog implements CardInputListener {
 			tenderedAmount = paymentView.getTenderedAmount();
 
 			switch (paymentType) {
-			case CASH:
-				ConfirmPayDialog confirmPayDialog = new ConfirmPayDialog();
-				confirmPayDialog.setAmount(tenderedAmount);
-				confirmPayDialog.open();
+				case CASH:
+					ConfirmPayDialog confirmPayDialog = new ConfirmPayDialog();
+					confirmPayDialog.setAmount(tenderedAmount);
+					confirmPayDialog.open();
 
-				if (confirmPayDialog.isCanceled()) {
-					return;
-				}
+					if (confirmPayDialog.isCanceled()) {
+						return;
+					}
 
-				if (settleTickets(tenderedAmount, new CashTransaction(), null, null)) {
-					setCanceled(false);
-					dispose();
-				}
-				break;
+					if (settleTickets(tenderedAmount, new CashTransaction(), null, null)) {
+						setCanceled(false);
+						dispose();
+					}
+					break;
 
-			case CREDIT_VISA:
-			case CREDIT_MASTER_CARD:
-			case CREDIT_AMEX:
-			case CREDIT_DISCOVERY:
-				payUsingCard(cardName, tenderedAmount);
-				break;
+				case CREDIT_VISA:
+				case CREDIT_MASTER_CARD:
+				case CREDIT_AMEX:
+				case CREDIT_DISCOVERY:
+					payUsingCard(cardName, tenderedAmount);
+					break;
 
-			case DEBIT_VISA:
-			case DEBIT_MASTER_CARD:
-				payUsingCard(cardName, tenderedAmount);
-				break;
+				case DEBIT_VISA:
+				case DEBIT_MASTER_CARD:
+					payUsingCard(cardName, tenderedAmount);
+					break;
 
-			default:
-				break;
+				default:
+					break;
 			}
 
 		} catch (Exception e) {
@@ -282,23 +283,24 @@ public class SettleTicketView extends POSDialog implements CardInputListener {
 				return false;
 			}
 
-			try {
-				for (Ticket ticket : ticketsToSettle) {
-					ticket.setTenderedAmount(tenderedAmount);
+			for (Ticket ticket : ticketsToSettle) {
+				ticket.setTenderedAmount(tenderedAmount);
 
+				submitMyKalaDiscount(ticket);
+
+				try {
 					if (ticket.needsKitchenPrint()) {
 						JReportPrintService.printTicketToKitchen(ticket);
 					}
 
 					JReportPrintService.printTicket(ticket);
+				} catch (Exception ee) {
+					POSMessageDialog.showError(Application.getPosWindow(), com.floreantpos.POSConstants.PRINT_ERROR, ee);
 				}
-
-				PosTransactionService transactionService = PosTransactionService.getInstance();
-				transactionService.settleTickets(ticketsToSettle, tenderedAmount, posTransaction, cardType, cardAuthorizationCode);
-
-			} catch (Exception ee) {
-				POSMessageDialog.showError(Application.getPosWindow(), com.floreantpos.POSConstants.PRINT_ERROR, ee);
 			}
+
+			PosTransactionService transactionService = PosTransactionService.getInstance();
+			transactionService.settleTickets(ticketsToSettle, tenderedAmount, posTransaction, cardType, cardAuthorizationCode);
 
 			double paidAmount = paymentView.getPaidAmount();
 			double dueAmount = paymentView.getDueAmount();
@@ -335,6 +337,29 @@ public class SettleTicketView extends POSDialog implements CardInputListener {
 		}
 	}
 
+	private void submitMyKalaDiscount(Ticket ticket) throws IOException, MalformedURLException {
+		if (ticket.isPropertyValueTrue("mykaladiscount")) {
+			String transactionURL = "http://cloud.floreantpos.org/triliant/api_user_transaction.php?";
+			transactionURL += "kala_id=" + ticket.getProperty("mykalaid");
+			transactionURL += "&trans_id=" + ticket.getId();
+			transactionURL += "&product_name=" + ticket.getTicketItems().get(0).getName();
+			transactionURL += "&product_price=" + ticket.getSubtotalAmount();
+			transactionURL += "&product_category=Food";
+			transactionURL += "&revenue_center=cash";
+			transactionURL += "&store_name=Floreant";
+			transactionURL += "&store_zip=17225";
+			transactionURL += "&store_id=" + Application.getInstance().getRestaurant().getUniqueId();
+
+			String string = IOUtils.toString(new URL(transactionURL).openStream());
+			System.out.println(transactionURL);
+			System.out.println(string);
+
+			if (string.contains("\"success\":false")) {
+				POSMessageDialog.showError("Coupon already used.");
+			}
+		}
+	}
+
 	private void payUsingCard(String cardName, final double tenderedAmount) throws Exception {
 		if (!CardConfig.getMerchantGateway().isCardTypeSupported(cardName)) {
 			POSMessageDialog.showError("<html>Card <b>" + cardName + "</b> not supported.</html>");
@@ -343,26 +368,26 @@ public class SettleTicketView extends POSDialog implements CardInputListener {
 
 		CardReader cardReader = CardConfig.getCardReader();
 		switch (cardReader) {
-		case SWIPE:
-			SwipeCardDialog swipeCardDialog = new SwipeCardDialog(this);
-			swipeCardDialog.pack();
-			swipeCardDialog.open();
-			break;
+			case SWIPE:
+				SwipeCardDialog swipeCardDialog = new SwipeCardDialog(this);
+				swipeCardDialog.pack();
+				swipeCardDialog.open();
+				break;
 
-		case MANUAL:
-			ManualCardEntryDialog dialog = new ManualCardEntryDialog(this);
-			dialog.pack();
-			dialog.open();
-			break;
+			case MANUAL:
+				ManualCardEntryDialog dialog = new ManualCardEntryDialog(this);
+				dialog.pack();
+				dialog.open();
+				break;
 
-		case EXTERNAL_TERMINAL:
-			AuthorizationCodeDialog authorizationCodeDialog = new AuthorizationCodeDialog(this);
-			authorizationCodeDialog.pack();
-			authorizationCodeDialog.open();
-			break;
+			case EXTERNAL_TERMINAL:
+				AuthorizationCodeDialog authorizationCodeDialog = new AuthorizationCodeDialog(this);
+				authorizationCodeDialog.pack();
+				authorizationCodeDialog.open();
+				break;
 
-		default:
-			break;
+			default:
+				break;
 		}
 
 	}
@@ -506,24 +531,12 @@ public class SettleTicketView extends POSDialog implements CardInputListener {
 
 			boolean success = Boolean.valueOf(object.get("success").toString());
 			if (success) {
-
-				String transactionURL = "http://cloud.floreantpos.org/triliant/api_user_transaction.php?";
-				transactionURL += "kala_id=" + mykalaid;
-				transactionURL += "&trans_id=" + RandomUtils.nextInt(99999);
-				transactionURL += "&product_name=" + ticket.getTicketItems().get(0).getName();
-				transactionURL += "&product_price=" + ticket.getSubtotalAmount();
-				transactionURL += "&product_category=Food";
-				transactionURL += "&revenue_center=cash";
-				transactionURL += "&store_name=Floreant";
-				transactionURL += "&store_zip=17225";
-				
-				String string = IOUtils.toString(new URL(transactionURL).openStream());
-				System.out.println(transactionURL);
-				System.out.println(string);
-
 				String message = object.getString("message").toString();
-				message += "\n" + "You have earned " + object.getString("points") + " points";
-				message += "\n" + "Your coupon number is " + object.getString("coupon");
+				String point = object.getString("points");
+				String couponno = object.getString("coupon");
+
+				message += "\n" + "You have earned " + point + " points";
+				message += "\n" + "Your coupon number is " + couponno;
 
 				int option = JOptionPane.showOptionDialog(Application.getPosWindow(), message, "", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE,
 						null, new String[] { "REDEEM", "CANCEL" }, "REDEEM");
@@ -532,17 +545,21 @@ public class SettleTicketView extends POSDialog implements CardInputListener {
 					return;
 				}
 
-				String offerString = object.getString("offer").replaceAll("%", "");
+				String offer = object.getString("offer");
+				String offerString = offer.replaceAll("%", "");
 				double offerPercentage = Double.parseDouble(offerString);
 
 				TicketCouponAndDiscount coupon = new TicketCouponAndDiscount();
 				coupon.setName("mykala_offer_" + object.getString("kala_id"));
 				coupon.setType(CouponAndDiscount.PERCENTAGE_PER_ORDER);
 				coupon.setValue(offerPercentage * 100.0);
+
 				ticket.addTocouponAndDiscounts(coupon);
+				ticket.addProperty("mykalaid", mykalaid);
 				ticket.addProperty("mykaladiscount", "true");
-				ticket.addProperty("mykalapoing", object.getString("points"));
-				ticket.addProperty("mykaladiscountpercentage", object.getString("offer"));
+				ticket.addProperty("mykalacoupon", couponno);
+				ticket.addProperty("mykalapoint", point);
+				ticket.addProperty("mykaladiscountpercentage", offer);
 
 				updateModel();
 
