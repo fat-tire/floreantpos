@@ -16,6 +16,7 @@ import javax.swing.UIManager;
 import net.xeoh.plugins.base.PluginManager;
 import net.xeoh.plugins.base.impl.PluginManagerFactory;
 
+import org.apache.commons.lang.math.RandomUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -218,6 +219,12 @@ public class Application {
 	public void refreshRestaurant() {
 		RestaurantDAO restaurantDAO = RestaurantDAO.getInstance();
 		this.restaurant = restaurantDAO.get(Integer.valueOf(1));
+		
+		if(restaurant.getUniqueId() == null || restaurant.getUniqueId() == 0) {
+			restaurant.setUniqueId(RandomUtils.nextInt());
+			restaurantDAO.saveOrUpdate(restaurant);
+		}
+		
 		if (restaurant.isAutoDrawerPullEnable() && autoDrawerPullTimer == null) {
 			autoDrawerPullTimer = new Timer(60 * 1000, new AutoDrawerPullAction());
 			autoDrawerPullTimer.start();
