@@ -2,7 +2,6 @@ package com.floreantpos.ui.views.payment;
 
 import java.awt.BorderLayout;
 import java.net.URL;
-import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,7 +12,9 @@ import javax.swing.JOptionPane;
 
 import net.authorize.data.creditcard.CardType;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.math.RandomUtils;
 
 import com.floreantpos.POSConstants;
 import com.floreantpos.PosException;
@@ -507,18 +508,18 @@ public class SettleTicketView extends POSDialog implements CardInputListener {
 			if (success) {
 
 				String transactionURL = "http://cloud.floreantpos.org/triliant/api_user_transaction.php?";
-				transactionURL += "​kala_id=" + mykalaid;
-				// transactionURL += trans_id
-				// transactionURL += product_name
-				// transactionURL += product_price
-				// transactionURL += product_category
-				transactionURL += "revenue_center=cash";
-				transactionURL += "store_name=" + Application.getInstance().getRestaurant().getName();
-				// transactionURL += store_zip
-
-				URLConnection urlConnection = new URL(transactionURL).openConnection();
-				Object content = urlConnection.getContent();
-				System.out.println(content);
+				transactionURL += "kala_id=" + mykalaid;
+				transactionURL += "&trans_id=" + RandomUtils.nextInt(99999);
+				transactionURL += "&product_name=" + ticket.getTicketItems().get(0).getName();
+				transactionURL += "&product_price=" + ticket.getSubtotalAmount();
+				transactionURL += "&product_category=Food";
+				transactionURL += "&revenue_center=cash";
+				transactionURL += "&store_name=Floreant";
+				transactionURL += "&store_zip=17225";
+				
+				String string = IOUtils.toString(new URL(transactionURL).openStream());
+				System.out.println(transactionURL);
+				System.out.println(string);
 
 				String message = object.getString("message").toString();
 				message += "\n" + "You have earned " + object.getString("points") + " points";
