@@ -105,9 +105,8 @@ public abstract class BaseRestaurant  implements Comparable, Serializable {
 	 * Return the value associated with the column: UNIQUE_ID
 	 */
 	public java.lang.Integer getUniqueId () {
-		return uniqueId;
-		
-	}
+					return uniqueId == null ? Integer.valueOf(0) : uniqueId;
+			}
 
 	/**
 	 * Set the value related to the column: UNIQUE_ID
@@ -123,9 +122,8 @@ public abstract class BaseRestaurant  implements Comparable, Serializable {
 	 * Return the value associated with the column: NAME
 	 */
 	public java.lang.String getName () {
-		return name;
-		
-	}
+					return name;
+			}
 
 	/**
 	 * Set the value related to the column: NAME
@@ -141,9 +139,8 @@ public abstract class BaseRestaurant  implements Comparable, Serializable {
 	 * Return the value associated with the column: ADDRESS_LINE1
 	 */
 	public java.lang.String getAddressLine1 () {
-		return addressLine1;
-		
-	}
+					return addressLine1;
+			}
 
 	/**
 	 * Set the value related to the column: ADDRESS_LINE1
@@ -159,9 +156,8 @@ public abstract class BaseRestaurant  implements Comparable, Serializable {
 	 * Return the value associated with the column: ADDRESS_LINE2
 	 */
 	public java.lang.String getAddressLine2 () {
-		return addressLine2;
-		
-	}
+					return addressLine2;
+			}
 
 	/**
 	 * Set the value related to the column: ADDRESS_LINE2
@@ -177,9 +173,8 @@ public abstract class BaseRestaurant  implements Comparable, Serializable {
 	 * Return the value associated with the column: ADDRESS_LINE3
 	 */
 	public java.lang.String getAddressLine3 () {
-		return addressLine3;
-		
-	}
+					return addressLine3;
+			}
 
 	/**
 	 * Set the value related to the column: ADDRESS_LINE3
@@ -195,9 +190,8 @@ public abstract class BaseRestaurant  implements Comparable, Serializable {
 	 * Return the value associated with the column: TELEPHONE
 	 */
 	public java.lang.String getTelephone () {
-		return telephone;
-		
-	}
+					return telephone;
+			}
 
 	/**
 	 * Set the value related to the column: TELEPHONE
@@ -213,8 +207,8 @@ public abstract class BaseRestaurant  implements Comparable, Serializable {
 	 * Return the value associated with the column: CAPACITY
 	 */
 	public java.lang.Integer getCapacity () {
-			return capacity == null ? Integer.valueOf(0) : capacity;
-	}
+					return capacity == null ? Integer.valueOf(0) : capacity;
+			}
 
 	/**
 	 * Set the value related to the column: CAPACITY
@@ -230,8 +224,8 @@ public abstract class BaseRestaurant  implements Comparable, Serializable {
 	 * Return the value associated with the column: TABLES
 	 */
 	public java.lang.Integer getTables () {
-			return tables == null ? Integer.valueOf(0) : tables;
-	}
+					return tables == null ? Integer.valueOf(0) : tables;
+			}
 
 	/**
 	 * Set the value related to the column: TABLES
@@ -247,8 +241,8 @@ public abstract class BaseRestaurant  implements Comparable, Serializable {
 	 * Return the value associated with the column: AUTODRAWERPULLENABLE
 	 */
 	public java.lang.Boolean isAutoDrawerPullEnable () {
-					return autoDrawerPullEnable == null ? Boolean.FALSE : autoDrawerPullEnable;
-			}
+								return autoDrawerPullEnable == null ? Boolean.FALSE : autoDrawerPullEnable;
+					}
 
 	/**
 	 * Set the value related to the column: AUTODRAWERPULLENABLE
@@ -264,8 +258,8 @@ public abstract class BaseRestaurant  implements Comparable, Serializable {
 	 * Return the value associated with the column: DRAWER_PULL_HOUR
 	 */
 	public java.lang.Integer getDrawerPullHour () {
-			return drawerPullHour == null ? Integer.valueOf(0) : drawerPullHour;
-	}
+					return drawerPullHour == null ? Integer.valueOf(0) : drawerPullHour;
+			}
 
 	/**
 	 * Set the value related to the column: DRAWER_PULL_HOUR
@@ -281,8 +275,8 @@ public abstract class BaseRestaurant  implements Comparable, Serializable {
 	 * Return the value associated with the column: DRAWER_PULL_MIN
 	 */
 	public java.lang.Integer getDrawerPullMin () {
-			return drawerPullMin == null ? Integer.valueOf(0) : drawerPullMin;
-	}
+					return drawerPullMin == null ? Integer.valueOf(0) : drawerPullMin;
+			}
 
 	/**
 	 * Set the value related to the column: DRAWER_PULL_MIN
@@ -298,9 +292,8 @@ public abstract class BaseRestaurant  implements Comparable, Serializable {
 	 * Return the value associated with the column: CNAME
 	 */
 	public java.lang.String getCurrencyName () {
-		return currencyName;
-		
-	}
+					return currencyName;
+			}
 
 	/**
 	 * Set the value related to the column: CNAME
@@ -316,9 +309,8 @@ public abstract class BaseRestaurant  implements Comparable, Serializable {
 	 * Return the value associated with the column: CSYMBOL
 	 */
 	public java.lang.String getCurrencySymbol () {
-		return currencySymbol;
-		
-	}
+					return currencySymbol;
+			}
 
 	/**
 	 * Set the value related to the column: CSYMBOL
@@ -334,8 +326,8 @@ public abstract class BaseRestaurant  implements Comparable, Serializable {
 	 * Return the value associated with the column: SC_PERCENTAGE
 	 */
 	public java.lang.Double getServiceChargePercentage () {
-					return serviceChargePercentage == null ? Double.valueOf(0) : serviceChargePercentage;
-			}
+									return serviceChargePercentage == null ? Double.valueOf(0) : serviceChargePercentage;
+					}
 
 	/**
 	 * Set the value related to the column: SC_PERCENTAGE
@@ -351,8 +343,8 @@ public abstract class BaseRestaurant  implements Comparable, Serializable {
 	 * Return the value associated with the column: GRATUITY_PERCENTAGE
 	 */
 	public java.lang.Double getDefaultGratuityPercentage () {
-					return defaultGratuityPercentage == null ? Double.valueOf(0) : defaultGratuityPercentage;
-			}
+									return defaultGratuityPercentage == null ? Double.valueOf(0) : defaultGratuityPercentage;
+					}
 
 	/**
 	 * Set the value related to the column: GRATUITY_PERCENTAGE
@@ -368,9 +360,8 @@ public abstract class BaseRestaurant  implements Comparable, Serializable {
 	 * Return the value associated with the column: TICKET_FOOTER
 	 */
 	public java.lang.String getTicketFooterMessage () {
-		return ticketFooterMessage;
-		
-	}
+					return ticketFooterMessage;
+			}
 
 	/**
 	 * Set the value related to the column: TICKET_FOOTER
@@ -386,8 +377,8 @@ public abstract class BaseRestaurant  implements Comparable, Serializable {
 	 * Return the value associated with the column: PRICE_INCLUDES_TAX
 	 */
 	public java.lang.Boolean isItemPriceIncludesTax () {
-					return itemPriceIncludesTax == null ? Boolean.FALSE : itemPriceIncludesTax;
-			}
+								return itemPriceIncludesTax == null ? Boolean.FALSE : itemPriceIncludesTax;
+					}
 
 	/**
 	 * Set the value related to the column: PRICE_INCLUDES_TAX

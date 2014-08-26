@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -342,7 +343,7 @@ public class SettleTicketView extends POSDialog implements CardInputListener {
 			String transactionURL = "http://cloud.floreantpos.org/triliant/api_user_transaction.php?";
 			transactionURL += "kala_id=" + ticket.getProperty("mykalaid");
 			transactionURL += "&trans_id=" + ticket.getId();
-			transactionURL += "&product_name=" + ticket.getTicketItems().get(0).getName();
+			transactionURL += "&product_name=" + URLEncoder.encode(ticket.getTicketItems().get(0).getName(), "utf-8");
 			transactionURL += "&product_price=" + ticket.getSubtotalAmount();
 			transactionURL += "&product_category=Food";
 			transactionURL += "&revenue_center=cash";
