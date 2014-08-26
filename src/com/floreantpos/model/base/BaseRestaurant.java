@@ -22,6 +22,7 @@ public abstract class BaseRestaurant  implements Comparable, Serializable {
 	public static String PROP_DRAWER_PULL_MIN = "drawerPullMin";
 	public static String PROP_TICKET_FOOTER_MESSAGE = "ticketFooterMessage";
 	public static String PROP_SERVICE_CHARGE_PERCENTAGE = "serviceChargePercentage";
+	public static String PROP_UNIQUE_ID = "uniqueId";
 	public static String PROP_NAME = "name";
 	public static String PROP_DEFAULT_GRATUITY_PERCENTAGE = "defaultGratuityPercentage";
 	public static String PROP_CURRENCY_NAME = "currencyName";
@@ -31,8 +32,8 @@ public abstract class BaseRestaurant  implements Comparable, Serializable {
 	public static String PROP_CAPACITY = "capacity";
 	public static String PROP_ADDRESS_LINE1 = "addressLine1";
 	public static String PROP_ADDRESS_LINE2 = "addressLine2";
-	public static String PROP_ADDRESS_LINE3 = "addressLine3";
 	public static String PROP_CURRENCY_SYMBOL = "currencySymbol";
+	public static String PROP_ADDRESS_LINE3 = "addressLine3";
 
 
 	// constructors
@@ -58,6 +59,7 @@ public abstract class BaseRestaurant  implements Comparable, Serializable {
 	private java.lang.Integer id;
 
 	// fields
+	private java.lang.Integer uniqueId;
 	private java.lang.String name;
 	private java.lang.String addressLine1;
 	private java.lang.String addressLine2;
@@ -100,10 +102,29 @@ public abstract class BaseRestaurant  implements Comparable, Serializable {
 
 
 	/**
+	 * Return the value associated with the column: UNIQUE_ID
+	 */
+	public java.lang.Integer getUniqueId () {
+		return uniqueId;
+		
+	}
+
+	/**
+	 * Set the value related to the column: UNIQUE_ID
+	 * @param uniqueId the UNIQUE_ID value
+	 */
+	public void setUniqueId (java.lang.Integer uniqueId) {
+		this.uniqueId = uniqueId;
+	}
+
+
+
+	/**
 	 * Return the value associated with the column: NAME
 	 */
 	public java.lang.String getName () {
-			return name;
+		return name;
+		
 	}
 
 	/**
@@ -120,7 +141,8 @@ public abstract class BaseRestaurant  implements Comparable, Serializable {
 	 * Return the value associated with the column: ADDRESS_LINE1
 	 */
 	public java.lang.String getAddressLine1 () {
-			return addressLine1;
+		return addressLine1;
+		
 	}
 
 	/**
@@ -137,7 +159,8 @@ public abstract class BaseRestaurant  implements Comparable, Serializable {
 	 * Return the value associated with the column: ADDRESS_LINE2
 	 */
 	public java.lang.String getAddressLine2 () {
-			return addressLine2;
+		return addressLine2;
+		
 	}
 
 	/**
@@ -154,7 +177,8 @@ public abstract class BaseRestaurant  implements Comparable, Serializable {
 	 * Return the value associated with the column: ADDRESS_LINE3
 	 */
 	public java.lang.String getAddressLine3 () {
-			return addressLine3;
+		return addressLine3;
+		
 	}
 
 	/**
@@ -171,7 +195,8 @@ public abstract class BaseRestaurant  implements Comparable, Serializable {
 	 * Return the value associated with the column: TELEPHONE
 	 */
 	public java.lang.String getTelephone () {
-			return telephone;
+		return telephone;
+		
 	}
 
 	/**
@@ -273,7 +298,8 @@ public abstract class BaseRestaurant  implements Comparable, Serializable {
 	 * Return the value associated with the column: CNAME
 	 */
 	public java.lang.String getCurrencyName () {
-			return currencyName;
+		return currencyName;
+		
 	}
 
 	/**
@@ -290,7 +316,8 @@ public abstract class BaseRestaurant  implements Comparable, Serializable {
 	 * Return the value associated with the column: CSYMBOL
 	 */
 	public java.lang.String getCurrencySymbol () {
-			return currencySymbol;
+		return currencySymbol;
+		
 	}
 
 	/**
@@ -341,7 +368,8 @@ public abstract class BaseRestaurant  implements Comparable, Serializable {
 	 * Return the value associated with the column: TICKET_FOOTER
 	 */
 	public java.lang.String getTicketFooterMessage () {
-			return ticketFooterMessage;
+		return ticketFooterMessage;
+		
 	}
 
 	/**
