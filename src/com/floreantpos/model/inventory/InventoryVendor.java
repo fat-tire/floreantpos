@@ -34,6 +34,11 @@ public class InventoryVendor extends BaseInventoryVendor {
 /*[CONSTRUCTOR MARKER END]*/
 	
 	@Override
+	public Boolean isVisible() {
+		return visible == null ? true : visible;
+	}
+	
+	@Override
 	public String toString() {
 		return getName();
 	}

@@ -1,7 +1,6 @@
 package com.floreantpos.model.inventory;
 
 import com.floreantpos.model.inventory.base.BaseInventoryGroup;
-import com.floreantpos.util.POSUtil;
 
 
 
@@ -36,7 +35,7 @@ public class InventoryGroup extends BaseInventoryGroup {
 	
 	@Override
 	public Boolean isVisible() {
-		return POSUtil.getBoolean(super.isVisible(), true);
+		return visible == null ? true : visible;
 	}
 
 	@Override

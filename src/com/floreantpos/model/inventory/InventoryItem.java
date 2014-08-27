@@ -33,5 +33,9 @@ public class InventoryItem extends BaseInventoryItem {
 
 /*[CONSTRUCTOR MARKER END]*/
 
+	@Override
+	public Boolean isVisible() {
+		return visible == null ? true : visible;
+	}
 
 }

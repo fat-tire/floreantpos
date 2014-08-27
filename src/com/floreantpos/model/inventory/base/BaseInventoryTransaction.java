@@ -51,9 +51,9 @@ public abstract class BaseInventoryTransaction  implements Comparable, Serializa
 	private java.util.Date modifiedTime;
 
 	// fields
-	private java.util.Date transactionDate;
-	private java.lang.Integer quantity;
-	private java.lang.Double unitPrice;
+		protected java.util.Date transactionDate;
+		protected java.lang.Integer quantity;
+		protected java.lang.Double unitPrice;
 
 	// many to one
 	private com.floreantpos.model.inventory.InventoryVendor vendor;
@@ -88,8 +88,8 @@ public abstract class BaseInventoryTransaction  implements Comparable, Serializa
 	 * Return the value associated with the column: MODIFIED_TIME
 	 */
 	public java.util.Date getModifiedTime () {
-		return modifiedTime;
-	}
+					return modifiedTime;
+			}
 
 	/**
 	 * Set the value related to the column: MODIFIED_TIME
@@ -106,8 +106,8 @@ public abstract class BaseInventoryTransaction  implements Comparable, Serializa
 	 * Return the value associated with the column: TRANSACTION_DATE
 	 */
 	public java.util.Date getTransactionDate () {
-		return transactionDate;
-	}
+					return transactionDate;
+			}
 
 	/**
 	 * Set the value related to the column: TRANSACTION_DATE
@@ -123,8 +123,8 @@ public abstract class BaseInventoryTransaction  implements Comparable, Serializa
 	 * Return the value associated with the column: QUANTITY
 	 */
 	public java.lang.Integer getQuantity () {
-		return quantity;
-	}
+					return quantity == null ? Integer.valueOf(0) : quantity;
+			}
 
 	/**
 	 * Set the value related to the column: QUANTITY
@@ -140,8 +140,8 @@ public abstract class BaseInventoryTransaction  implements Comparable, Serializa
 	 * Return the value associated with the column: UNIT_PRICE
 	 */
 	public java.lang.Double getUnitPrice () {
-		return unitPrice;
-	}
+									return unitPrice == null ? Double.valueOf(0) : unitPrice;
+					}
 
 	/**
 	 * Set the value related to the column: UNIT_PRICE
@@ -157,8 +157,8 @@ public abstract class BaseInventoryTransaction  implements Comparable, Serializa
 	 * Return the value associated with the column: VENDOR_ID
 	 */
 	public com.floreantpos.model.inventory.InventoryVendor getVendor () {
-		return vendor;
-	}
+					return vendor;
+			}
 
 	/**
 	 * Set the value related to the column: VENDOR_ID
@@ -174,8 +174,8 @@ public abstract class BaseInventoryTransaction  implements Comparable, Serializa
 	 * Return the value associated with the column: TRANSACTION_TYPE_ID
 	 */
 	public com.floreantpos.model.inventory.InventoryTransactionType getTransactionType () {
-		return transactionType;
-	}
+					return transactionType;
+			}
 
 	/**
 	 * Set the value related to the column: TRANSACTION_TYPE_ID
@@ -191,8 +191,8 @@ public abstract class BaseInventoryTransaction  implements Comparable, Serializa
 	 * Return the value associated with the column: FROM_WAREHOUSE_ID
 	 */
 	public com.floreantpos.model.inventory.InventoryWarehouse getFromWarehouse () {
-		return fromWarehouse;
-	}
+					return fromWarehouse;
+			}
 
 	/**
 	 * Set the value related to the column: FROM_WAREHOUSE_ID
@@ -208,8 +208,8 @@ public abstract class BaseInventoryTransaction  implements Comparable, Serializa
 	 * Return the value associated with the column: TO_WAREHOUSE_ID
 	 */
 	public com.floreantpos.model.inventory.InventoryWarehouse getToWarehouse () {
-		return toWarehouse;
-	}
+					return toWarehouse;
+			}
 
 	/**
 	 * Set the value related to the column: TO_WAREHOUSE_ID

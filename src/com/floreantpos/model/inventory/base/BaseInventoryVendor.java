@@ -58,8 +58,8 @@ public abstract class BaseInventoryVendor  implements Comparable, Serializable {
 	private java.util.Date modifiedTime;
 
 	// fields
-	private java.lang.String name;
-	private java.lang.Boolean visible;
+		protected java.lang.String name;
+		protected java.lang.Boolean visible;
 
 
 
@@ -88,8 +88,8 @@ public abstract class BaseInventoryVendor  implements Comparable, Serializable {
 	 * Return the value associated with the column: MODIFIED_TIME
 	 */
 	public java.util.Date getModifiedTime () {
-		return modifiedTime;
-	}
+					return modifiedTime;
+			}
 
 	/**
 	 * Set the value related to the column: MODIFIED_TIME
@@ -106,8 +106,8 @@ public abstract class BaseInventoryVendor  implements Comparable, Serializable {
 	 * Return the value associated with the column: NAME
 	 */
 	public java.lang.String getName () {
-		return name;
-	}
+					return name;
+			}
 
 	/**
 	 * Set the value related to the column: NAME
@@ -123,8 +123,8 @@ public abstract class BaseInventoryVendor  implements Comparable, Serializable {
 	 * Return the value associated with the column: VISIBLE
 	 */
 	public java.lang.Boolean isVisible () {
-		return visible;
-	}
+								return visible == null ? Boolean.FALSE : visible;
+					}
 
 	/**
 	 * Set the value related to the column: VISIBLE

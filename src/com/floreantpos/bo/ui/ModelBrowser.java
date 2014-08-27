@@ -3,6 +3,7 @@ package com.floreantpos.bo.ui;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -47,11 +48,10 @@ public class ModelBrowser<E> extends JPanel implements ActionListener, ListSelec
 			browserTable.setModel(tableModel);
 		}
 		
-		setLayout(new BorderLayout());
-		setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+		setLayout(new BorderLayout(10, 10));
+		setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		
 		browserPanel.add(new JScrollPane(browserTable));
-		browserTable.setBorder(BorderFactory.createEtchedBorder());
 		
 		JPanel searchPanel = createSearchPanel();
 		if(searchPanel != null) {
@@ -126,5 +126,10 @@ public class ModelBrowser<E> extends JPanel implements ActionListener, ListSelec
 		btnSave.setEnabled(false);
 		btnDelete.setEnabled(true);
 		btnCancel.setEnabled(false);
+	}
+	
+	public void setModels(List<E> models) {
+		ListTableModel tableModel = (ListTableModel) browserTable.getModel();
+		tableModel.setRows(models);
 	}
 }

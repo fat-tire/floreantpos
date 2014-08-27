@@ -39,27 +39,27 @@ public abstract class BaseInventoryWarehouseDAO extends com.floreantpos.model.in
 	}
 
 	public com.floreantpos.model.inventory.InventoryWarehouse get(java.lang.Integer key)
-		throws org.hibernate.HibernateException {
+	{
 		return (com.floreantpos.model.inventory.InventoryWarehouse) get(getReferenceClass(), key);
 	}
 
 	public com.floreantpos.model.inventory.InventoryWarehouse get(java.lang.Integer key, Session s)
-		throws org.hibernate.HibernateException {
+	{
 		return (com.floreantpos.model.inventory.InventoryWarehouse) get(getReferenceClass(), key, s);
 	}
 
 	public com.floreantpos.model.inventory.InventoryWarehouse load(java.lang.Integer key)
-		throws org.hibernate.HibernateException {
+	{
 		return (com.floreantpos.model.inventory.InventoryWarehouse) load(getReferenceClass(), key);
 	}
 
 	public com.floreantpos.model.inventory.InventoryWarehouse load(java.lang.Integer key, Session s)
-		throws org.hibernate.HibernateException {
+	{
 		return (com.floreantpos.model.inventory.InventoryWarehouse) load(getReferenceClass(), key, s);
 	}
 
 	public com.floreantpos.model.inventory.InventoryWarehouse loadInitialize(java.lang.Integer key, Session s) 
-			throws org.hibernate.HibernateException { 
+	{ 
 		com.floreantpos.model.inventory.InventoryWarehouse obj = load(key, s); 
 		if (!Hibernate.isInitialized(obj)) {
 			Hibernate.initialize(obj);
@@ -99,7 +99,7 @@ public abstract class BaseInventoryWarehouseDAO extends com.floreantpos.model.in
 	 * @return the class identifier
 	 */
 	public java.lang.Integer save(com.floreantpos.model.inventory.InventoryWarehouse inventoryWarehouse)
-		throws org.hibernate.HibernateException {
+	{
 		return (java.lang.Integer) super.save(inventoryWarehouse);
 	}
 
@@ -112,7 +112,7 @@ public abstract class BaseInventoryWarehouseDAO extends com.floreantpos.model.in
 	 * @return the class identifier
 	 */
 	public java.lang.Integer save(com.floreantpos.model.inventory.InventoryWarehouse inventoryWarehouse, Session s)
-		throws org.hibernate.HibernateException {
+	{
 		return (java.lang.Integer) save((Object) inventoryWarehouse, s);
 	}
 
@@ -123,7 +123,7 @@ public abstract class BaseInventoryWarehouseDAO extends com.floreantpos.model.in
 	 * @param inventoryWarehouse a transient instance containing new or updated state 
 	 */
 	public void saveOrUpdate(com.floreantpos.model.inventory.InventoryWarehouse inventoryWarehouse)
-		throws org.hibernate.HibernateException {
+	{
 		saveOrUpdate((Object) inventoryWarehouse);
 	}
 
@@ -136,7 +136,7 @@ public abstract class BaseInventoryWarehouseDAO extends com.floreantpos.model.in
 	 * @param s the Session.
 	 */
 	public void saveOrUpdate(com.floreantpos.model.inventory.InventoryWarehouse inventoryWarehouse, Session s)
-		throws org.hibernate.HibernateException {
+	{
 		saveOrUpdate((Object) inventoryWarehouse, s);
 	}
 
@@ -146,7 +146,7 @@ public abstract class BaseInventoryWarehouseDAO extends com.floreantpos.model.in
 	 * @param inventoryWarehouse a transient instance containing updated state
 	 */
 	public void update(com.floreantpos.model.inventory.InventoryWarehouse inventoryWarehouse) 
-		throws org.hibernate.HibernateException {
+	{
 		update((Object) inventoryWarehouse);
 	}
 
@@ -158,7 +158,7 @@ public abstract class BaseInventoryWarehouseDAO extends com.floreantpos.model.in
 	 * @param the Session
 	 */
 	public void update(com.floreantpos.model.inventory.InventoryWarehouse inventoryWarehouse, Session s)
-		throws org.hibernate.HibernateException {
+	{
 		update((Object) inventoryWarehouse, s);
 	}
 
@@ -168,7 +168,7 @@ public abstract class BaseInventoryWarehouseDAO extends com.floreantpos.model.in
 	 * @param id the instance ID to be removed
 	 */
 	public void delete(java.lang.Integer id)
-		throws org.hibernate.HibernateException {
+	{
 		delete((Object) load(id));
 	}
 
@@ -180,7 +180,7 @@ public abstract class BaseInventoryWarehouseDAO extends com.floreantpos.model.in
 	 * @param s the Session
 	 */
 	public void delete(java.lang.Integer id, Session s)
-		throws org.hibernate.HibernateException {
+	{
 		delete((Object) load(id, s), s);
 	}
 
@@ -190,7 +190,7 @@ public abstract class BaseInventoryWarehouseDAO extends com.floreantpos.model.in
 	 * @param inventoryWarehouse the instance to be removed
 	 */
 	public void delete(com.floreantpos.model.inventory.InventoryWarehouse inventoryWarehouse)
-		throws org.hibernate.HibernateException {
+	{
 		delete((Object) inventoryWarehouse);
 	}
 
@@ -202,7 +202,7 @@ public abstract class BaseInventoryWarehouseDAO extends com.floreantpos.model.in
 	 * @param s the Session
 	 */
 	public void delete(com.floreantpos.model.inventory.InventoryWarehouse inventoryWarehouse, Session s)
-		throws org.hibernate.HibernateException {
+	{
 		delete((Object) inventoryWarehouse, s);
 	}
 	
@@ -217,7 +217,7 @@ public abstract class BaseInventoryWarehouseDAO extends com.floreantpos.model.in
 	 * </ul>
 	 */
 	public void refresh (com.floreantpos.model.inventory.InventoryWarehouse inventoryWarehouse, Session s)
-		throws org.hibernate.HibernateException {
+	{
 		refresh((Object) inventoryWarehouse, s);
 	}
 

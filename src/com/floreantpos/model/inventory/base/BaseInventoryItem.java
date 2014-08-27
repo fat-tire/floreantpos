@@ -77,24 +77,24 @@ public abstract class BaseInventoryItem  implements Comparable, Serializable {
 	private java.util.Date modifiedTime;
 
 	// fields
-	private java.lang.String name;
-	private java.lang.String barcode;
-	private java.lang.String packSizeDescription;
-	private java.lang.Integer itemPerPackSize;
-	private java.lang.Integer sortOrder;
-	private java.lang.String packSizeReorderLevel;
-	private java.lang.String packSizeReplenishLevel;
-	private java.lang.String description;
-	private java.lang.Integer packSizeQuantityOnHand;
-	private java.lang.Integer totPackSizeValue;
-	private java.util.Date createTime;
-	private java.lang.Integer balanceTotalPacks;
-	private java.lang.Integer balanceTotalItems;
-	private java.lang.Integer balanceTotalRecepieUnits;
-	private java.util.Date lastUpdateDate;
-	private java.lang.Double purchasePrice;
-	private java.lang.Double sellingPrice;
-	private java.lang.Boolean visible;
+		protected java.lang.String name;
+		protected java.lang.String barcode;
+		protected java.lang.String packSizeDescription;
+		protected java.lang.Integer itemPerPackSize;
+		protected java.lang.Integer sortOrder;
+		protected java.lang.String packSizeReorderLevel;
+		protected java.lang.String packSizeReplenishLevel;
+		protected java.lang.String description;
+		protected java.lang.Integer packSizeQuantityOnHand;
+		protected java.lang.Integer totPackSizeValue;
+		protected java.util.Date createTime;
+		protected java.lang.Integer balanceTotalPacks;
+		protected java.lang.Integer balanceTotalItems;
+		protected java.lang.Integer balanceTotalRecepieUnits;
+		protected java.util.Date lastUpdateDate;
+		protected java.lang.Double purchasePrice;
+		protected java.lang.Double sellingPrice;
+		protected java.lang.Boolean visible;
 
 	// many to one
 	private com.floreantpos.model.inventory.InventoryGroup itemGroup;
@@ -128,8 +128,8 @@ public abstract class BaseInventoryItem  implements Comparable, Serializable {
 	 * Return the value associated with the column: MODIFIED_TIME
 	 */
 	public java.util.Date getModifiedTime () {
-		return modifiedTime;
-	}
+					return modifiedTime;
+			}
 
 	/**
 	 * Set the value related to the column: MODIFIED_TIME
@@ -146,8 +146,8 @@ public abstract class BaseInventoryItem  implements Comparable, Serializable {
 	 * Return the value associated with the column: NAME
 	 */
 	public java.lang.String getName () {
-		return name;
-	}
+					return name;
+			}
 
 	/**
 	 * Set the value related to the column: NAME
@@ -163,8 +163,8 @@ public abstract class BaseInventoryItem  implements Comparable, Serializable {
 	 * Return the value associated with the column: BARCODE
 	 */
 	public java.lang.String getBarcode () {
-		return barcode;
-	}
+					return barcode;
+			}
 
 	/**
 	 * Set the value related to the column: BARCODE
@@ -180,8 +180,8 @@ public abstract class BaseInventoryItem  implements Comparable, Serializable {
 	 * Return the value associated with the column: PACKSIZE_DESC
 	 */
 	public java.lang.String getPackSizeDescription () {
-		return packSizeDescription;
-	}
+					return packSizeDescription;
+			}
 
 	/**
 	 * Set the value related to the column: PACKSIZE_DESC
@@ -197,8 +197,8 @@ public abstract class BaseInventoryItem  implements Comparable, Serializable {
 	 * Return the value associated with the column: TOT_ITEM_PER_PACKSIZE
 	 */
 	public java.lang.Integer getItemPerPackSize () {
-		return itemPerPackSize;
-	}
+					return itemPerPackSize == null ? Integer.valueOf(0) : itemPerPackSize;
+			}
 
 	/**
 	 * Set the value related to the column: TOT_ITEM_PER_PACKSIZE
@@ -214,8 +214,8 @@ public abstract class BaseInventoryItem  implements Comparable, Serializable {
 	 * Return the value associated with the column: SORT_ORDER
 	 */
 	public java.lang.Integer getSortOrder () {
-		return sortOrder;
-	}
+					return sortOrder == null ? Integer.valueOf(0) : sortOrder;
+			}
 
 	/**
 	 * Set the value related to the column: SORT_ORDER
@@ -231,8 +231,8 @@ public abstract class BaseInventoryItem  implements Comparable, Serializable {
 	 * Return the value associated with the column: PACK_SIZE_REORDER_LEVEL
 	 */
 	public java.lang.String getPackSizeReorderLevel () {
-		return packSizeReorderLevel;
-	}
+					return packSizeReorderLevel;
+			}
 
 	/**
 	 * Set the value related to the column: PACK_SIZE_REORDER_LEVEL
@@ -248,8 +248,8 @@ public abstract class BaseInventoryItem  implements Comparable, Serializable {
 	 * Return the value associated with the column: PACK_SIZE_REPLENISH_LEVEL
 	 */
 	public java.lang.String getPackSizeReplenishLevel () {
-		return packSizeReplenishLevel;
-	}
+					return packSizeReplenishLevel;
+			}
 
 	/**
 	 * Set the value related to the column: PACK_SIZE_REPLENISH_LEVEL
@@ -265,8 +265,8 @@ public abstract class BaseInventoryItem  implements Comparable, Serializable {
 	 * Return the value associated with the column: DESCRIPTION
 	 */
 	public java.lang.String getDescription () {
-		return description;
-	}
+					return description;
+			}
 
 	/**
 	 * Set the value related to the column: DESCRIPTION
@@ -282,8 +282,8 @@ public abstract class BaseInventoryItem  implements Comparable, Serializable {
 	 * Return the value associated with the column: PACKSIZE_QTY_ON_HAND
 	 */
 	public java.lang.Integer getPackSizeQuantityOnHand () {
-		return packSizeQuantityOnHand;
-	}
+					return packSizeQuantityOnHand == null ? Integer.valueOf(0) : packSizeQuantityOnHand;
+			}
 
 	/**
 	 * Set the value related to the column: PACKSIZE_QTY_ON_HAND
@@ -299,8 +299,8 @@ public abstract class BaseInventoryItem  implements Comparable, Serializable {
 	 * Return the value associated with the column: TOT_PACKSIZE_VALUE
 	 */
 	public java.lang.Integer getTotPackSizeValue () {
-		return totPackSizeValue;
-	}
+					return totPackSizeValue == null ? Integer.valueOf(0) : totPackSizeValue;
+			}
 
 	/**
 	 * Set the value related to the column: TOT_PACKSIZE_VALUE
@@ -316,8 +316,8 @@ public abstract class BaseInventoryItem  implements Comparable, Serializable {
 	 * Return the value associated with the column: CREATE_TIME
 	 */
 	public java.util.Date getCreateTime () {
-		return createTime;
-	}
+					return createTime;
+			}
 
 	/**
 	 * Set the value related to the column: CREATE_TIME
@@ -333,8 +333,8 @@ public abstract class BaseInventoryItem  implements Comparable, Serializable {
 	 * Return the value associated with the column: BALANCE_TOTAL_PACKS
 	 */
 	public java.lang.Integer getBalanceTotalPacks () {
-		return balanceTotalPacks;
-	}
+					return balanceTotalPacks == null ? Integer.valueOf(0) : balanceTotalPacks;
+			}
 
 	/**
 	 * Set the value related to the column: BALANCE_TOTAL_PACKS
@@ -350,8 +350,8 @@ public abstract class BaseInventoryItem  implements Comparable, Serializable {
 	 * Return the value associated with the column: BALANCE_TOTAL_ITEMS
 	 */
 	public java.lang.Integer getBalanceTotalItems () {
-		return balanceTotalItems;
-	}
+					return balanceTotalItems == null ? Integer.valueOf(0) : balanceTotalItems;
+			}
 
 	/**
 	 * Set the value related to the column: BALANCE_TOTAL_ITEMS
@@ -367,8 +367,8 @@ public abstract class BaseInventoryItem  implements Comparable, Serializable {
 	 * Return the value associated with the column: BALANCE_TOTAL_RECEPIE_UNITS
 	 */
 	public java.lang.Integer getBalanceTotalRecepieUnits () {
-		return balanceTotalRecepieUnits;
-	}
+					return balanceTotalRecepieUnits == null ? Integer.valueOf(0) : balanceTotalRecepieUnits;
+			}
 
 	/**
 	 * Set the value related to the column: BALANCE_TOTAL_RECEPIE_UNITS
@@ -384,8 +384,8 @@ public abstract class BaseInventoryItem  implements Comparable, Serializable {
 	 * Return the value associated with the column: LAST_UPDATE_DATE
 	 */
 	public java.util.Date getLastUpdateDate () {
-		return lastUpdateDate;
-	}
+					return lastUpdateDate;
+			}
 
 	/**
 	 * Set the value related to the column: LAST_UPDATE_DATE
@@ -401,8 +401,8 @@ public abstract class BaseInventoryItem  implements Comparable, Serializable {
 	 * Return the value associated with the column: PURCHASE_PRICE
 	 */
 	public java.lang.Double getPurchasePrice () {
-		return purchasePrice;
-	}
+									return purchasePrice == null ? Double.valueOf(0) : purchasePrice;
+					}
 
 	/**
 	 * Set the value related to the column: PURCHASE_PRICE
@@ -418,8 +418,8 @@ public abstract class BaseInventoryItem  implements Comparable, Serializable {
 	 * Return the value associated with the column: SELLING_PRICE
 	 */
 	public java.lang.Double getSellingPrice () {
-		return sellingPrice;
-	}
+									return sellingPrice == null ? Double.valueOf(0) : sellingPrice;
+					}
 
 	/**
 	 * Set the value related to the column: SELLING_PRICE
@@ -435,8 +435,8 @@ public abstract class BaseInventoryItem  implements Comparable, Serializable {
 	 * Return the value associated with the column: VISIBLE
 	 */
 	public java.lang.Boolean isVisible () {
-		return visible;
-	}
+								return visible == null ? Boolean.FALSE : visible;
+					}
 
 	/**
 	 * Set the value related to the column: VISIBLE
@@ -452,8 +452,8 @@ public abstract class BaseInventoryItem  implements Comparable, Serializable {
 	 * Return the value associated with the column: ITEM_GROUP_ID
 	 */
 	public com.floreantpos.model.inventory.InventoryGroup getItemGroup () {
-		return itemGroup;
-	}
+					return itemGroup;
+			}
 
 	/**
 	 * Set the value related to the column: ITEM_GROUP_ID
@@ -469,8 +469,8 @@ public abstract class BaseInventoryItem  implements Comparable, Serializable {
 	 * Return the value associated with the column: ITEM_LOCATION_ID
 	 */
 	public com.floreantpos.model.inventory.InventoryLocation getItemLocation () {
-		return itemLocation;
-	}
+					return itemLocation;
+			}
 
 	/**
 	 * Set the value related to the column: ITEM_LOCATION_ID
@@ -486,8 +486,8 @@ public abstract class BaseInventoryItem  implements Comparable, Serializable {
 	 * Return the value associated with the column: ITEM_VENDOR_ID
 	 */
 	public com.floreantpos.model.inventory.InventoryVendor getItemVendor () {
-		return itemVendor;
-	}
+					return itemVendor;
+			}
 
 	/**
 	 * Set the value related to the column: ITEM_VENDOR_ID

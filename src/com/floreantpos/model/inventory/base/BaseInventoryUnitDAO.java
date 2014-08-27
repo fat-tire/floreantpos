@@ -39,27 +39,27 @@ public abstract class BaseInventoryUnitDAO extends com.floreantpos.model.invento
 	}
 
 	public com.floreantpos.model.inventory.InventoryUnit get(java.lang.Integer key)
-		throws org.hibernate.HibernateException {
+	{
 		return (com.floreantpos.model.inventory.InventoryUnit) get(getReferenceClass(), key);
 	}
 
 	public com.floreantpos.model.inventory.InventoryUnit get(java.lang.Integer key, Session s)
-		throws org.hibernate.HibernateException {
+	{
 		return (com.floreantpos.model.inventory.InventoryUnit) get(getReferenceClass(), key, s);
 	}
 
 	public com.floreantpos.model.inventory.InventoryUnit load(java.lang.Integer key)
-		throws org.hibernate.HibernateException {
+	{
 		return (com.floreantpos.model.inventory.InventoryUnit) load(getReferenceClass(), key);
 	}
 
 	public com.floreantpos.model.inventory.InventoryUnit load(java.lang.Integer key, Session s)
-		throws org.hibernate.HibernateException {
+	{
 		return (com.floreantpos.model.inventory.InventoryUnit) load(getReferenceClass(), key, s);
 	}
 
 	public com.floreantpos.model.inventory.InventoryUnit loadInitialize(java.lang.Integer key, Session s) 
-			throws org.hibernate.HibernateException { 
+	{ 
 		com.floreantpos.model.inventory.InventoryUnit obj = load(key, s); 
 		if (!Hibernate.isInitialized(obj)) {
 			Hibernate.initialize(obj);
@@ -99,7 +99,7 @@ public abstract class BaseInventoryUnitDAO extends com.floreantpos.model.invento
 	 * @return the class identifier
 	 */
 	public java.lang.Integer save(com.floreantpos.model.inventory.InventoryUnit inventoryUnit)
-		throws org.hibernate.HibernateException {
+	{
 		return (java.lang.Integer) super.save(inventoryUnit);
 	}
 
@@ -112,7 +112,7 @@ public abstract class BaseInventoryUnitDAO extends com.floreantpos.model.invento
 	 * @return the class identifier
 	 */
 	public java.lang.Integer save(com.floreantpos.model.inventory.InventoryUnit inventoryUnit, Session s)
-		throws org.hibernate.HibernateException {
+	{
 		return (java.lang.Integer) save((Object) inventoryUnit, s);
 	}
 
@@ -123,7 +123,7 @@ public abstract class BaseInventoryUnitDAO extends com.floreantpos.model.invento
 	 * @param inventoryUnit a transient instance containing new or updated state 
 	 */
 	public void saveOrUpdate(com.floreantpos.model.inventory.InventoryUnit inventoryUnit)
-		throws org.hibernate.HibernateException {
+	{
 		saveOrUpdate((Object) inventoryUnit);
 	}
 
@@ -136,7 +136,7 @@ public abstract class BaseInventoryUnitDAO extends com.floreantpos.model.invento
 	 * @param s the Session.
 	 */
 	public void saveOrUpdate(com.floreantpos.model.inventory.InventoryUnit inventoryUnit, Session s)
-		throws org.hibernate.HibernateException {
+	{
 		saveOrUpdate((Object) inventoryUnit, s);
 	}
 
@@ -146,7 +146,7 @@ public abstract class BaseInventoryUnitDAO extends com.floreantpos.model.invento
 	 * @param inventoryUnit a transient instance containing updated state
 	 */
 	public void update(com.floreantpos.model.inventory.InventoryUnit inventoryUnit) 
-		throws org.hibernate.HibernateException {
+	{
 		update((Object) inventoryUnit);
 	}
 
@@ -158,7 +158,7 @@ public abstract class BaseInventoryUnitDAO extends com.floreantpos.model.invento
 	 * @param the Session
 	 */
 	public void update(com.floreantpos.model.inventory.InventoryUnit inventoryUnit, Session s)
-		throws org.hibernate.HibernateException {
+	{
 		update((Object) inventoryUnit, s);
 	}
 
@@ -168,7 +168,7 @@ public abstract class BaseInventoryUnitDAO extends com.floreantpos.model.invento
 	 * @param id the instance ID to be removed
 	 */
 	public void delete(java.lang.Integer id)
-		throws org.hibernate.HibernateException {
+	{
 		delete((Object) load(id));
 	}
 
@@ -180,7 +180,7 @@ public abstract class BaseInventoryUnitDAO extends com.floreantpos.model.invento
 	 * @param s the Session
 	 */
 	public void delete(java.lang.Integer id, Session s)
-		throws org.hibernate.HibernateException {
+	{
 		delete((Object) load(id, s), s);
 	}
 
@@ -190,7 +190,7 @@ public abstract class BaseInventoryUnitDAO extends com.floreantpos.model.invento
 	 * @param inventoryUnit the instance to be removed
 	 */
 	public void delete(com.floreantpos.model.inventory.InventoryUnit inventoryUnit)
-		throws org.hibernate.HibernateException {
+	{
 		delete((Object) inventoryUnit);
 	}
 
@@ -202,7 +202,7 @@ public abstract class BaseInventoryUnitDAO extends com.floreantpos.model.invento
 	 * @param s the Session
 	 */
 	public void delete(com.floreantpos.model.inventory.InventoryUnit inventoryUnit, Session s)
-		throws org.hibernate.HibernateException {
+	{
 		delete((Object) inventoryUnit, s);
 	}
 	
@@ -217,7 +217,7 @@ public abstract class BaseInventoryUnitDAO extends com.floreantpos.model.invento
 	 * </ul>
 	 */
 	public void refresh (com.floreantpos.model.inventory.InventoryUnit inventoryUnit, Session s)
-		throws org.hibernate.HibernateException {
+	{
 		refresh((Object) inventoryUnit, s);
 	}
 

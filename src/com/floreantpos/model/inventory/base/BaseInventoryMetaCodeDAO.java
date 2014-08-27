@@ -39,27 +39,27 @@ public abstract class BaseInventoryMetaCodeDAO extends com.floreantpos.model.inv
 	}
 
 	public com.floreantpos.model.inventory.InventoryMetaCode get(java.lang.Integer key)
-		throws org.hibernate.HibernateException {
+	{
 		return (com.floreantpos.model.inventory.InventoryMetaCode) get(getReferenceClass(), key);
 	}
 
 	public com.floreantpos.model.inventory.InventoryMetaCode get(java.lang.Integer key, Session s)
-		throws org.hibernate.HibernateException {
+	{
 		return (com.floreantpos.model.inventory.InventoryMetaCode) get(getReferenceClass(), key, s);
 	}
 
 	public com.floreantpos.model.inventory.InventoryMetaCode load(java.lang.Integer key)
-		throws org.hibernate.HibernateException {
+	{
 		return (com.floreantpos.model.inventory.InventoryMetaCode) load(getReferenceClass(), key);
 	}
 
 	public com.floreantpos.model.inventory.InventoryMetaCode load(java.lang.Integer key, Session s)
-		throws org.hibernate.HibernateException {
+	{
 		return (com.floreantpos.model.inventory.InventoryMetaCode) load(getReferenceClass(), key, s);
 	}
 
 	public com.floreantpos.model.inventory.InventoryMetaCode loadInitialize(java.lang.Integer key, Session s) 
-			throws org.hibernate.HibernateException { 
+	{ 
 		com.floreantpos.model.inventory.InventoryMetaCode obj = load(key, s); 
 		if (!Hibernate.isInitialized(obj)) {
 			Hibernate.initialize(obj);
@@ -99,7 +99,7 @@ public abstract class BaseInventoryMetaCodeDAO extends com.floreantpos.model.inv
 	 * @return the class identifier
 	 */
 	public java.lang.Integer save(com.floreantpos.model.inventory.InventoryMetaCode inventoryMetaCode)
-		throws org.hibernate.HibernateException {
+	{
 		return (java.lang.Integer) super.save(inventoryMetaCode);
 	}
 
@@ -112,7 +112,7 @@ public abstract class BaseInventoryMetaCodeDAO extends com.floreantpos.model.inv
 	 * @return the class identifier
 	 */
 	public java.lang.Integer save(com.floreantpos.model.inventory.InventoryMetaCode inventoryMetaCode, Session s)
-		throws org.hibernate.HibernateException {
+	{
 		return (java.lang.Integer) save((Object) inventoryMetaCode, s);
 	}
 
@@ -123,7 +123,7 @@ public abstract class BaseInventoryMetaCodeDAO extends com.floreantpos.model.inv
 	 * @param inventoryMetaCode a transient instance containing new or updated state 
 	 */
 	public void saveOrUpdate(com.floreantpos.model.inventory.InventoryMetaCode inventoryMetaCode)
-		throws org.hibernate.HibernateException {
+	{
 		saveOrUpdate((Object) inventoryMetaCode);
 	}
 
@@ -136,7 +136,7 @@ public abstract class BaseInventoryMetaCodeDAO extends com.floreantpos.model.inv
 	 * @param s the Session.
 	 */
 	public void saveOrUpdate(com.floreantpos.model.inventory.InventoryMetaCode inventoryMetaCode, Session s)
-		throws org.hibernate.HibernateException {
+	{
 		saveOrUpdate((Object) inventoryMetaCode, s);
 	}
 
@@ -146,7 +146,7 @@ public abstract class BaseInventoryMetaCodeDAO extends com.floreantpos.model.inv
 	 * @param inventoryMetaCode a transient instance containing updated state
 	 */
 	public void update(com.floreantpos.model.inventory.InventoryMetaCode inventoryMetaCode) 
-		throws org.hibernate.HibernateException {
+	{
 		update((Object) inventoryMetaCode);
 	}
 
@@ -158,7 +158,7 @@ public abstract class BaseInventoryMetaCodeDAO extends com.floreantpos.model.inv
 	 * @param the Session
 	 */
 	public void update(com.floreantpos.model.inventory.InventoryMetaCode inventoryMetaCode, Session s)
-		throws org.hibernate.HibernateException {
+	{
 		update((Object) inventoryMetaCode, s);
 	}
 
@@ -168,7 +168,7 @@ public abstract class BaseInventoryMetaCodeDAO extends com.floreantpos.model.inv
 	 * @param id the instance ID to be removed
 	 */
 	public void delete(java.lang.Integer id)
-		throws org.hibernate.HibernateException {
+	{
 		delete((Object) load(id));
 	}
 
@@ -180,7 +180,7 @@ public abstract class BaseInventoryMetaCodeDAO extends com.floreantpos.model.inv
 	 * @param s the Session
 	 */
 	public void delete(java.lang.Integer id, Session s)
-		throws org.hibernate.HibernateException {
+	{
 		delete((Object) load(id, s), s);
 	}
 
@@ -190,7 +190,7 @@ public abstract class BaseInventoryMetaCodeDAO extends com.floreantpos.model.inv
 	 * @param inventoryMetaCode the instance to be removed
 	 */
 	public void delete(com.floreantpos.model.inventory.InventoryMetaCode inventoryMetaCode)
-		throws org.hibernate.HibernateException {
+	{
 		delete((Object) inventoryMetaCode);
 	}
 
@@ -202,7 +202,7 @@ public abstract class BaseInventoryMetaCodeDAO extends com.floreantpos.model.inv
 	 * @param s the Session
 	 */
 	public void delete(com.floreantpos.model.inventory.InventoryMetaCode inventoryMetaCode, Session s)
-		throws org.hibernate.HibernateException {
+	{
 		delete((Object) inventoryMetaCode, s);
 	}
 	
@@ -217,7 +217,7 @@ public abstract class BaseInventoryMetaCodeDAO extends com.floreantpos.model.inv
 	 * </ul>
 	 */
 	public void refresh (com.floreantpos.model.inventory.InventoryMetaCode inventoryMetaCode, Session s)
-		throws org.hibernate.HibernateException {
+	{
 		refresh((Object) inventoryMetaCode, s);
 	}
 
