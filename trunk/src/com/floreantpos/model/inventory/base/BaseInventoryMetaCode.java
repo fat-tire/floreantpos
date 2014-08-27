@@ -48,10 +48,10 @@ public abstract class BaseInventoryMetaCode  implements Comparable, Serializable
 	private java.util.Date modifiedTime;
 
 	// fields
-	private java.lang.String type;
-	private java.lang.String codeText;
-	private java.lang.Integer codeNo;
-	private java.lang.String description;
+		protected java.lang.String type;
+		protected java.lang.String codeText;
+		protected java.lang.Integer codeNo;
+		protected java.lang.String description;
 
 
 
@@ -80,8 +80,8 @@ public abstract class BaseInventoryMetaCode  implements Comparable, Serializable
 	 * Return the value associated with the column: MODIFIED_TIME
 	 */
 	public java.util.Date getModifiedTime () {
-		return modifiedTime;
-	}
+					return modifiedTime;
+			}
 
 	/**
 	 * Set the value related to the column: MODIFIED_TIME
@@ -98,8 +98,8 @@ public abstract class BaseInventoryMetaCode  implements Comparable, Serializable
 	 * Return the value associated with the column: TYPE
 	 */
 	public java.lang.String getType () {
-		return type;
-	}
+					return type;
+			}
 
 	/**
 	 * Set the value related to the column: TYPE
@@ -115,8 +115,8 @@ public abstract class BaseInventoryMetaCode  implements Comparable, Serializable
 	 * Return the value associated with the column: CODE_TEXT
 	 */
 	public java.lang.String getCodeText () {
-		return codeText;
-	}
+					return codeText;
+			}
 
 	/**
 	 * Set the value related to the column: CODE_TEXT
@@ -132,8 +132,8 @@ public abstract class BaseInventoryMetaCode  implements Comparable, Serializable
 	 * Return the value associated with the column: CODE_NO
 	 */
 	public java.lang.Integer getCodeNo () {
-		return codeNo;
-	}
+					return codeNo == null ? Integer.valueOf(0) : codeNo;
+			}
 
 	/**
 	 * Set the value related to the column: CODE_NO
@@ -149,8 +149,8 @@ public abstract class BaseInventoryMetaCode  implements Comparable, Serializable
 	 * Return the value associated with the column: DESCRIPTION
 	 */
 	public java.lang.String getDescription () {
-		return description;
-	}
+					return description;
+			}
 
 	/**
 	 * Set the value related to the column: DESCRIPTION

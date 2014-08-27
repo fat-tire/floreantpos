@@ -32,6 +32,11 @@ public class InventoryLocation extends BaseInventoryLocation {
 	}
 
 /*[CONSTRUCTOR MARKER END]*/
+	
+	@Override
+	public Boolean isVisible() {
+		return visible == null ? true : visible;
+	}
 
 	@Override
 	public String toString() {

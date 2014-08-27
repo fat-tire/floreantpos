@@ -46,8 +46,8 @@ public abstract class BaseInventoryTransactionType  implements Comparable, Seria
 	private java.util.Date modifiedTime;
 
 	// fields
-	private java.lang.String name;
-	private java.lang.Integer income;
+		protected java.lang.String name;
+		protected java.lang.Integer income;
 
 
 
@@ -76,8 +76,8 @@ public abstract class BaseInventoryTransactionType  implements Comparable, Seria
 	 * Return the value associated with the column: MODIFIED_TIME
 	 */
 	public java.util.Date getModifiedTime () {
-		return modifiedTime;
-	}
+					return modifiedTime;
+			}
 
 	/**
 	 * Set the value related to the column: MODIFIED_TIME
@@ -94,8 +94,8 @@ public abstract class BaseInventoryTransactionType  implements Comparable, Seria
 	 * Return the value associated with the column: NAME
 	 */
 	public java.lang.String getName () {
-		return name;
-	}
+					return name;
+			}
 
 	/**
 	 * Set the value related to the column: NAME
@@ -111,8 +111,8 @@ public abstract class BaseInventoryTransactionType  implements Comparable, Seria
 	 * Return the value associated with the column: INCOEM
 	 */
 	public java.lang.Integer getIncome () {
-		return income;
-	}
+					return income == null ? Integer.valueOf(0) : income;
+			}
 
 	/**
 	 * Set the value related to the column: INCOEM

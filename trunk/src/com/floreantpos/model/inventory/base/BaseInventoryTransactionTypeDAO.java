@@ -39,27 +39,27 @@ public abstract class BaseInventoryTransactionTypeDAO extends com.floreantpos.mo
 	}
 
 	public com.floreantpos.model.inventory.InventoryTransactionType get(java.lang.Integer key)
-		throws org.hibernate.HibernateException {
+	{
 		return (com.floreantpos.model.inventory.InventoryTransactionType) get(getReferenceClass(), key);
 	}
 
 	public com.floreantpos.model.inventory.InventoryTransactionType get(java.lang.Integer key, Session s)
-		throws org.hibernate.HibernateException {
+	{
 		return (com.floreantpos.model.inventory.InventoryTransactionType) get(getReferenceClass(), key, s);
 	}
 
 	public com.floreantpos.model.inventory.InventoryTransactionType load(java.lang.Integer key)
-		throws org.hibernate.HibernateException {
+	{
 		return (com.floreantpos.model.inventory.InventoryTransactionType) load(getReferenceClass(), key);
 	}
 
 	public com.floreantpos.model.inventory.InventoryTransactionType load(java.lang.Integer key, Session s)
-		throws org.hibernate.HibernateException {
+	{
 		return (com.floreantpos.model.inventory.InventoryTransactionType) load(getReferenceClass(), key, s);
 	}
 
 	public com.floreantpos.model.inventory.InventoryTransactionType loadInitialize(java.lang.Integer key, Session s) 
-			throws org.hibernate.HibernateException { 
+	{ 
 		com.floreantpos.model.inventory.InventoryTransactionType obj = load(key, s); 
 		if (!Hibernate.isInitialized(obj)) {
 			Hibernate.initialize(obj);
@@ -99,7 +99,7 @@ public abstract class BaseInventoryTransactionTypeDAO extends com.floreantpos.mo
 	 * @return the class identifier
 	 */
 	public java.lang.Integer save(com.floreantpos.model.inventory.InventoryTransactionType inventoryTransactionType)
-		throws org.hibernate.HibernateException {
+	{
 		return (java.lang.Integer) super.save(inventoryTransactionType);
 	}
 
@@ -112,7 +112,7 @@ public abstract class BaseInventoryTransactionTypeDAO extends com.floreantpos.mo
 	 * @return the class identifier
 	 */
 	public java.lang.Integer save(com.floreantpos.model.inventory.InventoryTransactionType inventoryTransactionType, Session s)
-		throws org.hibernate.HibernateException {
+	{
 		return (java.lang.Integer) save((Object) inventoryTransactionType, s);
 	}
 
@@ -123,7 +123,7 @@ public abstract class BaseInventoryTransactionTypeDAO extends com.floreantpos.mo
 	 * @param inventoryTransactionType a transient instance containing new or updated state 
 	 */
 	public void saveOrUpdate(com.floreantpos.model.inventory.InventoryTransactionType inventoryTransactionType)
-		throws org.hibernate.HibernateException {
+	{
 		saveOrUpdate((Object) inventoryTransactionType);
 	}
 
@@ -136,7 +136,7 @@ public abstract class BaseInventoryTransactionTypeDAO extends com.floreantpos.mo
 	 * @param s the Session.
 	 */
 	public void saveOrUpdate(com.floreantpos.model.inventory.InventoryTransactionType inventoryTransactionType, Session s)
-		throws org.hibernate.HibernateException {
+	{
 		saveOrUpdate((Object) inventoryTransactionType, s);
 	}
 
@@ -146,7 +146,7 @@ public abstract class BaseInventoryTransactionTypeDAO extends com.floreantpos.mo
 	 * @param inventoryTransactionType a transient instance containing updated state
 	 */
 	public void update(com.floreantpos.model.inventory.InventoryTransactionType inventoryTransactionType) 
-		throws org.hibernate.HibernateException {
+	{
 		update((Object) inventoryTransactionType);
 	}
 
@@ -158,7 +158,7 @@ public abstract class BaseInventoryTransactionTypeDAO extends com.floreantpos.mo
 	 * @param the Session
 	 */
 	public void update(com.floreantpos.model.inventory.InventoryTransactionType inventoryTransactionType, Session s)
-		throws org.hibernate.HibernateException {
+	{
 		update((Object) inventoryTransactionType, s);
 	}
 
@@ -168,7 +168,7 @@ public abstract class BaseInventoryTransactionTypeDAO extends com.floreantpos.mo
 	 * @param id the instance ID to be removed
 	 */
 	public void delete(java.lang.Integer id)
-		throws org.hibernate.HibernateException {
+	{
 		delete((Object) load(id));
 	}
 
@@ -180,7 +180,7 @@ public abstract class BaseInventoryTransactionTypeDAO extends com.floreantpos.mo
 	 * @param s the Session
 	 */
 	public void delete(java.lang.Integer id, Session s)
-		throws org.hibernate.HibernateException {
+	{
 		delete((Object) load(id, s), s);
 	}
 
@@ -190,7 +190,7 @@ public abstract class BaseInventoryTransactionTypeDAO extends com.floreantpos.mo
 	 * @param inventoryTransactionType the instance to be removed
 	 */
 	public void delete(com.floreantpos.model.inventory.InventoryTransactionType inventoryTransactionType)
-		throws org.hibernate.HibernateException {
+	{
 		delete((Object) inventoryTransactionType);
 	}
 
@@ -202,7 +202,7 @@ public abstract class BaseInventoryTransactionTypeDAO extends com.floreantpos.mo
 	 * @param s the Session
 	 */
 	public void delete(com.floreantpos.model.inventory.InventoryTransactionType inventoryTransactionType, Session s)
-		throws org.hibernate.HibernateException {
+	{
 		delete((Object) inventoryTransactionType, s);
 	}
 	
@@ -217,7 +217,7 @@ public abstract class BaseInventoryTransactionTypeDAO extends com.floreantpos.mo
 	 * </ul>
 	 */
 	public void refresh (com.floreantpos.model.inventory.InventoryTransactionType inventoryTransactionType, Session s)
-		throws org.hibernate.HibernateException {
+	{
 		refresh((Object) inventoryTransactionType, s);
 	}
 
