@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -342,6 +343,9 @@ public class SettleTicketView extends POSDialog implements CardInputListener {
 			else {
 				return true;
 			}
+		} catch (UnknownHostException e) {
+			POSMessageDialog.showError("My Kala discount server connection error");
+			return false;
 		} catch (Exception e) {
 			POSMessageDialog.showError(this, POSConstants.ERROR_MESSAGE, e);
 			return false;
@@ -360,8 +364,8 @@ public class SettleTicketView extends POSDialog implements CardInputListener {
 			transactionURL += "&store_name=Floreant";
 			transactionURL += "&store_zip=17225";
 			transactionURL += "&store_id=" + Application.getInstance().getRestaurant().getUniqueId();
-			
-			if(ticket.getProperty(MYKALA_COUPON) != null) {
+
+			if (ticket.getProperty(MYKALA_COUPON) != null) {
 				transactionURL += "&coupon=" + ticket.getProperty(MYKALA_COUPON);
 			}
 
@@ -514,18 +518,18 @@ public class SettleTicketView extends POSDialog implements CardInputListener {
 
 		return false;
 	}
-	
+
 	public KalaResponse getKalaResponse(String customerId) throws Exception {
 		String getUserInfoURL = "http://cloud.floreantpos.org/triliant/api_user_detail.php?kala_id=" + customerId;
 
 		JsonReader reader = Json.createReader(new URL(getUserInfoURL).openStream());
 		JsonObject object = reader.readObject();
-		
+
 		System.out.println(object);
-		
+
 		KalaResponse kalaResponse = new KalaResponse();
 		kalaResponse.parse(object);
-		
+
 		return kalaResponse;
 	}
 
@@ -552,7 +556,7 @@ public class SettleTicketView extends POSDialog implements CardInputListener {
 			if (StringUtils.isEmpty(mykalaid)) {
 				return;
 			}
-			
+
 			KalaResponse kalaResponse = getKalaResponse(mykalaid);
 
 			if (kalaResponse.getSuccess()) {
