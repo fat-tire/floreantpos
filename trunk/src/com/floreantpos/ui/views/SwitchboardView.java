@@ -25,7 +25,6 @@ import org.apache.commons.logging.LogFactory;
 
 import com.floreantpos.POSConstants;
 import com.floreantpos.PosException;
-import com.floreantpos.actions.SettleTicketAction;
 import com.floreantpos.bo.ui.BackOfficeWindow;
 import com.floreantpos.extension.OrderServiceExtension;
 import com.floreantpos.main.Application;
@@ -64,6 +63,7 @@ public class SwitchboardView extends JPanel implements ActionListener {
 
 	private OrderServiceExtension orderServiceExtension;
 
+	public static SwitchboardView instance;
 	//	private Timer ticketListUpdater;
 
 	/** Creates new form SwitchboardView */
@@ -100,6 +100,8 @@ public class SwitchboardView extends JPanel implements ActionListener {
 		//		ticketListUpdater = new Timer(30 * 1000, new TicketListUpdaterTask());
 
 		applyComponentOrientation(ComponentOrientation.getOrientation(Locale.getDefault()));
+		
+		instance = this;
 	}
 
 	/**
@@ -417,9 +419,23 @@ public class SwitchboardView extends JPanel implements ActionListener {
 
 			Ticket ticket = selectedTickets.get(0);
 			
-			if (new SettleTicketAction(ticket).execute()) {
-				updateTicketList();
+			//new SettleTicketAction(ticket).execute();
+			
+			ticket = TicketDAO.getInstance().initializeTicket(ticket);
+
+			if (ticket.isPaid()) {
+				POSMessageDialog.showError("Ticket is already settled");
+				return;
 			}
+
+			SettleTicketView posDialog = new SettleTicketView();
+			posDialog.setCurrentTicket(ticket);
+			posDialog.setSize(800, 600);
+			posDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+			posDialog.setModal(true);
+			posDialog.open();
+			
+			updateTicketList();
 			
 		} catch (Exception e) {
 			POSMessageDialog.showError(POSConstants.ERROR_MESSAGE, e);
@@ -695,7 +711,7 @@ public class SwitchboardView extends JPanel implements ActionListener {
 		updateTicketList();
 	}
 
-	private void updateTicketList() {
+	public void updateTicketList() {
 		User user = Application.getCurrentUser();
 
 		TicketDAO dao = TicketDAO.getInstance();

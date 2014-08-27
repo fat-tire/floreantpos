@@ -50,6 +50,16 @@ import com.floreantpos.ui.views.order.RootView;
 import com.floreantpos.util.POSUtil;
 
 public class SettleTicketView extends POSDialog implements CardInputListener {
+	public static final String MYKALA_DISCOUNT_PERCENTAGE = "mykala_discount_percentage";
+
+	public static final String MYKALA_POINT = "mykala_point";
+
+	public static final String MYKALA_COUPON = "mykala_coupon";
+
+	public static final String MYKALA_DISCOUNT = "mykala_discount";
+
+	public static final String MYKALA_ID = "mykala_id";
+
 	public final static String VIEW_NAME = "PAYMENT_VIEW";
 
 	private String previousViewName = SwitchboardView.VIEW_NAME;
@@ -339,9 +349,9 @@ public class SettleTicketView extends POSDialog implements CardInputListener {
 	}
 
 	private void submitMyKalaDiscount(Ticket ticket) throws IOException, MalformedURLException {
-		if (ticket.isPropertyValueTrue("mykaladiscount")) {
+		if (ticket.hasProperty(MYKALA_ID)) {
 			String transactionURL = "http://cloud.floreantpos.org/triliant/api_user_transaction.php?";
-			transactionURL += "kala_id=" + ticket.getProperty("mykalaid");
+			transactionURL += "kala_id=" + ticket.getProperty(MYKALA_ID);
 			transactionURL += "&trans_id=" + ticket.getId();
 			transactionURL += "&product_name=" + URLEncoder.encode(ticket.getTicketItems().get(0).getName(), "utf-8");
 			transactionURL += "&product_price=" + ticket.getSubtotalAmount();
@@ -350,6 +360,10 @@ public class SettleTicketView extends POSDialog implements CardInputListener {
 			transactionURL += "&store_name=Floreant";
 			transactionURL += "&store_zip=17225";
 			transactionURL += "&store_id=" + Application.getInstance().getRestaurant().getUniqueId();
+			
+			if(ticket.getProperty(MYKALA_COUPON) != null) {
+				transactionURL += "&coupon=" + ticket.getProperty(MYKALA_COUPON);
+			}
 
 			String string = IOUtils.toString(new URL(transactionURL).openStream());
 			System.out.println(transactionURL);
@@ -494,11 +508,25 @@ public class SettleTicketView extends POSDialog implements CardInputListener {
 		Ticket ticket = getTicketsToSettle().get(0);
 
 		Customer customer = ticket.getCustomer();
-		if (customer != null && customer.hasProperty("mykalaid")) {
+		if (customer != null && customer.hasProperty(MYKALA_ID)) {
 			return true;
 		}
 
 		return false;
+	}
+	
+	public KalaResponse getKalaResponse(String customerId) throws Exception {
+		String getUserInfoURL = "http://cloud.floreantpos.org/triliant/api_user_detail.php?kala_id=" + customerId;
+
+		JsonReader reader = Json.createReader(new URL(getUserInfoURL).openStream());
+		JsonObject object = reader.readObject();
+		
+		System.out.println(object);
+		
+		KalaResponse kalaResponse = new KalaResponse();
+		kalaResponse.parse(object);
+		
+		return kalaResponse;
 	}
 
 	public void makeMyKalaDiscount() {
@@ -507,15 +535,15 @@ public class SettleTicketView extends POSDialog implements CardInputListener {
 
 			Ticket ticket = getTicketsToSettle().get(0);
 
-			boolean mykaladiscountPaid = POSUtil.getBoolean(ticket.getProperty("mykaladiscount"));
+			boolean mykaladiscountPaid = POSUtil.getBoolean(ticket.getProperty(MYKALA_DISCOUNT));
 			if (mykaladiscountPaid) {
 				POSMessageDialog.showError("Kala user already added $" + ticket.getDiscountAmount() + " discount");
 				return;
 			}
 
 			Customer customer = ticket.getCustomer();
-			if (customer != null && customer.hasProperty("mykalaid")) {
-				mykalaid = customer.getProperty("mykalaid");
+			if (customer != null && customer.hasProperty(MYKALA_ID)) {
+				mykalaid = customer.getProperty(MYKALA_ID);
 			}
 			else {
 				mykalaid = JOptionPane.showInputDialog("Enter mykala id:");
@@ -524,43 +552,39 @@ public class SettleTicketView extends POSDialog implements CardInputListener {
 			if (StringUtils.isEmpty(mykalaid)) {
 				return;
 			}
+			
+			KalaResponse kalaResponse = getKalaResponse(mykalaid);
 
-			String getUserInfoURL = "http://cloud.floreantpos.org/triliant/api_user_detail.php?kala_id=" + mykalaid;
-
-			JsonReader reader = Json.createReader(new URL(getUserInfoURL).openStream());
-			JsonObject object = reader.readObject();
-
-			boolean success = Boolean.valueOf(object.get("success").toString());
-			if (success) {
-				String message = object.getString("message").toString();
-				String point = object.getString("points");
-				String couponno = object.getString("coupon");
+			if (kalaResponse.getSuccess()) {
+				String message = kalaResponse.getMessage();
+				String point = kalaResponse.getPoints();
+				String couponno = kalaResponse.getCoupon();
 
 				message += "\n" + "You have earned " + point + " points";
 				message += "\n" + "Your coupon number is " + couponno;
 
 				int option = JOptionPane.showOptionDialog(Application.getPosWindow(), message, "", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE,
-						null, new String[] { "REDEEM", "CANCEL" }, "REDEEM");
+						null, new String[] { "REDEEM", "LATER" }, "REDEEM");
 
 				if (option != JOptionPane.OK_OPTION) {
+					ticket.addProperty(MYKALA_ID, mykalaid);
 					return;
 				}
 
-				String offer = object.getString("offer");
-				String offerString = offer.replaceAll("%", "");
-				double offerPercentage = Double.parseDouble(offerString);
+				String offer = kalaResponse.getOffer();
+				double offerPercentage = Double.parseDouble(offer);
 
 				TicketCouponAndDiscount coupon = new TicketCouponAndDiscount();
-				coupon.setName("mykala_offer_" + object.getString("kala_id"));
+				coupon.setName("mykala_offer_" + kalaResponse.getOffer_id());
 				coupon.setType(CouponAndDiscount.PERCENTAGE_PER_ORDER);
 				coupon.setValue(offerPercentage * 100.0);
 
 				ticket.addTocouponAndDiscounts(coupon);
-				ticket.addProperty("mykalaid", mykalaid);
-				ticket.addProperty("mykaladiscount", "true");
-				ticket.addProperty("mykalacoupon", couponno);
-				ticket.addProperty("mykalapoint", point);
-				ticket.addProperty("mykaladiscountpercentage", offer);
+				ticket.addProperty(MYKALA_ID, mykalaid);
+				ticket.addProperty(MYKALA_DISCOUNT, "true");
+				ticket.addProperty(MYKALA_COUPON, couponno);
+				ticket.addProperty(MYKALA_POINT, point);
+				ticket.addProperty(MYKALA_DISCOUNT_PERCENTAGE, offer);
 
 				updateModel();
 
@@ -570,7 +594,7 @@ public class SettleTicketView extends POSDialog implements CardInputListener {
 			}
 
 			else {
-				POSMessageDialog.showError(BackOfficeWindow.getInstance(), object.getString("message").toString());
+				POSMessageDialog.showError(BackOfficeWindow.getInstance(), kalaResponse.getMessage());
 			}
 
 		} catch (Exception e) {
