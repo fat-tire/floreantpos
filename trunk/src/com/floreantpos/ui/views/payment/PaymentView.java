@@ -3,6 +3,7 @@ package com.floreantpos.ui.views.payment;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.UnknownHostException;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.List;
@@ -64,9 +65,9 @@ public class PaymentView extends JPanel {
 
 	public PaymentView(SettleTicketView settleTicketView) {
 		this.settleTicketView = settleTicketView;
-		
+
 		initComponents();
-		
+
 		btnUseKalaId.setActionCommand(ADD);
 	}
 
@@ -179,26 +180,26 @@ public class PaymentView extends JPanel {
 				settleTicketView.doTaxExempt(btnTaxExempt.isSelected());
 			}
 		});
-		
+
 		btnGratuity = new PosButton();
 		btnGratuity.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				doSetGratuity();
 			}
 		});
-		
+
 		btnMyKalaDiscount = new PosButton();
 		btnMyKalaDiscount.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				settleTicketView.makeMyKalaDiscount();
 			}
 		});
-		
+
 		btnUseKalaId = new PosButton();
 		btnUseKalaId.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String actionCommand = e.getActionCommand();
-				if(ADD.equals(actionCommand)) {
+				if (ADD.equals(actionCommand)) {
 					addMyKalaId();
 				}
 				else {
@@ -266,7 +267,7 @@ public class PaymentView extends JPanel {
 		tfAmountTendered.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
 
 		add(transparentPanel1, "cell 0 0,growx,aligny top");
-		
+
 		transparentPanel1.setLayout(new MigLayout("", "[][grow,fill]", "[19px][19px]"));
 		transparentPanel1.add(jLabel4, "cell 0 0,alignx right,aligny center");
 		transparentPanel1.add(jLabel6, "cell 0 1,alignx left,aligny center");
@@ -279,11 +280,11 @@ public class PaymentView extends JPanel {
 		ticket.getProperties().remove(SettleTicketView.MYKALA_ID);
 		ticket.setCustomer(null);
 		TicketDAO.getInstance().saveOrUpdate(ticket);
-		
+
 		btnUseKalaId.setText("USE MYKALA ID");
 		btnUseKalaId.setActionCommand(ADD);
 		btnMyKalaDiscount.setEnabled(false);
-		
+
 		POSMessageDialog.showMessage("My Kala Id removed");
 	}
 
@@ -296,15 +297,15 @@ public class PaymentView extends JPanel {
 			}
 
 			KalaResponse kalaResponse = settleTicketView.getKalaResponse(mykalaid);
-			
-			if(kalaResponse.getSuccess()) {
-				
+
+			if (kalaResponse.getSuccess()) {
+
 				CustomerDAO dao = CustomerDAO.getInstance();
-				
+
 				List<Customer> customers = dao.findBy(kalaResponse.getPhone1(), null, null);
 				Customer customer = null;
-				
-				if(customers.size() > 0) {
+
+				if (customers.size() > 0) {
 					customer = customers.get(0);
 				}
 				else {
@@ -313,34 +314,36 @@ public class PaymentView extends JPanel {
 					customer.setName(kalaResponse.getName());
 					//
 				}
-				
+
 				customer.addProperty(SettleTicketView.MYKALA_ID, kalaResponse.getMykala_id());
 				dao.save(customer);
-				
+
 				Ticket ticket = settleTicketView.getTicketsToSettle().get(0);
 				ticket.setCustomer(customer);
 				ticket.addProperty(SettleTicketView.MYKALA_ID, mykalaid);
 				TicketDAO.getInstance().saveOrUpdate(ticket);
-				
+
 				btnUseKalaId.setActionCommand(REMOVE);
 				btnUseKalaId.setText("REMOVE MYKALA ID");
-				
+
 				String message = kalaResponse.getMessage();
 				String point = kalaResponse.getPoints();
 
 				message += "\n" + "You have earned " + point + " points";
 				POSMessageDialog.showMessage(message);
 				btnMyKalaDiscount.setEnabled(true);
-			} 
-			
-			else {
-				POSMessageDialog.showError(BackOfficeWindow.getInstance(), kalaResponse.getMessage());
 			}
-			
-			
+
+			else {
+				POSMessageDialog.showError(kalaResponse.getMessage());
+			}
+
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+			POSMessageDialog.showError("Connection error");
 		} catch (Exception e) {
 			e.printStackTrace();
-			POSMessageDialog.showError(BackOfficeWindow.getInstance(), e.getMessage());
+			POSMessageDialog.showError(e.getMessage());
 		}
 	}
 
@@ -416,8 +419,8 @@ public class PaymentView extends JPanel {
 
 		tfDueAmount.setText(NumberUtil.formatNumber(dueAmount));
 		tfAmountTendered.setText(NumberUtil.formatNumber(dueAmount));
-		
-		if(settleTicketView.hasMyKalaId()) {
+
+		if (settleTicketView.hasMyKalaId()) {
 			btnUseKalaId.setText("REMOVE MYKALA ID");
 			btnUseKalaId.setActionCommand(REMOVE);
 			btnMyKalaDiscount.setEnabled(true);
@@ -425,7 +428,7 @@ public class PaymentView extends JPanel {
 		else {
 			btnMyKalaDiscount.setEnabled(false);
 		}
-		
+
 	}
 
 	public double getTenderedAmount() throws ParseException {
@@ -487,5 +490,4 @@ public class PaymentView extends JPanel {
 		tfAmountTendered.requestFocus();
 	}
 
-	
 }
