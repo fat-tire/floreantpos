@@ -50,12 +50,12 @@ public abstract class BaseInventoryUnit  implements Comparable, Serializable {
 	private java.util.Date modifiedTime;
 
 	// fields
-	private java.lang.String shortName;
-	private java.lang.String longName;
-	private java.lang.String alternativeName;
-	private java.lang.String conversionFactor1;
-	private java.lang.String conversionFactor2;
-	private java.lang.String conversionFactor3;
+		protected java.lang.String shortName;
+		protected java.lang.String longName;
+		protected java.lang.String alternativeName;
+		protected java.lang.String conversionFactor1;
+		protected java.lang.String conversionFactor2;
+		protected java.lang.String conversionFactor3;
 
 
 
@@ -84,8 +84,8 @@ public abstract class BaseInventoryUnit  implements Comparable, Serializable {
 	 * Return the value associated with the column: MODIFIED_TIME
 	 */
 	public java.util.Date getModifiedTime () {
-		return modifiedTime;
-	}
+					return modifiedTime;
+			}
 
 	/**
 	 * Set the value related to the column: MODIFIED_TIME
@@ -102,8 +102,8 @@ public abstract class BaseInventoryUnit  implements Comparable, Serializable {
 	 * Return the value associated with the column: SHORT_NAME
 	 */
 	public java.lang.String getShortName () {
-		return shortName;
-	}
+					return shortName;
+			}
 
 	/**
 	 * Set the value related to the column: SHORT_NAME
@@ -119,8 +119,8 @@ public abstract class BaseInventoryUnit  implements Comparable, Serializable {
 	 * Return the value associated with the column: LONG_NAME
 	 */
 	public java.lang.String getLongName () {
-		return longName;
-	}
+					return longName;
+			}
 
 	/**
 	 * Set the value related to the column: LONG_NAME
@@ -136,8 +136,8 @@ public abstract class BaseInventoryUnit  implements Comparable, Serializable {
 	 * Return the value associated with the column: ALT_NAME
 	 */
 	public java.lang.String getAlternativeName () {
-		return alternativeName;
-	}
+					return alternativeName;
+			}
 
 	/**
 	 * Set the value related to the column: ALT_NAME
@@ -153,8 +153,8 @@ public abstract class BaseInventoryUnit  implements Comparable, Serializable {
 	 * Return the value associated with the column: CONV_FACTOR1
 	 */
 	public java.lang.String getConversionFactor1 () {
-		return conversionFactor1;
-	}
+					return conversionFactor1;
+			}
 
 	/**
 	 * Set the value related to the column: CONV_FACTOR1
@@ -170,8 +170,8 @@ public abstract class BaseInventoryUnit  implements Comparable, Serializable {
 	 * Return the value associated with the column: CONV_FACTOR2
 	 */
 	public java.lang.String getConversionFactor2 () {
-		return conversionFactor2;
-	}
+					return conversionFactor2;
+			}
 
 	/**
 	 * Set the value related to the column: CONV_FACTOR2
@@ -187,8 +187,8 @@ public abstract class BaseInventoryUnit  implements Comparable, Serializable {
 	 * Return the value associated with the column: CONV_FACTOR3
 	 */
 	public java.lang.String getConversionFactor3 () {
-		return conversionFactor3;
-	}
+					return conversionFactor3;
+			}
 
 	/**
 	 * Set the value related to the column: CONV_FACTOR3

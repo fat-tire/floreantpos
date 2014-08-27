@@ -32,6 +32,11 @@ public class InventoryWarehouse extends BaseInventoryWarehouse {
 	}
 
 /*[CONSTRUCTOR MARKER END]*/
+	
+	@Override
+	public Boolean isVisible() {
+		return visible == null ? true : visible;
+	}
 
 	@Override
 	public String toString() {

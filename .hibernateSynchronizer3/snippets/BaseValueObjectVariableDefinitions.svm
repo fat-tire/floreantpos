@@ -1,0 +1,70 @@
+:Modified=true
+:Description=
+-
+#if ($class.Id)
+
+	private int hashCode = Integer.MIN_VALUE;
+#end
+#if ($class.Id)
+
+#if (!$class.isSubclass() || !$class.Id.Properties.indexOf($prop) > 0)
+	// primary key
+#if ($class.Id.hasExternalClass())
+	private ${class.Id.Property.AbsoluteClassName} ${class.Id.Property.VarName};
+#else
+#foreach ($prop in $class.Id.Properties)
+
+	$!{prop.ScopeField} ${prop.AbsoluteSignatureClassName} ${prop.VarName};
+#end
+#end
+#end
+#end
+#if ($class.Version)
+
+	$!{prop.ScopeField} ${class.Version.AbsoluteSignatureClassName} ${class.Version.VarName};
+#end
+#if ($class.Timestamp)
+
+	$!{prop.ScopeField} ${class.Timestamp.AbsoluteSignatureClassName} ${class.Timestamp.VarName};
+#end
+#if ($class.ComponentParent)
+	
+	// component parent reference
+	$!{prop.ScopeField} $class.Parent.AbsoluteSignatureClassName ${class.ComponentParent.VarName};
+#end
+#if ($class.Properties.size() > 0)
+
+	// fields
+#foreach ($prop in $class.Properties)
+	##$!{prop.ScopeField} ${prop.AbsoluteSignatureClassName} ${prop.VarName};
+	protected ${prop.AbsoluteSignatureClassName} ${prop.VarName};
+#end
+#end
+#if ($class.ComponentList.size() > 0)
+
+	// components
+#foreach ($component in $class.ComponentList)
+	$!{prop.ScopeField} ${component.AbsoluteSignatureClassName} ${component.VarName};
+#end
+#end
+#if ($class.OneToOneList.size() > 0)
+
+	// one to one
+#foreach ($prop in $class.OneToOneList)
+	$!{prop.ScopeField} ${prop.AbsoluteSignatureClassName} ${prop.VarName};
+#end
+#end
+#if ($class.ManyToOneList.size() > 0)
+
+	// many to one
+#foreach ($prop in $class.ManyToOneList)
+	$!{prop.ScopeField} ${prop.AbsoluteSignatureClassName} ${prop.VarName};
+#end
+#end
+#if ($class.CollectionList.size() > 0)
+
+	// collections
+#foreach ($prop in $class.CollectionList)
+	$!{prop.ScopeField} ${prop.AbsoluteSignatureClassName}$!{prop.GenericMarker} ${prop.VarName};
+#end
+#end
