@@ -3,14 +3,10 @@ package com.floreantpos.ui.views.payment;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.net.URL;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.List;
 
-import javax.json.Json;
-import javax.json.JsonObject;
-import javax.json.JsonReader;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JLabel;
@@ -33,6 +29,10 @@ import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.util.NumberUtil;
 
 public class PaymentView extends JPanel {
+	private static final String ADD = "0";
+
+	private static final String REMOVE = "1";
+
 	protected SettleTicketView settleTicketView;
 
 	private PosButton btnGratuity;
@@ -66,7 +66,8 @@ public class PaymentView extends JPanel {
 		this.settleTicketView = settleTicketView;
 		
 		initComponents();
-		btnUseKalaId.setActionCommand("0");
+		
+		btnUseKalaId.setActionCommand(ADD);
 	}
 
 	private void initComponents() {
@@ -134,7 +135,7 @@ public class PaymentView extends JPanel {
 
 		posButton9.setAction(calAction);
 		posButton9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/1_32.png"))); // NOI18N
-		posButton9.setActionCommand("1");
+		posButton9.setActionCommand(REMOVE);
 		posButton9.setFocusable(false);
 		calcButtonPanel.add(posButton9);
 
@@ -152,7 +153,7 @@ public class PaymentView extends JPanel {
 
 		posButton11.setAction(calAction);
 		posButton11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/0_32.png"))); // NOI18N
-		posButton11.setActionCommand("0");
+		posButton11.setActionCommand(ADD);
 		posButton11.setFocusable(false);
 		calcButtonPanel.add(posButton11);
 
@@ -197,8 +198,8 @@ public class PaymentView extends JPanel {
 		btnUseKalaId.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String actionCommand = e.getActionCommand();
-				if("0".equals(actionCommand)) {
-					useKalaId();
+				if(ADD.equals(actionCommand)) {
+					addMyKalaId();
 				}
 				else {
 					removeKalaId();
@@ -275,15 +276,18 @@ public class PaymentView extends JPanel {
 
 	protected void removeKalaId() {
 		Ticket ticket = settleTicketView.getTicketsToSettle().get(0);
+		ticket.getProperties().remove(SettleTicketView.MYKALA_ID);
 		ticket.setCustomer(null);
 		TicketDAO.getInstance().saveOrUpdate(ticket);
+		
 		btnUseKalaId.setText("USE MYKALA ID");
-		btnUseKalaId.setActionCommand("0");
+		btnUseKalaId.setActionCommand(ADD);
+		btnMyKalaDiscount.setEnabled(false);
 		
 		POSMessageDialog.showMessage("My Kala Id removed");
 	}
 
-	public void useKalaId() {
+	public void addMyKalaId() {
 		try {
 			String mykalaid = JOptionPane.showInputDialog("Enter mykala id:");
 
@@ -291,43 +295,46 @@ public class PaymentView extends JPanel {
 				return;
 			}
 
-			String getUserInfoURL = "http://cloud.floreantpos.org/triliant/api_user_detail.php?kala_id=" + mykalaid;
-
-			JsonReader reader = Json.createReader(new URL(getUserInfoURL).openStream());
-			JsonObject object = reader.readObject();
+			KalaResponse kalaResponse = settleTicketView.getKalaResponse(mykalaid);
 			
-			boolean success = Boolean.valueOf(object.get("success").toString());
-			if(success) {
+			if(kalaResponse.getSuccess()) {
 				
-				String phone = object.getString("phone1");
 				CustomerDAO dao = CustomerDAO.getInstance();
 				
-				List<Customer> customers = dao.findBy(phone, null, null);
+				List<Customer> customers = dao.findBy(kalaResponse.getPhone1(), null, null);
 				Customer customer = null;
+				
 				if(customers.size() > 0) {
 					customer = customers.get(0);
 				}
 				else {
 					customer = new Customer();
-					customer.setTelephoneNo(phone);
-					customer.setName(object.getString("first_name") + " " + object.getString("last_name"));
-					dao.save(customer);
+					customer.setTelephoneNo(kalaResponse.getPhone1());
+					customer.setName(kalaResponse.getName());
+					//
 				}
 				
-				customer.addProperty("mykalaid", object.getString("id"));
+				customer.addProperty(SettleTicketView.MYKALA_ID, kalaResponse.getMykala_id());
+				dao.save(customer);
 				
 				Ticket ticket = settleTicketView.getTicketsToSettle().get(0);
 				ticket.setCustomer(customer);
+				ticket.addProperty(SettleTicketView.MYKALA_ID, mykalaid);
 				TicketDAO.getInstance().saveOrUpdate(ticket);
 				
-				btnUseKalaId.setActionCommand("1");
+				btnUseKalaId.setActionCommand(REMOVE);
 				btnUseKalaId.setText("REMOVE MYKALA ID");
 				
-				POSMessageDialog.showMessage("My Kala Id set successful");
+				String message = kalaResponse.getMessage();
+				String point = kalaResponse.getPoints();
+
+				message += "\n" + "You have earned " + point + " points";
+				POSMessageDialog.showMessage(message);
+				btnMyKalaDiscount.setEnabled(true);
 			} 
 			
 			else {
-				POSMessageDialog.showError(BackOfficeWindow.getInstance(), object.getString("message").toString());
+				POSMessageDialog.showError(BackOfficeWindow.getInstance(), kalaResponse.getMessage());
 			}
 			
 			
@@ -362,7 +369,7 @@ public class PaymentView extends JPanel {
 			PosButton button = (PosButton) e.getSource();
 			String s = button.getActionCommand();
 			if (s.equals("CLEAR")) {
-				textField.setText("0");
+				textField.setText(ADD);
 			}
 			else if (s.equals(".")) {
 				if (textField.getText().indexOf('.') < 0) {
@@ -412,7 +419,11 @@ public class PaymentView extends JPanel {
 		
 		if(settleTicketView.hasMyKalaId()) {
 			btnUseKalaId.setText("REMOVE MYKALA ID");
-			btnUseKalaId.setActionCommand("1");
+			btnUseKalaId.setActionCommand(REMOVE);
+			btnMyKalaDiscount.setEnabled(true);
+		}
+		else {
+			btnMyKalaDiscount.setEnabled(false);
 		}
 		
 	}
