@@ -19,7 +19,6 @@ import net.miginfocom.swing.MigLayout;
 
 import org.apache.commons.lang.StringUtils;
 
-import com.floreantpos.bo.ui.BackOfficeWindow;
 import com.floreantpos.model.Customer;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.dao.CustomerDAO;
@@ -207,9 +206,9 @@ public class PaymentView extends JPanel {
 				}
 			}
 		});
-		btnUseKalaId.setText("USE KALA ID");
+		btnUseKalaId.setText("USE LOYALITY ID");
 		jPanel4.add(btnUseKalaId, "cell 0 0,growx");
-		btnMyKalaDiscount.setText("MY KALA DISCOUNT");
+		btnMyKalaDiscount.setText("LOYALITY DISCOUNT");
 		jPanel4.add(btnMyKalaDiscount, "cell 1 0,growx");
 		btnGratuity.setText("GRATUITY");
 		jPanel4.add(btnGratuity, "cell 0 1,growx");
@@ -277,11 +276,11 @@ public class PaymentView extends JPanel {
 
 	protected void removeKalaId() {
 		Ticket ticket = settleTicketView.getTicketsToSettle().get(0);
-		ticket.getProperties().remove(SettleTicketView.MYKALA_ID);
+		ticket.getProperties().remove(SettleTicketView.LOYALITY_ID);
 		ticket.setCustomer(null);
 		TicketDAO.getInstance().saveOrUpdate(ticket);
 
-		btnUseKalaId.setText("USE MYKALA ID");
+		btnUseKalaId.setText("USE MYLOYALITY ID");
 		btnUseKalaId.setActionCommand(ADD);
 		btnMyKalaDiscount.setEnabled(false);
 
@@ -290,13 +289,13 @@ public class PaymentView extends JPanel {
 
 	public void addMyKalaId() {
 		try {
-			String mykalaid = JOptionPane.showInputDialog("Enter mykala id:");
+			String loyalityid = JOptionPane.showInputDialog("Enter loyality id:");
 
-			if (StringUtils.isEmpty(mykalaid)) {
+			if (StringUtils.isEmpty(loyalityid)) {
 				return;
 			}
 
-			KalaResponse kalaResponse = settleTicketView.getKalaResponse(mykalaid);
+			KalaResponse kalaResponse = settleTicketView.getLoyalityResponse(loyalityid);
 
 			if (kalaResponse.getSuccess()) {
 
@@ -315,16 +314,16 @@ public class PaymentView extends JPanel {
 					//
 				}
 
-				customer.addProperty(SettleTicketView.MYKALA_ID, kalaResponse.getMykala_id());
+				customer.addProperty(SettleTicketView.LOYALITY_ID, kalaResponse.getMykala_id());
 				dao.save(customer);
 
 				Ticket ticket = settleTicketView.getTicketsToSettle().get(0);
 				ticket.setCustomer(customer);
-				ticket.addProperty(SettleTicketView.MYKALA_ID, mykalaid);
+				ticket.addProperty(SettleTicketView.LOYALITY_ID, loyalityid);
 				TicketDAO.getInstance().saveOrUpdate(ticket);
 
 				btnUseKalaId.setActionCommand(REMOVE);
-				btnUseKalaId.setText("REMOVE MYKALA ID");
+				btnUseKalaId.setText("REMOVE MYLOYALITY ID");
 
 				String message = kalaResponse.getMessage();
 				String point = kalaResponse.getPoints();
@@ -421,7 +420,7 @@ public class PaymentView extends JPanel {
 		tfAmountTendered.setText(NumberUtil.formatNumber(dueAmount));
 
 		if (settleTicketView.hasMyKalaId()) {
-			btnUseKalaId.setText("REMOVE MYKALA ID");
+			btnUseKalaId.setText("REMOVE LOYALITY ID");
 			btnUseKalaId.setActionCommand(REMOVE);
 			btnMyKalaDiscount.setEnabled(true);
 		}
