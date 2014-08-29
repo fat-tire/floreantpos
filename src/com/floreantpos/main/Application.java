@@ -40,7 +40,6 @@ import com.floreantpos.ui.views.order.RootView;
 import com.floreantpos.util.DatabaseConnectionException;
 import com.floreantpos.util.DatabaseUtil;
 import com.floreantpos.util.POSUtil;
-import com.floreantpos.util.TicketActiveDateSetterTask;
 import com.jgoodies.looks.plastic.PlasticXPLookAndFeel;
 import com.jgoodies.looks.plastic.theme.ExperienceBlue;
 
@@ -68,7 +67,6 @@ public class Application {
 	private static ImageIcon applicationIcon;
 
 	private boolean systemInitialized;
-	private TicketActiveDateSetterTask ticketActiveDateSetterTask;
 
 	public final static String VERSION = AppProperties.getVersion();
 
@@ -158,21 +156,6 @@ public class Application {
 		calendar.set(Calendar.MINUTE, 0);
 		calendar.set(Calendar.SECOND, 0);
 
-		Date time = calendar.getTime();
-
-		cancelTicketActiveTaskScheduler();
-
-		ticketActiveDateSetterTask = new TicketActiveDateSetterTask();
-		ticketActiveDateSetterTask.run();
-
-		java.util.Timer activeDateScheduler = new java.util.Timer();
-		activeDateScheduler.scheduleAtFixedRate(ticketActiveDateSetterTask, time, 86400 * 1000);
-	}
-
-	public void cancelTicketActiveTaskScheduler() {
-		if (this.ticketActiveDateSetterTask != null) {
-			this.ticketActiveDateSetterTask.cancel();
-		}
 	}
 
 	private void initPrintConfig() {
