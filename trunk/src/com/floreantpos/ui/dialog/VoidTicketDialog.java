@@ -42,7 +42,7 @@ public class VoidTicketDialog extends POSDialog {
 			POSMessageDialog.showError(com.floreantpos.POSConstants.CANNOT_LOAD_VOID_REASONS, e);
 		}
 		
-		setSize(794, 575);
+		setSize(850, 650);
     }
     
     /** This method is called from within the constructor to
@@ -152,7 +152,6 @@ public class VoidTicketDialog extends POSDialog {
 
         btnVoid.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/void_ticket_32.png"))); // NOI18N
         btnVoid.setText(com.floreantpos.POSConstants.VOID);
-        btnVoid.setPreferredSize(new java.awt.Dimension(140, 60));
         btnVoid.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnVoidActionPerformed(evt);
@@ -162,7 +161,6 @@ public class VoidTicketDialog extends POSDialog {
 
         btnCancel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cancel_32.png"))); // NOI18N
         btnCancel.setText(com.floreantpos.POSConstants.CANCEL);
-        btnCancel.setPreferredSize(new java.awt.Dimension(140, 60));
         btnCancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCancelActionPerformed(evt);
