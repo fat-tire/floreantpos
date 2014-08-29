@@ -286,7 +286,7 @@ public class SalesExceptionReport {
 
 	public class DiscountTableModel extends ListTableModel {
 		public DiscountTableModel() {
-			setColumnNames(new String[] { "no", com.floreantpos.POSConstants.NAME, "code", "totalCount", "totalDiscount", "totalNetSales", "totalGuests", "partySize", "checkSize", "countPercent", "ratioDnet" });
+			setColumnNames(new String[] { "no", "name", "code", "totalCount", "totalDiscount", "totalNetSales", "totalGuests", "partySize", "checkSize", "countPercent", "ratioDnet" });
 		}
 
 		public Object getValueAt(int rowIndex, int columnIndex) {

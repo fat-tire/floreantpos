@@ -11,7 +11,7 @@ public class PayrollReportModel extends ListTableModel {
 	DecimalFormat decimalFormat = new DecimalFormat("0.00");
 
 	public PayrollReportModel() {
-		super(new String[] { "userID", "userName", "from", "to", com.floreantpos.POSConstants.TOTAL, "rate", "payment", "userSSN" });
+		super(new String[] { "userID", "userName", "from", "to", "total", "rate", "payment", "userSSN" });
 	}
 
 	public Object getValueAt(int rowIndex, int columnIndex) {
@@ -19,7 +19,7 @@ public class PayrollReportModel extends ListTableModel {
 
 		switch (columnIndex) {
 		case 0:
-			return data.getUser().getUserId();
+			return String.valueOf(data.getUser().getUserId());
 
 		case 1:
 			return data.getUser().getFirstName() + " " + data.getUser().getLastName();
