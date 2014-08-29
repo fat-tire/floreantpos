@@ -284,7 +284,7 @@ public class PaymentView extends JPanel {
 		btnUseKalaId.setActionCommand(ADD);
 		btnMyKalaDiscount.setEnabled(false);
 
-		POSMessageDialog.showMessage("My Kala Id removed");
+		POSMessageDialog.showMessage("Loyality Id removed");
 	}
 
 	public void addMyKalaId() {
