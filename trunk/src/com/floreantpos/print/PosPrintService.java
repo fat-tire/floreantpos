@@ -575,7 +575,7 @@ public class PosPrintService {
 			JasperReport mainReport = (JasperReport) JRLoader.loadObject(JReportPrintService.class.getResourceAsStream("/com/floreantpos/report/DrawerPullJReport.jasper"));
 			JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(Arrays.asList(new DrawerPullReport[] {drawerPullReport}));
 			JasperPrint jasperPrint = JasperFillManager.fillReport(mainReport, parameters, dataSource);
-			jasperPrint.setProperty("printerName", PrintConfig.getReceiptPrinterName());
+			jasperPrint.setProperty("printerName", PrintConfig.getReportPrinterName());
 			JasperPrintManager.printReport(jasperPrint, false);
 		
 		} catch (Exception e) {

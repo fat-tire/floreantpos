@@ -1,6 +1,7 @@
 package com.floreantpos.model.dao;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -30,6 +31,20 @@ public class TicketDAO extends BaseTicketDAO {
 	 * Default constructor. Can be used in place of getInstance()
 	 */
 	public TicketDAO() {
+	}
+	
+	@Override
+	public void saveOrUpdate(Ticket ticket) {
+		ticket.setActiveDate(Calendar.getInstance().getTime());
+		
+		super.saveOrUpdate(ticket);
+	}
+	
+	@Override
+	public void saveOrUpdate(Ticket ticket, Session s) {
+		ticket.setActiveDate(Calendar.getInstance().getTime());
+		
+		super.saveOrUpdate(ticket, s);
 	}
 	
 	public Ticket refresh(Ticket ticket) {

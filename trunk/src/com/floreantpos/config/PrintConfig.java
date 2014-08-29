@@ -3,6 +3,7 @@ package com.floreantpos.config;
 
 public class PrintConfig {
 //	public final static String P_RECEIPT_PRINTER_TYPE =  "RECEIPT_PRINTER_TYPE";
+	public final static String REPORT_PRINTER_NAME = "report_printer_name"; //$NON-NLS-1$
 	public final static String RECEIPT_PRINTER_NAME = "receipt_printer_name"; //$NON-NLS-1$
 //	public final static String P_JAVAPOS_PRINTER_FOR_RECEIPT = "RECEIPT_JAVAPOS_PRINTER_NAME";
 //	public final static String P_CASH_DRAWER_NAME = "CASH_DRAWER_NAME";
@@ -14,6 +15,10 @@ public class PrintConfig {
 	public final static String P_PRINT_TO_KITCHEN_ON_ORDER_FINISH = "print_to_kitchen_on_order_finish"; //$NON-NLS-1$
 	public final static String P_PRINT_TO_KITCHEN_ON_ORDER_SETTLE = "print_to_kitchen_on_order_settle"; //$NON-NLS-1$
 
+	public static String getReportPrinterName() {
+		return AppConfig.getString(REPORT_PRINTER_NAME, ""); //$NON-NLS-1$
+	}
+	
 	public static String getReceiptPrinterName() {
 		return AppConfig.getString(RECEIPT_PRINTER_NAME, "POSPrinter"); //$NON-NLS-1$
 	}
