@@ -540,7 +540,7 @@ public class SalesSummaryDAO extends _RootDAO {
 						criteria.add(Restrictions.ge(Ticket.PROP_CREATE_DATE, start));
 						criteria.add(Restrictions.le(Ticket.PROP_CREATE_DATE, end));
 						criteria.add(Restrictions.eq(Ticket.PROP_SHIFT, shift));
-						criteria.add(Restrictions.eq(Ticket.PROP_TABLE_NUMBER, Ticket.TAKE_OUT));
+						criteria.add(Restrictions.eq(Ticket.PROP_TABLE_NUMBER, -1));
 
 						if (userType != null) {
 							criteria.add(Restrictions.eq("u." + User.PROP_NEW_USER_TYPE, userType));
@@ -548,6 +548,7 @@ public class SalesSummaryDAO extends _RootDAO {
 						if (terminal != null) {
 							criteria.add(Restrictions.eq(Ticket.PROP_TERMINAL, terminal));
 						}
+						
 						List list = criteria.list();
 						if (list.size() > 0) {
 							ShiftwiseSalesTableData data = new ShiftwiseSalesTableData();
