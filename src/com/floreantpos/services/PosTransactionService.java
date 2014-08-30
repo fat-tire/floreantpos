@@ -57,7 +57,6 @@ public class PosTransactionService {
 				
 				ticket.setVoided(false);
 				ticket.setDrawerResetted(false);
-				ticket.setClosingDate(currentDate);
 				ticket.setTerminal(terminal);
 				ticket.setCardNumber(cardAuthorizationCode);
 				
@@ -70,7 +69,7 @@ public class PosTransactionService {
 					dueAmount = 0;
 					
 					ticket.setPaid(true);
-					closeTicketIfApplicable(ticket);
+					closeTicketIfApplicable(ticket, currentDate);
 				}
 				else {
 					paidAmount += tenderedAmount;
@@ -163,9 +162,10 @@ public class PosTransactionService {
 		}
 	}
 
-	private void closeTicketIfApplicable(Ticket ticket) {
-		if(Ticket.DINE_IN.equals(ticket.getTicketType()) || Ticket.TAKE_OUT.equals(ticket.getTicketType())) {
+	private void closeTicketIfApplicable(Ticket ticket, Date currentDate) {
+		if(ticket.getTicketType() == null || Ticket.DINE_IN.equals(ticket.getTicketType()) || Ticket.TAKE_OUT.equals(ticket.getTicketType())) {
 			ticket.setClosed(true);
+			ticket.setClosingDate(currentDate);
 		}
 	}
 
