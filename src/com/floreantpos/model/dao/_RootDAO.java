@@ -39,6 +39,7 @@ import com.floreantpos.model.User;
 import com.floreantpos.model.UserPermission;
 import com.floreantpos.model.UserType;
 import com.floreantpos.model.VoidReason;
+import com.floreantpos.model.ZipCodeVsDeliveryCharge;
 import com.floreantpos.model.inventory.InventoryGroup;
 import com.floreantpos.model.inventory.InventoryItem;
 import com.floreantpos.model.inventory.InventoryLocation;
@@ -107,6 +108,7 @@ public abstract class _RootDAO extends com.floreantpos.model.dao._BaseRootDAO {
 		configuration = configuration.addClass(UserPermission.class);
 		configuration = configuration.addClass(UserType.class);
 		configuration = configuration.addClass(Customer.class);
+		configuration = configuration.addClass(ZipCodeVsDeliveryCharge.class);
 		
 		configuration = configureInventoryClasses(configuration);
 		
