@@ -78,6 +78,12 @@ public class ModelBrowser<E> extends JPanel implements ActionListener, ListSelec
 		btnDelete.addActionListener(this);
 		btnSave.addActionListener(this);
 		btnCancel.addActionListener(this);
+		
+		btnNew.setEnabled(true);
+		btnEdit.setEnabled(false);
+		btnSave.setEnabled(false);
+		btnDelete.setEnabled(false);
+		btnCancel.setEnabled(false);
 	}
 	
 	public JPanel createSearchPanel() {
@@ -101,8 +107,7 @@ public class ModelBrowser<E> extends JPanel implements ActionListener, ListSelec
 				break;
 				
 			case CANCEL:
-				E bean = beanEditor.getBean();
-				//if(bean.)
+				beanEditor.setBean(null);
 				
 			
 
