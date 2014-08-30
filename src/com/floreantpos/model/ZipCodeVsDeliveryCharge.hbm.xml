@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.floreantpos.model">
+	<class lazy="false" name="com.floreantpos.model.ZipCodeVsDeliveryCharge" table="ZIP_CODE_VS_DELIVERY_CHARGE">
+		<id column="AUTO_ID" name="autoId" type="java.lang.Integer">
+			<generator class="identity" />
+		</id>
+		<version column="MODIFIED_TIME" name="modifiedTime" type="timestamp" />
+		<property column="ZIP_CODE" name="zipCode" type="string" not-null="true" length="10" />
+		<property column="DELIVERY_CHARGE" name="deliveryCharge" not-null="true" type="double" />
+	</class>
+</hibernate-mapping>
