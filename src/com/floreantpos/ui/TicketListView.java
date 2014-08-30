@@ -20,6 +20,7 @@ import com.floreantpos.POSConstants;
 import com.floreantpos.bo.ui.explorer.ListTableModel;
 import com.floreantpos.model.Customer;
 import com.floreantpos.model.Ticket;
+import com.floreantpos.model.User;
 
 public class TicketListView extends JPanel {
 	private JXTable table;
@@ -117,7 +118,8 @@ public class TicketListView extends JPanel {
 				return ticket.getTableNumber();
 
 			case 2:
-				return String.valueOf(ticket.getOwner());
+					User owner = ticket.getOwner();
+					return owner.getFirstName();
 
 			case 3:
 				return ticket.getCreateDate();

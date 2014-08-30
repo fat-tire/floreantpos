@@ -296,15 +296,7 @@ public class SettleTicketView extends POSDialog implements CardInputListener {
 
 				submitMyKalaDiscount(ticket);
 
-				try {
-					if (ticket.needsKitchenPrint()) {
-						JReportPrintService.printTicketToKitchen(ticket);
-					}
-
-					JReportPrintService.printTicket(ticket);
-				} catch (Exception ee) {
-					POSMessageDialog.showError(Application.getPosWindow(), com.floreantpos.POSConstants.PRINT_ERROR, ee);
-				}
+				printTicket(ticket);
 			}
 
 			PosTransactionService transactionService = PosTransactionService.getInstance();
@@ -345,6 +337,18 @@ public class SettleTicketView extends POSDialog implements CardInputListener {
 		} catch (Exception e) {
 			POSMessageDialog.showError(this, POSConstants.ERROR_MESSAGE, e);
 			return false;
+		}
+	}
+
+	private void printTicket(Ticket ticket) {
+		try {
+			if (ticket.needsKitchenPrint()) {
+				JReportPrintService.printTicketToKitchen(ticket);
+			}
+
+			JReportPrintService.printTicket(ticket);
+		} catch (Exception ee) {
+			POSMessageDialog.showError(Application.getPosWindow(), com.floreantpos.POSConstants.PRINT_ERROR, ee);
 		}
 	}
 
@@ -452,7 +456,11 @@ public class SettleTicketView extends POSDialog implements CardInputListener {
 
 	@Override
 	public void cardInputted(CardInputter inputter) {
+		PaymentProcessWaitDialog waitDialog = new PaymentProcessWaitDialog(this);
+		
 		try {
+			waitDialog.setVisible(true);
+			
 			CardType authorizeNetCardType = CardType.findByValue(cardName);
 
 			if (inputter instanceof SwipeCardDialog) {
@@ -501,6 +509,8 @@ public class SettleTicketView extends POSDialog implements CardInputListener {
 		} catch (Exception e) {
 			e.printStackTrace();
 			POSMessageDialog.showError(e.getMessage());
+		} finally {
+			waitDialog.setVisible(false);
 		}
 	}
 
