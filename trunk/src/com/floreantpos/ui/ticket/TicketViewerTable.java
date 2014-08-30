@@ -9,8 +9,6 @@ import javax.swing.ListSelectionModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 
-import com.floreantpos.main.Application;
-import com.floreantpos.model.Restaurant;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.TicketItemModifier;
@@ -26,7 +24,8 @@ public class TicketViewerTable extends JTable {
 	}
 
 	public TicketViewerTable(Ticket ticket) {
-		setTicket(ticket);
+		model = new TicketViewerTableModel();
+		setModel(model);
 		
 		selectionModel = new DefaultListSelectionModel();
 		selectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -41,14 +40,17 @@ public class TicketViewerTable extends JTable {
 		
 		setRowHeight(20);
 		resizeTableColumns();
+		
+		setTicket(ticket);
 	}
 
 	private void resizeTableColumns() {
+		setAutoResizeMode(AUTO_RESIZE_ALL_COLUMNS);
 //		setColumnWidth(0, 180);
 		setColumnWidth(1, 50);
 		setColumnWidth(2, 30);
 		setColumnWidth(3, 60);
-		setColumnWidth(4, 75);
+		setColumnWidth(4, 60);
 	}
 
 	private void setColumnWidth(int columnNumber, int width) {
@@ -192,15 +194,7 @@ public class TicketViewerTable extends JTable {
 	}
 
 	public void setTicket(Ticket ticket) {
-		model = new TicketViewerTableModel(ticket);
-		model.setTable(this);
-		
-		Restaurant restaurant = Application.getInstance().getRestaurant();
-		if(restaurant != null) {
-			model.setPriceIncludesTax(restaurant.isItemPriceIncludesTax());
-		}
-		
-		setModel(model);
+		model.setTicket(ticket);
 	}
 
 	public Ticket getTicket() {
