@@ -127,7 +127,7 @@ public class DatabaseConfigurationDialog extends POSDialog implements ActionList
 		buttonPanel.add(btnSave);
 		buttonPanel.add(btnExit);
 
-		getContentPane().add(buttonPanel, Messages.getString("DatabaseConfigurationDialog.30")); //$NON-NLS-1$
+		getContentPane().add(buttonPanel, "span, grow"); //$NON-NLS-1$
 	}
 
 	private void addUIListeners() {
