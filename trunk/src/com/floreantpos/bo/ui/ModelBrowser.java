@@ -146,6 +146,7 @@ public class ModelBrowser<E> extends JPanel implements ActionListener, ListSelec
 
 						refreshTable();
 					}
+					break;
 
 				case DELETE:
 					if (beanEditor.delete()) {
