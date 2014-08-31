@@ -16,6 +16,7 @@ import java.io.Serializable;
 public abstract class BaseInventoryTransaction  implements Comparable, Serializable {
 
 	public static String REF = "InventoryTransaction";
+	public static String PROP_INVENTORY_ITEM = "inventoryItem";
 	public static String PROP_QUANTITY = "quantity";
 	public static String PROP_TO_WAREHOUSE = "toWarehouse";
 	public static String PROP_VENDOR = "vendor";
@@ -48,16 +49,17 @@ public abstract class BaseInventoryTransaction  implements Comparable, Serializa
 	// primary key
 	private java.lang.Integer id;
 
-	private java.util.Date modifiedTime;
+	 java.util.Date modifiedTime;
 
 	// fields
 		protected java.util.Date transactionDate;
-		protected java.lang.Integer quantity;
+		protected float quantity;
 		protected java.lang.Double unitPrice;
 
 	// many to one
-	private com.floreantpos.model.inventory.InventoryVendor vendor;
 	private com.floreantpos.model.inventory.InventoryTransactionType transactionType;
+	private com.floreantpos.model.inventory.InventoryItem inventoryItem;
+	private com.floreantpos.model.inventory.InventoryVendor vendor;
 	private com.floreantpos.model.inventory.InventoryWarehouse fromWarehouse;
 	private com.floreantpos.model.inventory.InventoryWarehouse toWarehouse;
 
@@ -122,15 +124,15 @@ public abstract class BaseInventoryTransaction  implements Comparable, Serializa
 	/**
 	 * Return the value associated with the column: QUANTITY
 	 */
-	public java.lang.Integer getQuantity () {
-					return quantity == null ? Integer.valueOf(0) : quantity;
+	public float getQuantity () {
+					return quantity;
 			}
 
 	/**
 	 * Set the value related to the column: QUANTITY
 	 * @param quantity the QUANTITY value
 	 */
-	public void setQuantity (java.lang.Integer quantity) {
+	public void setQuantity (float quantity) {
 		this.quantity = quantity;
 	}
 
@@ -154,23 +156,6 @@ public abstract class BaseInventoryTransaction  implements Comparable, Serializa
 
 
 	/**
-	 * Return the value associated with the column: VENDOR_ID
-	 */
-	public com.floreantpos.model.inventory.InventoryVendor getVendor () {
-					return vendor;
-			}
-
-	/**
-	 * Set the value related to the column: VENDOR_ID
-	 * @param vendor the VENDOR_ID value
-	 */
-	public void setVendor (com.floreantpos.model.inventory.InventoryVendor vendor) {
-		this.vendor = vendor;
-	}
-
-
-
-	/**
 	 * Return the value associated with the column: TRANSACTION_TYPE_ID
 	 */
 	public com.floreantpos.model.inventory.InventoryTransactionType getTransactionType () {
@@ -183,6 +168,40 @@ public abstract class BaseInventoryTransaction  implements Comparable, Serializa
 	 */
 	public void setTransactionType (com.floreantpos.model.inventory.InventoryTransactionType transactionType) {
 		this.transactionType = transactionType;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: ITEM_ID
+	 */
+	public com.floreantpos.model.inventory.InventoryItem getInventoryItem () {
+					return inventoryItem;
+			}
+
+	/**
+	 * Set the value related to the column: ITEM_ID
+	 * @param inventoryItem the ITEM_ID value
+	 */
+	public void setInventoryItem (com.floreantpos.model.inventory.InventoryItem inventoryItem) {
+		this.inventoryItem = inventoryItem;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: VENDOR_ID
+	 */
+	public com.floreantpos.model.inventory.InventoryVendor getVendor () {
+					return vendor;
+			}
+
+	/**
+	 * Set the value related to the column: VENDOR_ID
+	 * @param vendor the VENDOR_ID value
+	 */
+	public void setVendor (com.floreantpos.model.inventory.InventoryVendor vendor) {
+		this.vendor = vendor;
 	}
 
 
