@@ -48,7 +48,7 @@ public class POSUtil {
 		return d;
 	}
 	
-	public static double getInteger(Integer d) {
+	public static int getInteger(Integer d) {
 		if (d == null) {
 			return 0;
 		}
@@ -56,6 +56,14 @@ public class POSUtil {
 		return d;
 	}
 
+	public static int parseInteger(String s) {
+		try {
+			return Integer.parseInt(s);
+		} catch (Exception x) {
+			return 0;
+		}
+	}
+	
 	public static int parseInteger(String s, String parseErrorMessage) {
 		try {
 			return Integer.parseInt(s);

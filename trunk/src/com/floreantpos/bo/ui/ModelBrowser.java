@@ -1,6 +1,7 @@
 package com.floreantpos.bo.ui;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
@@ -17,6 +18,7 @@ import org.jdesktop.swingx.JXTable;
 
 import com.floreantpos.bo.ui.explorer.ListTableModel;
 import com.floreantpos.ui.BeanEditor;
+import com.floreantpos.ui.dialog.POSMessageDialog;
 
 public class ModelBrowser<E> extends JPanel implements ActionListener, ListSelectionListener {
 	
@@ -69,6 +71,7 @@ public class ModelBrowser<E> extends JPanel implements ActionListener, ListSelec
 		buttonPanel.add(btnSave);
 		buttonPanel.add(btnDelete);
 		buttonPanel.add(btnCancel);
+		beanPanel.setPreferredSize(new Dimension(500, 400));
 		beanPanel.add(buttonPanel, BorderLayout.SOUTH);
 		
 		add(beanPanel, BorderLayout.EAST);
@@ -84,6 +87,13 @@ public class ModelBrowser<E> extends JPanel implements ActionListener, ListSelec
 		btnSave.setEnabled(false);
 		btnDelete.setEnabled(false);
 		btnCancel.setEnabled(false);
+		
+		beanEditor.clearFields();
+		beanEditor.setFieldsEnable(false);
+	}
+	
+	public void refreshTable() {
+		
 	}
 	
 	public JPanel createSearchPanel() {
@@ -94,30 +104,76 @@ public class ModelBrowser<E> extends JPanel implements ActionListener, ListSelec
 	public void actionPerformed(ActionEvent e) {
 		Command command = Command.fromString(e.getActionCommand());
 		
-		switch (command) {
-			case NEW:
-			case EDIT:
-				beanEditor.createNew();
-				
-				btnNew.setEnabled(false);
-				btnEdit.setEnabled(false);
-				btnSave.setEnabled(true);
-				btnDelete.setEnabled(false);
-				btnCancel.setEnabled(true);
-				break;
-				
-			case CANCEL:
-				beanEditor.setBean(null);
-				
-			
+		try {
+			switch (command) {
+				case NEW:
+					beanEditor.createNew();
+					beanEditor.setFieldsEnable(true);
+					btnNew.setEnabled(false);
+					btnEdit.setEnabled(false);
+					btnSave.setEnabled(true);
+					btnDelete.setEnabled(false);
+					btnCancel.setEnabled(true);
+					break;
 
-			default:
-				break;
+				case EDIT:
+					beanEditor.setFieldsEnable(true);
+					btnNew.setEnabled(false);
+					btnEdit.setEnabled(false);
+					btnSave.setEnabled(true);
+					btnDelete.setEnabled(false);
+					btnCancel.setEnabled(true);
+					break;
+
+				case CANCEL:
+					beanEditor.setBean(null);
+					beanEditor.setFieldsEnable(false);
+					btnNew.setEnabled(true);
+					btnEdit.setEnabled(false);
+					btnSave.setEnabled(false);
+					btnDelete.setEnabled(false);
+					btnCancel.setEnabled(false);
+					break;
+
+				case SAVE:
+					if (beanEditor.save()) {
+						beanEditor.setFieldsEnable(false);
+						btnNew.setEnabled(true);
+						btnEdit.setEnabled(false);
+						btnSave.setEnabled(false);
+						btnDelete.setEnabled(false);
+						btnCancel.setEnabled(false);
+
+						refreshTable();
+					}
+
+				case DELETE:
+					if (beanEditor.delete()) {
+						beanEditor.setBean(null);
+						beanEditor.setFieldsEnable(false);
+						btnNew.setEnabled(true);
+						btnEdit.setEnabled(false);
+						btnSave.setEnabled(false);
+						btnDelete.setEnabled(false);
+						btnCancel.setEnabled(false);
+						refreshTable();
+					}
+					break;
+
+				default:
+					break;
+			}
+		} catch (Exception e2) {
+			POSMessageDialog.showError(e2.getMessage(), e2);
 		}
 	}
 
 	@Override
 	public void valueChanged(ListSelectionEvent e) {
+		if(e.getValueIsAdjusting()) {
+			return;
+		}
+		
 		ListTableModel model = (ListTableModel) browserTable.getModel();
 		int selectedRow = browserTable.getSelectedRow();
 		
