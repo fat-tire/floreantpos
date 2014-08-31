@@ -21,5 +21,11 @@ public class InventoryTransactionType extends BaseInventoryTransactionType {
 
 /*[CONSTRUCTOR MARKER END]*/
 
-
+	public InOutEnum getInOutEnum() {
+		return InOutEnum.fromInt(getInOrOut());
+	}
+	
+	public void setInOrOut(InOutEnum e) {
+		super.setInOrOut(e.getType());
+	}
 }
