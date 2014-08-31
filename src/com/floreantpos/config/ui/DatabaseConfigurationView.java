@@ -98,7 +98,7 @@ public class DatabaseConfigurationView extends ConfigurationView implements Acti
 		buttonPanel.add(btnTestConnection);
 		buttonPanel.add(btnSave);
 
-		add(buttonPanel, Messages.getString("DatabaseConfigurationDialog.30")); //$NON-NLS-1$
+		add(buttonPanel, "span, grow"); //$NON-NLS-1$
 	}
 
 	private void addUIListeners() {
