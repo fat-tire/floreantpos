@@ -7,7 +7,7 @@
     </id>
     <version column="MODIFIED_TIME" name="modifiedTime" type="timestamp"/>
     
-    <property column="NAME" name="name" type="string"/>
-    <property column="INCOEM" name="income" type="java.lang.Integer" />
+    <property column="NAME" name="name" type="string" length="16"/>
+    <property column="IN_OR_OUT" name="inOrOut" type="int" />
   </class>
 </hibernate-mapping>

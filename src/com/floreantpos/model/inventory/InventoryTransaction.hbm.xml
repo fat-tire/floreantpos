@@ -8,11 +8,14 @@
     <version column="MODIFIED_TIME" name="modifiedTime" type="timestamp"/>
     
     <property column="TRANSACTION_DATE" name="transactionDate" type="java.util.Date"/>
-    <property column="QUANTITY" name="quantity" type="java.lang.Integer"/>
+    <property column="QUANTITY" name="quantity" type="float"/>
     <property column="UNIT_PRICE" name="unitPrice" type="java.lang.Double" />
     
-    <many-to-one class="InventoryVendor" name="vendor" column="VENDOR_ID" /> 
     <many-to-one class="InventoryTransactionType" name="transactionType" column="TRANSACTION_TYPE_ID" /> 
+    
+    <many-to-one class="InventoryItem" name="inventoryItem" column="ITEM_ID" />
+    <many-to-one class="InventoryVendor" name="vendor" column="VENDOR_ID" />
+    
     <many-to-one class="InventoryWarehouse" name="fromWarehouse" column="FROM_WAREHOUSE_ID" /> 
     <many-to-one class="InventoryWarehouse" name="toWarehouse" column="TO_WAREHOUSE_ID" /> 
     

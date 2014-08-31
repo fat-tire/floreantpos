@@ -18,7 +18,7 @@ public abstract class BaseInventoryTransactionType  implements Comparable, Seria
 	public static String REF = "InventoryTransactionType";
 	public static String PROP_NAME = "name";
 	public static String PROP_ID = "id";
-	public static String PROP_INCOME = "income";
+	public static String PROP_IN_OR_OUT = "inOrOut";
 
 
 	// constructors
@@ -43,11 +43,11 @@ public abstract class BaseInventoryTransactionType  implements Comparable, Seria
 	// primary key
 	private java.lang.Integer id;
 
-	private java.util.Date modifiedTime;
+	 java.util.Date modifiedTime;
 
 	// fields
 		protected java.lang.String name;
-		protected java.lang.Integer income;
+		protected int inOrOut;
 
 
 
@@ -108,18 +108,18 @@ public abstract class BaseInventoryTransactionType  implements Comparable, Seria
 
 
 	/**
-	 * Return the value associated with the column: INCOEM
+	 * Return the value associated with the column: IN_OR_OUT
 	 */
-	public java.lang.Integer getIncome () {
-					return income == null ? Integer.valueOf(0) : income;
+	public int getInOrOut () {
+					return inOrOut;
 			}
 
 	/**
-	 * Set the value related to the column: INCOEM
-	 * @param income the INCOEM value
+	 * Set the value related to the column: IN_OR_OUT
+	 * @param inOrOut the IN_OR_OUT value
 	 */
-	public void setIncome (java.lang.Integer income) {
-		this.income = income;
+	public void setInOrOut (int inOrOut) {
+		this.inOrOut = inOrOut;
 	}
 
 
