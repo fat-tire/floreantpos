@@ -129,6 +129,8 @@ public abstract class SelectionView extends JPanel implements ComponentListener 
 			}
 		}
 		buttonsPanel.removeAll();
+		buttonsPanel.revalidate();
+		buttonsPanel.repaint();
 	}
 
 	protected void renderItems() {

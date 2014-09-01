@@ -45,7 +45,7 @@ public class GroupView extends SelectionView {
 	public void setMenuCategory(MenuCategory foodCategory) {
 		this.menuCategory = foodCategory;
 
-		reset();
+		//reset();
 		
 		if (foodCategory == null) {
 			return;
