@@ -12,6 +12,10 @@ public class DoubleTextField extends FocusedTextField {
 	}
 
 	public double getDouble() {
-		return Double.parseDouble(getText());
+		try {
+			return Double.parseDouble(getText());
+		} catch (Exception e) {
+			return 0;
+		}
 	}
 }

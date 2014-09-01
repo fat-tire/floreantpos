@@ -1,0 +1,225 @@
+package com.floreantpos.model.inventory.base;
+
+import org.hibernate.Hibernate;
+import org.hibernate.Session;
+import com.floreantpos.model.inventory.dao.PurchaseOrderDAO;
+import org.hibernate.criterion.Order;
+
+/**
+ * This is an automatically generated DAO class which should not be edited.
+ */
+public abstract class BasePurchaseOrderDAO extends com.floreantpos.model.inventory.dao._RootDAO {
+
+	// query name references
+
+
+	public static PurchaseOrderDAO instance;
+
+	/**
+	 * Return a singleton of the DAO
+	 */
+	public static PurchaseOrderDAO getInstance () {
+		if (null == instance) instance = new PurchaseOrderDAO();
+		return instance;
+	}
+
+	public Class getReferenceClass () {
+		return com.floreantpos.model.inventory.PurchaseOrder.class;
+	}
+
+    public Order getDefaultOrder () {
+		return Order.asc("name");
+    }
+
+	/**
+	 * Cast the object as a com.floreantpos.model.inventory.PurchaseOrder
+	 */
+	public com.floreantpos.model.inventory.PurchaseOrder cast (Object object) {
+		return (com.floreantpos.model.inventory.PurchaseOrder) object;
+	}
+
+	public com.floreantpos.model.inventory.PurchaseOrder get(java.lang.Integer key)
+	{
+		return (com.floreantpos.model.inventory.PurchaseOrder) get(getReferenceClass(), key);
+	}
+
+	public com.floreantpos.model.inventory.PurchaseOrder get(java.lang.Integer key, Session s)
+	{
+		return (com.floreantpos.model.inventory.PurchaseOrder) get(getReferenceClass(), key, s);
+	}
+
+	public com.floreantpos.model.inventory.PurchaseOrder load(java.lang.Integer key)
+	{
+		return (com.floreantpos.model.inventory.PurchaseOrder) load(getReferenceClass(), key);
+	}
+
+	public com.floreantpos.model.inventory.PurchaseOrder load(java.lang.Integer key, Session s)
+	{
+		return (com.floreantpos.model.inventory.PurchaseOrder) load(getReferenceClass(), key, s);
+	}
+
+	public com.floreantpos.model.inventory.PurchaseOrder loadInitialize(java.lang.Integer key, Session s) 
+	{ 
+		com.floreantpos.model.inventory.PurchaseOrder obj = load(key, s); 
+		if (!Hibernate.isInitialized(obj)) {
+			Hibernate.initialize(obj);
+		} 
+		return obj; 
+	}
+
+/* Generic methods */
+
+	/**
+	 * Return all objects related to the implementation of this DAO with no filter.
+	 */
+	public java.util.List<com.floreantpos.model.inventory.PurchaseOrder> findAll () {
+		return super.findAll();
+	}
+
+	/**
+	 * Return all objects related to the implementation of this DAO with no filter.
+	 */
+	public java.util.List<com.floreantpos.model.inventory.PurchaseOrder> findAll (Order defaultOrder) {
+		return super.findAll(defaultOrder);
+	}
+
+	/**
+	 * Return all objects related to the implementation of this DAO with no filter.
+	 * Use the session given.
+	 * @param s the Session
+	 */
+	public java.util.List<com.floreantpos.model.inventory.PurchaseOrder> findAll (Session s, Order defaultOrder) {
+		return super.findAll(s, defaultOrder);
+	}
+
+	/**
+	 * Persist the given transient instance, first assigning a generated identifier. (Or using the current value
+	 * of the identifier property if the assigned generator is used.) 
+	 * @param purchaseOrder a transient instance of a persistent class 
+	 * @return the class identifier
+	 */
+	public java.lang.Integer save(com.floreantpos.model.inventory.PurchaseOrder purchaseOrder)
+	{
+		return (java.lang.Integer) super.save(purchaseOrder);
+	}
+
+	/**
+	 * Persist the given transient instance, first assigning a generated identifier. (Or using the current value
+	 * of the identifier property if the assigned generator is used.) 
+	 * Use the Session given.
+	 * @param purchaseOrder a transient instance of a persistent class
+	 * @param s the Session
+	 * @return the class identifier
+	 */
+	public java.lang.Integer save(com.floreantpos.model.inventory.PurchaseOrder purchaseOrder, Session s)
+	{
+		return (java.lang.Integer) save((Object) purchaseOrder, s);
+	}
+
+	/**
+	 * Either save() or update() the given instance, depending upon the value of its identifier property. By default
+	 * the instance is always saved. This behaviour may be adjusted by specifying an unsaved-value attribute of the
+	 * identifier property mapping. 
+	 * @param purchaseOrder a transient instance containing new or updated state 
+	 */
+	public void saveOrUpdate(com.floreantpos.model.inventory.PurchaseOrder purchaseOrder)
+	{
+		saveOrUpdate((Object) purchaseOrder);
+	}
+
+	/**
+	 * Either save() or update() the given instance, depending upon the value of its identifier property. By default the
+	 * instance is always saved. This behaviour may be adjusted by specifying an unsaved-value attribute of the identifier
+	 * property mapping. 
+	 * Use the Session given.
+	 * @param purchaseOrder a transient instance containing new or updated state.
+	 * @param s the Session.
+	 */
+	public void saveOrUpdate(com.floreantpos.model.inventory.PurchaseOrder purchaseOrder, Session s)
+	{
+		saveOrUpdate((Object) purchaseOrder, s);
+	}
+
+	/**
+	 * Update the persistent state associated with the given identifier. An exception is thrown if there is a persistent
+	 * instance with the same identifier in the current session.
+	 * @param purchaseOrder a transient instance containing updated state
+	 */
+	public void update(com.floreantpos.model.inventory.PurchaseOrder purchaseOrder) 
+	{
+		update((Object) purchaseOrder);
+	}
+
+	/**
+	 * Update the persistent state associated with the given identifier. An exception is thrown if there is a persistent
+	 * instance with the same identifier in the current session.
+	 * Use the Session given.
+	 * @param purchaseOrder a transient instance containing updated state
+	 * @param the Session
+	 */
+	public void update(com.floreantpos.model.inventory.PurchaseOrder purchaseOrder, Session s)
+	{
+		update((Object) purchaseOrder, s);
+	}
+
+	/**
+	 * Remove a persistent instance from the datastore. The argument may be an instance associated with the receiving
+	 * Session or a transient instance with an identifier associated with existing persistent state. 
+	 * @param id the instance ID to be removed
+	 */
+	public void delete(java.lang.Integer id)
+	{
+		delete((Object) load(id));
+	}
+
+	/**
+	 * Remove a persistent instance from the datastore. The argument may be an instance associated with the receiving
+	 * Session or a transient instance with an identifier associated with existing persistent state. 
+	 * Use the Session given.
+	 * @param id the instance ID to be removed
+	 * @param s the Session
+	 */
+	public void delete(java.lang.Integer id, Session s)
+	{
+		delete((Object) load(id, s), s);
+	}
+
+	/**
+	 * Remove a persistent instance from the datastore. The argument may be an instance associated with the receiving
+	 * Session or a transient instance with an identifier associated with existing persistent state. 
+	 * @param purchaseOrder the instance to be removed
+	 */
+	public void delete(com.floreantpos.model.inventory.PurchaseOrder purchaseOrder)
+	{
+		delete((Object) purchaseOrder);
+	}
+
+	/**
+	 * Remove a persistent instance from the datastore. The argument may be an instance associated with the receiving
+	 * Session or a transient instance with an identifier associated with existing persistent state. 
+	 * Use the Session given.
+	 * @param purchaseOrder the instance to be removed
+	 * @param s the Session
+	 */
+	public void delete(com.floreantpos.model.inventory.PurchaseOrder purchaseOrder, Session s)
+	{
+		delete((Object) purchaseOrder, s);
+	}
+	
+	/**
+	 * Re-read the state of the given instance from the underlying database. It is inadvisable to use this to implement
+	 * long-running sessions that span many business tasks. This method is, however, useful in certain special circumstances.
+	 * For example 
+	 * <ul> 
+	 * <li>where a database trigger alters the object state upon insert or update</li>
+	 * <li>after executing direct SQL (eg. a mass update) in the same session</li>
+	 * <li>after inserting a Blob or Clob</li>
+	 * </ul>
+	 */
+	public void refresh (com.floreantpos.model.inventory.PurchaseOrder purchaseOrder, Session s)
+	{
+		refresh((Object) purchaseOrder, s);
+	}
+
+
+}

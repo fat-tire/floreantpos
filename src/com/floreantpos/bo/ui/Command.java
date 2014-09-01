@@ -6,6 +6,7 @@ public enum Command {
 	DELETE,
 	SAVE,
 	CANCEL,
+	NEW_TRANSACTION,
 	UNKNOWN
 	;
 	

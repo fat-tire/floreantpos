@@ -9,10 +9,12 @@
     
     <property column="TRANSACTION_DATE" name="transactionDate" type="java.util.Date"/>
     <property column="QUANTITY" name="quantity" type="float"/>
-    <property column="UNIT_PRICE" name="unitPrice" type="java.lang.Double" />
+    <property column="UNIT_PRICE" name="unitPrice" type="double" />
+    <property column="REMARK" name="remark" type="string" length="255" />
     
     <many-to-one class="InventoryTransactionType" name="transactionType" column="TRANSACTION_TYPE_ID" /> 
     
+    <many-to-one class="PurchaseOrder" name="referenceNo" column="REFERENCE_ID" />
     <many-to-one class="InventoryItem" name="inventoryItem" column="ITEM_ID" />
     <many-to-one class="InventoryVendor" name="vendor" column="VENDOR_ID" />
     
