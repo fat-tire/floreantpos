@@ -23,7 +23,7 @@ import com.floreantpos.ui.dialog.POSMessageDialog;
 public class ModelBrowser<E> extends JPanel implements ActionListener, ListSelectionListener {
 	
 	protected JXTable browserTable;
-	private BeanEditor<E> beanEditor;
+	protected BeanEditor<E> beanEditor;
 	
 	private JPanel browserPanel = new JPanel(new BorderLayout());
 	private JPanel beanPanel = new JPanel(new BorderLayout());
@@ -35,13 +35,15 @@ public class ModelBrowser<E> extends JPanel implements ActionListener, ListSelec
 	private JButton btnCancel = new JButton("CANCEL");
 	
 	public ModelBrowser() {
-		this(null, null);	
+		this(null);	
 	}
 
-	public ModelBrowser(ListTableModel<E> tableModel, BeanEditor<E> beanEditor) {
+	public ModelBrowser(BeanEditor<E> beanEditor) {
 		super();
 		this.beanEditor = beanEditor;
-		
+	}
+
+	public void init(ListTableModel<E> tableModel) {
 		browserTable = new JXTable();
 		browserTable.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		browserTable.getSelectionModel().addListSelectionListener(this);
@@ -66,6 +68,13 @@ public class ModelBrowser<E> extends JPanel implements ActionListener, ListSelec
 		beanPanel.add(beanEditor);
 		
 		JPanel buttonPanel = new JPanel();
+		
+		JButton additionalButton = getAdditionalButton();
+		if(additionalButton != null) {
+			buttonPanel.add(additionalButton);
+			additionalButton.addActionListener(this);
+		}
+		
 		buttonPanel.add(btnNew);
 		buttonPanel.add(btnEdit);
 		buttonPanel.add(btnSave);
@@ -98,6 +107,14 @@ public class ModelBrowser<E> extends JPanel implements ActionListener, ListSelec
 	
 	public JPanel createSearchPanel() {
 		return null;
+	}
+	
+	protected JButton getAdditionalButton() {
+		return null;
+	}
+	
+	protected void handleAdditionaButtonActionIfApplicable(ActionEvent e) {
+		
 	}
 	
 	@Override
@@ -164,6 +181,9 @@ public class ModelBrowser<E> extends JPanel implements ActionListener, ListSelec
 				default:
 					break;
 			}
+			
+			handleAdditionaButtonActionIfApplicable(e);
+			
 		} catch (Exception e2) {
 			POSMessageDialog.showError(e2.getMessage(), e2);
 		}

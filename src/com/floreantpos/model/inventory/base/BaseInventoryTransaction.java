@@ -25,6 +25,8 @@ public abstract class BaseInventoryTransaction  implements Comparable, Serializa
 	public static String PROP_ID = "id";
 	public static String PROP_TRANSACTION_TYPE = "transactionType";
 	public static String PROP_UNIT_PRICE = "unitPrice";
+	public static String PROP_REMARK = "remark";
+	public static String PROP_REFERENCE_NO = "referenceNo";
 
 
 	// constructors
@@ -54,10 +56,12 @@ public abstract class BaseInventoryTransaction  implements Comparable, Serializa
 	// fields
 		protected java.util.Date transactionDate;
 		protected float quantity;
-		protected java.lang.Double unitPrice;
+		protected double unitPrice;
+		protected java.lang.String remark;
 
 	// many to one
 	private com.floreantpos.model.inventory.InventoryTransactionType transactionType;
+	private com.floreantpos.model.inventory.PurchaseOrder referenceNo;
 	private com.floreantpos.model.inventory.InventoryItem inventoryItem;
 	private com.floreantpos.model.inventory.InventoryVendor vendor;
 	private com.floreantpos.model.inventory.InventoryWarehouse fromWarehouse;
@@ -141,16 +145,33 @@ public abstract class BaseInventoryTransaction  implements Comparable, Serializa
 	/**
 	 * Return the value associated with the column: UNIT_PRICE
 	 */
-	public java.lang.Double getUnitPrice () {
-									return unitPrice == null ? Double.valueOf(0) : unitPrice;
-					}
+	public double getUnitPrice () {
+					return unitPrice;
+			}
 
 	/**
 	 * Set the value related to the column: UNIT_PRICE
 	 * @param unitPrice the UNIT_PRICE value
 	 */
-	public void setUnitPrice (java.lang.Double unitPrice) {
+	public void setUnitPrice (double unitPrice) {
 		this.unitPrice = unitPrice;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: REMARK
+	 */
+	public java.lang.String getRemark () {
+					return remark;
+			}
+
+	/**
+	 * Set the value related to the column: REMARK
+	 * @param remark the REMARK value
+	 */
+	public void setRemark (java.lang.String remark) {
+		this.remark = remark;
 	}
 
 
@@ -168,6 +189,23 @@ public abstract class BaseInventoryTransaction  implements Comparable, Serializa
 	 */
 	public void setTransactionType (com.floreantpos.model.inventory.InventoryTransactionType transactionType) {
 		this.transactionType = transactionType;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: REFERENCE_ID
+	 */
+	public com.floreantpos.model.inventory.PurchaseOrder getReferenceNo () {
+					return referenceNo;
+			}
+
+	/**
+	 * Set the value related to the column: REFERENCE_ID
+	 * @param referenceNo the REFERENCE_ID value
+	 */
+	public void setReferenceNo (com.floreantpos.model.inventory.PurchaseOrder referenceNo) {
+		this.referenceNo = referenceNo;
 	}
 
 
