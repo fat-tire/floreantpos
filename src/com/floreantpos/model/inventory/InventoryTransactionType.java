@@ -25,7 +25,12 @@ public class InventoryTransactionType extends BaseInventoryTransactionType {
 		return InOutEnum.fromInt(getInOrOut());
 	}
 	
-	public void setInOrOut(InOutEnum e) {
+	public void setInOrOutEnum(InOutEnum e) {
 		super.setInOrOut(e.getType());
+	}
+	
+	@Override
+	public String toString() {
+		return name;
 	}
 }
