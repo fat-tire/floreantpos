@@ -12,20 +12,20 @@
         <property column="NAME" length="60" name="name" not-null="true" unique="true" type="java.lang.String"/>
         <property column="BARCODE" length="30" name="barcode" type="java.lang.String"/>
         <property column="PACKSIZE_DESC" length="30" name="packSizeDescription" type="java.lang.String"/>
-        <property column="TOT_ITEM_PER_PACKSIZE" name="itemPerPackSize" type="java.lang.Integer"/>
+        <property column="TOT_ITEM_PER_PACKSIZE" name="itemPerPackSize" type="int"/>
         <property column="SORT_ORDER" name="sortOrder" type="java.lang.Integer"/>
         <property column="PACK_SIZE_REORDER_LEVEL" name="packSizeReorderLevel" type="java.lang.String"/>
         <property column="PACK_SIZE_REPLENISH_LEVEL" name="packSizeReplenishLevel" type="java.lang.String"/>
         <property column="DESCRIPTION" name="description" type="java.lang.String"/>
-        <property column="PACKSIZE_QTY_ON_HAND" name="packSizeQuantityOnHand" type="java.lang.Integer"/>
-        <property column="TOT_PACKSIZE_VALUE" name="totPackSizeValue" type="java.lang.Integer"/>
+        <property column="PACKSIZE_QTY_ON_HAND" name="packSizeQuantityOnHand" type="int"/>
+        <property column="TOT_PACKSIZE_VALUE" name="totalPackSizeValue" type="int"/>
         <property column="CREATE_TIME" name="createTime" type="java.sql.Timestamp"/>
-        <property column="BALANCE_TOTAL_PACKS" name="balanceTotalPacks" type="java.lang.Integer"/>
-        <property column="BALANCE_TOTAL_ITEMS" name="balanceTotalItems" type="java.lang.Integer"/>
-        <property column="BALANCE_TOTAL_RECEPIE_UNITS" name="balanceTotalRecepieUnits" type="java.lang.Integer"/>
+        <property column="BALANCE_TOTAL_PACKS" name="totalPacks" type="int"/>
+        <property column="BALANCE_TOTAL_ITEMS" name="totalBalance" type="float"/>
+        <property column="BALANCE_TOTAL_RECEPIE_UNITS" name="totalRecepieUnits" type="int"/>
         <property column="LAST_UPDATE_DATE" name="lastUpdateDate" type="java.util.Date"/>
-        <property column="PURCHASE_PRICE" name="purchasePrice" type="java.lang.Double"/>
-        <property column="SELLING_PRICE" name="sellingPrice" type="java.lang.Double"/>
+        <property column="PURCHASE_PRICE" name="purchasePrice" type="double"/>
+        <property column="SELLING_PRICE" name="sellingPrice" type="double"/>
         <property column="VISIBLE" name="visible" type="java.lang.Boolean"/>
 
         <many-to-one class="InventoryGroup" name="itemGroup">

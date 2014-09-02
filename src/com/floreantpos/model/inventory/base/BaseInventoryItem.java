@@ -27,17 +27,17 @@ public abstract class BaseInventoryItem  implements Comparable, Serializable {
 	public static String PROP_PACK_SIZE_REORDER_LEVEL = "packSizeReorderLevel";
 	public static String PROP_PACK_SIZE_REPLENISH_LEVEL = "packSizeReplenishLevel";
 	public static String PROP_PACK_SIZE_QUANTITY_ON_HAND = "packSizeQuantityOnHand";
+	public static String PROP_TOTAL_PACKS = "totalPacks";
+	public static String PROP_TOTAL_BALANCE = "totalBalance";
 	public static String PROP_NAME = "name";
 	public static String PROP_LAST_UPDATE_DATE = "lastUpdateDate";
-	public static String PROP_BALANCE_TOTAL_PACKS = "balanceTotalPacks";
 	public static String PROP_ITEM_LOCATION = "itemLocation";
+	public static String PROP_TOTAL_PACK_SIZE_VALUE = "totalPackSizeValue";
 	public static String PROP_CREATE_TIME = "createTime";
 	public static String PROP_SELLING_PRICE = "sellingPrice";
 	public static String PROP_PACK_SIZE_DESCRIPTION = "packSizeDescription";
-	public static String PROP_BALANCE_TOTAL_ITEMS = "balanceTotalItems";
-	public static String PROP_TOT_PACK_SIZE_VALUE = "totPackSizeValue";
+	public static String PROP_TOTAL_RECEPIE_UNITS = "totalRecepieUnits";
 	public static String PROP_ID = "id";
-	public static String PROP_BALANCE_TOTAL_RECEPIE_UNITS = "balanceTotalRecepieUnits";
 
 
 	// constructors
@@ -74,26 +74,26 @@ public abstract class BaseInventoryItem  implements Comparable, Serializable {
 	// primary key
 	private java.lang.Integer id;
 
-	private java.util.Date modifiedTime;
+	 java.util.Date modifiedTime;
 
 	// fields
 		protected java.lang.String name;
 		protected java.lang.String barcode;
 		protected java.lang.String packSizeDescription;
-		protected java.lang.Integer itemPerPackSize;
+		protected int itemPerPackSize;
 		protected java.lang.Integer sortOrder;
 		protected java.lang.String packSizeReorderLevel;
 		protected java.lang.String packSizeReplenishLevel;
 		protected java.lang.String description;
-		protected java.lang.Integer packSizeQuantityOnHand;
-		protected java.lang.Integer totPackSizeValue;
+		protected int packSizeQuantityOnHand;
+		protected int totalPackSizeValue;
 		protected java.util.Date createTime;
-		protected java.lang.Integer balanceTotalPacks;
-		protected java.lang.Integer balanceTotalItems;
-		protected java.lang.Integer balanceTotalRecepieUnits;
+		protected int totalPacks;
+		protected float totalBalance;
+		protected int totalRecepieUnits;
 		protected java.util.Date lastUpdateDate;
-		protected java.lang.Double purchasePrice;
-		protected java.lang.Double sellingPrice;
+		protected double purchasePrice;
+		protected double sellingPrice;
 		protected java.lang.Boolean visible;
 
 	// many to one
@@ -196,15 +196,15 @@ public abstract class BaseInventoryItem  implements Comparable, Serializable {
 	/**
 	 * Return the value associated with the column: TOT_ITEM_PER_PACKSIZE
 	 */
-	public java.lang.Integer getItemPerPackSize () {
-					return itemPerPackSize == null ? Integer.valueOf(0) : itemPerPackSize;
+	public int getItemPerPackSize () {
+					return itemPerPackSize;
 			}
 
 	/**
 	 * Set the value related to the column: TOT_ITEM_PER_PACKSIZE
 	 * @param itemPerPackSize the TOT_ITEM_PER_PACKSIZE value
 	 */
-	public void setItemPerPackSize (java.lang.Integer itemPerPackSize) {
+	public void setItemPerPackSize (int itemPerPackSize) {
 		this.itemPerPackSize = itemPerPackSize;
 	}
 
@@ -281,15 +281,15 @@ public abstract class BaseInventoryItem  implements Comparable, Serializable {
 	/**
 	 * Return the value associated with the column: PACKSIZE_QTY_ON_HAND
 	 */
-	public java.lang.Integer getPackSizeQuantityOnHand () {
-					return packSizeQuantityOnHand == null ? Integer.valueOf(0) : packSizeQuantityOnHand;
+	public int getPackSizeQuantityOnHand () {
+					return packSizeQuantityOnHand;
 			}
 
 	/**
 	 * Set the value related to the column: PACKSIZE_QTY_ON_HAND
 	 * @param packSizeQuantityOnHand the PACKSIZE_QTY_ON_HAND value
 	 */
-	public void setPackSizeQuantityOnHand (java.lang.Integer packSizeQuantityOnHand) {
+	public void setPackSizeQuantityOnHand (int packSizeQuantityOnHand) {
 		this.packSizeQuantityOnHand = packSizeQuantityOnHand;
 	}
 
@@ -298,16 +298,16 @@ public abstract class BaseInventoryItem  implements Comparable, Serializable {
 	/**
 	 * Return the value associated with the column: TOT_PACKSIZE_VALUE
 	 */
-	public java.lang.Integer getTotPackSizeValue () {
-					return totPackSizeValue == null ? Integer.valueOf(0) : totPackSizeValue;
+	public int getTotalPackSizeValue () {
+					return totalPackSizeValue;
 			}
 
 	/**
 	 * Set the value related to the column: TOT_PACKSIZE_VALUE
-	 * @param totPackSizeValue the TOT_PACKSIZE_VALUE value
+	 * @param totalPackSizeValue the TOT_PACKSIZE_VALUE value
 	 */
-	public void setTotPackSizeValue (java.lang.Integer totPackSizeValue) {
-		this.totPackSizeValue = totPackSizeValue;
+	public void setTotalPackSizeValue (int totalPackSizeValue) {
+		this.totalPackSizeValue = totalPackSizeValue;
 	}
 
 
@@ -332,16 +332,16 @@ public abstract class BaseInventoryItem  implements Comparable, Serializable {
 	/**
 	 * Return the value associated with the column: BALANCE_TOTAL_PACKS
 	 */
-	public java.lang.Integer getBalanceTotalPacks () {
-					return balanceTotalPacks == null ? Integer.valueOf(0) : balanceTotalPacks;
+	public int getTotalPacks () {
+					return totalPacks;
 			}
 
 	/**
 	 * Set the value related to the column: BALANCE_TOTAL_PACKS
-	 * @param balanceTotalPacks the BALANCE_TOTAL_PACKS value
+	 * @param totalPacks the BALANCE_TOTAL_PACKS value
 	 */
-	public void setBalanceTotalPacks (java.lang.Integer balanceTotalPacks) {
-		this.balanceTotalPacks = balanceTotalPacks;
+	public void setTotalPacks (int totalPacks) {
+		this.totalPacks = totalPacks;
 	}
 
 
@@ -349,16 +349,16 @@ public abstract class BaseInventoryItem  implements Comparable, Serializable {
 	/**
 	 * Return the value associated with the column: BALANCE_TOTAL_ITEMS
 	 */
-	public java.lang.Integer getBalanceTotalItems () {
-					return balanceTotalItems == null ? Integer.valueOf(0) : balanceTotalItems;
+	public float getTotalBalance () {
+					return totalBalance;
 			}
 
 	/**
 	 * Set the value related to the column: BALANCE_TOTAL_ITEMS
-	 * @param balanceTotalItems the BALANCE_TOTAL_ITEMS value
+	 * @param totalBalance the BALANCE_TOTAL_ITEMS value
 	 */
-	public void setBalanceTotalItems (java.lang.Integer balanceTotalItems) {
-		this.balanceTotalItems = balanceTotalItems;
+	public void setTotalBalance (float totalBalance) {
+		this.totalBalance = totalBalance;
 	}
 
 
@@ -366,16 +366,16 @@ public abstract class BaseInventoryItem  implements Comparable, Serializable {
 	/**
 	 * Return the value associated with the column: BALANCE_TOTAL_RECEPIE_UNITS
 	 */
-	public java.lang.Integer getBalanceTotalRecepieUnits () {
-					return balanceTotalRecepieUnits == null ? Integer.valueOf(0) : balanceTotalRecepieUnits;
+	public int getTotalRecepieUnits () {
+					return totalRecepieUnits;
 			}
 
 	/**
 	 * Set the value related to the column: BALANCE_TOTAL_RECEPIE_UNITS
-	 * @param balanceTotalRecepieUnits the BALANCE_TOTAL_RECEPIE_UNITS value
+	 * @param totalRecepieUnits the BALANCE_TOTAL_RECEPIE_UNITS value
 	 */
-	public void setBalanceTotalRecepieUnits (java.lang.Integer balanceTotalRecepieUnits) {
-		this.balanceTotalRecepieUnits = balanceTotalRecepieUnits;
+	public void setTotalRecepieUnits (int totalRecepieUnits) {
+		this.totalRecepieUnits = totalRecepieUnits;
 	}
 
 
@@ -400,15 +400,15 @@ public abstract class BaseInventoryItem  implements Comparable, Serializable {
 	/**
 	 * Return the value associated with the column: PURCHASE_PRICE
 	 */
-	public java.lang.Double getPurchasePrice () {
-									return purchasePrice == null ? Double.valueOf(0) : purchasePrice;
-					}
+	public double getPurchasePrice () {
+					return purchasePrice;
+			}
 
 	/**
 	 * Set the value related to the column: PURCHASE_PRICE
 	 * @param purchasePrice the PURCHASE_PRICE value
 	 */
-	public void setPurchasePrice (java.lang.Double purchasePrice) {
+	public void setPurchasePrice (double purchasePrice) {
 		this.purchasePrice = purchasePrice;
 	}
 
@@ -417,15 +417,15 @@ public abstract class BaseInventoryItem  implements Comparable, Serializable {
 	/**
 	 * Return the value associated with the column: SELLING_PRICE
 	 */
-	public java.lang.Double getSellingPrice () {
-									return sellingPrice == null ? Double.valueOf(0) : sellingPrice;
-					}
+	public double getSellingPrice () {
+					return sellingPrice;
+			}
 
 	/**
 	 * Set the value related to the column: SELLING_PRICE
 	 * @param sellingPrice the SELLING_PRICE value
 	 */
-	public void setSellingPrice (java.lang.Double sellingPrice) {
+	public void setSellingPrice (double sellingPrice) {
 		this.sellingPrice = sellingPrice;
 	}
 
