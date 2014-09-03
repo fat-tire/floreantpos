@@ -25,7 +25,7 @@ public class ModelBrowser<E> extends JPanel implements ActionListener, ListSelec
 	protected JXTable browserTable;
 	protected BeanEditor<E> beanEditor;
 	
-	private JPanel browserPanel = new JPanel(new BorderLayout());
+	protected JPanel browserPanel = new JPanel(new BorderLayout());
 	private JPanel beanPanel = new JPanel(new BorderLayout());
 	
 	private JButton btnNew = new JButton("NEW");
