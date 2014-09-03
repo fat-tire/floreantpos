@@ -21,9 +21,10 @@ public class POSUtil {
 		if (b == null) {
 			return false;
 		}
-		
+
 		return Boolean.valueOf(b);
 	}
+
 	public static boolean getBoolean(Boolean b) {
 		if (b == null) {
 			return false;
@@ -31,12 +32,12 @@ public class POSUtil {
 
 		return b;
 	}
-	
+
 	public static boolean getBoolean(Boolean b, boolean defaultValue) {
 		if (b == null) {
 			return defaultValue;
 		}
-		
+
 		return b;
 	}
 
@@ -47,12 +48,12 @@ public class POSUtil {
 
 		return d;
 	}
-	
+
 	public static int getInteger(Integer d) {
 		if (d == null) {
 			return 0;
 		}
-		
+
 		return d;
 	}
 
@@ -63,7 +64,7 @@ public class POSUtil {
 			return 0;
 		}
 	}
-	
+
 	public static int parseInteger(String s, String parseErrorMessage) {
 		try {
 			return Integer.parseInt(s);
@@ -71,12 +72,20 @@ public class POSUtil {
 			throw new PosException(parseErrorMessage);
 		}
 	}
-	
+
+	public static double parseDouble(String s) {
+		try {
+			return Double.parseDouble(s);
+		} catch (Exception x) {
+			return 0;
+		}
+	}
+
 	public static double parseDouble(String s, String parseErrorMessage, boolean mandatory) {
 		try {
 			return Double.parseDouble(s);
 		} catch (Exception x) {
-			if(mandatory) {
+			if (mandatory) {
 				throw new PosException(parseErrorMessage);
 			}
 			else {
