@@ -88,7 +88,7 @@ public class InventoryItem extends BaseInventoryItem {
 			inventoryItem.setPackSizeDescription(strings[index++]);
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 		//name, barcode, pack size description, item/pack size, sortorder, pack size reorder level, pack size replenish level, description, total packs, total balance, total recepie unit, total pack size value, purchase price, selling price
 		
