@@ -39,7 +39,6 @@ import com.floreantpos.model.TicketItemCookingInstruction;
 import com.floreantpos.model.TicketItemModifier;
 import com.floreantpos.model.dao.CookingInstructionDAO;
 import com.floreantpos.model.dao.MenuItemDAO;
-import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.print.PosPrintService;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.ui.dialog.BeanEditorDialog;
@@ -351,14 +350,16 @@ public class TicketView extends JPanel {
 		try {
 
 			updateModel();
-
+			ticket.clearDeletedItems();
+			
 			OrderController.saveOrder(ticket);
 
 			if (ticket.needsKitchenPrint()) {
 				PosPrintService.printToKitchen(ticket);
 			}
-			ticket.clearDeletedItems();
-			OrderController.saveOrder(ticket);
+			
+			//ticket.clearDeletedItems();
+			//OrderController.saveOrder(ticket);
 
 			RootView.getInstance().showView(SwitchboardView.VIEW_NAME);
 
@@ -387,7 +388,9 @@ public class TicketView extends JPanel {
 	private void doPayNow(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_doPayNow
 		try {
 			updateModel();
-			TicketDAO.getInstance().saveOrUpdate(ticket);
+
+			OrderController.saveOrder(ticket);
+			
 			firePayOrderSelected();
 		} catch (PosException e) {
 			POSMessageDialog.showError(e.getMessage());

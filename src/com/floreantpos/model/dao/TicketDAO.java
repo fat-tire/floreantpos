@@ -47,21 +47,15 @@ public class TicketDAO extends BaseTicketDAO {
 		super.saveOrUpdate(ticket, s);
 	}
 	
-	public Ticket refresh(Ticket ticket) {
+	public Ticket loadFullTicket(int id) {
 		Session session = createNewSession();
-		super.refresh(ticket, session);
-		session.close();
 		
-		return ticket;
-	}
+		Ticket ticket = (Ticket) session.get(getReferenceClass(), id);
+		
+		Hibernate.initialize(ticket.getTicketItems());
+		Hibernate.initialize(ticket.getCouponAndDiscounts());
 
-	public Ticket initializeTicket(Ticket ticket) {
-		Session session = createNewSession();
-		Ticket newTicket = (Ticket) session.get(getReferenceClass(), ticket.getId());
-		Hibernate.initialize(newTicket.getTicketItems());
-		Hibernate.initialize(newTicket.getCouponAndDiscounts());
-
-		List<TicketItem> ticketItems = newTicket.getTicketItems();
+		List<TicketItem> ticketItems = ticket.getTicketItems();
 		if (ticketItems != null) {
 			for (TicketItem ticketItem : ticketItems) {
 				List<TicketItemModifierGroup> ticketItemModifierGroups = ticketItem.getTicketItemModifierGroups();
@@ -73,9 +67,33 @@ public class TicketDAO extends BaseTicketDAO {
 				}
 			}
 		}
+		
 		session.close();
-		return newTicket;
+		
+		return ticket;
 	}
+	
+//	public Ticket initializeTicket(Ticket ticket) {
+//		Session session = createNewSession();
+//		Ticket newTicket = (Ticket) session.get(getReferenceClass(), ticket.getId());
+//		Hibernate.initialize(newTicket.getTicketItems());
+//		Hibernate.initialize(newTicket.getCouponAndDiscounts());
+//
+//		List<TicketItem> ticketItems = newTicket.getTicketItems();
+//		if (ticketItems != null) {
+//			for (TicketItem ticketItem : ticketItems) {
+//				List<TicketItemModifierGroup> ticketItemModifierGroups = ticketItem.getTicketItemModifierGroups();
+//				Hibernate.initialize(ticketItemModifierGroups);
+//				if (ticketItemModifierGroups != null) {
+//					for (TicketItemModifierGroup ticketItemModifierGroup : ticketItemModifierGroups) {
+//						Hibernate.initialize(ticketItemModifierGroup.getTicketItemModifiers());
+//					}
+//				}
+//			}
+//		}
+//		session.close();
+//		return newTicket;
+//	}
 
 	public List<Gratuity> getServerGratuities(Terminal terminal, String transactionType) {
 		Session session = null;
@@ -229,6 +247,10 @@ public class TicketDAO extends BaseTicketDAO {
 		} finally {
 			closeSession(session);
 		}
+	}
+	
+	public boolean hasTicketByTableNumber(int tableNumber) {
+		return findTicketByTableNumber(tableNumber) != null;
 	}
 
 	public TicketSummary getOpenTicketSummary() {

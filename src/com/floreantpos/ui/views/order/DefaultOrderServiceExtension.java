@@ -40,9 +40,9 @@ public class DefaultOrderServiceExtension implements OrderServiceExtension {
 		}
 
 		int numberOfGuests = PosGuiUtil.captureGuestNumber();
-		if (numberOfGuests == -1) {
-			return;
-		}
+		//if (numberOfGuests == -1) {
+		//	return;
+		//}
 
 		Application application = Application.getInstance();
 
@@ -64,18 +64,18 @@ public class DefaultOrderServiceExtension implements OrderServiceExtension {
 	}
 
 	@Override
-	public void setCustomerToTicket(Ticket ticket) {
+	public void setCustomerToTicket(int ticketId) {
 	}
 	
-	public void setDeliveryDate(Ticket ticket) {}
+	public void setDeliveryDate(int ticketId) {}
 
 	@Override
-	public void assignDriver(Ticket ticket) {
+	public void assignDriver(int ticketId) {
 		
 	};
 	
 	@Override
-	public boolean finishOrder(Ticket ticket) {
+	public boolean finishOrder(int ticketId) {
 		return false;
 	}
 }
