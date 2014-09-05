@@ -35,7 +35,6 @@ import com.floreantpos.model.PaymentType;
 import com.floreantpos.model.PosTransaction;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketCouponAndDiscount;
-import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.report.JReportPrintService;
 import com.floreantpos.services.PosTransactionService;
 import com.floreantpos.swing.MessageDialog;
@@ -47,6 +46,7 @@ import com.floreantpos.ui.dialog.PaymentTypeSelectionDialog;
 import com.floreantpos.ui.dialog.TransactionCompletionDialog;
 import com.floreantpos.ui.views.SwitchboardView;
 import com.floreantpos.ui.views.TicketDetailView;
+import com.floreantpos.ui.views.order.OrderController;
 import com.floreantpos.ui.views.order.RootView;
 import com.floreantpos.util.POSUtil;
 
@@ -126,7 +126,7 @@ public class SettleTicketView extends POSDialog implements CardInputListener {
 
 				updateModel();
 
-				TicketDAO.getInstance().saveOrUpdate(ticket);
+				OrderController.saveOrder(ticket);
 				ticketDetailView.updateView();
 				paymentView.updateView();
 			}
@@ -149,14 +149,17 @@ public class SettleTicketView extends POSDialog implements CardInputListener {
 			for (Ticket ticket : ticketsToSettle) {
 				ticket.setTaxExempt(true);
 				ticket.calculatePrice();
-				TicketDAO.getInstance().saveOrUpdate(ticket);
+				//TicketDAO.getInstance().saveOrUpdate(ticket);
+				
+				OrderController.saveOrder(ticket);
 			}
 		}
 		else {
 			for (Ticket ticket : ticketsToSettle) {
 				ticket.setTaxExempt(false);
 				ticket.calculatePrice();
-				TicketDAO.getInstance().saveOrUpdate(ticket);
+				//TicketDAO.getInstance().saveOrUpdate(ticket);
+				OrderController.saveOrder(ticket);
 			}
 		}
 
@@ -183,7 +186,8 @@ public class SettleTicketView extends POSDialog implements CardInputListener {
 
 		ticket.setGratuity(gratuity);
 		ticket.calculatePrice();
-		TicketDAO.getInstance().saveOrUpdate(ticket);
+		//TicketDAO.getInstance().saveOrUpdate(ticket);
+		OrderController.saveOrder(ticket);
 
 		ticketDetailView.updateView();
 		paymentView.updateView();
@@ -213,7 +217,8 @@ public class SettleTicketView extends POSDialog implements CardInputListener {
 				updateModel();
 
 				for (Ticket ticket : tickets) {
-					TicketDAO.getInstance().saveOrUpdate(ticket);
+					//TicketDAO.getInstance().saveOrUpdate(ticket);
+					OrderController.saveOrder(ticket);
 				}
 
 				ticketDetailView.updateView();
@@ -293,14 +298,15 @@ public class SettleTicketView extends POSDialog implements CardInputListener {
 
 			for (Ticket ticket : ticketsToSettle) {
 				ticket.setTenderedAmount(tenderedAmount);
-
-				submitMyKalaDiscount(ticket);
-
-				printTicket(ticket);
+				//submitMyKalaDiscount(ticket);
 			}
 
 			PosTransactionService transactionService = PosTransactionService.getInstance();
 			transactionService.settleTickets(ticketsToSettle, tenderedAmount, posTransaction, cardType, cardAuthorizationCode);
+			
+			for (Ticket ticket : ticketsToSettle) {
+				printTicket(ticket);
+			}
 
 			double paidAmount = paymentView.getPaidAmount();
 			double dueAmount = paymentView.getDueAmount();
@@ -598,7 +604,9 @@ public class SettleTicketView extends POSDialog implements CardInputListener {
 
 				updateModel();
 
-				TicketDAO.getInstance().saveOrUpdate(ticket);
+				//TicketDAO.getInstance().saveOrUpdate(ticket);
+				OrderController.saveOrder(ticket);
+				
 				ticketDetailView.updateView();
 				paymentView.updateView();
 			}

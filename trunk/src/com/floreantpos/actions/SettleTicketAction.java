@@ -12,10 +12,10 @@ import com.floreantpos.ui.views.payment.SettleTicketView;
 
 public class SettleTicketAction extends AbstractAction {
 
-	private Ticket ticket;
+	private int ticketId;
 
-	public SettleTicketAction(Ticket ticket) {
-		this.ticket = ticket;
+	public SettleTicketAction(int ticketId) {
+		this.ticketId = ticketId;
 	}
 
 	@Override
@@ -24,7 +24,7 @@ public class SettleTicketAction extends AbstractAction {
 	}
 
 	public boolean execute() {
-		ticket = TicketDAO.getInstance().initializeTicket(ticket);
+		Ticket ticket = TicketDAO.getInstance().loadFullTicket(ticketId);
 
 		if (ticket.isPaid()) {
 			POSMessageDialog.showError("Ticket is already settled");

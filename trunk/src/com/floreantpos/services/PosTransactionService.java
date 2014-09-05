@@ -20,7 +20,6 @@ import com.floreantpos.model.Ticket;
 import com.floreantpos.model.User;
 import com.floreantpos.model.dao.ActionHistoryDAO;
 import com.floreantpos.model.dao.GenericDAO;
-import com.floreantpos.model.dao.UserDAO;
 import com.floreantpos.util.NumberUtil;
 
 public class PosTransactionService {
@@ -136,11 +135,11 @@ public class PosTransactionService {
 				dao.saveOrUpdate(posTransaction, session);
 				dao.saveOrUpdate(terminal, session);
 				
-				User assignedDriver = ticket.getAssignedDriver();
-				if(assignedDriver != null) {
-					assignedDriver.setAvailableForDelivery(true);
-					UserDAO.getInstance().saveOrUpdate(assignedDriver, session);
-				}
+//				User assignedDriver = ticket.getAssignedDriver();
+//				if(assignedDriver != null) {
+//					assignedDriver.setAvailableForDelivery(true);
+//					UserDAO.getInstance().saveOrUpdate(assignedDriver, session);
+//				}
 			}
 
 			tx.commit();
