@@ -1,5 +1,6 @@
 package com.floreantpos.ui.views.order;
 
+import com.floreantpos.POSConstants;
 import com.floreantpos.actions.SettleTicketAction;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.ActionHistory;
@@ -9,6 +10,7 @@ import com.floreantpos.model.MenuItem;
 import com.floreantpos.model.MenuModifier;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketItem;
+import com.floreantpos.model.User;
 import com.floreantpos.model.dao.ActionHistoryDAO;
 import com.floreantpos.model.dao.MenuItemDAO;
 import com.floreantpos.model.dao.TicketDAO;
@@ -18,7 +20,6 @@ import com.floreantpos.ui.views.order.actions.GroupSelectionListener;
 import com.floreantpos.ui.views.order.actions.ItemSelectionListener;
 import com.floreantpos.ui.views.order.actions.ModifierSelectionListener;
 import com.floreantpos.ui.views.order.actions.OrderListener;
-import com.floreantpos.ui.views.payment.SettleTicketView;
 
 public class OrderController implements OrderListener, CategorySelectionListener, GroupSelectionListener, ItemSelectionListener, ModifierSelectionListener {
 	private OrderView orderView;
@@ -121,11 +122,12 @@ public class OrderController implements OrderListener, CategorySelectionListener
 
 	public void payOrderSelected(Ticket ticket) {
 		RootView.getInstance().showView(SwitchboardView.VIEW_NAME);
-		new SettleTicketAction(ticket).execute();
+		new SettleTicketAction(ticket.getId()).execute();
 		SwitchboardView.instance.updateTicketList();
 	}
 
-	public static void saveOrder(Ticket ticket) {
+	//VERIFIED
+	public synchronized static void saveOrder(Ticket ticket) {
 		if (ticket == null)
 			return;
 
@@ -135,13 +137,14 @@ public class OrderController implements OrderListener, CategorySelectionListener
 		ticketDAO.saveOrUpdate(ticket);
 
 		//			save the action
+		ActionHistoryDAO actionHistoryDAO = ActionHistoryDAO.getInstance();
+		User user = Application.getCurrentUser();
+		
 		if (newTicket) {
-			ActionHistoryDAO.getInstance().saveHistory(Application.getCurrentUser(), ActionHistory.NEW_CHECK,
-					com.floreantpos.POSConstants.RECEIPT_REPORT_TICKET_NO_LABEL + ":" + ticket.getId());
+			actionHistoryDAO.saveHistory(user, ActionHistory.NEW_CHECK, POSConstants.RECEIPT_REPORT_TICKET_NO_LABEL + ":" + ticket.getId());
 		}
 		else {
-			ActionHistoryDAO.getInstance().saveHistory(Application.getCurrentUser(), ActionHistory.EDIT_CHECK,
-					com.floreantpos.POSConstants.RECEIPT_REPORT_TICKET_NO_LABEL + ":" + ticket.getId());
+			actionHistoryDAO.saveHistory(user, ActionHistory.EDIT_CHECK, POSConstants.RECEIPT_REPORT_TICKET_NO_LABEL + ":" + ticket.getId());
 		}
 	}
 }

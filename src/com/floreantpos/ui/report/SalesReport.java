@@ -85,8 +85,9 @@ public class SalesReport extends Report {
 		HashMap<String, ReportItem> modifierMap = new HashMap<String, ReportItem>();
 
 		for (Iterator iter = tickets.iterator(); iter.hasNext();) {
-			Ticket ticket = (Ticket) iter.next();
-			ticket = TicketDAO.getInstance().initializeTicket(ticket);
+			Ticket t = (Ticket) iter.next();
+			
+			Ticket ticket = TicketDAO.getInstance().loadFullTicket(t.getId());
 
 			List<TicketItem> ticketItems = ticket.getTicketItems();
 			if (ticketItems == null)

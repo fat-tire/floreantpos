@@ -98,6 +98,9 @@ public abstract class BaseTicketDAO extends com.floreantpos.model.dao._RootDAO {
 	 * @param ticket a transient instance of a persistent class 
 	 * @return the class identifier
 	 */
+	
+	//TODO
+	
 	public java.lang.Integer save(com.floreantpos.model.Ticket ticket)
 	{
 		return (java.lang.Integer) super.save(ticket);
@@ -162,6 +165,8 @@ public abstract class BaseTicketDAO extends com.floreantpos.model.dao._RootDAO {
 		update((Object) ticket, s);
 	}
 
+	//TODO
+	
 	/**
 	 * Remove a persistent instance from the datastore. The argument may be an instance associated with the receiving
 	 * Session or a transient instance with an identifier associated with existing persistent state. 
