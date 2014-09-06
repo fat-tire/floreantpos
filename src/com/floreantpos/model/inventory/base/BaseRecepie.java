@@ -46,7 +46,7 @@ public abstract class BaseRecepie  implements Comparable, Serializable {
 	private com.floreantpos.model.MenuItem menuItem;
 
 	// collections
-	private java.util.List<com.floreantpos.model.inventory.RecepieItem> recepieItem;
+	private java.util.Set<com.floreantpos.model.inventory.RecepieItem> recepieItems;
 
 
 
@@ -90,23 +90,23 @@ public abstract class BaseRecepie  implements Comparable, Serializable {
 
 
 	/**
-	 * Return the value associated with the column: recepieItem
+	 * Return the value associated with the column: recepieItems
 	 */
-	public java.util.List<com.floreantpos.model.inventory.RecepieItem> getRecepieItem () {
-					return recepieItem;
+	public java.util.Set<com.floreantpos.model.inventory.RecepieItem> getRecepieItems () {
+					return recepieItems;
 			}
 
 	/**
-	 * Set the value related to the column: recepieItem
-	 * @param recepieItem the recepieItem value
+	 * Set the value related to the column: recepieItems
+	 * @param recepieItems the recepieItems value
 	 */
-	public void setRecepieItem (java.util.List<com.floreantpos.model.inventory.RecepieItem> recepieItem) {
-		this.recepieItem = recepieItem;
+	public void setRecepieItems (java.util.Set<com.floreantpos.model.inventory.RecepieItem> recepieItems) {
+		this.recepieItems = recepieItems;
 	}
 
-	public void addTorecepieItem (com.floreantpos.model.inventory.RecepieItem recepieItem) {
-		if (null == getRecepieItem()) setRecepieItem(new java.util.ArrayList<com.floreantpos.model.inventory.RecepieItem>());
-		getRecepieItem().add(recepieItem);
+	public void addTorecepieItems (com.floreantpos.model.inventory.RecepieItem recepieItem) {
+		if (null == getRecepieItems()) setRecepieItems(new java.util.TreeSet<com.floreantpos.model.inventory.RecepieItem>());
+		getRecepieItems().add(recepieItem);
 	}
 
 
