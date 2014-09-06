@@ -19,6 +19,18 @@ public class RecepieItem extends BaseRecepieItem {
 		super(id);
 	}
 
+	/**
+	 * Constructor for required fields
+	 */
+	public RecepieItem (
+		java.lang.Integer id,
+		com.floreantpos.model.inventory.Recepie recepie) {
+
+		super (
+			id,
+			recepie);
+	}
+
 /*[CONSTRUCTOR MARKER END]*/
 
 

@@ -1,5 +1,8 @@
 package com.floreantpos.model.inventory;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import com.floreantpos.model.inventory.base.BaseRecepie;
 
 
@@ -21,5 +24,14 @@ public class Recepie extends BaseRecepie {
 
 /*[CONSTRUCTOR MARKER END]*/
 
-
+	public void addRecepieItem(RecepieItem recepieItem) {
+		Set<RecepieItem> recepieItems = getRecepieItems();
+		if(recepieItems == null) {
+			recepieItems = new HashSet<RecepieItem>(3);
+			setRecepieItems(recepieItems);
+		}
+		
+		recepieItem.setRecepie(this);
+		recepieItems.add(recepieItem);
+	}
 }
