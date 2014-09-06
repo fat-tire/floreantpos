@@ -63,6 +63,7 @@ public class SwitchboardView extends JPanel implements ActionListener {
 	private OrderServiceExtension orderServiceExtension;
 
 	public static SwitchboardView instance;
+
 	//	private Timer ticketListUpdater;
 
 	/** Creates new form SwitchboardView */
@@ -99,7 +100,7 @@ public class SwitchboardView extends JPanel implements ActionListener {
 		//		ticketListUpdater = new Timer(30 * 1000, new TicketListUpdaterTask());
 
 		applyComponentOrientation(ComponentOrientation.getOrientation(Locale.getDefault()));
-		
+
 		instance = this;
 	}
 
@@ -281,7 +282,7 @@ public class SwitchboardView extends JPanel implements ActionListener {
 
 	protected void doAssignDriver() {
 		try {
-			
+
 			Ticket ticket = getFirstSelectedTicket();
 
 			if (!Ticket.HOME_DELIVERY.equals(ticket.getTicketType())) {
@@ -397,7 +398,7 @@ public class SwitchboardView extends JPanel implements ActionListener {
 
 	private void doSettleTicket() {
 		try {
-			
+
 			List<Ticket> selectedTickets = openTicketList.getSelectedTickets();
 			if (selectedTickets.size() == 0 || selectedTickets.size() > 1) {
 				POSMessageDialog.showMessage(POSConstants.SELECT_ONE_TICKET_TO_SETTLE);
@@ -405,11 +406,11 @@ public class SwitchboardView extends JPanel implements ActionListener {
 			}
 
 			Ticket ticket = selectedTickets.get(0);
-			
+
 			new SettleTicketAction(ticket.getId()).execute();
-			
+
 			updateTicketList();
-			
+
 		} catch (Exception e) {
 			POSMessageDialog.showError(POSConstants.ERROR_MESSAGE, e);
 		}
@@ -424,7 +425,7 @@ public class SwitchboardView extends JPanel implements ActionListener {
 			}
 
 			List<Ticket> ticketsToShow = new ArrayList<Ticket>();
-			
+
 			for (int i = 0; i < selectedTickets.size(); i++) {
 				Ticket ticket = selectedTickets.get(i);
 				ticketsToShow.add(TicketDAO.getInstance().loadFullTicket(ticket.getId()));
@@ -459,11 +460,11 @@ public class SwitchboardView extends JPanel implements ActionListener {
 	private void doVoidTicket() {
 		try {
 			Ticket selectedTicket = getFirstSelectedTicket();
-			
-			if(selectedTicket == null) {
+
+			if (selectedTicket == null) {
 				return;
 			}
-			
+
 			if (!selectedTicket.getTotalAmount().equals(selectedTicket.getDueAmount())) {
 				POSMessageDialog.showMessage(POSConstants.PARTIAL_PAID_VOID_ERROR);
 				return;
@@ -486,11 +487,11 @@ public class SwitchboardView extends JPanel implements ActionListener {
 	private void doSplitTicket() {
 		try {
 			Ticket selectedTicket = getFirstSelectedTicket();
-			
-			if(selectedTicket == null) {
+
+			if (selectedTicket == null) {
 				return;
 			}
-			
+
 			if (!selectedTicket.getTotalAmount().equals(selectedTicket.getDueAmount())) {
 				POSMessageDialog.showMessage(POSConstants.PARTIAL_PAID_VOID_ERROR);
 				return;
@@ -522,14 +523,14 @@ public class SwitchboardView extends JPanel implements ActionListener {
 	}
 
 	private void editTicket(Ticket ticket) {
-		if(ticket.isPaid()) {
+		if (ticket.isPaid()) {
 			POSMessageDialog.showMessage("Paid ticket cannot be edited");
 			return;
 		}
-		
+
 		Ticket ticketToEdit = TicketDAO.getInstance().loadFullTicket(ticket.getId());
 		OrderView.getInstance().setCurrentTicket(ticketToEdit);
-		
+
 		RootView.getInstance().showView(OrderView.VIEW_NAME);
 	}
 
@@ -607,9 +608,9 @@ public class SwitchboardView extends JPanel implements ActionListener {
 		if (dialog.isCanceled()) {
 			return;
 		}
-		
+
 		List<Ticket> ticketsToSettle = new ArrayList<Ticket>();
-		
+
 		for (Ticket ticket : selectedTickets) {
 			selectedTickets.add(TicketDAO.getInstance().loadFullTicket(ticket.getId()));
 		}
@@ -742,16 +743,9 @@ public class SwitchboardView extends JPanel implements ActionListener {
 	public void setVisible(boolean aFlag) {
 		super.setVisible(aFlag);
 
-		if (aFlag)
-			updateTicketList();
-
-		//		if (aFlag) {
-		//			updateView();
-		//			ticketListUpdater.start();
-		//		}
-		//		else {
-		//			ticketListUpdater.stop();
-		//		}
+		if (aFlag) {
+			updateView();
+		}
 	}
 
 	public void actionPerformed(ActionEvent e) {
@@ -802,28 +796,28 @@ public class SwitchboardView extends JPanel implements ActionListener {
 			doVoidTicket();
 		}
 	}
-	
+
 	private Ticket getFirstSelectedTicket() {
 		List<Ticket> selectedTickets = openTicketList.getSelectedTickets();
-		
+
 		if (selectedTickets.size() == 0 || selectedTickets.size() > 1) {
 			POSMessageDialog.showMessage("Please select a ticket");
 			return null;
 		}
 
 		Ticket ticket = selectedTickets.get(0);
-		
+
 		return ticket;
 	}
-	
+
 	private List<Ticket> getSelectedTickets() {
 		List<Ticket> selectedTickets = openTicketList.getSelectedTickets();
-		
+
 		if (selectedTickets.size() == 0 || selectedTickets.size() > 1) {
 			POSMessageDialog.showMessage("Please select at lease one ticket");
 			return null;
 		}
-		
+
 		return selectedTickets;
 	}
 
