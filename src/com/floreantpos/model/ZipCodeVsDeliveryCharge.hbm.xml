@@ -2,7 +2,7 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping package="com.floreantpos.model">
 	<class lazy="false" name="com.floreantpos.model.ZipCodeVsDeliveryCharge" table="ZIP_CODE_VS_DELIVERY_CHARGE">
-		<id column="AUTO_ID" name="autoId" type="java.lang.Integer">
+		<id column="AUTO_ID" name="id" type="java.lang.Integer">
 			<generator class="identity" />
 		</id>
 		<version column="MODIFIED_TIME" name="modifiedTime" type="timestamp" />
