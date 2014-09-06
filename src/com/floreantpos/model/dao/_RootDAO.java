@@ -110,7 +110,7 @@ public abstract class _RootDAO extends com.floreantpos.model.dao._BaseRootDAO {
 		configuration = configuration.addClass(UserType.class);
 		configuration = configuration.addClass(Customer.class);
 		configuration = configuration.addClass(PurchaseOrder.class);
-		configuration = configuration.addClass(ZipCodeVsDeliveryCharge.class);
+		//configuration = configuration.addClass(ZipCodeVsDeliveryCharge.class);
 		
 		configuration = configureInventoryClasses(configuration);
 		

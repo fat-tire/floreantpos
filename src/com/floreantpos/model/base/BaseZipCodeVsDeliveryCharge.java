@@ -17,7 +17,7 @@ public abstract class BaseZipCodeVsDeliveryCharge  implements Comparable, Serial
 
 	public static String REF = "ZipCodeVsDeliveryCharge";
 	public static String PROP_DELIVERY_CHARGE = "deliveryCharge";
-	public static String PROP_AUTO_ID = "autoId";
+	public static String PROP_ID = "id";
 	public static String PROP_ZIP_CODE = "zipCode";
 
 
@@ -29,8 +29,8 @@ public abstract class BaseZipCodeVsDeliveryCharge  implements Comparable, Serial
 	/**
 	 * Constructor for primary key
 	 */
-	public BaseZipCodeVsDeliveryCharge (java.lang.Integer autoId) {
-		this.setAutoId(autoId);
+	public BaseZipCodeVsDeliveryCharge (java.lang.Integer id) {
+		this.setId(id);
 		initialize();
 	}
 
@@ -38,10 +38,12 @@ public abstract class BaseZipCodeVsDeliveryCharge  implements Comparable, Serial
 	 * Constructor for required fields
 	 */
 	public BaseZipCodeVsDeliveryCharge (
-		java.lang.Integer autoId,
+		java.lang.Integer id,
+		java.lang.String zipCode,
 		double deliveryCharge) {
 
-		this.setAutoId(autoId);
+		this.setId(id);
+		this.setZipCode(zipCode);
 		this.setDeliveryCharge(deliveryCharge);
 		initialize();
 	}
@@ -53,7 +55,7 @@ public abstract class BaseZipCodeVsDeliveryCharge  implements Comparable, Serial
 	private int hashCode = Integer.MIN_VALUE;
 
 	// primary key
-	private java.lang.Integer autoId;
+	private java.lang.Integer id;
 
 	 java.util.Date modifiedTime;
 
@@ -69,16 +71,16 @@ public abstract class BaseZipCodeVsDeliveryCharge  implements Comparable, Serial
      *  generator-class="identity"
      *  column="AUTO_ID"
      */
-	public java.lang.Integer getAutoId () {
-		return autoId;
+	public java.lang.Integer getId () {
+		return id;
 	}
 
 	/**
 	 * Set the unique identifier of this class
-	 * @param autoId the new ID
+	 * @param id the new ID
 	 */
-	public void setAutoId (java.lang.Integer autoId) {
-		this.autoId = autoId;
+	public void setId (java.lang.Integer id) {
+		this.id = id;
 		this.hashCode = Integer.MIN_VALUE;
 	}
 
@@ -123,8 +125,8 @@ public abstract class BaseZipCodeVsDeliveryCharge  implements Comparable, Serial
 	 * Return the value associated with the column: DELIVERY_CHARGE
 	 */
 	public double getDeliveryCharge () {
-									return deliveryCharge;
-					}
+					return deliveryCharge;
+			}
 
 	/**
 	 * Set the value related to the column: DELIVERY_CHARGE
@@ -143,16 +145,16 @@ public abstract class BaseZipCodeVsDeliveryCharge  implements Comparable, Serial
 		if (!(obj instanceof com.floreantpos.model.ZipCodeVsDeliveryCharge)) return false;
 		else {
 			com.floreantpos.model.ZipCodeVsDeliveryCharge zipCodeVsDeliveryCharge = (com.floreantpos.model.ZipCodeVsDeliveryCharge) obj;
-			if (null == this.getAutoId() || null == zipCodeVsDeliveryCharge.getAutoId()) return false;
-			else return (this.getAutoId().equals(zipCodeVsDeliveryCharge.getAutoId()));
+			if (null == this.getId() || null == zipCodeVsDeliveryCharge.getId()) return false;
+			else return (this.getId().equals(zipCodeVsDeliveryCharge.getId()));
 		}
 	}
 
 	public int hashCode () {
 		if (Integer.MIN_VALUE == this.hashCode) {
-			if (null == this.getAutoId()) return super.hashCode();
+			if (null == this.getId()) return super.hashCode();
 			else {
-				String hashStr = this.getClass().getName() + ":" + this.getAutoId().hashCode();
+				String hashStr = this.getClass().getName() + ":" + this.getId().hashCode();
 				this.hashCode = hashStr.hashCode();
 			}
 		}

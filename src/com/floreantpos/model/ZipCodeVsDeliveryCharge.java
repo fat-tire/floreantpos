@@ -15,19 +15,21 @@ public class ZipCodeVsDeliveryCharge extends BaseZipCodeVsDeliveryCharge {
 	/**
 	 * Constructor for primary key
 	 */
-	public ZipCodeVsDeliveryCharge (java.lang.Integer autoId) {
-		super(autoId);
+	public ZipCodeVsDeliveryCharge (java.lang.Integer id) {
+		super(id);
 	}
 
 	/**
 	 * Constructor for required fields
 	 */
 	public ZipCodeVsDeliveryCharge (
-		java.lang.Integer autoId,
+		java.lang.Integer id,
+		java.lang.String zipCode,
 		double deliveryCharge) {
 
 		super (
-			autoId,
+			id,
+			zipCode,
 			deliveryCharge);
 	}
 

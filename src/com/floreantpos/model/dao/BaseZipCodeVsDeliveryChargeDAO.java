@@ -1,4 +1,4 @@
-package com.floreantpos.model.base;
+package com.floreantpos.model.dao;
 
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
@@ -39,27 +39,27 @@ public abstract class BaseZipCodeVsDeliveryChargeDAO extends com.floreantpos.mod
 	}
 
 	public com.floreantpos.model.ZipCodeVsDeliveryCharge get(java.lang.Integer key)
-	{
+		throws org.hibernate.HibernateException {
 		return (com.floreantpos.model.ZipCodeVsDeliveryCharge) get(getReferenceClass(), key);
 	}
 
 	public com.floreantpos.model.ZipCodeVsDeliveryCharge get(java.lang.Integer key, Session s)
-	{
+		throws org.hibernate.HibernateException {
 		return (com.floreantpos.model.ZipCodeVsDeliveryCharge) get(getReferenceClass(), key, s);
 	}
 
 	public com.floreantpos.model.ZipCodeVsDeliveryCharge load(java.lang.Integer key)
-	{
+		throws org.hibernate.HibernateException {
 		return (com.floreantpos.model.ZipCodeVsDeliveryCharge) load(getReferenceClass(), key);
 	}
 
 	public com.floreantpos.model.ZipCodeVsDeliveryCharge load(java.lang.Integer key, Session s)
-	{
+		throws org.hibernate.HibernateException {
 		return (com.floreantpos.model.ZipCodeVsDeliveryCharge) load(getReferenceClass(), key, s);
 	}
 
 	public com.floreantpos.model.ZipCodeVsDeliveryCharge loadInitialize(java.lang.Integer key, Session s) 
-	{ 
+			throws org.hibernate.HibernateException { 
 		com.floreantpos.model.ZipCodeVsDeliveryCharge obj = load(key, s); 
 		if (!Hibernate.isInitialized(obj)) {
 			Hibernate.initialize(obj);
@@ -99,7 +99,7 @@ public abstract class BaseZipCodeVsDeliveryChargeDAO extends com.floreantpos.mod
 	 * @return the class identifier
 	 */
 	public java.lang.Integer save(com.floreantpos.model.ZipCodeVsDeliveryCharge zipCodeVsDeliveryCharge)
-	{
+		throws org.hibernate.HibernateException {
 		return (java.lang.Integer) super.save(zipCodeVsDeliveryCharge);
 	}
 
@@ -112,7 +112,7 @@ public abstract class BaseZipCodeVsDeliveryChargeDAO extends com.floreantpos.mod
 	 * @return the class identifier
 	 */
 	public java.lang.Integer save(com.floreantpos.model.ZipCodeVsDeliveryCharge zipCodeVsDeliveryCharge, Session s)
-	{
+		throws org.hibernate.HibernateException {
 		return (java.lang.Integer) save((Object) zipCodeVsDeliveryCharge, s);
 	}
 
@@ -123,7 +123,7 @@ public abstract class BaseZipCodeVsDeliveryChargeDAO extends com.floreantpos.mod
 	 * @param zipCodeVsDeliveryCharge a transient instance containing new or updated state 
 	 */
 	public void saveOrUpdate(com.floreantpos.model.ZipCodeVsDeliveryCharge zipCodeVsDeliveryCharge)
-	{
+		throws org.hibernate.HibernateException {
 		saveOrUpdate((Object) zipCodeVsDeliveryCharge);
 	}
 
@@ -136,7 +136,7 @@ public abstract class BaseZipCodeVsDeliveryChargeDAO extends com.floreantpos.mod
 	 * @param s the Session.
 	 */
 	public void saveOrUpdate(com.floreantpos.model.ZipCodeVsDeliveryCharge zipCodeVsDeliveryCharge, Session s)
-	{
+		throws org.hibernate.HibernateException {
 		saveOrUpdate((Object) zipCodeVsDeliveryCharge, s);
 	}
 
@@ -146,7 +146,7 @@ public abstract class BaseZipCodeVsDeliveryChargeDAO extends com.floreantpos.mod
 	 * @param zipCodeVsDeliveryCharge a transient instance containing updated state
 	 */
 	public void update(com.floreantpos.model.ZipCodeVsDeliveryCharge zipCodeVsDeliveryCharge) 
-	{
+		throws org.hibernate.HibernateException {
 		update((Object) zipCodeVsDeliveryCharge);
 	}
 
@@ -158,7 +158,7 @@ public abstract class BaseZipCodeVsDeliveryChargeDAO extends com.floreantpos.mod
 	 * @param the Session
 	 */
 	public void update(com.floreantpos.model.ZipCodeVsDeliveryCharge zipCodeVsDeliveryCharge, Session s)
-	{
+		throws org.hibernate.HibernateException {
 		update((Object) zipCodeVsDeliveryCharge, s);
 	}
 
@@ -168,7 +168,7 @@ public abstract class BaseZipCodeVsDeliveryChargeDAO extends com.floreantpos.mod
 	 * @param id the instance ID to be removed
 	 */
 	public void delete(java.lang.Integer id)
-	{
+		throws org.hibernate.HibernateException {
 		delete((Object) load(id));
 	}
 
@@ -180,7 +180,7 @@ public abstract class BaseZipCodeVsDeliveryChargeDAO extends com.floreantpos.mod
 	 * @param s the Session
 	 */
 	public void delete(java.lang.Integer id, Session s)
-	{
+		throws org.hibernate.HibernateException {
 		delete((Object) load(id, s), s);
 	}
 
@@ -190,7 +190,7 @@ public abstract class BaseZipCodeVsDeliveryChargeDAO extends com.floreantpos.mod
 	 * @param zipCodeVsDeliveryCharge the instance to be removed
 	 */
 	public void delete(com.floreantpos.model.ZipCodeVsDeliveryCharge zipCodeVsDeliveryCharge)
-	{
+		throws org.hibernate.HibernateException {
 		delete((Object) zipCodeVsDeliveryCharge);
 	}
 
@@ -202,7 +202,7 @@ public abstract class BaseZipCodeVsDeliveryChargeDAO extends com.floreantpos.mod
 	 * @param s the Session
 	 */
 	public void delete(com.floreantpos.model.ZipCodeVsDeliveryCharge zipCodeVsDeliveryCharge, Session s)
-	{
+		throws org.hibernate.HibernateException {
 		delete((Object) zipCodeVsDeliveryCharge, s);
 	}
 	
@@ -217,7 +217,7 @@ public abstract class BaseZipCodeVsDeliveryChargeDAO extends com.floreantpos.mod
 	 * </ul>
 	 */
 	public void refresh (com.floreantpos.model.ZipCodeVsDeliveryCharge zipCodeVsDeliveryCharge, Session s)
-	{
+		throws org.hibernate.HibernateException {
 		refresh((Object) zipCodeVsDeliveryCharge, s);
 	}
 
