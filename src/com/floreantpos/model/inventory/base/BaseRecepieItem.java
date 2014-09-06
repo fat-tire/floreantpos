@@ -18,6 +18,7 @@ public abstract class BaseRecepieItem  implements Comparable, Serializable {
 	public static String REF = "RecepieItem";
 	public static String PROP_INVENTORY_ITEM = "inventoryItem";
 	public static String PROP_PERCENTAGE = "percentage";
+	public static String PROP_RECEPIE = "recepie";
 	public static String PROP_ID = "id";
 
 
@@ -31,6 +32,18 @@ public abstract class BaseRecepieItem  implements Comparable, Serializable {
 	 */
 	public BaseRecepieItem (java.lang.Integer id) {
 		this.setId(id);
+		initialize();
+	}
+
+	/**
+	 * Constructor for required fields
+	 */
+	public BaseRecepieItem (
+		java.lang.Integer id,
+		com.floreantpos.model.inventory.Recepie recepie) {
+
+		this.setId(id);
+		this.setRecepie(recepie);
 		initialize();
 	}
 
@@ -48,6 +61,7 @@ public abstract class BaseRecepieItem  implements Comparable, Serializable {
 
 	// many to one
 	private com.floreantpos.model.inventory.InventoryItem inventoryItem;
+	private com.floreantpos.model.inventory.Recepie recepie;
 
 
 
@@ -103,6 +117,23 @@ public abstract class BaseRecepieItem  implements Comparable, Serializable {
 	 */
 	public void setInventoryItem (com.floreantpos.model.inventory.InventoryItem inventoryItem) {
 		this.inventoryItem = inventoryItem;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: RECEPIE_ID
+	 */
+	public com.floreantpos.model.inventory.Recepie getRecepie () {
+					return recepie;
+			}
+
+	/**
+	 * Set the value related to the column: RECEPIE_ID
+	 * @param recepie the RECEPIE_ID value
+	 */
+	public void setRecepie (com.floreantpos.model.inventory.Recepie recepie) {
+		this.recepie = recepie;
 	}
 
 

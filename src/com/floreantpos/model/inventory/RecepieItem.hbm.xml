@@ -11,5 +11,9 @@
 		<many-to-one class="com.floreantpos.model.inventory.InventoryItem" lazy="false" name="inventoryItem">
 			<column name="INVENTORY_ITEM" />
 		</many-to-one>
+		
+		<many-to-one class="com.floreantpos.model.inventory.Recepie" name="recepie" not-null="true">
+			<column name="RECEPIE_ID" />
+		</many-to-one>
 	</class>
 </hibernate-mapping>
