@@ -24,7 +24,7 @@ public class TicketViewerTable extends JTable {
 	}
 
 	public TicketViewerTable(Ticket ticket) {
-		model = new TicketViewerTableModel();
+		model = new TicketViewerTableModel(this);
 		setModel(model);
 		
 		selectionModel = new DefaultListSelectionModel();

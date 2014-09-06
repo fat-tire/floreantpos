@@ -30,11 +30,12 @@ public class TicketViewerTableModel extends AbstractTableModel {
 	private boolean forReciptPrint;
 	private boolean printCookingInstructions;
 
-	public TicketViewerTableModel() {
-		this(null);
+	public TicketViewerTableModel(JTable table) {
+		this(table, null);
 	}
 
-	public TicketViewerTableModel(Ticket ticket) {
+	public TicketViewerTableModel(JTable table, Ticket ticket) {
+		this.table = table;
 		setTicket(ticket);
 	}
 
@@ -270,14 +271,6 @@ public class TicketViewerTableModel extends AbstractTableModel {
 			return null;
 
 		return tableRows.get(String.valueOf(index));
-	}
-
-	public JTable getTable() {
-		return table;
-	}
-
-	public void setTable(JTable table) {
-		this.table = table;
 	}
 
 	public Ticket getTicket() {
