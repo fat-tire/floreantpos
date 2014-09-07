@@ -41,6 +41,11 @@ public class InventoryItem extends BaseInventoryItem {
 		return visible == null ? true : visible;
 	}
 	
+	@Override
+	public String toString() {
+		return getName();
+	}
+	
 	public static InventoryItem fromCSV(String csvLine) {
 		if(StringUtils.isEmpty(csvLine)) {
 			return null;
