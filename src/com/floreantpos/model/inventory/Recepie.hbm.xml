@@ -10,11 +10,11 @@
 			<column name="MENU_ITEM" />
 		</many-to-one>
 
-		<set cascade="all" inverse="true" lazy="false" name="recepieItems">
+		<set cascade="all" inverse="false" lazy="false" name="recepieItems">
 			<key>
 				<column name="RECEPIE_ID" />
 			</key>
-			<one-to-many class="com.floreantpos.model.inventory.RecepieItem" />
+			<one-to-many class="com.floreantpos.model.inventory.RecepieItem"  />
 		</set>
 	</class>
 </hibernate-mapping>

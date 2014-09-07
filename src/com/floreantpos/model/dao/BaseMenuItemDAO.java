@@ -39,27 +39,27 @@ public abstract class BaseMenuItemDAO extends com.floreantpos.model.dao._RootDAO
 	}
 
 	public com.floreantpos.model.MenuItem get(java.lang.Integer key)
-	{
+		throws org.hibernate.HibernateException {
 		return (com.floreantpos.model.MenuItem) get(getReferenceClass(), key);
 	}
 
 	public com.floreantpos.model.MenuItem get(java.lang.Integer key, Session s)
-	{
+		throws org.hibernate.HibernateException {
 		return (com.floreantpos.model.MenuItem) get(getReferenceClass(), key, s);
 	}
 
 	public com.floreantpos.model.MenuItem load(java.lang.Integer key)
-	{
+		throws org.hibernate.HibernateException {
 		return (com.floreantpos.model.MenuItem) load(getReferenceClass(), key);
 	}
 
 	public com.floreantpos.model.MenuItem load(java.lang.Integer key, Session s)
-	{
+		throws org.hibernate.HibernateException {
 		return (com.floreantpos.model.MenuItem) load(getReferenceClass(), key, s);
 	}
 
 	public com.floreantpos.model.MenuItem loadInitialize(java.lang.Integer key, Session s) 
-	{ 
+			throws org.hibernate.HibernateException { 
 		com.floreantpos.model.MenuItem obj = load(key, s); 
 		if (!Hibernate.isInitialized(obj)) {
 			Hibernate.initialize(obj);
@@ -99,7 +99,7 @@ public abstract class BaseMenuItemDAO extends com.floreantpos.model.dao._RootDAO
 	 * @return the class identifier
 	 */
 	public java.lang.Integer save(com.floreantpos.model.MenuItem menuItem)
-	{
+		throws org.hibernate.HibernateException {
 		return (java.lang.Integer) super.save(menuItem);
 	}
 
@@ -112,7 +112,7 @@ public abstract class BaseMenuItemDAO extends com.floreantpos.model.dao._RootDAO
 	 * @return the class identifier
 	 */
 	public java.lang.Integer save(com.floreantpos.model.MenuItem menuItem, Session s)
-	{
+		throws org.hibernate.HibernateException {
 		return (java.lang.Integer) save((Object) menuItem, s);
 	}
 
@@ -123,7 +123,7 @@ public abstract class BaseMenuItemDAO extends com.floreantpos.model.dao._RootDAO
 	 * @param menuItem a transient instance containing new or updated state 
 	 */
 	public void saveOrUpdate(com.floreantpos.model.MenuItem menuItem)
-	{
+		throws org.hibernate.HibernateException {
 		saveOrUpdate((Object) menuItem);
 	}
 
@@ -136,7 +136,7 @@ public abstract class BaseMenuItemDAO extends com.floreantpos.model.dao._RootDAO
 	 * @param s the Session.
 	 */
 	public void saveOrUpdate(com.floreantpos.model.MenuItem menuItem, Session s)
-	{
+		throws org.hibernate.HibernateException {
 		saveOrUpdate((Object) menuItem, s);
 	}
 
@@ -146,7 +146,7 @@ public abstract class BaseMenuItemDAO extends com.floreantpos.model.dao._RootDAO
 	 * @param menuItem a transient instance containing updated state
 	 */
 	public void update(com.floreantpos.model.MenuItem menuItem) 
-	{
+		throws org.hibernate.HibernateException {
 		update((Object) menuItem);
 	}
 
@@ -158,7 +158,7 @@ public abstract class BaseMenuItemDAO extends com.floreantpos.model.dao._RootDAO
 	 * @param the Session
 	 */
 	public void update(com.floreantpos.model.MenuItem menuItem, Session s)
-	{
+		throws org.hibernate.HibernateException {
 		update((Object) menuItem, s);
 	}
 
@@ -168,7 +168,7 @@ public abstract class BaseMenuItemDAO extends com.floreantpos.model.dao._RootDAO
 	 * @param id the instance ID to be removed
 	 */
 	public void delete(java.lang.Integer id)
-	{
+		throws org.hibernate.HibernateException {
 		delete((Object) load(id));
 	}
 
@@ -180,7 +180,7 @@ public abstract class BaseMenuItemDAO extends com.floreantpos.model.dao._RootDAO
 	 * @param s the Session
 	 */
 	public void delete(java.lang.Integer id, Session s)
-	{
+		throws org.hibernate.HibernateException {
 		delete((Object) load(id, s), s);
 	}
 
@@ -190,7 +190,7 @@ public abstract class BaseMenuItemDAO extends com.floreantpos.model.dao._RootDAO
 	 * @param menuItem the instance to be removed
 	 */
 	public void delete(com.floreantpos.model.MenuItem menuItem)
-	{
+		throws org.hibernate.HibernateException {
 		delete((Object) menuItem);
 	}
 
@@ -202,7 +202,7 @@ public abstract class BaseMenuItemDAO extends com.floreantpos.model.dao._RootDAO
 	 * @param s the Session
 	 */
 	public void delete(com.floreantpos.model.MenuItem menuItem, Session s)
-	{
+		throws org.hibernate.HibernateException {
 		delete((Object) menuItem, s);
 	}
 	
@@ -217,7 +217,7 @@ public abstract class BaseMenuItemDAO extends com.floreantpos.model.dao._RootDAO
 	 * </ul>
 	 */
 	public void refresh (com.floreantpos.model.MenuItem menuItem, Session s)
-	{
+		throws org.hibernate.HibernateException {
 		refresh((Object) menuItem, s);
 	}
 
