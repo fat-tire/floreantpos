@@ -284,6 +284,10 @@ public class SwitchboardView extends JPanel implements ActionListener {
 		try {
 
 			Ticket ticket = getFirstSelectedTicket();
+			
+			if(ticket == null) {
+				return;
+			}
 
 			if (!Ticket.HOME_DELIVERY.equals(ticket.getTicketType())) {
 				POSMessageDialog.showError("Driver can be assigned only for Home Delivery");
