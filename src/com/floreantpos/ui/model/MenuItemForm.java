@@ -7,6 +7,7 @@
 package com.floreantpos.ui.model;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Dialog;
 import java.awt.Dimension;
 import java.awt.Image;
@@ -25,6 +26,8 @@ import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EtchedBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.table.AbstractTableModel;
 
 import net.miginfocom.swing.MigLayout;
@@ -35,6 +38,7 @@ import org.hibernate.Session;
 
 import com.floreantpos.Messages;
 import com.floreantpos.bo.ui.BackOfficeWindow;
+import com.floreantpos.extension.InventoryPlugin;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.MenuGroup;
 import com.floreantpos.model.MenuItem;
@@ -48,6 +52,7 @@ import com.floreantpos.swing.ComboBoxModel;
 import com.floreantpos.swing.DoubleDocument;
 import com.floreantpos.swing.DoubleTextField;
 import com.floreantpos.swing.FixedLengthDocument;
+import com.floreantpos.swing.IUpdatebleView;
 import com.floreantpos.swing.MessageDialog;
 import com.floreantpos.ui.BeanEditor;
 import com.floreantpos.ui.dialog.BeanEditorDialog;
@@ -60,7 +65,7 @@ import com.floreantpos.util.ShiftUtil;
  *
  * @author  MShahriar
  */
-public class MenuItemForm extends BeanEditor implements ActionListener {
+public class MenuItemForm extends BeanEditor implements ActionListener, ChangeListener {
 	ShiftTableModel shiftTableModel;
 	
 	/** Creates new form FoodItemEditor */
@@ -183,9 +188,20 @@ public class MenuItemForm extends BeanEditor implements ActionListener {
         jPanel1.add(chkVisible, "cell 1 8,alignx left,aligny top");
         jPanel1.add(btnNewTax, "cell 2 7,alignx left,aligny top");
         jPanel1.add(jLabel5, "cell 2 4");
-        add(jTabbedPane1);
-		
+        add(tabbedPane);
+        
 		setBean(menuItem);
+		
+		addRecepieExtension();
+	}
+
+	public void addRecepieExtension() {
+		InventoryPlugin plugin = Application.getPluginManager().getPlugin(InventoryPlugin.class);
+		if (plugin == null) {
+			return;
+		}
+		
+		plugin.addRecepieView(tabbedPane);
 	}
 
 	/** This method is called from within the constructor to
@@ -196,7 +212,7 @@ public class MenuItemForm extends BeanEditor implements ActionListener {
     // <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jTabbedPane1 = new javax.swing.JTabbedPane();
+        tabbedPane = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel1.setHorizontalAlignment(SwingConstants.TRAILING);
@@ -266,7 +282,7 @@ public class MenuItemForm extends BeanEditor implements ActionListener {
         chkVisible.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
         chkVisible.setMargin(new java.awt.Insets(0, 0, 0, 0));
 
-        jTabbedPane1.addTab(com.floreantpos.POSConstants.GENERAL, jPanel1);
+        tabbedPane.addTab(com.floreantpos.POSConstants.GENERAL, jPanel1);
 
         btnNewModifierGroup.setText(com.floreantpos.POSConstants.ADD);
         btnNewModifierGroup.setActionCommand("AddModifierGroup");
@@ -325,7 +341,7 @@ public class MenuItemForm extends BeanEditor implements ActionListener {
                 .addContainerGap())
         );
 
-        jTabbedPane1.addTab(com.floreantpos.POSConstants.MODIFIER_GROUPS, jPanel2);
+        tabbedPane.addTab(com.floreantpos.POSConstants.MODIFIER_GROUPS, jPanel2);
 
         btnDeleteShift.setText(com.floreantpos.POSConstants.DELETE_SHIFT);
 
@@ -369,7 +385,9 @@ public class MenuItemForm extends BeanEditor implements ActionListener {
                 .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jTabbedPane1.addTab(com.floreantpos.POSConstants.SHIFTS, jPanel3);
+        tabbedPane.addTab(com.floreantpos.POSConstants.SHIFTS, jPanel3);
+        
+        tabbedPane.addChangeListener(this);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnNewTaxdoCreateNewTax(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewTaxdoCreateNewTax
@@ -415,7 +433,7 @@ public class MenuItemForm extends BeanEditor implements ActionListener {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JTabbedPane tabbedPane;
     private javax.swing.JTable shiftTable;
     private javax.swing.JTable tableTicketItemModifierGroups;
     private DoubleTextField tfDiscountRate;
@@ -543,6 +561,18 @@ public class MenuItemForm extends BeanEditor implements ActionListener {
         } catch (Exception x){}
 		menuItem.setMenuItemModiferGroups(menuItemModifierGroups);
 		menuItem.setShifts(shiftTableModel.getShifts());
+		
+		int tabCount = tabbedPane.getTabCount();
+		for(int i = 0; i< tabCount; i++) {
+			Component componentAt = tabbedPane.getComponent(i);
+			if(componentAt instanceof IUpdatebleView) {
+				IUpdatebleView view = (IUpdatebleView) componentAt;
+				if(!view.updateModel(menuItem)) {
+					return false;
+				}
+			}
+		}
+		
 		return true;
 	}
 	
@@ -736,5 +766,18 @@ public class MenuItemForm extends BeanEditor implements ActionListener {
 		else if(actionCommand.equals(com.floreantpos.POSConstants.DELETE_SHIFT)) {
 			deleteShift();
 		}
+	}
+
+	@Override
+	public void stateChanged(ChangeEvent e) {
+		Component selectedComponent = tabbedPane.getSelectedComponent();
+		if(!(selectedComponent instanceof IUpdatebleView)){
+			return;
+		}
+		
+		IUpdatebleView view = (IUpdatebleView) selectedComponent;
+		
+		MenuItem menuItem = (MenuItem) getBean();
+		view.initView(menuItem);
 	}
 }

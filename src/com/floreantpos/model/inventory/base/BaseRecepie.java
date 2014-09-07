@@ -104,11 +104,6 @@ public abstract class BaseRecepie  implements Comparable, Serializable {
 		this.recepieItems = recepieItems;
 	}
 
-	public void addTorecepieItems (com.floreantpos.model.inventory.RecepieItem recepieItem) {
-		if (null == getRecepieItems()) setRecepieItems(new java.util.TreeSet<com.floreantpos.model.inventory.RecepieItem>());
-		getRecepieItems().add(recepieItem);
-	}
-
 
 
 

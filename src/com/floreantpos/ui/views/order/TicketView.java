@@ -346,7 +346,7 @@ public class TicketView extends JPanel {
 		}
 	}
 
-	private void doFinishOrder(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_doFinishOrder
+	private synchronized void doFinishOrder(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_doFinishOrder
 		try {
 
 			updateModel();
@@ -377,7 +377,7 @@ public class TicketView extends JPanel {
 		RootView.getInstance().showView(SwitchboardView.VIEW_NAME);
 	}//GEN-LAST:event_doCancelOrder
 
-	private void updateModel() {
+	private synchronized void updateModel() {
 		if (ticket.getTicketItems() == null || ticket.getTicketItems().size() == 0) {
 			throw new PosException(com.floreantpos.POSConstants.TICKET_IS_EMPTY_);
 		}
