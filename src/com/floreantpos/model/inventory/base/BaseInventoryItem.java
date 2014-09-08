@@ -16,28 +16,27 @@ import java.io.Serializable;
 public abstract class BaseInventoryItem  implements Comparable, Serializable {
 
 	public static String REF = "InventoryItem";
-	public static String PROP_ITEM_PER_PACK_SIZE = "itemPerPackSize";
-	public static String PROP_PURCHASE_PRICE = "purchasePrice";
-	public static String PROP_BARCODE = "barcode";
+	public static String PROP_PACKAGE_BARCODE = "packageBarcode";
 	public static String PROP_DESCRIPTION = "description";
 	public static String PROP_ITEM_VENDOR = "itemVendor";
 	public static String PROP_ITEM_GROUP = "itemGroup";
 	public static String PROP_VISIBLE = "visible";
+	public static String PROP_AVERAGE_PACKAGE_PRICE = "averagePackagePrice";
 	public static String PROP_SORT_ORDER = "sortOrder";
-	public static String PROP_PACK_SIZE_REORDER_LEVEL = "packSizeReorderLevel";
-	public static String PROP_PACK_SIZE_REPLENISH_LEVEL = "packSizeReplenishLevel";
-	public static String PROP_PACK_SIZE_QUANTITY_ON_HAND = "packSizeQuantityOnHand";
-	public static String PROP_TOTAL_PACKS = "totalPacks";
-	public static String PROP_TOTAL_BALANCE = "totalBalance";
+	public static String PROP_UNIT_BARCODE = "unitBarcode";
+	public static String PROP_PACKAGE_REPLENISH_LEVEL = "packageReplenishLevel";
+	public static String PROP_PACKAGE_DESCRIPTION = "packageDescription";
 	public static String PROP_NAME = "name";
 	public static String PROP_LAST_UPDATE_DATE = "lastUpdateDate";
+	public static String PROP_TOTAL_PACKAGES = "totalPackages";
 	public static String PROP_ITEM_LOCATION = "itemLocation";
-	public static String PROP_TOTAL_PACK_SIZE_VALUE = "totalPackSizeValue";
 	public static String PROP_CREATE_TIME = "createTime";
-	public static String PROP_SELLING_PRICE = "sellingPrice";
-	public static String PROP_PACK_SIZE_DESCRIPTION = "packSizeDescription";
 	public static String PROP_TOTAL_RECEPIE_UNITS = "totalRecepieUnits";
 	public static String PROP_ID = "id";
+	public static String PROP_UNIT_PER_PACKAGE = "unitPerPackage";
+	public static String PROP_PACKAGE_REORDER_LEVEL = "packageReorderLevel";
+	public static String PROP_UNIT_SELLING_PRICE = "unitSellingPrice";
+	public static String PROP_UNIT_PURCHASE_PRICE = "unitPurchasePrice";
 
 
 	// constructors
@@ -53,18 +52,6 @@ public abstract class BaseInventoryItem  implements Comparable, Serializable {
 		initialize();
 	}
 
-	/**
-	 * Constructor for required fields
-	 */
-	public BaseInventoryItem (
-		java.lang.Integer id,
-		java.lang.String name) {
-
-		this.setId(id);
-		this.setName(name);
-		initialize();
-	}
-
 	protected void initialize () {}
 
 
@@ -77,23 +64,22 @@ public abstract class BaseInventoryItem  implements Comparable, Serializable {
 	 java.util.Date modifiedTime;
 
 	// fields
-		protected java.lang.String name;
-		protected java.lang.String barcode;
-		protected java.lang.String packSizeDescription;
-		protected int itemPerPackSize;
-		protected java.lang.Integer sortOrder;
-		protected java.lang.String packSizeReorderLevel;
-		protected java.lang.String packSizeReplenishLevel;
-		protected java.lang.String description;
-		protected int packSizeQuantityOnHand;
-		protected int totalPackSizeValue;
 		protected java.util.Date createTime;
-		protected int totalPacks;
-		protected float totalBalance;
-		protected int totalRecepieUnits;
 		protected java.util.Date lastUpdateDate;
-		protected double purchasePrice;
-		protected double sellingPrice;
+		protected java.lang.String name;
+		protected java.lang.String packageBarcode;
+		protected java.lang.String unitBarcode;
+		protected java.lang.String packageDescription;
+		protected java.lang.Float unitPerPackage;
+		protected java.lang.Integer sortOrder;
+		protected int packageReorderLevel;
+		protected int packageReplenishLevel;
+		protected java.lang.String description;
+		protected double averagePackagePrice;
+		protected int totalPackages;
+		protected float totalRecepieUnits;
+		protected double unitPurchasePrice;
+		protected double unitSellingPrice;
 		protected java.lang.Boolean visible;
 
 	// many to one
@@ -143,176 +129,6 @@ public abstract class BaseInventoryItem  implements Comparable, Serializable {
 
 
 	/**
-	 * Return the value associated with the column: NAME
-	 */
-	public java.lang.String getName () {
-					return name;
-			}
-
-	/**
-	 * Set the value related to the column: NAME
-	 * @param name the NAME value
-	 */
-	public void setName (java.lang.String name) {
-		this.name = name;
-	}
-
-
-
-	/**
-	 * Return the value associated with the column: BARCODE
-	 */
-	public java.lang.String getBarcode () {
-					return barcode;
-			}
-
-	/**
-	 * Set the value related to the column: BARCODE
-	 * @param barcode the BARCODE value
-	 */
-	public void setBarcode (java.lang.String barcode) {
-		this.barcode = barcode;
-	}
-
-
-
-	/**
-	 * Return the value associated with the column: PACKSIZE_DESC
-	 */
-	public java.lang.String getPackSizeDescription () {
-					return packSizeDescription;
-			}
-
-	/**
-	 * Set the value related to the column: PACKSIZE_DESC
-	 * @param packSizeDescription the PACKSIZE_DESC value
-	 */
-	public void setPackSizeDescription (java.lang.String packSizeDescription) {
-		this.packSizeDescription = packSizeDescription;
-	}
-
-
-
-	/**
-	 * Return the value associated with the column: TOT_ITEM_PER_PACKSIZE
-	 */
-	public int getItemPerPackSize () {
-					return itemPerPackSize;
-			}
-
-	/**
-	 * Set the value related to the column: TOT_ITEM_PER_PACKSIZE
-	 * @param itemPerPackSize the TOT_ITEM_PER_PACKSIZE value
-	 */
-	public void setItemPerPackSize (int itemPerPackSize) {
-		this.itemPerPackSize = itemPerPackSize;
-	}
-
-
-
-	/**
-	 * Return the value associated with the column: SORT_ORDER
-	 */
-	public java.lang.Integer getSortOrder () {
-					return sortOrder == null ? Integer.valueOf(0) : sortOrder;
-			}
-
-	/**
-	 * Set the value related to the column: SORT_ORDER
-	 * @param sortOrder the SORT_ORDER value
-	 */
-	public void setSortOrder (java.lang.Integer sortOrder) {
-		this.sortOrder = sortOrder;
-	}
-
-
-
-	/**
-	 * Return the value associated with the column: PACK_SIZE_REORDER_LEVEL
-	 */
-	public java.lang.String getPackSizeReorderLevel () {
-					return packSizeReorderLevel;
-			}
-
-	/**
-	 * Set the value related to the column: PACK_SIZE_REORDER_LEVEL
-	 * @param packSizeReorderLevel the PACK_SIZE_REORDER_LEVEL value
-	 */
-	public void setPackSizeReorderLevel (java.lang.String packSizeReorderLevel) {
-		this.packSizeReorderLevel = packSizeReorderLevel;
-	}
-
-
-
-	/**
-	 * Return the value associated with the column: PACK_SIZE_REPLENISH_LEVEL
-	 */
-	public java.lang.String getPackSizeReplenishLevel () {
-					return packSizeReplenishLevel;
-			}
-
-	/**
-	 * Set the value related to the column: PACK_SIZE_REPLENISH_LEVEL
-	 * @param packSizeReplenishLevel the PACK_SIZE_REPLENISH_LEVEL value
-	 */
-	public void setPackSizeReplenishLevel (java.lang.String packSizeReplenishLevel) {
-		this.packSizeReplenishLevel = packSizeReplenishLevel;
-	}
-
-
-
-	/**
-	 * Return the value associated with the column: DESCRIPTION
-	 */
-	public java.lang.String getDescription () {
-					return description;
-			}
-
-	/**
-	 * Set the value related to the column: DESCRIPTION
-	 * @param description the DESCRIPTION value
-	 */
-	public void setDescription (java.lang.String description) {
-		this.description = description;
-	}
-
-
-
-	/**
-	 * Return the value associated with the column: PACKSIZE_QTY_ON_HAND
-	 */
-	public int getPackSizeQuantityOnHand () {
-					return packSizeQuantityOnHand;
-			}
-
-	/**
-	 * Set the value related to the column: PACKSIZE_QTY_ON_HAND
-	 * @param packSizeQuantityOnHand the PACKSIZE_QTY_ON_HAND value
-	 */
-	public void setPackSizeQuantityOnHand (int packSizeQuantityOnHand) {
-		this.packSizeQuantityOnHand = packSizeQuantityOnHand;
-	}
-
-
-
-	/**
-	 * Return the value associated with the column: TOT_PACKSIZE_VALUE
-	 */
-	public int getTotalPackSizeValue () {
-					return totalPackSizeValue;
-			}
-
-	/**
-	 * Set the value related to the column: TOT_PACKSIZE_VALUE
-	 * @param totalPackSizeValue the TOT_PACKSIZE_VALUE value
-	 */
-	public void setTotalPackSizeValue (int totalPackSizeValue) {
-		this.totalPackSizeValue = totalPackSizeValue;
-	}
-
-
-
-	/**
 	 * Return the value associated with the column: CREATE_TIME
 	 */
 	public java.util.Date getCreateTime () {
@@ -325,57 +141,6 @@ public abstract class BaseInventoryItem  implements Comparable, Serializable {
 	 */
 	public void setCreateTime (java.util.Date createTime) {
 		this.createTime = createTime;
-	}
-
-
-
-	/**
-	 * Return the value associated with the column: BALANCE_TOTAL_PACKS
-	 */
-	public int getTotalPacks () {
-					return totalPacks;
-			}
-
-	/**
-	 * Set the value related to the column: BALANCE_TOTAL_PACKS
-	 * @param totalPacks the BALANCE_TOTAL_PACKS value
-	 */
-	public void setTotalPacks (int totalPacks) {
-		this.totalPacks = totalPacks;
-	}
-
-
-
-	/**
-	 * Return the value associated with the column: BALANCE_TOTAL_ITEMS
-	 */
-	public float getTotalBalance () {
-					return totalBalance;
-			}
-
-	/**
-	 * Set the value related to the column: BALANCE_TOTAL_ITEMS
-	 * @param totalBalance the BALANCE_TOTAL_ITEMS value
-	 */
-	public void setTotalBalance (float totalBalance) {
-		this.totalBalance = totalBalance;
-	}
-
-
-
-	/**
-	 * Return the value associated with the column: BALANCE_TOTAL_RECEPIE_UNITS
-	 */
-	public int getTotalRecepieUnits () {
-					return totalRecepieUnits;
-			}
-
-	/**
-	 * Set the value related to the column: BALANCE_TOTAL_RECEPIE_UNITS
-	 * @param totalRecepieUnits the BALANCE_TOTAL_RECEPIE_UNITS value
-	 */
-	public void setTotalRecepieUnits (int totalRecepieUnits) {
-		this.totalRecepieUnits = totalRecepieUnits;
 	}
 
 
@@ -398,35 +163,239 @@ public abstract class BaseInventoryItem  implements Comparable, Serializable {
 
 
 	/**
-	 * Return the value associated with the column: PURCHASE_PRICE
+	 * Return the value associated with the column: NAME
 	 */
-	public double getPurchasePrice () {
-					return purchasePrice;
+	public java.lang.String getName () {
+					return name;
 			}
 
 	/**
-	 * Set the value related to the column: PURCHASE_PRICE
-	 * @param purchasePrice the PURCHASE_PRICE value
+	 * Set the value related to the column: NAME
+	 * @param name the NAME value
 	 */
-	public void setPurchasePrice (double purchasePrice) {
-		this.purchasePrice = purchasePrice;
+	public void setName (java.lang.String name) {
+		this.name = name;
 	}
 
 
 
 	/**
-	 * Return the value associated with the column: SELLING_PRICE
+	 * Return the value associated with the column: PACKAGE_BARCODE
 	 */
-	public double getSellingPrice () {
-					return sellingPrice;
+	public java.lang.String getPackageBarcode () {
+					return packageBarcode;
 			}
 
 	/**
-	 * Set the value related to the column: SELLING_PRICE
-	 * @param sellingPrice the SELLING_PRICE value
+	 * Set the value related to the column: PACKAGE_BARCODE
+	 * @param packageBarcode the PACKAGE_BARCODE value
 	 */
-	public void setSellingPrice (double sellingPrice) {
-		this.sellingPrice = sellingPrice;
+	public void setPackageBarcode (java.lang.String packageBarcode) {
+		this.packageBarcode = packageBarcode;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: UNIT_BARCODE
+	 */
+	public java.lang.String getUnitBarcode () {
+					return unitBarcode;
+			}
+
+	/**
+	 * Set the value related to the column: UNIT_BARCODE
+	 * @param unitBarcode the UNIT_BARCODE value
+	 */
+	public void setUnitBarcode (java.lang.String unitBarcode) {
+		this.unitBarcode = unitBarcode;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: PACKAGE_DESC
+	 */
+	public java.lang.String getPackageDescription () {
+					return packageDescription;
+			}
+
+	/**
+	 * Set the value related to the column: PACKAGE_DESC
+	 * @param packageDescription the PACKAGE_DESC value
+	 */
+	public void setPackageDescription (java.lang.String packageDescription) {
+		this.packageDescription = packageDescription;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: UNIT_PER_PACKAGE
+	 */
+	public java.lang.Float getUnitPerPackage () {
+					return unitPerPackage;
+			}
+
+	/**
+	 * Set the value related to the column: UNIT_PER_PACKAGE
+	 * @param unitPerPackage the UNIT_PER_PACKAGE value
+	 */
+	public void setUnitPerPackage (java.lang.Float unitPerPackage) {
+		this.unitPerPackage = unitPerPackage;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: SORT_ORDER
+	 */
+	public java.lang.Integer getSortOrder () {
+					return sortOrder == null ? Integer.valueOf(0) : sortOrder;
+			}
+
+	/**
+	 * Set the value related to the column: SORT_ORDER
+	 * @param sortOrder the SORT_ORDER value
+	 */
+	public void setSortOrder (java.lang.Integer sortOrder) {
+		this.sortOrder = sortOrder;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: PACKAGE_REORDER_LEVEL
+	 */
+	public int getPackageReorderLevel () {
+					return packageReorderLevel;
+			}
+
+	/**
+	 * Set the value related to the column: PACKAGE_REORDER_LEVEL
+	 * @param packageReorderLevel the PACKAGE_REORDER_LEVEL value
+	 */
+	public void setPackageReorderLevel (int packageReorderLevel) {
+		this.packageReorderLevel = packageReorderLevel;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: PACKAGE_REPLENISH_LEVEL
+	 */
+	public int getPackageReplenishLevel () {
+					return packageReplenishLevel;
+			}
+
+	/**
+	 * Set the value related to the column: PACKAGE_REPLENISH_LEVEL
+	 * @param packageReplenishLevel the PACKAGE_REPLENISH_LEVEL value
+	 */
+	public void setPackageReplenishLevel (int packageReplenishLevel) {
+		this.packageReplenishLevel = packageReplenishLevel;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: DESCRIPTION
+	 */
+	public java.lang.String getDescription () {
+					return description;
+			}
+
+	/**
+	 * Set the value related to the column: DESCRIPTION
+	 * @param description the DESCRIPTION value
+	 */
+	public void setDescription (java.lang.String description) {
+		this.description = description;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: AVERAGE_PACKAGE_PRICE
+	 */
+	public double getAveragePackagePrice () {
+					return averagePackagePrice;
+			}
+
+	/**
+	 * Set the value related to the column: AVERAGE_PACKAGE_PRICE
+	 * @param averagePackagePrice the AVERAGE_PACKAGE_PRICE value
+	 */
+	public void setAveragePackagePrice (double averagePackagePrice) {
+		this.averagePackagePrice = averagePackagePrice;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: TOTAL_PACKAGES
+	 */
+	public int getTotalPackages () {
+					return totalPackages;
+			}
+
+	/**
+	 * Set the value related to the column: TOTAL_PACKAGES
+	 * @param totalPackages the TOTAL_PACKAGES value
+	 */
+	public void setTotalPackages (int totalPackages) {
+		this.totalPackages = totalPackages;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: TOTAL_RECEPIE_UNITS
+	 */
+	public float getTotalRecepieUnits () {
+					return totalRecepieUnits;
+			}
+
+	/**
+	 * Set the value related to the column: TOTAL_RECEPIE_UNITS
+	 * @param totalRecepieUnits the TOTAL_RECEPIE_UNITS value
+	 */
+	public void setTotalRecepieUnits (float totalRecepieUnits) {
+		this.totalRecepieUnits = totalRecepieUnits;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: UNIT_PURCHASE_PRICE
+	 */
+	public double getUnitPurchasePrice () {
+					return unitPurchasePrice;
+			}
+
+	/**
+	 * Set the value related to the column: UNIT_PURCHASE_PRICE
+	 * @param unitPurchasePrice the UNIT_PURCHASE_PRICE value
+	 */
+	public void setUnitPurchasePrice (double unitPurchasePrice) {
+		this.unitPurchasePrice = unitPurchasePrice;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: UNIT_SELLING_PRICE
+	 */
+	public double getUnitSellingPrice () {
+					return unitSellingPrice;
+			}
+
+	/**
+	 * Set the value related to the column: UNIT_SELLING_PRICE
+	 * @param unitSellingPrice the UNIT_SELLING_PRICE value
+	 */
+	public void setUnitSellingPrice (double unitSellingPrice) {
+		this.unitSellingPrice = unitSellingPrice;
 	}
 
 
