@@ -22,19 +22,12 @@ public class InventoryItem extends BaseInventoryItem {
 		super(id);
 	}
 
-	/**
-	 * Constructor for required fields
-	 */
-	public InventoryItem (
-		java.lang.Integer id,
-		java.lang.String name) {
-
-		super (
-			id,
-			name);
-	}
-
 /*[CONSTRUCTOR MARKER END]*/
+	
+	@Override
+	public Float getUnitPerPackage() {
+		return super.getUnitPerPackage() == null ? 1 : super.getUnitPerPackage();
+	}
 
 	@Override
 	public Boolean isVisible() {
@@ -57,51 +50,33 @@ public class InventoryItem extends BaseInventoryItem {
 		
 		int index = 0;
 		
-//		new NotNull(), // name
-//        new Optional(), // barcode
-//        new Optional(), // description
-//        new Optional(), // packSizeDescription
-//        new Optional(new ParseInt()), // itemPerPackSize
-//        new Optional(new ParseInt()), // sortOrder
-//        new Optional(), // packSizeReorderLevel
-//        new Optional(), // packSizeReplenishLevel
-//        new Optional(new ParseInt()), // packSizeQuantityOnHand
-//        new Optional(new ParseInt()), // totalPackSizeValue
-//        new Optional(new ParseInt()), // totalPacks
-//        new Optional(new ParseDouble()), // totalBalance
-//        new Optional(new ParseInt()), // totalRecepieUnits
-//        new Optional(new ParseDouble()), // purchasePrice
-//        new Optional(new ParseDouble()), // sellingPrice
-		
 		try {
+			
+//			"NAME", "UNIT_PER_PACKAGE", "TOTAL_PACKAGES", "AVERAGE_PACKAGE_PRICE", "TOTAL_RECEPIE_UNITS",
+//			"UNIT_PURCHASE_PRICE", "PACKAGE_BARCODE", "UNIT_BARCODE", "PACKAGE_DESC", "SORT_ORDER", "PACKAGE_REORDER_LEVEL",
+//			"PACKAGE_REPLENISH_LEVEL","DESCRIPTION","UNIT_SELLING_PRICE"
+			
 			inventoryItem.setName(strings[index++]);
-			inventoryItem.setDescription(strings[index++]);
-			//group
-			inventoryItem.setItemPerPackSize(POSUtil.parseInteger(strings[index++]));
-			inventoryItem.setTotalPackSizeValue(POSUtil.parseInteger(strings[index++]));
-			inventoryItem.setSortOrder(POSUtil.parseInteger(strings[index++]));
-			//vendor
-			//location
-			inventoryItem.setPackSizeReorderLevel(strings[index++]);
-			inventoryItem.setPackSizeReplenishLevel(strings[index++]);
-			inventoryItem.setBarcode(strings[index++]);
-			inventoryItem.setTotalPacks(POSUtil.parseInteger(strings[index++]));
-			inventoryItem.setTotalBalance((float) POSUtil.parseDouble(strings[index++]));
+			inventoryItem.setUnitPerPackage((float) POSUtil.parseDouble(strings[index++]));
+			inventoryItem.setTotalPackages(POSUtil.parseInteger(strings[index++]));
+			inventoryItem.setAveragePackagePrice(POSUtil.parseInteger(strings[index++]));
 			inventoryItem.setTotalRecepieUnits(POSUtil.parseInteger(strings[index++]));
-			inventoryItem.setPurchasePrice(POSUtil.parseDouble(strings[index++]));
-			inventoryItem.setSellingPrice(POSUtil.parseDouble(strings[index++]));
-			inventoryItem.setPackSizeDescription(strings[index++]);
+			inventoryItem.setUnitPurchasePrice(POSUtil.parseDouble(strings[index++]));
+			inventoryItem.setPackageBarcode(strings[index++]);
+			inventoryItem.setUnitBarcode(strings[index++]);
+			inventoryItem.setPackageDescription(strings[index++]);
+			inventoryItem.setSortOrder(POSUtil.parseInteger(strings[index++]));
+			inventoryItem.setPackageReorderLevel(POSUtil.parseInteger(strings[index++]));
+			inventoryItem.setPackageReplenishLevel(POSUtil.parseInteger(strings[index++]));
+			inventoryItem.setDescription(strings[index++]);
+			inventoryItem.setUnitSellingPrice(POSUtil.parseDouble(strings[index++]));
+			
 
 		} catch (Exception e) {
 			//e.printStackTrace();
 		}
-		//name, barcode, pack size description, item/pack size, sortorder, pack size reorder level, pack size replenish level, description, total packs, total balance, total recepie unit, total pack size value, purchase price, selling price
 		
 		return inventoryItem;
-
-//		inventoryItem.setItemGroup((InventoryGroup) cbGroup.getSelectedItem());
-//		inventoryItem.setItemLocation((InventoryLocation) cbLocation.getSelectedItem());
-//		inventoryItem.setItemVendor((InventoryVendor) cbVendor.getSelectedItem());
 	}
 
 }
