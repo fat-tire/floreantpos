@@ -43,7 +43,6 @@ import com.floreantpos.swing.PosButton;
 import com.floreantpos.ui.dialog.ManagerDialog;
 import com.floreantpos.ui.dialog.NumberSelectionDialog2;
 import com.floreantpos.ui.dialog.POSMessageDialog;
-import com.floreantpos.ui.dialog.PaymentTypeSelectionDialog;
 import com.floreantpos.ui.dialog.PayoutDialog;
 import com.floreantpos.ui.dialog.VoidTicketDialog;
 import com.floreantpos.ui.views.order.DefaultOrderServiceExtension;
@@ -605,18 +604,13 @@ public class SwitchboardView extends JPanel implements ActionListener {
 			return;
 		}
 
-		PaymentTypeSelectionDialog dialog = new PaymentTypeSelectionDialog();
-		dialog.setSize(250, 400);
-		dialog.open();
-
-		if (dialog.isCanceled()) {
-			return;
-		}
-
 		List<Ticket> ticketsToSettle = new ArrayList<Ticket>();
 
-		for (Ticket ticket : selectedTickets) {
-			selectedTickets.add(TicketDAO.getInstance().loadFullTicket(ticket.getId()));
+		for (int i = 0; i < selectedTickets.size(); i++) {
+			Ticket ticket = selectedTickets.get(i);
+			
+			Ticket fullTicket = TicketDAO.getInstance().loadFullTicket(ticket.getId());
+			ticketsToSettle.add(fullTicket);
 		}
 
 		SettleTicketView posDialog = new SettleTicketView();
@@ -817,7 +811,7 @@ public class SwitchboardView extends JPanel implements ActionListener {
 	private List<Ticket> getSelectedTickets() {
 		List<Ticket> selectedTickets = openTicketList.getSelectedTickets();
 
-		if (selectedTickets.size() == 0 || selectedTickets.size() > 1) {
+		if (selectedTickets.size() == 0) {
 			POSMessageDialog.showMessage("Please select at lease one ticket");
 			return null;
 		}
