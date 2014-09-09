@@ -2,13 +2,17 @@ package com.floreantpos.ui.views.payment;
 
 import java.awt.BorderLayout;
 import java.io.IOException;
+import java.io.StringReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import javax.json.Json;
+import javax.json.JsonArray;
+import javax.json.JsonNumber;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
 import javax.swing.JOptionPane;
@@ -20,14 +24,12 @@ import org.apache.commons.lang.StringUtils;
 
 import com.floreantpos.POSConstants;
 import com.floreantpos.PosException;
-import com.floreantpos.bo.ui.BackOfficeWindow;
 import com.floreantpos.config.CardConfig;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.CardReader;
 import com.floreantpos.model.CashTransaction;
 import com.floreantpos.model.CouponAndDiscount;
 import com.floreantpos.model.CreditCardTransaction;
-import com.floreantpos.model.Customer;
 import com.floreantpos.model.Gratuity;
 import com.floreantpos.model.MerchantGateway;
 import com.floreantpos.model.PaymentType;
@@ -186,7 +188,6 @@ public class SettleTicketView extends POSDialog implements CardInputListener {
 
 		ticket.setGratuity(gratuity);
 		ticket.calculatePrice();
-		//TicketDAO.getInstance().saveOrUpdate(ticket);
 		OrderController.saveOrder(ticket);
 
 		ticketDetailView.updateView();
@@ -217,7 +218,6 @@ public class SettleTicketView extends POSDialog implements CardInputListener {
 				updateModel();
 
 				for (Ticket ticket : tickets) {
-					//TicketDAO.getInstance().saveOrUpdate(ticket);
 					OrderController.saveOrder(ticket);
 				}
 
@@ -299,7 +299,7 @@ public class SettleTicketView extends POSDialog implements CardInputListener {
 			for (Ticket ticket : ticketsToSettle) {
 				ticket.setTenderedAmount(tenderedAmount);
 				
-				submitMyKalaDiscount(ticket);
+				confirmLoyalityDiscount(ticket);
 			}
 
 			PosTransactionService transactionService = PosTransactionService.getInstance();
@@ -347,6 +347,19 @@ public class SettleTicketView extends POSDialog implements CardInputListener {
 		}
 	}
 
+	public void confirmLoyalityDiscount(Ticket ticket) throws IOException, MalformedURLException {
+		try {
+			if (ticket.hasProperty(LOYALITY_ID)) {
+				String url = buildLoyalityApiURL(ticket, ticket.getProperty(LOYALITY_ID));
+				url += "&paid=1";
+				
+				IOUtils.toString(new URL(url).openStream());
+			}
+		} catch (Exception e) {
+			POSMessageDialog.showError(e.getMessage(), e);
+		}
+	}
+
 	private void printTicket(Ticket ticket) {
 		try {
 			if (ticket.needsKitchenPrint()) {
@@ -356,39 +369,6 @@ public class SettleTicketView extends POSDialog implements CardInputListener {
 			JReportPrintService.printTicket(ticket);
 		} catch (Exception ee) {
 			POSMessageDialog.showError(Application.getPosWindow(), com.floreantpos.POSConstants.PRINT_ERROR, ee);
-		}
-	}
-
-	private void submitMyKalaDiscount(Ticket ticket) throws IOException, MalformedURLException {
-		if (!ticket.hasProperty(LOYALITY_ID)) {
-			return;
-		}
-		
-		try {
-			Restaurant restaurant = Application.getInstance().getRestaurant();
-
-			String transactionURL = "http://cloud.floreantpos.org/tri2/kala_api?";
-			transactionURL += "kala_id=" + ticket.getProperty(LOYALITY_ID);
-			transactionURL += "&store_id=" + restaurant.getUniqueId();
-			transactionURL += "&store_name=" + POSUtil.encodeURLString(restaurant.getName());
-			transactionURL += "&store_zip=" + restaurant.getZipCode();
-			transactionURL += "&terminal=" + ticket.getTerminal().getId();
-			transactionURL += "&server=" + POSUtil.encodeURLString(ticket.getOwner().getFirstName() + " " + ticket.getOwner().getLastName());
-			transactionURL += "&" + ticket.toURLForm();
-
-			if (ticket.getProperty(LOYALITY_COUPON) != null) {
-				transactionURL += "&coupon=" + ticket.getProperty(LOYALITY_COUPON);
-			}
-
-			String string = IOUtils.toString(new URL(transactionURL).openStream());
-			//		System.out.println(transactionURL);
-			//		System.out.println(string);
-			//
-			if (string.contains("\"success\":false")) {
-				POSMessageDialog.showError("Coupon already used.");
-			}
-		} catch (Exception e) {
-			POSMessageDialog.showError("Error setting My Kala discount.", e);
 		}
 	}
 
@@ -527,105 +507,181 @@ public class SettleTicketView extends POSDialog implements CardInputListener {
 		}
 	}
 
-	public boolean hasMyKalaId() {
-		Ticket ticket = getTicketsToSettle().get(0);
+//	public boolean hasMyKalaId() {
+//		Ticket ticket = getTicketsToSettle().get(0);
+//
+//		Customer customer = ticket.getCustomer();
+//		if (customer != null && customer.hasProperty(LOYALITY_ID)) {
+//			return true;
+//		}
+//
+//		return false;
+//	}
 
-		Customer customer = ticket.getCustomer();
-		if (customer != null && customer.hasProperty(LOYALITY_ID)) {
-			return true;
+//	public KalaResponse getLoyalityResponse(String customerId) throws Exception {
+//		String getUserInfoURL = "http://cloud.floreantpos.org/triliant/api_user_detail.php?kala_id=" + customerId;
+//
+//		JsonReader reader = Json.createReader(new URL(getUserInfoURL).openStream());
+//		JsonObject object = reader.readObject();
+//
+//		System.out.println(object);
+//
+//		KalaResponse kalaResponse = new KalaResponse();
+//		kalaResponse.parse(object);
+//
+//		return kalaResponse;
+//	}
+	
+	public void submitMyKalaDiscount(Ticket ticket) {
+		if (ticket.hasProperty(LOYALITY_ID)) {
+			POSMessageDialog.showError("Loyality discount already added.");
+			return;
 		}
-
-		return false;
-	}
-
-	public KalaResponse getLoyalityResponse(String customerId) throws Exception {
-		String getUserInfoURL = "http://cloud.floreantpos.org/triliant/api_user_detail.php?kala_id=" + customerId;
-
-		JsonReader reader = Json.createReader(new URL(getUserInfoURL).openStream());
-		JsonObject object = reader.readObject();
-
-		System.out.println(object);
-
-		KalaResponse kalaResponse = new KalaResponse();
-		kalaResponse.parse(object);
-
-		return kalaResponse;
-	}
-
-	public void makeMyKalaDiscount() {
+		
 		try {
-			String loyalityid = null;
-
-			Ticket ticket = getTicketsToSettle().get(0);
-
-			boolean loyalitydiscountPaid = POSUtil.getBoolean(ticket.getProperty(LOYALITY_DISCOUNT));
-			if (loyalitydiscountPaid) {
-				POSMessageDialog.showError("Kala user already added $" + ticket.getDiscountAmount() + " discount");
-				return;
-			}
-
-			Customer customer = ticket.getCustomer();
-			if (customer != null && customer.hasProperty(LOYALITY_ID)) {
-				loyalityid = customer.getProperty(LOYALITY_ID);
-			}
-			else {
-				loyalityid = JOptionPane.showInputDialog("Enter loyality id:");
-			}
+			String loyalityid = JOptionPane.showInputDialog("Enter loyality id:");
 
 			if (StringUtils.isEmpty(loyalityid)) {
 				return;
 			}
+			
+			ticket.addProperty(LOYALITY_ID, loyalityid);
+			
+			String transactionURL = buildLoyalityApiURL(ticket, loyalityid);
 
-			KalaResponse kalaResponse = getLoyalityResponse(loyalityid);
-
-			if (kalaResponse.getSuccess()) {
-				String message = kalaResponse.getMessage();
-				String point = kalaResponse.getPoints();
-				String couponno = kalaResponse.getCoupon();
-
-				message += "\n" + "You have earned " + point + " points";
-				message += "\n" + "Your coupon number is " + couponno;
-
-				int option = JOptionPane.showOptionDialog(Application.getPosWindow(), message, "", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE,
-						null, new String[] { "REDEEM", "LATER" }, "REDEEM");
-
-				if (option != JOptionPane.OK_OPTION) {
-					ticket.addProperty(LOYALITY_ID, loyalityid);
-					return;
-				}
-
-				String offer = kalaResponse.getOffer();
-				double offerPercentage = Double.parseDouble(offer);
-
-				TicketCouponAndDiscount coupon = new TicketCouponAndDiscount();
-				coupon.setName("loyality_offer_" + kalaResponse.getOffer_id());
-				coupon.setType(CouponAndDiscount.PERCENTAGE_PER_ORDER);
-				coupon.setValue(offerPercentage * 100.0);
-
-				ticket.addTocouponAndDiscounts(coupon);
-				ticket.addProperty(LOYALITY_ID, loyalityid);
-				ticket.addProperty(LOYALITY_DISCOUNT, "true");
-				ticket.addProperty(LOYALITY_COUPON, couponno);
-				ticket.addProperty(LOYALITY_POINT, point);
-				ticket.addProperty(LOYALITY_DISCOUNT_PERCENTAGE, offer);
-
-				updateModel();
-
-				//TicketDAO.getInstance().saveOrUpdate(ticket);
-				OrderController.saveOrder(ticket);
-
-				ticketDetailView.updateView();
-				paymentView.updateView();
+			String string = IOUtils.toString(new URL(transactionURL).openStream());
+			
+			JsonReader reader = Json.createReader(new StringReader(string));
+			JsonObject object = reader.readObject();
+			JsonArray jsonArray = (JsonArray) object.get("discounts");
+			for(int i = 0; i < jsonArray.size(); i++) {
+				JsonObject jsonObject = (JsonObject) jsonArray.get(i);
+				addCoupon(ticket, jsonObject);
 			}
+			//		System.out.println(transactionURL);
+			//		System.out.println(string);
+			//
+			
+			updateModel();
 
-			else {
-				POSMessageDialog.showError(BackOfficeWindow.getInstance(), kalaResponse.getMessage());
-			}
+			//TicketDAO.getInstance().saveOrUpdate(ticket);
+			OrderController.saveOrder(ticket);
 
+			ticketDetailView.updateView();
+			paymentView.updateView();
+			
+//			if (string.contains("\"success\":false")) {
+//				POSMessageDialog.showError("Coupon already used.");
+//			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			POSMessageDialog.showError(BackOfficeWindow.getInstance(), e.getMessage());
+			POSMessageDialog.showError("Error setting My Kala discount.", e);
 		}
 	}
+
+	public String buildLoyalityApiURL(Ticket ticket, String loyalityid) {
+		Restaurant restaurant = Application.getInstance().getRestaurant();
+
+		String transactionURL = "http://cloud.floreantpos.org/tri2/kala_api?";
+		transactionURL += "kala_id=" + loyalityid;
+		transactionURL += "&store_id=" + restaurant.getUniqueId();
+		transactionURL += "&store_name=" + POSUtil.encodeURLString(restaurant.getName());
+		transactionURL += "&store_zip=" + restaurant.getZipCode();
+		transactionURL += "&terminal=" + ticket.getTerminal().getId();
+		transactionURL += "&server=" + POSUtil.encodeURLString(ticket.getOwner().getFirstName() + " " + ticket.getOwner().getLastName());
+		transactionURL += "&" + ticket.toURLForm();
+		
+		return transactionURL;
+	}
+	
+	private void addCoupon(Ticket ticket, JsonObject jsonObject) {
+		Set<String> keys = jsonObject.keySet();
+		for (String key : keys) {
+			JsonNumber jsonNumber = jsonObject.getJsonNumber(key);
+			double doubleValue = jsonNumber.doubleValue();
+			
+			TicketCouponAndDiscount coupon = new TicketCouponAndDiscount();
+			coupon.setName(key);
+			coupon.setType(CouponAndDiscount.FIXED_PER_ORDER);
+			coupon.setValue(doubleValue);
+
+			ticket.addTocouponAndDiscounts(coupon);
+		}
+	}
+
+//	public void makeMyKalaDiscount() {
+//		try {
+//			String loyalityid = null;
+//
+//			Ticket ticket = getTicketsToSettle().get(0);
+//
+//			boolean loyalitydiscountPaid = POSUtil.getBoolean(ticket.getProperty(LOYALITY_DISCOUNT));
+//			if (loyalitydiscountPaid) {
+//				POSMessageDialog.showError("Kala user already added $" + ticket.getDiscountAmount() + " discount");
+//				return;
+//			}
+//
+//			Customer customer = ticket.getCustomer();
+//			if (customer != null && customer.hasProperty(LOYALITY_ID)) {
+//				loyalityid = customer.getProperty(LOYALITY_ID);
+//			}
+//			else {
+//				loyalityid = JOptionPane.showInputDialog("Enter loyality id:");
+//			}
+//
+//			if (StringUtils.isEmpty(loyalityid)) {
+//				return;
+//			}
+//
+//			KalaResponse kalaResponse = getLoyalityResponse(loyalityid);
+//
+//			if (kalaResponse.getSuccess()) {
+//				String message = kalaResponse.getMessage();
+//				String point = kalaResponse.getPoints();
+//				String couponno = kalaResponse.getCoupon();
+//
+//				message += "\n" + "You have earned " + point + " points";
+//				message += "\n" + "Your coupon number is " + couponno;
+//
+//				int option = JOptionPane.showOptionDialog(Application.getPosWindow(), message, "", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE,
+//						null, new String[] { "REDEEM", "LATER" }, "REDEEM");
+//
+//				if (option != JOptionPane.OK_OPTION) {
+//					ticket.addProperty(LOYALITY_ID, loyalityid);
+//					return;
+//				}
+//
+//				String offer = kalaResponse.getOffer();
+//				double offerPercentage = Double.parseDouble(offer);
+//
+//				TicketCouponAndDiscount coupon = new TicketCouponAndDiscount();
+//				coupon.setName("loyality_offer_" + kalaResponse.getOffer_id());
+//				coupon.setType(CouponAndDiscount.PERCENTAGE_PER_ORDER);
+//				coupon.setValue(offerPercentage * 100.0);
+//
+//				ticket.addTocouponAndDiscounts(coupon);
+//				ticket.addProperty(LOYALITY_ID, loyalityid);
+//				ticket.addProperty(LOYALITY_DISCOUNT, "true");
+//				ticket.addProperty(LOYALITY_COUPON, couponno);
+//				ticket.addProperty(LOYALITY_POINT, point);
+//				ticket.addProperty(LOYALITY_DISCOUNT_PERCENTAGE, offer);
+//
+//				updateModel();
+//
+//				//TicketDAO.getInstance().saveOrUpdate(ticket);
+//				OrderController.saveOrder(ticket);
+//
+//				ticketDetailView.updateView();
+//				paymentView.updateView();
+//			}
+//
+//			else {
+//				POSMessageDialog.showError(BackOfficeWindow.getInstance(), kalaResponse.getMessage());
+//			}
+//
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			POSMessageDialog.showError(BackOfficeWindow.getInstance(), e.getMessage());
+//		}
+//	}
 
 }
