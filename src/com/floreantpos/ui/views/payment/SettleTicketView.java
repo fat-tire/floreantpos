@@ -507,16 +507,15 @@ public class SettleTicketView extends POSDialog implements CardInputListener {
 		}
 	}
 
-//	public boolean hasMyKalaId() {
-//		Ticket ticket = getTicketsToSettle().get(0);
-//
-//		Customer customer = ticket.getCustomer();
-//		if (customer != null && customer.hasProperty(LOYALITY_ID)) {
-//			return true;
-//		}
-//
-//		return false;
-//	}
+	public boolean hasMyKalaId() {
+		Ticket ticket = getTicketsToSettle().get(0);
+
+		if (ticket.hasProperty(LOYALITY_ID)) {
+			return true;
+		}
+
+		return false;
+	}
 
 //	public KalaResponse getLoyalityResponse(String customerId) throws Exception {
 //		String getUserInfoURL = "http://cloud.floreantpos.org/triliant/api_user_detail.php?kala_id=" + customerId;
@@ -566,6 +565,8 @@ public class SettleTicketView extends POSDialog implements CardInputListener {
 
 			//TicketDAO.getInstance().saveOrUpdate(ticket);
 			OrderController.saveOrder(ticket);
+			
+			POSMessageDialog.showMessage("Congrations! you have discounts from Kala Loyality Check discounts list for more.");
 
 			ticketDetailView.updateView();
 			paymentView.updateView();
