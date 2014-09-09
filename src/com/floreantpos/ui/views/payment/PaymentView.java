@@ -3,7 +3,6 @@ package com.floreantpos.ui.views.payment;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.net.UnknownHostException;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.List;
@@ -19,9 +18,7 @@ import net.miginfocom.swing.MigLayout;
 
 import org.apache.commons.lang.StringUtils;
 
-import com.floreantpos.model.Customer;
 import com.floreantpos.model.Ticket;
-import com.floreantpos.model.dao.CustomerDAO;
 import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.swing.POSToggleButton;
 import com.floreantpos.swing.PosButton;
@@ -67,7 +64,7 @@ public class PaymentView extends JPanel {
 
 		initComponents();
 
-		btnUseKalaId.setActionCommand(ADD);
+//		btnUseKalaId.setActionCommand(ADD);
 	}
 
 	private void initComponents() {
@@ -190,24 +187,26 @@ public class PaymentView extends JPanel {
 		btnMyKalaDiscount = new PosButton();
 		btnMyKalaDiscount.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				settleTicketView.makeMyKalaDiscount();
+				//settleTicketView.makeMyKalaDiscount();
+				Ticket ticket = settleTicketView.getTicketsToSettle().get(0);
+				settleTicketView.submitMyKalaDiscount(ticket);
 			}
 		});
 
-		btnUseKalaId = new PosButton();
-		btnUseKalaId.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				String actionCommand = e.getActionCommand();
-				if (ADD.equals(actionCommand)) {
-					addMyKalaId();
-				}
-				else {
-					removeKalaId();
-				}
-			}
-		});
-		btnUseKalaId.setText("USE LOYALITY ID");
-		jPanel4.add(btnUseKalaId, "cell 0 0,growx");
+//		btnUseKalaId = new PosButton();
+//		btnUseKalaId.addActionListener(new ActionListener() {
+//			public void actionPerformed(ActionEvent e) {
+//				String actionCommand = e.getActionCommand();
+//				if (ADD.equals(actionCommand)) {
+//					addMyKalaId();
+//				}
+//				else {
+//					removeKalaId();
+//				}
+//			}
+//		});
+//		btnUseKalaId.setText("USE LOYALITY ID");
+//		jPanel4.add(btnUseKalaId, "cell 0 0,growx");
 		btnMyKalaDiscount.setText("LOYALITY DISCOUNT");
 		jPanel4.add(btnMyKalaDiscount, "cell 1 0,growx");
 		btnGratuity.setText("GRATUITY");
@@ -277,73 +276,31 @@ public class PaymentView extends JPanel {
 	protected void removeKalaId() {
 		Ticket ticket = settleTicketView.getTicketsToSettle().get(0);
 		ticket.getProperties().remove(SettleTicketView.LOYALITY_ID);
-		ticket.setCustomer(null);
 		TicketDAO.getInstance().saveOrUpdate(ticket);
 
-		btnUseKalaId.setText("USE MYLOYALITY ID");
-		btnUseKalaId.setActionCommand(ADD);
-		btnMyKalaDiscount.setEnabled(false);
+//		btnUseKalaId.setText("USE MYLOYALITY ID");
+//		btnUseKalaId.setActionCommand(ADD);
+//		btnMyKalaDiscount.setEnabled(false);
 
 		POSMessageDialog.showMessage("Loyality Id removed");
 	}
 
 	public void addMyKalaId() {
-		try {
-			String loyalityid = JOptionPane.showInputDialog("Enter loyality id:");
+		String loyalityid = JOptionPane.showInputDialog("Enter loyality id:");
 
-			if (StringUtils.isEmpty(loyalityid)) {
-				return;
-			}
-
-			KalaResponse kalaResponse = settleTicketView.getLoyalityResponse(loyalityid);
-
-			if (kalaResponse.getSuccess()) {
-
-				CustomerDAO dao = CustomerDAO.getInstance();
-
-				List<Customer> customers = dao.findBy(kalaResponse.getPhone1(), null, null);
-				Customer customer = null;
-
-				if (customers.size() > 0) {
-					customer = customers.get(0);
-				}
-				else {
-					customer = new Customer();
-					customer.setTelephoneNo(kalaResponse.getPhone1());
-					customer.setName(kalaResponse.getName());
-					//
-				}
-
-				customer.addProperty(SettleTicketView.LOYALITY_ID, kalaResponse.getMykala_id());
-				dao.save(customer);
-
-				Ticket ticket = settleTicketView.getTicketsToSettle().get(0);
-				ticket.setCustomer(customer);
-				ticket.addProperty(SettleTicketView.LOYALITY_ID, loyalityid);
-				TicketDAO.getInstance().saveOrUpdate(ticket);
-
-				btnUseKalaId.setActionCommand(REMOVE);
-				btnUseKalaId.setText("REMOVE MYLOYALITY ID");
-
-				String message = kalaResponse.getMessage();
-				String point = kalaResponse.getPoints();
-
-				message += "\n" + "You have earned " + point + " points";
-				POSMessageDialog.showMessage(message);
-				btnMyKalaDiscount.setEnabled(true);
-			}
-
-			else {
-				POSMessageDialog.showError(kalaResponse.getMessage());
-			}
-
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
-			POSMessageDialog.showError("Connection error");
-		} catch (Exception e) {
-			e.printStackTrace();
-			POSMessageDialog.showError(e.getMessage());
+		if (StringUtils.isEmpty(loyalityid)) {
+			return;
 		}
+
+		Ticket ticket = settleTicketView.getTicketsToSettle().get(0);
+		ticket.addProperty(SettleTicketView.LOYALITY_ID, loyalityid);
+		TicketDAO.getInstance().saveOrUpdate(ticket);
+
+//		btnUseKalaId.setActionCommand(REMOVE);
+//		btnUseKalaId.setText("REMOVE LOYALITY ID");
+
+		POSMessageDialog.showMessage("Loyality id set.");
+//		btnMyKalaDiscount.setEnabled(true);
 	}
 
 	protected void doSetGratuity() {
@@ -402,7 +359,7 @@ public class PaymentView extends JPanel {
 		}
 	};
 	private PosButton btnMyKalaDiscount;
-	private PosButton btnUseKalaId;
+	//private PosButton btnUseKalaId;
 
 	public void updateView() {
 		List<Ticket> tickets = settleTicketView.getTicketsToSettle();
@@ -419,14 +376,14 @@ public class PaymentView extends JPanel {
 		tfDueAmount.setText(NumberUtil.formatNumber(dueAmount));
 		tfAmountTendered.setText(NumberUtil.formatNumber(dueAmount));
 
-		if (settleTicketView.hasMyKalaId()) {
-			btnUseKalaId.setText("REMOVE LOYALITY ID");
-			btnUseKalaId.setActionCommand(REMOVE);
-			btnMyKalaDiscount.setEnabled(true);
-		}
-		else {
-			btnMyKalaDiscount.setEnabled(false);
-		}
+//		if (settleTicketView.hasMyKalaId()) {
+//			btnUseKalaId.setText("REMOVE LOYALITY ID");
+//			btnUseKalaId.setActionCommand(REMOVE);
+////			btnMyKalaDiscount.setEnabled(true);
+//		}
+//		else {
+////			btnMyKalaDiscount.setEnabled(false);
+//		}
 
 	}
 
