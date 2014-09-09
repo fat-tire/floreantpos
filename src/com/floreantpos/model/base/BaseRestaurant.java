@@ -23,6 +23,7 @@ public abstract class BaseRestaurant  implements Comparable, Serializable {
 	public static String PROP_TICKET_FOOTER_MESSAGE = "ticketFooterMessage";
 	public static String PROP_SERVICE_CHARGE_PERCENTAGE = "serviceChargePercentage";
 	public static String PROP_UNIQUE_ID = "uniqueId";
+	public static String PROP_ZIP_CODE = "zipCode";
 	public static String PROP_NAME = "name";
 	public static String PROP_DEFAULT_GRATUITY_PERCENTAGE = "defaultGratuityPercentage";
 	public static String PROP_CURRENCY_NAME = "currencyName";
@@ -59,23 +60,24 @@ public abstract class BaseRestaurant  implements Comparable, Serializable {
 	private java.lang.Integer id;
 
 	// fields
-	private java.lang.Integer uniqueId;
-	private java.lang.String name;
-	private java.lang.String addressLine1;
-	private java.lang.String addressLine2;
-	private java.lang.String addressLine3;
-	private java.lang.String telephone;
-	private java.lang.Integer capacity;
-	private java.lang.Integer tables;
-	private java.lang.Boolean autoDrawerPullEnable;
-	private java.lang.Integer drawerPullHour;
-	private java.lang.Integer drawerPullMin;
-	private java.lang.String currencyName;
-	private java.lang.String currencySymbol;
-	private java.lang.Double serviceChargePercentage;
-	private java.lang.Double defaultGratuityPercentage;
-	private java.lang.String ticketFooterMessage;
-	private java.lang.Boolean itemPriceIncludesTax;
+		protected java.lang.Integer uniqueId;
+		protected java.lang.String name;
+		protected java.lang.String addressLine1;
+		protected java.lang.String addressLine2;
+		protected java.lang.String addressLine3;
+		protected java.lang.String zipCode;
+		protected java.lang.String telephone;
+		protected java.lang.Integer capacity;
+		protected java.lang.Integer tables;
+		protected java.lang.Boolean autoDrawerPullEnable;
+		protected java.lang.Integer drawerPullHour;
+		protected java.lang.Integer drawerPullMin;
+		protected java.lang.String currencyName;
+		protected java.lang.String currencySymbol;
+		protected java.lang.Double serviceChargePercentage;
+		protected java.lang.Double defaultGratuityPercentage;
+		protected java.lang.String ticketFooterMessage;
+		protected java.lang.Boolean itemPriceIncludesTax;
 
 
 
@@ -182,6 +184,23 @@ public abstract class BaseRestaurant  implements Comparable, Serializable {
 	 */
 	public void setAddressLine3 (java.lang.String addressLine3) {
 		this.addressLine3 = addressLine3;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: ZIP_CODE
+	 */
+	public java.lang.String getZipCode () {
+					return zipCode;
+			}
+
+	/**
+	 * Set the value related to the column: ZIP_CODE
+	 * @param zipCode the ZIP_CODE value
+	 */
+	public void setZipCode (java.lang.String zipCode) {
+		this.zipCode = zipCode;
 	}
 
 

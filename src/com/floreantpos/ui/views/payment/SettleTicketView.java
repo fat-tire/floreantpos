@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLEncoder;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +32,7 @@ import com.floreantpos.model.Gratuity;
 import com.floreantpos.model.MerchantGateway;
 import com.floreantpos.model.PaymentType;
 import com.floreantpos.model.PosTransaction;
+import com.floreantpos.model.Restaurant;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketCouponAndDiscount;
 import com.floreantpos.report.JReportPrintService;
@@ -150,7 +150,7 @@ public class SettleTicketView extends POSDialog implements CardInputListener {
 				ticket.setTaxExempt(true);
 				ticket.calculatePrice();
 				//TicketDAO.getInstance().saveOrUpdate(ticket);
-				
+
 				OrderController.saveOrder(ticket);
 			}
 		}
@@ -298,12 +298,13 @@ public class SettleTicketView extends POSDialog implements CardInputListener {
 
 			for (Ticket ticket : ticketsToSettle) {
 				ticket.setTenderedAmount(tenderedAmount);
-				//submitMyKalaDiscount(ticket);
+				
+				submitMyKalaDiscount(ticket);
 			}
 
 			PosTransactionService transactionService = PosTransactionService.getInstance();
 			transactionService.settleTickets(ticketsToSettle, tenderedAmount, posTransaction, cardType, cardAuthorizationCode);
-			
+
 			for (Ticket ticket : ticketsToSettle) {
 				printTicket(ticket);
 			}
@@ -359,29 +360,35 @@ public class SettleTicketView extends POSDialog implements CardInputListener {
 	}
 
 	private void submitMyKalaDiscount(Ticket ticket) throws IOException, MalformedURLException {
-		if (ticket.hasProperty(LOYALITY_ID)) {
-			String transactionURL = "http://cloud.floreantpos.org/triliant/api_user_transaction.php?";
+		if (!ticket.hasProperty(LOYALITY_ID)) {
+			return;
+		}
+		
+		try {
+			Restaurant restaurant = Application.getInstance().getRestaurant();
+
+			String transactionURL = "http://cloud.floreantpos.org/tri2/kala_api?";
 			transactionURL += "kala_id=" + ticket.getProperty(LOYALITY_ID);
-			transactionURL += "&trans_id=" + ticket.getId();
-			transactionURL += "&product_name=" + URLEncoder.encode(ticket.getTicketItems().get(0).getName(), "utf-8");
-			transactionURL += "&product_price=" + ticket.getSubtotalAmount();
-			transactionURL += "&product_category=Food";
-			transactionURL += "&revenue_center=cash";
-			transactionURL += "&store_name=Floreant";
-			transactionURL += "&store_zip=17225";
-			transactionURL += "&store_id=" + Application.getInstance().getRestaurant().getUniqueId();
+			transactionURL += "&store_id=" + restaurant.getUniqueId();
+			transactionURL += "&store_name=" + POSUtil.encodeURLString(restaurant.getName());
+			transactionURL += "&store_zip=" + restaurant.getZipCode();
+			transactionURL += "&terminal=" + ticket.getTerminal().getId();
+			transactionURL += "&server=" + POSUtil.encodeURLString(ticket.getOwner().getFirstName() + " " + ticket.getOwner().getLastName());
+			transactionURL += "&" + ticket.toURLForm();
 
 			if (ticket.getProperty(LOYALITY_COUPON) != null) {
 				transactionURL += "&coupon=" + ticket.getProperty(LOYALITY_COUPON);
 			}
 
 			String string = IOUtils.toString(new URL(transactionURL).openStream());
-			System.out.println(transactionURL);
-			System.out.println(string);
-
+			//		System.out.println(transactionURL);
+			//		System.out.println(string);
+			//
 			if (string.contains("\"success\":false")) {
 				POSMessageDialog.showError("Coupon already used.");
 			}
+		} catch (Exception e) {
+			POSMessageDialog.showError("Error setting My Kala discount.", e);
 		}
 	}
 
@@ -463,10 +470,10 @@ public class SettleTicketView extends POSDialog implements CardInputListener {
 	@Override
 	public void cardInputted(CardInputter inputter) {
 		PaymentProcessWaitDialog waitDialog = new PaymentProcessWaitDialog(this);
-		
+
 		try {
 			waitDialog.setVisible(true);
-			
+
 			CardType authorizeNetCardType = CardType.findByValue(cardName);
 
 			if (inputter instanceof SwipeCardDialog) {
@@ -606,7 +613,7 @@ public class SettleTicketView extends POSDialog implements CardInputListener {
 
 				//TicketDAO.getInstance().saveOrUpdate(ticket);
 				OrderController.saveOrder(ticket);
-				
+
 				ticketDetailView.updateView();
 				paymentView.updateView();
 			}

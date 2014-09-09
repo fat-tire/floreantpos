@@ -1,5 +1,7 @@
 package com.floreantpos.util;
 
+import java.net.URLEncoder;
+
 import com.floreantpos.PosException;
 
 public class POSUtil {
@@ -91,6 +93,14 @@ public class POSUtil {
 			else {
 				return 0;
 			}
+		}
+	}
+
+	public static String encodeURLString(String s) {
+		try {
+			return URLEncoder.encode(s, "UTF-8");
+		} catch (Exception x) {
+			return s;
 		}
 	}
 }

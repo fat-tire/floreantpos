@@ -561,4 +561,26 @@ public class Ticket extends BaseTicket {
 		
 		return POSUtil.getBoolean(property);
 	}
+	
+	public String toURLForm() {
+		String s = "ticket_id=" + getId();
+		
+		List<TicketItem> items = getTicketItems();
+		if(items == null || items.size() == 0) {
+			return s;
+		}
+		
+		for (int i = 0; i < items.size(); i++) {
+			TicketItem ticketItem = items.get(i);
+			s += "&items[" + i + "][id]=" + ticketItem.getId();
+			s += "&items[" + i + "][name]=" + POSUtil.encodeURLString(ticketItem.getName());
+			s += "&items[" + i + "][price]=" + ticketItem.getSubtotalAmount();
+		}
+		
+		s+= "&tax=" + getTaxAmount();
+		s+= "&subtotal=" + getSubtotalAmount();
+		s+= "&grandtotal=" + getTotalAmount();
+		
+		return s;
+	}
 }
