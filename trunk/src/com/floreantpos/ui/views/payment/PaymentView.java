@@ -205,9 +205,7 @@ public class PaymentView extends JPanel {
 //				}
 //			}
 //		});
-//		btnUseKalaId.setText("USE LOYALITY ID");
-//		jPanel4.add(btnUseKalaId, "cell 0 0,growx");
-		btnMyKalaDiscount.setText("LOYALITY DISCOUNT");
+		btnMyKalaDiscount.setText("LOYALTY DISCOUNT");
 		jPanel4.add(btnMyKalaDiscount, "cell 1 0,growx");
 		btnGratuity.setText("GRATUITY");
 		jPanel4.add(btnGratuity, "cell 0 1,growx");
@@ -275,32 +273,24 @@ public class PaymentView extends JPanel {
 
 	protected void removeKalaId() {
 		Ticket ticket = settleTicketView.getTicketsToSettle().get(0);
-		ticket.getProperties().remove(SettleTicketView.LOYALITY_ID);
+		ticket.getProperties().remove(SettleTicketView.LOYALTY_ID);
 		TicketDAO.getInstance().saveOrUpdate(ticket);
 
-//		btnUseKalaId.setText("USE MYLOYALITY ID");
-//		btnUseKalaId.setActionCommand(ADD);
-//		btnMyKalaDiscount.setEnabled(false);
-
-		POSMessageDialog.showMessage("Loyality Id removed");
+		POSMessageDialog.showMessage("Loyalty Id removed");
 	}
 
 	public void addMyKalaId() {
-		String loyalityid = JOptionPane.showInputDialog("Enter loyality id:");
+		String loyaltyid = JOptionPane.showInputDialog("Enter loyalty id:");
 
-		if (StringUtils.isEmpty(loyalityid)) {
+		if (StringUtils.isEmpty(loyaltyid)) {
 			return;
 		}
 
 		Ticket ticket = settleTicketView.getTicketsToSettle().get(0);
-		ticket.addProperty(SettleTicketView.LOYALITY_ID, loyalityid);
+		ticket.addProperty(SettleTicketView.LOYALTY_ID, loyaltyid);
 		TicketDAO.getInstance().saveOrUpdate(ticket);
 
-//		btnUseKalaId.setActionCommand(REMOVE);
-//		btnUseKalaId.setText("REMOVE LOYALITY ID");
-
-		POSMessageDialog.showMessage("Loyality id set.");
-//		btnMyKalaDiscount.setEnabled(true);
+		POSMessageDialog.showMessage("Loyalty id set.");
 	}
 
 	protected void doSetGratuity() {
@@ -375,16 +365,6 @@ public class PaymentView extends JPanel {
 
 		tfDueAmount.setText(NumberUtil.formatNumber(dueAmount));
 		tfAmountTendered.setText(NumberUtil.formatNumber(dueAmount));
-
-//		if (settleTicketView.hasMyKalaId()) {
-//			btnUseKalaId.setText("REMOVE LOYALITY ID");
-//			btnUseKalaId.setActionCommand(REMOVE);
-////			btnMyKalaDiscount.setEnabled(true);
-//		}
-//		else {
-////			btnMyKalaDiscount.setEnabled(false);
-//		}
-
 	}
 
 	public double getTenderedAmount() throws ParseException {
