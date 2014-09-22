@@ -4,7 +4,7 @@
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="229"/>
+	<property name="ireport.y" value="291"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -51,6 +51,8 @@
 	<parameter name="dueAmountText" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="dueAmount" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="additionalProperties" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="approvalCode" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="cardPayment" class="java.lang.Boolean" isForPrompting="false"/>
 	<field name="itemQty" class="java.lang.String"/>
 	<field name="itemName" class="java.lang.String"/>
 	<field name="itemSubtotal" class="java.lang.String"/>
@@ -394,7 +396,7 @@
 		<band splitType="Prevent"/>
 	</lastPageFooter>
 	<summary>
-		<band height="179" splitType="Stretch">
+		<band height="220" splitType="Stretch">
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement key="staticText-8" x="5" y="58" width="87" height="13">
 					<printWhenExpression><![CDATA[$P{tipAmount}!=null]]></printWhenExpression>
@@ -579,7 +581,7 @@
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{discountAmount}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement key="textField-1" positionType="Float" x="0" y="165" width="148" height="12" isRemoveLineWhenBlank="true">
+				<reportElement key="textField-1" positionType="Float" x="0" y="208" width="148" height="12" isRemoveLineWhenBlank="true">
 					<printWhenExpression><![CDATA[$P{showFooter}==true]]></printWhenExpression>
 				</reportElement>
 				<box>
@@ -645,6 +647,27 @@
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{additionalProperties}]]></textFieldExpression>
 			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="staticText-9" x="0" y="190" width="148" height="13">
+					<printWhenExpression><![CDATA[$P{cardPayment}==true]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle" markup="none">
+					<font fontName="Monospaced" size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{approvalCode}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="177" width="148" height="13">
+					<printWhenExpression><![CDATA[$P{cardPayment}==true]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement>
+					<font fontName="Monospaced" size="9"/>
+				</textElement>
+				<text><![CDATA[Sign:]]></text>
+			</staticText>
 		</band>
 	</summary>
 </jasperReport>
