@@ -24,6 +24,7 @@ import com.floreantpos.POSConstants;
 import com.floreantpos.config.PrintConfig;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.Customer;
+import com.floreantpos.model.PosTransaction;
 import com.floreantpos.model.Restaurant;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketItem;
@@ -136,6 +137,12 @@ public class JReportPrintService {
 		map.put(GUEST_COUNT, POSConstants.RECEIPT_REPORT_GUEST_NO_LABEL + ticket.getNumberOfGuests());
 		map.put(SERVER_NAME, POSConstants.RECEIPT_REPORT_SERVER_LABEL + ticket.getOwner());
 		map.put(REPORT_DATE, POSConstants.RECEIPT_REPORT_DATE_LABEL + Application.formatDate(new Date()));
+		
+		String transactionType = ticket.getTransactionType();
+		if(PosTransaction.TYPE_CREDIT_CARD.equalsIgnoreCase(transactionType) || PosTransaction.TYPE_DEBIT_CARD.equalsIgnoreCase(transactionType)) {
+			map.put("cardPayment", true);
+			map.put("approvalCode", "Approval: " + ticket.getCardNumber());
+		}
 
 		StringBuilder ticketHeaderBuilder = buildTicketHeader(ticket, printProperties);
 
