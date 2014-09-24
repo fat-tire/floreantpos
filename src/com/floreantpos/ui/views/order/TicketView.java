@@ -350,16 +350,13 @@ public class TicketView extends JPanel {
 		try {
 
 			updateModel();
-			ticket.clearDeletedItems();
-			
-			OrderController.saveOrder(ticket);
 
 			if (ticket.needsKitchenPrint()) {
 				PosPrintService.printToKitchen(ticket);
 			}
 			
-			//ticket.clearDeletedItems();
-			//OrderController.saveOrder(ticket);
+			ticket.clearDeletedItems();
+			OrderController.saveOrder(ticket);
 
 			RootView.getInstance().showView(SwitchboardView.VIEW_NAME);
 
