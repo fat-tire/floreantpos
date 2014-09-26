@@ -162,7 +162,9 @@ public class PosTransactionService {
 	}
 
 	private void closeTicketIfApplicable(Ticket ticket, Date currentDate) {
-		if(ticket.getTicketType() == null || Ticket.DINE_IN.equals(ticket.getTicketType()) || Ticket.TAKE_OUT.equals(ticket.getTicketType())) {
+		if(ticket.getTicketType() == null || Ticket.DINE_IN.equals(ticket.getTicketType())
+				|| Ticket.TAKE_OUT.equals(ticket.getTicketType())
+				|| Ticket.BAR_TAB.equals(ticket.getTicketType())) {
 			ticket.setClosed(true);
 			ticket.setClosingDate(currentDate);
 		}

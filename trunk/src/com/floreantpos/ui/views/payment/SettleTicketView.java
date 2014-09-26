@@ -231,7 +231,13 @@ public class SettleTicketView extends POSDialog implements CardInputListener {
 
 	public void doSettle() {
 		try {
-
+			
+			Ticket ticket = getTicketsToSettle().get(0);
+			if(Ticket.BAR_TAB.equalsIgnoreCase(ticket.getTicketType())) {
+				doSettleBarTabTicket(ticket);
+				return;
+			}
+			
 			PaymentTypeSelectionDialog dialog = new PaymentTypeSelectionDialog();
 			dialog.setResizable(false);
 			dialog.pack();
@@ -279,6 +285,50 @@ public class SettleTicketView extends POSDialog implements CardInputListener {
 
 		} catch (Exception e) {
 			e.printStackTrace();
+		}
+	}
+
+	private void doSettleBarTabTicket(Ticket ticket) {
+		double totalAmount = ticket.getTotalAmount();
+		
+		ConfirmPayDialog confirmPayDialog = new ConfirmPayDialog();
+		confirmPayDialog.setAmount(totalAmount);
+		confirmPayDialog.open();
+
+		if (confirmPayDialog.isCanceled()) {
+			return;
+		}
+		
+		PaymentProcessWaitDialog waitDialog = new PaymentProcessWaitDialog(this);
+		waitDialog.setVisible(true);
+		
+		try {
+			
+			String transactionId = ticket.getProperty(Ticket.PROPERTY_CARD_TRANSACTION_ID);
+			
+			if (totalAmount > 25) {
+				AuthorizeDoNetProcessor.voidAmount(transactionId, 25);
+				
+				String cardTracks = ticket.getProperty(Ticket.PROPERTY_CARD_TRACKS);
+				String authCode = AuthorizeDoNetProcessor.process(cardTracks, totalAmount, CardType.VISA);
+				
+				waitDialog.setVisible(false);
+				
+				settleTickets(totalAmount, new CreditCardTransaction(), "", authCode);
+			}
+			else {
+				String authCode = AuthorizeDoNetProcessor.captureAmount(transactionId, totalAmount);
+				
+				waitDialog.setVisible(false);
+				
+				settleTickets(totalAmount, new CreditCardTransaction(), "", authCode);
+			}
+			
+			setVisible(false);
+		} catch (Exception e) {
+			POSMessageDialog.showError(e.getMessage(), e);
+		} finally {
+			waitDialog.setVisible(false);
 		}
 	}
 
