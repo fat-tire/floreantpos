@@ -17,6 +17,8 @@ public class SwipeCardDialog extends POSDialog implements CardInputter {
 	private CardInputListener cardInputListener;
 	private JPasswordField passwordField;
 	private String cardString;
+	private PosButton btnEnterAuthorizationCode;
+	private PosButton btnManualEntry;
 	
 	public SwipeCardDialog(CardInputListener cardInputListener) {
 		this.cardInputListener = cardInputListener;
@@ -35,7 +37,7 @@ public class SwipeCardDialog extends POSDialog implements CardInputter {
 		JPanel panel_2 = new JPanel();
 		panel.add(panel_2);
 		
-		PosButton btnManualEntry = new PosButton();
+		btnManualEntry = new PosButton();
 		panel_2.add(btnManualEntry);
 		btnManualEntry.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -44,7 +46,7 @@ public class SwipeCardDialog extends POSDialog implements CardInputter {
 		});
 		btnManualEntry.setText("MANUAL ENTRY");
 		
-		PosButton btnEnterAuthorizationCode = new PosButton();
+		btnEnterAuthorizationCode = new PosButton();
 		panel_2.add(btnEnterAuthorizationCode);
 		btnEnterAuthorizationCode.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -127,5 +129,13 @@ public class SwipeCardDialog extends POSDialog implements CardInputter {
 		dispose();
 		
 		cardInputListener.cardInputted(this);
+	}
+	
+	public void setManualEntryVisible(boolean visible) {
+		btnManualEntry.setVisible(visible);
+	}
+	
+	public void setAuthorizationEntryVisible(boolean visible) {
+		btnEnterAuthorizationCode.setVisible(visible);
 	}
 }

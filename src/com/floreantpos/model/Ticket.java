@@ -23,6 +23,10 @@ public class Ticket extends BaseTicket {
 	public final static String PICKUP = "PICKUP";
 	public final static String HOME_DELIVERY = "HOME DELIVERY";
 	public final static String DRIVE_THROUGH = "DRIVE THRU";
+	public final static String BAR_TAB = "BAR_TAB";
+	
+	public final static String PROPERTY_CARD_TRANSACTION_ID = "card_transaction_id";
+	public final static String PROPERTY_CARD_TRACKS = "card_tracks";
 
 	/* [CONSTRUCTOR MARKER BEGIN] */
 	public Ticket() {

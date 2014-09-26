@@ -16,9 +16,11 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
+import javax.swing.ButtonModel;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JToolBar;
 
 import net.miginfocom.swing.MigLayout;
 
@@ -26,6 +28,7 @@ import org.apache.commons.logging.LogFactory;
 
 import com.floreantpos.POSConstants;
 import com.floreantpos.PosException;
+import com.floreantpos.actions.NewBarTabAction;
 import com.floreantpos.actions.SettleTicketAction;
 import com.floreantpos.bo.ui.BackOfficeWindow;
 import com.floreantpos.extension.OrderServiceExtension;
@@ -51,6 +54,7 @@ import com.floreantpos.ui.views.order.RootView;
 import com.floreantpos.ui.views.payment.SettleTicketView;
 import com.floreantpos.util.NumberUtil;
 import com.floreantpos.util.TicketAlreadyExistsException;
+import com.jidesoft.swing.JideToggleButton;
 
 /**
  * 
@@ -136,6 +140,12 @@ public class SwitchboardView extends JPanel implements ActionListener {
 		lblUserName.setFont(new java.awt.Font("Tahoma", 1, 18));
 		lblUserName.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 		statusPanel.add(lblUserName, java.awt.BorderLayout.PAGE_START);
+		
+		JToolBar toolBar = new JToolBar();
+		toolBar.add(new JideToggleButton("DINE IN"));
+		toolBar.add(new JideToggleButton("TAKE OUT"));
+		
+		statusPanel.add(toolBar);
 
 		add(statusPanel, java.awt.BorderLayout.NORTH);
 
@@ -184,6 +194,10 @@ public class SwitchboardView extends JPanel implements ActionListener {
 		});
 		btnDriveThrough.setText("DRIVE THRU");
 		activityPanel.add(btnDriveThrough);
+		
+		btnBarTab = new PosButton("BAR TAB");
+		btnBarTab.setAction(new NewBarTabAction(this));
+		activityPanel.add(btnBarTab);
 
 		btnEditTicket.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/edit_ticket_32.png")));
 		btnEditTicket.setText(POSConstants.CAPITAL_EDIT);
@@ -727,6 +741,7 @@ public class SwitchboardView extends JPanel implements ActionListener {
 	private com.floreantpos.swing.PosButton btnSplitTicket;
 	private com.floreantpos.swing.PosButton btnTakeout;
 	private com.floreantpos.swing.PosButton btnVoidTicket;
+	private com.floreantpos.swing.PosButton btnBarTab;
 	private javax.swing.JLabel lblUserName;
 	private com.floreantpos.ui.TicketListView openTicketList;
 	private PosButton btnPickup;
