@@ -10,8 +10,10 @@ import javax.swing.JOptionPane;
 import net.authorize.data.creditcard.CardType;
 
 import com.floreantpos.main.Application;
+import com.floreantpos.model.PaymentType;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.ui.dialog.POSMessageDialog;
+import com.floreantpos.ui.dialog.PaymentTypeSelectionDialog;
 import com.floreantpos.ui.views.order.OrderView;
 import com.floreantpos.ui.views.order.RootView;
 import com.floreantpos.ui.views.payment.AuthorizeDoNetProcessor;
@@ -22,6 +24,7 @@ import com.floreantpos.ui.views.payment.SwipeCardDialog;
 
 public class NewBarTabAction extends AbstractAction implements CardInputListener {
 	private Component parentComponent;
+	private PaymentType selectedPaymentType;
 
 	public NewBarTabAction(Component parentComponent) {
 		super("BAR TAB");
@@ -31,6 +34,18 @@ public class NewBarTabAction extends AbstractAction implements CardInputListener
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		PaymentTypeSelectionDialog paymentTypeSelectionDialog = new PaymentTypeSelectionDialog();
+		paymentTypeSelectionDialog.setCashButtonVisible(false);
+		paymentTypeSelectionDialog.pack();
+		paymentTypeSelectionDialog.setLocationRelativeTo(parentComponent);
+		paymentTypeSelectionDialog.setVisible(true);
+		
+		if(paymentTypeSelectionDialog.isCanceled()) {
+			return;
+		}
+		
+		selectedPaymentType = paymentTypeSelectionDialog.getSelectedPaymentType();
+		
 		SwipeCardDialog dialog = new SwipeCardDialog(this);
 		dialog.setTitle("Enter credit card information");
 		dialog.setManualEntryVisible(false);
@@ -59,7 +74,9 @@ public class NewBarTabAction extends AbstractAction implements CardInputListener
 		waitDialog.setVisible(true);
 		
 		try {
-			String transactionId = AuthorizeDoNetProcessor.authorizeAmount(cardString, 25, CardType.VISA);
+			CardType cardType = CardType.findByValue(selectedPaymentType.getDisplayString());
+			
+			String transactionId = AuthorizeDoNetProcessor.authorizeAmount(cardString, 25, cardType);
 			
 			Ticket ticket = new Ticket();
 			
@@ -71,6 +88,7 @@ public class NewBarTabAction extends AbstractAction implements CardInputListener
 			ticket.setShift(application.getCurrentShift());
 			ticket.addProperty(Ticket.PROPERTY_CARD_TRANSACTION_ID, transactionId);
 			ticket.addProperty(Ticket.PROPERTY_CARD_TRACKS, cardString);
+			ticket.addProperty(Ticket.PROPERTY_CARD_NAME, selectedPaymentType.getDisplayString());
 
 			Calendar currentTime = Calendar.getInstance();
 			ticket.setCreateDate(currentTime.getTime());

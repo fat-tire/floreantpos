@@ -27,6 +27,8 @@ import com.floreantpos.swing.PosButton;
  */
 public class PaymentTypeSelectionDialog extends POSDialog {
 	PaymentType selectedPaymentType;
+	private PaymentSelectionButton btnCash;
+	private PaymentSelectionButton btnGiftCert;
 
 	/** Creates new form PaymentTypeSelectionDialog */
 	public PaymentTypeSelectionDialog() {
@@ -47,8 +49,10 @@ public class PaymentTypeSelectionDialog extends POSDialog {
 		content.setBorder(new EmptyBorder(5, 5, 5, 5));
 		
 		JPanel genericPanel = new JPanel(new GridLayout(1, 0, 15, 15));
-		genericPanel.add(new PaymentSelectionButton(PaymentType.CASH), "grow,wrap");
-		genericPanel.add(new PaymentSelectionButton(PaymentType.GIFT_CERTIFICATE));
+		btnCash = new PaymentSelectionButton(PaymentType.CASH);
+		genericPanel.add(btnCash, "grow,wrap");
+		btnGiftCert = new PaymentSelectionButton(PaymentType.GIFT_CERTIFICATE);
+		genericPanel.add(btnGiftCert);
 		content.add(genericPanel, "height 60px, wrap, growx");
 		
 		JPanel creditCardPanel = new JPanel(new GridLayout(1, 0, 10, 10));
@@ -113,5 +117,10 @@ public class PaymentTypeSelectionDialog extends POSDialog {
 			setCanceled(false);
 			dispose();
 		}
+	}
+	
+	public void setCashButtonVisible(boolean visible) {
+		btnCash.setVisible(visible);
+		btnGiftCert.setVisible(visible);
 	}
 }

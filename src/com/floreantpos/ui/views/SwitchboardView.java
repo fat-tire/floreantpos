@@ -16,11 +16,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
-import javax.swing.ButtonModel;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JToolBar;
 
 import net.miginfocom.swing.MigLayout;
 
@@ -54,7 +52,6 @@ import com.floreantpos.ui.views.order.RootView;
 import com.floreantpos.ui.views.payment.SettleTicketView;
 import com.floreantpos.util.NumberUtil;
 import com.floreantpos.util.TicketAlreadyExistsException;
-import com.jidesoft.swing.JideToggleButton;
 
 /**
  * 
@@ -141,12 +138,6 @@ public class SwitchboardView extends JPanel implements ActionListener {
 		lblUserName.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 		statusPanel.add(lblUserName, java.awt.BorderLayout.PAGE_START);
 		
-		JToolBar toolBar = new JToolBar();
-		toolBar.add(new JideToggleButton("DINE IN"));
-		toolBar.add(new JideToggleButton("TAKE OUT"));
-		
-		statusPanel.add(toolBar);
-
 		add(statusPanel, java.awt.BorderLayout.NORTH);
 
 		bottomPanel.setLayout(new java.awt.BorderLayout(5, 5));

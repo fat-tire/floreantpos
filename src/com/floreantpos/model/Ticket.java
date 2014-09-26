@@ -27,6 +27,7 @@ public class Ticket extends BaseTicket {
 	
 	public final static String PROPERTY_CARD_TRANSACTION_ID = "card_transaction_id";
 	public final static String PROPERTY_CARD_TRACKS = "card_tracks";
+	public static final String PROPERTY_CARD_NAME = "card_name";
 
 	/* [CONSTRUCTOR MARKER BEGIN] */
 	public Ticket() {
