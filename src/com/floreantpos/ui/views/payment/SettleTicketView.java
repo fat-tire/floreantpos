@@ -299,6 +299,9 @@ public class SettleTicketView extends POSDialog implements CardInputListener {
 			return;
 		}
 		
+		String cardName = ticket.getProperty(Ticket.PROPERTY_CARD_NAME);
+		CardType cardType = CardType.findByValue(cardName);
+		
 		PaymentProcessWaitDialog waitDialog = new PaymentProcessWaitDialog(this);
 		waitDialog.setVisible(true);
 		
@@ -310,7 +313,7 @@ public class SettleTicketView extends POSDialog implements CardInputListener {
 				AuthorizeDoNetProcessor.voidAmount(transactionId, 25);
 				
 				String cardTracks = ticket.getProperty(Ticket.PROPERTY_CARD_TRACKS);
-				String authCode = AuthorizeDoNetProcessor.process(cardTracks, totalAmount, CardType.VISA);
+				String authCode = AuthorizeDoNetProcessor.process(cardTracks, totalAmount, cardType);
 				
 				waitDialog.setVisible(false);
 				
