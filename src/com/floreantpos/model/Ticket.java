@@ -28,6 +28,11 @@ public class Ticket extends BaseTicket {
 	public final static String PROPERTY_CARD_TRANSACTION_ID = "card_transaction_id";
 	public final static String PROPERTY_CARD_TRACKS = "card_tracks";
 	public static final String PROPERTY_CARD_NAME = "card_name";
+	public static final String PROPERTY_PAYMENT_METHOD = "payment_method";
+	public static final String PROPERTY_CARD_INPUT_METHOD = "card_input_method";
+	public static final String PROPERTY_CARD_NUMBER = "card_number";
+	public static final String PROPERTY_CARD_EXP_YEAR = "card_exp_year";
+	public static final String PROPERTY_CARD_EXP_MONTH = "card_exp_month";
 
 	/* [CONSTRUCTOR MARKER BEGIN] */
 	public Ticket() {
