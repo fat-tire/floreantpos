@@ -14,10 +14,12 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
 
+import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -508,7 +510,9 @@ public class TicketView extends JPanel {
 			tfTax.setText("");
 			tfServiceCharge.setText("");
 			tfTotal.setText("");
-
+			
+			setBorder(BorderFactory.createTitledBorder(null, "Ticket [ NEW ]", TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION));
+			
 			return;
 		}
 		
@@ -534,6 +538,13 @@ public class TicketView extends JPanel {
 
 		tfServiceCharge.setText(NumberUtil.formatNumber(ticket.getServiceCharge()));
 		tfTotal.setText(NumberUtil.formatNumber(ticket.getTotalAmount()));
+		
+		if(ticket.getId() == null) {
+			setBorder(BorderFactory.createTitledBorder(null, "Ticket [ NEW ]", TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION));
+		}
+		else {
+			setBorder(BorderFactory.createTitledBorder(null, "Ticket #" + ticket.getId(), TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION));
+		}
 	}
 
 	public void addOrderListener(OrderListener listenre) {
