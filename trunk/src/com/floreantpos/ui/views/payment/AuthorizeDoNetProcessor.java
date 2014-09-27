@@ -103,6 +103,33 @@ public class AuthorizeDoNetProcessor {
 		}
 	}
 	
+	public static String authorizeAmount(String cardNumber, String expMonth, String expYear, double amount, CardType cardType) throws Exception {
+		Environment environment = createEnvironment();
+		Merchant merchant = createMerchant(environment);
+		
+		CreditCard creditCard = CreditCard.createCreditCard();
+		creditCard.setCardType(cardType);
+		creditCard.setExpirationYear(expYear);
+		creditCard.setExpirationMonth(expMonth);
+		creditCard.setCreditCardNumber(cardNumber);
+		
+		// Create transaction
+		Transaction authCaptureTransaction = merchant.createAIMTransaction(TransactionType.AUTH_ONLY, new BigDecimal(amount));
+		authCaptureTransaction.setCreditCard(creditCard);
+		
+		Result<Transaction> result = (Result<Transaction>) merchant.postTransaction(authCaptureTransaction);
+		
+		if (result.isApproved()) {
+			return result.getTransId();
+		}
+		else if (result.isDeclined()) {
+			throw new Exception("Card declined\n" + result.getResponseReasonCodes().get(0).getReasonText());
+		}
+		else {
+			throw new Exception("Error\n" + result.getResponseReasonCodes().get(0).getReasonText());
+		}
+	}
+	
 	public static String captureAmount(String transactionId, double amount) throws Exception {
 		Environment environment = createEnvironment();
 		Merchant merchant = createMerchant(environment);
