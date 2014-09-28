@@ -100,9 +100,11 @@ public class NewBarTabAction extends AbstractAction implements CardInputListener
 
 			Ticket ticket = createTicket(Application.getInstance());
 
+			ticket.addProperty(Ticket.PROPERTY_CARD_AUTH_CODE, authorizationCode);
 			ticket.addProperty(Ticket.PROPERTY_PAYMENT_METHOD, selectedPaymentType.getDisplayString());
 			ticket.addProperty(Ticket.PROPERTY_CARD_NAME, selectedPaymentType.getDisplayString());
 			ticket.addProperty(Ticket.PROPERTY_CARD_READER, CardReader.EXTERNAL_TERMINAL.name());
+			ticket.addProperty(Ticket.PROPERTY_ADVANCE_PAYMENT, "0");
 			
 			OrderView.getInstance().setCurrentTicket(ticket);
 			RootView.getInstance().showView(OrderView.VIEW_NAME);
@@ -135,12 +137,14 @@ public class NewBarTabAction extends AbstractAction implements CardInputListener
 			String transactionId = AuthorizeDoNetProcessor.authorizeAmount(cardString, 25, cardType);
 			
 			Ticket ticket = createTicket(application);
+			ticket.setPaidAmount(25.0);
 			
 			ticket.addProperty(Ticket.PROPERTY_PAYMENT_METHOD, selectedPaymentType.getDisplayString());
 			ticket.addProperty(Ticket.PROPERTY_CARD_NAME, selectedPaymentType.getDisplayString());
 			ticket.addProperty(Ticket.PROPERTY_CARD_TRANSACTION_ID, transactionId);
 			ticket.addProperty(Ticket.PROPERTY_CARD_TRACKS, cardString);
 			ticket.addProperty(Ticket.PROPERTY_CARD_READER, CardReader.SWIPE.name());
+			ticket.addProperty(Ticket.PROPERTY_ADVANCE_PAYMENT, "25");
 
 			waitDialog.setVisible(false);
 
@@ -178,6 +182,7 @@ public class NewBarTabAction extends AbstractAction implements CardInputListener
 			String transactionId = AuthorizeDoNetProcessor.authorizeAmount(cardNumber, expMonth, expYear, 25, cardType);
 			
 			Ticket ticket = createTicket(application);
+			ticket.setPaidAmount(25.0);
 			
 			ticket.addProperty(Ticket.PROPERTY_PAYMENT_METHOD, selectedPaymentType.getDisplayString());
 			ticket.addProperty(Ticket.PROPERTY_CARD_NAME, selectedPaymentType.getDisplayString());
@@ -186,6 +191,7 @@ public class NewBarTabAction extends AbstractAction implements CardInputListener
 			ticket.addProperty(Ticket.PROPERTY_CARD_EXP_YEAR, expYear);
 			ticket.addProperty(Ticket.PROPERTY_CARD_EXP_MONTH, expMonth);
 			ticket.addProperty(Ticket.PROPERTY_CARD_READER, CardReader.MANUAL.name());
+			ticket.addProperty(Ticket.PROPERTY_ADVANCE_PAYMENT, "25");
 			
 			waitDialog.setVisible(false);
 

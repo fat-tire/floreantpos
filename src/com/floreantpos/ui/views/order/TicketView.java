@@ -39,6 +39,7 @@ import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.TicketItemCookingInstruction;
 import com.floreantpos.model.TicketItemModifier;
+import com.floreantpos.model.TicketType;
 import com.floreantpos.model.dao.CookingInstructionDAO;
 import com.floreantpos.model.dao.MenuItemDAO;
 import com.floreantpos.print.PosPrintService;
@@ -358,8 +359,16 @@ public class TicketView extends JPanel {
 			if (ticket.needsKitchenPrint()) {
 				PosPrintService.printToKitchen(ticket);
 			}
-			//if(ticket.getTicketType())
 			
+			if(ticket.getType() == TicketType.BAR_TAB) {
+				double advancePayment = 0;
+				
+				try {
+					advancePayment = Double.parseDouble(ticket.getProperty(Ticket.PROPERTY_ADVANCE_PAYMENT));
+				} catch (Exception e) {}
+				
+				PosPrintService.printTicket(ticket, advancePayment);
+			}
 			
 			ticket.clearDeletedItems();
 			OrderController.saveOrder(ticket);
