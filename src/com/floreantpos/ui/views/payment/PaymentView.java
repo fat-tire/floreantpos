@@ -24,6 +24,9 @@ import com.floreantpos.swing.POSToggleButton;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.util.NumberUtil;
+import java.awt.Font;
+import com.floreantpos.swing.FocusedTextField;
+import javax.swing.SwingConstants;
 
 public class PaymentView extends JPanel {
 	private static final String ADD = "0";
@@ -264,11 +267,22 @@ public class PaymentView extends JPanel {
 
 		add(transparentPanel1, "cell 0 0,growx,aligny top");
 
-		transparentPanel1.setLayout(new MigLayout("", "[][grow,fill]", "[19px][19px]"));
+		transparentPanel1.setLayout(new MigLayout("", "[][grow,fill]", "[19px][][19px]"));
 		transparentPanel1.add(jLabel4, "cell 0 0,alignx right,aligny center");
-		transparentPanel1.add(jLabel6, "cell 0 1,alignx left,aligny center");
+		
+		lblAdvance = new JLabel();
+		lblAdvance.setText("ADVANCE:");
+		lblAdvance.setFont(new Font("Dialog", Font.BOLD, 12));
+		transparentPanel1.add(lblAdvance, "cell 0 1,alignx trailing");
+		
+		tfAdvance = new FocusedTextField();
+		tfAdvance.setHorizontalAlignment(SwingConstants.RIGHT);
+		tfAdvance.setFocusable(false);
+		tfAdvance.setEditable(false);
+		transparentPanel1.add(tfAdvance, "cell 1 1,growx");
+		transparentPanel1.add(jLabel6, "cell 0 2,alignx left,aligny center");
 		transparentPanel1.add(tfDueAmount, "cell 1 0,growx,aligny top");
-		transparentPanel1.add(tfAmountTendered, "cell 1 1,growx,aligny top");
+		transparentPanel1.add(tfAmountTendered, "cell 1 2,growx,aligny top");
 	}// </editor-fold>//GEN-END:initComponents
 
 	protected void removeKalaId() {
@@ -349,6 +363,8 @@ public class PaymentView extends JPanel {
 		}
 	};
 	private PosButton btnMyKalaDiscount;
+	private JLabel lblAdvance;
+	private FocusedTextField tfAdvance;
 	//private PosButton btnUseKalaId;
 
 	public void updateView() {
@@ -362,8 +378,10 @@ public class PaymentView extends JPanel {
 		}
 
 		double dueAmount = getDueAmount();
-
+		double advanceAmount = getAdvanceAmount();
+		
 		tfDueAmount.setText(NumberUtil.formatNumber(dueAmount));
+		tfAdvance.setText(NumberUtil.formatNumber(advanceAmount));
 		tfAmountTendered.setText(NumberUtil.formatNumber(dueAmount));
 	}
 
@@ -403,6 +421,19 @@ public class PaymentView extends JPanel {
 		double total = 0;
 		for (Ticket ticket : ticketsToSettle) {
 			total += ticket.getDueAmount();
+		}
+		return total;
+	}
+	
+	protected double getAdvanceAmount() {
+		List<Ticket> ticketsToSettle = settleTicketView.getTicketsToSettle();
+		if (ticketsToSettle == null) {
+			return 0;
+		}
+		
+		double total = 0;
+		for (Ticket ticket : ticketsToSettle) {
+			total += ticket.getAdvanceAmount();
 		}
 		return total;
 	}
