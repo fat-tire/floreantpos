@@ -26,6 +26,7 @@ public abstract class BaseTicket  implements Comparable, Serializable {
 	public static String PROP_DELIVERY_CHARGE = "deliveryCharge";
 	public static String PROP_NUMBER_OF_GUESTS = "numberOfGuests";
 	public static String PROP_PAID = "paid";
+	public static String PROP_ADVANCE_AMOUNT = "advanceAmount";
 	public static String PROP_ACTIVE_DATE = "activeDate";
 	public static String PROP_CARD_TYPE = "cardType";
 	public static String PROP_ASSIGNED_DRIVER = "assignedDriver";
@@ -102,6 +103,7 @@ public abstract class BaseTicket  implements Comparable, Serializable {
 		protected java.lang.Double tenderedAmount;
 		protected java.lang.Double paidAmount;
 		protected java.lang.Double dueAmount;
+		protected java.lang.Double advanceAmount;
 		protected java.lang.Integer tableNumber;
 		protected java.lang.Integer numberOfGuests;
 		protected java.lang.String transactionType;
@@ -475,6 +477,23 @@ public abstract class BaseTicket  implements Comparable, Serializable {
 	 */
 	public void setDueAmount (java.lang.Double dueAmount) {
 		this.dueAmount = dueAmount;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: ADVANCE_AMOUNT
+	 */
+	public java.lang.Double getAdvanceAmount () {
+									return advanceAmount == null ? Double.valueOf(0) : advanceAmount;
+					}
+
+	/**
+	 * Set the value related to the column: ADVANCE_AMOUNT
+	 * @param advanceAmount the ADVANCE_AMOUNT value
+	 */
+	public void setAdvanceAmount (java.lang.Double advanceAmount) {
+		this.advanceAmount = advanceAmount;
 	}
 
 

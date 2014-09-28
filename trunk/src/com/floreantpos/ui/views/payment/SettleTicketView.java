@@ -232,6 +232,7 @@ public class SettleTicketView extends POSDialog implements CardInputListener {
 
 	public void doSettle() {
 		try {
+			tenderedAmount = paymentView.getTenderedAmount();
 			
 			Ticket ticket = getTicketsToSettle().get(0);
 			if(ticket.getType() == TicketType.BAR_TAB) {
@@ -249,8 +250,6 @@ public class SettleTicketView extends POSDialog implements CardInputListener {
 
 			PaymentType paymentType = dialog.getSelectedPaymentType();
 			cardName = paymentType.getDisplayString();
-
-			tenderedAmount = paymentView.getTenderedAmount();
 
 			switch (paymentType) {
 				case CASH:
@@ -290,10 +289,8 @@ public class SettleTicketView extends POSDialog implements CardInputListener {
 	}
 
 	private void doSettleBarTabTicket(Ticket ticket) {
-		double totalAmount = ticket.getTotalAmount();
-		
 		ConfirmPayDialog confirmPayDialog = new ConfirmPayDialog();
-		confirmPayDialog.setAmount(totalAmount);
+		confirmPayDialog.setAmount(tenderedAmount);
 		confirmPayDialog.open();
 
 		if (confirmPayDialog.isCanceled()) {
@@ -310,22 +307,22 @@ public class SettleTicketView extends POSDialog implements CardInputListener {
 			
 			String transactionId = ticket.getProperty(Ticket.PROPERTY_CARD_TRANSACTION_ID);
 			
-			if (totalAmount > 25) {
-				AuthorizeDoNetProcessor.voidAmount(transactionId, 25);
+			if (tenderedAmount > Ticket.BAR_TAB_ADVANCE) {
+				AuthorizeDoNetProcessor.voidAmount(transactionId, Ticket.BAR_TAB_ADVANCE);
 				
 				String cardTracks = ticket.getProperty(Ticket.PROPERTY_CARD_TRACKS);
-				String authCode = AuthorizeDoNetProcessor.process(cardTracks, totalAmount, cardType);
+				String authCode = AuthorizeDoNetProcessor.process(cardTracks, tenderedAmount, cardType);
 				
 				waitDialog.setVisible(false);
 				
-				settleTickets(totalAmount, new CreditCardTransaction(), "", authCode);
+				settleTickets(tenderedAmount, new CreditCardTransaction(), "", authCode);
 			}
 			else {
-				String authCode = AuthorizeDoNetProcessor.captureAmount(transactionId, totalAmount);
+				String authCode = AuthorizeDoNetProcessor.captureAmount(transactionId, tenderedAmount);
 				
 				waitDialog.setVisible(false);
 				
-				settleTickets(totalAmount, new CreditCardTransaction(), "", authCode);
+				settleTickets(tenderedAmount, new CreditCardTransaction(), "", authCode);
 			}
 			
 			setVisible(false);
