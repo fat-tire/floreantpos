@@ -118,7 +118,7 @@ public class NewBarTabAction extends AbstractAction implements CardInputListener
 		Application application = Application.getInstance();
 		
 		String symbol = Application.getCurrencySymbol();
-		String message = symbol + "25 will be booked. Proceed?";
+		String message = symbol + Ticket.BAR_TAB_ADVANCE + " will be booked. Proceed?";
 		
 		int option = JOptionPane.showOptionDialog(parentComponent, message, "Please confirm", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
 		if(option != JOptionPane.YES_OPTION) {
@@ -134,17 +134,18 @@ public class NewBarTabAction extends AbstractAction implements CardInputListener
 		try {
 			CardType cardType = CardType.findByValue(selectedPaymentType.getDisplayString());
 			
-			String transactionId = AuthorizeDoNetProcessor.authorizeAmount(cardString, 25, cardType);
+			String transactionId = AuthorizeDoNetProcessor.authorizeAmount(cardString, Ticket.BAR_TAB_ADVANCE, cardType);
 			
 			Ticket ticket = createTicket(application);
-			ticket.setPaidAmount(25.0);
+			ticket.setAdvanceAmount(Ticket.BAR_TAB_ADVANCE);
+			ticket.setTenderedAmount(Ticket.BAR_TAB_ADVANCE);
 			
 			ticket.addProperty(Ticket.PROPERTY_PAYMENT_METHOD, selectedPaymentType.getDisplayString());
 			ticket.addProperty(Ticket.PROPERTY_CARD_NAME, selectedPaymentType.getDisplayString());
 			ticket.addProperty(Ticket.PROPERTY_CARD_TRANSACTION_ID, transactionId);
 			ticket.addProperty(Ticket.PROPERTY_CARD_TRACKS, cardString);
 			ticket.addProperty(Ticket.PROPERTY_CARD_READER, CardReader.SWIPE.name());
-			ticket.addProperty(Ticket.PROPERTY_ADVANCE_PAYMENT, "25");
+			ticket.addProperty(Ticket.PROPERTY_ADVANCE_PAYMENT, String.valueOf(Ticket.BAR_TAB_ADVANCE));
 
 			waitDialog.setVisible(false);
 
@@ -161,7 +162,7 @@ public class NewBarTabAction extends AbstractAction implements CardInputListener
 		Application application = Application.getInstance();
 		
 		String symbol = Application.getCurrencySymbol();
-		String message = symbol + "25 will be booked. Proceed?";
+		String message = symbol + Ticket.BAR_TAB_ADVANCE + " will be booked. Proceed?";
 		
 		int option = JOptionPane.showOptionDialog(parentComponent, message, "Please confirm", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
 		if(option != JOptionPane.YES_OPTION) {
@@ -179,10 +180,11 @@ public class NewBarTabAction extends AbstractAction implements CardInputListener
 		try {
 			CardType cardType = CardType.findByValue(selectedPaymentType.getDisplayString());
 			
-			String transactionId = AuthorizeDoNetProcessor.authorizeAmount(cardNumber, expMonth, expYear, 25, cardType);
+			String transactionId = AuthorizeDoNetProcessor.authorizeAmount(cardNumber, expMonth, expYear, Ticket.BAR_TAB_ADVANCE, cardType);
 			
 			Ticket ticket = createTicket(application);
-			ticket.setPaidAmount(25.0);
+			ticket.setAdvanceAmount(Ticket.BAR_TAB_ADVANCE);
+			ticket.setTenderedAmount(Ticket.BAR_TAB_ADVANCE);
 			
 			ticket.addProperty(Ticket.PROPERTY_PAYMENT_METHOD, selectedPaymentType.getDisplayString());
 			ticket.addProperty(Ticket.PROPERTY_CARD_NAME, selectedPaymentType.getDisplayString());
@@ -191,7 +193,7 @@ public class NewBarTabAction extends AbstractAction implements CardInputListener
 			ticket.addProperty(Ticket.PROPERTY_CARD_EXP_YEAR, expYear);
 			ticket.addProperty(Ticket.PROPERTY_CARD_EXP_MONTH, expMonth);
 			ticket.addProperty(Ticket.PROPERTY_CARD_READER, CardReader.MANUAL.name());
-			ticket.addProperty(Ticket.PROPERTY_ADVANCE_PAYMENT, "25");
+			ticket.addProperty(Ticket.PROPERTY_ADVANCE_PAYMENT, String.valueOf(Ticket.BAR_TAB_ADVANCE));
 			
 			waitDialog.setVisible(false);
 

@@ -36,7 +36,9 @@ public class Ticket extends BaseTicket {
 	public static final String PROPERTY_CARD_EXP_YEAR = "card_exp_year";
 	public static final String PROPERTY_CARD_EXP_MONTH = "card_exp_month";
 	public static final String PROPERTY_ADVANCE_PAYMENT = "advance_payment";
-	public static final String PROPERTY_CARD_AUTH_CODE = "card_auth_code";;
+	public static final String PROPERTY_CARD_AUTH_CODE = "card_auth_code";
+	
+	public static final double BAR_TAB_ADVANCE = 25;
 
 	/* [CONSTRUCTOR MARKER BEGIN] */
 	public Ticket () {
