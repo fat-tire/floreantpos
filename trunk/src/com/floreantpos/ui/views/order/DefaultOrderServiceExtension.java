@@ -5,6 +5,7 @@ import java.util.Calendar;
 import com.floreantpos.extension.OrderServiceExtension;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.Ticket;
+import com.floreantpos.model.TicketType;
 import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.util.PosGuiUtil;
 import com.floreantpos.util.TicketAlreadyExistsException;
@@ -26,7 +27,7 @@ public class DefaultOrderServiceExtension implements OrderServiceExtension {
 	}
 
 	@Override
-	public void createNewTicket(String ticketType) throws TicketAlreadyExistsException {
+	public void createNewTicket(TicketType ticketType) throws TicketAlreadyExistsException {
 		int tableNumber = PosGuiUtil.captureTableNumber();
 		if (tableNumber == -1) {
 			return;
@@ -48,7 +49,7 @@ public class DefaultOrderServiceExtension implements OrderServiceExtension {
 
 		ticket = new Ticket();
 		ticket.setPriceIncludesTax(application.isPriceIncludesTax());
-		ticket.setTicketType(ticketType);
+		ticket.setType(ticketType);
 		ticket.setTableNumber(tableNumber);
 		ticket.setNumberOfGuests(numberOfGuests);
 		ticket.setTerminal(application.getTerminal());

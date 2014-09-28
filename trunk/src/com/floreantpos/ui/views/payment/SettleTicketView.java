@@ -37,6 +37,7 @@ import com.floreantpos.model.PosTransaction;
 import com.floreantpos.model.Restaurant;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketCouponAndDiscount;
+import com.floreantpos.model.TicketType;
 import com.floreantpos.report.JReportPrintService;
 import com.floreantpos.services.PosTransactionService;
 import com.floreantpos.swing.MessageDialog;
@@ -233,7 +234,7 @@ public class SettleTicketView extends POSDialog implements CardInputListener {
 		try {
 			
 			Ticket ticket = getTicketsToSettle().get(0);
-			if(Ticket.BAR_TAB.equalsIgnoreCase(ticket.getTicketType())) {
+			if(ticket.getType() == TicketType.BAR_TAB) {
 				doSettleBarTabTicket(ticket);
 				return;
 			}
@@ -502,6 +503,9 @@ public class SettleTicketView extends POSDialog implements CardInputListener {
 
 	@Override
 	public void cardInputted(CardInputter inputter) {
+		//authorize only, do not capture
+		double amountToAuthorize = tenderedAmount + (tenderedAmount * .2);
+		
 		PaymentProcessWaitDialog waitDialog = new PaymentProcessWaitDialog(this);
 
 		try {
@@ -526,7 +530,7 @@ public class SettleTicketView extends POSDialog implements CardInputListener {
 				}
 
 				if (CardConfig.getMerchantGateway() == MerchantGateway.AUTHORIZE_NET) {
-					String authorizationCode = AuthorizeDoNetProcessor.process(cardString, tenderedAmount, authorizeNetCardType);
+					String authorizationCode = AuthorizeDoNetProcessor.authorizeAmount(cardString, amountToAuthorize, authorizeNetCardType);
 					settleTickets(tenderedAmount, new CreditCardTransaction(), cardName, authorizationCode);
 				}
 
@@ -539,7 +543,7 @@ public class SettleTicketView extends POSDialog implements CardInputListener {
 				String expMonth = mDialog.getExpMonth();
 				String expYear = mDialog.getExpYear();
 
-				String authorizationCode = AuthorizeDoNetProcessor.process(cardNumber, expMonth, expYear, tenderedAmount, authorizeNetCardType);
+				String authorizationCode = AuthorizeDoNetProcessor.authorizeAmount(cardNumber, expMonth, expYear, amountToAuthorize, authorizeNetCardType);
 				POSMessageDialog.showMessage(authorizationCode);
 				settleTickets(tenderedAmount, new CreditCardTransaction(), cardName, authorizationCode);
 			}
@@ -596,13 +600,9 @@ public class SettleTicketView extends POSDialog implements CardInputListener {
 				JsonObject jsonObject = (JsonObject) jsonArray.get(i);
 				addCoupon(ticket, jsonObject);
 			}
-			//		System.out.println(transactionURL);
-			//		System.out.println(string);
-			//
 			
 			updateModel();
 
-			//TicketDAO.getInstance().saveOrUpdate(ticket);
 			OrderController.saveOrder(ticket);
 			
 			POSMessageDialog.showMessage("Congrations! you have discounts from Kala Loyalty Check discounts list for more.");

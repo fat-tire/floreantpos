@@ -17,6 +17,7 @@ import com.floreantpos.model.PosTransaction;
 import com.floreantpos.model.RefundTransaction;
 import com.floreantpos.model.Terminal;
 import com.floreantpos.model.Ticket;
+import com.floreantpos.model.TicketType;
 import com.floreantpos.model.User;
 import com.floreantpos.model.dao.ActionHistoryDAO;
 import com.floreantpos.model.dao.GenericDAO;
@@ -57,7 +58,7 @@ public class PosTransactionService {
 				ticket.setVoided(false);
 				ticket.setDrawerResetted(false);
 				ticket.setTerminal(terminal);
-				ticket.setCardNumber(cardAuthorizationCode);
+				ticket.setCardAuthCode(cardAuthorizationCode);
 				
 				double paidAmount = ticket.getPaidAmount();
 				double dueAmount = ticket.getDueAmount();
@@ -162,9 +163,14 @@ public class PosTransactionService {
 	}
 
 	private void closeTicketIfApplicable(Ticket ticket, Date currentDate) {
-		if(ticket.getTicketType() == null || Ticket.DINE_IN.equals(ticket.getTicketType())
-				|| Ticket.TAKE_OUT.equals(ticket.getTicketType())
-				|| Ticket.BAR_TAB.equals(ticket.getTicketType())) {
+		String transactionType = ticket.getTransactionType();
+		if(!"CASH".equalsIgnoreCase(transactionType)) {
+			return;
+		}
+		
+		TicketType ticketType = ticket.getType();
+		
+		if(ticketType == TicketType.DINE_IN || ticketType == TicketType.TAKE_OUT || ticketType == TicketType.BAR_TAB) {
 			ticket.setClosed(true);
 			ticket.setClosingDate(currentDate);
 		}

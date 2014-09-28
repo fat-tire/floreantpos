@@ -9,9 +9,14 @@ import javax.swing.JOptionPane;
 
 import net.authorize.data.creditcard.CardType;
 
+import org.apache.commons.lang.StringUtils;
+
+import com.floreantpos.PosException;
 import com.floreantpos.main.Application;
+import com.floreantpos.model.CardReader;
 import com.floreantpos.model.PaymentType;
 import com.floreantpos.model.Ticket;
+import com.floreantpos.model.TicketType;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.dialog.PaymentTypeSelectionDialog;
 import com.floreantpos.ui.views.order.OrderView;
@@ -54,6 +59,22 @@ public class NewBarTabAction extends AbstractAction implements CardInputListener
 		dialog.setLocationRelativeTo(parentComponent);
 		dialog.setVisible(true);
 	}
+	
+	private Ticket createTicket(Application application) {
+		Ticket ticket = new Ticket();
+		
+		ticket.setPriceIncludesTax(application.isPriceIncludesTax());
+		ticket.setType(TicketType.BAR_TAB);
+		ticket.setTableNumber(-1);
+		ticket.setTerminal(application.getTerminal());
+		ticket.setOwner(Application.getCurrentUser());
+		ticket.setShift(application.getCurrentShift());
+		
+		Calendar currentTime = Calendar.getInstance();
+		ticket.setCreateDate(currentTime.getTime());
+		ticket.setCreationHour(currentTime.get(Calendar.HOUR_OF_DAY));
+		return ticket;
+	}
 
 	@Override
 	public void cardInputted(CardInputter inputter) {
@@ -64,7 +85,30 @@ public class NewBarTabAction extends AbstractAction implements CardInputListener
 			useManualCard(inputter);
 		}
 		else if (inputter instanceof AuthorizationCodeDialog) {
-			POSMessageDialog.showError("to be implemented");
+			useAuthCode(inputter);
+		}
+	}
+
+	private void useAuthCode(CardInputter inputter) {
+		try {
+			
+			AuthorizationCodeDialog authDialog = (AuthorizationCodeDialog) inputter;
+			String authorizationCode = authDialog.getAuthorizationCode();
+			if (StringUtils.isEmpty(authorizationCode)) {
+				throw new PosException("Invalid authorization code");
+			}
+
+			Ticket ticket = createTicket(Application.getInstance());
+
+			ticket.addProperty(Ticket.PROPERTY_PAYMENT_METHOD, selectedPaymentType.getDisplayString());
+			ticket.addProperty(Ticket.PROPERTY_CARD_NAME, selectedPaymentType.getDisplayString());
+			ticket.addProperty(Ticket.PROPERTY_CARD_READER, CardReader.EXTERNAL_TERMINAL.name());
+			
+			OrderView.getInstance().setCurrentTicket(ticket);
+			RootView.getInstance().showView(OrderView.VIEW_NAME);
+			
+		} catch (Exception e) {
+			POSMessageDialog.showError(parentComponent, e.getMessage());
 		}
 	}
 
@@ -90,25 +134,14 @@ public class NewBarTabAction extends AbstractAction implements CardInputListener
 			
 			String transactionId = AuthorizeDoNetProcessor.authorizeAmount(cardString, 25, cardType);
 			
-			Ticket ticket = new Ticket();
-			
-			ticket.setPriceIncludesTax(application.isPriceIncludesTax());
-			ticket.setTicketType(Ticket.BAR_TAB);
-			ticket.setTableNumber(-1);
-			ticket.setTerminal(application.getTerminal());
-			ticket.setOwner(Application.getCurrentUser());
-			ticket.setShift(application.getCurrentShift());
+			Ticket ticket = createTicket(application);
 			
 			ticket.addProperty(Ticket.PROPERTY_PAYMENT_METHOD, selectedPaymentType.getDisplayString());
+			ticket.addProperty(Ticket.PROPERTY_CARD_NAME, selectedPaymentType.getDisplayString());
 			ticket.addProperty(Ticket.PROPERTY_CARD_TRANSACTION_ID, transactionId);
 			ticket.addProperty(Ticket.PROPERTY_CARD_TRACKS, cardString);
-			ticket.addProperty(Ticket.PROPERTY_CARD_NAME, selectedPaymentType.getDisplayString());
-			ticket.addProperty(Ticket.PROPERTY_CARD_INPUT_METHOD, "swipe");
+			ticket.addProperty(Ticket.PROPERTY_CARD_READER, CardReader.SWIPE.name());
 
-			Calendar currentTime = Calendar.getInstance();
-			ticket.setCreateDate(currentTime.getTime());
-			ticket.setCreationHour(currentTime.get(Calendar.HOUR_OF_DAY));
-			
 			waitDialog.setVisible(false);
 
 			OrderView.getInstance().setCurrentTicket(ticket);
@@ -119,7 +152,7 @@ public class NewBarTabAction extends AbstractAction implements CardInputListener
 			waitDialog.setVisible(false);
 		}
 	}
-	
+
 	private void useManualCard(CardInputter inputter) {
 		Application application = Application.getInstance();
 		
@@ -144,26 +177,15 @@ public class NewBarTabAction extends AbstractAction implements CardInputListener
 			
 			String transactionId = AuthorizeDoNetProcessor.authorizeAmount(cardNumber, expMonth, expYear, 25, cardType);
 			
-			Ticket ticket = new Ticket();
-			
-			ticket.setPriceIncludesTax(application.isPriceIncludesTax());
-			ticket.setTicketType(Ticket.BAR_TAB);
-			ticket.setTableNumber(-1);
-			ticket.setTerminal(application.getTerminal());
-			ticket.setOwner(Application.getCurrentUser());
-			ticket.setShift(application.getCurrentShift());
+			Ticket ticket = createTicket(application);
 			
 			ticket.addProperty(Ticket.PROPERTY_PAYMENT_METHOD, selectedPaymentType.getDisplayString());
+			ticket.addProperty(Ticket.PROPERTY_CARD_NAME, selectedPaymentType.getDisplayString());
 			ticket.addProperty(Ticket.PROPERTY_CARD_TRANSACTION_ID, transactionId);
 			ticket.addProperty(Ticket.PROPERTY_CARD_NUMBER, cardNumber);
 			ticket.addProperty(Ticket.PROPERTY_CARD_EXP_YEAR, expYear);
 			ticket.addProperty(Ticket.PROPERTY_CARD_EXP_MONTH, expMonth);
-			ticket.addProperty(Ticket.PROPERTY_CARD_NAME, selectedPaymentType.getDisplayString());
-			ticket.addProperty(Ticket.PROPERTY_CARD_INPUT_METHOD, "manual");
-
-			Calendar currentTime = Calendar.getInstance();
-			ticket.setCreateDate(currentTime.getTime());
-			ticket.setCreationHour(currentTime.get(Calendar.HOUR_OF_DAY));
+			ticket.addProperty(Ticket.PROPERTY_CARD_READER, CardReader.MANUAL.name());
 			
 			waitDialog.setVisible(false);
 
