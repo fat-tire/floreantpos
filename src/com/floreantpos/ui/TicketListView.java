@@ -13,13 +13,13 @@ import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.TableColumnModel;
 
-import org.apache.commons.lang.StringUtils;
 import org.jdesktop.swingx.JXTable;
 
 import com.floreantpos.POSConstants;
 import com.floreantpos.bo.ui.explorer.ListTableModel;
 import com.floreantpos.model.Customer;
 import com.floreantpos.model.Ticket;
+import com.floreantpos.model.TicketType;
 import com.floreantpos.model.User;
 
 public class TicketListView extends JPanel {
@@ -136,25 +136,19 @@ public class TicketListView extends JPanel {
 				return ticket.getDeliveryDate();
 
 			case 6:
-				if(StringUtils.isEmpty(ticket.getTicketType())) {
-					ticket.setTicketType(Ticket.DINE_IN);
-					
-					return Ticket.DINE_IN;
-				}
-				
-				return ticket.getTicketType();
+				return ticket.getType();
 				
 			case 7:
-				if(Ticket.PICKUP.equals(ticket.getTicketType())) {
+				if(ticket.getType() == TicketType.PICKUP) {
 					return "Will pickup";
 				}
-				else if(Ticket.HOME_DELIVERY.equals(ticket.getTicketType())) {
+				else if(ticket.getType() == TicketType.HOME_DELIVERY) {
 					if(ticket.getAssignedDriver() == null) {
 						return "Driver not assigned";
 					}
 					return "Driver assigned";
 				}
-				else if(Ticket.DRIVE_THROUGH.equals(ticket.getTicketType())) {
+				else if(ticket.getType() == TicketType.DRIVE_THRU) {
 					return "Not delivered";
 				}
 				

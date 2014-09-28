@@ -9,6 +9,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.floreantpos.main.Application;
 import com.floreantpos.model.base.BaseTicket;
 import com.floreantpos.util.NumberUtil;
@@ -18,31 +20,31 @@ public class Ticket extends BaseTicket {
 	private static final long serialVersionUID = 1L;
 	// public final static int TAKE_OUT = -1;
 
-	public final static String DINE_IN = "DINE IN";
-	public final static String TAKE_OUT = "TAKE OUT";
-	public final static String PICKUP = "PICKUP";
-	public final static String HOME_DELIVERY = "HOME DELIVERY";
-	public final static String DRIVE_THROUGH = "DRIVE THRU";
-	public final static String BAR_TAB = "BAR_TAB";
+//	public final static String DINE_IN = "DINE IN";
+//	public final static String TAKE_OUT = "TAKE OUT";
+//	public final static String PICKUP = "PICKUP";
+//	public final static String HOME_DELIVERY = "HOME DELIVERY";
+//	public final static String DRIVE_THROUGH = "DRIVE THRU";
+//	public final static String BAR_TAB = "BAR_TAB";
 	
 	public final static String PROPERTY_CARD_TRANSACTION_ID = "card_transaction_id";
 	public final static String PROPERTY_CARD_TRACKS = "card_tracks";
 	public static final String PROPERTY_CARD_NAME = "card_name";
 	public static final String PROPERTY_PAYMENT_METHOD = "payment_method";
-	public static final String PROPERTY_CARD_INPUT_METHOD = "card_input_method";
+	public static final String PROPERTY_CARD_READER = "card_reader";
 	public static final String PROPERTY_CARD_NUMBER = "card_number";
 	public static final String PROPERTY_CARD_EXP_YEAR = "card_exp_year";
 	public static final String PROPERTY_CARD_EXP_MONTH = "card_exp_month";
 
 	/* [CONSTRUCTOR MARKER BEGIN] */
-	public Ticket() {
+	public Ticket () {
 		super();
 	}
 
 	/**
 	 * Constructor for primary key
 	 */
-	public Ticket(java.lang.Integer id) {
+	public Ticket (java.lang.Integer id) {
 		super(id);
 	}
 
@@ -502,7 +504,7 @@ public class Ticket extends BaseTicket {
 	//	}
 
 	public double calculateServiceCharge() {
-		if (!DINE_IN.equals(getTicketType())) {
+		if (getType() != TicketType.DINE_IN) {
 			return 0;
 		}
 
@@ -518,24 +520,18 @@ public class Ticket extends BaseTicket {
 		return NumberUtil.roundToTwoDigit(fixInvalidAmount(serviceCharge));
 	}
 
-	public static boolean isDineIn(String type) {
-		return DINE_IN.equals(type);
+	public TicketType getType() {
+		String type = getTicketType();
+		
+		if(StringUtils.isEmpty(type)) {
+			return TicketType.DINE_IN;
+		}
+		
+		return TicketType.valueOf(type);
 	}
-
-	public static boolean isOnlineOrder(String type) {
-		return PICKUP.equals(type);
-	}
-
-	public static boolean isHomeDelivery(String type) {
-		return HOME_DELIVERY.equals(type);
-	}
-
-	public static boolean isTakeOut(String type) {
-		return TAKE_OUT.equals(type);
-	}
-
-	public static boolean isDriveThrough(String type) {
-		return DRIVE_THROUGH.equals(type);
+	
+	public void setType(TicketType type) {
+		setTicketType(type.name());
 	}
 
 	public boolean isPriceIncludesTax() {

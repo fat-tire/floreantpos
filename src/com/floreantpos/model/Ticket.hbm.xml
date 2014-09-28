@@ -34,7 +34,7 @@
 		<property column="TRANSACTION_CODE" length="60" name="transactionCode" type="string" />
 		<property column="BAR_CODE" length="60" name="barCode" type="string" />
 		<property column="CARD_TYPE" length="60" name="cardType" type="string" />
-		<property column="CARD_NUMBER" length="60" name="cardNumber" type="string" />
+		<property column="CARD_AUTH_CODE" length="60" name="cardAuthCode" type="string" />
 		<property column="IS_TAX_EXEMPT" name="taxExempt" type="java.lang.Boolean" />
 		<property column="IS_RE_OPENED" name="reOpened" type="java.lang.Boolean" />
 		<property column="SERVICE_CHARGE" name="serviceCharge" type="java.lang.Double" />
