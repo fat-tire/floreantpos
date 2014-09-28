@@ -352,10 +352,14 @@ public class TicketView extends JPanel {
 		try {
 
 			updateModel();
+			
+			OrderController.saveOrder(ticket);
 
 			if (ticket.needsKitchenPrint()) {
 				PosPrintService.printToKitchen(ticket);
 			}
+			//if(ticket.getTicketType())
+			
 			
 			ticket.clearDeletedItems();
 			OrderController.saveOrder(ticket);

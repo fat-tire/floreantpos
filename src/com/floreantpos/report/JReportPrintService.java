@@ -30,6 +30,7 @@ import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.TicketItemCookingInstruction;
 import com.floreantpos.model.TicketItemModifierGroup;
+import com.floreantpos.model.TicketType;
 import com.floreantpos.model.dao.RestaurantDAO;
 import com.floreantpos.util.NumberUtil;
 
@@ -141,7 +142,7 @@ public class JReportPrintService {
 		String transactionType = ticket.getTransactionType();
 		if(PosTransaction.TYPE_CREDIT_CARD.equalsIgnoreCase(transactionType) || PosTransaction.TYPE_DEBIT_CARD.equalsIgnoreCase(transactionType)) {
 			map.put("cardPayment", true);
-			map.put("approvalCode", "Approval: " + ticket.getCardNumber());
+			map.put("approvalCode", "Approval: " + ticket.getCardAuthCode());
 		}
 
 		StringBuilder ticketHeaderBuilder = buildTicketHeader(ticket, printProperties);
@@ -223,7 +224,7 @@ public class JReportPrintService {
 		ticketHeaderBuilder.append("<html>");
 		
 		beginRow(ticketHeaderBuilder);
-		addColumn(ticketHeaderBuilder, "*" + (ticket.getTicketType() == null ? Ticket.DINE_IN : ticket.getTicketType()) + "*");
+		addColumn(ticketHeaderBuilder, "*" + ticket.getType() + "*");
 		endRow(ticketHeaderBuilder);
 
 		beginRow(ticketHeaderBuilder);
@@ -234,7 +235,7 @@ public class JReportPrintService {
 		addColumn(ticketHeaderBuilder, POSConstants.RECEIPT_REPORT_TICKET_NO_LABEL + ticket.getId());
 		endRow(ticketHeaderBuilder);
 		
-		if (Ticket.DINE_IN.equalsIgnoreCase(ticket.getTicketType())) {
+		if (ticket.getType() == TicketType.DINE_IN) {
 			beginRow(ticketHeaderBuilder);
 			addColumn(ticketHeaderBuilder, POSConstants.RECEIPT_REPORT_TABLE_NO_LABEL + ticket.getTableNumber());
 			endRow(ticketHeaderBuilder);
@@ -257,7 +258,7 @@ public class JReportPrintService {
 		endRow(ticketHeaderBuilder);
 
 		//customer info section
-		if (!printProperties.isKitchenPrint() && !Ticket.DINE_IN.equalsIgnoreCase(ticket.getTicketType())) {
+		if (!printProperties.isKitchenPrint() && ticket.getType() != TicketType.DINE_IN) {
 			
 			Customer customer = ticket.getCustomer();
 			
