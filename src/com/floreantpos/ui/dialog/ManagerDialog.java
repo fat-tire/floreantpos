@@ -32,6 +32,11 @@ import com.floreantpos.ui.util.UiUtil;
 
 import foxtrot.Job;
 import foxtrot.Worker;
+import java.awt.GridBagConstraints;
+import com.floreantpos.swing.PosButton;
+import java.awt.Insets;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 /**
  *
@@ -126,9 +131,25 @@ public class ManagerDialog extends JFrame {
 
         transparentPanel3.add(btnCashDrops);
 
-        transparentPanel2.add(transparentPanel3, new java.awt.GridBagConstraints());
+        GridBagConstraints gbc_transparentPanel3 = new GridBagConstraints();
+        gbc_transparentPanel3.insets = new Insets(0, 0, 5, 0);
+        gbc_transparentPanel3.gridx = 0;
+        gbc_transparentPanel3.gridy = 0;
+        transparentPanel2.add(transparentPanel3, gbc_transparentPanel3);
 
         transparentPanel4.add(transparentPanel2, java.awt.BorderLayout.CENTER);
+        
+        btnAuthorizeTickets = new PosButton();
+        btnAuthorizeTickets.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		doShowAuthorizeTicketDialog();
+        	}
+        });
+        btnAuthorizeTickets.setText("AUTHORIZE TICKETS");
+        GridBagConstraints gbc_btnAuthorizeTickets = new GridBagConstraints();
+        gbc_btnAuthorizeTickets.gridx = 0;
+        gbc_btnAuthorizeTickets.gridy = 1;
+        transparentPanel2.add(btnAuthorizeTickets, gbc_btnAuthorizeTickets);
 
         transparentPanel1.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
 
@@ -149,7 +170,16 @@ public class ManagerDialog extends JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnFinishActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFinishActionPerformed
+    protected void doShowAuthorizeTicketDialog() {
+    	TicketAuthorizationDialog dialog = new TicketAuthorizationDialog(this);
+    	dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+    	dialog.setSize(800, 600);
+    	dialog.setLocationRelativeTo(this);
+    	dialog.setVisible(true);
+    	
+	}
+
+	private void btnFinishActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFinishActionPerformed
     	dispose();
     }//GEN-LAST:event_btnFinishActionPerformed
 
@@ -293,6 +323,7 @@ public class ManagerDialog extends JFrame {
     private com.floreantpos.swing.TransparentPanel transparentPanel2;
     private com.floreantpos.swing.TransparentPanel transparentPanel3;
     private com.floreantpos.swing.TransparentPanel transparentPanel4;
+    private PosButton btnAuthorizeTickets;
     // End of variables declaration//GEN-END:variables
     
 }

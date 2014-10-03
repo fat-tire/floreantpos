@@ -19,8 +19,10 @@ import com.floreantpos.POSConstants;
 import com.floreantpos.bo.ui.explorer.ListTableModel;
 import com.floreantpos.model.Customer;
 import com.floreantpos.model.Ticket;
+import com.floreantpos.model.TicketStatus;
 import com.floreantpos.model.TicketType;
 import com.floreantpos.model.User;
+import com.floreantpos.ui.dialog.POSMessageDialog;
 
 public class TicketListView extends JPanel {
 	private JXTable table;
@@ -33,7 +35,7 @@ public class TicketListView extends JPanel {
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
 		table.setDefaultRenderer(Object.class, new PosTableRenderer());
 		table.setGridColor(Color.LIGHT_GRAY);
-
+		
 		TableColumnModel columnModel = table.getColumnModel();
 		columnModel.getColumn(0).setPreferredWidth(20);
 		columnModel.getColumn(1).setPreferredWidth(20);
@@ -153,10 +155,13 @@ public class TicketListView extends JPanel {
 				}
 				
 				if(ticket.isPaid()) {
-					return "Paid";
+					if(ticket.getStatus() != null) {
+						return TicketStatus.valueOf(ticket.getStatus()).toString();
+					}
+					return "PAID";
 				}
 				
-				return "Open";
+				return "OPEN";
 
 			case 8:
 				return ticket.getTotalAmount();
@@ -170,35 +175,30 @@ public class TicketListView extends JPanel {
 		}
 
 	}
+	
+	public Ticket getFirstSelectedTicket() {
+		List<Ticket> selectedTickets = getSelectedTickets();
 
-	// private class TicketListTableCellRenderer extends PosTableRenderer {
-	// @Override
-	// public Component getTableCellRendererComponent(JTable table, Object
-	// value, boolean isSelected, boolean hasFocus, int row, int column) {
-	// Component rendererComponent = super.getTableCellRendererComponent(table,
-	// value, isSelected, hasFocus, row, column);
-	//
-	// if(isSelected || value == null) {
-	// return rendererComponent;
-	// }
-	//
-	// if(Ticket.isDineIn(value.toString())) {
-	// rendererComponent.setBackground(SwitchboardView.DINE_IN_COLOR);
-	// }
-	// else if(Ticket.isDriveThrough(value.toString())) {
-	// rendererComponent.setBackground(SwitchboardView.DRIVE_THROUGH_COLOR);
-	// }
-	// else if(Ticket.isOnlineOrder(value.toString())) {
-	// rendererComponent.setBackground(SwitchboardView.ONLINE_ORDER_COLOR);
-	// }
-	// else if(Ticket.isHomeDelivery(value.toString())) {
-	// rendererComponent.setBackground(SwitchboardView.HOME_DELIVERY_COLOR);
-	// }
-	// else if(Ticket.isTakeOut(value.toString())) {
-	// rendererComponent.setBackground(SwitchboardView.TAKE_OUT_COLOR);
-	// }
-	//
-	// return rendererComponent;
-	// }
-	// }
+		if (selectedTickets.size() == 0 || selectedTickets.size() > 1) {
+			POSMessageDialog.showMessage("Please select a ticket");
+			return null;
+		}
+
+		Ticket ticket = selectedTickets.get(0);
+
+		return ticket;
+	}
+	
+	public int getFirstSelectedTicketId() {
+		Ticket ticket = getFirstSelectedTicket();
+		if(ticket == null) {
+			return -1;
+		}
+		
+		return ticket.getId();
+	}
+
+	public JXTable getTable() {
+		return table;
+	}
 }

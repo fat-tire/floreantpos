@@ -83,7 +83,8 @@ public class TicketDetailView extends JPanel {
 			revalidate();
 			repaint();
 		} catch (Exception e) {
-			POSMessageDialog.showError(e.getMessage());
+			e.printStackTrace();
+			POSMessageDialog.showError(e.getMessage(), e);
 		}
 	}
 

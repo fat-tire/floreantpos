@@ -24,13 +24,13 @@ import com.floreantpos.POSConstants;
 import com.floreantpos.config.PrintConfig;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.Customer;
-import com.floreantpos.model.PosTransaction;
 import com.floreantpos.model.Restaurant;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.TicketItemCookingInstruction;
 import com.floreantpos.model.TicketItemModifierGroup;
 import com.floreantpos.model.TicketType;
+import com.floreantpos.model.TransactionType;
 import com.floreantpos.model.dao.RestaurantDAO;
 import com.floreantpos.util.NumberUtil;
 
@@ -93,10 +93,25 @@ public class JReportPrintService {
 			TicketPrintProperties printProperties = new TicketPrintProperties("*** PAYMENT RECEIPT ***", true, true, true);
 			printProperties.setKitchenPrint(false);
 			printProperties.setPrintCookingInstructions(false);
-
-			JasperPrint jasperPrint = createPrint(ticket, printProperties);
-			jasperPrint.setProperty("printerName", PrintConfig.getReceiptPrinterName());
-			JasperPrintManager.printReport(jasperPrint, false);
+			
+			TransactionType transactionType = TransactionType.valueOf(ticket.getTransactionType() == null ? "UNKNOWN" : ticket.getTransactionType());
+			
+			if (transactionType == TransactionType.CARD) {
+				printProperties.setReceiptCopyType("Customer Copy");
+				JasperPrint jasperPrint = createPrint(ticket, printProperties);
+				jasperPrint.setProperty("printerName", PrintConfig.getReceiptPrinterName());
+				JasperPrintManager.printReport(jasperPrint, false);
+				
+				printProperties.setReceiptCopyType("Merchant Copy");
+				jasperPrint = createPrint(ticket, printProperties);
+				jasperPrint.setProperty("printerName", PrintConfig.getReceiptPrinterName());
+				JasperPrintManager.printReport(jasperPrint, false);
+			}
+			else {
+				JasperPrint jasperPrint = createPrint(ticket, printProperties);
+				jasperPrint.setProperty("printerName", PrintConfig.getReceiptPrinterName());
+				JasperPrintManager.printReport(jasperPrint, false);
+			}
 
 		} catch (Exception e) {
 			logger.error(com.floreantpos.POSConstants.PRINT_ERROR, e);
@@ -139,8 +154,8 @@ public class JReportPrintService {
 		map.put(SERVER_NAME, POSConstants.RECEIPT_REPORT_SERVER_LABEL + ticket.getOwner());
 		map.put(REPORT_DATE, POSConstants.RECEIPT_REPORT_DATE_LABEL + Application.formatDate(new Date()));
 		
-		String transactionType = ticket.getTransactionType();
-		if(PosTransaction.TYPE_CREDIT_CARD.equalsIgnoreCase(transactionType) || PosTransaction.TYPE_DEBIT_CARD.equalsIgnoreCase(transactionType)) {
+		TransactionType transactionType = TransactionType.valueOf(ticket.getTransactionType() == null ? "UNKNOWN" : ticket.getTransactionType());
+		if(transactionType == TransactionType.CARD) {
 			map.put("cardPayment", true);
 			map.put("approvalCode", "Approval: " + ticket.getCardAuthCode());
 		}
@@ -198,6 +213,7 @@ public class JReportPrintService {
 			map.put("changedAmount", NumberUtil.formatNumber(changedAmount));
 			map.put("grandSubtotal", NumberUtil.formatNumber(ticket.getSubtotalAmount()));
 			map.put("footerMessage", restaurant.getTicketFooterMessage());
+			map.put("copyType", printProperties.getReceiptCopyType());
 			
 			String messageString = "<html>";
 			if(ticket.getCustomer() != null) {
