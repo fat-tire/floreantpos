@@ -16,7 +16,9 @@ import com.floreantpos.main.Application;
 import com.floreantpos.model.CardReader;
 import com.floreantpos.model.PaymentType;
 import com.floreantpos.model.Ticket;
+import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.TicketType;
+import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.dialog.PaymentTypeSelectionDialog;
 import com.floreantpos.ui.views.order.OrderView;
@@ -106,6 +108,13 @@ public class NewBarTabAction extends AbstractAction implements CardInputListener
 			ticket.addProperty(Ticket.PROPERTY_CARD_READER, CardReader.EXTERNAL_TERMINAL.name());
 			ticket.addProperty(Ticket.PROPERTY_ADVANCE_PAYMENT, "0");
 			
+			TicketItem item = new TicketItem();
+			item.setName("TAB OPEN");
+			
+			ticket.addToticketItems(item);
+			
+			TicketDAO.getInstance().save(ticket);
+			
 			OrderView.getInstance().setCurrentTicket(ticket);
 			RootView.getInstance().showView(OrderView.VIEW_NAME);
 			
@@ -146,13 +155,22 @@ public class NewBarTabAction extends AbstractAction implements CardInputListener
 			ticket.addProperty(Ticket.PROPERTY_CARD_TRACKS, cardString);
 			ticket.addProperty(Ticket.PROPERTY_CARD_READER, CardReader.SWIPE.name());
 			ticket.addProperty(Ticket.PROPERTY_ADVANCE_PAYMENT, String.valueOf(Ticket.BAR_TAB_ADVANCE));
+			
+			TicketItem item = new TicketItem();
+			item.setTicket(ticket);
+			item.setName("TAB OPEN");
+			
+			ticket.addToticketItems(item);
+			
+			TicketDAO.getInstance().save(ticket);
 
 			waitDialog.setVisible(false);
 
 			OrderView.getInstance().setCurrentTicket(ticket);
 			RootView.getInstance().showView(OrderView.VIEW_NAME);
 		} catch (Exception e) {
-			POSMessageDialog.showError(parentComponent, "Unable to authorize card.");
+			e.printStackTrace();
+			POSMessageDialog.showError(parentComponent, e.getMessage());
 		} finally {
 			waitDialog.setVisible(false);
 		}
@@ -194,6 +212,13 @@ public class NewBarTabAction extends AbstractAction implements CardInputListener
 			ticket.addProperty(Ticket.PROPERTY_CARD_EXP_MONTH, expMonth);
 			ticket.addProperty(Ticket.PROPERTY_CARD_READER, CardReader.MANUAL.name());
 			ticket.addProperty(Ticket.PROPERTY_ADVANCE_PAYMENT, String.valueOf(Ticket.BAR_TAB_ADVANCE));
+			
+			TicketItem item = new TicketItem();
+			item.setName("TAB OPEN");
+			
+			ticket.addToticketItems(item);
+			
+			TicketDAO.getInstance().save(ticket);
 			
 			waitDialog.setVisible(false);
 
