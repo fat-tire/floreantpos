@@ -13,6 +13,7 @@ import net.sf.jasperreports.engine.JasperPrintManager;
 
 import com.floreantpos.config.PrintConfig;
 import com.floreantpos.model.Ticket;
+import com.floreantpos.model.TransactionType;
 import com.floreantpos.report.JReportPrintService;
 import com.floreantpos.report.TicketPrintProperties;
 
@@ -50,9 +51,25 @@ public class OrderInfoView extends JPanel {
 			Ticket ticket = (Ticket) iter.next();
 			
 			TicketPrintProperties printProperties = new TicketPrintProperties("*** ORDER " + ticket.getId() + " ***", false, true, true);
-			JasperPrint jasperPrint = JReportPrintService.createPrint(ticket, printProperties);
-			jasperPrint.setProperty("printerName", PrintConfig.getReceiptPrinterName());
-			JasperPrintManager.printReport(jasperPrint, false);
+			
+			TransactionType transactionType = TransactionType.valueOf(ticket.getTransactionType() == null ? "UNKNOWN" : ticket.getTransactionType());
+			
+			if (transactionType == TransactionType.CARD) {
+				printProperties.setReceiptCopyType("Customer Copy");
+				JasperPrint jasperPrint = JReportPrintService.createPrint(ticket, printProperties);
+				jasperPrint.setProperty("printerName", PrintConfig.getReceiptPrinterName());
+				JasperPrintManager.printReport(jasperPrint, false);
+				
+				printProperties.setReceiptCopyType("Merchant Copy");
+				jasperPrint = JReportPrintService.createPrint(ticket, printProperties);
+				jasperPrint.setProperty("printerName", PrintConfig.getReceiptPrinterName());
+				JasperPrintManager.printReport(jasperPrint, false);
+			}
+			else {
+				JasperPrint jasperPrint = JReportPrintService.createPrint(ticket, printProperties);
+				jasperPrint.setProperty("printerName", PrintConfig.getReceiptPrinterName());
+				JasperPrintManager.printReport(jasperPrint, false);
+			}
 		}
 	}
 }

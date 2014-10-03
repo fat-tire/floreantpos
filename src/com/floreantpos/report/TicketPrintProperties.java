@@ -7,6 +7,8 @@ public class TicketPrintProperties {
 	private boolean showFooter;
 	private boolean showSubtotal;
 	
+	private String receiptCopyType;
+	
 	boolean printModifers = true;
 	boolean printCookingInstructions = true;
 	
@@ -78,5 +80,13 @@ public class TicketPrintProperties {
 
 	public void setKitchenPrint(boolean kitchenPrint) {
 		this.kitchenPrint = kitchenPrint;
+	}
+
+	public String getReceiptCopyType() {
+		return receiptCopyType;
+	}
+
+	public void setReceiptCopyType(String receiptCopyName) {
+		this.receiptCopyType = receiptCopyName;
 	}
 }

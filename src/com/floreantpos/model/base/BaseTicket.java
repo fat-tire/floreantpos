@@ -47,6 +47,7 @@ public abstract class BaseTicket  implements Comparable, Serializable {
 	public static String PROP_SHIFT = "shift";
 	public static String PROP_TAX_AMOUNT = "taxAmount";
 	public static String PROP_TENDERED_AMOUNT = "tenderedAmount";
+	public static String PROP_STATUS = "status";
 	public static String PROP_SUBTOTAL_AMOUNT = "subtotalAmount";
 	public static String PROP_VOIDED_BY = "voidedBy";
 	public static String PROP_TICKET_TYPE = "ticketType";
@@ -106,6 +107,7 @@ public abstract class BaseTicket  implements Comparable, Serializable {
 		protected java.lang.Double advanceAmount;
 		protected java.lang.Integer tableNumber;
 		protected java.lang.Integer numberOfGuests;
+		protected java.lang.String status;
 		protected java.lang.String transactionType;
 		protected java.lang.String transactionCode;
 		protected java.lang.String barCode;
@@ -528,6 +530,23 @@ public abstract class BaseTicket  implements Comparable, Serializable {
 	 */
 	public void setNumberOfGuests (java.lang.Integer numberOfGuests) {
 		this.numberOfGuests = numberOfGuests;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: STATUS
+	 */
+	public java.lang.String getStatus () {
+					return status;
+			}
+
+	/**
+	 * Set the value related to the column: STATUS
+	 * @param status the STATUS value
+	 */
+	public void setStatus (java.lang.String status) {
+		this.status = status;
 	}
 
 

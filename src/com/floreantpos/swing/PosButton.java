@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Insets;
 
+import javax.swing.Action;
 import javax.swing.JButton;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
@@ -22,11 +23,20 @@ public class PosButton extends JButton {
 	}
 
 	public PosButton() {
-		this(null);
+		this("");
 	}
 
 	public PosButton(String text) {
 		super(text);
+		setFont(UIConfig.getButtonFont());
+
+		setFocusPainted(false);
+		setMargin(margin);
+	}
+	
+	public PosButton(Action a) {
+		super(a);
+		
 		setFont(UIConfig.getButtonFont());
 
 		setFocusPainted(false);

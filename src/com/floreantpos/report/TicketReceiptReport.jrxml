@@ -53,6 +53,7 @@
 	<parameter name="additionalProperties" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="approvalCode" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="cardPayment" class="java.lang.Boolean" isForPrompting="false"/>
+	<parameter name="copyType" class="java.lang.String" isForPrompting="false"/>
 	<field name="itemQty" class="java.lang.String"/>
 	<field name="itemName" class="java.lang.String"/>
 	<field name="itemSubtotal" class="java.lang.String"/>
@@ -396,7 +397,7 @@
 		<band splitType="Prevent"/>
 	</lastPageFooter>
 	<summary>
-		<band height="220" splitType="Stretch">
+		<band height="233" splitType="Stretch">
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement key="staticText-8" x="5" y="58" width="87" height="13">
 					<printWhenExpression><![CDATA[$P{tipAmount}!=null]]></printWhenExpression>
@@ -581,7 +582,7 @@
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{discountAmount}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement key="textField-1" positionType="Float" x="0" y="208" width="148" height="12" isRemoveLineWhenBlank="true">
+				<reportElement key="textField-1" positionType="Float" x="0" y="221" width="148" height="12" isRemoveLineWhenBlank="true">
 					<printWhenExpression><![CDATA[$P{showFooter}==true]]></printWhenExpression>
 				</reportElement>
 				<box>
@@ -668,6 +669,15 @@
 				</textElement>
 				<text><![CDATA[Sign:]]></text>
 			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="staticText-9" x="0" y="205" width="148" height="13" isRemoveLineWhenBlank="true">
+					<printWhenExpression><![CDATA[$P{cardPayment}==true]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font fontName="Monospaced" size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{copyType}]]></textFieldExpression>
+			</textField>
 		</band>
 	</summary>
 </jasperReport>

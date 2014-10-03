@@ -20,25 +20,25 @@ import com.floreantpos.model.GiftCertificateTransaction;
 import com.floreantpos.model.Gratuity;
 import com.floreantpos.model.MenuCategory;
 import com.floreantpos.model.PayOutTransaction;
-import com.floreantpos.model.PosTransaction;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketCouponAndDiscount;
 import com.floreantpos.model.TicketItem;
+import com.floreantpos.model.TransactionType;
 import com.floreantpos.model.User;
 import com.floreantpos.model.dao.CouponAndDiscountDAO;
 import com.floreantpos.model.dao.GenericDAO;
 import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.report.CreditCardReport;
+import com.floreantpos.report.CreditCardReport.CreditCardReportData;
 import com.floreantpos.report.JournalReportModel;
+import com.floreantpos.report.JournalReportModel.JournalReportData;
 import com.floreantpos.report.MenuUsageReport;
+import com.floreantpos.report.MenuUsageReport.MenuUsageReportData;
 import com.floreantpos.report.SalesBalanceReport;
 import com.floreantpos.report.SalesDetailedReport;
+import com.floreantpos.report.SalesDetailedReport.DrawerPullData;
 import com.floreantpos.report.SalesExceptionReport;
 import com.floreantpos.report.ServerProductivityReport;
-import com.floreantpos.report.CreditCardReport.CreditCardReportData;
-import com.floreantpos.report.JournalReportModel.JournalReportData;
-import com.floreantpos.report.MenuUsageReport.MenuUsageReportData;
-import com.floreantpos.report.SalesDetailedReport.DrawerPullData;
 import com.floreantpos.report.ServerProductivityReport.ServerProductivityReportData;
 
 public class ReportService {
@@ -62,7 +62,7 @@ public class ReportService {
 		criteria.add(Restrictions.eq(Ticket.PROP_PAID, Boolean.TRUE));
 		criteria.add(Restrictions.ge(Ticket.PROP_CREATE_DATE, fromDate));
 		criteria.add(Restrictions.le(Ticket.PROP_CREATE_DATE, toDate));
-		criteria.add(Restrictions.or(Restrictions.eq(Ticket.PROP_TRANSACTION_TYPE, PosTransaction.TYPE_CREDIT_CARD), Restrictions.eq(Ticket.PROP_TRANSACTION_TYPE, PosTransaction.TYPE_DEBIT_CARD)));
+		criteria.add(Restrictions.eq(Ticket.PROP_TRANSACTION_TYPE, TransactionType.CARD.name()));
 		List list = criteria.list();
 
 		int totalSalesCount = 0;
@@ -400,7 +400,7 @@ public class ReportService {
 			criteria.add(Restrictions.ge(Ticket.PROP_CREATE_DATE, fromDate));
 			criteria.add(Restrictions.le(Ticket.PROP_CREATE_DATE, toDate));
 			criteria.add(Restrictions.eq(Ticket.PROP_VOIDED, Boolean.FALSE));
-			criteria.add(Restrictions.eq(Ticket.PROP_TRANSACTION_TYPE, PosTransaction.TYPE_CASH));
+			criteria.add(Restrictions.eq(Ticket.PROP_TRANSACTION_TYPE, TransactionType.CASH.name()));
 			projectionList = Projections.projectionList();
 			projectionList.add(Projections.sum(Ticket.PROP_TOTAL_AMOUNT));
 			criteria.setProjection(projectionList);
@@ -415,11 +415,7 @@ public class ReportService {
 			criteria.add(Restrictions.ge(Ticket.PROP_CREATE_DATE, fromDate));
 			criteria.add(Restrictions.le(Ticket.PROP_CREATE_DATE, toDate));
 			criteria.add(Restrictions.eq(Ticket.PROP_VOIDED, Boolean.FALSE));
-			criteria.add(
-					Restrictions.or(
-							Restrictions.eq(Ticket.PROP_TRANSACTION_TYPE, PosTransaction.TYPE_CREDIT_CARD),
-							Restrictions.eq(Ticket.PROP_TRANSACTION_TYPE, PosTransaction.TYPE_DEBIT_CARD)
-							));
+			criteria.add(Restrictions.eq(Ticket.PROP_TRANSACTION_TYPE, TransactionType.CARD.name()));
 			projectionList = Projections.projectionList();
 			projectionList.add(Projections.sum(Ticket.PROP_SUBTOTAL_AMOUNT));
 			criteria.setProjection(projectionList);
