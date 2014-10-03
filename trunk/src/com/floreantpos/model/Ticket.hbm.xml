@@ -29,6 +29,7 @@
 		<!--tableNumber should be -1 for take out -->
 		<property column="TABLE_NUMBER" name="tableNumber" type="java.lang.Integer" />
 		<property column="NUMBER_OF_GUESTS" name="numberOfGuests" type="java.lang.Integer" />
+		<property column="STATUS" name="status" type="string" length="30" />
 		<!-- property name="gratuityAmount" type="java.lang.Double" column="GRATUITY_AMOUNT" /> <property name="gratuityPaid" type="java.lang.Boolean" column="GRATUITY_PAID" 
 			/ -->
 		<property column="TRANSACTION_TYPE" index="tickettransactionType" length="20" name="transactionType" type="string" />

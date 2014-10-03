@@ -18,6 +18,7 @@ import com.floreantpos.model.RefundTransaction;
 import com.floreantpos.model.Terminal;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketType;
+import com.floreantpos.model.TransactionType;
 import com.floreantpos.model.User;
 import com.floreantpos.model.dao.ActionHistoryDAO;
 import com.floreantpos.model.dao.GenericDAO;
@@ -91,21 +92,21 @@ public class PosTransactionService {
 
 					terminal.setCurrentBalance(newBalance);
 					
-					ticket.setTransactionType(PosTransaction.TYPE_CASH);
+					ticket.setTransactionType(TransactionType.CASH.name());
 				}
 				else if (transaction instanceof CreditCardTransaction) {
 					posTransaction = new CreditCardTransaction();
 					((CreditCardTransaction) posTransaction).setCardNumber(cardAuthorizationCode);
 					((CreditCardTransaction) posTransaction).setCardType(cardType);
 					ticket.setCardType(cardType);
-					ticket.setTransactionType(PosTransaction.TYPE_CREDIT_CARD);
+					ticket.setTransactionType(TransactionType.CARD.name());
 				}
 				else if (transaction instanceof DebitCardTransaction) {
 					posTransaction = new DebitCardTransaction();
 					((DebitCardTransaction) posTransaction).setCardNumber(cardAuthorizationCode);
 					((DebitCardTransaction) posTransaction).setCardType(cardType);
 					ticket.setCardType(cardType);
-					ticket.setTransactionType(PosTransaction.TYPE_DEBIT_CARD);
+					ticket.setTransactionType(TransactionType.CARD.name());
 				}
 				else if (transaction instanceof GiftCertificateTransaction) {
 					posTransaction = transaction;
@@ -115,7 +116,7 @@ public class PosTransactionService {
 					double newBalance = currentBalance - giftCertificateTransaction.getCashBackAmount();
 					terminal.setCurrentBalance(newBalance);
 
-					ticket.setTransactionType(PosTransaction.TYPE_GIFT_CERT);
+					ticket.setTransactionType(TransactionType.GIFT_CERT.name());
 				}
 				
 				posTransaction.setTicket(ticket);

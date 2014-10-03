@@ -32,8 +32,10 @@ import com.floreantpos.bo.ui.BackOfficeWindow;
 import com.floreantpos.extension.OrderServiceExtension;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.AttendenceHistory;
+import com.floreantpos.model.Gratuity;
 import com.floreantpos.model.Shift;
 import com.floreantpos.model.Ticket;
+import com.floreantpos.model.TicketStatus;
 import com.floreantpos.model.TicketType;
 import com.floreantpos.model.User;
 import com.floreantpos.model.UserPermission;
@@ -62,6 +64,8 @@ public class SwitchboardView extends JPanel implements ActionListener {
 	public final static String VIEW_NAME = com.floreantpos.POSConstants.SWITCHBOARD;
 
 	private OrderServiceExtension orderServiceExtension;
+
+	private PosButton btnAddTips;
 
 	public static SwitchboardView instance;
 
@@ -236,6 +240,15 @@ public class SwitchboardView extends JPanel implements ActionListener {
 		});
 		btnAssignDriver.setText("<html>ASSIGN<br/>DRIVER</html>");
 		activityPanel.add(btnAssignDriver);
+		
+		btnAddTips = new PosButton("EDIT TIPS");
+		btnAddTips.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				doEditTips();
+			}
+		});
+		activityPanel.add(btnAddTips);
 
 		btnCloseOrder = new PosButton();
 		btnCloseOrder.addActionListener(new ActionListener() {
@@ -276,6 +289,55 @@ public class SwitchboardView extends JPanel implements ActionListener {
 
 		add(bottomPanel, java.awt.BorderLayout.CENTER);
 	}// </editor-fold>//GEN-END:initComponents
+
+	protected void doEditTips() {
+		Ticket ticket = getFirstSelectedTicket();
+		
+		if(ticket == null) {
+			return;
+		}
+		
+		ticket = TicketDAO.getInstance().loadFullTicket(ticket.getId());
+		
+		double tipsAmount = 0;
+		Gratuity gratuity = ticket.getGratuity();
+		if(gratuity != null) {
+			tipsAmount = gratuity.getAmount();
+		}
+		else {
+			gratuity = new Gratuity();
+		}
+		
+		NumberSelectionDialog2 dialog2 = new NumberSelectionDialog2();
+		dialog2.setTitle("Enter tips amount");
+		dialog2.pack();
+		dialog2.setLocationRelativeTo(this);
+		dialog2.setValue(tipsAmount);
+		dialog2.setVisible(true);
+		
+		tipsAmount = dialog2.getValue();
+		if(tipsAmount == 0) {
+			ticket.setGratuity(null);
+		}
+		else {
+			gratuity.setAmount(tipsAmount);
+			ticket.setGratuity(gratuity);
+		}
+		
+		ticket.calculatePrice();
+		
+		if(ticket.isPaid()) {
+			if(ticket.getTotalAmount() > ticket.getPaidAmount()) {
+				ticket.setStatus(TicketStatus.PAID_AND_HOLD.name());
+			}
+			else {
+				ticket.setStatus(TicketStatus.PAID.name());
+			}
+		}
+		
+		TicketDAO.getInstance().saveOrUpdate(ticket);
+		updateTicketList();
+	}
 
 	protected void doCloseOrder() {
 		Ticket ticket = getFirstSelectedTicket();
@@ -421,6 +483,7 @@ public class SwitchboardView extends JPanel implements ActionListener {
 			updateTicketList();
 
 		} catch (Exception e) {
+			e.printStackTrace();
 			POSMessageDialog.showError(POSConstants.ERROR_MESSAGE, e);
 		}
 	}
@@ -802,7 +865,7 @@ public class SwitchboardView extends JPanel implements ActionListener {
 		}
 	}
 
-	private Ticket getFirstSelectedTicket() {
+	public Ticket getFirstSelectedTicket() {
 		List<Ticket> selectedTickets = openTicketList.getSelectedTickets();
 
 		if (selectedTickets.size() == 0 || selectedTickets.size() > 1) {
