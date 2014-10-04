@@ -30,6 +30,7 @@ public class TicketListView extends JPanel {
 
 	public TicketListView() {
 		table = new TicketListTable();
+		table.setSortable(false);
 		table.setModel(tableModel = new TicketListTableModel());
 		table.setRowHeight(40);
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
@@ -77,6 +78,7 @@ public class TicketListView extends JPanel {
 			Ticket ticket = (Ticket) tableModel.getRowData(selectedRows[i]);
 			tickets.add(ticket);
 		}
+		
 		return tickets;
 	}
 
