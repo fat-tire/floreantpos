@@ -53,7 +53,7 @@ import com.floreantpos.ui.views.order.OrderController;
 import com.floreantpos.ui.views.order.RootView;
 import com.floreantpos.util.POSUtil;
 
-public class SettleTicketView extends POSDialog implements CardInputListener {
+public class SettleTicketDialog extends POSDialog implements CardInputListener {
 	public static final String LOYALTY_DISCOUNT_PERCENTAGE = "loyalty_discount_percentage";
 	public static final String LOYALTY_POINT = "loyalty_point";
 	public static final String LOYALTY_COUPON = "loyalty_coupon";
@@ -75,7 +75,7 @@ public class SettleTicketView extends POSDialog implements CardInputListener {
 
 	private String cardName;
 
-	public SettleTicketView() {
+	public SettleTicketDialog() {
 		super(Application.getPosWindow(), true);
 		setTitle("Settle ticket");
 
@@ -325,7 +325,8 @@ public class SettleTicketView extends POSDialog implements CardInputListener {
 				settleTickets(tenderedAmount, new CreditCardTransaction(), "", authCode);
 			}
 			
-			setVisible(false);
+			setCanceled(false);
+			dispose();
 		} catch (Exception e) {
 			POSMessageDialog.showError(e.getMessage(), e);
 		} finally {
@@ -543,6 +544,9 @@ public class SettleTicketView extends POSDialog implements CardInputListener {
 				String authorizationCode = AuthorizeDoNetProcessor.authorizeAmount(cardNumber, expMonth, expYear, amountToAuthorize, authorizeNetCardType);
 				POSMessageDialog.showMessage(authorizationCode);
 				settleTickets(tenderedAmount, new CreditCardTransaction(), cardName, authorizationCode);
+				
+				setCanceled(false);
+				dispose();
 			}
 			else if (inputter instanceof AuthorizationCodeDialog) {
 				AuthorizationCodeDialog authDialog = (AuthorizationCodeDialog) inputter;
@@ -552,6 +556,9 @@ public class SettleTicketView extends POSDialog implements CardInputListener {
 				}
 
 				settleTickets(tenderedAmount, new CreditCardTransaction(), null, authorizationCode);
+				
+				setCanceled(false);
+				dispose();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

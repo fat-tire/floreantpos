@@ -7,7 +7,7 @@ import javax.swing.border.EmptyBorder;
 
 import com.floreantpos.ui.views.LoginScreen;
 import com.floreantpos.ui.views.SwitchboardView;
-import com.floreantpos.ui.views.payment.SettleTicketView;
+import com.floreantpos.ui.views.payment.SettleTicketDialog;
 
 public class RootView extends com.floreantpos.swing.TransparentPanel {
 	private CardLayout layout = new CardLayout();
@@ -15,7 +15,7 @@ public class RootView extends com.floreantpos.swing.TransparentPanel {
 	private LoginScreen loginScreen;
 	private SwitchboardView switchboardView;
 	private OrderView orderView;
-	private SettleTicketView paymentView;
+	private SettleTicketDialog paymentView;
 
 	
 	private static RootView instance;
@@ -75,7 +75,7 @@ public class RootView extends com.floreantpos.swing.TransparentPanel {
 		return instance;
 	}
 
-	public SettleTicketView getPaymentView() {
+	public SettleTicketDialog getPaymentView() {
 		return paymentView;
 	}
 }

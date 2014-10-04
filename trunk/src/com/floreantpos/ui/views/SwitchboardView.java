@@ -52,7 +52,7 @@ import com.floreantpos.ui.dialog.VoidTicketDialog;
 import com.floreantpos.ui.views.order.DefaultOrderServiceExtension;
 import com.floreantpos.ui.views.order.OrderView;
 import com.floreantpos.ui.views.order.RootView;
-import com.floreantpos.ui.views.payment.SettleTicketView;
+import com.floreantpos.ui.views.payment.SettleTicketDialog;
 import com.floreantpos.util.NumberUtil;
 import com.floreantpos.util.TicketAlreadyExistsException;
 
@@ -682,7 +682,7 @@ public class SwitchboardView extends JPanel implements ActionListener {
 			ticketsToSettle.add(fullTicket);
 		}
 
-		SettleTicketView posDialog = new SettleTicketView();
+		SettleTicketDialog posDialog = new SettleTicketDialog();
 		posDialog.setTicketsToSettle(ticketsToSettle);
 		posDialog.setSize(800, 600);
 		posDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
