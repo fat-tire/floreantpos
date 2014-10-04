@@ -8,7 +8,7 @@ import javax.swing.JDialog;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.ui.dialog.POSMessageDialog;
-import com.floreantpos.ui.views.payment.SettleTicketView;
+import com.floreantpos.ui.views.payment.SettleTicketDialog;
 
 public class SettleTicketAction extends AbstractAction {
 
@@ -31,7 +31,7 @@ public class SettleTicketAction extends AbstractAction {
 			return false;
 		}
 
-		SettleTicketView posDialog = new SettleTicketView();
+		SettleTicketDialog posDialog = new SettleTicketDialog();
 		posDialog.setCurrentTicket(ticket);
 		posDialog.setSize(800, 600);
 		posDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);

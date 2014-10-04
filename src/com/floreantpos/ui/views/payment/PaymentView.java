@@ -33,7 +33,7 @@ public class PaymentView extends JPanel {
 
 	private static final String REMOVE = "1";
 
-	protected SettleTicketView settleTicketView;
+	protected SettleTicketDialog settleTicketView;
 
 	private PosButton btnGratuity;
 	private com.floreantpos.swing.PosButton btnCancel;
@@ -62,7 +62,7 @@ public class PaymentView extends JPanel {
 	private PosButton btnViewCoupons;
 	private JLabel label;
 
-	public PaymentView(SettleTicketView settleTicketView) {
+	public PaymentView(SettleTicketDialog settleTicketView) {
 		this.settleTicketView = settleTicketView;
 
 		initComponents();
@@ -287,7 +287,7 @@ public class PaymentView extends JPanel {
 
 	protected void removeKalaId() {
 		Ticket ticket = settleTicketView.getTicketsToSettle().get(0);
-		ticket.getProperties().remove(SettleTicketView.LOYALTY_ID);
+		ticket.getProperties().remove(SettleTicketDialog.LOYALTY_ID);
 		TicketDAO.getInstance().saveOrUpdate(ticket);
 
 		POSMessageDialog.showMessage("Loyalty Id removed");
@@ -301,7 +301,7 @@ public class PaymentView extends JPanel {
 		}
 
 		Ticket ticket = settleTicketView.getTicketsToSettle().get(0);
-		ticket.addProperty(SettleTicketView.LOYALTY_ID, loyaltyid);
+		ticket.addProperty(SettleTicketDialog.LOYALTY_ID, loyaltyid);
 		TicketDAO.getInstance().saveOrUpdate(ticket);
 
 		POSMessageDialog.showMessage("Loyalty id set.");
@@ -391,11 +391,11 @@ public class PaymentView extends JPanel {
 		return doubleValue;
 	}
 
-	public SettleTicketView getSettleTicketView() {
+	public SettleTicketDialog getSettleTicketView() {
 		return settleTicketView;
 	}
 
-	public void setSettleTicketView(SettleTicketView settleTicketView) {
+	public void setSettleTicketView(SettleTicketDialog settleTicketView) {
 		this.settleTicketView = settleTicketView;
 	}
 
