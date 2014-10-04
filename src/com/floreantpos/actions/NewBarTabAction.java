@@ -108,10 +108,7 @@ public class NewBarTabAction extends AbstractAction implements CardInputListener
 			ticket.addProperty(Ticket.PROPERTY_CARD_READER, CardReader.EXTERNAL_TERMINAL.name());
 			ticket.addProperty(Ticket.PROPERTY_ADVANCE_PAYMENT, "0");
 			
-			TicketItem item = new TicketItem();
-			item.setName("TAB OPEN");
-			
-			ticket.addToticketItems(item);
+			ticket.addToticketItems(createTabOpenItem(ticket));
 			
 			TicketDAO.getInstance().save(ticket);
 			
@@ -119,6 +116,7 @@ public class NewBarTabAction extends AbstractAction implements CardInputListener
 			RootView.getInstance().showView(OrderView.VIEW_NAME);
 			
 		} catch (Exception e) {
+			e.printStackTrace();
 			POSMessageDialog.showError(parentComponent, e.getMessage());
 		}
 	}
@@ -156,11 +154,7 @@ public class NewBarTabAction extends AbstractAction implements CardInputListener
 			ticket.addProperty(Ticket.PROPERTY_CARD_READER, CardReader.SWIPE.name());
 			ticket.addProperty(Ticket.PROPERTY_ADVANCE_PAYMENT, String.valueOf(Ticket.BAR_TAB_ADVANCE));
 			
-			TicketItem item = new TicketItem();
-			item.setTicket(ticket);
-			item.setName("TAB OPEN");
-			
-			ticket.addToticketItems(item);
+			ticket.addToticketItems(createTabOpenItem(ticket));
 			
 			TicketDAO.getInstance().save(ticket);
 
@@ -174,6 +168,13 @@ public class NewBarTabAction extends AbstractAction implements CardInputListener
 		} finally {
 			waitDialog.setVisible(false);
 		}
+	}
+
+	private TicketItem createTabOpenItem(Ticket ticket) {
+		TicketItem item = new TicketItem();
+		item.setTicket(ticket);
+		item.setName("TAB OPEN");
+		return item;
 	}
 
 	private void useManualCard(CardInputter inputter) {
@@ -213,10 +214,7 @@ public class NewBarTabAction extends AbstractAction implements CardInputListener
 			ticket.addProperty(Ticket.PROPERTY_CARD_READER, CardReader.MANUAL.name());
 			ticket.addProperty(Ticket.PROPERTY_ADVANCE_PAYMENT, String.valueOf(Ticket.BAR_TAB_ADVANCE));
 			
-			TicketItem item = new TicketItem();
-			item.setName("TAB OPEN");
-			
-			ticket.addToticketItems(item);
+			ticket.addToticketItems(createTabOpenItem(ticket));
 			
 			TicketDAO.getInstance().save(ticket);
 			
@@ -225,6 +223,7 @@ public class NewBarTabAction extends AbstractAction implements CardInputListener
 			OrderView.getInstance().setCurrentTicket(ticket);
 			RootView.getInstance().showView(OrderView.VIEW_NAME);
 		} catch (Exception e) {
+			e.printStackTrace();
 			POSMessageDialog.showError(parentComponent, "Unable to authorize card.");
 		} finally {
 			waitDialog.setVisible(false);
