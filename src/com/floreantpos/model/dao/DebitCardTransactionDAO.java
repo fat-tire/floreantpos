@@ -32,11 +32,11 @@ public class DebitCardTransactionDAO extends BaseDebitCardTransactionDAO {
 			
 			ProjectionList projectionList = Projections.projectionList();
 			projectionList.add(Projections.count(PosTransaction.PROP_ID));
-			projectionList.add(Projections.sum(CashTransaction.PROP_SUBTOTAL_AMOUNT));
-			projectionList.add(Projections.sum(CashTransaction.PROP_TAX_AMOUNT));
-			projectionList.add(Projections.sum(CashTransaction.PROP_DISCOUNT_AMOUNT));
-			projectionList.add(Projections.sum(CashTransaction.PROP_TOTAL_AMOUNT));
-			projectionList.add(Projections.sum(CashTransaction.PROP_GRATUITY_AMOUNT));
+			projectionList.add(Projections.sum(CashTransaction.PROP_AMOUNT));
+//			projectionList.add(Projections.sum(CashTransaction.PROP_TAX_AMOUNT));
+//			projectionList.add(Projections.sum(CashTransaction.PROP_DISCOUNT_AMOUNT));
+//			projectionList.add(Projections.sum(CashTransaction.PROP_TOTAL_AMOUNT));
+//			projectionList.add(Projections.sum(CashTransaction.PROP_GRATUITY_AMOUNT));
 			criteria.setProjection(projectionList);
 			
 			List list = criteria.list();

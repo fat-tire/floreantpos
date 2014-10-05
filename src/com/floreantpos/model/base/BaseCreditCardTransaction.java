@@ -17,8 +17,8 @@ public abstract class BaseCreditCardTransaction extends com.floreantpos.model.Po
 
 	public static String REF = "CreditCardTransaction";
 	public static String PROP_CARD_NUMBER = "cardNumber";
-	public static String PROP_CARD_TYPE = "cardType";
 	public static String PROP_ID = "id";
+	public static String PROP_CARD_TYPE = "cardType";
 
 
 	// constructors
@@ -39,8 +39,8 @@ public abstract class BaseCreditCardTransaction extends com.floreantpos.model.Po
 
 
 	// fields
-	private java.lang.String cardNumber;
-	private java.lang.String cardType;
+		protected java.lang.String cardNumber;
+		protected java.lang.String cardType;
 
 
 
@@ -51,8 +51,8 @@ public abstract class BaseCreditCardTransaction extends com.floreantpos.model.Po
 	 * Return the value associated with the column: CARD_NUMBER
 	 */
 	public java.lang.String getCardNumber () {
-			return cardNumber;
-	}
+					return cardNumber;
+			}
 
 	/**
 	 * Set the value related to the column: CARD_NUMBER
@@ -68,8 +68,8 @@ public abstract class BaseCreditCardTransaction extends com.floreantpos.model.Po
 	 * Return the value associated with the column: CARD_TYPE
 	 */
 	public java.lang.String getCardType () {
-			return cardType;
-	}
+					return cardType;
+			}
 
 	/**
 	 * Set the value related to the column: CARD_TYPE

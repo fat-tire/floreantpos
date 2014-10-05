@@ -466,7 +466,7 @@ public class ReportService {
 			criteria.add(Restrictions.ge(PayOutTransaction.PROP_TRANSACTION_TIME, fromDate));
 			criteria.add(Restrictions.le(PayOutTransaction.PROP_TRANSACTION_TIME, toDate));
 			projectionList = Projections.projectionList();
-			projectionList.add(Projections.sum(PayOutTransaction.PROP_SUBTOTAL_AMOUNT));
+			projectionList.add(Projections.sum(PayOutTransaction.PROP_AMOUNT));
 			criteria.setProjection(projectionList);
 			object = criteria.uniqueResult();
 			if(object != null && object instanceof Number) {
@@ -604,7 +604,7 @@ public class ReportService {
 			criteria.add(Restrictions.le(GiftCertificateTransaction.PROP_TRANSACTION_TIME, toDate));
 			ProjectionList projectionList = Projections.projectionList();
 			projectionList.add(Projections.rowCount());
-			projectionList.add(Projections.sum(GiftCertificateTransaction.PROP_TOTAL_AMOUNT));
+			projectionList.add(Projections.sum(GiftCertificateTransaction.PROP_AMOUNT));
 			criteria.setProjection(projectionList);
 			Object[] object = (Object[]) criteria.uniqueResult();
 			if(object != null && object.length > 0 && object[0] instanceof Number) {

@@ -98,13 +98,13 @@ public abstract class BaseTicket  implements Comparable, Serializable {
 		protected java.lang.Boolean closed;
 		protected java.lang.Boolean drawerResetted;
 		protected java.lang.Double subtotalAmount;
-		protected java.lang.Double discountAmount;
-		protected java.lang.Double taxAmount;
-		protected java.lang.Double totalAmount;
-		protected java.lang.Double tenderedAmount;
-		protected java.lang.Double paidAmount;
-		protected java.lang.Double dueAmount;
-		protected java.lang.Double advanceAmount;
+		protected double discountAmount;
+		protected double taxAmount;
+		protected double totalAmount;
+		protected double tenderedAmount;
+		protected double paidAmount;
+		protected double dueAmount;
+		protected double advanceAmount;
 		protected java.lang.Integer tableNumber;
 		protected java.lang.Integer numberOfGuests;
 		protected java.lang.String status;
@@ -384,15 +384,15 @@ public abstract class BaseTicket  implements Comparable, Serializable {
 	/**
 	 * Return the value associated with the column: TOTAL_DISCOUNT
 	 */
-	public java.lang.Double getDiscountAmount () {
-									return discountAmount == null ? Double.valueOf(0) : discountAmount;
-					}
+	public double getDiscountAmount () {
+					return discountAmount;
+			}
 
 	/**
 	 * Set the value related to the column: TOTAL_DISCOUNT
 	 * @param discountAmount the TOTAL_DISCOUNT value
 	 */
-	public void setDiscountAmount (java.lang.Double discountAmount) {
+	public void setDiscountAmount (double discountAmount) {
 		this.discountAmount = discountAmount;
 	}
 
@@ -401,15 +401,15 @@ public abstract class BaseTicket  implements Comparable, Serializable {
 	/**
 	 * Return the value associated with the column: TOTAL_TAX
 	 */
-	public java.lang.Double getTaxAmount () {
-									return taxAmount == null ? Double.valueOf(0) : taxAmount;
-					}
+	public double getTaxAmount () {
+					return taxAmount;
+			}
 
 	/**
 	 * Set the value related to the column: TOTAL_TAX
 	 * @param taxAmount the TOTAL_TAX value
 	 */
-	public void setTaxAmount (java.lang.Double taxAmount) {
+	public void setTaxAmount (double taxAmount) {
 		this.taxAmount = taxAmount;
 	}
 
@@ -418,15 +418,15 @@ public abstract class BaseTicket  implements Comparable, Serializable {
 	/**
 	 * Return the value associated with the column: TOTAL_PRICE
 	 */
-	public java.lang.Double getTotalAmount () {
-									return totalAmount == null ? Double.valueOf(0) : totalAmount;
-					}
+	public double getTotalAmount () {
+					return totalAmount;
+			}
 
 	/**
 	 * Set the value related to the column: TOTAL_PRICE
 	 * @param totalAmount the TOTAL_PRICE value
 	 */
-	public void setTotalAmount (java.lang.Double totalAmount) {
+	public void setTotalAmount (double totalAmount) {
 		this.totalAmount = totalAmount;
 	}
 
@@ -435,15 +435,15 @@ public abstract class BaseTicket  implements Comparable, Serializable {
 	/**
 	 * Return the value associated with the column: TENDERED_AMOUNT
 	 */
-	public java.lang.Double getTenderedAmount () {
-									return tenderedAmount == null ? Double.valueOf(0) : tenderedAmount;
-					}
+	public double getTenderedAmount () {
+					return tenderedAmount;
+			}
 
 	/**
 	 * Set the value related to the column: TENDERED_AMOUNT
 	 * @param tenderedAmount the TENDERED_AMOUNT value
 	 */
-	public void setTenderedAmount (java.lang.Double tenderedAmount) {
+	public void setTenderedAmount (double tenderedAmount) {
 		this.tenderedAmount = tenderedAmount;
 	}
 
@@ -452,15 +452,15 @@ public abstract class BaseTicket  implements Comparable, Serializable {
 	/**
 	 * Return the value associated with the column: PAID_AMOUNT
 	 */
-	public java.lang.Double getPaidAmount () {
-									return paidAmount == null ? Double.valueOf(0) : paidAmount;
-					}
+	public double getPaidAmount () {
+					return paidAmount;
+			}
 
 	/**
 	 * Set the value related to the column: PAID_AMOUNT
 	 * @param paidAmount the PAID_AMOUNT value
 	 */
-	public void setPaidAmount (java.lang.Double paidAmount) {
+	public void setPaidAmount (double paidAmount) {
 		this.paidAmount = paidAmount;
 	}
 
@@ -469,15 +469,15 @@ public abstract class BaseTicket  implements Comparable, Serializable {
 	/**
 	 * Return the value associated with the column: DUE_AMOUNT
 	 */
-	public java.lang.Double getDueAmount () {
-									return dueAmount == null ? Double.valueOf(0) : dueAmount;
-					}
+	public double getDueAmount () {
+					return dueAmount;
+			}
 
 	/**
 	 * Set the value related to the column: DUE_AMOUNT
 	 * @param dueAmount the DUE_AMOUNT value
 	 */
-	public void setDueAmount (java.lang.Double dueAmount) {
+	public void setDueAmount (double dueAmount) {
 		this.dueAmount = dueAmount;
 	}
 
@@ -486,15 +486,15 @@ public abstract class BaseTicket  implements Comparable, Serializable {
 	/**
 	 * Return the value associated with the column: ADVANCE_AMOUNT
 	 */
-	public java.lang.Double getAdvanceAmount () {
-									return advanceAmount == null ? Double.valueOf(0) : advanceAmount;
-					}
+	public double getAdvanceAmount () {
+					return advanceAmount;
+			}
 
 	/**
 	 * Set the value related to the column: ADVANCE_AMOUNT
 	 * @param advanceAmount the ADVANCE_AMOUNT value
 	 */
-	public void setAdvanceAmount (java.lang.Double advanceAmount) {
+	public void setAdvanceAmount (double advanceAmount) {
 		this.advanceAmount = advanceAmount;
 	}
 

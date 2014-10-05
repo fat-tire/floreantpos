@@ -2,9 +2,7 @@ package com.floreantpos.model.dao;
 
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
-
 import com.floreantpos.model.dao.PosTransactionDAO;
-
 import org.hibernate.criterion.Order;
 
 /**
@@ -41,27 +39,27 @@ public abstract class BasePosTransactionDAO extends com.floreantpos.model.dao._R
 	}
 
 	public com.floreantpos.model.PosTransaction get(java.lang.Integer key)
-	{
+		throws org.hibernate.HibernateException {
 		return (com.floreantpos.model.PosTransaction) get(getReferenceClass(), key);
 	}
 
 	public com.floreantpos.model.PosTransaction get(java.lang.Integer key, Session s)
-	{
+		throws org.hibernate.HibernateException {
 		return (com.floreantpos.model.PosTransaction) get(getReferenceClass(), key, s);
 	}
 
 	public com.floreantpos.model.PosTransaction load(java.lang.Integer key)
-	{
+		throws org.hibernate.HibernateException {
 		return (com.floreantpos.model.PosTransaction) load(getReferenceClass(), key);
 	}
 
 	public com.floreantpos.model.PosTransaction load(java.lang.Integer key, Session s)
-	{
+		throws org.hibernate.HibernateException {
 		return (com.floreantpos.model.PosTransaction) load(getReferenceClass(), key, s);
 	}
 
 	public com.floreantpos.model.PosTransaction loadInitialize(java.lang.Integer key, Session s) 
-	{ 
+			throws org.hibernate.HibernateException { 
 		com.floreantpos.model.PosTransaction obj = load(key, s); 
 		if (!Hibernate.isInitialized(obj)) {
 			Hibernate.initialize(obj);
@@ -101,7 +99,7 @@ public abstract class BasePosTransactionDAO extends com.floreantpos.model.dao._R
 	 * @return the class identifier
 	 */
 	public java.lang.Integer save(com.floreantpos.model.PosTransaction posTransaction)
-	{
+		throws org.hibernate.HibernateException {
 		return (java.lang.Integer) super.save(posTransaction);
 	}
 
@@ -114,7 +112,7 @@ public abstract class BasePosTransactionDAO extends com.floreantpos.model.dao._R
 	 * @return the class identifier
 	 */
 	public java.lang.Integer save(com.floreantpos.model.PosTransaction posTransaction, Session s)
-	{
+		throws org.hibernate.HibernateException {
 		return (java.lang.Integer) save((Object) posTransaction, s);
 	}
 
@@ -125,7 +123,7 @@ public abstract class BasePosTransactionDAO extends com.floreantpos.model.dao._R
 	 * @param posTransaction a transient instance containing new or updated state 
 	 */
 	public void saveOrUpdate(com.floreantpos.model.PosTransaction posTransaction)
-	{
+		throws org.hibernate.HibernateException {
 		saveOrUpdate((Object) posTransaction);
 	}
 
@@ -138,7 +136,7 @@ public abstract class BasePosTransactionDAO extends com.floreantpos.model.dao._R
 	 * @param s the Session.
 	 */
 	public void saveOrUpdate(com.floreantpos.model.PosTransaction posTransaction, Session s)
-	{
+		throws org.hibernate.HibernateException {
 		saveOrUpdate((Object) posTransaction, s);
 	}
 
@@ -148,7 +146,7 @@ public abstract class BasePosTransactionDAO extends com.floreantpos.model.dao._R
 	 * @param posTransaction a transient instance containing updated state
 	 */
 	public void update(com.floreantpos.model.PosTransaction posTransaction) 
-	{
+		throws org.hibernate.HibernateException {
 		update((Object) posTransaction);
 	}
 
@@ -160,7 +158,7 @@ public abstract class BasePosTransactionDAO extends com.floreantpos.model.dao._R
 	 * @param the Session
 	 */
 	public void update(com.floreantpos.model.PosTransaction posTransaction, Session s)
-	{
+		throws org.hibernate.HibernateException {
 		update((Object) posTransaction, s);
 	}
 
@@ -170,7 +168,7 @@ public abstract class BasePosTransactionDAO extends com.floreantpos.model.dao._R
 	 * @param id the instance ID to be removed
 	 */
 	public void delete(java.lang.Integer id)
-	{
+		throws org.hibernate.HibernateException {
 		delete((Object) load(id));
 	}
 
@@ -182,7 +180,7 @@ public abstract class BasePosTransactionDAO extends com.floreantpos.model.dao._R
 	 * @param s the Session
 	 */
 	public void delete(java.lang.Integer id, Session s)
-	{
+		throws org.hibernate.HibernateException {
 		delete((Object) load(id, s), s);
 	}
 
@@ -192,7 +190,7 @@ public abstract class BasePosTransactionDAO extends com.floreantpos.model.dao._R
 	 * @param posTransaction the instance to be removed
 	 */
 	public void delete(com.floreantpos.model.PosTransaction posTransaction)
-	{
+		throws org.hibernate.HibernateException {
 		delete((Object) posTransaction);
 	}
 
@@ -204,7 +202,7 @@ public abstract class BasePosTransactionDAO extends com.floreantpos.model.dao._R
 	 * @param s the Session
 	 */
 	public void delete(com.floreantpos.model.PosTransaction posTransaction, Session s)
-	{
+		throws org.hibernate.HibernateException {
 		delete((Object) posTransaction, s);
 	}
 	
@@ -219,7 +217,7 @@ public abstract class BasePosTransactionDAO extends com.floreantpos.model.dao._R
 	 * </ul>
 	 */
 	public void refresh (com.floreantpos.model.PosTransaction posTransaction, Session s)
-	{
+		throws org.hibernate.HibernateException {
 		refresh((Object) posTransaction, s);
 	}
 

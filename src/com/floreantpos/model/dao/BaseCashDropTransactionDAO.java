@@ -2,9 +2,7 @@ package com.floreantpos.model.dao;
 
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
-
 import com.floreantpos.model.dao.CashDropTransactionDAO;
-
 import org.hibernate.criterion.Order;
 
 /**
@@ -41,27 +39,27 @@ public abstract class BaseCashDropTransactionDAO extends com.floreantpos.model.d
 	}
 
 	public com.floreantpos.model.CashDropTransaction get(java.lang.Integer key)
-	{
+		throws org.hibernate.HibernateException {
 		return (com.floreantpos.model.CashDropTransaction) get(getReferenceClass(), key);
 	}
 
 	public com.floreantpos.model.CashDropTransaction get(java.lang.Integer key, Session s)
-	{
+		throws org.hibernate.HibernateException {
 		return (com.floreantpos.model.CashDropTransaction) get(getReferenceClass(), key, s);
 	}
 
 	public com.floreantpos.model.CashDropTransaction load(java.lang.Integer key)
-	{
+		throws org.hibernate.HibernateException {
 		return (com.floreantpos.model.CashDropTransaction) load(getReferenceClass(), key);
 	}
 
 	public com.floreantpos.model.CashDropTransaction load(java.lang.Integer key, Session s)
-	{
+		throws org.hibernate.HibernateException {
 		return (com.floreantpos.model.CashDropTransaction) load(getReferenceClass(), key, s);
 	}
 
 	public com.floreantpos.model.CashDropTransaction loadInitialize(java.lang.Integer key, Session s) 
-	{ 
+			throws org.hibernate.HibernateException { 
 		com.floreantpos.model.CashDropTransaction obj = load(key, s); 
 		if (!Hibernate.isInitialized(obj)) {
 			Hibernate.initialize(obj);
@@ -101,7 +99,7 @@ public abstract class BaseCashDropTransactionDAO extends com.floreantpos.model.d
 	 * @return the class identifier
 	 */
 	public java.lang.Integer save(com.floreantpos.model.CashDropTransaction cashDropTransaction)
-	{
+		throws org.hibernate.HibernateException {
 		return (java.lang.Integer) super.save(cashDropTransaction);
 	}
 
@@ -114,7 +112,7 @@ public abstract class BaseCashDropTransactionDAO extends com.floreantpos.model.d
 	 * @return the class identifier
 	 */
 	public java.lang.Integer save(com.floreantpos.model.CashDropTransaction cashDropTransaction, Session s)
-	{
+		throws org.hibernate.HibernateException {
 		return (java.lang.Integer) save((Object) cashDropTransaction, s);
 	}
 
@@ -125,7 +123,7 @@ public abstract class BaseCashDropTransactionDAO extends com.floreantpos.model.d
 	 * @param cashDropTransaction a transient instance containing new or updated state 
 	 */
 	public void saveOrUpdate(com.floreantpos.model.CashDropTransaction cashDropTransaction)
-	{
+		throws org.hibernate.HibernateException {
 		saveOrUpdate((Object) cashDropTransaction);
 	}
 
@@ -138,7 +136,7 @@ public abstract class BaseCashDropTransactionDAO extends com.floreantpos.model.d
 	 * @param s the Session.
 	 */
 	public void saveOrUpdate(com.floreantpos.model.CashDropTransaction cashDropTransaction, Session s)
-	{
+		throws org.hibernate.HibernateException {
 		saveOrUpdate((Object) cashDropTransaction, s);
 	}
 
@@ -148,7 +146,7 @@ public abstract class BaseCashDropTransactionDAO extends com.floreantpos.model.d
 	 * @param cashDropTransaction a transient instance containing updated state
 	 */
 	public void update(com.floreantpos.model.CashDropTransaction cashDropTransaction) 
-	{
+		throws org.hibernate.HibernateException {
 		update((Object) cashDropTransaction);
 	}
 
@@ -160,7 +158,7 @@ public abstract class BaseCashDropTransactionDAO extends com.floreantpos.model.d
 	 * @param the Session
 	 */
 	public void update(com.floreantpos.model.CashDropTransaction cashDropTransaction, Session s)
-	{
+		throws org.hibernate.HibernateException {
 		update((Object) cashDropTransaction, s);
 	}
 
@@ -170,7 +168,7 @@ public abstract class BaseCashDropTransactionDAO extends com.floreantpos.model.d
 	 * @param id the instance ID to be removed
 	 */
 	public void delete(java.lang.Integer id)
-	{
+		throws org.hibernate.HibernateException {
 		delete((Object) load(id));
 	}
 
@@ -182,7 +180,7 @@ public abstract class BaseCashDropTransactionDAO extends com.floreantpos.model.d
 	 * @param s the Session
 	 */
 	public void delete(java.lang.Integer id, Session s)
-	{
+		throws org.hibernate.HibernateException {
 		delete((Object) load(id, s), s);
 	}
 
@@ -192,7 +190,7 @@ public abstract class BaseCashDropTransactionDAO extends com.floreantpos.model.d
 	 * @param cashDropTransaction the instance to be removed
 	 */
 	public void delete(com.floreantpos.model.CashDropTransaction cashDropTransaction)
-	{
+		throws org.hibernate.HibernateException {
 		delete((Object) cashDropTransaction);
 	}
 
@@ -204,7 +202,7 @@ public abstract class BaseCashDropTransactionDAO extends com.floreantpos.model.d
 	 * @param s the Session
 	 */
 	public void delete(com.floreantpos.model.CashDropTransaction cashDropTransaction, Session s)
-	{
+		throws org.hibernate.HibernateException {
 		delete((Object) cashDropTransaction, s);
 	}
 	
@@ -219,7 +217,7 @@ public abstract class BaseCashDropTransactionDAO extends com.floreantpos.model.d
 	 * </ul>
 	 */
 	public void refresh (com.floreantpos.model.CashDropTransaction cashDropTransaction, Session s)
-	{
+		throws org.hibernate.HibernateException {
 		refresh((Object) cashDropTransaction, s);
 	}
 

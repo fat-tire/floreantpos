@@ -537,7 +537,7 @@ public class SwitchboardView extends JPanel implements ActionListener {
 				return;
 			}
 
-			if (!selectedTicket.getTotalAmount().equals(selectedTicket.getDueAmount())) {
+			if (selectedTicket.getTotalAmount() != selectedTicket.getDueAmount()) {
 				POSMessageDialog.showMessage(POSConstants.PARTIAL_PAID_VOID_ERROR);
 				return;
 			}
@@ -564,7 +564,7 @@ public class SwitchboardView extends JPanel implements ActionListener {
 				return;
 			}
 
-			if (!selectedTicket.getTotalAmount().equals(selectedTicket.getDueAmount())) {
+			if (selectedTicket.getTotalAmount() != selectedTicket.getDueAmount()) {
 				POSMessageDialog.showMessage(POSConstants.PARTIAL_PAID_VOID_ERROR);
 				return;
 			}

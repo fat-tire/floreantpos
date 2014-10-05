@@ -16,17 +16,14 @@ import java.io.Serializable;
 public abstract class BasePosTransaction  implements Comparable, Serializable {
 
 	public static String REF = "PosTransaction";
-	public static String PROP_TRANSACTION_TIME = "transactionTime";
-	public static String PROP_DRAWER_RESETTED = "drawerResetted";
-	public static String PROP_TICKET = "ticket";
-	public static String PROP_DISCOUNT_AMOUNT = "discountAmount";
-	public static String PROP_TAX_AMOUNT = "taxAmount";
 	public static String PROP_USER = "user";
-	public static String PROP_GRATUITY_AMOUNT = "gratuityAmount";
-	public static String PROP_SUBTOTAL_AMOUNT = "subtotalAmount";
-	public static String PROP_TOTAL_AMOUNT = "totalAmount";
-	public static String PROP_ID = "id";
+	public static String PROP_TICKET = "ticket";
+	public static String PROP_AMOUNT = "amount";
 	public static String PROP_TERMINAL = "terminal";
+	public static String PROP_TENDER_AMOUNT = "tenderAmount";
+	public static String PROP_ID = "id";
+	public static String PROP_DRAWER_RESETTED = "drawerResetted";
+	public static String PROP_TRANSACTION_TIME = "transactionTime";
 
 
 	// constructors
@@ -54,13 +51,10 @@ public abstract class BasePosTransaction  implements Comparable, Serializable {
 	 java.util.Date modifiedTime;
 
 	// fields
-	private java.util.Date transactionTime;
-	private java.lang.Double subtotalAmount;
-	private java.lang.Double discountAmount;
-	private java.lang.Double taxAmount;
-	private java.lang.Double totalAmount;
-	private java.lang.Double gratuityAmount;
-	private java.lang.Boolean drawerResetted;
+		protected java.util.Date transactionTime;
+		protected double amount;
+		protected double tenderAmount;
+		protected java.lang.Boolean drawerResetted;
 
 	// many to one
 	private com.floreantpos.model.Terminal terminal;
@@ -94,8 +88,8 @@ public abstract class BasePosTransaction  implements Comparable, Serializable {
 	 * Return the value associated with the column: MODIFIED_TIME
 	 */
 	public java.util.Date getModifiedTime () {
-			return modifiedTime;
-	}
+					return modifiedTime;
+			}
 
 	/**
 	 * Set the value related to the column: MODIFIED_TIME
@@ -112,8 +106,8 @@ public abstract class BasePosTransaction  implements Comparable, Serializable {
 	 * Return the value associated with the column: TRANSACTION_TIME
 	 */
 	public java.util.Date getTransactionTime () {
-			return transactionTime;
-	}
+					return transactionTime;
+			}
 
 	/**
 	 * Set the value related to the column: TRANSACTION_TIME
@@ -126,86 +120,35 @@ public abstract class BasePosTransaction  implements Comparable, Serializable {
 
 
 	/**
-	 * Return the value associated with the column: SUB_TOTAL
+	 * Return the value associated with the column: AMOUNT
 	 */
-	public java.lang.Double getSubtotalAmount () {
-					return subtotalAmount == null ? Double.valueOf(0) : subtotalAmount;
+	public double getAmount () {
+					return amount;
 			}
 
 	/**
-	 * Set the value related to the column: SUB_TOTAL
-	 * @param subtotalAmount the SUB_TOTAL value
+	 * Set the value related to the column: AMOUNT
+	 * @param amount the AMOUNT value
 	 */
-	public void setSubtotalAmount (java.lang.Double subtotalAmount) {
-		this.subtotalAmount = subtotalAmount;
+	public void setAmount (double amount) {
+		this.amount = amount;
 	}
 
 
 
 	/**
-	 * Return the value associated with the column: TOTAL_DISCOUNT
+	 * Return the value associated with the column: TENDER_AMOUNT
 	 */
-	public java.lang.Double getDiscountAmount () {
-					return discountAmount == null ? Double.valueOf(0) : discountAmount;
+	public double getTenderAmount () {
+					return tenderAmount;
 			}
 
 	/**
-	 * Set the value related to the column: TOTAL_DISCOUNT
-	 * @param discountAmount the TOTAL_DISCOUNT value
+	 * Set the value related to the column: TENDER_AMOUNT
+	 * @param tenderAmount the TENDER_AMOUNT value
 	 */
-	public void setDiscountAmount (java.lang.Double discountAmount) {
-		this.discountAmount = discountAmount;
-	}
-
-
-
-	/**
-	 * Return the value associated with the column: TOTAL_TAX
-	 */
-	public java.lang.Double getTaxAmount () {
-					return taxAmount == null ? Double.valueOf(0) : taxAmount;
-			}
-
-	/**
-	 * Set the value related to the column: TOTAL_TAX
-	 * @param taxAmount the TOTAL_TAX value
-	 */
-	public void setTaxAmount (java.lang.Double taxAmount) {
-		this.taxAmount = taxAmount;
-	}
-
-
-
-	/**
-	 * Return the value associated with the column: TOTAL_PRICE
-	 */
-	public java.lang.Double getTotalAmount () {
-					return totalAmount == null ? Double.valueOf(0) : totalAmount;
-			}
-
-	/**
-	 * Set the value related to the column: TOTAL_PRICE
-	 * @param totalAmount the TOTAL_PRICE value
-	 */
-	public void setTotalAmount (java.lang.Double totalAmount) {
-		this.totalAmount = totalAmount;
-	}
-
-
-
-	/**
-	 * Return the value associated with the column: GRATUITY_AMOUNT
-	 */
-	public java.lang.Double getGratuityAmount () {
-					return gratuityAmount == null ? Double.valueOf(0) : gratuityAmount;
-			}
-
-	/**
-	 * Set the value related to the column: GRATUITY_AMOUNT
-	 * @param gratuityAmount the GRATUITY_AMOUNT value
-	 */
-	public void setGratuityAmount (java.lang.Double gratuityAmount) {
-		this.gratuityAmount = gratuityAmount;
+	public void setTenderAmount (double tenderAmount) {
+		this.tenderAmount = tenderAmount;
 	}
 
 
@@ -214,8 +157,8 @@ public abstract class BasePosTransaction  implements Comparable, Serializable {
 	 * Return the value associated with the column: DRAWER_RESETTED
 	 */
 	public java.lang.Boolean isDrawerResetted () {
-					return drawerResetted == null ? Boolean.FALSE : drawerResetted;
-			}
+								return drawerResetted == null ? Boolean.FALSE : drawerResetted;
+					}
 
 	/**
 	 * Set the value related to the column: DRAWER_RESETTED
@@ -231,8 +174,8 @@ public abstract class BasePosTransaction  implements Comparable, Serializable {
 	 * Return the value associated with the column: TERMINAL_ID
 	 */
 	public com.floreantpos.model.Terminal getTerminal () {
-			return terminal;
-	}
+					return terminal;
+			}
 
 	/**
 	 * Set the value related to the column: TERMINAL_ID
@@ -248,8 +191,8 @@ public abstract class BasePosTransaction  implements Comparable, Serializable {
 	 * Return the value associated with the column: TICKET_ID
 	 */
 	public com.floreantpos.model.Ticket getTicket () {
-			return ticket;
-	}
+					return ticket;
+			}
 
 	/**
 	 * Set the value related to the column: TICKET_ID
@@ -265,8 +208,8 @@ public abstract class BasePosTransaction  implements Comparable, Serializable {
 	 * Return the value associated with the column: USER_ID
 	 */
 	public com.floreantpos.model.User getUser () {
-			return user;
-	}
+					return user;
+			}
 
 	/**
 	 * Set the value related to the column: USER_ID

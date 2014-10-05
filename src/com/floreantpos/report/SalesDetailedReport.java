@@ -36,9 +36,9 @@ public class SalesDetailedReport {
 			creditCardDatas.put(t.getCardType(), data);
 		}
 		data.setSalesCount(data.getSalesCount() + 1);
-		data.setSalesAmount(data.getSalesAmount() + t.getTotalAmount());
-		data.setNetSalesAmount(data.getNetSalesAmount() + t.getTotalAmount());
-		data.setNetTipsAmount(data.getNetTipsAmount() + t.getGratuityAmount());
+		data.setSalesAmount(data.getSalesAmount() + t.getAmount());
+		data.setNetSalesAmount(data.getNetSalesAmount() + t.getAmount());
+		//data.setNetTipsAmount(data.getNetTipsAmount() + t.getGratuityAmount());
 	}
 	
 	public void addCreditCardData(DebitCardTransaction t) {
@@ -49,9 +49,9 @@ public class SalesDetailedReport {
 			creditCardDatas.put(t.getCardType(), data);
 		}
 		data.setSalesCount(data.getSalesCount() + 1);
-		data.setSalesAmount(data.getSalesAmount() + t.getTotalAmount());
-		data.setNetSalesAmount(data.getNetSalesAmount() + t.getTotalAmount());
-		data.setNetTipsAmount(data.getNetTipsAmount() + t.getGratuityAmount());
+		data.setSalesAmount(data.getSalesAmount() + t.getAmount());
+		data.setNetSalesAmount(data.getNetSalesAmount() + t.getAmount());
+//		data.setNetTipsAmount(data.getNetTipsAmount() + t.getGratuityAmount());
 	}
 
 	public void addDrawerPullData(DrawerPullData data) {

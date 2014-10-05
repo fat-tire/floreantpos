@@ -98,10 +98,7 @@ public class PayoutDialog extends POSDialog {
 		payOutTransaction.setReason(reason);
 		payOutTransaction.setRecepient(recepient);
 		payOutTransaction.setNote(note);
-		payOutTransaction.setSubtotalAmount(Double.valueOf(payoutAmount));
-		payOutTransaction.setDiscountAmount(Double.valueOf(0));
-		payOutTransaction.setTaxAmount(Double.valueOf(0));
-		payOutTransaction.setTotalAmount(Double.valueOf(payoutAmount));
+		payOutTransaction.setAmount(Double.valueOf(payoutAmount));
 		
 		payOutTransaction.setUser(Application.getCurrentUser());
 		payOutTransaction.setTransactionTime(new Date());

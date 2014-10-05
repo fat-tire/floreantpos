@@ -163,7 +163,7 @@ public class TicketDAO extends BaseTicketDAO {
 				for (Iterator iter = list.iterator(); iter.hasNext();) {
 					PosTransaction transaction = (PosTransaction) iter.next();
 					Terminal terminal = transaction.getTerminal();
-					terminal.setCurrentBalance(terminal.getCurrentBalance() - transaction.getSubtotalAmount());
+					terminal.setCurrentBalance(terminal.getCurrentBalance() - transaction.getAmount());
 					session.update(terminal);
 					transaction.setTerminal(null);
 					session.delete(transaction);

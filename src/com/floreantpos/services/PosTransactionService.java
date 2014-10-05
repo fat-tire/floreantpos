@@ -27,7 +27,7 @@ import com.floreantpos.util.NumberUtil;
 public class PosTransactionService {
 	private static PosTransactionService paymentService = new PosTransactionService();
 
-	public void settleTickets(List<Ticket> tickets, double tenderedAmount, PosTransaction transaction, String cardType, String cardAuthorizationCode) throws Exception {
+	public void settleTickets(List<Ticket> tickets, final double tenderedAmount, PosTransaction transaction, String cardType, String cardAuthorizationCode) throws Exception {
 		Application application = Application.getInstance();
 		User currentUser = Application.getCurrentUser();
 		Terminal terminal = application.getTerminal();
@@ -66,7 +66,6 @@ public class PosTransactionService {
 				
 				if(tenderedAmount >= dueAmount) {
 					paidAmount += dueAmount;
-					tenderedAmount -= dueAmount;
 					dueAmount = 0;
 					
 					ticket.setPaid(true);
@@ -120,14 +119,7 @@ public class PosTransactionService {
 				}
 				
 				posTransaction.setTicket(ticket);
-				posTransaction.setSubtotalAmount(ticket.getSubtotalAmount());
-				posTransaction.setDiscountAmount(ticket.getDiscountAmount());
-				posTransaction.setTaxAmount(ticket.getTaxAmount());
-				posTransaction.setTotalAmount(ticket.getTotalAmount());
-				
-				if(ticket.getGratuity() != null) {
-					posTransaction.setGratuityAmount(ticket.getGratuity().getAmount());
-				}
+				posTransaction.setAmount(tenderedAmount);
 
 				posTransaction.setTerminal(terminal);
 				posTransaction.setUser(currentUser);
@@ -204,10 +196,7 @@ public class PosTransactionService {
 			RefundTransaction posTransaction = new RefundTransaction();
 			posTransaction.setTicket(ticket);
 
-			posTransaction.setSubtotalAmount(ticket.getSubtotalAmount());
-			posTransaction.setDiscountAmount(ticket.getDiscountAmount());
-			posTransaction.setTaxAmount(ticket.getTaxAmount());
-			posTransaction.setTotalAmount(ticket.getTotalAmount());
+			posTransaction.setAmount(ticket.getSubtotalAmount());
 
 			posTransaction.setTerminal(terminal);
 			posTransaction.setUser(currentUser);

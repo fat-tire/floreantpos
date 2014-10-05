@@ -16,9 +16,9 @@ import java.io.Serializable;
 public abstract class BasePayOutTransaction extends com.floreantpos.model.PosTransaction  implements Comparable, Serializable {
 
 	public static String REF = "PayOutTransaction";
-	public static String PROP_RECEPIENT = "recepient";
-	public static String PROP_NOTE = "note";
 	public static String PROP_ID = "id";
+	public static String PROP_NOTE = "note";
+	public static String PROP_RECEPIENT = "recepient";
 	public static String PROP_REASON = "reason";
 
 
@@ -40,7 +40,7 @@ public abstract class BasePayOutTransaction extends com.floreantpos.model.PosTra
 
 
 	// fields
-	private java.lang.String note;
+		protected java.lang.String note;
 
 	// many to one
 	private com.floreantpos.model.PayoutReason reason;
@@ -55,8 +55,8 @@ public abstract class BasePayOutTransaction extends com.floreantpos.model.PosTra
 	 * Return the value associated with the column: note
 	 */
 	public java.lang.String getNote () {
-			return note;
-	}
+					return note;
+			}
 
 	/**
 	 * Set the value related to the column: note
@@ -72,8 +72,8 @@ public abstract class BasePayOutTransaction extends com.floreantpos.model.PosTra
 	 * Return the value associated with the column: REASON_ID
 	 */
 	public com.floreantpos.model.PayoutReason getReason () {
-			return reason;
-	}
+					return reason;
+			}
 
 	/**
 	 * Set the value related to the column: REASON_ID
@@ -89,8 +89,8 @@ public abstract class BasePayOutTransaction extends com.floreantpos.model.PosTra
 	 * Return the value associated with the column: RECEPIENT_ID
 	 */
 	public com.floreantpos.model.PayoutRecepient getRecepient () {
-			return recepient;
-	}
+					return recepient;
+			}
 
 	/**
 	 * Set the value related to the column: RECEPIENT_ID
