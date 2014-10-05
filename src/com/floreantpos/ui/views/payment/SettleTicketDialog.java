@@ -307,11 +307,12 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 			
 			String transactionId = ticket.getProperty(Ticket.PROPERTY_CARD_TRANSACTION_ID);
 			
-			if (tenderedAmount > Ticket.BAR_TAB_ADVANCE) {
-				AuthorizeDoNetProcessor.voidAmount(transactionId, Ticket.BAR_TAB_ADVANCE);
+			double advanceAmount = ticket.getAdvanceAmount();
+			if (tenderedAmount > advanceAmount) {
+				AuthorizeDoNetProcessor.voidAmount(transactionId, advanceAmount);
 				
 				String cardTracks = ticket.getProperty(Ticket.PROPERTY_CARD_TRACKS);
-				String authCode = AuthorizeDoNetProcessor.process(cardTracks, tenderedAmount, cardType);
+				String authCode = AuthorizeDoNetProcessor.authorizeAmount(cardTracks, tenderedAmount, cardType);
 				
 				waitDialog.setVisible(false);
 				

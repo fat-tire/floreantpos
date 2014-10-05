@@ -38,7 +38,7 @@ public class CashDropTransactionDAO extends BaseCashDropTransactionDAO {
 		Session session = null;
 		org.hibernate.Transaction tx = null;
 		
-		terminal.setCurrentBalance(terminal.getCurrentBalance() + transaction.getSubtotalAmount());
+		terminal.setCurrentBalance(terminal.getCurrentBalance() + transaction.getAmount());
 		try {
 			session = createNewSession();
 			tx = session.beginTransaction();
@@ -58,7 +58,7 @@ public class CashDropTransactionDAO extends BaseCashDropTransactionDAO {
 		Session session = null;
 		org.hibernate.Transaction tx = null;
 		
-		terminal.setCurrentBalance(terminal.getCurrentBalance() - transaction.getSubtotalAmount());
+		terminal.setCurrentBalance(terminal.getCurrentBalance() - transaction.getAmount());
 		try {
 			session = createNewSession();
 			tx = session.beginTransaction();

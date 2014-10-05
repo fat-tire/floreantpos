@@ -17,8 +17,8 @@ public abstract class BaseGiftCertificateTransaction extends com.floreantpos.mod
 
 	public static String REF = "GiftCertificateTransaction";
 	public static String PROP_FACE_VALUE = "faceValue";
-	public static String PROP_CASH_BACK_AMOUNT = "cashBackAmount";
 	public static String PROP_ID = "id";
+	public static String PROP_CASH_BACK_AMOUNT = "cashBackAmount";
 	public static String PROP_PAID_AMOUNT = "paidAmount";
 
 
@@ -40,9 +40,9 @@ public abstract class BaseGiftCertificateTransaction extends com.floreantpos.mod
 
 
 	// fields
-	private java.lang.Double faceValue;
-	private java.lang.Double paidAmount;
-	private java.lang.Double cashBackAmount;
+		protected java.lang.Double faceValue;
+		protected java.lang.Double paidAmount;
+		protected java.lang.Double cashBackAmount;
 
 
 
@@ -53,8 +53,8 @@ public abstract class BaseGiftCertificateTransaction extends com.floreantpos.mod
 	 * Return the value associated with the column: FACE_VALUE
 	 */
 	public java.lang.Double getFaceValue () {
-					return faceValue == null ? Double.valueOf(0) : faceValue;
-			}
+									return faceValue == null ? Double.valueOf(0) : faceValue;
+					}
 
 	/**
 	 * Set the value related to the column: FACE_VALUE
@@ -70,8 +70,8 @@ public abstract class BaseGiftCertificateTransaction extends com.floreantpos.mod
 	 * Return the value associated with the column: PAID_AMOUNT
 	 */
 	public java.lang.Double getPaidAmount () {
-					return paidAmount == null ? Double.valueOf(0) : paidAmount;
-			}
+									return paidAmount == null ? Double.valueOf(0) : paidAmount;
+					}
 
 	/**
 	 * Set the value related to the column: PAID_AMOUNT
@@ -87,8 +87,8 @@ public abstract class BaseGiftCertificateTransaction extends com.floreantpos.mod
 	 * Return the value associated with the column: CASH_BACK_AMOUNT
 	 */
 	public java.lang.Double getCashBackAmount () {
-					return cashBackAmount == null ? Double.valueOf(0) : cashBackAmount;
-			}
+									return cashBackAmount == null ? Double.valueOf(0) : cashBackAmount;
+					}
 
 	/**
 	 * Set the value related to the column: CASH_BACK_AMOUNT

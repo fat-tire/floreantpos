@@ -111,42 +111,6 @@ public class Ticket extends BaseTicket {
 	}
 
 	@Override
-	public java.lang.Double getDiscountAmount() {
-		Double discountAmount = super.getDiscountAmount();
-		return discountAmount == null ? Double.valueOf(0) : discountAmount;
-	}
-
-	@Override
-	public java.lang.Double getTaxAmount() {
-		Double taxAmount = super.getTaxAmount();
-		return taxAmount == null ? Double.valueOf(0) : taxAmount;
-	}
-
-	@Override
-	public java.lang.Double getTotalAmount() {
-		Double totalAmount = super.getTotalAmount();
-		return totalAmount == null ? Double.valueOf(0) : totalAmount;
-	}
-
-	@Override
-	public java.lang.Double getTenderedAmount() {
-		Double tenderedAmount = super.getTenderedAmount();
-		return tenderedAmount == null ? Double.valueOf(0) : tenderedAmount;
-	}
-
-	@Override
-	public java.lang.Double getPaidAmount() {
-		Double paidAmount = super.getPaidAmount();
-		return paidAmount == null ? Double.valueOf(0) : paidAmount;
-	}
-
-	@Override
-	public java.lang.Double getDueAmount() {
-		Double dueAmount = super.getDueAmount();
-		return dueAmount == null ? Double.valueOf(0) : dueAmount;
-	}
-
-	@Override
 	public java.lang.Integer getTableNumber() {
 		Integer tableNumber = super.getTableNumber();
 		return tableNumber == null ? Integer.valueOf(0) : tableNumber;
