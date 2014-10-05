@@ -2,9 +2,7 @@ package com.floreantpos.model.dao;
 
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
-
 import com.floreantpos.model.dao.CreditCardTransactionDAO;
-
 import org.hibernate.criterion.Order;
 
 /**
@@ -41,27 +39,27 @@ public abstract class BaseCreditCardTransactionDAO extends com.floreantpos.model
 	}
 
 	public com.floreantpos.model.CreditCardTransaction get(java.lang.Integer key)
-	{
+		throws org.hibernate.HibernateException {
 		return (com.floreantpos.model.CreditCardTransaction) get(getReferenceClass(), key);
 	}
 
 	public com.floreantpos.model.CreditCardTransaction get(java.lang.Integer key, Session s)
-	{
+		throws org.hibernate.HibernateException {
 		return (com.floreantpos.model.CreditCardTransaction) get(getReferenceClass(), key, s);
 	}
 
 	public com.floreantpos.model.CreditCardTransaction load(java.lang.Integer key)
-	{
+		throws org.hibernate.HibernateException {
 		return (com.floreantpos.model.CreditCardTransaction) load(getReferenceClass(), key);
 	}
 
 	public com.floreantpos.model.CreditCardTransaction load(java.lang.Integer key, Session s)
-	{
+		throws org.hibernate.HibernateException {
 		return (com.floreantpos.model.CreditCardTransaction) load(getReferenceClass(), key, s);
 	}
 
 	public com.floreantpos.model.CreditCardTransaction loadInitialize(java.lang.Integer key, Session s) 
-	{ 
+			throws org.hibernate.HibernateException { 
 		com.floreantpos.model.CreditCardTransaction obj = load(key, s); 
 		if (!Hibernate.isInitialized(obj)) {
 			Hibernate.initialize(obj);
@@ -101,7 +99,7 @@ public abstract class BaseCreditCardTransactionDAO extends com.floreantpos.model
 	 * @return the class identifier
 	 */
 	public java.lang.Integer save(com.floreantpos.model.CreditCardTransaction creditCardTransaction)
-	{
+		throws org.hibernate.HibernateException {
 		return (java.lang.Integer) super.save(creditCardTransaction);
 	}
 
@@ -114,7 +112,7 @@ public abstract class BaseCreditCardTransactionDAO extends com.floreantpos.model
 	 * @return the class identifier
 	 */
 	public java.lang.Integer save(com.floreantpos.model.CreditCardTransaction creditCardTransaction, Session s)
-	{
+		throws org.hibernate.HibernateException {
 		return (java.lang.Integer) save((Object) creditCardTransaction, s);
 	}
 
@@ -125,7 +123,7 @@ public abstract class BaseCreditCardTransactionDAO extends com.floreantpos.model
 	 * @param creditCardTransaction a transient instance containing new or updated state 
 	 */
 	public void saveOrUpdate(com.floreantpos.model.CreditCardTransaction creditCardTransaction)
-	{
+		throws org.hibernate.HibernateException {
 		saveOrUpdate((Object) creditCardTransaction);
 	}
 
@@ -138,7 +136,7 @@ public abstract class BaseCreditCardTransactionDAO extends com.floreantpos.model
 	 * @param s the Session.
 	 */
 	public void saveOrUpdate(com.floreantpos.model.CreditCardTransaction creditCardTransaction, Session s)
-	{
+		throws org.hibernate.HibernateException {
 		saveOrUpdate((Object) creditCardTransaction, s);
 	}
 
@@ -148,7 +146,7 @@ public abstract class BaseCreditCardTransactionDAO extends com.floreantpos.model
 	 * @param creditCardTransaction a transient instance containing updated state
 	 */
 	public void update(com.floreantpos.model.CreditCardTransaction creditCardTransaction) 
-	{
+		throws org.hibernate.HibernateException {
 		update((Object) creditCardTransaction);
 	}
 
@@ -160,7 +158,7 @@ public abstract class BaseCreditCardTransactionDAO extends com.floreantpos.model
 	 * @param the Session
 	 */
 	public void update(com.floreantpos.model.CreditCardTransaction creditCardTransaction, Session s)
-	{
+		throws org.hibernate.HibernateException {
 		update((Object) creditCardTransaction, s);
 	}
 
@@ -170,7 +168,7 @@ public abstract class BaseCreditCardTransactionDAO extends com.floreantpos.model
 	 * @param id the instance ID to be removed
 	 */
 	public void delete(java.lang.Integer id)
-	{
+		throws org.hibernate.HibernateException {
 		delete((Object) load(id));
 	}
 
@@ -182,7 +180,7 @@ public abstract class BaseCreditCardTransactionDAO extends com.floreantpos.model
 	 * @param s the Session
 	 */
 	public void delete(java.lang.Integer id, Session s)
-	{
+		throws org.hibernate.HibernateException {
 		delete((Object) load(id, s), s);
 	}
 
@@ -192,7 +190,7 @@ public abstract class BaseCreditCardTransactionDAO extends com.floreantpos.model
 	 * @param creditCardTransaction the instance to be removed
 	 */
 	public void delete(com.floreantpos.model.CreditCardTransaction creditCardTransaction)
-	{
+		throws org.hibernate.HibernateException {
 		delete((Object) creditCardTransaction);
 	}
 
@@ -204,7 +202,7 @@ public abstract class BaseCreditCardTransactionDAO extends com.floreantpos.model
 	 * @param s the Session
 	 */
 	public void delete(com.floreantpos.model.CreditCardTransaction creditCardTransaction, Session s)
-	{
+		throws org.hibernate.HibernateException {
 		delete((Object) creditCardTransaction, s);
 	}
 	
@@ -219,7 +217,7 @@ public abstract class BaseCreditCardTransactionDAO extends com.floreantpos.model
 	 * </ul>
 	 */
 	public void refresh (com.floreantpos.model.CreditCardTransaction creditCardTransaction, Session s)
-	{
+		throws org.hibernate.HibernateException {
 		refresh((Object) creditCardTransaction, s);
 	}
 

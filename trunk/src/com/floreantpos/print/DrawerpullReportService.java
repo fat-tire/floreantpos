@@ -77,7 +77,7 @@ public class DrawerpullReportService {
 			double totalPayout = 0;
 			List<PayOutTransaction> payoutTransactions = new PayOutTransactionDAO().getUnsettled(terminal);
 			for (PayOutTransaction transaction : payoutTransactions) {
-				totalPayout += transaction.getTotalAmount();
+				totalPayout += transaction.getAmount();
 			}
 			report.setPayOutNumber(payoutTransactions.size());
 			report.setPayOutAmount(totalPayout);
@@ -85,7 +85,7 @@ public class DrawerpullReportService {
 			double drawerBleedAmount = 0;
 			List<CashDropTransaction> cashDrops = new CashDropTransactionDAO().findUnsettled(terminal);
 			for (CashDropTransaction transaction : cashDrops) {
-				drawerBleedAmount += transaction.getTotalAmount();
+				drawerBleedAmount += transaction.getAmount();
 			}
 			report.setDrawerBleedNumber(cashDrops.size());
 			report.setDrawerBleedAmount(drawerBleedAmount);

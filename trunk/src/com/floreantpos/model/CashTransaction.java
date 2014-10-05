@@ -21,4 +21,5 @@ public class CashTransaction extends BaseCashTransaction {
 
 /*[CONSTRUCTOR MARKER END]*/
 
+
 }

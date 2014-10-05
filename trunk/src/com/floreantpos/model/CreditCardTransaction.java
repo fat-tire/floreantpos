@@ -21,4 +21,5 @@ public class CreditCardTransaction extends BaseCreditCardTransaction {
 
 /*[CONSTRUCTOR MARKER END]*/
 
+
 }

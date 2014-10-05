@@ -261,10 +261,7 @@ public class CashDropDialog extends POSDialog {
 				transaction.setTerminal(Application.getInstance().getTerminal());
 				transaction.setUser(Application.getCurrentUser());
 				transaction.setTransactionTime(new Date());
-				transaction.setSubtotalAmount(amount);
-				transaction.setDiscountAmount(Double.valueOf(0));
-				transaction.setTaxAmount(Double.valueOf(0));
-				transaction.setTotalAmount(amount);
+				transaction.setAmount(amount);
 
 				CashDropTransactionDAO dao = new CashDropTransactionDAO();
 				dao.saveNewCashDrop(transaction, Application.getInstance().getTerminal());
@@ -350,7 +347,7 @@ public class CashDropDialog extends POSDialog {
 					return t.getTransactionTime();
 
 				case 1:
-					return Double.valueOf(t.getSubtotalAmount());
+					return Double.valueOf(t.getAmount());
 			}
 			return "";
 		}

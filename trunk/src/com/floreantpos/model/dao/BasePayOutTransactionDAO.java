@@ -2,9 +2,7 @@ package com.floreantpos.model.dao;
 
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
-
 import com.floreantpos.model.dao.PayOutTransactionDAO;
-
 import org.hibernate.criterion.Order;
 
 /**
@@ -41,27 +39,27 @@ public abstract class BasePayOutTransactionDAO extends com.floreantpos.model.dao
 	}
 
 	public com.floreantpos.model.PayOutTransaction get(java.lang.Integer key)
-	{
+		throws org.hibernate.HibernateException {
 		return (com.floreantpos.model.PayOutTransaction) get(getReferenceClass(), key);
 	}
 
 	public com.floreantpos.model.PayOutTransaction get(java.lang.Integer key, Session s)
-	{
+		throws org.hibernate.HibernateException {
 		return (com.floreantpos.model.PayOutTransaction) get(getReferenceClass(), key, s);
 	}
 
 	public com.floreantpos.model.PayOutTransaction load(java.lang.Integer key)
-	{
+		throws org.hibernate.HibernateException {
 		return (com.floreantpos.model.PayOutTransaction) load(getReferenceClass(), key);
 	}
 
 	public com.floreantpos.model.PayOutTransaction load(java.lang.Integer key, Session s)
-	{
+		throws org.hibernate.HibernateException {
 		return (com.floreantpos.model.PayOutTransaction) load(getReferenceClass(), key, s);
 	}
 
 	public com.floreantpos.model.PayOutTransaction loadInitialize(java.lang.Integer key, Session s) 
-	{ 
+			throws org.hibernate.HibernateException { 
 		com.floreantpos.model.PayOutTransaction obj = load(key, s); 
 		if (!Hibernate.isInitialized(obj)) {
 			Hibernate.initialize(obj);
@@ -101,7 +99,7 @@ public abstract class BasePayOutTransactionDAO extends com.floreantpos.model.dao
 	 * @return the class identifier
 	 */
 	public java.lang.Integer save(com.floreantpos.model.PayOutTransaction payOutTransaction)
-	{
+		throws org.hibernate.HibernateException {
 		return (java.lang.Integer) super.save(payOutTransaction);
 	}
 
@@ -114,7 +112,7 @@ public abstract class BasePayOutTransactionDAO extends com.floreantpos.model.dao
 	 * @return the class identifier
 	 */
 	public java.lang.Integer save(com.floreantpos.model.PayOutTransaction payOutTransaction, Session s)
-	{
+		throws org.hibernate.HibernateException {
 		return (java.lang.Integer) save((Object) payOutTransaction, s);
 	}
 
@@ -125,7 +123,7 @@ public abstract class BasePayOutTransactionDAO extends com.floreantpos.model.dao
 	 * @param payOutTransaction a transient instance containing new or updated state 
 	 */
 	public void saveOrUpdate(com.floreantpos.model.PayOutTransaction payOutTransaction)
-	{
+		throws org.hibernate.HibernateException {
 		saveOrUpdate((Object) payOutTransaction);
 	}
 
@@ -138,7 +136,7 @@ public abstract class BasePayOutTransactionDAO extends com.floreantpos.model.dao
 	 * @param s the Session.
 	 */
 	public void saveOrUpdate(com.floreantpos.model.PayOutTransaction payOutTransaction, Session s)
-	{
+		throws org.hibernate.HibernateException {
 		saveOrUpdate((Object) payOutTransaction, s);
 	}
 
@@ -148,7 +146,7 @@ public abstract class BasePayOutTransactionDAO extends com.floreantpos.model.dao
 	 * @param payOutTransaction a transient instance containing updated state
 	 */
 	public void update(com.floreantpos.model.PayOutTransaction payOutTransaction) 
-	{
+		throws org.hibernate.HibernateException {
 		update((Object) payOutTransaction);
 	}
 
@@ -160,7 +158,7 @@ public abstract class BasePayOutTransactionDAO extends com.floreantpos.model.dao
 	 * @param the Session
 	 */
 	public void update(com.floreantpos.model.PayOutTransaction payOutTransaction, Session s)
-	{
+		throws org.hibernate.HibernateException {
 		update((Object) payOutTransaction, s);
 	}
 
@@ -170,7 +168,7 @@ public abstract class BasePayOutTransactionDAO extends com.floreantpos.model.dao
 	 * @param id the instance ID to be removed
 	 */
 	public void delete(java.lang.Integer id)
-	{
+		throws org.hibernate.HibernateException {
 		delete((Object) load(id));
 	}
 
@@ -182,7 +180,7 @@ public abstract class BasePayOutTransactionDAO extends com.floreantpos.model.dao
 	 * @param s the Session
 	 */
 	public void delete(java.lang.Integer id, Session s)
-	{
+		throws org.hibernate.HibernateException {
 		delete((Object) load(id, s), s);
 	}
 
@@ -192,7 +190,7 @@ public abstract class BasePayOutTransactionDAO extends com.floreantpos.model.dao
 	 * @param payOutTransaction the instance to be removed
 	 */
 	public void delete(com.floreantpos.model.PayOutTransaction payOutTransaction)
-	{
+		throws org.hibernate.HibernateException {
 		delete((Object) payOutTransaction);
 	}
 
@@ -204,7 +202,7 @@ public abstract class BasePayOutTransactionDAO extends com.floreantpos.model.dao
 	 * @param s the Session
 	 */
 	public void delete(com.floreantpos.model.PayOutTransaction payOutTransaction, Session s)
-	{
+		throws org.hibernate.HibernateException {
 		delete((Object) payOutTransaction, s);
 	}
 	
@@ -219,7 +217,7 @@ public abstract class BasePayOutTransactionDAO extends com.floreantpos.model.dao
 	 * </ul>
 	 */
 	public void refresh (com.floreantpos.model.PayOutTransaction payOutTransaction, Session s)
-	{
+		throws org.hibernate.HibernateException {
 		refresh((Object) payOutTransaction, s);
 	}
 

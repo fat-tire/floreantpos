@@ -31,8 +31,8 @@ public class RefundTransactionDAO extends BaseRefundTransactionDAO {
 			
 			ProjectionList projectionList = Projections.projectionList();
 			projectionList.add(Projections.rowCount());
-			projectionList.add(Projections.sum(RefundTransaction.PROP_TAX_AMOUNT));
-			projectionList.add(Projections.sum(RefundTransaction.PROP_TOTAL_AMOUNT));
+			//projectionList.add(Projections.sum(RefundTransaction.PROP_TAX_AMOUNT));
+			projectionList.add(Projections.sum(RefundTransaction.PROP_AMOUNT));
 			criteria.setProjection(projectionList);
 			
 			criteria.add(Restrictions.eq(RefundTransaction.PROP_TERMINAL, terminal));

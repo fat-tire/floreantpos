@@ -19,13 +19,13 @@
 		<property column="SETTLED" index="ticketsettled" name="closed" type="java.lang.Boolean" />
 		<property column="DRAWER_RESETTED" index="drawerresetted" name="drawerResetted" type="java.lang.Boolean" />
 		<property column="SUB_TOTAL" length="52" name="subtotalAmount" type="java.lang.Double" />
-		<property column="TOTAL_DISCOUNT" length="52" name="discountAmount" type="java.lang.Double" />
-		<property column="TOTAL_TAX" length="52" name="taxAmount" type="java.lang.Double" />
-		<property column="TOTAL_PRICE" length="52" name="totalAmount" type="java.lang.Double" />
-		<property column="TENDERED_AMOUNT" length="52" name="tenderedAmount" type="java.lang.Double" />
-		<property column="PAID_AMOUNT" length="52" name="paidAmount" type="java.lang.Double" />
-		<property column="DUE_AMOUNT" length="52" name="dueAmount" type="java.lang.Double" />
-		<property column="ADVANCE_AMOUNT" length="52" name="advanceAmount" type="java.lang.Double" />
+		<property column="TOTAL_DISCOUNT" length="52" name="discountAmount" type="double" />
+		<property column="TOTAL_TAX" length="52" name="taxAmount" type="double" />
+		<property column="TOTAL_PRICE" length="52" name="totalAmount" type="double" />
+		<property column="TENDERED_AMOUNT" length="52" name="tenderedAmount" type="double" />
+		<property column="PAID_AMOUNT" length="52" name="paidAmount" type="double" />
+		<property column="DUE_AMOUNT" length="52" name="dueAmount" type="double" />
+		<property column="ADVANCE_AMOUNT" length="52" name="advanceAmount" type="double" />
 		<!--tableNumber should be -1 for take out -->
 		<property column="TABLE_NUMBER" name="tableNumber" type="java.lang.Integer" />
 		<property column="NUMBER_OF_GUESTS" name="numberOfGuests" type="java.lang.Integer" />
