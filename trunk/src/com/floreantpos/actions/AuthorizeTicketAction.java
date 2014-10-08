@@ -34,7 +34,6 @@ public class AuthorizeTicketAction extends AbstractAction {
 			Ticket ticket = dao.loadFullTicket(ticketId);
 			Double totalAmount = ticket.getTotalAmount();
 
-			ticket.setTenderedAmount(totalAmount);
 			ticket.setPaidAmount(totalAmount);
 			ticket.calculatePrice();
 			ticket.setStatus(TicketStatus.PAID.name());

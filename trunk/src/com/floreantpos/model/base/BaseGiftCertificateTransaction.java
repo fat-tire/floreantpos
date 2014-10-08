@@ -40,9 +40,9 @@ public abstract class BaseGiftCertificateTransaction extends com.floreantpos.mod
 
 
 	// fields
-		protected java.lang.Double faceValue;
-		protected java.lang.Double paidAmount;
-		protected java.lang.Double cashBackAmount;
+		protected double faceValue;
+		protected double paidAmount;
+		protected double cashBackAmount;
 
 
 
@@ -52,15 +52,15 @@ public abstract class BaseGiftCertificateTransaction extends com.floreantpos.mod
 	/**
 	 * Return the value associated with the column: FACE_VALUE
 	 */
-	public java.lang.Double getFaceValue () {
-									return faceValue == null ? Double.valueOf(0) : faceValue;
-					}
+	public double getFaceValue () {
+					return faceValue;
+			}
 
 	/**
 	 * Set the value related to the column: FACE_VALUE
 	 * @param faceValue the FACE_VALUE value
 	 */
-	public void setFaceValue (java.lang.Double faceValue) {
+	public void setFaceValue (double faceValue) {
 		this.faceValue = faceValue;
 	}
 
@@ -69,15 +69,15 @@ public abstract class BaseGiftCertificateTransaction extends com.floreantpos.mod
 	/**
 	 * Return the value associated with the column: PAID_AMOUNT
 	 */
-	public java.lang.Double getPaidAmount () {
-									return paidAmount == null ? Double.valueOf(0) : paidAmount;
-					}
+	public double getPaidAmount () {
+					return paidAmount;
+			}
 
 	/**
 	 * Set the value related to the column: PAID_AMOUNT
 	 * @param paidAmount the PAID_AMOUNT value
 	 */
-	public void setPaidAmount (java.lang.Double paidAmount) {
+	public void setPaidAmount (double paidAmount) {
 		this.paidAmount = paidAmount;
 	}
 
@@ -86,15 +86,15 @@ public abstract class BaseGiftCertificateTransaction extends com.floreantpos.mod
 	/**
 	 * Return the value associated with the column: CASH_BACK_AMOUNT
 	 */
-	public java.lang.Double getCashBackAmount () {
-									return cashBackAmount == null ? Double.valueOf(0) : cashBackAmount;
-					}
+	public double getCashBackAmount () {
+					return cashBackAmount;
+			}
 
 	/**
 	 * Set the value related to the column: CASH_BACK_AMOUNT
 	 * @param cashBackAmount the CASH_BACK_AMOUNT value
 	 */
-	public void setCashBackAmount (java.lang.Double cashBackAmount) {
+	public void setCashBackAmount (double cashBackAmount) {
 		this.cashBackAmount = cashBackAmount;
 	}
 

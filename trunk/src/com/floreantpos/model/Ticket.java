@@ -221,7 +221,7 @@ public class Ticket extends BaseTicket {
 		}
 		return count;
 	}
-
+	
 	public void calculatePrice() {
 		priceIncludesTax = Application.getInstance().isPriceIncludesTax();
 

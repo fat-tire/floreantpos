@@ -2,12 +2,10 @@ package com.floreantpos.model;
 
 import com.floreantpos.model.base.BaseCashTransaction;
 
-
-
 public class CashTransaction extends BaseCashTransaction {
 	private static final long serialVersionUID = 1L;
 
-/*[CONSTRUCTOR MARKER BEGIN]*/
+	/*[CONSTRUCTOR MARKER BEGIN]*/
 	public CashTransaction () {
 		super();
 	}
@@ -19,7 +17,5 @@ public class CashTransaction extends BaseCashTransaction {
 		super(id);
 	}
 
-/*[CONSTRUCTOR MARKER END]*/
-
-
+	/*[CONSTRUCTOR MARKER END]*/
 }

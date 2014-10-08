@@ -668,25 +668,25 @@ public class SwitchboardView extends JPanel implements ActionListener {
 	}
 
 	private void doGroupSettle() {
-		List<Ticket> selectedTickets = getSelectedTickets();
-		if (selectedTickets == null) {
-			return;
-		}
-
-		List<Ticket> ticketsToSettle = new ArrayList<Ticket>();
-
-		for (int i = 0; i < selectedTickets.size(); i++) {
-			Ticket ticket = selectedTickets.get(i);
-			
-			Ticket fullTicket = TicketDAO.getInstance().loadFullTicket(ticket.getId());
-			ticketsToSettle.add(fullTicket);
-		}
-
-		SettleTicketDialog posDialog = new SettleTicketDialog();
-		posDialog.setTicketsToSettle(ticketsToSettle);
-		posDialog.setSize(800, 600);
-		posDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-		posDialog.open();
+//		List<Ticket> selectedTickets = getSelectedTickets();
+//		if (selectedTickets == null) {
+//			return;
+//		}
+//
+//		List<Ticket> ticketsToSettle = new ArrayList<Ticket>();
+//
+//		for (int i = 0; i < selectedTickets.size(); i++) {
+//			Ticket ticket = selectedTickets.get(i);
+//			
+//			Ticket fullTicket = TicketDAO.getInstance().loadFullTicket(ticket.getId());
+//			ticketsToSettle.add(fullTicket);
+//		}
+//
+//		SettleTicketDialog posDialog = new SettleTicketDialog();
+//		posDialog.setTicketsToSettle(ticketsToSettle);
+//		posDialog.setSize(800, 600);
+//		posDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+//		posDialog.open();
 	}
 
 	public void updateView() {

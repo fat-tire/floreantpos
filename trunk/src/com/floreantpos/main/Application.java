@@ -127,6 +127,7 @@ public class Application {
 			setSystemInitialized(true);
 
 		} catch (DatabaseConnectionException e) {
+			e.printStackTrace();
 			StringWriter writer = new StringWriter();
 			e.printStackTrace(new PrintWriter(writer));
 
@@ -143,6 +144,7 @@ public class Application {
 				}
 			}
 		} catch (Exception e) {
+			e.printStackTrace();
 			logger.error(e);
 		} finally {
 			getPosWindow().setGlassPaneVisible(false);

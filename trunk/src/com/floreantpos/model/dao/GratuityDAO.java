@@ -104,7 +104,7 @@ public class GratuityDAO extends BaseGratuityDAO {
 				
 				TipsCashoutReportData data = new TipsCashoutReportData();
 				data.setTicketId(ticket.getId());
-				data.setSaleType(ticket.getCardType());
+//				data.setSaleType(ticket.getCardType());
 				data.setTicketTotal(ticket.getTotalAmount());
 				
 				if(gratuity != null) {

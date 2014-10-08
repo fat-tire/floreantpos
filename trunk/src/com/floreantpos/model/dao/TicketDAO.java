@@ -55,6 +55,7 @@ public class TicketDAO extends BaseTicketDAO {
 		
 		Hibernate.initialize(ticket.getTicketItems());
 		Hibernate.initialize(ticket.getCouponAndDiscounts());
+		Hibernate.initialize(ticket.getTransactions());
 
 		List<TicketItem> ticketItems = ticket.getTicketItems();
 		if (ticketItems != null) {
@@ -105,7 +106,6 @@ public class TicketDAO extends BaseTicketDAO {
 			Criteria criteria = session.createCriteria(getReferenceClass());
 			criteria.add(Restrictions.eq(Ticket.PROP_DRAWER_RESETTED, Boolean.FALSE));
 			criteria.add(Restrictions.eq(Ticket.PROP_TERMINAL, terminal));
-			criteria.add(Restrictions.eq(Ticket.PROP_TRANSACTION_TYPE, transactionType));
 			criteria.createAlias(Ticket.PROP_GRATUITY, "gratuity");
 			criteria.add(Restrictions.eq("gratuity.paid", Boolean.FALSE));
 
