@@ -21,5 +21,7 @@ public class PosTransaction extends BasePosTransaction {
 
 /*[CONSTRUCTOR MARKER END]*/
 
-
+	public boolean isCard() {
+		return (this instanceof CreditCardTransaction) || (this instanceof DebitCardTransaction);
+	}
 }

@@ -1,69 +1,92 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping package="com.floreantpos.model">
-  <class lazy="false" name="com.floreantpos.model.PosTransaction" optimistic-lock="version" table="TRANSACTIONS">
-    <id column="ID" name="id" type="java.lang.Integer">
-      <generator class="identity"/>
-    </id>
-    <discriminator column="PAYMENT_TYPE" length="20" type="string"/>
-    <version column="MODIFIED_TIME" name="modifiedTime" type="timestamp"/>
-    
-    <property column="TRANSACTION_TIME" length="10" name="transactionTime" type="java.util.Date"/>
-    <property column="AMOUNT" length="52" name="amount" type="double"/>
-    <property column="TENDER_AMOUNT" length="52" name="tenderAmount" type="double"/>
-    
-    <!-- a transaction is marked as settled when drawer is resetted -->
-    <property column="DRAWER_RESETTED" index="tran_drawer_resetted" name="drawerResetted" type="java.lang.Boolean"/>
+	<class lazy="false" name="com.floreantpos.model.PosTransaction" optimistic-lock="version" table="TRANSACTIONS">
+		<id column="ID" name="id" type="java.lang.Integer">
+			<generator class="identity" />
+		</id>
+		<discriminator column="TRANSACTION_TYPE" length="20" type="string" />
+		<version column="MODIFIED_TIME" name="modifiedTime" type="timestamp" />
 
-    <!-- Associations -->
-    <!-- uni-directional many-to-one association to Terminal -->
-    <many-to-one class="com.floreantpos.model.Terminal" name="terminal">
-      <column name="TERMINAL_ID"/>
-    </many-to-one>
-    
-    <!-- uni-directional one-to-one association to Ticket -->
-    <many-to-one class="com.floreantpos.model.Ticket" name="ticket">
-      <column name="TICKET_ID"/>
-    </many-to-one>
-    
-    <!-- uni-directional many-to-one association to User -->
-    <many-to-one class="com.floreantpos.model.User" name="user">
-      <column name="USER_ID"/>
-    </many-to-one>
-    
-    <subclass discriminator-value="CASH" name="com.floreantpos.model.CashTransaction">
-		</subclass>
+		<property column="TRANSACTION_TIME" length="10" name="transactionTime" type="java.util.Date" />
+		<property column="AMOUNT" length="52" name="amount" type="java.lang.Double" />
+		<property column="TENDER_AMOUNT" length="52" name="tenderAmount" type="java.lang.Double" />
+		<property column="DEBIT" name="debit" type="java.lang.Boolean" />
+		<property column="CAPTURED" name="captured" type="java.lang.Boolean" />
 		
-    <subclass discriminator-value="GIFT_CERT" name="com.floreantpos.model.GiftCertificateTransaction">
-      <property column="FACE_VALUE" name="faceValue" type="java.lang.Double"/>
-      <property column="PAID_AMOUNT" name="paidAmount" type="java.lang.Double"/>
-      <property column="CASH_BACK_AMOUNT" name="cashBackAmount" type="java.lang.Double"/>
-    </subclass>
-    
-    <subclass discriminator-value="CREDIT_CARD" name="com.floreantpos.model.CreditCardTransaction">
-      <property column="CARD_NUMBER" length="30" name="cardNumber" type="string"/>
-      <property column="CARD_TYPE" length="30" name="cardType" type="string"/>
-    </subclass>
-    
-    <subclass discriminator-value="DEBIT_CARD" name="com.floreantpos.model.DebitCardTransaction">
-      <property column="CARD_NUMBER" length="30" name="cardNumber" type="string"/>
-      <property column="CARD_TYPE" length="30" name="cardType" type="string"/>
-    </subclass>
-    
-    <subclass discriminator-value="CASH_DROP" name="com.floreantpos.model.CashDropTransaction">
+		<property column="ADDITIONAL_AMOUNT" length="52" name="additionalAmount" type="java.lang.Double" />
+		<property column="ADDITIONAL_AMOUNT_INFO" length="30" name="additionalAmountInfo" type="string" />
+
+		<!-- a transaction is marked as settled when drawer is resetted -->
+		<property column="DRAWER_RESETTED" index="tran_drawer_resetted" name="drawerResetted" type="java.lang.Boolean" />
+
+		<property column="NOTE" name="note" length="255" type="string" />
+
+		<!-- Associations -->
+		<!-- uni-directional many-to-one association to Terminal -->
+		<many-to-one class="com.floreantpos.model.Terminal" name="terminal">
+			<column name="TERMINAL_ID" />
+		</many-to-one>
+
+		<!-- uni-directional one-to-one association to Ticket -->
+		<many-to-one class="com.floreantpos.model.Ticket" name="ticket">
+			<column name="TICKET_ID" />
+		</many-to-one>
+
+		<!-- uni-directional many-to-one association to User -->
+		<many-to-one class="com.floreantpos.model.User" name="user">
+			<column name="USER_ID" />
+		</many-to-one>
+
+		<many-to-one class="com.floreantpos.model.PayoutReason" lazy="false" name="reason">
+			<column name="PAYOUT_REASON_ID" />
+		</many-to-one>
+
+		<many-to-one class="com.floreantpos.model.PayoutRecepient" lazy="false" name="recepient">
+			<column name="PAYOUT_RECEPIENT_ID" />
+		</many-to-one>
+
+		<subclass discriminator-value="CASH" name="com.floreantpos.model.CashTransaction">
 		</subclass>
-		
-    <subclass discriminator-value="REFUND" name="com.floreantpos.model.RefundTransaction">
+
+		<subclass discriminator-value="GIFT_CERT" name="com.floreantpos.model.GiftCertificateTransaction">
+			<!-- GIFT CERT SPECIFIC -->
+			<property column="FACE_VALUE" name="faceValue" type="double" />
+			<property column="PAID_AMOUNT" name="paidAmount" type="double" />
+			<property column="CASH_BACK_AMOUNT" name="cashBackAmount" type="double" />
 		</subclass>
-		
-    <subclass discriminator-value="PAY_OUT" name="com.floreantpos.model.PayOutTransaction">
-      <property length="255" name="note" type="string"/>
-      <many-to-one class="com.floreantpos.model.PayoutReason" lazy="false" name="reason">
-        <column name="REASON_ID"/>
-      </many-to-one>
-      <many-to-one class="com.floreantpos.model.PayoutRecepient" lazy="false" name="recepient">
-        <column name="RECEPIENT_ID"/>
-      </many-to-one>
-    </subclass>
-  </class>
+
+		<subclass discriminator-value="CREDIT_CARD" name="com.floreantpos.model.CreditCardTransaction">
+			<property column="CARD_TRACK" length="120" name="cardTrack" type="string" />
+			<property column="CARD_NUMBER" length="40" name="cardNumber" type="string" />
+			<property column="CARD_AUTHORIZATION_CODE" length="30" name="authorizationCode" type="string" />
+			<property column="CARD_TYPE" length="20" name="cardType" type="string" />
+			<property column="CARD_TRANSACTION_ID" name="cardTransactionId" type="string" length="60" />
+			<property column="CARD_MERCHANT_GATEWAY" name="cardMerchantGateway" type="string" length="60" />
+			<property column="CARD_EXP_MONTH" name="cardExpiryMonth" type="string" length="16" />
+			<property column="CARD_EXP_YEAR" name="cardExpiryYear" type="string" length="4" />
+			<property column="CARD_ENTRY_TYPE" name="cardEntryType" type="string" length="20" />
+		</subclass>
+
+		<subclass discriminator-value="DEBIT_CARD" name="com.floreantpos.model.DebitCardTransaction">
+			<property column="CARD_TRACK" length="120" name="cardTrack" type="string" />
+			<property column="CARD_NUMBER" length="40" name="cardNumber" type="string" />
+			<property column="CARD_AUTHORIZATION_CODE" length="30" name="authorizationCode" type="string" />
+			<property column="CARD_TYPE" length="20" name="cardType" type="string" />
+			<property column="CARD_TRANSACTION_ID" name="cardTransactionId" type="string" length="60" />
+			<property column="CARD_MERCHANT_GATEWAY" name="cardMerchantGateway" type="string" length="60" />
+			<property column="CARD_EXP_MONTH" name="cardExpiryMonth" type="string" length="16" />
+			<property column="CARD_EXP_YEAR" name="cardExpiryYear" type="string" length="4" />
+			<property column="CARD_ENTRY_TYPE" name="cardEntryType" type="string" length="20" />
+		</subclass>
+
+		<subclass discriminator-value="CASH_DROP" name="com.floreantpos.model.CashDropTransaction">
+		</subclass>
+
+		<subclass discriminator-value="REFUND" name="com.floreantpos.model.RefundTransaction">
+		</subclass>
+
+		<subclass discriminator-value="PAY_OUT" name="com.floreantpos.model.PayOutTransaction">
+		</subclass>
+	</class>
 </hibernate-mapping>

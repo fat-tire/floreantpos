@@ -1,11 +1,11 @@
 package com.floreantpos.ui.views.payment;
 
+import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.NumberFormat;
 import java.text.ParseException;
-import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -13,20 +13,20 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 
 import net.miginfocom.swing.MigLayout;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.floreantpos.model.Gratuity;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.dao.TicketDAO;
+import com.floreantpos.swing.FocusedTextField;
 import com.floreantpos.swing.POSToggleButton;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.util.NumberUtil;
-import java.awt.Font;
-import com.floreantpos.swing.FocusedTextField;
-import javax.swing.SwingConstants;
 
 public class PaymentView extends JPanel {
 	private static final String ADD = "0";
@@ -67,7 +67,7 @@ public class PaymentView extends JPanel {
 
 		initComponents();
 
-//		btnUseKalaId.setActionCommand(ADD);
+		//		btnUseKalaId.setActionCommand(ADD);
 	}
 
 	private void initComponents() {
@@ -190,24 +190,22 @@ public class PaymentView extends JPanel {
 		btnMyKalaDiscount = new PosButton();
 		btnMyKalaDiscount.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//settleTicketView.makeMyKalaDiscount();
-				Ticket ticket = settleTicketView.getTicketsToSettle().get(0);
-				settleTicketView.submitMyKalaDiscount(ticket);
+				settleTicketView.submitMyKalaDiscount();
 			}
 		});
 
-//		btnUseKalaId = new PosButton();
-//		btnUseKalaId.addActionListener(new ActionListener() {
-//			public void actionPerformed(ActionEvent e) {
-//				String actionCommand = e.getActionCommand();
-//				if (ADD.equals(actionCommand)) {
-//					addMyKalaId();
-//				}
-//				else {
-//					removeKalaId();
-//				}
-//			}
-//		});
+		//		btnUseKalaId = new PosButton();
+		//		btnUseKalaId.addActionListener(new ActionListener() {
+		//			public void actionPerformed(ActionEvent e) {
+		//				String actionCommand = e.getActionCommand();
+		//				if (ADD.equals(actionCommand)) {
+		//					addMyKalaId();
+		//				}
+		//				else {
+		//					removeKalaId();
+		//				}
+		//			}
+		//		});
 		btnMyKalaDiscount.setText("LOYALTY DISCOUNT");
 		jPanel4.add(btnMyKalaDiscount, "cell 1 0,growx");
 		btnGratuity.setText("GRATUITY");
@@ -269,12 +267,12 @@ public class PaymentView extends JPanel {
 
 		transparentPanel1.setLayout(new MigLayout("", "[][grow,fill]", "[19px][][19px]"));
 		transparentPanel1.add(jLabel4, "cell 0 0,alignx right,aligny center");
-		
+
 		lblAdvance = new JLabel();
 		lblAdvance.setText("ADVANCE:");
 		lblAdvance.setFont(new Font("Dialog", Font.BOLD, 12));
 		transparentPanel1.add(lblAdvance, "cell 0 1,alignx trailing");
-		
+
 		tfAdvance = new FocusedTextField();
 		tfAdvance.setHorizontalAlignment(SwingConstants.RIGHT);
 		tfAdvance.setFocusable(false);
@@ -286,7 +284,7 @@ public class PaymentView extends JPanel {
 	}// </editor-fold>//GEN-END:initComponents
 
 	protected void removeKalaId() {
-		Ticket ticket = settleTicketView.getTicketsToSettle().get(0);
+		Ticket ticket = settleTicketView.getTicket();
 		ticket.getProperties().remove(SettleTicketDialog.LOYALTY_ID);
 		TicketDAO.getInstance().saveOrUpdate(ticket);
 
@@ -300,7 +298,7 @@ public class PaymentView extends JPanel {
 			return;
 		}
 
-		Ticket ticket = settleTicketView.getTicketsToSettle().get(0);
+		Ticket ticket = settleTicketView.getTicket();
 		ticket.addProperty(SettleTicketDialog.LOYALTY_ID, loyaltyid);
 		TicketDAO.getInstance().saveOrUpdate(ticket);
 
@@ -365,21 +363,16 @@ public class PaymentView extends JPanel {
 	private PosButton btnMyKalaDiscount;
 	private JLabel lblAdvance;
 	private FocusedTextField tfAdvance;
+
 	//private PosButton btnUseKalaId;
 
 	public void updateView() {
-		List<Ticket> tickets = settleTicketView.getTicketsToSettle();
-		if (tickets.size() == 1) {
-			btnTaxExempt.setEnabled(true);
-			btnTaxExempt.setSelected(tickets.get(0).isTaxExempt());
-		}
-		else {
-			btnTaxExempt.setEnabled(false);
-		}
+		btnTaxExempt.setEnabled(true);
+		btnTaxExempt.setSelected(settleTicketView.getTicket().isTaxExempt());
 
 		double dueAmount = getDueAmount();
 		double advanceAmount = getAdvanceAmount();
-		
+
 		tfDueAmount.setText(NumberUtil.formatNumber(dueAmount));
 		tfAdvance.setText(NumberUtil.formatNumber(advanceAmount));
 		tfAmountTendered.setText(NumberUtil.formatNumber(dueAmount));
@@ -400,57 +393,20 @@ public class PaymentView extends JPanel {
 	}
 
 	protected double getPaidAmount() {
-		List<Ticket> ticketsToSettle = settleTicketView.getTicketsToSettle();
-		if (ticketsToSettle == null) {
-			return 0;
-		}
-
-		double total = 0;
-		for (Ticket ticket : ticketsToSettle) {
-			total += ticket.getPaidAmount();
-		}
-		return total;
+		return settleTicketView.getTicket().getPaidAmount();
 	}
 
 	protected double getDueAmount() {
-		List<Ticket> ticketsToSettle = settleTicketView.getTicketsToSettle();
-		if (ticketsToSettle == null) {
-			return 0;
-		}
-
-		double total = 0;
-		for (Ticket ticket : ticketsToSettle) {
-			total += ticket.getDueAmount();
-		}
-		return total;
+		return settleTicketView.getTicket().getDueAmount();
 	}
-	
+
 	protected double getAdvanceAmount() {
-		List<Ticket> ticketsToSettle = settleTicketView.getTicketsToSettle();
-		if (ticketsToSettle == null) {
-			return 0;
-		}
-		
-		double total = 0;
-		for (Ticket ticket : ticketsToSettle) {
-			total += ticket.getAdvanceAmount();
-		}
-		return total;
+		Gratuity gratuity = settleTicketView.getTicket().getGratuity();
+		return gratuity != null ? gratuity.getAmount() : 0;
 	}
 
 	protected double getTotalGratuity() {
-		List<Ticket> ticketsToSettle = settleTicketView.getTicketsToSettle();
-		if (ticketsToSettle == null) {
-			return 0;
-		}
-
-		double total = 0;
-		for (Ticket ticket : ticketsToSettle) {
-			if (ticket.getGratuity() != null) {
-				total += ticket.getGratuity().getAmount();
-			}
-		}
-		return total;
+		return settleTicketView.getTicket().getPaidAmount();
 	}
 
 	public void setDefaultFocus() {

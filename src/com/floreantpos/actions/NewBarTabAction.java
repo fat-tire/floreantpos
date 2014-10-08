@@ -145,7 +145,6 @@ public class NewBarTabAction extends AbstractAction implements CardInputListener
 			
 			Ticket ticket = createTicket(application);
 			ticket.setAdvanceAmount(Ticket.BAR_TAB_ADVANCE);
-			ticket.setTenderedAmount(Ticket.BAR_TAB_ADVANCE);
 			
 			ticket.addProperty(Ticket.PROPERTY_PAYMENT_METHOD, selectedPaymentType.getDisplayString());
 			ticket.addProperty(Ticket.PROPERTY_CARD_NAME, selectedPaymentType.getDisplayString());
@@ -203,7 +202,6 @@ public class NewBarTabAction extends AbstractAction implements CardInputListener
 			
 			Ticket ticket = createTicket(application);
 			ticket.setAdvanceAmount(Ticket.BAR_TAB_ADVANCE);
-			ticket.setTenderedAmount(Ticket.BAR_TAB_ADVANCE);
 			
 			ticket.addProperty(Ticket.PROPERTY_PAYMENT_METHOD, selectedPaymentType.getDisplayString());
 			ticket.addProperty(Ticket.PROPERTY_CARD_NAME, selectedPaymentType.getDisplayString());

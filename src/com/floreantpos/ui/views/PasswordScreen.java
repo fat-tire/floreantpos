@@ -278,6 +278,7 @@ public class PasswordScreen extends JPanel {
 			LogFactory.getLog(Application.class).error(e);
 			MessageDialog.showError(e.getMessage());
 		} catch (Exception e1) {
+			e1.printStackTrace();
 			LogFactory.getLog(Application.class).error(e1);
 			String message = e1.getMessage();
 

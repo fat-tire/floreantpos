@@ -22,8 +22,8 @@ public class TransactionCompletionDialog extends POSDialog {
 	private double totalAmount;
 	private double paidAmount;
 	private double dueAmount;
-	private double dueAmountBeforePaid;
 	private double gratuityAmount;
+	private double changeAmount;
 	
 	private JLabel lblTenderedAmount;
 	private JLabel lblTotalAmount;
@@ -84,6 +84,8 @@ public class TransactionCompletionDialog extends POSDialog {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					for (Ticket ticket : tickets) {
+						
+						//FIXME: REVISE
 						PosPrintService.printTicket(ticket, getTenderedAmount());
 					}
 				}catch(Exception ee) {
@@ -121,12 +123,7 @@ public class TransactionCompletionDialog extends POSDialog {
 		lblPaidAmount.setText(NumberUtil.formatNumber(paidAmount));
 		lblDueAmount.setText(NumberUtil.formatNumber(dueAmount));
 		lblGratuityAmount.setText(NumberUtil.formatNumber(gratuityAmount));
-		
-		double changeDueAmount = tenderedAmount - gratuityAmount - dueAmountBeforePaid;
-		if(changeDueAmount < 0) {
-			changeDueAmount = 0;
-		}
-		lblChangeDue.setText(NumberUtil.formatNumber(changeDueAmount));
+		lblChangeDue.setText(NumberUtil.formatNumber(changeAmount));
 	}
 	
 	private static TransactionCompletionDialog instance;
@@ -136,14 +133,6 @@ public class TransactionCompletionDialog extends POSDialog {
 			instance = new TransactionCompletionDialog(Application.getPosWindow());
 		}
 		return instance;
-	}
-
-	public double getDueAmountBeforePaid() {
-		return dueAmountBeforePaid;
-	}
-
-	public void setDueAmountBeforePaid(double dueAmountBeforePaid) {
-		this.dueAmountBeforePaid = dueAmountBeforePaid;
 	}
 
 	public double getDueAmount() {
@@ -184,5 +173,13 @@ public class TransactionCompletionDialog extends POSDialog {
 
 	public void setTickets(List<Ticket> tickets) {
 		this.tickets = tickets;
+	}
+
+	public double getChangeAmount() {
+		return changeAmount;
+	}
+
+	public void setChangeAmount(double changeAmount) {
+		this.changeAmount = changeAmount;
 	}
 }

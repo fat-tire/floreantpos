@@ -17,9 +17,6 @@ public abstract class BasePayOutTransaction extends com.floreantpos.model.PosTra
 
 	public static String REF = "PayOutTransaction";
 	public static String PROP_ID = "id";
-	public static String PROP_NOTE = "note";
-	public static String PROP_RECEPIENT = "recepient";
-	public static String PROP_REASON = "reason";
 
 
 	// constructors
@@ -39,66 +36,8 @@ public abstract class BasePayOutTransaction extends com.floreantpos.model.PosTra
 	private int hashCode = Integer.MIN_VALUE;
 
 
-	// fields
-		protected java.lang.String note;
-
-	// many to one
-	private com.floreantpos.model.PayoutReason reason;
-	private com.floreantpos.model.PayoutRecepient recepient;
 
 
-
-
-
-
-	/**
-	 * Return the value associated with the column: note
-	 */
-	public java.lang.String getNote () {
-					return note;
-			}
-
-	/**
-	 * Set the value related to the column: note
-	 * @param note the note value
-	 */
-	public void setNote (java.lang.String note) {
-		this.note = note;
-	}
-
-
-
-	/**
-	 * Return the value associated with the column: REASON_ID
-	 */
-	public com.floreantpos.model.PayoutReason getReason () {
-					return reason;
-			}
-
-	/**
-	 * Set the value related to the column: REASON_ID
-	 * @param reason the REASON_ID value
-	 */
-	public void setReason (com.floreantpos.model.PayoutReason reason) {
-		this.reason = reason;
-	}
-
-
-
-	/**
-	 * Return the value associated with the column: RECEPIENT_ID
-	 */
-	public com.floreantpos.model.PayoutRecepient getRecepient () {
-					return recepient;
-			}
-
-	/**
-	 * Set the value related to the column: RECEPIENT_ID
-	 * @param recepient the RECEPIENT_ID value
-	 */
-	public void setRecepient (com.floreantpos.model.PayoutRecepient recepient) {
-		this.recepient = recepient;
-	}
 
 
 

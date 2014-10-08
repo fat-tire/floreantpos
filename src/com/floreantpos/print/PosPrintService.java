@@ -27,6 +27,7 @@ import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.TicketItemModifier;
 import com.floreantpos.model.TipsCashoutReport;
 import com.floreantpos.model.TipsCashoutReportTableModel;
+import com.floreantpos.model.TransactionType;
 import com.floreantpos.model.dao.RestaurantDAO;
 import com.floreantpos.report.JReportPrintService;
 import com.floreantpos.util.NumberUtil;
@@ -188,6 +189,7 @@ public class PosPrintService {
 	}
 
 	public static void printTicket(final Ticket ticket, final double paidAmount) throws Exception {
+		//FIXME
 		JReportPrintService.printTicket(ticket);
 		
 //		Job job = new Job() {

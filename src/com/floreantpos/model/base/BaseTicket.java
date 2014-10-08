@@ -16,11 +16,10 @@ import java.io.Serializable;
 public abstract class BaseTicket  implements Comparable, Serializable {
 
 	public static String REF = "Ticket";
-	public static String PROP_RE_OPENED = "reOpened";
 	public static String PROP_BAR_CODE = "barCode";
+	public static String PROP_RE_OPENED = "reOpened";
 	public static String PROP_VOID_REASON = "voidReason";
 	public static String PROP_DUE_AMOUNT = "dueAmount";
-	public static String PROP_TRANSACTION_TYPE = "transactionType";
 	public static String PROP_DISCOUNT_AMOUNT = "discountAmount";
 	public static String PROP_CREATE_DATE = "createDate";
 	public static String PROP_DELIVERY_CHARGE = "deliveryCharge";
@@ -28,11 +27,9 @@ public abstract class BaseTicket  implements Comparable, Serializable {
 	public static String PROP_PAID = "paid";
 	public static String PROP_ADVANCE_AMOUNT = "advanceAmount";
 	public static String PROP_ACTIVE_DATE = "activeDate";
-	public static String PROP_CARD_TYPE = "cardType";
 	public static String PROP_ASSIGNED_DRIVER = "assignedDriver";
 	public static String PROP_CREATION_HOUR = "creationHour";
 	public static String PROP_CUSTOMER_WILL_PICKUP = "customerWillPickup";
-	public static String PROP_CARD_AUTH_CODE = "cardAuthCode";
 	public static String PROP_DRAWER_RESETTED = "drawerResetted";
 	public static String PROP_CUSTOMER = "customer";
 	public static String PROP_OWNER = "owner";
@@ -42,11 +39,9 @@ public abstract class BaseTicket  implements Comparable, Serializable {
 	public static String PROP_TERMINAL = "terminal";
 	public static String PROP_CLOSED = "closed";
 	public static String PROP_CLOSING_DATE = "closingDate";
-	public static String PROP_TRANSACTION_CODE = "transactionCode";
 	public static String PROP_DELIVERY_ADDRESS = "deliveryAddress";
 	public static String PROP_SHIFT = "shift";
 	public static String PROP_TAX_AMOUNT = "taxAmount";
-	public static String PROP_TENDERED_AMOUNT = "tenderedAmount";
 	public static String PROP_STATUS = "status";
 	public static String PROP_SUBTOTAL_AMOUNT = "subtotalAmount";
 	public static String PROP_VOIDED_BY = "voidedBy";
@@ -101,18 +96,13 @@ public abstract class BaseTicket  implements Comparable, Serializable {
 		protected double discountAmount;
 		protected double taxAmount;
 		protected double totalAmount;
-		protected double tenderedAmount;
 		protected double paidAmount;
 		protected double dueAmount;
 		protected double advanceAmount;
 		protected java.lang.Integer tableNumber;
 		protected java.lang.Integer numberOfGuests;
 		protected java.lang.String status;
-		protected java.lang.String transactionType;
-		protected java.lang.String transactionCode;
 		protected java.lang.String barCode;
-		protected java.lang.String cardType;
-		protected java.lang.String cardAuthCode;
 		protected java.lang.Boolean taxExempt;
 		protected java.lang.Boolean reOpened;
 		protected java.lang.Double serviceCharge;
@@ -135,6 +125,7 @@ public abstract class BaseTicket  implements Comparable, Serializable {
 	private java.util.Map<String, String> properties;
 	private java.util.List<com.floreantpos.model.TicketItem> ticketItems;
 	private java.util.List<com.floreantpos.model.TicketCouponAndDiscount> couponAndDiscounts;
+	private java.util.List<com.floreantpos.model.PosTransaction> transactions;
 
 
 
@@ -433,23 +424,6 @@ public abstract class BaseTicket  implements Comparable, Serializable {
 
 
 	/**
-	 * Return the value associated with the column: TENDERED_AMOUNT
-	 */
-	public double getTenderedAmount () {
-					return tenderedAmount;
-			}
-
-	/**
-	 * Set the value related to the column: TENDERED_AMOUNT
-	 * @param tenderedAmount the TENDERED_AMOUNT value
-	 */
-	public void setTenderedAmount (double tenderedAmount) {
-		this.tenderedAmount = tenderedAmount;
-	}
-
-
-
-	/**
 	 * Return the value associated with the column: PAID_AMOUNT
 	 */
 	public double getPaidAmount () {
@@ -552,40 +526,6 @@ public abstract class BaseTicket  implements Comparable, Serializable {
 
 
 	/**
-	 * Return the value associated with the column: TRANSACTION_TYPE
-	 */
-	public java.lang.String getTransactionType () {
-					return transactionType;
-			}
-
-	/**
-	 * Set the value related to the column: TRANSACTION_TYPE
-	 * @param transactionType the TRANSACTION_TYPE value
-	 */
-	public void setTransactionType (java.lang.String transactionType) {
-		this.transactionType = transactionType;
-	}
-
-
-
-	/**
-	 * Return the value associated with the column: TRANSACTION_CODE
-	 */
-	public java.lang.String getTransactionCode () {
-					return transactionCode;
-			}
-
-	/**
-	 * Set the value related to the column: TRANSACTION_CODE
-	 * @param transactionCode the TRANSACTION_CODE value
-	 */
-	public void setTransactionCode (java.lang.String transactionCode) {
-		this.transactionCode = transactionCode;
-	}
-
-
-
-	/**
 	 * Return the value associated with the column: BAR_CODE
 	 */
 	public java.lang.String getBarCode () {
@@ -598,40 +538,6 @@ public abstract class BaseTicket  implements Comparable, Serializable {
 	 */
 	public void setBarCode (java.lang.String barCode) {
 		this.barCode = barCode;
-	}
-
-
-
-	/**
-	 * Return the value associated with the column: CARD_TYPE
-	 */
-	public java.lang.String getCardType () {
-					return cardType;
-			}
-
-	/**
-	 * Set the value related to the column: CARD_TYPE
-	 * @param cardType the CARD_TYPE value
-	 */
-	public void setCardType (java.lang.String cardType) {
-		this.cardType = cardType;
-	}
-
-
-
-	/**
-	 * Return the value associated with the column: CARD_AUTH_CODE
-	 */
-	public java.lang.String getCardAuthCode () {
-					return cardAuthCode;
-			}
-
-	/**
-	 * Set the value related to the column: CARD_AUTH_CODE
-	 * @param cardAuthCode the CARD_AUTH_CODE value
-	 */
-	public void setCardAuthCode (java.lang.String cardAuthCode) {
-		this.cardAuthCode = cardAuthCode;
 	}
 
 
@@ -948,6 +854,28 @@ public abstract class BaseTicket  implements Comparable, Serializable {
 	public void addTocouponAndDiscounts (com.floreantpos.model.TicketCouponAndDiscount ticketCouponAndDiscount) {
 		if (null == getCouponAndDiscounts()) setCouponAndDiscounts(new java.util.ArrayList<com.floreantpos.model.TicketCouponAndDiscount>());
 		getCouponAndDiscounts().add(ticketCouponAndDiscount);
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: transactions
+	 */
+	public java.util.List<com.floreantpos.model.PosTransaction> getTransactions () {
+					return transactions;
+			}
+
+	/**
+	 * Set the value related to the column: transactions
+	 * @param transactions the transactions value
+	 */
+	public void setTransactions (java.util.List<com.floreantpos.model.PosTransaction> transactions) {
+		this.transactions = transactions;
+	}
+
+	public void addTotransactions (com.floreantpos.model.PosTransaction posTransaction) {
+		if (null == getTransactions()) setTransactions(new java.util.ArrayList<com.floreantpos.model.PosTransaction>());
+		getTransactions().add(posTransaction);
 	}
 
 

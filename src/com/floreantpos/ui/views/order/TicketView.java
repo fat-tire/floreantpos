@@ -366,7 +366,7 @@ public class TicketView extends JPanel {
 				try {
 					advancePayment = Double.parseDouble(ticket.getProperty(Ticket.PROPERTY_ADVANCE_PAYMENT));
 				} catch (Exception e) {}
-				
+				//FIXME: REVISE
 				PosPrintService.printTicket(ticket, advancePayment);
 			}
 			

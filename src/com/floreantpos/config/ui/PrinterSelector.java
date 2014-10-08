@@ -74,7 +74,6 @@ public class PrinterSelector extends ConfigurationView {
 
 	@Override
 	public boolean save() throws Exception {
-		// TODO Auto-generated method stub
 		return false;
 	}
 

@@ -22,7 +22,6 @@
 		<property column="TOTAL_DISCOUNT" length="52" name="discountAmount" type="double" />
 		<property column="TOTAL_TAX" length="52" name="taxAmount" type="double" />
 		<property column="TOTAL_PRICE" length="52" name="totalAmount" type="double" />
-		<property column="TENDERED_AMOUNT" length="52" name="tenderedAmount" type="double" />
 		<property column="PAID_AMOUNT" length="52" name="paidAmount" type="double" />
 		<property column="DUE_AMOUNT" length="52" name="dueAmount" type="double" />
 		<property column="ADVANCE_AMOUNT" length="52" name="advanceAmount" type="double" />
@@ -32,11 +31,7 @@
 		<property column="STATUS" name="status" type="string" length="30" />
 		<!-- property name="gratuityAmount" type="java.lang.Double" column="GRATUITY_AMOUNT" /> <property name="gratuityPaid" type="java.lang.Boolean" column="GRATUITY_PAID" 
 			/ -->
-		<property column="TRANSACTION_TYPE" index="tickettransactionType" length="20" name="transactionType" type="string" />
-		<property column="TRANSACTION_CODE" length="60" name="transactionCode" type="string" />
 		<property column="BAR_CODE" length="60" name="barCode" type="string" />
-		<property column="CARD_TYPE" length="60" name="cardType" type="string" />
-		<property column="CARD_AUTH_CODE" length="60" name="cardAuthCode" type="string" />
 		<property column="IS_TAX_EXEMPT" name="taxExempt" type="java.lang.Boolean" />
 		<property column="IS_RE_OPENED" name="reOpened" type="java.lang.Boolean" />
 		<property column="SERVICE_CHARGE" name="serviceCharge" type="java.lang.Double" />
@@ -68,6 +63,14 @@
 			</key>
 			<list-index column="D_ORDER" />
 			<one-to-many class="com.floreantpos.model.TicketCouponAndDiscount" />
+		</list>
+		
+		<list cascade="all" inverse="false" lazy="false" name="transactions">
+			<key>
+				<column name="TICKET_ID" />
+			</key>
+			<list-index column="TRAN_ORDER" />
+			<one-to-many class="com.floreantpos.model.PosTransaction" />
 		</list>
 
 		<!-- uni-directional many-to-one association to User -->
