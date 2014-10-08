@@ -52,9 +52,10 @@ public class OrderInfoView extends JPanel {
 			
 			TicketPrintProperties printProperties = new TicketPrintProperties("*** ORDER " + ticket.getId() + " ***", false, true, true);
 			
-			TransactionType transactionType = TransactionType.valueOf(ticket.getTransactionType() == null ? "UNKNOWN" : ticket.getTransactionType());
+			//FIXME
+			TransactionType transactionType = TransactionType.CASH;//TransactionType.valueOf(ticket.getTransactionType() == null ? "UNKNOWN" : ticket.getTransactionType());
 			
-			if (transactionType == TransactionType.CARD) {
+			if (transactionType == TransactionType.CREDIT_CARD || transactionType == TransactionType.DEBIT_CARD) {
 				printProperties.setReceiptCopyType("Customer Copy");
 				JasperPrint jasperPrint = JReportPrintService.createPrint(ticket, printProperties);
 				jasperPrint.setProperty("printerName", PrintConfig.getReceiptPrinterName());

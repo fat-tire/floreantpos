@@ -16,14 +16,21 @@ import java.io.Serializable;
 public abstract class BasePosTransaction  implements Comparable, Serializable {
 
 	public static String REF = "PosTransaction";
+	public static String PROP_ADDITIONAL_AMOUNT = "additionalAmount";
 	public static String PROP_USER = "user";
-	public static String PROP_TICKET = "ticket";
 	public static String PROP_AMOUNT = "amount";
+	public static String PROP_CAPTURED = "captured";
+	public static String PROP_ADDITIONAL_AMOUNT_INFO = "additionalAmountInfo";
 	public static String PROP_TERMINAL = "terminal";
+	public static String PROP_NOTE = "note";
+	public static String PROP_RECEPIENT = "recepient";
+	public static String PROP_TICKET = "ticket";
 	public static String PROP_TENDER_AMOUNT = "tenderAmount";
 	public static String PROP_ID = "id";
-	public static String PROP_DRAWER_RESETTED = "drawerResetted";
 	public static String PROP_TRANSACTION_TIME = "transactionTime";
+	public static String PROP_DRAWER_RESETTED = "drawerResetted";
+	public static String PROP_DEBIT = "debit";
+	public static String PROP_REASON = "reason";
 
 
 	// constructors
@@ -52,14 +59,21 @@ public abstract class BasePosTransaction  implements Comparable, Serializable {
 
 	// fields
 		protected java.util.Date transactionTime;
-		protected double amount;
-		protected double tenderAmount;
+		protected java.lang.Double amount;
+		protected java.lang.Double tenderAmount;
+		protected java.lang.Boolean debit;
+		protected java.lang.Boolean captured;
+		protected java.lang.Double additionalAmount;
+		protected java.lang.String additionalAmountInfo;
 		protected java.lang.Boolean drawerResetted;
+		protected java.lang.String note;
 
 	// many to one
 	private com.floreantpos.model.Terminal terminal;
 	private com.floreantpos.model.Ticket ticket;
 	private com.floreantpos.model.User user;
+	private com.floreantpos.model.PayoutReason reason;
+	private com.floreantpos.model.PayoutRecepient recepient;
 
 
 
@@ -122,15 +136,15 @@ public abstract class BasePosTransaction  implements Comparable, Serializable {
 	/**
 	 * Return the value associated with the column: AMOUNT
 	 */
-	public double getAmount () {
-					return amount;
-			}
+	public java.lang.Double getAmount () {
+									return amount == null ? Double.valueOf(0) : amount;
+					}
 
 	/**
 	 * Set the value related to the column: AMOUNT
 	 * @param amount the AMOUNT value
 	 */
-	public void setAmount (double amount) {
+	public void setAmount (java.lang.Double amount) {
 		this.amount = amount;
 	}
 
@@ -139,16 +153,84 @@ public abstract class BasePosTransaction  implements Comparable, Serializable {
 	/**
 	 * Return the value associated with the column: TENDER_AMOUNT
 	 */
-	public double getTenderAmount () {
-					return tenderAmount;
-			}
+	public java.lang.Double getTenderAmount () {
+									return tenderAmount == null ? Double.valueOf(0) : tenderAmount;
+					}
 
 	/**
 	 * Set the value related to the column: TENDER_AMOUNT
 	 * @param tenderAmount the TENDER_AMOUNT value
 	 */
-	public void setTenderAmount (double tenderAmount) {
+	public void setTenderAmount (java.lang.Double tenderAmount) {
 		this.tenderAmount = tenderAmount;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: DEBIT
+	 */
+	public java.lang.Boolean isDebit () {
+								return debit == null ? Boolean.FALSE : debit;
+					}
+
+	/**
+	 * Set the value related to the column: DEBIT
+	 * @param debit the DEBIT value
+	 */
+	public void setDebit (java.lang.Boolean debit) {
+		this.debit = debit;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: CAPTURED
+	 */
+	public java.lang.Boolean isCaptured () {
+								return captured == null ? Boolean.FALSE : captured;
+					}
+
+	/**
+	 * Set the value related to the column: CAPTURED
+	 * @param captured the CAPTURED value
+	 */
+	public void setCaptured (java.lang.Boolean captured) {
+		this.captured = captured;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: ADDITIONAL_AMOUNT
+	 */
+	public java.lang.Double getAdditionalAmount () {
+									return additionalAmount == null ? Double.valueOf(0) : additionalAmount;
+					}
+
+	/**
+	 * Set the value related to the column: ADDITIONAL_AMOUNT
+	 * @param additionalAmount the ADDITIONAL_AMOUNT value
+	 */
+	public void setAdditionalAmount (java.lang.Double additionalAmount) {
+		this.additionalAmount = additionalAmount;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: ADDITIONAL_AMOUNT_INFO
+	 */
+	public java.lang.String getAdditionalAmountInfo () {
+					return additionalAmountInfo;
+			}
+
+	/**
+	 * Set the value related to the column: ADDITIONAL_AMOUNT_INFO
+	 * @param additionalAmountInfo the ADDITIONAL_AMOUNT_INFO value
+	 */
+	public void setAdditionalAmountInfo (java.lang.String additionalAmountInfo) {
+		this.additionalAmountInfo = additionalAmountInfo;
 	}
 
 
@@ -166,6 +248,23 @@ public abstract class BasePosTransaction  implements Comparable, Serializable {
 	 */
 	public void setDrawerResetted (java.lang.Boolean drawerResetted) {
 		this.drawerResetted = drawerResetted;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: NOTE
+	 */
+	public java.lang.String getNote () {
+					return note;
+			}
+
+	/**
+	 * Set the value related to the column: NOTE
+	 * @param note the NOTE value
+	 */
+	public void setNote (java.lang.String note) {
+		this.note = note;
 	}
 
 
@@ -217,6 +316,40 @@ public abstract class BasePosTransaction  implements Comparable, Serializable {
 	 */
 	public void setUser (com.floreantpos.model.User user) {
 		this.user = user;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: PAYOUT_REASON_ID
+	 */
+	public com.floreantpos.model.PayoutReason getReason () {
+					return reason;
+			}
+
+	/**
+	 * Set the value related to the column: PAYOUT_REASON_ID
+	 * @param reason the PAYOUT_REASON_ID value
+	 */
+	public void setReason (com.floreantpos.model.PayoutReason reason) {
+		this.reason = reason;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: PAYOUT_RECEPIENT_ID
+	 */
+	public com.floreantpos.model.PayoutRecepient getRecepient () {
+					return recepient;
+			}
+
+	/**
+	 * Set the value related to the column: PAYOUT_RECEPIENT_ID
+	 * @param recepient the PAYOUT_RECEPIENT_ID value
+	 */
+	public void setRecepient (com.floreantpos.model.PayoutRecepient recepient) {
+		this.recepient = recepient;
 	}
 
 

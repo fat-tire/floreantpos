@@ -23,7 +23,6 @@ import com.floreantpos.model.PayOutTransaction;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketCouponAndDiscount;
 import com.floreantpos.model.TicketItem;
-import com.floreantpos.model.TransactionType;
 import com.floreantpos.model.User;
 import com.floreantpos.model.dao.CouponAndDiscountDAO;
 import com.floreantpos.model.dao.GenericDAO;
@@ -62,7 +61,8 @@ public class ReportService {
 		criteria.add(Restrictions.eq(Ticket.PROP_PAID, Boolean.TRUE));
 		criteria.add(Restrictions.ge(Ticket.PROP_CREATE_DATE, fromDate));
 		criteria.add(Restrictions.le(Ticket.PROP_CREATE_DATE, toDate));
-		criteria.add(Restrictions.eq(Ticket.PROP_TRANSACTION_TYPE, TransactionType.CARD.name()));
+		//FIXME: TRANSACTION
+//		criteria.add(Restrictions.eq(Ticket.PROP_TRANSACTION_TYPE, TransactionType.CARD.name()));
 		List list = criteria.list();
 
 		int totalSalesCount = 0;
@@ -76,7 +76,8 @@ public class ReportService {
 			CreditCardReportData data = new CreditCardReportData();
 
 			data.setRefId(ticket.getId());
-			data.setCardType(ticket.getCardType());
+			//FIXME: GET CARD TYPE
+			//data.setCardType(ticket.getCardType());
 			data.setSubtotal(ticket.getSubtotalAmount());
 			data.setTotal(ticket.getTotalAmount());
 
@@ -400,7 +401,8 @@ public class ReportService {
 			criteria.add(Restrictions.ge(Ticket.PROP_CREATE_DATE, fromDate));
 			criteria.add(Restrictions.le(Ticket.PROP_CREATE_DATE, toDate));
 			criteria.add(Restrictions.eq(Ticket.PROP_VOIDED, Boolean.FALSE));
-			criteria.add(Restrictions.eq(Ticket.PROP_TRANSACTION_TYPE, TransactionType.CASH.name()));
+			//FIXME: TRANSACTION
+//			criteria.add(Restrictions.eq(Ticket.PROP_TRANSACTION_TYPE, TransactionType.CASH.name()));
 			projectionList = Projections.projectionList();
 			projectionList.add(Projections.sum(Ticket.PROP_TOTAL_AMOUNT));
 			criteria.setProjection(projectionList);
@@ -415,7 +417,8 @@ public class ReportService {
 			criteria.add(Restrictions.ge(Ticket.PROP_CREATE_DATE, fromDate));
 			criteria.add(Restrictions.le(Ticket.PROP_CREATE_DATE, toDate));
 			criteria.add(Restrictions.eq(Ticket.PROP_VOIDED, Boolean.FALSE));
-			criteria.add(Restrictions.eq(Ticket.PROP_TRANSACTION_TYPE, TransactionType.CARD.name()));
+			//FIXME: TRANSACTION
+//			criteria.add(Restrictions.eq(Ticket.PROP_TRANSACTION_TYPE, TransactionType.CARD.name()));
 			projectionList = Projections.projectionList();
 			projectionList.add(Projections.sum(Ticket.PROP_SUBTOTAL_AMOUNT));
 			criteria.setProjection(projectionList);

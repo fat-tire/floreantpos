@@ -20,7 +20,6 @@ import com.floreantpos.model.PayOutTransaction;
 import com.floreantpos.model.Terminal;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketCouponAndDiscount;
-import com.floreantpos.model.TransactionType;
 import com.floreantpos.model.dao.CashDropTransactionDAO;
 import com.floreantpos.model.dao.CashTransactionDAO;
 import com.floreantpos.model.dao.CreditCardTransactionDAO;
@@ -190,7 +189,8 @@ public class DrawerpullReportService {
 		criteria.add(Restrictions.eq(Ticket.PROP_CLOSED, Boolean.TRUE));
 		criteria.add(Restrictions.eq(Ticket.PROP_VOIDED, Boolean.FALSE));
 		criteria.add(Restrictions.eq(Ticket.PROP_DRAWER_RESETTED, Boolean.FALSE));
-		criteria.add(Restrictions.eq(Ticket.PROP_TRANSACTION_TYPE, TransactionType.CASH.name()));
+		//FIXME: TRANSACTION
+//		criteria.add(Restrictions.eq(Ticket.PROP_TRANSACTION_TYPE, TransactionType.CASH.name()));
 		criteria.add(Restrictions.eq(Ticket.PROP_TERMINAL, terminal));
 
 		projectionList = Projections.projectionList();
@@ -236,7 +236,8 @@ public class DrawerpullReportService {
 		criteria.add(Restrictions.eq(Ticket.PROP_VOIDED, Boolean.FALSE));
 		criteria.add(Restrictions.eq(Ticket.PROP_DRAWER_RESETTED, Boolean.FALSE));
 		criteria.add(Restrictions.eq(Ticket.PROP_TERMINAL, terminal));
-		criteria.add(Restrictions.eq(Ticket.PROP_TRANSACTION_TYPE, TransactionType.GIFT_CERT.name()));
+		//FIXME: TRANSACTION
+//		criteria.add(Restrictions.eq(Ticket.PROP_TRANSACTION_TYPE, TransactionType.GIFT_CERT.name()));
 		
 		ProjectionList projectionList = Projections.projectionList();
 		projectionList.add(Projections.rowCount());

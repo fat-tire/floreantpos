@@ -24,13 +24,13 @@ import com.floreantpos.POSConstants;
 import com.floreantpos.config.PrintConfig;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.Customer;
+import com.floreantpos.model.PosTransaction;
 import com.floreantpos.model.Restaurant;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.TicketItemCookingInstruction;
 import com.floreantpos.model.TicketItemModifierGroup;
 import com.floreantpos.model.TicketType;
-import com.floreantpos.model.TransactionType;
 import com.floreantpos.model.dao.RestaurantDAO;
 import com.floreantpos.util.NumberUtil;
 
@@ -88,15 +88,19 @@ public class JReportPrintService {
 	}
 
 	public static void printTicket(Ticket ticket) {
+		printTicket(ticket, null);
+	}
+	
+	public static void printTicket(Ticket ticket, PosTransaction transaction) {
 		try {
 
 			TicketPrintProperties printProperties = new TicketPrintProperties("*** PAYMENT RECEIPT ***", true, true, true);
 			printProperties.setKitchenPrint(false);
 			printProperties.setPrintCookingInstructions(false);
 			
-			TransactionType transactionType = TransactionType.valueOf(ticket.getTransactionType() == null ? "UNKNOWN" : ticket.getTransactionType());
+			//TransactionType transactionType = TransactionType.valueOf(ticket.getTransactionType() == null ? "UNKNOWN" : ticket.getTransactionType());
 			
-			if (transactionType == TransactionType.CARD) {
+			if (transaction != null && transaction.isCard()) {
 				printProperties.setReceiptCopyType("Customer Copy");
 				JasperPrint jasperPrint = createPrint(ticket, printProperties);
 				jasperPrint.setProperty("printerName", PrintConfig.getReceiptPrinterName());
@@ -154,11 +158,11 @@ public class JReportPrintService {
 		map.put(SERVER_NAME, POSConstants.RECEIPT_REPORT_SERVER_LABEL + ticket.getOwner());
 		map.put(REPORT_DATE, POSConstants.RECEIPT_REPORT_DATE_LABEL + Application.formatDate(new Date()));
 		
-		TransactionType transactionType = TransactionType.valueOf(ticket.getTransactionType() == null ? "UNKNOWN" : ticket.getTransactionType());
-		if(transactionType == TransactionType.CARD) {
-			map.put("cardPayment", true);
-			map.put("approvalCode", "Approval: " + ticket.getCardAuthCode());
-		}
+//		TransactionType transactionType = TransactionType.valueOf(ticket.getTransactionType() == null ? "UNKNOWN" : ticket.getTransactionType());
+//		if(transactionType == TransactionType.CARD) {
+//			map.put("cardPayment", true);
+//			map.put("approvalCode", "Approval: " + ticket.getCardAuthCode());
+//		}
 
 		StringBuilder ticketHeaderBuilder = buildTicketHeader(ticket, printProperties);
 
@@ -191,7 +195,7 @@ public class JReportPrintService {
 			}
 
 			double netAmount = totalAmount;
-			double changedAmount = ticket.getTenderedAmount() - netAmount;
+			double changedAmount = 0;//ticket.getTenderedAmount() - netAmount;
 
 			if (changedAmount < 0) {
 				changedAmount = 0;
@@ -208,7 +212,7 @@ public class JReportPrintService {
 			map.put("changeAmountText", POSConstants.RECEIPT_REPORT_CHANGEAMOUNT_LABEL + currencySymbol);
 
 			map.put("netAmount", NumberUtil.formatNumber(netAmount));
-			map.put("paidAmount", NumberUtil.formatNumber(ticket.getTenderedAmount()));
+			map.put("paidAmount", NumberUtil.formatNumber(ticket.getPaidAmount()));
 			map.put("dueAmount", NumberUtil.formatNumber(ticket.getDueAmount()));
 			map.put("changedAmount", NumberUtil.formatNumber(changedAmount));
 			map.put("grandSubtotal", NumberUtil.formatNumber(ticket.getSubtotalAmount()));
