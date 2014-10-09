@@ -3,6 +3,7 @@ package com.floreantpos.swing;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Insets;
+import java.awt.event.ActionListener;
 
 import javax.swing.Action;
 import javax.swing.JButton;
@@ -10,6 +11,7 @@ import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 
+import com.floreantpos.actions.ActionCommand;
 import com.floreantpos.config.UIConfig;
 
 public class PosButton extends JButton {
@@ -41,6 +43,19 @@ public class PosButton extends JButton {
 
 		setFocusPainted(false);
 		setMargin(margin);
+	}
+	
+	public PosButton(ActionCommand command) {
+		this(command.toString());
+		
+		setActionCommand(command.name());
+	}
+	
+	public PosButton(ActionCommand command, ActionListener listener) {
+		this(command.toString());
+		
+		setActionCommand(command.name());
+		addActionListener(listener);
 	}
 
 	@Override
