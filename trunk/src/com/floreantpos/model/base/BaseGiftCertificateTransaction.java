@@ -16,10 +16,7 @@ import java.io.Serializable;
 public abstract class BaseGiftCertificateTransaction extends com.floreantpos.model.PosTransaction  implements Comparable, Serializable {
 
 	public static String REF = "GiftCertificateTransaction";
-	public static String PROP_FACE_VALUE = "faceValue";
 	public static String PROP_ID = "id";
-	public static String PROP_CASH_BACK_AMOUNT = "cashBackAmount";
-	public static String PROP_PAID_AMOUNT = "paidAmount";
 
 
 	// constructors
@@ -39,64 +36,8 @@ public abstract class BaseGiftCertificateTransaction extends com.floreantpos.mod
 	private int hashCode = Integer.MIN_VALUE;
 
 
-	// fields
-		protected double faceValue;
-		protected double paidAmount;
-		protected double cashBackAmount;
 
 
-
-
-
-
-	/**
-	 * Return the value associated with the column: FACE_VALUE
-	 */
-	public double getFaceValue () {
-					return faceValue;
-			}
-
-	/**
-	 * Set the value related to the column: FACE_VALUE
-	 * @param faceValue the FACE_VALUE value
-	 */
-	public void setFaceValue (double faceValue) {
-		this.faceValue = faceValue;
-	}
-
-
-
-	/**
-	 * Return the value associated with the column: PAID_AMOUNT
-	 */
-	public double getPaidAmount () {
-					return paidAmount;
-			}
-
-	/**
-	 * Set the value related to the column: PAID_AMOUNT
-	 * @param paidAmount the PAID_AMOUNT value
-	 */
-	public void setPaidAmount (double paidAmount) {
-		this.paidAmount = paidAmount;
-	}
-
-
-
-	/**
-	 * Return the value associated with the column: CASH_BACK_AMOUNT
-	 */
-	public double getCashBackAmount () {
-					return cashBackAmount;
-			}
-
-	/**
-	 * Set the value related to the column: CASH_BACK_AMOUNT
-	 * @param cashBackAmount the CASH_BACK_AMOUNT value
-	 */
-	public void setCashBackAmount (double cashBackAmount) {
-		this.cashBackAmount = cashBackAmount;
-	}
 
 
 

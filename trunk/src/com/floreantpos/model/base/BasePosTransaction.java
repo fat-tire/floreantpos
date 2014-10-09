@@ -16,21 +16,32 @@ import java.io.Serializable;
 public abstract class BasePosTransaction  implements Comparable, Serializable {
 
 	public static String REF = "PosTransaction";
-	public static String PROP_ADDITIONAL_AMOUNT = "additionalAmount";
 	public static String PROP_USER = "user";
-	public static String PROP_AMOUNT = "amount";
-	public static String PROP_CAPTURED = "captured";
-	public static String PROP_ADDITIONAL_AMOUNT_INFO = "additionalAmountInfo";
-	public static String PROP_TERMINAL = "terminal";
-	public static String PROP_NOTE = "note";
+	public static String PROP_CARD_ENTRY_TYPE = "cardEntryType";
 	public static String PROP_RECEPIENT = "recepient";
+	public static String PROP_CARD_EXPIRY_MONTH = "cardExpiryMonth";
 	public static String PROP_TICKET = "ticket";
-	public static String PROP_TENDER_AMOUNT = "tenderAmount";
-	public static String PROP_ID = "id";
+	public static String PROP_CARD_MERCHANT_GATEWAY = "cardMerchantGateway";
+	public static String PROP_CASH_BACK_AMOUNT = "cashBackAmount";
+	public static String PROP_CARD_TYPE = "cardType";
 	public static String PROP_TRANSACTION_TIME = "transactionTime";
 	public static String PROP_DRAWER_RESETTED = "drawerResetted";
-	public static String PROP_DEBIT = "debit";
 	public static String PROP_REASON = "reason";
+	public static String PROP_CARD_NUMBER = "cardNumber";
+	public static String PROP_FACE_VALUE = "faceValue";
+	public static String PROP_AMOUNT = "amount";
+	public static String PROP_CAPTURED = "captured";
+	public static String PROP_CARD_EXPIRY_YEAR = "cardExpiryYear";
+	public static String PROP_TERMINAL = "terminal";
+	public static String PROP_NOTE = "note";
+	public static String PROP_CARD_TRACK = "cardTrack";
+	public static String PROP_AUTHORIZATION_CODE = "authorizationCode";
+	public static String PROP_TIPS_AMOUNT = "tipsAmount";
+	public static String PROP_CARD_TRANSACTION_ID = "cardTransactionId";
+	public static String PROP_TENDER_AMOUNT = "tenderAmount";
+	public static String PROP_ID = "id";
+	public static String PROP_PAID_AMOUNT = "paidAmount";
+	public static String PROP_DEBIT = "debit";
 
 
 	// constructors
@@ -60,11 +71,22 @@ public abstract class BasePosTransaction  implements Comparable, Serializable {
 	// fields
 		protected java.util.Date transactionTime;
 		protected java.lang.Double amount;
+		protected java.lang.Double tipsAmount;
 		protected java.lang.Double tenderAmount;
 		protected java.lang.Boolean debit;
 		protected java.lang.Boolean captured;
-		protected java.lang.Double additionalAmount;
-		protected java.lang.String additionalAmountInfo;
+		protected java.lang.String cardTrack;
+		protected java.lang.String cardNumber;
+		protected java.lang.String authorizationCode;
+		protected java.lang.String cardType;
+		protected java.lang.String cardTransactionId;
+		protected java.lang.String cardMerchantGateway;
+		protected java.lang.String cardExpiryMonth;
+		protected java.lang.String cardExpiryYear;
+		protected java.lang.String cardEntryType;
+		protected java.lang.Double faceValue;
+		protected java.lang.Double paidAmount;
+		protected java.lang.Double cashBackAmount;
 		protected java.lang.Boolean drawerResetted;
 		protected java.lang.String note;
 
@@ -74,6 +96,9 @@ public abstract class BasePosTransaction  implements Comparable, Serializable {
 	private com.floreantpos.model.User user;
 	private com.floreantpos.model.PayoutReason reason;
 	private com.floreantpos.model.PayoutRecepient recepient;
+
+	// collections
+	private java.util.Map<String, String> properties;
 
 
 
@@ -151,6 +176,23 @@ public abstract class BasePosTransaction  implements Comparable, Serializable {
 
 
 	/**
+	 * Return the value associated with the column: TIPS_AMOUNT
+	 */
+	public java.lang.Double getTipsAmount () {
+									return tipsAmount == null ? Double.valueOf(0) : tipsAmount;
+					}
+
+	/**
+	 * Set the value related to the column: TIPS_AMOUNT
+	 * @param tipsAmount the TIPS_AMOUNT value
+	 */
+	public void setTipsAmount (java.lang.Double tipsAmount) {
+		this.tipsAmount = tipsAmount;
+	}
+
+
+
+	/**
 	 * Return the value associated with the column: TENDER_AMOUNT
 	 */
 	public java.lang.Double getTenderAmount () {
@@ -202,35 +244,205 @@ public abstract class BasePosTransaction  implements Comparable, Serializable {
 
 
 	/**
-	 * Return the value associated with the column: ADDITIONAL_AMOUNT
+	 * Return the value associated with the column: CARD_TRACK
 	 */
-	public java.lang.Double getAdditionalAmount () {
-									return additionalAmount == null ? Double.valueOf(0) : additionalAmount;
-					}
+	public java.lang.String getCardTrack () {
+					return cardTrack;
+			}
 
 	/**
-	 * Set the value related to the column: ADDITIONAL_AMOUNT
-	 * @param additionalAmount the ADDITIONAL_AMOUNT value
+	 * Set the value related to the column: CARD_TRACK
+	 * @param cardTrack the CARD_TRACK value
 	 */
-	public void setAdditionalAmount (java.lang.Double additionalAmount) {
-		this.additionalAmount = additionalAmount;
+	public void setCardTrack (java.lang.String cardTrack) {
+		this.cardTrack = cardTrack;
 	}
 
 
 
 	/**
-	 * Return the value associated with the column: ADDITIONAL_AMOUNT_INFO
+	 * Return the value associated with the column: CARD_NUMBER
 	 */
-	public java.lang.String getAdditionalAmountInfo () {
-					return additionalAmountInfo;
+	public java.lang.String getCardNumber () {
+					return cardNumber;
 			}
 
 	/**
-	 * Set the value related to the column: ADDITIONAL_AMOUNT_INFO
-	 * @param additionalAmountInfo the ADDITIONAL_AMOUNT_INFO value
+	 * Set the value related to the column: CARD_NUMBER
+	 * @param cardNumber the CARD_NUMBER value
 	 */
-	public void setAdditionalAmountInfo (java.lang.String additionalAmountInfo) {
-		this.additionalAmountInfo = additionalAmountInfo;
+	public void setCardNumber (java.lang.String cardNumber) {
+		this.cardNumber = cardNumber;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: CARD_AUTHORIZATION_CODE
+	 */
+	public java.lang.String getAuthorizationCode () {
+					return authorizationCode;
+			}
+
+	/**
+	 * Set the value related to the column: CARD_AUTHORIZATION_CODE
+	 * @param authorizationCode the CARD_AUTHORIZATION_CODE value
+	 */
+	public void setAuthorizationCode (java.lang.String authorizationCode) {
+		this.authorizationCode = authorizationCode;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: CARD_TYPE
+	 */
+	public java.lang.String getCardType () {
+					return cardType;
+			}
+
+	/**
+	 * Set the value related to the column: CARD_TYPE
+	 * @param cardType the CARD_TYPE value
+	 */
+	public void setCardType (java.lang.String cardType) {
+		this.cardType = cardType;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: CARD_TRANSACTION_ID
+	 */
+	public java.lang.String getCardTransactionId () {
+					return cardTransactionId;
+			}
+
+	/**
+	 * Set the value related to the column: CARD_TRANSACTION_ID
+	 * @param cardTransactionId the CARD_TRANSACTION_ID value
+	 */
+	public void setCardTransactionId (java.lang.String cardTransactionId) {
+		this.cardTransactionId = cardTransactionId;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: CARD_MERCHANT_GATEWAY
+	 */
+	public java.lang.String getCardMerchantGateway () {
+					return cardMerchantGateway;
+			}
+
+	/**
+	 * Set the value related to the column: CARD_MERCHANT_GATEWAY
+	 * @param cardMerchantGateway the CARD_MERCHANT_GATEWAY value
+	 */
+	public void setCardMerchantGateway (java.lang.String cardMerchantGateway) {
+		this.cardMerchantGateway = cardMerchantGateway;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: CARD_EXP_MONTH
+	 */
+	public java.lang.String getCardExpiryMonth () {
+					return cardExpiryMonth;
+			}
+
+	/**
+	 * Set the value related to the column: CARD_EXP_MONTH
+	 * @param cardExpiryMonth the CARD_EXP_MONTH value
+	 */
+	public void setCardExpiryMonth (java.lang.String cardExpiryMonth) {
+		this.cardExpiryMonth = cardExpiryMonth;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: CARD_EXP_YEAR
+	 */
+	public java.lang.String getCardExpiryYear () {
+					return cardExpiryYear;
+			}
+
+	/**
+	 * Set the value related to the column: CARD_EXP_YEAR
+	 * @param cardExpiryYear the CARD_EXP_YEAR value
+	 */
+	public void setCardExpiryYear (java.lang.String cardExpiryYear) {
+		this.cardExpiryYear = cardExpiryYear;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: CARD_ENTRY_TYPE
+	 */
+	public java.lang.String getCardEntryType () {
+					return cardEntryType;
+			}
+
+	/**
+	 * Set the value related to the column: CARD_ENTRY_TYPE
+	 * @param cardEntryType the CARD_ENTRY_TYPE value
+	 */
+	public void setCardEntryType (java.lang.String cardEntryType) {
+		this.cardEntryType = cardEntryType;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: FACE_VALUE
+	 */
+	public java.lang.Double getFaceValue () {
+									return faceValue == null ? Double.valueOf(0) : faceValue;
+					}
+
+	/**
+	 * Set the value related to the column: FACE_VALUE
+	 * @param faceValue the FACE_VALUE value
+	 */
+	public void setFaceValue (java.lang.Double faceValue) {
+		this.faceValue = faceValue;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: PAID_AMOUNT
+	 */
+	public java.lang.Double getPaidAmount () {
+									return paidAmount == null ? Double.valueOf(0) : paidAmount;
+					}
+
+	/**
+	 * Set the value related to the column: PAID_AMOUNT
+	 * @param paidAmount the PAID_AMOUNT value
+	 */
+	public void setPaidAmount (java.lang.Double paidAmount) {
+		this.paidAmount = paidAmount;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: CASH_BACK_AMOUNT
+	 */
+	public java.lang.Double getCashBackAmount () {
+									return cashBackAmount == null ? Double.valueOf(0) : cashBackAmount;
+					}
+
+	/**
+	 * Set the value related to the column: CASH_BACK_AMOUNT
+	 * @param cashBackAmount the CASH_BACK_AMOUNT value
+	 */
+	public void setCashBackAmount (java.lang.Double cashBackAmount) {
+		this.cashBackAmount = cashBackAmount;
 	}
 
 
@@ -350,6 +562,23 @@ public abstract class BasePosTransaction  implements Comparable, Serializable {
 	 */
 	public void setRecepient (com.floreantpos.model.PayoutRecepient recepient) {
 		this.recepient = recepient;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: properties
+	 */
+	public java.util.Map<String, String> getProperties () {
+					return properties;
+			}
+
+	/**
+	 * Set the value related to the column: properties
+	 * @param properties the properties value
+	 */
+	public void setProperties (java.util.Map<String, String> properties) {
+		this.properties = properties;
 	}
 
 

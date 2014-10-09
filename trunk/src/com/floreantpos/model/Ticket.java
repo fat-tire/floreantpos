@@ -58,92 +58,57 @@ public class Ticket extends BaseTicket {
 	private DecimalFormat numberFormat = new DecimalFormat("0.00");
 
 	private List deletedItems;
-
 	private boolean priceIncludesTax;
-
-	@Override
-	public java.lang.Integer getCreationHour() {
-		Integer creationHour = super.getCreationHour();
-
-		return creationHour == null ? Integer.valueOf(0) : creationHour;
-	}
-
-	@Override
-	public java.lang.Boolean isPaid() {
-		Boolean boolean1 = super.isPaid();
-
-		return boolean1 == null ? Boolean.FALSE : boolean1;
-	}
-
-	@Override
-	public java.lang.Boolean isVoided() {
-		Boolean voided = super.isVoided();
-
-		return voided == null ? Boolean.FALSE : voided;
-	}
-
-	@Override
-	public java.lang.Boolean isWasted() {
-		Boolean wasted = super.isWasted();
-
-		return wasted == null ? Boolean.FALSE : wasted;
-	}
-
-	@Override
-	public java.lang.Boolean isClosed() {
-		Boolean closed = super.isClosed();
-
-		return closed == null ? Boolean.FALSE : closed;
-	}
-
-	@Override
-	public java.lang.Boolean isDrawerResetted() {
-		Boolean drawerResetted = super.isDrawerResetted();
-
-		return drawerResetted == null ? Boolean.FALSE : drawerResetted;
-	}
-
-	@Override
-	public java.lang.Double getSubtotalAmount() {
-		Double subtotalAmount = super.getSubtotalAmount();
-
-		return subtotalAmount == null ? Double.valueOf(0) : subtotalAmount;
-	}
-
-	@Override
-	public java.lang.Integer getTableNumber() {
-		Integer tableNumber = super.getTableNumber();
-		return tableNumber == null ? Integer.valueOf(0) : tableNumber;
-	}
-
-	@Override
-	public java.lang.Boolean isTaxExempt() {
-		Boolean taxExempt = super.isTaxExempt();
-		return taxExempt == null ? Boolean.FALSE : taxExempt;
-	}
-
-	@Override
-	public java.lang.Boolean isReOpened() {
-		Boolean reOpened = super.isReOpened();
-		return reOpened == null ? Boolean.FALSE : reOpened;
+	
+	public void setGratuityAmount(double amount) {
+		if(amount == 0) {
+			setGratuity(null);
+		}
+		
+		Gratuity gratuity = getGratuity();
+		if(gratuity == null) {
+			gratuity = createGratuity();
+			setGratuity(gratuity);
+		}
+		
+		gratuity.setAmount(amount);
 	}
 	
-	@Override
-	public java.lang.Double getServiceCharge() {
-		Double serviceCharge = super.getServiceCharge();
-		return serviceCharge == null ? Double.valueOf(0) : serviceCharge;
+	public void addGratuityAmount(double amount) {
+		if(amount == 0) {
+			setGratuity(null);
+		}
+		
+		Gratuity gratuity = getGratuity();
+		if(gratuity == null) {
+			gratuity = createGratuity();
+			setGratuity(gratuity);
+		}
+		
+		gratuity.setAmount(gratuity.getAmount() + amount);
+	}
+
+	private Gratuity createGratuity() {
+		Gratuity gratuity;
+		gratuity = new Gratuity();
+		gratuity.setTicket(this);
+		gratuity.setTerminal(Application.getInstance().getTerminal());
+		gratuity.setOwner(getOwner());
+		gratuity.setPaid(false);
+		return gratuity;
 	}
 	
-	@Override
-	public java.lang.Double getDeliveryCharge() {
-		Double deliveryCharge = super.getDeliveryCharge();
-		return deliveryCharge == null ? Double.valueOf(0) : deliveryCharge;
+	public void subtractFromGratuity(Double amount) {
+		if(!hasGratuity()) return;
+		
+		if(amount == null) return;
+		
+		double newAmount = getGratuity().getAmount() - amount;
+		setGratuityAmount(newAmount);
 	}
 	
-	@Override
-	public java.lang.Boolean isCustomerWillPickup() {
-		Boolean customerWillPickup = super.isCustomerWillPickup();
-		return customerWillPickup == null ? Boolean.FALSE : customerWillPickup;
+	public boolean hasGratuity() {
+		return getGratuity() != null;
 	}
 
 	@Override
