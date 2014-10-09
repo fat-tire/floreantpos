@@ -1,6 +1,7 @@
 package com.floreantpos.ui.dialog;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Container;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -243,5 +244,20 @@ public class NumberSelectionDialog2 extends POSDialog implements ActionListener 
 		}
 		
 		return (int) dialog.getValue();
+	}
+	
+	public static double show(Component parent, String title, double initialAmount) {
+		NumberSelectionDialog2 dialog2 = new NumberSelectionDialog2();
+		dialog2.setTitle(title);
+		dialog2.pack();
+		dialog2.setLocationRelativeTo(parent);
+		dialog2.setValue(initialAmount);
+		dialog2.setVisible(true);
+		
+		if(dialog2.isCanceled()) {
+			return Double.NaN;
+		}
+		
+		return dialog2.getValue();
 	}
 }

@@ -79,7 +79,7 @@ public class TransactionListView extends JPanel {
 	private class TransactionListTable extends JXTable {
 		
 		public TransactionListTable() {
-			setColumnControlVisible(true);
+			setColumnControlVisible(false);
 		}
 		
 		@Override
@@ -97,7 +97,7 @@ public class TransactionListView extends JPanel {
 
 	private class TransactionListTableModel extends ListTableModel<PosTransaction> {
 		public TransactionListTableModel() {
-			super(new String[] { "ID", "TICKET ID", "AMOUNT" });
+			super(new String[] { "TRANSACTION ID", "TICKET ID", "TIPS", "AMOUNT", "TOTAL" });
 		}
 
 		public Object getValueAt(int rowIndex, int columnIndex) {
@@ -109,9 +109,15 @@ public class TransactionListView extends JPanel {
 
 			case 1:
 				return transaction.getTicket().getId();
-
+				
 			case 2:
-					return transaction.getAmount();
+				return transaction.getTipsAmount();
+
+			case 3:
+				return transaction.getAmount();
+				
+			case 4:
+				return transaction.getAmount() + transaction.getTipsAmount();
 
 			}
 
@@ -124,7 +130,7 @@ public class TransactionListView extends JPanel {
 		List<PosTransaction> selectedTickets = getSelectedTransactions();
 
 		if (selectedTickets.size() == 0 || selectedTickets.size() > 1) {
-			POSMessageDialog.showMessage("Please select a ticket");
+			POSMessageDialog.showMessage("Please select an item");
 			return null;
 		}
 
