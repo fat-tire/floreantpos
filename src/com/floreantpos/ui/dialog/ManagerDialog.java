@@ -42,12 +42,13 @@ import java.awt.event.ActionEvent;
  *
  * @author  MShahriar
  */
-public class ManagerDialog extends JFrame {
+public class ManagerDialog extends JDialog {
 	private GlassPane glassPane;
 	
     /** Creates new form ManagerDialog */
     public ManagerDialog() {
-        super();
+        super(Application.getPosWindow(), true);
+        
         initComponents();
         
         setIconImage(Application.getPosWindow().getIconImage());

@@ -397,15 +397,15 @@ public abstract class BasePosTransaction  implements Comparable, Serializable {
 
 
 	/**
-	 * Return the value associated with the column: FACE_VALUE
+	 * Return the value associated with the column: GIFT_CERT_FACE_VALUE
 	 */
 	public java.lang.Double getFaceValue () {
 									return faceValue == null ? Double.valueOf(0) : faceValue;
 					}
 
 	/**
-	 * Set the value related to the column: FACE_VALUE
-	 * @param faceValue the FACE_VALUE value
+	 * Set the value related to the column: GIFT_CERT_FACE_VALUE
+	 * @param faceValue the GIFT_CERT_FACE_VALUE value
 	 */
 	public void setFaceValue (java.lang.Double faceValue) {
 		this.faceValue = faceValue;
@@ -414,15 +414,15 @@ public abstract class BasePosTransaction  implements Comparable, Serializable {
 
 
 	/**
-	 * Return the value associated with the column: PAID_AMOUNT
+	 * Return the value associated with the column: GIFT_CERT_PAID_AMOUNT
 	 */
 	public java.lang.Double getPaidAmount () {
 									return paidAmount == null ? Double.valueOf(0) : paidAmount;
 					}
 
 	/**
-	 * Set the value related to the column: PAID_AMOUNT
-	 * @param paidAmount the PAID_AMOUNT value
+	 * Set the value related to the column: GIFT_CERT_PAID_AMOUNT
+	 * @param paidAmount the GIFT_CERT_PAID_AMOUNT value
 	 */
 	public void setPaidAmount (java.lang.Double paidAmount) {
 		this.paidAmount = paidAmount;
@@ -431,15 +431,15 @@ public abstract class BasePosTransaction  implements Comparable, Serializable {
 
 
 	/**
-	 * Return the value associated with the column: CASH_BACK_AMOUNT
+	 * Return the value associated with the column: GIFT_CERT_CASH_BACK_AMOUNT
 	 */
 	public java.lang.Double getCashBackAmount () {
 									return cashBackAmount == null ? Double.valueOf(0) : cashBackAmount;
 					}
 
 	/**
-	 * Set the value related to the column: CASH_BACK_AMOUNT
-	 * @param cashBackAmount the CASH_BACK_AMOUNT value
+	 * Set the value related to the column: GIFT_CERT_CASH_BACK_AMOUNT
+	 * @param cashBackAmount the GIFT_CERT_CASH_BACK_AMOUNT value
 	 */
 	public void setCashBackAmount (java.lang.Double cashBackAmount) {
 		this.cashBackAmount = cashBackAmount;

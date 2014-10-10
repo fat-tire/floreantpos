@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -61,10 +62,6 @@ public class Ticket extends BaseTicket {
 	private boolean priceIncludesTax;
 	
 	public void setGratuityAmount(double amount) {
-		if(amount == 0) {
-			setGratuity(null);
-		}
-		
 		Gratuity gratuity = getGratuity();
 		if(gratuity == null) {
 			gratuity = createGratuity();
@@ -74,20 +71,6 @@ public class Ticket extends BaseTicket {
 		gratuity.setAmount(amount);
 	}
 	
-	public void addGratuityAmount(double amount) {
-		if(amount == 0) {
-			setGratuity(null);
-		}
-		
-		Gratuity gratuity = getGratuity();
-		if(gratuity == null) {
-			gratuity = createGratuity();
-			setGratuity(gratuity);
-		}
-		
-		gratuity.setAmount(gratuity.getAmount() + amount);
-	}
-
 	private Gratuity createGratuity() {
 		Gratuity gratuity;
 		gratuity = new Gratuity();
@@ -96,15 +79,6 @@ public class Ticket extends BaseTicket {
 		gratuity.setOwner(getOwner());
 		gratuity.setPaid(false);
 		return gratuity;
-	}
-	
-	public void subtractFromGratuity(Double amount) {
-		if(!hasGratuity()) return;
-		
-		if(amount == null) return;
-		
-		double newAmount = getGratuity().getAmount() - amount;
-		setGratuityAmount(newAmount);
 	}
 	
 	public boolean hasGratuity() {
@@ -493,6 +467,15 @@ public class Ticket extends BaseTicket {
 		}
 
 		return getProperties().get(key);
+	}
+	
+	public void removeProperty(String propertyName) {
+		Map<String, String> properties = getProperties();
+		if (properties == null) {
+			return;
+		}
+		
+		properties.remove(propertyName);
 	}
 	
 	public boolean isPropertyValueTrue(String propertyName) {

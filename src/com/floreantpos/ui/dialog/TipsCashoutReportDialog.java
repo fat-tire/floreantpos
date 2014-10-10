@@ -6,6 +6,7 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -23,7 +24,7 @@ import com.floreantpos.util.NumberUtil;
 public class TipsCashoutReportDialog extends POSDialog implements ActionListener {
 	private final TipsCashoutReport report;
 
-	public TipsCashoutReportDialog(TipsCashoutReport report, java.awt.Frame parent, boolean modal) {
+	public TipsCashoutReportDialog(TipsCashoutReport report, JDialog parent, boolean modal) {
 		super(parent, modal);
 		this.report = report;
 		

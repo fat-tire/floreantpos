@@ -114,10 +114,10 @@ public class TransactionListView extends JPanel {
 				return transaction.getTipsAmount();
 
 			case 3:
-				return transaction.getAmount();
+				return transaction.getAmount() - transaction.getTipsAmount();
 				
 			case 4:
-				return transaction.getAmount() + transaction.getTipsAmount();
+				return transaction.getAmount();
 
 			}
 

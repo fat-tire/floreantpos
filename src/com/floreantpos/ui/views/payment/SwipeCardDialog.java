@@ -122,6 +122,10 @@ public class SwipeCardDialog extends POSDialog implements CardInputter {
 	public String getCardString() {
 		return cardString;
 	}
+	
+	public void setCardString(String cardString) {
+		this.cardString = cardString;
+	}
 
 	private void submitCard() {
 		cardString = new String(passwordField.getPassword());
