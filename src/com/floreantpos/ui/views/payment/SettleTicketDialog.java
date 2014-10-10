@@ -16,8 +16,6 @@ import javax.json.JsonObject;
 import javax.json.JsonReader;
 import javax.swing.JOptionPane;
 
-import net.authorize.data.creditcard.CardType;
-
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 
@@ -49,7 +47,6 @@ import com.floreantpos.ui.dialog.TransactionCompletionDialog;
 import com.floreantpos.ui.views.SwitchboardView;
 import com.floreantpos.ui.views.TicketDetailView;
 import com.floreantpos.ui.views.order.OrderController;
-import com.floreantpos.ui.views.order.RootView;
 import com.floreantpos.util.POSUtil;
 
 public class SettleTicketDialog extends POSDialog implements CardInputListener {
@@ -245,11 +242,11 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 					}
 
 					CashTransaction transaction = new CashTransaction();
+					transaction.setTicket(ticket);
 					transaction.setCaptured(true);
-					if (settleTicket(tenderAmount, transaction)) {
-						setCanceled(false);
-						dispose();
-					}
+					setTransactionAmounts(transaction);
+					
+					settleTicket(transaction);
 					break;
 
 				case CREDIT_VISA:
@@ -282,47 +279,48 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 			return;
 		}
 
-		String cardName = ticket.getProperty(Ticket.PROPERTY_CARD_NAME);
-		CardType cardType = CardType.findByValue(cardName);
-
 		PaymentProcessWaitDialog waitDialog = new PaymentProcessWaitDialog(this);
 		waitDialog.setVisible(true);
 
 		try {
-
 			String transactionId = ticket.getProperty(Ticket.PROPERTY_CARD_TRANSACTION_ID);
-
-			double advanceAmount = ticket.getAdvanceAmount();
-			if (tenderAmount > advanceAmount) {
-				AuthorizeDoNetProcessor.voidAmount(transactionId, advanceAmount);
-
-				String cardTracks = ticket.getProperty(Ticket.PROPERTY_CARD_TRACKS);
-				String tranId = AuthorizeDoNetProcessor.authorizeAmount(cardTracks, tenderAmount, cardType);
-
-				waitDialog.setVisible(false);
-				
-				CreditCardTransaction transaction = new CreditCardTransaction();
-				transaction.setCardTransactionId(tranId);
-				transaction.setCaptured(false);
-				transaction.setCardType(cardName);
-				//transaction.setCardNumber(cardString);
-				
-				//FIXME: IT IS AUTHORIZE ONLY, IT SHOULD NOT BE A TRANSACTION
-				//settleTicket(tenderedAmount, transaction, "", authCode);
+			double advanceAmount = Double.parseDouble(ticket.getProperty(Ticket.PROPERTY_ADVANCE_PAYMENT));
+			
+			CreditCardTransaction transaction = new CreditCardTransaction();
+			transaction.setTicket(ticket);
+			transaction.setCardType(ticket.getProperty(Ticket.PROPERTY_CARD_NAME));
+			transaction.setCaptured(false);
+			transaction.setCardMerchantGateway(MerchantGateway.AUTHORIZE_NET.name());
+			
+			CardReader cardReader = CardReader.valueOf(ticket.getProperty(Ticket.PROPERTY_CARD_READER));
+			
+			if(cardReader == CardReader.SWIPE) {
+				transaction.setCardEntryType(CardReader.SWIPE.name());
+				transaction.setCardTrack(ticket.getProperty(Ticket.PROPERTY_CARD_TRACKS));
+				transaction.setCardTransactionId(transactionId);
+			}
+			else if(cardReader == CardReader.MANUAL) {
+				transaction.setCardEntryType(CardReader.MANUAL.name());
+				transaction.setCardTransactionId(transactionId);
+				transaction.setCardNumber(ticket.getProperty(Ticket.PROPERTY_CARD_NUMBER));
+				transaction.setCardExpiryMonth(ticket.getProperty(Ticket.PROPERTY_CARD_EXP_MONTH));
+				transaction.setCardExpiryYear(ticket.getProperty(Ticket.PROPERTY_CARD_EXP_YEAR));
 			}
 			else {
-				String authCode = AuthorizeDoNetProcessor.captureAmount(transactionId, tenderAmount);
-
-				waitDialog.setVisible(false);
-
-				CreditCardTransaction transaction = new CreditCardTransaction();
-				transaction.setAuthorizationCode(authCode);
-				transaction.setCardType(cardName);
-				settleTicket(tenderAmount, transaction);
+				transaction.setCardEntryType(CardReader.EXTERNAL_TERMINAL.name());
+				transaction.setAuthorizationCode(ticket.getProperty(Ticket.PROPERTY_CARD_AUTH_CODE));
 			}
+			
+			setTransactionAmounts(transaction);
+			
+			if (tenderAmount > advanceAmount) {
+				AuthorizeDotNetProcessor.voidAmount(transactionId, advanceAmount);
+			}
+			
+			AuthorizeDotNetProcessor.authorizeAmount(transaction);
 
-			setCanceled(false);
-			dispose();
+			settleTicket(transaction);
+			
 		} catch (Exception e) {
 			POSMessageDialog.showError(e.getMessage(), e);
 		} finally {
@@ -330,42 +328,39 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 		}
 	}
 
-	public boolean settleTicket(final double tenderAmount, PosTransaction transaction) {
+	public void settleTicket(PosTransaction transaction) {
 		try {
 			final double dueAmount = ticket.getDueAmount();
 			
 			confirmLoyaltyDiscount(ticket);
 
 			PosTransactionService transactionService = PosTransactionService.getInstance();
-			transactionService.settleTicket(ticket, tenderAmount, transaction);
+			transactionService.settleTicket(ticket, transaction);
 
 			//FIXME
 			printTicket(ticket, transaction);
 
-			showTransactionCompleteMsg(dueAmount, tenderAmount, ticket, transaction);
+			showTransactionCompleteMsg(dueAmount, transaction.getTenderAmount(), ticket, transaction);
 
 			if (ticket.getDueAmount() > 0.0) {
 				int option = JOptionPane.showConfirmDialog(Application.getPosWindow(), POSConstants.CONFIRM_PARTIAL_PAYMENT, POSConstants.MDS_POS,
 						JOptionPane.YES_NO_OPTION);
 				
 				if (option != JOptionPane.YES_OPTION) {
-					RootView.getInstance().showView(SwitchboardView.VIEW_NAME);
-					return true;
+					setCanceled(false);
+					dispose();
 				}
 				
 				setTicket(ticket);
-
-				return false;
 			}
 			else {
-				return true;
+				setCanceled(false);
+				dispose();
 			}
 		} catch (UnknownHostException e) {
 			POSMessageDialog.showError("My Kala discount server connection error");
-			return false;
 		} catch (Exception e) {
 			POSMessageDialog.showError(this, POSConstants.ERROR_MESSAGE, e);
-			return false;
 		}
 	}
 
@@ -447,17 +442,6 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 
 	}
 
-	//	private void setTenderAmount(double tenderedAmount) {
-	//		List<Ticket> ticketsToSettle = getTicketsToSettle();
-	//		if (ticketsToSettle == null) {
-	//			return;
-	//		}
-	//
-	//		for (Ticket ticket : ticketsToSettle) {
-	//			ticket.setTenderedAmount(tenderedAmount);
-	//		}
-	//	}
-
 	public void updatePaymentView() {
 		paymentView.updateView();
 	}
@@ -469,17 +453,6 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 	public void setPreviousViewName(String previousViewName) {
 		this.previousViewName = previousViewName;
 	}
-
-	//	public List<Ticket> getTicketsToSettle() {
-	//		return ticketsToSettle;
-	//	}
-	//
-	//	public void setTicketsToSettle(List<Ticket> ticketsToSettle) {
-	//		this.ticketsToSettle = ticketsToSettle;
-	//
-	//		ticketDetailView.setTickets(ticketsToSettle);
-	//		paymentView.updateView();
-	//	}
 
 	public TicketDetailView getTicketDetailView() {
 		return ticketDetailView;
@@ -493,14 +466,10 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 	@Override
 	public void cardInputted(CardInputter inputter) {
 		//authorize only, do not capture
-		double amountToAuthorize = tenderAmount + (tenderAmount * .2);
-
 		PaymentProcessWaitDialog waitDialog = new PaymentProcessWaitDialog(this);
 
 		try {
 			waitDialog.setVisible(true);
-
-			CardType authorizeNetCardType = CardType.findByValue(cardName);
 
 			if (inputter instanceof SwipeCardDialog) {
 				SwipeCardDialog swipeCardDialog = (SwipeCardDialog) inputter;
@@ -519,43 +488,37 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 				}
 
 				if (CardConfig.getMerchantGateway() == MerchantGateway.AUTHORIZE_NET) {
-					String tranId = AuthorizeDoNetProcessor.authorizeAmount(cardString, amountToAuthorize, authorizeNetCardType);
-					
 					CreditCardTransaction transaction = new CreditCardTransaction();
-					transaction.setCardTransactionId(tranId);
-					transaction.setCaptured(false);
+					transaction.setTicket(ticket);
 					transaction.setCardType(cardName);
 					transaction.setCardTrack(cardString);
+					transaction.setCaptured(false);
 					transaction.setCardMerchantGateway(MerchantGateway.AUTHORIZE_NET.name());
-					transaction.setCardEntryType(CardInput.SWIPE.name());
+					transaction.setCardEntryType(CardReader.SWIPE.name());
+					setTransactionAmounts(transaction);
 					
-					settleTicket(tenderAmount, transaction);
+					AuthorizeDotNetProcessor.authorizeAmount(transaction);
+					
+					settleTicket(transaction);
 				}
-
-				setCanceled(false);
-				dispose();
 			}
 			else if (inputter instanceof ManualCardEntryDialog) {
 				ManualCardEntryDialog mDialog = (ManualCardEntryDialog) inputter;
-				String cardNumber = mDialog.getCardNumber();
-				String expMonth = mDialog.getExpMonth();
-				String expYear = mDialog.getExpYear();
-
-				String transactionId = AuthorizeDoNetProcessor.authorizeAmount(cardNumber, expMonth, expYear, amountToAuthorize, authorizeNetCardType);
 				
 				CreditCardTransaction transaction = new CreditCardTransaction();
-				transaction.setCardTransactionId(transactionId);
-				transaction.setCaptured(false);
+				transaction.setTicket(ticket);
 				transaction.setCardType(cardName);
+				transaction.setCaptured(false);
 				transaction.setCardMerchantGateway(MerchantGateway.AUTHORIZE_NET.name());
-				transaction.setCardEntryType(CardInput.MANUAL.name());
-				transaction.setCardExpiryMonth(expMonth);
-				transaction.setCardExpiryYear(expYear);
+				transaction.setCardEntryType(CardReader.MANUAL.name());
+				transaction.setCardNumber(mDialog.getCardNumber());
+				transaction.setCardExpiryMonth(mDialog.getExpMonth());
+				transaction.setCardExpiryYear(mDialog.getExpYear());
+				setTransactionAmounts(transaction);
 				
-				settleTicket(tenderAmount, transaction);
+				AuthorizeDotNetProcessor.authorizeAmount(transaction);
 				
-				setCanceled(false);
-				dispose();
+				settleTicket(transaction);
 			}
 			else if (inputter instanceof AuthorizationCodeDialog) {
 				AuthorizationCodeDialog authDialog = (AuthorizationCodeDialog) inputter;
@@ -563,17 +526,33 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 				if (StringUtils.isEmpty(authorizationCode)) {
 					throw new PosException("Invalid authorization code");
 				}
-				//FIXME
-				//settleTicket(tenderedAmount, TransactionType.CREDIT_CARD, null, authorizationCode);
-
-				setCanceled(false);
-				dispose();
+				
+				CreditCardTransaction transaction = new CreditCardTransaction();
+				transaction.setTicket(ticket);
+				transaction.setCardType(cardName);
+				transaction.setCaptured(false);
+				transaction.setCardEntryType(CardReader.EXTERNAL_TERMINAL.name());
+				transaction.setAuthorizationCode(authorizationCode);
+				setTransactionAmounts(transaction);
+				
+				settleTicket(transaction);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			POSMessageDialog.showError(e.getMessage());
 		} finally {
 			waitDialog.setVisible(false);
+		}
+	}
+
+	private void setTransactionAmounts(PosTransaction transaction) {
+		transaction.setTenderAmount(tenderAmount);
+		
+		if(tenderAmount >= ticket.getDueAmount()) {
+			transaction.setAmount(ticket.getDueAmount());
+		}
+		else {
+			transaction.setAmount(tenderAmount);
 		}
 	}
 

@@ -24,7 +24,7 @@ import com.floreantpos.ui.dialog.PaymentTypeSelectionDialog;
 import com.floreantpos.ui.views.order.OrderView;
 import com.floreantpos.ui.views.order.RootView;
 import com.floreantpos.ui.views.payment.AuthorizationCodeDialog;
-import com.floreantpos.ui.views.payment.AuthorizeDoNetProcessor;
+import com.floreantpos.ui.views.payment.AuthorizeDotNetProcessor;
 import com.floreantpos.ui.views.payment.CardInputListener;
 import com.floreantpos.ui.views.payment.CardInputter;
 import com.floreantpos.ui.views.payment.ManualCardEntryDialog;
@@ -103,10 +103,9 @@ public class NewBarTabAction extends AbstractAction implements CardInputListener
 			Ticket ticket = createTicket(Application.getInstance());
 
 			ticket.addProperty(Ticket.PROPERTY_CARD_AUTH_CODE, authorizationCode);
-			ticket.addProperty(Ticket.PROPERTY_PAYMENT_METHOD, selectedPaymentType.getDisplayString());
-			ticket.addProperty(Ticket.PROPERTY_CARD_NAME, selectedPaymentType.getDisplayString());
+			ticket.addProperty(Ticket.PROPERTY_PAYMENT_METHOD, selectedPaymentType.name());
+			ticket.addProperty(Ticket.PROPERTY_CARD_NAME, selectedPaymentType.name());
 			ticket.addProperty(Ticket.PROPERTY_CARD_READER, CardReader.EXTERNAL_TERMINAL.name());
-			ticket.addProperty(Ticket.PROPERTY_ADVANCE_PAYMENT, "0");
 			
 			ticket.addToticketItems(createTabOpenItem(ticket));
 			
@@ -139,15 +138,12 @@ public class NewBarTabAction extends AbstractAction implements CardInputListener
 		waitDialog.setVisible(true);
 		
 		try {
-			CardType cardType = CardType.findByValue(selectedPaymentType.getDisplayString());
-			
-			String transactionId = AuthorizeDoNetProcessor.authorizeAmount(cardString, Ticket.BAR_TAB_ADVANCE, cardType);
+			String transactionId = AuthorizeDotNetProcessor.authorizeAmount(cardString, Ticket.BAR_TAB_ADVANCE, selectedPaymentType.getDisplayString());
 			
 			Ticket ticket = createTicket(application);
-			ticket.setAdvanceAmount(Ticket.BAR_TAB_ADVANCE);
 			
-			ticket.addProperty(Ticket.PROPERTY_PAYMENT_METHOD, selectedPaymentType.getDisplayString());
-			ticket.addProperty(Ticket.PROPERTY_CARD_NAME, selectedPaymentType.getDisplayString());
+			ticket.addProperty(Ticket.PROPERTY_PAYMENT_METHOD, selectedPaymentType.name());
+			ticket.addProperty(Ticket.PROPERTY_CARD_NAME, selectedPaymentType.name());
 			ticket.addProperty(Ticket.PROPERTY_CARD_TRANSACTION_ID, transactionId);
 			ticket.addProperty(Ticket.PROPERTY_CARD_TRACKS, cardString);
 			ticket.addProperty(Ticket.PROPERTY_CARD_READER, CardReader.SWIPE.name());
@@ -168,14 +164,7 @@ public class NewBarTabAction extends AbstractAction implements CardInputListener
 			waitDialog.setVisible(false);
 		}
 	}
-
-	private TicketItem createTabOpenItem(Ticket ticket) {
-		TicketItem item = new TicketItem();
-		item.setTicket(ticket);
-		item.setName("TAB OPEN");
-		return item;
-	}
-
+	
 	private void useManualCard(CardInputter inputter) {
 		Application application = Application.getInstance();
 		
@@ -198,13 +187,12 @@ public class NewBarTabAction extends AbstractAction implements CardInputListener
 		try {
 			CardType cardType = CardType.findByValue(selectedPaymentType.getDisplayString());
 			
-			String transactionId = AuthorizeDoNetProcessor.authorizeAmount(cardNumber, expMonth, expYear, Ticket.BAR_TAB_ADVANCE, cardType);
+			String transactionId = AuthorizeDotNetProcessor.authorizeAmount(cardNumber, expMonth, expYear, Ticket.BAR_TAB_ADVANCE, cardType);
 			
 			Ticket ticket = createTicket(application);
-			ticket.setAdvanceAmount(Ticket.BAR_TAB_ADVANCE);
 			
-			ticket.addProperty(Ticket.PROPERTY_PAYMENT_METHOD, selectedPaymentType.getDisplayString());
-			ticket.addProperty(Ticket.PROPERTY_CARD_NAME, selectedPaymentType.getDisplayString());
+			ticket.addProperty(Ticket.PROPERTY_PAYMENT_METHOD, selectedPaymentType.name());
+			ticket.addProperty(Ticket.PROPERTY_CARD_NAME, selectedPaymentType.name());
 			ticket.addProperty(Ticket.PROPERTY_CARD_TRANSACTION_ID, transactionId);
 			ticket.addProperty(Ticket.PROPERTY_CARD_NUMBER, cardNumber);
 			ticket.addProperty(Ticket.PROPERTY_CARD_EXP_YEAR, expYear);
@@ -228,4 +216,10 @@ public class NewBarTabAction extends AbstractAction implements CardInputListener
 		}
 	}
 
+	private TicketItem createTabOpenItem(Ticket ticket) {
+		TicketItem item = new TicketItem();
+		item.setTicket(ticket);
+		item.setName("TAB OPEN");
+		return item;
+	}
 }

@@ -21,7 +21,6 @@ import com.floreantpos.model.Terminal;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.TicketItemModifierGroup;
-import com.floreantpos.model.TicketStatus;
 import com.floreantpos.model.User;
 import com.floreantpos.model.util.TicketSummary;
 
@@ -214,22 +213,6 @@ public class TicketDAO extends BaseTicketDAO {
 		}
 	}
 	
-	public List<Ticket> findHoldTickets() {
-		Session session = null;
-		
-		try {
-			session = getSession();
-			Criteria criteria = session.createCriteria(getReferenceClass());
-			criteria.add(Restrictions.eq(Ticket.PROP_CLOSED, Boolean.FALSE));
-			criteria.add(Restrictions.eq(Ticket.PROP_VOIDED, Boolean.FALSE));
-			criteria.add(Restrictions.eq(Ticket.PROP_STATUS, TicketStatus.PAID_AND_HOLD.name()));
-			List list = criteria.list();
-			return list;
-		} finally {
-			closeSession(session);
-		}
-	}
-
 	public List<Ticket> findOpenTickets(Date startDate, Date endDate) {
 		Session session = null;
 
