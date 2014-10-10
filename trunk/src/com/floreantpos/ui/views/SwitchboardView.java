@@ -52,7 +52,6 @@ import com.floreantpos.ui.dialog.VoidTicketDialog;
 import com.floreantpos.ui.views.order.DefaultOrderServiceExtension;
 import com.floreantpos.ui.views.order.OrderView;
 import com.floreantpos.ui.views.order.RootView;
-import com.floreantpos.ui.views.payment.SettleTicketDialog;
 import com.floreantpos.util.NumberUtil;
 import com.floreantpos.util.TicketAlreadyExistsException;
 
@@ -325,15 +324,7 @@ public class SwitchboardView extends JPanel implements ActionListener {
 		}
 		
 		ticket.calculatePrice();
-		
-		if(ticket.isPaid()) {
-			if(ticket.getTotalAmount() > ticket.getPaidAmount()) {
-				ticket.setStatus(TicketStatus.PAID_AND_HOLD.name());
-			}
-			else {
-				ticket.setStatus(TicketStatus.PAID.name());
-			}
-		}
+		ticket.setStatus(TicketStatus.PAID.name());
 		
 		TicketDAO.getInstance().saveOrUpdate(ticket);
 		updateTicketList();
@@ -665,6 +656,8 @@ public class SwitchboardView extends JPanel implements ActionListener {
 	private void doShowManagerWindow() {
 		ManagerDialog dialog = new ManagerDialog();
 		dialog.open();
+		
+		updateTicketList();
 	}
 
 	private void doGroupSettle() {
@@ -876,17 +869,6 @@ public class SwitchboardView extends JPanel implements ActionListener {
 		Ticket ticket = selectedTickets.get(0);
 
 		return ticket;
-	}
-
-	private List<Ticket> getSelectedTickets() {
-		List<Ticket> selectedTickets = openTicketList.getSelectedTickets();
-
-		if (selectedTickets.size() == 0) {
-			POSMessageDialog.showMessage("Please select at lease one ticket");
-			return null;
-		}
-
-		return selectedTickets;
 	}
 
 	//	private class TicketListUpdaterTask implements ActionListener {

@@ -15,6 +15,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.swing.DefaultListSelectionModel;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -37,8 +38,9 @@ public class OpenTicketsListDialog extends POSDialog {
 	private OpenTicketListTableModel tableModel;
 
 	/** Creates new form OpenTicketsListDialog */
-	public OpenTicketsListDialog(java.awt.Frame parent, boolean modal) {
-		super(parent, modal, false);
+	public OpenTicketsListDialog(JDialog parent, boolean modal) {
+		super(parent, modal);
+		
 		initComponents();
 		setTitle(com.floreantpos.POSConstants.ACTIVE_TICKETS);
 		titlePanel.setTitle(com.floreantpos.POSConstants.ACTIVE_TICKETS_BEFORE_DRAWER_RESET);
@@ -263,17 +265,6 @@ public class OpenTicketsListDialog extends POSDialog {
 			tableModel.removeTicket(ticketToVoid);
 		}
 	}//GEN-LAST:event_doVoidTicket
-
-	/**
-	 * @param args the command line arguments
-	 */
-	public static void main(String args[]) {
-		java.awt.EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				new OpenTicketsListDialog(new javax.swing.JFrame(), true).setVisible(true);
-			}
-		});
-	}
 
 	// Variables declaration - do not modify//GEN-BEGIN:variables
 	private com.floreantpos.swing.PosButton btnClose;

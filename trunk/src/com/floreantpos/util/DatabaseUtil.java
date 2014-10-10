@@ -124,6 +124,17 @@ public class DatabaseUtil {
 
 			UserDAO dao = new UserDAO();
 			dao.saveOrUpdate(u);
+			
+			u = new User();
+			u.setUserId(123);
+			u.setSsn("1233");
+			u.setPassword("1111");
+			u.setFirstName("Test2");
+			u.setLastName(com.floreantpos.POSConstants.USER);
+			u.setNewUserType(type);
+			
+			dao = new UserDAO();
+			dao.saveOrUpdate(u);
 
 			MenuCategory category = new MenuCategory();
 			category.setName(com.floreantpos.POSConstants.BEVERAGE);

@@ -7,8 +7,6 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 
 import com.floreantpos.model.PosTransaction;
-import com.floreantpos.model.Terminal;
-import com.floreantpos.model.Ticket;
 
 
 public class PosTransactionDAO extends BasePosTransactionDAO {
@@ -18,14 +16,15 @@ public class PosTransactionDAO extends BasePosTransactionDAO {
 	 */
 	public PosTransactionDAO () {}
 
-	public List<PosTransaction> findUnauthorizedTransactions(Terminal terminal) {
+	public List<PosTransaction> findUnauthorizedTransactions() {
 		Session session = null;
 
 		try {
 			session = getSession();
+			
 			Criteria criteria = session.createCriteria(getReferenceClass());
 			criteria.add(Restrictions.eq(PosTransaction.PROP_CAPTURED, Boolean.FALSE));
-			criteria.add(Restrictions.eq(Ticket.PROP_TERMINAL, terminal));
+			criteria.add(Restrictions.isNotNull(PosTransaction.PROP_TICKET));
 
 			return criteria.list();
 		} finally {

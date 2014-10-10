@@ -13,7 +13,7 @@ import com.floreantpos.model.PosTransaction;
 import com.floreantpos.model.RefundTransaction;
 import com.floreantpos.model.Terminal;
 import com.floreantpos.model.Ticket;
-import com.floreantpos.model.TicketStatus;
+import com.floreantpos.model.TicketType;
 import com.floreantpos.model.User;
 import com.floreantpos.model.dao.ActionHistoryDAO;
 import com.floreantpos.model.dao.GenericDAO;
@@ -22,7 +22,7 @@ import com.floreantpos.util.NumberUtil;
 public class PosTransactionService {
 	private static PosTransactionService paymentService = new PosTransactionService();
 
-	public void settleTicket(Ticket ticket, final double tenderAmount, PosTransaction transaction) throws Exception {
+	public void settleTicket(Ticket ticket, PosTransaction transaction) throws Exception {
 		Application application = Application.getInstance();
 		User currentUser = Application.getCurrentUser();
 		Terminal terminal = application.getTerminal();
@@ -44,6 +44,7 @@ public class PosTransactionService {
 
 			double transactionAmount = 0;
 			double dueAmount = 0;
+			final double tenderAmount = transaction.getTenderAmount(); 
 			
 			if(tenderAmount >= ticket.getDueAmount()) {
 				transactionAmount = ticket.getDueAmount();
@@ -59,9 +60,6 @@ public class PosTransactionService {
 
 			if (dueAmount == 0) {
 				ticket.setPaid(true);
-				if(transaction != null && transaction.isCard()) {
-					ticket.setStatus(TicketStatus.PAID_AND_HOLD.name());
-				}
 				closeTicketIfApplicable(ticket, currentDate);
 			}
 			else {
@@ -80,6 +78,19 @@ public class PosTransactionService {
 			transaction.setTransactionTime(currentDate);
 
 			ticket.addTotransactions(transaction);
+			
+			if(ticket.getType() == TicketType.BAR_TAB) {
+				ticket.removeProperty(Ticket.PROPERTY_PAYMENT_METHOD);
+				ticket.removeProperty(Ticket.PROPERTY_CARD_NAME);
+				ticket.removeProperty(Ticket.PROPERTY_CARD_TRANSACTION_ID);
+				ticket.removeProperty(Ticket.PROPERTY_CARD_TRACKS);
+				ticket.removeProperty(Ticket.PROPERTY_CARD_READER);
+				ticket.removeProperty(Ticket.PROPERTY_ADVANCE_PAYMENT);
+				ticket.removeProperty(Ticket.PROPERTY_CARD_NUMBER);
+				ticket.removeProperty(Ticket.PROPERTY_CARD_EXP_YEAR);
+				ticket.removeProperty(Ticket.PROPERTY_CARD_EXP_MONTH);
+				ticket.removeProperty(Ticket.PROPERTY_CARD_AUTH_CODE);
+			}
 
 			dao.saveOrUpdate(ticket, session);
 			//dao.saveOrUpdate(transaction, session);

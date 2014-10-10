@@ -16,6 +16,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Set;
 
+import javax.swing.JDialog;
 import javax.swing.JEditorPane;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -55,7 +56,7 @@ public class DrawerPullReportDialog extends POSDialog {
     private DrawerPullReport drawerPullReport;
     private Terminal terminal;
     
-    public DrawerPullReportDialog(java.awt.Frame parent, boolean modal) {
+    public DrawerPullReportDialog(JDialog parent, boolean modal) {
         super(parent, false);
         initComponents();
     }
@@ -144,17 +145,6 @@ public class DrawerPullReportDialog extends POSDialog {
     private void btnFinishActionPerformed() {//GEN-FIRST:event_btnFinishActionPerformed
         dispose();
     }//GEN-LAST:event_btnFinishActionPerformed
-    
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new DrawerPullReportDialog(new javax.swing.JFrame(), true).setVisible(true);
-            }
-        });
-    }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.floreantpos.swing.PosButton btnFinish;

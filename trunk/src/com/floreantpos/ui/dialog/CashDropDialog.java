@@ -8,7 +8,6 @@ package com.floreantpos.ui.dialog;
 
 import java.awt.Component;
 import java.awt.Font;
-import java.awt.Frame;
 import java.awt.Rectangle;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -17,6 +16,7 @@ import java.util.List;
 
 import javax.swing.DefaultListSelectionModel;
 import javax.swing.JCheckBox;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
@@ -41,7 +41,7 @@ public class CashDropDialog extends POSDialog {
 	private String currencySymbol;
 
 	/** Creates new form CashDropDialog */
-	public CashDropDialog(Frame parent) {
+	public CashDropDialog(JDialog parent) {
 		super(parent, true);
 		initComponents();
 
