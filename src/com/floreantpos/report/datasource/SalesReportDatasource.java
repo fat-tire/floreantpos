@@ -1,4 +1,4 @@
-package com.floreantpos.ui.report.datasource;
+package com.floreantpos.report.datasource;
 
 import javax.swing.table.TableModel;
 

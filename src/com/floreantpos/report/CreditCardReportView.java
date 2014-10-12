@@ -1,4 +1,4 @@
-package com.floreantpos.ui.report;
+package com.floreantpos.report;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
@@ -25,7 +25,6 @@ import org.jdesktop.swingx.JXDatePicker;
 import com.floreantpos.POSConstants;
 import com.floreantpos.bo.ui.BackOfficeWindow;
 import com.floreantpos.model.util.DateUtil;
-import com.floreantpos.report.CreditCardReport;
 import com.floreantpos.report.service.ReportService;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.util.UiUtil;
@@ -100,7 +99,7 @@ public class CreditCardReportView extends JPanel {
 		map.put("netTipsPaid", NumberUtil.formatNumber(report.getTipsPaid()));
 		map.put("netCharge", NumberUtil.formatNumber(report.getNetCharge()));
 		
-		JasperReport jasperReport = (JasperReport) JRLoader.loadObject(getClass().getResource("/com/floreantpos/ui/report/credit_card_report.jasper"));
+		JasperReport jasperReport = (JasperReport) JRLoader.loadObject(getClass().getResource("/com/floreantpos/report/template/credit_card_report.jasper"));
 		JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map, new JRTableModelDataSource(report.getTableModel()));
 		JRViewer viewer = new JRViewer(jasperPrint);
 		reportContainer.removeAll();

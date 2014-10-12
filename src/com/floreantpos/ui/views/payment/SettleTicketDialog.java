@@ -265,7 +265,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 					transaction.setTicket(ticket);
 					transaction.setCaptured(true);
 					setTransactionAmounts(transaction);
-					
+
 					double giftCertFaceValue = giftCertDialog.getGiftCertFaceValue();
 					double giftCertCashBackAmount = 0;
 					transaction.setTenderAmount(giftCertFaceValue);
@@ -277,13 +277,13 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 					else {
 						transaction.setAmount(giftCertFaceValue);
 					}
-					
+
 					transaction.setGiftCertNumber(giftCertDialog.getGiftCertNumber());
 					transaction.setGiftCertFaceValue(giftCertFaceValue);
 					transaction.setGiftCertPaidAmount(transaction.getAmount());
 					transaction.setGiftCertCashBackAmount(giftCertCashBackAmount);
-					
-					settleTicket(transaction);   
+
+					settleTicket(transaction);
 					break;
 
 				default:
@@ -309,7 +309,6 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 
 		try {
 			String transactionId = ticket.getProperty(Ticket.PROPERTY_CARD_TRANSACTION_ID);
-			double advanceAmount = Double.parseDouble(ticket.getProperty(Ticket.PROPERTY_ADVANCE_PAYMENT));
 
 			CreditCardTransaction transaction = new CreditCardTransaction();
 			transaction.setTicket(ticket);
@@ -338,11 +337,15 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 
 			setTransactionAmounts(transaction);
 
-			if (tenderAmount > advanceAmount) {
-				AuthorizeDotNetProcessor.voidAmount(transactionId, advanceAmount);
-			}
+			if (cardReader == CardReader.SWIPE || cardReader == CardReader.MANUAL) {
+				double advanceAmount = Double.parseDouble(ticket.getProperty(Ticket.PROPERTY_ADVANCE_PAYMENT, "" + Ticket.BAR_TAB_ADVANCE));
+				
+				if (tenderAmount > advanceAmount) {
+					AuthorizeDotNetProcessor.voidAmount(transactionId, advanceAmount);
+				}
 
-			AuthorizeDotNetProcessor.authorizeAmount(transaction);
+				AuthorizeDotNetProcessor.authorizeAmount(transaction);
+			}
 
 			settleTicket(transaction);
 

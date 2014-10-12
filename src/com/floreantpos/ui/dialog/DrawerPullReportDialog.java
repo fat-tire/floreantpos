@@ -285,7 +285,7 @@ public class DrawerPullReportDialog extends POSDialog {
 		addTableRow(table, "-DEBIT CARDS   (" + drawerPullReport.getDebitCardReceiptNumber() + ")", decimalFormat.format(drawerPullReport.getDebitCardReceiptAmount()));
 		addTableRow(table, "-GIFT RETURNS  (" + drawerPullReport.getGiftCertReturnCount() + ")", decimalFormat.format(drawerPullReport.getGiftCertReturnAmount()));
 		addTableRow(table, "+GIFT CERT. CHANGE", decimalFormat.format(drawerPullReport.getGiftCertChangeAmount()));
-		addTableRow(table, "+CASH BACK", decimalFormat.format(drawerPullReport.getCashBack()));
+		addTableRow(table, "-CASH BACK", decimalFormat.format(drawerPullReport.getCashBack()));
 		addTableSeparator(table);
 		addTableRow(table, "=RECEIPT DIFFERENTIAL", decimalFormat.format(drawerPullReport.getReceiptDifferential()));
 		document.appendBody(table);

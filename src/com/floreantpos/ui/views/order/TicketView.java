@@ -43,6 +43,7 @@ import com.floreantpos.model.TicketType;
 import com.floreantpos.model.dao.CookingInstructionDAO;
 import com.floreantpos.model.dao.MenuItemDAO;
 import com.floreantpos.print.PosPrintService;
+import com.floreantpos.report.JReportPrintService;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.ui.dialog.BeanEditorDialog;
 import com.floreantpos.ui.dialog.POSMessageDialog;
@@ -357,17 +358,7 @@ public class TicketView extends JPanel {
 			OrderController.saveOrder(ticket);
 
 			if (ticket.needsKitchenPrint()) {
-				PosPrintService.printToKitchen(ticket);
-			}
-			
-			if(ticket.getType() == TicketType.BAR_TAB) {
-				double advancePayment = 0;
-				
-				try {
-					advancePayment = Double.parseDouble(ticket.getProperty(Ticket.PROPERTY_ADVANCE_PAYMENT));
-				} catch (Exception e) {}
-				//FIXME: REVISE
-				PosPrintService.printTicket(ticket, advancePayment);
+				JReportPrintService.printTicketToKitchen(ticket);
 			}
 			
 			ticket.clearDeletedItems();
@@ -529,6 +520,13 @@ public class TicketView extends JPanel {
 			return;
 		}
 		
+		//Bar Tab must be paid immediately
+		if(ticket.getType() == TicketType.BAR_TAB) {
+			btnFinish.setEnabled(false);
+		}
+		else {
+			btnFinish.setEnabled(true);
+		}
 
 		ticket.calculatePrice();
 

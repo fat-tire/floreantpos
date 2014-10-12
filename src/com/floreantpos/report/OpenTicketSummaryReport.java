@@ -1,4 +1,4 @@
-package com.floreantpos.ui.report;
+package com.floreantpos.report;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -13,7 +13,6 @@ import net.sf.jasperreports.view.JRViewer;
 
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.dao.TicketDAO;
-import com.floreantpos.report.TicketReportModel;
 import com.floreantpos.report.service.ReportService;
 
 public class OpenTicketSummaryReport extends Report {
@@ -38,7 +37,7 @@ public class OpenTicketSummaryReport extends Report {
 		//map.put("dateRange", Application.formatDate(date1) + " to " + Application.formatDate(date2));
 		map.put("terminalName", com.floreantpos.POSConstants.ALL);
 		
-		JasperReport masterReport = (JasperReport) JRLoader.loadObject(OpenTicketSummaryReport.class.getResource("/com/floreantpos/ui/report/open_ticket_summary_report.jasper"));
+		JasperReport masterReport = (JasperReport) JRLoader.loadObject(OpenTicketSummaryReport.class.getResource("/com/floreantpos/report/template/open_ticket_summary_report.jasper"));
 		JasperPrint print = JasperFillManager.fillReport(masterReport, map, new JRTableModelDataSource(reportModel));
 		viewer = new JRViewer(print);
 	}

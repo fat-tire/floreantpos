@@ -1,4 +1,4 @@
-package com.floreantpos.ui.report;
+package com.floreantpos.report;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
@@ -18,6 +18,7 @@ import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.data.JRTableModelDataSource;
 import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.view.JRViewer;
 
@@ -26,13 +27,11 @@ import org.jdesktop.swingx.JXDatePicker;
 import com.floreantpos.POSConstants;
 import com.floreantpos.bo.ui.BackOfficeWindow;
 import com.floreantpos.model.util.DateUtil;
-import com.floreantpos.report.SalesBalanceReport;
 import com.floreantpos.report.service.ReportService;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.util.UiUtil;
-import com.floreantpos.util.NumberUtil;
 
-public class SalesBalanceReportView extends JPanel {
+public class SalesDetailReportView extends JPanel {
 	private SimpleDateFormat fullDateFormatter = new SimpleDateFormat("yyyy MMM dd, hh:mm a");
 	private SimpleDateFormat shortDateFormatter = new SimpleDateFormat("yyyy MMM dd");
 	
@@ -41,7 +40,7 @@ public class SalesBalanceReportView extends JPanel {
 	private JButton btnGo = new JButton(com.floreantpos.POSConstants.GO);
 	private JPanel reportContainer;
 	
-	public SalesBalanceReportView() {
+	public SalesDetailReportView() {
 		super(new BorderLayout());
 		
 		JPanel topPanel = new JPanel(new MigLayout());
@@ -68,7 +67,7 @@ public class SalesBalanceReportView extends JPanel {
 				try {
 					viewReport();
 				} catch (Exception e1) {
-					POSMessageDialog.showError(SalesBalanceReportView.this, POSConstants.ERROR_MESSAGE, e1);
+					POSMessageDialog.showError(SalesDetailReportView.this, POSConstants.ERROR_MESSAGE, e1);
 				}
 			}
 			
@@ -88,42 +87,29 @@ public class SalesBalanceReportView extends JPanel {
 		toDate = DateUtil.endOfDay(toDate);
 		
 		ReportService reportService = new ReportService();
-		SalesBalanceReport report = reportService.getSalesBalanceReport(fromDate, toDate);
+		SalesDetailedReport report = reportService.getSalesDetailedReport(fromDate, toDate);
 		
-		HashMap<String, String> map = new HashMap<String, String>();
+		JasperReport drawerPullReport = (JasperReport) JRLoader.loadObject(SalesReportModelFactory.class.getResource("/com/floreantpos/report/template/sales_summary_balance_detailed__1.jasper"));
+		JasperReport creditCardReport = (JasperReport) JRLoader.loadObject(SalesReportModelFactory.class.getResource("/com/floreantpos/report/template/sales_summary_balance_detailed_2.jasper"));
+		
+		HashMap map = new HashMap();
 		ReportUtil.populateRestaurantProperties(map);
 		map.put("fromDate", shortDateFormatter.format(fromDate));
 		map.put("toDate", shortDateFormatter.format(toDate));
 		map.put("reportTime", fullDateFormatter.format(new Date()));
+		map.put("giftCertReturnCount", report.getGiftCertReturnCount());
+		map.put("giftCertReturnAmount", report.getGiftCertReturnAmount());
+		map.put("giftCertChangeCount", report.getGiftCertChangeCount());
+		map.put("giftCertChangeAmount", report.getGiftCertChangeAmount());
+		map.put("tipsCount", report.getTipsCount());
+		map.put("tipsAmount", report.getChargedTips());
+		map.put("tipsPaidAmount", report.getTipsPaid());
+		map.put("drawerPullReport", drawerPullReport);
+		map.put("drawerPullDatasource", new JRTableModelDataSource(report.getDrawerPullDataTableModel()));
+		map.put("creditCardReport", creditCardReport);
+		map.put("creditCardReportDatasource", new JRTableModelDataSource(report.getCreditCardDataTableModel()));
 		
-		map.put("grossTaxableSales", NumberUtil.formatNumber(report.getGrossTaxableSalesAmount()));
-		map.put("grossNonTaxableSales", NumberUtil.formatNumber(report.getGrossNonTaxableSalesAmount()));
-		map.put("discounts", NumberUtil.formatNumber(report.getDiscountAmount()));
-		map.put("netSales", NumberUtil.formatNumber(report.getNetSalesAmount()));
-		map.put("salesTaxes", NumberUtil.formatNumber(report.getSalesTaxAmount()));
-		map.put("totalRevenues", NumberUtil.formatNumber(report.getTotalRevenueAmount()));
-		map.put("giftCertSold", NumberUtil.formatNumber(report.getGiftCertSalesAmount()));
-		map.put("payIns", NumberUtil.formatNumber(report.getPayInsAmount()));
-		map.put("chargedTips", NumberUtil.formatNumber(report.getChargedTipsAmount()));
-		map.put("grossReceipts", NumberUtil.formatNumber(report.getGrossReceiptsAmount()));
-		map.put("cashReceipts", NumberUtil.formatNumber(report.getCashReceiptsAmount()));
-		map.put("creditCardReceipts", NumberUtil.formatNumber(report.getCreditCardReceiptsAmount()));
-		map.put("grossTipsPaid", NumberUtil.formatNumber(report.getGrossTipsPaidAmount()));
-		map.put("arReceipts", NumberUtil.formatNumber(report.getArReceiptsAmount()));
-		map.put("giftCertReturns", NumberUtil.formatNumber(report.getGiftCertReturnAmount()));
-		map.put("giftCertChange", NumberUtil.formatNumber(report.getGiftCertChangeAmount()));
-		map.put("cashBack", NumberUtil.formatNumber(report.getCashBackAmount()));
-		map.put("receiptDiff", NumberUtil.formatNumber(report.getReceiptDiffAmount()));
-		map.put("tipsDiscount", NumberUtil.formatNumber(report.getTipsDiscountAmount()));
-		map.put("cashPayout", NumberUtil.formatNumber(report.getCashPayoutAmount()));
-		map.put("cashAccountable", NumberUtil.formatNumber(report.getCashAccountableAmount()));
-		map.put("drawerPulls", NumberUtil.formatNumber(report.getDrawerPullsAmount()));
-		map.put("coCurrent", NumberUtil.formatNumber(report.getCoCurrentAmount()));
-		map.put("coPrevious", NumberUtil.formatNumber(report.getCoPreviousAmount()));
-		map.put("coOverShort", NumberUtil.formatNumber(report.getOverShortAmount()));
-		map.put("days", String.valueOf((int) ((toDate.getTime() - fromDate.getTime()) * (1.15740741 * Math.pow(10, -8))) + 1));
-		
-		JasperReport jasperReport = (JasperReport) JRLoader.loadObject(getClass().getResource("/com/floreantpos/ui/report/sales_summary_balance_report.jasper"));
+		JasperReport jasperReport = (JasperReport) JRLoader.loadObject(getClass().getResource("/com/floreantpos/report/template/sales_summary_balace_detail.jasper"));
 		JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map, new JREmptyDataSource());
 		JRViewer viewer = new JRViewer(jasperPrint);
 		reportContainer.removeAll();

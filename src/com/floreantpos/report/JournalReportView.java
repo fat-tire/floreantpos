@@ -1,4 +1,4 @@
-package com.floreantpos.ui.report;
+package com.floreantpos.report;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
@@ -25,18 +25,17 @@ import org.jdesktop.swingx.JXDatePicker;
 import com.floreantpos.POSConstants;
 import com.floreantpos.bo.ui.BackOfficeWindow;
 import com.floreantpos.model.util.DateUtil;
-import com.floreantpos.report.MenuUsageReport;
 import com.floreantpos.report.service.ReportService;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.util.UiUtil;
 
-public class MenuUsageReportView extends JPanel {
+public class JournalReportView extends JPanel {
 	private JXDatePicker fromDatePicker = UiUtil.getCurrentMonthStart();
 	private JXDatePicker toDatePicker = UiUtil.getCurrentMonthEnd();
 	private JButton btnGo = new JButton(com.floreantpos.POSConstants.GO);
 	private JPanel reportContainer;
 	
-	public MenuUsageReportView() {
+	public JournalReportView() {
 		super(new BorderLayout());
 		
 		JPanel topPanel = new JPanel(new MigLayout());
@@ -63,7 +62,7 @@ public class MenuUsageReportView extends JPanel {
 				try {
 					viewReport();
 				} catch (Exception e1) {
-					POSMessageDialog.showError(MenuUsageReportView.this, POSConstants.ERROR_MESSAGE, e1);
+					POSMessageDialog.showError(JournalReportView.this, POSConstants.ERROR_MESSAGE, e1);
 				}
 			}
 			
@@ -83,15 +82,15 @@ public class MenuUsageReportView extends JPanel {
 		toDate = DateUtil.endOfDay(toDate);
 		
 		ReportService reportService = new ReportService();
-		MenuUsageReport report = reportService.getMenuUsageReport(fromDate, toDate);
+		JournalReportModel report = reportService.getJournalReport(fromDate, toDate);
 		
 		HashMap<String, String> map = new HashMap<String, String>();
-		map.put("reportTitle", "========= MENU USAGE REPORT ==========");
+		map.put("reportTitle", "========= JOURNAL REPORT ==========");
 		map.put("fromDate", ReportService.formatShortDate(fromDate));
 		map.put("toDate", ReportService.formatShortDate(toDate));
 		map.put("reportTime", ReportService.formatFullDate(new Date()));
 		
-		JasperReport jasperReport = (JasperReport) JRLoader.loadObject(getClass().getResource("/com/floreantpos/ui/report/menu_usage_report.jasper"));
+		JasperReport jasperReport = (JasperReport) JRLoader.loadObject(getClass().getResource("/com/floreantpos/report/template/journal_report.jasper"));
 		JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map, new JRTableModelDataSource(report.getTableModel()));
 		JRViewer viewer = new JRViewer(jasperPrint);
 		reportContainer.removeAll();
