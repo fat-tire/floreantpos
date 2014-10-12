@@ -41,24 +41,11 @@ public class PosTransactionService {
 			ticket.setVoided(false);
 			ticket.setDrawerResetted(false);
 			ticket.setTerminal(terminal);
-
-			double transactionAmount = 0;
-			double dueAmount = 0;
-			final double tenderAmount = transaction.getTenderAmount(); 
+			ticket.setPaidAmount(ticket.getPaidAmount() + transaction.getAmount());
 			
-			if(tenderAmount >= ticket.getDueAmount()) {
-				transactionAmount = ticket.getDueAmount();
-				dueAmount = 0;
-			}
-			else {
-				transactionAmount = tenderAmount;
-				dueAmount = ticket.getDueAmount() - tenderAmount;
-			}
+			ticket.calculatePrice();
 
-			ticket.setPaidAmount(ticket.getPaidAmount() + transactionAmount);
-			ticket.setDueAmount(dueAmount);
-
-			if (dueAmount == 0) {
+			if (ticket.getDueAmount() == 0.0) {
 				ticket.setPaid(true);
 				closeTicketIfApplicable(ticket, currentDate);
 			}
@@ -66,20 +53,17 @@ public class PosTransactionService {
 				ticket.setPaid(false);
 				ticket.setClosed(false);
 			}
-			
+
 			adjustTerminalBalance(ticket, transaction, terminal);
 
-			transaction.setAmount(transactionAmount);
-			transaction.setTenderAmount(tenderAmount);
 			transaction.setDebit(false);
-			transaction.setTicket(ticket);
 			transaction.setTerminal(terminal);
 			transaction.setUser(currentUser);
 			transaction.setTransactionTime(currentDate);
 
 			ticket.addTotransactions(transaction);
-			
-			if(ticket.getType() == TicketType.BAR_TAB) {
+
+			if (ticket.getType() == TicketType.BAR_TAB) {
 				ticket.removeProperty(Ticket.PROPERTY_PAYMENT_METHOD);
 				ticket.removeProperty(Ticket.PROPERTY_CARD_NAME);
 				ticket.removeProperty(Ticket.PROPERTY_CARD_TRANSACTION_ID);
@@ -120,16 +104,15 @@ public class PosTransactionService {
 	}
 
 	private void adjustTerminalBalance(Ticket ticket, PosTransaction transaction, Terminal terminal) {
-		if(transaction instanceof CashTransaction) {
+		if (transaction instanceof CashTransaction) {
 			double currentBalance = terminal.getCurrentBalance();
-			double totalPrice = ticket.getTotalAmount();
-			double newBalance = currentBalance + totalPrice;
+			double newBalance = currentBalance + transaction.getAmount();
 
 			terminal.setCurrentBalance(newBalance);
 		}
-		else if(transaction instanceof GiftCertificateTransaction) {
+		else if (transaction instanceof GiftCertificateTransaction) {
 			double currentBalance = terminal.getCurrentBalance();
-			double newBalance = currentBalance - ((GiftCertificateTransaction) transaction).getCashBackAmount();
+			double newBalance = currentBalance - ((GiftCertificateTransaction) transaction).getGiftCertCashBackAmount();
 			terminal.setCurrentBalance(newBalance);
 		}
 	}

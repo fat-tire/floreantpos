@@ -1,6 +1,7 @@
 package com.floreantpos.ui.views.order;
 
 import java.util.Calendar;
+import java.util.Date;
 
 import javax.swing.JOptionPane;
 
@@ -105,6 +106,7 @@ public class DefaultOrderServiceExtension implements OrderServiceExtension {
 		}
 
 		ticket.setClosed(true);
+		ticket.setClosingDate(new Date());
 		TicketDAO.getInstance().saveOrUpdate(ticket);
 
 		User driver = ticket.getAssignedDriver();

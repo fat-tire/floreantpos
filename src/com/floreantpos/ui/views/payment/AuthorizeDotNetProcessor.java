@@ -120,7 +120,7 @@ public class AuthorizeDotNetProcessor {
 
 		if (result.isApproved()) {
 			transaction.setCardTransactionId(result.getTransId());
-			transaction.setAuthorizationCode(result.getAuthCode());
+			transaction.setCardAuthCode(result.getAuthCode());
 		}
 		else if (result.isDeclined()) {
 			throw new Exception("Card declined\n" + result.getResponseReasonCodes().get(0).getReasonText());
@@ -169,7 +169,7 @@ public class AuthorizeDotNetProcessor {
 
 		if (result.isApproved()) {
 			transaction.setCardTransactionId(result.getTransId());
-			transaction.setAuthorizationCode(result.getAuthCode());
+			transaction.setCardAuthCode(result.getAuthCode());
 		}
 		else if (result.isDeclined()) {
 			throw new Exception("Transaction declined\n" + result.getResponseReasonCodes().get(0).getReasonText());
@@ -193,7 +193,7 @@ public class AuthorizeDotNetProcessor {
 
 		if (result.isApproved()) {
 			transaction.setCardTransactionId(result.getTransId());
-			transaction.setAuthorizationCode(result.getAuthCode());
+			transaction.setCardAuthCode(result.getAuthCode());
 		}
 		else if (result.isDeclined()) {
 			throw new Exception("Card declined\n" + result.getResponseReasonCodes().get(0).getReasonText());
@@ -215,7 +215,7 @@ public class AuthorizeDotNetProcessor {
 
 		if (result.isApproved()) {
 			transaction.setCardTransactionId(result.getTransId());
-			transaction.setAuthorizationCode(result.getAuthCode());
+			transaction.setCardAuthCode(result.getAuthCode());
 		}
 		else if (result.isDeclined()) {
 			throw new Exception("Transaction declined\n" + result.getResponseReasonCodes().get(0).getReasonText());

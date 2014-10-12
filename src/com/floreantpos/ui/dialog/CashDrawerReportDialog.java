@@ -38,8 +38,8 @@ import com.floreantpos.model.DrawerPullVoidTicketEntry;
 import com.floreantpos.model.Terminal;
 import com.floreantpos.model.User;
 import com.floreantpos.model.dao.TerminalDAO;
+import com.floreantpos.print.DrawerpullReportService;
 import com.floreantpos.print.PosPrintService;
-import com.floreantpos.services.DrawerPullService;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.ui.TitlePanel;
 import com.floreantpos.util.NumberUtil;
@@ -64,7 +64,7 @@ public class CashDrawerReportDialog extends POSDialog {
     public void initialize() throws Exception {
     	terminal = Application.getInstance().getTerminal();
     	
-    	drawerPullReport = new DrawerPullService().getDrawerPullReport();
+    	drawerPullReport = DrawerpullReportService.buildDrawerPullReport();
     	
 //    	cashDrawerReport = new CashDrawerReport();
 //    	cashDrawerReport.createReport(terminal);

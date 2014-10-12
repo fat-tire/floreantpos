@@ -72,7 +72,7 @@ public class TicketDetailView extends JPanel {
 				Ticket ticket = (Ticket) iter.next();
 				
 				TicketPrintProperties printProperties = new TicketPrintProperties("*** ORDER " + ticket.getId() + " ***", false, true, true);
-				JasperPrint jasperPrint = JReportPrintService.createPrint(ticket, printProperties);
+				JasperPrint jasperPrint = JReportPrintService.createPrint(ticket, printProperties, null);
 
 				TicketReceiptView receiptView = new TicketReceiptView(jasperPrint);
 				reportPanel.add(receiptView.getReportPanel());

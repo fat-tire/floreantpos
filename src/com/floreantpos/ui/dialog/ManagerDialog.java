@@ -93,7 +93,6 @@ public class ManagerDialog extends JDialog {
         transparentPanel3.setLayout(new java.awt.GridLayout(2, 2, 5, 5));
 
         btnShowTips.setText(com.floreantpos.POSConstants.SERVER_TIPS);
-        btnShowTips.setPreferredSize(new java.awt.Dimension(220, 60));
         btnShowTips.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 doShowServerTips(evt);
@@ -103,7 +102,6 @@ public class ManagerDialog extends JDialog {
         transparentPanel3.add(btnShowTips);
 
         btnDrawerPullReport.setText(com.floreantpos.POSConstants.DRAWER_PULL);
-        btnDrawerPullReport.setPreferredSize(new java.awt.Dimension(220, 60));
         btnDrawerPullReport.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnDrawerPullReportActionPerformed(evt);
@@ -113,7 +111,6 @@ public class ManagerDialog extends JDialog {
         transparentPanel3.add(btnDrawerPullReport);
 
         btnOpenTickets.setText(com.floreantpos.POSConstants.OPEN_TICKETS);
-        btnOpenTickets.setPreferredSize(new java.awt.Dimension(220, 60));
         btnOpenTickets.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnOpenTicketsActionPerformed(evt);
@@ -123,7 +120,6 @@ public class ManagerDialog extends JDialog {
         transparentPanel3.add(btnOpenTickets);
 
         btnCashDrops.setText(com.floreantpos.POSConstants.DRAWER_BLEED);
-        btnCashDrops.setPreferredSize(new java.awt.Dimension(220, 60));
         btnCashDrops.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCashDropsActionPerformed(evt);
@@ -155,7 +151,6 @@ public class ManagerDialog extends JDialog {
         transparentPanel1.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
 
         btnFinish.setText(com.floreantpos.POSConstants.FINISH);
-        btnFinish.setPreferredSize(new java.awt.Dimension(120, 60));
         btnFinish.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnFinishActionPerformed(evt);
@@ -236,7 +231,7 @@ public class ManagerDialog extends JDialog {
 					DrawerPullReportDialog dialog = new DrawerPullReportDialog(ManagerDialog.this, true);
 					dialog.setTitle(com.floreantpos.POSConstants.DRAWER_PULL);
 					dialog.initialize();
-					dialog.setSize(430, 500);
+					dialog.setSize(470, 500);
 					dialog.setResizable(false);
 					dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 					dialog.open();

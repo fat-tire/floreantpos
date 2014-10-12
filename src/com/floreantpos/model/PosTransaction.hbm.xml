@@ -18,18 +18,19 @@
 		<!-- card -->
 		<property column="CARD_TRACK" length="120" name="cardTrack" type="string" />
 		<property column="CARD_NUMBER" length="40" name="cardNumber" type="string" />
-		<property column="CARD_AUTHORIZATION_CODE" length="30" name="authorizationCode" type="string" />
+		<property column="CARD_AUTH_CODE" length="30" name="cardAuthCode" type="string" />
 		<property column="CARD_TYPE" length="20" name="cardType" type="string" />
 		<property column="CARD_TRANSACTION_ID" name="cardTransactionId" type="string" length="60" />
 		<property column="CARD_MERCHANT_GATEWAY" name="cardMerchantGateway" type="string" length="60" />
 		<property column="CARD_EXP_MONTH" name="cardExpiryMonth" type="string" length="16" />
 		<property column="CARD_EXP_YEAR" name="cardExpiryYear" type="string" length="4" />
-		<property column="CARD_ENTRY_TYPE" name="cardEntryType" type="string" length="20" />
+		<property column="CARD_READER" name="cardReader" type="string" length="20" />
 
 		<!-- GIFT CERT SPECIFIC -->
-		<property column="GIFT_CERT_FACE_VALUE" name="faceValue" type="java.lang.Double" />
-		<property column="GIFT_CERT_PAID_AMOUNT" name="paidAmount" type="java.lang.Double" />
-		<property column="GIFT_CERT_CASH_BACK_AMOUNT" name="cashBackAmount" type="java.lang.Double" />
+		<property column="GIFT_CERT_NUMBER" name="giftCertNumber" type="string" />
+		<property column="GIFT_CERT_FACE_VALUE" name="giftCertFaceValue" type="java.lang.Double" />
+		<property column="GIFT_CERT_PAID_AMOUNT" name="giftCertPaidAmount" type="java.lang.Double" />
+		<property column="GIFT_CERT_CASH_BACK_AMOUNT" name="giftCertCashBackAmount" type="java.lang.Double" />
 
 		<!-- a transaction is marked as settled when drawer is resetted -->
 		<property column="DRAWER_RESETTED" index="tran_drawer_resetted" name="drawerResetted" type="java.lang.Boolean" />

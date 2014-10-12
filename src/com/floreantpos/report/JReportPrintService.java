@@ -67,7 +67,7 @@ public class JReportPrintService {
 
 			ticketReportStream = JReportPrintService.class.getResourceAsStream(reportFile);
 			JasperReport ticketReport = (JasperReport) JRLoader.loadObject(ticketReportStream);
-			
+
 			JasperPrint jasperPrint = JasperFillManager.fillReport(ticketReport, properties, dataSource);
 
 			return jasperPrint;
@@ -77,8 +77,8 @@ public class JReportPrintService {
 		}
 	}
 
-	public static JasperPrint createPrint(Ticket ticket, TicketPrintProperties printProperties) throws Exception {
-		HashMap map = populateTicketProperties(ticket, printProperties);
+	public static JasperPrint createPrint(Ticket ticket, TicketPrintProperties printProperties, PosTransaction transaction) throws Exception {
+		HashMap map = populateTicketProperties(ticket, printProperties, transaction);
 
 		final String FILE_RECEIPT_REPORT = "/com/floreantpos/report/TicketReceiptReport.jasper";
 
@@ -88,31 +88,46 @@ public class JReportPrintService {
 	}
 
 	public static void printTicket(Ticket ticket) {
-		printTicket(ticket, null);
-	}
-	
-	public static void printTicket(Ticket ticket, PosTransaction transaction) {
 		try {
+
+			TicketPrintProperties printProperties = new TicketPrintProperties("*** ORDER " + ticket.getId() + " ***", false, true, true);
+			printProperties.setKitchenPrint(false);
+			printProperties.setPrintCookingInstructions(false);
+
+			JasperPrint jasperPrint = createPrint(ticket, printProperties, null);
+			jasperPrint.setName("ORDER_" + ticket.getId());
+			jasperPrint.setProperty("printerName", PrintConfig.getReceiptPrinterName());
+			JasperPrintManager.printReport(jasperPrint, false);
+
+		} catch (Exception e) {
+			logger.error(com.floreantpos.POSConstants.PRINT_ERROR, e);
+		}
+	}
+
+	public static void printTransaction(PosTransaction transaction) {
+		try {
+			Ticket ticket = transaction.getTicket();
 
 			TicketPrintProperties printProperties = new TicketPrintProperties("*** PAYMENT RECEIPT ***", true, true, true);
 			printProperties.setKitchenPrint(false);
 			printProperties.setPrintCookingInstructions(false);
-			
-			//TransactionType transactionType = TransactionType.valueOf(ticket.getTransactionType() == null ? "UNKNOWN" : ticket.getTransactionType());
-			
+
 			if (transaction != null && transaction.isCard()) {
 				printProperties.setReceiptCopyType("Customer Copy");
-				JasperPrint jasperPrint = createPrint(ticket, printProperties);
+				JasperPrint jasperPrint = createPrint(ticket, printProperties, transaction);
+				jasperPrint.setName("Ticket-" + ticket.getId() + "-CustomerCopy");
 				jasperPrint.setProperty("printerName", PrintConfig.getReceiptPrinterName());
 				JasperPrintManager.printReport(jasperPrint, false);
-				
+
 				printProperties.setReceiptCopyType("Merchant Copy");
-				jasperPrint = createPrint(ticket, printProperties);
+				jasperPrint = createPrint(ticket, printProperties, transaction);
+				jasperPrint.setName("Ticket-" + ticket.getId() + "-MerchantCopy");
 				jasperPrint.setProperty("printerName", PrintConfig.getReceiptPrinterName());
 				JasperPrintManager.printReport(jasperPrint, false);
 			}
 			else {
-				JasperPrint jasperPrint = createPrint(ticket, printProperties);
+				JasperPrint jasperPrint = createPrint(ticket, printProperties, transaction);
+				jasperPrint.setName("Ticket-" + ticket.getId());
 				jasperPrint.setProperty("printerName", PrintConfig.getReceiptPrinterName());
 				JasperPrintManager.printReport(jasperPrint, false);
 			}
@@ -134,7 +149,7 @@ public class JReportPrintService {
 		html.append("<span>" + columnText + "</span>");
 	}
 
-	public static HashMap populateTicketProperties(Ticket ticket, TicketPrintProperties printProperties) {
+	public static HashMap populateTicketProperties(Ticket ticket, TicketPrintProperties printProperties, PosTransaction transaction) {
 		Restaurant restaurant = RestaurantDAO.getWorkingRestaurant();
 
 		double totalAmount = ticket.getTotalAmount();
@@ -157,12 +172,6 @@ public class JReportPrintService {
 		map.put(GUEST_COUNT, POSConstants.RECEIPT_REPORT_GUEST_NO_LABEL + ticket.getNumberOfGuests());
 		map.put(SERVER_NAME, POSConstants.RECEIPT_REPORT_SERVER_LABEL + ticket.getOwner());
 		map.put(REPORT_DATE, POSConstants.RECEIPT_REPORT_DATE_LABEL + Application.formatDate(new Date()));
-		
-//		TransactionType transactionType = TransactionType.valueOf(ticket.getTransactionType() == null ? "UNKNOWN" : ticket.getTransactionType());
-//		if(transactionType == TransactionType.CARD) {
-//			map.put("cardPayment", true);
-//			map.put("approvalCode", "Approval: " + ticket.getCardAuthCode());
-//		}
 
 		StringBuilder ticketHeaderBuilder = buildTicketHeader(ticket, printProperties);
 
@@ -194,13 +203,6 @@ public class JReportPrintService {
 				map.put(TIP_AMOUNT, NumberUtil.formatNumber(tipAmount));
 			}
 
-			double netAmount = totalAmount;
-			double changedAmount = 0;//ticket.getTenderedAmount() - netAmount;
-
-			if (changedAmount < 0) {
-				changedAmount = 0;
-			}
-
 			map.put("totalText", POSConstants.RECEIPT_REPORT_TOTAL_LABEL + currencySymbol);
 			map.put("discountText", POSConstants.RECEIPT_REPORT_DISCOUNT_LABEL + currencySymbol);
 			map.put("taxText", POSConstants.RECEIPT_REPORT_TAX_LABEL + currencySymbol);
@@ -211,22 +213,34 @@ public class JReportPrintService {
 			map.put("dueAmountText", POSConstants.RECEIPT_REPORT_DUEAMOUNT_LABEL + currencySymbol);
 			map.put("changeAmountText", POSConstants.RECEIPT_REPORT_CHANGEAMOUNT_LABEL + currencySymbol);
 
-			map.put("netAmount", NumberUtil.formatNumber(netAmount));
+			map.put("netAmount", NumberUtil.formatNumber(totalAmount));
 			map.put("paidAmount", NumberUtil.formatNumber(ticket.getPaidAmount()));
 			map.put("dueAmount", NumberUtil.formatNumber(ticket.getDueAmount()));
-			map.put("changedAmount", NumberUtil.formatNumber(changedAmount));
 			map.put("grandSubtotal", NumberUtil.formatNumber(ticket.getSubtotalAmount()));
 			map.put("footerMessage", restaurant.getTicketFooterMessage());
 			map.put("copyType", printProperties.getReceiptCopyType());
-			
+
+			if (transaction != null) {
+				double changedAmount = transaction.getTenderAmount() - transaction.getAmount();
+				if (changedAmount < 0) {
+					changedAmount = 0;
+				}
+				map.put("changedAmount", NumberUtil.formatNumber(changedAmount));
+
+				if (transaction.isCard()) {
+					map.put("cardPayment", true);
+					map.put("approvalCode", "Approval: " + transaction.getCardAuthCode());
+				}
+			}
+
 			String messageString = "<html>";
-			if(ticket.getCustomer() != null) {
+			if (ticket.getCustomer() != null) {
 				Customer customer = ticket.getCustomer();
-				if(customer.hasProperty("mykalaid")) {
+				if (customer.hasProperty("mykalaid")) {
 					messageString += "<br/>Customer: " + customer.getName();
 				}
 			}
-			if(ticket.hasProperty("mykaladiscount")) {
+			if (ticket.hasProperty("mykaladiscount")) {
 				messageString += "<br/>My Kala point: " + ticket.getProperty("mykalapoing");
 				messageString += "<br/>My Kala discount: " + ticket.getDiscountAmount();
 			}
@@ -239,10 +253,10 @@ public class JReportPrintService {
 
 	private static StringBuilder buildTicketHeader(Ticket ticket, TicketPrintProperties printProperties) {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("M/d/yy, h:m a");
-		
+
 		StringBuilder ticketHeaderBuilder = new StringBuilder();
 		ticketHeaderBuilder.append("<html>");
-		
+
 		beginRow(ticketHeaderBuilder);
 		addColumn(ticketHeaderBuilder, "*" + ticket.getType() + "*");
 		endRow(ticketHeaderBuilder);
@@ -254,7 +268,7 @@ public class JReportPrintService {
 		beginRow(ticketHeaderBuilder);
 		addColumn(ticketHeaderBuilder, POSConstants.RECEIPT_REPORT_TICKET_NO_LABEL + ticket.getId());
 		endRow(ticketHeaderBuilder);
-		
+
 		if (ticket.getType() == TicketType.DINE_IN) {
 			beginRow(ticketHeaderBuilder);
 			addColumn(ticketHeaderBuilder, POSConstants.RECEIPT_REPORT_TABLE_NO_LABEL + ticket.getTableNumber());
@@ -279,20 +293,20 @@ public class JReportPrintService {
 
 		//customer info section
 		if (!printProperties.isKitchenPrint() && ticket.getType() != TicketType.DINE_IN) {
-			
+
 			Customer customer = ticket.getCustomer();
-			
+
 			if (customer != null) {
 				beginRow(ticketHeaderBuilder);
 				addColumn(ticketHeaderBuilder, "*Delivery to*");
 				endRow(ticketHeaderBuilder);
-				
+
 				if (StringUtils.isNotEmpty(customer.getName())) {
 					beginRow(ticketHeaderBuilder);
 					addColumn(ticketHeaderBuilder, customer.getName());
 					endRow(ticketHeaderBuilder);
 				}
-				
+
 				if (StringUtils.isNotEmpty(ticket.getDeliveryAddress())) {
 					beginRow(ticketHeaderBuilder);
 					addColumn(ticketHeaderBuilder, ticket.getDeliveryAddress());
@@ -309,8 +323,8 @@ public class JReportPrintService {
 					addColumn(ticketHeaderBuilder, "Tel: " + customer.getTelephoneNo());
 					endRow(ticketHeaderBuilder);
 				}
-				
-				if(ticket.getDeliveryDate() != null) {
+
+				if (ticket.getDeliveryDate() != null) {
 					beginRow(ticketHeaderBuilder);
 					addColumn(ticketHeaderBuilder, "Delivery: " + dateFormat.format(ticket.getDeliveryDate()));
 					endRow(ticketHeaderBuilder);
@@ -327,8 +341,8 @@ public class JReportPrintService {
 
 			TicketPrintProperties printProperties = new TicketPrintProperties("*** KITCHEN ***", false, false, false);
 			printProperties.setKitchenPrint(true);
-			JasperPrint jasperPrint = createPrint(ticket, printProperties);
-			jasperPrint.setName("KitchenReceipt");
+			JasperPrint jasperPrint = createPrint(ticket, printProperties, null);
+			jasperPrint.setName("KitchenReceipt-Ticket-" + ticket.getId());
 			jasperPrint.setProperty("printerName", PrintConfig.getKitchenPrinterName());
 			JasperPrintManager.printReport(jasperPrint, false);
 

@@ -74,28 +74,19 @@ public class TicketDAO extends BaseTicketDAO {
 		return ticket;
 	}
 	
-//	public Ticket initializeTicket(Ticket ticket) {
-//		Session session = createNewSession();
-//		Ticket newTicket = (Ticket) session.get(getReferenceClass(), ticket.getId());
-//		Hibernate.initialize(newTicket.getTicketItems());
-//		Hibernate.initialize(newTicket.getCouponAndDiscounts());
-//
-//		List<TicketItem> ticketItems = newTicket.getTicketItems();
-//		if (ticketItems != null) {
-//			for (TicketItem ticketItem : ticketItems) {
-//				List<TicketItemModifierGroup> ticketItemModifierGroups = ticketItem.getTicketItemModifierGroups();
-//				Hibernate.initialize(ticketItemModifierGroups);
-//				if (ticketItemModifierGroups != null) {
-//					for (TicketItemModifierGroup ticketItemModifierGroup : ticketItemModifierGroups) {
-//						Hibernate.initialize(ticketItemModifierGroup.getTicketItemModifiers());
-//					}
-//				}
-//			}
-//		}
-//		session.close();
-//		return newTicket;
-//	}
-
+	public Ticket loadCouponsAndTransactions(int id) {
+		Session session = createNewSession();
+		
+		Ticket ticket = (Ticket) session.get(getReferenceClass(), id);
+		
+		Hibernate.initialize(ticket.getCouponAndDiscounts());
+		Hibernate.initialize(ticket.getTransactions());
+		
+		session.close();
+		
+		return ticket;
+	}
+	
 	public List<Gratuity> getServerGratuities(Terminal terminal, String transactionType) {
 		Session session = null;
 		ArrayList<Gratuity> gratuities = new ArrayList<Gratuity>();

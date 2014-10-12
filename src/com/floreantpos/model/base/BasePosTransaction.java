@@ -17,30 +17,31 @@ public abstract class BasePosTransaction  implements Comparable, Serializable {
 
 	public static String REF = "PosTransaction";
 	public static String PROP_USER = "user";
-	public static String PROP_CARD_ENTRY_TYPE = "cardEntryType";
 	public static String PROP_RECEPIENT = "recepient";
+	public static String PROP_GIFT_CERT_CASH_BACK_AMOUNT = "giftCertCashBackAmount";
 	public static String PROP_CARD_EXPIRY_MONTH = "cardExpiryMonth";
+	public static String PROP_CARD_READER = "cardReader";
+	public static String PROP_GIFT_CERT_NUMBER = "giftCertNumber";
 	public static String PROP_TICKET = "ticket";
 	public static String PROP_CARD_MERCHANT_GATEWAY = "cardMerchantGateway";
-	public static String PROP_CASH_BACK_AMOUNT = "cashBackAmount";
 	public static String PROP_CARD_TYPE = "cardType";
+	public static String PROP_CARD_AUTH_CODE = "cardAuthCode";
 	public static String PROP_TRANSACTION_TIME = "transactionTime";
 	public static String PROP_DRAWER_RESETTED = "drawerResetted";
 	public static String PROP_REASON = "reason";
 	public static String PROP_CARD_NUMBER = "cardNumber";
-	public static String PROP_FACE_VALUE = "faceValue";
+	public static String PROP_GIFT_CERT_FACE_VALUE = "giftCertFaceValue";
 	public static String PROP_AMOUNT = "amount";
 	public static String PROP_CAPTURED = "captured";
 	public static String PROP_CARD_EXPIRY_YEAR = "cardExpiryYear";
 	public static String PROP_TERMINAL = "terminal";
 	public static String PROP_NOTE = "note";
 	public static String PROP_CARD_TRACK = "cardTrack";
-	public static String PROP_AUTHORIZATION_CODE = "authorizationCode";
 	public static String PROP_TIPS_AMOUNT = "tipsAmount";
 	public static String PROP_CARD_TRANSACTION_ID = "cardTransactionId";
 	public static String PROP_TENDER_AMOUNT = "tenderAmount";
 	public static String PROP_ID = "id";
-	public static String PROP_PAID_AMOUNT = "paidAmount";
+	public static String PROP_GIFT_CERT_PAID_AMOUNT = "giftCertPaidAmount";
 	public static String PROP_DEBIT = "debit";
 
 
@@ -77,16 +78,17 @@ public abstract class BasePosTransaction  implements Comparable, Serializable {
 		protected java.lang.Boolean captured;
 		protected java.lang.String cardTrack;
 		protected java.lang.String cardNumber;
-		protected java.lang.String authorizationCode;
+		protected java.lang.String cardAuthCode;
 		protected java.lang.String cardType;
 		protected java.lang.String cardTransactionId;
 		protected java.lang.String cardMerchantGateway;
 		protected java.lang.String cardExpiryMonth;
 		protected java.lang.String cardExpiryYear;
-		protected java.lang.String cardEntryType;
-		protected java.lang.Double faceValue;
-		protected java.lang.Double paidAmount;
-		protected java.lang.Double cashBackAmount;
+		protected java.lang.String cardReader;
+		protected java.lang.String giftCertNumber;
+		protected java.lang.Double giftCertFaceValue;
+		protected java.lang.Double giftCertPaidAmount;
+		protected java.lang.Double giftCertCashBackAmount;
 		protected java.lang.Boolean drawerResetted;
 		protected java.lang.String note;
 
@@ -278,18 +280,18 @@ public abstract class BasePosTransaction  implements Comparable, Serializable {
 
 
 	/**
-	 * Return the value associated with the column: CARD_AUTHORIZATION_CODE
+	 * Return the value associated with the column: CARD_AUTH_CODE
 	 */
-	public java.lang.String getAuthorizationCode () {
-					return authorizationCode;
+	public java.lang.String getCardAuthCode () {
+					return cardAuthCode;
 			}
 
 	/**
-	 * Set the value related to the column: CARD_AUTHORIZATION_CODE
-	 * @param authorizationCode the CARD_AUTHORIZATION_CODE value
+	 * Set the value related to the column: CARD_AUTH_CODE
+	 * @param cardAuthCode the CARD_AUTH_CODE value
 	 */
-	public void setAuthorizationCode (java.lang.String authorizationCode) {
-		this.authorizationCode = authorizationCode;
+	public void setCardAuthCode (java.lang.String cardAuthCode) {
+		this.cardAuthCode = cardAuthCode;
 	}
 
 
@@ -380,18 +382,35 @@ public abstract class BasePosTransaction  implements Comparable, Serializable {
 
 
 	/**
-	 * Return the value associated with the column: CARD_ENTRY_TYPE
+	 * Return the value associated with the column: CARD_READER
 	 */
-	public java.lang.String getCardEntryType () {
-					return cardEntryType;
+	public java.lang.String getCardReader () {
+					return cardReader;
 			}
 
 	/**
-	 * Set the value related to the column: CARD_ENTRY_TYPE
-	 * @param cardEntryType the CARD_ENTRY_TYPE value
+	 * Set the value related to the column: CARD_READER
+	 * @param cardReader the CARD_READER value
 	 */
-	public void setCardEntryType (java.lang.String cardEntryType) {
-		this.cardEntryType = cardEntryType;
+	public void setCardReader (java.lang.String cardReader) {
+		this.cardReader = cardReader;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: GIFT_CERT_NUMBER
+	 */
+	public java.lang.String getGiftCertNumber () {
+					return giftCertNumber;
+			}
+
+	/**
+	 * Set the value related to the column: GIFT_CERT_NUMBER
+	 * @param giftCertNumber the GIFT_CERT_NUMBER value
+	 */
+	public void setGiftCertNumber (java.lang.String giftCertNumber) {
+		this.giftCertNumber = giftCertNumber;
 	}
 
 
@@ -399,16 +418,16 @@ public abstract class BasePosTransaction  implements Comparable, Serializable {
 	/**
 	 * Return the value associated with the column: GIFT_CERT_FACE_VALUE
 	 */
-	public java.lang.Double getFaceValue () {
-									return faceValue == null ? Double.valueOf(0) : faceValue;
+	public java.lang.Double getGiftCertFaceValue () {
+									return giftCertFaceValue == null ? Double.valueOf(0) : giftCertFaceValue;
 					}
 
 	/**
 	 * Set the value related to the column: GIFT_CERT_FACE_VALUE
-	 * @param faceValue the GIFT_CERT_FACE_VALUE value
+	 * @param giftCertFaceValue the GIFT_CERT_FACE_VALUE value
 	 */
-	public void setFaceValue (java.lang.Double faceValue) {
-		this.faceValue = faceValue;
+	public void setGiftCertFaceValue (java.lang.Double giftCertFaceValue) {
+		this.giftCertFaceValue = giftCertFaceValue;
 	}
 
 
@@ -416,16 +435,16 @@ public abstract class BasePosTransaction  implements Comparable, Serializable {
 	/**
 	 * Return the value associated with the column: GIFT_CERT_PAID_AMOUNT
 	 */
-	public java.lang.Double getPaidAmount () {
-									return paidAmount == null ? Double.valueOf(0) : paidAmount;
+	public java.lang.Double getGiftCertPaidAmount () {
+									return giftCertPaidAmount == null ? Double.valueOf(0) : giftCertPaidAmount;
 					}
 
 	/**
 	 * Set the value related to the column: GIFT_CERT_PAID_AMOUNT
-	 * @param paidAmount the GIFT_CERT_PAID_AMOUNT value
+	 * @param giftCertPaidAmount the GIFT_CERT_PAID_AMOUNT value
 	 */
-	public void setPaidAmount (java.lang.Double paidAmount) {
-		this.paidAmount = paidAmount;
+	public void setGiftCertPaidAmount (java.lang.Double giftCertPaidAmount) {
+		this.giftCertPaidAmount = giftCertPaidAmount;
 	}
 
 
@@ -433,16 +452,16 @@ public abstract class BasePosTransaction  implements Comparable, Serializable {
 	/**
 	 * Return the value associated with the column: GIFT_CERT_CASH_BACK_AMOUNT
 	 */
-	public java.lang.Double getCashBackAmount () {
-									return cashBackAmount == null ? Double.valueOf(0) : cashBackAmount;
+	public java.lang.Double getGiftCertCashBackAmount () {
+									return giftCertCashBackAmount == null ? Double.valueOf(0) : giftCertCashBackAmount;
 					}
 
 	/**
 	 * Set the value related to the column: GIFT_CERT_CASH_BACK_AMOUNT
-	 * @param cashBackAmount the GIFT_CERT_CASH_BACK_AMOUNT value
+	 * @param giftCertCashBackAmount the GIFT_CERT_CASH_BACK_AMOUNT value
 	 */
-	public void setCashBackAmount (java.lang.Double cashBackAmount) {
-		this.cashBackAmount = cashBackAmount;
+	public void setGiftCertCashBackAmount (java.lang.Double giftCertCashBackAmount) {
+		this.giftCertCashBackAmount = giftCertCashBackAmount;
 	}
 
 
