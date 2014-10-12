@@ -174,7 +174,7 @@ public class SalesAnalysisReportModel extends ListTableModel {
 		data.setCategoryName("C");
 		list.add(data);
 
-		JasperReport report = (JasperReport) JRLoader.loadObject(SalesAnalysisData.class.getResource("/com/floreantpos/ui/report/sales_summary_report2.jasper"));
+		JasperReport report = (JasperReport) JRLoader.loadObject(SalesAnalysisData.class.getResource("/com/floreantpos/report/template/sales_summary_report2.jasper"));
 		JasperPrint print = JasperFillManager.fillReport(report, new HashMap(), new JRBeanCollectionDataSource(list));
 
 		JasperViewer.viewReport(print, true);

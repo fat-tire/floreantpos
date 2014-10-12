@@ -1,8 +1,9 @@
-package com.floreantpos.ui.report;
+package com.floreantpos.report;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -13,6 +14,7 @@ import javax.swing.JSeparator;
 import javax.swing.border.EmptyBorder;
 
 import net.miginfocom.swing.MigLayout;
+import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
@@ -25,18 +27,20 @@ import org.jdesktop.swingx.JXDatePicker;
 import com.floreantpos.POSConstants;
 import com.floreantpos.bo.ui.BackOfficeWindow;
 import com.floreantpos.model.util.DateUtil;
-import com.floreantpos.report.JournalReportModel;
 import com.floreantpos.report.service.ReportService;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.util.UiUtil;
 
-public class JournalReportView extends JPanel {
+public class SalesExceptionReportView extends JPanel {
+	private SimpleDateFormat fullDateFormatter = new SimpleDateFormat("yyyy MMM dd, hh:mm a");
+	private SimpleDateFormat shortDateFormatter = new SimpleDateFormat("yyyy MMM dd");
+	
 	private JXDatePicker fromDatePicker = UiUtil.getCurrentMonthStart();
 	private JXDatePicker toDatePicker = UiUtil.getCurrentMonthEnd();
 	private JButton btnGo = new JButton(com.floreantpos.POSConstants.GO);
 	private JPanel reportContainer;
 	
-	public JournalReportView() {
+	public SalesExceptionReportView() {
 		super(new BorderLayout());
 		
 		JPanel topPanel = new JPanel(new MigLayout());
@@ -63,7 +67,7 @@ public class JournalReportView extends JPanel {
 				try {
 					viewReport();
 				} catch (Exception e1) {
-					POSMessageDialog.showError(JournalReportView.this, POSConstants.ERROR_MESSAGE, e1);
+					POSMessageDialog.showError(SalesExceptionReportView.this, POSConstants.ERROR_MESSAGE, e1);
 				}
 			}
 			
@@ -83,16 +87,24 @@ public class JournalReportView extends JPanel {
 		toDate = DateUtil.endOfDay(toDate);
 		
 		ReportService reportService = new ReportService();
-		JournalReportModel report = reportService.getJournalReport(fromDate, toDate);
+		SalesExceptionReport report = reportService.getSalesExceptionReport(fromDate, toDate);
 		
-		HashMap<String, String> map = new HashMap<String, String>();
-		map.put("reportTitle", "========= JOURNAL REPORT ==========");
-		map.put("fromDate", ReportService.formatShortDate(fromDate));
-		map.put("toDate", ReportService.formatShortDate(toDate));
-		map.put("reportTime", ReportService.formatFullDate(new Date()));
+		JasperReport voidReport = (JasperReport) JRLoader.loadObject(SalesReportModelFactory.class.getResource("/com/floreantpos/report/template/sales_summary_exception_voids.jasper"));
+		JasperReport discountReport = (JasperReport) JRLoader.loadObject(SalesReportModelFactory.class.getResource("/com/floreantpos/report/template/sales_summary_exception_discounts.jasper"));
 		
-		JasperReport jasperReport = (JasperReport) JRLoader.loadObject(getClass().getResource("/com/floreantpos/ui/report/journal_report.jasper"));
-		JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map, new JRTableModelDataSource(report.getTableModel()));
+		HashMap map = new HashMap();
+		ReportUtil.populateRestaurantProperties(map);
+		map.put("fromDate", shortDateFormatter.format(fromDate));
+		map.put("toDate", shortDateFormatter.format(toDate));
+		map.put("reportTime", fullDateFormatter.format(new Date()));
+		map.put("voidReport", voidReport);
+		map.put("voidReportDataSource", new JRTableModelDataSource(report.getVoidTableModel()));
+		map.put("discountReport", discountReport);
+		map.put("discountReportDataSource", new JRTableModelDataSource(report.getDiscountTableModel()));
+		
+		
+		JasperReport jasperReport = (JasperReport) JRLoader.loadObject(getClass().getResource("/com/floreantpos/report/template/sales_summary_exception.jasper"));
+		JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map, new JREmptyDataSource());
 		JRViewer viewer = new JRViewer(jasperPrint);
 		reportContainer.removeAll();
 		reportContainer.add(viewer);

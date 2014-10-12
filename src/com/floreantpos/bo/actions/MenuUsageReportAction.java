@@ -1,4 +1,4 @@
-package com.floreantpos.ui.report.actions;
+package com.floreantpos.bo.actions;
 
 import java.awt.event.ActionEvent;
 
@@ -8,7 +8,7 @@ import javax.swing.JTabbedPane;
 
 import com.floreantpos.bo.ui.BackOfficeWindow;
 import com.floreantpos.main.Application;
-import com.floreantpos.ui.report.MenuUsageReportView;
+import com.floreantpos.report.MenuUsageReportView;
 
 public class MenuUsageReportAction extends AbstractAction {
 

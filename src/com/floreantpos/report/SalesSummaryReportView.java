@@ -4,7 +4,7 @@
  * Created on March 10, 2007, 2:53 AM
  */
 
-package com.floreantpos.ui.report;
+package com.floreantpos.report;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -29,9 +29,7 @@ import com.floreantpos.model.UserType;
 import com.floreantpos.model.dao.SalesSummaryDAO;
 import com.floreantpos.model.dao.TerminalDAO;
 import com.floreantpos.model.dao.UserTypeDAO;
-import com.floreantpos.report.SalesAnalysisReportModel;
 import com.floreantpos.report.SalesAnalysisReportModel.SalesAnalysisData;
-import com.floreantpos.report.SalesStatistics;
 import com.floreantpos.report.SalesStatistics.ShiftwiseDataTableModel;
 import com.floreantpos.swing.ListComboBoxModel;
 import com.floreantpos.ui.dialog.POSMessageDialog;
@@ -214,7 +212,7 @@ public class SalesSummaryReportView extends javax.swing.JPanel {
 		properties.put("centre", terminal == null ? com.floreantpos.POSConstants.ALL : terminal.getName());
 		properties.put("days", String.valueOf(dateDiff));
 
-		JasperReport report = (JasperReport) JRLoader.loadObject(getClass().getResource("/com/floreantpos/ui/report/sales_summary_report2.jasper"));
+		JasperReport report = (JasperReport) JRLoader.loadObject(getClass().getResource("/com/floreantpos/report/template/sales_summary_report2.jasper"));
 		JasperPrint print = JasperFillManager.fillReport(report, properties, new JRTableModelDataSource(new SalesAnalysisReportModel(datas)));
 		openReport(print);
 	}
@@ -271,7 +269,7 @@ public class SalesSummaryReportView extends javax.swing.JPanel {
 		properties.put("Labor", NumberUtil.formatNumber(summary.getLaborCost()));
 		properties.put("LaborCost", NumberUtil.formatNumber((summary.getLaborCost() / summary.getGrossSale()) * 100));
 
-		JasperReport report = (JasperReport) JRLoader.loadObject(getClass().getResource("/com/floreantpos/ui/report/sales_summary_report1.jasper"));
+		JasperReport report = (JasperReport) JRLoader.loadObject(getClass().getResource("/com/floreantpos/report/template/sales_summary_report1.jasper"));
 		JasperPrint print = JasperFillManager.fillReport(report, properties, new JRTableModelDataSource(new ShiftwiseDataTableModel(summary.getSalesTableDataList())));
 		openReport(print);
 

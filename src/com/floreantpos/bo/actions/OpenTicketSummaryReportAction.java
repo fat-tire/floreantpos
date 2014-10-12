@@ -1,4 +1,4 @@
-package com.floreantpos.ui.report.actions;
+package com.floreantpos.bo.actions;
 
 import java.awt.event.ActionEvent;
 
@@ -8,8 +8,8 @@ import javax.swing.JTabbedPane;
 
 import com.floreantpos.bo.ui.BackOfficeWindow;
 import com.floreantpos.main.Application;
-import com.floreantpos.ui.report.OpenTicketSummaryReport;
-import com.floreantpos.ui.report.ReportViewer;
+import com.floreantpos.report.OpenTicketSummaryReport;
+import com.floreantpos.report.ReportViewer;
 
 public class OpenTicketSummaryReportAction extends AbstractAction {
 

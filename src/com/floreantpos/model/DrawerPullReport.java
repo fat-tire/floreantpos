@@ -36,7 +36,7 @@ public class DrawerPullReport extends BaseDrawerPullReport {
 		
 		
 		double total = getCashReceiptAmount() + getCreditCardReceiptAmount() + 
-						getDebitCardReceiptAmount() + getGiftCertReturnAmount() - 
+						getDebitCardReceiptAmount() + getGiftCertReturnAmount() + 
 						getGiftCertChangeAmount() - getCashBack();
 		setReceiptDifferential(getGrossReceipts() - total);
 		

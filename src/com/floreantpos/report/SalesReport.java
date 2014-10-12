@@ -1,4 +1,4 @@
-package com.floreantpos.ui.report;
+package com.floreantpos.report;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -22,9 +22,6 @@ import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.TicketItemModifier;
 import com.floreantpos.model.TicketItemModifierGroup;
 import com.floreantpos.model.dao.TicketDAO;
-import com.floreantpos.report.ReportItem;
-import com.floreantpos.report.SalesReportModel;
-import com.floreantpos.report.SalesReportModelFactory;
 import com.floreantpos.report.service.ReportService;
 
 public class SalesReport extends Report {
@@ -42,8 +39,8 @@ public class SalesReport extends Report {
 		SalesReportModel itemReportModel = this.itemReportModel;
 		SalesReportModel modifierReportModel = this.modifierReportModel;
 
-		JasperReport itemReport = (JasperReport) JRLoader.loadObject(SalesReportModelFactory.class.getResource("/com/floreantpos/ui/report/sales_sub_report.jasper"));
-		JasperReport modifierReport = (JasperReport) JRLoader.loadObject(SalesReportModelFactory.class.getResource("/com/floreantpos/ui/report/sales_sub_report.jasper"));
+		JasperReport itemReport = (JasperReport) JRLoader.loadObject(SalesReportModelFactory.class.getResource("/com/floreantpos/report/template/sales_sub_report.jasper"));
+		JasperReport modifierReport = (JasperReport) JRLoader.loadObject(SalesReportModelFactory.class.getResource("/com/floreantpos/report/template/sales_sub_report.jasper"));
 
 		HashMap map = new HashMap();
 		ReportUtil.populateRestaurantProperties(map);
@@ -59,7 +56,7 @@ public class SalesReport extends Report {
 		map.put("itemReport", itemReport);
 		map.put("modifierReport", modifierReport);
 
-		JasperReport masterReport = (JasperReport) JRLoader.loadObject(SalesReport.class.getResource("/com/floreantpos/ui/report/sales_report.jasper"));
+		JasperReport masterReport = (JasperReport) JRLoader.loadObject(SalesReport.class.getResource("/com/floreantpos/report/template/sales_report.jasper"));
 
 		JasperPrint print = JasperFillManager.fillReport(masterReport, map, new JREmptyDataSource());
 		viewer = new JRViewer(print);
