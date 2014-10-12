@@ -100,7 +100,7 @@ public class TicketAuthorizationDialog extends POSDialog {
 				return;
 			}
 
-			String cardEntryType = transaction.getCardEntryType();
+			String cardEntryType = transaction.getCardReader();
 			if (StringUtils.isEmpty(cardEntryType)) {
 				POSMessageDialog.showError("No input information found for card. The record may be broken.");
 				return;

@@ -71,7 +71,7 @@ public class Ticket extends BaseTicket {
 		gratuity.setAmount(amount);
 	}
 	
-	private Gratuity createGratuity() {
+	public Gratuity createGratuity() {
 		Gratuity gratuity;
 		gratuity = new Gratuity();
 		gratuity.setTicket(this);

@@ -2,11 +2,8 @@ package com.floreantpos.model.util;
 
 public class TransactionSummary {
 	private int totalNumber;
-	private double subtotalAmount;
 	private double totalAmount;
-	private double totalTax;
-	private double totalDiscount;
-	private double gratuityAmount;
+	private double changeAmount;
 	
 	public TransactionSummary() {
 		super();
@@ -28,36 +25,11 @@ public class TransactionSummary {
 		this.totalNumber = totalTicket;
 	}
 
-	public double getTotalTax() {
-		return totalTax;
+	public double getChangeAmount() {
+		return changeAmount;
 	}
 
-	public void setTotalTax(double totalTax) {
-		this.totalTax = totalTax;
+	public void setChangeAmount(double changeAmount) {
+		this.changeAmount = changeAmount;
 	}
-
-	public double getTotalDiscount() {
-		return totalDiscount;
-	}
-
-	public void setTotalDiscount(double totalDiscount) {
-		this.totalDiscount = totalDiscount;
-	}
-
-	public double getGratuityAmount() {
-		return gratuityAmount;
-	}
-
-	public void setGratuityAmount(double gratuityAmount) {
-		this.gratuityAmount = gratuityAmount;
-	}
-
-	public double getSubtotalAmount() {
-		return subtotalAmount;
-	}
-
-	public void setSubtotalAmount(double subtotalAmount) {
-		this.subtotalAmount = subtotalAmount;
-	}
-
 }

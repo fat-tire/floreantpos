@@ -1,6 +1,5 @@
 package com.floreantpos.ui.views.payment;
 
-import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,7 +12,6 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.SwingConstants;
 
 import net.miginfocom.swing.MigLayout;
 
@@ -22,7 +20,6 @@ import org.apache.commons.lang.StringUtils;
 import com.floreantpos.model.Gratuity;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.dao.TicketDAO;
-import com.floreantpos.swing.FocusedTextField;
 import com.floreantpos.swing.POSToggleButton;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.ui.dialog.POSMessageDialog;
@@ -268,16 +265,6 @@ public class PaymentView extends JPanel {
 		transparentPanel1.setLayout(new MigLayout("", "[][grow,fill]", "[19px][][19px]"));
 		transparentPanel1.add(jLabel4, "cell 0 0,alignx right,aligny center");
 
-		lblAdvance = new JLabel();
-		lblAdvance.setText("ADVANCE:");
-		lblAdvance.setFont(new Font("Dialog", Font.BOLD, 12));
-		transparentPanel1.add(lblAdvance, "cell 0 1,alignx trailing");
-
-		tfAdvance = new FocusedTextField();
-		tfAdvance.setHorizontalAlignment(SwingConstants.RIGHT);
-		tfAdvance.setFocusable(false);
-		tfAdvance.setEditable(false);
-		transparentPanel1.add(tfAdvance, "cell 1 1,growx");
 		transparentPanel1.add(jLabel6, "cell 0 2,alignx left,aligny center");
 		transparentPanel1.add(tfDueAmount, "cell 1 0,growx,aligny top");
 		transparentPanel1.add(tfAmountTendered, "cell 1 2,growx,aligny top");
@@ -361,8 +348,6 @@ public class PaymentView extends JPanel {
 		}
 	};
 	private PosButton btnMyKalaDiscount;
-	private JLabel lblAdvance;
-	private FocusedTextField tfAdvance;
 
 	//private PosButton btnUseKalaId;
 
@@ -371,10 +356,8 @@ public class PaymentView extends JPanel {
 		btnTaxExempt.setSelected(settleTicketView.getTicket().isTaxExempt());
 
 		double dueAmount = getDueAmount();
-		double advanceAmount = getAdvanceAmount();
 
 		tfDueAmount.setText(NumberUtil.formatNumber(dueAmount));
-		tfAdvance.setText(NumberUtil.formatNumber(advanceAmount));
 		tfAmountTendered.setText(NumberUtil.formatNumber(dueAmount));
 	}
 
