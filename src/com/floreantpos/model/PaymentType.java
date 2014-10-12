@@ -50,4 +50,25 @@ public enum PaymentType {
 			return CardConfig.isSwipeCardSupported() || CardConfig.isManualEntrySupported() || CardConfig.isExtTerminalSupported();
 		}
 	}
+	
+	public PosTransaction createTransaction() {
+		switch (this) {
+			case CREDIT_VISA:
+			case CREDIT_AMEX:
+			case CREDIT_DISCOVERY:
+			case CREDIT_MASTER_CARD:
+				return new CreditCardTransaction();
+				
+			case DEBIT_MASTER_CARD:
+			case DEBIT_VISA:
+				return new DebitCardTransaction();
+				
+			case GIFT_CERTIFICATE:
+				return new GiftCertificateTransaction();
+
+			default:
+				CashTransaction transaction = new CashTransaction();
+				return transaction;
+		}
+	}
 }

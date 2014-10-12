@@ -20,6 +20,7 @@ import com.floreantpos.model.GiftCertificateTransaction;
 import com.floreantpos.model.Gratuity;
 import com.floreantpos.model.MenuCategory;
 import com.floreantpos.model.PayOutTransaction;
+import com.floreantpos.model.PosTransaction;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketCouponAndDiscount;
 import com.floreantpos.model.TicketItem;
@@ -435,8 +436,8 @@ public class ReportService {
 			criteria.add(Restrictions.le("t." + Ticket.PROP_CREATE_DATE, toDate));
 			criteria.add(Restrictions.eq("t." + Ticket.PROP_VOIDED, Boolean.FALSE));
 			projectionList = Projections.projectionList();
-			projectionList.add(Projections.sum(GiftCertificateTransaction.PROP_FACE_VALUE));
-			projectionList.add(Projections.sum(GiftCertificateTransaction.PROP_CASH_BACK_AMOUNT));
+			projectionList.add(Projections.sum(PosTransaction.PROP_GIFT_CERT_FACE_VALUE));
+			projectionList.add(Projections.sum(PosTransaction.PROP_GIFT_CERT_CASH_BACK_AMOUNT));
 			criteria.setProjection(projectionList);
 			Object[] o = (Object[]) criteria.uniqueResult();
 			if(o.length > 0 && o[0] instanceof Number) {
@@ -620,10 +621,10 @@ public class ReportService {
 			criteria = session.createCriteria(GiftCertificateTransaction.class);
 			criteria.add(Restrictions.ge(GiftCertificateTransaction.PROP_TRANSACTION_TIME, fromDate));
 			criteria.add(Restrictions.le(GiftCertificateTransaction.PROP_TRANSACTION_TIME, toDate));
-			criteria.add(Restrictions.gt(GiftCertificateTransaction.PROP_CASH_BACK_AMOUNT, Double.valueOf(0)));
+			criteria.add(Restrictions.gt(GiftCertificateTransaction.PROP_GIFT_CERT_CASH_BACK_AMOUNT, Double.valueOf(0)));
 			projectionList = Projections.projectionList();
 			projectionList.add(Projections.rowCount());
-			projectionList.add(Projections.sum(GiftCertificateTransaction.PROP_CASH_BACK_AMOUNT));
+			projectionList.add(Projections.sum(GiftCertificateTransaction.PROP_GIFT_CERT_CASH_BACK_AMOUNT));
 			criteria.setProjection(projectionList);
 			object = (Object[]) criteria.uniqueResult();
 			if(object != null && object.length > 0 && object[0] instanceof Number) {

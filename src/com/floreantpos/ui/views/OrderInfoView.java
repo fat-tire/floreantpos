@@ -9,11 +9,8 @@ import javax.swing.JScrollPane;
 
 import net.miginfocom.swing.MigLayout;
 import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.JasperPrintManager;
 
-import com.floreantpos.config.PrintConfig;
 import com.floreantpos.model.Ticket;
-import com.floreantpos.model.TransactionType;
 import com.floreantpos.report.JReportPrintService;
 import com.floreantpos.report.TicketPrintProperties;
 
@@ -36,7 +33,7 @@ public class OrderInfoView extends JPanel {
 			Ticket ticket = (Ticket) tickets.get(i);
 			
 			TicketPrintProperties printProperties = new TicketPrintProperties("*** ORDER " + ticket.getId() + " ***", false, true, true);
-			JasperPrint jasperPrint = JReportPrintService.createPrint(ticket, printProperties);
+			JasperPrint jasperPrint = JReportPrintService.createPrint(ticket, printProperties, null);
 
 			TicketReceiptView receiptView = new TicketReceiptView(jasperPrint);
 			reportPanel.add(receiptView.getReportPanel());
@@ -50,27 +47,7 @@ public class OrderInfoView extends JPanel {
 		for (Iterator iter = tickets.iterator(); iter.hasNext();) {
 			Ticket ticket = (Ticket) iter.next();
 			
-			TicketPrintProperties printProperties = new TicketPrintProperties("*** ORDER " + ticket.getId() + " ***", false, true, true);
-			
-			//FIXME
-			TransactionType transactionType = TransactionType.CASH;//TransactionType.valueOf(ticket.getTransactionType() == null ? "UNKNOWN" : ticket.getTransactionType());
-			
-			if (transactionType == TransactionType.CREDIT_CARD || transactionType == TransactionType.DEBIT_CARD) {
-				printProperties.setReceiptCopyType("Customer Copy");
-				JasperPrint jasperPrint = JReportPrintService.createPrint(ticket, printProperties);
-				jasperPrint.setProperty("printerName", PrintConfig.getReceiptPrinterName());
-				JasperPrintManager.printReport(jasperPrint, false);
-				
-				printProperties.setReceiptCopyType("Merchant Copy");
-				jasperPrint = JReportPrintService.createPrint(ticket, printProperties);
-				jasperPrint.setProperty("printerName", PrintConfig.getReceiptPrinterName());
-				JasperPrintManager.printReport(jasperPrint, false);
-			}
-			else {
-				JasperPrint jasperPrint = JReportPrintService.createPrint(ticket, printProperties);
-				jasperPrint.setProperty("printerName", PrintConfig.getReceiptPrinterName());
-				JasperPrintManager.printReport(jasperPrint, false);
-			}
+			JReportPrintService.printTicket(ticket);
 		}
 	}
 }

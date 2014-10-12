@@ -65,12 +65,11 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 
 	private TicketDetailView ticketDetailView;
 	private PaymentView paymentView;
-	//protected List<Ticket> ticketsToSettle;
 
 	private Ticket ticket;
 
 	private double tenderAmount;
-
+	private PaymentType paymentType;
 	private String cardName;
 
 	public SettleTicketDialog() {
@@ -88,14 +87,6 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 		getContentPane().add(leftPanel, BorderLayout.CENTER);
 		getContentPane().add(rightPanel, BorderLayout.EAST);
 	}
-
-	//	public void setCurrentTicket(Ticket currentTicket) {
-	//		ticketsToSettle = new ArrayList<Ticket>();
-	//		ticketsToSettle.add(currentTicket);
-	//
-	//		ticketDetailView.setTickets(getTicketsToSettle());
-	//		paymentView.updateView();
-	//	}
 
 	private void updateModel() {
 		if (ticket == null) {
@@ -174,7 +165,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 		}
 
 		double gratuityAmount = d.getGratuityAmount();
-		Gratuity gratuity = new Gratuity();
+		Gratuity gratuity = ticket.createGratuity();
 		gratuity.setAmount(gratuityAmount);
 
 		ticket.setGratuity(gratuity);
@@ -228,8 +219,9 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 				return;
 			}
 
-			PaymentType paymentType = dialog.getSelectedPaymentType();
+			paymentType = dialog.getSelectedPaymentType();
 			cardName = paymentType.getDisplayString();
+			PosTransaction transaction = null;
 
 			switch (paymentType) {
 				case CASH:
@@ -241,11 +233,11 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 						return;
 					}
 
-					CashTransaction transaction = new CashTransaction();
+					transaction = new CashTransaction();
 					transaction.setTicket(ticket);
 					transaction.setCaptured(true);
 					setTransactionAmounts(transaction);
-					
+
 					settleTicket(transaction);
 					break;
 
@@ -259,6 +251,39 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 				case DEBIT_VISA:
 				case DEBIT_MASTER_CARD:
 					payUsingCard(cardName, tenderAmount);
+					break;
+
+				case GIFT_CERTIFICATE:
+					GiftCertDialog giftCertDialog = new GiftCertDialog(this);
+					giftCertDialog.pack();
+					giftCertDialog.open();
+
+					if (dialog.isCanceled())
+						return;
+
+					transaction = paymentType.createTransaction();
+					transaction.setTicket(ticket);
+					transaction.setCaptured(true);
+					setTransactionAmounts(transaction);
+					
+					double giftCertFaceValue = giftCertDialog.getGiftCertFaceValue();
+					double giftCertCashBackAmount = 0;
+					transaction.setTenderAmount(giftCertFaceValue);
+
+					if (giftCertFaceValue >= ticket.getDueAmount()) {
+						transaction.setAmount(ticket.getDueAmount());
+						giftCertCashBackAmount = giftCertFaceValue - ticket.getDueAmount();
+					}
+					else {
+						transaction.setAmount(giftCertFaceValue);
+					}
+					
+					transaction.setGiftCertNumber(giftCertDialog.getGiftCertNumber());
+					transaction.setGiftCertFaceValue(giftCertFaceValue);
+					transaction.setGiftCertPaidAmount(transaction.getAmount());
+					transaction.setGiftCertCashBackAmount(giftCertCashBackAmount);
+					
+					settleTicket(transaction);   
 					break;
 
 				default:
@@ -285,42 +310,42 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 		try {
 			String transactionId = ticket.getProperty(Ticket.PROPERTY_CARD_TRANSACTION_ID);
 			double advanceAmount = Double.parseDouble(ticket.getProperty(Ticket.PROPERTY_ADVANCE_PAYMENT));
-			
+
 			CreditCardTransaction transaction = new CreditCardTransaction();
 			transaction.setTicket(ticket);
 			transaction.setCardType(ticket.getProperty(Ticket.PROPERTY_CARD_NAME));
 			transaction.setCaptured(false);
 			transaction.setCardMerchantGateway(MerchantGateway.AUTHORIZE_NET.name());
-			
+
 			CardReader cardReader = CardReader.valueOf(ticket.getProperty(Ticket.PROPERTY_CARD_READER));
-			
-			if(cardReader == CardReader.SWIPE) {
-				transaction.setCardEntryType(CardReader.SWIPE.name());
+
+			if (cardReader == CardReader.SWIPE) {
+				transaction.setCardReader(CardReader.SWIPE.name());
 				transaction.setCardTrack(ticket.getProperty(Ticket.PROPERTY_CARD_TRACKS));
 				transaction.setCardTransactionId(transactionId);
 			}
-			else if(cardReader == CardReader.MANUAL) {
-				transaction.setCardEntryType(CardReader.MANUAL.name());
+			else if (cardReader == CardReader.MANUAL) {
+				transaction.setCardReader(CardReader.MANUAL.name());
 				transaction.setCardTransactionId(transactionId);
 				transaction.setCardNumber(ticket.getProperty(Ticket.PROPERTY_CARD_NUMBER));
 				transaction.setCardExpiryMonth(ticket.getProperty(Ticket.PROPERTY_CARD_EXP_MONTH));
 				transaction.setCardExpiryYear(ticket.getProperty(Ticket.PROPERTY_CARD_EXP_YEAR));
 			}
 			else {
-				transaction.setCardEntryType(CardReader.EXTERNAL_TERMINAL.name());
-				transaction.setAuthorizationCode(ticket.getProperty(Ticket.PROPERTY_CARD_AUTH_CODE));
+				transaction.setCardReader(CardReader.EXTERNAL_TERMINAL.name());
+				transaction.setCardAuthCode(ticket.getProperty(Ticket.PROPERTY_CARD_AUTH_CODE));
 			}
-			
+
 			setTransactionAmounts(transaction);
-			
+
 			if (tenderAmount > advanceAmount) {
 				AuthorizeDotNetProcessor.voidAmount(transactionId, advanceAmount);
 			}
-			
+
 			AuthorizeDotNetProcessor.authorizeAmount(transaction);
 
 			settleTicket(transaction);
-			
+
 		} catch (Exception e) {
 			POSMessageDialog.showError(e.getMessage(), e);
 		} finally {
@@ -331,7 +356,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 	public void settleTicket(PosTransaction transaction) {
 		try {
 			final double dueAmount = ticket.getDueAmount();
-			
+
 			confirmLoyaltyDiscount(ticket);
 
 			PosTransactionService transactionService = PosTransactionService.getInstance();
@@ -345,12 +370,12 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 			if (ticket.getDueAmount() > 0.0) {
 				int option = JOptionPane.showConfirmDialog(Application.getPosWindow(), POSConstants.CONFIRM_PARTIAL_PAYMENT, POSConstants.MDS_POS,
 						JOptionPane.YES_NO_OPTION);
-				
+
 				if (option != JOptionPane.YES_OPTION) {
 					setCanceled(false);
 					dispose();
 				}
-				
+
 				setTicket(ticket);
 			}
 			else {
@@ -371,14 +396,14 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 		dialog.setTotalAmount(dueAmount);
 		dialog.setPaidAmount(transaction.getAmount());
 		dialog.setDueAmount(ticket.getDueAmount());
-		
-		if(tenderedAmount > transaction.getAmount()) {
+
+		if (tenderedAmount > transaction.getAmount()) {
 			dialog.setChangeAmount(tenderedAmount - transaction.getAmount());
 		}
 		else {
 			dialog.setChangeAmount(0);
 		}
-		
+
 		// dialog.setGratuityAmount(gratuityAmount);
 		dialog.updateView();
 		dialog.pack();
@@ -404,7 +429,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 				JReportPrintService.printTicketToKitchen(ticket);
 			}
 
-			JReportPrintService.printTicket(ticket, transaction);
+			JReportPrintService.printTransaction(transaction);
 		} catch (Exception ee) {
 			POSMessageDialog.showError(Application.getPosWindow(), com.floreantpos.POSConstants.PRINT_ERROR, ee);
 		}
@@ -471,6 +496,9 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 		try {
 			waitDialog.setVisible(true);
 
+			PosTransaction transaction = paymentType.createTransaction();
+			transaction.setTicket(ticket);
+
 			if (inputter instanceof SwipeCardDialog) {
 				SwipeCardDialog swipeCardDialog = (SwipeCardDialog) inputter;
 				String cardString = swipeCardDialog.getCardString();
@@ -488,36 +516,32 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 				}
 
 				if (CardConfig.getMerchantGateway() == MerchantGateway.AUTHORIZE_NET) {
-					CreditCardTransaction transaction = new CreditCardTransaction();
-					transaction.setTicket(ticket);
 					transaction.setCardType(cardName);
 					transaction.setCardTrack(cardString);
 					transaction.setCaptured(false);
 					transaction.setCardMerchantGateway(MerchantGateway.AUTHORIZE_NET.name());
-					transaction.setCardEntryType(CardReader.SWIPE.name());
+					transaction.setCardReader(CardReader.SWIPE.name());
 					setTransactionAmounts(transaction);
-					
+
 					AuthorizeDotNetProcessor.authorizeAmount(transaction);
-					
+
 					settleTicket(transaction);
 				}
 			}
 			else if (inputter instanceof ManualCardEntryDialog) {
 				ManualCardEntryDialog mDialog = (ManualCardEntryDialog) inputter;
-				
-				CreditCardTransaction transaction = new CreditCardTransaction();
-				transaction.setTicket(ticket);
+
 				transaction.setCardType(cardName);
 				transaction.setCaptured(false);
 				transaction.setCardMerchantGateway(MerchantGateway.AUTHORIZE_NET.name());
-				transaction.setCardEntryType(CardReader.MANUAL.name());
+				transaction.setCardReader(CardReader.MANUAL.name());
 				transaction.setCardNumber(mDialog.getCardNumber());
 				transaction.setCardExpiryMonth(mDialog.getExpMonth());
 				transaction.setCardExpiryYear(mDialog.getExpYear());
 				setTransactionAmounts(transaction);
-				
+
 				AuthorizeDotNetProcessor.authorizeAmount(transaction);
-				
+
 				settleTicket(transaction);
 			}
 			else if (inputter instanceof AuthorizationCodeDialog) {
@@ -526,15 +550,13 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 				if (StringUtils.isEmpty(authorizationCode)) {
 					throw new PosException("Invalid authorization code");
 				}
-				
-				CreditCardTransaction transaction = new CreditCardTransaction();
-				transaction.setTicket(ticket);
+
 				transaction.setCardType(cardName);
 				transaction.setCaptured(false);
-				transaction.setCardEntryType(CardReader.EXTERNAL_TERMINAL.name());
-				transaction.setAuthorizationCode(authorizationCode);
+				transaction.setCardReader(CardReader.EXTERNAL_TERMINAL.name());
+				transaction.setCardAuthCode(authorizationCode);
 				setTransactionAmounts(transaction);
-				
+
 				settleTicket(transaction);
 			}
 		} catch (Exception e) {
@@ -547,8 +569,8 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 
 	private void setTransactionAmounts(PosTransaction transaction) {
 		transaction.setTenderAmount(tenderAmount);
-		
-		if(tenderAmount >= ticket.getDueAmount()) {
+
+		if (tenderAmount >= ticket.getDueAmount()) {
 			transaction.setAmount(ticket.getDueAmount());
 		}
 		else {
