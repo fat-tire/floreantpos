@@ -14,6 +14,7 @@ import com.floreantpos.model.RefundTransaction;
 import com.floreantpos.model.Terminal;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketType;
+import com.floreantpos.model.TransactionType;
 import com.floreantpos.model.User;
 import com.floreantpos.model.dao.ActionHistoryDAO;
 import com.floreantpos.model.dao.GenericDAO;
@@ -56,7 +57,7 @@ public class PosTransactionService {
 
 			adjustTerminalBalance(ticket, transaction, terminal);
 
-			transaction.setDebit(false);
+			transaction.setTransactionType(TransactionType.CREDIT.name());
 			transaction.setTerminal(terminal);
 			transaction.setUser(currentUser);
 			transaction.setTransactionTime(currentDate);
