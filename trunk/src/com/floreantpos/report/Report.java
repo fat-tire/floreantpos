@@ -1,4 +1,4 @@
-package com.floreantpos.ui.report;
+package com.floreantpos.report;
 
 import java.util.Date;
 

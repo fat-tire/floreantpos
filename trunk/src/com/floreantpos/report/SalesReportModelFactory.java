@@ -121,8 +121,8 @@ public class SalesReportModelFactory {
 		SalesReportModel itemReportModel = factory.getItemReportModel();
 		SalesReportModel modifierReportModel = factory.getModifierReportModel();
 		
-		JasperReport itemReport = (JasperReport) JRLoader.loadObject(SalesReportModelFactory.class.getResource("/com/floreantpos/ui/report/SalesSubReport.jasper"));
-		JasperReport modifierReport = (JasperReport) JRLoader.loadObject(SalesReportModelFactory.class.getResource("/com/floreantpos/ui/report/SalesSubReport.jasper"));
+		JasperReport itemReport = (JasperReport) JRLoader.loadObject(SalesReportModelFactory.class.getResource("/com/floreantpos/report/template/SalesSubReport.jasper"));
+		JasperReport modifierReport = (JasperReport) JRLoader.loadObject(SalesReportModelFactory.class.getResource("/com/floreantpos/report/template/SalesSubReport.jasper"));
 		
 		HashMap map = new HashMap();
 		map.put("itemDataSource", new  JRTableModelDataSource(itemReportModel));
@@ -133,7 +133,7 @@ public class SalesReportModelFactory {
 		map.put("itemReport", itemReport);
 		map.put("modifierReport", modifierReport);
 		
-		JasperReport masterReport = (JasperReport) JRLoader.loadObject(SalesReportModelFactory.class.getResource("/com/floreantpos/ui/report/SalesReport.jasper"));
+		JasperReport masterReport = (JasperReport) JRLoader.loadObject(SalesReportModelFactory.class.getResource("/com/floreantpos/report/template/SalesReport.jasper"));
 		
 		JasperPrint print = JasperFillManager.fillReport(masterReport, map, new JREmptyDataSource());
 		JasperViewer.viewReport(print, false);

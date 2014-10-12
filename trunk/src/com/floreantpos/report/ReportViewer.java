@@ -4,7 +4,7 @@
  * Created on September 17, 2006, 11:38 PM
  */
 
-package com.floreantpos.ui.report;
+package com.floreantpos.report;
 
 import java.util.Date;
 

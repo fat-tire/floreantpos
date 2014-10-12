@@ -80,7 +80,7 @@ public class JReportPrintService {
 	public static JasperPrint createPrint(Ticket ticket, TicketPrintProperties printProperties, PosTransaction transaction) throws Exception {
 		HashMap map = populateTicketProperties(ticket, printProperties, transaction);
 
-		final String FILE_RECEIPT_REPORT = "/com/floreantpos/report/TicketReceiptReport.jasper";
+		final String FILE_RECEIPT_REPORT = "/com/floreantpos/report/template/TicketReceiptReport.jasper";
 
 		TicketDataSource dataSource = new TicketDataSource(ticket, printProperties.isKitchenPrint(), printProperties.isPrintModifers(),
 				printProperties.isPrintCookingInstructions());

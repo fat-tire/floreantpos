@@ -469,6 +469,19 @@ public class Ticket extends BaseTicket {
 		return getProperties().get(key);
 	}
 	
+	public String getProperty(String key, String defaultValue) {
+		if (getProperties() == null) {
+			return null;
+		}
+		
+		String string = getProperties().get(key);
+		if(StringUtils.isEmpty(string)) {
+			return defaultValue;
+		}
+		
+		return string;
+	}
+	
 	public void removeProperty(String propertyName) {
 		Map<String, String> properties = getProperties();
 		if (properties == null) {

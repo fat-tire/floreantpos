@@ -13,6 +13,7 @@ import net.miginfocom.swing.MigLayout;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.print.PosPrintService;
+import com.floreantpos.report.JReportPrintService;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.util.NumberUtil;
 
@@ -84,9 +85,7 @@ public class TransactionCompletionDialog extends POSDialog {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					for (Ticket ticket : tickets) {
-						
-						//FIXME: REVISE
-						PosPrintService.printTicket(ticket, getTenderedAmount());
+						JReportPrintService.printTicket(ticket);
 					}
 				}catch(Exception ee) {
 					POSMessageDialog.showError(Application.getPosWindow(), "There was an error while printing money receipt", ee);
