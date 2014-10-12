@@ -18,6 +18,7 @@ public abstract class BasePosTransaction  implements Comparable, Serializable {
 	public static String REF = "PosTransaction";
 	public static String PROP_USER = "user";
 	public static String PROP_RECEPIENT = "recepient";
+	public static String PROP_TRANSACTION_TYPE = "transactionType";
 	public static String PROP_GIFT_CERT_CASH_BACK_AMOUNT = "giftCertCashBackAmount";
 	public static String PROP_CARD_EXPIRY_MONTH = "cardExpiryMonth";
 	public static String PROP_CARD_READER = "cardReader";
@@ -42,7 +43,6 @@ public abstract class BasePosTransaction  implements Comparable, Serializable {
 	public static String PROP_TENDER_AMOUNT = "tenderAmount";
 	public static String PROP_ID = "id";
 	public static String PROP_GIFT_CERT_PAID_AMOUNT = "giftCertPaidAmount";
-	public static String PROP_DEBIT = "debit";
 
 
 	// constructors
@@ -74,7 +74,7 @@ public abstract class BasePosTransaction  implements Comparable, Serializable {
 		protected java.lang.Double amount;
 		protected java.lang.Double tipsAmount;
 		protected java.lang.Double tenderAmount;
-		protected java.lang.Boolean debit;
+		protected java.lang.String transactionType;
 		protected java.lang.Boolean captured;
 		protected java.lang.String cardTrack;
 		protected java.lang.String cardNumber;
@@ -212,18 +212,18 @@ public abstract class BasePosTransaction  implements Comparable, Serializable {
 
 
 	/**
-	 * Return the value associated with the column: DEBIT
+	 * Return the value associated with the column: TRANSACTION_TYPE
 	 */
-	public java.lang.Boolean isDebit () {
-								return debit == null ? Boolean.FALSE : debit;
-					}
+	public java.lang.String getTransactionType () {
+					return transactionType;
+			}
 
 	/**
-	 * Set the value related to the column: DEBIT
-	 * @param debit the DEBIT value
+	 * Set the value related to the column: TRANSACTION_TYPE
+	 * @param transactionType the TRANSACTION_TYPE value
 	 */
-	public void setDebit (java.lang.Boolean debit) {
-		this.debit = debit;
+	public void setTransactionType (java.lang.String transactionType) {
+		this.transactionType = transactionType;
 	}
 
 
