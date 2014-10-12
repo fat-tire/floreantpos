@@ -5,14 +5,14 @@
 		<id column="ID" name="id" type="java.lang.Integer">
 			<generator class="identity" />
 		</id>
-		<discriminator column="TRANSACTION_TYPE" length="20" type="string" />
+		<discriminator column="TRANSACTION_CLASS" length="30" type="string" />
 		<version column="MODIFIED_TIME" name="modifiedTime" type="timestamp" />
 
 		<property column="TRANSACTION_TIME" length="10" name="transactionTime" type="java.util.Date" />
 		<property column="AMOUNT" length="52" name="amount" type="java.lang.Double" />
 		<property column="TIPS_AMOUNT" length="52" name="tipsAmount" type="java.lang.Double" />
 		<property column="TENDER_AMOUNT" length="52" name="tenderAmount" type="java.lang.Double" />
-		<property column="DEBIT" name="debit" type="java.lang.Boolean" />
+		<property column="TRANSACTION_TYPE" name="transactionType" type="string" length="20" />
 		<property column="CAPTURED" name="captured" type="java.lang.Boolean" />
 
 		<!-- card -->
@@ -27,7 +27,7 @@
 		<property column="CARD_READER" name="cardReader" type="string" length="20" />
 
 		<!-- GIFT CERT SPECIFIC -->
-		<property column="GIFT_CERT_NUMBER" name="giftCertNumber" type="string" />
+		<property column="GIFT_CERT_NUMBER" name="giftCertNumber" type="string" length="64"/>
 		<property column="GIFT_CERT_FACE_VALUE" name="giftCertFaceValue" type="java.lang.Double" />
 		<property column="GIFT_CERT_PAID_AMOUNT" name="giftCertPaidAmount" type="java.lang.Double" />
 		<property column="GIFT_CERT_CASH_BACK_AMOUNT" name="giftCertCashBackAmount" type="java.lang.Double" />
