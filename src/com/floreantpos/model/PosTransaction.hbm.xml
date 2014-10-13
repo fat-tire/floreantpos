@@ -5,7 +5,7 @@
 		<id column="ID" name="id" type="java.lang.Integer">
 			<generator class="identity" />
 		</id>
-		<discriminator column="TRANSACTION_CLASS" length="30" type="string" />
+		<discriminator column="PAYMENT_TYPE" length="30" type="string" />
 		<version column="MODIFIED_TIME" name="modifiedTime" type="timestamp" />
 
 		<property column="TRANSACTION_TIME" length="10" name="transactionTime" type="java.util.Date" />
