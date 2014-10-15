@@ -1,7 +1,10 @@
 package com.floreantpos.model;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 import com.floreantpos.model.base.BaseMenuCategory;
 
+@XmlRootElement(name="menu-category")
 public class MenuCategory extends BaseMenuCategory {
 	private static final long serialVersionUID = 1L;
 

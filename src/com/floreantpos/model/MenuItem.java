@@ -2,8 +2,11 @@ package com.floreantpos.model;
 
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 import com.floreantpos.model.base.BaseMenuItem;
 
+@XmlRootElement(name="menu-item")
 public class MenuItem extends BaseMenuItem {
 	private static final long serialVersionUID = 1L;
 

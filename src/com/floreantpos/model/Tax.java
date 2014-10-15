@@ -1,7 +1,10 @@
 package com.floreantpos.model;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 import com.floreantpos.model.base.BaseTax;
 
+@XmlRootElement(name="tax")
 public class Tax extends BaseTax {
 	private static final long serialVersionUID = 1L;
 

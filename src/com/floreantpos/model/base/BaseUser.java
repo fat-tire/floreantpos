@@ -3,6 +3,8 @@ package com.floreantpos.model.base;
 import java.lang.Comparable;
 import java.io.Serializable;
 
+import javax.xml.bind.annotation.XmlTransient;
+
 
 /**
  * This is an object that contains data related to the USERS table.
@@ -113,6 +115,7 @@ public abstract class BaseUser  implements Comparable, Serializable {
 	/**
 	 * Return the value associated with the column: MODIFIED_TIME
 	 */
+	@XmlTransient
 	public java.util.Date getModifiedTime () {
 			return modifiedTime;
 	}

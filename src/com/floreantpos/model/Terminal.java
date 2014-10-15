@@ -1,7 +1,10 @@
 package com.floreantpos.model;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 import com.floreantpos.model.base.BaseTerminal;
 
+@XmlRootElement(name="terminal")
 public class Terminal extends BaseTerminal {
 	private static final long serialVersionUID = 1L;
 

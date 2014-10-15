@@ -11,7 +11,7 @@
     <property column="VISIBLE" index="food_category_visible" name="visible" type="java.lang.Boolean"/>
     <property column="BEVERAGE" name="beverage" type="java.lang.Boolean"/>
     <!-- Associations -->
-    <set cascade="none" inverse="true" lazy="true" name="menuGroups">
+    <set cascade="none" inverse="true" lazy="false" name="menuGroups">
       <key column="MENU_CATEGORY_ID"/>
       <one-to-many class="MenuGroup"/>
     </set>

@@ -1,7 +1,10 @@
 package com.floreantpos.model;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 import com.floreantpos.model.base.BaseMenuItemShift;
 
+@XmlRootElement(name="menu-item-shift")
 public class MenuItemShift extends BaseMenuItemShift {
 	private static final long serialVersionUID = 1L;
 
