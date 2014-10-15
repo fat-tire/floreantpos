@@ -2,6 +2,9 @@ package com.floreantpos.model.base;
 
 import java.io.Serializable;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlTransient;
+
 
 /**
  * This is an object that contains data related to the MENU_GROUP table.
@@ -90,6 +93,7 @@ public abstract class BaseMenuGroup  implements Comparable, Serializable {
 	/**
 	 * Return the value associated with the column: MODIFIED_TIME
 	 */
+	@XmlTransient
 	public java.util.Date getModifiedTime () {
 			return modifiedTime;
 	}
@@ -142,6 +146,7 @@ public abstract class BaseMenuGroup  implements Comparable, Serializable {
 	/**
 	 * Return the value associated with the column: CATEGORY_ID
 	 */
+	@XmlElement(name="menu-category")
 	public com.floreantpos.model.MenuCategory getParent () {
 			return parent;
 	}

@@ -2,10 +2,12 @@ package com.floreantpos.model;
 
 import java.util.Set;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 import com.floreantpos.model.base.BaseUserType;
 
 
-
+@XmlRootElement(name="user-type")
 public class UserType extends BaseUserType {
 	private static final long serialVersionUID = 1L;
 

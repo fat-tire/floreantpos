@@ -1,7 +1,10 @@
 package com.floreantpos.model;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 import com.floreantpos.model.base.BaseMenuGroup;
 
+@XmlRootElement(name="menu-group")
 public class MenuGroup extends BaseMenuGroup {
 	private static final long serialVersionUID = 1L;
 

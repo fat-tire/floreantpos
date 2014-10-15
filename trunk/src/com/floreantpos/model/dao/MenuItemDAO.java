@@ -12,7 +12,6 @@ import com.floreantpos.model.MenuGroup;
 import com.floreantpos.model.MenuItem;
 import com.floreantpos.model.MenuItemModifierGroup;
 
-
 public class MenuItemDAO extends BaseMenuItemDAO {
 
 	/**
@@ -27,16 +26,19 @@ public class MenuItemDAO extends BaseMenuItemDAO {
 		
 		try {
 			session = createNewSession();
-			//session.refresh(menuItem);
 			menuItem = (MenuItem) session.merge(menuItem);
+			
 			Hibernate.initialize(menuItem.getMenuItemModiferGroups());
+			
 			List<MenuItemModifierGroup> menuItemModiferGroups = menuItem.getMenuItemModiferGroups();
 			if (menuItemModiferGroups != null) {
 				for (MenuItemModifierGroup menuItemModifierGroup : menuItemModiferGroups) {
 					Hibernate.initialize(menuItemModifierGroup.getModifierGroup().getModifiers());
 				}
 			}
+			
 			Hibernate.initialize(menuItem.getShifts());
+			
 			return menuItem;
 		} finally {
 			closeSession(session);
