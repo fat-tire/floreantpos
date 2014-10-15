@@ -2,12 +2,15 @@ package com.floreantpos.model;
 
 import java.util.Calendar;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 import org.apache.commons.logging.LogFactory;
 
 import com.floreantpos.main.Application;
 import com.floreantpos.model.base.BaseUser;
 import com.floreantpos.model.dao.UserDAO;
 
+@XmlRootElement(name="user")
 public class User extends BaseUser {
 	private static final long serialVersionUID = 1L;
 
