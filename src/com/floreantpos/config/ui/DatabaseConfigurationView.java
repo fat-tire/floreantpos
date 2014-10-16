@@ -19,10 +19,12 @@ import org.apache.commons.lang.StringUtils;
 
 import com.floreantpos.Database;
 import com.floreantpos.Messages;
+import com.floreantpos.bo.ui.BackOfficeWindow;
 import com.floreantpos.config.AppConfig;
 import com.floreantpos.main.Application;
 import com.floreantpos.swing.POSPasswordField;
 import com.floreantpos.swing.POSTextField;
+import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.util.DatabaseConnectionException;
 import com.floreantpos.util.DatabaseUtil;
 
@@ -129,63 +131,73 @@ public class DatabaseConfigurationView extends ConfigurationView implements Acti
 
 
 	public void actionPerformed(ActionEvent e) {
-		String command = e.getActionCommand();
+		try {
+			String command = e.getActionCommand();
 
-		Database selectedDb = (Database) databaseCombo.getSelectedItem();
+			Database selectedDb = (Database) databaseCombo.getSelectedItem();
 
-		String providerName = selectedDb.getProviderName();
-		String databaseURL = tfServerAddress.getText();
-		String databasePort = tfServerPort.getText();
-		String databaseName = tfDatabaseName.getText();
-		String user = tfUserName.getText();
-		String pass = new String(tfPassword.getPassword());
+			String providerName = selectedDb.getProviderName();
+			String databaseURL = tfServerAddress.getText();
+			String databasePort = tfServerPort.getText();
+			String databaseName = tfDatabaseName.getText();
+			String user = tfUserName.getText();
+			String pass = new String(tfPassword.getPassword());
 
-		String connectionString = selectedDb.getConnectString(databaseURL, databasePort, databaseName);
-		String hibernateDialect = selectedDb.getHibernateDialect();
-		String driverClass = selectedDb.getHibernateConnectionDriverClass();
+			String connectionString = selectedDb.getConnectString(databaseURL, databasePort, databaseName);
+			String hibernateDialect = selectedDb.getHibernateDialect();
+			String driverClass = selectedDb.getHibernateConnectionDriverClass();
 
-		if (TEST.equalsIgnoreCase(command)) {
-			Application.getInstance().setSystemInitialized(false);
-			saveConfig(selectedDb, providerName, databaseURL, databasePort, databaseName, user, pass, connectionString, hibernateDialect);
+			if (TEST.equalsIgnoreCase(command)) {
+				Application.getInstance().setSystemInitialized(false);
+				saveConfig(selectedDb, providerName, databaseURL, databasePort, databaseName, user, pass, connectionString, hibernateDialect);
 
-			try {
-				DatabaseUtil.checkConnection(connectionString, hibernateDialect, driverClass, user, pass);
-			} catch (DatabaseConnectionException e1) {
-				JOptionPane.showMessageDialog(this, Messages.getString("DatabaseConfigurationDialog.32")); //$NON-NLS-1$
-				return;
+				try {
+					DatabaseUtil.checkConnection(connectionString, hibernateDialect, driverClass, user, pass);
+				} catch (DatabaseConnectionException e1) {
+					JOptionPane.showMessageDialog(this, Messages.getString("DatabaseConfigurationDialog.32")); //$NON-NLS-1$
+					return;
+				}
+
+				JOptionPane.showMessageDialog(this, Messages.getString("DatabaseConfigurationDialog.31")); //$NON-NLS-1$
 			}
-			
-			JOptionPane.showMessageDialog(this, Messages.getString("DatabaseConfigurationDialog.31")); //$NON-NLS-1$
-		}
-		else if (CONFIGURE_DB.equals(command)) {
-			Application.getInstance().setSystemInitialized(false);
+			else if (CONFIGURE_DB.equals(command)) {
+				Application.getInstance().setSystemInitialized(false);
 
-			int i = JOptionPane.showConfirmDialog(this,
-					Messages.getString("DatabaseConfigurationDialog.33"), Messages.getString("DatabaseConfigurationDialog.34"), JOptionPane.YES_NO_OPTION); //$NON-NLS-1$ //$NON-NLS-2$
-			if (i != JOptionPane.YES_OPTION) {
-				return;
+				int i = JOptionPane.showConfirmDialog(this,
+						Messages.getString("DatabaseConfigurationDialog.33"), Messages.getString("DatabaseConfigurationDialog.34"), JOptionPane.YES_NO_OPTION); //$NON-NLS-1$ //$NON-NLS-2$
+				if (i != JOptionPane.YES_OPTION) {
+					return;
+				}
+
+				i = JOptionPane.showConfirmDialog(this, "Do you want to generate sample data?", "Confirm", JOptionPane.YES_NO_OPTION);
+				boolean generateSampleData = false;
+				if (i == JOptionPane.YES_OPTION)
+					generateSampleData = true;
+
+				saveConfig(selectedDb, providerName, databaseURL, databasePort, databaseName, user, pass, connectionString, hibernateDialect);
+
+				String connectionString2 = selectedDb.getCreateDbConnectString(databaseURL, databasePort, databaseName);
+
+				this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+				boolean createDatabase = DatabaseUtil.createDatabase(connectionString2, hibernateDialect, driverClass, user, pass, generateSampleData);
+				this.setCursor(Cursor.getDefaultCursor());
+
+				if (createDatabase) {
+					//JOptionPane.showMessageDialog(DatabaseConfigurationView.this, Messages.getString("DatabaseConfigurationDialog.35")); //$NON-NLS-1$
+					JOptionPane.showMessageDialog(DatabaseConfigurationView.this, "Database created. Default password is 1111."); //$NON-NLS-1$
+				}
+				else {
+					JOptionPane.showMessageDialog(DatabaseConfigurationView.this, Messages.getString("DatabaseConfigurationDialog.36")); //$NON-NLS-1$
+				}
 			}
-
-			saveConfig(selectedDb, providerName, databaseURL, databasePort, databaseName, user, pass, connectionString, hibernateDialect);
-
-			String connectionString2 = selectedDb.getCreateDbConnectString(databaseURL, databasePort, databaseName);
-
-			this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-			boolean createDatabase = DatabaseUtil.createDatabase(connectionString2, hibernateDialect, driverClass, user, pass);
-			this.setCursor(Cursor.getDefaultCursor());
-
-			if (createDatabase) {
-				JOptionPane.showMessageDialog(DatabaseConfigurationView.this, Messages.getString("DatabaseConfigurationDialog.35")); //$NON-NLS-1$
+			else if (SAVE.equalsIgnoreCase(command)) {
+				Application.getInstance().setSystemInitialized(false);
+				saveConfig(selectedDb, providerName, databaseURL, databasePort, databaseName, user, pass, connectionString, hibernateDialect);
 			}
-			else {
-				JOptionPane.showMessageDialog(DatabaseConfigurationView.this, Messages.getString("DatabaseConfigurationDialog.36")); //$NON-NLS-1$
+			else if (CANCEL.equalsIgnoreCase(command)) {
 			}
-		}
-		else if (SAVE.equalsIgnoreCase(command)) {
-			Application.getInstance().setSystemInitialized(false);
-			saveConfig(selectedDb, providerName, databaseURL, databasePort, databaseName, user, pass, connectionString, hibernateDialect);
-		}
-		else if (CANCEL.equalsIgnoreCase(command)) {
+		} catch (Exception e2) {
+			POSMessageDialog.showMessage(BackOfficeWindow.getInstance(), e2.getMessage());
 		}
 	}
 

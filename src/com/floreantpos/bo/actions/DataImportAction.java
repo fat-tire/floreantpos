@@ -41,6 +41,27 @@ public class DataImportAction extends AbstractAction {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		JFileChooser fileChooser = DataExportAction.getFileChooser();
+		int option = fileChooser.showOpenDialog(BackOfficeWindow.getInstance());
+		if(option != JFileChooser.APPROVE_OPTION) {
+			return;
+		}
+		
+		File file = fileChooser.getSelectedFile();
+		try {
+			
+			importMenuItemsFromFile(file);
+			POSMessageDialog.showMessage(BackOfficeWindow.getInstance(), "Success!");
+			
+		} catch (Exception e1) {
+			e1.printStackTrace();
+			
+			POSMessageDialog.showMessage(BackOfficeWindow.getInstance(), e1.getMessage());
+		} 
+			
+	}
+
+	public static void importMenuItemsFromFile(File file) throws Exception {
 		Session session = null;
 		Transaction transaction = null;
 		FileReader reader = null;
@@ -49,13 +70,7 @@ public class DataImportAction extends AbstractAction {
 		Map<String, Object> objectMap = new HashMap<String, Object>();
 		
 		try {
-			JFileChooser fileChooser = DataExportAction.getFileChooser();
-			int option = fileChooser.showOpenDialog(BackOfficeWindow.getInstance());
-			if(option != JFileChooser.APPROVE_OPTION) {
-				return;
-			}
 			
-			File file = fileChooser.getSelectedFile();
 			if(file == null) return;
 			
 			reader = new FileReader(file);
@@ -150,14 +165,11 @@ public class DataImportAction extends AbstractAction {
 			}
 			
 			transaction.commit();
-			
-			POSMessageDialog.showMessage(BackOfficeWindow.getInstance(), "Success!");
-			
 		} catch (Exception e1) {
-			if(transaction != null) transaction.rollback();
-			e1.printStackTrace();
 			
-			POSMessageDialog.showMessage(BackOfficeWindow.getInstance(), e1.getMessage());
+			if(transaction != null) transaction.rollback();
+			throw e1;
+			
 		} finally {
 			dao.closeSession(session);
 			IOUtils.closeQuietly(reader);

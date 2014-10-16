@@ -56,6 +56,7 @@ public class CategoryView extends SelectionView implements ActionListener {
 		MenuCategoryDAO categoryDAO = new MenuCategoryDAO();
 		List<MenuCategory> categories = categoryDAO.findBevegares();
 		categories.addAll(categoryDAO.findNonBevegares());
+		if(categories.size() == 0) return;
 		
 		setItems(categories);
 		
