@@ -1,5 +1,7 @@
 package com.floreantpos.util;
 
+import java.io.File;
+import java.net.URL;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -11,9 +13,7 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.classic.Session;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 
-import com.floreantpos.model.MenuCategory;
-import com.floreantpos.model.MenuGroup;
-import com.floreantpos.model.MenuItem;
+import com.floreantpos.bo.actions.DataImportAction;
 import com.floreantpos.model.PosTransaction;
 import com.floreantpos.model.Restaurant;
 import com.floreantpos.model.Shift;
@@ -22,9 +22,6 @@ import com.floreantpos.model.Ticket;
 import com.floreantpos.model.User;
 import com.floreantpos.model.UserPermission;
 import com.floreantpos.model.UserType;
-import com.floreantpos.model.dao.MenuCategoryDAO;
-import com.floreantpos.model.dao.MenuGroupDAO;
-import com.floreantpos.model.dao.MenuItemDAO;
 import com.floreantpos.model.dao.PosTransactionDAO;
 import com.floreantpos.model.dao.RestaurantDAO;
 import com.floreantpos.model.dao.ShiftDAO;
@@ -67,7 +64,7 @@ public class DatabaseUtil {
 		}
 	}
 
-	public static boolean createDatabase(String connectionString, String hibernateDialect, String hibernateConnectionDriverClass, String user, String password) {
+	public static boolean createDatabase(String connectionString, String hibernateDialect, String hibernateConnectionDriverClass, String user, String password, boolean exportSampleData) {
 		try {
 			Configuration configuration = _RootDAO.getNewConfiguration(null);
 
@@ -78,7 +75,6 @@ public class DatabaseUtil {
 			configuration = configuration.setProperty("hibernate.connection.username", user);
 			configuration = configuration.setProperty("hibernate.connection.password", password);
 			configuration = configuration.setProperty("hibernate.hbm2ddl.auto", "create");
-			//configuration = configuration.setProperty("hibernate.connection.autocommit", "true");
 
 			SchemaExport schemaExport = new SchemaExport(configuration);
 			schemaExport.create(true, true);
@@ -87,9 +83,9 @@ public class DatabaseUtil {
 
 			Restaurant restaurant = new Restaurant();
 			restaurant.setId(Integer.valueOf(1));
-			restaurant.setName("Demo Restaurant");
-			restaurant.setAddressLine1("somewhere");
-			restaurant.setTelephone("+00demo");
+			restaurant.setName("Sample Restaurant");
+			restaurant.setAddressLine1("Somewhere");
+			restaurant.setTelephone("+0123456789");
 			RestaurantDAO.getInstance().saveOrUpdate(restaurant);
 
 			Tax tax = new Tax();
@@ -117,64 +113,60 @@ public class DatabaseUtil {
 			User u = new User();
 			u.setUserId(123);
 			u.setSsn("123");
-			u.setPassword("7777");
-			u.setFirstName("Test");
+			u.setPassword("1111");
+			u.setFirstName("Administrator");
 			u.setLastName(com.floreantpos.POSConstants.USER);
 			u.setNewUserType(type);
 
 			UserDAO dao = new UserDAO();
 			dao.saveOrUpdate(u);
 			
-			u = new User();
-			u.setUserId(123);
-			u.setSsn("1233");
-			u.setPassword("1111");
-			u.setFirstName("Test2");
-			u.setLastName(com.floreantpos.POSConstants.USER);
-			u.setNewUserType(type);
+			if(!exportSampleData) {
+				return true;
+			}
 			
-			dao = new UserDAO();
-			dao.saveOrUpdate(u);
-
-			MenuCategory category = new MenuCategory();
-			category.setName(com.floreantpos.POSConstants.BEVERAGE);
-			category.setBeverage(Boolean.TRUE);
-			category.setVisible(Boolean.TRUE);
-			MenuCategoryDAO.getInstance().saveOrUpdate(category);
-
-			MenuCategory category2 = new MenuCategory();
-			category2.setName("BREAKFAST");
-			category2.setBeverage(Boolean.FALSE);
-			category2.setVisible(Boolean.TRUE);
-			MenuCategoryDAO.getInstance().saveOrUpdate(category2);
-
-			MenuGroup group1 = new MenuGroup();
-			group1.setParent(category);
-			group1.setName("COLD BEVERAGE");
-			group1.setVisible(Boolean.TRUE);
-			MenuGroupDAO.getInstance().save(group1);
-
-			MenuGroup group2 = new MenuGroup();
-			group2.setParent(category2);
-			group2.setName("FAVOURITE");
-			group2.setVisible(Boolean.TRUE);
-			MenuGroupDAO.getInstance().save(group2);
-
-			MenuItem item1 = new MenuItem();
-			item1.setParent(group1);
-			item1.setName("Coke");
-			item1.setPrice(Double.valueOf(2.0));
-			item1.setTax(tax);
-			item1.setVisible(Boolean.TRUE);
-			MenuItemDAO.getInstance().save(item1);
-
-			MenuItem item2 = new MenuItem();
-			item2.setParent(group2);
-			item2.setName("Egg");
-			item2.setPrice(Double.valueOf(2.0));
-			item2.setTax(tax);
-			item2.setVisible(Boolean.TRUE);
-			MenuItemDAO.getInstance().save(item2);
+			URL resource = DatabaseUtil.class.getResource("/floreantpos-menu-items.xml");
+			DataImportAction.importMenuItemsFromFile(new File(resource.getFile()));
+			
+//			MenuCategory category = new MenuCategory();
+//			category.setName(com.floreantpos.POSConstants.BEVERAGE);
+//			category.setBeverage(Boolean.TRUE);
+//			category.setVisible(Boolean.TRUE);
+//			MenuCategoryDAO.getInstance().saveOrUpdate(category);
+//
+//			MenuCategory category2 = new MenuCategory();
+//			category2.setName("BREAKFAST");
+//			category2.setBeverage(Boolean.FALSE);
+//			category2.setVisible(Boolean.TRUE);
+//			MenuCategoryDAO.getInstance().saveOrUpdate(category2);
+//
+//			MenuGroup group1 = new MenuGroup();
+//			group1.setParent(category);
+//			group1.setName("COLD BEVERAGE");
+//			group1.setVisible(Boolean.TRUE);
+//			MenuGroupDAO.getInstance().save(group1);
+//
+//			MenuGroup group2 = new MenuGroup();
+//			group2.setParent(category2);
+//			group2.setName("FAVOURITE");
+//			group2.setVisible(Boolean.TRUE);
+//			MenuGroupDAO.getInstance().save(group2);
+//
+//			MenuItem item1 = new MenuItem();
+//			item1.setParent(group1);
+//			item1.setName("Coke");
+//			item1.setPrice(Double.valueOf(2.0));
+//			item1.setTax(tax);
+//			item1.setVisible(Boolean.TRUE);
+//			MenuItemDAO.getInstance().save(item1);
+//
+//			MenuItem item2 = new MenuItem();
+//			item2.setParent(group2);
+//			item2.setName("Egg");
+//			item2.setPrice(Double.valueOf(2.0));
+//			item2.setTax(tax);
+//			item2.setVisible(Boolean.TRUE);
+//			MenuItemDAO.getInstance().save(item2);
 
 			return true;
 		} catch (Exception e) {
