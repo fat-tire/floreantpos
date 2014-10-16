@@ -25,6 +25,10 @@ public class POSMessageDialog extends javax.swing.JDialog {
 	public static void showMessage(String message) {
 		JOptionPane.showMessageDialog(Application.getPosWindow(), message, com.floreantpos.POSConstants.MDS_POS, JOptionPane.INFORMATION_MESSAGE, null);
 	}
+	
+	public static void showMessage(Component parent, String message) {
+		JOptionPane.showMessageDialog(parent, message, com.floreantpos.POSConstants.MDS_POS, JOptionPane.INFORMATION_MESSAGE, null);
+	}
 
 	public static void showError(String message) {
 		JOptionPane.showMessageDialog(Application.getPosWindow(), message, com.floreantpos.POSConstants.MDS_POS, JOptionPane.ERROR_MESSAGE, null);

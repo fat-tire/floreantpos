@@ -1,9 +1,7 @@
 package com.floreantpos.model.base;
 
-import java.lang.Comparable;
 import java.io.Serializable;
 
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 
@@ -261,7 +259,6 @@ public abstract class BaseMenuItem  implements Comparable, Serializable {
 	/**
 	 * Return the value associated with the column: GROUP_ID
 	 */
-	@XmlElement(name="menu-group")
 	public com.floreantpos.model.MenuGroup getParent () {
 					return parent;
 			}
@@ -313,6 +310,7 @@ public abstract class BaseMenuItem  implements Comparable, Serializable {
 	/**
 	 * Return the value associated with the column: shifts
 	 */
+	@XmlTransient
 	public java.util.List<com.floreantpos.model.MenuItemShift> getShifts () {
 					return shifts;
 			}
@@ -335,6 +333,7 @@ public abstract class BaseMenuItem  implements Comparable, Serializable {
 	/**
 	 * Return the value associated with the column: menuItemModiferGroups
 	 */
+	@XmlTransient
 	public java.util.List<com.floreantpos.model.MenuItemModifierGroup> getMenuItemModiferGroups () {
 					return menuItemModiferGroups;
 			}

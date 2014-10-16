@@ -7,9 +7,12 @@ import java.io.StringWriter;
 
 import javax.swing.AbstractAction;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileFilter;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 
+import org.apache.commons.io.IOUtils;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -18,33 +21,38 @@ import com.floreantpos.model.dao.GenericDAO;
 import com.floreantpos.model.dao.MenuCategoryDAO;
 import com.floreantpos.model.dao.MenuGroupDAO;
 import com.floreantpos.model.dao.MenuItemDAO;
-import com.floreantpos.model.dao.MenuItemShiftDAO;
 import com.floreantpos.model.dao.MenuModifierDAO;
 import com.floreantpos.model.dao.MenuModifierGroupDAO;
-import com.floreantpos.model.dao.RestaurantDAO;
-import com.floreantpos.model.dao.ShiftDAO;
 import com.floreantpos.model.dao.TaxDAO;
-import com.floreantpos.model.dao.UserDAO;
-import com.floreantpos.model.dao.UserPermissionDAO;
-import com.floreantpos.model.dao.UserTypeDAO;
+import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.util.datamigrate.Elements;
 
 public class DataExportAction extends AbstractAction {
 	public DataExportAction() {
-		super("Export Data");
+		super("Export Menu Items");
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		Session session = null;
+        Transaction transaction = null;
+        FileWriter fileWriter = null;
+        GenericDAO dao = new GenericDAO();
+        
 		try {
-			JFileChooser fileChooser = new JFileChooser();
+			JFileChooser fileChooser = getFileChooser();
 			int option = fileChooser.showSaveDialog(BackOfficeWindow.getInstance());
 			if(option != JFileChooser.APPROVE_OPTION) {
 				return;
 			}
 			
 			File file = fileChooser.getSelectedFile();
-			
+			if(file.exists()) {
+				option = JOptionPane.showConfirmDialog(BackOfficeWindow.getInstance(), "Overwrite file " + file.getName() + "?", "Confirm", JOptionPane.YES_NO_OPTION);
+				if(option != JOptionPane.YES_OPTION) {
+					return;
+				}
+			}
 			
 			JAXBContext jaxbContext = JAXBContext.newInstance(Elements.class);
 			Marshaller m = jaxbContext.createMarshaller();
@@ -53,9 +61,8 @@ public class DataExportAction extends AbstractAction {
 	        
 	        StringWriter writer = new StringWriter();
 	        
-	        GenericDAO dao = new GenericDAO();
-	        Session session = dao.createNewSession();
-	        Transaction transaction = session.beginTransaction();
+	        session = dao.createNewSession();
+	        transaction = session.beginTransaction();
 	        
 	        Elements elements = new Elements();
 	        
@@ -72,31 +79,62 @@ public class DataExportAction extends AbstractAction {
 //	   	 * 12. USER_PERMISSION
 //	   	 * 13. SHIFT
 	        
-	        elements.setUsers(UserDAO.getInstance().findAll(session));
 	        elements.setTaxes(TaxDAO.getInstance().findAll(session));
 	        elements.setMenuCategories(MenuCategoryDAO.getInstance().findAll(session));
 	        elements.setMenuGroups(MenuGroupDAO.getInstance().findAll(session));
 	        elements.setMenuModifiers(MenuModifierDAO.getInstance().findAll(session));
 	        elements.setMenuModifierGroups(MenuModifierGroupDAO.getInstance().findAll(session));
 	        elements.setMenuItems(MenuItemDAO.getInstance().findAll(session));
-	        elements.setMenuItemShifts(MenuItemShiftDAO.getInstance().findAll(session));
-	        elements.setRestaurants(RestaurantDAO.getInstance().findAll(session));
-	        elements.setUserTypes(UserTypeDAO.getInstance().findAll(session));
-	        elements.setUserPermissions(UserPermissionDAO.getInstance().findAll(session));
-	        elements.setShifts(ShiftDAO.getInstance().findAll(session));
+	        
+//	        elements.setUsers(UserDAO.getInstance().findAll(session));
+//	        
+//	        elements.setMenuItemShifts(MenuItemShiftDAO.getInstance().findAll(session));
+//	        elements.setRestaurants(RestaurantDAO.getInstance().findAll(session));
+//	        elements.setUserTypes(UserTypeDAO.getInstance().findAll(session));
+//	        elements.setUserPermissions(UserPermissionDAO.getInstance().findAll(session));
+//	        elements.setShifts(ShiftDAO.getInstance().findAll(session));
 	        
 	        m.marshal(elements, writer);
 	        
 	        transaction.commit();
-	        session.close();
 	        
-	        
-	        FileWriter fileWriter = new FileWriter(file);
+	        fileWriter = new FileWriter(file);
 	        fileWriter.write(writer.toString());
 	        fileWriter.close();
 	        
+	        POSMessageDialog.showMessage(BackOfficeWindow.getInstance(), "Saved!");
+	        
 		} catch (Exception e1) {
+			transaction.rollback();
 			e1.printStackTrace();
+			POSMessageDialog.showMessage(BackOfficeWindow.getInstance(), e1.getMessage());
+		} finally {
+			IOUtils.closeQuietly(fileWriter);
+			dao.closeSession(session);
 		}
+	}
+
+	public static JFileChooser getFileChooser() {
+		JFileChooser fileChooser = new JFileChooser();
+		fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+		fileChooser.setMultiSelectionEnabled(false);
+		fileChooser.setSelectedFile(new File("floreantpos-menu-items.xml"));
+		fileChooser.setFileFilter(new FileFilter() {
+			
+			@Override
+			public String getDescription() {
+				return "XML File";
+			}
+			
+			@Override
+			public boolean accept(File f) {
+				if(f.getName().endsWith(".xml")) {
+					return true;
+				}
+				
+				return false;
+			}
+		});
+		return fileChooser;
 	}
 }

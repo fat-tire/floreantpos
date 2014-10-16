@@ -163,6 +163,7 @@ public abstract class BaseMenuCategory  implements Comparable, Serializable {
 	/**
 	 * Return the value associated with the column: menuGroups
 	 */
+	@XmlTransient
 	public java.util.Set<com.floreantpos.model.MenuGroup> getMenuGroups () {
 			return menuGroups;
 	}
