@@ -2,7 +2,6 @@ package com.floreantpos.model.base;
 
 import java.io.Serializable;
 
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 
@@ -146,7 +145,6 @@ public abstract class BaseMenuGroup  implements Comparable, Serializable {
 	/**
 	 * Return the value associated with the column: CATEGORY_ID
 	 */
-	@XmlElement(name="menu-category")
 	public com.floreantpos.model.MenuCategory getParent () {
 			return parent;
 	}
