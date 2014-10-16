@@ -170,6 +170,7 @@ public abstract class BaseMenuModifierGroup  implements Comparable, Serializable
 	/**
 	 * Return the value associated with the column: modifiers
 	 */
+	@XmlTransient
 	public java.util.Set<com.floreantpos.model.MenuModifier> getModifiers () {
 			return modifiers;
 	}
