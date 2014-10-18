@@ -1,28 +1,29 @@
 package com.floreantpos.model.util;
 
 public class TransactionSummary {
-	private int totalNumber;
-	private double totalAmount;
+	private int count;
+	private double amount;
+	private double tipsAmount;
 	private double changeAmount;
 	
 	public TransactionSummary() {
 		super();
 	}
 
-	public double getTotalAmount() {
-		return totalAmount;
+	public double getAmount() {
+		return amount;
 	}
 
-	public void setTotalAmount(double totalPrice) {
-		this.totalAmount = totalPrice;
+	public void setAmount(double totalPrice) {
+		this.amount = totalPrice;
 	}
 
-	public int getTotalNumber() {
-		return totalNumber;
+	public int getCount() {
+		return count;
 	}
 
-	public void setTotalNumber(int totalTicket) {
-		this.totalNumber = totalTicket;
+	public void setCount(int totalTicket) {
+		this.count = totalTicket;
 	}
 
 	public double getChangeAmount() {
@@ -31,5 +32,13 @@ public class TransactionSummary {
 
 	public void setChangeAmount(double changeAmount) {
 		this.changeAmount = changeAmount;
+	}
+
+	public double getTipsAmount() {
+		return tipsAmount;
+	}
+
+	public void setTipsAmount(double tipsAmount) {
+		this.tipsAmount = tipsAmount;
 	}
 }
