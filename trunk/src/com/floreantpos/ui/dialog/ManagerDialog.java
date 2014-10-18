@@ -7,6 +7,8 @@
 package com.floreantpos.ui.dialog;
 
 import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.Insets;
 import java.awt.Toolkit;
 import java.util.List;
 
@@ -32,11 +34,6 @@ import com.floreantpos.ui.util.UiUtil;
 
 import foxtrot.Job;
 import foxtrot.Worker;
-import java.awt.GridBagConstraints;
-import com.floreantpos.swing.PosButton;
-import java.awt.Insets;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
 /**
  *
@@ -136,18 +133,6 @@ public class ManagerDialog extends JDialog {
 
         transparentPanel4.add(transparentPanel2, java.awt.BorderLayout.CENTER);
         
-        btnAuthorizeTickets = new PosButton();
-        btnAuthorizeTickets.addActionListener(new ActionListener() {
-        	public void actionPerformed(ActionEvent e) {
-        		doShowAuthorizeTicketDialog();
-        	}
-        });
-        btnAuthorizeTickets.setText("AUTHORIZE TICKETS");
-        GridBagConstraints gbc_btnAuthorizeTickets = new GridBagConstraints();
-        gbc_btnAuthorizeTickets.gridx = 0;
-        gbc_btnAuthorizeTickets.gridy = 1;
-        transparentPanel2.add(btnAuthorizeTickets, gbc_btnAuthorizeTickets);
-
         transparentPanel1.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
 
         btnFinish.setText(com.floreantpos.POSConstants.FINISH);
@@ -165,15 +150,6 @@ public class ManagerDialog extends JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    protected void doShowAuthorizeTicketDialog() {
-    	TicketAuthorizationDialog dialog = new TicketAuthorizationDialog(this);
-    	dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-    	dialog.setSize(800, 600);
-    	dialog.setLocationRelativeTo(this);
-    	dialog.setVisible(true);
-    	
-	}
 
 	private void btnFinishActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFinishActionPerformed
     	dispose();
@@ -319,7 +295,6 @@ public class ManagerDialog extends JDialog {
     private com.floreantpos.swing.TransparentPanel transparentPanel2;
     private com.floreantpos.swing.TransparentPanel transparentPanel3;
     private com.floreantpos.swing.TransparentPanel transparentPanel4;
-    private PosButton btnAuthorizeTickets;
     // End of variables declaration//GEN-END:variables
     
 }
