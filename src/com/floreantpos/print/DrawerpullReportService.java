@@ -253,20 +253,20 @@ public class DrawerpullReportService {
 			}
 			
 			TransactionSummary ts = calculateTransactionSummary(ticket, CashTransaction.class);
-			report.setCashReceiptNumber(report.getCashReceiptNumber() + ts.getTotalNumber());
-			report.setCashReceiptAmount(report.getCashReceiptAmount() + ts.getTotalAmount());
+			report.setCashReceiptNumber(report.getCashReceiptNumber() + ts.getCount());
+			report.setCashReceiptAmount(report.getCashReceiptAmount() + ts.getAmount());
 			
 			ts = calculateTransactionSummary(ticket, CreditCardTransaction.class);
-			report.setCreditCardReceiptNumber(report.getCreditCardReceiptNumber() + ts.getTotalNumber());
-			report.setCreditCardReceiptAmount(report.getCreditCardReceiptAmount() + ts.getTotalAmount());
+			report.setCreditCardReceiptNumber(report.getCreditCardReceiptNumber() + ts.getCount());
+			report.setCreditCardReceiptAmount(report.getCreditCardReceiptAmount() + ts.getAmount());
 			
 			ts = calculateTransactionSummary(ticket, DebitCardTransaction.class);
-			report.setDebitCardReceiptNumber(report.getDebitCardReceiptNumber() + ts.getTotalNumber());
-			report.setDebitCardReceiptAmount(report.getDebitCardReceiptAmount() + ts.getTotalAmount());
+			report.setDebitCardReceiptNumber(report.getDebitCardReceiptNumber() + ts.getCount());
+			report.setDebitCardReceiptAmount(report.getDebitCardReceiptAmount() + ts.getAmount());
 			
 			ts = calculateTransactionSummary(ticket, GiftCertificateTransaction.class);
-			report.setGiftCertReturnCount(report.getGiftCertReturnCount() + ts.getTotalNumber());
-			report.setGiftCertReturnAmount(report.getGiftCertReturnAmount() + ts.getTotalAmount());
+			report.setGiftCertReturnCount(report.getGiftCertReturnCount() + ts.getCount());
+			report.setGiftCertReturnAmount(report.getGiftCertReturnAmount() + ts.getAmount());
 			report.setGiftCertChangeAmount(report.getGiftCertChangeAmount() + ts.getChangeAmount());
 			report.setCashBack(report.getCashBack() + ts.getChangeAmount());
 		}
@@ -297,8 +297,8 @@ public class DrawerpullReportService {
 			}
 		}
 		
-		summary.setTotalNumber(count);
-		summary.setTotalAmount(total);
+		summary.setCount(count);
+		summary.setAmount(total);
 		summary.setChangeAmount(changeAmount);
 		
 		return summary;

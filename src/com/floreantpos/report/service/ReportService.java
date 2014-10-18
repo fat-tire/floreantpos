@@ -27,9 +27,6 @@ import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.User;
 import com.floreantpos.model.dao.CouponAndDiscountDAO;
 import com.floreantpos.model.dao.GenericDAO;
-import com.floreantpos.model.dao.TicketDAO;
-import com.floreantpos.report.CreditCardReport;
-import com.floreantpos.report.CreditCardReport.CreditCardReportData;
 import com.floreantpos.report.JournalReportModel;
 import com.floreantpos.report.JournalReportModel.JournalReportData;
 import com.floreantpos.report.MenuUsageReport;
@@ -53,60 +50,6 @@ public class ReportService {
 		return shortDateFormatter.format(date);
 	}
 	
-	public CreditCardReport getCreditCardReport(Date fromDate, Date toDate) {
-		CreditCardReport report = new CreditCardReport();
-
-		TicketDAO dao = TicketDAO.getInstance();
-		Session session = dao.getSession();
-		Criteria criteria = session.createCriteria(Ticket.class);
-		criteria.add(Restrictions.eq(Ticket.PROP_PAID, Boolean.TRUE));
-		criteria.add(Restrictions.ge(Ticket.PROP_CREATE_DATE, fromDate));
-		criteria.add(Restrictions.le(Ticket.PROP_CREATE_DATE, toDate));
-		//FIXME: TRANSACTION
-//		criteria.add(Restrictions.eq(Ticket.PROP_TRANSACTION_TYPE, TransactionType.CARD.name()));
-		List list = criteria.list();
-
-		int totalSalesCount = 0;
-		double totalSales = 0;
-		double netTips = 0;
-		double tipsPaid = 0;
-		double netCharge = 0;
-
-		for (Iterator iter = list.iterator(); iter.hasNext();) {
-			Ticket ticket = (Ticket) iter.next();
-			CreditCardReportData data = new CreditCardReportData();
-
-			data.setRefId(ticket.getId());
-			//FIXME: GET CARD TYPE
-			//data.setCardType(ticket.getCardType());
-			data.setSubtotal(ticket.getSubtotalAmount());
-			data.setTotal(ticket.getTotalAmount());
-
-			if (ticket.getGratuity() != null) {
-				Gratuity gratuity = ticket.getGratuity();
-				data.setTips(gratuity.getAmount());
-				netTips += gratuity.getAmount();
-				if (gratuity.isPaid()) {
-					tipsPaid += gratuity.getAmount().doubleValue();
-				}
-			}
-
-			totalSales += ticket.getSubtotalAmount();
-			report.addReportData(data);
-		}
-		totalSalesCount = list.size();
-		netCharge = totalSales + netTips;
-
-		report.setFromDate(fromDate);
-		report.setToDate(toDate);
-		report.setNetCharge(netCharge);
-		report.setTotalSales(totalSales);
-		report.setTotalSalesCount(totalSalesCount);
-		report.setNetTips(netTips);
-
-		return report;
-	}
-
 	public MenuUsageReport getMenuUsageReport(Date fromDate, Date toDate) {
 		GenericDAO dao = new GenericDAO();
 		MenuUsageReport report = new MenuUsageReport();
