@@ -125,7 +125,13 @@ public class NumberSelectionDialog2 extends POSDialog implements ActionListener 
 	
 	private void doInsertNumber(String number) {
 		String s = tfNumber.getText();
-		if (s.equals("0")) {
+		double d = 0;
+		
+		try {
+			d = Double.parseDouble(s);
+		}catch (Exception x) {}
+		
+		if (d == 0) {
 			tfNumber.setText(number);
 			return;
 		}
@@ -139,14 +145,14 @@ public class NumberSelectionDialog2 extends POSDialog implements ActionListener 
 	}
 	
 	private void doInsertDot() {
-		if (isFloatingPoint() && tfNumber.getText().indexOf('.') < 0) {
+		//if (isFloatingPoint() && tfNumber.getText().indexOf('.') < 0) {
 			String string = tfNumber.getText() + ".";
 			if (!validate(string)) {
 				POSMessageDialog.showError(POSConstants.INVALID_NUMBER);
 				return;
 			}
 			tfNumber.setText(string);
-		}
+		//}
 	}
 
 	public void actionPerformed(ActionEvent e) {
@@ -202,7 +208,10 @@ public class NumberSelectionDialog2 extends POSDialog implements ActionListener 
 	}
 
 	public void setValue(double value) {
-		if (isFloatingPoint()) {
+		if(value == 0) {
+			tfNumber.setText("0");
+		}
+		else if (isFloatingPoint()) {
 			tfNumber.setText(String.valueOf(value));
 		}
 		else {
@@ -248,6 +257,7 @@ public class NumberSelectionDialog2 extends POSDialog implements ActionListener 
 	
 	public static double show(Component parent, String title, double initialAmount) {
 		NumberSelectionDialog2 dialog2 = new NumberSelectionDialog2();
+		dialog2.setFloatingPoint(true);
 		dialog2.setTitle(title);
 		dialog2.pack();
 		dialog2.setLocationRelativeTo(parent);
