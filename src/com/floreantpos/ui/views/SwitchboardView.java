@@ -32,10 +32,8 @@ import com.floreantpos.bo.ui.BackOfficeWindow;
 import com.floreantpos.extension.OrderServiceExtension;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.AttendenceHistory;
-import com.floreantpos.model.Gratuity;
 import com.floreantpos.model.Shift;
 import com.floreantpos.model.Ticket;
-import com.floreantpos.model.TicketStatus;
 import com.floreantpos.model.TicketType;
 import com.floreantpos.model.User;
 import com.floreantpos.model.UserPermission;
@@ -48,10 +46,12 @@ import com.floreantpos.ui.dialog.ManagerDialog;
 import com.floreantpos.ui.dialog.NumberSelectionDialog2;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.dialog.PayoutDialog;
+import com.floreantpos.ui.dialog.TicketAuthorizationDialog;
 import com.floreantpos.ui.dialog.VoidTicketDialog;
 import com.floreantpos.ui.views.order.DefaultOrderServiceExtension;
 import com.floreantpos.ui.views.order.OrderView;
 import com.floreantpos.ui.views.order.RootView;
+import com.floreantpos.ui.views.payment.SettleTicketDialog;
 import com.floreantpos.util.NumberUtil;
 import com.floreantpos.util.TicketAlreadyExistsException;
 
@@ -63,8 +63,6 @@ public class SwitchboardView extends JPanel implements ActionListener {
 	public final static String VIEW_NAME = com.floreantpos.POSConstants.SWITCHBOARD;
 
 	private OrderServiceExtension orderServiceExtension;
-
-	private PosButton btnAddTips;
 
 	public static SwitchboardView instance;
 
@@ -80,6 +78,7 @@ public class SwitchboardView extends JPanel implements ActionListener {
 		btnGroupSettle.addActionListener(this);
 		btnLogout.addActionListener(this);
 		btnManager.addActionListener(this);
+		btnAuthorize.addActionListener(this);
 		btnNewTicket.addActionListener(this);
 		btnPayout.addActionListener(this);
 		btnOrderInfo.addActionListener(this);
@@ -134,6 +133,7 @@ public class SwitchboardView extends JPanel implements ActionListener {
 		btnLogout = new com.floreantpos.swing.PosButton();
 		btnBackOffice = new com.floreantpos.swing.PosButton();
 		btnManager = new com.floreantpos.swing.PosButton();
+		btnAuthorize = new PosButton("AUTHORIZE");
 		btnClockOut = new com.floreantpos.swing.PosButton();
 
 		setLayout(new java.awt.BorderLayout(10, 10));
@@ -240,15 +240,6 @@ public class SwitchboardView extends JPanel implements ActionListener {
 		btnAssignDriver.setText("<html>ASSIGN<br/>DRIVER</html>");
 		activityPanel.add(btnAssignDriver);
 		
-		btnAddTips = new PosButton("EDIT TIPS");
-		btnAddTips.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				doEditTips();
-			}
-		});
-		activityPanel.add(btnAddTips);
-
 		btnCloseOrder = new PosButton();
 		btnCloseOrder.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -280,55 +271,17 @@ public class SwitchboardView extends JPanel implements ActionListener {
 
 		bottomPanel.add(bottomRightPanel, java.awt.BorderLayout.EAST);
 		bottomRightPanel.setLayout(new MigLayout("aligny bottom, insets 1 2 1 2, gapy 10", "[170px]", "[][][][][]"));
-		bottomRightPanel.add(btnShutdown, "cell 0 4,grow");
-		bottomRightPanel.add(btnLogout, "cell 0 3,grow");
-		bottomRightPanel.add(btnClockOut, "cell 0 2,grow");
-		bottomRightPanel.add(btnBackOffice, "cell 0 1,grow");
-		bottomRightPanel.add(btnManager, "cell 0 0,grow");
+		
+		bottomRightPanel.add(btnAuthorize, "grow,wrap");
+		bottomRightPanel.add(btnManager, "grow,wrap");
+		bottomRightPanel.add(btnBackOffice, "grow,wrap");
+		bottomRightPanel.add(btnClockOut, "grow,wrap");
+		bottomRightPanel.add(btnLogout, "grow,wrap");
+		bottomRightPanel.add(btnShutdown, "grow,wrap");
+		//bottomRightPanel.add(btnManager, "cell 0 0,grow");
 
 		add(bottomPanel, java.awt.BorderLayout.CENTER);
 	}// </editor-fold>//GEN-END:initComponents
-
-	protected void doEditTips() {
-		Ticket ticket = getFirstSelectedTicket();
-		
-		if(ticket == null) {
-			return;
-		}
-		
-		ticket = TicketDAO.getInstance().loadFullTicket(ticket.getId());
-		
-		double tipsAmount = 0;
-		Gratuity gratuity = ticket.getGratuity();
-		if(gratuity != null) {
-			tipsAmount = gratuity.getAmount();
-		}
-		else {
-			gratuity = new Gratuity();
-		}
-		
-		NumberSelectionDialog2 dialog2 = new NumberSelectionDialog2();
-		dialog2.setTitle("Enter tips amount");
-		dialog2.pack();
-		dialog2.setLocationRelativeTo(this);
-		dialog2.setValue(tipsAmount);
-		dialog2.setVisible(true);
-		
-		tipsAmount = dialog2.getValue();
-		if(tipsAmount == 0) {
-			ticket.setGratuity(null);
-		}
-		else {
-			gratuity.setAmount(tipsAmount);
-			ticket.setGratuity(gratuity);
-		}
-		
-		ticket.calculatePrice();
-		ticket.setStatus(TicketStatus.PAID.name());
-		
-		TicketDAO.getInstance().saveOrUpdate(ticket);
-		updateTicketList();
-	}
 
 	protected void doCloseOrder() {
 		Ticket ticket = getFirstSelectedTicket();
@@ -343,9 +296,9 @@ public class SwitchboardView extends JPanel implements ActionListener {
 
 			Ticket ticket = getFirstSelectedTicket();
 			
-//			if(ticket == null) {
-//				return;
-//			}
+			if(ticket == null) {
+				return;
+			}
 
 			if (ticket.getType() != TicketType.HOME_DELIVERY) {
 				POSMessageDialog.showError("Driver can be assigned only for Home Delivery");
@@ -661,25 +614,24 @@ public class SwitchboardView extends JPanel implements ActionListener {
 	}
 
 	private void doGroupSettle() {
-//		List<Ticket> selectedTickets = getSelectedTickets();
-//		if (selectedTickets == null) {
-//			return;
-//		}
-//
-//		List<Ticket> ticketsToSettle = new ArrayList<Ticket>();
-//
-//		for (int i = 0; i < selectedTickets.size(); i++) {
-//			Ticket ticket = selectedTickets.get(i);
-//			
-//			Ticket fullTicket = TicketDAO.getInstance().loadFullTicket(ticket.getId());
-//			ticketsToSettle.add(fullTicket);
-//		}
-//
-//		SettleTicketDialog posDialog = new SettleTicketDialog();
-//		posDialog.setTicketsToSettle(ticketsToSettle);
-//		posDialog.setSize(800, 600);
-//		posDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-//		posDialog.open();
+		List<Ticket> selectedTickets = openTicketList.getSelectedTickets();
+		if (selectedTickets == null) {
+			return;
+		}
+
+		for (int i = 0; i < selectedTickets.size(); i++) {
+			Ticket ticket = selectedTickets.get(i);
+			
+			Ticket fullTicket = TicketDAO.getInstance().loadFullTicket(ticket.getId());
+			
+			SettleTicketDialog posDialog = new SettleTicketDialog();
+			posDialog.setTicket(fullTicket);
+			posDialog.setSize(800, 600);
+			posDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+			posDialog.open();
+		}
+
+		updateTicketList();
 	}
 
 	public void updateView() {
@@ -716,6 +668,7 @@ public class SwitchboardView extends JPanel implements ActionListener {
 					}
 					else if (permission.equals(UserPermission.PERFORM_MANAGER_TASK)) {
 						btnManager.setEnabled(true);
+						btnAuthorize.setEnabled(true);
 					}
 					else if (permission.equals(UserPermission.SPLIT_TICKET)) {
 						btnSplitTicket.setEnabled(true);
@@ -780,6 +733,7 @@ public class SwitchboardView extends JPanel implements ActionListener {
 	private com.floreantpos.swing.PosButton btnGroupSettle;
 	private com.floreantpos.swing.PosButton btnLogout;
 	private com.floreantpos.swing.PosButton btnManager;
+	private com.floreantpos.swing.PosButton btnAuthorize;
 	private com.floreantpos.swing.PosButton btnNewTicket;
 	private com.floreantpos.swing.PosButton btnPayout;
 	private com.floreantpos.swing.PosButton btnOrderInfo;
@@ -814,48 +768,59 @@ public class SwitchboardView extends JPanel implements ActionListener {
 		if (source == btnBackOffice) {
 			doShowBackoffice();
 		}
-		if (source == btnClockOut) {
+		else if (source == btnClockOut) {
 			doClockOut();
 		}
-		if (source == btnEditTicket) {
+		else if (source == btnEditTicket) {
 			doEditTicket();
 		}
-		if (source == btnGroupSettle) {
+		else if (source == btnGroupSettle) {
 			doGroupSettle();
 		}
-		if (source == btnLogout) {
+		else if (source == btnLogout) {
 			doLogout();
 		}
-		if (source == btnManager) {
+		else if (source == btnManager) {
 			doShowManagerWindow();
 		}
-		if (source == btnNewTicket) {
+		else if (source == btnAuthorize) {
+			doAuthorizeTickets();
+		}
+		else if (source == btnNewTicket) {
 			doCreateNewTicket(TicketType.DINE_IN);
 		}
-		if (source == btnPayout) {
+		else if (source == btnPayout) {
 			doPayout();
 		}
-		if (source == btnOrderInfo) {
+		else if (source == btnOrderInfo) {
 			doShowOrderInfo();
 		}
-		if (source == btnReopenTicket) {
+		else if (source == btnReopenTicket) {
 			doReopenTicket();
 		}
-		if (source == btnSettleTicket) {
+		else if (source == btnSettleTicket) {
 			doSettleTicket();
 		}
-		if (source == btnShutdown) {
+		else if (source == btnShutdown) {
 			doShutdown();
 		}
-		if (source == btnSplitTicket) {
+		else if (source == btnSplitTicket) {
 			doSplitTicket();
 		}
-		if (source == btnTakeout) {
+		else if (source == btnTakeout) {
 			doTakeout(TicketType.TAKE_OUT);
 		}
-		if (source == btnVoidTicket) {
+		else if (source == btnVoidTicket) {
 			doVoidTicket();
 		}
+	}
+
+	private void doAuthorizeTickets() {
+		TicketAuthorizationDialog dialog = new TicketAuthorizationDialog(Application.getPosWindow());
+    	dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+    	dialog.setSize(800, 600);
+    	dialog.setLocationRelativeTo(this);
+    	dialog.setVisible(true);
 	}
 
 	public Ticket getFirstSelectedTicket() {
