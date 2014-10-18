@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -24,6 +25,8 @@ import org.jdesktop.swingx.JXDatePicker;
 
 import com.floreantpos.POSConstants;
 import com.floreantpos.bo.ui.BackOfficeWindow;
+import com.floreantpos.model.CreditCardTransaction;
+import com.floreantpos.model.dao.PosTransactionDAO;
 import com.floreantpos.model.util.DateUtil;
 import com.floreantpos.report.service.ReportService;
 import com.floreantpos.ui.dialog.POSMessageDialog;
@@ -83,24 +86,33 @@ public class CreditCardReportView extends JPanel {
 		fromDate = DateUtil.startOfDay(fromDate);
 		toDate = DateUtil.endOfDay(toDate);
 		
-		ReportService reportService = new ReportService();
-		CreditCardReport report = reportService.getCreditCardReport(fromDate, toDate);
+		Date currentTime = new Date();
+		
+		List<CreditCardTransaction> transactions = (List<CreditCardTransaction>) PosTransactionDAO.getInstance().findTransactions(null, CreditCardTransaction.class, fromDate, toDate);
+		
+		int saleCount = 0;
+		double totalSales = 0;
+		double totalTips = 0;
+		for (CreditCardTransaction transaction : transactions) {
+			++saleCount;
+			totalSales += transaction.getAmount();
+			totalTips += transaction.getTipsAmount();
+		}
 		
 		HashMap<String, String> map = new HashMap<String, String>();
 		ReportUtil.populateRestaurantProperties(map);
 		map.put("reportTitle", "========= CREDIT CARD REPORT ==========");
 		map.put("fromDate", ReportService.formatShortDate(fromDate));
 		map.put("toDate", ReportService.formatShortDate(toDate));
-		map.put("reportTime", ReportService.formatFullDate(new Date()));
+		map.put("reportTime", ReportService.formatFullDate(currentTime));
 		
-		map.put("salesCount", String.valueOf(report.getTotalSalesCount()));
-		map.put("totalSales", NumberUtil.formatNumber(report.getTotalSales()));
-		map.put("netTips", NumberUtil.formatNumber(report.getNetTips()));
-		map.put("netTipsPaid", NumberUtil.formatNumber(report.getTipsPaid()));
-		map.put("netCharge", NumberUtil.formatNumber(report.getNetCharge()));
+		map.put("saleCount", String.valueOf(saleCount));
+		map.put("totalSales", NumberUtil.formatNumber(totalSales - totalTips));
+		map.put("totalTips", NumberUtil.formatNumber(totalTips));
+		map.put("total", NumberUtil.formatNumber(totalSales));
 		
 		JasperReport jasperReport = (JasperReport) JRLoader.loadObject(getClass().getResource("/com/floreantpos/report/template/credit_card_report.jasper"));
-		JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map, new JRTableModelDataSource(report.getTableModel()));
+		JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map, new JRTableModelDataSource(new CardReportModel(transactions)));
 		JRViewer viewer = new JRViewer(jasperPrint);
 		reportContainer.removeAll();
 		reportContainer.add(viewer);

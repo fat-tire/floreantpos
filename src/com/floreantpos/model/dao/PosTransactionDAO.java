@@ -1,5 +1,6 @@
 package com.floreantpos.model.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.Criteria;
@@ -36,7 +37,30 @@ public class PosTransactionDAO extends BasePosTransactionDAO {
 		}
 	}
 	
-	public TransactionSummary getTransactionSummary(Terminal terminal, Class transactionClass) {
+	public List<? extends PosTransaction> findTransactions(Terminal terminal, Class transactionClass, Date from, Date to ) {
+		Session session = null;
+
+		try {
+			session = getSession();
+			
+			Criteria criteria = session.createCriteria(transactionClass);
+			criteria.add(Restrictions.isNotNull(PosTransaction.PROP_TICKET));
+			if(terminal != null) {
+				criteria.add(Restrictions.eq(PosTransaction.PROP_TERMINAL, terminal));
+			}
+			
+			if(from != null && to != null) {
+				//criteria.add(Restrictions.ge(PosTransaction.PROP_TRANSACTION_TIME, from));
+				//criteria.add(Restrictions.le(PosTransaction.PROP_TRANSACTION_TIME, to));
+			}
+
+			return criteria.list();
+		} finally {
+			closeSession(session);
+		}
+	}
+	
+	public TransactionSummary getTransactionSummary(Terminal terminal, Class transactionClass, Date from, Date to) {
 		Session session = null;
 		TransactionSummary summary = new TransactionSummary();
 		try {
@@ -44,11 +68,20 @@ public class PosTransactionDAO extends BasePosTransactionDAO {
 
 			Criteria criteria = session.createCriteria(transactionClass);
 			criteria.add(Restrictions.eq(PosTransaction.PROP_DRAWER_RESETTED, Boolean.FALSE));
-			criteria.add(Restrictions.eq(PosTransaction.PROP_TERMINAL, terminal));
+			
+			if(terminal != null) {
+				criteria.add(Restrictions.eq(PosTransaction.PROP_TERMINAL, terminal));
+			}
+			
+			if(from != null && to != null) {
+				criteria.add(Restrictions.ge(PosTransaction.PROP_TRANSACTION_TIME, from));
+				criteria.add(Restrictions.le(PosTransaction.PROP_TRANSACTION_TIME, to));
+			}
 
 			ProjectionList projectionList = Projections.projectionList();
 			projectionList.add(Projections.count(PosTransaction.PROP_ID));
 			projectionList.add(Projections.sum(PosTransaction.PROP_AMOUNT));
+			projectionList.add(Projections.sum(PosTransaction.PROP_TIPS_AMOUNT));
 
 			criteria.setProjection(projectionList);
 
@@ -60,8 +93,9 @@ public class PosTransactionDAO extends BasePosTransactionDAO {
 			Object[] o = (Object[]) list.get(0);
 			int index = 0;
 			
-			summary.setTotalNumber(HibernateProjectionsUtil.getInt(o, index++));
-			summary.setTotalAmount(HibernateProjectionsUtil.getDouble(o, index++));
+			summary.setCount(HibernateProjectionsUtil.getInt(o, index++));
+			summary.setAmount(HibernateProjectionsUtil.getDouble(o, index++));
+			summary.setTipsAmount(HibernateProjectionsUtil.getDouble(o, index++));
 			
 			return summary;
 		} finally {
