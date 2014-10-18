@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
@@ -50,6 +51,30 @@ public class TicketAuthorizationDialog extends POSDialog {
 
 		add(buttonPanel, BorderLayout.SOUTH);
 
+		updateTransactiontList();
+	}
+	
+	public TicketAuthorizationDialog(JFrame parent) {
+		super(parent, true);
+		
+		TitlePanel titlePanel = new TitlePanel();
+		titlePanel.setTitle("Authorize tickets");
+		add(titlePanel, BorderLayout.NORTH);
+		
+		listView.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+		
+		add(listView);
+		
+		JPanel buttonPanel = new JPanel();
+		ActionHandler actionHandler = new ActionHandler();
+		
+		buttonPanel.add(new PosButton(ActionCommand.EDIT_TIPS, actionHandler));
+		buttonPanel.add(new PosButton(ActionCommand.AUTHORIZE, actionHandler));
+		
+		buttonPanel.add(new PosButton(new CloseDialogAction(this)));
+		
+		add(buttonPanel, BorderLayout.SOUTH);
+		
 		updateTransactiontList();
 	}
 
