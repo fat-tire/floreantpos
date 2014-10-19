@@ -1,5 +1,9 @@
 package com.floreantpos.model;
 
+import java.util.Date;
+
+import javax.xml.bind.annotation.XmlTransient;
+
 import com.floreantpos.model.base.BaseMenuModifier;
 
 public class MenuModifier extends BaseMenuModifier {

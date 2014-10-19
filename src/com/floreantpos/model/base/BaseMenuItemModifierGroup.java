@@ -1,6 +1,9 @@
 package com.floreantpos.model.base;
 
+import java.lang.Comparable;
 import java.io.Serializable;
+
+import javax.xml.bind.annotation.XmlTransient;
 
 
 /**
@@ -18,7 +21,6 @@ public abstract class BaseMenuItemModifierGroup  implements Comparable, Serializ
 	public static String PROP_MIN_QUANTITY = "minQuantity";
 	public static String PROP_ID = "id";
 	public static String PROP_MODIFIER_GROUP = "modifierGroup";
-	public static String PROP_PARENT_MENU_ITEM = "parentMenuItem";
 	public static String PROP_MAX_QUANTITY = "maxQuantity";
 
 
@@ -44,15 +46,14 @@ public abstract class BaseMenuItemModifierGroup  implements Comparable, Serializ
 	// primary key
 	private java.lang.Integer id;
 
-	private java.util.Date modifiedTime;
+	 java.util.Date modifiedTime;
 
 	// fields
-	private java.lang.Integer minQuantity;
-	private java.lang.Integer maxQuantity;
+		protected java.lang.Integer minQuantity;
+		protected java.lang.Integer maxQuantity;
 
 	// many to one
 	private com.floreantpos.model.MenuModifierGroup modifierGroup;
-	private com.floreantpos.model.MenuItem parentMenuItem;
 
 
 
@@ -80,9 +81,10 @@ public abstract class BaseMenuItemModifierGroup  implements Comparable, Serializ
 	/**
 	 * Return the value associated with the column: MODIFIED_TIME
 	 */
+	@XmlTransient
 	public java.util.Date getModifiedTime () {
-			return modifiedTime;
-	}
+					return modifiedTime;
+			}
 
 	/**
 	 * Set the value related to the column: MODIFIED_TIME
@@ -99,8 +101,8 @@ public abstract class BaseMenuItemModifierGroup  implements Comparable, Serializ
 	 * Return the value associated with the column: MIN_QUANTITY
 	 */
 	public java.lang.Integer getMinQuantity () {
-			return minQuantity == null ? Integer.valueOf(0) : minQuantity;
-	}
+					return minQuantity == null ? Integer.valueOf(0) : minQuantity;
+			}
 
 	/**
 	 * Set the value related to the column: MIN_QUANTITY
@@ -116,8 +118,8 @@ public abstract class BaseMenuItemModifierGroup  implements Comparable, Serializ
 	 * Return the value associated with the column: MAX_QUANTITY
 	 */
 	public java.lang.Integer getMaxQuantity () {
-			return maxQuantity == null ? Integer.valueOf(0) : maxQuantity;
-	}
+					return maxQuantity == null ? Integer.valueOf(0) : maxQuantity;
+			}
 
 	/**
 	 * Set the value related to the column: MAX_QUANTITY
@@ -133,8 +135,8 @@ public abstract class BaseMenuItemModifierGroup  implements Comparable, Serializ
 	 * Return the value associated with the column: MODIFIER_GROUP
 	 */
 	public com.floreantpos.model.MenuModifierGroup getModifierGroup () {
-			return modifierGroup;
-	}
+					return modifierGroup;
+			}
 
 	/**
 	 * Set the value related to the column: MODIFIER_GROUP
@@ -142,23 +144,6 @@ public abstract class BaseMenuItemModifierGroup  implements Comparable, Serializ
 	 */
 	public void setModifierGroup (com.floreantpos.model.MenuModifierGroup modifierGroup) {
 		this.modifierGroup = modifierGroup;
-	}
-
-
-
-	/**
-	 * Return the value associated with the column: MENU_ITEM
-	 */
-	public com.floreantpos.model.MenuItem getParentMenuItem () {
-			return parentMenuItem;
-	}
-
-	/**
-	 * Set the value related to the column: MENU_ITEM
-	 * @param parentMenuItem the MENU_ITEM value
-	 */
-	public void setParentMenuItem (com.floreantpos.model.MenuItem parentMenuItem) {
-		this.parentMenuItem = parentMenuItem;
 	}
 
 
