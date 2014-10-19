@@ -455,6 +455,7 @@ public class MenuItemForm extends BeanEditor implements ActionListener, ChangeLi
 			dialog.open();
 			if (!dialog.isCanceled()) {
 				MenuItemModifierGroup modifier = (MenuItemModifierGroup) form.getBean();
+				//modifier.setParentMenuItem((MenuItem) this.getBean());
 				menuItemMGListModel.add(modifier);
 			}
 		} catch (Exception x) {
@@ -473,6 +474,7 @@ public class MenuItemForm extends BeanEditor implements ActionListener, ChangeLi
     		BeanEditorDialog dialog = new BeanEditorDialog(form, getParentFrame(), true);
     		dialog.open();
     		if (!dialog.isCanceled()) {
+    			//menuItemModifierGroup.setParentMenuItem((MenuItem) this.getBean());
     			menuItemMGListModel.fireTableDataChanged();
     		}
     	} catch (Exception x) {

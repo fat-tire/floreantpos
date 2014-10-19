@@ -7,6 +7,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import com.floreantpos.model.MenuCategory;
 import com.floreantpos.model.MenuGroup;
 import com.floreantpos.model.MenuItem;
+import com.floreantpos.model.MenuItemModifierGroup;
 import com.floreantpos.model.MenuModifier;
 import com.floreantpos.model.MenuModifierGroup;
 import com.floreantpos.model.Tax;
@@ -21,6 +22,7 @@ public class Elements {
 	List<MenuCategory> menuCategories;
 	List<MenuGroup> menuGroups;
 	List<MenuModifier> menuModifiers;
+	List<MenuItemModifierGroup> menuItemModifierGroups;
 	List<MenuModifierGroup> menuModifierGroups;
 	List<MenuItem> menuItems;
 	
@@ -89,6 +91,14 @@ public class Elements {
 
 	public void setTaxes(List<Tax> taxes) {
 		this.taxes = taxes;
+	}
+
+	public List<MenuItemModifierGroup> getMenuItemModifierGroups() {
+		return menuItemModifierGroups;
+	}
+
+	public void setMenuItemModifierGroups(List<MenuItemModifierGroup> menuItemModifierGroups) {
+		this.menuItemModifierGroups = menuItemModifierGroups;
 	}
 
 //	public List<MenuItemShift> getMenuItemShifts() {
