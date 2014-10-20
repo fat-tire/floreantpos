@@ -31,6 +31,20 @@ public abstract class BasePayOutTransaction extends com.floreantpos.model.PosTra
 		super(id);
 	}
 
+	/**
+	 * Constructor for required fields
+	 */
+	public BasePayOutTransaction (
+		java.lang.Integer id,
+		java.lang.String transactionType,
+		java.lang.String paymentType) {
+
+		super (
+			id,
+			transactionType,
+			paymentType);
+	}
+
 
 
 	private int hashCode = Integer.MIN_VALUE;

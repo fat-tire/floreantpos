@@ -52,23 +52,30 @@ public enum PaymentType {
 	}
 	
 	public PosTransaction createTransaction() {
+		PosTransaction transaction = null;
 		switch (this) {
 			case CREDIT_VISA:
 			case CREDIT_AMEX:
 			case CREDIT_DISCOVERY:
 			case CREDIT_MASTER_CARD:
-				return new CreditCardTransaction();
+				transaction = new CreditCardTransaction();
+				break;
 				
 			case DEBIT_MASTER_CARD:
 			case DEBIT_VISA:
-				return new DebitCardTransaction();
+				transaction = new DebitCardTransaction();
+				break;
 				
 			case GIFT_CERTIFICATE:
-				return new GiftCertificateTransaction();
-
+				transaction = new GiftCertificateTransaction();
+				break;
+				
 			default:
-				CashTransaction transaction = new CashTransaction();
-				return transaction;
+				transaction = new CashTransaction();
+				break;
 		}
+		
+		transaction.setPaymentType(name());
+		return transaction;
 	}
 }

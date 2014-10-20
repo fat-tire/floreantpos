@@ -19,6 +19,20 @@ public class CreditCardTransaction extends BaseCreditCardTransaction {
 		super(id);
 	}
 
+	/**
+	 * Constructor for required fields
+	 */
+	public CreditCardTransaction (
+		java.lang.Integer id,
+		java.lang.String transactionType,
+		java.lang.String paymentType) {
+
+		super (
+			id,
+			transactionType,
+			paymentType);
+	}
+
 /*[CONSTRUCTOR MARKER END]*/
 
 

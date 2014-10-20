@@ -38,6 +38,7 @@ public abstract class BasePosTransaction  implements Comparable, Serializable {
 	public static String PROP_TERMINAL = "terminal";
 	public static String PROP_NOTE = "note";
 	public static String PROP_CARD_TRACK = "cardTrack";
+	public static String PROP_PAYMENT_TYPE = "paymentType";
 	public static String PROP_TIPS_AMOUNT = "tipsAmount";
 	public static String PROP_CARD_TRANSACTION_ID = "cardTransactionId";
 	public static String PROP_TENDER_AMOUNT = "tenderAmount";
@@ -58,6 +59,20 @@ public abstract class BasePosTransaction  implements Comparable, Serializable {
 		initialize();
 	}
 
+	/**
+	 * Constructor for required fields
+	 */
+	public BasePosTransaction (
+		java.lang.Integer id,
+		java.lang.String transactionType,
+		java.lang.String paymentType) {
+
+		this.setId(id);
+		this.setTransactionType(transactionType);
+		this.setPaymentType(paymentType);
+		initialize();
+	}
+
 	protected void initialize () {}
 
 
@@ -75,6 +90,7 @@ public abstract class BasePosTransaction  implements Comparable, Serializable {
 		protected java.lang.Double tipsAmount;
 		protected java.lang.Double tenderAmount;
 		protected java.lang.String transactionType;
+		protected java.lang.String paymentType;
 		protected java.lang.Boolean captured;
 		protected java.lang.String cardTrack;
 		protected java.lang.String cardNumber;
@@ -224,6 +240,23 @@ public abstract class BasePosTransaction  implements Comparable, Serializable {
 	 */
 	public void setTransactionType (java.lang.String transactionType) {
 		this.transactionType = transactionType;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: PAYMENT_SUB_TYPE
+	 */
+	public java.lang.String getPaymentType () {
+					return paymentType;
+			}
+
+	/**
+	 * Set the value related to the column: PAYMENT_SUB_TYPE
+	 * @param paymentType the PAYMENT_SUB_TYPE value
+	 */
+	public void setPaymentType (java.lang.String paymentType) {
+		this.paymentType = paymentType;
 	}
 
 

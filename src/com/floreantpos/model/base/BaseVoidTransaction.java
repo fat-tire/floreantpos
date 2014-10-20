@@ -13,28 +13,28 @@ import java.io.Serializable;
  *  table="TRANSACTIONS"
  */
 
-public abstract class BaseDebitCardTransaction extends com.floreantpos.model.PosTransaction  implements Comparable, Serializable {
+public abstract class BaseVoidTransaction extends com.floreantpos.model.PosTransaction  implements Comparable, Serializable {
 
-	public static String REF = "DebitCardTransaction";
+	public static String REF = "VoidTransaction";
 	public static String PROP_ID = "id";
 
 
 	// constructors
-	public BaseDebitCardTransaction () {
+	public BaseVoidTransaction () {
 		initialize();
 	}
 
 	/**
 	 * Constructor for primary key
 	 */
-	public BaseDebitCardTransaction (java.lang.Integer id) {
+	public BaseVoidTransaction (java.lang.Integer id) {
 		super(id);
 	}
 
 	/**
 	 * Constructor for required fields
 	 */
-	public BaseDebitCardTransaction (
+	public BaseVoidTransaction (
 		java.lang.Integer id,
 		java.lang.String transactionType,
 		java.lang.String paymentType) {
@@ -59,11 +59,11 @@ public abstract class BaseDebitCardTransaction extends com.floreantpos.model.Pos
 
 	public boolean equals (Object obj) {
 		if (null == obj) return false;
-		if (!(obj instanceof com.floreantpos.model.DebitCardTransaction)) return false;
+		if (!(obj instanceof com.floreantpos.model.VoidTransaction)) return false;
 		else {
-			com.floreantpos.model.DebitCardTransaction debitCardTransaction = (com.floreantpos.model.DebitCardTransaction) obj;
-			if (null == this.getId() || null == debitCardTransaction.getId()) return false;
-			else return (this.getId().equals(debitCardTransaction.getId()));
+			com.floreantpos.model.VoidTransaction voidTransaction = (com.floreantpos.model.VoidTransaction) obj;
+			if (null == this.getId() || null == voidTransaction.getId()) return false;
+			else return (this.getId().equals(voidTransaction.getId()));
 		}
 	}
 

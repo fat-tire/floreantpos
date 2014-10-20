@@ -27,6 +27,7 @@ import com.floreantpos.model.CardReader;
 import com.floreantpos.model.CashTransaction;
 import com.floreantpos.model.CouponAndDiscount;
 import com.floreantpos.model.CreditCardTransaction;
+import com.floreantpos.model.GiftCertificateTransaction;
 import com.floreantpos.model.Gratuity;
 import com.floreantpos.model.MerchantGateway;
 import com.floreantpos.model.PaymentType;
@@ -234,6 +235,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 					}
 
 					transaction = new CashTransaction();
+					transaction.setPaymentType(paymentType.name());
 					transaction.setTicket(ticket);
 					transaction.setCaptured(true);
 					setTransactionAmounts(transaction);
@@ -261,7 +263,8 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 					if (dialog.isCanceled())
 						return;
 
-					transaction = paymentType.createTransaction();
+					transaction = new GiftCertificateTransaction();
+					transaction.setPaymentType(PaymentType.GIFT_CERTIFICATE.name());
 					transaction.setTicket(ticket);
 					transaction.setCaptured(true);
 					setTransactionAmounts(transaction);
