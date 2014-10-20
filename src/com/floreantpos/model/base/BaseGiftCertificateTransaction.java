@@ -31,6 +31,20 @@ public abstract class BaseGiftCertificateTransaction extends com.floreantpos.mod
 		super(id);
 	}
 
+	/**
+	 * Constructor for required fields
+	 */
+	public BaseGiftCertificateTransaction (
+		java.lang.Integer id,
+		java.lang.String transactionType,
+		java.lang.String paymentType) {
+
+		super (
+			id,
+			transactionType,
+			paymentType);
+	}
+
 
 
 	private int hashCode = Integer.MIN_VALUE;

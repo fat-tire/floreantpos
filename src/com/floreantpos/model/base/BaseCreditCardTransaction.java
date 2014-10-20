@@ -31,6 +31,20 @@ public abstract class BaseCreditCardTransaction extends com.floreantpos.model.Po
 		super(id);
 	}
 
+	/**
+	 * Constructor for required fields
+	 */
+	public BaseCreditCardTransaction (
+		java.lang.Integer id,
+		java.lang.String transactionType,
+		java.lang.String paymentType) {
+
+		super (
+			id,
+			transactionType,
+			paymentType);
+	}
+
 
 
 	private int hashCode = Integer.MIN_VALUE;

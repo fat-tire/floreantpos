@@ -31,6 +31,20 @@ public abstract class BaseCashTransaction extends com.floreantpos.model.PosTrans
 		super(id);
 	}
 
+	/**
+	 * Constructor for required fields
+	 */
+	public BaseCashTransaction (
+		java.lang.Integer id,
+		java.lang.String transactionType,
+		java.lang.String paymentType) {
+
+		super (
+			id,
+			transactionType,
+			paymentType);
+	}
+
 
 
 	private int hashCode = Integer.MIN_VALUE;

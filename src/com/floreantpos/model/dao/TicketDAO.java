@@ -14,15 +14,19 @@ import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 
+import com.floreantpos.main.Application;
 import com.floreantpos.model.Gratuity;
-import com.floreantpos.model.PosTransaction;
+import com.floreantpos.model.PaymentType;
 import com.floreantpos.model.Shift;
 import com.floreantpos.model.Terminal;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.TicketItemModifierGroup;
+import com.floreantpos.model.TransactionType;
 import com.floreantpos.model.User;
+import com.floreantpos.model.VoidTransaction;
 import com.floreantpos.model.util.TicketSummary;
+import com.floreantpos.services.PosTransactionService;
 
 public class TicketDAO extends BaseTicketDAO {
 	private final static TicketDAO instance = new TicketDAO();
@@ -134,31 +138,37 @@ public class TicketDAO extends BaseTicketDAO {
 	public void voidTicket(Ticket ticket) throws Exception {
 		Session session = null;
 		Transaction tx = null;
+		
 		try {
-			ticket.setVoided(true);
-			ticket.setPaid(false);
-			ticket.setClosed(true);
-			ticket.setClosingDate(new Date());
-
 			session = createNewSession();
 			tx = session.beginTransaction();
-
-			session.update(ticket);
-
-			Criteria criteria = session.createCriteria(com.floreantpos.model.PosTransaction.class);
-			criteria.add(Restrictions.eq(com.floreantpos.model.PosTransaction.PROP_TICKET, ticket));
-			List list = criteria.list();
-
-			if(list != null) {
-				for (Iterator iter = list.iterator(); iter.hasNext();) {
-					PosTransaction transaction = (PosTransaction) iter.next();
-					Terminal terminal = transaction.getTerminal();
-					terminal.setCurrentBalance(terminal.getCurrentBalance() - transaction.getAmount());
-					session.update(terminal);
-					transaction.setTerminal(null);
-					session.delete(transaction);
-				}
+		
+			Terminal terminal = Application.getInstance().getTerminal();
+			
+			ticket.setVoided(true);
+			ticket.setClosed(true);
+			ticket.setClosingDate(new Date());
+			ticket.setTerminal(terminal);
+			
+			if(ticket.isPaid()) {
+				VoidTransaction transaction = new VoidTransaction();
+				transaction.setTicket(ticket);
+				transaction.setTerminal(terminal);
+				transaction.setTransactionTime(new Date());
+				transaction.setTransactionType(TransactionType.DEBIT.name());
+				transaction.setPaymentType(PaymentType.CASH.name());
+				transaction.setAmount(ticket.getPaidAmount());
+				transaction.setTerminal(Application.getInstance().getTerminal());
+				transaction.setCaptured(true);
+				
+				PosTransactionService.adjustTerminalBalance(transaction);
+				
+				ticket.addTotransactions(transaction);
 			}
+			
+			session.update(ticket);
+			session.update(terminal);
+			
 			session.flush();
 			tx.commit();
 		} catch (Exception x) {

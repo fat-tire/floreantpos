@@ -12,7 +12,8 @@
 		<property column="AMOUNT" length="52" name="amount" type="java.lang.Double" />
 		<property column="TIPS_AMOUNT" length="52" name="tipsAmount" type="java.lang.Double" />
 		<property column="TENDER_AMOUNT" length="52" name="tenderAmount" type="java.lang.Double" />
-		<property column="TRANSACTION_TYPE" name="transactionType" type="string" length="20" />
+		<property column="TRANSACTION_TYPE" name="transactionType" type="string" length="20" not-null="true"/>
+		<property column="PAYMENT_SUB_TYPE" name="paymentType" type="string" length="40" not-null="true"/>
 		<property column="CAPTURED" name="captured" type="java.lang.Boolean" />
 
 		<!-- card -->
@@ -87,6 +88,9 @@
 		</subclass>
 
 		<subclass discriminator-value="PAY_OUT" name="com.floreantpos.model.PayOutTransaction">
+		</subclass>
+		
+		<subclass discriminator-value="VOID_TRANS" name="com.floreantpos.model.VoidTransaction">
 		</subclass>
 	</class>
 </hibernate-mapping>

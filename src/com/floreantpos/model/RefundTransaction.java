@@ -19,6 +19,20 @@ public class RefundTransaction extends BaseRefundTransaction {
 		super(id);
 	}
 
+	/**
+	 * Constructor for required fields
+	 */
+	public RefundTransaction (
+		java.lang.Integer id,
+		java.lang.String transactionType,
+		java.lang.String paymentType) {
+
+		super (
+			id,
+			transactionType,
+			paymentType);
+	}
+
 /*[CONSTRUCTOR MARKER END]*/
 
 

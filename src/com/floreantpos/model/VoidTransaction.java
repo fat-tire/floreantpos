@@ -2,29 +2,29 @@ package com.floreantpos.model;
 
 import org.apache.commons.lang.StringUtils;
 
-import com.floreantpos.model.base.BasePayOutTransaction;
+import com.floreantpos.model.base.BaseVoidTransaction;
 
 
 
-public class PayOutTransaction extends BasePayOutTransaction {
+public class VoidTransaction extends BaseVoidTransaction {
 	private static final long serialVersionUID = 1L;
 
 /*[CONSTRUCTOR MARKER BEGIN]*/
-	public PayOutTransaction () {
+	public VoidTransaction () {
 		super();
 	}
 
 	/**
 	 * Constructor for primary key
 	 */
-	public PayOutTransaction (java.lang.Integer id) {
+	public VoidTransaction (java.lang.Integer id) {
 		super(id);
 	}
 
 	/**
 	 * Constructor for required fields
 	 */
-	public PayOutTransaction (
+	public VoidTransaction (
 		java.lang.Integer id,
 		java.lang.String transactionType,
 		java.lang.String paymentType) {
