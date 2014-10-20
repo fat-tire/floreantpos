@@ -220,7 +220,7 @@ public class DrawerPullReportDialog extends POSDialog {
 		table.addElement(tr);
 	}
 	
-	void addExceptionTableRow(Table table, String column1, String coulmn2, String coulmn3, String coulmn4, String column5) {
+	void addExceptionTableRow(Table table, String column1, String coulmn2, String coulmn3, String column5) {
 		TR tr = new TR();
 		TD td = new TD();
 		td.addAttribute("valign", "top");
@@ -236,12 +236,6 @@ public class DrawerPullReportDialog extends POSDialog {
 		td.addAttribute("valign", "top");
 		td.addAttribute("align", "right");
 		td.addElement(coulmn3);
-		tr.addElement(td);
-		
-		td = new TD();
-		td.addAttribute("valign", "top");
-		td.addAttribute("align", "right");
-		td.addElement(coulmn4);
 		tr.addElement(td);
 		
 		td = new TD();
@@ -321,14 +315,14 @@ public class DrawerPullReportDialog extends POSDialog {
 		createSectionHeader(document, "=== VOIDS/REFUNDS (Without Tax) ===");
 		table = new Table();
 		table.addAttribute("width", "100%");
-		addExceptionTableRow(table, "CODE", "REASON", "WAST", "QTY", "AMOUNT");
+		addExceptionTableRow(table, "CODE", "REASON", "WASTE", "AMOUNT");
 		addExceptionTableSeparator(table);
 		
 		//CONDITIONAL
 		Set<DrawerPullVoidTicketEntry> voidTickets = drawerPullReport.getVoidTickets();
 		if(voidTickets != null) {
 			for (DrawerPullVoidTicketEntry entry : voidTickets) {
-				addExceptionTableRow(table, String.valueOf(entry.getCode()), entry.getReason(), " ", String.valueOf(entry.getQuantity()), NumberUtil.formatNumber(entry.getAmount()));
+				addExceptionTableRow(table, String.valueOf(entry.getCode()), entry.getReason(), entry.getHast(), NumberUtil.formatNumber(entry.getAmount()));
 			}
 		}
 		addExceptionTableSeparator(table);
@@ -336,7 +330,7 @@ public class DrawerPullReportDialog extends POSDialog {
 		
 		table = new Table();
 		table.addAttribute("width", "100%");
-		addTableRow(table, "TOTAL VOIDS W/WST", decimalFormat.format(drawerPullReport.getTotalVoidWst()));
+		addTableRow(table, "TOTAL WASTE", decimalFormat.format(drawerPullReport.getTotalVoidWst()));
 		addTableRow(table, "TOTAL VOIDS", decimalFormat.format(drawerPullReport.getTotalVoid()));
 		
 		document.appendBody(table);

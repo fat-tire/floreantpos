@@ -1,6 +1,7 @@
 package com.floreantpos.print;
 
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import org.hibernate.Criteria;
@@ -13,11 +14,13 @@ import com.floreantpos.model.CashTransaction;
 import com.floreantpos.model.CreditCardTransaction;
 import com.floreantpos.model.DebitCardTransaction;
 import com.floreantpos.model.DrawerPullReport;
+import com.floreantpos.model.DrawerPullVoidTicketEntry;
 import com.floreantpos.model.GiftCertificateTransaction;
 import com.floreantpos.model.PayOutTransaction;
 import com.floreantpos.model.PosTransaction;
 import com.floreantpos.model.Terminal;
 import com.floreantpos.model.Ticket;
+import com.floreantpos.model.TicketCouponAndDiscount;
 import com.floreantpos.model.dao.CashDropTransactionDAO;
 import com.floreantpos.model.dao.GenericDAO;
 import com.floreantpos.model.dao.PayOutTransactionDAO;
@@ -68,23 +71,7 @@ public class DrawerpullReportService {
 			report.setBeginCash(terminal.getOpeningBalance());
 			report.setCashToDeposit(terminal.getCurrentBalance());
 
-			//void
-//			criteria = session.createCriteria(Ticket.class, "t");
-//			criteria.add(Restrictions.eq(Ticket.PROP_VOIDED, Boolean.TRUE));
-//			criteria.add(Restrictions.eq(Ticket.PROP_DRAWER_RESETTED, Boolean.FALSE));
-//			criteria.add(Restrictions.eq(Ticket.PROP_TERMINAL, terminal));
-//			list = criteria.list();
-//
-//			for (Iterator iter = list.iterator(); iter.hasNext();) {
-//				Ticket ticket = (Ticket) iter.next();
-//				DrawerPullVoidTicketEntry entry = new DrawerPullVoidTicketEntry();
-//				entry.setCode(ticket.getId());
-//				entry.setAmount(ticket.getSubtotalAmount());
-//				//entry.setQuantity()
-//				entry.setReason(ticket.getVoidReason());
-//
-//				report.addVoidTicketEntry(entry);
-//			}
+			populateVoidSection(session, terminal, report);
 //
 //			//gift cert
 //			criteria = session.createCriteria(GiftCertificateTransaction.class);
@@ -114,26 +101,26 @@ public class DrawerpullReportService {
 			double totalDiscountPercentage = 0;
 			double totalDiscountRatio = 0;
 
-//			criteria = session.createCriteria(Ticket.class, "t");
-//			criteria.add(Restrictions.eq(Ticket.PROP_CLOSED, Boolean.TRUE));
-//			criteria.add(Restrictions.eq(Ticket.PROP_VOIDED, Boolean.FALSE));
-//			criteria.add(Restrictions.eq(Ticket.PROP_DRAWER_RESETTED, Boolean.FALSE));
-//			criteria.add(Restrictions.eq(Ticket.PROP_TERMINAL, terminal));
-//			list = criteria.list();
-//
-//			for (Iterator iter = list.iterator(); iter.hasNext();) {
-//				Ticket ticket = (Ticket) iter.next();
-//				if (ticket.getCouponAndDiscounts() != null) {
-//					List<TicketCouponAndDiscount> discounts = ticket.getCouponAndDiscounts();
-//					for (TicketCouponAndDiscount discount2 : discounts) {
-//						++totalDiscountCount;
-//						totalDiscountAmount += discount2.getValue();
-//						totalDiscountGuest += ticket.getNumberOfGuests();
-//						totalDiscountSales += ticket.getTotalAmount();
-//						totalDiscountCheckSize++;
-//					}
-//				}
-//			}
+			Criteria criteria = session.createCriteria(Ticket.class, "t");
+			//criteria.add(Restrictions.eq(Ticket.PROP_CLOSED, Boolean.TRUE));
+			criteria.add(Restrictions.eq(Ticket.PROP_VOIDED, Boolean.FALSE));
+			criteria.add(Restrictions.eq(Ticket.PROP_DRAWER_RESETTED, Boolean.FALSE));
+			criteria.add(Restrictions.eq(Ticket.PROP_TERMINAL, terminal));
+			List list = criteria.list();
+
+			for (Iterator iter = list.iterator(); iter.hasNext();) {
+				Ticket ticket = (Ticket) iter.next();
+				if (ticket.getCouponAndDiscounts() != null) {
+					List<TicketCouponAndDiscount> discounts = ticket.getCouponAndDiscounts();
+					for (TicketCouponAndDiscount discount2 : discounts) {
+						++totalDiscountCount;
+						totalDiscountAmount += discount2.getValue();
+						totalDiscountGuest += ticket.getNumberOfGuests();
+						totalDiscountSales += ticket.getTotalAmount();
+						totalDiscountCheckSize++;
+					}
+				}
+			}
 
 			totalDiscountPartySize = totalDiscountGuest;
 
@@ -155,6 +142,42 @@ public class DrawerpullReportService {
 			if (session != null)
 				session.close();
 		}
+	}
+
+	private static void populateVoidSection(Session session, Terminal terminal, DrawerPullReport report) {
+		//void
+		Criteria criteria = session.createCriteria(Ticket.class, "t");
+		criteria.add(Restrictions.eq(Ticket.PROP_VOIDED, Boolean.TRUE));
+		criteria.add(Restrictions.eq(Ticket.PROP_DRAWER_RESETTED, Boolean.FALSE));
+		criteria.add(Restrictions.eq(Ticket.PROP_TERMINAL, terminal));
+		List<Ticket> list = criteria.list();
+
+		double totalWaste = 0;
+		double totalVoid = 0;
+		
+		for (Iterator iter = list.iterator(); iter.hasNext();) {
+			Ticket ticket = (Ticket) iter.next();
+			DrawerPullVoidTicketEntry entry = new DrawerPullVoidTicketEntry();
+			entry.setCode(ticket.getId());
+			entry.setAmount(ticket.getSubtotalAmount());
+			entry.setReason(ticket.getVoidReason());
+			if(ticket.isWasted()) {
+				entry.setHast("Yes");
+			}
+			else {
+				entry.setHast("No");
+			}
+			
+			report.addVoidTicketEntry(entry);
+			
+			totalVoid += ticket.getSubtotalAmount();
+			if(ticket.isWasted()) {
+				totalWaste += ticket.getSubtotalAmount();
+			}
+		}
+		
+		report.setTotalVoid(totalVoid);
+		report.setTotalVoidWst(totalWaste);
 	}
 
 //	private static void populateCashTax(Session session, Terminal terminal, DrawerPullReport report) {
