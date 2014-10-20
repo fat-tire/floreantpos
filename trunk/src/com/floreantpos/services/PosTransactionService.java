@@ -16,6 +16,7 @@ import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketType;
 import com.floreantpos.model.TransactionType;
 import com.floreantpos.model.User;
+import com.floreantpos.model.VoidTransaction;
 import com.floreantpos.model.dao.ActionHistoryDAO;
 import com.floreantpos.model.dao.GenericDAO;
 import com.floreantpos.util.NumberUtil;
@@ -30,7 +31,7 @@ public class PosTransactionService {
 
 		Session session = null;
 		Transaction tx = null;
-
+		
 		GenericDAO dao = new GenericDAO();
 
 		try {
@@ -55,8 +56,6 @@ public class PosTransactionService {
 				ticket.setClosed(false);
 			}
 
-			adjustTerminalBalance(ticket, transaction, terminal);
-
 			transaction.setTransactionType(TransactionType.CREDIT.name());
 			transaction.setTerminal(terminal);
 			transaction.setUser(currentUser);
@@ -76,10 +75,11 @@ public class PosTransactionService {
 				ticket.removeProperty(Ticket.PROPERTY_CARD_EXP_MONTH);
 				ticket.removeProperty(Ticket.PROPERTY_CARD_AUTH_CODE);
 			}
+			
+			adjustTerminalBalance(transaction);
 
-			dao.saveOrUpdate(ticket, session);
-			//dao.saveOrUpdate(transaction, session);
-			dao.saveOrUpdate(terminal, session);
+			session.saveOrUpdate(ticket);
+			session.update(terminal);
 
 			//				User assignedDriver = ticket.getAssignedDriver();
 			//				if(assignedDriver != null) {
@@ -104,17 +104,32 @@ public class PosTransactionService {
 		ActionHistoryDAO.getInstance().saveHistory(Application.getCurrentUser(), ActionHistory.SETTLE_CHECK, actionMessage);
 	}
 
-	private void adjustTerminalBalance(Ticket ticket, PosTransaction transaction, Terminal terminal) {
+	public static void adjustTerminalBalance(PosTransaction transaction) {
+		Terminal terminal = transaction.getTerminal();
+		
 		if (transaction instanceof CashTransaction) {
+			
 			double currentBalance = terminal.getCurrentBalance();
 			double newBalance = currentBalance + transaction.getAmount();
 
 			terminal.setCurrentBalance(newBalance);
+			
 		}
 		else if (transaction instanceof GiftCertificateTransaction) {
+			
 			double currentBalance = terminal.getCurrentBalance();
-			double newBalance = currentBalance - ((GiftCertificateTransaction) transaction).getGiftCertCashBackAmount();
+			double newBalance = currentBalance - transaction.getGiftCertCashBackAmount();
+			
 			terminal.setCurrentBalance(newBalance);
+			
+		}
+		else if(transaction instanceof VoidTransaction) {
+			
+			double currentBalance = terminal.getCurrentBalance();
+			double newBalance = currentBalance - transaction.getAmount();
+
+			terminal.setCurrentBalance(newBalance);
+			
 		}
 	}
 

@@ -2,6 +2,8 @@ package com.floreantpos.model;
 
 import java.util.HashMap;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.floreantpos.model.base.BasePosTransaction;
 import com.floreantpos.util.POSUtil;
 
@@ -22,7 +24,58 @@ public class PosTransaction extends BasePosTransaction {
 		super(id);
 	}
 
+	/**
+	 * Constructor for required fields
+	 */
+	public PosTransaction (
+		java.lang.Integer id,
+		java.lang.String transactionType,
+		java.lang.String paymentType) {
+
+		super (
+			id,
+			transactionType,
+			paymentType);
+	}
+
 /*[CONSTRUCTOR MARKER END]*/
+	
+	@Override
+	public String getTransactionType() {
+		String type = super.getTransactionType();
+		
+		if(StringUtils.isEmpty(type)) {
+			return TransactionType.CREDIT.name();
+		}
+		
+		return type;
+	}
+	
+	public void updateTerminalBalance() {
+		Terminal terminal = getTerminal();
+		if(terminal == null) {
+			return;
+		}
+		
+		Double amount = getAmount();
+		if(amount == null || amount == 0) {
+			return;
+		}
+		
+		double terminalBalance = terminal.getCurrentBalance();
+		
+		TransactionType transactionType = TransactionType.valueOf(getTransactionType());
+		switch (transactionType) {
+			case CREDIT:
+				terminalBalance += amount;
+				break;
+				
+			case DEBIT:
+				terminalBalance -= amount;
+		}
+		
+		terminal.setCurrentBalance(terminalBalance);
+	}
 
 	public boolean isCard() {
 		return (this instanceof CreditCardTransaction) || (this instanceof DebitCardTransaction);

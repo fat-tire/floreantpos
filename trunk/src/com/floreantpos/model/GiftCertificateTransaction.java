@@ -19,6 +19,20 @@ public class GiftCertificateTransaction extends BaseGiftCertificateTransaction {
 		super(id);
 	}
 
+	/**
+	 * Constructor for required fields
+	 */
+	public GiftCertificateTransaction (
+		java.lang.Integer id,
+		java.lang.String transactionType,
+		java.lang.String paymentType) {
+
+		super (
+			id,
+			transactionType,
+			paymentType);
+	}
+
 /*[CONSTRUCTOR MARKER END]*/
 
 

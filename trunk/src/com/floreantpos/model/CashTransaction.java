@@ -17,5 +17,19 @@ public class CashTransaction extends BaseCashTransaction {
 		super(id);
 	}
 
+	/**
+	 * Constructor for required fields
+	 */
+	public CashTransaction (
+		java.lang.Integer id,
+		java.lang.String transactionType,
+		java.lang.String paymentType) {
+
+		super (
+			id,
+			transactionType,
+			paymentType);
+	}
+
 	/*[CONSTRUCTOR MARKER END]*/
 }
