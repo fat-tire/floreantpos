@@ -18,6 +18,7 @@ import com.floreantpos.model.Shift;
 import com.floreantpos.model.Terminal;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketItem;
+import com.floreantpos.model.TicketType;
 import com.floreantpos.model.User;
 import com.floreantpos.model.UserType;
 import com.floreantpos.report.SalesStatistics;
@@ -61,7 +62,7 @@ public class SalesSummaryDAO extends _RootDAO {
 			MenuCategory miscCategory = new MenuCategory();
 			miscCategory.setName("MISC");
 			categories.add(miscCategory);
-			
+
 			//find food sales
 			criteria = session.createCriteria(TicketItem.class, "item");
 			criteria.createCriteria("ticket", "t");
@@ -101,7 +102,7 @@ public class SalesSummaryDAO extends _RootDAO {
 				data.calculate();
 				list.add(data);
 			}
-			
+
 			//find non food sales
 			criteria = session.createCriteria(TicketItem.class, "item");
 			criteria.createCriteria("ticket", "t");
@@ -114,7 +115,7 @@ public class SalesSummaryDAO extends _RootDAO {
 			criteria.add(Restrictions.eq("item." + TicketItem.PROP_BEVERAGE, Boolean.TRUE));
 			criteria.add(Restrictions.ge("t." + Ticket.PROP_ACTIVE_DATE, start));
 			criteria.add(Restrictions.le("t." + Ticket.PROP_ACTIVE_DATE, end));
-			
+
 			if (userType != null) {
 				criteria.add(Restrictions.eq("u." + User.PROP_NEW_USER_TYPE, userType));
 			}
@@ -124,24 +125,24 @@ public class SalesSummaryDAO extends _RootDAO {
 			datas = criteria.list();
 			if (datas.size() > 0) {
 				Object[] objects = (Object[]) datas.get(0);
-				
+
 				SalesAnalysisData data = new SalesAnalysisData();
 				data.setShiftName("");
 				data.setCategoryName("NON FOOD SALES");
-				
+
 				if (objects.length > 0 && objects[0] != null)
 					data.setCount(((Number) objects[0]).intValue());
-				
+
 				if (objects.length > 1 && objects[1] != null)
 					data.setGross(((Number) objects[1]).doubleValue());
-				
+
 				if (objects.length > 2 && objects[2] != null)
 					data.setDiscount(((Number) objects[2]).doubleValue());
-				
+
 				data.calculate();
 				list.add(data);
 			}
-			
+
 			//find shift wise salse
 			for (Shift shift : shifts) {
 
@@ -188,7 +189,7 @@ public class SalesSummaryDAO extends _RootDAO {
 					}
 				}
 			}
-			
+
 			//find all sales
 			for (MenuCategory category : categories) {
 
@@ -268,7 +269,7 @@ public class SalesSummaryDAO extends _RootDAO {
 				criteria.setProjection(projectionList);
 				criteria.add(Restrictions.ge(Ticket.PROP_CREATE_DATE, start));
 				criteria.add(Restrictions.le(Ticket.PROP_CREATE_DATE, end));
-				
+
 				//do not take into account void tickets
 				criteria.add(Restrictions.eq(Ticket.PROP_VOIDED, Boolean.FALSE));
 
@@ -488,89 +489,11 @@ public class SalesSummaryDAO extends _RootDAO {
 				for (Object object : shifts) {
 					Shift shift = (Shift) object;
 
-					{
-						//DINE IN PART
-						criteria = session.createCriteria(Ticket.class, "ticket");
-						criteria.createCriteria(Ticket.PROP_OWNER, "u");
-						ProjectionList projectionList = Projections.projectionList();
-						projectionList.add(Projections.rowCount());
-						projectionList.add(Projections.sum(Ticket.PROP_NUMBER_OF_GUESTS));
-						projectionList.add(Projections.sum(Ticket.PROP_SUBTOTAL_AMOUNT));
-						criteria.setProjection(projectionList);
-						criteria.add(Restrictions.ge(Ticket.PROP_CREATE_DATE, start));
-						criteria.add(Restrictions.le(Ticket.PROP_CREATE_DATE, end));
-						criteria.add(Restrictions.eq(Ticket.PROP_SHIFT, shift));
-
-						if (userType != null) {
-							criteria.add(Restrictions.eq("u." + User.PROP_NEW_USER_TYPE, userType));
-						}
-						if (terminal != null) {
-							criteria.add(Restrictions.eq(Ticket.PROP_TERMINAL, terminal));
-						}
-						List list = criteria.list();
-						if (list.size() > 0) {
-							ShiftwiseSalesTableData data = new ShiftwiseSalesTableData();
-							data.setProfitCenter("DINE IN");
-							Object[] objects = (Object[]) list.get(0);
-
-							data.setShiftName(shift.getName());
-							data.setCheckCount(((Number) objects[0]).intValue());
-
-							if (objects.length > 1 && objects[1] != null) {
-								data.setGuestCount(((Number) objects[1]).intValue());
-							}
-							if (objects.length > 2 && objects[2] != null) {
-								data.setTotalSales(((Number) objects[2]).doubleValue());
-							}
-							data.setPercentage(data.getTotalSales() * 100 / salesSummary.getGrossSale());
-							data.calculateOthers();
-							salesSummary.addSalesTableData(data);
-						}
+					TicketType[] values = TicketType.values();
+					for (TicketType ticketType : values) {
+						findRecordByProfitCenter(start, end, userType, terminal, session, salesSummary, shift, ticketType);
 					}
-					
-					{
-						//TAKE OUT PART
-						criteria = session.createCriteria(Ticket.class, "ticket");
-						criteria.createCriteria(Ticket.PROP_OWNER, "u");
-						ProjectionList projectionList = Projections.projectionList();
-						projectionList.add(Projections.rowCount());
-						projectionList.add(Projections.sum(Ticket.PROP_NUMBER_OF_GUESTS));
-						projectionList.add(Projections.sum(Ticket.PROP_TOTAL_AMOUNT));
-						criteria.setProjection(projectionList);
-						criteria.add(Restrictions.ge(Ticket.PROP_CREATE_DATE, start));
-						criteria.add(Restrictions.le(Ticket.PROP_CREATE_DATE, end));
-						criteria.add(Restrictions.eq(Ticket.PROP_SHIFT, shift));
-						criteria.add(Restrictions.eq(Ticket.PROP_TABLE_NUMBER, -1));
 
-						if (userType != null) {
-							criteria.add(Restrictions.eq("u." + User.PROP_NEW_USER_TYPE, userType));
-						}
-						if (terminal != null) {
-							criteria.add(Restrictions.eq(Ticket.PROP_TERMINAL, terminal));
-						}
-						
-						List list = criteria.list();
-						if (list.size() > 0) {
-							ShiftwiseSalesTableData data = new ShiftwiseSalesTableData();
-							data.setProfitCenter("TAKE OUT");
-							
-							Object[] objects = (Object[]) list.get(0);
-
-							data.setShiftName(shift.getName());
-							data.setCheckCount(((Number) objects[0]).intValue());
-
-							if (objects.length > 1 && objects[1] != null) {
-								data.setGuestCount(((Number) objects[1]).intValue());
-							}
-							if (objects.length > 2 && objects[2] != null) {
-								data.setTotalSales(((Number) objects[2]).doubleValue());
-							}
-
-							data.calculateOthers();
-							salesSummary.addSalesTableData(data);
-						}
-					
-					}
 				}
 			}
 
@@ -580,6 +503,48 @@ public class SalesSummaryDAO extends _RootDAO {
 			if (session != null) {
 				closeSession(session);
 			}
+		}
+	}
+
+	private void findRecordByProfitCenter(Date start, Date end, UserType userType, Terminal terminal, Session session, SalesStatistics salesSummary,
+			Shift shift, TicketType ticketType) {
+		Criteria criteria;
+		criteria = session.createCriteria(Ticket.class, "ticket");
+		criteria.createCriteria(Ticket.PROP_OWNER, "u");
+		ProjectionList projectionList = Projections.projectionList();
+		projectionList.add(Projections.rowCount());
+		projectionList.add(Projections.sum(Ticket.PROP_NUMBER_OF_GUESTS));
+		projectionList.add(Projections.sum(Ticket.PROP_SUBTOTAL_AMOUNT));
+		criteria.setProjection(projectionList);
+		criteria.add(Restrictions.ge(Ticket.PROP_CREATE_DATE, start));
+		criteria.add(Restrictions.le(Ticket.PROP_CREATE_DATE, end));
+		criteria.add(Restrictions.eq(Ticket.PROP_SHIFT, shift));
+		criteria.add(Restrictions.eq(Ticket.PROP_TICKET_TYPE, ticketType.name()));
+
+		if (userType != null) {
+			criteria.add(Restrictions.eq("u." + User.PROP_NEW_USER_TYPE, userType));
+		}
+		if (terminal != null) {
+			criteria.add(Restrictions.eq(Ticket.PROP_TERMINAL, terminal));
+		}
+		List list = criteria.list();
+		if (list.size() > 0) {
+			ShiftwiseSalesTableData data = new ShiftwiseSalesTableData();
+			data.setProfitCenter(ticketType.toString());
+			Object[] objects = (Object[]) list.get(0);
+
+			data.setShiftName(shift.getName());
+			data.setCheckCount(((Number) objects[0]).intValue());
+
+			if (objects.length > 1 && objects[1] != null) {
+				data.setGuestCount(((Number) objects[1]).intValue());
+			}
+			if (objects.length > 2 && objects[2] != null) {
+				data.setTotalSales(((Number) objects[2]).doubleValue());
+			}
+			data.setPercentage(data.getTotalSales() * 100 / salesSummary.getGrossSale());
+			data.calculateOthers();
+			salesSummary.addSalesTableData(data);
 		}
 	}
 }
