@@ -256,7 +256,7 @@ public class SalesExceptionReport {
 
 	public class VoidTableModel extends ListTableModel {
 		public VoidTableModel() {
-			setColumnNames(new String[] { "code", "reason", "wast", com.floreantpos.POSConstants.QTY, com.floreantpos.POSConstants.AMOUNT });
+			setColumnNames(new String[] { "code", "reason", "wast", "qty", "amount" });
 		}
 
 		public Object getValueAt(int rowIndex, int columnIndex) {
