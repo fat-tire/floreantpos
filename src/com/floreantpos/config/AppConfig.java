@@ -7,7 +7,7 @@ import org.apache.commons.configuration.PropertiesConfiguration;
 import com.floreantpos.Database;
 
 public class AppConfig {
-	private static final String TERMINAL_ID = "terminal_id"; //$NON-NLS-1$
+	
 	public static final String DATABASE_URL = "database_url"; //$NON-NLS-1$
 	public static final String DATABASE_PORT = "database_port"; //$NON-NLS-1$
 	public static final String DATABASE_NAME = "database_name"; //$NON-NLS-1$
@@ -39,14 +39,10 @@ public class AppConfig {
 		}
 	}
 	
-	public static int getTerminalId() {
-		return config.getInt(TERMINAL_ID, -1);
+	public static PropertiesConfiguration getConfig() {
+		return config;
 	}
 	
-	public static void setTerminalId(int id) {
-		config.setProperty(TERMINAL_ID, id);
-	}
-
 	public static boolean getBoolean(String key, boolean defaultValue) {
 		return config.getBoolean(key, defaultValue);
 	}
