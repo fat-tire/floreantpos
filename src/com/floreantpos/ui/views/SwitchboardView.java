@@ -29,6 +29,7 @@ import com.floreantpos.PosException;
 import com.floreantpos.actions.NewBarTabAction;
 import com.floreantpos.actions.SettleTicketAction;
 import com.floreantpos.bo.ui.BackOfficeWindow;
+import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.extension.OrderServiceExtension;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.AttendenceHistory;
@@ -154,51 +155,63 @@ public class SwitchboardView extends JPanel implements ActionListener {
 		activityPanel.setPreferredSize(new java.awt.Dimension(655, 150));
 		activityPanel.setLayout(new java.awt.GridLayout(3, 0, 5, 5));
 
-		btnNewTicket.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/new_ticket_32.png")));
-		btnNewTicket.setText("DINE IN");
-		activityPanel.add(btnNewTicket);
-		btnTakeout = new com.floreantpos.swing.PosButton();
-
-		btnTakeout.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pay_32.png")));
-		btnTakeout.setText(POSConstants.CAPITAL_TAKE_OUT);
-		activityPanel.add(btnTakeout);
-
-		btnPickup = new PosButton();
-		btnPickup.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				doHomeDelivery(TicketType.PICKUP);
-			}
-		});
-		btnPickup.setText("PICKUP");
-		activityPanel.add(btnPickup);
-
-		btnHomeDelivery = new PosButton();
-		btnHomeDelivery.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				doHomeDelivery(TicketType.HOME_DELIVERY);
-			}
-		});
-		btnHomeDelivery.setText("HOME DELIVERY");
-		activityPanel.add(btnHomeDelivery);
-
-		btnDriveThrough = new PosButton();
-		btnDriveThrough.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				doTakeout(TicketType.DRIVE_THRU);
-			}
-		});
-		btnDriveThrough.setText("DRIVE THRU");
-		activityPanel.add(btnDriveThrough);
+		if(TerminalConfig.isDineInEnable()) {
+			btnNewTicket.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/new_ticket_32.png")));
+			btnNewTicket.setText("DINE IN");
+			activityPanel.add(btnNewTicket);
+		}
 		
-		btnBarTab = new PosButton("BAR TAB");
-		btnBarTab.setAction(new NewBarTabAction(this));
-		activityPanel.add(btnBarTab);
+		if(TerminalConfig.isTakeOutEnable()) {
+			btnTakeout = new com.floreantpos.swing.PosButton();
+			btnTakeout.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pay_32.png")));
+			btnTakeout.setText(POSConstants.CAPITAL_TAKE_OUT);
+			activityPanel.add(btnTakeout);
+		}
 
-		btnEditTicket.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/edit_ticket_32.png")));
-		btnEditTicket.setText(POSConstants.CAPITAL_EDIT);
-		activityPanel.add(btnEditTicket);
+		if(TerminalConfig.isPickupEnable()) {
+			btnPickup = new PosButton();
+			btnPickup.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					doHomeDelivery(TicketType.PICKUP);
+				}
+			});
+			btnPickup.setText("PICKUP");
+			activityPanel.add(btnPickup);
+		}
+
+		if(TerminalConfig.isHomeDeliveryEnable()) {
+			btnHomeDelivery = new PosButton();
+			btnHomeDelivery.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					doHomeDelivery(TicketType.HOME_DELIVERY);
+				}
+			});
+			btnHomeDelivery.setText("HOME DELIVERY");
+			activityPanel.add(btnHomeDelivery);
+		}
+
+		if(TerminalConfig.isDriveThruEnable()) {
+			btnDriveThrough = new PosButton();
+			btnDriveThrough.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					doTakeout(TicketType.DRIVE_THRU);
+				}
+			});
+			btnDriveThrough.setText("DRIVE THRU");
+			activityPanel.add(btnDriveThrough);
+		}
+		
+		if(TerminalConfig.isBarTabEnable()) {
+			btnBarTab = new PosButton("BAR TAB");
+			btnBarTab.setAction(new NewBarTabAction(this));
+			activityPanel.add(btnBarTab);
+	
+			btnEditTicket.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/edit_ticket_32.png")));
+			btnEditTicket.setText(POSConstants.CAPITAL_EDIT);
+			activityPanel.add(btnEditTicket);
+		}
+		
 		btnSettleTicket = new com.floreantpos.swing.PosButton();
-
 		btnSettleTicket.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/settle_ticket_32.png")));
 		btnSettleTicket.setText(POSConstants.CAPITAL_SETTLE);
 		activityPanel.add(btnSettleTicket);
