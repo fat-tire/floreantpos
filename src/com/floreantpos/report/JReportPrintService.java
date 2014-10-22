@@ -176,6 +176,7 @@ public class JReportPrintService {
 		StringBuilder ticketHeaderBuilder = buildTicketHeader(ticket, printProperties);
 
 		map.put("ticketHeader", ticketHeaderBuilder.toString());
+		map.put("barcode", String.valueOf(ticket.getId()));
 
 		if (printProperties.isShowHeader()) {
 			map.put(HEADER_LINE1, restaurant.getName());
