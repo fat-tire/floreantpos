@@ -35,14 +35,13 @@ public class ConfigurationDialog extends POSDialog implements ChangeListener, Ac
 		
 		add(tabbedPane, "span, grow" ); //$NON-NLS-1$
 		
-		RestaurantConfigurationView restaurantConfigurationView = new RestaurantConfigurationView();
-		addView(restaurantConfigurationView);
-		
-		addView(new TaxConfigurationView());
+		addView(new RestaurantConfigurationView());
+		addView(new TerminalConfigurationView());
 		addView(new PrintConfigurationView());
 		addView(new DrawerPullConfigurationView());
 		addView(new CardConfigurationView());
 		addView(new DatabaseConfigurationView());
+		addView(new TaxConfigurationView());
 		
 		tabbedPane.addChangeListener(this);
 		

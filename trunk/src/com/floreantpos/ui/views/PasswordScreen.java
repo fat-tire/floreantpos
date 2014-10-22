@@ -22,13 +22,12 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
-import org.apache.commons.logging.LogFactory;
-
 import net.miginfocom.swing.MigLayout;
+
+import org.apache.commons.logging.LogFactory;
 
 import com.floreantpos.POSConstants;
 import com.floreantpos.config.ui.DatabaseConfigurationDialog;
-import com.floreantpos.config.ui.TerminalSetupDialog;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.AttendenceHistory;
 import com.floreantpos.model.Shift;
@@ -392,12 +391,6 @@ public class PasswordScreen extends JPanel {
 			}
 			else if ("DBCONFIG".equalsIgnoreCase(command)) {
 				DatabaseConfigurationDialog.show(Application.getPosWindow());
-			}
-			else if (POSConstants.TERMINAL_SETUP.equals(command)) {
-				TerminalSetupDialog dialog = new TerminalSetupDialog();
-				dialog.pack();
-				dialog.setLocationRelativeTo(Application.getPosWindow());
-				dialog.setVisible(true);
 			}
 			else {
 				String newPass = capturePassword();

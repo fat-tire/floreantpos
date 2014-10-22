@@ -23,8 +23,8 @@ import org.apache.commons.logging.LogFactory;
 import com.floreantpos.Messages;
 import com.floreantpos.POSConstants;
 import com.floreantpos.bo.ui.BackOfficeWindow;
-import com.floreantpos.config.AppConfig;
 import com.floreantpos.config.AppProperties;
+import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.config.ui.DatabaseConfigurationDialog;
 import com.floreantpos.model.PrinterConfiguration;
 import com.floreantpos.model.Restaurant;
@@ -168,7 +168,7 @@ public class Application {
 	}
 
 	private void initTerminal() {
-		int terminalId = AppConfig.getTerminalId();
+		int terminalId = TerminalConfig.getTerminalId();
 
 		if (terminalId == -1) {
 			//			NumberSelectionDialog2 dialog = new NumberSelectionDialog2();
@@ -195,7 +195,7 @@ public class Application {
 			TerminalDAO.getInstance().saveOrUpdate(terminal);
 		}
 
-		AppConfig.setTerminalId(terminalId);
+		TerminalConfig.setTerminalId(terminalId);
 		RootView.getInstance().getLoginScreen().setTerminalId(terminalId);
 
 		this.terminal = terminal;
