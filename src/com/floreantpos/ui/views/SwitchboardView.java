@@ -339,7 +339,7 @@ public class SwitchboardView extends JPanel implements ActionListener {
 	private void doReopenTicket() {
 		try {
 
-			int ticketId = NumberSelectionDialog2.takeIntInput(POSConstants.ENTER_TICKET_ID);
+			int ticketId = NumberSelectionDialog2.takeIntInput("Enter or scan ticket id");
 
 			if (ticketId == -1) {
 				return;
@@ -426,19 +426,24 @@ public class SwitchboardView extends JPanel implements ActionListener {
 
 	private void doSettleTicket() {
 		try {
-
+			Ticket ticket = null;
+			
 			List<Ticket> selectedTickets = openTicketList.getSelectedTickets();
-			if (selectedTickets.size() == 0 || selectedTickets.size() > 1) {
-				POSMessageDialog.showMessage(POSConstants.SELECT_ONE_TICKET_TO_SETTLE);
-				return;
+			
+			if (selectedTickets.size() > 0) {
+				ticket = selectedTickets.get(0);
 			}
-
-			Ticket ticket = selectedTickets.get(0);
+			else {
+				int ticketId = NumberSelectionDialog2.takeIntInput("Enter or scan ticket id");
+				ticket = TicketService.getTicket(ticketId);
+			}
 
 			new SettleTicketAction(ticket.getId()).execute();
 
 			updateTicketList();
-
+			
+		} catch (PosException e) {
+			POSMessageDialog.showError(this, e.getMessage());
 		} catch (Exception e) {
 			e.printStackTrace();
 			POSMessageDialog.showError(POSConstants.ERROR_MESSAGE, e);
@@ -488,18 +493,19 @@ public class SwitchboardView extends JPanel implements ActionListener {
 
 	private void doVoidTicket() {
 		try {
-			Ticket selectedTicket = getFirstSelectedTicket();
+			Ticket ticket = null;
 
-			if (selectedTicket == null) {
-				return;
+			List<Ticket> selectedTickets = openTicketList.getSelectedTickets();
+
+			if (selectedTickets.size() > 0) {
+				ticket = selectedTickets.get(0);
+			}
+			else {
+				int ticketId = NumberSelectionDialog2.takeIntInput("Enter or scan ticket id");
+				ticket = TicketService.getTicket(ticketId);
 			}
 
-//			if (selectedTicket.getTotalAmount() != selectedTicket.getDueAmount()) {
-//				POSMessageDialog.showMessage(POSConstants.PARTIAL_PAID_VOID_ERROR);
-//				return;
-//			}
-
-			Ticket ticketToVoid = TicketDAO.getInstance().loadFullTicket(selectedTicket.getId());
+			Ticket ticketToVoid = TicketDAO.getInstance().loadFullTicket(ticket.getId());
 
 			VoidTicketDialog voidTicketDialog = new VoidTicketDialog(Application.getPosWindow(), true);
 			voidTicketDialog.setTicket(ticketToVoid);
@@ -508,6 +514,8 @@ public class SwitchboardView extends JPanel implements ActionListener {
 			if (!voidTicketDialog.isCanceled()) {
 				updateView();
 			}
+		} catch (PosException e) {
+			POSMessageDialog.showError(this, e.getMessage());
 		} catch (Exception e) {
 			POSMessageDialog.showError(POSConstants.ERROR_MESSAGE, e);
 		}
@@ -540,15 +548,25 @@ public class SwitchboardView extends JPanel implements ActionListener {
 	}
 
 	private void doEditTicket() {
-		List<Ticket> selectedTickets = openTicketList.getSelectedTickets();
-		if (selectedTickets.size() == 0 || selectedTickets.size() > 1) {
-			POSMessageDialog.showMessage(POSConstants.SELECT_ONE_TICKET_TO_EDIT);
-			return;
+		try {
+			Ticket ticket = null;
+
+			List<Ticket> selectedTickets = openTicketList.getSelectedTickets();
+
+			if (selectedTickets.size() > 0) {
+				ticket = selectedTickets.get(0);
+			}
+			else {
+				int ticketId = NumberSelectionDialog2.takeIntInput("Enter or scan ticket id");
+				ticket = TicketService.getTicket(ticketId);
+			}
+
+			editTicket(ticket);
+		} catch (PosException e) {
+			POSMessageDialog.showError(this, e.getMessage());
+		} catch (Exception e) {
+			POSMessageDialog.showError(this, e.getMessage(), e);
 		}
-
-		Ticket ticket = selectedTickets.get(0);
-
-		editTicket(ticket);
 	}
 
 	private void editTicket(Ticket ticket) {

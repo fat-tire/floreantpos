@@ -42,12 +42,15 @@ public class NumberSelectionDialog2 extends POSDialog implements ActionListener 
 		tfNumber = new JTextField();
 		tfNumber.setText(String.valueOf(defaultValue));
 		tfNumber.setFont(tfNumber.getFont().deriveFont(Font.BOLD, 24));
-		tfNumber.setEditable(false);
+		//tfNumber.setEditable(false);
+		tfNumber.setFocusable(true);
+		tfNumber.requestFocus();
 		tfNumber.setBackground(Color.WHITE);
-		tfNumber.setHorizontalAlignment(JTextField.RIGHT);
+		//tfNumber.setHorizontalAlignment(JTextField.RIGHT);
 		contentPane.add(tfNumber, "span 2, grow");
 
 		PosButton posButton = new PosButton(POSConstants.CLEAR_ALL);
+		posButton.setFocusable(false);
 		posButton.setMinimumSize(new Dimension(25, 23));
 		posButton.addActionListener(this);
 		contentPane.add(posButton, "growy,height 55,wrap");
@@ -59,6 +62,7 @@ public class NumberSelectionDialog2 extends POSDialog implements ActionListener 
 		for (int i = 0; i < numbers.length; i++) {
 			for (int j = 0; j < numbers[i].length; j++) {
 				posButton = new PosButton();
+				posButton.setFocusable(false);
 				ImageIcon icon = IconFactory.getIcon(iconNames[i][j]);
 				String buttonText = String.valueOf(numbers[i][j]);
 
@@ -84,13 +88,14 @@ public class NumberSelectionDialog2 extends POSDialog implements ActionListener 
 		contentPane.add(new JSeparator(), "newline,spanx ,growy,gapy 20");
 
 		posButton = new PosButton(POSConstants.OK);
+		posButton.setFocusable(false);
 		posButton.addActionListener(this);
-		contentPane.add(posButton, "skip 1,height 55,grow");
+		contentPane.add(posButton, "skip 1,grow");
 
 		posButton_1 = new PosButton(POSConstants.CANCEL);
-		posButton_1.setMinimumSize(new Dimension(25, 23));
+		posButton_1.setFocusable(false);
 		posButton_1.addActionListener(this);
-		contentPane.add(posButton_1, "height 55,grow");
+		contentPane.add(posButton_1, "grow");
 
 	}
 	
