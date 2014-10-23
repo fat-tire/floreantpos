@@ -12,7 +12,6 @@ import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.view.JasperViewer;
 
 import com.floreantpos.bo.ui.explorer.ListTableModel;
-import com.floreantpos.util.NumberUtil;
 
 public class SalesAnalysisReportModel extends ListTableModel {
 
@@ -34,13 +33,13 @@ public class SalesAnalysisReportModel extends ListTableModel {
 				return String.valueOf(data.count);
 
 			case 3:
-				return NumberUtil.formatNumber(data.gross);
+				return String.valueOf(data.gross);
 
 			case 4:
-				return NumberUtil.formatNumber(data.discount);
+				return String.valueOf(data.discount);
 
 			case 5:
-				return NumberUtil.formatNumber(data.netSales);
+				return String.valueOf(data.netSales);
 
 			case 6:
 				return " ";//Application.formatNumber(data.avgGross);
