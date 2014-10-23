@@ -32,7 +32,7 @@ public class TerminalConfig {
 	}
 	
 	public static void setDineInEnable(boolean enable) {
-		config.addProperty(DINE_IN_ENABLE, enable);
+		config.setProperty(DINE_IN_ENABLE, enable);
 	}
 	
 	public static boolean isPickupEnable() {
@@ -40,7 +40,7 @@ public class TerminalConfig {
 	}
 	
 	public static void setPickupEnable(boolean enable) {
-		config.addProperty(PICKUP_ENABLE, enable);
+		config.setProperty(PICKUP_ENABLE, enable);
 	}
 	
 	public static boolean isTakeOutEnable() {
@@ -48,7 +48,7 @@ public class TerminalConfig {
 	}
 	
 	public static void setTakeOutEnable(boolean enable) {
-		config.addProperty(TAKE_OUT_ENABLE, enable);
+		config.setProperty(TAKE_OUT_ENABLE, enable);
 	}
 	
 	public static boolean isHomeDeliveryEnable() {
@@ -56,7 +56,7 @@ public class TerminalConfig {
 	}
 	
 	public static void setHomeDeliveryEnable(boolean enable) {
-		config.addProperty(HOME_DELIVERY_ENABLE, enable);
+		config.setProperty(HOME_DELIVERY_ENABLE, enable);
 	}
 	
 	public static boolean isDriveThruEnable() {
@@ -64,7 +64,7 @@ public class TerminalConfig {
 	}
 	
 	public static void setDriveThruEnable(boolean enable) {
-		config.addProperty(DRIVE_THRU_ENABLE, enable);
+		config.setProperty(DRIVE_THRU_ENABLE, enable);
 	}
 	
 	public static boolean isBarTabEnable() {
@@ -72,7 +72,7 @@ public class TerminalConfig {
 	}
 	
 	public static void setBarTabEnable(boolean enable) {
-		config.addProperty(BAR_TAB_ENABLE, enable);
+		config.setProperty(BAR_TAB_ENABLE, enable);
 	}
 	
 }
