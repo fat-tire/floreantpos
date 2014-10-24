@@ -31,6 +31,7 @@ import com.floreantpos.model.Restaurant;
 import com.floreantpos.model.Shift;
 import com.floreantpos.model.Terminal;
 import com.floreantpos.model.User;
+import com.floreantpos.model.UserPermission;
 import com.floreantpos.model.dao.PrinterConfigurationDAO;
 import com.floreantpos.model.dao.RestaurantDAO;
 import com.floreantpos.model.dao.TerminalDAO;
@@ -93,6 +94,11 @@ public class Application {
 
 		posWindow.getContentPane().add(rootView);
 		posWindow.setupSizeAndLocation();
+		
+		if(TerminalConfig.isFullscreenMode()) {
+			posWindow.enterFullScreenMode();
+		}
+		
 		posWindow.setVisible(true);
 
 		initializeSystem();
@@ -254,6 +260,13 @@ public class Application {
 	}
 
 	public void shutdownPOS() {
+		User user = getCurrentUser();
+		
+		if(user != null && !user.hasPermission(UserPermission.SHUT_DOWN)) {
+			POSMessageDialog.showError("You do not have permission to execute this action");
+			return;
+		}
+		
 		int option = JOptionPane.showOptionDialog(getPosWindow(), com.floreantpos.POSConstants.SURE_SHUTDOWN_, com.floreantpos.POSConstants.CONFIRM_SHUTDOWN,
 				JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
 		if (option != JOptionPane.YES_OPTION) {
