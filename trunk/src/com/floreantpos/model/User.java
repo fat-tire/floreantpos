@@ -43,6 +43,10 @@ public class User extends BaseUser {
 	public final static String USER_TYPE_MANAGER = "MANAGER";
 	public final static String USER_TYPE_CASHIER = "CASHIER";
 	public final static String USER_TYPE_SERVER = "SERVER";
+	
+	public boolean hasPermission(UserPermission permission) {
+		return getNewUserType().hasPermission(permission);
+	}
 
 	
 	public void doClockIn(Terminal terminal, Shift shift, Calendar currentTime) {

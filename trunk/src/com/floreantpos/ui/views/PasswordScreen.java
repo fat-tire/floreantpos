@@ -27,6 +27,7 @@ import net.miginfocom.swing.MigLayout;
 import org.apache.commons.logging.LogFactory;
 
 import com.floreantpos.POSConstants;
+import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.config.ui.DatabaseConfigurationDialog;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.AttendenceHistory;
@@ -233,6 +234,9 @@ public class PasswordScreen extends JPanel {
 		btnShutdown.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/shut_down_32.png"))); // NOI18N
 		btnShutdown.setText(com.floreantpos.POSConstants.SHUTDOWN);
 		btnShutdown.setFocusable(false);
+		if(TerminalConfig.isFullscreenMode()) {
+			btnShutdown.setVisible(false);
+		}
 		jPanel3.add(btnShutdown, "cell 0 1,grow");
 
 		add(jPanel3, "cell 0 3,growx,aligny bottom");

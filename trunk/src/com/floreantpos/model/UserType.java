@@ -32,6 +32,15 @@ public class UserType extends BaseUserType {
 		}
 	}
 	
+	public boolean hasPermission(UserPermission permission) {
+		Set<UserPermission> permissions = getPermissions();
+		if(permissions == null) {
+			return false;
+		}
+		
+		return permissions.contains(permission);
+	}
+	
 	@Override
 	public String toString() {
 		String s = getName();
