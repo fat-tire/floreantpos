@@ -2,6 +2,8 @@ package com.floreantpos.main;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
 import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.WindowEvent;
@@ -52,10 +54,18 @@ public class PosWindow extends JFrame implements WindowListener {
 		setLocation(AppConfig.getInt(WLOCX, ((screenSize.width - getWidth()) >> 1)), AppConfig.getInt(WLOCY, ((screenSize.height - getHeight()) >> 1)));
 		setMinimumSize(new Dimension(800, 600));
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		
-//		GraphicsDevice window = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[0];
-//		setUndecorated(true);
-//		window.setFullScreenWindow(this);
+	}
+
+	public void enterFullScreenMode() {
+		GraphicsDevice window = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[0];
+		setUndecorated(true);
+		window.setFullScreenWindow(this);
+	}
+	
+	public void leaveFullScreenMode() {
+		GraphicsDevice window = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[0];
+		setUndecorated(false);
+		window.setFullScreenWindow(null);
 	}
 	
 	public void saveSizeAndLocation() {

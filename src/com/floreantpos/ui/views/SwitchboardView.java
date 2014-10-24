@@ -28,6 +28,7 @@ import com.floreantpos.POSConstants;
 import com.floreantpos.PosException;
 import com.floreantpos.actions.NewBarTabAction;
 import com.floreantpos.actions.SettleTicketAction;
+import com.floreantpos.bo.actions.ShutDownAction;
 import com.floreantpos.bo.ui.BackOfficeWindow;
 import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.extension.OrderServiceExtension;
@@ -85,7 +86,6 @@ public class SwitchboardView extends JPanel implements ActionListener {
 		btnOrderInfo.addActionListener(this);
 		btnReopenTicket.addActionListener(this);
 		btnSettleTicket.addActionListener(this);
-		btnShutdown.addActionListener(this);
 		btnSplitTicket.addActionListener(this);
 		btnTakeout.addActionListener(this);
 		btnVoidTicket.addActionListener(this);
@@ -130,7 +130,7 @@ public class SwitchboardView extends JPanel implements ActionListener {
 		btnPayout = new com.floreantpos.swing.PosButton();
 		btnOrderInfo = new com.floreantpos.swing.PosButton();
 		javax.swing.JPanel bottomRightPanel = new javax.swing.JPanel();
-		btnShutdown = new com.floreantpos.swing.PosButton();
+		btnShutdown = new com.floreantpos.swing.PosButton(new ShutDownAction());
 		btnLogout = new com.floreantpos.swing.PosButton();
 		btnBackOffice = new com.floreantpos.swing.PosButton();
 		btnManager = new com.floreantpos.swing.PosButton();
@@ -156,14 +156,12 @@ public class SwitchboardView extends JPanel implements ActionListener {
 		activityPanel.setLayout(new java.awt.GridLayout(3, 0, 5, 5));
 
 		if(TerminalConfig.isDineInEnable()) {
-			btnNewTicket.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/new_ticket_32.png")));
 			btnNewTicket.setText("DINE IN");
 			activityPanel.add(btnNewTicket);
 		}
 		
 		if(TerminalConfig.isTakeOutEnable()) {
 			btnTakeout = new com.floreantpos.swing.PosButton();
-			btnTakeout.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pay_32.png")));
 			btnTakeout.setText(POSConstants.CAPITAL_TAKE_OUT);
 			activityPanel.add(btnTakeout);
 		}
@@ -206,36 +204,29 @@ public class SwitchboardView extends JPanel implements ActionListener {
 			btnBarTab.setAction(new NewBarTabAction(this));
 			activityPanel.add(btnBarTab);
 	
-			btnEditTicket.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/edit_ticket_32.png")));
 			btnEditTicket.setText(POSConstants.CAPITAL_EDIT);
 			activityPanel.add(btnEditTicket);
 		}
 		
 		btnSettleTicket = new com.floreantpos.swing.PosButton();
-		btnSettleTicket.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/settle_ticket_32.png")));
 		btnSettleTicket.setText(POSConstants.CAPITAL_SETTLE);
 		activityPanel.add(btnSettleTicket);
 		btnGroupSettle = new com.floreantpos.swing.PosButton();
 
-		btnGroupSettle.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/settle_ticket_32.png")));
 		btnGroupSettle.setText("<html><body>" + POSConstants.CAPITAL_GROUP + "<br>" + POSConstants.CAPITAL_SETTLE + "</body></html>");
 		activityPanel.add(btnGroupSettle);
 		btnSplitTicket = new com.floreantpos.swing.PosButton();
 
-		btnSplitTicket.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/split_32.png")));
 		btnSplitTicket.setText(POSConstants.CAPITAL_SPLIT);
 		activityPanel.add(btnSplitTicket);
 		btnReopenTicket = new com.floreantpos.swing.PosButton();
 
-		btnReopenTicket.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/edit_ticket_32.png")));
 		btnReopenTicket.setText(POSConstants.CAPITAL_RE_OPEN);
 		activityPanel.add(btnReopenTicket);
 
-		btnVoidTicket.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/void_ticket_32.png")));
 		btnVoidTicket.setText(POSConstants.CAPITAL_VOID);
 		activityPanel.add(btnVoidTicket);
 
-		btnPayout.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pay_32.png")));
 		btnPayout.setText(POSConstants.CAPITAL_PAY_OUT);
 		activityPanel.add(btnPayout);
 
@@ -268,18 +259,12 @@ public class SwitchboardView extends JPanel implements ActionListener {
 				javax.swing.border.TitledBorder.DEFAULT_POSITION));
 		bottomRightPanel.setPreferredSize(new java.awt.Dimension(180, 10));
 
-		btnShutdown.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/shut_down_32.png")));
-		btnShutdown.setText(POSConstants.CAPITAL_SHUTDOWN);
-
-		btnLogout.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/log_out_32.png")));
 		btnLogout.setText(POSConstants.CAPITAL_LOGOUT);
 
 		btnBackOffice.setText(POSConstants.CAPITAL_BACK_OFFICE);
 
-		btnManager.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/user_32.png")));
 		btnManager.setText(POSConstants.CAPITAL_MANAGER);
 
-		btnClockOut.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/log_out_32.png")));
 		btnClockOut.setText(POSConstants.CAPITAL_CLOCK_OUT);
 
 		bottomPanel.add(bottomRightPanel, java.awt.BorderLayout.EAST);
@@ -414,10 +399,6 @@ public class SwitchboardView extends JPanel implements ActionListener {
 		}
 		window.setVisible(true);
 		window.toFront();
-	}
-
-	private void doShutdown() {
-		Application.getInstance().shutdownPOS();
 	}
 
 	private void doLogout() {
@@ -716,7 +697,7 @@ public class SwitchboardView extends JPanel implements ActionListener {
 					else if (permission.equals(UserPermission.EDIT_TICKET)) {
 						btnEditTicket.setEnabled(true);
 					}
-					else if (permission.equals(UserPermission.CREATE_NEW_TICKET)) {
+					else if (permission.equals(UserPermission.CREATE_TICKET)) {
 						btnNewTicket.setEnabled(true);
 					}
 				}
@@ -737,7 +718,7 @@ public class SwitchboardView extends JPanel implements ActionListener {
 			Set<UserPermission> permissions = user.getNewUserType().getPermissions();
 			if (permissions != null) {
 				for (UserPermission permission : permissions) {
-					if (permission.equals(UserPermission.VIEW_ALL_OPEN_TICKET)) {
+					if (permission.equals(UserPermission.VIEW_OPEN_TICKETS)) {
 						showAllOpenTicket = true;
 						break;
 					}
@@ -831,9 +812,6 @@ public class SwitchboardView extends JPanel implements ActionListener {
 		}
 		else if (source == btnSettleTicket) {
 			doSettleTicket();
-		}
-		else if (source == btnShutdown) {
-			doShutdown();
 		}
 		else if (source == btnSplitTicket) {
 			doSplitTicket();

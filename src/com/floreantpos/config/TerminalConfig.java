@@ -2,20 +2,25 @@ package com.floreantpos.config;
 
 import org.apache.commons.configuration.PropertiesConfiguration;
 
+import com.floreantpos.util.PasswordHasher;
+
 public class TerminalConfig {
-	private static final String BAR_TAB_ENABLE = "BarTab_enable";
+	private static final String BAR_TAB_ENABLE = "BarTab_enable";//$NON-NLS-1$
 
-	private static final String DRIVE_THRU_ENABLE = "DriveThru_enable";
+	private static final String DRIVE_THRU_ENABLE = "DriveThru_enable";//$NON-NLS-1$
 
-	private static final String HOME_DELIVERY_ENABLE = "HomeDelivery_enable";
+	private static final String HOME_DELIVERY_ENABLE = "HomeDelivery_enable";//$NON-NLS-1$
 
-	private static final String TAKE_OUT_ENABLE = "TakeOut_enable";
+	private static final String TAKE_OUT_ENABLE = "TakeOut_enable";//$NON-NLS-1$
 
-	private static final String PICKUP_ENABLE = "Pickup_enable";
+	private static final String PICKUP_ENABLE = "Pickup_enable";//$NON-NLS-1$
 
-	private static final String DINE_IN_ENABLE = "DineIn_enable";
+	private static final String DINE_IN_ENABLE = "DineIn_enable";//$NON-NLS-1$
+	
+	private static final String ADMIN_PASSWORD = "admin_pass";//$NON-NLS-1$
 
 	static final String TERMINAL_ID = "terminal_id"; //$NON-NLS-1$
+	static final String FULLSCREEN_MODE = "fullscreen_mode"; //$NON-NLS-1$
 	
 	private static PropertiesConfiguration config = AppConfig.getConfig();
 
@@ -75,4 +80,23 @@ public class TerminalConfig {
 		config.setProperty(BAR_TAB_ENABLE, enable);
 	}
 	
+	public static boolean isFullscreenMode() {
+		return config.getBoolean(FULLSCREEN_MODE, false);
+	}
+	
+	public static void setFullscreenMode(boolean fullscreen) {
+		config.setProperty(FULLSCREEN_MODE, fullscreen);
+	}
+	
+	public static String getAdminPassword() {
+		return config.getString(ADMIN_PASSWORD, PasswordHasher.hashPassword("1111"));
+	}
+	
+	public static void setAdminPassword(String password) {
+		config.setProperty(ADMIN_PASSWORD, PasswordHasher.hashPassword(password));
+	}
+
+	public static boolean matchAdminPassword(String password) {
+		return getAdminPassword().equals(PasswordHasher.hashPassword(password));
+	}
 }
