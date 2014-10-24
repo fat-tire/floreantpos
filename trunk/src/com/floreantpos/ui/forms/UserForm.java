@@ -244,7 +244,7 @@ public class UserForm extends BeanEditor {
 			throw new IllegalModelStateException("Cost per hour for " + firstName + " " + lastName + " is not valid.");
 		}
 
-		user.setNewUserType((UserType) cbUserType.getSelectedItem());
+		user.setType((UserType) cbUserType.getSelectedItem());
 		user.setCostPerHour(cost);
 
 		user.setSsn(ssn);
@@ -286,7 +286,7 @@ public class UserForm extends BeanEditor {
 		tfPassword1.setText(data.getPassword());
 		tfPassword2.setText(data.getPassword());
 		tfPhone.setText(data.getPhoneNo());
-		cbUserType.setSelectedItem(data.getNewUserType());
+		cbUserType.setSelectedItem(data.getType());
 		
 		Double costPerHour = data.getCostPerHour();
 		if(costPerHour == null) {

@@ -116,7 +116,7 @@ public class DatabaseUtil {
 			u.setPassword("1111");
 			u.setFirstName("Administrator");
 			u.setLastName(com.floreantpos.POSConstants.USER);
-			u.setNewUserType(type);
+			u.setType(type);
 
 			UserDAO dao = new UserDAO();
 			dao.saveOrUpdate(u);
@@ -127,46 +127,6 @@ public class DatabaseUtil {
 			
 			URL resource = DatabaseUtil.class.getResource("/floreantpos-menu-items.xml");
 			DataImportAction.importMenuItemsFromFile(new File(resource.getFile()));
-			
-//			MenuCategory category = new MenuCategory();
-//			category.setName(com.floreantpos.POSConstants.BEVERAGE);
-//			category.setBeverage(Boolean.TRUE);
-//			category.setVisible(Boolean.TRUE);
-//			MenuCategoryDAO.getInstance().saveOrUpdate(category);
-//
-//			MenuCategory category2 = new MenuCategory();
-//			category2.setName("BREAKFAST");
-//			category2.setBeverage(Boolean.FALSE);
-//			category2.setVisible(Boolean.TRUE);
-//			MenuCategoryDAO.getInstance().saveOrUpdate(category2);
-//
-//			MenuGroup group1 = new MenuGroup();
-//			group1.setParent(category);
-//			group1.setName("COLD BEVERAGE");
-//			group1.setVisible(Boolean.TRUE);
-//			MenuGroupDAO.getInstance().save(group1);
-//
-//			MenuGroup group2 = new MenuGroup();
-//			group2.setParent(category2);
-//			group2.setName("FAVOURITE");
-//			group2.setVisible(Boolean.TRUE);
-//			MenuGroupDAO.getInstance().save(group2);
-//
-//			MenuItem item1 = new MenuItem();
-//			item1.setParent(group1);
-//			item1.setName("Coke");
-//			item1.setPrice(Double.valueOf(2.0));
-//			item1.setTax(tax);
-//			item1.setVisible(Boolean.TRUE);
-//			MenuItemDAO.getInstance().save(item1);
-//
-//			MenuItem item2 = new MenuItem();
-//			item2.setParent(group2);
-//			item2.setName("Egg");
-//			item2.setPrice(Double.valueOf(2.0));
-//			item2.setTax(tax);
-//			item2.setVisible(Boolean.TRUE);
-//			MenuItemDAO.getInstance().save(item2);
 
 			return true;
 		} catch (Exception e) {

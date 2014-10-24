@@ -201,7 +201,7 @@ public class UserDAO extends BaseUserDAO {
 		Session session = getSession();
 		Query query = session.createQuery(hql);
 		query = query.setParameter("userId", user.getUserId());
-		query = query.setParameter("userType", user.getNewUserType());
+		query = query.setParameter("userType", user.getType());
 		
 		if (query.list().size() > 0) {
 			throw new PosException("Another user with same ID already exists");

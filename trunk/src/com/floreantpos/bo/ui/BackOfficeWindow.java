@@ -108,7 +108,7 @@ public class BackOfficeWindow extends javax.swing.JFrame {
 
 	private void createMenus() {
 		User user = Application.getCurrentUser();
-		UserType newUserType = user.getNewUserType();
+		UserType newUserType = user.getType();
 
 		Set<UserPermission> permissions = null;
 

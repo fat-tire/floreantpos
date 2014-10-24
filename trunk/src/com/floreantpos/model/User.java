@@ -45,7 +45,7 @@ public class User extends BaseUser {
 	public final static String USER_TYPE_SERVER = "SERVER";
 	
 	public boolean hasPermission(UserPermission permission) {
-		return getNewUserType().hasPermission(permission);
+		return getType().hasPermission(permission);
 	}
 
 	
@@ -85,15 +85,11 @@ public class User extends BaseUser {
 		return getFirstName() + " " + getLastName();
 	}
 	
-//	public boolean isManager() {
-//		return USER_TYPE_MANAGER.equals(getUserType());
-//	}
-//	
-//	public boolean isCashier() {
-//		return USER_TYPE_CASHIER.equals(getUserType());
-//	}
-//	
-//	public boolean isServer() {
-//		return USER_TYPE_SERVER.equals(getUserType());
-//	}
+	public boolean isManager() {
+		return hasPermission(UserPermission.PERFORM_MANAGER_TASK);
+	}
+	
+	public boolean isAdministrator() {
+		return hasPermission(UserPermission.PERFORM_ADMINISTRATIVE_TASK);
+	}
 }

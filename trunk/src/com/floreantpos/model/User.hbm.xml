@@ -23,6 +23,6 @@
     <!-- Associations -->
     <many-to-one class="Shift" column="SHIFT_ID" name="currentShift"/>
     <many-to-one class="Terminal" name="currentTerminal"/>
-    <many-to-one class="UserType" column="N_USER_TYPE" name="newUserType"/>
+    <many-to-one class="UserType" column="N_USER_TYPE" name="type"/>
   </class>
 </hibernate-mapping>

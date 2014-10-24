@@ -24,15 +24,6 @@ public class InventoryItem extends BaseInventoryItem {
 
 /*[CONSTRUCTOR MARKER END]*/
 	
-	@Override
-	public Float getUnitPerPackage() {
-		return super.getUnitPerPackage() == null ? 1 : super.getUnitPerPackage();
-	}
-
-	@Override
-	public Boolean isVisible() {
-		return visible == null ? true : visible;
-	}
 	
 	@Override
 	public String toString() {
@@ -57,10 +48,10 @@ public class InventoryItem extends BaseInventoryItem {
 //			"PACKAGE_REPLENISH_LEVEL","DESCRIPTION","UNIT_SELLING_PRICE"
 			
 			inventoryItem.setName(strings[index++]);
-			inventoryItem.setUnitPerPackage((float) POSUtil.parseDouble(strings[index++]));
+			inventoryItem.setUnitPerPackage(POSUtil.parseDouble(strings[index++]));
 			inventoryItem.setTotalPackages(POSUtil.parseInteger(strings[index++]));
-			inventoryItem.setAveragePackagePrice(POSUtil.parseInteger(strings[index++]));
-			inventoryItem.setTotalRecepieUnits(POSUtil.parseInteger(strings[index++]));
+			inventoryItem.setAveragePackagePrice(POSUtil.parseDouble(strings[index++]));
+			inventoryItem.setTotalRecepieUnits(POSUtil.parseDouble(strings[index++]));
 			inventoryItem.setUnitPurchasePrice(POSUtil.parseDouble(strings[index++]));
 			inventoryItem.setPackageBarcode(strings[index++]);
 			inventoryItem.setUnitBarcode(strings[index++]);
