@@ -1,66 +1,66 @@
-package com.floreantpos.model.dao;
+package com.floreantpos.model.inventory.dao;
 
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
-import com.floreantpos.model.dao.UserDAO;
+import com.floreantpos.model.inventory.dao.InventoryTransactionDAO;
 import org.hibernate.criterion.Order;
 
 /**
  * This is an automatically generated DAO class which should not be edited.
  */
-public abstract class BaseUserDAO extends com.floreantpos.model.dao._RootDAO {
+public abstract class BaseInventoryTransactionDAO extends com.floreantpos.model.inventory.dao._RootDAO {
 
 	// query name references
 
 
-	public static UserDAO instance;
+	public static InventoryTransactionDAO instance;
 
 	/**
 	 * Return a singleton of the DAO
 	 */
-	public static UserDAO getInstance () {
-		if (null == instance) instance = new UserDAO();
+	public static InventoryTransactionDAO getInstance () {
+		if (null == instance) instance = new InventoryTransactionDAO();
 		return instance;
 	}
 
 	public Class getReferenceClass () {
-		return com.floreantpos.model.User.class;
+		return com.floreantpos.model.inventory.InventoryTransaction.class;
 	}
 
     public Order getDefaultOrder () {
-		return Order.asc("lastName");
+		return null;
     }
 
 	/**
-	 * Cast the object as a com.floreantpos.model.User
+	 * Cast the object as a com.floreantpos.model.inventory.InventoryTransaction
 	 */
-	public com.floreantpos.model.User cast (Object object) {
-		return (com.floreantpos.model.User) object;
+	public com.floreantpos.model.inventory.InventoryTransaction cast (Object object) {
+		return (com.floreantpos.model.inventory.InventoryTransaction) object;
 	}
 
-	public com.floreantpos.model.User get(java.lang.Integer key)
+	public com.floreantpos.model.inventory.InventoryTransaction get(java.lang.Integer key)
 		throws org.hibernate.HibernateException {
-		return (com.floreantpos.model.User) get(getReferenceClass(), key);
+		return (com.floreantpos.model.inventory.InventoryTransaction) get(getReferenceClass(), key);
 	}
 
-	public com.floreantpos.model.User get(java.lang.Integer key, Session s)
+	public com.floreantpos.model.inventory.InventoryTransaction get(java.lang.Integer key, Session s)
 		throws org.hibernate.HibernateException {
-		return (com.floreantpos.model.User) get(getReferenceClass(), key, s);
+		return (com.floreantpos.model.inventory.InventoryTransaction) get(getReferenceClass(), key, s);
 	}
 
-	public com.floreantpos.model.User load(java.lang.Integer key)
+	public com.floreantpos.model.inventory.InventoryTransaction load(java.lang.Integer key)
 		throws org.hibernate.HibernateException {
-		return (com.floreantpos.model.User) load(getReferenceClass(), key);
+		return (com.floreantpos.model.inventory.InventoryTransaction) load(getReferenceClass(), key);
 	}
 
-	public com.floreantpos.model.User load(java.lang.Integer key, Session s)
+	public com.floreantpos.model.inventory.InventoryTransaction load(java.lang.Integer key, Session s)
 		throws org.hibernate.HibernateException {
-		return (com.floreantpos.model.User) load(getReferenceClass(), key, s);
+		return (com.floreantpos.model.inventory.InventoryTransaction) load(getReferenceClass(), key, s);
 	}
 
-	public com.floreantpos.model.User loadInitialize(java.lang.Integer key, Session s) 
+	public com.floreantpos.model.inventory.InventoryTransaction loadInitialize(java.lang.Integer key, Session s) 
 			throws org.hibernate.HibernateException { 
-		com.floreantpos.model.User obj = load(key, s); 
+		com.floreantpos.model.inventory.InventoryTransaction obj = load(key, s); 
 		if (!Hibernate.isInitialized(obj)) {
 			Hibernate.initialize(obj);
 		} 
@@ -72,14 +72,14 @@ public abstract class BaseUserDAO extends com.floreantpos.model.dao._RootDAO {
 	/**
 	 * Return all objects related to the implementation of this DAO with no filter.
 	 */
-	public java.util.List<com.floreantpos.model.User> findAll () {
+	public java.util.List<com.floreantpos.model.inventory.InventoryTransaction> findAll () {
 		return super.findAll();
 	}
 
 	/**
 	 * Return all objects related to the implementation of this DAO with no filter.
 	 */
-	public java.util.List<com.floreantpos.model.User> findAll (Order defaultOrder) {
+	public java.util.List<com.floreantpos.model.inventory.InventoryTransaction> findAll (Order defaultOrder) {
 		return super.findAll(defaultOrder);
 	}
 
@@ -88,43 +88,43 @@ public abstract class BaseUserDAO extends com.floreantpos.model.dao._RootDAO {
 	 * Use the session given.
 	 * @param s the Session
 	 */
-	public java.util.List<com.floreantpos.model.User> findAll (Session s, Order defaultOrder) {
+	public java.util.List<com.floreantpos.model.inventory.InventoryTransaction> findAll (Session s, Order defaultOrder) {
 		return super.findAll(s, defaultOrder);
 	}
 
 	/**
 	 * Persist the given transient instance, first assigning a generated identifier. (Or using the current value
 	 * of the identifier property if the assigned generator is used.) 
-	 * @param user a transient instance of a persistent class 
+	 * @param inventoryTransaction a transient instance of a persistent class 
 	 * @return the class identifier
 	 */
-	public java.lang.Integer save(com.floreantpos.model.User user)
+	public java.lang.Integer save(com.floreantpos.model.inventory.InventoryTransaction inventoryTransaction)
 		throws org.hibernate.HibernateException {
-		return (java.lang.Integer) super.save(user);
+		return (java.lang.Integer) super.save(inventoryTransaction);
 	}
 
 	/**
 	 * Persist the given transient instance, first assigning a generated identifier. (Or using the current value
 	 * of the identifier property if the assigned generator is used.) 
 	 * Use the Session given.
-	 * @param user a transient instance of a persistent class
+	 * @param inventoryTransaction a transient instance of a persistent class
 	 * @param s the Session
 	 * @return the class identifier
 	 */
-	public java.lang.Integer save(com.floreantpos.model.User user, Session s)
+	public java.lang.Integer save(com.floreantpos.model.inventory.InventoryTransaction inventoryTransaction, Session s)
 		throws org.hibernate.HibernateException {
-		return (java.lang.Integer) save((Object) user, s);
+		return (java.lang.Integer) save((Object) inventoryTransaction, s);
 	}
 
 	/**
 	 * Either save() or update() the given instance, depending upon the value of its identifier property. By default
 	 * the instance is always saved. This behaviour may be adjusted by specifying an unsaved-value attribute of the
 	 * identifier property mapping. 
-	 * @param user a transient instance containing new or updated state 
+	 * @param inventoryTransaction a transient instance containing new or updated state 
 	 */
-	public void saveOrUpdate(com.floreantpos.model.User user)
+	public void saveOrUpdate(com.floreantpos.model.inventory.InventoryTransaction inventoryTransaction)
 		throws org.hibernate.HibernateException {
-		saveOrUpdate((Object) user);
+		saveOrUpdate((Object) inventoryTransaction);
 	}
 
 	/**
@@ -132,34 +132,34 @@ public abstract class BaseUserDAO extends com.floreantpos.model.dao._RootDAO {
 	 * instance is always saved. This behaviour may be adjusted by specifying an unsaved-value attribute of the identifier
 	 * property mapping. 
 	 * Use the Session given.
-	 * @param user a transient instance containing new or updated state.
+	 * @param inventoryTransaction a transient instance containing new or updated state.
 	 * @param s the Session.
 	 */
-	public void saveOrUpdate(com.floreantpos.model.User user, Session s)
+	public void saveOrUpdate(com.floreantpos.model.inventory.InventoryTransaction inventoryTransaction, Session s)
 		throws org.hibernate.HibernateException {
-		saveOrUpdate((Object) user, s);
+		saveOrUpdate((Object) inventoryTransaction, s);
 	}
 
 	/**
 	 * Update the persistent state associated with the given identifier. An exception is thrown if there is a persistent
 	 * instance with the same identifier in the current session.
-	 * @param user a transient instance containing updated state
+	 * @param inventoryTransaction a transient instance containing updated state
 	 */
-	public void update(com.floreantpos.model.User user) 
+	public void update(com.floreantpos.model.inventory.InventoryTransaction inventoryTransaction) 
 		throws org.hibernate.HibernateException {
-		update((Object) user);
+		update((Object) inventoryTransaction);
 	}
 
 	/**
 	 * Update the persistent state associated with the given identifier. An exception is thrown if there is a persistent
 	 * instance with the same identifier in the current session.
 	 * Use the Session given.
-	 * @param user a transient instance containing updated state
+	 * @param inventoryTransaction a transient instance containing updated state
 	 * @param the Session
 	 */
-	public void update(com.floreantpos.model.User user, Session s)
+	public void update(com.floreantpos.model.inventory.InventoryTransaction inventoryTransaction, Session s)
 		throws org.hibernate.HibernateException {
-		update((Object) user, s);
+		update((Object) inventoryTransaction, s);
 	}
 
 	/**
@@ -187,23 +187,23 @@ public abstract class BaseUserDAO extends com.floreantpos.model.dao._RootDAO {
 	/**
 	 * Remove a persistent instance from the datastore. The argument may be an instance associated with the receiving
 	 * Session or a transient instance with an identifier associated with existing persistent state. 
-	 * @param user the instance to be removed
+	 * @param inventoryTransaction the instance to be removed
 	 */
-	public void delete(com.floreantpos.model.User user)
+	public void delete(com.floreantpos.model.inventory.InventoryTransaction inventoryTransaction)
 		throws org.hibernate.HibernateException {
-		delete((Object) user);
+		delete((Object) inventoryTransaction);
 	}
 
 	/**
 	 * Remove a persistent instance from the datastore. The argument may be an instance associated with the receiving
 	 * Session or a transient instance with an identifier associated with existing persistent state. 
 	 * Use the Session given.
-	 * @param user the instance to be removed
+	 * @param inventoryTransaction the instance to be removed
 	 * @param s the Session
 	 */
-	public void delete(com.floreantpos.model.User user, Session s)
+	public void delete(com.floreantpos.model.inventory.InventoryTransaction inventoryTransaction, Session s)
 		throws org.hibernate.HibernateException {
-		delete((Object) user, s);
+		delete((Object) inventoryTransaction, s);
 	}
 	
 	/**
@@ -216,9 +216,9 @@ public abstract class BaseUserDAO extends com.floreantpos.model.dao._RootDAO {
 	 * <li>after inserting a Blob or Clob</li>
 	 * </ul>
 	 */
-	public void refresh (com.floreantpos.model.User user, Session s)
+	public void refresh (com.floreantpos.model.inventory.InventoryTransaction inventoryTransaction, Session s)
 		throws org.hibernate.HibernateException {
-		refresh((Object) user, s);
+		refresh((Object) inventoryTransaction, s);
 	}
 
 

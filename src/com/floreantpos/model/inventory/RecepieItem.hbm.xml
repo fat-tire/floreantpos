@@ -6,7 +6,7 @@
 			<generator class="identity" />
 		</id>
 		
-		<property name="percentage" column="PERCENTAGE" type="float" />
+		<property name="percentage" column="PERCENTAGE" type="java.lang.Double" />
 		
 		<many-to-one class="com.floreantpos.model.inventory.InventoryItem" lazy="false" name="inventoryItem">
 			<column name="INVENTORY_ITEM" />
