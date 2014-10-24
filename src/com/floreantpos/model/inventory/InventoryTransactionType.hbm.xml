@@ -8,6 +8,6 @@
     <version column="MODIFIED_TIME" name="modifiedTime" type="timestamp"/>
     
     <property column="NAME" name="name" type="string" length="16"/>
-    <property column="IN_OR_OUT" name="inOrOut" type="int" />
+    <property column="IN_OR_OUT" name="inOrOut" type="java.lang.Integer" />
   </class>
 </hibernate-mapping>

@@ -57,7 +57,7 @@ public abstract class BaseRecepieItem  implements Comparable, Serializable {
 	private java.lang.Integer id;
 
 	// fields
-		protected float percentage;
+		protected java.lang.Double percentage;
 
 	// many to one
 	private com.floreantpos.model.inventory.InventoryItem inventoryItem;
@@ -90,15 +90,15 @@ public abstract class BaseRecepieItem  implements Comparable, Serializable {
 	/**
 	 * Return the value associated with the column: PERCENTAGE
 	 */
-	public float getPercentage () {
-					return percentage;
-			}
+	public java.lang.Double getPercentage () {
+									return percentage == null ? Double.valueOf(0) : percentage;
+					}
 
 	/**
 	 * Set the value related to the column: PERCENTAGE
 	 * @param percentage the PERCENTAGE value
 	 */
-	public void setPercentage (float percentage) {
+	public void setPercentage (java.lang.Double percentage) {
 		this.percentage = percentage;
 	}
 

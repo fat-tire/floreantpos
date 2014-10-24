@@ -71,7 +71,7 @@ public class UserExplorer extends TransparentPanel {
 					
 					User user2 = new User();
 					user2.setUserId(user.getUserId());
-					user2.setNewUserType(user.getNewUserType());
+					user2.setType(user.getType());
 					user2.setFirstName(user.getFirstName());
 					user2.setLastName(user.getLastName());
 					user2.setPassword(user.getPassword());
@@ -136,7 +136,7 @@ public class UserExplorer extends TransparentPanel {
 						tableModel.deleteItem(index);
 					}
 				} catch(ConstraintViolationException x) {
-					String message = com.floreantpos.POSConstants.USER + " " + user.getFirstName() + " " + user.getLastName() + " (" + user.getNewUserType() + ") " + com.floreantpos.POSConstants.ERROR_MESSAGE; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+					String message = com.floreantpos.POSConstants.USER + " " + user.getFirstName() + " " + user.getLastName() + " (" + user.getType() + ") " + com.floreantpos.POSConstants.ERROR_MESSAGE; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 				BOMessageDialog.showError(message, x);
 				} catch (Exception x) {
 				BOMessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
@@ -174,7 +174,7 @@ public class UserExplorer extends TransparentPanel {
 					return user.getLastName();
 					
 				case 3:
-					return user.getNewUserType();
+					return user.getType();
 			}
 			return null;
 		}

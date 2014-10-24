@@ -8,8 +8,8 @@
     <version column="MODIFIED_TIME" name="modifiedTime" type="timestamp"/>
     
     <property column="TRANSACTION_DATE" name="transactionDate" type="java.util.Date"/>
-    <property column="QUANTITY" name="quantity" type="float"/>
-    <property column="UNIT_PRICE" name="unitPrice" type="double" />
+    <property column="QUANTITY" name="quantity" type="java.lang.Double"/>
+    <property column="UNIT_PRICE" name="unitPrice" type="java.lang.Double" />
     <property column="REMARK" name="remark" type="string" length="255" />
     
     <many-to-one class="InventoryTransactionType" name="transactionType" column="TRANSACTION_TYPE_ID" /> 

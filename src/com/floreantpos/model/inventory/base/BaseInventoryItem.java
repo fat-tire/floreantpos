@@ -70,16 +70,16 @@ public abstract class BaseInventoryItem  implements Comparable, Serializable {
 		protected java.lang.String packageBarcode;
 		protected java.lang.String unitBarcode;
 		protected java.lang.String packageDescription;
-		protected java.lang.Float unitPerPackage;
+		protected java.lang.Double unitPerPackage;
 		protected java.lang.Integer sortOrder;
-		protected int packageReorderLevel;
-		protected int packageReplenishLevel;
+		protected java.lang.Integer packageReorderLevel;
+		protected java.lang.Integer packageReplenishLevel;
 		protected java.lang.String description;
-		protected double averagePackagePrice;
-		protected int totalPackages;
-		protected float totalRecepieUnits;
-		protected double unitPurchasePrice;
-		protected double unitSellingPrice;
+		protected java.lang.Double averagePackagePrice;
+		protected java.lang.Integer totalPackages;
+		protected java.lang.Double totalRecepieUnits;
+		protected java.lang.Double unitPurchasePrice;
+		protected java.lang.Double unitSellingPrice;
 		protected java.lang.Boolean visible;
 
 	// many to one
@@ -233,15 +233,15 @@ public abstract class BaseInventoryItem  implements Comparable, Serializable {
 	/**
 	 * Return the value associated with the column: UNIT_PER_PACKAGE
 	 */
-	public java.lang.Float getUnitPerPackage () {
-					return unitPerPackage;
-			}
+	public java.lang.Double getUnitPerPackage () {
+									return unitPerPackage == null ? Double.valueOf(0) : unitPerPackage;
+					}
 
 	/**
 	 * Set the value related to the column: UNIT_PER_PACKAGE
 	 * @param unitPerPackage the UNIT_PER_PACKAGE value
 	 */
-	public void setUnitPerPackage (java.lang.Float unitPerPackage) {
+	public void setUnitPerPackage (java.lang.Double unitPerPackage) {
 		this.unitPerPackage = unitPerPackage;
 	}
 
@@ -267,15 +267,15 @@ public abstract class BaseInventoryItem  implements Comparable, Serializable {
 	/**
 	 * Return the value associated with the column: PACKAGE_REORDER_LEVEL
 	 */
-	public int getPackageReorderLevel () {
-					return packageReorderLevel;
+	public java.lang.Integer getPackageReorderLevel () {
+					return packageReorderLevel == null ? Integer.valueOf(0) : packageReorderLevel;
 			}
 
 	/**
 	 * Set the value related to the column: PACKAGE_REORDER_LEVEL
 	 * @param packageReorderLevel the PACKAGE_REORDER_LEVEL value
 	 */
-	public void setPackageReorderLevel (int packageReorderLevel) {
+	public void setPackageReorderLevel (java.lang.Integer packageReorderLevel) {
 		this.packageReorderLevel = packageReorderLevel;
 	}
 
@@ -284,15 +284,15 @@ public abstract class BaseInventoryItem  implements Comparable, Serializable {
 	/**
 	 * Return the value associated with the column: PACKAGE_REPLENISH_LEVEL
 	 */
-	public int getPackageReplenishLevel () {
-					return packageReplenishLevel;
+	public java.lang.Integer getPackageReplenishLevel () {
+					return packageReplenishLevel == null ? Integer.valueOf(0) : packageReplenishLevel;
 			}
 
 	/**
 	 * Set the value related to the column: PACKAGE_REPLENISH_LEVEL
 	 * @param packageReplenishLevel the PACKAGE_REPLENISH_LEVEL value
 	 */
-	public void setPackageReplenishLevel (int packageReplenishLevel) {
+	public void setPackageReplenishLevel (java.lang.Integer packageReplenishLevel) {
 		this.packageReplenishLevel = packageReplenishLevel;
 	}
 
@@ -318,15 +318,15 @@ public abstract class BaseInventoryItem  implements Comparable, Serializable {
 	/**
 	 * Return the value associated with the column: AVERAGE_PACKAGE_PRICE
 	 */
-	public double getAveragePackagePrice () {
-					return averagePackagePrice;
-			}
+	public java.lang.Double getAveragePackagePrice () {
+									return averagePackagePrice == null ? Double.valueOf(0) : averagePackagePrice;
+					}
 
 	/**
 	 * Set the value related to the column: AVERAGE_PACKAGE_PRICE
 	 * @param averagePackagePrice the AVERAGE_PACKAGE_PRICE value
 	 */
-	public void setAveragePackagePrice (double averagePackagePrice) {
+	public void setAveragePackagePrice (java.lang.Double averagePackagePrice) {
 		this.averagePackagePrice = averagePackagePrice;
 	}
 
@@ -335,15 +335,15 @@ public abstract class BaseInventoryItem  implements Comparable, Serializable {
 	/**
 	 * Return the value associated with the column: TOTAL_PACKAGES
 	 */
-	public int getTotalPackages () {
-					return totalPackages;
+	public java.lang.Integer getTotalPackages () {
+					return totalPackages == null ? Integer.valueOf(0) : totalPackages;
 			}
 
 	/**
 	 * Set the value related to the column: TOTAL_PACKAGES
 	 * @param totalPackages the TOTAL_PACKAGES value
 	 */
-	public void setTotalPackages (int totalPackages) {
+	public void setTotalPackages (java.lang.Integer totalPackages) {
 		this.totalPackages = totalPackages;
 	}
 
@@ -352,15 +352,15 @@ public abstract class BaseInventoryItem  implements Comparable, Serializable {
 	/**
 	 * Return the value associated with the column: TOTAL_RECEPIE_UNITS
 	 */
-	public float getTotalRecepieUnits () {
-					return totalRecepieUnits;
-			}
+	public java.lang.Double getTotalRecepieUnits () {
+									return totalRecepieUnits == null ? Double.valueOf(0) : totalRecepieUnits;
+					}
 
 	/**
 	 * Set the value related to the column: TOTAL_RECEPIE_UNITS
 	 * @param totalRecepieUnits the TOTAL_RECEPIE_UNITS value
 	 */
-	public void setTotalRecepieUnits (float totalRecepieUnits) {
+	public void setTotalRecepieUnits (java.lang.Double totalRecepieUnits) {
 		this.totalRecepieUnits = totalRecepieUnits;
 	}
 
@@ -369,15 +369,15 @@ public abstract class BaseInventoryItem  implements Comparable, Serializable {
 	/**
 	 * Return the value associated with the column: UNIT_PURCHASE_PRICE
 	 */
-	public double getUnitPurchasePrice () {
-					return unitPurchasePrice;
-			}
+	public java.lang.Double getUnitPurchasePrice () {
+									return unitPurchasePrice == null ? Double.valueOf(0) : unitPurchasePrice;
+					}
 
 	/**
 	 * Set the value related to the column: UNIT_PURCHASE_PRICE
 	 * @param unitPurchasePrice the UNIT_PURCHASE_PRICE value
 	 */
-	public void setUnitPurchasePrice (double unitPurchasePrice) {
+	public void setUnitPurchasePrice (java.lang.Double unitPurchasePrice) {
 		this.unitPurchasePrice = unitPurchasePrice;
 	}
 
@@ -386,15 +386,15 @@ public abstract class BaseInventoryItem  implements Comparable, Serializable {
 	/**
 	 * Return the value associated with the column: UNIT_SELLING_PRICE
 	 */
-	public double getUnitSellingPrice () {
-					return unitSellingPrice;
-			}
+	public java.lang.Double getUnitSellingPrice () {
+									return unitSellingPrice == null ? Double.valueOf(0) : unitSellingPrice;
+					}
 
 	/**
 	 * Set the value related to the column: UNIT_SELLING_PRICE
 	 * @param unitSellingPrice the UNIT_SELLING_PRICE value
 	 */
-	public void setUnitSellingPrice (double unitSellingPrice) {
+	public void setUnitSellingPrice (java.lang.Double unitSellingPrice) {
 		this.unitSellingPrice = unitSellingPrice;
 	}
 

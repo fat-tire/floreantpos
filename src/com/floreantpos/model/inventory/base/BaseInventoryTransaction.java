@@ -55,8 +55,8 @@ public abstract class BaseInventoryTransaction  implements Comparable, Serializa
 
 	// fields
 		protected java.util.Date transactionDate;
-		protected float quantity;
-		protected double unitPrice;
+		protected java.lang.Double quantity;
+		protected java.lang.Double unitPrice;
 		protected java.lang.String remark;
 
 	// many to one
@@ -128,15 +128,15 @@ public abstract class BaseInventoryTransaction  implements Comparable, Serializa
 	/**
 	 * Return the value associated with the column: QUANTITY
 	 */
-	public float getQuantity () {
-					return quantity;
-			}
+	public java.lang.Double getQuantity () {
+									return quantity == null ? Double.valueOf(0) : quantity;
+					}
 
 	/**
 	 * Set the value related to the column: QUANTITY
 	 * @param quantity the QUANTITY value
 	 */
-	public void setQuantity (float quantity) {
+	public void setQuantity (java.lang.Double quantity) {
 		this.quantity = quantity;
 	}
 
@@ -145,15 +145,15 @@ public abstract class BaseInventoryTransaction  implements Comparable, Serializa
 	/**
 	 * Return the value associated with the column: UNIT_PRICE
 	 */
-	public double getUnitPrice () {
-					return unitPrice;
-			}
+	public java.lang.Double getUnitPrice () {
+									return unitPrice == null ? Double.valueOf(0) : unitPrice;
+					}
 
 	/**
 	 * Set the value related to the column: UNIT_PRICE
 	 * @param unitPrice the UNIT_PRICE value
 	 */
-	public void setUnitPrice (double unitPrice) {
+	public void setUnitPrice (java.lang.Double unitPrice) {
 		this.unitPrice = unitPrice;
 	}
 

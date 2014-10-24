@@ -43,11 +43,11 @@ public abstract class BaseInventoryTransactionType  implements Comparable, Seria
 	// primary key
 	private java.lang.Integer id;
 
-	 java.util.Date modifiedTime;
+	private java.util.Date modifiedTime;
 
 	// fields
 		protected java.lang.String name;
-		protected int inOrOut;
+		protected java.lang.Integer inOrOut;
 
 
 
@@ -110,15 +110,15 @@ public abstract class BaseInventoryTransactionType  implements Comparable, Seria
 	/**
 	 * Return the value associated with the column: IN_OR_OUT
 	 */
-	public int getInOrOut () {
-					return inOrOut;
+	public java.lang.Integer getInOrOut () {
+					return inOrOut == null ? Integer.valueOf(0) : inOrOut;
 			}
 
 	/**
 	 * Set the value related to the column: IN_OR_OUT
 	 * @param inOrOut the IN_OR_OUT value
 	 */
-	public void setInOrOut (int inOrOut) {
+	public void setInOrOut (java.lang.Integer inOrOut) {
 		this.inOrOut = inOrOut;
 	}
 

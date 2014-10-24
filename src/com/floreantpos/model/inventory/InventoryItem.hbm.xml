@@ -16,18 +16,18 @@
         <property column="PACKAGE_BARCODE" length="30" name="packageBarcode" type="java.lang.String"/>
         <property column="UNIT_BARCODE" length="30" name="unitBarcode" type="java.lang.String"/>
         <property column="PACKAGE_DESC" length="30" name="packageDescription" type="java.lang.String"/>
-        <property column="UNIT_PER_PACKAGE" name="unitPerPackage" type="java.lang.Float"/>
+        <property column="UNIT_PER_PACKAGE" name="unitPerPackage" type="java.lang.Double"/>
         <property column="SORT_ORDER" name="sortOrder" type="java.lang.Integer"/>
-        <property column="PACKAGE_REORDER_LEVEL" name="packageReorderLevel" type="int"/>
-        <property column="PACKAGE_REPLENISH_LEVEL" name="packageReplenishLevel" type="int"/>
+        <property column="PACKAGE_REORDER_LEVEL" name="packageReorderLevel" type="java.lang.Integer"/>
+        <property column="PACKAGE_REPLENISH_LEVEL" name="packageReplenishLevel" type="java.lang.Integer"/>
         <property column="DESCRIPTION" name="description" type="java.lang.String"/>
-        <property column="AVERAGE_PACKAGE_PRICE" name="averagePackagePrice" type="double"/>
+        <property column="AVERAGE_PACKAGE_PRICE" name="averagePackagePrice" type="java.lang.Double"/>
         
-        <property column="TOTAL_PACKAGES" name="totalPackages" type="int"/>
-        <property column="TOTAL_RECEPIE_UNITS" name="totalRecepieUnits" type="float"/>
+        <property column="TOTAL_PACKAGES" name="totalPackages" type="java.lang.Integer"/>
+        <property column="TOTAL_RECEPIE_UNITS" name="totalRecepieUnits" type="java.lang.Double"/>
        
-        <property column="UNIT_PURCHASE_PRICE" name="unitPurchasePrice" type="double"/>
-        <property column="UNIT_SELLING_PRICE" name="unitSellingPrice" type="double"/>
+        <property column="UNIT_PURCHASE_PRICE" name="unitPurchasePrice" type="java.lang.Double"/>
+        <property column="UNIT_SELLING_PRICE" name="unitSellingPrice" type="java.lang.Double"/>
         <property column="VISIBLE" name="visible" type="java.lang.Boolean"/>
 
         <many-to-one class="InventoryGroup" name="itemGroup">

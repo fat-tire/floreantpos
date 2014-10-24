@@ -77,7 +77,7 @@ public class SalesSummaryDAO extends _RootDAO {
 			criteria.add(Restrictions.le("t." + Ticket.PROP_ACTIVE_DATE, end));
 
 			if (userType != null) {
-				criteria.add(Restrictions.eq("u." + User.PROP_NEW_USER_TYPE, userType));
+				criteria.add(Restrictions.eq("u." + User.PROP_TYPE, userType));
 			}
 			if (terminal != null) {
 				criteria.add(Restrictions.eq("item." + TicketItem.PROP_TICKET + "." + Ticket.PROP_TERMINAL, terminal));
@@ -117,7 +117,7 @@ public class SalesSummaryDAO extends _RootDAO {
 			criteria.add(Restrictions.le("t." + Ticket.PROP_ACTIVE_DATE, end));
 
 			if (userType != null) {
-				criteria.add(Restrictions.eq("u." + User.PROP_NEW_USER_TYPE, userType));
+				criteria.add(Restrictions.eq("u." + User.PROP_TYPE, userType));
 			}
 			if (terminal != null) {
 				criteria.add(Restrictions.eq("item." + TicketItem.PROP_TICKET + "." + Ticket.PROP_TERMINAL, terminal));
@@ -162,7 +162,7 @@ public class SalesSummaryDAO extends _RootDAO {
 					criteria.add(Restrictions.le("t." + Ticket.PROP_ACTIVE_DATE, end));
 
 					if (userType != null) {
-						criteria.add(Restrictions.eq("u." + User.PROP_NEW_USER_TYPE, userType));
+						criteria.add(Restrictions.eq("u." + User.PROP_TYPE, userType));
 					}
 					if (terminal != null) {
 						criteria.add(Restrictions.eq("item." + TicketItem.PROP_TICKET + "." + Ticket.PROP_TERMINAL, terminal));
@@ -206,7 +206,7 @@ public class SalesSummaryDAO extends _RootDAO {
 				criteria.add(Restrictions.le("t." + Ticket.PROP_ACTIVE_DATE, end));
 
 				if (userType != null) {
-					criteria.add(Restrictions.eq("u." + User.PROP_NEW_USER_TYPE, userType));
+					criteria.add(Restrictions.eq("u." + User.PROP_TYPE, userType));
 				}
 				if (terminal != null) {
 					criteria.add(Restrictions.eq("item." + TicketItem.PROP_TICKET + "." + Ticket.PROP_TERMINAL, terminal));
@@ -274,7 +274,7 @@ public class SalesSummaryDAO extends _RootDAO {
 				criteria.add(Restrictions.eq(Ticket.PROP_VOIDED, Boolean.FALSE));
 
 				if (userType != null) {
-					criteria.add(Restrictions.eq("u." + User.PROP_NEW_USER_TYPE, userType));
+					criteria.add(Restrictions.eq("u." + User.PROP_TYPE, userType));
 				}
 
 				if (terminal != null) {
@@ -309,7 +309,7 @@ public class SalesSummaryDAO extends _RootDAO {
 				criteria.add(Restrictions.le(Ticket.PROP_CREATE_DATE, end));
 
 				if (userType != null) {
-					criteria.add(Restrictions.eq("u." + User.PROP_NEW_USER_TYPE, userType));
+					criteria.add(Restrictions.eq("u." + User.PROP_TYPE, userType));
 				}
 
 				if (terminal != null) {
@@ -340,7 +340,7 @@ public class SalesSummaryDAO extends _RootDAO {
 				criteria.add(Restrictions.eq(Ticket.PROP_CLOSED, Boolean.FALSE));
 
 				if (userType != null) {
-					criteria.add(Restrictions.eq("u." + User.PROP_NEW_USER_TYPE, userType));
+					criteria.add(Restrictions.eq("u." + User.PROP_TYPE, userType));
 				}
 				if (terminal != null) {
 					criteria.add(Restrictions.eq(Ticket.PROP_TERMINAL, terminal));
@@ -370,7 +370,7 @@ public class SalesSummaryDAO extends _RootDAO {
 				criteria.add(Restrictions.eq(Ticket.PROP_VOIDED, Boolean.TRUE));
 
 				if (userType != null) {
-					criteria.add(Restrictions.eq("u." + User.PROP_NEW_USER_TYPE, userType));
+					criteria.add(Restrictions.eq("u." + User.PROP_TYPE, userType));
 				}
 				if (terminal != null) {
 					criteria.add(Restrictions.eq(Ticket.PROP_TERMINAL, terminal));
@@ -400,7 +400,7 @@ public class SalesSummaryDAO extends _RootDAO {
 				criteria.add(Restrictions.eq(Ticket.PROP_TAX_EXEMPT, Boolean.TRUE));
 
 				if (userType != null) {
-					criteria.add(Restrictions.eq("u." + User.PROP_NEW_USER_TYPE, userType));
+					criteria.add(Restrictions.eq("u." + User.PROP_TYPE, userType));
 				}
 				if (terminal != null) {
 					criteria.add(Restrictions.eq(Ticket.PROP_TERMINAL, terminal));
@@ -428,7 +428,7 @@ public class SalesSummaryDAO extends _RootDAO {
 				criteria.add(Restrictions.eq(Ticket.PROP_RE_OPENED, Boolean.TRUE));
 
 				if (userType != null) {
-					criteria.add(Restrictions.eq("u." + User.PROP_NEW_USER_TYPE, userType));
+					criteria.add(Restrictions.eq("u." + User.PROP_TYPE, userType));
 				}
 				if (terminal != null) {
 					criteria.add(Restrictions.eq(Ticket.PROP_TERMINAL, terminal));
@@ -452,7 +452,7 @@ public class SalesSummaryDAO extends _RootDAO {
 				criteria.add(Restrictions.le(AttendenceHistory.PROP_CLOCK_IN_TIME, end));
 
 				if (userType != null) {
-					criteria.add(Restrictions.eq("u." + User.PROP_NEW_USER_TYPE, userType));
+					criteria.add(Restrictions.eq("u." + User.PROP_TYPE, userType));
 				}
 				if (terminal != null) {
 					criteria.add(Restrictions.eq(AttendenceHistory.PROP_TERMINAL, terminal));
@@ -522,7 +522,7 @@ public class SalesSummaryDAO extends _RootDAO {
 		criteria.add(Restrictions.eq(Ticket.PROP_TICKET_TYPE, ticketType.name()));
 
 		if (userType != null) {
-			criteria.add(Restrictions.eq("u." + User.PROP_NEW_USER_TYPE, userType));
+			criteria.add(Restrictions.eq("u." + User.PROP_TYPE, userType));
 		}
 		if (terminal != null) {
 			criteria.add(Restrictions.eq(Ticket.PROP_TERMINAL, terminal));

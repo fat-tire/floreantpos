@@ -648,7 +648,7 @@ public class SwitchboardView extends JPanel implements ActionListener {
 
 	public void updateView() {
 		User user = Application.getCurrentUser();
-		UserType userType = user.getNewUserType();
+		UserType userType = user.getType();
 		if (userType != null) {
 			Set<UserPermission> permissions = userType.getPermissions();
 			if (permissions != null) {
@@ -714,8 +714,8 @@ public class SwitchboardView extends JPanel implements ActionListener {
 		List<Ticket> openTickets = null;
 
 		boolean showAllOpenTicket = false;
-		if (user.getNewUserType() != null) {
-			Set<UserPermission> permissions = user.getNewUserType().getPermissions();
+		if (user.getType() != null) {
+			Set<UserPermission> permissions = user.getType().getPermissions();
 			if (permissions != null) {
 				for (UserPermission permission : permissions) {
 					if (permission.equals(UserPermission.VIEW_OPEN_TICKETS)) {
