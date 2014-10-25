@@ -83,9 +83,9 @@ public class PosWindow extends JFrame implements WindowListener {
 		glassPane.setVisible(b);
 	}
 	
-	public void setGlassPaneMessage(String message) {
+	/*public void setGlassPaneMessage(String message) {
 		glassPane.setMessage(message);
-	}
+	}*/
 
 	public void windowOpened(WindowEvent e) {
 	}

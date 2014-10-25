@@ -17,7 +17,6 @@ import com.floreantpos.model.dao.RestaurantDAO;
 import com.floreantpos.model.dao.TerminalDAO;
 import com.floreantpos.model.dao.UserDAO;
 import com.floreantpos.print.DrawerpullReportService;
-import com.floreantpos.swing.GlassPane;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.util.ShiftUtil;
 
@@ -43,7 +42,7 @@ public class AutoDrawerPullAction implements ActionListener {
 			else {
 				return;
 			}
-			((GlassPane) posWindow.getGlassPane()).setMessage(com.floreantpos.POSConstants.PERFORMING_AUTO_DRAWER_PULL);
+			//((GlassPane) posWindow.getGlassPane()).setMessage(com.floreantpos.POSConstants.PERFORMING_AUTO_DRAWER_PULL);
 			posWindow.setGlassPaneVisible(true);
 			DrawerPullReport report = DrawerpullReportService.buildDrawerPullReport();
 

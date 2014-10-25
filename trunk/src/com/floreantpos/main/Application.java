@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Random;
 
@@ -122,14 +121,14 @@ public class Application {
 		try {
 
 			posWindow.setGlassPaneVisible(true);
-			posWindow.setGlassPaneMessage(com.floreantpos.POSConstants.LOADING);
+			//posWindow.setGlassPaneMessage(com.floreantpos.POSConstants.LOADING);
 
 			DatabaseUtil.checkConnection(DatabaseUtil.initialize());
 
 			initTerminal();
 			initPrintConfig();
 			refreshRestaurant();
-			setTicketActiveSetterScheduler();
+			//setTicketActiveSetterScheduler();
 			setSystemInitialized(true);
 
 		} catch (DatabaseConnectionException e) {
@@ -158,14 +157,14 @@ public class Application {
 		}
 	}
 
-	private void setTicketActiveSetterScheduler() {
-		Calendar calendar = Calendar.getInstance();
-		calendar.set(Calendar.DAY_OF_MONTH, calendar.get(Calendar.DAY_OF_MONTH) + 1);
-		calendar.set(Calendar.HOUR_OF_DAY, 0);
-		calendar.set(Calendar.MINUTE, 0);
-		calendar.set(Calendar.SECOND, 0);
-
-	}
+//	private void setTicketActiveSetterScheduler() {
+//		Calendar calendar = Calendar.getInstance();
+//		calendar.set(Calendar.DAY_OF_MONTH, calendar.get(Calendar.DAY_OF_MONTH) + 1);
+//		calendar.set(Calendar.HOUR_OF_DAY, 0);
+//		calendar.set(Calendar.MINUTE, 0);
+//		calendar.set(Calendar.SECOND, 0);
+//
+//	}
 
 	private void initPrintConfig() {
 		printConfiguration = PrinterConfigurationDAO.getInstance().get(PrinterConfiguration.ID);
@@ -178,28 +177,24 @@ public class Application {
 		int terminalId = TerminalConfig.getTerminalId();
 
 		if (terminalId == -1) {
-			//			NumberSelectionDialog2 dialog = new NumberSelectionDialog2();
-			//			dialog.setTitle(com.floreantpos.POSConstants.ENTER_ID_FOR_TERMINAL);
-			//			dialog.pack();
-			//			dialog.setLocationRelativeTo(getPosWindow());
-			//			dialog.setVisible(true);
-			//			
-			//			terminalId = (int) dialog.getValue();
-
 			Random random = new Random();
 			terminalId = random.nextInt(10000) + 1;
 		}
 
-		Terminal terminal = TerminalDAO.getInstance().get(new Integer(terminalId));
-		if (terminal == null) {
+		Terminal terminal = null;
+		try {
+			terminal = TerminalDAO.getInstance().get(new Integer(terminalId));
+			if (terminal == null) {
+				terminal = new Terminal();
+				terminal.setId(terminalId);
+				terminal.setOpeningBalance(new Double(500));
+				terminal.setCurrentBalance(new Double(500));
+				terminal.setName(String.valueOf(terminalId)); //$NON-NLS-1$
 
-			terminal = new Terminal();
-			terminal.setId(terminalId);
-			terminal.setOpeningBalance(new Double(500));
-			terminal.setCurrentBalance(new Double(500));
-			terminal.setName(String.valueOf(terminalId)); //$NON-NLS-1$
-
-			TerminalDAO.getInstance().saveOrUpdate(terminal);
+				TerminalDAO.getInstance().saveOrUpdate(terminal);
+			}
+		} catch (Exception e) {
+			throw new DatabaseConnectionException();
 		}
 
 		TerminalConfig.setTerminalId(terminalId);
@@ -209,29 +204,33 @@ public class Application {
 	}
 
 	public void refreshRestaurant() {
-		this.restaurant = RestaurantDAO.getRestaurant();
-		
-		if(restaurant.getUniqueId() == null || restaurant.getUniqueId() == 0) {
-			restaurant.setUniqueId(RandomUtils.nextInt());
-			RestaurantDAO.getInstance().saveOrUpdate(restaurant);
-		}
-		
-		if (restaurant.isAutoDrawerPullEnable() && autoDrawerPullTimer == null) {
-			autoDrawerPullTimer = new Timer(60 * 1000, new AutoDrawerPullAction());
-			autoDrawerPullTimer.start();
-		}
-		else {
-			if (autoDrawerPullTimer != null) {
-				autoDrawerPullTimer.stop();
-				autoDrawerPullTimer = null;
+		try {
+			this.restaurant = RestaurantDAO.getRestaurant();
+
+			if (restaurant.getUniqueId() == null || restaurant.getUniqueId() == 0) {
+				restaurant.setUniqueId(RandomUtils.nextInt());
+				RestaurantDAO.getInstance().saveOrUpdate(restaurant);
 			}
-		}
-		
-		if(restaurant.isItemPriceIncludesTax()) {
-			posWindow.setStatus("Tax is included in item price");
-		}
-		else {
-			posWindow.setStatus("Tax is not included in item price");
+
+			if (restaurant.isAutoDrawerPullEnable() && autoDrawerPullTimer == null) {
+				autoDrawerPullTimer = new Timer(60 * 1000, new AutoDrawerPullAction());
+				autoDrawerPullTimer.start();
+			}
+			else {
+				if (autoDrawerPullTimer != null) {
+					autoDrawerPullTimer.stop();
+					autoDrawerPullTimer = null;
+				}
+			}
+
+			if (restaurant.isItemPriceIncludesTax()) {
+				posWindow.setStatus("Tax is included in item price");
+			}
+			else {
+				posWindow.setStatus("Tax is not included in item price");
+			}
+		} catch (Exception e) {
+			throw new DatabaseConnectionException();
 		}
 	}
 
