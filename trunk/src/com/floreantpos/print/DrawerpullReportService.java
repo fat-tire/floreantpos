@@ -3,6 +3,7 @@ package com.floreantpos.print;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -307,7 +308,7 @@ public class DrawerpullReportService {
 		
 		TransactionSummary summary = new TransactionSummary();
 		
-		List<PosTransaction> transactions = ticket.getTransactions();
+		Set<PosTransaction> transactions = ticket.getTransactions();
 		if(transactions == null) {
 			return summary;
 		}

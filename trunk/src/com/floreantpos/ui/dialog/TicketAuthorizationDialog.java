@@ -3,7 +3,7 @@ package com.floreantpos.ui.dialog;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.List;
+import java.util.Set;
 
 import javax.swing.BorderFactory;
 import javax.swing.JDialog;
@@ -186,7 +186,7 @@ public class TicketAuthorizationDialog extends POSDialog {
 			}
 
 			Ticket ticket = TicketDAO.getInstance().loadFullTicket(transaction.getTicket().getId());
-			List<PosTransaction> transactions = ticket.getTransactions();
+			Set<PosTransaction> transactions = ticket.getTransactions();
 			for (PosTransaction posTransaction : transactions) {
 				if (transaction.getId().equals(posTransaction.getId())) {
 					transaction = posTransaction;

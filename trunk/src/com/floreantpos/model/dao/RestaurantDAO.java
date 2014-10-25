@@ -11,7 +11,7 @@ public class RestaurantDAO extends BaseRestaurantDAO {
 	 */
 	public RestaurantDAO () {}
 
-	public static Restaurant getWorkingRestaurant() {
+	public static Restaurant getRestaurant() {
 		return getInstance().get(Integer.valueOf(1));
 	}
 }
