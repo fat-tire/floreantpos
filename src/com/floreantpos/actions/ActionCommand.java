@@ -2,6 +2,7 @@ package com.floreantpos.actions;
 
 public enum ActionCommand {
 	AUTHORIZE,
+	AUTHORIZE_ALL,
 	EDIT_TIPS,
 	CLOSE;
 	

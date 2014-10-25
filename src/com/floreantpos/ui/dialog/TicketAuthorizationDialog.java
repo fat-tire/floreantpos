@@ -3,6 +3,7 @@ package com.floreantpos.ui.dialog;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 import java.util.Set;
 
 import javax.swing.BorderFactory;
@@ -15,7 +16,6 @@ import org.apache.commons.lang.StringUtils;
 
 import com.floreantpos.actions.ActionCommand;
 import com.floreantpos.actions.CloseDialogAction;
-import com.floreantpos.main.Application;
 import com.floreantpos.model.CardReader;
 import com.floreantpos.model.PosTransaction;
 import com.floreantpos.model.Ticket;
@@ -35,10 +35,10 @@ public class TicketAuthorizationDialog extends POSDialog {
 
 		init();
 	}
-	
+
 	public TicketAuthorizationDialog(JFrame parent) {
 		super(parent, true);
-		
+
 		init();
 	}
 
@@ -56,6 +56,7 @@ public class TicketAuthorizationDialog extends POSDialog {
 
 		buttonPanel.add(new PosButton(ActionCommand.EDIT_TIPS, actionHandler));
 		buttonPanel.add(new PosButton(ActionCommand.AUTHORIZE, actionHandler));
+		buttonPanel.add(new PosButton(ActionCommand.AUTHORIZE_ALL, actionHandler));
 
 		buttonPanel.add(new PosButton(new CloseDialogAction(this)));
 
@@ -63,9 +64,172 @@ public class TicketAuthorizationDialog extends POSDialog {
 
 		updateTransactiontList();
 	}
-	
+
 	public void updateTransactiontList() {
 		listView.setTransactions(PosTransactionDAO.getInstance().findUnauthorizedTransactions());
+	}
+
+	private boolean confirmAuthorize(String message) {
+		int option = JOptionPane.showConfirmDialog(TicketAuthorizationDialog.this, message, "Confirm", JOptionPane.OK_CANCEL_OPTION);
+		if (option == JOptionPane.OK_OPTION) {
+			return true;
+		}
+
+		return false;
+	}
+
+	private void doAuthorize() {
+		List<PosTransaction> transactions = listView.getSelectedTransactions();
+
+		if (transactions == null || transactions.size() == 0) {
+			POSMessageDialog.showMessage(TicketAuthorizationDialog.this, "Please select transactions to authorize");
+			return;
+		}
+
+		if (!confirmAuthorize("Selected transactions will be authorized.")) {
+			return;
+		}
+
+		PaymentProcessWaitDialog waitDialog = new PaymentProcessWaitDialog(TicketAuthorizationDialog.this);
+		waitDialog.setVisible(true);
+
+		try {
+
+			for (PosTransaction transaction : transactions) {
+				authorizeTransaction(transaction);
+			}
+
+			POSMessageDialog.showMessage("Authorized.");
+			updateTransactiontList();
+
+		} catch (Exception e) {
+			POSMessageDialog.showError(e.getMessage(), e);
+		} finally {
+			waitDialog.setVisible(false);
+		}
+	}
+
+	public void doAuthorizeAll() {
+		List<PosTransaction> transactions = listView.getAllTransactions();
+
+		if (transactions == null || transactions.size() == 0) {
+			POSMessageDialog.showMessage(TicketAuthorizationDialog.this, "Nothing to authorize.");
+			return;
+		}
+
+		if (!confirmAuthorize("Authorize all transactions?")) {
+			return;
+		}
+
+		PaymentProcessWaitDialog waitDialog = new PaymentProcessWaitDialog(TicketAuthorizationDialog.this);
+		waitDialog.setVisible(true);
+
+		try {
+
+			for (PosTransaction transaction : transactions) {
+				authorizeTransaction(transaction);
+			}
+
+			POSMessageDialog.showMessage("Authorized.");
+			updateTransactiontList();
+
+		} catch (Exception e) {
+			POSMessageDialog.showError(e.getMessage(), e);
+		} finally {
+			waitDialog.setVisible(false);
+		}
+	}
+
+	private void authorizeSwipeCard(PosTransaction transaction) throws Exception {
+		double authorizedAmount = transaction.calculateAuthorizeAmount();
+		double totalAmount = transaction.getAmount();
+
+		if (totalAmount > authorizedAmount) {
+			AuthorizeDotNetProcessor.voidAmount(transaction);
+			AuthorizeDotNetProcessor.captureNewAmount(transaction);
+
+			transaction.setCaptured(true);
+
+			PosTransactionDAO.getInstance().saveOrUpdate(transaction);
+		}
+		else {
+			AuthorizeDotNetProcessor.captureAuthorizedAmount(transaction);
+
+			transaction.setCaptured(true);
+
+			PosTransactionDAO.getInstance().saveOrUpdate(transaction);
+		}
+	}
+
+	private void doEditTips() {
+		PosTransaction transaction = listView.getFirstSelectedTransaction();
+
+		if (transaction == null) {
+			return;
+		}
+
+		Ticket ticket = TicketDAO.getInstance().loadFullTicket(transaction.getTicket().getId());
+		Set<PosTransaction> transactions = ticket.getTransactions();
+		for (PosTransaction posTransaction : transactions) {
+			if (transaction.getId().equals(posTransaction.getId())) {
+				transaction = posTransaction;
+				break;
+			}
+		}
+
+		final double oldTipsAmount = transaction.getTipsAmount();
+		final double newTipsAmount = NumberSelectionDialog2.show(TicketAuthorizationDialog.this, "Enter tips amount", oldTipsAmount);
+
+		if (Double.isNaN(newTipsAmount))
+			return;
+
+		transaction.setTipsAmount(newTipsAmount);
+		transaction.setAmount(transaction.getAmount() - oldTipsAmount + newTipsAmount);
+
+		if (ticket.hasGratuity()) {
+			double ticketTipsAmount = ticket.getGratuity().getAmount();
+			double ticketPaidAmount = ticket.getPaidAmount();
+
+			double newTicketTipsAmount = ticketTipsAmount - oldTipsAmount + newTipsAmount;
+			double newTicketPaidAmount = ticketPaidAmount - oldTipsAmount + newTipsAmount;
+
+			ticket.setGratuityAmount(newTicketTipsAmount);
+			ticket.setPaidAmount(newTicketPaidAmount);
+		}
+		else {
+			ticket.setGratuityAmount(newTipsAmount);
+			ticket.setPaidAmount(ticket.getPaidAmount() + newTipsAmount);
+		}
+
+		ticket.calculatePrice();
+
+		TicketDAO.getInstance().saveOrUpdate(ticket);
+		updateTransactiontList();
+	}
+
+	private void authorizeTransaction(PosTransaction transaction) throws Exception {
+		String cardEntryType = transaction.getCardReader();
+		if (StringUtils.isEmpty(cardEntryType)) {
+			POSMessageDialog.showError("No input information found for transaction id = " + transaction.getId() + ". The record may be broken.");
+			return;
+		}
+
+		CardReader cardReader = CardReader.valueOf(cardEntryType);
+
+		switch (cardReader) {
+			case SWIPE:
+			case MANUAL:
+				authorizeSwipeCard(transaction);
+				break;
+
+			case EXTERNAL_TERMINAL:
+				transaction.setCaptured(true);
+				PosTransactionDAO.getInstance().saveOrUpdate(transaction);
+				break;
+
+			default:
+				break;
+		}
 	}
 
 	class ActionHandler implements ActionListener {
@@ -85,6 +249,9 @@ public class TicketAuthorizationDialog extends POSDialog {
 						doAuthorize();
 						break;
 
+					case AUTHORIZE_ALL:
+						doAuthorizeAll();
+
 					default:
 						break;
 				}
@@ -92,137 +259,5 @@ public class TicketAuthorizationDialog extends POSDialog {
 				POSMessageDialog.showError(TicketAuthorizationDialog.this, e2.getMessage(), e2);
 			}
 		}
-		
-		private boolean confirmAuthorize(PosTransaction transaction) {
-			Double amount = transaction.getAmount();
-			String message = "Transaction with amount " + Application.getCurrencySymbol() +	amount + " will be authorized.";
-			int option = JOptionPane.showConfirmDialog(TicketAuthorizationDialog.this, message, "Confirm", JOptionPane.OK_CANCEL_OPTION);
-			if(option == JOptionPane.OK_OPTION) {
-				return true;
-			}
-			
-			return false;
-		}
-
-		private void doAuthorize() {
-			PosTransaction transaction = listView.getFirstSelectedTransaction();
-
-			if (transaction == null) {
-				return;
-			}
-
-			String cardEntryType = transaction.getCardReader();
-			if (StringUtils.isEmpty(cardEntryType)) {
-				POSMessageDialog.showError("No input information found for card. The record may be broken.");
-				return;
-			}
-			
-			if(!confirmAuthorize(transaction)) {
-				return;
-			}
-
-			CardReader cardReader = CardReader.valueOf(cardEntryType);
-
-			switch (cardReader) {
-				case SWIPE:
-				case MANUAL:
-					authorizeSwipeCard(transaction);
-					break;
-
-				case EXTERNAL_TERMINAL:
-					transaction.setCaptured(true);
-					PosTransactionDAO.getInstance().saveOrUpdate(transaction);
-					POSMessageDialog.showMessage("Authorized.");
-					updateTransactiontList();
-					break;
-
-				default:
-					break;
-			}
-		}
-
-		private void authorizeSwipeCard(PosTransaction transaction) {
-			PaymentProcessWaitDialog waitDialog = new PaymentProcessWaitDialog(TicketAuthorizationDialog.this);
-			waitDialog.setVisible(true);
-
-			try {
-				double authorizedAmount = transaction.calculateAuthorizeAmount();
-				double totalAmount = transaction.getAmount();
-
-				if (totalAmount > authorizedAmount) {
-					AuthorizeDotNetProcessor.voidAmount(transaction);
-					AuthorizeDotNetProcessor.captureNewAmount(transaction);
-
-					transaction.setCaptured(true);
-
-					PosTransactionDAO.getInstance().saveOrUpdate(transaction);
-
-					waitDialog.setVisible(false);
-				}
-				else {
-					AuthorizeDotNetProcessor.captureAuthorizedAmount(transaction);
-
-					transaction.setCaptured(true);
-
-					PosTransactionDAO.getInstance().saveOrUpdate(transaction);
-
-					waitDialog.setVisible(false);
-				}
-
-				POSMessageDialog.showMessage("Authorized.");
-				updateTransactiontList();
-			} catch (Exception e) {
-				POSMessageDialog.showError(e.getMessage(), e);
-			} finally {
-				waitDialog.setVisible(false);
-			}
-		}
-
-		private void doEditTips() {
-			PosTransaction transaction = listView.getFirstSelectedTransaction();
-
-			if (transaction == null) {
-				return;
-			}
-
-			Ticket ticket = TicketDAO.getInstance().loadFullTicket(transaction.getTicket().getId());
-			Set<PosTransaction> transactions = ticket.getTransactions();
-			for (PosTransaction posTransaction : transactions) {
-				if (transaction.getId().equals(posTransaction.getId())) {
-					transaction = posTransaction;
-					break;
-				}
-			}
-
-			final double oldTipsAmount = transaction.getTipsAmount();
-			final double newTipsAmount = NumberSelectionDialog2.show(TicketAuthorizationDialog.this, "Enter tips amount", oldTipsAmount);
-
-			if (Double.isNaN(newTipsAmount))
-				return;
-
-			transaction.setTipsAmount(newTipsAmount);
-			transaction.setAmount(transaction.getAmount() - oldTipsAmount + newTipsAmount);
-
-			if (ticket.hasGratuity()) {
-				double ticketTipsAmount = ticket.getGratuity().getAmount();
-				double ticketPaidAmount = ticket.getPaidAmount();
-
-				double newTicketTipsAmount = ticketTipsAmount - oldTipsAmount + newTipsAmount;
-				double newTicketPaidAmount = ticketPaidAmount - oldTipsAmount + newTipsAmount;
-
-				ticket.setGratuityAmount(newTicketTipsAmount);
-				ticket.setPaidAmount(newTicketPaidAmount);
-			}
-			else {
-				ticket.setGratuityAmount(newTipsAmount);
-				ticket.setPaidAmount(ticket.getPaidAmount() + newTipsAmount);
-			}
-
-			ticket.calculatePrice();
-
-			TicketDAO.getInstance().saveOrUpdate(ticket);
-			updateTransactiontList();
-		}
-
 	}
 }

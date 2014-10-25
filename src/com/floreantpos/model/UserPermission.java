@@ -46,6 +46,7 @@ public class UserPermission extends BaseUserPermission {
 	public final static UserPermission PERFORM_ADMINISTRATIVE_TASK = new UserPermission("Perform Administrative Task");
 	public final static UserPermission PERFORM_MANAGER_TASK = new UserPermission("Perform Manager Task");
 	public final static UserPermission VIEW_BACK_OFFICE = new UserPermission("View Back Office");
+	public final static UserPermission AUTHORIZE_TICKETS = new UserPermission("Authorize Tickets");
 	public final static UserPermission SPLIT_TICKET = new UserPermission("Split Ticket");
 	public final static UserPermission SETTLE_TICKET = new UserPermission("Settle Ticket");
 	public final static UserPermission REOPEN_TICKET = new UserPermission("Reopen Ticket");
@@ -58,7 +59,7 @@ public class UserPermission extends BaseUserPermission {
 	public final static UserPermission VIEW_EXPLORERS = new UserPermission("View Explorers");
 	public final static UserPermission VIEW_REPORTS = new UserPermission("View Reports");
 	
-	public final static UserPermission[] permissions = new UserPermission[] {VIEW_OPEN_TICKETS,CREATE_TICKET,EDIT_TICKET, VOID_TICKET, PERFORM_MANAGER_TASK,
-			VIEW_BACK_OFFICE, SPLIT_TICKET, SETTLE_TICKET, REOPEN_TICKET, PAY_OUT,
-			TAKE_OUT, PERFORM_ADMINISTRATIVE_TASK, VIEW_EXPLORERS, VIEW_REPORTS, SHUT_DOWN};
+	public final static UserPermission[] permissions = new UserPermission[] {VIEW_OPEN_TICKETS,CREATE_TICKET,EDIT_TICKET, VOID_TICKET,
+			VIEW_BACK_OFFICE, AUTHORIZE_TICKETS, SPLIT_TICKET, SETTLE_TICKET, REOPEN_TICKET, PAY_OUT,
+			TAKE_OUT, VIEW_EXPLORERS, VIEW_REPORTS, SHUT_DOWN, PERFORM_MANAGER_TASK, PERFORM_ADMINISTRATIVE_TASK};
 }
