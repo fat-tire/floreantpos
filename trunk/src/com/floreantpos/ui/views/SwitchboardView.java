@@ -26,6 +26,7 @@ import org.apache.commons.logging.LogFactory;
 
 import com.floreantpos.POSConstants;
 import com.floreantpos.PosException;
+import com.floreantpos.actions.AuthorizeTicketAction;
 import com.floreantpos.actions.NewBarTabAction;
 import com.floreantpos.actions.SettleTicketAction;
 import com.floreantpos.actions.ShutDownAction;
@@ -48,7 +49,6 @@ import com.floreantpos.ui.dialog.ManagerDialog;
 import com.floreantpos.ui.dialog.NumberSelectionDialog2;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.dialog.PayoutDialog;
-import com.floreantpos.ui.dialog.TicketAuthorizationDialog;
 import com.floreantpos.ui.dialog.VoidTicketDialog;
 import com.floreantpos.ui.views.order.DefaultOrderServiceExtension;
 import com.floreantpos.ui.views.order.OrderView;
@@ -80,7 +80,6 @@ public class SwitchboardView extends JPanel implements ActionListener {
 		btnGroupSettle.addActionListener(this);
 		btnLogout.addActionListener(this);
 		btnManager.addActionListener(this);
-		btnAuthorize.addActionListener(this);
 		btnNewTicket.addActionListener(this);
 		btnPayout.addActionListener(this);
 		btnOrderInfo.addActionListener(this);
@@ -134,7 +133,7 @@ public class SwitchboardView extends JPanel implements ActionListener {
 		btnLogout = new com.floreantpos.swing.PosButton();
 		btnBackOffice = new com.floreantpos.swing.PosButton();
 		btnManager = new com.floreantpos.swing.PosButton();
-		btnAuthorize = new PosButton("AUTHORIZE");
+		btnAuthorize = new PosButton(new AuthorizeTicketAction());
 		btnClockOut = new com.floreantpos.swing.PosButton();
 
 		setLayout(new java.awt.BorderLayout(10, 10));
@@ -680,7 +679,6 @@ public class SwitchboardView extends JPanel implements ActionListener {
 					}
 					else if (permission.equals(UserPermission.PERFORM_MANAGER_TASK)) {
 						btnManager.setEnabled(true);
-						btnAuthorize.setEnabled(true);
 					}
 					else if (permission.equals(UserPermission.SPLIT_TICKET)) {
 						btnSplitTicket.setEnabled(true);
@@ -795,9 +793,6 @@ public class SwitchboardView extends JPanel implements ActionListener {
 		else if (source == btnManager) {
 			doShowManagerWindow();
 		}
-		else if (source == btnAuthorize) {
-			doAuthorizeTickets();
-		}
 		else if (source == btnNewTicket) {
 			doCreateNewTicket(TicketType.DINE_IN);
 		}
@@ -822,14 +817,6 @@ public class SwitchboardView extends JPanel implements ActionListener {
 		else if (source == btnVoidTicket) {
 			doVoidTicket();
 		}
-	}
-
-	private void doAuthorizeTickets() {
-		TicketAuthorizationDialog dialog = new TicketAuthorizationDialog(Application.getPosWindow());
-    	dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-    	dialog.setSize(800, 600);
-    	dialog.setLocationRelativeTo(this);
-    	dialog.setVisible(true);
 	}
 
 	public Ticket getFirstSelectedTicket() {

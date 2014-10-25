@@ -220,7 +220,7 @@ public class PasswordScreen extends JPanel {
 		jPanel2.add(msgLabel, "cell 0 3,grow");
 
 		jPanel3.setPreferredSize(new java.awt.Dimension(100, 105));
-		jPanel3.setLayout(new GridLayout(0, 1));
+		jPanel3.setLayout(new GridLayout(0, 1, 5, 5));
 
 		jPanel3.add(psbtnLogin);
 		
