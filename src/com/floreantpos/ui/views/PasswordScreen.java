@@ -8,6 +8,7 @@ package com.floreantpos.ui.views;
 
 import java.awt.ComponentOrientation;
 import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -168,7 +169,6 @@ public class PasswordScreen extends JPanel {
 			}
 		});
 		psbtnLogin.setText("LOGIN");
-		buttonPanel.add(psbtnLogin, "cell 2 3,grow");
 
 		jPanel2.setOpaque(false);
 
@@ -220,12 +220,14 @@ public class PasswordScreen extends JPanel {
 		jPanel2.add(msgLabel, "cell 0 3,grow");
 
 		jPanel3.setPreferredSize(new java.awt.Dimension(100, 105));
-		jPanel3.setLayout(new MigLayout("", "[grow,fill]", "[][]"));
+		jPanel3.setLayout(new GridLayout(0, 1));
 
+		jPanel3.add(psbtnLogin);
+		
 		btnConfigureDatabase.setAction(goAction);
 		btnConfigureDatabase.setText(com.floreantpos.POSConstants.CONFIGURE_DATABASE);
 		btnConfigureDatabase.setFocusable(false);
-		jPanel3.add(btnConfigureDatabase, "cell 0 0,grow");
+		jPanel3.add(btnConfigureDatabase);
 
 		panel = new JPanel();
 		add(panel, "cell 0 2,grow");
@@ -234,10 +236,12 @@ public class PasswordScreen extends JPanel {
 		btnShutdown.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/shut_down_32.png"))); // NOI18N
 		btnShutdown.setText(com.floreantpos.POSConstants.SHUTDOWN);
 		btnShutdown.setFocusable(false);
+		
 		if(TerminalConfig.isFullscreenMode()) {
+			btnConfigureDatabase.setVisible(false);
 			btnShutdown.setVisible(false);
 		}
-		jPanel3.add(btnShutdown, "cell 0 1,grow");
+		jPanel3.add(btnShutdown);
 
 		add(jPanel3, "cell 0 3,growx,aligny bottom");
 

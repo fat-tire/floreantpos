@@ -137,7 +137,7 @@ public class DatabaseUtil {
 		}
 	}
 	
-	public static boolean updateDatabase(String connectionString, String hibernateDialect, String hibernateConnectionDriverClass, String user, String password, boolean exportSampleData) {
+	public static boolean updateDatabase(String connectionString, String hibernateDialect, String hibernateConnectionDriverClass, String user, String password) {
 		try {
 			Configuration configuration = _RootDAO.getNewConfiguration(null);
 
