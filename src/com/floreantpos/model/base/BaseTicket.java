@@ -125,7 +125,7 @@ public abstract class BaseTicket  implements Comparable, Serializable {
 	private java.util.Map<String, String> properties;
 	private java.util.List<com.floreantpos.model.TicketItem> ticketItems;
 	private java.util.List<com.floreantpos.model.TicketCouponAndDiscount> couponAndDiscounts;
-	private java.util.List<com.floreantpos.model.PosTransaction> transactions;
+	private java.util.Set<com.floreantpos.model.PosTransaction> transactions;
 
 
 
@@ -861,7 +861,7 @@ public abstract class BaseTicket  implements Comparable, Serializable {
 	/**
 	 * Return the value associated with the column: transactions
 	 */
-	public java.util.List<com.floreantpos.model.PosTransaction> getTransactions () {
+	public java.util.Set<com.floreantpos.model.PosTransaction> getTransactions () {
 					return transactions;
 			}
 
@@ -869,12 +869,12 @@ public abstract class BaseTicket  implements Comparable, Serializable {
 	 * Set the value related to the column: transactions
 	 * @param transactions the transactions value
 	 */
-	public void setTransactions (java.util.List<com.floreantpos.model.PosTransaction> transactions) {
+	public void setTransactions (java.util.Set<com.floreantpos.model.PosTransaction> transactions) {
 		this.transactions = transactions;
 	}
 
 	public void addTotransactions (com.floreantpos.model.PosTransaction posTransaction) {
-		if (null == getTransactions()) setTransactions(new java.util.ArrayList<com.floreantpos.model.PosTransaction>());
+		if (null == getTransactions()) setTransactions(new java.util.TreeSet<com.floreantpos.model.PosTransaction>());
 		getTransactions().add(posTransaction);
 	}
 
