@@ -62,6 +62,10 @@ public class TransactionListView extends JPanel {
 
 		return tableModel.getRowData(selectedRow);
 	}
+	
+	public List<PosTransaction> getAllTransactions() {
+		return this.tableModel.getRows();
+	}
 
 	public List<PosTransaction> getSelectedTransactions() {
 		int[] selectedRows = table.getSelectedRows();
@@ -97,7 +101,7 @@ public class TransactionListView extends JPanel {
 
 	private class TransactionListTableModel extends ListTableModel<PosTransaction> {
 		public TransactionListTableModel() {
-			super(new String[] { "TRANSACTION ID", "TICKET ID", "TIPS", "AMOUNT", "TOTAL" });
+			super(new String[] { "TRANSACTION ID", "TICKET ID", "SERVER", "CARD TYPE", "TIPS", "AMOUNT", "TOTAL" });
 		}
 
 		public Object getValueAt(int rowIndex, int columnIndex) {
@@ -111,12 +115,18 @@ public class TransactionListView extends JPanel {
 				return transaction.getTicket().getId();
 				
 			case 2:
-				return transaction.getTipsAmount();
-
+				return transaction.getTicket().getOwner().getFirstName();
+				
 			case 3:
-				return transaction.getAmount() - transaction.getTipsAmount();
+				return transaction.getCardType();
 				
 			case 4:
+				return transaction.getTipsAmount();
+
+			case 5:
+				return transaction.getAmount() - transaction.getTipsAmount();
+				
+			case 6:
 				return transaction.getAmount();
 
 			}
