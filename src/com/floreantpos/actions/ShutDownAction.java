@@ -1,4 +1,4 @@
-package com.floreantpos.bo.actions;
+package com.floreantpos.actions;
 
 import com.floreantpos.POSConstants;
 import com.floreantpos.main.Application;

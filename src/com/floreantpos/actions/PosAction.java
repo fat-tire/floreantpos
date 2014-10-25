@@ -1,4 +1,4 @@
-package com.floreantpos.bo.actions;
+package com.floreantpos.actions;
 
 import java.awt.event.ActionEvent;
 
@@ -11,6 +11,7 @@ import com.floreantpos.ui.dialog.POSMessageDialog;
 
 public abstract class PosAction extends AbstractAction {
 	protected UserPermission requiredPermission;
+	//protected boolean allowAdministrator = true;
 	
 	public PosAction(String name, UserPermission requiredPermission) {
 		super(name);
@@ -29,6 +30,11 @@ public abstract class PosAction extends AbstractAction {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		User user = Application.getCurrentUser();
+		
+//		if(allowAdministrator && user.isAdministrator()) {
+//			execute();
+//		}
+		
 		if(!user.hasPermission(requiredPermission)) {
 			POSMessageDialog.showError("You do not have permission to execute this action");
 			return;
@@ -38,4 +44,12 @@ public abstract class PosAction extends AbstractAction {
 	}
 
 	public abstract void execute();
+
+//	public boolean isAllowAdministrator() {
+//		return allowAdministrator;
+//	}
+//
+//	public void setAllowAdministrator(boolean allowAdministrator) {
+//		this.allowAdministrator = allowAdministrator;
+//	}
 }

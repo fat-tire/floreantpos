@@ -28,7 +28,7 @@ import com.floreantpos.POSConstants;
 import com.floreantpos.PosException;
 import com.floreantpos.actions.NewBarTabAction;
 import com.floreantpos.actions.SettleTicketAction;
-import com.floreantpos.bo.actions.ShutDownAction;
+import com.floreantpos.actions.ShutDownAction;
 import com.floreantpos.bo.ui.BackOfficeWindow;
 import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.extension.OrderServiceExtension;

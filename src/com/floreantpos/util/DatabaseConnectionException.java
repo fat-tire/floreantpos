@@ -1,6 +1,6 @@
 package com.floreantpos.util;
 
-public class DatabaseConnectionException extends Exception {
+public class DatabaseConnectionException extends RuntimeException {
 
 	public DatabaseConnectionException() {
 	}
