@@ -8,10 +8,11 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.classic.Session;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
+import org.hibernate.tool.hbm2ddl.SchemaUpdate;
 
 import com.floreantpos.bo.actions.DataImportAction;
 import com.floreantpos.model.PosTransaction;
@@ -127,6 +128,31 @@ public class DatabaseUtil {
 			
 			URL resource = DatabaseUtil.class.getResource("/floreantpos-menu-items.xml");
 			DataImportAction.importMenuItemsFromFile(new File(resource.getFile()));
+
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(e);
+			return false;
+		}
+	}
+	
+	public static boolean updateDatabase(String connectionString, String hibernateDialect, String hibernateConnectionDriverClass, String user, String password, boolean exportSampleData) {
+		try {
+			Configuration configuration = _RootDAO.getNewConfiguration(null);
+
+			configuration = configuration.setProperty("hibernate.dialect", hibernateDialect);
+			configuration = configuration.setProperty("hibernate.connection.driver_class", hibernateConnectionDriverClass);
+
+			configuration = configuration.setProperty("hibernate.connection.url", connectionString);
+			configuration = configuration.setProperty("hibernate.connection.username", user);
+			configuration = configuration.setProperty("hibernate.connection.password", password);
+			configuration = configuration.setProperty("hibernate.hbm2ddl.auto", "update");
+
+			SchemaUpdate schemaUpdate = new SchemaUpdate(configuration);
+			schemaUpdate.execute(true, true);
+
+			_RootDAO.initialize();
 
 			return true;
 		} catch (Exception e) {

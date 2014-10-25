@@ -65,13 +65,12 @@
 			<one-to-many class="com.floreantpos.model.TicketCouponAndDiscount" />
 		</list>
 		
-		<list cascade="all" inverse="false" lazy="false" name="transactions">
+		<set cascade="all" inverse="true" lazy="false" name="transactions">
 			<key>
 				<column name="TICKET_ID" />
 			</key>
-			<list-index column="TRAN_ORDER" />
 			<one-to-many class="com.floreantpos.model.PosTransaction" />
-		</list>
+		</set>
 
 		<!-- uni-directional many-to-one association to User -->
 		<many-to-one class="com.floreantpos.model.Shift" lazy="false" name="shift">

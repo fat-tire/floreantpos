@@ -150,6 +150,7 @@ public class Application {
 				}
 			}
 		} catch (Exception e) {
+			POSMessageDialog.showError(e.getMessage(), e);
 			e.printStackTrace();
 			logger.error(e);
 		} finally {
@@ -208,12 +209,11 @@ public class Application {
 	}
 
 	public void refreshRestaurant() {
-		RestaurantDAO restaurantDAO = RestaurantDAO.getInstance();
-		this.restaurant = restaurantDAO.get(Integer.valueOf(1));
+		this.restaurant = RestaurantDAO.getRestaurant();
 		
 		if(restaurant.getUniqueId() == null || restaurant.getUniqueId() == 0) {
 			restaurant.setUniqueId(RandomUtils.nextInt());
-			restaurantDAO.saveOrUpdate(restaurant);
+			RestaurantDAO.getInstance().saveOrUpdate(restaurant);
 		}
 		
 		if (restaurant.isAutoDrawerPullEnable() && autoDrawerPullTimer == null) {

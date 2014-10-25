@@ -150,7 +150,7 @@ public class JReportPrintService {
 	}
 
 	public static HashMap populateTicketProperties(Ticket ticket, TicketPrintProperties printProperties, PosTransaction transaction) {
-		Restaurant restaurant = RestaurantDAO.getWorkingRestaurant();
+		Restaurant restaurant = RestaurantDAO.getRestaurant();
 
 		double totalAmount = ticket.getTotalAmount();
 		double tipAmount = 0;
