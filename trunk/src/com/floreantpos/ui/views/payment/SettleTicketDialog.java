@@ -36,6 +36,7 @@ import com.floreantpos.model.Restaurant;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketCouponAndDiscount;
 import com.floreantpos.model.TicketType;
+import com.floreantpos.model.UserPermission;
 import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.report.JReportPrintService;
 import com.floreantpos.services.PosTransactionService;
@@ -101,6 +102,11 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 		try {
 			if (ticket == null)
 				return;
+			
+			if(!Application.getCurrentUser().hasPermission(UserPermission.ADD_DISCOUNT)) {
+				POSMessageDialog.showError("You do not have permission to execute this action");
+				return;
+			}
 
 			if (ticket.getCouponAndDiscounts() != null && ticket.getCouponAndDiscounts().size() > 0) {
 				POSMessageDialog.showError(com.floreantpos.POSConstants.DISCOUNT_COUPON_LIMIT_);

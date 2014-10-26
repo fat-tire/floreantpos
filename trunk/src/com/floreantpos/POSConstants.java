@@ -173,6 +173,7 @@ public class POSConstants {
 	public static final String FIRST_NAME = Messages.getString("PosMessage.167"); //$NON-NLS-1$
 	public static final String EDIT_MENU_ITEM = Messages.getString("PosMessage.168"); //$NON-NLS-1$
 	public static final String COUPON_DISCOUNT = Messages.getString("PosMessage.169"); //$NON-NLS-1$
+	public static final String ADD_GRATUITY_TEXT = Messages.getString("ADD_GRATUITY_TEXT"); //$NON-NLS-1$
 	public static final String PRINT_ERROR = Messages.getString("PosMessage.170"); //$NON-NLS-1$
 	public static final String SALES_SUMMARY_KEY_STATISTICS = Messages.getString("PosMessage.171"); //$NON-NLS-1$
 	public static final String SELECT_SHIFT = Messages.getString("PosMessage.172"); //$NON-NLS-1$

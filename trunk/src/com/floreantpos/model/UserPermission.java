@@ -53,6 +53,7 @@ public class UserPermission extends BaseUserPermission {
 	public final static UserPermission PAY_OUT = new UserPermission("Pay Out");
 	public final static UserPermission TAKE_OUT = new UserPermission("Take Out");
 	public final static UserPermission SHUT_DOWN = new UserPermission("Shut Down");
+	public final static UserPermission ADD_DISCOUNT = new UserPermission("Add Discount");
 	//public final static UserPermission VIEW_USER_LIST = new UserPermission("View User List");
 	//public final static UserPermission GRATUITY_ADMINISTRATION = new UserPermission("Gratuity Administration");
 	//public final static UserPermission VIEW_DRAWER_PULL_REPORT = new UserPermission("View Drawer Pull Report");
@@ -61,5 +62,5 @@ public class UserPermission extends BaseUserPermission {
 	
 	public final static UserPermission[] permissions = new UserPermission[] {VIEW_OPEN_TICKETS,CREATE_TICKET,EDIT_TICKET, VOID_TICKET,
 			VIEW_BACK_OFFICE, AUTHORIZE_TICKETS, SPLIT_TICKET, SETTLE_TICKET, REOPEN_TICKET, PAY_OUT,
-			TAKE_OUT, VIEW_EXPLORERS, VIEW_REPORTS, SHUT_DOWN, PERFORM_MANAGER_TASK, PERFORM_ADMINISTRATIVE_TASK};
+			TAKE_OUT, VIEW_EXPLORERS, VIEW_REPORTS, SHUT_DOWN, ADD_DISCOUNT, PERFORM_MANAGER_TASK, PERFORM_ADMINISTRATIVE_TASK};
 }
