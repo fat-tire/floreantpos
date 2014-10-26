@@ -151,7 +151,6 @@ public class SwitchboardView extends JPanel implements ActionListener {
 		bottomLeftPanel.setLayout(new java.awt.BorderLayout(5, 5));
 		bottomLeftPanel.add(openTicketList, java.awt.BorderLayout.CENTER);
 
-		activityPanel.setPreferredSize(new java.awt.Dimension(655, 150));
 		activityPanel.setLayout(new java.awt.GridLayout(3, 0, 5, 5));
 
 		if(TerminalConfig.isDineInEnable()) {
@@ -637,7 +636,7 @@ public class SwitchboardView extends JPanel implements ActionListener {
 			
 			SettleTicketDialog posDialog = new SettleTicketDialog();
 			posDialog.setTicket(fullTicket);
-			posDialog.setSize(800, 600);
+			posDialog.setSize(800, 700);
 			posDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			posDialog.open();
 		}
