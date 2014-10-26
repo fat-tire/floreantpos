@@ -32,15 +32,15 @@ public class TicketListView extends JPanel {
 		table = new TicketListTable();
 		table.setSortable(false);
 		table.setModel(tableModel = new TicketListTableModel());
-		table.setRowHeight(40);
+		table.setRowHeight(60);
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
 		table.setDefaultRenderer(Object.class, new PosTableRenderer());
 		table.setGridColor(Color.LIGHT_GRAY);
 		
 		TableColumnModel columnModel = table.getColumnModel();
-		columnModel.getColumn(0).setPreferredWidth(20);
+		columnModel.getColumn(0).setPreferredWidth(30);
 		columnModel.getColumn(1).setPreferredWidth(20);
-		columnModel.getColumn(2).setPreferredWidth(200);
+		columnModel.getColumn(2).setPreferredWidth(100);
 		columnModel.getColumn(3).setPreferredWidth(100);
 
 		JScrollPane scrollPane = new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
