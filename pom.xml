@@ -47,13 +47,22 @@
 						</goals>
 					</execution>
 				</executions>
+				<!-- <configuration>
+					<doCheck>false</doCheck>
+					<doUpdate>false</doUpdate>
+					<revisionOnScmFailure>true</revisionOnScmFailure>
+					<format>{0,date,yyyyMMdd}</format>
+					<items>
+						<item>timestamp</item>
+					</items>
+				</configuration> -->
 				<configuration>
 					<doCheck>false</doCheck>
 					<doUpdate>false</doUpdate>
 					<revisionOnScmFailure>true</revisionOnScmFailure>
-					<format>{0,date,yyyy-MM-dd}</format>
+					<format>{0,number}</format>
 					<items>
-						<item>timestamp</item>
+						<item>buildNumber0</item>
 					</items>
 				</configuration>
 			</plugin>
@@ -132,7 +141,7 @@
 						<phase>package</phase>
 						<configuration>
 							<target>
-								<zip destfile="${project.build.directory}/${project.build.finalName}-${buildNumber}.zip" basedir="${project.build.directory}/${project.build.finalName}-bin/${project.build.finalName}"></zip>
+								<zip destfile="${project.build.directory}/${project.build.finalName}-beta-build${buildNumber}.zip" basedir="${project.build.directory}/${project.build.finalName}-bin/${project.build.finalName}"></zip>
 							</target>
 						</configuration>
 						<goals>
