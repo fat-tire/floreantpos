@@ -76,7 +76,7 @@ public class PosButton extends JButton {
 		}
 		
 		if(size != null) {
-			size.setSize(size.width + 20, 45);
+			size.setSize(size.width + 20, 60);
 		}
 		
 		
