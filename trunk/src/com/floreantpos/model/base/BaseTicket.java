@@ -16,7 +16,6 @@ import java.io.Serializable;
 public abstract class BaseTicket  implements Comparable, Serializable {
 
 	public static String REF = "Ticket";
-	public static String PROP_BAR_CODE = "barCode";
 	public static String PROP_RE_OPENED = "reOpened";
 	public static String PROP_VOID_REASON = "voidReason";
 	public static String PROP_DUE_AMOUNT = "dueAmount";
@@ -102,7 +101,6 @@ public abstract class BaseTicket  implements Comparable, Serializable {
 		protected java.lang.Integer tableNumber;
 		protected java.lang.Integer numberOfGuests;
 		protected java.lang.String status;
-		protected java.lang.String barCode;
 		protected java.lang.Boolean taxExempt;
 		protected java.lang.Boolean reOpened;
 		protected java.lang.Double serviceCharge;
@@ -521,23 +519,6 @@ public abstract class BaseTicket  implements Comparable, Serializable {
 	 */
 	public void setStatus (java.lang.String status) {
 		this.status = status;
-	}
-
-
-
-	/**
-	 * Return the value associated with the column: BAR_CODE
-	 */
-	public java.lang.String getBarCode () {
-					return barCode;
-			}
-
-	/**
-	 * Set the value related to the column: BAR_CODE
-	 * @param barCode the BAR_CODE value
-	 */
-	public void setBarCode (java.lang.String barCode) {
-		this.barCode = barCode;
 	}
 
 
