@@ -31,7 +31,6 @@
 		<property column="STATUS" name="status" type="string" length="30" />
 		<!-- property name="gratuityAmount" type="java.lang.Double" column="GRATUITY_AMOUNT" /> <property name="gratuityPaid" type="java.lang.Boolean" column="GRATUITY_PAID" 
 			/ -->
-		<property column="BAR_CODE" length="60" name="barCode" type="string" />
 		<property column="IS_TAX_EXEMPT" name="taxExempt" type="java.lang.Boolean" />
 		<property column="IS_RE_OPENED" name="reOpened" type="java.lang.Boolean" />
 		<property column="SERVICE_CHARGE" name="serviceCharge" type="java.lang.Double" />
