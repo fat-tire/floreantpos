@@ -52,7 +52,7 @@ public class PasswordScreen extends JPanel {
 
 	/** Creates new form PasswordScreen */
 	public PasswordScreen() {
-		setMinimumSize(new Dimension(320, 10));
+		//setMinimumSize(new Dimension(320, 10));
 		initComponents();
 
 		btnConfigureDatabase.setAction(goAction);
@@ -87,11 +87,11 @@ public class PasswordScreen extends JPanel {
 		btnConfigureDatabase = new com.floreantpos.swing.PosButton();
 		btnShutdown = new com.floreantpos.swing.PosButton();
 
-		setPreferredSize(new Dimension(360, 593));
-		setLayout(new MigLayout("ins 0", "[400px,grow]", "[116px][270px][grow][fill]"));
+		setPreferredSize(new Dimension(320, 593));
+		setLayout(new MigLayout("ins 0", "[380px,grow]", "[110px][270px][grow][fill,grow]"));
 
 		buttonPanel.setOpaque(false);
-		buttonPanel.setPreferredSize(new java.awt.Dimension(280, 180));
+		buttonPanel.setPreferredSize(new java.awt.Dimension(200, 180));
 		buttonPanel.setLayout(new MigLayout("", "[111px][111px][111px,grow]", "[60px][60px][60px][60px]"));
 
 		btn7.setAction(loginAction);

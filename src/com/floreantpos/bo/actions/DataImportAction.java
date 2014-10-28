@@ -86,114 +86,122 @@ public class DataImportAction extends AbstractAction {
 			transaction = session.beginTransaction();
 
 			List<Tax> taxes = elements.getTaxes();
-			for (Tax tax : taxes) {
-				objectMap.put(tax.toString() + "_" + tax.getId(), tax);
-				tax.setId(null);
+			if (taxes != null) {
+				for (Tax tax : taxes) {
+					objectMap.put(tax.getUniqueId(), tax);
+					tax.setId(null);
 
-				TaxDAO.getInstance().save(tax, session);
+					TaxDAO.getInstance().save(tax, session);
+				}
 			}
 
 			List<MenuCategory> menuCategories = elements.getMenuCategories();
-			for (MenuCategory menuCategory : menuCategories) {
+			if (menuCategories != null) {
+				for (MenuCategory menuCategory : menuCategories) {
 
-				objectMap.put(menuCategory.toString() + "_" + menuCategory.getId(), menuCategory);
-				menuCategory.setId(null);
+					objectMap.put(menuCategory.getUniqueId(), menuCategory);
+					menuCategory.setId(null);
 
-				MenuCategoryDAO.getInstance().save(menuCategory, session);
+					MenuCategoryDAO.getInstance().save(menuCategory, session);
+				}
 			}
 
 			List<MenuGroup> menuGroups = elements.getMenuGroups();
-			for (MenuGroup menuGroup : menuGroups) {
+			if (menuGroups != null) {
+				for (MenuGroup menuGroup : menuGroups) {
 
-				MenuCategory menuCategory = menuGroup.getParent();
-				if (menuCategory != null) {
-					menuCategory = (MenuCategory) objectMap.get(menuCategory.toString() + "_" + menuCategory.getId());
-					menuGroup.setParent(menuCategory);
+					MenuCategory menuCategory = menuGroup.getParent();
+					if (menuCategory != null) {
+						menuCategory = (MenuCategory) objectMap.get(menuCategory.getUniqueId());
+						menuGroup.setParent(menuCategory);
+					}
+
+					objectMap.put(menuGroup.getUniqueId(), menuGroup);
+					menuGroup.setId(null);
+
+					MenuGroupDAO.getInstance().saveOrUpdate(menuGroup, session);
 				}
-
-				objectMap.put(menuGroup.toString() + "_" + menuGroup.getId(), menuGroup);
-				menuGroup.setId(null);
-
-				MenuGroupDAO.getInstance().saveOrUpdate(menuGroup, session);
 			}
 
 			List<MenuModifierGroup> menuModifierGroups = elements.getMenuModifierGroups();
-			for (MenuModifierGroup menuModifierGroup : menuModifierGroups) {
-				objectMap.put(menuModifierGroup.toString() + "_" + menuModifierGroup.getId(), menuModifierGroup);
-				menuModifierGroup.setId(null);
+			if (menuModifierGroups != null) {
+				for (MenuModifierGroup menuModifierGroup : menuModifierGroups) {
+					objectMap.put(menuModifierGroup.getUniqueId(), menuModifierGroup);
+					menuModifierGroup.setId(null);
 
-				MenuModifierGroupDAO.getInstance().saveOrUpdate(menuModifierGroup, session);
+					MenuModifierGroupDAO.getInstance().saveOrUpdate(menuModifierGroup, session);
+				}
 			}
 
 			List<MenuModifier> menuModifiers = elements.getMenuModifiers();
-			for (MenuModifier menuModifier : menuModifiers) {
+			if (menuModifiers != null) {
+				for (MenuModifier menuModifier : menuModifiers) {
 
-				objectMap.put(menuModifier.toString() + "_" + menuModifier.getId(), menuModifier);
-				menuModifier.setId(null);
+					objectMap.put(menuModifier.getUniqueId(), menuModifier);
+					menuModifier.setId(null);
 
-				MenuModifierGroup menuModifierGroup = menuModifier.getModifierGroup();
-				if (menuModifierGroup != null) {
-					menuModifierGroup = (MenuModifierGroup) objectMap.get(menuModifierGroup.toString() + "_" + menuModifierGroup.getId());
-					menuModifier.setModifierGroup(menuModifierGroup);
+					MenuModifierGroup menuModifierGroup = menuModifier.getModifierGroup();
+					if (menuModifierGroup != null) {
+						menuModifierGroup = (MenuModifierGroup) objectMap.get(menuModifierGroup.getUniqueId());
+						menuModifier.setModifierGroup(menuModifierGroup);
+					}
+
+					Tax tax = menuModifier.getTax();
+					if (tax != null) {
+						tax = (Tax) objectMap.get(tax.getUniqueId());
+						menuModifier.setTax(tax);
+					}
+
+					MenuModifierDAO.getInstance().saveOrUpdate(menuModifier, session);
 				}
-
-				Tax tax = menuModifier.getTax();
-				if (tax != null) {
-					tax = (Tax) objectMap.get(tax.toString() + "_" + tax.getId());
-					menuModifier.setTax(tax);
-				}
-
-				MenuModifierDAO.getInstance().saveOrUpdate(menuModifier, session);
 			}
 
 			List<MenuItemModifierGroup> menuItemModifierGroups = elements.getMenuItemModifierGroups();
-			for (MenuItemModifierGroup mimg : menuItemModifierGroups) {
-				objectMap.put(mimg.toString() + "_" + mimg.getId(), mimg);
-				mimg.setId(null);
+			if (menuItemModifierGroups != null) {
+				for (MenuItemModifierGroup mimg : menuItemModifierGroups) {
+					objectMap.put(mimg.getUniqueId(), mimg);
+					mimg.setId(null);
 
-				MenuModifierGroup menuModifierGroup = mimg.getModifierGroup();
-				if (menuModifierGroup != null) {
-					menuModifierGroup = (MenuModifierGroup) objectMap.get(menuModifierGroup.toString() + "_" + menuModifierGroup.getId());
-					mimg.setModifierGroup(menuModifierGroup);
+					MenuModifierGroup menuModifierGroup = mimg.getModifierGroup();
+					if (menuModifierGroup != null) {
+						menuModifierGroup = (MenuModifierGroup) objectMap.get(menuModifierGroup.getUniqueId());
+						mimg.setModifierGroup(menuModifierGroup);
+					}
+
+					MenuItemModifierGroupDAO.getInstance().save(mimg, session);
 				}
-
-				//				MenuItem menuItem = mimg.getParentMenuItem();
-				//				if(menuItem != null) {
-				//					menuItem = (MenuItem) objectMap.get(menuItem.toString() + "_" + menuItem.getId());
-				//					mimg.setParentMenuItem(menuItem);
-				//				}
-
-				MenuItemModifierGroupDAO.getInstance().save(mimg, session);
 			}
 
 			List<MenuItem> menuItems = elements.getMenuItems();
-			for (MenuItem menuItem : menuItems) {
+			if (menuItems != null) {
+				for (MenuItem menuItem : menuItems) {
 
-				objectMap.put(menuItem.toString() + "_" + menuItem.getId(), menuItem);
-				menuItem.setId(null);
+					objectMap.put(menuItem.getUniqueId(), menuItem);
+					menuItem.setId(null);
 
-				MenuGroup menuGroup = menuItem.getParent();
-				if (menuGroup != null) {
-					menuGroup = (MenuGroup) objectMap.get(menuGroup.toString() + "_" + menuGroup.getId());
-					menuItem.setParent(menuGroup);
-				}
-
-				Tax tax = menuItem.getTax();
-				if (tax != null) {
-					tax = (Tax) objectMap.get(tax.toString() + "_" + tax.getId());
-					menuItem.setTax(tax);
-				}
-
-				List<MenuItemModifierGroup> menuItemModiferGroups = menuItem.getMenuItemModiferGroups();
-				if (menuItemModiferGroups != null) {
-					for (MenuItemModifierGroup menuItemModifierGroup : menuItemModiferGroups) {
-						MenuItemModifierGroup menuItemModifierGroup2 = (MenuItemModifierGroup) objectMap.get(menuItemModifierGroup.toString() + "_" + menuItemModifierGroup.getId());
-						menuItemModifierGroup.setId(menuItemModifierGroup2.getId());
-						menuItemModifierGroup.setModifierGroup(menuItemModifierGroup2.getModifierGroup());
+					MenuGroup menuGroup = menuItem.getParent();
+					if (menuGroup != null) {
+						menuGroup = (MenuGroup) objectMap.get(menuGroup.getUniqueId());
+						menuItem.setParent(menuGroup);
 					}
-				}
 
-				MenuItemDAO.getInstance().saveOrUpdate(menuItem, session);
+					Tax tax = menuItem.getTax();
+					if (tax != null) {
+						tax = (Tax) objectMap.get(tax.getUniqueId());
+						menuItem.setTax(tax);
+					}
+
+					List<MenuItemModifierGroup> menuItemModiferGroups = menuItem.getMenuItemModiferGroups();
+					if (menuItemModiferGroups != null) {
+						for (MenuItemModifierGroup menuItemModifierGroup : menuItemModiferGroups) {
+							MenuItemModifierGroup menuItemModifierGroup2 = (MenuItemModifierGroup) objectMap.get(menuItemModifierGroup.getUniqueId());
+							menuItemModifierGroup.setId(menuItemModifierGroup2.getId());
+							menuItemModifierGroup.setModifierGroup(menuItemModifierGroup2.getModifierGroup());
+						}
+					}
+
+					MenuItemDAO.getInstance().saveOrUpdate(menuItem, session);
+				}
 			}
 
 			transaction.commit();

@@ -33,6 +33,10 @@ public class Tax extends BaseTax {
 	}
 
 	/*[CONSTRUCTOR MARKER END]*/
+	
+	public String getUniqueId() {
+		return ("tax_" + getName() + "_" + getId()).replaceAll("\\s+", "_");
+	}
 
 	@Override
 	public String toString() {
