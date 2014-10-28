@@ -42,7 +42,7 @@ public class CategoryView extends SelectionView implements ActionListener {
 	
 	/** Creates new form CategoryView */
 	public CategoryView() {
-		super(com.floreantpos.POSConstants.CATEGORIES, 120, 55);
+		super(com.floreantpos.POSConstants.CATEGORIES, 120, 70);
 		
 		setBackVisible(false);
 		
