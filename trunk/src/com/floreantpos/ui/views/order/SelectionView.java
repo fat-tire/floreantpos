@@ -23,8 +23,8 @@ import com.floreantpos.POSConstants;
 import com.floreantpos.swing.PosButton;
 
 public abstract class SelectionView extends JPanel implements ComponentListener {
-	private final static int HORIZONTAL_GAP = 5;
-	private final static int VERTICAL_GAP = 5;
+	private final static int HORIZONTAL_GAP = 15;
+	private final static int VERTICAL_GAP = 15;
 
 	private Dimension buttonSize;
 
@@ -83,7 +83,7 @@ public abstract class SelectionView extends JPanel implements ComponentListener 
 	}
 
 	public SelectionView(String title) {
-		this(title, 100, 100);
+		this(title, 140, 140);
 	}
 
 	public void setItems(List items) {
