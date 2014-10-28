@@ -6,34 +6,48 @@
 
 package com.floreantpos.ui.views.order;
 
+import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JDialog;
+import javax.swing.JPanel;
 
 import com.floreantpos.POSConstants;
 import com.floreantpos.main.Application;
+import com.floreantpos.model.MenuItem;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.TicketType;
+import com.floreantpos.model.dao.MenuItemDAO;
 import com.floreantpos.model.dao.TicketDAO;
-import com.floreantpos.swing.TransparentPanel;
+import com.floreantpos.swing.PosButton;
 import com.floreantpos.ui.dialog.MiscTicketItemDialog;
 import com.floreantpos.ui.dialog.NumberSelectionDialog2;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.views.OrderInfoDialog;
 import com.floreantpos.ui.views.OrderInfoView;
+import com.floreantpos.ui.views.order.actions.ItemSelectionListener;
 
 /**
  *
  * @author  MShahriar
  */
-public class OthersView extends TransparentPanel {
+public class OthersView extends JPanel {
 	private Ticket currentTicket;
+	private ItemSelectionListener itemSelectionListener;
 
 	/** Creates new form OthersView */
 	public OthersView() {
 		initComponents();
+	}
+	
+	public OthersView(ItemSelectionListener itemSelectionListener) {
+		initComponents();
+		
+		setItemSelectionListener(itemSelectionListener);
 	}
 
 	/** This method is called from within the constructor to
@@ -44,19 +58,30 @@ public class OthersView extends TransparentPanel {
 	// <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:initComponents
 	private void initComponents() {
 
-		transparentPanel2 = new com.floreantpos.swing.TransparentPanel();
+		buttonPanel = new JPanel();
 		btnOrderInfo = new com.floreantpos.swing.PosButton();
 		btnMisc = new com.floreantpos.swing.PosButton();
-		transparentPanel1 = new com.floreantpos.swing.TransparentPanel();
 		btnCustomerNumber = new com.floreantpos.swing.PosButton();
 		btnTableNumber = new com.floreantpos.swing.PosButton();
 
-		setBorder(javax.swing.BorderFactory.createTitledBorder(null, com.floreantpos.POSConstants.OTHERS, javax.swing.border.TitledBorder.CENTER,
+		setBorder(javax.swing.BorderFactory.createTitledBorder(null, "=", javax.swing.border.TitledBorder.CENTER,
 				javax.swing.border.TitledBorder.DEFAULT_POSITION));
-		setLayout(new java.awt.GridLayout(0, 1, 5, 5));
+		setLayout(new BorderLayout());
+		
+		JPanel topPanel = new JPanel(new BorderLayout());
+		topPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
+		PosButton btnAddItem = new PosButton("SEARCH ITEM BY ID");
+		topPanel.add(btnAddItem);
+		add(topPanel, BorderLayout.NORTH);
+		btnAddItem.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				searchItem();
+			}
+		});
 
-		transparentPanel2.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
-		transparentPanel2.setLayout(new java.awt.GridLayout(1, 0, 5, 5));
+		buttonPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
+		buttonPanel.setLayout(new java.awt.GridLayout(1, 0, 5, 5));
 
 		btnOrderInfo.setText(com.floreantpos.POSConstants.ORDER_INFO);
 		btnOrderInfo.addActionListener(new java.awt.event.ActionListener() {
@@ -64,7 +89,7 @@ public class OthersView extends TransparentPanel {
 				doViewOrderInfo();
 			}
 		});
-		transparentPanel2.add(btnOrderInfo);
+		buttonPanel.add(btnOrderInfo);
 
 		btnMisc.setText(com.floreantpos.POSConstants.MISC);
 		btnMisc.addActionListener(new java.awt.event.ActionListener() {
@@ -72,12 +97,7 @@ public class OthersView extends TransparentPanel {
 				doInsertMisc(evt);
 			}
 		});
-		transparentPanel2.add(btnMisc);
-
-		add(transparentPanel2);
-
-		transparentPanel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
-		transparentPanel1.setLayout(new java.awt.GridLayout(1, 0, 5, 5));
+		buttonPanel.add(btnMisc);
 
 		btnCustomerNumber.setText(com.floreantpos.POSConstants.CUSTOMER);
 		btnCustomerNumber.addActionListener(new java.awt.event.ActionListener() {
@@ -85,7 +105,7 @@ public class OthersView extends TransparentPanel {
 				btnCustomerNumberActionPerformed(evt);
 			}
 		});
-		transparentPanel1.add(btnCustomerNumber);
+		buttonPanel.add(btnCustomerNumber);
 
 		btnTableNumber.setText(com.floreantpos.POSConstants.TABLE);
 		btnTableNumber.addActionListener(new java.awt.event.ActionListener() {
@@ -93,9 +113,9 @@ public class OthersView extends TransparentPanel {
 				btnTableNumberActionPerformed(evt);
 			}
 		});
-		transparentPanel1.add(btnTableNumber);
-
-		add(transparentPanel1);
+		buttonPanel.add(btnTableNumber);
+		
+		add(buttonPanel);
 	}// </editor-fold>//GEN-END:initComponents
 
 	private void doInsertMisc(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_doInsertMisc
@@ -203,8 +223,7 @@ public class OthersView extends TransparentPanel {
 	private com.floreantpos.swing.PosButton btnMisc;
 	private com.floreantpos.swing.PosButton btnOrderInfo;
 	private com.floreantpos.swing.PosButton btnTableNumber;
-	private com.floreantpos.swing.TransparentPanel transparentPanel1;
-	private com.floreantpos.swing.TransparentPanel transparentPanel2;
+	private JPanel buttonPanel;
 
 	// End of variables declaration//GEN-END:variables
 
@@ -234,5 +253,28 @@ public class OthersView extends TransparentPanel {
 	public void setCurrentTicket(Ticket currentTicket) {
 		this.currentTicket = currentTicket;
 		updateView();
+	}
+
+	public ItemSelectionListener getItemSelectionListener() {
+		return itemSelectionListener;
+	}
+
+	public void setItemSelectionListener(ItemSelectionListener itemSelectionListener) {
+		this.itemSelectionListener = itemSelectionListener;
+	}
+
+	public void searchItem() {
+		int itemId = NumberSelectionDialog2.takeIntInput("Enter or scan item id");
+
+		if (itemId == -1) {
+			return;
+		}
+		
+		MenuItem menuItem = MenuItemDAO.getInstance().get(itemId);
+		if(menuItem == null) {
+			POSMessageDialog.showError("Item not found");
+			return;
+		}
+		itemSelectionListener.itemSelected(menuItem);
 	}
 }
