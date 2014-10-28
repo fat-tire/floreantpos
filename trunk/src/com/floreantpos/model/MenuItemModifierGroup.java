@@ -31,4 +31,8 @@ public class MenuItemModifierGroup extends BaseMenuItemModifierGroup {
 		return "";
 	}
 
+	public String getUniqueId() {
+		return ("menuitem_modifiergroup_" + toString() + "_" + getId()).replaceAll("\\s+", "_");
+	}
+
 }
