@@ -117,19 +117,19 @@ public class DatabaseConfigurationDialog extends POSDialog implements ActionList
 		getContentPane().add(tfPassword, "grow, wrap"); //$NON-NLS-1$
 		getContentPane().add(new JSeparator(), "span, grow, gaptop 10"); //$NON-NLS-1$
 
-		btnTestConnection = new PosButton(Messages.getString("DatabaseConfigurationDialog.26")); //$NON-NLS-1$
+		btnTestConnection = new PosButton(Messages.getString("DatabaseConfigurationDialog.26").toUpperCase()); //$NON-NLS-1$
 		btnTestConnection.setActionCommand(TEST);
-		btnSave = new PosButton(Messages.getString("DatabaseConfigurationDialog.27")); //$NON-NLS-1$
+		btnSave = new PosButton(Messages.getString("DatabaseConfigurationDialog.27").toUpperCase()); //$NON-NLS-1$
 		btnSave.setActionCommand(SAVE);
-		btnExit = new PosButton(Messages.getString("DatabaseConfigurationDialog.28")); //$NON-NLS-1$
+		btnExit = new PosButton(Messages.getString("DatabaseConfigurationDialog.28").toUpperCase()); //$NON-NLS-1$
 		btnExit.setActionCommand(CANCEL);
 
 		JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 		
-		btnCreateDb = new PosButton(Messages.getString("DatabaseConfigurationDialog.29")); //$NON-NLS-1$
+		btnCreateDb = new PosButton(Messages.getString("DatabaseConfigurationDialog.29").toUpperCase()); //$NON-NLS-1$
 		btnCreateDb.setActionCommand(CREATE_DATABASE);
 		
-		btnUpdateDb = new PosButton("Update Database");
+		btnUpdateDb = new PosButton(Messages.getString("UPDATE_DATABASE").toUpperCase()); //$NON-NLS-1$
 		btnUpdateDb.setActionCommand(UPDATE_DATABASE);
 		
 		buttonPanel.add(btnUpdateDb);
