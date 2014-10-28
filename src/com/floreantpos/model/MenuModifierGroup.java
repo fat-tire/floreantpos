@@ -26,4 +26,8 @@ public class MenuModifierGroup extends BaseMenuModifierGroup {
 	public String toString() {
 		return getName();
 	}
+
+	public String getUniqueId() {
+		return ("menu_modifiergroup_" + getName() + "_" + getId()).replaceAll("\\s+", "_");
+	}
 }

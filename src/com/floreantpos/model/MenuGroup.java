@@ -38,4 +38,8 @@ public class MenuGroup extends BaseMenuGroup {
 	public String toString() {
 		return getName();
 	}
+
+	public String getUniqueId() {
+		return ("menu_group_" + getName() + "_" + getId()).replaceAll("\\s+", "_");
+	}
 }

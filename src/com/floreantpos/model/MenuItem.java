@@ -81,4 +81,8 @@ public class MenuItem extends BaseMenuItem {
 	public String toString() {
 		return getName();
 	}
+
+	public String getUniqueId() {
+		return ("menu_item_" + getName() + "_" + getId()).replaceAll("\\s+", "_");
+	}
 }

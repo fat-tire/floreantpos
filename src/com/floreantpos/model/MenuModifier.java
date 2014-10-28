@@ -33,4 +33,8 @@ public class MenuModifier extends BaseMenuModifier {
 	public String toString() {
 		return getName();
 	}
+
+	public String getUniqueId() {
+		return ("menu_modifier_" + getName() + "_" + getId()).replaceAll("\\s+", "_");
+	}
 }

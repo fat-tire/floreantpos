@@ -38,4 +38,8 @@ public class MenuCategory extends BaseMenuCategory {
 	public String toString() {
 		return getName();
 	}
+
+	public String getUniqueId() {
+		return ("menu_category_" + getName() + "_" + getId()).replaceAll("\\s+", "_");
+	}
 }
