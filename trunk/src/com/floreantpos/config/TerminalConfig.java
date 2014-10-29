@@ -1,7 +1,5 @@
 package com.floreantpos.config;
 
-import java.awt.Dimension;
-
 import org.apache.commons.configuration.PropertiesConfiguration;
 
 import com.floreantpos.util.PasswordHasher;
@@ -29,8 +27,6 @@ public class TerminalConfig {
 	static final String FULLSCREEN_MODE = "fullscreen_mode"; //$NON-NLS-1$
 	
 	private static PropertiesConfiguration config = AppConfig.getConfig();
-
-	private static Dimension touchButtonSize;
 
 	public static int getTerminalId() {
 		return config.getInt(TERMINAL_ID, -1);
@@ -113,20 +109,7 @@ public class TerminalConfig {
 	}
 	
 	public static int getTouchScreenButtonHeight() {
-		return config.getInt(TOUCH_BUTTON_HEIGHT, 60);
-	}
-	
-	public static Dimension getTouchScreenButtonSize() {
-		if(touchButtonSize != null) {
-			return touchButtonSize;
-		}
-		
-		int width = 60;
-		int height = config.getInt(TOUCH_BUTTON_HEIGHT, 60);
-		
-		touchButtonSize = new Dimension(width, height);
-		
-		return touchButtonSize;
+		return config.getInt(TOUCH_BUTTON_HEIGHT, 45);
 	}
 	
 	public static void setTouchScreenFontSize(int size) {
@@ -134,6 +117,6 @@ public class TerminalConfig {
 	}
 	
 	public static int getTouchScreenFontSize() {
-		return config.getInt(TOUCH_FONT_SIZE, 14);
+		return config.getInt(TOUCH_FONT_SIZE, 12);
 	}
 }
