@@ -88,7 +88,7 @@ public class PasswordScreen extends JPanel {
 		btnShutdown = new com.floreantpos.swing.PosButton();
 
 		setPreferredSize(new Dimension(320, 593));
-		setLayout(new MigLayout("ins 0", "[380px,grow]", "[110px][270px][grow][fill,grow]"));
+		setLayout(new MigLayout("ins 0", "[380px,grow]", "[110px][270px][grow,fill][grow]"));
 
 		buttonPanel.setOpaque(false);
 		buttonPanel.setPreferredSize(new java.awt.Dimension(200, 180));
@@ -162,18 +162,8 @@ public class PasswordScreen extends JPanel {
 		buttonPanel.add(posButton1, "cell 1 3,grow");
 		add(buttonPanel, "cell 0 1,grow");
 
-		psbtnLogin = new PosButton();
-		psbtnLogin.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				doLogin();
-			}
-		});
-		psbtnLogin.setText("LOGIN");
-
 		jPanel2.setOpaque(false);
 
-		jLabel4.setFont(new java.awt.Font("DejaVu Sans", 1, 24));
-		jLabel4.setForeground(new java.awt.Color(204, 102, 0));
 		jLabel4.setText(com.floreantpos.POSConstants.USER_TYPE + ":");
 		add(jPanel2, "cell 0 0,growx,aligny top");
 		jPanel2.setLayout(new MigLayout("", "[343px]", "[][22px][31px][30px]"));
@@ -219,25 +209,30 @@ public class PasswordScreen extends JPanel {
 		msgLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		jPanel2.add(msgLabel, "cell 0 3,grow");
 
-		jPanel3.setPreferredSize(new java.awt.Dimension(100, 105));
+		panel = new JPanel();
+		add(panel, "cell 0 2,grow");
+		
 		jPanel3.setLayout(new GridLayout(0, 1, 5, 5));
 
+		psbtnLogin = new PosButton();
+		psbtnLogin.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				doLogin();
+			}
+		});
+		psbtnLogin.setText("LOGIN");
 		jPanel3.add(psbtnLogin);
-		
+
 		btnConfigureDatabase.setAction(goAction);
 		btnConfigureDatabase.setText(com.floreantpos.POSConstants.CONFIGURE_DATABASE);
 		btnConfigureDatabase.setFocusable(false);
 		jPanel3.add(btnConfigureDatabase);
 
-		panel = new JPanel();
-		add(panel, "cell 0 2,grow");
-
 		btnShutdown.setAction(goAction);
-		btnShutdown.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/shut_down_32.png"))); // NOI18N
 		btnShutdown.setText(com.floreantpos.POSConstants.SHUTDOWN);
 		btnShutdown.setFocusable(false);
-		
-		if(TerminalConfig.isFullscreenMode()) {
+
+		if (TerminalConfig.isFullscreenMode()) {
 			btnConfigureDatabase.setVisible(false);
 			btnShutdown.setVisible(false);
 		}
@@ -251,7 +246,7 @@ public class PasswordScreen extends JPanel {
 	public synchronized void doLogin() {
 		try {
 			tfPassword.setEnabled(false);
-			
+
 			Application application = Application.getInstance();
 			application.initializeSystem();
 
