@@ -31,7 +31,7 @@ public class ConfigurationDialog extends POSDialog implements ChangeListener, Ac
 		super(parent, false);
 		setTitle(Messages.getString("CONFIGURATION_WINDOW_TITLE")); //$NON-NLS-1$
 		
-		setLayout(new MigLayout("fill")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		setLayout(new MigLayout("fill", "", "[fill,grow][]")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		
 		add(tabbedPane, "span, grow" ); //$NON-NLS-1$
 		

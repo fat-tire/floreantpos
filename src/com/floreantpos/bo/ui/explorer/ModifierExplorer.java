@@ -10,8 +10,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 
-import org.jdesktop.swingx.JXTable;
-
 import com.floreantpos.bo.ui.BOMessageDialog;
 import com.floreantpos.bo.ui.BackOfficeWindow;
 import com.floreantpos.main.Application;
@@ -37,7 +35,6 @@ public class ModifierExplorer extends TransparentPanel {
 
 		tableModel = new ModifierExplorerTableModel();
 		table = new JTable(tableModel);
-		table.setAutoResizeMode(JXTable.AUTO_RESIZE_OFF);
 		table.setDefaultRenderer(Object.class, new PosTableRenderer());
 		//table.packAll();
 		
