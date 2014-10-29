@@ -196,7 +196,7 @@ public class UserDAO extends BaseUserDAO {
 	}
 
 	private boolean validate(User user, boolean editMode) throws PosException {
-		String hql = "from User u where u.userId=:userId and u.newUserType=:userType";
+		String hql = "from User u where u.userId=:userId and u.type=:userType";
 
 		Session session = getSession();
 		Query query = session.createQuery(hql);
