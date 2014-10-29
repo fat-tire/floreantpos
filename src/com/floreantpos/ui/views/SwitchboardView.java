@@ -255,7 +255,6 @@ public class SwitchboardView extends JPanel implements ActionListener {
 
 		bottomRightPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "OTHERS", javax.swing.border.TitledBorder.CENTER,
 				javax.swing.border.TitledBorder.DEFAULT_POSITION));
-		bottomRightPanel.setPreferredSize(new java.awt.Dimension(180, 10));
 
 		btnLogout.setText(POSConstants.CAPITAL_LOGOUT);
 
@@ -266,15 +265,14 @@ public class SwitchboardView extends JPanel implements ActionListener {
 		btnClockOut.setText(POSConstants.CAPITAL_CLOCK_OUT);
 
 		bottomPanel.add(bottomRightPanel, java.awt.BorderLayout.EAST);
-		bottomRightPanel.setLayout(new MigLayout("aligny bottom, insets 1 2 1 2, gapy 10", "[170px]", "[][][][][]"));
+		bottomRightPanel.setLayout(new MigLayout("aligny bottom, insets 1 2 1 2, gapy 10", "[120px]", "[][][][][]"));
 		
-		bottomRightPanel.add(btnAuthorize, "grow,wrap");
-		bottomRightPanel.add(btnManager, "grow,wrap");
-		bottomRightPanel.add(btnBackOffice, "grow,wrap");
-		bottomRightPanel.add(btnClockOut, "grow,wrap");
-		bottomRightPanel.add(btnLogout, "grow,wrap");
-		bottomRightPanel.add(btnShutdown, "grow,wrap");
-		//bottomRightPanel.add(btnManager, "cell 0 0,grow");
+		bottomRightPanel.add(btnAuthorize, "height pref!,grow,wrap");
+		bottomRightPanel.add(btnManager, "height pref!,grow,wrap");
+		bottomRightPanel.add(btnBackOffice, "height pref!,grow,wrap");
+		bottomRightPanel.add(btnClockOut, "height pref!,grow,wrap");
+		bottomRightPanel.add(btnLogout, "height pref!,grow,wrap");
+		bottomRightPanel.add(btnShutdown, "height pref!,grow,wrap");
 
 		add(bottomPanel, java.awt.BorderLayout.CENTER);
 	}// </editor-fold>//GEN-END:initComponents
