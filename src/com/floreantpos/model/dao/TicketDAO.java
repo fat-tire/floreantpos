@@ -383,7 +383,7 @@ public class TicketDAO extends BaseTicketDAO {
 
 			if (userType != null) {
 				criteria.createAlias(Ticket.PROP_OWNER, "u");
-				criteria.add(Restrictions.eq("u.newUserType", userType));
+				criteria.add(Restrictions.eq("u.type", userType));
 			}
 			if (terminal != null) {
 				criteria.add(Restrictions.eq(Ticket.PROP_TERMINAL, terminal));
@@ -408,7 +408,7 @@ public class TicketDAO extends BaseTicketDAO {
 
 			if (userType != null) {
 				criteria.createAlias(Ticket.PROP_OWNER, "u");
-				criteria.add(Restrictions.eq("u.newUserType", userType));
+				criteria.add(Restrictions.eq("u.type", userType));
 			}
 			if (terminal != null) {
 				criteria.add(Restrictions.eq(Ticket.PROP_TERMINAL, terminal));
