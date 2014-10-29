@@ -96,7 +96,7 @@
 							<mainClass>com.floreantpos.main.Main</mainClass>
 						</manifest>
 						<manifestEntries>
-							<Class-Path>i18n/</Class-Path>
+							<Class-Path>config/ i18n/</Class-Path>
 						</manifestEntries>
 					</archive>
 				</configuration>
