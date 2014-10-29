@@ -152,20 +152,24 @@ public class SwitchboardView extends JPanel implements ActionListener {
 		bottomLeftPanel.add(openTicketList, java.awt.BorderLayout.CENTER);
 
 		activityPanel.setLayout(new java.awt.GridLayout(3, 0, 5, 5));
+		
+		btnNewTicket.setText("DINE IN");
+		btnTakeout = new com.floreantpos.swing.PosButton();
+		btnPickup = new PosButton();
+		btnHomeDelivery = new PosButton();
+		btnDriveThrough = new PosButton();
+		btnBarTab = new PosButton("BAR TAB");
 
 		if(TerminalConfig.isDineInEnable()) {
-			btnNewTicket.setText("DINE IN");
 			activityPanel.add(btnNewTicket);
 		}
 		
 		if(TerminalConfig.isTakeOutEnable()) {
-			btnTakeout = new com.floreantpos.swing.PosButton();
 			btnTakeout.setText(POSConstants.CAPITAL_TAKE_OUT);
 			activityPanel.add(btnTakeout);
 		}
 
 		if(TerminalConfig.isPickupEnable()) {
-			btnPickup = new PosButton();
 			btnPickup.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					doHomeDelivery(TicketType.PICKUP);
@@ -176,7 +180,6 @@ public class SwitchboardView extends JPanel implements ActionListener {
 		}
 
 		if(TerminalConfig.isHomeDeliveryEnable()) {
-			btnHomeDelivery = new PosButton();
 			btnHomeDelivery.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					doHomeDelivery(TicketType.HOME_DELIVERY);
@@ -187,7 +190,6 @@ public class SwitchboardView extends JPanel implements ActionListener {
 		}
 
 		if(TerminalConfig.isDriveThruEnable()) {
-			btnDriveThrough = new PosButton();
 			btnDriveThrough.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					doTakeout(TicketType.DRIVE_THRU);
@@ -198,7 +200,6 @@ public class SwitchboardView extends JPanel implements ActionListener {
 		}
 		
 		if(TerminalConfig.isBarTabEnable()) {
-			btnBarTab = new PosButton("BAR TAB");
 			btnBarTab.setAction(new NewBarTabAction(this));
 			activityPanel.add(btnBarTab);
 	
