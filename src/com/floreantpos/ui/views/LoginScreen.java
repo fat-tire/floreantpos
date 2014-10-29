@@ -9,6 +9,7 @@ package com.floreantpos.ui.views;
 import java.awt.BorderLayout;
 import java.awt.Color;
 
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.CompoundBorder;
@@ -40,7 +41,13 @@ public class LoginScreen extends JPanel {
 
 		JPanel centerPanel = new JPanel(new BorderLayout());
 		centerPanel.setBorder(new CompoundBorder(new EtchedBorder(), new EmptyBorder(20, 20, 20, 20)));
-		centerPanel.add(new ImageComponent(IconFactory.getIcon("floreant-pos.png").getImage()));
+		ImageIcon icon = IconFactory.getIcon("/", "logo.png");
+		
+		if(icon == null) {
+			icon = IconFactory.getIcon("floreant-pos.png");
+		}
+		
+		centerPanel.add(new ImageComponent(icon.getImage()));
 
 		add(centerPanel);
 
