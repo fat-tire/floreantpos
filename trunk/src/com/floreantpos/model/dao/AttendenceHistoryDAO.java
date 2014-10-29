@@ -40,7 +40,7 @@ public class AttendenceHistoryDAO extends BaseAttendenceHistoryDAO {
 
 			if (userType != null) {
 				criteria.createAlias(AttendenceHistory.PROP_USER, "u");
-				criteria.add(Restrictions.eq("u.newUserType", userType));
+				criteria.add(Restrictions.eq("u.type", userType));
 			}
 			if (terminal != null) {
 				criteria.add(Restrictions.eq(Ticket.PROP_TERMINAL, terminal));
@@ -80,7 +80,7 @@ public class AttendenceHistoryDAO extends BaseAttendenceHistoryDAO {
 			
 			if (userType != null) {
 				criteria.createAlias(AttendenceHistory.PROP_USER, "u");
-				criteria.add(Restrictions.eq("u.newUserType", userType));
+				criteria.add(Restrictions.eq("u.type", userType));
 			}
 			if (terminal != null) {
 				criteria.add(Restrictions.eq(Ticket.PROP_TERMINAL, terminal));
