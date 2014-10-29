@@ -12,6 +12,7 @@ import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 
 import com.floreantpos.actions.ActionCommand;
+import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.config.UIConfig;
 
 public class PosButton extends JButton {
@@ -70,13 +71,13 @@ public class PosButton extends JButton {
 		if (isPreferredSizeSet()) {
 			return size;
 		}
-
+		
 		if (ui != null) {
 			size = ui.getPreferredSize(this);
 		}
 		
 		if(size != null) {
-			size.setSize(size.width + 20, 60);
+			size.setSize(size.width + 20, TerminalConfig.getTouchScreenButtonHeight());
 		}
 		
 		
