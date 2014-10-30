@@ -513,7 +513,6 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 
 			PosTransaction transaction = paymentType.createTransaction();
 			transaction.setTicket(ticket);
-//			transaction.setPaymentType(paymentType.name());
 
 			if (inputter instanceof SwipeCardDialog) {
 				SwipeCardDialog swipeCardDialog = (SwipeCardDialog) inputter;

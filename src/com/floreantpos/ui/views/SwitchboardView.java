@@ -741,7 +741,7 @@ public class SwitchboardView extends JPanel implements ActionListener {
 			Set<UserPermission> permissions = user.getType().getPermissions();
 			if (permissions != null) {
 				for (UserPermission permission : permissions) {
-					if (permission.equals(UserPermission.VIEW_OPEN_TICKETS)) {
+					if (permission.equals(UserPermission.VIEW_ALL_OPEN_TICKETS)) {
 						showAllOpenTicket = true;
 						break;
 					}
