@@ -56,6 +56,7 @@ public class PosTransactionService {
 			}
 
 			transaction.setTransactionType(TransactionType.CREDIT.name());
+			//transaction.setPaymentType(transaction.getPaymentType());
 			transaction.setTerminal(terminal);
 			transaction.setUser(currentUser);
 			transaction.setTransactionTime(currentDate);
@@ -78,7 +79,7 @@ public class PosTransactionService {
 			adjustTerminalBalance(transaction);
 
 			session.saveOrUpdate(ticket);
-			session.update(terminal);
+			//session.update(terminal);
 
 			//				User assignedDriver = ticket.getAssignedDriver();
 			//				if(assignedDriver != null) {
