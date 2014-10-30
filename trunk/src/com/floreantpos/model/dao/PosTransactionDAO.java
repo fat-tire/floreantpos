@@ -11,6 +11,7 @@ import org.hibernate.criterion.Restrictions;
 
 import com.floreantpos.model.PosTransaction;
 import com.floreantpos.model.Terminal;
+import com.floreantpos.model.User;
 import com.floreantpos.model.util.TransactionSummary;
 
 
@@ -22,15 +23,23 @@ public class PosTransactionDAO extends BasePosTransactionDAO {
 	public PosTransactionDAO () {}
 
 	public List<PosTransaction> findUnauthorizedTransactions() {
+		return findUnauthorizedTransactions(null);
+	}
+	
+	public List<PosTransaction> findUnauthorizedTransactions(User owner) {
 		Session session = null;
-
+		
 		try {
 			session = getSession();
 			
 			Criteria criteria = session.createCriteria(getReferenceClass());
 			criteria.add(Restrictions.eq(PosTransaction.PROP_CAPTURED, Boolean.FALSE));
 			criteria.add(Restrictions.isNotNull(PosTransaction.PROP_TICKET));
-
+			
+			if(owner != null) {
+				criteria.add(Restrictions.eq(PosTransaction.PROP_USER, owner));
+			}
+			
 			return criteria.list();
 		} finally {
 			closeSession(session);

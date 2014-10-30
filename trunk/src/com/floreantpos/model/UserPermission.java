@@ -40,7 +40,7 @@ public class UserPermission extends BaseUserPermission {
 	}
 	
 	public final static UserPermission CREATE_TICKET = new UserPermission("Create New Ticket");
-	public final static UserPermission VIEW_OPEN_TICKETS = new UserPermission("View All Open Ticket");
+	public final static UserPermission VIEW_ALL_OPEN_TICKETS = new UserPermission("View All Open Ticket");
 	public final static UserPermission EDIT_TICKET = new UserPermission("Edit Ticket");
 	public final static UserPermission VOID_TICKET = new UserPermission("Void Ticket");
 	public final static UserPermission PERFORM_ADMINISTRATIVE_TASK = new UserPermission("Perform Administrative Task");
@@ -60,7 +60,7 @@ public class UserPermission extends BaseUserPermission {
 	public final static UserPermission VIEW_EXPLORERS = new UserPermission("View Explorers");
 	public final static UserPermission VIEW_REPORTS = new UserPermission("View Reports");
 	
-	public final static UserPermission[] permissions = new UserPermission[] {VIEW_OPEN_TICKETS,CREATE_TICKET,EDIT_TICKET, VOID_TICKET,
+	public final static UserPermission[] permissions = new UserPermission[] {VIEW_ALL_OPEN_TICKETS,CREATE_TICKET,EDIT_TICKET, VOID_TICKET,
 			VIEW_BACK_OFFICE, AUTHORIZE_TICKETS, SPLIT_TICKET, SETTLE_TICKET, REOPEN_TICKET, PAY_OUT,
 			TAKE_OUT, VIEW_EXPLORERS, VIEW_REPORTS, SHUT_DOWN, ADD_DISCOUNT, PERFORM_MANAGER_TASK, PERFORM_ADMINISTRATIVE_TASK};
 }
