@@ -36,6 +36,7 @@ import com.floreantpos.model.Restaurant;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketCouponAndDiscount;
 import com.floreantpos.model.TicketType;
+import com.floreantpos.model.TransactionType;
 import com.floreantpos.model.UserPermission;
 import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.report.JReportPrintService;
@@ -320,6 +321,8 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 			String transactionId = ticket.getProperty(Ticket.PROPERTY_CARD_TRANSACTION_ID);
 
 			CreditCardTransaction transaction = new CreditCardTransaction();
+			transaction.setPaymentType(ticket.getProperty(Ticket.PROPERTY_PAYMENT_METHOD));
+			transaction.setTransactionType(TransactionType.CREDIT.name());
 			transaction.setTicket(ticket);
 			transaction.setCardType(ticket.getProperty(Ticket.PROPERTY_CARD_NAME));
 			transaction.setCaptured(false);
@@ -510,6 +513,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 
 			PosTransaction transaction = paymentType.createTransaction();
 			transaction.setTicket(ticket);
+//			transaction.setPaymentType(paymentType.name());
 
 			if (inputter instanceof SwipeCardDialog) {
 				SwipeCardDialog swipeCardDialog = (SwipeCardDialog) inputter;
