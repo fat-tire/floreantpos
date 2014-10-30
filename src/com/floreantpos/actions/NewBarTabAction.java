@@ -104,7 +104,7 @@ public class NewBarTabAction extends AbstractAction implements CardInputListener
 
 			ticket.addProperty(Ticket.PROPERTY_CARD_AUTH_CODE, authorizationCode);
 			ticket.addProperty(Ticket.PROPERTY_PAYMENT_METHOD, selectedPaymentType.name());
-			ticket.addProperty(Ticket.PROPERTY_CARD_NAME, selectedPaymentType.name());
+			ticket.addProperty(Ticket.PROPERTY_CARD_NAME, selectedPaymentType.getDisplayString());
 			ticket.addProperty(Ticket.PROPERTY_CARD_READER, CardReader.EXTERNAL_TERMINAL.name());
 			
 			ticket.addToticketItems(createTabOpenItem(ticket));

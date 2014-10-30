@@ -16,9 +16,12 @@ import org.apache.commons.lang.StringUtils;
 
 import com.floreantpos.actions.ActionCommand;
 import com.floreantpos.actions.CloseDialogAction;
+import com.floreantpos.main.Application;
 import com.floreantpos.model.CardReader;
 import com.floreantpos.model.PosTransaction;
 import com.floreantpos.model.Ticket;
+import com.floreantpos.model.User;
+import com.floreantpos.model.UserPermission;
 import com.floreantpos.model.dao.PosTransactionDAO;
 import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.swing.PosButton;
@@ -66,7 +69,13 @@ public class TicketAuthorizationDialog extends POSDialog {
 	}
 
 	public void updateTransactiontList() {
-		listView.setTransactions(PosTransactionDAO.getInstance().findUnauthorizedTransactions());
+		User owner = null;
+		User currentUser = Application.getCurrentUser();
+		if(!currentUser.hasPermission(UserPermission.VIEW_ALL_OPEN_TICKETS)) {
+			owner = currentUser;
+		}
+		
+		listView.setTransactions(PosTransactionDAO.getInstance().findUnauthorizedTransactions(owner));
 	}
 
 	private boolean confirmAuthorize(String message) {
