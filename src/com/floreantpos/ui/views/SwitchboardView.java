@@ -10,6 +10,7 @@ import java.awt.ComponentOrientation;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -43,6 +44,7 @@ import com.floreantpos.model.UserPermission;
 import com.floreantpos.model.UserType;
 import com.floreantpos.model.dao.AttendenceHistoryDAO;
 import com.floreantpos.model.dao.TicketDAO;
+import com.floreantpos.model.dao.UserDAO;
 import com.floreantpos.services.TicketService;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.ui.dialog.ManagerDialog;
@@ -54,7 +56,7 @@ import com.floreantpos.ui.views.order.DefaultOrderServiceExtension;
 import com.floreantpos.ui.views.order.OrderView;
 import com.floreantpos.ui.views.order.RootView;
 import com.floreantpos.ui.views.payment.SettleTicketDialog;
-import com.floreantpos.util.NumberUtil;
+import com.floreantpos.util.POSUtil;
 import com.floreantpos.util.TicketAlreadyExistsException;
 
 /**
@@ -96,7 +98,6 @@ public class SwitchboardView extends JPanel implements ActionListener {
 			btnPickup.setEnabled(false);
 			btnDriveThrough.setEnabled(false);
 			btnAssignDriver.setEnabled(false);
-			btnCloseOrder.setEnabled(false);
 
 			orderServiceExtension = new DefaultOrderServiceExtension();
 		}
@@ -141,7 +142,7 @@ public class SwitchboardView extends JPanel implements ActionListener {
 		lblUserName.setFont(new java.awt.Font("Tahoma", 1, 18));
 		lblUserName.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 		statusPanel.add(lblUserName, java.awt.BorderLayout.PAGE_START);
-		
+
 		add(statusPanel, java.awt.BorderLayout.NORTH);
 
 		bottomPanel.setLayout(new java.awt.BorderLayout(5, 5));
@@ -152,7 +153,7 @@ public class SwitchboardView extends JPanel implements ActionListener {
 		bottomLeftPanel.add(openTicketList, java.awt.BorderLayout.CENTER);
 
 		activityPanel.setLayout(new java.awt.GridLayout(3, 0, 5, 5));
-		
+
 		btnNewTicket.setText("DINE IN");
 		btnTakeout = new com.floreantpos.swing.PosButton();
 		btnPickup = new PosButton();
@@ -160,16 +161,16 @@ public class SwitchboardView extends JPanel implements ActionListener {
 		btnDriveThrough = new PosButton();
 		btnBarTab = new PosButton("BAR TAB");
 
-		if(TerminalConfig.isDineInEnable()) {
+		if (TerminalConfig.isDineInEnable()) {
 			activityPanel.add(btnNewTicket);
 		}
-		
-		if(TerminalConfig.isTakeOutEnable()) {
+
+		if (TerminalConfig.isTakeOutEnable()) {
 			btnTakeout.setText(POSConstants.CAPITAL_TAKE_OUT);
 			activityPanel.add(btnTakeout);
 		}
 
-		if(TerminalConfig.isPickupEnable()) {
+		if (TerminalConfig.isPickupEnable()) {
 			btnPickup.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					doHomeDelivery(TicketType.PICKUP);
@@ -179,7 +180,7 @@ public class SwitchboardView extends JPanel implements ActionListener {
 			activityPanel.add(btnPickup);
 		}
 
-		if(TerminalConfig.isHomeDeliveryEnable()) {
+		if (TerminalConfig.isHomeDeliveryEnable()) {
 			btnHomeDelivery.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					doHomeDelivery(TicketType.HOME_DELIVERY);
@@ -189,7 +190,7 @@ public class SwitchboardView extends JPanel implements ActionListener {
 			activityPanel.add(btnHomeDelivery);
 		}
 
-		if(TerminalConfig.isDriveThruEnable()) {
+		if (TerminalConfig.isDriveThruEnable()) {
 			btnDriveThrough.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					doTakeout(TicketType.DRIVE_THRU);
@@ -198,15 +199,15 @@ public class SwitchboardView extends JPanel implements ActionListener {
 			btnDriveThrough.setText("DRIVE THRU");
 			activityPanel.add(btnDriveThrough);
 		}
-		
-		if(TerminalConfig.isBarTabEnable()) {
+
+		if (TerminalConfig.isBarTabEnable()) {
 			btnBarTab.setAction(new NewBarTabAction(this));
 			activityPanel.add(btnBarTab);
-	
+
 			btnEditTicket.setText(POSConstants.CAPITAL_EDIT);
 			activityPanel.add(btnEditTicket);
 		}
-		
+
 		btnSettleTicket = new com.floreantpos.swing.PosButton();
 		btnSettleTicket.setText(POSConstants.CAPITAL_SETTLE);
 		activityPanel.add(btnSettleTicket);
@@ -242,7 +243,7 @@ public class SwitchboardView extends JPanel implements ActionListener {
 		});
 		btnAssignDriver.setText("<html>ASSIGN<br/>DRIVER</html>");
 		activityPanel.add(btnAssignDriver);
-		
+
 		btnCloseOrder = new PosButton();
 		btnCloseOrder.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -267,7 +268,7 @@ public class SwitchboardView extends JPanel implements ActionListener {
 
 		bottomPanel.add(bottomRightPanel, java.awt.BorderLayout.EAST);
 		bottomRightPanel.setLayout(new MigLayout("aligny bottom, insets 1 2 1 2, gapy 10", "[120px]", "[][][][][]"));
-		
+
 		bottomRightPanel.add(btnAuthorize, "height pref!,grow,wrap");
 		bottomRightPanel.add(btnManager, "height pref!,grow,wrap");
 		bottomRightPanel.add(btnBackOffice, "height pref!,grow,wrap");
@@ -281,17 +282,37 @@ public class SwitchboardView extends JPanel implements ActionListener {
 	protected void doCloseOrder() {
 		Ticket ticket = getFirstSelectedTicket();
 
-		if (orderServiceExtension.finishOrder(ticket.getId())) {
-			updateTicketList();
+		int due = (int) POSUtil.getDouble(ticket.getDueAmount());
+		if (due != 0) {
+			POSMessageDialog.showError("Ticket is not fully paid");
+			return;
 		}
+
+		int option = JOptionPane.showOptionDialog(Application.getPosWindow(), "Ticket# " + ticket.getId() + " will be closed.", "Confirm",
+				JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, null, null, null);
+
+		if (option != JOptionPane.OK_OPTION) {
+			return;
+		}
+
+		ticket.setClosed(true);
+		TicketDAO.getInstance().saveOrUpdate(ticket);
+
+		User driver = ticket.getAssignedDriver();
+		if (driver != null) {
+			driver.setAvailableForDelivery(true);
+			UserDAO.getInstance().saveOrUpdate(driver);
+		}
+		
+		updateTicketList();
 	}
 
 	protected void doAssignDriver() {
 		try {
 
 			Ticket ticket = getFirstSelectedTicket();
-			
-			if(ticket == null) {
+
+			if (ticket == null) {
 				return;
 			}
 
@@ -327,7 +348,7 @@ public class SwitchboardView extends JPanel implements ActionListener {
 				return;
 			}
 
-			Ticket ticket = TicketService.getTicket(ticketId);
+			Ticket ticket = TicketDAO.getInstance().loadFullTicket(ticketId);
 
 			if (ticket == null) {
 				throw new PosException(POSConstants.NO_TICKET_WITH_ID + " " + ticketId + " " + POSConstants.FOUND);
@@ -336,20 +357,36 @@ public class SwitchboardView extends JPanel implements ActionListener {
 			if (!ticket.isClosed()) {
 				throw new PosException(POSConstants.TICKET_IS_NOT_CLOSED);
 			}
-
-			String ticketTotalAmount = Application.getCurrencySymbol() + NumberUtil.formatNumber(ticket.getTotalAmount());
-			String amountMessage = "<span style='color: red; font-weight: bold;'>" + ticketTotalAmount + "</span>";
-			String message = "<html><body>Ticket amount is " + ticketTotalAmount
-					+ ". To reopen ticket, you need to refund that amount to system.<br/>Please press <b>OK</b> after you refund amount " + amountMessage
-					+ "</body></html>";
-
-			int option = JOptionPane.showOptionDialog(this, message, "Alert!", JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, null, null, null);
-			if (option != JOptionPane.OK_OPTION) {
-				return;
+			
+			if(ticket.isVoided()) {
+				throw new PosException("Void ticket cannot be reopened");
 			}
 
-			TicketService.refundTicket(ticket);
-			editTicket(ticket);
+			ticket.setClosed(false);
+			ticket.setClosingDate(null);
+			ticket.setReOpened(true);
+			
+			TicketDAO.getInstance().saveOrUpdate(ticket);
+			
+			OrderInfoView view = new OrderInfoView(Arrays.asList(ticket));
+			OrderInfoDialog dialog = new OrderInfoDialog(view);
+			dialog.setSize(400, 600);
+			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+			dialog.setLocationRelativeTo(Application.getPosWindow());
+			dialog.setVisible(true);
+			
+			updateTicketList();
+
+//			String ticketTotalAmount = Application.getCurrencySymbol() + NumberUtil.formatNumber(ticket.getTotalAmount());
+//			String amountMessage = "<span style='color: red; font-weight: bold;'>" + ticketTotalAmount + "</span>";
+//			String message = "<html><body>Ticket amount is " + ticketTotalAmount
+//					+ ". To reopen ticket, you need to refund that amount to system.<br/>Please press <b>OK</b> after you refund amount " + amountMessage
+//					+ "</body></html>";
+//
+//			int option = JOptionPane.showOptionDialog(this, message, "Alert!", JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, null, null, null);
+//			if (option != JOptionPane.OK_OPTION) {
+//				return;
+//			}
 
 		} catch (PosException e) {
 			POSMessageDialog.showError(this, e.getLocalizedMessage());
@@ -405,9 +442,9 @@ public class SwitchboardView extends JPanel implements ActionListener {
 	private void doSettleTicket() {
 		try {
 			Ticket ticket = null;
-			
+
 			List<Ticket> selectedTickets = openTicketList.getSelectedTickets();
-			
+
 			if (selectedTickets.size() > 0) {
 				ticket = selectedTickets.get(0);
 			}
@@ -419,7 +456,7 @@ public class SwitchboardView extends JPanel implements ActionListener {
 			new SettleTicketAction(ticket.getId()).execute();
 
 			updateTicketList();
-			
+
 		} catch (PosException e) {
 			POSMessageDialog.showError(this, e.getMessage());
 		} catch (Exception e) {
@@ -427,19 +464,23 @@ public class SwitchboardView extends JPanel implements ActionListener {
 			POSMessageDialog.showError(POSConstants.ERROR_MESSAGE, e);
 		}
 	}
-
+	
 	private void doShowOrderInfo() {
+		doShowOrderInfo(openTicketList.getSelectedTickets());
+	}
+
+	private void doShowOrderInfo(List<Ticket> tickets) {
 		try {
-			List<Ticket> selectedTickets = openTicketList.getSelectedTickets();
-			if (selectedTickets.size() == 0) {
+			
+			if (tickets.size() == 0) {
 				POSMessageDialog.showMessage(POSConstants.SELECT_ONE_TICKET_TO_PRINT);
 				return;
 			}
 
 			List<Ticket> ticketsToShow = new ArrayList<Ticket>();
 
-			for (int i = 0; i < selectedTickets.size(); i++) {
-				Ticket ticket = selectedTickets.get(i);
+			for (int i = 0; i < tickets.size(); i++) {
+				Ticket ticket = tickets.get(i);
 				ticketsToShow.add(TicketDAO.getInstance().loadFullTicket(ticket.getId()));
 			}
 
@@ -451,22 +492,8 @@ public class SwitchboardView extends JPanel implements ActionListener {
 			dialog.setVisible(true);
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			POSMessageDialog.showError(POSConstants.ERROR_MESSAGE, e);
 		}
-
-		//		Ticket ticket = selectedTickets.get(0);
-		//		try {
-		//			ticket = TicketDAO.getInstance().initializeTicket(ticket);
-		//			ticket.calculateDefaultGratutity();
-		//
-		//			PosPrintService.printTicket(ticket, 0);
-		//
-		//			// PRINT ACTION
-		//			String actionMessage = "CHK#" + ":" + ticket.getId();
-		//			ActionHistoryDAO.getInstance().saveHistory(Application.getCurrentUser(), ActionHistory.PRINT_CHECK, actionMessage);
-		//		} catch (Exception e) {
-		//			POSMessageDialog.showError(this, e.getMessage(), e);
-		//		}
 	}
 
 	private void doVoidTicket() {
@@ -507,10 +534,10 @@ public class SwitchboardView extends JPanel implements ActionListener {
 				return;
 			}
 
-//			if (selectedTicket.getTotalAmount() != selectedTicket.getDueAmount()) {
-//				POSMessageDialog.showMessage(POSConstants.PARTIAL_PAID_VOID_ERROR);
-//				return;
-//			}
+			//			if (selectedTicket.getTotalAmount() != selectedTicket.getDueAmount()) {
+			//				POSMessageDialog.showMessage(POSConstants.PARTIAL_PAID_VOID_ERROR);
+			//				return;
+			//			}
 
 			// initialize the ticket.
 			Ticket ticket = TicketDAO.getInstance().loadFullTicket(selectedTicket.getId());
@@ -618,7 +645,7 @@ public class SwitchboardView extends JPanel implements ActionListener {
 	private void doShowManagerWindow() {
 		ManagerDialog dialog = new ManagerDialog();
 		dialog.open();
-		
+
 		updateTicketList();
 	}
 
@@ -630,9 +657,9 @@ public class SwitchboardView extends JPanel implements ActionListener {
 
 		for (int i = 0; i < selectedTickets.size(); i++) {
 			Ticket ticket = selectedTickets.get(i);
-			
+
 			Ticket fullTicket = TicketDAO.getInstance().loadFullTicket(ticket.getId());
-			
+
 			SettleTicketDialog posDialog = new SettleTicketDialog();
 			posDialog.setTicket(fullTicket);
 			posDialog.setSize(800, 700);

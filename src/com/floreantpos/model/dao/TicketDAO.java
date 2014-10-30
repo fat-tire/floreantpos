@@ -56,6 +56,8 @@ public class TicketDAO extends BaseTicketDAO {
 		
 		Ticket ticket = (Ticket) session.get(getReferenceClass(), id);
 		
+		if(ticket == null) return null;
+		
 		Hibernate.initialize(ticket.getTicketItems());
 		Hibernate.initialize(ticket.getCouponAndDiscounts());
 		Hibernate.initialize(ticket.getTransactions());

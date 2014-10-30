@@ -10,7 +10,6 @@ import com.floreantpos.model.ActionHistory;
 import com.floreantpos.model.CashTransaction;
 import com.floreantpos.model.GiftCertificateTransaction;
 import com.floreantpos.model.PosTransaction;
-import com.floreantpos.model.RefundTransaction;
 import com.floreantpos.model.Terminal;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketType;
@@ -134,23 +133,25 @@ public class PosTransactionService {
 	}
 
 	private void closeTicketIfApplicable(Ticket ticket, Date currentDate) {
-		//		String transactionType = ticket.getTransactionType();
-		//		if (!"CASH".equalsIgnoreCase(transactionType)) {
-		//			return;
-		//		}
-		//
-		//		TicketType ticketType = ticket.getType();
-		//
-		//		if (ticketType == TicketType.DINE_IN || ticketType == TicketType.TAKE_OUT || ticketType == TicketType.BAR_TAB) {
-		//			ticket.setClosed(true);
-		//			ticket.setClosingDate(currentDate);
-		//		}
+		TicketType ticketType = ticket.getType();
+		
+		switch (ticketType) {
+			case DINE_IN:
+			case BAR_TAB:
+			case TAKE_OUT:
+				ticket.setClosed(true);
+				ticket.setClosingDate(currentDate);
+				break;
+
+			default:
+				break;
+		}
+		
 	}
 
 	public void refundTicket(Ticket ticket) throws Exception {
-		Application application = Application.getInstance();
-		User currentUser = Application.getCurrentUser();
-		Terminal terminal = application.getTerminal();
+//		User currentUser = Application.getCurrentUser();
+//		Terminal terminal = ticket.getTerminal();
 
 		Session session = null;
 		Transaction tx = null;
@@ -158,34 +159,32 @@ public class PosTransactionService {
 		GenericDAO dao = new GenericDAO();
 
 		try {
-			Double currentBalance = terminal.getCurrentBalance();
-			Double totalPrice = ticket.getTotalAmount();
-			double newBalance = currentBalance - totalPrice;
-			terminal.setCurrentBalance(newBalance);
+//			Double currentBalance = terminal.getCurrentBalance();
+//			Double totalPrice = ticket.getTotalAmount();
+//			double newBalance = currentBalance - totalPrice;
+//			terminal.setCurrentBalance(newBalance);
 
+//			RefundTransaction posTransaction = new RefundTransaction();
+//			posTransaction.setTicket(ticket);
+//			posTransaction.setPaymentType(PaymentType.CASH.name());
+//			posTransaction.setTransactionType(TransactionType.DEBIT.name());
+//			posTransaction.setAmount(ticket.getSubtotalAmount());
+//			posTransaction.setTerminal(terminal);
+//			posTransaction.setUser(currentUser);
+//			posTransaction.setTransactionTime(new Date());
+			
 			ticket.setVoided(false);
-			ticket.setPaid(false);
 			ticket.setClosed(false);
 			ticket.setDrawerResetted(false);
 			ticket.setClosingDate(null);
 			ticket.setReOpened(true);
-			ticket.setTerminal(terminal);
-
-			RefundTransaction posTransaction = new RefundTransaction();
-			//posTransaction.setTicket(ticket);
-
-			posTransaction.setAmount(ticket.getSubtotalAmount());
-
-			posTransaction.setTerminal(terminal);
-			posTransaction.setUser(currentUser);
-			posTransaction.setTransactionTime(new Date());
+//			ticket.setTerminal(terminal);
+//			ticket.addTotransactions(posTransaction);
 
 			session = dao.getSession();
 			tx = session.beginTransaction();
 
 			dao.saveOrUpdate(ticket, session);
-			dao.saveOrUpdate(posTransaction, session);
-			dao.saveOrUpdate(terminal, session);
 
 			tx.commit();
 
