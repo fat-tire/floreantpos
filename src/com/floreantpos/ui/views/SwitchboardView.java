@@ -25,10 +25,12 @@ import net.miginfocom.swing.MigLayout;
 
 import org.apache.commons.logging.LogFactory;
 
+import com.floreantpos.ITicketList;
 import com.floreantpos.POSConstants;
 import com.floreantpos.PosException;
 import com.floreantpos.actions.AuthorizeTicketAction;
 import com.floreantpos.actions.NewBarTabAction;
+import com.floreantpos.actions.RefundAction;
 import com.floreantpos.actions.SettleTicketAction;
 import com.floreantpos.actions.ShutDownAction;
 import com.floreantpos.bo.ui.BackOfficeWindow;
@@ -63,12 +65,12 @@ import com.floreantpos.util.TicketAlreadyExistsException;
  * 
  * @author MShahriar
  */
-public class SwitchboardView extends JPanel implements ActionListener {
+public class SwitchboardView extends JPanel implements ActionListener, ITicketList {
 	public final static String VIEW_NAME = com.floreantpos.POSConstants.SWITCHBOARD;
 
 	private OrderServiceExtension orderServiceExtension;
 
-	public static SwitchboardView instance;
+	private static SwitchboardView instance;
 
 	//	private Timer ticketListUpdater;
 
@@ -107,6 +109,10 @@ public class SwitchboardView extends JPanel implements ActionListener {
 
 		instance = this;
 	}
+	
+	public static SwitchboardView getInstance() {
+		return instance;
+	}
 
 	/**
 	 * This method is called from within the constructor to initialize the form.
@@ -127,6 +133,7 @@ public class SwitchboardView extends JPanel implements ActionListener {
 		btnNewTicket = new com.floreantpos.swing.PosButton();
 		btnEditTicket = new com.floreantpos.swing.PosButton();
 		btnVoidTicket = new com.floreantpos.swing.PosButton();
+		btnRefundTicket = new com.floreantpos.swing.PosButton(new RefundAction(this));
 		btnPayout = new com.floreantpos.swing.PosButton();
 		btnOrderInfo = new com.floreantpos.swing.PosButton();
 		javax.swing.JPanel bottomRightPanel = new javax.swing.JPanel();
@@ -226,6 +233,8 @@ public class SwitchboardView extends JPanel implements ActionListener {
 
 		btnVoidTicket.setText(POSConstants.CAPITAL_VOID);
 		activityPanel.add(btnVoidTicket);
+		
+		activityPanel.add(btnRefundTicket);
 
 		btnPayout.setText(POSConstants.CAPITAL_PAY_OUT);
 		activityPanel.add(btnPayout);
@@ -778,6 +787,7 @@ public class SwitchboardView extends JPanel implements ActionListener {
 	private com.floreantpos.swing.PosButton btnSplitTicket;
 	private com.floreantpos.swing.PosButton btnTakeout;
 	private com.floreantpos.swing.PosButton btnVoidTicket;
+	private com.floreantpos.swing.PosButton btnRefundTicket;
 	private com.floreantpos.swing.PosButton btnBarTab;
 	private javax.swing.JLabel lblUserName;
 	private com.floreantpos.ui.TicketListView openTicketList;
@@ -854,6 +864,18 @@ public class SwitchboardView extends JPanel implements ActionListener {
 
 		Ticket ticket = selectedTickets.get(0);
 
+		return ticket;
+	}
+	
+	public Ticket getSelectedTicket() {
+		List<Ticket> selectedTickets = openTicketList.getSelectedTickets();
+		
+		if (selectedTickets.size() == 0 || selectedTickets.size() > 1) {
+			return null;
+		}
+		
+		Ticket ticket = selectedTickets.get(0);
+		
 		return ticket;
 	}
 
