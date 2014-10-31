@@ -9,7 +9,9 @@ import com.floreantpos.main.Application;
 import com.floreantpos.model.ActionHistory;
 import com.floreantpos.model.CashTransaction;
 import com.floreantpos.model.GiftCertificateTransaction;
+import com.floreantpos.model.PaymentType;
 import com.floreantpos.model.PosTransaction;
+import com.floreantpos.model.RefundTransaction;
 import com.floreantpos.model.Terminal;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketType;
@@ -151,8 +153,8 @@ public class PosTransactionService {
 	}
 
 	public void refundTicket(Ticket ticket) throws Exception {
-//		User currentUser = Application.getCurrentUser();
-//		Terminal terminal = ticket.getTerminal();
+		User currentUser = Application.getCurrentUser();
+		Terminal terminal = ticket.getTerminal();
 
 		Session session = null;
 		Transaction tx = null;
@@ -160,27 +162,26 @@ public class PosTransactionService {
 		GenericDAO dao = new GenericDAO();
 
 		try {
-//			Double currentBalance = terminal.getCurrentBalance();
-//			Double totalPrice = ticket.getTotalAmount();
-//			double newBalance = currentBalance - totalPrice;
-//			terminal.setCurrentBalance(newBalance);
+			Double currentBalance = terminal.getCurrentBalance();
+			Double totalPrice = ticket.getTotalAmount();
+			double newBalance = currentBalance - totalPrice;
+			terminal.setCurrentBalance(newBalance);
 
-//			RefundTransaction posTransaction = new RefundTransaction();
-//			posTransaction.setTicket(ticket);
-//			posTransaction.setPaymentType(PaymentType.CASH.name());
-//			posTransaction.setTransactionType(TransactionType.DEBIT.name());
-//			posTransaction.setAmount(ticket.getSubtotalAmount());
-//			posTransaction.setTerminal(terminal);
-//			posTransaction.setUser(currentUser);
-//			posTransaction.setTransactionTime(new Date());
+			RefundTransaction posTransaction = new RefundTransaction();
+			posTransaction.setTicket(ticket);
+			posTransaction.setPaymentType(PaymentType.CASH.name());
+			posTransaction.setTransactionType(TransactionType.DEBIT.name());
+			posTransaction.setAmount(ticket.getPaidAmount());
+			posTransaction.setTerminal(terminal);
+			posTransaction.setUser(currentUser);
+			posTransaction.setTransactionTime(new Date());
 			
-			ticket.setVoided(false);
-			ticket.setClosed(false);
+			ticket.setVoided(true);
+			ticket.setClosed(true);
 			ticket.setDrawerResetted(false);
-			ticket.setClosingDate(null);
-			ticket.setReOpened(true);
-//			ticket.setTerminal(terminal);
-//			ticket.addTotransactions(posTransaction);
+			ticket.setClosingDate(new Date());
+
+			ticket.addTotransactions(posTransaction);
 
 			session = dao.getSession();
 			tx = session.beginTransaction();
