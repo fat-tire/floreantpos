@@ -2,8 +2,6 @@ package com.floreantpos.ui.views.payment;
 
 import java.math.BigDecimal;
 
-import org.apache.commons.lang.StringUtils;
-
 import net.authorize.Environment;
 import net.authorize.Merchant;
 import net.authorize.TransactionType;
@@ -11,6 +9,8 @@ import net.authorize.aim.Transaction;
 import net.authorize.aim.cardpresent.Result;
 import net.authorize.data.creditcard.CardType;
 import net.authorize.data.creditcard.CreditCard;
+
+import org.apache.commons.lang.StringUtils;
 
 import com.floreantpos.config.CardConfig;
 import com.floreantpos.model.PosTransaction;
@@ -306,7 +306,7 @@ public class AuthorizeDotNetProcessor {
 		return environment;
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		String apiLoginID = "6tuU4N3H";
 		String transactionKey = "4k6955x3T8bCVPVm";
 		//String MD5Value = "paltalk123";
@@ -319,24 +319,47 @@ public class AuthorizeDotNetProcessor {
 		//merchant.setMD5Value(MD5Value);
 
 		// Create credit card
-		CreditCard creditCard = CreditCard.createCreditCard();
-		creditCard.setCardType(CardType.VISA);
-
-		// Create transaction
-		Transaction authCaptureTransaction = merchant.createAIMTransaction(TransactionType.PRIOR_AUTH_CAPTURE, new BigDecimal(100));
-		authCaptureTransaction.setTransactionId("2221368345");
-		authCaptureTransaction.setCreditCard(creditCard);
-
-		Result<Transaction> result = (Result<Transaction>) merchant.postTransaction(authCaptureTransaction);
+		CreditCard creditCard = createCard("%B4111111111111111^SHAH/RIAR^1803101000000000020000831000000?;4111111111111111=1803101000020000831?", CardType.VISA.name());
+		
+		Transaction authTransaction = merchant.createAIMTransaction(TransactionType.AUTH_ONLY, new BigDecimal(100));
+		authTransaction.setCreditCard(creditCard);
+		
+		Result<Transaction> result = (Result<Transaction>) merchant.postTransaction(authTransaction);
+		
 		if (result.isApproved()) {
-			System.out.println("approved");
+			
+			System.out.println("authorization successful");
+			
+			Thread.sleep(1000);
+			
+			Transaction authCaptureTransaction = merchant.createAIMTransaction(TransactionType.PRIOR_AUTH_CAPTURE, new BigDecimal(100));
+			authCaptureTransaction.setTransactionId(result.getTransId());
+			authCaptureTransaction.setCreditCard(creditCard);
+
+			Result<Transaction> result2 = (Result<Transaction>) merchant.postTransaction(authCaptureTransaction);
+			
+			if (result2.isApproved()) {
+				System.out.println("capture successful");
+				
+				Thread.sleep(1000);
+				
+				Transaction voidTransaction = merchant.createAIMTransaction(TransactionType.VOID, new BigDecimal(100));
+				voidTransaction.setTransactionId(result.getTransId());
+				voidTransaction.setCreditCard(creditCard);
+				
+				Result<Transaction> result3 = (Result<Transaction>) merchant.postTransaction(authCaptureTransaction);
+				
+				if(result3.isApproved()) {
+					System.out.println("void successful");
+				}
+				else {
+					System.out.println("void declined");
+				}
+			}
 		}
-		if (result.isDeclined()) {
-			System.out.println("declined");
+		else {
+			System.out.println(result.getXmlResponseDocument());
 		}
-		if (result.isError()) {
-			System.out.println("error");
-		}
-		System.out.println("transaction id: " + result.getTransId());
+
 	}
 }
