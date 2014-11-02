@@ -105,6 +105,7 @@ public class DrawerpullReportService {
 			Criteria criteria = session.createCriteria(Ticket.class, "t");
 			//criteria.add(Restrictions.eq(Ticket.PROP_CLOSED, Boolean.TRUE));
 			criteria.add(Restrictions.eq(Ticket.PROP_VOIDED, Boolean.FALSE));
+			criteria.add(Restrictions.eq(Ticket.PROP_REFUNDED, Boolean.FALSE));
 			criteria.add(Restrictions.eq(Ticket.PROP_DRAWER_RESETTED, Boolean.FALSE));
 			criteria.add(Restrictions.eq(Ticket.PROP_TERMINAL, terminal));
 			List list = criteria.list();
@@ -248,6 +249,7 @@ public class DrawerpullReportService {
 		Criteria criteria = session.createCriteria(Ticket.class);
 		criteria.add(Restrictions.eq(Ticket.PROP_PAID, Boolean.TRUE));
 		criteria.add(Restrictions.eq(Ticket.PROP_VOIDED, Boolean.FALSE));
+		criteria.add(Restrictions.eq(Ticket.PROP_REFUNDED, Boolean.FALSE));
 		criteria.add(Restrictions.eq(Ticket.PROP_DRAWER_RESETTED, Boolean.FALSE));
 		criteria.add(Restrictions.eq(Ticket.PROP_TERMINAL, terminal));
 

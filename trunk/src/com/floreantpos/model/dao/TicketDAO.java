@@ -207,7 +207,8 @@ public class TicketDAO extends BaseTicketDAO {
 			session = getSession();
 			Criteria criteria = session.createCriteria(getReferenceClass());
 			criteria.add(Restrictions.eq(Ticket.PROP_CLOSED, Boolean.FALSE));
-			criteria.add(Restrictions.eq(Ticket.PROP_VOIDED, Boolean.FALSE));
+			//criteria.add(Restrictions.eq(Ticket.PROP_VOIDED, Boolean.FALSE));
+			//criteria.add(Restrictions.eq(Ticket.PROP_REFUNDED, Boolean.FALSE));
 			criteria.add(Restrictions.eq(Ticket.PROP_OWNER, user));
 			List list = criteria.list();
 			return list;
@@ -264,6 +265,7 @@ public class TicketDAO extends BaseTicketDAO {
 			Criteria criteria = session.createCriteria(Ticket.class);
 			criteria.add(Restrictions.eq(Ticket.PROP_CLOSED, Boolean.FALSE));
 			criteria.add(Restrictions.eq(Ticket.PROP_VOIDED, Boolean.FALSE));
+			criteria.add(Restrictions.eq(Ticket.PROP_REFUNDED, Boolean.FALSE));
 			criteria.add(Restrictions.eq(Ticket.PROP_DRAWER_RESETTED, Boolean.FALSE));
 
 			ProjectionList projectionList = Projections.projectionList();
@@ -292,6 +294,7 @@ public class TicketDAO extends BaseTicketDAO {
 			Criteria criteria = session.createCriteria(Ticket.class);
 			criteria.add(Restrictions.eq(Ticket.PROP_CLOSED, Boolean.TRUE));
 			criteria.add(Restrictions.eq(Ticket.PROP_VOIDED, Boolean.FALSE));
+			criteria.add(Restrictions.eq(Ticket.PROP_REFUNDED, Boolean.FALSE));
 			criteria.add(Restrictions.eq(Ticket.PROP_DRAWER_RESETTED, Boolean.FALSE));
 			criteria.add(Restrictions.eq(Ticket.PROP_TERMINAL, terminal));
 
@@ -364,6 +367,7 @@ public class TicketDAO extends BaseTicketDAO {
 			criteria.add(Restrictions.le(Ticket.PROP_CREATE_DATE, endDate));
 			//criteria.add(Restrictions.eq(Ticket.PROP_CLOSED, Boolean.TRUE));
 			criteria.add(Restrictions.eq(Ticket.PROP_VOIDED, Boolean.FALSE));
+			criteria.add(Restrictions.eq(Ticket.PROP_REFUNDED, Boolean.FALSE));
 			criteria.add(Restrictions.eq(Ticket.PROP_DRAWER_RESETTED, Boolean.valueOf(closed)));
 
 			return criteria.list();
@@ -407,6 +411,7 @@ public class TicketDAO extends BaseTicketDAO {
 			criteria.add(Restrictions.eq(Ticket.PROP_SHIFT, shit));
 			criteria.add(Restrictions.eq(Ticket.PROP_CLOSED, Boolean.TRUE));
 			criteria.add(Restrictions.eq(Ticket.PROP_VOIDED, Boolean.FALSE));
+			criteria.add(Restrictions.eq(Ticket.PROP_REFUNDED, Boolean.FALSE));
 
 			if (userType != null) {
 				criteria.createAlias(Ticket.PROP_OWNER, "u");

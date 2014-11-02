@@ -269,6 +269,7 @@ public class ReportService {
 			criteria.add(Restrictions.ge(Ticket.PROP_CREATE_DATE, fromDate));
 			criteria.add(Restrictions.le(Ticket.PROP_CREATE_DATE, toDate));
 			criteria.add(Restrictions.eq(Ticket.PROP_VOIDED, Boolean.FALSE));
+			criteria.add(Restrictions.eq(Ticket.PROP_REFUNDED, Boolean.FALSE));
 			criteria.add(Restrictions.eq(Ticket.PROP_TAX_EXEMPT, Boolean.FALSE));
 			ProjectionList projectionList = Projections.projectionList();
 			projectionList.add(Projections.sum(Ticket.PROP_SUBTOTAL_AMOUNT));
@@ -284,6 +285,7 @@ public class ReportService {
 			criteria.add(Restrictions.ge(Ticket.PROP_CREATE_DATE, fromDate));
 			criteria.add(Restrictions.le(Ticket.PROP_CREATE_DATE, toDate));
 			criteria.add(Restrictions.eq(Ticket.PROP_VOIDED, Boolean.FALSE));
+			criteria.add(Restrictions.eq(Ticket.PROP_REFUNDED, Boolean.FALSE));
 			criteria.add(Restrictions.eq(Ticket.PROP_TAX_EXEMPT, Boolean.TRUE));
 			projectionList = Projections.projectionList();
 			projectionList.add(Projections.sum(Ticket.PROP_SUBTOTAL_AMOUNT));
@@ -299,6 +301,7 @@ public class ReportService {
 			criteria.add(Restrictions.ge(Ticket.PROP_CREATE_DATE, fromDate));
 			criteria.add(Restrictions.le(Ticket.PROP_CREATE_DATE, toDate));
 			criteria.add(Restrictions.eq(Ticket.PROP_VOIDED, Boolean.FALSE));
+			criteria.add(Restrictions.eq(Ticket.PROP_REFUNDED, Boolean.FALSE));
 			
 			List list = criteria.list();
 			for (Iterator iter = list.iterator(); iter.hasNext();) {
@@ -316,6 +319,7 @@ public class ReportService {
 			criteria.add(Restrictions.ge(Ticket.PROP_CREATE_DATE, fromDate));
 			criteria.add(Restrictions.le(Ticket.PROP_CREATE_DATE, toDate));
 			criteria.add(Restrictions.eq(Ticket.PROP_VOIDED, Boolean.FALSE));
+			criteria.add(Restrictions.eq(Ticket.PROP_REFUNDED, Boolean.FALSE));
 			projectionList = Projections.projectionList();
 			projectionList.add(Projections.sum(Ticket.PROP_TAX_AMOUNT));
 			criteria.setProjection(projectionList);
@@ -330,7 +334,11 @@ public class ReportService {
 			criteria.createAlias(Ticket.PROP_GRATUITY, "g");
 			criteria.add(Restrictions.ge(Ticket.PROP_CREATE_DATE, fromDate));
 			criteria.add(Restrictions.le(Ticket.PROP_CREATE_DATE, toDate));
+			
+			//FIXME: HOW ABOUT TIPS ON VOID OR REFUNDED TICKET?
+			
 			criteria.add(Restrictions.eq(Ticket.PROP_VOIDED, Boolean.FALSE));
+			criteria.add(Restrictions.eq(Ticket.PROP_REFUNDED, Boolean.FALSE));
 			projectionList = Projections.projectionList();
 			projectionList.add(Projections.sum("g." + Gratuity.PROP_AMOUNT));
 			criteria.setProjection(projectionList);
@@ -345,6 +353,7 @@ public class ReportService {
 			criteria.add(Restrictions.ge(Ticket.PROP_CREATE_DATE, fromDate));
 			criteria.add(Restrictions.le(Ticket.PROP_CREATE_DATE, toDate));
 			criteria.add(Restrictions.eq(Ticket.PROP_VOIDED, Boolean.FALSE));
+			criteria.add(Restrictions.eq(Ticket.PROP_REFUNDED, Boolean.FALSE));
 			//FIXME: TRANSACTION
 //			criteria.add(Restrictions.eq(Ticket.PROP_TRANSACTION_TYPE, TransactionType.CASH.name()));
 			projectionList = Projections.projectionList();
@@ -361,6 +370,8 @@ public class ReportService {
 			criteria.add(Restrictions.ge(Ticket.PROP_CREATE_DATE, fromDate));
 			criteria.add(Restrictions.le(Ticket.PROP_CREATE_DATE, toDate));
 			criteria.add(Restrictions.eq(Ticket.PROP_VOIDED, Boolean.FALSE));
+			criteria.add(Restrictions.eq(Ticket.PROP_REFUNDED, Boolean.FALSE));
+			
 			//FIXME: TRANSACTION
 //			criteria.add(Restrictions.eq(Ticket.PROP_TRANSACTION_TYPE, TransactionType.CARD.name()));
 			projectionList = Projections.projectionList();
@@ -378,6 +389,7 @@ public class ReportService {
 			criteria.add(Restrictions.ge("t." + Ticket.PROP_CREATE_DATE, fromDate));
 			criteria.add(Restrictions.le("t." + Ticket.PROP_CREATE_DATE, toDate));
 			criteria.add(Restrictions.eq("t." + Ticket.PROP_VOIDED, Boolean.FALSE));
+			criteria.add(Restrictions.eq("t." + Ticket.PROP_REFUNDED, Boolean.FALSE));
 			projectionList = Projections.projectionList();
 			projectionList.add(Projections.sum(PosTransaction.PROP_GIFT_CERT_FACE_VALUE));
 			projectionList.add(Projections.sum(PosTransaction.PROP_GIFT_CERT_CASH_BACK_AMOUNT));
@@ -397,7 +409,11 @@ public class ReportService {
 			criteria.createAlias(Ticket.PROP_GRATUITY, "gratuity");
 			criteria.add(Restrictions.ge(Ticket.PROP_CREATE_DATE, fromDate));
 			criteria.add(Restrictions.le(Ticket.PROP_CREATE_DATE, toDate));
+			
+			//FIXME: TIPS
 			criteria.add(Restrictions.eq(Ticket.PROP_VOIDED, Boolean.FALSE));
+			criteria.add(Restrictions.eq(Ticket.PROP_REFUNDED, Boolean.FALSE));
+			
 			criteria.add(Restrictions.eq("gratuity." + Gratuity.PROP_PAID, Boolean.TRUE));
 			projectionList = Projections.projectionList();
 			projectionList.add(Projections.sum("gratuity." + Gratuity.PROP_AMOUNT));
@@ -480,6 +496,7 @@ public class ReportService {
 			criteria.add(Restrictions.ge(Ticket.PROP_CREATE_DATE, fromDate));
 			criteria.add(Restrictions.le(Ticket.PROP_CREATE_DATE, toDate));
 			criteria.add(Restrictions.eq(Ticket.PROP_VOIDED, Boolean.FALSE));
+			criteria.add(Restrictions.eq(Ticket.PROP_REFUNDED, Boolean.FALSE));
 			
 			list = criteria.list();
 			for (Iterator iter = list.iterator(); iter.hasNext();) {
