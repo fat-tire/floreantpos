@@ -11,6 +11,7 @@ import org.hibernate.criterion.Restrictions;
 
 import com.floreantpos.model.PosTransaction;
 import com.floreantpos.model.Terminal;
+import com.floreantpos.model.TransactionType;
 import com.floreantpos.model.User;
 import com.floreantpos.model.util.TransactionSummary;
 
@@ -34,6 +35,8 @@ public class PosTransactionDAO extends BasePosTransactionDAO {
 			
 			Criteria criteria = session.createCriteria(getReferenceClass());
 			criteria.add(Restrictions.eq(PosTransaction.PROP_CAPTURED, Boolean.FALSE));
+			criteria.add(Restrictions.eq(PosTransaction.PROP_AUTHORIZABLE, Boolean.TRUE));
+			criteria.add(Restrictions.eq(PosTransaction.PROP_TRANSACTION_TYPE, TransactionType.CREDIT.name()));
 			criteria.add(Restrictions.isNotNull(PosTransaction.PROP_TICKET));
 			
 			if(owner != null) {
