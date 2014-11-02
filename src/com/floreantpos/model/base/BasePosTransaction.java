@@ -18,6 +18,7 @@ public abstract class BasePosTransaction  implements Comparable, Serializable {
 	public static String REF = "PosTransaction";
 	public static String PROP_USER = "user";
 	public static String PROP_RECEPIENT = "recepient";
+	public static String PROP_AUTHORIZABLE = "authorizable";
 	public static String PROP_TRANSACTION_TYPE = "transactionType";
 	public static String PROP_GIFT_CERT_CASH_BACK_AMOUNT = "giftCertCashBackAmount";
 	public static String PROP_CARD_EXPIRY_MONTH = "cardExpiryMonth";
@@ -40,8 +41,8 @@ public abstract class BasePosTransaction  implements Comparable, Serializable {
 	public static String PROP_CARD_TRACK = "cardTrack";
 	public static String PROP_PAYMENT_TYPE = "paymentType";
 	public static String PROP_TIPS_AMOUNT = "tipsAmount";
-	public static String PROP_CARD_TRANSACTION_ID = "cardTransactionId";
 	public static String PROP_TENDER_AMOUNT = "tenderAmount";
+	public static String PROP_CARD_TRANSACTION_ID = "cardTransactionId";
 	public static String PROP_ID = "id";
 	public static String PROP_GIFT_CERT_PAID_AMOUNT = "giftCertPaidAmount";
 
@@ -92,6 +93,7 @@ public abstract class BasePosTransaction  implements Comparable, Serializable {
 		protected java.lang.String transactionType;
 		protected java.lang.String paymentType;
 		protected java.lang.Boolean captured;
+		protected java.lang.Boolean authorizable;
 		protected java.lang.String cardTrack;
 		protected java.lang.String cardNumber;
 		protected java.lang.String cardAuthCode;
@@ -274,6 +276,23 @@ public abstract class BasePosTransaction  implements Comparable, Serializable {
 	 */
 	public void setCaptured (java.lang.Boolean captured) {
 		this.captured = captured;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: AUTHORIZABLE
+	 */
+	public java.lang.Boolean isAuthorizable () {
+								return authorizable == null ? Boolean.FALSE : authorizable;
+					}
+
+	/**
+	 * Set the value related to the column: AUTHORIZABLE
+	 * @param authorizable the AUTHORIZABLE value
+	 */
+	public void setAuthorizable (java.lang.Boolean authorizable) {
+		this.authorizable = authorizable;
 	}
 
 

@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import net.sf.jasperreports.engine.JRDataSource;
+import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperPrintManager;
@@ -59,6 +60,15 @@ public class JReportPrintService {
 	private static final String ITEM_TEXT = "itemText";
 	private static final String CURRENCY_SYMBOL = "currencySymbol";
 	private static Log logger = LogFactory.getLog(JReportPrintService.class);
+	
+	public static void printGenericReport(String title, String data) throws Exception {
+		HashMap<String, String> map = new HashMap<String, String>(2);
+		map.put("title", title);
+		map.put("data", data);
+		JasperPrint jasperPrint = createJasperPrint("/com/floreantpos/report/template/GenericReport.jasper", map, new JREmptyDataSource());
+		jasperPrint.setProperty("printerName", PrintConfig.getReceiptPrinterName());
+		JasperPrintManager.printReport(jasperPrint, false);
+	}
 
 	public static JasperPrint createJasperPrint(String reportFile, Map<String, String> properties, JRDataSource dataSource) throws Exception {
 		InputStream ticketReportStream = null;

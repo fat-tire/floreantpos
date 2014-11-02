@@ -272,6 +272,7 @@ public class SalesSummaryDAO extends _RootDAO {
 
 				//do not take into account void tickets
 				criteria.add(Restrictions.eq(Ticket.PROP_VOIDED, Boolean.FALSE));
+				criteria.add(Restrictions.eq(Ticket.PROP_REFUNDED, Boolean.FALSE));
 
 				if (userType != null) {
 					criteria.add(Restrictions.eq("u." + User.PROP_TYPE, userType));
@@ -397,6 +398,7 @@ public class SalesSummaryDAO extends _RootDAO {
 				criteria.add(Restrictions.ge(Ticket.PROP_CREATE_DATE, start));
 				criteria.add(Restrictions.le(Ticket.PROP_CREATE_DATE, end));
 				criteria.add(Restrictions.eq(Ticket.PROP_VOIDED, Boolean.FALSE));
+				criteria.add(Restrictions.eq(Ticket.PROP_REFUNDED, Boolean.FALSE));
 				criteria.add(Restrictions.eq(Ticket.PROP_TAX_EXEMPT, Boolean.TRUE));
 
 				if (userType != null) {

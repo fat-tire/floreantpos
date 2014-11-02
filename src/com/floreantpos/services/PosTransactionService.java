@@ -20,6 +20,7 @@ import com.floreantpos.model.User;
 import com.floreantpos.model.VoidTransaction;
 import com.floreantpos.model.dao.ActionHistoryDAO;
 import com.floreantpos.model.dao.GenericDAO;
+import com.floreantpos.report.JReportPrintService;
 import com.floreantpos.util.NumberUtil;
 
 public class PosTransactionService {
@@ -166,17 +167,23 @@ public class PosTransactionService {
 			Double totalPrice = ticket.getTotalAmount();
 			double newBalance = currentBalance - totalPrice;
 			terminal.setCurrentBalance(newBalance);
+			
+			double refundAmount = ticket.getPaidAmount();
+			if(ticket.getGratuity() != null) {
+				refundAmount -= ticket.getGratuity().getAmount();
+			}
 
 			RefundTransaction posTransaction = new RefundTransaction();
 			posTransaction.setTicket(ticket);
 			posTransaction.setPaymentType(PaymentType.CASH.name());
 			posTransaction.setTransactionType(TransactionType.DEBIT.name());
-			posTransaction.setAmount(ticket.getPaidAmount());
+			posTransaction.setAmount(refundAmount);
 			posTransaction.setTerminal(terminal);
 			posTransaction.setUser(currentUser);
 			posTransaction.setTransactionTime(new Date());
 			
-			ticket.setVoided(true);
+			ticket.setVoided(false);
+			ticket.setRefunded(true);
 			ticket.setClosed(true);
 			ticket.setDrawerResetted(false);
 			ticket.setClosingDate(new Date());
@@ -189,6 +196,11 @@ public class PosTransactionService {
 			dao.saveOrUpdate(ticket, session);
 
 			tx.commit();
+			
+			String title = "- REFUND RECEIPT -";
+			String data = "Ticket #" + ticket.getId() + ", amount " + refundAmount + " was refunded.";
+			
+			JReportPrintService.printGenericReport(title, data);
 
 		} catch (Exception e) {
 			try {

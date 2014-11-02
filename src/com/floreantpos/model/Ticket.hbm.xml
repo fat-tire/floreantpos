@@ -15,6 +15,7 @@
 		<property column="VOIDED" index="ticketvoided" name="voided" type="java.lang.Boolean" />
 		<property column="VOID_REASON" name="voidReason" type="java.lang.String" />
 		<property column="WASTED" name="wasted" type="java.lang.Boolean" />
+		<property column="REFUNDED" name="refunded" type="java.lang.Boolean" />
 		<!-- a ticket is marked as closed it is either paid or voided -->
 		<property column="SETTLED" index="ticketsettled" name="closed" type="java.lang.Boolean" />
 		<property column="DRAWER_RESETTED" index="drawerresetted" name="drawerResetted" type="java.lang.Boolean" />

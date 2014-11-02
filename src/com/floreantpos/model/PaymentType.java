@@ -59,11 +59,13 @@ public enum PaymentType {
 			case CREDIT_DISCOVERY:
 			case CREDIT_MASTER_CARD:
 				transaction = new CreditCardTransaction();
+				transaction.setAuthorizable(true);
 				break;
 				
 			case DEBIT_MASTER_CARD:
 			case DEBIT_VISA:
 				transaction = new DebitCardTransaction();
+				transaction.setAuthorizable(true);
 				break;
 				
 			case GIFT_CERTIFICATE:
