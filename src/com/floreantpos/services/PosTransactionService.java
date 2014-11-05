@@ -153,7 +153,7 @@ public class PosTransactionService {
 		
 	}
 
-	public void refundTicket(Ticket ticket) throws Exception {
+	public void refundTicket(Ticket ticket, final double refundAmount) throws Exception {
 		User currentUser = Application.getCurrentUser();
 		Terminal terminal = ticket.getTerminal();
 
@@ -168,10 +168,10 @@ public class PosTransactionService {
 			double newBalance = currentBalance - totalPrice;
 			terminal.setCurrentBalance(newBalance);
 			
-			double refundAmount = ticket.getPaidAmount();
-			if(ticket.getGratuity() != null) {
-				refundAmount -= ticket.getGratuity().getAmount();
-			}
+//			double refundAmount = ticket.getPaidAmount();
+//			if(ticket.getGratuity() != null) {
+//				refundAmount -= ticket.getGratuity().getAmount();
+//			}
 
 			RefundTransaction posTransaction = new RefundTransaction();
 			posTransaction.setTicket(ticket);

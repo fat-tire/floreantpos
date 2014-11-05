@@ -11,9 +11,11 @@ import java.util.Date;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.ActionHistory;
 import com.floreantpos.model.PayOutTransaction;
+import com.floreantpos.model.PaymentType;
 import com.floreantpos.model.PayoutReason;
 import com.floreantpos.model.PayoutRecepient;
 import com.floreantpos.model.Terminal;
+import com.floreantpos.model.TransactionType;
 import com.floreantpos.model.dao.ActionHistoryDAO;
 import com.floreantpos.model.dao.PayOutTransactionDAO;
 import com.floreantpos.util.NumberUtil;
@@ -95,6 +97,9 @@ public class PayoutDialog extends POSDialog {
 		terminal.setCurrentBalance(terminal.getCurrentBalance() - payoutAmount);
 
 		PayOutTransaction payOutTransaction = new PayOutTransaction();
+		payOutTransaction.setPaymentType(PaymentType.CASH.name());
+		payOutTransaction.setTransactionType(TransactionType.DEBIT.name());
+		
 		payOutTransaction.setReason(reason);
 		payOutTransaction.setRecepient(recepient);
 		payOutTransaction.setNote(note);

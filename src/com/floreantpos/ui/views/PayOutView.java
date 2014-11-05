@@ -6,16 +6,22 @@
 
 package com.floreantpos.ui.views;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.Vector;
 
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.LayoutStyle.ComponentPlacement;
 
 import com.floreantpos.main.Application;
 import com.floreantpos.model.PayoutReason;
 import com.floreantpos.model.PayoutRecepient;
 import com.floreantpos.model.dao.PayoutReasonDAO;
 import com.floreantpos.model.dao.PayoutRecepientDAO;
+import com.floreantpos.swing.PosButton;
 import com.floreantpos.swing.TransparentPanel;
 import com.floreantpos.ui.dialog.NotesDialog;
 
@@ -70,7 +76,7 @@ public class PayOutView extends TransparentPanel {
         cbRecepient.setFont(new java.awt.Font("Tahoma", 1, 18));
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 12));
-        jLabel3.setText(com.floreantpos.POSConstants.NOTES);
+        jLabel3.setText("NOTE");
 
         btnAddNote.setText("...");
         btnAddNote.addActionListener(new java.awt.event.ActionListener() {
@@ -82,59 +88,124 @@ public class PayOutView extends TransparentPanel {
         tfNote.setColumns(20);
         tfNote.setEditable(false);
         tfNote.setLineWrap(true);
-        tfNote.setRows(5);
+        tfNote.setRows(4);
         tfNote.setWrapStyleWord(true);
         jScrollPane1.setViewportView(tfNote);
+        
+        btnNewReason = new PosButton();
+        btnNewReason.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		doNewReason();
+        	}
+        });
+        btnNewReason.setText("...");
+        
+        btnNewRecepient = new PosButton();
+        btnNewRecepient.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		doNewRecepient();
+        	}
+        });
+        btnNewRecepient.setText("...");
 
-        org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);
-        this.setLayout(layout);
+        GroupLayout layout = new GroupLayout(this);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(layout.createSequentialGroup()
-                .addContainerGap()
-                .add(numberSelectionView, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .add(7, 7, 7)
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(org.jdesktop.layout.GroupLayout.TRAILING, cbRecepient, 0, 425, Short.MAX_VALUE)
-                    .add(cbReason, 0, 425, Short.MAX_VALUE)
-                    .add(jLabel1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 425, Short.MAX_VALUE)
-                    .add(jLabel3, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 69, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
-                        .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 363, Short.MAX_VALUE)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(btnAddNote, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 56, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                    .add(jLabel2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 425, Short.MAX_VALUE))
-                .addContainerGap())
+        	layout.createParallelGroup(Alignment.LEADING)
+        		.addGroup(layout.createSequentialGroup()
+        			.addContainerGap()
+        			.addComponent(numberSelectionView, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+        			.addGap(7)
+        			.addGroup(layout.createParallelGroup(Alignment.TRAILING)
+        				.addGroup(layout.createSequentialGroup()
+        					.addComponent(cbRecepient, 0, 349, Short.MAX_VALUE)
+        					.addPreferredGap(ComponentPlacement.RELATED)
+        					.addComponent(btnNewRecepient, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+        				.addGroup(layout.createSequentialGroup()
+        					.addComponent(cbReason, 0, 334, Short.MAX_VALUE)
+        					.addPreferredGap(ComponentPlacement.RELATED)
+        					.addComponent(btnNewReason, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+        				.addComponent(jLabel1, GroupLayout.DEFAULT_SIZE, 381, Short.MAX_VALUE)
+        				.addGroup(layout.createSequentialGroup()
+        					.addComponent(jScrollPane1, GroupLayout.DEFAULT_SIZE, 319, Short.MAX_VALUE)
+        					.addPreferredGap(ComponentPlacement.RELATED)
+        					.addComponent(btnAddNote, GroupLayout.PREFERRED_SIZE, 56, GroupLayout.PREFERRED_SIZE))
+        				.addComponent(jLabel2, GroupLayout.DEFAULT_SIZE, 381, Short.MAX_VALUE)
+        				.addGroup(layout.createSequentialGroup()
+        					.addPreferredGap(ComponentPlacement.RELATED)
+        					.addComponent(jLabel3, GroupLayout.DEFAULT_SIZE, 376, Short.MAX_VALUE)))
+        			.addContainerGap())
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(layout.createSequentialGroup()
-                .addContainerGap()
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(numberSelectionView, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 347, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(layout.createSequentialGroup()
-                        .add(jLabel1)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(cbReason, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 41, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .add(33, 33, 33)
-                        .add(jLabel2)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(cbRecepient, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .add(35, 35, 35)
-                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
-                            .add(layout.createSequentialGroup()
-                                .add(jLabel3)
-                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                                .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 134, Short.MAX_VALUE))
-                            .add(btnAddNote, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 46, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap())
+        	layout.createParallelGroup(Alignment.LEADING)
+        		.addGroup(layout.createSequentialGroup()
+        			.addContainerGap()
+        			.addGroup(layout.createParallelGroup(Alignment.LEADING)
+        				.addComponent(numberSelectionView, GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE)
+        				.addGroup(layout.createSequentialGroup()
+        					.addComponent(jLabel1)
+        					.addPreferredGap(ComponentPlacement.RELATED)
+        					.addGroup(layout.createParallelGroup(Alignment.TRAILING)
+        						.addGroup(layout.createSequentialGroup()
+        							.addGap(4)
+        							.addComponent(cbReason, GroupLayout.DEFAULT_SIZE, 41, Short.MAX_VALUE))
+        						.addComponent(btnNewReason, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+        					.addGap(33)
+        					.addComponent(jLabel2)
+        					.addPreferredGap(ComponentPlacement.RELATED)
+        					.addGroup(layout.createParallelGroup(Alignment.LEADING)
+        						.addGroup(layout.createSequentialGroup()
+        							.addComponent(cbRecepient, GroupLayout.DEFAULT_SIZE, 41, Short.MAX_VALUE)
+        							.addGap(4))
+        						.addComponent(btnNewRecepient, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+        					.addGap(31)
+        					.addComponent(jLabel3)
+        					.addPreferredGap(ComponentPlacement.RELATED)
+        					.addGroup(layout.createParallelGroup(Alignment.LEADING)
+        						.addComponent(btnAddNote, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE)
+        						.addComponent(jScrollPane1, GroupLayout.DEFAULT_SIZE, 142, Short.MAX_VALUE))))
+        			.addContainerGap())
         );
-
-        layout.linkSize(new java.awt.Component[] {cbReason, cbRecepient}, org.jdesktop.layout.GroupLayout.VERTICAL);
+        this.setLayout(layout);
 
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnAddNoteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddNoteActionPerformed
+    protected void doNewRecepient() {
+    	NotesDialog dialog = new NotesDialog(Application.getPosWindow(), true);
+    	dialog.setTitle("Enter pay out recepient");
+    	dialog.pack();
+    	dialog.open();
+    	
+    	if(dialog.isCanceled()) {
+    		return;
+    	}
+    	
+    	PayoutRecepient recepient = new PayoutRecepient();
+    	recepient.setName(dialog.getNote());
+    	
+    	PayoutRecepientDAO.getInstance().saveOrUpdate(recepient);
+    	DefaultComboBoxModel<PayoutRecepient> model = (DefaultComboBoxModel<PayoutRecepient>) cbRecepient.getModel();
+    	model.addElement(recepient);
+	}
+
+	protected void doNewReason() {
+		NotesDialog dialog = new NotesDialog(Application.getPosWindow(), true);
+    	dialog.setTitle("Enter pay out reason");
+    	dialog.pack();
+    	dialog.open();
+    	
+    	if(dialog.isCanceled()) {
+    		return;
+    	}
+    	
+    	PayoutReason reason = new PayoutReason();
+    	reason.setReason(dialog.getNote());
+    	
+    	PayoutReasonDAO.getInstance().saveOrUpdate(reason);
+    	DefaultComboBoxModel<PayoutReason> model = (DefaultComboBoxModel<PayoutReason>) cbReason.getModel();
+    	model.addElement(reason);
+	}
+
+	private void btnAddNoteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddNoteActionPerformed
     	NotesDialog dialog = new NotesDialog(Application.getPosWindow(), true);
     	dialog.setTitle(com.floreantpos.POSConstants.ENTER_PAYOUT_NOTE);
     	dialog.pack();
@@ -156,6 +227,8 @@ public class PayOutView extends TransparentPanel {
     private javax.swing.JScrollPane jScrollPane1;
     private com.floreantpos.ui.views.NumberSelectionView numberSelectionView;
     private javax.swing.JTextArea tfNote;
+    private PosButton btnNewRecepient;
+    private PosButton btnNewReason;
     // End of variables declaration//GEN-END:variables
     
     public double getPayoutAmount() {
