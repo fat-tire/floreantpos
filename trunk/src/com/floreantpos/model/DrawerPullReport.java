@@ -37,7 +37,7 @@ public class DrawerPullReport extends BaseDrawerPullReport {
 		
 		double total = getCashReceiptAmount() + getCreditCardReceiptAmount() + 
 						getDebitCardReceiptAmount() + getGiftCertReturnAmount() + 
-						getGiftCertChangeAmount() - getCashBack();
+						getGiftCertChangeAmount() - getCashBack() - getRefundAmount();
 		setReceiptDifferential(getGrossReceipts() - total);
 		
 		setTipsDifferential(getChargedTips() - getTipsPaid());
@@ -47,9 +47,10 @@ public class DrawerPullReport extends BaseDrawerPullReport {
 		double totalPayout = getPayOutAmount();
 		double beginCash = getBeginCash();
 		double cashBack = getCashBack();
+		double refundAmount = getRefundAmount();
 		double drawerBleed = getDrawerBleedAmount();
 		
-		setDrawerAccountable(beginCash + totalCash - tips - totalPayout - cashBack - drawerBleed); 
+		setDrawerAccountable(beginCash + totalCash - tips - totalPayout - cashBack - refundAmount - drawerBleed); 
 		
 		Set<DrawerPullVoidTicketEntry> voidTickets = getVoidTickets();
 		if(voidTickets != null) {
