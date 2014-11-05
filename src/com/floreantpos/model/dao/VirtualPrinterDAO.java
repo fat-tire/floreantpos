@@ -1,5 +1,10 @@
 package com.floreantpos.model.dao;
 
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.criterion.Restrictions;
+
+import com.floreantpos.model.VirtualPrinter;
 import com.floreantpos.model.dao.BaseVirtualPrinterDAO;
 
 
@@ -10,5 +15,12 @@ public class VirtualPrinterDAO extends BaseVirtualPrinterDAO {
 	 */
 	public VirtualPrinterDAO () {}
 
+	public VirtualPrinter findPrinterByName(String name) {
+		Session session = getSession();
+		Criteria criteria = session.createCriteria(getReferenceClass());
+		criteria.add(Restrictions.eq(VirtualPrinter.PROP_NAME, name));
+		
+		return (VirtualPrinter) criteria.uniqueResult();
+	}
 
 }
