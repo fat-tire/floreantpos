@@ -1,7 +1,7 @@
 package com.floreantpos.model.util;
 
 public class RefundSummary {
-	private double tax;
+	private int count;
 	private double amount;
 
 	public double getAmount() {
@@ -12,11 +12,12 @@ public class RefundSummary {
 		this.amount = amount;
 	}
 
-	public double getTax() {
-		return tax;
+	public int getCount() {
+		return count;
 	}
 
-	public void setTax(double tax) {
-		this.tax = tax;
+	public void setCount(int count) {
+		this.count = count;
 	}
+
 }

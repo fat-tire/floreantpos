@@ -1,9 +1,6 @@
 package com.floreantpos.actions;
 
-import javax.swing.JOptionPane;
-
 import com.floreantpos.ITicketList;
-import com.floreantpos.POSConstants;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.UserPermission;
@@ -33,7 +30,12 @@ public class RefundAction extends PosAction {
 			}
 			
 			if(!ticket.isPaid()) {
-				POSMessageDialog.showError("Ticket is not paid");
+				POSMessageDialog.showError("Ticket is not paid.");
+				return;
+			}
+			
+			if(ticket.isRefunded()) {
+				POSMessageDialog.showError("Ticket is already refunded.");
 				return;
 			}
 			
@@ -41,17 +43,36 @@ public class RefundAction extends PosAction {
 			
 			String message = Application.getCurrencySymbol() + paidAmount + " will be refunded.";
 			
-			int option = JOptionPane.showOptionDialog(Application.getPosWindow(), message, POSConstants.CONFIRM,
-					JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
-			if (option != JOptionPane.OK_OPTION) {
+//			int option = JOptionPane.showOptionDialog(Application.getPosWindow(), message, POSConstants.CONFIRM,
+//					JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+//			if (option != JOptionPane.OK_OPTION) {
+//				return;
+//			}
+
+			ticket = TicketDAO.getInstance().loadFullTicket(ticket.getId());
+			
+			message = "<html>" +
+					"Ticket #" + ticket.getId() + "<br/>Total paid " + ticket.getPaidAmount();
+			
+			if(ticket.getGratuity() != null) {
+				message += ", including tips " + ticket.getGratuity().getAmount();
+			}
+			
+			message += "</html>";
+			
+			double refundAmount = NumberSelectionDialog2.takeDoubleInput(message, "Enter refund amount", paidAmount);
+			if(Double.isNaN(refundAmount)) {
+				return;
+			}
+			
+			if(refundAmount > paidAmount) {
+				POSMessageDialog.showError("Refund amount cannot be greater than paid amount");
 				return;
 			}
 
-			ticket = TicketDAO.getInstance().loadFullTicket(ticket.getId());
-
-			PosTransactionService.getInstance().refundTicket(ticket);
+			PosTransactionService.getInstance().refundTicket(ticket, refundAmount);
 			
-			POSMessageDialog.showMessage("Done.");
+			POSMessageDialog.showMessage("Refunded " + Application.getCurrencySymbol() + refundAmount);
 			
 			ticketList.updateTicketList();
 			

@@ -17,21 +17,23 @@
     <property column="GIFTCERTRETURNCOUNT" name="giftCertReturnCount" type="java.lang.Integer"/>
     <property column="GIFTCERTRETURNAMOUNT" name="giftCertReturnAmount" type="java.lang.Double"/>
     <property column="GIFTCERTCHANGEAMOUNT" name="giftCertChangeAmount" type="java.lang.Double"/>
-    <property column="CASH_RECEIPT_NO" name="cashReceiptNumber" type="java.lang.Integer"/>
+    <property column="CASH_RECEIPT_NO" name="cashReceiptCount" type="java.lang.Integer"/>
     <property column="CASH_RECEIPT_AMOUNT" name="cashReceiptAmount" type="java.lang.Double"/>
-    <property column="CREDIT_CARD_RECEIPT_NO" name="creditCardReceiptNumber" type="java.lang.Integer"/>
+    <property column="CREDIT_CARD_RECEIPT_NO" name="creditCardReceiptCount" type="java.lang.Integer"/>
     <property column="CREDIT_CARD_RECEIPT_AMOUNT" name="creditCardReceiptAmount" type="java.lang.Double"/>
-    <property column="DEBIT_CARD_RECEIPT_NO" name="debitCardReceiptNumber" type="java.lang.Integer"/>
+    <property column="DEBIT_CARD_RECEIPT_NO" name="debitCardReceiptCount" type="java.lang.Integer"/>
     <property column="DEBIT_CARD_RECEIPT_AMOUNT" name="debitCardReceiptAmount" type="java.lang.Double"/>
+    <property column="REFUND_RECEIPT_COUNT" name="refundReceiptCount" type="java.lang.Integer"/>
+    <property column="REFUND_AMOUNT" name="refundAmount" type="java.lang.Double"/>
     <property column="RECEIPT_DIFFERENTIAL" name="receiptDifferential" type="java.lang.Double"/>
     <property column="CASH_BACK" name="cashBack" type="java.lang.Double"/>
     <property column="CASH_TIPS" name="cashTips" type="java.lang.Double"/>
     <property column="CHARGED_TIPS" name="chargedTips" type="java.lang.Double"/>
     <property column="TIPS_PAID" name="tipsPaid" type="java.lang.Double"/>
     <property column="TIPS_DIFFERENTIAL" name="tipsDifferential" type="java.lang.Double"/>
-    <property column="PAY_OUT_NO" name="payOutNumber" type="java.lang.Integer"/>
+    <property column="PAY_OUT_NO" name="payOutCount" type="java.lang.Integer"/>
     <property column="PAY_OUT_AMOUNT" name="payOutAmount" type="java.lang.Double"/>
-    <property column="DRAWER_BLEED_NO" name="drawerBleedNumber" type="java.lang.Integer"/>
+    <property column="DRAWER_BLEED_NO" name="drawerBleedCount" type="java.lang.Integer"/>
     <property column="DRAWER_BLEED_AMOUNT" name="drawerBleedAmount" type="java.lang.Double"/>
     <property column="DRAWER_ACCOUNTABLE" name="drawerAccountable" type="java.lang.Double"/>
     <property column="CASH_TO_DEPOSIT" name="cashToDeposit" type="java.lang.Double"/>

@@ -274,12 +274,13 @@ public class DrawerPullReportDialog extends POSDialog {
 		
 		table = new Table();
 		table.addAttribute("width", "100%");
-		addTableRow(table, "-CASH RECEIPTS (" + drawerPullReport.getCashReceiptNumber() + ")", decimalFormat.format(drawerPullReport.getCashReceiptAmount()));
-		addTableRow(table, "-CREDIT CARDS  (" + drawerPullReport.getCreditCardReceiptNumber() + ")", decimalFormat.format(drawerPullReport.getCreditCardReceiptAmount()));
-		addTableRow(table, "-DEBIT CARDS   (" + drawerPullReport.getDebitCardReceiptNumber() + ")", decimalFormat.format(drawerPullReport.getDebitCardReceiptAmount()));
+		addTableRow(table, "-CASH RECEIPTS (" + drawerPullReport.getCashReceiptCount() + ")", decimalFormat.format(drawerPullReport.getCashReceiptAmount()));
+		addTableRow(table, "-CREDIT CARDS  (" + drawerPullReport.getCreditCardReceiptCount() + ")", decimalFormat.format(drawerPullReport.getCreditCardReceiptAmount()));
+		addTableRow(table, "-DEBIT CARDS   (" + drawerPullReport.getDebitCardReceiptCount() + ")", decimalFormat.format(drawerPullReport.getDebitCardReceiptAmount()));
 		addTableRow(table, "-GIFT RETURNS  (" + drawerPullReport.getGiftCertReturnCount() + ")", decimalFormat.format(drawerPullReport.getGiftCertReturnAmount()));
 		addTableRow(table, "+GIFT CERT. CHANGE", decimalFormat.format(drawerPullReport.getGiftCertChangeAmount()));
-		addTableRow(table, "-CASH BACK", decimalFormat.format(drawerPullReport.getCashBack()));
+		addTableRow(table, "+CASH BACK", decimalFormat.format(drawerPullReport.getCashBack()));
+		addTableRow(table, "+REFUND (" + drawerPullReport.getRefundReceiptCount() + ")", decimalFormat.format(drawerPullReport.getRefundAmount()));
 		addTableSeparator(table);
 		addTableRow(table, "=RECEIPT DIFFERENTIAL", decimalFormat.format(drawerPullReport.getReceiptDifferential()));
 		document.appendBody(table);
@@ -299,13 +300,14 @@ public class DrawerPullReportDialog extends POSDialog {
 		createSectionHeader(document, " CASH BALANCE ");
 		table = new Table();
 		table.addAttribute("width", "100%");
-		addTableRow(table, "CASH  (" + drawerPullReport.getCashReceiptNumber() + ")", decimalFormat.format(drawerPullReport.getCashReceiptAmount()));
+		addTableRow(table, "CASH  (" + drawerPullReport.getCashReceiptCount() + ")", decimalFormat.format(drawerPullReport.getCashReceiptAmount()));
 		//addTableRow(table, "CASH TAX", decimalFormat.format(drawerPullReport.getCashTax()));
 		addTableRow(table, "-TIPS PAID", decimalFormat.format(drawerPullReport.getTipsPaid()));
-		addTableRow(table, "-PAY OUT       (" + drawerPullReport.getPayOutNumber() + ")", decimalFormat.format(drawerPullReport.getPayOutAmount()));
+		addTableRow(table, "-PAY OUT       (" + drawerPullReport.getPayOutCount() + ")", decimalFormat.format(drawerPullReport.getPayOutAmount()));
 		addTableRow(table, "-CASH BACK", decimalFormat.format(drawerPullReport.getCashBack()));
+		addTableRow(table, "-REFUND (" + drawerPullReport.getRefundReceiptCount() + ")", decimalFormat.format(drawerPullReport.getRefundAmount()));
 		addTableRow(table, "+BEGIN CASH", decimalFormat.format(terminal.getOpeningBalance()));
-		addTableRow(table, "-DRAWER BLEED  (" + drawerPullReport.getDrawerBleedNumber() + ")", decimalFormat.format(drawerPullReport.getDrawerBleedAmount()));
+		addTableRow(table, "-DRAWER BLEED  (" + drawerPullReport.getDrawerBleedCount() + ")", decimalFormat.format(drawerPullReport.getDrawerBleedAmount()));
 		addTableSeparator(table);
 		addTableRow(table, "=DRAWER ACCOUNTABLE", decimalFormat.format(drawerPullReport.getDrawerAccountable()));
 		addTableRow(table, ">CASH TO DEPOSIT", decimalFormat.format(drawerPullReport.getCashToDeposit()));

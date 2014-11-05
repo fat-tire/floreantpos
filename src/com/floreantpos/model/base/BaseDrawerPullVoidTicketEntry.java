@@ -33,11 +33,11 @@ public abstract class BaseDrawerPullVoidTicketEntry  implements Comparable, Seri
 
 
 	// fields
-	private java.lang.Integer code;
-	private java.lang.String reason;
-	private java.lang.String hast;
-	private java.lang.Integer quantity;
-	private java.lang.Double amount;
+		protected java.lang.Integer code;
+		protected java.lang.String reason;
+		protected java.lang.String hast;
+		protected java.lang.Integer quantity;
+		protected java.lang.Double amount;
 
 
 
@@ -48,8 +48,8 @@ public abstract class BaseDrawerPullVoidTicketEntry  implements Comparable, Seri
 	 * Return the value associated with the column: code
 	 */
 	public java.lang.Integer getCode () {
-			return code == null ? Integer.valueOf(0) : code;
-	}
+					return code == null ? Integer.valueOf(0) : code;
+			}
 
 	/**
 	 * Set the value related to the column: code
@@ -65,8 +65,8 @@ public abstract class BaseDrawerPullVoidTicketEntry  implements Comparable, Seri
 	 * Return the value associated with the column: reason
 	 */
 	public java.lang.String getReason () {
-			return reason;
-	}
+					return reason;
+			}
 
 	/**
 	 * Set the value related to the column: reason
@@ -82,8 +82,8 @@ public abstract class BaseDrawerPullVoidTicketEntry  implements Comparable, Seri
 	 * Return the value associated with the column: hast
 	 */
 	public java.lang.String getHast () {
-			return hast;
-	}
+					return hast;
+			}
 
 	/**
 	 * Set the value related to the column: hast
@@ -99,8 +99,8 @@ public abstract class BaseDrawerPullVoidTicketEntry  implements Comparable, Seri
 	 * Return the value associated with the column: quantity
 	 */
 	public java.lang.Integer getQuantity () {
-			return quantity == null ? Integer.valueOf(0) : quantity;
-	}
+					return quantity == null ? Integer.valueOf(0) : quantity;
+			}
 
 	/**
 	 * Set the value related to the column: quantity
@@ -116,8 +116,8 @@ public abstract class BaseDrawerPullVoidTicketEntry  implements Comparable, Seri
 	 * Return the value associated with the column: amount
 	 */
 	public java.lang.Double getAmount () {
-					return amount == null ? Double.valueOf(0) : amount;
-			}
+									return amount == null ? Double.valueOf(0) : amount;
+					}
 
 	/**
 	 * Set the value related to the column: amount

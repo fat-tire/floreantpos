@@ -43,13 +43,15 @@ public class DrawerpullReportService {
 			session = dao.createNewSession();
 
 			populateNetSales(session, terminal, report);
+			populateReceiptDifferential(session, terminal, report);
 
-//			populateGiftSection(session, terminal, report);
+			//			populateGiftSection(session, terminal, report);
 
 			//populateCashTax(session, terminal, report);
 
-			RefundSummary refundSummary = new RefundTransactionDAO().getTotalRefundForTerminal(terminal);
-			report.setCashBack(report.getCashBack() + refundSummary.getAmount());
+			RefundSummary refundSummary = RefundTransactionDAO.getInstance().getTotalRefundForTerminal(terminal);
+			report.setRefundReceiptCount(report.getRefundReceiptCount() + refundSummary.getCount());
+			report.setRefundAmount(report.getRefundAmount() + refundSummary.getAmount());
 
 			report.setTipsPaid(TicketDAO.getInstance().getPaidGratuityAmount(terminal));
 
@@ -58,7 +60,7 @@ public class DrawerpullReportService {
 			for (PayOutTransaction transaction : payoutTransactions) {
 				totalPayout += transaction.getAmount();
 			}
-			report.setPayOutNumber(payoutTransactions.size());
+			report.setPayOutCount(payoutTransactions.size());
 			report.setPayOutAmount(totalPayout);
 
 			double drawerBleedAmount = 0;
@@ -66,31 +68,31 @@ public class DrawerpullReportService {
 			for (CashDropTransaction transaction : cashDrops) {
 				drawerBleedAmount += transaction.getAmount();
 			}
-			report.setDrawerBleedNumber(cashDrops.size());
+			report.setDrawerBleedCount(cashDrops.size());
 			report.setDrawerBleedAmount(drawerBleedAmount);
 
 			report.setBeginCash(terminal.getOpeningBalance());
 			report.setCashToDeposit(terminal.getCurrentBalance());
 
 			populateVoidSection(session, terminal, report);
-//
-//			//gift cert
-//			criteria = session.createCriteria(GiftCertificateTransaction.class);
-//			criteria.add(Restrictions.eq(GiftCertificateTransaction.PROP_DRAWER_RESETTED, Boolean.FALSE));
-//			criteria.add(Restrictions.eq(GiftCertificateTransaction.PROP_TERMINAL, terminal));
-//			projectionList = Projections.projectionList();
-//			projectionList.add(Projections.sum(GiftCertificateTransaction.PROP_FACE_VALUE));
-//			projectionList.add(Projections.sum(GiftCertificateTransaction.PROP_CASH_BACK_AMOUNT));
-//			criteria.setProjection(projectionList);
-//			Object[] o = (Object[]) criteria.uniqueResult();
-//			if (o.length > 0 && o[0] instanceof Number) {
-//				double amount = ((Number) o[0]).doubleValue();
-//				report.setGiftCertReturnAmount(amount);
-//			}
-//			if (o.length > 1 && o[1] instanceof Number) {
-//				double amount = ((Number) o[1]).doubleValue();
-//				report.setGiftCertChangeAmount(amount);
-//			}
+			//
+			//			//gift cert
+			//			criteria = session.createCriteria(GiftCertificateTransaction.class);
+			//			criteria.add(Restrictions.eq(GiftCertificateTransaction.PROP_DRAWER_RESETTED, Boolean.FALSE));
+			//			criteria.add(Restrictions.eq(GiftCertificateTransaction.PROP_TERMINAL, terminal));
+			//			projectionList = Projections.projectionList();
+			//			projectionList.add(Projections.sum(GiftCertificateTransaction.PROP_FACE_VALUE));
+			//			projectionList.add(Projections.sum(GiftCertificateTransaction.PROP_CASH_BACK_AMOUNT));
+			//			criteria.setProjection(projectionList);
+			//			Object[] o = (Object[]) criteria.uniqueResult();
+			//			if (o.length > 0 && o[0] instanceof Number) {
+			//				double amount = ((Number) o[0]).doubleValue();
+			//				report.setGiftCertReturnAmount(amount);
+			//			}
+			//			if (o.length > 1 && o[1] instanceof Number) {
+			//				double amount = ((Number) o[1]).doubleValue();
+			//				report.setGiftCertChangeAmount(amount);
+			//			}
 
 			//discount, coupon
 			int totalDiscountCount = 0;
@@ -156,93 +158,93 @@ public class DrawerpullReportService {
 
 		double totalWaste = 0;
 		double totalVoid = 0;
-		
+
 		for (Iterator iter = list.iterator(); iter.hasNext();) {
 			Ticket ticket = (Ticket) iter.next();
 			DrawerPullVoidTicketEntry entry = new DrawerPullVoidTicketEntry();
 			entry.setCode(ticket.getId());
 			entry.setAmount(ticket.getSubtotalAmount());
 			entry.setReason(ticket.getVoidReason());
-			if(ticket.isWasted()) {
+			if (ticket.isWasted()) {
 				entry.setHast("Yes");
 			}
 			else {
 				entry.setHast("No");
 			}
-			
+
 			report.addVoidTicketEntry(entry);
-			
+
 			totalVoid += ticket.getSubtotalAmount();
-			if(ticket.isWasted()) {
+			if (ticket.isWasted()) {
 				totalWaste += ticket.getSubtotalAmount();
 			}
 		}
-		
+
 		report.setTotalVoid(totalVoid);
 		report.setTotalVoidWst(totalWaste);
 	}
 
-//	private static void populateCashTax(Session session, Terminal terminal, DrawerPullReport report) {
-//		Criteria criteria;
-//		ProjectionList projectionList;
-//		List list;
-//		//find cash tax amount
-//		criteria = session.createCriteria(Ticket.class, "t");
-//		criteria.add(Restrictions.eq(Ticket.PROP_CLOSED, Boolean.TRUE));
-//		criteria.add(Restrictions.eq(Ticket.PROP_VOIDED, Boolean.FALSE));
-//		criteria.add(Restrictions.eq(Ticket.PROP_DRAWER_RESETTED, Boolean.FALSE));
-//		//FIXME: TRANSACTION
-//		//		criteria.add(Restrictions.eq(Ticket.PROP_TRANSACTION_TYPE, TransactionType.CASH.name()));
-//		criteria.add(Restrictions.eq(Ticket.PROP_TERMINAL, terminal));
-//
-//		projectionList = Projections.projectionList();
-//		projectionList.add(Projections.rowCount());
-//		projectionList.add(Projections.sum(Ticket.PROP_TAX_AMOUNT));
-//
-//		criteria.setProjection(projectionList);
-//		list = criteria.list();
-//
-//		double cashTax = 0;
-//		if (list != null && list.size() > 0) {
-//			Object[] objects = (Object[]) list.get(0);
-//
-//			if (objects.length > 1 && objects[1] != null) {
-//				cashTax = ((Number) objects[1]).doubleValue();
-//			}
-//		}
-//		report.setCashTax(cashTax);
-//	}
+	//	private static void populateCashTax(Session session, Terminal terminal, DrawerPullReport report) {
+	//		Criteria criteria;
+	//		ProjectionList projectionList;
+	//		List list;
+	//		//find cash tax amount
+	//		criteria = session.createCriteria(Ticket.class, "t");
+	//		criteria.add(Restrictions.eq(Ticket.PROP_CLOSED, Boolean.TRUE));
+	//		criteria.add(Restrictions.eq(Ticket.PROP_VOIDED, Boolean.FALSE));
+	//		criteria.add(Restrictions.eq(Ticket.PROP_DRAWER_RESETTED, Boolean.FALSE));
+	//		//FIXME: TRANSACTION
+	//		//		criteria.add(Restrictions.eq(Ticket.PROP_TRANSACTION_TYPE, TransactionType.CASH.name()));
+	//		criteria.add(Restrictions.eq(Ticket.PROP_TERMINAL, terminal));
+	//
+	//		projectionList = Projections.projectionList();
+	//		projectionList.add(Projections.rowCount());
+	//		projectionList.add(Projections.sum(Ticket.PROP_TAX_AMOUNT));
+	//
+	//		criteria.setProjection(projectionList);
+	//		list = criteria.list();
+	//
+	//		double cashTax = 0;
+	//		if (list != null && list.size() > 0) {
+	//			Object[] objects = (Object[]) list.get(0);
+	//
+	//			if (objects.length > 1 && objects[1] != null) {
+	//				cashTax = ((Number) objects[1]).doubleValue();
+	//			}
+	//		}
+	//		report.setCashTax(cashTax);
+	//	}
 
-//	//FIXME: FIX GIFT CERT SECTION
-//	private static void populateGiftSection(Session session, Terminal terminal, DrawerPullReport report) {
-//		//gift cert receipt
-//		Criteria criteria = session.createCriteria(PosTransaction.class);
-//		//criteria.add(Restrictions.eq(Ticket.PROP_CLOSED, Boolean.TRUE));
-//		//criteria.add(Restrictions.eq(Ticket.PROP_VOIDED, Boolean.FALSE));
-//		//criteria.add(Restrictions.eq(Ticket.PROP_DRAWER_RESETTED, Boolean.FALSE));
-//		criteria.add(Restrictions.eq(PosTransaction.PROP_TERMINAL, terminal));
-//
-//		//FIXME: TRANSACTION
-//		//		criteria.add(Restrictions.eq(Ticket.PROP_TRANSACTION_TYPE, TransactionType.GIFT_CERT.name()));
-//
-//		//		ProjectionList projectionList = Projections.projectionList();
-//		//		projectionList.add(Projections.rowCount());
-//		//		projectionList.add(Projections.sum(Ticket.PROP_SUBTOTAL_AMOUNT));
-//		//
-//		//		criteria.setProjection(projectionList);
-//		//
-//		//		List list = criteria.list();
-//		//
-//		//		if (list.size() > 0) {
-//		//			Object[] datas = (Object[]) list.get(0);
-//		//			if (datas.length > 0 && datas[0] instanceof Number) {
-//		//				report.setGiftCertReturnCount(((Number) datas[0]).intValue());
-//		//			}
-//		//			if (datas.length > 1 && datas[1] instanceof Number) {
-//		//				report.setGiftCertReturnAmount(((Number) datas[1]).doubleValue());
-//		//			}
-//		//		}
-//	}
+	//	//FIXME: FIX GIFT CERT SECTION
+	//	private static void populateGiftSection(Session session, Terminal terminal, DrawerPullReport report) {
+	//		//gift cert receipt
+	//		Criteria criteria = session.createCriteria(PosTransaction.class);
+	//		//criteria.add(Restrictions.eq(Ticket.PROP_CLOSED, Boolean.TRUE));
+	//		//criteria.add(Restrictions.eq(Ticket.PROP_VOIDED, Boolean.FALSE));
+	//		//criteria.add(Restrictions.eq(Ticket.PROP_DRAWER_RESETTED, Boolean.FALSE));
+	//		criteria.add(Restrictions.eq(PosTransaction.PROP_TERMINAL, terminal));
+	//
+	//		//FIXME: TRANSACTION
+	//		//		criteria.add(Restrictions.eq(Ticket.PROP_TRANSACTION_TYPE, TransactionType.GIFT_CERT.name()));
+	//
+	//		//		ProjectionList projectionList = Projections.projectionList();
+	//		//		projectionList.add(Projections.rowCount());
+	//		//		projectionList.add(Projections.sum(Ticket.PROP_SUBTOTAL_AMOUNT));
+	//		//
+	//		//		criteria.setProjection(projectionList);
+	//		//
+	//		//		List list = criteria.list();
+	//		//
+	//		//		if (list.size() > 0) {
+	//		//			Object[] datas = (Object[]) list.get(0);
+	//		//			if (datas.length > 0 && datas[0] instanceof Number) {
+	//		//				report.setGiftCertReturnCount(((Number) datas[0]).intValue());
+	//		//			}
+	//		//			if (datas.length > 1 && datas[1] instanceof Number) {
+	//		//				report.setGiftCertReturnAmount(((Number) datas[1]).doubleValue());
+	//		//			}
+	//		//		}
+	//	}
 
 	private static void populateNetSales(Session session, Terminal terminal, DrawerPullReport report) {
 		//find net sale, tax
@@ -264,37 +266,15 @@ public class DrawerpullReportService {
 		double discount = 0;
 		double salesTax = 0;
 		double tips = 0;
-		
-		TicketDAO dao = TicketDAO.getInstance();
-		
+
 		for (Ticket ticket : list) {
-			ticket = dao.loadCouponsAndTransactions(ticket.getId());
-			
 			++ticketCount;
 			subtotal += ticket.getSubtotalAmount();
 			discount += ticket.getDiscountAmount();
 			salesTax += ticket.getTaxAmount();
-			if(ticket.getGratuity() != null) {
+			if (ticket.getGratuity() != null) {
 				tips += ticket.getGratuity().getAmount();
 			}
-			
-			TransactionSummary ts = calculateTransactionSummary(ticket, CashTransaction.class);
-			report.setCashReceiptNumber(report.getCashReceiptNumber() + ts.getCount());
-			report.setCashReceiptAmount(report.getCashReceiptAmount() + ts.getAmount());
-			
-			ts = calculateTransactionSummary(ticket, CreditCardTransaction.class);
-			report.setCreditCardReceiptNumber(report.getCreditCardReceiptNumber() + ts.getCount());
-			report.setCreditCardReceiptAmount(report.getCreditCardReceiptAmount() + ts.getAmount());
-			
-			ts = calculateTransactionSummary(ticket, DebitCardTransaction.class);
-			report.setDebitCardReceiptNumber(report.getDebitCardReceiptNumber() + ts.getCount());
-			report.setDebitCardReceiptAmount(report.getDebitCardReceiptAmount() + ts.getAmount());
-			
-			ts = calculateTransactionSummary(ticket, GiftCertificateTransaction.class);
-			report.setGiftCertReturnCount(report.getGiftCertReturnCount() + ts.getCount());
-			report.setGiftCertReturnAmount(report.getGiftCertReturnAmount() + ts.getAmount());
-			report.setGiftCertChangeAmount(report.getGiftCertChangeAmount() + ts.getChangeAmount());
-			report.setCashBack(report.getCashBack() + ts.getChangeAmount());
 		}
 
 		report.setTicketCount(ticketCount);
@@ -302,31 +282,71 @@ public class DrawerpullReportService {
 		report.setSalesTax(salesTax);
 		report.setChargedTips(tips);
 	}
-	
+
+	private static void populateReceiptDifferential(Session session, Terminal terminal, DrawerPullReport report) {
+		//find net sale, tax
+		Criteria criteria = session.createCriteria(Ticket.class);
+		criteria.add(Restrictions.eq(Ticket.PROP_PAID, Boolean.TRUE));
+		criteria.add(Restrictions.eq(Ticket.PROP_VOIDED, Boolean.FALSE));
+		criteria.add(Restrictions.eq(Ticket.PROP_DRAWER_RESETTED, Boolean.FALSE));
+		criteria.add(Restrictions.eq(Ticket.PROP_TERMINAL, terminal));
+
+		List<Ticket> list = criteria.list();
+
+		if (list == null || list.size() == 0) {
+			return;
+		}
+
+		TicketDAO dao = TicketDAO.getInstance();
+
+		for (Ticket ticket : list) {
+			ticket = dao.loadCouponsAndTransactions(ticket.getId());
+
+
+			TransactionSummary ts = calculateTransactionSummary(ticket, CashTransaction.class);
+			report.setCashReceiptCount(report.getCashReceiptCount() + ts.getCount());
+			report.setCashReceiptAmount(report.getCashReceiptAmount() + ts.getAmount());
+
+			ts = calculateTransactionSummary(ticket, CreditCardTransaction.class);
+			report.setCreditCardReceiptCount(report.getCreditCardReceiptCount() + ts.getCount());
+			report.setCreditCardReceiptAmount(report.getCreditCardReceiptAmount() + ts.getAmount());
+
+			ts = calculateTransactionSummary(ticket, DebitCardTransaction.class);
+			report.setDebitCardReceiptCount(report.getDebitCardReceiptCount() + ts.getCount());
+			report.setDebitCardReceiptAmount(report.getDebitCardReceiptAmount() + ts.getAmount());
+
+			ts = calculateTransactionSummary(ticket, GiftCertificateTransaction.class);
+			report.setGiftCertReturnCount(report.getGiftCertReturnCount() + ts.getCount());
+			report.setGiftCertReturnAmount(report.getGiftCertReturnAmount() + ts.getAmount());
+			report.setGiftCertChangeAmount(report.getGiftCertChangeAmount() + ts.getChangeAmount());
+			report.setCashBack(report.getCashBack() + ts.getChangeAmount());
+		}
+	}
+
 	private static TransactionSummary calculateTransactionSummary(Ticket ticket, Class transactionClass) {
 		int count = 0;
 		double total = 0;
 		double changeAmount = 0;
-		
+
 		TransactionSummary summary = new TransactionSummary();
-		
+
 		Set<PosTransaction> transactions = ticket.getTransactions();
-		if(transactions == null) {
+		if (transactions == null) {
 			return summary;
 		}
-		
+
 		for (PosTransaction posTransaction : transactions) {
-			if(posTransaction.getClass().equals(transactionClass)) {
+			if (posTransaction.getClass().equals(transactionClass)) {
 				++count;
 				total += posTransaction.getAmount();
 				changeAmount += posTransaction.getGiftCertCashBackAmount();
 			}
 		}
-		
+
 		summary.setCount(count);
 		summary.setAmount(total);
 		summary.setChangeAmount(changeAmount);
-		
+
 		return summary;
 	}
 

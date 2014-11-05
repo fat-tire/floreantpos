@@ -16,10 +16,4 @@ public class TicketService {
 		
 		return ticket;
 	}
-	
-	public static void refundTicket(Ticket ticket) throws Exception {
-		PosTransactionService service = PosTransactionService.getInstance();
-		service.refundTicket(ticket);
-		ticket.setDrawerResetted(false);
-	}
 }
