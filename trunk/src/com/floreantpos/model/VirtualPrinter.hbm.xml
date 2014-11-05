@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.floreantpos.model">
+  <class lazy="false" name="com.floreantpos.model.VirtualPrinter" table="VIRTUAL_PRINTER">
+    <id column="AUTO_ID" name="autoId" type="java.lang.Integer">
+      <generator class="identity"/>
+    </id>
+    <version column="MODIFIED_TIME" name="modifiedTime" type="timestamp"/>
+    
+    <property column="NAME" name="name" type="string" unique="true" length="60" not-null="true"/>
+    <property column="DEVICE_NAME" name="deviceName" type="string" length="120"/>
+    
+  </class>
+</hibernate-mapping>
