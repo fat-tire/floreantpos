@@ -38,6 +38,7 @@ import com.floreantpos.model.TicketItemModifierGroup;
 import com.floreantpos.model.User;
 import com.floreantpos.model.UserPermission;
 import com.floreantpos.model.UserType;
+import com.floreantpos.model.VirtualPrinter;
 import com.floreantpos.model.VoidReason;
 import com.floreantpos.model.ZipCodeVsDeliveryCharge;
 import com.floreantpos.model.inventory.InventoryGroup;
@@ -105,6 +106,7 @@ public abstract class _RootDAO extends com.floreantpos.model.dao._BaseRootDAO {
 		configuration = configuration.addClass(TicketItemModifierGroup.class);
 		configuration = configuration.addClass(PosTransaction.class);
 		configuration = configuration.addClass(User.class);
+		configuration = configuration.addClass(VirtualPrinter.class);
 		configuration = configuration.addClass(VoidReason.class);
 		configuration = configuration.addClass(DrawerPullReport.class);
 		configuration = configuration.addClass(PrinterConfiguration.class);
