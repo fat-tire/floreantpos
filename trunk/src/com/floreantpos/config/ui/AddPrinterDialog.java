@@ -3,6 +3,7 @@ package com.floreantpos.config.ui;
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 import javax.print.PrintService;
 import javax.print.PrintServiceLookup;
@@ -11,37 +12,52 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JSeparator;
 
 import net.miginfocom.swing.MigLayout;
 
-import org.apache.commons.lang.StringUtils;
-
 import com.floreantpos.bo.ui.BackOfficeWindow;
+import com.floreantpos.model.Printer;
 import com.floreantpos.model.VirtualPrinter;
 import com.floreantpos.model.dao.VirtualPrinterDAO;
-import com.floreantpos.swing.FixedLengthTextField;
 import com.floreantpos.ui.dialog.POSDialog;
 import com.floreantpos.ui.dialog.POSMessageDialog;
+import javax.swing.JCheckBox;
 
 public class AddPrinterDialog extends POSDialog {
-	VirtualPrinter printer;
-	private FixedLengthTextField tfName;
+	private Printer printer;
+	private JComboBox cbVirtualPrinter;
 	private JComboBox cbDevice;
+	private JCheckBox chckbxDefault;
 
 	public AddPrinterDialog() throws HeadlessException {
 		super(BackOfficeWindow.getInstance(), true);
-		setTitle("Add Printer");
+		setTitle("Add/Edit Printer");
+		
+		setSize(400, 200);
+		setResizable(false);
+		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 	}
 
 	@Override
 	public void initUI() {
-		getContentPane().setLayout(new MigLayout("", "[][grow]", "[][][][][][][][][][grow]"));
+		getContentPane().setLayout(new MigLayout("", "[][grow][]", "[][][][][grow]"));
 		
-		JLabel lblName = new JLabel("Name");
+		JLabel lblName = new JLabel("Virtual Printer");
 		getContentPane().add(lblName, "cell 0 0,alignx trailing");
 		
-		tfName = new FixedLengthTextField(60);
-		getContentPane().add(tfName, "cell 1 0,growx");
+		cbVirtualPrinter = new JComboBox();
+		List<VirtualPrinter> virtualPrinters = VirtualPrinterDAO.getInstance().findAll();
+		cbVirtualPrinter.setModel(new DefaultComboBoxModel<VirtualPrinter>(virtualPrinters.toArray(new VirtualPrinter[0])));
+		getContentPane().add(cbVirtualPrinter, "cell 1 0,growx");
+		
+		JButton btnNew = new JButton("NEW");
+		btnNew.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				doAddNewVirtualPrinter();
+			}
+		});
+		getContentPane().add(btnNew, "cell 2 0");
 		
 		JLabel lblDevice = new JLabel("Device");
 		getContentPane().add(lblDevice, "cell 0 1,alignx trailing");
@@ -51,8 +67,14 @@ public class AddPrinterDialog extends POSDialog {
 		cbDevice.setRenderer(new PrintServiceComboRenderer());
 		getContentPane().add(cbDevice, "cell 1 1,growx");
 		
+		chckbxDefault = new JCheckBox("Default");
+		getContentPane().add(chckbxDefault, "cell 1 2");
+		
+		JSeparator separator = new JSeparator();
+		getContentPane().add(separator, "cell 0 3 3 1,growx,gapy 50px");
+		
 		JPanel panel = new JPanel();
-		getContentPane().add(panel, "cell 0 9 2 1,grow");
+		getContentPane().add(panel, "cell 0 4 3 1,grow");
 		
 		JButton btnOk = new JButton("OK");
 		btnOk.addActionListener(new ActionListener() {
@@ -65,20 +87,31 @@ public class AddPrinterDialog extends POSDialog {
 		JButton btnCancel = new JButton("CANCEL");
 		btnCancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				setCanceled(true);
+				dispose();
 			}
 		});
 		panel.add(btnCancel);
 	}
 
-	protected void doAddPrinter() {
-		String name = tfName.getText();
-		if (StringUtils.isEmpty(name)) {
-			POSMessageDialog.showMessage(this, "Please provide a name");
+	protected void doAddNewVirtualPrinter() {
+		VirtualPrinterConfigDialog dialog = new VirtualPrinterConfigDialog();
+		dialog.open();
+		
+		if(dialog.isCanceled()) {
 			return;
 		}
 		
-		if(VirtualPrinterDAO.getInstance().findPrinterByName(name) != null) {
-			POSMessageDialog.showMessage(this, "A printer with that name already exists.");
+		VirtualPrinter virtualPrinter = dialog.getPrinter();
+		DefaultComboBoxModel<VirtualPrinter> model = (DefaultComboBoxModel<VirtualPrinter>) cbVirtualPrinter.getModel();
+		model.addElement(virtualPrinter);
+		cbVirtualPrinter.setSelectedItem(virtualPrinter);
+	}
+
+	protected void doAddPrinter() {
+		VirtualPrinter vp = (VirtualPrinter) cbVirtualPrinter.getSelectedItem();
+		if (vp == null) {
+			POSMessageDialog.showError(this, "Please select a virtual printer");
 			return;
 		}
 		
@@ -88,9 +121,38 @@ public class AddPrinterDialog extends POSDialog {
 			return;
 		}
 		
-		VirtualPrinter vp = new VirtualPrinter();
-		vp.setName(name);
-		vp.setDeviceName(printService.getName());
+		boolean defaultPrinter = chckbxDefault.isSelected();
+		
+		if(printer == null) {
+			printer = new Printer();
+		}
+		printer.setVirtualPrinter(vp);
+		printer.setDeviceName(printService.getName());
+		printer.setDefaultPrinter(defaultPrinter);
+		
+		setCanceled(false);
+		dispose();
+	}
+
+	public Printer getPrinter() {
+		return printer;
+	}
+
+	public void setPrinter(Printer printer) {
+		this.printer = printer;
+		
+		if (printer != null) {
+			cbVirtualPrinter.setSelectedItem(printer.getVirtualPrinter());
+			
+			DefaultComboBoxModel<PrintService> deviceModel = (DefaultComboBoxModel<PrintService>) cbDevice.getModel();
+			for(int i = 0; i < deviceModel.getSize(); i++) {
+				PrintService printService = deviceModel.getElementAt(i);
+				if(printService.getName().equals(printer.getDeviceName())) {
+					cbDevice.setSelectedIndex(i);
+					break;
+				}
+			}
+		}
 	}
 
 }

@@ -58,4 +58,8 @@ public class PrintConfig {
 	public static boolean isPrintToKitchenOnOrderSettle() {
 		return AppConfig.getBoolean(P_PRINT_TO_KITCHEN_ON_ORDER_SETTLE, false);
 	}
+	
+	public static void addReciptPrinter(String name, String deviceName) {
+		
+	}
 }

@@ -25,6 +25,7 @@ import com.floreantpos.bo.ui.BackOfficeWindow;
 import com.floreantpos.config.AppProperties;
 import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.config.ui.DatabaseConfigurationDialog;
+import com.floreantpos.model.PosPrinters;
 import com.floreantpos.model.PrinterConfiguration;
 import com.floreantpos.model.Restaurant;
 import com.floreantpos.model.Shift;
@@ -45,7 +46,7 @@ import com.jgoodies.looks.plastic.theme.ExperienceBlue;
 
 public class Application {
 	private static Log logger = LogFactory.getLog(Application.class);
-	
+
 	private boolean developmentMode = false;
 
 	private Timer autoDrawerPullTimer;
@@ -60,6 +61,7 @@ public class Application {
 	private Shift currentShift;
 	public PrinterConfiguration printConfiguration;
 	private Restaurant restaurant;
+	private PosPrinters printers;
 
 	private static Application instance;
 
@@ -82,8 +84,8 @@ public class Application {
 	public void start() {
 		pluginManager = PluginManagerFactory.createPluginManager();
 		pluginManager.addPluginsFrom(new File("plugins/").toURI());
-		
-		if(developmentMode) {
+
+		if (developmentMode) {
 			pluginManager.addPluginsFrom(new File("/home/mshahriar/project/oro/target/classes").toURI());
 		}
 
@@ -93,11 +95,11 @@ public class Application {
 
 		posWindow.getContentPane().add(rootView);
 		posWindow.setupSizeAndLocation();
-		
-		if(TerminalConfig.isFullscreenMode()) {
+
+		if (TerminalConfig.isFullscreenMode()) {
 			posWindow.enterFullScreenMode();
 		}
-		
+
 		posWindow.setVisible(true);
 
 		initializeSystem();
@@ -128,6 +130,7 @@ public class Application {
 			initTerminal();
 			initPrintConfig();
 			refreshRestaurant();
+			loadPrinters();
 			//setTicketActiveSetterScheduler();
 			setSystemInitialized(true);
 
@@ -157,14 +160,21 @@ public class Application {
 		}
 	}
 
-//	private void setTicketActiveSetterScheduler() {
-//		Calendar calendar = Calendar.getInstance();
-//		calendar.set(Calendar.DAY_OF_MONTH, calendar.get(Calendar.DAY_OF_MONTH) + 1);
-//		calendar.set(Calendar.HOUR_OF_DAY, 0);
-//		calendar.set(Calendar.MINUTE, 0);
-//		calendar.set(Calendar.SECOND, 0);
-//
-//	}
+	private void loadPrinters() {
+		printers = PosPrinters.load();
+		if(printers == null) {
+			printers = new PosPrinters();
+		}
+	}
+
+	//	private void setTicketActiveSetterScheduler() {
+	//		Calendar calendar = Calendar.getInstance();
+	//		calendar.set(Calendar.DAY_OF_MONTH, calendar.get(Calendar.DAY_OF_MONTH) + 1);
+	//		calendar.set(Calendar.HOUR_OF_DAY, 0);
+	//		calendar.set(Calendar.MINUTE, 0);
+	//		calendar.set(Calendar.SECOND, 0);
+	//
+	//	}
 
 	private void initPrintConfig() {
 		printConfiguration = PrinterConfigurationDAO.getInstance().get(PrinterConfiguration.ID);
@@ -260,12 +270,12 @@ public class Application {
 
 	public void shutdownPOS() {
 		User user = getCurrentUser();
-		
-		if(user != null && !user.hasPermission(UserPermission.SHUT_DOWN)) {
+
+		if (user != null && !user.hasPermission(UserPermission.SHUT_DOWN)) {
 			POSMessageDialog.showError("You do not have permission to execute this action");
 			return;
 		}
-		
+
 		int option = JOptionPane.showOptionDialog(getPosWindow(), com.floreantpos.POSConstants.SURE_SHUTDOWN_, com.floreantpos.POSConstants.CONFIRM_SHUTDOWN,
 				JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
 		if (option != JOptionPane.YES_OPTION) {
@@ -326,6 +336,10 @@ public class Application {
 	//	public static PrinterConfiguration getPrinterConfiguration() {
 	//		return getInstance().printConfiguration;
 	//	}
+	
+	public static PosPrinters getPrinters() {
+		return getInstance().printers;
+	}
 
 	public static String getTitle() {
 		return "Floreant POS - Version " + VERSION; //$NON-NLS-1$
@@ -396,13 +410,13 @@ public class Application {
 	public void setDevelopmentMode(boolean developmentMode) {
 		this.developmentMode = developmentMode;
 	}
-	
+
 	public boolean isPriceIncludesTax() {
 		Restaurant restaurant = getRestaurant();
-		if(restaurant == null) {
+		if (restaurant == null) {
 			return false;
 		}
-		
+
 		return POSUtil.getBoolean(restaurant.isItemPriceIncludesTax());
 	}
 }
