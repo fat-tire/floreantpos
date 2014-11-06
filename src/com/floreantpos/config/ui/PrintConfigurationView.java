@@ -25,13 +25,19 @@ import net.miginfocom.swing.MigLayout;
 
 import com.floreantpos.config.AppConfig;
 import com.floreantpos.config.PrintConfig;
+import com.floreantpos.main.Application;
+import com.floreantpos.model.PosPrinters;
 import com.floreantpos.ui.dialog.POSMessageDialog;
+import javax.swing.JPanel;
+import java.awt.GridLayout;
 
 /**
  *
  * @author mshahriar
  */
 public class PrintConfigurationView extends ConfigurationView {
+	
+	PosPrinters printers = Application.getPrinters();
 
 	/** Creates new form PrintConfiguration */
 	public PrintConfigurationView() {
@@ -97,6 +103,8 @@ public class PrintConfigurationView extends ConfigurationView {
 		printService = (PrintService) cbKitchenPrinterName.getSelectedItem();
 		AppConfig.put(PrintConfig.KITCHEN_PRINTER_NAME, printService == null ? null : printService.getName());
 
+		Application.getPrinters().save();
+		
 		return true;
 	}
 
@@ -108,7 +116,7 @@ public class PrintConfigurationView extends ConfigurationView {
 	@SuppressWarnings("unchecked")
 	// <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
 	private void initComponents() {
-		setLayout(new MigLayout("", "[][grow,fill]", "[][][][18px][18px][18px][18px]"));
+		setLayout(new MigLayout("", "[][grow,fill]", "[][][][18px,grow]"));
 		
 		JLabel lblReportPrinter = new JLabel("Report Printer");
 		add(lblReportPrinter, "cell 0 0,alignx trailing");
@@ -127,6 +135,16 @@ public class PrintConfigurationView extends ConfigurationView {
 		jLabel2.setText("Kitchen Printer:");
 		cbKitchenPrinterName = new javax.swing.JComboBox();
 		add(cbKitchenPrinterName, "cell 1 2,growx");
+		
+		JPanel panel = new JPanel();
+		add(panel, "cell 0 3 2 1,grow");
+		panel.setLayout(new GridLayout(0, 2, 10, 0));
+		
+		MultiPrinterPane multiPrinterPane = new MultiPrinterPane("Receipt Printers", printers.getReceiptPrinters());
+		panel.add(multiPrinterPane);
+		
+		MultiPrinterPane multiPrinterPane_1 = new MultiPrinterPane("Kitchen Printers", printers.getKitchenPrinters());
+		panel.add(multiPrinterPane_1);
 
 	}// </editor-fold>//GEN-END:initComponents
 
