@@ -25,7 +25,6 @@ import com.floreantpos.model.PayoutReason;
 import com.floreantpos.model.PayoutRecepient;
 import com.floreantpos.model.PosTransaction;
 import com.floreantpos.model.PrinterConfiguration;
-import com.floreantpos.model.PrinterGroup;
 import com.floreantpos.model.Restaurant;
 import com.floreantpos.model.RestaurantTable;
 import com.floreantpos.model.Shift;
@@ -108,7 +107,6 @@ public abstract class _RootDAO extends com.floreantpos.model.dao._BaseRootDAO {
 		configuration = configuration.addClass(PosTransaction.class);
 		configuration = configuration.addClass(User.class);
 		configuration = configuration.addClass(VirtualPrinter.class);
-		configuration = configuration.addClass(PrinterGroup.class);
 		configuration = configuration.addClass(VoidReason.class);
 		configuration = configuration.addClass(DrawerPullReport.class);
 		configuration = configuration.addClass(PrinterConfiguration.class);

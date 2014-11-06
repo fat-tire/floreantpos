@@ -15,23 +15,34 @@ public class VirtualPrinter extends BaseVirtualPrinter {
 	/**
 	 * Constructor for primary key
 	 */
-	public VirtualPrinter (java.lang.Integer autoId) {
-		super(autoId);
+	public VirtualPrinter (java.lang.Integer id) {
+		super(id);
 	}
 
 	/**
 	 * Constructor for required fields
 	 */
 	public VirtualPrinter (
-		java.lang.Integer autoId,
+		java.lang.Integer id,
 		java.lang.String name) {
 
 		super (
-			autoId,
+			id,
 			name);
 	}
 
 /*[CONSTRUCTOR MARKER END]*/
+	
+	@Override
+	public boolean equals(Object obj) {
+		if(!(obj instanceof VirtualPrinter)) {
+			return false;
+		}
+		
+		VirtualPrinter other = (VirtualPrinter) obj;
+		
+		return this.name.equalsIgnoreCase(other.name);
+	}
 
 	@Override
 	public String toString() {

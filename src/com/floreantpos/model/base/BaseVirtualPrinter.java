@@ -3,6 +3,8 @@ package com.floreantpos.model.base;
 import java.lang.Comparable;
 import java.io.Serializable;
 
+import javax.xml.bind.annotation.XmlTransient;
+
 
 /**
  * This is an object that contains data related to the VIRTUAL_PRINTER table.
@@ -17,8 +19,7 @@ public abstract class BaseVirtualPrinter  implements Comparable, Serializable {
 
 	public static String REF = "VirtualPrinter";
 	public static String PROP_NAME = "name";
-	public static String PROP_DEVICE_NAME = "deviceName";
-	public static String PROP_AUTO_ID = "autoId";
+	public static String PROP_ID = "id";
 
 
 	// constructors
@@ -29,8 +30,8 @@ public abstract class BaseVirtualPrinter  implements Comparable, Serializable {
 	/**
 	 * Constructor for primary key
 	 */
-	public BaseVirtualPrinter (java.lang.Integer autoId) {
-		this.setAutoId(autoId);
+	public BaseVirtualPrinter (java.lang.Integer id) {
+		this.setId(id);
 		initialize();
 	}
 
@@ -38,10 +39,10 @@ public abstract class BaseVirtualPrinter  implements Comparable, Serializable {
 	 * Constructor for required fields
 	 */
 	public BaseVirtualPrinter (
-		java.lang.Integer autoId,
+		java.lang.Integer id,
 		java.lang.String name) {
 
-		this.setAutoId(autoId);
+		this.setId(id);
 		this.setName(name);
 		initialize();
 	}
@@ -53,13 +54,12 @@ public abstract class BaseVirtualPrinter  implements Comparable, Serializable {
 	private int hashCode = Integer.MIN_VALUE;
 
 	// primary key
-	private java.lang.Integer autoId;
+	private java.lang.Integer id;
 
 	 java.util.Date modifiedTime;
 
 	// fields
 		protected java.lang.String name;
-		protected java.lang.String deviceName;
 
 
 
@@ -67,18 +67,18 @@ public abstract class BaseVirtualPrinter  implements Comparable, Serializable {
 	 * Return the unique identifier of this class
      * @hibernate.id
      *  generator-class="identity"
-     *  column="AUTO_ID"
+     *  column="ID"
      */
-	public java.lang.Integer getAutoId () {
-		return autoId;
+	public java.lang.Integer getId () {
+		return id;
 	}
 
 	/**
 	 * Set the unique identifier of this class
-	 * @param autoId the new ID
+	 * @param id the new ID
 	 */
-	public void setAutoId (java.lang.Integer autoId) {
-		this.autoId = autoId;
+	public void setId (java.lang.Integer id) {
+		this.id = id;
 		this.hashCode = Integer.MIN_VALUE;
 	}
 
@@ -87,6 +87,7 @@ public abstract class BaseVirtualPrinter  implements Comparable, Serializable {
 	/**
 	 * Return the value associated with the column: MODIFIED_TIME
 	 */
+	@XmlTransient
 	public java.util.Date getModifiedTime () {
 					return modifiedTime;
 			}
@@ -119,23 +120,6 @@ public abstract class BaseVirtualPrinter  implements Comparable, Serializable {
 
 
 
-	/**
-	 * Return the value associated with the column: DEVICE_NAME
-	 */
-	public java.lang.String getDeviceName () {
-					return deviceName;
-			}
-
-	/**
-	 * Set the value related to the column: DEVICE_NAME
-	 * @param deviceName the DEVICE_NAME value
-	 */
-	public void setDeviceName (java.lang.String deviceName) {
-		this.deviceName = deviceName;
-	}
-
-
-
 
 
 	public boolean equals (Object obj) {
@@ -143,16 +127,16 @@ public abstract class BaseVirtualPrinter  implements Comparable, Serializable {
 		if (!(obj instanceof com.floreantpos.model.VirtualPrinter)) return false;
 		else {
 			com.floreantpos.model.VirtualPrinter virtualPrinter = (com.floreantpos.model.VirtualPrinter) obj;
-			if (null == this.getAutoId() || null == virtualPrinter.getAutoId()) return false;
-			else return (this.getAutoId().equals(virtualPrinter.getAutoId()));
+			if (null == this.getId() || null == virtualPrinter.getId()) return false;
+			else return (this.getId().equals(virtualPrinter.getId()));
 		}
 	}
 
 	public int hashCode () {
 		if (Integer.MIN_VALUE == this.hashCode) {
-			if (null == this.getAutoId()) return super.hashCode();
+			if (null == this.getId()) return super.hashCode();
 			else {
-				String hashStr = this.getClass().getName() + ":" + this.getAutoId().hashCode();
+				String hashStr = this.getClass().getName() + ":" + this.getId().hashCode();
 				this.hashCode = hashStr.hashCode();
 			}
 		}
