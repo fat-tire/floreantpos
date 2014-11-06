@@ -3,8 +3,6 @@ package com.floreantpos.model.base;
 import java.lang.Comparable;
 import java.io.Serializable;
 
-import javax.xml.bind.annotation.XmlTransient;
-
 
 /**
  * This is an object that contains data related to the MENU_ITEM table.
@@ -29,6 +27,7 @@ public abstract class BaseMenuItem  implements Comparable, Serializable {
 	public static String PROP_PRICE = "price";
 	public static String PROP_TAX = "tax";
 	public static String PROP_ID = "id";
+	public static String PROP_VIRTUAL_PRINTER = "virtualPrinter";
 
 
 	// constructors
@@ -72,22 +71,23 @@ public abstract class BaseMenuItem  implements Comparable, Serializable {
 	 java.util.Date modifiedTime;
 
 	// fields
-		protected java.lang.String name;
 		protected java.lang.Double buyPrice;
-		protected java.lang.Double price;
 		protected java.lang.Double discountRate;
-		protected java.lang.Boolean visible;
 		protected byte[] image;
+		protected java.lang.String name;
+		protected java.lang.Double price;
 		protected java.lang.Boolean showImageOnly;
+		protected java.lang.Boolean visible;
 
 	// many to one
 	private com.floreantpos.model.MenuGroup parent;
-	private com.floreantpos.model.Tax tax;
 	private com.floreantpos.model.inventory.Recepie recepie;
+	private com.floreantpos.model.Tax tax;
+	private com.floreantpos.model.VirtualPrinter virtualPrinter;
 
 	// collections
-	private java.util.List<com.floreantpos.model.MenuItemShift> shifts;
 	private java.util.List<com.floreantpos.model.MenuItemModifierGroup> menuItemModiferGroups;
+	private java.util.List<com.floreantpos.model.MenuItemShift> shifts;
 
 
 
@@ -115,7 +115,6 @@ public abstract class BaseMenuItem  implements Comparable, Serializable {
 	/**
 	 * Return the value associated with the column: MODIFIED_TIME
 	 */
-	@XmlTransient
 	public java.util.Date getModifiedTime () {
 					return modifiedTime;
 			}
@@ -132,23 +131,6 @@ public abstract class BaseMenuItem  implements Comparable, Serializable {
 
 
 	/**
-	 * Return the value associated with the column: NAME
-	 */
-	public java.lang.String getName () {
-					return name;
-			}
-
-	/**
-	 * Set the value related to the column: NAME
-	 * @param name the NAME value
-	 */
-	public void setName (java.lang.String name) {
-		this.name = name;
-	}
-
-
-
-	/**
 	 * Return the value associated with the column: BUY_PRICE
 	 */
 	public java.lang.Double getBuyPrice () {
@@ -161,6 +143,57 @@ public abstract class BaseMenuItem  implements Comparable, Serializable {
 	 */
 	public void setBuyPrice (java.lang.Double buyPrice) {
 		this.buyPrice = buyPrice;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: DISCOUNT_RATE
+	 */
+	public java.lang.Double getDiscountRate () {
+									return discountRate == null ? Double.valueOf(0) : discountRate;
+					}
+
+	/**
+	 * Set the value related to the column: DISCOUNT_RATE
+	 * @param discountRate the DISCOUNT_RATE value
+	 */
+	public void setDiscountRate (java.lang.Double discountRate) {
+		this.discountRate = discountRate;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: IMAGE
+	 */
+	public byte[] getImage () {
+					return image;
+			}
+
+	/**
+	 * Set the value related to the column: IMAGE
+	 * @param image the IMAGE value
+	 */
+	public void setImage (byte[] image) {
+		this.image = image;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: NAME
+	 */
+	public java.lang.String getName () {
+					return name;
+			}
+
+	/**
+	 * Set the value related to the column: NAME
+	 * @param name the NAME value
+	 */
+	public void setName (java.lang.String name) {
+		this.name = name;
 	}
 
 
@@ -183,18 +216,18 @@ public abstract class BaseMenuItem  implements Comparable, Serializable {
 
 
 	/**
-	 * Return the value associated with the column: DISCOUNT_RATE
+	 * Return the value associated with the column: SHOW_IMAGE_ONLY
 	 */
-	public java.lang.Double getDiscountRate () {
-									return discountRate == null ? Double.valueOf(0) : discountRate;
+	public java.lang.Boolean isShowImageOnly () {
+								return showImageOnly == null ? Boolean.FALSE : showImageOnly;
 					}
 
 	/**
-	 * Set the value related to the column: DISCOUNT_RATE
-	 * @param discountRate the DISCOUNT_RATE value
+	 * Set the value related to the column: SHOW_IMAGE_ONLY
+	 * @param showImageOnly the SHOW_IMAGE_ONLY value
 	 */
-	public void setDiscountRate (java.lang.Double discountRate) {
-		this.discountRate = discountRate;
+	public void setShowImageOnly (java.lang.Boolean showImageOnly) {
+		this.showImageOnly = showImageOnly;
 	}
 
 
@@ -224,40 +257,6 @@ public abstract class BaseMenuItem  implements Comparable, Serializable {
 
 
 	/**
-	 * Return the value associated with the column: IMAGE
-	 */
-	public byte[] getImage () {
-					return image;
-			}
-
-	/**
-	 * Set the value related to the column: IMAGE
-	 * @param image the IMAGE value
-	 */
-	public void setImage (byte[] image) {
-		this.image = image;
-	}
-
-
-
-	/**
-	 * Return the value associated with the column: SHOW_IMAGE_ONLY
-	 */
-	public java.lang.Boolean isShowImageOnly () {
-								return showImageOnly == null ? Boolean.FALSE : showImageOnly;
-					}
-
-	/**
-	 * Set the value related to the column: SHOW_IMAGE_ONLY
-	 * @param showImageOnly the SHOW_IMAGE_ONLY value
-	 */
-	public void setShowImageOnly (java.lang.Boolean showImageOnly) {
-		this.showImageOnly = showImageOnly;
-	}
-
-
-
-	/**
 	 * Return the value associated with the column: GROUP_ID
 	 */
 	public com.floreantpos.model.MenuGroup getParent () {
@@ -270,23 +269,6 @@ public abstract class BaseMenuItem  implements Comparable, Serializable {
 	 */
 	public void setParent (com.floreantpos.model.MenuGroup parent) {
 		this.parent = parent;
-	}
-
-
-
-	/**
-	 * Return the value associated with the column: TAX_ID
-	 */
-	public com.floreantpos.model.Tax getTax () {
-					return tax;
-			}
-
-	/**
-	 * Set the value related to the column: TAX_ID
-	 * @param tax the TAX_ID value
-	 */
-	public void setTax (com.floreantpos.model.Tax tax) {
-		this.tax = tax;
 	}
 
 
@@ -309,23 +291,35 @@ public abstract class BaseMenuItem  implements Comparable, Serializable {
 
 
 	/**
-	 * Return the value associated with the column: shifts
+	 * Return the value associated with the column: TAX_ID
 	 */
-	public java.util.List<com.floreantpos.model.MenuItemShift> getShifts () {
-					return shifts;
+	public com.floreantpos.model.Tax getTax () {
+					return tax;
 			}
 
 	/**
-	 * Set the value related to the column: shifts
-	 * @param shifts the shifts value
+	 * Set the value related to the column: TAX_ID
+	 * @param tax the TAX_ID value
 	 */
-	public void setShifts (java.util.List<com.floreantpos.model.MenuItemShift> shifts) {
-		this.shifts = shifts;
+	public void setTax (com.floreantpos.model.Tax tax) {
+		this.tax = tax;
 	}
 
-	public void addToshifts (com.floreantpos.model.MenuItemShift menuItemShift) {
-		if (null == getShifts()) setShifts(new java.util.ArrayList<com.floreantpos.model.MenuItemShift>());
-		getShifts().add(menuItemShift);
+
+
+	/**
+	 * Return the value associated with the column: VPRINTER_ID
+	 */
+	public com.floreantpos.model.VirtualPrinter getVirtualPrinter () {
+					return virtualPrinter;
+			}
+
+	/**
+	 * Set the value related to the column: VPRINTER_ID
+	 * @param virtualPrinter the VPRINTER_ID value
+	 */
+	public void setVirtualPrinter (com.floreantpos.model.VirtualPrinter virtualPrinter) {
+		this.virtualPrinter = virtualPrinter;
 	}
 
 
@@ -348,6 +342,28 @@ public abstract class BaseMenuItem  implements Comparable, Serializable {
 	public void addTomenuItemModiferGroups (com.floreantpos.model.MenuItemModifierGroup menuItemModifierGroup) {
 		if (null == getMenuItemModiferGroups()) setMenuItemModiferGroups(new java.util.ArrayList<com.floreantpos.model.MenuItemModifierGroup>());
 		getMenuItemModiferGroups().add(menuItemModifierGroup);
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: shifts
+	 */
+	public java.util.List<com.floreantpos.model.MenuItemShift> getShifts () {
+					return shifts;
+			}
+
+	/**
+	 * Set the value related to the column: shifts
+	 * @param shifts the shifts value
+	 */
+	public void setShifts (java.util.List<com.floreantpos.model.MenuItemShift> shifts) {
+		this.shifts = shifts;
+	}
+
+	public void addToshifts (com.floreantpos.model.MenuItemShift menuItemShift) {
+		if (null == getShifts()) setShifts(new java.util.ArrayList<com.floreantpos.model.MenuItemShift>());
+		getShifts().add(menuItemShift);
 	}
 
 
