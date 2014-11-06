@@ -19,9 +19,11 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
@@ -45,9 +47,11 @@ import com.floreantpos.model.MenuItem;
 import com.floreantpos.model.MenuItemModifierGroup;
 import com.floreantpos.model.MenuItemShift;
 import com.floreantpos.model.Tax;
+import com.floreantpos.model.VirtualPrinter;
 import com.floreantpos.model.dao.MenuGroupDAO;
 import com.floreantpos.model.dao.MenuItemDAO;
 import com.floreantpos.model.dao.TaxDAO;
+import com.floreantpos.model.dao.VirtualPrinterDAO;
 import com.floreantpos.swing.ComboBoxModel;
 import com.floreantpos.swing.DoubleDocument;
 import com.floreantpos.swing.DoubleTextField;
@@ -135,7 +139,7 @@ public class MenuItemForm extends BeanEditor implements ActionListener, ChangeLi
 		btnDeleteShift.addActionListener(this);
 		
 		tfDiscountRate.setDocument(new DoubleDocument());
-        jPanel1.setLayout(new MigLayout("", "[104px][100px,grow][][49px]", "[19px][25px][][19px][19px][][][25px][15px]"));
+        jPanel1.setLayout(new MigLayout("", "[104px][100px,grow][][49px]", "[19px][25px][][19px][19px][][][25px][][15px]"));
         
         lblBuyPrice = new JLabel(Messages.getString("LABEL_BUY_PRICE"));
         jPanel1.add(lblBuyPrice, "cell 0 2");
@@ -185,7 +189,13 @@ public class MenuItemForm extends BeanEditor implements ActionListener, ChangeLi
         jPanel1.add(tfDiscountRate, "cell 1 4,growx,aligny top");
         jPanel1.add(cbTax, "cell 1 7,growx,aligny top");
         jPanel1.add(tfPrice, "cell 1 3,growx,aligny top");
-        jPanel1.add(chkVisible, "cell 1 8,alignx left,aligny top");
+        
+        lblKitchenPrinter = new JLabel(Messages.getString("MenuItemForm.lblKitchenPrinter.text")); //$NON-NLS-1$
+        jPanel1.add(lblKitchenPrinter, "cell 0 8,alignx trailing");
+        
+        cbPrinter = new JComboBox<VirtualPrinter>(new DefaultComboBoxModel<VirtualPrinter>(VirtualPrinterDAO.getInstance().findAll().toArray(new VirtualPrinter[0])));
+        jPanel1.add(cbPrinter, "cell 1 8,growx");
+        jPanel1.add(chkVisible, "cell 1 9,alignx left,aligny top");
         jPanel1.add(btnNewTax, "cell 2 7,alignx left,aligny top");
         jPanel1.add(jLabel5, "cell 2 4");
         add(tabbedPane);
@@ -447,6 +457,8 @@ public class MenuItemForm extends BeanEditor implements ActionListener, ChangeLi
 	private JCheckBox cbShowTextWithImage;
 	private JLabel lblBuyPrice;
 	private DoubleTextField tfBuyPrice;
+	private JLabel lblKitchenPrinter;
+	private JComboBox<VirtualPrinter> cbPrinter;
     
     private void addMenuItemModifierGroup() {
     	try {
@@ -540,6 +552,8 @@ public class MenuItemForm extends BeanEditor implements ActionListener, ChangeLi
 			cbGroup.setSelectedItem(menuItem.getParent());
 			cbTax.setSelectedItem(menuItem.getTax());
 		}
+		
+		cbPrinter.setSelectedItem(menuItem.getVirtualPrinter());
 	}
 
 	@Override
@@ -574,6 +588,8 @@ public class MenuItemForm extends BeanEditor implements ActionListener, ChangeLi
 				}
 			}
 		}
+		
+		menuItem.setVirtualPrinter((VirtualPrinter) cbPrinter.getSelectedItem());
 		
 		return true;
 	}
