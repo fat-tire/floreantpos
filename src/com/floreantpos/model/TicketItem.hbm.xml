@@ -51,5 +51,9 @@
 				<property name="printedToKitchen" type="java.lang.Boolean" />
 			</composite-element>
 		</list>
+		
+		<many-to-one class="com.floreantpos.model.VirtualPrinter" lazy="false" cascade="none" name="defaultPrinter">
+			<column name="VPRINTER_ID" />
+		</many-to-one>
 	</class>
 </hibernate-mapping>

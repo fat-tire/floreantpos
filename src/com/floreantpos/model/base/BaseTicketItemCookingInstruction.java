@@ -30,8 +30,8 @@ public abstract class BaseTicketItemCookingInstruction  implements Comparable, S
 
 
 	// fields
-	private java.lang.String description;
-	private java.lang.Boolean printedToKitchen;
+		protected java.lang.String description;
+		protected java.lang.Boolean printedToKitchen;
 
 
 
@@ -42,8 +42,8 @@ public abstract class BaseTicketItemCookingInstruction  implements Comparable, S
 	 * Return the value associated with the column: description
 	 */
 	public java.lang.String getDescription () {
-			return description;
-	}
+					return description;
+			}
 
 	/**
 	 * Set the value related to the column: description
@@ -59,8 +59,8 @@ public abstract class BaseTicketItemCookingInstruction  implements Comparable, S
 	 * Return the value associated with the column: printedToKitchen
 	 */
 	public java.lang.Boolean isPrintedToKitchen () {
-					return printedToKitchen == null ? Boolean.FALSE : printedToKitchen;
-			}
+								return printedToKitchen == null ? Boolean.FALSE : printedToKitchen;
+					}
 
 	/**
 	 * Set the value related to the column: printedToKitchen
