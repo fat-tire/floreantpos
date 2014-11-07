@@ -16,10 +16,8 @@ import java.io.Serializable;
 public abstract class BaseKitchenTicket  implements Comparable, Serializable {
 
 	public static String REF = "KitchenTicket";
-	public static String PROP_OWNER = "owner";
 	public static String PROP_STATUS = "status";
 	public static String PROP_TABLE_NUMBER = "tableNumber";
-	public static String PROP_TERMINAL = "terminal";
 	public static String PROP_VOID_REASON = "voidReason";
 	public static String PROP_CLOSING_DATE = "closingDate";
 	public static String PROP_ID = "id";
@@ -53,17 +51,13 @@ public abstract class BaseKitchenTicket  implements Comparable, Serializable {
 	 java.util.Date modifiedTime;
 
 	// fields
-		protected java.lang.Integer ticketId;
-		protected java.util.Date createDate;
 		protected java.util.Date closingDate;
-		protected java.lang.Boolean voided;
-		protected java.lang.String voidReason;
-		protected java.lang.Integer tableNumber;
+		protected java.util.Date createDate;
 		protected java.lang.String status;
-
-	// many to one
-	private com.floreantpos.model.User owner;
-	private com.floreantpos.model.Terminal terminal;
+		protected java.lang.Integer tableNumber;
+		protected java.lang.Integer ticketId;
+		protected java.lang.String voidReason;
+		protected java.lang.Boolean voided;
 
 	// collections
 	private java.util.List<com.floreantpos.model.TicketItem> ticketItems;
@@ -110,18 +104,18 @@ public abstract class BaseKitchenTicket  implements Comparable, Serializable {
 
 
 	/**
-	 * Return the value associated with the column: TICKET_ID
+	 * Return the value associated with the column: CLOSING_DATE
 	 */
-	public java.lang.Integer getTicketId () {
-					return ticketId == null ? Integer.valueOf(0) : ticketId;
+	public java.util.Date getClosingDate () {
+					return closingDate;
 			}
 
 	/**
-	 * Set the value related to the column: TICKET_ID
-	 * @param ticketId the TICKET_ID value
+	 * Set the value related to the column: CLOSING_DATE
+	 * @param closingDate the CLOSING_DATE value
 	 */
-	public void setTicketId (java.lang.Integer ticketId) {
-		this.ticketId = ticketId;
+	public void setClosingDate (java.util.Date closingDate) {
+		this.closingDate = closingDate;
 	}
 
 
@@ -144,52 +138,18 @@ public abstract class BaseKitchenTicket  implements Comparable, Serializable {
 
 
 	/**
-	 * Return the value associated with the column: CLOSING_DATE
+	 * Return the value associated with the column: STATUS
 	 */
-	public java.util.Date getClosingDate () {
-					return closingDate;
+	public java.lang.String getStatus () {
+					return status;
 			}
 
 	/**
-	 * Set the value related to the column: CLOSING_DATE
-	 * @param closingDate the CLOSING_DATE value
+	 * Set the value related to the column: STATUS
+	 * @param status the STATUS value
 	 */
-	public void setClosingDate (java.util.Date closingDate) {
-		this.closingDate = closingDate;
-	}
-
-
-
-	/**
-	 * Return the value associated with the column: VOIDED
-	 */
-	public java.lang.Boolean isVoided () {
-								return voided == null ? Boolean.FALSE : voided;
-					}
-
-	/**
-	 * Set the value related to the column: VOIDED
-	 * @param voided the VOIDED value
-	 */
-	public void setVoided (java.lang.Boolean voided) {
-		this.voided = voided;
-	}
-
-
-
-	/**
-	 * Return the value associated with the column: VOID_REASON
-	 */
-	public java.lang.String getVoidReason () {
-					return voidReason;
-			}
-
-	/**
-	 * Set the value related to the column: VOID_REASON
-	 * @param voidReason the VOID_REASON value
-	 */
-	public void setVoidReason (java.lang.String voidReason) {
-		this.voidReason = voidReason;
+	public void setStatus (java.lang.String status) {
+		this.status = status;
 	}
 
 
@@ -212,52 +172,52 @@ public abstract class BaseKitchenTicket  implements Comparable, Serializable {
 
 
 	/**
-	 * Return the value associated with the column: STATUS
+	 * Return the value associated with the column: TICKET_ID
 	 */
-	public java.lang.String getStatus () {
-					return status;
+	public java.lang.Integer getTicketId () {
+					return ticketId == null ? Integer.valueOf(0) : ticketId;
 			}
 
 	/**
-	 * Set the value related to the column: STATUS
-	 * @param status the STATUS value
+	 * Set the value related to the column: TICKET_ID
+	 * @param ticketId the TICKET_ID value
 	 */
-	public void setStatus (java.lang.String status) {
-		this.status = status;
+	public void setTicketId (java.lang.Integer ticketId) {
+		this.ticketId = ticketId;
 	}
 
 
 
 	/**
-	 * Return the value associated with the column: OWNER_ID
+	 * Return the value associated with the column: VOID_REASON
 	 */
-	public com.floreantpos.model.User getOwner () {
-					return owner;
+	public java.lang.String getVoidReason () {
+					return voidReason;
 			}
 
 	/**
-	 * Set the value related to the column: OWNER_ID
-	 * @param owner the OWNER_ID value
+	 * Set the value related to the column: VOID_REASON
+	 * @param voidReason the VOID_REASON value
 	 */
-	public void setOwner (com.floreantpos.model.User owner) {
-		this.owner = owner;
+	public void setVoidReason (java.lang.String voidReason) {
+		this.voidReason = voidReason;
 	}
 
 
 
 	/**
-	 * Return the value associated with the column: TERMINAL_ID
+	 * Return the value associated with the column: VOIDED
 	 */
-	public com.floreantpos.model.Terminal getTerminal () {
-					return terminal;
-			}
+	public java.lang.Boolean isVoided () {
+								return voided == null ? Boolean.FALSE : voided;
+					}
 
 	/**
-	 * Set the value related to the column: TERMINAL_ID
-	 * @param terminal the TERMINAL_ID value
+	 * Set the value related to the column: VOIDED
+	 * @param voided the VOIDED value
 	 */
-	public void setTerminal (com.floreantpos.model.Terminal terminal) {
-		this.terminal = terminal;
+	public void setVoided (java.lang.Boolean voided) {
+		this.voided = voided;
 	}
 
 

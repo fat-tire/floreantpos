@@ -34,6 +34,11 @@ public class VirtualPrinter extends BaseVirtualPrinter {
 /*[CONSTRUCTOR MARKER END]*/
 	
 	@Override
+	public int hashCode() {
+		return this.name.hashCode();
+	}
+	
+	@Override
 	public boolean equals(Object obj) {
 		if(!(obj instanceof VirtualPrinter)) {
 			return false;

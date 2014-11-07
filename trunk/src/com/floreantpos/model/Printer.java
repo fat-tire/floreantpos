@@ -47,6 +47,22 @@ public class Printer {
 	}
 	
 	@Override
+	public int hashCode() {
+		return this.virtualPrinter.hashCode();
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if(!(obj instanceof Printer)) {
+			return false;
+		}
+		
+		Printer that = (Printer) obj;
+		
+		return this.virtualPrinter.equals(that.virtualPrinter);
+	}
+	
+	@Override
 	public String toString() {
 		return virtualPrinter.getName();
 	}
