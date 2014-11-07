@@ -23,13 +23,9 @@ import javax.swing.JList;
 
 import net.miginfocom.swing.MigLayout;
 
-import com.floreantpos.config.AppConfig;
-import com.floreantpos.config.PrintConfig;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.PosPrinters;
 import com.floreantpos.ui.dialog.POSMessageDialog;
-import javax.swing.JPanel;
-import java.awt.GridLayout;
 
 /**
  *
@@ -55,16 +51,16 @@ public class PrintConfigurationView extends ConfigurationView {
 
 		cbReportPrinterName.setModel(new DefaultComboBoxModel(printServices));
 		cbReceiptPrinterName.setModel(new DefaultComboBoxModel(printServices));
-		cbKitchenPrinterName.setModel(new DefaultComboBoxModel(printServices));
+		//cbKitchenPrinterName.setModel(new DefaultComboBoxModel(printServices));
 
 		PrintServiceComboRenderer comboRenderer = new PrintServiceComboRenderer();
 		cbReportPrinterName.setRenderer(comboRenderer);
 		cbReceiptPrinterName.setRenderer(comboRenderer);
-		cbKitchenPrinterName.setRenderer(comboRenderer);
+		//cbKitchenPrinterName.setRenderer(comboRenderer);
 
-		setSelectedPrinter(cbReportPrinterName, PrintConfig.REPORT_PRINTER_NAME);
-		setSelectedPrinter(cbReceiptPrinterName, PrintConfig.RECEIPT_PRINTER_NAME);
-		setSelectedPrinter(cbKitchenPrinterName, PrintConfig.KITCHEN_PRINTER_NAME);
+		setSelectedPrinter(cbReportPrinterName, printers.getReportPrinter());
+		setSelectedPrinter(cbReceiptPrinterName, printers.getReceiptPrinter());
+		//setSelectedPrinter(cbKitchenPrinterName, PrintConfig.KITCHEN_PRINTER_NAME);
 
 		setInitialized(true);
 
@@ -73,19 +69,19 @@ public class PrintConfigurationView extends ConfigurationView {
 		}
 	}
 
-	private void setSelectedPrinter(JComboBox whichPrinter, String propertyName) {
-		PrintService osDefaultPrinter = PrintServiceLookup.lookupDefaultPrintService();
+	private void setSelectedPrinter(JComboBox whichPrinter, String printerName) {
+//		PrintService osDefaultPrinter = PrintServiceLookup.lookupDefaultPrintService();
+//
+//		if (osDefaultPrinter == null) {
+//			return;
+//		}
 
-		if (osDefaultPrinter == null) {
-			return;
-		}
-
-		String receiptPrinterName = AppConfig.getString(propertyName, osDefaultPrinter.getName());
+		//String printerName = AppConfig.getString(propertyName, osDefaultPrinter.getName());
 
 		int printerCount = whichPrinter.getItemCount();
 		for (int i = 0; i < printerCount; i++) {
 			PrintService printService = (PrintService) whichPrinter.getItemAt(i);
-			if (printService.getName().equals(receiptPrinterName)) {
+			if (printService.getName().equals(printerName)) {
 				whichPrinter.setSelectedIndex(i);
 				return;
 			}
@@ -95,13 +91,15 @@ public class PrintConfigurationView extends ConfigurationView {
 	@Override
 	public boolean save() throws Exception {
 		PrintService printService = (PrintService) cbReportPrinterName.getSelectedItem();
-		AppConfig.put(PrintConfig.REPORT_PRINTER_NAME, printService == null ? null : printService.getName());
+		printers.setReportPrinter(printService == null ? null : printService.getName());
+		//AppConfig.put(PrintConfig.REPORT_PRINTER_NAME, printService == null ? null : printService.getName());
 		
 		printService = (PrintService) cbReceiptPrinterName.getSelectedItem();
-		AppConfig.put(PrintConfig.RECEIPT_PRINTER_NAME, printService == null ? null : printService.getName());
+		printers.setReceiptPrinter(printService == null ? null : printService.getName());
+		//AppConfig.put(PrintConfig.RECEIPT_PRINTER_NAME, printService == null ? null : printService.getName());
 
-		printService = (PrintService) cbKitchenPrinterName.getSelectedItem();
-		AppConfig.put(PrintConfig.KITCHEN_PRINTER_NAME, printService == null ? null : printService.getName());
+		//printService = (PrintService) cbKitchenPrinterName.getSelectedItem();
+		//AppConfig.put(PrintConfig.KITCHEN_PRINTER_NAME, printService == null ? null : printService.getName());
 
 		Application.getPrinters().save();
 		
@@ -132,25 +130,26 @@ public class PrintConfigurationView extends ConfigurationView {
 		javax.swing.JLabel jLabel2 = new javax.swing.JLabel();
 		add(jLabel2, "cell 0 2,alignx right");
 
-		jLabel2.setText("Kitchen Printer:");
-		cbKitchenPrinterName = new javax.swing.JComboBox();
-		add(cbKitchenPrinterName, "cell 1 2,growx");
+		//jLabel2.setText("Kitchen Printer:");
+		//cbKitchenPrinterName = new javax.swing.JComboBox();
+		//add(cbKitchenPrinterName, "cell 1 2,growx");
 		
-		JPanel panel = new JPanel();
-		add(panel, "cell 0 3 2 1,grow");
-		panel.setLayout(new GridLayout(0, 2, 10, 0));
+		//JPanel panel = new JPanel();
+		//add(panel, "cell 0 3 2 1,grow");
+		//panel.setLayout(new GridLayout(0, 2, 10, 0));
 		
-		MultiPrinterPane multiPrinterPane = new MultiPrinterPane("Receipt Printers", printers.getReceiptPrinters());
-		panel.add(multiPrinterPane);
+		//MultiPrinterPane multiPrinterPane = new MultiPrinterPane("Receipt Printers", printers.getReceiptPrinters());
+		//panel.add(multiPrinterPane);
 		
-		MultiPrinterPane multiPrinterPane_1 = new MultiPrinterPane("Kitchen Printers", printers.getKitchenPrinters());
-		panel.add(multiPrinterPane_1);
+		MultiPrinterPane multiPrinterPane = new MultiPrinterPane("Kitchen Printers", printers.getKitchenPrinters());
+		add(multiPrinterPane, "cell 0 3 2 1,grow");
+		//panel.add(multiPrinterPane_1);
 
 	}// </editor-fold>//GEN-END:initComponents
 
 	// Variables declaration - do not modify//GEN-BEGIN:variables
-	private javax.swing.JComboBox cbKitchenPrinterName;
-	private javax.swing.JComboBox cbReceiptPrinterName;
+	//private javax.swing.JComboBox cbKitchenPrinterName;
+	private JComboBox cbReceiptPrinterName;
 	private JComboBox cbReportPrinterName;
 
 	// End of variables declaration//GEN-END:variables

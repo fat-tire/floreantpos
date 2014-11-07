@@ -17,7 +17,6 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.floreantpos.config.PrintConfig;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.DrawerPullReport;
 import com.floreantpos.model.Restaurant;
@@ -256,7 +255,7 @@ public class PosPrintService {
 			JasperReport mainReport = (JasperReport) JRLoader.loadObject(JReportPrintService.class.getResourceAsStream("/com/floreantpos/report/template/DrawerPullJReport.jasper"));
 			JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(Arrays.asList(new DrawerPullReport[] {drawerPullReport}));
 			JasperPrint jasperPrint = JasperFillManager.fillReport(mainReport, parameters, dataSource);
-			jasperPrint.setProperty("printerName", PrintConfig.getReportPrinterName());
+			jasperPrint.setProperty("printerName", Application.getPrinters().getReportPrinter());
 			JasperPrintManager.printReport(jasperPrint, false);
 		
 		} catch (Exception e) {

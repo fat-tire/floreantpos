@@ -22,7 +22,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.floreantpos.POSConstants;
-import com.floreantpos.config.PrintConfig;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.Customer;
 import com.floreantpos.model.KitchenTicket;
@@ -67,7 +66,7 @@ public class JReportPrintService {
 		map.put("title", title);
 		map.put("data", data);
 		JasperPrint jasperPrint = createJasperPrint("/com/floreantpos/report/template/GenericReport.jasper", map, new JREmptyDataSource());
-		jasperPrint.setProperty("printerName", PrintConfig.getReceiptPrinterName());
+		jasperPrint.setProperty("printerName", Application.getPrinters().getReceiptPrinter());
 		JasperPrintManager.printReport(jasperPrint, false);
 	}
 
@@ -106,7 +105,7 @@ public class JReportPrintService {
 
 			JasperPrint jasperPrint = createPrint(ticket, printProperties, null);
 			jasperPrint.setName("ORDER_" + ticket.getId());
-			jasperPrint.setProperty("printerName", PrintConfig.getReceiptPrinterName());
+			jasperPrint.setProperty("printerName", Application.getPrinters().getReceiptPrinter());
 			JasperPrintManager.printReport(jasperPrint, false);
 
 		} catch (Exception e) {
@@ -126,19 +125,19 @@ public class JReportPrintService {
 				printProperties.setReceiptCopyType("Customer Copy");
 				JasperPrint jasperPrint = createPrint(ticket, printProperties, transaction);
 				jasperPrint.setName("Ticket-" + ticket.getId() + "-CustomerCopy");
-				jasperPrint.setProperty("printerName", PrintConfig.getReceiptPrinterName());
+				jasperPrint.setProperty("printerName", Application.getPrinters().getReceiptPrinter());
 				JasperPrintManager.printReport(jasperPrint, false);
 
 				printProperties.setReceiptCopyType("Merchant Copy");
 				jasperPrint = createPrint(ticket, printProperties, transaction);
 				jasperPrint.setName("Ticket-" + ticket.getId() + "-MerchantCopy");
-				jasperPrint.setProperty("printerName", PrintConfig.getReceiptPrinterName());
+				jasperPrint.setProperty("printerName", Application.getPrinters().getReceiptPrinter());
 				JasperPrintManager.printReport(jasperPrint, false);
 			}
 			else {
 				JasperPrint jasperPrint = createPrint(ticket, printProperties, transaction);
 				jasperPrint.setName("Ticket-" + ticket.getId());
-				jasperPrint.setProperty("printerName", PrintConfig.getReceiptPrinterName());
+				jasperPrint.setProperty("printerName", Application.getPrinters().getReceiptPrinter());
 				JasperPrintManager.printReport(jasperPrint, false);
 			}
 

@@ -15,51 +15,47 @@ public class PrintConfig {
 	public final static String P_PRINT_TO_KITCHEN_ON_ORDER_FINISH = "print_to_kitchen_on_order_finish"; //$NON-NLS-1$
 	public final static String P_PRINT_TO_KITCHEN_ON_ORDER_SETTLE = "print_to_kitchen_on_order_settle"; //$NON-NLS-1$
 
-	public static String getReportPrinterName() {
-		return AppConfig.getString(REPORT_PRINTER_NAME, ""); //$NON-NLS-1$
-	}
-	
-	public static String getReceiptPrinterName() {
-		return AppConfig.getString(RECEIPT_PRINTER_NAME, "POSPrinter"); //$NON-NLS-1$
-	}
-
-	public static String getKitchenPrinterName() {
-		return AppConfig.getString(KITCHEN_PRINTER_NAME, "KitchenPrinter"); //$NON-NLS-1$
-	}
-	
-	public static void setPrintReceiptOnOrderFinish(boolean print) {
-		AppConfig.put(P_PRINT_RECEIPT_ON_ORDER_FINISH, print);
-	}
-
-	public static boolean isPrintReceiptOnOrderFinish() {
-		return AppConfig.getBoolean(P_PRINT_RECEIPT_ON_ORDER_FINISH, true);
-	}
-	
-	public static void setPrintReceiptOnOrderSettle(boolean print) {
-		AppConfig.put(P_PRINT_RECEIPT_ON_ORDER_SETTLE, print);
-	}
-
-	public static boolean isPrintReceiptOnOrderSettle() {
-		return AppConfig.getBoolean(P_PRINT_RECEIPT_ON_ORDER_SETTLE, false);
-	}
-
-	public static void setPrintToKitchenOnOrderFinish(boolean print) {
-		AppConfig.put(P_PRINT_TO_KITCHEN_ON_ORDER_FINISH, print);
-	}
-	
-	public static boolean isPrintToKitchenOnOrderFinish() {
-		return AppConfig.getBoolean(P_PRINT_TO_KITCHEN_ON_ORDER_FINISH, false);
-	}
-	
-	public static void setPrintToKitchenOnOrderSettle(boolean print) {
-		AppConfig.put(P_PRINT_TO_KITCHEN_ON_ORDER_SETTLE, print);
-	}
-
-	public static boolean isPrintToKitchenOnOrderSettle() {
-		return AppConfig.getBoolean(P_PRINT_TO_KITCHEN_ON_ORDER_SETTLE, false);
-	}
-	
-	public static void addReciptPrinter(String name, String deviceName) {
-		
-	}
+//	public static String getReportPrinterName() {
+//		return AppConfig.getString(REPORT_PRINTER_NAME, ""); //$NON-NLS-1$
+//	}
+//	
+//	public static String getReceiptPrinterName() {
+//		return AppConfig.getString(RECEIPT_PRINTER_NAME, "POSPrinter"); //$NON-NLS-1$
+//	}
+//
+//	public static String getKitchenPrinterName() {
+//		return AppConfig.getString(KITCHEN_PRINTER_NAME, "KitchenPrinter"); //$NON-NLS-1$
+//	}
+//	
+//	public static void setPrintReceiptOnOrderFinish(boolean print) {
+//		AppConfig.put(P_PRINT_RECEIPT_ON_ORDER_FINISH, print);
+//	}
+//
+//	public static boolean isPrintReceiptOnOrderFinish() {
+//		return AppConfig.getBoolean(P_PRINT_RECEIPT_ON_ORDER_FINISH, true);
+//	}
+//	
+//	public static void setPrintReceiptOnOrderSettle(boolean print) {
+//		AppConfig.put(P_PRINT_RECEIPT_ON_ORDER_SETTLE, print);
+//	}
+//
+//	public static boolean isPrintReceiptOnOrderSettle() {
+//		return AppConfig.getBoolean(P_PRINT_RECEIPT_ON_ORDER_SETTLE, false);
+//	}
+//
+//	public static void setPrintToKitchenOnOrderFinish(boolean print) {
+//		AppConfig.put(P_PRINT_TO_KITCHEN_ON_ORDER_FINISH, print);
+//	}
+//	
+//	public static boolean isPrintToKitchenOnOrderFinish() {
+//		return AppConfig.getBoolean(P_PRINT_TO_KITCHEN_ON_ORDER_FINISH, false);
+//	}
+//	
+//	public static void setPrintToKitchenOnOrderSettle(boolean print) {
+//		AppConfig.put(P_PRINT_TO_KITCHEN_ON_ORDER_SETTLE, print);
+//	}
+//
+//	public static boolean isPrintToKitchenOnOrderSettle() {
+//		return AppConfig.getBoolean(P_PRINT_TO_KITCHEN_ON_ORDER_SETTLE, false);
+//	}
 }

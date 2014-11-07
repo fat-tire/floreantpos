@@ -17,36 +17,45 @@ import org.apache.commons.io.FileUtils;
 
 @XmlRootElement(name = "printers")
 public class PosPrinters {
-	private Printer reportPrinter;
+	private String reportPrinter;
+	private String receiptPrinter;
 	
-	private Printer defaultReceiptPrinter;
+//	private Printer defaultReceiptPrinter;
 	private Printer defaultKitchenPrinter;
 	
-	private List<Printer> receiptPrinters;
+	//private List<Printer> receiptPrinters;
 	private List<Printer> kitchenPrinters;
 	
-	private Map<VirtualPrinter, Printer> receiptPrinterMap = new HashMap<VirtualPrinter, Printer>();
+	//private Map<VirtualPrinter, Printer> receiptPrinterMap = new HashMap<VirtualPrinter, Printer>();
 	private Map<VirtualPrinter, Printer> kitchePrinterMap = new HashMap<VirtualPrinter, Printer>();
 
-	public Printer getReportPrinter() {
+	public String getReportPrinter() {
 		return reportPrinter;
 	}
 
-	public void setReportPrinter(Printer reportPrinter) {
+	public void setReportPrinter(String reportPrinter) {
 		this.reportPrinter = reportPrinter;
 	}
-
-	public List<Printer> getReceiptPrinters() {
-		if (receiptPrinters == null) {
-			receiptPrinters = new ArrayList<Printer>(2);
-		}
-
-		return receiptPrinters;
+	
+	public String getReceiptPrinter() {
+		return receiptPrinter;
+	}
+	
+	public void setReceiptPrinter(String receiptPrinter) {
+		this.receiptPrinter = receiptPrinter;
 	}
 
-	public void setReceiptPrinters(List<Printer> receiptPrinters) {
-		this.receiptPrinters = receiptPrinters;
-	}
+//	public List<Printer> getReceiptPrinters() {
+//		if (receiptPrinters == null) {
+//			receiptPrinters = new ArrayList<Printer>(2);
+//		}
+//
+//		return receiptPrinters;
+//	}
+//
+//	public void setReceiptPrinters(List<Printer> receiptPrinters) {
+//		this.receiptPrinters = receiptPrinters;
+//	}
 
 	public List<Printer> getKitchenPrinters() {
 		if (kitchenPrinters == null) {
@@ -60,32 +69,32 @@ public class PosPrinters {
 		this.kitchenPrinters = kitchenPrinters;
 	}
 
-	public void addReceiptPrinter(Printer printer) {
-		getReceiptPrinters().add(printer);
-	}
+//	public void addReceiptPrinter(Printer printer) {
+//		getReceiptPrinters().add(printer);
+//	}
 
 	public void addKitchenPrinter(Printer printer) {
 		getKitchenPrinters().add(printer);
 	}
 	
-	public void setDefaultReceiptPrinter(Printer defaultReceiptPrinter) {
-		this.defaultReceiptPrinter = defaultReceiptPrinter;
-	}
+//	public void setDefaultReceiptPrinter(Printer defaultReceiptPrinter) {
+//		this.defaultReceiptPrinter = defaultReceiptPrinter;
+//	}
 	
-	public Printer getDefaultReceiptPrinter() {
-		if(defaultReceiptPrinter == null && getReceiptPrinters().size() > 0) {
-			defaultReceiptPrinter = receiptPrinters.get(0);
-			
-			for (Printer printer : receiptPrinters) {
-				if(printer.isDefaultPrinter()) {
-					defaultReceiptPrinter = printer;
-					break;
-				}
-			}
-		}
-		
-		return defaultReceiptPrinter;
-	}
+//	public Printer getDefaultReceiptPrinter() {
+//		if(defaultReceiptPrinter == null && getReceiptPrinters().size() > 0) {
+//			defaultReceiptPrinter = receiptPrinters.get(0);
+//			
+//			for (Printer printer : receiptPrinters) {
+//				if(printer.isDefaultPrinter()) {
+//					defaultReceiptPrinter = printer;
+//					break;
+//				}
+//			}
+//		}
+//		
+//		return defaultReceiptPrinter;
+//	}
 	
 	public void setDefaultKitchenPrinter(Printer defaultKitchenPrinter) {
 		this.defaultKitchenPrinter = defaultKitchenPrinter;
@@ -106,21 +115,21 @@ public class PosPrinters {
 		return defaultKitchenPrinter;
 	}
 	
-	public Printer getReceiptPrinterFor(VirtualPrinter vp) {
-		return receiptPrinterMap.get(vp);
-	}
+//	public Printer getReceiptPrinterFor(VirtualPrinter vp) {
+//		return receiptPrinterMap.get(vp);
+//	}
 	
 	public Printer getKitchenPrinterFor(VirtualPrinter vp) {
 		return kitchePrinterMap.get(vp);
 	}
 	
 	private void populatePrinterMaps() {
-		receiptPrinterMap.clear();
+		//receiptPrinterMap.clear();
 		kitchePrinterMap.clear();
 		
-		for (Printer printer : getReceiptPrinters()) {
-			receiptPrinterMap.put(printer.getVirtualPrinter(), printer);
-		}
+//		for (Printer printer : getReceiptPrinters()) {
+//			receiptPrinterMap.put(printer.getVirtualPrinter(), printer);
+//		}
 		
 		for (Printer printer : getKitchenPrinters()) {
 			kitchePrinterMap.put(printer.getVirtualPrinter(), printer);
@@ -129,7 +138,7 @@ public class PosPrinters {
 
 	public void save() {
 		try {
-			getDefaultReceiptPrinter();
+//			getDefaultReceiptPrinter();
 			getDefaultKitchenPrinter();
 			
 			populatePrinterMaps();
