@@ -275,4 +275,15 @@ public class TicketItem extends BaseTicketItem implements ITicketItem {
 	public void setPriceIncludesTax(boolean priceIncludesTax) {
 		this.priceIncludesTax = priceIncludesTax;
 	}
+	
+	public Printer getPrinter() {
+		PosPrinters printers = Application.getPrinters();
+		VirtualPrinter virtualPrinter = getDefaultPrinter();
+		
+		if(virtualPrinter == null) {
+			return printers.getDefaultKitchenPrinter();
+		}
+		
+		return printers.getKitchenPrinterFor(virtualPrinter);
+	}
 }
