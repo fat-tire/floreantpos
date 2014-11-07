@@ -16,6 +16,7 @@ import java.io.Serializable;
 public abstract class BaseKitchenTicket  implements Comparable, Serializable {
 
 	public static String REF = "KitchenTicket";
+	public static String PROP_OWNER = "owner";
 	public static String PROP_STATUS = "status";
 	public static String PROP_TABLE_NUMBER = "tableNumber";
 	public static String PROP_VOID_REASON = "voidReason";
@@ -58,6 +59,9 @@ public abstract class BaseKitchenTicket  implements Comparable, Serializable {
 		protected java.lang.Integer ticketId;
 		protected java.lang.String voidReason;
 		protected java.lang.Boolean voided;
+
+	// many to one
+	private com.floreantpos.model.User owner;
 
 	// collections
 	private java.util.List<com.floreantpos.model.TicketItem> ticketItems;
@@ -218,6 +222,23 @@ public abstract class BaseKitchenTicket  implements Comparable, Serializable {
 	 */
 	public void setVoided (java.lang.Boolean voided) {
 		this.voided = voided;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: OWNER_ID
+	 */
+	public com.floreantpos.model.User getOwner () {
+					return owner;
+			}
+
+	/**
+	 * Set the value related to the column: OWNER_ID
+	 * @param owner the OWNER_ID value
+	 */
+	public void setOwner (com.floreantpos.model.User owner) {
+		this.owner = owner;
 	}
 
 
