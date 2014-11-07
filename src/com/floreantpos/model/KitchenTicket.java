@@ -1,5 +1,12 @@
 package com.floreantpos.model;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import com.floreantpos.model.base.BaseKitchenTicket;
 
 
@@ -20,6 +27,55 @@ public class KitchenTicket extends BaseKitchenTicket {
 	}
 
 /*[CONSTRUCTOR MARKER END]*/
+	
+	private Printer printer;
+	
+	public void setPrinter(Printer printer) {
+		this.printer = printer;
+	}
+	
+	public Printer getPrinter() {
+		return printer;
+	}
 
+	public static List<KitchenTicket> fromTicket(Ticket ticket) {
+		Map<Printer, KitchenTicket> itemMap = new HashMap<Printer, KitchenTicket>();
+		List<KitchenTicket> kitchenTickets = new ArrayList<KitchenTicket>(2);
+		
+		List<TicketItem> ticketItems = ticket.getTicketItems();
+		if(ticketItems == null) {
+			return kitchenTickets;
+		}
+		
+		for (TicketItem ticketItem : ticketItems) {
+			if(ticketItem.isPrintedToKitchen()) {
+				continue;
+			}
+			
+			Printer printer = ticketItem.getPrinter();
+			if(printer == null) {
+				continue;
+			}
+			
+			KitchenTicket kitchenTicket = itemMap.get(printer);
+			if(kitchenTicket == null) {
+				kitchenTicket = new KitchenTicket();
+				kitchenTicket.setPrinter(printer);
+				kitchenTicket.setTicketId(ticket.getId());
+				kitchenTicket.setCreateDate(new Date());
+				kitchenTicket.setTableNumber(ticket.getTableNumber());
 
+				itemMap.put(printer, kitchenTicket);
+			}
+			
+			kitchenTicket.addToticketItems(ticketItem);
+		}
+		
+		Collection<KitchenTicket> values = itemMap.values();
+		for (KitchenTicket kitchenTicket : values) {
+			kitchenTickets.add(kitchenTicket);
+		}
+		
+		return kitchenTickets;
+	}
 }
