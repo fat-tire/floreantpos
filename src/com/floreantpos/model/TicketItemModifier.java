@@ -210,4 +210,9 @@ public class TicketItemModifier extends BaseTicketItemModifier implements ITicke
 	public void setPriceIncludesTax(boolean priceIncludesTax) {
 		this.priceIncludesTax = priceIncludesTax;
 	}
+	
+	@Override
+	public String getItemCode() {
+		return "";
+	}
 }

@@ -1,6 +1,7 @@
 package com.floreantpos.model;
 
 public interface ITicketItem {
+	String getItemCode();
 	boolean canAddCookingInstruction();
 	Boolean isPrintedToKitchen();
 	

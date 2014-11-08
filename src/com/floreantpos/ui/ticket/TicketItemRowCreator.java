@@ -42,7 +42,7 @@ public class TicketItemRowCreator {
 		}
 	}
 
-	public static void calculateTicketRows(KitchenTicket ticket, Map<String, ITicketItem> tableRows) {
+	public static void calculateKitchenTicketRows(KitchenTicket ticket, Map<String, ITicketItem> tableRows) {
 		tableRows.clear();
 
 		int rowNum = 0;

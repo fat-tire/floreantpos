@@ -48,7 +48,7 @@ public class KitchenTicket extends BaseKitchenTicket {
 		}
 		
 		for (TicketItem ticketItem : ticketItems) {
-			if(ticketItem.isPrintedToKitchen()) {
+			if(ticketItem.isPrintedToKitchen() || !ticketItem.isShouldPrintToKitchen()) {
 				continue;
 			}
 			
@@ -64,6 +64,7 @@ public class KitchenTicket extends BaseKitchenTicket {
 				kitchenTicket.setTicketId(ticket.getId());
 				kitchenTicket.setCreateDate(new Date());
 				kitchenTicket.setTableNumber(ticket.getTableNumber());
+				kitchenTicket.setOwner(ticket.getOwner());
 
 				itemMap.put(printer, kitchenTicket);
 			}

@@ -8,22 +8,22 @@ import com.floreantpos.model.KitchenTicket;
 import com.floreantpos.ui.ticket.TicketItemRowCreator;
 
 public class KitchenTicketDataSource extends AbstractReportDataSource {
-	
+
 	public KitchenTicketDataSource() {
-		super(new String[] { "itemName", "itemQty", "itemSubtotal" });
+		super(new String[] { "itemNo", "itemName", "itemQty" });
 	}
 
 	public KitchenTicketDataSource(KitchenTicket ticket) {
-		super(new String[] { "itemName", "itemQty", "itemSubtotal" });
+		super(new String[] { "itemNo", "itemName", "itemQty" });
 
 		setTicket(ticket);
 	}
-	
+
 	private void setTicket(KitchenTicket ticket) {
 		ArrayList<ITicketItem> rows = new ArrayList<ITicketItem>();
 
 		LinkedHashMap<String, ITicketItem> tableRows = new LinkedHashMap<String, ITicketItem>();
-		TicketItemRowCreator.calculateTicketRows(ticket, tableRows);
+		TicketItemRowCreator.calculateKitchenTicketRows(ticket, tableRows);
 
 		rows.addAll(tableRows.values());
 		setRows(rows);
@@ -34,24 +34,19 @@ public class KitchenTicketDataSource extends AbstractReportDataSource {
 
 		switch (columnIndex) {
 			case 0:
-				return item.getNameDisplay();
+				return item.getItemCode();
 
 			case 1:
-				Integer itemCountDisplay = item.getItemCountDisplay();
-				
-				if(itemCountDisplay == null) {
-					return null;
-				}
-				
-				return String.valueOf(itemCountDisplay);
+				return item.getNameDisplay();
 
 			case 2:
-				Double total = item.getTotalAmountWithoutModifiersDisplay();
-				if(total == null) {
+				Integer itemCountDisplay = item.getItemCountDisplay();
+
+				if (itemCountDisplay == null) {
 					return null;
 				}
-				
-				return String.valueOf(total);
+
+				return String.valueOf(itemCountDisplay);
 		}
 
 		return null;

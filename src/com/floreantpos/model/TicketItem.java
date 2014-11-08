@@ -276,6 +276,11 @@ public class TicketItem extends BaseTicketItem implements ITicketItem {
 		this.priceIncludesTax = priceIncludesTax;
 	}
 	
+	@Override
+	public String getItemCode() {
+		return String.valueOf(getId());
+	}
+	
 	public Printer getPrinter() {
 		PosPrinters printers = Application.getPrinters();
 		VirtualPrinter virtualPrinter = getDefaultPrinter();
