@@ -179,25 +179,25 @@ public class MenuItemForm extends BeanEditor implements ActionListener, ChangeLi
         
         cbShowTextWithImage = new JCheckBox("Show image only");
         cbShowTextWithImage.setActionCommand("Show Text with Image");
-        jPanel1.add(cbShowTextWithImage, "cell 1 6 3 1");
-        jPanel1.add(jLabel6, "cell 0 7,alignx left,aligny center");
-        jPanel1.add(jLabel2, "cell 0 4,alignx left,aligny center");
-        jPanel1.add(jLabel1, "cell 0 0,alignx left,aligny center");
-        jPanel1.add(tfName, "cell 1 0 3 1,growx,aligny top");
-        jPanel1.add(cbGroup, "cell 1 1,growx,aligny top");
-        jPanel1.add(btnNewGroup, "cell 3 1,growx,aligny top");
-        jPanel1.add(tfDiscountRate, "cell 1 4,growx,aligny top");
-        jPanel1.add(cbTax, "cell 1 7,growx,aligny top");
-        jPanel1.add(tfPrice, "cell 1 3,growx,aligny top");
+        jPanel1.add(cbShowTextWithImage, "cell 1 6 3 1"); //$NON-NLS-1$
+        jPanel1.add(jLabel6, "cell 0 7,alignx left,aligny center"); //$NON-NLS-1$
+        jPanel1.add(jLabel2, "cell 0 4,alignx left,aligny center"); //$NON-NLS-1$
+        jPanel1.add(jLabel1, "cell 0 0,alignx left,aligny center"); //$NON-NLS-1$
+        jPanel1.add(tfName, "cell 1 0 3 1,growx,aligny top"); //$NON-NLS-1$
+        jPanel1.add(cbGroup, "cell 1 1,growx,aligny top"); //$NON-NLS-1$
+        jPanel1.add(btnNewGroup, "cell 3 1,growx,aligny top"); //$NON-NLS-1$
+        jPanel1.add(tfDiscountRate, "cell 1 4,growx,aligny top"); //$NON-NLS-1$
+        jPanel1.add(cbTax, "cell 1 7,growx,aligny top"); //$NON-NLS-1$
+        jPanel1.add(tfPrice, "cell 1 3,growx,aligny top"); //$NON-NLS-1$
         
-        lblKitchenPrinter = new JLabel(Messages.getString("MenuItemForm.lblKitchenPrinter.text")); //$NON-NLS-1$
-        jPanel1.add(lblKitchenPrinter, "cell 0 8,alignx trailing");
+        lblKitchenPrinter = new JLabel("Kitchen Printer");
+        jPanel1.add(lblKitchenPrinter, "cell 0 8"); //$NON-NLS-1$
         
         cbPrinter = new JComboBox<VirtualPrinter>(new DefaultComboBoxModel<VirtualPrinter>(VirtualPrinterDAO.getInstance().findAll().toArray(new VirtualPrinter[0])));
-        jPanel1.add(cbPrinter, "cell 1 8,growx");
-        jPanel1.add(chkVisible, "cell 1 9,alignx left,aligny top");
-        jPanel1.add(btnNewTax, "cell 2 7,alignx left,aligny top");
-        jPanel1.add(jLabel5, "cell 2 4");
+        jPanel1.add(cbPrinter, "cell 1 8,growx"); //$NON-NLS-1$
+        jPanel1.add(chkVisible, "cell 1 9,alignx left,aligny top"); //$NON-NLS-1$
+        jPanel1.add(btnNewTax, "cell 2 7,alignx left,aligny top"); //$NON-NLS-1$
+        jPanel1.add(jLabel5, "cell 2 4"); //$NON-NLS-1$
         add(tabbedPane);
         
 		setBean(menuItem);

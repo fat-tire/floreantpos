@@ -32,6 +32,7 @@ import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.TicketItemCookingInstruction;
 import com.floreantpos.model.TicketItemModifierGroup;
 import com.floreantpos.model.TicketType;
+import com.floreantpos.model.dao.KitchenTicketDAO;
 import com.floreantpos.model.dao.RestaurantDAO;
 import com.floreantpos.util.NumberUtil;
 
@@ -350,15 +351,17 @@ public class JReportPrintService {
 		HashMap map = new HashMap();
 		
 		map.put(SHOW_HEADER_SEPARATOR, Boolean.TRUE);
-		map.put(CHECK_NO, POSConstants.RECEIPT_REPORT_TICKET_NO_LABEL + ticket.getId());
-		map.put(TABLE_NO, POSConstants.RECEIPT_REPORT_TABLE_NO_LABEL + ticket.getTableNumber());
+		map.put(CHECK_NO, POSConstants.RECEIPT_REPORT_TICKET_NO_LABEL + ticket.getTicketId());
+		if(ticket.getTableNumber() != -1) {
+			map.put(TABLE_NO, POSConstants.RECEIPT_REPORT_TABLE_NO_LABEL + ticket.getTableNumber());
+		}
 		//map.put(GUEST_COUNT, POSConstants.RECEIPT_REPORT_GUEST_NO_LABEL + ticket.getNumberOfGuests());
-		map.put(SERVER_NAME, POSConstants.RECEIPT_REPORT_SERVER_LABEL + ticket.getOwner());
+		map.put(SERVER_NAME, POSConstants.RECEIPT_REPORT_SERVER_LABEL + ticket.getOwner().getFirstName());
 		map.put(REPORT_DATE, POSConstants.RECEIPT_REPORT_DATE_LABEL + Application.formatDate(new Date()));
 		
-		map.put("ticketHeader", "***");
+		map.put("ticketHeader", "KTICHEN RECEIPT");
 		
-		final String FILE_RECEIPT_REPORT = "/com/floreantpos/report/template/TicketReceiptReport.jasper";
+		final String FILE_RECEIPT_REPORT = "/com/floreantpos/report/template/KitchenReceipt.jasper";
 
 		KitchenTicketDataSource dataSource = new KitchenTicketDataSource(ticket);
 		
@@ -370,31 +373,25 @@ public class JReportPrintService {
 			
 			List<KitchenTicket> kitchenTickets = KitchenTicket.fromTicket(ticket);
 			
-			if(kitchenTickets.size() == 0) {
-				System.out.println("nothing to print");
-			}
-			
 			for (KitchenTicket kitchenTicket : kitchenTickets) {
-				TicketPrintProperties printProperties = new TicketPrintProperties("*** KITCHEN ***", false, false, false);
-				printProperties.setKitchenPrint(true);
-				JasperPrint jasperPrint = createPrint(ticket, printProperties, null);
+				JasperPrint jasperPrint = createKitchenPrint(kitchenTicket);
 				jasperPrint.setName("KitchenReceipt-Ticket-" + ticket.getId());
 				jasperPrint.setProperty("printerName", kitchenTicket.getPrinter().getDeviceName());
+				
 				JasperPrintManager.printReport(jasperPrint, false);
 				
-				System.out.println("Printed to: " + kitchenTicket.getPrinter().getDeviceName());
+				markItemsAsPrinted(kitchenTicket);
 			}
 
 			//no exception, so print to kitchen successful.
 			//now mark items as printed.
-			markItemsAsPrinted(ticket);
 
 		} catch (Exception e) {
 			logger.error(com.floreantpos.POSConstants.PRINT_ERROR, e);
 		}
 	}
 
-	private static void markItemsAsPrinted(Ticket ticket) {
+	private static void markItemsAsPrinted(KitchenTicket ticket) {
 		List<TicketItem> ticketItems = ticket.getTicketItems();
 		if (ticketItems != null) {
 			for (TicketItem ticketItem : ticketItems) {
@@ -417,5 +414,7 @@ public class JReportPrintService {
 				}
 			}
 		}
+		
+		KitchenTicketDAO.getInstance().saveOrUpdate(ticket);
 	}
 }

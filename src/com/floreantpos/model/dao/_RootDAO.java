@@ -14,6 +14,7 @@ import com.floreantpos.model.CouponAndDiscount;
 import com.floreantpos.model.Customer;
 import com.floreantpos.model.DrawerPullReport;
 import com.floreantpos.model.Gratuity;
+import com.floreantpos.model.KitchenTicket;
 import com.floreantpos.model.MenuCategory;
 import com.floreantpos.model.MenuGroup;
 import com.floreantpos.model.MenuItem;
@@ -100,6 +101,7 @@ public abstract class _RootDAO extends com.floreantpos.model.dao._BaseRootDAO {
 		configuration = configuration.addClass(Tax.class);
 		configuration = configuration.addClass(Terminal.class);
 		configuration = configuration.addClass(Ticket.class);
+		configuration = configuration.addClass(KitchenTicket.class);
 		configuration = configuration.addClass(TicketCouponAndDiscount.class);
 		configuration = configuration.addClass(TicketItem.class);
 		configuration = configuration.addClass(TicketItemModifier.class);
