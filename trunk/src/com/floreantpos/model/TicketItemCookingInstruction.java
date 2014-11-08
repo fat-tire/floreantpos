@@ -57,4 +57,9 @@ public class TicketItemCookingInstruction extends BaseTicketItemCookingInstructi
 	public Double getTotalAmountWithoutModifiersDisplay() {
 		return null;
 	}
+	
+	@Override
+	public String getItemCode() {
+		return "";
+	}
 }
