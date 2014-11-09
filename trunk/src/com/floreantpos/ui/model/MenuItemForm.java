@@ -190,7 +190,7 @@ public class MenuItemForm extends BeanEditor implements ActionListener, ChangeLi
         jPanel1.add(cbTax, "cell 1 7,growx,aligny top"); //$NON-NLS-1$
         jPanel1.add(tfPrice, "cell 1 3,growx,aligny top"); //$NON-NLS-1$
         
-        lblKitchenPrinter = new JLabel("Kitchen Printer");
+        lblKitchenPrinter = new JLabel("Kitchen & Bar Printer");
         jPanel1.add(lblKitchenPrinter, "cell 0 8"); //$NON-NLS-1$
         
         cbPrinter = new JComboBox<VirtualPrinter>(new DefaultComboBoxModel<VirtualPrinter>(VirtualPrinterDAO.getInstance().findAll().toArray(new VirtualPrinter[0])));
