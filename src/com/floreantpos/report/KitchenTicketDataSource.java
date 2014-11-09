@@ -1,11 +1,7 @@
 package com.floreantpos.report;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-
-import com.floreantpos.model.ITicketItem;
 import com.floreantpos.model.KitchenTicket;
-import com.floreantpos.ui.ticket.TicketItemRowCreator;
+import com.floreantpos.model.KitchenTicketItem;
 
 public class KitchenTicketDataSource extends AbstractReportDataSource {
 
@@ -20,27 +16,21 @@ public class KitchenTicketDataSource extends AbstractReportDataSource {
 	}
 
 	private void setTicket(KitchenTicket ticket) {
-		ArrayList<ITicketItem> rows = new ArrayList<ITicketItem>();
-
-		LinkedHashMap<String, ITicketItem> tableRows = new LinkedHashMap<String, ITicketItem>();
-		TicketItemRowCreator.calculateKitchenTicketRows(ticket, tableRows);
-
-		rows.addAll(tableRows.values());
-		setRows(rows);
+		setRows(ticket.getTicketItems());
 	}
 
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		ITicketItem item = (ITicketItem) rows.get(rowIndex);
+		KitchenTicketItem item = (KitchenTicketItem) rows.get(rowIndex);
 
 		switch (columnIndex) {
 			case 0:
-				return item.getItemCode();
+				return item.getMenuItemCode();
 
 			case 1:
-				return item.getNameDisplay();
+				return item.getMenuItemName();
 
 			case 2:
-				Integer itemCountDisplay = item.getItemCountDisplay();
+				Integer itemCountDisplay = item.getQuantity();
 
 				if (itemCountDisplay == null) {
 					return null;

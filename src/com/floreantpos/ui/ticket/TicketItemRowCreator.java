@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.floreantpos.model.ITicketItem;
-import com.floreantpos.model.KitchenTicket;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.TicketItemCookingInstruction;
@@ -42,25 +41,25 @@ public class TicketItemRowCreator {
 		}
 	}
 
-	public static void calculateKitchenTicketRows(KitchenTicket ticket, Map<String, ITicketItem> tableRows) {
-		tableRows.clear();
-
-		int rowNum = 0;
-
-		if (ticket == null || ticket.getTicketItems() == null)
-			return;
-
-		List<TicketItem> ticketItems = ticket.getTicketItems();
-		for (TicketItem ticketItem : ticketItems) {
-
-			ticketItem.setTableRowNum(rowNum);
-			tableRows.put(String.valueOf(rowNum), ticketItem);
-			rowNum++;
-
-			rowNum = includeModifiers(ticketItem, tableRows, rowNum, true);
-			rowNum = includeCookintInstructions(ticketItem, tableRows, rowNum);
-		}
-	}
+//	public static void calculateKitchenTicketRows(KitchenTicket ticket, Map<String, ITicketItem> tableRows) {
+//		tableRows.clear();
+//
+//		int rowNum = 0;
+//
+//		if (ticket == null || ticket.getTicketItems() == null)
+//			return;
+//
+//		List<TicketItem> ticketItems = ticket.getTicketItems();
+//		for (TicketItem ticketItem : ticketItems) {
+//
+//			ticketItem.setTableRowNum(rowNum);
+//			tableRows.put(String.valueOf(rowNum), ticketItem);
+//			rowNum++;
+//
+//			rowNum = includeModifiers(ticketItem, tableRows, rowNum, true);
+//			rowNum = includeCookintInstructions(ticketItem, tableRows, rowNum);
+//		}
+//	}
 
 	private static int includeCookintInstructions(TicketItem ticketItem, Map<String, ITicketItem> tableRows, int rowNum) {
 		List<TicketItemCookingInstruction> cookingInstructions = ticketItem.getCookingInstructions();
