@@ -28,12 +28,9 @@ import com.floreantpos.model.KitchenTicket;
 import com.floreantpos.model.PosTransaction;
 import com.floreantpos.model.Restaurant;
 import com.floreantpos.model.Ticket;
-import com.floreantpos.model.TicketItem;
-import com.floreantpos.model.TicketItemCookingInstruction;
-import com.floreantpos.model.TicketItemModifierGroup;
 import com.floreantpos.model.TicketType;
-import com.floreantpos.model.dao.KitchenTicketDAO;
 import com.floreantpos.model.dao.RestaurantDAO;
+import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.util.NumberUtil;
 
 public class JReportPrintService {
@@ -356,7 +353,7 @@ public class JReportPrintService {
 			map.put(TABLE_NO, POSConstants.RECEIPT_REPORT_TABLE_NO_LABEL + ticket.getTableNumber());
 		}
 		//map.put(GUEST_COUNT, POSConstants.RECEIPT_REPORT_GUEST_NO_LABEL + ticket.getNumberOfGuests());
-		map.put(SERVER_NAME, POSConstants.RECEIPT_REPORT_SERVER_LABEL + ticket.getOwner().getFirstName());
+		map.put(SERVER_NAME, POSConstants.RECEIPT_REPORT_SERVER_LABEL + ticket.getServerName());
 		map.put(REPORT_DATE, POSConstants.RECEIPT_REPORT_DATE_LABEL + Application.formatDate(new Date()));
 		
 		map.put("ticketHeader", "KTICHEN RECEIPT");
@@ -380,41 +377,41 @@ public class JReportPrintService {
 				
 				JasperPrintManager.printReport(jasperPrint, false);
 				
-				markItemsAsPrinted(kitchenTicket);
+				//markItemsAsPrinted(kitchenTicket);
 			}
 
 			//no exception, so print to kitchen successful.
 			//now mark items as printed.
-
+			TicketDAO.getInstance().saveOrUpdate(ticket);
 		} catch (Exception e) {
 			logger.error(com.floreantpos.POSConstants.PRINT_ERROR, e);
 		}
 	}
 
-	private static void markItemsAsPrinted(KitchenTicket ticket) {
-		List<TicketItem> ticketItems = ticket.getTicketItems();
-		if (ticketItems != null) {
-			for (TicketItem ticketItem : ticketItems) {
-				if (!ticketItem.isPrintedToKitchen()) {
-					ticketItem.setPrintedToKitchen(true);
-				}
-
-				List<TicketItemModifierGroup> modifierGroups = ticketItem.getTicketItemModifierGroups();
-				if (modifierGroups != null) {
-					for (TicketItemModifierGroup modifierGroup : modifierGroups) {
-						modifierGroup.setPrintedToKitchen(true);
-					}
-				}
-
-				List<TicketItemCookingInstruction> cookingInstructions = ticketItem.getCookingInstructions();
-				if (cookingInstructions != null) {
-					for (TicketItemCookingInstruction ticketItemCookingInstruction : cookingInstructions) {
-						ticketItemCookingInstruction.setPrintedToKitchen(true);
-					}
-				}
-			}
-		}
-		
-		KitchenTicketDAO.getInstance().saveOrUpdate(ticket);
-	}
+//	private static void markItemsAsPrinted(KitchenTicket ticket) {
+//		List<TicketItem> ticketItems = ticket.getTicketItems();
+//		if (ticketItems != null) {
+//			for (TicketItem ticketItem : ticketItems) {
+//				if (!ticketItem.isPrintedToKitchen()) {
+//					ticketItem.setPrintedToKitchen(true);
+//				}
+//
+//				List<TicketItemModifierGroup> modifierGroups = ticketItem.getTicketItemModifierGroups();
+//				if (modifierGroups != null) {
+//					for (TicketItemModifierGroup modifierGroup : modifierGroups) {
+//						modifierGroup.setPrintedToKitchen(true);
+//					}
+//				}
+//
+//				List<TicketItemCookingInstruction> cookingInstructions = ticketItem.getCookingInstructions();
+//				if (cookingInstructions != null) {
+//					for (TicketItemCookingInstruction ticketItemCookingInstruction : cookingInstructions) {
+//						ticketItemCookingInstruction.setPrintedToKitchen(true);
+//					}
+//				}
+//			}
+//		}
+//		
+//		KitchenTicketDAO.getInstance().saveOrUpdate(ticket);
+//	}
 }

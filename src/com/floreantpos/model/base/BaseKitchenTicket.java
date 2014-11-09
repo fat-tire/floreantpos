@@ -16,13 +16,11 @@ import java.io.Serializable;
 public abstract class BaseKitchenTicket  implements Comparable, Serializable {
 
 	public static String REF = "KitchenTicket";
-	public static String PROP_OWNER = "owner";
 	public static String PROP_STATUS = "status";
 	public static String PROP_TABLE_NUMBER = "tableNumber";
-	public static String PROP_VOID_REASON = "voidReason";
-	public static String PROP_CLOSING_DATE = "closingDate";
 	public static String PROP_ID = "id";
 	public static String PROP_VOIDED = "voided";
+	public static String PROP_SERVER_NAME = "serverName";
 	public static String PROP_CREATE_DATE = "createDate";
 	public static String PROP_TICKET_ID = "ticketId";
 
@@ -52,19 +50,15 @@ public abstract class BaseKitchenTicket  implements Comparable, Serializable {
 	 java.util.Date modifiedTime;
 
 	// fields
-		protected java.util.Date closingDate;
-		protected java.util.Date createDate;
-		protected java.lang.String status;
-		protected java.lang.Integer tableNumber;
 		protected java.lang.Integer ticketId;
-		protected java.lang.String voidReason;
+		protected java.util.Date createDate;
 		protected java.lang.Boolean voided;
-
-	// many to one
-	private com.floreantpos.model.User owner;
+		protected java.lang.Integer tableNumber;
+		protected java.lang.String status;
+		protected java.lang.String serverName;
 
 	// collections
-	private java.util.List<com.floreantpos.model.TicketItem> ticketItems;
+	private java.util.List<com.floreantpos.model.KitchenTicketItem> ticketItems;
 
 
 
@@ -108,18 +102,18 @@ public abstract class BaseKitchenTicket  implements Comparable, Serializable {
 
 
 	/**
-	 * Return the value associated with the column: CLOSING_DATE
+	 * Return the value associated with the column: TICKET_ID
 	 */
-	public java.util.Date getClosingDate () {
-					return closingDate;
+	public java.lang.Integer getTicketId () {
+					return ticketId == null ? Integer.valueOf(0) : ticketId;
 			}
 
 	/**
-	 * Set the value related to the column: CLOSING_DATE
-	 * @param closingDate the CLOSING_DATE value
+	 * Set the value related to the column: TICKET_ID
+	 * @param ticketId the TICKET_ID value
 	 */
-	public void setClosingDate (java.util.Date closingDate) {
-		this.closingDate = closingDate;
+	public void setTicketId (java.lang.Integer ticketId) {
+		this.ticketId = ticketId;
 	}
 
 
@@ -142,18 +136,18 @@ public abstract class BaseKitchenTicket  implements Comparable, Serializable {
 
 
 	/**
-	 * Return the value associated with the column: STATUS
+	 * Return the value associated with the column: VOIDED
 	 */
-	public java.lang.String getStatus () {
-					return status;
-			}
+	public java.lang.Boolean isVoided () {
+								return voided == null ? Boolean.FALSE : voided;
+					}
 
 	/**
-	 * Set the value related to the column: STATUS
-	 * @param status the STATUS value
+	 * Set the value related to the column: VOIDED
+	 * @param voided the VOIDED value
 	 */
-	public void setStatus (java.lang.String status) {
-		this.status = status;
+	public void setVoided (java.lang.Boolean voided) {
+		this.voided = voided;
 	}
 
 
@@ -176,69 +170,35 @@ public abstract class BaseKitchenTicket  implements Comparable, Serializable {
 
 
 	/**
-	 * Return the value associated with the column: TICKET_ID
+	 * Return the value associated with the column: STATUS
 	 */
-	public java.lang.Integer getTicketId () {
-					return ticketId == null ? Integer.valueOf(0) : ticketId;
+	public java.lang.String getStatus () {
+					return status;
 			}
 
 	/**
-	 * Set the value related to the column: TICKET_ID
-	 * @param ticketId the TICKET_ID value
+	 * Set the value related to the column: STATUS
+	 * @param status the STATUS value
 	 */
-	public void setTicketId (java.lang.Integer ticketId) {
-		this.ticketId = ticketId;
+	public void setStatus (java.lang.String status) {
+		this.status = status;
 	}
 
 
 
 	/**
-	 * Return the value associated with the column: VOID_REASON
+	 * Return the value associated with the column: SERVER_NAME
 	 */
-	public java.lang.String getVoidReason () {
-					return voidReason;
+	public java.lang.String getServerName () {
+					return serverName;
 			}
 
 	/**
-	 * Set the value related to the column: VOID_REASON
-	 * @param voidReason the VOID_REASON value
+	 * Set the value related to the column: SERVER_NAME
+	 * @param serverName the SERVER_NAME value
 	 */
-	public void setVoidReason (java.lang.String voidReason) {
-		this.voidReason = voidReason;
-	}
-
-
-
-	/**
-	 * Return the value associated with the column: VOIDED
-	 */
-	public java.lang.Boolean isVoided () {
-								return voided == null ? Boolean.FALSE : voided;
-					}
-
-	/**
-	 * Set the value related to the column: VOIDED
-	 * @param voided the VOIDED value
-	 */
-	public void setVoided (java.lang.Boolean voided) {
-		this.voided = voided;
-	}
-
-
-
-	/**
-	 * Return the value associated with the column: OWNER_ID
-	 */
-	public com.floreantpos.model.User getOwner () {
-					return owner;
-			}
-
-	/**
-	 * Set the value related to the column: OWNER_ID
-	 * @param owner the OWNER_ID value
-	 */
-	public void setOwner (com.floreantpos.model.User owner) {
-		this.owner = owner;
+	public void setServerName (java.lang.String serverName) {
+		this.serverName = serverName;
 	}
 
 
@@ -246,7 +206,7 @@ public abstract class BaseKitchenTicket  implements Comparable, Serializable {
 	/**
 	 * Return the value associated with the column: ticketItems
 	 */
-	public java.util.List<com.floreantpos.model.TicketItem> getTicketItems () {
+	public java.util.List<com.floreantpos.model.KitchenTicketItem> getTicketItems () {
 					return ticketItems;
 			}
 
@@ -254,13 +214,13 @@ public abstract class BaseKitchenTicket  implements Comparable, Serializable {
 	 * Set the value related to the column: ticketItems
 	 * @param ticketItems the ticketItems value
 	 */
-	public void setTicketItems (java.util.List<com.floreantpos.model.TicketItem> ticketItems) {
+	public void setTicketItems (java.util.List<com.floreantpos.model.KitchenTicketItem> ticketItems) {
 		this.ticketItems = ticketItems;
 	}
 
-	public void addToticketItems (com.floreantpos.model.TicketItem ticketItem) {
-		if (null == getTicketItems()) setTicketItems(new java.util.ArrayList<com.floreantpos.model.TicketItem>());
-		getTicketItems().add(ticketItem);
+	public void addToticketItems (com.floreantpos.model.KitchenTicketItem kitchenTicketItem) {
+		if (null == getTicketItems()) setTicketItems(new java.util.ArrayList<com.floreantpos.model.KitchenTicketItem>());
+		getTicketItems().add(kitchenTicketItem);
 	}
 
 
