@@ -1,97 +1,47 @@
 package com.floreantpos.demo;
 
+import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.Toolkit;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.UIManager;
+import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 
-import com.floreantpos.main.Application;
-import com.floreantpos.model.Ticket;
-import com.floreantpos.model.TicketItem;
-import com.jgoodies.looks.plastic.PlasticXPLookAndFeel;
-import com.jgoodies.looks.plastic.theme.ExperienceBlue;
+import com.floreantpos.model.KitchenTicket;
 
-public class KitchenDisplay extends JPanel {
-	private KitchenTicketView kitchenTicketView;
-	private KitchenTicketView kitchenTicketView_1;
-	private KitchenTicketView kitchenTicketView_2;
-	private KitchenTicketView kitchenTicketView_4;
-	private KitchenTicketView kitchenTicketView_3;
-	private KitchenTicketView kitchenTicketView_6;
-	private KitchenTicketView kitchenTicketView_5;
-	private KitchenTicketView kitchenTicketView_7;
+public class KitchenDisplay extends JFrame {
+	
+	public static final KitchenDisplay instance = new KitchenDisplay();
+	
+	JPanel ticketPanel = new JPanel(new GridLayout(1, 0, 10, 10));
 	
 	public KitchenDisplay() {
-		setBorder(new EmptyBorder(5, 5, 5, 5));
-		setLayout(new GridLayout(2, 4, 10, 10));
+		setTitle("Kitchen Display");
 		
-		kitchenTicketView = new KitchenTicketView();
-		kitchenTicketView.setTitle("Terminal #1/Ticket #22");
-		add(kitchenTicketView);
+		ticketPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
+		add(new JScrollPane(ticketPanel));
 		
-		kitchenTicketView_1 = new KitchenTicketView();
-		kitchenTicketView_1.setTitle("Terminal #1/Ticket #5");
-		add(kitchenTicketView_1);
-		
-		kitchenTicketView_2 = new KitchenTicketView();
-		kitchenTicketView_2.setTitle("");
-		add(kitchenTicketView_2);
-		
-		kitchenTicketView_4 = new KitchenTicketView();
-		kitchenTicketView_4.setTitle("");
-		add(kitchenTicketView_4);
-		
-		kitchenTicketView_3 = new KitchenTicketView();
-		kitchenTicketView_3.setTitle("");
-		add(kitchenTicketView_3);
-		
-		kitchenTicketView_6 = new KitchenTicketView();
-		kitchenTicketView_6.setTitle("");
-		add(kitchenTicketView_6);
-		
-		kitchenTicketView_5 = new KitchenTicketView();
-		kitchenTicketView_5.setTitle("");
-		add(kitchenTicketView_5);
-		
-		kitchenTicketView_7 = new KitchenTicketView();
-		kitchenTicketView_7.setTitle("");
-		add(kitchenTicketView_7);
-		
-		kitchenTicketView_1.setTicket(createTicket(new String[] {"Hote Cake", "Small Burger", "Small coke"}, new int[]{5, 5, 5}, new double[] {5, 7, 2}));
-		kitchenTicketView.setTicket(createTicket(new String[] {"Big Chicken Burger", "French Fries"}, new int[]{3, 3}, new double[] {6, 2}));
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		setSize(screenSize);
+		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 	}
 
-	private Ticket createTicket(String[] itemNames, int[] itemCounts, double[] unitPrices) {
-		Ticket ticket1 = new Ticket();
-		ticket1.setPriceIncludesTax(Application.getInstance().isPriceIncludesTax());
-		for (int i = 0; i < itemNames.length; i++) {
-			TicketItem ticketItem = new TicketItem(1);
-			ticketItem.setPriceIncludesTax(ticket1.isPriceIncludesTax());
-			ticketItem.setName(itemNames[i]);
-			ticketItem.setItemCount(itemCounts[i]);
-			ticketItem.setUnitPrice(unitPrices[i]);
-			ticket1.addToticketItems(ticketItem);
-		}
+	public void addTicket(KitchenTicket ticket) {
+		KitchenTicketView view = new KitchenTicketView(this, ticket);
+		ticketPanel.add(view);
 		
-		ticket1.calculatePrice();
-		return ticket1;
+		setVisible(true);
 	}
 	
-	public static void main(String[] args) {
-		try {
-			PlasticXPLookAndFeel.setPlasticTheme(new ExperienceBlue());
-			UIManager.setLookAndFeel(new PlasticXPLookAndFeel());
-			UIManager.put("ComboBox.is3DEnabled", Boolean.FALSE);
-		} catch (Exception ignored) {
-		}
+	public void removeTicket(KitchenTicketView view) {
+		ticketPanel.remove(view);
+		ticketPanel.revalidate();
+		ticketPanel.repaint();
 		
-		JFrame frame = new JFrame();
-		frame.setTitle("Floreant POS - Kitchen Terminal");
-		frame.add(new KitchenDisplay());
-		frame.setSize(800, 600);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setVisible(true);
+		if(ticketPanel.getComponents().length == 0) {
+			setVisible(false);
+		}
 	}
 }
