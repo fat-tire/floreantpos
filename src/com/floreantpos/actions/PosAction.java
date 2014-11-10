@@ -13,6 +13,10 @@ public abstract class PosAction extends AbstractAction {
 	protected UserPermission requiredPermission;
 	//protected boolean allowAdministrator = true;
 	
+	public PosAction(String name) {
+		super(name);
+	}
+	
 	public PosAction(String name, UserPermission requiredPermission) {
 		super(name);
 		
@@ -34,6 +38,11 @@ public abstract class PosAction extends AbstractAction {
 //		if(allowAdministrator && user.isAdministrator()) {
 //			execute();
 //		}
+		
+		if(requiredPermission == null) {
+			execute();
+			return;
+		}
 		
 		if(!user.hasPermission(requiredPermission)) {
 			POSMessageDialog.showError("You do not have permission to execute this action");

@@ -31,7 +31,8 @@ public class KitchenDisplay extends JFrame {
 	public void addTicket(KitchenTicket ticket) {
 		KitchenTicketView view = new KitchenTicketView(this, ticket);
 		ticketPanel.add(view);
-		
+		ticketPanel.revalidate();
+		ticketPanel.repaint();
 		setVisible(true);
 	}
 	
@@ -40,8 +41,8 @@ public class KitchenDisplay extends JFrame {
 		ticketPanel.revalidate();
 		ticketPanel.repaint();
 		
-		if(ticketPanel.getComponents().length == 0) {
-			setVisible(false);
-		}
+//		if(ticketPanel.getComponents().length == 0) {
+//			setVisible(false);
+//		}
 	}
 }
