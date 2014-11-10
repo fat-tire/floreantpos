@@ -30,6 +30,7 @@ import com.floreantpos.POSConstants;
 import com.floreantpos.PosException;
 import com.floreantpos.actions.AuthorizeTicketAction;
 import com.floreantpos.actions.NewBarTabAction;
+import com.floreantpos.actions.OpenKitchenDisplayAction;
 import com.floreantpos.actions.RefundAction;
 import com.floreantpos.actions.SettleTicketAction;
 import com.floreantpos.actions.ShutDownAction;
@@ -142,6 +143,7 @@ public class SwitchboardView extends JPanel implements ActionListener, ITicketLi
 		btnBackOffice = new com.floreantpos.swing.PosButton();
 		btnManager = new com.floreantpos.swing.PosButton();
 		btnAuthorize = new PosButton(new AuthorizeTicketAction());
+		btnKitchenDisplay = new PosButton(new OpenKitchenDisplayAction());
 		btnClockOut = new com.floreantpos.swing.PosButton();
 
 		setLayout(new java.awt.BorderLayout(10, 10));
@@ -279,6 +281,7 @@ public class SwitchboardView extends JPanel implements ActionListener, ITicketLi
 		bottomRightPanel.setLayout(new MigLayout("aligny bottom, insets 1 2 1 2, gapy 10", "[120px]", "[][][][][]"));
 
 		bottomRightPanel.add(btnAuthorize, "height pref!,grow,wrap");
+		bottomRightPanel.add(btnKitchenDisplay, "height pref!,grow,wrap");
 		bottomRightPanel.add(btnManager, "height pref!,grow,wrap");
 		bottomRightPanel.add(btnBackOffice, "height pref!,grow,wrap");
 		bottomRightPanel.add(btnClockOut, "height pref!,grow,wrap");
@@ -778,6 +781,7 @@ public class SwitchboardView extends JPanel implements ActionListener, ITicketLi
 	private com.floreantpos.swing.PosButton btnLogout;
 	private com.floreantpos.swing.PosButton btnManager;
 	private com.floreantpos.swing.PosButton btnAuthorize;
+	private com.floreantpos.swing.PosButton btnKitchenDisplay;
 	private com.floreantpos.swing.PosButton btnNewTicket;
 	private com.floreantpos.swing.PosButton btnPayout;
 	private com.floreantpos.swing.PosButton btnOrderInfo;
