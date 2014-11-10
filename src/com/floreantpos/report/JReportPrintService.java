@@ -22,6 +22,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.floreantpos.POSConstants;
+import com.floreantpos.demo.KitchenDisplay;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.Customer;
 import com.floreantpos.model.KitchenTicket;
@@ -29,6 +30,7 @@ import com.floreantpos.model.PosTransaction;
 import com.floreantpos.model.Restaurant;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketType;
+import com.floreantpos.model.dao.KitchenTicketDAO;
 import com.floreantpos.model.dao.RestaurantDAO;
 import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.util.NumberUtil;
@@ -371,13 +373,20 @@ public class JReportPrintService {
 			List<KitchenTicket> kitchenTickets = KitchenTicket.fromTicket(ticket);
 			
 			for (KitchenTicket kitchenTicket : kitchenTickets) {
+				
+				String deviceName = kitchenTicket.getPrinter().getDeviceName();
+				
 				JasperPrint jasperPrint = createKitchenPrint(kitchenTicket);
-				jasperPrint.setName("KitchenReceipt-Ticket-" + ticket.getId());
-				jasperPrint.setProperty("printerName", kitchenTicket.getPrinter().getDeviceName());
+				jasperPrint.setName("KitchenReceipt-" + ticket.getId() + "-" + deviceName);
+				jasperPrint.setProperty("printerName", deviceName);
 				
 				JasperPrintManager.printReport(jasperPrint, false);
 				
 				//markItemsAsPrinted(kitchenTicket);
+				KitchenTicketDAO.getInstance().saveOrUpdate(kitchenTicket);
+				
+				KitchenDisplay.instance.addTicket(kitchenTicket);
+				
 			}
 
 			//no exception, so print to kitchen successful.
