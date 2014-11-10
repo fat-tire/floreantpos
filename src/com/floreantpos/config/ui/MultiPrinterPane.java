@@ -44,6 +44,13 @@ public class MultiPrinterPane extends JPanel {
 		panel.add(btnAdd);
 		
 		JButton btnEdit = new JButton("EDIT");
+		btnEdit.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				doEditPrinter();
+			}
+		});
 		panel.add(btnEdit);
 		
 		JScrollPane scrollPane = new JScrollPane();
@@ -59,6 +66,31 @@ public class MultiPrinterPane extends JPanel {
 			}
 		}
 		
+	}
+
+	protected void doEditPrinter() {
+		Printer printer = list.getSelectedValue();
+		if(printer == null) {
+			return;
+		}
+		
+		AddPrinterDialog dialog = new AddPrinterDialog();
+		dialog.setPrinter(printer);
+		dialog.open();
+
+		if (dialog.isCanceled()) {
+			return;
+		}
+
+		Printer p = dialog.getPrinter();
+
+		if (p.isDefaultPrinter()) {
+			for (Printer printer2 : printers) {
+				printer2.setDefaultPrinter(false);
+			}
+		}
+		
+		printer.setDefaultPrinter(true);
 	}
 
 	protected void doAddPrinter() {
