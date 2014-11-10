@@ -65,7 +65,7 @@ public class KitchenTicket extends BaseKitchenTicket {
 				kitchenTicket.setCreateDate(new Date());
 				kitchenTicket.setTableNumber(ticket.getTableNumber());
 				kitchenTicket.setServerName(ticket.getOwner().getFirstName());
-
+				kitchenTicket.setStatus(KitchenTicketStatus.WAITING.name());
 				itemMap.put(printer, kitchenTicket);
 			}
 			
@@ -73,6 +73,7 @@ public class KitchenTicket extends BaseKitchenTicket {
 			item.setMenuItemCode(ticketItem.getItemCode());
 			item.setMenuItemName(ticketItem.getNameDisplay());
 			item.setQuantity(ticketItem.getItemCountDisplay());
+			item.setStatus(KitchenTicketStatus.WAITING.name());
 			kitchenTicket.addToticketItems(item);
 			
 			ticketItem.setPrintedToKitchen(true);
@@ -118,7 +119,7 @@ public class KitchenTicket extends BaseKitchenTicket {
 						item.setMenuItemCode("");
 						item.setMenuItemName(itemModifier.getNameDisplay());
 						item.setQuantity(itemModifier.getItemCountDisplay());
-						
+						item.setStatus(KitchenTicketStatus.WAITING.name());
 						kitchenTicket.addToticketItems(item);
 						
 						itemModifier.setPrintedToKitchen(true);
@@ -126,5 +127,9 @@ public class KitchenTicket extends BaseKitchenTicket {
 				}
 			}
 		}
+	}
+	
+	public static enum KitchenTicketStatus {
+		WAITING, VOID, READY;
 	}
 }
