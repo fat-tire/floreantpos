@@ -36,6 +36,7 @@ import com.floreantpos.actions.SettleTicketAction;
 import com.floreantpos.actions.ShutDownAction;
 import com.floreantpos.bo.ui.BackOfficeWindow;
 import com.floreantpos.config.TerminalConfig;
+import com.floreantpos.demo.KitchenDisplay;
 import com.floreantpos.extension.OrderServiceExtension;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.AttendenceHistory;
@@ -448,6 +449,7 @@ public class SwitchboardView extends JPanel implements ActionListener, ITicketLi
 	}
 
 	private void doLogout() {
+		KitchenDisplay.instance.dispose();
 		Application.getInstance().logout();
 	}
 
