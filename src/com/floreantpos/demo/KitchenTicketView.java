@@ -23,6 +23,8 @@ import javax.swing.border.Border;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumn;
 
+import net.miginfocom.swing.MigLayout;
+
 import com.floreantpos.bo.ui.explorer.ListTableModel;
 import com.floreantpos.model.KitchenTicket;
 import com.floreantpos.model.KitchenTicket.KitchenTicketStatus;
@@ -31,6 +33,7 @@ import com.floreantpos.model.VirtualPrinter;
 import com.floreantpos.model.dao.KitchenTicketDAO;
 import com.floreantpos.swing.ButtonColumn;
 import com.floreantpos.swing.PosButton;
+import com.floreantpos.swing.TimerWatch;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 
 public class KitchenTicketView extends JPanel {
@@ -39,6 +42,7 @@ public class KitchenTicketView extends JPanel {
 	KitchenTicketTableModel tableModel;
 	JTable table;
 	KitchenTicketStatusSelector statusSelector;
+	private TimerWatch timerWatch;
 
 	public KitchenTicketView(KitchenDisplay display, KitchenTicket ticket) {
 		this.ticket = ticket;
@@ -47,13 +51,7 @@ public class KitchenTicketView extends JPanel {
 		setBorder(BorderFactory.createCompoundBorder(emptyBorder, BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY), emptyBorder)));
 		setLayout(new BorderLayout(5, 5));
 
-		VirtualPrinter virtualPrinter = ticket.getPrinter().getVirtualPrinter();
-		String printerName = virtualPrinter == null ? "" : virtualPrinter.getName();
-
-		ticketId.setText("Ticket# " + ticket.getTicketId() + "-" + ticket.getId() + " [" + printerName + "]");
-		ticketId.setFont(ticketId.getFont().deriveFont(Font.BOLD));
-		ticketId.setHorizontalAlignment(JLabel.CENTER);
-		add(ticketId, BorderLayout.NORTH);
+		createHeader(ticket);
 
 		createTable(ticket);
 
@@ -63,6 +61,28 @@ public class KitchenTicketView extends JPanel {
 		statusSelector.pack();
 
 		setPreferredSize(new Dimension(400, 200));
+		
+		timerWatch.start();
+	}
+	
+	public void stopTimer() {
+		timerWatch.stop();
+	}
+
+	private void createHeader(KitchenTicket ticket) {
+		VirtualPrinter virtualPrinter = ticket.getPrinter().getVirtualPrinter();
+		String printerName = virtualPrinter == null ? "" : virtualPrinter.getName();
+
+		ticketId.setText("Ticket# " + ticket.getTicketId() + "-" + ticket.getId() + " [" + printerName + "]");
+		ticketId.setFont(ticketId.getFont().deriveFont(Font.BOLD));
+		
+		timerWatch = new TimerWatch();
+		
+		JPanel headerPanel = new JPanel(new MigLayout("fill","[fill][]",""));
+		headerPanel.add(ticketId, "grow");
+		headerPanel.add(timerWatch);
+		
+		add(headerPanel, BorderLayout.NORTH);
 	}
 
 	private void createTable(KitchenTicket ticket) {
