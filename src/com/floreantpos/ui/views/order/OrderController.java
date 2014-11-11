@@ -69,7 +69,7 @@ public class OrderController implements OrderListener, CategorySelectionListener
 			ticketItem.setBeverage(false);
 			ticketItem.setShouldPrintToKitchen(true);
 		}
-		ticketItem.setDefaultPrinter(menuItem.getVirtualPrinter());
+		ticketItem.setVirtualPrinter(menuItem.getVirtualPrinter());
 		orderView.getTicketView().addTicketItem(ticketItem);
 
 		if (hasModifiers) {

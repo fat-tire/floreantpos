@@ -283,7 +283,7 @@ public class TicketItem extends BaseTicketItem implements ITicketItem {
 	
 	public Printer getPrinter() {
 		PosPrinters printers = Application.getPrinters();
-		VirtualPrinter virtualPrinter = getDefaultPrinter();
+		VirtualPrinter virtualPrinter = getVirtualPrinter();
 		
 		if(virtualPrinter == null) {
 			return printers.getDefaultKitchenPrinter();

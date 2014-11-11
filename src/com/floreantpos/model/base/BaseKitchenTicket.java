@@ -23,6 +23,7 @@ public abstract class BaseKitchenTicket  implements Comparable, Serializable {
 	public static String PROP_SERVER_NAME = "serverName";
 	public static String PROP_CREATE_DATE = "createDate";
 	public static String PROP_TICKET_ID = "ticketId";
+	public static String PROP_VIRTUAL_PRINTER = "virtualPrinter";
 
 
 	// constructors
@@ -50,12 +51,15 @@ public abstract class BaseKitchenTicket  implements Comparable, Serializable {
 	 java.util.Date modifiedTime;
 
 	// fields
-		protected java.lang.Integer ticketId;
 		protected java.util.Date createDate;
-		protected java.lang.Boolean voided;
-		protected java.lang.Integer tableNumber;
-		protected java.lang.String status;
 		protected java.lang.String serverName;
+		protected java.lang.String status;
+		protected java.lang.Integer tableNumber;
+		protected java.lang.Integer ticketId;
+		protected java.lang.Boolean voided;
+
+	// many to one
+	private com.floreantpos.model.VirtualPrinter virtualPrinter;
 
 	// collections
 	private java.util.List<com.floreantpos.model.KitchenTicketItem> ticketItems;
@@ -102,23 +106,6 @@ public abstract class BaseKitchenTicket  implements Comparable, Serializable {
 
 
 	/**
-	 * Return the value associated with the column: TICKET_ID
-	 */
-	public java.lang.Integer getTicketId () {
-					return ticketId == null ? Integer.valueOf(0) : ticketId;
-			}
-
-	/**
-	 * Set the value related to the column: TICKET_ID
-	 * @param ticketId the TICKET_ID value
-	 */
-	public void setTicketId (java.lang.Integer ticketId) {
-		this.ticketId = ticketId;
-	}
-
-
-
-	/**
 	 * Return the value associated with the column: CREATE_DATE
 	 */
 	public java.util.Date getCreateDate () {
@@ -136,35 +123,18 @@ public abstract class BaseKitchenTicket  implements Comparable, Serializable {
 
 
 	/**
-	 * Return the value associated with the column: VOIDED
+	 * Return the value associated with the column: SERVER_NAME
 	 */
-	public java.lang.Boolean isVoided () {
-								return voided == null ? Boolean.FALSE : voided;
-					}
-
-	/**
-	 * Set the value related to the column: VOIDED
-	 * @param voided the VOIDED value
-	 */
-	public void setVoided (java.lang.Boolean voided) {
-		this.voided = voided;
-	}
-
-
-
-	/**
-	 * Return the value associated with the column: TABLE_NUMBER
-	 */
-	public java.lang.Integer getTableNumber () {
-					return tableNumber == null ? Integer.valueOf(0) : tableNumber;
+	public java.lang.String getServerName () {
+					return serverName;
 			}
 
 	/**
-	 * Set the value related to the column: TABLE_NUMBER
-	 * @param tableNumber the TABLE_NUMBER value
+	 * Set the value related to the column: SERVER_NAME
+	 * @param serverName the SERVER_NAME value
 	 */
-	public void setTableNumber (java.lang.Integer tableNumber) {
-		this.tableNumber = tableNumber;
+	public void setServerName (java.lang.String serverName) {
+		this.serverName = serverName;
 	}
 
 
@@ -187,18 +157,69 @@ public abstract class BaseKitchenTicket  implements Comparable, Serializable {
 
 
 	/**
-	 * Return the value associated with the column: SERVER_NAME
+	 * Return the value associated with the column: TABLE_NUMBER
 	 */
-	public java.lang.String getServerName () {
-					return serverName;
+	public java.lang.Integer getTableNumber () {
+					return tableNumber == null ? Integer.valueOf(0) : tableNumber;
 			}
 
 	/**
-	 * Set the value related to the column: SERVER_NAME
-	 * @param serverName the SERVER_NAME value
+	 * Set the value related to the column: TABLE_NUMBER
+	 * @param tableNumber the TABLE_NUMBER value
 	 */
-	public void setServerName (java.lang.String serverName) {
-		this.serverName = serverName;
+	public void setTableNumber (java.lang.Integer tableNumber) {
+		this.tableNumber = tableNumber;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: TICKET_ID
+	 */
+	public java.lang.Integer getTicketId () {
+					return ticketId == null ? Integer.valueOf(0) : ticketId;
+			}
+
+	/**
+	 * Set the value related to the column: TICKET_ID
+	 * @param ticketId the TICKET_ID value
+	 */
+	public void setTicketId (java.lang.Integer ticketId) {
+		this.ticketId = ticketId;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: VOIDED
+	 */
+	public java.lang.Boolean isVoided () {
+								return voided == null ? Boolean.FALSE : voided;
+					}
+
+	/**
+	 * Set the value related to the column: VOIDED
+	 * @param voided the VOIDED value
+	 */
+	public void setVoided (java.lang.Boolean voided) {
+		this.voided = voided;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: VPRINTER
+	 */
+	public com.floreantpos.model.VirtualPrinter getVirtualPrinter () {
+					return virtualPrinter;
+			}
+
+	/**
+	 * Set the value related to the column: VPRINTER
+	 * @param virtualPrinter the VPRINTER value
+	 */
+	public void setVirtualPrinter (com.floreantpos.model.VirtualPrinter virtualPrinter) {
+		this.virtualPrinter = virtualPrinter;
 	}
 
 
