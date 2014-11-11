@@ -2,7 +2,8 @@ package com.floreantpos.bo.actions;
 
 import java.awt.event.ActionEvent;
 import java.io.File;
-import java.io.FileReader;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -62,25 +63,28 @@ public class DataImportAction extends AbstractAction {
 		}
 
 	}
-
+	
 	public static void importMenuItemsFromFile(File file) throws Exception {
+		if (file == null)
+			return;
+
+		FileInputStream	inputStream = new FileInputStream(file);
+		importMenuItems(inputStream);
+	}
+
+	public static void importMenuItems(InputStream inputStream) throws Exception {
 		Session session = null;
 		Transaction transaction = null;
-		FileReader reader = null;
 		GenericDAO dao = new GenericDAO();
 
 		Map<String, Object> objectMap = new HashMap<String, Object>();
 
 		try {
 
-			if (file == null)
-				return;
-
-			reader = new FileReader(file);
 
 			JAXBContext jaxbContext = JAXBContext.newInstance(Elements.class);
 			Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
-			Elements elements = (Elements) unmarshaller.unmarshal(reader);
+			Elements elements = (Elements) unmarshaller.unmarshal(inputStream);
 
 			session = dao.createNewSession();
 			transaction = session.beginTransaction();
@@ -213,7 +217,7 @@ public class DataImportAction extends AbstractAction {
 
 		} finally {
 			dao.closeSession(session);
-			IOUtils.closeQuietly(reader);
+			IOUtils.closeQuietly(inputStream);
 		}
 	}
 }
