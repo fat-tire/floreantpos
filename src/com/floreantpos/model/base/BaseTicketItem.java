@@ -1,5 +1,6 @@
 package com.floreantpos.model.base;
 
+import java.lang.Comparable;
 import java.io.Serializable;
 
 import com.floreantpos.model.TicketItemCookingInstruction;
@@ -27,7 +28,6 @@ public abstract class BaseTicketItem  implements Comparable, Serializable {
 	public static String PROP_UNIT_PRICE = "unitPrice";
 	public static String PROP_TAX_AMOUNT = "taxAmount";
 	public static String PROP_DISCOUNT_AMOUNT = "discountAmount";
-	public static String PROP_DEFAULT_PRINTER = "defaultPrinter";
 	public static String PROP_NAME = "name";
 	public static String PROP_PRINTED_TO_KITCHEN = "printedToKitchen";
 	public static String PROP_SHOULD_PRINT_TO_KITCHEN = "shouldPrintToKitchen";
@@ -39,6 +39,7 @@ public abstract class BaseTicketItem  implements Comparable, Serializable {
 	public static String PROP_TOTAL_AMOUNT = "totalAmount";
 	public static String PROP_SUBTOTAL_AMOUNT_WITHOUT_MODIFIERS = "subtotalAmountWithoutModifiers";
 	public static String PROP_TOTAL_AMOUNT_WITHOUT_MODIFIERS = "totalAmountWithoutModifiers";
+	public static String PROP_VIRTUAL_PRINTER = "virtualPrinter";
 
 
 	// constructors
@@ -78,33 +79,33 @@ public abstract class BaseTicketItem  implements Comparable, Serializable {
 	 java.util.Date modifiedTime;
 
 	// fields
-		protected java.lang.Boolean beverage;
-		protected java.lang.String categoryName;
-		protected java.lang.Double discountAmount;
-		protected java.lang.Double discountRate;
-		protected java.lang.String groupName;
-		protected java.lang.Boolean hasModifiers;
-		protected java.lang.Integer itemCount;
 		protected java.lang.Integer itemId;
+		protected java.lang.Integer itemCount;
 		protected java.lang.String name;
-		protected java.lang.Boolean printedToKitchen;
-		protected java.lang.Boolean shouldPrintToKitchen;
+		protected java.lang.String groupName;
+		protected java.lang.String categoryName;
+		protected java.lang.Double unitPrice;
+		protected java.lang.Double discountRate;
+		protected java.lang.Double taxRate;
 		protected java.lang.Double subtotalAmount;
 		protected java.lang.Double subtotalAmountWithoutModifiers;
+		protected java.lang.Double discountAmount;
 		protected java.lang.Double taxAmount;
 		protected java.lang.Double taxAmountWithoutModifiers;
-		protected java.lang.Double taxRate;
 		protected java.lang.Double totalAmount;
 		protected java.lang.Double totalAmountWithoutModifiers;
-		protected java.lang.Double unitPrice;
+		protected java.lang.Boolean beverage;
+		protected java.lang.Boolean shouldPrintToKitchen;
+		protected java.lang.Boolean hasModifiers;
+		protected java.lang.Boolean printedToKitchen;
 
 	// many to one
-	private com.floreantpos.model.VirtualPrinter defaultPrinter;
 	private com.floreantpos.model.Ticket ticket;
+	private com.floreantpos.model.VirtualPrinter virtualPrinter;
 
 	// collections
-	private java.util.List<TicketItemCookingInstruction> cookingInstructions;
 	private java.util.List<com.floreantpos.model.TicketItemModifierGroup> ticketItemModifierGroups;
+	private java.util.List<TicketItemCookingInstruction> cookingInstructions;
 
 
 
@@ -148,103 +149,18 @@ public abstract class BaseTicketItem  implements Comparable, Serializable {
 
 
 	/**
-	 * Return the value associated with the column: BEVERAGE
+	 * Return the value associated with the column: ITEM_ID
 	 */
-	public java.lang.Boolean isBeverage () {
-								return beverage == null ? Boolean.FALSE : beverage;
-					}
-
-	/**
-	 * Set the value related to the column: BEVERAGE
-	 * @param beverage the BEVERAGE value
-	 */
-	public void setBeverage (java.lang.Boolean beverage) {
-		this.beverage = beverage;
-	}
-
-
-
-	/**
-	 * Return the value associated with the column: CATEGORY_NAME
-	 */
-	public java.lang.String getCategoryName () {
-					return categoryName;
+	public java.lang.Integer getItemId () {
+					return itemId == null ? Integer.valueOf(0) : itemId;
 			}
 
 	/**
-	 * Set the value related to the column: CATEGORY_NAME
-	 * @param categoryName the CATEGORY_NAME value
+	 * Set the value related to the column: ITEM_ID
+	 * @param itemId the ITEM_ID value
 	 */
-	public void setCategoryName (java.lang.String categoryName) {
-		this.categoryName = categoryName;
-	}
-
-
-
-	/**
-	 * Return the value associated with the column: DISCOUNT
-	 */
-	public java.lang.Double getDiscountAmount () {
-									return discountAmount == null ? Double.valueOf(0) : discountAmount;
-					}
-
-	/**
-	 * Set the value related to the column: DISCOUNT
-	 * @param discountAmount the DISCOUNT value
-	 */
-	public void setDiscountAmount (java.lang.Double discountAmount) {
-		this.discountAmount = discountAmount;
-	}
-
-
-
-	/**
-	 * Return the value associated with the column: DISCOUNT_RATE
-	 */
-	public java.lang.Double getDiscountRate () {
-									return discountRate == null ? Double.valueOf(0) : discountRate;
-					}
-
-	/**
-	 * Set the value related to the column: DISCOUNT_RATE
-	 * @param discountRate the DISCOUNT_RATE value
-	 */
-	public void setDiscountRate (java.lang.Double discountRate) {
-		this.discountRate = discountRate;
-	}
-
-
-
-	/**
-	 * Return the value associated with the column: GROUP_NAME
-	 */
-	public java.lang.String getGroupName () {
-					return groupName;
-			}
-
-	/**
-	 * Set the value related to the column: GROUP_NAME
-	 * @param groupName the GROUP_NAME value
-	 */
-	public void setGroupName (java.lang.String groupName) {
-		this.groupName = groupName;
-	}
-
-
-
-	/**
-	 * Return the value associated with the column: HAS_MODIIERS
-	 */
-	public java.lang.Boolean isHasModifiers () {
-								return hasModifiers == null ? Boolean.FALSE : hasModifiers;
-					}
-
-	/**
-	 * Set the value related to the column: HAS_MODIIERS
-	 * @param hasModifiers the HAS_MODIIERS value
-	 */
-	public void setHasModifiers (java.lang.Boolean hasModifiers) {
-		this.hasModifiers = hasModifiers;
+	public void setItemId (java.lang.Integer itemId) {
+		this.itemId = itemId;
 	}
 
 
@@ -267,23 +183,6 @@ public abstract class BaseTicketItem  implements Comparable, Serializable {
 
 
 	/**
-	 * Return the value associated with the column: ITEM_ID
-	 */
-	public java.lang.Integer getItemId () {
-					return itemId == null ? Integer.valueOf(0) : itemId;
-			}
-
-	/**
-	 * Set the value related to the column: ITEM_ID
-	 * @param itemId the ITEM_ID value
-	 */
-	public void setItemId (java.lang.Integer itemId) {
-		this.itemId = itemId;
-	}
-
-
-
-	/**
 	 * Return the value associated with the column: ITEM_NAME
 	 */
 	public java.lang.String getName () {
@@ -301,44 +200,88 @@ public abstract class BaseTicketItem  implements Comparable, Serializable {
 
 
 	/**
-	 * Return the value associated with the column: PRINTED_TO_KITCHEN
+	 * Return the value associated with the column: GROUP_NAME
 	 */
-	public java.lang.Boolean isPrintedToKitchen () {
-								return printedToKitchen == null ? Boolean.FALSE : printedToKitchen;
+	public java.lang.String getGroupName () {
+					return groupName;
+			}
+
+	/**
+	 * Set the value related to the column: GROUP_NAME
+	 * @param groupName the GROUP_NAME value
+	 */
+	public void setGroupName (java.lang.String groupName) {
+		this.groupName = groupName;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: CATEGORY_NAME
+	 */
+	public java.lang.String getCategoryName () {
+					return categoryName;
+			}
+
+	/**
+	 * Set the value related to the column: CATEGORY_NAME
+	 * @param categoryName the CATEGORY_NAME value
+	 */
+	public void setCategoryName (java.lang.String categoryName) {
+		this.categoryName = categoryName;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: ITEM_PRICE
+	 */
+	public java.lang.Double getUnitPrice () {
+									return unitPrice == null ? Double.valueOf(0) : unitPrice;
 					}
 
 	/**
-	 * Set the value related to the column: PRINTED_TO_KITCHEN
-	 * @param printedToKitchen the PRINTED_TO_KITCHEN value
+	 * Set the value related to the column: ITEM_PRICE
+	 * @param unitPrice the ITEM_PRICE value
 	 */
-	public void setPrintedToKitchen (java.lang.Boolean printedToKitchen) {
-		this.printedToKitchen = printedToKitchen;
+	public void setUnitPrice (java.lang.Double unitPrice) {
+		this.unitPrice = unitPrice;
 	}
 
 
 
 	/**
-	 * Return the value associated with the column: PRINT_TO_KITCHEN
+	 * Return the value associated with the column: DISCOUNT_RATE
 	 */
-	public java.lang.Boolean isShouldPrintToKitchen () {
-									return shouldPrintToKitchen == null ? Boolean.valueOf(true) : shouldPrintToKitchen;
-						}
+	public java.lang.Double getDiscountRate () {
+									return discountRate == null ? Double.valueOf(0) : discountRate;
+					}
 
 	/**
-	 * Set the value related to the column: PRINT_TO_KITCHEN
-	 * @param shouldPrintToKitchen the PRINT_TO_KITCHEN value
+	 * Set the value related to the column: DISCOUNT_RATE
+	 * @param discountRate the DISCOUNT_RATE value
 	 */
-	public void setShouldPrintToKitchen (java.lang.Boolean shouldPrintToKitchen) {
-		this.shouldPrintToKitchen = shouldPrintToKitchen;
+	public void setDiscountRate (java.lang.Double discountRate) {
+		this.discountRate = discountRate;
 	}
 
 
+
 	/**
-	 * Custom property
+	 * Return the value associated with the column: ITEM_TAX_RATE
 	 */
-	public static String getShouldPrintToKitchenDefaultValue () {
-		return "true";
+	public java.lang.Double getTaxRate () {
+									return taxRate == null ? Double.valueOf(0) : taxRate;
+					}
+
+	/**
+	 * Set the value related to the column: ITEM_TAX_RATE
+	 * @param taxRate the ITEM_TAX_RATE value
+	 */
+	public void setTaxRate (java.lang.Double taxRate) {
+		this.taxRate = taxRate;
 	}
+
 
 
 	/**
@@ -371,6 +314,23 @@ public abstract class BaseTicketItem  implements Comparable, Serializable {
 	 */
 	public void setSubtotalAmountWithoutModifiers (java.lang.Double subtotalAmountWithoutModifiers) {
 		this.subtotalAmountWithoutModifiers = subtotalAmountWithoutModifiers;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: DISCOUNT
+	 */
+	public java.lang.Double getDiscountAmount () {
+									return discountAmount == null ? Double.valueOf(0) : discountAmount;
+					}
+
+	/**
+	 * Set the value related to the column: DISCOUNT
+	 * @param discountAmount the DISCOUNT value
+	 */
+	public void setDiscountAmount (java.lang.Double discountAmount) {
+		this.discountAmount = discountAmount;
 	}
 
 
@@ -410,23 +370,6 @@ public abstract class BaseTicketItem  implements Comparable, Serializable {
 
 
 	/**
-	 * Return the value associated with the column: ITEM_TAX_RATE
-	 */
-	public java.lang.Double getTaxRate () {
-									return taxRate == null ? Double.valueOf(0) : taxRate;
-					}
-
-	/**
-	 * Set the value related to the column: ITEM_TAX_RATE
-	 * @param taxRate the ITEM_TAX_RATE value
-	 */
-	public void setTaxRate (java.lang.Double taxRate) {
-		this.taxRate = taxRate;
-	}
-
-
-
-	/**
 	 * Return the value associated with the column: TOTAL_PRICE
 	 */
 	public java.lang.Double getTotalAmount () {
@@ -461,35 +404,76 @@ public abstract class BaseTicketItem  implements Comparable, Serializable {
 
 
 	/**
-	 * Return the value associated with the column: ITEM_PRICE
+	 * Return the value associated with the column: BEVERAGE
 	 */
-	public java.lang.Double getUnitPrice () {
-									return unitPrice == null ? Double.valueOf(0) : unitPrice;
+	public java.lang.Boolean isBeverage () {
+								return beverage == null ? Boolean.FALSE : beverage;
 					}
 
 	/**
-	 * Set the value related to the column: ITEM_PRICE
-	 * @param unitPrice the ITEM_PRICE value
+	 * Set the value related to the column: BEVERAGE
+	 * @param beverage the BEVERAGE value
 	 */
-	public void setUnitPrice (java.lang.Double unitPrice) {
-		this.unitPrice = unitPrice;
+	public void setBeverage (java.lang.Boolean beverage) {
+		this.beverage = beverage;
 	}
 
 
 
 	/**
-	 * Return the value associated with the column: VPRINTER_ID
+	 * Return the value associated with the column: PRINT_TO_KITCHEN
 	 */
-	public com.floreantpos.model.VirtualPrinter getDefaultPrinter () {
-					return defaultPrinter;
-			}
+	public java.lang.Boolean isShouldPrintToKitchen () {
+									return shouldPrintToKitchen == null ? Boolean.valueOf(true) : shouldPrintToKitchen;
+						}
 
 	/**
-	 * Set the value related to the column: VPRINTER_ID
-	 * @param defaultPrinter the VPRINTER_ID value
+	 * Set the value related to the column: PRINT_TO_KITCHEN
+	 * @param shouldPrintToKitchen the PRINT_TO_KITCHEN value
 	 */
-	public void setDefaultPrinter (com.floreantpos.model.VirtualPrinter defaultPrinter) {
-		this.defaultPrinter = defaultPrinter;
+	public void setShouldPrintToKitchen (java.lang.Boolean shouldPrintToKitchen) {
+		this.shouldPrintToKitchen = shouldPrintToKitchen;
+	}
+
+
+	/**
+	 * Custom property
+	 */
+	public static String getShouldPrintToKitchenDefaultValue () {
+		return "true";
+	}
+
+
+	/**
+	 * Return the value associated with the column: HAS_MODIIERS
+	 */
+	public java.lang.Boolean isHasModifiers () {
+								return hasModifiers == null ? Boolean.FALSE : hasModifiers;
+					}
+
+	/**
+	 * Set the value related to the column: HAS_MODIIERS
+	 * @param hasModifiers the HAS_MODIIERS value
+	 */
+	public void setHasModifiers (java.lang.Boolean hasModifiers) {
+		this.hasModifiers = hasModifiers;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: PRINTED_TO_KITCHEN
+	 */
+	public java.lang.Boolean isPrintedToKitchen () {
+								return printedToKitchen == null ? Boolean.FALSE : printedToKitchen;
+					}
+
+	/**
+	 * Set the value related to the column: PRINTED_TO_KITCHEN
+	 * @param printedToKitchen the PRINTED_TO_KITCHEN value
+	 */
+	public void setPrintedToKitchen (java.lang.Boolean printedToKitchen) {
+		this.printedToKitchen = printedToKitchen;
 	}
 
 
@@ -512,18 +496,18 @@ public abstract class BaseTicketItem  implements Comparable, Serializable {
 
 
 	/**
-	 * Return the value associated with the column: cookingInstructions
+	 * Return the value associated with the column: VPRINTER_ID
 	 */
-	public java.util.List<TicketItemCookingInstruction> getCookingInstructions () {
-					return cookingInstructions;
+	public com.floreantpos.model.VirtualPrinter getVirtualPrinter () {
+					return virtualPrinter;
 			}
 
 	/**
-	 * Set the value related to the column: cookingInstructions
-	 * @param cookingInstructions the cookingInstructions value
+	 * Set the value related to the column: VPRINTER_ID
+	 * @param virtualPrinter the VPRINTER_ID value
 	 */
-	public void setCookingInstructions (java.util.List<TicketItemCookingInstruction> cookingInstructions) {
-		this.cookingInstructions = cookingInstructions;
+	public void setVirtualPrinter (com.floreantpos.model.VirtualPrinter virtualPrinter) {
+		this.virtualPrinter = virtualPrinter;
 	}
 
 
@@ -546,6 +530,23 @@ public abstract class BaseTicketItem  implements Comparable, Serializable {
 	public void addToticketItemModifierGroups (com.floreantpos.model.TicketItemModifierGroup ticketItemModifierGroup) {
 		if (null == getTicketItemModifierGroups()) setTicketItemModifierGroups(new java.util.ArrayList<com.floreantpos.model.TicketItemModifierGroup>());
 		getTicketItemModifierGroups().add(ticketItemModifierGroup);
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: cookingInstructions
+	 */
+	public java.util.List<TicketItemCookingInstruction> getCookingInstructions () {
+					return cookingInstructions;
+			}
+
+	/**
+	 * Set the value related to the column: cookingInstructions
+	 * @param cookingInstructions the cookingInstructions value
+	 */
+	public void setCookingInstructions (java.util.List<TicketItemCookingInstruction> cookingInstructions) {
+		this.cookingInstructions = cookingInstructions;
 	}
 
 

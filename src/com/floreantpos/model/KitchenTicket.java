@@ -7,7 +7,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.floreantpos.main.Application;
 import com.floreantpos.model.base.BaseKitchenTicket;
+import com.floreantpos.model.dao.KitchenTicketDAO;
 
 
 
@@ -28,14 +30,15 @@ public class KitchenTicket extends BaseKitchenTicket {
 
 /*[CONSTRUCTOR MARKER END]*/
 	
-	private Printer printer;
-	
-	public void setPrinter(Printer printer) {
-		this.printer = printer;
-	}
-	
 	public Printer getPrinter() {
-		return printer;
+		PosPrinters printers = Application.getPrinters();
+		VirtualPrinter virtualPrinter = getVirtualPrinter();
+		
+		if(virtualPrinter == null) {
+			return printers.getDefaultKitchenPrinter();
+		}
+		
+		return printers.getKitchenPrinterFor(virtualPrinter);
 	}
 
 	public static List<KitchenTicket> fromTicket(Ticket ticket) {
@@ -60,12 +63,15 @@ public class KitchenTicket extends BaseKitchenTicket {
 			KitchenTicket kitchenTicket = itemMap.get(printer);
 			if(kitchenTicket == null) {
 				kitchenTicket = new KitchenTicket();
-				kitchenTicket.setPrinter(printer);
+				kitchenTicket.setVirtualPrinter(ticketItem.getVirtualPrinter());
 				kitchenTicket.setTicketId(ticket.getId());
 				kitchenTicket.setCreateDate(new Date());
 				kitchenTicket.setTableNumber(ticket.getTableNumber());
 				kitchenTicket.setServerName(ticket.getOwner().getFirstName());
 				kitchenTicket.setStatus(KitchenTicketStatus.WAITING.name());
+				
+				KitchenTicketDAO.getInstance().saveOrUpdate(kitchenTicket);
+				
 				itemMap.put(printer, kitchenTicket);
 			}
 			

@@ -429,7 +429,7 @@ public class TicketForSplitView extends com.floreantpos.swing.TransparentPanel i
 		newTicketItem.setTaxRate(ticketItem.getTaxRate());
 		newTicketItem.setBeverage(ticketItem.isBeverage());
 		newTicketItem.setShouldPrintToKitchen(ticketItem.isShouldPrintToKitchen());
-		newTicketItem.setDefaultPrinter(ticketItem.getDefaultPrinter());
+		newTicketItem.setVirtualPrinter(ticketItem.getVirtualPrinter());
 		
 		int itemCount = ticketItem.getItemCount();
 
@@ -460,7 +460,7 @@ public class TicketForSplitView extends com.floreantpos.swing.TransparentPanel i
 		newTicketItem.setTaxRate(ticketItem.getTaxRate());
 		newTicketItem.setBeverage(ticketItem.isBeverage());
 		newTicketItem.setShouldPrintToKitchen(ticketItem.isShouldPrintToKitchen());
-		newTicketItem.setDefaultPrinter(ticketItem.getDefaultPrinter());
+		newTicketItem.setVirtualPrinter(ticketItem.getVirtualPrinter());
 		
 		toTicketView.ticketViewerTable.addAllTicketItem(newTicketItem);
 		ticketViewerTable.delete(ticketItem.getTableRowNum());
