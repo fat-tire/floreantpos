@@ -32,7 +32,10 @@ public class KitchenDisplay extends JFrame implements ActionListener {
 		setTitle("Kitchen Display");
 
 		ticketPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
-		add(new JScrollPane(ticketPanel));
+		JScrollPane scrollPane = new JScrollPane(ticketPanel);
+		scrollPane.getHorizontalScrollBar().setSize(new Dimension(100, 60));
+		scrollPane.getHorizontalScrollBar().setPreferredSize(new Dimension(100, 60));
+		add(scrollPane);
 
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		setSize(screenSize);
@@ -47,10 +50,10 @@ public class KitchenDisplay extends JFrame implements ActionListener {
 		ticketPanel.add(view, "growy, width pref!");
 		ticketPanel.revalidate();
 		ticketPanel.repaint();
-		setVisible(true);
 	}
 
 	public void removeTicket(KitchenTicketView view) {
+		view.stopTimer();
 		ticketPanel.remove(view);
 		ticketPanel.revalidate();
 		ticketPanel.repaint();
@@ -61,20 +64,36 @@ public class KitchenDisplay extends JFrame implements ActionListener {
 		super.setVisible(b);
 
 		if (b) {
+			updateTicketView();
+			
 			if (!viewUpdateTimer.isRunning()) {
 				viewUpdateTimer.start();
 			}
 		}
 		else {
-			viewUpdateTimer.stop();
+			cleanup();
 		}
 	}
 
 	@Override
 	public void dispose() {
-		viewUpdateTimer.stop();
+		cleanup();
 
 		super.dispose();
+	}
+
+	private void cleanup() {
+		viewUpdateTimer.stop();
+		
+		Component[] components = ticketPanel.getComponents();
+		for (Component component : components) {
+			if (component instanceof KitchenTicketView) {
+				KitchenTicketView kitchenTicketView = (KitchenTicketView) component;
+				kitchenTicketView.stopTimer();
+			}
+		}
+		
+		ticketPanel.removeAll();
 	}
 
 	@Override
