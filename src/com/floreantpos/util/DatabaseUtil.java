@@ -1,7 +1,5 @@
 package com.floreantpos.util;
 
-import java.io.File;
-import java.net.URL;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -126,8 +124,7 @@ public class DatabaseUtil {
 				return true;
 			}
 			
-			URL resource = DatabaseUtil.class.getResource("/floreantpos-menu-items.xml");
-			DataImportAction.importMenuItemsFromFile(new File(resource.getFile()));
+			DataImportAction.importMenuItems(DatabaseUtil.class.getResourceAsStream("/floreantpos-menu-items.xml"));
 
 			return true;
 		} catch (Exception e) {
