@@ -77,7 +77,7 @@ public class KitchenTicketView extends JPanel {
 			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 				Component rendererComponent = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 				KitchenTicketItem ticketItem = tableModel.getRowData(row);
-				if(ticketItem.getStatus().equalsIgnoreCase(KitchenTicketStatus.READY.name())) {
+				if(ticketItem.getStatus().equalsIgnoreCase(KitchenTicketStatus.DONE.name())) {
 					rendererComponent.setBackground(Color.green);
 				}
 				else if(ticketItem.getStatus().equalsIgnoreCase(KitchenTicketStatus.VOID.name())) {
@@ -140,7 +140,7 @@ public class KitchenTicketView extends JPanel {
 						}
 					}
 
-					ticket.setStatus(KitchenTicketStatus.READY.name());
+					ticket.setStatus(KitchenTicketStatus.DONE.name());
 					KitchenTicketDAO.getInstance().saveOrUpdate(ticket);
 					KitchenDisplay.instance.removeTicket(KitchenTicketView.this);
 				} catch (Exception e2) {

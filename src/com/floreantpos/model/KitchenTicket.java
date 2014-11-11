@@ -136,6 +136,6 @@ public class KitchenTicket extends BaseKitchenTicket {
 	}
 	
 	public static enum KitchenTicketStatus {
-		WAITING, VOID, READY;
+		WAITING, VOID, DONE;
 	}
 }

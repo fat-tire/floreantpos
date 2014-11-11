@@ -279,7 +279,7 @@ public class SwitchboardView extends JPanel implements ActionListener, ITicketLi
 		btnClockOut.setText(POSConstants.CAPITAL_CLOCK_OUT);
 
 		bottomPanel.add(bottomRightPanel, java.awt.BorderLayout.EAST);
-		bottomRightPanel.setLayout(new MigLayout("aligny bottom, insets 1 2 1 2, gapy 10", "[120px]", "[][][][][]"));
+		bottomRightPanel.setLayout(new MigLayout("aligny bottom, insets 1 2 1 2, gapy 10", "[140px]", "[][][][][]"));
 
 		bottomRightPanel.add(btnAuthorize, "height pref!,grow,wrap");
 		bottomRightPanel.add(btnKitchenDisplay, "height pref!,grow,wrap");

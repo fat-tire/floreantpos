@@ -20,7 +20,7 @@ import com.floreantpos.ui.dialog.POSMessageDialog;
 public class KitchenTicketStatusSelector extends POSDialog implements ActionListener {
 	private PosButton btnWaiting = new PosButton(KitchenTicketStatus.WAITING.name());
 	private PosButton btnVoid= new PosButton(KitchenTicketStatus.VOID.name());
-	private PosButton btnReady = new PosButton(KitchenTicketStatus.READY.name());
+	private PosButton btnReady = new PosButton(KitchenTicketStatus.DONE.name());
 	
 	private KitchenTicketItem ticketItem;
 	
