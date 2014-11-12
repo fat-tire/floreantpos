@@ -18,8 +18,10 @@ import java.util.Locale;
 import java.util.Set;
 
 import javax.swing.JDialog;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.Timer;
 
 import net.miginfocom.swing.MigLayout;
 
@@ -61,6 +63,7 @@ import com.floreantpos.ui.views.order.OrderView;
 import com.floreantpos.ui.views.order.RootView;
 import com.floreantpos.ui.views.payment.SettleTicketDialog;
 import com.floreantpos.util.POSUtil;
+import com.floreantpos.util.PosGuiUtil;
 import com.floreantpos.util.TicketAlreadyExistsException;
 
 /**
@@ -73,6 +76,8 @@ public class SwitchboardView extends JPanel implements ActionListener, ITicketLi
 	private OrderServiceExtension orderServiceExtension;
 
 	private static SwitchboardView instance;
+	
+	private Timer autoLogoffTimer = new Timer(1000, new AutoLogoffHandler());
 
 	//	private Timer ticketListUpdater;
 
@@ -152,6 +157,8 @@ public class SwitchboardView extends JPanel implements ActionListener, ITicketLi
 		lblUserName.setFont(new java.awt.Font("Tahoma", 1, 18));
 		lblUserName.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 		statusPanel.add(lblUserName, java.awt.BorderLayout.PAGE_START);
+		
+		statusPanel.add(timerLabel);
 
 		add(statusPanel, java.awt.BorderLayout.NORTH);
 
@@ -802,6 +809,7 @@ public class SwitchboardView extends JPanel implements ActionListener, ITicketLi
 	private PosButton btnDriveThrough;
 	private PosButton btnAssignDriver;
 	private PosButton btnCloseOrder;
+	private JLabel timerLabel = new JLabel();
 
 	// End of variables declaration//GEN-END:variables
 
@@ -811,6 +819,10 @@ public class SwitchboardView extends JPanel implements ActionListener, ITicketLi
 
 		if (aFlag) {
 			updateView();
+			autoLogoffTimer.start();
+		}
+		else {
+			autoLogoffTimer.stop();
 		}
 	}
 
@@ -892,4 +904,28 @@ public class SwitchboardView extends JPanel implements ActionListener, ITicketLi
 	//		}
 	//
 	//	}
+	
+	class AutoLogoffHandler implements ActionListener {
+		int countDown = 100;
+		
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if(PosGuiUtil.isModalDialogShowing()) {
+				//autoLogoffTimer.stop();
+				countDown = 100;
+				return;
+			}
+			
+			--countDown;
+			int min = countDown / 60;
+			int sec = countDown % 60;
+			
+			timerLabel.setText(min + ":" + sec);
+			
+			if(countDown == 0) {
+				//logoff
+			}
+		}
+		
+	}
 }
