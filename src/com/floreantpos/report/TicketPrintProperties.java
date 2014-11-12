@@ -12,8 +12,6 @@ public class TicketPrintProperties {
 	boolean printModifers = true;
 	boolean printCookingInstructions = true;
 	
-	boolean kitchenPrint = false;
-
 	public TicketPrintProperties() {
 		super();
 	}
@@ -72,14 +70,6 @@ public class TicketPrintProperties {
 
 	public void setPrintCookingInstructions(boolean printCookingInstructions) {
 		this.printCookingInstructions = printCookingInstructions;
-	}
-
-	public boolean isKitchenPrint() {
-		return kitchenPrint;
-	}
-
-	public void setKitchenPrint(boolean kitchenPrint) {
-		this.kitchenPrint = kitchenPrint;
 	}
 
 	public String getReceiptCopyType() {
