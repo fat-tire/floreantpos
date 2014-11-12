@@ -1,5 +1,8 @@
 package com.floreantpos.util;
 
+import java.awt.Dialog;
+import java.awt.Window;
+
 import javax.swing.text.JTextComponent;
 
 import com.floreantpos.POSConstants;
@@ -53,5 +56,16 @@ public class PosGuiUtil {
 		} catch (Exception e) {
 			return 0.0;
 		}
+	}
+
+	public static boolean isModalDialogShowing() {
+		Window[] windows = Window.getWindows();
+		if (windows != null) { // don't rely on current implementation, which at least returns [0].
+			for (Window w : windows) {
+				if (w.isShowing() && w instanceof Dialog && ((Dialog) w).isModal())
+					return true;
+			}
+		}
+		return false;
 	}
 }
