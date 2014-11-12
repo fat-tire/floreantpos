@@ -5,6 +5,8 @@ import org.apache.commons.configuration.PropertiesConfiguration;
 import com.floreantpos.util.PasswordHasher;
 
 public class TerminalConfig {
+	private static final String DEFAULT_PASS_LEN = "DEFAULT_PASS_LEN";
+
 	private static final String TOUCH_FONT_SIZE = "TOUCH_FONT_SIZE";//$NON-NLS-1$
 
 	private static final String TOUCH_BUTTON_HEIGHT = "TOUCH_BUTTON_HEIGHT";//$NON-NLS-1$
@@ -118,5 +120,13 @@ public class TerminalConfig {
 	
 	public static int getTouchScreenFontSize() {
 		return config.getInt(TOUCH_FONT_SIZE, 12);
+	}
+
+	public static void setDefaultPassLen(int defaultPassLen) {
+		config.setProperty(DEFAULT_PASS_LEN, defaultPassLen);
+	}
+	
+	public static int getDefaultPassLen() {
+		return config.getInt(DEFAULT_PASS_LEN, 4);
 	}
 }
