@@ -9,7 +9,8 @@
 		
 		<property column="TICKET_ID" name="ticketId" type="java.lang.Integer" />
 		
-		<property column="CREATE_DATE" index="ticketcreateDate" length="10" name="createDate" type="java.util.Date" />
+		<property column="CREATE_DATE" length="10" name="createDate" type="java.util.Date" />
+		<property column="CLOSE_DATE" length="10" name="closingDate" type="java.util.Date" />
 		<property column="VOIDED" index="ticketvoided" name="voided" type="java.lang.Boolean" />
 		<!-- a ticket is marked as closed it is either paid or voided -->
 		

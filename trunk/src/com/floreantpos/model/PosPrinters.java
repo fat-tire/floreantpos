@@ -15,6 +15,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import org.apache.commons.io.FileUtils;
 
+import com.floreantpos.model.dao.VirtualPrinterDAO;
+
 @XmlRootElement(name = "printers")
 public class PosPrinters {
 	private String reportPrinter;
@@ -175,6 +177,13 @@ public class PosPrinters {
 			PosPrinters printers = (PosPrinters) unmarshaller.unmarshal(reader);
 			
 			printers.populatePrinterMaps();
+			
+			initVirtualPrinter(printers.defaultKitchenPrinter);
+			
+			List<Printer> kitchenPrinters2 = printers.kitchenPrinters;
+			for (Printer printer : kitchenPrinters2) {
+				initVirtualPrinter(printer);
+			}
 
 			return printers;
 
@@ -183,6 +192,19 @@ public class PosPrinters {
 		}
 
 		return null;
+	}
+	
+	private static void initVirtualPrinter(Printer printer) {
+		VirtualPrinter virtualPrinter = printer.getVirtualPrinter();
+		
+		VirtualPrinterDAO dao = VirtualPrinterDAO.getInstance();
+		VirtualPrinter printerByName = dao.findPrinterByName(virtualPrinter.getName());
+		if(printerByName != null) {
+			printer.setVirtualPrinter(printerByName);
+		}
+		else {
+			dao.saveOrUpdate(virtualPrinter);
+		}
 	}
 
 }

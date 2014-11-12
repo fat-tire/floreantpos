@@ -5,8 +5,7 @@
     <id column="ID" name="id" type="java.lang.Integer">
       <generator class="identity"/>
     </id>
-    <version column="MODIFIED_TIME" name="modifiedTime" type="timestamp"/>
-    
+
     <property column="NAME" name="name" type="string" unique="true" length="60" not-null="true"/>
     
   </class>

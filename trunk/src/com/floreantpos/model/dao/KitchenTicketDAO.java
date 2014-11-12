@@ -23,9 +23,9 @@ public class KitchenTicketDAO extends BaseKitchenTicketDAO {
 		try {
 			session = getSession();
 			Criteria criteria = session.createCriteria(getReferenceClass());
-			criteria.add(Restrictions.ne(KitchenTicket.PROP_STATUS, KitchenTicketStatus.VOID.name()));
-			criteria.add(Restrictions.ne(KitchenTicket.PROP_STATUS, KitchenTicketStatus.DONE.name()));
+			criteria.add(Restrictions.eq(KitchenTicket.PROP_STATUS, KitchenTicketStatus.WAITING.name()));
 			List list = criteria.list();
+
 			return list;
 		} finally {
 			closeSession(session);
