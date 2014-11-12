@@ -424,7 +424,7 @@ public class PasswordScreen extends JPanel {
 		msgLabel.setText("");
 
 		String secretKey = capturePassword();
-		if (secretKey != null && secretKey.length() == 4) {
+		if (secretKey != null && secretKey.length() == TerminalConfig.getDefaultPassLen()) {
 			Thread loginThread = new Thread(new Runnable() {
 				@Override
 				public void run() {

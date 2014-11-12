@@ -22,6 +22,7 @@ public class TerminalConfigurationView extends ConfigurationView {
 //	private JCheckBox cbxPrintKitchenOnOrderFinish;
 //	private JCheckBox cbxPrintKitchenOnSettle;
 	private IntegerTextField tfTerminalNumber;
+	private IntegerTextField tfSecretKeyLength;
 	//private FixedLengthTextField tfAdminPassword = new FixedLengthTextField(16);
 	
 	private JCheckBox cbEnableDineIn = new JCheckBox("DINE IN");
@@ -52,6 +53,11 @@ public class TerminalConfigurationView extends ConfigurationView {
 		tfTerminalNumber = new IntegerTextField();
 		tfTerminalNumber.setColumns(10);
 		add(tfTerminalNumber, "aligny top, wrap"); //$NON-NLS-1$
+		
+		add(new JLabel("Default password length"));
+		tfSecretKeyLength = new IntegerTextField(3);
+		add(tfSecretKeyLength, "wrap");
+		
 		add(cbFullscreenMode, "wrap"); //$NON-NLS-1$
 		
 		JPanel ticketTypePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 20, 10));
@@ -113,7 +119,11 @@ public class TerminalConfigurationView extends ConfigurationView {
 			return false;
 		}
 		
+		int defaultPassLen = tfSecretKeyLength.getInteger();
+		if(defaultPassLen == 0) defaultPassLen = 4;
+		
 		TerminalConfig.setTerminalId(terminalNumber);
+		TerminalConfig.setDefaultPassLen(defaultPassLen);
 		TerminalConfig.setDineInEnable(cbEnableDineIn.isSelected());
 		TerminalConfig.setPickupEnable(cbEnablePickUp.isSelected());
 		TerminalConfig.setTakeOutEnable(cbEnableTakeOut.isSelected());
@@ -133,7 +143,7 @@ public class TerminalConfigurationView extends ConfigurationView {
 	@Override
 	public void initialize() throws Exception {
 		tfTerminalNumber.setText(String.valueOf(TerminalConfig.getTerminalId()));
-		
+		tfSecretKeyLength.setText(String.valueOf(TerminalConfig.getDefaultPassLen()));
 		cbEnableDineIn.setSelected(TerminalConfig.isDineInEnable());
 		cbEnablePickUp.setSelected(TerminalConfig.isPickupEnable());
 		cbEnableTakeOut.setSelected(TerminalConfig.isTakeOutEnable());
