@@ -46,6 +46,8 @@ public class KitchenDisplay extends JFrame implements ActionListener {
 	}
 
 	public void addTicket(KitchenTicket ticket) {
+		if(!isShowing()) return;
+		
 		KitchenTicketView view = new KitchenTicketView(this, ticket);
 		ticketPanel.add(view, "growy, width pref!");
 		ticketPanel.revalidate();

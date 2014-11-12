@@ -22,6 +22,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.floreantpos.POSConstants;
+import com.floreantpos.demo.KitchenDisplay;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.Customer;
 import com.floreantpos.model.KitchenTicket;
@@ -380,7 +381,7 @@ public class JReportPrintService {
 				jasperPrint.setProperty("printerName", deviceName);
 				
 				JasperPrintManager.printReport(jasperPrint, false);
-				
+				KitchenDisplay.instance.addTicket(kitchenTicket);
 				//markItemsAsPrinted(kitchenTicket);
 				KitchenTicketDAO.getInstance().saveOrUpdate(kitchenTicket);
 			}

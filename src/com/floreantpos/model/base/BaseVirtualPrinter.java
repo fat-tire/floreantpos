@@ -56,8 +56,6 @@ public abstract class BaseVirtualPrinter  implements Comparable, Serializable {
 	// primary key
 	private java.lang.Integer id;
 
-	 java.util.Date modifiedTime;
-
 	// fields
 		protected java.lang.String name;
 
@@ -69,6 +67,7 @@ public abstract class BaseVirtualPrinter  implements Comparable, Serializable {
      *  generator-class="identity"
      *  column="ID"
      */
+	@XmlTransient
 	public java.lang.Integer getId () {
 		return id;
 	}
@@ -80,24 +79,6 @@ public abstract class BaseVirtualPrinter  implements Comparable, Serializable {
 	public void setId (java.lang.Integer id) {
 		this.id = id;
 		this.hashCode = Integer.MIN_VALUE;
-	}
-
-
-
-	/**
-	 * Return the value associated with the column: MODIFIED_TIME
-	 */
-	@XmlTransient
-	public java.util.Date getModifiedTime () {
-					return modifiedTime;
-			}
-
-	/**
-	 * Set the value related to the column: MODIFIED_TIME
-	 * @param modifiedTime the MODIFIED_TIME value
-	 */
-	public void setModifiedTime (java.util.Date modifiedTime) {
-		this.modifiedTime = modifiedTime;
 	}
 
 
