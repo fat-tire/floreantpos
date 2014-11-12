@@ -197,10 +197,10 @@ public class PosTransactionService {
 
 			tx.commit();
 			
-			String title = "- REFUND RECEIPT -";
-			String data = "Ticket #" + ticket.getId() + ", amount " + refundAmount + " was refunded.";
+			//String title = "- REFUND RECEIPT -";
+			//String data = "Ticket #" + ticket.getId() + ", amount " + refundAmount + " was refunded.";
 			
-			JReportPrintService.printGenericReport(title, data);
+			JReportPrintService.printRefundTicket(ticket, posTransaction);
 
 		} catch (Exception e) {
 			try {
