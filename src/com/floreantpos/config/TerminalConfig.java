@@ -5,6 +5,10 @@ import org.apache.commons.configuration.PropertiesConfiguration;
 import com.floreantpos.util.PasswordHasher;
 
 public class TerminalConfig {
+	private static final String AUTO_LOGOFF_TIME = "AUTO_LOGOFF_TIME";
+
+	private static final String AUTO_LOGOFF_ENABLE = "AUTO_LOGOFF_ENABLE";
+
 	private static final String DEFAULT_PASS_LEN = "DEFAULT_PASS_LEN";
 
 	private static final String TOUCH_FONT_SIZE = "TOUCH_FONT_SIZE";//$NON-NLS-1$
@@ -128,5 +132,21 @@ public class TerminalConfig {
 	
 	public static int getDefaultPassLen() {
 		return config.getInt(DEFAULT_PASS_LEN, 4);
+	}
+	
+	public static boolean isAutoLogoffEnable() {
+		return config.getBoolean(AUTO_LOGOFF_ENABLE, true);
+	}
+	
+	public static void setAutoLogoffEnable(boolean enable) {
+		config.setProperty(AUTO_LOGOFF_ENABLE, enable);
+	}
+	
+	public static void setAutoLogoffTime(int time) {
+		config.setProperty(AUTO_LOGOFF_TIME, time);
+	}
+	
+	public static int getAutoLogoffTime() {
+		return config.getInt(AUTO_LOGOFF_TIME, 60);
 	}
 }

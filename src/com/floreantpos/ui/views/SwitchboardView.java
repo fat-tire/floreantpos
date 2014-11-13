@@ -7,6 +7,7 @@
 package com.floreantpos.ui.views;
 
 import java.awt.ComponentOrientation;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -71,13 +72,15 @@ import com.floreantpos.util.TicketAlreadyExistsException;
  * @author MShahriar
  */
 public class SwitchboardView extends JPanel implements ActionListener, ITicketList {
+	private final AutoLogoffHandler logoffHandler = new AutoLogoffHandler();
+
 	public final static String VIEW_NAME = com.floreantpos.POSConstants.SWITCHBOARD;
 
 	private OrderServiceExtension orderServiceExtension;
 
 	private static SwitchboardView instance;
 	
-	private Timer autoLogoffTimer = new Timer(1000, new AutoLogoffHandler());
+	private Timer autoLogoffTimer = new Timer(1000, logoffHandler);
 
 	//	private Timer ticketListUpdater;
 
@@ -131,7 +134,7 @@ public class SwitchboardView extends JPanel implements ActionListener, ITicketLi
 	// desc=" Generated Code ">//GEN-BEGIN:initComponents
 	private void initComponents() {
 
-		javax.swing.JPanel statusPanel = new javax.swing.JPanel();
+		javax.swing.JPanel statusPanel = new javax.swing.JPanel(new MigLayout("fill", "[fill, grow 100][]", ""));
 		lblUserName = new javax.swing.JLabel();
 		javax.swing.JPanel bottomPanel = new javax.swing.JPanel();
 		javax.swing.JPanel bottomLeftPanel = new javax.swing.JPanel();
@@ -154,10 +157,13 @@ public class SwitchboardView extends JPanel implements ActionListener, ITicketLi
 
 		setLayout(new java.awt.BorderLayout(10, 10));
 
-		lblUserName.setFont(new java.awt.Font("Tahoma", 1, 18));
-		lblUserName.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-		statusPanel.add(lblUserName, java.awt.BorderLayout.PAGE_START);
+		java.awt.Font headerFont = new java.awt.Font("Dialog", Font.BOLD, 12);
 		
+		lblUserName.setFont(headerFont);
+		statusPanel.add(lblUserName);
+		
+		timerLabel.setHorizontalAlignment(JLabel.RIGHT);
+		timerLabel.setFont(headerFont);
 		statusPanel.add(timerLabel);
 
 		add(statusPanel, java.awt.BorderLayout.NORTH);
@@ -456,6 +462,7 @@ public class SwitchboardView extends JPanel implements ActionListener, ITicketLi
 	}
 
 	private void doLogout() {
+		BackOfficeWindow.getInstance().dispose();
 		KitchenDisplay.instance.dispose();
 		Application.getInstance().logout();
 	}
@@ -819,7 +826,11 @@ public class SwitchboardView extends JPanel implements ActionListener, ITicketLi
 
 		if (aFlag) {
 			updateView();
-			autoLogoffTimer.start();
+			
+			logoffHandler.reset();
+			if(TerminalConfig.isAutoLogoffEnable()) {
+				autoLogoffTimer.start();
+			}
 		}
 		else {
 			autoLogoffTimer.stop();
@@ -905,14 +916,13 @@ public class SwitchboardView extends JPanel implements ActionListener, ITicketLi
 	//
 	//	}
 	
-	class AutoLogoffHandler implements ActionListener {
-		int countDown = 100;
+	private class AutoLogoffHandler implements ActionListener {
+		int countDown = TerminalConfig.getAutoLogoffTime();
 		
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if(PosGuiUtil.isModalDialogShowing()) {
-				//autoLogoffTimer.stop();
-				countDown = 100;
+				reset();
 				return;
 			}
 			
@@ -920,11 +930,16 @@ public class SwitchboardView extends JPanel implements ActionListener, ITicketLi
 			int min = countDown / 60;
 			int sec = countDown % 60;
 			
-			timerLabel.setText(min + ":" + sec);
+			timerLabel.setText("Aoto logoff in " + min + ":" + sec);
 			
 			if(countDown == 0) {
-				//logoff
+				doLogout();
 			}
+		}
+		
+		public void reset() {
+			timerLabel.setText("");
+			countDown = TerminalConfig.getAutoLogoffTime();
 		}
 		
 	}
