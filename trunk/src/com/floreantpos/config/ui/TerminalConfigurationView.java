@@ -1,6 +1,8 @@
 package com.floreantpos.config.ui;
 
 import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JCheckBox;
@@ -37,6 +39,8 @@ public class TerminalConfigurationView extends ConfigurationView {
 	private IntegerTextField tfButtonHeight;
 
 	private IntegerTextField tfFontSize;
+	private JCheckBox cbAutoLogoff = new JCheckBox("Enable auto logoff");
+	private IntegerTextField tfLogoffTime = new IntegerTextField(4);
 	
 	public TerminalConfigurationView() {
 		super();
@@ -45,7 +49,7 @@ public class TerminalConfigurationView extends ConfigurationView {
 	}
 
 	private void initComponents() {
-		setLayout(new MigLayout("gap 5px 10px", "[][grow]", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		setLayout(new MigLayout("gap 5px 10px", "[][][grow]", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		
 		JLabel lblTerminalNumber = new JLabel(Messages.getString("TerminalConfigurationView.TERMINAL_NUMBER")); //$NON-NLS-1$
 		add(lblTerminalNumber, "alignx left,aligny center"); //$NON-NLS-1$
@@ -58,6 +62,21 @@ public class TerminalConfigurationView extends ConfigurationView {
 		tfSecretKeyLength = new IntegerTextField(3);
 		add(tfSecretKeyLength, "wrap");
 		
+		cbAutoLogoff.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(cbAutoLogoff.isSelected()) {
+					tfLogoffTime.setEnabled(true);
+				} 
+				else {
+					tfLogoffTime.setEnabled(false);
+				}
+			}
+		});
+		add(cbAutoLogoff);
+		add(new JLabel("Auto logoff time"));
+		add(tfLogoffTime, "wrap");
+		
 		add(cbFullscreenMode, "wrap"); //$NON-NLS-1$
 		
 		JPanel ticketTypePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 20, 10));
@@ -69,7 +88,7 @@ public class TerminalConfigurationView extends ConfigurationView {
 		ticketTypePanel.add(cbEnableDriveThru);
 		ticketTypePanel.add(cbEnableBarTab);
 		
-		add(ticketTypePanel, "span 2, wrap");
+		add(ticketTypePanel, "span 3, wrap");
 		
 		JPanel touchConfigPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 20, 10));
 		touchConfigPanel.setBorder(BorderFactory.createTitledBorder("TOUCH SCREEN SETTINGS"));
@@ -81,7 +100,7 @@ public class TerminalConfigurationView extends ConfigurationView {
 		tfFontSize = new IntegerTextField(5);
 		touchConfigPanel.add(tfFontSize);
 		
-		add(touchConfigPanel, "span 2, grow, wrap");
+		add(touchConfigPanel, "span 3, grow, wrap");
 	}
 	
 	public static void main(String[] args) {
@@ -135,6 +154,9 @@ public class TerminalConfigurationView extends ConfigurationView {
 		TerminalConfig.setTouchScreenButtonHeight(buttonHeight);
 		TerminalConfig.setTouchScreenFontSize(fontSize);
 		
+		TerminalConfig.setAutoLogoffEnable(cbAutoLogoff.isSelected());
+		TerminalConfig.setAutoLogoffTime(tfLogoffTime.getInteger() <= 0 ? 10 : tfLogoffTime.getInteger());
+		
 		POSMessageDialog.showMessage(BackOfficeWindow.getInstance(), "Please restart system for the configuration to take effect");
 		
 		return true;
@@ -154,6 +176,10 @@ public class TerminalConfigurationView extends ConfigurationView {
 		
 		tfButtonHeight.setText("" + TerminalConfig.getTouchScreenButtonHeight());
 		tfFontSize.setText("" + TerminalConfig.getTouchScreenFontSize());
+		
+		cbAutoLogoff.setSelected(TerminalConfig.isAutoLogoffEnable());
+		tfLogoffTime.setText("" + TerminalConfig.getAutoLogoffTime());
+		tfLogoffTime.setEnabled(cbAutoLogoff.isSelected());
 		
 		setInitialized(true);
 	}
