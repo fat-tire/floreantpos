@@ -195,6 +195,8 @@ public class PosPrinters {
 	}
 	
 	private static void initVirtualPrinter(Printer printer) {
+		if(printer == null) return;
+		
 		VirtualPrinter virtualPrinter = printer.getVirtualPrinter();
 		
 		VirtualPrinterDAO dao = VirtualPrinterDAO.getInstance();
