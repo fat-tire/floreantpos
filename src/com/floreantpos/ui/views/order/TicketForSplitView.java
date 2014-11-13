@@ -13,14 +13,15 @@ import java.util.Calendar;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
-import javax.swing.table.TableColumn;
-import javax.swing.table.TableColumnModel;
 
 import com.floreantpos.IconFactory;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.TicketItemModifierGroup;
+import java.awt.GridBagConstraints;
+import javax.swing.SwingConstants;
+import java.awt.Dimension;
 
 /**
  *
@@ -41,19 +42,9 @@ public class TicketForSplitView extends com.floreantpos.swing.TransparentPanel i
 	public TicketForSplitView() {
 		initComponents();
 
-		TableColumnModel columnModel = ticketViewerTable.getColumnModel();
-		TableColumn column = null;
-
-		column = columnModel.getColumn(0);
-		column.setPreferredWidth(35);
-		column.setMaxWidth(35);
-		column.setMinWidth(35);
-
-		column = columnModel.getColumn(1);
-		column.setPreferredWidth(60);
-		column.setMaxWidth(60);
-		column.setMinWidth(60);
-
+		ticketViewerTable.getColumnExt(1).setVisible(false);
+		ticketViewerTable.getColumnExt(2).setVisible(false);
+		
 		ticket = new Ticket();
 		ticket.setPriceIncludesTax(Application.getInstance().isPriceIncludesTax());
 		ticket.setTerminal(Application.getInstance().getTerminal());
@@ -87,9 +78,21 @@ public class TicketForSplitView extends com.floreantpos.swing.TransparentPanel i
 		jSeparator2 = new javax.swing.JSeparator();
 		jSeparator3 = new javax.swing.JSeparator();
 		tfSubtotal = new javax.swing.JTextField();
+		tfSubtotal.setMinimumSize(new Dimension(90, 19));
+		tfSubtotal.setHorizontalAlignment(SwingConstants.TRAILING);
+		tfSubtotal.setColumns(10);
 		tfTax = new javax.swing.JTextField();
+		tfTax.setMinimumSize(new Dimension(90, 19));
+		tfTax.setHorizontalAlignment(SwingConstants.TRAILING);
+		tfTax.setColumns(10);
 		tfDiscount = new javax.swing.JTextField();
+		tfDiscount.setMinimumSize(new Dimension(90, 19));
+		tfDiscount.setHorizontalAlignment(SwingConstants.TRAILING);
+		tfDiscount.setColumns(10);
 		tfTotal = new javax.swing.JTextField();
+		tfTotal.setMinimumSize(new Dimension(90, 19));
+		tfTotal.setHorizontalAlignment(SwingConstants.TRAILING);
+		tfTotal.setColumns(10);
 		jPanel5 = new com.floreantpos.swing.TransparentPanel();
 		btnScrollUp = new com.floreantpos.swing.PosButton();
 		btnScrollDown = new com.floreantpos.swing.PosButton();
@@ -114,6 +117,7 @@ public class TicketForSplitView extends com.floreantpos.swing.TransparentPanel i
 		jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
 		jLabel5.setText(com.floreantpos.POSConstants.SUBTOTAL + ":");
 		gridBagConstraints = new java.awt.GridBagConstraints();
+		gridBagConstraints.weightx = 1.0;
 		gridBagConstraints.gridx = 0;
 		gridBagConstraints.gridy = 1;
 		gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
@@ -168,43 +172,39 @@ public class TicketForSplitView extends com.floreantpos.swing.TransparentPanel i
 
 		tfSubtotal.setEditable(false);
 		tfSubtotal.setFont(new java.awt.Font("Tahoma", 1, 12));
-		gridBagConstraints = new java.awt.GridBagConstraints();
-		gridBagConstraints.gridwidth = java.awt.GridBagConstraints.REMAINDER;
-		gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-		gridBagConstraints.weightx = 1.0;
-		gridBagConstraints.insets = new java.awt.Insets(3, 5, 0, 5);
-		jPanel3.add(tfSubtotal, gridBagConstraints);
+		gridBagConstraints_1 = new java.awt.GridBagConstraints();
+		gridBagConstraints_1.anchor = GridBagConstraints.WEST;
+		gridBagConstraints_1.gridwidth = java.awt.GridBagConstraints.REMAINDER;
+		gridBagConstraints_1.insets = new java.awt.Insets(3, 5, 0, 5);
+		jPanel3.add(tfSubtotal, gridBagConstraints_1);
 
 		tfTax.setEditable(false);
 		tfTax.setFont(new java.awt.Font("Tahoma", 1, 12));
-		gridBagConstraints = new java.awt.GridBagConstraints();
-		gridBagConstraints.gridx = 1;
-		gridBagConstraints.gridy = 3;
-		gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-		gridBagConstraints.weightx = 1.0;
-		gridBagConstraints.insets = new java.awt.Insets(3, 5, 0, 5);
-		jPanel3.add(tfTax, gridBagConstraints);
+		gridBagConstraints_3 = new java.awt.GridBagConstraints();
+		gridBagConstraints_3.anchor = GridBagConstraints.WEST;
+		gridBagConstraints_3.gridx = 1;
+		gridBagConstraints_3.gridy = 3;
+		gridBagConstraints_3.insets = new java.awt.Insets(3, 5, 0, 5);
+		jPanel3.add(tfTax, gridBagConstraints_3);
 
 		tfDiscount.setEditable(false);
 		tfDiscount.setFont(new java.awt.Font("Tahoma", 1, 12));
-		gridBagConstraints = new java.awt.GridBagConstraints();
-		gridBagConstraints.gridx = 1;
-		gridBagConstraints.gridy = 2;
-		gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-		gridBagConstraints.weightx = 1.0;
-		gridBagConstraints.insets = new java.awt.Insets(3, 5, 0, 5);
-		jPanel3.add(tfDiscount, gridBagConstraints);
+		gridBagConstraints_2 = new java.awt.GridBagConstraints();
+		gridBagConstraints_2.anchor = GridBagConstraints.WEST;
+		gridBagConstraints_2.gridx = 1;
+		gridBagConstraints_2.gridy = 2;
+		gridBagConstraints_2.insets = new java.awt.Insets(3, 5, 0, 5);
+		jPanel3.add(tfDiscount, gridBagConstraints_2);
 
 		tfTotal.setEditable(false);
 		tfTotal.setFont(new java.awt.Font("Tahoma", 1, 12));
-		gridBagConstraints = new java.awt.GridBagConstraints();
-		gridBagConstraints.gridx = 1;
-		gridBagConstraints.gridy = 4;
-		gridBagConstraints.gridwidth = java.awt.GridBagConstraints.REMAINDER;
-		gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-		gridBagConstraints.weightx = 1.0;
-		gridBagConstraints.insets = new java.awt.Insets(3, 5, 3, 5);
-		jPanel3.add(tfTotal, gridBagConstraints);
+		gridBagConstraints_4 = new java.awt.GridBagConstraints();
+		gridBagConstraints_4.anchor = GridBagConstraints.WEST;
+		gridBagConstraints_4.gridx = 1;
+		gridBagConstraints_4.gridy = 4;
+		gridBagConstraints_4.gridwidth = java.awt.GridBagConstraints.REMAINDER;
+		gridBagConstraints_4.insets = new java.awt.Insets(3, 5, 3, 5);
+		jPanel3.add(tfTotal, gridBagConstraints_4);
 
 		jPanel1.add(jPanel3, java.awt.BorderLayout.NORTH);
 
@@ -368,6 +368,10 @@ public class TicketForSplitView extends com.floreantpos.swing.TransparentPanel i
 	private javax.swing.JTextField tfTax;
 	private javax.swing.JTextField tfTotal;
 	private com.floreantpos.ui.ticket.TicketViewerTable ticketViewerTable;
+	private GridBagConstraints gridBagConstraints_1;
+	private GridBagConstraints gridBagConstraints_2;
+	private GridBagConstraints gridBagConstraints_3;
+	private GridBagConstraints gridBagConstraints_4;
 
 	// End of variables declaration//GEN-END:variables
 
