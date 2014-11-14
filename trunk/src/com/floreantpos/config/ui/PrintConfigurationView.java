@@ -23,6 +23,7 @@ import javax.swing.JList;
 
 import net.miginfocom.swing.MigLayout;
 
+import com.floreantpos.bo.ui.BackOfficeWindow;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.PosPrinters;
 import com.floreantpos.ui.dialog.POSMessageDialog;
@@ -65,7 +66,7 @@ public class PrintConfigurationView extends ConfigurationView {
 		setInitialized(true);
 
 		if (printServices == null || printServices.length == 0) {
-			POSMessageDialog.showMessage("No printer is installed on your operating system. Please install printer and come back again.");
+			POSMessageDialog.showMessage(BackOfficeWindow.getInstance(), "No printer is installed on your operating system. Please install printer and come back again.");
 		}
 	}
 

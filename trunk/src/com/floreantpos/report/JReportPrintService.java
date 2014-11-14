@@ -9,6 +9,7 @@ import java.util.Map;
 
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JREmptyDataSource;
+import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperPrintManager;
@@ -20,6 +21,8 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 import com.floreantpos.POSConstants;
 import com.floreantpos.demo.KitchenDisplay;
@@ -31,7 +34,6 @@ import com.floreantpos.model.RefundTransaction;
 import com.floreantpos.model.Restaurant;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketType;
-import com.floreantpos.model.dao.KitchenTicketDAO;
 import com.floreantpos.model.dao.RestaurantDAO;
 import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.util.NumberUtil;
@@ -68,7 +70,7 @@ public class JReportPrintService {
 		map.put("data", data);
 		JasperPrint jasperPrint = createJasperPrint("/com/floreantpos/report/template/GenericReport.jasper", map, new JREmptyDataSource());
 		jasperPrint.setProperty("printerName", Application.getPrinters().getReceiptPrinter());
-		JasperPrintManager.printReport(jasperPrint, false);
+		printQuitely(jasperPrint);
 	}
 
 	public static JasperPrint createJasperPrint(String reportFile, Map<String, String> properties, JRDataSource dataSource) throws Exception {
@@ -107,7 +109,7 @@ public class JReportPrintService {
 			JasperPrint jasperPrint = createPrint(ticket, map, null);
 			jasperPrint.setName("ORDER_" + ticket.getId());
 			jasperPrint.setProperty("printerName", Application.getPrinters().getReceiptPrinter());
-			JasperPrintManager.printReport(jasperPrint, false);
+			printQuitely(jasperPrint);
 
 		} catch (Exception e) {
 			logger.error(com.floreantpos.POSConstants.PRINT_ERROR, e);
@@ -135,7 +137,7 @@ public class JReportPrintService {
 			JasperPrint jasperPrint = createRefundPrint(ticket, map);
 			jasperPrint.setName("REFUND_" + ticket.getId());
 			jasperPrint.setProperty("printerName", Application.getPrinters().getReceiptPrinter());
-			JasperPrintManager.printReport(jasperPrint, false);
+			printQuitely(jasperPrint);
 			
 		} catch (Exception e) {
 			logger.error(com.floreantpos.POSConstants.PRINT_ERROR, e);
@@ -156,19 +158,19 @@ public class JReportPrintService {
 				JasperPrint jasperPrint = createPrint(ticket, map, transaction);
 				jasperPrint.setName("Ticket-" + ticket.getId() + "-CustomerCopy");
 				jasperPrint.setProperty("printerName", Application.getPrinters().getReceiptPrinter());
-				JasperPrintManager.printReport(jasperPrint, false);
+				printQuitely(jasperPrint);
 
 				printProperties.setReceiptCopyType("Merchant Copy");
 				jasperPrint = createPrint(ticket, map, transaction);
 				jasperPrint.setName("Ticket-" + ticket.getId() + "-MerchantCopy");
 				jasperPrint.setProperty("printerName", Application.getPrinters().getReceiptPrinter());
-				JasperPrintManager.printReport(jasperPrint, false);
+				printQuitely(jasperPrint);
 			}
 			else {
 				JasperPrint jasperPrint = createPrint(ticket, map, transaction);
 				jasperPrint.setName("Ticket-" + ticket.getId());
 				jasperPrint.setProperty("printerName", Application.getPrinters().getReceiptPrinter());
-				JasperPrintManager.printReport(jasperPrint, false);
+				printQuitely(jasperPrint);
 			}
 
 		} catch (Exception e) {
@@ -398,7 +400,11 @@ public class JReportPrintService {
 	}
 
 	public static void printTicketToKitchen(Ticket ticket) {
+		Session session = null;
+		Transaction transaction = null;
 		try {
+			session = TicketDAO.getInstance().createNewSession();
+			transaction = session.beginTransaction();
 			
 			List<KitchenTicket> kitchenTickets = KitchenTicket.fromTicket(ticket);
 			
@@ -410,17 +416,31 @@ public class JReportPrintService {
 				jasperPrint.setName("KitchenReceipt-" + ticket.getId() + "-" + deviceName);
 				jasperPrint.setProperty("printerName", deviceName);
 				
-				JasperPrintManager.printReport(jasperPrint, false);
 				KitchenDisplay.instance.addTicket(kitchenTicket);
+				
+				session.saveOrUpdate(kitchenTicket);
+				
+				printQuitely(jasperPrint);
+				
 				//markItemsAsPrinted(kitchenTicket);
-				KitchenTicketDAO.getInstance().saveOrUpdate(kitchenTicket);
 			}
 
-			//no exception, so print to kitchen successful.
-			//now mark items as printed.
-			TicketDAO.getInstance().saveOrUpdate(ticket);
+			session.saveOrUpdate(ticket);
+			transaction.commit();
+			
 		} catch (Exception e) {
+			transaction.rollback();
 			logger.error(com.floreantpos.POSConstants.PRINT_ERROR, e);
+		} finally {
+			session.close();
+		}
+	}
+
+	private static void printQuitely(JasperPrint jasperPrint) throws JRException {
+		try {
+			JasperPrintManager.printReport(jasperPrint, false);
+		} catch(Exception x) {
+			x.printStackTrace();
 		}
 	}
 
