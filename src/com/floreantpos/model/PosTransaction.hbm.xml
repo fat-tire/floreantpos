@@ -47,7 +47,7 @@
 
 		<!-- Associations -->
 		<!-- uni-directional many-to-one association to Terminal -->
-		<many-to-one class="com.floreantpos.model.Terminal" name="terminal">
+		<many-to-one class="com.floreantpos.model.Terminal" name="terminal" cascade="none">
 			<column name="TERMINAL_ID" />
 		</many-to-one>
 
