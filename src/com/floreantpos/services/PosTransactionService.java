@@ -81,8 +81,9 @@ public class PosTransactionService {
 			
 			adjustTerminalBalance(transaction);
 
+			session.update(terminal);
 			session.saveOrUpdate(ticket);
-			//session.update(terminal);
+			
 
 			//				User assignedDriver = ticket.getAssignedDriver();
 			//				if(assignedDriver != null) {
