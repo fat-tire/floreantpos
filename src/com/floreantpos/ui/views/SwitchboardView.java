@@ -7,6 +7,7 @@
 package com.floreantpos.ui.views;
 
 import java.awt.ComponentOrientation;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -134,7 +135,7 @@ public class SwitchboardView extends JPanel implements ActionListener, ITicketLi
 	// desc=" Generated Code ">//GEN-BEGIN:initComponents
 	private void initComponents() {
 
-		javax.swing.JPanel statusPanel = new javax.swing.JPanel(new MigLayout("fill", "[fill, grow 100][]", ""));
+		
 		lblUserName = new javax.swing.JLabel();
 		javax.swing.JPanel bottomPanel = new javax.swing.JPanel();
 		javax.swing.JPanel bottomLeftPanel = new javax.swing.JPanel();
@@ -157,16 +158,7 @@ public class SwitchboardView extends JPanel implements ActionListener, ITicketLi
 
 		setLayout(new java.awt.BorderLayout(10, 10));
 
-		java.awt.Font headerFont = new java.awt.Font("Dialog", Font.BOLD, 12);
-		
-		lblUserName.setFont(headerFont);
-		statusPanel.add(lblUserName);
-		
-		timerLabel.setHorizontalAlignment(JLabel.RIGHT);
-		timerLabel.setFont(headerFont);
-		statusPanel.add(timerLabel);
-
-		add(statusPanel, java.awt.BorderLayout.NORTH);
+		createHeaderPanel();
 
 		bottomPanel.setLayout(new java.awt.BorderLayout(5, 5));
 
@@ -304,6 +296,21 @@ public class SwitchboardView extends JPanel implements ActionListener, ITicketLi
 
 		add(bottomPanel, java.awt.BorderLayout.CENTER);
 	}// </editor-fold>//GEN-END:initComponents
+
+	private void createHeaderPanel() {
+		JPanel statusPanel = new JPanel(new MigLayout("fill", "[fill, grow 100][]", ""));
+		statusPanel.setPreferredSize(new Dimension(80, 40));
+		java.awt.Font headerFont = new java.awt.Font("Dialog", Font.BOLD, 12);
+		
+		lblUserName.setFont(headerFont);
+		statusPanel.add(lblUserName);
+		
+		timerLabel.setHorizontalAlignment(JLabel.RIGHT);
+		timerLabel.setFont(headerFont);
+		statusPanel.add(timerLabel);
+
+		add(statusPanel, java.awt.BorderLayout.NORTH);
+	}
 
 	protected void doCloseOrder() {
 		Ticket ticket = getFirstSelectedTicket();
