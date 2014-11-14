@@ -88,7 +88,7 @@
 		<many-to-one class="com.floreantpos.model.User" lazy="false" name="voidedBy">
 			<column name="VOID_BY_USER" />
 		</many-to-one>
-		<many-to-one class="com.floreantpos.model.Terminal" cascade="save-update" lazy="false" name="terminal">
+		<many-to-one class="com.floreantpos.model.Terminal" cascade="none" lazy="false" name="terminal">
 			<column name="TERMINAL_ID" />
 		</many-to-one>
 		<many-to-one class="com.floreantpos.model.Customer" lazy="false" name="customer">
