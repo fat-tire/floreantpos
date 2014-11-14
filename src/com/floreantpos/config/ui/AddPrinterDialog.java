@@ -1,5 +1,6 @@
 package com.floreantpos.config.ui;
 
+import java.awt.Dimension;
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -34,9 +35,10 @@ public class AddPrinterDialog extends POSDialog {
 		super(BackOfficeWindow.getInstance(), true);
 		setTitle("Add/Edit Printer");
 		
-		setSize(400, 200);
-		setResizable(false);
+		setMinimumSize(new Dimension(400, 200));
+		//setResizable(false);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		pack();
 	}
 
 	@Override
