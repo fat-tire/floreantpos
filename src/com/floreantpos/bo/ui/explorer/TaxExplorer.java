@@ -19,7 +19,6 @@ import com.floreantpos.swing.TransparentPanel;
 import com.floreantpos.ui.PosTableRenderer;
 import com.floreantpos.ui.dialog.BeanEditorDialog;
 import com.floreantpos.ui.dialog.ConfirmDeleteDialog;
-import com.floreantpos.ui.model.MenuCategoryForm;
 import com.floreantpos.ui.model.TaxForm;
 
 public class TaxExplorer extends TransparentPanel {
@@ -43,13 +42,13 @@ public class TaxExplorer extends TransparentPanel {
 		addButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					MenuCategoryForm editor = new MenuCategoryForm();
+					TaxForm editor = new TaxForm();
 					BeanEditorDialog dialog = new BeanEditorDialog(editor, BackOfficeWindow.getInstance(), true);
 					dialog.open();
 					if (dialog.isCanceled())
 						return;
 
-					tableModel.addCategory((Tax) editor.getBean());
+					tableModel.addTax((Tax) editor.getBean());
 				} catch (Exception x) {
 				BOMessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
 				}
@@ -90,7 +89,7 @@ public class TaxExplorer extends TransparentPanel {
 					if (ConfirmDeleteDialog.showMessage(TaxExplorer.this, com.floreantpos.POSConstants.CONFIRM_DELETE, com.floreantpos.POSConstants.DELETE) == ConfirmDeleteDialog.YES) {
 						Tax tax = taxList.get(index);
 						TaxDAO.getInstance().delete(tax);
-						tableModel.deleteCategory(tax, index);
+						tableModel.deleteTax(tax, index);
 					}
 				} catch (Exception x) {
 				BOMessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
@@ -151,13 +150,13 @@ public class TaxExplorer extends TransparentPanel {
 			return null;
 		}
 
-		public void addCategory(Tax tax) {
+		public void addTax(Tax tax) {
 			int size = taxList.size();
 			taxList.add(tax);
 			fireTableRowsInserted(size, size);
 		}
 		
-		public void deleteCategory(Tax tax, int index) {
+		public void deleteTax(Tax tax, int index) {
 			taxList.remove(tax);
 			fireTableRowsDeleted(index, index);
 		}
