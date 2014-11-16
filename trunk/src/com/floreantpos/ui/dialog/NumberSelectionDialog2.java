@@ -3,7 +3,10 @@ package com.floreantpos.ui.dialog;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.Dialog;
+import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -15,9 +18,9 @@ import net.miginfocom.swing.MigLayout;
 
 import com.floreantpos.IconFactory;
 import com.floreantpos.POSConstants;
+import com.floreantpos.main.Application;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.ui.TitlePanel;
-import java.awt.Dimension;
 
 public class NumberSelectionDialog2 extends POSDialog implements ActionListener {
 	private int defaultValue;
@@ -27,8 +30,23 @@ public class NumberSelectionDialog2 extends POSDialog implements ActionListener 
 
 	private boolean floatingPoint;
 	private PosButton posButton_1;
-
+	
 	public NumberSelectionDialog2() {
+		this(Application.getPosWindow());
+	}
+
+	public NumberSelectionDialog2(Frame parent) {
+		super(parent, true);
+		init();
+	}
+	
+	public NumberSelectionDialog2(Dialog parent) {
+		super(parent, true);
+		
+		init();
+	}
+
+	private void init() {
 		setResizable(false);
 		
 		Container contentPane = getContentPane();
@@ -96,12 +114,11 @@ public class NumberSelectionDialog2 extends POSDialog implements ActionListener 
 		posButton_1.setFocusable(false);
 		posButton_1.addActionListener(this);
 		contentPane.add(posButton_1, "grow");
-
 	}
 	
 	private void doOk() {
 		if (!validate(tfNumber.getText())) {
-			POSMessageDialog.showError(POSConstants.INVALID_NUMBER);
+			POSMessageDialog.showError(this, POSConstants.INVALID_NUMBER);
 			return;
 		}
 		setCanceled(false);
@@ -143,7 +160,7 @@ public class NumberSelectionDialog2 extends POSDialog implements ActionListener 
 
 		s = s + number;
 		if (!validate(s)) {
-			POSMessageDialog.showError(POSConstants.INVALID_NUMBER);
+			POSMessageDialog.showError(this, POSConstants.INVALID_NUMBER);
 			return;
 		}
 		tfNumber.setText(s);
@@ -153,7 +170,7 @@ public class NumberSelectionDialog2 extends POSDialog implements ActionListener 
 		//if (isFloatingPoint() && tfNumber.getText().indexOf('.') < 0) {
 			String string = tfNumber.getText() + ".";
 			if (!validate(string)) {
-				POSMessageDialog.showError(POSConstants.INVALID_NUMBER);
+				POSMessageDialog.showError(this, POSConstants.INVALID_NUMBER);
 				return;
 			}
 			tfNumber.setText(string);
