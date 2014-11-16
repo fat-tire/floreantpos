@@ -13,7 +13,7 @@
 		<property column="MENU_ITEM_NAME" name="menuItemName" type="string" length="30"/>
 		<property column="QUANTITY" name="quantity" type="java.lang.Integer"/>
 		
-		<property column="VOIDED" index="ticketvoided" name="voided" type="java.lang.Boolean" />
+		<property column="VOIDED" name="voided" type="java.lang.Boolean" />
 		<!-- a ticket is marked as closed it is either paid or voided -->
 		
 		<property column="STATUS" name="status" type="string" length="30" />
