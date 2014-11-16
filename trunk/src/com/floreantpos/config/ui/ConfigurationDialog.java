@@ -19,7 +19,6 @@ import com.floreantpos.POSConstants;
 import com.floreantpos.PosException;
 import com.floreantpos.ui.dialog.POSDialog;
 import com.floreantpos.ui.dialog.POSMessageDialog;
-import com.floreantpos.ui.views.FloorConfigurationView;
 
 public class ConfigurationDialog extends POSDialog implements ChangeListener, ActionListener {
 	private static final String OK = com.floreantpos.POSConstants.OK;
@@ -43,7 +42,6 @@ public class ConfigurationDialog extends POSDialog implements ChangeListener, Ac
 		addView(new CardConfigurationView());
 		addView(new DatabaseConfigurationView());
 		addView(new TaxConfigurationView());
-		addView(new FloorConfigurationView());
 		
 		tabbedPane.addChangeListener(this);
 		
