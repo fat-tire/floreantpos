@@ -51,6 +51,11 @@ public class ShopFloor extends BaseShopFloor {
 	public Blob getImage() {
 		return Hibernate.createBlob(this.imageData);
 	}
+	
+	@Override
+	public String toString() {
+		return getName();
+	}
 
 	private byte[] toByteArray(Blob fromBlob) throws Exception {
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
