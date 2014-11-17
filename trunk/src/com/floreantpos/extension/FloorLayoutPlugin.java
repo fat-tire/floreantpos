@@ -6,4 +6,5 @@ import net.xeoh.plugins.base.Plugin;
 
 public interface FloorLayoutPlugin extends Plugin {
 	void initConfigurationView(ConfigurationDialog dialog);
+	int captureTableNumber();
 }
