@@ -5,6 +5,7 @@ import java.util.Date;
 
 import javax.swing.JOptionPane;
 
+import com.floreantpos.extension.FloorLayoutPlugin;
 import com.floreantpos.extension.OrderServiceExtension;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.Ticket;
@@ -35,7 +36,16 @@ public class DefaultOrderServiceExtension implements OrderServiceExtension {
 
 	@Override
 	public void createNewTicket(TicketType ticketType) throws TicketAlreadyExistsException {
-		int tableNumber = PosGuiUtil.captureTableNumber();
+		int tableNumber = -1;
+		
+		FloorLayoutPlugin floorLayoutPlugin = Application.getPluginManager().getPlugin(FloorLayoutPlugin.class);
+		if(floorLayoutPlugin != null) {
+			tableNumber = floorLayoutPlugin.captureTableNumber();
+		}
+		else {
+			tableNumber = PosGuiUtil.captureTableNumber();
+		}
+		
 		if (tableNumber == -1) {
 			return;
 		}
