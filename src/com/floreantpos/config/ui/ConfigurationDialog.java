@@ -17,6 +17,8 @@ import net.miginfocom.swing.MigLayout;
 import com.floreantpos.Messages;
 import com.floreantpos.POSConstants;
 import com.floreantpos.PosException;
+import com.floreantpos.extension.FloorLayoutPlugin;
+import com.floreantpos.main.Application;
 import com.floreantpos.ui.dialog.POSDialog;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 
@@ -56,6 +58,11 @@ public class ConfigurationDialog extends POSDialog implements ChangeListener, Ac
 		
 		add(bottomPanel, "newline,growx, gaptop 10"); //$NON-NLS-1$
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		
+		FloorLayoutPlugin floorLayoutPlugin = Application.getPluginManager().getPlugin(FloorLayoutPlugin.class);
+		if(floorLayoutPlugin != null) {
+			floorLayoutPlugin.initConfigurationView(this);
+		}
 	}
 	
 	public void addView(ConfigurationView view) {
