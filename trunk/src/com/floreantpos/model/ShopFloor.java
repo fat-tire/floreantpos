@@ -14,14 +14,14 @@ public class ShopFloor extends BaseShopFloor {
 	private static final long serialVersionUID = 1L;
 
 	/*[CONSTRUCTOR MARKER BEGIN]*/
-	public ShopFloor() {
+	public ShopFloor () {
 		super();
 	}
 
 	/**
 	 * Constructor for primary key
 	 */
-	public ShopFloor(java.lang.Integer id) {
+	public ShopFloor (java.lang.Integer id) {
 		super(id);
 	}
 

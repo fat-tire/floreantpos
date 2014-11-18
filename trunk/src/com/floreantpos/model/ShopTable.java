@@ -21,5 +21,11 @@ public class ShopTable extends BaseShopTable {
 
 /*[CONSTRUCTOR MARKER END]*/
 
-
+	public ShopTable(Integer number, Integer x, Integer y) {
+		super();
+		
+		setNumber(number);
+		setX(x);
+		setY(y);
+	}
 }
