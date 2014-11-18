@@ -44,8 +44,8 @@ public abstract class BaseShopFloor  implements Comparable, Serializable {
 	private java.lang.Integer id;
 
 	// fields
-		protected java.lang.String name;
 		protected java.sql.Blob image;
+		protected java.lang.String name;
 
 	// collections
 	private java.util.Set<com.floreantpos.model.ShopTable> tables;
@@ -75,23 +75,6 @@ public abstract class BaseShopFloor  implements Comparable, Serializable {
 
 
 	/**
-	 * Return the value associated with the column: NAME
-	 */
-	public java.lang.String getName () {
-					return name;
-			}
-
-	/**
-	 * Set the value related to the column: NAME
-	 * @param name the NAME value
-	 */
-	public void setName (java.lang.String name) {
-		this.name = name;
-	}
-
-
-
-	/**
 	 * Return the value associated with the column: IMAGE
 	 */
 	public java.sql.Blob getImage () {
@@ -109,6 +92,23 @@ public abstract class BaseShopFloor  implements Comparable, Serializable {
 
 
 	/**
+	 * Return the value associated with the column: NAME
+	 */
+	public java.lang.String getName () {
+					return name;
+			}
+
+	/**
+	 * Set the value related to the column: NAME
+	 * @param name the NAME value
+	 */
+	public void setName (java.lang.String name) {
+		this.name = name;
+	}
+
+
+
+	/**
 	 * Return the value associated with the column: tables
 	 */
 	public java.util.Set<com.floreantpos.model.ShopTable> getTables () {
@@ -120,13 +120,7 @@ public abstract class BaseShopFloor  implements Comparable, Serializable {
 	 * @param tables the tables value
 	 */
 	public void setTables (java.util.Set<com.floreantpos.model.ShopTable> tables) {
-		if(this.tables == null) {
-			this.tables = tables;
-		}
-		else {
-			this.tables.clear();
-			this.tables.addAll(tables);
-		}
+		this.tables = tables;
 	}
 
 	public void addTotables (com.floreantpos.model.ShopTable shopTable) {

@@ -1,6 +1,6 @@
 package com.floreantpos.model.dao;
 
-import com.floreantpos.model.dao.BaseShopFloorDAO;
+import org.hibernate.criterion.Projections;
 
 
 public class ShopFloorDAO extends BaseShopFloorDAO {
@@ -10,5 +10,8 @@ public class ShopFloorDAO extends BaseShopFloorDAO {
 	 */
 	public ShopFloorDAO () {}
 
-
+	public boolean hasFloor() {
+		Number result = (Number) getSession().createCriteria(getReferenceClass()).setProjection(Projections.rowCount()).uniqueResult();
+		return result.intValue() != 0;
+	}
 }
