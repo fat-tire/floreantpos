@@ -7,8 +7,10 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -60,6 +62,41 @@ public class Ticket extends BaseTicket {
 
 	private List deletedItems;
 	private boolean priceIncludesTax;
+	
+	public String getTableNumbers() {
+		Set<ShopTable> tables = getTables();
+		if(tables == null) return "";
+		
+		String s = "";
+		for (Iterator iterator = tables.iterator(); iterator.hasNext();) {
+			ShopTable shopTable = (ShopTable) iterator.next();
+			s += shopTable.getNumber();
+			
+			if(iterator.hasNext()) {
+				s += ", ";
+			}
+		}
+		
+		return s;
+	}
+	
+	@Override
+	public void setClosed(Boolean closed) {
+		super.setClosed(closed);
+		
+		if(closed) {
+			releaseTables();
+		}
+	}
+
+	private void releaseTables() {
+		Set<ShopTable> tables = getTables();
+		if(tables == null) return;
+		
+		for (ShopTable shopTable : tables) {
+			shopTable.setOccupied(false);
+		}
+	}
 	
 	public void setGratuityAmount(double amount) {
 		Gratuity gratuity = getGratuity();

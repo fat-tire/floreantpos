@@ -67,7 +67,7 @@ public class NewBarTabAction extends AbstractAction implements CardInputListener
 		
 		ticket.setPriceIncludesTax(application.isPriceIncludesTax());
 		ticket.setType(TicketType.BAR_TAB);
-		ticket.setTableNumber(-1);
+		//ticket.setTableNumber(-1);
 		ticket.setTerminal(application.getTerminal());
 		ticket.setOwner(Application.getCurrentUser());
 		ticket.setShift(application.getCurrentShift());

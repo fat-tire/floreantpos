@@ -15,7 +15,7 @@
 		<!-- a ticket is marked as closed it is either paid or voided -->
 		
 		<!--tableNumber should be -1 for take out -->
-		<property column="TABLE_NUMBER" name="tableNumber" type="java.lang.Integer" />
+		<property column="TABLE_NUMBERS" name="tableNumbers" type="java.lang.String" length="120" />
 		<property column="STATUS" name="status" type="string" length="30" />
 		<property column="SERVER_NAME" name="serverName" type="string" length="30" />
 

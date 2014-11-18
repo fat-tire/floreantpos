@@ -174,6 +174,10 @@ public class NumberSelectionView extends TransparentPanel implements ActionListe
 	public double getValue() {
 		return Double.parseDouble(tfNumber.getText());
 	}
+	
+	public String getText() {
+		return tfNumber.getText();
+	}
 
 	public void setValue(double value) {
 		if(isDecimalAllowed()) {

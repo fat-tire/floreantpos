@@ -46,7 +46,7 @@ public class TicketReportModel extends AbstractTableModel {
 				return dateFormat.format(ticket.getCreateDate());
 				
 			case 2:
-				return String.valueOf(ticket.getTableNumber());
+				return String.valueOf(ticket.getTableNumbers());
 				
 			case 3:
 				if(ticket.isClosed()) {
