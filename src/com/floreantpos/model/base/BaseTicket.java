@@ -34,7 +34,6 @@ public abstract class BaseTicket  implements Comparable, Serializable {
 	public static String PROP_OWNER = "owner";
 	public static String PROP_DELIVERY_DATE = "deliveryDate";
 	public static String PROP_GRATUITY = "gratuity";
-	public static String PROP_TABLE_NUMBER = "tableNumber";
 	public static String PROP_TERMINAL = "terminal";
 	public static String PROP_CLOSED = "closed";
 	public static String PROP_CLOSING_DATE = "closingDate";
@@ -100,7 +99,6 @@ public abstract class BaseTicket  implements Comparable, Serializable {
 		protected java.lang.Double paidAmount;
 		protected java.lang.Double dueAmount;
 		protected java.lang.Double advanceAmount;
-		protected java.lang.Integer tableNumber;
 		protected java.lang.Integer numberOfGuests;
 		protected java.lang.String status;
 		protected java.lang.Boolean taxExempt;
@@ -126,6 +124,7 @@ public abstract class BaseTicket  implements Comparable, Serializable {
 	private java.util.List<com.floreantpos.model.TicketItem> ticketItems;
 	private java.util.List<com.floreantpos.model.TicketCouponAndDiscount> couponAndDiscounts;
 	private java.util.Set<com.floreantpos.model.PosTransaction> transactions;
+	private java.util.Set<com.floreantpos.model.ShopTable> tables;
 
 
 
@@ -487,23 +486,6 @@ public abstract class BaseTicket  implements Comparable, Serializable {
 	 */
 	public void setAdvanceAmount (java.lang.Double advanceAmount) {
 		this.advanceAmount = advanceAmount;
-	}
-
-
-
-	/**
-	 * Return the value associated with the column: TABLE_NUMBER
-	 */
-	public java.lang.Integer getTableNumber () {
-					return tableNumber == null ? Integer.valueOf(0) : tableNumber;
-			}
-
-	/**
-	 * Set the value related to the column: TABLE_NUMBER
-	 * @param tableNumber the TABLE_NUMBER value
-	 */
-	public void setTableNumber (java.lang.Integer tableNumber) {
-		this.tableNumber = tableNumber;
 	}
 
 
@@ -876,6 +858,28 @@ public abstract class BaseTicket  implements Comparable, Serializable {
 	public void addTotransactions (com.floreantpos.model.PosTransaction posTransaction) {
 		if (null == getTransactions()) setTransactions(new java.util.TreeSet<com.floreantpos.model.PosTransaction>());
 		getTransactions().add(posTransaction);
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: tables
+	 */
+	public java.util.Set<com.floreantpos.model.ShopTable> getTables () {
+					return tables;
+			}
+
+	/**
+	 * Set the value related to the column: tables
+	 * @param tables the tables value
+	 */
+	public void setTables (java.util.Set<com.floreantpos.model.ShopTable> tables) {
+		this.tables = tables;
+	}
+
+	public void addTotables (com.floreantpos.model.ShopTable shopTable) {
+		if (null == getTables()) setTables(new java.util.TreeSet<com.floreantpos.model.ShopTable>());
+		getTables().add(shopTable);
 	}
 
 

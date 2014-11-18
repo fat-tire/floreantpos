@@ -2,12 +2,14 @@ package com.floreantpos.ui.views.order;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import javax.swing.JOptionPane;
 
 import com.floreantpos.extension.FloorLayoutPlugin;
 import com.floreantpos.extension.OrderServiceExtension;
 import com.floreantpos.main.Application;
+import com.floreantpos.model.ShopTable;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketType;
 import com.floreantpos.model.User;
@@ -36,42 +38,39 @@ public class DefaultOrderServiceExtension implements OrderServiceExtension {
 
 	@Override
 	public void createNewTicket(TicketType ticketType) throws TicketAlreadyExistsException {
-		int tableNumber = -1;
+		List<ShopTable> tables = null;
 		
 		FloorLayoutPlugin floorLayoutPlugin = Application.getPluginManager().getPlugin(FloorLayoutPlugin.class);
 		if(floorLayoutPlugin != null) {
-			tableNumber = floorLayoutPlugin.captureTableNumber();
+			tables = floorLayoutPlugin.captureTableNumbers();
 		}
 		else {
-			tableNumber = PosGuiUtil.captureTableNumber();
+			tables = PosGuiUtil.captureTable();
+		}
+
+		if(tables == null) {
+			return;
 		}
 		
-		if (tableNumber == -1) {
+		int numberOfGuests = PosGuiUtil.captureGuestNumber();
+		if (numberOfGuests == -1) {
 			return;
 		}
 
-		TicketDAO dao = TicketDAO.getInstance();
-
-		Ticket ticket = dao.findTicketByTableNumber(tableNumber);
-		if (ticket != null) {
-			throw new TicketAlreadyExistsException(ticket);
-		}
-
-		int numberOfGuests = PosGuiUtil.captureGuestNumber();
-		//if (numberOfGuests == -1) {
-		//	return;
-		//}
-
 		Application application = Application.getInstance();
-
-		ticket = new Ticket();
+		
+		Ticket ticket = new Ticket();
 		ticket.setPriceIncludesTax(application.isPriceIncludesTax());
 		ticket.setType(ticketType);
-		ticket.setTableNumber(tableNumber);
 		ticket.setNumberOfGuests(numberOfGuests);
 		ticket.setTerminal(application.getTerminal());
 		ticket.setOwner(Application.getCurrentUser());
 		ticket.setShift(application.getCurrentShift());
+		
+		for (ShopTable shopTable : tables) {
+			shopTable.setOccupied(true);
+			ticket.addTotables(shopTable);
+		}
 
 		Calendar currentTime = Calendar.getInstance();
 		ticket.setCreateDate(currentTime.getTime());

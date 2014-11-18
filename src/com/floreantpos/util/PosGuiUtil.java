@@ -2,15 +2,34 @@ package com.floreantpos.util;
 
 import java.awt.Dialog;
 import java.awt.Window;
+import java.util.List;
 
+import javax.swing.JOptionPane;
 import javax.swing.text.JTextComponent;
 
 import com.floreantpos.POSConstants;
 import com.floreantpos.main.Application;
+import com.floreantpos.model.ShopTable;
 import com.floreantpos.ui.dialog.NumberSelectionDialog2;
 import com.floreantpos.ui.dialog.POSMessageDialog;
+import com.floreantpos.ui.dialog.TableSelectionDialog;
 
 public class PosGuiUtil {
+	public static List<ShopTable> captureTable() {
+		TableSelectionDialog dialog = new TableSelectionDialog();
+		dialog.pack();
+		dialog.open();
+
+		if (dialog.isCanceled()) {
+			int option = JOptionPane.showOptionDialog(Application.getPosWindow(), "Proceed without table?", "Confirm", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+			if(option != JOptionPane.YES_OPTION) {
+				return null;
+			}
+		}
+
+		return dialog.getTables();
+	}
+	
 	public static int captureTableNumber() {
 		NumberSelectionDialog2 dialog = new NumberSelectionDialog2();
 		dialog.setTitle(POSConstants.ENTER_A_TABLE_NUMBER);

@@ -233,29 +233,29 @@ public class TicketDAO extends BaseTicketDAO {
 		}
 	}
 
-	public Ticket findTicketByTableNumber(int tableNumber) {
-		Session session = null;
-
-		try {
-			session = getSession();
-			Criteria criteria = session.createCriteria(getReferenceClass());
-			criteria.add(Restrictions.eq(Ticket.PROP_CLOSED, Boolean.FALSE));
-			criteria.add(Restrictions.eq(Ticket.PROP_TABLE_NUMBER, Integer.valueOf(tableNumber)));
-			
-			List list = criteria.list();
-			if(list.size() <= 0) {
-				return null;
-			}
-			
-			return (Ticket) list.get(0);
-		} finally {
-			closeSession(session);
-		}
-	}
+//	public Ticket findTicketByTableNumber(int tableNumber) {
+//		Session session = null;
+//
+//		try {
+//			session = getSession();
+//			Criteria criteria = session.createCriteria(getReferenceClass());
+//			criteria.add(Restrictions.eq(Ticket.PROP_CLOSED, Boolean.FALSE));
+//			criteria.add(Restrictions.eq(Ticket.PROP_TABLE_NUMBER, Integer.valueOf(tableNumber)));
+//			
+//			List list = criteria.list();
+//			if(list.size() <= 0) {
+//				return null;
+//			}
+//			
+//			return (Ticket) list.get(0);
+//		} finally {
+//			closeSession(session);
+//		}
+//	}
 	
-	public boolean hasTicketByTableNumber(int tableNumber) {
-		return findTicketByTableNumber(tableNumber) != null;
-	}
+//	public boolean hasTicketByTableNumber(int tableNumber) {
+//		return findTicketByTableNumber(tableNumber) != null;
+//	}
 
 	public TicketSummary getOpenTicketSummary() {
 		Session session = null;

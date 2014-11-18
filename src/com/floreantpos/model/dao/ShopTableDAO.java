@@ -1,6 +1,10 @@
 package com.floreantpos.model.dao;
 
-import com.floreantpos.model.dao.BaseShopTableDAO;
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.criterion.Restrictions;
+
+import com.floreantpos.model.ShopTable;
 
 
 public class ShopTableDAO extends BaseShopTableDAO {
@@ -10,5 +14,11 @@ public class ShopTableDAO extends BaseShopTableDAO {
 	 */
 	public ShopTableDAO () {}
 
-
+	public ShopTable getByNumber(String tableNumber) {
+		Session session = getSession();
+		Criteria criteria = session.createCriteria(getReferenceClass());
+		criteria.add(Restrictions.eq(ShopTable.PROP_NUMBER, tableNumber));
+		
+		return (ShopTable) criteria.uniqueResult();
+	}
 }

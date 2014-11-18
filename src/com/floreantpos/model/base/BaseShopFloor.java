@@ -18,6 +18,7 @@ public abstract class BaseShopFloor  implements Comparable, Serializable {
 	public static String REF = "ShopFloor";
 	public static String PROP_NAME = "name";
 	public static String PROP_IMAGE = "image";
+	public static String PROP_OCCUPIED = "occupied";
 	public static String PROP_ID = "id";
 
 
@@ -44,8 +45,9 @@ public abstract class BaseShopFloor  implements Comparable, Serializable {
 	private java.lang.Integer id;
 
 	// fields
-		protected java.sql.Blob image;
 		protected java.lang.String name;
+		protected java.lang.Boolean occupied;
+		protected java.sql.Blob image;
 
 	// collections
 	private java.util.Set<com.floreantpos.model.ShopTable> tables;
@@ -75,23 +77,6 @@ public abstract class BaseShopFloor  implements Comparable, Serializable {
 
 
 	/**
-	 * Return the value associated with the column: IMAGE
-	 */
-	public java.sql.Blob getImage () {
-					return image;
-			}
-
-	/**
-	 * Set the value related to the column: IMAGE
-	 * @param image the IMAGE value
-	 */
-	public void setImage (java.sql.Blob image) {
-		this.image = image;
-	}
-
-
-
-	/**
 	 * Return the value associated with the column: NAME
 	 */
 	public java.lang.String getName () {
@@ -104,6 +89,40 @@ public abstract class BaseShopFloor  implements Comparable, Serializable {
 	 */
 	public void setName (java.lang.String name) {
 		this.name = name;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: OCCUPIED
+	 */
+	public java.lang.Boolean isOccupied () {
+								return occupied == null ? Boolean.FALSE : occupied;
+					}
+
+	/**
+	 * Set the value related to the column: OCCUPIED
+	 * @param occupied the OCCUPIED value
+	 */
+	public void setOccupied (java.lang.Boolean occupied) {
+		this.occupied = occupied;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: IMAGE
+	 */
+	public java.sql.Blob getImage () {
+					return image;
+			}
+
+	/**
+	 * Set the value related to the column: IMAGE
+	 * @param image the IMAGE value
+	 */
+	public void setImage (java.sql.Blob image) {
+		this.image = image;
 	}
 
 

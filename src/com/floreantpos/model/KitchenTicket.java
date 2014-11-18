@@ -66,7 +66,7 @@ public class KitchenTicket extends BaseKitchenTicket {
 				kitchenTicket.setVirtualPrinter(ticketItem.getVirtualPrinter());
 				kitchenTicket.setTicketId(ticket.getId());
 				kitchenTicket.setCreateDate(new Date());
-				kitchenTicket.setTableNumber(ticket.getTableNumber());
+				kitchenTicket.setTableNumbers(ticket.getTableNumbers());
 				kitchenTicket.setServerName(ticket.getOwner().getFirstName());
 				kitchenTicket.setStatus(KitchenTicketStatus.WAITING.name());
 				kitchenTicket.setVirtualPrinter(printer.getVirtualPrinter());
