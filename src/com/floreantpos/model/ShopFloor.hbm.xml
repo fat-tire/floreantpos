@@ -11,7 +11,7 @@
     
     <set cascade="all" inverse="false" lazy="false" name="tables">
 			<key>
-				<column name="SHOP_TABLE" />
+				<column name="FLOOR_ID" />
 			</key>
 			<one-to-many class="com.floreantpos.model.ShopTable" />
 		</set>
