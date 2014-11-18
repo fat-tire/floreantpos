@@ -17,9 +17,9 @@ public abstract class BaseKitchenTicket  implements Comparable, Serializable {
 
 	public static String REF = "KitchenTicket";
 	public static String PROP_STATUS = "status";
-	public static String PROP_TABLE_NUMBER = "tableNumber";
 	public static String PROP_CLOSING_DATE = "closingDate";
 	public static String PROP_ID = "id";
+	public static String PROP_TABLE_NUMBERS = "tableNumbers";
 	public static String PROP_VOIDED = "voided";
 	public static String PROP_SERVER_NAME = "serverName";
 	public static String PROP_CREATE_DATE = "createDate";
@@ -56,7 +56,7 @@ public abstract class BaseKitchenTicket  implements Comparable, Serializable {
 		protected java.util.Date createDate;
 		protected java.util.Date closingDate;
 		protected java.lang.Boolean voided;
-		protected java.lang.Integer tableNumber;
+		protected java.lang.String tableNumbers;
 		protected java.lang.String status;
 		protected java.lang.String serverName;
 
@@ -176,18 +176,18 @@ public abstract class BaseKitchenTicket  implements Comparable, Serializable {
 
 
 	/**
-	 * Return the value associated with the column: TABLE_NUMBER
+	 * Return the value associated with the column: TABLE_NUMBERS
 	 */
-	public java.lang.Integer getTableNumber () {
-					return tableNumber == null ? Integer.valueOf(0) : tableNumber;
+	public java.lang.String getTableNumbers () {
+					return tableNumbers;
 			}
 
 	/**
-	 * Set the value related to the column: TABLE_NUMBER
-	 * @param tableNumber the TABLE_NUMBER value
+	 * Set the value related to the column: TABLE_NUMBERS
+	 * @param tableNumbers the TABLE_NUMBERS value
 	 */
-	public void setTableNumber (java.lang.Integer tableNumber) {
-		this.tableNumber = tableNumber;
+	public void setTableNumbers (java.lang.String tableNumbers) {
+		this.tableNumbers = tableNumbers;
 	}
 
 

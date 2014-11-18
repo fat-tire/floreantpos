@@ -6,6 +6,7 @@
       <generator class="identity"/>
     </id>
     <property column="NAME" length="60" name="name" type="java.lang.String"/>
+    <property column="OCCUPIED" name="occupied" type="java.lang.Boolean"/>
     <property name="image" column="IMAGE" not-null="false" type="blob" length="1048576"/>
     <!-- Associations -->
     

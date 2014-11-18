@@ -16,8 +16,12 @@ import java.io.Serializable;
 public abstract class BaseShopTable  implements Comparable, Serializable {
 
 	public static String REF = "ShopTable";
+	public static String PROP_NAME = "name";
+	public static String PROP_DESCRIPTION = "description";
 	public static String PROP_NUMBER = "number";
+	public static String PROP_OCCUPIED = "occupied";
 	public static String PROP_ID = "id";
+	public static String PROP_CAPACITY = "capacity";
 	public static String PROP_Y = "y";
 	public static String PROP_X = "x";
 
@@ -45,9 +49,13 @@ public abstract class BaseShopTable  implements Comparable, Serializable {
 	private java.lang.Integer id;
 
 	// fields
-		protected java.lang.Integer number;
+		protected java.lang.String name;
+		protected java.lang.String description;
+		protected java.lang.Integer capacity;
+		protected java.lang.String number;
 		protected java.lang.Integer x;
 		protected java.lang.Integer y;
+		protected java.lang.Boolean occupied;
 
 
 
@@ -74,17 +82,68 @@ public abstract class BaseShopTable  implements Comparable, Serializable {
 
 
 	/**
+	 * Return the value associated with the column: NAME
+	 */
+	public java.lang.String getName () {
+					return name;
+			}
+
+	/**
+	 * Set the value related to the column: NAME
+	 * @param name the NAME value
+	 */
+	public void setName (java.lang.String name) {
+		this.name = name;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: DESCRIPTION
+	 */
+	public java.lang.String getDescription () {
+					return description;
+			}
+
+	/**
+	 * Set the value related to the column: DESCRIPTION
+	 * @param description the DESCRIPTION value
+	 */
+	public void setDescription (java.lang.String description) {
+		this.description = description;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: CAPACITY
+	 */
+	public java.lang.Integer getCapacity () {
+					return capacity == null ? Integer.valueOf(0) : capacity;
+			}
+
+	/**
+	 * Set the value related to the column: CAPACITY
+	 * @param capacity the CAPACITY value
+	 */
+	public void setCapacity (java.lang.Integer capacity) {
+		this.capacity = capacity;
+	}
+
+
+
+	/**
 	 * Return the value associated with the column: NUMBER
 	 */
-	public java.lang.Integer getNumber () {
-					return number == null ? Integer.valueOf(0) : number;
+	public java.lang.String getNumber () {
+					return number;
 			}
 
 	/**
 	 * Set the value related to the column: NUMBER
 	 * @param number the NUMBER value
 	 */
-	public void setNumber (java.lang.Integer number) {
+	public void setNumber (java.lang.String number) {
 		this.number = number;
 	}
 
@@ -120,6 +179,23 @@ public abstract class BaseShopTable  implements Comparable, Serializable {
 	 */
 	public void setY (java.lang.Integer y) {
 		this.y = y;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: OCCUPIED
+	 */
+	public java.lang.Boolean isOccupied () {
+								return occupied == null ? Boolean.FALSE : occupied;
+					}
+
+	/**
+	 * Set the value related to the column: OCCUPIED
+	 * @param occupied the OCCUPIED value
+	 */
+	public void setOccupied (java.lang.Boolean occupied) {
+		this.occupied = occupied;
 	}
 
 

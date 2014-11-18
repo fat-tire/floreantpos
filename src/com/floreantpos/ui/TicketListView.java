@@ -119,7 +119,7 @@ public class TicketListView extends JPanel {
 				return Integer.valueOf(ticket.getId());
 
 			case 1:
-				return ticket.getTableNumber();
+				return ticket.getTableNumbers();
 
 			case 2:
 					User owner = ticket.getOwner();

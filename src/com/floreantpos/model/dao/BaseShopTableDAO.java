@@ -28,7 +28,7 @@ public abstract class BaseShopTableDAO extends com.floreantpos.model.dao._RootDA
 	}
 
     public Order getDefaultOrder () {
-		return null;
+		return Order.asc("name");
     }
 
 	/**

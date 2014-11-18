@@ -6,9 +6,13 @@
       <generator class="identity"/>
     </id>
     
-    <property column="NUMBER" name="number" type="java.lang.Integer"/>
+    <property column="NAME" name="name" type="java.lang.String" length="20"/>
+    <property column="DESCRIPTION" name="description" type="java.lang.String" length="60"/>
+    <property column="CAPACITY" name="capacity" type="java.lang.Integer"/>
+    <property column="NUMBER" name="number" unique="true" type="java.lang.String"/>
     <property column="X" name="x" type="java.lang.Integer"/>
     <property column="Y" name="y" type="java.lang.Integer"/>
+    <property column="OCCUPIED" name="occupied" type="java.lang.Boolean"/>
     <!-- Associations -->
   </class>
 </hibernate-mapping>
