@@ -110,7 +110,7 @@ public class TableSelectionDialog extends POSDialog implements ActionListener {
 				contentPane.add(posButton, constraints);
 			}
 		}
-		contentPane.add(new JSeparator(), "newline,spanx ,growy,gapy 20");
+		contentPane.add(new JSeparator(JSeparator.HORIZONTAL), "newline, span 3, grow, gaptop 5");
 		
 		JPanel buttonPanel = new JPanel(new GridLayout(1, 0, 10, 10));
 		
@@ -135,7 +135,7 @@ public class TableSelectionDialog extends POSDialog implements ActionListener {
 		posButton_1.addActionListener(this);
 		buttonPanel.add(posButton_1, "grow");
 
-		contentPane.add(buttonPanel, "grow, span 3");
+		contentPane.add(buttonPanel, "newline, grow, span 3");
 	}
 
 	private void doOk() {
