@@ -11,6 +11,7 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JLabel;
@@ -24,6 +25,7 @@ import org.hibernate.Transaction;
 import com.floreantpos.POSConstants;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.ActionHistory;
+import com.floreantpos.model.ShopTable;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.dao.ActionHistoryDAO;
@@ -292,6 +294,14 @@ public class SplitTicketDialog extends POSDialog {
 		
 		//FIXME: WHAT ABOUT TABLE NUMBER?
 		//ticket.setTableNumber(mainTicketView.getTicket().getTableNumber());
+		
+		Set<ShopTable> tables = mainTicketView.getTicket().getTables();
+		if(tables != null) {
+			for (ShopTable shopTable : tables) {
+				ticket.addTotables(shopTable);
+			}
+		}
+		
 		session.saveOrUpdate(ticket);
 	}
 
