@@ -42,7 +42,7 @@ public class VoidTicketDialog extends POSDialog {
 			POSMessageDialog.showError(com.floreantpos.POSConstants.CANNOT_LOAD_VOID_REASONS, e);
 		}
 		
-		setSize(850, 650);
+		setSize(450, 650);
     }
     
     /** This method is called from within the constructor to
@@ -57,7 +57,6 @@ public class VoidTicketDialog extends POSDialog {
         titlePanel1 = new com.floreantpos.ui.TitlePanel();
         transparentPanel1 = new com.floreantpos.swing.TransparentPanel();
         jPanel1 = new javax.swing.JPanel();
-        ticketView = new com.floreantpos.ui.views.order.TicketView();
         jPanel2 = new javax.swing.JPanel();
         ticketDetailView = new com.floreantpos.ui.views.TicketDetailView();
         transparentPanel2 = new com.floreantpos.swing.TransparentPanel();
@@ -83,9 +82,6 @@ public class VoidTicketDialog extends POSDialog {
 
         jPanel1.setOpaque(false);
         jPanel1.setLayout(new java.awt.BorderLayout());
-
-        ticketView.setControlsVisible(false);
-        jPanel1.add(ticketView, java.awt.BorderLayout.CENTER);
 
         transparentPanel1.add(jPanel1, java.awt.BorderLayout.WEST);
 
@@ -253,7 +249,6 @@ public class VoidTicketDialog extends POSDialog {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JSeparator jSeparator1;
     private com.floreantpos.ui.views.TicketDetailView ticketDetailView;
-    private com.floreantpos.ui.views.order.TicketView ticketView;
     private com.floreantpos.ui.TitlePanel titlePanel1;
     private com.floreantpos.swing.TransparentPanel transparentPanel1;
     private com.floreantpos.swing.TransparentPanel transparentPanel2;
@@ -267,8 +262,6 @@ public class VoidTicketDialog extends POSDialog {
 
 	public void setTicket(Ticket ticket) {
 		this.ticket = ticket;
-		
-		ticketView.setTicket(ticket);
 		ticketDetailView.setTicket(ticket);
 	}
     
