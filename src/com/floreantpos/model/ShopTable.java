@@ -28,4 +28,9 @@ public class ShopTable extends BaseShopTable {
 		setX(x);
 		setY(y);
 	}
+	
+	@Override
+	public String toString() {
+		return getNumber();
+	}
 }
