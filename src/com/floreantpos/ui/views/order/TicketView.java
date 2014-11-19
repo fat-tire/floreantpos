@@ -42,7 +42,6 @@ import com.floreantpos.model.TicketItemModifier;
 import com.floreantpos.model.TicketType;
 import com.floreantpos.model.dao.CookingInstructionDAO;
 import com.floreantpos.model.dao.MenuItemDAO;
-import com.floreantpos.print.PosPrintService;
 import com.floreantpos.report.JReportPrintService;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.ui.dialog.BeanEditorDialog;
