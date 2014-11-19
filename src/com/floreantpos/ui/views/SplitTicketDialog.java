@@ -292,9 +292,6 @@ public class SplitTicketDialog extends POSDialog {
 		if (ticket.getTicketItems().size() <= 0)
 			return;
 		
-		//FIXME: WHAT ABOUT TABLE NUMBER?
-		//ticket.setTableNumber(mainTicketView.getTicket().getTableNumber());
-		
 		Set<ShopTable> tables = mainTicketView.getTicket().getTables();
 		if(tables != null) {
 			for (ShopTable shopTable : tables) {
