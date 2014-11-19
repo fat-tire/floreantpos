@@ -63,19 +63,17 @@
 			<list-index column="D_ORDER" />
 			<one-to-many class="com.floreantpos.model.TicketCouponAndDiscount" />
 		</list>
-		
+
 		<set cascade="all" inverse="true" lazy="false" name="transactions">
 			<key>
 				<column name="TICKET_ID" />
 			</key>
 			<one-to-many class="com.floreantpos.model.PosTransaction" />
 		</set>
-		
-		<set cascade="save-update" inverse="false" lazy="false" name="tables">
-			<key>
-				<column name="TICKET_ID" />
-			</key>
-			<one-to-many class="com.floreantpos.model.ShopTable" />
+
+		<set name="tables" cascade="save-update" table="TICKET_TABLE" lazy="false">
+			<key column="ticket_id" />
+			<many-to-many column="table_id" class="com.floreantpos.model.ShopTable" />
 		</set>
 
 		<!-- uni-directional many-to-one association to User -->

@@ -184,68 +184,6 @@ public class DrawerpullReportService {
 		report.setTotalVoidWst(totalWaste);
 	}
 
-	//	private static void populateCashTax(Session session, Terminal terminal, DrawerPullReport report) {
-	//		Criteria criteria;
-	//		ProjectionList projectionList;
-	//		List list;
-	//		//find cash tax amount
-	//		criteria = session.createCriteria(Ticket.class, "t");
-	//		criteria.add(Restrictions.eq(Ticket.PROP_CLOSED, Boolean.TRUE));
-	//		criteria.add(Restrictions.eq(Ticket.PROP_VOIDED, Boolean.FALSE));
-	//		criteria.add(Restrictions.eq(Ticket.PROP_DRAWER_RESETTED, Boolean.FALSE));
-	//		//FIXME: TRANSACTION
-	//		//		criteria.add(Restrictions.eq(Ticket.PROP_TRANSACTION_TYPE, TransactionType.CASH.name()));
-	//		criteria.add(Restrictions.eq(Ticket.PROP_TERMINAL, terminal));
-	//
-	//		projectionList = Projections.projectionList();
-	//		projectionList.add(Projections.rowCount());
-	//		projectionList.add(Projections.sum(Ticket.PROP_TAX_AMOUNT));
-	//
-	//		criteria.setProjection(projectionList);
-	//		list = criteria.list();
-	//
-	//		double cashTax = 0;
-	//		if (list != null && list.size() > 0) {
-	//			Object[] objects = (Object[]) list.get(0);
-	//
-	//			if (objects.length > 1 && objects[1] != null) {
-	//				cashTax = ((Number) objects[1]).doubleValue();
-	//			}
-	//		}
-	//		report.setCashTax(cashTax);
-	//	}
-
-	//	//FIXME: FIX GIFT CERT SECTION
-	//	private static void populateGiftSection(Session session, Terminal terminal, DrawerPullReport report) {
-	//		//gift cert receipt
-	//		Criteria criteria = session.createCriteria(PosTransaction.class);
-	//		//criteria.add(Restrictions.eq(Ticket.PROP_CLOSED, Boolean.TRUE));
-	//		//criteria.add(Restrictions.eq(Ticket.PROP_VOIDED, Boolean.FALSE));
-	//		//criteria.add(Restrictions.eq(Ticket.PROP_DRAWER_RESETTED, Boolean.FALSE));
-	//		criteria.add(Restrictions.eq(PosTransaction.PROP_TERMINAL, terminal));
-	//
-	//		//FIXME: TRANSACTION
-	//		//		criteria.add(Restrictions.eq(Ticket.PROP_TRANSACTION_TYPE, TransactionType.GIFT_CERT.name()));
-	//
-	//		//		ProjectionList projectionList = Projections.projectionList();
-	//		//		projectionList.add(Projections.rowCount());
-	//		//		projectionList.add(Projections.sum(Ticket.PROP_SUBTOTAL_AMOUNT));
-	//		//
-	//		//		criteria.setProjection(projectionList);
-	//		//
-	//		//		List list = criteria.list();
-	//		//
-	//		//		if (list.size() > 0) {
-	//		//			Object[] datas = (Object[]) list.get(0);
-	//		//			if (datas.length > 0 && datas[0] instanceof Number) {
-	//		//				report.setGiftCertReturnCount(((Number) datas[0]).intValue());
-	//		//			}
-	//		//			if (datas.length > 1 && datas[1] instanceof Number) {
-	//		//				report.setGiftCertReturnAmount(((Number) datas[1]).doubleValue());
-	//		//			}
-	//		//		}
-	//	}
-
 	private static void populateNetSales(Session session, Terminal terminal, DrawerPullReport report) {
 		//find net sale, tax
 		Criteria criteria = session.createCriteria(Ticket.class);
