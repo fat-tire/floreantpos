@@ -41,6 +41,7 @@ import com.floreantpos.actions.ShutDownAction;
 import com.floreantpos.bo.ui.BackOfficeWindow;
 import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.demo.KitchenDisplay;
+import com.floreantpos.extension.FloorLayoutPlugin;
 import com.floreantpos.extension.OrderServiceExtension;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.AttendenceHistory;
@@ -282,9 +283,22 @@ public class SwitchboardView extends JPanel implements ActionListener, ITicketLi
 		btnManager.setText(POSConstants.CAPITAL_MANAGER);
 
 		btnClockOut.setText(POSConstants.CAPITAL_CLOCK_OUT);
-
+		
 		bottomPanel.add(bottomRightPanel, java.awt.BorderLayout.EAST);
 		bottomRightPanel.setLayout(new MigLayout("aligny bottom, insets 1 2 1 2, gapy 10", "[140px]", "[][][][][]"));
+		
+		final FloorLayoutPlugin floorLayoutPlugin = Application.getPluginManager().getPlugin(FloorLayoutPlugin.class);
+		if(floorLayoutPlugin != null) {
+			PosButton btnTicketsAndTables = new PosButton("TICKETS & TABLES");
+			btnTicketsAndTables.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					floorLayoutPlugin.openTicketsAndTablesDisplay();
+				}
+			});
+			
+			bottomRightPanel.add(btnTicketsAndTables, "height pref!,grow,wrap");
+		}
 
 		bottomRightPanel.add(btnAuthorize, "height pref!,grow,wrap");
 		bottomRightPanel.add(btnKitchenDisplay, "height pref!,grow,wrap");
