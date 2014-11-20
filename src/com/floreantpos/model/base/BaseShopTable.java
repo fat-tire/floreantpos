@@ -22,6 +22,7 @@ public abstract class BaseShopTable  implements Comparable, Serializable {
 	public static String PROP_OCCUPIED = "occupied";
 	public static String PROP_ID = "id";
 	public static String PROP_CAPACITY = "capacity";
+	public static String PROP_BOOKED = "booked";
 	public static String PROP_Y = "y";
 	public static String PROP_X = "x";
 
@@ -56,6 +57,7 @@ public abstract class BaseShopTable  implements Comparable, Serializable {
 		protected java.lang.Integer x;
 		protected java.lang.Integer y;
 		protected java.lang.Boolean occupied;
+		protected java.lang.Boolean booked;
 
 
 
@@ -196,6 +198,23 @@ public abstract class BaseShopTable  implements Comparable, Serializable {
 	 */
 	public void setOccupied (java.lang.Boolean occupied) {
 		this.occupied = occupied;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: BOOKED
+	 */
+	public java.lang.Boolean isBooked () {
+								return booked == null ? Boolean.FALSE : booked;
+					}
+
+	/**
+	 * Set the value related to the column: BOOKED
+	 * @param booked the BOOKED value
+	 */
+	public void setBooked (java.lang.Boolean booked) {
+		this.booked = booked;
 	}
 
 
