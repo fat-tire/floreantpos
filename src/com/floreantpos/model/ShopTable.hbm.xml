@@ -13,6 +13,7 @@
     <property column="X" name="x" type="java.lang.Integer"/>
     <property column="Y" name="y" type="java.lang.Integer"/>
     <property column="OCCUPIED" name="occupied" type="java.lang.Boolean"/>
+    <property column="BOOKED" name="booked" type="java.lang.Boolean"/>
     <!-- Associations -->
   </class>
 </hibernate-mapping>

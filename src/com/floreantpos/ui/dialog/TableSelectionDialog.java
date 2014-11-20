@@ -1,20 +1,26 @@
 package com.floreantpos.ui.dialog;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dialog;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Frame;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 
+import javax.swing.BorderFactory;
+import javax.swing.DefaultListCellRenderer;
+import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
-import javax.swing.JSeparator;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
 import net.miginfocom.swing.MigLayout;
@@ -35,9 +41,8 @@ public class TableSelectionDialog extends POSDialog implements ActionListener {
 	private TitlePanel titlePanel;
 	private JTextField tfNumber;
 
-	private PosButton posButton_1;
-	
-	private List<ShopTable> tables = new ArrayList<ShopTable>();
+	private DefaultListModel<ShopTable> addedTableListModel = new DefaultListModel<ShopTable>();
+	private JList<ShopTable> addedTableList = new JList<ShopTable>(addedTableListModel);
 
 	public TableSelectionDialog() {
 		this(Application.getPosWindow());
@@ -58,13 +63,15 @@ public class TableSelectionDialog extends POSDialog implements ActionListener {
 		setResizable(false);
 
 		Container contentPane = getContentPane();
+		contentPane.setLayout(new BorderLayout(5, 5));
 
-		MigLayout layout = new MigLayout("fillx", "[60px,fill][60px,fill][60px,fill]", "[][][][][]");
-		contentPane.setLayout(layout);
+		renderTableList();
 
 		titlePanel = new TitlePanel();
 		titlePanel.setTitle("Enter table number");
-		contentPane.add(titlePanel, "spanx ,growy,height 60,wrap");
+		contentPane.add(titlePanel, BorderLayout.NORTH);
+
+		JPanel keypadPanel = new JPanel(new MigLayout("fill"));
 
 		tfNumber = new JTextField();
 		tfNumber.setText(String.valueOf(defaultValue));
@@ -72,13 +79,13 @@ public class TableSelectionDialog extends POSDialog implements ActionListener {
 		tfNumber.setFocusable(true);
 		tfNumber.requestFocus();
 		tfNumber.setBackground(Color.WHITE);
-		contentPane.add(tfNumber, "span 2, grow");
+		keypadPanel.add(tfNumber, "span 2, grow");
 
 		PosButton posButton = new PosButton(POSConstants.CLEAR_ALL);
 		posButton.setFocusable(false);
 		posButton.setMinimumSize(new Dimension(25, 23));
 		posButton.addActionListener(this);
-		contentPane.add(posButton, "growy,height 55,wrap");
+		keypadPanel.add(posButton, "growy,height 55,wrap, w 100!");
 
 		String[][] numbers = { { "7", "8", "9" }, { "4", "5", "6" }, { "1", "2", "3" }, { "0", "CLEAR" } };
 		String[][] iconNames = new String[][] { { "7_32.png", "8_32.png", "9_32.png" }, { "4_32.png", "5_32.png", "6_32.png" },
@@ -103,74 +110,112 @@ public class TableSelectionDialog extends POSDialog implements ActionListener {
 
 				posButton.setActionCommand(buttonText);
 				posButton.addActionListener(this);
-				String constraints = "grow, height 55";
+				String constraints = "grow,w 100!, height 80!";
 				if (j == numbers[i].length - 1) {
 					constraints += ", wrap";
 				}
-				contentPane.add(posButton, constraints);
+				keypadPanel.add(posButton, constraints);
 			}
 		}
-		contentPane.add(new JSeparator(JSeparator.HORIZONTAL), "newline, span 3, grow, gaptop 5");
-		
-		JPanel buttonPanel = new JPanel(new GridLayout(1, 0, 10, 10));
-		
+
+		JPanel buttonPanel = new JPanel(new MigLayout("align 50% 50%"));
+		//buttonPanel.add(new JSeparator(JSeparator.HORIZONTAL), "span 4, grow, gaptop 5");
+
 		posButton = new PosButton("NEXT");
 		posButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if(addTable()) {
+				if (addTable()) {
 					tfNumber.setText("");
 				}
 			}
 		});
-		buttonPanel.add(posButton, "grow");
+		buttonPanel.add(posButton, "newline, w 80");
 
 		posButton = new PosButton(POSConstants.OK);
 		posButton.setFocusable(false);
 		posButton.addActionListener(this);
-		buttonPanel.add(posButton, "skip 1,grow");
+		buttonPanel.add(posButton, "w 80!");
 
-		posButton_1 = new PosButton(POSConstants.CANCEL);
-		posButton_1.setFocusable(false);
-		posButton_1.addActionListener(this);
-		buttonPanel.add(posButton_1, "grow");
+		PosButton btnCancel = new PosButton(POSConstants.CANCEL);
+		btnCancel.setFocusable(false);
+		btnCancel.addActionListener(this);
+		buttonPanel.add(btnCancel, " w 80!");
 
-		contentPane.add(buttonPanel, "newline, grow, span 3");
+		contentPane.add(buttonPanel, BorderLayout.SOUTH);
+		contentPane.add(keypadPanel);
+	}
+
+	private void renderTableList() {
+		JPanel tableListPanel = new JPanel(new BorderLayout(5, 5));
+		tableListPanel.setPreferredSize(new Dimension(150, 100));
+		tableListPanel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(0, 5, 5, 5),
+				BorderFactory.createTitledBorder("Added Tables")));
+
+		PosButton btnRemoveTable = new PosButton("REMOVE");
+		btnRemoveTable.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				ShopTable selectedValue = addedTableList.getSelectedValue();
+				if (selectedValue != null) {
+					addedTableListModel.removeElement(selectedValue);
+				}
+			}
+		});
+		tableListPanel.add(btnRemoveTable, BorderLayout.SOUTH);
+		DefaultListCellRenderer renderer = new DefaultListCellRenderer() {
+			Dimension preferredSize = new Dimension(60, 40);
+
+			public java.awt.Component getListCellRendererComponent(javax.swing.JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+				JLabel rendererComponent = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+				rendererComponent.setHorizontalAlignment(JLabel.CENTER);
+				rendererComponent.setPreferredSize(preferredSize);
+
+				return rendererComponent;
+			};
+		};
+		addedTableList.setCellRenderer(renderer);
+		tableListPanel.add(new JScrollPane(addedTableList));
+
+		getContentPane().add(tableListPanel, BorderLayout.WEST);
 	}
 
 	private void doOk() {
-		if(addTable()) {
-			setCanceled(false);
-			dispose();
-		}
+		setCanceled(false);
+		dispose();
 	}
 
 	private boolean addTable() {
 		String tableNumber = tfNumber.getText();
-		if(StringUtils.isEmpty(tableNumber)) {
+		if (StringUtils.isEmpty(tableNumber)) {
 			POSMessageDialog.showError(this, "Please insert table number");
 			return false;
 		}
-		
+
 		ShopTable shopTable = ShopTableDAO.getInstance().getByNumber(tableNumber);
 
-		if(shopTable == null) {
+		if (shopTable == null) {
 			POSMessageDialog.showError(this, "Table number " + tableNumber + " does not exist");
 			return false;
 		}
-		
-		if(shopTable.isOccupied()) {
-			POSMessageDialog.showError(this,  "Table number " + tableNumber + " is occupied");
+
+		if (shopTable.isOccupied()) {
+			POSMessageDialog.showError(this, "Table number " + tableNumber + " is occupied");
 			return false;
 		}
-		
-		this.tables.add(shopTable);
+
+		if (shopTable.isBooked()) {
+			POSMessageDialog.showError(this, "Table number " + tableNumber + " is booked");
+			return false;
+		}
+
+		addedTableListModel.addElement(shopTable);
 		return true;
 	}
 
 	private void doCancel() {
-		this.tables.clear();
-		
+		addedTableListModel.removeAllElements();
+
 		setCanceled(true);
 		dispose();
 	}
@@ -226,6 +271,13 @@ public class TableSelectionDialog extends POSDialog implements ActionListener {
 	}
 
 	public List<ShopTable> getTables() {
+		Enumeration<ShopTable> elements = this.addedTableListModel.elements();
+		List<ShopTable> tables = new ArrayList<ShopTable>();
+
+		while (elements.hasMoreElements()) {
+			tables.add(elements.nextElement());
+		}
+
 		return tables;
 	}
 }
