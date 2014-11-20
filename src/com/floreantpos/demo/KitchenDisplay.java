@@ -16,6 +16,7 @@ import javax.swing.border.EmptyBorder;
 
 import net.miginfocom.swing.MigLayout;
 
+import com.floreantpos.main.Application;
 import com.floreantpos.model.KitchenTicket;
 import com.floreantpos.model.dao.KitchenTicketDAO;
 import com.floreantpos.ui.dialog.POSMessageDialog;
@@ -30,6 +31,7 @@ public class KitchenDisplay extends JFrame implements ActionListener {
 
 	public KitchenDisplay() {
 		setTitle("Kitchen Display");
+		setIconImage(Application.getApplicationIcon().getImage());
 
 		ticketPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		JScrollPane scrollPane = new JScrollPane(ticketPanel);
