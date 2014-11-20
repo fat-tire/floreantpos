@@ -10,6 +10,8 @@ public class ShopTableButton extends PosButton {
 	public ShopTableButton(ShopTable shopTable) {
 		this.shopTable = shopTable;
 		setText(shopTable.toString());
+		
+		update();
 	}
 
 	public void setShopTable(ShopTable shopTable) {
@@ -25,8 +27,7 @@ public class ShopTableButton extends PosButton {
 		return shopTable.toString();
 	}
 	
-	@Override
-	public void repaint() {
+	public void update() {
 		if(shopTable != null && shopTable.isOccupied()) {
 			setEnabled(false);
 			setBackground(Color.red);
@@ -42,6 +43,5 @@ public class ShopTableButton extends PosButton {
 			setBackground(Color.green);
 			setForeground(Color.black);
 		}
-		super.repaint();
 	}
 }
