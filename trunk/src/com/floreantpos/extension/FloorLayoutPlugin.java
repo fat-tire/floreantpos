@@ -9,6 +9,7 @@ import net.xeoh.plugins.base.Plugin;
 
 public interface FloorLayoutPlugin extends Plugin {
 	void initialize();
+	void openTicketsAndTablesDisplay();
 	void initConfigurationView(ConfigurationDialog dialog);
 	List<ShopTable> captureTableNumbers();
 }

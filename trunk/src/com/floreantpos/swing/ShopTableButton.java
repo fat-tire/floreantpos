@@ -28,14 +28,17 @@ public class ShopTableButton extends PosButton {
 	@Override
 	public void repaint() {
 		if(shopTable != null && shopTable.isOccupied()) {
+			setEnabled(false);
 			setBackground(Color.red);
 			setForeground(Color.black);
 		}
 		else if(shopTable != null && shopTable.isBooked()) {
+			setEnabled(false);
 			setBackground(Color.orange);
 			setForeground(Color.black);
 		}
 		else {
+			setEnabled(true);
 			setBackground(Color.green);
 			setForeground(Color.black);
 		}

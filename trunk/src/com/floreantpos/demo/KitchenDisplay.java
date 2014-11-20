@@ -37,8 +37,7 @@ public class KitchenDisplay extends JFrame implements ActionListener {
 		scrollPane.getHorizontalScrollBar().setPreferredSize(new Dimension(100, 60));
 		add(scrollPane);
 
-		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		setSize(screenSize);
+		setSize(Toolkit.getDefaultToolkit().getScreenSize());
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
 		viewUpdateTimer = new Timer(30 * 1000, this);
