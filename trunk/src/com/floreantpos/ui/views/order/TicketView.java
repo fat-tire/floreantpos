@@ -96,6 +96,7 @@ public class TicketView extends JPanel {
 				btnAddCookingInstruction.setEnabled(item.canAddCookingInstruction());
 				btnIncreaseAmount.setEnabled(!printedToKitchen);
 				btnDecreaseAmount.setEnabled(!printedToKitchen);
+				btnDelete.setEnabled(!printedToKitchen);
 			}
 
 		});

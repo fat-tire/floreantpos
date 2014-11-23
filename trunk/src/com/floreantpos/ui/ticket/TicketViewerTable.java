@@ -4,17 +4,16 @@ import java.awt.Color;
 import java.awt.Rectangle;
 
 import javax.swing.DefaultListSelectionModel;
+import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
-
-import org.jdesktop.swingx.JXTable;
 
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.TicketItemModifier;
 
-public class TicketViewerTable extends JXTable {
+public class TicketViewerTable extends JTable {
 	
 	private TicketViewerTableModel model;
 	private DefaultListSelectionModel selectionModel;
