@@ -23,6 +23,22 @@ public class ShopTableButton extends PosButton {
 	}
 	
 	@Override
+	public boolean equals(Object obj) {
+		if(!(obj instanceof ShopTableButton)) {
+			return false;
+		}
+		
+		ShopTableButton that = (ShopTableButton) obj;
+		
+		return this.shopTable.equals(that.shopTable);
+	}
+	
+	@Override
+	public int hashCode() {
+		return this.shopTable.hashCode();
+	}
+	
+	@Override
 	public String toString() {
 		return shopTable.toString();
 	}
