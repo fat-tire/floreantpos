@@ -42,8 +42,8 @@ public class TicketForSplitView extends com.floreantpos.swing.TransparentPanel i
 	public TicketForSplitView() {
 		initComponents();
 
-		ticketViewerTable.getColumnExt(1).setVisible(false);
-		ticketViewerTable.getColumnExt(2).setVisible(false);
+		//ticketViewerTable.getColumnExt(1).setVisible(false);
+		//ticketViewerTable.getColumnExt(2).setVisible(false);
 		
 		ticket = new Ticket();
 		ticket.setPriceIncludesTax(Application.getInstance().isPriceIncludesTax());
