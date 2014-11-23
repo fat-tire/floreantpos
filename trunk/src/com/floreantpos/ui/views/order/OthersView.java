@@ -20,6 +20,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import com.floreantpos.POSConstants;
+import com.floreantpos.extension.FloorLayoutPlugin;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.MenuItem;
 import com.floreantpos.model.ShopTable;
@@ -200,43 +201,62 @@ public class OthersView extends JPanel {
 		try {
 
 			Ticket thisTicket = getCurrentTicket();
-
-			List<ShopTable> tables = PosGuiUtil.captureTable();
-			if (tables == null) {
-				return;
-			}
-
-			session = TicketDAO.getInstance().getSession();
-			transaction = session.beginTransaction();
-
-			if (thisTicket.getTables() != null) {
-				Set<ShopTable> oldTables = thisTicket.getTables();
-
-				for (ShopTable shopTable : oldTables) {
-					shopTable.setOccupied(false);
-				}
-
-				for (ShopTable shopTable : tables) {
-					shopTable.setOccupied(true);
-				}
-
-				oldTables.retainAll(tables);
+			
+			FloorLayoutPlugin floorLayoutPlugin = Application.getPluginManager().getPlugin(FloorLayoutPlugin.class);
+			List<ShopTable> tables = null;
+			
+			if(floorLayoutPlugin != null) {
+				tables = floorLayoutPlugin.captureTableNumbers(thisTicket);
 			}
 			else {
-				for (ShopTable shopTable : tables) {
-					shopTable.setOccupied(true);
-					thisTicket.addTotables(shopTable);
-				}
+				tables = PosGuiUtil.captureTable(thisTicket);
+			}
+
+			if(tables == null) {
+				return;
 			}
 			
+			session = TicketDAO.getInstance().createNewSession();
+			transaction = session.beginTransaction();
+			
+			clearShopTable(session, thisTicket);
 			session.saveOrUpdate(thisTicket);
+			
+			for (ShopTable shopTable : tables) {
+				shopTable.setOccupied(true);
+				session.merge(shopTable);
+				
+				thisTicket.addTotables(shopTable);
+			}
+
+			session.merge(thisTicket);
 			transaction.commit();
 
 			updateView();
 
 		} catch (Exception e) {
+			e.printStackTrace();
 			transaction.rollback();
+		} finally {
+			if(session != null) {
+				session.close();
+			}
 		}
+	}
+
+	private void clearShopTable(Session session, Ticket thisTicket) {
+		Set<ShopTable> tables2 = thisTicket.getTables();
+		
+		if(tables2 == null) return;
+		
+		for (ShopTable shopTable : tables2) {
+			shopTable.setOccupied(false);
+			shopTable.setBooked(false);
+			
+			session.saveOrUpdate(shopTable);
+		}
+		
+		tables2.clear();
 	}
 
 	private com.floreantpos.swing.PosButton btnCustomerNumber;
