@@ -10,13 +10,15 @@ import javax.swing.text.JTextComponent;
 import com.floreantpos.POSConstants;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.ShopTable;
+import com.floreantpos.model.Ticket;
 import com.floreantpos.ui.dialog.NumberSelectionDialog2;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.dialog.TableSelectionDialog;
 
 public class PosGuiUtil {
-	public static List<ShopTable> captureTable() {
+	public static List<ShopTable> captureTable(Ticket ticket) {
 		TableSelectionDialog dialog = new TableSelectionDialog();
+		dialog.setTicket(ticket);
 		dialog.pack();
 		dialog.open();
 
@@ -30,25 +32,6 @@ public class PosGuiUtil {
 		return dialog.getTables();
 	}
 	
-	public static int captureTableNumber() {
-		NumberSelectionDialog2 dialog = new NumberSelectionDialog2();
-		dialog.setTitle(POSConstants.ENTER_A_TABLE_NUMBER);
-		dialog.pack();
-		dialog.open();
-
-		if (dialog.isCanceled()) {
-			return -1;
-		}
-
-		int tableNumber = (int) dialog.getValue();
-		if (tableNumber == 0) {
-			POSMessageDialog.showError(Application.getPosWindow(), POSConstants.TABLE_NUMBER_CANNOT_BE_0);
-			return -1;
-		}
-
-		return tableNumber;
-	}
-
 	public static int captureGuestNumber() {
 		NumberSelectionDialog2 dialog = new NumberSelectionDialog2();
 		dialog.setTitle(POSConstants.ENTER_NUMBER_OF_GUEST);

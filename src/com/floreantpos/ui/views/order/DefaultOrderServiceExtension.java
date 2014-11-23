@@ -42,10 +42,10 @@ public class DefaultOrderServiceExtension implements OrderServiceExtension {
 		
 		FloorLayoutPlugin floorLayoutPlugin = Application.getPluginManager().getPlugin(FloorLayoutPlugin.class);
 		if(floorLayoutPlugin != null) {
-			tables = floorLayoutPlugin.captureTableNumbers();
+			tables = floorLayoutPlugin.captureTableNumbers(null);
 		}
 		else {
-			tables = PosGuiUtil.captureTable();
+			tables = PosGuiUtil.captureTable(null);
 		}
 
 		if(tables == null) {

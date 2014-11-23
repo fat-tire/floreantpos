@@ -12,6 +12,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.Set;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListCellRenderer;
@@ -31,6 +32,7 @@ import com.floreantpos.IconFactory;
 import com.floreantpos.POSConstants;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.ShopTable;
+import com.floreantpos.model.Ticket;
 import com.floreantpos.model.dao.ShopTableDAO;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.ui.TitlePanel;
@@ -158,6 +160,7 @@ public class TableSelectionDialog extends POSDialog implements ActionListener {
 			public void actionPerformed(ActionEvent e) {
 				ShopTable selectedValue = addedTableList.getSelectedValue();
 				if (selectedValue != null) {
+					selectedValue.setOccupied(false);
 					addedTableListModel.removeElement(selectedValue);
 				}
 			}
@@ -279,5 +282,18 @@ public class TableSelectionDialog extends POSDialog implements ActionListener {
 		}
 
 		return tables;
+	}
+	
+	public void setTicket(Ticket ticket) {
+		if(ticket == null) {
+			return;
+		}
+		
+		Set<ShopTable> tables = ticket.getTables();
+		if(tables == null) return;
+		
+		for (ShopTable shopTable : tables) {
+			addedTableListModel.addElement(shopTable);
+		}
 	}
 }
