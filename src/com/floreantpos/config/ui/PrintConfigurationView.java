@@ -49,6 +49,10 @@ public class PrintConfigurationView extends ConfigurationView {
 	@Override
 	public void initialize() throws Exception {
 		PrintService[] printServices = PrintServiceLookup.lookupPrintServices(null, null);
+		
+		for (PrintService printService : printServices) {
+			System.out.println("printer: " + printService.getName());
+		}
 
 		cbReportPrinterName.setModel(new DefaultComboBoxModel(printServices));
 		cbReceiptPrinterName.setModel(new DefaultComboBoxModel(printServices));

@@ -54,6 +54,7 @@ import com.floreantpos.model.UserType;
 import com.floreantpos.model.dao.AttendenceHistoryDAO;
 import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.model.dao.UserDAO;
+import com.floreantpos.report.JReportPrintService;
 import com.floreantpos.services.TicketService;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.ui.dialog.ManagerDialog;
@@ -687,8 +688,12 @@ public class SwitchboardView extends JPanel implements ActionListener, ITicketLi
 	}
 
 	private void doPayout() {
-		PayoutDialog dialog = new PayoutDialog(Application.getPosWindow(), true);
-		dialog.open();
+		//PayoutDialog dialog = new PayoutDialog(Application.getPosWindow(), true);
+		//dialog.open();
+		
+		Ticket ticket = getSelectedTicket();
+		Ticket ticketToEdit = TicketDAO.getInstance().loadFullTicket(ticket.getId());
+		JReportPrintService.printTicketToKitchen(ticketToEdit);
 	}
 
 	private void doShowManagerWindow() {
