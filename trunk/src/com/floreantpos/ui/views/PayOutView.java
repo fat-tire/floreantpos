@@ -54,6 +54,7 @@ public class PayOutView extends TransparentPanel {
     // <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:initComponents
     private void initComponents() {
         numberSelectionView = new com.floreantpos.ui.views.NumberSelectionView();
+        numberSelectionView.setDecimalAllowed(true);
         jLabel1 = new javax.swing.JLabel();
         cbReason = new javax.swing.JComboBox();
         jLabel2 = new javax.swing.JLabel();
