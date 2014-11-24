@@ -155,6 +155,7 @@ public class TableSelectionDialog extends POSDialog implements ActionListener {
 				BorderFactory.createTitledBorder("Added Tables")));
 
 		PosButton btnRemoveTable = new PosButton("REMOVE");
+		btnRemoveTable.setFocusable(false);
 		btnRemoveTable.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -190,6 +191,7 @@ public class TableSelectionDialog extends POSDialog implements ActionListener {
 
 	private boolean addTable() {
 		String tableNumber = tfNumber.getText();
+		
 		if (StringUtils.isEmpty(tableNumber)) {
 			POSMessageDialog.showError(this, "Please insert table number");
 			return false;
@@ -198,8 +200,8 @@ public class TableSelectionDialog extends POSDialog implements ActionListener {
 		ShopTable shopTable = ShopTableDAO.getInstance().getByNumber(tableNumber);
 
 		if (shopTable == null) {
-			POSMessageDialog.showError(this, "Table number " + tableNumber + " does not exist");
-			return false;
+			shopTable = new ShopTable();
+			shopTable.setNumber(tableNumber);
 		}
 
 		if (shopTable.isOccupied()) {
@@ -239,7 +241,17 @@ public class TableSelectionDialog extends POSDialog implements ActionListener {
 	}
 
 	private void doInsertNumber(String number) {
-		tfNumber.setText(number);
+		String s = tfNumber.getText();
+		
+		if (s.equals("0")) {
+			tfNumber.setText(number);
+			return;
+		}
+
+		s = s + number;
+		
+		tfNumber.setText(s);
+		tfNumber.requestFocus();
 	}
 
 	public void actionPerformed(ActionEvent e) {
