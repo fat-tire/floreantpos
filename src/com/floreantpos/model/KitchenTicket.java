@@ -51,9 +51,9 @@ public class KitchenTicket extends BaseKitchenTicket {
 		}
 		
 		for (TicketItem ticketItem : ticketItems) {
-//			if(ticketItem.isPrintedToKitchen() || !ticketItem.isShouldPrintToKitchen()) {
-//				continue;
-//			}
+			if(ticketItem.isPrintedToKitchen() || !ticketItem.isShouldPrintToKitchen()) {
+				continue;
+			}
 			
 			Printer printer = ticketItem.getPrinter();
 			if(printer == null) {

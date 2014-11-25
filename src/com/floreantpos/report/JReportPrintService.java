@@ -381,14 +381,17 @@ public class JReportPrintService {
 	public static JasperPrint createKitchenPrint(KitchenTicket ticket) throws Exception {
 		HashMap map = new HashMap();
 		
+		map.put(HEADER_LINE1, Application.getInstance().getRestaurant().getName());
+		map.put(HEADER_LINE2, "*** KITCHEN RECEIPT *** ");
+		map.put(SHOW_HEADER_SEPARATOR, Boolean.TRUE);
 		map.put(SHOW_HEADER_SEPARATOR, Boolean.TRUE);
 		map.put(CHECK_NO, POSConstants.RECEIPT_REPORT_TICKET_NO_LABEL + ticket.getTicketId());
-		//if(ticket.getTableNumbers() != -1) {
+		if(ticket.getTableNumbers() != null) {
 			map.put(TABLE_NO, POSConstants.RECEIPT_REPORT_TABLE_NO_LABEL + ticket.getTableNumbers());
-		//}
+		}
 		//map.put(GUEST_COUNT, POSConstants.RECEIPT_REPORT_GUEST_NO_LABEL + ticket.getNumberOfGuests());
 		map.put(SERVER_NAME, POSConstants.RECEIPT_REPORT_SERVER_LABEL + ticket.getServerName());
-		map.put(REPORT_DATE, POSConstants.RECEIPT_REPORT_DATE_LABEL + Application.formatDate(new Date()));
+		map.put(REPORT_DATE, Application.formatDate(new Date()));
 		
 		map.put("ticketHeader", "KTICHEN RECEIPT");
 		
@@ -415,6 +418,7 @@ public class JReportPrintService {
 				JasperPrint jasperPrint = createKitchenPrint(kitchenTicket);
 				jasperPrint.setName("KitchenReceipt-" + ticket.getId() + "-" + deviceName);
 				jasperPrint.setProperty("printerName", deviceName);
+				//JasperViewer.viewReport(jasperPrint, false);
 				
 				KitchenDisplay.instance.addTicket(kitchenTicket);
 				
