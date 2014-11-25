@@ -82,7 +82,6 @@ public class JReportPrintService {
 			JasperReport ticketReport = (JasperReport) JRLoader.loadObject(ticketReportStream);
 
 			JasperPrint jasperPrint = JasperFillManager.fillReport(ticketReport, properties, dataSource);
-
 			return jasperPrint;
 
 		} finally {
@@ -154,13 +153,14 @@ public class JReportPrintService {
 			
 
 			if (transaction != null && transaction.isCard()) {
-				printProperties.setReceiptCopyType("Customer Copy");
+				map.put("cardPayment", true);
+				map.put("copyType", "Customer Copy");
 				JasperPrint jasperPrint = createPrint(ticket, map, transaction);
 				jasperPrint.setName("Ticket-" + ticket.getId() + "-CustomerCopy");
 				jasperPrint.setProperty("printerName", Application.getPrinters().getReceiptPrinter());
 				printQuitely(jasperPrint);
 
-				printProperties.setReceiptCopyType("Merchant Copy");
+				map.put("copyType", "Merchant Copy");
 				jasperPrint = createPrint(ticket, map, transaction);
 				jasperPrint.setName("Ticket-" + ticket.getId() + "-MerchantCopy");
 				jasperPrint.setProperty("printerName", Application.getPrinters().getReceiptPrinter());
@@ -382,7 +382,7 @@ public class JReportPrintService {
 		HashMap map = new HashMap();
 		
 		map.put(HEADER_LINE1, Application.getInstance().getRestaurant().getName());
-		map.put(HEADER_LINE2, "*** KITCHEN RECEIPT *** ");
+		map.put(HEADER_LINE2, "*** KITCHEN RECEIPT *** ");map.put("cardPayment", true);
 		map.put(SHOW_HEADER_SEPARATOR, Boolean.TRUE);
 		map.put(SHOW_HEADER_SEPARATOR, Boolean.TRUE);
 		map.put(CHECK_NO, POSConstants.RECEIPT_REPORT_TICKET_NO_LABEL + ticket.getTicketId());
