@@ -18,6 +18,7 @@ import com.floreantpos.config.AppConfig;
 import com.floreantpos.swing.GlassPane;
 
 public class PosWindow extends JFrame implements WindowListener {
+	private static final String EXTENDEDSTATE = "extendedstate"; //$NON-NLS-1$
 	private static final String WLOCY = "wlocy"; //$NON-NLS-1$
 	private static final String WLOCX = "wlocx"; //$NON-NLS-1$
 	private static final String WHEIGHT = "wheight"; //$NON-NLS-1$
@@ -54,6 +55,11 @@ public class PosWindow extends JFrame implements WindowListener {
 		setLocation(AppConfig.getInt(WLOCX, ((screenSize.width - getWidth()) >> 1)), AppConfig.getInt(WLOCY, ((screenSize.height - getHeight()) >> 1)));
 		setMinimumSize(new Dimension(800, 600));
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		
+		int extendedState = AppConfig.getInt(EXTENDEDSTATE, -1);
+		if(extendedState != -1) {
+			setExtendedState(extendedState);
+		}
 	}
 
 	public void enterFullScreenMode() {
@@ -77,6 +83,8 @@ public class PosWindow extends JFrame implements WindowListener {
 		Point locationOnScreen = getLocationOnScreen();
 		AppConfig.putInt(WLOCX, locationOnScreen.x);
 		AppConfig.putInt(WLOCY, locationOnScreen.y);
+		
+		AppConfig.putInt(EXTENDEDSTATE, getExtendedState());
 	}
 	
 	public void setGlassPaneVisible(boolean b) {
