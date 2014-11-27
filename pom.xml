@@ -47,15 +47,8 @@
 						</goals>
 					</execution>
 				</executions>
-				<!-- <configuration>
-					<doCheck>false</doCheck>
-					<doUpdate>false</doUpdate>
-					<revisionOnScmFailure>true</revisionOnScmFailure>
-					<format>{0,date,yyyyMMdd}</format>
-					<items>
-						<item>timestamp</item>
-					</items>
-				</configuration> -->
+				<!-- <configuration> <doCheck>false</doCheck> <doUpdate>false</doUpdate> <revisionOnScmFailure>true</revisionOnScmFailure> <format>{0,date,yyyyMMdd}</format> 
+					<items> <item>timestamp</item> </items> </configuration> -->
 				<configuration>
 					<doCheck>false</doCheck>
 					<doUpdate>false</doUpdate>
@@ -433,6 +426,12 @@
 			<groupId>net.sourceforge.barbecue</groupId>
 			<artifactId>barbecue</artifactId>
 			<version>1.5-beta1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>xerces</groupId>
+			<artifactId>xercesImpl</artifactId>
+			<version>2.11.0</version>
 		</dependency>
 	</dependencies>
 
