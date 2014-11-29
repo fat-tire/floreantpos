@@ -17,6 +17,7 @@ public abstract class BaseInventoryItem  implements Comparable, Serializable {
 
 	public static String REF = "InventoryItem";
 	public static String PROP_PACKAGE_BARCODE = "packageBarcode";
+	public static String PROP_PACKAGING_UNIT = "packagingUnit";
 	public static String PROP_DESCRIPTION = "description";
 	public static String PROP_ITEM_VENDOR = "itemVendor";
 	public static String PROP_ITEM_GROUP = "itemGroup";
@@ -25,7 +26,6 @@ public abstract class BaseInventoryItem  implements Comparable, Serializable {
 	public static String PROP_SORT_ORDER = "sortOrder";
 	public static String PROP_UNIT_BARCODE = "unitBarcode";
 	public static String PROP_PACKAGE_REPLENISH_LEVEL = "packageReplenishLevel";
-	public static String PROP_PACKAGE_DESCRIPTION = "packageDescription";
 	public static String PROP_NAME = "name";
 	public static String PROP_LAST_UPDATE_DATE = "lastUpdateDate";
 	public static String PROP_TOTAL_PACKAGES = "totalPackages";
@@ -69,7 +69,7 @@ public abstract class BaseInventoryItem  implements Comparable, Serializable {
 		protected java.lang.String name;
 		protected java.lang.String packageBarcode;
 		protected java.lang.String unitBarcode;
-		protected java.lang.String packageDescription;
+		protected java.lang.String packagingUnit;
 		protected java.lang.Double unitPerPackage;
 		protected java.lang.Integer sortOrder;
 		protected java.lang.Integer packageReorderLevel;
@@ -214,18 +214,18 @@ public abstract class BaseInventoryItem  implements Comparable, Serializable {
 
 
 	/**
-	 * Return the value associated with the column: PACKAGE_DESC
+	 * Return the value associated with the column: PACKAGING_UNIT
 	 */
-	public java.lang.String getPackageDescription () {
-					return packageDescription;
+	public java.lang.String getPackagingUnit () {
+					return packagingUnit;
 			}
 
 	/**
-	 * Set the value related to the column: PACKAGE_DESC
-	 * @param packageDescription the PACKAGE_DESC value
+	 * Set the value related to the column: PACKAGING_UNIT
+	 * @param packagingUnit the PACKAGING_UNIT value
 	 */
-	public void setPackageDescription (java.lang.String packageDescription) {
-		this.packageDescription = packageDescription;
+	public void setPackagingUnit (java.lang.String packagingUnit) {
+		this.packagingUnit = packagingUnit;
 	}
 
 
