@@ -55,7 +55,7 @@ public class InventoryItem extends BaseInventoryItem {
 			inventoryItem.setUnitPurchasePrice(POSUtil.parseDouble(strings[index++]));
 			inventoryItem.setPackageBarcode(strings[index++]);
 			inventoryItem.setUnitBarcode(strings[index++]);
-			inventoryItem.setPackageDescription(strings[index++]);
+			inventoryItem.setPackagingUnit(strings[index++]);
 			inventoryItem.setSortOrder(POSUtil.parseInteger(strings[index++]));
 			inventoryItem.setPackageReorderLevel(POSUtil.parseInteger(strings[index++]));
 			inventoryItem.setPackageReplenishLevel(POSUtil.parseInteger(strings[index++]));
