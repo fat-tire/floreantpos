@@ -17,9 +17,11 @@ public abstract class BasePackagingUnit  implements Comparable, Serializable {
 
 	public static String REF = "PackagingUnit";
 	public static String PROP_NAME = "name";
-	public static String PROP_UNIT_CLASS = "unitClass";
 	public static String PROP_FACTOR = "factor";
+	public static String PROP_SHORT_NAME = "shortName";
 	public static String PROP_ID = "id";
+	public static String PROP_DIMENSION = "dimension";
+	public static String PROP_BASE_UNIT = "baseUnit";
 
 
 	// constructors
@@ -45,11 +47,11 @@ public abstract class BasePackagingUnit  implements Comparable, Serializable {
 	private java.lang.Integer id;
 
 	// fields
-		protected java.lang.Double factor;
 		protected java.lang.String name;
-
-	// many to one
-	private com.floreantpos.model.PackagingUnitClass unitClass;
+		protected java.lang.String shortName;
+		protected java.lang.Double factor;
+		protected java.lang.Boolean baseUnit;
+		protected java.lang.String dimension;
 
 
 
@@ -76,23 +78,6 @@ public abstract class BasePackagingUnit  implements Comparable, Serializable {
 
 
 	/**
-	 * Return the value associated with the column: FACTOR
-	 */
-	public java.lang.Double getFactor () {
-									return factor == null ? Double.valueOf(0) : factor;
-					}
-
-	/**
-	 * Set the value related to the column: FACTOR
-	 * @param factor the FACTOR value
-	 */
-	public void setFactor (java.lang.Double factor) {
-		this.factor = factor;
-	}
-
-
-
-	/**
 	 * Return the value associated with the column: NAME
 	 */
 	public java.lang.String getName () {
@@ -110,18 +95,69 @@ public abstract class BasePackagingUnit  implements Comparable, Serializable {
 
 
 	/**
-	 * Return the value associated with the column: UNIT_CLASS_ID
+	 * Return the value associated with the column: SHORT_NAME
 	 */
-	public com.floreantpos.model.PackagingUnitClass getUnitClass () {
-					return unitClass;
+	public java.lang.String getShortName () {
+					return shortName;
 			}
 
 	/**
-	 * Set the value related to the column: UNIT_CLASS_ID
-	 * @param unitClass the UNIT_CLASS_ID value
+	 * Set the value related to the column: SHORT_NAME
+	 * @param shortName the SHORT_NAME value
 	 */
-	public void setUnitClass (com.floreantpos.model.PackagingUnitClass unitClass) {
-		this.unitClass = unitClass;
+	public void setShortName (java.lang.String shortName) {
+		this.shortName = shortName;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: FACTOR
+	 */
+	public java.lang.Double getFactor () {
+									return factor == null ? Double.valueOf(0) : factor;
+					}
+
+	/**
+	 * Set the value related to the column: FACTOR
+	 * @param factor the FACTOR value
+	 */
+	public void setFactor (java.lang.Double factor) {
+		this.factor = factor;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: BASEUNIT
+	 */
+	public java.lang.Boolean isBaseUnit () {
+								return baseUnit == null ? Boolean.FALSE : baseUnit;
+					}
+
+	/**
+	 * Set the value related to the column: BASEUNIT
+	 * @param baseUnit the BASEUNIT value
+	 */
+	public void setBaseUnit (java.lang.Boolean baseUnit) {
+		this.baseUnit = baseUnit;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: DIMENSION
+	 */
+	public java.lang.String getDimension () {
+					return dimension;
+			}
+
+	/**
+	 * Set the value related to the column: DIMENSION
+	 * @param dimension the DIMENSION value
+	 */
+	public void setDimension (java.lang.String dimension) {
+		this.dimension = dimension;
 	}
 
 

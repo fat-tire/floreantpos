@@ -6,8 +6,9 @@
       <generator class="identity"/>
     </id>
     <property column="NAME" name="name" type="java.lang.String" length="30" unique="true"/>
+    <property column="SHORT_NAME" name="shortName" type="java.lang.String" length="10"/>
     <property column="FACTOR" name="factor" type="java.lang.Double"/>
-   	
-   	<many-to-one name="unitClass" class="PackagingUnitClass" column="UNIT_CLASS_ID"/>
+    <property column="BASEUNIT" name="baseUnit" type="java.lang.Boolean"/>
+   	<property column="DIMENSION" name="dimension" type="java.lang.String" length="30"/>
   </class>
 </hibernate-mapping>

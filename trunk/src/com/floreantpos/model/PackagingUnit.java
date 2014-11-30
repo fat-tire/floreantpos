@@ -1,5 +1,7 @@
 package com.floreantpos.model;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.floreantpos.model.base.BasePackagingUnit;
 
 
@@ -21,5 +23,18 @@ public class PackagingUnit extends BasePackagingUnit {
 
 /*[CONSTRUCTOR MARKER END]*/
 
+	public void setPackagingDimension(PackagingDimension dimension) {
+		setDimension(dimension.name());
+	}
+	
+	public PackagingDimension getPackagingDimension() {
+		String dimension2 = getDimension();
+		
+		if(StringUtils.isEmpty(dimension2)) {
+			return null;
+		}
+		
+		return PackagingDimension.valueOf(dimension2);
+	}
 
 }
