@@ -2,29 +2,29 @@ package com.floreantpos.model.dao;
 
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
-import com.floreantpos.model.dao.PackagingUnitDAO;
+import com.floreantpos.model.dao.PackagingUnitClassDAO;
 import org.hibernate.criterion.Order;
 
 /**
  * This is an automatically generated DAO class which should not be edited.
  */
-public abstract class BasePackagingUnitDAO extends com.floreantpos.model.dao._RootDAO {
+public abstract class BasePackagingUnitClassDAO extends com.floreantpos.model.dao._RootDAO {
 
 	// query name references
 
 
-	public static PackagingUnitDAO instance;
+	public static PackagingUnitClassDAO instance;
 
 	/**
 	 * Return a singleton of the DAO
 	 */
-	public static PackagingUnitDAO getInstance () {
-		if (null == instance) instance = new PackagingUnitDAO();
+	public static PackagingUnitClassDAO getInstance () {
+		if (null == instance) instance = new PackagingUnitClassDAO();
 		return instance;
 	}
 
 	public Class getReferenceClass () {
-		return com.floreantpos.model.PackagingUnit.class;
+		return com.floreantpos.model.PackagingUnitClass.class;
 	}
 
     public Order getDefaultOrder () {
@@ -32,35 +32,35 @@ public abstract class BasePackagingUnitDAO extends com.floreantpos.model.dao._Ro
     }
 
 	/**
-	 * Cast the object as a com.floreantpos.model.PackagingUnit
+	 * Cast the object as a com.floreantpos.model.PackagingUnitClass
 	 */
-	public com.floreantpos.model.PackagingUnit cast (Object object) {
-		return (com.floreantpos.model.PackagingUnit) object;
+	public com.floreantpos.model.PackagingUnitClass cast (Object object) {
+		return (com.floreantpos.model.PackagingUnitClass) object;
 	}
 
-	public com.floreantpos.model.PackagingUnit get(java.lang.Integer key)
+	public com.floreantpos.model.PackagingUnitClass get(java.lang.Integer key)
 		throws org.hibernate.HibernateException {
-		return (com.floreantpos.model.PackagingUnit) get(getReferenceClass(), key);
+		return (com.floreantpos.model.PackagingUnitClass) get(getReferenceClass(), key);
 	}
 
-	public com.floreantpos.model.PackagingUnit get(java.lang.Integer key, Session s)
+	public com.floreantpos.model.PackagingUnitClass get(java.lang.Integer key, Session s)
 		throws org.hibernate.HibernateException {
-		return (com.floreantpos.model.PackagingUnit) get(getReferenceClass(), key, s);
+		return (com.floreantpos.model.PackagingUnitClass) get(getReferenceClass(), key, s);
 	}
 
-	public com.floreantpos.model.PackagingUnit load(java.lang.Integer key)
+	public com.floreantpos.model.PackagingUnitClass load(java.lang.Integer key)
 		throws org.hibernate.HibernateException {
-		return (com.floreantpos.model.PackagingUnit) load(getReferenceClass(), key);
+		return (com.floreantpos.model.PackagingUnitClass) load(getReferenceClass(), key);
 	}
 
-	public com.floreantpos.model.PackagingUnit load(java.lang.Integer key, Session s)
+	public com.floreantpos.model.PackagingUnitClass load(java.lang.Integer key, Session s)
 		throws org.hibernate.HibernateException {
-		return (com.floreantpos.model.PackagingUnit) load(getReferenceClass(), key, s);
+		return (com.floreantpos.model.PackagingUnitClass) load(getReferenceClass(), key, s);
 	}
 
-	public com.floreantpos.model.PackagingUnit loadInitialize(java.lang.Integer key, Session s) 
+	public com.floreantpos.model.PackagingUnitClass loadInitialize(java.lang.Integer key, Session s) 
 			throws org.hibernate.HibernateException { 
-		com.floreantpos.model.PackagingUnit obj = load(key, s); 
+		com.floreantpos.model.PackagingUnitClass obj = load(key, s); 
 		if (!Hibernate.isInitialized(obj)) {
 			Hibernate.initialize(obj);
 		} 
@@ -72,14 +72,14 @@ public abstract class BasePackagingUnitDAO extends com.floreantpos.model.dao._Ro
 	/**
 	 * Return all objects related to the implementation of this DAO with no filter.
 	 */
-	public java.util.List<com.floreantpos.model.PackagingUnit> findAll () {
+	public java.util.List<com.floreantpos.model.PackagingUnitClass> findAll () {
 		return super.findAll();
 	}
 
 	/**
 	 * Return all objects related to the implementation of this DAO with no filter.
 	 */
-	public java.util.List<com.floreantpos.model.PackagingUnit> findAll (Order defaultOrder) {
+	public java.util.List<com.floreantpos.model.PackagingUnitClass> findAll (Order defaultOrder) {
 		return super.findAll(defaultOrder);
 	}
 
@@ -88,43 +88,43 @@ public abstract class BasePackagingUnitDAO extends com.floreantpos.model.dao._Ro
 	 * Use the session given.
 	 * @param s the Session
 	 */
-	public java.util.List<com.floreantpos.model.PackagingUnit> findAll (Session s, Order defaultOrder) {
+	public java.util.List<com.floreantpos.model.PackagingUnitClass> findAll (Session s, Order defaultOrder) {
 		return super.findAll(s, defaultOrder);
 	}
 
 	/**
 	 * Persist the given transient instance, first assigning a generated identifier. (Or using the current value
 	 * of the identifier property if the assigned generator is used.) 
-	 * @param packagingUnit a transient instance of a persistent class 
+	 * @param packagingUnitClass a transient instance of a persistent class 
 	 * @return the class identifier
 	 */
-	public java.lang.Integer save(com.floreantpos.model.PackagingUnit packagingUnit)
+	public java.lang.Integer save(com.floreantpos.model.PackagingUnitClass packagingUnitClass)
 		throws org.hibernate.HibernateException {
-		return (java.lang.Integer) super.save(packagingUnit);
+		return (java.lang.Integer) super.save(packagingUnitClass);
 	}
 
 	/**
 	 * Persist the given transient instance, first assigning a generated identifier. (Or using the current value
 	 * of the identifier property if the assigned generator is used.) 
 	 * Use the Session given.
-	 * @param packagingUnit a transient instance of a persistent class
+	 * @param packagingUnitClass a transient instance of a persistent class
 	 * @param s the Session
 	 * @return the class identifier
 	 */
-	public java.lang.Integer save(com.floreantpos.model.PackagingUnit packagingUnit, Session s)
+	public java.lang.Integer save(com.floreantpos.model.PackagingUnitClass packagingUnitClass, Session s)
 		throws org.hibernate.HibernateException {
-		return (java.lang.Integer) save((Object) packagingUnit, s);
+		return (java.lang.Integer) save((Object) packagingUnitClass, s);
 	}
 
 	/**
 	 * Either save() or update() the given instance, depending upon the value of its identifier property. By default
 	 * the instance is always saved. This behaviour may be adjusted by specifying an unsaved-value attribute of the
 	 * identifier property mapping. 
-	 * @param packagingUnit a transient instance containing new or updated state 
+	 * @param packagingUnitClass a transient instance containing new or updated state 
 	 */
-	public void saveOrUpdate(com.floreantpos.model.PackagingUnit packagingUnit)
+	public void saveOrUpdate(com.floreantpos.model.PackagingUnitClass packagingUnitClass)
 		throws org.hibernate.HibernateException {
-		saveOrUpdate((Object) packagingUnit);
+		saveOrUpdate((Object) packagingUnitClass);
 	}
 
 	/**
@@ -132,34 +132,34 @@ public abstract class BasePackagingUnitDAO extends com.floreantpos.model.dao._Ro
 	 * instance is always saved. This behaviour may be adjusted by specifying an unsaved-value attribute of the identifier
 	 * property mapping. 
 	 * Use the Session given.
-	 * @param packagingUnit a transient instance containing new or updated state.
+	 * @param packagingUnitClass a transient instance containing new or updated state.
 	 * @param s the Session.
 	 */
-	public void saveOrUpdate(com.floreantpos.model.PackagingUnit packagingUnit, Session s)
+	public void saveOrUpdate(com.floreantpos.model.PackagingUnitClass packagingUnitClass, Session s)
 		throws org.hibernate.HibernateException {
-		saveOrUpdate((Object) packagingUnit, s);
+		saveOrUpdate((Object) packagingUnitClass, s);
 	}
 
 	/**
 	 * Update the persistent state associated with the given identifier. An exception is thrown if there is a persistent
 	 * instance with the same identifier in the current session.
-	 * @param packagingUnit a transient instance containing updated state
+	 * @param packagingUnitClass a transient instance containing updated state
 	 */
-	public void update(com.floreantpos.model.PackagingUnit packagingUnit) 
+	public void update(com.floreantpos.model.PackagingUnitClass packagingUnitClass) 
 		throws org.hibernate.HibernateException {
-		update((Object) packagingUnit);
+		update((Object) packagingUnitClass);
 	}
 
 	/**
 	 * Update the persistent state associated with the given identifier. An exception is thrown if there is a persistent
 	 * instance with the same identifier in the current session.
 	 * Use the Session given.
-	 * @param packagingUnit a transient instance containing updated state
+	 * @param packagingUnitClass a transient instance containing updated state
 	 * @param the Session
 	 */
-	public void update(com.floreantpos.model.PackagingUnit packagingUnit, Session s)
+	public void update(com.floreantpos.model.PackagingUnitClass packagingUnitClass, Session s)
 		throws org.hibernate.HibernateException {
-		update((Object) packagingUnit, s);
+		update((Object) packagingUnitClass, s);
 	}
 
 	/**
@@ -187,23 +187,23 @@ public abstract class BasePackagingUnitDAO extends com.floreantpos.model.dao._Ro
 	/**
 	 * Remove a persistent instance from the datastore. The argument may be an instance associated with the receiving
 	 * Session or a transient instance with an identifier associated with existing persistent state. 
-	 * @param packagingUnit the instance to be removed
+	 * @param packagingUnitClass the instance to be removed
 	 */
-	public void delete(com.floreantpos.model.PackagingUnit packagingUnit)
+	public void delete(com.floreantpos.model.PackagingUnitClass packagingUnitClass)
 		throws org.hibernate.HibernateException {
-		delete((Object) packagingUnit);
+		delete((Object) packagingUnitClass);
 	}
 
 	/**
 	 * Remove a persistent instance from the datastore. The argument may be an instance associated with the receiving
 	 * Session or a transient instance with an identifier associated with existing persistent state. 
 	 * Use the Session given.
-	 * @param packagingUnit the instance to be removed
+	 * @param packagingUnitClass the instance to be removed
 	 * @param s the Session
 	 */
-	public void delete(com.floreantpos.model.PackagingUnit packagingUnit, Session s)
+	public void delete(com.floreantpos.model.PackagingUnitClass packagingUnitClass, Session s)
 		throws org.hibernate.HibernateException {
-		delete((Object) packagingUnit, s);
+		delete((Object) packagingUnitClass, s);
 	}
 	
 	/**
@@ -216,9 +216,9 @@ public abstract class BasePackagingUnitDAO extends com.floreantpos.model.dao._Ro
 	 * <li>after inserting a Blob or Clob</li>
 	 * </ul>
 	 */
-	public void refresh (com.floreantpos.model.PackagingUnit packagingUnit, Session s)
+	public void refresh (com.floreantpos.model.PackagingUnitClass packagingUnitClass, Session s)
 		throws org.hibernate.HibernateException {
-		refresh((Object) packagingUnit, s);
+		refresh((Object) packagingUnitClass, s);
 	}
 
 
