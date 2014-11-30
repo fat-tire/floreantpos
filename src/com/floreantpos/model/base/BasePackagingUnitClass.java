@@ -5,32 +5,30 @@ import java.io.Serializable;
 
 
 /**
- * This is an object that contains data related to the PACKAGING_UNIT table.
+ * This is an object that contains data related to the PACKAGING_UNIT_CLASS table.
  * Do not modify this class because it will be overwritten if the configuration file
  * related to this class is modified.
  *
  * @hibernate.class
- *  table="PACKAGING_UNIT"
+ *  table="PACKAGING_UNIT_CLASS"
  */
 
-public abstract class BasePackagingUnit  implements Comparable, Serializable {
+public abstract class BasePackagingUnitClass  implements Comparable, Serializable {
 
-	public static String REF = "PackagingUnit";
+	public static String REF = "PackagingUnitClass";
 	public static String PROP_NAME = "name";
-	public static String PROP_UNIT_CLASS = "unitClass";
-	public static String PROP_FACTOR = "factor";
 	public static String PROP_ID = "id";
 
 
 	// constructors
-	public BasePackagingUnit () {
+	public BasePackagingUnitClass () {
 		initialize();
 	}
 
 	/**
 	 * Constructor for primary key
 	 */
-	public BasePackagingUnit (java.lang.Integer id) {
+	public BasePackagingUnitClass (java.lang.Integer id) {
 		this.setId(id);
 		initialize();
 	}
@@ -45,11 +43,7 @@ public abstract class BasePackagingUnit  implements Comparable, Serializable {
 	private java.lang.Integer id;
 
 	// fields
-		protected java.lang.Double factor;
 		protected java.lang.String name;
-
-	// many to one
-	private com.floreantpos.model.PackagingUnitClass unitClass;
 
 
 
@@ -76,23 +70,6 @@ public abstract class BasePackagingUnit  implements Comparable, Serializable {
 
 
 	/**
-	 * Return the value associated with the column: FACTOR
-	 */
-	public java.lang.Double getFactor () {
-									return factor == null ? Double.valueOf(0) : factor;
-					}
-
-	/**
-	 * Set the value related to the column: FACTOR
-	 * @param factor the FACTOR value
-	 */
-	public void setFactor (java.lang.Double factor) {
-		this.factor = factor;
-	}
-
-
-
-	/**
 	 * Return the value associated with the column: NAME
 	 */
 	public java.lang.String getName () {
@@ -109,32 +86,15 @@ public abstract class BasePackagingUnit  implements Comparable, Serializable {
 
 
 
-	/**
-	 * Return the value associated with the column: UNIT_CLASS_ID
-	 */
-	public com.floreantpos.model.PackagingUnitClass getUnitClass () {
-					return unitClass;
-			}
-
-	/**
-	 * Set the value related to the column: UNIT_CLASS_ID
-	 * @param unitClass the UNIT_CLASS_ID value
-	 */
-	public void setUnitClass (com.floreantpos.model.PackagingUnitClass unitClass) {
-		this.unitClass = unitClass;
-	}
-
-
-
 
 
 	public boolean equals (Object obj) {
 		if (null == obj) return false;
-		if (!(obj instanceof com.floreantpos.model.PackagingUnit)) return false;
+		if (!(obj instanceof com.floreantpos.model.PackagingUnitClass)) return false;
 		else {
-			com.floreantpos.model.PackagingUnit packagingUnit = (com.floreantpos.model.PackagingUnit) obj;
-			if (null == this.getId() || null == packagingUnit.getId()) return false;
-			else return (this.getId().equals(packagingUnit.getId()));
+			com.floreantpos.model.PackagingUnitClass packagingUnitClass = (com.floreantpos.model.PackagingUnitClass) obj;
+			if (null == this.getId() || null == packagingUnitClass.getId()) return false;
+			else return (this.getId().equals(packagingUnitClass.getId()));
 		}
 	}
 
