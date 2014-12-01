@@ -3,73 +3,76 @@ package com.floreantpos.ui.dialog;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.List;
 
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JSeparator;
 
 import net.miginfocom.swing.MigLayout;
 
 import com.floreantpos.main.Application;
-import com.floreantpos.model.Ticket;
-import com.floreantpos.print.PosPrintService;
+import com.floreantpos.model.PosTransaction;
 import com.floreantpos.report.JReportPrintService;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.util.NumberUtil;
 
 public class TransactionCompletionDialog extends POSDialog {
-	private List<Ticket> tickets;
+	//private List<Ticket> tickets;
 	private double tenderedAmount;
 	private double totalAmount;
 	private double paidAmount;
 	private double dueAmount;
 	private double gratuityAmount;
 	private double changeAmount;
-	
+
 	private JLabel lblTenderedAmount;
 	private JLabel lblTotalAmount;
 	private JLabel lblPaidAmount;
 	private JLabel lblDueAmount;
 	private JLabel lblChangeDue;
 	private JLabel lblGratuityAmount;
-	
-	private TransactionCompletionDialog(Frame parent) {
+
+	private PosTransaction completedTransaction;
+
+	public TransactionCompletionDialog(Frame parent, PosTransaction transaction) {
 		super(parent, true);
 		
+		this.completedTransaction = transaction;
+
 		setTitle(com.floreantpos.POSConstants.TRANSACTION_COMPLETED);
-		
-		setLayout(new MigLayout("align 50% 0%, ins 20","[]20[]",""));
-		
-		add(createLabel("TOTAL AMOUNT" + ":",JLabel.LEFT), "grow");
-		lblTotalAmount = createLabel("0.0",JLabel.RIGHT);
+
+		setLayout(new MigLayout("align 50% 0%, ins 20", "[]20[]", ""));
+
+		add(createLabel("TOTAL AMOUNT" + ":", JLabel.LEFT), "grow");
+		lblTotalAmount = createLabel("0.0", JLabel.RIGHT);
 		add(lblTotalAmount, "span, grow");
-		
-		add(createLabel("TENDERED AMOUNT" + ":",JLabel.LEFT), "newline,grow");
-		lblTenderedAmount = createLabel("0.0",JLabel.RIGHT);
+
+		add(createLabel("TENDERED AMOUNT" + ":", JLabel.LEFT), "newline,grow");
+		lblTenderedAmount = createLabel("0.0", JLabel.RIGHT);
 		add(lblTenderedAmount, "span, grow");
-		
+
 		add(new JSeparator(), "newline,span, grow");
-		
-		add(createLabel("PAID AMOUNT" + ":",JLabel.LEFT), "newline,grow");
-		lblPaidAmount = createLabel("0.0",JLabel.RIGHT);
+
+		add(createLabel("PAID AMOUNT" + ":", JLabel.LEFT), "newline,grow");
+		lblPaidAmount = createLabel("0.0", JLabel.RIGHT);
 		add(lblPaidAmount, "span, grow");
 
-		add(createLabel("DUE AMOUNT" + ":",JLabel.LEFT), "newline,grow");
-		lblDueAmount = createLabel("0.0",JLabel.RIGHT);
+		add(createLabel("DUE AMOUNT" + ":", JLabel.LEFT), "newline,grow");
+		lblDueAmount = createLabel("0.0", JLabel.RIGHT);
 		add(lblDueAmount, "span, grow");
-		
+
 		add(new JSeparator(), "newline,span, grow");
-		
-		add(createLabel("GRATUITY AMOUNT" + ":",JLabel.LEFT), "newline,grow");
-		lblGratuityAmount = createLabel("0.0",JLabel.RIGHT);
+
+		add(createLabel("GRATUITY AMOUNT" + ":", JLabel.LEFT), "newline,grow");
+		lblGratuityAmount = createLabel("0.0", JLabel.RIGHT);
 		add(lblGratuityAmount, "span, grow");
-		
+
 		add(new JSeparator(), "newline,span, grow");
-		
-		add(createLabel("CHANGE DUE" + ":",JLabel.LEFT), "grow");
+
+		add(createLabel("CHANGE DUE" + ":", JLabel.LEFT), "grow");
 		lblChangeDue = createLabel("0.0", JLabel.RIGHT);
 		add(lblChangeDue, "span, grow");
-		
+
 		add(new JSeparator(), "sg mygroup,newline,span,grow");
 		PosButton btnClose = new PosButton("CLOSE");
 		btnClose.addActionListener(new ActionListener() {
@@ -77,28 +80,54 @@ public class TransactionCompletionDialog extends POSDialog {
 			public void actionPerformed(ActionEvent e) {
 				dispose();
 			}
-			
+
 		});
 
-		PosButton btnPrintClose = new PosButton("PRINT & CLOSE");
-		btnPrintClose.addActionListener(new ActionListener() {
+		PosButton btnPrintStoreCopy = new PosButton("PRINT STORE COPY");
+		btnPrintStoreCopy.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					for (Ticket ticket : tickets) {
-						JReportPrintService.printTicket(ticket);
-					}
-				}catch(Exception ee) {
-					POSMessageDialog.showError(Application.getPosWindow(), "There was an error while printing money receipt", ee);
+
+					JReportPrintService.printTransaction(completedTransaction, false);
+
+				} catch (Exception ee) {
+					POSMessageDialog.showError(Application.getPosWindow(), "There was an error while printing.", ee);
 				}
 				dispose();
 			}
 		});
-		
-		add(btnPrintClose, "newline,skip, align 100%,h 50, w 120");
-		add(btnClose, "skip, align 100%,h 50, w 120");
+
+		PosButton btnPrintAllCopy = new PosButton("PRINT STORE & MERCHANT COPY");
+		btnPrintAllCopy.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+
+					JReportPrintService.printTransaction(completedTransaction, true);
+
+				} catch (Exception ee) {
+					POSMessageDialog.showError(Application.getPosWindow(), "There was an error while printing.", ee);
+				}
+				dispose();
+			}
+		});
+
+		JPanel p = new JPanel();
+
+		if (completedTransaction.isCard()) {
+			p.add(btnPrintAllCopy, "newline,skip, h 50");
+			p.add(btnPrintStoreCopy, "skip, h 50");
+			p.add(btnClose, "skip, h 50");
+		}
+		else {
+			btnPrintStoreCopy.setText("PRINT");
+			p.add(btnPrintStoreCopy, "skip, h 50");
+			p.add(btnClose, "skip, h 50");
+		}
+
+		add(p, "newline, span 2, grow, gaptop 15px");
 		//setResizable(false);
 	}
-	
+
 	protected JLabel createLabel(String text, int alignment) {
 		JLabel label = new JLabel(text);
 		label.setFont(new java.awt.Font("Tahoma", 1, 24));
@@ -124,15 +153,7 @@ public class TransactionCompletionDialog extends POSDialog {
 		lblGratuityAmount.setText(NumberUtil.formatNumber(gratuityAmount));
 		lblChangeDue.setText(NumberUtil.formatNumber(changeAmount));
 	}
-	
-	private static TransactionCompletionDialog instance;
-	
-	public static TransactionCompletionDialog getInstance() {
-		if(instance == null) {
-			instance = new TransactionCompletionDialog(Application.getPosWindow());
-		}
-		return instance;
-	}
+
 
 	public double getDueAmount() {
 		return dueAmount;
@@ -166,19 +187,15 @@ public class TransactionCompletionDialog extends POSDialog {
 		this.gratuityAmount = gratuityAmount;
 	}
 
-	public List<Ticket> getTickets() {
-		return tickets;
-	}
-
-	public void setTickets(List<Ticket> tickets) {
-		this.tickets = tickets;
-	}
-
 	public double getChangeAmount() {
 		return changeAmount;
 	}
 
 	public void setChangeAmount(double changeAmount) {
 		this.changeAmount = changeAmount;
+	}
+
+	public void setCompletedTransaction(PosTransaction completedTransaction) {
+		this.completedTransaction = completedTransaction;
 	}
 }

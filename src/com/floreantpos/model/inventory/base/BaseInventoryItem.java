@@ -69,7 +69,6 @@ public abstract class BaseInventoryItem  implements Comparable, Serializable {
 		protected java.lang.String name;
 		protected java.lang.String packageBarcode;
 		protected java.lang.String unitBarcode;
-		protected java.lang.String packagingUnit;
 		protected java.lang.Double unitPerPackage;
 		protected java.lang.Integer sortOrder;
 		protected java.lang.Integer packageReorderLevel;
@@ -83,6 +82,7 @@ public abstract class BaseInventoryItem  implements Comparable, Serializable {
 		protected java.lang.Boolean visible;
 
 	// many to one
+	private com.floreantpos.model.PackagingUnit packagingUnit;
 	private com.floreantpos.model.inventory.InventoryGroup itemGroup;
 	private com.floreantpos.model.inventory.InventoryLocation itemLocation;
 	private com.floreantpos.model.inventory.InventoryVendor itemVendor;
@@ -209,23 +209,6 @@ public abstract class BaseInventoryItem  implements Comparable, Serializable {
 	 */
 	public void setUnitBarcode (java.lang.String unitBarcode) {
 		this.unitBarcode = unitBarcode;
-	}
-
-
-
-	/**
-	 * Return the value associated with the column: PACKAGING_UNIT
-	 */
-	public java.lang.String getPackagingUnit () {
-					return packagingUnit;
-			}
-
-	/**
-	 * Set the value related to the column: PACKAGING_UNIT
-	 * @param packagingUnit the PACKAGING_UNIT value
-	 */
-	public void setPackagingUnit (java.lang.String packagingUnit) {
-		this.packagingUnit = packagingUnit;
 	}
 
 
@@ -413,6 +396,23 @@ public abstract class BaseInventoryItem  implements Comparable, Serializable {
 	 */
 	public void setVisible (java.lang.Boolean visible) {
 		this.visible = visible;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: PUNIT_ID
+	 */
+	public com.floreantpos.model.PackagingUnit getPackagingUnit () {
+					return packagingUnit;
+			}
+
+	/**
+	 * Set the value related to the column: PUNIT_ID
+	 * @param packagingUnit the PUNIT_ID value
+	 */
+	public void setPackagingUnit (com.floreantpos.model.PackagingUnit packagingUnit) {
+		this.packagingUnit = packagingUnit;
 	}
 
 

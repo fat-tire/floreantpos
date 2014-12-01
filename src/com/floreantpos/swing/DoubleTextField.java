@@ -15,7 +15,7 @@ public class DoubleTextField extends FocusedTextField {
 		try {
 			return Double.parseDouble(getText());
 		} catch (Exception e) {
-			return 0;
+			return Double.NaN;
 		}
 	}
 }

@@ -37,4 +37,8 @@ public class PackagingUnit extends BasePackagingUnit {
 		return PackagingDimension.valueOf(dimension2);
 	}
 
+	@Override
+	public String toString() {
+		return getName();
+	}
 }

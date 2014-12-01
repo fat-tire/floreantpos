@@ -23,6 +23,7 @@ import com.floreantpos.model.MenuItemModifierGroup;
 import com.floreantpos.model.MenuItemShift;
 import com.floreantpos.model.MenuModifier;
 import com.floreantpos.model.MenuModifierGroup;
+import com.floreantpos.model.PackagingUnit;
 import com.floreantpos.model.PayoutReason;
 import com.floreantpos.model.PayoutRecepient;
 import com.floreantpos.model.PosTransaction;
@@ -152,6 +153,7 @@ public abstract class _RootDAO extends com.floreantpos.model.dao._BaseRootDAO {
 		configuration = configuration.addClass(InventoryWarehouse.class);
 		configuration = configuration.addClass(Recepie.class);
 		configuration = configuration.addClass(RecepieItem.class);
+		configuration = configuration.addClass(PackagingUnit.class);
 		
 		return configuration;
 	}
