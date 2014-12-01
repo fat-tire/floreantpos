@@ -15,7 +15,6 @@
         <property column="NAME" length="60" name="name" type="java.lang.String"/>
         <property column="PACKAGE_BARCODE" length="30" name="packageBarcode" type="java.lang.String"/>
         <property column="UNIT_BARCODE" length="30" name="unitBarcode" type="java.lang.String"/>
-        <property column="PACKAGING_UNIT" length="30" name="packagingUnit" type="java.lang.String"/>
         <property column="UNIT_PER_PACKAGE" name="unitPerPackage" type="java.lang.Double"/>
         <property column="SORT_ORDER" name="sortOrder" type="java.lang.Integer"/>
         <property column="PACKAGE_REORDER_LEVEL" name="packageReorderLevel" type="java.lang.Integer"/>
@@ -29,6 +28,10 @@
         <property column="UNIT_PURCHASE_PRICE" name="unitPurchasePrice" type="java.lang.Double"/>
         <property column="UNIT_SELLING_PRICE" name="unitSellingPrice" type="java.lang.Double"/>
         <property column="VISIBLE" name="visible" type="java.lang.Boolean"/>
+        
+        <many-to-one class="com.floreantpos.model.PackagingUnit" name="packagingUnit">
+            <column name="PUNIT_ID"/>
+        </many-to-one>
 
         <many-to-one class="InventoryGroup" name="itemGroup">
             <column name="ITEM_GROUP_ID"/>

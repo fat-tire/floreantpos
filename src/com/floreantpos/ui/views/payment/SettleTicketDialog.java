@@ -405,8 +405,8 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 	}
 
 	private void showTransactionCompleteMsg(final double dueAmount, final double tenderedAmount, Ticket ticket, PosTransaction transaction) {
-		TransactionCompletionDialog dialog = TransactionCompletionDialog.getInstance();
-		dialog.setTickets(Arrays.asList(ticket));
+		TransactionCompletionDialog dialog = new TransactionCompletionDialog(Application.getPosWindow(), transaction);
+		dialog.setCompletedTransaction(transaction);
 		dialog.setTenderedAmount(tenderedAmount);
 		dialog.setTotalAmount(dueAmount);
 		dialog.setPaidAmount(transaction.getAmount());
@@ -444,7 +444,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 				JReportPrintService.printTicketToKitchen(ticket);
 			}
 
-			JReportPrintService.printTransaction(transaction);
+			//JReportPrintService.printTransaction(transaction);
 		} catch (Exception ee) {
 			POSMessageDialog.showError(Application.getPosWindow(), com.floreantpos.POSConstants.PRINT_ERROR, ee);
 		}
@@ -529,7 +529,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 				if (confirmPayDialog.isCanceled()) {
 					return;
 				}
-
+				
 				if (CardConfig.getMerchantGateway() == MerchantGateway.AUTHORIZE_NET) {
 					transaction.setCardType(cardName);
 					transaction.setCardTrack(cardString);

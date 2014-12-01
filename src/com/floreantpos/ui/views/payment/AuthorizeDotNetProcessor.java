@@ -12,6 +12,8 @@ import net.authorize.data.creditcard.CreditCard;
 
 import org.apache.commons.lang.StringUtils;
 
+import us.fatehi.magnetictrack.bankcard.BankCardMagneticTrack;
+
 import com.floreantpos.config.CardConfig;
 import com.floreantpos.model.PosTransaction;
 
@@ -224,7 +226,7 @@ public class AuthorizeDotNetProcessor {
 			throw new Exception("Error\n" + result.getResponseReasonCodes().get(0).getReasonText());
 		}
 	}
-	
+
 	public static void voidAmount(String transId, double amount) throws Exception {
 		Environment environment = createEnvironment();
 		Merchant merchant = createMerchant(environment);
@@ -236,8 +238,8 @@ public class AuthorizeDotNetProcessor {
 		Result<Transaction> result = (Result<Transaction>) merchant.postTransaction(authCaptureTransaction);
 
 		if (result.isApproved()) {
-//			transaction.setCardTransactionId(result.getTransId());
-//			transaction.setAuthorizationCode(result.getAuthCode());
+			//			transaction.setCardTransactionId(result.getTransId());
+			//			transaction.setAuthorizationCode(result.getAuthCode());
 		}
 		else if (result.isDeclined()) {
 			throw new Exception("Transaction declined\n" + result.getResponseReasonCodes().get(0).getReasonText());
@@ -253,7 +255,7 @@ public class AuthorizeDotNetProcessor {
 
 		if (StringUtils.isNotEmpty(transaction.getCardTrack())) {
 			return createCard(transaction.getCardTrack(), transaction.getCardType());
-			
+
 		}
 		else {
 			return createCard(transaction.getCardNumber(), transaction.getCardExpiryMonth(), transaction.getCardExpiryYear(), transaction.getCardType());
@@ -271,18 +273,18 @@ public class AuthorizeDotNetProcessor {
 		if (tracks.length > 1) {
 			creditCard.setTrack2(";" + tracks[1]);
 		}
-		
+
 		return creditCard;
 	}
-	
+
 	private static CreditCard createCard(String cardNumber, String expMonth, String expYear, String cardType) {
 		CreditCard creditCard = CreditCard.createCreditCard();
 		creditCard.setCardType(CardType.findByValue(cardType));
-		
+
 		creditCard.setExpirationYear(expYear);
 		creditCard.setExpirationMonth(expMonth);
 		creditCard.setCreditCardNumber(cardNumber);
-		
+
 		return creditCard;
 	}
 
@@ -307,59 +309,63 @@ public class AuthorizeDotNetProcessor {
 	}
 
 	public static void main(String[] args) throws Exception {
-		String apiLoginID = "6tuU4N3H";
-		String transactionKey = "4k6955x3T8bCVPVm";
-		//String MD5Value = "paltalk123";
+		//		String apiLoginID = "6tuU4N3H";
+		//		String transactionKey = "4k6955x3T8bCVPVm";
+		//		//String MD5Value = "paltalk123";
+		//
+		//		Environment environment = Environment.SANDBOX;
+		//
+		//		Merchant merchant = Merchant.createMerchant(environment, apiLoginID, transactionKey);
+		//		merchant.setDeviceType(net.authorize.DeviceType.VIRTUAL_TERMINAL);
+		//		merchant.setMarketType(net.authorize.MarketType.RETAIL);
+		//		//merchant.setMD5Value(MD5Value);
+		//
+		//		// Create credit card
+		//		CreditCard creditCard = createCard("%B4111111111111111^SHAH/RIAR^1803101000000000020000831000000?;4111111111111111=1803101000020000831?", CardType.VISA.name());
+		//		
+		//		Transaction authTransaction = merchant.createAIMTransaction(TransactionType.AUTH_ONLY, new BigDecimal(100));
+		//		authTransaction.setCreditCard(creditCard);
+		//		
+		//		Result<Transaction> result = (Result<Transaction>) merchant.postTransaction(authTransaction);
+		//		
+		//		if (result.isApproved()) {
+		//			
+		//			System.out.println("authorization successful");
+		//			
+		//			Thread.sleep(1000);
+		//			
+		//			Transaction authCaptureTransaction = merchant.createAIMTransaction(TransactionType.PRIOR_AUTH_CAPTURE, new BigDecimal(100));
+		//			authCaptureTransaction.setTransactionId(result.getTransId());
+		//			authCaptureTransaction.setCreditCard(creditCard);
+		//
+		//			Result<Transaction> result2 = (Result<Transaction>) merchant.postTransaction(authCaptureTransaction);
+		//			
+		//			if (result2.isApproved()) {
+		//				System.out.println("capture successful");
+		//				
+		//				Thread.sleep(1000);
+		//				
+		//				Transaction voidTransaction = merchant.createAIMTransaction(TransactionType.VOID, new BigDecimal(100));
+		//				voidTransaction.setTransactionId(result.getTransId());
+		//				voidTransaction.setCreditCard(creditCard);
+		//				
+		//				Result<Transaction> result3 = (Result<Transaction>) merchant.postTransaction(authCaptureTransaction);
+		//				
+		//				if(result3.isApproved()) {
+		//					System.out.println("void successful");
+		//				}
+		//				else {
+		//					System.out.println("void declined");
+		//				}
+		//			}
+		//		}
+		//		else {
+		//			System.out.println(result.getXmlResponseDocument());
+		//		}
 
-		Environment environment = Environment.SANDBOX;
-
-		Merchant merchant = Merchant.createMerchant(environment, apiLoginID, transactionKey);
-		merchant.setDeviceType(net.authorize.DeviceType.VIRTUAL_TERMINAL);
-		merchant.setMarketType(net.authorize.MarketType.RETAIL);
-		//merchant.setMD5Value(MD5Value);
-
-		// Create credit card
-		CreditCard creditCard = createCard("%B4111111111111111^SHAH/RIAR^1803101000000000020000831000000?;4111111111111111=1803101000020000831?", CardType.VISA.name());
-		
-		Transaction authTransaction = merchant.createAIMTransaction(TransactionType.AUTH_ONLY, new BigDecimal(100));
-		authTransaction.setCreditCard(creditCard);
-		
-		Result<Transaction> result = (Result<Transaction>) merchant.postTransaction(authTransaction);
-		
-		if (result.isApproved()) {
-			
-			System.out.println("authorization successful");
-			
-			Thread.sleep(1000);
-			
-			Transaction authCaptureTransaction = merchant.createAIMTransaction(TransactionType.PRIOR_AUTH_CAPTURE, new BigDecimal(100));
-			authCaptureTransaction.setTransactionId(result.getTransId());
-			authCaptureTransaction.setCreditCard(creditCard);
-
-			Result<Transaction> result2 = (Result<Transaction>) merchant.postTransaction(authCaptureTransaction);
-			
-			if (result2.isApproved()) {
-				System.out.println("capture successful");
-				
-				Thread.sleep(1000);
-				
-				Transaction voidTransaction = merchant.createAIMTransaction(TransactionType.VOID, new BigDecimal(100));
-				voidTransaction.setTransactionId(result.getTransId());
-				voidTransaction.setCreditCard(creditCard);
-				
-				Result<Transaction> result3 = (Result<Transaction>) merchant.postTransaction(authCaptureTransaction);
-				
-				if(result3.isApproved()) {
-					System.out.println("void successful");
-				}
-				else {
-					System.out.println("void declined");
-				}
-			}
-		}
-		else {
-			System.out.println(result.getXmlResponseDocument());
-		}
+		final BankCardMagneticTrack track = BankCardMagneticTrack
+				.from("%B4111111111111111^SHAH/RIAR^1803101000000000020000831000000?;4111111111111111=1803101000020000831?");
+		System.out.println(track.getTrack2().getExpirationDate());
 
 	}
 }

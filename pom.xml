@@ -283,6 +283,10 @@
 					<artifactId>commons-collections</artifactId>
 					<groupId>commons-collections</groupId>
 				</exclusion>
+				<exclusion>
+					<artifactId>xml-apis</artifactId>
+					<groupId>xml-apis</groupId>
+				</exclusion>
 			</exclusions>
 		</dependency>
 
@@ -312,6 +316,10 @@
 				<exclusion>
 					<artifactId>servlet-api</artifactId>
 					<groupId>javax.servlet</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>xml-apis</artifactId>
+					<groupId>xml-apis</groupId>
 				</exclusion>
 			</exclusions>
 		</dependency>
@@ -433,11 +441,13 @@
 			<artifactId>xercesImpl</artifactId>
 			<version>2.11.0</version>
 		</dependency>
+
 		<dependency>
-			<groupId>org.jscience</groupId>
-			<artifactId>jscience</artifactId>
-			<version>4.3.1</version>
+			<groupId>us.fatehi</groupId>
+			<artifactId>magnetictrackparser</artifactId>
+			<version>1.0</version>
 		</dependency>
+
 	</dependencies>
 
 	<repositories>
