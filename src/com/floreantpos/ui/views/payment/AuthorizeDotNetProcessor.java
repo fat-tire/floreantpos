@@ -17,75 +17,9 @@ import us.fatehi.magnetictrack.bankcard.BankCardMagneticTrack;
 import com.floreantpos.config.CardConfig;
 import com.floreantpos.model.PosTransaction;
 
-public class AuthorizeDotNetProcessor {
-	//	public static String process(String cardNumber, String expMonth, String expYear, double tenderedAmount, CardType cardType) throws Exception {
-	//		//		private static String apiLoginID = "6tuU4N3H";
-	//		//	    private static String transactionKey = "4k6955x3T8bCVPVm"; 
-	//
-	//		Environment environment = createEnvironment();
-	//		Merchant merchant = createMerchant(environment);
-	//
-	//		// Create credit card
-	//		CreditCard creditCard = CreditCard.createCreditCard();
-	//		creditCard.setCardType(cardType);
-	//
-	//		//		%B4111111111111111^SHAH/RIAR^1803101000000000020000831000000?;4111111111111111=1803101000020000831?
-	//
-	//		creditCard.setCreditCardNumber(cardNumber);
-	//		creditCard.setExpirationMonth(expMonth);
-	//		creditCard.setExpirationYear(expYear);
-	//
-	//		// Create transaction
-	//		Transaction authCaptureTransaction = merchant.createAIMTransaction(TransactionType.AUTH_CAPTURE, new BigDecimal(tenderedAmount));
-	//		authCaptureTransaction.setCreditCard(creditCard);
-	//
-	//		Result<Transaction> result = (Result<Transaction>) merchant.postTransaction(authCaptureTransaction);
-	//
-	//		if (result.isApproved()) {
-	//			//POSMessageDialog.showMessage("Approved!</br>" + "Transaction Id: " + result.getTransId());
-	//			return result.getAuthCode();
-	//		}
-	//		else if (result.isDeclined()) {
-	//			throw new Exception("Card declined\n" + result.getResponseReasonCodes().get(0).getReasonText());
-	//			//POSMessageDialog.showMessage("Declined.</br>");
-	//			//System.out.println(result.getResponseReasonCodes().get(0) + " : " + result.getResponseReasonCodes().get(0).getReasonText());
-	//		}
-	//		else {
-	//			throw new Exception("Error\n" + result.getResponseReasonCodes().get(0).getReasonText());
-	//			//POSMessageDialog.showMessage("Error.</br>");
-	//			//System.out.println(result.getResponseReasonCodes().get(0) + " : " + result.getResponseReasonCodes().get(0).getReasonText());
-	//		}
-	//	}
-	//
-	//	public static String process(String cardTracks, double tenderedAmount, CardType cardType) throws Exception {
-	//		Environment environment = createEnvironment();
-	//		Merchant merchant = createMerchant(environment);
-	//
-	//		CreditCard creditCard = createCard(cardTracks, cardType);
-	//
-	//		// Create transaction
-	//		Transaction authCaptureTransaction = merchant.createAIMTransaction(TransactionType.AUTH_CAPTURE, new BigDecimal(tenderedAmount));
-	//		authCaptureTransaction.setCreditCard(creditCard);
-	//
-	//		Result<Transaction> result = (Result<Transaction>) merchant.postTransaction(authCaptureTransaction);
-	//
-	//		if (result.isApproved()) {
-	//			//POSMessageDialog.showMessage("Approved!</br>" + "Transaction Id: " + result.getTransId());
-	//			return result.getAuthCode();
-	//		}
-	//		else if (result.isDeclined()) {
-	//			throw new Exception("Card declined\n" + result.getResponseReasonCodes().get(0).getReasonText());
-	//			//POSMessageDialog.showMessage("Declined.</br>");
-	//			//System.out.println(result.getResponseReasonCodes().get(0) + " : " + result.getResponseReasonCodes().get(0).getReasonText());
-	//		}
-	//		else {
-	//			throw new Exception("Error\n" + result.getResponseReasonCodes().get(0).getReasonText());
-	//			//POSMessageDialog.showMessage("Error.</br>");
-	//			//System.out.println(result.getResponseReasonCodes().get(0) + " : " + result.getResponseReasonCodes().get(0).getReasonText());
-	//		}
-	//	}
+public class AuthorizeDotNetProcessor implements CardProcessor {
 
-	public static String authorizeAmount(String cardTracks, double amount, String cardType) throws Exception {
+	public String authorizeAmount(String cardTracks, double amount, String cardType) throws Exception {
 		Environment environment = createEnvironment();
 		Merchant merchant = createMerchant(environment);
 
@@ -108,7 +42,7 @@ public class AuthorizeDotNetProcessor {
 		}
 	}
 
-	public static void authorizeAmount(PosTransaction transaction) throws Exception {
+	public void authorizeAmount(PosTransaction transaction) throws Exception {
 		Environment environment = createEnvironment();
 		Merchant merchant = createMerchant(environment);
 
@@ -132,7 +66,7 @@ public class AuthorizeDotNetProcessor {
 		}
 	}
 
-	public static String authorizeAmount(String cardNumber, String expMonth, String expYear, double amount, CardType cardType) throws Exception {
+	public String authorizeAmount(String cardNumber, String expMonth, String expYear, double amount, CardType cardType) throws Exception {
 		Environment environment = createEnvironment();
 		Merchant merchant = createMerchant(environment);
 
@@ -159,7 +93,7 @@ public class AuthorizeDotNetProcessor {
 		}
 	}
 
-	public static void captureAuthorizedAmount(PosTransaction transaction) throws Exception {
+	public void captureAuthorizedAmount(PosTransaction transaction) throws Exception {
 		Environment environment = createEnvironment();
 		Merchant merchant = createMerchant(environment);
 
@@ -181,7 +115,7 @@ public class AuthorizeDotNetProcessor {
 		}
 	}
 
-	public static void captureNewAmount(PosTransaction transaction) throws Exception {
+	public void captureNewAmount(PosTransaction transaction) throws Exception {
 		Environment environment = createEnvironment();
 		Merchant merchant = createMerchant(environment);
 
@@ -205,7 +139,7 @@ public class AuthorizeDotNetProcessor {
 		}
 	}
 
-	public static void voidAmount(PosTransaction transaction) throws Exception {
+	public void voidAmount(PosTransaction transaction) throws Exception {
 		Environment environment = createEnvironment();
 		Merchant merchant = createMerchant(environment);
 
@@ -227,7 +161,7 @@ public class AuthorizeDotNetProcessor {
 		}
 	}
 
-	public static void voidAmount(String transId, double amount) throws Exception {
+	public void voidAmount(String transId, double amount) throws Exception {
 		Environment environment = createEnvironment();
 		Merchant merchant = createMerchant(environment);
 
@@ -249,7 +183,7 @@ public class AuthorizeDotNetProcessor {
 		}
 	}
 
-	private static CreditCard createCard(PosTransaction transaction) {
+	private CreditCard createCard(PosTransaction transaction) {
 		CreditCard creditCard = CreditCard.createCreditCard();
 		creditCard.setCardType(CardType.findByValue(transaction.getCardType()));
 
@@ -262,7 +196,7 @@ public class AuthorizeDotNetProcessor {
 		}
 	}
 
-	private static CreditCard createCard(String cardTrack, String cardType) {
+	private CreditCard createCard(String cardTrack, String cardType) {
 		CreditCard creditCard = CreditCard.createCreditCard();
 		creditCard.setCardType(CardType.findByValue(cardType));
 
@@ -277,7 +211,7 @@ public class AuthorizeDotNetProcessor {
 		return creditCard;
 	}
 
-	private static CreditCard createCard(String cardNumber, String expMonth, String expYear, String cardType) {
+	private CreditCard createCard(String cardNumber, String expMonth, String expYear, String cardType) {
 		CreditCard creditCard = CreditCard.createCreditCard();
 		creditCard.setCardType(CardType.findByValue(cardType));
 
@@ -288,7 +222,7 @@ public class AuthorizeDotNetProcessor {
 		return creditCard;
 	}
 
-	private static Merchant createMerchant(Environment environment) throws Exception {
+	private Merchant createMerchant(Environment environment) throws Exception {
 		String apiLoginID = CardConfig.getMerchantAccount();
 		String transactionKey = CardConfig.getMerchantPass();
 		//String MD5Value = "paltalk123";
@@ -300,7 +234,7 @@ public class AuthorizeDotNetProcessor {
 		return merchant;
 	}
 
-	private static Environment createEnvironment() {
+	private Environment createEnvironment() {
 		Environment environment = Environment.PRODUCTION;
 		if (CardConfig.isSandboxMode()) {
 			environment = Environment.SANDBOX;

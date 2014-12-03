@@ -58,12 +58,17 @@ public class CardConfig {
 	}
 
 	public static MerchantGateway getMerchantGateway() {
-		String gateway = AppConfig.getString(MERCHANT_GATEWAY);
+		String gateway = AppConfig.getString(MERCHANT_GATEWAY, MerchantGateway.AUTHORIZE_NET.name());
 		if (StringUtils.isEmpty(gateway)) {
 			return MerchantGateway.AUTHORIZE_NET;
 		}
 
-		return MerchantGateway.valueOf(gateway);
+		MerchantGateway merchantGateway = MerchantGateway.valueOf(gateway);
+		if(merchantGateway == null) {
+			throw new RuntimeException("Merchant gateway is not configured");
+		}
+		
+		return merchantGateway;
 	}
 
 	public static void setMerchantAccount(String account) {
