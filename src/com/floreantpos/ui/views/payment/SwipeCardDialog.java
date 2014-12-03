@@ -7,6 +7,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JPanel;
 
 import com.floreantpos.config.CardConfig;
+import com.floreantpos.main.Application;
 import com.floreantpos.swing.PosButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -90,6 +91,10 @@ public class SwipeCardDialog extends POSDialog implements CardInputter {
 		});
 		passwordField.setColumns(30);
 		panel_1.add(passwordField);
+		
+		if(Application.getInstance().isDevelopmentMode()) {
+			passwordField.setText("%B4111111111111111^SHAH/RIAR^1803101000000000020000831000000?;4111111111111111=1803101000020000831?");
+		}
 		
 		if (!CardConfig.isManualEntrySupported()) {
 			btnManualEntry.setEnabled(false);
