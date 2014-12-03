@@ -12,6 +12,7 @@ import net.authorize.data.creditcard.CardType;
 import org.apache.commons.lang.StringUtils;
 
 import com.floreantpos.PosException;
+import com.floreantpos.config.CardConfig;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.CardReader;
 import com.floreantpos.model.PaymentType;
@@ -24,7 +25,6 @@ import com.floreantpos.ui.dialog.PaymentTypeSelectionDialog;
 import com.floreantpos.ui.views.order.OrderView;
 import com.floreantpos.ui.views.order.RootView;
 import com.floreantpos.ui.views.payment.AuthorizationCodeDialog;
-import com.floreantpos.ui.views.payment.AuthorizeDotNetProcessor;
 import com.floreantpos.ui.views.payment.CardInputListener;
 import com.floreantpos.ui.views.payment.CardInputter;
 import com.floreantpos.ui.views.payment.ManualCardEntryDialog;
@@ -138,7 +138,7 @@ public class NewBarTabAction extends AbstractAction implements CardInputListener
 		waitDialog.setVisible(true);
 		
 		try {
-			String transactionId = AuthorizeDotNetProcessor.authorizeAmount(cardString, Ticket.BAR_TAB_ADVANCE, selectedPaymentType.getDisplayString());
+			String transactionId = CardConfig.getMerchantGateway().getProcessor().authorizeAmount(cardString, Ticket.BAR_TAB_ADVANCE, selectedPaymentType.getDisplayString());
 			
 			Ticket ticket = createTicket(application);
 			
@@ -187,7 +187,7 @@ public class NewBarTabAction extends AbstractAction implements CardInputListener
 		try {
 			CardType cardType = CardType.findByValue(selectedPaymentType.getDisplayString());
 			
-			String transactionId = AuthorizeDotNetProcessor.authorizeAmount(cardNumber, expMonth, expYear, Ticket.BAR_TAB_ADVANCE, cardType);
+			String transactionId = CardConfig.getMerchantGateway().getProcessor().authorizeAmount(cardNumber, expMonth, expYear, Ticket.BAR_TAB_ADVANCE, cardType);
 			
 			Ticket ticket = createTicket(application);
 			

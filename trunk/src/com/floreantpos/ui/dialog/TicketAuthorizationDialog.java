@@ -16,6 +16,7 @@ import org.apache.commons.lang.StringUtils;
 
 import com.floreantpos.actions.ActionCommand;
 import com.floreantpos.actions.CloseDialogAction;
+import com.floreantpos.config.CardConfig;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.CardReader;
 import com.floreantpos.model.PosTransaction;
@@ -27,7 +28,7 @@ import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.ui.TitlePanel;
 import com.floreantpos.ui.TransactionListView;
-import com.floreantpos.ui.views.payment.AuthorizeDotNetProcessor;
+import com.floreantpos.ui.views.payment.CardProcessor;
 import com.floreantpos.ui.views.payment.PaymentProcessWaitDialog;
 
 public class TicketAuthorizationDialog extends POSDialog {
@@ -153,16 +154,18 @@ public class TicketAuthorizationDialog extends POSDialog {
 		double authorizedAmount = transaction.calculateAuthorizeAmount();
 		double totalAmount = transaction.getAmount();
 
+		CardProcessor cardProcessor = CardConfig.getMerchantGateway().getProcessor();
+		
 		if (totalAmount > authorizedAmount) {
-			AuthorizeDotNetProcessor.voidAmount(transaction);
-			AuthorizeDotNetProcessor.captureNewAmount(transaction);
+			cardProcessor.voidAmount(transaction);
+			cardProcessor.captureNewAmount(transaction);
 
 			transaction.setCaptured(true);
 
 			PosTransactionDAO.getInstance().saveOrUpdate(transaction);
 		}
 		else {
-			AuthorizeDotNetProcessor.captureAuthorizedAmount(transaction);
+			cardProcessor.captureAuthorizedAmount(transaction);
 
 			transaction.setCaptured(true);
 
