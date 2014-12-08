@@ -20,7 +20,7 @@ import com.floreantpos.ui.BeanEditor;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.util.PosGuiUtil;
 
-public class CustomerForm extends BeanEditor {
+public class CustomerForm extends BeanEditor<Customer> {
 	private FixedLengthTextField tfLoyaltyNo;
 	private FixedLengthTextField tfAddress;
 	private FixedLengthTextField tfCity;

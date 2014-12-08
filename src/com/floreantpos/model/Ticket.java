@@ -62,6 +62,10 @@ public class Ticket extends BaseTicket {
 
 	private List deletedItems;
 	private boolean priceIncludesTax;
+
+	public static final String CUSTOMER_PHONE = "CUSTOMER_PHONE";
+	public static final String CUSTOMER_NAME = "CUSTOMER_NAME";
+	public static final String CUSTOMER_ID = "CUSTOMER_ID";
 	
 	public String getTableNumbers() {
 		Set<ShopTable> tables = getTables();
