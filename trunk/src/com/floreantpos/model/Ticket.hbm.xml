@@ -95,8 +95,5 @@
 		<many-to-one class="com.floreantpos.model.Terminal" cascade="none" lazy="false" name="terminal">
 			<column name="TERMINAL_ID" />
 		</many-to-one>
-		<many-to-one class="com.floreantpos.model.Customer" lazy="false" name="customer">
-			<column name="CUSTOMER_ID" />
-		</many-to-one>
 	</class>
 </hibernate-mapping>

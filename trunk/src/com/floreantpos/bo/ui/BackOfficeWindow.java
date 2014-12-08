@@ -52,6 +52,7 @@ import com.floreantpos.bo.actions.UserTypeExplorerAction;
 import com.floreantpos.bo.actions.ViewGratuitiesAction;
 import com.floreantpos.config.AppConfig;
 import com.floreantpos.extension.InventoryPlugin;
+import com.floreantpos.extension.OrderServiceExtension;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.User;
 import com.floreantpos.model.UserPermission;
@@ -193,6 +194,14 @@ public class BackOfficeWindow extends javax.swing.JFrame {
 		explorerMenu.add(new CouponExplorerAction());
 		explorerMenu.add(new CookingInstructionExplorerAction());
 		explorerMenu.add(new TaxExplorerAction());
+		
+		OrderServiceExtension plugin = Application.getPluginManager().getPlugin(OrderServiceExtension.class);
+		if (plugin == null) {
+			return;
+		}
+		
+		plugin.createCustomerMenu(explorerMenu);
+		
 		menuBar.add(explorerMenu);
 	}
 

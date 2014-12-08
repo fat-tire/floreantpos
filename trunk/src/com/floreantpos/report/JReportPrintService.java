@@ -29,7 +29,6 @@ import us.fatehi.magnetictrack.bankcard.BankCardMagneticTrack;
 import com.floreantpos.POSConstants;
 import com.floreantpos.demo.KitchenDisplay;
 import com.floreantpos.main.Application;
-import com.floreantpos.model.Customer;
 import com.floreantpos.model.KitchenTicket;
 import com.floreantpos.model.PosTransaction;
 import com.floreantpos.model.RefundTransaction;
@@ -335,12 +334,13 @@ public class JReportPrintService {
 			}
 
 			String messageString = "<html>";
-			if (ticket.getCustomer() != null) {
-				Customer customer = ticket.getCustomer();
-				if (customer.hasProperty("mykalaid")) {
-					messageString += "<br/>Customer: " + customer.getName();
-				}
-			}
+//			String customerName = ticket.getProperty(Ticket.CUSTOMER_NAME);
+			
+//			if (customerName != null) {
+//				if (customer.hasProperty("mykalaid")) {
+//					messageString += "<br/>Customer: " + customer.getName();
+//				}
+//			}
 			if (ticket.hasProperty("mykaladiscount")) {
 				messageString += "<br/>My Kala point: " + ticket.getProperty("mykalapoing");
 				messageString += "<br/>My Kala discount: " + ticket.getDiscountAmount();
@@ -395,16 +395,17 @@ public class JReportPrintService {
 		//customer info section
 		if (ticket.getType() != TicketType.DINE_IN) {
 
-			Customer customer = ticket.getCustomer();
+			String customerName = ticket.getProperty(Ticket.CUSTOMER_NAME);
+			String customerPhone = ticket.getProperty(Ticket.CUSTOMER_PHONE);
 
-			if (customer != null) {
+			if (StringUtils.isNotEmpty(customerName)) {
 				beginRow(ticketHeaderBuilder);
 				addColumn(ticketHeaderBuilder, "*Delivery to*");
 				endRow(ticketHeaderBuilder);
 
-				if (StringUtils.isNotEmpty(customer.getName())) {
+				if (StringUtils.isNotEmpty(customerName)) {
 					beginRow(ticketHeaderBuilder);
-					addColumn(ticketHeaderBuilder, customer.getName());
+					addColumn(ticketHeaderBuilder, customerName);
 					endRow(ticketHeaderBuilder);
 				}
 
@@ -419,9 +420,9 @@ public class JReportPrintService {
 					endRow(ticketHeaderBuilder);
 				}
 
-				if (StringUtils.isNotEmpty(customer.getTelephoneNo())) {
+				if (StringUtils.isNotEmpty(customerPhone)) {
 					beginRow(ticketHeaderBuilder);
-					addColumn(ticketHeaderBuilder, "Tel: " + customer.getTelephoneNo());
+					addColumn(ticketHeaderBuilder, "Tel: " + customerPhone);
 					endRow(ticketHeaderBuilder);
 				}
 

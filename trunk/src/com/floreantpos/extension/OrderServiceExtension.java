@@ -1,5 +1,7 @@
 package com.floreantpos.extension;
 
+import javax.swing.JMenu;
+
 import net.xeoh.plugins.base.Plugin;
 
 import com.floreantpos.model.TicketType;
@@ -15,4 +17,5 @@ public interface OrderServiceExtension extends Plugin {
 	void setDeliveryDate(int ticketId);
 	void assignDriver(int ticketId);
 	boolean finishOrder(int ticketId);
+	void createCustomerMenu(JMenu menu);
 }
