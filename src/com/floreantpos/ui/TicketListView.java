@@ -17,7 +17,6 @@ import org.jdesktop.swingx.JXTable;
 
 import com.floreantpos.POSConstants;
 import com.floreantpos.bo.ui.explorer.ListTableModel;
-import com.floreantpos.model.Customer;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketStatus;
 import com.floreantpos.model.TicketType;
@@ -129,9 +128,10 @@ public class TicketListView extends JPanel {
 				return ticket.getCreateDate();
 
 			case 4:
-				Customer customer = ticket.getCustomer();
-				if (customer != null) {
-					return ticket.getCustomer().getTelephoneNo();
+				String customerPhone = ticket.getProperty(Ticket.CUSTOMER_PHONE);
+				
+				if (customerPhone != null) {
+					return customerPhone;
 				}
 
 				return "Guest";

@@ -21,8 +21,8 @@ public abstract class BaseTicket  implements Comparable, Serializable {
 	public static String PROP_DUE_AMOUNT = "dueAmount";
 	public static String PROP_DISCOUNT_AMOUNT = "discountAmount";
 	public static String PROP_CREATE_DATE = "createDate";
-	public static String PROP_DELIVERY_CHARGE = "deliveryCharge";
 	public static String PROP_NUMBER_OF_GUESTS = "numberOfGuests";
+	public static String PROP_DELIVERY_CHARGE = "deliveryCharge";
 	public static String PROP_PAID = "paid";
 	public static String PROP_ADVANCE_AMOUNT = "advanceAmount";
 	public static String PROP_ACTIVE_DATE = "activeDate";
@@ -30,7 +30,6 @@ public abstract class BaseTicket  implements Comparable, Serializable {
 	public static String PROP_CREATION_HOUR = "creationHour";
 	public static String PROP_CUSTOMER_WILL_PICKUP = "customerWillPickup";
 	public static String PROP_DRAWER_RESETTED = "drawerResetted";
-	public static String PROP_CUSTOMER = "customer";
 	public static String PROP_OWNER = "owner";
 	public static String PROP_DELIVERY_DATE = "deliveryDate";
 	public static String PROP_GRATUITY = "gratuity";
@@ -117,7 +116,6 @@ public abstract class BaseTicket  implements Comparable, Serializable {
 	private com.floreantpos.model.Gratuity gratuity;
 	private com.floreantpos.model.User voidedBy;
 	private com.floreantpos.model.Terminal terminal;
-	private com.floreantpos.model.Customer customer;
 
 	// collections
 	private java.util.Map<String, String> properties;
@@ -758,23 +756,6 @@ public abstract class BaseTicket  implements Comparable, Serializable {
 	 */
 	public void setTerminal (com.floreantpos.model.Terminal terminal) {
 		this.terminal = terminal;
-	}
-
-
-
-	/**
-	 * Return the value associated with the column: CUSTOMER_ID
-	 */
-	public com.floreantpos.model.Customer getCustomer () {
-					return customer;
-			}
-
-	/**
-	 * Set the value related to the column: CUSTOMER_ID
-	 * @param customer the CUSTOMER_ID value
-	 */
-	public void setCustomer (com.floreantpos.model.Customer customer) {
-		this.customer = customer;
 	}
 
 

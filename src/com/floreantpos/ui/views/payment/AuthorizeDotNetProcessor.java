@@ -299,7 +299,7 @@ public class AuthorizeDotNetProcessor implements CardProcessor {
 
 		final BankCardMagneticTrack track = BankCardMagneticTrack
 				.from("%B4111111111111111^SHAH/RIAR^1803101000000000020000831000000?;4111111111111111=1803101000020000831?");
-		System.out.println(track.getTrack2().getExpirationDate());
+		System.out.println(track.getTrack1());
 
 	}
 }

@@ -4,6 +4,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import javax.swing.JMenu;
 import javax.swing.JOptionPane;
 
 import com.floreantpos.extension.FloorLayoutPlugin;
@@ -125,5 +126,9 @@ public class DefaultOrderServiceExtension implements OrderServiceExtension {
 		}
 
 		return true;
+	}
+
+	@Override
+	public void createCustomerMenu(JMenu menu) {
 	}
 }
