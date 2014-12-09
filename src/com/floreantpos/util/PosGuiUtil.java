@@ -5,6 +5,8 @@ import java.awt.Window;
 import java.util.List;
 
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.table.TableColumn;
 import javax.swing.text.JTextComponent;
 
 import com.floreantpos.POSConstants;
@@ -69,5 +71,14 @@ public class PosGuiUtil {
 			}
 		}
 		return false;
+	}
+	
+	public static void setColumnWidth(JTable table, int columnNumber, int width) {
+		TableColumn column = table.getColumnModel().getColumn(columnNumber);
+
+		column.setPreferredWidth(width);
+		column.setWidth(width);
+//		column.setMaxWidth(width);
+//		column.setMinWidth(width);
 	}
 }
