@@ -7,6 +7,7 @@
 		</id>
 		<version column="MODIFIED_TIME" name="modifiedTime" type="timestamp" />
 		<property column="NAME" length="30" name="name" not-null="true" type="java.lang.String" />
+		<property column="BARCODE" length="120" name="barcode" type="java.lang.String" />
 		<property column="BUY_PRICE" length="52" name="buyPrice" not-null="true" type="java.lang.Double" />
 		<property column="PRICE" length="52" name="price" not-null="true" type="java.lang.Double" />
 		<property column="DISCOUNT_RATE" length="52" name="discountRate" type="java.lang.Double" />

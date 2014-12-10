@@ -64,12 +64,13 @@ import com.floreantpos.ui.dialog.ConfirmDeleteDialog;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.util.POSUtil;
 import com.floreantpos.util.ShiftUtil;
+import com.floreantpos.swing.FixedLengthTextField;
 
 /**
  *
  * @author  MShahriar
  */
-public class MenuItemForm extends BeanEditor implements ActionListener, ChangeListener {
+public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener, ChangeListener {
 	ShiftTableModel shiftTableModel;
 	
 	/** Creates new form FoodItemEditor */
@@ -139,27 +140,33 @@ public class MenuItemForm extends BeanEditor implements ActionListener, ChangeLi
 		btnDeleteShift.addActionListener(this);
 		
 		tfDiscountRate.setDocument(new DoubleDocument());
-        jPanel1.setLayout(new MigLayout("", "[104px][100px,grow][][49px]", "[19px][25px][][19px][19px][][][25px][][15px]"));
+        jPanel1.setLayout(new MigLayout("", "[104px][100px,grow][][49px]", "[19px][][25px][][19px][19px][][][25px][][15px]"));
+        
+        lblBarcode = new JLabel(Messages.getString("MenuItemForm.lblBarcode.text")); //$NON-NLS-1$
+        jPanel1.add(lblBarcode, "cell 0 1,alignx leading");
+        
+        tfBarcode = new FixedLengthTextField(120);
+        jPanel1.add(tfBarcode, "cell 1 1,growx");
         
         lblBuyPrice = new JLabel(Messages.getString("LABEL_BUY_PRICE"));
-        jPanel1.add(lblBuyPrice, "cell 0 2");
+        jPanel1.add(lblBuyPrice, "cell 0 3");
         
         tfBuyPrice = new DoubleTextField();
         tfBuyPrice.setHorizontalAlignment(SwingConstants.TRAILING);
-        jPanel1.add(tfBuyPrice, "cell 1 2,growx");
-        jPanel1.add(jLabel3, "cell 0 3,alignx left,aligny center");
-        jPanel1.add(jLabel4, "cell 0 1,alignx left,aligny center");
+        jPanel1.add(tfBuyPrice, "cell 1 3,growx");
+        jPanel1.add(jLabel3, "cell 0 4,alignx left,aligny center");
+        jPanel1.add(jLabel4, "cell 0 2,alignx left,aligny center");
         
         JLabel lblImage = new JLabel("Image:");
         lblImage.setHorizontalAlignment(SwingConstants.TRAILING);
-        jPanel1.add(lblImage, "cell 0 5,aligny center");
+        jPanel1.add(lblImage, "cell 0 6,aligny center");
         setLayout(new BorderLayout(0, 0));
         
         lblImagePreview = new JLabel("");
         lblImagePreview.setHorizontalAlignment(JLabel.CENTER);
         lblImagePreview.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
         lblImagePreview.setPreferredSize(new Dimension(60, 120));
-        jPanel1.add(lblImagePreview, "cell 1 5,grow");
+        jPanel1.add(lblImagePreview, "cell 1 6,grow");
         
         JButton btnSelectImage = new JButton("...");
         btnSelectImage.addActionListener(new ActionListener() {
@@ -167,7 +174,7 @@ public class MenuItemForm extends BeanEditor implements ActionListener, ChangeLi
         		doSelectImageFile();
         	}
         });
-        jPanel1.add(btnSelectImage, "cell 2 5");
+        jPanel1.add(btnSelectImage, "cell 2 6");
         
         btnClearImage = new JButton("Clear");
         btnClearImage.addActionListener(new ActionListener() {
@@ -175,29 +182,29 @@ public class MenuItemForm extends BeanEditor implements ActionListener, ChangeLi
         		doClearImage();
         	}
         });
-        jPanel1.add(btnClearImage, "cell 3 5");
+        jPanel1.add(btnClearImage, "cell 3 6");
         
         cbShowTextWithImage = new JCheckBox("Show image only");
         cbShowTextWithImage.setActionCommand("Show Text with Image");
-        jPanel1.add(cbShowTextWithImage, "cell 1 6 3 1"); //$NON-NLS-1$
-        jPanel1.add(jLabel6, "cell 0 7,alignx left,aligny center"); //$NON-NLS-1$
-        jPanel1.add(jLabel2, "cell 0 4,alignx left,aligny center"); //$NON-NLS-1$
+        jPanel1.add(cbShowTextWithImage, "cell 1 7 3 1"); //$NON-NLS-1$
+        jPanel1.add(jLabel6, "cell 0 8,alignx left,aligny center"); //$NON-NLS-1$
+        jPanel1.add(jLabel2, "cell 0 5,alignx left,aligny center"); //$NON-NLS-1$
         jPanel1.add(jLabel1, "cell 0 0,alignx left,aligny center"); //$NON-NLS-1$
         jPanel1.add(tfName, "cell 1 0 3 1,growx,aligny top"); //$NON-NLS-1$
-        jPanel1.add(cbGroup, "cell 1 1,growx,aligny top"); //$NON-NLS-1$
-        jPanel1.add(btnNewGroup, "cell 3 1,growx,aligny top"); //$NON-NLS-1$
-        jPanel1.add(tfDiscountRate, "cell 1 4,growx,aligny top"); //$NON-NLS-1$
-        jPanel1.add(cbTax, "cell 1 7,growx,aligny top"); //$NON-NLS-1$
-        jPanel1.add(tfPrice, "cell 1 3,growx,aligny top"); //$NON-NLS-1$
+        jPanel1.add(cbGroup, "cell 1 2,growx,aligny top"); //$NON-NLS-1$
+        jPanel1.add(btnNewGroup, "cell 3 2,growx,aligny top"); //$NON-NLS-1$
+        jPanel1.add(tfDiscountRate, "cell 1 5,growx,aligny top"); //$NON-NLS-1$
+        jPanel1.add(cbTax, "cell 1 8,growx,aligny top"); //$NON-NLS-1$
+        jPanel1.add(tfPrice, "cell 1 4,growx,aligny top"); //$NON-NLS-1$
         
         lblKitchenPrinter = new JLabel("Kitchen & Bar Printer");
-        jPanel1.add(lblKitchenPrinter, "cell 0 8"); //$NON-NLS-1$
+        jPanel1.add(lblKitchenPrinter, "cell 0 9"); //$NON-NLS-1$
         
         cbPrinter = new JComboBox<VirtualPrinter>(new DefaultComboBoxModel<VirtualPrinter>(VirtualPrinterDAO.getInstance().findAll().toArray(new VirtualPrinter[0])));
-        jPanel1.add(cbPrinter, "cell 1 8,growx"); //$NON-NLS-1$
-        jPanel1.add(chkVisible, "cell 1 9,alignx left,aligny top"); //$NON-NLS-1$
-        jPanel1.add(btnNewTax, "cell 2 7,alignx left,aligny top"); //$NON-NLS-1$
-        jPanel1.add(jLabel5, "cell 2 4"); //$NON-NLS-1$
+        jPanel1.add(cbPrinter, "cell 1 9,growx"); //$NON-NLS-1$
+        jPanel1.add(chkVisible, "cell 1 10,alignx left,aligny top"); //$NON-NLS-1$
+        jPanel1.add(btnNewTax, "cell 2 8,alignx left,aligny top"); //$NON-NLS-1$
+        jPanel1.add(jLabel5, "cell 2 5"); //$NON-NLS-1$
         add(tabbedPane);
         
 		setBean(menuItem);
@@ -459,6 +466,8 @@ public class MenuItemForm extends BeanEditor implements ActionListener, ChangeLi
 	private DoubleTextField tfBuyPrice;
 	private JLabel lblKitchenPrinter;
 	private JComboBox<VirtualPrinter> cbPrinter;
+	private JLabel lblBarcode;
+	private FixedLengthTextField tfBarcode;
     
     private void addMenuItemModifierGroup() {
     	try {
@@ -523,7 +532,7 @@ public class MenuItemForm extends BeanEditor implements ActionListener, ChangeLi
 
 	@Override
 	protected void updateView() {
-		MenuItem menuItem = (MenuItem) getBean();
+		MenuItem menuItem = getBean();
 		
 		if(menuItem.getId() != null && !Hibernate.isInitialized(menuItem.getMenuItemModiferGroups())) {
 			//initialize food item modifer groups.
@@ -535,6 +544,7 @@ public class MenuItemForm extends BeanEditor implements ActionListener, ChangeLi
 		}
 		
 		tfName.setText(menuItem.getName());
+		tfBarcode.setText(menuItem.getBarcode());
 		tfPrice.setText(String.valueOf(menuItem.getPrice()));
 		tfDiscountRate.setText(String.valueOf(menuItem.getDiscountRate()));
 		chkVisible.setSelected(menuItem.isVisible());
@@ -564,8 +574,9 @@ public class MenuItemForm extends BeanEditor implements ActionListener, ChangeLi
 			return false;
 		}
 		
-		MenuItem menuItem = (MenuItem) getBean();
+		MenuItem menuItem = getBean();
 		menuItem.setName(itemName);
+		menuItem.setBarcode(tfBarcode.getText());
 		menuItem.setParent((MenuGroup) cbGroup.getSelectedItem());
 		menuItem.setPrice(Double.valueOf(tfPrice.getText()));
 		menuItem.setTax((Tax) cbTax.getSelectedItem());

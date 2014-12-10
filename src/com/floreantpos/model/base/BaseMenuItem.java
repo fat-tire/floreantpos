@@ -17,15 +17,16 @@ public abstract class BaseMenuItem  implements Comparable, Serializable {
 
 	public static String REF = "MenuItem";
 	public static String PROP_BUY_PRICE = "buyPrice";
-	public static String PROP_NAME = "name";
+	public static String PROP_BARCODE = "barcode";
 	public static String PROP_PARENT = "parent";
-	public static String PROP_RECEPIE = "recepie";
-	public static String PROP_SHOW_IMAGE_ONLY = "showImageOnly";
 	public static String PROP_VISIBLE = "visible";
+	public static String PROP_SHOW_IMAGE_ONLY = "showImageOnly";
 	public static String PROP_DISCOUNT_RATE = "discountRate";
-	public static String PROP_IMAGE = "image";
-	public static String PROP_PRICE = "price";
 	public static String PROP_TAX = "tax";
+	public static String PROP_NAME = "name";
+	public static String PROP_RECEPIE = "recepie";
+	public static String PROP_PRICE = "price";
+	public static String PROP_IMAGE = "image";
 	public static String PROP_ID = "id";
 	public static String PROP_VIRTUAL_PRINTER = "virtualPrinter";
 
@@ -71,6 +72,7 @@ public abstract class BaseMenuItem  implements Comparable, Serializable {
 	 java.util.Date modifiedTime;
 
 	// fields
+		protected java.lang.String barcode;
 		protected java.lang.Double buyPrice;
 		protected java.lang.Double discountRate;
 		protected byte[] image;
@@ -127,6 +129,23 @@ public abstract class BaseMenuItem  implements Comparable, Serializable {
 		this.modifiedTime = modifiedTime;
 	}
 
+
+
+
+	/**
+	 * Return the value associated with the column: BARCODE
+	 */
+	public java.lang.String getBarcode () {
+					return barcode;
+			}
+
+	/**
+	 * Set the value related to the column: BARCODE
+	 * @param barcode the BARCODE value
+	 */
+	public void setBarcode (java.lang.String barcode) {
+		this.barcode = barcode;
+	}
 
 
 
