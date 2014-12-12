@@ -185,6 +185,8 @@ public class BackOfficeWindow extends javax.swing.JFrame {
 
 	private void createExplorerMenu(JMenuBar menuBar) {
 		JMenu explorerMenu = new JMenu(com.floreantpos.POSConstants.EXPLORERS);
+		menuBar.add(explorerMenu);
+		
 		explorerMenu.add(new CategoryExplorerAction());
 		explorerMenu.add(new GroupExplorerAction());
 		explorerMenu.add(new ItemExplorerAction());
@@ -201,8 +203,6 @@ public class BackOfficeWindow extends javax.swing.JFrame {
 		}
 		
 		plugin.createCustomerMenu(explorerMenu);
-		
-		menuBar.add(explorerMenu);
 	}
 
 	private void createAdminMenu(JMenuBar menuBar) {
