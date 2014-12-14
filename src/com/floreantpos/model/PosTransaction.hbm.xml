@@ -18,11 +18,11 @@
 		<property column="AUTHORIZABLE" name="authorizable" type="java.lang.Boolean" />
 
 		<!-- card -->
-		<property column="CARD_TRACK" length="120" name="cardTrack" type="string" />
+		<property column="CARD_TRACK" length="1000" name="cardTrack" type="string" />
 		<property column="CARD_NUMBER" length="40" name="cardNumber" type="string" />
 		<property column="CARD_AUTH_CODE" length="30" name="cardAuthCode" type="string" />
 		<property column="CARD_TYPE" length="20" name="cardType" type="string" />
-		<property column="CARD_TRANSACTION_ID" name="cardTransactionId" type="string" length="60" />
+		<property column="CARD_TRANSACTION_ID" name="cardTransactionId" type="string" length="255" />
 		<property column="CARD_MERCHANT_GATEWAY" name="cardMerchantGateway" type="string" length="60" />
 		<property column="CARD_EXP_MONTH" name="cardExpiryMonth" type="string" length="16" />
 		<property column="CARD_EXP_YEAR" name="cardExpiryYear" type="string" length="4" />
