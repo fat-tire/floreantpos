@@ -2,6 +2,7 @@ package com.floreantpos.model;
 
 import com.floreantpos.ui.views.payment.AuthorizeDotNetProcessor;
 import com.floreantpos.ui.views.payment.CardProcessor;
+import com.floreantpos.ui.views.payment.MercuryPayProcessor;
 
 import net.authorize.data.creditcard.CardType;
 
@@ -31,6 +32,10 @@ public enum MerchantGateway {
 				processor = new AuthorizeDotNetProcessor();
 				break;
 				
+			case MERCURY_PAY:
+				processor = new MercuryPayProcessor();
+				break;
+				
 
 		}
 		
@@ -42,7 +47,7 @@ public enum MerchantGateway {
 			return CardType.findByValue(cardName) != CardType.UNKNOWN;
 		}
 		
-		return false;
+		return true;
 	}
 	
 	@Override

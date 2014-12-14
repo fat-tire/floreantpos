@@ -1,0 +1,24 @@
+<TStream>
+	<Transaction>
+		<MerchantID>$merchantId</MerchantID>
+		<LaneID>$laneId</LaneID>
+		<TranType>Credit</TranType>
+		<TranCode>$tranCode</TranCode>
+		<InvoiceNo>$invoiceNo</InvoiceNo>
+		<RefNo>$refNo</RefNo>
+		<Memo>FloreantPOS-1.4</Memo>
+		<PartialAuth>Allow</PartialAuth>
+		<Frequency>OneTime</Frequency>
+		<RecordNo>RecordNumberRequested</RecordNo>
+		<Account>
+			<EncryptedFormat>MagneSafe</EncryptedFormat>
+			<AccountSource>Swiped</AccountSource>
+			<EncryptedBlock>$encryptedBlock</EncryptedBlock>
+			<EncryptedKey>$encryptedKey</EncryptedKey>
+		</Account>
+		<Amount>
+			<Purchase>$amount</Purchase>
+			<Authorize>$authorizeAmount</Authorize>
+		</Amount>
+	</Transaction>
+</TStream>
