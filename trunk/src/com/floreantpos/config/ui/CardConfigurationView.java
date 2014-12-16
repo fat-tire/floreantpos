@@ -75,6 +75,23 @@ public class CardConfigurationView extends ConfigurationView {
 		add(lblMerchantGateway, "cell 0 4,alignx leading");
 
 		cbGateway = new JComboBox();
+		cbGateway.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				MerchantGateway gateway = (MerchantGateway) cbGateway.getSelectedItem();
+				switch(gateway) {
+					case AUTHORIZE_NET:
+						tfMerchantAccount.setText("6tuU4N3H");
+						tfMerchantPass.setText("4k6955x3T8bCVPVm");
+						break;
+						
+					case MERCURY_PAY:
+						tfMerchantAccount.setText("118725340908147");
+						tfMerchantPass.setText("XYZ");
+						break;
+				}
+			}
+		});
 		add(cbGateway, "cell 1 4,growx");
 
 		JLabel lblMerchantAccount = new JLabel("Merchant Account");
