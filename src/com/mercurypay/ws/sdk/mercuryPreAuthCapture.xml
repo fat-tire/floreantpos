@@ -1,0 +1,22 @@
+<TStream>
+	<Transaction>
+		<MerchantID>$merchantId</MerchantID>
+		<LaneID>$laneId</LaneID>
+		<TranType>Credit</TranType>
+		<TranCode>PreAuthCaptureByRecordNo</TranCode>
+		<InvoiceNo>$invoiceNo</InvoiceNo>
+		<RefNo>$refNo</RefNo>
+		<Memo>FloreantPOS-1.4</Memo>
+		<PartialAuth>Allow</PartialAuth>
+		<Frequency>OneTime</Frequency>
+		<RecordNo>$recordNo</RecordNo>
+		<Amount>
+			<Purchase>$amount</Purchase>
+			<Authorize>$authorizeAmount</Authorize>
+		</Amount>
+		<TranInfo>
+			<AuthCode>$authCode</AuthCode> <!--use originally returned AuthCode -->
+			<AcqRefData>$AcqRefData</AcqRefData>
+		</TranInfo>
+	</Transaction>
+</TStream>
