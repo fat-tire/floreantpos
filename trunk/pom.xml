@@ -9,7 +9,7 @@
 	</properties>
 
 	<scm>
-		<connection>scm:svn:svn.code.sf.net/p/floreantpos/code/trunk</connection>
+		<connection>scm:svn:http://svn.code.sf.net/p/floreantpos/code/trunk</connection>
 	</scm>
 
 	<build>
@@ -25,7 +25,6 @@
 			<resource>
 				<directory>resources</directory>
 			</resource>
-			<!-- <resource> <directory>config</directory> </resource> -->
 			<resource>
 				<directory>filters</directory>
 				<filtering>true</filtering>
@@ -47,17 +46,25 @@
 						</goals>
 					</execution>
 				</executions>
-				<!-- <configuration> <doCheck>false</doCheck> <doUpdate>false</doUpdate> <revisionOnScmFailure>true</revisionOnScmFailure> <format>{0,date,yyyyMMdd}</format> 
-					<items> <item>timestamp</item> </items> </configuration> -->
 				<configuration>
 					<doCheck>false</doCheck>
 					<doUpdate>false</doUpdate>
-					<revisionOnScmFailure>true</revisionOnScmFailure>
-					<format>{0,number}</format>
-					<items>
-						<item>buildNumber0</item>
-					</items>
+					<providerImplementations>
+						<svn>javasvn</svn>
+					</providerImplementations>
 				</configuration>
+				<dependencies>
+					<dependency>
+						<groupId>com.google.code.maven-scm-provider-svnjava</groupId>
+						<artifactId>maven-scm-provider-svnjava</artifactId>
+						<version>2.1.1</version>
+					</dependency>
+					<dependency>
+						<groupId>org.tmatesoft.svnkit</groupId>
+						<artifactId>svnkit</artifactId>
+						<version>1.8.5</version>
+					</dependency>
+				</dependencies>
 			</plugin>
 
 			<plugin>
