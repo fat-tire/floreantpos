@@ -42,6 +42,26 @@ public enum MerchantGateway {
 		return processor;
 	}
 	
+//	public boolean isManualEntrySupported() {
+//		if(processor != null) {
+//			return processor;
+//		}
+//		
+//		switch (this) {
+//			case AUTHORIZE_NET:
+//				processor = new AuthorizeDotNetProcessor();
+//				break;
+//				
+//			case MERCURY_PAY:
+//				processor = new MercuryPayProcessor();
+//				break;
+//				
+//
+//		}
+//		
+//		return processor;
+//	}
+	
 	public boolean isCardTypeSupported(String cardName) {
 		if (this == AUTHORIZE_NET) {
 			return CardType.findByValue(cardName) != CardType.UNKNOWN;

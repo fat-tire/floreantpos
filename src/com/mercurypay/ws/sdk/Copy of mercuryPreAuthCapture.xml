@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<RStream>
+	<CmdResponse>
+		<ResponseOrigin>Server</ResponseOrigin>
+		<DSIXReturnCode>004118</DSIXReturnCode>
+		<CmdStatus>Error</CmdStatus>
+		<TextResponse>Decryption Service Unavailable. - 200 Response With Status:Failure Message:Failed to decrypt</TextResponse>
+		<UserTraceData></UserTraceData>
+	</CmdResponse>
+</RStream>
