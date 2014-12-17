@@ -110,4 +110,16 @@ public class CardConfig {
 	public static void setSandboxMode(boolean sandbosMode) {
 		AppConfig.put("sandboxMode", sandbosMode);
 	}
+	
+	public static double getBartabLimit() {
+		try {
+			return Double.parseDouble(AppConfig.getString("bartablimit", "25"));
+		} catch (Exception e) {
+			return 25;
+		}
+	}
+	
+	public static void setBartabLimit(double limit) {
+		AppConfig.put("bartablimit", String.valueOf(limit));
+	}
 }
