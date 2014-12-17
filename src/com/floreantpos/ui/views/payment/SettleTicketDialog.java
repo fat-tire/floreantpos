@@ -326,7 +326,9 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 			transaction.setTicket(ticket);
 			transaction.setCardType(ticket.getProperty(Ticket.PROPERTY_CARD_NAME));
 			transaction.setCaptured(false);
-			transaction.setCardMerchantGateway(MerchantGateway.AUTHORIZE_NET.name());
+			transaction.setCardMerchantGateway(CardConfig.getMerchantGateway().name());
+			transaction.setCardAuthCode(ticket.getProperty("AuthCode"));
+			transaction.addProperty("AcqRefData", ticket.getProperty("AcqRefData"));
 
 			CardReader cardReader = CardReader.valueOf(ticket.getProperty(Ticket.PROPERTY_CARD_READER));
 
@@ -350,7 +352,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 			setTransactionAmounts(transaction);
 
 			if (cardReader == CardReader.SWIPE || cardReader == CardReader.MANUAL) {
-				double advanceAmount = Double.parseDouble(ticket.getProperty(Ticket.PROPERTY_ADVANCE_PAYMENT, "" + Ticket.BAR_TAB_ADVANCE));
+				double advanceAmount = Double.parseDouble(ticket.getProperty(Ticket.PROPERTY_ADVANCE_PAYMENT, "" + CardConfig.getMerchantGateway()));
 				
 				CardProcessor cardProcessor = CardConfig.getMerchantGateway().getProcessor();
 				if (tenderAmount > advanceAmount) {

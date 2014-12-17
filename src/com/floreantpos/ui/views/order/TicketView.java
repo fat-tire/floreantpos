@@ -39,7 +39,6 @@ import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.TicketItemCookingInstruction;
 import com.floreantpos.model.TicketItemModifier;
-import com.floreantpos.model.TicketType;
 import com.floreantpos.model.dao.CookingInstructionDAO;
 import com.floreantpos.model.dao.MenuItemDAO;
 import com.floreantpos.report.JReportPrintService;
@@ -508,7 +507,7 @@ public class TicketView extends JPanel {
 	}
 
 	public void updateView() {
-		if (ticket == null || ticket.getTicketItems() == null || ticket.getTicketItems().size() <= 0) {
+		if (ticket == null) {
 			tfSubtotal.setText("");
 			tfDiscount.setText("");
 			tfTax.setText("");
@@ -520,14 +519,6 @@ public class TicketView extends JPanel {
 			return;
 		}
 		
-		//Bar Tab must be paid immediately
-		if(ticket.getType() == TicketType.BAR_TAB) {
-			btnFinish.setEnabled(false);
-		}
-		else {
-			btnFinish.setEnabled(true);
-		}
-
 		ticket.calculatePrice();
 
 		tfSubtotal.setText(NumberUtil.formatNumber(ticket.getSubtotalAmount()));

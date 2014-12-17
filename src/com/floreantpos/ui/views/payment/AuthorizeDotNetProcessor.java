@@ -16,10 +16,11 @@ import us.fatehi.magnetictrack.bankcard.BankCardMagneticTrack;
 
 import com.floreantpos.config.CardConfig;
 import com.floreantpos.model.PosTransaction;
+import com.floreantpos.model.Ticket;
 
 public class AuthorizeDotNetProcessor implements CardProcessor {
 
-	public String authorizeAmount(String cardTracks, double amount, String cardType) throws Exception {
+	public String authorizeAmount(Ticket ticket, String cardTracks, double amount, String cardType) throws Exception {
 		Environment environment = createEnvironment();
 		Merchant merchant = createMerchant(environment);
 

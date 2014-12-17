@@ -9,12 +9,14 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPasswordField;
+import javax.swing.JSeparator;
 
 import net.miginfocom.swing.MigLayout;
 
 import com.floreantpos.config.CardConfig;
 import com.floreantpos.model.CardReader;
 import com.floreantpos.model.MerchantGateway;
+import com.floreantpos.swing.DoubleTextField;
 import com.floreantpos.swing.POSTextField;
 
 public class CardConfigurationView extends ConfigurationView {
@@ -28,6 +30,7 @@ public class CardConfigurationView extends ConfigurationView {
 	private JCheckBox chckbxAllowMagneticSwipe;
 	private JCheckBox chckbxAllowCardManual;
 	private JCheckBox chckbxAllowExternalTerminal;
+	private DoubleTextField tfBarTabLimit = new DoubleTextField(10);
 
 	public CardConfigurationView() {
 		createUI();
@@ -111,6 +114,12 @@ public class CardConfigurationView extends ConfigurationView {
 		
 		cbSandboxMode = new JCheckBox("Sandbox mode");
 		add(cbSandboxMode, "cell 1 7");
+		
+		JSeparator separator = new JSeparator(JSeparator.HORIZONTAL);
+		add(separator, "newline, growx, span 10, wrap");
+		
+		add(new JLabel("Bar tab limit"));
+		add(tfBarTabLimit);
 	}
 
 	protected void updateCheckBoxes() {
@@ -205,6 +214,8 @@ public class CardConfigurationView extends ConfigurationView {
 		
 		CardConfig.setSandboxMode(cbSandboxMode.isSelected());
 		
+		CardConfig.setBartabLimit(tfBarTabLimit.getDouble());
+		
 		return true;
 	}
 
@@ -231,6 +242,7 @@ public class CardConfigurationView extends ConfigurationView {
 		}
 		
 		cbSandboxMode.setSelected(CardConfig.isSandboxMode());
+		tfBarTabLimit.setText(String.valueOf(CardConfig.getBartabLimit()));
 		
 		updateCardList();
 

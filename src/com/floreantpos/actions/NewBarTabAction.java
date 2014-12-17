@@ -11,19 +11,17 @@ import net.authorize.data.creditcard.CardType;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.floreantpos.ITicketList;
 import com.floreantpos.PosException;
 import com.floreantpos.config.CardConfig;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.CardReader;
 import com.floreantpos.model.PaymentType;
 import com.floreantpos.model.Ticket;
-import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.TicketType;
 import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.dialog.PaymentTypeSelectionDialog;
-import com.floreantpos.ui.views.order.OrderView;
-import com.floreantpos.ui.views.order.RootView;
 import com.floreantpos.ui.views.payment.AuthorizationCodeDialog;
 import com.floreantpos.ui.views.payment.CardInputListener;
 import com.floreantpos.ui.views.payment.CardInputter;
@@ -67,7 +65,6 @@ public class NewBarTabAction extends AbstractAction implements CardInputListener
 		
 		ticket.setPriceIncludesTax(application.isPriceIncludesTax());
 		ticket.setType(TicketType.BAR_TAB);
-		//ticket.setTableNumber(-1);
 		ticket.setTerminal(application.getTerminal());
 		ticket.setOwner(Application.getCurrentUser());
 		ticket.setShift(application.getCurrentShift());
@@ -75,6 +72,7 @@ public class NewBarTabAction extends AbstractAction implements CardInputListener
 		Calendar currentTime = Calendar.getInstance();
 		ticket.setCreateDate(currentTime.getTime());
 		ticket.setCreationHour(currentTime.get(Calendar.HOUR_OF_DAY));
+		
 		return ticket;
 	}
 
@@ -107,12 +105,17 @@ public class NewBarTabAction extends AbstractAction implements CardInputListener
 			ticket.addProperty(Ticket.PROPERTY_CARD_NAME, selectedPaymentType.getDisplayString());
 			ticket.addProperty(Ticket.PROPERTY_CARD_READER, CardReader.EXTERNAL_TERMINAL.name());
 			
-			ticket.addToticketItems(createTabOpenItem(ticket));
+			//ticket.addToticketItems(createTabOpenItem(ticket));
 			
 			TicketDAO.getInstance().save(ticket);
 			
-			OrderView.getInstance().setCurrentTicket(ticket);
-			RootView.getInstance().showView(OrderView.VIEW_NAME);
+			POSMessageDialog.showMessage("Bar tab created with ID: " + ticket.getId());
+			if(parentComponent instanceof ITicketList) {
+				((ITicketList) parentComponent).updateTicketList();
+			}
+			
+			//OrderView.getInstance().setCurrentTicket(ticket);
+			//RootView.getInstance().showView(OrderView.VIEW_NAME);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -124,7 +127,7 @@ public class NewBarTabAction extends AbstractAction implements CardInputListener
 		Application application = Application.getInstance();
 		
 		String symbol = Application.getCurrencySymbol();
-		String message = symbol + Ticket.BAR_TAB_ADVANCE + " will be booked. Proceed?";
+		String message = symbol + CardConfig.getBartabLimit() + " will be booked. Proceed?";
 		
 		int option = JOptionPane.showOptionDialog(parentComponent, message, "Please confirm", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
 		if(option != JOptionPane.YES_OPTION) {
@@ -138,25 +141,30 @@ public class NewBarTabAction extends AbstractAction implements CardInputListener
 		waitDialog.setVisible(true);
 		
 		try {
-			String transactionId = CardConfig.getMerchantGateway().getProcessor().authorizeAmount(cardString, Ticket.BAR_TAB_ADVANCE, selectedPaymentType.getDisplayString());
-			
 			Ticket ticket = createTicket(application);
+			
+			String transactionId = CardConfig.getMerchantGateway().getProcessor().authorizeAmount(ticket, cardString, CardConfig.getBartabLimit(), selectedPaymentType.getDisplayString());
 			
 			ticket.addProperty(Ticket.PROPERTY_PAYMENT_METHOD, selectedPaymentType.name());
 			ticket.addProperty(Ticket.PROPERTY_CARD_NAME, selectedPaymentType.name());
 			ticket.addProperty(Ticket.PROPERTY_CARD_TRANSACTION_ID, transactionId);
 			ticket.addProperty(Ticket.PROPERTY_CARD_TRACKS, cardString);
 			ticket.addProperty(Ticket.PROPERTY_CARD_READER, CardReader.SWIPE.name());
-			ticket.addProperty(Ticket.PROPERTY_ADVANCE_PAYMENT, String.valueOf(Ticket.BAR_TAB_ADVANCE));
+			ticket.addProperty(Ticket.PROPERTY_ADVANCE_PAYMENT, String.valueOf(CardConfig.getBartabLimit()));
 			
-			ticket.addToticketItems(createTabOpenItem(ticket));
+			//ticket.addToticketItems(createTabOpenItem(ticket));
 			
 			TicketDAO.getInstance().save(ticket);
 
 			waitDialog.setVisible(false);
 
-			OrderView.getInstance().setCurrentTicket(ticket);
-			RootView.getInstance().showView(OrderView.VIEW_NAME);
+			POSMessageDialog.showMessage("Bar tab created with ID: " + ticket.getId());
+			if(parentComponent instanceof ITicketList) {
+				((ITicketList) parentComponent).updateTicketList();
+			}
+			
+			//OrderView.getInstance().setCurrentTicket(ticket);
+			//RootView.getInstance().showView(OrderView.VIEW_NAME);
 		} catch (Exception e) {
 			e.printStackTrace();
 			POSMessageDialog.showError(parentComponent, e.getMessage());
@@ -169,7 +177,7 @@ public class NewBarTabAction extends AbstractAction implements CardInputListener
 		Application application = Application.getInstance();
 		
 		String symbol = Application.getCurrencySymbol();
-		String message = symbol + Ticket.BAR_TAB_ADVANCE + " will be booked. Proceed?";
+		String message = symbol + CardConfig.getBartabLimit() + " will be booked. Proceed?";
 		
 		int option = JOptionPane.showOptionDialog(parentComponent, message, "Please confirm", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
 		if(option != JOptionPane.YES_OPTION) {
@@ -187,7 +195,7 @@ public class NewBarTabAction extends AbstractAction implements CardInputListener
 		try {
 			CardType cardType = CardType.findByValue(selectedPaymentType.getDisplayString());
 			
-			String transactionId = CardConfig.getMerchantGateway().getProcessor().authorizeAmount(cardNumber, expMonth, expYear, Ticket.BAR_TAB_ADVANCE, cardType);
+			String transactionId = CardConfig.getMerchantGateway().getProcessor().authorizeAmount(cardNumber, expMonth, expYear, CardConfig.getBartabLimit(), cardType);
 			
 			Ticket ticket = createTicket(application);
 			
@@ -198,28 +206,26 @@ public class NewBarTabAction extends AbstractAction implements CardInputListener
 			ticket.addProperty(Ticket.PROPERTY_CARD_EXP_YEAR, expYear);
 			ticket.addProperty(Ticket.PROPERTY_CARD_EXP_MONTH, expMonth);
 			ticket.addProperty(Ticket.PROPERTY_CARD_READER, CardReader.MANUAL.name());
-			ticket.addProperty(Ticket.PROPERTY_ADVANCE_PAYMENT, String.valueOf(Ticket.BAR_TAB_ADVANCE));
+			ticket.addProperty(Ticket.PROPERTY_ADVANCE_PAYMENT, String.valueOf(CardConfig.getBartabLimit()));
 			
-			ticket.addToticketItems(createTabOpenItem(ticket));
+			//ticket.addToticketItems(createTabOpenItem(ticket));
 			
 			TicketDAO.getInstance().save(ticket);
 			
 			waitDialog.setVisible(false);
+			
+			POSMessageDialog.showMessage("Bar tab created with ID: " + ticket.getId());
+			if(parentComponent instanceof ITicketList) {
+				((ITicketList) parentComponent).updateTicketList();
+			}
 
-			OrderView.getInstance().setCurrentTicket(ticket);
-			RootView.getInstance().showView(OrderView.VIEW_NAME);
+			//OrderView.getInstance().setCurrentTicket(ticket);
+			//RootView.getInstance().showView(OrderView.VIEW_NAME);
 		} catch (Exception e) {
 			e.printStackTrace();
 			POSMessageDialog.showError(parentComponent, "Unable to authorize card.");
 		} finally {
 			waitDialog.setVisible(false);
 		}
-	}
-
-	private TicketItem createTabOpenItem(Ticket ticket) {
-		TicketItem item = new TicketItem();
-		item.setTicket(ticket);
-		item.setName("TAB OPEN");
-		return item;
 	}
 }
