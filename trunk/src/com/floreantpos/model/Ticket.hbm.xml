@@ -44,7 +44,7 @@
 		<map name="properties" cascade="all" lazy="false">
 			<key column="id" />
 			<index column="property_name" type="string" />
-			<element column="property_value" type="string" />
+			<element column="property_value" type="string" length="1000"/>
 		</map>
 
 		<!-- Associations -->

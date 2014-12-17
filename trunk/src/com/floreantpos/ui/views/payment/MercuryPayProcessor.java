@@ -1,15 +1,15 @@
 package com.floreantpos.ui.views.payment;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
 
 import net.authorize.data.creditcard.CardType;
-
-import org.apache.commons.logging.LogFactory;
 
 import com.floreantpos.PosException;
 import com.floreantpos.config.CardConfig;
 import com.floreantpos.model.PosTransaction;
 import com.floreantpos.model.Ticket;
+import com.floreantpos.model.TicketType;
 import com.floreantpos.ui.util.StreamUtils;
 import com.mercurypay.ws.sdk.MercuryResponse;
 import com.mercurypay.ws.sdk.MercuryWebRequest;
@@ -29,32 +29,44 @@ public class MercuryPayProcessor implements CardProcessor {
 	public final static String $tranCode = "$tranCode";
 	public final static String $refNo = "$refNo";
 
-	private static String mercuryXml;
-
-	static {
-		try {
-			mercuryXml = StreamUtils.toString(MercuryPayProcessor.class.getResourceAsStream("/com/mercurypay/ws/sdk/mercuryAuth.xml"));
-		} catch (IOException e) {
-			LogFactory.getLog(MercuryPayProcessor.class).error(e);
-		}
-	}
-
 	@Override
 	public void authorizeAmount(PosTransaction transaction) throws Exception {
 		Ticket ticket = transaction.getTicket();
+		
+		if(ticket.getType() == TicketType.BAR_TAB && ticket.hasProperty("AcqRefData")) {
+			captureAuthorizedAmount(transaction);
+			return;
+		}
+		
+		String mpsResponse = doPreAuth(ticket, transaction.getCardTrack(), transaction.getAmount());
+		
+		MercuryResponse result = new MercuryResponse(mpsResponse);
+		if(!result.isApproved()) {
+			throw new PosException("Error authorizing transaction.");
+		}
+		
+		System.out.println(mpsResponse);
+		
+		transaction.setCardTransactionId(result.getTransactionId());
+		transaction.setCardAuthCode(result.getAuthCode());
+		transaction.addProperty("AcqRefData", result.getAcqRefData());
+	}
 
-		String cardTrack = transaction.getCardTrack();
+	private String doPreAuth(Ticket ticket, String cardTrack, double amount) throws IOException, Exception {
+		String xml = StreamUtils.toString(MercuryPayProcessor.class.getResourceAsStream("/com/mercurypay/ws/sdk/mercuryAuth.xml"));
+
 		String[] strings = cardTrack.split("\\|");
+		
+		DecimalFormat formatter = new DecimalFormat("0.00");
 
 		//String merchantId = "118725340908147";
 		String laneId = "01";
 		String tranCode = "PreAuth";
 		String invoiceNo = String.valueOf(ticket.getId());
-		String amount = String.valueOf(transaction.getAmount());
+		String amountStrng = formatter.format(amount);
 		String encryptedBlock = strings[3];
 		String encryptedKey = strings[9];
 
-		String xml = new String(mercuryXml);
 		xml = xml.replace($merchantId, CardConfig.getMerchantAccount());
 		xml = xml.replace($laneId, laneId);
 		xml = xml.replace($tranCode, tranCode);
@@ -62,8 +74,10 @@ public class MercuryPayProcessor implements CardProcessor {
 		xml = xml.replace($refNo, invoiceNo);
 		xml = xml.replace($encryptedBlock, encryptedBlock);
 		xml = xml.replace($encryptedKey, encryptedKey);
-		xml = xml.replace($amount, amount);
-		xml = xml.replace($authorizeAmount, amount);
+		xml = xml.replace($amount, amountStrng);
+		xml = xml.replace($authorizeAmount, amountStrng);
+		
+		System.out.println(xml);
 
 		MercuryWebRequest mpswr = new MercuryWebRequest("https://w1.mercurydev.net/ws/ws.asmx");
 		mpswr.addParameter("tran", xml); //Set WebServices 'tran' parameter to the XML transaction request
@@ -72,20 +86,24 @@ public class MercuryPayProcessor implements CardProcessor {
 		mpswr.setTimeout(10); //Set request timeout to 10 seconds
 
 		String mpsResponse = mpswr.sendRequest();
+		return mpsResponse;
+	}
+
+	@Override
+	public String authorizeAmount(Ticket ticket, String cardTrack, double amount, String cardType) throws Exception {
+		String mpsResponse = doPreAuth(ticket, cardTrack, amount);
+		
+		System.out.println(mpsResponse);
 		
 		MercuryResponse result = new MercuryResponse(mpsResponse);
 		if(!result.isApproved()) {
 			throw new PosException("Error authorizing transaction.");
 		}
 		
-		transaction.setCardTransactionId(result.getTransactionId());
-		transaction.setCardAuthCode(result.getAuthCode());
-		transaction.addProperty("AcqRefData", result.getAcqRefData());
-	}
-
-	@Override
-	public String authorizeAmount(String cardTracks, double amount, String cardType) throws Exception {
-		throw new PosException("Manual entry is not supported by selected payment gateway.");
+		ticket.addProperty("AuthCode", result.getAuthCode());
+		ticket.addProperty("AcqRefData", result.getAcqRefData());
+		
+		return result.getTransactionId();
 	}
 
 	@Override
