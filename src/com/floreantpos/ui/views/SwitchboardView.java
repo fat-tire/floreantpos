@@ -219,10 +219,10 @@ public class SwitchboardView extends JPanel implements ActionListener, ITicketLi
 		if (TerminalConfig.isBarTabEnable()) {
 			btnBarTab.setAction(new NewBarTabAction(this));
 			activityPanel.add(btnBarTab);
-
-			btnEditTicket.setText(POSConstants.CAPITAL_EDIT);
-			activityPanel.add(btnEditTicket);
 		}
+		
+		btnEditTicket.setText(POSConstants.CAPITAL_EDIT);
+		activityPanel.add(btnEditTicket);
 
 		btnSettleTicket = new com.floreantpos.swing.PosButton();
 		btnSettleTicket.setText(POSConstants.CAPITAL_SETTLE);
