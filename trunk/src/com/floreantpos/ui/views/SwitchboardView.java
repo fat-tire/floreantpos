@@ -38,6 +38,7 @@ import com.floreantpos.actions.OpenKitchenDisplayAction;
 import com.floreantpos.actions.RefundAction;
 import com.floreantpos.actions.SettleTicketAction;
 import com.floreantpos.actions.ShutDownAction;
+import com.floreantpos.actions.TicketImportAction;
 import com.floreantpos.bo.ui.BackOfficeWindow;
 import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.demo.KitchenDisplay;
@@ -304,6 +305,7 @@ public class SwitchboardView extends JPanel implements ActionListener, ITicketLi
 		bottomRightPanel.add(btnKitchenDisplay, "height pref!,grow,wrap");
 		bottomRightPanel.add(btnManager, "height pref!,grow,wrap");
 		bottomRightPanel.add(btnBackOffice, "height pref!,grow,wrap");
+		bottomRightPanel.add(new PosButton(new TicketImportAction(bottomRightPanel)), "height pref!,grow,wrap");
 		bottomRightPanel.add(btnClockOut, "height pref!,grow,wrap");
 		bottomRightPanel.add(btnLogout, "height pref!,grow,wrap");
 		bottomRightPanel.add(btnShutdown, "height pref!,grow,wrap");
@@ -689,10 +691,6 @@ public class SwitchboardView extends JPanel implements ActionListener, ITicketLi
 	private void doPayout() {
 		PayoutDialog dialog = new PayoutDialog(Application.getPosWindow(), true);
 		dialog.open();
-		
-//		Ticket ticket = getSelectedTicket();
-//		Ticket ticketToEdit = TicketDAO.getInstance().loadFullTicket(ticket.getId());
-//		JReportPrintService.printTicketToKitchen(ticketToEdit);
 	}
 
 	private void doShowManagerWindow() {

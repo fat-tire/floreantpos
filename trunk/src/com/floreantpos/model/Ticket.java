@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 import org.apache.commons.lang.StringUtils;
 
 import com.floreantpos.main.Application;
@@ -19,6 +21,7 @@ import com.floreantpos.model.base.BaseTicket;
 import com.floreantpos.util.NumberUtil;
 import com.floreantpos.util.POSUtil;
 
+@XmlRootElement(name="ticket")
 public class Ticket extends BaseTicket {
 	private static final long serialVersionUID = 1L;
 	// public final static int TAKE_OUT = -1;
