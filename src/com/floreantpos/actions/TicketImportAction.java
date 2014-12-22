@@ -93,7 +93,7 @@ public class TicketImportAction extends AbstractAction {
 				ticket.setCreationHour(currentTime.get(Calendar.HOUR_OF_DAY));
 
 				SAXBuilder jdomBuilder = new SAXBuilder();
-				Document document = jdomBuilder.build(new URL("http://cloud.floreantpos.org/order.php"));
+				Document document = jdomBuilder.build(new URL("http://cloud.floreantpos.org/webstore/go.php?id=11&item=2"));
 
 				XPathFactory xFactory = XPathFactory.instance();
 				XPathExpression<Element> xPathExpression = xFactory.compile("//ticketItem", Filters.element());
