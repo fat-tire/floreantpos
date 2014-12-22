@@ -3,6 +3,8 @@ package com.floreantpos.model.base;
 import java.lang.Comparable;
 import java.io.Serializable;
 
+import javax.xml.bind.annotation.XmlTransient;
+
 import com.floreantpos.model.TicketItemCookingInstruction;
 
 
@@ -481,6 +483,7 @@ public abstract class BaseTicketItem  implements Comparable, Serializable {
 	/**
 	 * Return the value associated with the column: TICKET_ID
 	 */
+	@XmlTransient
 	public com.floreantpos.model.Ticket getTicket () {
 					return ticket;
 			}

@@ -3,6 +3,8 @@ package com.floreantpos.model.base;
 import java.lang.Comparable;
 import java.io.Serializable;
 
+import javax.xml.bind.annotation.XmlTransient;
+
 
 /**
  * This is an object that contains data related to the TRANSACTIONS table.
@@ -572,6 +574,7 @@ public abstract class BasePosTransaction  implements Comparable, Serializable {
 	/**
 	 * Return the value associated with the column: TICKET_ID
 	 */
+	@XmlTransient
 	public com.floreantpos.model.Ticket getTicket () {
 					return ticket;
 			}
