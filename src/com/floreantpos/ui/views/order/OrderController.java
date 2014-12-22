@@ -49,39 +49,13 @@ public class OrderController implements OrderListener, CategorySelectionListener
 		MenuItemDAO dao = new MenuItemDAO();
 		menuItem = dao.initialize(menuItem);
 
-		boolean hasModifiers = (menuItem.getMenuItemModiferGroups() != null && menuItem.getMenuItemModiferGroups().size() > 0);
-
-		TicketItem ticketItem = new TicketItem();
-		ticketItem.setItemId(menuItem.getId());
-		ticketItem.setItemCount(1);
-		ticketItem.setName(menuItem.getName());
-		ticketItem.setGroupName(menuItem.getParent().getName());
-		ticketItem.setCategoryName(menuItem.getParent().getParent().getName());
-		ticketItem.setUnitPrice(menuItem.getPrice(Application.getInstance().getCurrentShift()));
-		ticketItem.setDiscountRate(menuItem.getDiscountRate());
-		ticketItem.setTaxRate(menuItem.getTax() == null ? 0 : menuItem.getTax().getRate());
-		ticketItem.setHasModifiers(hasModifiers);
-		if (menuItem.getParent().getParent().isBeverage()) {
-			ticketItem.setBeverage(true);
-			ticketItem.setShouldPrintToKitchen(false);
-		}
-		else {
-			ticketItem.setBeverage(false);
-			ticketItem.setShouldPrintToKitchen(true);
-		}
-		ticketItem.setVirtualPrinter(menuItem.getVirtualPrinter());
+		TicketItem ticketItem = menuItem.convertToTicketItem();
 		orderView.getTicketView().addTicketItem(ticketItem);
 
-		if (hasModifiers) {
+		if (menuItem.hasModifiers()) {
 			ModifierView modifierView = orderView.getModifierView();
 			modifierView.setMenuItem(menuItem, ticketItem);
 			orderView.showView(ModifierView.VIEW_NAME);
-
-			//			ModifierView modifierView = new ModifierView();
-			//			modifierView.setMenuItem(menuItem, ticketItem);
-			//			PanelTester.width = 800;
-			//			PanelTester.height = 600;
-			//			PanelTester.test(modifierView);
 		}
 	}
 
