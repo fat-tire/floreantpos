@@ -1,15 +1,16 @@
 package com.floreantpos.actions;
 
+import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 import java.net.URL;
 import java.util.Calendar;
 import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.JFrame;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.Timer;
 
@@ -21,12 +22,12 @@ import org.jdom2.input.SAXBuilder;
 import org.jdom2.xpath.XPathExpression;
 import org.jdom2.xpath.XPathFactory;
 
+import com.floreantpos.ITicketList;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.MenuItem;
 import com.floreantpos.model.MenuItemModifierGroup;
 import com.floreantpos.model.MenuModifier;
 import com.floreantpos.model.MenuModifierGroup;
-import com.floreantpos.model.PaymentType;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.TicketItemModifier;
@@ -35,15 +36,14 @@ import com.floreantpos.model.TicketType;
 import com.floreantpos.model.dao.MenuItemDAO;
 import com.floreantpos.model.dao.MenuModifierDAO;
 import com.floreantpos.model.dao.TicketDAO;
-import com.floreantpos.ui.TicketListView;
 
 public class TicketImportAction extends AbstractAction {
+	private TicketImporter TICKET_IMPORTER = new TicketImporter();
 	private Component parentComponent;
-	private PaymentType selectedPaymentType;
 
 	JTextArea ta = new JTextArea();
 
-	Timer timer = new Timer(60*1000, new TicketImporter());
+	Timer timer = new Timer(60*1000, TICKET_IMPORTER);
 
 	public TicketImportAction(Component parentComponent) {
 		super("ONLINE TICKETS");
@@ -53,24 +53,32 @@ public class TicketImportAction extends AbstractAction {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		JFrame frame = new JFrame("Online tickt importar") {
+		JFrame frame = new JFrame("Online tickt importer") {
 			@Override
 			public void setVisible(boolean b) {
 				super.setVisible(b);
 				
 				if(b) {
-					timer.restart();
+					timer.start();
 				}
 				else {
 					timer.stop();
 				}
 			}
+			
+			@Override
+			public void dispose() {
+				timer.stop();
+				super.dispose();
+			}
 		};
-		ta.setEditable(false);
-		frame.add(ta);
+		//ta.setEditable(false);
+		frame.getContentPane().setLayout(new BorderLayout());
+		frame.getContentPane().add(new JScrollPane(ta));
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.setSize(800, 600);
 		frame.setVisible(true);
+		TICKET_IMPORTER.actionPerformed(null);
 	}
 
 	class TicketImporter implements ActionListener {
@@ -93,7 +101,7 @@ public class TicketImportAction extends AbstractAction {
 				ticket.setCreationHour(currentTime.get(Calendar.HOUR_OF_DAY));
 
 				SAXBuilder jdomBuilder = new SAXBuilder();
-				Document document = jdomBuilder.build(new URL("http://cloud.floreantpos.org/webstore/go.php?id=11&item=2"));
+				Document document = jdomBuilder.build(new URL("http://cloud.floreantpos.org/webstore/go.php?id=11&item=1"));
 
 				XPathFactory xFactory = XPathFactory.instance();
 				XPathExpression<Element> xPathExpression = xFactory.compile("//ticketItem", Filters.element());
@@ -105,6 +113,7 @@ public class TicketImportAction extends AbstractAction {
 					MenuItem menuItem = dao.get(Integer.parseInt(id), session);
 
 					TicketItem ticketItem = menuItem.convertToTicketItem();
+					ticketItem.setTicket(ticket);
 					ticket.addToticketItems(ticketItem);
 
 					XPathExpression<Element> xPathExpression2 = xFactory.compile("//modifier", Filters.element());
@@ -131,7 +140,9 @@ public class TicketImportAction extends AbstractAction {
 				ticketDAO.save(ticket);
 				
 				ta.append("\nImported ticket with id: " + ticket.getId());
-				
+				if(parentComponent instanceof ITicketList) {
+					((ITicketList) parentComponent).updateTicketList();
+				}
 			} catch (Exception e2) {
 				e2.printStackTrace();
 			}
