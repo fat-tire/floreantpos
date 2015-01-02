@@ -32,6 +32,7 @@ import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.ui.dialog.MiscTicketItemDialog;
 import com.floreantpos.ui.dialog.NumberSelectionDialog2;
+import com.floreantpos.ui.dialog.POSDialog;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.views.OrderInfoDialog;
 import com.floreantpos.ui.views.OrderInfoView;
@@ -68,27 +69,24 @@ public class OthersView extends JPanel {
 		buttonPanel = new JPanel();
 		btnOrderInfo = new com.floreantpos.swing.PosButton();
 		btnMisc = new com.floreantpos.swing.PosButton();
-		btnCustomerNumber = new com.floreantpos.swing.PosButton();
+		btnGuestNo = new com.floreantpos.swing.PosButton();
 		btnTableNumber = new com.floreantpos.swing.PosButton();
 
 		setBorder(javax.swing.BorderFactory.createTitledBorder(null, "=", javax.swing.border.TitledBorder.CENTER,
 				javax.swing.border.TitledBorder.DEFAULT_POSITION));
 		setLayout(new BorderLayout());
 
-		JPanel topPanel = new JPanel(new BorderLayout());
-		topPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
-		PosButton btnAddItem = new PosButton("SEARCH ITEM BY ID");
-		topPanel.add(btnAddItem);
-		add(topPanel, BorderLayout.NORTH);
-		btnAddItem.addActionListener(new ActionListener() {
+		btnSearchItem = new PosButton("SEARCH ITEM");
+		btnSearchItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				searchItem();
 			}
 		});
-
+		buttonPanel.add(btnSearchItem);
+		
 		buttonPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
-		buttonPanel.setLayout(new java.awt.GridLayout(1, 0, 5, 5));
+		buttonPanel.setLayout(new java.awt.GridLayout(2, 0, 5, 5));
 
 		btnOrderInfo.setText(com.floreantpos.POSConstants.ORDER_INFO);
 		btnOrderInfo.addActionListener(new java.awt.event.ActionListener() {
@@ -97,6 +95,15 @@ public class OthersView extends JPanel {
 			}
 		});
 		buttonPanel.add(btnOrderInfo);
+		
+		btnCustomer = new PosButton("CUSTOMER");
+		btnCustomer.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				doAddEditCustomer();
+			}
+		});
+		buttonPanel.add(btnCustomer);
 
 		btnMisc.setText(com.floreantpos.POSConstants.MISC);
 		btnMisc.addActionListener(new java.awt.event.ActionListener() {
@@ -106,13 +113,13 @@ public class OthersView extends JPanel {
 		});
 		buttonPanel.add(btnMisc);
 
-		btnCustomerNumber.setText(com.floreantpos.POSConstants.CUSTOMER);
-		btnCustomerNumber.addActionListener(new java.awt.event.ActionListener() {
+		btnGuestNo.setText(com.floreantpos.POSConstants.CUSTOMER);
+		btnGuestNo.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				btnCustomerNumberActionPerformed(evt);
 			}
 		});
-		buttonPanel.add(btnCustomerNumber);
+		buttonPanel.add(btnGuestNo);
 
 		btnTableNumber.setText(com.floreantpos.POSConstants.TABLE);
 		btnTableNumber.addActionListener(new java.awt.event.ActionListener() {
@@ -124,6 +131,11 @@ public class OthersView extends JPanel {
 
 		add(buttonPanel);
 	}// </editor-fold>//GEN-END:initComponents
+
+	protected void doAddEditCustomer() {
+		POSDialog dialog = new POSDialog();
+		//customers
+	}
 
 	private void doInsertMisc(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_doInsertMisc
 		MiscTicketItemDialog dialog = new MiscTicketItemDialog(Application.getPosWindow(), true);
@@ -259,10 +271,12 @@ public class OthersView extends JPanel {
 		tables2.clear();
 	}
 
-	private com.floreantpos.swing.PosButton btnCustomerNumber;
+	private com.floreantpos.swing.PosButton btnGuestNo;
 	private com.floreantpos.swing.PosButton btnMisc;
 	private com.floreantpos.swing.PosButton btnOrderInfo;
 	private com.floreantpos.swing.PosButton btnTableNumber;
+	private com.floreantpos.swing.PosButton btnCustomer;
+	private com.floreantpos.swing.PosButton btnSearchItem;
 	private JPanel buttonPanel;
 
 	// End of variables declaration//GEN-END:variables
@@ -270,17 +284,17 @@ public class OthersView extends JPanel {
 	public void updateView() {
 		if (currentTicket != null) {
 			if (currentTicket.getType() != TicketType.DINE_IN) {
-				btnCustomerNumber.setText("");
+				btnGuestNo.setText("");
 				btnTableNumber.setText("");
 
-				btnCustomerNumber.setEnabled(false);
+				btnGuestNo.setEnabled(false);
 				btnTableNumber.setEnabled(false);
 			}
 			else {
-				btnCustomerNumber.setEnabled(true);
+				btnGuestNo.setEnabled(true);
 				btnTableNumber.setEnabled(true);
 
-				btnCustomerNumber.setText(currentTicket.getNumberOfGuests() + " " + POSConstants.GUEST + "s");
+				btnGuestNo.setText(currentTicket.getNumberOfGuests() + " " + POSConstants.GUEST + "s");
 				btnTableNumber.setText(POSConstants.RECEIPT_REPORT_TABLE_NO_LABEL + ": " + currentTicket.getTableNumbers());
 			}
 		}
