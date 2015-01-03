@@ -2,48 +2,24 @@ package com.floreantpos.customer;
 
 import java.util.List;
 
-import javax.swing.table.AbstractTableModel;
-
+import com.floreantpos.bo.ui.explorer.ListTableModel;
 import com.floreantpos.model.Customer;
 
-public class CustomerListTableModel extends AbstractTableModel {
-	private final String[] columns = { "PHONE", "NAME", "DoB", "ADDRESS", "CITY", "STATE" };
-
-	private List<Customer> customers;
+public class CustomerListTableModel extends ListTableModel<Customer> {
+	private final static String[] columns = { "PHONE", "NAME", "DoB", "ADDRESS", "CITY", "STATE" };
 
 	public CustomerListTableModel() {
+		super(columns);
 	}
 
 	public CustomerListTableModel(List<Customer> customers) {
-		this.customers = customers;
-	}
-
-	@Override
-	public int getRowCount() {
-		if (customers == null) {
-			return 0;
-		}
-
-		return customers.size();
-	}
-
-	@Override
-	public int getColumnCount() {
-		return columns.length;
-	}
-	
-	@Override
-	public String getColumnName(int column) {
-		return columns[column];
+		super(columns, customers);
 	}
 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		if (customers == null) {
-			return null;
-		}
 
-		Customer customer = customers.get(rowIndex);
+		Customer customer = getRowData(rowIndex);
 
 		switch (columnIndex) {
 			case 0:
@@ -66,25 +42,4 @@ public class CustomerListTableModel extends AbstractTableModel {
 		}
 		return null;
 	}
-
-	public List<Customer> getCustomers() {
-		return customers;
-	}
-
-	public void setCustomers(List<Customer> customers) {
-		this.customers = customers;
-	}
-	
-	public Customer getCustomer(int index) {
-		if(customers == null) {
-			return null;
-		}
-		
-		if(index < 0 || index >= customers.size()) {
-			return null;
-		}
-		
-		return customers.get(index);
-	}
-
 }

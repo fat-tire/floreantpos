@@ -566,4 +566,10 @@ public class Ticket extends BaseTicket {
 		addProperty(Ticket.CUSTOMER_NAME, customer.getName());
 		addProperty(Ticket.CUSTOMER_PHONE, customer.getTelephoneNo());
 	}
+	
+	public void removeCustomer() {
+		removeProperty(CUSTOMER_ID);
+		removeProperty(CUSTOMER_NAME);
+		removeProperty(CUSTOMER_PHONE);
+	}
 }
