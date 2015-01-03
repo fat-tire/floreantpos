@@ -4,9 +4,11 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
@@ -21,13 +23,17 @@ import org.apache.commons.lang.StringUtils;
 
 import com.floreantpos.main.Application;
 import com.floreantpos.model.Customer;
+import com.floreantpos.model.Ticket;
 import com.floreantpos.model.dao.CustomerDAO;
+import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.swing.POSTextField;
 import com.floreantpos.swing.PosSmallButton;
 import com.floreantpos.ui.dialog.BeanEditorDialog;
+import com.floreantpos.ui.dialog.POSDialog;
+import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.forms.CustomerForm;
 
-public class CustomerSelectionView extends JPanel {
+public class CustomerSelectionDialog extends POSDialog {
 
 	private PosSmallButton btnCreateNewCustomer;
 
@@ -38,18 +44,26 @@ public class CustomerSelectionView extends JPanel {
 	private PosSmallButton btnInfo;
 
 	protected Customer selectedCustomer;
+	private PosSmallButton btnRemoveCustomer;
 	
-	public CustomerSelectionView() {
-		createUI();
+	private Ticket ticket;
+	
+	public CustomerSelectionDialog(Ticket ticket) {
+		this.ticket = ticket;
+		
+		setTitle("Add/Edit Customer");
+		
+		loadCustomerFromTicket();
 	}
 
-	private void createUI() {
+	@Override
+	public void initUI() {
 		setPreferredSize(new Dimension(690, 553));
-		setLayout(new MigLayout("", "[549px,grow]", "[grow][][shrink 0,fill][grow][grow]"));
+		getContentPane().setLayout(new MigLayout("", "[549px,grow]", "[grow][][shrink 0,fill][grow][grow]"));
 
 		JPanel panel_4 = new JPanel();
-		panel_4.setBorder(new TitledBorder(null, "OroCust 0.7", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		add(panel_4, "cell 0 0,grow");
+		panel_4.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		getContentPane().add(panel_4, "cell 0 0,grow");
 		panel_4.setLayout(new MigLayout("", "[grow][][][]", "[grow][][][]"));
 
 		JLabel lblNewLabel = new JLabel("");
@@ -67,7 +81,7 @@ public class CustomerSelectionView extends JPanel {
 		psmlbtnSearch.setFocusable(false);
 		psmlbtnSearch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				searchCustomer();
+				doSearchCustomer();
 			}
 		});
 		psmlbtnSearch.setText("SEARCH");
@@ -134,50 +148,99 @@ public class CustomerSelectionView extends JPanel {
 		panel.add(btnCreateNewCustomer);
 		btnCreateNewCustomer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				createNewCustomer();
+				doCreateNewCustomer();
 			}
 		});
 		btnCreateNewCustomer.setText("NEW");
-
-		PosSmallButton btnCancel = new PosSmallButton();
-		btnCancel.addActionListener(new ActionListener() {
+		
+		btnRemoveCustomer = new PosSmallButton();
+		btnRemoveCustomer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				doRemoveCustomerFromTicket();
 			}
 		});
-		btnCancel.setText("CANCEL");
-		panel.add(btnCancel);
+		btnRemoveCustomer.setText("REMOVE");
+		panel.add(btnRemoveCustomer);
 
 		PosSmallButton btnSelect = new PosSmallButton();
 		btnSelect.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				Customer customer = customerTable.getSelectedCustomer();
+				if(customer == null) {
+					POSMessageDialog.showError("Please select a customer");
+					return;
+				}
+				
+				doSetCustomer(customer);
 			}
 		});
 		btnSelect.setText("SELECT");
 		panel.add(btnSelect);
+		
+				PosSmallButton btnCancel = new PosSmallButton();
+				btnCancel.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						setCanceled(true);
+						dispose();
+					}
+				});
+				btnCancel.setText("CANCEL");
+				panel.add(btnCancel);
 
 		JPanel panel_3 = new JPanel(new BorderLayout());
-		add(panel_3, "cell 0 1,grow, gapright 2px");
+		getContentPane().add(panel_3, "cell 0 1,grow, gapright 2px");
 
 		com.floreantpos.swing.QwertyKeyPad qwertyKeyPad = new com.floreantpos.swing.QwertyKeyPad();
 		panel_3.add(qwertyKeyPad);
 		tfName.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				searchCustomer();
+				doSearchCustomer();
 			}
 		});
 		tfLoyaltyNo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				searchCustomer();
+				doSearchCustomer();
 			}
 		});
 		tfPhone.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				searchCustomer();
+				doSearchCustomer();
 			}
 		});
 	}
 
-	protected void searchCustomer() {
+	private void loadCustomerFromTicket() {
+		String customerIdString = ticket.getProperty(Ticket.CUSTOMER_ID);
+		if(StringUtils.isNotEmpty(customerIdString)) {
+			int customerId = Integer.parseInt(customerIdString);
+			Customer customer = CustomerDAO.getInstance().get(customerId);
+			
+			List<Customer> list = new ArrayList<Customer>();
+			list.add(customer);
+			customerTable.setModel(new CustomerListTableModel(list));
+		}
+	}
+
+	protected void doSetCustomer(Customer customer) {
+		ticket.setCustomer(customer);
+		TicketDAO.getInstance().saveOrUpdate(ticket);
+		setCanceled(false);
+		dispose();
+	}
+
+	protected void doRemoveCustomerFromTicket() {
+		int option = JOptionPane.showOptionDialog(this, "Remove customer from ticket?", "Confirm", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+		if(option != JOptionPane.YES_OPTION) {
+			return;
+		}
+		
+		ticket.removeCustomer();
+		TicketDAO.getInstance().saveOrUpdate(ticket);
+		setCanceled(false);
+		dispose();
+	}
+
+	protected void doSearchCustomer() {
 		String phone = tfPhone.getText();
 		String name = tfName.getText();
 		String loyalty = tfLoyaltyNo.getText();
@@ -192,20 +255,19 @@ public class CustomerSelectionView extends JPanel {
 		customerTable.setModel(new CustomerListTableModel(list));
 	}
 
-	protected void createNewCustomer() {
+	protected void doCreateNewCustomer() {
 		CustomerForm form = new CustomerForm();
 		BeanEditorDialog dialog = new BeanEditorDialog(form, Application.getPosWindow(), true);
 		dialog.open();
 
 		if (!dialog.isCanceled()) {
 			selectedCustomer = (Customer) form.getBean();
+			
+			CustomerListTableModel model = (CustomerListTableModel) customerTable.getModel();
+			model.addItem(selectedCustomer);
 		}
 	}
-
-	public Customer getCustomer() {
-		return selectedCustomer;
-	}
-
+	
 	@Override
 	public String getName() {
 		return "C";

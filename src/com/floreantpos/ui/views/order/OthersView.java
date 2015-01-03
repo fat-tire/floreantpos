@@ -20,6 +20,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import com.floreantpos.POSConstants;
+import com.floreantpos.customer.CustomerSelectionDialog;
 import com.floreantpos.extension.FloorLayoutPlugin;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.MenuItem;
@@ -32,7 +33,6 @@ import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.ui.dialog.MiscTicketItemDialog;
 import com.floreantpos.ui.dialog.NumberSelectionDialog2;
-import com.floreantpos.ui.dialog.POSDialog;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.views.OrderInfoDialog;
 import com.floreantpos.ui.views.OrderInfoView;
@@ -133,8 +133,9 @@ public class OthersView extends JPanel {
 	}// </editor-fold>//GEN-END:initComponents
 
 	protected void doAddEditCustomer() {
-		POSDialog dialog = new POSDialog();
-		//customers
+		CustomerSelectionDialog dialog = new CustomerSelectionDialog(getCurrentTicket());
+		dialog.setSize(800, 650);
+		dialog.open();
 	}
 
 	private void doInsertMisc(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_doInsertMisc
