@@ -143,6 +143,7 @@ public abstract class _RootDAO extends com.floreantpos.model.dao._BaseRootDAO {
 		configuration = configuration.setProperty("hibernate.c3p0.timeout", "300");
 		configuration = configuration.setProperty("hibernate.c3p0.max_statements", "50");
 		configuration = configuration.setProperty("hibernate.c3p0.idle_test_period", "3000");
+		//configuration = configuration.setProperty("hibernate.c3p0.validate", "true");
 
 		return configuration;
 	}

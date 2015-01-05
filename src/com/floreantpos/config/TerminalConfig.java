@@ -5,6 +5,8 @@ import org.apache.commons.configuration.PropertiesConfiguration;
 import com.floreantpos.util.PasswordHasher;
 
 public class TerminalConfig {
+	private static final String UI_DEFAULT_FONT = "ui_default_font";
+
 	private static final String AUTO_LOGOFF_TIME = "AUTO_LOGOFF_TIME";
 
 	private static final String AUTO_LOGOFF_ENABLE = "AUTO_LOGOFF_ENABLE";
@@ -148,5 +150,13 @@ public class TerminalConfig {
 	
 	public static int getAutoLogoffTime() {
 		return config.getInt(AUTO_LOGOFF_TIME, 60);
+	}
+	
+	public static String getUiDefaultFont() {
+		return config.getString(UI_DEFAULT_FONT);
+	}
+	
+	public static void setUiDefaultFont(String fontName) {
+		config.setProperty(UI_DEFAULT_FONT, fontName);
 	}
 }

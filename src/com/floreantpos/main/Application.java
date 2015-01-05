@@ -1,5 +1,6 @@
 package com.floreantpos.main;
 
+import java.awt.Font;
 import java.io.File;
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -15,6 +16,7 @@ import javax.swing.UIManager;
 import net.xeoh.plugins.base.PluginManager;
 import net.xeoh.plugins.base.impl.PluginManagerFactory;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.RandomUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -107,12 +109,58 @@ public class Application {
 
 	private void setApplicationLook() {
 		try {
+			
+			initializeFont();
+			
 			PlasticXPLookAndFeel.setPlasticTheme(new ExperienceBlue());
 			UIManager.setLookAndFeel(new PlasticXPLookAndFeel());
 			//UIManager.setLookAndFeel(new NimbusLookAndFeel());
 			UIManager.put("ComboBox.is3DEnabled", Boolean.FALSE); //$NON-NLS-1$
 		} catch (Exception ignored) {
+			ignored.printStackTrace();
 		}
+	}
+
+	private void initializeFont() {
+		String uiDefaultFont = TerminalConfig.getUiDefaultFont();
+		if(StringUtils.isEmpty(uiDefaultFont)) {
+			return;
+		}
+		
+		Font sourceFont = UIManager.getFont("Label.font");
+		Font font = new Font(uiDefaultFont, sourceFont.getStyle(), sourceFont.getSize());
+		
+		UIManager.put("Button.font", font);
+		UIManager.put("ToggleButton.font", font);
+		UIManager.put("RadioButton.font", font);
+		UIManager.put("CheckBox.font", font);
+		UIManager.put("ColorChooser.font", font);
+		UIManager.put("ComboBox.font", font);
+		UIManager.put("Label.font", font);
+		UIManager.put("List.font", font);
+		UIManager.put("MenuBar.font", font);
+		UIManager.put("MenuItem.font", font);
+		UIManager.put("RadioButtonMenuItem.font", font);
+		UIManager.put("CheckBoxMenuItem.font", font);
+		UIManager.put("Menu.font", font);
+		UIManager.put("PopupMenu.font", font);
+		UIManager.put("OptionPane.font", font);
+		UIManager.put("Panel.font", font);
+		UIManager.put("ProgressBar.font", font);
+		UIManager.put("ScrollPane.font", font);
+		UIManager.put("Viewport.font", font);
+		UIManager.put("TabbedPane.font", font);
+		UIManager.put("Table.font", font);
+		UIManager.put("TableHeader.font", font);
+		UIManager.put("TextField.font", font);
+		UIManager.put("PasswordField.font", font);
+		UIManager.put("TextArea.font", font);
+		UIManager.put("TextPane.font", font);
+		UIManager.put("EditorPane.font", font);
+		UIManager.put("TitledBorder.font", font);
+		UIManager.put("ToolBar.font", font);
+		UIManager.put("ToolTip.font", font);
+		UIManager.put("Tree.font", font);
 	}
 
 	public void initializeSystem() {

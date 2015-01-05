@@ -1,14 +1,20 @@
 package com.floreantpos.config.ui;
 
 import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GraphicsEnvironment;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+
+import org.apache.commons.lang.StringUtils;
 
 import net.miginfocom.swing.MigLayout;
 
@@ -35,6 +41,8 @@ public class TerminalConfigurationView extends ConfigurationView {
 	private JCheckBox cbEnableBarTab = new JCheckBox("BAR TAB");
 	
 	private JCheckBox cbFullscreenMode = new JCheckBox("Kiosk Mode");
+	
+	private JComboBox<String> cbFonts = new JComboBox<String>();
 
 	private IntegerTextField tfButtonHeight;
 
@@ -74,10 +82,13 @@ public class TerminalConfigurationView extends ConfigurationView {
 			}
 		});
 		add(cbAutoLogoff);
-		add(new JLabel("Auto logoff time"));
+		add(new JLabel("Auto logoff time")); //$NON-NLS-1$
 		add(tfLogoffTime, "wrap");
 		
 		add(cbFullscreenMode, "wrap"); //$NON-NLS-1$
+		
+		add(new JLabel("Default font")); //$NON-NLS-1$
+		add(cbFonts, "wrap"); //$NON-NLS-1$
 		
 		JPanel ticketTypePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 20, 10));
 		ticketTypePanel.setBorder(BorderFactory.createTitledBorder("Ticket Types"));
@@ -159,6 +170,13 @@ public class TerminalConfigurationView extends ConfigurationView {
 		
 		POSMessageDialog.showMessage(BackOfficeWindow.getInstance(), "Please restart system for the configuration to take effect");
 		
+		String selectedFont = (String) cbFonts.getSelectedItem();
+		if("<select>".equals(selectedFont)) {
+			selectedFont = null;
+		}
+		
+		TerminalConfig.setUiDefaultFont(selectedFont);
+		
 		return true;
 	}
 
@@ -181,7 +199,25 @@ public class TerminalConfigurationView extends ConfigurationView {
 		tfLogoffTime.setText("" + TerminalConfig.getAutoLogoffTime());
 		tfLogoffTime.setEnabled(cbAutoLogoff.isSelected());
 		
+		initializeFontConfig();
+		
 		setInitialized(true);
+	}
+
+	private void initializeFontConfig() {
+		GraphicsEnvironment e = GraphicsEnvironment.getLocalGraphicsEnvironment();
+	    Font[] fonts = e.getAllFonts(); // Get the fonts
+	    DefaultComboBoxModel<String> model = (DefaultComboBoxModel<String>) cbFonts.getModel();
+	    model.addElement("<select>");
+	    
+	    for (Font f : fonts) {
+	    	model.addElement(f.getFontName());
+	    }
+	    
+	    String uiDefaultFont = TerminalConfig.getUiDefaultFont();
+	    if(StringUtils.isNotEmpty(uiDefaultFont)) {
+	    	cbFonts.setSelectedItem(uiDefaultFont);
+	    }
 	}
 
 	@Override
