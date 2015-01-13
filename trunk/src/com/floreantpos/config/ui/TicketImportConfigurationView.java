@@ -11,7 +11,8 @@ import com.floreantpos.swing.POSTextField;
 public class TicketImportConfigurationView extends ConfigurationView {
 	public static final String CONFIG_TAB_TAX = "Ticket Import";
 	
-	private POSTextField tfURL = new POSTextField(60);
+	private POSTextField tfURL = new POSTextField(30);
+	private POSTextField tfSecretKey = new POSTextField(10);
 	private IntegerTextField tfPollInterval = new IntegerTextField(6); 
 	
 	public TicketImportConfigurationView() {
@@ -31,6 +32,7 @@ public class TicketImportConfigurationView extends ConfigurationView {
 		}
 
 		AppConfig.put("ticket_import_url", tfURL.getText());
+		AppConfig.put("ticket_import_secret_key", tfSecretKey.getText());
 		AppConfig.putInt("ticket_import_poll_interval", tfPollInterval.getInteger());
 
 		return true;
@@ -39,6 +41,7 @@ public class TicketImportConfigurationView extends ConfigurationView {
 	@Override
 	public void initialize() throws Exception {
 		tfURL.setText(AppConfig.getString("ticket_import_url", "http://cloud.floreantpos.org/webstore/"));
+		tfSecretKey.setText(AppConfig.getString("ticket_import_secret_key", "12345"));
 		tfPollInterval.setText(AppConfig.getString("ticket_import_poll_interval", "60"));
 		
 		setInitialized(true);
