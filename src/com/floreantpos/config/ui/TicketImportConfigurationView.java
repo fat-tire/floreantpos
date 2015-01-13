@@ -1,23 +1,27 @@
 package com.floreantpos.config.ui;
 
-import com.floreantpos.main.Application;
-import com.floreantpos.model.Restaurant;
-import com.floreantpos.model.dao.RestaurantDAO;
-import com.floreantpos.util.POSUtil;
+import javax.swing.JLabel;
 
 import net.miginfocom.swing.MigLayout;
-import javax.swing.JCheckBox;
+
+import com.floreantpos.config.AppConfig;
+import com.floreantpos.swing.IntegerTextField;
+import com.floreantpos.swing.POSTextField;
 
 public class TicketImportConfigurationView extends ConfigurationView {
-	public static final String CONFIG_TAB_TAX = "Tax";
-	private Restaurant restaurant;
-	private JCheckBox cbItemSalesPriceIncludesTax;
+	public static final String CONFIG_TAB_TAX = "Ticket Import";
+	
+	private POSTextField tfURL = new POSTextField(60);
+	private IntegerTextField tfPollInterval = new IntegerTextField(6); 
 	
 	public TicketImportConfigurationView() {
 		setLayout(new MigLayout("", "[]", "[]"));
 
-		cbItemSalesPriceIncludesTax = new JCheckBox("Item sales price includes tax");
-		add(cbItemSalesPriceIncludesTax, "cell 0 0");
+		add(new JLabel("Ticket import api URL"));
+		add(tfURL, "wrap");
+		
+		add(new JLabel("Poll interval (in second)"));
+		add(tfPollInterval, "wrap");
 	}
 
 	@Override
@@ -26,20 +30,17 @@ public class TicketImportConfigurationView extends ConfigurationView {
 			return true;
 		}
 
-		restaurant.setItemPriceIncludesTax(cbItemSalesPriceIncludesTax.isSelected());
-
-		RestaurantDAO.getInstance().saveOrUpdate(restaurant);
-
-		Application.getInstance().refreshRestaurant();
+		AppConfig.put("ticket_import_url", tfURL.getText());
+		AppConfig.putInt("ticket_import_poll_interval", tfPollInterval.getInteger());
 
 		return true;
 	}
 
 	@Override
 	public void initialize() throws Exception {
-		restaurant = RestaurantDAO.getInstance().get(Integer.valueOf(1));
-		cbItemSalesPriceIncludesTax.setSelected(POSUtil.getBoolean(restaurant.isItemPriceIncludesTax()));
-
+		tfURL.setText(AppConfig.getString("ticket_import_url", "http://cloud.floreantpos.org/webstore/"));
+		tfPollInterval.setText(AppConfig.getString("ticket_import_poll_interval", "60"));
+		
 		setInitialized(true);
 	}
 
