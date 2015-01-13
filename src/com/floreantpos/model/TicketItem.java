@@ -128,6 +128,20 @@ public class TicketItem extends BaseTicketItem implements ITicketItem {
 
 		return ticketItemModifierGroup;
 	}
+	
+	public TicketItemModifierGroup findTicketItemModifierGroup(Integer menuModifierGroupId) {
+		List<TicketItemModifierGroup> ticketItemModifierGroups = getTicketItemModifierGroups();
+		
+		if (ticketItemModifierGroups != null) {
+			for (TicketItemModifierGroup ticketItemModifierGroup : ticketItemModifierGroups) {
+				if (ticketItemModifierGroup.getModifierGroupId() == menuModifierGroupId) {
+					return ticketItemModifierGroup;
+				}
+			}
+		}
+		
+		return null;
+	}
 
 	public void calculatePrice() {
 		priceIncludesTax = Application.getInstance().isPriceIncludesTax();
