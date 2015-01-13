@@ -18,6 +18,7 @@ import com.floreantpos.Messages;
 import com.floreantpos.POSConstants;
 import com.floreantpos.PosException;
 import com.floreantpos.extension.FloorLayoutPlugin;
+import com.floreantpos.extension.TicketImportPlugin;
 import com.floreantpos.main.Application;
 import com.floreantpos.ui.dialog.POSDialog;
 import com.floreantpos.ui.dialog.POSMessageDialog;
@@ -44,6 +45,11 @@ public class ConfigurationDialog extends POSDialog implements ChangeListener, Ac
 		addView(new CardConfigurationView());
 		addView(new DatabaseConfigurationView());
 		addView(new TaxConfigurationView());
+		
+		TicketImportPlugin ticketImportPlugin = Application.getPluginManager().getPlugin(TicketImportPlugin.class);
+		if(ticketImportPlugin != null) {
+			addView(new TicketImportConfigurationView());
+		}
 		
 		tabbedPane.addChangeListener(this);
 		
