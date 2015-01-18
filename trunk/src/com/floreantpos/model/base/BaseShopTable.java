@@ -59,6 +59,9 @@ public abstract class BaseShopTable  implements Comparable, Serializable {
 		protected java.lang.Boolean occupied;
 		protected java.lang.Boolean booked;
 
+	// collections
+	private java.util.Set<com.floreantpos.model.ShopTableType> types;
+
 
 
 	/**
@@ -215,6 +218,28 @@ public abstract class BaseShopTable  implements Comparable, Serializable {
 	 */
 	public void setBooked (java.lang.Boolean booked) {
 		this.booked = booked;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: types
+	 */
+	public java.util.Set<com.floreantpos.model.ShopTableType> getTypes () {
+					return types;
+			}
+
+	/**
+	 * Set the value related to the column: types
+	 * @param types the types value
+	 */
+	public void setTypes (java.util.Set<com.floreantpos.model.ShopTableType> types) {
+		this.types = types;
+	}
+
+	public void addTotypes (com.floreantpos.model.ShopTableType shopTableType) {
+		if (null == getTypes()) setTypes(new java.util.TreeSet<com.floreantpos.model.ShopTableType>());
+		getTypes().add(shopTableType);
 	}
 
 
