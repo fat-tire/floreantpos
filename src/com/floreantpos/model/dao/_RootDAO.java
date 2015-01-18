@@ -32,6 +32,7 @@ import com.floreantpos.model.Restaurant;
 import com.floreantpos.model.Shift;
 import com.floreantpos.model.ShopFloor;
 import com.floreantpos.model.ShopTable;
+import com.floreantpos.model.ShopTableType;
 import com.floreantpos.model.Tax;
 import com.floreantpos.model.Terminal;
 import com.floreantpos.model.Ticket;
@@ -122,6 +123,7 @@ public abstract class _RootDAO extends com.floreantpos.model.dao._BaseRootDAO {
 		configuration = configuration.addClass(ZipCodeVsDeliveryCharge.class);
 		configuration = configuration.addClass(ShopFloor.class);
 		configuration = configuration.addClass(ShopTable.class);
+		configuration = configuration.addClass(ShopTableType.class);
 		
 		configuration = configureInventoryClasses(configuration);
 		
