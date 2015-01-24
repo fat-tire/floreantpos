@@ -75,7 +75,7 @@ public class Ticket extends BaseTicket {
 		String s = "";
 		for (Iterator iterator = tables.iterator(); iterator.hasNext();) {
 			ShopTable shopTable = (ShopTable) iterator.next();
-			s += shopTable.getNumber();
+			s += shopTable.getTableNumber();
 			
 			if(iterator.hasNext()) {
 				s += ", ";

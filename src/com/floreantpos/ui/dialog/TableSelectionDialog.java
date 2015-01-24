@@ -201,7 +201,7 @@ public class TableSelectionDialog extends POSDialog implements ActionListener {
 
 		if (shopTable == null) {
 			shopTable = new ShopTable();
-			shopTable.setNumber(tableNumber);
+			shopTable.setTableNumber(tableNumber);
 		}
 
 		if (shopTable.isOccupied()) {
