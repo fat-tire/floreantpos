@@ -18,13 +18,14 @@ public abstract class BaseShopTable  implements Comparable, Serializable {
 	public static String REF = "ShopTable";
 	public static String PROP_NAME = "name";
 	public static String PROP_DESCRIPTION = "description";
-	public static String PROP_NUMBER = "number";
+	public static String PROP_TABLE_NUMBER = "tableNumber";
 	public static String PROP_OCCUPIED = "occupied";
 	public static String PROP_ID = "id";
 	public static String PROP_CAPACITY = "capacity";
 	public static String PROP_BOOKED = "booked";
 	public static String PROP_Y = "y";
 	public static String PROP_X = "x";
+	public static String PROP_FLOOR = "floor";
 
 
 	// constructors
@@ -53,11 +54,14 @@ public abstract class BaseShopTable  implements Comparable, Serializable {
 		protected java.lang.String name;
 		protected java.lang.String description;
 		protected java.lang.Integer capacity;
-		protected java.lang.String number;
+		protected java.lang.String tableNumber;
 		protected java.lang.Integer x;
 		protected java.lang.Integer y;
 		protected java.lang.Boolean occupied;
 		protected java.lang.Boolean booked;
+
+	// many to one
+	private com.floreantpos.model.ShopFloor floor;
 
 	// collections
 	private java.util.Set<com.floreantpos.model.ShopTableType> types;
@@ -138,18 +142,18 @@ public abstract class BaseShopTable  implements Comparable, Serializable {
 
 
 	/**
-	 * Return the value associated with the column: NUMBER
+	 * Return the value associated with the column: TABLE_NUMBER
 	 */
-	public java.lang.String getNumber () {
-					return number;
+	public java.lang.String getTableNumber () {
+					return tableNumber;
 			}
 
 	/**
-	 * Set the value related to the column: NUMBER
-	 * @param number the NUMBER value
+	 * Set the value related to the column: TABLE_NUMBER
+	 * @param tableNumber the TABLE_NUMBER value
 	 */
-	public void setNumber (java.lang.String number) {
-		this.number = number;
+	public void setTableNumber (java.lang.String tableNumber) {
+		this.tableNumber = tableNumber;
 	}
 
 
@@ -218,6 +222,23 @@ public abstract class BaseShopTable  implements Comparable, Serializable {
 	 */
 	public void setBooked (java.lang.Boolean booked) {
 		this.booked = booked;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: FLOOR_ID
+	 */
+	public com.floreantpos.model.ShopFloor getFloor () {
+					return floor;
+			}
+
+	/**
+	 * Set the value related to the column: FLOOR_ID
+	 * @param floor the FLOOR_ID value
+	 */
+	public void setFloor (com.floreantpos.model.ShopFloor floor) {
+		this.floor = floor;
 	}
 
 

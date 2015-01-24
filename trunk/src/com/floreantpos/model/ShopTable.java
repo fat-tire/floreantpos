@@ -24,13 +24,22 @@ public class ShopTable extends BaseShopTable {
 	public ShopTable(String number, Integer x, Integer y) {
 		super();
 		
-		setNumber(number);
+		setTableNumber(number);
+		setX(x);
+		setY(y);
+	}
+	
+	public ShopTable(ShopFloor floor, String number, Integer x, Integer y) {
+		super();
+		
+		setFloor(floor);
+		setTableNumber(number);
 		setX(x);
 		setY(y);
 	}
 	
 	@Override
 	public String toString() {
-		return getNumber();
+		return getTableNumber();
 	}
 }
