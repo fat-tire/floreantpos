@@ -17,7 +17,7 @@ public class ShopTableDAO extends BaseShopTableDAO {
 	public ShopTable getByNumber(String tableNumber) {
 		Session session = createNewSession();
 		Criteria criteria = session.createCriteria(getReferenceClass());
-		criteria.add(Restrictions.eq(ShopTable.PROP_NUMBER, tableNumber));
+		criteria.add(Restrictions.eq(ShopTable.PROP_TABLE_NUMBER, tableNumber));
 		
 		return (ShopTable) criteria.uniqueResult();
 	}
