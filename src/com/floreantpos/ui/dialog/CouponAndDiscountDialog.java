@@ -274,8 +274,10 @@ public class CouponAndDiscountDialog extends POSDialog implements ActionListener
     
     public TicketCouponAndDiscount getSelectedCoupon() {
 		try {
-			double parseDouble = Double.parseDouble(tfValue.getText());
+
+			double parseDouble = NumberUtil.parse(tfValue.getText()).doubleValue();
 			ticketCoupon.setValue(parseDouble);
+			
 		}catch(Exception x) {
 			throw new PosException("CouponAndDiscount amount is not valid");
 		}
