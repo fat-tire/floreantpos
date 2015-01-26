@@ -3,6 +3,9 @@ package com.floreantpos.util;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.NumberFormat;
+import java.text.ParseException;
+
+import org.apache.commons.lang.StringUtils;
 
 public class NumberUtil {
 	private final static NumberFormat numberFormat = NumberFormat.getNumberInstance();
@@ -30,5 +33,13 @@ public class NumberUtil {
 		}
 		
 		return value;
+	}
+	
+	public static Number parse(String number) throws ParseException {
+		if(StringUtils.isEmpty(number)) {
+			return 0;
+		}
+		
+		return numberFormat.parse(number);
 	}
 }
