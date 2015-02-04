@@ -52,6 +52,12 @@ public class PosButton extends JButton {
 		setActionCommand(command.name());
 	}
 	
+	public PosButton(String text, ActionCommand command) {
+		this(text);
+		
+		setActionCommand(command.name());
+	}
+	
 	public PosButton(ActionCommand command, ActionListener listener) {
 		this(command.toString());
 		
