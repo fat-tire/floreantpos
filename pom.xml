@@ -471,10 +471,16 @@
 			<version>0.9.1.2</version>
 		</dependency>
 		
-		<dependency><!-- Use this dependency in your licensed application -->
+		<dependency>
 			<groupId>net.nicholaswilliams.java.licensing</groupId>
 			<artifactId>licensing-core</artifactId>
 			<version>1.1.0</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.oro</groupId>
+			<artifactId>licensor</artifactId>
+			<version>1.0</version>
 		</dependency>
 	</dependencies>
 
