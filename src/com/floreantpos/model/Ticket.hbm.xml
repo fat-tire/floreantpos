@@ -71,10 +71,10 @@
 			<one-to-many class="com.floreantpos.model.PosTransaction" />
 		</set>
 
-		<set name="tables" cascade="save-update" table="TICKET_TABLE" lazy="false">
+		<bag name="tableNumbers" table="TICKET_TABLE_NUM" sort="natural" lazy="false" cascade="all">
 			<key column="ticket_id" />
-			<many-to-many column="table_id" class="com.floreantpos.model.ShopTable" />
-		</set>
+			<element column="TABLE_ID" type="string" />
+		</bag>
 
 		<!-- uni-directional many-to-one association to User -->
 		<many-to-one class="com.floreantpos.model.Shift" lazy="false" name="shift">

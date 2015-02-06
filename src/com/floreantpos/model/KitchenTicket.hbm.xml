@@ -14,10 +14,13 @@
 		<property column="VOIDED" index="ticketvoided" name="voided" type="java.lang.Boolean" />
 		<!-- a ticket is marked as closed it is either paid or voided -->
 		
-		<!--tableNumber should be -1 for take out -->
-		<property column="TABLE_NUMBERS" name="tableNumbers" type="java.lang.String" length="120" />
 		<property column="STATUS" name="status" type="string" length="30" />
 		<property column="SERVER_NAME" name="serverName" type="string" length="30" />
+		
+		<bag name="tableNumbers" table="KIT_TICKET_TABLE_NUM" sort="natural" lazy="false" cascade="all">
+			<key column="kit_ticket_id" />
+			<element column="TABLE_ID" type="string" />
+		</bag>
 
 		<!-- Associations -->
 		<!-- bi-directional one-to-many association to TicketItem -->

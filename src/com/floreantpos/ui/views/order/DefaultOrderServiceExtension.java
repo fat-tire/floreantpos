@@ -70,7 +70,7 @@ public class DefaultOrderServiceExtension implements OrderServiceExtension {
 		
 		for (ShopTable shopTable : tables) {
 			shopTable.setOccupied(true);
-			ticket.addTotables(shopTable);
+			ticket.addTable(shopTable.getTableNumber());
 		}
 
 		Calendar currentTime = Calendar.getInstance();

@@ -56,7 +56,7 @@ public class KitchenDisplay extends JFrame implements ActionListener {
 	}
 
 	public void removeTicket(KitchenTicketView view) {
-		view.stopTimer();
+		//view.stopTimer();
 		ticketPanel.remove(view);
 		ticketPanel.revalidate();
 		ticketPanel.repaint();
