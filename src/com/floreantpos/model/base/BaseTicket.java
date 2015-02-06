@@ -21,8 +21,8 @@ public abstract class BaseTicket  implements Comparable, Serializable {
 	public static String PROP_DUE_AMOUNT = "dueAmount";
 	public static String PROP_DISCOUNT_AMOUNT = "discountAmount";
 	public static String PROP_CREATE_DATE = "createDate";
-	public static String PROP_NUMBER_OF_GUESTS = "numberOfGuests";
 	public static String PROP_DELIVERY_CHARGE = "deliveryCharge";
+	public static String PROP_NUMBER_OF_GUESTS = "numberOfGuests";
 	public static String PROP_PAID = "paid";
 	public static String PROP_ADVANCE_AMOUNT = "advanceAmount";
 	public static String PROP_ACTIVE_DATE = "activeDate";
@@ -122,7 +122,7 @@ public abstract class BaseTicket  implements Comparable, Serializable {
 	private java.util.List<com.floreantpos.model.TicketItem> ticketItems;
 	private java.util.List<com.floreantpos.model.TicketCouponAndDiscount> couponAndDiscounts;
 	private java.util.Set<com.floreantpos.model.PosTransaction> transactions;
-	private java.util.Set<com.floreantpos.model.ShopTable> tables;
+	private java.util.List<String> tableNumbers;
 
 
 
@@ -844,23 +844,18 @@ public abstract class BaseTicket  implements Comparable, Serializable {
 
 
 	/**
-	 * Return the value associated with the column: tables
+	 * Return the value associated with the column: tableNumbers
 	 */
-	public java.util.Set<com.floreantpos.model.ShopTable> getTables () {
-					return tables;
+	public java.util.List<String> getTableNumbers () {
+					return tableNumbers;
 			}
 
 	/**
-	 * Set the value related to the column: tables
-	 * @param tables the tables value
+	 * Set the value related to the column: tableNumbers
+	 * @param tableNumbers the tableNumbers value
 	 */
-	public void setTables (java.util.Set<com.floreantpos.model.ShopTable> tables) {
-		this.tables = tables;
-	}
-
-	public void addTotables (com.floreantpos.model.ShopTable shopTable) {
-		if (null == getTables()) setTables(new java.util.TreeSet<com.floreantpos.model.ShopTable>());
-		getTables().add(shopTable);
+	public void setTableNumbers (java.util.List<String> tableNumbers) {
+		this.tableNumbers = tableNumbers;
 	}
 
 

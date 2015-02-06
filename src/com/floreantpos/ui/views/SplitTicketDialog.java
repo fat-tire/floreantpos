@@ -11,7 +11,6 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JLabel;
@@ -29,6 +28,7 @@ import com.floreantpos.model.ShopTable;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.dao.ActionHistoryDAO;
+import com.floreantpos.model.dao.ShopTableDAO;
 import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.swing.TransparentPanel;
@@ -292,10 +292,10 @@ public class SplitTicketDialog extends POSDialog {
 		if (ticket.getTicketItems().size() <= 0)
 			return;
 		
-		Set<ShopTable> tables = mainTicketView.getTicket().getTables();
+		List<ShopTable> tables = ShopTableDAO.getInstance().getTables(mainTicketView.getTicket());
 		if(tables != null) {
 			for (ShopTable shopTable : tables) {
-				ticket.addTotables(shopTable);
+				ticket.addTable(shopTable.getTableNumber());
 			}
 		}
 		

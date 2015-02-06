@@ -7,10 +7,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -18,6 +16,7 @@ import org.apache.commons.lang.StringUtils;
 
 import com.floreantpos.main.Application;
 import com.floreantpos.model.base.BaseTicket;
+import com.floreantpos.model.dao.ShopTableDAO;
 import com.floreantpos.util.NumberUtil;
 import com.floreantpos.util.POSUtil;
 
@@ -68,21 +67,31 @@ public class Ticket extends BaseTicket {
 	public static final String CUSTOMER_NAME = "CUSTOMER_NAME";
 	public static final String CUSTOMER_ID = "CUSTOMER_ID";
 	
-	public String getTableNumbers() {
-		Set<ShopTable> tables = getTables();
-		if(tables == null) return "";
-		
-		String s = "";
-		for (Iterator iterator = tables.iterator(); iterator.hasNext();) {
-			ShopTable shopTable = (ShopTable) iterator.next();
-			s += shopTable.getTableNumber();
-			
-			if(iterator.hasNext()) {
-				s += ", ";
-			}
+//	public String getTableNumbers() {
+//		Set<ShopTable> tables = getTables();
+//		if(tables == null) return "";
+//		
+//		String s = "";
+//		for (Iterator iterator = tables.iterator(); iterator.hasNext();) {
+//			ShopTable shopTable = (ShopTable) iterator.next();
+//			s += shopTable.getTableNumber();
+//			
+//			if(iterator.hasNext()) {
+//				s += ", ";
+//			}
+//		}
+//		
+//		return s;
+//	}
+	
+	public void addTable(String tableNumber) {
+		List<String> numbers = getTableNumbers();
+		if(numbers == null) {
+			numbers = new ArrayList<String>();
+			setTableNumbers(numbers);
 		}
 		
-		return s;
+		numbers.add(tableNumber);
 	}
 	
 	@Override
@@ -90,19 +99,10 @@ public class Ticket extends BaseTicket {
 		super.setClosed(closed);
 		
 		if(closed) {
-			releaseTables();
+			ShopTableDAO.getInstance().releaseTables(this);
 		}
 	}
 
-	private void releaseTables() {
-		Set<ShopTable> tables = getTables();
-		if(tables == null) return;
-		
-		for (ShopTable shopTable : tables) {
-			shopTable.setOccupied(false);
-		}
-	}
-	
 	public void setGratuityAmount(double amount) {
 		Gratuity gratuity = getGratuity();
 		if(gratuity == null) {

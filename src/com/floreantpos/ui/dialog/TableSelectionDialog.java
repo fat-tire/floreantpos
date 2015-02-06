@@ -12,7 +12,6 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
-import java.util.Set;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListCellRenderer;
@@ -301,7 +300,7 @@ public class TableSelectionDialog extends POSDialog implements ActionListener {
 			return;
 		}
 		
-		Set<ShopTable> tables = ticket.getTables();
+		List<ShopTable> tables = ShopTableDAO.getInstance().getTables(ticket);
 		if(tables == null) return;
 		
 		for (ShopTable shopTable : tables) {
