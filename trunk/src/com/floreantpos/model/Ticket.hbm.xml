@@ -71,7 +71,7 @@
 			<one-to-many class="com.floreantpos.model.PosTransaction" />
 		</set>
 
-		<bag name="tableNumbers" table="TICKET_TABLE_NUM" sort="natural" lazy="false" cascade="all">
+		<bag name="tableNumbers" table="TICKET_TABLE_NUM" lazy="false" cascade="all">
 			<key column="ticket_id" />
 			<element column="TABLE_ID" type="string" />
 		</bag>
