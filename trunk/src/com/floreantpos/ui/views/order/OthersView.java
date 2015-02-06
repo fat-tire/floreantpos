@@ -11,7 +11,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import javax.swing.JDialog;
 import javax.swing.JPanel;
@@ -29,6 +28,7 @@ import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.TicketType;
 import com.floreantpos.model.dao.MenuItemDAO;
+import com.floreantpos.model.dao.ShopTableDAO;
 import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.ui.dialog.MiscTicketItemDialog;
@@ -239,7 +239,7 @@ public class OthersView extends JPanel {
 				shopTable.setOccupied(true);
 				session.merge(shopTable);
 				
-				thisTicket.addTotables(shopTable);
+				thisTicket.addTable(shopTable.getTableNumber());
 			}
 
 			session.merge(thisTicket);
@@ -258,7 +258,7 @@ public class OthersView extends JPanel {
 	}
 
 	private void clearShopTable(Session session, Ticket thisTicket) {
-		Set<ShopTable> tables2 = thisTicket.getTables();
+		List<ShopTable> tables2 = ShopTableDAO.getInstance().getTables(thisTicket);
 		
 		if(tables2 == null) return;
 		

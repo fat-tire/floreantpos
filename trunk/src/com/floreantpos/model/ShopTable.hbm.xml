@@ -9,7 +9,7 @@
     <property column="NAME" name="name" type="java.lang.String" length="20"/>
     <property column="DESCRIPTION" name="description" type="java.lang.String" length="60"/>
     <property column="CAPACITY" name="capacity" type="java.lang.Integer"/>
-    <property column="TABLE_NUMBER" name="tableNumber" type="java.lang.String"/>
+    <property column="TABLE_NUMBER" name="tableNumber" type="java.lang.String" unique="true" />
     <property column="X" name="x" type="java.lang.Integer"/>
     <property column="Y" name="y" type="java.lang.Integer"/>
     <property column="OCCUPIED" name="occupied" type="java.lang.Boolean"/>
