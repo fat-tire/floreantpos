@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Blob;
 import java.sql.SQLException;
+import java.util.Set;
 
 import org.hibernate.Hibernate;
 
@@ -90,5 +91,20 @@ public class ShopFloor extends BaseShopFloor {
 			}
 		}
 		return baos.toByteArray();
+	}
+	
+	public boolean hasTableWithNumber(String number) {
+		Set<ShopTable> tables = getTables();
+		if(tables == null) {
+			return false;
+		}
+		
+		for (ShopTable shopTable : tables) {
+			if(shopTable.getTableNumber().equals(number)) {
+				return true;
+			}
+		}
+		
+		return false;
 	}
 }
