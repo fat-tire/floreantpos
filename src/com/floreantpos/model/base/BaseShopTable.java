@@ -21,6 +21,7 @@ public abstract class BaseShopTable  implements Comparable, Serializable {
 	public static String PROP_TABLE_NUMBER = "tableNumber";
 	public static String PROP_OCCUPIED = "occupied";
 	public static String PROP_ID = "id";
+	public static String PROP_DIRTY = "dirty";
 	public static String PROP_CAPACITY = "capacity";
 	public static String PROP_BOOKED = "booked";
 	public static String PROP_Y = "y";
@@ -59,12 +60,13 @@ public abstract class BaseShopTable  implements Comparable, Serializable {
 		protected java.lang.Integer y;
 		protected java.lang.Boolean occupied;
 		protected java.lang.Boolean booked;
+		protected java.lang.Boolean dirty;
 
 	// many to one
 	private com.floreantpos.model.ShopFloor floor;
 
 	// collections
-	private java.util.Set<com.floreantpos.model.ShopTableType> types;
+	private java.util.List<com.floreantpos.model.ShopTableType> types;
 
 
 
@@ -227,6 +229,23 @@ public abstract class BaseShopTable  implements Comparable, Serializable {
 
 
 	/**
+	 * Return the value associated with the column: DIRTY
+	 */
+	public java.lang.Boolean isDirty () {
+								return dirty == null ? Boolean.FALSE : dirty;
+					}
+
+	/**
+	 * Set the value related to the column: DIRTY
+	 * @param dirty the DIRTY value
+	 */
+	public void setDirty (java.lang.Boolean dirty) {
+		this.dirty = dirty;
+	}
+
+
+
+	/**
 	 * Return the value associated with the column: FLOOR_ID
 	 */
 	public com.floreantpos.model.ShopFloor getFloor () {
@@ -246,7 +265,7 @@ public abstract class BaseShopTable  implements Comparable, Serializable {
 	/**
 	 * Return the value associated with the column: types
 	 */
-	public java.util.Set<com.floreantpos.model.ShopTableType> getTypes () {
+	public java.util.List<com.floreantpos.model.ShopTableType> getTypes () {
 					return types;
 			}
 
@@ -254,12 +273,12 @@ public abstract class BaseShopTable  implements Comparable, Serializable {
 	 * Set the value related to the column: types
 	 * @param types the types value
 	 */
-	public void setTypes (java.util.Set<com.floreantpos.model.ShopTableType> types) {
+	public void setTypes (java.util.List<com.floreantpos.model.ShopTableType> types) {
 		this.types = types;
 	}
 
 	public void addTotypes (com.floreantpos.model.ShopTableType shopTableType) {
-		if (null == getTypes()) setTypes(new java.util.TreeSet<com.floreantpos.model.ShopTableType>());
+		if (null == getTypes()) setTypes(new java.util.ArrayList<com.floreantpos.model.ShopTableType>());
 		getTypes().add(shopTableType);
 	}
 
