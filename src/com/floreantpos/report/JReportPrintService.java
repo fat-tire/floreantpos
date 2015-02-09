@@ -10,6 +10,7 @@ import java.util.Map;
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperPrintManager;
@@ -65,6 +66,31 @@ public class JReportPrintService {
 	private static final String CURRENCY_SYMBOL = "currencySymbol";
 	private static Log logger = LogFactory.getLog(JReportPrintService.class);
 
+	private static JasperReport TICKET_RECEIPT_REPORT = null;
+
+	static {
+		loadReports();
+	}
+
+	private static void loadReports() {
+		InputStream resource = null;
+		
+		try {
+			resource = JReportPrintService.class.getResourceAsStream("/receipt/ticket-receipt.jrxml");
+			if (resource == null) {
+				resource = JReportPrintService.class.getResourceAsStream("/com/floreantpos/report/template/TicketReceiptReport.jasper");
+				TICKET_RECEIPT_REPORT = (JasperReport) JRLoader.loadObject(resource);
+			}
+			else {
+				TICKET_RECEIPT_REPORT = JasperCompileManager.compileReport(resource);
+			}
+		} catch (Exception e) {
+			logger.error(e);
+		} finally {
+			IOUtils.closeQuietly(resource);
+		}
+	}
+
 	public static void printGenericReport(String title, String data) throws Exception {
 		HashMap<String, String> map = new HashMap<String, String>(2);
 		map.put("title", title);
@@ -90,12 +116,18 @@ public class JReportPrintService {
 		}
 	}
 
-	public static JasperPrint createPrint(Ticket ticket, Map<String, String> map, PosTransaction transaction) throws Exception {
+	public static JasperPrint createJasperPrint(JasperReport report, Map<String, String> properties, JRDataSource dataSource) throws Exception {
+		JasperPrint jasperPrint = JasperFillManager.fillReport(report, properties, dataSource);
+		return jasperPrint;
+	}
 
-		final String FILE_RECEIPT_REPORT = "/com/floreantpos/report/template/TicketReceiptReport.jasper";
+	public static JasperPrint createPrint(Ticket ticket, Map<String, String> map, PosTransaction transaction) throws Exception {
+//		JReportPrintService.class.getResource("/config/receipt/ticket-receipt.jrxml");
+//
+//		final String FILE_RECEIPT_REPORT = "/com/floreantpos/report/template/TicketReceiptReport.jasper";
 
 		TicketDataSource dataSource = new TicketDataSource(ticket);
-		return createJasperPrint(FILE_RECEIPT_REPORT, map, new JRTableModelDataSource(dataSource));
+		return createJasperPrint(TICKET_RECEIPT_REPORT, map, new JRTableModelDataSource(dataSource));
 	}
 
 	public static void printTicket(Ticket ticket) {
@@ -196,7 +228,7 @@ public class JReportPrintService {
 
 				if (printCustomerCopy) {
 					map.put("copyType", "Customer Copy");
-					
+
 					jasperPrint = createPrint(ticket, map, transaction);
 					jasperPrint.setName("Ticket-" + ticket.getId() + "-CustomerCopy");
 					jasperPrint.setProperty("printerName", Application.getPrinters().getReceiptPrinter());
@@ -334,13 +366,13 @@ public class JReportPrintService {
 			}
 
 			String messageString = "<html>";
-//			String customerName = ticket.getProperty(Ticket.CUSTOMER_NAME);
-			
-//			if (customerName != null) {
-//				if (customer.hasProperty("mykalaid")) {
-//					messageString += "<br/>Customer: " + customer.getName();
-//				}
-//			}
+			//			String customerName = ticket.getProperty(Ticket.CUSTOMER_NAME);
+
+			//			if (customerName != null) {
+			//				if (customer.hasProperty("mykalaid")) {
+			//					messageString += "<br/>Customer: " + customer.getName();
+			//				}
+			//			}
 			if (ticket.hasProperty("mykaladiscount")) {
 				messageString += "<br/>My Kala point: " + ticket.getProperty("mykalapoing");
 				messageString += "<br/>My Kala discount: " + ticket.getDiscountAmount();
