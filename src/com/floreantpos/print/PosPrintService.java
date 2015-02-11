@@ -248,11 +248,11 @@ public class PosPrintService {
 			
 			parameters.put("headerLine1", restaurant.getName());
 			
-			JasperReport subReport = (JasperReport) JRLoader.loadObject(JReportPrintService.class.getResourceAsStream("/com/floreantpos/report/template/DrawerPullVoidReport.jasper"));
+			JasperReport subReport = (JasperReport) JRLoader.loadObject(JReportPrintService.class.getResourceAsStream("/com/floreantpos/report/template/drawer-pull-void-veport.jasper"));
 			
 			parameters.put("subreportParameter", subReport);
 			
-			JasperReport mainReport = (JasperReport) JRLoader.loadObject(JReportPrintService.class.getResourceAsStream("/com/floreantpos/report/template/DrawerPullJReport.jasper"));
+			JasperReport mainReport = (JasperReport) JRLoader.loadObject(JReportPrintService.class.getResourceAsStream("/com/floreantpos/report/template/drawer-pull-report.jasper"));
 			JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(Arrays.asList(new DrawerPullReport[] {drawerPullReport}));
 			JasperPrint jasperPrint = JasperFillManager.fillReport(mainReport, parameters, dataSource);
 			jasperPrint.setProperty("printerName", Application.getPrinters().getReportPrinter());

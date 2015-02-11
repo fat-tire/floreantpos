@@ -78,7 +78,7 @@ public class JReportPrintService {
 	private static void loadReports() {
 		TICKET_RECEIPT_REPORT = loadReport("/printerlayouts/ticket-receipt.jrxml", "/com/floreantpos/report/template/TicketReceiptReport.jasper");
 		KITCHEN_RECEIPT_REPORT = loadReport("/printerlayouts/kitchen-receipt.jrxml", "/com/floreantpos/report/template/KitchenReceipt.jasper");
-		REFUND_RECEIPT_REPORT = loadReport("/printerlayouts/generic-receipt.jrxml", "/com/floreantpos/report/template/GenericReport.jasper");
+		REFUND_RECEIPT_REPORT = loadReport("/printerlayouts/generic-receipt.jrxml", "/com/floreantpos/report/template/GenericReceipt.jasper");
 	}
 
 	private static JasperReport loadReport(String jrxmlPath, String defaultReportPath) {
