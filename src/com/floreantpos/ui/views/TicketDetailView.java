@@ -21,7 +21,7 @@ import net.miginfocom.swing.MigLayout;
 import net.sf.jasperreports.engine.JasperPrint;
 
 import com.floreantpos.model.Ticket;
-import com.floreantpos.report.JReportPrintService;
+import com.floreantpos.report.ReceiptPrintService;
 import com.floreantpos.report.TicketPrintProperties;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 
@@ -73,8 +73,8 @@ public class TicketDetailView extends JPanel {
 				Ticket ticket = (Ticket) iter.next();
 				
 				TicketPrintProperties printProperties = new TicketPrintProperties("*** ORDER " + ticket.getId() + " ***", false, true, true);
-				HashMap map = JReportPrintService.populateTicketProperties(ticket, printProperties, null);
-				JasperPrint jasperPrint = JReportPrintService.createPrint(ticket, map, null);
+				HashMap map = ReceiptPrintService.populateTicketProperties(ticket, printProperties, null);
+				JasperPrint jasperPrint = ReceiptPrintService.createPrint(ticket, map, null);
 
 				TicketReceiptView receiptView = new TicketReceiptView(jasperPrint);
 				reportPanel.add(receiptView.getReportPanel());

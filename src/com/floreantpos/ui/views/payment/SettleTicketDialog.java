@@ -39,7 +39,7 @@ import com.floreantpos.model.TicketType;
 import com.floreantpos.model.TransactionType;
 import com.floreantpos.model.UserPermission;
 import com.floreantpos.model.dao.TicketDAO;
-import com.floreantpos.report.JReportPrintService;
+import com.floreantpos.report.ReceiptPrintService;
 import com.floreantpos.services.PosTransactionService;
 import com.floreantpos.ui.dialog.CouponAndDiscountDialog;
 import com.floreantpos.ui.dialog.DiscountListDialog;
@@ -444,7 +444,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 	private void printTicket(Ticket ticket, PosTransaction transaction) {
 		try {
 			if (ticket.needsKitchenPrint()) {
-				JReportPrintService.printTicketToKitchen(ticket);
+				ReceiptPrintService.printTicketToKitchen(ticket);
 			}
 
 			//JReportPrintService.printTransaction(transaction);

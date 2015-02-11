@@ -12,7 +12,7 @@ import net.miginfocom.swing.MigLayout;
 import net.sf.jasperreports.engine.JasperPrint;
 
 import com.floreantpos.model.Ticket;
-import com.floreantpos.report.JReportPrintService;
+import com.floreantpos.report.ReceiptPrintService;
 import com.floreantpos.report.TicketPrintProperties;
 
 public class OrderInfoView extends JPanel {
@@ -34,8 +34,8 @@ public class OrderInfoView extends JPanel {
 			Ticket ticket = (Ticket) tickets.get(i);
 			
 			TicketPrintProperties printProperties = new TicketPrintProperties("*** ORDER " + ticket.getId() + " ***", false, true, true);
-			HashMap map = JReportPrintService.populateTicketProperties(ticket, printProperties, null);
-			JasperPrint jasperPrint = JReportPrintService.createPrint(ticket, map, null);
+			HashMap map = ReceiptPrintService.populateTicketProperties(ticket, printProperties, null);
+			JasperPrint jasperPrint = ReceiptPrintService.createPrint(ticket, map, null);
 
 			TicketReceiptView receiptView = new TicketReceiptView(jasperPrint);
 			reportPanel.add(receiptView.getReportPanel());
@@ -49,7 +49,7 @@ public class OrderInfoView extends JPanel {
 		for (Iterator iter = tickets.iterator(); iter.hasNext();) {
 			Ticket ticket = (Ticket) iter.next();
 			
-			JReportPrintService.printTicket(ticket);
+			ReceiptPrintService.printTicket(ticket);
 		}
 	}
 }

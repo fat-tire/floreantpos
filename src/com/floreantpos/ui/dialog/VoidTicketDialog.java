@@ -18,7 +18,7 @@ import com.floreantpos.model.VoidReason;
 import com.floreantpos.model.dao.ActionHistoryDAO;
 import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.model.dao.VoidReasonDAO;
-import com.floreantpos.report.JReportPrintService;
+import com.floreantpos.report.ReceiptPrintService;
 import com.floreantpos.swing.ListComboBoxModel;
 import com.floreantpos.util.NumberUtil;
 
@@ -220,7 +220,7 @@ public class VoidTicketDialog extends POSDialog {
 				String title = "- VOID RECEIPT -";
 				String data = "Ticket #" + ticket.getId() + " was voided.";
 				
-				JReportPrintService.printGenericReport(title, data);
+				ReceiptPrintService.printGenericReport(title, data);
 			}catch(Exception ee) {
 				String message = "There was an error while printing void information to kitchen\n" + ee.getMessage();
 				POSMessageDialog.showError(Application.getPosWindow(), message, ee);
