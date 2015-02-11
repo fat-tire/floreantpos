@@ -111,7 +111,7 @@ public class CreditCardReportView extends JPanel {
 		map.put("totalTips", NumberUtil.formatNumber(totalTips));
 		map.put("total", NumberUtil.formatNumber(totalSales));
 		
-		JasperReport jasperReport = (JasperReport) JRLoader.loadObject(getClass().getResource("/com/floreantpos/report/template/credit_card_report.jasper"));
+		JasperReport jasperReport = (JasperReport) JRLoader.loadObject(getClass().getResource("/com/floreantpos/report/template/credit-card-report.jasper"));
 		JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map, new JRTableModelDataSource(new CardReportModel(transactions)));
 		JRViewer viewer = new JRViewer(jasperPrint);
 		reportContainer.removeAll();

@@ -1,0 +1,726 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="DrawerPullJReport" pageWidth="226" pageHeight="550" columnWidth="224" leftMargin="1" rightMargin="1" topMargin="1" bottomMargin="1" isIgnorePagination="true">
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<parameter name="netSales" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["/home/mshahriar/workspace/floreantpos/src/com/floreantpos/report/"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="subreportParameter" class="net.sf.jasperreports.engine.JasperReport" isForPrompting="false"/>
+	<parameter name="headerLine1" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="totalVoid" class="java.lang.Double" isForPrompting="false"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="totalDiscountSales" class="java.lang.Double">
+		<fieldDescription><![CDATA[totalDiscountSales]]></fieldDescription>
+	</field>
+	<field name="creditCardReceiptAmount" class="java.lang.Double">
+		<fieldDescription><![CDATA[creditCardReceiptAmount]]></fieldDescription>
+	</field>
+	<field name="giftCertReturnCount" class="java.lang.Integer">
+		<fieldDescription><![CDATA[giftCertReturnCount]]></fieldDescription>
+	</field>
+	<field name="payOutNumber" class="java.lang.Integer">
+		<fieldDescription><![CDATA[payOutNumber]]></fieldDescription>
+	</field>
+	<field name="cashReceiptAmount" class="java.lang.Double">
+		<fieldDescription><![CDATA[cashReceiptAmount]]></fieldDescription>
+	</field>
+	<field name="beginCash" class="java.lang.Double">
+		<fieldDescription><![CDATA[beginCash]]></fieldDescription>
+	</field>
+	<field name="totalDiscountRatio" class="java.lang.Double">
+		<fieldDescription><![CDATA[totalDiscountRatio]]></fieldDescription>
+	</field>
+	<field name="chargedTips" class="java.lang.Double">
+		<fieldDescription><![CDATA[chargedTips]]></fieldDescription>
+	</field>
+	<field name="payOutAmount" class="java.lang.Double">
+		<fieldDescription><![CDATA[payOutAmount]]></fieldDescription>
+	</field>
+	<field name="totalDiscountPartySize" class="java.lang.Integer">
+		<fieldDescription><![CDATA[totalDiscountPartySize]]></fieldDescription>
+	</field>
+	<field name="cashTips" class="java.lang.Double">
+		<fieldDescription><![CDATA[cashTips]]></fieldDescription>
+	</field>
+	<field name="totalDiscountPercentage" class="java.lang.Double">
+		<fieldDescription><![CDATA[totalDiscountPercentage]]></fieldDescription>
+	</field>
+	<field name="creditCardReceiptNumber" class="java.lang.Integer">
+		<fieldDescription><![CDATA[creditCardReceiptNumber]]></fieldDescription>
+	</field>
+	<field name="drawerBleedNumber" class="java.lang.Integer">
+		<fieldDescription><![CDATA[drawerBleedNumber]]></fieldDescription>
+	</field>
+	<field name="cashToDeposit" class="java.lang.Double">
+		<fieldDescription><![CDATA[cashToDeposit]]></fieldDescription>
+	</field>
+	<field name="grossReceipts" class="java.lang.Double">
+		<fieldDescription><![CDATA[grossReceipts]]></fieldDescription>
+	</field>
+	<field name="giftCertChangeAmount" class="java.lang.Double">
+		<fieldDescription><![CDATA[giftCertChangeAmount]]></fieldDescription>
+	</field>
+	<field name="totalVoid" class="java.lang.Double">
+		<fieldDescription><![CDATA[totalVoid]]></fieldDescription>
+	</field>
+	<field name="drawerAccountable" class="java.lang.Double">
+		<fieldDescription><![CDATA[drawerAccountable]]></fieldDescription>
+	</field>
+	<field name="tipsDifferential" class="java.lang.Double">
+		<fieldDescription><![CDATA[tipsDifferential]]></fieldDescription>
+	</field>
+	<field name="totalDiscountAmount" class="java.lang.Double">
+		<fieldDescription><![CDATA[totalDiscountAmount]]></fieldDescription>
+	</field>
+	<field name="receiptDifferential" class="java.lang.Double">
+		<fieldDescription><![CDATA[receiptDifferential]]></fieldDescription>
+	</field>
+	<field name="tipsPaid" class="java.lang.Double">
+		<fieldDescription><![CDATA[tipsPaid]]></fieldDescription>
+	</field>
+	<field name="giftCertReturnAmount" class="java.lang.Double">
+		<fieldDescription><![CDATA[giftCertReturnAmount]]></fieldDescription>
+	</field>
+	<field name="variance" class="java.lang.Double">
+		<fieldDescription><![CDATA[variance]]></fieldDescription>
+	</field>
+	<field name="salesTax" class="java.lang.Double">
+		<fieldDescription><![CDATA[salesTax]]></fieldDescription>
+	</field>
+	<field name="netSales" class="java.lang.Double">
+		<fieldDescription><![CDATA[netSales]]></fieldDescription>
+	</field>
+	<field name="totalRevenue" class="java.lang.Double">
+		<fieldDescription><![CDATA[totalRevenue]]></fieldDescription>
+	</field>
+	<field name="terminal" class="com.floreantpos.model.Terminal">
+		<fieldDescription><![CDATA[terminal]]></fieldDescription>
+	</field>
+	<field name="debitCardReceiptAmount" class="java.lang.Double">
+		<fieldDescription><![CDATA[debitCardReceiptAmount]]></fieldDescription>
+	</field>
+	<field name="totalVoidWst" class="java.lang.Double">
+		<fieldDescription><![CDATA[totalVoidWst]]></fieldDescription>
+	</field>
+	<field name="totalDiscountGuest" class="java.lang.Integer">
+		<fieldDescription><![CDATA[totalDiscountGuest]]></fieldDescription>
+	</field>
+	<field name="reg" class="java.lang.String">
+		<fieldDescription><![CDATA[reg]]></fieldDescription>
+	</field>
+	<field name="class" class="java.lang.Class">
+		<fieldDescription><![CDATA[class]]></fieldDescription>
+	</field>
+	<field name="id" class="java.lang.Integer">
+		<fieldDescription><![CDATA[id]]></fieldDescription>
+	</field>
+	<field name="debitCardReceiptNumber" class="java.lang.Integer">
+		<fieldDescription><![CDATA[debitCardReceiptNumber]]></fieldDescription>
+	</field>
+	<field name="drawerBleedAmount" class="java.lang.Double">
+		<fieldDescription><![CDATA[drawerBleedAmount]]></fieldDescription>
+	</field>
+	<field name="cashTax" class="java.lang.Double">
+		<fieldDescription><![CDATA[cashTax]]></fieldDescription>
+	</field>
+	<field name="ticketCount" class="java.lang.Integer">
+		<fieldDescription><![CDATA[ticketCount]]></fieldDescription>
+	</field>
+	<field name="totalDiscountCount" class="java.lang.Integer">
+		<fieldDescription><![CDATA[totalDiscountCount]]></fieldDescription>
+	</field>
+	<field name="totalDiscountCheckSize" class="java.lang.Integer">
+		<fieldDescription><![CDATA[totalDiscountCheckSize]]></fieldDescription>
+	</field>
+	<field name="cashReceiptNumber" class="java.lang.Integer">
+		<fieldDescription><![CDATA[cashReceiptNumber]]></fieldDescription>
+	</field>
+	<field name="cashBack" class="java.lang.Double">
+		<fieldDescription><![CDATA[cashBack]]></fieldDescription>
+	</field>
+	<field name="reportTime" class="java.util.Date">
+		<fieldDescription><![CDATA[reportTime]]></fieldDescription>
+	</field>
+	<field name="voidTickets" class="java.util.Set">
+		<fieldDescription><![CDATA[voidTickets]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="20" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField-12" x="0" y="0" width="223" height="18" isRemoveLineWhenBlank="true"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{headerLine1}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="498" splitType="Stretch">
+			<staticText>
+				<reportElement key="staticText-1" x="0" y="7" width="224" height="15"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[SALES BALANCE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-2" x="0" y="27" width="120" height="15"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[   NET SALES]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-3" x="0" y="72" width="120" height="15"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[+CHARGED TIPS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-4" x="0" y="57" width="120" height="15"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[=TOTAL REVENUES]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-5" x="0" y="42" width="120" height="15"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[+SALS TAX]]></text>
+			</staticText>
+			<line>
+				<reportElement key="line-1" x="0" y="88" width="224" height="1"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineStyle="Solid"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement key="staticText-6" x="-1" y="90" width="120" height="15"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[=GROSS RECEIPTS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-7" x="0" y="112" width="120" height="15"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[-CASH RECEIPTS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-9" x="0" y="142" width="120" height="15"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[-DEBIT CARDS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-10" x="0" y="127" width="120" height="15"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[-CREDIT CARDS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-8" x="0" y="157" width="120" height="15"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[-GIFT RETURNS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-12" x="0" y="172" width="120" height="15"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[+GIFT CERT. CHANGE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-14" x="0" y="187" width="120" height="15"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[+CASH BACK]]></text>
+			</staticText>
+			<line>
+				<reportElement key="line-3" x="0" y="202" width="224" height="1"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineStyle="Solid"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement key="staticText-15" x="-1" y="204" width="120" height="15"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[=RECEIPT DIFFERENTIAL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-16" x="0" y="226" width="120" height="15"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[+CHARGED TIPS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-17" x="0" y="241" width="120" height="15"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[-TIPS PAID]]></text>
+			</staticText>
+			<line>
+				<reportElement key="line-4" x="0" y="256" width="224" height="1"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineStyle="Solid"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement key="staticText-18" x="-1" y="258" width="120" height="15"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[=TIPS DIFFERENTIAL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-19" x="0" y="437" width="224" height="15"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[EXCEPTIONS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-20" x="0" y="302" width="120" height="15"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[   CASH]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-21" x="0" y="347" width="120" height="15"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[-CASH BACK]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-22" x="0" y="332" width="120" height="15"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[-PAY OUT]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-23" x="0" y="317" width="120" height="15"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[-TIPS PAID]]></text>
+			</staticText>
+			<line>
+				<reportElement key="line-5" x="0" y="392" width="224" height="1"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineStyle="Solid"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement key="staticText-24" x="-1" y="362" width="120" height="15"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[+BEGIN CASH]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-25" x="0" y="394" width="120" height="15"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[=DRAWER ACCOUNTABLE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-26" x="0" y="377" width="120" height="15"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[-DRAWER BLEED]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-27" x="0" y="409" width="120" height="15"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[>CASH TO DEPOSIT]]></text>
+			</staticText>
+			<subreport>
+				<reportElement x="0" y="456" width="224" height="38"/>
+				<subreportParameter name="totalVoid">
+					<subreportParameterExpression><![CDATA[$P{totalVoid}]]></subreportParameterExpression>
+				</subreportParameter>
+				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{voidTickets})]]></dataSourceExpression>
+				<subreportExpression class="net.sf.jasperreports.engine.JasperReport"><![CDATA[$P{subreportParameter}]]></subreportExpression>
+			</subreport>
+			<textField>
+				<reportElement x="123" y="27" width="100" height="15"/>
+				<textElement textAlignment="Right">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[new java.text.DecimalFormat("0.00").format($F{netSales})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="123" y="42" width="100" height="15"/>
+				<textElement textAlignment="Right">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[new java.text.DecimalFormat("0.00").format($F{salesTax})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="123" y="57" width="100" height="15"/>
+				<textElement textAlignment="Right">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[new java.text.DecimalFormat("0.00").format($F{totalRevenue})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="123" y="72" width="100" height="15"/>
+				<textElement textAlignment="Right">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[new java.text.DecimalFormat("0.00").format($F{chargedTips})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="123" y="90" width="100" height="15"/>
+				<textElement textAlignment="Right">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[new java.text.DecimalFormat("0.00").format($F{grossReceipts})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="123" y="112" width="100" height="15"/>
+				<textElement textAlignment="Right">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[new java.text.DecimalFormat("0.00").format($F{cashReceiptAmount})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="123" y="127" width="100" height="15"/>
+				<textElement textAlignment="Right">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[new java.text.DecimalFormat("0.00").format($F{creditCardReceiptAmount})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="123" y="142" width="100" height="15"/>
+				<textElement textAlignment="Right">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[new java.text.DecimalFormat("0.00").format($F{debitCardReceiptAmount})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="123" y="172" width="100" height="15"/>
+				<textElement textAlignment="Right">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[new java.text.DecimalFormat("0.00").format($F{giftCertChangeAmount})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="123" y="157" width="100" height="15"/>
+				<textElement textAlignment="Right">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[new java.text.DecimalFormat("0.00").format($F{giftCertReturnAmount})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="123" y="187" width="100" height="15"/>
+				<textElement textAlignment="Right">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[new java.text.DecimalFormat("0.00").format($F{cashBack})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="123" y="204" width="100" height="15"/>
+				<textElement textAlignment="Right">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[new java.text.DecimalFormat("0.00").format($F{receiptDifferential})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="123" y="226" width="100" height="15"/>
+				<textElement textAlignment="Right">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[new java.text.DecimalFormat("0.00").format($F{chargedTips})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="123" y="241" width="100" height="15"/>
+				<textElement textAlignment="Right">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[new java.text.DecimalFormat("0.00").format($F{tipsPaid})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="123" y="258" width="100" height="15"/>
+				<textElement textAlignment="Right">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[new java.text.DecimalFormat("0.00").format($F{tipsDifferential})]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-1" x="-1" y="280" width="224" height="15"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[CASH BALANCE]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="123" y="302" width="100" height="15"/>
+				<textElement textAlignment="Right">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[new java.text.DecimalFormat("0.00").format($F{cashReceiptAmount})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="123" y="317" width="100" height="15"/>
+				<textElement textAlignment="Right">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[new java.text.DecimalFormat("0.00").format($F{tipsPaid})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="123" y="332" width="100" height="15"/>
+				<textElement textAlignment="Right">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[new java.text.DecimalFormat("0.00").format($F{payOutAmount})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="123" y="347" width="100" height="15"/>
+				<textElement textAlignment="Right">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[new java.text.DecimalFormat("0.00").format($F{cashBack})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="123" y="362" width="100" height="15"/>
+				<textElement textAlignment="Right">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[new java.text.DecimalFormat("0.00").format($F{beginCash})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="123" y="377" width="100" height="15"/>
+				<textElement textAlignment="Right">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[new java.text.DecimalFormat("0.00").format($F{drawerBleedAmount})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="123" y="394" width="100" height="15"/>
+				<textElement textAlignment="Right">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[new java.text.DecimalFormat("0.00").format($F{drawerAccountable})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="123" y="409" width="100" height="15"/>
+				<textElement textAlignment="Right">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[new java.text.DecimalFormat("0.00").format($F{cashToDeposit})]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>
