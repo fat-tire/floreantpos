@@ -20,7 +20,7 @@ import com.floreantpos.model.User;
 import com.floreantpos.model.VoidTransaction;
 import com.floreantpos.model.dao.ActionHistoryDAO;
 import com.floreantpos.model.dao.GenericDAO;
-import com.floreantpos.report.JReportPrintService;
+import com.floreantpos.report.ReceiptPrintService;
 import com.floreantpos.util.NumberUtil;
 
 public class PosTransactionService {
@@ -201,7 +201,7 @@ public class PosTransactionService {
 			//String title = "- REFUND RECEIPT -";
 			//String data = "Ticket #" + ticket.getId() + ", amount " + refundAmount + " was refunded.";
 			
-			JReportPrintService.printRefundTicket(ticket, posTransaction);
+			ReceiptPrintService.printRefundTicket(ticket, posTransaction);
 
 		} catch (Exception e) {
 			try {

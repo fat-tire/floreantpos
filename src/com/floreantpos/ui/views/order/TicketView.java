@@ -41,7 +41,7 @@ import com.floreantpos.model.TicketItemCookingInstruction;
 import com.floreantpos.model.TicketItemModifier;
 import com.floreantpos.model.dao.CookingInstructionDAO;
 import com.floreantpos.model.dao.MenuItemDAO;
-import com.floreantpos.report.JReportPrintService;
+import com.floreantpos.report.ReceiptPrintService;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.ui.dialog.BeanEditorDialog;
 import com.floreantpos.ui.dialog.POSMessageDialog;
@@ -357,7 +357,7 @@ public class TicketView extends JPanel {
 			OrderController.saveOrder(ticket);
 
 			if (ticket.needsKitchenPrint()) {
-				JReportPrintService.printTicketToKitchen(ticket);
+				ReceiptPrintService.printTicketToKitchen(ticket);
 			}
 			
 			ticket.clearDeletedItems();

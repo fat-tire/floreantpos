@@ -12,7 +12,7 @@ import net.miginfocom.swing.MigLayout;
 
 import com.floreantpos.main.Application;
 import com.floreantpos.model.PosTransaction;
-import com.floreantpos.report.JReportPrintService;
+import com.floreantpos.report.ReceiptPrintService;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.util.NumberUtil;
 
@@ -88,7 +88,7 @@ public class TransactionCompletionDialog extends POSDialog {
 			public void actionPerformed(ActionEvent e) {
 				try {
 
-					JReportPrintService.printTransaction(completedTransaction, false);
+					ReceiptPrintService.printTransaction(completedTransaction, false);
 
 				} catch (Exception ee) {
 					POSMessageDialog.showError(Application.getPosWindow(), "There was an error while printing.", ee);
@@ -102,7 +102,7 @@ public class TransactionCompletionDialog extends POSDialog {
 			public void actionPerformed(ActionEvent e) {
 				try {
 
-					JReportPrintService.printTransaction(completedTransaction, true);
+					ReceiptPrintService.printTransaction(completedTransaction, true);
 
 				} catch (Exception ee) {
 					POSMessageDialog.showError(Application.getPosWindow(), "There was an error while printing.", ee);
