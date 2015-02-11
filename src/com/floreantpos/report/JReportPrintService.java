@@ -67,25 +67,36 @@ public class JReportPrintService {
 	private static Log logger = LogFactory.getLog(JReportPrintService.class);
 
 	private static JasperReport TICKET_RECEIPT_REPORT = null;
+	private static JasperReport KITCHEN_RECEIPT_REPORT = null;
+	private static JasperReport REFUND_RECEIPT_REPORT = null;
+	private static JasperReport GENERIC_RECEIPT_REPORT = null;
 
 	static {
 		loadReports();
 	}
 
 	private static void loadReports() {
+		TICKET_RECEIPT_REPORT = loadReport("/printerlayouts/ticket-receipt.jrxml", "/com/floreantpos/report/template/TicketReceiptReport.jasper");
+		KITCHEN_RECEIPT_REPORT = loadReport("/printerlayouts/kitchen-receipt.jrxml", "/com/floreantpos/report/template/KitchenReceipt.jasper");
+		REFUND_RECEIPT_REPORT = loadReport("/printerlayouts/generic-receipt.jrxml", "/com/floreantpos/report/template/GenericReport.jasper");
+	}
+
+	private static JasperReport loadReport(String jrxmlPath, String defaultReportPath) {
 		InputStream resource = null;
-		
+
 		try {
-			resource = JReportPrintService.class.getResourceAsStream("/receipt/ticket-receipt.jrxml");
+			resource = JReportPrintService.class.getResourceAsStream(jrxmlPath);
 			if (resource == null) {
-				resource = JReportPrintService.class.getResourceAsStream("/com/floreantpos/report/template/TicketReceiptReport.jasper");
-				TICKET_RECEIPT_REPORT = (JasperReport) JRLoader.loadObject(resource);
+				resource = JReportPrintService.class.getResourceAsStream(defaultReportPath);
+				return (JasperReport) JRLoader.loadObject(resource);
 			}
 			else {
-				TICKET_RECEIPT_REPORT = JasperCompileManager.compileReport(resource);
+				return JasperCompileManager.compileReport(resource);
 			}
 		} catch (Exception e) {
 			logger.error(e);
+			return null;
+			
 		} finally {
 			IOUtils.closeQuietly(resource);
 		}
@@ -95,26 +106,26 @@ public class JReportPrintService {
 		HashMap<String, String> map = new HashMap<String, String>(2);
 		map.put("title", title);
 		map.put("data", data);
-		JasperPrint jasperPrint = createJasperPrint("/com/floreantpos/report/template/GenericReport.jasper", map, new JREmptyDataSource());
+		JasperPrint jasperPrint = createJasperPrint(GENERIC_RECEIPT_REPORT, map, new JREmptyDataSource());
 		jasperPrint.setProperty("printerName", Application.getPrinters().getReceiptPrinter());
 		printQuitely(jasperPrint);
 	}
 
-	public static JasperPrint createJasperPrint(String reportFile, Map<String, String> properties, JRDataSource dataSource) throws Exception {
-		InputStream ticketReportStream = null;
-
-		try {
-
-			ticketReportStream = JReportPrintService.class.getResourceAsStream(reportFile);
-			JasperReport ticketReport = (JasperReport) JRLoader.loadObject(ticketReportStream);
-
-			JasperPrint jasperPrint = JasperFillManager.fillReport(ticketReport, properties, dataSource);
-			return jasperPrint;
-
-		} finally {
-			IOUtils.closeQuietly(ticketReportStream);
-		}
-	}
+//	public static JasperPrint createJasperPrint(String reportFile, Map<String, String> properties, JRDataSource dataSource) throws Exception {
+//		InputStream ticketReportStream = null;
+//
+//		try {
+//
+//			ticketReportStream = JReportPrintService.class.getResourceAsStream(reportFile);
+//			JasperReport ticketReport = (JasperReport) JRLoader.loadObject(ticketReportStream);
+//
+//			JasperPrint jasperPrint = JasperFillManager.fillReport(ticketReport, properties, dataSource);
+//			return jasperPrint;
+//
+//		} finally {
+//			IOUtils.closeQuietly(ticketReportStream);
+//		}
+//	}
 
 	public static JasperPrint createJasperPrint(JasperReport report, Map<String, String> properties, JRDataSource dataSource) throws Exception {
 		JasperPrint jasperPrint = JasperFillManager.fillReport(report, properties, dataSource);
@@ -122,10 +133,6 @@ public class JReportPrintService {
 	}
 
 	public static JasperPrint createPrint(Ticket ticket, Map<String, String> map, PosTransaction transaction) throws Exception {
-//		JReportPrintService.class.getResource("/config/receipt/ticket-receipt.jrxml");
-//
-//		final String FILE_RECEIPT_REPORT = "/com/floreantpos/report/template/TicketReceiptReport.jasper";
-
 		TicketDataSource dataSource = new TicketDataSource(ticket);
 		return createJasperPrint(TICKET_RECEIPT_REPORT, map, new JRTableModelDataSource(dataSource));
 	}
@@ -148,10 +155,8 @@ public class JReportPrintService {
 	}
 
 	public static JasperPrint createRefundPrint(Ticket ticket, HashMap map) throws Exception {
-		final String FILE_RECEIPT_REPORT = "/com/floreantpos/report/template/RefundReceipt.jasper";
-
 		TicketDataSource dataSource = new TicketDataSource(ticket);
-		return createJasperPrint(FILE_RECEIPT_REPORT, map, new JRTableModelDataSource(dataSource));
+		return createJasperPrint(REFUND_RECEIPT_REPORT, map, new JRTableModelDataSource(dataSource));
 	}
 
 	public static void printRefundTicket(Ticket ticket, RefundTransaction posTransaction) {
@@ -488,11 +493,9 @@ public class JReportPrintService {
 
 		map.put("ticketHeader", "KTICHEN RECEIPT");
 
-		final String FILE_RECEIPT_REPORT = "/com/floreantpos/report/template/KitchenReceipt.jasper";
-
 		KitchenTicketDataSource dataSource = new KitchenTicketDataSource(ticket);
 
-		return createJasperPrint(FILE_RECEIPT_REPORT, map, new JRTableModelDataSource(dataSource));
+		return createJasperPrint(KITCHEN_RECEIPT_REPORT, map, new JRTableModelDataSource(dataSource));
 	}
 
 	public static void printTicketToKitchen(Ticket ticket) {
