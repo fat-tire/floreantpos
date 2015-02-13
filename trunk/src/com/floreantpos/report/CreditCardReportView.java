@@ -18,7 +18,6 @@ import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRTableModelDataSource;
-import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.view.JRViewer;
 
 import org.jdesktop.swingx.JXDatePicker;
@@ -111,7 +110,7 @@ public class CreditCardReportView extends JPanel {
 		map.put("totalTips", NumberUtil.formatNumber(totalTips));
 		map.put("total", NumberUtil.formatNumber(totalSales));
 		
-		JasperReport jasperReport = (JasperReport) JRLoader.loadObject(getClass().getResource("/com/floreantpos/report/template/credit-card-report.jasper"));
+		JasperReport jasperReport = ReportUtil.getReport("credit-card-report");
 		JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map, new JRTableModelDataSource(new CardReportModel(transactions)));
 		JRViewer viewer = new JRViewer(jasperPrint);
 		reportContainer.removeAll();

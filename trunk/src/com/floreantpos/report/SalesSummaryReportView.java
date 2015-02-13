@@ -20,7 +20,6 @@ import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRTableModelDataSource;
-import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.view.JRViewer;
 
 import com.floreantpos.bo.ui.BackOfficeWindow;
@@ -212,7 +211,7 @@ public class SalesSummaryReportView extends javax.swing.JPanel {
 		properties.put("centre", terminal == null ? com.floreantpos.POSConstants.ALL : terminal.getName());
 		properties.put("days", String.valueOf(dateDiff));
 
-		JasperReport report = (JasperReport) JRLoader.loadObject(getClass().getResource("/com/floreantpos/report/template/sales_summary_report2.jasper"));
+		JasperReport report = ReportUtil.getReport("sales_summary_report2");
 		JasperPrint print = JasperFillManager.fillReport(report, properties, new JRTableModelDataSource(new SalesAnalysisReportModel(datas)));
 		openReport(print);
 	}
@@ -269,7 +268,7 @@ public class SalesSummaryReportView extends javax.swing.JPanel {
 		properties.put("Labor", NumberUtil.formatNumber(summary.getLaborCost()));
 		properties.put("LaborCost", NumberUtil.formatNumber((summary.getLaborCost() / summary.getGrossSale()) * 100));
 
-		JasperReport report = (JasperReport) JRLoader.loadObject(getClass().getResource("/com/floreantpos/report/template/sales_summary_report1.jasper"));
+		JasperReport report = ReportUtil.getReport("sales_summary_report1");
 		JasperPrint print = JasperFillManager.fillReport(report, properties, new JRTableModelDataSource(new ShiftwiseDataTableModel(summary.getSalesTableDataList())));
 		openReport(print);
 

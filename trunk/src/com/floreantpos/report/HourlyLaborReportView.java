@@ -26,7 +26,6 @@ import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRTableModelDataSource;
-import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.view.JRViewer;
 
 import org.jdesktop.swingx.JXDatePicker;
@@ -250,10 +249,10 @@ public class HourlyLaborReportView extends TransparentPanel {
         }
 
         try {
-            JasperReport hourlyReport = (JasperReport) JRLoader.loadObject(getClass().getResource("/com/floreantpos/report/template/hourly_labor_subreport.jasper"));
-            JasperReport shiftReport = (JasperReport) JRLoader.loadObject(getClass().getResource("/com/floreantpos/report/template/hourly_labor_shift_subreport.jasper"));
+            JasperReport hourlyReport = ReportUtil.getReport("hourly_labor_subreport");
+            JasperReport shiftReport = ReportUtil.getReport("hourly_labor_shift_subreport");
 
-            JasperReport report = (JasperReport) JRLoader.loadObject(getClass().getResource("/com/floreantpos/report/template/hourly_labor_report.jasper"));
+            JasperReport report = ReportUtil.getReport("hourly_labor_report");
 
             HashMap properties = new HashMap();
             ReportUtil.populateRestaurantProperties(properties);

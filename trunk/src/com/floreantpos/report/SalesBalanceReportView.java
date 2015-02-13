@@ -18,7 +18,6 @@ import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.view.JRViewer;
 
 import org.jdesktop.swingx.JXDatePicker;
@@ -122,7 +121,7 @@ public class SalesBalanceReportView extends JPanel {
 		map.put("coOverShort", NumberUtil.formatNumber(report.getOverShortAmount()));
 		map.put("days", String.valueOf((int) ((toDate.getTime() - fromDate.getTime()) * (1.15740741 * Math.pow(10, -8))) + 1));
 		
-		JasperReport jasperReport = (JasperReport) JRLoader.loadObject(getClass().getResource("/com/floreantpos/report/template/sales_summary_balance_report.jasper"));
+		JasperReport jasperReport = ReportUtil.getReport("sales_summary_balance_report");
 		JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map, new JREmptyDataSource());
 		JRViewer viewer = new JRViewer(jasperPrint);
 		reportContainer.removeAll();

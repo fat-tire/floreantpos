@@ -19,7 +19,6 @@ import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRTableModelDataSource;
-import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.view.JRViewer;
 
 import org.jdesktop.swingx.JXDatePicker;
@@ -89,8 +88,8 @@ public class SalesExceptionReportView extends JPanel {
 		ReportService reportService = new ReportService();
 		SalesExceptionReport report = reportService.getSalesExceptionReport(fromDate, toDate);
 		
-		JasperReport voidReport = (JasperReport) JRLoader.loadObject(SalesReportModelFactory.class.getResource("/com/floreantpos/report/template/sales_summary_exception_voids.jasper"));
-		JasperReport discountReport = (JasperReport) JRLoader.loadObject(SalesReportModelFactory.class.getResource("/com/floreantpos/report/template/sales_summary_exception_discounts.jasper"));
+		JasperReport voidReport = ReportUtil.getReport("sales_summary_exception_voids");
+		JasperReport discountReport = ReportUtil.getReport("sales_summary_exception_discounts");
 		
 		HashMap map = new HashMap();
 		ReportUtil.populateRestaurantProperties(map);
@@ -103,7 +102,7 @@ public class SalesExceptionReportView extends JPanel {
 		map.put("discountReportDataSource", new JRTableModelDataSource(report.getDiscountTableModel()));
 		
 		
-		JasperReport jasperReport = (JasperReport) JRLoader.loadObject(getClass().getResource("/com/floreantpos/report/template/sales_summary_exception.jasper"));
+		JasperReport jasperReport = ReportUtil.getReport("sales_summary_exception");
 		JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map, new JREmptyDataSource());
 		JRViewer viewer = new JRViewer(jasperPrint);
 		reportContainer.removeAll();
