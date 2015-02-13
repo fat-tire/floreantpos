@@ -41,6 +41,7 @@ public class TerminalConfigurationView extends ConfigurationView {
 	private JCheckBox cbEnableBarTab = new JCheckBox("BAR TAB");
 	
 	private JCheckBox cbFullscreenMode = new JCheckBox("Kiosk Mode");
+	private JCheckBox cbShowDbConfiguration = new JCheckBox("Show database configuration button on login screen");
 	
 	private JComboBox<String> cbFonts = new JComboBox<String>();
 
@@ -69,6 +70,8 @@ public class TerminalConfigurationView extends ConfigurationView {
 		add(new JLabel("Default password length"));
 		tfSecretKeyLength = new IntegerTextField(3);
 		add(tfSecretKeyLength, "wrap");
+		
+		add(cbShowDbConfiguration, "span 2, wrap");
 		
 		cbAutoLogoff.addActionListener(new ActionListener() {
 			@Override
@@ -161,6 +164,7 @@ public class TerminalConfigurationView extends ConfigurationView {
 		TerminalConfig.setDriveThruEnable(cbEnableDriveThru.isSelected());
 		TerminalConfig.setBarTabEnable(cbEnableBarTab.isSelected());
 		TerminalConfig.setFullscreenMode(cbFullscreenMode.isSelected());
+		TerminalConfig.setShowDbConfigureButton(cbShowDbConfiguration.isSelected());
 		
 		TerminalConfig.setTouchScreenButtonHeight(buttonHeight);
 		TerminalConfig.setTouchScreenFontSize(fontSize);
@@ -191,6 +195,7 @@ public class TerminalConfigurationView extends ConfigurationView {
 		cbEnableDriveThru.setSelected(TerminalConfig.isDriveThruEnable());
 		cbEnableBarTab.setSelected(TerminalConfig.isBarTabEnable());
 		cbFullscreenMode.setSelected(TerminalConfig.isFullscreenMode());
+		cbShowDbConfiguration.setSelected(TerminalConfig.isShowDbConfigureButton());
 		
 		tfButtonHeight.setText("" + TerminalConfig.getTouchScreenButtonHeight());
 		tfFontSize.setText("" + TerminalConfig.getTouchScreenFontSize());

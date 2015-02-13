@@ -5,6 +5,8 @@ import org.apache.commons.configuration.PropertiesConfiguration;
 import com.floreantpos.util.PasswordHasher;
 
 public class TerminalConfig {
+	private static final String SHOW_DB_CONFIGURATION = "show_db_configuration";
+
 	private static final String UI_DEFAULT_FONT = "ui_default_font";
 
 	private static final String AUTO_LOGOFF_TIME = "AUTO_LOGOFF_TIME";
@@ -158,5 +160,13 @@ public class TerminalConfig {
 	
 	public static void setUiDefaultFont(String fontName) {
 		config.setProperty(UI_DEFAULT_FONT, fontName);
+	}
+	
+	public static void setShowDbConfigureButton(boolean show) {
+		config.setProperty(SHOW_DB_CONFIGURATION, show);
+	}
+	
+	public static boolean isShowDbConfigureButton() {
+		return config.getBoolean(SHOW_DB_CONFIGURATION, true);
 	}
 }
