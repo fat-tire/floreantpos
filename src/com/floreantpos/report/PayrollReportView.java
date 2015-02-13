@@ -21,7 +21,6 @@ import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRTableModelDataSource;
-import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.view.JRViewer;
 
 import org.jdesktop.swingx.JXDatePicker;
@@ -119,7 +118,7 @@ public class PayrollReportView extends TransparentPanel {
         
 
         try {
-            JasperReport report = (JasperReport) JRLoader.loadObject(getClass().getResource("/com/floreantpos/report/template/PayrollReport.jasper"));
+            JasperReport report = ReportUtil.getReport("PayrollReport");
 
             HashMap properties = new HashMap();
             properties.put("fromDate", fromDate);

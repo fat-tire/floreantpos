@@ -10,7 +10,6 @@ import net.sf.jasperreports.engine.JasperPrintManager;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.data.JRTableModelDataSource;
-import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.view.JasperViewer;
 
 import org.apache.commons.lang.StringUtils;
@@ -25,7 +24,7 @@ import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TipsCashoutReport;
 import com.floreantpos.model.TipsCashoutReportTableModel;
 import com.floreantpos.model.dao.RestaurantDAO;
-import com.floreantpos.report.ReceiptPrintService;
+import com.floreantpos.report.ReportUtil;
 import com.floreantpos.util.NumberUtil;
 
 public class PosPrintService {
@@ -248,11 +247,11 @@ public class PosPrintService {
 			
 			parameters.put("headerLine1", restaurant.getName());
 			
-			JasperReport subReport = (JasperReport) JRLoader.loadObject(ReceiptPrintService.class.getResourceAsStream("/com/floreantpos/report/template/drawer-pull-void-veport.jasper"));
+			JasperReport subReport = ReportUtil.getReport("drawer-pull-void-veport");
 			
 			parameters.put("subreportParameter", subReport);
 			
-			JasperReport mainReport = (JasperReport) JRLoader.loadObject(ReceiptPrintService.class.getResourceAsStream("/com/floreantpos/report/template/drawer-pull-report.jasper"));
+			JasperReport mainReport = ReportUtil.getReport("drawer-pull-report");
 			JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(Arrays.asList(new DrawerPullReport[] {drawerPullReport}));
 			JasperPrint jasperPrint = JasperFillManager.fillReport(mainReport, parameters, dataSource);
 			jasperPrint.setProperty("printerName", Application.getPrinters().getReportPrinter());
@@ -281,8 +280,7 @@ public class PosPrintService {
 			
 			parameters.put("headerLine1", restaurant.getName());
 			
-			
-			JasperReport mainReport = (JasperReport) JRLoader.loadObject(ReceiptPrintService.class.getResourceAsStream("/com/floreantpos/report/template/ServerTipsReport.jasper"));
+			JasperReport mainReport = ReportUtil.getReport("ServerTipsReport");
 			JRDataSource dataSource = new JRTableModelDataSource(new TipsCashoutReportTableModel(report.getDatas(), new String[] {"ticketId", "saleType", "ticketTotal", "tips"}));
 			JasperPrint jasperPrint = JasperFillManager.fillReport(mainReport, parameters, dataSource);
 			JasperViewer.viewReport(jasperPrint, false);

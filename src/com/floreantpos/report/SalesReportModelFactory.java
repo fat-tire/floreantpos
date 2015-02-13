@@ -11,7 +11,6 @@ import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRTableModelDataSource;
-import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.view.JasperViewer;
 
 import org.jdesktop.swingx.calendar.DateUtils;
@@ -121,8 +120,8 @@ public class SalesReportModelFactory {
 		SalesReportModel itemReportModel = factory.getItemReportModel();
 		SalesReportModel modifierReportModel = factory.getModifierReportModel();
 		
-		JasperReport itemReport = (JasperReport) JRLoader.loadObject(SalesReportModelFactory.class.getResource("/com/floreantpos/report/template/SalesSubReport.jasper"));
-		JasperReport modifierReport = (JasperReport) JRLoader.loadObject(SalesReportModelFactory.class.getResource("/com/floreantpos/report/template/SalesSubReport.jasper"));
+		JasperReport itemReport = ReportUtil.getReport("SalesSubReport");
+		JasperReport modifierReport = ReportUtil.getReport("SalesSubReport");
 		
 		HashMap map = new HashMap();
 		map.put("itemDataSource", new  JRTableModelDataSource(itemReportModel));
@@ -133,7 +132,7 @@ public class SalesReportModelFactory {
 		map.put("itemReport", itemReport);
 		map.put("modifierReport", modifierReport);
 		
-		JasperReport masterReport = (JasperReport) JRLoader.loadObject(SalesReportModelFactory.class.getResource("/com/floreantpos/report/template/SalesReport.jasper"));
+		JasperReport masterReport = ReportUtil.getReport("SalesReport");
 		
 		JasperPrint print = JasperFillManager.fillReport(masterReport, map, new JREmptyDataSource());
 		JasperViewer.viewReport(print, false);
