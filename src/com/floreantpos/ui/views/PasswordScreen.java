@@ -55,9 +55,6 @@ public class PasswordScreen extends JPanel {
 		//setMinimumSize(new Dimension(320, 10));
 		initComponents();
 
-		btnConfigureDatabase.setAction(goAction);
-		btnConfigureDatabase.setActionCommand("DBCONFIG");
-
 		applyComponentOrientation(ComponentOrientation.getOrientation(Locale.getDefault()));
 	}
 
@@ -84,7 +81,7 @@ public class PasswordScreen extends JPanel {
 		jPanel2 = new javax.swing.JPanel();
 		jLabel4 = new javax.swing.JLabel();
 		jPanel3 = new javax.swing.JPanel();
-		btnConfigureDatabase = new com.floreantpos.swing.PosButton();
+
 		btnShutdown = new com.floreantpos.swing.PosButton();
 
 		setPreferredSize(new Dimension(320, 593));
@@ -211,7 +208,7 @@ public class PasswordScreen extends JPanel {
 
 		panel = new JPanel();
 		add(panel, "cell 0 2,grow");
-		
+
 		jPanel3.setLayout(new GridLayout(0, 1, 5, 5));
 
 		psbtnLogin = new PosButton();
@@ -223,10 +220,14 @@ public class PasswordScreen extends JPanel {
 		psbtnLogin.setText("LOGIN");
 		jPanel3.add(psbtnLogin);
 
-		btnConfigureDatabase.setAction(goAction);
-		btnConfigureDatabase.setText(com.floreantpos.POSConstants.CONFIGURE_DATABASE);
-		btnConfigureDatabase.setFocusable(false);
-		jPanel3.add(btnConfigureDatabase);
+		if (TerminalConfig.isShowDbConfigureButton()) {
+			btnConfigureDatabase = new com.floreantpos.swing.PosButton();
+			btnConfigureDatabase.setAction(goAction);
+			btnConfigureDatabase.setText(com.floreantpos.POSConstants.CONFIGURE_DATABASE);
+			btnConfigureDatabase.setFocusable(false);
+			btnConfigureDatabase.setActionCommand("DBCONFIG");
+			jPanel3.add(btnConfigureDatabase);
+		}
 
 		btnShutdown.setAction(goAction);
 		btnShutdown.setText(com.floreantpos.POSConstants.SHUTDOWN);
