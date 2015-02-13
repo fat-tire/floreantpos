@@ -17,7 +17,6 @@ import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRTableModelDataSource;
-import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.view.JRViewer;
 
 import org.jdesktop.swingx.JXDatePicker;
@@ -90,7 +89,7 @@ public class MenuUsageReportView extends JPanel {
 		map.put("toDate", ReportService.formatShortDate(toDate));
 		map.put("reportTime", ReportService.formatFullDate(new Date()));
 		
-		JasperReport jasperReport = (JasperReport) JRLoader.loadObject(getClass().getResource("/com/floreantpos/report/template/menu_usage_report.jasper"));
+		JasperReport jasperReport = ReportUtil.getReport("menu_usage_report");
 		JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map, new JRTableModelDataSource(report.getTableModel()));
 		JRViewer viewer = new JRViewer(jasperPrint);
 		reportContainer.removeAll();

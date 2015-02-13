@@ -8,7 +8,6 @@ import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRTableModelDataSource;
-import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.view.JRViewer;
 
 import com.floreantpos.model.Ticket;
@@ -37,7 +36,7 @@ public class OpenTicketSummaryReport extends Report {
 		//map.put("dateRange", Application.formatDate(date1) + " to " + Application.formatDate(date2));
 		map.put("terminalName", com.floreantpos.POSConstants.ALL);
 		
-		JasperReport masterReport = (JasperReport) JRLoader.loadObject(OpenTicketSummaryReport.class.getResource("/com/floreantpos/report/template/open_ticket_summary_report.jasper"));
+		JasperReport masterReport = ReportUtil.getReport("open_ticket_summary_report");
 		JasperPrint print = JasperFillManager.fillReport(masterReport, map, new JRTableModelDataSource(reportModel));
 		viewer = new JRViewer(print);
 	}

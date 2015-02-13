@@ -19,7 +19,6 @@ import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRTableModelDataSource;
-import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.view.JRViewer;
 
 import org.jdesktop.swingx.JXDatePicker;
@@ -89,8 +88,8 @@ public class SalesDetailReportView extends JPanel {
 		ReportService reportService = new ReportService();
 		SalesDetailedReport report = reportService.getSalesDetailedReport(fromDate, toDate);
 		
-		JasperReport drawerPullReport = (JasperReport) JRLoader.loadObject(SalesReportModelFactory.class.getResource("/com/floreantpos/report/template/sales_summary_balance_detailed__1.jasper"));
-		JasperReport creditCardReport = (JasperReport) JRLoader.loadObject(SalesReportModelFactory.class.getResource("/com/floreantpos/report/template/sales_summary_balance_detailed_2.jasper"));
+		JasperReport drawerPullReport = ReportUtil.getReport("sales_summary_balance_detailed__1");
+		JasperReport creditCardReport = ReportUtil.getReport("sales_summary_balance_detailed_2");
 		
 		HashMap map = new HashMap();
 		ReportUtil.populateRestaurantProperties(map);
@@ -109,7 +108,7 @@ public class SalesDetailReportView extends JPanel {
 		map.put("creditCardReport", creditCardReport);
 		map.put("creditCardReportDatasource", new JRTableModelDataSource(report.getCreditCardDataTableModel()));
 		
-		JasperReport jasperReport = (JasperReport) JRLoader.loadObject(getClass().getResource("/com/floreantpos/report/template/sales_summary_balace_detail.jasper"));
+		JasperReport jasperReport = ReportUtil.getReport("sales_summary_balace_detail");
 		JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map, new JREmptyDataSource());
 		JRViewer viewer = new JRViewer(jasperPrint);
 		reportContainer.removeAll();

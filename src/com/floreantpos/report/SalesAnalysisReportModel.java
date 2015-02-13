@@ -8,7 +8,6 @@ import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
-import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.view.JasperViewer;
 
 import com.floreantpos.bo.ui.explorer.ListTableModel;
@@ -173,7 +172,7 @@ public class SalesAnalysisReportModel extends ListTableModel {
 		data.setCategoryName("C");
 		list.add(data);
 
-		JasperReport report = (JasperReport) JRLoader.loadObject(SalesAnalysisData.class.getResource("/com/floreantpos/report/template/sales_summary_report2.jasper"));
+		JasperReport report = ReportUtil.getReport("sales_summary_report2");
 		JasperPrint print = JasperFillManager.fillReport(report, new HashMap(), new JRBeanCollectionDataSource(list));
 
 		JasperViewer.viewReport(print, true);
