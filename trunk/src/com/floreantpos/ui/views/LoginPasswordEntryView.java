@@ -20,8 +20,10 @@ import java.util.Locale;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.BorderFactory;
+import javax.swing.ButtonGroup;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JToggleButton;
 import javax.swing.SwingConstants;
 
 import net.miginfocom.swing.MigLayout;
@@ -45,7 +47,6 @@ import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.util.ShiftException;
 import com.floreantpos.util.ShiftUtil;
 import com.floreantpos.util.UserNotFoundException;
-import javax.swing.JCheckBox;
 
 /**
  * 
@@ -214,16 +215,35 @@ class LoginPasswordEntryView extends JPanel {
 
 		jPanel3.setLayout(new GridLayout(0, 1, 5, 5));
 		jPanel3.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
-		cbCashierMode = new JCheckBox("Cashier mode");
-		cbCashierMode.setSelected(TerminalConfig.isCashierMode());
-		cbCashierMode.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				TerminalConfig.setCashierMode(cbCashierMode.isSelected());
-			}
-		});
 		
-		jPanel3.add(cbCashierMode);
+		ButtonGroup buttonGroup = new ButtonGroup();
+		buttonGroup.add(btnRegularMode);
+		buttonGroup.add(btnCashierMode);
+		buttonGroup.add(btnKitchenMode);
+		
+		btnRegularMode.setFocusable(false);
+		btnCashierMode.setFocusable(false);
+		btnKitchenMode.setFocusable(false);
+		
+		ModeSelectionListener l = new ModeSelectionListener();
+		btnRegularMode.addActionListener(l);
+		btnCashierMode.addActionListener(l);
+		btnKitchenMode.addActionListener(l);
+		
+		btnRegularMode.setSelected(TerminalConfig.isRegularMode());
+		btnCashierMode.setSelected(TerminalConfig.isCashierMode());
+		btnKitchenMode.setSelected(TerminalConfig.isKitchenMode());
+		
+		if(!btnRegularMode.isSelected() && !btnCashierMode.isSelected() && !btnKitchenMode.isSelected()) {
+			btnRegularMode.setSelected(true);
+		}
+		
+		JPanel modePanel = new JPanel(new GridLayout(1, 0, 2, 2));
+		modePanel.add(btnRegularMode);
+		modePanel.add(btnCashierMode);
+		modePanel.add(btnKitchenMode);
+		
+		jPanel3.add(modePanel);
 
 		psbtnLogin = new PosButton();
 		psbtnLogin.addActionListener(new ActionListener() {
@@ -436,7 +456,10 @@ class LoginPasswordEntryView extends JPanel {
 	private JLabel msgLabel;
 	private PosButton psbtnLogin;
 	private JLabel lblTerminalId;
-	private JCheckBox cbCashierMode;
+	
+	private JToggleButton btnRegularMode = new JToggleButton("<html><center>REGULAR<br/>MODE</center></html>");
+	private JToggleButton btnCashierMode = new JToggleButton("<html><center>CASHIER<br/>MODE</center></html>");
+	private JToggleButton btnKitchenMode = new JToggleButton("<html><center>KITCHEN<br/>MODE</center></html>");
 
 	public void setFocus() {
 		tfPassword.setText("");
@@ -458,5 +481,15 @@ class LoginPasswordEntryView extends JPanel {
 
 			loginThread.start();
 		}
+	}
+	
+	class ModeSelectionListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			TerminalConfig.setRegularMode(btnRegularMode.isSelected());
+			TerminalConfig.setCashierMode(btnCashierMode.isSelected());
+			TerminalConfig.setKitchenMode(btnKitchenMode.isSelected());
+		}
+		
 	}
 }

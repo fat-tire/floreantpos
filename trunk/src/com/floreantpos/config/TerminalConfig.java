@@ -5,6 +5,10 @@ import org.apache.commons.configuration.PropertiesConfiguration;
 import com.floreantpos.util.PasswordHasher;
 
 public class TerminalConfig {
+	private static final String REGULAR_MODE = "regular_mode";
+
+	private static final String KITCHEN_MODE = "kitchen_mode";
+
 	private static final String CASHIER_MODE = "cashier_mode";
 
 	private static final String SHOW_DB_CONFIGURATION = "show_db_configuration";
@@ -178,5 +182,21 @@ public class TerminalConfig {
 	
 	public static void setCashierMode(boolean cashierMode) {
 		config.setProperty(CASHIER_MODE, cashierMode);
+	}
+	
+	public static boolean isRegularMode() {
+		return config.getBoolean(REGULAR_MODE, false);
+	}
+	
+	public static void setRegularMode(boolean regularMode) {
+		config.setProperty(REGULAR_MODE, regularMode);
+	}
+	
+	public static boolean isKitchenMode() {
+		return config.getBoolean(KITCHEN_MODE, false);
+	}
+	
+	public static void setKitchenMode(boolean kitchenMode) {
+		config.setProperty(KITCHEN_MODE, kitchenMode);
 	}
 }
