@@ -5,6 +5,8 @@ import org.apache.commons.configuration.PropertiesConfiguration;
 import com.floreantpos.util.PasswordHasher;
 
 public class TerminalConfig {
+	private static final String CASHIER_MODE = "cashier_mode";
+
 	private static final String SHOW_DB_CONFIGURATION = "show_db_configuration";
 
 	private static final String UI_DEFAULT_FONT = "ui_default_font";
@@ -168,5 +170,13 @@ public class TerminalConfig {
 	
 	public static boolean isShowDbConfigureButton() {
 		return config.getBoolean(SHOW_DB_CONFIGURATION, true);
+	}
+	
+	public static boolean isCashierMode() {
+		return config.getBoolean(CASHIER_MODE, false);
+	}
+	
+	public static void setCashierMode(boolean cashierMode) {
+		config.setProperty(CASHIER_MODE, cashierMode);
 	}
 }

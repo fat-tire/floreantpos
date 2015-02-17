@@ -29,6 +29,7 @@ import org.hibernate.StaleObjectStateException;
 
 import com.floreantpos.POSConstants;
 import com.floreantpos.PosException;
+import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.CookingInstruction;
 import com.floreantpos.model.ITicketItem;
@@ -363,7 +364,7 @@ public class TicketView extends JPanel {
 			ticket.clearDeletedItems();
 			OrderController.saveOrder(ticket);
 
-			RootView.getInstance().showView(SwitchboardView.VIEW_NAME);
+			closeView();
 
 		} catch (StaleObjectStateException e) {
 			POSMessageDialog.showError("It seems the ticket has been modified by some other person or terminal. Save failed.");
@@ -375,8 +376,17 @@ public class TicketView extends JPanel {
 		}
 	}//GEN-LAST:event_doFinishOrder
 
+	private void closeView() {
+		if(TerminalConfig.isCashierMode()) {
+			Application.getInstance().logout();
+		}
+		else {
+			RootView.getInstance().showView(SwitchboardView.VIEW_NAME);
+		}
+	}
+
 	private void doCancelOrder(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_doCancelOrder
-		RootView.getInstance().showView(SwitchboardView.VIEW_NAME);
+		closeView();
 	}//GEN-LAST:event_doCancelOrder
 
 	private synchronized void updateModel() {

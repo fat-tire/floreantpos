@@ -675,7 +675,7 @@ public class SwitchboardView extends JPanel implements ActionListener, ITicketLi
 		}
 	}
 
-	private void doTakeout(TicketType titcketType) {
+	public static void doTakeout(TicketType titcketType) {
 		Application application = Application.getInstance();
 
 		Ticket ticket = new Ticket();
