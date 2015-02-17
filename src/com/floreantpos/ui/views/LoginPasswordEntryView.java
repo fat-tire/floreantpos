@@ -214,15 +214,16 @@ class LoginPasswordEntryView extends JPanel {
 
 		jPanel3.setLayout(new GridLayout(0, 1, 5, 5));
 		jPanel3.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
-		cbChashierMode = new JCheckBox("Chashier mode");
-		cbChashierMode.setSelected(TerminalConfig.isCashierMode());
-		cbChashierMode.addActionListener(new ActionListener() {
+		cbCashierMode = new JCheckBox("Cashier mode");
+		cbCashierMode.setSelected(TerminalConfig.isCashierMode());
+		cbCashierMode.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				TerminalConfig.setCashierMode(cbChashierMode.isSelected());
+				TerminalConfig.setCashierMode(cbCashierMode.isSelected());
 			}
 		});
-		jPanel3.add(cbChashierMode);
+		
+		jPanel3.add(cbCashierMode);
 
 		psbtnLogin = new PosButton();
 		psbtnLogin.addActionListener(new ActionListener() {
@@ -435,7 +436,7 @@ class LoginPasswordEntryView extends JPanel {
 	private JLabel msgLabel;
 	private PosButton psbtnLogin;
 	private JLabel lblTerminalId;
-	private JCheckBox cbChashierMode;
+	private JCheckBox cbCashierMode;
 
 	public void setFocus() {
 		tfPassword.setText("");
