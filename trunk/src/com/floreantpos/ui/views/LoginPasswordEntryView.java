@@ -19,6 +19,7 @@ import java.util.Locale;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
@@ -33,6 +34,7 @@ import com.floreantpos.config.ui.DatabaseConfigurationDialog;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.AttendenceHistory;
 import com.floreantpos.model.Shift;
+import com.floreantpos.model.TicketType;
 import com.floreantpos.model.User;
 import com.floreantpos.model.dao.AttendenceHistoryDAO;
 import com.floreantpos.model.dao.UserDAO;
@@ -43,15 +45,16 @@ import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.util.ShiftException;
 import com.floreantpos.util.ShiftUtil;
 import com.floreantpos.util.UserNotFoundException;
+import javax.swing.JCheckBox;
 
 /**
  * 
  * @author MShahriar
  */
-public class PasswordScreen extends JPanel {
+class LoginPasswordEntryView extends JPanel {
 
 	/** Creates new form PasswordScreen */
-	public PasswordScreen() {
+	LoginPasswordEntryView() {
 		//setMinimumSize(new Dimension(320, 10));
 		initComponents();
 
@@ -85,7 +88,7 @@ public class PasswordScreen extends JPanel {
 		btnShutdown = new com.floreantpos.swing.PosButton();
 
 		setPreferredSize(new Dimension(320, 593));
-		setLayout(new MigLayout("ins 0", "[380px,grow]", "[110px][270px][grow,fill][grow]"));
+		setLayout(new MigLayout("ins 0", "[380px,grow]", "[110px][270px][grow,fill][][grow]"));
 
 		buttonPanel.setOpaque(false);
 		buttonPanel.setPreferredSize(new java.awt.Dimension(200, 180));
@@ -210,6 +213,16 @@ public class PasswordScreen extends JPanel {
 		add(panel, "cell 0 2,grow");
 
 		jPanel3.setLayout(new GridLayout(0, 1, 5, 5));
+		jPanel3.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
+		cbChashierMode = new JCheckBox("Chashier mode");
+		cbChashierMode.setSelected(TerminalConfig.isCashierMode());
+		cbChashierMode.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				TerminalConfig.setCashierMode(cbChashierMode.isSelected());
+			}
+		});
+		jPanel3.add(cbChashierMode);
 
 		psbtnLogin = new PosButton();
 		psbtnLogin.addActionListener(new ActionListener() {
@@ -237,9 +250,10 @@ public class PasswordScreen extends JPanel {
 			btnConfigureDatabase.setVisible(false);
 			btnShutdown.setVisible(false);
 		}
+		
 		jPanel3.add(btnShutdown);
 
-		add(jPanel3, "cell 0 3,growx,aligny bottom");
+		add(jPanel3, "cell 0 4,growx,aligny bottom");
 
 		lblTerminalId.setText("");
 	}// </editor-fold>//GEN-END:initComponents
@@ -271,7 +285,13 @@ public class PasswordScreen extends JPanel {
 			application.setCurrentShift(currentShift);
 
 			tfPassword.setText("");
-			application.getRootView().showView(SwitchboardView.VIEW_NAME);
+			
+			if(TerminalConfig.isCashierMode()) {
+				SwitchboardView.doTakeout(TicketType.TAKE_OUT);
+			}
+			else {
+				application.getRootView().showView(SwitchboardView.VIEW_NAME);
+			}
 
 		} catch (UserNotFoundException e) {
 			LogFactory.getLog(Application.class).error(e);
@@ -415,6 +435,7 @@ public class PasswordScreen extends JPanel {
 	private JLabel msgLabel;
 	private PosButton psbtnLogin;
 	private JLabel lblTerminalId;
+	private JCheckBox cbChashierMode;
 
 	public void setFocus() {
 		tfPassword.setText("");

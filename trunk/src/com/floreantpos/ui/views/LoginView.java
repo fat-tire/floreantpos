@@ -23,13 +23,13 @@ import com.floreantpos.swing.ImageComponent;
  *
  * @author  MShahriar
  */
-public class LoginScreen extends JPanel {
+public class LoginView extends JPanel {
 	public final static String VIEW_NAME = "LOGIN_VIEW";
 
-	private PasswordScreen passwordScreen;
+	private LoginPasswordEntryView passwordScreen;
 
 	/** Creates new form LoginScreen */
-	public LoginScreen() {
+	public LoginView() {
 		//setLayout(new MigLayout("ins 20 10 20 10, fill","[fill,growprio 100,grow][]",""));
 		setLayout(new BorderLayout(5, 5));
 
@@ -51,7 +51,7 @@ public class LoginScreen extends JPanel {
 
 		add(centerPanel);
 
-		passwordScreen = new PasswordScreen();
+		passwordScreen = new LoginPasswordEntryView();
 		passwordScreen.setBorder(new CompoundBorder(new EtchedBorder(), new EmptyBorder(5, 5, 12, 5)));
 		
 		add(passwordScreen, BorderLayout.EAST);
