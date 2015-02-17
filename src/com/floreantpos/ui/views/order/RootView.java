@@ -5,14 +5,14 @@ import java.awt.Component;
 
 import javax.swing.border.EmptyBorder;
 
-import com.floreantpos.ui.views.LoginScreen;
+import com.floreantpos.ui.views.LoginView;
 import com.floreantpos.ui.views.SwitchboardView;
 import com.floreantpos.ui.views.payment.SettleTicketDialog;
 
 public class RootView extends com.floreantpos.swing.TransparentPanel {
 	private CardLayout layout = new CardLayout();
 	
-	private LoginScreen loginScreen;
+	private LoginView loginScreen;
 	private SwitchboardView switchboardView;
 	private OrderView orderView;
 	private SettleTicketDialog paymentView;
@@ -24,8 +24,8 @@ public class RootView extends com.floreantpos.swing.TransparentPanel {
 		setLayout(layout);
 		setBorder(new EmptyBorder(3,3,3,3));
 		
-		loginScreen = new LoginScreen();
-		addView(LoginScreen.VIEW_NAME, loginScreen);
+		loginScreen = new LoginView();
+		addView(LoginView.VIEW_NAME, loginScreen);
 		
 		switchboardView = new SwitchboardView();
 		addView(SwitchboardView.VIEW_NAME, switchboardView);
@@ -37,7 +37,7 @@ public class RootView extends com.floreantpos.swing.TransparentPanel {
 		//paymentView = SettleTicketView.getInstance();
 		//addView(SettleTicketView.VIEW_NAME, paymentView);
 		
-		showView(LoginScreen.VIEW_NAME);
+		showView(LoginView.VIEW_NAME);
 	}
 	
 	public void addView(String viewName, Component view) {
@@ -56,7 +56,7 @@ public class RootView extends com.floreantpos.swing.TransparentPanel {
 		this.orderView = orderView;
 	}
 	
-	public LoginScreen getLoginScreen() {
+	public LoginView getLoginScreen() {
 		return loginScreen;
 	}
 

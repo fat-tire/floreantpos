@@ -38,7 +38,7 @@ import com.floreantpos.model.dao.PrinterConfigurationDAO;
 import com.floreantpos.model.dao.RestaurantDAO;
 import com.floreantpos.model.dao.TerminalDAO;
 import com.floreantpos.ui.dialog.POSMessageDialog;
-import com.floreantpos.ui.views.LoginScreen;
+import com.floreantpos.ui.views.LoginView;
 import com.floreantpos.ui.views.order.RootView;
 import com.floreantpos.util.DatabaseConnectionException;
 import com.floreantpos.util.DatabaseUtil;
@@ -343,7 +343,7 @@ public class Application {
 		}
 
 		setCurrentUser(null);
-		RootView.getInstance().showView(LoginScreen.VIEW_NAME);
+		RootView.getInstance().showView(LoginView.VIEW_NAME);
 	}
 
 	public static User getCurrentUser() {

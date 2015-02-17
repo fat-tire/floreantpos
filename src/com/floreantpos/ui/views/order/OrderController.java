@@ -2,6 +2,7 @@ package com.floreantpos.ui.views.order;
 
 import com.floreantpos.POSConstants;
 import com.floreantpos.actions.SettleTicketAction;
+import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.ActionHistory;
 import com.floreantpos.model.MenuCategory;
@@ -91,9 +92,15 @@ public class OrderController implements OrderListener, CategorySelectionListener
 	}
 
 	public void payOrderSelected(Ticket ticket) {
-		RootView.getInstance().showView(SwitchboardView.VIEW_NAME);
 		new SettleTicketAction(ticket.getId()).execute();
-		SwitchboardView.getInstance().updateTicketList();
+		
+		if(TerminalConfig.isCashierMode()) {
+			Application.getInstance().logout();
+		}
+		else {
+			RootView.getInstance().showView(SwitchboardView.VIEW_NAME);
+			SwitchboardView.getInstance().updateTicketList();
+		}
 	}
 
 	//VERIFIED
