@@ -116,6 +116,7 @@ public class Application {
 			UIManager.setLookAndFeel(new PlasticXPLookAndFeel());
 			//UIManager.setLookAndFeel(new NimbusLookAndFeel());
 			UIManager.put("ComboBox.is3DEnabled", Boolean.FALSE); //$NON-NLS-1$
+			//UIManager.put("ToggleButtonUI", "com.floreantpos.swing.POSButtonUI");
 		} catch (Exception ignored) {
 			ignored.printStackTrace();
 		}
