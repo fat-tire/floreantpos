@@ -46,7 +46,7 @@ public class ReportUtil {
 				return (JasperReport) JRLoader.loadObject(resource);
 			}
 		} catch (Exception e) {
-			logger.error(e);
+			logger.error("Could not load report " + reportName + " from user directory, loading default report");
 			return getDefaultReport(reportName);
 			
 		} finally {
@@ -87,7 +87,7 @@ public class ReportUtil {
 		try {
 			
 			resource = ReceiptPrintService.class.getResourceAsStream(DEFAULT_REPORT_DIR + reportName + ".jasper");
-			return JasperCompileManager.compileReport(resource);
+			return (JasperReport) JRLoader.loadObject(resource);
 			
 		} catch (Exception e) {
 			logger.error(e);
