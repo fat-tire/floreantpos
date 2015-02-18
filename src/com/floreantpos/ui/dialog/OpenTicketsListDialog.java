@@ -22,13 +22,18 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 
+import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.User;
 import com.floreantpos.model.dao.TicketDAO;
+import com.floreantpos.ui.views.order.CashierModeNextActionDialog;
+import com.floreantpos.ui.views.order.OrderView;
 
 /**
  *
@@ -41,13 +46,13 @@ public class OpenTicketsListDialog extends POSDialog {
 	/** Creates new form OpenTicketsListDialog */
 	public OpenTicketsListDialog(JDialog parent, boolean modal) {
 		super(parent, modal);
-		
+
 		init();
 	}
-	
+
 	public OpenTicketsListDialog(Frame parent, boolean modal) {
 		super(parent, modal);
-		
+
 		init();
 	}
 
@@ -57,7 +62,13 @@ public class OpenTicketsListDialog extends POSDialog {
 		titlePanel.setTitle(com.floreantpos.POSConstants.ACTIVE_TICKETS_BEFORE_DRAWER_RESET);
 
 		TicketDAO dao = new TicketDAO();
-		openTickets = dao.findOpenTickets();
+
+		if (TerminalConfig.isCashierMode()) {
+			openTickets = dao.findOpenTicketsForUser(Application.getCurrentUser());
+		}
+		else {
+			openTickets = dao.findOpenTickets();
+		}
 
 		tableModel = new OpenTicketListTableModel();
 		openTicketListTable.setModel(tableModel);
@@ -67,6 +78,19 @@ public class OpenTicketsListDialog extends POSDialog {
 		selectionModel = new DefaultListSelectionModel();
 		selectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		openTicketListTable.setSelectionModel(selectionModel);
+		
+		if (TerminalConfig.isCashierMode()) {
+			selectionModel.addListSelectionListener(new ListSelectionListener() {
+				@Override
+				public void valueChanged(ListSelectionEvent e) {
+					Ticket ticket = openTickets.get(openTicketListTable.getSelectedRow());
+					ticket = TicketDAO.getInstance().loadFullTicket(ticket.getId());
+					OrderView.getInstance().setCurrentTicket(ticket);
+
+					dispose();
+				}
+			});
+		}
 	}
 
 	/** This method is called from within the constructor to
@@ -79,9 +103,7 @@ public class OpenTicketsListDialog extends POSDialog {
 		titlePanel = new com.floreantpos.ui.TitlePanel();
 		transparentPanel1 = new com.floreantpos.swing.TransparentPanel();
 		transparentPanel3 = new com.floreantpos.swing.TransparentPanel();
-		btnVoid = new com.floreantpos.swing.PosButton();
-		//        btnPrint = new com.floreantpos.swing.PosButton();
-		btnTransferServer = new com.floreantpos.swing.PosButton();
+
 		btnClose = new com.floreantpos.swing.PosButton();
 		transparentPanel4 = new com.floreantpos.swing.TransparentPanel();
 		btnScrollUp = new com.floreantpos.swing.PosButton();
@@ -98,35 +120,30 @@ public class OpenTicketsListDialog extends POSDialog {
 		transparentPanel3.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
 
 		transparentPanel3.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 5));
-		btnVoid.setText(com.floreantpos.POSConstants.VOID);
-		btnVoid.setPreferredSize(new java.awt.Dimension(100, 50));
-		btnVoid.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				doVoidTicket(evt);
-			}
-		});
 
-		transparentPanel3.add(btnVoid);
+		if (!TerminalConfig.isCashierMode()) {
+			btnVoid = new com.floreantpos.swing.PosButton();
+			btnVoid.setText(com.floreantpos.POSConstants.VOID);
+			btnVoid.setPreferredSize(new java.awt.Dimension(100, 50));
+			btnVoid.addActionListener(new java.awt.event.ActionListener() {
+				public void actionPerformed(java.awt.event.ActionEvent evt) {
+					doVoidTicket(evt);
+				}
+			});
 
-		//        btnPrint.setText(com.floreantpos.POSConstants.PRINT);
-		//        btnPrint.setPreferredSize(new java.awt.Dimension(100, 50));
-		//        btnPrint.addActionListener(new java.awt.event.ActionListener() {
-		//            public void actionPerformed(java.awt.event.ActionEvent evt) {
-		//                doPrintTicket(evt);
-		//            }
-		//        });
-		//
-		//        transparentPanel3.add(btnPrint);
+			transparentPanel3.add(btnVoid);
 
-		btnTransferServer.setText("<html><body><center>TRANSFER<br>SERVER</center></body></html>");
-		btnTransferServer.setPreferredSize(new java.awt.Dimension(100, 50));
-		btnTransferServer.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				doTransferServer(evt);
-			}
-		});
+			btnTransferServer = new com.floreantpos.swing.PosButton();
+			btnTransferServer.setText("<html><body><center>TRANSFER<br>SERVER</center></body></html>");
+			btnTransferServer.setPreferredSize(new java.awt.Dimension(100, 50));
+			btnTransferServer.addActionListener(new java.awt.event.ActionListener() {
+				public void actionPerformed(java.awt.event.ActionEvent evt) {
+					doTransferServer(evt);
+				}
+			});
 
-		transparentPanel3.add(btnTransferServer);
+			transparentPanel3.add(btnTransferServer);
+		}
 
 		btnClose.setText(com.floreantpos.POSConstants.CLOSE);
 		btnClose.setPreferredSize(new java.awt.Dimension(100, 50));
@@ -233,6 +250,12 @@ public class OpenTicketsListDialog extends POSDialog {
 	private void doClose(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_doClose
 		canceled = false;
 		dispose();
+
+		if (TerminalConfig.isCashierMode()) {
+			String message = "What do you want to do next?";
+			CashierModeNextActionDialog dialog = new CashierModeNextActionDialog(Application.getPosWindow(), message);
+			dialog.open();
+		}
 	}//GEN-LAST:event_doClose
 
 	private void doTransferServer(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_doTransferServer
@@ -265,7 +288,7 @@ public class OpenTicketsListDialog extends POSDialog {
 		if (ticket == null) {
 			return;
 		}
-		
+
 		Ticket ticketToVoid = TicketDAO.getInstance().loadFullTicket(ticket.getId());
 
 		VoidTicketDialog dialog = new VoidTicketDialog(Application.getPosWindow(), true);
