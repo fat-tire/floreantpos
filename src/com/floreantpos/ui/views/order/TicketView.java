@@ -8,6 +8,8 @@ package com.floreantpos.ui.views.order;
 
 import java.awt.BorderLayout;
 import java.awt.Font;
+import java.awt.Frame;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -19,6 +21,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -40,6 +43,7 @@ import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.TicketItemCookingInstruction;
 import com.floreantpos.model.TicketItemModifier;
+import com.floreantpos.model.TicketType;
 import com.floreantpos.model.dao.CookingInstructionDAO;
 import com.floreantpos.model.dao.MenuItemDAO;
 import com.floreantpos.report.ReceiptPrintService;
@@ -378,7 +382,10 @@ public class TicketView extends JPanel {
 
 	private void closeView() {
 		if(TerminalConfig.isCashierMode()) {
-			Application.getInstance().logout();
+			SwitchboardView.doTakeout(TicketType.TAKE_OUT);
+			Window ancestor = SwingUtilities.getWindowAncestor(this);
+			CashierModeNextActionDialog dialog = new CashierModeNextActionDialog((Frame) ancestor);
+			dialog.open();
 		}
 		else {
 			RootView.getInstance().showView(SwitchboardView.VIEW_NAME);
@@ -504,8 +511,6 @@ public class TicketView extends JPanel {
 	public void removeModifier(TicketItem parent, TicketItemModifier modifier) {
 		ticketViewerTable.removeModifier(parent, modifier);
 	}
-
-	//	private NumberFormat numberFormat = new DecimalFormat("0.00");
 
 	public void updateAllView() {
 		ticketViewerTable.updateView();
