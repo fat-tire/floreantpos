@@ -25,13 +25,8 @@ import com.floreantpos.swing.IntegerTextField;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 
 public class TerminalConfigurationView extends ConfigurationView {
-//	private JCheckBox cbxPrintReceiptOnOrderFinish;
-//	private JCheckBox cbxPrintReceiptOnSettle;
-//	private JCheckBox cbxPrintKitchenOnOrderFinish;
-//	private JCheckBox cbxPrintKitchenOnSettle;
 	private IntegerTextField tfTerminalNumber;
 	private IntegerTextField tfSecretKeyLength;
-	//private FixedLengthTextField tfAdminPassword = new FixedLengthTextField(16);
 	
 	private JCheckBox cbEnableDineIn = new JCheckBox("DINE IN");
 	private JCheckBox cbEnableTakeOut = new JCheckBox("TAKE OUT");
@@ -71,7 +66,7 @@ public class TerminalConfigurationView extends ConfigurationView {
 		tfSecretKeyLength = new IntegerTextField(3);
 		add(tfSecretKeyLength, "wrap");
 		
-		add(cbShowDbConfiguration, "span 2, wrap");
+		add(cbShowDbConfiguration, "spanx 3");
 		
 		cbAutoLogoff.addActionListener(new ActionListener() {
 			@Override
@@ -84,14 +79,14 @@ public class TerminalConfigurationView extends ConfigurationView {
 				}
 			}
 		});
-		add(cbAutoLogoff);
+		add(cbAutoLogoff, "newline");
 		add(new JLabel("Auto logoff time")); //$NON-NLS-1$
 		add(tfLogoffTime, "wrap");
 		
 		add(cbFullscreenMode, "wrap"); //$NON-NLS-1$
 		
 		add(new JLabel("Default font")); //$NON-NLS-1$
-		add(cbFonts, "wrap"); //$NON-NLS-1$
+		add(cbFonts, "span 2, wrap"); //$NON-NLS-1$
 		
 		JPanel ticketTypePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 20, 10));
 		ticketTypePanel.setBorder(BorderFactory.createTitledBorder("Ticket Types"));
