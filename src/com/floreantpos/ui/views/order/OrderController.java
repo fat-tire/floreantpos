@@ -1,5 +1,10 @@
 package com.floreantpos.ui.views.order;
 
+import java.awt.Frame;
+import java.awt.Window;
+
+import javax.swing.SwingUtilities;
+
 import com.floreantpos.POSConstants;
 import com.floreantpos.actions.SettleTicketAction;
 import com.floreantpos.config.TerminalConfig;
@@ -11,6 +16,7 @@ import com.floreantpos.model.MenuItem;
 import com.floreantpos.model.MenuModifier;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketItem;
+import com.floreantpos.model.TicketType;
 import com.floreantpos.model.User;
 import com.floreantpos.model.dao.ActionHistoryDAO;
 import com.floreantpos.model.dao.MenuItemDAO;
@@ -95,7 +101,15 @@ public class OrderController implements OrderListener, CategorySelectionListener
 		new SettleTicketAction(ticket.getId()).execute();
 		
 		if(TerminalConfig.isCashierMode()) {
-			Application.getInstance().logout();
+			String message = "Ticket no " + ticket.getId() + " saved. What do you want to do next?";
+			if(ticket.isPaid()) {
+				message = "Ticket no " + ticket.getId() + " paid. What do you want to do next?";
+			}
+			
+			SwitchboardView.doTakeout(TicketType.TAKE_OUT);
+			Window ancestor = SwingUtilities.getWindowAncestor(Application.getPosWindow());
+			CashierModeNextActionDialog dialog = new CashierModeNextActionDialog((Frame) ancestor, message);
+			dialog.open();
 		}
 		else {
 			RootView.getInstance().showView(SwitchboardView.VIEW_NAME);

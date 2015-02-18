@@ -43,7 +43,6 @@ import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.TicketItemCookingInstruction;
 import com.floreantpos.model.TicketItemModifier;
-import com.floreantpos.model.TicketType;
 import com.floreantpos.model.dao.CookingInstructionDAO;
 import com.floreantpos.model.dao.MenuItemDAO;
 import com.floreantpos.report.ReceiptPrintService;
@@ -368,7 +367,7 @@ public class TicketView extends JPanel {
 			ticket.clearDeletedItems();
 			OrderController.saveOrder(ticket);
 
-			closeView();
+			closeView(false);
 
 		} catch (StaleObjectStateException e) {
 			POSMessageDialog.showError("It seems the ticket has been modified by some other person or terminal. Save failed.");
@@ -380,11 +379,15 @@ public class TicketView extends JPanel {
 		}
 	}//GEN-LAST:event_doFinishOrder
 
-	private void closeView() {
+	private void closeView(boolean orderCanceled) {
 		if(TerminalConfig.isCashierMode()) {
-			SwitchboardView.doTakeout(TicketType.TAKE_OUT);
+			String message = "Order canceled. What do you want to do next?";
+			if(!orderCanceled) {
+				message = "Ticket no " + getTicket().getId() + " saved. What do you want to do next?";
+			}
+			
 			Window ancestor = SwingUtilities.getWindowAncestor(this);
-			CashierModeNextActionDialog dialog = new CashierModeNextActionDialog((Frame) ancestor);
+			CashierModeNextActionDialog dialog = new CashierModeNextActionDialog((Frame) ancestor, message);
 			dialog.open();
 		}
 		else {
@@ -393,7 +396,7 @@ public class TicketView extends JPanel {
 	}
 
 	private void doCancelOrder(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_doCancelOrder
-		closeView();
+		closeView(true);
 	}//GEN-LAST:event_doCancelOrder
 
 	private synchronized void updateModel() {
