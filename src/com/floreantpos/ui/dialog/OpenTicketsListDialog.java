@@ -8,6 +8,7 @@ package com.floreantpos.ui.dialog;
 
 import java.awt.Component;
 import java.awt.Font;
+import java.awt.Frame;
 import java.awt.Rectangle;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -41,6 +42,16 @@ public class OpenTicketsListDialog extends POSDialog {
 	public OpenTicketsListDialog(JDialog parent, boolean modal) {
 		super(parent, modal);
 		
+		init();
+	}
+	
+	public OpenTicketsListDialog(Frame parent, boolean modal) {
+		super(parent, modal);
+		
+		init();
+	}
+
+	private void init() {
 		initComponents();
 		setTitle(com.floreantpos.POSConstants.ACTIVE_TICKETS);
 		titlePanel.setTitle(com.floreantpos.POSConstants.ACTIVE_TICKETS_BEFORE_DRAWER_RESET);
