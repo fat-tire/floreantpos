@@ -37,7 +37,6 @@ public class ReportUtil {
 		InputStream resource = null;
 
 		try {
-			
 			resource = ReceiptPrintService.class.getResourceAsStream(USER_REPORT_DIR + reportName + ".jasper");
 			if (resource == null) {
 				return compileReport(reportName);
@@ -55,7 +54,7 @@ public class ReportUtil {
 		
 	}
 	
-	private static JasperReport compileReport(String reportName) {
+	private static JasperReport compileReport(String reportName) throws Exception {
 		InputStream in = null;
 		InputStream in2 = null;
 		FileOutputStream out = null;
@@ -72,8 +71,6 @@ public class ReportUtil {
 			in2 = ReceiptPrintService.class.getResourceAsStream(USER_REPORT_DIR + reportName + ".jasper");
 			return (JasperReport) JRLoader.loadObject(in2);
 			
-		} catch (Exception e) {
-			return null;
 		} finally {
 			IOUtils.closeQuietly(in);
 			IOUtils.closeQuietly(in2);
