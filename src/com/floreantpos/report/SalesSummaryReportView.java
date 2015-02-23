@@ -205,7 +205,7 @@ public class SalesSummaryReportView extends javax.swing.JPanel {
 			properties.put("reportType", com.floreantpos.POSConstants.SYSTEM_TOTAL);
 		}
 		else {
-			properties.put("reportType", userType);
+			properties.put("reportType", userType.getName());
 		}
 		properties.put("shift", com.floreantpos.POSConstants.ALL);
 		properties.put("centre", terminal == null ? com.floreantpos.POSConstants.ALL : terminal.getName());
