@@ -14,9 +14,6 @@
     <property column="TELEPHONE" length="16" name="telephone" type="string"/>
     <property column="CAPACITY" name="capacity" type="java.lang.Integer"/>
     <property column="TABLES" name="tables" type="java.lang.Integer"/>
-    <property column="AUTODRAWERPULLENABLE" name="autoDrawerPullEnable" type="java.lang.Boolean"/>
-    <property column="DRAWER_PULL_HOUR" name="drawerPullHour" type="java.lang.Integer"/>
-    <property column="DRAWER_PULL_MIN" name="drawerPullMin" type="java.lang.Integer"/>
     <property column="CNAME" length="20" name="currencyName" type="string"/>
     <property column="CSYMBOL" length="10" name="currencySymbol" type="string"/>
     <property column="SC_PERCENTAGE" length="10" name="serviceChargePercentage" type="java.lang.Double"/>

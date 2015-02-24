@@ -16,10 +16,8 @@ import java.io.Serializable;
 public abstract class BaseRestaurant  implements Comparable, Serializable {
 
 	public static String REF = "Restaurant";
-	public static String PROP_AUTO_DRAWER_PULL_ENABLE = "autoDrawerPullEnable";
 	public static String PROP_ITEM_PRICE_INCLUDES_TAX = "itemPriceIncludesTax";
 	public static String PROP_TELEPHONE = "telephone";
-	public static String PROP_DRAWER_PULL_MIN = "drawerPullMin";
 	public static String PROP_TICKET_FOOTER_MESSAGE = "ticketFooterMessage";
 	public static String PROP_SERVICE_CHARGE_PERCENTAGE = "serviceChargePercentage";
 	public static String PROP_UNIQUE_ID = "uniqueId";
@@ -27,14 +25,13 @@ public abstract class BaseRestaurant  implements Comparable, Serializable {
 	public static String PROP_NAME = "name";
 	public static String PROP_DEFAULT_GRATUITY_PERCENTAGE = "defaultGratuityPercentage";
 	public static String PROP_CURRENCY_NAME = "currencyName";
-	public static String PROP_DRAWER_PULL_HOUR = "drawerPullHour";
 	public static String PROP_TABLES = "tables";
 	public static String PROP_ID = "id";
 	public static String PROP_CAPACITY = "capacity";
 	public static String PROP_ADDRESS_LINE1 = "addressLine1";
 	public static String PROP_ADDRESS_LINE2 = "addressLine2";
-	public static String PROP_CURRENCY_SYMBOL = "currencySymbol";
 	public static String PROP_ADDRESS_LINE3 = "addressLine3";
+	public static String PROP_CURRENCY_SYMBOL = "currencySymbol";
 
 
 	// constructors
@@ -69,9 +66,6 @@ public abstract class BaseRestaurant  implements Comparable, Serializable {
 		protected java.lang.String telephone;
 		protected java.lang.Integer capacity;
 		protected java.lang.Integer tables;
-		protected java.lang.Boolean autoDrawerPullEnable;
-		protected java.lang.Integer drawerPullHour;
-		protected java.lang.Integer drawerPullMin;
 		protected java.lang.String currencyName;
 		protected java.lang.String currencySymbol;
 		protected java.lang.Double serviceChargePercentage;
@@ -252,57 +246,6 @@ public abstract class BaseRestaurant  implements Comparable, Serializable {
 	 */
 	public void setTables (java.lang.Integer tables) {
 		this.tables = tables;
-	}
-
-
-
-	/**
-	 * Return the value associated with the column: AUTODRAWERPULLENABLE
-	 */
-	public java.lang.Boolean isAutoDrawerPullEnable () {
-								return autoDrawerPullEnable == null ? Boolean.FALSE : autoDrawerPullEnable;
-					}
-
-	/**
-	 * Set the value related to the column: AUTODRAWERPULLENABLE
-	 * @param autoDrawerPullEnable the AUTODRAWERPULLENABLE value
-	 */
-	public void setAutoDrawerPullEnable (java.lang.Boolean autoDrawerPullEnable) {
-		this.autoDrawerPullEnable = autoDrawerPullEnable;
-	}
-
-
-
-	/**
-	 * Return the value associated with the column: DRAWER_PULL_HOUR
-	 */
-	public java.lang.Integer getDrawerPullHour () {
-					return drawerPullHour == null ? Integer.valueOf(0) : drawerPullHour;
-			}
-
-	/**
-	 * Set the value related to the column: DRAWER_PULL_HOUR
-	 * @param drawerPullHour the DRAWER_PULL_HOUR value
-	 */
-	public void setDrawerPullHour (java.lang.Integer drawerPullHour) {
-		this.drawerPullHour = drawerPullHour;
-	}
-
-
-
-	/**
-	 * Return the value associated with the column: DRAWER_PULL_MIN
-	 */
-	public java.lang.Integer getDrawerPullMin () {
-					return drawerPullMin == null ? Integer.valueOf(0) : drawerPullMin;
-			}
-
-	/**
-	 * Set the value related to the column: DRAWER_PULL_MIN
-	 * @param drawerPullMin the DRAWER_PULL_MIN value
-	 */
-	public void setDrawerPullMin (java.lang.Integer drawerPullMin) {
-		this.drawerPullMin = drawerPullMin;
 	}
 
 
