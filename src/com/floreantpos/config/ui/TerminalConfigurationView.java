@@ -139,12 +139,12 @@ public class TerminalConfigurationView extends ConfigurationView {
 		drawerConfigPanel.setBorder(BorderFactory.createTitledBorder("CASH DRAWER"));
 		
 		chkHasCashDrawer = new JCheckBox("This terminal has cash drawer");
-		drawerConfigPanel.add(chkHasCashDrawer, "wrap");
+		drawerConfigPanel.add(chkHasCashDrawer, "span 5, wrap");
 		
 		drawerConfigPanel.add(new JLabel("Drawer initial balance"));
-		drawerConfigPanel.add(tfDrawerInitialBalance, "wrap");
+		drawerConfigPanel.add(tfDrawerInitialBalance, "span 4, wrap");
 		
-		drawerConfigPanel.add(chkAutoDrawerPull = new JCheckBox(com.floreantpos.POSConstants.AUTO_DRAWER_PULL_EVERY_DAY_AT_)); //$NON-NLS-1$
+		drawerConfigPanel.add(chkAutoDrawerPull = new JCheckBox(com.floreantpos.POSConstants.AUTO_DRAWER_PULL_EVERY_DAY_AT_), "span 2"); //$NON-NLS-1$
 		drawerConfigPanel.add(new JLabel(com.floreantpos.POSConstants.HOUR + ":")); //$NON-NLS-1$ //$NON-NLS-2$
 		drawerConfigPanel.add(cbHour = new JComboBox(hours), ""); //$NON-NLS-1$
 		
