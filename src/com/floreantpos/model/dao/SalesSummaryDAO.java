@@ -80,7 +80,7 @@ public class SalesSummaryDAO extends _RootDAO {
 				criteria.add(Restrictions.eq("u." + User.PROP_TYPE, userType));
 			}
 			if (terminal != null) {
-				criteria.add(Restrictions.eq("item." + TicketItem.PROP_TICKET + "." + Ticket.PROP_TERMINAL, terminal));
+				criteria.add(Restrictions.eq("t." + Ticket.PROP_TERMINAL, terminal));
 			}
 			List datas = criteria.list();
 			if (datas.size() > 0) {
@@ -120,7 +120,7 @@ public class SalesSummaryDAO extends _RootDAO {
 				criteria.add(Restrictions.eq("u." + User.PROP_TYPE, userType));
 			}
 			if (terminal != null) {
-				criteria.add(Restrictions.eq("item." + TicketItem.PROP_TICKET + "." + Ticket.PROP_TERMINAL, terminal));
+				criteria.add(Restrictions.eq("t." + Ticket.PROP_TERMINAL, terminal));
 			}
 			datas = criteria.list();
 			if (datas.size() > 0) {
@@ -165,7 +165,7 @@ public class SalesSummaryDAO extends _RootDAO {
 						criteria.add(Restrictions.eq("u." + User.PROP_TYPE, userType));
 					}
 					if (terminal != null) {
-						criteria.add(Restrictions.eq("item." + TicketItem.PROP_TICKET + "." + Ticket.PROP_TERMINAL, terminal));
+						criteria.add(Restrictions.eq("t." + Ticket.PROP_TERMINAL, terminal));
 					}
 					datas = criteria.list();
 					if (datas.size() > 0) {
@@ -209,7 +209,7 @@ public class SalesSummaryDAO extends _RootDAO {
 					criteria.add(Restrictions.eq("u." + User.PROP_TYPE, userType));
 				}
 				if (terminal != null) {
-					criteria.add(Restrictions.eq("item." + TicketItem.PROP_TICKET + "." + Ticket.PROP_TERMINAL, terminal));
+					criteria.add(Restrictions.eq("t." + Ticket.PROP_TERMINAL, terminal));
 				}
 				datas = criteria.list();
 				if (datas.size() > 0) {

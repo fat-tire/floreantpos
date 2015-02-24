@@ -8,12 +8,10 @@ import java.util.List;
 
 import com.floreantpos.model.AttendenceHistory;
 import com.floreantpos.model.DrawerPullReport;
-import com.floreantpos.model.Restaurant;
 import com.floreantpos.model.Shift;
 import com.floreantpos.model.Terminal;
 import com.floreantpos.model.User;
 import com.floreantpos.model.dao.AttendenceHistoryDAO;
-import com.floreantpos.model.dao.RestaurantDAO;
 import com.floreantpos.model.dao.TerminalDAO;
 import com.floreantpos.model.dao.UserDAO;
 import com.floreantpos.print.DrawerpullReportService;
@@ -25,9 +23,9 @@ public class AutoDrawerPullAction implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		PosWindow posWindow = Application.getPosWindow();
 		try {
-			RestaurantDAO restaurantDAO = RestaurantDAO.getInstance();
-			Restaurant restaurant = restaurantDAO.get(Integer.valueOf(1));
-			if(!restaurant.isAutoDrawerPullEnable()) {
+			Terminal terminal = Application.getInstance().getTerminal();
+			
+			if(!terminal.isAutoDrawerPullEnable()) {
 				return;
 			}
 			Calendar currentTime = Calendar.getInstance();
@@ -35,8 +33,8 @@ public class AutoDrawerPullAction implements ActionListener {
 			int currentHour = currentTime.get(Calendar.HOUR_OF_DAY);
 			int currentMin = currentTime.get(Calendar.MINUTE);
 			
-			if(currentHour >= restaurant.getDrawerPullHour() && currentMin >= restaurant.getDrawerPullMin() 
-					&& currentMin < restaurant.getDrawerPullMin() + 1) {
+			if(currentHour >= terminal.getAutoDrawerPullHour() && currentMin >= terminal.getAutoDrawerPullMin() 
+					&& currentMin < terminal.getAutoDrawerPullMin() + 1) {
 				
 			}
 			else {
@@ -47,7 +45,6 @@ public class AutoDrawerPullAction implements ActionListener {
 			DrawerPullReport report = DrawerpullReportService.buildDrawerPullReport();
 
 			TerminalDAO dao = new TerminalDAO();
-			Terminal terminal = Application.getInstance().getTerminal();
 			dao.resetCashDrawer(report, terminal, null);
 			
 			Shift currentShift = ShiftUtil.getCurrentShift();
