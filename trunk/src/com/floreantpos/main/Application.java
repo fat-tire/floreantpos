@@ -258,6 +258,18 @@ public class Application {
 
 		TerminalConfig.setTerminalId(terminalId);
 		RootView.getInstance().getLoginScreen().setTerminalId(terminalId);
+		
+
+		if (terminal.isHasCashDrawer() && terminal.isAutoDrawerPullEnable() && autoDrawerPullTimer == null) {
+			autoDrawerPullTimer = new Timer(60 * 1000, new AutoDrawerPullAction());
+			autoDrawerPullTimer.start();
+		}
+		else {
+			if (autoDrawerPullTimer != null) {
+				autoDrawerPullTimer.stop();
+				autoDrawerPullTimer = null;
+			}
+		}
 
 		this.terminal = terminal;
 	}
@@ -269,17 +281,6 @@ public class Application {
 			if (restaurant.getUniqueId() == null || restaurant.getUniqueId() == 0) {
 				restaurant.setUniqueId(RandomUtils.nextInt());
 				RestaurantDAO.getInstance().saveOrUpdate(restaurant);
-			}
-
-			if (restaurant.isAutoDrawerPullEnable() && autoDrawerPullTimer == null) {
-				autoDrawerPullTimer = new Timer(60 * 1000, new AutoDrawerPullAction());
-				autoDrawerPullTimer.start();
-			}
-			else {
-				if (autoDrawerPullTimer != null) {
-					autoDrawerPullTimer.stop();
-					autoDrawerPullTimer = null;
-				}
 			}
 
 			if (restaurant.isItemPriceIncludesTax()) {

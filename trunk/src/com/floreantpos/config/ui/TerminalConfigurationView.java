@@ -14,13 +14,17 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import org.apache.commons.lang.StringUtils;
-
 import net.miginfocom.swing.MigLayout;
+
+import org.apache.commons.lang.StringUtils;
 
 import com.floreantpos.Messages;
 import com.floreantpos.bo.ui.BackOfficeWindow;
 import com.floreantpos.config.TerminalConfig;
+import com.floreantpos.main.Application;
+import com.floreantpos.model.Terminal;
+import com.floreantpos.model.dao.TerminalDAO;
+import com.floreantpos.swing.DoubleTextField;
 import com.floreantpos.swing.IntegerTextField;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 
@@ -45,6 +49,12 @@ public class TerminalConfigurationView extends ConfigurationView {
 	private IntegerTextField tfFontSize;
 	private JCheckBox cbAutoLogoff = new JCheckBox("Enable auto logoff");
 	private IntegerTextField tfLogoffTime = new IntegerTextField(4);
+	
+	JComboBox cbHour;
+	JComboBox cbMin;
+	JCheckBox chkAutoDrawerPull;
+	JCheckBox chkHasCashDrawer;
+	DoubleTextField tfDrawerInitialBalance = new DoubleTextField(6);
 	
 	public TerminalConfigurationView() {
 		super();
@@ -89,7 +99,7 @@ public class TerminalConfigurationView extends ConfigurationView {
 		add(cbFonts, "span 2, wrap"); //$NON-NLS-1$
 		
 		JPanel ticketTypePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 20, 10));
-		ticketTypePanel.setBorder(BorderFactory.createTitledBorder("Ticket Types"));
+		ticketTypePanel.setBorder(BorderFactory.createTitledBorder("TICKET TYPE"));
 		ticketTypePanel.add(cbEnableDineIn);
 		ticketTypePanel.add(cbEnableTakeOut);
 		ticketTypePanel.add(cbEnablePickUp);
@@ -97,10 +107,10 @@ public class TerminalConfigurationView extends ConfigurationView {
 		ticketTypePanel.add(cbEnableDriveThru);
 		ticketTypePanel.add(cbEnableBarTab);
 		
-		add(ticketTypePanel, "span 3, wrap");
+		add(ticketTypePanel, "span 3, grow, wrap");
 		
 		JPanel touchConfigPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 20, 10));
-		touchConfigPanel.setBorder(BorderFactory.createTitledBorder("TOUCH SCREEN SETTINGS"));
+		touchConfigPanel.setBorder(BorderFactory.createTitledBorder("TOUCH SCREEN"));
 		touchConfigPanel.add(new JLabel("Button height"));
 		tfButtonHeight = new IntegerTextField(5);
 		touchConfigPanel.add(tfButtonHeight);
@@ -110,6 +120,53 @@ public class TerminalConfigurationView extends ConfigurationView {
 		touchConfigPanel.add(tfFontSize);
 		
 		add(touchConfigPanel, "span 3, grow, wrap");
+		
+		addCashDrawerConfig();
+	}
+
+	private void addCashDrawerConfig() {
+		Integer[] hours = new Integer[24];
+		Integer[] minutes = new Integer[60];
+		
+		for(int i = 0; i < 24; i++) {
+			hours[i] = Integer.valueOf(i);
+		}
+		for(int i = 0; i < 60; i++) {
+			minutes[i] = Integer.valueOf(i);
+		}
+		
+		JPanel drawerConfigPanel = new JPanel(new MigLayout());
+		drawerConfigPanel.setBorder(BorderFactory.createTitledBorder("CASH DRAWER"));
+		
+		chkHasCashDrawer = new JCheckBox("This terminal has cash drawer");
+		drawerConfigPanel.add(chkHasCashDrawer, "wrap");
+		
+		drawerConfigPanel.add(new JLabel("Drawer initial balance"));
+		drawerConfigPanel.add(tfDrawerInitialBalance, "wrap");
+		
+		drawerConfigPanel.add(chkAutoDrawerPull = new JCheckBox(com.floreantpos.POSConstants.AUTO_DRAWER_PULL_EVERY_DAY_AT_)); //$NON-NLS-1$
+		drawerConfigPanel.add(new JLabel(com.floreantpos.POSConstants.HOUR + ":")); //$NON-NLS-1$ //$NON-NLS-2$
+		drawerConfigPanel.add(cbHour = new JComboBox(hours), ""); //$NON-NLS-1$
+		
+		drawerConfigPanel.add(new JLabel(Messages.getString("DrawerPullConfigurationView.MINUTE") + ":")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		drawerConfigPanel.add(cbMin = new JComboBox(minutes), ""); //$NON-NLS-1$
+		
+		add(drawerConfigPanel, "span 3, grow, wrap");
+	
+		chkHasCashDrawer.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				doEnableDisableDrawerPull();
+			}
+		});
+	}
+
+	protected void doEnableDisableDrawerPull() {
+		boolean selected = chkHasCashDrawer.isSelected();
+		chkAutoDrawerPull.setEnabled(selected);
+		cbHour.setEnabled(selected);
+		cbMin.setEnabled(selected);
+		tfDrawerInitialBalance.setEnabled(selected);
 	}
 	
 	public static void main(String[] args) {
@@ -176,6 +233,23 @@ public class TerminalConfigurationView extends ConfigurationView {
 		
 		TerminalConfig.setUiDefaultFont(selectedFont);
 		
+		TerminalDAO terminalDAO = TerminalDAO.getInstance();
+		Terminal terminal = terminalDAO.get(terminalNumber);
+		if(terminal == null) {
+			terminal = new Terminal();
+			terminal.setId(terminalNumber);
+			terminal.setCurrentBalance(tfDrawerInitialBalance.getDouble());
+			terminal.setName(String.valueOf(terminalNumber));
+		}
+		
+		terminal.setHasCashDrawer(chkHasCashDrawer.isSelected());
+		terminal.setAutoDrawerPullEnable(chkAutoDrawerPull.isSelected());
+		terminal.setAutoDrawerPullHour((Integer) cbHour.getSelectedItem());
+		terminal.setAutoDrawerPullMin((Integer) cbMin.getSelectedItem());
+		terminal.setOpeningBalance(tfDrawerInitialBalance.getDouble());
+		
+		terminalDAO.saveOrUpdate(terminal);
+		
 		return true;
 	}
 
@@ -200,6 +274,15 @@ public class TerminalConfigurationView extends ConfigurationView {
 		tfLogoffTime.setEnabled(cbAutoLogoff.isSelected());
 		
 		initializeFontConfig();
+		
+		Terminal terminal = Application.getInstance().getTerminal();
+		chkHasCashDrawer.setSelected(terminal.isHasCashDrawer());
+		chkAutoDrawerPull.setSelected(terminal.isAutoDrawerPullEnable());
+		cbHour.setSelectedItem(terminal.getAutoDrawerPullHour());
+		cbMin.setSelectedItem(terminal.getAutoDrawerPullMin());
+		tfDrawerInitialBalance.setText("" + terminal.getOpeningBalance());
+		
+		doEnableDisableDrawerPull();
 		
 		setInitialized(true);
 	}

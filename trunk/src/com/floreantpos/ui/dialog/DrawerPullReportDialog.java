@@ -47,7 +47,7 @@ import com.floreantpos.util.NumberUtil;
 
 /**
  *
- * @author  MShahriar
+ * @author  MShahriar mshahriar@gmail.com
  */
 public class DrawerPullReportDialog extends POSDialog {
     private SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMMM, yyyy");
