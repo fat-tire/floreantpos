@@ -45,7 +45,7 @@ public class AutoDrawerPullAction implements ActionListener {
 			DrawerPullReport report = DrawerpullReportService.buildDrawerPullReport();
 
 			TerminalDAO dao = new TerminalDAO();
-			dao.resetCashDrawer(report, terminal, null);
+			dao.resetCashDrawer(report, terminal, null, terminal.getOpeningBalance());
 			
 			Shift currentShift = ShiftUtil.getCurrentShift();
 			
