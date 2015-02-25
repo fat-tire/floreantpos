@@ -31,7 +31,7 @@ public class TerminalDAO extends BaseTerminalDAO {
 		}
 	}
 	
-	public void resetCashDrawer(DrawerPullReport report, Terminal terminal, User user) throws Exception {
+	public void resetCashDrawer(DrawerPullReport report, Terminal terminal, User user, double balance) throws Exception {
 		Session session = null;
 		Transaction  tx = null;
 		
@@ -54,7 +54,8 @@ public class TerminalDAO extends BaseTerminalDAO {
 			query.setEntity("terminal", terminal);
 			query.executeUpdate();
 			
-			terminal.setCurrentBalance(terminal.getOpeningBalance());
+			terminal.setOpeningBalance(balance);
+			terminal.setCurrentBalance(balance);
 			update(terminal);
 			save(report);
 			save(history);
