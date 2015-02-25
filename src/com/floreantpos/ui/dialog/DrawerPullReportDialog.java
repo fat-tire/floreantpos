@@ -103,46 +103,47 @@ public class DrawerPullReportDialog extends POSDialog {
         
         btnFinish.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				btnFinishActionPerformed();
+				doCloseDialog();
 			}
         });
         btnResetCashDrawer.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
-        		btnResetCashDrawerActionPerformed();
+        		doResetCashDrawer();
         	}
         });
         btnPrint.addActionListener(new ActionListener() {
-
 			public void actionPerformed(ActionEvent e) {
-				try {
-					PosPrintService.printDrawerPullReport(drawerPullReport, terminal);
-				} catch (Exception ex) {
-					POSMessageDialog.showError(DrawerPullReportDialog.this, "Error while printing\n" + ex.getMessage());
-					ex.printStackTrace();
-				}
-				
+				doPrintReport();
 			}
         	
         });
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnResetCashDrawerActionPerformed() {//GEN-FIRST:event_btnResetCashDrawerActionPerformed
+    private void doResetCashDrawer() {//GEN-FIRST:event_btnResetCashDrawerActionPerformed
     	int option = JOptionPane.showOptionDialog(this, "Sure reset cash drawer?", "Confirm", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
     	if(option != JOptionPane.YES_OPTION) return;
     	
     	Application app = Application.getInstance();
     	Terminal terminal = app.getTerminal();
+    	
+    	double drawerBalance = NumberSelectionDialog2.takeDoubleInput("Enter amount", "Please enter drawer balance", terminal.getOpeningBalance());
+    	if(Double.isNaN(drawerBalance)) {
+    		return;
+    	}
+    	
     	User user = Application.getCurrentUser();
     	
     	TerminalDAO dao = new TerminalDAO();
     	try {
-			dao.resetCashDrawer(drawerPullReport, terminal, user);
+			dao.resetCashDrawer(drawerPullReport, terminal, user, drawerBalance);
+			POSMessageDialog.showMessage(this, "Drawer resetted");
+			doCloseDialog();
 		} catch (Exception e) {
 			POSMessageDialog.showError("Cannot save", e);
 		}
     }//GEN-LAST:event_btnResetCashDrawerActionPerformed
 
-    private void btnFinishActionPerformed() {//GEN-FIRST:event_btnFinishActionPerformed
+    private void doCloseDialog() {//GEN-FIRST:event_btnFinishActionPerformed
         dispose();
     }//GEN-LAST:event_btnFinishActionPerformed
     
@@ -357,5 +358,14 @@ public class DrawerPullReportDialog extends POSDialog {
 	public void setTitle(String title) {
 		titlePanel1.setTitle(title);
 		super.setTitle(title);
+	}
+
+	private void doPrintReport() {
+		try {
+			PosPrintService.printDrawerPullReport(drawerPullReport, terminal);
+		} catch (Exception ex) {
+			POSMessageDialog.showError(DrawerPullReportDialog.this, "Error while printing\n" + ex.getMessage());
+			ex.printStackTrace();
+		}
 	}
 }
