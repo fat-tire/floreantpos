@@ -163,6 +163,8 @@ public class DrawerPullReportDialog extends POSDialog {
 		p.addElement(new BR());
 		p.addElement("DRAWER PULL");
 		p.addElement(new BR());
+		p.addElement("TERMINAL #: " + Application.getInstance().getTerminal().getName());
+		p.addElement(new BR());
 		p.addElement("===================================");
 		document.appendBody(p);
 	}
