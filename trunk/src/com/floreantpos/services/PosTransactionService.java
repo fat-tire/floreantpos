@@ -39,7 +39,7 @@ public class PosTransactionService {
 		try {
 			Date currentDate = new Date();
 
-			session = dao.getSession();
+			session = dao.createNewSession();
 			tx = session.beginTransaction();
 
 			ticket.setVoided(false);
