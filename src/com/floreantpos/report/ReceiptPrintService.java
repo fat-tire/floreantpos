@@ -482,7 +482,6 @@ public class ReceiptPrintService {
 				session.saveOrUpdate(kitchenTicket);
 			}
 
-			session.saveOrUpdate(ticket);
 			transaction.commit();
 			
 			ticket.clearDeletedItems();
