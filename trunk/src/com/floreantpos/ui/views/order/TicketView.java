@@ -45,6 +45,7 @@ import com.floreantpos.model.TicketItemCookingInstruction;
 import com.floreantpos.model.TicketItemModifier;
 import com.floreantpos.model.dao.CookingInstructionDAO;
 import com.floreantpos.model.dao.MenuItemDAO;
+import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.report.ReceiptPrintService;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.ui.dialog.BeanEditorDialog;
@@ -358,13 +359,20 @@ public class TicketView extends JPanel {
 
 			updateModel();
 			
-			OrderController.saveOrder(ticket);
+			TicketDAO ticketDAO = TicketDAO.getInstance();
+			
+			if(ticket.getId() == null) {
+				//save ticket first. ticket needs to save so that it
+				//contains an id.
+				OrderController.saveOrder(ticket);
+				ticketDAO.refresh(ticket);
+			}
 
 			if (ticket.needsKitchenPrint()) {
-				ReceiptPrintService.printTicketToKitchen(ticket);
+				ReceiptPrintService.printToKitchen(ticket);
+				ticketDAO.refresh(ticket);
 			}
 			
-			ticket.clearDeletedItems();
 			OrderController.saveOrder(ticket);
 
 			closeView(false);
