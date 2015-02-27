@@ -32,6 +32,7 @@ import com.floreantpos.model.RefundTransaction;
 import com.floreantpos.model.Restaurant;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketType;
+import com.floreantpos.model.dao.KitchenTicketDAO;
 import com.floreantpos.model.dao.RestaurantDAO;
 import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.util.NumberUtil;
@@ -458,11 +459,11 @@ public class ReceiptPrintService {
 		return createJasperPrint(ReportUtil.getReport("kitchen-receipt"), map, new JRTableModelDataSource(dataSource));
 	}
 
-	public static void printTicketToKitchen(Ticket ticket) {
+	public static void printToKitchen(Ticket ticket) {
 		Session session = null;
 		Transaction transaction = null;
 		try {
-			session = TicketDAO.getInstance().createNewSession();
+			session = KitchenTicketDAO.getInstance().createNewSession();
 			transaction = session.beginTransaction();
 
 			List<KitchenTicket> kitchenTickets = KitchenTicket.fromTicket(ticket);
@@ -474,19 +475,18 @@ public class ReceiptPrintService {
 				JasperPrint jasperPrint = createKitchenPrint(kitchenTicket);
 				jasperPrint.setName("KitchenReceipt-" + ticket.getId() + "-" + deviceName);
 				jasperPrint.setProperty("printerName", deviceName);
-				//JasperViewer.viewReport(jasperPrint, false);
-
+				
 				KitchenDisplay.instance.addTicket(kitchenTicket);
-
-				session.saveOrUpdate(kitchenTicket);
-
 				printQuitely(jasperPrint);
-
-				//markItemsAsPrinted(kitchenTicket);
+				
+				session.saveOrUpdate(kitchenTicket);
 			}
 
 			session.saveOrUpdate(ticket);
 			transaction.commit();
+			
+			ticket.clearDeletedItems();
+			TicketDAO.getInstance().saveOrUpdate(ticket);
 
 		} catch (Exception e) {
 			transaction.rollback();
