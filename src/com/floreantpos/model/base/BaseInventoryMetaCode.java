@@ -1,5 +1,6 @@
 package com.floreantpos.model.base;
 
+import java.lang.Comparable;
 import java.io.Serializable;
 
 
@@ -44,8 +45,6 @@ public abstract class BaseInventoryMetaCode  implements Comparable, Serializable
 	// primary key
 	private java.lang.Integer id;
 
-	private java.util.Date modifiedTime;
-
 	// fields
 		protected java.lang.String type;
 		protected java.lang.String codeText;
@@ -71,23 +70,6 @@ public abstract class BaseInventoryMetaCode  implements Comparable, Serializable
 	public void setId (java.lang.Integer id) {
 		this.id = id;
 		this.hashCode = Integer.MIN_VALUE;
-	}
-
-
-
-	/**
-	 * Return the value associated with the column: MODIFIED_TIME
-	 */
-	public java.util.Date getModifiedTime () {
-					return modifiedTime;
-			}
-
-	/**
-	 * Set the value related to the column: MODIFIED_TIME
-	 * @param modifiedTime the MODIFIED_TIME value
-	 */
-	public void setModifiedTime (java.util.Date modifiedTime) {
-		this.modifiedTime = modifiedTime;
 	}
 
 

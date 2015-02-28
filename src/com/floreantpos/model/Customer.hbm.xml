@@ -7,7 +7,7 @@
 			<generator class="identity" />
 		</id>
 		
-		<version column="MODIFIED_TIME" name="modifiedTime" type="timestamp" />
+		
 		
 		<property name="loyaltyNo" column="LOYALTY_NO" length="30" type="string" />
 		<property name="telephoneNo" column="TELEPHONE_NO" length="30" type="string" />

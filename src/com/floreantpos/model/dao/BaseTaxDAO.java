@@ -2,6 +2,7 @@ package com.floreantpos.model.dao;
 
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
+import com.floreantpos.model.dao.TaxDAO;
 import org.hibernate.criterion.Order;
 
 /**
@@ -38,27 +39,27 @@ public abstract class BaseTaxDAO extends com.floreantpos.model.dao._RootDAO {
 	}
 
 	public com.floreantpos.model.Tax get(java.lang.Integer key)
-	{
+		throws org.hibernate.HibernateException {
 		return (com.floreantpos.model.Tax) get(getReferenceClass(), key);
 	}
 
 	public com.floreantpos.model.Tax get(java.lang.Integer key, Session s)
-	{
+		throws org.hibernate.HibernateException {
 		return (com.floreantpos.model.Tax) get(getReferenceClass(), key, s);
 	}
 
 	public com.floreantpos.model.Tax load(java.lang.Integer key)
-	{
+		throws org.hibernate.HibernateException {
 		return (com.floreantpos.model.Tax) load(getReferenceClass(), key);
 	}
 
 	public com.floreantpos.model.Tax load(java.lang.Integer key, Session s)
-	{
+		throws org.hibernate.HibernateException {
 		return (com.floreantpos.model.Tax) load(getReferenceClass(), key, s);
 	}
 
 	public com.floreantpos.model.Tax loadInitialize(java.lang.Integer key, Session s) 
-	{ 
+			throws org.hibernate.HibernateException { 
 		com.floreantpos.model.Tax obj = load(key, s); 
 		if (!Hibernate.isInitialized(obj)) {
 			Hibernate.initialize(obj);
@@ -98,7 +99,7 @@ public abstract class BaseTaxDAO extends com.floreantpos.model.dao._RootDAO {
 	 * @return the class identifier
 	 */
 	public java.lang.Integer save(com.floreantpos.model.Tax tax)
-	{
+		throws org.hibernate.HibernateException {
 		return (java.lang.Integer) super.save(tax);
 	}
 
@@ -111,7 +112,7 @@ public abstract class BaseTaxDAO extends com.floreantpos.model.dao._RootDAO {
 	 * @return the class identifier
 	 */
 	public java.lang.Integer save(com.floreantpos.model.Tax tax, Session s)
-	{
+		throws org.hibernate.HibernateException {
 		return (java.lang.Integer) save((Object) tax, s);
 	}
 
@@ -122,7 +123,7 @@ public abstract class BaseTaxDAO extends com.floreantpos.model.dao._RootDAO {
 	 * @param tax a transient instance containing new or updated state 
 	 */
 	public void saveOrUpdate(com.floreantpos.model.Tax tax)
-	{
+		throws org.hibernate.HibernateException {
 		saveOrUpdate((Object) tax);
 	}
 
@@ -135,7 +136,7 @@ public abstract class BaseTaxDAO extends com.floreantpos.model.dao._RootDAO {
 	 * @param s the Session.
 	 */
 	public void saveOrUpdate(com.floreantpos.model.Tax tax, Session s)
-	{
+		throws org.hibernate.HibernateException {
 		saveOrUpdate((Object) tax, s);
 	}
 
@@ -145,7 +146,7 @@ public abstract class BaseTaxDAO extends com.floreantpos.model.dao._RootDAO {
 	 * @param tax a transient instance containing updated state
 	 */
 	public void update(com.floreantpos.model.Tax tax) 
-	{
+		throws org.hibernate.HibernateException {
 		update((Object) tax);
 	}
 
@@ -157,7 +158,7 @@ public abstract class BaseTaxDAO extends com.floreantpos.model.dao._RootDAO {
 	 * @param the Session
 	 */
 	public void update(com.floreantpos.model.Tax tax, Session s)
-	{
+		throws org.hibernate.HibernateException {
 		update((Object) tax, s);
 	}
 
@@ -167,7 +168,7 @@ public abstract class BaseTaxDAO extends com.floreantpos.model.dao._RootDAO {
 	 * @param id the instance ID to be removed
 	 */
 	public void delete(java.lang.Integer id)
-	{
+		throws org.hibernate.HibernateException {
 		delete((Object) load(id));
 	}
 
@@ -179,7 +180,7 @@ public abstract class BaseTaxDAO extends com.floreantpos.model.dao._RootDAO {
 	 * @param s the Session
 	 */
 	public void delete(java.lang.Integer id, Session s)
-	{
+		throws org.hibernate.HibernateException {
 		delete((Object) load(id, s), s);
 	}
 
@@ -189,7 +190,7 @@ public abstract class BaseTaxDAO extends com.floreantpos.model.dao._RootDAO {
 	 * @param tax the instance to be removed
 	 */
 	public void delete(com.floreantpos.model.Tax tax)
-	{
+		throws org.hibernate.HibernateException {
 		delete((Object) tax);
 	}
 
@@ -201,7 +202,7 @@ public abstract class BaseTaxDAO extends com.floreantpos.model.dao._RootDAO {
 	 * @param s the Session
 	 */
 	public void delete(com.floreantpos.model.Tax tax, Session s)
-	{
+		throws org.hibernate.HibernateException {
 		delete((Object) tax, s);
 	}
 	
@@ -216,7 +217,7 @@ public abstract class BaseTaxDAO extends com.floreantpos.model.dao._RootDAO {
 	 * </ul>
 	 */
 	public void refresh (com.floreantpos.model.Tax tax, Session s)
-	{
+		throws org.hibernate.HibernateException {
 		refresh((Object) tax, s);
 	}
 

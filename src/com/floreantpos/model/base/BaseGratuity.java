@@ -1,5 +1,6 @@
 package com.floreantpos.model.base;
 
+import java.lang.Comparable;
 import java.io.Serializable;
 
 
@@ -15,12 +16,12 @@ import java.io.Serializable;
 public abstract class BaseGratuity  implements Comparable, Serializable {
 
 	public static String REF = "Gratuity";
-	public static String PROP_AMOUNT = "amount";
 	public static String PROP_OWNER = "owner";
 	public static String PROP_PAID = "paid";
 	public static String PROP_TICKET = "ticket";
-	public static String PROP_ID = "id";
+	public static String PROP_AMOUNT = "amount";
 	public static String PROP_TERMINAL = "terminal";
+	public static String PROP_ID = "id";
 
 
 	// constructors
@@ -45,11 +46,9 @@ public abstract class BaseGratuity  implements Comparable, Serializable {
 	// primary key
 	private java.lang.Integer id;
 
-	 java.util.Date modifiedTime;
-
 	// fields
-	private java.lang.Double amount;
-	private java.lang.Boolean paid;
+		protected java.lang.Double amount;
+		protected java.lang.Boolean paid;
 
 	// many to one
 	private com.floreantpos.model.Ticket ticket;
@@ -79,30 +78,13 @@ public abstract class BaseGratuity  implements Comparable, Serializable {
 
 
 
-	/**
-	 * Return the value associated with the column: MODIFIED_TIME
-	 */
-	public java.util.Date getModifiedTime () {
-			return modifiedTime;
-	}
-
-	/**
-	 * Set the value related to the column: MODIFIED_TIME
-	 * @param modifiedTime the MODIFIED_TIME value
-	 */
-	public void setModifiedTime (java.util.Date modifiedTime) {
-		this.modifiedTime = modifiedTime;
-	}
-
-
-
 
 	/**
 	 * Return the value associated with the column: AMOUNT
 	 */
 	public java.lang.Double getAmount () {
-					return amount == null ? Double.valueOf(0) : amount;
-			}
+									return amount == null ? Double.valueOf(0) : amount;
+					}
 
 	/**
 	 * Set the value related to the column: AMOUNT
@@ -118,8 +100,8 @@ public abstract class BaseGratuity  implements Comparable, Serializable {
 	 * Return the value associated with the column: PAID
 	 */
 	public java.lang.Boolean isPaid () {
-					return paid == null ? Boolean.FALSE : paid;
-			}
+								return paid == null ? Boolean.FALSE : paid;
+					}
 
 	/**
 	 * Set the value related to the column: PAID
@@ -135,8 +117,8 @@ public abstract class BaseGratuity  implements Comparable, Serializable {
 	 * Return the value associated with the column: TICKET_ID
 	 */
 	public com.floreantpos.model.Ticket getTicket () {
-			return ticket;
-	}
+					return ticket;
+			}
 
 	/**
 	 * Set the value related to the column: TICKET_ID
@@ -152,8 +134,8 @@ public abstract class BaseGratuity  implements Comparable, Serializable {
 	 * Return the value associated with the column: OWNER_ID
 	 */
 	public com.floreantpos.model.User getOwner () {
-			return owner;
-	}
+					return owner;
+			}
 
 	/**
 	 * Set the value related to the column: OWNER_ID
@@ -169,8 +151,8 @@ public abstract class BaseGratuity  implements Comparable, Serializable {
 	 * Return the value associated with the column: TERMINAL_ID
 	 */
 	public com.floreantpos.model.Terminal getTerminal () {
-			return terminal;
-	}
+					return terminal;
+			}
 
 	/**
 	 * Set the value related to the column: TERMINAL_ID

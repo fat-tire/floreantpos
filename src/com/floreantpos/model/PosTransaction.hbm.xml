@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping package="com.floreantpos.model">
-	<class lazy="false" name="com.floreantpos.model.PosTransaction" optimistic-lock="version" table="TRANSACTIONS">
+	<class lazy="false" name="com.floreantpos.model.PosTransaction"  table="TRANSACTIONS">
 		<id column="ID" name="id" type="java.lang.Integer">
 			<generator class="identity" />
 		</id>
 		<discriminator column="PAYMENT_TYPE" length="30" type="string" />
-		<version column="MODIFIED_TIME" name="modifiedTime" type="timestamp" />
+		
 
 		<property column="TRANSACTION_TIME" length="10" name="transactionTime" type="java.util.Date" />
 		<property column="AMOUNT" length="52" name="amount" type="java.lang.Double" />
