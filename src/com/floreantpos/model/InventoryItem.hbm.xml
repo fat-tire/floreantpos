@@ -2,12 +2,12 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping package="com.floreantpos.model">
-    <class lazy="false" name="com.floreantpos.model.InventoryItem" optimistic-lock="version"
+    <class lazy="false" name="com.floreantpos.model.InventoryItem" 
            table="INVENTORY_ITEM">
         <id column="ID" name="id" type="java.lang.Integer">
             <generator class="identity"/>
         </id>
-        <version column="MODIFIED_TIME" name="modifiedTime" type="timestamp"/>
+        
         
         <property column="CREATE_TIME" name="createTime" type="java.sql.Timestamp"/>
         <property column="LAST_UPDATE_DATE" name="lastUpdateDate" type="java.util.Date"/>

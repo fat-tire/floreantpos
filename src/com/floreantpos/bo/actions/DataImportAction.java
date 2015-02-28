@@ -14,8 +14,6 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;
 
 import org.apache.commons.io.IOUtils;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
 
 import com.floreantpos.bo.ui.BackOfficeWindow;
 import com.floreantpos.model.MenuCategory;
@@ -25,7 +23,6 @@ import com.floreantpos.model.MenuItemModifierGroup;
 import com.floreantpos.model.MenuModifier;
 import com.floreantpos.model.MenuModifierGroup;
 import com.floreantpos.model.Tax;
-import com.floreantpos.model.dao.GenericDAO;
 import com.floreantpos.model.dao.MenuCategoryDAO;
 import com.floreantpos.model.dao.MenuGroupDAO;
 import com.floreantpos.model.dao.MenuItemDAO;
@@ -73,9 +70,6 @@ public class DataImportAction extends AbstractAction {
 	}
 
 	public static void importMenuItems(InputStream inputStream) throws Exception {
-		Session session = null;
-		Transaction transaction = null;
-		GenericDAO dao = new GenericDAO();
 
 		Map<String, Object> objectMap = new HashMap<String, Object>();
 
@@ -86,16 +80,13 @@ public class DataImportAction extends AbstractAction {
 			Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
 			Elements elements = (Elements) unmarshaller.unmarshal(inputStream);
 
-			session = dao.createNewSession();
-			transaction = session.beginTransaction();
-
 			List<Tax> taxes = elements.getTaxes();
 			if (taxes != null) {
 				for (Tax tax : taxes) {
 					objectMap.put(tax.getUniqueId(), tax);
 					tax.setId(null);
 
-					TaxDAO.getInstance().save(tax, session);
+					TaxDAO.getInstance().save(tax);
 				}
 			}
 
@@ -106,7 +97,7 @@ public class DataImportAction extends AbstractAction {
 					objectMap.put(menuCategory.getUniqueId(), menuCategory);
 					menuCategory.setId(null);
 
-					MenuCategoryDAO.getInstance().save(menuCategory, session);
+					MenuCategoryDAO.getInstance().save(menuCategory);
 				}
 			}
 
@@ -123,7 +114,7 @@ public class DataImportAction extends AbstractAction {
 					objectMap.put(menuGroup.getUniqueId(), menuGroup);
 					menuGroup.setId(null);
 
-					MenuGroupDAO.getInstance().saveOrUpdate(menuGroup, session);
+					MenuGroupDAO.getInstance().saveOrUpdate(menuGroup);
 				}
 			}
 
@@ -133,7 +124,7 @@ public class DataImportAction extends AbstractAction {
 					objectMap.put(menuModifierGroup.getUniqueId(), menuModifierGroup);
 					menuModifierGroup.setId(null);
 
-					MenuModifierGroupDAO.getInstance().saveOrUpdate(menuModifierGroup, session);
+					MenuModifierGroupDAO.getInstance().saveOrUpdate(menuModifierGroup);
 				}
 			}
 
@@ -156,7 +147,7 @@ public class DataImportAction extends AbstractAction {
 						menuModifier.setTax(tax);
 					}
 
-					MenuModifierDAO.getInstance().saveOrUpdate(menuModifier, session);
+					MenuModifierDAO.getInstance().saveOrUpdate(menuModifier);
 				}
 			}
 
@@ -172,7 +163,7 @@ public class DataImportAction extends AbstractAction {
 						mimg.setModifierGroup(menuModifierGroup);
 					}
 
-					MenuItemModifierGroupDAO.getInstance().save(mimg, session);
+					MenuItemModifierGroupDAO.getInstance().save(mimg);
 				}
 			}
 
@@ -204,19 +195,11 @@ public class DataImportAction extends AbstractAction {
 						}
 					}
 
-					MenuItemDAO.getInstance().saveOrUpdate(menuItem, session);
+					MenuItemDAO.getInstance().saveOrUpdate(menuItem);
 				}
 			}
 
-			transaction.commit();
-		} catch (Exception e1) {
-
-			if (transaction != null)
-				transaction.rollback();
-			throw e1;
-
 		} finally {
-			dao.closeSession(session);
 			IOUtils.closeQuietly(inputStream);
 		}
 	}

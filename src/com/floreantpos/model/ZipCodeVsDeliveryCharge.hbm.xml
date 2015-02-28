@@ -5,7 +5,7 @@
 		<id column="AUTO_ID" name="id" type="java.lang.Integer">
 			<generator class="identity" />
 		</id>
-		<version column="MODIFIED_TIME" name="modifiedTime" type="timestamp" />
+		
 		<property column="ZIP_CODE" name="zipCode" type="string" not-null="true" length="10" />
 		<property column="DELIVERY_CHARGE" name="deliveryCharge" not-null="true" type="double" />
 	</class>

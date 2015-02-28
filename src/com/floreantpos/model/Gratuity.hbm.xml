@@ -5,7 +5,7 @@
     <id column="ID" name="id" type="java.lang.Integer">
       <generator class="identity"/>
     </id>
-    <version column="MODIFIED_TIME" name="modifiedTime" type="timestamp"/>
+    
     <property column="AMOUNT" name="amount" type="java.lang.Double"/>
     <property column="PAID" name="paid" type="java.lang.Boolean"/>
     <many-to-one class="Ticket" column="TICKET_ID" name="ticket"/>

@@ -1,8 +1,7 @@
 package com.floreantpos.model.base;
 
+import java.lang.Comparable;
 import java.io.Serializable;
-
-import javax.xml.bind.annotation.XmlTransient;
 
 import com.floreantpos.model.TicketItemCookingInstruction;
 
@@ -77,8 +76,6 @@ public abstract class BaseTicketItem  implements Comparable, Serializable {
 	// primary key
 	private java.lang.Integer id;
 
-	 java.util.Date modifiedTime;
-
 	// fields
 		protected java.lang.Integer itemId;
 		protected java.lang.Integer itemCount;
@@ -127,23 +124,6 @@ public abstract class BaseTicketItem  implements Comparable, Serializable {
 	public void setId (java.lang.Integer id) {
 		this.id = id;
 		this.hashCode = Integer.MIN_VALUE;
-	}
-
-
-
-	/**
-	 * Return the value associated with the column: MODIFIED_TIME
-	 */
-	public java.util.Date getModifiedTime () {
-					return modifiedTime;
-			}
-
-	/**
-	 * Set the value related to the column: MODIFIED_TIME
-	 * @param modifiedTime the MODIFIED_TIME value
-	 */
-	public void setModifiedTime (java.util.Date modifiedTime) {
-		this.modifiedTime = modifiedTime;
 	}
 
 
@@ -482,7 +462,6 @@ public abstract class BaseTicketItem  implements Comparable, Serializable {
 	/**
 	 * Return the value associated with the column: TICKET_ID
 	 */
-	@XmlTransient
 	public com.floreantpos.model.Ticket getTicket () {
 					return ticket;
 			}

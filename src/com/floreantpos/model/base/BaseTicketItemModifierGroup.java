@@ -1,5 +1,6 @@
 package com.floreantpos.model.base;
 
+import java.lang.Comparable;
 import java.io.Serializable;
 
 
@@ -44,12 +45,10 @@ public abstract class BaseTicketItemModifierGroup  implements Comparable, Serial
 	// primary key
 	private java.lang.Integer id;
 
-	private java.util.Date modifiedTime;
-
 	// fields
-	private java.lang.Integer modifierGroupId;
-	private java.lang.Integer minQuantity;
-	private java.lang.Integer maxQuantity;
+		protected java.lang.Integer modifierGroupId;
+		protected java.lang.Integer minQuantity;
+		protected java.lang.Integer maxQuantity;
 
 	// many to one
 	private com.floreantpos.model.TicketItem parent;
@@ -80,30 +79,13 @@ public abstract class BaseTicketItemModifierGroup  implements Comparable, Serial
 
 
 
-	/**
-	 * Return the value associated with the column: MODIFIED_TIME
-	 */
-	public java.util.Date getModifiedTime () {
-			return modifiedTime;
-	}
-
-	/**
-	 * Set the value related to the column: MODIFIED_TIME
-	 * @param modifiedTime the MODIFIED_TIME value
-	 */
-	public void setModifiedTime (java.util.Date modifiedTime) {
-		this.modifiedTime = modifiedTime;
-	}
-
-
-
 
 	/**
 	 * Return the value associated with the column: GROUP_ID
 	 */
 	public java.lang.Integer getModifierGroupId () {
-			return modifierGroupId == null ? Integer.valueOf(0) : modifierGroupId;
-	}
+					return modifierGroupId == null ? Integer.valueOf(0) : modifierGroupId;
+			}
 
 	/**
 	 * Set the value related to the column: GROUP_ID
@@ -119,8 +101,8 @@ public abstract class BaseTicketItemModifierGroup  implements Comparable, Serial
 	 * Return the value associated with the column: MIN_QUANTITY
 	 */
 	public java.lang.Integer getMinQuantity () {
-			return minQuantity == null ? Integer.valueOf(0) : minQuantity;
-	}
+					return minQuantity == null ? Integer.valueOf(0) : minQuantity;
+			}
 
 	/**
 	 * Set the value related to the column: MIN_QUANTITY
@@ -136,8 +118,8 @@ public abstract class BaseTicketItemModifierGroup  implements Comparable, Serial
 	 * Return the value associated with the column: MAX_QUANTITY
 	 */
 	public java.lang.Integer getMaxQuantity () {
-			return maxQuantity == null ? Integer.valueOf(0) : maxQuantity;
-	}
+					return maxQuantity == null ? Integer.valueOf(0) : maxQuantity;
+			}
 
 	/**
 	 * Set the value related to the column: MAX_QUANTITY
@@ -153,8 +135,8 @@ public abstract class BaseTicketItemModifierGroup  implements Comparable, Serial
 	 * Return the value associated with the column: parent
 	 */
 	public com.floreantpos.model.TicketItem getParent () {
-			return parent;
-	}
+					return parent;
+			}
 
 	/**
 	 * Set the value related to the column: parent
@@ -170,8 +152,8 @@ public abstract class BaseTicketItemModifierGroup  implements Comparable, Serial
 	 * Return the value associated with the column: ticketItemModifiers
 	 */
 	public java.util.List<com.floreantpos.model.TicketItemModifier> getTicketItemModifiers () {
-			return ticketItemModifiers;
-	}
+					return ticketItemModifiers;
+			}
 
 	/**
 	 * Set the value related to the column: ticketItemModifiers

@@ -2,6 +2,7 @@ package com.floreantpos.model.dao;
 
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
+import com.floreantpos.model.dao.MenuModifierGroupDAO;
 import org.hibernate.criterion.Order;
 
 /**
@@ -38,27 +39,27 @@ public abstract class BaseMenuModifierGroupDAO extends com.floreantpos.model.dao
 	}
 
 	public com.floreantpos.model.MenuModifierGroup get(java.lang.Integer key)
-	{
+		throws org.hibernate.HibernateException {
 		return (com.floreantpos.model.MenuModifierGroup) get(getReferenceClass(), key);
 	}
 
 	public com.floreantpos.model.MenuModifierGroup get(java.lang.Integer key, Session s)
-	{
+		throws org.hibernate.HibernateException {
 		return (com.floreantpos.model.MenuModifierGroup) get(getReferenceClass(), key, s);
 	}
 
 	public com.floreantpos.model.MenuModifierGroup load(java.lang.Integer key)
-	{
+		throws org.hibernate.HibernateException {
 		return (com.floreantpos.model.MenuModifierGroup) load(getReferenceClass(), key);
 	}
 
 	public com.floreantpos.model.MenuModifierGroup load(java.lang.Integer key, Session s)
-	{
+		throws org.hibernate.HibernateException {
 		return (com.floreantpos.model.MenuModifierGroup) load(getReferenceClass(), key, s);
 	}
 
 	public com.floreantpos.model.MenuModifierGroup loadInitialize(java.lang.Integer key, Session s) 
-	{ 
+			throws org.hibernate.HibernateException { 
 		com.floreantpos.model.MenuModifierGroup obj = load(key, s); 
 		if (!Hibernate.isInitialized(obj)) {
 			Hibernate.initialize(obj);
@@ -98,7 +99,7 @@ public abstract class BaseMenuModifierGroupDAO extends com.floreantpos.model.dao
 	 * @return the class identifier
 	 */
 	public java.lang.Integer save(com.floreantpos.model.MenuModifierGroup menuModifierGroup)
-	{
+		throws org.hibernate.HibernateException {
 		return (java.lang.Integer) super.save(menuModifierGroup);
 	}
 
@@ -111,7 +112,7 @@ public abstract class BaseMenuModifierGroupDAO extends com.floreantpos.model.dao
 	 * @return the class identifier
 	 */
 	public java.lang.Integer save(com.floreantpos.model.MenuModifierGroup menuModifierGroup, Session s)
-	{
+		throws org.hibernate.HibernateException {
 		return (java.lang.Integer) save((Object) menuModifierGroup, s);
 	}
 
@@ -122,7 +123,7 @@ public abstract class BaseMenuModifierGroupDAO extends com.floreantpos.model.dao
 	 * @param menuModifierGroup a transient instance containing new or updated state 
 	 */
 	public void saveOrUpdate(com.floreantpos.model.MenuModifierGroup menuModifierGroup)
-	{
+		throws org.hibernate.HibernateException {
 		saveOrUpdate((Object) menuModifierGroup);
 	}
 
@@ -135,7 +136,7 @@ public abstract class BaseMenuModifierGroupDAO extends com.floreantpos.model.dao
 	 * @param s the Session.
 	 */
 	public void saveOrUpdate(com.floreantpos.model.MenuModifierGroup menuModifierGroup, Session s)
-	{
+		throws org.hibernate.HibernateException {
 		saveOrUpdate((Object) menuModifierGroup, s);
 	}
 
@@ -145,7 +146,7 @@ public abstract class BaseMenuModifierGroupDAO extends com.floreantpos.model.dao
 	 * @param menuModifierGroup a transient instance containing updated state
 	 */
 	public void update(com.floreantpos.model.MenuModifierGroup menuModifierGroup) 
-	{
+		throws org.hibernate.HibernateException {
 		update((Object) menuModifierGroup);
 	}
 
@@ -157,7 +158,7 @@ public abstract class BaseMenuModifierGroupDAO extends com.floreantpos.model.dao
 	 * @param the Session
 	 */
 	public void update(com.floreantpos.model.MenuModifierGroup menuModifierGroup, Session s)
-	{
+		throws org.hibernate.HibernateException {
 		update((Object) menuModifierGroup, s);
 	}
 
@@ -167,7 +168,7 @@ public abstract class BaseMenuModifierGroupDAO extends com.floreantpos.model.dao
 	 * @param id the instance ID to be removed
 	 */
 	public void delete(java.lang.Integer id)
-	{
+		throws org.hibernate.HibernateException {
 		delete((Object) load(id));
 	}
 
@@ -179,7 +180,7 @@ public abstract class BaseMenuModifierGroupDAO extends com.floreantpos.model.dao
 	 * @param s the Session
 	 */
 	public void delete(java.lang.Integer id, Session s)
-	{
+		throws org.hibernate.HibernateException {
 		delete((Object) load(id, s), s);
 	}
 
@@ -189,7 +190,7 @@ public abstract class BaseMenuModifierGroupDAO extends com.floreantpos.model.dao
 	 * @param menuModifierGroup the instance to be removed
 	 */
 	public void delete(com.floreantpos.model.MenuModifierGroup menuModifierGroup)
-	{
+		throws org.hibernate.HibernateException {
 		delete((Object) menuModifierGroup);
 	}
 
@@ -201,7 +202,7 @@ public abstract class BaseMenuModifierGroupDAO extends com.floreantpos.model.dao
 	 * @param s the Session
 	 */
 	public void delete(com.floreantpos.model.MenuModifierGroup menuModifierGroup, Session s)
-	{
+		throws org.hibernate.HibernateException {
 		delete((Object) menuModifierGroup, s);
 	}
 	
@@ -216,7 +217,7 @@ public abstract class BaseMenuModifierGroupDAO extends com.floreantpos.model.dao
 	 * </ul>
 	 */
 	public void refresh (com.floreantpos.model.MenuModifierGroup menuModifierGroup, Session s)
-	{
+		throws org.hibernate.HibernateException {
 		refresh((Object) menuModifierGroup, s);
 	}
 
