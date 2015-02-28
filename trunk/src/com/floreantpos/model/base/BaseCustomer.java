@@ -1,5 +1,6 @@
 package com.floreantpos.model.base;
 
+import java.lang.Comparable;
 import java.io.Serializable;
 
 
@@ -56,25 +57,23 @@ public abstract class BaseCustomer  implements Comparable, Serializable {
 	// primary key
 	private java.lang.Integer autoId;
 
-	 java.util.Date modifiedTime;
-
 	// fields
-	private java.lang.String loyaltyNo;
-	private java.lang.String telephoneNo;
-	private java.lang.String email;
-	private java.lang.String name;
-	private java.lang.String dob;
-	private java.lang.String ssn;
-	private java.lang.String address;
-	private java.lang.String city;
-	private java.lang.String state;
-	private java.lang.String zipCode;
-	private java.lang.String country;
-	private java.lang.Boolean vip;
-	private java.lang.Double creditLimit;
-	private java.lang.Double creditSpent;
-	private java.lang.String creditCardNo;
-	private java.lang.String note;
+		protected java.lang.String loyaltyNo;
+		protected java.lang.String telephoneNo;
+		protected java.lang.String email;
+		protected java.lang.String name;
+		protected java.lang.String dob;
+		protected java.lang.String ssn;
+		protected java.lang.String address;
+		protected java.lang.String city;
+		protected java.lang.String state;
+		protected java.lang.String zipCode;
+		protected java.lang.String country;
+		protected java.lang.Boolean vip;
+		protected java.lang.Double creditLimit;
+		protected java.lang.Double creditSpent;
+		protected java.lang.String creditCardNo;
+		protected java.lang.String note;
 
 	// collections
 	private java.util.Map<String, String> properties;
@@ -102,30 +101,13 @@ public abstract class BaseCustomer  implements Comparable, Serializable {
 
 
 
-	/**
-	 * Return the value associated with the column: MODIFIED_TIME
-	 */
-	public java.util.Date getModifiedTime () {
-		return modifiedTime;
-	}
-
-	/**
-	 * Set the value related to the column: MODIFIED_TIME
-	 * @param modifiedTime the MODIFIED_TIME value
-	 */
-	public void setModifiedTime (java.util.Date modifiedTime) {
-		this.modifiedTime = modifiedTime;
-	}
-
-
-
 
 	/**
 	 * Return the value associated with the column: LOYALTY_NO
 	 */
 	public java.lang.String getLoyaltyNo () {
-		return loyaltyNo;
-	}
+					return loyaltyNo;
+			}
 
 	/**
 	 * Set the value related to the column: LOYALTY_NO
@@ -141,8 +123,8 @@ public abstract class BaseCustomer  implements Comparable, Serializable {
 	 * Return the value associated with the column: TELEPHONE_NO
 	 */
 	public java.lang.String getTelephoneNo () {
-		return telephoneNo;
-	}
+					return telephoneNo;
+			}
 
 	/**
 	 * Set the value related to the column: TELEPHONE_NO
@@ -158,8 +140,8 @@ public abstract class BaseCustomer  implements Comparable, Serializable {
 	 * Return the value associated with the column: EMAIL
 	 */
 	public java.lang.String getEmail () {
-		return email;
-	}
+					return email;
+			}
 
 	/**
 	 * Set the value related to the column: EMAIL
@@ -175,8 +157,8 @@ public abstract class BaseCustomer  implements Comparable, Serializable {
 	 * Return the value associated with the column: NAME
 	 */
 	public java.lang.String getName () {
-		return name;
-	}
+					return name;
+			}
 
 	/**
 	 * Set the value related to the column: NAME
@@ -192,8 +174,8 @@ public abstract class BaseCustomer  implements Comparable, Serializable {
 	 * Return the value associated with the column: DOB
 	 */
 	public java.lang.String getDob () {
-		return dob;
-	}
+					return dob;
+			}
 
 	/**
 	 * Set the value related to the column: DOB
@@ -209,8 +191,8 @@ public abstract class BaseCustomer  implements Comparable, Serializable {
 	 * Return the value associated with the column: SSN
 	 */
 	public java.lang.String getSsn () {
-		return ssn;
-	}
+					return ssn;
+			}
 
 	/**
 	 * Set the value related to the column: SSN
@@ -226,8 +208,8 @@ public abstract class BaseCustomer  implements Comparable, Serializable {
 	 * Return the value associated with the column: ADDRESS
 	 */
 	public java.lang.String getAddress () {
-		return address;
-	}
+					return address;
+			}
 
 	/**
 	 * Set the value related to the column: ADDRESS
@@ -243,8 +225,8 @@ public abstract class BaseCustomer  implements Comparable, Serializable {
 	 * Return the value associated with the column: CITY
 	 */
 	public java.lang.String getCity () {
-		return city;
-	}
+					return city;
+			}
 
 	/**
 	 * Set the value related to the column: CITY
@@ -260,8 +242,8 @@ public abstract class BaseCustomer  implements Comparable, Serializable {
 	 * Return the value associated with the column: STATE
 	 */
 	public java.lang.String getState () {
-		return state;
-	}
+					return state;
+			}
 
 	/**
 	 * Set the value related to the column: STATE
@@ -277,8 +259,8 @@ public abstract class BaseCustomer  implements Comparable, Serializable {
 	 * Return the value associated with the column: ZIP_CODE
 	 */
 	public java.lang.String getZipCode () {
-		return zipCode;
-	}
+					return zipCode;
+			}
 
 	/**
 	 * Set the value related to the column: ZIP_CODE
@@ -294,8 +276,8 @@ public abstract class BaseCustomer  implements Comparable, Serializable {
 	 * Return the value associated with the column: COUNTRY
 	 */
 	public java.lang.String getCountry () {
-		return country;
-	}
+					return country;
+			}
 
 	/**
 	 * Set the value related to the column: COUNTRY
@@ -311,8 +293,8 @@ public abstract class BaseCustomer  implements Comparable, Serializable {
 	 * Return the value associated with the column: VIP
 	 */
 	public java.lang.Boolean isVip () {
-		return vip;
-	}
+								return vip == null ? Boolean.FALSE : vip;
+					}
 
 	/**
 	 * Set the value related to the column: VIP
@@ -328,8 +310,8 @@ public abstract class BaseCustomer  implements Comparable, Serializable {
 	 * Return the value associated with the column: CREDIT_LIMIT
 	 */
 	public java.lang.Double getCreditLimit () {
-		return creditLimit;
-	}
+									return creditLimit == null ? Double.valueOf(0) : creditLimit;
+					}
 
 	/**
 	 * Set the value related to the column: CREDIT_LIMIT
@@ -345,8 +327,8 @@ public abstract class BaseCustomer  implements Comparable, Serializable {
 	 * Return the value associated with the column: CREDIT_SPENT
 	 */
 	public java.lang.Double getCreditSpent () {
-		return creditSpent;
-	}
+									return creditSpent == null ? Double.valueOf(0) : creditSpent;
+					}
 
 	/**
 	 * Set the value related to the column: CREDIT_SPENT
@@ -362,8 +344,8 @@ public abstract class BaseCustomer  implements Comparable, Serializable {
 	 * Return the value associated with the column: CREDIT_CARD_NO
 	 */
 	public java.lang.String getCreditCardNo () {
-		return creditCardNo;
-	}
+					return creditCardNo;
+			}
 
 	/**
 	 * Set the value related to the column: CREDIT_CARD_NO
@@ -379,8 +361,8 @@ public abstract class BaseCustomer  implements Comparable, Serializable {
 	 * Return the value associated with the column: NOTE
 	 */
 	public java.lang.String getNote () {
-		return note;
-	}
+					return note;
+			}
 
 	/**
 	 * Set the value related to the column: NOTE
@@ -396,8 +378,8 @@ public abstract class BaseCustomer  implements Comparable, Serializable {
 	 * Return the value associated with the column: properties
 	 */
 	public java.util.Map<String, String> getProperties () {
-		return properties;
-	}
+					return properties;
+			}
 
 	/**
 	 * Set the value related to the column: properties

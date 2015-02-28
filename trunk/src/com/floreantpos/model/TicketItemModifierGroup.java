@@ -9,14 +9,14 @@ public class TicketItemModifierGroup extends BaseTicketItemModifierGroup {
 	private static final long serialVersionUID = 1L;
 
 	/* [CONSTRUCTOR MARKER BEGIN] */
-	public TicketItemModifierGroup() {
+	public TicketItemModifierGroup () {
 		super();
 	}
 
 	/**
 	 * Constructor for primary key
 	 */
-	public TicketItemModifierGroup(java.lang.Integer id) {
+	public TicketItemModifierGroup (java.lang.Integer id) {
 		super(id);
 	}
 

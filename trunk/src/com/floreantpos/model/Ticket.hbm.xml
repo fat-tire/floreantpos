@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping package="com.floreantpos.model">
-	<class lazy="false" name="com.floreantpos.model.Ticket" optimistic-lock="version" table="TICKET">
+	<class lazy="false" name="com.floreantpos.model.Ticket"  table="TICKET">
 		<id column="ID" name="id" type="java.lang.Integer">
 			<generator class="identity" />
 		</id>
-		<version column="MODIFIED_TIME" name="modifiedTime" type="timestamp" />
+		
 		<property column="CREATE_DATE" index="ticketcreateDate" length="10" name="createDate" type="java.util.Date" />
 		<property column="CLOSING_DATE" index="ticketclosingDate" length="10" name="closingDate" type="java.util.Date" />
 		<property column="ACTIVE_DATE" index="ticketactiveDate" length="10" name="activeDate" type="java.util.Date" />

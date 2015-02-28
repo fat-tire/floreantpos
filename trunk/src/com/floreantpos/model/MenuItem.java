@@ -1,10 +1,8 @@
 package com.floreantpos.model;
 
-import java.util.Date;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 import com.floreantpos.main.Application;
 import com.floreantpos.model.base.BaseMenuItem;
@@ -42,12 +40,6 @@ public class MenuItem extends BaseMenuItem {
 	}
 
 	/*[CONSTRUCTOR MARKER END]*/
-	
-	@Override
-	@XmlTransient
-	public Date getModifiedTime() {
-		return super.getModifiedTime();
-	}
 	
 	public double getPrice(Shift currentShift) {
 		List<MenuItemShift> shifts = getShifts();

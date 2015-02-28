@@ -9,14 +9,14 @@ public class Terminal extends BaseTerminal {
 	private static final long serialVersionUID = 1L;
 
 	/*[CONSTRUCTOR MARKER BEGIN]*/
-	public Terminal() {
+	public Terminal () {
 		super();
 	}
 
 	/**
 	 * Constructor for primary key
 	 */
-	public Terminal(java.lang.Integer id) {
+	public Terminal (java.lang.Integer id) {
 		super(id);
 	}
 

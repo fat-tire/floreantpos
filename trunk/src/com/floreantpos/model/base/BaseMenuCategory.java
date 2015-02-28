@@ -1,8 +1,7 @@
 package com.floreantpos.model.base;
 
+import java.lang.Comparable;
 import java.io.Serializable;
-
-import javax.xml.bind.annotation.XmlTransient;
 
 
 /**
@@ -17,10 +16,10 @@ import javax.xml.bind.annotation.XmlTransient;
 public abstract class BaseMenuCategory  implements Comparable, Serializable {
 
 	public static String REF = "MenuCategory";
-	public static String PROP_VISIBLE = "visible";
 	public static String PROP_NAME = "name";
-	public static String PROP_ID = "id";
 	public static String PROP_BEVERAGE = "beverage";
+	public static String PROP_VISIBLE = "visible";
+	public static String PROP_ID = "id";
 
 
 	// constructors
@@ -57,12 +56,10 @@ public abstract class BaseMenuCategory  implements Comparable, Serializable {
 	// primary key
 	private java.lang.Integer id;
 
-	 java.util.Date modifiedTime;
-
 	// fields
-	private java.lang.String name;
-	private java.lang.Boolean visible;
-	private java.lang.Boolean beverage;
+		protected java.lang.String name;
+		protected java.lang.Boolean visible;
+		protected java.lang.Boolean beverage;
 
 	// collections
 	private java.util.Set<com.floreantpos.model.MenuGroup> menuGroups;
@@ -90,31 +87,13 @@ public abstract class BaseMenuCategory  implements Comparable, Serializable {
 
 
 
-	/**
-	 * Return the value associated with the column: MODIFIED_TIME
-	 */
-	@XmlTransient
-	public java.util.Date getModifiedTime () {
-			return modifiedTime;
-	}
-
-	/**
-	 * Set the value related to the column: MODIFIED_TIME
-	 * @param modifiedTime the MODIFIED_TIME value
-	 */
-	public void setModifiedTime (java.util.Date modifiedTime) {
-		this.modifiedTime = modifiedTime;
-	}
-
-
-
 
 	/**
 	 * Return the value associated with the column: NAME
 	 */
 	public java.lang.String getName () {
-			return name;
-	}
+					return name;
+			}
 
 	/**
 	 * Set the value related to the column: NAME
@@ -130,8 +109,8 @@ public abstract class BaseMenuCategory  implements Comparable, Serializable {
 	 * Return the value associated with the column: VISIBLE
 	 */
 	public java.lang.Boolean isVisible () {
-					return visible == null ? Boolean.FALSE : visible;
-			}
+								return visible == null ? Boolean.FALSE : visible;
+					}
 
 	/**
 	 * Set the value related to the column: VISIBLE
@@ -147,8 +126,8 @@ public abstract class BaseMenuCategory  implements Comparable, Serializable {
 	 * Return the value associated with the column: BEVERAGE
 	 */
 	public java.lang.Boolean isBeverage () {
-					return beverage == null ? Boolean.FALSE : beverage;
-			}
+								return beverage == null ? Boolean.FALSE : beverage;
+					}
 
 	/**
 	 * Set the value related to the column: BEVERAGE
@@ -163,10 +142,9 @@ public abstract class BaseMenuCategory  implements Comparable, Serializable {
 	/**
 	 * Return the value associated with the column: menuGroups
 	 */
-	@XmlTransient
 	public java.util.Set<com.floreantpos.model.MenuGroup> getMenuGroups () {
-			return menuGroups;
-	}
+					return menuGroups;
+			}
 
 	/**
 	 * Set the value related to the column: menuGroups

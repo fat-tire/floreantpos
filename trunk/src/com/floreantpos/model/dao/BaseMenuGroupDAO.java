@@ -2,6 +2,7 @@ package com.floreantpos.model.dao;
 
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
+import com.floreantpos.model.dao.MenuGroupDAO;
 import org.hibernate.criterion.Order;
 
 /**
@@ -38,27 +39,27 @@ public abstract class BaseMenuGroupDAO extends com.floreantpos.model.dao._RootDA
 	}
 
 	public com.floreantpos.model.MenuGroup get(java.lang.Integer key)
-	{
+		throws org.hibernate.HibernateException {
 		return (com.floreantpos.model.MenuGroup) get(getReferenceClass(), key);
 	}
 
 	public com.floreantpos.model.MenuGroup get(java.lang.Integer key, Session s)
-	{
+		throws org.hibernate.HibernateException {
 		return (com.floreantpos.model.MenuGroup) get(getReferenceClass(), key, s);
 	}
 
 	public com.floreantpos.model.MenuGroup load(java.lang.Integer key)
-	{
+		throws org.hibernate.HibernateException {
 		return (com.floreantpos.model.MenuGroup) load(getReferenceClass(), key);
 	}
 
 	public com.floreantpos.model.MenuGroup load(java.lang.Integer key, Session s)
-	{
+		throws org.hibernate.HibernateException {
 		return (com.floreantpos.model.MenuGroup) load(getReferenceClass(), key, s);
 	}
 
 	public com.floreantpos.model.MenuGroup loadInitialize(java.lang.Integer key, Session s) 
-	{ 
+			throws org.hibernate.HibernateException { 
 		com.floreantpos.model.MenuGroup obj = load(key, s); 
 		if (!Hibernate.isInitialized(obj)) {
 			Hibernate.initialize(obj);
@@ -98,7 +99,7 @@ public abstract class BaseMenuGroupDAO extends com.floreantpos.model.dao._RootDA
 	 * @return the class identifier
 	 */
 	public java.lang.Integer save(com.floreantpos.model.MenuGroup menuGroup)
-	{
+		throws org.hibernate.HibernateException {
 		return (java.lang.Integer) super.save(menuGroup);
 	}
 
@@ -111,7 +112,7 @@ public abstract class BaseMenuGroupDAO extends com.floreantpos.model.dao._RootDA
 	 * @return the class identifier
 	 */
 	public java.lang.Integer save(com.floreantpos.model.MenuGroup menuGroup, Session s)
-	{
+		throws org.hibernate.HibernateException {
 		return (java.lang.Integer) save((Object) menuGroup, s);
 	}
 
@@ -122,7 +123,7 @@ public abstract class BaseMenuGroupDAO extends com.floreantpos.model.dao._RootDA
 	 * @param menuGroup a transient instance containing new or updated state 
 	 */
 	public void saveOrUpdate(com.floreantpos.model.MenuGroup menuGroup)
-	{
+		throws org.hibernate.HibernateException {
 		saveOrUpdate((Object) menuGroup);
 	}
 
@@ -135,7 +136,7 @@ public abstract class BaseMenuGroupDAO extends com.floreantpos.model.dao._RootDA
 	 * @param s the Session.
 	 */
 	public void saveOrUpdate(com.floreantpos.model.MenuGroup menuGroup, Session s)
-	{
+		throws org.hibernate.HibernateException {
 		saveOrUpdate((Object) menuGroup, s);
 	}
 
@@ -145,7 +146,7 @@ public abstract class BaseMenuGroupDAO extends com.floreantpos.model.dao._RootDA
 	 * @param menuGroup a transient instance containing updated state
 	 */
 	public void update(com.floreantpos.model.MenuGroup menuGroup) 
-	{
+		throws org.hibernate.HibernateException {
 		update((Object) menuGroup);
 	}
 
@@ -157,7 +158,7 @@ public abstract class BaseMenuGroupDAO extends com.floreantpos.model.dao._RootDA
 	 * @param the Session
 	 */
 	public void update(com.floreantpos.model.MenuGroup menuGroup, Session s)
-	{
+		throws org.hibernate.HibernateException {
 		update((Object) menuGroup, s);
 	}
 
@@ -167,7 +168,7 @@ public abstract class BaseMenuGroupDAO extends com.floreantpos.model.dao._RootDA
 	 * @param id the instance ID to be removed
 	 */
 	public void delete(java.lang.Integer id)
-	{
+		throws org.hibernate.HibernateException {
 		delete((Object) load(id));
 	}
 
@@ -179,7 +180,7 @@ public abstract class BaseMenuGroupDAO extends com.floreantpos.model.dao._RootDA
 	 * @param s the Session
 	 */
 	public void delete(java.lang.Integer id, Session s)
-	{
+		throws org.hibernate.HibernateException {
 		delete((Object) load(id, s), s);
 	}
 
@@ -189,7 +190,7 @@ public abstract class BaseMenuGroupDAO extends com.floreantpos.model.dao._RootDA
 	 * @param menuGroup the instance to be removed
 	 */
 	public void delete(com.floreantpos.model.MenuGroup menuGroup)
-	{
+		throws org.hibernate.HibernateException {
 		delete((Object) menuGroup);
 	}
 
@@ -201,7 +202,7 @@ public abstract class BaseMenuGroupDAO extends com.floreantpos.model.dao._RootDA
 	 * @param s the Session
 	 */
 	public void delete(com.floreantpos.model.MenuGroup menuGroup, Session s)
-	{
+		throws org.hibernate.HibernateException {
 		delete((Object) menuGroup, s);
 	}
 	
@@ -216,7 +217,7 @@ public abstract class BaseMenuGroupDAO extends com.floreantpos.model.dao._RootDA
 	 * </ul>
 	 */
 	public void refresh (com.floreantpos.model.MenuGroup menuGroup, Session s)
-	{
+		throws org.hibernate.HibernateException {
 		refresh((Object) menuGroup, s);
 	}
 

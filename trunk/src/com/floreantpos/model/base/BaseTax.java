@@ -1,8 +1,7 @@
 package com.floreantpos.model.base;
 
+import java.lang.Comparable;
 import java.io.Serializable;
-
-import javax.xml.bind.annotation.XmlTransient;
 
 
 /**
@@ -56,11 +55,9 @@ public abstract class BaseTax  implements Comparable, Serializable {
 	// primary key
 	private java.lang.Integer id;
 
-	private java.util.Date modifiedTime;
-
 	// fields
-	private java.lang.String name;
-	private java.lang.Double rate;
+		protected java.lang.String name;
+		protected java.lang.Double rate;
 
 
 
@@ -85,31 +82,13 @@ public abstract class BaseTax  implements Comparable, Serializable {
 
 
 
-	/**
-	 * Return the value associated with the column: MODIFIED_TIME
-	 */
-	@XmlTransient
-	public java.util.Date getModifiedTime () {
-			return modifiedTime;
-	}
-
-	/**
-	 * Set the value related to the column: MODIFIED_TIME
-	 * @param modifiedTime the MODIFIED_TIME value
-	 */
-	public void setModifiedTime (java.util.Date modifiedTime) {
-		this.modifiedTime = modifiedTime;
-	}
-
-
-
 
 	/**
 	 * Return the value associated with the column: NAME
 	 */
 	public java.lang.String getName () {
-			return name;
-	}
+					return name;
+			}
 
 	/**
 	 * Set the value related to the column: NAME
@@ -125,8 +104,8 @@ public abstract class BaseTax  implements Comparable, Serializable {
 	 * Return the value associated with the column: RATE
 	 */
 	public java.lang.Double getRate () {
-			return rate == null ? Double.valueOf(0) : rate;
-	}
+									return rate == null ? Double.valueOf(0) : rate;
+					}
 
 	/**
 	 * Set the value related to the column: RATE

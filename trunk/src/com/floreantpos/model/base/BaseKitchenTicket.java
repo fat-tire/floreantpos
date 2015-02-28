@@ -1,5 +1,6 @@
 package com.floreantpos.model.base;
 
+import java.lang.Comparable;
 import java.io.Serializable;
 
 
@@ -47,15 +48,13 @@ public abstract class BaseKitchenTicket  implements Comparable, Serializable {
 	// primary key
 	private java.lang.Integer id;
 
-	 java.util.Date modifiedTime;
-
 	// fields
-		protected java.util.Date closingDate;
-		protected java.util.Date createDate;
-		protected java.lang.String serverName;
-		protected java.lang.String status;
 		protected java.lang.Integer ticketId;
+		protected java.util.Date createDate;
+		protected java.util.Date closingDate;
 		protected java.lang.Boolean voided;
+		protected java.lang.String status;
+		protected java.lang.String serverName;
 
 	// many to one
 	private com.floreantpos.model.VirtualPrinter virtualPrinter;
@@ -87,37 +86,20 @@ public abstract class BaseKitchenTicket  implements Comparable, Serializable {
 
 
 
+
 	/**
-	 * Return the value associated with the column: MODIFIED_TIME
+	 * Return the value associated with the column: TICKET_ID
 	 */
-	public java.util.Date getModifiedTime () {
-					return modifiedTime;
+	public java.lang.Integer getTicketId () {
+					return ticketId == null ? Integer.valueOf(0) : ticketId;
 			}
 
 	/**
-	 * Set the value related to the column: MODIFIED_TIME
-	 * @param modifiedTime the MODIFIED_TIME value
+	 * Set the value related to the column: TICKET_ID
+	 * @param ticketId the TICKET_ID value
 	 */
-	public void setModifiedTime (java.util.Date modifiedTime) {
-		this.modifiedTime = modifiedTime;
-	}
-
-
-
-
-	/**
-	 * Return the value associated with the column: CLOSE_DATE
-	 */
-	public java.util.Date getClosingDate () {
-					return closingDate;
-			}
-
-	/**
-	 * Set the value related to the column: CLOSE_DATE
-	 * @param closingDate the CLOSE_DATE value
-	 */
-	public void setClosingDate (java.util.Date closingDate) {
-		this.closingDate = closingDate;
+	public void setTicketId (java.lang.Integer ticketId) {
+		this.ticketId = ticketId;
 	}
 
 
@@ -140,18 +122,35 @@ public abstract class BaseKitchenTicket  implements Comparable, Serializable {
 
 
 	/**
-	 * Return the value associated with the column: SERVER_NAME
+	 * Return the value associated with the column: CLOSE_DATE
 	 */
-	public java.lang.String getServerName () {
-					return serverName;
+	public java.util.Date getClosingDate () {
+					return closingDate;
 			}
 
 	/**
-	 * Set the value related to the column: SERVER_NAME
-	 * @param serverName the SERVER_NAME value
+	 * Set the value related to the column: CLOSE_DATE
+	 * @param closingDate the CLOSE_DATE value
 	 */
-	public void setServerName (java.lang.String serverName) {
-		this.serverName = serverName;
+	public void setClosingDate (java.util.Date closingDate) {
+		this.closingDate = closingDate;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: VOIDED
+	 */
+	public java.lang.Boolean isVoided () {
+								return voided == null ? Boolean.FALSE : voided;
+					}
+
+	/**
+	 * Set the value related to the column: VOIDED
+	 * @param voided the VOIDED value
+	 */
+	public void setVoided (java.lang.Boolean voided) {
+		this.voided = voided;
 	}
 
 
@@ -174,35 +173,18 @@ public abstract class BaseKitchenTicket  implements Comparable, Serializable {
 
 
 	/**
-	 * Return the value associated with the column: TICKET_ID
+	 * Return the value associated with the column: SERVER_NAME
 	 */
-	public java.lang.Integer getTicketId () {
-					return ticketId == null ? Integer.valueOf(0) : ticketId;
+	public java.lang.String getServerName () {
+					return serverName;
 			}
 
 	/**
-	 * Set the value related to the column: TICKET_ID
-	 * @param ticketId the TICKET_ID value
+	 * Set the value related to the column: SERVER_NAME
+	 * @param serverName the SERVER_NAME value
 	 */
-	public void setTicketId (java.lang.Integer ticketId) {
-		this.ticketId = ticketId;
-	}
-
-
-
-	/**
-	 * Return the value associated with the column: VOIDED
-	 */
-	public java.lang.Boolean isVoided () {
-								return voided == null ? Boolean.FALSE : voided;
-					}
-
-	/**
-	 * Set the value related to the column: VOIDED
-	 * @param voided the VOIDED value
-	 */
-	public void setVoided (java.lang.Boolean voided) {
-		this.voided = voided;
+	public void setServerName (java.lang.String serverName) {
+		this.serverName = serverName;
 	}
 
 

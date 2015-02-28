@@ -2,6 +2,7 @@ package com.floreantpos.model.dao;
 
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
+import com.floreantpos.model.dao.MenuCategoryDAO;
 import org.hibernate.criterion.Order;
 
 /**
@@ -38,27 +39,27 @@ public abstract class BaseMenuCategoryDAO extends com.floreantpos.model.dao._Roo
 	}
 
 	public com.floreantpos.model.MenuCategory get(java.lang.Integer key)
-	{
+		throws org.hibernate.HibernateException {
 		return (com.floreantpos.model.MenuCategory) get(getReferenceClass(), key);
 	}
 
 	public com.floreantpos.model.MenuCategory get(java.lang.Integer key, Session s)
-	{
+		throws org.hibernate.HibernateException {
 		return (com.floreantpos.model.MenuCategory) get(getReferenceClass(), key, s);
 	}
 
 	public com.floreantpos.model.MenuCategory load(java.lang.Integer key)
-	{
+		throws org.hibernate.HibernateException {
 		return (com.floreantpos.model.MenuCategory) load(getReferenceClass(), key);
 	}
 
 	public com.floreantpos.model.MenuCategory load(java.lang.Integer key, Session s)
-	{
+		throws org.hibernate.HibernateException {
 		return (com.floreantpos.model.MenuCategory) load(getReferenceClass(), key, s);
 	}
 
 	public com.floreantpos.model.MenuCategory loadInitialize(java.lang.Integer key, Session s) 
-	{ 
+			throws org.hibernate.HibernateException { 
 		com.floreantpos.model.MenuCategory obj = load(key, s); 
 		if (!Hibernate.isInitialized(obj)) {
 			Hibernate.initialize(obj);
@@ -98,7 +99,7 @@ public abstract class BaseMenuCategoryDAO extends com.floreantpos.model.dao._Roo
 	 * @return the class identifier
 	 */
 	public java.lang.Integer save(com.floreantpos.model.MenuCategory menuCategory)
-	{
+		throws org.hibernate.HibernateException {
 		return (java.lang.Integer) super.save(menuCategory);
 	}
 
@@ -111,7 +112,7 @@ public abstract class BaseMenuCategoryDAO extends com.floreantpos.model.dao._Roo
 	 * @return the class identifier
 	 */
 	public java.lang.Integer save(com.floreantpos.model.MenuCategory menuCategory, Session s)
-	{
+		throws org.hibernate.HibernateException {
 		return (java.lang.Integer) save((Object) menuCategory, s);
 	}
 
@@ -122,7 +123,7 @@ public abstract class BaseMenuCategoryDAO extends com.floreantpos.model.dao._Roo
 	 * @param menuCategory a transient instance containing new or updated state 
 	 */
 	public void saveOrUpdate(com.floreantpos.model.MenuCategory menuCategory)
-	{
+		throws org.hibernate.HibernateException {
 		saveOrUpdate((Object) menuCategory);
 	}
 
@@ -135,7 +136,7 @@ public abstract class BaseMenuCategoryDAO extends com.floreantpos.model.dao._Roo
 	 * @param s the Session.
 	 */
 	public void saveOrUpdate(com.floreantpos.model.MenuCategory menuCategory, Session s)
-	{
+		throws org.hibernate.HibernateException {
 		saveOrUpdate((Object) menuCategory, s);
 	}
 
@@ -145,7 +146,7 @@ public abstract class BaseMenuCategoryDAO extends com.floreantpos.model.dao._Roo
 	 * @param menuCategory a transient instance containing updated state
 	 */
 	public void update(com.floreantpos.model.MenuCategory menuCategory) 
-	{
+		throws org.hibernate.HibernateException {
 		update((Object) menuCategory);
 	}
 
@@ -157,7 +158,7 @@ public abstract class BaseMenuCategoryDAO extends com.floreantpos.model.dao._Roo
 	 * @param the Session
 	 */
 	public void update(com.floreantpos.model.MenuCategory menuCategory, Session s)
-	{
+		throws org.hibernate.HibernateException {
 		update((Object) menuCategory, s);
 	}
 
@@ -167,7 +168,7 @@ public abstract class BaseMenuCategoryDAO extends com.floreantpos.model.dao._Roo
 	 * @param id the instance ID to be removed
 	 */
 	public void delete(java.lang.Integer id)
-	{
+		throws org.hibernate.HibernateException {
 		delete((Object) load(id));
 	}
 
@@ -179,7 +180,7 @@ public abstract class BaseMenuCategoryDAO extends com.floreantpos.model.dao._Roo
 	 * @param s the Session
 	 */
 	public void delete(java.lang.Integer id, Session s)
-	{
+		throws org.hibernate.HibernateException {
 		delete((Object) load(id, s), s);
 	}
 
@@ -189,7 +190,7 @@ public abstract class BaseMenuCategoryDAO extends com.floreantpos.model.dao._Roo
 	 * @param menuCategory the instance to be removed
 	 */
 	public void delete(com.floreantpos.model.MenuCategory menuCategory)
-	{
+		throws org.hibernate.HibernateException {
 		delete((Object) menuCategory);
 	}
 
@@ -201,7 +202,7 @@ public abstract class BaseMenuCategoryDAO extends com.floreantpos.model.dao._Roo
 	 * @param s the Session
 	 */
 	public void delete(com.floreantpos.model.MenuCategory menuCategory, Session s)
-	{
+		throws org.hibernate.HibernateException {
 		delete((Object) menuCategory, s);
 	}
 	
@@ -216,7 +217,7 @@ public abstract class BaseMenuCategoryDAO extends com.floreantpos.model.dao._Roo
 	 * </ul>
 	 */
 	public void refresh (com.floreantpos.model.MenuCategory menuCategory, Session s)
-	{
+		throws org.hibernate.HibernateException {
 		refresh((Object) menuCategory, s);
 	}
 

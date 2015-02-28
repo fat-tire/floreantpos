@@ -1,8 +1,7 @@
 package com.floreantpos.model.base;
 
+import java.lang.Comparable;
 import java.io.Serializable;
-
-import javax.xml.bind.annotation.XmlTransient;
 
 
 /**
@@ -46,13 +45,11 @@ public abstract class BaseMenuModifierGroup  implements Comparable, Serializable
 	// primary key
 	private java.lang.Integer id;
 
-	private java.util.Date modifiedTime;
-
 	// fields
-	private java.lang.String name;
-	private java.lang.Boolean enable;
-	private java.lang.Boolean exclusive;
-	private java.lang.Boolean required;
+		protected java.lang.String name;
+		protected java.lang.Boolean enable;
+		protected java.lang.Boolean exclusive;
+		protected java.lang.Boolean required;
 
 	// collections
 	private java.util.Set<com.floreantpos.model.MenuModifier> modifiers;
@@ -80,31 +77,13 @@ public abstract class BaseMenuModifierGroup  implements Comparable, Serializable
 
 
 
-	/**
-	 * Return the value associated with the column: MODIFIED_TIME
-	 */
-	@XmlTransient
-	public java.util.Date getModifiedTime () {
-			return modifiedTime;
-	}
-
-	/**
-	 * Set the value related to the column: MODIFIED_TIME
-	 * @param modifiedTime the MODIFIED_TIME value
-	 */
-	public void setModifiedTime (java.util.Date modifiedTime) {
-		this.modifiedTime = modifiedTime;
-	}
-
-
-
 
 	/**
 	 * Return the value associated with the column: NAME
 	 */
 	public java.lang.String getName () {
-			return name;
-	}
+					return name;
+			}
 
 	/**
 	 * Set the value related to the column: NAME
@@ -120,8 +99,8 @@ public abstract class BaseMenuModifierGroup  implements Comparable, Serializable
 	 * Return the value associated with the column: ENABLED
 	 */
 	public java.lang.Boolean isEnable () {
-			return enable == null ? Boolean.FALSE : enable;
-	}
+								return enable == null ? Boolean.FALSE : enable;
+					}
 
 	/**
 	 * Set the value related to the column: ENABLED
@@ -137,8 +116,8 @@ public abstract class BaseMenuModifierGroup  implements Comparable, Serializable
 	 * Return the value associated with the column: EXCLUSIVED
 	 */
 	public java.lang.Boolean isExclusive () {
-			return exclusive == null ? Boolean.FALSE : exclusive;
-	}
+								return exclusive == null ? Boolean.FALSE : exclusive;
+					}
 
 	/**
 	 * Set the value related to the column: EXCLUSIVED
@@ -154,8 +133,8 @@ public abstract class BaseMenuModifierGroup  implements Comparable, Serializable
 	 * Return the value associated with the column: REQUIRED
 	 */
 	public java.lang.Boolean isRequired () {
-			return required == null ? Boolean.FALSE : required;
-	}
+								return required == null ? Boolean.FALSE : required;
+					}
 
 	/**
 	 * Set the value related to the column: REQUIRED
@@ -170,10 +149,9 @@ public abstract class BaseMenuModifierGroup  implements Comparable, Serializable
 	/**
 	 * Return the value associated with the column: modifiers
 	 */
-	@XmlTransient
 	public java.util.Set<com.floreantpos.model.MenuModifier> getModifiers () {
-			return modifiers;
-	}
+					return modifiers;
+			}
 
 	/**
 	 * Set the value related to the column: modifiers

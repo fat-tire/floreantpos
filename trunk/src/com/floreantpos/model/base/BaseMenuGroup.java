@@ -1,8 +1,7 @@
 package com.floreantpos.model.base;
 
+import java.lang.Comparable;
 import java.io.Serializable;
-
-import javax.xml.bind.annotation.XmlTransient;
 
 
 /**
@@ -57,11 +56,9 @@ public abstract class BaseMenuGroup  implements Comparable, Serializable {
 	// primary key
 	private java.lang.Integer id;
 
-	private java.util.Date modifiedTime;
-
 	// fields
-	private java.lang.String name;
-	private java.lang.Boolean visible;
+		protected java.lang.String name;
+		protected java.lang.Boolean visible;
 
 	// many to one
 	private com.floreantpos.model.MenuCategory parent;
@@ -89,31 +86,13 @@ public abstract class BaseMenuGroup  implements Comparable, Serializable {
 
 
 
-	/**
-	 * Return the value associated with the column: MODIFIED_TIME
-	 */
-	@XmlTransient
-	public java.util.Date getModifiedTime () {
-			return modifiedTime;
-	}
-
-	/**
-	 * Set the value related to the column: MODIFIED_TIME
-	 * @param modifiedTime the MODIFIED_TIME value
-	 */
-	public void setModifiedTime (java.util.Date modifiedTime) {
-		this.modifiedTime = modifiedTime;
-	}
-
-
-
 
 	/**
 	 * Return the value associated with the column: NAME
 	 */
 	public java.lang.String getName () {
-			return name;
-	}
+					return name;
+			}
 
 	/**
 	 * Set the value related to the column: NAME
@@ -129,8 +108,8 @@ public abstract class BaseMenuGroup  implements Comparable, Serializable {
 	 * Return the value associated with the column: VISIBLE
 	 */
 	public java.lang.Boolean isVisible () {
-			return visible == null ? Boolean.FALSE : visible;
-	}
+								return visible == null ? Boolean.FALSE : visible;
+					}
 
 	/**
 	 * Set the value related to the column: VISIBLE
@@ -146,8 +125,8 @@ public abstract class BaseMenuGroup  implements Comparable, Serializable {
 	 * Return the value associated with the column: CATEGORY_ID
 	 */
 	public com.floreantpos.model.MenuCategory getParent () {
-			return parent;
-	}
+					return parent;
+			}
 
 	/**
 	 * Set the value related to the column: CATEGORY_ID
