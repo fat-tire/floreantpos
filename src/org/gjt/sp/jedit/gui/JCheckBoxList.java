@@ -26,8 +26,14 @@ package org.gjt.sp.jedit.gui;
 import java.awt.Component;
 import java.awt.Font;
 import java.util.Vector;
-import javax.swing.*;
-import javax.swing.table.*;
+
+import javax.swing.JCheckBox;
+import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
+import javax.swing.UIManager;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumn;
 
 //}}}
 

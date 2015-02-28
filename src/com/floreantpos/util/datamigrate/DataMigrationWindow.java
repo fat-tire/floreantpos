@@ -1,37 +1,26 @@
 package com.floreantpos.util.datamigrate;
 
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JTextField;
-
 import java.awt.BorderLayout;
-
-import com.floreantpos.Database;
-import com.floreantpos.model.MenuCategory;
-import com.floreantpos.model.dao.MenuCategoryDAO;
-import com.floreantpos.model.dao._RootDAO;
-import com.floreantpos.swing.PosButton;
-import com.floreantpos.ui.TitlePanel;
-import com.sun.org.apache.bcel.internal.generic.NEW;
-
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 import java.util.List;
 
-import net.miginfocom.swing.MigLayout;
-import javax.swing.JLabel;
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.classic.Session;
+
+import com.floreantpos.Database;
+import com.floreantpos.model.MenuCategory;
+import com.floreantpos.model.dao.MenuCategoryDAO;
+import com.floreantpos.model.dao._RootDAO;
+import com.floreantpos.ui.TitlePanel;
 
 public class DataMigrationWindow extends JFrame {
 

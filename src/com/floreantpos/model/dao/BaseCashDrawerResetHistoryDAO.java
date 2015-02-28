@@ -2,9 +2,6 @@ package com.floreantpos.model.dao;
 
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
-
-import com.floreantpos.model.dao.CashDrawerResetHistoryDAO;
-
 import org.hibernate.criterion.Order;
 
 /**

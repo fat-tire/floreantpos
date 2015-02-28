@@ -2,6 +2,7 @@ package com.floreantpos.config.ui;
 
 import javax.swing.JLabel;
 import javax.swing.JSeparator;
+import javax.swing.JTextField;
 
 import net.miginfocom.swing.MigLayout;
 
@@ -12,7 +13,6 @@ import com.floreantpos.model.Restaurant;
 import com.floreantpos.model.dao.RestaurantDAO;
 import com.floreantpos.swing.POSTextField;
 import com.floreantpos.ui.dialog.POSMessageDialog;
-import javax.swing.JTextField;
 
 public class RestaurantConfigurationView extends ConfigurationView {
 	private RestaurantDAO dao;

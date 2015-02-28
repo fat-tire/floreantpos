@@ -3,7 +3,6 @@ package com.floreantpos.model;
 import java.util.HashSet;
 import java.util.Set;
 
-
 import com.floreantpos.model.base.BaseDrawerPullReport;
 
 public class DrawerPullReport extends BaseDrawerPullReport {

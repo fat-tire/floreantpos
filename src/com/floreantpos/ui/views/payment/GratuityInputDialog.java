@@ -6,15 +6,15 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
+import javax.swing.SwingConstants;
 
 import net.miginfocom.swing.MigLayout;
 
 import com.floreantpos.swing.DoubleTextField;
+import com.floreantpos.swing.NumericKeypad;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.ui.TitlePanel;
 import com.floreantpos.ui.dialog.POSDialog;
-import com.floreantpos.swing.NumericKeypad;
-import javax.swing.SwingConstants;
 
 public class GratuityInputDialog extends POSDialog {
 	private DoubleTextField doubleTextField;

@@ -56,6 +56,7 @@ import com.floreantpos.swing.ComboBoxModel;
 import com.floreantpos.swing.DoubleDocument;
 import com.floreantpos.swing.DoubleTextField;
 import com.floreantpos.swing.FixedLengthDocument;
+import com.floreantpos.swing.FixedLengthTextField;
 import com.floreantpos.swing.IUpdatebleView;
 import com.floreantpos.swing.MessageDialog;
 import com.floreantpos.ui.BeanEditor;
@@ -64,7 +65,6 @@ import com.floreantpos.ui.dialog.ConfirmDeleteDialog;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.util.POSUtil;
 import com.floreantpos.util.ShiftUtil;
-import com.floreantpos.swing.FixedLengthTextField;
 
 /**
  *

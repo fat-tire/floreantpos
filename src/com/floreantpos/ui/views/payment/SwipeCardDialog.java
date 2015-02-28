@@ -1,18 +1,18 @@
 package com.floreantpos.ui.views.payment;
-import com.floreantpos.ui.TitlePanel;
-import com.floreantpos.ui.dialog.POSDialog;
-
 import java.awt.BorderLayout;
-import javax.swing.JPasswordField;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JSeparator;
+import javax.swing.border.EmptyBorder;
 
 import com.floreantpos.config.CardConfig;
 import com.floreantpos.main.Application;
 import com.floreantpos.swing.PosButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import javax.swing.border.EmptyBorder;
-import javax.swing.JSeparator;
+import com.floreantpos.ui.TitlePanel;
+import com.floreantpos.ui.dialog.POSDialog;
 
 public class SwipeCardDialog extends POSDialog implements CardInputter {
 	private CardInputListener cardInputListener;

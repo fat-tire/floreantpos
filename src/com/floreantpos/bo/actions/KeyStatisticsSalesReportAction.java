@@ -7,7 +7,6 @@ import javax.swing.Icon;
 import javax.swing.JTabbedPane;
 
 import com.floreantpos.bo.ui.BackOfficeWindow;
-import com.floreantpos.main.Application;
 import com.floreantpos.report.SalesSummaryReportView;
 
 public class KeyStatisticsSalesReportAction extends AbstractAction {

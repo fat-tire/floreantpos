@@ -3,7 +3,10 @@ package com.floreantpos.config.ui;
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
 
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
@@ -13,9 +16,6 @@ import net.miginfocom.swing.MigLayout;
 import com.floreantpos.main.Application;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.swing.TitledView;
-import javax.swing.AbstractAction;
-import java.awt.event.ActionEvent;
-import javax.swing.Action;
 
 public class TerminalSetupDialog extends JDialog {
 	

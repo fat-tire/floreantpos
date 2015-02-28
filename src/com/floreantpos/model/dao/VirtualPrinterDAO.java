@@ -5,7 +5,6 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 
 import com.floreantpos.model.VirtualPrinter;
-import com.floreantpos.model.dao.BaseVirtualPrinterDAO;
 
 
 public class VirtualPrinterDAO extends BaseVirtualPrinterDAO {
