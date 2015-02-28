@@ -1,8 +1,10 @@
 package com.floreantpos.ui.views;
 
-import javax.swing.JPanel;
-import net.miginfocom.swing.MigLayout;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
+
+import net.miginfocom.swing.MigLayout;
+
 import com.floreantpos.swing.POSTextField;
 
 public class DateEntryView extends JPanel {

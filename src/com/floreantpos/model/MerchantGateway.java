@@ -1,10 +1,10 @@
 package com.floreantpos.model;
 
+import net.authorize.data.creditcard.CardType;
+
 import com.floreantpos.ui.views.payment.AuthorizeDotNetProcessor;
 import com.floreantpos.ui.views.payment.CardProcessor;
 import com.floreantpos.ui.views.payment.MercuryPayProcessor;
-
-import net.authorize.data.creditcard.CardType;
 
 public enum MerchantGateway {
 	

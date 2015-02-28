@@ -1,6 +1,5 @@
 package com.floreantpos.model.dao;
 
-import com.floreantpos.model.dao.BaseUserPermissionDAO;
 
 
 public class UserPermissionDAO extends BaseUserPermissionDAO {

@@ -1,6 +1,5 @@
 package com.floreantpos.model.base;
 
-import java.lang.Comparable;
 import java.io.Serializable;
 
 
@@ -83,7 +82,7 @@ public abstract class BaseMenuItem  implements Comparable, Serializable {
 
 	// many to one
 	private com.floreantpos.model.MenuGroup parent;
-	private com.floreantpos.model.inventory.Recepie recepie;
+	private com.floreantpos.model.Recepie recepie;
 	private com.floreantpos.model.Tax tax;
 	private com.floreantpos.model.VirtualPrinter virtualPrinter;
 
@@ -295,7 +294,7 @@ public abstract class BaseMenuItem  implements Comparable, Serializable {
 	/**
 	 * Return the value associated with the column: RECEPIE
 	 */
-	public com.floreantpos.model.inventory.Recepie getRecepie () {
+	public com.floreantpos.model.Recepie getRecepie () {
 					return recepie;
 			}
 
@@ -303,7 +302,7 @@ public abstract class BaseMenuItem  implements Comparable, Serializable {
 	 * Set the value related to the column: RECEPIE
 	 * @param recepie the RECEPIE value
 	 */
-	public void setRecepie (com.floreantpos.model.inventory.Recepie recepie) {
+	public void setRecepie (com.floreantpos.model.Recepie recepie) {
 		this.recepie = recepie;
 	}
 

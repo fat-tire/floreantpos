@@ -21,8 +21,8 @@ import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.TicketType;
 import com.floreantpos.model.User;
 import com.floreantpos.model.UserType;
-import com.floreantpos.report.SalesStatistics;
 import com.floreantpos.report.SalesAnalysisReportModel.SalesAnalysisData;
+import com.floreantpos.report.SalesStatistics;
 import com.floreantpos.report.SalesStatistics.ShiftwiseSalesTableData;
 
 public class SalesSummaryDAO extends _RootDAO {
