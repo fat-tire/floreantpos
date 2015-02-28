@@ -39,7 +39,7 @@
 			<column name="TAX_ID" />
 		</many-to-one>
 		
-		<many-to-one class="com.floreantpos.model.inventory.Recepie" lazy="false" cascade="all" name="recepie">
+		<many-to-one class="com.floreantpos.model.Recepie" lazy="false" cascade="all" name="recepie">
 			<column name="RECEPIE" />
 		</many-to-one>
 		

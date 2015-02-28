@@ -1,6 +1,5 @@
 package com.floreantpos.model.dao;
 
-import com.floreantpos.model.dao.BasePrinterConfigurationDAO;
 
 
 public class PrinterConfigurationDAO extends BasePrinterConfigurationDAO {

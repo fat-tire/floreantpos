@@ -13,9 +13,9 @@ import net.miginfocom.swing.MigLayout;
 import com.floreantpos.config.CardConfig;
 import com.floreantpos.swing.POSTextField;
 import com.floreantpos.swing.PosButton;
+import com.floreantpos.swing.QwertyKeyPad;
 import com.floreantpos.ui.TitlePanel;
 import com.floreantpos.ui.dialog.POSDialog;
-import com.floreantpos.swing.QwertyKeyPad;
 
 public class ManualCardEntryDialog extends POSDialog implements CardInputter {
 	private CardInputListener cardInputListener;

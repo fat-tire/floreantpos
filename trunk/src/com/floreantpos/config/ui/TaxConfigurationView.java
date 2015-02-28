@@ -1,12 +1,13 @@
 package com.floreantpos.config.ui;
 
+import javax.swing.JCheckBox;
+
+import net.miginfocom.swing.MigLayout;
+
 import com.floreantpos.main.Application;
 import com.floreantpos.model.Restaurant;
 import com.floreantpos.model.dao.RestaurantDAO;
 import com.floreantpos.util.POSUtil;
-
-import net.miginfocom.swing.MigLayout;
-import javax.swing.JCheckBox;
 
 public class TaxConfigurationView extends ConfigurationView {
 	public static final String CONFIG_TAB_TAX = "Tax";

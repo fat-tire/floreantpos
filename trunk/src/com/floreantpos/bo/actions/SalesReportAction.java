@@ -7,7 +7,6 @@ import javax.swing.Icon;
 import javax.swing.JTabbedPane;
 
 import com.floreantpos.bo.ui.BackOfficeWindow;
-import com.floreantpos.main.Application;
 import com.floreantpos.report.ReportViewer;
 import com.floreantpos.report.SalesReport;
 

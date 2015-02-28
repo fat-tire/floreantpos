@@ -8,12 +8,12 @@ import java.awt.event.ActionListener;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
+import javax.swing.border.EmptyBorder;
 
 import com.floreantpos.main.Application;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.ui.TitlePanel;
 import com.floreantpos.ui.dialog.POSDialog;
-import javax.swing.border.EmptyBorder;
 
 public class ConfirmPayDialog extends POSDialog {
 	private JLabel lblInfo;

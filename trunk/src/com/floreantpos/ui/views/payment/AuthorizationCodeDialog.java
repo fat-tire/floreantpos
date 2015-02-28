@@ -1,17 +1,20 @@
 package com.floreantpos.ui.views.payment;
 
-import com.floreantpos.ui.dialog.POSDialog;
-import javax.swing.JPanel;
 import java.awt.BorderLayout;
-import net.miginfocom.swing.MigLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JSeparator;
+
+import net.miginfocom.swing.MigLayout;
+
 import com.floreantpos.swing.FocusedTextField;
 import com.floreantpos.swing.PosButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import com.floreantpos.ui.TitlePanel;
-import javax.swing.JSeparator;
 import com.floreantpos.swing.QwertyKeyPad;
+import com.floreantpos.ui.TitlePanel;
+import com.floreantpos.ui.dialog.POSDialog;
 
 public class AuthorizationCodeDialog extends POSDialog implements CardInputter {
 	private CardInputListener cardInputListener;

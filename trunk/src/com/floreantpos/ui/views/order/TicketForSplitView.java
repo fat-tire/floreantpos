@@ -6,10 +6,13 @@
 
 package com.floreantpos.ui.views.order;
 
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import javax.swing.SwingConstants;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
@@ -19,9 +22,6 @@ import com.floreantpos.main.Application;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.TicketItemModifierGroup;
-import java.awt.GridBagConstraints;
-import javax.swing.SwingConstants;
-import java.awt.Dimension;
 
 /**
  *

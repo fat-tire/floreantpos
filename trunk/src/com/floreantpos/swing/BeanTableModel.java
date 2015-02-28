@@ -1,7 +1,8 @@
 package com.floreantpos.swing;
 
-import java.beans.*;
-import java.util.*;
+import java.beans.PropertyDescriptor;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
