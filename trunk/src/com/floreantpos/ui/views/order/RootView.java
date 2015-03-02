@@ -5,6 +5,7 @@ import java.awt.Component;
 
 import javax.swing.border.EmptyBorder;
 
+import com.floreantpos.demo.KitchenDisplayView;
 import com.floreantpos.ui.views.LoginView;
 import com.floreantpos.ui.views.SwitchboardView;
 import com.floreantpos.ui.views.payment.SettleTicketDialog;
@@ -33,6 +34,7 @@ public class RootView extends com.floreantpos.swing.TransparentPanel {
 		orderView = OrderView.getInstance();
 		orderView.init();
 		addView(OrderView.VIEW_NAME, orderView);
+		//addView("KitchenView", new KitchenDisplayView());
 		
 		//paymentView = SettleTicketView.getInstance();
 		//addView(SettleTicketView.VIEW_NAME, paymentView);
@@ -47,7 +49,7 @@ public class RootView extends com.floreantpos.swing.TransparentPanel {
 	public void showView(String viewName) {
 		layout.show(this, viewName);
 	}
-
+	
 	public OrderView getOrderView() {
 		return orderView;
 	}
