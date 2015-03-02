@@ -5,7 +5,6 @@ import java.awt.Component;
 
 import javax.swing.border.EmptyBorder;
 
-import com.floreantpos.demo.KitchenDisplayView;
 import com.floreantpos.ui.views.LoginView;
 import com.floreantpos.ui.views.SwitchboardView;
 import com.floreantpos.ui.views.payment.SettleTicketDialog;
