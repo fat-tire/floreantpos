@@ -24,7 +24,7 @@ import org.hibernate.Transaction;
 import us.fatehi.magnetictrack.bankcard.BankCardMagneticTrack;
 
 import com.floreantpos.POSConstants;
-import com.floreantpos.demo.KitchenDisplay;
+import com.floreantpos.demo.KitchenDisplayWindow;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.KitchenTicket;
 import com.floreantpos.model.PosTransaction;
@@ -476,7 +476,7 @@ public class ReceiptPrintService {
 				jasperPrint.setName("KitchenReceipt-" + ticket.getId() + "-" + deviceName);
 				jasperPrint.setProperty("printerName", deviceName);
 				
-				KitchenDisplay.instance.addTicket(kitchenTicket);
+				KitchenDisplayWindow.instance.addTicket(kitchenTicket);
 				printQuitely(jasperPrint);
 				
 				session.saveOrUpdate(kitchenTicket);

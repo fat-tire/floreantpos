@@ -310,6 +310,9 @@ class LoginPasswordEntryView extends JPanel {
 			if(TerminalConfig.isCashierMode()) {
 				SwitchboardView.doTakeout(TicketType.TAKE_OUT);
 			}
+			//else if(TerminalConfig.isKitchenMode()) {
+				//application.getRootView().showView("KitchenView");
+			//}
 			else {
 				application.getRootView().showView(SwitchboardView.VIEW_NAME);
 			}
