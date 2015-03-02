@@ -3,6 +3,7 @@ package com.floreantpos.demo;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -14,6 +15,7 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
 import javax.swing.Timer;
 import javax.swing.border.EmptyBorder;
 
@@ -49,21 +51,31 @@ public class KitchenDisplayView extends JPanel implements ActionListener {
 			printerModel.addElement(printer);
 		}
 
+		Font font = getFont().deriveFont(18f);
+		
+		cbPrinters.setFont(font);
 		cbPrinters.setRenderer(new PosComboRenderer());
 		cbPrinters.setModel(printerModel);
 		cbPrinters.addActionListener(this);
 
 		JPanel topPanel = new JPanel();
 		topPanel.setBorder(BorderFactory.createTitledBorder("Filters"));
-		topPanel.add(new JLabel("Printer"));
+		JLabel label = new JLabel("Printer");
+		label.setFont(font);
+		topPanel.add(label);
 		topPanel.add(cbPrinters);
 
+		cbTicketTypes.setFont(font);
 		cbTicketTypes.setRenderer(new PosComboRenderer());
 		DefaultComboBoxModel<TicketType> ticketTypeModel = new DefaultComboBoxModel<TicketType>(TicketType.values());
 		ticketTypeModel.insertElementAt(null, 0);
 		cbTicketTypes.setModel(ticketTypeModel);
 		cbTicketTypes.addActionListener(this);
-		topPanel.add(new JLabel("Order type"));
+		JLabel label2 = new JLabel("Order type");
+		label2.setFont(font);
+		
+		topPanel.add(new JSeparator(JSeparator.VERTICAL));
+		topPanel.add(label2);
 		topPanel.add(cbTicketTypes);
 
 		add(topPanel, BorderLayout.NORTH);
