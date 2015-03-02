@@ -18,6 +18,7 @@ public abstract class BaseKitchenTicket  implements Comparable, Serializable {
 	public static String REF = "KitchenTicket";
 	public static String PROP_STATUS = "status";
 	public static String PROP_CLOSING_DATE = "closingDate";
+	public static String PROP_TICKET_TYPE = "ticketType";
 	public static String PROP_ID = "id";
 	public static String PROP_VOIDED = "voided";
 	public static String PROP_SERVER_NAME = "serverName";
@@ -55,6 +56,7 @@ public abstract class BaseKitchenTicket  implements Comparable, Serializable {
 		protected java.lang.Boolean voided;
 		protected java.lang.String status;
 		protected java.lang.String serverName;
+		protected java.lang.String ticketType;
 
 	// many to one
 	private com.floreantpos.model.VirtualPrinter virtualPrinter;
@@ -185,6 +187,23 @@ public abstract class BaseKitchenTicket  implements Comparable, Serializable {
 	 */
 	public void setServerName (java.lang.String serverName) {
 		this.serverName = serverName;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: TICKET_TYPE
+	 */
+	public java.lang.String getTicketType () {
+					return ticketType;
+			}
+
+	/**
+	 * Set the value related to the column: TICKET_TYPE
+	 * @param ticketType the TICKET_TYPE value
+	 */
+	public void setTicketType (java.lang.String ticketType) {
+		this.ticketType = ticketType;
 	}
 
 

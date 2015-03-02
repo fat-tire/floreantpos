@@ -21,6 +21,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
+import javax.swing.event.AncestorEvent;
+import javax.swing.event.AncestorListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumn;
 
@@ -45,7 +47,7 @@ public class KitchenTicketView extends JPanel {
 	KitchenTicketStatusSelector statusSelector;
 	private TimerWatch timerWatch;
 
-	public KitchenTicketView(KitchenDisplay display, KitchenTicket ticket) {
+	public KitchenTicketView(KitchenTicket ticket) {
 		this.ticket = ticket;
 
 		Border emptyBorder = BorderFactory.createEmptyBorder(5, 5, 5, 5);
@@ -65,6 +67,21 @@ public class KitchenTicketView extends JPanel {
 		setPreferredSize(new Dimension(400, 200));
 
 		timerWatch.start();
+		
+		addAncestorListener(new AncestorListener() {
+			@Override
+			public void ancestorRemoved(AncestorEvent event) {
+				timerWatch.stop();
+			}
+			
+			@Override
+			public void ancestorMoved(AncestorEvent event) {
+			}
+			
+			@Override
+			public void ancestorAdded(AncestorEvent event) {
+			}
+		});
 	}
 
 	public void stopTimer() {
@@ -75,10 +92,14 @@ public class KitchenTicketView extends JPanel {
 		VirtualPrinter virtualPrinter = ticket.getPrinter().getVirtualPrinter();
 		String printerName = virtualPrinter == null ? "" : virtualPrinter.getName();
 
-		ticketId.setText("Ticket# " + ticket.getTicketId() + "-" + ticket.getId() + " [" + printerName + "]");
+		String ticketInfo = "Ticket# " + ticket.getTicketId() + "-" + ticket.getId() + " [" + printerName + "]";
+		if(ticket.getTableNumbers() != null && ticket.getTableNumbers().size() > 0) {
+			ticketInfo += "<br/>Table " + ticket.getTableNumbers();
+		}
+		ticketId.setText("<html>" + ticketInfo + "</html>");
 		ticketId.setFont(ticketId.getFont().deriveFont(Font.BOLD));
 
-		timerWatch = new TimerWatch();
+		timerWatch = new TimerWatch(ticket.getCreateDate());
 
 		JPanel headerPanel = new JPanel(new MigLayout("fill", "[fill, grow 100][]", ""));
 		headerPanel.add(ticketId, "grow 100");
@@ -234,7 +255,8 @@ public class KitchenTicketView extends JPanel {
 
 	private void closeTicket(KitchenTicketStatus status) {
 		try {
-
+			stopTimer();
+			
 			int option = JOptionPane.showConfirmDialog(KitchenTicketView.this, "Confirm " + status.name() + "?", "Confirm", JOptionPane.YES_NO_OPTION);
 			if (option != JOptionPane.YES_OPTION) {
 				return;
@@ -244,7 +266,7 @@ public class KitchenTicketView extends JPanel {
 			ticket.setClosingDate(new Date());
 
 			KitchenTicketDAO.getInstance().saveOrUpdate(ticket);
-			KitchenDisplay.instance.removeTicket(KitchenTicketView.this);
+			this.getParent().remove(this);
 		} catch (Exception e) {
 			POSMessageDialog.showError(KitchenTicketView.this, e.getMessage(), e);
 		}

@@ -1,6 +1,6 @@
 package com.floreantpos.actions;
 
-import com.floreantpos.demo.KitchenDisplay;
+import com.floreantpos.demo.KitchenDisplayWindow;
 
 public class OpenKitchenDisplayAction extends PosAction {
 
@@ -10,7 +10,7 @@ public class OpenKitchenDisplayAction extends PosAction {
 	
 	@Override
 	public void execute() {
-		KitchenDisplay.instance.setVisible(true);
+		KitchenDisplayWindow.instance.setVisible(true);
 	}
 
 }

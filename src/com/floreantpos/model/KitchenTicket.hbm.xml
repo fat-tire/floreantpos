@@ -17,6 +17,8 @@
 		<property column="STATUS" name="status" type="string" length="30" />
 		<property column="SERVER_NAME" name="serverName" type="string" length="30" />
 		
+		<property name="ticketType" column="TICKET_TYPE" length="20" type="string" />
+		
 		<bag name="tableNumbers" table="KIT_TICKET_TABLE_NUM" lazy="false" cascade="all">
 			<key column="kit_ticket_id" />
 			<element column="TABLE_ID" type="string" />

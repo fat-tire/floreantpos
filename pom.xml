@@ -470,18 +470,25 @@
 			<artifactId>c3p0</artifactId>
 			<version>0.9.1.2</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>net.nicholaswilliams.java.licensing</groupId>
 			<artifactId>licensing-core</artifactId>
 			<version>1.1.0</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>com.oro</groupId>
 			<artifactId>licensor</artifactId>
 			<version>1.1-SNAPSHOT</version>
 		</dependency>
+
+		<dependency>
+			<groupId>joda-time</groupId>
+			<artifactId>joda-time</artifactId>
+			<version>2.3</version>
+		</dependency>
+
 	</dependencies>
 
 	<repositories>

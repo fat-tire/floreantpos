@@ -5,63 +5,41 @@ package com.floreantpos.swing;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Date;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
+import org.joda.time.Duration;
+import org.joda.time.Instant;
+import org.joda.time.Interval;
+
 public class TimerWatch extends JPanel implements ActionListener {
-	int hour;
-	int min;
-	int sec;
 	
 	Timer updateTimer = new Timer(1000, this);
 	JLabel timerLabel = new JLabel();
+	private final Date date;
 	
-	public TimerWatch() {
+	public TimerWatch(Date date) {
+		this.date = date;
+		
 		timerLabel.setFont(timerLabel.getFont().deriveFont(Font.BOLD));
 		timerLabel.setHorizontalAlignment(JLabel.RIGHT);
-		timerLabel.setText(hour + ":" + min + ":" + sec);
+		
+		actionPerformed(null);
 		
 		add(timerLabel);
 	}
 
-	public int getHour() {
-		return hour;
-	}
 
-	public void increaseHour() {
-		++hour;
-	}
-
-	public int getMin() {
-		return min;
-	}
-
-	public void increaseMin() {
-		++min;
-		if(min > 60) {
-			min = 0;
-			increaseHour();
-		}
-	}
-
-	public int getSec() {
-		return sec;
-	}
-
-	public void increaseSec() {
-		++sec;
-		if(sec > 60) {
-			sec = 0;
-			increaseMin();
-		}
-	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		increaseSec();
-		timerLabel.setText(hour + ":" + min + ":" + sec);
+		Interval interval = new Interval(date.getTime(), new Instant().getMillis());
+		Duration duration = interval.toDuration();
+		
+		timerLabel.setText(duration.getStandardHours() + ":" + (duration.getStandardMinutes()%60) + ":" + (duration.getStandardSeconds()%60));
 	}
 	
 	public void start() {
