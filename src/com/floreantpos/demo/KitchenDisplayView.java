@@ -15,7 +15,6 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JSeparator;
 import javax.swing.Timer;
 import javax.swing.border.EmptyBorder;
 
@@ -27,10 +26,13 @@ import com.floreantpos.model.PosPrinters;
 import com.floreantpos.model.Printer;
 import com.floreantpos.model.TicketType;
 import com.floreantpos.model.dao.KitchenTicketDAO;
+import com.floreantpos.swing.PosButton;
 import com.floreantpos.swing.PosComboRenderer;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 
 public class KitchenDisplayView extends JPanel implements ActionListener {
+	
+	public final static String VIEW_NAME = "KD";
 
 	public static final KitchenDisplayView instance = new KitchenDisplayView();
 
@@ -58,7 +60,7 @@ public class KitchenDisplayView extends JPanel implements ActionListener {
 		cbPrinters.setModel(printerModel);
 		cbPrinters.addActionListener(this);
 
-		JPanel topPanel = new JPanel();
+		JPanel topPanel = new JPanel(new MigLayout("", "[][][][][fill,grow][]", ""));
 		topPanel.setBorder(BorderFactory.createTitledBorder("Filters"));
 		JLabel label = new JLabel("Printer");
 		label.setFont(font);
@@ -74,9 +76,13 @@ public class KitchenDisplayView extends JPanel implements ActionListener {
 		JLabel label2 = new JLabel("Order type");
 		label2.setFont(font);
 		
-		topPanel.add(new JSeparator(JSeparator.VERTICAL));
 		topPanel.add(label2);
 		topPanel.add(cbTicketTypes);
+		
+		PosButton btnLogout = new PosButton("LOG OUT");
+		btnLogout.addActionListener(this);
+		topPanel.add(new JLabel(), "grow");
+		topPanel.add(btnLogout);
 
 		add(topPanel, BorderLayout.NORTH);
 
@@ -155,6 +161,9 @@ public class KitchenDisplayView extends JPanel implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		if(e.getActionCommand().equalsIgnoreCase("log out")) {
+			Application.getInstance().logout();
+		}
 		if (e.getSource() == viewUpdateTimer) {
 			updateTicketView();
 		}

@@ -33,6 +33,7 @@ import org.apache.commons.logging.LogFactory;
 import com.floreantpos.POSConstants;
 import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.config.ui.DatabaseConfigurationDialog;
+import com.floreantpos.demo.KitchenDisplayView;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.AttendenceHistory;
 import com.floreantpos.model.Shift;
@@ -44,6 +45,7 @@ import com.floreantpos.swing.MessageDialog;
 import com.floreantpos.swing.POSPasswordField;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.ui.dialog.POSMessageDialog;
+import com.floreantpos.ui.views.order.RootView;
 import com.floreantpos.util.ShiftException;
 import com.floreantpos.util.ShiftUtil;
 import com.floreantpos.util.UserNotFoundException;
@@ -307,12 +309,20 @@ class LoginPasswordEntryView extends JPanel {
 
 			tfPassword.setText("");
 			
+			RootView rootView = application.getRootView();
+			
 			if(TerminalConfig.isCashierMode()) {
 				SwitchboardView.doTakeout(TicketType.TAKE_OUT);
 			}
-			//else if(TerminalConfig.isKitchenMode()) {
-				//application.getRootView().showView("KitchenView");
-			//}
+			else if(TerminalConfig.isKitchenMode()) {
+				if(rootView.hasView(KitchenDisplayView.VIEW_NAME)) {
+					rootView.showView(KitchenDisplayView.VIEW_NAME);
+				}
+				else {
+					rootView.addView(KitchenDisplayView.VIEW_NAME, new KitchenDisplayView());
+					rootView.showView(KitchenDisplayView.VIEW_NAME);
+				}
+			}
 			else {
 				application.getRootView().showView(SwitchboardView.VIEW_NAME);
 			}
