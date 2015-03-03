@@ -161,7 +161,7 @@ public class KitchenDisplayView extends JPanel implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if(e.getActionCommand().equalsIgnoreCase("log out")) {
+		if(e.getActionCommand() != null && e.getActionCommand().equalsIgnoreCase("log out")) {
 			Application.getInstance().logout();
 		}
 		if (e.getSource() == viewUpdateTimer) {
