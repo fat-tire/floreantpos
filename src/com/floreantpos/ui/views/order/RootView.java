@@ -2,6 +2,8 @@ package com.floreantpos.ui.views.order;
 
 import java.awt.CardLayout;
 import java.awt.Component;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.swing.border.EmptyBorder;
 
@@ -16,6 +18,8 @@ public class RootView extends com.floreantpos.swing.TransparentPanel {
 	private SwitchboardView switchboardView;
 	private OrderView orderView;
 	private SettleTicketDialog paymentView;
+	
+	private Set<String> viewNames = new HashSet<String>();
 
 	
 	private static RootView instance;
@@ -42,11 +46,16 @@ public class RootView extends com.floreantpos.swing.TransparentPanel {
 	}
 	
 	public void addView(String viewName, Component view) {
+		viewNames.add(viewName);
 		add(view, viewName);
 	}
 	
 	public void showView(String viewName) {
 		layout.show(this, viewName);
+	}
+	
+	public boolean hasView(String viewName) {
+		return viewNames.contains(viewName);
 	}
 	
 	public OrderView getOrderView() {
