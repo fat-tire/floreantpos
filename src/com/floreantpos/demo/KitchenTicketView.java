@@ -18,6 +18,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SwingUtilities;
@@ -47,6 +48,7 @@ public class KitchenTicketView extends JPanel {
 	JTable table;
 	KitchenTicketStatusSelector statusSelector;
 	private TimerWatch timerWatch;
+	private JScrollPane scrollPane;
 
 	public KitchenTicketView(KitchenTicket ticket) {
 		this.ticket = ticket;
@@ -150,7 +152,8 @@ public class KitchenTicketView extends JPanel {
 		};
 
 		new ButtonColumn(table, action, 2);
-		JScrollPane scrollPane = new JScrollPane(table);
+		scrollPane = new JScrollPane(table);
+		//scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
 		add(scrollPane);
 	}
 
@@ -164,7 +167,7 @@ public class KitchenTicketView extends JPanel {
 	}
 
 	private void createButtonPanel() {
-		JPanel donePanel = new JPanel(new GridLayout(1, 0, 10, 10));
+		JPanel buttonPanel = new JPanel(new GridLayout(1, 0, 5, 5));
 
 		PosButton btnDone = new PosButton("DONE");
 		btnDone.addActionListener(new ActionListener() {
@@ -174,7 +177,7 @@ public class KitchenTicketView extends JPanel {
 			}
 		});
 
-		donePanel.add(btnDone);
+		buttonPanel.add(btnDone);
 
 		PosButton btnVoid = new PosButton("VOID");
 		btnVoid.addActionListener(new ActionListener() {
@@ -183,7 +186,7 @@ public class KitchenTicketView extends JPanel {
 				closeTicket(KitchenTicketStatus.VOID);
 			}
 		});
-		donePanel.add(btnVoid);
+		buttonPanel.add(btnVoid);
 
 		PosButton btnPrint = new PosButton("PRINT");
 		btnPrint.addActionListener(new ActionListener() {
@@ -192,9 +195,29 @@ public class KitchenTicketView extends JPanel {
 				//KitchenDisplay.instance.removeTicket(KitchenTicketView.this);
 			}
 		});
-		donePanel.add(btnPrint);
+		buttonPanel.add(btnPrint);
+		
+		PosButton btnUp = new PosButton("UP");
+		btnUp.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JScrollBar scrollBar = scrollPane.getVerticalScrollBar();
+				scrollBar.setValue(scrollBar.getValue() - 50);
+			}
+		});
+		buttonPanel.add(btnUp);
+		
+		PosButton btnDown = new PosButton("DOWN");
+		btnDown.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JScrollBar scrollBar = scrollPane.getVerticalScrollBar();
+				scrollBar.setValue(scrollBar.getValue() + 50);
+			}
+		});
+		buttonPanel.add(btnDown);
 
-		add(donePanel, BorderLayout.SOUTH);
+		add(buttonPanel, BorderLayout.SOUTH);
 	}
 
 	private void resizeTableColumns() {
