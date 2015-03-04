@@ -9,8 +9,6 @@ import com.floreantpos.model.KitchenTicket;
 
 public class KitchenDisplayWindow extends JFrame {
 
-	public static final KitchenDisplayWindow instance = new KitchenDisplayWindow();
-	
 	KitchenDisplayView view = new KitchenDisplayView();
 
 	public KitchenDisplayWindow() {

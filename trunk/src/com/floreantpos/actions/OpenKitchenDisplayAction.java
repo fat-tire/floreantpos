@@ -1,5 +1,7 @@
 package com.floreantpos.actions;
 
+import java.awt.Window;
+
 import com.floreantpos.demo.KitchenDisplayWindow;
 
 public class OpenKitchenDisplayAction extends PosAction {
@@ -10,7 +12,16 @@ public class OpenKitchenDisplayAction extends PosAction {
 	
 	@Override
 	public void execute() {
-		KitchenDisplayWindow.instance.setVisible(true);
+		Window[] windows = Window.getWindows();
+		for (Window window : windows) {
+			if(window instanceof KitchenDisplayWindow) {
+				window.toFront();
+				return;
+			}
+		}
+		
+		KitchenDisplayWindow window = new KitchenDisplayWindow();
+		window.setVisible(true);
 	}
 
 }
