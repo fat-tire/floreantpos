@@ -55,7 +55,6 @@ import com.floreantpos.model.UserPermission;
 import com.floreantpos.model.UserType;
 import com.floreantpos.model.dao.AttendenceHistoryDAO;
 import com.floreantpos.model.dao.TicketDAO;
-import com.floreantpos.model.dao.UserDAO;
 import com.floreantpos.services.TicketService;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.ui.dialog.ManagerDialog;
@@ -64,6 +63,7 @@ import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.dialog.PayoutDialog;
 import com.floreantpos.ui.dialog.VoidTicketDialog;
 import com.floreantpos.ui.views.order.DefaultOrderServiceExtension;
+import com.floreantpos.ui.views.order.OrderController;
 import com.floreantpos.ui.views.order.OrderView;
 import com.floreantpos.ui.views.order.RootView;
 import com.floreantpos.ui.views.payment.SettleTicketDialog;
@@ -350,14 +350,7 @@ public class SwitchboardView extends JPanel implements ActionListener, ITicketLi
 			return;
 		}
 
-		ticket.setClosed(true);
-		TicketDAO.getInstance().saveOrUpdate(ticket);
-
-		User driver = ticket.getAssignedDriver();
-		if (driver != null) {
-			driver.setAvailableForDelivery(true);
-			UserDAO.getInstance().saveOrUpdate(driver);
-		}
+		OrderController.closeOrder(ticket);
 		
 		updateTicketList();
 	}

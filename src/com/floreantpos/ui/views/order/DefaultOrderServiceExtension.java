@@ -1,7 +1,6 @@
 package com.floreantpos.ui.views.order;
 
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import javax.swing.JMenu;
@@ -13,9 +12,7 @@ import com.floreantpos.main.Application;
 import com.floreantpos.model.ShopTable;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketType;
-import com.floreantpos.model.User;
 import com.floreantpos.model.dao.TicketDAO;
-import com.floreantpos.model.dao.UserDAO;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.util.POSUtil;
 import com.floreantpos.util.PosGuiUtil;
@@ -115,15 +112,8 @@ public class DefaultOrderServiceExtension implements OrderServiceExtension {
 			return false;
 		}
 
-		ticket.setClosed(true);
-		ticket.setClosingDate(new Date());
-		TicketDAO.getInstance().saveOrUpdate(ticket);
-
-		User driver = ticket.getAssignedDriver();
-		if (driver != null) {
-			driver.setAvailableForDelivery(true);
-			UserDAO.getInstance().saveOrUpdate(driver);
-		}
+		
+		OrderController.closeOrder(ticket);
 
 		return true;
 	}
