@@ -2,6 +2,7 @@ package com.floreantpos.ui.views.order;
 
 import java.awt.Frame;
 import java.awt.Window;
+import java.util.Date;
 
 import javax.swing.SwingUtilities;
 
@@ -20,7 +21,9 @@ import com.floreantpos.model.TicketType;
 import com.floreantpos.model.User;
 import com.floreantpos.model.dao.ActionHistoryDAO;
 import com.floreantpos.model.dao.MenuItemDAO;
+import com.floreantpos.model.dao.ShopTableDAO;
 import com.floreantpos.model.dao.TicketDAO;
+import com.floreantpos.model.dao.UserDAO;
 import com.floreantpos.ui.views.SwitchboardView;
 import com.floreantpos.ui.views.order.actions.CategorySelectionListener;
 import com.floreantpos.ui.views.order.actions.GroupSelectionListener;
@@ -132,10 +135,26 @@ public class OrderController implements OrderListener, CategorySelectionListener
 		User user = Application.getCurrentUser();
 		
 		if (newTicket) {
+			ShopTableDAO.getInstance().occupyTables(ticket);
+			
 			actionHistoryDAO.saveHistory(user, ActionHistory.NEW_CHECK, POSConstants.RECEIPT_REPORT_TICKET_NO_LABEL + ":" + ticket.getId());
 		}
 		else {
 			actionHistoryDAO.saveHistory(user, ActionHistory.EDIT_CHECK, POSConstants.RECEIPT_REPORT_TICKET_NO_LABEL + ":" + ticket.getId());
+		}
+	}
+	
+	public synchronized static void closeOrder(Ticket ticket) {
+		ticket.setClosed(true);
+		ticket.setClosingDate(new Date());
+		
+		TicketDAO ticketDAO = new TicketDAO();
+		ticketDAO.saveOrUpdate(ticket);
+		
+		User driver = ticket.getAssignedDriver();
+		if (driver != null) {
+			driver.setAvailableForDelivery(true);
+			UserDAO.getInstance().saveOrUpdate(driver);
 		}
 	}
 }
