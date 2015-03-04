@@ -20,6 +20,7 @@ import javax.swing.border.EmptyBorder;
 
 import net.miginfocom.swing.MigLayout;
 
+import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.KitchenTicket;
 import com.floreantpos.model.PosPrinters;
@@ -31,7 +32,7 @@ import com.floreantpos.swing.PosComboRenderer;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 
 public class KitchenDisplayView extends JPanel implements ActionListener {
-	
+
 	public final static String VIEW_NAME = "KD";
 
 	public static final KitchenDisplayView instance = new KitchenDisplayView();
@@ -42,6 +43,8 @@ public class KitchenDisplayView extends JPanel implements ActionListener {
 	JPanel ticketPanel = new JPanel(new MigLayout("filly"));
 
 	private Timer viewUpdateTimer;
+
+	private PosButton btnLogout;
 
 	public KitchenDisplayView() {
 		setLayout(new BorderLayout(5, 5));
@@ -54,7 +57,7 @@ public class KitchenDisplayView extends JPanel implements ActionListener {
 		}
 
 		Font font = getFont().deriveFont(18f);
-		
+
 		cbPrinters.setFont(font);
 		cbPrinters.setRenderer(new PosComboRenderer());
 		cbPrinters.setModel(printerModel);
@@ -75,14 +78,16 @@ public class KitchenDisplayView extends JPanel implements ActionListener {
 		cbTicketTypes.addActionListener(this);
 		JLabel label2 = new JLabel("Order type");
 		label2.setFont(font);
-		
+
 		topPanel.add(label2);
 		topPanel.add(cbTicketTypes);
-		
-		PosButton btnLogout = new PosButton("LOG OUT");
-		btnLogout.addActionListener(this);
-		topPanel.add(new JLabel(), "grow");
-		topPanel.add(btnLogout);
+
+		if (TerminalConfig.isKitchenMode()) {
+			btnLogout = new PosButton("LOG OUT");
+			btnLogout.addActionListener(this);
+			topPanel.add(new JLabel(), "grow");
+			topPanel.add(btnLogout);
+		}
 
 		add(topPanel, BorderLayout.NORTH);
 
@@ -108,9 +113,9 @@ public class KitchenDisplayView extends JPanel implements ActionListener {
 		if (selectedPrinter != null && !selectedPrinter.equals(ticket.getPrinter())) {
 			return;
 		}
-		
+
 		TicketType selectedTicketType = (TicketType) cbTicketTypes.getSelectedItem();
-		if(selectedTicketType != null && selectedTicketType != ticket.getType()) {
+		if (selectedTicketType != null && selectedTicketType != ticket.getType()) {
 			return;
 		}
 
@@ -161,7 +166,7 @@ public class KitchenDisplayView extends JPanel implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if(e.getActionCommand() != null && e.getActionCommand().equalsIgnoreCase("log out")) {
+		if (e.getActionCommand() != null && e.getActionCommand().equalsIgnoreCase("log out")) {
 			Application.getInstance().logout();
 		}
 		if (e.getSource() == viewUpdateTimer) {

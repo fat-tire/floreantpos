@@ -9,6 +9,7 @@ package com.floreantpos.ui.views;
 import java.awt.ComponentOrientation;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -485,7 +486,12 @@ public class SwitchboardView extends JPanel implements ActionListener, ITicketLi
 
 	private void doLogout() {
 		BackOfficeWindow.getInstance().dispose();
-		KitchenDisplayWindow.instance.dispose();
+		Window[] windows = Window.getWindows();
+		for (Window window : windows) {
+			if(window instanceof KitchenDisplayWindow) {
+				window.dispose();
+			}
+		}
 		Application.getInstance().logout();
 	}
 
