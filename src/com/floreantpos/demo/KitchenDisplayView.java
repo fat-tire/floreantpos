@@ -75,6 +75,7 @@ public class KitchenDisplayView extends JPanel implements ActionListener {
 		DefaultComboBoxModel<TicketType> ticketTypeModel = new DefaultComboBoxModel<TicketType>(TicketType.values());
 		ticketTypeModel.insertElementAt(null, 0);
 		cbTicketTypes.setModel(ticketTypeModel);
+		cbTicketTypes.setSelectedIndex(0);
 		cbTicketTypes.addActionListener(this);
 		JLabel label2 = new JLabel("Order type");
 		label2.setFont(font);

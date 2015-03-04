@@ -3,6 +3,7 @@ package com.floreantpos.demo;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Frame;
@@ -266,7 +267,10 @@ public class KitchenTicketView extends JPanel {
 			ticket.setClosingDate(new Date());
 
 			KitchenTicketDAO.getInstance().saveOrUpdate(ticket);
-			this.getParent().remove(this);
+			Container parent = this.getParent();
+			parent.remove(this);
+			parent.revalidate();
+			parent.repaint();
 		} catch (Exception e) {
 			POSMessageDialog.showError(KitchenTicketView.this, e.getMessage(), e);
 		}
