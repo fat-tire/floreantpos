@@ -50,6 +50,33 @@ public class ShopTableDAO extends BaseShopTableDAO {
 		return getByNumbers(ticket.getTableNumbers()); 
 	}
 	
+	public void occupyTables(Ticket ticket) {
+		List<ShopTable> tables = getTables(ticket);
+		
+		if(tables == null) return;
+		
+		Session session = null;
+		Transaction tx = null;
+		
+		try {
+			session = createNewSession();
+			tx = session.beginTransaction();
+
+			for (ShopTable shopTable : tables) {
+				shopTable.setOccupied(true);
+				saveOrUpdate(shopTable);
+			}
+
+			tx.commit();
+		} catch (Exception e) {
+			tx.rollback();
+			LogFactory.getLog(ShopTableDAO.class).error(e);
+			throw new RuntimeException(e);
+		} finally {
+			closeSession(session);
+		}
+	}
+	
 	public void releaseTables(Ticket ticket) {
 		List<ShopTable> tables = getTables(ticket);
 		
