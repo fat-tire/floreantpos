@@ -104,4 +104,26 @@ public class ShopTableDAO extends BaseShopTableDAO {
 			closeSession(session);
 		}
 	}
+	
+	public void deleteTables(Collection<ShopTable> tables) {
+		Session session = null;
+		Transaction tx = null;
+		
+		try {
+			session = createNewSession();
+			tx = session.beginTransaction();
+
+			for (ShopTable shopTable : tables) {
+				super.delete(shopTable, session);
+			}
+
+			tx.commit();
+		} catch (Exception e) {
+			tx.rollback();
+			LogFactory.getLog(ShopTableDAO.class).error(e);
+			throw new RuntimeException(e);
+		} finally {
+			closeSession(session);
+		}
+	}
 }
