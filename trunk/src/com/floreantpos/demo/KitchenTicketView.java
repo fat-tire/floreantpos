@@ -153,17 +153,7 @@ public class KitchenTicketView extends JPanel {
 
 		new ButtonColumn(table, action, 2);
 		scrollPane = new JScrollPane(table);
-		//scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
 		add(scrollPane);
-	}
-
-	public void refreshTicket() {
-		try {
-			KitchenTicketDAO.getInstance().refresh(this.ticket);
-			tableModel.setRows(this.ticket.getTicketItems());
-		} catch (Exception e) {
-			POSMessageDialog.showError(KitchenTicketView.this, e.getMessage(), e);
-		}
 	}
 
 	private void createButtonPanel() {
