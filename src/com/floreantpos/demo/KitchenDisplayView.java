@@ -98,7 +98,7 @@ public class KitchenDisplayView extends JPanel implements ActionListener {
 		scrollPane.getHorizontalScrollBar().setPreferredSize(new Dimension(100, 60));
 		add(scrollPane);
 
-		viewUpdateTimer = new Timer(30 * 1000, this);
+		viewUpdateTimer = new Timer(15 * 1000, this);
 		viewUpdateTimer.setRepeats(true);
 	}
 
@@ -190,7 +190,6 @@ public class KitchenDisplayView extends JPanel implements ActionListener {
 			for (Component component : components) {
 				if (component instanceof KitchenTicketView) {
 					KitchenTicketView kitchenTicketView = (KitchenTicketView) component;
-					//kitchenTicketView.refreshTicket();
 					existingList.add(kitchenTicketView.getTicket());
 				}
 			}
