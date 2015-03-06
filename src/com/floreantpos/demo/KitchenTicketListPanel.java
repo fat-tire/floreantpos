@@ -29,6 +29,16 @@ public class KitchenTicketListPanel extends JPanel {
 	}
 	
 	@Override
+	public void remove(Component comp) {
+		if(comp instanceof KitchenTicketView) {
+			KitchenTicketView view = (KitchenTicketView) comp;
+			existingTickets.remove(view.getTicket());
+		}
+		
+		super.remove(comp);
+	}
+	
+	@Override
 	public void removeAll() {
 		existingTickets.clear();
 		
