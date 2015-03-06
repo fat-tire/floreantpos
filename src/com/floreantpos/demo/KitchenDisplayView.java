@@ -1,12 +1,10 @@
 package com.floreantpos.demo;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -40,7 +38,7 @@ public class KitchenDisplayView extends JPanel implements ActionListener {
 	private JComboBox<Printer> cbPrinters = new JComboBox<Printer>();
 	private JComboBox<TicketType> cbTicketTypes = new JComboBox<TicketType>();
 
-	JPanel ticketPanel = new JPanel(new MigLayout("filly"));
+	KitchenTicketListPanel ticketPanel = new KitchenTicketListPanel();
 
 	private Timer viewUpdateTimer;
 
@@ -106,7 +104,7 @@ public class KitchenDisplayView extends JPanel implements ActionListener {
 		addTicket(ticket, true);
 	}
 
-	private void addTicket(KitchenTicket ticket, boolean updateView) {
+	private synchronized void addTicket(KitchenTicket ticket, boolean updateView) {
 		if (!isShowing())
 			return;
 
@@ -120,19 +118,12 @@ public class KitchenDisplayView extends JPanel implements ActionListener {
 			return;
 		}
 
-		KitchenTicketView view = new KitchenTicketView(ticket);
-		ticketPanel.add(view, "growy, width pref!");
-
-		if (updateView) {
-			ticketPanel.revalidate();
-			ticketPanel.repaint();
+		if (ticketPanel.addTicket(ticket)) {
+			if (updateView) {
+				//ticketPanel.revalidate();
+				ticketPanel.repaint();
+			}
 		}
-	}
-
-	public void removeTicket(KitchenTicketView view) {
-		ticketPanel.remove(view);
-		ticketPanel.revalidate();
-		ticketPanel.repaint();
 	}
 
 	@Override
@@ -151,17 +142,8 @@ public class KitchenDisplayView extends JPanel implements ActionListener {
 		}
 	}
 
-	public void cleanup() {
+	public synchronized void cleanup() {
 		viewUpdateTimer.stop();
-
-		Component[] components = ticketPanel.getComponents();
-		for (Component component : components) {
-			if (component instanceof KitchenTicketView) {
-				KitchenTicketView kitchenTicketView = (KitchenTicketView) component;
-				kitchenTicketView.stopTimer();
-			}
-		}
-
 		ticketPanel.removeAll();
 	}
 
@@ -184,23 +166,12 @@ public class KitchenDisplayView extends JPanel implements ActionListener {
 			viewUpdateTimer.stop();
 
 			List<KitchenTicket> list = KitchenTicketDAO.getInstance().findAllOpen();
-			List<KitchenTicket> existingList = new ArrayList<KitchenTicket>();
-
-			Component[] components = ticketPanel.getComponents();
-			for (Component component : components) {
-				if (component instanceof KitchenTicketView) {
-					KitchenTicketView kitchenTicketView = (KitchenTicketView) component;
-					existingList.add(kitchenTicketView.getTicket());
-				}
-			}
 
 			for (KitchenTicket kitchenTicket : list) {
-				if (!existingList.contains(kitchenTicket)) {
-					addTicket(kitchenTicket, false);
-				}
+				addTicket(kitchenTicket, false);
 			}
 
-			ticketPanel.revalidate();
+			//ticketPanel.revalidate();
 			ticketPanel.repaint();
 
 		} catch (Exception e2) {
