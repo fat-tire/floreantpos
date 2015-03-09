@@ -58,11 +58,12 @@ public class ReportUtil {
 		InputStream in = null;
 		InputStream in2 = null;
 		FileOutputStream out = null;
+		File jasperFile = null;
 		
 		try {
 			File jrxmlFile = new File(ReceiptPrintService.class.getResource(USER_REPORT_DIR + reportName + ".jrxml").getFile());
 			File dir = jrxmlFile.getParentFile();
-			File jasperFile = new File(dir, reportName + ".jasper");
+			jasperFile = new File(dir, reportName + ".jasper");
 
 			in = ReceiptPrintService.class.getResourceAsStream(USER_REPORT_DIR + reportName + ".jrxml");
 			out = new FileOutputStream(jasperFile);
@@ -71,7 +72,16 @@ public class ReportUtil {
 			in2 = ReceiptPrintService.class.getResourceAsStream(USER_REPORT_DIR + reportName + ".jasper");
 			return (JasperReport) JRLoader.loadObject(in2);
 			
-		} finally {
+		} catch (Exception e) {
+			IOUtils.closeQuietly(out);
+			if(jasperFile != null) {
+				jasperFile.delete();
+			}
+			
+			throw e;
+		}
+		
+		finally {
 			IOUtils.closeQuietly(in);
 			IOUtils.closeQuietly(in2);
 			IOUtils.closeQuietly(out);
