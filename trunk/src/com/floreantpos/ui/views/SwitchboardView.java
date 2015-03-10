@@ -84,11 +84,11 @@ public class SwitchboardView extends JPanel implements ActionListener, ITicketLi
 	private OrderServiceExtension orderServiceExtension;
 
 	private static SwitchboardView instance;
-	
+
 	private Timer autoLogoffTimer = new Timer(1000, logoffHandler);
 
-	//	private Timer ticketListUpdater;
-
+	//private Timer ticketListUpdateTimer = new Timer(10 * 1000, new TicketListUpdaterTask());
+	
 	/** Creates new form SwitchboardView */
 	public SwitchboardView() {
 		initComponents();
@@ -118,13 +118,12 @@ public class SwitchboardView extends JPanel implements ActionListener, ITicketLi
 
 			orderServiceExtension = new DefaultOrderServiceExtension();
 		}
-		//		ticketListUpdater = new Timer(30 * 1000, new TicketListUpdaterTask());
 
 		applyComponentOrientation(ComponentOrientation.getOrientation(Locale.getDefault()));
 
 		instance = this;
 	}
-	
+
 	public static SwitchboardView getInstance() {
 		return instance;
 	}
@@ -139,7 +138,6 @@ public class SwitchboardView extends JPanel implements ActionListener, ITicketLi
 	// desc=" Generated Code ">//GEN-BEGIN:initComponents
 	private void initComponents() {
 
-		
 		lblUserName = new javax.swing.JLabel();
 		javax.swing.JPanel bottomPanel = new javax.swing.JPanel();
 		javax.swing.JPanel bottomLeftPanel = new javax.swing.JPanel();
@@ -223,7 +221,7 @@ public class SwitchboardView extends JPanel implements ActionListener, ITicketLi
 			btnBarTab.setAction(new NewBarTabAction(this));
 			activityPanel.add(btnBarTab);
 		}
-		
+
 		btnEditTicket.setText(POSConstants.CAPITAL_EDIT);
 		activityPanel.add(btnEditTicket);
 
@@ -245,7 +243,7 @@ public class SwitchboardView extends JPanel implements ActionListener, ITicketLi
 
 		btnVoidTicket.setText(POSConstants.CAPITAL_VOID);
 		activityPanel.add(btnVoidTicket);
-		
+
 		activityPanel.add(btnRefundTicket);
 
 		btnPayout.setText(POSConstants.CAPITAL_PAY_OUT);
@@ -286,12 +284,12 @@ public class SwitchboardView extends JPanel implements ActionListener, ITicketLi
 		btnManager.setText(POSConstants.CAPITAL_MANAGER);
 
 		btnClockOut.setText(POSConstants.CAPITAL_CLOCK_OUT);
-		
+
 		bottomPanel.add(bottomRightPanel, java.awt.BorderLayout.EAST);
 		bottomRightPanel.setLayout(new MigLayout("aligny bottom, insets 1 2 1 2, gapy 10", "[140px]", "[][][][][]"));
-		
+
 		final FloorLayoutPlugin floorLayoutPlugin = Application.getPluginManager().getPlugin(FloorLayoutPlugin.class);
-		if(floorLayoutPlugin != null) {
+		if (floorLayoutPlugin != null) {
 			PosButton btnTicketsAndTables = new PosButton("TICKETS & TABLES");
 			btnTicketsAndTables.addActionListener(new ActionListener() {
 				@Override
@@ -299,7 +297,7 @@ public class SwitchboardView extends JPanel implements ActionListener, ITicketLi
 					floorLayoutPlugin.openTicketsAndTablesDisplay();
 				}
 			});
-			
+
 			bottomRightPanel.add(btnTicketsAndTables, "height pref!,grow,wrap");
 		}
 
@@ -307,12 +305,12 @@ public class SwitchboardView extends JPanel implements ActionListener, ITicketLi
 		bottomRightPanel.add(btnKitchenDisplay, "height pref!,grow,wrap");
 		bottomRightPanel.add(btnManager, "height pref!,grow,wrap");
 		bottomRightPanel.add(btnBackOffice, "height pref!,grow,wrap");
-		
+
 		TicketImportPlugin ticketImportPlugin = Application.getPluginManager().getPlugin(TicketImportPlugin.class);
-		if(ticketImportPlugin != null) {
+		if (ticketImportPlugin != null) {
 			bottomRightPanel.add(new PosButton(new TicketImportAction()), "height pref!,grow,wrap");
 		}
-		
+
 		bottomRightPanel.add(btnClockOut, "height pref!,grow,wrap");
 		bottomRightPanel.add(btnLogout, "height pref!,grow,wrap");
 		bottomRightPanel.add(btnShutdown, "height pref!,grow,wrap");
@@ -322,15 +320,25 @@ public class SwitchboardView extends JPanel implements ActionListener, ITicketLi
 
 	private void createHeaderPanel() {
 		JPanel statusPanel = new JPanel(new MigLayout("fill", "[fill, grow 100][]", ""));
-		statusPanel.setPreferredSize(new Dimension(80, 40));
+		statusPanel.setPreferredSize(new Dimension(80, 60));
 		java.awt.Font headerFont = new java.awt.Font("Dialog", Font.BOLD, 12);
-		
+
 		lblUserName.setFont(headerFont);
 		statusPanel.add(lblUserName);
-		
+
 		timerLabel.setHorizontalAlignment(JLabel.RIGHT);
 		timerLabel.setFont(headerFont);
 		statusPanel.add(timerLabel);
+		
+		PosButton btnRefrestTickets = new PosButton("REFRESH TICKET LIST");
+		btnRefrestTickets.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				updateTicketList();
+			}
+		});
+		
+		statusPanel.add(btnRefrestTickets);
 
 		add(statusPanel, java.awt.BorderLayout.NORTH);
 	}
@@ -352,7 +360,7 @@ public class SwitchboardView extends JPanel implements ActionListener, ITicketLi
 		}
 
 		OrderController.closeOrder(ticket);
-		
+
 		updateTicketList();
 	}
 
@@ -406,36 +414,36 @@ public class SwitchboardView extends JPanel implements ActionListener, ITicketLi
 			if (!ticket.isClosed()) {
 				throw new PosException(POSConstants.TICKET_IS_NOT_CLOSED);
 			}
-			
-			if(ticket.isVoided()) {
+
+			if (ticket.isVoided()) {
 				throw new PosException("Void ticket cannot be reopened");
 			}
 
 			ticket.setClosed(false);
 			ticket.setClosingDate(null);
 			ticket.setReOpened(true);
-			
+
 			TicketDAO.getInstance().saveOrUpdate(ticket);
-			
+
 			OrderInfoView view = new OrderInfoView(Arrays.asList(ticket));
 			OrderInfoDialog dialog = new OrderInfoDialog(view);
 			dialog.setSize(400, 600);
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setLocationRelativeTo(Application.getPosWindow());
 			dialog.setVisible(true);
-			
+
 			updateTicketList();
 
-//			String ticketTotalAmount = Application.getCurrencySymbol() + NumberUtil.formatNumber(ticket.getTotalAmount());
-//			String amountMessage = "<span style='color: red; font-weight: bold;'>" + ticketTotalAmount + "</span>";
-//			String message = "<html><body>Ticket amount is " + ticketTotalAmount
-//					+ ". To reopen ticket, you need to refund that amount to system.<br/>Please press <b>OK</b> after you refund amount " + amountMessage
-//					+ "</body></html>";
-//
-//			int option = JOptionPane.showOptionDialog(this, message, "Alert!", JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, null, null, null);
-//			if (option != JOptionPane.OK_OPTION) {
-//				return;
-//			}
+			//			String ticketTotalAmount = Application.getCurrencySymbol() + NumberUtil.formatNumber(ticket.getTotalAmount());
+			//			String amountMessage = "<span style='color: red; font-weight: bold;'>" + ticketTotalAmount + "</span>";
+			//			String message = "<html><body>Ticket amount is " + ticketTotalAmount
+			//					+ ". To reopen ticket, you need to refund that amount to system.<br/>Please press <b>OK</b> after you refund amount " + amountMessage
+			//					+ "</body></html>";
+			//
+			//			int option = JOptionPane.showOptionDialog(this, message, "Alert!", JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, null, null, null);
+			//			if (option != JOptionPane.OK_OPTION) {
+			//				return;
+			//			}
 
 		} catch (PosException e) {
 			POSMessageDialog.showError(this, e.getLocalizedMessage());
@@ -488,7 +496,7 @@ public class SwitchboardView extends JPanel implements ActionListener, ITicketLi
 		BackOfficeWindow.getInstance().dispose();
 		Window[] windows = Window.getWindows();
 		for (Window window : windows) {
-			if(window instanceof KitchenDisplayWindow) {
+			if (window instanceof KitchenDisplayWindow) {
 				window.dispose();
 			}
 		}
@@ -520,14 +528,14 @@ public class SwitchboardView extends JPanel implements ActionListener, ITicketLi
 			POSMessageDialog.showError(POSConstants.ERROR_MESSAGE, e);
 		}
 	}
-	
+
 	private void doShowOrderInfo() {
 		doShowOrderInfo(openTicketList.getSelectedTickets());
 	}
 
 	private void doShowOrderInfo(List<Ticket> tickets) {
 		try {
-			
+
 			if (tickets.size() == 0) {
 				POSMessageDialog.showMessage(POSConstants.SELECT_ONE_TICKET_TO_PRINT);
 				return;
@@ -786,35 +794,32 @@ public class SwitchboardView extends JPanel implements ActionListener, ITicketLi
 		updateTicketList();
 	}
 
-	public void updateTicketList() {
-		User user = Application.getCurrentUser();
+	public synchronized void updateTicketList() {
+		try {
+			//ticketListUpdateTimer.stop();
+			Application.getPosWindow().setGlassPaneVisible(true);
 
-		TicketDAO dao = TicketDAO.getInstance();
-		List<Ticket> openTickets = null;
+			User user = Application.getCurrentUser();
 
-		boolean showAllOpenTicket = false;
-		if (user.getType() != null) {
-			Set<UserPermission> permissions = user.getType().getPermissions();
-			if (permissions != null) {
-				for (UserPermission permission : permissions) {
-					if (permission.equals(UserPermission.VIEW_ALL_OPEN_TICKETS)) {
-						showAllOpenTicket = true;
-						break;
-					}
-				}
+			TicketDAO dao = TicketDAO.getInstance();
+			List<Ticket> openTickets = null;
+
+			if (user.canViewAllOpenTickets()) {
+				openTickets = dao.findOpenTickets();
 			}
-		}
+			else {
+				openTickets = dao.findOpenTicketsForUser(user);
+			}
+			openTicketList.setTickets(openTickets);
 
-		if (showAllOpenTicket) {
-			openTickets = dao.findOpenTickets();
+			lblUserName.setText(POSConstants.WELCOME + " " + user.toString() + ". " + POSConstants.YOU + " " + POSConstants.HAVE + " " + openTickets.size()
+					+ " " + POSConstants.OPEN.toLowerCase() + " " + POSConstants.TICKETS);
+		} catch (Exception e) {
+			POSMessageDialog.showError(this, "Error getting open ticket list", e);
+		} finally {
+			Application.getPosWindow().setGlassPaneVisible(false);
+			//ticketListUpdateTimer.restart();
 		}
-		else {
-			openTickets = dao.findOpenTicketsForUser(user);
-		}
-		openTicketList.setTickets(openTickets);
-
-		lblUserName.setText(POSConstants.WELCOME + " " + user.toString() + ". " + POSConstants.YOU + " " + POSConstants.HAVE + " " + openTickets.size() + " "
-				+ POSConstants.OPEN.toLowerCase() + " " + POSConstants.TICKETS);
 	}
 
 	// Variables declaration - do not modify//GEN-BEGIN:variables
@@ -849,18 +854,19 @@ public class SwitchboardView extends JPanel implements ActionListener, ITicketLi
 	// End of variables declaration//GEN-END:variables
 
 	@Override
-	public void setVisible(boolean aFlag) {
-		super.setVisible(aFlag);
+	public void setVisible(boolean visible) {
+		super.setVisible(visible);
 
-		if (aFlag) {
+		if (visible) {
 			updateView();
-			
+
 			logoffHandler.reset();
-			if(TerminalConfig.isAutoLogoffEnable()) {
+			if (TerminalConfig.isAutoLogoffEnable()) {
 				autoLogoffTimer.start();
 			}
 		}
 		else {
+			//ticketListUpdateTimer.stop();
 			autoLogoffTimer.stop();
 		}
 	}
@@ -923,52 +929,50 @@ public class SwitchboardView extends JPanel implements ActionListener, ITicketLi
 
 		return ticket;
 	}
-	
+
 	public Ticket getSelectedTicket() {
 		List<Ticket> selectedTickets = openTicketList.getSelectedTickets();
-		
+
 		if (selectedTickets.size() == 0 || selectedTickets.size() > 1) {
 			return null;
 		}
-		
+
 		Ticket ticket = selectedTickets.get(0);
-		
+
 		return ticket;
 	}
 
-	//	private class TicketListUpdaterTask implements ActionListener {
-	//
-	//		public void actionPerformed(ActionEvent e) {
-	//			updateTicketList();
-	//		}
-	//
-	//	}
-	
+	private class TicketListUpdaterTask implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			updateTicketList();
+		}
+	}
+
 	private class AutoLogoffHandler implements ActionListener {
 		int countDown = TerminalConfig.getAutoLogoffTime();
-		
+
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			if(PosGuiUtil.isModalDialogShowing()) {
+			if (PosGuiUtil.isModalDialogShowing()) {
 				reset();
 				return;
 			}
-			
+
 			--countDown;
 			int min = countDown / 60;
 			int sec = countDown % 60;
-			
+
 			timerLabel.setText("Aoto logoff in " + min + ":" + sec);
-			
-			if(countDown == 0) {
+
+			if (countDown == 0) {
 				doLogout();
 			}
 		}
-		
+
 		public void reset() {
 			timerLabel.setText("");
 			countDown = TerminalConfig.getAutoLogoffTime();
 		}
-		
+
 	}
 }
