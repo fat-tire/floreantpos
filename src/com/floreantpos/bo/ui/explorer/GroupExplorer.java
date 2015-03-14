@@ -149,7 +149,7 @@ public class GroupExplorer extends TransparentPanel {
 					return Boolean.valueOf(category.isVisible());
 
 				case 3:
-					return category.getParent().getName();
+					return category.getParent().getDisplayName();
 			}
 			return null;
 		}

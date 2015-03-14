@@ -94,7 +94,8 @@ public class DataImportAction extends AbstractAction {
 			if (menuCategories != null) {
 				for (MenuCategory menuCategory : menuCategories) {
 
-					objectMap.put(menuCategory.getUniqueId(), menuCategory);
+					String uniqueId = menuCategory.getUniqueId();
+					objectMap.put(uniqueId, menuCategory);
 					menuCategory.setId(null);
 
 					MenuCategoryDAO.getInstance().save(menuCategory);

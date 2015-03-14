@@ -118,7 +118,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 	public MenuItemForm(MenuItem menuItem) throws Exception {
 		initComponents();
 		
-		tfName.setDocument(new FixedLengthDocument(30));
+		tfName.setDocument(new FixedLengthDocument(120));
 		
 		MenuGroupDAO foodGroupDAO = new MenuGroupDAO();
 		List<MenuGroup> foodGroups = foodGroupDAO.findAll();

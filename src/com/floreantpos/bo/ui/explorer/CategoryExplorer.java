@@ -1,6 +1,7 @@
 package com.floreantpos.bo.ui.explorer;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
@@ -9,6 +10,8 @@ import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
+
+import org.jdesktop.swingx.JXTable;
 
 import com.floreantpos.bo.ui.BOMessageDialog;
 import com.floreantpos.bo.ui.BackOfficeWindow;
@@ -32,7 +35,7 @@ public class CategoryExplorer extends TransparentPanel {
 		categoryList = dao.findAll();
 		
 		tableModel = new CategoryExplorerTableModel();
-		table = new JTable(tableModel);
+		table = new JXTable(tableModel);
 		table.setDefaultRenderer(Object.class, new PosTableRenderer());
 		
 		setLayout(new BorderLayout(5,5));
@@ -42,13 +45,17 @@ public class CategoryExplorer extends TransparentPanel {
 		addButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
+					
 					MenuCategoryForm editor = new MenuCategoryForm();
 					BeanEditorDialog dialog = new BeanEditorDialog(editor, BackOfficeWindow.getInstance(), true);
 					dialog.open();
+					
 					if (dialog.isCanceled())
 						return;
+					
 					MenuCategory foodCategory = (MenuCategory) editor.getBean();
 					tableModel.addCategory(foodCategory);
+					
 				} catch (Exception x) {
 					BOMessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
 				}
@@ -64,6 +71,7 @@ public class CategoryExplorer extends TransparentPanel {
 					if (index < 0)
 						return;
 
+					index = table.convertRowIndexToModel(index);
 					MenuCategory category = categoryList.get(index);
 
 					MenuCategoryForm editor = new MenuCategoryForm(category);
@@ -87,6 +95,7 @@ public class CategoryExplorer extends TransparentPanel {
 					if (index < 0)
 						return;
 
+					index = table.convertRowIndexToModel(index);
 					if (ConfirmDeleteDialog.showMessage(CategoryExplorer.this, com.floreantpos.POSConstants.CONFIRM_DELETE, com.floreantpos.POSConstants.DELETE) == ConfirmDeleteDialog.YES) {
 						MenuCategory category = categoryList.get(index);
 						MenuCategoryDAO dao = new MenuCategoryDAO();
@@ -108,7 +117,10 @@ public class CategoryExplorer extends TransparentPanel {
 	}
 	
 	class CategoryExplorerTableModel extends AbstractTableModel {
-		String[] columnNames = {com.floreantpos.POSConstants.ID, com.floreantpos.POSConstants.NAME, com.floreantpos.POSConstants.BEVERAGE, com.floreantpos.POSConstants.VISIBLE};
+		String[] columnNames = {com.floreantpos.POSConstants.ID, com.floreantpos.POSConstants.NAME, 
+				"Translated Name", com.floreantpos.POSConstants.BEVERAGE, 
+				com.floreantpos.POSConstants.VISIBLE, "Sort Order", "Button Color"
+		};
 		
 		public int getRowCount() {
 			if(categoryList == null) {
@@ -130,7 +142,7 @@ public class CategoryExplorer extends TransparentPanel {
 		public boolean isCellEditable(int rowIndex, int columnIndex) {
 			return false;
 		}
-
+		
 		public Object getValueAt(int rowIndex, int columnIndex) {
 			if(categoryList == null)
 				return ""; //$NON-NLS-1$
@@ -145,10 +157,23 @@ public class CategoryExplorer extends TransparentPanel {
 					return category.getName();
 					
 				case 2:
-					return Boolean.valueOf(category.isBeverage());
+					return category.getTranslatedName();
 					
 				case 3:
+					return Boolean.valueOf(category.isBeverage());
+					
+				case 4:
 					return Boolean.valueOf(category.isVisible());
+					
+				case 5:
+					return category.getSortOrder();
+					
+				case 6:
+					if(category.getButtonColor() != null) {
+						return new Color(category.getButtonColor());
+					}
+					
+					return null;
 			}
 			return null;
 		}

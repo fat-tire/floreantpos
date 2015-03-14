@@ -7,8 +7,6 @@
 			<generator class="identity" />
 		</id>
 		
-		
-		
 		<property name="loyaltyNo" column="LOYALTY_NO" length="30" type="string" />
 		<property name="telephoneNo" column="TELEPHONE_NO" length="30" type="string" />
 		<property name="email" column="EMAIL" length="40" type="string" />
@@ -26,7 +24,7 @@
 		<property name="creditCardNo" column="CREDIT_CARD_NO" length="30" type="string" />
 		<property name="note" column="NOTE" length="255" type="string" />
 
-		<map name="properties" cascade="all" lazy="false">
+		<map name="properties" cascade="all" lazy="false" table="CUSTOMER_PROPERTIES">
 			<key column="id"/>
         	<index column="property_name" type="string"/>
             <element column="property_value" type="string"/>

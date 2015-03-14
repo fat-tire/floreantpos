@@ -3,6 +3,7 @@
  */
 package com.floreantpos.ui;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -22,9 +23,11 @@ public class PosTableRenderer extends DefaultTableCellRenderer {
 	 * 
 	 */
 	private JCheckBox checkBox = new JCheckBox();
+	private JLabel lblColor = new JLabel();
 	
 	public PosTableRenderer(){
 		checkBox.setHorizontalAlignment(SwingConstants.CENTER);
+		lblColor.setOpaque(true);
 	}
 	
 	@Override
@@ -39,6 +42,12 @@ public class PosTableRenderer extends DefaultTableCellRenderer {
 			}
 			return checkBox;
 		}
+		if(value instanceof Color) {
+			lblColor.setBackground((Color) value);
+			
+			return lblColor;
+		}
+		
 		JLabel label = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, false, row, column);
 		
 		return label;

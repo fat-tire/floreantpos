@@ -21,6 +21,7 @@ public abstract class BaseMenuModifierGroup  implements Comparable, Serializable
 	public static String PROP_REQUIRED = "required";
 	public static String PROP_ENABLE = "enable";
 	public static String PROP_ID = "id";
+	public static String PROP_TRANSLATED_NAME = "translatedName";
 
 
 	// constructors
@@ -47,6 +48,7 @@ public abstract class BaseMenuModifierGroup  implements Comparable, Serializable
 
 	// fields
 		protected java.lang.String name;
+		protected java.lang.String translatedName;
 		protected java.lang.Boolean enable;
 		protected java.lang.Boolean exclusive;
 		protected java.lang.Boolean required;
@@ -91,6 +93,23 @@ public abstract class BaseMenuModifierGroup  implements Comparable, Serializable
 	 */
 	public void setName (java.lang.String name) {
 		this.name = name;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: TRANSLATED_NAME
+	 */
+	public java.lang.String getTranslatedName () {
+					return translatedName;
+			}
+
+	/**
+	 * Set the value related to the column: TRANSLATED_NAME
+	 * @param translatedName the TRANSLATED_NAME value
+	 */
+	public void setTranslatedName (java.lang.String translatedName) {
+		this.translatedName = translatedName;
 	}
 
 

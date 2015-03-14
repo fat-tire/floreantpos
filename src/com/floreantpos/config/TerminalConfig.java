@@ -199,4 +199,12 @@ public class TerminalConfig {
 	public static void setKitchenMode(boolean kitchenMode) {
 		config.setProperty(KITCHEN_MODE, kitchenMode);
 	}
+	
+	public static boolean isUseTranslatedName() {
+		return config.getBoolean("use_translated_name", false);
+	}
+	
+	public static void setUseTranslatedName(boolean useTranslatedName) {
+		config.setProperty("use_translated_name", useTranslatedName);
+	}
 }

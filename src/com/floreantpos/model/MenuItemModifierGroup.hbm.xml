@@ -8,6 +8,9 @@
     
     <property column="MIN_QUANTITY" name="minQuantity" type="java.lang.Integer"/>
     <property column="MAX_QUANTITY" name="maxQuantity" type="java.lang.Integer"/>
+    
+    <property column="SORT_ORDER" name="sortOrder" type="java.lang.Integer" />
+    
     <!-- Associations -->
     <!-- bi-directional one-to-many association to ModifierItem -->
     <many-to-one class="MenuModifierGroup" column="MODIFIER_GROUP" name="modifierGroup"/>

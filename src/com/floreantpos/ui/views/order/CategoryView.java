@@ -6,6 +6,7 @@
 
 package com.floreantpos.ui.views.order;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -54,8 +55,7 @@ public class CategoryView extends SelectionView implements ActionListener {
 		reset();
 		
 		MenuCategoryDAO categoryDAO = new MenuCategoryDAO();
-		List<MenuCategory> categories = categoryDAO.findBevegares();
-		categories.addAll(categoryDAO.findNonBevegares());
+		List<MenuCategory> categories = categoryDAO.findAllEnable();
 		if(categories.size() == 0) return;
 		
 		setItems(categories);
@@ -103,9 +103,13 @@ public class CategoryView extends SelectionView implements ActionListener {
 	private static class CategoryButton extends POSToggleButton {
 		MenuCategory foodCategory;
 		
-		CategoryButton(CategoryView view, MenuCategory foodCategory) {
-			this.foodCategory = foodCategory;
-			setText("<html><body><center>" + foodCategory.getName() + "</center></body></html>");
+		CategoryButton(CategoryView view, MenuCategory menuCategory) {
+			this.foodCategory = menuCategory;
+			setText("<html><body><center>" + menuCategory.getDisplayName() + "</center></body></html>");
+			
+			if(menuCategory.getButtonColor() != null) {
+				setBackground(new Color(menuCategory.getButtonColor()));
+			}
 			
 			addActionListener(view);
 		}

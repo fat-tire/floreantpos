@@ -100,6 +100,7 @@ public class DataMigrationWindow extends JFrame {
 		for (MenuCategory menuCategory : categories) {
 			MenuCategory m = new MenuCategory();
 			m.setName(menuCategory.getName());
+			m.setTranslatedName(menuCategory.getTranslatedName());
 			m.setBeverage(menuCategory.isBeverage());
 			m.setVisible(menuCategory.isVisible());
 			

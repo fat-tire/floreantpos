@@ -17,6 +17,7 @@ public abstract class BaseMenuItemModifierGroup  implements Comparable, Serializ
 
 	public static String REF = "MenuItemModifierGroup";
 	public static String PROP_MIN_QUANTITY = "minQuantity";
+	public static String PROP_SORT_ORDER = "sortOrder";
 	public static String PROP_ID = "id";
 	public static String PROP_MODIFIER_GROUP = "modifierGroup";
 	public static String PROP_MAX_QUANTITY = "maxQuantity";
@@ -47,6 +48,7 @@ public abstract class BaseMenuItemModifierGroup  implements Comparable, Serializ
 	// fields
 		protected java.lang.Integer minQuantity;
 		protected java.lang.Integer maxQuantity;
+		protected java.lang.Integer sortOrder;
 
 	// many to one
 	private com.floreantpos.model.MenuModifierGroup modifierGroup;
@@ -105,6 +107,23 @@ public abstract class BaseMenuItemModifierGroup  implements Comparable, Serializ
 	 */
 	public void setMaxQuantity (java.lang.Integer maxQuantity) {
 		this.maxQuantity = maxQuantity;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: SORT_ORDER
+	 */
+	public java.lang.Integer getSortOrder () {
+					return sortOrder == null ? Integer.valueOf(0) : sortOrder;
+			}
+
+	/**
+	 * Set the value related to the column: SORT_ORDER
+	 * @param sortOrder the SORT_ORDER value
+	 */
+	public void setSortOrder (java.lang.Integer sortOrder) {
+		this.sortOrder = sortOrder;
 	}
 
 
