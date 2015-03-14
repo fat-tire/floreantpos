@@ -43,7 +43,12 @@ public class PosTableRenderer extends DefaultTableCellRenderer {
 			return checkBox;
 		}
 		if(value instanceof Color) {
-			lblColor.setBackground((Color) value);
+			Color color = (Color) value;
+			String rgb = Integer.toHexString(color.getRGB()).toUpperCase();
+			rgb = rgb.substring(2, rgb.length());
+			
+			lblColor.setText(rgb);
+			lblColor.setBackground(color);
 			
 			return lblColor;
 		}
