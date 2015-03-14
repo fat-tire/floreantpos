@@ -23,7 +23,7 @@ public class POSToggleButton extends JToggleButton {
 		super(text);
 
 		setFont(UIConfig.getButtonFont());
-		//setFocusPainted(false);
+		setFocusPainted(false);
 		//setMargin(margin);
 	}
 
