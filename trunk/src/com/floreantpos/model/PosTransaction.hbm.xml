@@ -39,7 +39,7 @@
 
 		<property column="NOTE" name="note" length="255" type="string" />
 
-		<map name="properties" cascade="all" lazy="false">
+		<map name="properties" cascade="all" lazy="false" table="TRANSACTION_PROPERTIES">
 			<key column="id" />
 			<index column="property_name" type="string" />
 			<element column="property_value" type="string" />

@@ -41,7 +41,7 @@
 
 		<property name="ticketType" column="TICKET_TYPE" length="20" type="string" />
 
-		<map name="properties" cascade="all" lazy="false">
+		<map name="properties" cascade="all" lazy="false" table="TICKET_PROPERTIES">
 			<key column="id" />
 			<index column="property_name" type="string" />
 			<element column="property_value" type="string" length="1000"/>

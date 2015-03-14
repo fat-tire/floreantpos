@@ -10,7 +10,6 @@ import java.awt.Graphics2D;
 
 import javax.swing.AbstractButton;
 import javax.swing.JComponent;
-import javax.swing.UIManager;
 import javax.swing.plaf.ComponentUI;
 
 import com.jgoodies.looks.plastic.PlasticToggleButtonUI;
@@ -27,14 +26,15 @@ public class POSToggleButtonUI extends PlasticToggleButtonUI {
 			AbstractButton b = (AbstractButton) c;
 			if (isToolBarButton(b)) {
 				c.setOpaque(false);
-			} else if (b.isContentAreaFilled()) {
+			}
+			else if (b.isContentAreaFilled()) {
 				g.setColor(c.getBackground());
 				g.fillRect(0, 0, c.getWidth(), c.getHeight());
 
 				if (is3D(b)) {
-					Color color1 = UIManager.getColor("control");
+					Color color1 = c.getBackground();// UIManager.getColor("control");
 					Color color2 = color1.brighter();
-					
+
 					int x = 0;
 					int y = 0;
 					int width = c.getWidth();

@@ -34,7 +34,7 @@ public class MenuGroupForm extends BeanEditor {
     public MenuGroupForm(MenuGroup foodGroup) {
         initComponents();
         
-        tfName.setDocument(new FixedLengthDocument(20));
+        tfName.setDocument(new FixedLengthDocument(40));
         
         MenuCategoryDAO categoryDAO = new MenuCategoryDAO();
         List<MenuCategory> foodCategories = categoryDAO.findAll();

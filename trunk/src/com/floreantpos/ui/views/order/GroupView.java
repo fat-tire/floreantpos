@@ -42,18 +42,18 @@ public class GroupView extends SelectionView {
 		return menuCategory;
 	}
 
-	public void setMenuCategory(MenuCategory foodCategory) {
-		this.menuCategory = foodCategory;
+	public void setMenuCategory(MenuCategory menuCategory) {
+		this.menuCategory = menuCategory;
 
 		//reset();
 		
-		if (foodCategory == null) {
+		if (menuCategory == null) {
 			return;
 		}
 		
 		try {
 			MenuGroupDAO dao = new MenuGroupDAO();
-			List<MenuGroup> groups = dao.findEnabledByParent(foodCategory);
+			List<MenuGroup> groups = dao.findEnabledByParent(menuCategory);
 			
 			if(groups.size() == 1) {
 				MenuGroup menuGroup = groups.get(0);

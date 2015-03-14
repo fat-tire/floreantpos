@@ -6,9 +6,15 @@
       <generator class="identity"/>
     </id>
     
-    <property column="NAME" length="20" name="name" not-null="true" type="java.lang.String"/>
+    <property column="NAME" length="40" name="name" not-null="true" type="java.lang.String"/>
+    <property column="TRANSLATED_NAME" length="40" name="translatedName" not-null="false" type="java.lang.String" />
+    
     <!-- property name="image" type="java.sql.Blob" column="IMAGE" length="1048576" /-->
     <property column="VISIBLE" index="menugroupvisible" name="visible" type="java.lang.Boolean"/>
+    
+    <property column="SORT_ORDER" name="sortOrder" type="java.lang.Integer"/>
+    <property column="BTN_COLOR" name="buttonColor" type="java.lang.Integer" />
+    
     <!-- Associations -->
     <!-- uni-directional many-to-one association to FoodCategory -->
     <many-to-one class="com.floreantpos.model.MenuCategory" lazy="false" name="parent">

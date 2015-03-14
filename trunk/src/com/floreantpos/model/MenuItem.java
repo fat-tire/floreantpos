@@ -4,6 +4,9 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.apache.commons.lang.StringUtils;
+
+import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.base.BaseMenuItem;
 
@@ -40,6 +43,15 @@ public class MenuItem extends BaseMenuItem {
 	}
 
 	/*[CONSTRUCTOR MARKER END]*/
+	
+	@Override
+	public String getName() {
+		if(TerminalConfig.isUseTranslatedName() && StringUtils.isNotEmpty(getTranslatedName())) {
+			return getTranslatedName();
+		}
+		
+		return super.getName();
+	}
 	
 	public double getPrice(Shift currentShift) {
 		List<MenuItemShift> shifts = getShifts();
@@ -85,7 +97,7 @@ public class MenuItem extends BaseMenuItem {
 		ticketItem.setItemCount(1);
 		ticketItem.setName(this.getName());
 		ticketItem.setGroupName(this.getParent().getName());
-		ticketItem.setCategoryName(this.getParent().getParent().getName());
+		ticketItem.setCategoryName(this.getParent().getParent().getDisplayName());
 		ticketItem.setUnitPrice(this.getPrice(Application.getInstance().getCurrentShift()));
 		ticketItem.setDiscountRate(this.getDiscountRate());
 		ticketItem.setTaxRate(this.getTax() == null ? 0 : this.getTax().getRate());

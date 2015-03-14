@@ -17,17 +17,20 @@ public abstract class BaseMenuItem  implements Comparable, Serializable {
 
 	public static String REF = "MenuItem";
 	public static String PROP_BUY_PRICE = "buyPrice";
-	public static String PROP_NAME = "name";
-	public static String PROP_PARENT = "parent";
 	public static String PROP_BARCODE = "barcode";
-	public static String PROP_RECEPIE = "recepie";
-	public static String PROP_SHOW_IMAGE_ONLY = "showImageOnly";
+	public static String PROP_PARENT = "parent";
 	public static String PROP_VISIBLE = "visible";
+	public static String PROP_SHOW_IMAGE_ONLY = "showImageOnly";
 	public static String PROP_DISCOUNT_RATE = "discountRate";
-	public static String PROP_IMAGE = "image";
-	public static String PROP_PRICE = "price";
+	public static String PROP_SORT_ORDER = "sortOrder";
 	public static String PROP_TAX = "tax";
+	public static String PROP_NAME = "name";
+	public static String PROP_BUTTON_COLOR = "buttonColor";
+	public static String PROP_RECEPIE = "recepie";
+	public static String PROP_PRICE = "price";
+	public static String PROP_IMAGE = "image";
 	public static String PROP_ID = "id";
+	public static String PROP_TRANSLATED_NAME = "translatedName";
 	public static String PROP_VIRTUAL_PRINTER = "virtualPrinter";
 
 
@@ -71,11 +74,14 @@ public abstract class BaseMenuItem  implements Comparable, Serializable {
 
 	// fields
 		protected java.lang.String name;
+		protected java.lang.String translatedName;
 		protected java.lang.String barcode;
 		protected java.lang.Double buyPrice;
 		protected java.lang.Double price;
 		protected java.lang.Double discountRate;
 		protected java.lang.Boolean visible;
+		protected java.lang.Integer sortOrder;
+		protected java.lang.String buttonColor;
 		protected byte[] image;
 		protected java.lang.Boolean showImageOnly;
 
@@ -126,6 +132,23 @@ public abstract class BaseMenuItem  implements Comparable, Serializable {
 	 */
 	public void setName (java.lang.String name) {
 		this.name = name;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: TRANSLATED_NAME
+	 */
+	public java.lang.String getTranslatedName () {
+					return translatedName;
+			}
+
+	/**
+	 * Set the value related to the column: TRANSLATED_NAME
+	 * @param translatedName the TRANSLATED_NAME value
+	 */
+	public void setTranslatedName (java.lang.String translatedName) {
+		this.translatedName = translatedName;
 	}
 
 
@@ -220,6 +243,40 @@ public abstract class BaseMenuItem  implements Comparable, Serializable {
 	public static String getVisibleDefaultValue () {
 		return "true";
 	}
+
+
+	/**
+	 * Return the value associated with the column: SORT_ORDER
+	 */
+	public java.lang.Integer getSortOrder () {
+					return sortOrder == null ? Integer.valueOf(0) : sortOrder;
+			}
+
+	/**
+	 * Set the value related to the column: SORT_ORDER
+	 * @param sortOrder the SORT_ORDER value
+	 */
+	public void setSortOrder (java.lang.Integer sortOrder) {
+		this.sortOrder = sortOrder;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: BTN_COLOR
+	 */
+	public java.lang.String getButtonColor () {
+					return buttonColor;
+			}
+
+	/**
+	 * Set the value related to the column: BTN_COLOR
+	 * @param buttonColor the BTN_COLOR value
+	 */
+	public void setButtonColor (java.lang.String buttonColor) {
+		this.buttonColor = buttonColor;
+	}
+
 
 
 	/**
