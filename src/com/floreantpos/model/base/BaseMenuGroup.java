@@ -18,8 +18,11 @@ public abstract class BaseMenuGroup  implements Comparable, Serializable {
 	public static String REF = "MenuGroup";
 	public static String PROP_NAME = "name";
 	public static String PROP_PARENT = "parent";
+	public static String PROP_BUTTON_COLOR = "buttonColor";
 	public static String PROP_VISIBLE = "visible";
+	public static String PROP_SORT_ORDER = "sortOrder";
 	public static String PROP_ID = "id";
+	public static String PROP_TRANSLATED_NAME = "translatedName";
 
 
 	// constructors
@@ -58,7 +61,10 @@ public abstract class BaseMenuGroup  implements Comparable, Serializable {
 
 	// fields
 		protected java.lang.String name;
+		protected java.lang.String translatedName;
 		protected java.lang.Boolean visible;
+		protected java.lang.Integer sortOrder;
+		protected java.lang.Integer buttonColor;
 
 	// many to one
 	private com.floreantpos.model.MenuCategory parent;
@@ -105,6 +111,23 @@ public abstract class BaseMenuGroup  implements Comparable, Serializable {
 
 
 	/**
+	 * Return the value associated with the column: TRANSLATED_NAME
+	 */
+	public java.lang.String getTranslatedName () {
+					return translatedName;
+			}
+
+	/**
+	 * Set the value related to the column: TRANSLATED_NAME
+	 * @param translatedName the TRANSLATED_NAME value
+	 */
+	public void setTranslatedName (java.lang.String translatedName) {
+		this.translatedName = translatedName;
+	}
+
+
+
+	/**
 	 * Return the value associated with the column: VISIBLE
 	 */
 	public java.lang.Boolean isVisible () {
@@ -117,6 +140,40 @@ public abstract class BaseMenuGroup  implements Comparable, Serializable {
 	 */
 	public void setVisible (java.lang.Boolean visible) {
 		this.visible = visible;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: SORT_ORDER
+	 */
+	public java.lang.Integer getSortOrder () {
+					return sortOrder == null ? Integer.valueOf(0) : sortOrder;
+			}
+
+	/**
+	 * Set the value related to the column: SORT_ORDER
+	 * @param sortOrder the SORT_ORDER value
+	 */
+	public void setSortOrder (java.lang.Integer sortOrder) {
+		this.sortOrder = sortOrder;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: BTN_COLOR
+	 */
+	public java.lang.Integer getButtonColor () {
+					return buttonColor == null ? Integer.valueOf(0) : buttonColor;
+			}
+
+	/**
+	 * Set the value related to the column: BTN_COLOR
+	 * @param buttonColor the BTN_COLOR value
+	 */
+	public void setButtonColor (java.lang.Integer buttonColor) {
+		this.buttonColor = buttonColor;
 	}
 
 

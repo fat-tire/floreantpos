@@ -38,7 +38,8 @@
     <property column="DRAWER_ACCOUNTABLE" name="drawerAccountable" type="java.lang.Double"/>
     <property column="CASH_TO_DEPOSIT" name="cashToDeposit" type="java.lang.Double"/>
     <property column="VARIANCE" name="variance" type="java.lang.Double"/>
-    <set cascade="all" inverse="false" lazy="false" name="voidTickets">
+    
+    <set cascade="all" inverse="false" lazy="false" name="voidTickets" table="DRAWER_PULL_REPORT_VOIDTICKETS">
       <key column="DPREPORT_ID"/>
       <composite-element class="DrawerPullVoidTicketEntry">
         <property name="code" type="java.lang.Integer"/>

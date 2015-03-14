@@ -7,6 +7,8 @@
     </id>
     
     <property column="NAME" length="60" name="name" type="java.lang.String"/>
+    <property column="TRANSLATED_NAME" length="60" name="translatedName" not-null="false" type="java.lang.String" />
+    
     <property column="ENABLED" index="mg_enable" name="enable" type="java.lang.Boolean"/>
     <property column="EXCLUSIVED" name="exclusive" type="java.lang.Boolean"/>
     <property column="REQUIRED" name="required" type="java.lang.Boolean"/>

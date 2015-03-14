@@ -18,8 +18,11 @@ public abstract class BaseMenuCategory  implements Comparable, Serializable {
 	public static String REF = "MenuCategory";
 	public static String PROP_NAME = "name";
 	public static String PROP_BEVERAGE = "beverage";
+	public static String PROP_BUTTON_COLOR = "buttonColor";
 	public static String PROP_VISIBLE = "visible";
+	public static String PROP_SORT_ORDER = "sortOrder";
 	public static String PROP_ID = "id";
+	public static String PROP_TRANSLATED_NAME = "translatedName";
 
 
 	// constructors
@@ -58,11 +61,14 @@ public abstract class BaseMenuCategory  implements Comparable, Serializable {
 
 	// fields
 		protected java.lang.String name;
+		protected java.lang.String translatedName;
 		protected java.lang.Boolean visible;
 		protected java.lang.Boolean beverage;
+		protected java.lang.Integer sortOrder;
+		protected java.lang.Integer buttonColor;
 
 	// collections
-	private java.util.Set<com.floreantpos.model.MenuGroup> menuGroups;
+	private java.util.List<com.floreantpos.model.MenuGroup> menuGroups;
 
 
 
@@ -106,6 +112,23 @@ public abstract class BaseMenuCategory  implements Comparable, Serializable {
 
 
 	/**
+	 * Return the value associated with the column: TRANSLATED_NAME
+	 */
+	public java.lang.String getTranslatedName () {
+					return translatedName;
+			}
+
+	/**
+	 * Set the value related to the column: TRANSLATED_NAME
+	 * @param translatedName the TRANSLATED_NAME value
+	 */
+	public void setTranslatedName (java.lang.String translatedName) {
+		this.translatedName = translatedName;
+	}
+
+
+
+	/**
 	 * Return the value associated with the column: VISIBLE
 	 */
 	public java.lang.Boolean isVisible () {
@@ -140,9 +163,43 @@ public abstract class BaseMenuCategory  implements Comparable, Serializable {
 
 
 	/**
+	 * Return the value associated with the column: SORT_ORDER
+	 */
+	public java.lang.Integer getSortOrder () {
+					return sortOrder == null ? Integer.valueOf(0) : sortOrder;
+			}
+
+	/**
+	 * Set the value related to the column: SORT_ORDER
+	 * @param sortOrder the SORT_ORDER value
+	 */
+	public void setSortOrder (java.lang.Integer sortOrder) {
+		this.sortOrder = sortOrder;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: BTN_COLOR
+	 */
+	public java.lang.Integer getButtonColor () {
+					return buttonColor;
+			}
+
+	/**
+	 * Set the value related to the column: BTN_COLOR
+	 * @param buttonColor the BTN_COLOR value
+	 */
+	public void setButtonColor (java.lang.Integer buttonColor) {
+		this.buttonColor = buttonColor;
+	}
+
+
+
+	/**
 	 * Return the value associated with the column: menuGroups
 	 */
-	public java.util.Set<com.floreantpos.model.MenuGroup> getMenuGroups () {
+	public java.util.List<com.floreantpos.model.MenuGroup> getMenuGroups () {
 					return menuGroups;
 			}
 
@@ -150,12 +207,12 @@ public abstract class BaseMenuCategory  implements Comparable, Serializable {
 	 * Set the value related to the column: menuGroups
 	 * @param menuGroups the menuGroups value
 	 */
-	public void setMenuGroups (java.util.Set<com.floreantpos.model.MenuGroup> menuGroups) {
+	public void setMenuGroups (java.util.List<com.floreantpos.model.MenuGroup> menuGroups) {
 		this.menuGroups = menuGroups;
 	}
 
 	public void addTomenuGroups (com.floreantpos.model.MenuGroup menuGroup) {
-		if (null == getMenuGroups()) setMenuGroups(new java.util.TreeSet<com.floreantpos.model.MenuGroup>());
+		if (null == getMenuGroups()) setMenuGroups(new java.util.ArrayList<com.floreantpos.model.MenuGroup>());
 		getMenuGroups().add(menuGroup);
 	}
 
