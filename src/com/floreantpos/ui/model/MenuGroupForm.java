@@ -19,6 +19,11 @@ import com.floreantpos.swing.MessageDialog;
 import com.floreantpos.ui.BeanEditor;
 import com.floreantpos.ui.dialog.BeanEditorDialog;
 import com.floreantpos.util.POSUtil;
+import net.miginfocom.swing.MigLayout;
+import javax.swing.JLabel;
+import com.floreantpos.swing.FixedLengthTextField;
+import com.floreantpos.swing.IntegerTextField;
+import javax.swing.JButton;
 
 /**
  *
@@ -41,6 +46,32 @@ public class MenuGroupForm extends BeanEditor {
         cbCategory.setModel(new ComboBoxModel(foodCategories));
         
         setBean(foodGroup);
+        setLayout(new MigLayout("", "[70px][289px,grow][6px][49px]", "[19px][][25px][][][15px]"));
+        
+        lblTranslatedName = new JLabel("Translated name");
+        add(lblTranslatedName, "cell 0 1,alignx trailing");
+        
+        tfTranslatedName = new FixedLengthTextField();
+        add(tfTranslatedName, "cell 1 1,growx");
+        add(jLabel2, "cell 0 2,alignx left,aligny center");
+        add(jLabel1, "cell 0 0,alignx left,aligny center");
+        add(tfName, "cell 1 0 3 1,growx,aligny top");
+        
+        lblSortOrder = new JLabel("Sort order");
+        add(lblSortOrder, "cell 0 3,alignx leading");
+        
+        tfSortOrder = new IntegerTextField();
+        tfSortOrder.setColumns(6);
+        add(tfSortOrder, "cell 1 3");
+        
+        lblButtonColor = new JLabel("Button color");
+        add(lblButtonColor, "cell 0 4");
+        
+        btnButtonColor = new JButton("");
+        add(btnButtonColor, "cell 1 4,grow");
+        add(chkVisible, "cell 1 5,alignx left,aligny top");
+        add(cbCategory, "cell 1 2,growx,aligny top");
+        add(btnNewCategory, "cell 3 2,alignx left,aligny top");
     }
     
     /** This method is called from within the constructor to
@@ -71,42 +102,6 @@ public class MenuGroupForm extends BeanEditor {
                 doNewCategory(evt);
             }
         });
-
-        org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(layout.createSequentialGroup()
-                .addContainerGap()
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(jLabel2)
-                    .add(jLabel1))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(tfName, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 295, Short.MAX_VALUE)
-                    .add(chkVisible)
-                    .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
-                        .add(cbCategory, 0, 242, Short.MAX_VALUE)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(btnNewCategory)))
-                .addContainerGap())
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(layout.createSequentialGroup()
-                .addContainerGap()
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(jLabel1)
-                    .add(tfName, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(jLabel2)
-                    .add(btnNewCategory)
-                    .add(cbCategory, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(chkVisible)
-                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
     }// </editor-fold>//GEN-END:initComponents
 
     private void doNewCategory(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_doNewCategory
@@ -133,6 +128,12 @@ public class MenuGroupForm extends BeanEditor {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private com.floreantpos.swing.FixedLengthTextField tfName;
+    private JLabel lblTranslatedName;
+    private FixedLengthTextField tfTranslatedName;
+    private JLabel lblSortOrder;
+    private JLabel lblButtonColor;
+    private IntegerTextField tfSortOrder;
+    private JButton btnButtonColor;
     // End of variables declaration//GEN-END:variables
 	@Override
 	public boolean save() {

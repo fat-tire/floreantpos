@@ -3,19 +3,26 @@
  */
 package com.floreantpos.swing;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
 import javax.swing.AbstractButton;
+import javax.swing.BorderFactory;
 import javax.swing.JComponent;
+import javax.swing.UIManager;
+import javax.swing.border.Border;
 import javax.swing.plaf.ComponentUI;
 
 import com.jgoodies.looks.plastic.PlasticToggleButtonUI;
 
 public class POSToggleButtonUI extends PlasticToggleButtonUI {
 	private static final POSToggleButtonUI INSTANCE = new POSToggleButtonUI();
+	
+	private final static Border pressedBorder = BorderFactory.createStrokeBorder(new BasicStroke(5.0f));
+	private final static Border defaultBorder = UIManager.getBorder("Button.border");
 
 	public static ComponentUI createUI(JComponent b) {
 		return INSTANCE;
@@ -46,14 +53,16 @@ public class POSToggleButtonUI extends PlasticToggleButtonUI {
 				}
 			}
 		}
+		c.setBorder(defaultBorder);
 		paint(g, c);
 	}
 
 	protected void paintButtonPressed(Graphics g, AbstractButton b) {
 		if (b.isContentAreaFilled()) {
-			Color background = b.getBackground().darker();
+			Color background = b.getBackground();
 			g.setColor(background);
 			g.fillRect(0, 0, b.getWidth(), b.getHeight());
+			b.setBorder(pressedBorder);
 		}
 	}
 }
