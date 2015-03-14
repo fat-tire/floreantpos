@@ -110,7 +110,7 @@ public class GroupView extends SelectionView {
 		GroupButton(MenuGroup foodGroup) {
 			this.foodGroup = foodGroup;
 			
-			setText("<html><body><center>" + foodGroup.getName() + "</center></body></html>");
+			setText("<html><body><center>" + foodGroup.getDisplayName() + "</center></body></html>");
 			addActionListener(this);
 		}
 

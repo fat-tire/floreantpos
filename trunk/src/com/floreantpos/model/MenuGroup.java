@@ -37,8 +37,7 @@ public class MenuGroup extends BaseMenuGroup {
 
 	/*[CONSTRUCTOR MARKER END]*/
 	
-	@Override
-	public String getName() {
+	public String getDisplayName() {
 		if(TerminalConfig.isUseTranslatedName() && StringUtils.isNotEmpty(getTranslatedName())) {
 			return getTranslatedName();
 		}
