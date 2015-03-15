@@ -258,7 +258,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
         jPanel1.add(tfTranslatedName, "cell 1 1 3 1,growx");
         
         lblSortOrder = new JLabel(Messages.getString("MenuItemForm.lblSortOrder.text")); //$NON-NLS-1$
-        jPanel1.add(lblSortOrder, "cell 0 2,alignx trailing");
+        jPanel1.add(lblSortOrder, "cell 0 2");
         
         tfSortOrder = new IntegerTextField();
         tfSortOrder.setColumns(10);
