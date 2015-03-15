@@ -14,6 +14,7 @@
 		<property column="BEVERAGE" name="beverage" type="java.lang.Boolean" />
 		<property column="SORT_ORDER" name="sortOrder" type="java.lang.Integer" />
 		<property column="BTN_COLOR" name="buttonColor" type="java.lang.Integer" />
+		<property column="TEXT_COLOR" name="textColor" type="java.lang.Integer" />
 
 		<!-- Associations -->
 		<bag cascade="none" inverse="true" lazy="false" name="menuGroups">
