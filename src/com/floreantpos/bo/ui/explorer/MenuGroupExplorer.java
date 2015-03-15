@@ -1,6 +1,7 @@
 package com.floreantpos.bo.ui.explorer;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
@@ -10,6 +11,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 
+import com.floreantpos.POSConstants;
 import com.floreantpos.bo.ui.BOMessageDialog;
 import com.floreantpos.bo.ui.BackOfficeWindow;
 import com.floreantpos.model.MenuGroup;
@@ -20,13 +22,13 @@ import com.floreantpos.ui.dialog.BeanEditorDialog;
 import com.floreantpos.ui.dialog.ConfirmDeleteDialog;
 import com.floreantpos.ui.model.MenuGroupForm;
 
-public class GroupExplorer extends TransparentPanel {
+public class MenuGroupExplorer extends TransparentPanel {
 	private List<MenuGroup> groupList;
 
 	private JTable table;
 	private GroupExplorerTableModel tableModel;
 
-	public GroupExplorer() {
+	public MenuGroupExplorer() {
 		MenuGroupDAO dao = new MenuGroupDAO();
 		groupList = dao.findAll();
 
@@ -58,7 +60,7 @@ public class GroupExplorer extends TransparentPanel {
 						return;
 					table.repaint();
 				} catch (Exception x) {
-				BOMessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
+				BOMessageDialog.showError(POSConstants.ERROR_MESSAGE, x);
 				}
 			}
 
@@ -75,7 +77,7 @@ public class GroupExplorer extends TransparentPanel {
 					MenuGroup foodGroup = (MenuGroup) editor.getBean();
 					tableModel.addGroup(foodGroup);
 				} catch (Exception x) {
-				BOMessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
+				BOMessageDialog.showError(POSConstants.ERROR_MESSAGE, x);
 				}
 			}
 
@@ -87,14 +89,14 @@ public class GroupExplorer extends TransparentPanel {
 					int index = table.getSelectedRow();
 					if (index < 0)
 						return;
-					if (ConfirmDeleteDialog.showMessage(GroupExplorer.this, com.floreantpos.POSConstants.CONFIRM_DELETE, com.floreantpos.POSConstants.DELETE) != ConfirmDeleteDialog.NO) {
+					if (ConfirmDeleteDialog.showMessage(MenuGroupExplorer.this, POSConstants.CONFIRM_DELETE, POSConstants.DELETE) != ConfirmDeleteDialog.NO) {
 						MenuGroup category = groupList.get(index);
 						MenuGroupDAO foodGroupDAO = new MenuGroupDAO();
 						foodGroupDAO.delete(category);
 						tableModel.deleteGroup(category, index);
 					}
 				} catch (Exception x) {
-				BOMessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
+				BOMessageDialog.showError(POSConstants.ERROR_MESSAGE, x);
 				}
 			}
 
@@ -109,7 +111,8 @@ public class GroupExplorer extends TransparentPanel {
 	}
 
 	class GroupExplorerTableModel extends AbstractTableModel {
-		String[] columnNames = { com.floreantpos.POSConstants.ID, com.floreantpos.POSConstants.NAME, com.floreantpos.POSConstants.VISIBLE, com.floreantpos.POSConstants.MENU_CATEGORY };
+		String[] columnNames = { POSConstants.ID, POSConstants.NAME, POSConstants.TRANSLATED_NAME,
+				POSConstants.VISIBLE, POSConstants.MENU_CATEGORY, POSConstants.SORT_ORDER, POSConstants.BUTTON_COLOR };
 
 		public int getRowCount() {
 			if (groupList == null) {
@@ -119,7 +122,7 @@ public class GroupExplorer extends TransparentPanel {
 		}
 
 		public int getColumnCount() {
-			return 4;
+			return columnNames.length;
 		}
 
 		@Override
@@ -136,20 +139,33 @@ public class GroupExplorer extends TransparentPanel {
 			if (groupList == null)
 				return ""; //$NON-NLS-1$
 
-			MenuGroup category = groupList.get(rowIndex);
+			MenuGroup group = groupList.get(rowIndex);
 
 			switch (columnIndex) {
 				case 0:
-					return String.valueOf(category.getId());
+					return String.valueOf(group.getId());
 
 				case 1:
-					return category.getName();
-
+					return group.getName();
+					
 				case 2:
-					return Boolean.valueOf(category.isVisible());
+					return group.getTranslatedName();
 
 				case 3:
-					return category.getParent().getDisplayName();
+					return Boolean.valueOf(group.isVisible());
+
+				case 4:
+					return group.getParent().getDisplayName();
+					
+				case 5:
+					return group.getSortOrder();
+					
+				case 6:
+					if(group.getButtonColor() != null) {
+						return new Color(group.getButtonColor());
+					}
+					
+					return null;
 			}
 			return null;
 		}

@@ -44,6 +44,21 @@ public class MenuItem extends BaseMenuItem {
 
 	/*[CONSTRUCTOR MARKER END]*/
 	
+	@Override
+	public Integer getSortOrder() {
+		return sortOrder == null ? Integer.MAX_VALUE : sortOrder;
+	}
+	
+	@Override
+	public Integer getButtonColor() {
+		return buttonColor;
+	}
+	
+	@Override
+	public Integer getTextColor() {
+		return textColor;
+	}
+	
 	public String getDisplayName() {
 		if(TerminalConfig.isUseTranslatedName() && StringUtils.isNotEmpty(getTranslatedName())) {
 			return getTranslatedName();

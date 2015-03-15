@@ -82,7 +82,7 @@ public abstract class BaseMenuItem  implements Comparable, Serializable {
 		protected java.lang.Double discountRate;
 		protected java.lang.Boolean visible;
 		protected java.lang.Integer sortOrder;
-		protected java.lang.String buttonColor;
+		protected java.lang.Integer buttonColor;
 		protected java.lang.Integer textColor;
 		protected byte[] image;
 		protected java.lang.Boolean showImageOnly;
@@ -267,15 +267,15 @@ public abstract class BaseMenuItem  implements Comparable, Serializable {
 	/**
 	 * Return the value associated with the column: BTN_COLOR
 	 */
-	public java.lang.String getButtonColor () {
-					return buttonColor;
+	public java.lang.Integer getButtonColor () {
+					return buttonColor == null ? Integer.valueOf(0) : buttonColor;
 			}
 
 	/**
 	 * Set the value related to the column: BTN_COLOR
 	 * @param buttonColor the BTN_COLOR value
 	 */
-	public void setButtonColor (java.lang.String buttonColor) {
+	public void setButtonColor (java.lang.Integer buttonColor) {
 		this.buttonColor = buttonColor;
 	}
 
