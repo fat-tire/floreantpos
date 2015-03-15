@@ -3,7 +3,6 @@
  */
 package com.floreantpos.swing;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
@@ -21,7 +20,7 @@ import com.jgoodies.looks.plastic.PlasticToggleButtonUI;
 public class POSToggleButtonUI extends PlasticToggleButtonUI {
 	private static final POSToggleButtonUI INSTANCE = new POSToggleButtonUI();
 	
-	private final static Border pressedBorder = BorderFactory.createStrokeBorder(new BasicStroke(5.0f));
+	private final static Border pressedBorder = BorderFactory.createLineBorder(Color.black, 5);
 	private final static Border defaultBorder = UIManager.getBorder("Button.border");
 
 	public static ComponentUI createUI(JComponent b) {

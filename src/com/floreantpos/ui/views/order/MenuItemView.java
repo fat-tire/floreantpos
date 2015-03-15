@@ -6,6 +6,7 @@
 
 package com.floreantpos.ui.views.order;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -106,31 +107,38 @@ public class MenuItemView extends SelectionView {
 		private static final int BUTTON_SIZE = 100;
 		MenuItem foodItem;
 
-		ItemButton(MenuItem foodItem) {
-			this.foodItem = foodItem;
+		ItemButton(MenuItem menuItem) {
+			this.foodItem = menuItem;
 			setVerticalTextPosition(SwingConstants.BOTTOM);
 			setHorizontalTextPosition(SwingConstants.CENTER);
 			
-			if(foodItem.getImage() != null) {
+			if(menuItem.getImage() != null) {
 				int w = BUTTON_SIZE - 10;
 				int h = BUTTON_SIZE - 10;
 				
-				if(foodItem.isShowImageOnly()) {
-					ImageIcon imageIcon = new ImageIcon(new ImageIcon(foodItem.getImage()).getImage().getScaledInstance(w, h, Image.SCALE_SMOOTH));
+				if(menuItem.isShowImageOnly()) {
+					ImageIcon imageIcon = new ImageIcon(new ImageIcon(menuItem.getImage()).getImage().getScaledInstance(w, h, Image.SCALE_SMOOTH));
 					setIcon(imageIcon);
 				}
 				else {
 					w = 80;
 					h = 80;
 					
-					ImageIcon imageIcon = new ImageIcon(new ImageIcon(foodItem.getImage()).getImage().getScaledInstance(w, h, Image.SCALE_SMOOTH));
+					ImageIcon imageIcon = new ImageIcon(new ImageIcon(menuItem.getImage()).getImage().getScaledInstance(w, h, Image.SCALE_SMOOTH));
 					setIcon(imageIcon);
-					setText("<html><body><center>" + foodItem.getName() + "</center></body></html>");
+					setText("<html><body><center>" + menuItem.getName() + "</center></body></html>");
 				}
 				
 			}
 			else {
-				setText("<html><body><center>" + foodItem.getName() + "</center></body></html>");
+				setText("<html><body><center>" + menuItem.getName() + "</center></body></html>");
+			}
+			
+			if(menuItem.getButtonColor() != null) {
+				setBackground(new Color(menuItem.getButtonColor()));
+			}
+			if(menuItem.getTextColor() != null) {
+				setForeground(new Color(menuItem.getTextColor()));
 			}
 			
 			setPreferredSize(new Dimension(BUTTON_SIZE, BUTTON_SIZE));

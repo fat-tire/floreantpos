@@ -13,6 +13,7 @@ import javax.swing.table.AbstractTableModel;
 
 import org.jdesktop.swingx.JXTable;
 
+import com.floreantpos.POSConstants;
 import com.floreantpos.bo.ui.BOMessageDialog;
 import com.floreantpos.bo.ui.BackOfficeWindow;
 import com.floreantpos.model.MenuCategory;
@@ -23,14 +24,14 @@ import com.floreantpos.ui.dialog.BeanEditorDialog;
 import com.floreantpos.ui.dialog.ConfirmDeleteDialog;
 import com.floreantpos.ui.model.MenuCategoryForm;
 
-public class CategoryExplorer extends TransparentPanel {
+public class MenuCategoryExplorer extends TransparentPanel {
 	private List<MenuCategory> categoryList;
 	
 	private JTable table;
 
 	private CategoryExplorerTableModel tableModel;
 	
-	public CategoryExplorer() {
+	public MenuCategoryExplorer() {
 		MenuCategoryDAO dao = new MenuCategoryDAO();
 		categoryList = dao.findAll();
 		
@@ -41,7 +42,7 @@ public class CategoryExplorer extends TransparentPanel {
 		setLayout(new BorderLayout(5,5));
 		add(new JScrollPane(table));
 		
-		JButton addButton = new JButton(com.floreantpos.POSConstants.ADD);
+		JButton addButton = new JButton(POSConstants.ADD);
 		addButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -57,13 +58,13 @@ public class CategoryExplorer extends TransparentPanel {
 					tableModel.addCategory(foodCategory);
 					
 				} catch (Exception x) {
-					BOMessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
+					BOMessageDialog.showError(POSConstants.ERROR_MESSAGE, x);
 				}
 			}
 			
 		});
 		
-		JButton editButton = new JButton(com.floreantpos.POSConstants.EDIT);
+		JButton editButton = new JButton(POSConstants.EDIT);
 		editButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -82,12 +83,12 @@ public class CategoryExplorer extends TransparentPanel {
 
 					table.repaint();
 				} catch (Throwable x) {
-					BOMessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
+					BOMessageDialog.showError(POSConstants.ERROR_MESSAGE, x);
 				}
 			}
 			
 		});
-		JButton deleteButton = new JButton(com.floreantpos.POSConstants.DELETE);
+		JButton deleteButton = new JButton(POSConstants.DELETE);
 		deleteButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -96,14 +97,14 @@ public class CategoryExplorer extends TransparentPanel {
 						return;
 
 					index = table.convertRowIndexToModel(index);
-					if (ConfirmDeleteDialog.showMessage(CategoryExplorer.this, com.floreantpos.POSConstants.CONFIRM_DELETE, com.floreantpos.POSConstants.DELETE) == ConfirmDeleteDialog.YES) {
+					if (ConfirmDeleteDialog.showMessage(MenuCategoryExplorer.this, POSConstants.CONFIRM_DELETE, POSConstants.DELETE) == ConfirmDeleteDialog.YES) {
 						MenuCategory category = categoryList.get(index);
 						MenuCategoryDAO dao = new MenuCategoryDAO();
 						dao.delete(category);
 						tableModel.deleteCategory(category, index);
 					}
 				} catch (Exception x) {
-					BOMessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
+					BOMessageDialog.showError(POSConstants.ERROR_MESSAGE, x);
 				}
 			}
 			
@@ -117,9 +118,9 @@ public class CategoryExplorer extends TransparentPanel {
 	}
 	
 	class CategoryExplorerTableModel extends AbstractTableModel {
-		String[] columnNames = {com.floreantpos.POSConstants.ID, com.floreantpos.POSConstants.NAME, 
-				"Translated Name", com.floreantpos.POSConstants.BEVERAGE, 
-				com.floreantpos.POSConstants.VISIBLE, "Sort Order", "Button Color"
+		String[] columnNames = {POSConstants.ID, POSConstants.NAME, 
+				POSConstants.TRANSLATED_NAME, POSConstants.BEVERAGE, 
+				POSConstants.VISIBLE, POSConstants.SORT_ORDER, POSConstants.BUTTON_COLOR
 		};
 		
 		public int getRowCount() {

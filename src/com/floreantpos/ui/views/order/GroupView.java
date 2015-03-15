@@ -6,6 +6,7 @@
 
 package com.floreantpos.ui.views.order;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
@@ -105,17 +106,25 @@ public class GroupView extends SelectionView {
 	
 	
 	private class GroupButton extends PosButton implements ActionListener {
-		MenuGroup foodGroup;
+		MenuGroup menuGroup;
 		
 		GroupButton(MenuGroup foodGroup) {
-			this.foodGroup = foodGroup;
+			this.menuGroup = foodGroup;
 			
 			setText("<html><body><center>" + foodGroup.getDisplayName() + "</center></body></html>");
+			
+			if(menuGroup.getButtonColor() != null) {
+				setBackground(new Color(menuGroup.getButtonColor()));
+			}
+			if(menuGroup.getTextColor() != null) {
+				setForeground(new Color(menuGroup.getTextColor()));
+			}
+			
 			addActionListener(this);
 		}
 
 		public void actionPerformed(ActionEvent e) {
-			fireGroupSelected(foodGroup);
+			fireGroupSelected(menuGroup);
 		}
 	}
 

@@ -184,6 +184,9 @@ public class POSConstants {
 	public static final String DATE_TIME = Messages.getString("PosMessage.177"); //$NON-NLS-1$
 	public static final String TAX = Messages.getString("PosMessage.178"); //$NON-NLS-1$
 	public static final String NAME = Messages.getString("PosMessage.179"); //$NON-NLS-1$
+	public static final String TRANSLATED_NAME = Messages.getString("Translated_Name"); //$NON-NLS-1$
+	public static final String SORT_ORDER = Messages.getString("SORT_ORDER"); //$NON-NLS-1$
+	public static final String BUTTON_COLOR = Messages.getString("BUTTON_COLOR"); //$NON-NLS-1$
 	public static final String EDIT_MENU_CATEGORY = Messages.getString("PosMessage.180"); //$NON-NLS-1$
 	public static final String DESCRIPTION = Messages.getString("PosMessage.181"); //$NON-NLS-1$
 	public static final String INVALID_AMOUNT = Messages.getString("PosMessage.182"); //$NON-NLS-1$

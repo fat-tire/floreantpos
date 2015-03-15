@@ -7,7 +7,7 @@ import javax.swing.Icon;
 import javax.swing.JTabbedPane;
 
 import com.floreantpos.bo.ui.BackOfficeWindow;
-import com.floreantpos.bo.ui.explorer.GroupExplorer;
+import com.floreantpos.bo.ui.explorer.MenuGroupExplorer;
 
 public class GroupExplorerAction extends AbstractAction {
 
@@ -26,15 +26,15 @@ public class GroupExplorerAction extends AbstractAction {
 	public void actionPerformed(ActionEvent e) {
 		BackOfficeWindow backOfficeWindow = BackOfficeWindow.getInstance();
 		JTabbedPane tabbedPane;
-		GroupExplorer group;
+		MenuGroupExplorer group;
 		tabbedPane = backOfficeWindow.getTabbedPane();
 		int index = tabbedPane.indexOfTab(com.floreantpos.POSConstants.GROUP_EXPLORER);
 		if (index == -1) {
-			group = new GroupExplorer();
+			group = new MenuGroupExplorer();
 			tabbedPane.addTab(com.floreantpos.POSConstants.GROUP_EXPLORER, group);
 		}
 		else {
-			group = (GroupExplorer) tabbedPane.getComponentAt(index);
+			group = (MenuGroupExplorer) tabbedPane.getComponentAt(index);
 		}
 		tabbedPane.setSelectedComponent(group);
 
