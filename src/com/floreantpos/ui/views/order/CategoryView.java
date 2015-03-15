@@ -110,6 +110,9 @@ public class CategoryView extends SelectionView implements ActionListener {
 			if(menuCategory.getButtonColor() != null) {
 				setBackground(new Color(menuCategory.getButtonColor()));
 			}
+			if(menuCategory.getTextColor() != null) {
+				setForeground(new Color(menuCategory.getTextColor()));
+			}
 			
 			addActionListener(view);
 		}

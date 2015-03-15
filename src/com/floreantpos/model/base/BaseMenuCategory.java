@@ -23,6 +23,7 @@ public abstract class BaseMenuCategory  implements Comparable, Serializable {
 	public static String PROP_SORT_ORDER = "sortOrder";
 	public static String PROP_ID = "id";
 	public static String PROP_TRANSLATED_NAME = "translatedName";
+	public static String PROP_TEXT_COLOR = "textColor";
 
 
 	// constructors
@@ -66,6 +67,7 @@ public abstract class BaseMenuCategory  implements Comparable, Serializable {
 		protected java.lang.Boolean beverage;
 		protected java.lang.Integer sortOrder;
 		protected java.lang.Integer buttonColor;
+		protected java.lang.Integer textColor;
 
 	// collections
 	private java.util.List<com.floreantpos.model.MenuGroup> menuGroups;
@@ -166,7 +168,7 @@ public abstract class BaseMenuCategory  implements Comparable, Serializable {
 	 * Return the value associated with the column: SORT_ORDER
 	 */
 	public java.lang.Integer getSortOrder () {
-					return sortOrder == null ? Integer.valueOf(0) : sortOrder;
+					return sortOrder == null ? Integer.MAX_VALUE : sortOrder;
 			}
 
 	/**
@@ -183,7 +185,7 @@ public abstract class BaseMenuCategory  implements Comparable, Serializable {
 	 * Return the value associated with the column: BTN_COLOR
 	 */
 	public java.lang.Integer getButtonColor () {
-					return buttonColor;
+					return buttonColor == null ? Integer.valueOf(0) : buttonColor;
 			}
 
 	/**
@@ -192,6 +194,23 @@ public abstract class BaseMenuCategory  implements Comparable, Serializable {
 	 */
 	public void setButtonColor (java.lang.Integer buttonColor) {
 		this.buttonColor = buttonColor;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: TEXT_COLOR
+	 */
+	public java.lang.Integer getTextColor () {
+					return textColor == null ? Integer.valueOf(0) : textColor;
+			}
+
+	/**
+	 * Set the value related to the column: TEXT_COLOR
+	 * @param textColor the TEXT_COLOR value
+	 */
+	public void setTextColor (java.lang.Integer textColor) {
+		this.textColor = textColor;
 	}
 
 

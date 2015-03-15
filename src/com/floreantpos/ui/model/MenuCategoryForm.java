@@ -39,14 +39,6 @@ public class MenuCategoryForm extends BeanEditor {
 	public MenuCategoryForm(MenuCategory category) throws Exception {
 		initComponents();
 
-		btnColor.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				Color color = JColorChooser.showDialog(MenuCategoryForm.this, "Select color", btnColor.getBackground());
-				btnColor.setBackground(color);
-			}
-		});
-
 		setBean(category);
 	}
 
@@ -85,14 +77,14 @@ public class MenuCategoryForm extends BeanEditor {
 		lblSortOrder = new JLabel("Sort order");
 
 		tfSortOrder = new IntegerTextField();
-		tfSortOrder.setColumns(5);
+		tfSortOrder.setColumns(10);
 
 		lblButtonColor = new JLabel("Button color");
 
-		btnColor = new JButton();
-		btnColor.setPreferredSize(new Dimension(120, 10));
+		btnButtonColor = new JButton();
+		btnButtonColor.setPreferredSize(new Dimension(140, 40));
 		
-		setLayout(new MigLayout("", "[87px][327px,grow]", "[19px][][19px][25px][21px][15px]"));
+		setLayout(new MigLayout("", "[87px][327px,grow]", "[19px][][19px][][][21px][15px]"));
 		add(jLabel1, "cell 0 0,alignx left,aligny center");
 		
 		lblTranslatedName = new JLabel("Translated name");
@@ -105,9 +97,34 @@ public class MenuCategoryForm extends BeanEditor {
 		add(lblButtonColor, "cell 0 3,alignx left,growy");
 		add(tfName, "cell 1 0,growx,aligny top");
 		add(tfSortOrder, "cell 1 2,alignx left,aligny top");
-		add(chkBeverage, "cell 1 4,alignx left,growy");
-		add(chkVisible, "cell 1 5,alignx left,aligny top");
-		add(btnColor, "cell 1 3,alignx left,growy");
+		
+		lblTextColor = new JLabel("Text color");
+		add(lblTextColor, "cell 0 4");
+		
+		btnTextColor = new JButton();
+		btnTextColor.setText("SAMPLE TEXT");
+		btnTextColor.setPreferredSize(new Dimension(140, 40));
+		add(btnTextColor, "cell 1 4,growy");
+		add(chkBeverage, "cell 1 5,alignx left,growy");
+		add(chkVisible, "cell 1 6,alignx left,aligny top");
+		add(btnButtonColor, "cell 1 3,alignx left,growy");
+		
+		btnButtonColor.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Color color = JColorChooser.showDialog(MenuCategoryForm.this, "Select color", btnButtonColor.getBackground());
+				btnButtonColor.setBackground(color);
+				btnTextColor.setBackground(color);
+			}
+		});
+		
+		btnTextColor.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Color color = JColorChooser.showDialog(MenuCategoryForm.this, "Select color", btnTextColor.getForeground());
+				btnTextColor.setForeground(color);
+			}
+		});
 	}// </editor-fold>//GEN-END:initComponents
 
 	protected void updateView() {
@@ -133,7 +150,13 @@ public class MenuCategoryForm extends BeanEditor {
 
 		if (menuCategory.getButtonColor() != null) {
 			Color color = new Color(menuCategory.getButtonColor());
-			btnColor.setBackground(color);
+			btnButtonColor.setBackground(color);
+			btnTextColor.setBackground(color);
+		}
+		
+		if(menuCategory.getTextColor() != null) {
+			Color color = new Color(menuCategory.getTextColor());
+			btnTextColor.setForeground(color);
 		}
 		
 		chkBeverage.setSelected(menuCategory.isBeverage());
@@ -161,10 +184,8 @@ public class MenuCategoryForm extends BeanEditor {
 		menuCategory.setTranslatedName(tfTranslatedName.getText());
 		menuCategory.setSortOrder(tfSortOrder.getInteger());
 
-		Color color = btnColor.getBackground();
-		if (color != null) {
-			menuCategory.setButtonColor(color.getRGB());
-		}
+		menuCategory.setButtonColor(btnButtonColor.getBackground().getRGB());
+		menuCategory.setTextColor(btnTextColor.getForeground().getRGB());
 		
 		menuCategory.setBeverage(chkBeverage.isSelected());
 		menuCategory.setVisible(chkVisible.isSelected());
@@ -178,11 +199,13 @@ public class MenuCategoryForm extends BeanEditor {
 	private javax.swing.JLabel jLabel1;
 	private com.floreantpos.swing.FixedLengthTextField tfName;
 	private IntegerTextField tfSortOrder;
-	private JButton btnColor;
+	private JButton btnButtonColor;
 	private JLabel lblSortOrder;
 	private JLabel lblButtonColor;
 	private JLabel lblTranslatedName;
 	private FixedLengthTextField tfTranslatedName;
+	private JLabel lblTextColor;
+	private JButton btnTextColor;
 
 	// End of variables declaration//GEN-END:variables
 	@Override

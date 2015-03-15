@@ -17,13 +17,14 @@ public abstract class BaseMenuItem  implements Comparable, Serializable {
 
 	public static String REF = "MenuItem";
 	public static String PROP_BUY_PRICE = "buyPrice";
-	public static String PROP_BARCODE = "barcode";
 	public static String PROP_PARENT = "parent";
+	public static String PROP_BARCODE = "barcode";
 	public static String PROP_VISIBLE = "visible";
 	public static String PROP_SHOW_IMAGE_ONLY = "showImageOnly";
 	public static String PROP_DISCOUNT_RATE = "discountRate";
 	public static String PROP_SORT_ORDER = "sortOrder";
 	public static String PROP_TAX = "tax";
+	public static String PROP_TEXT_COLOR = "textColor";
 	public static String PROP_NAME = "name";
 	public static String PROP_BUTTON_COLOR = "buttonColor";
 	public static String PROP_RECEPIE = "recepie";
@@ -82,6 +83,7 @@ public abstract class BaseMenuItem  implements Comparable, Serializable {
 		protected java.lang.Boolean visible;
 		protected java.lang.Integer sortOrder;
 		protected java.lang.String buttonColor;
+		protected java.lang.Integer textColor;
 		protected byte[] image;
 		protected java.lang.Boolean showImageOnly;
 
@@ -275,6 +277,23 @@ public abstract class BaseMenuItem  implements Comparable, Serializable {
 	 */
 	public void setButtonColor (java.lang.String buttonColor) {
 		this.buttonColor = buttonColor;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: TEXT_COLOR
+	 */
+	public java.lang.Integer getTextColor () {
+					return textColor == null ? Integer.valueOf(0) : textColor;
+			}
+
+	/**
+	 * Set the value related to the column: TEXT_COLOR
+	 * @param textColor the TEXT_COLOR value
+	 */
+	public void setTextColor (java.lang.Integer textColor) {
+		this.textColor = textColor;
 	}
 
 
