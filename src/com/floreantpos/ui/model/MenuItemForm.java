@@ -248,7 +248,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		btnDeleteShift.addActionListener(this);
 		
 		tfDiscountRate.setDocument(new DoubleDocument());
-        jPanel1.setLayout(new MigLayout("", "[104px][100px,grow][][49px]", "[19px][][][][25px][][19px][19px][][][25px][][][][15px]"));
+        jPanel1.setLayout(new MigLayout("", "[104px][100px,grow][][49px]", "[19px][][][][25px][][19px][19px][25px][][][][][][15px]"));
         
         lblTranslatedName = new JLabel(Messages.getString("MenuItemForm.lblTranslatedName.text")); //$NON-NLS-1$
         jPanel1.add(lblTranslatedName, "cell 0 1,alignx leading");
@@ -279,17 +279,32 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
         jPanel1.add(tfBuyPrice, "cell 1 5,growx");
         jPanel1.add(jLabel3, "cell 0 6,alignx left,aligny center");
         jPanel1.add(jLabel4, "cell 0 4,alignx left,aligny center");
+        setLayout(new BorderLayout(0, 0));
+        jPanel1.add(jLabel6, "cell 0 8,alignx left,aligny center"); //$NON-NLS-1$
+        jPanel1.add(jLabel2, "cell 0 7,alignx left,aligny center"); //$NON-NLS-1$
+        jPanel1.add(jLabel1, "cell 0 0,alignx left,aligny center"); //$NON-NLS-1$
+        jPanel1.add(tfName, "cell 1 0 3 1,growx,aligny top"); //$NON-NLS-1$
+        jPanel1.add(cbGroup, "cell 1 4,growx,aligny top"); //$NON-NLS-1$
+        jPanel1.add(btnNewGroup, "cell 3 4,growx,aligny top"); //$NON-NLS-1$
+        jPanel1.add(tfDiscountRate, "cell 1 7,growx,aligny top"); //$NON-NLS-1$
+        jPanel1.add(cbTax, "cell 1 8,growx,aligny top"); //$NON-NLS-1$
+        jPanel1.add(tfPrice, "cell 1 6,growx,aligny top"); //$NON-NLS-1$
+        
+        lblKitchenPrinter = new JLabel("Kitchen & Bar Printer");
+        jPanel1.add(lblKitchenPrinter, "cell 0 9"); //$NON-NLS-1$
+        
+        cbPrinter = new JComboBox<VirtualPrinter>(new DefaultComboBoxModel<VirtualPrinter>(VirtualPrinterDAO.getInstance().findAll().toArray(new VirtualPrinter[0])));
+        jPanel1.add(cbPrinter, "cell 1 9,growx"); //$NON-NLS-1$
         
         JLabel lblImage = new JLabel("Image:");
         lblImage.setHorizontalAlignment(SwingConstants.TRAILING);
-        jPanel1.add(lblImage, "cell 0 8,aligny center");
-        setLayout(new BorderLayout(0, 0));
+        jPanel1.add(lblImage, "cell 0 10,aligny center");
         
         lblImagePreview = new JLabel("");
         lblImagePreview.setHorizontalAlignment(JLabel.CENTER);
         lblImagePreview.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
         lblImagePreview.setPreferredSize(new Dimension(100, 100));
-        jPanel1.add(lblImagePreview, "cell 1 8");
+        jPanel1.add(lblImagePreview, "cell 1 10");
         
         JButton btnSelectImage = new JButton("...");
         btnSelectImage.addActionListener(new ActionListener() {
@@ -297,7 +312,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
         		doSelectImageFile();
         	}
         });
-        jPanel1.add(btnSelectImage, "cell 2 8");
+        jPanel1.add(btnSelectImage, "cell 2 10");
         
         btnClearImage = new JButton("Clear");
         btnClearImage.addActionListener(new ActionListener() {
@@ -305,42 +320,27 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
         		doClearImage();
         	}
         });
-        jPanel1.add(btnClearImage, "cell 3 8");
-        
-        cbShowTextWithImage = new JCheckBox("Show image only");
-        cbShowTextWithImage.setActionCommand("Show Text with Image");
-        jPanel1.add(cbShowTextWithImage, "cell 1 9 3 1"); //$NON-NLS-1$
-        jPanel1.add(jLabel6, "cell 0 10,alignx left,aligny center"); //$NON-NLS-1$
-        jPanel1.add(jLabel2, "cell 0 7,alignx left,aligny center"); //$NON-NLS-1$
-        jPanel1.add(jLabel1, "cell 0 0,alignx left,aligny center"); //$NON-NLS-1$
-        jPanel1.add(tfName, "cell 1 0 3 1,growx,aligny top"); //$NON-NLS-1$
-        jPanel1.add(cbGroup, "cell 1 4,growx,aligny top"); //$NON-NLS-1$
-        jPanel1.add(btnNewGroup, "cell 3 4,growx,aligny top"); //$NON-NLS-1$
-        jPanel1.add(tfDiscountRate, "cell 1 7,growx,aligny top"); //$NON-NLS-1$
-        jPanel1.add(cbTax, "cell 1 10,growx,aligny top"); //$NON-NLS-1$
-        jPanel1.add(tfPrice, "cell 1 6,growx,aligny top"); //$NON-NLS-1$
-        
-        lblKitchenPrinter = new JLabel("Kitchen & Bar Printer");
-        jPanel1.add(lblKitchenPrinter, "cell 0 11"); //$NON-NLS-1$
-        
-        cbPrinter = new JComboBox<VirtualPrinter>(new DefaultComboBoxModel<VirtualPrinter>(VirtualPrinterDAO.getInstance().findAll().toArray(new VirtualPrinter[0])));
-        jPanel1.add(cbPrinter, "cell 1 11,growx"); //$NON-NLS-1$
+        jPanel1.add(btnClearImage, "cell 3 10");
         
         lblButtonColor = new JLabel(Messages.getString("MenuItemForm.lblButtonColor.text")); //$NON-NLS-1$
-        jPanel1.add(lblButtonColor, "cell 0 12");
+        jPanel1.add(lblButtonColor, "cell 0 11");
         
         btnButtonColor = new JButton(); //$NON-NLS-1$
         btnButtonColor.setPreferredSize(new Dimension(140, 40));
-        jPanel1.add(btnButtonColor, "cell 1 12");
+        jPanel1.add(btnButtonColor, "cell 1 11");
         
         lblTextColor = new JLabel(Messages.getString("MenuItemForm.lblTextColor.text")); //$NON-NLS-1$
-        jPanel1.add(lblTextColor, "cell 0 13");
+        jPanel1.add(lblTextColor, "cell 0 12");
         
         btnTextColor = new JButton(Messages.getString("MenuItemForm.SAMPLE_TEXT")); //$NON-NLS-1$
         btnTextColor.setPreferredSize(new Dimension(140, 40));
-        jPanel1.add(btnTextColor, "cell 1 13");
+        jPanel1.add(btnTextColor, "cell 1 12");
+        
+        cbShowTextWithImage = new JCheckBox("Show image only");
+        cbShowTextWithImage.setActionCommand("Show Text with Image");
+        jPanel1.add(cbShowTextWithImage, "cell 1 13"); //$NON-NLS-1$
         jPanel1.add(chkVisible, "cell 1 14,alignx left,aligny top"); //$NON-NLS-1$
-        jPanel1.add(btnNewTax, "cell 2 10,alignx left,aligny top"); //$NON-NLS-1$
+        jPanel1.add(btnNewTax, "cell 2 8,alignx left,aligny top"); //$NON-NLS-1$
         jPanel1.add(jLabel5, "cell 2 7"); //$NON-NLS-1$
         add(tabbedPane);
         
