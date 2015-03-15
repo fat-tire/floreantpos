@@ -144,9 +144,6 @@ public class MenuCategoryForm extends BeanEditor {
 		if (menuCategory.getSortOrder() != null) {
 			tfSortOrder.setText(menuCategory.getSortOrder().toString());
 		}
-		else {
-			tfSortOrder.setText("0");
-		}
 
 		if (menuCategory.getButtonColor() != null) {
 			Color color = new Color(menuCategory.getButtonColor());

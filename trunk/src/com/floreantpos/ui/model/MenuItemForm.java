@@ -7,6 +7,7 @@
 package com.floreantpos.ui.model;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dialog;
 import java.awt.Dimension;
@@ -23,6 +24,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JColorChooser;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
@@ -55,7 +57,6 @@ import com.floreantpos.model.dao.VirtualPrinterDAO;
 import com.floreantpos.swing.ComboBoxModel;
 import com.floreantpos.swing.DoubleDocument;
 import com.floreantpos.swing.DoubleTextField;
-import com.floreantpos.swing.FixedLengthDocument;
 import com.floreantpos.swing.FixedLengthTextField;
 import com.floreantpos.swing.IUpdatebleView;
 import com.floreantpos.swing.MessageDialog;
@@ -65,6 +66,7 @@ import com.floreantpos.ui.dialog.ConfirmDeleteDialog;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.util.POSUtil;
 import com.floreantpos.util.ShiftUtil;
+import com.floreantpos.swing.IntegerTextField;
 
 /**
  *
@@ -118,7 +120,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 	public MenuItemForm(MenuItem menuItem) throws Exception {
 		initComponents();
 		
-		tfName.setDocument(new FixedLengthDocument(120));
+		setBean(menuItem);
 		
 		MenuGroupDAO foodGroupDAO = new MenuGroupDAO();
 		List<MenuGroup> foodGroups = foodGroupDAO.findAll();
@@ -129,87 +131,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		cbTax.setModel(new ComboBoxModel(taxes));
 		
 		menuItemModifierGroups = menuItem.getMenuItemModiferGroups();
-		menuItemMGListModel = new MenuItemMGListModel();
-		tableTicketItemModifierGroups.setModel(menuItemMGListModel);
 		shiftTable.setModel(shiftTableModel = new ShiftTableModel(menuItem.getShifts()));
-		
-		btnNewModifierGroup.addActionListener(this);
-		btnEditModifierGroup.addActionListener(this);
-		btnDeleteModifierGroup.addActionListener(this);
-		btnAddShift.addActionListener(this);
-		btnDeleteShift.addActionListener(this);
-		
-		tfDiscountRate.setDocument(new DoubleDocument());
-        jPanel1.setLayout(new MigLayout("", "[104px][100px,grow][][49px]", "[19px][][25px][][19px][19px][][][25px][][15px]"));
-        
-        lblBarcode = new JLabel(Messages.getString("MenuItemForm.lblBarcode.text")); //$NON-NLS-1$
-        jPanel1.add(lblBarcode, "cell 0 1,alignx leading");
-        
-        tfBarcode = new FixedLengthTextField(120);
-        jPanel1.add(tfBarcode, "cell 1 1,growx");
-        
-        lblBuyPrice = new JLabel(Messages.getString("LABEL_BUY_PRICE"));
-        jPanel1.add(lblBuyPrice, "cell 0 3");
-        
-        tfBuyPrice = new DoubleTextField();
-        tfBuyPrice.setHorizontalAlignment(SwingConstants.TRAILING);
-        jPanel1.add(tfBuyPrice, "cell 1 3,growx");
-        jPanel1.add(jLabel3, "cell 0 4,alignx left,aligny center");
-        jPanel1.add(jLabel4, "cell 0 2,alignx left,aligny center");
-        
-        JLabel lblImage = new JLabel("Image:");
-        lblImage.setHorizontalAlignment(SwingConstants.TRAILING);
-        jPanel1.add(lblImage, "cell 0 6,aligny center");
-        setLayout(new BorderLayout(0, 0));
-        
-        lblImagePreview = new JLabel("");
-        lblImagePreview.setHorizontalAlignment(JLabel.CENTER);
-        lblImagePreview.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-        lblImagePreview.setPreferredSize(new Dimension(60, 120));
-        jPanel1.add(lblImagePreview, "cell 1 6,grow");
-        
-        JButton btnSelectImage = new JButton("...");
-        btnSelectImage.addActionListener(new ActionListener() {
-        	public void actionPerformed(ActionEvent e) {
-        		doSelectImageFile();
-        	}
-        });
-        jPanel1.add(btnSelectImage, "cell 2 6");
-        
-        btnClearImage = new JButton("Clear");
-        btnClearImage.addActionListener(new ActionListener() {
-        	public void actionPerformed(ActionEvent e) {
-        		doClearImage();
-        	}
-        });
-        jPanel1.add(btnClearImage, "cell 3 6");
-        
-        cbShowTextWithImage = new JCheckBox("Show image only");
-        cbShowTextWithImage.setActionCommand("Show Text with Image");
-        jPanel1.add(cbShowTextWithImage, "cell 1 7 3 1"); //$NON-NLS-1$
-        jPanel1.add(jLabel6, "cell 0 8,alignx left,aligny center"); //$NON-NLS-1$
-        jPanel1.add(jLabel2, "cell 0 5,alignx left,aligny center"); //$NON-NLS-1$
-        jPanel1.add(jLabel1, "cell 0 0,alignx left,aligny center"); //$NON-NLS-1$
-        jPanel1.add(tfName, "cell 1 0 3 1,growx,aligny top"); //$NON-NLS-1$
-        jPanel1.add(cbGroup, "cell 1 2,growx,aligny top"); //$NON-NLS-1$
-        jPanel1.add(btnNewGroup, "cell 3 2,growx,aligny top"); //$NON-NLS-1$
-        jPanel1.add(tfDiscountRate, "cell 1 5,growx,aligny top"); //$NON-NLS-1$
-        jPanel1.add(cbTax, "cell 1 8,growx,aligny top"); //$NON-NLS-1$
-        jPanel1.add(tfPrice, "cell 1 4,growx,aligny top"); //$NON-NLS-1$
-        
-        lblKitchenPrinter = new JLabel("Kitchen & Bar Printer");
-        jPanel1.add(lblKitchenPrinter, "cell 0 9"); //$NON-NLS-1$
-        
-        cbPrinter = new JComboBox<VirtualPrinter>(new DefaultComboBoxModel<VirtualPrinter>(VirtualPrinterDAO.getInstance().findAll().toArray(new VirtualPrinter[0])));
-        jPanel1.add(cbPrinter, "cell 1 9,growx"); //$NON-NLS-1$
-        jPanel1.add(chkVisible, "cell 1 10,alignx left,aligny top"); //$NON-NLS-1$
-        jPanel1.add(btnNewTax, "cell 2 8,alignx left,aligny top"); //$NON-NLS-1$
-        jPanel1.add(jLabel5, "cell 2 5"); //$NON-NLS-1$
-        add(tabbedPane);
-        
-		setBean(menuItem);
-		
-		addRecepieExtension();
 	}
 
 	public void addRecepieExtension() {
@@ -234,6 +156,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
         jLabel1 = new javax.swing.JLabel();
         jLabel1.setHorizontalAlignment(SwingConstants.TRAILING);
         tfName = new com.floreantpos.swing.FixedLengthTextField();
+        tfName.setLength(120);
         jLabel4 = new javax.swing.JLabel();
         jLabel4.setHorizontalAlignment(SwingConstants.TRAILING);
         cbGroup = new javax.swing.JComboBox();
@@ -314,6 +237,131 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 
         btnEditModifierGroup.setText(com.floreantpos.POSConstants.EDIT);
         btnEditModifierGroup.setActionCommand("EditModifierGroup");
+        
+		menuItemMGListModel = new MenuItemMGListModel();
+		tableTicketItemModifierGroups.setModel(menuItemMGListModel);
+		
+		btnNewModifierGroup.addActionListener(this);
+		btnEditModifierGroup.addActionListener(this);
+		btnDeleteModifierGroup.addActionListener(this);
+		btnAddShift.addActionListener(this);
+		btnDeleteShift.addActionListener(this);
+		
+		tfDiscountRate.setDocument(new DoubleDocument());
+        jPanel1.setLayout(new MigLayout("", "[104px][100px,grow][][49px]", "[19px][][][][25px][][19px][19px][][][25px][][][][15px]"));
+        
+        lblTranslatedName = new JLabel(Messages.getString("MenuItemForm.lblTranslatedName.text")); //$NON-NLS-1$
+        jPanel1.add(lblTranslatedName, "cell 0 1,alignx leading");
+        
+        tfTranslatedName = new FixedLengthTextField();
+        tfTranslatedName.setLength(120);
+        jPanel1.add(tfTranslatedName, "cell 1 1 3 1,growx");
+        
+        lblSortOrder = new JLabel(Messages.getString("MenuItemForm.lblSortOrder.text")); //$NON-NLS-1$
+        jPanel1.add(lblSortOrder, "cell 0 2,alignx trailing");
+        
+        tfSortOrder = new IntegerTextField();
+        tfSortOrder.setColumns(10);
+        tfSortOrder.setText(Messages.getString("MenuItemForm.integerTextField.text")); //$NON-NLS-1$
+        jPanel1.add(tfSortOrder, "cell 1 2");
+        
+        lblBarcode = new JLabel(Messages.getString("MenuItemForm.lblBarcode.text")); //$NON-NLS-1$
+        jPanel1.add(lblBarcode, "cell 0 3,alignx leading");
+        
+        tfBarcode = new FixedLengthTextField(120);
+        jPanel1.add(tfBarcode, "cell 1 3,growx");
+        
+        lblBuyPrice = new JLabel(Messages.getString("LABEL_BUY_PRICE"));
+        jPanel1.add(lblBuyPrice, "cell 0 5");
+        
+        tfBuyPrice = new DoubleTextField();
+        tfBuyPrice.setHorizontalAlignment(SwingConstants.TRAILING);
+        jPanel1.add(tfBuyPrice, "cell 1 5,growx");
+        jPanel1.add(jLabel3, "cell 0 6,alignx left,aligny center");
+        jPanel1.add(jLabel4, "cell 0 4,alignx left,aligny center");
+        
+        JLabel lblImage = new JLabel("Image:");
+        lblImage.setHorizontalAlignment(SwingConstants.TRAILING);
+        jPanel1.add(lblImage, "cell 0 8,aligny center");
+        setLayout(new BorderLayout(0, 0));
+        
+        lblImagePreview = new JLabel("");
+        lblImagePreview.setHorizontalAlignment(JLabel.CENTER);
+        lblImagePreview.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+        lblImagePreview.setPreferredSize(new Dimension(100, 100));
+        jPanel1.add(lblImagePreview, "cell 1 8");
+        
+        JButton btnSelectImage = new JButton("...");
+        btnSelectImage.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		doSelectImageFile();
+        	}
+        });
+        jPanel1.add(btnSelectImage, "cell 2 8");
+        
+        btnClearImage = new JButton("Clear");
+        btnClearImage.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		doClearImage();
+        	}
+        });
+        jPanel1.add(btnClearImage, "cell 3 8");
+        
+        cbShowTextWithImage = new JCheckBox("Show image only");
+        cbShowTextWithImage.setActionCommand("Show Text with Image");
+        jPanel1.add(cbShowTextWithImage, "cell 1 9 3 1"); //$NON-NLS-1$
+        jPanel1.add(jLabel6, "cell 0 10,alignx left,aligny center"); //$NON-NLS-1$
+        jPanel1.add(jLabel2, "cell 0 7,alignx left,aligny center"); //$NON-NLS-1$
+        jPanel1.add(jLabel1, "cell 0 0,alignx left,aligny center"); //$NON-NLS-1$
+        jPanel1.add(tfName, "cell 1 0 3 1,growx,aligny top"); //$NON-NLS-1$
+        jPanel1.add(cbGroup, "cell 1 4,growx,aligny top"); //$NON-NLS-1$
+        jPanel1.add(btnNewGroup, "cell 3 4,growx,aligny top"); //$NON-NLS-1$
+        jPanel1.add(tfDiscountRate, "cell 1 7,growx,aligny top"); //$NON-NLS-1$
+        jPanel1.add(cbTax, "cell 1 10,growx,aligny top"); //$NON-NLS-1$
+        jPanel1.add(tfPrice, "cell 1 6,growx,aligny top"); //$NON-NLS-1$
+        
+        lblKitchenPrinter = new JLabel("Kitchen & Bar Printer");
+        jPanel1.add(lblKitchenPrinter, "cell 0 11"); //$NON-NLS-1$
+        
+        cbPrinter = new JComboBox<VirtualPrinter>(new DefaultComboBoxModel<VirtualPrinter>(VirtualPrinterDAO.getInstance().findAll().toArray(new VirtualPrinter[0])));
+        jPanel1.add(cbPrinter, "cell 1 11,growx"); //$NON-NLS-1$
+        
+        lblButtonColor = new JLabel(Messages.getString("MenuItemForm.lblButtonColor.text")); //$NON-NLS-1$
+        jPanel1.add(lblButtonColor, "cell 0 12");
+        
+        btnButtonColor = new JButton(); //$NON-NLS-1$
+        btnButtonColor.setPreferredSize(new Dimension(140, 40));
+        jPanel1.add(btnButtonColor, "cell 1 12");
+        
+        lblTextColor = new JLabel(Messages.getString("MenuItemForm.lblTextColor.text")); //$NON-NLS-1$
+        jPanel1.add(lblTextColor, "cell 0 13");
+        
+        btnTextColor = new JButton(Messages.getString("MenuItemForm.SAMPLE_TEXT")); //$NON-NLS-1$
+        btnTextColor.setPreferredSize(new Dimension(140, 40));
+        jPanel1.add(btnTextColor, "cell 1 13");
+        jPanel1.add(chkVisible, "cell 1 14,alignx left,aligny top"); //$NON-NLS-1$
+        jPanel1.add(btnNewTax, "cell 2 10,alignx left,aligny top"); //$NON-NLS-1$
+        jPanel1.add(jLabel5, "cell 2 7"); //$NON-NLS-1$
+        add(tabbedPane);
+        
+		addRecepieExtension();
+		
+		btnButtonColor.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Color color = JColorChooser.showDialog(MenuItemForm.this, "Select color", btnButtonColor.getBackground());
+				btnButtonColor.setBackground(color);
+				btnTextColor.setBackground(color);
+			}
+		});
+
+		btnTextColor.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Color color = JColorChooser.showDialog(MenuItemForm.this, "Select color", btnTextColor.getForeground());
+				btnTextColor.setForeground(color);
+			}
+		});
 
         tableTicketItemModifierGroups.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -468,6 +516,14 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 	private JComboBox<VirtualPrinter> cbPrinter;
 	private JLabel lblBarcode;
 	private FixedLengthTextField tfBarcode;
+	private JLabel lblButtonColor;
+	private JLabel lblTextColor;
+	private JButton btnButtonColor;
+	private JButton btnTextColor;
+	private JLabel lblTranslatedName;
+	private FixedLengthTextField tfTranslatedName;
+	private JLabel lblSortOrder;
+	private IntegerTextField tfSortOrder;
     
     private void addMenuItemModifierGroup() {
     	try {
@@ -544,6 +600,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		}
 		
 		tfName.setText(menuItem.getName());
+		tfTranslatedName.setText(menuItem.getTranslatedName());
 		tfBarcode.setText(menuItem.getBarcode());
 		tfPrice.setText(String.valueOf(menuItem.getPrice()));
 		tfDiscountRate.setText(String.valueOf(menuItem.getDiscountRate()));
@@ -564,6 +621,21 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		}
 		
 		cbPrinter.setSelectedItem(menuItem.getVirtualPrinter());
+		
+		if (menuItem.getSortOrder() != null) {
+			tfSortOrder.setText(menuItem.getSortOrder().toString());
+		}
+
+		if (menuItem.getButtonColor() != null) {
+			Color color = new Color(menuItem.getButtonColor());
+			btnButtonColor.setBackground(color);
+			btnTextColor.setBackground(color);
+		}
+
+		if (menuItem.getTextColor() != null) {
+			Color color = new Color(menuItem.getTextColor());
+			btnTextColor.setForeground(color);
+		}
 	}
 
 	@Override
@@ -582,6 +654,12 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		menuItem.setTax((Tax) cbTax.getSelectedItem());
 		menuItem.setVisible(chkVisible.isSelected());
 		menuItem.setShowImageOnly(cbShowTextWithImage.isSelected());
+		
+		menuItem.setTranslatedName(tfTranslatedName.getText());
+		menuItem.setSortOrder(tfSortOrder.getInteger());
+
+		menuItem.setButtonColor(btnButtonColor.getBackground().getRGB());
+		menuItem.setTextColor(btnTextColor.getForeground().getRGB());
 		
         try {
             menuItem.setDiscountRate(Double.parseDouble(tfDiscountRate.getText()));
