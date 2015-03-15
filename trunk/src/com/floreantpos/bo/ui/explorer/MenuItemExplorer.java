@@ -7,7 +7,8 @@ import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
-import javax.swing.JTable;
+
+import org.jdesktop.swingx.JXTable;
 
 import com.floreantpos.POSConstants;
 import com.floreantpos.bo.ui.BOMessageDialog;
@@ -24,7 +25,7 @@ import com.floreantpos.ui.model.MenuItemForm;
 public class MenuItemExplorer extends TransparentPanel {
 	private List<MenuItem> itemList;
 
-	private JTable table;
+	private JXTable table;
 	private MenuItemExplorerTableModel tableModel;
 	private String currencySymbol;
 
@@ -36,7 +37,7 @@ public class MenuItemExplorer extends TransparentPanel {
 
 		tableModel = new MenuItemExplorerTableModel();
 		tableModel.setRows(itemList);
-		table = new JTable(tableModel);
+		table = new JXTable(tableModel);
 		table.setDefaultRenderer(Object.class, new PosTableRenderer());
 
 		setLayout(new BorderLayout(5, 5));
@@ -53,6 +54,8 @@ public class MenuItemExplorer extends TransparentPanel {
 					if (index < 0)
 						return;
 
+					index = table.convertRowIndexToModel(index);
+					
 					MenuItem menuItem = itemList.get(index);
 					menuItem = MenuItemDAO.getInstance().initialize(menuItem);
 					itemList.set(index, menuItem);
@@ -94,6 +97,8 @@ public class MenuItemExplorer extends TransparentPanel {
 					int index = table.getSelectedRow();
 					if (index < 0)
 						return;
+					
+					index = table.convertRowIndexToModel(index);
 
 					if (ConfirmDeleteDialog.showMessage(MenuItemExplorer.this, POSConstants.CONFIRM_DELETE, POSConstants.DELETE) != ConfirmDeleteDialog.NO) {
 						MenuItem category = itemList.get(index);
