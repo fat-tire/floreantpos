@@ -109,7 +109,7 @@ public class MenuItem extends BaseMenuItem {
 		TicketItem ticketItem = new TicketItem();
 		ticketItem.setItemId(this.getId());
 		ticketItem.setItemCount(1);
-		ticketItem.setName(this.getName());
+		ticketItem.setName(this.getDisplayName());
 		ticketItem.setGroupName(this.getParent().getDisplayName());
 		ticketItem.setCategoryName(this.getParent().getParent().getDisplayName());
 		ticketItem.setUnitPrice(this.getPrice(Application.getInstance().getCurrentShift()));
