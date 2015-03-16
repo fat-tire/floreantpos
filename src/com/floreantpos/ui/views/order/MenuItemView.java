@@ -126,7 +126,7 @@ public class MenuItemView extends SelectionView {
 					
 					ImageIcon imageIcon = new ImageIcon(new ImageIcon(menuItem.getImage()).getImage().getScaledInstance(w, h, Image.SCALE_SMOOTH));
 					setIcon(imageIcon);
-					setText("<html><body><center>" + menuItem.getName() + "</center></body></html>");
+					setText("<html><body><center>" + menuItem.getDisplayName() + "</center></body></html>");
 				}
 				
 			}
