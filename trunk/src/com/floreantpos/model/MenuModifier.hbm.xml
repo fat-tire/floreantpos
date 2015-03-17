@@ -10,6 +10,7 @@
 		<property column="TRANSLATED_NAME" length="120" name="translatedName" not-null="false" type="java.lang.String" />
 		<property column="PRICE" length="52" name="price" type="java.lang.Double" />
 		<property column="EXTRA_PRICE" length="52" name="extraPrice" type="java.lang.Double" />
+		<property column="SORT_ORDER" name="sortOrder" type="java.lang.Integer" />
 		<property column="BTN_COLOR" name="buttonColor" type="java.lang.Integer" />
 		<property column="TEXT_COLOR" name="textColor" type="java.lang.Integer" />
 		<property column="ENABLE" index="modifierenabled" name="enable" type="java.lang.Boolean" />
