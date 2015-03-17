@@ -30,6 +30,7 @@
 			<filtered>false</filtered>
 			<includes>
 				<include>CHANGES</include>
+				<include>drawer-kick.bat</include>
 			</includes>
 		</fileSet>
 		<fileSet>
