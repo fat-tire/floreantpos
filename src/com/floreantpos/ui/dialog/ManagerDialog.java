@@ -10,6 +10,9 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
 import java.util.List;
 
 import javax.swing.JComboBox;
@@ -21,6 +24,7 @@ import javax.swing.JPanel;
 
 import net.miginfocom.swing.MigLayout;
 
+import org.apache.commons.logging.LogFactory;
 import org.jdesktop.swingx.JXDatePicker;
 
 import com.floreantpos.main.Application;
@@ -30,6 +34,7 @@ import com.floreantpos.model.dao.GratuityDAO;
 import com.floreantpos.model.dao.UserDAO;
 import com.floreantpos.swing.GlassPane;
 import com.floreantpos.swing.ListComboBoxModel;
+import com.floreantpos.swing.PosButton;
 import com.floreantpos.ui.util.UiUtil;
 
 /**
@@ -84,7 +89,7 @@ public class ManagerDialog extends JDialog {
 		transparentPanel2.setLayout(new java.awt.GridBagLayout());
 
 		transparentPanel2.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
-		transparentPanel3.setLayout(new java.awt.GridLayout(2, 2, 5, 5));
+		transparentPanel3.setLayout(new java.awt.GridLayout(3, 2, 5, 5));
 
 		btnShowTips.setText(com.floreantpos.POSConstants.SERVER_TIPS);
 		btnShowTips.addActionListener(new java.awt.event.ActionListener() {
@@ -127,6 +132,15 @@ public class ManagerDialog extends JDialog {
 		gbc_transparentPanel3.gridx = 0;
 		gbc_transparentPanel3.gridy = 0;
 		transparentPanel2.add(transparentPanel3, gbc_transparentPanel3);
+		
+		btnDrawerKick = new PosButton();
+		btnDrawerKick.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				doDrawerKick();
+			}
+		});
+		btnDrawerKick.setText("NO SALE");
+		transparentPanel3.add(btnDrawerKick);
 
 		transparentPanel4.add(transparentPanel2, java.awt.BorderLayout.CENTER);
 
@@ -147,6 +161,19 @@ public class ManagerDialog extends JDialog {
 
 		pack();
 	}// </editor-fold>//GEN-END:initComponents
+	
+	protected void doDrawerKick() {
+		try {
+			
+			File file = new File(Application.getInstance().getLocation(), "drawer-kick.bat");
+			if (file.exists()) {
+				Runtime.getRuntime().exec(file.getAbsolutePath());
+			}
+
+		} catch (Exception e) {
+			LogFactory.getLog(ManagerDialog.class).error(e);
+		}
+	}
 
 	private void doCloseDialog() {//GEN-FIRST:event_btnFinishActionPerformed
 		dispose();
@@ -262,6 +289,7 @@ public class ManagerDialog extends JDialog {
 	private com.floreantpos.swing.TransparentPanel transparentPanel2;
 	private com.floreantpos.swing.TransparentPanel transparentPanel3;
 	private com.floreantpos.swing.TransparentPanel transparentPanel4;
+	private PosButton btnDrawerKick;
 	// End of variables declaration//GEN-END:variables
 
 }
