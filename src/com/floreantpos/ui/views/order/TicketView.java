@@ -432,22 +432,22 @@ public class TicketView extends JPanel {
 		if (object != null) {
 			updateView();
 
-			if (object instanceof TicketItemModifier) {
-				ModifierView modifierView = OrderView.getInstance().getModifierView();
-				if (modifierView.isVisible()) {
-					modifierView.updateVisualRepresentation();
-				}
-			}
+//			if (object instanceof TicketItemModifier) {
+//				ModifierView modifierView = OrderView.getInstance().getModifierView();
+//				if (modifierView.isVisible()) {
+//					modifierView.updateVisualRepresentation();
+//				}
+//			}
 		}
 
 	}//GEN-LAST:event_doDeleteSelection
 
 	private void doIncreaseAmount(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_doIncreaseAmount
 		if (ticketViewerTable.increaseItemAmount()) {
-			ModifierView modifierView = OrderView.getInstance().getModifierView();
-			if (modifierView.isVisible()) {
-				modifierView.updateVisualRepresentation();
-			}
+//			ModifierView modifierView = OrderView.getInstance().getModifierView();
+//			if (modifierView.isVisible()) {
+//				modifierView.updateVisualRepresentation();
+//			}
 			updateView();
 		}
 
@@ -455,10 +455,10 @@ public class TicketView extends JPanel {
 
 	private void doDecreaseAmount(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_doDecreaseAmount
 		if (ticketViewerTable.decreaseItemAmount()) {
-			ModifierView modifierView = OrderView.getInstance().getModifierView();
-			if (modifierView.isVisible()) {
-				modifierView.updateVisualRepresentation();
-			}
+//			ModifierView modifierView = OrderView.getInstance().getModifierView();
+//			if (modifierView.isVisible()) {
+//				modifierView.updateVisualRepresentation();
+//			}
 			updateView();
 		}
 	}//GEN-LAST:event_doDecreaseAmount

@@ -1,5 +1,8 @@
 package com.floreantpos.model;
 
+import org.apache.commons.lang.StringUtils;
+
+import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.model.base.BaseMenuModifier;
 
 public class MenuModifier extends BaseMenuModifier {
@@ -27,6 +30,24 @@ public class MenuModifier extends BaseMenuModifier {
 	
 	public void setMenuItemModifierGroup(MenuItemModifierGroup menuItemModifierGroup) {
 		this.menuItemModifierGroup = menuItemModifierGroup;
+	}
+	
+	@Override
+	public Integer getButtonColor() {
+		return buttonColor;
+	}
+	
+	@Override
+	public Integer getTextColor() {
+		return textColor;
+	}
+	
+	public String getDisplayName() {
+		if(TerminalConfig.isUseTranslatedName() && StringUtils.isNotEmpty(getTranslatedName())) {
+			return getTranslatedName();
+		}
+		
+		return super.getName();
 	}
 	
 	@Override

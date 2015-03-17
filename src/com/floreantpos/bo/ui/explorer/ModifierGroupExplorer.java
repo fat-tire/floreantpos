@@ -10,6 +10,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 
+import com.floreantpos.POSConstants;
 import com.floreantpos.bo.ui.BOMessageDialog;
 import com.floreantpos.bo.ui.BackOfficeWindow;
 import com.floreantpos.model.MenuModifierGroup;
@@ -114,7 +115,7 @@ public class ModifierGroupExplorer extends TransparentPanel {
 	}
 
 	class ModifierGroupExplorerTableModel extends AbstractTableModel {
-		String[] columnNames = { com.floreantpos.POSConstants.ID, com.floreantpos.POSConstants.NAME };
+		String[] columnNames = { com.floreantpos.POSConstants.ID, com.floreantpos.POSConstants.NAME, POSConstants.TRANSLATED_NAME };
 
 		public int getRowCount() {
 			if (mGroupList == null) {
@@ -124,7 +125,7 @@ public class ModifierGroupExplorer extends TransparentPanel {
 		}
 
 		public int getColumnCount() {
-			return 2;
+			return columnNames.length;
 		}
 
 		@Override
@@ -149,6 +150,9 @@ public class ModifierGroupExplorer extends TransparentPanel {
 
 				case 1:
 					return mgroup.getName();
+					
+				case 2:
+					return mgroup.getTranslatedName();
 
 			}
 			return null;

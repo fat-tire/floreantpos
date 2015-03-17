@@ -19,11 +19,14 @@ public abstract class BaseMenuModifier  implements Comparable, Serializable {
 	public static String PROP_NAME = "name";
 	public static String PROP_SHOULD_PRINT_TO_KITCHEN = "shouldPrintToKitchen";
 	public static String PROP_EXTRA_PRICE = "extraPrice";
+	public static String PROP_BUTTON_COLOR = "buttonColor";
 	public static String PROP_ENABLE = "enable";
 	public static String PROP_PRICE = "price";
 	public static String PROP_TAX = "tax";
 	public static String PROP_ID = "id";
 	public static String PROP_MODIFIER_GROUP = "modifierGroup";
+	public static String PROP_TRANSLATED_NAME = "translatedName";
+	public static String PROP_TEXT_COLOR = "textColor";
 
 
 	// constructors
@@ -50,8 +53,11 @@ public abstract class BaseMenuModifier  implements Comparable, Serializable {
 
 	// fields
 		protected java.lang.String name;
+		protected java.lang.String translatedName;
 		protected java.lang.Double price;
 		protected java.lang.Double extraPrice;
+		protected java.lang.Integer buttonColor;
+		protected java.lang.Integer textColor;
 		protected java.lang.Boolean enable;
 		protected java.lang.Boolean shouldPrintToKitchen;
 
@@ -101,6 +107,23 @@ public abstract class BaseMenuModifier  implements Comparable, Serializable {
 
 
 	/**
+	 * Return the value associated with the column: TRANSLATED_NAME
+	 */
+	public java.lang.String getTranslatedName () {
+					return translatedName;
+			}
+
+	/**
+	 * Set the value related to the column: TRANSLATED_NAME
+	 * @param translatedName the TRANSLATED_NAME value
+	 */
+	public void setTranslatedName (java.lang.String translatedName) {
+		this.translatedName = translatedName;
+	}
+
+
+
+	/**
 	 * Return the value associated with the column: PRICE
 	 */
 	public java.lang.Double getPrice () {
@@ -130,6 +153,40 @@ public abstract class BaseMenuModifier  implements Comparable, Serializable {
 	 */
 	public void setExtraPrice (java.lang.Double extraPrice) {
 		this.extraPrice = extraPrice;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: BTN_COLOR
+	 */
+	public java.lang.Integer getButtonColor () {
+					return buttonColor == null ? Integer.valueOf(0) : buttonColor;
+			}
+
+	/**
+	 * Set the value related to the column: BTN_COLOR
+	 * @param buttonColor the BTN_COLOR value
+	 */
+	public void setButtonColor (java.lang.Integer buttonColor) {
+		this.buttonColor = buttonColor;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: TEXT_COLOR
+	 */
+	public java.lang.Integer getTextColor () {
+					return textColor == null ? Integer.valueOf(0) : textColor;
+			}
+
+	/**
+	 * Set the value related to the column: TEXT_COLOR
+	 * @param textColor the TEXT_COLOR value
+	 */
+	public void setTextColor (java.lang.Integer textColor) {
+		this.textColor = textColor;
 	}
 
 
