@@ -469,4 +469,9 @@ public class Application {
 
 		return POSUtil.getBoolean(restaurant.isItemPriceIncludesTax());
 	}
+	
+	public String getLocation() {
+		File file = new File(getClass().getProtectionDomain().getCodeSource().getLocation().getFile());
+		return file.getParent();
+	}
 }
