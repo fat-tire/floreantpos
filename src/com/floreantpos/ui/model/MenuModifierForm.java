@@ -33,6 +33,7 @@ import com.floreantpos.swing.MessageDialog;
 import com.floreantpos.ui.BeanEditor;
 import com.floreantpos.ui.dialog.BeanEditorDialog;
 import com.floreantpos.util.POSUtil;
+import com.floreantpos.swing.IntegerTextField;
 
 /**
  *
@@ -116,38 +117,44 @@ public class MenuModifierForm extends BeanEditor {
 
 		jTabbedPane1.addTab(com.floreantpos.POSConstants.GENERAL, jPanel1);
 
-		jPanel1.setLayout(new MigLayout("", "[80px][173px,grow][6px][49px][12px][59px]", "[19px][][24px][19px][19px][25px][][][15px]"));
+		jPanel1.setLayout(new MigLayout("", "[80px][173px,grow][6px][49px][12px][59px]", "[19px][][24px][19px][19px][][25px][][][15px]"));
 
 		lblTranslatedName = new JLabel("Translated name");
 		jPanel1.add(lblTranslatedName, "cell 0 1,alignx trailing");
 
 		tfTranslatedName = new FixedLengthTextField();
 		jPanel1.add(tfTranslatedName, "cell 1 1 5 1,growx");
-		jPanel1.add(jLabel5, "cell 0 5,alignx left,aligny center");
+		
+		lblSortOrder = new JLabel("Sort order");
+		jPanel1.add(lblSortOrder, "cell 0 5");
+		
+		tfSortOrder = new IntegerTextField();
+		jPanel1.add(tfSortOrder, "cell 1 5,growx");
+		jPanel1.add(jLabel5, "cell 0 6,alignx left,aligny center");
 		jPanel1.add(jLabel1, "cell 0 0,alignx left,aligny center");
 		jPanel1.add(jLabel4, "cell 0 2,alignx left,aligny center");
 		jPanel1.add(jLabel2, "cell 0 3,alignx left,aligny center");
 		jPanel1.add(jLabel3, "cell 0 4,alignx left,aligny center");
 
 		JLabel lblButtonColor = new JLabel("Button color");
-		jPanel1.add(lblButtonColor, "cell 0 6");
+		jPanel1.add(lblButtonColor, "cell 0 7");
 
 		btnButtonColor = new JButton("");
 		btnButtonColor.setPreferredSize(new Dimension(140, 40));
-		jPanel1.add(btnButtonColor, "cell 1 6");
+		jPanel1.add(btnButtonColor, "cell 1 7");
 
 		JLabel lblTextColor = new JLabel("Text color");
-		jPanel1.add(lblTextColor, "cell 0 7");
+		jPanel1.add(lblTextColor, "cell 0 8");
 
 		btnTextColor = new JButton("SAMPLE TEXT");
 		btnTextColor.setPreferredSize(new Dimension(140, 40));
-		jPanel1.add(btnTextColor, "cell 1 7");
-		jPanel1.add(btnPrintToKitchen, "cell 1 8,alignx left,aligny top");
+		jPanel1.add(btnTextColor, "cell 1 8");
+		jPanel1.add(btnPrintToKitchen, "cell 1 9,alignx left,aligny top");
 		jPanel1.add(tfName, "cell 1 0 5 1,growx,aligny top");
 		jPanel1.add(cbModifierGroup, "cell 1 2 5 1,growx,aligny top");
-		jPanel1.add(cbTaxes, "cell 1 5,growx,aligny top");
-		jPanel1.add(btnNewTax, "cell 3 5,alignx left,aligny top");
-		jPanel1.add(jLabel6, "cell 5 5,alignx left,aligny center");
+		jPanel1.add(cbTaxes, "cell 1 6,growx,aligny top");
+		jPanel1.add(btnNewTax, "cell 3 6,alignx left,aligny top");
+		jPanel1.add(jLabel6, "cell 5 6,alignx left,aligny center");
 		jPanel1.add(tfExtraPrice, "cell 1 4,growx,aligny top");
 		jPanel1.add(tfPrice, "cell 1 3,growx,aligny top");
 
@@ -205,6 +212,8 @@ public class MenuModifierForm extends BeanEditor {
 	private FixedLengthTextField tfTranslatedName;
 	private JButton btnButtonColor;
 	private JButton btnTextColor;
+	private IntegerTextField tfSortOrder;
+	private JLabel lblSortOrder;
 
 	// End of variables declaration//GEN-END:variables
 	@Override
@@ -240,6 +249,10 @@ public class MenuModifierForm extends BeanEditor {
 		tfExtraPrice.setValue(Double.valueOf(modifier.getExtraPrice()));
 		cbModifierGroup.setSelectedItem(modifier.getModifierGroup());
 		btnPrintToKitchen.setSelected(modifier.isShouldPrintToKitchen());
+		
+		if (modifier.getSortOrder() != null) {
+			tfSortOrder.setText(modifier.getSortOrder().toString());
+		}
 		
 		if (modifier.getButtonColor() != null) {
 			Color color = new Color(modifier.getButtonColor());
@@ -277,6 +290,7 @@ public class MenuModifierForm extends BeanEditor {
 		modifier.setTranslatedName(tfTranslatedName.getText());
 		modifier.setButtonColor(btnButtonColor.getBackground().getRGB());
 		modifier.setTextColor(btnTextColor.getForeground().getRGB());
+		modifier.setSortOrder(tfSortOrder.getInteger());
 
 		return true;
 	}

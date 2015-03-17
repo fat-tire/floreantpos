@@ -21,6 +21,7 @@ public abstract class BaseMenuModifier  implements Comparable, Serializable {
 	public static String PROP_EXTRA_PRICE = "extraPrice";
 	public static String PROP_BUTTON_COLOR = "buttonColor";
 	public static String PROP_ENABLE = "enable";
+	public static String PROP_SORT_ORDER = "sortOrder";
 	public static String PROP_PRICE = "price";
 	public static String PROP_TAX = "tax";
 	public static String PROP_ID = "id";
@@ -56,6 +57,7 @@ public abstract class BaseMenuModifier  implements Comparable, Serializable {
 		protected java.lang.String translatedName;
 		protected java.lang.Double price;
 		protected java.lang.Double extraPrice;
+		protected java.lang.Integer sortOrder;
 		protected java.lang.Integer buttonColor;
 		protected java.lang.Integer textColor;
 		protected java.lang.Boolean enable;
@@ -153,6 +155,23 @@ public abstract class BaseMenuModifier  implements Comparable, Serializable {
 	 */
 	public void setExtraPrice (java.lang.Double extraPrice) {
 		this.extraPrice = extraPrice;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: SORT_ORDER
+	 */
+	public java.lang.Integer getSortOrder () {
+					return sortOrder == null ? Integer.valueOf(0) : sortOrder;
+			}
+
+	/**
+	 * Set the value related to the column: SORT_ORDER
+	 * @param sortOrder the SORT_ORDER value
+	 */
+	public void setSortOrder (java.lang.Integer sortOrder) {
+		this.sortOrder = sortOrder;
 	}
 
 
