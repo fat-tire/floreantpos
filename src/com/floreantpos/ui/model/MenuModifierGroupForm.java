@@ -6,13 +6,18 @@
 
 package com.floreantpos.ui.model;
 
+import javax.swing.JLabel;
+
+import net.miginfocom.swing.MigLayout;
+
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
 
+import com.floreantpos.POSConstants;
 import com.floreantpos.model.MenuModifierGroup;
 import com.floreantpos.model.dao.ModifierDAO;
 import com.floreantpos.model.dao.ModifierGroupDAO;
-import com.floreantpos.swing.FixedLengthDocument;
+import com.floreantpos.swing.FixedLengthTextField;
 import com.floreantpos.swing.MessageDialog;
 import com.floreantpos.ui.BeanEditor;
 import com.floreantpos.util.POSUtil;
@@ -31,8 +36,6 @@ public class MenuModifierGroupForm extends BeanEditor {
 	public MenuModifierGroupForm(MenuModifierGroup group) throws Exception {
 		initComponents();
 		
-		tfName.setDocument(new FixedLengthDocument(60));
-		
 		setBean(group);
 	}
 
@@ -43,38 +46,29 @@ public class MenuModifierGroupForm extends BeanEditor {
 	 */
     // <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:initComponents
     private void initComponents() {
+    	setLayout(new MigLayout("", "[45px][369px,grow]", "[19px][]"));
+		
         jLabel1 = new javax.swing.JLabel();
         tfName = new com.floreantpos.swing.FixedLengthTextField();
+        tfName.setLength(60);
 
-        jLabel1.setText(com.floreantpos.POSConstants.NAME + ":");
+        jLabel1.setText(com.floreantpos.POSConstants.NAME);
 
-        tfName.setText("fixedLengthTextField1");
-
-        org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(layout.createSequentialGroup()
-                .addContainerGap()
-                .add(jLabel1)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(tfName, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 384, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(layout.createSequentialGroup()
-                .addContainerGap()
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(jLabel1)
-                    .add(tfName, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
+        add(jLabel1, "cell 0 0,alignx left,aligny center");
+		add(tfName, "cell 1 0,growx,aligny top");
+		
+		JLabel lblTranslatedName = new JLabel(POSConstants.TRANSLATED_NAME);
+		add(lblTranslatedName, "cell 0 1,alignx trailing");
+		
+		tfTranslatedName = new FixedLengthTextField();
+		tfTranslatedName.setLength(60);
+		add(tfTranslatedName, "cell 1 1,growx");
     }// </editor-fold>//GEN-END:initComponents
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private com.floreantpos.swing.FixedLengthTextField tfName;
+    private FixedLengthTextField tfTranslatedName;
     // End of variables declaration//GEN-END:variables
 	@Override
 	public boolean save() {
@@ -105,12 +99,7 @@ public class MenuModifierGroupForm extends BeanEditor {
 		}
 
 		tfName.setText(group.getName());
-//		if(group.getId() == null) {
-//			chkEnable.setSelected(true);
-//		}
-//		else {
-//			chkEnable.setSelected(group.isEnable());
-//		}
+		tfTranslatedName.setText(group.getTranslatedName());
 	}
 
 	@Override
@@ -124,7 +113,7 @@ public class MenuModifierGroupForm extends BeanEditor {
     	}
     	
 		group.setName(name);
-//		group.setEnable(chkEnable.isSelected());
+		group.setTranslatedName(tfTranslatedName.getText());
 		
 		return true;
 	}

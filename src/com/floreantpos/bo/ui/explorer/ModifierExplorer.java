@@ -1,6 +1,7 @@
 package com.floreantpos.bo.ui.explorer;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
@@ -10,6 +11,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 
+import com.floreantpos.POSConstants;
 import com.floreantpos.bo.ui.BOMessageDialog;
 import com.floreantpos.bo.ui.BackOfficeWindow;
 import com.floreantpos.main.Application;
@@ -112,7 +114,11 @@ public class ModifierExplorer extends TransparentPanel {
 	}
 
 	class ModifierExplorerTableModel extends AbstractTableModel {
-		String[] columnNames = {com.floreantpos.POSConstants.ID, com.floreantpos.POSConstants.NAME, com.floreantpos.POSConstants.PRICE + " (" + currencySymbol + ")", com.floreantpos.POSConstants.EXTRA_PRICE, com.floreantpos.POSConstants.TAX + "(%)", com.floreantpos.POSConstants.MODIFIER_GROUP }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		String[] columnNames = {com.floreantpos.POSConstants.ID, com.floreantpos.POSConstants.NAME, POSConstants.TRANSLATED_NAME,
+				com.floreantpos.POSConstants.PRICE + " (" + currencySymbol + ")", 
+				com.floreantpos.POSConstants.EXTRA_PRICE, com.floreantpos.POSConstants.TAX + "(%)", 
+				com.floreantpos.POSConstants.MODIFIER_GROUP,
+				POSConstants.BUTTON_COLOR}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 		public int getRowCount() {
 			if (modifierList == null) {
@@ -146,25 +152,35 @@ public class ModifierExplorer extends TransparentPanel {
 					return String.valueOf(modifier.getId());
 
 				case 1:
-					return String.valueOf(modifier.getName());
-
+					return modifier.getName();
+					
 				case 2:
+					return modifier.getTranslatedName();
+
+				case 3:
 					return Double.valueOf(modifier.getPrice());
 					
-				case 3:
+				case 4:
 					return Double.valueOf(modifier.getExtraPrice());
 					
-				case 4:
+				case 5:
 					if(modifier.getTax() == null) {
 						return ""; //$NON-NLS-1$
 					}
 					return Double.valueOf(modifier.getTax().getRate());
 					
-				case 5:
+				case 6:
 					if(modifier.getModifierGroup() == null) {
 						return ""; //$NON-NLS-1$
 					}
 					return modifier.getModifierGroup().getName();
+					
+				case 7:
+					if(modifier.getButtonColor() != null) {
+						return new Color(modifier.getButtonColor());
+					}
+					
+					return null;
 			}
 			return null;
 		}
