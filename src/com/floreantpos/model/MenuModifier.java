@@ -33,6 +33,11 @@ public class MenuModifier extends BaseMenuModifier {
 	}
 	
 	@Override
+	public Integer getSortOrder() {
+		return sortOrder == null ? Integer.MAX_VALUE : sortOrder;
+	}
+	
+	@Override
 	public Integer getButtonColor() {
 		return buttonColor;
 	}

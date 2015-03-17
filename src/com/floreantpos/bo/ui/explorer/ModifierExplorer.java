@@ -118,7 +118,7 @@ public class ModifierExplorer extends TransparentPanel {
 				com.floreantpos.POSConstants.PRICE + " (" + currencySymbol + ")", 
 				com.floreantpos.POSConstants.EXTRA_PRICE, com.floreantpos.POSConstants.TAX + "(%)", 
 				com.floreantpos.POSConstants.MODIFIER_GROUP,
-				POSConstants.BUTTON_COLOR}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				POSConstants.BUTTON_COLOR, POSConstants.SORT_ORDER}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 		public int getRowCount() {
 			if (modifierList == null) {
@@ -181,6 +181,9 @@ public class ModifierExplorer extends TransparentPanel {
 					}
 					
 					return null;
+					
+				case 8:
+					return modifier.getSortOrder();
 			}
 			return null;
 		}
