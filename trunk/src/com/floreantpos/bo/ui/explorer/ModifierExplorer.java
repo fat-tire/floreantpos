@@ -8,8 +8,9 @@ import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
+
+import org.jdesktop.swingx.JXTable;
 
 import com.floreantpos.POSConstants;
 import com.floreantpos.bo.ui.BOMessageDialog;
@@ -27,7 +28,7 @@ public class ModifierExplorer extends TransparentPanel {
 	private List<MenuModifier> modifierList;
 	ModifierExplorerTableModel tableModel;
 	private String currencySymbol;
-	private JTable table;
+	private JXTable table;
 
 	public ModifierExplorer() {
 		currencySymbol = Application.getCurrencySymbol();
@@ -36,9 +37,8 @@ public class ModifierExplorer extends TransparentPanel {
 		modifierList = dao.findAll();
 
 		tableModel = new ModifierExplorerTableModel();
-		table = new JTable(tableModel);
+		table = new JXTable(tableModel);
 		table.setDefaultRenderer(Object.class, new PosTableRenderer());
-		//table.packAll();
 		
 		setLayout(new BorderLayout(5, 5));
 		add(new JScrollPane(table));
@@ -55,6 +55,8 @@ public class ModifierExplorer extends TransparentPanel {
 					int index = table.getSelectedRow();
 					if (index < 0)
 						return;
+					
+					index = table.convertRowIndexToModel(index);
 					MenuModifier modifier = modifierList.get(index);
 
 					MenuModifierForm editor = new MenuModifierForm(modifier);
@@ -93,6 +95,9 @@ public class ModifierExplorer extends TransparentPanel {
 					int index = table.getSelectedRow();
 					if (index < 0)
 						return;
+					
+					index = table.convertRowIndexToModel(index);
+					
 					if (ConfirmDeleteDialog.showMessage(ModifierExplorer.this, com.floreantpos.POSConstants.CONFIRM_DELETE, com.floreantpos.POSConstants.DELETE) != ConfirmDeleteDialog.NO) {
 						MenuModifier category = modifierList.get(index);
 						ModifierDAO modifierDAO = new ModifierDAO();
