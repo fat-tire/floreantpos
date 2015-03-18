@@ -4,7 +4,7 @@ import javax.swing.JMenu;
 
 import net.xeoh.plugins.base.Plugin;
 
-import com.floreantpos.model.TicketType;
+import com.floreantpos.model.OrderType;
 import com.floreantpos.util.TicketAlreadyExistsException;
 
 public interface OrderServiceExtension extends Plugin {
@@ -12,7 +12,7 @@ public interface OrderServiceExtension extends Plugin {
 	String getDescription();
 	
 	void init();
-	void createNewTicket(TicketType ticketType) throws TicketAlreadyExistsException;
+	void createNewTicket(OrderType ticketType) throws TicketAlreadyExistsException;
 	void setCustomerToTicket(int ticketId);
 	void setDeliveryDate(int ticketId);
 	void assignDriver(int ticketId);

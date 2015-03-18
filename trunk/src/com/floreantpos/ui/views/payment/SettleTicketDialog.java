@@ -35,7 +35,7 @@ import com.floreantpos.model.PosTransaction;
 import com.floreantpos.model.Restaurant;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketCouponAndDiscount;
-import com.floreantpos.model.TicketType;
+import com.floreantpos.model.OrderType;
 import com.floreantpos.model.TransactionType;
 import com.floreantpos.model.UserPermission;
 import com.floreantpos.model.dao.TicketDAO;
@@ -214,7 +214,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 
 			tenderAmount = paymentView.getTenderedAmount();
 
-			if (ticket.getType() == TicketType.BAR_TAB) {
+			if (ticket.getType() == OrderType.BAR_TAB) {
 				doSettleBarTabTicket(ticket);
 				return;
 			}

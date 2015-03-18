@@ -67,6 +67,9 @@ import com.floreantpos.ui.dialog.ConfirmDeleteDialog;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.util.POSUtil;
 import com.floreantpos.util.ShiftUtil;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.LayoutStyle.ComponentPlacement;
 
 /**
  *
@@ -80,6 +83,23 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		this(new MenuItem());
 	}
 
+	public MenuItemForm(MenuItem menuItem) throws Exception {
+		initComponents();
+
+		MenuGroupDAO foodGroupDAO = new MenuGroupDAO();
+		List<MenuGroup> foodGroups = foodGroupDAO.findAll();
+		cbGroup.setModel(new ComboBoxModel(foodGroups));
+
+		TaxDAO taxDAO = new TaxDAO();
+		List<Tax> taxes = taxDAO.findAll();
+		cbTax.setModel(new ComboBoxModel(taxes));
+
+		menuItemModifierGroups = menuItem.getMenuItemModiferGroups();
+		shiftTable.setModel(shiftTableModel = new ShiftTableModel(menuItem.getShifts()));
+		
+		setBean(menuItem);
+	}
+	
 	protected void doSelectImageFile() {
 		JFileChooser fileChooser = new JFileChooser();
 		fileChooser.setMultiSelectionEnabled(false);
@@ -117,23 +137,6 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		lblImagePreview.setIcon(null);
 	}
 
-	public MenuItemForm(MenuItem menuItem) throws Exception {
-		initComponents();
-
-		MenuGroupDAO foodGroupDAO = new MenuGroupDAO();
-		List<MenuGroup> foodGroups = foodGroupDAO.findAll();
-		cbGroup.setModel(new ComboBoxModel(foodGroups));
-
-		TaxDAO taxDAO = new TaxDAO();
-		List<Tax> taxes = taxDAO.findAll();
-		cbTax.setModel(new ComboBoxModel(taxes));
-
-		menuItemModifierGroups = menuItem.getMenuItemModiferGroups();
-		shiftTable.setModel(shiftTableModel = new ShiftTableModel(menuItem.getShifts()));
-		
-		setBean(menuItem);
-	}
-
 	public void addRecepieExtension() {
 		InventoryPlugin plugin = Application.getPluginManager().getPlugin(InventoryPlugin.class);
 		if (plugin == null) {
@@ -152,7 +155,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 	private void initComponents() {
 
 		tabbedPane = new javax.swing.JTabbedPane();
-		jPanel1 = new javax.swing.JPanel();
+		tabGeneral = new javax.swing.JPanel();
 		jLabel1 = new javax.swing.JLabel();
 		jLabel1.setHorizontalAlignment(SwingConstants.TRAILING);
 		tfName = new com.floreantpos.swing.FixedLengthTextField();
@@ -174,13 +177,13 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		tfDiscountRate = new DoubleTextField();
 		tfDiscountRate.setHorizontalAlignment(SwingConstants.TRAILING);
 		chkVisible = new javax.swing.JCheckBox();
-		jPanel2 = new javax.swing.JPanel();
+		tabModifier = new javax.swing.JPanel();
 		btnNewModifierGroup = new javax.swing.JButton();
 		btnDeleteModifierGroup = new javax.swing.JButton();
 		btnEditModifierGroup = new javax.swing.JButton();
 		jScrollPane1 = new javax.swing.JScrollPane();
 		tableTicketItemModifierGroups = new javax.swing.JTable();
-		jPanel3 = new javax.swing.JPanel();
+		tabShift = new javax.swing.JPanel();
 		btnDeleteShift = new javax.swing.JButton();
 		btnAddShift = new javax.swing.JButton();
 		jScrollPane2 = new javax.swing.JScrollPane();
@@ -222,7 +225,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		chkVisible.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
 		chkVisible.setMargin(new java.awt.Insets(0, 0, 0, 0));
 
-		tabbedPane.addTab(com.floreantpos.POSConstants.GENERAL, jPanel1);
+		tabbedPane.addTab(com.floreantpos.POSConstants.GENERAL, tabGeneral);
 
 		btnNewModifierGroup.setText(com.floreantpos.POSConstants.ADD);
 		btnNewModifierGroup.setActionCommand("AddModifierGroup");
@@ -248,64 +251,64 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		btnDeleteShift.addActionListener(this);
 
 		tfDiscountRate.setDocument(new DoubleDocument());
-		jPanel1.setLayout(new MigLayout("", "[104px][100px,grow][][49px]", "[19px][][][][25px][][19px][19px][25px][][][][][][15px]"));
+		tabGeneral.setLayout(new MigLayout("", "[104px][100px,grow][][49px]", "[19px][][][][25px][][19px][19px][25px][][][][][][15px]"));
 
 		lblTranslatedName = new JLabel(Messages.getString("MenuItemForm.lblTranslatedName.text")); //$NON-NLS-1$
-		jPanel1.add(lblTranslatedName, "cell 0 1,alignx leading");
+		tabGeneral.add(lblTranslatedName, "cell 0 1,alignx leading");
 
 		tfTranslatedName = new FixedLengthTextField();
 		tfTranslatedName.setLength(120);
-		jPanel1.add(tfTranslatedName, "cell 1 1 3 1,growx");
+		tabGeneral.add(tfTranslatedName, "cell 1 1 3 1,growx");
 
 		lblSortOrder = new JLabel(Messages.getString("MenuItemForm.lblSortOrder.text")); //$NON-NLS-1$
-		jPanel1.add(lblSortOrder, "cell 0 2");
+		tabGeneral.add(lblSortOrder, "cell 0 2");
 
 		tfSortOrder = new IntegerTextField();
 		tfSortOrder.setColumns(10);
 		tfSortOrder.setText(Messages.getString("MenuItemForm.integerTextField.text")); //$NON-NLS-1$
-		jPanel1.add(tfSortOrder, "cell 1 2");
+		tabGeneral.add(tfSortOrder, "cell 1 2");
 
 		lblBarcode = new JLabel(Messages.getString("MenuItemForm.lblBarcode.text")); //$NON-NLS-1$
-		jPanel1.add(lblBarcode, "cell 0 3,alignx leading");
+		tabGeneral.add(lblBarcode, "cell 0 3,alignx leading");
 
 		tfBarcode = new FixedLengthTextField(120);
-		jPanel1.add(tfBarcode, "cell 1 3,growx");
+		tabGeneral.add(tfBarcode, "cell 1 3,growx");
 
 		lblBuyPrice = new JLabel(Messages.getString("LABEL_BUY_PRICE"));
-		jPanel1.add(lblBuyPrice, "cell 0 5");
+		tabGeneral.add(lblBuyPrice, "cell 0 5");
 
 		tfBuyPrice = new DoubleTextField();
 		tfBuyPrice.setHorizontalAlignment(SwingConstants.TRAILING);
-		jPanel1.add(tfBuyPrice, "cell 1 5,growx");
-		jPanel1.add(jLabel3, "cell 0 6,alignx left,aligny center");
-		jPanel1.add(jLabel4, "cell 0 4,alignx left,aligny center");
+		tabGeneral.add(tfBuyPrice, "cell 1 5,growx");
+		tabGeneral.add(jLabel3, "cell 0 6,alignx left,aligny center");
+		tabGeneral.add(jLabel4, "cell 0 4,alignx left,aligny center");
 		setLayout(new BorderLayout(0, 0));
-		jPanel1.add(jLabel6, "cell 0 8,alignx left,aligny center"); //$NON-NLS-1$
-		jPanel1.add(jLabel2, "cell 0 7,alignx left,aligny center"); //$NON-NLS-1$
-		jPanel1.add(jLabel1, "cell 0 0,alignx left,aligny center"); //$NON-NLS-1$
-		jPanel1.add(tfName, "cell 1 0 3 1,growx,aligny top"); //$NON-NLS-1$
-		jPanel1.add(cbGroup, "cell 1 4,growx,aligny top"); //$NON-NLS-1$
-		jPanel1.add(btnNewGroup, "cell 3 4,growx,aligny top"); //$NON-NLS-1$
-		jPanel1.add(tfDiscountRate, "cell 1 7,growx,aligny top"); //$NON-NLS-1$
-		jPanel1.add(cbTax, "cell 1 8,growx,aligny top"); //$NON-NLS-1$
-		jPanel1.add(tfPrice, "cell 1 6,growx,aligny top"); //$NON-NLS-1$
+		tabGeneral.add(jLabel6, "cell 0 8,alignx left,aligny center"); //$NON-NLS-1$
+		tabGeneral.add(jLabel2, "cell 0 7,alignx left,aligny center"); //$NON-NLS-1$
+		tabGeneral.add(jLabel1, "cell 0 0,alignx left,aligny center"); //$NON-NLS-1$
+		tabGeneral.add(tfName, "cell 1 0 3 1,growx,aligny top"); //$NON-NLS-1$
+		tabGeneral.add(cbGroup, "cell 1 4,growx,aligny top"); //$NON-NLS-1$
+		tabGeneral.add(btnNewGroup, "cell 3 4,growx,aligny top"); //$NON-NLS-1$
+		tabGeneral.add(tfDiscountRate, "cell 1 7,growx,aligny top"); //$NON-NLS-1$
+		tabGeneral.add(cbTax, "cell 1 8,growx,aligny top"); //$NON-NLS-1$
+		tabGeneral.add(tfPrice, "cell 1 6,growx,aligny top"); //$NON-NLS-1$
 
 		lblKitchenPrinter = new JLabel("Kitchen & Bar Printer");
-		jPanel1.add(lblKitchenPrinter, "cell 0 9"); //$NON-NLS-1$
+		tabGeneral.add(lblKitchenPrinter, "cell 0 9"); //$NON-NLS-1$
 
 		cbPrinter = new JComboBox<VirtualPrinter>(new DefaultComboBoxModel<VirtualPrinter>(VirtualPrinterDAO.getInstance().findAll()
 				.toArray(new VirtualPrinter[0])));
-		jPanel1.add(cbPrinter, "cell 1 9,growx"); //$NON-NLS-1$
+		tabGeneral.add(cbPrinter, "cell 1 9,growx"); //$NON-NLS-1$
 
 		JLabel lblImage = new JLabel("Image:");
 		lblImage.setHorizontalAlignment(SwingConstants.TRAILING);
-		jPanel1.add(lblImage, "cell 0 10,aligny center");
+		tabGeneral.add(lblImage, "cell 0 10,aligny center");
 
 		lblImagePreview = new JLabel("");
 		lblImagePreview.setHorizontalAlignment(JLabel.CENTER);
 		lblImagePreview.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		lblImagePreview.setPreferredSize(new Dimension(100, 100));
-		jPanel1.add(lblImagePreview, "cell 1 10");
+		tabGeneral.add(lblImagePreview, "cell 1 10");
 
 		JButton btnSelectImage = new JButton("...");
 		btnSelectImage.addActionListener(new ActionListener() {
@@ -313,7 +316,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 				doSelectImageFile();
 			}
 		});
-		jPanel1.add(btnSelectImage, "cell 2 10");
+		tabGeneral.add(btnSelectImage, "cell 2 10");
 
 		btnClearImage = new JButton("Clear");
 		btnClearImage.addActionListener(new ActionListener() {
@@ -321,28 +324,28 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 				doClearImage();
 			}
 		});
-		jPanel1.add(btnClearImage, "cell 3 10");
+		tabGeneral.add(btnClearImage, "cell 3 10");
 
 		lblButtonColor = new JLabel(Messages.getString("MenuItemForm.lblButtonColor.text")); //$NON-NLS-1$
-		jPanel1.add(lblButtonColor, "cell 0 11");
+		tabGeneral.add(lblButtonColor, "cell 0 11");
 
 		btnButtonColor = new JButton(); //$NON-NLS-1$
 		btnButtonColor.setPreferredSize(new Dimension(140, 40));
-		jPanel1.add(btnButtonColor, "cell 1 11");
+		tabGeneral.add(btnButtonColor, "cell 1 11");
 
 		lblTextColor = new JLabel(Messages.getString("MenuItemForm.lblTextColor.text")); //$NON-NLS-1$
-		jPanel1.add(lblTextColor, "cell 0 12");
+		tabGeneral.add(lblTextColor, "cell 0 12");
 
 		btnTextColor = new JButton(Messages.getString("MenuItemForm.SAMPLE_TEXT")); //$NON-NLS-1$
 		btnTextColor.setPreferredSize(new Dimension(140, 40));
-		jPanel1.add(btnTextColor, "cell 1 12");
+		tabGeneral.add(btnTextColor, "cell 1 12");
 
 		cbShowTextWithImage = new JCheckBox("Show image only");
 		cbShowTextWithImage.setActionCommand("Show Text with Image");
-		jPanel1.add(cbShowTextWithImage, "cell 1 13"); //$NON-NLS-1$
-		jPanel1.add(chkVisible, "cell 1 14,alignx left,aligny top"); //$NON-NLS-1$
-		jPanel1.add(btnNewTax, "cell 2 8,alignx left,aligny top"); //$NON-NLS-1$
-		jPanel1.add(jLabel5, "cell 2 7"); //$NON-NLS-1$
+		tabGeneral.add(cbShowTextWithImage, "cell 1 13"); //$NON-NLS-1$
+		tabGeneral.add(chkVisible, "cell 1 14,alignx left,aligny top"); //$NON-NLS-1$
+		tabGeneral.add(btnNewTax, "cell 2 8,alignx left,aligny top"); //$NON-NLS-1$
+		tabGeneral.add(jLabel5, "cell 2 7"); //$NON-NLS-1$
 		add(tabbedPane);
 
 		addRecepieExtension();
@@ -364,33 +367,38 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 			}
 		});
 
-		tableTicketItemModifierGroups.setModel(new javax.swing.table.DefaultTableModel(new Object[][] { {}, {}, {}, {} }, new String[] {
-
-		}));
 		jScrollPane1.setViewportView(tableTicketItemModifierGroups);
 
-		org.jdesktop.layout.GroupLayout jPanel2Layout = new org.jdesktop.layout.GroupLayout(jPanel2);
-		jPanel2.setLayout(jPanel2Layout);
-		jPanel2Layout.setHorizontalGroup(jPanel2Layout
-				.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-				.add(org.jdesktop.layout.GroupLayout.TRAILING,
-						jPanel2Layout.createSequentialGroup().addContainerGap(280, Short.MAX_VALUE).add(btnNewModifierGroup)
-								.addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED).add(btnEditModifierGroup)
-								.addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED).add(btnDeleteModifierGroup).addContainerGap())
-				.add(jPanel2Layout.createSequentialGroup().addContainerGap()
-						.add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 377, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-						.addContainerGap(86, Short.MAX_VALUE)));
-		jPanel2Layout.setVerticalGroup(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(
-				org.jdesktop.layout.GroupLayout.TRAILING,
-				jPanel2Layout
-						.createSequentialGroup()
-						.addContainerGap()
-						.add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 270, Short.MAX_VALUE)
-						.addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-						.add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE).add(btnDeleteModifierGroup).add(btnEditModifierGroup)
-								.add(btnNewModifierGroup)).addContainerGap()));
+		GroupLayout jPanel2Layout = new GroupLayout(tabModifier);
+		jPanel2Layout.setVerticalGroup(
+			jPanel2Layout.createParallelGroup(Alignment.TRAILING)
+				.addGroup(jPanel2Layout.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(jScrollPane1, GroupLayout.DEFAULT_SIZE, 412, Short.MAX_VALUE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(jPanel2Layout.createParallelGroup(Alignment.BASELINE)
+						.addComponent(btnDeleteModifierGroup)
+						.addComponent(btnEditModifierGroup)
+						.addComponent(btnNewModifierGroup))
+					.addContainerGap())
+		);
+		jPanel2Layout.setHorizontalGroup(
+			jPanel2Layout.createParallelGroup(Alignment.TRAILING)
+				.addGroup(jPanel2Layout.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(jPanel2Layout.createParallelGroup(Alignment.LEADING)
+						.addGroup(jPanel2Layout.createSequentialGroup()
+							.addComponent(btnNewModifierGroup)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(btnEditModifierGroup)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(btnDeleteModifierGroup))
+						.addComponent(jScrollPane1, GroupLayout.DEFAULT_SIZE, 421, Short.MAX_VALUE))
+					.addContainerGap())
+		);
+		tabModifier.setLayout(jPanel2Layout);
 
-		tabbedPane.addTab(com.floreantpos.POSConstants.MODIFIER_GROUPS, jPanel2);
+		tabbedPane.addTab(com.floreantpos.POSConstants.MODIFIER_GROUPS, tabModifier);
 
 		btnDeleteShift.setText(com.floreantpos.POSConstants.DELETE_SHIFT);
 
@@ -400,8 +408,8 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 				{ null, null, null, null }, { null, null, null, null } }, new String[] { "Title 1", "Title 2", "Title 3", "Title 4" }));
 		jScrollPane2.setViewportView(shiftTable);
 
-		org.jdesktop.layout.GroupLayout jPanel3Layout = new org.jdesktop.layout.GroupLayout(jPanel3);
-		jPanel3.setLayout(jPanel3Layout);
+		org.jdesktop.layout.GroupLayout jPanel3Layout = new org.jdesktop.layout.GroupLayout(tabShift);
+		tabShift.setLayout(jPanel3Layout);
 		jPanel3Layout.setHorizontalGroup(jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(
 				jPanel3Layout
 						.createSequentialGroup()
@@ -419,7 +427,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 						.add(jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE).add(btnAddShift).add(btnDeleteShift))
 						.addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
 
-		tabbedPane.addTab(com.floreantpos.POSConstants.SHIFTS, jPanel3);
+		tabbedPane.addTab(com.floreantpos.POSConstants.SHIFTS, tabShift);
 
 		tabbedPane.addChangeListener(this);
 	}// </editor-fold>//GEN-END:initComponents
@@ -462,9 +470,9 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 	private javax.swing.JLabel jLabel4;
 	private javax.swing.JLabel jLabel5;
 	private javax.swing.JLabel jLabel6;
-	private javax.swing.JPanel jPanel1;
-	private javax.swing.JPanel jPanel2;
-	private javax.swing.JPanel jPanel3;
+	private javax.swing.JPanel tabGeneral;
+	private javax.swing.JPanel tabModifier;
+	private javax.swing.JPanel tabShift;
 	private javax.swing.JScrollPane jScrollPane1;
 	private javax.swing.JScrollPane jScrollPane2;
 	private javax.swing.JTabbedPane tabbedPane;

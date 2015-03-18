@@ -18,7 +18,7 @@ import com.floreantpos.main.Application;
 import com.floreantpos.model.CardReader;
 import com.floreantpos.model.PaymentType;
 import com.floreantpos.model.Ticket;
-import com.floreantpos.model.TicketType;
+import com.floreantpos.model.OrderType;
 import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.dialog.PaymentTypeSelectionDialog;
@@ -64,7 +64,7 @@ public class NewBarTabAction extends AbstractAction implements CardInputListener
 		Ticket ticket = new Ticket();
 		
 		ticket.setPriceIncludesTax(application.isPriceIncludesTax());
-		ticket.setType(TicketType.BAR_TAB);
+		ticket.setType(OrderType.BAR_TAB);
 		ticket.setTerminal(application.getTerminal());
 		ticket.setOwner(Application.getCurrentUser());
 		ticket.setShift(application.getCurrentShift());

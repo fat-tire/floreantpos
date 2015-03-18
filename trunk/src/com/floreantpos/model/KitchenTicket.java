@@ -32,17 +32,17 @@ public class KitchenTicket extends BaseKitchenTicket {
 
 /*[CONSTRUCTOR MARKER END]*/
 	
-	public TicketType getType() {
+	public OrderType getType() {
 		String type = getTicketType();
 		
 		if(StringUtils.isEmpty(type)) {
-			return TicketType.DINE_IN;
+			return OrderType.DINE_IN;
 		}
 		
-		return TicketType.valueOf(type);
+		return OrderType.valueOf(type);
 	}
 	
-	public void setType(TicketType type) {
+	public void setType(OrderType type) {
 		setTicketType(type.name());
 	}
 	

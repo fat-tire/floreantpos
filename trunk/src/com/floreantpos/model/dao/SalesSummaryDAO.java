@@ -18,7 +18,7 @@ import com.floreantpos.model.Shift;
 import com.floreantpos.model.Terminal;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketItem;
-import com.floreantpos.model.TicketType;
+import com.floreantpos.model.OrderType;
 import com.floreantpos.model.User;
 import com.floreantpos.model.UserType;
 import com.floreantpos.report.SalesAnalysisReportModel.SalesAnalysisData;
@@ -491,8 +491,8 @@ public class SalesSummaryDAO extends _RootDAO {
 				for (Object object : shifts) {
 					Shift shift = (Shift) object;
 
-					TicketType[] values = TicketType.values();
-					for (TicketType ticketType : values) {
+					OrderType[] values = OrderType.values();
+					for (OrderType ticketType : values) {
 						findRecordByProfitCenter(start, end, userType, terminal, session, salesSummary, shift, ticketType);
 					}
 
@@ -509,7 +509,7 @@ public class SalesSummaryDAO extends _RootDAO {
 	}
 
 	private void findRecordByProfitCenter(Date start, Date end, UserType userType, Terminal terminal, Session session, SalesStatistics salesSummary,
-			Shift shift, TicketType ticketType) {
+			Shift shift, OrderType ticketType) {
 		Criteria criteria;
 		criteria = session.createCriteria(Ticket.class, "ticket");
 		criteria.createCriteria(Ticket.PROP_OWNER, "u");
