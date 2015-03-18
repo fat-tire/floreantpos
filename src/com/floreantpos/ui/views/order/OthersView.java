@@ -26,7 +26,7 @@ import com.floreantpos.model.MenuItem;
 import com.floreantpos.model.ShopTable;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketItem;
-import com.floreantpos.model.TicketType;
+import com.floreantpos.model.OrderType;
 import com.floreantpos.model.dao.MenuItemDAO;
 import com.floreantpos.model.dao.ShopTableDAO;
 import com.floreantpos.model.dao.TicketDAO;
@@ -284,7 +284,7 @@ public class OthersView extends JPanel {
 
 	public void updateView() {
 		if (currentTicket != null) {
-			if (currentTicket.getType() != TicketType.DINE_IN) {
+			if (currentTicket.getType() != OrderType.DINE_IN) {
 				btnGuestNo.setText("");
 				btnTableNumber.setText("");
 
