@@ -37,7 +37,7 @@ import com.floreantpos.demo.KitchenDisplayView;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.AttendenceHistory;
 import com.floreantpos.model.Shift;
-import com.floreantpos.model.TicketType;
+import com.floreantpos.model.OrderType;
 import com.floreantpos.model.User;
 import com.floreantpos.model.dao.AttendenceHistoryDAO;
 import com.floreantpos.model.dao.UserDAO;
@@ -312,7 +312,7 @@ class LoginPasswordEntryView extends JPanel {
 			RootView rootView = application.getRootView();
 			
 			if(TerminalConfig.isCashierMode()) {
-				SwitchboardView.doTakeout(TicketType.TAKE_OUT);
+				SwitchboardView.doTakeout(OrderType.TAKE_OUT);
 			}
 			else if(TerminalConfig.isKitchenMode()) {
 				if(rootView.hasView(KitchenDisplayView.VIEW_NAME)) {

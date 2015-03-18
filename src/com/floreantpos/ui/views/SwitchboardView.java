@@ -50,7 +50,7 @@ import com.floreantpos.main.Application;
 import com.floreantpos.model.AttendenceHistory;
 import com.floreantpos.model.Shift;
 import com.floreantpos.model.Ticket;
-import com.floreantpos.model.TicketType;
+import com.floreantpos.model.OrderType;
 import com.floreantpos.model.User;
 import com.floreantpos.model.UserPermission;
 import com.floreantpos.model.UserType;
@@ -190,7 +190,7 @@ public class SwitchboardView extends JPanel implements ActionListener, ITicketLi
 		if (TerminalConfig.isPickupEnable()) {
 			btnPickup.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					doHomeDelivery(TicketType.PICKUP);
+					doHomeDelivery(OrderType.PICKUP);
 				}
 			});
 			btnPickup.setText("PICKUP");
@@ -200,7 +200,7 @@ public class SwitchboardView extends JPanel implements ActionListener, ITicketLi
 		if (TerminalConfig.isHomeDeliveryEnable()) {
 			btnHomeDelivery.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					doHomeDelivery(TicketType.HOME_DELIVERY);
+					doHomeDelivery(OrderType.HOME_DELIVERY);
 				}
 			});
 			btnHomeDelivery.setText("HOME DELIVERY");
@@ -210,7 +210,7 @@ public class SwitchboardView extends JPanel implements ActionListener, ITicketLi
 		if (TerminalConfig.isDriveThruEnable()) {
 			btnDriveThrough.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					doTakeout(TicketType.DRIVE_THRU);
+					doTakeout(OrderType.DRIVE_THRU);
 				}
 			});
 			btnDriveThrough.setText("DRIVE THRU");
@@ -373,7 +373,7 @@ public class SwitchboardView extends JPanel implements ActionListener, ITicketLi
 				return;
 			}
 
-			if (ticket.getType() != TicketType.HOME_DELIVERY) {
+			if (ticket.getType() != OrderType.HOME_DELIVERY) {
 				POSMessageDialog.showError("Driver can be assigned only for Home Delivery");
 				return;
 			}
@@ -650,7 +650,7 @@ public class SwitchboardView extends JPanel implements ActionListener, ITicketLi
 		RootView.getInstance().showView(OrderView.VIEW_NAME);
 	}
 
-	private void doCreateNewTicket(final TicketType ticketType) {
+	private void doCreateNewTicket(final OrderType ticketType) {
 		try {
 			OrderServiceExtension orderService = new DefaultOrderServiceExtension();
 			orderService.createNewTicket(ticketType);
@@ -666,7 +666,7 @@ public class SwitchboardView extends JPanel implements ActionListener, ITicketLi
 		}
 	}
 
-	protected void doHomeDelivery(TicketType ticketType) {
+	protected void doHomeDelivery(OrderType ticketType) {
 		try {
 
 			orderServiceExtension.createNewTicket(ticketType);
@@ -682,7 +682,7 @@ public class SwitchboardView extends JPanel implements ActionListener, ITicketLi
 		}
 	}
 
-	public static void doTakeout(TicketType titcketType) {
+	public static void doTakeout(OrderType titcketType) {
 		Application application = Application.getInstance();
 
 		Ticket ticket = new Ticket();
@@ -892,7 +892,7 @@ public class SwitchboardView extends JPanel implements ActionListener, ITicketLi
 			doShowManagerWindow();
 		}
 		else if (source == btnNewTicket) {
-			doCreateNewTicket(TicketType.DINE_IN);
+			doCreateNewTicket(OrderType.DINE_IN);
 		}
 		else if (source == btnPayout) {
 			doPayout();
@@ -910,7 +910,7 @@ public class SwitchboardView extends JPanel implements ActionListener, ITicketLi
 			doSplitTicket();
 		}
 		else if (source == btnTakeout) {
-			doTakeout(TicketType.TAKE_OUT);
+			doTakeout(OrderType.TAKE_OUT);
 		}
 		else if (source == btnVoidTicket) {
 			doVoidTicket();

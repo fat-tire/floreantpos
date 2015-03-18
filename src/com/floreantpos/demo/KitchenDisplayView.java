@@ -23,7 +23,7 @@ import com.floreantpos.main.Application;
 import com.floreantpos.model.KitchenTicket;
 import com.floreantpos.model.PosPrinters;
 import com.floreantpos.model.Printer;
-import com.floreantpos.model.TicketType;
+import com.floreantpos.model.OrderType;
 import com.floreantpos.model.dao.KitchenTicketDAO;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.swing.PosComboRenderer;
@@ -36,7 +36,7 @@ public class KitchenDisplayView extends JPanel implements ActionListener {
 	public static final KitchenDisplayView instance = new KitchenDisplayView();
 
 	private JComboBox<Printer> cbPrinters = new JComboBox<Printer>();
-	private JComboBox<TicketType> cbTicketTypes = new JComboBox<TicketType>();
+	private JComboBox<OrderType> cbTicketTypes = new JComboBox<OrderType>();
 
 	KitchenTicketListPanel ticketPanel = new KitchenTicketListPanel();
 
@@ -70,7 +70,7 @@ public class KitchenDisplayView extends JPanel implements ActionListener {
 
 		cbTicketTypes.setFont(font);
 		cbTicketTypes.setRenderer(new PosComboRenderer());
-		DefaultComboBoxModel<TicketType> ticketTypeModel = new DefaultComboBoxModel<TicketType>(TicketType.values());
+		DefaultComboBoxModel<OrderType> ticketTypeModel = new DefaultComboBoxModel<OrderType>(OrderType.values());
 		ticketTypeModel.insertElementAt(null, 0);
 		cbTicketTypes.setModel(ticketTypeModel);
 		cbTicketTypes.setSelectedIndex(0);
@@ -113,7 +113,7 @@ public class KitchenDisplayView extends JPanel implements ActionListener {
 			return;
 		}
 
-		TicketType selectedTicketType = (TicketType) cbTicketTypes.getSelectedItem();
+		OrderType selectedTicketType = (OrderType) cbTicketTypes.getSelectedItem();
 		if (selectedTicketType != null && selectedTicketType != ticket.getType()) {
 			return;
 		}

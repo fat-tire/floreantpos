@@ -13,7 +13,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import com.floreantpos.main.Application;
-import com.floreantpos.model.TicketType;
+import com.floreantpos.model.OrderType;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.ui.dialog.OpenTicketsListDialog;
 import com.floreantpos.ui.dialog.POSDialog;
@@ -61,7 +61,7 @@ public class CashierModeNextActionDialog extends POSDialog implements ActionList
 	public void actionPerformed(ActionEvent e) {
 		
 		if(e.getSource() == btnNew) {
-			SwitchboardView.doTakeout(TicketType.TAKE_OUT);
+			SwitchboardView.doTakeout(OrderType.TAKE_OUT);
 		}
 		else if(e.getSource() == btnLogout) {
 			Application.getInstance().logout();

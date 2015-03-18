@@ -30,7 +30,7 @@ import com.floreantpos.model.PosTransaction;
 import com.floreantpos.model.RefundTransaction;
 import com.floreantpos.model.Restaurant;
 import com.floreantpos.model.Ticket;
-import com.floreantpos.model.TicketType;
+import com.floreantpos.model.OrderType;
 import com.floreantpos.model.dao.KitchenTicketDAO;
 import com.floreantpos.model.dao.RestaurantDAO;
 import com.floreantpos.model.dao.TicketDAO;
@@ -367,7 +367,7 @@ public class ReceiptPrintService {
 		addColumn(ticketHeaderBuilder, POSConstants.RECEIPT_REPORT_TICKET_NO_LABEL + ticket.getId());
 		endRow(ticketHeaderBuilder);
 
-		if (ticket.getType() == TicketType.DINE_IN) {
+		if (ticket.getType() == OrderType.DINE_IN) {
 			beginRow(ticketHeaderBuilder);
 			addColumn(ticketHeaderBuilder, POSConstants.RECEIPT_REPORT_TABLE_NO_LABEL + ticket.getTableNumbers());
 			endRow(ticketHeaderBuilder);
@@ -390,7 +390,7 @@ public class ReceiptPrintService {
 		endRow(ticketHeaderBuilder);
 
 		//customer info section
-		if (ticket.getType() != TicketType.DINE_IN) {
+		if (ticket.getType() != OrderType.DINE_IN) {
 
 			String customerName = ticket.getProperty(Ticket.CUSTOMER_NAME);
 			String customerPhone = ticket.getProperty(Ticket.CUSTOMER_PHONE);

@@ -14,7 +14,7 @@ import com.floreantpos.model.PosTransaction;
 import com.floreantpos.model.RefundTransaction;
 import com.floreantpos.model.Terminal;
 import com.floreantpos.model.Ticket;
-import com.floreantpos.model.TicketType;
+import com.floreantpos.model.OrderType;
 import com.floreantpos.model.TransactionType;
 import com.floreantpos.model.User;
 import com.floreantpos.model.VoidTransaction;
@@ -66,7 +66,7 @@ public class PosTransactionService {
 
 			ticket.addTotransactions(transaction);
 
-			if (ticket.getType() == TicketType.BAR_TAB) {
+			if (ticket.getType() == OrderType.BAR_TAB) {
 				ticket.removeProperty(Ticket.PROPERTY_PAYMENT_METHOD);
 				ticket.removeProperty(Ticket.PROPERTY_CARD_NAME);
 				ticket.removeProperty(Ticket.PROPERTY_CARD_TRANSACTION_ID);
@@ -138,7 +138,7 @@ public class PosTransactionService {
 	}
 
 	private void closeTicketIfApplicable(Ticket ticket, Date currentDate) {
-		TicketType ticketType = ticket.getType();
+		OrderType ticketType = ticket.getType();
 		
 		switch (ticketType) {
 			case DINE_IN:
