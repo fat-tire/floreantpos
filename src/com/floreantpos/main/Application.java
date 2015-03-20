@@ -34,6 +34,7 @@ import com.floreantpos.model.Shift;
 import com.floreantpos.model.Terminal;
 import com.floreantpos.model.User;
 import com.floreantpos.model.UserPermission;
+import com.floreantpos.model.dao.OrderTypePropertiesDAO;
 import com.floreantpos.model.dao.PrinterConfigurationDAO;
 import com.floreantpos.model.dao.RestaurantDAO;
 import com.floreantpos.model.dao.TerminalDAO;
@@ -272,6 +273,8 @@ public class Application {
 		}
 
 		this.terminal = terminal;
+		
+		OrderTypePropertiesDAO.populate();
 	}
 
 	public void refreshRestaurant() {

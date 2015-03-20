@@ -34,8 +34,6 @@ public class NewBarTabAction extends AbstractAction implements CardInputListener
 	private PaymentType selectedPaymentType;
 
 	public NewBarTabAction(Component parentComponent) {
-		super("BAR TAB");
-		
 		this.parentComponent = parentComponent;
 	}
 
