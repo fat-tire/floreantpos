@@ -37,10 +37,6 @@ public class RootView extends com.floreantpos.swing.TransparentPanel {
 		orderView = OrderView.getInstance();
 		orderView.init();
 		addView(OrderView.VIEW_NAME, orderView);
-		//addView("KitchenView", new KitchenDisplayView());
-		
-		//paymentView = SettleTicketView.getInstance();
-		//addView(SettleTicketView.VIEW_NAME, paymentView);
 		
 		showView(LoginView.VIEW_NAME);
 	}
