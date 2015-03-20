@@ -32,6 +32,7 @@ import com.floreantpos.model.MenuItemModifierGroup;
 import com.floreantpos.model.MenuItemShift;
 import com.floreantpos.model.MenuModifier;
 import com.floreantpos.model.MenuModifierGroup;
+import com.floreantpos.model.OrderTypeProperties;
 import com.floreantpos.model.PackagingUnit;
 import com.floreantpos.model.PayoutReason;
 import com.floreantpos.model.PayoutRecepient;
@@ -124,6 +125,7 @@ public abstract class _RootDAO extends com.floreantpos.model.dao._BaseRootDAO {
 		configuration = configuration.addClass(ShopFloor.class);
 		configuration = configuration.addClass(ShopTable.class);
 		configuration = configuration.addClass(ShopTableType.class);
+		configuration = configuration.addClass(OrderTypeProperties.class);
 		
 		configuration = configureInventoryClasses(configuration);
 		

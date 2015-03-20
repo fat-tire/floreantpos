@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="com.floreantpos.model">
+	<class lazy="false" name="com.floreantpos.model.OrderTypeProperties" table="ORDER_TYPE_PROPERTIES">
+		<id column="ID" name="id" type="java.lang.Integer">
+			<generator class="identity" />
+		</id>
+
+		<property column="OTYPE" name="ordetType" type="java.lang.String" length="16" />
+		<property column="ALIAS" name="alias" type="java.lang.String" length="40" />
+		<property column="BTN_COLOR" name="buttonColor" type="java.lang.Integer" />
+		<property column="TEXT_COLOR" name="textColor" type="java.lang.Integer" />
+		<property column="VISIBLE" name="visible" type="java.lang.Boolean"/>
+
+		<!-- Associations -->
+	</class>
+</hibernate-mapping>
