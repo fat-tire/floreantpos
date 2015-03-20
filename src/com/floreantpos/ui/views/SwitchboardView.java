@@ -184,7 +184,8 @@ public class SwitchboardView extends JPanel implements ActionListener, ITicketLi
 		bottomLeftPanel.setLayout(new java.awt.BorderLayout(5, 5));
 		bottomLeftPanel.add(openTicketList, java.awt.BorderLayout.CENTER);
 
-		activityPanel.setLayout(new java.awt.GridLayout(3, 0, 5, 5));
+		//activityPanel.setLayout(new java.awt.GridLayout(3, 0, 5, 5));
+		activityPanel.setLayout(new MigLayout("wrap 6, hidemode 3, fill", "[grow, fill]", ""));
 
 		activityPanel.add(btnNewTicket);
 		activityPanel.add(btnTakeout);

@@ -28,12 +28,12 @@ public class OrderTypeConfigurationView extends ConfigurationView {
 	private JCheckBox cbBarTab;
 	
 	public OrderTypeConfigurationView() {
-		setLayout(new MigLayout("", "[grow]", "[grow][grow]"));
+		setLayout(new MigLayout("", "[grow]", ""));
 		
 		JPanel panel = new JPanel();
 		panel.setBorder(new TitledBorder(null, "ORDER TYPE", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		add(panel, "cell 0 0,grow");
-		panel.setLayout(new MigLayout("", "[][][][][][]", "[]"));
+		panel.setLayout(new MigLayout("gap 20px", "[][][][][][]", "[]"));
 		
 		cbDineIn = new JCheckBox("DINE IN");
 		panel.add(cbDineIn, "cell 0 0");
