@@ -29,11 +29,9 @@ import javax.swing.Timer;
 
 import net.miginfocom.swing.MigLayout;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.LogFactory;
 
 import com.floreantpos.ITicketList;
-import com.floreantpos.Messages;
 import com.floreantpos.POSConstants;
 import com.floreantpos.PosException;
 import com.floreantpos.actions.AuthorizeTicketAction;
@@ -304,14 +302,9 @@ public class SwitchboardView extends JPanel implements ActionListener, ITicketLi
 	private void setupOrderType(OrderType orderType, JButton button, String textKey) {
 		OrderTypeProperties properties = orderType.getProperties();
 
+		button.setText(orderType.toString());
+		
 		if (properties != null && properties.isVisible()) {
-			if (StringUtils.isNotEmpty(properties.getAlias())) {
-				button.setText(properties.getAlias());
-			}
-			else {
-				button.setText(Messages.getString(textKey));
-			}
-
 			button.setVisible(true);
 		}
 		else {
