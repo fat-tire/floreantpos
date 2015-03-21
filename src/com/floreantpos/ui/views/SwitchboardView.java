@@ -7,15 +7,11 @@
 package com.floreantpos.ui.views;
 
 import java.awt.ComponentOrientation;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
@@ -39,27 +35,23 @@ import com.floreantpos.actions.NewBarTabAction;
 import com.floreantpos.actions.OpenKitchenDisplayAction;
 import com.floreantpos.actions.RefundAction;
 import com.floreantpos.actions.SettleTicketAction;
-import com.floreantpos.actions.ShutDownAction;
 import com.floreantpos.actions.TicketImportAction;
 import com.floreantpos.bo.ui.BackOfficeWindow;
 import com.floreantpos.config.TerminalConfig;
-import com.floreantpos.demo.KitchenDisplayWindow;
 import com.floreantpos.extension.FloorLayoutPlugin;
 import com.floreantpos.extension.OrderServiceExtension;
 import com.floreantpos.extension.TicketImportPlugin;
 import com.floreantpos.main.Application;
-import com.floreantpos.model.AttendenceHistory;
 import com.floreantpos.model.OrderType;
 import com.floreantpos.model.OrderTypeProperties;
-import com.floreantpos.model.Shift;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.User;
 import com.floreantpos.model.UserPermission;
 import com.floreantpos.model.UserType;
-import com.floreantpos.model.dao.AttendenceHistoryDAO;
 import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.services.TicketService;
 import com.floreantpos.swing.PosButton;
+import com.floreantpos.ui.HeaderPanel;
 import com.floreantpos.ui.dialog.ManagerDialog;
 import com.floreantpos.ui.dialog.NumberSelectionDialog2;
 import com.floreantpos.ui.dialog.POSMessageDialog;
@@ -103,10 +95,8 @@ public class SwitchboardView extends JPanel implements ActionListener, ITicketLi
 		btnBarTab.addActionListener(this);
 
 		btnBackOffice.addActionListener(this);
-		btnClockOut.addActionListener(this);
 		btnEditTicket.addActionListener(this);
 		btnGroupSettle.addActionListener(this);
-		btnLogout.addActionListener(this);
 		btnManager.addActionListener(this);
 		btnPayout.addActionListener(this);
 		btnOrderInfo.addActionListener(this);
@@ -163,13 +153,10 @@ public class SwitchboardView extends JPanel implements ActionListener, ITicketLi
 		btnPayout = new PosButton();
 		btnOrderInfo = new PosButton();
 		javax.swing.JPanel bottomRightPanel = new javax.swing.JPanel();
-		btnShutdown = new PosButton(new ShutDownAction());
-		btnLogout = new PosButton();
 		btnBackOffice = new PosButton();
 		btnManager = new PosButton();
 		btnAuthorize = new PosButton(new AuthorizeTicketAction());
 		btnKitchenDisplay = new PosButton(new OpenKitchenDisplayAction());
-		btnClockOut = new PosButton();
 
 		setLayout(new java.awt.BorderLayout(10, 10));
 
@@ -249,13 +236,10 @@ public class SwitchboardView extends JPanel implements ActionListener, ITicketLi
 		bottomRightPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "OTHERS", javax.swing.border.TitledBorder.CENTER,
 				javax.swing.border.TitledBorder.DEFAULT_POSITION));
 
-		btnLogout.setText(POSConstants.CAPITAL_LOGOUT);
 
 		btnBackOffice.setText(POSConstants.CAPITAL_BACK_OFFICE);
 
 		btnManager.setText(POSConstants.CAPITAL_MANAGER);
-
-		btnClockOut.setText(POSConstants.CAPITAL_CLOCK_OUT);
 
 		bottomPanel.add(bottomRightPanel, java.awt.BorderLayout.EAST);
 		bottomRightPanel.setLayout(new MigLayout("aligny bottom, insets 1 2 1 2, gapy 10", "[140px]", "[][][][][]"));
@@ -283,10 +267,6 @@ public class SwitchboardView extends JPanel implements ActionListener, ITicketLi
 			bottomRightPanel.add(new PosButton(new TicketImportAction()), "height pref!,grow,wrap");
 		}
 
-		bottomRightPanel.add(btnClockOut, "height pref!,grow,wrap");
-		bottomRightPanel.add(btnLogout, "height pref!,grow,wrap");
-		bottomRightPanel.add(btnShutdown, "height pref!,grow,wrap");
-
 		add(bottomPanel, java.awt.BorderLayout.CENTER);
 	}// </editor-fold>//GEN-END:initComponents
 
@@ -313,28 +293,7 @@ public class SwitchboardView extends JPanel implements ActionListener, ITicketLi
 	}
 
 	private void createHeaderPanel() {
-		JPanel statusPanel = new JPanel(new MigLayout("fill", "[fill, grow 100][]", ""));
-		statusPanel.setPreferredSize(new Dimension(80, 60));
-		java.awt.Font headerFont = new java.awt.Font("Dialog", Font.BOLD, 12);
-
-		lblUserName.setFont(headerFont);
-		statusPanel.add(lblUserName);
-
-		timerLabel.setHorizontalAlignment(JLabel.RIGHT);
-		timerLabel.setFont(headerFont);
-		statusPanel.add(timerLabel);
-
-		PosButton btnRefrestTickets = new PosButton("REFRESH TICKET LIST");
-		btnRefrestTickets.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				updateTicketList();
-			}
-		});
-
-		statusPanel.add(btnRefrestTickets);
-
-		add(statusPanel, java.awt.BorderLayout.NORTH);
+		add(new HeaderPanel(), java.awt.BorderLayout.NORTH);
 	}
 
 	protected void doCloseOrder() {
@@ -435,36 +394,6 @@ public class SwitchboardView extends JPanel implements ActionListener, ITicketLi
 		}
 	}
 
-	private void doClockOut() {
-		int option = JOptionPane.showOptionDialog(this, POSConstants.CONFIRM_CLOCK_OUT, POSConstants.CONFIRM, JOptionPane.YES_NO_OPTION,
-				JOptionPane.QUESTION_MESSAGE, null, null, null);
-		if (option != JOptionPane.YES_OPTION) {
-			return;
-		}
-
-		User user = Application.getCurrentUser();
-		AttendenceHistoryDAO attendenceHistoryDAO = new AttendenceHistoryDAO();
-		AttendenceHistory attendenceHistory = attendenceHistoryDAO.findHistoryByClockedInTime(user);
-		if (attendenceHistory == null) {
-			attendenceHistory = new AttendenceHistory();
-			Date lastClockInTime = user.getLastClockInTime();
-			Calendar c = Calendar.getInstance();
-			c.setTime(lastClockInTime);
-			attendenceHistory.setClockInTime(lastClockInTime);
-			attendenceHistory.setClockInHour(Short.valueOf((short) c.get(Calendar.HOUR)));
-			attendenceHistory.setUser(user);
-			attendenceHistory.setTerminal(Application.getInstance().getTerminal());
-			attendenceHistory.setShift(user.getCurrentShift());
-		}
-
-		Shift shift = user.getCurrentShift();
-		Calendar calendar = Calendar.getInstance();
-
-		user.doClockOut(attendenceHistory, shift, calendar);
-
-		Application.getInstance().logout();
-	}
-
 	private synchronized void doShowBackoffice() {
 		BackOfficeWindow window = BackOfficeWindow.getInstance();
 		if (window == null) {
@@ -473,17 +402,6 @@ public class SwitchboardView extends JPanel implements ActionListener, ITicketLi
 		}
 		window.setVisible(true);
 		window.toFront();
-	}
-
-	private void doLogout() {
-		BackOfficeWindow.getInstance().dispose();
-		Window[] windows = Window.getWindows();
-		for (Window window : windows) {
-			if (window instanceof KitchenDisplayWindow) {
-				window.dispose();
-			}
-		}
-		Application.getInstance().logout();
 	}
 
 	private void doSettleTicket() {
@@ -804,10 +722,8 @@ public class SwitchboardView extends JPanel implements ActionListener, ITicketLi
 
 	// Variables declaration - do not modify//GEN-BEGIN:variables
 	private PosButton btnBackOffice;
-	private PosButton btnClockOut;
 	private PosButton btnEditTicket;
 	private PosButton btnGroupSettle;
-	private PosButton btnLogout;
 	private PosButton btnManager;
 	private PosButton btnAuthorize;
 	private PosButton btnKitchenDisplay;
@@ -816,7 +732,6 @@ public class SwitchboardView extends JPanel implements ActionListener, ITicketLi
 	private PosButton btnOrderInfo;
 	private PosButton btnReopenTicket;
 	private PosButton btnSettleTicket;
-	private PosButton btnShutdown;
 	private PosButton btnSplitTicket;
 	private PosButton btnTakeout;
 	private PosButton btnVoidTicket;
@@ -875,17 +790,11 @@ public class SwitchboardView extends JPanel implements ActionListener, ITicketLi
 		else if (source == btnBackOffice) {
 			doShowBackoffice();
 		}
-		else if (source == btnClockOut) {
-			doClockOut();
-		}
 		else if (source == btnEditTicket) {
 			doEditTicket();
 		}
 		else if (source == btnGroupSettle) {
 			doGroupSettle();
-		}
-		else if (source == btnLogout) {
-			doLogout();
 		}
 		else if (source == btnManager) {
 			doShowManagerWindow();
@@ -958,7 +867,7 @@ public class SwitchboardView extends JPanel implements ActionListener, ITicketLi
 			timerLabel.setText("Aoto logoff in " + min + ":" + sec);
 
 			if (countDown == 0) {
-				doLogout();
+				//doLogout();
 			}
 		}
 
