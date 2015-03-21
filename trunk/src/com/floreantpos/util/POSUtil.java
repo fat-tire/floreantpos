@@ -1,10 +1,22 @@
 package com.floreantpos.util;
 
+import java.awt.Window;
 import java.net.URLEncoder;
 
 import com.floreantpos.PosException;
 
 public class POSUtil {
+	public static Window getFocusedWindow() {
+		Window[] windows = Window.getWindows();
+		for (Window window : windows) {
+			if (window.hasFocus()) {
+				return window;
+			}
+		}
+		
+		return null;
+	}
+	
 	public static boolean isBlankOrNull(String str) {
 		if (str == null) {
 			return true;
