@@ -46,16 +46,16 @@ public class HeaderPanel extends JPanel {
 
 		PosButton btnClockOUt = new PosButton(new ClockoutAction(false, true));
 		btnClockOUt.setToolTipText(Messages.getString("Clockout")); //$NON-NLS-1$
-		add(btnClockOUt, "w 40!, h 40!"); //$NON-NLS-1$
+		add(btnClockOUt, "w 60!, h 60!"); //$NON-NLS-1$
 
 		PosButton btnLogout = new PosButton(new LogoutAction(false, true));
 		btnLogout.setToolTipText(Messages.getString("Logout")); //$NON-NLS-1$
-		add(btnLogout, "w 40!, h 40!"); //$NON-NLS-1$
+		add(btnLogout, "w 60!, h 60!"); //$NON-NLS-1$
 
 		PosButton btnShutdown = new PosButton(new ShutDownAction(false, true));
 		btnShutdown.setIcon(IconFactory.getIcon("shut_down_32.png")); //$NON-NLS-1$
 		btnShutdown.setToolTipText(Messages.getString("Shutdown")); //$NON-NLS-1$
-		add(btnShutdown, "w 40!, h 40!"); //$NON-NLS-1$
+		add(btnShutdown, "w 60!, h 60!"); //$NON-NLS-1$
 
 		timer = new Timer(1000, new ActionListener() {
 			@Override
