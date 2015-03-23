@@ -6,7 +6,11 @@
 
 package com.floreantpos.ui.views;
 
+import java.awt.BorderLayout;
 import java.awt.ComponentOrientation;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -16,12 +20,16 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JSeparator;
+import javax.swing.SwingConstants;
 import javax.swing.Timer;
+import javax.swing.border.TitledBorder;
 
 import net.miginfocom.swing.MigLayout;
 
@@ -65,6 +73,7 @@ import com.floreantpos.ui.views.payment.SettleTicketDialog;
 import com.floreantpos.util.POSUtil;
 import com.floreantpos.util.PosGuiUtil;
 import com.floreantpos.util.TicketAlreadyExistsException;
+import com.jidesoft.popup.JidePopup;
 
 /**
  * 
@@ -86,8 +95,8 @@ public class SwitchboardView extends JPanel implements ActionListener, ITicketLi
 	/** Creates new form SwitchboardView */
 	public SwitchboardView() {
 		initComponents();
-		
-		btnNewTicket.addActionListener(this);
+
+		btnDineIn.addActionListener(this);
 		btnTakeout.addActionListener(this);
 		btnPickup.addActionListener(this);
 		btnHomeDelivery.addActionListener(this);
@@ -134,166 +143,136 @@ public class SwitchboardView extends JPanel implements ActionListener, ITicketLi
 	// <editor-fold defaultstate="collapsed"
 	// desc=" Generated Code ">//GEN-BEGIN:initComponents
 	private void initComponents() {
-		JPanel activityPanel = new JPanel();
-
-		lblUserName = new javax.swing.JLabel();
-		javax.swing.JPanel bottomPanel = new javax.swing.JPanel();
-		javax.swing.JPanel bottomLeftPanel = new javax.swing.JPanel();
-		openTicketList = new com.floreantpos.ui.TicketListView();
-
-		btnNewTicket = new PosButton();
-		btnTakeout = new PosButton();
-		btnPickup = new PosButton();
-		btnHomeDelivery = new PosButton();
-		btnDriveThrough = new PosButton();
-		btnBarTab = new PosButton();
-		btnEditTicket = new PosButton();
-		btnVoidTicket = new PosButton();
-		btnRefundTicket = new PosButton(new RefundAction(this));
-		btnPayout = new PosButton();
-		btnOrderInfo = new PosButton();
-		javax.swing.JPanel bottomRightPanel = new javax.swing.JPanel();
-		btnBackOffice = new PosButton();
-		btnManager = new PosButton();
-		btnAuthorize = new PosButton(new AuthorizeTicketAction());
-		btnKitchenDisplay = new PosButton(new OpenKitchenDisplayAction());
-
 		setLayout(new java.awt.BorderLayout(10, 10));
 
-		createHeaderPanel();
+		javax.swing.JPanel centerPanel = new javax.swing.JPanel(new java.awt.BorderLayout(5, 5));
+		javax.swing.JPanel ticketsAndActivityPanel = new javax.swing.JPanel();
 
-		bottomPanel.setLayout(new java.awt.BorderLayout(5, 5));
+		javax.swing.JPanel newOrderPanel = new javax.swing.JPanel();
 
-		bottomLeftPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, POSConstants.OPEN_TICKETS_AND_ACTIVITY,
-				javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
-		bottomLeftPanel.setLayout(new java.awt.BorderLayout(5, 5));
-		bottomLeftPanel.add(openTicketList, java.awt.BorderLayout.CENTER);
+		add(new HeaderPanel(), java.awt.BorderLayout.NORTH);
 
-		//activityPanel.setLayout(new java.awt.GridLayout(3, 0, 5, 5));
-		activityPanel.setLayout(new MigLayout("wrap 6, hidemode 3, fill", "[grow, fill]", ""));
+		ticketsAndActivityPanel.setBorder(BorderFactory.createTitledBorder(null, POSConstants.OPEN_TICKETS_AND_ACTIVITY, TitledBorder.CENTER,
+				TitledBorder.DEFAULT_POSITION));
+		ticketsAndActivityPanel.setLayout(new java.awt.BorderLayout(10, 10));
+		ticketsAndActivityPanel.add(openTicketList, java.awt.BorderLayout.CENTER);
 
-		activityPanel.add(btnNewTicket);
-		activityPanel.add(btnTakeout);
-		activityPanel.add(btnPickup);
-		activityPanel.add(btnHomeDelivery);
-		activityPanel.add(btnDriveThrough);
-		activityPanel.add(btnBarTab);
-		
-		setupOrderTypes();
+		JPanel activityPanel = new JPanel(new BorderLayout(10, 10));
+		JPanel activityButtonPanel = new JPanel(new GridLayout(1, 0, 5, 5));
 
-		btnEditTicket.setText(POSConstants.CAPITAL_EDIT);
-		activityPanel.add(btnEditTicket);
+		activityButtonPanel.add(btnSettleTicket);
+		activityButtonPanel.add(btnEditTicket);
+		activityButtonPanel.add(btnCloseOrder);
+		activityButtonPanel.add(btnReopenTicket);
+		activityButtonPanel.add(btnVoidTicket);
+		activityButtonPanel.add(btnOrderInfo);
 
-		btnSettleTicket = new PosButton();
-		btnSettleTicket.setText(POSConstants.CAPITAL_SETTLE);
-		activityPanel.add(btnSettleTicket);
-		btnGroupSettle = new PosButton();
+		activityPanel.add(activityButtonPanel);
+		activityPanel.add(btnMore, BorderLayout.EAST);
+		activityPanel.setPreferredSize(new Dimension(65, 65));
 
-		btnGroupSettle.setText("<html><body>" + POSConstants.CAPITAL_GROUP + "<br>" + POSConstants.CAPITAL_SETTLE + "</body></html>");
-		activityPanel.add(btnGroupSettle);
-		btnSplitTicket = new PosButton();
+		final JidePopup popupMenu = new JidePopup();
+		popupMenu.setPopupType(JidePopup.HEAVY_WEIGHT_POPUP);
+		popupMenu.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+		popupMenu.setLayout(new MigLayout("fill, wrap 3, gap 10", "[fill, grow]", ""));
+		popupMenu.add(btnGroupSettle);
+		popupMenu.add(btnSplitTicket);
+		popupMenu.add(btnAssignDriver);
+		popupMenu.add(btnRefundTicket);
+		popupMenu.add(btnPayout);
+		popupMenu.add(btnAuthorize);
+		popupMenu.add(btnManager);
+		popupMenu.add(btnKitchenDisplay);
+		popupMenu.add(btnBackOffice);
+		popupMenu.packPopup();
 
-		btnSplitTicket.setText(POSConstants.CAPITAL_SPLIT);
-		activityPanel.add(btnSplitTicket);
-		btnReopenTicket = new PosButton();
+		btnMore.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
 
-		btnReopenTicket.setText(POSConstants.CAPITAL_RE_OPEN);
-		activityPanel.add(btnReopenTicket);
+				popupMenu.showPopup(SwingConstants.SOUTH_EAST, btnMore);
+			}
+		});
 
-		btnVoidTicket.setText(POSConstants.CAPITAL_VOID);
-		activityPanel.add(btnVoidTicket);
+		ticketsAndActivityPanel.add(activityPanel, java.awt.BorderLayout.SOUTH);
 
-		activityPanel.add(btnRefundTicket);
-
-		btnPayout.setText(POSConstants.CAPITAL_PAY_OUT);
-		activityPanel.add(btnPayout);
-
-		btnOrderInfo.setText(POSConstants.ORDER_INFO);
-		activityPanel.add(btnOrderInfo);
-
-		bottomLeftPanel.add(activityPanel, java.awt.BorderLayout.SOUTH);
-
-		btnAssignDriver = new PosButton();
 		btnAssignDriver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				doAssignDriver();
 			}
 		});
-		btnAssignDriver.setText("<html>ASSIGN<br/>DRIVER</html>");
-		activityPanel.add(btnAssignDriver);
+		//activityPanel.add(btnAssignDriver);
 
-		btnCloseOrder = new PosButton();
 		btnCloseOrder.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				doCloseOrder();
 			}
 		});
-		btnCloseOrder.setText("CLOSE ORDER");
-		activityPanel.add(btnCloseOrder);
+		//activityPanel.add(btnCloseOrder);
 
-		bottomPanel.add(bottomLeftPanel, java.awt.BorderLayout.CENTER);
+		centerPanel.add(ticketsAndActivityPanel, java.awt.BorderLayout.CENTER);
 
-		bottomRightPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "OTHERS", javax.swing.border.TitledBorder.CENTER,
-				javax.swing.border.TitledBorder.DEFAULT_POSITION));
-
-
-		btnBackOffice.setText(POSConstants.CAPITAL_BACK_OFFICE);
-
-		btnManager.setText(POSConstants.CAPITAL_MANAGER);
-
-		bottomPanel.add(bottomRightPanel, java.awt.BorderLayout.EAST);
-		bottomRightPanel.setLayout(new MigLayout("aligny bottom, insets 1 2 1 2, gapy 10", "[140px]", "[][][][][]"));
+		newOrderPanel.setBorder(BorderFactory.createTitledBorder(null, POSConstants.NEW_ORDER_PANEL_LABEL, TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION));
+		newOrderPanel.setLayout(new MigLayout("fill, flowy, hidemode 3"));
+		newOrderPanel.add(btnDineIn, "grow, w 140!");
+		newOrderPanel.add(btnTakeout, "grow, w 140!");
+		newOrderPanel.add(btnPickup, "grow, w 140!");
+		newOrderPanel.add(btnHomeDelivery, "grow, w 140!");
+		newOrderPanel.add(btnDriveThrough, "grow, w 140!");
+		newOrderPanel.add(btnBarTab, "grow, w 140!");
+		
+		setupOrderTypes();
+		
+		centerPanel.add(newOrderPanel, java.awt.BorderLayout.EAST);
+		
 
 		final FloorLayoutPlugin floorLayoutPlugin = Application.getPluginManager().getPlugin(FloorLayoutPlugin.class);
 		if (floorLayoutPlugin != null) {
-			PosButton btnTicketsAndTables = new PosButton("TICKETS & TABLES");
-			btnTicketsAndTables.addActionListener(new ActionListener() {
+			btnTableManage = new PosButton(POSConstants.TABLE_MANAGE_BUTTON_TEXT);
+			btnTableManage.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					floorLayoutPlugin.openTicketsAndTablesDisplay();
 				}
 			});
 
-			bottomRightPanel.add(btnTicketsAndTables, "height pref!,grow,wrap");
+			popupMenu.add(btnTableManage);
 		}
 
-		bottomRightPanel.add(btnAuthorize, "height pref!,grow,wrap");
-		bottomRightPanel.add(btnKitchenDisplay, "height pref!,grow,wrap");
-		bottomRightPanel.add(btnManager, "height pref!,grow,wrap");
-		bottomRightPanel.add(btnBackOffice, "height pref!,grow,wrap");
+		//		bottomRightPanel.add(btnAuthorize, "height pref!,grow,wrap");
+		//		bottomRightPanel.add(btnKitchenDisplay, "height pref!,grow,wrap");
+		//		bottomRightPanel.add(btnManager, "height pref!,grow,wrap");
+		//		bottomRightPanel.add(btnBackOffice, "height pref!,grow,wrap");
 
 		TicketImportPlugin ticketImportPlugin = Application.getPluginManager().getPlugin(TicketImportPlugin.class);
 		if (ticketImportPlugin != null) {
-			bottomRightPanel.add(new PosButton(new TicketImportAction()), "height pref!,grow,wrap");
+			btnOnlineTickets = new PosButton(POSConstants.ONLINE_TICKET_BUTTON_TEXT, new TicketImportAction());
+			popupMenu.add(btnOnlineTickets);
 		}
 
-		add(bottomPanel, java.awt.BorderLayout.CENTER);
+		add(centerPanel, java.awt.BorderLayout.CENTER);
 	}// </editor-fold>//GEN-END:initComponents
 
 	private void setupOrderTypes() {
-		setupOrderType(OrderType.DINE_IN, btnNewTicket, OrderType.DINE_IN.name());
+		setupOrderType(OrderType.DINE_IN, btnDineIn, OrderType.DINE_IN.name());
 		setupOrderType(OrderType.TAKE_OUT, btnTakeout, OrderType.TAKE_OUT.name());
 		setupOrderType(OrderType.PICKUP, btnPickup, OrderType.PICKUP.name());
 		setupOrderType(OrderType.HOME_DELIVERY, btnHomeDelivery, OrderType.HOME_DELIVERY.name());
 		setupOrderType(OrderType.DRIVE_THRU, btnDriveThrough, OrderType.DRIVE_THRU.name());
 		setupOrderType(OrderType.BAR_TAB, btnBarTab, OrderType.BAR_TAB.name());
 	}
-	
+
 	private void setupOrderType(OrderType orderType, JButton button, String textKey) {
 		OrderTypeProperties properties = orderType.getProperties();
 
 		button.setText(orderType.toString());
-		
+
 		if (properties != null && properties.isVisible()) {
 			button.setVisible(true);
 		}
 		else {
 			button.setVisible(false);
 		}
-	}
-
-	private void createHeaderPanel() {
-		add(new HeaderPanel(), java.awt.BorderLayout.NORTH);
 	}
 
 	protected void doCloseOrder() {
@@ -632,13 +611,13 @@ public class SwitchboardView extends JPanel implements ActionListener, ITicketLi
 
 	public void updateView() {
 		setupOrderTypes();
-		
+
 		User user = Application.getCurrentUser();
 		UserType userType = user.getType();
 		if (userType != null) {
 			Set<UserPermission> permissions = userType.getPermissions();
 			if (permissions != null) {
-				btnNewTicket.setEnabled(false);
+				btnDineIn.setEnabled(false);
 				btnBackOffice.setEnabled(false);
 				btnEditTicket.setEnabled(false);
 				btnGroupSettle.setEnabled(false);
@@ -683,7 +662,7 @@ public class SwitchboardView extends JPanel implements ActionListener, ITicketLi
 						btnEditTicket.setEnabled(true);
 					}
 					else if (permission.equals(UserPermission.CREATE_TICKET)) {
-						btnNewTicket.setEnabled(true);
+						btnDineIn.setEnabled(true);
 					}
 				}
 			}
@@ -710,8 +689,6 @@ public class SwitchboardView extends JPanel implements ActionListener, ITicketLi
 			}
 			openTicketList.setTickets(openTickets);
 
-			lblUserName.setText(POSConstants.WELCOME + " " + user.toString() + ". " + POSConstants.YOU + " " + POSConstants.HAVE + " " + openTickets.size()
-					+ " " + POSConstants.OPEN.toLowerCase() + " " + POSConstants.TICKETS);
 		} catch (Exception e) {
 			POSMessageDialog.showError(this, "Error getting open ticket list", e);
 		} finally {
@@ -721,29 +698,41 @@ public class SwitchboardView extends JPanel implements ActionListener, ITicketLi
 	}
 
 	// Variables declaration - do not modify//GEN-BEGIN:variables
-	private PosButton btnBackOffice;
-	private PosButton btnEditTicket;
-	private PosButton btnGroupSettle;
-	private PosButton btnManager;
-	private PosButton btnAuthorize;
-	private PosButton btnKitchenDisplay;
-	private PosButton btnNewTicket;
-	private PosButton btnPayout;
-	private PosButton btnOrderInfo;
-	private PosButton btnReopenTicket;
-	private PosButton btnSettleTicket;
-	private PosButton btnSplitTicket;
-	private PosButton btnTakeout;
-	private PosButton btnVoidTicket;
-	private PosButton btnRefundTicket;
-	private PosButton btnBarTab;
-	private javax.swing.JLabel lblUserName;
-	private com.floreantpos.ui.TicketListView openTicketList;
-	private PosButton btnPickup;
-	private PosButton btnHomeDelivery;
-	private PosButton btnDriveThrough;
-	private PosButton btnAssignDriver;
-	private PosButton btnCloseOrder;
+
+	private PosButton btnDineIn = new PosButton(POSConstants.DINE_IN_BUTTON_TEXT);
+	private PosButton btnTakeout = new PosButton(POSConstants.TAKE_OUT_BUTTON_TEXT);
+	private PosButton btnPickup = new PosButton(POSConstants.PICKUP_BUTTON_TEXT);
+	private PosButton btnHomeDelivery = new PosButton(POSConstants.HOME_DELIVERY_BUTTON_TEXT);
+	private PosButton btnDriveThrough = new PosButton(POSConstants.DRIVE_THRU_BUTTON_TEXT);
+	private PosButton btnBarTab = new PosButton(POSConstants.BAR_TAB_BUTTON_TEXT);
+
+	private PosButton btnBackOffice = new PosButton(POSConstants.BACK_OFFICE_BUTTON_TEXT);
+	private PosButton btnEditTicket = new PosButton(POSConstants.EDIT_TICKET_BUTTON_TEXT);
+	private PosButton btnGroupSettle = new PosButton(POSConstants.GROUP_SETTLE_BUTTON_TEXT);
+	private PosButton btnManager = new PosButton(POSConstants.MANAGER_BUTTON_TEXT);
+	private PosButton btnAuthorize = new PosButton(POSConstants.AUTHORIZE_BUTTON_TEXT, new AuthorizeTicketAction());
+	private PosButton btnKitchenDisplay = new PosButton(POSConstants.KITCHEN_DISPLAY_BUTTON_TEXT, new OpenKitchenDisplayAction());
+
+	private PosButton btnOrderInfo = new PosButton(POSConstants.ORDER_INFO_BUTTON_TEXT);
+	private PosButton btnReopenTicket = new PosButton(POSConstants.REOPEN_TICKET_BUTTON_TEXT);
+	private PosButton btnSettleTicket = new PosButton(POSConstants.SETTLE_TICKET_BUTTON_TEXT);
+	private PosButton btnSplitTicket = new PosButton(POSConstants.SPLIT_TICKET_BUTTON_TEXT);
+
+	private PosButton btnVoidTicket = new PosButton(POSConstants.VOID_TICKET_BUTTON_TEXT);
+	private PosButton btnRefundTicket = new PosButton(POSConstants.REFUND_BUTTON_TEXT, new RefundAction(this));
+
+	private PosButton btnPayout = new PosButton(POSConstants.PAYOUT_BUTTON_TEXT);
+
+	private PosButton btnAssignDriver = new PosButton(POSConstants.ASSIGN_DRIVER_BUTTON_TEXT);
+	private PosButton btnCloseOrder = new PosButton(POSConstants.CLOSE_ORDER_BUTTON_TEXT);
+
+	private PosButton btnMore = new PosButton(POSConstants.MORE_ACTIVITY_BUTTON_TEXT);
+
+	private PosButton btnTableManage = null;
+	private PosButton btnOnlineTickets = null;
+
+	private com.floreantpos.ui.TicketListView openTicketList = new com.floreantpos.ui.TicketListView();
+
 	private JLabel timerLabel = new JLabel();
 
 	// End of variables declaration//GEN-END:variables
@@ -768,23 +757,23 @@ public class SwitchboardView extends JPanel implements ActionListener, ITicketLi
 
 	public void actionPerformed(ActionEvent e) {
 		Object source = e.getSource();
-		
-		if(source == btnNewTicket) {
+
+		if (source == btnDineIn) {
 			doCreateNewTicket(OrderType.DINE_IN);
 		}
-		else if(source == btnTakeout) {
+		else if (source == btnTakeout) {
 			doTakeout(OrderType.TAKE_OUT);
 		}
-		else if(source == btnPickup) {
+		else if (source == btnPickup) {
 			doHomeDelivery(OrderType.PICKUP);
 		}
-		else if(source == btnHomeDelivery) {
+		else if (source == btnHomeDelivery) {
 			doHomeDelivery(OrderType.HOME_DELIVERY);
 		}
-		else if(source == btnDriveThrough) {
+		else if (source == btnDriveThrough) {
 			doTakeout(OrderType.DRIVE_THRU);
 		}
-		else if(source == btnBarTab) {
+		else if (source == btnBarTab) {
 			new NewBarTabAction(this).actionPerformed(e);
 		}
 		else if (source == btnBackOffice) {

@@ -97,15 +97,17 @@ public class Application {
 		rootView = RootView.getInstance();
 
 		posWindow.getContentPane().add(rootView);
-		posWindow.setupSizeAndLocation();
+		//posWindow.setupSizeAndLocation();
 
 		if (TerminalConfig.isFullscreenMode()) {
 			posWindow.enterFullScreenMode();
 		}
-
+		posWindow.setSize(1024, 768);
 		posWindow.setVisible(true);
 
 		initializeSystem();
+		
+		
 	}
 
 	private void setApplicationLook() {

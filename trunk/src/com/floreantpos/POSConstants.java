@@ -2,6 +2,35 @@ package com.floreantpos;
 public class POSConstants {
 	public static final String COLON = ":"; //$NON-NLS-1$
 	
+	public static final String DINE_IN_BUTTON_TEXT = Messages.getString("DINE_IN_BUTTON_TEXT"); //$NON-NLS-1$
+	public static final String TAKE_OUT_BUTTON_TEXT = Messages.getString("TAKE_OUT_BUTTON_TEXT"); //$NON-NLS-1$
+	public static final String PICKUP_BUTTON_TEXT = Messages.getString("PICKUP_BUTTON_TEXT"); //$NON-NLS-1$
+	public static final String HOME_DELIVERY_BUTTON_TEXT = Messages.getString("HOME_DELIVERY_BUTTON_TEXT"); //$NON-NLS-1$
+	public static final String DRIVE_THRU_BUTTON_TEXT = Messages.getString("DRIVE_THRU_BUTTON_TEXT"); //$NON-NLS-1$
+	public static final String BAR_TAB_BUTTON_TEXT = Messages.getString("BAR_TAB_BUTTON_TEXT"); //$NON-NLS-1$
+	
+	public static final String BACK_OFFICE_BUTTON_TEXT = Messages.getString("BACK_OFFICE_BUTTON_TEXT"); //$NON-NLS-1$
+	public static final String EDIT_TICKET_BUTTON_TEXT = Messages.getString("EDIT_TICKET_BUTTON_TEXT"); //$NON-NLS-1$
+	public static final String GROUP_SETTLE_BUTTON_TEXT = Messages.getString("GROUP_SETTLE_BUTTON_TEXT"); //$NON-NLS-1$
+	public static final String MANAGER_BUTTON_TEXT = Messages.getString("MANAGER_BUTTON_TEXT"); //$NON-NLS-1$
+	public static final String AUTHORIZE_BUTTON_TEXT = Messages.getString("AUTHORIZE_BUTTON_TEXT"); //$NON-NLS-1$
+	public static final String KITCHEN_DISPLAY_BUTTON_TEXT = Messages.getString("KITCHEN_DISPLAY_BUTTON_TEXT"); //$NON-NLS-1$
+	public static final String PAYOUT_BUTTON_TEXT = Messages.getString("PAYOUT_BUTTON_TEXT"); //$NON-NLS-1$
+	public static final String ORDER_INFO_BUTTON_TEXT = Messages.getString("ORDER_INFO_BUTTON_TEXT"); //$NON-NLS-1$
+	public static final String REOPEN_TICKET_BUTTON_TEXT = Messages.getString("REOPEN_TICKET_BUTTON_TEXT"); //$NON-NLS-1$
+	public static final String SETTLE_TICKET_BUTTON_TEXT = Messages.getString("SETTLE_TICKET_BUTTON_TEXT"); //$NON-NLS-1$
+	public static final String SPLIT_TICKET_BUTTON_TEXT = Messages.getString("SPLIT_TICKET_BUTTON_TEXT"); //$NON-NLS-1$
+	public static final String VOID_TICKET_BUTTON_TEXT = Messages.getString("VOID_TICKET_BUTTON_TEXT"); //$NON-NLS-1$
+	public static final String REFUND_BUTTON_TEXT = Messages.getString("REFUND_BUTTON_TEXT"); //$NON-NLS-1$
+	public static final String ASSIGN_DRIVER_BUTTON_TEXT = Messages.getString("ASSIGN_DRIVER_BUTTON_TEXT"); //$NON-NLS-1$
+	public static final String CLOSE_ORDER_BUTTON_TEXT = Messages.getString("CLOSE_ORDER_BUTTON_TEXT"); //$NON-NLS-1$
+	public static final String MORE_ACTIVITY_BUTTON_TEXT = Messages.getString("MORE_ACTIVITY_BUTTON_TEXT"); //$NON-NLS-1$
+	public static final String TABLE_MANAGE_BUTTON_TEXT = Messages.getString("TABLE_MANAGE_BUTTON_TEXT"); //$NON-NLS-1$
+	public static final String ONLINE_TICKET_BUTTON_TEXT = Messages.getString("ONLINE_TICKET_BUTTON_TEXT"); //$NON-NLS-1$
+	public static final String NEW_ORDER_PANEL_LABEL = Messages.getString("NEW_ORDER_PANEL_LABEL"); //$NON-NLS-1$
+	
+	
+	
 	public static final String EDIT_TAX_RATE = Messages.getString("PosMessage.0"); //$NON-NLS-1$
 	public static final String ENTER_PAYOUT_NOTE = Messages.getString("PosMessage.1"); //$NON-NLS-1$
 	public static final String LOADING = Messages.getString("PosMessage.2"); //$NON-NLS-1$
