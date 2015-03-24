@@ -8,7 +8,6 @@ package com.floreantpos.ui.views;
 
 import java.awt.BorderLayout;
 import java.awt.ComponentOrientation;
-import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -26,7 +25,6 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 import javax.swing.Timer;
 import javax.swing.border.TitledBorder;
@@ -263,15 +261,15 @@ public class SwitchboardView extends JPanel implements ActionListener, ITicketLi
 	}
 
 	private void setupOrderType(OrderType orderType, JButton button, String textKey) {
+		button.setText(orderType.toString());
+		
 		OrderTypeProperties properties = orderType.getProperties();
 
-		button.setText(orderType.toString());
-
-		if (properties != null && properties.isVisible()) {
+		if (properties == null) {
 			button.setVisible(true);
 		}
 		else {
-			button.setVisible(false);
+			button.setVisible(properties.isVisible());
 		}
 	}
 
