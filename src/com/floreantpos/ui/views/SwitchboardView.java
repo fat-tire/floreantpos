@@ -223,7 +223,7 @@ public class SwitchboardView extends JPanel implements ActionListener, ITicketLi
 		activityPanel.add(cardPanel);
 		
 		PosButton btnPrev = new PosButton();
-		btnPrev.setIcon(IconFactory.getIcon("previous_32.png"));
+		btnPrev.setIcon(IconFactory.getIcon("previous_32.png")); //$NON-NLS-1$
 		btnPrev.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -233,7 +233,7 @@ public class SwitchboardView extends JPanel implements ActionListener, ITicketLi
 		activityPanel.add(btnPrev, BorderLayout.WEST);
 
 		PosButton btnNext = new PosButton();
-		btnNext.setIcon(IconFactory.getIcon("next_32.png"));
+		btnNext.setIcon(IconFactory.getIcon("next_32.png")); //$NON-NLS-1$
 		btnNext.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
