@@ -34,6 +34,7 @@ import net.miginfocom.swing.MigLayout;
 import org.apache.commons.logging.LogFactory;
 
 import com.floreantpos.ITicketList;
+import com.floreantpos.IconFactory;
 import com.floreantpos.POSConstants;
 import com.floreantpos.PosException;
 import com.floreantpos.actions.AuthorizeTicketAction;
@@ -72,6 +73,7 @@ import com.floreantpos.util.POSUtil;
 import com.floreantpos.util.PosGuiUtil;
 import com.floreantpos.util.TicketAlreadyExistsException;
 import com.jidesoft.popup.JidePopup;
+import com.jstatcom.component.CardPanel;
 
 /**
  * 
@@ -155,42 +157,7 @@ public class SwitchboardView extends JPanel implements ActionListener, ITicketLi
 		ticketsAndActivityPanel.setLayout(new java.awt.BorderLayout(10, 10));
 		ticketsAndActivityPanel.add(openTicketList, java.awt.BorderLayout.CENTER);
 
-		JPanel activityPanel = new JPanel(new BorderLayout(10, 10));
-		JPanel activityButtonPanel = new JPanel(new GridLayout(1, 0, 5, 5));
-
-		activityButtonPanel.add(btnSettleTicket);
-		activityButtonPanel.add(btnEditTicket);
-		activityButtonPanel.add(btnCloseOrder);
-		activityButtonPanel.add(btnReopenTicket);
-		activityButtonPanel.add(btnVoidTicket);
-		activityButtonPanel.add(btnOrderInfo);
-
-		activityPanel.add(activityButtonPanel);
-		activityPanel.add(btnMore, BorderLayout.EAST);
-		activityPanel.setPreferredSize(new Dimension(65, 65));
-
-		final JidePopup popupMenu = new JidePopup();
-		popupMenu.setPopupType(JidePopup.HEAVY_WEIGHT_POPUP);
-		popupMenu.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-		popupMenu.setLayout(new MigLayout("fill, wrap 3, gap 10", "[fill, grow]", ""));
-		popupMenu.add(btnGroupSettle);
-		popupMenu.add(btnSplitTicket);
-		popupMenu.add(btnAssignDriver);
-		popupMenu.add(btnRefundTicket);
-		popupMenu.add(btnPayout);
-		popupMenu.add(btnAuthorize);
-		popupMenu.add(btnManager);
-		popupMenu.add(btnKitchenDisplay);
-		popupMenu.add(btnBackOffice);
-		popupMenu.packPopup();
-
-		btnMore.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-
-				popupMenu.showPopup(SwingConstants.SOUTH_EAST, btnMore);
-			}
-		});
+		JPanel activityPanel = createActivityPanel();
 
 		ticketsAndActivityPanel.add(activityPanel, java.awt.BorderLayout.SOUTH);
 
@@ -199,14 +166,12 @@ public class SwitchboardView extends JPanel implements ActionListener, ITicketLi
 				doAssignDriver();
 			}
 		});
-		//activityPanel.add(btnAssignDriver);
 
 		btnCloseOrder.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				doCloseOrder();
 			}
 		});
-		//activityPanel.add(btnCloseOrder);
 
 		centerPanel.add(ticketsAndActivityPanel, java.awt.BorderLayout.CENTER);
 
@@ -222,8 +187,61 @@ public class SwitchboardView extends JPanel implements ActionListener, ITicketLi
 		setupOrderTypes();
 		
 		centerPanel.add(newOrderPanel, java.awt.BorderLayout.EAST);
-		
 
+		add(centerPanel, java.awt.BorderLayout.CENTER);
+	}// </editor-fold>//GEN-END:initComponents
+
+	private JPanel createActivityPanel() {
+		JPanel activityPanel = new JPanel(new BorderLayout());
+		final CardPanel cardPanel = new CardPanel();
+		
+		JPanel panel1 = new JPanel(new GridLayout(1, 0, 5, 5));
+
+		panel1.add(btnSettleTicket);
+		panel1.add(btnEditTicket);
+		panel1.add(btnCloseOrder);
+		panel1.add(btnReopenTicket);
+		panel1.add(btnVoidTicket);
+		panel1.add(btnOrderInfo);
+		cardPanel.add(panel1);
+		
+		JPanel panel2 = new JPanel(new GridLayout(1, 0, 5, 5));
+		panel2.add(btnGroupSettle);
+		panel2.add(btnSplitTicket);
+		panel2.add(btnAssignDriver);
+		panel2.add(btnRefundTicket);
+		panel2.add(btnPayout);
+		cardPanel.add(panel2);
+		
+		JPanel panel3 = new JPanel(new GridLayout(1, 0, 5, 5));
+		panel3.add(btnAuthorize);
+		panel3.add(btnManager);
+		panel3.add(btnKitchenDisplay);
+		panel3.add(btnBackOffice);
+		cardPanel.add(panel3);
+		
+		activityPanel.add(cardPanel);
+		
+		PosButton btnPrev = new PosButton();
+		btnPrev.setIcon(IconFactory.getIcon("previous_32.png"));
+		btnPrev.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				cardPanel.showPreviousCard();
+			}
+		});
+		activityPanel.add(btnPrev, BorderLayout.WEST);
+
+		PosButton btnNext = new PosButton();
+		btnNext.setIcon(IconFactory.getIcon("next_32.png"));
+		btnNext.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				cardPanel.showNextCard();
+			}
+		});
+		activityPanel.add(btnNext, BorderLayout.EAST);
+		
 		final FloorLayoutPlugin floorLayoutPlugin = Application.getPluginManager().getPlugin(FloorLayoutPlugin.class);
 		if (floorLayoutPlugin != null) {
 			btnTableManage = new PosButton(POSConstants.TABLE_MANAGE_BUTTON_TEXT);
@@ -234,22 +252,16 @@ public class SwitchboardView extends JPanel implements ActionListener, ITicketLi
 				}
 			});
 
-			popupMenu.add(btnTableManage);
+			panel3.add(btnTableManage);
 		}
-
-		//		bottomRightPanel.add(btnAuthorize, "height pref!,grow,wrap");
-		//		bottomRightPanel.add(btnKitchenDisplay, "height pref!,grow,wrap");
-		//		bottomRightPanel.add(btnManager, "height pref!,grow,wrap");
-		//		bottomRightPanel.add(btnBackOffice, "height pref!,grow,wrap");
 
 		TicketImportPlugin ticketImportPlugin = Application.getPluginManager().getPlugin(TicketImportPlugin.class);
 		if (ticketImportPlugin != null) {
 			btnOnlineTickets = new PosButton(POSConstants.ONLINE_TICKET_BUTTON_TEXT, new TicketImportAction());
-			popupMenu.add(btnOnlineTickets);
+			panel3.add(btnOnlineTickets);
 		}
-
-		add(centerPanel, java.awt.BorderLayout.CENTER);
-	}// </editor-fold>//GEN-END:initComponents
+		return activityPanel;
+	}
 
 	private void setupOrderTypes() {
 		setupOrderType(OrderType.DINE_IN, btnDineIn, OrderType.DINE_IN.name());
@@ -723,8 +735,6 @@ public class SwitchboardView extends JPanel implements ActionListener, ITicketLi
 
 	private PosButton btnAssignDriver = new PosButton(POSConstants.ASSIGN_DRIVER_BUTTON_TEXT);
 	private PosButton btnCloseOrder = new PosButton(POSConstants.CLOSE_ORDER_BUTTON_TEXT);
-
-	private PosButton btnMore = new PosButton(POSConstants.MORE_ACTIVITY_BUTTON_TEXT);
 
 	private PosButton btnTableManage = null;
 	private PosButton btnOnlineTickets = null;
