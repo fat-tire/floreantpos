@@ -125,7 +125,7 @@ public class TerminalConfig {
 	}
 	
 	public static int getTouchScreenButtonHeight() {
-		return config.getInt(TOUCH_BUTTON_HEIGHT, 60);
+		return config.getInt(TOUCH_BUTTON_HEIGHT, 80);
 	}
 	
 	public static void setTouchScreenFontSize(int size) {
