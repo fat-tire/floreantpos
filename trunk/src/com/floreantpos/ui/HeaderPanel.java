@@ -1,6 +1,7 @@
 package com.floreantpos.ui;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -41,6 +42,7 @@ public class HeaderPanel extends JPanel {
 		add(logoLabel);
 
 		statusLabel = new JLabel();
+		statusLabel.setFont(statusLabel.getFont().deriveFont(Font.BOLD));
 		statusLabel.setHorizontalAlignment(JLabel.CENTER);
 		add(statusLabel, "grow"); //$NON-NLS-1$
 
