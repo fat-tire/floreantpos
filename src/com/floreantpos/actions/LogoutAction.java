@@ -34,7 +34,7 @@ public class LogoutAction extends PosAction {
 				window.dispose();
 			}
 		}
-		Application.getInstance().logout();
+		Application.getInstance().doLogout();
 	}
 
 }
