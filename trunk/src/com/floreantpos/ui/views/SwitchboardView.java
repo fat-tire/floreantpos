@@ -8,7 +8,6 @@ package com.floreantpos.ui.views;
 
 import java.awt.BorderLayout;
 import java.awt.ComponentOrientation;
-import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -25,7 +24,6 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.SwingConstants;
 import javax.swing.Timer;
 import javax.swing.border.TitledBorder;
 
@@ -58,7 +56,6 @@ import com.floreantpos.model.UserType;
 import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.services.TicketService;
 import com.floreantpos.swing.PosButton;
-import com.floreantpos.ui.HeaderPanel;
 import com.floreantpos.ui.dialog.ManagerDialog;
 import com.floreantpos.ui.dialog.NumberSelectionDialog2;
 import com.floreantpos.ui.dialog.POSMessageDialog;
@@ -72,7 +69,6 @@ import com.floreantpos.ui.views.payment.SettleTicketDialog;
 import com.floreantpos.util.POSUtil;
 import com.floreantpos.util.PosGuiUtil;
 import com.floreantpos.util.TicketAlreadyExistsException;
-import com.jidesoft.popup.JidePopup;
 import com.jstatcom.component.CardPanel;
 
 /**
@@ -149,8 +145,6 @@ public class SwitchboardView extends JPanel implements ActionListener, ITicketLi
 		javax.swing.JPanel ticketsAndActivityPanel = new javax.swing.JPanel();
 
 		javax.swing.JPanel newOrderPanel = new javax.swing.JPanel();
-
-		add(new HeaderPanel(), java.awt.BorderLayout.NORTH);
 
 		ticketsAndActivityPanel.setBorder(BorderFactory.createTitledBorder(null, POSConstants.OPEN_TICKETS_AND_ACTIVITY, TitledBorder.CENTER,
 				TitledBorder.DEFAULT_POSITION));

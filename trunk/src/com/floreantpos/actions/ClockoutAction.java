@@ -59,7 +59,7 @@ public class ClockoutAction extends PosAction {
 
 		user.doClockOut(attendenceHistory, shift, calendar);
 
-		Application.getInstance().logout();
+		Application.getInstance().doLogout();
 	}
 
 }

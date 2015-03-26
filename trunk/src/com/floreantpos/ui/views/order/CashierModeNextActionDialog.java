@@ -64,7 +64,7 @@ public class CashierModeNextActionDialog extends POSDialog implements ActionList
 			SwitchboardView.doTakeout(OrderType.TAKE_OUT);
 		}
 		else if(e.getSource() == btnLogout) {
-			Application.getInstance().logout();
+			Application.getInstance().doLogout();
 		}
 		else if(e.getSource() == btnOpen) {
 			OpenTicketsListDialog dialog = new OpenTicketsListDialog((Frame) SwingUtilities.getWindowAncestor(this), true);

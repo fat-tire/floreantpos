@@ -8,8 +8,13 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
+import com.floreantpos.main.Application;
+import com.floreantpos.model.AttendenceHistory;
 import com.floreantpos.model.Shift;
+import com.floreantpos.model.User;
+import com.floreantpos.model.dao.AttendenceHistoryDAO;
 import com.floreantpos.model.dao.ShiftDAO;
+import com.floreantpos.ui.dialog.POSMessageDialog;
 
 public class ShiftUtil {
 
@@ -172,5 +177,53 @@ public class ShiftUtil {
 		shiftDAO.saveOrUpdate(defaultShift);
 		
 		return defaultShift;
+	}
+	
+	public static void adjustUserShift(User user, Shift currentShift) {
+		Application application = Application.getInstance();
+		Calendar currentTime = Calendar.getInstance();
+
+		if (user.isClockedIn() != null && user.isClockedIn().booleanValue()) {
+			Shift userShift = user.getCurrentShift();
+			Date userLastClockInTime = user.getLastClockInTime();
+			long elaspedTimeSinceLastLogin = Math.abs(currentTime.getTimeInMillis() - userLastClockInTime.getTime());
+
+			if (userShift != null) {
+				if (!userShift.equals(currentShift)) {
+					reClockInUser(currentTime, user, currentShift);
+				}
+				else if (userShift.getShiftLength() != null && (elaspedTimeSinceLastLogin >= userShift.getShiftLength())) {
+					reClockInUser(currentTime, user, currentShift);
+				}
+			}
+			else {
+				user.doClockIn(application.getTerminal(), currentShift, currentTime);
+			}
+		}
+		else {
+			user.doClockIn(application.getTerminal(), currentShift, currentTime);
+		}
+	}
+	
+	private static void reClockInUser(Calendar currentTime, User user, Shift currentShift) {
+		POSMessageDialog.showMessage("You will be clocked out from previous Shift");
+
+		Application application = Application.getInstance();
+		AttendenceHistoryDAO attendenceHistoryDAO = new AttendenceHistoryDAO();
+
+		AttendenceHistory attendenceHistory = attendenceHistoryDAO.findHistoryByClockedInTime(user);
+		if (attendenceHistory == null) {
+			attendenceHistory = new AttendenceHistory();
+			Date lastClockInTime = user.getLastClockInTime();
+			Calendar c = Calendar.getInstance();
+			c.setTime(lastClockInTime);
+			attendenceHistory.setClockInTime(lastClockInTime);
+			attendenceHistory.setClockInHour(Short.valueOf((short) c.get(Calendar.HOUR)));
+			attendenceHistory.setUser(user);
+			attendenceHistory.setTerminal(application.getTerminal());
+			attendenceHistory.setShift(user.getCurrentShift());
+		}
+		user.doClockOut(attendenceHistory, currentShift, currentTime);
+		user.doClockIn(application.getTerminal(), currentShift, currentTime);
 	}
 }
