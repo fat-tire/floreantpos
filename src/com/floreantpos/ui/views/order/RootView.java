@@ -1,19 +1,24 @@
 package com.floreantpos.ui.views.order;
 
+import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Component;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import com.floreantpos.ui.HeaderPanel;
 import com.floreantpos.ui.views.LoginView;
 import com.floreantpos.ui.views.SwitchboardView;
 import com.floreantpos.ui.views.payment.SettleTicketDialog;
 
 public class RootView extends com.floreantpos.swing.TransparentPanel {
-	private CardLayout layout = new CardLayout();
+	private CardLayout cards = new CardLayout();
 	
+	private HeaderPanel headerPanel = new HeaderPanel();
+	private JPanel contentPanel = new JPanel(cards);
 	private LoginView loginScreen;
 	private SwitchboardView switchboardView;
 	private OrderView orderView;
@@ -25,8 +30,13 @@ public class RootView extends com.floreantpos.swing.TransparentPanel {
 	private static RootView instance;
 	
 	private RootView() {
-		setLayout(layout);
+		setLayout(new BorderLayout());
 		setBorder(new EmptyBorder(3,3,3,3));
+		
+		headerPanel.setVisible(false);
+		add(headerPanel, BorderLayout.NORTH);
+		
+		add(contentPanel);
 		
 		loginScreen = new LoginView();
 		addView(LoginView.VIEW_NAME, loginScreen);
@@ -43,11 +53,19 @@ public class RootView extends com.floreantpos.swing.TransparentPanel {
 	
 	public void addView(String viewName, Component view) {
 		viewNames.add(viewName);
-		add(view, viewName);
+		contentPanel.add(view, viewName);
 	}
 	
 	public void showView(String viewName) {
-		layout.show(this, viewName);
+		cards.show(contentPanel, viewName);
+		if(LoginView.VIEW_NAME.equals(viewName)) {
+			headerPanel.stopTimer();
+			headerPanel.setVisible(false);
+		}
+		else {
+			headerPanel.startTimer();
+			headerPanel.setVisible(true);
+		}
 	}
 	
 	public boolean hasView(String viewName) {

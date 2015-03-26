@@ -13,8 +13,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.Locale;
 
 import javax.swing.AbstractAction;
@@ -30,24 +28,14 @@ import net.miginfocom.swing.MigLayout;
 
 import org.apache.commons.logging.LogFactory;
 
-import com.floreantpos.POSConstants;
 import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.config.ui.DatabaseConfigurationDialog;
-import com.floreantpos.demo.KitchenDisplayView;
 import com.floreantpos.main.Application;
-import com.floreantpos.model.AttendenceHistory;
-import com.floreantpos.model.Shift;
-import com.floreantpos.model.OrderType;
-import com.floreantpos.model.User;
-import com.floreantpos.model.dao.AttendenceHistoryDAO;
-import com.floreantpos.model.dao.UserDAO;
 import com.floreantpos.swing.MessageDialog;
 import com.floreantpos.swing.POSPasswordField;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.ui.dialog.POSMessageDialog;
-import com.floreantpos.ui.views.order.RootView;
 import com.floreantpos.util.ShiftException;
-import com.floreantpos.util.ShiftUtil;
 import com.floreantpos.util.UserNotFoundException;
 
 /**
@@ -247,6 +235,8 @@ class LoginPasswordEntryView extends JPanel {
 		
 		jPanel3.add(modePanel);
 
+		JPanel actionButtonPanel = new JPanel(new GridLayout(1, 0, 5, 5));
+		
 		psbtnLogin = new PosButton();
 		psbtnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -254,7 +244,7 @@ class LoginPasswordEntryView extends JPanel {
 			}
 		});
 		psbtnLogin.setText("LOGIN");
-		jPanel3.add(psbtnLogin);
+		actionButtonPanel.add(psbtnLogin);
 
 		if (TerminalConfig.isShowDbConfigureButton()) {
 			btnConfigureDatabase = new com.floreantpos.swing.PosButton();
@@ -274,8 +264,9 @@ class LoginPasswordEntryView extends JPanel {
 			btnShutdown.setVisible(false);
 		}
 		
-		jPanel3.add(btnShutdown);
+		actionButtonPanel.add(btnShutdown);
 
+		jPanel3.add(actionButtonPanel);
 		add(jPanel3, "cell 0 4,growx,aligny bottom");
 
 		lblTerminalId.setText("");
@@ -283,49 +274,13 @@ class LoginPasswordEntryView extends JPanel {
 
 	public synchronized void doLogin() {
 		try {
+			
 			tfPassword.setEnabled(false);
-
-			Application application = Application.getInstance();
-			application.initializeSystem();
-
 			String secretKey = capturePassword();
-
-			UserDAO dao = new UserDAO();
-			User user = dao.findUserBySecretKey(secretKey);
-
-			if (user == null) {
-				throw new UserNotFoundException();
-			}
-
-			Shift currentShift = ShiftUtil.getCurrentShift();
-			if (currentShift == null) {
-				throw new ShiftException(POSConstants.NO_SHIFT_CONFIGURED);
-			}
-
-			adjustUserShift(user, currentShift);
-
-			application.setCurrentUser(user);
-			application.setCurrentShift(currentShift);
-
 			tfPassword.setText("");
 			
-			RootView rootView = application.getRootView();
-			
-			if(TerminalConfig.isCashierMode()) {
-				SwitchboardView.doTakeout(OrderType.TAKE_OUT);
-			}
-			else if(TerminalConfig.isKitchenMode()) {
-				if(rootView.hasView(KitchenDisplayView.VIEW_NAME)) {
-					rootView.showView(KitchenDisplayView.VIEW_NAME);
-				}
-				else {
-					rootView.addView(KitchenDisplayView.VIEW_NAME, new KitchenDisplayView());
-					rootView.showView(KitchenDisplayView.VIEW_NAME);
-				}
-			}
-			else {
-				application.getRootView().showView(SwitchboardView.VIEW_NAME);
-			}
+			Application application = Application.getInstance();
+			application.doLogin(secretKey);
 
 		} catch (UserNotFoundException e) {
 			LogFactory.getLog(Application.class).error(e);
@@ -335,7 +290,6 @@ class LoginPasswordEntryView extends JPanel {
 			LogFactory.getLog(Application.class).error(e);
 			MessageDialog.showError(e.getMessage());
 		} catch (Exception e1) {
-			e1.printStackTrace();
 			LogFactory.getLog(Application.class).error(e1);
 			String message = e1.getMessage();
 
@@ -352,31 +306,7 @@ class LoginPasswordEntryView extends JPanel {
 		}
 	}
 
-	private void adjustUserShift(User user, Shift currentShift) {
-		Application application = Application.getInstance();
-		Calendar currentTime = Calendar.getInstance();
-
-		if (user.isClockedIn() != null && user.isClockedIn().booleanValue()) {
-			Shift userShift = user.getCurrentShift();
-			Date userLastClockInTime = user.getLastClockInTime();
-			long elaspedTimeSinceLastLogin = Math.abs(currentTime.getTimeInMillis() - userLastClockInTime.getTime());
-
-			if (userShift != null) {
-				if (!userShift.equals(currentShift)) {
-					reClockInUser(currentTime, user, currentShift);
-				}
-				else if (userShift.getShiftLength() != null && (elaspedTimeSinceLastLogin >= userShift.getShiftLength())) {
-					reClockInUser(currentTime, user, currentShift);
-				}
-			}
-			else {
-				user.doClockIn(application.getTerminal(), currentShift, currentTime);
-			}
-		}
-		else {
-			user.doClockIn(application.getTerminal(), currentShift, currentTime);
-		}
-	}
+	
 
 	private String capturePassword() {
 		char[] password = tfPassword.getPassword();
@@ -386,28 +316,6 @@ class LoginPasswordEntryView extends JPanel {
 
 	public void setTerminalId(int terminalId) {
 		lblTerminalId.setText("TERMINAL ID: " + terminalId);
-	}
-
-	private void reClockInUser(Calendar currentTime, User user, Shift currentShift) {
-		POSMessageDialog.showMessage("You will be clocked out from previous Shift");
-
-		Application application = Application.getInstance();
-		AttendenceHistoryDAO attendenceHistoryDAO = new AttendenceHistoryDAO();
-
-		AttendenceHistory attendenceHistory = attendenceHistoryDAO.findHistoryByClockedInTime(user);
-		if (attendenceHistory == null) {
-			attendenceHistory = new AttendenceHistory();
-			Date lastClockInTime = user.getLastClockInTime();
-			Calendar c = Calendar.getInstance();
-			c.setTime(lastClockInTime);
-			attendenceHistory.setClockInTime(lastClockInTime);
-			attendenceHistory.setClockInHour(Short.valueOf((short) c.get(Calendar.HOUR)));
-			attendenceHistory.setUser(user);
-			attendenceHistory.setTerminal(application.getTerminal());
-			attendenceHistory.setShift(user.getCurrentShift());
-		}
-		user.doClockOut(attendenceHistory, currentShift, currentTime);
-		user.doClockIn(application.getTerminal(), currentShift, currentTime);
 	}
 
 	// Variables declaration - do not modify//GEN-BEGIN:variables

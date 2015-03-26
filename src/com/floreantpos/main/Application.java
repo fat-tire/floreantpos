@@ -27,6 +27,8 @@ import com.floreantpos.bo.ui.BackOfficeWindow;
 import com.floreantpos.config.AppProperties;
 import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.config.ui.DatabaseConfigurationDialog;
+import com.floreantpos.demo.KitchenDisplayView;
+import com.floreantpos.model.OrderType;
 import com.floreantpos.model.PosPrinters;
 import com.floreantpos.model.PrinterConfiguration;
 import com.floreantpos.model.Restaurant;
@@ -38,12 +40,17 @@ import com.floreantpos.model.dao.OrderTypePropertiesDAO;
 import com.floreantpos.model.dao.PrinterConfigurationDAO;
 import com.floreantpos.model.dao.RestaurantDAO;
 import com.floreantpos.model.dao.TerminalDAO;
+import com.floreantpos.model.dao.UserDAO;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.views.LoginView;
+import com.floreantpos.ui.views.SwitchboardView;
 import com.floreantpos.ui.views.order.RootView;
 import com.floreantpos.util.DatabaseConnectionException;
 import com.floreantpos.util.DatabaseUtil;
 import com.floreantpos.util.POSUtil;
+import com.floreantpos.util.ShiftException;
+import com.floreantpos.util.ShiftUtil;
+import com.floreantpos.util.UserNotFoundException;
 import com.jgoodies.looks.plastic.PlasticXPLookAndFeel;
 import com.jgoodies.looks.plastic.theme.ExperienceBlue;
 
@@ -97,17 +104,14 @@ public class Application {
 		rootView = RootView.getInstance();
 
 		posWindow.getContentPane().add(rootView);
-		//posWindow.setupSizeAndLocation();
+		posWindow.setupSizeAndLocation();
 
 		if (TerminalConfig.isFullscreenMode()) {
 			posWindow.enterFullScreenMode();
 		}
-		posWindow.setSize(1024, 768);
 		posWindow.setVisible(true);
 
 		initializeSystem();
-		
-		
 	}
 
 	private void setApplicationLook() {
@@ -342,7 +346,46 @@ public class Application {
 		System.exit(0);
 	}
 
-	public void logout() {
+	public synchronized void doLogin(String secretKey) {
+		initializeSystem();
+
+		UserDAO dao = new UserDAO();
+		User user = dao.findUserBySecretKey(secretKey);
+
+		if (user == null) {
+			throw new UserNotFoundException();
+		}
+
+		Shift currentShift = ShiftUtil.getCurrentShift();
+		if (currentShift == null) {
+			throw new ShiftException(POSConstants.NO_SHIFT_CONFIGURED);
+		}
+
+		ShiftUtil.adjustUserShift(user, currentShift);
+
+		setCurrentUser(user);
+		setCurrentShift(currentShift);
+
+		RootView rootView = getRootView();
+		
+		if(TerminalConfig.isCashierMode()) {
+			SwitchboardView.doTakeout(OrderType.TAKE_OUT);
+		}
+		else if(TerminalConfig.isKitchenMode()) {
+			if(rootView.hasView(KitchenDisplayView.VIEW_NAME)) {
+				rootView.showView(KitchenDisplayView.VIEW_NAME);
+			}
+			else {
+				rootView.addView(KitchenDisplayView.VIEW_NAME, new KitchenDisplayView());
+				rootView.showView(KitchenDisplayView.VIEW_NAME);
+			}
+		}
+		else {
+			rootView.showView(SwitchboardView.VIEW_NAME);
+		}
+	}
+	
+	public void doLogout() {
 		if (backOfficeWindow != null) {
 			backOfficeWindow.setVisible(false);
 			backOfficeWindow = null;

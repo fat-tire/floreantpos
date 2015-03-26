@@ -32,8 +32,16 @@ public class HeaderPanel extends JPanel {
 	private String userString = Messages.getString("PosMessage.70"); //$NON-NLS-1$
 	private String terminalString = Messages.getString("TERMINAL_LABEL"); //$NON-NLS-1$
 	
+	private String name;
+	
 	public HeaderPanel() {
+		this("");
+	}
+	
+	public HeaderPanel(String name) {
 		super(new MigLayout("ins 2 2 0 2", "[][fill, grow][]", "")); //$NON-NLS-1$  //$NON-NLS-2$  //$NON-NLS-3$
+		
+		this.name = name;
 
 		setOpaque(true);
 		setBackground(Color.white);
@@ -63,18 +71,12 @@ public class HeaderPanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (!isShowing()) {
+					System.out.println("Stopping timer for: " + HeaderPanel.this.name);
 					timer.stop();
 					return;
 				}
 				
-				StringBuilder sb = new StringBuilder();
-				sb.append(userString + ": " + Application.getCurrentUser().getFirstName()); //$NON-NLS-1$
-				sb.append(", "); //$NON-NLS-1$
-				sb.append(terminalString + ": " + Application.getInstance().getTerminal().getName()); //$NON-NLS-1$
-				sb.append(", "); //$NON-NLS-1$
-				sb.append(dateFormat.format(Calendar.getInstance().getTime()));
-
-				statusLabel.setText(sb.toString());
+				showHeader();
 			}
 		});
 
@@ -89,6 +91,26 @@ public class HeaderPanel extends JPanel {
 			return;
 		}
 
+		System.out.println("Starting timer for: " + HeaderPanel.this.name);
 		timer.start();
+	}
+
+	private void showHeader() {
+		StringBuilder sb = new StringBuilder();
+		sb.append(userString + ": " + Application.getCurrentUser().getFirstName()); //$NON-NLS-1$
+		sb.append(", "); //$NON-NLS-1$
+		sb.append(terminalString + ": " + Application.getInstance().getTerminal().getName()); //$NON-NLS-1$
+		sb.append(", "); //$NON-NLS-1$
+		sb.append(dateFormat.format(Calendar.getInstance().getTime()));
+
+		statusLabel.setText(sb.toString());
+	}
+	
+	public void startTimer() {
+		timer.start();
+	}
+	
+	public void stopTimer() {
+		timer.stop();
 	}
 }
