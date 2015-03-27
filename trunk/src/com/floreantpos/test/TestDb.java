@@ -1,6 +1,19 @@
 package com.floreantpos.test;
 
-import java.util.UUID;
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
+
+import javax.swing.Action;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+import javax.swing.JTree;
+import javax.swing.border.TitledBorder;
+
+import org.jdesktop.swingx.JXCollapsiblePane;
+import org.jdesktop.swingx.JXFrame;
 
 public class TestDb {
 
@@ -8,39 +21,40 @@ public class TestDb {
 	 * @param args
 	 */
 	public static void main(String[] args) throws Exception {
-		UUID uid = UUID.randomUUID();
-		System.out.println(uid.toString());
-		
-//		InetAddress localHost = InetAddress.getLocalHost();
-//		NetworkInterface networkInterface = NetworkInterface.getByInetAddress(localHost);
-//		byte[] mac = networkInterface.getHardwareAddress();
-//		if (mac != null) {
-//			System.out.print("Current MAC address : ");
-//
-//			StringBuilder sb = new StringBuilder();
-//			for (int i = 0; i < mac.length; i++) {
-//				sb.append(String.format("%02X%s", mac[i], (i < mac.length - 1) ? "-" : ""));
-//			}
-//			System.out.println(sb.toString());
-//		}
-		
-		
-//		Enumeration<NetworkInterface> enumeration = NetworkInterface.getNetworkInterfaces();
-//		while (enumeration.hasMoreElements()) {
-//			NetworkInterface networkInterface = enumeration.nextElement();
-//			byte[] mac = networkInterface.getHardwareAddress();
-//
-//			if (mac != null) {
-//				System.out.print("Current MAC address : ");
-//
-//				StringBuilder sb = new StringBuilder();
-//				for (int i = 0; i < mac.length; i++) {
-//					sb.append(String.format("%02X%s", mac[i], (i < mac.length - 1) ? "-" : ""));
-//				}
-//				System.out.println(sb.toString());
-//			}
-//		}
+		JXCollapsiblePane cp = new JXCollapsiblePane();
+
+		 // JXCollapsiblePane can be used like any other container
+		 cp.setLayout(new BorderLayout());
+		 
+		 // the Controls panel with a textfield to filter the tree
+		 JPanel controls = new JPanel(new FlowLayout(FlowLayout.LEFT, 4, 0));
+		 controls.add(new JLabel("Search:"));
+		 controls.add(new JTextField(10));    
+		 controls.add(new JButton("Refresh"));
+		 controls.setBorder(new TitledBorder("Filters"));
+		 cp.add("Center", controls);
+		   
+		 JXFrame frame = new JXFrame();
+		 frame.setLayout(new BorderLayout());
+		  
+		 // Put the "Controls" first
+		 frame.add("North", cp);
+		    
+		 // Then the tree - we assume the Controls would somehow filter the tree
+		 JScrollPane scroll = new JScrollPane(new JTree());
+		 frame.add("Center", scroll);
+
+		 // Show/hide the "Controls"
+		 
+		 Action a = cp.getActionMap().get("toggle");
+		JButton toggle = new JButton(a);
+		 frame.add("South", toggle);
+
+		 frame.pack();
+		 frame.setVisible(true);
 
 	}
+
+
 
 }

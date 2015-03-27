@@ -21,7 +21,7 @@ public class LogoutAction extends PosAction {
 			putValue(Action.NAME, Messages.getString("Logout")); //$NON-NLS-1$
 		}
 		if (showIcon) {
-			putValue(Action.SMALL_ICON, IconFactory.getIcon("log_out_32.png")); //$NON-NLS-1$
+			putValue(Action.SMALL_ICON, IconFactory.getIcon("logout.png")); //$NON-NLS-1$
 		}
 	}
 

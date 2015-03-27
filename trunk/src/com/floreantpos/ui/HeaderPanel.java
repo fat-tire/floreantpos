@@ -63,7 +63,7 @@ public class HeaderPanel extends JPanel {
 		add(btnLogout, "w 60!, h 60!"); //$NON-NLS-1$
 
 		PosButton btnShutdown = new PosButton(new ShutDownAction(false, true));
-		btnShutdown.setIcon(IconFactory.getIcon("shut_down_32.png")); //$NON-NLS-1$
+		btnShutdown.setIcon(IconFactory.getIcon("shutdown.png")); //$NON-NLS-1$
 		btnShutdown.setToolTipText(Messages.getString("Shutdown")); //$NON-NLS-1$
 		add(btnShutdown, "w 60!, h 60!"); //$NON-NLS-1$
 
@@ -71,7 +71,6 @@ public class HeaderPanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (!isShowing()) {
-					System.out.println("Stopping timer for: " + HeaderPanel.this.name);
 					timer.stop();
 					return;
 				}
