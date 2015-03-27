@@ -25,6 +25,7 @@ public class POSConstants {
 	public static final String ASSIGN_DRIVER_BUTTON_TEXT = Messages.getString("ASSIGN_DRIVER_BUTTON_TEXT"); //$NON-NLS-1$
 	public static final String CLOSE_ORDER_BUTTON_TEXT = Messages.getString("CLOSE_ORDER_BUTTON_TEXT"); //$NON-NLS-1$
 	public static final String MORE_ACTIVITY_BUTTON_TEXT = Messages.getString("MORE_ACTIVITY_BUTTON_TEXT"); //$NON-NLS-1$
+	public static final String LESS_ACTIVITY_BUTTON_TEXT = Messages.getString("LESS_ACTIVITY_BUTTON_TEXT"); //$NON-NLS-1$
 	public static final String TABLE_MANAGE_BUTTON_TEXT = Messages.getString("TABLE_MANAGE_BUTTON_TEXT"); //$NON-NLS-1$
 	public static final String ONLINE_TICKET_BUTTON_TEXT = Messages.getString("ONLINE_TICKET_BUTTON_TEXT"); //$NON-NLS-1$
 	public static final String NEW_ORDER_PANEL_LABEL = Messages.getString("NEW_ORDER_PANEL_LABEL"); //$NON-NLS-1$
