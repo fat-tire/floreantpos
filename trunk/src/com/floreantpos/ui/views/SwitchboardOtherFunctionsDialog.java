@@ -1,20 +1,18 @@
 package com.floreantpos.ui.views;
 
 import java.awt.GridLayout;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Set;
 
 import javax.swing.BorderFactory;
+import javax.swing.JDialog;
 import javax.swing.JPanel;
 
-import org.apache.ecs.xhtml.strike;
-
 import com.floreantpos.POSConstants;
-import com.floreantpos.actions.AuthorizeTicketAction;
-import com.floreantpos.actions.OpenKitchenDisplayAction;
-import com.floreantpos.actions.TicketImportAction;
 import com.floreantpos.bo.ui.BackOfficeWindow;
+import com.floreantpos.demo.KitchenDisplayWindow;
 import com.floreantpos.extension.FloorLayoutPlugin;
 import com.floreantpos.extension.TicketImportPlugin;
 import com.floreantpos.main.Application;
@@ -25,17 +23,21 @@ import com.floreantpos.swing.PosButton;
 import com.floreantpos.ui.dialog.ManagerDialog;
 import com.floreantpos.ui.dialog.POSDialog;
 import com.floreantpos.ui.dialog.PayoutDialog;
+import com.floreantpos.ui.dialog.TicketAuthorizationDialog;
 
 public class SwitchboardOtherFunctionsDialog extends POSDialog implements ActionListener {
 	private SwitchboardView switchboardView;
 	
 	private PosButton btnBackOffice = new PosButton(POSConstants.BACK_OFFICE_BUTTON_TEXT);
 	private PosButton btnManager = new PosButton(POSConstants.MANAGER_BUTTON_TEXT);
-	private PosButton btnAuthorize = new PosButton(POSConstants.AUTHORIZE_BUTTON_TEXT, new AuthorizeTicketAction());
-	private PosButton btnKitchenDisplay = new PosButton(POSConstants.KITCHEN_DISPLAY_BUTTON_TEXT, new OpenKitchenDisplayAction());
+	private PosButton btnAuthorize = new PosButton(POSConstants.AUTHORIZE_BUTTON_TEXT);
+	private PosButton btnKitchenDisplay = new PosButton(POSConstants.KITCHEN_DISPLAY_BUTTON_TEXT);
 	private PosButton btnPayout = new PosButton(POSConstants.PAYOUT_BUTTON_TEXT);
 	private PosButton btnTableManage = new PosButton(POSConstants.TABLE_MANAGE_BUTTON_TEXT);
-	private PosButton btnOnlineTickets = new PosButton(POSConstants.ONLINE_TICKET_BUTTON_TEXT, new TicketImportAction());
+	private PosButton btnOnlineTickets = new PosButton(POSConstants.ONLINE_TICKET_BUTTON_TEXT);
+	
+	private FloorLayoutPlugin floorLayoutPlugin;
+	private TicketImportPlugin ticketImportPlugin;
 	
 	public SwitchboardOtherFunctionsDialog(SwitchboardView switchboardView) {
 		super(Application.getPosWindow(), true);
@@ -52,25 +54,26 @@ public class SwitchboardOtherFunctionsDialog extends POSDialog implements Action
 		contentPane.add(btnKitchenDisplay);
 		contentPane.add(btnPayout);
 		
-		final FloorLayoutPlugin floorLayoutPlugin = Application.getPluginManager().getPlugin(FloorLayoutPlugin.class);
+		floorLayoutPlugin = Application.getPluginManager().getPlugin(FloorLayoutPlugin.class);
 		if (floorLayoutPlugin != null) {
 			contentPane.add(btnTableManage);
-			
-			btnTableManage.addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					floorLayoutPlugin.openTicketsAndTablesDisplay();
-				}
-			});
 		}
 
-		TicketImportPlugin ticketImportPlugin = Application.getPluginManager().getPlugin(TicketImportPlugin.class);
+		ticketImportPlugin = Application.getPluginManager().getPlugin(TicketImportPlugin.class);
 		if (ticketImportPlugin != null) {
 			contentPane.add(btnOnlineTickets);
 		}
 		
 		contentPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		setContentPane(contentPane);
+		
+		btnBackOffice.addActionListener(this);
+		btnManager.addActionListener(this);
+		btnAuthorize.addActionListener(this);
+		btnKitchenDisplay.addActionListener(this);
+		btnPayout.addActionListener(this);
+		btnTableManage.addActionListener(this);
+		btnOnlineTickets.addActionListener(this);
 		
 		setupPermission();
 	}
@@ -96,11 +99,39 @@ public class SwitchboardOtherFunctionsDialog extends POSDialog implements Action
 		}
 	}
 	
+	private void doShowKitchenDisplay() {
+		Window[] windows = Window.getWindows();
+		for (Window window : windows) {
+			if(window instanceof KitchenDisplayWindow) {
+				window.toFront();
+				return;
+			}
+		}
+		
+		KitchenDisplayWindow window = new KitchenDisplayWindow();
+		window.setVisible(true);
+	}
+	
+	private void doShowTicketImportDialog() {
+		TicketImportPlugin ticketImportPlugin = Application.getPluginManager().getPlugin(TicketImportPlugin.class);
+		if(ticketImportPlugin != null) {
+			ticketImportPlugin.startService();
+		}
+	}
+	
+	private void doShowAuthorizeTicketDialog() {
+		TicketAuthorizationDialog dialog = new TicketAuthorizationDialog(Application.getPosWindow());
+    	dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+    	dialog.setSize(800, 600);
+    	dialog.setLocationRelativeTo(Application.getPosWindow());
+    	dialog.setVisible(true);
+	}
+	
 	private void doShowManagerWindow() {
 		ManagerDialog dialog = new ManagerDialog();
 		dialog.open();
 
-		//updateTicketList();
+		switchboardView.updateTicketList();
 	}
 	
 	private synchronized void doShowBackoffice() {
@@ -120,21 +151,39 @@ public class SwitchboardOtherFunctionsDialog extends POSDialog implements Action
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-//		contentPane.add(btnBackOffice);
-//		contentPane.add(btnManager);
-//		contentPane.add(btnAuthorize);
-//		contentPane.add(btnKitchenDisplay);
-//		contentPane.add(btnPayout);
+//		private PosButton btnBackOffice = new PosButton(POSConstants.BACK_OFFICE_BUTTON_TEXT);
+//		private PosButton btnManager = new PosButton(POSConstants.MANAGER_BUTTON_TEXT);
+//		private PosButton btnAuthorize = new PosButton(POSConstants.AUTHORIZE_BUTTON_TEXT);
+//		private PosButton btnKitchenDisplay = new PosButton(POSConstants.KITCHEN_DISPLAY_BUTTON_TEXT);
+//		private PosButton btnPayout = new PosButton(POSConstants.PAYOUT_BUTTON_TEXT);
+//		private PosButton btnTableManage = new PosButton(POSConstants.TABLE_MANAGE_BUTTON_TEXT);
+//		private PosButton btnOnlineTickets = new PosButton(POSConstants.ONLINE_TICKET_BUTTON_TEXT);
 		
 		Object source = e.getSource();
+		dispose();
+		
 		if(source == btnBackOffice) {
 			doShowBackoffice();
 		}
 		else if(source == btnManager) {
 			doShowManagerWindow();
 		}
+		else if(source == btnAuthorize) {
+			doShowAuthorizeTicketDialog();
+		}
+		else if(source == btnKitchenDisplay) {
+			doShowKitchenDisplay();
+		}
 		else if(source == btnPayout) {
 			doPayout();
+		}
+		else if(source == btnTableManage) {
+			if(floorLayoutPlugin != null) {
+				floorLayoutPlugin.openTicketsAndTablesDisplay();
+			}
+		}
+		else if(source == btnOnlineTickets) {
+			doShowTicketImportDialog();
 		}
 	}
 }

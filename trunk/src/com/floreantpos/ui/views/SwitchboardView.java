@@ -7,15 +7,11 @@
 package com.floreantpos.ui.views;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.ComponentOrientation;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -41,20 +37,13 @@ import org.apache.commons.logging.LogFactory;
 import org.jdesktop.swingx.JXCollapsiblePane;
 
 import com.floreantpos.ITicketList;
-import com.floreantpos.IconFactory;
 import com.floreantpos.POSConstants;
 import com.floreantpos.PosException;
-import com.floreantpos.actions.AuthorizeTicketAction;
 import com.floreantpos.actions.NewBarTabAction;
-import com.floreantpos.actions.OpenKitchenDisplayAction;
 import com.floreantpos.actions.RefundAction;
 import com.floreantpos.actions.SettleTicketAction;
-import com.floreantpos.actions.TicketImportAction;
-import com.floreantpos.bo.ui.BackOfficeWindow;
 import com.floreantpos.config.TerminalConfig;
-import com.floreantpos.extension.FloorLayoutPlugin;
 import com.floreantpos.extension.OrderServiceExtension;
-import com.floreantpos.extension.TicketImportPlugin;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.OrderType;
 import com.floreantpos.model.OrderTypeProperties;
@@ -65,10 +54,8 @@ import com.floreantpos.model.UserType;
 import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.services.TicketService;
 import com.floreantpos.swing.PosButton;
-import com.floreantpos.ui.dialog.ManagerDialog;
 import com.floreantpos.ui.dialog.NumberSelectionDialog2;
 import com.floreantpos.ui.dialog.POSMessageDialog;
-import com.floreantpos.ui.dialog.PayoutDialog;
 import com.floreantpos.ui.dialog.VoidTicketDialog;
 import com.floreantpos.ui.views.order.DefaultOrderServiceExtension;
 import com.floreantpos.ui.views.order.OrderController;
@@ -78,7 +65,6 @@ import com.floreantpos.ui.views.payment.SettleTicketDialog;
 import com.floreantpos.util.POSUtil;
 import com.floreantpos.util.PosGuiUtil;
 import com.floreantpos.util.TicketAlreadyExistsException;
-import com.jstatcom.component.CardPanel;
 
 /**
  * 
@@ -252,7 +238,7 @@ public class SwitchboardView extends JPanel implements ActionListener, ITicketLi
 		innerActivityPanel.add(panel1);
 		
 		final JXCollapsiblePane collapsiblePane = new JXCollapsiblePane();
-		
+		collapsiblePane.setAnimated(false);
 		collapsiblePane.getContentPane().setLayout(new GridLayout(1, 0, 5, 5));
 		collapsiblePane.getContentPane().add(btnGroupSettle);
 		collapsiblePane.getContentPane().add(btnSplitTicket);
