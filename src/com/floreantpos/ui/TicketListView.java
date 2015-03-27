@@ -17,9 +17,9 @@ import org.jdesktop.swingx.JXTable;
 
 import com.floreantpos.POSConstants;
 import com.floreantpos.bo.ui.explorer.ListTableModel;
+import com.floreantpos.model.OrderType;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketStatus;
-import com.floreantpos.model.OrderType;
 import com.floreantpos.model.User;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 
@@ -30,6 +30,7 @@ public class TicketListView extends JPanel {
 	public TicketListView() {
 		table = new TicketListTable();
 		table.setSortable(false);
+		table.setColumnControlVisible(false);
 		table.setModel(tableModel = new TicketListTableModel());
 		table.setRowHeight(60);
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
@@ -44,7 +45,7 @@ public class TicketListView extends JPanel {
 
 		JScrollPane scrollPane = new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		JScrollBar scrollBar = scrollPane.getVerticalScrollBar();
-		scrollBar.setPreferredSize(new Dimension(30, 60));
+		scrollBar.setPreferredSize(new Dimension(60, 60));
 
 		setLayout(new BorderLayout());
 
@@ -88,7 +89,6 @@ public class TicketListView extends JPanel {
 	private class TicketListTable extends JXTable {
 		
 		public TicketListTable() {
-			setColumnControlVisible(true);
 		}
 		
 		@Override
@@ -106,8 +106,7 @@ public class TicketListView extends JPanel {
 
 	private class TicketListTableModel extends ListTableModel {
 		public TicketListTableModel() {
-			super(new String[] { POSConstants.ID, "TBL", POSConstants.SERVER, POSConstants.CREATED, POSConstants.CUSTOMER,
-					POSConstants.TICKET_DELIVERY_DATE, POSConstants.TICKET_TYPE, "STATUS", POSConstants.TOTAL, POSConstants.DUE });
+			super(new String[] { POSConstants.ID, POSConstants.SERVER, POSConstants.TICKET_TYPE, "STATUS", POSConstants.TOTAL, POSConstants.DUE });
 		}
 
 		public Object getValueAt(int rowIndex, int columnIndex) {
@@ -118,31 +117,13 @@ public class TicketListView extends JPanel {
 				return Integer.valueOf(ticket.getId());
 
 			case 1:
-				return ticket.getTableNumbers();
-
-			case 2:
 					User owner = ticket.getOwner();
 					return owner.getFirstName();
 
-			case 3:
-				return ticket.getCreateDate();
-
-			case 4:
-				String customerPhone = ticket.getProperty(Ticket.CUSTOMER_PHONE);
-				
-				if (customerPhone != null) {
-					return customerPhone;
-				}
-
-				return "Guest";
-
-			case 5:
-				return ticket.getDeliveryDate();
-
-			case 6:
+			case 2:
 				return ticket.getType();
 				
-			case 7:
+			case 3:
 				if(ticket.getType() == OrderType.PICKUP) {
 					return "Will pickup";
 				}
@@ -165,10 +146,10 @@ public class TicketListView extends JPanel {
 				
 				return "OPEN";
 
-			case 8:
+			case 4:
 				return ticket.getTotalAmount();
 
-			case 9:
+			case 5:
 				return ticket.getDueAmount();
 
 			}
