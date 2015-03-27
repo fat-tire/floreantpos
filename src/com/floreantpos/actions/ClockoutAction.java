@@ -27,7 +27,7 @@ public class ClockoutAction extends PosAction {
 			putValue(Action.NAME, Messages.getString("Clockout")); //$NON-NLS-1$
 		}
 		if (showIcon) {
-			putValue(Action.SMALL_ICON, IconFactory.getIcon("user_32.png")); //$NON-NLS-1$
+			putValue(Action.SMALL_ICON, IconFactory.getIcon("clock_out.png")); //$NON-NLS-1$
 		}
 	}
 
