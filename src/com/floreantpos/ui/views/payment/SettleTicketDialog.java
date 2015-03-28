@@ -30,12 +30,12 @@ import com.floreantpos.model.CreditCardTransaction;
 import com.floreantpos.model.GiftCertificateTransaction;
 import com.floreantpos.model.Gratuity;
 import com.floreantpos.model.MerchantGateway;
+import com.floreantpos.model.OrderType;
 import com.floreantpos.model.PaymentType;
 import com.floreantpos.model.PosTransaction;
 import com.floreantpos.model.Restaurant;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketCouponAndDiscount;
-import com.floreantpos.model.OrderType;
 import com.floreantpos.model.TransactionType;
 import com.floreantpos.model.UserPermission;
 import com.floreantpos.model.dao.TicketDAO;
@@ -447,7 +447,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 				ReceiptPrintService.printToKitchen(ticket);
 			}
 
-			//JReportPrintService.printTransaction(transaction);
+			ReceiptPrintService.printTransaction(transaction);
 		} catch (Exception ee) {
 			POSMessageDialog.showError(Application.getPosWindow(), com.floreantpos.POSConstants.PRINT_ERROR, ee);
 		}
