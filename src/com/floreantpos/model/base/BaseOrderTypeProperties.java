@@ -17,6 +17,7 @@ public abstract class BaseOrderTypeProperties  implements Comparable, Serializab
 
 	public static String REF = "OrderTypeProperties";
 	public static String PROP_ORDET_TYPE = "ordetType";
+	public static String PROP_ALLOW_DELAY_PAYMENT = "allowDelayPayment";
 	public static String PROP_BUTTON_COLOR = "buttonColor";
 	public static String PROP_VISIBLE = "visible";
 	public static String PROP_ALIAS = "alias";
@@ -52,6 +53,7 @@ public abstract class BaseOrderTypeProperties  implements Comparable, Serializab
 		protected java.lang.Integer buttonColor;
 		protected java.lang.Integer textColor;
 		protected java.lang.Boolean visible;
+		protected java.lang.Boolean allowDelayPayment;
 
 
 
@@ -158,6 +160,23 @@ public abstract class BaseOrderTypeProperties  implements Comparable, Serializab
 	 */
 	public void setVisible (java.lang.Boolean visible) {
 		this.visible = visible;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: ALLOW_DELAY_PAYMENT
+	 */
+	public java.lang.Boolean isAllowDelayPayment () {
+								return allowDelayPayment == null ? Boolean.FALSE : allowDelayPayment;
+					}
+
+	/**
+	 * Set the value related to the column: ALLOW_DELAY_PAYMENT
+	 * @param allowDelayPayment the ALLOW_DELAY_PAYMENT value
+	 */
+	public void setAllowDelayPayment (java.lang.Boolean allowDelayPayment) {
+		this.allowDelayPayment = allowDelayPayment;
 	}
 
 
