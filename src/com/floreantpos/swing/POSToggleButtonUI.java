@@ -58,10 +58,10 @@ public class POSToggleButtonUI extends PlasticToggleButtonUI {
 
 	protected void paintButtonPressed(Graphics g, AbstractButton b) {
 		if (b.isContentAreaFilled()) {
-			Color background = b.getBackground();
+			Color background = b.getBackground().darker();
 			g.setColor(background);
 			g.fillRect(0, 0, b.getWidth(), b.getHeight());
-			b.setBorder(pressedBorder);
+			//b.setBorder(pressedBorder);
 		}
 	}
 }

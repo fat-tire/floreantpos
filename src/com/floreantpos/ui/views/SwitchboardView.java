@@ -20,13 +20,13 @@ import java.util.Locale;
 import java.util.Set;
 
 import javax.swing.BorderFactory;
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
-import javax.swing.JToggleButton;
 import javax.swing.Timer;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
@@ -53,6 +53,7 @@ import com.floreantpos.model.UserPermission;
 import com.floreantpos.model.UserType;
 import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.services.TicketService;
+import com.floreantpos.swing.POSToggleButton;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.ui.dialog.NumberSelectionDialog2;
 import com.floreantpos.ui.dialog.POSMessageDialog;
@@ -136,43 +137,11 @@ public class SwitchboardView extends JPanel implements ActionListener, ITicketLi
 		javax.swing.JPanel centerPanel = new javax.swing.JPanel(new java.awt.BorderLayout(5, 5));
 		javax.swing.JPanel ticketsAndActivityPanel = new javax.swing.JPanel(new java.awt.BorderLayout(10, 10));
 
-
 		ticketsAndActivityPanel.setBorder(BorderFactory.createTitledBorder(null, POSConstants.OPEN_TICKETS_AND_ACTIVITY, TitledBorder.CENTER,
 				TitledBorder.DEFAULT_POSITION));
-		
-		JPanel filterPanel = new JPanel(new MigLayout("","fill",""));
-		
-		JToggleButton btnFilterByPaid = new JToggleButton("PAID");
-		btnFilterByPaid.setPreferredSize(new Dimension(60, 60));
-		JToggleButton btnFilterByUnPaid = new JToggleButton("UNPAID");
-		btnFilterByUnPaid.setPreferredSize(new Dimension(60, 60));
-		filterPanel.add(btnFilterByPaid);
-		filterPanel.add(btnFilterByUnPaid);
-		
-		filterPanel.add(new JSeparator(JSeparator.VERTICAL));
-		
-		JToggleButton btnFilterByDineIn = new JToggleButton("DINE IN");
-		btnFilterByDineIn.setPreferredSize(new Dimension(60, 60));
-		JToggleButton btnFilterByTakeOut = new JToggleButton("TAKE OUT");
-		btnFilterByTakeOut.setPreferredSize(new Dimension(60, 60));
-		
-		JToggleButton btnFilterByPickup = new JToggleButton("PICKUP");
-		btnFilterByPickup.setPreferredSize(new Dimension(60, 60));
-		
-		JToggleButton btnFilterByHomeDeli = new JToggleButton("HOME DELIVERY");
-		btnFilterByHomeDeli.setPreferredSize(new Dimension(60, 60));
-		
-		JToggleButton btnFilterByDriveThru = new JToggleButton("DRIVE THRU");
-		btnFilterByDriveThru.setPreferredSize(new Dimension(60, 60));
-		
-		filterPanel.add(btnFilterByDineIn);
-		filterPanel.add(btnFilterByTakeOut);
-		filterPanel.add(btnFilterByPickup);
-		filterPanel.add(btnFilterByHomeDeli);
-		filterPanel.add(btnFilterByDriveThru);
-		
-		//ticketsAndActivityPanel.add(filterPanel, BorderLayout.NORTH);
-		
+
+		orderFiltersPanel = createOrderFilters();
+		ticketsAndActivityPanel.add(orderFiltersPanel, BorderLayout.NORTH);
 		ticketsAndActivityPanel.add(openTicketList, java.awt.BorderLayout.CENTER);
 
 		JPanel activityPanel = createActivityPanel();
@@ -201,14 +170,13 @@ public class SwitchboardView extends JPanel implements ActionListener, ITicketLi
 		newOrderPanel.add(btnHomeDelivery, "grow, w 140!");
 		newOrderPanel.add(btnDriveThrough, "grow, w 140!");
 		newOrderPanel.add(btnBarTab, "grow, w 140!");
-		
+
 		setupOrderTypes();
-		
-		JPanel rightPanel = new JPanel(new MigLayout("flowy,hidemode 3, fill","fill, grow",""));
+
+		JPanel rightPanel = new JPanel(new MigLayout("flowy,hidemode 3, fill", "fill, grow", ""));
 		rightPanel.setBorder(BorderFactory.createTitledBorder(null, "-", TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION));
 		rightPanel.add(newOrderPanel);
-		
-		
+
 		PosButton btnOthers = new PosButton("OTHER FUNCTIONS");
 		btnOthers.addActionListener(new ActionListener() {
 			@Override
@@ -218,7 +186,7 @@ public class SwitchboardView extends JPanel implements ActionListener, ITicketLi
 			}
 		});
 		rightPanel.add(btnOthers);
-		
+
 		centerPanel.add(rightPanel, java.awt.BorderLayout.EAST);
 
 		add(centerPanel, java.awt.BorderLayout.CENTER);
@@ -227,16 +195,25 @@ public class SwitchboardView extends JPanel implements ActionListener, ITicketLi
 	private JPanel createActivityPanel() {
 		JPanel activityPanel = new JPanel(new BorderLayout(5, 5));
 		JPanel innerActivityPanel = new JPanel(new MigLayout("hidemode 3, fill, ins 0", "fill, grow", ""));
-		
+
 		JPanel panel1 = new JPanel(new GridLayout(1, 0, 5, 5));
 		
+		POSToggleButton btnOrderFilters = new POSToggleButton("ORDER FILTERS");
+		btnOrderFilters.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				orderFiltersPanel.setCollapsed(!orderFiltersPanel.isCollapsed());
+			}
+		});
+
+		panel1.add(btnOrderFilters);
 		panel1.add(btnOrderInfo);
 		panel1.add(btnEditTicket);
 		panel1.add(btnSettleTicket);
 		panel1.add(btnCloseOrder);
-		
+
 		innerActivityPanel.add(panel1);
-		
+
 		final JXCollapsiblePane collapsiblePane = new JXCollapsiblePane();
 		collapsiblePane.setAnimated(false);
 		collapsiblePane.getContentPane().setLayout(new GridLayout(1, 0, 5, 5));
@@ -244,24 +221,24 @@ public class SwitchboardView extends JPanel implements ActionListener, ITicketLi
 		collapsiblePane.getContentPane().add(btnSplitTicket);
 		collapsiblePane.getContentPane().add(btnReopenTicket);
 		collapsiblePane.getContentPane().add(btnVoidTicket);
-		
+
 		collapsiblePane.getContentPane().add(btnRefundTicket);
 		collapsiblePane.getContentPane().add(btnAssignDriver);
-		
+
 		collapsiblePane.setCollapsed(true);
 		innerActivityPanel.add(collapsiblePane, "newline");
-		
+
 		final PosButton btnMore = new PosButton(POSConstants.MORE_ACTIVITY_BUTTON_TEXT);
 		final Border border1 = BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(0, 0, 5, 0), btnMore.getBorder());
 		final Border border2 = BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0), btnMore.getBorder());
 		btnMore.setBorder(border1);
-		
+
 		btnMore.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				boolean collapsed = collapsiblePane.isCollapsed();
 				collapsiblePane.setCollapsed(!collapsed);
-				if(collapsed) {
+				if (collapsed) {
 					btnMore.setText(POSConstants.LESS_ACTIVITY_BUTTON_TEXT);
 					btnMore.setBorder(border2);
 				}
@@ -271,71 +248,125 @@ public class SwitchboardView extends JPanel implements ActionListener, ITicketLi
 				}
 			}
 		});
-		
+
 		activityPanel.add(innerActivityPanel);
 		activityPanel.add(btnMore, BorderLayout.EAST);
-		
+
 		return activityPanel;
-		
+
 		//panel1.add(btnPayout);
+
+		//		cardPanel.add(panel1);
+		//		
+		//		JPanel panel2 = new JPanel(new GridLayout(1, 0, 5, 5));
+		//		panel2.setBorder(border);
+		//		//panel2.setBackground(Color.blue);
+		//		
+		//		cardPanel.add(panel2);
+		//		
+		//		JPanel panel3 = new JPanel(new GridLayout(1, 0, 5, 5));
+		//		panel3.setBorder(border);
+		//		//panel3.setBackground(Color.red);
+		//		panel3.add(btnAuthorize);
+		//		panel3.add(btnManager);
+		//		panel3.add(btnKitchenDisplay);
+		//		panel3.add(btnBackOffice);
+		//		cardPanel.add(panel3);
+		//		
+		//		activityPanel.add(cardPanel);
+		//		
+		//		PosButton btnPrev = new PosButton();
+		//		btnPrev.setIcon(IconFactory.getIcon("previous.png")); //$NON-NLS-1$
+		//		btnPrev.addActionListener(new ActionListener() {
+		//			@Override
+		//			public void actionPerformed(ActionEvent e) {
+		//				cardPanel.showPreviousCard();
+		//			}
+		//		});
+		//		activityPanel.add(btnPrev, BorderLayout.WEST);
+		//
+		//		PosButton btnNext = new PosButton();
+		//		btnNext.setIcon(IconFactory.getIcon("next.png")); //$NON-NLS-1$
+		//		btnNext.addActionListener(new ActionListener() {
+		//			@Override
+		//			public void actionPerformed(ActionEvent e) {
+		//				cardPanel.showNextCard();
+		//			}
+		//		});
+		//		activityPanel.add(btnNext, BorderLayout.EAST);
+		//		
+		//		final FloorLayoutPlugin floorLayoutPlugin = Application.getPluginManager().getPlugin(FloorLayoutPlugin.class);
+		//		if (floorLayoutPlugin != null) {
+		//			btnTableManage = new PosButton(POSConstants.TABLE_MANAGE_BUTTON_TEXT);
+		//			btnTableManage.addActionListener(new ActionListener() {
+		//				@Override
+		//				public void actionPerformed(ActionEvent e) {
+		//					floorLayoutPlugin.openTicketsAndTablesDisplay();
+		//				}
+		//			});
+		//
+		//			panel3.add(btnTableManage);
+		//		}
+		//
+		//		TicketImportPlugin ticketImportPlugin = Application.getPluginManager().getPlugin(TicketImportPlugin.class);
+		//		if (ticketImportPlugin != null) {
+		//			btnOnlineTickets = new PosButton(POSConstants.ONLINE_TICKET_BUTTON_TEXT, new TicketImportAction());
+		//			panel3.add(btnOnlineTickets);
+		//		}
+	}
+
+	private JXCollapsiblePane createOrderFilters() {
+		JXCollapsiblePane filterPanel = new JXCollapsiblePane();
+		filterPanel.setCollapsed(true);
+		filterPanel.getContentPane().setLayout(new MigLayout("fill", "fill, grow", ""));
+
+		POSToggleButton btnNoPaymentFilter = new POSToggleButton("ALL");
+		POSToggleButton btnFilterByPaid = new POSToggleButton("PAID");
+		POSToggleButton btnFilterByUnPaid = new POSToggleButton("UNPAID");
 		
-//		cardPanel.add(panel1);
-//		
-//		JPanel panel2 = new JPanel(new GridLayout(1, 0, 5, 5));
-//		panel2.setBorder(border);
-//		//panel2.setBackground(Color.blue);
-//		
-//		cardPanel.add(panel2);
-//		
-//		JPanel panel3 = new JPanel(new GridLayout(1, 0, 5, 5));
-//		panel3.setBorder(border);
-//		//panel3.setBackground(Color.red);
-//		panel3.add(btnAuthorize);
-//		panel3.add(btnManager);
-//		panel3.add(btnKitchenDisplay);
-//		panel3.add(btnBackOffice);
-//		cardPanel.add(panel3);
-//		
-//		activityPanel.add(cardPanel);
-//		
-//		PosButton btnPrev = new PosButton();
-//		btnPrev.setIcon(IconFactory.getIcon("previous.png")); //$NON-NLS-1$
-//		btnPrev.addActionListener(new ActionListener() {
-//			@Override
-//			public void actionPerformed(ActionEvent e) {
-//				cardPanel.showPreviousCard();
-//			}
-//		});
-//		activityPanel.add(btnPrev, BorderLayout.WEST);
-//
-//		PosButton btnNext = new PosButton();
-//		btnNext.setIcon(IconFactory.getIcon("next.png")); //$NON-NLS-1$
-//		btnNext.addActionListener(new ActionListener() {
-//			@Override
-//			public void actionPerformed(ActionEvent e) {
-//				cardPanel.showNextCard();
-//			}
-//		});
-//		activityPanel.add(btnNext, BorderLayout.EAST);
-//		
-//		final FloorLayoutPlugin floorLayoutPlugin = Application.getPluginManager().getPlugin(FloorLayoutPlugin.class);
-//		if (floorLayoutPlugin != null) {
-//			btnTableManage = new PosButton(POSConstants.TABLE_MANAGE_BUTTON_TEXT);
-//			btnTableManage.addActionListener(new ActionListener() {
-//				@Override
-//				public void actionPerformed(ActionEvent e) {
-//					floorLayoutPlugin.openTicketsAndTablesDisplay();
-//				}
-//			});
-//
-//			panel3.add(btnTableManage);
-//		}
-//
-//		TicketImportPlugin ticketImportPlugin = Application.getPluginManager().getPlugin(TicketImportPlugin.class);
-//		if (ticketImportPlugin != null) {
-//			btnOnlineTickets = new PosButton(POSConstants.ONLINE_TICKET_BUTTON_TEXT, new TicketImportAction());
-//			panel3.add(btnOnlineTickets);
-//		}
+		ButtonGroup paymentGroup = new ButtonGroup();
+		paymentGroup.add(btnNoPaymentFilter);
+		paymentGroup.add(btnFilterByPaid);
+		paymentGroup.add(btnFilterByUnPaid);
+		
+		JPanel filterByPaymentStatusPanel = new JPanel(new MigLayout("", "fill, grow", ""));
+		filterByPaymentStatusPanel.setBorder(new TitledBorder("FILTER BY PAYMENT STATUS"));
+		filterByPaymentStatusPanel.add(btnNoPaymentFilter);
+		filterByPaymentStatusPanel.add(btnFilterByPaid);
+		filterByPaymentStatusPanel.add(btnFilterByUnPaid);
+		
+		filterPanel.getContentPane().add(filterByPaymentStatusPanel);
+
+		POSToggleButton btnFilterByOrderTypeALL = new POSToggleButton("ALL");
+		POSToggleButton btnFilterByDineIn = new POSToggleButton("DINE IN");
+		POSToggleButton btnFilterByTakeOut = new POSToggleButton("TAKE OUT");
+		POSToggleButton btnFilterByPickup = new POSToggleButton("PICKUP");
+		POSToggleButton btnFilterByHomeDeli = new POSToggleButton("HOME DELIVERY");
+		POSToggleButton btnFilterByDriveThru = new POSToggleButton("DRIVE THRU");
+		POSToggleButton btnFilterByBarTab = new POSToggleButton("BAR TAB");
+		
+		ButtonGroup orderTypeGroup = new ButtonGroup();
+		orderTypeGroup.add(btnFilterByOrderTypeALL);
+		orderTypeGroup.add(btnFilterByDineIn);
+		orderTypeGroup.add(btnFilterByTakeOut);
+		orderTypeGroup.add(btnFilterByPickup);
+		orderTypeGroup.add(btnFilterByHomeDeli);
+		orderTypeGroup.add(btnFilterByDriveThru);
+		orderTypeGroup.add(btnFilterByBarTab);
+
+		JPanel filterByOrderPanel = new JPanel(new MigLayout("", "fill, grow", ""));
+		filterByOrderPanel.setBorder(new TitledBorder("FILTER BY ORDER TYPE"));
+		filterByOrderPanel.add(btnFilterByOrderTypeALL);
+		filterByOrderPanel.add(btnFilterByDineIn);
+		filterByOrderPanel.add(btnFilterByTakeOut);
+		filterByOrderPanel.add(btnFilterByPickup);
+		filterByOrderPanel.add(btnFilterByHomeDeli);
+		filterByOrderPanel.add(btnFilterByDriveThru);
+		filterByOrderPanel.add(btnFilterByBarTab);
+		
+		filterPanel.getContentPane().add(filterByOrderPanel);
+		
+		return filterPanel;
 	}
 
 	private void setupOrderTypes() {
@@ -349,7 +380,7 @@ public class SwitchboardView extends JPanel implements ActionListener, ITicketLi
 
 	private void setupOrderType(OrderType orderType, JButton button, String textKey) {
 		button.setText(orderType.toString());
-		
+
 		OrderTypeProperties properties = orderType.getProperties();
 
 		if (properties == null) {
@@ -771,6 +802,8 @@ public class SwitchboardView extends JPanel implements ActionListener, ITicketLi
 	private com.floreantpos.ui.TicketListView openTicketList = new com.floreantpos.ui.TicketListView();
 
 	private JLabel timerLabel = new JLabel();
+
+	private JXCollapsiblePane orderFiltersPanel;
 
 	// End of variables declaration//GEN-END:variables
 
