@@ -12,6 +12,7 @@
 		<property column="BTN_COLOR" name="buttonColor" type="java.lang.Integer" />
 		<property column="TEXT_COLOR" name="textColor" type="java.lang.Integer" />
 		<property column="VISIBLE" name="visible" type="java.lang.Boolean"/>
+		<property column="ALLOW_DELAY_PAYMENT" name="allowDelayPayment" type="java.lang.Boolean"/>
 
 		<!-- Associations -->
 	</class>
