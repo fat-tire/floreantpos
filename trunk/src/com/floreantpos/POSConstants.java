@@ -29,6 +29,13 @@ public class POSConstants {
 	public static final String TABLE_MANAGE_BUTTON_TEXT = Messages.getString("TABLE_MANAGE_BUTTON_TEXT"); //$NON-NLS-1$
 	public static final String ONLINE_TICKET_BUTTON_TEXT = Messages.getString("ONLINE_TICKET_BUTTON_TEXT"); //$NON-NLS-1$
 	public static final String NEW_ORDER_PANEL_LABEL = Messages.getString("NEW_ORDER_PANEL_LABEL"); //$NON-NLS-1$
+	public static final String ENABLE_OPTION_LABEL = Messages.getString("ENABLE_OPTION_LABEL"); //$NON-NLS-1$
+	public static final String LATER_PAYMENT_OPTION_LABEL = Messages.getString("LATER_PAYMENT_OPTION_LABEL"); //$NON-NLS-1$
+	public static final String ALIAS_LABEL = Messages.getString("ALIAS_LABEL"); //$NON-NLS-1$
+
+	public static final String CANCEL_BUTTON_TEXT = Messages.getString("CANCEL_BUTTON_TEXT"); //$NON-NLS-1$
+	public static final String SAVE_BUTTON_TEXT = Messages.getString("SAVE_BUTTON_TEXT"); //$NON-NLS-1$
+	public static final String PAY_BUTTON_TEXT = Messages.getString("PAY_BUTTON_TEXT"); //$NON-NLS-1$
 	
 	
 	

@@ -8,7 +8,6 @@ package com.floreantpos.ui.views;
 
 import java.awt.BorderLayout;
 import java.awt.ComponentOrientation;
-import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -26,9 +25,10 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JSeparator;
 import javax.swing.Timer;
 import javax.swing.border.Border;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
 import net.miginfocom.swing.MigLayout;
@@ -137,8 +137,9 @@ public class SwitchboardView extends JPanel implements ActionListener, ITicketLi
 		javax.swing.JPanel centerPanel = new javax.swing.JPanel(new java.awt.BorderLayout(5, 5));
 		javax.swing.JPanel ticketsAndActivityPanel = new javax.swing.JPanel(new java.awt.BorderLayout(10, 10));
 
-		ticketsAndActivityPanel.setBorder(BorderFactory.createTitledBorder(null, POSConstants.OPEN_TICKETS_AND_ACTIVITY, TitledBorder.CENTER,
-				TitledBorder.DEFAULT_POSITION));
+		TitledBorder titledBorder = BorderFactory.createTitledBorder(null, POSConstants.OPEN_TICKETS_AND_ACTIVITY, TitledBorder.CENTER,
+				TitledBorder.DEFAULT_POSITION);
+		ticketsAndActivityPanel.setBorder(new CompoundBorder(titledBorder, new EmptyBorder(2, 2, 2, 2)));
 
 		orderFiltersPanel = createOrderFilters();
 		ticketsAndActivityPanel.add(orderFiltersPanel, BorderLayout.NORTH);
@@ -161,21 +162,22 @@ public class SwitchboardView extends JPanel implements ActionListener, ITicketLi
 		});
 
 		centerPanel.add(ticketsAndActivityPanel, java.awt.BorderLayout.CENTER);
-
-		JPanel newOrderPanel = new JPanel();
-		newOrderPanel.setLayout(new GridLayout(0, 1, 5, 5));
-		newOrderPanel.add(btnDineIn, "grow, w 140!");
-		newOrderPanel.add(btnTakeout, "grow, w 140!");
-		newOrderPanel.add(btnPickup, "grow, w 140!");
-		newOrderPanel.add(btnHomeDelivery, "grow, w 140!");
-		newOrderPanel.add(btnDriveThrough, "grow, w 140!");
-		newOrderPanel.add(btnBarTab, "grow, w 140!");
+		
+		JPanel rightPanel = new JPanel(new BorderLayout(20, 20));
+		TitledBorder titledBorder2 = BorderFactory.createTitledBorder(null, "-", TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION);
+		rightPanel.setBorder(new CompoundBorder(titledBorder2, new EmptyBorder(2, 2, 6, 2)));
+		
+		JPanel orderPanel = new JPanel(new MigLayout("ins 2 2 0 2, fill, hidemode 3, flowy", "fill, grow", ""));
+		orderPanel.add(btnDineIn, "grow");
+		orderPanel.add(btnTakeout, "grow");
+		orderPanel.add(btnPickup, "grow");
+		orderPanel.add(btnHomeDelivery, "grow");
+		orderPanel.add(btnDriveThrough, "grow");
+		orderPanel.add(btnBarTab, "grow");
 
 		setupOrderTypes();
-
-		JPanel rightPanel = new JPanel(new MigLayout("flowy,hidemode 3, fill", "fill, grow", ""));
-		rightPanel.setBorder(BorderFactory.createTitledBorder(null, "-", TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION));
-		rightPanel.add(newOrderPanel);
+		
+		rightPanel.add(orderPanel);
 
 		PosButton btnOthers = new PosButton("OTHER FUNCTIONS");
 		btnOthers.addActionListener(new ActionListener() {
@@ -185,7 +187,7 @@ public class SwitchboardView extends JPanel implements ActionListener, ITicketLi
 				dialog.open();
 			}
 		});
-		rightPanel.add(btnOthers);
+		rightPanel.add(btnOthers, BorderLayout.SOUTH);
 
 		centerPanel.add(rightPanel, java.awt.BorderLayout.EAST);
 
