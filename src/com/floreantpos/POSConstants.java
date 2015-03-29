@@ -9,7 +9,10 @@ public class POSConstants {
 	public static final String DRIVE_THRU_BUTTON_TEXT = Messages.getString("DRIVE_THRU_BUTTON_TEXT"); //$NON-NLS-1$
 	public static final String BAR_TAB_BUTTON_TEXT = Messages.getString("BAR_TAB_BUTTON_TEXT"); //$NON-NLS-1$
 	
+	public static final String CashierSwitchBoardView_LABEL_ORDER = Messages.getString("CashierSwitchBoardView.LABEL_ORDER"); //$NON-NLS-1$
+	
 	public static final String BACK_OFFICE_BUTTON_TEXT = Messages.getString("BACK_OFFICE_BUTTON_TEXT"); //$NON-NLS-1$
+	public static final String NEW_ORDER_BUTTON_TEXT = Messages.getString("NEW_ORDER_BUTTON_TEXT"); //$NON-NLS-1$
 	public static final String EDIT_TICKET_BUTTON_TEXT = Messages.getString("EDIT_TICKET_BUTTON_TEXT"); //$NON-NLS-1$
 	public static final String GROUP_SETTLE_BUTTON_TEXT = Messages.getString("GROUP_SETTLE_BUTTON_TEXT"); //$NON-NLS-1$
 	public static final String MANAGER_BUTTON_TEXT = Messages.getString("MANAGER_BUTTON_TEXT"); //$NON-NLS-1$

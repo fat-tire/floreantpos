@@ -30,6 +30,7 @@ import com.floreantpos.ui.views.order.actions.GroupSelectionListener;
 import com.floreantpos.ui.views.order.actions.ItemSelectionListener;
 import com.floreantpos.ui.views.order.actions.ModifierSelectionListener;
 import com.floreantpos.ui.views.order.actions.OrderListener;
+import com.floreantpos.util.OrderUtil;
 
 public class OrderController implements OrderListener, CategorySelectionListener, GroupSelectionListener, ItemSelectionListener, ModifierSelectionListener {
 	private OrderView orderView;
@@ -109,7 +110,7 @@ public class OrderController implements OrderListener, CategorySelectionListener
 				message = "Ticket no " + ticket.getId() + " paid. What do you want to do next?";
 			}
 			
-			SwitchboardView.doTakeout(OrderType.TAKE_OUT);
+			OrderUtil.createNewTakeOutOrder(OrderType.TAKE_OUT);
 			Window ancestor = SwingUtilities.getWindowAncestor(Application.getPosWindow());
 			CashierModeNextActionDialog dialog = new CashierModeNextActionDialog((Frame) ancestor, message);
 			dialog.open();

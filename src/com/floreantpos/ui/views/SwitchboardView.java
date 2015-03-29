@@ -13,7 +13,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
@@ -62,7 +61,9 @@ import com.floreantpos.ui.views.order.DefaultOrderServiceExtension;
 import com.floreantpos.ui.views.order.OrderController;
 import com.floreantpos.ui.views.order.OrderView;
 import com.floreantpos.ui.views.order.RootView;
+import com.floreantpos.ui.views.order.ViewPanel;
 import com.floreantpos.ui.views.payment.SettleTicketDialog;
+import com.floreantpos.util.OrderUtil;
 import com.floreantpos.util.POSUtil;
 import com.floreantpos.util.PosGuiUtil;
 import com.floreantpos.util.TicketAlreadyExistsException;
@@ -71,7 +72,7 @@ import com.floreantpos.util.TicketAlreadyExistsException;
  * 
  * @author MShahriar
  */
-public class SwitchboardView extends JPanel implements ActionListener, ITicketList {
+public class SwitchboardView extends ViewPanel implements ActionListener, ITicketList {
 	private final AutoLogoffHandler logoffHandler = new AutoLogoffHandler();
 
 	public final static String VIEW_NAME = com.floreantpos.POSConstants.SWITCHBOARD;
@@ -665,25 +666,6 @@ public class SwitchboardView extends JPanel implements ActionListener, ITicketLi
 		}
 	}
 
-	public static void doTakeout(OrderType titcketType) {
-		Application application = Application.getInstance();
-
-		Ticket ticket = new Ticket();
-		ticket.setPriceIncludesTax(application.isPriceIncludesTax());
-		//ticket.setTableNumber(-1);
-		ticket.setType(titcketType);
-		ticket.setTerminal(application.getTerminal());
-		ticket.setOwner(Application.getCurrentUser());
-		ticket.setShift(application.getCurrentShift());
-
-		Calendar currentTime = Calendar.getInstance();
-		ticket.setCreateDate(currentTime.getTime());
-		ticket.setCreationHour(currentTime.get(Calendar.HOUR_OF_DAY));
-
-		OrderView.getInstance().setCurrentTicket(ticket);
-		RootView.getInstance().showView(OrderView.VIEW_NAME);
-	}
-
 	private void doGroupSettle() {
 		List<Ticket> selectedTickets = openTicketList.getSelectedTickets();
 		if (selectedTickets == null) {
@@ -834,7 +816,7 @@ public class SwitchboardView extends JPanel implements ActionListener, ITicketLi
 			doCreateNewTicket(OrderType.DINE_IN);
 		}
 		else if (source == btnTakeout) {
-			doTakeout(OrderType.TAKE_OUT);
+			OrderUtil.createNewTakeOutOrder(OrderType.TAKE_OUT);
 		}
 		else if (source == btnPickup) {
 			doHomeDelivery(OrderType.PICKUP);
@@ -843,7 +825,7 @@ public class SwitchboardView extends JPanel implements ActionListener, ITicketLi
 			doHomeDelivery(OrderType.HOME_DELIVERY);
 		}
 		else if (source == btnDriveThrough) {
-			doTakeout(OrderType.DRIVE_THRU);
+			OrderUtil.createNewTakeOutOrder(OrderType.DRIVE_THRU);
 		}
 		else if (source == btnBarTab) {
 			new NewBarTabAction(this).actionPerformed(e);
@@ -928,5 +910,10 @@ public class SwitchboardView extends JPanel implements ActionListener, ITicketLi
 			countDown = TerminalConfig.getAutoLogoffTime();
 		}
 
+	}
+	
+	@Override
+	public String getViewName() {
+		return VIEW_NAME;
 	}
 }

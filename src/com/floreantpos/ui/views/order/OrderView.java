@@ -19,7 +19,7 @@ import com.floreantpos.ui.dialog.POSMessageDialog;
  *
  * @author  MShahriar
  */
-public class OrderView extends com.floreantpos.swing.TransparentPanel {
+public class OrderView extends ViewPanel {
 	private HashMap<String, JComponent> views = new HashMap<String, JComponent>();
 
 	public final static String VIEW_NAME = "ORDER_VIEW";
@@ -194,5 +194,10 @@ public class OrderView extends com.floreantpos.swing.TransparentPanel {
 			categoryView.cleanup();
 		}
 		super.setVisible(aFlag);
+	}
+
+	@Override
+	public String getViewName() {
+		return VIEW_NAME;
 	}
 }

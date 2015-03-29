@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
+import javax.swing.border.TitledBorder;
 import javax.swing.table.TableColumn;
 import javax.swing.text.JTextComponent;
 
@@ -80,5 +81,9 @@ public class PosGuiUtil {
 		column.setWidth(width);
 //		column.setMaxWidth(width);
 //		column.setMinWidth(width);
+	}
+	
+	public static TitledBorder createTitledBorder(String title) {
+		return new TitledBorder(null, title, TitledBorder.CENTER, TitledBorder.CENTER);
 	}
 }
