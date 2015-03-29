@@ -546,7 +546,12 @@ public class TicketView extends JPanel {
 			setBorder(BorderFactory.createTitledBorder(null, "Ticket #" + ticket.getId(), TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION));
 		}
 		
-		//btnSave.setVisible(ticket.getType().getProperties().isAllowDelayPayment());
+		if(ticket.getType() != null && ticket.getType().getProperties() != null) {
+			btnSave.setVisible(ticket.getType().getProperties().isAllowDelayPayment());
+		}
+		else {
+			btnSave.setVisible(true);
+		}
 	}
 
 	public void addOrderListener(OrderListener listenre) {
