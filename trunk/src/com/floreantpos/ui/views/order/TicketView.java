@@ -155,17 +155,15 @@ public class TicketView extends JPanel {
 //		tfDiscount.setFont(new java.awt.Font("Tahoma", 1, 12));
 //		ticketAmountPanel.add(tfDiscount, "cell 1 2,growx,aligny center");
 		
-//		jLabel2 = new javax.swing.JLabel();
-//		jLabel2.setFont(new java.awt.Font("Tahoma", 1, 12));
-//		jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-//		jLabel2.setText(com.floreantpos.POSConstants.TAX + ":");
-//		ticketAmountPanel.add(jLabel2, "cell 0 3,growx,aligny center");
-//		tfTax = new javax.swing.JTextField();
-//		tfTax.setHorizontalAlignment(SwingConstants.TRAILING);
-//
-//		tfTax.setEditable(false);
-//		tfTax.setFont(new java.awt.Font("Tahoma", 1, 12));
-//		ticketAmountPanel.add(tfTax, "cell 1 3,growx,aligny center");
+		lblTax = new javax.swing.JLabel();
+		lblTax.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+		lblTax.setText(com.floreantpos.POSConstants.TAX + ":");
+		ticketAmountPanel.add(lblTax, "cell 0 3,growx,aligny center");
+		tfTax = new javax.swing.JTextField();
+		tfTax.setHorizontalAlignment(SwingConstants.TRAILING);
+
+		tfTax.setEditable(false);
+		ticketAmountPanel.add(tfTax, "cell 1 3,growx,aligny center");
 
 //		lblServiceCharge = new JLabel();
 //		lblServiceCharge.setText("Service Charge:");
@@ -462,7 +460,7 @@ public class TicketView extends JPanel {
 	private com.floreantpos.swing.PosButton btnScrollDown;
 	private com.floreantpos.swing.PosButton btnScrollUp;
 //	private javax.swing.JLabel jLabel1;
-//	private javax.swing.JLabel jLabel2;
+	private javax.swing.JLabel lblTax;
 	private javax.swing.JLabel jLabel5;
 	private javax.swing.JLabel jLabel6;
 	private com.floreantpos.swing.TransparentPanel jPanel1;
@@ -472,7 +470,7 @@ public class TicketView extends JPanel {
 	private javax.swing.JScrollPane jScrollPane1;
 //	private javax.swing.JTextField tfDiscount;
 	private javax.swing.JTextField tfSubtotal;
-//	private javax.swing.JTextField tfTax;
+	private javax.swing.JTextField tfTax;
 	private javax.swing.JTextField tfTotal;
 	private com.floreantpos.ui.ticket.TicketViewerTable ticketViewerTable;
 //	private JTextField tfServiceCharge;
@@ -515,7 +513,7 @@ public class TicketView extends JPanel {
 		if (ticket == null) {
 			tfSubtotal.setText("");
 //			tfDiscount.setText("");
-//			tfTax.setText("");
+			tfTax.setText("");
 //			tfServiceCharge.setText("");
 			tfTotal.setText("");
 			
@@ -529,12 +527,12 @@ public class TicketView extends JPanel {
 		tfSubtotal.setText(NumberUtil.formatNumber(ticket.getSubtotalAmount()));
 //		tfDiscount.setText(NumberUtil.formatNumber(ticket.getDiscountAmount()));
 
-//		if(Application.getInstance().isPriceIncludesTax()) {
-//			tfTax.setText("INCLUDED");
-//		}
-//		else {
-//			tfTax.setText(NumberUtil.formatNumber(ticket.getTaxAmount()));
-//		}
+		if(Application.getInstance().isPriceIncludesTax()) {
+			tfTax.setText("INCLUDED");
+		}
+		else {
+			tfTax.setText(NumberUtil.formatNumber(ticket.getTaxAmount()));
+		}
 //
 //		tfServiceCharge.setText(NumberUtil.formatNumber(ticket.getServiceCharge()));
 		tfTotal.setText(NumberUtil.formatNumber(ticket.getTotalAmount()));
