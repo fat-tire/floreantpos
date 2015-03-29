@@ -18,12 +18,13 @@ import javax.swing.border.EtchedBorder;
 
 import com.floreantpos.IconFactory;
 import com.floreantpos.swing.ImageComponent;
+import com.floreantpos.ui.views.order.ViewPanel;
 
 /**
  *
  * @author  MShahriar
  */
-public class LoginView extends JPanel {
+public class LoginView extends ViewPanel {
 	public final static String VIEW_NAME = "LOGIN_VIEW";
 
 	private LoginPasswordEntryView passwordScreen;
@@ -66,5 +67,10 @@ public class LoginView extends JPanel {
 
 	public void setTerminalId(int terminalId) {
 		passwordScreen.setTerminalId(terminalId);
+	}
+	
+	@Override
+	public String getViewName() {
+		return VIEW_NAME;
 	}
 }

@@ -2,7 +2,6 @@ package com.floreantpos.ui.views.order;
 
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
-import java.awt.Component;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -10,6 +9,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import com.floreantpos.ui.HeaderPanel;
+import com.floreantpos.ui.views.IView;
 import com.floreantpos.ui.views.LoginView;
 import com.floreantpos.ui.views.SwitchboardView;
 import com.floreantpos.ui.views.payment.SettleTicketDialog;
@@ -39,21 +39,21 @@ public class RootView extends com.floreantpos.swing.TransparentPanel {
 		add(contentPanel);
 		
 		loginScreen = new LoginView();
-		addView(LoginView.VIEW_NAME, loginScreen);
+		addView(loginScreen);
 		
 		switchboardView = new SwitchboardView();
-		addView(SwitchboardView.VIEW_NAME, switchboardView);
+		addView(switchboardView);
 		
 		orderView = OrderView.getInstance();
 		orderView.init();
-		addView(OrderView.VIEW_NAME, orderView);
+		addView(orderView);
 		
 		showView(LoginView.VIEW_NAME);
 	}
 	
-	public void addView(String viewName, Component view) {
-		viewNames.add(viewName);
-		contentPanel.add(view, viewName);
+	public void addView(IView iView) {
+		viewNames.add(iView.getViewName());
+		contentPanel.add(iView.getViewName(), iView.getViewComponent());
 	}
 	
 	public void showView(String viewName) {
@@ -68,8 +68,16 @@ public class RootView extends com.floreantpos.swing.TransparentPanel {
 		}
 	}
 	
+	public void showView(IView view) {
+		showView(view.getViewName());
+	}
+	
 	public boolean hasView(String viewName) {
 		return viewNames.contains(viewName);
+	}
+	
+	public boolean hasView(IView view) {
+		return viewNames.contains(view.getViewName());
 	}
 	
 	public OrderView getOrderView() {

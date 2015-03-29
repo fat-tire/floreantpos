@@ -42,6 +42,7 @@ import com.floreantpos.model.dao.RestaurantDAO;
 import com.floreantpos.model.dao.TerminalDAO;
 import com.floreantpos.model.dao.UserDAO;
 import com.floreantpos.ui.dialog.POSMessageDialog;
+import com.floreantpos.ui.views.CashierSwitchBoardView;
 import com.floreantpos.ui.views.LoginView;
 import com.floreantpos.ui.views.SwitchboardView;
 import com.floreantpos.ui.views.order.RootView;
@@ -369,14 +370,21 @@ public class Application {
 		RootView rootView = getRootView();
 		
 		if(TerminalConfig.isCashierMode()) {
-			SwitchboardView.doTakeout(OrderType.TAKE_OUT);
+			//SwitchboardView.doTakeout(OrderType.TAKE_OUT);
+			if(!rootView.hasView(CashierSwitchBoardView.VIEW_NAME)) {
+				CashierSwitchBoardView view = new CashierSwitchBoardView();
+				rootView.addView(view);
+			}
+			
+			rootView.showView(CashierSwitchBoardView.VIEW_NAME);
 		}
 		else if(TerminalConfig.isKitchenMode()) {
 			if(rootView.hasView(KitchenDisplayView.VIEW_NAME)) {
 				rootView.showView(KitchenDisplayView.VIEW_NAME);
 			}
 			else {
-				rootView.addView(KitchenDisplayView.VIEW_NAME, new KitchenDisplayView());
+				KitchenDisplayView kitchenDisplayView = new KitchenDisplayView();
+				rootView.addView(kitchenDisplayView);
 				rootView.showView(KitchenDisplayView.VIEW_NAME);
 			}
 		}
