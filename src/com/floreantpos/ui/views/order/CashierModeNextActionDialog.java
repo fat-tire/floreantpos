@@ -17,7 +17,7 @@ import com.floreantpos.model.OrderType;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.ui.dialog.OpenTicketsListDialog;
 import com.floreantpos.ui.dialog.POSDialog;
-import com.floreantpos.ui.views.SwitchboardView;
+import com.floreantpos.util.OrderUtil;
 
 public class CashierModeNextActionDialog extends POSDialog implements ActionListener {
 	PosButton btnNew = new PosButton("NEW TICKET");
@@ -61,7 +61,7 @@ public class CashierModeNextActionDialog extends POSDialog implements ActionList
 	public void actionPerformed(ActionEvent e) {
 		
 		if(e.getSource() == btnNew) {
-			SwitchboardView.doTakeout(OrderType.TAKE_OUT);
+			OrderUtil.createNewTakeOutOrder(OrderType.TAKE_OUT);
 		}
 		else if(e.getSource() == btnLogout) {
 			Application.getInstance().doLogout();

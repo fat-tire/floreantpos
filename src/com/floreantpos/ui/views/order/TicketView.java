@@ -17,9 +17,7 @@ import java.awt.event.MouseEvent;
 import java.util.List;
 
 import javax.swing.BorderFactory;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.border.TitledBorder;
@@ -548,7 +546,7 @@ public class TicketView extends JPanel {
 			setBorder(BorderFactory.createTitledBorder(null, "Ticket #" + ticket.getId(), TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION));
 		}
 		
-		btnSave.setVisible(ticket.getType().getProperties().isAllowDelayPayment());
+		//btnSave.setVisible(ticket.getType().getProperties().isAllowDelayPayment());
 	}
 
 	public void addOrderListener(OrderListener listenre) {

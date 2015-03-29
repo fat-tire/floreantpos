@@ -21,15 +21,16 @@ import net.miginfocom.swing.MigLayout;
 import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.KitchenTicket;
+import com.floreantpos.model.OrderType;
 import com.floreantpos.model.PosPrinters;
 import com.floreantpos.model.Printer;
-import com.floreantpos.model.OrderType;
 import com.floreantpos.model.dao.KitchenTicketDAO;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.swing.PosComboRenderer;
 import com.floreantpos.ui.dialog.POSMessageDialog;
+import com.floreantpos.ui.views.order.ViewPanel;
 
-public class KitchenDisplayView extends JPanel implements ActionListener {
+public class KitchenDisplayView extends ViewPanel implements ActionListener {
 
 	public final static String VIEW_NAME = "KD";
 
@@ -179,5 +180,10 @@ public class KitchenDisplayView extends JPanel implements ActionListener {
 		} finally {
 			viewUpdateTimer.restart();
 		}
+	}
+
+	@Override
+	public String getViewName() {
+		return VIEW_NAME;
 	}
 }
