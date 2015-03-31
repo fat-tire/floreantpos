@@ -8,7 +8,6 @@ import java.util.List;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollBar;
-import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 
@@ -16,6 +15,7 @@ import org.jdesktop.swingx.JXTable;
 
 import com.floreantpos.bo.ui.explorer.ListTableModel;
 import com.floreantpos.model.PosTransaction;
+import com.floreantpos.swing.PosScrollPane;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 
 public class TransactionListView extends JPanel {
@@ -37,7 +37,7 @@ public class TransactionListView extends JPanel {
 //		columnModel.getColumn(2).setPreferredWidth(200);
 //		columnModel.getColumn(3).setPreferredWidth(100);
 
-		JScrollPane scrollPane = new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		PosScrollPane scrollPane = new PosScrollPane(table, PosScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, PosScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		JScrollBar scrollBar = scrollPane.getVerticalScrollBar();
 		scrollBar.setPreferredSize(new Dimension(30, 60));
 

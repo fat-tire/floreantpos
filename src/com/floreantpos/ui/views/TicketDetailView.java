@@ -14,7 +14,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 
 import net.miginfocom.swing.MigLayout;
@@ -23,6 +22,7 @@ import net.sf.jasperreports.engine.JasperPrint;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.report.ReceiptPrintService;
 import com.floreantpos.report.TicketPrintProperties;
+import com.floreantpos.swing.PosScrollPane;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 
 /**
@@ -66,7 +66,7 @@ public class TicketDetailView extends JPanel {
 			}
 			
 			JPanel reportPanel = new JPanel(new MigLayout("wrap 1, ax 50%","",""));
-			JScrollPane scrollPane = new JScrollPane(reportPanel);
+			PosScrollPane scrollPane = new PosScrollPane(reportPanel);
 			scrollPane.getVerticalScrollBar().setUnitIncrement(20);
 
 			for (Iterator iter = tickets.iterator(); iter.hasNext();) {
