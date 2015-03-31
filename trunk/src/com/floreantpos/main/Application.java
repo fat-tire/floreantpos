@@ -12,6 +12,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
 import javax.swing.UIManager;
+import javax.swing.plaf.FontUIResource;
 
 import net.xeoh.plugins.base.PluginManager;
 import net.xeoh.plugins.base.impl.PluginManagerFactory;
@@ -28,7 +29,6 @@ import com.floreantpos.config.AppProperties;
 import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.config.ui.DatabaseConfigurationDialog;
 import com.floreantpos.demo.KitchenDisplayView;
-import com.floreantpos.model.OrderType;
 import com.floreantpos.model.PosPrinters;
 import com.floreantpos.model.PrinterConfiguration;
 import com.floreantpos.model.Restaurant;
@@ -139,6 +139,7 @@ public class Application {
 		Font sourceFont = UIManager.getFont("Label.font");
 		Font font = new Font(uiDefaultFont, sourceFont.getStyle(), sourceFont.getSize());
 		
+		UIManager.put("OptionPane.buttonFont", new FontUIResource(new Font("ARIAL",Font.PLAIN,35)));
 		UIManager.put("Button.font", font);
 		UIManager.put("ToggleButton.font", font);
 		UIManager.put("RadioButton.font", font);

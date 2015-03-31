@@ -8,8 +8,6 @@ package com.floreantpos.ui.views.order;
 
 import java.awt.BorderLayout;
 import java.awt.Font;
-import java.awt.Frame;
-import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -19,7 +17,6 @@ import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -46,8 +43,10 @@ import com.floreantpos.model.dao.MenuItemDAO;
 import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.report.ReceiptPrintService;
 import com.floreantpos.swing.PosButton;
+import com.floreantpos.swing.PosScrollPane;
 import com.floreantpos.ui.dialog.BeanEditorDialog;
 import com.floreantpos.ui.dialog.POSMessageDialog;
+import com.floreantpos.ui.views.CashierSwitchBoardView;
 import com.floreantpos.ui.views.CookingInstructionSelectionView;
 import com.floreantpos.ui.views.SwitchboardView;
 import com.floreantpos.ui.views.order.actions.OrderListener;
@@ -124,7 +123,7 @@ public class TicketView extends JPanel {
 		btnScrollDown = new com.floreantpos.swing.PosButton();
 		jPanel2 = new com.floreantpos.swing.TransparentPanel();
 		ticketViewerTable = new com.floreantpos.ui.ticket.TicketViewerTable();
-		jScrollPane1 = new javax.swing.JScrollPane(ticketViewerTable);
+		ticketScrollPane = new PosScrollPane(ticketViewerTable);
 
 		setBorder(javax.swing.BorderFactory.createTitledBorder(null, com.floreantpos.POSConstants.TICKET, javax.swing.border.TitledBorder.CENTER,
 				javax.swing.border.TitledBorder.DEFAULT_POSITION));
@@ -283,12 +282,12 @@ public class TicketView extends JPanel {
 		jPanel2.setLayout(new java.awt.BorderLayout());
 
 		//		jScrollPane1.setBorder(null);
-		jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		jScrollPane1.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
-		jScrollPane1.setPreferredSize(new java.awt.Dimension(180, 200));
+		ticketScrollPane.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		ticketScrollPane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+		ticketScrollPane.setPreferredSize(new java.awt.Dimension(180, 200));
 		//jScrollPane1.setViewportView(ticketViewerTable);
 
-		jPanel2.add(jScrollPane1, java.awt.BorderLayout.CENTER);
+		jPanel2.add(ticketScrollPane, java.awt.BorderLayout.CENTER);
 
 		add(jPanel2, java.awt.BorderLayout.CENTER);
 		
@@ -367,14 +366,15 @@ public class TicketView extends JPanel {
 
 	private void closeView(boolean orderCanceled) {
 		if(TerminalConfig.isCashierMode()) {
-			String message = "Order canceled. What do you want to do next?";
-			if(!orderCanceled) {
-				message = "Ticket no " + getTicket().getId() + " saved. What do you want to do next?";
-			}
-			
-			Window ancestor = SwingUtilities.getWindowAncestor(this);
-			CashierModeNextActionDialog dialog = new CashierModeNextActionDialog((Frame) ancestor, message);
-			dialog.open();
+//			String message = "Order canceled. What do you want to do next?";
+//			if(!orderCanceled) {
+//				message = "Ticket no " + getTicket().getId() + " saved. What do you want to do next?";
+//			}
+//			
+//			Window ancestor = SwingUtilities.getWindowAncestor(this);
+//			CashierModeNextActionDialog dialog = new CashierModeNextActionDialog((Frame) ancestor, message);
+//			dialog.open();
+			RootView.getInstance().showView(CashierSwitchBoardView.VIEW_NAME);
 		}
 		else {
 			RootView.getInstance().showView(SwitchboardView.VIEW_NAME);
@@ -467,7 +467,7 @@ public class TicketView extends JPanel {
 	private com.floreantpos.swing.TransparentPanel jPanel2;
 	private com.floreantpos.swing.TransparentPanel ticketAmountPanel;
 	private com.floreantpos.swing.TransparentPanel scrollerPanel;
-	private javax.swing.JScrollPane jScrollPane1;
+	private javax.swing.JScrollPane ticketScrollPane;
 //	private javax.swing.JTextField tfDiscount;
 	private javax.swing.JTextField tfSubtotal;
 	private javax.swing.JTextField tfTax;

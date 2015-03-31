@@ -2,13 +2,10 @@ package com.floreantpos.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JPanel;
-import javax.swing.JScrollBar;
-import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.TableColumnModel;
@@ -21,6 +18,7 @@ import com.floreantpos.model.OrderType;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketStatus;
 import com.floreantpos.model.User;
+import com.floreantpos.swing.PosScrollPane;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 
 public class TicketListView extends JPanel {
@@ -43,9 +41,7 @@ public class TicketListView extends JPanel {
 		columnModel.getColumn(2).setPreferredWidth(100);
 		columnModel.getColumn(3).setPreferredWidth(100);
 
-		JScrollPane scrollPane = new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		JScrollBar scrollBar = scrollPane.getVerticalScrollBar();
-		scrollBar.setPreferredSize(new Dimension(60, 60));
+		PosScrollPane scrollPane = new PosScrollPane(table, PosScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, PosScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
 		setLayout(new BorderLayout());
 
