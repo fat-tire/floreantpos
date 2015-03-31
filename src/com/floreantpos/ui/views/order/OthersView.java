@@ -76,11 +76,12 @@ public class OthersView extends JPanel {
 				javax.swing.border.TitledBorder.DEFAULT_POSITION));
 		setLayout(new BorderLayout());
 
-		btnSearchItem = new PosButton("SEARCH ITEM");
+		btnSearchItem = new PosButton("MANAGER MENU");
 		btnSearchItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				searchItem();
+				//searchItem();
+				POSMessageDialog.showMessage("Manager approval TBD");
 			}
 		});
 		buttonPanel.add(btnSearchItem);
