@@ -21,6 +21,8 @@ public class ShutDownAction extends PosAction {
 		if (showIcon) {
 			putValue(Action.SMALL_ICON, IconFactory.getIcon("shut_down_32.png")); //$NON-NLS-1$
 		}
+		
+		setRequiredPermission(UserPermission.SHUT_DOWN);
 	}
 	
 	@Override
