@@ -139,6 +139,7 @@ public class Application {
 		Font sourceFont = UIManager.getFont("Label.font");
 		Font font = new Font(uiDefaultFont, sourceFont.getStyle(), sourceFont.getSize());
 		
+		UIManager.put("ArrowButton.size", 40);
 		UIManager.put("OptionPane.buttonFont", new FontUIResource(new Font("ARIAL",Font.PLAIN,35)));
 		UIManager.put("Button.font", font);
 		UIManager.put("ToggleButton.font", font);
@@ -332,10 +333,10 @@ public class Application {
 	public void shutdownPOS() {
 		User user = getCurrentUser();
 
-		if (user != null && !user.hasPermission(UserPermission.SHUT_DOWN)) {
-			POSMessageDialog.showError("You do not have permission to execute this action");
-			return;
-		}
+//		if (user != null && !user.hasPermission(UserPermission.SHUT_DOWN)) {
+//			POSMessageDialog.showError("You do not have permission to execute this action");
+//			return;
+//		}
 
 		int option = JOptionPane.showOptionDialog(getPosWindow(), com.floreantpos.POSConstants.SURE_SHUTDOWN_, com.floreantpos.POSConstants.CONFIRM_SHUTDOWN,
 				JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);

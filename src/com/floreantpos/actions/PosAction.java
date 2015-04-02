@@ -8,6 +8,8 @@ import javax.swing.Icon;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.User;
 import com.floreantpos.model.UserPermission;
+import com.floreantpos.model.dao.UserDAO;
+import com.floreantpos.ui.dialog.NumberSelectionDialog2;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 
 public abstract class PosAction extends AbstractAction {
@@ -63,7 +65,21 @@ public abstract class PosAction extends AbstractAction {
 		}
 
 		if (!user.hasPermission(requiredPermission)) {
-			POSMessageDialog.showError("You do not have permission to execute this action");
+			String password = String.valueOf(NumberSelectionDialog2.takeIntInput("Please enter password"));
+			User user2 = UserDAO.getInstance().findUserBySecretKey(password);
+			if(user2 == null) {
+				POSMessageDialog.showError("No user found with that secret key");
+			}
+			else {
+				if(!user2.hasPermission(requiredPermission)) {
+					POSMessageDialog.showError("No permission");
+				}
+				else {
+					execute();
+				}
+			}
+			
+			//POSMessageDialog.showError("You do not have permission to execute this action");
 			return;
 		}
 
