@@ -1,7 +1,7 @@
 package com.floreantpos.model;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.floreantpos.model.base.BaseRecepie;
 
@@ -23,9 +23,9 @@ public class Recepie extends BaseRecepie {
 /*[CONSTRUCTOR MARKER END]*/
 
 	public void addRecepieItem(RecepieItem recepieItem) {
-		Set<RecepieItem> recepieItems = getRecepieItems();
+		List<RecepieItem> recepieItems = getRecepieItems();
 		if(recepieItems == null) {
-			recepieItems = new HashSet<RecepieItem>(3);
+			recepieItems = new ArrayList<RecepieItem>(3);
 			setRecepieItems(recepieItems);
 		}
 		
