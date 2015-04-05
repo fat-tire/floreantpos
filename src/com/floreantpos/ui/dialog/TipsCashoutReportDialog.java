@@ -25,7 +25,7 @@ public class TipsCashoutReportDialog extends POSDialog implements ActionListener
 	private final TipsCashoutReport report;
 
 	public TipsCashoutReportDialog(TipsCashoutReport report, JDialog parent, boolean modal) {
-		super(parent, modal);
+		super();
 		this.report = report;
 		
 		setTitle(com.floreantpos.POSConstants.SERVER_TIPS_REPORT);

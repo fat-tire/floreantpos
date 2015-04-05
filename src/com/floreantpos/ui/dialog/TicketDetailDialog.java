@@ -15,8 +15,7 @@ import com.floreantpos.model.Ticket;
 public class TicketDetailDialog extends POSDialog {
     
     /** Creates new form TicketDetailDialog */
-    public TicketDetailDialog(java.awt.Frame parent, boolean modal) {
-        super(parent, modal);
+    public TicketDetailDialog() {
         initComponents();
         
         setResizable(false);

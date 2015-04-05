@@ -6,7 +6,6 @@ import javax.swing.AbstractAction;
 import javax.swing.Icon;
 
 import com.floreantpos.bo.ui.BOMessageDialog;
-import com.floreantpos.bo.ui.BackOfficeWindow;
 import com.floreantpos.ui.dialog.BeanEditorDialog;
 import com.floreantpos.ui.model.MenuItemForm;
 
@@ -27,7 +26,7 @@ public class NewMenuItemAction extends AbstractAction {
 	public void actionPerformed(ActionEvent e) {
 		try {
 			MenuItemForm editor = new MenuItemForm();
-			BeanEditorDialog dialog = new BeanEditorDialog(editor, BackOfficeWindow.getInstance(), true);
+			BeanEditorDialog dialog = new BeanEditorDialog(editor);
 			dialog.open();
 		} catch (Exception x) {
 			BOMessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);

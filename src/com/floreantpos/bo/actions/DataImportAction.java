@@ -42,7 +42,7 @@ public class DataImportAction extends AbstractAction {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		JFileChooser fileChooser = DataExportAction.getFileChooser();
-		int option = fileChooser.showOpenDialog(BackOfficeWindow.getInstance());
+		int option = fileChooser.showOpenDialog(com.floreantpos.util.POSUtil.getFocusedWindow());
 		if (option != JFileChooser.APPROVE_OPTION) {
 			return;
 		}
@@ -51,12 +51,12 @@ public class DataImportAction extends AbstractAction {
 		try {
 
 			importMenuItemsFromFile(file);
-			POSMessageDialog.showMessage(BackOfficeWindow.getInstance(), "Success!");
+			POSMessageDialog.showMessage(com.floreantpos.util.POSUtil.getFocusedWindow(), "Success!");
 
 		} catch (Exception e1) {
 			e1.printStackTrace();
 
-			POSMessageDialog.showMessage(BackOfficeWindow.getInstance(), e1.getMessage());
+			POSMessageDialog.showMessage(com.floreantpos.util.POSUtil.getFocusedWindow(), e1.getMessage());
 		}
 
 	}

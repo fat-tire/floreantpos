@@ -17,7 +17,6 @@ import javax.swing.border.TitledBorder;
 
 import net.miginfocom.swing.MigLayout;
 
-import com.floreantpos.main.Application;
 import com.floreantpos.model.PaymentType;
 import com.floreantpos.swing.PosButton;
 
@@ -32,7 +31,7 @@ public class PaymentTypeSelectionDialog extends POSDialog {
 
 	/** Creates new form PaymentTypeSelectionDialog */
 	public PaymentTypeSelectionDialog() {
-		super(Application.getPosWindow(), true);
+		super();
 		setTitle("Select payment type");
 		
 		initComponents();

@@ -45,7 +45,7 @@ public class SplitTicketDialog extends POSDialog {
 
 	/** Creates new form SplitTicketView */
 	public SplitTicketDialog() {
-		super(Application.getPosWindow(), true, true);
+		super();
 
 		initComponents();
 

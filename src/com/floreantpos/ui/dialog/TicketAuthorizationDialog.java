@@ -35,13 +35,13 @@ public class TicketAuthorizationDialog extends POSDialog {
 	private TransactionListView listView = new TransactionListView();
 
 	public TicketAuthorizationDialog(JDialog parent) {
-		super(parent, true);
+		super();
 
 		init();
 	}
 
 	public TicketAuthorizationDialog(JFrame parent) {
-		super(parent, true);
+		super();
 
 		init();
 	}

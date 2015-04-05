@@ -6,7 +6,6 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.Frame;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -21,7 +20,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 import javax.swing.event.AncestorEvent;
 import javax.swing.event.AncestorListener;
@@ -64,7 +62,7 @@ public class KitchenTicketView extends JPanel {
 
 		createButtonPanel();
 
-		statusSelector = new KitchenTicketStatusSelector((Frame) SwingUtilities.windowForComponent(this));
+		statusSelector = new KitchenTicketStatusSelector();
 		statusSelector.pack();
 
 		setPreferredSize(new Dimension(400, 200));

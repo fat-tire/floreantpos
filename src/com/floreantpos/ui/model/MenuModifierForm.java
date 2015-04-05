@@ -29,11 +29,11 @@ import com.floreantpos.model.dao.ModifierGroupDAO;
 import com.floreantpos.model.dao.TaxDAO;
 import com.floreantpos.swing.ComboBoxModel;
 import com.floreantpos.swing.FixedLengthTextField;
+import com.floreantpos.swing.IntegerTextField;
 import com.floreantpos.swing.MessageDialog;
 import com.floreantpos.ui.BeanEditor;
 import com.floreantpos.ui.dialog.BeanEditorDialog;
 import com.floreantpos.util.POSUtil;
-import com.floreantpos.swing.IntegerTextField;
 
 /**
  *
@@ -179,7 +179,7 @@ public class MenuModifierForm extends BeanEditor {
 	private void btnNewTaxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewTaxActionPerformed
 		try {
 			TaxForm editor = new TaxForm();
-			BeanEditorDialog dialog = new BeanEditorDialog(editor, getParentFrame(), true);
+			BeanEditorDialog dialog = new BeanEditorDialog(editor);
 			dialog.open();
 			if (!dialog.isCanceled()) {
 				Tax tax = (Tax) editor.getBean();

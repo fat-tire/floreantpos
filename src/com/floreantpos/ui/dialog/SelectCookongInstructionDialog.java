@@ -1,7 +1,5 @@
 package com.floreantpos.ui.dialog;
 
-import java.awt.Dialog;
-import java.awt.Frame;
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -29,22 +27,6 @@ public class SelectCookongInstructionDialog extends POSDialog implements ActionL
 		super();
 	}
 
-	public SelectCookongInstructionDialog(Dialog owner, boolean modal) {
-		super(owner, modal);
-	}
-
-	public SelectCookongInstructionDialog(Dialog owner, String title, boolean modal) {
-		super(owner, title, modal);
-	}
-
-	public SelectCookongInstructionDialog(Frame owner, boolean modal, boolean unDecorated) throws HeadlessException {
-		super(owner, modal, unDecorated);
-	}
-
-	public SelectCookongInstructionDialog(Frame owner, boolean modal) throws HeadlessException {
-		super(owner, modal);
-	}
-	
 	@Override
 	protected void initUI() {
 		setLayout(new MigLayout());
@@ -81,7 +63,7 @@ public class SelectCookongInstructionDialog extends POSDialog implements ActionL
 	}
 	
 	private void doCreateNew() {
-		NewCookongInstructionDialog dialog = new NewCookongInstructionDialog(this, true);
+		NewCookongInstructionDialog dialog = new NewCookongInstructionDialog();
 		dialog.pack();
 		dialog.open();
 		

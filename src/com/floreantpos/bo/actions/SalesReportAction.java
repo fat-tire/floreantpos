@@ -25,7 +25,7 @@ public class SalesReportAction extends AbstractAction {
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		BackOfficeWindow window = BackOfficeWindow.getInstance();
+		BackOfficeWindow window = com.floreantpos.util.POSUtil.getBackOfficeWindow();
 		JTabbedPane tabbedPane = window.getTabbedPane();
 		
 		ReportViewer viewer = null;

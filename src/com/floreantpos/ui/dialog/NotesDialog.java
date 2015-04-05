@@ -15,8 +15,7 @@ import com.floreantpos.main.Application;
 public class NotesDialog extends POSDialog {
     
     /** Creates new form NotesDialog */
-    public NotesDialog(java.awt.Frame parent, boolean modal) {
-        super(parent, modal);
+    public NotesDialog() {
         initComponents();
     }
     
@@ -79,17 +78,6 @@ public class NotesDialog extends POSDialog {
     	super.setTitle(Application.getTitle());
     	
     	titlePanel.setTitle(title);
-    }
-    
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new NotesDialog(new javax.swing.JFrame(), true).setVisible(true);
-            }
-        });
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables

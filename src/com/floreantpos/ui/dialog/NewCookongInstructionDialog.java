@@ -1,7 +1,5 @@
 package com.floreantpos.ui.dialog;
 
-import java.awt.Dialog;
-import java.awt.Frame;
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -26,22 +24,6 @@ public class NewCookongInstructionDialog extends POSDialog implements ActionList
 		super();
 	}
 
-	public NewCookongInstructionDialog(Dialog owner, boolean modal) {
-		super(owner, modal);
-	}
-
-	public NewCookongInstructionDialog(Dialog owner, String title, boolean modal) {
-		super(owner, title, modal);
-	}
-
-	public NewCookongInstructionDialog(Frame owner, boolean modal, boolean unDecorated) throws HeadlessException {
-		super(owner, modal, unDecorated);
-	}
-
-	public NewCookongInstructionDialog(Frame owner, boolean modal) throws HeadlessException {
-		super(owner, modal);
-	}
-	
 	@Override
 	protected void initUI() {
 		setLayout(new MigLayout());

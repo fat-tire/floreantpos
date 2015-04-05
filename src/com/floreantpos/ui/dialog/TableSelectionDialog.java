@@ -3,10 +3,8 @@ package com.floreantpos.ui.dialog;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
-import java.awt.Dialog;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -29,7 +27,6 @@ import org.apache.commons.lang.StringUtils;
 
 import com.floreantpos.IconFactory;
 import com.floreantpos.POSConstants;
-import com.floreantpos.main.Application;
 import com.floreantpos.model.ShopTable;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.dao.ShopTableDAO;
@@ -46,17 +43,6 @@ public class TableSelectionDialog extends POSDialog implements ActionListener {
 	private JList<ShopTable> addedTableList = new JList<ShopTable>(addedTableListModel);
 
 	public TableSelectionDialog() {
-		this(Application.getPosWindow());
-	}
-
-	public TableSelectionDialog(Frame parent) {
-		super(parent, true);
-		init();
-	}
-
-	public TableSelectionDialog(Dialog parent) {
-		super(parent, true);
-
 		init();
 	}
 

@@ -311,7 +311,7 @@ public class TicketView extends JPanel {
 
 			List<CookingInstruction> list = CookingInstructionDAO.getInstance().findAll();
 			CookingInstructionSelectionView cookingInstructionSelectionView = new CookingInstructionSelectionView();
-			BeanEditorDialog dialog = new BeanEditorDialog(cookingInstructionSelectionView, Application.getPosWindow(), true);
+			BeanEditorDialog dialog = new BeanEditorDialog(cookingInstructionSelectionView);
 			dialog.setBean(list);
 			dialog.setSize(450, 300);
 			dialog.setLocationRelativeTo(Application.getPosWindow());

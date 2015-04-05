@@ -182,7 +182,7 @@ public class ManagerDialog extends JDialog {
 	private void doShowCashDrops() {//GEN-FIRST:event_btnCashDropsActionPerformed
 		try {
 			setGlassPaneVisible(true);
-			CashDropDialog dialog = new CashDropDialog(ManagerDialog.this);
+			CashDropDialog dialog = new CashDropDialog();
 			dialog.initDate();
 			dialog.open();
 		} catch (Exception e) {
@@ -195,7 +195,7 @@ public class ManagerDialog extends JDialog {
 	private void doShowOpenTickets() {//GEN-FIRST:event_btnOpenTicketsActionPerformed
 		try {
 			setGlassPaneVisible(true);
-			OpenTicketsListDialog dialog = new OpenTicketsListDialog(ManagerDialog.this, true);
+			OpenTicketsListDialog dialog = new OpenTicketsListDialog();
 			dialog.open();
 		} catch (Exception e) {
 			POSMessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, e);

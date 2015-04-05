@@ -12,7 +12,6 @@ import javax.swing.JTable;
 import org.hibernate.exception.ConstraintViolationException;
 
 import com.floreantpos.bo.ui.BOMessageDialog;
-import com.floreantpos.bo.ui.BackOfficeWindow;
 import com.floreantpos.model.User;
 import com.floreantpos.model.dao.UserDAO;
 import com.floreantpos.swing.TransparentPanel;
@@ -46,7 +45,7 @@ public class UserExplorer extends TransparentPanel {
 					if(userWithMaxId != null) {
 						editor.setId(new Integer(userWithMaxId.intValue() + 1));
 					}
-					BeanEditorDialog dialog = new BeanEditorDialog(editor, BackOfficeWindow.getInstance(), true);
+					BeanEditorDialog dialog = new BeanEditorDialog(editor);
 					dialog.open();
 					if (dialog.isCanceled())
 						return;
@@ -80,7 +79,7 @@ public class UserExplorer extends TransparentPanel {
 					UserForm editor = new UserForm();
 					editor.setEditMode(false);
 					editor.setBean(user2);
-					BeanEditorDialog dialog = new BeanEditorDialog(editor, BackOfficeWindow.getInstance(), true);
+					BeanEditorDialog dialog = new BeanEditorDialog(editor);
 					dialog.open();
 					if (dialog.isCanceled())
 						return;
@@ -106,7 +105,7 @@ public class UserExplorer extends TransparentPanel {
 					UserForm editor = new UserForm();
 					editor.setEditMode(true);
 					editor.setBean(user);
-					BeanEditorDialog dialog = new BeanEditorDialog(editor, BackOfficeWindow.getInstance(), true);
+					BeanEditorDialog dialog = new BeanEditorDialog(editor);
 					dialog.open();
 					if (dialog.isCanceled())
 						return;

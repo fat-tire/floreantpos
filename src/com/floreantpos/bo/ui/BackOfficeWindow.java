@@ -70,7 +70,7 @@ public class BackOfficeWindow extends javax.swing.JFrame {
 	private static final String WINDOW_HEIGHT = "bwheight";//$NON-NLS-1$
 	private static final String WINDOW_WIDTH = "bwwidth";//$NON-NLS-1$
 
-	private static BackOfficeWindow instance;
+//	private static BackOfficeWindow instance;
 
 	/** Creates new form BackOfficeWindow */
 	public BackOfficeWindow() {
@@ -272,17 +272,17 @@ public class BackOfficeWindow extends javax.swing.JFrame {
 
 	public void close() {
 		saveSizeAndLocation();
-		instance = null;
+//		instance = null;
 		dispose();
 	}
 
-	public static BackOfficeWindow getInstance() {
-		if (instance == null) {
-			instance = new BackOfficeWindow();
-			Application.getInstance().setBackOfficeWindow(instance);
-		}
-
-		return instance;
-	}
+//	public static BackOfficeWindow getInstance() {
+//		if (instance == null) {
+//			instance = new BackOfficeWindow();
+//			Application.getInstance().setBackOfficeWindow(instance);
+//		}
+//
+//		return instance;
+//	}
 
 }

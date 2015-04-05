@@ -66,7 +66,7 @@ public class PrintConfigurationView extends ConfigurationView {
 		setInitialized(true);
 
 		if (printServices == null || printServices.length == 0) {
-			POSMessageDialog.showMessage(BackOfficeWindow.getInstance(), "No printer is installed on your operating system. Please install printer and come back again.");
+			POSMessageDialog.showMessage(com.floreantpos.util.POSUtil.getFocusedWindow(), "No printer is installed on your operating system. Please install printer and come back again.");
 		}
 	}
 

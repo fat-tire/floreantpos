@@ -190,12 +190,12 @@ public class TerminalConfigurationView extends ConfigurationView {
 		int fontSize = tfFontSize.getInteger();
 		
 		if(buttonHeight < 20) {
-			POSMessageDialog.showError(BackOfficeWindow.getInstance(), "Please make sure button size is at least 20");
+			POSMessageDialog.showError(com.floreantpos.util.POSUtil.getFocusedWindow(), "Please make sure button size is at least 20");
 			return false;
 		}
 		
 		if(fontSize < 8) {
-			POSMessageDialog.showError(BackOfficeWindow.getInstance(), "Please make sure button font size is at least 8");
+			POSMessageDialog.showError(com.floreantpos.util.POSUtil.getFocusedWindow(), "Please make sure button font size is at least 8");
 			return false;
 		}
 		
@@ -227,7 +227,7 @@ public class TerminalConfigurationView extends ConfigurationView {
 		TerminalConfig.setAutoLogoffEnable(cbAutoLogoff.isSelected());
 		TerminalConfig.setAutoLogoffTime(tfLogoffTime.getInteger() <= 0 ? 10 : tfLogoffTime.getInteger());
 		
-		POSMessageDialog.showMessage(BackOfficeWindow.getInstance(), "Please restart system for the configuration to take effect");
+		POSMessageDialog.showMessage(com.floreantpos.util.POSUtil.getFocusedWindow(), "Please restart system for the configuration to take effect");
 		
 		String selectedFont = (String) cbFonts.getSelectedItem();
 		if("<select>".equals(selectedFont)) {
