@@ -40,7 +40,7 @@ public class SwitchboardOtherFunctionsDialog extends POSDialog implements Action
 	private TicketImportPlugin ticketImportPlugin;
 	
 	public SwitchboardOtherFunctionsDialog(SwitchboardView switchboardView) {
-		super(Application.getPosWindow(), true);
+		super();
 		this.switchboardView = switchboardView;
 		
 		setTitle("OTHER FUNCTIONS");
@@ -135,17 +135,16 @@ public class SwitchboardOtherFunctionsDialog extends POSDialog implements Action
 	}
 	
 	private synchronized void doShowBackoffice() {
-		BackOfficeWindow window = BackOfficeWindow.getInstance();
+		BackOfficeWindow window = com.floreantpos.util.POSUtil.getBackOfficeWindow();
 		if (window == null) {
 			window = new BackOfficeWindow();
-			Application.getInstance().setBackOfficeWindow(window);
 		}
 		window.setVisible(true);
 		window.toFront();
 	}
 	
 	private void doPayout() {
-		PayoutDialog dialog = new PayoutDialog(Application.getPosWindow(), true);
+		PayoutDialog dialog = new PayoutDialog();
 		dialog.open();
 	}
 

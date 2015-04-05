@@ -22,7 +22,7 @@ public class RestaurantPropertyDialog extends POSDialog {
 
 	/** Creates new form RestaurantPropertyDialog */
 	public RestaurantPropertyDialog() {
-		super(BackOfficeWindow.getInstance(), true);
+		super();
 		
 		setTitle(com.floreantpos.POSConstants.CONFIGURE);
 		

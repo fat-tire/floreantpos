@@ -11,7 +11,6 @@ import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 
 import com.floreantpos.bo.ui.BOMessageDialog;
-import com.floreantpos.bo.ui.BackOfficeWindow;
 import com.floreantpos.model.CouponAndDiscount;
 import com.floreantpos.model.dao.CouponAndDiscountDAO;
 import com.floreantpos.swing.TransparentPanel;
@@ -61,7 +60,7 @@ public class CouponExplorer extends TransparentPanel implements ActionListener {
 	private void addNewCoupon() {
 		try {
 			CouponForm editor = new CouponForm();
-			BeanEditorDialog dialog = new BeanEditorDialog(editor, BackOfficeWindow.getInstance(), true);
+			BeanEditorDialog dialog = new BeanEditorDialog(editor);
 			dialog.open();
 			
 			if (dialog.isCanceled())
@@ -76,7 +75,7 @@ public class CouponExplorer extends TransparentPanel implements ActionListener {
 	private void editCoupon(CouponAndDiscount coupon) {
 		try {
 			CouponForm editor = new CouponForm(coupon);
-			BeanEditorDialog dialog = new BeanEditorDialog(editor, BackOfficeWindow.getInstance(), true);
+			BeanEditorDialog dialog = new BeanEditorDialog(editor);
 			dialog.open();
 			if (dialog.isCanceled())
 				return;

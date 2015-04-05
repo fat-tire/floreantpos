@@ -1,7 +1,6 @@
 package com.floreantpos.config.ui;
 
 import java.awt.Cursor;
-import java.awt.Dialog;
 import java.awt.FlowLayout;
 import java.awt.Frame;
 import java.awt.HeadlessException;
@@ -61,20 +60,6 @@ public class DatabaseConfigurationDialog extends POSDialog implements ActionList
 
 	public DatabaseConfigurationDialog() throws HeadlessException {
 		super();
-
-		setFieldValues();
-		addUIListeners();
-	}
-
-	public DatabaseConfigurationDialog(Dialog owner, boolean modal) {
-		super(owner, modal);
-
-		setFieldValues();
-		addUIListeners();
-	}
-
-	public DatabaseConfigurationDialog(Frame owner, boolean modal) throws HeadlessException {
-		super(owner, modal);
 
 		setFieldValues();
 		addUIListeners();
@@ -215,7 +200,6 @@ public class DatabaseConfigurationDialog extends POSDialog implements ActionList
 				return;
 			}
 			
-			setGlassPaneVisible(true);
 			setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 			
 			Application.getInstance().setSystemInitialized(false);
@@ -283,7 +267,6 @@ public class DatabaseConfigurationDialog extends POSDialog implements ActionList
 			POSMessageDialog.showMessage(this, e2.getMessage());
 		} finally {
 			setCursor(Cursor.getDefaultCursor());
-			setGlassPaneVisible(false);
 		}
 	}
 
@@ -335,7 +318,7 @@ public class DatabaseConfigurationDialog extends POSDialog implements ActionList
 	}
 
 	public static DatabaseConfigurationDialog show(Frame parent) {
-		DatabaseConfigurationDialog dialog = new DatabaseConfigurationDialog(Application.getPosWindow(), true);
+		DatabaseConfigurationDialog dialog = new DatabaseConfigurationDialog();
 		dialog.setTitle(Messages.getString("DatabaseConfigurationDialog.38")); //$NON-NLS-1$
 		dialog.pack();
 		dialog.open();

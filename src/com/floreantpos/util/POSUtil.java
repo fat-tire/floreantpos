@@ -4,6 +4,7 @@ import java.awt.Window;
 import java.net.URLEncoder;
 
 import com.floreantpos.PosException;
+import com.floreantpos.bo.ui.BackOfficeWindow;
 
 public class POSUtil {
 	public static Window getFocusedWindow() {
@@ -11,6 +12,17 @@ public class POSUtil {
 		for (Window window : windows) {
 			if (window.hasFocus()) {
 				return window;
+			}
+		}
+		
+		return null;
+	}
+	
+	public static BackOfficeWindow getBackOfficeWindow() {
+		Window[] windows = Window.getWindows();
+		for (Window window : windows) {
+			if (window instanceof BackOfficeWindow) {
+				return (BackOfficeWindow) window;
 			}
 		}
 		

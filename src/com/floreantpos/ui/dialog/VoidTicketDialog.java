@@ -7,7 +7,6 @@
 package com.floreantpos.ui.dialog;
 
 
-import java.awt.Frame;
 import java.util.List;
 
 import com.floreantpos.POSConstants;
@@ -30,8 +29,7 @@ public class VoidTicketDialog extends POSDialog {
     private Ticket ticket;
     
     /** Creates new form VoidTicketDialog */
-    public VoidTicketDialog(java.awt.Frame parent, boolean modal) {
-        super(parent, modal, true);
+    public VoidTicketDialog() {
         initComponents();
         
         try {
@@ -176,7 +174,7 @@ public class VoidTicketDialog extends POSDialog {
 
     private void btnNewVoidReasonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewVoidReasonActionPerformed
     	try {
-			NotesDialog dialog = new NotesDialog((Frame) getOwner(), true);
+			NotesDialog dialog = new NotesDialog();
 			dialog.setTitle(com.floreantpos.POSConstants.ENTER_VOID_REASON);
 			dialog.pack();
 			dialog.open();

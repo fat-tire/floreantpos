@@ -6,9 +6,8 @@ import javax.swing.Action;
 
 import com.floreantpos.IconFactory;
 import com.floreantpos.Messages;
-import com.floreantpos.bo.ui.BackOfficeWindow;
-import com.floreantpos.demo.KitchenDisplayWindow;
 import com.floreantpos.main.Application;
+import com.floreantpos.main.PosWindow;
 
 public class LogoutAction extends PosAction {
 
@@ -27,10 +26,10 @@ public class LogoutAction extends PosAction {
 
 	@Override
 	public void execute() {
-		BackOfficeWindow.getInstance().dispose();
 		Window[] windows = Window.getWindows();
 		for (Window window : windows) {
-			if (window instanceof KitchenDisplayWindow) {
+			if (!(window instanceof PosWindow)) {
+				window.setVisible(false);
 				window.dispose();
 			}
 		}

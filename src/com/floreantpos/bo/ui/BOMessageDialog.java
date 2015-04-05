@@ -22,17 +22,17 @@ public class BOMessageDialog {
 	}
 
 	public static void showError(String errorMessage) {
-		JOptionPane.showMessageDialog(BackOfficeWindow.getInstance(), errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
+		JOptionPane.showMessageDialog(com.floreantpos.util.POSUtil.getFocusedWindow(), errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
 	}
 
 	public static void showError(String errorMessage, Throwable t) {
 		logger.error(errorMessage, t);
-		JOptionPane.showMessageDialog(BackOfficeWindow.getInstance(), errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
+		JOptionPane.showMessageDialog(com.floreantpos.util.POSUtil.getFocusedWindow(), errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
 	}
 
 	public static void showError(Throwable t) {
 		logger.error("Error", t);
-		JOptionPane.showMessageDialog(BackOfficeWindow.getInstance(), "An unexpected error has occured, you may need to restart the application", "Error",
+		JOptionPane.showMessageDialog(com.floreantpos.util.POSUtil.getFocusedWindow(), "An unexpected error has occured, you may need to restart the application", "Error",
 				JOptionPane.ERROR_MESSAGE);
 	}
 }

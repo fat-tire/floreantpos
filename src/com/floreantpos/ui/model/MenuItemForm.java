@@ -9,7 +9,6 @@ package com.floreantpos.ui.model;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Dialog;
 import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -21,6 +20,8 @@ import java.util.Calendar;
 import java.util.List;
 
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -28,6 +29,7 @@ import javax.swing.JColorChooser;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
+import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.SwingConstants;
 import javax.swing.border.EtchedBorder;
 import javax.swing.event.ChangeEvent;
@@ -41,7 +43,6 @@ import org.hibernate.Hibernate;
 import org.hibernate.Session;
 
 import com.floreantpos.Messages;
-import com.floreantpos.bo.ui.BackOfficeWindow;
 import com.floreantpos.extension.InventoryPlugin;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.MenuGroup;
@@ -67,9 +68,6 @@ import com.floreantpos.ui.dialog.ConfirmDeleteDialog;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.util.POSUtil;
 import com.floreantpos.util.ShiftUtil;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.LayoutStyle.ComponentPlacement;
 
 /**
  *
@@ -433,7 +431,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 	}// </editor-fold>//GEN-END:initComponents
 
 	private void btnNewTaxdoCreateNewTax(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewTaxdoCreateNewTax
-		BeanEditorDialog dialog = new BeanEditorDialog(new TaxForm(), BackOfficeWindow.getInstance(), true);
+		BeanEditorDialog dialog = new BeanEditorDialog(new TaxForm());
 		dialog.open();
 	}//GEN-LAST:event_btnNewTaxdoCreateNewTax
 
@@ -443,7 +441,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 
 	private void doCreateNewGroup(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_doCreateNewGroup
 		MenuGroupForm editor = new MenuGroupForm();
-		BeanEditorDialog dialog = new BeanEditorDialog(editor, getParentFrame(), true);
+		BeanEditorDialog dialog = new BeanEditorDialog(editor);
 		dialog.open();
 		if (!dialog.isCanceled()) {
 			MenuGroup foodGroup = (MenuGroup) editor.getBean();
@@ -505,7 +503,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 	private void addMenuItemModifierGroup() {
 		try {
 			MenuItemModifierGroupForm form = new MenuItemModifierGroupForm();
-			BeanEditorDialog dialog = new BeanEditorDialog(form, getParentFrame(), true);
+			BeanEditorDialog dialog = new BeanEditorDialog(form);
 			dialog.open();
 			if (!dialog.isCanceled()) {
 				MenuItemModifierGroup modifier = (MenuItemModifierGroup) form.getBean();
@@ -534,7 +532,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 			MenuItemModifierGroup menuItemModifierGroup = menuItemMGListModel.get(index);
 
 			MenuItemModifierGroupForm form = new MenuItemModifierGroupForm(menuItemModifierGroup);
-			BeanEditorDialog dialog = new BeanEditorDialog(form, getParentFrame(), true);
+			BeanEditorDialog dialog = new BeanEditorDialog(form);
 			dialog.open();
 			if (!dialog.isCanceled()) {
 				//menuItemModifierGroup.setParentMenuItem((MenuItem) this.getBean());
@@ -824,8 +822,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 	}
 
 	private void addShift() {
-		//TODO: ???
-		MenuItemShiftDialog dialog = new MenuItemShiftDialog((Dialog) this.getTopLevelAncestor());
+		MenuItemShiftDialog dialog = new MenuItemShiftDialog();
 		dialog.setSize(350, 220);
 		dialog.open();
 

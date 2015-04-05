@@ -23,7 +23,6 @@ import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.AbstractTableModel;
 
-import com.floreantpos.main.Application;
 import com.floreantpos.model.CouponAndDiscount;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketCouponAndDiscount;
@@ -51,7 +50,7 @@ public class DiscountListDialog extends POSDialog implements ActionListener {
     private boolean modified = false;
 
     public DiscountListDialog(List<Ticket> tickets) {
-        super(Application.getPosWindow(), true, false);
+        super();
 
         this.tickets = tickets;
 

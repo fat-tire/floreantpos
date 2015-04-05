@@ -16,7 +16,6 @@ import java.util.List;
 
 import javax.swing.DefaultListSelectionModel;
 import javax.swing.JCheckBox;
-import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
@@ -41,8 +40,7 @@ public class CashDropDialog extends POSDialog {
 	private String currencySymbol;
 
 	/** Creates new form CashDropDialog */
-	public CashDropDialog(JDialog parent) {
-		super(parent, true);
+	public CashDropDialog() {
 		initComponents();
 
 		terminal = Application.getInstance().getTerminal();

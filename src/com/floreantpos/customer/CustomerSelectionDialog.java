@@ -21,7 +21,6 @@ import net.miginfocom.swing.MigLayout;
 
 import org.apache.commons.lang.StringUtils;
 
-import com.floreantpos.main.Application;
 import com.floreantpos.model.Customer;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.dao.CustomerDAO;
@@ -257,7 +256,7 @@ public class CustomerSelectionDialog extends POSDialog {
 
 	protected void doCreateNewCustomer() {
 		CustomerForm form = new CustomerForm();
-		BeanEditorDialog dialog = new BeanEditorDialog(form, Application.getPosWindow(), true);
+		BeanEditorDialog dialog = new BeanEditorDialog(form);
 		dialog.open();
 
 		if (!dialog.isCanceled()) {

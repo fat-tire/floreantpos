@@ -27,8 +27,7 @@ import com.floreantpos.util.NumberUtil;
 public class PayoutDialog extends POSDialog {
 
 	/** Creates new form PayoutDialog */
-	public PayoutDialog(java.awt.Frame parent, boolean modal) {
-		super(parent, modal);
+	public PayoutDialog() {
 		initComponents();
 
 		setTitle(Application.getTitle() + ": PAY OUT");

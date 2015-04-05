@@ -1,6 +1,5 @@
 package com.floreantpos.config.ui;
 
-import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -30,8 +29,7 @@ public class ConfigurationDialog extends POSDialog implements ChangeListener, Ac
 	private List<ConfigurationView> views = new ArrayList<ConfigurationView>();
 	
 	
-	public ConfigurationDialog(Frame parent) {
-		super(parent, false);
+	public ConfigurationDialog() {
 		setTitle(Messages.getString("CONFIGURATION_WINDOW_TITLE")); //$NON-NLS-1$
 		
 		setLayout(new MigLayout("fill", "", "[fill,grow][]")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$

@@ -24,7 +24,7 @@ public class ItemExplorerAction extends AbstractAction {
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		BackOfficeWindow backOfficeWindow = BackOfficeWindow.getInstance();
+		BackOfficeWindow backOfficeWindow = com.floreantpos.util.POSUtil.getBackOfficeWindow();
 		JTabbedPane tabbedPane;
 		MenuItemExplorer item;
 		tabbedPane = backOfficeWindow.getTabbedPane();

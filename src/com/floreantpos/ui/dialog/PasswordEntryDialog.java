@@ -3,24 +3,21 @@ package com.floreantpos.ui.dialog;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
-import java.awt.Dialog;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.ImageIcon;
-import javax.swing.JSeparator;
 import javax.swing.JPasswordField;
-
-import org.apache.commons.lang.StringUtils;
+import javax.swing.JSeparator;
 
 import net.miginfocom.swing.MigLayout;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.floreantpos.IconFactory;
 import com.floreantpos.POSConstants;
-import com.floreantpos.main.Application;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.ui.TitlePanel;
 import com.floreantpos.util.POSUtil;
@@ -31,17 +28,6 @@ public class PasswordEntryDialog extends POSDialog implements ActionListener {
 	private PosButton btnCancel = new PosButton(POSConstants.CANCEL);
 	
 	public PasswordEntryDialog() {
-		this(Application.getPosWindow());
-	}
-
-	public PasswordEntryDialog(Frame parent) {
-		super(parent, true);
-		init();
-	}
-	
-	public PasswordEntryDialog(Dialog parent) {
-		super(parent, true);
-		
 		init();
 	}
 

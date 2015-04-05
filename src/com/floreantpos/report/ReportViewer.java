@@ -122,7 +122,7 @@ public class ReportViewer extends javax.swing.JPanel {
 		Date toDate = dpEndDate.getDate();
 		
 		if(fromDate.after(toDate)) {
-			POSMessageDialog.showError(BackOfficeWindow.getInstance(), com.floreantpos.POSConstants.FROM_DATE_CANNOT_BE_GREATER_THAN_TO_DATE_);
+			POSMessageDialog.showError(com.floreantpos.util.POSUtil.getFocusedWindow(), com.floreantpos.POSConstants.FROM_DATE_CANNOT_BE_GREATER_THAN_TO_DATE_);
 			return;
 		}
 		

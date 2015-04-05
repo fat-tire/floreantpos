@@ -54,7 +54,7 @@ public class ShiftEntryDialog extends POSDialog {
     }
 
     public ShiftEntryDialog(Shift shift) {
-        super(BackOfficeWindow.getInstance(), true);
+        super();
         setTitle(com.floreantpos.POSConstants.NEW_SHIFT);
 
         setContentPane(contentPane);

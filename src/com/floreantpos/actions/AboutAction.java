@@ -14,6 +14,7 @@ public class AboutAction extends AbstractAction {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		
 		AboutDialog dialog = new AboutDialog();
 		dialog.pack();
 		dialog.open();

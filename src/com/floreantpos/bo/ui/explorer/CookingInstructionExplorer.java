@@ -12,12 +12,12 @@ import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 
 import com.floreantpos.bo.ui.BOMessageDialog;
-import com.floreantpos.bo.ui.BackOfficeWindow;
 import com.floreantpos.model.CookingInstruction;
 import com.floreantpos.model.dao.CookingInstructionDAO;
 import com.floreantpos.swing.TransparentPanel;
 import com.floreantpos.ui.PosTableRenderer;
 import com.floreantpos.ui.dialog.ConfirmDeleteDialog;
+import com.floreantpos.util.POSUtil;
 
 public class CookingInstructionExplorer extends TransparentPanel {
 	private List<CookingInstruction> categoryList;
@@ -41,13 +41,13 @@ public class CookingInstructionExplorer extends TransparentPanel {
 		addButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					String instruction = JOptionPane.showInputDialog(BackOfficeWindow.getInstance(), com.floreantpos.POSConstants.ENTER_INSTRUCTION_DESCRIPTION);
+					String instruction = JOptionPane.showInputDialog(POSUtil.getFocusedWindow(), com.floreantpos.POSConstants.ENTER_INSTRUCTION_DESCRIPTION);
 					if(instruction == null) {
-						BOMessageDialog.showError(BackOfficeWindow.getInstance(), com.floreantpos.POSConstants.INSTRUCTION_CANNOT_BE_EMPTY);
+						BOMessageDialog.showError(POSUtil.getFocusedWindow(), com.floreantpos.POSConstants.INSTRUCTION_CANNOT_BE_EMPTY);
 						return;
 					}
 					if(instruction.length() > 60) {
-						BOMessageDialog.showError(BackOfficeWindow.getInstance(), com.floreantpos.POSConstants.LONG_INSTRUCTION_ERROR);
+						BOMessageDialog.showError(POSUtil.getFocusedWindow(), com.floreantpos.POSConstants.LONG_INSTRUCTION_ERROR);
 						return;
 					}
 					
@@ -72,14 +72,14 @@ public class CookingInstructionExplorer extends TransparentPanel {
 						return;
 					
 					CookingInstruction cookingInstruction = categoryList.get(index);
-					String instruction = JOptionPane.showInputDialog(BackOfficeWindow.getInstance(), com.floreantpos.POSConstants.ENTER_INSTRUCTION_DESCRIPTION, cookingInstruction.getDescription());
+					String instruction = JOptionPane.showInputDialog(POSUtil.getFocusedWindow(), com.floreantpos.POSConstants.ENTER_INSTRUCTION_DESCRIPTION, cookingInstruction.getDescription());
 
 					if(instruction == null) {
-						BOMessageDialog.showError(BackOfficeWindow.getInstance(), com.floreantpos.POSConstants.INSTRUCTION_CANNOT_BE_EMPTY);
+						BOMessageDialog.showError(POSUtil.getFocusedWindow(), com.floreantpos.POSConstants.INSTRUCTION_CANNOT_BE_EMPTY);
 						return;
 					}
 					if(instruction.length() > 60) {
-						BOMessageDialog.showError(BackOfficeWindow.getInstance(), com.floreantpos.POSConstants.LONG_INSTRUCTION_ERROR);
+						BOMessageDialog.showError(POSUtil.getFocusedWindow(), com.floreantpos.POSConstants.LONG_INSTRUCTION_ERROR);
 						return;
 					}
 					cookingInstruction.setDescription(instruction);

@@ -2,7 +2,6 @@ package com.floreantpos.ui.views.order;
 
 import java.awt.BorderLayout;
 import java.awt.Font;
-import java.awt.Frame;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -10,7 +9,6 @@ import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 
 import com.floreantpos.main.Application;
 import com.floreantpos.model.OrderType;
@@ -26,9 +24,7 @@ public class CashierModeNextActionDialog extends POSDialog implements ActionList
 	
 	JLabel messageLabel = new JLabel("", JLabel.CENTER);
 	
-	public CashierModeNextActionDialog(Frame owner, String message) {
-		super(owner, true);
-		
+	public CashierModeNextActionDialog(String message) {
 		setTitle("SELECT NEXT ACTION");
 		
 		JPanel contentPane = new JPanel(new BorderLayout(10, 20));
@@ -67,7 +63,7 @@ public class CashierModeNextActionDialog extends POSDialog implements ActionList
 			Application.getInstance().doLogout();
 		}
 		else if(e.getSource() == btnOpen) {
-			OpenTicketsListDialog dialog = new OpenTicketsListDialog((Frame) SwingUtilities.getWindowAncestor(this), true);
+			OpenTicketsListDialog dialog = new OpenTicketsListDialog();
 			dialog.open();
 		}
 		
