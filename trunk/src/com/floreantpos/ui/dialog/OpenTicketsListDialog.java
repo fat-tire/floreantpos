@@ -8,7 +8,6 @@ package com.floreantpos.ui.dialog;
 
 import java.awt.Component;
 import java.awt.Font;
-import java.awt.Frame;
 import java.awt.Rectangle;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -16,7 +15,6 @@ import java.util.Date;
 import java.util.List;
 
 import javax.swing.DefaultListSelectionModel;
-import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -44,15 +42,7 @@ public class OpenTicketsListDialog extends POSDialog {
 	private OpenTicketListTableModel tableModel;
 
 	/** Creates new form OpenTicketsListDialog */
-	public OpenTicketsListDialog(JDialog parent, boolean modal) {
-		super(parent, modal);
-
-		init();
-	}
-
-	public OpenTicketsListDialog(Frame parent, boolean modal) {
-		super(parent, modal);
-
+	public OpenTicketsListDialog() {
 		init();
 	}
 
@@ -253,7 +243,7 @@ public class OpenTicketsListDialog extends POSDialog {
 
 		if (TerminalConfig.isCashierMode()) {
 			String message = "What do you want to do next?";
-			CashierModeNextActionDialog dialog = new CashierModeNextActionDialog(Application.getPosWindow(), message);
+			CashierModeNextActionDialog dialog = new CashierModeNextActionDialog(message);
 			dialog.open();
 		}
 	}//GEN-LAST:event_doClose
@@ -263,7 +253,7 @@ public class OpenTicketsListDialog extends POSDialog {
 			Ticket ticket = getSelectedTicket();
 
 			if (ticket != null) {
-				UserListDialog dialog = new UserListDialog(Application.getPosWindow(), true);
+				UserListDialog dialog = new UserListDialog();
 				dialog.open();
 				if (!dialog.isCanceled()) {
 					User selectedUser = dialog.getSelectedUser();
@@ -291,7 +281,7 @@ public class OpenTicketsListDialog extends POSDialog {
 
 		Ticket ticketToVoid = TicketDAO.getInstance().loadFullTicket(ticket.getId());
 
-		VoidTicketDialog dialog = new VoidTicketDialog(Application.getPosWindow(), true);
+		VoidTicketDialog dialog = new VoidTicketDialog();
 		dialog.setTicket(ticketToVoid);
 		dialog.open();
 

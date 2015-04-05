@@ -23,10 +23,10 @@ import com.floreantpos.customer.CustomerSelectionDialog;
 import com.floreantpos.extension.FloorLayoutPlugin;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.MenuItem;
+import com.floreantpos.model.OrderType;
 import com.floreantpos.model.ShopTable;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketItem;
-import com.floreantpos.model.OrderType;
 import com.floreantpos.model.dao.MenuItemDAO;
 import com.floreantpos.model.dao.ShopTableDAO;
 import com.floreantpos.model.dao.TicketDAO;
@@ -140,7 +140,7 @@ public class OthersView extends JPanel {
 	}
 
 	private void doInsertMisc(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_doInsertMisc
-		MiscTicketItemDialog dialog = new MiscTicketItemDialog(Application.getPosWindow(), true);
+		MiscTicketItemDialog dialog = new MiscTicketItemDialog();
 		dialog.open();
 		if (!dialog.isCanceled()) {
 			TicketItem ticketItem = dialog.getTicketItem();

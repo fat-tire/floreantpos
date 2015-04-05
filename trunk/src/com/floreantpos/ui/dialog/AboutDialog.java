@@ -10,14 +10,13 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import com.floreantpos.IconFactory;
-import com.floreantpos.bo.ui.BackOfficeWindow;
 import com.floreantpos.main.Application;
+import com.floreantpos.util.POSUtil;
 
 public class AboutDialog extends POSDialog {
 	
 	public AboutDialog() {
-		super(BackOfficeWindow.getInstance(), true);
-		setTitle("About");
+		super(POSUtil.getFocusedWindow(), "About");
 	}
 	
 	@Override

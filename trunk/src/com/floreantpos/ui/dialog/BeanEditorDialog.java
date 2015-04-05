@@ -12,6 +12,7 @@ import java.awt.event.WindowListener;
 
 import com.floreantpos.swing.PosSmallButton;
 import com.floreantpos.ui.BeanEditor;
+import com.floreantpos.util.POSUtil;
 
 /**
  *
@@ -22,23 +23,19 @@ public class BeanEditorDialog extends javax.swing.JDialog implements WindowListe
 	private boolean canceled = false;
 	
 	public BeanEditorDialog() {
-		this(null, true);
+		this(null);
 	}
 
-	/** Creates new form OkCancelDialog */
-	public BeanEditorDialog(java.awt.Frame parent, boolean modal) {
-		this(null, parent, modal);
-	}
 
-	public BeanEditorDialog(BeanEditor beanEditor, java.awt.Frame parent, boolean modal) {
-		super(parent, modal);
-		
+	public BeanEditorDialog(BeanEditor beanEditor) {
+		super(POSUtil.getFocusedWindow(), ModalityType.APPLICATION_MODAL);
 		initComponents();
 
 		setBeanEditor(beanEditor);
 
 		addWindowListener(this);
 	}
+
 
 	/** This method is called from within the constructor to
 	 * initialize the form.

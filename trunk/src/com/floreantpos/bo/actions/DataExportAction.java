@@ -45,14 +45,14 @@ public class DataExportAction extends AbstractAction {
 
 		try {
 			JFileChooser fileChooser = getFileChooser();
-			int option = fileChooser.showSaveDialog(BackOfficeWindow.getInstance());
+			int option = fileChooser.showSaveDialog(com.floreantpos.util.POSUtil.getFocusedWindow());
 			if (option != JFileChooser.APPROVE_OPTION) {
 				return;
 			}
 
 			File file = fileChooser.getSelectedFile();
 			if (file.exists()) {
-				option = JOptionPane.showConfirmDialog(BackOfficeWindow.getInstance(), "Overwrite file " + file.getName() + "?", "Confirm",
+				option = JOptionPane.showConfirmDialog(com.floreantpos.util.POSUtil.getFocusedWindow(), "Overwrite file " + file.getName() + "?", "Confirm",
 						JOptionPane.YES_NO_OPTION);
 				if (option != JOptionPane.YES_OPTION) {
 					return;
@@ -110,12 +110,12 @@ public class DataExportAction extends AbstractAction {
 			fileWriter.write(writer.toString());
 			fileWriter.close();
 
-			POSMessageDialog.showMessage(BackOfficeWindow.getInstance(), "Saved!");
+			POSMessageDialog.showMessage(com.floreantpos.util.POSUtil.getFocusedWindow(), "Saved!");
 
 		} catch (Exception e1) {
 			transaction.rollback();
 			e1.printStackTrace();
-			POSMessageDialog.showMessage(BackOfficeWindow.getInstance(), e1.getMessage());
+			POSMessageDialog.showMessage(com.floreantpos.util.POSUtil.getFocusedWindow(), e1.getMessage());
 		} finally {
 			IOUtils.closeQuietly(fileWriter);
 			dao.closeSession(session);

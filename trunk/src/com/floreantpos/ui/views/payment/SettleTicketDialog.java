@@ -76,7 +76,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 	private String cardName;
 
 	public SettleTicketDialog() {
-		super(Application.getPosWindow(), true);
+		super();
 		setTitle("Settle ticket");
 
 		getContentPane().setLayout(new BorderLayout(5, 5));
@@ -408,7 +408,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 	}
 
 	private void showTransactionCompleteMsg(final double dueAmount, final double tenderedAmount, Ticket ticket, PosTransaction transaction) {
-		TransactionCompletionDialog dialog = new TransactionCompletionDialog(Application.getPosWindow(), transaction);
+		TransactionCompletionDialog dialog = new TransactionCompletionDialog(transaction);
 		dialog.setCompletedTransaction(transaction);
 		dialog.setTenderedAmount(tenderedAmount);
 		dialog.setTotalAmount(dueAmount);

@@ -12,7 +12,6 @@ import javax.swing.table.AbstractTableModel;
 
 import com.floreantpos.POSConstants;
 import com.floreantpos.bo.ui.BOMessageDialog;
-import com.floreantpos.bo.ui.BackOfficeWindow;
 import com.floreantpos.model.Tax;
 import com.floreantpos.model.dao.TaxDAO;
 import com.floreantpos.swing.TransparentPanel;
@@ -43,7 +42,7 @@ public class TaxExplorer extends TransparentPanel {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					TaxForm editor = new TaxForm();
-					BeanEditorDialog dialog = new BeanEditorDialog(editor, BackOfficeWindow.getInstance(), true);
+					BeanEditorDialog dialog = new BeanEditorDialog(editor);
 					dialog.open();
 					if (dialog.isCanceled())
 						return;
@@ -66,7 +65,7 @@ public class TaxExplorer extends TransparentPanel {
 
 					Tax tax = taxList.get(index);
 
-					BeanEditorDialog dialog = new BeanEditorDialog(new TaxForm(tax), BackOfficeWindow.getInstance(), true);
+					BeanEditorDialog dialog = new BeanEditorDialog(new TaxForm(tax));
 					dialog.open();
 					if (dialog.isCanceled())
 						return;

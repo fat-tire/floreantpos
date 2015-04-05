@@ -14,7 +14,6 @@ import org.jdesktop.swingx.JXTable;
 
 import com.floreantpos.POSConstants;
 import com.floreantpos.bo.ui.BOMessageDialog;
-import com.floreantpos.bo.ui.BackOfficeWindow;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.MenuModifier;
 import com.floreantpos.model.dao.ModifierDAO;
@@ -60,7 +59,7 @@ public class ModifierExplorer extends TransparentPanel {
 					MenuModifier modifier = modifierList.get(index);
 
 					MenuModifierForm editor = new MenuModifierForm(modifier);
-					BeanEditorDialog dialog = new BeanEditorDialog(editor, BackOfficeWindow.getInstance(), true);
+					BeanEditorDialog dialog = new BeanEditorDialog(editor);
 					dialog.open();
 					if (dialog.isCanceled())
 						return;
@@ -76,7 +75,7 @@ public class ModifierExplorer extends TransparentPanel {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					MenuModifierForm editor = new MenuModifierForm();
-					BeanEditorDialog dialog = new BeanEditorDialog(editor, BackOfficeWindow.getInstance(), true);
+					BeanEditorDialog dialog = new BeanEditorDialog(editor);
 					dialog.open();
 					if (dialog.isCanceled())
 						return;

@@ -11,7 +11,6 @@ import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 
 import com.floreantpos.bo.ui.BOMessageDialog;
-import com.floreantpos.bo.ui.BackOfficeWindow;
 import com.floreantpos.model.UserType;
 import com.floreantpos.model.dao.UserTypeDAO;
 import com.floreantpos.swing.TransparentPanel;
@@ -43,7 +42,7 @@ public class UserTypeExplorer extends TransparentPanel {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					UserTypeForm editor = new UserTypeForm();
-					BeanEditorDialog dialog = new BeanEditorDialog(editor, BackOfficeWindow.getInstance(), true);
+					BeanEditorDialog dialog = new BeanEditorDialog(editor);
 					dialog.open();
 					if (dialog.isCanceled())
 						return;
@@ -68,7 +67,7 @@ public class UserTypeExplorer extends TransparentPanel {
 
 					UserTypeForm editor = new UserTypeForm();
 					editor.setUserType(type);
-					BeanEditorDialog dialog = new BeanEditorDialog(editor, BackOfficeWindow.getInstance(), true);
+					BeanEditorDialog dialog = new BeanEditorDialog(editor);
 					dialog.open();
 					if (dialog.isCanceled())
 						return;

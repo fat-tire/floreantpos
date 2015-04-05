@@ -15,7 +15,6 @@ import org.jdesktop.swingx.JXTable;
 
 import com.floreantpos.POSConstants;
 import com.floreantpos.bo.ui.BOMessageDialog;
-import com.floreantpos.bo.ui.BackOfficeWindow;
 import com.floreantpos.model.MenuCategory;
 import com.floreantpos.model.dao.MenuCategoryDAO;
 import com.floreantpos.swing.TransparentPanel;
@@ -48,7 +47,7 @@ public class MenuCategoryExplorer extends TransparentPanel {
 				try {
 					
 					MenuCategoryForm editor = new MenuCategoryForm();
-					BeanEditorDialog dialog = new BeanEditorDialog(editor, BackOfficeWindow.getInstance(), true);
+					BeanEditorDialog dialog = new BeanEditorDialog(editor);
 					dialog.open();
 					
 					if (dialog.isCanceled())
@@ -76,7 +75,7 @@ public class MenuCategoryExplorer extends TransparentPanel {
 					MenuCategory category = categoryList.get(index);
 
 					MenuCategoryForm editor = new MenuCategoryForm(category);
-					BeanEditorDialog dialog = new BeanEditorDialog(editor, BackOfficeWindow.getInstance(), true);
+					BeanEditorDialog dialog = new BeanEditorDialog(editor);
 					dialog.open();
 					if (dialog.isCanceled())
 						return;

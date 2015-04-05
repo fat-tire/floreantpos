@@ -197,7 +197,7 @@ public class DatabaseConfigurationView extends ConfigurationView implements Acti
 			else if (CANCEL.equalsIgnoreCase(command)) {
 			}
 		} catch (Exception e2) {
-			POSMessageDialog.showMessage(BackOfficeWindow.getInstance(), e2.getMessage());
+			POSMessageDialog.showMessage(com.floreantpos.util.POSUtil.getFocusedWindow(), e2.getMessage());
 		}
 	}
 

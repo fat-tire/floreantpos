@@ -565,7 +565,7 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 
 			Ticket ticketToVoid = TicketDAO.getInstance().loadFullTicket(ticket.getId());
 
-			VoidTicketDialog voidTicketDialog = new VoidTicketDialog(Application.getPosWindow(), true);
+			VoidTicketDialog voidTicketDialog = new VoidTicketDialog();
 			voidTicketDialog.setTicket(ticketToVoid);
 			voidTicketDialog.open();
 

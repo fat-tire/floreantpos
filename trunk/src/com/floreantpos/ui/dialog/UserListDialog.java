@@ -19,8 +19,7 @@ import com.floreantpos.swing.ListComboBoxModel;
 public class UserListDialog extends POSDialog {
     
     /** Creates new form UserListDialog */
-    public UserListDialog(java.awt.Frame parent, boolean modal) {
-        super(parent, modal, false);
+    public UserListDialog() {
         initComponents();
         setTitle(com.floreantpos.POSConstants.USER_LIST);
         
@@ -116,17 +115,6 @@ public class UserListDialog extends POSDialog {
     
     public User getSelectedUser() {
     	return (User) cbUserList.getSelectedItem();
-    }
-    
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new UserListDialog(new javax.swing.JFrame(), true).setVisible(true);
-            }
-        });
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables

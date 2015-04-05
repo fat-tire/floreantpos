@@ -32,7 +32,7 @@ public class AddPrinterDialog extends POSDialog {
 	private JCheckBox chckbxDefault;
 
 	public AddPrinterDialog() throws HeadlessException {
-		super(BackOfficeWindow.getInstance(), true);
+		super();
 		setTitle("Add/Edit Printer");
 		
 		setMinimumSize(new Dimension(400, 200));

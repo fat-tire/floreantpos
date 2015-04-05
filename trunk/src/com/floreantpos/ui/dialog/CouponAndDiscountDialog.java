@@ -21,7 +21,6 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import com.floreantpos.PosException;
-import com.floreantpos.main.Application;
 import com.floreantpos.model.CouponAndDiscount;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketCouponAndDiscount;
@@ -39,7 +38,7 @@ public class CouponAndDiscountDialog extends POSDialog implements ActionListener
     
     /** Creates new form CouponAndDiscountDialog */
     public CouponAndDiscountDialog() {
-    	super(Application.getPosWindow(), true, false);
+    	super();
 
     	initComponents();
         

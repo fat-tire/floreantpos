@@ -25,7 +25,7 @@ public class VirtualPrinterConfigDialog extends POSDialog {
 	private FixedLengthTextField tfName;
 
 	public VirtualPrinterConfigDialog() throws HeadlessException {
-		super(BackOfficeWindow.getInstance(), true);
+		super();
 		setTitle("Add/Edit Virtual Printer");
 		
 		setSize(400, 150);

@@ -8,7 +8,6 @@ package com.floreantpos.ui.model;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
@@ -137,7 +136,7 @@ public class MenuGroupForm extends BeanEditor {
 	private void doNewCategory(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_doNewCategory
 		try {
 			MenuCategoryForm editor = new MenuCategoryForm();
-			BeanEditorDialog dialog = new BeanEditorDialog(editor, new Frame(), true);
+			BeanEditorDialog dialog = new BeanEditorDialog(editor);
 			dialog.open();
 			if (!dialog.isCanceled()) {
 				MenuCategory foodCategory = (MenuCategory) editor.getBean();

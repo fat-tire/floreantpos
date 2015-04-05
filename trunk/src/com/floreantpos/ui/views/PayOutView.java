@@ -16,7 +16,6 @@ import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
-import com.floreantpos.main.Application;
 import com.floreantpos.model.PayoutReason;
 import com.floreantpos.model.PayoutRecepient;
 import com.floreantpos.model.dao.PayoutReasonDAO;
@@ -171,7 +170,7 @@ public class PayOutView extends TransparentPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     protected void doNewRecepient() {
-    	NotesDialog dialog = new NotesDialog(Application.getPosWindow(), true);
+    	NotesDialog dialog = new NotesDialog();
     	dialog.setTitle("Enter pay out recepient");
     	dialog.pack();
     	dialog.open();
@@ -189,7 +188,7 @@ public class PayOutView extends TransparentPanel {
 	}
 
 	protected void doNewReason() {
-		NotesDialog dialog = new NotesDialog(Application.getPosWindow(), true);
+		NotesDialog dialog = new NotesDialog();
     	dialog.setTitle("Enter pay out reason");
     	dialog.pack();
     	dialog.open();
@@ -207,7 +206,7 @@ public class PayOutView extends TransparentPanel {
 	}
 
 	private void btnAddNoteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddNoteActionPerformed
-    	NotesDialog dialog = new NotesDialog(Application.getPosWindow(), true);
+    	NotesDialog dialog = new NotesDialog();
     	dialog.setTitle(com.floreantpos.POSConstants.ENTER_PAYOUT_NOTE);
     	dialog.pack();
     	dialog.open();

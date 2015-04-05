@@ -16,8 +16,7 @@ public class MiscTicketItemDialog extends POSDialog {
     private TicketItem ticketItem;
 	
     /** Creates new form MiscTicketItemDialog */
-    public MiscTicketItemDialog(java.awt.Frame parent, boolean modal) {
-        super(parent, modal);
+    public MiscTicketItemDialog() {
         initComponents();
         
         noteView1.setNoteLength(30);
@@ -107,17 +106,6 @@ public class MiscTicketItemDialog extends POSDialog {
     public TicketItem getTicketItem() {
 		return ticketItem;
 	}
-    
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new MiscTicketItemDialog(new javax.swing.JFrame(), true).setVisible(true);
-            }
-        });
-    }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.floreantpos.ui.views.NoteView noteView1;

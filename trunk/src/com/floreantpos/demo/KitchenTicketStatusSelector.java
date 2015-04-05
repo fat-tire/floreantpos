@@ -1,7 +1,6 @@
 package com.floreantpos.demo;
 
 import java.awt.BorderLayout;
-import java.awt.Frame;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -24,8 +23,7 @@ public class KitchenTicketStatusSelector extends POSDialog implements ActionList
 	
 	private KitchenTicketItem ticketItem;
 	
-	public KitchenTicketStatusSelector(Frame parent) {
-		super(parent, true);
+	public KitchenTicketStatusSelector() {
 		setTitle("Kitchen item status selector");
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		

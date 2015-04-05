@@ -6,7 +6,6 @@
 
 package com.floreantpos.ui.dialog;
 
-import com.floreantpos.main.Application;
 
 /**
  *
@@ -16,7 +15,7 @@ public class NumberSelectionDialog extends POSDialog {
 	
     /** Creates new form NumericDialog */
     public NumberSelectionDialog() {
-        super(Application.getPosWindow(), true);
+        super();
         initComponents();
         
         setResizable(false);

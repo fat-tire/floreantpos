@@ -24,7 +24,6 @@ import org.apache.commons.logging.LogFactory;
 
 import com.floreantpos.Messages;
 import com.floreantpos.POSConstants;
-import com.floreantpos.bo.ui.BackOfficeWindow;
 import com.floreantpos.config.AppProperties;
 import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.config.ui.DatabaseConfigurationDialog;
@@ -35,7 +34,6 @@ import com.floreantpos.model.Restaurant;
 import com.floreantpos.model.Shift;
 import com.floreantpos.model.Terminal;
 import com.floreantpos.model.User;
-import com.floreantpos.model.UserPermission;
 import com.floreantpos.model.dao.OrderTypePropertiesDAO;
 import com.floreantpos.model.dao.PrinterConfigurationDAO;
 import com.floreantpos.model.dao.RestaurantDAO;
@@ -68,7 +66,6 @@ public class Application {
 	private PosWindow posWindow;
 	private User currentUser;
 	private RootView rootView;
-	private BackOfficeWindow backOfficeWindow;
 	private Shift currentShift;
 	public PrinterConfiguration printConfiguration;
 	private Restaurant restaurant;
@@ -331,13 +328,6 @@ public class Application {
 	}
 
 	public void shutdownPOS() {
-		User user = getCurrentUser();
-
-//		if (user != null && !user.hasPermission(UserPermission.SHUT_DOWN)) {
-//			POSMessageDialog.showError("You do not have permission to execute this action");
-//			return;
-//		}
-
 		int option = JOptionPane.showOptionDialog(getPosWindow(), com.floreantpos.POSConstants.SURE_SHUTDOWN_, com.floreantpos.POSConstants.CONFIRM_SHUTDOWN,
 				JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
 		if (option != JOptionPane.YES_OPTION) {
@@ -396,12 +386,7 @@ public class Application {
 	}
 	
 	public void doLogout() {
-		if (backOfficeWindow != null) {
-			backOfficeWindow.setVisible(false);
-			backOfficeWindow = null;
-			currentShift = null;
-		}
-
+		currentShift = null;
 		setCurrentUser(null);
 		RootView.getInstance().showView(LoginView.VIEW_NAME);
 	}
@@ -424,14 +409,6 @@ public class Application {
 
 	public static PosWindow getPosWindow() {
 		return getInstance().posWindow;
-	}
-
-	//	public BackOfficeWindow getBackOfficeWindow() {
-	//		return backOfficeWindow;
-	//	}
-
-	public void setBackOfficeWindow(BackOfficeWindow backOfficeWindow) {
-		this.backOfficeWindow = backOfficeWindow;
 	}
 
 	public Terminal getTerminal() {

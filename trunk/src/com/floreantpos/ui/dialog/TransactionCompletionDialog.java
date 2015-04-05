@@ -1,6 +1,5 @@
 package com.floreantpos.ui.dialog;
 
-import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -34,9 +33,7 @@ public class TransactionCompletionDialog extends POSDialog {
 
 	private PosTransaction completedTransaction;
 
-	public TransactionCompletionDialog(Frame parent, PosTransaction transaction) {
-		super(parent, true);
-		
+	public TransactionCompletionDialog(PosTransaction transaction) {
 		this.completedTransaction = transaction;
 
 		setTitle(com.floreantpos.POSConstants.TRANSACTION_COMPLETED);

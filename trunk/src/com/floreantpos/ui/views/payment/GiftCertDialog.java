@@ -24,7 +24,7 @@ public class GiftCertDialog extends POSDialog {
 	private DoubleTextField tfFaceValue;
 	
 	public GiftCertDialog(JDialog parent) {
-		super(parent, true);
+		super();
 		
 		setTitle("Gift Cert");
 		

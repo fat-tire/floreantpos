@@ -26,7 +26,7 @@ public class CouponExplorerAction extends AbstractAction {
 
 	public void actionPerformed(ActionEvent e) {
 		try {
-			BackOfficeWindow backOfficeWindow = BackOfficeWindow.getInstance();
+			BackOfficeWindow backOfficeWindow = com.floreantpos.util.POSUtil.getBackOfficeWindow();
 
 			CouponExplorer explorer = null;
 			JTabbedPane tabbedPane = backOfficeWindow.getTabbedPane();
