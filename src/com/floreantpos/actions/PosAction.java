@@ -5,12 +5,14 @@ import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 import javax.swing.Icon;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.floreantpos.main.Application;
 import com.floreantpos.model.User;
 import com.floreantpos.model.UserPermission;
 import com.floreantpos.model.dao.UserDAO;
-import com.floreantpos.ui.dialog.NumberSelectionDialog2;
 import com.floreantpos.ui.dialog.POSMessageDialog;
+import com.floreantpos.ui.dialog.PasswordEntryDialog;
 
 public abstract class PosAction extends AbstractAction {
 	protected UserPermission requiredPermission;
@@ -55,17 +57,17 @@ public abstract class PosAction extends AbstractAction {
 	public void actionPerformed(ActionEvent e) {
 		User user = Application.getCurrentUser();
 
-		//		if(allowAdministrator && user.isAdministrator()) {
-		//			execute();
-		//		}
-
 		if (requiredPermission == null) {
 			execute();
 			return;
 		}
 
 		if (!user.hasPermission(requiredPermission)) {
-			String password = String.valueOf(NumberSelectionDialog2.takeIntInput("Please enter password"));
+			String password = PasswordEntryDialog.show(Application.getPosWindow(), "Please enter manager password to execute this action");
+			if(StringUtils.isEmpty(password)) {
+				return;
+			}
+			
 			User user2 = UserDAO.getInstance().findUserBySecretKey(password);
 			if(user2 == null) {
 				POSMessageDialog.showError("No user found with that secret key");
