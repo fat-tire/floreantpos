@@ -115,4 +115,14 @@ public class POSUtil {
 			return s;
 		}
 	}
+	
+	public static boolean isValidPassword(char[] password) {
+		for (char c : password) {
+			if(!Character.isDigit(c)) {
+				return false;
+			}
+		}
+		
+		return true;
+	}
 }

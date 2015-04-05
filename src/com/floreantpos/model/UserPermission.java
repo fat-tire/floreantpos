@@ -22,6 +22,13 @@ public class UserPermission extends BaseUserPermission {
 	}
 
 /*[CONSTRUCTOR MARKER END]*/
+	
+	public UserPermission (java.lang.String name, boolean visibleWithoutPermission) {
+		super(name);
+		this.visibleWithoutPermission = visibleWithoutPermission;
+	}
+	
+	private boolean visibleWithoutPermission = true;
 
 	@Override
 	public boolean equals(Object obj) {
@@ -45,7 +52,7 @@ public class UserPermission extends BaseUserPermission {
 	public final static UserPermission VOID_TICKET = new UserPermission("Void Ticket");
 	public final static UserPermission PERFORM_ADMINISTRATIVE_TASK = new UserPermission("Perform Administrative Task");
 	public final static UserPermission PERFORM_MANAGER_TASK = new UserPermission("Perform Manager Task");
-	public final static UserPermission VIEW_BACK_OFFICE = new UserPermission("View Back Office");
+	public final static UserPermission VIEW_BACK_OFFICE = new UserPermission("View Back Office", false);
 	public final static UserPermission AUTHORIZE_TICKETS = new UserPermission("Authorize Tickets");
 	public final static UserPermission SPLIT_TICKET = new UserPermission("Split Ticket");
 	public final static UserPermission SETTLE_TICKET = new UserPermission("Settle Ticket");
@@ -66,4 +73,12 @@ public class UserPermission extends BaseUserPermission {
 	public final static UserPermission[] permissions = new UserPermission[] {VIEW_ALL_OPEN_TICKETS,CREATE_TICKET,EDIT_TICKET, VOID_TICKET,
 			VIEW_BACK_OFFICE, AUTHORIZE_TICKETS, SPLIT_TICKET, SETTLE_TICKET, REOPEN_TICKET, PAY_OUT,
 			TAKE_OUT, VIEW_EXPLORERS, VIEW_REPORTS, SHUT_DOWN, ADD_DISCOUNT, REFUND, PERFORM_MANAGER_TASK, PERFORM_ADMINISTRATIVE_TASK};
+
+	public boolean isVisibleWithoutPermission() {
+		return visibleWithoutPermission;
+	}
+
+	public void setVisibleWithoutPermission(boolean visibleWithoutPermission) {
+		this.visibleWithoutPermission = visibleWithoutPermission;
+	}
 }
