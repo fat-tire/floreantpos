@@ -6,9 +6,9 @@ import java.util.Set;
 
 import javax.swing.JPanel;
 
-import com.floreantpos.model.KitchenTicket;
-
 import net.miginfocom.swing.MigLayout;
+
+import com.floreantpos.model.KitchenTicket;
 
 public class KitchenTicketListPanel extends JPanel {
 	private Set<KitchenTicket> existingTickets = new HashSet<KitchenTicket>();

@@ -13,12 +13,12 @@ import org.hibernate.criterion.Restrictions;
 
 import com.floreantpos.model.AttendenceHistory;
 import com.floreantpos.model.MenuCategory;
+import com.floreantpos.model.OrderType;
 import com.floreantpos.model.Restaurant;
 import com.floreantpos.model.Shift;
 import com.floreantpos.model.Terminal;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketItem;
-import com.floreantpos.model.OrderType;
 import com.floreantpos.model.User;
 import com.floreantpos.model.UserType;
 import com.floreantpos.report.SalesAnalysisReportModel.SalesAnalysisData;

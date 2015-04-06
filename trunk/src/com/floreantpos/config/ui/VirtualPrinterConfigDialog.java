@@ -13,7 +13,6 @@ import net.miginfocom.swing.MigLayout;
 
 import org.apache.commons.lang.StringUtils;
 
-import com.floreantpos.bo.ui.BackOfficeWindow;
 import com.floreantpos.model.VirtualPrinter;
 import com.floreantpos.model.dao.VirtualPrinterDAO;
 import com.floreantpos.swing.FixedLengthTextField;

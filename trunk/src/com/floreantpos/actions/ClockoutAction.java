@@ -14,6 +14,7 @@ import com.floreantpos.model.AttendenceHistory;
 import com.floreantpos.model.Shift;
 import com.floreantpos.model.User;
 import com.floreantpos.model.dao.AttendenceHistoryDAO;
+import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.util.POSUtil;
 
 public class ClockoutAction extends PosAction {
@@ -33,8 +34,8 @@ public class ClockoutAction extends PosAction {
 
 	@Override
 	public void execute() {
-		int option = JOptionPane.showOptionDialog(POSUtil.getFocusedWindow(), POSConstants.CONFIRM_CLOCK_OUT, POSConstants.CONFIRM, JOptionPane.YES_NO_OPTION,
-				JOptionPane.QUESTION_MESSAGE, null, null, null);
+		int option = POSMessageDialog.showYesNoQuestionDialog(POSUtil.getFocusedWindow(), POSConstants.CONFIRM_CLOCK_OUT, POSConstants.CONFIRM);
+		
 		if (option != JOptionPane.YES_OPTION) {
 			return;
 		}

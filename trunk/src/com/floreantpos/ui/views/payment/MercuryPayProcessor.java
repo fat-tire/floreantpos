@@ -7,9 +7,9 @@ import net.authorize.data.creditcard.CardType;
 
 import com.floreantpos.PosException;
 import com.floreantpos.config.CardConfig;
+import com.floreantpos.model.OrderType;
 import com.floreantpos.model.PosTransaction;
 import com.floreantpos.model.Ticket;
-import com.floreantpos.model.OrderType;
 import com.floreantpos.ui.util.StreamUtils;
 import com.mercurypay.ws.sdk.MercuryResponse;
 import com.mercurypay.ws.sdk.MercuryWebRequest;

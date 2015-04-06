@@ -19,7 +19,6 @@ import org.apache.commons.lang.StringUtils;
 
 import com.floreantpos.Database;
 import com.floreantpos.Messages;
-import com.floreantpos.bo.ui.BackOfficeWindow;
 import com.floreantpos.config.AppConfig;
 import com.floreantpos.main.Application;
 import com.floreantpos.swing.POSPasswordField;
