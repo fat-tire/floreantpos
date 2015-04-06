@@ -21,7 +21,6 @@ import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
@@ -785,8 +784,6 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 
 	private com.floreantpos.ui.TicketListView openTicketList = new com.floreantpos.ui.TicketListView();
 
-	private JLabel timerLabel = new JLabel();
-
 	private JXCollapsiblePane orderFiltersPanel;
 
 	// End of variables declaration//GEN-END:variables
@@ -898,15 +895,15 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 			int min = countDown / 60;
 			int sec = countDown % 60;
 
-			timerLabel.setText("Aoto logoff in " + min + ":" + sec);
+			RootView.getInstance().getHeaderPanel().setLogoffText("Aoto logoff in " + min + ":" + sec);
 
 			if (countDown == 0) {
-				//doLogout();
+				Application.getInstance().doLogout();
 			}
 		}
 
 		public void reset() {
-			timerLabel.setText("");
+			RootView.getInstance().getHeaderPanel().setLogoffText("");
 			countDown = TerminalConfig.getAutoLogoffTime();
 		}
 
