@@ -202,6 +202,14 @@ public class TicketItemModifier extends BaseTicketItemModifier implements ITicke
 
 		return getTotalAmount();
 	}
+	
+	@Override
+	public Double getSubTotalAmountWithoutModifiersDisplay() {
+		if (getModifierType() == TicketItemModifier.NO_MODIFIER) {
+			return null;
+		}
+		return getSubTotalAmount();
+	}
 
 	public boolean isPriceIncludesTax() {
 		return priceIncludesTax;
