@@ -84,6 +84,7 @@ public class OrderTypeConfigurationView extends ConfigurationView {
 		OrderTypeProperties properties = orderType.getProperties();
 		if(properties == null) {
 			checkBox.setSelected(true);
+			cbPayLater.setSelected(true);
 			return;
 		}
 		
