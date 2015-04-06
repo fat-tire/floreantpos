@@ -22,6 +22,7 @@ import com.floreantpos.actions.LogoutAction;
 import com.floreantpos.actions.ShutDownAction;
 import com.floreantpos.main.Application;
 import com.floreantpos.swing.PosButton;
+import com.floreantpos.swing.TransparentPanel;
 
 public class HeaderPanel extends JPanel {
 	private static final SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd yyyy, hh:mm:ss aaa"); //$NON-NLS-1$
@@ -33,6 +34,8 @@ public class HeaderPanel extends JPanel {
 	private String terminalString = Messages.getString("TERMINAL_LABEL"); //$NON-NLS-1$
 	
 	private String name;
+
+	private JLabel logoffLabel;
 	
 	public HeaderPanel() {
 		this("");
@@ -48,11 +51,20 @@ public class HeaderPanel extends JPanel {
 
 		JLabel logoLabel = new JLabel(IconFactory.getIcon("header-logo.png")); //$NON-NLS-1$
 		add(logoLabel);
-
+		
+		TransparentPanel statusPanel = new TransparentPanel(new MigLayout("hidemode 3, fill, ins 0, gap 0"));
 		statusLabel = new JLabel();
 		statusLabel.setFont(statusLabel.getFont().deriveFont(Font.BOLD));
 		statusLabel.setHorizontalAlignment(JLabel.CENTER);
-		add(statusLabel, "grow"); //$NON-NLS-1$
+		statusLabel.setVerticalAlignment(JLabel.BOTTOM);
+		statusPanel.add(statusLabel, "grow");
+		logoffLabel = new JLabel();
+		logoffLabel.setFont(statusLabel.getFont().deriveFont(Font.BOLD));
+		logoffLabel.setHorizontalAlignment(JLabel.CENTER);
+		logoffLabel.setVerticalAlignment(JLabel.TOP);
+		statusPanel.add(logoffLabel, "newline, growx");
+		
+		add(statusPanel, "grow"); //$NON-NLS-1$
 
 		PosButton btnClockOUt = new PosButton(new ClockoutAction(false, true));
 		btnClockOUt.setToolTipText(Messages.getString("Clockout")); //$NON-NLS-1$
@@ -103,6 +115,10 @@ public class HeaderPanel extends JPanel {
 		sb.append(dateFormat.format(Calendar.getInstance().getTime()));
 
 		statusLabel.setText(sb.toString());
+	}
+	
+	public void setLogoffText(String text) {
+		logoffLabel.setText(text);
 	}
 	
 	public void startTimer() {
