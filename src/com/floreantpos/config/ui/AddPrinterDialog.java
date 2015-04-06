@@ -18,7 +18,6 @@ import javax.swing.JSeparator;
 
 import net.miginfocom.swing.MigLayout;
 
-import com.floreantpos.bo.ui.BackOfficeWindow;
 import com.floreantpos.model.Printer;
 import com.floreantpos.model.VirtualPrinter;
 import com.floreantpos.model.dao.VirtualPrinterDAO;

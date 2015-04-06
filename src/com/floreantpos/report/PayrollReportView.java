@@ -25,7 +25,6 @@ import net.sf.jasperreports.view.JRViewer;
 
 import org.jdesktop.swingx.JXDatePicker;
 
-import com.floreantpos.bo.ui.BackOfficeWindow;
 import com.floreantpos.model.dao.AttendenceHistoryDAO;
 import com.floreantpos.model.dao.TerminalDAO;
 import com.floreantpos.swing.TransparentPanel;

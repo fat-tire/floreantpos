@@ -17,7 +17,6 @@ import org.apache.commons.io.IOUtils;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-import com.floreantpos.bo.ui.BackOfficeWindow;
 import com.floreantpos.model.MenuItem;
 import com.floreantpos.model.MenuItemModifierGroup;
 import com.floreantpos.model.dao.GenericDAO;

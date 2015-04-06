@@ -23,7 +23,6 @@ import net.sf.jasperreports.view.JRViewer;
 import org.jdesktop.swingx.JXDatePicker;
 
 import com.floreantpos.POSConstants;
-import com.floreantpos.bo.ui.BackOfficeWindow;
 import com.floreantpos.model.CreditCardTransaction;
 import com.floreantpos.model.dao.PosTransactionDAO;
 import com.floreantpos.model.util.DateUtil;

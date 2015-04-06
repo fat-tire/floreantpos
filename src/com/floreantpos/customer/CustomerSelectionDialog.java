@@ -228,7 +228,7 @@ public class CustomerSelectionDialog extends POSDialog {
 	}
 
 	protected void doRemoveCustomerFromTicket() {
-		int option = JOptionPane.showOptionDialog(this, "Remove customer from ticket?", "Confirm", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+		int option = POSMessageDialog.showYesNoQuestionDialog(this, "Remove customer from ticket?", "Confirm");
 		if(option != JOptionPane.YES_OPTION) {
 			return;
 		}

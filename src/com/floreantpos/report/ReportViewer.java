@@ -8,7 +8,6 @@ package com.floreantpos.report;
 
 import java.util.Date;
 
-import com.floreantpos.bo.ui.BackOfficeWindow;
 import com.floreantpos.swing.MessageDialog;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.util.UiUtil;
