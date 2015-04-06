@@ -34,6 +34,7 @@ public class ConfigurationDialog extends POSDialog implements ChangeListener, Ac
 		
 		setLayout(new MigLayout("fill", "", "[fill,grow][]")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		
+		tabbedPane.addChangeListener(this);
 		add(tabbedPane, "span, grow" ); //$NON-NLS-1$
 		
 		addView(new RestaurantConfigurationView());
@@ -49,7 +50,7 @@ public class ConfigurationDialog extends POSDialog implements ChangeListener, Ac
 			addView(new TicketImportConfigurationView());
 		}
 		
-		tabbedPane.addChangeListener(this);
+		
 		
 		JPanel bottomPanel = new JPanel(new MigLayout("fillx")); //$NON-NLS-1$
 		
