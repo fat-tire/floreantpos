@@ -14,4 +14,6 @@ public interface ITicketItem {
 	Double getTaxAmountWithoutModifiersDisplay();
 
 	Double getTotalAmountWithoutModifiersDisplay();
+	
+	Double getSubTotalAmountWithoutModifiersDisplay();
 }
