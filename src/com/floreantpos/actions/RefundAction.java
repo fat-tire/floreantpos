@@ -43,12 +43,6 @@ public class RefundAction extends PosAction {
 			
 			String message = Application.getCurrencySymbol() + paidAmount + " will be refunded.";
 			
-//			int option = JOptionPane.showOptionDialog(Application.getPosWindow(), message, POSConstants.CONFIRM,
-//					JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
-//			if (option != JOptionPane.OK_OPTION) {
-//				return;
-//			}
-
 			ticket = TicketDAO.getInstance().loadFullTicket(ticket.getId());
 			
 			message = "<html>" +

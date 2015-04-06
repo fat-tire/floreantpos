@@ -7,8 +7,12 @@
 package com.floreantpos.ui.dialog;
 
 import java.awt.Component;
+import java.awt.Dimension;
 
+import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 
 import org.apache.log4j.Logger;
 
@@ -48,5 +52,30 @@ public class POSMessageDialog extends javax.swing.JDialog {
 		x.printStackTrace();
 		logger.error(message, x);
 		JOptionPane.showMessageDialog(parent, message, com.floreantpos.POSConstants.MDS_POS, JOptionPane.ERROR_MESSAGE, null);
+	}
+	
+	public static int showYesNoQuestionDialog(Component parent, String message, String title) {
+		JOptionPane optionPane = new JOptionPane(message, JOptionPane.QUESTION_MESSAGE, JOptionPane.YES_NO_OPTION);
+		Object[] options = optionPane.getComponents();
+		for (Object object : options) {
+			if(object instanceof JPanel) {
+				JPanel panel = (JPanel) object;
+				Component[] components = panel.getComponents();
+				for (Component component : components) {
+					if(component instanceof JButton) {
+						component.setPreferredSize(new Dimension(component.getPreferredSize().width, 60));
+					}
+				}
+			}
+		}
+		
+		JDialog dialog = optionPane.createDialog(parent, title);
+		dialog.setVisible(true);
+		
+		Object selectedValue = optionPane.getValue();
+		if(selectedValue == null)
+            return JOptionPane.CLOSED_OPTION;
+		
+		return ((Integer) selectedValue).intValue();
 	}
 }

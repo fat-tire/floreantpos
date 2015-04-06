@@ -7,7 +7,6 @@ import org.hibernate.Transaction;
 
 import com.floreantpos.model.OrderType;
 import com.floreantpos.model.OrderTypeProperties;
-import com.floreantpos.model.dao.BaseOrderTypePropertiesDAO;
 
 
 public class OrderTypePropertiesDAO extends BaseOrderTypePropertiesDAO {

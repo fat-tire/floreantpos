@@ -7,6 +7,7 @@
 package com.floreantpos.ui.model;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -23,7 +24,6 @@ import com.floreantpos.swing.IntegerTextField;
 import com.floreantpos.swing.MessageDialog;
 import com.floreantpos.ui.BeanEditor;
 import com.floreantpos.util.POSUtil;
-import java.awt.Dimension;
 
 /**
  *

@@ -23,7 +23,6 @@ import javax.swing.JList;
 
 import net.miginfocom.swing.MigLayout;
 
-import com.floreantpos.bo.ui.BackOfficeWindow;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.PosPrinters;
 import com.floreantpos.ui.dialog.POSMessageDialog;

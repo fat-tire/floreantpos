@@ -30,7 +30,6 @@ import net.sf.jasperreports.view.JRViewer;
 
 import org.jdesktop.swingx.JXDatePicker;
 
-import com.floreantpos.bo.ui.BackOfficeWindow;
 import com.floreantpos.model.Shift;
 import com.floreantpos.model.Terminal;
 import com.floreantpos.model.Ticket;

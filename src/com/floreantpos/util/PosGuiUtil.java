@@ -26,7 +26,7 @@ public class PosGuiUtil {
 		dialog.open();
 
 		if (dialog.isCanceled()) {
-			int option = JOptionPane.showOptionDialog(Application.getPosWindow(), "Proceed without table?", "Confirm", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+			int option = POSMessageDialog.showYesNoQuestionDialog(Application.getPosWindow(), "Proceed without table?", "Confirm");
 			if(option != JOptionPane.YES_OPTION) {
 				return null;
 			}

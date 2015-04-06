@@ -21,7 +21,6 @@ import javax.swing.JSeparator;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 
-import com.floreantpos.bo.ui.BackOfficeWindow;
 import com.floreantpos.model.Shift;
 import com.floreantpos.model.dao.ShiftDAO;
 import com.floreantpos.ui.dialog.POSDialog;

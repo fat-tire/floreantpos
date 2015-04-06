@@ -22,7 +22,6 @@ import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRTableModelDataSource;
 import net.sf.jasperreports.view.JRViewer;
 
-import com.floreantpos.bo.ui.BackOfficeWindow;
 import com.floreantpos.model.Terminal;
 import com.floreantpos.model.UserType;
 import com.floreantpos.model.dao.SalesSummaryDAO;

@@ -120,7 +120,7 @@ public class DrawerPullReportDialog extends POSDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void doResetCashDrawer() {//GEN-FIRST:event_btnResetCashDrawerActionPerformed
-    	int option = JOptionPane.showOptionDialog(this, "Sure reset cash drawer?", "Confirm", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+    	int option = POSMessageDialog.showYesNoQuestionDialog(this, "Sure reset cash drawer?", "Confirm");
     	if(option != JOptionPane.YES_OPTION) return;
     	
     	Application app = Application.getInstance();

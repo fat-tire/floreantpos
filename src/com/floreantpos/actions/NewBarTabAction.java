@@ -127,7 +127,7 @@ public class NewBarTabAction extends AbstractAction implements CardInputListener
 		String symbol = Application.getCurrencySymbol();
 		String message = symbol + CardConfig.getBartabLimit() + " will be booked. Proceed?";
 		
-		int option = JOptionPane.showOptionDialog(parentComponent, message, "Please confirm", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+		int option = POSMessageDialog.showYesNoQuestionDialog(parentComponent, message, "Please confirm");
 		if(option != JOptionPane.YES_OPTION) {
 			return;
 		}
@@ -177,7 +177,7 @@ public class NewBarTabAction extends AbstractAction implements CardInputListener
 		String symbol = Application.getCurrencySymbol();
 		String message = symbol + CardConfig.getBartabLimit() + " will be booked. Proceed?";
 		
-		int option = JOptionPane.showOptionDialog(parentComponent, message, "Please confirm", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+		int option = POSMessageDialog.showYesNoQuestionDialog(parentComponent, message, "Please confirm");
 		if(option != JOptionPane.YES_OPTION) {
 			return;
 		}
