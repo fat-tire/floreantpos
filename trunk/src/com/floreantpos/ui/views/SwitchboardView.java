@@ -177,8 +177,11 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 		btnOthers.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				SwitchboardOtherFunctionsDialog dialog = new SwitchboardOtherFunctionsDialog(SwitchboardView.this);
-				dialog.open();
+				//SwitchboardOtherFunctionsDialog dialog = new SwitchboardOtherFunctionsDialog(SwitchboardView.this);
+				//dialog.open();
+				
+				SwitchboardOtherFunctionsView view = SwitchboardOtherFunctionsView.getInstance();
+				RootView.getInstance().showView(view);
 			}
 		});
 		rightPanel.add(btnOthers, BorderLayout.SOUTH);
