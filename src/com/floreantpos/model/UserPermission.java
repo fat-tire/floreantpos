@@ -64,6 +64,7 @@ public class UserPermission extends BaseUserPermission {
 	public final static UserPermission REFUND = new UserPermission("Refund");
 	public final static UserPermission VIEW_EXPLORERS = new UserPermission("View Explorers");
 	public final static UserPermission VIEW_REPORTS = new UserPermission("View Reports");
+	public final static UserPermission MANAGE_TABLE_LAYOUT = new UserPermission("Manage Table Layout");
 	
 	//public final static UserPermission VIEW_USER_LIST = new UserPermission("View User List");
 	//public final static UserPermission GRATUITY_ADMINISTRATION = new UserPermission("Gratuity Administration");
@@ -72,7 +73,7 @@ public class UserPermission extends BaseUserPermission {
 	
 	public final static UserPermission[] permissions = new UserPermission[] {VIEW_ALL_OPEN_TICKETS,CREATE_TICKET,EDIT_TICKET, VOID_TICKET,
 			VIEW_BACK_OFFICE, AUTHORIZE_TICKETS, SPLIT_TICKET, SETTLE_TICKET, REOPEN_TICKET, PAY_OUT,
-			TAKE_OUT, VIEW_EXPLORERS, VIEW_REPORTS, SHUT_DOWN, ADD_DISCOUNT, REFUND, PERFORM_MANAGER_TASK, PERFORM_ADMINISTRATIVE_TASK};
+			TAKE_OUT, VIEW_EXPLORERS, VIEW_REPORTS, SHUT_DOWN, ADD_DISCOUNT, REFUND, PERFORM_MANAGER_TASK, PERFORM_ADMINISTRATIVE_TASK, MANAGE_TABLE_LAYOUT};
 
 	public boolean isVisibleWithoutPermission() {
 		return visibleWithoutPermission;

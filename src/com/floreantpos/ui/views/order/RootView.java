@@ -68,6 +68,10 @@ public class RootView extends com.floreantpos.swing.TransparentPanel {
 	}
 	
 	public void showView(IView view) {
+		if(!viewNames.contains(view.getViewName())) {
+			addView(view);
+		}
+		
 		showView(view.getViewName());
 	}
 	

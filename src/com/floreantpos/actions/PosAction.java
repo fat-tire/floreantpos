@@ -15,6 +15,7 @@ import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.dialog.PasswordEntryDialog;
 
 public abstract class PosAction extends AbstractAction {
+	private boolean visible = true;
 	protected UserPermission requiredPermission;
 	
 	public PosAction() {
@@ -63,7 +64,7 @@ public abstract class PosAction extends AbstractAction {
 		}
 
 		if (!user.hasPermission(requiredPermission)) {
-			String password = PasswordEntryDialog.show(Application.getPosWindow(), "Please enter manager password to execute this action");
+			String password = PasswordEntryDialog.show(Application.getPosWindow(), "Please enter privileged password");
 			if(StringUtils.isEmpty(password)) {
 				return;
 			}
@@ -89,6 +90,14 @@ public abstract class PosAction extends AbstractAction {
 	}
 
 	public abstract void execute();
+
+	public boolean isVisible() {
+		return visible;
+	}
+
+	public void setVisible(boolean visible) {
+		this.visible = visible;
+	}
 
 	//	public boolean isAllowAdministrator() {
 	//		return allowAdministrator;
