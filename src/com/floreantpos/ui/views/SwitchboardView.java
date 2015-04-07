@@ -23,7 +23,6 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.Timer;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
@@ -40,7 +39,6 @@ import com.floreantpos.PosException;
 import com.floreantpos.actions.NewBarTabAction;
 import com.floreantpos.actions.RefundAction;
 import com.floreantpos.actions.SettleTicketAction;
-import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.extension.OrderServiceExtension;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.OrderType;
@@ -64,7 +62,6 @@ import com.floreantpos.ui.views.order.ViewPanel;
 import com.floreantpos.ui.views.payment.SettleTicketDialog;
 import com.floreantpos.util.OrderUtil;
 import com.floreantpos.util.POSUtil;
-import com.floreantpos.util.PosGuiUtil;
 import com.floreantpos.util.TicketAlreadyExistsException;
 
 /**
@@ -72,15 +69,12 @@ import com.floreantpos.util.TicketAlreadyExistsException;
  * @author MShahriar
  */
 public class SwitchboardView extends ViewPanel implements ActionListener, ITicketList {
-	private final AutoLogoffHandler logoffHandler = new AutoLogoffHandler();
 
 	public final static String VIEW_NAME = com.floreantpos.POSConstants.SWITCHBOARD;
 
 	private OrderServiceExtension orderServiceExtension;
 
 	private static SwitchboardView instance;
-
-	private Timer autoLogoffTimer = new Timer(1000, logoffHandler);
 
 	//private Timer ticketListUpdateTimer = new Timer(10 * 1000, new TicketListUpdaterTask());
 
@@ -794,15 +788,9 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 
 		if (visible) {
 			updateView();
-
-			logoffHandler.reset();
-			if (TerminalConfig.isAutoLogoffEnable()) {
-				autoLogoffTimer.start();
-			}
 		}
 		else {
 			//ticketListUpdateTimer.stop();
-			autoLogoffTimer.stop();
 		}
 	}
 
@@ -881,34 +869,6 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 		}
 	}
 
-	private class AutoLogoffHandler implements ActionListener {
-		int countDown = TerminalConfig.getAutoLogoffTime();
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			if (PosGuiUtil.isModalDialogShowing()) {
-				reset();
-				return;
-			}
-
-			--countDown;
-			int min = countDown / 60;
-			int sec = countDown % 60;
-
-			RootView.getInstance().getHeaderPanel().setLogoffText("Aoto logoff in " + min + ":" + sec);
-
-			if (countDown == 0) {
-				Application.getInstance().doLogout();
-			}
-		}
-
-		public void reset() {
-			RootView.getInstance().getHeaderPanel().setLogoffText("");
-			countDown = TerminalConfig.getAutoLogoffTime();
-		}
-
-	}
-	
 	@Override
 	public String getViewName() {
 		return VIEW_NAME;

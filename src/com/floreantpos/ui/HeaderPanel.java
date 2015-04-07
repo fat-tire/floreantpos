@@ -2,7 +2,6 @@ package com.floreantpos.ui;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
@@ -20,32 +19,26 @@ import com.floreantpos.Messages;
 import com.floreantpos.actions.ClockoutAction;
 import com.floreantpos.actions.LogoutAction;
 import com.floreantpos.actions.ShutDownAction;
+import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.main.Application;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.swing.TransparentPanel;
+import com.floreantpos.util.PosGuiUtil;
 
 public class HeaderPanel extends JPanel {
 	private static final SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd yyyy, hh:mm:ss aaa"); //$NON-NLS-1$
 
 	private JLabel statusLabel;
-	private Timer timer;
+	private Timer timer = new Timer(1000, new TimerHandler());
 
 	private String userString = Messages.getString("PosMessage.70"); //$NON-NLS-1$
 	private String terminalString = Messages.getString("TERMINAL_LABEL"); //$NON-NLS-1$
 	
-	private String name;
-
 	private JLabel logoffLabel;
 	
 	public HeaderPanel() {
-		this("");
-	}
-	
-	public HeaderPanel(String name) {
 		super(new MigLayout("ins 2 2 0 2", "[][fill, grow][]", "")); //$NON-NLS-1$  //$NON-NLS-2$  //$NON-NLS-3$
 		
-		this.name = name;
-
 		setOpaque(true);
 		setBackground(Color.white);
 
@@ -79,30 +72,8 @@ public class HeaderPanel extends JPanel {
 		btnShutdown.setToolTipText(Messages.getString("Shutdown")); //$NON-NLS-1$
 		add(btnShutdown, "w 60!, h 60!"); //$NON-NLS-1$
 
-		timer = new Timer(1000, new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (!isShowing()) {
-					timer.stop();
-					return;
-				}
-				
-				showHeader();
-			}
-		});
-
 		add(new JSeparator(JSeparator.HORIZONTAL), "newline, span 6, grow, gap 0");
-	}
-
-	@Override
-	public void paint(Graphics g) {
-		super.paint(g);
-
-		if (timer.isRunning()) {
-			return;
-		}
-
-		System.out.println("Starting timer for: " + HeaderPanel.this.name);
+		
 		timer.start();
 	}
 
@@ -117,15 +88,67 @@ public class HeaderPanel extends JPanel {
 		statusLabel.setText(sb.toString());
 	}
 	
-	public void setLogoffText(String text) {
-		logoffLabel.setText(text);
-	}
-	
-	public void startTimer() {
+	private void startTimer() {
 		timer.start();
 	}
 	
-	public void stopTimer() {
+	private void stopTimer() {
 		timer.stop();
+	}
+	
+	@Override
+	public void setVisible(boolean aFlag) {
+		super.setVisible(aFlag);
+		
+		if(aFlag) {
+			startTimer();
+		}
+		else {
+			stopTimer();
+		}
+	}
+	
+	private class TimerHandler implements ActionListener {
+		int countDown = TerminalConfig.getAutoLogoffTime();
+		boolean autoLogoffEnable = TerminalConfig.isAutoLogoffEnable();
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if (!isShowing()) {
+				timer.stop();
+				return;
+			}
+			
+			showHeader();
+			
+			checkLogoffOption();
+		}
+
+		private void checkLogoffOption() {
+			if(!autoLogoffEnable) {
+				return;
+			}
+			
+			if (PosGuiUtil.isModalDialogShowing()) {
+				reset();
+				return;
+			}
+
+			--countDown;
+			int min = countDown / 60;
+			int sec = countDown % 60;
+
+			logoffLabel.setText("Aoto logoff in " + min + ":" + sec);
+
+			if (countDown == 0) {
+				Application.getInstance().doLogout();
+			}
+		}
+
+		public void reset() {
+			logoffLabel.setText("");
+			countDown = TerminalConfig.getAutoLogoffTime();
+		}
+
 	}
 }
