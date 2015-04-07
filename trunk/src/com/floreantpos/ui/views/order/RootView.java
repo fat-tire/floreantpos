@@ -57,15 +57,14 @@ public class RootView extends com.floreantpos.swing.TransparentPanel {
 	}
 	
 	public void showView(String viewName) {
-		cards.show(contentPanel, viewName);
 		if(LoginView.VIEW_NAME.equals(viewName)) {
-			headerPanel.stopTimer();
 			headerPanel.setVisible(false);
 		}
 		else {
-			headerPanel.startTimer();
 			headerPanel.setVisible(true);
 		}
+		
+		cards.show(contentPanel, viewName);
 	}
 	
 	public void showView(IView view) {

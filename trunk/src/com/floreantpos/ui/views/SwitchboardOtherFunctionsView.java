@@ -2,14 +2,14 @@ package com.floreantpos.ui.views;
 
 import com.floreantpos.ui.views.order.ViewPanel;
 
-public class SwitchboardAllFunctionsView extends ViewPanel {
+public class SwitchboardOtherFunctionsView extends ViewPanel {
 	public static final String VIEW_NAME="afv";
-	private static SwitchboardAllFunctionsView instance;
+	private static SwitchboardOtherFunctionsView instance;
 	
 	
-	public static SwitchboardAllFunctionsView getInstance() {
+	public static SwitchboardOtherFunctionsView getInstance() {
 		if(instance == null) {
-			instance = new SwitchboardAllFunctionsView();
+			instance = new SwitchboardOtherFunctionsView();
 		}
 		
 		return instance;
