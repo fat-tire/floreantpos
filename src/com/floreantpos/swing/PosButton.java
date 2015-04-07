@@ -12,6 +12,7 @@ import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 
 import com.floreantpos.actions.ActionCommand;
+import com.floreantpos.actions.PosAction;
 import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.config.UIConfig;
 
@@ -97,5 +98,15 @@ public class PosButton extends JButton {
 		
 		
 		return (size != null) ? size : super.getPreferredSize();
+	}
+	
+	@Override
+	public void setAction(Action a) {
+		super.setAction(a);
+		
+		if(a instanceof PosAction) {
+			PosAction action = (PosAction) a;
+			setVisible(action.isVisible());
+		}
 	}
 }

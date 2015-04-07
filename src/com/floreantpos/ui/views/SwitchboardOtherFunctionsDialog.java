@@ -11,7 +11,6 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 
 import com.floreantpos.POSConstants;
-import com.floreantpos.bo.ui.BackOfficeWindow;
 import com.floreantpos.demo.KitchenDisplayWindow;
 import com.floreantpos.extension.FloorLayoutPlugin;
 import com.floreantpos.extension.TicketImportPlugin;
@@ -28,7 +27,6 @@ import com.floreantpos.ui.dialog.TicketAuthorizationDialog;
 public class SwitchboardOtherFunctionsDialog extends POSDialog implements ActionListener {
 	private SwitchboardView switchboardView;
 	
-	private PosButton btnBackOffice = new PosButton(POSConstants.BACK_OFFICE_BUTTON_TEXT);
 	private PosButton btnManager = new PosButton(POSConstants.MANAGER_BUTTON_TEXT);
 	private PosButton btnAuthorize = new PosButton(POSConstants.AUTHORIZE_BUTTON_TEXT);
 	private PosButton btnKitchenDisplay = new PosButton(POSConstants.KITCHEN_DISPLAY_BUTTON_TEXT);
@@ -48,7 +46,6 @@ public class SwitchboardOtherFunctionsDialog extends POSDialog implements Action
 		setSize(800, 400);
 		
 		JPanel contentPane = new JPanel(new GridLayout(2, 0, 10, 10));
-		contentPane.add(btnBackOffice);
 		contentPane.add(btnManager);
 		contentPane.add(btnAuthorize);
 		contentPane.add(btnKitchenDisplay);
@@ -67,7 +64,6 @@ public class SwitchboardOtherFunctionsDialog extends POSDialog implements Action
 		contentPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		setContentPane(contentPane);
 		
-		btnBackOffice.addActionListener(this);
 		btnManager.addActionListener(this);
 		btnAuthorize.addActionListener(this);
 		btnKitchenDisplay.addActionListener(this);
@@ -90,9 +86,6 @@ public class SwitchboardOtherFunctionsDialog extends POSDialog implements Action
 					}
 					else if (permission.equals(UserPermission.PERFORM_MANAGER_TASK)) {
 						btnManager.setEnabled(true);
-					}
-					else if (permission.equals(UserPermission.VIEW_BACK_OFFICE)) {
-						btnBackOffice.setEnabled(true);
 					}
 				}
 			}
@@ -134,15 +127,6 @@ public class SwitchboardOtherFunctionsDialog extends POSDialog implements Action
 		switchboardView.updateTicketList();
 	}
 	
-	private synchronized void doShowBackoffice() {
-		BackOfficeWindow window = com.floreantpos.util.POSUtil.getBackOfficeWindow();
-		if (window == null) {
-			window = new BackOfficeWindow();
-		}
-		window.setVisible(true);
-		window.toFront();
-	}
-	
 	private void doPayout() {
 		PayoutDialog dialog = new PayoutDialog();
 		dialog.open();
@@ -161,10 +145,7 @@ public class SwitchboardOtherFunctionsDialog extends POSDialog implements Action
 		Object source = e.getSource();
 		dispose();
 		
-		if(source == btnBackOffice) {
-			doShowBackoffice();
-		}
-		else if(source == btnManager) {
+		if(source == btnManager) {
 			doShowManagerWindow();
 		}
 		else if(source == btnAuthorize) {
