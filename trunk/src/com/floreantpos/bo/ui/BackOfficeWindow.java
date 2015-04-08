@@ -16,7 +16,6 @@ import java.util.Locale;
 import java.util.Set;
 
 import javax.swing.AbstractAction;
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -227,7 +226,6 @@ public class BackOfficeWindow extends javax.swing.JFrame {
 		tabbedPane.setTabShape(JideTabbedPane.SHAPE_WINDOWS);
 		tabbedPane.setShowCloseButtonOnTab(true);
 		tabbedPane.setTabInsets(new Insets(5, 5, 5, 5));
-		tabbedPane.addTab("fuck sunny leone", new JButton());
 
 		getContentPane().setLayout(new java.awt.BorderLayout(5, 0));
 
