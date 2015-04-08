@@ -33,7 +33,8 @@ public class PosButton extends JButton {
 	public PosButton(String text) {
 		super(text);
 		setFont(UIConfig.getButtonFont());
-
+		
+		setFocusable(false);
 		setFocusPainted(false);
 		setMargin(margin);
 	}
@@ -43,6 +44,7 @@ public class PosButton extends JButton {
 		
 		setFont(UIConfig.getButtonFont());
 		
+		setFocusable(false);
 		setFocusPainted(false);
 		setMargin(margin);
 	}
@@ -52,6 +54,7 @@ public class PosButton extends JButton {
 		
 		setFont(UIConfig.getButtonFont());
 
+		setFocusable(false);
 		setFocusPainted(false);
 		setMargin(margin);
 	}
