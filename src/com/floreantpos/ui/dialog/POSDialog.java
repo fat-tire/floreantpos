@@ -21,16 +21,12 @@ public class POSDialog extends JDialog {
 
 	public POSDialog(Window owner, String title) {
 		this(owner, title, true);
-		
-		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 
 		initUI();
 	}
 	
 	public POSDialog(Window owner, String title, boolean modal) {
 		super(owner, title, modal ? ModalityType.APPLICATION_MODAL: ModalityType.MODELESS);
-		
-		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		
 		initUI();
 	}
