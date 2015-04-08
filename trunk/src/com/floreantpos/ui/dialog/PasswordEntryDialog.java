@@ -62,7 +62,7 @@ public class PasswordEntryDialog extends POSDialog implements ActionListener {
 //		String[][] iconNames = new String[][] { { "7_32.png", "8_32.png", "9_32.png" }, { "4_32.png", "5_32.png", "6_32.png" },
 //				{ "1_32.png", "2_32.png", "3_32.png" }, { "", "0_32.png", "clear_32.png" } };
 
-		Dimension size = new Dimension(80, 80);
+		Dimension size = new Dimension(160, 80);
 		
 		for (int i = 0; i < numbers.length; i++) {
 			for (int j = 0; j < numbers[i].length; j++) {
@@ -176,6 +176,10 @@ public class PasswordEntryDialog extends POSDialog implements ActionListener {
 		dialog2.pack();
 		dialog2.setLocationRelativeTo(parent);
 		dialog2.setVisible(true);
+		
+		if(dialog2.isCanceled()) {
+			return null;
+		}
 
 		return dialog2.getPasswordAsString();
 	}

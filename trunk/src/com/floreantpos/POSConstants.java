@@ -70,7 +70,7 @@ public class POSConstants {
 	public static final String SALES_ANALYSIS = Messages.getString("PosMessage.25"); //$NON-NLS-1$
 	public static final String TYPE = Messages.getString("PosMessage.26"); //$NON-NLS-1$
 	public static final String MODIFIER_GROUP_EXPLORER = Messages.getString("PosMessage.27"); //$NON-NLS-1$
-	public static final String DRAWER_PULL = Messages.getString("PosMessage.28"); //$NON-NLS-1$
+	public static final String DRAWER_PULL_BUTTON_TEXT = Messages.getString("DRAWER_PULL_BUTTON_TEXT"); //$NON-NLS-1$
 	public static final String CLEAR = Messages.getString("PosMessage.29"); //$NON-NLS-1$
 	public static final String NO_SHIFT_CONFIGURED = Messages.getString("PosMessage.30"); //$NON-NLS-1$
 	public static final String SHIFTS = Messages.getString("PosMessage.31"); //$NON-NLS-1$
