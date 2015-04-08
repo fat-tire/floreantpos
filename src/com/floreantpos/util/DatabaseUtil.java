@@ -130,21 +130,68 @@ public class DatabaseUtil {
 			shift.setShiftLength(Long.valueOf(length));
 			ShiftDAO.getInstance().saveOrUpdate(shift);
 
-			UserType type = new UserType();
-			type.setName(com.floreantpos.POSConstants.ADMINISTRATOR);
-			type.setPermissions(new HashSet<UserPermission>(Arrays.asList(UserPermission.permissions)));
-			UserTypeDAO.getInstance().saveOrUpdate(type);
+			UserType administrator = new UserType();
+			administrator.setName(com.floreantpos.POSConstants.ADMINISTRATOR);
+			administrator.setPermissions(new HashSet<UserPermission>(Arrays.asList(UserPermission.permissions)));
+			UserTypeDAO.getInstance().saveOrUpdate(administrator);
+			
+			UserType manager = new UserType();
+			manager.setName(com.floreantpos.POSConstants.MANAGER);
+			manager.setPermissions(new HashSet<UserPermission>(Arrays.asList(UserPermission.permissions)));
+			UserTypeDAO.getInstance().saveOrUpdate(manager);
+			
+			UserType cashier = new UserType();
+			cashier.setName(com.floreantpos.POSConstants.CASHIER);
+			cashier.setPermissions(new HashSet<UserPermission>(Arrays.asList(UserPermission.CREATE_TICKET, UserPermission.EDIT_TICKET, UserPermission.SETTLE_TICKET,
+					UserPermission.SPLIT_TICKET, UserPermission.VIEW_ALL_OPEN_TICKETS)));
+			UserTypeDAO.getInstance().saveOrUpdate(cashier);
+			
+			UserType server = new UserType();
+			server.setName(com.floreantpos.POSConstants.CASHIER);
+			server.setPermissions(new HashSet<UserPermission>(Arrays.asList(UserPermission.CREATE_TICKET, UserPermission.EDIT_TICKET, UserPermission.SETTLE_TICKET,
+					UserPermission.SPLIT_TICKET)));
+			UserTypeDAO.getInstance().saveOrUpdate(server);
 
-			User u = new User();
-			u.setUserId(123);
-			u.setSsn("123");
-			u.setPassword("1111");
-			u.setFirstName("Administrator");
-			u.setLastName(com.floreantpos.POSConstants.USER);
-			u.setType(type);
+			User administratorUser = new User();
+			administratorUser.setUserId(123);
+			administratorUser.setSsn("123");
+			administratorUser.setPassword("1111");
+			administratorUser.setFirstName("Administrator");
+			administratorUser.setLastName("System");
+			administratorUser.setType(administrator);
 
 			UserDAO dao = new UserDAO();
-			dao.saveOrUpdate(u);
+			dao.saveOrUpdate(administratorUser);
+			
+			User managerUser = new User();
+			managerUser.setUserId(124);
+			managerUser.setSsn("124");
+			managerUser.setPassword("2222");
+			managerUser.setFirstName("X");
+			managerUser.setLastName("Y");
+			managerUser.setType(manager);
+
+			dao.saveOrUpdate(managerUser);
+			
+			User cashierUser = new User();
+			cashierUser.setUserId(125);
+			cashierUser.setSsn("125");
+			cashierUser.setPassword("3333");
+			cashierUser.setFirstName("C");
+			cashierUser.setLastName("D");
+			cashierUser.setType(cashier);
+
+			dao.saveOrUpdate(cashierUser);
+			
+			User serverUser = new User();
+			serverUser.setUserId(126);
+			serverUser.setSsn("126");
+			serverUser.setPassword("7777");
+			serverUser.setFirstName("John");
+			serverUser.setLastName("Doe");
+			serverUser.setType(server);
+
+			dao.saveOrUpdate(serverUser);
 			
 			if(!exportSampleData) {
 				return true;
