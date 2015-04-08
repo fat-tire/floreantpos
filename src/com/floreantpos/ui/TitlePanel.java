@@ -6,12 +6,15 @@
 
 package com.floreantpos.ui;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
+import javax.swing.BorderFactory;
 import javax.swing.UIManager;
 
 /**
@@ -19,12 +22,10 @@ import javax.swing.UIManager;
  * @author  MShahriar
  */
 public class TitlePanel extends com.floreantpos.swing.TransparentPanel {
-    //private String title;
     
     /** Creates new form TitlePanel */
     public TitlePanel() {
         initComponents();
-//        jSeparator1.setVisible(false);
     }
     
     /** This method is called from within the constructor to
@@ -35,30 +36,18 @@ public class TitlePanel extends com.floreantpos.swing.TransparentPanel {
     // <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:initComponents
     private void initComponents() {
         lblTitle = new javax.swing.JLabel();
+        lblTitle.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         jSeparator1 = new javax.swing.JSeparator();
 
         lblTitle.setFont(getTitleFont());
         lblTitle.setForeground(getTitleColor());
         lblTitle.setText(com.floreantpos.POSConstants.TITLE);
 
-        org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(layout.createSequentialGroup()
-                .addContainerGap()
-                .add(lblTitle, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE)
-                .addContainerGap())
-            .add(jSeparator1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(layout.createSequentialGroup()
-                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .add(lblTitle)
-                .add(15, 15, 15)
-                .add(jSeparator1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-        );
+       setLayout(new BorderLayout(5, 5));
+       add(lblTitle);
+       add(jSeparator1, BorderLayout.SOUTH);
+       
+       setPreferredSize(new Dimension(300, 60));
     }// </editor-fold>//GEN-END:initComponents
     
     protected void paintComponent(Graphics g) {

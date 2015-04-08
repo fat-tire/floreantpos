@@ -150,6 +150,7 @@ public class DatabaseUtil {
 			server.setName(com.floreantpos.POSConstants.CASHIER);
 			server.setPermissions(new HashSet<UserPermission>(Arrays.asList(UserPermission.CREATE_TICKET, UserPermission.EDIT_TICKET, UserPermission.SETTLE_TICKET,
 					UserPermission.SPLIT_TICKET)));
+			//server.setTest(Arrays.asList(OrderType.BAR_TAB));
 			UserTypeDAO.getInstance().saveOrUpdate(server);
 
 			User administratorUser = new User();
