@@ -16,6 +16,7 @@ import java.util.Locale;
 import java.util.Set;
 
 import javax.swing.AbstractAction;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -69,8 +70,6 @@ public class BackOfficeWindow extends javax.swing.JFrame {
 	private static final String POSX = "bwx";//$NON-NLS-1$
 	private static final String WINDOW_HEIGHT = "bwheight";//$NON-NLS-1$
 	private static final String WINDOW_WIDTH = "bwwidth";//$NON-NLS-1$
-
-	public static BackOfficeWindow instance = new BackOfficeWindow();
 
 	/** Creates new form BackOfficeWindow */
 	public BackOfficeWindow() {
@@ -228,6 +227,7 @@ public class BackOfficeWindow extends javax.swing.JFrame {
 		tabbedPane.setTabShape(JideTabbedPane.SHAPE_WINDOWS);
 		tabbedPane.setShowCloseButtonOnTab(true);
 		tabbedPane.setTabInsets(new Insets(5, 5, 5, 5));
+		tabbedPane.addTab("fuck sunny leone", new JButton());
 
 		getContentPane().setLayout(new java.awt.BorderLayout(5, 0));
 
@@ -238,8 +238,6 @@ public class BackOfficeWindow extends javax.swing.JFrame {
 		jPanel1.add(tabbedPane, java.awt.BorderLayout.CENTER);
 
 		getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
-
-		pack();
 	}// </editor-fold>//GEN-END:initComponents
 
 	/**
