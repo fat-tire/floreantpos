@@ -1,14 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping package="com.floreantpos.model">
-  <class lazy="false" name="com.floreantpos.model.UserType" table="USER_TYPE">
-    <id column="ID" name="id" type="java.lang.Integer">
-      <generator class="identity"/>
-    </id>
-    <property column="P_NAME" length="60" name="name" type="java.lang.String"/>
-    <set cascade="all" inverse="false" lazy="false" name="permissions" table="USER_USER_PERMISSION">
-      <key column="permissionId"/>
-      <many-to-many class="UserPermission"/>
-    </set>
-  </class>
+
+	<!-- <typedef name="orderType" class="com.floreantpos.model.EnumUserType">
+		<param name="enumClassName">com.floreantpos.model.OrderType</param>
+	</typedef> -->
+	
+	<class lazy="false" name="com.floreantpos.model.UserType" table="USER_TYPE">
+		<id column="ID" name="id" type="java.lang.Integer">
+			<generator class="identity" />
+		</id>
+		<property column="P_NAME" length="60" name="name" type="java.lang.String" />
+		<set cascade="all" inverse="false" lazy="false" name="permissions" table="USER_USER_PERMISSION">
+			<key column="permissionId" />
+			<many-to-many class="com.floreantpos.model.UserPermission" />
+		</set>
+
+		<!-- <bag name="test" table="enum_test" >
+			<key column="lk"/>
+			<element column="ab" type="orderType" />
+		</bag> -->
+	</class>
 </hibernate-mapping>

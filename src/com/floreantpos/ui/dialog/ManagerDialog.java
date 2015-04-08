@@ -100,7 +100,7 @@ public class ManagerDialog extends JDialog {
 
 		transparentPanel3.add(btnShowTips);
 
-		btnDrawerPullReport.setText(com.floreantpos.POSConstants.DRAWER_PULL);
+		btnDrawerPullReport.setText(com.floreantpos.POSConstants.DRAWER_PULL_BUTTON_TEXT);
 		btnDrawerPullReport.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				btnDrawerPullReportActionPerformed(evt);
@@ -212,7 +212,7 @@ public class ManagerDialog extends JDialog {
 		try {
 			setGlassPaneVisible(true);
 			DrawerPullReportDialog dialog = new DrawerPullReportDialog(ManagerDialog.this, true);
-			dialog.setTitle(com.floreantpos.POSConstants.DRAWER_PULL);
+			dialog.setTitle(com.floreantpos.POSConstants.DRAWER_PULL_BUTTON_TEXT);
 			dialog.initialize();
 			dialog.setSize(470, 500);
 			dialog.setResizable(false);
@@ -252,7 +252,7 @@ public class ManagerDialog extends JDialog {
 			GratuityDAO gratuityDAO = new GratuityDAO();
 			TipsCashoutReport report = gratuityDAO.createReport(fromDatePicker.getDate(), toDatePicker.getDate(), (User) userCombo.getSelectedItem());
 
-			TipsCashoutReportDialog dialog = new TipsCashoutReportDialog(report, ManagerDialog.this, false);
+			TipsCashoutReportDialog dialog = new TipsCashoutReportDialog(report);
 			dialog.setSize(400, 600);
 			dialog.open();
 		} catch (Exception e) {
