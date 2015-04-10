@@ -1,5 +1,6 @@
 package com.floreantpos.model.base;
 
+import java.lang.Comparable;
 import java.io.Serializable;
 
 
@@ -19,6 +20,7 @@ public abstract class BaseRecepieItem  implements Comparable, Serializable {
 	public static String PROP_PERCENTAGE = "percentage";
 	public static String PROP_RECEPIE = "recepie";
 	public static String PROP_ID = "id";
+	public static String PROP_INVENTORY_DEDUCTABLE = "inventoryDeductable";
 
 
 	// constructors
@@ -57,6 +59,7 @@ public abstract class BaseRecepieItem  implements Comparable, Serializable {
 
 	// fields
 		protected java.lang.Double percentage;
+		protected java.lang.Boolean inventoryDeductable;
 
 	// many to one
 	private com.floreantpos.model.InventoryItem inventoryItem;
@@ -99,6 +102,23 @@ public abstract class BaseRecepieItem  implements Comparable, Serializable {
 	 */
 	public void setPercentage (java.lang.Double percentage) {
 		this.percentage = percentage;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: INVENTORY_DEDUCTABLE
+	 */
+	public java.lang.Boolean isInventoryDeductable () {
+								return inventoryDeductable == null ? Boolean.FALSE : inventoryDeductable;
+					}
+
+	/**
+	 * Set the value related to the column: INVENTORY_DEDUCTABLE
+	 * @param inventoryDeductable the INVENTORY_DEDUCTABLE value
+	 */
+	public void setInventoryDeductable (java.lang.Boolean inventoryDeductable) {
+		this.inventoryDeductable = inventoryDeductable;
 	}
 
 
