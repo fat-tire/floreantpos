@@ -120,7 +120,7 @@ public class TicketViewerTableModel extends AbstractTableModel {
 
 			TicketItem t = (TicketItem) entry.getValue();
 
-			if (ticketItem.getName().equals(t.getName()) && !t.isPrintedToKitchen()) {
+			if (ticketItem.getName().equals(t.getName()) && !t.isPrintedToKitchen() && !t.isInventoryHandled()) {
 				t.setItemCount(t.getItemCount() + 1);
 
 				table.repaint();
@@ -217,7 +217,7 @@ public class TicketViewerTableModel extends AbstractTableModel {
 				if (item.getTableRowNum() == rowNum) {
 					iter.remove();
 
-					if (item.isPrintedToKitchen()) {
+					if (item.isPrintedToKitchen() || item.isInventoryHandled()) {
 						ticket.addDeletedItems(item);
 					}
 
