@@ -16,7 +16,11 @@ import org.hibernate.criterion.Restrictions;
 
 import com.floreantpos.main.Application;
 import com.floreantpos.model.Gratuity;
+import com.floreantpos.model.InventoryItem;
+import com.floreantpos.model.MenuItem;
 import com.floreantpos.model.PaymentType;
+import com.floreantpos.model.Recepie;
+import com.floreantpos.model.RecepieItem;
 import com.floreantpos.model.Shift;
 import com.floreantpos.model.Terminal;
 import com.floreantpos.model.Ticket;
@@ -39,16 +43,20 @@ public class TicketDAO extends BaseTicketDAO {
 	
 	@Override
 	public void saveOrUpdate(Ticket ticket) {
+		adjustInventoryItems(ticket);
 		ticket.setActiveDate(Calendar.getInstance().getTime());
-		
 		super.saveOrUpdate(ticket);
+		
+		ticket.clearDeletedItems();
 	}
-	
+
 	@Override
 	public void saveOrUpdate(Ticket ticket, Session s) {
+		adjustInventoryItems(ticket);
 		ticket.setActiveDate(Calendar.getInstance().getTime());
-		
 		super.saveOrUpdate(ticket, s);
+		
+		ticket.clearDeletedItems();
 	}
 	
 	public Ticket loadFullTicket(int id) {
@@ -429,5 +437,73 @@ public class TicketDAO extends BaseTicketDAO {
 
 	public static TicketDAO getInstance() {
 		return instance;
+	}
+	
+	private void adjustInventoryItems(Ticket ticket) {
+		List<TicketItem> ticketItems = ticket.getTicketItems();
+		if(ticketItems == null) {
+			return;
+		}
+		
+		for (TicketItem ticketItem : ticketItems) {
+			if(ticketItem.isInventoryHandled()) {
+				continue;
+			}
+			
+			Integer menuItemId = ticketItem.getItemId();
+			MenuItem menuItem = MenuItemDAO.getInstance().get(menuItemId);
+			Recepie recepie = menuItem.getRecepie();
+			
+			if(recepie == null) {
+				return;
+			}
+			
+			List<RecepieItem> recepieItems = recepie.getRecepieItems();
+			for (RecepieItem recepieItem : recepieItems) {
+				InventoryItem inventoryItem = recepieItem.getInventoryItem();
+				Double totalRecepieUnits = inventoryItem.getTotalRecepieUnits();
+				inventoryItem.setTotalRecepieUnits(totalRecepieUnits - ticketItem.getItemCount());
+				
+				InventoryItemDAO.getInstance().saveOrUpdate(inventoryItem);
+			}
+			
+			ticketItem.setInventoryHandled(true);
+		}
+		
+		List deletedItems = ticket.getDeletedItems();
+		if(deletedItems == null) {
+			return;
+		}
+		
+		for (Object o : deletedItems) {
+			if(!(o instanceof TicketItem)) {
+				continue;
+			}
+			
+			TicketItem ticketItem = (TicketItem) o;
+			
+			if(!ticketItem.isInventoryHandled()) {
+				continue;
+			}
+			
+			Integer menuItemId = ticketItem.getItemId();
+			MenuItem menuItem = MenuItemDAO.getInstance().get(menuItemId);
+			Recepie recepie = menuItem.getRecepie();
+			
+			if(recepie == null) {
+				return;
+			}
+			
+			List<RecepieItem> recepieItems = recepie.getRecepieItems();
+			for (RecepieItem recepieItem : recepieItems) {
+				InventoryItem inventoryItem = recepieItem.getInventoryItem();
+				Double totalRecepieUnits = inventoryItem.getTotalRecepieUnits();
+				inventoryItem.setTotalRecepieUnits(totalRecepieUnits + ticketItem.getItemCount());
+				
+				InventoryItemDAO.getInstance().saveOrUpdate(inventoryItem);
+			}
+			
+			ticketItem.setInventoryHandled(true);
+		}
 	}
 }

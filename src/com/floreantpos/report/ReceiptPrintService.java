@@ -483,7 +483,6 @@ public class ReceiptPrintService {
 
 			transaction.commit();
 			
-			ticket.clearDeletedItems();
 			TicketDAO.getInstance().saveOrUpdate(ticket);
 
 		} catch (Exception e) {

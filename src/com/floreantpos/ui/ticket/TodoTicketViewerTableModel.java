@@ -225,7 +225,7 @@ public class TodoTicketViewerTableModel extends AbstractTableModel {
 				if (item.getTableRowNum() == rowNum) {
 					iter.remove();
 
-					if (item.isPrintedToKitchen()) {
+					if (item.isPrintedToKitchen() || item.isInventoryHandled()) {
 						ticket.addDeletedItems(item);
 					}
 
