@@ -7,6 +7,7 @@
 		</id>
 		
 		<property name="percentage" column="PERCENTAGE" type="java.lang.Double" />
+		<property name="inventoryDeductable" column="INVENTORY_DEDUCTABLE" type="java.lang.Boolean" />
 		
 		<many-to-one class="com.floreantpos.model.InventoryItem" lazy="false" name="inventoryItem">
 			<column name="INVENTORY_ITEM" />
