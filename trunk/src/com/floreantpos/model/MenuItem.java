@@ -126,6 +126,19 @@ public class MenuItem extends BaseMenuItem {
 		}
 		ticketItem.setVirtualPrinter(this.getVirtualPrinter());
 		
+		Recepie recepie = getRecepie();
+		if(recepie != null) {
+			List<RecepieItem> recepieItems = recepie.getRecepieItems();
+			for (RecepieItem recepieItem : recepieItems) {
+				InventoryItem inventoryItem = recepieItem.getInventoryItem();
+				Double recepieUnits = inventoryItem.getTotalRecepieUnits();
+				//Double percentage = recepieItem.getPercentage();
+				--recepieUnits;
+				
+			}
+			
+		}
+		
 		return ticketItem;
 	}
 	

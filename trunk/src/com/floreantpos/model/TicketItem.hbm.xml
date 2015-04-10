@@ -22,6 +22,7 @@
 		<property column="TOTAL_PRICE" name="totalAmount" type="java.lang.Double" />
 		<property column="TOTAL_PRICE_WITHOUT_MODIFIERS" name="totalAmountWithoutModifiers" type="java.lang.Double" />
 		<property column="BEVERAGE" name="beverage" type="java.lang.Boolean" />
+		<property column="INVENTORY_HANDLED" name="inventoryHandled" type="java.lang.Boolean" />
 		<property column="PRINT_TO_KITCHEN" name="shouldPrintToKitchen" type="java.lang.Boolean">
 			<meta attribute="defaultValue">true</meta>
 		</property>

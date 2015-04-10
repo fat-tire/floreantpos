@@ -1,5 +1,6 @@
 package com.floreantpos.model.base;
 
+import java.lang.Comparable;
 import java.io.Serializable;
 
 import com.floreantpos.model.TicketItemCookingInstruction;
@@ -32,6 +33,7 @@ public abstract class BaseTicketItem  implements Comparable, Serializable {
 	public static String PROP_SHOULD_PRINT_TO_KITCHEN = "shouldPrintToKitchen";
 	public static String PROP_TICKET = "ticket";
 	public static String PROP_SUBTOTAL_AMOUNT = "subtotalAmount";
+	public static String PROP_INVENTORY_HANDLED = "inventoryHandled";
 	public static String PROP_HAS_MODIFIERS = "hasModifiers";
 	public static String PROP_TAX_AMOUNT_WITHOUT_MODIFIERS = "taxAmountWithoutModifiers";
 	public static String PROP_ID = "id";
@@ -92,6 +94,7 @@ public abstract class BaseTicketItem  implements Comparable, Serializable {
 		protected java.lang.Double totalAmount;
 		protected java.lang.Double totalAmountWithoutModifiers;
 		protected java.lang.Boolean beverage;
+		protected java.lang.Boolean inventoryHandled;
 		protected java.lang.Boolean shouldPrintToKitchen;
 		protected java.lang.Boolean hasModifiers;
 		protected java.lang.Boolean printedToKitchen;
@@ -396,6 +399,23 @@ public abstract class BaseTicketItem  implements Comparable, Serializable {
 	 */
 	public void setBeverage (java.lang.Boolean beverage) {
 		this.beverage = beverage;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: INVENTORY_HANDLED
+	 */
+	public java.lang.Boolean isInventoryHandled () {
+								return inventoryHandled == null ? Boolean.FALSE : inventoryHandled;
+					}
+
+	/**
+	 * Set the value related to the column: INVENTORY_HANDLED
+	 * @param inventoryHandled the INVENTORY_HANDLED value
+	 */
+	public void setInventoryHandled (java.lang.Boolean inventoryHandled) {
+		this.inventoryHandled = inventoryHandled;
 	}
 
 
