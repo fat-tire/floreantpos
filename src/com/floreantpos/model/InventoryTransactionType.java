@@ -1,36 +1,34 @@
 package com.floreantpos.model;
 
-import com.floreantpos.model.base.BaseInventoryTransactionType;
-
-
-
-public class InventoryTransactionType extends BaseInventoryTransactionType {
-	private static final long serialVersionUID = 1L;
-
-/*[CONSTRUCTOR MARKER BEGIN]*/
-	public InventoryTransactionType () {
-		super();
-	}
-
-	/**
-	 * Constructor for primary key
-	 */
-	public InventoryTransactionType (java.lang.Integer id) {
-		super(id);
-	}
-
-/*[CONSTRUCTOR MARKER END]*/
-
-	public InOutEnum getInOutEnum() {
-		return InOutEnum.fromInt(getInOrOut());
+public enum InventoryTransactionType {
+	IN(1),
+	OUT(-1),
+	UNCHANGED(0);
+	
+	private int type;
+	
+	private InventoryTransactionType(int type) {
+		this.type = type;
 	}
 	
-	public void setInOrOutEnum(InOutEnum e) {
-		super.setInOrOut(e.getType());
+	public int getType() {
+		return type;
+	}
+	
+	public static InventoryTransactionType fromInt(int type) {
+		InventoryTransactionType[] values = values();
+		
+		for (InventoryTransactionType inOutEnum : values) {
+			if(inOutEnum.type == type) {
+				return inOutEnum;
+			}
+		}
+		
+		return UNCHANGED;
 	}
 	
 	@Override
 	public String toString() {
-		return name;
+		return name();
 	}
 }

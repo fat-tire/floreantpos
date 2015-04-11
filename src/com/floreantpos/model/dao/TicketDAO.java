@@ -17,6 +17,8 @@ import org.hibernate.criterion.Restrictions;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.Gratuity;
 import com.floreantpos.model.InventoryItem;
+import com.floreantpos.model.InventoryTransaction;
+import com.floreantpos.model.InventoryTransactionType;
 import com.floreantpos.model.MenuItem;
 import com.floreantpos.model.PaymentType;
 import com.floreantpos.model.Recepie;
@@ -470,6 +472,14 @@ public class TicketDAO extends BaseTicketDAO {
 				inventoryItem.setTotalRecepieUnits(totalRecepieUnits - ticketItem.getItemCount());
 				
 				InventoryItemDAO.getInstance().saveOrUpdate(inventoryItem);
+				
+				InventoryTransaction transaction = new InventoryTransaction();
+				transaction.setType(InventoryTransactionType.OUT);
+				transaction.setUnitPrice(inventoryItem.getUnitSellingPrice());
+				transaction.setInventoryItem(inventoryItem);
+				transaction.setQuantity(ticketItem.getItemCount());
+				transaction.setRemark("OUT as a recepie item for " + ticketItem.getName() + " for ticket " + ticket.getId());
+				InventoryTransactionDAO.getInstance().save(transaction);
 			}
 			
 			ticketItem.setInventoryHandled(true);
@@ -511,6 +521,14 @@ public class TicketDAO extends BaseTicketDAO {
 				inventoryItem.setTotalRecepieUnits(totalRecepieUnits + ticketItem.getItemCount());
 				
 				InventoryItemDAO.getInstance().saveOrUpdate(inventoryItem);
+				
+				InventoryTransaction transaction = new InventoryTransaction();
+				transaction.setType(InventoryTransactionType.IN);
+				transaction.setUnitPrice(inventoryItem.getUnitSellingPrice());
+				transaction.setInventoryItem(inventoryItem);
+				transaction.setQuantity(ticketItem.getItemCount());
+				transaction.setRemark("IN as " + ticketItem.getName() + " was canceled for ticket " + ticket.getId());
+				InventoryTransactionDAO.getInstance().save(transaction);
 			}
 			
 			ticketItem.setInventoryHandled(true);
