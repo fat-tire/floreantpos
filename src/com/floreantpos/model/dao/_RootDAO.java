@@ -19,7 +19,6 @@ import com.floreantpos.model.InventoryItem;
 import com.floreantpos.model.InventoryLocation;
 import com.floreantpos.model.InventoryMetaCode;
 import com.floreantpos.model.InventoryTransaction;
-import com.floreantpos.model.InventoryTransactionType;
 import com.floreantpos.model.InventoryUnit;
 import com.floreantpos.model.InventoryVendor;
 import com.floreantpos.model.InventoryWarehouse;
@@ -159,7 +158,6 @@ public abstract class _RootDAO extends com.floreantpos.model.dao._BaseRootDAO {
 		configuration = configuration.addClass(InventoryLocation.class);
 		configuration = configuration.addClass(InventoryMetaCode.class);
 		configuration = configuration.addClass(InventoryTransaction.class);
-		configuration = configuration.addClass(InventoryTransactionType.class);
 		configuration = configuration.addClass(InventoryUnit.class);
 		configuration = configuration.addClass(InventoryVendor.class);
 		configuration = configuration.addClass(InventoryWarehouse.class);

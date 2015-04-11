@@ -50,7 +50,7 @@ public class MediaFX extends Application {
 		});
 
 		Media videoFile = new Media(
-				"file:///home/mshahriar/Videos/sadat2.mp4");
+				"file:/home/mshahriar/Desktop/20051210-w50s.flv");
 		
 		//Media videoFile = new Media(
 		//		"http://download.wavetlan.com/SVV/Media/HTTP/H264/Other_Media/H264_test5_voice_mp4_480x360.mp4");
