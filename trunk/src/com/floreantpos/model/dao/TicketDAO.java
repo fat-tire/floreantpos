@@ -465,6 +465,7 @@ public class TicketDAO extends BaseTicketDAO {
 				}
 				
 				InventoryItem inventoryItem = recepieItem.getInventoryItem();
+				inventoryItem.setTotalPackages(inventoryItem.getTotalPackages() - ticketItem.getItemCount());
 				Double totalRecepieUnits = inventoryItem.getTotalRecepieUnits();
 				inventoryItem.setTotalRecepieUnits(totalRecepieUnits - ticketItem.getItemCount());
 				
@@ -505,6 +506,7 @@ public class TicketDAO extends BaseTicketDAO {
 				}
 				
 				InventoryItem inventoryItem = recepieItem.getInventoryItem();
+				inventoryItem.setTotalPackages(inventoryItem.getTotalPackages() + ticketItem.getItemCount());
 				Double totalRecepieUnits = inventoryItem.getTotalRecepieUnits();
 				inventoryItem.setTotalRecepieUnits(totalRecepieUnits + ticketItem.getItemCount());
 				
