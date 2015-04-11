@@ -21,5 +21,16 @@ public class InventoryTransaction extends BaseInventoryTransaction {
 
 /*[CONSTRUCTOR MARKER END]*/
 
+	public static String PROP_TYPE = "type";
+	
+	protected InventoryTransactionType type;
+	
+	public InventoryTransactionType getType() {
+		return type;
+	}
+	
+	public void setType(InventoryTransactionType type) {
+		this.type = type;
+	}
 
 }

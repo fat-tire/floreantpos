@@ -1,5 +1,6 @@
 package com.floreantpos.model.base;
 
+import java.lang.Comparable;
 import java.io.Serializable;
 
 
@@ -22,7 +23,6 @@ public abstract class BaseInventoryTransaction  implements Comparable, Serializa
 	public static String PROP_TRANSACTION_DATE = "transactionDate";
 	public static String PROP_FROM_WAREHOUSE = "fromWarehouse";
 	public static String PROP_ID = "id";
-	public static String PROP_TRANSACTION_TYPE = "transactionType";
 	public static String PROP_UNIT_PRICE = "unitPrice";
 	public static String PROP_REMARK = "remark";
 	public static String PROP_REFERENCE_NO = "referenceNo";
@@ -57,7 +57,6 @@ public abstract class BaseInventoryTransaction  implements Comparable, Serializa
 		protected java.lang.String remark;
 
 	// many to one
-	private com.floreantpos.model.InventoryTransactionType transactionType;
 	private com.floreantpos.model.PurchaseOrder referenceNo;
 	private com.floreantpos.model.InventoryItem inventoryItem;
 	private com.floreantpos.model.InventoryVendor vendor;
@@ -152,23 +151,6 @@ public abstract class BaseInventoryTransaction  implements Comparable, Serializa
 	 */
 	public void setRemark (java.lang.String remark) {
 		this.remark = remark;
-	}
-
-
-
-	/**
-	 * Return the value associated with the column: TRANSACTION_TYPE_ID
-	 */
-	public com.floreantpos.model.InventoryTransactionType getTransactionType () {
-					return transactionType;
-			}
-
-	/**
-	 * Set the value related to the column: TRANSACTION_TYPE_ID
-	 * @param transactionType the TRANSACTION_TYPE_ID value
-	 */
-	public void setTransactionType (com.floreantpos.model.InventoryTransactionType transactionType) {
-		this.transactionType = transactionType;
 	}
 
 
