@@ -8,6 +8,7 @@ package com.floreantpos.ui.views.order;
 
 import java.awt.BorderLayout;
 import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -15,6 +16,8 @@ import java.awt.event.MouseEvent;
 import java.util.List;
 
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.TitledBorder;
@@ -64,42 +67,6 @@ public class TicketView extends JPanel {
 
 	public TicketView() {
 		initComponents();
-
-		btnAddCookingInstruction.setEnabled(false);
-		btnIncreaseAmount.setEnabled(false);
-		btnDecreaseAmount.setEnabled(false);
-
-		ticketViewerTable.setRowHeight(35);
-		ticketViewerTable.getRenderer().setInTicketScreen(true);
-		ticketViewerTable.addMouseListener(new MouseAdapter() {
-			public void mouseClicked(MouseEvent e) {
-				if (e.getClickCount() == 2) {
-					updateSelectionView();
-				}
-			}
-
-		});
-
-		ticketViewerTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-			@Override
-			public void valueChanged(ListSelectionEvent e) {
-
-				Object selected = ticketViewerTable.getSelected();
-				if (!(selected instanceof ITicketItem)) {
-					return;
-				}
-
-				ITicketItem item = (ITicketItem) selected;
-
-				Boolean printedToKitchen = item.isPrintedToKitchen();
-
-				btnAddCookingInstruction.setEnabled(item.canAddCookingInstruction());
-				btnIncreaseAmount.setEnabled(!printedToKitchen);
-				btnDecreaseAmount.setEnabled(!printedToKitchen);
-				btnDelete.setEnabled(!printedToKitchen);
-			}
-
-		});
 	}
 
 	/** This method is called from within the constructor to
@@ -117,17 +84,15 @@ public class TicketView extends JPanel {
 		btnCancel = new com.floreantpos.swing.PosButton();
 		btnSave = new com.floreantpos.swing.PosButton();
 		scrollerPanel = new com.floreantpos.swing.TransparentPanel();
-		btnIncreaseAmount = new com.floreantpos.swing.PosButton();
 		btnDecreaseAmount = new com.floreantpos.swing.PosButton();
-		btnScrollUp = new com.floreantpos.swing.PosButton();
 		btnScrollDown = new com.floreantpos.swing.PosButton();
-		jPanel2 = new com.floreantpos.swing.TransparentPanel();
+		ticketTablePanel = new com.floreantpos.swing.TransparentPanel();
 		ticketViewerTable = new com.floreantpos.ui.ticket.TicketViewerTable();
 		ticketScrollPane = new PosScrollPane(ticketViewerTable);
 
 		setBorder(javax.swing.BorderFactory.createTitledBorder(null, com.floreantpos.POSConstants.TICKET, javax.swing.border.TitledBorder.CENTER,
 				javax.swing.border.TitledBorder.DEFAULT_POSITION));
-		setPreferredSize(new java.awt.Dimension(420, 463));
+		
 		setLayout(new java.awt.BorderLayout(5, 5));
 		jPanel1.setLayout(new BorderLayout(5, 5));
 		ticketAmountPanel.setLayout(new MigLayout("alignx trailing,fill", "[grow][]", "[][][][][][][][]"));
@@ -211,87 +176,113 @@ public class TicketView extends JPanel {
 			}
 		});
 		controlPanel.add(btnPay);
-
-		btnIncreaseAmount.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/add_user_32.png")));
-		btnIncreaseAmount.setPreferredSize(new java.awt.Dimension(76, 45));
-		btnIncreaseAmount.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				doIncreaseAmount(evt);
-			}
-		});
-		scrollerPanel.setLayout(new MigLayout("insets 0", "[133px,grow][133px,grow][133px,grow]", "[45px][45px]"));
-		scrollerPanel.add(btnIncreaseAmount, "cell 0 0,grow");
-
-		btnDecreaseAmount.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/minus_32.png")));
-		btnDecreaseAmount.setPreferredSize(new java.awt.Dimension(76, 45));
-		btnDecreaseAmount.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				doDecreaseAmount(evt);
-			}
-		});
-		scrollerPanel.add(btnDecreaseAmount, "cell 1 0,grow");
-
-		btnScrollUp.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/up_32.png")));
-		btnScrollUp.setPreferredSize(new java.awt.Dimension(76, 45));
-		btnScrollUp.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				doScrollUp(evt);
-			}
-		});
-		scrollerPanel.add(btnScrollUp, "cell 2 0,grow");
-
-		btnScrollDown.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/down_32.png")));
-		btnScrollDown.setPreferredSize(new java.awt.Dimension(76, 45));
-		btnScrollDown.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				doScrollDown(evt);
-			}
-		});
-		btnDelete = new com.floreantpos.swing.PosButton();
-
-		btnDelete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/delete_32.png")));
-		btnDelete.setText(com.floreantpos.POSConstants.DELETE);
-		btnDelete.setPreferredSize(new java.awt.Dimension(80, 17));
-		btnDelete.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				doDeleteSelection(evt);
-			}
-		});
-
-		btnAddCookingInstruction = new PosButton();
-		btnAddCookingInstruction.setEnabled(false);
-		btnAddCookingInstruction.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				doAddCookingInstruction();
-			}
-		});
-		btnAddCookingInstruction.setText("<html><center>ADD COOKING<br/>INSTRUCTION</center></html>");
-		scrollerPanel.add(btnAddCookingInstruction, "cell 0 1,grow");
-		scrollerPanel.add(btnDelete, "cell 1 1,grow");
-		scrollerPanel.add(btnScrollDown, "cell 2 1,grow");
+		
+		createTicketItemControlPanel();
 
 		JPanel amountPanelContainer= new JPanel(new BorderLayout(5, 5));
 		amountPanelContainer.add(ticketAmountPanel);
-		amountPanelContainer.add(scrollerPanel, BorderLayout.SOUTH);
 
 		jPanel1.add(amountPanelContainer);
 		jPanel1.add(controlPanel, BorderLayout.SOUTH);
 
 		add(jPanel1, java.awt.BorderLayout.SOUTH);
 
-		jPanel2.setLayout(new java.awt.BorderLayout());
+		ticketTablePanel.setLayout(new java.awt.BorderLayout(5, 5));
 
-		//		jScrollPane1.setBorder(null);
 		ticketScrollPane.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		ticketScrollPane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 		ticketScrollPane.setPreferredSize(new java.awt.Dimension(180, 200));
-		//jScrollPane1.setViewportView(ticketViewerTable);
 
-		jPanel2.add(ticketScrollPane, java.awt.BorderLayout.CENTER);
+		ticketTablePanel.add(scrollerPanel, BorderLayout.EAST);
+		ticketTablePanel.add(ticketScrollPane, java.awt.BorderLayout.CENTER);
+		
+		add(ticketTablePanel, java.awt.BorderLayout.CENTER);
+		
+		ticketViewerTable.setRowHeight(35);
+		ticketViewerTable.getRenderer().setInTicketScreen(true);
+		ticketViewerTable.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
+				if (e.getClickCount() == 2) {
+					updateSelectionView();
+				}
+			}
 
-		add(jPanel2, java.awt.BorderLayout.CENTER);
+		});
+
+		ticketViewerTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+			@Override
+			public void valueChanged(ListSelectionEvent e) {
+
+				Object selected = ticketViewerTable.getSelected();
+				if (!(selected instanceof ITicketItem)) {
+					return;
+				}
+
+				ITicketItem item = (ITicketItem) selected;
+
+				Boolean printedToKitchen = item.isPrintedToKitchen();
+
+				btnAddCookingInstruction.setEnabled(item.canAddCookingInstruction());
+				btnIncreaseAmount.setEnabled(!printedToKitchen);
+				btnDecreaseAmount.setEnabled(!printedToKitchen);
+				btnDelete.setEnabled(!printedToKitchen);
+			}
+
+		});
+		
+		setPreferredSize(new java.awt.Dimension(480, 463));
 		
 	}// </editor-fold>//GEN-END:initComponents
+
+	private void createTicketItemControlPanel() {
+		scrollerPanel.setLayout(new GridLayout(0, 1, 5, 5));
+		
+		btnScrollUp.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				doScrollUp(evt);
+			}
+		});
+
+		btnIncreaseAmount.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				doIncreaseAmount(evt);
+			}
+		});
+
+		btnDecreaseAmount.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/minus_32.png")));
+		btnDecreaseAmount.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				doDecreaseAmount(evt);
+			}
+		});
+
+		btnScrollDown.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/down_32.png")));
+		btnScrollDown.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				doScrollDown(evt);
+			}
+		});
+
+		btnDelete.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				doDeleteSelection(evt);
+			}
+		});
+
+		btnAddCookingInstruction.setEnabled(false);
+		btnAddCookingInstruction.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				doAddCookingInstruction();
+			}
+		});
+		
+		scrollerPanel.add(btnScrollUp);
+		scrollerPanel.add(btnIncreaseAmount);
+		scrollerPanel.add(btnDecreaseAmount);
+		scrollerPanel.add(btnDelete);
+		scrollerPanel.add(btnAddCookingInstruction);
+		scrollerPanel.add(btnScrollDown);
+	}
 
 	protected void doAddCookingInstruction() {
 
@@ -453,18 +444,18 @@ public class TicketView extends JPanel {
 	private com.floreantpos.swing.TransparentPanel controlPanel;
 	private com.floreantpos.swing.PosButton btnCancel;
 	private com.floreantpos.swing.PosButton btnDecreaseAmount;
-	private com.floreantpos.swing.PosButton btnDelete;
+	private com.floreantpos.swing.PosButton btnDelete = new PosButton(new javax.swing.ImageIcon(getClass().getResource("/images/delete_32.png")));
 	private com.floreantpos.swing.PosButton btnSave;
-	private com.floreantpos.swing.PosButton btnIncreaseAmount;
+	private com.floreantpos.swing.PosButton btnIncreaseAmount = new PosButton(new javax.swing.ImageIcon(getClass().getResource("/images/add_user_32.png")));
 	private com.floreantpos.swing.PosButton btnPay;
 	private com.floreantpos.swing.PosButton btnScrollDown;
-	private com.floreantpos.swing.PosButton btnScrollUp;
+	private com.floreantpos.swing.PosButton btnScrollUp = new PosButton(new ImageIcon(getClass().getResource("/images/up_32.png")));
 //	private javax.swing.JLabel jLabel1;
 	private javax.swing.JLabel lblTax;
 	private javax.swing.JLabel jLabel5;
 	private javax.swing.JLabel jLabel6;
 	private com.floreantpos.swing.TransparentPanel jPanel1;
-	private com.floreantpos.swing.TransparentPanel jPanel2;
+	private com.floreantpos.swing.TransparentPanel ticketTablePanel;
 	private com.floreantpos.swing.TransparentPanel ticketAmountPanel;
 	private com.floreantpos.swing.TransparentPanel scrollerPanel;
 	private javax.swing.JScrollPane ticketScrollPane;
@@ -475,7 +466,7 @@ public class TicketView extends JPanel {
 	private com.floreantpos.ui.ticket.TicketViewerTable ticketViewerTable;
 //	private JTextField tfServiceCharge;
 //	private JLabel lblServiceCharge;
-	private PosButton btnAddCookingInstruction;
+	private PosButton btnAddCookingInstruction = new PosButton("CI");
 
 	// End of variables declaration//GEN-END:variables
 
@@ -623,5 +614,14 @@ public class TicketView extends JPanel {
 
 			orderView.showView(ModifierView.VIEW_NAME);
 		}
+	}
+	
+	public static void main(String[] args) {
+		TicketView ticketView = new TicketView();
+		JFrame frame = new JFrame();
+		frame.add(ticketView);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.pack();
+		frame.setVisible(true);
 	}
 }

@@ -6,6 +6,7 @@ import java.awt.Insets;
 import java.awt.event.ActionListener;
 
 import javax.swing.Action;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
@@ -76,6 +77,10 @@ public class PosButton extends JButton {
 		
 		setActionCommand(command.name());
 		addActionListener(listener);
+	}
+
+	public PosButton(ImageIcon imageIcon) {
+		super(imageIcon);
 	}
 
 	@Override
