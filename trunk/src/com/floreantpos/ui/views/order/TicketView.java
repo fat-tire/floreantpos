@@ -663,7 +663,7 @@ public class TicketView extends JPanel {
 			});
 
 			buttonPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
-			buttonPanel.setLayout(new java.awt.GridLayout(1, 0, 5, 5));
+			buttonPanel.setLayout(new java.awt.GridLayout(2, 0, 5, 5));
 
 			btnOrderType.setText(com.floreantpos.POSConstants.ORDER_TYPE_BUTTON_TEXT);
 			btnOrderType.addActionListener(new java.awt.event.ActionListener() {
