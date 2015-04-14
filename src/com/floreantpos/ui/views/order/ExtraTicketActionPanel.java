@@ -14,9 +14,13 @@ import java.util.List;
 
 import javax.swing.JDialog;
 import javax.swing.JPanel;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.TitledBorder;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.jdesktop.swingx.JXCollapsiblePane;
 
 import com.floreantpos.POSConstants;
 import com.floreantpos.customer.CustomerSelectionDialog;
@@ -43,20 +47,22 @@ import com.floreantpos.util.PosGuiUtil;
  *
  * @author  MShahriar
  */
-public class OthersView extends JPanel {
+public class ExtraTicketActionPanel extends JXCollapsiblePane {
 	private Ticket currentTicket;
 	private ItemSelectionListener itemSelectionListener;
+	
+	private static ExtraTicketActionPanel instance = new ExtraTicketActionPanel();
 
 	/** Creates new form OthersView */
-	public OthersView() {
+	private ExtraTicketActionPanel() {
 		initComponents();
 	}
 
-	public OthersView(ItemSelectionListener itemSelectionListener) {
-		initComponents();
-
-		setItemSelectionListener(itemSelectionListener);
-	}
+//	public ExtraTicketActionPanel(ItemSelectionListener itemSelectionListener) {
+//		initComponents();
+//
+//		setItemSelectionListener(itemSelectionListener);
+//	}
 
 	/** This method is called from within the constructor to
 	 * initialize the form.
@@ -65,15 +71,16 @@ public class OthersView extends JPanel {
 	 */
 	// <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:initComponents
 	private void initComponents() {
-
+		setCollapsed(true);
+		setAnimated(false);
+		
 		buttonPanel = new JPanel();
 		btnOrderInfo = new com.floreantpos.swing.PosButton();
 		btnMisc = new com.floreantpos.swing.PosButton();
 		btnGuestNo = new com.floreantpos.swing.PosButton();
 		btnTableNumber = new com.floreantpos.swing.PosButton();
 
-		setBorder(javax.swing.BorderFactory.createTitledBorder(null, "=", javax.swing.border.TitledBorder.CENTER,
-				javax.swing.border.TitledBorder.DEFAULT_POSITION));
+		setBorder(new CompoundBorder(new EmptyBorder(10, 2, 2, 1), new TitledBorder("")));
 		setLayout(new BorderLayout());
 
 		btnSearchItem = new PosButton("MANAGER MENU");
@@ -87,7 +94,7 @@ public class OthersView extends JPanel {
 		buttonPanel.add(btnSearchItem);
 		
 		buttonPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
-		buttonPanel.setLayout(new java.awt.GridLayout(2, 0, 5, 5));
+		buttonPanel.setLayout(new java.awt.GridLayout(1, 0, 5, 5));
 
 		btnOrderInfo.setText(com.floreantpos.POSConstants.ORDER_INFO);
 		btnOrderInfo.addActionListener(new java.awt.event.ActionListener() {
@@ -120,7 +127,7 @@ public class OthersView extends JPanel {
 				btnCustomerNumberActionPerformed(evt);
 			}
 		});
-		buttonPanel.add(btnGuestNo);
+		//buttonPanel.add(btnGuestNo);
 
 		btnTableNumber.setText(com.floreantpos.POSConstants.TABLE);
 		btnTableNumber.addActionListener(new java.awt.event.ActionListener() {
@@ -128,7 +135,7 @@ public class OthersView extends JPanel {
 				btnTableNumberActionPerformed(evt);
 			}
 		});
-		buttonPanel.add(btnTableNumber);
+		//buttonPanel.add(btnTableNumber);
 
 		add(buttonPanel);
 	}// </editor-fold>//GEN-END:initComponents
@@ -332,5 +339,9 @@ public class OthersView extends JPanel {
 			return;
 		}
 		itemSelectionListener.itemSelected(menuItem);
+	}
+	
+	public static ExtraTicketActionPanel getInstance() {
+		return instance;
 	}
 }
