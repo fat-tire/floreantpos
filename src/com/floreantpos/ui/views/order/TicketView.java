@@ -144,7 +144,7 @@ public class TicketView extends JPanel {
 
 				Boolean printedToKitchen = item.isPrintedToKitchen();
 
-				btnAddCookingInstruction.setEnabled(item.canAddCookingInstruction());
+				btnCookingInstruction.setEnabled(item.canAddCookingInstruction());
 				btnIncreaseAmount.setEnabled(!printedToKitchen);
 				btnDecreaseAmount.setEnabled(!printedToKitchen);
 				btnDelete.setEnabled(!printedToKitchen);
@@ -267,8 +267,7 @@ public class TicketView extends JPanel {
 			}
 		});
 
-		btnAddCookingInstruction.setEnabled(false);
-		btnAddCookingInstruction.addActionListener(new ActionListener() {
+		btnCookingInstruction.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				doAddCookingInstruction();
 			}
@@ -278,7 +277,7 @@ public class TicketView extends JPanel {
 		ticketItemActionPanel.add(btnIncreaseAmount);
 		ticketItemActionPanel.add(btnDecreaseAmount);
 		ticketItemActionPanel.add(btnDelete);
-		ticketItemActionPanel.add(btnAddCookingInstruction);
+		ticketItemActionPanel.add(btnCookingInstruction);
 		ticketItemActionPanel.add(btnScrollDown);
 		
 		ticketItemActionPanel.setPreferredSize(new Dimension(70, 360));
@@ -461,7 +460,7 @@ public class TicketView extends JPanel {
 	private javax.swing.JTextField tfTotal;
 	private com.floreantpos.ui.ticket.TicketViewerTable ticketViewerTable;
 	private ExtraTicketActionPanel extraActionPanel = new ExtraTicketActionPanel();
-	private PosButton btnAddCookingInstruction = new PosButton("CI");
+	private PosButton btnCookingInstruction = new PosButton(new ImageIcon(getClass().getResource("/images/cooking-instruction.png")));
 	private TitledBorder titledBorder = new TitledBorder("");
 	private Border border = new CompoundBorder(titledBorder, new EmptyBorder(5, 5, 5, 5));
 
