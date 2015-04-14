@@ -12,8 +12,6 @@ import java.util.List;
 import javax.swing.AbstractButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JSeparator;
-import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
 import net.miginfocom.swing.MigLayout;
@@ -60,7 +58,6 @@ public abstract class SelectionView extends JPanel implements ComponentListener 
 
 		MigLayout migLayout2 = new MigLayout("fill,hidemode 3", "grow", "");
 		JPanel southPanel = new JPanel(migLayout2);
-		//southPanel.add(new JSeparator(JSeparator.HORIZONTAL), "wrap, span, grow, gaptop 5");
 
 		btnBack = new PosButton();
 		btnBack.setText(POSConstants.CAPITAL_BACK);

@@ -37,7 +37,7 @@ public class MenuItemView extends SelectionView {
 	private Vector<ItemSelectionListener> listenerList = new Vector<ItemSelectionListener>();
 
 	private MenuGroup menuGroup;
-	private PosButton btnMisc = new PosButton(com.floreantpos.POSConstants.MISC);
+	private PosButton btnMisc = new PosButton(com.floreantpos.POSConstants.MISC_BUTTON_TEXT);
 
 	/** Creates new form GroupView */
 	public MenuItemView() {
