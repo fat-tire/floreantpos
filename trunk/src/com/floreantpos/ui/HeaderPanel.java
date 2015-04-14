@@ -117,7 +117,6 @@ public class HeaderPanel extends JPanel {
 	
 	private class TimerHandler implements ActionListener {
 		int countDown = TerminalConfig.getAutoLogoffTime();
-		boolean autoLogoffEnable = TerminalConfig.isAutoLogoffEnable();
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -132,7 +131,7 @@ public class HeaderPanel extends JPanel {
 		}
 
 		private void checkLogoffOption() {
-			if(!autoLogoffEnable) {
+			if(!TerminalConfig.isAutoLogoffEnable()) {
 				return;
 			}
 			

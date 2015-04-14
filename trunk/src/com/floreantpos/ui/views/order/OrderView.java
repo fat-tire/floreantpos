@@ -72,13 +72,12 @@ public class OrderView extends ViewPanel {
         ticketView = new com.floreantpos.ui.views.order.TicketView();
         jPanel1 = new com.floreantpos.swing.TransparentPanel();
         midContainer = new com.floreantpos.swing.TransparentPanel();
-        othersView = new com.floreantpos.ui.views.order.OthersView();
 
-        setLayout(new java.awt.BorderLayout());
+        setLayout(new java.awt.BorderLayout(10, 10));
 
-        add(categoryView, java.awt.BorderLayout.WEST);
+        add(categoryView, java.awt.BorderLayout.EAST);
 
-        add(ticketView, java.awt.BorderLayout.EAST);
+        add(ticketView, java.awt.BorderLayout.WEST);
 
         jPanel1.setLayout(new java.awt.BorderLayout());
 
@@ -95,7 +94,7 @@ public class OrderView extends ViewPanel {
     private com.floreantpos.ui.views.order.CategoryView categoryView;
     private com.floreantpos.swing.TransparentPanel jPanel1;
     private com.floreantpos.swing.TransparentPanel midContainer;
-    private com.floreantpos.ui.views.order.OthersView othersView;
+    private com.floreantpos.ui.views.order.ExtraTicketActionPanel othersView = ExtraTicketActionPanel.getInstance();
     private com.floreantpos.ui.views.order.TicketView ticketView;
     // End of variables declaration//GEN-END:variables
     
@@ -175,7 +174,7 @@ public class OrderView extends ViewPanel {
 	public void resetView() {
 	}
 
-	public com.floreantpos.ui.views.order.OthersView getOthersView() {
+	public com.floreantpos.ui.views.order.ExtraTicketActionPanel getOthersView() {
 		return othersView;
 	}
 	
