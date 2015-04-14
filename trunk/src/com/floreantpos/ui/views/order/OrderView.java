@@ -70,6 +70,7 @@ public class OrderView extends ViewPanel {
     private void initComponents() {
         categoryView = new com.floreantpos.ui.views.order.CategoryView();
         ticketView = new com.floreantpos.ui.views.order.TicketView();
+        othersView = ticketView.getExtraActionPanel();
         jPanel1 = new com.floreantpos.swing.TransparentPanel();
         midContainer = new com.floreantpos.swing.TransparentPanel();
 
@@ -94,7 +95,7 @@ public class OrderView extends ViewPanel {
     private com.floreantpos.ui.views.order.CategoryView categoryView;
     private com.floreantpos.swing.TransparentPanel jPanel1;
     private com.floreantpos.swing.TransparentPanel midContainer;
-    private com.floreantpos.ui.views.order.ExtraTicketActionPanel othersView = ExtraTicketActionPanel.getInstance();
+    private TicketView.ExtraTicketActionPanel othersView;
     private com.floreantpos.ui.views.order.TicketView ticketView;
     // End of variables declaration//GEN-END:variables
     
@@ -160,7 +161,6 @@ public class OrderView extends ViewPanel {
 		this.currentTicket = currentTicket;
 		
 		ticketView.setTicket(currentTicket);
-		othersView.setCurrentTicket(currentTicket);
 		resetView();
 	}
 	
@@ -174,7 +174,7 @@ public class OrderView extends ViewPanel {
 	public void resetView() {
 	}
 
-	public com.floreantpos.ui.views.order.ExtraTicketActionPanel getOthersView() {
+	public TicketView.ExtraTicketActionPanel getOthersView() {
 		return othersView;
 	}
 	

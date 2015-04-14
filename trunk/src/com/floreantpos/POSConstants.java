@@ -9,6 +9,8 @@ public class POSConstants {
 	public static final String DRIVE_THRU_BUTTON_TEXT = Messages.getString("DRIVE_THRU_BUTTON_TEXT"); //$NON-NLS-1$
 	public static final String BAR_TAB_BUTTON_TEXT = Messages.getString("BAR_TAB_BUTTON_TEXT"); //$NON-NLS-1$
 	
+	public static final String SEARCH_ITEM_BUTTON_TEXT = Messages.getString("SEARCH_ITEM_BUTTON_TEXT"); //$NON-NLS-1$
+	
 	public static final String CashierSwitchBoardView_LABEL_ORDER = Messages.getString("CashierSwitchBoardView.LABEL_ORDER"); //$NON-NLS-1$
 	
 	public static final String BACK_OFFICE_BUTTON_TEXT = Messages.getString("BACK_OFFICE_BUTTON_TEXT"); //$NON-NLS-1$
@@ -103,11 +105,12 @@ public class POSConstants {
 	public static final String GROUPS = Messages.getString("PosMessage.58"); //$NON-NLS-1$
 	public static final String TEL = Messages.getString("PosMessage.59"); //$NON-NLS-1$
 	public static final String SERVER = Messages.getString("PosMessage.60"); //$NON-NLS-1$
-	public static final String CUSTOMER = Messages.getString("PosMessage.61"); //$NON-NLS-1$
+	public static final String CUSTOMER_SELECTION_BUTTON_TEXT = Messages.getString("CUSTOMER_SELECTION_BUTTON_TEXT"); //$NON-NLS-1$
 	public static final String GENERAL = Messages.getString("PosMessage.62"); //$NON-NLS-1$
 	public static final String GROUP = Messages.getString("PosMessage.63"); //$NON-NLS-1$
 	public static final String RATE = Messages.getString("PosMessage.64"); //$NON-NLS-1$
 	public static final String ORDER_INFO = Messages.getString("PosMessage.65"); //$NON-NLS-1$
+	public static final String ORDER_TYPE_BUTTON_TEXT = Messages.getString("ORDER_TYPE_BUTTON_TEXT"); //$NON-NLS-1$
 	public static final String CANNOT_LOAD_VOID_REASONS = Messages.getString("PosMessage.66"); //$NON-NLS-1$
 	public static final String DELETE_SHIFT = Messages.getString("PosMessage.67"); //$NON-NLS-1$
 	public static final String PRINTER_TYPE = Messages.getString("PosMessage.68"); //$NON-NLS-1$
@@ -134,7 +137,7 @@ public class POSConstants {
 	public static final String REQUIRED_MODIFIERS_NOT_ADDED = Messages.getString("PosMessage.88"); //$NON-NLS-1$
 	public static final String DISABLED = Messages.getString("PosMessage.89"); //$NON-NLS-1$
 	public static final String INSTRUCTION_CANNOT_BE_EMPTY = Messages.getString("PosMessage.90"); //$NON-NLS-1$
-	public static final String TABLE = Messages.getString("PosMessage.91"); //$NON-NLS-1$
+	public static final String TABLE_NO_BUTTON_TEXT = Messages.getString("TABLE_NO_BUTTON_TEXT"); //$NON-NLS-1$
 	public static final String NAME_REQUIRED = Messages.getString("PosMessage.92"); //$NON-NLS-1$
 	public static final String THERE_WAS_AN_ERROR_WHILE_PRINTING_TO_KITCHEN = Messages.getString("PosMessage.93"); //$NON-NLS-1$
 	public static final String TIME = Messages.getString("PosMessage.94"); //$NON-NLS-1$
@@ -260,7 +263,7 @@ public class POSConstants {
 	public static final String DELETE = Messages.getString("PosMessage.210"); //$NON-NLS-1$
 	public static final String QTY = Messages.getString("PosMessage.211"); //$NON-NLS-1$
 	public static final String CONFIRM_DELETE = Messages.getString("PosMessage.212"); //$NON-NLS-1$
-	public static final String GUEST = "Guest"; //$NON-NLS-1$
+	public static final String GUEST_NO_BUTTON_TEXT = Messages.getString("GUEST_NO_BUTTON_TEXT"); //$NON-NLS-1$
 	public static final String EMPTY_PASSWORD = Messages.getString("PosMessage.214"); //$NON-NLS-1$
 	public static final String TABLES = Messages.getString("PosMessage.215"); //$NON-NLS-1$
 	public static final String SWITCHBOARD = Messages.getString("PosMessage.216"); //$NON-NLS-1$
@@ -275,7 +278,7 @@ public class POSConstants {
 	public static final String CHECK = "Check"; //$NON-NLS-1$
 	public static final String SETTLE_TIME = Messages.getString("PosMessage.226"); //$NON-NLS-1$
 	public static final String FROM = Messages.getString("PosMessage.227"); //$NON-NLS-1$
-	public static final String MISC = Messages.getString("PosMessage.228"); //$NON-NLS-1$
+	public static final String MISC_BUTTON_TEXT = Messages.getString("MISC_BUTTON_TEXT"); //$NON-NLS-1$
 	public static final String COUPON_VALUE = Messages.getString("PosMessage.229"); //$NON-NLS-1$
 	public static final String OTHERS = Messages.getString("PosMessage.231"); //$NON-NLS-1$
 	public static final String CASHIER = Messages.getString("PosMessage.232"); //$NON-NLS-1$

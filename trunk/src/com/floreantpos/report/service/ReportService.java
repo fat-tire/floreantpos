@@ -62,7 +62,7 @@ public class ReportService {
 			Criteria criteria = session.createCriteria(MenuCategory.class);
 			List<MenuCategory> categories = criteria.list();
 			MenuCategory miscCategory = new MenuCategory();
-			miscCategory.setName(com.floreantpos.POSConstants.MISC);
+			miscCategory.setName(com.floreantpos.POSConstants.MISC_BUTTON_TEXT);
 			categories.add(miscCategory);
 
 			for (MenuCategory category : categories) {
@@ -123,7 +123,7 @@ public class ReportService {
 			criteria = session.createCriteria(MenuCategory.class);
 			List<MenuCategory> categories = criteria.list();
 			MenuCategory miscCategory = new MenuCategory();
-			miscCategory.setName(com.floreantpos.POSConstants.MISC);
+			miscCategory.setName(com.floreantpos.POSConstants.MISC_BUTTON_TEXT);
 			categories.add(miscCategory);
 			
 			for (User server : servers) {

@@ -96,8 +96,8 @@ public class MiscTicketItemDialog extends POSDialog {
     	ticketItem.setItemCount(1);
     	ticketItem.setUnitPrice(amount);
     	ticketItem.setName(itemName);
-    	ticketItem.setCategoryName(com.floreantpos.POSConstants.MISC);
-    	ticketItem.setGroupName(com.floreantpos.POSConstants.MISC);
+    	ticketItem.setCategoryName(com.floreantpos.POSConstants.MISC_BUTTON_TEXT);
+    	ticketItem.setGroupName(com.floreantpos.POSConstants.MISC_BUTTON_TEXT);
     	ticketItem.setShouldPrintToKitchen(true);
     	
     	dispose();

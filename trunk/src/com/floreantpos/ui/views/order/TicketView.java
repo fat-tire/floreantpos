@@ -12,11 +12,11 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.ImageIcon;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
@@ -29,35 +29,48 @@ import javax.swing.event.ListSelectionListener;
 
 import net.miginfocom.swing.MigLayout;
 
+import org.hibernate.Session;
 import org.hibernate.StaleObjectStateException;
+import org.jdesktop.swingx.JXCollapsiblePane;
 
 import com.floreantpos.POSConstants;
 import com.floreantpos.PosException;
 import com.floreantpos.config.TerminalConfig;
+import com.floreantpos.customer.CustomerSelectionDialog;
+import com.floreantpos.extension.FloorLayoutPlugin;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.CookingInstruction;
 import com.floreantpos.model.ITicketItem;
 import com.floreantpos.model.MenuCategory;
 import com.floreantpos.model.MenuGroup;
 import com.floreantpos.model.MenuItem;
+import com.floreantpos.model.OrderType;
+import com.floreantpos.model.ShopTable;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.TicketItemCookingInstruction;
 import com.floreantpos.model.TicketItemModifier;
 import com.floreantpos.model.dao.CookingInstructionDAO;
 import com.floreantpos.model.dao.MenuItemDAO;
+import com.floreantpos.model.dao.ShopTableDAO;
 import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.report.ReceiptPrintService;
 import com.floreantpos.swing.POSToggleButton;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.swing.PosScrollPane;
 import com.floreantpos.ui.dialog.BeanEditorDialog;
+import com.floreantpos.ui.dialog.MiscTicketItemDialog;
+import com.floreantpos.ui.dialog.NumberSelectionDialog2;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.views.CashierSwitchBoardView;
 import com.floreantpos.ui.views.CookingInstructionSelectionView;
+import com.floreantpos.ui.views.OrderInfoDialog;
+import com.floreantpos.ui.views.OrderInfoView;
 import com.floreantpos.ui.views.SwitchboardView;
+import com.floreantpos.ui.views.order.actions.ItemSelectionListener;
 import com.floreantpos.ui.views.order.actions.OrderListener;
 import com.floreantpos.util.NumberUtil;
+import com.floreantpos.util.PosGuiUtil;
 
 /**
  *
@@ -110,15 +123,12 @@ public class TicketView extends JPanel {
 		add(ticketActionPanel, BorderLayout.SOUTH);
 		add(ticketItemActionPanel, BorderLayout.EAST);
 
-		ticketViewerTable.setRowHeight(35);
 		ticketViewerTable.getRenderer().setInTicketScreen(true);
-		ticketViewerTable.addMouseListener(new MouseAdapter() {
-			public void mouseClicked(MouseEvent e) {
-				if (e.getClickCount() == 2) {
-					updateSelectionView();
-				}
+		ticketViewerTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+			@Override
+			public void valueChanged(ListSelectionEvent e) {
+				updateSelectionView();
 			}
-
 		});
 
 		ticketViewerTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
@@ -173,7 +183,7 @@ public class TicketView extends JPanel {
 		btnMore.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				ExtraTicketActionPanel.getInstance().setCollapsed(!btnMore.isSelected());
+				extraActionPanel.setCollapsed(!btnMore.isSelected());
 			}
 		});
 		
@@ -450,6 +460,7 @@ public class TicketView extends JPanel {
 	private javax.swing.JTextField tfTax;
 	private javax.swing.JTextField tfTotal;
 	private com.floreantpos.ui.ticket.TicketViewerTable ticketViewerTable;
+	private ExtraTicketActionPanel extraActionPanel = new ExtraTicketActionPanel();
 	private PosButton btnAddCookingInstruction = new PosButton("CI");
 	private TitledBorder titledBorder = new TitledBorder("");
 	private Border border = new CompoundBorder(titledBorder, new EmptyBorder(5, 5, 5, 5));
@@ -594,6 +605,10 @@ public class TicketView extends JPanel {
 			orderView.showView(ModifierView.VIEW_NAME);
 		}
 	}
+	
+	public ExtraTicketActionPanel getExtraActionPanel() {
+		return extraActionPanel;
+	}
 
 	public static void main(String[] args) {
 		TicketView ticketView = new TicketView();
@@ -603,4 +618,304 @@ public class TicketView extends JPanel {
 		frame.pack();
 		frame.setVisible(true);
 	}
+	
+	public class ExtraTicketActionPanel extends JXCollapsiblePane {
+		private ItemSelectionListener itemSelectionListener;
+
+		/** Creates new form OthersView */
+		private ExtraTicketActionPanel() {
+			initComponents();
+		}
+
+		//	public ExtraTicketActionPanel(ItemSelectionListener itemSelectionListener) {
+		//		initComponents();
+		//
+		//		setItemSelectionListener(itemSelectionListener);
+		//	}
+
+		/** This method is called from within the constructor to
+		 * initialize the form.
+		 * WARNING: Do NOT modify this code. The content of this method is
+		 * always regenerated by the Form Editor.
+		 */
+		// <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:initComponents
+		private void initComponents() {
+			setCollapsed(true);
+			setAnimated(false);
+
+			buttonPanel = new JPanel();
+			btnOrderType = new com.floreantpos.swing.PosButton();
+			btnMisc = new com.floreantpos.swing.PosButton();
+			btnGuestNo = new com.floreantpos.swing.PosButton();
+			btnTableNumber = new com.floreantpos.swing.PosButton();
+
+			setBorder(new CompoundBorder(new EmptyBorder(10, 2, 2, 1), new TitledBorder("")));
+			setLayout(new BorderLayout());
+
+			btnSearchItem = new PosButton(POSConstants.SEARCH_ITEM_BUTTON_TEXT);
+			btnSearchItem.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					searchItem();
+				}
+			});
+
+			buttonPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
+			buttonPanel.setLayout(new java.awt.GridLayout(1, 0, 5, 5));
+
+			btnOrderType.setText(com.floreantpos.POSConstants.ORDER_TYPE_BUTTON_TEXT);
+			btnOrderType.addActionListener(new java.awt.event.ActionListener() {
+				public void actionPerformed(java.awt.event.ActionEvent evt) {
+					//doViewOrderInfo();
+					doChangeOrderType();
+				}
+			});
+
+			btnCustomer = new PosButton(POSConstants.CUSTOMER_SELECTION_BUTTON_TEXT);
+			btnCustomer.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					doAddEditCustomer();
+				}
+			});
+
+			btnMisc.setText(com.floreantpos.POSConstants.MISC_BUTTON_TEXT);
+			btnMisc.addActionListener(new java.awt.event.ActionListener() {
+				public void actionPerformed(java.awt.event.ActionEvent evt) {
+					doInsertMisc(evt);
+				}
+			});
+
+			btnGuestNo.setText(com.floreantpos.POSConstants.GUEST_NO_BUTTON_TEXT);
+			btnGuestNo.addActionListener(new java.awt.event.ActionListener() {
+				public void actionPerformed(java.awt.event.ActionEvent evt) {
+					btnCustomerNumberActionPerformed(evt);
+				}
+			});
+
+			btnTableNumber.setText(com.floreantpos.POSConstants.TABLE_NO_BUTTON_TEXT);
+			btnTableNumber.addActionListener(new java.awt.event.ActionListener() {
+				public void actionPerformed(java.awt.event.ActionEvent evt) {
+					btnTableNumberActionPerformed(evt);
+				}
+			});
+
+			buttonPanel.add(btnMisc);
+			buttonPanel.add(btnSearchItem);
+			buttonPanel.add(btnOrderType);
+			buttonPanel.add(btnCustomer);
+			buttonPanel.add(btnTableNumber);
+			buttonPanel.add(btnGuestNo);
+
+			add(buttonPanel);
+		}// </editor-fold>//GEN-END:initComponents
+		
+		public void setOrderType(OrderType orderType) {
+			ticket.setType(orderType);
+			
+			btnGuestNo.setEnabled(orderType == OrderType.DINE_IN);
+			btnTableNumber.setEnabled(orderType == OrderType.DINE_IN);
+		}
+
+		protected void doChangeOrderType() {
+			OrderTypeSelectionDialog dialog = new OrderTypeSelectionDialog();
+			dialog.open();
+			
+			if(dialog.isCanceled()) return;
+			
+			OrderType selectedOrderType = dialog.getSelectedOrderType();
+			setOrderType(selectedOrderType);
+		}
+
+		protected void doAddEditCustomer() {
+			CustomerSelectionDialog dialog = new CustomerSelectionDialog(getTicket());
+			dialog.setSize(800, 650);
+			dialog.open();
+		}
+
+		private void doInsertMisc(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_doInsertMisc
+			MiscTicketItemDialog dialog = new MiscTicketItemDialog();
+			dialog.open();
+			if (!dialog.isCanceled()) {
+				TicketItem ticketItem = dialog.getTicketItem();
+				RootView.getInstance().getOrderView().getTicketView().addTicketItem(ticketItem);
+			}
+		}//GEN-LAST:event_doInsertMisc
+
+		private void doViewOrderInfo() {//GEN-FIRST:event_btnOrderInfoActionPerformed
+			try {
+				Ticket ticket = getTicket();
+
+				List<Ticket> tickets = new ArrayList<Ticket>();
+				tickets.add(ticket);
+
+				OrderInfoView view = new OrderInfoView(tickets);
+				OrderInfoDialog dialog = new OrderInfoDialog(view);
+				dialog.setSize(400, 600);
+				dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+				dialog.setLocationRelativeTo(Application.getPosWindow());
+				dialog.setVisible(true);
+
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
+			//    	TicketDetailDialog dialog = new TicketDetailDialog(Application.getPosWindow(), true);
+			//    	dialog.setTicket(getCurrentTicket());
+			//    	dialog.open();
+			//    	
+			//    	if(!dialog.isCanceled()) {
+			//    		OrderView.getInstance().getTicketView().updateView();
+			//    	}
+
+		}//GEN-LAST:event_btnOrderInfoActionPerformed
+
+		private void btnCustomerNumberActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCustomerNumberActionPerformed
+			updateGuestNumber();
+		}//GEN-LAST:event_btnCustomerNumberActionPerformed
+
+		private void updateGuestNumber() {
+			Ticket thisTicket = getTicket();
+			int guestNumber = thisTicket.getNumberOfGuests();
+
+			NumberSelectionDialog2 dialog = new NumberSelectionDialog2();
+			dialog.setTitle(com.floreantpos.POSConstants.NUMBER_OF_GUESTS);
+			dialog.setValue(guestNumber);
+			dialog.pack();
+			dialog.open();
+
+			if (dialog.isCanceled()) {
+				return;
+			}
+
+			guestNumber = (int) dialog.getValue();
+			if (guestNumber == 0) {
+				POSMessageDialog.showError(Application.getPosWindow(), com.floreantpos.POSConstants.GUEST_NUMBER_CANNOT_BE_0);
+				return;
+			}
+
+			thisTicket.setNumberOfGuests(guestNumber);
+			updateView();
+
+		}
+
+		private void btnTableNumberActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTableNumberActionPerformed
+			updateTableNumber();
+		}//GEN-LAST:event_btnTableNumberActionPerformed
+
+		private void updateTableNumber() {
+			Session session = null;
+			org.hibernate.Transaction transaction = null;
+
+			try {
+
+				Ticket thisTicket = getTicket();
+
+				FloorLayoutPlugin floorLayoutPlugin = Application.getPluginManager().getPlugin(FloorLayoutPlugin.class);
+				List<ShopTable> tables = null;
+
+				if (floorLayoutPlugin != null) {
+					tables = floorLayoutPlugin.captureTableNumbers(thisTicket);
+				}
+				else {
+					tables = PosGuiUtil.captureTable(thisTicket);
+				}
+
+				if (tables == null) {
+					return;
+				}
+
+				session = TicketDAO.getInstance().createNewSession();
+				transaction = session.beginTransaction();
+
+				clearShopTable(session, thisTicket);
+				session.saveOrUpdate(thisTicket);
+
+				for (ShopTable shopTable : tables) {
+					shopTable.setOccupied(true);
+					session.merge(shopTable);
+
+					thisTicket.addTable(shopTable.getTableNumber());
+				}
+
+				session.merge(thisTicket);
+				transaction.commit();
+
+				updateView();
+
+			} catch (Exception e) {
+				e.printStackTrace();
+				transaction.rollback();
+			} finally {
+				if (session != null) {
+					session.close();
+				}
+			}
+		}
+
+		private void clearShopTable(Session session, Ticket thisTicket) {
+			List<ShopTable> tables2 = ShopTableDAO.getInstance().getTables(thisTicket);
+
+			if (tables2 == null)
+				return;
+
+			for (ShopTable shopTable : tables2) {
+				shopTable.setOccupied(false);
+				shopTable.setBooked(false);
+
+				session.saveOrUpdate(shopTable);
+			}
+
+			tables2.clear();
+		}
+
+		private com.floreantpos.swing.PosButton btnGuestNo;
+		private com.floreantpos.swing.PosButton btnMisc;
+		private com.floreantpos.swing.PosButton btnOrderType;
+		private com.floreantpos.swing.PosButton btnTableNumber;
+		private com.floreantpos.swing.PosButton btnCustomer;
+		private com.floreantpos.swing.PosButton btnSearchItem;
+		private JPanel buttonPanel;
+
+		// End of variables declaration//GEN-END:variables
+
+		public void updateView() {
+			if (ticket != null) {
+				if (ticket.getType() != OrderType.DINE_IN) {
+					btnGuestNo.setEnabled(false);
+					btnTableNumber.setEnabled(false);
+				}
+				else {
+					btnGuestNo.setEnabled(true);
+					btnTableNumber.setEnabled(true);
+
+					//btnGuestNo.setText(currentTicket.getNumberOfGuests() + " " + POSConstants.GUEST + "s");
+					//btnTableNumber.setText(POSConstants.RECEIPT_REPORT_TABLE_NO_LABEL + ": " + currentTicket.getTableNumbers());
+				}
+			}
+		}
+
+		public ItemSelectionListener getItemSelectionListener() {
+			return itemSelectionListener;
+		}
+
+		public void setItemSelectionListener(ItemSelectionListener itemSelectionListener) {
+			this.itemSelectionListener = itemSelectionListener;
+		}
+
+		public void searchItem() {
+			int itemId = NumberSelectionDialog2.takeIntInput("Enter or scan item id");
+
+			if (itemId == -1) {
+				return;
+			}
+
+			MenuItem menuItem = MenuItemDAO.getInstance().get(itemId);
+			if (menuItem == null) {
+				POSMessageDialog.showError("Item not found");
+				return;
+			}
+			itemSelectionListener.itemSelected(menuItem);
+		}
+	}
+
 }
