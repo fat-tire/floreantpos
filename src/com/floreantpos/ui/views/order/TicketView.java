@@ -7,6 +7,7 @@
 package com.floreantpos.ui.views.order;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -15,11 +16,13 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
 
-import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
+import javax.swing.border.Border;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -45,6 +48,7 @@ import com.floreantpos.model.dao.CookingInstructionDAO;
 import com.floreantpos.model.dao.MenuItemDAO;
 import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.report.ReceiptPrintService;
+import com.floreantpos.swing.POSToggleButton;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.swing.PosScrollPane;
 import com.floreantpos.ui.dialog.BeanEditorDialog;
@@ -76,128 +80,36 @@ public class TicketView extends JPanel {
 	 */
 	// <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:initComponents
 	private void initComponents() {
-		jPanel1 = new com.floreantpos.swing.TransparentPanel();
-		ticketAmountPanel = new com.floreantpos.swing.TransparentPanel();
-		controlPanel = new com.floreantpos.swing.TransparentPanel();
-		controlPanel.setOpaque(true);
+		titledBorder.setTitleJustification(TitledBorder.CENTER);
+		setBorder(border);
+		setLayout(new java.awt.BorderLayout(5, 5));
+		
 		btnPay = new com.floreantpos.swing.PosButton();
 		btnCancel = new com.floreantpos.swing.PosButton();
 		btnSave = new com.floreantpos.swing.PosButton();
-		scrollerPanel = new com.floreantpos.swing.TransparentPanel();
+		ticketItemActionPanel = new com.floreantpos.swing.TransparentPanel();
 		btnDecreaseAmount = new com.floreantpos.swing.PosButton();
 		btnScrollDown = new com.floreantpos.swing.PosButton();
-		ticketTablePanel = new com.floreantpos.swing.TransparentPanel();
 		ticketViewerTable = new com.floreantpos.ui.ticket.TicketViewerTable();
 		ticketScrollPane = new PosScrollPane(ticketViewerTable);
-
-		setBorder(javax.swing.BorderFactory.createTitledBorder(null, com.floreantpos.POSConstants.TICKET, javax.swing.border.TitledBorder.CENTER,
-				javax.swing.border.TitledBorder.DEFAULT_POSITION));
-		
-		setLayout(new java.awt.BorderLayout(5, 5));
-		jPanel1.setLayout(new BorderLayout(5, 5));
-		ticketAmountPanel.setLayout(new MigLayout("alignx trailing,fill", "[grow][]", "[][][][][][][][]"));
-		
-		jLabel5 = new javax.swing.JLabel();
-		jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-		jLabel5.setText(com.floreantpos.POSConstants.SUBTOTAL + ":");
-		ticketAmountPanel.add(jLabel5, "cell 0 1,growx,aligny center");
-		tfSubtotal = new javax.swing.JTextField(10);
-		tfSubtotal.setHorizontalAlignment(SwingConstants.TRAILING);
-
-		tfSubtotal.setEditable(false);
-		ticketAmountPanel.add(tfSubtotal, "cell 1 1,growx,aligny center");
-		
-//		jLabel1 = new javax.swing.JLabel();
-//		jLabel1.setFont(new java.awt.Font("Tahoma", 1, 12));
-//		jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-//		jLabel1.setText(com.floreantpos.POSConstants.DISCOUNT + ":");
-//		ticketAmountPanel.add(jLabel1, "cell 0 2,growx,aligny center");
-//		tfDiscount = new javax.swing.JTextField();
-//		tfDiscount.setHorizontalAlignment(SwingConstants.TRAILING);
-//
-//		tfDiscount.setEditable(false);
-//		tfDiscount.setFont(new java.awt.Font("Tahoma", 1, 12));
-//		ticketAmountPanel.add(tfDiscount, "cell 1 2,growx,aligny center");
-		
-		lblTax = new javax.swing.JLabel();
-		lblTax.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-		lblTax.setText(com.floreantpos.POSConstants.TAX + ":");
-		ticketAmountPanel.add(lblTax, "cell 0 3,growx,aligny center");
-		tfTax = new javax.swing.JTextField();
-		tfTax.setHorizontalAlignment(SwingConstants.TRAILING);
-
-		tfTax.setEditable(false);
-		ticketAmountPanel.add(tfTax, "cell 1 3,growx,aligny center");
-
-//		lblServiceCharge = new JLabel();
-//		lblServiceCharge.setText("Service Charge:");
-//		lblServiceCharge.setHorizontalAlignment(SwingConstants.RIGHT);
-//		lblServiceCharge.setFont(new Font("Dialog", Font.BOLD, 12));
-//		ticketAmountPanel.add(lblServiceCharge, "cell 0 4,alignx trailing");
-
-//		tfServiceCharge = new JTextField();
-//		tfServiceCharge.setHorizontalAlignment(SwingConstants.TRAILING);
-//		tfServiceCharge.setEditable(false);
-//		ticketAmountPanel.add(tfServiceCharge, "cell 1 4,growx,aligny center");
-//		tfServiceCharge.setColumns(10);
-		jLabel6 = new javax.swing.JLabel();
-		jLabel6.setFont(jLabel6.getFont().deriveFont(Font.BOLD, 16));
-		jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-		jLabel6.setText(com.floreantpos.POSConstants.TOTAL + ":");
-		ticketAmountPanel.add(jLabel6, "cell 0 5,growx,aligny center");
-		tfTotal = new javax.swing.JTextField(10);
-		tfTotal.setFont(tfTotal.getFont().deriveFont(Font.BOLD, 16));
-		tfTotal.setHorizontalAlignment(SwingConstants.TRAILING);
-		tfTotal.setEditable(false);
-		ticketAmountPanel.add(tfTotal, "cell 1 5,growx,aligny center");
-
-		controlPanel.setLayout(new MigLayout("insets 0, fill, hidemode 3", "fill, grow", ""));
-		
-		btnCancel.setText(POSConstants.CANCEL_BUTTON_TEXT);
-		btnCancel.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				doCancelOrder(evt);
-			}
-		});
-		controlPanel.add(btnCancel);
-
-		btnSave.setText(com.floreantpos.POSConstants.SAVE_BUTTON_TEXT);
-		btnSave.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				doFinishOrder(evt);
-			}
-		});
-		controlPanel.add(btnSave);
-		
-		btnPay.setText(com.floreantpos.POSConstants.PAY_BUTTON_TEXT);
-		btnPay.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				doPayNow(evt);
-			}
-		});
-		controlPanel.add(btnPay);
-		
-		createTicketItemControlPanel();
-
-		JPanel amountPanelContainer= new JPanel(new BorderLayout(5, 5));
-		amountPanelContainer.add(ticketAmountPanel);
-
-		jPanel1.add(amountPanelContainer);
-		jPanel1.add(controlPanel, BorderLayout.SOUTH);
-
-		add(jPanel1, java.awt.BorderLayout.SOUTH);
-
-		ticketTablePanel.setLayout(new java.awt.BorderLayout(5, 5));
-
 		ticketScrollPane.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		ticketScrollPane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+		ticketScrollPane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
 		ticketScrollPane.setPreferredSize(new java.awt.Dimension(180, 200));
+		
+		JPanel totalViewPanel = createTotalViewerPanel();
 
-		ticketTablePanel.add(scrollerPanel, BorderLayout.EAST);
-		ticketTablePanel.add(ticketScrollPane, java.awt.BorderLayout.CENTER);
+		createTicketActionPanel();
+
+		createTicketItemControlPanel();
 		
-		add(ticketTablePanel, java.awt.BorderLayout.CENTER);
+		JPanel centerPanel = new JPanel(new BorderLayout(5, 5));
+		centerPanel.add(ticketScrollPane);
+		centerPanel.add(totalViewPanel, BorderLayout.SOUTH);
 		
+		add(centerPanel);
+		add(ticketActionPanel, BorderLayout.SOUTH);
+		add(ticketItemActionPanel, BorderLayout.EAST);
+
 		ticketViewerTable.setRowHeight(35);
 		ticketViewerTable.getRenderer().setInTicketScreen(true);
 		ticketViewerTable.addMouseListener(new MouseAdapter() {
@@ -229,14 +141,90 @@ public class TicketView extends JPanel {
 			}
 
 		});
-		
+
 		setPreferredSize(new java.awt.Dimension(480, 463));
-		
+
 	}// </editor-fold>//GEN-END:initComponents
 
-	private void createTicketItemControlPanel() {
-		scrollerPanel.setLayout(new GridLayout(0, 1, 5, 5));
+	private void createTicketActionPanel() {
+		ticketActionPanel.setLayout(new GridLayout(1, 0, 5, 5));
+
+		btnCancel.setText(POSConstants.CANCEL_BUTTON_TEXT);
+		btnCancel.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				doCancelOrder(evt);
+			}
+		});
+
+		btnSave.setText(com.floreantpos.POSConstants.SAVE_BUTTON_TEXT);
+		btnSave.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				doFinishOrder(evt);
+			}
+		});
+
+		btnPay.setText(com.floreantpos.POSConstants.PAY_BUTTON_TEXT);
+		btnPay.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				doPayNow(evt);
+			}
+		});
 		
+		btnMore.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				ExtraTicketActionPanel.getInstance().setCollapsed(!btnMore.isSelected());
+			}
+		});
+		
+		ticketActionPanel.add(btnPay);
+		ticketActionPanel.add(btnSave);
+		ticketActionPanel.add(btnMore);
+		ticketActionPanel.add(btnCancel);
+		
+	}
+
+	private JPanel createTotalViewerPanel() {
+		lblSubtotal = new javax.swing.JLabel();
+		lblSubtotal.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+		lblSubtotal.setText(com.floreantpos.POSConstants.SUBTOTAL + ":");
+		
+		tfSubtotal = new javax.swing.JTextField(10);
+		tfSubtotal.setHorizontalAlignment(SwingConstants.TRAILING);
+		tfSubtotal.setEditable(false);
+
+		lblTax = new javax.swing.JLabel();
+		lblTax.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+		lblTax.setText(com.floreantpos.POSConstants.TAX + ":");
+		
+		tfTax = new javax.swing.JTextField();
+		tfTax.setEditable(false);
+		tfTax.setHorizontalAlignment(SwingConstants.TRAILING);
+
+		lblTotal = new javax.swing.JLabel();
+		lblTotal.setFont(lblTotal.getFont().deriveFont(Font.BOLD, 16));
+		lblTotal.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+		lblTotal.setText(com.floreantpos.POSConstants.TOTAL + ":");
+		tfTotal = new javax.swing.JTextField(10);
+		tfTotal.setFont(tfTotal.getFont().deriveFont(Font.BOLD, 16));
+		tfTotal.setHorizontalAlignment(SwingConstants.TRAILING);
+		tfTotal.setEditable(false);
+		
+		JPanel ticketAmountPanel = new com.floreantpos.swing.TransparentPanel(new MigLayout("ins 2 2 3 2,alignx trailing,fill", "[grow][]", ""));
+		
+		ticketAmountPanel.add(lblSubtotal, "cell 0 1,growx,aligny center");
+		ticketAmountPanel.add(tfSubtotal, "cell 1 1,growx,aligny center");
+		ticketAmountPanel.add(lblTax, "cell 0 3,growx,aligny center");
+		ticketAmountPanel.add(tfTax, "cell 1 3,growx,aligny center");
+		ticketAmountPanel.add(lblTotal, "cell 0 5,growx,aligny center");
+		ticketAmountPanel.add(tfTotal, "cell 1 5,growx,aligny center");
+		
+		return ticketAmountPanel;
+	}
+
+	private void createTicketItemControlPanel() {
+		ticketItemActionPanel.setLayout(new GridLayout(0, 1, 5, 5));
+
 		btnScrollUp.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				doScrollUp(evt);
@@ -275,13 +263,15 @@ public class TicketView extends JPanel {
 				doAddCookingInstruction();
 			}
 		});
+
+		ticketItemActionPanel.add(btnScrollUp);
+		ticketItemActionPanel.add(btnIncreaseAmount);
+		ticketItemActionPanel.add(btnDecreaseAmount);
+		ticketItemActionPanel.add(btnDelete);
+		ticketItemActionPanel.add(btnAddCookingInstruction);
+		ticketItemActionPanel.add(btnScrollDown);
 		
-		scrollerPanel.add(btnScrollUp);
-		scrollerPanel.add(btnIncreaseAmount);
-		scrollerPanel.add(btnDecreaseAmount);
-		scrollerPanel.add(btnDelete);
-		scrollerPanel.add(btnAddCookingInstruction);
-		scrollerPanel.add(btnScrollDown);
+		ticketItemActionPanel.setPreferredSize(new Dimension(70, 360));
 	}
 
 	protected void doAddCookingInstruction() {
@@ -326,10 +316,10 @@ public class TicketView extends JPanel {
 		try {
 
 			updateModel();
-			
+
 			TicketDAO ticketDAO = TicketDAO.getInstance();
-			
-			if(ticket.getId() == null) {
+
+			if (ticket.getId() == null) {
 				//save ticket first. ticket needs to save so that it
 				//contains an id.
 				OrderController.saveOrder(ticket);
@@ -340,7 +330,7 @@ public class TicketView extends JPanel {
 				ReceiptPrintService.printToKitchen(ticket);
 				ticketDAO.refresh(ticket);
 			}
-			
+
 			OrderController.saveOrder(ticket);
 
 			closeView(false);
@@ -356,15 +346,15 @@ public class TicketView extends JPanel {
 	}//GEN-LAST:event_doFinishOrder
 
 	private void closeView(boolean orderCanceled) {
-		if(TerminalConfig.isCashierMode()) {
-//			String message = "Order canceled. What do you want to do next?";
-//			if(!orderCanceled) {
-//				message = "Ticket no " + getTicket().getId() + " saved. What do you want to do next?";
-//			}
-//			
-//			Window ancestor = SwingUtilities.getWindowAncestor(this);
-//			CashierModeNextActionDialog dialog = new CashierModeNextActionDialog((Frame) ancestor, message);
-//			dialog.open();
+		if (TerminalConfig.isCashierMode()) {
+			//			String message = "Order canceled. What do you want to do next?";
+			//			if(!orderCanceled) {
+			//				message = "Ticket no " + getTicket().getId() + " saved. What do you want to do next?";
+			//			}
+			//			
+			//			Window ancestor = SwingUtilities.getWindowAncestor(this);
+			//			CashierModeNextActionDialog dialog = new CashierModeNextActionDialog((Frame) ancestor, message);
+			//			dialog.open();
 			RootView.getInstance().showView(CashierSwitchBoardView.VIEW_NAME);
 		}
 		else {
@@ -389,7 +379,7 @@ public class TicketView extends JPanel {
 			updateModel();
 
 			OrderController.saveOrder(ticket);
-			
+
 			firePayOrderSelected();
 		} catch (PosException e) {
 			POSMessageDialog.showError(e.getMessage());
@@ -401,22 +391,22 @@ public class TicketView extends JPanel {
 		if (object != null) {
 			updateView();
 
-//			if (object instanceof TicketItemModifier) {
-//				ModifierView modifierView = OrderView.getInstance().getModifierView();
-//				if (modifierView.isVisible()) {
-//					modifierView.updateVisualRepresentation();
-//				}
-//			}
+			//			if (object instanceof TicketItemModifier) {
+			//				ModifierView modifierView = OrderView.getInstance().getModifierView();
+			//				if (modifierView.isVisible()) {
+			//					modifierView.updateVisualRepresentation();
+			//				}
+			//			}
 		}
 
 	}//GEN-LAST:event_doDeleteSelection
 
 	private void doIncreaseAmount(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_doIncreaseAmount
 		if (ticketViewerTable.increaseItemAmount()) {
-//			ModifierView modifierView = OrderView.getInstance().getModifierView();
-//			if (modifierView.isVisible()) {
-//				modifierView.updateVisualRepresentation();
-//			}
+			//			ModifierView modifierView = OrderView.getInstance().getModifierView();
+			//			if (modifierView.isVisible()) {
+			//				modifierView.updateVisualRepresentation();
+			//			}
 			updateView();
 		}
 
@@ -424,10 +414,10 @@ public class TicketView extends JPanel {
 
 	private void doDecreaseAmount(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_doDecreaseAmount
 		if (ticketViewerTable.decreaseItemAmount()) {
-//			ModifierView modifierView = OrderView.getInstance().getModifierView();
-//			if (modifierView.isVisible()) {
-//				modifierView.updateVisualRepresentation();
-//			}
+			//			ModifierView modifierView = OrderView.getInstance().getModifierView();
+			//			if (modifierView.isVisible()) {
+			//				modifierView.updateVisualRepresentation();
+			//			}
 			updateView();
 		}
 	}//GEN-LAST:event_doDecreaseAmount
@@ -441,32 +431,28 @@ public class TicketView extends JPanel {
 	}//GEN-LAST:event_doScrollUp
 
 	// Variables declaration - do not modify//GEN-BEGIN:variables
-	private com.floreantpos.swing.TransparentPanel controlPanel;
+	private com.floreantpos.swing.TransparentPanel ticketActionPanel = new com.floreantpos.swing.TransparentPanel();
 	private com.floreantpos.swing.PosButton btnCancel;
 	private com.floreantpos.swing.PosButton btnDecreaseAmount;
 	private com.floreantpos.swing.PosButton btnDelete = new PosButton(new javax.swing.ImageIcon(getClass().getResource("/images/delete_32.png")));
 	private com.floreantpos.swing.PosButton btnSave;
 	private com.floreantpos.swing.PosButton btnIncreaseAmount = new PosButton(new javax.swing.ImageIcon(getClass().getResource("/images/add_user_32.png")));
 	private com.floreantpos.swing.PosButton btnPay;
+	private com.floreantpos.swing.POSToggleButton btnMore = new POSToggleButton(POSConstants.MORE_ACTIVITY_BUTTON_TEXT);
 	private com.floreantpos.swing.PosButton btnScrollDown;
 	private com.floreantpos.swing.PosButton btnScrollUp = new PosButton(new ImageIcon(getClass().getResource("/images/up_32.png")));
-//	private javax.swing.JLabel jLabel1;
 	private javax.swing.JLabel lblTax;
-	private javax.swing.JLabel jLabel5;
-	private javax.swing.JLabel jLabel6;
-	private com.floreantpos.swing.TransparentPanel jPanel1;
-	private com.floreantpos.swing.TransparentPanel ticketTablePanel;
-	private com.floreantpos.swing.TransparentPanel ticketAmountPanel;
-	private com.floreantpos.swing.TransparentPanel scrollerPanel;
+	private javax.swing.JLabel lblSubtotal;
+	private javax.swing.JLabel lblTotal;
+	private com.floreantpos.swing.TransparentPanel ticketItemActionPanel;
 	private javax.swing.JScrollPane ticketScrollPane;
-//	private javax.swing.JTextField tfDiscount;
 	private javax.swing.JTextField tfSubtotal;
 	private javax.swing.JTextField tfTax;
 	private javax.swing.JTextField tfTotal;
 	private com.floreantpos.ui.ticket.TicketViewerTable ticketViewerTable;
-//	private JTextField tfServiceCharge;
-//	private JLabel lblServiceCharge;
 	private PosButton btnAddCookingInstruction = new PosButton("CI");
+	private TitledBorder titledBorder = new TitledBorder("");
+	private Border border = new CompoundBorder(titledBorder, new EmptyBorder(5, 5, 5, 5));
 
 	// End of variables declaration//GEN-END:variables
 
@@ -503,39 +489,32 @@ public class TicketView extends JPanel {
 	public void updateView() {
 		if (ticket == null) {
 			tfSubtotal.setText("");
-//			tfDiscount.setText("");
 			tfTax.setText("");
-//			tfServiceCharge.setText("");
 			tfTotal.setText("");
-			
-			setBorder(BorderFactory.createTitledBorder(null, "Ticket [ NEW ]", TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION));
-			
+			titledBorder.setTitle("Ticket [ NEW ]");
 			return;
 		}
-		
+
 		ticket.calculatePrice();
 
 		tfSubtotal.setText(NumberUtil.formatNumber(ticket.getSubtotalAmount()));
-//		tfDiscount.setText(NumberUtil.formatNumber(ticket.getDiscountAmount()));
 
-		if(Application.getInstance().isPriceIncludesTax()) {
+		if (Application.getInstance().isPriceIncludesTax()) {
 			tfTax.setText("INCLUDED");
 		}
 		else {
 			tfTax.setText(NumberUtil.formatNumber(ticket.getTaxAmount()));
 		}
-//
-//		tfServiceCharge.setText(NumberUtil.formatNumber(ticket.getServiceCharge()));
 		tfTotal.setText(NumberUtil.formatNumber(ticket.getTotalAmount()));
-		
-		if(ticket.getId() == null) {
-			setBorder(BorderFactory.createTitledBorder(null, "Ticket [ NEW ]", TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION));
+
+		if (ticket.getId() == null) {
+			titledBorder.setTitle("Ticket [ NEW ]");
 		}
 		else {
-			setBorder(BorderFactory.createTitledBorder(null, "Ticket #" + ticket.getId(), TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION));
+			titledBorder.setTitle("Ticket #" + ticket.getId());
 		}
-		
-		if(ticket.getType() != null && ticket.getType().getProperties() != null) {
+
+		if (ticket.getType() != null && ticket.getType().getProperties() != null) {
 			btnSave.setVisible(ticket.getType().getProperties().isAllowDelayPayment());
 		}
 		else {
@@ -559,13 +538,13 @@ public class TicketView extends JPanel {
 
 	public void setControlsVisible(boolean visible) {
 		if (visible) {
-			controlPanel.setVisible(true);
+			ticketActionPanel.setVisible(true);
 			btnIncreaseAmount.setEnabled(true);
 			btnDecreaseAmount.setEnabled(true);
 			btnDelete.setEnabled(true);
 		}
 		else {
-			controlPanel.setVisible(false);
+			ticketActionPanel.setVisible(false);
 			btnIncreaseAmount.setEnabled(false);
 			btnDecreaseAmount.setEnabled(false);
 			btnDelete.setEnabled(false);
@@ -615,7 +594,7 @@ public class TicketView extends JPanel {
 			orderView.showView(ModifierView.VIEW_NAME);
 		}
 	}
-	
+
 	public static void main(String[] args) {
 		TicketView ticketView = new TicketView();
 		JFrame frame = new JFrame();

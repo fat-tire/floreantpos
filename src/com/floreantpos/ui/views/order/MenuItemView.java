@@ -20,9 +20,11 @@ import javax.swing.SwingConstants;
 import com.floreantpos.PosException;
 import com.floreantpos.model.MenuGroup;
 import com.floreantpos.model.MenuItem;
+import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.dao.MenuItemDAO;
 import com.floreantpos.swing.ImageIcon;
 import com.floreantpos.swing.PosButton;
+import com.floreantpos.ui.dialog.MiscTicketItemDialog;
 import com.floreantpos.ui.views.order.actions.ItemSelectionListener;
 
 /**
@@ -35,10 +37,22 @@ public class MenuItemView extends SelectionView {
 	private Vector<ItemSelectionListener> listenerList = new Vector<ItemSelectionListener>();
 
 	private MenuGroup menuGroup;
+	private PosButton btnMisc = new PosButton(com.floreantpos.POSConstants.MISC);
 
 	/** Creates new form GroupView */
 	public MenuItemView() {
 		super(com.floreantpos.POSConstants.ITEMS);
+		
+		btnMisc.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				MiscTicketItemDialog dialog = new MiscTicketItemDialog();
+				dialog.open();
+				if (!dialog.isCanceled()) {
+					TicketItem ticketItem = dialog.getTicketItem();
+					RootView.getInstance().getOrderView().getTicketView().addTicketItem(ticketItem);
+				}
+			}
+		});
 		
 		setBackEnable(false);
 	}
