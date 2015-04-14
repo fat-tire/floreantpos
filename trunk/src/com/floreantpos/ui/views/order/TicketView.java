@@ -570,6 +570,9 @@ public class TicketView extends JPanel {
 		TicketItem selectedItem = null;
 		if (selectedObject instanceof TicketItem) {
 			selectedItem = (TicketItem) selectedObject;
+			if("MISC".equalsIgnoreCase(selectedItem.getGroupName())) {
+				return;
+			}
 			MenuItemDAO dao = new MenuItemDAO();
 			MenuItem menuItem = dao.get(selectedItem.getItemId());
 			MenuGroup menuGroup = menuItem.getParent();
@@ -738,6 +741,8 @@ public class TicketView extends JPanel {
 			dialog.open();
 			if (!dialog.isCanceled()) {
 				TicketItem ticketItem = dialog.getTicketItem();
+				ticketItem.setTicket(ticket);
+				ticketItem.calculatePrice();
 				RootView.getInstance().getOrderView().getTicketView().addTicketItem(ticketItem);
 			}
 		}//GEN-LAST:event_doInsertMisc
