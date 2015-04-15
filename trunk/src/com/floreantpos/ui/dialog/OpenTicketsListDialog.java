@@ -148,7 +148,7 @@ public class OpenTicketsListDialog extends POSDialog {
 		transparentPanel1.add(transparentPanel3, java.awt.BorderLayout.CENTER);
 
 		transparentPanel4.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 5, 1, 5));
-		btnScrollUp.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/up_32.png")));
+		btnScrollUp.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/up.png")));
 		btnScrollUp.setPreferredSize(new java.awt.Dimension(80, 50));
 		btnScrollUp.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -158,7 +158,7 @@ public class OpenTicketsListDialog extends POSDialog {
 
 		transparentPanel4.add(btnScrollUp);
 
-		btnScrollDown.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/down_32.png")));
+		btnScrollDown.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/down.png")));
 		btnScrollDown.setPreferredSize(new java.awt.Dimension(80, 50));
 		btnScrollDown.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {

@@ -247,14 +247,14 @@ public class TicketView extends JPanel {
 			}
 		});
 
-		btnDecreaseAmount.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/minus_32.png")));
+		btnDecreaseAmount.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/minus.png")));
 		btnDecreaseAmount.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				doDecreaseAmount(evt);
 			}
 		});
 
-		btnScrollDown.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/down_32.png")));
+		btnScrollDown.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/down.png")));
 		btnScrollDown.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				doScrollDown(evt);
@@ -443,13 +443,13 @@ public class TicketView extends JPanel {
 	private com.floreantpos.swing.TransparentPanel ticketActionPanel = new com.floreantpos.swing.TransparentPanel();
 	private com.floreantpos.swing.PosButton btnCancel;
 	private com.floreantpos.swing.PosButton btnDecreaseAmount;
-	private com.floreantpos.swing.PosButton btnDelete = new PosButton(new javax.swing.ImageIcon(getClass().getResource("/images/delete_32.png")));
+	private com.floreantpos.swing.PosButton btnDelete = new PosButton(new javax.swing.ImageIcon(getClass().getResource("/images/delete.png")));
 	private com.floreantpos.swing.PosButton btnSave;
-	private com.floreantpos.swing.PosButton btnIncreaseAmount = new PosButton(new javax.swing.ImageIcon(getClass().getResource("/images/add_user_32.png")));
+	private com.floreantpos.swing.PosButton btnIncreaseAmount = new PosButton(new javax.swing.ImageIcon(getClass().getResource("/images/add_user.png")));
 	private com.floreantpos.swing.PosButton btnPay;
 	private com.floreantpos.swing.POSToggleButton btnMore = new POSToggleButton(POSConstants.MORE_ACTIVITY_BUTTON_TEXT);
 	private com.floreantpos.swing.PosButton btnScrollDown;
-	private com.floreantpos.swing.PosButton btnScrollUp = new PosButton(new ImageIcon(getClass().getResource("/images/up_32.png")));
+	private com.floreantpos.swing.PosButton btnScrollUp = new PosButton(new ImageIcon(getClass().getResource("/images/up.png")));
 	private javax.swing.JLabel lblTax;
 	private javax.swing.JLabel lblSubtotal;
 	private javax.swing.JLabel lblTotal;
