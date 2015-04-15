@@ -80,7 +80,7 @@ public class NumberSelectionView extends TransparentPanel implements ActionListe
         for (int i = 0; i < numbers.length; i++) {
 			for (int j = 0; j < numbers[i].length; j++) {
 				PosButton posButton = new PosButton();
-				ImageIcon icon = IconFactory.getIcon(iconNames[i][j]);
+				ImageIcon icon = IconFactory.getIcon("/ui_icons/", iconNames[i][j]);
 				String buttonText = String.valueOf(numbers[i][j]);
 
 				if (icon == null) {

@@ -34,7 +34,7 @@ public class LoginView extends ViewPanel {
 		//setLayout(new MigLayout("ins 20 10 20 10, fill","[fill,growprio 100,grow][]",""));
 		setLayout(new BorderLayout(5, 5));
 
-		JLabel titleLabel = new JLabel(IconFactory.getIcon("title.png"));
+		JLabel titleLabel = new JLabel(IconFactory.getIcon("/ui_icons/", "title.png"));
 		titleLabel.setOpaque(true);
 		titleLabel.setBackground(Color.WHITE);
 		
@@ -45,7 +45,7 @@ public class LoginView extends ViewPanel {
 		ImageIcon icon = IconFactory.getIcon("/", "logo.png");
 		
 		if(icon == null) {
-			icon = IconFactory.getIcon("floreant-pos.png");
+			icon = IconFactory.getIcon("/ui_icons/", "floreant-pos.png");
 		}
 		
 		centerPanel.add(new ImageComponent(icon.getImage()));

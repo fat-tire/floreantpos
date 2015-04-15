@@ -20,6 +20,7 @@ import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import com.floreantpos.IconFactory;
 import com.floreantpos.PosException;
 import com.floreantpos.model.CouponAndDiscount;
 import com.floreantpos.model.Ticket;
@@ -119,7 +120,7 @@ public class CouponAndDiscountDialog extends POSDialog implements ActionListener
 
         jScrollPane1.setViewportView(listCoupons);
 
-        btnCancel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cancel.png"))); // NOI18N
+        btnCancel.setIcon(IconFactory.getIcon("/ui_icons/", "cancel.png")); // NOI18N
         btnCancel.setText("CANCEL");
         btnCancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -127,7 +128,7 @@ public class CouponAndDiscountDialog extends POSDialog implements ActionListener
             }
         });
 
-        btnOk.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/finish.png"))); // NOI18N
+        btnOk.setIcon(IconFactory.getIcon("/ui_icons/", "finish.png")); // NOI18N
         btnOk.setText("OK");
         btnOk.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -135,9 +136,9 @@ public class CouponAndDiscountDialog extends POSDialog implements ActionListener
             }
         });
 
-        btnUp.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/up.png"))); // NOI18N
+        btnUp.setIcon(IconFactory.getIcon("/ui_icons/", "up.png")); // NOI18N
 
-        btnDown.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/down.png"))); // NOI18N
+        btnDown.setIcon(IconFactory.getIcon("/ui_icons/", "down.png")); // NOI18N
 
         jSeparator2.setOrientation(javax.swing.SwingConstants.VERTICAL);
 

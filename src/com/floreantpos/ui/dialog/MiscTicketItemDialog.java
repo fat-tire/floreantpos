@@ -6,6 +6,7 @@
 
 package com.floreantpos.ui.dialog;
 
+import com.floreantpos.IconFactory;
 import com.floreantpos.model.TicketItem;
 
 /**
@@ -42,7 +43,7 @@ public class MiscTicketItemDialog extends POSDialog {
         titlePanel1.setTitle(com.floreantpos.POSConstants.MISC_ITEM);
         getContentPane().add(titlePanel1, java.awt.BorderLayout.NORTH);
 
-        posButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/finish.png")));
+        posButton1.setIcon(IconFactory.getIcon("/ui_icons/", "finish.png"));
         posButton1.setText(com.floreantpos.POSConstants.FINISH);
         posButton1.setPreferredSize(new java.awt.Dimension(120, 50));
         posButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -53,7 +54,7 @@ public class MiscTicketItemDialog extends POSDialog {
 
         transparentPanel1.add(posButton1);
 
-        posButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cancel.png")));
+        posButton2.setIcon(IconFactory.getIcon("/ui_icons/", "cancel.png"));
         posButton2.setText(com.floreantpos.POSConstants.CANCEL);
         posButton2.setPreferredSize(new java.awt.Dimension(120, 50));
         posButton2.addActionListener(new java.awt.event.ActionListener() {

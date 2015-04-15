@@ -17,6 +17,7 @@ import javax.swing.border.TitledBorder;
 
 import net.miginfocom.swing.MigLayout;
 
+import com.floreantpos.IconFactory;
 import com.floreantpos.model.PaymentType;
 import com.floreantpos.swing.PosButton;
 
@@ -100,7 +101,7 @@ public class PaymentTypeSelectionDialog extends POSDialog {
 			paymentType = p;
 			
 			if (p.getImageFile() != null) {
-				setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/" + p.getImageFile())));
+				setIcon(IconFactory.getIcon("/ui_icons/", "" + p.getImageFile()));
 			}
 			else {
 				setText(p.getDisplayString());

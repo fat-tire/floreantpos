@@ -208,32 +208,32 @@ public class ModifierView extends SelectionView {
 	
 	
 
-//	public void updateVisualRepresentation() {
-//		List<TicketItemModifierGroup> ticketItemModifierGroups = parentTicketItem.getTicketItemModifierGroups();
-//		if (ticketItemModifierGroups != null) {
-//			for (TicketItemModifierGroup ticketItemModifierGroup : ticketItemModifierGroups) {
-//				List<TicketItemModifier> ticketItemModifiers = ticketItemModifierGroup.getTicketItemModifiers();
-//				if (ticketItemModifiers != null) {
-//					int total = 0;
-//					int max = ticketItemModifierGroup.getMaxQuantity();
-//					for (TicketItemModifier ticketItemModifier : ticketItemModifiers) {
-//						String key = ticketItemModifier.getItemId() + "_" + ticketItemModifier.getGroupId();
-//						ModifierButton button = buttonMap.get(key);
-//						if (ticketItemModifier.getModifierType() != TicketItemModifier.NO_MODIFIER) {
-//							total += ticketItemModifier.getItemCount();
-//							if (total > max) {
-//								ticketItemModifier.setModifierType(TicketItemModifier.EXTRA_MODIFIER);
-//							}
-//							else {
-//								ticketItemModifier.setModifierType(TicketItemModifier.NORMAL_MODIFIER);
-//							}
-//						}
-//						button.updateView(ticketItemModifier);
-//					}
-//				}
-//			}
-//		}
-//	}
+	public void updateVisualRepresentation() {
+		List<TicketItemModifierGroup> ticketItemModifierGroups = parentTicketItem.getTicketItemModifierGroups();
+		if (ticketItemModifierGroups != null) {
+			for (TicketItemModifierGroup ticketItemModifierGroup : ticketItemModifierGroups) {
+				List<TicketItemModifier> ticketItemModifiers = ticketItemModifierGroup.getTicketItemModifiers();
+				if (ticketItemModifiers != null) {
+					int total = 0;
+					int max = ticketItemModifierGroup.getMaxQuantity();
+					for (TicketItemModifier ticketItemModifier : ticketItemModifiers) {
+						String key = ticketItemModifier.getItemId() + "_" + ticketItemModifier.getGroupId();
+						ModifierButton button = buttonMap.get(key);
+						if (ticketItemModifier.getModifierType() != TicketItemModifier.NO_MODIFIER) {
+							total += ticketItemModifier.getItemCount();
+							if (total > max) {
+								ticketItemModifier.setModifierType(TicketItemModifier.EXTRA_MODIFIER);
+							}
+							else {
+								ticketItemModifier.setModifierType(TicketItemModifier.NORMAL_MODIFIER);
+							}
+						}
+						button.updateView(ticketItemModifier);
+					}
+				}
+			}
+		}
+	}
 
 	public TicketItem getParentTicketItem() {
 		return parentTicketItem;
@@ -294,26 +294,26 @@ public class ModifierView extends SelectionView {
 			addActionListener(this);
 		}
 
-//		void updateView(TicketItemModifier ticketItemModifier) {
-//			if (ticketItemModifier == null || ticketItemModifier.getModifierType() == TicketItemModifier.MODIFIER_NOT_INITIALIZED) {
-//				setBackground(null);
-//				//setIcon(null);
-//				return;
-//			}
-//
-//			if (ticketItemModifier.getModifierType() == TicketItemModifier.NORMAL_MODIFIER) {
-//				//setIcon(normalIcon);
-//				setBackground(Color.GREEN.darker());
-//			}
-//			else if (ticketItemModifier.getModifierType() == TicketItemModifier.NO_MODIFIER) {
-//				//setIcon(noIcon);
-//				setBackground(Color.RED.darker());
-//			}
-//			else if (ticketItemModifier.getModifierType() == TicketItemModifier.EXTRA_MODIFIER) {
-//				//setIcon(extraIcon);
-//				setBackground(Color.ORANGE);
-//			}
-//		}
+		void updateView(TicketItemModifier ticketItemModifier) {
+			if (ticketItemModifier == null || ticketItemModifier.getModifierType() == TicketItemModifier.MODIFIER_NOT_INITIALIZED) {
+				setBackground(null);
+				//setIcon(null);
+				return;
+			}
+
+			if (ticketItemModifier.getModifierType() == TicketItemModifier.NORMAL_MODIFIER) {
+				//setIcon(normalIcon);
+				setBackground(Color.GREEN.darker());
+			}
+			else if (ticketItemModifier.getModifierType() == TicketItemModifier.NO_MODIFIER) {
+				//setIcon(noIcon);
+				setBackground(Color.RED.darker());
+			}
+			else if (ticketItemModifier.getModifierType() == TicketItemModifier.EXTRA_MODIFIER) {
+				//setIcon(extraIcon);
+				setBackground(Color.ORANGE);
+			}
+		}
 		
 		public void actionPerformed(ActionEvent e) {
 			TicketItemModifierGroup ticketItemModifierGroup = parentTicketItem.findTicketItemModifierGroup(menuModifier, true);
@@ -338,7 +338,7 @@ public class ModifierView extends SelectionView {
 			switch (modifierType) {
 				case TicketItemModifier.MODIFIER_NOT_INITIALIZED:
 					ticketItemModifier.setModifierType(TicketItemModifier.NORMAL_MODIFIER);
-					//updateVisualRepresentation();
+					updateVisualRepresentation();
 					ticketView.updateAllView();
 					ticketView.selectRow(ticketItemModifier.getTableRowNum());
 					break;
@@ -346,7 +346,7 @@ public class ModifierView extends SelectionView {
 				case TicketItemModifier.NORMAL_MODIFIER:
 				case TicketItemModifier.EXTRA_MODIFIER:
 					ticketItemModifier.setModifierType(TicketItemModifier.NO_MODIFIER);
-					//updateVisualRepresentation();
+					updateVisualRepresentation();
 					ticketView.updateAllView();
 					ticketView.selectRow(ticketItemModifier.getTableRowNum());
 					break;
@@ -355,7 +355,7 @@ public class ModifierView extends SelectionView {
 					ticketItemModifier.setModifierType(TicketItemModifier.MODIFIER_NOT_INITIALIZED);
 					ticketItemModifierGroup.removeTicketItemModifier(ticketItemModifier);
 					//updateView(ticketItemModifier);
-					//updateVisualRepresentation();
+					updateVisualRepresentation();
 					ticketView.updateAllView();
 					ticketView.selectRow(ticketItemModifier.getTableRowNum() - 1);
 					break;
