@@ -162,7 +162,7 @@
     <Component class="com.floreantpos.swing.PosButton" name="btnCancel">
       <Properties>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/images/cancel_32.png"/>
+          <Image iconType="3" name="/images/cancel.png"/>
         </Property>
         <Property name="text" type="java.lang.String" value="CANCEL"/>
       </Properties>
@@ -173,7 +173,7 @@
     <Component class="com.floreantpos.swing.PosButton" name="btnOk">
       <Properties>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/images/finish_32.png"/>
+          <Image iconType="3" name="/images/finish.png"/>
         </Property>
         <Property name="text" type="java.lang.String" value="OK"/>
       </Properties>
@@ -186,14 +186,14 @@
     <Component class="com.floreantpos.swing.PosButton" name="btnUp">
       <Properties>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/images/up_32.png"/>
+          <Image iconType="3" name="/images/up.png"/>
         </Property>
       </Properties>
     </Component>
     <Component class="com.floreantpos.swing.PosButton" name="btnDown">
       <Properties>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/images/down_32.png"/>
+          <Image iconType="3" name="/images/down.png"/>
         </Property>
       </Properties>
     </Component>

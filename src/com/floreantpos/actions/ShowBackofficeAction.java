@@ -19,7 +19,7 @@ public class ShowBackofficeAction extends PosAction {
 			putValue(Action.NAME, UserPermission.VIEW_BACK_OFFICE); //$NON-NLS-1$
 		}
 		if (showIcon) {
-			putValue(Action.SMALL_ICON, IconFactory.getIcon("new_ticket_32.png")); //$NON-NLS-1$
+			putValue(Action.SMALL_ICON, IconFactory.getIcon("new_ticket.png")); //$NON-NLS-1$
 		}
 		
 		setRequiredPermission(UserPermission.VIEW_BACK_OFFICE);

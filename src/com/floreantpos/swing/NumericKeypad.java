@@ -82,47 +82,47 @@ public class NumericKeypad extends javax.swing.JComponent {
 		keypadPanel.setLayout(new java.awt.GridLayout(4, 3, 5, 5));
 
 		posButton7.setAction(goAction);
-		posButton7.setIcon(com.floreantpos.IconFactory.getIcon("7_32.png"));
+		posButton7.setIcon(com.floreantpos.IconFactory.getIcon("7.png"));
 		posButton7.setActionCommand("7");
 		keypadPanel.add(posButton7);
 
 		posButton8.setAction(goAction);
-		posButton8.setIcon(com.floreantpos.IconFactory.getIcon("8_32.png"));
+		posButton8.setIcon(com.floreantpos.IconFactory.getIcon("8.png"));
 		posButton8.setActionCommand("8");
 		keypadPanel.add(posButton8);
 
 		posButton9.setAction(goAction);
-		posButton9.setIcon(com.floreantpos.IconFactory.getIcon("9_32.png"));
+		posButton9.setIcon(com.floreantpos.IconFactory.getIcon("9.png"));
 		posButton9.setActionCommand("9");
 		keypadPanel.add(posButton9);
 
 		posButton4.setAction(goAction);
-		posButton4.setIcon(com.floreantpos.IconFactory.getIcon("4_32.png"));
+		posButton4.setIcon(com.floreantpos.IconFactory.getIcon("4.png"));
 		posButton4.setActionCommand("4");
 		keypadPanel.add(posButton4);
 
 		posButton5.setAction(goAction);
-		posButton5.setIcon(com.floreantpos.IconFactory.getIcon("5_32.png"));
+		posButton5.setIcon(com.floreantpos.IconFactory.getIcon("5.png"));
 		posButton5.setActionCommand("5");
 		keypadPanel.add(posButton5);
 
 		posButton6.setAction(goAction);
-		posButton6.setIcon(com.floreantpos.IconFactory.getIcon("6_32.png"));
+		posButton6.setIcon(com.floreantpos.IconFactory.getIcon("6.png"));
 		posButton6.setActionCommand("6");
 		keypadPanel.add(posButton6);
 
 		posButton1.setAction(goAction);
-		posButton1.setIcon(com.floreantpos.IconFactory.getIcon("1_32.png"));
+		posButton1.setIcon(com.floreantpos.IconFactory.getIcon("1.png"));
 		posButton1.setActionCommand("1");
 		keypadPanel.add(posButton1);
 
 		posButton2.setAction(goAction);
-		posButton2.setIcon(com.floreantpos.IconFactory.getIcon("2_32.png"));
+		posButton2.setIcon(com.floreantpos.IconFactory.getIcon("2.png"));
 		posButton2.setActionCommand("2");
 		keypadPanel.add(posButton2);
 
 		posButton3.setAction(goAction);
-		posButton3.setIcon(com.floreantpos.IconFactory.getIcon("3_32.png"));
+		posButton3.setIcon(com.floreantpos.IconFactory.getIcon("3.png"));
 		posButton3.setActionCommand("3");
 		keypadPanel.add(posButton3);
 
@@ -130,11 +130,11 @@ public class NumericKeypad extends javax.swing.JComponent {
 		btnDot.setFocusable(false);
 		btnDot.setAction(goAction);
 		btnDot.setActionCommand(".");
-		btnDot.setIcon(com.floreantpos.IconFactory.getIcon("dot_32.png"));
+		btnDot.setIcon(com.floreantpos.IconFactory.getIcon("dot.png"));
 		keypadPanel.add(btnDot);
 
 		posButton0.setAction(goAction);
-		posButton0.setIcon(com.floreantpos.IconFactory.getIcon("0_32.png"));
+		posButton0.setIcon(com.floreantpos.IconFactory.getIcon("0.png"));
 		posButton0.setActionCommand("0");
 		keypadPanel.add(posButton0);
 		setLayout(new BorderLayout(0, 0));
@@ -143,7 +143,7 @@ public class NumericKeypad extends javax.swing.JComponent {
 		keypadPanel.add(posButton10);
 
 		posButton10.setAction(goAction);
-		posButton10.setIcon(com.floreantpos.IconFactory.getIcon("clear_32.png"));
+		posButton10.setIcon(com.floreantpos.IconFactory.getIcon("clear.png"));
 		posButton10.setText("CLEAR");
 		add(keypadPanel, BorderLayout.CENTER);
 	}// </editor-fold>

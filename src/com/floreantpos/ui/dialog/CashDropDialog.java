@@ -140,7 +140,7 @@ public class CashDropDialog extends POSDialog {
         transparentPanel2.setLayout(new java.awt.GridLayout(0, 1, 2, 2));
 
         transparentPanel2.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 5));
-        btnUp.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/up_32.png")));
+        btnUp.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/up.png")));
         btnUp.setPreferredSize(new java.awt.Dimension(80, 0));
         btnUp.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -150,7 +150,7 @@ public class CashDropDialog extends POSDialog {
 
         transparentPanel2.add(btnUp);
 
-        btnDown.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/down_32.png")));
+        btnDown.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/down.png")));
         btnDown.setPreferredSize(new java.awt.Dimension(80, 0));
         btnDown.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

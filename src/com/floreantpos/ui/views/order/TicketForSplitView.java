@@ -210,7 +210,7 @@ public class TicketForSplitView extends com.floreantpos.swing.TransparentPanel i
 
 		jPanel5.setLayout(new java.awt.GridBagLayout());
 
-		btnScrollUp.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/up_32.png")));
+		btnScrollUp.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/up.png")));
 		btnScrollUp.setPreferredSize(new java.awt.Dimension(50, 45));
 		btnScrollUp.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -226,7 +226,7 @@ public class TicketForSplitView extends com.floreantpos.swing.TransparentPanel i
 		gridBagConstraints.insets = new java.awt.Insets(0, 2, 0, 0);
 		jPanel5.add(btnScrollUp, gridBagConstraints);
 
-		btnScrollDown.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/down_32.png")));
+		btnScrollDown.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/down.png")));
 		btnScrollDown.setPreferredSize(new java.awt.Dimension(50, 45));
 		btnScrollDown.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -530,39 +530,39 @@ public class TicketForSplitView extends com.floreantpos.swing.TransparentPanel i
 
 		switch (viewNumber) {
 			case 1:
-				btnTransferToTicket1.setIcon(IconFactory.getIcon("next_32.png"));
+				btnTransferToTicket1.setIcon(IconFactory.getIcon("next.png"));
 				btnTransferToTicket1.setText("2");
-				btnTransferToTicket2.setIcon(IconFactory.getIcon("next_32.png"));
+				btnTransferToTicket2.setIcon(IconFactory.getIcon("next.png"));
 				btnTransferToTicket2.setText("3");
-				btnTransferToTicket3.setIcon(IconFactory.getIcon("next_32.png"));
+				btnTransferToTicket3.setIcon(IconFactory.getIcon("next.png"));
 				btnTransferToTicket3.setText("4");
 				break;
 
 			case 2:
-				btnTransferToTicket1.setIcon(IconFactory.getIcon("previous_32.png"));
+				btnTransferToTicket1.setIcon(IconFactory.getIcon("previous.png"));
 				btnTransferToTicket1.setText("1");
-				btnTransferToTicket2.setIcon(IconFactory.getIcon("next_32.png"));
+				btnTransferToTicket2.setIcon(IconFactory.getIcon("next.png"));
 				btnTransferToTicket2.setText("3");
-				btnTransferToTicket3.setIcon(IconFactory.getIcon("next_32.png"));
+				btnTransferToTicket3.setIcon(IconFactory.getIcon("next.png"));
 				btnTransferToTicket3.setText("4");
 				break;
 
 			case 3:
-				btnTransferToTicket1.setIcon(IconFactory.getIcon("previous_32.png"));
+				btnTransferToTicket1.setIcon(IconFactory.getIcon("previous.png"));
 				btnTransferToTicket1.setText("1");
-				btnTransferToTicket2.setIcon(IconFactory.getIcon("previous_32.png"));
+				btnTransferToTicket2.setIcon(IconFactory.getIcon("previous.png"));
 				btnTransferToTicket2.setText("2");
-				btnTransferToTicket3.setIcon(IconFactory.getIcon("next_32.png"));
+				btnTransferToTicket3.setIcon(IconFactory.getIcon("next.png"));
 				btnTransferToTicket3.setText("4");
 
 				break;
 
 			case 4:
-				btnTransferToTicket1.setIcon(IconFactory.getIcon("previous_32.png"));
+				btnTransferToTicket1.setIcon(IconFactory.getIcon("previous.png"));
 				btnTransferToTicket1.setText("1");
-				btnTransferToTicket2.setIcon(IconFactory.getIcon("previous_32.png"));
+				btnTransferToTicket2.setIcon(IconFactory.getIcon("previous.png"));
 				btnTransferToTicket2.setText("2");
-				btnTransferToTicket3.setIcon(IconFactory.getIcon("previous_32.png"));
+				btnTransferToTicket3.setIcon(IconFactory.getIcon("previous.png"));
 				btnTransferToTicket3.setText("3");
 				break;
 
