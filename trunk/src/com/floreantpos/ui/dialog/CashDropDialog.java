@@ -24,6 +24,7 @@ import javax.swing.border.TitledBorder;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 
+import com.floreantpos.IconFactory;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.CashDropTransaction;
 import com.floreantpos.model.Terminal;
@@ -140,7 +141,7 @@ public class CashDropDialog extends POSDialog {
         transparentPanel2.setLayout(new java.awt.GridLayout(0, 1, 2, 2));
 
         transparentPanel2.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 5));
-        btnUp.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/up.png")));
+        btnUp.setIcon(IconFactory.getIcon("/ui_icons/", "up.png"));
         btnUp.setPreferredSize(new java.awt.Dimension(80, 0));
         btnUp.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -150,7 +151,7 @@ public class CashDropDialog extends POSDialog {
 
         transparentPanel2.add(btnUp);
 
-        btnDown.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/down.png")));
+        btnDown.setIcon(IconFactory.getIcon("/ui_icons/", "down.png"));
         btnDown.setPreferredSize(new java.awt.Dimension(80, 0));
         btnDown.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

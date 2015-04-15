@@ -28,6 +28,7 @@ import net.miginfocom.swing.MigLayout;
 
 import org.apache.commons.logging.LogFactory;
 
+import com.floreantpos.IconFactory;
 import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.config.ui.DatabaseConfigurationDialog;
 import com.floreantpos.main.Application;
@@ -86,67 +87,67 @@ class LoginPasswordEntryView extends JPanel {
 		buttonPanel.setLayout(new MigLayout("", "[111px][111px][111px,grow]", "[60px][60px][60px][60px]"));
 
 		btn7.setAction(loginAction);
-		btn7.setIcon(com.floreantpos.IconFactory.getIcon("7.png"));
+		btn7.setIcon(com.floreantpos.IconFactory.getIcon("/ui_icons/", "7.png"));
 		btn7.setActionCommand("7");
 		btn7.setFocusable(false);
 		buttonPanel.add(btn7, "cell 0 0,grow");
 
 		btn8.setAction(loginAction);
-		btn8.setIcon(com.floreantpos.IconFactory.getIcon("8.png"));
+		btn8.setIcon(com.floreantpos.IconFactory.getIcon("/ui_icons/", "8.png"));
 		btn8.setActionCommand("8");
 		btn8.setFocusable(false);
 		buttonPanel.add(btn8, "cell 1 0,grow");
 
 		btn9.setAction(loginAction);
-		btn9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/9.png"))); // NOI18N
+		btn9.setIcon(IconFactory.getIcon("/ui_icons/", "9.png")); // NOI18N
 		btn9.setActionCommand("9");
 		btn9.setFocusable(false);
 		buttonPanel.add(btn9, "cell 2 0,grow");
 
 		btn4.setAction(loginAction);
-		btn4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/4.png"))); // NOI18N
+		btn4.setIcon(IconFactory.getIcon("/ui_icons/", "4.png")); // NOI18N
 		btn4.setActionCommand("4");
 		btn4.setFocusable(false);
 		buttonPanel.add(btn4, "cell 0 1,grow");
 
 		btn5.setAction(loginAction);
-		btn5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/5.png"))); // NOI18N
+		btn5.setIcon(IconFactory.getIcon("/ui_icons/", "5.png")); // NOI18N
 		btn5.setActionCommand("5");
 		btn5.setFocusable(false);
 		buttonPanel.add(btn5, "cell 1 1,grow");
 
 		btn6.setAction(loginAction);
-		btn6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/6.png"))); // NOI18N
+		btn6.setIcon(IconFactory.getIcon("/ui_icons/", "6.png")); // NOI18N
 		btn6.setActionCommand("6");
 		btn6.setFocusable(false);
 		buttonPanel.add(btn6, "cell 2 1,grow");
 
 		btn1.setAction(loginAction);
-		btn1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/1.png"))); // NOI18N
+		btn1.setIcon(IconFactory.getIcon("/ui_icons/", "1.png")); // NOI18N
 		btn1.setActionCommand("1");
 		btn1.setFocusable(false);
 		buttonPanel.add(btn1, "cell 0 2,grow");
 
 		btn2.setAction(loginAction);
-		btn2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/2.png"))); // NOI18N
+		btn2.setIcon(IconFactory.getIcon("/ui_icons/", "2.png")); // NOI18N
 		btn2.setActionCommand("2");
 		btn2.setFocusable(false);
 		buttonPanel.add(btn2, "cell 1 2,grow");
 
 		btn3.setAction(loginAction);
-		btn3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/3.png"))); // NOI18N
+		btn3.setIcon(IconFactory.getIcon("/ui_icons/", "3.png")); // NOI18N
 		btn3.setActionCommand("3");
 		btn3.setFocusable(false);
 		buttonPanel.add(btn3, "cell 2 2,grow");
 
 		posButton3.setAction(goAction);
-		posButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/0.png"))); // NOI18N
+		posButton3.setIcon(IconFactory.getIcon("/ui_icons/", "0.png")); // NOI18N
 		posButton3.setActionCommand("0");
 		posButton3.setFocusable(false);
 		buttonPanel.add(posButton3, "cell 0 3,grow");
 
 		posButton1.setAction(goAction);
-		posButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/clear.png"))); // NOI18N
+		posButton1.setIcon(IconFactory.getIcon("/ui_icons/", "clear.png")); // NOI18N
 		posButton1.setText(com.floreantpos.POSConstants.CLEAR);
 		posButton1.setFocusable(false);
 		posButton1.setPreferredSize(new java.awt.Dimension(90, 50));

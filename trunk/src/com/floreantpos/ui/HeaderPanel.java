@@ -45,7 +45,7 @@ public class HeaderPanel extends JPanel {
 		setOpaque(true);
 		setBackground(Color.white);
 
-		JLabel logoLabel = new JLabel(IconFactory.getIcon("header-logo.png")); //$NON-NLS-1$
+		JLabel logoLabel = new JLabel(IconFactory.getIcon("/ui_icons/", "header-logo.png")); //$NON-NLS-1$
 		add(logoLabel);
 		
 		TransparentPanel statusPanel = new TransparentPanel(new MigLayout("hidemode 3, fill, ins 0, gap 0"));
@@ -74,7 +74,7 @@ public class HeaderPanel extends JPanel {
 		add(btnLogout, "w 60!, h 60!"); //$NON-NLS-1$
 
 		PosButton btnShutdown = new PosButton(new ShutDownAction(false, true));
-		btnShutdown.setIcon(IconFactory.getIcon("shutdown.png")); //$NON-NLS-1$
+		btnShutdown.setIcon(IconFactory.getIcon("/ui_icons/", "shutdown.png")); //$NON-NLS-1$
 		btnShutdown.setToolTipText(Messages.getString("Shutdown")); //$NON-NLS-1$
 		add(btnShutdown, "w 60!, h 60!"); //$NON-NLS-1$
 

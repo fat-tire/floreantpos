@@ -8,6 +8,7 @@ package com.floreantpos.ui.dialog;
 
 import java.util.List;
 
+import com.floreantpos.IconFactory;
 import com.floreantpos.model.User;
 import com.floreantpos.model.dao.UserDAO;
 import com.floreantpos.swing.ListComboBoxModel;
@@ -52,7 +53,7 @@ public class UserListDialog extends POSDialog {
 
         transparentPanel1.setLayout(new java.awt.BorderLayout());
 
-        btnOk.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/finish.png")));
+        btnOk.setIcon(IconFactory.getIcon("/ui_icons/", "finish.png"));
         btnOk.setText(com.floreantpos.POSConstants.OK);
         btnOk.setPreferredSize(new java.awt.Dimension(120, 50));
         btnOk.addActionListener(new java.awt.event.ActionListener() {
@@ -63,7 +64,7 @@ public class UserListDialog extends POSDialog {
 
         transparentPanel2.add(btnOk);
 
-        btnCancel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cancel.png")));
+        btnCancel.setIcon(IconFactory.getIcon("/ui_icons/", "cancel.png"));
         btnCancel.setText(com.floreantpos.POSConstants.CANCEL);
         btnCancel.setPreferredSize(new java.awt.Dimension(120, 50));
         btnCancel.addActionListener(new java.awt.event.ActionListener() {

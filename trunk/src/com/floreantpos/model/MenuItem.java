@@ -1,7 +1,9 @@
 package com.floreantpos.model;
 
+import java.awt.Image;
 import java.util.List;
 
+import javax.swing.ImageIcon;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.apache.commons.lang.StringUtils;
@@ -144,5 +146,11 @@ public class MenuItem extends BaseMenuItem {
 	
 	public boolean hasModifiers() {
 		return (this.getMenuItemModiferGroups() != null && this.getMenuItemModiferGroups().size() > 0);
+	}
+	
+	public ImageIcon getScaledImage(int width, int height) {
+		ImageIcon icon = new ImageIcon(getImage());
+		Image scaledInstance = icon.getImage().getScaledInstance(width, height,  Image.SCALE_SMOOTH);
+		return new ImageIcon(scaledInstance);
 	}
 }

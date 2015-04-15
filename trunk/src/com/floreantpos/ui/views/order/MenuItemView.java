@@ -8,7 +8,6 @@ package com.floreantpos.ui.views.order;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
@@ -22,7 +21,6 @@ import com.floreantpos.model.MenuGroup;
 import com.floreantpos.model.MenuItem;
 import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.dao.MenuItemDAO;
-import com.floreantpos.swing.ImageIcon;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.ui.dialog.MiscTicketItemDialog;
 import com.floreantpos.ui.views.order.actions.ItemSelectionListener;
@@ -131,15 +129,13 @@ public class MenuItemView extends SelectionView {
 				int h = BUTTON_SIZE - 10;
 				
 				if(menuItem.isShowImageOnly()) {
-					ImageIcon imageIcon = new ImageIcon(new ImageIcon(menuItem.getImage()).getImage().getScaledInstance(w, h, Image.SCALE_SMOOTH));
-					setIcon(imageIcon);
+					setIcon(menuItem.getScaledImage(w, h));
 				}
 				else {
 					w = 80;
 					h = 80;
 					
-					ImageIcon imageIcon = new ImageIcon(new ImageIcon(menuItem.getImage()).getImage().getScaledInstance(w, h, Image.SCALE_SMOOTH));
-					setIcon(imageIcon);
+					setIcon(menuItem.getScaledImage(w, h));
 					setText("<html><body><center>" + menuItem.getDisplayName() + "</center></body></html>");
 				}
 				
