@@ -210,7 +210,7 @@ public class TicketForSplitView extends com.floreantpos.swing.TransparentPanel i
 
 		jPanel5.setLayout(new java.awt.GridBagLayout());
 
-		btnScrollUp.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/up.png")));
+		btnScrollUp.setIcon(IconFactory.getIcon("/ui_icons/", "up.png"));
 		btnScrollUp.setPreferredSize(new java.awt.Dimension(50, 45));
 		btnScrollUp.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -226,7 +226,7 @@ public class TicketForSplitView extends com.floreantpos.swing.TransparentPanel i
 		gridBagConstraints.insets = new java.awt.Insets(0, 2, 0, 0);
 		jPanel5.add(btnScrollUp, gridBagConstraints);
 
-		btnScrollDown.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/down.png")));
+		btnScrollDown.setIcon(IconFactory.getIcon("/ui_icons/", "down.png"));
 		btnScrollDown.setPreferredSize(new java.awt.Dimension(50, 45));
 		btnScrollDown.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {

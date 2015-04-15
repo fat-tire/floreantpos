@@ -9,6 +9,7 @@ package com.floreantpos.ui.dialog;
 
 import java.util.List;
 
+import com.floreantpos.IconFactory;
 import com.floreantpos.POSConstants;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.ActionHistory;
@@ -144,7 +145,7 @@ public class VoidTicketDialog extends POSDialog {
 
         transparentPanel3.setLayout(new java.awt.BorderLayout());
 
-        btnVoid.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/void_ticket.png"))); // NOI18N
+        btnVoid.setIcon(IconFactory.getIcon("/ui_icons/", "void_ticket.png")); // NOI18N
         btnVoid.setText(com.floreantpos.POSConstants.VOID);
         btnVoid.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -153,7 +154,7 @@ public class VoidTicketDialog extends POSDialog {
         });
         transparentPanel4.add(btnVoid);
 
-        btnCancel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cancel.png"))); // NOI18N
+        btnCancel.setIcon(IconFactory.getIcon("/ui_icons/", "cancel.png")); // NOI18N
         btnCancel.setText(com.floreantpos.POSConstants.CANCEL);
         btnCancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

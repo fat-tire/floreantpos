@@ -67,7 +67,7 @@ public class NumberSelectionDialog2 extends POSDialog implements ActionListener 
 			for (int j = 0; j < numbers[i].length; j++) {
 				posButton = new PosButton();
 				posButton.setFocusable(false);
-				ImageIcon icon = IconFactory.getIcon(iconNames[i][j]);
+				ImageIcon icon = IconFactory.getIcon("/ui_icons/", iconNames[i][j]);
 				String buttonText = String.valueOf(numbers[i][j]);
 
 				if (icon == null) {

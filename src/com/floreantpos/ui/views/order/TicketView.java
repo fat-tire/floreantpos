@@ -15,7 +15,6 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -33,6 +32,7 @@ import org.hibernate.Session;
 import org.hibernate.StaleObjectStateException;
 import org.jdesktop.swingx.JXCollapsiblePane;
 
+import com.floreantpos.IconFactory;
 import com.floreantpos.POSConstants;
 import com.floreantpos.PosException;
 import com.floreantpos.config.TerminalConfig;
@@ -247,14 +247,14 @@ public class TicketView extends JPanel {
 			}
 		});
 
-		btnDecreaseAmount.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/minus.png")));
+		btnDecreaseAmount.setIcon(IconFactory.getIcon("/ui_icons/", "minus.png"));
 		btnDecreaseAmount.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				doDecreaseAmount(evt);
 			}
 		});
 
-		btnScrollDown.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/down.png")));
+		btnScrollDown.setIcon(IconFactory.getIcon("/ui_icons/", "down.png"));
 		btnScrollDown.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				doScrollDown(evt);
@@ -443,13 +443,13 @@ public class TicketView extends JPanel {
 	private com.floreantpos.swing.TransparentPanel ticketActionPanel = new com.floreantpos.swing.TransparentPanel();
 	private com.floreantpos.swing.PosButton btnCancel;
 	private com.floreantpos.swing.PosButton btnDecreaseAmount;
-	private com.floreantpos.swing.PosButton btnDelete = new PosButton(new javax.swing.ImageIcon(getClass().getResource("/images/delete.png")));
+	private com.floreantpos.swing.PosButton btnDelete = new PosButton(IconFactory.getIcon("/ui_icons/", "delete.png"));
 	private com.floreantpos.swing.PosButton btnSave;
-	private com.floreantpos.swing.PosButton btnIncreaseAmount = new PosButton(new javax.swing.ImageIcon(getClass().getResource("/images/add_user.png")));
+	private com.floreantpos.swing.PosButton btnIncreaseAmount = new PosButton(IconFactory.getIcon("/ui_icons/", "add_user.png"));
 	private com.floreantpos.swing.PosButton btnPay;
 	private com.floreantpos.swing.POSToggleButton btnMore = new POSToggleButton(POSConstants.MORE_ACTIVITY_BUTTON_TEXT);
 	private com.floreantpos.swing.PosButton btnScrollDown;
-	private com.floreantpos.swing.PosButton btnScrollUp = new PosButton(new ImageIcon(getClass().getResource("/images/up.png")));
+	private com.floreantpos.swing.PosButton btnScrollUp = new PosButton(IconFactory.getIcon("/ui_icons/", "up.png"));
 	private javax.swing.JLabel lblTax;
 	private javax.swing.JLabel lblSubtotal;
 	private javax.swing.JLabel lblTotal;
@@ -460,7 +460,7 @@ public class TicketView extends JPanel {
 	private javax.swing.JTextField tfTotal;
 	private com.floreantpos.ui.ticket.TicketViewerTable ticketViewerTable;
 	private ExtraTicketActionPanel extraActionPanel = new ExtraTicketActionPanel();
-	private PosButton btnCookingInstruction = new PosButton(new ImageIcon(getClass().getResource("/images/cooking-instruction.png")));
+	private PosButton btnCookingInstruction = new PosButton(IconFactory.getIcon("/ui_icons/", "cooking-instruction.png"));
 	private TitledBorder titledBorder = new TitledBorder("");
 	private Border border = new CompoundBorder(titledBorder, new EmptyBorder(5, 5, 5, 5));
 

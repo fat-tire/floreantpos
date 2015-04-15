@@ -1,9 +1,6 @@
 package com.floreantpos.ui.views.order;
 
-import java.awt.Window;
 import java.util.Date;
-
-import javax.swing.SwingUtilities;
 
 import com.floreantpos.POSConstants;
 import com.floreantpos.actions.SettleTicketAction;
@@ -110,7 +107,6 @@ public class OrderController implements OrderListener, CategorySelectionListener
 			}
 			
 			OrderUtil.createNewTakeOutOrder(OrderType.TAKE_OUT);
-			Window ancestor = SwingUtilities.getWindowAncestor(Application.getPosWindow());
 			CashierModeNextActionDialog dialog = new CashierModeNextActionDialog(message);
 			dialog.open();
 		}
