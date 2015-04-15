@@ -54,7 +54,7 @@
         <Component class="com.floreantpos.swing.PosButton" name="btnShutdown">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/images/shut_down_32.png"/>
+              <Image iconType="3" name="/images/shut_down.png"/>
             </Property>
             <Property name="text" type="java.lang.String" value="SHUTDOWN"/>
           </Properties>
@@ -65,7 +65,7 @@
         <Component class="com.floreantpos.swing.PosButton" name="btnShutdown1">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/images/log_in_32.png"/>
+              <Image iconType="3" name="/images/log_in.png"/>
             </Property>
             <Property name="text" type="java.lang.String" value="LOGIN"/>
           </Properties>

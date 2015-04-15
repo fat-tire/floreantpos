@@ -144,7 +144,7 @@ public class VoidTicketDialog extends POSDialog {
 
         transparentPanel3.setLayout(new java.awt.BorderLayout());
 
-        btnVoid.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/void_ticket_32.png"))); // NOI18N
+        btnVoid.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/void_ticket.png"))); // NOI18N
         btnVoid.setText(com.floreantpos.POSConstants.VOID);
         btnVoid.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -153,7 +153,7 @@ public class VoidTicketDialog extends POSDialog {
         });
         transparentPanel4.add(btnVoid);
 
-        btnCancel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cancel_32.png"))); // NOI18N
+        btnCancel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cancel.png"))); // NOI18N
         btnCancel.setText(com.floreantpos.POSConstants.CANCEL);
         btnCancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

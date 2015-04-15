@@ -31,7 +31,7 @@
               <component id="b8be0" class="com.floreantpos.swing.PosButton" binding="btnDeleteSelected">
                 <constraints/>
                 <properties>
-                  <icon value="images/delete_32.png"/>
+                  <icon value="images/delete.png"/>
                   <preferredSize width="140" height="50"/>
                   <text value="Delete Selected"/>
                 </properties>
@@ -39,7 +39,7 @@
               <component id="e7465" class="com.floreantpos.swing.PosButton" binding="buttonOK">
                 <constraints/>
                 <properties>
-                  <icon value="images/finish_32.png"/>
+                  <icon value="images/finish.png"/>
                   <preferredSize width="120" height="50"/>
                   <text value="OK"/>
                 </properties>
@@ -47,7 +47,7 @@
               <component id="5723f" class="com.floreantpos.swing.PosButton" binding="buttonCancel">
                 <constraints/>
                 <properties>
-                  <icon value="images/cancel_32.png"/>
+                  <icon value="images/cancel.png"/>
                   <preferredSize width="120" height="50"/>
                   <text value="Cancel"/>
                 </properties>
@@ -96,7 +96,7 @@
                   <forms defaultalign-horz="false" defaultalign-vert="false"/>
                 </constraints>
                 <properties>
-                  <icon value="images/up_32.png"/>
+                  <icon value="images/up.png"/>
                   <preferredSize width="50" height="50"/>
                   <text value=""/>
                 </properties>
@@ -107,7 +107,7 @@
                   <forms defaultalign-horz="false" defaultalign-vert="false"/>
                 </constraints>
                 <properties>
-                  <icon value="images/down_32.png"/>
+                  <icon value="images/down.png"/>
                   <preferredSize width="50" height="50"/>
                   <text value=""/>
                 </properties>

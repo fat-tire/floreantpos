@@ -95,73 +95,73 @@ public class PaymentView extends JPanel {
 		calcButtonPanel.setLayout(new java.awt.GridLayout(0, 3, 5, 5));
 
 		posButton1.setAction(calAction);
-		posButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/7_32.png"))); // NOI18N
+		posButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/7.png"))); // NOI18N
 		posButton1.setActionCommand("7");
 		posButton1.setFocusable(false);
 		calcButtonPanel.add(posButton1);
 
 		posButton2.setAction(calAction);
-		posButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/8_32.png"))); // NOI18N
+		posButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/8.png"))); // NOI18N
 		posButton2.setActionCommand("8");
 		posButton2.setFocusable(false);
 		calcButtonPanel.add(posButton2);
 
 		posButton3.setAction(calAction);
-		posButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/9_32.png"))); // NOI18N
+		posButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/9.png"))); // NOI18N
 		posButton3.setActionCommand("9");
 		posButton3.setFocusable(false);
 		calcButtonPanel.add(posButton3);
 
 		posButton4.setAction(calAction);
-		posButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/4_32.png"))); // NOI18N
+		posButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/4.png"))); // NOI18N
 		posButton4.setActionCommand("4");
 		posButton4.setFocusable(false);
 		calcButtonPanel.add(posButton4);
 
 		posButton5.setAction(calAction);
-		posButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/5_32.png"))); // NOI18N
+		posButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/5.png"))); // NOI18N
 		posButton5.setActionCommand("5");
 		posButton5.setFocusable(false);
 		calcButtonPanel.add(posButton5);
 
 		posButton6.setAction(calAction);
-		posButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/6_32.png"))); // NOI18N
+		posButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/6.png"))); // NOI18N
 		posButton6.setActionCommand("6");
 		posButton6.setFocusable(false);
 		calcButtonPanel.add(posButton6);
 
 		posButton9.setAction(calAction);
-		posButton9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/1_32.png"))); // NOI18N
+		posButton9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/1.png"))); // NOI18N
 		posButton9.setActionCommand(REMOVE);
 		posButton9.setFocusable(false);
 		calcButtonPanel.add(posButton9);
 
 		posButton8.setAction(calAction);
-		posButton8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/2_32.png"))); // NOI18N
+		posButton8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/2.png"))); // NOI18N
 		posButton8.setActionCommand("2");
 		posButton8.setFocusable(false);
 		calcButtonPanel.add(posButton8);
 
 		posButton7.setAction(calAction);
-		posButton7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/3_32.png"))); // NOI18N
+		posButton7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/3.png"))); // NOI18N
 		posButton7.setActionCommand("3");
 		posButton7.setFocusable(false);
 		calcButtonPanel.add(posButton7);
 
 		posButton11.setAction(calAction);
-		posButton11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/0_32.png"))); // NOI18N
+		posButton11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/0.png"))); // NOI18N
 		posButton11.setActionCommand(ADD);
 		posButton11.setFocusable(false);
 		calcButtonPanel.add(posButton11);
 
 		posButton10.setAction(calAction);
-		posButton10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/dot_32.png"))); // NOI18N
+		posButton10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/dot.png"))); // NOI18N
 		posButton10.setActionCommand(".");
 		posButton10.setFocusable(false);
 		calcButtonPanel.add(posButton10);
 
 		posButton12.setAction(calAction);
-		posButton12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/clear_32.png"))); // NOI18N
+		posButton12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/clear.png"))); // NOI18N
 		posButton12.setText("CLEAR");
 		posButton12.setFocusable(false);
 		calcButtonPanel.add(posButton12);
