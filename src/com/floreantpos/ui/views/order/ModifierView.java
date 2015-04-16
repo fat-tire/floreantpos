@@ -10,6 +10,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -33,12 +35,13 @@ import com.floreantpos.model.TicketItemModifierGroup;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.views.order.actions.ModifierSelectionListener;
+import com.floreantpos.util.ModifierStateChangeListener;
 
 /**
  *
  * @author  MShahriar
  */
-public class ModifierView extends SelectionView {
+public class ModifierView extends SelectionView implements ModifierStateChangeListener {
 	private Vector<ModifierSelectionListener> listenerList = new Vector<ModifierSelectionListener>();
 
 	private MenuItem parentMenuItem;
@@ -160,8 +163,9 @@ public class ModifierView extends SelectionView {
 			btnNext.setEnabled(true);
 		}
 		separatorCount = spCount;
-		revalidate();
-		repaint();
+//		revalidate();
+//		repaint();
+		updateVisualRepresentation();
 	}
 	
 	protected int getSeparatorCount() {
@@ -295,6 +299,9 @@ public class ModifierView extends SelectionView {
 		}
 
 		void updateView(TicketItemModifier ticketItemModifier) {
+			Integer itemCount = ticketItemModifier.getItemCount();
+			setText(menuModifier.getDisplayName() +"("+itemCount+")");
+			
 			if (ticketItemModifier == null || ticketItemModifier.getModifierType() == TicketItemModifier.MODIFIER_NOT_INITIALIZED) {
 				setBackground(null);
 				//setIcon(null);
@@ -303,15 +310,15 @@ public class ModifierView extends SelectionView {
 
 			if (ticketItemModifier.getModifierType() == TicketItemModifier.NORMAL_MODIFIER) {
 				//setIcon(normalIcon);
-				setBackground(Color.GREEN.darker());
+				//setBackground(Color.GREEN.darker());
 			}
-			else if (ticketItemModifier.getModifierType() == TicketItemModifier.NO_MODIFIER) {
-				//setIcon(noIcon);
-				setBackground(Color.RED.darker());
-			}
+//			else if (ticketItemModifier.getModifierType() == TicketItemModifier.NO_MODIFIER) {
+//				//setIcon(noIcon);
+//				setBackground(Color.RED.darker());
+//			}
 			else if (ticketItemModifier.getModifierType() == TicketItemModifier.EXTRA_MODIFIER) {
 				//setIcon(extraIcon);
-				setBackground(Color.ORANGE);
+				//setBackground(Color.ORANGE);
 			}
 		}
 		
@@ -325,7 +332,7 @@ public class ModifierView extends SelectionView {
 
 			if (ticketItemModifier == null) {
 				TicketItemModifier m = ticketItemModifierGroup.addTicketItemModifier(menuModifier, modifierCount >= maxModifier ? TicketItemModifier.EXTRA_MODIFIER : TicketItemModifier.NORMAL_MODIFIER);
-				//updateView(m);
+				updateView(m);
 				ticketView.updateAllView();
 				ticketView.selectRow(m.getTableRowNum());
 				return;
@@ -337,6 +344,7 @@ public class ModifierView extends SelectionView {
 			}
 			switch (modifierType) {
 				case TicketItemModifier.MODIFIER_NOT_INITIALIZED:
+					ticketItemModifier.setItemCount(ticketItemModifier.getItemCount() + 1);
 					ticketItemModifier.setModifierType(TicketItemModifier.NORMAL_MODIFIER);
 					updateVisualRepresentation();
 					ticketView.updateAllView();
@@ -345,21 +353,26 @@ public class ModifierView extends SelectionView {
 
 				case TicketItemModifier.NORMAL_MODIFIER:
 				case TicketItemModifier.EXTRA_MODIFIER:
-					ticketItemModifier.setModifierType(TicketItemModifier.NO_MODIFIER);
+					ticketItemModifier.setItemCount(ticketItemModifier.getItemCount() + 1);
 					updateVisualRepresentation();
 					ticketView.updateAllView();
 					ticketView.selectRow(ticketItemModifier.getTableRowNum());
 					break;
 
-				case TicketItemModifier.NO_MODIFIER:
-					ticketItemModifier.setModifierType(TicketItemModifier.MODIFIER_NOT_INITIALIZED);
-					ticketItemModifierGroup.removeTicketItemModifier(ticketItemModifier);
-					//updateView(ticketItemModifier);
-					updateVisualRepresentation();
-					ticketView.updateAllView();
-					ticketView.selectRow(ticketItemModifier.getTableRowNum() - 1);
-					break;
+//				case TicketItemModifier.NO_MODIFIER:
+//					ticketItemModifier.setModifierType(TicketItemModifier.MODIFIER_NOT_INITIALIZED);
+//					ticketItemModifierGroup.removeTicketItemModifier(ticketItemModifier);
+//					//updateView(ticketItemModifier);
+//					updateVisualRepresentation();
+//					ticketView.updateAllView();
+//					ticketView.selectRow(ticketItemModifier.getTableRowNum() - 1);
+//					break;
 			}
 		}
+	}
+
+	@Override
+	public void modifierStateChanged() {
+		updateVisualRepresentation();
 	}
 }

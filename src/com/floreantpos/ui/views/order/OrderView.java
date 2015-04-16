@@ -50,6 +50,8 @@ public class OrderView extends ViewPanel {
 		groupView = new GroupView();
 		itemView = new MenuItemView();
 		modifierView = new ModifierView();
+		
+		ticketView.getTicketViewerTable().setModifierStateChangeListener(modifierView);
 
 		addView(GroupView.VIEW_NAME, groupView);
 		addView(MenuItemView.VIEW_NAME, itemView);
@@ -88,7 +90,6 @@ public class OrderView extends ViewPanel {
         jPanel1.add(othersView, java.awt.BorderLayout.SOUTH);
 
         add(jPanel1, java.awt.BorderLayout.CENTER);
-
     }// </editor-fold>//GEN-END:initComponents
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
