@@ -12,12 +12,15 @@ import javax.swing.table.TableColumn;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.TicketItemModifier;
+import com.floreantpos.util.ModifierStateChangeListener;
 
 public class TicketViewerTable extends JTable {
 	
 	private TicketViewerTableModel model;
 	private DefaultListSelectionModel selectionModel;
 	private TicketViewerTableCellRenderer cellRenderer;
+	
+	private ModifierStateChangeListener modifierStateChangeListener;
 
 	public TicketViewerTable() {
 		this(null);
@@ -153,6 +156,10 @@ public class TicketViewerTable extends JTable {
 			modifier.setItemCount(++itemCount);
 			repaint();
 			
+			if(modifierStateChangeListener != null) {
+				modifierStateChangeListener.modifierStateChanged();
+			}
+			
 			return true;
 		}
 		return false;
@@ -176,7 +183,7 @@ public class TicketViewerTable extends JTable {
 
 			ticketItem.setItemCount(--itemCount);
 			repaint();
-
+			
 			return true;
 		}
 		else if (object instanceof TicketItemModifier) {
@@ -187,6 +194,10 @@ public class TicketViewerTable extends JTable {
 
 			modifier.setItemCount(--itemCount);
 			repaint();
+			
+			if(modifierStateChangeListener != null) {
+				modifierStateChangeListener.modifierStateChanged();
+			}
 			
 			return true;
 		}
@@ -213,7 +224,14 @@ public class TicketViewerTable extends JTable {
 
 	public Object deleteSelectedItem() {
 		int selectedRow = getSelectedRow();
-		return model.delete(selectedRow);
+		Object delete = model.delete(selectedRow);
+		
+		if(delete instanceof TicketItemModifier) {
+			if(modifierStateChangeListener != null) {
+				modifierStateChangeListener.modifierStateChanged();
+			}
+		}
+		return delete;
 	}
 
 	public boolean containsTicketItem(TicketItem ticketItem) {
@@ -272,5 +290,13 @@ public class TicketViewerTable extends JTable {
 		selectionModel.addSelectionInterval(index, index);
 		Rectangle cellRect = getCellRect(index, 0, false);
 		scrollRectToVisible(cellRect);
+	}
+
+	public ModifierStateChangeListener getModifierStateChangeListener() {
+		return modifierStateChangeListener;
+	}
+
+	public void setModifierStateChangeListener(ModifierStateChangeListener modifierStateChangeListener) {
+		this.modifierStateChangeListener = modifierStateChangeListener;
 	}
 }

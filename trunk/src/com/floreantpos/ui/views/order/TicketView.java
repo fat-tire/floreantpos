@@ -484,6 +484,8 @@ public class TicketView extends JPanel {
 	}
 
 	public void removeModifier(TicketItem parent, TicketItemModifier modifier) {
+		modifier.setItemCount(0);
+		modifier.setModifierType(TicketItemModifier.MODIFIER_NOT_INITIALIZED);
 		ticketViewerTable.removeModifier(parent, modifier);
 	}
 
@@ -610,6 +612,10 @@ public class TicketView extends JPanel {
 	
 	public ExtraTicketActionPanel getExtraActionPanel() {
 		return extraActionPanel;
+	}
+	
+	public com.floreantpos.ui.ticket.TicketViewerTable getTicketViewerTable() {
+		return ticketViewerTable;
 	}
 
 	public static void main(String[] args) {
