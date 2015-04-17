@@ -96,7 +96,7 @@ public class TicketView extends JPanel {
 		titledBorder.setTitleJustification(TitledBorder.CENTER);
 		setBorder(border);
 		setLayout(new java.awt.BorderLayout(5, 5));
-		
+
 		btnPay = new com.floreantpos.swing.PosButton();
 		btnCancel = new com.floreantpos.swing.PosButton();
 		btnSave = new com.floreantpos.swing.PosButton();
@@ -108,17 +108,17 @@ public class TicketView extends JPanel {
 		ticketScrollPane.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		ticketScrollPane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
 		ticketScrollPane.setPreferredSize(new java.awt.Dimension(180, 200));
-		
+
 		JPanel totalViewPanel = createTotalViewerPanel();
 
 		createTicketActionPanel();
 
 		createTicketItemControlPanel();
-		
+
 		JPanel centerPanel = new JPanel(new BorderLayout(5, 5));
 		centerPanel.add(ticketScrollPane);
 		centerPanel.add(totalViewPanel, BorderLayout.SOUTH);
-		
+
 		add(centerPanel);
 		add(ticketActionPanel, BorderLayout.SOUTH);
 		add(ticketItemActionPanel, BorderLayout.EAST);
@@ -179,26 +179,26 @@ public class TicketView extends JPanel {
 				doPayNow(evt);
 			}
 		});
-		
+
 		btnMore.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				extraActionPanel.setCollapsed(!btnMore.isSelected());
 			}
 		});
-		
+
 		ticketActionPanel.add(btnPay);
 		ticketActionPanel.add(btnSave);
 		ticketActionPanel.add(btnMore);
 		ticketActionPanel.add(btnCancel);
-		
+
 	}
 
 	private JPanel createTotalViewerPanel() {
 		lblSubtotal = new javax.swing.JLabel();
 		lblSubtotal.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
 		lblSubtotal.setText(com.floreantpos.POSConstants.SUBTOTAL + ":");
-		
+
 		tfSubtotal = new javax.swing.JTextField(10);
 		tfSubtotal.setHorizontalAlignment(SwingConstants.TRAILING);
 		tfSubtotal.setEditable(false);
@@ -206,7 +206,7 @@ public class TicketView extends JPanel {
 		lblTax = new javax.swing.JLabel();
 		lblTax.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
 		lblTax.setText(com.floreantpos.POSConstants.TAX + ":");
-		
+
 		tfTax = new javax.swing.JTextField();
 		tfTax.setEditable(false);
 		tfTax.setHorizontalAlignment(SwingConstants.TRAILING);
@@ -219,16 +219,16 @@ public class TicketView extends JPanel {
 		tfTotal.setFont(tfTotal.getFont().deriveFont(Font.BOLD, 16));
 		tfTotal.setHorizontalAlignment(SwingConstants.TRAILING);
 		tfTotal.setEditable(false);
-		
+
 		JPanel ticketAmountPanel = new com.floreantpos.swing.TransparentPanel(new MigLayout("ins 2 2 3 2,alignx trailing,fill", "[grow][]", ""));
-		
+
 		ticketAmountPanel.add(lblSubtotal, "cell 0 1,growx,aligny center");
 		ticketAmountPanel.add(tfSubtotal, "cell 1 1,growx,aligny center");
 		ticketAmountPanel.add(lblTax, "cell 0 3,growx,aligny center");
 		ticketAmountPanel.add(tfTax, "cell 1 3,growx,aligny center");
 		ticketAmountPanel.add(lblTotal, "cell 0 5,growx,aligny center");
 		ticketAmountPanel.add(tfTotal, "cell 1 5,growx,aligny center");
-		
+
 		return ticketAmountPanel;
 	}
 
@@ -279,7 +279,7 @@ public class TicketView extends JPanel {
 		ticketItemActionPanel.add(btnDelete);
 		ticketItemActionPanel.add(btnCookingInstruction);
 		ticketItemActionPanel.add(btnScrollDown);
-		
+
 		ticketItemActionPanel.setPreferredSize(new Dimension(70, 360));
 	}
 
@@ -568,52 +568,71 @@ public class TicketView extends JPanel {
 
 		OrderView orderView = OrderView.getInstance();
 
-		TicketItem selectedItem = null;
+		TicketItem selectedTicketItem = null;
 		if (selectedObject instanceof TicketItem) {
-			selectedItem = (TicketItem) selectedObject;
-			if("MISC".equalsIgnoreCase(selectedItem.getGroupName())) {
-				return;
-			}
-			MenuItemDAO dao = new MenuItemDAO();
-			MenuItem menuItem = dao.get(selectedItem.getItemId());
-			MenuGroup menuGroup = menuItem.getParent();
-			MenuItemView itemView = OrderView.getInstance().getItemView();
-			if (!menuGroup.equals(itemView.getMenuGroup())) {
-				itemView.setMenuGroup(menuGroup);
-			}
-			orderView.showView(MenuItemView.VIEW_NAME);
+			selectedTicketItem = (TicketItem) selectedObject;
 
-			MenuCategory menuCategory = menuGroup.getParent();
-			orderView.getCategoryView().setSelectedCategory(menuCategory);
-			return;
+			ModifierView modifierView = orderView.getModifierView();
+
+			if (selectedTicketItem.isHasModifiers()) {
+				MenuItemDAO dao = new MenuItemDAO();
+				MenuItem menuItem = dao.get(selectedTicketItem.getItemId());
+				if (!menuItem.equals(modifierView.getMenuItem())) {
+					menuItem = dao.initialize(menuItem);
+					modifierView.setMenuItem(menuItem, selectedTicketItem);
+				}
+
+				MenuCategory menuCategory = menuItem.getParent().getParent();
+				orderView.getCategoryView().setSelectedCategory(menuCategory);
+
+				modifierView.clearSelection();
+				orderView.showView(ModifierView.VIEW_NAME);
+			}
+			else {
+				MenuItemDAO dao = new MenuItemDAO();
+				MenuItem menuItem = dao.get(selectedTicketItem.getItemId());
+				MenuGroup menuGroup = menuItem.getParent();
+				MenuItemView itemView = OrderView.getInstance().getItemView();
+				if (!menuGroup.equals(itemView.getMenuGroup())) {
+					itemView.setMenuGroup(menuGroup);
+				}
+				orderView.showView(MenuItemView.VIEW_NAME);
+
+				MenuCategory menuCategory = menuGroup.getParent();
+				orderView.getCategoryView().setSelectedCategory(menuCategory);
+			}
 		}
 		else if (selectedObject instanceof TicketItemModifier) {
-			selectedItem = ((TicketItemModifier) selectedObject).getParent().getParent();
-		}
-		if (selectedItem == null)
-			return;
+			selectedTicketItem = ((TicketItemModifier) selectedObject).getParent().getParent();
+			if (selectedTicketItem == null)
+				return;
 
-		ModifierView modifierView = orderView.getModifierView();
+			ModifierView modifierView = orderView.getModifierView();
 
-		if (selectedItem.isHasModifiers()) {
-			MenuItemDAO dao = new MenuItemDAO();
-			MenuItem menuItem = dao.get(selectedItem.getItemId());
-			if (!menuItem.equals(modifierView.getMenuItem())) {
-				menuItem = dao.initialize(menuItem);
-				modifierView.setMenuItem(menuItem, selectedItem);
+			if (selectedTicketItem.isHasModifiers()) {
+				MenuItemDAO dao = new MenuItemDAO();
+				MenuItem menuItem = dao.get(selectedTicketItem.getItemId());
+				if (!menuItem.equals(modifierView.getMenuItem())) {
+					menuItem = dao.initialize(menuItem);
+					modifierView.setMenuItem(menuItem, selectedTicketItem);
+				}
+
+				MenuCategory menuCategory = menuItem.getParent().getParent();
+				orderView.getCategoryView().setSelectedCategory(menuCategory);
+
+				TicketItemModifier ticketItemModifier = (TicketItemModifier) selectedObject;
+				ticketItemModifier.setSelected(true);
+				modifierView.select(ticketItemModifier);
+
+				orderView.showView(ModifierView.VIEW_NAME);
 			}
-
-			MenuCategory menuCategory = menuItem.getParent().getParent();
-			orderView.getCategoryView().setSelectedCategory(menuCategory);
-
-			orderView.showView(ModifierView.VIEW_NAME);
 		}
 	}
-	
+
 	public ExtraTicketActionPanel getExtraActionPanel() {
 		return extraActionPanel;
 	}
-	
+
 	public com.floreantpos.ui.ticket.TicketViewerTable getTicketViewerTable() {
 		return ticketViewerTable;
 	}
@@ -626,7 +645,7 @@ public class TicketView extends JPanel {
 		frame.pack();
 		frame.setVisible(true);
 	}
-	
+
 	public class ExtraTicketActionPanel extends JXCollapsiblePane {
 		private ItemSelectionListener itemSelectionListener;
 
@@ -717,10 +736,10 @@ public class TicketView extends JPanel {
 
 			add(buttonPanel);
 		}// </editor-fold>//GEN-END:initComponents
-		
+
 		public void setOrderType(OrderType orderType) {
 			ticket.setType(orderType);
-			
+
 			btnGuestNo.setEnabled(orderType == OrderType.DINE_IN);
 			btnTableNumber.setEnabled(orderType == OrderType.DINE_IN);
 		}
@@ -728,9 +747,10 @@ public class TicketView extends JPanel {
 		protected void doChangeOrderType() {
 			OrderTypeSelectionDialog dialog = new OrderTypeSelectionDialog();
 			dialog.open();
-			
-			if(dialog.isCanceled()) return;
-			
+
+			if (dialog.isCanceled())
+				return;
+
 			OrderType selectedOrderType = dialog.getSelectedOrderType();
 			setOrderType(selectedOrderType);
 		}
