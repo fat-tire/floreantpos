@@ -105,86 +105,21 @@ public class ModifierView extends SelectionView implements ModifierStateChangeLi
 		}
 	}
 
-	protected void renderItems() {
-		reset();
-
-		if (this.items == null || items.size() == 0) {
-			return;
-		}
-
-		Dimension size = buttonsPanel.getSize();
-		Dimension itemButtonSize = getButtonSize();
-
-		int horizontalButtonCount = getButtonCount(size.width, getButtonSize().width);
-		int verticalButtonCount = getButtonCount(size.height, getButtonSize().height);
-
-		buttonsPanel.setLayout(new MigLayout("alignx 50%, wrap " + horizontalButtonCount));
-
-		//TODO: REVISE CODE
-		int totalItem = horizontalButtonCount * verticalButtonCount;
-
-		previousBlockIndex = currentBlockIndex - totalItem + separatorCount;
-		nextBlockIndex = currentBlockIndex + totalItem;
-
-		int spCount = getSeparatorCount();
-
-		if (spCount > 0) {
-			verticalButtonCount = getButtonCount(size.height - (spCount * 40), getButtonSize().height);
-
-			totalItem = horizontalButtonCount * verticalButtonCount;
-			previousBlockIndex = (currentBlockIndex - totalItem) + spCount;
-			nextBlockIndex = currentBlockIndex + totalItem + spCount;
-		}
-
-		try {
-			for (int i = currentBlockIndex; i < nextBlockIndex; i++) {
-
-				Object item = items.get(i);
-
-				if (item instanceof String) {
-					addSeparator(item.toString());
-					continue;
-				}
-
-				AbstractButton itemButton = createItemButton(item);
-				buttonsPanel.add(itemButton, "width " + itemButtonSize.width + "!, height " + itemButtonSize.height + "!");
-
-				if (i == items.size() - 1) {
-					break;
-				}
-			}
-		} catch (Exception e) {
-			// TODO: fix it.
-		}
-
-		if (previousBlockIndex >= 0 && currentBlockIndex != 0) {
-			btnPrev.setEnabled(true);
-		}
-
-		if (nextBlockIndex < items.size()) {
-			btnNext.setEnabled(true);
-		}
-		separatorCount = spCount;
-		//		revalidate();
-		//		repaint();
-		updateVisualRepresentation();
-	}
-
 	protected int getSeparatorCount() {
 		if (!(this instanceof ModifierView)) {
 			return 0;
 		}
 
 		int count = 0;
-		for (int i = currentBlockIndex; i < nextBlockIndex; i++) {
-			if (i == items.size() - 1) {
-				break;
-			}
-
-			if (items.get(i) instanceof String) {
-				++count;
-			}
-		}
+//		for (int i = currentBlockIndex; i < nextBlockIndex; i++) {
+//			if (i == items.size() - 1) {
+//				break;
+//			}
+//
+//			if (items.get(i) instanceof String) {
+//				++count;
+//			}
+//		}
 		return count;
 	}
 
