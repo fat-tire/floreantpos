@@ -81,6 +81,8 @@ public class PosButton extends JButton {
 
 	public PosButton(ImageIcon imageIcon) {
 		super(imageIcon);
+		setFocusable(false);
+		setFocusPainted(false);
 	}
 
 	@Override
