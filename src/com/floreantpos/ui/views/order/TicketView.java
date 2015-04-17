@@ -127,7 +127,9 @@ public class TicketView extends JPanel {
 		ticketViewerTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
-				updateSelectionView();
+				if(!e.getValueIsAdjusting()) {
+					updateSelectionView();
+				}
 			}
 		});
 
@@ -596,7 +598,9 @@ public class TicketView extends JPanel {
 				if (!menuGroup.equals(itemView.getMenuGroup())) {
 					itemView.setMenuGroup(menuGroup);
 				}
+				
 				orderView.showView(MenuItemView.VIEW_NAME);
+				itemView.selectItem(menuItem);
 
 				MenuCategory menuCategory = menuGroup.getParent();
 				orderView.getCategoryView().setSelectedCategory(menuCategory);

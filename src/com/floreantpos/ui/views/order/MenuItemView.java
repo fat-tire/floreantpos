@@ -10,7 +10,9 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Vector;
 
 import javax.swing.AbstractButton;
@@ -19,10 +21,8 @@ import javax.swing.SwingConstants;
 import com.floreantpos.PosException;
 import com.floreantpos.model.MenuGroup;
 import com.floreantpos.model.MenuItem;
-import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.dao.MenuItemDAO;
 import com.floreantpos.swing.PosButton;
-import com.floreantpos.ui.dialog.MiscTicketItemDialog;
 import com.floreantpos.ui.views.order.actions.ItemSelectionListener;
 
 /**
@@ -35,23 +35,11 @@ public class MenuItemView extends SelectionView {
 	private Vector<ItemSelectionListener> listenerList = new Vector<ItemSelectionListener>();
 
 	private MenuGroup menuGroup;
-	private PosButton btnMisc = new PosButton(com.floreantpos.POSConstants.MISC_BUTTON_TEXT);
-
+	private Map<Integer, ItemButton> menuItemButtonMap = new HashMap<Integer, MenuItemView.ItemButton>();
+	
 	/** Creates new form GroupView */
 	public MenuItemView() {
 		super(com.floreantpos.POSConstants.ITEMS);
-		
-		btnMisc.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				MiscTicketItemDialog dialog = new MiscTicketItemDialog();
-				dialog.open();
-				if (!dialog.isCanceled()) {
-					TicketItem ticketItem = dialog.getTicketItem();
-					RootView.getInstance().getOrderView().getTicketView().addTicketItem(ticketItem);
-				}
-			}
-		});
-		
 		setBackEnable(false);
 	}
 
@@ -63,7 +51,8 @@ public class MenuItemView extends SelectionView {
 		this.menuGroup = menuGroup;
 
 		reset();
-
+		menuItemButtonMap.clear();
+		
 		if (menuGroup == null) {
 			return;
 		}
@@ -74,14 +63,6 @@ public class MenuItemView extends SelectionView {
 			setBackEnable(items.size() > 0);
 			
 			setItems(items);
-			
-//			for (int i = 0; i < items.size(); i++) {
-//				MenuItem menuItem = items.get(i);
-//				ItemButton itemButton = new ItemButton(menuItem);
-//				addButton(itemButton);
-//			}
-//			revalidate();
-//			repaint();
 		} catch (PosException e) {
 			e.printStackTrace();
 		}
@@ -91,6 +72,7 @@ public class MenuItemView extends SelectionView {
 	protected AbstractButton createItemButton(Object item) {
 		MenuItem menuItem = (MenuItem) item;
 		ItemButton itemButton = new ItemButton(menuItem);
+		menuItemButtonMap.put(menuItem.getId(), itemButton);
 		
 		return itemButton;
 	}
@@ -114,6 +96,13 @@ public class MenuItemView extends SelectionView {
 			listener.itemSelectionFinished(menuGroup);
 		}
 	}
+	
+	public void selectItem(MenuItem menuItem) {
+		ItemButton button = menuItemButtonMap.get(menuItem.getId());
+		if(button != null) {
+			button.requestFocus();
+		}
+	}
 
 	private class ItemButton extends PosButton implements ActionListener {
 		private static final int BUTTON_SIZE = 100;
@@ -121,6 +110,8 @@ public class MenuItemView extends SelectionView {
 
 		ItemButton(MenuItem menuItem) {
 			this.foodItem = menuItem;
+			setFocusable(true);
+			setFocusPainted(true);
 			setVerticalTextPosition(SwingConstants.BOTTOM);
 			setHorizontalTextPosition(SwingConstants.CENTER);
 			
