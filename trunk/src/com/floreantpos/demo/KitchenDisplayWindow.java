@@ -9,7 +9,7 @@ import com.floreantpos.model.KitchenTicket;
 
 public class KitchenDisplayWindow extends JFrame {
 
-	KitchenDisplayView view = new KitchenDisplayView();
+	KitchenDisplayView view = new KitchenDisplayView(true);
 
 	public KitchenDisplayWindow() {
 		setTitle("Kitchen Display");

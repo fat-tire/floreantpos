@@ -27,6 +27,7 @@ import com.floreantpos.model.Printer;
 import com.floreantpos.model.dao.KitchenTicketDAO;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.swing.PosComboRenderer;
+import com.floreantpos.ui.HeaderPanel;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.views.order.ViewPanel;
 
@@ -34,18 +35,18 @@ public class KitchenDisplayView extends ViewPanel implements ActionListener {
 
 	public final static String VIEW_NAME = "KD";
 
-	public static final KitchenDisplayView instance = new KitchenDisplayView();
-
 	private JComboBox<Printer> cbPrinters = new JComboBox<Printer>();
 	private JComboBox<OrderType> cbTicketTypes = new JComboBox<OrderType>();
 
+	HeaderPanel headerPanel;
+	
 	KitchenTicketListPanel ticketPanel = new KitchenTicketListPanel();
 
 	private Timer viewUpdateTimer;
 
 	private PosButton btnLogout;
 
-	public KitchenDisplayView() {
+	public KitchenDisplayView(boolean showHeader) {
 		setLayout(new BorderLayout(5, 5));
 		PosPrinters printers = Application.getPrinters();
 		List<Printer> kitchenPrinters = printers.getKitchenPrinters();
@@ -61,6 +62,12 @@ public class KitchenDisplayView extends ViewPanel implements ActionListener {
 		cbPrinters.setRenderer(new PosComboRenderer());
 		cbPrinters.setModel(printerModel);
 		cbPrinters.addActionListener(this);
+		
+		JPanel firstTopPanel = new JPanel(new BorderLayout(5, 5));
+		if(showHeader) {
+			headerPanel = new HeaderPanel();
+			firstTopPanel.add(headerPanel, BorderLayout.NORTH);
+		}
 
 		JPanel topPanel = new JPanel(new MigLayout("", "[][][][][fill,grow][]", ""));
 		topPanel.setBorder(BorderFactory.createTitledBorder("Filters"));
@@ -89,7 +96,8 @@ public class KitchenDisplayView extends ViewPanel implements ActionListener {
 			topPanel.add(btnLogout);
 		}
 
-		add(topPanel, BorderLayout.NORTH);
+		firstTopPanel.add(topPanel);
+		add(firstTopPanel, BorderLayout.NORTH);
 
 		ticketPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		JScrollPane scrollPane = new JScrollPane(ticketPanel);

@@ -375,7 +375,7 @@ public class Application {
 				rootView.showView(KitchenDisplayView.VIEW_NAME);
 			}
 			else {
-				KitchenDisplayView kitchenDisplayView = new KitchenDisplayView();
+				KitchenDisplayView kitchenDisplayView = new KitchenDisplayView(false);
 				rootView.addView(kitchenDisplayView);
 				rootView.showView(KitchenDisplayView.VIEW_NAME);
 			}
