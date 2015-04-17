@@ -10,6 +10,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -18,7 +20,9 @@ import java.util.Set;
 import java.util.Vector;
 
 import javax.swing.AbstractButton;
+import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
+import javax.swing.UIManager;
 
 import net.miginfocom.swing.MigLayout;
 
@@ -54,6 +58,10 @@ public class ModifierView extends SelectionView implements ModifierStateChangeLi
 	private int separatorCount;
 
 	public static final String VIEW_NAME = "MODIFIER_VIEW";
+
+	private final NumberFormat numberFormat = new DecimalFormat("00");
+	
+	private ModifierButton currentSelectedButton;
 
 	/** Creates new form GroupView */
 	public ModifierView() {
@@ -279,7 +287,7 @@ public class ModifierView extends SelectionView implements ModifierStateChangeLi
 		public ModifierButton(MenuModifier modifier) {
 			this.menuModifier = modifier;
 
-			setText(modifier.getDisplayName());
+			setText("<html><center>" + modifier.getDisplayName() + "</center></html>");
 
 			if (modifier.getButtonColor() != null) {
 				setBackground(new Color(modifier.getButtonColor()));
@@ -295,27 +303,36 @@ public class ModifierView extends SelectionView implements ModifierStateChangeLi
 		void updateView(TicketItemModifier ticketItemModifier) {
 			Integer itemCount = ticketItemModifier.getItemCount();
 
-			if (ticketItemModifier == null || ticketItemModifier.getModifierType() == TicketItemModifier.MODIFIER_NOT_INITIALIZED) {
-				setBackground(null);
-				setText("<html><center>" + menuModifier.getDisplayName() + "</center></html>");
-				//setIcon(null);
-				return;
-			}
+			String text = menuModifier.getDisplayName();
+			String style = "";
 
-			if (ticketItemModifier.getModifierType() == TicketItemModifier.NORMAL_MODIFIER) {
-				//setIcon(normalIcon);
-				//setBackground(Color.GREEN.darker());
-				setText("<html><center>" + menuModifier.getDisplayName() + "<br/><h2 style='color:green;'>(" + itemCount + ")</h2></center></html>");
+			if (ticketItemModifier == null || ticketItemModifier.getModifierType() == TicketItemModifier.MODIFIER_NOT_INITIALIZED) {
+			}
+			else if (ticketItemModifier.getModifierType() == TicketItemModifier.NORMAL_MODIFIER) {
+				style = "color: green;";
 			}
 			//			else if (ticketItemModifier.getModifierType() == TicketItemModifier.NO_MODIFIER) {
 			//				//setIcon(noIcon);
 			//				setBackground(Color.RED.darker());
 			//			}
 			else if (ticketItemModifier.getModifierType() == TicketItemModifier.EXTRA_MODIFIER) {
-				//setIcon(extraIcon);
-				//setBackground(Color.ORANGE);
-				setText("<html><center>" + menuModifier.getDisplayName() + "<br/><h2 style='color:orange;'>(" + itemCount + ")</h2></center></html>");
+				style = "color: red;";
 			}
+
+			StringBuilder sb = new StringBuilder();
+			sb.append("<html>");
+			sb.append("<center>");
+			sb.append(text);
+
+			if (itemCount != 0) {
+				sb.append("<h2 style='" + style + "'>");
+				sb.append("(" + numberFormat.format(itemCount) + ")");
+				sb.append("</h2>");
+			}
+			sb.append("</center>");
+			sb.append("</html>");
+
+			setText(sb.toString());
 		}
 
 		public void actionPerformed(ActionEvent e) {
@@ -382,5 +399,28 @@ public class ModifierView extends SelectionView implements ModifierStateChangeLi
 		}
 
 		modifierButton.updateView(modifier);
+	}
+	
+	@Override
+	public void select(TicketItemModifier modifier) {
+		String key = modifier.getItemId() + "_" + modifier.getGroupId();
+		ModifierButton modifierButton = buttonMap.get(key);
+		if (modifierButton == null) {
+			return;
+		}
+		
+		if(currentSelectedButton != null) {
+			currentSelectedButton.setBorder(UIManager.getBorder("Button.border"));
+		}
+		currentSelectedButton = modifierButton;
+		modifierButton.setBorder(BorderFactory.createLineBorder(Color.red, 3));
+	}
+	
+	@Override
+	public void clearSelection() {
+		if(currentSelectedButton != null) {
+			currentSelectedButton.setBorder(UIManager.getBorder("Button.border"));
+		}
+		currentSelectedButton = null;
 	}
 }

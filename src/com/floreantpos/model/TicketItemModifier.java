@@ -28,6 +28,8 @@ public class TicketItemModifier extends BaseTicketItemModifier implements ITicke
 
 	/*[CONSTRUCTOR MARKER END]*/
 	
+	private boolean selected;
+	
 	boolean priceIncludesTax;
 
 	private int	tableRowNum;
@@ -222,5 +224,13 @@ public class TicketItemModifier extends BaseTicketItemModifier implements ITicke
 	@Override
 	public String getItemCode() {
 		return "";
+	}
+
+	public boolean isSelected() {
+		return selected;
+	}
+
+	public void setSelected(boolean selected) {
+		this.selected = selected;
 	}
 }
