@@ -65,13 +65,13 @@ public class NumberSelectionView extends TransparentPanel implements ActionListe
         		{"7","8","9"},
         		{"4","5","6"},
         		{"1","2","3"},
-        		{".","0",com.floreantpos.POSConstants.CLEAR}
+        		{".","0",""}
         };
         String[][] iconNames = new String[][] { 
-        		{ "7_32.png", "8_32.png", "9.png" }, 
-        		{ "4_32.png", "5_32.png", "6.png" }, 
-        		{ "1_32.png", "2_32.png", "3.png" }, 
-        		{ "dot_32.png", "0_32.png", "clear.png" } 
+        		{ "7.png", "8.png", "9.png" }, 
+        		{ "4.png", "5.png", "6.png" }, 
+        		{ "1.png", "2.png", "3.png" }, 
+        		{ "dot.png", "0.png", "clear.png" } 
         	};
         
         JPanel centerPanel = new JPanel(new GridLayout(4,3,5,5));
