@@ -20,7 +20,6 @@ import java.util.Set;
 import java.util.Vector;
 
 import javax.swing.AbstractButton;
-import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
@@ -297,6 +296,8 @@ public class ModifierView extends SelectionView implements ModifierStateChangeLi
 				setForeground(new Color(modifier.getTextColor()));
 			}
 
+			setFocusable(true);
+			setFocusPainted(true);
 			addActionListener(this);
 		}
 
@@ -413,7 +414,8 @@ public class ModifierView extends SelectionView implements ModifierStateChangeLi
 			currentSelectedButton.setBorder(UIManager.getBorder("Button.border"));
 		}
 		currentSelectedButton = modifierButton;
-		modifierButton.setBorder(BorderFactory.createLineBorder(Color.red, 3));
+		//modifierButton.setBorder(BorderFactory.createLineBorder(Color.blue.brighter(), 2));
+		modifierButton.requestFocus(true);
 	}
 	
 	@Override

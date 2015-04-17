@@ -41,6 +41,8 @@ public class TicketViewerTable extends JTable {
 		setShowGrid(true);
 		setBorder(null);
 		
+		setFocusable(false);
+		
 		setRowHeight(60);
 		resizeTableColumns();
 		
