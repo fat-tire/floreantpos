@@ -6,11 +6,12 @@
 
 package com.floreantpos.ui.dialog;
 
+import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
-import com.floreantpos.swing.PosSmallButton;
+import com.floreantpos.swing.PosButton;
 import com.floreantpos.ui.BeanEditor;
 import com.floreantpos.util.POSUtil;
 
@@ -48,8 +49,8 @@ public class BeanEditorDialog extends javax.swing.JDialog implements WindowListe
 		jPanel1 = new com.floreantpos.swing.TransparentPanel();
 		jSeparator1 = new javax.swing.JSeparator();
 		jPanel2 = new com.floreantpos.swing.TransparentPanel();
-		btnOk = new PosSmallButton();
-		btnCancel = new PosSmallButton();
+		btnOk = new PosButton();
+		btnCancel = new PosButton();
 		beanEditorContainer = new com.floreantpos.swing.TransparentPanel();
 
 		setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -61,6 +62,7 @@ public class BeanEditorDialog extends javax.swing.JDialog implements WindowListe
 
 		jPanel2.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
 
+		btnOk.setPreferredSize(new Dimension(150, 60));
 		btnOk.setText(com.floreantpos.POSConstants.OK);
 		btnOk.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -70,6 +72,7 @@ public class BeanEditorDialog extends javax.swing.JDialog implements WindowListe
 
 		jPanel2.add(btnOk);
 
+		btnCancel.setPreferredSize(new Dimension(150, 60));
 		btnCancel.setText(com.floreantpos.POSConstants.CANCEL);
 		btnCancel.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -115,8 +118,8 @@ public class BeanEditorDialog extends javax.swing.JDialog implements WindowListe
 
 	// Variables declaration - do not modify//GEN-BEGIN:variables
 	private com.floreantpos.swing.TransparentPanel beanEditorContainer;
-	private PosSmallButton btnCancel;
-	private PosSmallButton btnOk;
+	private PosButton btnCancel;
+	private PosButton btnOk;
 	private com.floreantpos.swing.TransparentPanel jPanel1;
 	private com.floreantpos.swing.TransparentPanel jPanel2;
 	private javax.swing.JSeparator jSeparator1;
