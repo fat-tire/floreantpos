@@ -26,13 +26,13 @@ public class GratuityInputDialog extends POSDialog {
 		
 		JPanel panel = new JPanel();
 		getContentPane().add(panel, BorderLayout.CENTER);
-		panel.setLayout(new MigLayout("", "[224px,grow,fill]", "[19px][grow,fill][][]"));
+		panel.setLayout(new MigLayout("", "[224px,grow,fill]", "[][grow,fill][][]"));
 		
 		doubleTextField = new DoubleTextField();
 		doubleTextField.setHorizontalAlignment(SwingConstants.TRAILING);
 		doubleTextField.setFocusCycleRoot(true);
 		doubleTextField.setColumns(20);
-		panel.add(doubleTextField, "cell 0 0,alignx left,height 30px,aligny top");
+		panel.add(doubleTextField, "cell 0 0,alignx left,height 40px,aligny top");
 		
 		NumericKeypad numericKeypad = new NumericKeypad();
 		panel.add(numericKeypad, "cell 0 1");
