@@ -10,8 +10,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -48,11 +46,11 @@ public class ModifierView extends SelectionView implements ModifierStateChangeLi
 	private TicketItem parentTicketItem;
 
 	private HashMap<String, ModifierButton> buttonMap = new HashMap<String, ModifierButton>();
-	
-//	private final static ImageIcon normalIcon = IconFactory.getIcon("normalModifier16.png");
-//	private final static ImageIcon noIcon = IconFactory.getIcon("noModifier16.png");
-//	private final static ImageIcon extraIcon = IconFactory.getIcon("extraModifier16.png");
-	
+
+	//	private final static ImageIcon normalIcon = IconFactory.getIcon("normalModifier16.png");
+	//	private final static ImageIcon noIcon = IconFactory.getIcon("noModifier16.png");
+	//	private final static ImageIcon extraIcon = IconFactory.getIcon("extraModifier16.png");
+
 	private int separatorCount;
 
 	public static final String VIEW_NAME = "MODIFIER_VIEW";
@@ -62,7 +60,6 @@ public class ModifierView extends SelectionView implements ModifierStateChangeLi
 		super(com.floreantpos.POSConstants.MODIFIERS);
 	}
 
-
 	public MenuItem getMenuItem() {
 		return parentMenuItem;
 	}
@@ -70,7 +67,7 @@ public class ModifierView extends SelectionView implements ModifierStateChangeLi
 	public void setMenuItem(MenuItem menuItem, TicketItem ticketItem) {
 		this.parentMenuItem = menuItem;
 		this.parentTicketItem = ticketItem;
-		
+
 		reset();
 		buttonMap.clear();
 		separatorCount = 0;
@@ -79,28 +76,28 @@ public class ModifierView extends SelectionView implements ModifierStateChangeLi
 			List<MenuItemModifierGroup> menuItemModifierGroups = menuItem.getMenuItemModiferGroups();
 
 			List itemList = new ArrayList();
-			
+
 			for (Iterator<MenuItemModifierGroup> iter = menuItemModifierGroups.iterator(); iter.hasNext();) {
 				MenuItemModifierGroup menuItemModifierGroup = iter.next();
 				MenuModifierGroup group = menuItemModifierGroup.getModifierGroup();
-				
+
 				itemList.add(group.getName());
 
 				Set<MenuModifier> modifiers = group.getModifiers();
 				for (MenuModifier modifier : modifiers) {
 					modifier.setMenuItemModifierGroup(menuItemModifierGroup);
 				}
-				
+
 				itemList.addAll(modifiers);
 			}
-			
+
 			setItems(itemList);
-			
+
 		} catch (PosException e) {
 			POSMessageDialog.showError(this, com.floreantpos.POSConstants.ERROR_MESSAGE, e);
 		}
 	}
-	
+
 	protected void renderItems() {
 		reset();
 
@@ -110,30 +107,28 @@ public class ModifierView extends SelectionView implements ModifierStateChangeLi
 
 		Dimension size = buttonsPanel.getSize();
 		Dimension itemButtonSize = getButtonSize();
-		
-		
 
 		int horizontalButtonCount = getButtonCount(size.width, getButtonSize().width);
 		int verticalButtonCount = getButtonCount(size.height, getButtonSize().height);
-		
+
 		buttonsPanel.setLayout(new MigLayout("alignx 50%, wrap " + horizontalButtonCount));
-		
+
 		//TODO: REVISE CODE
 		int totalItem = horizontalButtonCount * verticalButtonCount;
-		
+
 		previousBlockIndex = currentBlockIndex - totalItem + separatorCount;
 		nextBlockIndex = currentBlockIndex + totalItem;
-		
+
 		int spCount = getSeparatorCount();
-		
-		if(spCount > 0) {
+
+		if (spCount > 0) {
 			verticalButtonCount = getButtonCount(size.height - (spCount * 40), getButtonSize().height);
-			
+
 			totalItem = horizontalButtonCount * verticalButtonCount;
 			previousBlockIndex = (currentBlockIndex - totalItem) + spCount;
 			nextBlockIndex = currentBlockIndex + totalItem + spCount;
 		}
-		
+
 		try {
 			for (int i = currentBlockIndex; i < nextBlockIndex; i++) {
 
@@ -154,45 +149,45 @@ public class ModifierView extends SelectionView implements ModifierStateChangeLi
 		} catch (Exception e) {
 			// TODO: fix it.
 		}
-		
-		if(previousBlockIndex >= 0 && currentBlockIndex != 0) {
+
+		if (previousBlockIndex >= 0 && currentBlockIndex != 0) {
 			btnPrev.setEnabled(true);
 		}
-		
-		if(nextBlockIndex < items.size()) {
+
+		if (nextBlockIndex < items.size()) {
 			btnNext.setEnabled(true);
 		}
 		separatorCount = spCount;
-//		revalidate();
-//		repaint();
+		//		revalidate();
+		//		repaint();
 		updateVisualRepresentation();
 	}
-	
+
 	protected int getSeparatorCount() {
-		if(!(this instanceof ModifierView)) {
+		if (!(this instanceof ModifierView)) {
 			return 0;
 		}
-		
+
 		int count = 0;
-		for(int i = currentBlockIndex; i < nextBlockIndex; i++) {
-			if(i == items.size() - 1) {
+		for (int i = currentBlockIndex; i < nextBlockIndex; i++) {
+			if (i == items.size() - 1) {
 				break;
 			}
-			
-			if(items.get(i) instanceof String) {
+
+			if (items.get(i) instanceof String) {
 				++count;
 			}
 		}
 		return count;
 	}
-	
+
 	@Override
 	protected AbstractButton createItemButton(Object item) {
 		MenuModifier modifier = (MenuModifier) item;
 		ModifierButton modifierButton = new ModifierButton(modifier);
 		String key = modifier.getId() + "_" + modifier.getModifierGroup().getId();
 		buttonMap.put(key, modifierButton);
-		
+
 		return modifierButton;
 	}
 
@@ -209,8 +204,6 @@ public class ModifierView extends SelectionView implements ModifierStateChangeLi
 			listener.modifierSelectionFiniched(parentMenuItem);
 		}
 	}
-	
-	
 
 	public void updateVisualRepresentation() {
 		List<TicketItemModifierGroup> ticketItemModifierGroups = parentTicketItem.getTicketItemModifierGroups();
@@ -270,7 +263,8 @@ public class ModifierView extends SelectionView implements ModifierStateChangeLi
 		}
 
 		if (!requiredModifierAdded) {
-			int option = JOptionPane.showConfirmDialog(this, com.floreantpos.POSConstants.REQUIRED_MODIFIERS_NOT_ADDED, com.floreantpos.POSConstants.CONFIRM, JOptionPane.YES_NO_OPTION);
+			int option = JOptionPane.showConfirmDialog(this, com.floreantpos.POSConstants.REQUIRED_MODIFIERS_NOT_ADDED, com.floreantpos.POSConstants.CONFIRM,
+					JOptionPane.YES_NO_OPTION);
 			if (option != JOptionPane.YES_OPTION) {
 				return;
 			}
@@ -278,32 +272,32 @@ public class ModifierView extends SelectionView implements ModifierStateChangeLi
 
 		fireModifierSelectionFinished();
 	}
-	
+
 	private class ModifierButton extends PosButton implements ActionListener {
 		private MenuModifier menuModifier;
 
 		public ModifierButton(MenuModifier modifier) {
 			this.menuModifier = modifier;
-			
+
 			setText(modifier.getDisplayName());
-			
-			if(modifier.getButtonColor() != null) {
+
+			if (modifier.getButtonColor() != null) {
 				setBackground(new Color(modifier.getButtonColor()));
 			}
-			
-			if(modifier.getTextColor() != null) {
+
+			if (modifier.getTextColor() != null) {
 				setForeground(new Color(modifier.getTextColor()));
 			}
-			
+
 			addActionListener(this);
 		}
 
 		void updateView(TicketItemModifier ticketItemModifier) {
 			Integer itemCount = ticketItemModifier.getItemCount();
-			setText(menuModifier.getDisplayName() +"("+itemCount+")");
-			
+
 			if (ticketItemModifier == null || ticketItemModifier.getModifierType() == TicketItemModifier.MODIFIER_NOT_INITIALIZED) {
 				setBackground(null);
+				setText("<html><center>" + menuModifier.getDisplayName() + "</center></html>");
 				//setIcon(null);
 				return;
 			}
@@ -311,17 +305,19 @@ public class ModifierView extends SelectionView implements ModifierStateChangeLi
 			if (ticketItemModifier.getModifierType() == TicketItemModifier.NORMAL_MODIFIER) {
 				//setIcon(normalIcon);
 				//setBackground(Color.GREEN.darker());
+				setText("<html><center>" + menuModifier.getDisplayName() + "<br/><h2 style='color:green;'>(" + itemCount + ")</h2></center></html>");
 			}
-//			else if (ticketItemModifier.getModifierType() == TicketItemModifier.NO_MODIFIER) {
-//				//setIcon(noIcon);
-//				setBackground(Color.RED.darker());
-//			}
+			//			else if (ticketItemModifier.getModifierType() == TicketItemModifier.NO_MODIFIER) {
+			//				//setIcon(noIcon);
+			//				setBackground(Color.RED.darker());
+			//			}
 			else if (ticketItemModifier.getModifierType() == TicketItemModifier.EXTRA_MODIFIER) {
 				//setIcon(extraIcon);
 				//setBackground(Color.ORANGE);
+				setText("<html><center>" + menuModifier.getDisplayName() + "<br/><h2 style='color:orange;'>(" + itemCount + ")</h2></center></html>");
 			}
 		}
-		
+
 		public void actionPerformed(ActionEvent e) {
 			TicketItemModifierGroup ticketItemModifierGroup = parentTicketItem.findTicketItemModifierGroup(menuModifier, true);
 			int modifierCount = ticketItemModifierGroup.countItems(true);
@@ -331,15 +327,16 @@ public class ModifierView extends SelectionView implements ModifierStateChangeLi
 			TicketView ticketView = OrderView.getInstance().getTicketView();
 
 			if (ticketItemModifier == null) {
-				TicketItemModifier m = ticketItemModifierGroup.addTicketItemModifier(menuModifier, modifierCount >= maxModifier ? TicketItemModifier.EXTRA_MODIFIER : TicketItemModifier.NORMAL_MODIFIER);
+				TicketItemModifier m = ticketItemModifierGroup.addTicketItemModifier(menuModifier,
+						modifierCount >= maxModifier ? TicketItemModifier.EXTRA_MODIFIER : TicketItemModifier.NORMAL_MODIFIER);
 				updateView(m);
 				ticketView.updateAllView();
 				ticketView.selectRow(m.getTableRowNum());
 				return;
 			}
-			
+
 			int modifierType = TicketItemModifier.MODIFIER_NOT_INITIALIZED;
-			if(ticketItemModifier.getModifierType() != null) {
+			if (ticketItemModifier.getModifierType() != null) {
 				modifierType = ticketItemModifier.getModifierType().intValue();
 			}
 			switch (modifierType) {
@@ -359,14 +356,14 @@ public class ModifierView extends SelectionView implements ModifierStateChangeLi
 					ticketView.selectRow(ticketItemModifier.getTableRowNum());
 					break;
 
-//				case TicketItemModifier.NO_MODIFIER:
-//					ticketItemModifier.setModifierType(TicketItemModifier.MODIFIER_NOT_INITIALIZED);
-//					ticketItemModifierGroup.removeTicketItemModifier(ticketItemModifier);
-//					//updateView(ticketItemModifier);
-//					updateVisualRepresentation();
-//					ticketView.updateAllView();
-//					ticketView.selectRow(ticketItemModifier.getTableRowNum() - 1);
-//					break;
+			//				case TicketItemModifier.NO_MODIFIER:
+			//					ticketItemModifier.setModifierType(TicketItemModifier.MODIFIER_NOT_INITIALIZED);
+			//					ticketItemModifierGroup.removeTicketItemModifier(ticketItemModifier);
+			//					//updateView(ticketItemModifier);
+			//					updateVisualRepresentation();
+			//					ticketView.updateAllView();
+			//					ticketView.selectRow(ticketItemModifier.getTableRowNum() - 1);
+			//					break;
 			}
 		}
 	}
@@ -374,5 +371,16 @@ public class ModifierView extends SelectionView implements ModifierStateChangeLi
 	@Override
 	public void modifierStateChanged() {
 		updateVisualRepresentation();
+	}
+
+	@Override
+	public void updateView(TicketItemModifier modifier) {
+		String key = modifier.getItemId() + "_" + modifier.getGroupId();
+		ModifierButton modifierButton = buttonMap.get(key);
+		if (modifierButton == null) {
+			return;
+		}
+
+		modifierButton.updateView(modifier);
 	}
 }

@@ -228,7 +228,10 @@ public class TicketViewerTable extends JTable {
 		
 		if(delete instanceof TicketItemModifier) {
 			if(modifierStateChangeListener != null) {
-				modifierStateChangeListener.modifierStateChanged();
+				TicketItemModifier modifier = (TicketItemModifier) delete;
+				modifier.setModifierType(TicketItemModifier.MODIFIER_NOT_INITIALIZED);
+				modifier.setItemCount(0);
+				modifierStateChangeListener.updateView(modifier);
 			}
 		}
 		return delete;
