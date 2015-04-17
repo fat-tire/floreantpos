@@ -305,7 +305,7 @@ public class TicketView extends JPanel {
 			CookingInstructionSelectionView cookingInstructionSelectionView = new CookingInstructionSelectionView();
 			BeanEditorDialog dialog = new BeanEditorDialog(cookingInstructionSelectionView);
 			dialog.setBean(list);
-			dialog.setSize(450, 300);
+			dialog.setSize(800, 600);
 			dialog.setLocationRelativeTo(Application.getPosWindow());
 			dialog.setVisible(true);
 
