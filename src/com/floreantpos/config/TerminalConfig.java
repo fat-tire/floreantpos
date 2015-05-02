@@ -2,6 +2,8 @@ package com.floreantpos.config;
 
 import org.apache.commons.configuration.PropertiesConfiguration;
 
+import com.floreantpos.model.OrderTypeFilter;
+import com.floreantpos.model.PaymentStatusFilter;
 import com.floreantpos.util.PasswordHasher;
 
 public class TerminalConfig {
@@ -206,5 +208,21 @@ public class TerminalConfig {
 	
 	public static void setUseTranslatedName(boolean useTranslatedName) {
 		config.setProperty("use_translated_name", useTranslatedName);
+	}
+	
+	public static OrderTypeFilter getOrderTypeFilter() {
+		return OrderTypeFilter.fromString(config.getString("order_type_filter"));
+	}
+	
+	public static void setOrderTypeFilter(String filter) {
+		config.setProperty("order_type_filter", filter);
+	}
+	
+	public static PaymentStatusFilter getPaymentStatusFilter() {
+		return PaymentStatusFilter.fromString(config.getString("ps_filter"));
+	}
+	
+	public static void setPaymentStatusFilter(String filter) {
+		config.setProperty("ps_filter", filter);
 	}
 }
