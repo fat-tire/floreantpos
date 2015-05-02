@@ -20,6 +20,8 @@ import com.floreantpos.model.InventoryItem;
 import com.floreantpos.model.InventoryTransaction;
 import com.floreantpos.model.InventoryTransactionType;
 import com.floreantpos.model.MenuItem;
+import com.floreantpos.model.OrderTypeFilter;
+import com.floreantpos.model.PaymentStatusFilter;
 import com.floreantpos.model.PaymentType;
 import com.floreantpos.model.Recepie;
 import com.floreantpos.model.RecepieItem;
@@ -236,6 +238,40 @@ public class TicketDAO extends BaseTicketDAO {
 			criteria.add(Restrictions.eq(Ticket.PROP_CLOSED, Boolean.FALSE));
 			criteria.add(Restrictions.ge(Ticket.PROP_CREATE_DATE, startDate));
 			criteria.add(Restrictions.le(Ticket.PROP_CREATE_DATE, endDate));
+			List list = criteria.list();
+			return list;
+		} finally {
+			closeSession(session);
+		}
+	}
+	
+	public List<Ticket> findTickets(PaymentStatusFilter psFilter, OrderTypeFilter otFilter) {
+		return findTicketsForUser(psFilter, otFilter, null);
+	}
+	
+	public List<Ticket> findTicketsForUser(PaymentStatusFilter psFilter, OrderTypeFilter otFilter, User user) {
+		Session session = null;
+		
+		try {
+			session = getSession();
+			Criteria criteria = session.createCriteria(getReferenceClass());
+			criteria.add(Restrictions.eq(Ticket.PROP_CLOSED, Boolean.FALSE));
+			
+			if(psFilter == PaymentStatusFilter.PAID) {
+				criteria.add(Restrictions.eq(Ticket.PROP_PAID, Boolean.TRUE));
+			}
+			else {
+				criteria.add(Restrictions.eq(Ticket.PROP_PAID, Boolean.FALSE));
+			}
+			
+			if(otFilter != OrderTypeFilter.ALL) {
+				criteria.add(Restrictions.eq(Ticket.PROP_TICKET_TYPE, otFilter.name()));
+			}
+			
+			if(user != null) {
+				criteria.add(Restrictions.eq(Ticket.PROP_OWNER, user));
+			}
+			
 			List list = criteria.list();
 			return list;
 		} finally {
