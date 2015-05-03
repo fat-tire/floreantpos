@@ -16,6 +16,7 @@ public class ShowKitchenDisplayAction extends PosAction {
 		Window[] windows = Window.getWindows();
 		for (Window window : windows) {
 			if(window instanceof KitchenDisplayWindow) {
+				window.setVisible(true);
 				window.toFront();
 				return;
 			}
