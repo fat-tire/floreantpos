@@ -582,6 +582,7 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 			}
 			else {
 				int ticketId = NumberSelectionDialog2.takeIntInput("Enter or scan ticket id");
+				if(ticketId == -1) return;
 				ticket = TicketService.getTicket(ticketId);
 			}
 
@@ -690,6 +691,8 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 			}
 			else {
 				int ticketId = NumberSelectionDialog2.takeIntInput("Enter or scan ticket id");
+				if(ticketId == -1) return;
+				
 				ticket = TicketService.getTicket(ticketId);
 			}
 
