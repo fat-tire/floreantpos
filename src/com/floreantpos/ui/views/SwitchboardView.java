@@ -475,7 +475,8 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 
 	protected void doCloseOrder() {
 		Ticket ticket = getFirstSelectedTicket();
-
+		ticket = TicketDAO.getInstance().loadFullTicket(ticket.getId());
+		
 		int due = (int) POSUtil.getDouble(ticket.getDueAmount());
 		if (due != 0) {
 			POSMessageDialog.showError("Ticket is not fully paid");

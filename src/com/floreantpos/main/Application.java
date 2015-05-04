@@ -94,7 +94,7 @@ public class Application {
 		pluginManager.addPluginsFrom(new File("plugins/").toURI());
 
 		if (developmentMode) {
-			//pluginManager.addPluginsFrom(new File("/home/mshahriar/project/oro/target/classes").toURI());
+			pluginManager.addPluginsFrom(new File("/home/mshahriar/project/oro/target/classes").toURI());
 		}
 
 		setApplicationLook();
