@@ -255,13 +255,17 @@ public class TicketDAO extends BaseTicketDAO {
 		try {
 			session = getSession();
 			Criteria criteria = session.createCriteria(getReferenceClass());
-			criteria.add(Restrictions.eq(Ticket.PROP_CLOSED, Boolean.FALSE));
 			
-			if(psFilter == PaymentStatusFilter.PAID) {
-				criteria.add(Restrictions.eq(Ticket.PROP_PAID, Boolean.TRUE));
-			}
-			else {
+			if(psFilter == PaymentStatusFilter.OPEN) {
 				criteria.add(Restrictions.eq(Ticket.PROP_PAID, Boolean.FALSE));
+				criteria.add(Restrictions.eq(Ticket.PROP_CLOSED, Boolean.FALSE));
+			}
+			else if(psFilter == PaymentStatusFilter.PAID) {
+				criteria.add(Restrictions.eq(Ticket.PROP_PAID, Boolean.TRUE));
+				criteria.add(Restrictions.eq(Ticket.PROP_CLOSED, Boolean.FALSE));
+			}
+			else if(psFilter == PaymentStatusFilter.CLOSED) {
+				criteria.add(Restrictions.eq(Ticket.PROP_DRAWER_RESETTED, Boolean.FALSE));
 			}
 			
 			if(otFilter != OrderTypeFilter.ALL) {

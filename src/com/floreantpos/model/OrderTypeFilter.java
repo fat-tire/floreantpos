@@ -11,12 +11,13 @@ public enum OrderTypeFilter {
 			return ALL;
 		}
 		
-		OrderTypeFilter filter = valueOf(s);
-		if(filter == null) {
+		try {
+			OrderTypeFilter filter = valueOf(s);
+
+			return filter;
+		} catch (Exception e) {
 			return ALL;
 		}
-		
-		return filter;
 	}
 
 	public String toString() {

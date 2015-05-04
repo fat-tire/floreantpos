@@ -2,21 +2,20 @@ package com.floreantpos.model;
 
 import org.apache.commons.lang.StringUtils;
 
-
 public enum PaymentStatusFilter {
-	ALL, PAID, UN_PAID;
-	
+	OPEN, PAID, CLOSED;
+
 	public static PaymentStatusFilter fromString(String s) {
-		if(StringUtils.isEmpty(s)) {
-			return ALL;
+		if (StringUtils.isEmpty(s)) {
+			return OPEN;
 		}
-		
-		PaymentStatusFilter filter = valueOf(s);
-		if(filter == null) {
-			return ALL;
+
+		try {
+			PaymentStatusFilter filter = valueOf(s);
+			return filter;
+		} catch (Exception e) {
+			return OPEN;
 		}
-		
-		return filter;
 	}
 
 	public String toString() {
