@@ -322,9 +322,9 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 		filterPanel.setCollapsed(true);
 		filterPanel.getContentPane().setLayout(new MigLayout("fill", "fill, grow", ""));
 
-		POSToggleButton btnNoPaymentFilter = new POSToggleButton(PaymentStatusFilter.ALL.toString());
+		POSToggleButton btnNoPaymentFilter = new POSToggleButton(PaymentStatusFilter.OPEN.toString());
 		POSToggleButton btnFilterByPaid = new POSToggleButton(PaymentStatusFilter.PAID.toString());
-		POSToggleButton btnFilterByUnPaid = new POSToggleButton(PaymentStatusFilter.UN_PAID.toString());
+		POSToggleButton btnFilterByUnPaid = new POSToggleButton(PaymentStatusFilter.CLOSED.toString());
 		
 		ButtonGroup paymentGroup = new ButtonGroup();
 		paymentGroup.add(btnNoPaymentFilter);
@@ -333,7 +333,7 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 		
 		PaymentStatusFilter paymentStatusFilter = TerminalConfig.getPaymentStatusFilter();
 		switch(paymentStatusFilter) {
-			case ALL:
+			case OPEN:
 				btnNoPaymentFilter.setSelected(true);
 				break;
 				
@@ -341,7 +341,7 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 				btnFilterByPaid.setSelected(true);
 				break;
 				
-			case UN_PAID:
+			case CLOSED:
 				btnFilterByUnPaid.setSelected(true);
 				break;
 				
