@@ -16,7 +16,6 @@ import com.floreantpos.POSConstants;
 import com.floreantpos.bo.ui.explorer.ListTableModel;
 import com.floreantpos.model.OrderType;
 import com.floreantpos.model.Ticket;
-import com.floreantpos.model.TicketStatus;
 import com.floreantpos.model.User;
 import com.floreantpos.swing.PosScrollPane;
 import com.floreantpos.ui.dialog.POSMessageDialog;
@@ -120,27 +119,27 @@ public class TicketListView extends JPanel {
 				return ticket.getType();
 				
 			case 3:
-				if(ticket.getType() == OrderType.PICKUP) {
-					return "Will pickup";
-				}
-				else if(ticket.getType() == OrderType.HOME_DELIVERY) {
-					if(ticket.getAssignedDriver() == null) {
-						return "Driver not assigned";
-					}
-					return "Driver assigned";
-				}
-				else if(ticket.getType() == OrderType.DRIVE_THRU) {
-					return "Not delivered";
-				}
-				
+				String status = "";
 				if(ticket.isPaid()) {
-					if(ticket.getStatus() != null) {
-						return TicketStatus.valueOf(ticket.getStatus()).toString();
-					}
-					return "PAID";
+					status = "PAID";
+				}
+				else {
+					status = "OPEN";
 				}
 				
-				return "OPEN";
+				if(ticket.getType() == OrderType.HOME_DELIVERY) {
+					if(ticket.getAssignedDriver() == null) {
+						status += " (DRIVER NOT ASSIGNED)";
+					}
+					
+					status += " (DRIVER ASSIGNED)";
+				}
+				
+				if(ticket.isClosed()) {
+					status += " (CLOSED)";
+				}
+				
+				return status;
 
 			case 4:
 				return ticket.getTotalAmount();
