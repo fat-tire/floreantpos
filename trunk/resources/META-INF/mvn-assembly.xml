@@ -42,6 +42,14 @@
 			</includes>
 		</fileSet>
 		<fileSet>
+			<directory>plugins</directory>
+			<outputDirectory>plugins</outputDirectory>
+			<filtered>false</filtered>
+			<includes>
+				<include>README</include>
+			</includes>
+		</fileSet>
+		<fileSet>
 			<directory>database/derby-server</directory>
 			<outputDirectory>database/derby-server</outputDirectory>
 			<includes>
