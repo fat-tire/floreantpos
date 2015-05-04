@@ -74,14 +74,13 @@ public class TableSelectionDialog extends POSDialog implements ActionListener {
 		posButton.addActionListener(this);
 		keypadPanel.add(posButton, "growy,height 55,wrap, w 100!");
 
-		String[][] numbers = { { "7", "8", "9" }, { "4", "5", "6" }, { "1", "2", "3" }, { "0", "CLEAR" } };
+		String[][] numbers = { { "7", "8", "9" }, { "4", "5", "6" }, { "1", "2", "3" }, { ".", "0", "CLEAR" } };
 		String[][] iconNames = new String[][] { { "7.png", "8.png", "9.png" }, { "4.png", "5.png", "6.png" },
-				{ "1.png", "2.png", "3.png" }, { "0.png", "clear.png" } };
+				{ "1.png", "2.png", "3.png" }, { "dot.png", "0.png", "clear.png" } };
 
 		for (int i = 0; i < numbers.length; i++) {
 			for (int j = 0; j < numbers[i].length; j++) {
 				posButton = new PosButton();
-				posButton.setFocusable(false);
 				ImageIcon icon = IconFactory.getIcon(iconNames[i][j]);
 				String buttonText = String.valueOf(numbers[i][j]);
 
@@ -96,8 +95,11 @@ public class TableSelectionDialog extends POSDialog implements ActionListener {
 				}
 
 				posButton.setActionCommand(buttonText);
+				if(".".equals(buttonText)) {
+					posButton.setEnabled(false);
+				}
 				posButton.addActionListener(this);
-				String constraints = "grow,w 100!, height 80!";
+				String constraints = "grow,w 100!";
 				if (j == numbers[i].length - 1) {
 					constraints += ", wrap";
 				}
