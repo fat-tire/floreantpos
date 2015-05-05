@@ -6,6 +6,7 @@ import java.util.List;
 import javax.swing.JMenu;
 import javax.swing.JOptionPane;
 
+import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.extension.FloorLayoutPlugin;
 import com.floreantpos.extension.OrderServiceExtension;
 import com.floreantpos.main.Application;
@@ -37,26 +38,31 @@ public class DefaultOrderServiceExtension implements OrderServiceExtension {
 	@Override
 	public void createNewTicket(OrderType ticketType) throws TicketAlreadyExistsException {
 		List<ShopTable> tables = null;
-		
-		FloorLayoutPlugin floorLayoutPlugin = Application.getPluginManager().getPlugin(FloorLayoutPlugin.class);
-		if(floorLayoutPlugin != null) {
-			tables = floorLayoutPlugin.captureTableNumbers(null);
-		}
-		else {
-			tables = PosGuiUtil.captureTable(null);
+
+		if (TerminalConfig.isShouldShowTableSelection()) {
+			FloorLayoutPlugin floorLayoutPlugin = Application.getPluginManager().getPlugin(FloorLayoutPlugin.class);
+			if (floorLayoutPlugin != null) {
+				tables = floorLayoutPlugin.captureTableNumbers(null);
+			}
+			else {
+				tables = PosGuiUtil.captureTable(null);
+			}
+
+			if (tables == null) {
+				return;
+			}
 		}
 
-		if(tables == null) {
-			return;
-		}
-		
-		int numberOfGuests = PosGuiUtil.captureGuestNumber();
-		if (numberOfGuests == -1) {
-			return;
+		int numberOfGuests = 0;
+		if (TerminalConfig.isShouldShowGuestSelection()) {
+			numberOfGuests = PosGuiUtil.captureGuestNumber();
+			if (numberOfGuests == -1) {
+				return;
+			}
 		}
 
 		Application application = Application.getInstance();
-		
+
 		Ticket ticket = new Ticket();
 		ticket.setPriceIncludesTax(application.isPriceIncludesTax());
 		ticket.setType(ticketType);
@@ -64,10 +70,12 @@ public class DefaultOrderServiceExtension implements OrderServiceExtension {
 		ticket.setTerminal(application.getTerminal());
 		ticket.setOwner(Application.getCurrentUser());
 		ticket.setShift(application.getCurrentShift());
-		
-		for (ShopTable shopTable : tables) {
-			shopTable.setOccupied(true);
-			ticket.addTable(shopTable.getTableNumber());
+
+		if (tables != null) {
+			for (ShopTable shopTable : tables) {
+				shopTable.setOccupied(true);
+				ticket.addTable(shopTable.getTableNumber());
+			}
 		}
 
 		Calendar currentTime = Calendar.getInstance();
@@ -94,10 +102,10 @@ public class DefaultOrderServiceExtension implements OrderServiceExtension {
 	public boolean finishOrder(int ticketId) {
 		Ticket ticket = TicketDAO.getInstance().get(ticketId);
 
-//		if (ticket.getType() == TicketType.DINE_IN) {
-//			POSMessageDialog.showError("Please select tickets of type HOME DELIVERY or PICKUP or DRIVE THRU");
-//			return false;
-//		}
+		//		if (ticket.getType() == TicketType.DINE_IN) {
+		//			POSMessageDialog.showError("Please select tickets of type HOME DELIVERY or PICKUP or DRIVE THRU");
+		//			return false;
+		//		}
 
 		int due = (int) POSUtil.getDouble(ticket.getDueAmount());
 		if (due != 0) {
@@ -112,7 +120,6 @@ public class DefaultOrderServiceExtension implements OrderServiceExtension {
 			return false;
 		}
 
-		
 		OrderController.closeOrder(ticket);
 
 		return true;

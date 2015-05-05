@@ -1,4 +1,7 @@
 package com.floreantpos.config.ui;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
@@ -6,6 +9,7 @@ import javax.swing.JTextField;
 import net.miginfocom.swing.MigLayout;
 
 import com.floreantpos.POSConstants;
+import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.model.OrderType;
 import com.floreantpos.model.OrderTypeProperties;
 import com.floreantpos.model.dao.OrderTypePropertiesDAO;
@@ -34,20 +38,35 @@ public class OrderTypeConfigurationView extends ConfigurationView {
 	private JCheckBox cbDriveThruDelayPay = new JCheckBox(POSConstants.LATER_PAYMENT_OPTION_LABEL);
 	private JCheckBox cbBarTabDelayPay = new JCheckBox(POSConstants.LATER_PAYMENT_OPTION_LABEL);
 	
+	private JCheckBox cbShowTableSelection = new JCheckBox("Enable table selection");
+	private JCheckBox cbShowGuestSelection = new JCheckBox("Enable guest selection");
+	
 	public OrderTypeConfigurationView() {
 		setLayout(new MigLayout("", "", ""));
 		
 		addOption(OrderType.DINE_IN, cbDineInEnable, cbDineInDelayPay, tfDineInAlias);
+		add(cbShowTableSelection, "span 2, newline, wrap");
+		add(cbShowGuestSelection, "span 2, wrap");
+		
 		addOption(OrderType.TAKE_OUT, cbTakeOutEnable, cbTakeOutDelayPay, tfTakeOutAlias);
 		addOption(OrderType.PICKUP, cbPickupEnable, cbPickupDelayPay, tfPickupAlias);
 		addOption(OrderType.HOME_DELIVERY, cbHomeDeliveryEnable, cbHomeDeliveryDelayPay, tfHomeDeliveryAlias);
 		addOption(OrderType.DRIVE_THRU, cbDriveThruEnable, cbDriveThruDelayPay, tfDriveThruAlias);
 		addOption(OrderType.BAR_TAB, cbBarTabEnable, cbBarTabDelayPay, tfBarTabAlias);
+		
+		cbDineInEnable.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				boolean selected = cbDineInEnable.isSelected();
+				cbShowTableSelection.setEnabled(selected);
+				cbShowGuestSelection.setEnabled(selected);
+			}
+		});
 	}
 	
 	private void addOption(OrderType orderType, JCheckBox cbEnable, JCheckBox cbLaterPay, JTextField tfAlias) {
 		TitledSeparator separator = new TitledSeparator(orderType.name().replaceAll("_", " "));
-		add(separator, "gaptop 30, newline, span 5, grow, wrap");
+		add(separator, "gaptop 10, newline, span 5, grow, wrap");
 		add(cbEnable, "gapright 25");
 		add(cbLaterPay, "gapright 25");
 		add(new JLabel(POSConstants.ALIAS_LABEL));
@@ -65,6 +84,9 @@ public class OrderTypeConfigurationView extends ConfigurationView {
 		
 		OrderTypePropertiesDAO.getInstance().saveAll();
 		
+		TerminalConfig.setShouldShowTableSelection(cbShowTableSelection.isSelected());
+		TerminalConfig.setShouldShowGuestSelection(cbShowGuestSelection.isSelected());
+		
 		return true;
 	}
 
@@ -76,6 +98,9 @@ public class OrderTypeConfigurationView extends ConfigurationView {
 		setupView(OrderType.HOME_DELIVERY, cbHomeDeliveryEnable, cbHomeDeliveryDelayPay, tfHomeDeliveryAlias);
 		setupView(OrderType.DRIVE_THRU, cbDriveThruEnable, cbDriveThruDelayPay, tfDriveThruAlias);
 		setupView(OrderType.BAR_TAB, cbBarTabEnable, cbBarTabDelayPay, tfBarTabAlias);
+		
+		cbShowTableSelection.setSelected(TerminalConfig.isShouldShowTableSelection());
+		cbShowGuestSelection.setSelected(TerminalConfig.isShouldShowGuestSelection());
 		
 		setInitialized(true);
 	}
