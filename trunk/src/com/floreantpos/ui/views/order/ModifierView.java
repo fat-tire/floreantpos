@@ -248,6 +248,20 @@ public class ModifierView extends SelectionView implements ModifierStateChangeLi
 		List<MenuItemModifierGroup> menuItemModifierGroups = parentMenuItem.getMenuItemModiferGroups();
 		List<TicketItemModifierGroup> ticketItemModifierGroups = parentTicketItem.getTicketItemModifierGroups();
 
+		boolean requiredModifierAdded = isRequiredModifiersAdded(menuItemModifierGroups, ticketItemModifierGroups);
+
+		if (!requiredModifierAdded) {
+			int option = JOptionPane.showConfirmDialog(this, com.floreantpos.POSConstants.REQUIRED_MODIFIERS_NOT_ADDED, com.floreantpos.POSConstants.CONFIRM,
+					JOptionPane.YES_NO_OPTION);
+			if (option != JOptionPane.YES_OPTION) {
+				return;
+			}
+		}
+
+		fireModifierSelectionFinished();
+	}
+
+	public boolean isRequiredModifiersAdded(List<MenuItemModifierGroup> menuItemModifierGroups, List<TicketItemModifierGroup> ticketItemModifierGroups) {
 		boolean requiredModifierAdded = true;
 		if (menuItemModifierGroups != null) {
 			outer: for (MenuItemModifierGroup menuItemModifierGroup : menuItemModifierGroups) {
@@ -268,16 +282,7 @@ public class ModifierView extends SelectionView implements ModifierStateChangeLi
 				}
 			}
 		}
-
-		if (!requiredModifierAdded) {
-			int option = JOptionPane.showConfirmDialog(this, com.floreantpos.POSConstants.REQUIRED_MODIFIERS_NOT_ADDED, com.floreantpos.POSConstants.CONFIRM,
-					JOptionPane.YES_NO_OPTION);
-			if (option != JOptionPane.YES_OPTION) {
-				return;
-			}
-		}
-
-		fireModifierSelectionFinished();
+		return requiredModifierAdded;
 	}
 
 	private class ModifierButton extends PosButton implements ActionListener {
