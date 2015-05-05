@@ -7,6 +7,14 @@ import com.floreantpos.model.PaymentStatusFilter;
 import com.floreantpos.util.PasswordHasher;
 
 public class TerminalConfig {
+	private static final String SHOW_GUEST_SELECTION = "show_guest_selection";
+
+	private static final String ORDER_TYPE_FILTER = "order_type_filter";
+
+	private static final String PS_FILTER = "ps_filter";
+
+	private static final String SHOW_TABLE_SELECTION = "show_table_selection";
+
 	private static final String REGULAR_MODE = "regular_mode";
 
 	private static final String KITCHEN_MODE = "kitchen_mode";
@@ -211,18 +219,34 @@ public class TerminalConfig {
 	}
 	
 	public static OrderTypeFilter getOrderTypeFilter() {
-		return OrderTypeFilter.fromString(config.getString("order_type_filter"));
+		return OrderTypeFilter.fromString(config.getString(ORDER_TYPE_FILTER));
 	}
 	
 	public static void setOrderTypeFilter(String filter) {
-		config.setProperty("order_type_filter", filter);
+		config.setProperty(ORDER_TYPE_FILTER, filter);
 	}
 	
 	public static PaymentStatusFilter getPaymentStatusFilter() {
-		return PaymentStatusFilter.fromString(config.getString("ps_filter"));
+		return PaymentStatusFilter.fromString(config.getString(PS_FILTER));
 	}
 	
 	public static void setPaymentStatusFilter(String filter) {
-		config.setProperty("ps_filter", filter);
+		config.setProperty(PS_FILTER, filter);
+	}
+	
+	public static void setShouldShowTableSelection(boolean showTableSelection) {
+		config.setProperty(SHOW_TABLE_SELECTION, Boolean.valueOf(showTableSelection));
+	}
+	
+	public static boolean isShouldShowTableSelection() {
+		return config.getBoolean(SHOW_TABLE_SELECTION, Boolean.TRUE);
+	}
+	
+	public static void setShouldShowGuestSelection(boolean showGuestSelection) {
+		config.setProperty(SHOW_GUEST_SELECTION, Boolean.valueOf(showGuestSelection));
+	}
+	
+	public static boolean isShouldShowGuestSelection() {
+		return config.getBoolean(SHOW_GUEST_SELECTION, Boolean.TRUE);
 	}
 }
