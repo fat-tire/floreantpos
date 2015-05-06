@@ -18,6 +18,8 @@ import java.util.Vector;
 
 import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import org.apache.log4j.Logger;
 
@@ -118,6 +120,14 @@ public class CategoryView extends SelectionView implements ActionListener {
 			}
 			
 			addActionListener(view);
+			
+			addChangeListener(new ChangeListener() {
+				@Override
+				public void stateChanged(ChangeEvent e) {
+					CategoryButton b = (CategoryButton) e.getSource();
+					System.out.println(b.getText() +":"+b.isSelected());
+				}
+			});
 		}
 	}
 	
