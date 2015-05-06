@@ -1,5 +1,7 @@
 package com.floreantpos.main;
 
+import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.io.File;
 import java.io.PrintWriter;
@@ -9,7 +11,10 @@ import java.util.Date;
 import java.util.Random;
 
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.Timer;
 import javax.swing.UIManager;
 import javax.swing.plaf.FontUIResource;
@@ -328,15 +333,37 @@ public class Application {
 	}
 
 	public void shutdownPOS() {
-		int option = JOptionPane.showOptionDialog(getPosWindow(), com.floreantpos.POSConstants.SURE_SHUTDOWN_, com.floreantpos.POSConstants.CONFIRM_SHUTDOWN,
-				JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
-		if (option != JOptionPane.YES_OPTION) {
-			return;
+		JOptionPane optionPane = new JOptionPane(com.floreantpos.POSConstants.SURE_SHUTDOWN_, JOptionPane.QUESTION_MESSAGE, JOptionPane.YES_NO_OPTION);
+		Object[] options = optionPane.getComponents();
+		for (Object object : options) {
+			if(object instanceof JPanel) {
+				JPanel panel = (JPanel) object;
+				Component[] components = panel.getComponents();
+				for (Component component : components) {
+					if(component instanceof JButton) {
+						component.setPreferredSize(new Dimension(component.getPreferredSize().width, 60));
+					}
+				}
+			}
 		}
+		
+		JDialog dialog = optionPane.createDialog(POSUtil.getFocusedWindow(), com.floreantpos.POSConstants.MDS_POS);
+		dialog.setVisible(true);
+		
+		//		int option = JOptionPane.showOptionDialog(getPosWindow(), com.floreantpos.POSConstants.SURE_SHUTDOWN_, com.floreantpos.POSConstants.CONFIRM_SHUTDOWN,
+		//				JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+		
+		Object selectedValue = optionPane.getValue();
 
-		posWindow.saveSizeAndLocation();
-
-		System.exit(0);
+        if(selectedValue == null)
+            return;
+        
+        if(selectedValue instanceof Integer) {
+            if(((Integer)selectedValue).intValue() == JOptionPane.YES_OPTION) {
+            	posWindow.saveSizeAndLocation();
+        		System.exit(0);
+            }
+        }
 	}
 
 	public synchronized void doLogin(String secretKey) {
