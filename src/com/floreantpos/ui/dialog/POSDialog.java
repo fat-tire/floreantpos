@@ -1,24 +1,33 @@
 package com.floreantpos.ui.dialog;
 
+import java.awt.Frame;
 import java.awt.HeadlessException;
 import java.awt.Window;
 
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 
-import com.floreantpos.util.POSUtil;
+import com.floreantpos.main.Application;
 
 public class POSDialog extends JDialog {
 	protected boolean canceled = true;
 
 	public POSDialog() throws HeadlessException {
-		this(POSUtil.getFocusedWindow());
+		super(Application.getPosWindow(), true);
+		
+		initUI();
+	}
+	
+	public POSDialog(Frame owner, boolean modal) {
+		super(owner, modal);
+		
+		initUI();
 	}
 
-	public POSDialog(Window owner) {
-		this(owner, "");
-	}
-
+//	public POSDialog(Window owner) {
+//		this(owner, "");
+//	}
+//
 	public POSDialog(Window owner, String title) {
 		this(owner, title, true);
 

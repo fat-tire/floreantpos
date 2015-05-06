@@ -10,6 +10,7 @@ import javax.swing.JSeparator;
 
 import net.miginfocom.swing.MigLayout;
 
+import com.floreantpos.main.Application;
 import com.floreantpos.swing.FocusedTextField;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.swing.QwertyKeyPad;
@@ -21,6 +22,8 @@ public class AuthorizationCodeDialog extends POSDialog implements CardInputter {
 	private FocusedTextField tfAuthorizationCode;
 	
 	public AuthorizationCodeDialog(CardInputListener cardInputListener) {
+		super(Application.getPosWindow(), true);
+		
 		this.cardInputListener = cardInputListener;
 		
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);

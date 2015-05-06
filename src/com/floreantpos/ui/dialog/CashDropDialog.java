@@ -42,6 +42,8 @@ public class CashDropDialog extends POSDialog {
 
 	/** Creates new form CashDropDialog */
 	public CashDropDialog() {
+		super(Application.getPosWindow(), true);
+		
 		initComponents();
 
 		terminal = Application.getInstance().getTerminal();

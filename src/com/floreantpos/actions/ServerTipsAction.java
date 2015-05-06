@@ -12,6 +12,7 @@ import net.miginfocom.swing.MigLayout;
 import org.jdesktop.swingx.JXDatePicker;
 
 import com.floreantpos.POSConstants;
+import com.floreantpos.main.Application;
 import com.floreantpos.model.TipsCashoutReport;
 import com.floreantpos.model.User;
 import com.floreantpos.model.UserPermission;
@@ -21,7 +22,6 @@ import com.floreantpos.swing.ListComboBoxModel;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.dialog.TipsCashoutReportDialog;
 import com.floreantpos.ui.util.UiUtil;
-import com.floreantpos.util.POSUtil;
 
 public class ServerTipsAction extends PosAction {
 
@@ -46,7 +46,7 @@ public class ServerTipsAction extends PosAction {
 			panel.add(new JLabel(com.floreantpos.POSConstants.TO_), "grow");
 			panel.add(toDatePicker);
 
-			int option = JOptionPane.showOptionDialog(POSUtil.getFocusedWindow(), panel, com.floreantpos.POSConstants.SELECT_CRIETERIA, JOptionPane.OK_CANCEL_OPTION,
+			int option = JOptionPane.showOptionDialog(Application.getPosWindow(), panel, com.floreantpos.POSConstants.SELECT_CRIETERIA, JOptionPane.OK_CANCEL_OPTION,
 					JOptionPane.QUESTION_MESSAGE, null, null, null);
 			if (option != JOptionPane.OK_OPTION) {
 				return;

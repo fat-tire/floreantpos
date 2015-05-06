@@ -57,11 +57,13 @@ public class DrawerPullReportDialog extends POSDialog {
     private Terminal terminal;
     
     public DrawerPullReportDialog() {
+    	super(Application.getPosWindow(), true);
     	initComponents();
     }
     
     public DrawerPullReportDialog(JDialog parent, boolean modal) {
-        super();
+    	super(Application.getPosWindow(), true);
+    	
         initComponents();
     }
     
