@@ -25,6 +25,8 @@ public class CashierModeNextActionDialog extends POSDialog implements ActionList
 	JLabel messageLabel = new JLabel("", JLabel.CENTER);
 	
 	public CashierModeNextActionDialog(String message) {
+		super(Application.getPosWindow(), true);
+		
 		setTitle("SELECT NEXT ACTION");
 		
 		JPanel contentPane = new JPanel(new BorderLayout(10, 20));
