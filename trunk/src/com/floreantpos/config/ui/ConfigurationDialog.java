@@ -21,6 +21,7 @@ import com.floreantpos.extension.TicketImportPlugin;
 import com.floreantpos.main.Application;
 import com.floreantpos.ui.dialog.POSDialog;
 import com.floreantpos.ui.dialog.POSMessageDialog;
+import com.floreantpos.util.POSUtil;
 
 public class ConfigurationDialog extends POSDialog implements ChangeListener, ActionListener {
 	private static final String OK = com.floreantpos.POSConstants.OK;
@@ -30,6 +31,8 @@ public class ConfigurationDialog extends POSDialog implements ChangeListener, Ac
 	
 	
 	public ConfigurationDialog() {
+		super(POSUtil.getBackOfficeWindow(), true);
+		
 		setTitle(Messages.getString("CONFIGURATION_WINDOW_TITLE")); //$NON-NLS-1$
 		
 		setLayout(new MigLayout("fill", "", "[fill,grow][]")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
