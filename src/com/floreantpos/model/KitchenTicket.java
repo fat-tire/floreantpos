@@ -71,7 +71,7 @@ public class KitchenTicket extends BaseKitchenTicket {
 				continue;
 			}
 			
-			Printer printer = ticketItem.getPrinter();
+			Printer printer = ticketItem.getPrinter(ticket.getType());
 			if(printer == null) {
 				continue;
 			}

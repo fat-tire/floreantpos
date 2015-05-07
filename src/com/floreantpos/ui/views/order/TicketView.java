@@ -529,7 +529,7 @@ public class TicketView extends JPanel {
 		}
 
 		if (ticket.getType() != null && ticket.getType().getProperties() != null) {
-			btnSave.setVisible(ticket.getType().getProperties().isAllowDelayPayment());
+			btnSave.setVisible(ticket.getType().getProperties().isPostPaid());
 		}
 		else {
 			btnSave.setVisible(true);

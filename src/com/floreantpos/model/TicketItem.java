@@ -300,11 +300,15 @@ public class TicketItem extends BaseTicketItem implements ITicketItem {
 		return String.valueOf(getId());
 	}
 	
-	public Printer getPrinter() {
+	public Printer getPrinter(OrderType orderType) {
 		PosPrinters printers = Application.getPrinters();
 		VirtualPrinter virtualPrinter = getVirtualPrinter();
 		
 		if(virtualPrinter == null) {
+			if(orderType.getProperties().getVirtualPrinter() != null) {
+				return printers.getKitchenPrinterFor(orderType.getProperties().getVirtualPrinter());
+			}
+			
 			return printers.getDefaultKitchenPrinter();
 		}
 		

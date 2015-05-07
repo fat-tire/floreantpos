@@ -1,9 +1,14 @@
 package com.floreantpos.config.ui;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
+import javax.swing.BorderFactory;
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import net.miginfocom.swing.MigLayout;
@@ -12,8 +17,11 @@ import com.floreantpos.POSConstants;
 import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.model.OrderType;
 import com.floreantpos.model.OrderTypeProperties;
+import com.floreantpos.model.VirtualPrinter;
 import com.floreantpos.model.dao.OrderTypePropertiesDAO;
+import com.floreantpos.model.dao.VirtualPrinterDAO;
 import com.floreantpos.swing.FixedLengthTextField;
+import com.floreantpos.swing.ListComboBoxModel;
 import com.jidesoft.swing.TitledSeparator;
 
 public class OrderTypeConfigurationView extends ConfigurationView {
@@ -23,37 +31,41 @@ public class OrderTypeConfigurationView extends ConfigurationView {
 	private FixedLengthTextField tfTakeOutAlias = new FixedLengthTextField(40);
 	private FixedLengthTextField tfPickupAlias = new FixedLengthTextField(40);
 	private FixedLengthTextField tfHomeDeliveryAlias = new FixedLengthTextField(40);
-	
+
 	private JCheckBox cbDineInEnable = new JCheckBox(POSConstants.ENABLE_OPTION_LABEL);
 	private JCheckBox cbTakeOutEnable = new JCheckBox(POSConstants.ENABLE_OPTION_LABEL);
 	private JCheckBox cbPickupEnable = new JCheckBox(POSConstants.ENABLE_OPTION_LABEL);
 	private JCheckBox cbHomeDeliveryEnable = new JCheckBox(POSConstants.ENABLE_OPTION_LABEL);
 	private JCheckBox cbDriveThruEnable = new JCheckBox(POSConstants.ENABLE_OPTION_LABEL);
 	private JCheckBox cbBarTabEnable = new JCheckBox(POSConstants.ENABLE_OPTION_LABEL);
-	
+
 	private JCheckBox cbDineInDelayPay = new JCheckBox(POSConstants.LATER_PAYMENT_OPTION_LABEL);
 	private JCheckBox cbTakeOutDelayPay = new JCheckBox(POSConstants.LATER_PAYMENT_OPTION_LABEL);
 	private JCheckBox cbPickupDelayPay = new JCheckBox(POSConstants.LATER_PAYMENT_OPTION_LABEL);
 	private JCheckBox cbHomeDeliveryDelayPay = new JCheckBox(POSConstants.LATER_PAYMENT_OPTION_LABEL);
 	private JCheckBox cbDriveThruDelayPay = new JCheckBox(POSConstants.LATER_PAYMENT_OPTION_LABEL);
 	private JCheckBox cbBarTabDelayPay = new JCheckBox(POSConstants.LATER_PAYMENT_OPTION_LABEL);
-	
+
 	private JCheckBox cbShowTableSelection = new JCheckBox("Enable table selection");
 	private JCheckBox cbShowGuestSelection = new JCheckBox("Enable guest selection");
-	
+
+	private JComboBox<VirtualPrinter> cbDineInPrinter = new JComboBox<VirtualPrinter>();
+	private JComboBox<VirtualPrinter> cbTakeoutPrinter = new JComboBox<VirtualPrinter>();
+	private JComboBox<VirtualPrinter> cbPickupPrinter = new JComboBox<VirtualPrinter>();
+	private JComboBox<VirtualPrinter> cbHomeDeliPrinter = new JComboBox<VirtualPrinter>();
+	private JComboBox<VirtualPrinter> cbDriveThruPrinter = new JComboBox<VirtualPrinter>();
+	private JComboBox<VirtualPrinter> cbBarPrinter = new JComboBox<VirtualPrinter>();
+
 	public OrderTypeConfigurationView() {
 		setLayout(new MigLayout("", "", ""));
-		
-		addOption(OrderType.DINE_IN, cbDineInEnable, cbDineInDelayPay, tfDineInAlias);
-		add(cbShowTableSelection, "span 2, newline, wrap");
-		add(cbShowGuestSelection, "span 2, wrap");
-		
-		addOption(OrderType.TAKE_OUT, cbTakeOutEnable, cbTakeOutDelayPay, tfTakeOutAlias);
-		addOption(OrderType.PICKUP, cbPickupEnable, cbPickupDelayPay, tfPickupAlias);
-		addOption(OrderType.HOME_DELIVERY, cbHomeDeliveryEnable, cbHomeDeliveryDelayPay, tfHomeDeliveryAlias);
-		addOption(OrderType.DRIVE_THRU, cbDriveThruEnable, cbDriveThruDelayPay, tfDriveThruAlias);
-		addOption(OrderType.BAR_TAB, cbBarTabEnable, cbBarTabDelayPay, tfBarTabAlias);
-		
+
+		addOption(OrderType.DINE_IN, cbDineInEnable, cbDineInDelayPay, tfDineInAlias, cbDineInPrinter);
+		addOption(OrderType.TAKE_OUT, cbTakeOutEnable, cbTakeOutDelayPay, tfTakeOutAlias, cbTakeoutPrinter);
+		addOption(OrderType.PICKUP, cbPickupEnable, cbPickupDelayPay, tfPickupAlias, cbPickupPrinter);
+		addOption(OrderType.HOME_DELIVERY, cbHomeDeliveryEnable, cbHomeDeliveryDelayPay, tfHomeDeliveryAlias, cbHomeDeliPrinter);
+		addOption(OrderType.DRIVE_THRU, cbDriveThruEnable, cbDriveThruDelayPay, tfDriveThruAlias, cbDriveThruPrinter);
+		addOption(OrderType.BAR_TAB, cbBarTabEnable, cbBarTabDelayPay, tfBarTabAlias, cbBarPrinter);
+
 		cbDineInEnable.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -63,72 +75,92 @@ public class OrderTypeConfigurationView extends ConfigurationView {
 			}
 		});
 	}
-	
-	private void addOption(OrderType orderType, JCheckBox cbEnable, JCheckBox cbLaterPay, JTextField tfAlias) {
-		TitledSeparator separator = new TitledSeparator(orderType.name().replaceAll("_", " "));
-		add(separator, "gaptop 10, newline, span 5, grow, wrap");
-		add(cbEnable, "gapright 25");
-		add(cbLaterPay, "gapright 25");
-		add(new JLabel(POSConstants.ALIAS_LABEL));
-		add(tfAlias);
+
+	private void addOption(OrderType orderType, JCheckBox cbEnable, JCheckBox cbPostPaid, JTextField tfAlias, JComboBox<VirtualPrinter> cbPrinter) {
+		JPanel panel = new JPanel(new MigLayout("fill", "grow", ""));
+		panel.setBorder(BorderFactory.createTitledBorder(orderType.name().replaceAll("_", " ")));
+		panel.add(cbEnable, "gapright 25");
+		panel.add(cbPostPaid, "gapright 25");
+		panel.add(new JLabel(POSConstants.ALIAS_LABEL));
+		panel.add(tfAlias);
+		panel.add(new JLabel("Printer"), "newline");
+		panel.add(cbPrinter, "span 3, grow");
+
+		if (orderType == OrderType.DINE_IN) {
+			panel.add(cbShowTableSelection, "span 2, newline, wrap");
+			panel.add(cbShowGuestSelection, "span 2, wrap");
+		}
+
+		add(panel, "newline, grow");
 	}
 
 	@Override
 	public boolean save() throws Exception {
-		setupModel(OrderType.DINE_IN, cbDineInEnable, cbDineInDelayPay, tfDineInAlias);
-		setupModel(OrderType.TAKE_OUT, cbTakeOutEnable, cbTakeOutDelayPay, tfTakeOutAlias);
-		setupModel(OrderType.PICKUP, cbPickupEnable, cbPickupDelayPay, tfPickupAlias);
-		setupModel(OrderType.HOME_DELIVERY, cbHomeDeliveryEnable, cbHomeDeliveryDelayPay, tfHomeDeliveryAlias);
-		setupModel(OrderType.DRIVE_THRU, cbDriveThruEnable, cbDriveThruDelayPay, tfDriveThruAlias);
-		setupModel(OrderType.BAR_TAB, cbBarTabEnable, cbBarTabDelayPay, tfBarTabAlias);
-		
+		setupModel(OrderType.DINE_IN, cbDineInEnable, cbDineInDelayPay, tfDineInAlias, cbDineInPrinter);
+		setupModel(OrderType.TAKE_OUT, cbTakeOutEnable, cbTakeOutDelayPay, tfTakeOutAlias, cbTakeoutPrinter);
+		setupModel(OrderType.PICKUP, cbPickupEnable, cbPickupDelayPay, tfPickupAlias, cbPickupPrinter);
+		setupModel(OrderType.HOME_DELIVERY, cbHomeDeliveryEnable, cbHomeDeliveryDelayPay, tfHomeDeliveryAlias, cbHomeDeliPrinter);
+		setupModel(OrderType.DRIVE_THRU, cbDriveThruEnable, cbDriveThruDelayPay, tfDriveThruAlias, cbDriveThruPrinter);
+		setupModel(OrderType.BAR_TAB, cbBarTabEnable, cbBarTabDelayPay, tfBarTabAlias, cbBarPrinter);
+
 		OrderTypePropertiesDAO.getInstance().saveAll();
-		
+
 		TerminalConfig.setShouldShowTableSelection(cbShowTableSelection.isSelected());
 		TerminalConfig.setShouldShowGuestSelection(cbShowGuestSelection.isSelected());
-		
+
 		return true;
 	}
 
 	@Override
 	public void initialize() throws Exception {
-		setupView(OrderType.DINE_IN, cbDineInEnable, cbDineInDelayPay, tfDineInAlias);
-		setupView(OrderType.TAKE_OUT, cbTakeOutEnable, cbTakeOutDelayPay, tfTakeOutAlias);
-		setupView(OrderType.PICKUP, cbPickupEnable, cbPickupDelayPay, tfPickupAlias);
-		setupView(OrderType.HOME_DELIVERY, cbHomeDeliveryEnable, cbHomeDeliveryDelayPay, tfHomeDeliveryAlias);
-		setupView(OrderType.DRIVE_THRU, cbDriveThruEnable, cbDriveThruDelayPay, tfDriveThruAlias);
-		setupView(OrderType.BAR_TAB, cbBarTabEnable, cbBarTabDelayPay, tfBarTabAlias);
-		
+		List<VirtualPrinter> virtualPrinters = VirtualPrinterDAO.getInstance().findAll();
+
+		cbDineInPrinter.setModel(new ListComboBoxModel(virtualPrinters));
+		cbTakeoutPrinter.setModel(new ListComboBoxModel(virtualPrinters));
+		cbPickupPrinter.setModel(new ListComboBoxModel(virtualPrinters));
+		cbHomeDeliPrinter.setModel(new ListComboBoxModel(virtualPrinters));
+		cbDriveThruPrinter.setModel(new ListComboBoxModel(virtualPrinters));
+		cbBarPrinter.setModel(new ListComboBoxModel(virtualPrinters));
+
+		setupView(OrderType.DINE_IN, cbDineInEnable, cbDineInDelayPay, tfDineInAlias, cbDineInPrinter);
+		setupView(OrderType.TAKE_OUT, cbTakeOutEnable, cbTakeOutDelayPay, tfTakeOutAlias, cbTakeoutPrinter);
+		setupView(OrderType.PICKUP, cbPickupEnable, cbPickupDelayPay, tfPickupAlias, cbPickupPrinter);
+		setupView(OrderType.HOME_DELIVERY, cbHomeDeliveryEnable, cbHomeDeliveryDelayPay, tfHomeDeliveryAlias, cbHomeDeliPrinter);
+		setupView(OrderType.DRIVE_THRU, cbDriveThruEnable, cbDriveThruDelayPay, tfDriveThruAlias, cbDriveThruPrinter);
+		setupView(OrderType.BAR_TAB, cbBarTabEnable, cbBarTabDelayPay, tfBarTabAlias, cbBarPrinter);
+
 		cbShowTableSelection.setSelected(TerminalConfig.isShouldShowTableSelection());
 		cbShowGuestSelection.setSelected(TerminalConfig.isShouldShowGuestSelection());
-		
+
 		setInitialized(true);
 	}
-	
-	private void setupView(OrderType orderType, JCheckBox checkBox, JCheckBox cbPayLater, JTextField textField) {
+
+	private void setupView(OrderType orderType, JCheckBox checkBox, JCheckBox cbPayLater, JTextField textField, JComboBox<VirtualPrinter> cbPrinter) {
 		OrderTypeProperties properties = orderType.getProperties();
-		if(properties == null) {
+		if (properties == null) {
 			checkBox.setSelected(true);
 			cbPayLater.setSelected(true);
 			return;
 		}
-		
+
 		checkBox.setSelected(properties.isVisible());
-		cbPayLater.setSelected(properties.isAllowDelayPayment());
+		cbPayLater.setSelected(properties.isPostPaid());
 		textField.setText(properties.getAlias());
+		cbPrinter.setSelectedItem(properties.getVirtualPrinter());
 	}
-	
-	private void setupModel(OrderType orderType, JCheckBox checkBox, JCheckBox cbPayLater, JTextField textField) {
+
+	private void setupModel(OrderType orderType, JCheckBox checkBox, JCheckBox cbPayLater, JTextField textField, JComboBox<VirtualPrinter> cbPrinter) {
 		OrderTypeProperties orderTypeProperties = orderType.getProperties();
-		if(orderTypeProperties == null) {
+		if (orderTypeProperties == null) {
 			orderTypeProperties = new OrderTypeProperties();
 			orderType.setProperties(orderTypeProperties);
 		}
-		
+
 		orderTypeProperties.setOrdetType(orderType.name());
 		orderTypeProperties.setVisible(checkBox.isSelected());
-		orderTypeProperties.setAllowDelayPayment(cbPayLater.isSelected());
+		orderTypeProperties.setPostPaid(cbPayLater.isSelected());
 		orderTypeProperties.setAlias(textField.getText());
+		orderTypeProperties.setVirtualPrinter((VirtualPrinter) cbPrinter.getSelectedItem());
 	}
 
 	@Override
