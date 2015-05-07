@@ -1,5 +1,6 @@
 package com.floreantpos.model.base;
 
+import java.lang.Comparable;
 import java.io.Serializable;
 
 
@@ -16,12 +17,13 @@ public abstract class BaseOrderTypeProperties  implements Comparable, Serializab
 
 	public static String REF = "OrderTypeProperties";
 	public static String PROP_ORDET_TYPE = "ordetType";
-	public static String PROP_ALLOW_DELAY_PAYMENT = "allowDelayPayment";
 	public static String PROP_BUTTON_COLOR = "buttonColor";
 	public static String PROP_VISIBLE = "visible";
 	public static String PROP_ALIAS = "alias";
+	public static String PROP_POST_PAID = "postPaid";
 	public static String PROP_ID = "id";
 	public static String PROP_TEXT_COLOR = "textColor";
+	public static String PROP_VIRTUAL_PRINTER = "virtualPrinter";
 
 
 	// constructors
@@ -52,7 +54,10 @@ public abstract class BaseOrderTypeProperties  implements Comparable, Serializab
 		protected java.lang.Integer buttonColor;
 		protected java.lang.Integer textColor;
 		protected java.lang.Boolean visible;
-		protected java.lang.Boolean allowDelayPayment;
+		protected java.lang.Boolean postPaid;
+
+	// many to one
+	private com.floreantpos.model.VirtualPrinter virtualPrinter;
 
 
 
@@ -164,18 +169,35 @@ public abstract class BaseOrderTypeProperties  implements Comparable, Serializab
 
 
 	/**
-	 * Return the value associated with the column: ALLOW_DELAY_PAYMENT
+	 * Return the value associated with the column: POST_PAID
 	 */
-	public java.lang.Boolean isAllowDelayPayment () {
-								return allowDelayPayment == null ? Boolean.FALSE : allowDelayPayment;
+	public java.lang.Boolean isPostPaid () {
+								return postPaid == null ? Boolean.FALSE : postPaid;
 					}
 
 	/**
-	 * Set the value related to the column: ALLOW_DELAY_PAYMENT
-	 * @param allowDelayPayment the ALLOW_DELAY_PAYMENT value
+	 * Set the value related to the column: POST_PAID
+	 * @param postPaid the POST_PAID value
 	 */
-	public void setAllowDelayPayment (java.lang.Boolean allowDelayPayment) {
-		this.allowDelayPayment = allowDelayPayment;
+	public void setPostPaid (java.lang.Boolean postPaid) {
+		this.postPaid = postPaid;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: VPRINTER_ID
+	 */
+	public com.floreantpos.model.VirtualPrinter getVirtualPrinter () {
+					return virtualPrinter;
+			}
+
+	/**
+	 * Set the value related to the column: VPRINTER_ID
+	 * @param virtualPrinter the VPRINTER_ID value
+	 */
+	public void setVirtualPrinter (com.floreantpos.model.VirtualPrinter virtualPrinter) {
+		this.virtualPrinter = virtualPrinter;
 	}
 
 
