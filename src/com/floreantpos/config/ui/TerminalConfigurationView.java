@@ -50,9 +50,6 @@ public class TerminalConfigurationView extends ConfigurationView {
 	private JCheckBox cbAutoLogoff = new JCheckBox("Enable auto logoff");
 	private IntegerTextField tfLogoffTime = new IntegerTextField(4);
 	
-	JComboBox cbHour;
-	JComboBox cbMin;
-	JCheckBox chkAutoDrawerPull;
 	JCheckBox chkHasCashDrawer;
 	DoubleTextField tfDrawerInitialBalance = new DoubleTextField(6);
 	
@@ -93,7 +90,7 @@ public class TerminalConfigurationView extends ConfigurationView {
 		add(new JLabel("Auto logoff time")); //$NON-NLS-1$
 		add(tfLogoffTime, "wrap");
 		
-		add(cbTranslatedName, "span 2, wrap"); //$NON-NLS-1$
+		add(cbTranslatedName, "span 2"); //$NON-NLS-1$
 		add(cbFullscreenMode, "wrap"); //$NON-NLS-1$
 		
 		add(new JLabel("Default font")); //$NON-NLS-1$
@@ -145,13 +142,6 @@ public class TerminalConfigurationView extends ConfigurationView {
 		drawerConfigPanel.add(new JLabel("Drawer initial balance"));
 		drawerConfigPanel.add(tfDrawerInitialBalance, "span 4, wrap");
 		
-		drawerConfigPanel.add(chkAutoDrawerPull = new JCheckBox(com.floreantpos.POSConstants.AUTO_DRAWER_PULL_EVERY_DAY_AT_), "span 2"); //$NON-NLS-1$
-		drawerConfigPanel.add(new JLabel(com.floreantpos.POSConstants.HOUR + ":")); //$NON-NLS-1$ //$NON-NLS-2$
-		drawerConfigPanel.add(cbHour = new JComboBox(hours), ""); //$NON-NLS-1$
-		
-		drawerConfigPanel.add(new JLabel(Messages.getString("DrawerPullConfigurationView.MINUTE") + ":")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		drawerConfigPanel.add(cbMin = new JComboBox(minutes), ""); //$NON-NLS-1$
-		
 		add(drawerConfigPanel, "span 3, grow, wrap");
 	
 		chkHasCashDrawer.addActionListener(new ActionListener() {
@@ -164,9 +154,6 @@ public class TerminalConfigurationView extends ConfigurationView {
 
 	protected void doEnableDisableDrawerPull() {
 		boolean selected = chkHasCashDrawer.isSelected();
-		chkAutoDrawerPull.setEnabled(selected);
-		cbHour.setEnabled(selected);
-		cbMin.setEnabled(selected);
 		tfDrawerInitialBalance.setEnabled(selected);
 	}
 	
@@ -245,9 +232,6 @@ public class TerminalConfigurationView extends ConfigurationView {
 		}
 		
 		terminal.setHasCashDrawer(chkHasCashDrawer.isSelected());
-		terminal.setAutoDrawerPullEnable(chkAutoDrawerPull.isSelected());
-		terminal.setAutoDrawerPullHour((Integer) cbHour.getSelectedItem());
-		terminal.setAutoDrawerPullMin((Integer) cbMin.getSelectedItem());
 		terminal.setOpeningBalance(tfDrawerInitialBalance.getDouble());
 		
 		terminalDAO.saveOrUpdate(terminal);
@@ -280,9 +264,6 @@ public class TerminalConfigurationView extends ConfigurationView {
 		
 		Terminal terminal = Application.getInstance().getTerminal();
 		chkHasCashDrawer.setSelected(terminal.isHasCashDrawer());
-		chkAutoDrawerPull.setSelected(terminal.isAutoDrawerPullEnable());
-		cbHour.setSelectedItem(terminal.getAutoDrawerPullHour());
-		cbMin.setSelectedItem(terminal.getAutoDrawerPullMin());
 		tfDrawerInitialBalance.setText("" + terminal.getOpeningBalance());
 		
 		doEnableDisableDrawerPull();
