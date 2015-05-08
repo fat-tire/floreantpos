@@ -16,7 +16,7 @@ import net.miginfocom.swing.MigLayout;
 
 import com.floreantpos.IconFactory;
 import com.floreantpos.Messages;
-import com.floreantpos.actions.ClockoutAction;
+import com.floreantpos.actions.ClockInOutAction;
 import com.floreantpos.actions.LogoutAction;
 import com.floreantpos.actions.ShowBackofficeAction;
 import com.floreantpos.actions.ShutDownAction;
@@ -65,8 +65,7 @@ public class HeaderPanel extends JPanel {
 		PosButton btnBackoffice = new PosButton(new ShowBackofficeAction(false, true));
 		add(btnBackoffice, "w 60!, h 60!"); //$NON-NLS-1$
 
-		PosButton btnClockOUt = new PosButton(new ClockoutAction(false, true));
-		btnClockOUt.setToolTipText(Messages.getString("Clockout")); //$NON-NLS-1$
+		PosButton btnClockOUt = new PosButton(new ClockInOutAction(false, true));
 		add(btnClockOUt, "w 60!, h 60!"); //$NON-NLS-1$
 
 		PosButton btnLogout = new PosButton(new LogoutAction(false, true));
