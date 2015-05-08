@@ -1,5 +1,6 @@
 package com.floreantpos.model.base;
 
+import java.lang.Comparable;
 import java.io.Serializable;
 
 
@@ -15,6 +16,7 @@ import java.io.Serializable;
 public abstract class BaseKitchenTicket  implements Comparable, Serializable {
 
 	public static String REF = "KitchenTicket";
+	public static String PROP_PRINTER_GROUP = "printerGroup";
 	public static String PROP_STATUS = "status";
 	public static String PROP_CLOSING_DATE = "closingDate";
 	public static String PROP_TICKET_TYPE = "ticketType";
@@ -23,7 +25,6 @@ public abstract class BaseKitchenTicket  implements Comparable, Serializable {
 	public static String PROP_SERVER_NAME = "serverName";
 	public static String PROP_CREATE_DATE = "createDate";
 	public static String PROP_TICKET_ID = "ticketId";
-	public static String PROP_VIRTUAL_PRINTER = "virtualPrinter";
 
 
 	// constructors
@@ -58,7 +59,7 @@ public abstract class BaseKitchenTicket  implements Comparable, Serializable {
 		protected java.lang.String ticketType;
 
 	// many to one
-	private com.floreantpos.model.VirtualPrinter virtualPrinter;
+	private com.floreantpos.model.PrinterGroup printerGroup;
 
 	// collections
 	private java.util.List<String> tableNumbers;
@@ -208,18 +209,18 @@ public abstract class BaseKitchenTicket  implements Comparable, Serializable {
 
 
 	/**
-	 * Return the value associated with the column: VPRINTER
+	 * Return the value associated with the column: PG_ID
 	 */
-	public com.floreantpos.model.VirtualPrinter getVirtualPrinter () {
-					return virtualPrinter;
+	public com.floreantpos.model.PrinterGroup getPrinterGroup () {
+					return printerGroup;
 			}
 
 	/**
-	 * Set the value related to the column: VPRINTER
-	 * @param virtualPrinter the VPRINTER value
+	 * Set the value related to the column: PG_ID
+	 * @param printerGroup the PG_ID value
 	 */
-	public void setVirtualPrinter (com.floreantpos.model.VirtualPrinter virtualPrinter) {
-		this.virtualPrinter = virtualPrinter;
+	public void setPrinterGroup (com.floreantpos.model.PrinterGroup printerGroup) {
+		this.printerGroup = printerGroup;
 	}
 
 

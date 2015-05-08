@@ -23,7 +23,6 @@ public abstract class BaseOrderTypeProperties  implements Comparable, Serializab
 	public static String PROP_POST_PAID = "postPaid";
 	public static String PROP_ID = "id";
 	public static String PROP_TEXT_COLOR = "textColor";
-	public static String PROP_VIRTUAL_PRINTER = "virtualPrinter";
 
 
 	// constructors
@@ -55,9 +54,6 @@ public abstract class BaseOrderTypeProperties  implements Comparable, Serializab
 		protected java.lang.Integer textColor;
 		protected java.lang.Boolean visible;
 		protected java.lang.Boolean postPaid;
-
-	// many to one
-	private com.floreantpos.model.VirtualPrinter virtualPrinter;
 
 
 
@@ -181,23 +177,6 @@ public abstract class BaseOrderTypeProperties  implements Comparable, Serializab
 	 */
 	public void setPostPaid (java.lang.Boolean postPaid) {
 		this.postPaid = postPaid;
-	}
-
-
-
-	/**
-	 * Return the value associated with the column: VPRINTER_ID
-	 */
-	public com.floreantpos.model.VirtualPrinter getVirtualPrinter () {
-					return virtualPrinter;
-			}
-
-	/**
-	 * Set the value related to the column: VPRINTER_ID
-	 * @param virtualPrinter the VPRINTER_ID value
-	 */
-	public void setVirtualPrinter (com.floreantpos.model.VirtualPrinter virtualPrinter) {
-		this.virtualPrinter = virtualPrinter;
 	}
 
 

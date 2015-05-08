@@ -64,6 +64,6 @@ public class Printer {
 	
 	@Override
 	public String toString() {
-		return virtualPrinter.getName();
+		return virtualPrinter.toString();
 	}
 }

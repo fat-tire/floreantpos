@@ -32,7 +32,13 @@ import com.floreantpos.ui.dialog.POSMessageDialog;
  * @author mshahriar
  */
 public class PrintConfigurationView extends ConfigurationView {
-	
+
+	// Variables declaration - do not modify//GEN-BEGIN:variables
+	private JComboBox cbReceiptPrinterName;
+	private JComboBox cbReportPrinterName;
+
+	// End of variables declaration//GEN-END:variables
+
 	PosPrinters printers = Application.getPrinters();
 
 	/** Creates new form PrintConfiguration */
@@ -48,33 +54,31 @@ public class PrintConfigurationView extends ConfigurationView {
 	@Override
 	public void initialize() throws Exception {
 		PrintService[] printServices = PrintServiceLookup.lookupPrintServices(null, null);
-		
+
 		cbReportPrinterName.setModel(new DefaultComboBoxModel(printServices));
 		cbReceiptPrinterName.setModel(new DefaultComboBoxModel(printServices));
-		//cbKitchenPrinterName.setModel(new DefaultComboBoxModel(printServices));
 
 		PrintServiceComboRenderer comboRenderer = new PrintServiceComboRenderer();
 		cbReportPrinterName.setRenderer(comboRenderer);
 		cbReceiptPrinterName.setRenderer(comboRenderer);
-		//cbKitchenPrinterName.setRenderer(comboRenderer);
 
 		setSelectedPrinter(cbReportPrinterName, printers.getReportPrinter());
 		setSelectedPrinter(cbReceiptPrinterName, printers.getReceiptPrinter());
-		//setSelectedPrinter(cbKitchenPrinterName, PrintConfig.KITCHEN_PRINTER_NAME);
 
 		setInitialized(true);
 
 		if (printServices == null || printServices.length == 0) {
-			POSMessageDialog.showMessage(com.floreantpos.util.POSUtil.getFocusedWindow(), "No printer is installed on your operating system. Please install printer and come back again.");
+			POSMessageDialog.showMessage(com.floreantpos.util.POSUtil.getFocusedWindow(),
+					"No printer is installed on your operating system. Please install printer and come back again.");
 		}
 	}
 
 	private void setSelectedPrinter(JComboBox whichPrinter, String printerName) {
-//		PrintService osDefaultPrinter = PrintServiceLookup.lookupDefaultPrintService();
-//
-//		if (osDefaultPrinter == null) {
-//			return;
-//		}
+		//		PrintService osDefaultPrinter = PrintServiceLookup.lookupDefaultPrintService();
+		//
+		//		if (osDefaultPrinter == null) {
+		//			return;
+		//		}
 
 		//String printerName = AppConfig.getString(propertyName, osDefaultPrinter.getName());
 
@@ -93,7 +97,7 @@ public class PrintConfigurationView extends ConfigurationView {
 		PrintService printService = (PrintService) cbReportPrinterName.getSelectedItem();
 		printers.setReportPrinter(printService == null ? null : printService.getName());
 		//AppConfig.put(PrintConfig.REPORT_PRINTER_NAME, printService == null ? null : printService.getName());
-		
+
 		printService = (PrintService) cbReceiptPrinterName.getSelectedItem();
 		printers.setReceiptPrinter(printService == null ? null : printService.getName());
 		//AppConfig.put(PrintConfig.RECEIPT_PRINTER_NAME, printService == null ? null : printService.getName());
@@ -102,7 +106,7 @@ public class PrintConfigurationView extends ConfigurationView {
 		//AppConfig.put(PrintConfig.KITCHEN_PRINTER_NAME, printService == null ? null : printService.getName());
 
 		Application.getPrinters().save();
-		
+
 		return true;
 	}
 
@@ -115,10 +119,10 @@ public class PrintConfigurationView extends ConfigurationView {
 	// <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
 	private void initComponents() {
 		setLayout(new MigLayout("", "[][grow,fill]", "[][][][18px,grow]"));
-		
+
 		JLabel lblReportPrinter = new JLabel("Report Printer");
 		add(lblReportPrinter, "cell 0 0,alignx trailing");
-		
+
 		cbReportPrinterName = new JComboBox();
 		add(cbReportPrinterName, "cell 1 0,growx");
 		javax.swing.JLabel jLabel1 = new javax.swing.JLabel();
@@ -130,29 +134,13 @@ public class PrintConfigurationView extends ConfigurationView {
 		javax.swing.JLabel jLabel2 = new javax.swing.JLabel();
 		add(jLabel2, "cell 0 2,alignx right");
 
-		//jLabel2.setText("Kitchen Printer:");
-		//cbKitchenPrinterName = new javax.swing.JComboBox();
-		//add(cbKitchenPrinterName, "cell 1 2,growx");
-		
-		//JPanel panel = new JPanel();
-		//add(panel, "cell 0 3 2 1,grow");
-		//panel.setLayout(new GridLayout(0, 2, 10, 0));
-		
-		//MultiPrinterPane multiPrinterPane = new MultiPrinterPane("Receipt Printers", printers.getReceiptPrinters());
-		//panel.add(multiPrinterPane);
-		
 		MultiPrinterPane multiPrinterPane = new MultiPrinterPane("Kitchen Printers", printers.getKitchenPrinters());
 		add(multiPrinterPane, "cell 0 3 2 1,grow");
-		//panel.add(multiPrinterPane_1);
+		
+		PrinterGroupView printerGroupView = new PrinterGroupView("Printer Groups");
+		add(printerGroupView, "newline, grow, span 2");
 
 	}// </editor-fold>//GEN-END:initComponents
-
-	// Variables declaration - do not modify//GEN-BEGIN:variables
-	//private javax.swing.JComboBox cbKitchenPrinterName;
-	private JComboBox cbReceiptPrinterName;
-	private JComboBox cbReportPrinterName;
-
-	// End of variables declaration//GEN-END:variables
 
 	private class PrintServiceComboRenderer extends DefaultListCellRenderer {
 		@Override

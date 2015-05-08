@@ -126,7 +126,7 @@ public class MenuItem extends BaseMenuItem {
 			ticketItem.setBeverage(false);
 			ticketItem.setShouldPrintToKitchen(true);
 		}
-		ticketItem.setVirtualPrinter(this.getVirtualPrinter());
+		ticketItem.setPrinterGroup(this.getPrinterGroup());
 		
 		Recepie recepie = getRecepie();
 		if(recepie != null) {
