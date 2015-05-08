@@ -125,7 +125,6 @@ public class CategoryView extends SelectionView implements ActionListener {
 				@Override
 				public void stateChanged(ChangeEvent e) {
 					CategoryButton b = (CategoryButton) e.getSource();
-					System.out.println(b.getText() +":"+b.isSelected());
 				}
 			});
 		}
