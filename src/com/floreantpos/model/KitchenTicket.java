@@ -48,13 +48,22 @@ public class KitchenTicket extends BaseKitchenTicket {
 	
 	public Printer getPrinter() {
 		PosPrinters printers = Application.getPrinters();
-		VirtualPrinter virtualPrinter = getVirtualPrinter();
+		PrinterGroup virtualPrinter = getPrinterGroup();
 		
 		if(virtualPrinter == null) {
 			return printers.getDefaultKitchenPrinter();
 		}
 		
-		return printers.getKitchenPrinterFor(virtualPrinter);
+		//return printers.getKitchenPrinterFor(virtualPrinter);
+		List<String> printerNames = virtualPrinter.getPrinterNames();
+		List<Printer> kitchenPrinters = printers.getKitchenPrinters();
+		for (Printer printer : kitchenPrinters) {
+			if(printerNames.contains(printer.getVirtualPrinter().getName())) {
+				return printer;
+			}
+		}
+		
+		return printers.getDefaultKitchenPrinter();
 	}
 
 	public static List<KitchenTicket> fromTicket(Ticket ticket) {
@@ -79,7 +88,7 @@ public class KitchenTicket extends BaseKitchenTicket {
 			KitchenTicket kitchenTicket = itemMap.get(printer);
 			if(kitchenTicket == null) {
 				kitchenTicket = new KitchenTicket();
-				kitchenTicket.setVirtualPrinter(ticketItem.getVirtualPrinter());
+				kitchenTicket.setPrinterGroup(ticketItem.getPrinterGroup());
 				kitchenTicket.setTicketId(ticket.getId());
 				kitchenTicket.setCreateDate(new Date());
 				kitchenTicket.setTicketType(ticket.getTicketType());
@@ -90,7 +99,7 @@ public class KitchenTicket extends BaseKitchenTicket {
 				
 				kitchenTicket.setServerName(ticket.getOwner().getFirstName());
 				kitchenTicket.setStatus(KitchenTicketStatus.WAITING.name());
-				kitchenTicket.setVirtualPrinter(printer.getVirtualPrinter());
+				//kitchenTicket.setPrinterGroup(printer.getVirtualPrinter());
 				
 				KitchenTicketDAO.getInstance().saveOrUpdate(kitchenTicket);
 				

@@ -1,5 +1,8 @@
 package com.floreantpos.model;
 
+import java.util.Iterator;
+import java.util.List;
+
 import com.floreantpos.model.base.BaseVirtualPrinter;
 
 
@@ -51,6 +54,22 @@ public class VirtualPrinter extends BaseVirtualPrinter {
 
 	@Override
 	public String toString() {
-		return getName();
+		String name = getName();
+		
+		List<String> typeNames = getOrderTypeNames();
+		if(typeNames != null && typeNames.size() > 0) {
+			name += " (";
+			
+			for (Iterator iterator = typeNames.iterator(); iterator.hasNext();) {
+				String string = (String) iterator.next();
+				name += string;
+				if(iterator.hasNext()) {
+					name += ", ";
+				}
+			}
+			name += ")";
+		}
+		
+		return name;
 	}
 }

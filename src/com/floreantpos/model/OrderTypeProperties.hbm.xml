@@ -14,10 +14,5 @@
 		<property column="VISIBLE" name="visible" type="java.lang.Boolean"/>
 		<property column="POST_PAID" name="postPaid" type="java.lang.Boolean"/>
 		
-		<many-to-one class="com.floreantpos.model.VirtualPrinter" lazy="false" cascade="none" name="virtualPrinter">
-			<column name="VPRINTER_ID" />
-		</many-to-one>
-
-		<!-- Associations -->
 	</class>
 </hibernate-mapping>

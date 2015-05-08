@@ -1,5 +1,6 @@
 package com.floreantpos.model.base;
 
+import java.lang.Comparable;
 import java.io.Serializable;
 
 import com.floreantpos.model.TicketItemCookingInstruction;
@@ -28,6 +29,7 @@ public abstract class BaseTicketItem  implements Comparable, Serializable {
 	public static String PROP_TAX_AMOUNT = "taxAmount";
 	public static String PROP_DISCOUNT_AMOUNT = "discountAmount";
 	public static String PROP_NAME = "name";
+	public static String PROP_PRINTER_GROUP = "printerGroup";
 	public static String PROP_PRINTED_TO_KITCHEN = "printedToKitchen";
 	public static String PROP_SHOULD_PRINT_TO_KITCHEN = "shouldPrintToKitchen";
 	public static String PROP_TICKET = "ticket";
@@ -39,7 +41,6 @@ public abstract class BaseTicketItem  implements Comparable, Serializable {
 	public static String PROP_TOTAL_AMOUNT = "totalAmount";
 	public static String PROP_SUBTOTAL_AMOUNT_WITHOUT_MODIFIERS = "subtotalAmountWithoutModifiers";
 	public static String PROP_TOTAL_AMOUNT_WITHOUT_MODIFIERS = "totalAmountWithoutModifiers";
-	public static String PROP_VIRTUAL_PRINTER = "virtualPrinter";
 
 
 	// constructors
@@ -100,7 +101,7 @@ public abstract class BaseTicketItem  implements Comparable, Serializable {
 
 	// many to one
 	private com.floreantpos.model.Ticket ticket;
-	private com.floreantpos.model.VirtualPrinter virtualPrinter;
+	private com.floreantpos.model.PrinterGroup printerGroup;
 
 	// collections
 	private java.util.List<com.floreantpos.model.TicketItemModifierGroup> ticketItemModifierGroups;
@@ -495,18 +496,18 @@ public abstract class BaseTicketItem  implements Comparable, Serializable {
 
 
 	/**
-	 * Return the value associated with the column: VPRINTER_ID
+	 * Return the value associated with the column: PG_ID
 	 */
-	public com.floreantpos.model.VirtualPrinter getVirtualPrinter () {
-					return virtualPrinter;
+	public com.floreantpos.model.PrinterGroup getPrinterGroup () {
+					return printerGroup;
 			}
 
 	/**
-	 * Set the value related to the column: VPRINTER_ID
-	 * @param virtualPrinter the VPRINTER_ID value
+	 * Set the value related to the column: PG_ID
+	 * @param printerGroup the PG_ID value
 	 */
-	public void setVirtualPrinter (com.floreantpos.model.VirtualPrinter virtualPrinter) {
-		this.virtualPrinter = virtualPrinter;
+	public void setPrinterGroup (com.floreantpos.model.PrinterGroup printerGroup) {
+		this.printerGroup = printerGroup;
 	}
 
 

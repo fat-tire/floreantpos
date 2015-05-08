@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping package="com.floreantpos.model">
-	<class lazy="false" name="com.floreantpos.model.VirtualPrinter" table="VIRTUAL_PRINTER">
+	<class lazy="false" name="com.floreantpos.model.PrinterGroup" table="PRINTER_GROUP">
 		<id column="ID" name="id" type="java.lang.Integer">
 			<generator class="identity" />
 		</id>
-		
+
 		<property column="NAME" name="name" type="string" unique="true" length="60" not-null="true" />
 
-		<bag name="orderTypeNames" table="VIRTUALPRINTER_ORDER_TYPE" lazy="false" cascade="all">
+		<bag name="printerNames" table="PRINTER_GROUP_PRINTERS" lazy="false" cascade="all">
 			<key column="printer_id" />
-			<element column="ORDER_TYPE" type="string" />
+			<element column="PRINTER_NAME" type="string" />
 		</bag>
+
 	</class>
 </hibernate-mapping>

@@ -1,5 +1,6 @@
 package com.floreantpos.model.base;
 
+import java.lang.Comparable;
 import java.io.Serializable;
 
 
@@ -25,13 +26,13 @@ public abstract class BaseMenuItem  implements Comparable, Serializable {
 	public static String PROP_TAX = "tax";
 	public static String PROP_TEXT_COLOR = "textColor";
 	public static String PROP_NAME = "name";
+	public static String PROP_PRINTER_GROUP = "printerGroup";
 	public static String PROP_BUTTON_COLOR = "buttonColor";
 	public static String PROP_RECEPIE = "recepie";
 	public static String PROP_PRICE = "price";
 	public static String PROP_IMAGE = "image";
 	public static String PROP_ID = "id";
 	public static String PROP_TRANSLATED_NAME = "translatedName";
-	public static String PROP_VIRTUAL_PRINTER = "virtualPrinter";
 
 
 	// constructors
@@ -90,7 +91,7 @@ public abstract class BaseMenuItem  implements Comparable, Serializable {
 	private com.floreantpos.model.MenuGroup parent;
 	private com.floreantpos.model.Tax tax;
 	private com.floreantpos.model.Recepie recepie;
-	private com.floreantpos.model.VirtualPrinter virtualPrinter;
+	private com.floreantpos.model.PrinterGroup printerGroup;
 
 	// collections
 	private java.util.List<com.floreantpos.model.MenuItemShift> shifts;
@@ -383,18 +384,18 @@ public abstract class BaseMenuItem  implements Comparable, Serializable {
 
 
 	/**
-	 * Return the value associated with the column: VPRINTER_ID
+	 * Return the value associated with the column: PG_ID
 	 */
-	public com.floreantpos.model.VirtualPrinter getVirtualPrinter () {
-					return virtualPrinter;
+	public com.floreantpos.model.PrinterGroup getPrinterGroup () {
+					return printerGroup;
 			}
 
 	/**
-	 * Set the value related to the column: VPRINTER_ID
-	 * @param virtualPrinter the VPRINTER_ID value
+	 * Set the value related to the column: PG_ID
+	 * @param printerGroup the PG_ID value
 	 */
-	public void setVirtualPrinter (com.floreantpos.model.VirtualPrinter virtualPrinter) {
-		this.virtualPrinter = virtualPrinter;
+	public void setPrinterGroup (com.floreantpos.model.PrinterGroup printerGroup) {
+		this.printerGroup = printerGroup;
 	}
 
 
