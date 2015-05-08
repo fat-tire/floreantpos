@@ -179,7 +179,7 @@ public class ShiftUtil {
 		return defaultShift;
 	}
 	
-	public static void adjustUserShift(User user, Shift currentShift) {
+	public static void adjustUserShiftAndClockIn(User user, Shift currentShift) {
 		Application application = Application.getInstance();
 		Calendar currentTime = Calendar.getInstance();
 
