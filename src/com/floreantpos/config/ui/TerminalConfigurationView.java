@@ -32,13 +32,6 @@ public class TerminalConfigurationView extends ConfigurationView {
 	private IntegerTextField tfSecretKeyLength;
 	
 	private JCheckBox cbTranslatedName = new JCheckBox("Show translated item name in UI");
-	private JCheckBox cbEnableDineIn = new JCheckBox("DINE IN");
-	private JCheckBox cbEnableTakeOut = new JCheckBox("TAKE OUT");
-	private JCheckBox cbEnablePickUp = new JCheckBox("PICK UP");
-	private JCheckBox cbEnableHomeDelivery = new JCheckBox("HOME DELIVERY");
-	private JCheckBox cbEnableDriveThru = new JCheckBox("DRIVE THRU");
-	private JCheckBox cbEnableBarTab = new JCheckBox("BAR TAB");
-	
 	private JCheckBox cbFullscreenMode = new JCheckBox("Kiosk Mode");
 	private JCheckBox cbShowDbConfiguration = new JCheckBox("Show database configuration button on login screen");
 	
@@ -95,17 +88,6 @@ public class TerminalConfigurationView extends ConfigurationView {
 		
 		add(new JLabel("Default font")); //$NON-NLS-1$
 		add(cbFonts, "span 2, wrap"); //$NON-NLS-1$
-		
-		JPanel ticketTypePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 20, 10));
-		ticketTypePanel.setBorder(BorderFactory.createTitledBorder("TICKET TYPE"));
-		ticketTypePanel.add(cbEnableDineIn);
-		ticketTypePanel.add(cbEnableTakeOut);
-		ticketTypePanel.add(cbEnablePickUp);
-		ticketTypePanel.add(cbEnableHomeDelivery);
-		ticketTypePanel.add(cbEnableDriveThru);
-		ticketTypePanel.add(cbEnableBarTab);
-		
-		add(ticketTypePanel, "span 3, grow, wrap");
 		
 		JPanel touchConfigPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 20, 10));
 		touchConfigPanel.setBorder(BorderFactory.createTitledBorder("TOUCH SCREEN"));
@@ -197,12 +179,6 @@ public class TerminalConfigurationView extends ConfigurationView {
 		
 		TerminalConfig.setTerminalId(terminalNumber);
 		TerminalConfig.setDefaultPassLen(defaultPassLen);
-		TerminalConfig.setDineInEnable(cbEnableDineIn.isSelected());
-		TerminalConfig.setPickupEnable(cbEnablePickUp.isSelected());
-		TerminalConfig.setTakeOutEnable(cbEnableTakeOut.isSelected());
-		TerminalConfig.setHomeDeliveryEnable(cbEnableHomeDelivery.isSelected());
-		TerminalConfig.setDriveThruEnable(cbEnableDriveThru.isSelected());
-		TerminalConfig.setBarTabEnable(cbEnableBarTab.isSelected());
 		TerminalConfig.setFullscreenMode(cbFullscreenMode.isSelected());
 		TerminalConfig.setShowDbConfigureButton(cbShowDbConfiguration.isSelected());
 		TerminalConfig.setUseTranslatedName(cbTranslatedName.isSelected());
@@ -243,12 +219,6 @@ public class TerminalConfigurationView extends ConfigurationView {
 	public void initialize() throws Exception {
 		tfTerminalNumber.setText(String.valueOf(TerminalConfig.getTerminalId()));
 		tfSecretKeyLength.setText(String.valueOf(TerminalConfig.getDefaultPassLen()));
-		cbEnableDineIn.setSelected(TerminalConfig.isDineInEnable());
-		cbEnablePickUp.setSelected(TerminalConfig.isPickupEnable());
-		cbEnableTakeOut.setSelected(TerminalConfig.isTakeOutEnable());
-		cbEnableHomeDelivery.setSelected(TerminalConfig.isHomeDeliveryEnable());
-		cbEnableDriveThru.setSelected(TerminalConfig.isDriveThruEnable());
-		cbEnableBarTab.setSelected(TerminalConfig.isBarTabEnable());
 		cbFullscreenMode.setSelected(TerminalConfig.isFullscreenMode());
 		cbShowDbConfiguration.setSelected(TerminalConfig.isShowDbConfigureButton());
 		
