@@ -2,29 +2,29 @@ package com.floreantpos.model.dao;
 
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
-import com.floreantpos.model.dao.MenuItemDAO;
+import com.floreantpos.model.dao.PrinterGroupDAO;
 import org.hibernate.criterion.Order;
 
 /**
  * This is an automatically generated DAO class which should not be edited.
  */
-public abstract class BaseMenuItemDAO extends com.floreantpos.model.dao._RootDAO {
+public abstract class BasePrinterGroupDAO extends com.floreantpos.model.dao._RootDAO {
 
 	// query name references
 
 
-	public static MenuItemDAO instance;
+	public static PrinterGroupDAO instance;
 
 	/**
 	 * Return a singleton of the DAO
 	 */
-	public static MenuItemDAO getInstance () {
-		if (null == instance) instance = new MenuItemDAO();
+	public static PrinterGroupDAO getInstance () {
+		if (null == instance) instance = new PrinterGroupDAO();
 		return instance;
 	}
 
 	public Class getReferenceClass () {
-		return com.floreantpos.model.MenuItem.class;
+		return com.floreantpos.model.PrinterGroup.class;
 	}
 
     public Order getDefaultOrder () {
@@ -32,35 +32,35 @@ public abstract class BaseMenuItemDAO extends com.floreantpos.model.dao._RootDAO
     }
 
 	/**
-	 * Cast the object as a com.floreantpos.model.MenuItem
+	 * Cast the object as a com.floreantpos.model.PrinterGroup
 	 */
-	public com.floreantpos.model.MenuItem cast (Object object) {
-		return (com.floreantpos.model.MenuItem) object;
+	public com.floreantpos.model.PrinterGroup cast (Object object) {
+		return (com.floreantpos.model.PrinterGroup) object;
 	}
 
-	public com.floreantpos.model.MenuItem get(java.lang.Integer key)
+	public com.floreantpos.model.PrinterGroup get(java.lang.Integer key)
 		throws org.hibernate.HibernateException {
-		return (com.floreantpos.model.MenuItem) get(getReferenceClass(), key);
+		return (com.floreantpos.model.PrinterGroup) get(getReferenceClass(), key);
 	}
 
-	public com.floreantpos.model.MenuItem get(java.lang.Integer key, Session s)
+	public com.floreantpos.model.PrinterGroup get(java.lang.Integer key, Session s)
 		throws org.hibernate.HibernateException {
-		return (com.floreantpos.model.MenuItem) get(getReferenceClass(), key, s);
+		return (com.floreantpos.model.PrinterGroup) get(getReferenceClass(), key, s);
 	}
 
-	public com.floreantpos.model.MenuItem load(java.lang.Integer key)
+	public com.floreantpos.model.PrinterGroup load(java.lang.Integer key)
 		throws org.hibernate.HibernateException {
-		return (com.floreantpos.model.MenuItem) load(getReferenceClass(), key);
+		return (com.floreantpos.model.PrinterGroup) load(getReferenceClass(), key);
 	}
 
-	public com.floreantpos.model.MenuItem load(java.lang.Integer key, Session s)
+	public com.floreantpos.model.PrinterGroup load(java.lang.Integer key, Session s)
 		throws org.hibernate.HibernateException {
-		return (com.floreantpos.model.MenuItem) load(getReferenceClass(), key, s);
+		return (com.floreantpos.model.PrinterGroup) load(getReferenceClass(), key, s);
 	}
 
-	public com.floreantpos.model.MenuItem loadInitialize(java.lang.Integer key, Session s) 
+	public com.floreantpos.model.PrinterGroup loadInitialize(java.lang.Integer key, Session s) 
 			throws org.hibernate.HibernateException { 
-		com.floreantpos.model.MenuItem obj = load(key, s); 
+		com.floreantpos.model.PrinterGroup obj = load(key, s); 
 		if (!Hibernate.isInitialized(obj)) {
 			Hibernate.initialize(obj);
 		} 
@@ -72,14 +72,14 @@ public abstract class BaseMenuItemDAO extends com.floreantpos.model.dao._RootDAO
 	/**
 	 * Return all objects related to the implementation of this DAO with no filter.
 	 */
-	public java.util.List<com.floreantpos.model.MenuItem> findAll () {
+	public java.util.List<com.floreantpos.model.PrinterGroup> findAll () {
 		return super.findAll();
 	}
 
 	/**
 	 * Return all objects related to the implementation of this DAO with no filter.
 	 */
-	public java.util.List<com.floreantpos.model.MenuItem> findAll (Order defaultOrder) {
+	public java.util.List<com.floreantpos.model.PrinterGroup> findAll (Order defaultOrder) {
 		return super.findAll(defaultOrder);
 	}
 
@@ -88,43 +88,43 @@ public abstract class BaseMenuItemDAO extends com.floreantpos.model.dao._RootDAO
 	 * Use the session given.
 	 * @param s the Session
 	 */
-	public java.util.List<com.floreantpos.model.MenuItem> findAll (Session s, Order defaultOrder) {
+	public java.util.List<com.floreantpos.model.PrinterGroup> findAll (Session s, Order defaultOrder) {
 		return super.findAll(s, defaultOrder);
 	}
 
 	/**
 	 * Persist the given transient instance, first assigning a generated identifier. (Or using the current value
 	 * of the identifier property if the assigned generator is used.) 
-	 * @param menuItem a transient instance of a persistent class 
+	 * @param printerGroup a transient instance of a persistent class 
 	 * @return the class identifier
 	 */
-	public java.lang.Integer save(com.floreantpos.model.MenuItem menuItem)
+	public java.lang.Integer save(com.floreantpos.model.PrinterGroup printerGroup)
 		throws org.hibernate.HibernateException {
-		return (java.lang.Integer) super.save(menuItem);
+		return (java.lang.Integer) super.save(printerGroup);
 	}
 
 	/**
 	 * Persist the given transient instance, first assigning a generated identifier. (Or using the current value
 	 * of the identifier property if the assigned generator is used.) 
 	 * Use the Session given.
-	 * @param menuItem a transient instance of a persistent class
+	 * @param printerGroup a transient instance of a persistent class
 	 * @param s the Session
 	 * @return the class identifier
 	 */
-	public java.lang.Integer save(com.floreantpos.model.MenuItem menuItem, Session s)
+	public java.lang.Integer save(com.floreantpos.model.PrinterGroup printerGroup, Session s)
 		throws org.hibernate.HibernateException {
-		return (java.lang.Integer) save((Object) menuItem, s);
+		return (java.lang.Integer) save((Object) printerGroup, s);
 	}
 
 	/**
 	 * Either save() or update() the given instance, depending upon the value of its identifier property. By default
 	 * the instance is always saved. This behaviour may be adjusted by specifying an unsaved-value attribute of the
 	 * identifier property mapping. 
-	 * @param menuItem a transient instance containing new or updated state 
+	 * @param printerGroup a transient instance containing new or updated state 
 	 */
-	public void saveOrUpdate(com.floreantpos.model.MenuItem menuItem)
+	public void saveOrUpdate(com.floreantpos.model.PrinterGroup printerGroup)
 		throws org.hibernate.HibernateException {
-		saveOrUpdate((Object) menuItem);
+		saveOrUpdate((Object) printerGroup);
 	}
 
 	/**
@@ -132,34 +132,34 @@ public abstract class BaseMenuItemDAO extends com.floreantpos.model.dao._RootDAO
 	 * instance is always saved. This behaviour may be adjusted by specifying an unsaved-value attribute of the identifier
 	 * property mapping. 
 	 * Use the Session given.
-	 * @param menuItem a transient instance containing new or updated state.
+	 * @param printerGroup a transient instance containing new or updated state.
 	 * @param s the Session.
 	 */
-	public void saveOrUpdate(com.floreantpos.model.MenuItem menuItem, Session s)
+	public void saveOrUpdate(com.floreantpos.model.PrinterGroup printerGroup, Session s)
 		throws org.hibernate.HibernateException {
-		saveOrUpdate((Object) menuItem, s);
+		saveOrUpdate((Object) printerGroup, s);
 	}
 
 	/**
 	 * Update the persistent state associated with the given identifier. An exception is thrown if there is a persistent
 	 * instance with the same identifier in the current session.
-	 * @param menuItem a transient instance containing updated state
+	 * @param printerGroup a transient instance containing updated state
 	 */
-	public void update(com.floreantpos.model.MenuItem menuItem) 
+	public void update(com.floreantpos.model.PrinterGroup printerGroup) 
 		throws org.hibernate.HibernateException {
-		update((Object) menuItem);
+		update((Object) printerGroup);
 	}
 
 	/**
 	 * Update the persistent state associated with the given identifier. An exception is thrown if there is a persistent
 	 * instance with the same identifier in the current session.
 	 * Use the Session given.
-	 * @param menuItem a transient instance containing updated state
+	 * @param printerGroup a transient instance containing updated state
 	 * @param the Session
 	 */
-	public void update(com.floreantpos.model.MenuItem menuItem, Session s)
+	public void update(com.floreantpos.model.PrinterGroup printerGroup, Session s)
 		throws org.hibernate.HibernateException {
-		update((Object) menuItem, s);
+		update((Object) printerGroup, s);
 	}
 
 	/**
@@ -187,23 +187,23 @@ public abstract class BaseMenuItemDAO extends com.floreantpos.model.dao._RootDAO
 	/**
 	 * Remove a persistent instance from the datastore. The argument may be an instance associated with the receiving
 	 * Session or a transient instance with an identifier associated with existing persistent state. 
-	 * @param menuItem the instance to be removed
+	 * @param printerGroup the instance to be removed
 	 */
-	public void delete(com.floreantpos.model.MenuItem menuItem)
+	public void delete(com.floreantpos.model.PrinterGroup printerGroup)
 		throws org.hibernate.HibernateException {
-		delete((Object) menuItem);
+		delete((Object) printerGroup);
 	}
 
 	/**
 	 * Remove a persistent instance from the datastore. The argument may be an instance associated with the receiving
 	 * Session or a transient instance with an identifier associated with existing persistent state. 
 	 * Use the Session given.
-	 * @param menuItem the instance to be removed
+	 * @param printerGroup the instance to be removed
 	 * @param s the Session
 	 */
-	public void delete(com.floreantpos.model.MenuItem menuItem, Session s)
+	public void delete(com.floreantpos.model.PrinterGroup printerGroup, Session s)
 		throws org.hibernate.HibernateException {
-		delete((Object) menuItem, s);
+		delete((Object) printerGroup, s);
 	}
 	
 	/**
@@ -216,9 +216,9 @@ public abstract class BaseMenuItemDAO extends com.floreantpos.model.dao._RootDAO
 	 * <li>after inserting a Blob or Clob</li>
 	 * </ul>
 	 */
-	public void refresh (com.floreantpos.model.MenuItem menuItem, Session s)
+	public void refresh (com.floreantpos.model.PrinterGroup printerGroup, Session s)
 		throws org.hibernate.HibernateException {
-		refresh((Object) menuItem, s);
+		refresh((Object) printerGroup, s);
 	}
 
 

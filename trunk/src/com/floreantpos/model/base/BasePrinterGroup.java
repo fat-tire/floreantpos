@@ -5,30 +5,30 @@ import java.io.Serializable;
 
 
 /**
- * This is an object that contains data related to the VIRTUAL_PRINTER table.
+ * This is an object that contains data related to the PRINTER_GROUP table.
  * Do not modify this class because it will be overwritten if the configuration file
  * related to this class is modified.
  *
  * @hibernate.class
- *  table="VIRTUAL_PRINTER"
+ *  table="PRINTER_GROUP"
  */
 
-public abstract class BaseVirtualPrinter  implements Comparable, Serializable {
+public abstract class BasePrinterGroup  implements Comparable, Serializable {
 
-	public static String REF = "VirtualPrinter";
+	public static String REF = "PrinterGroup";
 	public static String PROP_NAME = "name";
 	public static String PROP_ID = "id";
 
 
 	// constructors
-	public BaseVirtualPrinter () {
+	public BasePrinterGroup () {
 		initialize();
 	}
 
 	/**
 	 * Constructor for primary key
 	 */
-	public BaseVirtualPrinter (java.lang.Integer id) {
+	public BasePrinterGroup (java.lang.Integer id) {
 		this.setId(id);
 		initialize();
 	}
@@ -36,7 +36,7 @@ public abstract class BaseVirtualPrinter  implements Comparable, Serializable {
 	/**
 	 * Constructor for required fields
 	 */
-	public BaseVirtualPrinter (
+	public BasePrinterGroup (
 		java.lang.Integer id,
 		java.lang.String name) {
 
@@ -58,7 +58,7 @@ public abstract class BaseVirtualPrinter  implements Comparable, Serializable {
 		protected java.lang.String name;
 
 	// collections
-	private java.util.List<String> orderTypeNames;
+	private java.util.List<String> printerNames;
 
 
 
@@ -102,18 +102,18 @@ public abstract class BaseVirtualPrinter  implements Comparable, Serializable {
 
 
 	/**
-	 * Return the value associated with the column: orderTypeNames
+	 * Return the value associated with the column: printers
 	 */
-	public java.util.List<String> getOrderTypeNames () {
-					return orderTypeNames;
+	public java.util.List<String> getPrinterNames () {
+					return printerNames;
 			}
 
 	/**
-	 * Set the value related to the column: orderTypeNames
-	 * @param orderTypeNames the orderTypeNames value
+	 * Set the value related to the column: printers
+	 * @param printers the printers value
 	 */
-	public void setOrderTypeNames (java.util.List<String> orderTypeNames) {
-		this.orderTypeNames = orderTypeNames;
+	public void setPrinterNames (java.util.List<String> printers) {
+		this.printerNames = printers;
 	}
 
 
@@ -122,11 +122,11 @@ public abstract class BaseVirtualPrinter  implements Comparable, Serializable {
 
 	public boolean equals (Object obj) {
 		if (null == obj) return false;
-		if (!(obj instanceof com.floreantpos.model.VirtualPrinter)) return false;
+		if (!(obj instanceof com.floreantpos.model.PrinterGroup)) return false;
 		else {
-			com.floreantpos.model.VirtualPrinter virtualPrinter = (com.floreantpos.model.VirtualPrinter) obj;
-			if (null == this.getId() || null == virtualPrinter.getId()) return false;
-			else return (this.getId().equals(virtualPrinter.getId()));
+			com.floreantpos.model.PrinterGroup printerGroup = (com.floreantpos.model.PrinterGroup) obj;
+			if (null == this.getId() || null == printerGroup.getId()) return false;
+			else return (this.getId().equals(printerGroup.getId()));
 		}
 	}
 

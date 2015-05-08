@@ -49,12 +49,12 @@ import com.floreantpos.model.MenuGroup;
 import com.floreantpos.model.MenuItem;
 import com.floreantpos.model.MenuItemModifierGroup;
 import com.floreantpos.model.MenuItemShift;
+import com.floreantpos.model.PrinterGroup;
 import com.floreantpos.model.Tax;
-import com.floreantpos.model.VirtualPrinter;
 import com.floreantpos.model.dao.MenuGroupDAO;
 import com.floreantpos.model.dao.MenuItemDAO;
+import com.floreantpos.model.dao.PrinterGroupDAO;
 import com.floreantpos.model.dao.TaxDAO;
-import com.floreantpos.model.dao.VirtualPrinterDAO;
 import com.floreantpos.swing.ComboBoxModel;
 import com.floreantpos.swing.DoubleDocument;
 import com.floreantpos.swing.DoubleTextField;
@@ -291,12 +291,12 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		tabGeneral.add(cbTax, "cell 1 8,growx,aligny top"); //$NON-NLS-1$
 		tabGeneral.add(tfPrice, "cell 1 6,growx,aligny top"); //$NON-NLS-1$
 
-		lblKitchenPrinter = new JLabel("Kitchen & Bar Printer");
+		lblKitchenPrinter = new JLabel("Printer Group");
 		tabGeneral.add(lblKitchenPrinter, "cell 0 9"); //$NON-NLS-1$
 
-		cbPrinter = new JComboBox<VirtualPrinter>(new DefaultComboBoxModel<VirtualPrinter>(VirtualPrinterDAO.getInstance().findAll()
-				.toArray(new VirtualPrinter[0])));
-		tabGeneral.add(cbPrinter, "cell 1 9,growx"); //$NON-NLS-1$
+		cbPrinterGroup = new JComboBox<PrinterGroup>(new DefaultComboBoxModel<PrinterGroup>(PrinterGroupDAO.getInstance().findAll()
+				.toArray(new PrinterGroup[0])));
+		tabGeneral.add(cbPrinterGroup, "cell 1 9,growx"); //$NON-NLS-1$
 
 		JLabel lblImage = new JLabel("Image:");
 		lblImage.setHorizontalAlignment(SwingConstants.TRAILING);
@@ -488,7 +488,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 	private JLabel lblBuyPrice;
 	private DoubleTextField tfBuyPrice;
 	private JLabel lblKitchenPrinter;
-	private JComboBox<VirtualPrinter> cbPrinter;
+	private JComboBox<PrinterGroup> cbPrinterGroup;
 	private JLabel lblBarcode;
 	private FixedLengthTextField tfBarcode;
 	private JLabel lblButtonColor;
@@ -601,7 +601,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		cbGroup.setSelectedItem(menuItem.getParent());
 		cbTax.setSelectedItem(menuItem.getTax());
 
-		cbPrinter.setSelectedItem(menuItem.getVirtualPrinter());
+		cbPrinterGroup.setSelectedItem(menuItem.getPrinterGroup());
 
 		if (menuItem.getSortOrder() != null) {
 			tfSortOrder.setText(menuItem.getSortOrder().toString());
@@ -660,7 +660,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 			}
 		}
 
-		menuItem.setVirtualPrinter((VirtualPrinter) cbPrinter.getSelectedItem());
+		menuItem.setPrinterGroup((PrinterGroup) cbPrinterGroup.getSelectedItem());
 
 		return true;
 	}

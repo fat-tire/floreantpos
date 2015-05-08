@@ -22,7 +22,6 @@ import com.floreantpos.model.dao.OrderTypePropertiesDAO;
 import com.floreantpos.model.dao.VirtualPrinterDAO;
 import com.floreantpos.swing.FixedLengthTextField;
 import com.floreantpos.swing.ListComboBoxModel;
-import com.jidesoft.swing.TitledSeparator;
 
 public class OrderTypeConfigurationView extends ConfigurationView {
 	private FixedLengthTextField tfDriveThruAlias = new FixedLengthTextField(40);
@@ -83,8 +82,8 @@ public class OrderTypeConfigurationView extends ConfigurationView {
 		panel.add(cbPostPaid, "gapright 25");
 		panel.add(new JLabel(POSConstants.ALIAS_LABEL));
 		panel.add(tfAlias);
-		panel.add(new JLabel("Printer"), "newline");
-		panel.add(cbPrinter, "span 3, grow");
+//		panel.add(new JLabel("Printer"), "newline");
+//		panel.add(cbPrinter, "span 3, grow");
 
 		if (orderType == OrderType.DINE_IN) {
 			panel.add(cbShowTableSelection, "span 2, newline, wrap");
@@ -113,14 +112,14 @@ public class OrderTypeConfigurationView extends ConfigurationView {
 
 	@Override
 	public void initialize() throws Exception {
-		List<VirtualPrinter> virtualPrinters = VirtualPrinterDAO.getInstance().findAll();
-
-		cbDineInPrinter.setModel(new ListComboBoxModel(virtualPrinters));
-		cbTakeoutPrinter.setModel(new ListComboBoxModel(virtualPrinters));
-		cbPickupPrinter.setModel(new ListComboBoxModel(virtualPrinters));
-		cbHomeDeliPrinter.setModel(new ListComboBoxModel(virtualPrinters));
-		cbDriveThruPrinter.setModel(new ListComboBoxModel(virtualPrinters));
-		cbBarPrinter.setModel(new ListComboBoxModel(virtualPrinters));
+//		List<VirtualPrinter> virtualPrinters = VirtualPrinterDAO.getInstance().findAll();
+//
+//		cbDineInPrinter.setModel(new ListComboBoxModel(virtualPrinters));
+//		cbTakeoutPrinter.setModel(new ListComboBoxModel(virtualPrinters));
+//		cbPickupPrinter.setModel(new ListComboBoxModel(virtualPrinters));
+//		cbHomeDeliPrinter.setModel(new ListComboBoxModel(virtualPrinters));
+//		cbDriveThruPrinter.setModel(new ListComboBoxModel(virtualPrinters));
+//		cbBarPrinter.setModel(new ListComboBoxModel(virtualPrinters));
 
 		setupView(OrderType.DINE_IN, cbDineInEnable, cbDineInDelayPay, tfDineInAlias, cbDineInPrinter);
 		setupView(OrderType.TAKE_OUT, cbTakeOutEnable, cbTakeOutDelayPay, tfTakeOutAlias, cbTakeoutPrinter);
@@ -146,7 +145,6 @@ public class OrderTypeConfigurationView extends ConfigurationView {
 		checkBox.setSelected(properties.isVisible());
 		cbPayLater.setSelected(properties.isPostPaid());
 		textField.setText(properties.getAlias());
-		cbPrinter.setSelectedItem(properties.getVirtualPrinter());
 	}
 
 	private void setupModel(OrderType orderType, JCheckBox checkBox, JCheckBox cbPayLater, JTextField textField, JComboBox<VirtualPrinter> cbPrinter) {
@@ -160,7 +158,6 @@ public class OrderTypeConfigurationView extends ConfigurationView {
 		orderTypeProperties.setVisible(checkBox.isSelected());
 		orderTypeProperties.setPostPaid(cbPayLater.isSelected());
 		orderTypeProperties.setAlias(textField.getText());
-		orderTypeProperties.setVirtualPrinter((VirtualPrinter) cbPrinter.getSelectedItem());
 	}
 
 	@Override

@@ -37,6 +37,7 @@ import com.floreantpos.model.PayoutReason;
 import com.floreantpos.model.PayoutRecepient;
 import com.floreantpos.model.PosTransaction;
 import com.floreantpos.model.PrinterConfiguration;
+import com.floreantpos.model.PrinterGroup;
 import com.floreantpos.model.PurchaseOrder;
 import com.floreantpos.model.Recepie;
 import com.floreantpos.model.RecepieItem;
@@ -125,6 +126,7 @@ public abstract class _RootDAO extends com.floreantpos.model.dao._BaseRootDAO {
 		configuration = configuration.addClass(ShopTable.class);
 		configuration = configuration.addClass(ShopTableType.class);
 		configuration = configuration.addClass(OrderTypeProperties.class);
+		configuration = configuration.addClass(PrinterGroup.class);
 		
 		configuration = configureInventoryClasses(configuration);
 		
