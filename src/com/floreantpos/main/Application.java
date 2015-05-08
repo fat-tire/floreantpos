@@ -381,7 +381,7 @@ public class Application {
 			throw new ShiftException(POSConstants.NO_SHIFT_CONFIGURED);
 		}
 
-		ShiftUtil.adjustUserShift(user, currentShift);
+		ShiftUtil.adjustUserShiftAndClockIn(user, currentShift);
 
 		setCurrentUser(user);
 		setCurrentShift(currentShift);
