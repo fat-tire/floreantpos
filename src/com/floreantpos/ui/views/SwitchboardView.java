@@ -39,6 +39,7 @@ import com.floreantpos.PosException;
 import com.floreantpos.actions.NewBarTabAction;
 import com.floreantpos.actions.RefundAction;
 import com.floreantpos.actions.SettleTicketAction;
+import com.floreantpos.actions.VoidTicketAction;
 import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.extension.OrderServiceExtension;
 import com.floreantpos.main.Application;
@@ -56,7 +57,6 @@ import com.floreantpos.swing.POSToggleButton;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.ui.dialog.NumberSelectionDialog2;
 import com.floreantpos.ui.dialog.POSMessageDialog;
-import com.floreantpos.ui.dialog.VoidTicketDialog;
 import com.floreantpos.ui.views.order.DefaultOrderServiceExtension;
 import com.floreantpos.ui.views.order.OrderController;
 import com.floreantpos.ui.views.order.OrderView;
@@ -98,7 +98,7 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 		btnReopenTicket.addActionListener(this);
 		btnSettleTicket.addActionListener(this);
 		btnSplitTicket.addActionListener(this);
-		btnVoidTicket.addActionListener(this);
+		btnVoidTicket.setAction(new VoidTicketAction(this));
 
 		orderServiceExtension = Application.getPluginManager().getPlugin(OrderServiceExtension.class);
 
@@ -630,36 +630,6 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 		}
 	}
 
-	private void doVoidTicket() {
-		try {
-			Ticket ticket = null;
-
-			List<Ticket> selectedTickets = ticketList.getSelectedTickets();
-
-			if (selectedTickets.size() > 0) {
-				ticket = selectedTickets.get(0);
-			}
-			else {
-				int ticketId = NumberSelectionDialog2.takeIntInput("Enter or scan ticket id");
-				ticket = TicketService.getTicket(ticketId);
-			}
-
-			Ticket ticketToVoid = TicketDAO.getInstance().loadFullTicket(ticket.getId());
-
-			VoidTicketDialog voidTicketDialog = new VoidTicketDialog();
-			voidTicketDialog.setTicket(ticketToVoid);
-			voidTicketDialog.open();
-
-			if (!voidTicketDialog.isCanceled()) {
-				updateView();
-			}
-		} catch (PosException e) {
-			POSMessageDialog.showError(this, e.getMessage());
-		} catch (Exception e) {
-			POSMessageDialog.showError(POSConstants.ERROR_MESSAGE, e);
-		}
-	}
-
 	private void doSplitTicket() {
 		try {
 			Ticket selectedTicket = getFirstSelectedTicket();
@@ -785,7 +755,6 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 				btnSettleTicket.setEnabled(false);
 				btnSplitTicket.setEnabled(false);
 				btnTakeout.setEnabled(false);
-				btnVoidTicket.setEnabled(false);
 
 				for (UserPermission permission : permissions) {
 					if (permission.equals(UserPermission.VOID_TICKET)) {
@@ -926,9 +895,6 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 		}
 		else if (source == btnSplitTicket) {
 			doSplitTicket();
-		}
-		else if (source == btnVoidTicket) {
-			doVoidTicket();
 		}
 	}
 
