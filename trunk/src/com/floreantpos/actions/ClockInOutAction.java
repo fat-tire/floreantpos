@@ -141,6 +141,11 @@ public class ClockInOutAction extends PosAction {
 				POSMessageDialog.showError("No user found with that secret key");
 				return;
 			}
+			
+			if (user.isClockedIn() != null && user.isClockedIn().booleanValue()) {
+				POSMessageDialog.showMessage("User " + user.getFirstName() + " " + user.getLastName() + " is already clocked in.");
+				return;
+			}
 
 			Shift currentShift = ShiftUtil.getCurrentShift();
 			if (currentShift == null) {
