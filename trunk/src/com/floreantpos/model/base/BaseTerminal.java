@@ -1,5 +1,6 @@
 package com.floreantpos.model.base;
 
+import java.lang.Comparable;
 import java.io.Serializable;
 
 
@@ -18,6 +19,7 @@ public abstract class BaseTerminal  implements Comparable, Serializable {
 	public static String PROP_NAME = "name";
 	public static String PROP_AUTO_DRAWER_PULL_ENABLE = "autoDrawerPullEnable";
 	public static String PROP_OPENING_BALANCE = "openingBalance";
+	public static String PROP_ASSIGNED_USER = "assignedUser";
 	public static String PROP_HAS_CASH_DRAWER = "hasCashDrawer";
 	public static String PROP_CURRENT_BALANCE = "currentBalance";
 	public static String PROP_ID = "id";
@@ -55,6 +57,9 @@ public abstract class BaseTerminal  implements Comparable, Serializable {
 		protected java.lang.Boolean autoDrawerPullEnable;
 		protected java.lang.Integer autoDrawerPullHour;
 		protected java.lang.Integer autoDrawerPullMin;
+
+	// many to one
+	private com.floreantpos.model.User assignedUser;
 
 
 
@@ -195,6 +200,23 @@ public abstract class BaseTerminal  implements Comparable, Serializable {
 	 */
 	public void setAutoDrawerPullMin (java.lang.Integer autoDrawerPullMin) {
 		this.autoDrawerPullMin = autoDrawerPullMin;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: ASSIGNED_USER
+	 */
+	public com.floreantpos.model.User getAssignedUser () {
+					return assignedUser;
+			}
+
+	/**
+	 * Set the value related to the column: ASSIGNED_USER
+	 * @param assignedUser the ASSIGNED_USER value
+	 */
+	public void setAssignedUser (com.floreantpos.model.User assignedUser) {
+		this.assignedUser = assignedUser;
 	}
 
 

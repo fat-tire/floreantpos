@@ -2,65 +2,65 @@ package com.floreantpos.model.dao;
 
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
-import com.floreantpos.model.dao.TerminalDAO;
+import com.floreantpos.model.dao.DrawerAssignedHistoryDAO;
 import org.hibernate.criterion.Order;
 
 /**
  * This is an automatically generated DAO class which should not be edited.
  */
-public abstract class BaseTerminalDAO extends com.floreantpos.model.dao._RootDAO {
+public abstract class BaseDrawerAssignedHistoryDAO extends com.floreantpos.model.dao._RootDAO {
 
 	// query name references
 
 
-	public static TerminalDAO instance;
+	public static DrawerAssignedHistoryDAO instance;
 
 	/**
 	 * Return a singleton of the DAO
 	 */
-	public static TerminalDAO getInstance () {
-		if (null == instance) instance = new TerminalDAO();
+	public static DrawerAssignedHistoryDAO getInstance () {
+		if (null == instance) instance = new DrawerAssignedHistoryDAO();
 		return instance;
 	}
 
 	public Class getReferenceClass () {
-		return com.floreantpos.model.Terminal.class;
+		return com.floreantpos.model.DrawerAssignedHistory.class;
 	}
 
     public Order getDefaultOrder () {
-		return Order.asc("name");
+		return null;
     }
 
 	/**
-	 * Cast the object as a com.floreantpos.model.Terminal
+	 * Cast the object as a com.floreantpos.model.DrawerAssignedHistory
 	 */
-	public com.floreantpos.model.Terminal cast (Object object) {
-		return (com.floreantpos.model.Terminal) object;
+	public com.floreantpos.model.DrawerAssignedHistory cast (Object object) {
+		return (com.floreantpos.model.DrawerAssignedHistory) object;
 	}
 
-	public com.floreantpos.model.Terminal get(java.lang.Integer key)
+	public com.floreantpos.model.DrawerAssignedHistory get(java.lang.Integer key)
 		throws org.hibernate.HibernateException {
-		return (com.floreantpos.model.Terminal) get(getReferenceClass(), key);
+		return (com.floreantpos.model.DrawerAssignedHistory) get(getReferenceClass(), key);
 	}
 
-	public com.floreantpos.model.Terminal get(java.lang.Integer key, Session s)
+	public com.floreantpos.model.DrawerAssignedHistory get(java.lang.Integer key, Session s)
 		throws org.hibernate.HibernateException {
-		return (com.floreantpos.model.Terminal) get(getReferenceClass(), key, s);
+		return (com.floreantpos.model.DrawerAssignedHistory) get(getReferenceClass(), key, s);
 	}
 
-	public com.floreantpos.model.Terminal load(java.lang.Integer key)
+	public com.floreantpos.model.DrawerAssignedHistory load(java.lang.Integer key)
 		throws org.hibernate.HibernateException {
-		return (com.floreantpos.model.Terminal) load(getReferenceClass(), key);
+		return (com.floreantpos.model.DrawerAssignedHistory) load(getReferenceClass(), key);
 	}
 
-	public com.floreantpos.model.Terminal load(java.lang.Integer key, Session s)
+	public com.floreantpos.model.DrawerAssignedHistory load(java.lang.Integer key, Session s)
 		throws org.hibernate.HibernateException {
-		return (com.floreantpos.model.Terminal) load(getReferenceClass(), key, s);
+		return (com.floreantpos.model.DrawerAssignedHistory) load(getReferenceClass(), key, s);
 	}
 
-	public com.floreantpos.model.Terminal loadInitialize(java.lang.Integer key, Session s) 
+	public com.floreantpos.model.DrawerAssignedHistory loadInitialize(java.lang.Integer key, Session s) 
 			throws org.hibernate.HibernateException { 
-		com.floreantpos.model.Terminal obj = load(key, s); 
+		com.floreantpos.model.DrawerAssignedHistory obj = load(key, s); 
 		if (!Hibernate.isInitialized(obj)) {
 			Hibernate.initialize(obj);
 		} 
@@ -72,14 +72,14 @@ public abstract class BaseTerminalDAO extends com.floreantpos.model.dao._RootDAO
 	/**
 	 * Return all objects related to the implementation of this DAO with no filter.
 	 */
-	public java.util.List<com.floreantpos.model.Terminal> findAll () {
+	public java.util.List<com.floreantpos.model.DrawerAssignedHistory> findAll () {
 		return super.findAll();
 	}
 
 	/**
 	 * Return all objects related to the implementation of this DAO with no filter.
 	 */
-	public java.util.List<com.floreantpos.model.Terminal> findAll (Order defaultOrder) {
+	public java.util.List<com.floreantpos.model.DrawerAssignedHistory> findAll (Order defaultOrder) {
 		return super.findAll(defaultOrder);
 	}
 
@@ -88,43 +88,43 @@ public abstract class BaseTerminalDAO extends com.floreantpos.model.dao._RootDAO
 	 * Use the session given.
 	 * @param s the Session
 	 */
-	public java.util.List<com.floreantpos.model.Terminal> findAll (Session s, Order defaultOrder) {
+	public java.util.List<com.floreantpos.model.DrawerAssignedHistory> findAll (Session s, Order defaultOrder) {
 		return super.findAll(s, defaultOrder);
 	}
 
 	/**
 	 * Persist the given transient instance, first assigning a generated identifier. (Or using the current value
 	 * of the identifier property if the assigned generator is used.) 
-	 * @param terminal a transient instance of a persistent class 
+	 * @param drawerAssignedHistory a transient instance of a persistent class 
 	 * @return the class identifier
 	 */
-	public java.lang.Integer save(com.floreantpos.model.Terminal terminal)
+	public java.lang.Integer save(com.floreantpos.model.DrawerAssignedHistory drawerAssignedHistory)
 		throws org.hibernate.HibernateException {
-		return (java.lang.Integer) super.save(terminal);
+		return (java.lang.Integer) super.save(drawerAssignedHistory);
 	}
 
 	/**
 	 * Persist the given transient instance, first assigning a generated identifier. (Or using the current value
 	 * of the identifier property if the assigned generator is used.) 
 	 * Use the Session given.
-	 * @param terminal a transient instance of a persistent class
+	 * @param drawerAssignedHistory a transient instance of a persistent class
 	 * @param s the Session
 	 * @return the class identifier
 	 */
-	public java.lang.Integer save(com.floreantpos.model.Terminal terminal, Session s)
+	public java.lang.Integer save(com.floreantpos.model.DrawerAssignedHistory drawerAssignedHistory, Session s)
 		throws org.hibernate.HibernateException {
-		return (java.lang.Integer) save((Object) terminal, s);
+		return (java.lang.Integer) save((Object) drawerAssignedHistory, s);
 	}
 
 	/**
 	 * Either save() or update() the given instance, depending upon the value of its identifier property. By default
 	 * the instance is always saved. This behaviour may be adjusted by specifying an unsaved-value attribute of the
 	 * identifier property mapping. 
-	 * @param terminal a transient instance containing new or updated state 
+	 * @param drawerAssignedHistory a transient instance containing new or updated state 
 	 */
-	public void saveOrUpdate(com.floreantpos.model.Terminal terminal)
+	public void saveOrUpdate(com.floreantpos.model.DrawerAssignedHistory drawerAssignedHistory)
 		throws org.hibernate.HibernateException {
-		saveOrUpdate((Object) terminal);
+		saveOrUpdate((Object) drawerAssignedHistory);
 	}
 
 	/**
@@ -132,34 +132,34 @@ public abstract class BaseTerminalDAO extends com.floreantpos.model.dao._RootDAO
 	 * instance is always saved. This behaviour may be adjusted by specifying an unsaved-value attribute of the identifier
 	 * property mapping. 
 	 * Use the Session given.
-	 * @param terminal a transient instance containing new or updated state.
+	 * @param drawerAssignedHistory a transient instance containing new or updated state.
 	 * @param s the Session.
 	 */
-	public void saveOrUpdate(com.floreantpos.model.Terminal terminal, Session s)
+	public void saveOrUpdate(com.floreantpos.model.DrawerAssignedHistory drawerAssignedHistory, Session s)
 		throws org.hibernate.HibernateException {
-		saveOrUpdate((Object) terminal, s);
+		saveOrUpdate((Object) drawerAssignedHistory, s);
 	}
 
 	/**
 	 * Update the persistent state associated with the given identifier. An exception is thrown if there is a persistent
 	 * instance with the same identifier in the current session.
-	 * @param terminal a transient instance containing updated state
+	 * @param drawerAssignedHistory a transient instance containing updated state
 	 */
-	public void update(com.floreantpos.model.Terminal terminal) 
+	public void update(com.floreantpos.model.DrawerAssignedHistory drawerAssignedHistory) 
 		throws org.hibernate.HibernateException {
-		update((Object) terminal);
+		update((Object) drawerAssignedHistory);
 	}
 
 	/**
 	 * Update the persistent state associated with the given identifier. An exception is thrown if there is a persistent
 	 * instance with the same identifier in the current session.
 	 * Use the Session given.
-	 * @param terminal a transient instance containing updated state
+	 * @param drawerAssignedHistory a transient instance containing updated state
 	 * @param the Session
 	 */
-	public void update(com.floreantpos.model.Terminal terminal, Session s)
+	public void update(com.floreantpos.model.DrawerAssignedHistory drawerAssignedHistory, Session s)
 		throws org.hibernate.HibernateException {
-		update((Object) terminal, s);
+		update((Object) drawerAssignedHistory, s);
 	}
 
 	/**
@@ -187,23 +187,23 @@ public abstract class BaseTerminalDAO extends com.floreantpos.model.dao._RootDAO
 	/**
 	 * Remove a persistent instance from the datastore. The argument may be an instance associated with the receiving
 	 * Session or a transient instance with an identifier associated with existing persistent state. 
-	 * @param terminal the instance to be removed
+	 * @param drawerAssignedHistory the instance to be removed
 	 */
-	public void delete(com.floreantpos.model.Terminal terminal)
+	public void delete(com.floreantpos.model.DrawerAssignedHistory drawerAssignedHistory)
 		throws org.hibernate.HibernateException {
-		delete((Object) terminal);
+		delete((Object) drawerAssignedHistory);
 	}
 
 	/**
 	 * Remove a persistent instance from the datastore. The argument may be an instance associated with the receiving
 	 * Session or a transient instance with an identifier associated with existing persistent state. 
 	 * Use the Session given.
-	 * @param terminal the instance to be removed
+	 * @param drawerAssignedHistory the instance to be removed
 	 * @param s the Session
 	 */
-	public void delete(com.floreantpos.model.Terminal terminal, Session s)
+	public void delete(com.floreantpos.model.DrawerAssignedHistory drawerAssignedHistory, Session s)
 		throws org.hibernate.HibernateException {
-		delete((Object) terminal, s);
+		delete((Object) drawerAssignedHistory, s);
 	}
 	
 	/**
@@ -216,9 +216,9 @@ public abstract class BaseTerminalDAO extends com.floreantpos.model.dao._RootDAO
 	 * <li>after inserting a Blob or Clob</li>
 	 * </ul>
 	 */
-	public void refresh (com.floreantpos.model.Terminal terminal, Session s)
+	public void refresh (com.floreantpos.model.DrawerAssignedHistory drawerAssignedHistory, Session s)
 		throws org.hibernate.HibernateException {
-		refresh((Object) terminal, s);
+		refresh((Object) drawerAssignedHistory, s);
 	}
 
 

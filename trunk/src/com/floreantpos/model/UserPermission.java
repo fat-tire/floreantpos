@@ -54,6 +54,7 @@ public class UserPermission extends BaseUserPermission {
 	public final static UserPermission PERFORM_MANAGER_TASK = new UserPermission("Perform Manager Task");
 	public final static UserPermission VIEW_BACK_OFFICE = new UserPermission("View Back Office", false);
 	public final static UserPermission AUTHORIZE_TICKETS = new UserPermission("Authorize Tickets");
+	public final static UserPermission DRAWER_ASSIGNMENT = new UserPermission("Drawer Assignment");
 	public final static UserPermission DRAWER_PULL = new UserPermission("Drawer Pull");
 	public final static UserPermission SPLIT_TICKET = new UserPermission("Split Ticket");
 	public final static UserPermission SETTLE_TICKET = new UserPermission("Settle Ticket");
@@ -73,7 +74,7 @@ public class UserPermission extends BaseUserPermission {
 	
 	
 	public final static UserPermission[] permissions = new UserPermission[] {VIEW_ALL_OPEN_TICKETS,CREATE_TICKET,EDIT_TICKET, VOID_TICKET,
-			VIEW_BACK_OFFICE, AUTHORIZE_TICKETS, SPLIT_TICKET, SETTLE_TICKET, REOPEN_TICKET, PAY_OUT, DRAWER_PULL,
+			VIEW_BACK_OFFICE, AUTHORIZE_TICKETS, SPLIT_TICKET, SETTLE_TICKET, REOPEN_TICKET, PAY_OUT, DRAWER_ASSIGNMENT, DRAWER_PULL,
 			TAKE_OUT, VIEW_EXPLORERS, VIEW_REPORTS, SHUT_DOWN, ADD_DISCOUNT, REFUND, PERFORM_MANAGER_TASK, PERFORM_ADMINISTRATIVE_TASK, MANAGE_TABLE_LAYOUT};
 
 	public boolean isVisibleWithoutPermission() {

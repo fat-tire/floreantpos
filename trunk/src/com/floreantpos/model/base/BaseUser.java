@@ -1,5 +1,6 @@
 package com.floreantpos.model.base;
 
+import java.lang.Comparable;
 import java.io.Serializable;
 
 
@@ -23,6 +24,7 @@ public abstract class BaseUser  implements Comparable, Serializable {
 	public static String PROP_SSN = "ssn";
 	public static String PROP_PHONE_NO = "phoneNo";
 	public static String PROP_DRIVER = "driver";
+	public static String PROP_ACTIVE = "active";
 	public static String PROP_CURRENT_TERMINAL = "currentTerminal";
 	public static String PROP_AVAILABLE_FOR_DELIVERY = "availableForDelivery";
 	public static String PROP_AUTO_ID = "autoId";
@@ -67,17 +69,18 @@ public abstract class BaseUser  implements Comparable, Serializable {
 	private java.lang.Integer autoId;
 
 	// fields
-		protected java.lang.Integer userId;
-		protected java.lang.String password;
-		protected java.lang.String firstName;
-		protected java.lang.String lastName;
-		protected java.lang.String ssn;
-		protected java.lang.Double costPerHour;
-		protected java.lang.Boolean clockedIn;
-		protected java.util.Date lastClockInTime;
-		protected java.lang.String phoneNo;
-		protected java.lang.Boolean driver;
+		protected java.lang.Boolean active;
 		protected java.lang.Boolean availableForDelivery;
+		protected java.lang.Boolean clockedIn;
+		protected java.lang.Double costPerHour;
+		protected java.lang.Boolean driver;
+		protected java.lang.String firstName;
+		protected java.util.Date lastClockInTime;
+		protected java.lang.String lastName;
+		protected java.lang.String password;
+		protected java.lang.String phoneNo;
+		protected java.lang.String ssn;
+		protected java.lang.Integer userId;
 
 	// many to one
 	private com.floreantpos.model.Shift currentShift;
@@ -109,103 +112,35 @@ public abstract class BaseUser  implements Comparable, Serializable {
 
 
 	/**
-	 * Return the value associated with the column: USER_ID
+	 * Return the value associated with the column: ACTIVE
 	 */
-	public java.lang.Integer getUserId () {
-					return userId == null ? Integer.valueOf(0) : userId;
-			}
-
-	/**
-	 * Set the value related to the column: USER_ID
-	 * @param userId the USER_ID value
-	 */
-	public void setUserId (java.lang.Integer userId) {
-		this.userId = userId;
-	}
-
-
-
-	/**
-	 * Return the value associated with the column: USER_PASS
-	 */
-	public java.lang.String getPassword () {
-					return password;
-			}
-
-	/**
-	 * Set the value related to the column: USER_PASS
-	 * @param password the USER_PASS value
-	 */
-	public void setPassword (java.lang.String password) {
-		this.password = password;
-	}
-
-
-
-	/**
-	 * Return the value associated with the column: FIRST_NAME
-	 */
-	public java.lang.String getFirstName () {
-					return firstName;
-			}
-
-	/**
-	 * Set the value related to the column: FIRST_NAME
-	 * @param firstName the FIRST_NAME value
-	 */
-	public void setFirstName (java.lang.String firstName) {
-		this.firstName = firstName;
-	}
-
-
-
-	/**
-	 * Return the value associated with the column: LAST_NAME
-	 */
-	public java.lang.String getLastName () {
-					return lastName;
-			}
-
-	/**
-	 * Set the value related to the column: LAST_NAME
-	 * @param lastName the LAST_NAME value
-	 */
-	public void setLastName (java.lang.String lastName) {
-		this.lastName = lastName;
-	}
-
-
-
-	/**
-	 * Return the value associated with the column: SSN
-	 */
-	public java.lang.String getSsn () {
-					return ssn;
-			}
-
-	/**
-	 * Set the value related to the column: SSN
-	 * @param ssn the SSN value
-	 */
-	public void setSsn (java.lang.String ssn) {
-		this.ssn = ssn;
-	}
-
-
-
-	/**
-	 * Return the value associated with the column: COST_PER_HOUR
-	 */
-	public java.lang.Double getCostPerHour () {
-									return costPerHour == null ? Double.valueOf(0) : costPerHour;
+	public java.lang.Boolean isActive () {
+								return active == null ? Boolean.FALSE : active;
 					}
 
 	/**
-	 * Set the value related to the column: COST_PER_HOUR
-	 * @param costPerHour the COST_PER_HOUR value
+	 * Set the value related to the column: ACTIVE
+	 * @param active the ACTIVE value
 	 */
-	public void setCostPerHour (java.lang.Double costPerHour) {
-		this.costPerHour = costPerHour;
+	public void setActive (java.lang.Boolean active) {
+		this.active = active;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: AVAILABLE_FOR_DELIVERY
+	 */
+	public java.lang.Boolean isAvailableForDelivery () {
+								return availableForDelivery == null ? Boolean.FALSE : availableForDelivery;
+					}
+
+	/**
+	 * Set the value related to the column: AVAILABLE_FOR_DELIVERY
+	 * @param availableForDelivery the AVAILABLE_FOR_DELIVERY value
+	 */
+	public void setAvailableForDelivery (java.lang.Boolean availableForDelivery) {
+		this.availableForDelivery = availableForDelivery;
 	}
 
 
@@ -228,35 +163,18 @@ public abstract class BaseUser  implements Comparable, Serializable {
 
 
 	/**
-	 * Return the value associated with the column: LAST_CLOCK_IN_TIME
+	 * Return the value associated with the column: COST_PER_HOUR
 	 */
-	public java.util.Date getLastClockInTime () {
-					return lastClockInTime;
-			}
+	public java.lang.Double getCostPerHour () {
+									return costPerHour == null ? Double.valueOf(0) : costPerHour;
+					}
 
 	/**
-	 * Set the value related to the column: LAST_CLOCK_IN_TIME
-	 * @param lastClockInTime the LAST_CLOCK_IN_TIME value
+	 * Set the value related to the column: COST_PER_HOUR
+	 * @param costPerHour the COST_PER_HOUR value
 	 */
-	public void setLastClockInTime (java.util.Date lastClockInTime) {
-		this.lastClockInTime = lastClockInTime;
-	}
-
-
-
-	/**
-	 * Return the value associated with the column: PHONE_NO
-	 */
-	public java.lang.String getPhoneNo () {
-					return phoneNo;
-			}
-
-	/**
-	 * Set the value related to the column: PHONE_NO
-	 * @param phoneNo the PHONE_NO value
-	 */
-	public void setPhoneNo (java.lang.String phoneNo) {
-		this.phoneNo = phoneNo;
+	public void setCostPerHour (java.lang.Double costPerHour) {
+		this.costPerHour = costPerHour;
 	}
 
 
@@ -279,18 +197,120 @@ public abstract class BaseUser  implements Comparable, Serializable {
 
 
 	/**
-	 * Return the value associated with the column: AVAILABLE_FOR_DELIVERY
+	 * Return the value associated with the column: FIRST_NAME
 	 */
-	public java.lang.Boolean isAvailableForDelivery () {
-								return availableForDelivery == null ? Boolean.FALSE : availableForDelivery;
-					}
+	public java.lang.String getFirstName () {
+					return firstName;
+			}
 
 	/**
-	 * Set the value related to the column: AVAILABLE_FOR_DELIVERY
-	 * @param availableForDelivery the AVAILABLE_FOR_DELIVERY value
+	 * Set the value related to the column: FIRST_NAME
+	 * @param firstName the FIRST_NAME value
 	 */
-	public void setAvailableForDelivery (java.lang.Boolean availableForDelivery) {
-		this.availableForDelivery = availableForDelivery;
+	public void setFirstName (java.lang.String firstName) {
+		this.firstName = firstName;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: LAST_CLOCK_IN_TIME
+	 */
+	public java.util.Date getLastClockInTime () {
+					return lastClockInTime;
+			}
+
+	/**
+	 * Set the value related to the column: LAST_CLOCK_IN_TIME
+	 * @param lastClockInTime the LAST_CLOCK_IN_TIME value
+	 */
+	public void setLastClockInTime (java.util.Date lastClockInTime) {
+		this.lastClockInTime = lastClockInTime;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: LAST_NAME
+	 */
+	public java.lang.String getLastName () {
+					return lastName;
+			}
+
+	/**
+	 * Set the value related to the column: LAST_NAME
+	 * @param lastName the LAST_NAME value
+	 */
+	public void setLastName (java.lang.String lastName) {
+		this.lastName = lastName;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: USER_PASS
+	 */
+	public java.lang.String getPassword () {
+					return password;
+			}
+
+	/**
+	 * Set the value related to the column: USER_PASS
+	 * @param password the USER_PASS value
+	 */
+	public void setPassword (java.lang.String password) {
+		this.password = password;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: PHONE_NO
+	 */
+	public java.lang.String getPhoneNo () {
+					return phoneNo;
+			}
+
+	/**
+	 * Set the value related to the column: PHONE_NO
+	 * @param phoneNo the PHONE_NO value
+	 */
+	public void setPhoneNo (java.lang.String phoneNo) {
+		this.phoneNo = phoneNo;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: SSN
+	 */
+	public java.lang.String getSsn () {
+					return ssn;
+			}
+
+	/**
+	 * Set the value related to the column: SSN
+	 * @param ssn the SSN value
+	 */
+	public void setSsn (java.lang.String ssn) {
+		this.ssn = ssn;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: USER_ID
+	 */
+	public java.lang.Integer getUserId () {
+					return userId == null ? Integer.valueOf(0) : userId;
+			}
+
+	/**
+	 * Set the value related to the column: USER_ID
+	 * @param userId the USER_ID value
+	 */
+	public void setUserId (java.lang.Integer userId) {
+		this.userId = userId;
 	}
 
 
