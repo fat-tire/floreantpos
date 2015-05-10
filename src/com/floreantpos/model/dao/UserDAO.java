@@ -27,6 +27,24 @@ public class UserDAO extends BaseUserDAO {
 	 */
 	public UserDAO() {
 	}
+	
+	public List<User> findAllActive() {
+		Session session = null;
+		
+		try {
+			session = createNewSession();
+			Criteria criteria = session.createCriteria(getReferenceClass());
+			criteria.add(Restrictions.disjunction()
+					.add(Restrictions.isNull(User.PROP_ACTIVE))
+					.add(Restrictions.eq(User.PROP_ACTIVE, Boolean.TRUE)));
+			
+			return criteria.list();
+		} finally {
+			if (session != null) {
+				closeSession(session);
+			}
+		}
+	}
 
 	public List<User> findDrivers() {
 		Session session = null;

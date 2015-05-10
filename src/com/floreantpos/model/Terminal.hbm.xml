@@ -14,5 +14,9 @@
 		<property column="DRAWER_PULL_HOUR" name="autoDrawerPullHour" type="java.lang.Integer" />
 		<property column="DRAWER_PULL_MIN" name="autoDrawerPullMin" type="java.lang.Integer" />
 		<!-- Associations -->
+
+		<many-to-one class="com.floreantpos.model.User" lazy="false" name="assignedUser">
+			<column name="ASSIGNED_USER" />
+		</many-to-one>
 	</class>
 </hibernate-mapping>

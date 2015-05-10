@@ -41,6 +41,13 @@ public class User extends BaseUser {
 	public final static String USER_TYPE_CASHIER = "CASHIER";
 	public final static String USER_TYPE_SERVER = "SERVER";
 
+	/**
+	 * Return the value associated with the column: ACTIVE
+	 */
+	public java.lang.Boolean isActive() {
+		return active == null ? Boolean.TRUE : active;
+	}
+
 	public boolean hasPermission(UserPermission permission) {
 		return getType().hasPermission(permission);
 	}
@@ -85,14 +92,21 @@ public class User extends BaseUser {
 		if (permissions == null) {
 			return false;
 		}
-		
+
 		for (UserPermission permission : permissions) {
 			if (permission.equals(UserPermission.VIEW_ALL_OPEN_TICKETS)) {
 				return true;
 			}
 		}
-		
+
 		return false;
+	}
+
+	public void setFullName(String str) {
+	}
+	
+	public String getFullName() {
+		return getFirstName() + " " + getLastName();
 	}
 
 	@Override

@@ -1,0 +1,144 @@
+package com.floreantpos.actions;
+
+import java.util.Date;
+
+import javax.swing.Action;
+import javax.swing.JOptionPane;
+
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+
+import com.floreantpos.main.Application;
+import com.floreantpos.model.DrawerAssignedHistory;
+import com.floreantpos.model.Terminal;
+import com.floreantpos.model.User;
+import com.floreantpos.model.UserPermission;
+import com.floreantpos.model.dao.TerminalDAO;
+import com.floreantpos.swing.UserListDialog;
+import com.floreantpos.ui.dialog.POSMessageDialog;
+
+public class DrawerAssignmentAction extends PosAction {
+
+	public DrawerAssignmentAction() {
+		super("ASSIGN DRAWER", UserPermission.DRAWER_ASSIGNMENT); //$NON-NLS-1$
+		Terminal terminal = Application.getInstance().getTerminal();
+		User assignedUser = terminal.getAssignedUser();
+		
+		if (assignedUser != null) {
+			putValue(Action.NAME, "DEASSIGN DRAWER");
+		}
+		else {
+			putValue(Action.NAME, "ASSIGN DRAWER");
+		}
+	}
+
+	@Override
+	public void execute() {
+		try {
+			Terminal terminal = Application.getInstance().getTerminal();
+			User assignedUser = terminal.getAssignedUser();
+			
+			if (assignedUser != null) {
+				int option = POSMessageDialog.showYesNoQuestionDialog(Application.getPosWindow(), "Drawer is assigned to " + assignedUser.getFullName()
+						+ ". Do you want to deassigned?", "Confirm");
+				if (option != JOptionPane.YES_OPTION) {
+					return;
+				}
+
+				performDeassignment(terminal);
+			}
+			else {
+				performAssignment(terminal);
+			}
+
+		} catch (Exception e) {
+			POSMessageDialog.showError(e.getMessage(), e);
+		}
+	}
+
+	private void performAssignment(Terminal terminal) throws Exception {
+		Session session = null;
+		Transaction tx = null;
+
+		try {
+			UserListDialog dialog = new UserListDialog();
+			dialog.pack();
+			dialog.open();
+
+			if (dialog.isCanceled())
+				return;
+
+			User user = dialog.getSelectedUser();
+
+			terminal.setAssignedUser(user);
+
+			DrawerAssignedHistory history = new DrawerAssignedHistory();
+			history.setTime(new Date());
+			history.setOperation(DrawerAssignedHistory.ASSIGNMENT_OPERATION);
+			history.setUser(user);
+
+			session = TerminalDAO.getInstance().createNewSession();
+			tx = session.beginTransaction();
+
+			session.saveOrUpdate(terminal);
+			session.save(history);
+
+			tx.commit();
+
+			POSMessageDialog.showMessage("Drawer is assigned to " + user.getFullName());
+
+			putValue(Action.NAME, "DEASSIGN DRAWER");
+			
+		} catch (Exception e) {
+			if (tx != null) {
+				tx.rollback();
+			}
+
+			throw e;
+		} finally {
+			if (session != null) {
+				session.close();
+			}
+		}
+	}
+
+	private void performDeassignment(Terminal terminal) throws Exception {
+		Session session = null;
+		Transaction tx = null;
+
+		try {
+			User user = terminal.getAssignedUser();
+			
+			terminal.setAssignedUser(null);
+
+			DrawerAssignedHistory history = new DrawerAssignedHistory();
+			history.setTime(new Date());
+			history.setOperation(DrawerAssignedHistory.DEASSIGNMENT_OPERATION);
+			history.setUser(user);
+
+			session = TerminalDAO.getInstance().createNewSession();
+			tx = session.beginTransaction();
+
+			session.saveOrUpdate(terminal);
+			session.save(history);
+
+			tx.commit();
+
+			POSMessageDialog.showMessage("Drawer is deassigned");
+
+			putValue(Action.NAME, "ASSIGN DRAWER");
+			
+		} catch (Exception e) {
+			if (tx != null) {
+				tx.rollback();
+			}
+
+			throw e;
+		} finally {
+			if (session != null) {
+				session.close();
+			}
+		}
+	}
+
+}
