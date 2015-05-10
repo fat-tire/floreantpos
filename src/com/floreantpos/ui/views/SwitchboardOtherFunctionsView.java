@@ -9,6 +9,7 @@ import javax.swing.JPanel;
 
 import net.miginfocom.swing.MigLayout;
 
+import com.floreantpos.actions.DrawerAssignmentAction;
 import com.floreantpos.actions.DrawerBleedAction;
 import com.floreantpos.actions.DrawerKickAction;
 import com.floreantpos.actions.DrawerPullAction;
@@ -19,6 +20,7 @@ import com.floreantpos.actions.ServerTipsAction;
 import com.floreantpos.actions.ShowKitchenDisplayAction;
 import com.floreantpos.actions.ShowOnlineTicketManagementAction;
 import com.floreantpos.actions.ShowTransactionsAuthorizationsAction;
+import com.floreantpos.main.Application;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.ui.views.order.RootView;
 import com.floreantpos.ui.views.order.ViewPanel;
@@ -28,6 +30,7 @@ public class SwitchboardOtherFunctionsView extends ViewPanel {
 	private static SwitchboardOtherFunctionsView instance;
 	
 	private PosAction[] actions = {
+			new DrawerAssignmentAction(),
 			new DrawerPullAction(),
 			new DrawerBleedAction(),
 			new DrawerKickAction(),
@@ -62,6 +65,12 @@ public class SwitchboardOtherFunctionsView extends ViewPanel {
 		JPanel contentPanel = new JPanel(new MigLayout("align 50% 50%, wrap 5"));
 		
 		for (PosAction action : actions) {
+			if(action instanceof DrawerAssignmentAction) {
+				if(!Application.getInstance().getTerminal().isHasCashDrawer()) {
+					continue;
+				}
+			}
+			
 			PosButton button = new PosButton(action);
 			contentPanel.add(button, "w 150!, h 150!");
 		}

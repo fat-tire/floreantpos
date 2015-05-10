@@ -20,6 +20,8 @@
     <property column="PHONE_NO" name="phoneNo" length="20" type="string"/>
     <property column="IS_DRIVER" name="driver" type="java.lang.Boolean"/>
     <property column="AVAILABLE_FOR_DELIVERY" name="availableForDelivery" type="java.lang.Boolean"/>
+    <property column="ACTIVE" name="active" type="java.lang.Boolean"/>
+    
     <!-- Associations -->
     <many-to-one class="Shift" column="SHIFT_ID" name="currentShift"/>
     <many-to-one class="Terminal" name="currentTerminal"/>

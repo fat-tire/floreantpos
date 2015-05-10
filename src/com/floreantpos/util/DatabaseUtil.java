@@ -160,6 +160,7 @@ public class DatabaseUtil {
 			administratorUser.setFirstName("Administrator");
 			administratorUser.setLastName("System");
 			administratorUser.setType(administrator);
+			administratorUser.setActive(true);
 
 			UserDAO dao = new UserDAO();
 			dao.saveOrUpdate(administratorUser);
@@ -171,6 +172,7 @@ public class DatabaseUtil {
 			managerUser.setFirstName("X");
 			managerUser.setLastName("Y");
 			managerUser.setType(manager);
+			managerUser.setActive(true);
 
 			dao.saveOrUpdate(managerUser);
 			
@@ -181,6 +183,7 @@ public class DatabaseUtil {
 			cashierUser.setFirstName("C");
 			cashierUser.setLastName("D");
 			cashierUser.setType(cashier);
+			cashierUser.setActive(true);
 
 			dao.saveOrUpdate(cashierUser);
 			
@@ -191,6 +194,7 @@ public class DatabaseUtil {
 			serverUser.setFirstName("John");
 			serverUser.setLastName("Doe");
 			serverUser.setType(server);
+			serverUser.setActive(true);
 
 			dao.saveOrUpdate(serverUser);
 			
