@@ -50,7 +50,8 @@ public class PosWindow extends JFrame implements WindowListener {
 	
 	public void setupSizeAndLocation() {
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		setSize(AppConfig.getInt(WWIDTH, (int) screenSize.getWidth()), AppConfig.getInt(WHEIGHT, (int) screenSize.getHeight()));
+		//setSize(AppConfig.getInt(WWIDTH, (int) screenSize.getWidth()), AppConfig.getInt(WHEIGHT, (int) screenSize.getHeight()));
+		setSize(1024, 768);
 		
 		setLocation(AppConfig.getInt(WLOCX, ((screenSize.width - getWidth()) >> 1)), AppConfig.getInt(WLOCY, ((screenSize.height - getHeight()) >> 1)));
 		setMinimumSize(new Dimension(800, 600));

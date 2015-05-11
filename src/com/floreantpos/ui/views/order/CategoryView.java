@@ -48,12 +48,12 @@ public class CategoryView extends SelectionView implements ActionListener {
 	
 	/** Creates new form CategoryView */
 	public CategoryView() {
-		super(com.floreantpos.POSConstants.CATEGORIES, 120, 80);
+		super(com.floreantpos.POSConstants.CATEGORIES, 100, 80);
 		
 		setBackVisible(false);
 		
 		categoryButtonGroup = new ButtonGroup();
-		setPreferredSize(new Dimension(160, 100));
+		setPreferredSize(new Dimension(120, 100));
 	}
 
 	public void initialize() {

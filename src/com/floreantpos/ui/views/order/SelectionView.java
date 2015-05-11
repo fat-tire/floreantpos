@@ -81,7 +81,7 @@ public abstract class SelectionView extends JPanel implements ComponentListener 
 	}
 
 	public SelectionView(String title) {
-		this(title, 120, 120);
+		this(title, 120, 80);
 	}
 
 	public void setItems(List items) {
