@@ -8,6 +8,7 @@ import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.Junction;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 
@@ -34,9 +35,11 @@ public class UserDAO extends BaseUserDAO {
 		try {
 			session = createNewSession();
 			Criteria criteria = session.createCriteria(getReferenceClass());
-			criteria.add(Restrictions.disjunction()
+			Junction activeUserCriteria = Restrictions.disjunction()
 					.add(Restrictions.isNull(User.PROP_ACTIVE))
-					.add(Restrictions.eq(User.PROP_ACTIVE, Boolean.TRUE)));
+					.add(Restrictions.eq(User.PROP_ACTIVE, Boolean.TRUE));
+			criteria.add(activeUserCriteria);
+			criteria.add(Restrictions.eq(User.PROP_CLOCKED_IN, Boolean.TRUE));
 			
 			return criteria.list();
 		} finally {

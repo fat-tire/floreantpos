@@ -18,7 +18,6 @@ import java.util.Set;
 
 import javax.swing.JDialog;
 import javax.swing.JEditorPane;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
@@ -37,8 +36,6 @@ import com.floreantpos.main.Application;
 import com.floreantpos.model.DrawerPullReport;
 import com.floreantpos.model.DrawerPullVoidTicketEntry;
 import com.floreantpos.model.Terminal;
-import com.floreantpos.model.User;
-import com.floreantpos.model.dao.TerminalDAO;
 import com.floreantpos.print.DrawerpullReportService;
 import com.floreantpos.print.PosPrintService;
 import com.floreantpos.swing.PosButton;
@@ -102,7 +99,6 @@ public class DrawerPullReportDialog extends POSDialog {
         
         buttonPanel.add(new JSeparator(), "grow,span,wrap");
         buttonPanel.add(btnPrint = new PosButton("PRINT"), "w 120, h 50, grow");
-        buttonPanel.add(btnResetCashDrawer = new PosButton("RESET DRAWER"), "w 120, h 50, grow");
         buttonPanel.add(btnFinish = new PosButton("CLOSE"), "w 120, h 50, grow");
         
         add(buttonPanel, BorderLayout.SOUTH);
@@ -112,11 +108,6 @@ public class DrawerPullReportDialog extends POSDialog {
 				doCloseDialog();
 			}
         });
-        btnResetCashDrawer.addActionListener(new ActionListener() {
-        	public void actionPerformed(ActionEvent e) {
-        		doResetCashDrawer();
-        	}
-        });
         btnPrint.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				doPrintReport();
@@ -125,29 +116,29 @@ public class DrawerPullReportDialog extends POSDialog {
         });
     }// </editor-fold>//GEN-END:initComponents
 
-    private void doResetCashDrawer() {//GEN-FIRST:event_btnResetCashDrawerActionPerformed
-    	int option = POSMessageDialog.showYesNoQuestionDialog(this, "Sure reset cash drawer?", "Confirm");
-    	if(option != JOptionPane.YES_OPTION) return;
-    	
-    	Application app = Application.getInstance();
-    	Terminal terminal = app.getTerminal();
-    	
-    	double drawerBalance = NumberSelectionDialog2.takeDoubleInput("Enter amount", "Please enter drawer balance", terminal.getOpeningBalance());
-    	if(Double.isNaN(drawerBalance)) {
-    		return;
-    	}
-    	
-    	User user = Application.getCurrentUser();
-    	
-    	TerminalDAO dao = new TerminalDAO();
-    	try {
-			dao.resetCashDrawer(drawerPullReport, terminal, user, drawerBalance);
-			POSMessageDialog.showMessage(this, "Drawer resetted");
-			doCloseDialog();
-		} catch (Exception e) {
-			POSMessageDialog.showError("Cannot save", e);
-		}
-    }//GEN-LAST:event_btnResetCashDrawerActionPerformed
+//    private void doResetCashDrawer() {//GEN-FIRST:event_btnResetCashDrawerActionPerformed
+//    	int option = POSMessageDialog.showYesNoQuestionDialog(this, "Sure reset cash drawer?", "Confirm");
+//    	if(option != JOptionPane.YES_OPTION) return;
+//    	
+//    	Application app = Application.getInstance();
+//    	Terminal terminal = app.getTerminal();
+//    	
+//    	double drawerBalance = NumberSelectionDialog2.takeDoubleInput("Enter amount", "Please enter drawer balance", terminal.getOpeningBalance());
+//    	if(Double.isNaN(drawerBalance)) {
+//    		return;
+//    	}
+//    	
+//    	User user = Application.getCurrentUser();
+//    	
+//    	TerminalDAO dao = new TerminalDAO();
+//    	try {
+//			dao.resetCashDrawer(drawerPullReport, terminal, user, drawerBalance);
+//			POSMessageDialog.showMessage(this, "Drawer resetted");
+//			doCloseDialog();
+//		} catch (Exception e) {
+//			POSMessageDialog.showError("Cannot save", e);
+//		}
+//    }//GEN-LAST:event_btnResetCashDrawerActionPerformed
 
     private void doCloseDialog() {//GEN-FIRST:event_btnFinishActionPerformed
         dispose();
@@ -156,7 +147,7 @@ public class DrawerPullReportDialog extends POSDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.floreantpos.swing.PosButton btnFinish;
     private com.floreantpos.swing.PosButton btnPrint;
-    private com.floreantpos.swing.PosButton btnResetCashDrawer;
+//    private com.floreantpos.swing.PosButton btnResetCashDrawer;
     private javax.swing.JEditorPane taReport;
     private com.floreantpos.ui.TitlePanel titlePanel1;
     // End of variables declaration//GEN-END:variables

@@ -15,6 +15,7 @@ import com.floreantpos.model.User;
 import com.floreantpos.model.UserPermission;
 import com.floreantpos.model.dao.TerminalDAO;
 import com.floreantpos.swing.UserListDialog;
+import com.floreantpos.ui.dialog.NumberSelectionDialog2;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 
 public class DrawerAssignmentAction extends PosAction {
@@ -25,7 +26,7 @@ public class DrawerAssignmentAction extends PosAction {
 		User assignedUser = terminal.getAssignedUser();
 		
 		if (assignedUser != null) {
-			putValue(Action.NAME, "DEASSIGN DRAWER");
+			putValue(Action.NAME, "DRAWER CLOSE");
 		}
 		else {
 			putValue(Action.NAME, "ASSIGN DRAWER");
@@ -69,8 +70,14 @@ public class DrawerAssignmentAction extends PosAction {
 				return;
 
 			User user = dialog.getSelectedUser();
+			
+			double drawerBalance = NumberSelectionDialog2.takeDoubleInput("Please enter drawer initial balance", "Please enter drawer initial balance", terminal.getOpeningBalance());
+	    	if(Double.isNaN(drawerBalance)) {
+	    		return;
+	    	}
 
 			terminal.setAssignedUser(user);
+			terminal.setCurrentBalance(drawerBalance);
 
 			DrawerAssignedHistory history = new DrawerAssignedHistory();
 			history.setTime(new Date());
@@ -110,6 +117,7 @@ public class DrawerAssignmentAction extends PosAction {
 			User user = terminal.getAssignedUser();
 			
 			terminal.setAssignedUser(null);
+			terminal.setCurrentBalance(0.0);
 
 			DrawerAssignedHistory history = new DrawerAssignedHistory();
 			history.setTime(new Date());
