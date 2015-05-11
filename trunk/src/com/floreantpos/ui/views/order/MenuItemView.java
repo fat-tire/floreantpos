@@ -124,7 +124,7 @@ public class MenuItemView extends SelectionView {
 				}
 				else {
 					w = 80;
-					h = 80;
+					h = 40;
 					
 					setIcon(menuItem.getScaledImage(w, h));
 					setText("<html><body><center>" + menuItem.getDisplayName() + "</center></body></html>");
