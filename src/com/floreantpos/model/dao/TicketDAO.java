@@ -266,6 +266,7 @@ public class TicketDAO extends BaseTicketDAO {
 			}
 			else if(psFilter == PaymentStatusFilter.CLOSED) {
 				criteria.add(Restrictions.eq(Ticket.PROP_DRAWER_RESETTED, Boolean.FALSE));
+				criteria.add(Restrictions.eq(Ticket.PROP_CLOSED, Boolean.TRUE));
 			}
 			
 			if(otFilter != OrderTypeFilter.ALL) {
