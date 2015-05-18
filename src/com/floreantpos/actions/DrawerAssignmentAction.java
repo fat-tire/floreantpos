@@ -10,10 +10,13 @@ import org.hibernate.Transaction;
 
 import com.floreantpos.main.Application;
 import com.floreantpos.model.DrawerAssignedHistory;
+import com.floreantpos.model.DrawerPullReport;
 import com.floreantpos.model.Terminal;
 import com.floreantpos.model.User;
 import com.floreantpos.model.UserPermission;
 import com.floreantpos.model.dao.TerminalDAO;
+import com.floreantpos.print.DrawerpullReportService;
+import com.floreantpos.print.PosPrintService;
 import com.floreantpos.swing.UserListDialog;
 import com.floreantpos.ui.dialog.NumberSelectionDialog2;
 import com.floreantpos.ui.dialog.POSMessageDialog;
@@ -110,43 +113,37 @@ public class DrawerAssignmentAction extends PosAction {
 	}
 
 	private void performDeassignment(Terminal terminal) throws Exception {
-		Session session = null;
-		Transaction tx = null;
-
 		try {
 			User user = terminal.getAssignedUser();
 			
-			terminal.setAssignedUser(null);
-			terminal.setCurrentBalance(0.0);
+			DrawerPullReport report = DrawerpullReportService.buildDrawerPullReport();
+			report.setAssignedUser(user);
 
-			DrawerAssignedHistory history = new DrawerAssignedHistory();
-			history.setTime(new Date());
-			history.setOperation(DrawerAssignedHistory.DEASSIGNMENT_OPERATION);
-			history.setUser(user);
-
-			session = TerminalDAO.getInstance().createNewSession();
-			tx = session.beginTransaction();
-
-			session.saveOrUpdate(terminal);
-			session.save(history);
-
-			tx.commit();
+			TerminalDAO dao = new TerminalDAO();
+			dao.resetCashDrawer(report, terminal, user, 0);
+			
+			PosPrintService.printDrawerPullReport(report, terminal);
+			
+//			DrawerAssignedHistory history = new DrawerAssignedHistory();
+//			history.setTime(new Date());
+//			history.setOperation(DrawerAssignedHistory.DEASSIGNMENT_OPERATION);
+//			history.setUser(user);
+//
+//			session = TerminalDAO.getInstance().createNewSession();
+//			tx = session.beginTransaction();
+//
+//			session.saveOrUpdate(terminal);
+//			session.save(history);
+//
+//			tx.commit();
 
 			POSMessageDialog.showMessage("Drawer is deassigned");
 
 			putValue(Action.NAME, "ASSIGN DRAWER");
 			
 		} catch (Exception e) {
-			if (tx != null) {
-				tx.rollback();
-			}
-
 			throw e;
-		} finally {
-			if (session != null) {
-				session.close();
-			}
-		}
+		} 
 	}
 
 }

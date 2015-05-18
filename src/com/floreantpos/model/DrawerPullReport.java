@@ -8,7 +8,7 @@ import com.floreantpos.model.base.BaseDrawerPullReport;
 public class DrawerPullReport extends BaseDrawerPullReport {
 	private static final long serialVersionUID = 1L;
 
-/*[CONSTRUCTOR MARKER BEGIN]*/
+	/*[CONSTRUCTOR MARKER BEGIN]*/
 	public DrawerPullReport () {
 		super();
 	}
@@ -20,10 +20,50 @@ public class DrawerPullReport extends BaseDrawerPullReport {
 		super(id);
 	}
 
-/*[CONSTRUCTOR MARKER END]*/
+	/*[CONSTRUCTOR MARKER END]*/
+
+	public void setPayOutNumber(Integer i) {
+
+	}
 	
+	public String getCashReceiptNumber() {
+		return "";
+	}
+
+	public void setCashReceiptNumber(String s) {
+
+	}
+
+	public String getCreditCardReceiptNumber() {
+		return "";
+	}
+
+	public void setCreditCardReceiptNumber(String s) {
+
+	}
+	
+	public String getDrawerBleedNumber() {
+		return "";
+	}
+
+	public void setDebitCardReceiptNumber(String s) {
+
+	}
+	
+	public String getDebitCardReceiptNumber() {
+		return "";
+	}
+
+	public void setDrawerBleedNumber(String s) {
+
+	}
+
+	public Integer getPayOutNumber() {
+		return 0;
+	}
+
 	public void addVoidTicketEntry(DrawerPullVoidTicketEntry entry) {
-		if(getVoidTickets() == null) {
+		if (getVoidTickets() == null) {
 			setVoidTickets(new HashSet<DrawerPullVoidTicketEntry>());
 		}
 		getVoidTickets().add(entry);
@@ -32,15 +72,13 @@ public class DrawerPullReport extends BaseDrawerPullReport {
 	public void calculate() {
 		setTotalRevenue(getNetSales() + getSalesTax());
 		setGrossReceipts(getTotalRevenue() + getChargedTips());
-		
-		
-		double total = getCashReceiptAmount() + getCreditCardReceiptAmount() + 
-						getDebitCardReceiptAmount() + getGiftCertReturnAmount() + 
-						getGiftCertChangeAmount() - getCashBack() - getRefundAmount();
+
+		double total = getCashReceiptAmount() + getCreditCardReceiptAmount() + getDebitCardReceiptAmount() + getGiftCertReturnAmount()
+				+ getGiftCertChangeAmount() - getCashBack() - getRefundAmount();
 		setReceiptDifferential(getGrossReceipts() - total);
-		
+
 		setTipsDifferential(getChargedTips() - getTipsPaid());
-		
+
 		double totalCash = getCashReceiptAmount();
 		double tips = getTipsPaid();
 		double totalPayout = getPayOutAmount();
@@ -48,11 +86,11 @@ public class DrawerPullReport extends BaseDrawerPullReport {
 		double cashBack = getCashBack();
 		double refundAmount = getRefundAmount();
 		double drawerBleed = getDrawerBleedAmount();
-		
-		setDrawerAccountable(beginCash + totalCash - tips - totalPayout - cashBack - refundAmount - drawerBleed); 
-		
+
+		setDrawerAccountable(beginCash + totalCash - tips - totalPayout - cashBack - refundAmount - drawerBleed);
+
 		Set<DrawerPullVoidTicketEntry> voidTickets = getVoidTickets();
-		if(voidTickets != null) {
+		if (voidTickets != null) {
 			double totalVoidAmount = 0;
 			for (DrawerPullVoidTicketEntry entry : voidTickets) {
 				totalVoidAmount += entry.getAmount();
