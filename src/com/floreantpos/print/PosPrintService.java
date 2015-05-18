@@ -1,6 +1,7 @@
 package com.floreantpos.print;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 
 import net.sf.jasperreports.engine.JRDataSource;
@@ -241,15 +242,17 @@ public class PosPrintService {
 		try {
 			HashMap parameters = new HashMap();
 			
+			parameters.put("assignedUserName", drawerPullReport.getAssignedUser().getFullName());
+			parameters.put("reportTime", new Date());
 			parameters.put("totalVoid", drawerPullReport.getTotalVoid());
 			
 			Restaurant restaurant = RestaurantDAO.getInstance().get(Integer.valueOf(1));
 			
 			parameters.put("headerLine1", restaurant.getName());
 			
-			JasperReport subReport = ReportUtil.getReport("drawer-pull-void-veport");
+			//JasperReport subReport = ReportUtil.getReport("drawer-pull-void-veport");
 			
-			parameters.put("subreportParameter", subReport);
+			//parameters.put("subreportParameter", subReport);
 			
 			JasperReport mainReport = ReportUtil.getReport("drawer-pull-report");
 			JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(Arrays.asList(new DrawerPullReport[] {drawerPullReport}));

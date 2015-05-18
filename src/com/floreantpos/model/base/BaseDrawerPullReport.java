@@ -1,5 +1,6 @@
 package com.floreantpos.model.base;
 
+import java.lang.Comparable;
 import java.io.Serializable;
 
 import com.floreantpos.model.DrawerPullVoidTicketEntry;
@@ -29,6 +30,7 @@ public abstract class BaseDrawerPullReport  implements Comparable, Serializable 
 	public static String PROP_TIPS_DIFFERENTIAL = "tipsDifferential";
 	public static String PROP_DRAWER_BLEED_COUNT = "drawerBleedCount";
 	public static String PROP_DRAWER_ACCOUNTABLE = "drawerAccountable";
+	public static String PROP_ASSIGNED_USER = "assignedUser";
 	public static String PROP_CASH_TAX = "cashTax";
 	public static String PROP_RECEIPT_DIFFERENTIAL = "receiptDifferential";
 	public static String PROP_TOTAL_DISCOUNT_GUEST = "totalDiscountGuest";
@@ -132,6 +134,7 @@ public abstract class BaseDrawerPullReport  implements Comparable, Serializable 
 		protected java.lang.Double totalDiscountRatio;
 
 	// many to one
+	private com.floreantpos.model.User assignedUser;
 	private com.floreantpos.model.Terminal terminal;
 
 	// collections
@@ -888,6 +891,23 @@ public abstract class BaseDrawerPullReport  implements Comparable, Serializable 
 	 */
 	public void setTotalDiscountRatio (java.lang.Double totalDiscountRatio) {
 		this.totalDiscountRatio = totalDiscountRatio;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: USER_ID
+	 */
+	public com.floreantpos.model.User getAssignedUser () {
+					return assignedUser;
+			}
+
+	/**
+	 * Set the value related to the column: USER_ID
+	 * @param assignedUser the USER_ID value
+	 */
+	public void setAssignedUser (com.floreantpos.model.User assignedUser) {
+		this.assignedUser = assignedUser;
 	}
 
 
