@@ -48,6 +48,7 @@ import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.views.CashierSwitchBoardView;
 import com.floreantpos.ui.views.LoginView;
 import com.floreantpos.ui.views.SwitchboardView;
+import com.floreantpos.ui.views.order.OrderView;
 import com.floreantpos.ui.views.order.RootView;
 import com.floreantpos.util.DatabaseConnectionException;
 import com.floreantpos.util.DatabaseUtil;
@@ -388,6 +389,10 @@ public class Application {
 
 		RootView rootView = getRootView();
 		
+		if(!rootView.hasView(OrderView.VIEW_NAME)) {
+			rootView.addView(OrderView.getInstance());
+		}
+		
 		if(TerminalConfig.isCashierMode()) {
 			//SwitchboardView.doTakeout(OrderType.TAKE_OUT);
 			if(!rootView.hasView(CashierSwitchBoardView.VIEW_NAME)) {
@@ -408,7 +413,7 @@ public class Application {
 			}
 		}
 		else {
-			rootView.showView(SwitchboardView.VIEW_NAME);
+			rootView.showView(SwitchboardView.getInstance());
 		}
 	}
 	
