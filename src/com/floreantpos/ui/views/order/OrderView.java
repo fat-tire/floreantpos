@@ -29,6 +29,8 @@ public class OrderView extends ViewPanel {
 	/** Creates new form OrderView */
 	private OrderView() {
 		initComponents();
+		
+		init();
 	}
 
 	public void addView(final String viewName, final JComponent view) {

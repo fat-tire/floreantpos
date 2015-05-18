@@ -11,7 +11,6 @@ import javax.swing.border.EmptyBorder;
 import com.floreantpos.ui.HeaderPanel;
 import com.floreantpos.ui.views.IView;
 import com.floreantpos.ui.views.LoginView;
-import com.floreantpos.ui.views.SwitchboardView;
 import com.floreantpos.ui.views.payment.SettleTicketDialog;
 
 public class RootView extends com.floreantpos.swing.TransparentPanel {
@@ -20,7 +19,7 @@ public class RootView extends com.floreantpos.swing.TransparentPanel {
 	private HeaderPanel headerPanel = new HeaderPanel();
 	private JPanel contentPanel = new JPanel(cards);
 	private LoginView loginScreen;
-	private SwitchboardView switchboardView;
+	//private SwitchboardView switchboardView;
 	private OrderView orderView;
 	private SettleTicketDialog paymentView;
 	
@@ -41,12 +40,10 @@ public class RootView extends com.floreantpos.swing.TransparentPanel {
 		loginScreen = new LoginView();
 		addView(loginScreen);
 		
-		switchboardView = new SwitchboardView();
-		addView(switchboardView);
+//		switchboardView = new SwitchboardView();
+//		addView(switchboardView);
 		
-		orderView = OrderView.getInstance();
-		orderView.init();
-		addView(orderView);
+		
 		
 		showView(LoginView.VIEW_NAME);
 	}
@@ -95,13 +92,13 @@ public class RootView extends com.floreantpos.swing.TransparentPanel {
 		return loginScreen;
 	}
 
-	public SwitchboardView getSwitchboadView() {
-		return switchboardView;
-	}
-
-	public void setSwitchboardView(SwitchboardView switchboardView) {
-		this.switchboardView = switchboardView;
-	}
+//	public SwitchboardView getSwitchboadView() {
+//		return switchboardView;
+//	}
+//
+//	public void setSwitchboardView(SwitchboardView switchboardView) {
+//		this.switchboardView = switchboardView;
+//	}
 
 	public synchronized static RootView getInstance() {
 		if(instance == null) {
