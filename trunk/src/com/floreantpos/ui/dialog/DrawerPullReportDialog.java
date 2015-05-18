@@ -68,6 +68,7 @@ public class DrawerPullReportDialog extends POSDialog {
     	terminal = Application.getInstance().getTerminal();
     	
     	drawerPullReport = DrawerpullReportService.buildDrawerPullReport();
+    	drawerPullReport.setAssignedUser(terminal.getAssignedUser());
     	
     	taReport.setContentType("text/html");
     	taReport.setEditable(false);

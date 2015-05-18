@@ -7,6 +7,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import com.floreantpos.model.CashDrawerResetHistory;
+import com.floreantpos.model.DrawerAssignedHistory;
 import com.floreantpos.model.DrawerPullReport;
 import com.floreantpos.model.Terminal;
 import com.floreantpos.model.Ticket;
@@ -54,14 +55,20 @@ public class TerminalDAO extends BaseTerminalDAO {
 			query.setEntity("terminal", terminal);
 			query.executeUpdate();
 			
+			terminal.setAssignedUser(null);
 			terminal.setOpeningBalance(balance);
 			terminal.setCurrentBalance(balance);
-			update(terminal);
-			save(report);
-			save(history);
-			tx.commit();
+			update(terminal, session);
+			save(report, session);
+			save(history, session);
 			
-			terminal.setCurrentBalance(terminal.getOpeningBalance());
+			DrawerAssignedHistory history2 = new DrawerAssignedHistory();
+			history2.setTime(new Date());
+			history2.setOperation(DrawerAssignedHistory.DEASSIGNMENT_OPERATION);
+			history2.setUser(user);
+			save(history2, session);
+			
+			tx.commit();
 		} catch (Exception e) {
 			try {
 				tx.rollback();
