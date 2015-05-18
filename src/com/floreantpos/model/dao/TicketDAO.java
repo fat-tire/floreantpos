@@ -495,10 +495,15 @@ public class TicketDAO extends BaseTicketDAO {
 			
 			Integer menuItemId = ticketItem.getItemId();
 			MenuItem menuItem = MenuItemDAO.getInstance().get(menuItemId);
+			
+			if(menuItem == null) {
+				continue;
+			}
+			
 			Recepie recepie = menuItem.getRecepie();
 			
 			if(recepie == null) {
-				return;
+				continue;
 			}
 			
 			List<RecepieItem> recepieItems = recepie.getRecepieItems();
