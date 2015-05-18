@@ -82,7 +82,7 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 	//private Timer ticketListUpdateTimer = new Timer(10 * 1000, new TicketListUpdaterTask());
 
 	/** Creates new form SwitchboardView */
-	public SwitchboardView() {
+	private SwitchboardView() {
 		initComponents();
 
 		btnDineIn.addActionListener(this);
@@ -112,11 +112,13 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 		}
 
 		applyComponentOrientation(ComponentOrientation.getOrientation(Locale.getDefault()));
-
-		instance = this;
 	}
 
 	public static SwitchboardView getInstance() {
+		if(instance == null) {
+			instance = new SwitchboardView();
+		}
+		
 		return instance;
 	}
 
@@ -211,7 +213,10 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 		panel1.add(btnOrderFilters);
 		panel1.add(btnOrderInfo);
 		panel1.add(btnEditTicket);
-		panel1.add(btnSettleTicket);
+		
+		if(Application.getInstance().getTerminal().isHasCashDrawer()) {
+			panel1.add(btnSettleTicket);
+		}
 		panel1.add(btnCloseOrder);
 
 		innerActivityPanel.add(panel1);
@@ -219,7 +224,10 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 		final JXCollapsiblePane collapsiblePane = new JXCollapsiblePane();
 		collapsiblePane.setAnimated(false);
 		collapsiblePane.getContentPane().setLayout(new GridLayout(1, 0, 5, 5));
-		collapsiblePane.getContentPane().add(btnGroupSettle);
+		
+		if(Application.getInstance().getTerminal().isHasCashDrawer()) {
+			collapsiblePane.getContentPane().add(btnGroupSettle);
+		}
 		collapsiblePane.getContentPane().add(btnSplitTicket);
 		collapsiblePane.getContentPane().add(btnReopenTicket);
 		collapsiblePane.getContentPane().add(btnVoidTicket);
@@ -574,6 +582,11 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 
 	private void doSettleTicket() {
 		try {
+			if (!Application.getInstance().getTerminal().isCashDrawerAssigned()) {
+				POSMessageDialog.showError("Unable to accept payment. Configuration error or Drawer has not been assigned.");
+				return;
+			}
+			
 			Ticket ticket = null;
 
 			List<Ticket> selectedTickets = ticketList.getSelectedTickets();
@@ -720,6 +733,11 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 	}
 
 	private void doGroupSettle() {
+		if (!Application.getInstance().getTerminal().isCashDrawerAssigned()) {
+			POSMessageDialog.showError("Unable to accept payment. Configuration error or Drawer has not been assigned.");
+			return;
+		}
+		
 		List<Ticket> selectedTickets = ticketList.getSelectedTickets();
 		if (selectedTickets == null) {
 			return;
@@ -923,11 +941,11 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 		return ticket;
 	}
 
-	private class TicketListUpdaterTask implements ActionListener {
-		public void actionPerformed(ActionEvent e) {
-			updateTicketList();
-		}
-	}
+//	private class TicketListUpdaterTask implements ActionListener {
+//		public void actionPerformed(ActionEvent e) {
+//			updateTicketList();
+//		}
+//	}
 
 	@Override
 	public String getViewName() {

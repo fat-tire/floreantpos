@@ -12,10 +12,8 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
@@ -64,8 +62,6 @@ import com.floreantpos.ui.dialog.NumberSelectionDialog2;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.views.CashierSwitchBoardView;
 import com.floreantpos.ui.views.CookingInstructionSelectionView;
-import com.floreantpos.ui.views.OrderInfoDialog;
-import com.floreantpos.ui.views.OrderInfoView;
 import com.floreantpos.ui.views.SwitchboardView;
 import com.floreantpos.ui.views.order.actions.ItemSelectionListener;
 import com.floreantpos.ui.views.order.actions.OrderListener;
@@ -190,7 +186,9 @@ public class TicketView extends JPanel {
 			}
 		});
 
-		ticketActionPanel.add(btnPay);
+		if (Application.getInstance().getTerminal().isHasCashDrawer()) {
+			ticketActionPanel.add(btnPay);
+		}
 		ticketActionPanel.add(btnSave);
 		ticketActionPanel.add(btnMore);
 		ticketActionPanel.add(btnCancel);
@@ -390,6 +388,11 @@ public class TicketView extends JPanel {
 
 	private void doPayNow(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_doPayNow
 		try {
+			if (!Application.getInstance().getTerminal().isCashDrawerAssigned()) {
+				POSMessageDialog.showError("Unable to accept payment. Configuration error or Drawer has not been assigned.");
+				return;
+			}
+
 			updateModel();
 
 			OrderController.saveOrder(ticket);
@@ -786,34 +789,6 @@ public class TicketView extends JPanel {
 				RootView.getInstance().getOrderView().getTicketView().addTicketItem(ticketItem);
 			}
 		}// GEN-LAST:event_doInsertMisc
-
-		private void doViewOrderInfo() {// GEN-FIRST:event_btnOrderInfoActionPerformed
-			try {
-				Ticket ticket = getTicket();
-
-				List<Ticket> tickets = new ArrayList<Ticket>();
-				tickets.add(ticket);
-
-				OrderInfoView view = new OrderInfoView(tickets);
-				OrderInfoDialog dialog = new OrderInfoDialog(view);
-				dialog.setSize(400, 600);
-				dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-				dialog.setLocationRelativeTo(Application.getPosWindow());
-				dialog.setVisible(true);
-
-			} catch (Exception e) {
-				// TODO: handle exception
-			}
-			// TicketDetailDialog dialog = new
-			// TicketDetailDialog(Application.getPosWindow(), true);
-			// dialog.setTicket(getCurrentTicket());
-			// dialog.open();
-			//
-			// if(!dialog.isCanceled()) {
-			// OrderView.getInstance().getTicketView().updateView();
-			// }
-
-		}// GEN-LAST:event_btnOrderInfoActionPerformed
 
 		private void btnCustomerNumberActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnCustomerNumberActionPerformed
 			updateGuestNumber();

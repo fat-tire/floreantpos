@@ -29,6 +29,10 @@ public class Terminal extends BaseTerminal {
 	public java.lang.Boolean isHasCashDrawer() {
 		return hasCashDrawer == null ? Boolean.TRUE : hasCashDrawer;
 	}
+	
+	public boolean isCashDrawerAssigned() {
+		return getAssignedUser() != null;
+	}
 
 	@Override
 	public String toString() {
