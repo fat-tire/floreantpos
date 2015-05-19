@@ -241,24 +241,25 @@ public class PosPrintService {
 		
 		try {
 			HashMap parameters = new HashMap();
-			
-			parameters.put("assignedUserName", drawerPullReport.getAssignedUser().getFullName());
-			parameters.put("reportTime", new Date());
-			parameters.put("totalVoid", drawerPullReport.getTotalVoid());
-			
 			Restaurant restaurant = RestaurantDAO.getInstance().get(Integer.valueOf(1));
 			
 			parameters.put("headerLine1", restaurant.getName());
+			parameters.put("terminal", "Terminal # " + terminal.getId());
+			parameters.put("user", "User: " + drawerPullReport.getAssignedUser().getFullName());
+			parameters.put("date", new Date());
+			parameters.put("totalVoid", drawerPullReport.getTotalVoid());
 			
-			//JasperReport subReport = ReportUtil.getReport("drawer-pull-void-veport");
+			JasperReport subReport = ReportUtil.getReport("drawer-pull-void-veport");
 			
-			//parameters.put("subreportParameter", subReport);
+			parameters.put("subreportParameter", subReport);
 			
 			JasperReport mainReport = ReportUtil.getReport("drawer-pull-report");
 			JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(Arrays.asList(new DrawerPullReport[] {drawerPullReport}));
 			JasperPrint jasperPrint = JasperFillManager.fillReport(mainReport, parameters, dataSource);
 			jasperPrint.setProperty("printerName", Application.getPrinters().getReportPrinter());
 			JasperPrintManager.printReport(jasperPrint, false);
+			
+			//JasperViewer.viewReport(jasperPrint, false);
 		
 		} catch (Exception e) {
 			e.printStackTrace();
