@@ -786,7 +786,7 @@ public class TicketView extends JPanel {
 				TicketItem ticketItem = dialog.getTicketItem();
 				ticketItem.setTicket(ticket);
 				ticketItem.calculatePrice();
-				RootView.getInstance().getOrderView().getTicketView().addTicketItem(ticketItem);
+				OrderView.getInstance().getTicketView().addTicketItem(ticketItem);
 			}
 		}// GEN-LAST:event_doInsertMisc
 

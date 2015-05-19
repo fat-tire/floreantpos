@@ -2,8 +2,8 @@ package com.floreantpos.ui.views.order;
 
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -19,12 +19,9 @@ public class RootView extends com.floreantpos.swing.TransparentPanel {
 	private HeaderPanel headerPanel = new HeaderPanel();
 	private JPanel contentPanel = new JPanel(cards);
 	private LoginView loginScreen;
-	//private SwitchboardView switchboardView;
-	private OrderView orderView;
 	private SettleTicketDialog paymentView;
 	
-	private Set<String> viewNames = new HashSet<String>();
-
+	private Map<String, IView> views = new HashMap<String, IView>();
 	
 	private static RootView instance;
 	
@@ -40,16 +37,11 @@ public class RootView extends com.floreantpos.swing.TransparentPanel {
 		loginScreen = new LoginView();
 		addView(loginScreen);
 		
-//		switchboardView = new SwitchboardView();
-//		addView(switchboardView);
-		
-		
-		
 		showView(LoginView.VIEW_NAME);
 	}
 	
 	public void addView(IView iView) {
-		viewNames.add(iView.getViewName());
+		views.put(iView.getViewName(), iView);
 		contentPanel.add(iView.getViewName(), iView.getViewComponent());
 	}
 	
@@ -65,7 +57,7 @@ public class RootView extends com.floreantpos.swing.TransparentPanel {
 	}
 	
 	public void showView(IView view) {
-		if(!viewNames.contains(view.getViewName())) {
+		if(!views.containsKey(view.getViewName())) {
 			addView(view);
 		}
 		
@@ -73,19 +65,15 @@ public class RootView extends com.floreantpos.swing.TransparentPanel {
 	}
 	
 	public boolean hasView(String viewName) {
-		return viewNames.contains(viewName);
+		return views.containsKey(viewName);
 	}
 	
 	public boolean hasView(IView view) {
-		return viewNames.contains(view.getViewName());
+		return views.containsKey(view.getViewName());
 	}
 	
 	public OrderView getOrderView() {
-		return orderView;
-	}
-	
-	public void setOrderView(OrderView orderView) {
-		this.orderView = orderView;
+		return (OrderView) views.get(OrderView.VIEW_NAME);
 	}
 	
 	public LoginView getLoginScreen() {
