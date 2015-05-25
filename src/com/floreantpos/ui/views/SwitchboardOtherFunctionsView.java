@@ -34,13 +34,12 @@ public class SwitchboardOtherFunctionsView extends ViewPanel {
 			new DrawerPullAction(),
 			new DrawerBleedAction(),
 			new DrawerKickAction(),
+			new PayoutAction(),
 			new ServerTipsAction(),
 			new ShowTransactionsAuthorizationsAction(),
 			new ShowKitchenDisplayAction(),
-			new PayoutAction(),
 			new ManageTableLayoutAction(),
-			new ShowOnlineTicketManagementAction(),
-			new PayoutAction()
+			new ShowOnlineTicketManagementAction()
 	};
 	
 //	private PosButton btnDrawerPull = new PosButton(new DrawerPullAction());
