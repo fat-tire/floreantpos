@@ -22,5 +22,5 @@ public class DrawerAssignedHistory extends BaseDrawerAssignedHistory {
 /*[CONSTRUCTOR MARKER END]*/
 
 	public final static String ASSIGNMENT_OPERATION = "ASSIGN";
-	public final static String DEASSIGNMENT_OPERATION = "DEASSIGN";
+	public final static String CLOSE_OPERATION = "CLOSE";
 }

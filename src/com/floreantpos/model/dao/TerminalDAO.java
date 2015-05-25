@@ -64,7 +64,7 @@ public class TerminalDAO extends BaseTerminalDAO {
 			
 			DrawerAssignedHistory history2 = new DrawerAssignedHistory();
 			history2.setTime(new Date());
-			history2.setOperation(DrawerAssignedHistory.DEASSIGNMENT_OPERATION);
+			history2.setOperation(DrawerAssignedHistory.CLOSE_OPERATION);
 			history2.setUser(user);
 			save(history2, session);
 			
