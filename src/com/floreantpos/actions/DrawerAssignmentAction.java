@@ -44,12 +44,12 @@ public class DrawerAssignmentAction extends PosAction {
 			
 			if (assignedUser != null) {
 				int option = POSMessageDialog.showYesNoQuestionDialog(Application.getPosWindow(), "Drawer is assigned to " + assignedUser.getFullName()
-						+ ". Do you want to deassigned?", "Confirm");
+						+ ". Do you want to close?", "Confirm");
 				if (option != JOptionPane.YES_OPTION) {
 					return;
 				}
 
-				performDeassignment(terminal);
+				performDrawerClose(terminal);
 			}
 			else {
 				performAssignment(terminal);
@@ -97,7 +97,7 @@ public class DrawerAssignmentAction extends PosAction {
 
 			POSMessageDialog.showMessage("Drawer is assigned to " + user.getFullName());
 
-			putValue(Action.NAME, "DEASSIGN DRAWER");
+			putValue(Action.NAME, "CLOSE DRAWER");
 			
 		} catch (Exception e) {
 			if (tx != null) {
@@ -112,7 +112,7 @@ public class DrawerAssignmentAction extends PosAction {
 		}
 	}
 
-	private void performDeassignment(Terminal terminal) throws Exception {
+	private void performDrawerClose(Terminal terminal) throws Exception {
 		try {
 			User user = terminal.getAssignedUser();
 			
@@ -137,7 +137,7 @@ public class DrawerAssignmentAction extends PosAction {
 //
 //			tx.commit();
 
-			POSMessageDialog.showMessage("Drawer is deassigned");
+			POSMessageDialog.showMessage("Drawer is closed.");
 
 			putValue(Action.NAME, "ASSIGN DRAWER");
 			
@@ -145,5 +145,4 @@ public class DrawerAssignmentAction extends PosAction {
 			throw e;
 		} 
 	}
-
 }
