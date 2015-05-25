@@ -2,6 +2,7 @@ package com.floreantpos.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,13 +27,14 @@ public class TicketListView extends JPanel {
 
 	public TicketListView() {
 		table = new TicketListTable();
-		table.setSortable(false);
-		table.setColumnControlVisible(false);
+		table.setSortable(true);
+		table.setColumnControlVisible(true);
 		table.setModel(tableModel = new TicketListTableModel());
 		table.setRowHeight(60);
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
 		table.setDefaultRenderer(Object.class, new PosTableRenderer());
 		table.setGridColor(Color.LIGHT_GRAY);
+		table.getTableHeader().setPreferredSize(new Dimension(100, 40));
 		
 		TableColumnModel columnModel = table.getColumnModel();
 		columnModel.getColumn(0).setPreferredWidth(30);
@@ -61,7 +63,7 @@ public class TicketListView extends JPanel {
 			return null;
 		}
 
-		return (Ticket) tableModel.getRowData(selectedRow);
+		return (Ticket) tableModel.getRowData(table.convertRowIndexToModel(selectedRow));
 	}
 
 	public List<Ticket> getSelectedTickets() {
@@ -70,7 +72,7 @@ public class TicketListView extends JPanel {
 		ArrayList<Ticket> tickets = new ArrayList<Ticket>(selectedRows.length);
 
 		for (int i = 0; i < selectedRows.length; i++) {
-			Ticket ticket = (Ticket) tableModel.getRowData(selectedRows[i]);
+			Ticket ticket = (Ticket) tableModel.getRowData(table.convertRowIndexToModel(selectedRows[i]));
 			tickets.add(ticket);
 		}
 		
