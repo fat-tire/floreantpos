@@ -9,6 +9,10 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JSeparator;
@@ -17,13 +21,18 @@ import javax.swing.border.EmptyBorder;
 import org.apache.commons.lang.StringUtils;
 
 import com.floreantpos.POSConstants;
+import com.floreantpos.config.TerminalConfig;
+import com.floreantpos.model.User;
+import com.floreantpos.model.dao.UserDAO;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.ui.TitlePanel;
-import com.floreantpos.util.POSUtil;
 
 public class PasswordEntryDialog extends POSDialog implements ActionListener {
 	private TitlePanel titlePanel;
-	private JPasswordField tfPassword = new JPasswordField();
+	private JPasswordField tfPassword;
+	private JLabel statusLabel;
+	
+	private User user;
 
 	public PasswordEntryDialog() {
 		init();
@@ -31,101 +40,138 @@ public class PasswordEntryDialog extends POSDialog implements ActionListener {
 
 	private void init() {
 		setResizable(false);
-		
+
 		JPanel container = (JPanel) getContentPane();
-		container.setBorder(new EmptyBorder(5,5,5,5));
+		container.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setLayout(new BorderLayout());
 
 		titlePanel = new TitlePanel();
 		add(titlePanel, BorderLayout.NORTH);
 
 		JPanel contentPane = new JPanel(new BorderLayout(10, 10));
-		contentPane.setBorder(new EmptyBorder(10,0,0,0));
+		contentPane.setBorder(new EmptyBorder(10, 0, 0, 0));
 		add(contentPane);
 
-		tfPassword.setFont(tfPassword.getFont().deriveFont(Font.BOLD, 24));
-		tfPassword.setFocusable(true);
-		tfPassword.requestFocus();
-		tfPassword.setBackground(Color.WHITE);
-		contentPane.add(tfPassword, BorderLayout.NORTH);
+		JPanel inputPanel = createInputPanel();
+		contentPane.add(inputPanel, BorderLayout.NORTH);
 
-		// PosButton posButton = new PosButton(POSConstants.CLEAR_ALL);
-		// posButton.setFocusable(false);
-		// posButton.setMinimumSize(new Dimension(25, 23));
-		// posButton.addActionListener(this);
-		// contentPane.add(posButton, "growy,height 55,wrap");
-		
-		JPanel buttonPanel = new JPanel(new GridLayout(0, 3, 5, 5));
-		contentPane.add(buttonPanel);
+		JPanel keyboardPanel = createKeyboardPanel();
+		contentPane.add(keyboardPanel);
 
-		String[][] numbers = { { "7", "8", "9" }, { "4", "5", "6" }, { "1", "2", "3" }, { "", "0", "CLEAR" } };
-//		String[][] iconNames = new String[][] { { "7_32.png", "8_32.png", "9_32.png" }, { "4_32.png", "5_32.png", "6.png" },
-//				{ "1_32.png", "2_32.png", "3_32.png" }, { "", "0_32.png", "clear.png" } };
-
-		Dimension size = new Dimension(160, 80);
-		
-		for (int i = 0; i < numbers.length; i++) {
-			for (int j = 0; j < numbers[i].length; j++) {
-				PosButton posButton = new PosButton();
-				posButton.setPreferredSize(size);
-				String buttonText = String.valueOf(numbers[i][j]);
-
-				posButton.setText(buttonText);
-				posButton.setActionCommand(buttonText);
-				posButton.addActionListener(this);
-				buttonPanel.add(posButton);
-			}
-		}
-		
 		JPanel bottomPanel = new JPanel(new BorderLayout(5, 5));
-		bottomPanel.setBorder(new EmptyBorder(15, 0, 0, 0));
 		contentPane.add(bottomPanel, BorderLayout.SOUTH);
-		
+
 		bottomPanel.add(new JSeparator(JSeparator.HORIZONTAL), BorderLayout.NORTH);
-		
+
 		JPanel bottomButtonPanel = new JPanel(new GridLayout(1, 0, 10, 10));
 		bottomPanel.add(bottomButtonPanel);
-		
+
 		PosButton btnOk = new PosButton(POSConstants.OK.toUpperCase());
-		btnOk.setPreferredSize(size);
 		btnOk.addActionListener(this);
 		bottomButtonPanel.add(btnOk);
-		
+
 		PosButton btnCancel = new PosButton(POSConstants.CANCEL.toUpperCase());
-		btnCancel.setPreferredSize(size);
 		btnCancel.addActionListener(this);
 		bottomButtonPanel.add(btnCancel);
 	}
 
+	private JPanel createInputPanel() {
+		JPanel inputPanel = new JPanel(new BorderLayout(5, 5));
+
+		tfPassword = new JPasswordField();
+		tfPassword.setFont(tfPassword.getFont().deriveFont(Font.BOLD, 24));
+		tfPassword.setFocusable(true);
+		tfPassword.requestFocus();
+		tfPassword.setBackground(Color.WHITE);
+		inputPanel.add(tfPassword, BorderLayout.NORTH);
+
+		statusLabel = new JLabel();
+		statusLabel.setHorizontalAlignment(JLabel.CENTER);
+		inputPanel.add(statusLabel);
+
+		return inputPanel;
+	}
+
+	private JPanel createKeyboardPanel() {
+		JPanel buttonPanel = new JPanel(new GridLayout(0, 3, 5, 5));
+
+		String[][] numbers = { { "7", "8", "9" }, { "4", "5", "6" }, { "1", "2", "3" }, { "0", "CLEAR", "CLEAR ALL" } };
+		String[][] iconNames = new String[][] { { "7.png", "8.png", "9.png" }, { "4.png", "5.png", "6.png" }, { "1.png", "2.png", "3.png" },
+				{ "0.png", "clear.png", "clear.png" } };
+
+		Dimension size = new Dimension(120, 80);
+
+		for (int i = 0; i < numbers.length; i++) {
+			for (int j = 0; j < numbers[i].length; j++) {
+				String buttonText = String.valueOf(numbers[i][j]);
+
+				PosButton posButton = new PosButton();
+				if (buttonText.startsWith("CLEAR")) {
+					posButton.setText(buttonText);
+					posButton.addActionListener(this);
+				}
+				else {
+					posButton.setAction(loginAction);
+				}
+
+				ImageIcon icon = com.floreantpos.IconFactory.getIcon("/ui_icons/", iconNames[i][j]);
+				if (icon != null) {
+					posButton.setIcon(icon);
+				}
+				else {
+					posButton.setText(buttonText);
+				}
+
+				posButton.setPreferredSize(size);
+				posButton.setActionCommand(buttonText);
+				buttonPanel.add(posButton);
+			}
+		}
+		return buttonPanel;
+	}
+
 	private void doOk() {
-		char[] password = tfPassword.getPassword();
-
-		if (password == null || password.length == 0) {
-			POSMessageDialog.showError(this, "Please enter password");
-			return;
+//		char[] password = tfPassword.getPassword();
+//
+//		if (password == null || password.length == 0) {
+//			POSMessageDialog.showError(this, "Please enter password");
+//			return;
+//		}
+//
+//		boolean validPassword = POSUtil.isValidPassword(password);
+//		if (!validPassword) {
+//			//POSMessageDialog.showError(this, "The password is not valid. Password can only contain digit.");
+//			
+//			return;
+//		}
+//
+//		setCanceled(false);
+//		dispose();
+		
+		if(checkLogin(getPasswordAsString())) {
+			setCanceled(false);
+			dispose();
 		}
-
-		boolean validPassword = POSUtil.isValidPassword(password);
-		if (!validPassword) {
-			POSMessageDialog.showError(this, "The password is not valid. Password can only contain digit.");
-			return;
-		}
-
-		setCanceled(false);
-		dispose();
 	}
 
 	private void doCancel() {
+		user = null;
 		setCanceled(true);
 		dispose();
 	}
 
 	private void doClearAll() {
+		statusLabel.setText("");
 		tfPassword.setText("");
 	}
 
 	private void doClear() {
-		tfPassword.setText("");
+		statusLabel.setText("");
+		String passwordAsString = getPasswordAsString();
+		if (StringUtils.isNotEmpty(passwordAsString)) {
+			passwordAsString = passwordAsString.substring(0, passwordAsString.length() - 1);
+		}
+		tfPassword.setText(passwordAsString);
 	}
 
 	public void actionPerformed(ActionEvent e) {
@@ -176,11 +222,54 @@ public class PasswordEntryDialog extends POSDialog implements ActionListener {
 		dialog2.pack();
 		dialog2.setLocationRelativeTo(parent);
 		dialog2.setVisible(true);
-		
-		if(dialog2.isCanceled()) {
+
+		if (dialog2.isCanceled()) {
 			return null;
 		}
 
 		return dialog2.getPasswordAsString();
+	}
+	
+	public static User getUser(Component parent, String title) {
+		PasswordEntryDialog dialog2 = new PasswordEntryDialog();
+		dialog2.setTitle(title);
+		dialog2.pack();
+		dialog2.setLocationRelativeTo(parent);
+		dialog2.setVisible(true);
+		
+		if (dialog2.isCanceled()) {
+			return null;
+		}
+		
+		return dialog2.getUser();
+	}
+
+	private synchronized boolean checkLogin(String secretKey) {
+		user = UserDAO.getInstance().findUserBySecretKey(secretKey);
+		if (user == null) {
+			statusLabel.setText("Wrong password, please try again.");
+			return false;
+		}
+
+		return true;
+	}
+
+	Action loginAction = new AbstractAction() {
+		public void actionPerformed(ActionEvent e) {
+			tfPassword.setText(getPasswordAsString() + e.getActionCommand());
+
+			String secretKey = getPasswordAsString();
+			if (secretKey != null && secretKey.length() == TerminalConfig.getDefaultPassLen()) {
+				statusLabel.setText("");
+				if(checkLogin(secretKey)) {
+					setCanceled(false);
+					dispose();
+				}
+			}
+		}
+	};
+
+	public User getUser() {
+		return user;
 	}
 }

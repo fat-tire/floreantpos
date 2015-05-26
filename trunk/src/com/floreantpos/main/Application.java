@@ -43,7 +43,6 @@ import com.floreantpos.model.dao.OrderTypePropertiesDAO;
 import com.floreantpos.model.dao.PrinterConfigurationDAO;
 import com.floreantpos.model.dao.RestaurantDAO;
 import com.floreantpos.model.dao.TerminalDAO;
-import com.floreantpos.model.dao.UserDAO;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.views.CashierSwitchBoardView;
 import com.floreantpos.ui.views.LoginView;
@@ -55,7 +54,6 @@ import com.floreantpos.util.DatabaseUtil;
 import com.floreantpos.util.POSUtil;
 import com.floreantpos.util.ShiftException;
 import com.floreantpos.util.ShiftUtil;
-import com.floreantpos.util.UserNotFoundException;
 import com.jgoodies.looks.plastic.PlasticXPLookAndFeel;
 import com.jgoodies.looks.plastic.theme.ExperienceBlue;
 
@@ -367,14 +365,11 @@ public class Application {
         }
 	}
 
-	public synchronized void doLogin(String secretKey) {
+	public synchronized void doLogin(User user) {
 		initializeSystem();
 
-		UserDAO dao = new UserDAO();
-		User user = dao.findUserBySecretKey(secretKey);
-
 		if (user == null) {
-			throw new UserNotFoundException();
+			return;
 		}
 
 		Shift currentShift = ShiftUtil.getCurrentShift();
