@@ -11,8 +11,6 @@ import javax.swing.Action;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import org.apache.commons.lang.StringUtils;
-
 import com.floreantpos.IconFactory;
 import com.floreantpos.POSConstants;
 import com.floreantpos.main.Application;
@@ -20,7 +18,6 @@ import com.floreantpos.model.AttendenceHistory;
 import com.floreantpos.model.Shift;
 import com.floreantpos.model.User;
 import com.floreantpos.model.dao.AttendenceHistoryDAO;
-import com.floreantpos.model.dao.UserDAO;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.ui.dialog.POSDialog;
 import com.floreantpos.ui.dialog.POSMessageDialog;
@@ -45,16 +42,20 @@ public class ClockInOutAction extends PosAction {
 
 	@Override
 	public void execute() {
+		final User user = PasswordEntryDialog.getUser(Application.getPosWindow(), "ENTER SECRET KEY");
+		if (user == null) {
+			return;
+		}
+		
 		final POSDialog dialog = new POSDialog(Application.getPosWindow(), true);
 		dialog.setTitle("SELECT ACTION");
 		
 		PosButton btnClockIn = new PosButton("CLOCK IN");
-		btnClockIn.setPreferredSize(new Dimension(150, 120));
 		btnClockIn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				dialog.dispose();
-				performClockIn();
+				performClockIn(user);
 			}
 		});
 		
@@ -63,12 +64,12 @@ public class ClockInOutAction extends PosAction {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				dialog.dispose();
-				
-				performClockOut();
+				performClockOut(user);
 			}
 		});
 		
 		PosButton btnCancel = new PosButton("CANCEL");
+		btnCancel.setPreferredSize(new Dimension(150, 120));
 		btnCancel.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -79,28 +80,22 @@ public class ClockInOutAction extends PosAction {
 		JPanel contentPane = (JPanel) dialog.getContentPane();
 		contentPane.setBorder(new EmptyBorder(10, 10, 10, 10));
 		contentPane.setLayout(new GridLayout(1, 0, 10, 10));
-		contentPane.add(btnClockIn);
-		contentPane.add(btnClockOut);
+		
+		if(user.isClockedIn()) {
+			contentPane.add(btnClockOut);
+		}
+		else {
+			contentPane.add(btnClockIn);
+		}
+		
 		contentPane.add(btnCancel);
 		dialog.pack();
 		dialog.open();
 	}
 
-	private void performClockOut() {
+	private void performClockOut(User user) {
 		try {
-			String password = PasswordEntryDialog.show(Application.getPosWindow(), "Please enter user secret key");
-			if (StringUtils.isEmpty(password)) {
-				return;
-			}
-
-			User user = UserDAO.getInstance().findUserBySecretKey(password);
 			if (user == null) {
-				POSMessageDialog.showError("No user found with that secret key");
-				return;
-			}
-
-			if (user.isClockedIn() == null || !user.isClockedIn().booleanValue()) {
-				POSMessageDialog.showMessage("User " + user.getFirstName() + " " + user.getLastName() + " is not clocked in.");
 				return;
 			}
 
@@ -129,16 +124,9 @@ public class ClockInOutAction extends PosAction {
 		}
 	}
 
-	private void performClockIn() {
+	private void performClockIn(User user) {
 		try {
-			String password = PasswordEntryDialog.show(Application.getPosWindow(), "Please enter user secret key");
-			if (StringUtils.isEmpty(password)) {
-				return;
-			}
-
-			User user = UserDAO.getInstance().findUserBySecretKey(password);
 			if (user == null) {
-				POSMessageDialog.showError("No user found with that secret key");
 				return;
 			}
 			
