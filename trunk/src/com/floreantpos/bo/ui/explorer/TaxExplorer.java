@@ -65,7 +65,8 @@ public class TaxExplorer extends TransparentPanel {
 
 					Tax tax = taxList.get(index);
 
-					BeanEditorDialog dialog = new BeanEditorDialog(new TaxForm(tax));
+					TaxForm taxForm = new TaxForm(tax);
+					BeanEditorDialog dialog = new BeanEditorDialog(taxForm);
 					dialog.open();
 					if (dialog.isCanceled())
 						return;
