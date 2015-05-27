@@ -8,6 +8,7 @@ package com.floreantpos.ui.model;
 
 import com.floreantpos.model.Tax;
 import com.floreantpos.model.dao.TaxDAO;
+import com.floreantpos.swing.DoubleTextField;
 import com.floreantpos.swing.MessageDialog;
 import com.floreantpos.ui.BeanEditor;
 import com.floreantpos.util.POSUtil;
@@ -39,7 +40,7 @@ public class TaxForm extends BeanEditor {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         tfName = new com.floreantpos.swing.FixedLengthTextField();
-        tfRate = new javax.swing.JFormattedTextField();
+        tfRate = new DoubleTextField();
         jLabel3 = new javax.swing.JLabel();
 
         jLabel1.setText(com.floreantpos.POSConstants.NAME + ":");
@@ -90,7 +91,7 @@ public class TaxForm extends BeanEditor {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private com.floreantpos.swing.FixedLengthTextField tfName;
-    private javax.swing.JFormattedTextField tfRate;
+    private DoubleTextField tfRate;
     // End of variables declaration//GEN-END:variables
 	@Override
 	public boolean save() {
@@ -113,7 +114,7 @@ public class TaxForm extends BeanEditor {
 	protected void updateView() {
 		Tax tax = (Tax) getBean();
 		tfName.setText(tax.getName());
-		tfRate.setValue(Double.valueOf(tax.getRate()));
+		tfRate.setText("" + tax.getRate());
 	}
 
 	@Override
@@ -127,7 +128,7 @@ public class TaxForm extends BeanEditor {
     	}
 		
 		tax.setName(name);
-		tax.setRate(new Double(tfRate.getValue().toString()).doubleValue());
+		tax.setRate(tfRate.getDouble());
 		
 		return true;
 	}
