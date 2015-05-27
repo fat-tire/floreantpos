@@ -9,9 +9,9 @@ import java.util.List;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
-import javax.swing.table.TableColumnModel;
 
 import org.jdesktop.swingx.JXTable;
+import org.jdesktop.swingx.table.TableColumnModelExt;
 
 import com.floreantpos.POSConstants;
 import com.floreantpos.bo.ui.explorer.ListTableModel;
@@ -36,11 +36,18 @@ public class TicketListView extends JPanel {
 		table.setGridColor(Color.LIGHT_GRAY);
 		table.getTableHeader().setPreferredSize(new Dimension(100, 40));
 		
-		TableColumnModel columnModel = table.getColumnModel();
+		TableColumnModelExt columnModel = (TableColumnModelExt) table.getColumnModel();
 		columnModel.getColumn(0).setPreferredWidth(30);
 		columnModel.getColumn(1).setPreferredWidth(20);
 		columnModel.getColumn(2).setPreferredWidth(100);
 		columnModel.getColumn(3).setPreferredWidth(100);
+		
+		columnModel.getColumnExt(5).setVisible(false);
+		columnModel.getColumnExt(4).setVisible(false);
+		columnModel.getColumnExt(3).setVisible(false);
+		columnModel.getColumnExt(2).setVisible(false);
+		columnModel.getColumnExt(1).setVisible(false);
+		
 
 		PosScrollPane scrollPane = new PosScrollPane(table, PosScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, PosScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
@@ -79,10 +86,6 @@ public class TicketListView extends JPanel {
 		return tickets;
 	}
 
-	// public void removeTicket(Ticket ticket) {
-	// tableModel.
-	// }
-
 	private class TicketListTable extends JXTable {
 		
 		public TicketListTable() {
@@ -103,7 +106,11 @@ public class TicketListView extends JPanel {
 
 	private class TicketListTableModel extends ListTableModel {
 		public TicketListTableModel() {
-			super(new String[] { POSConstants.ID, POSConstants.SERVER, POSConstants.TICKET_TYPE, "STATUS", POSConstants.TOTAL, POSConstants.DUE });
+			super(new String[] { POSConstants.TICKET_LIST_COLUMN_ID, POSConstants.TICKET_LIST_COLUMN_TABLE,
+					POSConstants.TICKET_LIST_COLUMN_SERVER, POSConstants.TICKET_LIST_COLUMN_CREATE_DATE, 
+					POSConstants.TICKET_LIST_COLUMN_CUSTOMER, POSConstants.TICKET_LIST_COLUMN_DELIVERY_DATE,
+					POSConstants.TICKET_LIST_COLUMN_TICKET_TYPE, POSConstants.TICKET_LIST_COLUMN_STATUS, 
+					POSConstants.TICKET_LIST_COLUMN_TOTAL, POSConstants.TICKET_LIST_COLUMN_DUE });
 		}
 
 		public Object getValueAt(int rowIndex, int columnIndex) {
@@ -114,13 +121,31 @@ public class TicketListView extends JPanel {
 				return Integer.valueOf(ticket.getId());
 
 			case 1:
+				return ticket.getTableNumbers();
+
+			case 2:
 					User owner = ticket.getOwner();
 					return owner.getFirstName();
 
-			case 2:
+			case 3:
+				return ticket.getCreateDate();
+
+			case 4:
+				String customerPhone = ticket.getProperty(Ticket.CUSTOMER_PHONE);
+				
+				if (customerPhone != null) {
+					return customerPhone;
+				}
+
+				return "Guest";
+
+			case 5:
+				return ticket.getDeliveryDate();
+
+			case 6:
 				return ticket.getType();
 				
-			case 3:
+			case 7:
 				String status = "";
 				if(ticket.isPaid()) {
 					status = "PAID";
@@ -143,10 +168,10 @@ public class TicketListView extends JPanel {
 				
 				return status;
 
-			case 4:
+			case 8:
 				return ticket.getTotalAmount();
 
-			case 5:
+			case 9:
 				return ticket.getDueAmount();
 
 			}
