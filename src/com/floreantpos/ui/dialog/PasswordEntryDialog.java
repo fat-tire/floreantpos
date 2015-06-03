@@ -8,6 +8,8 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -83,6 +85,29 @@ public class PasswordEntryDialog extends POSDialog implements ActionListener {
 		tfPassword.setFocusable(true);
 		tfPassword.requestFocus();
 		tfPassword.setBackground(Color.WHITE);
+		tfPassword.addKeyListener(new KeyListener() {
+			
+			@Override
+			public void keyTyped(KeyEvent e) {
+				
+			}
+			
+			@Override
+			public void keyReleased(KeyEvent e) {
+				String secretKey = getPasswordAsString();
+				if (secretKey != null && secretKey.length() == TerminalConfig.getDefaultPassLen()) {
+					statusLabel.setText("");
+					if(checkLogin(secretKey)) {
+						setCanceled(false);
+						dispose();
+					}
+				}
+			}
+			
+			@Override
+			public void keyPressed(KeyEvent e) {
+			}
+		});
 		inputPanel.add(tfPassword, BorderLayout.NORTH);
 
 		statusLabel = new JLabel();
@@ -231,8 +256,12 @@ public class PasswordEntryDialog extends POSDialog implements ActionListener {
 	}
 	
 	public static User getUser(Component parent, String title) {
+		return getUser(parent, title, title);
+	}
+	
+	public static User getUser(Component parent, String windowTitle, String title) {
 		PasswordEntryDialog dialog2 = new PasswordEntryDialog();
-		dialog2.setTitle(title);
+		dialog2.setDialogTitle(windowTitle);
 		dialog2.pack();
 		dialog2.setLocationRelativeTo(parent);
 		dialog2.setVisible(true);
