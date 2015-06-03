@@ -151,7 +151,7 @@ class LoginPasswordEntryView extends JPanel {
 
 	public synchronized void doLogin() {
 		try {
-			final User user = PasswordEntryDialog.getUser(Application.getPosWindow(), "ENTER SECRET KEY");
+			final User user = PasswordEntryDialog.getUser(Application.getPosWindow(), "LOGIN", "ENTER SECRET KEY");
 			if (user == null) {
 				return;
 			}
