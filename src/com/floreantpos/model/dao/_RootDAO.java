@@ -140,7 +140,7 @@ public abstract class _RootDAO extends com.floreantpos.model.dao._BaseRootDAO {
 		configuration = configuration.setProperty("hibernate.connection.url", AppConfig.getConnectString());
 		configuration = configuration.setProperty("hibernate.connection.username", AppConfig.getDatabaseUser());
 		configuration = configuration.setProperty("hibernate.connection.password", AppConfig.getDatabasePassword());
-		//configuration = configuration.setProperty("hibernate.hbm2ddl.auto", "update");
+		configuration = configuration.setProperty("hibernate.hbm2ddl.auto", "update");
 		configuration = configuration.setProperty("hibernate.connection.autocommit", "false");
 		configuration = configuration.setProperty("hibernate.max_fetch_depth", "3");
 		configuration = configuration.setProperty("hibernate.show_sql", "false");
