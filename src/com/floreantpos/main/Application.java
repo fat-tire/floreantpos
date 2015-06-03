@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Random;
 
@@ -52,7 +53,6 @@ import com.floreantpos.ui.views.order.RootView;
 import com.floreantpos.util.DatabaseConnectionException;
 import com.floreantpos.util.DatabaseUtil;
 import com.floreantpos.util.POSUtil;
-import com.floreantpos.util.ShiftException;
 import com.floreantpos.util.ShiftUtil;
 import com.jgoodies.looks.plastic.PlasticXPLookAndFeel;
 import com.jgoodies.looks.plastic.theme.ExperienceBlue;
@@ -118,9 +118,9 @@ public class Application {
 
 	private void setApplicationLook() {
 		try {
-			
+
 			initializeFont();
-			
+
 			PlasticXPLookAndFeel.setPlasticTheme(new ExperienceBlue());
 			UIManager.setLookAndFeel(new PlasticXPLookAndFeel());
 			//UIManager.setLookAndFeel(new NimbusLookAndFeel());
@@ -133,15 +133,15 @@ public class Application {
 
 	private void initializeFont() {
 		String uiDefaultFont = TerminalConfig.getUiDefaultFont();
-		if(StringUtils.isEmpty(uiDefaultFont)) {
+		if (StringUtils.isEmpty(uiDefaultFont)) {
 			return;
 		}
-		
+
 		Font sourceFont = UIManager.getFont("Label.font");
 		Font font = new Font(uiDefaultFont, sourceFont.getStyle(), sourceFont.getSize());
-		
+
 		UIManager.put("ArrowButton.size", 40);
-		UIManager.put("OptionPane.buttonFont", new FontUIResource(new Font("ARIAL",Font.PLAIN,35)));
+		UIManager.put("OptionPane.buttonFont", new FontUIResource(new Font("ARIAL", Font.PLAIN, 35)));
 		UIManager.put("Button.font", font);
 		UIManager.put("ToggleButton.font", font);
 		UIManager.put("RadioButton.font", font);
@@ -222,7 +222,7 @@ public class Application {
 
 	private void loadPrinters() {
 		printers = PosPrinters.load();
-		if(printers == null) {
+		if (printers == null) {
 			printers = new PosPrinters();
 		}
 	}
@@ -269,7 +269,6 @@ public class Application {
 
 		TerminalConfig.setTerminalId(terminalId);
 		RootView.getInstance().getLoginScreen().setTerminalId(terminalId);
-		
 
 		if (terminal.isHasCashDrawer() && terminal.isAutoDrawerPullEnable() && autoDrawerPullTimer == null) {
 			autoDrawerPullTimer = new Timer(60 * 1000, new AutoDrawerPullAction());
@@ -283,7 +282,7 @@ public class Application {
 		}
 
 		this.terminal = terminal;
-		
+
 		OrderTypePropertiesDAO.populate();
 	}
 
@@ -335,34 +334,34 @@ public class Application {
 		JOptionPane optionPane = new JOptionPane(com.floreantpos.POSConstants.SURE_SHUTDOWN_, JOptionPane.QUESTION_MESSAGE, JOptionPane.YES_NO_OPTION);
 		Object[] options = optionPane.getComponents();
 		for (Object object : options) {
-			if(object instanceof JPanel) {
+			if (object instanceof JPanel) {
 				JPanel panel = (JPanel) object;
 				Component[] components = panel.getComponents();
 				for (Component component : components) {
-					if(component instanceof JButton) {
+					if (component instanceof JButton) {
 						component.setPreferredSize(new Dimension(component.getPreferredSize().width, 60));
 					}
 				}
 			}
 		}
-		
+
 		JDialog dialog = optionPane.createDialog(POSUtil.getFocusedWindow(), com.floreantpos.POSConstants.MDS_POS);
 		dialog.setVisible(true);
-		
+
 		//		int option = JOptionPane.showOptionDialog(getPosWindow(), com.floreantpos.POSConstants.SURE_SHUTDOWN_, com.floreantpos.POSConstants.CONFIRM_SHUTDOWN,
 		//				JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
-		
+
 		Object selectedValue = optionPane.getValue();
 
-        if(selectedValue == null)
-            return;
-        
-        if(selectedValue instanceof Integer) {
-            if(((Integer)selectedValue).intValue() == JOptionPane.YES_OPTION) {
-            	posWindow.saveSizeAndLocation();
-        		System.exit(0);
-            }
-        }
+		if (selectedValue == null)
+			return;
+
+		if (selectedValue instanceof Integer) {
+			if (((Integer) selectedValue).intValue() == JOptionPane.YES_OPTION) {
+				posWindow.saveSizeAndLocation();
+				System.exit(0);
+			}
+		}
 	}
 
 	public synchronized void doLogin(User user) {
@@ -371,34 +370,45 @@ public class Application {
 		if (user == null) {
 			return;
 		}
-
+		
 		Shift currentShift = ShiftUtil.getCurrentShift();
-		if (currentShift == null) {
-			throw new ShiftException(POSConstants.NO_SHIFT_CONFIGURED);
-		}
+		setCurrentShift(currentShift);
+		
+		if (!user.isClockedIn()) {
 
-		ShiftUtil.adjustUserShiftAndClockIn(user, currentShift);
+			int option = POSMessageDialog.showYesNoQuestionDialog(posWindow, "You are currently clocked out. Do you want to be clocked in too?", "Confirm");
+			if (option == JOptionPane.YES_OPTION) {
+
+				
+
+				//			if (currentShift == null) {
+				//				throw new ShiftException(POSConstants.NO_SHIFT_CONFIGURED);
+				//			}
+
+				Calendar currentTime = Calendar.getInstance();
+				user.doClockIn(getTerminal(), currentShift, currentTime);
+				//			ShiftUtil.adjustUserShiftAndClockIn(user, currentShift);
+			}
+		}
 
 		setCurrentUser(user);
-		setCurrentShift(currentShift);
-
-		RootView rootView = getRootView();
 		
-		if(!rootView.hasView(OrderView.VIEW_NAME)) {
+		RootView rootView = getRootView();
+
+		if (!rootView.hasView(OrderView.VIEW_NAME)) {
 			rootView.addView(OrderView.getInstance());
 		}
-		
-		if(TerminalConfig.isCashierMode()) {
-			//SwitchboardView.doTakeout(OrderType.TAKE_OUT);
-			if(!rootView.hasView(CashierSwitchBoardView.VIEW_NAME)) {
+
+		if (TerminalConfig.isCashierMode()) {
+			if (!rootView.hasView(CashierSwitchBoardView.VIEW_NAME)) {
 				CashierSwitchBoardView view = new CashierSwitchBoardView();
 				rootView.addView(view);
 			}
-			
+
 			rootView.showView(CashierSwitchBoardView.VIEW_NAME);
 		}
-		else if(TerminalConfig.isKitchenMode()) {
-			if(rootView.hasView(KitchenDisplayView.VIEW_NAME)) {
+		else if (TerminalConfig.isKitchenMode()) {
+			if (rootView.hasView(KitchenDisplayView.VIEW_NAME)) {
 				rootView.showView(KitchenDisplayView.VIEW_NAME);
 			}
 			else {
@@ -411,7 +421,7 @@ public class Application {
 			rootView.showView(SwitchboardView.getInstance());
 		}
 	}
-	
+
 	public void doLogout() {
 		currentShift = null;
 		setCurrentUser(null);
@@ -448,7 +458,7 @@ public class Application {
 	//	public static PrinterConfiguration getPrinterConfiguration() {
 	//		return getInstance().printConfiguration;
 	//	}
-	
+
 	public static PosPrinters getPrinters() {
 		return getInstance().printers;
 	}
@@ -531,7 +541,7 @@ public class Application {
 
 		return POSUtil.getBoolean(restaurant.isItemPriceIncludesTax());
 	}
-	
+
 	public String getLocation() {
 		File file = new File(getClass().getProtectionDomain().getCodeSource().getLocation().getFile());
 		return file.getParent();
