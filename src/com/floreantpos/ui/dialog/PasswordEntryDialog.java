@@ -261,6 +261,7 @@ public class PasswordEntryDialog extends POSDialog implements ActionListener {
 	
 	public static User getUser(Component parent, String windowTitle, String title) {
 		PasswordEntryDialog dialog2 = new PasswordEntryDialog();
+		dialog2.setTitle(title);
 		dialog2.setDialogTitle(windowTitle);
 		dialog2.pack();
 		dialog2.setLocationRelativeTo(parent);
