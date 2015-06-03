@@ -12,7 +12,6 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import com.floreantpos.IconFactory;
-import com.floreantpos.POSConstants;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.AttendenceHistory;
 import com.floreantpos.model.Shift;
@@ -22,7 +21,6 @@ import com.floreantpos.swing.PosButton;
 import com.floreantpos.ui.dialog.POSDialog;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.dialog.PasswordEntryDialog;
-import com.floreantpos.util.ShiftException;
 import com.floreantpos.util.ShiftUtil;
 
 public class ClockInOutAction extends PosAction {
@@ -136,11 +134,14 @@ public class ClockInOutAction extends PosAction {
 			}
 
 			Shift currentShift = ShiftUtil.getCurrentShift();
-			if (currentShift == null) {
-				throw new ShiftException(POSConstants.NO_SHIFT_CONFIGURED);
-			}
+//			if (currentShift == null) {
+//				throw new ShiftException(POSConstants.NO_SHIFT_CONFIGURED);
+//			}
 
-			ShiftUtil.adjustUserShiftAndClockIn(user, currentShift);
+//			ShiftUtil.adjustUserShiftAndClockIn(user, currentShift);
+			
+			Calendar currentTime = Calendar.getInstance();
+			user.doClockIn(Application.getInstance().getTerminal(), currentShift, currentTime);
 
 			POSMessageDialog.showMessage("User " + user.getFirstName() + " " + user.getLastName() + " is clocked in.");
 		} catch (Exception e) {
