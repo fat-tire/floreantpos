@@ -44,7 +44,7 @@ public class PasswordEntryDialog extends POSDialog implements ActionListener {
 		setResizable(false);
 
 		JPanel container = (JPanel) getContentPane();
-		container.setBorder(new EmptyBorder(5, 5, 5, 5));
+		container.setBorder(new EmptyBorder(5, 15, 10, 15));
 		setLayout(new BorderLayout());
 
 		titlePanel = new TitlePanel();
@@ -148,6 +148,7 @@ public class PasswordEntryDialog extends POSDialog implements ActionListener {
 				}
 
 				posButton.setPreferredSize(size);
+				posButton.setIconTextGap(0);
 				posButton.setActionCommand(buttonText);
 				buttonPanel.add(posButton);
 			}
