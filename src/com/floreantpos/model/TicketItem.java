@@ -319,4 +319,19 @@ public class TicketItem extends BaseTicketItem implements ITicketItem {
 		
 		return printers.getDefaultKitchenPrinter();
 	}
+
+	@Override
+	public boolean canAddDiscount() {
+		return true;
+	}
+
+	@Override
+	public boolean canVoid() {
+		return true;
+	}
+
+	@Override
+	public boolean canAddAdOn() {
+		return true;
+	}
 }
