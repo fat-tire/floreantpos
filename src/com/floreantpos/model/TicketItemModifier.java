@@ -233,4 +233,28 @@ public class TicketItemModifier extends BaseTicketItemModifier implements ITicke
 	public void setSelected(boolean selected) {
 		this.selected = selected;
 	}
+
+	@Override
+	public boolean canAddDiscount() {
+		return false;
+	}
+
+	@Override
+	public boolean canVoid() {
+		return false;
+	}
+
+	@Override
+	public boolean canAddAdOn() {
+		return false;
+	}
+
+	@Override
+	public void setDiscountAmount(Double amount) {
+	}
+
+	@Override
+	public Double getDiscountAmount() {
+		return null;
+	}
 }
