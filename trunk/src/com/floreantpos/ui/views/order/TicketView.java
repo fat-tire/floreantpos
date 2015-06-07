@@ -143,14 +143,16 @@ public class TicketView extends JPanel {
 
 				Boolean printedToKitchen = item.isPrintedToKitchen();
 
-				btnCookingInstruction.setEnabled(item.canAddCookingInstruction());
 				btnIncreaseAmount.setEnabled(!printedToKitchen);
 				btnDecreaseAmount.setEnabled(!printedToKitchen);
 				btnDelete.setEnabled(!printedToKitchen);
+				
+				getExtraActionPanel().updateView(item);
 			}
 
 		});
 
+		getExtraActionPanel().updateView(null);
 		setPreferredSize(new java.awt.Dimension(480, 463));
 
 	}// </editor-fold>//GEN-END:initComponents
@@ -268,17 +270,10 @@ public class TicketView extends JPanel {
 			}
 		});
 
-		btnCookingInstruction.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				doAddCookingInstruction();
-			}
-		});
-
 		ticketItemActionPanel.add(btnScrollUp);
 		ticketItemActionPanel.add(btnIncreaseAmount);
 		ticketItemActionPanel.add(btnDecreaseAmount);
 		ticketItemActionPanel.add(btnDelete);
-		ticketItemActionPanel.add(btnCookingInstruction);
 		ticketItemActionPanel.add(btnScrollDown);
 
 		ticketItemActionPanel.setPreferredSize(new Dimension(70, 360));
@@ -471,7 +466,7 @@ public class TicketView extends JPanel {
 	private javax.swing.JTextField tfTotal;
 	private com.floreantpos.ui.ticket.TicketViewerTable ticketViewerTable;
 	private ExtraTicketActionPanel extraActionPanel = new ExtraTicketActionPanel();
-	private PosButton btnCookingInstruction = new PosButton(IconFactory.getIcon("/ui_icons/", "cooking-instruction.png"));
+	
 	private TitledBorder titledBorder = new TitledBorder("");
 	private Border border = new CompoundBorder(titledBorder, new EmptyBorder(5, 5, 5, 5));
 
@@ -706,7 +701,7 @@ public class TicketView extends JPanel {
 			});
 
 			buttonPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
-			buttonPanel.setLayout(new java.awt.GridLayout(2, 0, 5, 5));
+			buttonPanel.setLayout(new java.awt.GridLayout(3, 0, 5, 5));
 
 			btnOrderType.setText(com.floreantpos.POSConstants.ORDER_TYPE_BUTTON_TEXT);
 			btnOrderType.addActionListener(new java.awt.event.ActionListener() {
@@ -744,6 +739,31 @@ public class TicketView extends JPanel {
 					btnTableNumberActionPerformed(evt);
 				}
 			});
+			
+			btnCookingInstruction.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					doAddCookingInstruction();
+				}
+			});
+			
+			btnDiscount.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					ITicketItem selectedObject = (ITicketItem) ticketViewerTable.getSelected();
+					if(selectedObject == null || !selectedObject.canAddDiscount()) {
+						return;
+					}
+					
+					double d = NumberSelectionDialog2.takeDoubleInput("Enter amount", "Enter discount amount", selectedObject.getDiscountAmount());
+					selectedObject.setDiscountAmount(d);
+					
+					TicketView.this.updateView();
+				}
+			});
+			
+			buttonPanel.add(btnCookingInstruction);
+			buttonPanel.add(btnDiscount);
+			buttonPanel.add(btnAddOn);
+			buttonPanel.add(btnVoid);
 
 			buttonPanel.add(btnMisc);
 			buttonPanel.add(btnSearchItem);
@@ -895,6 +915,11 @@ public class TicketView extends JPanel {
 		private com.floreantpos.swing.PosButton btnTableNumber;
 		private com.floreantpos.swing.PosButton btnCustomer;
 		private com.floreantpos.swing.PosButton btnSearchItem;
+		
+		private PosButton btnCookingInstruction = new PosButton(IconFactory.getIcon("/ui_icons/", "cooking-instruction.png"));
+		private PosButton btnDiscount = new PosButton("DISCOUNT");
+		private PosButton btnAddOn = new PosButton("ADD ON");
+		private PosButton btnVoid = new PosButton("VOID");
 		private JPanel buttonPanel;
 
 		// End of variables declaration//GEN-END:variables
@@ -915,6 +940,22 @@ public class TicketView extends JPanel {
 					// + ": " + currentTicket.getTableNumbers());
 				}
 			}
+		}
+		
+		public void updateView(ITicketItem item) {
+			if(item == null) {
+				btnCookingInstruction.setEnabled(false);
+				btnDiscount.setEnabled(false);
+				btnVoid.setEnabled(false);
+				btnAddOn.setEnabled(false);
+				
+				return;
+			}
+			
+			btnCookingInstruction.setEnabled(item.canAddCookingInstruction());
+			btnDiscount.setEnabled(item.canAddDiscount());
+			btnVoid.setEnabled(item.canAddAdOn());
+			btnAddOn.setEnabled(item.canVoid());
 		}
 
 		public ItemSelectionListener getItemSelectionListener() {
@@ -940,5 +981,4 @@ public class TicketView extends JPanel {
 			itemSelectionListener.itemSelected(menuItem);
 		}
 	}
-
 }
