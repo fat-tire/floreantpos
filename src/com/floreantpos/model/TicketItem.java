@@ -190,9 +190,13 @@ public class TicketItem extends BaseTicketItem implements ITicketItem {
 	}
 
 	private double calculateDiscount() {
-		double subtotalWithoutModifiers = getSubtotalAmountWithoutModifiers();
 		double discountRate = getDiscountRate();
-
+		
+		if(discountRate < 0) {
+			return getDiscountAmount();
+		}
+		
+		double subtotalWithoutModifiers = getSubtotalAmountWithoutModifiers();
 		double discount = 0;
 		if (discountRate > 0) {
 			discount = subtotalWithoutModifiers * discountRate / 100.0;

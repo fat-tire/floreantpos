@@ -15,6 +15,7 @@ import java.awt.event.ActionListener;
 import java.util.List;
 
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.Border;
@@ -205,6 +206,10 @@ public class TicketView extends JPanel {
 		tfSubtotal = new javax.swing.JTextField(10);
 		tfSubtotal.setHorizontalAlignment(SwingConstants.TRAILING);
 		tfSubtotal.setEditable(false);
+		
+		tfDiscount = new javax.swing.JTextField(10);
+		tfDiscount.setHorizontalAlignment(SwingConstants.TRAILING);
+		tfDiscount.setEditable(false);
 
 		lblTax = new javax.swing.JLabel();
 		lblTax.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -225,12 +230,14 @@ public class TicketView extends JPanel {
 
 		JPanel ticketAmountPanel = new com.floreantpos.swing.TransparentPanel(new MigLayout("ins 2 2 3 2,alignx trailing,fill", "[grow][]", ""));
 
-		ticketAmountPanel.add(lblSubtotal, "cell 0 1,growx,aligny center");
-		ticketAmountPanel.add(tfSubtotal, "cell 1 1,growx,aligny center");
-		ticketAmountPanel.add(lblTax, "cell 0 3,growx,aligny center");
-		ticketAmountPanel.add(tfTax, "cell 1 3,growx,aligny center");
-		ticketAmountPanel.add(lblTotal, "cell 0 5,growx,aligny center");
-		ticketAmountPanel.add(tfTotal, "cell 1 5,growx,aligny center");
+		ticketAmountPanel.add(lblSubtotal, "growx,aligny center");
+		ticketAmountPanel.add(tfSubtotal, "growx,aligny center");
+		ticketAmountPanel.add(new JLabel("Discount:", JLabel.TRAILING), "newline,growx,aligny center");
+		ticketAmountPanel.add(tfDiscount, "growx,aligny center");
+		ticketAmountPanel.add(lblTax, "newline,growx,aligny center");
+		ticketAmountPanel.add(tfTax, "growx,aligny center");
+		ticketAmountPanel.add(lblTotal, "newline,growx,aligny center");
+		ticketAmountPanel.add(tfTotal, "growx,aligny center");
 
 		return ticketAmountPanel;
 	}
@@ -462,6 +469,7 @@ public class TicketView extends JPanel {
 	private com.floreantpos.swing.TransparentPanel ticketItemActionPanel;
 	private javax.swing.JScrollPane ticketScrollPane;
 	private javax.swing.JTextField tfSubtotal;
+	private javax.swing.JTextField tfDiscount;
 	private javax.swing.JTextField tfTax;
 	private javax.swing.JTextField tfTotal;
 	private com.floreantpos.ui.ticket.TicketViewerTable ticketViewerTable;
@@ -507,6 +515,7 @@ public class TicketView extends JPanel {
 	public void updateView() {
 		if (ticket == null) {
 			tfSubtotal.setText("");
+			tfDiscount.setText("");
 			tfTax.setText("");
 			tfTotal.setText("");
 			titledBorder.setTitle("Ticket [ NEW ]");
@@ -516,6 +525,7 @@ public class TicketView extends JPanel {
 		ticket.calculatePrice();
 
 		tfSubtotal.setText(NumberUtil.formatNumber(ticket.getSubtotalAmount()));
+		tfDiscount.setText(NumberUtil.formatNumber(ticket.getDiscountAmount()));
 
 		if (Application.getInstance().isPriceIncludesTax()) {
 			tfTax.setText("INCLUDED");
@@ -754,8 +764,11 @@ public class TicketView extends JPanel {
 					}
 					
 					double d = NumberSelectionDialog2.takeDoubleInput("Enter amount", "Enter discount amount", selectedObject.getDiscountAmount());
+					if(selectedObject instanceof TicketItem) {
+						((TicketItem) selectedObject).setDiscountRate(-1.0);
+					}
 					selectedObject.setDiscountAmount(d);
-					
+					ticketViewerTable.repaint();
 					TicketView.this.updateView();
 				}
 			});
