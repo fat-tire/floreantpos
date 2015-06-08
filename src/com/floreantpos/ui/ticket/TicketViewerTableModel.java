@@ -24,7 +24,7 @@ public class TicketViewerTableModel extends AbstractTableModel {
 
 	private boolean priceIncludesTax = false;
 	
-	protected String[] columnNames = { "Item", "U/Price", "Unit", "Price","D" };
+	protected String[] columnNames = { "Item", "U/Price", "Unit", "Price" };
 
 	private boolean forReciptPrint;
 	private boolean printCookingInstructions;
@@ -80,9 +80,6 @@ public class TicketViewerTableModel extends AbstractTableModel {
 
 			case 3:
 				return ticketItem.getSubTotalAmountWithoutModifiersDisplay();
-				
-			case 4:
-				return ticketItem.getDiscountAmount();
 		}
 
 		return null;
