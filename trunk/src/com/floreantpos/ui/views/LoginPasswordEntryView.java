@@ -139,8 +139,12 @@ class LoginPasswordEntryView extends JPanel {
 		btnShutdown.setFocusable(false);
 
 		if (TerminalConfig.isFullscreenMode()) {
-			btnConfigureDatabase.setVisible(false);
-			btnShutdown.setVisible(false);
+			if(btnConfigureDatabase != null) {
+				btnConfigureDatabase.setVisible(false);
+			}
+			if(btnShutdown != null) {
+				btnShutdown.setVisible(false);
+			}
 		}
 		
 		bottomPanel.add(btnShutdown, "grow, wrap, h 60!");
