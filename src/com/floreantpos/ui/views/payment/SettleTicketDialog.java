@@ -219,15 +219,15 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 				return;
 			}
 
-			PaymentTypeSelectionDialog dialog = new PaymentTypeSelectionDialog();
-			dialog.setResizable(false);
-			dialog.pack();
-			dialog.open();
-			if (dialog.isCanceled()) {
+			PaymentTypeSelectionDialog paymentTypeSelectionDialog = new PaymentTypeSelectionDialog();
+			paymentTypeSelectionDialog.setResizable(false);
+			paymentTypeSelectionDialog.pack();
+			paymentTypeSelectionDialog.open();
+			if (paymentTypeSelectionDialog.isCanceled()) {
 				return;
 			}
 
-			paymentType = dialog.getSelectedPaymentType();
+			paymentType = paymentTypeSelectionDialog.getSelectedPaymentType();
 			cardName = paymentType.getDisplayString();
 			PosTransaction transaction = null;
 
@@ -267,7 +267,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 					giftCertDialog.pack();
 					giftCertDialog.open();
 
-					if (dialog.isCanceled())
+					if (giftCertDialog.isCanceled())
 						return;
 
 					transaction = new GiftCertificateTransaction();

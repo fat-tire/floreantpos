@@ -15,6 +15,7 @@ import org.apache.commons.lang.StringUtils;
 import com.floreantpos.swing.DoubleTextField;
 import com.floreantpos.swing.FixedLengthTextField;
 import com.floreantpos.swing.PosButton;
+import com.floreantpos.swing.QwertyKeyPad;
 import com.floreantpos.ui.TitlePanel;
 import com.floreantpos.ui.dialog.POSDialog;
 import com.floreantpos.ui.dialog.POSMessageDialog;
@@ -22,6 +23,7 @@ import com.floreantpos.ui.dialog.POSMessageDialog;
 public class GiftCertDialog extends POSDialog {
 	private FixedLengthTextField tfGiftCertNumber;
 	private DoubleTextField tfFaceValue;
+	private QwertyKeyPad qwertyKeyPad;
 	
 	public GiftCertDialog(JDialog parent) {
 		super();
@@ -49,8 +51,11 @@ public class GiftCertDialog extends POSDialog {
 		tfFaceValue.setText("50");
 		panel.add(tfFaceValue, "cell 1 1,growx");
 		
-		JPanel panel_1 = new JPanel();
-		getContentPane().add(panel_1, BorderLayout.SOUTH);
+		qwertyKeyPad = new QwertyKeyPad();
+		panel.add(qwertyKeyPad, "newline, gaptop 10px, span");
+		
+		JPanel buttonPanel = new JPanel(new MigLayout("align 50%"));
+		getContentPane().add(buttonPanel, BorderLayout.SOUTH);
 		
 		PosButton psbtnOk = new PosButton();
 		psbtnOk.addActionListener(new ActionListener() {
@@ -70,7 +75,7 @@ public class GiftCertDialog extends POSDialog {
 			}
 		});
 		psbtnOk.setText("OK");
-		panel_1.add(psbtnOk);
+		buttonPanel.add(psbtnOk, "w 100!, h 60!");
 		
 		PosButton psbtnCancel = new PosButton();
 		psbtnCancel.addActionListener(new ActionListener() {
@@ -80,7 +85,7 @@ public class GiftCertDialog extends POSDialog {
 			}
 		});
 		psbtnCancel.setText("CANCEL");
-		panel_1.add(psbtnCancel);
+		buttonPanel.add(psbtnCancel, "w 100!, h 60!");
 		
 	}
 	
