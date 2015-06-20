@@ -409,7 +409,7 @@ public class SalesStatistics {
 			super(new String[] { POSConstants.DAYPART,
 					"profitCenter",
 					POSConstants.CHECK,
-					POSConstants.GUEST_NO_BUTTON_TEXT,
+					"Guest",
 					POSConstants.ENTER,
 					POSConstants.SALES,
 					POSConstants.AVGCHK,
