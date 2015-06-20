@@ -1,7 +1,10 @@
 package com.floreantpos.ui;
 
+import java.awt.AWTEvent;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Toolkit;
+import java.awt.event.AWTEventListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
@@ -31,8 +34,8 @@ public class HeaderPanel extends JPanel {
 
 	private JLabel statusLabel;
 	
-	private final TimerHandler TIMER_HANDLER = new TimerHandler();
-	private Timer timer = new Timer(1000, TIMER_HANDLER);
+	private Timer clockTimer = new Timer(1000, new ClockTimerHandler());
+	private Timer autoLogoffTimer;
 
 	private String userString = Messages.getString("PosMessage.70"); //$NON-NLS-1$
 	private String terminalString = Messages.getString("TERMINAL_LABEL"); //$NON-NLS-1$
@@ -79,7 +82,11 @@ public class HeaderPanel extends JPanel {
 
 		add(new JSeparator(JSeparator.HORIZONTAL), "newline, span 6, grow, gap 0");
 		
-		timer.start();
+		clockTimer.start();
+		
+		if(TerminalConfig.isAutoLogoffEnable()) {
+			autoLogoffTimer = new Timer(1000, new AutoLogoffHandler());
+		}
 	}
 
 	private void showHeader() {
@@ -94,11 +101,19 @@ public class HeaderPanel extends JPanel {
 	}
 	
 	private void startTimer() {
-		timer.start();
+		clockTimer.start();
+		
+		if(autoLogoffTimer != null) {
+			autoLogoffTimer.start();
+		}
 	}
 	
 	private void stopTimer() {
-		timer.stop();
+		clockTimer.stop();
+		
+		if(autoLogoffTimer != null) {
+			autoLogoffTimer.stop();
+		}
 	}
 	
 	@Override
@@ -106,7 +121,6 @@ public class HeaderPanel extends JPanel {
 		super.setVisible(aFlag);
 		
 		if(aFlag) {
-			TIMER_HANDLER.reset();
 			startTimer();
 		}
 		else {
@@ -114,22 +128,37 @@ public class HeaderPanel extends JPanel {
 		}
 	}
 	
-	private class TimerHandler implements ActionListener {
-		int countDown = TerminalConfig.getAutoLogoffTime();
-
+	private class ClockTimerHandler implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if (!isShowing()) {
-				timer.stop();
+				clockTimer.stop();
 				return;
 			}
 			
 			showHeader();
-			
-			checkLogoffOption();
+		}
+	}
+	
+	class AutoLogoffHandler implements ActionListener, AWTEventListener {
+		int countDown = TerminalConfig.getAutoLogoffTime();
+		
+		public AutoLogoffHandler() {
+			Toolkit.getDefaultToolkit().addAWTEventListener(this, AWTEvent.KEY_EVENT_MASK | AWTEvent.MOUSE_EVENT_MASK | AWTEvent.MOUSE_MOTION_EVENT_MASK);
+		}
+		
+		@Override
+		public void eventDispatched(AWTEvent event) {
+			reset();
 		}
 
-		private void checkLogoffOption() {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if (!isShowing()) {
+				autoLogoffTimer.stop();
+				return;
+			}
+			
 			if(!TerminalConfig.isAutoLogoffEnable()) {
 				return;
 			}
@@ -149,11 +178,13 @@ public class HeaderPanel extends JPanel {
 				Application.getInstance().doLogout();
 			}
 		}
-
+		
 		public void reset() {
 			logoffLabel.setText("");
 			countDown = TerminalConfig.getAutoLogoffTime();
+			
+			autoLogoffTimer.setInitialDelay(5 * 1000);
+			autoLogoffTimer.restart();
 		}
-
 	}
 }
