@@ -444,7 +444,7 @@ public class ReceiptPrintService {
 		map.put(SHOW_HEADER_SEPARATOR, Boolean.TRUE);
 		map.put(SHOW_HEADER_SEPARATOR, Boolean.TRUE);
 		map.put(CHECK_NO, POSConstants.RECEIPT_REPORT_TICKET_NO_LABEL + ticket.getTicketId());
-		if (ticket.getTableNumbers() != null) {
+		if (ticket.getTableNumbers() != null && ticket.getTableNumbers().size() > 0) {
 			map.put(TABLE_NO, POSConstants.RECEIPT_REPORT_TABLE_NO_LABEL + ticket.getTableNumbers());
 		}
 		//map.put(GUEST_COUNT, POSConstants.RECEIPT_REPORT_GUEST_NO_LABEL + ticket.getNumberOfGuests());
@@ -452,6 +452,11 @@ public class ReceiptPrintService {
 		map.put(REPORT_DATE, Application.formatDate(new Date()));
 
 		map.put("ticketHeader", "KTICHEN RECEIPT");
+		String ticketType = ticket.getTicketType();
+		if(StringUtils.isNotEmpty(ticketType)) {
+			ticketType = ticketType.replaceAll("_", " ");
+		}
+		map.put("orderType", "* " + ticketType + " *");
 
 		KitchenTicketDataSource dataSource = new KitchenTicketDataSource(ticket);
 
