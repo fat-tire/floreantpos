@@ -301,7 +301,7 @@ public class TicketItem extends BaseTicketItem implements ITicketItem {
 	
 	@Override
 	public String getItemCode() {
-		return String.valueOf(getId());
+		return String.valueOf(getItemId());
 	}
 	
 	public Printer getPrinter(OrderType orderType) {
