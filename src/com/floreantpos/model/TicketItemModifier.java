@@ -155,10 +155,6 @@ public class TicketItemModifier extends BaseTicketItemModifier implements ITicke
 			display = " - No " + display;
 			return display;
 		}
-		else if (getModifierType() == TicketItemModifier.EXTRA_MODIFIER) {
-			display = " - Extra " + display;
-			return display;
-		}
 
 		return " - " + display;
 	}
