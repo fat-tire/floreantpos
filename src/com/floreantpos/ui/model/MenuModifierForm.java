@@ -28,6 +28,7 @@ import com.floreantpos.model.dao.ModifierDAO;
 import com.floreantpos.model.dao.ModifierGroupDAO;
 import com.floreantpos.model.dao.TaxDAO;
 import com.floreantpos.swing.ComboBoxModel;
+import com.floreantpos.swing.DoubleTextField;
 import com.floreantpos.swing.FixedLengthTextField;
 import com.floreantpos.swing.IntegerTextField;
 import com.floreantpos.swing.MessageDialog;
@@ -78,10 +79,10 @@ public class MenuModifierForm extends BeanEditor {
 		jLabel1 = new javax.swing.JLabel();
 		jLabel3 = new javax.swing.JLabel();
 		jLabel5 = new javax.swing.JLabel();
-		tfExtraPrice = new javax.swing.JFormattedTextField();
+		tfExtraPrice = new DoubleTextField();
 		jLabel6 = new javax.swing.JLabel();
 		cbTaxes = new javax.swing.JComboBox();
-		tfPrice = new javax.swing.JFormattedTextField();
+		tfPrice = new DoubleTextField();
 		btnNewTax = new javax.swing.JButton();
 		tfName = new javax.swing.JFormattedTextField();
 		jLabel4 = new javax.swing.JLabel();
@@ -205,9 +206,9 @@ public class MenuModifierForm extends BeanEditor {
 	private javax.swing.JLabel jLabel6;
 	private com.floreantpos.swing.TransparentPanel jPanel1;
 	private javax.swing.JTabbedPane jTabbedPane1;
-	private javax.swing.JFormattedTextField tfExtraPrice;
+	private DoubleTextField tfExtraPrice;
 	private javax.swing.JFormattedTextField tfName;
-	private javax.swing.JFormattedTextField tfPrice;
+	private DoubleTextField tfPrice;
 	private JLabel lblTranslatedName;
 	private FixedLengthTextField tfTranslatedName;
 	private JButton btnButtonColor;
@@ -245,8 +246,8 @@ public class MenuModifierForm extends BeanEditor {
 
 		tfName.setText(modifier.getName());
 		tfTranslatedName.setText(modifier.getTranslatedName());
-		tfPrice.setValue(new Double(modifier.getPrice()));
-		tfExtraPrice.setValue(Double.valueOf(modifier.getExtraPrice()));
+		tfPrice.setText(String.valueOf(modifier.getPrice()));
+		tfExtraPrice.setText(String.valueOf(modifier.getExtraPrice()));
 		cbModifierGroup.setSelectedItem(modifier.getModifierGroup());
 		btnPrintToKitchen.setSelected(modifier.isShouldPrintToKitchen());
 		
@@ -281,8 +282,8 @@ public class MenuModifierForm extends BeanEditor {
 		}
 
 		modifier.setName(name);
-		modifier.setPrice(((Double) tfPrice.getValue()).doubleValue());
-		modifier.setExtraPrice(((Double) tfExtraPrice.getValue()).doubleValue());
+		modifier.setPrice(tfPrice.getDouble());
+		modifier.setExtraPrice(tfExtraPrice.getDouble());
 		modifier.setTax((Tax) cbTaxes.getSelectedItem());
 		modifier.setModifierGroup((MenuModifierGroup) cbModifierGroup.getSelectedItem());
 		modifier.setShouldPrintToKitchen(Boolean.valueOf(btnPrintToKitchen.isSelected()));
