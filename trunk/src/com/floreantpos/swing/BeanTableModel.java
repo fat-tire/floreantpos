@@ -46,6 +46,11 @@ public class BeanTableModel<M> extends AbstractTableModel {
 		rows.remove(row);
 		fireTableDataChanged();
 	}
+	
+	public void removeRow(int index) {
+		rows.remove(index);
+		fireTableRowsDeleted(index, index);
+	}
 
 	public void addRows(List<M> rows) {
 		for (M row : rows) {
@@ -98,6 +103,14 @@ public class BeanTableModel<M> extends AbstractTableModel {
 
 	public boolean isCellEditable(int rowIndex, int columnIndex) {
 		return columns.get(columnIndex).editable == EditMode.EDITABLE;
+	}
+	
+	public void setRow(int index, M row) {
+		getRows().set(index, row);
+	}
+	
+	public M getRow(int index) {
+		return getRows().get(index);
 	}
 
 	public List<M> getRows() {
