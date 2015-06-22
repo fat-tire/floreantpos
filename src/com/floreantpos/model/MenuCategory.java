@@ -39,7 +39,7 @@ public class MenuCategory extends BaseMenuCategory {
 	
 	@Override
 	public Integer getSortOrder() {
-		return sortOrder == null ? Integer.MAX_VALUE : sortOrder;
+		return sortOrder == null ? 9999 : sortOrder;
 	}
 	
 	@Override
