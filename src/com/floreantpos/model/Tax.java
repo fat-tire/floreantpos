@@ -40,6 +40,6 @@ public class Tax extends BaseTax {
 
 	@Override
 	public String toString() {
-		return getName();
+		return getName() + " (" + getRate() + "%)";
 	}
 }

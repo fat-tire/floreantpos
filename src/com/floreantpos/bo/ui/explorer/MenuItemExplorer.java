@@ -3,7 +3,6 @@ package com.floreantpos.bo.ui.explorer;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
@@ -15,32 +14,41 @@ import com.floreantpos.bo.ui.BOMessageDialog;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.MenuItem;
 import com.floreantpos.model.dao.MenuItemDAO;
+import com.floreantpos.swing.BeanTableModel;
 import com.floreantpos.swing.TransparentPanel;
-import com.floreantpos.ui.PosTableRenderer;
 import com.floreantpos.ui.dialog.BeanEditorDialog;
 import com.floreantpos.ui.dialog.ConfirmDeleteDialog;
 import com.floreantpos.ui.model.MenuItemForm;
 
 public class MenuItemExplorer extends TransparentPanel {
-	private List<MenuItem> itemList;
 
 	private JXTable table;
-	private MenuItemExplorerTableModel tableModel;
-	private String currencySymbol;
+	private BeanTableModel<MenuItem> tableModel;
 
 	public MenuItemExplorer() {
-		currencySymbol = Application.getCurrencySymbol();
+		tableModel = new BeanTableModel<MenuItem>(MenuItem.class);
+		tableModel.addColumn(POSConstants.ID.toUpperCase(), "id");
+		tableModel.addColumn(POSConstants.NAME.toUpperCase(), "name");
+		tableModel.addColumn(POSConstants.TRANSLATED_NAME.toUpperCase(), "translatedName");
+		tableModel.addColumn(POSConstants.PRICE.toUpperCase() + " (" + Application.getCurrencySymbol() + ")", "price");
+		tableModel.addColumn(POSConstants.VISIBLE.toUpperCase(), "visible");
+		tableModel.addColumn(POSConstants.DISCOUNT.toUpperCase() + "(%)", "discountRate");
+		tableModel.addColumn(POSConstants.FOOD_GROUP.toUpperCase(), "parent");
+		tableModel.addColumn(POSConstants.TAX.toUpperCase(), "tax");
+		tableModel.addColumn(POSConstants.SORT_ORDER.toUpperCase(), "sortOrder");
+		tableModel.addColumn(POSConstants.BUTTON_COLOR.toUpperCase(), "buttonColor");
 
-		MenuItemDAO dao = new MenuItemDAO();
-		itemList = dao.findAll();
-
-		tableModel = new MenuItemExplorerTableModel();
-		tableModel.setRows(itemList);
+		tableModel.addRows(MenuItemDAO.getInstance().findAll());
+		
 		table = new JXTable(tableModel);
-		table.setDefaultRenderer(Object.class, new PosTableRenderer());
 
 		setLayout(new BorderLayout(5, 5));
 		add(new JScrollPane(table));
+		
+		add(createButtonPanel(), BorderLayout.SOUTH);
+	}
+
+	private TransparentPanel createButtonPanel() {
 		ExplorerButtonPanel explorerButton = new ExplorerButtonPanel();
 		JButton editButton = explorerButton.getEditButton();
 		JButton addButton = explorerButton.getAddButton();
@@ -55,9 +63,10 @@ public class MenuItemExplorer extends TransparentPanel {
 
 					index = table.convertRowIndexToModel(index);
 					
-					MenuItem menuItem = itemList.get(index);
+					MenuItem menuItem = tableModel.getRow(index);
 					menuItem = MenuItemDAO.getInstance().initialize(menuItem);
-					itemList.set(index, menuItem);
+					
+					tableModel.setRow(index, menuItem);
 
 					MenuItemForm editor = new MenuItemForm(menuItem);
 					BeanEditorDialog dialog = new BeanEditorDialog(editor);
@@ -82,7 +91,7 @@ public class MenuItemExplorer extends TransparentPanel {
 					if (dialog.isCanceled())
 						return;
 					MenuItem foodItem = (MenuItem) editor.getBean();
-					tableModel.addMenuItem(foodItem);
+					tableModel.addRow(foodItem);
 				} catch (Throwable x) {
 					BOMessageDialog.showError(POSConstants.ERROR_MESSAGE, x);
 				}
@@ -100,10 +109,11 @@ public class MenuItemExplorer extends TransparentPanel {
 					index = table.convertRowIndexToModel(index);
 
 					if (ConfirmDeleteDialog.showMessage(MenuItemExplorer.this, POSConstants.CONFIRM_DELETE, POSConstants.DELETE) != ConfirmDeleteDialog.NO) {
-						MenuItem category = itemList.get(index);
+						MenuItem item = tableModel.getRow(index);
 						MenuItemDAO foodItemDAO = new MenuItemDAO();
-						foodItemDAO.delete(category);
-						tableModel.deleteMenuItem(category, index);
+						foodItemDAO.delete(item);
+						
+						tableModel.removeRow(index);
 					}
 				} catch (Throwable x) {
 					BOMessageDialog.showError(POSConstants.ERROR_MESSAGE, x);
@@ -116,69 +126,6 @@ public class MenuItemExplorer extends TransparentPanel {
 		panel.add(addButton);
 		panel.add(editButton);
 		panel.add(deleteButton);
-		add(panel, BorderLayout.SOUTH);
-	}
-
-	class MenuItemExplorerTableModel extends ListTableModel {
-		String[] columnNames = { POSConstants.ID, POSConstants.NAME, POSConstants.TRANSLATED_NAME, POSConstants.PRICE + " (" + currencySymbol + ")",
-				POSConstants.VISIBLE, POSConstants.DISCOUNT + "(%)", POSConstants.FOOD_GROUP, POSConstants.TAX + " (%)", POSConstants.SORT_ORDER,
-				POSConstants.BUTTON_COLOR }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-
-		MenuItemExplorerTableModel() {
-			setColumnNames(columnNames);
-		}
-
-		public Object getValueAt(int rowIndex, int columnIndex) {
-			MenuItem item = (MenuItem) rows.get(rowIndex);
-
-			switch (columnIndex) {
-				case 0:
-					return String.valueOf(item.getId());
-
-				case 1:
-					return item.getName();
-					
-				case 2:
-					return item.getTranslatedName();
-
-				case 3:
-					return Double.valueOf(item.getPrice());
-
-				case 4:
-					return item.isVisible();
-
-				case 5:
-					return Double.valueOf(item.getDiscountRate());
-
-				case 6:
-					if (item.getParent() != null) {
-						return item.getParent().getName();
-					}
-					return ""; //$NON-NLS-1$
-
-				case 7:
-					if (item.getTax() != null) {
-						return Double.valueOf(item.getTax().getRate());
-					}
-					return ""; //$NON-NLS-1$
-					
-				case 8:
-					return item.getSortOrder();
-					
-				case 9:
-					return item.getButtonColor();
-
-			}
-			return null;
-		}
-
-		public void addMenuItem(MenuItem menuItem) {
-			super.addItem(menuItem);
-
-		}
-
-		public void deleteMenuItem(MenuItem category, int index) {
-			super.deleteItem(index);
-		}
+		return panel;
 	}
 }
