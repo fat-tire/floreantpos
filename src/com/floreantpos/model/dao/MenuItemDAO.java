@@ -5,6 +5,7 @@ import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import com.floreantpos.PosException;
@@ -53,6 +54,7 @@ public class MenuItemDAO extends BaseMenuItemDAO {
 			session = getSession();
 			Criteria criteria = session.createCriteria(getReferenceClass());
 			criteria.add(Restrictions.eq(MenuItem.PROP_PARENT, group));
+			criteria.addOrder(Order.asc(MenuItem.PROP_SORT_ORDER));
 			
 			if(!includeInvisibleItems) {
 				criteria.add(Restrictions.eq(MenuItem.PROP_VISIBLE, Boolean.TRUE));
