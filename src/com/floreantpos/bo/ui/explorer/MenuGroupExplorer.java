@@ -15,7 +15,6 @@ import com.floreantpos.model.MenuGroup;
 import com.floreantpos.model.dao.MenuGroupDAO;
 import com.floreantpos.swing.BeanTableModel;
 import com.floreantpos.swing.TransparentPanel;
-import com.floreantpos.ui.PosTableRenderer;
 import com.floreantpos.ui.dialog.BeanEditorDialog;
 import com.floreantpos.ui.dialog.ConfirmDeleteDialog;
 import com.floreantpos.ui.model.MenuGroupForm;
@@ -38,7 +37,7 @@ public class MenuGroupExplorer extends TransparentPanel {
 		tableModel.addRows(MenuGroupDAO.getInstance().findAll());
 
 		table = new JXTable(tableModel);
-		table.setDefaultRenderer(Object.class, new PosTableRenderer());
+//		table.setDefaultRenderer(Object.class, new PosTableRenderer());
 
 		setLayout(new BorderLayout(5, 5));
 		add(new JScrollPane(table));
