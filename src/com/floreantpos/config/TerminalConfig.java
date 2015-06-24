@@ -7,6 +7,8 @@ import com.floreantpos.model.PaymentStatusFilter;
 import com.floreantpos.util.PasswordHasher;
 
 public class TerminalConfig {
+	private static final String USE_SETTLEMENT_PROMPT = "UseSettlementPrompt";
+
 	private static final String SHOW_GUEST_SELECTION = "show_guest_selection";
 
 	private static final String ORDER_TYPE_FILTER = "order_type_filter";
@@ -188,5 +190,13 @@ public class TerminalConfig {
 	
 	public static boolean isShouldShowGuestSelection() {
 		return config.getBoolean(SHOW_GUEST_SELECTION, Boolean.TRUE);
+	}
+	
+	public static void setUseSettlementPrompt(boolean settlementPrompt) {
+		config.setProperty(USE_SETTLEMENT_PROMPT, Boolean.valueOf(settlementPrompt));
+	}
+	
+	public static boolean isUseSettlementPrompt() {
+		return config.getBoolean(USE_SETTLEMENT_PROMPT, Boolean.FALSE);
 	}
 }
