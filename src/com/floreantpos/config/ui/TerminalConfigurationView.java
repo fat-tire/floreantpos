@@ -33,6 +33,7 @@ public class TerminalConfigurationView extends ConfigurationView {
 	
 	private JCheckBox cbTranslatedName = new JCheckBox("Show translated item name in UI");
 	private JCheckBox cbFullscreenMode = new JCheckBox("Kiosk Mode");
+	private JCheckBox cbUseSettlementPrompt = new JCheckBox("Show prompt to confirm ticket settlement");
 	private JCheckBox cbShowDbConfiguration = new JCheckBox("Show database configuration button on login screen");
 	
 	private JComboBox<String> cbFonts = new JComboBox<String>();
@@ -84,9 +85,10 @@ public class TerminalConfigurationView extends ConfigurationView {
 		add(tfLogoffTime, "wrap");
 		
 		add(cbTranslatedName, "span 2"); //$NON-NLS-1$
-		add(cbFullscreenMode, "wrap"); //$NON-NLS-1$
+		add(cbFullscreenMode, "newline, span"); //$NON-NLS-1$
+		add(cbUseSettlementPrompt, "newline, span"); //$NON-NLS-1$
 		
-		add(new JLabel("Default font")); //$NON-NLS-1$
+		add(new JLabel("Default font"), "newline"); //$NON-NLS-1$
 		add(cbFonts, "span 2, wrap"); //$NON-NLS-1$
 		
 		JPanel touchConfigPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 20, 10));
@@ -188,6 +190,7 @@ public class TerminalConfigurationView extends ConfigurationView {
 		
 		TerminalConfig.setAutoLogoffEnable(cbAutoLogoff.isSelected());
 		TerminalConfig.setAutoLogoffTime(tfLogoffTime.getInteger() <= 0 ? 10 : tfLogoffTime.getInteger());
+		TerminalConfig.setUseSettlementPrompt(cbUseSettlementPrompt.isSelected());
 		
 		POSMessageDialog.showMessage(com.floreantpos.util.POSUtil.getFocusedWindow(), "Please restart system for the configuration to take effect");
 		
@@ -221,6 +224,7 @@ public class TerminalConfigurationView extends ConfigurationView {
 		tfSecretKeyLength.setText(String.valueOf(TerminalConfig.getDefaultPassLen()));
 		cbFullscreenMode.setSelected(TerminalConfig.isFullscreenMode());
 		cbShowDbConfiguration.setSelected(TerminalConfig.isShowDbConfigureButton());
+		cbUseSettlementPrompt.setSelected(TerminalConfig.isUseSettlementPrompt());
 		
 		tfButtonHeight.setText("" + TerminalConfig.getTouchScreenButtonHeight());
 		tfFontSize.setText("" + TerminalConfig.getTouchScreenFontSize());

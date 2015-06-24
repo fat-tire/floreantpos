@@ -22,6 +22,7 @@ import org.apache.commons.lang.StringUtils;
 import com.floreantpos.POSConstants;
 import com.floreantpos.PosException;
 import com.floreantpos.config.CardConfig;
+import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.CardReader;
 import com.floreantpos.model.CashTransaction;
@@ -233,11 +234,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 
 			switch (paymentType) {
 				case CASH:
-					ConfirmPayDialog confirmPayDialog = new ConfirmPayDialog();
-					confirmPayDialog.setAmount(tenderAmount);
-					confirmPayDialog.open();
-
-					if (confirmPayDialog.isCanceled()) {
+					if(!confirmPayment()) {
 						return;
 					}
 
@@ -305,12 +302,24 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 		}
 	}
 
-	private void doSettleBarTabTicket(Ticket ticket) {
+	private boolean confirmPayment() {
+		if(!TerminalConfig.isUseSettlementPrompt()) {
+			return true;
+		}
+		
 		ConfirmPayDialog confirmPayDialog = new ConfirmPayDialog();
 		confirmPayDialog.setAmount(tenderAmount);
 		confirmPayDialog.open();
 
 		if (confirmPayDialog.isCanceled()) {
+			return false;
+		}
+		
+		return true;
+	}
+
+	private void doSettleBarTabTicket(Ticket ticket) {
+		if(!confirmPayment()) {
 			return;
 		}
 
@@ -527,11 +536,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 					throw new RuntimeException("Invalid card string");
 				}
 
-				ConfirmPayDialog confirmPayDialog = new ConfirmPayDialog();
-				confirmPayDialog.setAmount(tenderAmount);
-				confirmPayDialog.open();
-
-				if (confirmPayDialog.isCanceled()) {
+				if(!confirmPayment()) {
 					return;
 				}
 				
