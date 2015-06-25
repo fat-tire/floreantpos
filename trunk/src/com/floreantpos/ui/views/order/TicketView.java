@@ -764,9 +764,14 @@ public class TicketView extends JPanel {
 					}
 					
 					double d = NumberSelectionDialog2.takeDoubleInput("Enter amount", "Enter discount amount", selectedObject.getDiscountAmount());
+					if(Double.isNaN(d)) {
+						return;
+					}
+					
 					if(selectedObject instanceof TicketItem) {
 						((TicketItem) selectedObject).setDiscountRate(-1.0);
 					}
+					
 					selectedObject.setDiscountAmount(d);
 					ticketViewerTable.repaint();
 					TicketView.this.updateView();
