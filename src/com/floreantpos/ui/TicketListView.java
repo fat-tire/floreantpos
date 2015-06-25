@@ -8,7 +8,6 @@ import java.util.List;
 
 import javax.swing.JPanel;
 import javax.swing.JTable;
-import javax.swing.ListSelectionModel;
 
 import org.jdesktop.swingx.JXTable;
 import org.jdesktop.swingx.table.TableColumnModelExt;
@@ -26,7 +25,7 @@ public class TicketListView extends JPanel {
 	private TicketListTableModel tableModel;
 
 	public TicketListView() {
-		table = new TicketListTable();
+		table = new JXTable();
 		table.setSortable(true);
 		table.setColumnControlVisible(true);
 		table.setModel(tableModel = new TicketListTableModel());
@@ -86,23 +85,23 @@ public class TicketListView extends JPanel {
 		return tickets;
 	}
 
-	private class TicketListTable extends JXTable {
-		
-		public TicketListTable() {
-		}
-		
-		@Override
-		public void changeSelection(int rowIndex, int columnIndex, boolean toggle, boolean extend) {
-			ListSelectionModel selectionModel = getSelectionModel();
-			boolean selected = selectionModel.isSelectedIndex(rowIndex);
-			if (selected) {
-				selectionModel.removeSelectionInterval(rowIndex, rowIndex);
-			}
-			else {
-				selectionModel.addSelectionInterval(rowIndex, rowIndex);
-			}
-		}
-	}
+//	private class TicketListTable extends JXTable {
+//		
+//		public TicketListTable() {
+//		}
+//		
+//		@Override
+//		public void changeSelection(int rowIndex, int columnIndex, boolean toggle, boolean extend) {
+//			ListSelectionModel selectionModel = getSelectionModel();
+//			boolean selected = selectionModel.isSelectedIndex(rowIndex);
+//			if (selected) {
+//				selectionModel.removeSelectionInterval(rowIndex, rowIndex);
+//			}
+//			else {
+//				selectionModel.addSelectionInterval(rowIndex, rowIndex);
+//			}
+//		}
+//	}
 
 	private class TicketListTableModel extends ListTableModel {
 		public TicketListTableModel() {
