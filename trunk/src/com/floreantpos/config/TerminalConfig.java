@@ -129,7 +129,7 @@ public class TerminalConfig {
 	}
 	
 	public static boolean isCashierMode() {
-		return config.getBoolean(CASHIER_MODE, false);
+		return false; //config.getBoolean(CASHIER_MODE, false);
 	}
 	
 	public static void setCashierMode(boolean cashierMode) {
