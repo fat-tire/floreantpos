@@ -6,8 +6,23 @@
 
 package com.floreantpos.ui.dialog;
 
+import java.awt.BorderLayout;
+import java.awt.Font;
+import java.util.List;
+
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.border.TitledBorder;
+
 import com.floreantpos.IconFactory;
+import com.floreantpos.POSConstants;
+import com.floreantpos.config.TerminalConfig;
+import com.floreantpos.model.Tax;
 import com.floreantpos.model.TicketItem;
+import com.floreantpos.model.dao.TaxDAO;
+import com.floreantpos.swing.ComboBoxModel;
+import com.floreantpos.ui.views.NoteView;
 
 /**
  *
@@ -20,7 +35,7 @@ public class MiscTicketItemDialog extends POSDialog {
     public MiscTicketItemDialog() {
         initComponents();
         
-        noteView1.setNoteLength(30);
+        noteView.setNoteLength(120);
         numberSelectionView1.setDecimalAllowed(true);
     }
     
@@ -36,8 +51,8 @@ public class MiscTicketItemDialog extends POSDialog {
         posButton1 = new com.floreantpos.swing.PosButton();
         posButton2 = new com.floreantpos.swing.PosButton();
         transparentPanel2 = new com.floreantpos.swing.TransparentPanel();
-        numberSelectionView1 = new com.floreantpos.ui.views.NumberSelectionView();
-        noteView1 = new com.floreantpos.ui.views.NoteView();
+        
+        noteView = new NoteView();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         titlePanel1.setTitle(com.floreantpos.POSConstants.MISC_ITEM);
@@ -69,18 +84,57 @@ public class MiscTicketItemDialog extends POSDialog {
 
         transparentPanel2.setLayout(new java.awt.BorderLayout());
 
-        numberSelectionView1.setPreferredSize(new java.awt.Dimension(220, 392));
-        numberSelectionView1.setTitle(com.floreantpos.POSConstants.PRICE);
-        transparentPanel2.add(numberSelectionView1, java.awt.BorderLayout.WEST);
+        JPanel leftPanel = createLeftPanel();
+        
+        
+        transparentPanel2.add(leftPanel, java.awt.BorderLayout.WEST);
 
-        noteView1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, com.floreantpos.POSConstants.ITEM_NAME, javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
-        transparentPanel2.add(noteView1, java.awt.BorderLayout.CENTER);
+        noteView.setBorder(javax.swing.BorderFactory.createTitledBorder(null, com.floreantpos.POSConstants.ITEM_NAME, javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
+        transparentPanel2.add(noteView, java.awt.BorderLayout.CENTER);
+        
+        
 
         getContentPane().add(transparentPanel2, java.awt.BorderLayout.CENTER);
 
         java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
         setBounds((screenSize.width-786)/2, (screenSize.height-452)/2, 786, 452);
     }// </editor-fold>//GEN-END:initComponents
+
+	private JPanel createLeftPanel() {
+		numberSelectionView1 = new com.floreantpos.ui.views.NumberSelectionView();
+		numberSelectionView1.setPreferredSize(new java.awt.Dimension(220, 392));
+		numberSelectionView1.setBorder(null);
+        //numberSelectionView1.setTitle(com.floreantpos.POSConstants.PRICE);
+        
+        JPanel leftPanel = new JPanel(new BorderLayout(5, 5));
+        leftPanel.add(numberSelectionView1);
+        
+        JPanel leftSouthPanel = new JPanel(new BorderLayout(5, 5));
+        JLabel label = new JLabel(POSConstants.TAX);
+        label.setFont(label.getFont().deriveFont(Font.BOLD, 12));
+		leftSouthPanel.add(label, BorderLayout.WEST);
+        
+        cbTax = new JComboBox();
+        List<Tax> taxes = TaxDAO.getInstance().findAll();
+		cbTax.setModel(new ComboBoxModel(taxes));
+        leftSouthPanel.add(cbTax);
+        
+        leftPanel.add(leftSouthPanel, BorderLayout.SOUTH);
+        leftPanel.setBorder(new TitledBorder(POSConstants.PRICE));
+        
+        int defaultTaxId = TerminalConfig.getMiscItemDefaultTaxId();
+        if(defaultTaxId != -1) {
+        	for (int i = 0; i < taxes.size(); i++) {
+				Tax tax = taxes.get(i);
+				if(tax.getId() == defaultTaxId) {
+					cbTax.setSelectedIndex(i);
+					break;
+				}
+			}
+        }
+        
+		return leftPanel;
+	}
 
     private void doCancel(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_doCancel
     	setCanceled(true);
@@ -91,7 +145,7 @@ public class MiscTicketItemDialog extends POSDialog {
     private void doFinish(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_doFinish
     	setCanceled(false);
     	double amount = numberSelectionView1.getValue();
-    	String itemName = noteView1.getNote();
+    	String itemName = noteView.getNote();
     	
     	ticketItem = new TicketItem();
     	ticketItem.setItemCount(1);
@@ -100,6 +154,11 @@ public class MiscTicketItemDialog extends POSDialog {
     	ticketItem.setCategoryName(com.floreantpos.POSConstants.MISC_BUTTON_TEXT);
     	ticketItem.setGroupName(com.floreantpos.POSConstants.MISC_BUTTON_TEXT);
     	ticketItem.setShouldPrintToKitchen(true);
+    	Tax tax =  (Tax) cbTax.getSelectedItem();
+    	if(tax != null) {
+    		ticketItem.setTaxRate(tax.getRate());
+    		TerminalConfig.setMiscItemDefaultTaxId(tax.getId());
+    	}
     	
     	dispose();
     }//GEN-LAST:event_doFinish
@@ -109,7 +168,8 @@ public class MiscTicketItemDialog extends POSDialog {
 	}
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private com.floreantpos.ui.views.NoteView noteView1;
+    private javax.swing.JComboBox cbTax;
+    private NoteView noteView;
     private com.floreantpos.ui.views.NumberSelectionView numberSelectionView1;
     private com.floreantpos.swing.PosButton posButton1;
     private com.floreantpos.swing.PosButton posButton2;
