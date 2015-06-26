@@ -6,8 +6,8 @@
       <generator class="identity"/>
     </id>
     
-    <property column="NAME" length="40" name="name" not-null="true" type="java.lang.String"/>
-    <property column="TRANSLATED_NAME" length="40" name="translatedName" not-null="false" type="java.lang.String" />
+    <property column="NAME" length="120" name="name" not-null="true" type="java.lang.String"/>
+    <property column="TRANSLATED_NAME" length="120" name="translatedName" not-null="false" type="java.lang.String" />
     
     <!-- property name="image" type="java.sql.Blob" column="IMAGE" length="1048576" /-->
     <property column="VISIBLE" index="menugroupvisible" name="visible" type="java.lang.Boolean"/>
