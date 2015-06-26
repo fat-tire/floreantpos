@@ -36,14 +36,14 @@ public class NoteView extends JPanel implements ActionListener, ChangeListener {
 	public NoteView() {
 		setLayout(new BorderLayout(5, 5));
 
-		note.setFont(note.getFont().deriveFont(Font.BOLD, 18));
+		//note.setFont(note.getFont().deriveFont(Font.BOLD, 18));
 		note.setWrapStyleWord(true);
 		note.setLineWrap(true);
 		note.setDocument(new FixedLengthDocument(255));
 
 		TransparentPanel northPanel = new TransparentPanel(new BorderLayout());
 		JScrollPane scrollPane = new JScrollPane(note);
-		northPanel.setPreferredSize(new Dimension(100,100));
+		northPanel.setPreferredSize(new Dimension(100,60));
 		northPanel.add(scrollPane);
 		add(northPanel, BorderLayout.NORTH);
 

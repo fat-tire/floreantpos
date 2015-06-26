@@ -199,4 +199,12 @@ public class TerminalConfig {
 	public static boolean isUseSettlementPrompt() {
 		return config.getBoolean(USE_SETTLEMENT_PROMPT, Boolean.FALSE);
 	}
+	
+	public static void setMiscItemDefaultTaxId(int id) {
+		config.setProperty("mistitemdefaulttaxid", id);
+	}
+	
+	public static int getMiscItemDefaultTaxId() {
+		return config.getInt("mistitemdefaulttaxid", -1);
+	}
 }

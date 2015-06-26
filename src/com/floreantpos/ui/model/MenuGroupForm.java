@@ -57,7 +57,7 @@ public class MenuGroupForm extends BeanEditor {
 		setLayout(new MigLayout("", "[70px][289px,grow][6px][49px]", "[19px][][25px][][][][15px]"));
 		
 		jLabel1 = new javax.swing.JLabel();
-		tfName = new com.floreantpos.swing.FixedLengthTextField();
+		tfName = new com.floreantpos.swing.FixedLengthTextField(120);
 		jLabel2 = new javax.swing.JLabel();
 		cbCategory = new javax.swing.JComboBox();
 		chkVisible = new javax.swing.JCheckBox();
@@ -81,7 +81,7 @@ public class MenuGroupForm extends BeanEditor {
 		lblTranslatedName = new JLabel("Translated name");
 		add(lblTranslatedName, "cell 0 1,alignx trailing");
 
-		tfTranslatedName = new FixedLengthTextField();
+		tfTranslatedName = new FixedLengthTextField(120);
 		add(tfTranslatedName, "cell 1 1,growx");
 		add(jLabel2, "cell 0 2,alignx left,aligny center");
 		add(jLabel1, "cell 0 0,alignx left,aligny center");
