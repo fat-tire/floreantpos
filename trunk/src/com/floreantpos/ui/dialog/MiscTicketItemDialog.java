@@ -43,7 +43,7 @@ public class MiscTicketItemDialog extends POSDialog {
 	public MiscTicketItemDialog() {
 		super(Application.getPosWindow(), true);
 		
-		setTitle("Miscellanous item entry");
+		setTitle("Miscellaneous item entry");
 		
 		initComponents();
 	}
@@ -74,15 +74,18 @@ public class MiscTicketItemDialog extends POSDialog {
 		contentPane.add(tfItemPrice, "grow, w 120, h 40");
 
 		contentPane.add(new JLabel("Tax"), "alignx trailing");
+		
+		PosComboRenderer comboRenderer = new PosComboRenderer();
+		comboRenderer.setEnableDefaultValueShowing(false);
 
 		cbTax = new JComboBox();
-		cbTax.setRenderer(new PosComboRenderer());
+		cbTax.setRenderer(comboRenderer);
 		contentPane.add(cbTax, "w 200!, h 40");
 
 		contentPane.add(new JLabel("Printer group"), "alignx trailing");
 
 		cbPrinterGroup = new JComboBox();
-		cbPrinterGroup.setRenderer(new PosComboRenderer());
+		cbPrinterGroup.setRenderer(comboRenderer);
 		contentPane.add(cbPrinterGroup, "w 200!, h 40");
 		
 		QwertyKeyPad keyPad = new QwertyKeyPad();
