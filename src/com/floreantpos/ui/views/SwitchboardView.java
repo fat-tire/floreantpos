@@ -134,7 +134,7 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 		setLayout(new java.awt.BorderLayout(10, 10));
 
 		javax.swing.JPanel centerPanel = new javax.swing.JPanel(new java.awt.BorderLayout(5, 5));
-		javax.swing.JPanel ticketsAndActivityPanel = new javax.swing.JPanel(new java.awt.BorderLayout(10, 10));
+		javax.swing.JPanel ticketsAndActivityPanel = new javax.swing.JPanel(new java.awt.BorderLayout(5, 5));
 
 		TitledBorder titledBorder = BorderFactory.createTitledBorder(null, POSConstants.OPEN_TICKETS_AND_ACTIVITY, TitledBorder.CENTER,
 				TitledBorder.DEFAULT_POSITION);
@@ -182,9 +182,6 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 		btnOthers.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-//				SwitchboardOtherFunctionsDialog dialog = new SwitchboardOtherFunctionsDialog(SwitchboardView.this);
-//				dialog.open();
-				
 				SwitchboardOtherFunctionsView view = SwitchboardOtherFunctionsView.getInstance();
 				RootView.getInstance().showView(view);
 			}
