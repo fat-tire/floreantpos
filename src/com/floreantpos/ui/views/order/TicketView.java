@@ -819,7 +819,7 @@ public class TicketView extends JPanel {
 
 		private void doInsertMisc(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_doInsertMisc
 			MiscTicketItemDialog dialog = new MiscTicketItemDialog();
-			dialog.setSize(1024, 600);
+			dialog.setSize(900, 580);
 			dialog.open();
 			if (!dialog.isCanceled()) {
 				TicketItem ticketItem = dialog.getTicketItem();
