@@ -25,6 +25,7 @@ import us.fatehi.magnetictrack.bankcard.BankCardMagneticTrack;
 
 import com.floreantpos.POSConstants;
 import com.floreantpos.main.Application;
+import com.floreantpos.model.CardReader;
 import com.floreantpos.model.KitchenTicket;
 import com.floreantpos.model.OrderType;
 import com.floreantpos.model.PosTransaction;
@@ -149,6 +150,12 @@ public class ReceiptPrintService {
 			HashMap map = populateTicketProperties(ticket, printProperties, transaction);
 
 			if (transaction != null && transaction.isCard()) {
+				CardReader cardReader = CardReader.fromString(transaction.getCardReader());
+				
+				if (cardReader == CardReader.EXTERNAL_TERMINAL) {
+					return;
+				}
+				
 				map.put("cardPayment", true);
 				map.put("copyType", "Customer Copy");
 				JasperPrint jasperPrint = createPrint(ticket, map, transaction);
