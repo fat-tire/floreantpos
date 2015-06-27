@@ -54,6 +54,24 @@ public class TicketListView extends JPanel {
 		setLayout(new BorderLayout());
 
 		add(scrollPane);
+		
+//		JPanel statusPanel = new JPanel(new MigLayout("ins 5 2 5 0", "[fill, grow][]10[]10[]", ""));
+//		
+//		JLabel lblStatus = new JLabel("Fount 1000 ticket, showing 1 to 100");
+//		statusPanel.add(lblStatus, "grow");
+//		
+//		PosButton btnRefresh = new PosButton("REFRESH");
+//		statusPanel.add(btnRefresh, "align trailing, h 40!");
+//
+//		PosButton btnPrev = new PosButton("PREV");
+//		statusPanel.add(btnPrev, "align trailing, h 40!");
+//		
+//		PosButton btnNext = new PosButton("NEXT");
+//		statusPanel.add(btnNext, "align trailing, h 40!");
+//		
+//		statusPanel.add(new JSeparator(JSeparator.HORIZONTAL), "newline, grow, span");
+//		
+//		add(statusPanel, BorderLayout.SOUTH);
 	}
 
 	public void setTickets(List<Ticket> tickets) {
