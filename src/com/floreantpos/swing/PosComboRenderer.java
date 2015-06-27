@@ -8,9 +8,11 @@ import javax.swing.JList;
 import org.jdesktop.swingx.renderer.DefaultListRenderer;
 
 public class PosComboRenderer extends DefaultListRenderer {
+	private boolean enableDefaultValueShowing = true;
+	
 	@Override
 	public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-		if(value == null) {
+		if(value == null && enableDefaultValueShowing) {
 			value = "ALL";
 		}
 		
@@ -20,5 +22,13 @@ public class PosComboRenderer extends DefaultListRenderer {
 		component.setPreferredSize(size);
 		
 		return component;
+	}
+
+	public boolean isEnableDefaultValueShowing() {
+		return enableDefaultValueShowing;
+	}
+
+	public void setEnableDefaultValueShowing(boolean enableDefaultValueShowing) {
+		this.enableDefaultValueShowing = enableDefaultValueShowing;
 	}
 }
