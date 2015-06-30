@@ -180,7 +180,10 @@ public class TicketListView extends JPanel {
 					status += " (DRIVER ASSIGNED)";
 				}
 				
-				if(ticket.isClosed()) {
+				if(ticket.isVoided()) {
+					status = "VOID";
+				}
+				else if(ticket.isClosed()) {
 					status += " (CLOSED)";
 				}
 				

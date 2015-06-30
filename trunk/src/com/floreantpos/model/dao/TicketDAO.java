@@ -267,6 +267,11 @@ public class TicketDAO extends BaseTicketDAO {
 			else if(psFilter == PaymentStatusFilter.CLOSED) {
 				criteria.add(Restrictions.eq(Ticket.PROP_DRAWER_RESETTED, Boolean.FALSE));
 				criteria.add(Restrictions.eq(Ticket.PROP_CLOSED, Boolean.TRUE));
+				
+				Calendar currentTime = Calendar.getInstance();
+				currentTime.add(Calendar.HOUR_OF_DAY, -24);
+
+				criteria.add(Restrictions.ge(Ticket.PROP_CLOSING_DATE, currentTime.getTime()));
 			}
 			
 			if(otFilter != OrderTypeFilter.ALL) {
