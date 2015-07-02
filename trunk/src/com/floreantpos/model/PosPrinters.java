@@ -205,7 +205,13 @@ public class PosPrinters {
 			printer.setVirtualPrinter(printerByName);
 		}
 		else {
-			dao.saveOrUpdate(virtualPrinter);
+			Integer id = virtualPrinter.getId();
+			if(dao.get(id) != null) {;
+				dao.saveOrUpdate(virtualPrinter);
+			}
+			else {
+				dao.save(virtualPrinter);
+			}
 		}
 	}
 
