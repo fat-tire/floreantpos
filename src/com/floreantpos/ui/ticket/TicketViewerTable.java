@@ -91,15 +91,11 @@ public class TicketViewerTable extends JTable {
 		int selectedRow = getSelectedRow();
 		int rowCount = model.getItemCount();
 
-		if (selectedRow <= 0) {
-			selectedRow = rowCount - 1;
+		if (selectedRow > (rowCount - 1)) {
+			return;
 		}
-		else if (selectedRow > (rowCount - 1)) {
-			selectedRow = rowCount - 1;
-		}
-		else {
-			--selectedRow;
-		}
+
+		--selectedRow;
 
 		selectionModel.addSelectionInterval(selectedRow, selectedRow);
 		Rectangle cellRect = getCellRect(selectedRow, 0, false);
@@ -111,15 +107,11 @@ public class TicketViewerTable extends JTable {
 			return;
 
 		int selectedRow = getSelectedRow();
-		if (selectedRow < 0) {
-			selectedRow = 0;
+		if (selectedRow >= model.getItemCount() - 1) {
+			return;
 		}
-		else if (selectedRow >= model.getItemCount() - 1) {
-			selectedRow = 0;
-		}
-		else {
-			++selectedRow;
-		}
+
+		++selectedRow;
 
 		selectionModel.addSelectionInterval(selectedRow, selectedRow);
 		Rectangle cellRect = getCellRect(selectedRow, 0, false);
