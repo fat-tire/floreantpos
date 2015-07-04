@@ -63,6 +63,8 @@ public class ReceiptPrintService {
 	private static final String ITEM_TEXT = "itemText";
 	private static final String CURRENCY_SYMBOL = "currencySymbol";
 	private static Log logger = LogFactory.getLog(ReceiptPrintService.class);
+	
+	private static final SimpleDateFormat reportDateFormat = new SimpleDateFormat("M/d/yy, h:m a");
 
 	public static void printGenericReport(String title, String data) throws Exception {
 		HashMap<String, String> map = new HashMap<String, String>(2);
@@ -358,7 +360,6 @@ public class ReceiptPrintService {
 	}
 
 	private static StringBuilder buildTicketHeader(Ticket ticket, TicketPrintProperties printProperties) {
-		SimpleDateFormat dateFormat = new SimpleDateFormat("M/d/yy, h:m a");
 
 		StringBuilder ticketHeaderBuilder = new StringBuilder();
 		ticketHeaderBuilder.append("<html>");
@@ -390,7 +391,7 @@ public class ReceiptPrintService {
 		endRow(ticketHeaderBuilder);
 
 		beginRow(ticketHeaderBuilder);
-		addColumn(ticketHeaderBuilder, POSConstants.RECEIPT_REPORT_DATE_LABEL + dateFormat.format(new Date()));
+		addColumn(ticketHeaderBuilder, POSConstants.RECEIPT_REPORT_DATE_LABEL + reportDateFormat.format(new Date()));
 		endRow(ticketHeaderBuilder);
 
 		beginRow(ticketHeaderBuilder);
@@ -433,7 +434,7 @@ public class ReceiptPrintService {
 
 				if (ticket.getDeliveryDate() != null) {
 					beginRow(ticketHeaderBuilder);
-					addColumn(ticketHeaderBuilder, "Delivery: " + dateFormat.format(ticket.getDeliveryDate()));
+					addColumn(ticketHeaderBuilder, "Delivery: " + reportDateFormat.format(ticket.getDeliveryDate()));
 					endRow(ticketHeaderBuilder);
 				}
 			}
@@ -457,7 +458,7 @@ public class ReceiptPrintService {
 		}
 		//map.put(GUEST_COUNT, POSConstants.RECEIPT_REPORT_GUEST_NO_LABEL + ticket.getNumberOfGuests());
 		map.put(SERVER_NAME, POSConstants.RECEIPT_REPORT_SERVER_LABEL + ticket.getServerName());
-		map.put(REPORT_DATE, Application.formatDate(new Date()));
+		map.put(REPORT_DATE, "Printed: " + reportDateFormat.format(new Date()));
 
 		map.put("ticketHeader", "KTICHEN RECEIPT");
 		String ticketType = ticket.getTicketType();
