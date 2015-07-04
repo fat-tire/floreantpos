@@ -32,7 +32,6 @@ import com.floreantpos.bo.ui.explorer.ListTableModel;
 import com.floreantpos.model.KitchenTicket;
 import com.floreantpos.model.KitchenTicket.KitchenTicketStatus;
 import com.floreantpos.model.KitchenTicketItem;
-import com.floreantpos.model.VirtualPrinter;
 import com.floreantpos.model.dao.KitchenTicketDAO;
 import com.floreantpos.swing.ButtonColumn;
 import com.floreantpos.swing.PosButton;
@@ -90,10 +89,9 @@ public class KitchenTicketView extends JPanel {
 	}
 
 	private void createHeader(KitchenTicket ticket) {
-		VirtualPrinter virtualPrinter = ticket.getPrinter().getVirtualPrinter();
-		String printerName = virtualPrinter == null ? "" : virtualPrinter.getName();
-
-		String ticketInfo = "Ticket# " + ticket.getTicketId() + "-" + ticket.getId() + " [" + printerName + "]";
+		String printerName = ticket.getPrinters().toString();
+		
+		String ticketInfo = "Ticket# " + ticket.getTicketId() + "-" + ticket.getId() + " " + printerName + "";
 		if(ticket.getTableNumbers() != null && ticket.getTableNumbers().size() > 0) {
 			ticketInfo += "<br/>Table " + ticket.getTableNumbers();
 		}
