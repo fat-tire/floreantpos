@@ -306,14 +306,14 @@ public class TicketItem extends BaseTicketItem implements ITicketItem {
 	
 	public Printer getPrinter(OrderType orderType) {
 		PosPrinters printers = Application.getPrinters();
-		PrinterGroup virtualPrinter = getPrinterGroup();
+		PrinterGroup printerGroup = getPrinterGroup();
 		
-		if(virtualPrinter == null) {
+		if(printerGroup == null) {
 			return printers.getDefaultKitchenPrinter();
 		}
 		
 		//return printers.getKitchenPrinterFor(virtualPrinter);
-		List<String> printerNames = virtualPrinter.getPrinterNames();
+		List<String> printerNames = printerGroup.getPrinterNames();
 		List<Printer> kitchenPrinters = printers.getKitchenPrinters();
 		for (Printer printer : kitchenPrinters) {
 			if(printerNames.contains(printer.getVirtualPrinter().getName())) {
