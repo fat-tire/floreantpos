@@ -172,7 +172,7 @@ public class HeaderPanel extends JPanel {
 			int min = countDown / 60;
 			int sec = countDown % 60;
 
-			logoffLabel.setText("Aoto logoff in " + min + ":" + sec);
+			logoffLabel.setText("Auto logoff in " + min + ":" + sec);
 
 			if (countDown == 0) {
 				Application.getInstance().doLogout();
