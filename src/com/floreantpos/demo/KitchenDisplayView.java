@@ -118,7 +118,7 @@ public class KitchenDisplayView extends ViewPanel implements ActionListener {
 			return;
 
 		Printer selectedPrinter = (Printer) cbPrinters.getSelectedItem();
-		if (selectedPrinter != null && !selectedPrinter.equals(ticket.getPrinter())) {
+		if (selectedPrinter != null && !selectedPrinter.equals(ticket.getPrinters())) {
 			return;
 		}
 

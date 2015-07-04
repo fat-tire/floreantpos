@@ -46,24 +46,30 @@ public class KitchenTicket extends BaseKitchenTicket {
 		setTicketType(type.name());
 	}
 	
-	public Printer getPrinter() {
-		PosPrinters printers = Application.getPrinters();
+	public List<Printer> getPrinters() {
+		List<Printer> printers = new ArrayList<Printer>();
+		
+		PosPrinters posPrinters = Application.getPrinters();
 		PrinterGroup virtualPrinter = getPrinterGroup();
 		
 		if(virtualPrinter == null) {
-			return printers.getDefaultKitchenPrinter();
+			printers.add(posPrinters.getDefaultKitchenPrinter());
+			return printers;
 		}
 		
-		//return printers.getKitchenPrinterFor(virtualPrinter);
 		List<String> printerNames = virtualPrinter.getPrinterNames();
-		List<Printer> kitchenPrinters = printers.getKitchenPrinters();
+		List<Printer> kitchenPrinters = posPrinters.getKitchenPrinters();
 		for (Printer printer : kitchenPrinters) {
 			if(printerNames.contains(printer.getVirtualPrinter().getName())) {
-				return printer;
+				printers.add(printer);
 			}
 		}
 		
-		return printers.getDefaultKitchenPrinter();
+		if(printers.size() == 0) {
+			printers.add(posPrinters.getDefaultKitchenPrinter());
+		}
+		
+		return printers;
 	}
 
 	public static List<KitchenTicket> fromTicket(Ticket ticket) {
