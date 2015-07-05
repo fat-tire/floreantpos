@@ -18,7 +18,6 @@ import com.floreantpos.util.NumberUtil;
 
 public class PosTableRenderer extends DefaultTableCellRenderer {
 	private static final SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd, h:m a");
-	//private static final DecimalFormat numberFormat = new DecimalFormat("0.00");
 	/**
 	 * 
 	 */

@@ -1,6 +1,5 @@
 package com.floreantpos.model;
 
-import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -58,7 +57,6 @@ public class Ticket extends BaseTicket {
 	/* [CONSTRUCTOR MARKER END] */
 
 	private static SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd yyyy, h:m a");
-	private DecimalFormat numberFormat = new DecimalFormat("0.00");
 
 	private List deletedItems;
 	private boolean priceIncludesTax;
@@ -184,7 +182,7 @@ public class Ticket extends BaseTicket {
 		}
 		title += " Server" + ": " + getOwner();
 		title += " Create on" + ":" + getCreateDateFormatted();
-		title += " Total" + ": " + numberFormat.format(getTotalAmount());
+		title += " Total" + ": " + NumberUtil.formatNumber(getTotalAmount());
 
 		return title;
 	}
