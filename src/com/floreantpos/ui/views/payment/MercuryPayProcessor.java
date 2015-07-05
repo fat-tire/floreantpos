@@ -1,7 +1,6 @@
 package com.floreantpos.ui.views.payment;
 
 import java.io.IOException;
-import java.text.DecimalFormat;
 
 import net.authorize.data.creditcard.CardType;
 
@@ -11,6 +10,7 @@ import com.floreantpos.model.OrderType;
 import com.floreantpos.model.PosTransaction;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.ui.util.StreamUtils;
+import com.floreantpos.util.NumberUtil;
 import com.mercurypay.ws.sdk.MercuryResponse;
 import com.mercurypay.ws.sdk.MercuryWebRequest;
 
@@ -57,13 +57,11 @@ public class MercuryPayProcessor implements CardProcessor {
 
 		String[] strings = cardTrack.split("\\|");
 		
-		DecimalFormat formatter = new DecimalFormat("0.00");
-
 		//String merchantId = "118725340908147";
 		String laneId = "01";
 		String tranCode = "PreAuth";
 		String invoiceNo = String.valueOf(ticket.getId());
-		String amountStrng = formatter.format(amount);
+		String amountStrng = NumberUtil.formatNumber(amount);
 		String encryptedBlock = strings[3];
 		String encryptedKey = strings[9];
 

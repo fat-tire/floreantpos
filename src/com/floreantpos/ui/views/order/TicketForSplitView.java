@@ -8,7 +8,6 @@ package com.floreantpos.ui.views.order;
 
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -22,6 +21,7 @@ import com.floreantpos.main.Application;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.TicketItemModifierGroup;
+import com.floreantpos.util.NumberUtil;
 
 /**
  *
@@ -29,7 +29,6 @@ import com.floreantpos.model.TicketItemModifierGroup;
  */
 public class TicketForSplitView extends com.floreantpos.swing.TransparentPanel implements TableModelListener {
 	private Ticket ticket;
-	private DecimalFormat numberFormat = new DecimalFormat("0.00");
 
 	public final static String VIEW_NAME = "TICKET_FOR_SPLIT_VIEW";
 
@@ -401,10 +400,10 @@ public class TicketForSplitView extends com.floreantpos.swing.TransparentPanel i
 
 		ticket.calculatePrice();
 
-		tfSubtotal.setText(numberFormat.format(ticket.getSubtotalAmount()));
-		tfDiscount.setText(numberFormat.format(ticket.getDiscountAmount()));
-		tfTax.setText(numberFormat.format(ticket.getTaxAmount()));
-		tfTotal.setText(numberFormat.format(ticket.getTotalAmount()));
+		tfSubtotal.setText(NumberUtil.formatNumber(ticket.getSubtotalAmount()));
+		tfDiscount.setText(NumberUtil.formatNumber(ticket.getDiscountAmount()));
+		tfTax.setText(NumberUtil.formatNumber(ticket.getTaxAmount()));
+		tfTotal.setText(NumberUtil.formatNumber(ticket.getTotalAmount()));
 	}
 
 	public Ticket getTicket() {
@@ -486,10 +485,10 @@ public class TicketForSplitView extends com.floreantpos.swing.TransparentPanel i
 
 		ticket.calculatePrice();
 
-		tfSubtotal.setText(numberFormat.format(ticket.getSubtotalAmount()));
-		tfDiscount.setText(numberFormat.format(ticket.getDiscountAmount()));
-		tfTax.setText(numberFormat.format(ticket.getTaxAmount()));
-		tfTotal.setText(numberFormat.format(ticket.getTotalAmount()));
+		tfSubtotal.setText(NumberUtil.formatNumber(ticket.getSubtotalAmount()));
+		tfDiscount.setText(NumberUtil.formatNumber(ticket.getDiscountAmount()));
+		tfTax.setText(NumberUtil.formatNumber(ticket.getTaxAmount()));
+		tfTotal.setText(NumberUtil.formatNumber(ticket.getTotalAmount()));
 	}
 
 	public TicketForSplitView getTicketView1() {

@@ -10,8 +10,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -58,8 +56,6 @@ public class ModifierView extends SelectionView implements ModifierStateChangeLi
 
 	public static final String VIEW_NAME = "MODIFIER_VIEW";
 
-	private final NumberFormat numberFormat = new DecimalFormat("00");
-	
 	private ModifierButton currentSelectedButton;
 
 	/** Creates new form GroupView */
@@ -332,7 +328,7 @@ public class ModifierView extends SelectionView implements ModifierStateChangeLi
 
 			if (itemCount != 0) {
 				sb.append("<h2 style='" + style + "'>");
-				sb.append("(" + numberFormat.format(itemCount) + ")");
+				sb.append("(" + itemCount + ")");
 				sb.append("</h2>");
 			}
 			sb.append("</center>");

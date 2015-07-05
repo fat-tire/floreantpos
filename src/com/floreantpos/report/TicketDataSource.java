@@ -6,6 +6,7 @@ import java.util.LinkedHashMap;
 import com.floreantpos.model.ITicketItem;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.ui.ticket.TicketItemRowCreator;
+import com.floreantpos.util.NumberUtil;
 
 public class TicketDataSource extends AbstractReportDataSource {
 	
@@ -51,7 +52,7 @@ public class TicketDataSource extends AbstractReportDataSource {
 					return null;
 				}
 				
-				return String.valueOf(total);
+				return NumberUtil.formatNumber(total);
 		}
 
 		return null;
