@@ -2,16 +2,15 @@ package com.floreantpos.ui.ticket;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.text.DecimalFormat;
 
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 
 import com.floreantpos.model.ITicketItem;
+import com.floreantpos.util.NumberUtil;
 
 public class TicketViewerTableCellRenderer extends DefaultTableCellRenderer {
-	private static final DecimalFormat numberFormat = new DecimalFormat("0.00");
 	private boolean inTicketScreen = false;
 
 	@Override
@@ -47,7 +46,7 @@ public class TicketViewerTableCellRenderer extends DefaultTableCellRenderer {
 		String text = value.toString();
 
 		if (value instanceof Double || value instanceof Float) {
-			text = numberFormat.format(((java.lang.Number) value).doubleValue());
+			text = NumberUtil.formatNumber(((java.lang.Number) value).doubleValue());
 			setHorizontalAlignment(SwingConstants.RIGHT);
 		}
 		else if (value instanceof Integer) {

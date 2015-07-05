@@ -3,7 +3,6 @@ package com.floreantpos.ui.views.payment;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.text.NumberFormat;
 import java.text.ParseException;
 
 import javax.swing.AbstractAction;
@@ -347,8 +346,7 @@ public class PaymentView extends JPanel {
 	}
 
 	public double getTenderedAmount() throws ParseException {
-		NumberFormat numberFormat = NumberFormat.getInstance();
-		double doubleValue = numberFormat.parse(tfAmountTendered.getText()).doubleValue();
+		double doubleValue = NumberUtil.parse(tfAmountTendered.getText()).doubleValue();
 		return doubleValue;
 	}
 

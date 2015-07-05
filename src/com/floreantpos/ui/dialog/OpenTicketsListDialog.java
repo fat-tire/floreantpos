@@ -9,7 +9,6 @@ package com.floreantpos.ui.dialog;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.Rectangle;
-import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -33,6 +32,7 @@ import com.floreantpos.model.User;
 import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.ui.views.order.CashierModeNextActionDialog;
 import com.floreantpos.ui.views.order.OrderView;
+import com.floreantpos.util.NumberUtil;
 
 /**
  *
@@ -371,7 +371,6 @@ public class OpenTicketsListDialog extends POSDialog {
 	class TicketTableCellRenderer extends DefaultTableCellRenderer {
 		Font font = getFont().deriveFont(Font.BOLD, 12);
 		SimpleDateFormat dateFormat = new SimpleDateFormat("MMM-dd-yy hh:mm a");
-		DecimalFormat decimalFormat = new DecimalFormat("0.00");
 		String currencySymbol = Application.getCurrencySymbol();
 
 		@Override
@@ -384,7 +383,7 @@ public class OpenTicketsListDialog extends POSDialog {
 				label.setHorizontalAlignment(SwingConstants.CENTER);
 			}
 			else if (value instanceof Double) {
-				label.setText(currencySymbol + decimalFormat.format(((Double) value).doubleValue()));
+				label.setText(currencySymbol + NumberUtil.formatNumber(((Double) value).doubleValue()));
 				label.setHorizontalAlignment(SwingConstants.RIGHT);
 			}
 			else {

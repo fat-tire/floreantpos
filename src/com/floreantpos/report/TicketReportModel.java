@@ -1,15 +1,14 @@
 package com.floreantpos.report;
 
-import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
 import com.floreantpos.model.Ticket;
+import com.floreantpos.util.NumberUtil;
 
 public class TicketReportModel extends AbstractTableModel {
-	private static DecimalFormat formatter = new DecimalFormat("#,##0.00");
 	private static SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM, yyyy");
 //	private String currencySymbol;
 	
@@ -55,7 +54,7 @@ public class TicketReportModel extends AbstractTableModel {
 				return com.floreantpos.POSConstants.OPEN;
 				
 			case 4:
-				return formatter.format(ticket.getTotalAmount());
+				return NumberUtil.formatNumber(ticket.getTotalAmount());
 		}
 		return null;
 	}

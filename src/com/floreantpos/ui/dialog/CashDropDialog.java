@@ -9,7 +9,6 @@ package com.floreantpos.ui.dialog;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.Rectangle;
-import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -29,6 +28,7 @@ import com.floreantpos.main.Application;
 import com.floreantpos.model.CashDropTransaction;
 import com.floreantpos.model.Terminal;
 import com.floreantpos.model.dao.CashDropTransactionDAO;
+import com.floreantpos.util.NumberUtil;
 
 /**
  *
@@ -357,7 +357,6 @@ public class CashDropDialog extends POSDialog {
 
 	class TableRenderer extends DefaultTableCellRenderer {
 		private SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy hh:mm a");
-		private DecimalFormat numberFormat = new DecimalFormat("0.00");
 		Font font = getFont().deriveFont(Font.BOLD, 14);
 		/**
 		 * 
@@ -388,7 +387,7 @@ public class CashDropDialog extends POSDialog {
 				label.setHorizontalAlignment(SwingConstants.RIGHT);
 			}
 			if (value instanceof Double) {
-				String string = numberFormat.format(((java.lang.Double) value).doubleValue());
+				String string = NumberUtil.formatNumber(((java.lang.Double) value).doubleValue());
 				label.setText(currencySymbol + string);
 				label.setHorizontalAlignment(SwingConstants.RIGHT);
 			}

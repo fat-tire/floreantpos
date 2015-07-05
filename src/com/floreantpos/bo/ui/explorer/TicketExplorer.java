@@ -1,7 +1,6 @@
 package com.floreantpos.bo.ui.explorer;
 
 import java.awt.BorderLayout;
-import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
@@ -20,7 +19,6 @@ import com.floreantpos.ui.PosTableRenderer;
 
 public class TicketExplorer extends TransparentPanel {
 	private SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd yyyy, h:m a"); //$NON-NLS-1$
-	DecimalFormat numberFormat = new DecimalFormat("0.00"); //$NON-NLS-1$
 	
 	JXTable explorerTable;
 	private List<Ticket> tickets;
