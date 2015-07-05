@@ -32,6 +32,8 @@ public class KitchenTicket extends BaseKitchenTicket {
 
 /*[CONSTRUCTOR MARKER END]*/
 	
+	private String customerName;
+	
 	public OrderType getType() {
 		String type = getTicketType();
 		
@@ -105,7 +107,10 @@ public class KitchenTicket extends BaseKitchenTicket {
 				
 				kitchenTicket.setServerName(ticket.getOwner().getFirstName());
 				kitchenTicket.setStatus(KitchenTicketStatus.WAITING.name());
-				//kitchenTicket.setPrinterGroup(printer.getVirtualPrinter());
+				
+				if(StringUtils.isNotEmpty(ticket.getProperty(Ticket.CUSTOMER_NAME))) {
+					kitchenTicket.setCustomerName(ticket.getProperty(Ticket.CUSTOMER_NAME));
+				}
 				
 				KitchenTicketDAO.getInstance().saveOrUpdate(kitchenTicket);
 				
@@ -174,5 +179,13 @@ public class KitchenTicket extends BaseKitchenTicket {
 	
 	public static enum KitchenTicketStatus {
 		WAITING, VOID, DONE;
+	}
+
+	public String getCustomerName() {
+		return customerName;
+	}
+
+	public void setCustomerName(String customerName) {
+		this.customerName = customerName;
 	}
 }
