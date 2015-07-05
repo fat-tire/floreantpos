@@ -456,7 +456,11 @@ public class ReceiptPrintService {
 		if (ticket.getTableNumbers() != null && ticket.getTableNumbers().size() > 0) {
 			map.put(TABLE_NO, POSConstants.RECEIPT_REPORT_TABLE_NO_LABEL + ticket.getTableNumbers());
 		}
-		//map.put(GUEST_COUNT, POSConstants.RECEIPT_REPORT_GUEST_NO_LABEL + ticket.getNumberOfGuests());
+		
+		if(StringUtils.isNotEmpty(ticket.getCustomerName())) {
+			map.put("customer", "Customer: " + ticket.getCustomerName());
+		}
+		
 		map.put(SERVER_NAME, POSConstants.RECEIPT_REPORT_SERVER_LABEL + ticket.getServerName());
 		map.put(REPORT_DATE, "Printed: " + reportDateFormat.format(new Date()));
 
