@@ -83,9 +83,9 @@ public class DataImportAction extends AbstractAction {
 			if (taxes != null) {
 				for (Tax tax : taxes) {
 					objectMap.put(tax.getUniqueId(), tax);
-					tax.setId(null);
+					tax.setId(1);
 
-					TaxDAO.getInstance().save(tax);
+					//TaxDAO.getInstance().saveOrUpdate(tax);
 				}
 			}
 
