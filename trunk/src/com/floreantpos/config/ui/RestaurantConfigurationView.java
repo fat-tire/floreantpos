@@ -11,16 +11,17 @@ import org.apache.commons.lang.StringUtils;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.Restaurant;
 import com.floreantpos.model.dao.RestaurantDAO;
+import com.floreantpos.swing.FixedLengthTextField;
 import com.floreantpos.swing.POSTextField;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 
 public class RestaurantConfigurationView extends ConfigurationView {
 	private RestaurantDAO dao;
 	private Restaurant restaurant;
-	private POSTextField tfRestaurantName;
-	private POSTextField tfAddressLine1;
-	private POSTextField tfAddressLine2;
-	private POSTextField tfAddressLine3;
+	private FixedLengthTextField tfRestaurantName;
+	private FixedLengthTextField tfAddressLine1;
+	private FixedLengthTextField tfAddressLine2;
+	private FixedLengthTextField tfAddressLine3;
 	private POSTextField tfTelephone;
 	private POSTextField tfCapacity;
 	private POSTextField tfTable;
@@ -37,25 +38,25 @@ public class RestaurantConfigurationView extends ConfigurationView {
 		JLabel lblNewLabel = new JLabel("Restaurant name" + ":");
 		add(lblNewLabel, "cell 0 1,alignx trailing");
 		
-		tfRestaurantName = new POSTextField();
+		tfRestaurantName = new FixedLengthTextField(120);
 		add(tfRestaurantName, "cell 1 1 3 1,growx");
 		
 		JLabel lblAddressLine = new JLabel("Address line 1" + ":");
 		add(lblAddressLine, "cell 0 2,alignx trailing");
 		
-		tfAddressLine1 = new POSTextField();
+		tfAddressLine1 = new FixedLengthTextField(60);
 		add(tfAddressLine1, "cell 1 2 3 1,growx");
 		
 		JLabel lblAddressLine_1 = new JLabel("Address line 2" + ":");
 		add(lblAddressLine_1, "cell 0 3,alignx trailing");
 		
-		tfAddressLine2 = new POSTextField();
+		tfAddressLine2 = new FixedLengthTextField(60);
 		add(tfAddressLine2, "cell 1 3 3 1,growx");
 		
 		JLabel lblAddressLine_2 = new JLabel("Address line 3" + ":");
 		add(lblAddressLine_2, "cell 0 4,alignx trailing");
 		
-		tfAddressLine3 = new POSTextField();
+		tfAddressLine3 = new FixedLengthTextField(60);
 		add(tfAddressLine3, "cell 1 4 3 1,growx");
 		
 		JLabel lblZipCode = new JLabel("ZIP code");
