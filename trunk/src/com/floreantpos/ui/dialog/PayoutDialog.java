@@ -120,7 +120,7 @@ public class PayoutDialog extends POSDialog {
 			
 			dispose();
 		} catch (Exception e) {
-			POSMessageDialog.showError(e.getMessage(), e);
+			POSMessageDialog.showError(Application.getPosWindow(), e.getMessage(), e);
 		}
 	}//GEN-LAST:event_doFinishPayout
 

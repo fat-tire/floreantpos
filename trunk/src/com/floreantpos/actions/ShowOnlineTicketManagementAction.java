@@ -22,7 +22,7 @@ public class ShowOnlineTicketManagementAction extends PosAction {
 				ticketImportPlugin.startService();
 			}
 		} catch (Exception e) {
-			POSMessageDialog.showError(e.getMessage(), e);
+			POSMessageDialog.showError(Application.getPosWindow(), e.getMessage(), e);
 		}
 	}
 

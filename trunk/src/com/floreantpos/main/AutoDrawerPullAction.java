@@ -71,7 +71,7 @@ public class AutoDrawerPullAction implements ActionListener {
 				user.doClockIn(terminal, currentShift, currentTime);
 			}
 		} catch (Exception ex) {
-			POSMessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, ex);
+			POSMessageDialog.showError(Application.getPosWindow(),com.floreantpos.POSConstants.ERROR_MESSAGE, ex);
 		} finally {
 			posWindow.setGlassPaneVisible(false);
 		}

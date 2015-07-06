@@ -43,7 +43,7 @@ public class UserListDialog extends POSDialog {
 			public void actionPerformed(ActionEvent e) {
 				int selectedRow = userListTable.getSelectedRow();
 				if(selectedRow == -1) {
-					POSMessageDialog.showError("Please select user");
+					POSMessageDialog.showError(Application.getPosWindow(), "Please select user");
 					return;
 				}
 				

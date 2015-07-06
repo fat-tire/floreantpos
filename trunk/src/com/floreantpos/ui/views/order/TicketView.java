@@ -291,14 +291,14 @@ public class TicketView extends JPanel {
 		try {
 			Object object = ticketViewerTable.getSelected();
 			if (!(object instanceof TicketItem)) {
-				POSMessageDialog.showError("Please select and item");
+				POSMessageDialog.showError(Application.getPosWindow(), "Please select and item");
 				return;
 			}
 
 			TicketItem ticketItem = (TicketItem) object;
 
 			if (ticketItem.isPrintedToKitchen()) {
-				POSMessageDialog.showError("Cooking instruction cannot be added to item already printed to kitchen");
+				POSMessageDialog.showError(Application.getPosWindow(), "Cooking instruction cannot be added to item already printed to kitchen");
 				return;
 			}
 
@@ -348,7 +348,7 @@ public class TicketView extends JPanel {
 			closeView(false);
 
 		} catch (StaleObjectStateException e) {
-			POSMessageDialog.showError("It seems the ticket has been modified by some other person or terminal. Save failed.");
+			POSMessageDialog.showError(Application.getPosWindow(), "It seems the ticket has been modified by some other person or terminal. Save failed.");
 			return;
 		} catch (PosException x) {
 			POSMessageDialog.showError(x.getMessage());
@@ -391,7 +391,7 @@ public class TicketView extends JPanel {
 	private void doPayNow(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_doPayNow
 		try {
 			if (!Application.getInstance().getTerminal().isCashDrawerAssigned()) {
-				POSMessageDialog.showError("Unable to accept payment. Configuration error or Drawer has not been assigned.");
+				POSMessageDialog.showError(Application.getPosWindow(), "Unable to accept payment. Configuration error or Drawer has not been assigned.");
 				return;
 			}
 
@@ -994,7 +994,7 @@ public class TicketView extends JPanel {
 
 			MenuItem menuItem = MenuItemDAO.getInstance().get(itemId);
 			if (menuItem == null) {
-				POSMessageDialog.showError("Item not found");
+				POSMessageDialog.showError(Application.getPosWindow(), "Item not found");
 				return;
 			}
 			itemSelectionListener.itemSelected(menuItem);

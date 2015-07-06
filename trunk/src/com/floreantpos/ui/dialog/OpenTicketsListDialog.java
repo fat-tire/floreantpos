@@ -232,7 +232,7 @@ public class OpenTicketsListDialog extends POSDialog {
 	private Ticket getSelectedTicket() {
 		int row = openTicketListTable.getSelectedRow();
 		if (row < 0) {
-			POSMessageDialog.showError(com.floreantpos.POSConstants.SELECT_TICKET);
+			POSMessageDialog.showError(this, com.floreantpos.POSConstants.SELECT_TICKET);
 			return null;
 		}
 		return openTickets.get(row);
@@ -266,7 +266,7 @@ public class OpenTicketsListDialog extends POSDialog {
 				}
 			}
 		} catch (Exception e) {
-			POSMessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE);
+			POSMessageDialog.showError(this, com.floreantpos.POSConstants.ERROR_MESSAGE);
 		}
 	}//GEN-LAST:event_doTransferServer
 

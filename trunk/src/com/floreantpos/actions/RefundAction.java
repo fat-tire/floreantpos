@@ -26,16 +26,18 @@ public class RefundAction extends PosAction {
 
 			if (ticket == null) {
 				int ticketId = NumberSelectionDialog2.takeIntInput("Enter or scan ticket id");
+				if(ticketId == -1) return;
+				
 				ticket = TicketService.getTicket(ticketId);
 			}
 			
 			if(!ticket.isPaid()) {
-				POSMessageDialog.showError("Ticket is not paid.");
+				POSMessageDialog.showError(Application.getPosWindow(), "Ticket is not paid.");
 				return;
 			}
 			
 			if(ticket.isRefunded()) {
-				POSMessageDialog.showError("Ticket is already refunded.");
+				POSMessageDialog.showError(Application.getPosWindow(), "Ticket is already refunded.");
 				return;
 			}
 			
@@ -60,7 +62,7 @@ public class RefundAction extends PosAction {
 			}
 			
 			if(refundAmount > paidAmount) {
-				POSMessageDialog.showError("Refund amount cannot be greater than paid amount");
+				POSMessageDialog.showError(Application.getPosWindow(), "Refund amount cannot be greater than paid amount");
 				return;
 			}
 
@@ -71,7 +73,7 @@ public class RefundAction extends PosAction {
 			ticketList.updateTicketList();
 			
 		} catch (Exception e) {
-			POSMessageDialog.showError(e.getMessage(), e);
+			POSMessageDialog.showError(Application.getPosWindow(), e.getMessage(), e);
 		}
 	}
 

@@ -2,7 +2,6 @@ package com.floreantpos.config.ui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JCheckBox;
@@ -19,9 +18,7 @@ import com.floreantpos.model.OrderType;
 import com.floreantpos.model.OrderTypeProperties;
 import com.floreantpos.model.VirtualPrinter;
 import com.floreantpos.model.dao.OrderTypePropertiesDAO;
-import com.floreantpos.model.dao.VirtualPrinterDAO;
 import com.floreantpos.swing.FixedLengthTextField;
-import com.floreantpos.swing.ListComboBoxModel;
 
 public class OrderTypeConfigurationView extends ConfigurationView {
 	private FixedLengthTextField tfDriveThruAlias = new FixedLengthTextField(40);

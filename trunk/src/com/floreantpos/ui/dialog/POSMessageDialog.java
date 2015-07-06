@@ -17,7 +17,6 @@ import javax.swing.JPanel;
 import org.apache.log4j.Logger;
 
 import com.floreantpos.main.Application;
-import com.floreantpos.util.POSUtil;
 
 /**
  * 
@@ -27,7 +26,7 @@ public class POSMessageDialog extends javax.swing.JDialog {
 
 	private static Logger logger = Logger.getLogger(Application.class);
 	
-	private static void showDialog(String message, int messageType, int optionType) {
+	private static void showDialog(Component parent, String message, int messageType, int optionType) {
 		JOptionPane optionPane = new JOptionPane(message, messageType, optionType);
 		Object[] options = optionPane.getComponents();
 		for (Object object : options) {
@@ -42,45 +41,31 @@ public class POSMessageDialog extends javax.swing.JDialog {
 			}
 		}
 		
-		JDialog dialog = optionPane.createDialog(POSUtil.getFocusedWindow(), com.floreantpos.POSConstants.MDS_POS);
+		JDialog dialog = optionPane.createDialog(parent, com.floreantpos.POSConstants.MDS_POS);
+		dialog.setModal(true);
 		dialog.setVisible(true);
 	}
 
-	public static void showMessage(String message) {
-		showDialog(message, JOptionPane.INFORMATION_MESSAGE, JOptionPane.DEFAULT_OPTION);
-		
-		//JOptionPane.showMessageDialog(Application.getPosWindow(), message, com.floreantpos.POSConstants.MDS_POS, JOptionPane.INFORMATION_MESSAGE, null);
-	}
-
 	
+	public static void showMessage(String message) {
+		showDialog(Application.getPosWindow(), message, JOptionPane.INFORMATION_MESSAGE, JOptionPane.DEFAULT_OPTION);
+	}
 	
 	public static void showMessage(Component parent, String message) {
-		showDialog(message, JOptionPane.INFORMATION_MESSAGE, JOptionPane.DEFAULT_OPTION);
-		//JOptionPane.showMessageDialog(parent, message, com.floreantpos.POSConstants.MDS_POS, JOptionPane.INFORMATION_MESSAGE, null);
+		showDialog(parent, message, JOptionPane.INFORMATION_MESSAGE, JOptionPane.DEFAULT_OPTION);
 	}
 
 	public static void showError(String message) {
-		showDialog(message, JOptionPane.ERROR_MESSAGE, JOptionPane.DEFAULT_OPTION);
-//		JOptionPane.showMessageDialog(Application.getPosWindow(), message, com.floreantpos.POSConstants.MDS_POS, JOptionPane.ERROR_MESSAGE, null);
+		showDialog(Application.getPosWindow(), message, JOptionPane.ERROR_MESSAGE, JOptionPane.DEFAULT_OPTION);
 	}
-
+	
 	public static void showError(Component parent, String message) {
-		showDialog(message, JOptionPane.ERROR_MESSAGE, JOptionPane.DEFAULT_OPTION);
-//		JOptionPane.showMessageDialog(parent, message, com.floreantpos.POSConstants.MDS_POS, JOptionPane.ERROR_MESSAGE, null);
-	}
-
-	public static void showError(String message, Throwable x) {
-		x.printStackTrace();
-		logger.error(message, x);
-		showDialog(message, JOptionPane.ERROR_MESSAGE, JOptionPane.DEFAULT_OPTION);
-//		JOptionPane.showMessageDialog(Application.getPosWindow(), message, com.floreantpos.POSConstants.ERROR_MESSAGE, JOptionPane.ERROR_MESSAGE, null);
+		showDialog(parent, message, JOptionPane.ERROR_MESSAGE, JOptionPane.DEFAULT_OPTION);
 	}
 
 	public static void showError(Component parent, String message, Throwable x) {
-		x.printStackTrace();
 		logger.error(message, x);
-		showDialog(message, JOptionPane.ERROR_MESSAGE, JOptionPane.DEFAULT_OPTION);
-//		JOptionPane.showMessageDialog(parent, message, com.floreantpos.POSConstants.MDS_POS, JOptionPane.ERROR_MESSAGE, null);
+		showDialog(parent, message, JOptionPane.ERROR_MESSAGE, JOptionPane.DEFAULT_OPTION);
 	}
 	
 	public static int showYesNoQuestionDialog(Component parent, String message, String title) {

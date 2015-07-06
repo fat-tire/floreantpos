@@ -109,11 +109,11 @@ public class TicketAuthorizationDialog extends POSDialog {
 				authorizeTransaction(transaction);
 			}
 
-			POSMessageDialog.showMessage("Authorized.");
+			POSMessageDialog.showMessage(Application.getPosWindow(), "Authorized.");
 			updateTransactiontList();
 
 		} catch (Exception e) {
-			POSMessageDialog.showError(e.getMessage(), e);
+			POSMessageDialog.showError(Application.getPosWindow(), e.getMessage(), e);
 		} finally {
 			waitDialog.setVisible(false);
 		}
@@ -140,11 +140,11 @@ public class TicketAuthorizationDialog extends POSDialog {
 				authorizeTransaction(transaction);
 			}
 
-			POSMessageDialog.showMessage("Authorized.");
+			POSMessageDialog.showMessage(Application.getPosWindow(), "Authorized.");
 			updateTransactiontList();
 
 		} catch (Exception e) {
-			POSMessageDialog.showError(e.getMessage(), e);
+			POSMessageDialog.showError(Application.getPosWindow(), e.getMessage(), e);
 		} finally {
 			waitDialog.setVisible(false);
 		}
@@ -222,7 +222,7 @@ public class TicketAuthorizationDialog extends POSDialog {
 	private void authorizeTransaction(PosTransaction transaction) throws Exception {
 		String cardEntryType = transaction.getCardReader();
 		if (StringUtils.isEmpty(cardEntryType)) {
-			POSMessageDialog.showError("No input information found for transaction id = " + transaction.getId() + ". The record may be broken.");
+			POSMessageDialog.showError(Application.getPosWindow(), "No input information found for transaction id = " + transaction.getId() + ". The record may be broken.");
 			return;
 		}
 

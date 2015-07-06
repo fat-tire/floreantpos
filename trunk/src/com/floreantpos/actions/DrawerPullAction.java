@@ -3,6 +3,7 @@ package com.floreantpos.actions;
 import javax.swing.JDialog;
 
 import com.floreantpos.POSConstants;
+import com.floreantpos.main.Application;
 import com.floreantpos.model.UserPermission;
 import com.floreantpos.ui.dialog.DrawerPullReportDialog;
 import com.floreantpos.ui.dialog.POSMessageDialog;
@@ -24,7 +25,7 @@ public class DrawerPullAction extends PosAction {
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.open();
 		} catch (Exception e) {
-			POSMessageDialog.showError(e.getMessage(), e);
+			POSMessageDialog.showError(Application.getPosWindow(),e.getMessage(), e);
 		}
 	}
 

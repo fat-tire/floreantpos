@@ -9,6 +9,7 @@ import javax.swing.JTable;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.AbstractTableModel;
 
+import com.floreantpos.main.Application;
 import com.floreantpos.model.CookingInstruction;
 import com.floreantpos.model.TicketItemCookingInstruction;
 import com.floreantpos.model.util.IllegalModelStateException;
@@ -42,7 +43,7 @@ public class CookingInstructionSelectionView extends BeanEditor {
 		int[] selectedRows = table.getSelectedRows();
 		
 		if(selectedRows.length == 0) {
-			POSMessageDialog.showError("No cooking instruction selected");
+			POSMessageDialog.showError(Application.getPosWindow(), "No cooking instruction selected");
 			return false;
 		}
 		

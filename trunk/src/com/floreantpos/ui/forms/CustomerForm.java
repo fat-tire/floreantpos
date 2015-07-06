@@ -10,6 +10,7 @@ import org.apache.commons.lang.StringUtils;
 import org.hibernate.StaleObjectStateException;
 
 import com.floreantpos.bo.ui.BOMessageDialog;
+import com.floreantpos.main.Application;
 import com.floreantpos.model.Customer;
 import com.floreantpos.model.dao.CustomerDAO;
 import com.floreantpos.model.util.IllegalModelStateException;
@@ -193,7 +194,7 @@ public class CustomerForm extends BeanEditor<Customer> {
 		String email = tfEmail.getText();
 		
 		if(StringUtils.isEmpty(phoneString) && StringUtils.isEmpty(name) && StringUtils.isEmpty(email)) {
-			POSMessageDialog.showError("Please provide either name or phone or email");
+			POSMessageDialog.showError(Application.getPosWindow(), "Please provide either name or phone or email");
 			return false;
 		}
 		

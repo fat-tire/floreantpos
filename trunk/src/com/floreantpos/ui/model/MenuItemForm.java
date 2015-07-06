@@ -511,7 +511,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 				
 				for (MenuItemModifierGroup modifierGroup : menuItemModifierGroups) {
 					if(modifierGroup.getModifierGroup().equals(modifier.getModifierGroup())) {
-						POSMessageDialog.showError("This modifier group already exists");
+						POSMessageDialog.showError(Application.getPosWindow(), "This modifier group already exists");
 						return;
 					}
 				}
