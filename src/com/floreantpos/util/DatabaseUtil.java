@@ -147,7 +147,7 @@ public class DatabaseUtil {
 			UserTypeDAO.getInstance().saveOrUpdate(cashier);
 			
 			UserType server = new UserType();
-			server.setName(com.floreantpos.POSConstants.CASHIER);
+			server.setName("SR. CASHIER");
 			server.setPermissions(new HashSet<UserPermission>(Arrays.asList(UserPermission.CREATE_TICKET, UserPermission.EDIT_TICKET, UserPermission.SETTLE_TICKET,
 					UserPermission.SPLIT_TICKET)));
 			//server.setTest(Arrays.asList(OrderType.BAR_TAB));
