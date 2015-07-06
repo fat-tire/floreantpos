@@ -20,6 +20,7 @@ import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
 import com.floreantpos.IconFactory;
+import com.floreantpos.main.Application;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.swing.TransparentPanel;
 import com.floreantpos.ui.dialog.POSMessageDialog;
@@ -126,7 +127,7 @@ public class NumberSelectionView extends TransparentPanel implements ActionListe
 			if (isDecimalAllowed() && tfNumber.getText().indexOf('.') < 0) {
 				String string = tfNumber.getText() + ".";
 				if(!validate(string)) {
-					POSMessageDialog.showError("Invalid number");
+					POSMessageDialog.showError(Application.getPosWindow(), "Invalid number");
 					return;
 				}
 				tfNumber.setText(string);
@@ -141,7 +142,7 @@ public class NumberSelectionView extends TransparentPanel implements ActionListe
 			
 			s = s + actionCommand;
 			if(!validate(s)) {
-				POSMessageDialog.showError("Invalid number");
+				POSMessageDialog.showError(Application.getPosWindow(), "Invalid number");
 				return;
 			}
 			tfNumber.setText(s);

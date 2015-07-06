@@ -11,6 +11,7 @@ import java.util.HashMap;
 
 import javax.swing.JComponent;
 
+import com.floreantpos.main.Application;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 
@@ -187,7 +188,7 @@ public class OrderView extends ViewPanel {
 			try {
 				categoryView.initialize();
 			}catch(Throwable t) {
-				POSMessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, t);
+				POSMessageDialog.showError(Application.getPosWindow(), com.floreantpos.POSConstants.ERROR_MESSAGE, t);
 			}
 		}
 		else {

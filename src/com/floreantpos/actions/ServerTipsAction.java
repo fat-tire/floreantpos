@@ -59,7 +59,7 @@ public class ServerTipsAction extends PosAction {
 			dialog.setSize(400, 600);
 			dialog.open();
 		} catch (Exception e) {
-			POSMessageDialog.showError(e.getMessage(), e);
+			POSMessageDialog.showError(Application.getPosWindow(), e.getMessage(), e);
 		}
 	}
 

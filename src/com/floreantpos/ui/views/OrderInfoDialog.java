@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JPanel;
 
+import com.floreantpos.main.Application;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.ui.dialog.POSDialog;
 import com.floreantpos.ui.dialog.POSMessageDialog;
@@ -49,7 +50,7 @@ public class OrderInfoDialog extends POSDialog {
 		try {
 			view.print();
 		} catch (Exception e) {
-			POSMessageDialog.showError(e.getMessage());
+			POSMessageDialog.showError(Application.getPosWindow(), e.getMessage());
 		}
 	}
 

@@ -38,7 +38,7 @@ public class VoidTicketDialog extends POSDialog {
 			List<VoidReason> voidReasons = dao.findAll();
 			cbVoidReasons.setModel(new ListComboBoxModel(voidReasons));
 		} catch (Exception e) {
-			POSMessageDialog.showError(com.floreantpos.POSConstants.CANNOT_LOAD_VOID_REASONS, e);
+			POSMessageDialog.showError(Application.getPosWindow(), com.floreantpos.POSConstants.CANNOT_LOAD_VOID_REASONS, e);
 		}
 		
 		setSize(450, 650);
@@ -194,7 +194,7 @@ public class VoidTicketDialog extends POSDialog {
 				}
 			}
 		} catch (Throwable e) {
-			POSMessageDialog.showError(POSConstants.ERROR_MESSAGE, e);
+			POSMessageDialog.showError(Application.getPosWindow(), POSConstants.ERROR_MESSAGE, e);
 		}
     }//GEN-LAST:event_btnNewVoidReasonActionPerformed
 
@@ -232,7 +232,7 @@ public class VoidTicketDialog extends POSDialog {
 			
 			dispose();
 		} catch (Exception e) {
-			POSMessageDialog.showError(POSConstants.ERROR_MESSAGE, e);
+			POSMessageDialog.showError(Application.getPosWindow(), POSConstants.ERROR_MESSAGE, e);
 		}
     }//GEN-LAST:event_btnVoidActionPerformed
     

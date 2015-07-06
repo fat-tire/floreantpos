@@ -484,7 +484,7 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 		
 		int due = (int) POSUtil.getDouble(ticket.getDueAmount());
 		if (due != 0) {
-			POSMessageDialog.showError("Ticket is not fully paid");
+			POSMessageDialog.showError(this, "Ticket is not fully paid");
 			return;
 		}
 
@@ -510,7 +510,7 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 			}
 
 			if (ticket.getType() != OrderType.HOME_DELIVERY) {
-				POSMessageDialog.showError("Driver can be assigned only for Home Delivery");
+				POSMessageDialog.showError(this, "Driver can be assigned only for Home Delivery");
 				return;
 			}
 
@@ -527,7 +527,7 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 			orderServiceExtension.assignDriver(ticket.getId());
 		} catch (Exception e) {
 			e.printStackTrace();
-			POSMessageDialog.showError(e.getMessage());
+			POSMessageDialog.showError(this, e.getMessage());
 			LogFactory.getLog(SwitchboardView.class).error(e);
 		}
 	}
@@ -580,7 +580,7 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 	private void doSettleTicket() {
 		try {
 			if (!Application.getInstance().getTerminal().isCashDrawerAssigned()) {
-				POSMessageDialog.showError("Unable to accept payment. Configuration error or Drawer has not been assigned.");
+				POSMessageDialog.showError(this, "Unable to accept payment. Configuration error or Drawer has not been assigned.");
 				return;
 			}
 			
@@ -605,7 +605,7 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 			POSMessageDialog.showError(this, e.getMessage());
 		} catch (Exception e) {
 			e.printStackTrace();
-			POSMessageDialog.showError(POSConstants.ERROR_MESSAGE, e);
+			POSMessageDialog.showError(this, POSConstants.ERROR_MESSAGE, e);
 		}
 	}
 
@@ -617,7 +617,7 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 		try {
 
 			if (tickets.size() == 0) {
-				POSMessageDialog.showMessage(POSConstants.SELECT_ONE_TICKET_TO_PRINT);
+				POSMessageDialog.showMessage(this, POSConstants.SELECT_ONE_TICKET_TO_PRINT);
 				return;
 			}
 
@@ -636,7 +636,7 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 			dialog.setVisible(true);
 
 		} catch (Exception e) {
-			POSMessageDialog.showError(POSConstants.ERROR_MESSAGE, e);
+			POSMessageDialog.showError(this, POSConstants.ERROR_MESSAGE, e);
 		}
 	}
 
@@ -657,7 +657,7 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 
 			updateView();
 		} catch (Exception e) {
-			POSMessageDialog.showError(POSConstants.ERROR_MESSAGE, e);
+			POSMessageDialog.showError(this, POSConstants.ERROR_MESSAGE, e);
 		}
 	}
 
@@ -687,7 +687,7 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 
 	private void editTicket(Ticket ticket) {
 		if (ticket.isPaid()) {
-			POSMessageDialog.showMessage("Paid ticket cannot be edited");
+			POSMessageDialog.showMessage(this, "Paid ticket cannot be edited");
 			return;
 		}
 
@@ -731,7 +731,7 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 
 	private void doGroupSettle() {
 		if (!Application.getInstance().getTerminal().isCashDrawerAssigned()) {
-			POSMessageDialog.showError("Unable to accept payment. Configuration error or Drawer has not been assigned.");
+			POSMessageDialog.showError(this, "Unable to accept payment. Configuration error or Drawer has not been assigned.");
 			return;
 		}
 		
@@ -917,7 +917,7 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 		List<Ticket> selectedTickets = ticketList.getSelectedTickets();
 
 		if (selectedTickets.size() == 0 || selectedTickets.size() > 1) {
-			POSMessageDialog.showMessage("Please select a ticket");
+			POSMessageDialog.showMessage(this, "Please select a ticket");
 			return null;
 		}
 

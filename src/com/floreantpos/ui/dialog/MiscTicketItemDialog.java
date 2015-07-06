@@ -14,9 +14,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 
-import org.apache.commons.lang.StringUtils;
-
 import net.miginfocom.swing.MigLayout;
+
+import org.apache.commons.lang.StringUtils;
 
 import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.main.Application;
@@ -152,12 +152,12 @@ public class MiscTicketItemDialog extends POSDialog {
 		String itemName = tfItemName.getText();
 		
 		if(StringUtils.isEmpty(itemName)) {
-			POSMessageDialog.showError("Please intsert item name");
+			POSMessageDialog.showError(Application.getPosWindow(), "Please intsert item name");
 			return;
 		}
 		
 		if(amount <= 0 || Double.isNaN(amount)) {
-			POSMessageDialog.showError("Please intsert valid item price");
+			POSMessageDialog.showError(Application.getPosWindow(), "Please intsert valid item price");
 			return;
 		}
 		

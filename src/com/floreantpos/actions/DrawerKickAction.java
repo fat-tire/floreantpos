@@ -20,7 +20,7 @@ public class DrawerKickAction extends PosAction {
 				Runtime.getRuntime().exec(file.getAbsolutePath());
 			}
 		} catch (Exception e) {
-			POSMessageDialog.showError(e.getMessage(), e);
+			POSMessageDialog.showError(Application.getPosWindow(),e.getMessage(), e);
 		}
 	}
 
