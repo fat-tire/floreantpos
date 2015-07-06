@@ -244,7 +244,7 @@ public class CashDropDialog extends POSDialog {
 				tableModel.removeCashDrop(transaction);
 			}
 		} catch (Exception e) {
-			POSMessageDialog.showError("An error has occured while deleting cash drop", e);
+			POSMessageDialog.showError(Application.getPosWindow(),"An error has occured while deleting cash drop", e);
 		}
 	}//GEN-LAST:event_btnDeleteSelectedActionPerformed
 
@@ -270,7 +270,7 @@ public class CashDropDialog extends POSDialog {
 				tableModel.addCashDrop(transaction);
 			}
 		} catch (Exception e) {
-			POSMessageDialog.showError("An error has occured while saving cash drop", e);
+			POSMessageDialog.showError(Application.getPosWindow(),"An error has occured while saving cash drop", e);
 		}
 	}//GEN-LAST:event_btnNewCashDropActionPerformed
 

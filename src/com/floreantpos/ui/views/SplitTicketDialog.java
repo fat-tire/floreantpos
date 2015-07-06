@@ -231,7 +231,7 @@ public class SplitTicketDialog extends POSDialog {
 				tx.rollback();
 			} catch (Exception x) {
 			}
-			POSMessageDialog.showError(POSConstants.ERROR_MESSAGE, e);
+			POSMessageDialog.showError(Application.getPosWindow(), POSConstants.ERROR_MESSAGE, e);
 		} finally {
 			try {
 				session.close();

@@ -200,7 +200,7 @@ public class Application {
 			e.printStackTrace(new PrintWriter(writer));
 
 			if (writer.toString().contains("Another instance of Derby may have already booted")) {
-				POSMessageDialog.showError("Another FloreantPOS instance may be already running.\n" + "Multiple instances cannot be run in Derby single mode");
+				POSMessageDialog.showError(Application.getPosWindow(), "Another FloreantPOS instance may be already running.\n" + "Multiple instances cannot be run in Derby single mode");
 
 				return;
 			}
@@ -212,7 +212,7 @@ public class Application {
 				}
 			}
 		} catch (Exception e) {
-			POSMessageDialog.showError(e.getMessage(), e);
+			POSMessageDialog.showError(getPosWindow(), e.getMessage(), e);
 			e.printStackTrace();
 			logger.error(e);
 		} finally {

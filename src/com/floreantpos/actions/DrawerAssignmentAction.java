@@ -56,7 +56,7 @@ public class DrawerAssignmentAction extends PosAction {
 			}
 
 		} catch (Exception e) {
-			POSMessageDialog.showError(e.getMessage(), e);
+			POSMessageDialog.showError(Application.getPosWindow(),e.getMessage(), e);
 		}
 	}
 

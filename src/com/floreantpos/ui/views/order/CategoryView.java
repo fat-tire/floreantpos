@@ -18,11 +18,10 @@ import java.util.Vector;
 
 import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 
 import org.apache.log4j.Logger;
 
+import com.floreantpos.main.Application;
 import com.floreantpos.model.MenuCategory;
 import com.floreantpos.model.MenuItemModifierGroup;
 import com.floreantpos.model.TicketItemModifierGroup;
@@ -120,13 +119,6 @@ public class CategoryView extends SelectionView implements ActionListener {
 			}
 			
 			addActionListener(view);
-			
-			addChangeListener(new ChangeListener() {
-				@Override
-				public void stateChanged(ChangeEvent e) {
-					CategoryButton b = (CategoryButton) e.getSource();
-				}
-			});
 		}
 	}
 	
@@ -141,7 +133,7 @@ public class CategoryView extends SelectionView implements ActionListener {
 			boolean requiredModifierAdded = modifierView.isRequiredModifiersAdded(menuItemModifierGroups, ticketItemModifierGroups);
 
 			if (!requiredModifierAdded) {
-				POSMessageDialog.showError("Please add required modifiers");
+				POSMessageDialog.showError(Application.getPosWindow(), "Please add required modifiers");
 				return;
 			}
 		}

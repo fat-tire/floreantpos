@@ -71,18 +71,18 @@ public abstract class PosAction extends AbstractAction {
 			
 			User user2 = UserDAO.getInstance().findUserBySecretKey(password);
 			if(user2 == null) {
-				POSMessageDialog.showError("No user found with that secret key");
+				POSMessageDialog.showError(Application.getPosWindow(), "No user found with that secret key");
 			}
 			else {
 				if(!user2.hasPermission(requiredPermission)) {
-					POSMessageDialog.showError("No permission");
+					POSMessageDialog.showError(Application.getPosWindow(), "No permission");
 				}
 				else {
 					execute();
 				}
 			}
 			
-			//POSMessageDialog.showError("You do not have permission to execute this action");
+			//POSMessageDialog.showError(Application.getPosWindow(), "You do not have permission to execute this action");
 			return;
 		}
 

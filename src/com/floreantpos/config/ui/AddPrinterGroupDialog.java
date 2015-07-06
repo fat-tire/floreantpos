@@ -65,13 +65,13 @@ public class AddPrinterGroupDialog extends POSDialog {
 		btnOk.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(StringUtils.isEmpty(tfName.getText())) {
-					POSMessageDialog.showError("Name is empty");
+					POSMessageDialog.showError(Application.getPosWindow(), "Name is empty");
 					return;
 				}
 				
 				Object[] checkedValues = printerList.getCheckedValues();
 				if(checkedValues == null || checkedValues.length == 0) {
-					POSMessageDialog.showError("Please select at least one printer");
+					POSMessageDialog.showError(Application.getPosWindow(), "Please select at least one printer");
 					return;
 				}
 				

@@ -103,13 +103,13 @@ public class DefaultOrderServiceExtension implements OrderServiceExtension {
 		Ticket ticket = TicketDAO.getInstance().get(ticketId);
 
 		//		if (ticket.getType() == TicketType.DINE_IN) {
-		//			POSMessageDialog.showError("Please select tickets of type HOME DELIVERY or PICKUP or DRIVE THRU");
+		//			POSMessageDialog.showError(Application.getPosWindow(), "Please select tickets of type HOME DELIVERY or PICKUP or DRIVE THRU");
 		//			return false;
 		//		}
 
 		int due = (int) POSUtil.getDouble(ticket.getDueAmount());
 		if (due != 0) {
-			POSMessageDialog.showError("Ticket is not fully paid");
+			POSMessageDialog.showError(Application.getPosWindow(), "Ticket is not fully paid");
 			return false;
 		}
 

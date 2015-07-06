@@ -172,7 +172,7 @@ public class TerminalConfigurationView extends ConfigurationView {
 		try {
 			terminalNumber = Integer.parseInt(tfTerminalNumber.getText());
 		} catch(Exception x) {
-			POSMessageDialog.showError(Messages.getString("TerminalConfigurationView.14")); //$NON-NLS-1$
+			POSMessageDialog.showError(Application.getPosWindow(), Messages.getString("TerminalConfigurationView.14")); //$NON-NLS-1$
 			return false;
 		}
 		

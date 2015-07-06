@@ -106,12 +106,12 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 				return;
 			
 			if(!Application.getCurrentUser().hasPermission(UserPermission.ADD_DISCOUNT)) {
-				POSMessageDialog.showError("You do not have permission to execute this action");
+				POSMessageDialog.showError(Application.getPosWindow(), "You do not have permission to execute this action");
 				return;
 			}
 
 			if (ticket.getCouponAndDiscounts() != null && ticket.getCouponAndDiscounts().size() > 0) {
-				POSMessageDialog.showError(com.floreantpos.POSConstants.DISCOUNT_COUPON_LIMIT_);
+				POSMessageDialog.showError(Application.getPosWindow(), com.floreantpos.POSConstants.DISCOUNT_COUPON_LIMIT_);
 				return;
 			}
 
@@ -374,7 +374,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 			settleTicket(transaction);
 
 		} catch (Exception e) {
-			POSMessageDialog.showError(e.getMessage(), e);
+			POSMessageDialog.showError(Application.getPosWindow(), e.getMessage(), e);
 		} finally {
 			waitDialog.setVisible(false);
 		}
@@ -410,7 +410,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 				dispose();
 			}
 		} catch (UnknownHostException e) {
-			POSMessageDialog.showError("My Kala discount server connection error");
+			POSMessageDialog.showError(Application.getPosWindow(), "My Kala discount server connection error");
 		} catch (Exception e) {
 			POSMessageDialog.showError(this, POSConstants.ERROR_MESSAGE, e);
 		}
@@ -446,7 +446,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 				IOUtils.toString(new URL(url).openStream());
 			}
 		} catch (Exception e) {
-			POSMessageDialog.showError(e.getMessage(), e);
+			POSMessageDialog.showError(Application.getPosWindow(), e.getMessage(), e);
 		}
 	}
 
@@ -464,7 +464,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 
 	private void payUsingCard(String cardName, final double tenderedAmount) throws Exception {
 		if (!CardConfig.getMerchantGateway().isCardTypeSupported(cardName)) {
-			POSMessageDialog.showError("<html>Card <b>" + cardName + "</b> not supported.</html>");
+			POSMessageDialog.showError(Application.getPosWindow(), "<html>Card <b>" + cardName + "</b> not supported.</html>");
 			return;
 		}
 
@@ -584,7 +584,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			POSMessageDialog.showError(e.getMessage());
+			POSMessageDialog.showError(Application.getPosWindow(), e.getMessage());
 		} finally {
 			waitDialog.setVisible(false);
 		}
@@ -614,7 +614,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 
 	public void submitMyKalaDiscount() {
 		if (ticket.hasProperty(LOYALTY_ID)) {
-			POSMessageDialog.showError("Loyalty discount already added.");
+			POSMessageDialog.showError(Application.getPosWindow(), "Loyalty discount already added.");
 			return;
 		}
 
@@ -643,16 +643,16 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 
 			OrderController.saveOrder(ticket);
 
-			POSMessageDialog.showMessage("Congrations! you have discounts from Kala Loyalty Check discounts list for more.");
+			POSMessageDialog.showMessage(Application.getPosWindow(), "Congrations! you have discounts from Kala Loyalty Check discounts list for more.");
 
 			ticketDetailView.updateView();
 			paymentView.updateView();
 
 			//			if (string.contains("\"success\":false")) {
-			//				POSMessageDialog.showError("Coupon already used.");
+			//				POSMessageDialog.showError(Application.getPosWindow(), "Coupon already used.");
 			//			}
 		} catch (Exception e) {
-			POSMessageDialog.showError("Error setting My Kala discount.", e);
+			POSMessageDialog.showError(Application.getPosWindow(), "Error setting My Kala discount.", e);
 		}
 	}
 

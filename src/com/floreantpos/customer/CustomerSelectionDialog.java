@@ -21,6 +21,7 @@ import net.miginfocom.swing.MigLayout;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.floreantpos.main.Application;
 import com.floreantpos.model.Customer;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.dao.CustomerDAO;
@@ -166,7 +167,7 @@ public class CustomerSelectionDialog extends POSDialog {
 			public void actionPerformed(ActionEvent e) {
 				Customer customer = customerTable.getSelectedCustomer();
 				if(customer == null) {
-					POSMessageDialog.showError("Please select a customer");
+					POSMessageDialog.showError(Application.getPosWindow(), "Please select a customer");
 					return;
 				}
 				

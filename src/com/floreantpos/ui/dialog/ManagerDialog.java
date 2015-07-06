@@ -186,7 +186,7 @@ public class ManagerDialog extends JDialog {
 			dialog.initDate();
 			dialog.open();
 		} catch (Exception e) {
-			POSMessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, e);
+			POSMessageDialog.showError(Application.getPosWindow(), com.floreantpos.POSConstants.ERROR_MESSAGE, e);
 		} finally {
 			setGlassPaneVisible(false);
 		}
@@ -198,7 +198,7 @@ public class ManagerDialog extends JDialog {
 			OpenTicketsListDialog dialog = new OpenTicketsListDialog();
 			dialog.open();
 		} catch (Exception e) {
-			POSMessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, e);
+			POSMessageDialog.showError(Application.getPosWindow(), com.floreantpos.POSConstants.ERROR_MESSAGE, e);
 		} finally {
 			setGlassPaneVisible(false);
 		}
@@ -219,7 +219,7 @@ public class ManagerDialog extends JDialog {
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.open();
 		} catch (Exception e) {
-			POSMessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, e);
+			POSMessageDialog.showError(Application.getPosWindow(), com.floreantpos.POSConstants.ERROR_MESSAGE, e);
 		} finally {
 			setGlassPaneVisible(false);
 		}
@@ -256,7 +256,7 @@ public class ManagerDialog extends JDialog {
 			dialog.setSize(400, 600);
 			dialog.open();
 		} catch (Exception e) {
-			POSMessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, e);
+			POSMessageDialog.showError(Application.getPosWindow(), com.floreantpos.POSConstants.ERROR_MESSAGE, e);
 		} finally {
 			setGlassPaneVisible(false);
 		}

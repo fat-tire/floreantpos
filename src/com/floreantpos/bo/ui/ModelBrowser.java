@@ -17,6 +17,7 @@ import javax.swing.event.ListSelectionListener;
 import org.jdesktop.swingx.JXTable;
 
 import com.floreantpos.bo.ui.explorer.ListTableModel;
+import com.floreantpos.main.Application;
 import com.floreantpos.ui.BeanEditor;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 
@@ -185,7 +186,7 @@ public class ModelBrowser<E> extends JPanel implements ActionListener, ListSelec
 			handleAdditionaButtonActionIfApplicable(e);
 			
 		} catch (Exception e2) {
-			POSMessageDialog.showError(e2.getMessage(), e2);
+			POSMessageDialog.showError(Application.getPosWindow(), e2.getMessage(), e2);
 		}
 	}
 
