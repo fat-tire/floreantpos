@@ -780,8 +780,8 @@ public class TicketView extends JPanel {
 			
 			buttonPanel.add(btnCookingInstruction);
 			buttonPanel.add(btnDiscount);
-			buttonPanel.add(btnAddOn);
-			buttonPanel.add(btnVoid);
+			//buttonPanel.add(btnAddOn);
+			//buttonPanel.add(btnVoid);
 
 			buttonPanel.add(btnMisc);
 			buttonPanel.add(btnSearchItem);
@@ -937,8 +937,8 @@ public class TicketView extends JPanel {
 		
 		private PosButton btnCookingInstruction = new PosButton(IconFactory.getIcon("/ui_icons/", "cooking-instruction.png"));
 		private PosButton btnDiscount = new PosButton("DISCOUNT");
-		private PosButton btnAddOn = new PosButton("ADD ON");
-		private PosButton btnVoid = new PosButton("VOID");
+		//private PosButton btnAddOn = new PosButton("ADD ON");
+		//private PosButton btnVoid = new PosButton("VOID");
 		private JPanel buttonPanel;
 
 		// End of variables declaration//GEN-END:variables
@@ -965,16 +965,16 @@ public class TicketView extends JPanel {
 			if(item == null) {
 				btnCookingInstruction.setEnabled(false);
 				btnDiscount.setEnabled(false);
-				btnVoid.setEnabled(false);
-				btnAddOn.setEnabled(false);
+//				btnVoid.setEnabled(false);
+//				btnAddOn.setEnabled(false);
 				
 				return;
 			}
 			
 			btnCookingInstruction.setEnabled(item.canAddCookingInstruction());
 			btnDiscount.setEnabled(item.canAddDiscount());
-			btnVoid.setEnabled(item.canAddAdOn());
-			btnAddOn.setEnabled(item.canVoid());
+//			btnVoid.setEnabled(item.canAddAdOn());
+//			btnAddOn.setEnabled(item.canVoid());
 		}
 
 		public ItemSelectionListener getItemSelectionListener() {

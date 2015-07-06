@@ -459,11 +459,6 @@
         </parent>
         <price>2.0</price>
         <showImageOnly>false</showImageOnly>
-        <tax>
-            <id>1</id>
-            <name>US</name>
-            <rate>6.0</rate>
-        </tax>
         <visible>true</visible>
     </menuItems>
     <menuItems>
@@ -509,11 +504,6 @@
         </parent>
         <price>2.0</price>
         <showImageOnly>false</showImageOnly>
-        <tax>
-            <id>1</id>
-            <name>US</name>
-            <rate>6.0</rate>
-        </tax>
         <visible>true</visible>
     </menuItems>
     <menuItems>
@@ -534,11 +524,6 @@
         </parent>
         <price>0.0</price>
         <showImageOnly>false</showImageOnly>
-        <tax>
-            <id>1</id>
-            <name>US</name>
-            <rate>6.0</rate>
-        </tax>
         <visible>true</visible>
     </menuItems>
     <menuItems>
