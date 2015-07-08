@@ -55,7 +55,7 @@ public class DatabaseConfigurationView extends ConfigurationView implements Acti
 	}
 
 	protected void initUI() {
-		setLayout(new MigLayout("fill", "[][grow,fill]", "[][][][][][][][grow,fill]"));
+		setLayout(new MigLayout("fill", "[][grow,fill]", "[][][][][][][][grow,fill]")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		tfServerAddress = new POSTextField();
 		tfServerPort = new POSTextField();
 		tfDatabaseName = new POSTextField();
@@ -168,7 +168,7 @@ public class DatabaseConfigurationView extends ConfigurationView implements Acti
 					return;
 				}
 
-				i = JOptionPane.showConfirmDialog(this, "Do you want to generate sample data?", "Confirm", JOptionPane.YES_NO_OPTION);
+				i = JOptionPane.showConfirmDialog(this, Messages.getString("DatabaseConfigurationView.3"), Messages.getString("DatabaseConfigurationView.4"), JOptionPane.YES_NO_OPTION); //$NON-NLS-1$ //$NON-NLS-2$
 				boolean generateSampleData = false;
 				if (i == JOptionPane.YES_OPTION)
 					generateSampleData = true;
@@ -262,7 +262,7 @@ public class DatabaseConfigurationView extends ConfigurationView implements Acti
 
 	@Override
 	public String getName() {
-		return "Database";
+		return Messages.getString("DatabaseConfigurationView.5"); //$NON-NLS-1$
 	}
 
 }
