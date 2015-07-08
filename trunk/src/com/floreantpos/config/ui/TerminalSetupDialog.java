@@ -13,6 +13,7 @@ import javax.swing.JSeparator;
 
 import net.miginfocom.swing.MigLayout;
 
+import com.floreantpos.Messages;
 import com.floreantpos.main.Application;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.swing.TitledView;
@@ -35,23 +36,23 @@ public class TerminalSetupDialog extends JDialog {
 		
 		JPanel panel = new JPanel();
 		getContentPane().add(panel, BorderLayout.SOUTH);
-		panel.setLayout(new MigLayout("", "[64px][71px][][][][][][][][][][][][]", "[][41px]"));
+		panel.setLayout(new MigLayout("", "[64px][71px][][][][][][][][][][][][]", "[][41px]")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		
 		JSeparator separator = new JSeparator();
-		panel.add(separator, "cell 0 0 14 1,growx");
+		panel.add(separator, "cell 0 0 14 1,growx"); //$NON-NLS-1$
 		psbtnSave.setAction(saveAction);
 		psbtnSave.setMargin(new Insets(10, 20, 10, 20));
-		psbtnSave.setText("Save");
-		panel.add(psbtnSave, "cell 12 1,alignx left,aligny top");
+		psbtnSave.setText(Messages.getString("TerminalSetupDialog.4")); //$NON-NLS-1$
+		panel.add(psbtnSave, "cell 12 1,alignx left,aligny top"); //$NON-NLS-1$
 		
 		PosButton psbtnClose = new PosButton();
 		psbtnClose.setAction(closeAction);
 		psbtnClose.setMargin(new Insets(10, 20, 10, 20));
-		psbtnClose.setText("Close");
-		panel.add(psbtnClose, "cell 13 1,alignx left,aligny top");
+		psbtnClose.setText(Messages.getString("TerminalSetupDialog.6")); //$NON-NLS-1$
+		panel.add(psbtnClose, "cell 13 1,alignx left,aligny top"); //$NON-NLS-1$
 		
 		TitledView titledView = new TitledView();
-		titledView.setTitle("Setup this terminal");
+		titledView.setTitle(Messages.getString("TerminalSetupDialog.0")); //$NON-NLS-1$
 		getContentPane().add(titledView, BorderLayout.NORTH);
 		
 		terminalConfigurationView = new TerminalConfigurationView();
@@ -76,8 +77,8 @@ public class TerminalSetupDialog extends JDialog {
 	}
 	private class SwingAction extends AbstractAction {
 		public SwingAction() {
-			putValue(NAME, "SaveAction");
-			putValue(SHORT_DESCRIPTION, "Save");
+			putValue(NAME, "SaveAction"); //$NON-NLS-1$
+			putValue(SHORT_DESCRIPTION, Messages.getString("TerminalSetupDialog.10")); //$NON-NLS-1$
 		}
 		public void actionPerformed(ActionEvent e) {
 			if(terminalConfigurationView.canSave()) {
@@ -87,8 +88,8 @@ public class TerminalSetupDialog extends JDialog {
 	}
 	private class SwingAction_1 extends AbstractAction {
 		public SwingAction_1() {
-			putValue(NAME, "CloseAction");
-			putValue(SHORT_DESCRIPTION, "Close");
+			putValue(NAME, "CloseAction"); //$NON-NLS-1$
+			putValue(SHORT_DESCRIPTION, Messages.getString("TerminalSetupDialog.12")); //$NON-NLS-1$
 		}
 		public void actionPerformed(ActionEvent e) {
 			dispose();

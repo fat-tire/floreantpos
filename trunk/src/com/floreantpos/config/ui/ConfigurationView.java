@@ -22,12 +22,12 @@ public abstract class ConfigurationView extends JPanel {
 
 
 	protected void addRow(String title, JTextField textField) {
-		add(createLabel(title), "newline, grow");
-		add(textField, "w 250,height pref");
+		add(createLabel(title), "newline, grow"); //$NON-NLS-1$
+		add(textField, "w 250,height pref"); //$NON-NLS-1$
 	}
 	
 	protected void addRow(String title, JTextField textField, String constraints) {
-		add(createLabel(title), "newline, grow");
+		add(createLabel(title), "newline, grow"); //$NON-NLS-1$
 		add(textField, constraints);
 	}
 	

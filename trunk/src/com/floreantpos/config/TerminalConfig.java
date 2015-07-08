@@ -7,31 +7,31 @@ import com.floreantpos.model.PaymentStatusFilter;
 import com.floreantpos.util.PasswordHasher;
 
 public class TerminalConfig {
-	private static final String USE_SETTLEMENT_PROMPT = "UseSettlementPrompt";
+	private static final String USE_SETTLEMENT_PROMPT = "UseSettlementPrompt"; //$NON-NLS-1$
 
-	private static final String SHOW_GUEST_SELECTION = "show_guest_selection";
+	private static final String SHOW_GUEST_SELECTION = "show_guest_selection"; //$NON-NLS-1$
 
-	private static final String ORDER_TYPE_FILTER = "order_type_filter";
+	private static final String ORDER_TYPE_FILTER = "order_type_filter"; //$NON-NLS-1$
 
-	private static final String PS_FILTER = "ps_filter";
+	private static final String PS_FILTER = "ps_filter"; //$NON-NLS-1$
 
-	private static final String SHOW_TABLE_SELECTION = "show_table_selection";
+	private static final String SHOW_TABLE_SELECTION = "show_table_selection"; //$NON-NLS-1$
 
-	private static final String REGULAR_MODE = "regular_mode";
+	private static final String REGULAR_MODE = "regular_mode"; //$NON-NLS-1$
 
-	private static final String KITCHEN_MODE = "kitchen_mode";
+	private static final String KITCHEN_MODE = "kitchen_mode"; //$NON-NLS-1$
 
-	private static final String CASHIER_MODE = "cashier_mode";
+	private static final String CASHIER_MODE = "cashier_mode"; //$NON-NLS-1$
 
-	private static final String SHOW_DB_CONFIGURATION = "show_db_configuration";
+	private static final String SHOW_DB_CONFIGURATION = "show_db_configuration"; //$NON-NLS-1$
 
-	private static final String UI_DEFAULT_FONT = "ui_default_font";
+	private static final String UI_DEFAULT_FONT = "ui_default_font"; //$NON-NLS-1$
 
-	private static final String AUTO_LOGOFF_TIME = "AUTO_LOGOFF_TIME";
+	private static final String AUTO_LOGOFF_TIME = "AUTO_LOGOFF_TIME"; //$NON-NLS-1$
 
-	private static final String AUTO_LOGOFF_ENABLE = "AUTO_LOGOFF_ENABLE";
+	private static final String AUTO_LOGOFF_ENABLE = "AUTO_LOGOFF_ENABLE"; //$NON-NLS-1$
 
-	private static final String DEFAULT_PASS_LEN = "DEFAULT_PASS_LEN";
+	private static final String DEFAULT_PASS_LEN = "DEFAULT_PASS_LEN"; //$NON-NLS-1$
 
 	private static final String TOUCH_FONT_SIZE = "TOUCH_FONT_SIZE";//$NON-NLS-1$
 
@@ -61,7 +61,7 @@ public class TerminalConfig {
 	}
 	
 	public static String getAdminPassword() {
-		return config.getString(ADMIN_PASSWORD, PasswordHasher.hashPassword("1111"));
+		return config.getString(ADMIN_PASSWORD, PasswordHasher.hashPassword("1111")); //$NON-NLS-1$
 	}
 	
 	public static void setAdminPassword(String password) {
@@ -153,11 +153,11 @@ public class TerminalConfig {
 	}
 	
 	public static boolean isUseTranslatedName() {
-		return config.getBoolean("use_translated_name", false);
+		return config.getBoolean("use_translated_name", false); //$NON-NLS-1$
 	}
 	
 	public static void setUseTranslatedName(boolean useTranslatedName) {
-		config.setProperty("use_translated_name", useTranslatedName);
+		config.setProperty("use_translated_name", useTranslatedName); //$NON-NLS-1$
 	}
 	
 	public static OrderTypeFilter getOrderTypeFilter() {
@@ -201,10 +201,10 @@ public class TerminalConfig {
 	}
 	
 	public static void setMiscItemDefaultTaxId(int id) {
-		config.setProperty("mistitemdefaulttaxid", id);
+		config.setProperty("mistitemdefaulttaxid", id); //$NON-NLS-1$
 	}
 	
 	public static int getMiscItemDefaultTaxId() {
-		return config.getInt("mistitemdefaulttaxid", -1);
+		return config.getInt("mistitemdefaulttaxid", -1); //$NON-NLS-1$
 	}
 }
