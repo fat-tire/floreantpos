@@ -8,6 +8,6 @@ public enum ActionCommand {
 	OK;
 	
 	public String toString() {
-		return name().replaceAll("_", " ");
+		return name().replaceAll("_", " "); //$NON-NLS-1$ //$NON-NLS-2$
 	};
 }

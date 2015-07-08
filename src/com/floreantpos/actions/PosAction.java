@@ -7,6 +7,7 @@ import javax.swing.Icon;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.floreantpos.Messages;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.User;
 import com.floreantpos.model.UserPermission;
@@ -64,18 +65,18 @@ public abstract class PosAction extends AbstractAction {
 		}
 
 		if (!user.hasPermission(requiredPermission)) {
-			String password = PasswordEntryDialog.show(Application.getPosWindow(), "Please enter privileged password");
+			String password = PasswordEntryDialog.show(Application.getPosWindow(), Messages.getString("PosAction.0")); //$NON-NLS-1$
 			if(StringUtils.isEmpty(password)) {
 				return;
 			}
 			
 			User user2 = UserDAO.getInstance().findUserBySecretKey(password);
 			if(user2 == null) {
-				POSMessageDialog.showError(Application.getPosWindow(), "No user found with that secret key");
+				POSMessageDialog.showError(Application.getPosWindow(), Messages.getString("PosAction.1")); //$NON-NLS-1$
 			}
 			else {
 				if(!user2.hasPermission(requiredPermission)) {
-					POSMessageDialog.showError(Application.getPosWindow(), "No permission");
+					POSMessageDialog.showError(Application.getPosWindow(), Messages.getString("PosAction.2")); //$NON-NLS-1$
 				}
 				else {
 					execute();

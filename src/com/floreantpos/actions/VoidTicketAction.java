@@ -1,6 +1,7 @@
 package com.floreantpos.actions;
 
 import com.floreantpos.ITicketList;
+import com.floreantpos.Messages;
 import com.floreantpos.POSConstants;
 import com.floreantpos.PosException;
 import com.floreantpos.main.Application;
@@ -26,7 +27,7 @@ public class VoidTicketAction extends PosAction {
 		try {
 			Ticket ticket = ticketList.getSelectedTicket();
 
-			int ticketId = NumberSelectionDialog2.takeIntInput("Enter or scan ticket id");
+			int ticketId = NumberSelectionDialog2.takeIntInput(Messages.getString("VoidTicketAction.0")); //$NON-NLS-1$
 			if(ticketId == -1) return;
 			
 			ticket = TicketService.getTicket(ticketId);

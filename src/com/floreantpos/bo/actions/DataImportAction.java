@@ -15,6 +15,7 @@ import javax.xml.bind.Unmarshaller;
 
 import org.apache.commons.io.IOUtils;
 
+import com.floreantpos.Messages;
 import com.floreantpos.model.MenuCategory;
 import com.floreantpos.model.MenuGroup;
 import com.floreantpos.model.MenuItem;
@@ -35,7 +36,7 @@ import com.floreantpos.util.datamigrate.Elements;
 public class DataImportAction extends AbstractAction {
 
 	public DataImportAction() {
-		super("Import Menu Items");
+		super(Messages.getString("DataImportAction.0")); //$NON-NLS-1$
 	}
 
 	@Override
@@ -50,7 +51,7 @@ public class DataImportAction extends AbstractAction {
 		try {
 
 			importMenuItemsFromFile(file);
-			POSMessageDialog.showMessage(com.floreantpos.util.POSUtil.getFocusedWindow(), "Success!");
+			POSMessageDialog.showMessage(com.floreantpos.util.POSUtil.getFocusedWindow(), Messages.getString("DataImportAction.1")); //$NON-NLS-1$
 
 		} catch (Exception e1) {
 			e1.printStackTrace();

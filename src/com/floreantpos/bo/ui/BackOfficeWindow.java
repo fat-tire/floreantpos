@@ -20,6 +20,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 
+import com.floreantpos.Messages;
 import com.floreantpos.actions.AboutAction;
 import com.floreantpos.bo.actions.CategoryExplorerAction;
 import com.floreantpos.bo.actions.ConfigureRestaurantAction;
@@ -137,7 +138,7 @@ public class BackOfficeWindow extends javax.swing.JFrame {
 
 		createInventoryMenus(menuBar);
 		
-		JMenu helpMenu = new JMenu("Help");
+		JMenu helpMenu = new JMenu(Messages.getString("BackOfficeWindow.0")); //$NON-NLS-1$
 		helpMenu.add(new AboutAction());
 		menuBar.add(helpMenu);
 
@@ -155,7 +156,7 @@ public class BackOfficeWindow extends javax.swing.JFrame {
 			return;
 		}
 
-		JMenu inventoryMenu = new JMenu("Inventory");
+		JMenu inventoryMenu = new JMenu(Messages.getString("BackOfficeWindow.1")); //$NON-NLS-1$
 		for (AbstractAction abstractAction : actions) {
 			inventoryMenu.add(abstractAction);
 		}
