@@ -417,7 +417,7 @@ public class POSConstants {
 	public static final String TICKET_DELIVERY_DATE = Messages.getString("POSConstants.TICKET_DELIVERY_DATE"); //$NON-NLS-1$
 	public static final String TICKET_TYPE = Messages.getString("POSConstants.TICKET_TYPE"); //$NON-NLS-1$
 
-	public static final String POS_MESSAGE_ERROR = "PosMessage.Error";
+	public static final String POS_MESSAGE_ERROR = "PosMessage.Error"; //$NON-NLS-1$
 	
 	public static final String CONFIG_TAB_RESTAURANT = Messages.getString("CONFIG_TAB_RESTAURANT"); //$NON-NLS-1$
 	public static final String CONFIG_TAB_TAX = Messages.getString("CONFIG_TAB_TAX"); //$NON-NLS-1$

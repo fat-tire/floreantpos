@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 import javax.swing.JDialog;
 
+import com.floreantpos.Messages;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.dao.TicketDAO;
@@ -28,7 +29,7 @@ public class SettleTicketAction extends AbstractAction {
 		Ticket ticket = TicketDAO.getInstance().loadFullTicket(ticketId);
 
 		if (ticket.isPaid()) {
-			POSMessageDialog.showError(Application.getPosWindow(), "Ticket is already settled");
+			POSMessageDialog.showError(Application.getPosWindow(), Messages.getString("SettleTicketAction.0")); //$NON-NLS-1$
 			return false;
 		}
 
