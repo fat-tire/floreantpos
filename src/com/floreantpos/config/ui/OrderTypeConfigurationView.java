@@ -12,6 +12,7 @@ import javax.swing.JTextField;
 
 import net.miginfocom.swing.MigLayout;
 
+import com.floreantpos.Messages;
 import com.floreantpos.POSConstants;
 import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.model.OrderType;
@@ -42,8 +43,8 @@ public class OrderTypeConfigurationView extends ConfigurationView {
 	private JCheckBox cbDriveThruDelayPay = new JCheckBox(POSConstants.LATER_PAYMENT_OPTION_LABEL);
 	private JCheckBox cbBarTabDelayPay = new JCheckBox(POSConstants.LATER_PAYMENT_OPTION_LABEL);
 
-	private JCheckBox cbShowTableSelection = new JCheckBox("Enable table selection");
-	private JCheckBox cbShowGuestSelection = new JCheckBox("Enable guest selection");
+	private JCheckBox cbShowTableSelection = new JCheckBox(Messages.getString("OrderTypeConfigurationView.0")); //$NON-NLS-1$
+	private JCheckBox cbShowGuestSelection = new JCheckBox(Messages.getString("OrderTypeConfigurationView.1")); //$NON-NLS-1$
 
 	private JComboBox<VirtualPrinter> cbDineInPrinter = new JComboBox<VirtualPrinter>();
 	private JComboBox<VirtualPrinter> cbTakeoutPrinter = new JComboBox<VirtualPrinter>();
@@ -53,7 +54,7 @@ public class OrderTypeConfigurationView extends ConfigurationView {
 	private JComboBox<VirtualPrinter> cbBarPrinter = new JComboBox<VirtualPrinter>();
 
 	public OrderTypeConfigurationView() {
-		setLayout(new MigLayout("", "", ""));
+		setLayout(new MigLayout("", "", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 		addOption(OrderType.DINE_IN, cbDineInEnable, cbDineInDelayPay, tfDineInAlias, cbDineInPrinter);
 		addOption(OrderType.TAKE_OUT, cbTakeOutEnable, cbTakeOutDelayPay, tfTakeOutAlias, cbTakeoutPrinter);
@@ -73,21 +74,21 @@ public class OrderTypeConfigurationView extends ConfigurationView {
 	}
 
 	private void addOption(OrderType orderType, JCheckBox cbEnable, JCheckBox cbPostPaid, JTextField tfAlias, JComboBox<VirtualPrinter> cbPrinter) {
-		JPanel panel = new JPanel(new MigLayout("fill", "grow", ""));
-		panel.setBorder(BorderFactory.createTitledBorder(orderType.name().replaceAll("_", " ")));
-		panel.add(cbEnable, "gapright 25");
-		panel.add(cbPostPaid, "gapright 25");
+		JPanel panel = new JPanel(new MigLayout("fill", "grow", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		panel.setBorder(BorderFactory.createTitledBorder(orderType.name().replaceAll("_", " "))); //$NON-NLS-1$ //$NON-NLS-2$
+		panel.add(cbEnable, "gapright 25"); //$NON-NLS-1$
+		panel.add(cbPostPaid, "gapright 25"); //$NON-NLS-1$
 		panel.add(new JLabel(POSConstants.ALIAS_LABEL));
 		panel.add(tfAlias);
 //		panel.add(new JLabel("Printer"), "newline");
 //		panel.add(cbPrinter, "span 3, grow");
 
 		if (orderType == OrderType.DINE_IN) {
-			panel.add(cbShowTableSelection, "span 2, newline, wrap");
-			panel.add(cbShowGuestSelection, "span 2, wrap");
+			panel.add(cbShowTableSelection, "span 2, newline, wrap"); //$NON-NLS-1$
+			panel.add(cbShowGuestSelection, "span 2, wrap"); //$NON-NLS-1$
 		}
 
-		add(panel, "newline, grow");
+		add(panel, "newline, grow"); //$NON-NLS-1$
 	}
 
 	@Override
@@ -159,7 +160,7 @@ public class OrderTypeConfigurationView extends ConfigurationView {
 
 	@Override
 	public String getName() {
-		return "Order";
+		return "Order"; //$NON-NLS-1$
 	}
 
 }

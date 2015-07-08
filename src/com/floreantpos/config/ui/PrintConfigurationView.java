@@ -23,6 +23,7 @@ import javax.swing.JList;
 
 import net.miginfocom.swing.MigLayout;
 
+import com.floreantpos.Messages;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.PosPrinters;
 import com.floreantpos.ui.dialog.POSMessageDialog;
@@ -69,7 +70,7 @@ public class PrintConfigurationView extends ConfigurationView {
 
 		if (printServices == null || printServices.length == 0) {
 			POSMessageDialog.showMessage(com.floreantpos.util.POSUtil.getFocusedWindow(),
-					"No printer is installed on your operating system. Please install printer and come back again.");
+					Messages.getString("PrintConfigurationView.0")); //$NON-NLS-1$
 		}
 	}
 
@@ -118,27 +119,27 @@ public class PrintConfigurationView extends ConfigurationView {
 	@SuppressWarnings("unchecked")
 	// <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
 	private void initComponents() {
-		setLayout(new MigLayout("", "[][grow,fill]", "[][][][18px,grow]"));
+		setLayout(new MigLayout("", "[][grow,fill]", "[][][][18px,grow]")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
-		JLabel lblReportPrinter = new JLabel("Report Printer");
-		add(lblReportPrinter, "cell 0 0,alignx trailing");
+		JLabel lblReportPrinter = new JLabel(Messages.getString("PrintConfigurationView.4")); //$NON-NLS-1$
+		add(lblReportPrinter, "cell 0 0,alignx trailing"); //$NON-NLS-1$
 
 		cbReportPrinterName = new JComboBox();
-		add(cbReportPrinterName, "cell 1 0,growx");
+		add(cbReportPrinterName, "cell 1 0,growx"); //$NON-NLS-1$
 		javax.swing.JLabel jLabel1 = new javax.swing.JLabel();
-		add(jLabel1, "cell 0 1,alignx right");
+		add(jLabel1, "cell 0 1,alignx right"); //$NON-NLS-1$
 
-		jLabel1.setText("Receipt Printer:");
+		jLabel1.setText(Messages.getString("PrintConfigurationView.8")); //$NON-NLS-1$
 		cbReceiptPrinterName = new javax.swing.JComboBox();
-		add(cbReceiptPrinterName, "cell 1 1,growx");
+		add(cbReceiptPrinterName, "cell 1 1,growx"); //$NON-NLS-1$
 		javax.swing.JLabel jLabel2 = new javax.swing.JLabel();
-		add(jLabel2, "cell 0 2,alignx right");
+		add(jLabel2, "cell 0 2,alignx right"); //$NON-NLS-1$
 
-		MultiPrinterPane multiPrinterPane = new MultiPrinterPane("Kitchen Printers", printers.getKitchenPrinters());
-		add(multiPrinterPane, "cell 0 3 2 1,grow");
+		MultiPrinterPane multiPrinterPane = new MultiPrinterPane(Messages.getString("PrintConfigurationView.11"), printers.getKitchenPrinters()); //$NON-NLS-1$
+		add(multiPrinterPane, "cell 0 3 2 1,grow"); //$NON-NLS-1$
 		
-		PrinterGroupView printerGroupView = new PrinterGroupView("Printer Groups");
-		add(printerGroupView, "newline, grow, span 2");
+		PrinterGroupView printerGroupView = new PrinterGroupView(Messages.getString("PrintConfigurationView.13")); //$NON-NLS-1$
+		add(printerGroupView, "newline, grow, span 2"); //$NON-NLS-1$
 
 	}// </editor-fold>//GEN-END:initComponents
 

@@ -12,6 +12,7 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import com.floreantpos.Messages;
 import com.floreantpos.model.Printer;
 import com.floreantpos.model.VirtualPrinter;
 import com.floreantpos.ui.dialog.POSMessageDialog;
@@ -35,7 +36,7 @@ public class MultiPrinterPane extends JPanel {
 		JPanel panel = new JPanel();
 		add(panel, BorderLayout.SOUTH);
 		
-		JButton btnAdd = new JButton("ADD");
+		JButton btnAdd = new JButton(Messages.getString("MultiPrinterPane.0")); //$NON-NLS-1$
 		btnAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				doAddPrinter();
@@ -43,7 +44,7 @@ public class MultiPrinterPane extends JPanel {
 		});
 		panel.add(btnAdd);
 		
-		JButton btnEdit = new JButton("EDIT");
+		JButton btnEdit = new JButton(Messages.getString("MultiPrinterPane.1")); //$NON-NLS-1$
 		btnEdit.addActionListener(new ActionListener() {
 			
 			@Override
@@ -113,7 +114,7 @@ public class MultiPrinterPane extends JPanel {
 		
 		for (Printer printer : printers) {
 			if(virtualPrinter.equals(printer.getVirtualPrinter())) {
-				POSMessageDialog.showError(this.getParent(), "A printer with that virtual printer already exists.");
+				POSMessageDialog.showError(this.getParent(), Messages.getString("MultiPrinterPane.2")); //$NON-NLS-1$
 				return;
 			}
 		}

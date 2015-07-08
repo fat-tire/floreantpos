@@ -4,21 +4,22 @@ import javax.swing.JCheckBox;
 
 import net.miginfocom.swing.MigLayout;
 
+import com.floreantpos.Messages;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.Restaurant;
 import com.floreantpos.model.dao.RestaurantDAO;
 import com.floreantpos.util.POSUtil;
 
 public class TaxConfigurationView extends ConfigurationView {
-	public static final String CONFIG_TAB_TAX = "Tax";
+	public static final String CONFIG_TAB_TAX = Messages.getString("TaxConfigurationView.0"); //$NON-NLS-1$
 	private Restaurant restaurant;
 	private JCheckBox cbItemSalesPriceIncludesTax;
 	
 	public TaxConfigurationView() {
-		setLayout(new MigLayout("", "[]", "[]"));
+		setLayout(new MigLayout("", "[]", "[]")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
-		cbItemSalesPriceIncludesTax = new JCheckBox("Item sales price includes tax");
-		add(cbItemSalesPriceIncludesTax, "cell 0 0");
+		cbItemSalesPriceIncludesTax = new JCheckBox(Messages.getString("TaxConfigurationView.4")); //$NON-NLS-1$
+		add(cbItemSalesPriceIncludesTax, "cell 0 0"); //$NON-NLS-1$
 	}
 
 	@Override
