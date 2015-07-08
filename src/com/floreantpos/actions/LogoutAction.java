@@ -20,7 +20,7 @@ public class LogoutAction extends PosAction {
 			putValue(Action.NAME, Messages.getString("Logout")); //$NON-NLS-1$
 		}
 		if (showIcon) {
-			putValue(Action.SMALL_ICON, IconFactory.getIcon("/ui_icons/", "logout.png")); //$NON-NLS-1$
+			putValue(Action.SMALL_ICON, IconFactory.getIcon("/ui_icons/", "logout.png")); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 	}
 

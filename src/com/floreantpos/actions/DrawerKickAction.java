@@ -15,7 +15,7 @@ public class DrawerKickAction extends PosAction {
 	@Override
 	public void execute() {
 		try {
-			File file = new File(Application.getInstance().getLocation(), "drawer-kick.bat");
+			File file = new File(Application.getInstance().getLocation(), "drawer-kick.bat"); //$NON-NLS-1$
 			if (file.exists()) {
 				Runtime.getRuntime().exec(file.getAbsolutePath());
 			}

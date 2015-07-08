@@ -4,12 +4,13 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 
+import com.floreantpos.Messages;
 import com.floreantpos.ui.dialog.AboutDialog;
 
 public class AboutAction extends AbstractAction {
 	
 	public AboutAction() {
-		super("About");
+		super(Messages.getString("AboutAction.0")); //$NON-NLS-1$
 	}
 
 	@Override
