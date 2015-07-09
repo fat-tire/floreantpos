@@ -174,34 +174,34 @@ public class KitchenTicketView extends JPanel {
 		});
 		buttonPanel.add(btnVoid);
 
-		PosButton btnPrint = new PosButton("PRINT");
-		btnPrint.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				//KitchenDisplay.instance.removeTicket(KitchenTicketView.this);
-			}
-		});
-		buttonPanel.add(btnPrint);
-		
-		PosButton btnUp = new PosButton("UP");
-		btnUp.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				JScrollBar scrollBar = scrollPane.getVerticalScrollBar();
-				scrollBar.setValue(scrollBar.getValue() - 50);
-			}
-		});
-		buttonPanel.add(btnUp);
-		
-		PosButton btnDown = new PosButton("DOWN");
-		btnDown.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				JScrollBar scrollBar = scrollPane.getVerticalScrollBar();
-				scrollBar.setValue(scrollBar.getValue() + 50);
-			}
-		});
-		buttonPanel.add(btnDown);
+//		PosButton btnPrint = new PosButton("PRINT");
+//		btnPrint.addActionListener(new ActionListener() {
+//			@Override
+//			public void actionPerformed(ActionEvent e) {
+//				//KitchenDisplay.instance.removeTicket(KitchenTicketView.this);
+//			}
+//		});
+//		buttonPanel.add(btnPrint);
+//		
+//		PosButton btnUp = new PosButton("UP");
+//		btnUp.addActionListener(new ActionListener() {
+//			@Override
+//			public void actionPerformed(ActionEvent e) {
+//				JScrollBar scrollBar = scrollPane.getVerticalScrollBar();
+//				scrollBar.setValue(scrollBar.getValue() - 50);
+//			}
+//		});
+//		buttonPanel.add(btnUp);
+//		
+//		PosButton btnDown = new PosButton("DOWN");
+//		btnDown.addActionListener(new ActionListener() {
+//			@Override
+//			public void actionPerformed(ActionEvent e) {
+//				JScrollBar scrollBar = scrollPane.getVerticalScrollBar();
+//				scrollBar.setValue(scrollBar.getValue() + 50);
+//			}
+//		});
+//		buttonPanel.add(btnDown);
 
 		add(buttonPanel, BorderLayout.SOUTH);
 	}
