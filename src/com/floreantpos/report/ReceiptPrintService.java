@@ -489,7 +489,7 @@ public class ReceiptPrintService {
 				
 				List<Printer> printers = kitchenTicket.getPrinters();
 				for (Printer printer : printers) {
-					String deviceName = printer.getVirtualPrinter().getName();
+					String deviceName = printer.getDeviceName();
 
 					JasperPrint jasperPrint = createKitchenPrint(kitchenTicket);
 					jasperPrint.setName("KitchenReceipt-" + ticket.getId() + "-" + deviceName);
