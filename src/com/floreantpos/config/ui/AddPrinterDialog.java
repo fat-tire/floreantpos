@@ -144,6 +144,7 @@ public class AddPrinterDialog extends POSDialog {
 		
 		if (printer != null) {
 			cbVirtualPrinter.setSelectedItem(printer.getVirtualPrinter());
+			chckbxDefault.setSelected(printer.isDefaultPrinter());
 			
 			DefaultComboBoxModel<PrintService> deviceModel = (DefaultComboBoxModel<PrintService>) cbDevice.getModel();
 			for(int i = 0; i < deviceModel.getSize(); i++) {
