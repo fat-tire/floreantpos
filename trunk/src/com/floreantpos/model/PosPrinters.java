@@ -103,7 +103,7 @@ public class PosPrinters {
 	}
 	
 	public Printer getDefaultKitchenPrinter() {
-		if(defaultKitchenPrinter == null && getKitchenPrinters().size() > 0) {
+		if(getKitchenPrinters().size() > 0) {
 			defaultKitchenPrinter = kitchenPrinters.get(0);
 			
 			for (Printer printer : kitchenPrinters) {

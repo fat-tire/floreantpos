@@ -12,6 +12,7 @@ import net.authorize.data.creditcard.CardType;
 import org.apache.commons.lang.StringUtils;
 
 import com.floreantpos.ITicketList;
+import com.floreantpos.Messages;
 import com.floreantpos.PosException;
 import com.floreantpos.config.CardConfig;
 import com.floreantpos.main.Application;
@@ -52,7 +53,7 @@ public class NewBarTabAction extends AbstractAction implements CardInputListener
 		selectedPaymentType = paymentTypeSelectionDialog.getSelectedPaymentType();
 		
 		SwipeCardDialog dialog = new SwipeCardDialog(this);
-		dialog.setTitle("Enter credit card information");
+		dialog.setTitle(Messages.getString("NewBarTabAction.0")); //$NON-NLS-1$
 		dialog.pack();
 		dialog.setLocationRelativeTo(parentComponent);
 		dialog.setVisible(true);
@@ -93,7 +94,7 @@ public class NewBarTabAction extends AbstractAction implements CardInputListener
 			AuthorizationCodeDialog authDialog = (AuthorizationCodeDialog) inputter;
 			String authorizationCode = authDialog.getAuthorizationCode();
 			if (StringUtils.isEmpty(authorizationCode)) {
-				throw new PosException("Invalid authorization code");
+				throw new PosException(Messages.getString("NewBarTabAction.1")); //$NON-NLS-1$
 			}
 
 			Ticket ticket = createTicket(Application.getInstance());
@@ -107,7 +108,7 @@ public class NewBarTabAction extends AbstractAction implements CardInputListener
 			
 			TicketDAO.getInstance().save(ticket);
 			
-			POSMessageDialog.showMessage("Bar tab created with ID: " + ticket.getId());
+			POSMessageDialog.showMessage(Messages.getString("NewBarTabAction.2") + ticket.getId()); //$NON-NLS-1$
 			if(parentComponent instanceof ITicketList) {
 				((ITicketList) parentComponent).updateTicketList();
 			}
@@ -125,9 +126,9 @@ public class NewBarTabAction extends AbstractAction implements CardInputListener
 		Application application = Application.getInstance();
 		
 		String symbol = Application.getCurrencySymbol();
-		String message = symbol + CardConfig.getBartabLimit() + " will be booked. Proceed?";
+		String message = symbol + CardConfig.getBartabLimit() + Messages.getString("NewBarTabAction.3"); //$NON-NLS-1$
 		
-		int option = POSMessageDialog.showYesNoQuestionDialog(parentComponent, message, "Please confirm");
+		int option = POSMessageDialog.showYesNoQuestionDialog(parentComponent, message, Messages.getString("NewBarTabAction.4")); //$NON-NLS-1$
 		if(option != JOptionPane.YES_OPTION) {
 			return;
 		}
@@ -156,7 +157,7 @@ public class NewBarTabAction extends AbstractAction implements CardInputListener
 
 			waitDialog.setVisible(false);
 
-			POSMessageDialog.showMessage("Bar tab created with ID: " + ticket.getId());
+			POSMessageDialog.showMessage(Messages.getString("NewBarTabAction.5") + ticket.getId()); //$NON-NLS-1$
 			if(parentComponent instanceof ITicketList) {
 				((ITicketList) parentComponent).updateTicketList();
 			}
@@ -175,9 +176,9 @@ public class NewBarTabAction extends AbstractAction implements CardInputListener
 		Application application = Application.getInstance();
 		
 		String symbol = Application.getCurrencySymbol();
-		String message = symbol + CardConfig.getBartabLimit() + " will be booked. Proceed?";
+		String message = symbol + CardConfig.getBartabLimit() + Messages.getString("NewBarTabAction.6"); //$NON-NLS-1$
 		
-		int option = POSMessageDialog.showYesNoQuestionDialog(parentComponent, message, "Please confirm");
+		int option = POSMessageDialog.showYesNoQuestionDialog(parentComponent, message, Messages.getString("NewBarTabAction.7")); //$NON-NLS-1$
 		if(option != JOptionPane.YES_OPTION) {
 			return;
 		}
@@ -212,7 +213,7 @@ public class NewBarTabAction extends AbstractAction implements CardInputListener
 			
 			waitDialog.setVisible(false);
 			
-			POSMessageDialog.showMessage("Bar tab created with ID: " + ticket.getId());
+			POSMessageDialog.showMessage(Messages.getString("NewBarTabAction.8") + ticket.getId()); //$NON-NLS-1$
 			if(parentComponent instanceof ITicketList) {
 				((ITicketList) parentComponent).updateTicketList();
 			}
@@ -221,7 +222,7 @@ public class NewBarTabAction extends AbstractAction implements CardInputListener
 			//RootView.getInstance().showView(OrderView.VIEW_NAME);
 		} catch (Exception e) {
 			e.printStackTrace();
-			POSMessageDialog.showError(parentComponent, "Unable to authorize card.");
+			POSMessageDialog.showError(parentComponent, Messages.getString("NewBarTabAction.9")); //$NON-NLS-1$
 		} finally {
 			waitDialog.setVisible(false);
 		}
