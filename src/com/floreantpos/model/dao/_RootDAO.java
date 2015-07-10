@@ -1,5 +1,7 @@
 package com.floreantpos.model.dao;
 
+import java.sql.Connection;
+
 import org.hibernate.Session;
 import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.cfg.Configuration;
@@ -144,6 +146,7 @@ public abstract class _RootDAO extends com.floreantpos.model.dao._BaseRootDAO {
 		configuration = configuration.setProperty("hibernate.connection.autocommit", "false");
 		configuration = configuration.setProperty("hibernate.max_fetch_depth", "3");
 		configuration = configuration.setProperty("hibernate.show_sql", "false");
+		configuration = configuration.setProperty("hibernate.connection.isolation", String.valueOf(Connection.TRANSACTION_READ_COMMITTED));
 
 		configuration = configuration.setProperty("hibernate.c3p0.min_size", "2");
 		configuration = configuration.setProperty("hibernate.c3p0.max_size", "10");
