@@ -11,8 +11,10 @@ import java.awt.ComponentOrientation;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
@@ -34,6 +36,7 @@ import org.apache.commons.logging.LogFactory;
 import org.jdesktop.swingx.JXCollapsiblePane;
 
 import com.floreantpos.ITicketList;
+import com.floreantpos.Messages;
 import com.floreantpos.POSConstants;
 import com.floreantpos.PosException;
 import com.floreantpos.actions.NewBarTabAction;
@@ -78,6 +81,8 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 	private OrderServiceExtension orderServiceExtension;
 
 	private static SwitchboardView instance;
+	
+	private SimpleDateFormat updateTimeFormat = new SimpleDateFormat("MMM dd, hh:mm:ss"); //$NON-NLS-1$
 
 	//private Timer ticketListUpdateTimer = new Timer(10 * 1000, new TicketListUpdaterTask());
 
@@ -136,9 +141,9 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 		javax.swing.JPanel centerPanel = new javax.swing.JPanel(new java.awt.BorderLayout(5, 5));
 		javax.swing.JPanel ticketsAndActivityPanel = new javax.swing.JPanel(new java.awt.BorderLayout(5, 5));
 
-		TitledBorder titledBorder = BorderFactory.createTitledBorder(null, POSConstants.OPEN_TICKETS_AND_ACTIVITY, TitledBorder.CENTER,
+		ticketsListPanelBorder = BorderFactory.createTitledBorder(null, POSConstants.OPEN_TICKETS_AND_ACTIVITY, TitledBorder.CENTER,
 				TitledBorder.DEFAULT_POSITION);
-		ticketsAndActivityPanel.setBorder(new CompoundBorder(titledBorder, new EmptyBorder(2, 2, 2, 2)));
+		ticketsAndActivityPanel.setBorder(new CompoundBorder(ticketsListPanelBorder, new EmptyBorder(2, 2, 2, 2)));
 
 		orderFiltersPanel = createOrderFilters();
 		ticketsAndActivityPanel.add(orderFiltersPanel, BorderLayout.NORTH);
@@ -166,13 +171,13 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 		TitledBorder titledBorder2 = BorderFactory.createTitledBorder(null, "-", TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION);
 		rightPanel.setBorder(new CompoundBorder(titledBorder2, new EmptyBorder(2, 2, 6, 2)));
 		
-		JPanel orderPanel = new JPanel(new MigLayout("ins 2 2 0 2, fill, hidemode 3, flowy", "fill, grow", ""));
-		orderPanel.add(btnDineIn, "grow");
-		orderPanel.add(btnTakeout, "grow");
-		orderPanel.add(btnPickup, "grow");
-		orderPanel.add(btnHomeDelivery, "grow");
-		orderPanel.add(btnDriveThrough, "grow");
-		orderPanel.add(btnBarTab, "grow");
+		JPanel orderPanel = new JPanel(new MigLayout("ins 2 2 0 2, fill, hidemode 3, flowy", "fill, grow", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		orderPanel.add(btnDineIn, "grow"); //$NON-NLS-1$
+		orderPanel.add(btnTakeout, "grow"); //$NON-NLS-1$
+		orderPanel.add(btnPickup, "grow"); //$NON-NLS-1$
+		orderPanel.add(btnHomeDelivery, "grow"); //$NON-NLS-1$
+		orderPanel.add(btnDriveThrough, "grow"); //$NON-NLS-1$
+		orderPanel.add(btnBarTab, "grow"); //$NON-NLS-1$
 
 		setupOrderTypes();
 		
@@ -195,9 +200,17 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 
 	private JPanel createActivityPanel() {
 		JPanel activityPanel = new JPanel(new BorderLayout(5, 5));
-		JPanel innerActivityPanel = new JPanel(new MigLayout("hidemode 3, fill, ins 0", "fill, grow", ""));
+		JPanel innerActivityPanel = new JPanel(new MigLayout("hidemode 3, fill, ins 0", "fill, grow", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 		JPanel panel1 = new JPanel(new GridLayout(1, 0, 5, 5));
+		
+		btnRefreshTicketList.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				updateTicketList();
+			}
+		});
+		panel1.add(btnRefreshTicketList);
 		
 		POSToggleButton btnOrderFilters = new POSToggleButton("ORDER FILTERS");
 		btnOrderFilters.addActionListener(new ActionListener() {
@@ -233,7 +246,7 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 		collapsiblePane.getContentPane().add(btnAssignDriver);
 
 		collapsiblePane.setCollapsed(true);
-		innerActivityPanel.add(collapsiblePane, "newline");
+		innerActivityPanel.add(collapsiblePane, "newline"); //$NON-NLS-1$
 
 		final PosButton btnMore = new PosButton(POSConstants.MORE_ACTIVITY_BUTTON_TEXT);
 		final Border border1 = BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(0, 0, 5, 0), btnMore.getBorder());
@@ -260,72 +273,12 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 		activityPanel.add(btnMore, BorderLayout.EAST);
 
 		return activityPanel;
-
-		//panel1.add(btnPayout);
-
-		//		cardPanel.add(panel1);
-		//		
-		//		JPanel panel2 = new JPanel(new GridLayout(1, 0, 5, 5));
-		//		panel2.setBorder(border);
-		//		//panel2.setBackground(Color.blue);
-		//		
-		//		cardPanel.add(panel2);
-		//		
-		//		JPanel panel3 = new JPanel(new GridLayout(1, 0, 5, 5));
-		//		panel3.setBorder(border);
-		//		//panel3.setBackground(Color.red);
-		//		panel3.add(btnAuthorize);
-		//		panel3.add(btnManager);
-		//		panel3.add(btnKitchenDisplay);
-		//		panel3.add(btnBackOffice);
-		//		cardPanel.add(panel3);
-		//		
-		//		activityPanel.add(cardPanel);
-		//		
-		//		PosButton btnPrev = new PosButton();
-		//		btnPrev.setIcon(IconFactory.getIcon("previous.png")); //$NON-NLS-1$
-		//		btnPrev.addActionListener(new ActionListener() {
-		//			@Override
-		//			public void actionPerformed(ActionEvent e) {
-		//				cardPanel.showPreviousCard();
-		//			}
-		//		});
-		//		activityPanel.add(btnPrev, BorderLayout.WEST);
-		//
-		//		PosButton btnNext = new PosButton();
-		//		btnNext.setIcon(IconFactory.getIcon("next.png")); //$NON-NLS-1$
-		//		btnNext.addActionListener(new ActionListener() {
-		//			@Override
-		//			public void actionPerformed(ActionEvent e) {
-		//				cardPanel.showNextCard();
-		//			}
-		//		});
-		//		activityPanel.add(btnNext, BorderLayout.EAST);
-		//		
-		//		final FloorLayoutPlugin floorLayoutPlugin = Application.getPluginManager().getPlugin(FloorLayoutPlugin.class);
-		//		if (floorLayoutPlugin != null) {
-		//			btnTableManage = new PosButton(POSConstants.TABLE_MANAGE_BUTTON_TEXT);
-		//			btnTableManage.addActionListener(new ActionListener() {
-		//				@Override
-		//				public void actionPerformed(ActionEvent e) {
-		//					floorLayoutPlugin.openTicketsAndTablesDisplay();
-		//				}
-		//			});
-		//
-		//			panel3.add(btnTableManage);
-		//		}
-		//
-		//		TicketImportPlugin ticketImportPlugin = Application.getPluginManager().getPlugin(TicketImportPlugin.class);
-		//		if (ticketImportPlugin != null) {
-		//			btnOnlineTickets = new PosButton(POSConstants.ONLINE_TICKET_BUTTON_TEXT, new TicketImportAction());
-		//			panel3.add(btnOnlineTickets);
-		//		}
 	}
 
 	private JXCollapsiblePane createOrderFilters() {
 		JXCollapsiblePane filterPanel = new JXCollapsiblePane();
 		filterPanel.setCollapsed(true);
-		filterPanel.getContentPane().setLayout(new MigLayout("fill", "fill, grow", ""));
+		filterPanel.getContentPane().setLayout(new MigLayout("fill", "fill, grow", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 		POSToggleButton btnNoPaymentFilter = new POSToggleButton(PaymentStatusFilter.OPEN.toString());
 		POSToggleButton btnFilterByPaid = new POSToggleButton(PaymentStatusFilter.PAID.toString());
@@ -352,7 +305,7 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 				
 		}
 		
-		JPanel filterByPaymentStatusPanel = new JPanel(new MigLayout("", "fill, grow", ""));
+		JPanel filterByPaymentStatusPanel = new JPanel(new MigLayout("", "fill, grow", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		filterByPaymentStatusPanel.setBorder(new TitledBorder("FILTER BY PAYMENT STATUS"));
 		filterByPaymentStatusPanel.add(btnNoPaymentFilter);
 		filterByPaymentStatusPanel.add(btnFilterByPaid);
@@ -408,7 +361,7 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 				break;
 		}
 		
-		JPanel filterByOrderPanel = new JPanel(new MigLayout("", "fill, grow", ""));
+		JPanel filterByOrderPanel = new JPanel(new MigLayout("", "fill, grow", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		filterByOrderPanel.setBorder(new TitledBorder("FILTER BY ORDER TYPE"));
 		filterByOrderPanel.add(btnFilterByOrderTypeALL);
 		filterByOrderPanel.add(btnFilterByDineIn);
@@ -424,7 +377,7 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String actionCommand = e.getActionCommand();
-				String filter = actionCommand.replaceAll("\\s", "_");
+				String filter = actionCommand.replaceAll("\\s", "_"); //$NON-NLS-1$ //$NON-NLS-2$
 				TerminalConfig.setPaymentStatusFilter(filter);
 				updateTicketList();
 			}
@@ -438,7 +391,7 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String actionCommand = e.getActionCommand();
-				String filter = actionCommand.replaceAll("\\s", "_");
+				String filter = actionCommand.replaceAll("\\s", "_"); //$NON-NLS-1$ //$NON-NLS-2$
 				TerminalConfig.setOrderTypeFilter(filter);
 				updateTicketList();
 			}
@@ -544,7 +497,7 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 			Ticket ticket = TicketDAO.getInstance().loadFullTicket(ticketId);
 
 			if (ticket == null) {
-				throw new PosException(POSConstants.NO_TICKET_WITH_ID + " " + ticketId + " " + POSConstants.FOUND);
+				throw new PosException(POSConstants.NO_TICKET_WITH_ID + " " + ticketId + " " + POSConstants.FOUND); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 
 			if (!ticket.isClosed()) {
@@ -814,6 +767,8 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 			PaymentStatusFilter paymentStatusFilter = TerminalConfig.getPaymentStatusFilter();
 			OrderTypeFilter orderTypeFilter = TerminalConfig.getOrderTypeFilter();
 
+			Date now = new Date();
+			
 			if (user.canViewAllOpenTickets()) {
 				tickets = dao.findTickets(paymentStatusFilter, orderTypeFilter);
 			}
@@ -822,6 +777,10 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 			}
 			
 			ticketList.setTickets(tickets);
+			
+			ticketsListPanelBorder.setTitle(POSConstants.OPEN_TICKETS_AND_ACTIVITY
+					+ " (" + Messages.getString("Updated") //NON-NLS-1$ //NON-NLS-2$
+					+ ": " + updateTimeFormat.format(now) + ")"); //NON-NLS-1$ //NON-NLS-2$
 
 		} catch (Exception e) {
 			POSMessageDialog.showError(this, "Error getting open ticket list", e);
@@ -853,10 +812,13 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 
 	private PosButton btnAssignDriver = new PosButton(POSConstants.ASSIGN_DRIVER_BUTTON_TEXT);
 	private PosButton btnCloseOrder = new PosButton(POSConstants.CLOSE_ORDER_BUTTON_TEXT);
+	private PosButton btnRefreshTicketList = new PosButton(Messages.getString("REFRESH")); //NON-NLS-1$
 
 	private com.floreantpos.ui.TicketListView ticketList = new com.floreantpos.ui.TicketListView();
 
 	private JXCollapsiblePane orderFiltersPanel;
+
+	private TitledBorder ticketsListPanelBorder;
 
 	// End of variables declaration//GEN-END:variables
 
