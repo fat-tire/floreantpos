@@ -399,6 +399,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 						JOptionPane.YES_NO_OPTION);
 
 				if (option != JOptionPane.YES_OPTION) {
+					
 					setCanceled(false);
 					dispose();
 				}

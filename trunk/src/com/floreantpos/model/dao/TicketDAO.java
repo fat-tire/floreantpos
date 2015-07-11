@@ -15,6 +15,7 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 
 import com.floreantpos.main.Application;
+import com.floreantpos.model.DataUpdateInfo;
 import com.floreantpos.model.Gratuity;
 import com.floreantpos.model.InventoryItem;
 import com.floreantpos.model.InventoryTransaction;
@@ -46,21 +47,104 @@ public class TicketDAO extends BaseTicketDAO {
 	}
 	
 	@Override
-	public void saveOrUpdate(Ticket ticket) {
-		adjustInventoryItems(ticket);
-		ticket.setActiveDate(Calendar.getInstance().getTime());
-		super.saveOrUpdate(ticket);
+	public synchronized void saveOrUpdate(Ticket ticket) {
+		Session session = null;
+		Transaction tx = null;
 		
-		ticket.clearDeletedItems();
+		try {
+			
+			session = createNewSession();
+			tx = session.beginTransaction();
+			
+			adjustInventoryItems(session, ticket);
+			
+			ticket.setActiveDate(Calendar.getInstance().getTime());
+			
+			session.saveOrUpdate(ticket);
+
+			ticket.clearDeletedItems();
+			
+			DataUpdateInfo lastUpdateInfo = DataUpdateInfoDAO.getLastUpdateInfo();
+			lastUpdateInfo.setLastUpdateTime(new Date());
+			session.update(lastUpdateInfo);
+			
+			tx.commit();
+			
+		} catch (Exception e) {
+			if(tx != null) {
+				tx.rollback();
+			}
+			
+			throwException(e);
+			
+		} finally {
+			if(session != null) {
+				session.close();
+			}
+		}
 	}
 
 	@Override
 	public void saveOrUpdate(Ticket ticket, Session s) {
-		adjustInventoryItems(ticket);
+		adjustInventoryItems(s, ticket);
 		ticket.setActiveDate(Calendar.getInstance().getTime());
 		super.saveOrUpdate(ticket, s);
 		
 		ticket.clearDeletedItems();
+		
+		DataUpdateInfo lastUpdateInfo = DataUpdateInfoDAO.getLastUpdateInfo();
+		lastUpdateInfo.setLastUpdateTime(new Date());
+		
+		s.update(lastUpdateInfo);
+	}
+	
+	public void voidTicket(Ticket ticket) throws Exception {
+		Session session = null;
+		Transaction tx = null;
+		
+		try {
+			session = createNewSession();
+			tx = session.beginTransaction();
+		
+			Terminal terminal = Application.getInstance().getTerminal();
+			
+			ticket.setVoided(true);
+			ticket.setClosed(true);
+			ticket.setClosingDate(new Date());
+			ticket.setTerminal(terminal);
+			
+			if(ticket.isPaid()) {
+				VoidTransaction transaction = new VoidTransaction();
+				transaction.setTicket(ticket);
+				transaction.setTerminal(terminal);
+				transaction.setTransactionTime(new Date());
+				transaction.setTransactionType(TransactionType.DEBIT.name());
+				transaction.setPaymentType(PaymentType.CASH.name());
+				transaction.setAmount(ticket.getPaidAmount());
+				transaction.setTerminal(Application.getInstance().getTerminal());
+				transaction.setCaptured(true);
+				
+				PosTransactionService.adjustTerminalBalance(transaction);
+				
+				ticket.addTotransactions(transaction);
+			}
+			
+			session.update(ticket);
+			session.update(terminal);
+			
+			session.flush();
+			tx.commit();
+		} catch (Exception x) {
+			try {
+				tx.rollback();
+			} catch (Exception e) {
+			}
+			throw x;
+		}
+
+		finally {
+			closeSession(session);
+		}
 	}
 	
 	public Ticket loadFullTicket(int id) {
@@ -145,55 +229,6 @@ public class TicketDAO extends BaseTicketDAO {
 			}
 			return 0;
 		} finally {
-			closeSession(session);
-		}
-	}
-
-	public void voidTicket(Ticket ticket) throws Exception {
-		Session session = null;
-		Transaction tx = null;
-		
-		try {
-			session = createNewSession();
-			tx = session.beginTransaction();
-		
-			Terminal terminal = Application.getInstance().getTerminal();
-			
-			ticket.setVoided(true);
-			ticket.setClosed(true);
-			ticket.setClosingDate(new Date());
-			ticket.setTerminal(terminal);
-			
-			if(ticket.isPaid()) {
-				VoidTransaction transaction = new VoidTransaction();
-				transaction.setTicket(ticket);
-				transaction.setTerminal(terminal);
-				transaction.setTransactionTime(new Date());
-				transaction.setTransactionType(TransactionType.DEBIT.name());
-				transaction.setPaymentType(PaymentType.CASH.name());
-				transaction.setAmount(ticket.getPaidAmount());
-				transaction.setTerminal(Application.getInstance().getTerminal());
-				transaction.setCaptured(true);
-				
-				PosTransactionService.adjustTerminalBalance(transaction);
-				
-				ticket.addTotransactions(transaction);
-			}
-			
-			session.update(ticket);
-			session.update(terminal);
-			
-			session.flush();
-			tx.commit();
-		} catch (Exception x) {
-			try {
-				tx.rollback();
-			} catch (Exception e) {
-			}
-			throw x;
-		}
-
-		finally {
 			closeSession(session);
 		}
 	}
@@ -487,7 +522,7 @@ public class TicketDAO extends BaseTicketDAO {
 		return instance;
 	}
 	
-	private void adjustInventoryItems(Ticket ticket) {
+	private void adjustInventoryItems(Session session, Ticket ticket) {
 		List<TicketItem> ticketItems = ticket.getTicketItems();
 		if(ticketItems == null) {
 			return;
@@ -522,7 +557,7 @@ public class TicketDAO extends BaseTicketDAO {
 				Double totalRecepieUnits = inventoryItem.getTotalRecepieUnits();
 				inventoryItem.setTotalRecepieUnits(totalRecepieUnits - ticketItem.getItemCount());
 				
-				InventoryItemDAO.getInstance().saveOrUpdate(inventoryItem);
+				session.saveOrUpdate(inventoryItem);
 				
 				InventoryTransaction transaction = new InventoryTransaction();
 				transaction.setType(InventoryTransactionType.OUT);
@@ -530,7 +565,8 @@ public class TicketDAO extends BaseTicketDAO {
 				transaction.setInventoryItem(inventoryItem);
 				transaction.setQuantity(ticketItem.getItemCount());
 				transaction.setRemark("OUT as a recepie item for " + ticketItem.getName() + " for ticket " + ticket.getId());
-				InventoryTransactionDAO.getInstance().save(transaction);
+				
+				session.save(transaction);
 			}
 			
 			ticketItem.setInventoryHandled(true);
@@ -571,7 +607,7 @@ public class TicketDAO extends BaseTicketDAO {
 				Double totalRecepieUnits = inventoryItem.getTotalRecepieUnits();
 				inventoryItem.setTotalRecepieUnits(totalRecepieUnits + ticketItem.getItemCount());
 				
-				InventoryItemDAO.getInstance().saveOrUpdate(inventoryItem);
+				session.saveOrUpdate(inventoryItem);
 				
 				InventoryTransaction transaction = new InventoryTransaction();
 				transaction.setType(InventoryTransactionType.IN);
@@ -579,7 +615,8 @@ public class TicketDAO extends BaseTicketDAO {
 				transaction.setInventoryItem(inventoryItem);
 				transaction.setQuantity(ticketItem.getItemCount());
 				transaction.setRemark("IN as " + ticketItem.getName() + " was canceled for ticket " + ticket.getId());
-				InventoryTransactionDAO.getInstance().save(transaction);
+				
+				session.save(transaction);
 			}
 			
 			ticketItem.setInventoryHandled(true);
