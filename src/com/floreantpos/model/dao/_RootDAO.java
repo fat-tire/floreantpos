@@ -14,6 +14,7 @@ import com.floreantpos.model.CashDrawerResetHistory;
 import com.floreantpos.model.CookingInstruction;
 import com.floreantpos.model.CouponAndDiscount;
 import com.floreantpos.model.Customer;
+import com.floreantpos.model.DataUpdateInfo;
 import com.floreantpos.model.DrawerAssignedHistory;
 import com.floreantpos.model.DrawerPullReport;
 import com.floreantpos.model.Gratuity;
@@ -131,6 +132,7 @@ public abstract class _RootDAO extends com.floreantpos.model.dao._BaseRootDAO {
 		configuration = configuration.addClass(OrderTypeProperties.class);
 		configuration = configuration.addClass(PrinterGroup.class);
 		configuration = configuration.addClass(DrawerAssignedHistory.class);
+		configuration = configuration.addClass(DataUpdateInfo.class);
 		
 		configuration = configureInventoryClasses(configuration);
 		

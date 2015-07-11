@@ -299,7 +299,7 @@ public class SplitTicketDialog extends POSDialog {
 			}
 		}
 		
-		session.saveOrUpdate(ticket);
+		TicketDAO.getInstance().saveOrUpdate(ticket, session);
 	}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
