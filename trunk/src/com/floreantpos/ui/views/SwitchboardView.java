@@ -39,6 +39,7 @@ import com.floreantpos.ITicketList;
 import com.floreantpos.Messages;
 import com.floreantpos.POSConstants;
 import com.floreantpos.PosException;
+import com.floreantpos.actions.DrawerAssignmentAction;
 import com.floreantpos.actions.NewBarTabAction;
 import com.floreantpos.actions.RefundAction;
 import com.floreantpos.actions.SettleTicketAction;
@@ -171,7 +172,7 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 		centerPanel.add(ticketsAndActivityPanel, java.awt.BorderLayout.CENTER);
 		
 		JPanel rightPanel = new JPanel(new BorderLayout(20, 20));
-		TitledBorder titledBorder2 = BorderFactory.createTitledBorder(null, "-", TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION);
+		TitledBorder titledBorder2 = BorderFactory.createTitledBorder(null, "-", TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION); //$NON-NLS-1$
 		rightPanel.setBorder(new CompoundBorder(titledBorder2, new EmptyBorder(2, 2, 6, 2)));
 		
 		JPanel orderPanel = new JPanel(new MigLayout("ins 2 2 0 2, fill, hidemode 3, flowy", "fill, grow", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
@@ -186,7 +187,7 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 		
 		rightPanel.add(orderPanel);
 
-		PosButton btnOthers = new PosButton("OTHER FUNCTIONS");
+		PosButton btnOthers = new PosButton(Messages.getString("SwitchboardView.1")); //$NON-NLS-1$
 		btnOthers.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -215,7 +216,7 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 		});
 		panel1.add(btnRefreshTicketList);
 		
-		POSToggleButton btnOrderFilters = new POSToggleButton("ORDER FILTERS");
+		POSToggleButton btnOrderFilters = new POSToggleButton(Messages.getString("SwitchboardView.2")); //$NON-NLS-1$
 		btnOrderFilters.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -309,7 +310,7 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 		}
 		
 		JPanel filterByPaymentStatusPanel = new JPanel(new MigLayout("", "fill, grow", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		filterByPaymentStatusPanel.setBorder(new TitledBorder("FILTER BY PAYMENT STATUS"));
+		filterByPaymentStatusPanel.setBorder(new TitledBorder(Messages.getString("SwitchboardView.3"))); //$NON-NLS-1$
 		filterByPaymentStatusPanel.add(btnNoPaymentFilter);
 		filterByPaymentStatusPanel.add(btnFilterByPaid);
 		filterByPaymentStatusPanel.add(btnFilterByUnPaid);
@@ -365,7 +366,7 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 		}
 		
 		JPanel filterByOrderPanel = new JPanel(new MigLayout("", "fill, grow", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		filterByOrderPanel.setBorder(new TitledBorder("FILTER BY ORDER TYPE"));
+		filterByOrderPanel.setBorder(new TitledBorder(Messages.getString("SwitchboardView.4"))); //$NON-NLS-1$
 		filterByOrderPanel.add(btnFilterByOrderTypeALL);
 		filterByOrderPanel.add(btnFilterByDineIn);
 		filterByOrderPanel.add(btnFilterByTakeOut);
@@ -440,11 +441,11 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 		
 		int due = (int) POSUtil.getDouble(ticket.getDueAmount());
 		if (due != 0) {
-			POSMessageDialog.showError(this, "Ticket is not fully paid");
+			POSMessageDialog.showError(this, Messages.getString("SwitchboardView.5")); //$NON-NLS-1$
 			return;
 		}
 
-		int option = JOptionPane.showOptionDialog(Application.getPosWindow(), "Ticket# " + ticket.getId() + " will be closed.", "Confirm",
+		int option = JOptionPane.showOptionDialog(Application.getPosWindow(), Messages.getString("SwitchboardView.6") + ticket.getId() + Messages.getString("SwitchboardView.7"), POSConstants.CONFIRM, //$NON-NLS-1$ //$NON-NLS-2$
 				JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, null, null, null);
 
 		if (option != JOptionPane.OK_OPTION) {
@@ -466,13 +467,13 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 			}
 
 			if (ticket.getType() != OrderType.HOME_DELIVERY) {
-				POSMessageDialog.showError(this, "Driver can be assigned only for Home Delivery");
+				POSMessageDialog.showError(this, Messages.getString("SwitchboardView.8")); //$NON-NLS-1$
 				return;
 			}
 
 			User assignedDriver = ticket.getAssignedDriver();
 			if (assignedDriver != null) {
-				int option = JOptionPane.showOptionDialog(Application.getPosWindow(), "Driver already assigned. Do you want to reassign?", "Confirm",
+				int option = JOptionPane.showOptionDialog(Application.getPosWindow(), Messages.getString("SwitchboardView.9"), POSConstants.CONFIRM, //$NON-NLS-1$
 						JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
 
 				if (option != JOptionPane.YES_OPTION) {
@@ -491,7 +492,7 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 	private void doReopenTicket() {
 		try {
 
-			int ticketId = NumberSelectionDialog2.takeIntInput("Enter or scan ticket id");
+			int ticketId = NumberSelectionDialog2.takeIntInput(Messages.getString("SwitchboardView.10")); //$NON-NLS-1$
 
 			if (ticketId == -1) {
 				return;
@@ -508,7 +509,7 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 			}
 
 			if (ticket.isVoided()) {
-				throw new PosException("Void ticket cannot be reopened");
+				throw new PosException(Messages.getString("SwitchboardView.11")); //$NON-NLS-1$
 			}
 
 			ticket.setClosed(false);
@@ -535,8 +536,7 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 
 	private void doSettleTicket() {
 		try {
-			if (!Application.getInstance().getTerminal().isCashDrawerAssigned()) {
-				POSMessageDialog.showError(this, "Unable to accept payment. Configuration error or Drawer has not been assigned.");
+			if(!checkDrawerAssignment()) {
 				return;
 			}
 			
@@ -548,7 +548,7 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 				ticket = selectedTickets.get(0);
 			}
 			else {
-				int ticketId = NumberSelectionDialog2.takeIntInput("Enter or scan ticket id");
+				int ticketId = NumberSelectionDialog2.takeIntInput(Messages.getString("SwitchboardView.12")); //$NON-NLS-1$
 				if(ticketId == -1) return;
 				ticket = TicketService.getTicket(ticketId);
 			}
@@ -627,7 +627,7 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 				ticket = selectedTickets.get(0);
 			}
 			else {
-				int ticketId = NumberSelectionDialog2.takeIntInput("Enter or scan ticket id");
+				int ticketId = NumberSelectionDialog2.takeIntInput(Messages.getString("SwitchboardView.12")); //$NON-NLS-1$
 				if(ticketId == -1) return;
 				
 				ticket = TicketService.getTicket(ticketId);
@@ -643,7 +643,7 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 
 	private void editTicket(Ticket ticket) {
 		if (ticket.isPaid()) {
-			POSMessageDialog.showMessage(this, "Paid ticket cannot be edited");
+			POSMessageDialog.showMessage(this, Messages.getString("SwitchboardView.14")); //$NON-NLS-1$
 			return;
 		}
 
@@ -686,8 +686,7 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 	}
 
 	private void doGroupSettle() {
-		if (!Application.getInstance().getTerminal().isCashDrawerAssigned()) {
-			POSMessageDialog.showError(this, "Unable to accept payment. Configuration error or Drawer has not been assigned.");
+		if(!checkDrawerAssignment()) {
 			return;
 		}
 		
@@ -709,6 +708,25 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 		}
 
 		updateTicketList();
+	}
+
+	private boolean checkDrawerAssignment() {
+		if (!Application.getInstance().getTerminal().isCashDrawerAssigned()) {
+			int option = POSMessageDialog.showYesNoQuestionDialog(this, Messages.getString("SwitchboardView.15") + //$NON-NLS-1$
+					Messages.getString("SwitchboardView.16"), Messages.getString("SwitchboardView.17")); //$NON-NLS-1$ //$NON-NLS-2$
+			
+			if(option == JOptionPane.YES_OPTION) {
+				DrawerAssignmentAction action = new DrawerAssignmentAction();
+				action.execute();
+				return false;
+			}
+			else {
+				POSMessageDialog.showError(this, Messages.getString("SwitchboardView.18")); //$NON-NLS-1$
+				return false;
+			}
+		}
+		
+		return true;
 	}
 
 	public void updateView() {
@@ -783,7 +801,7 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 			btnRefreshTicketList.setBlinking(false);
 			
 		} catch (Exception e) {
-			POSMessageDialog.showError(this, "Error getting open ticket list", e);
+			POSMessageDialog.showError(this, Messages.getString("SwitchboardView.19"), e); //$NON-NLS-1$
 		} finally {
 			Application.getPosWindow().setGlassPaneVisible(false);
 		}
@@ -794,7 +812,7 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 			this.lastUpdateTime = new Date(lastUpdateInfo.getLastUpdateTime().getTime());
 			
 		} catch (Exception e) {
-			POSMessageDialog.showError(this, "Error checking last update time.", e);
+			POSMessageDialog.showError(this, Messages.getString("SwitchboardView.20"), e); //$NON-NLS-1$
 		}
 		
 		lastUpateCheckTimer.restart();
@@ -822,7 +840,7 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 
 	private PosButton btnAssignDriver = new PosButton(POSConstants.ASSIGN_DRIVER_BUTTON_TEXT);
 	private PosButton btnCloseOrder = new PosButton(POSConstants.CLOSE_ORDER_BUTTON_TEXT);
-	private PosBlinkButton btnRefreshTicketList = new PosBlinkButton(Messages.getString("REFRESH")); //NON-NLS-1$
+	private PosBlinkButton btnRefreshTicketList = new PosBlinkButton(Messages.getString(Messages.getString("SwitchboardView.21"))); //NON-NLS-1$ //$NON-NLS-1$
 
 	private com.floreantpos.ui.TicketListView ticketList = new com.floreantpos.ui.TicketListView();
 
@@ -889,7 +907,7 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 		List<Ticket> selectedTickets = ticketList.getSelectedTickets();
 
 		if (selectedTickets.size() == 0 || selectedTickets.size() > 1) {
-			POSMessageDialog.showMessage(this, "Please select a ticket");
+			POSMessageDialog.showMessage(this, Messages.getString("SwitchboardView.22")); //$NON-NLS-1$
 			return null;
 		}
 
