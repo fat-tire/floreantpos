@@ -3,8 +3,14 @@ package com.floreantpos.util;
 import java.awt.Window;
 import java.net.URLEncoder;
 
+import javax.swing.JOptionPane;
+
+import com.floreantpos.Messages;
 import com.floreantpos.PosException;
+import com.floreantpos.actions.DrawerAssignmentAction;
 import com.floreantpos.bo.ui.BackOfficeWindow;
+import com.floreantpos.main.Application;
+import com.floreantpos.ui.dialog.POSMessageDialog;
 
 public class POSUtil {
 	public static Window getFocusedWindow() {
@@ -131,6 +137,25 @@ public class POSUtil {
 	public static boolean isValidPassword(char[] password) {
 		for (char c : password) {
 			if(!Character.isDigit(c)) {
+				return false;
+			}
+		}
+		
+		return true;
+	}
+
+	public static boolean checkDrawerAssignment() {
+		if (!Application.getInstance().getTerminal().isCashDrawerAssigned()) {
+			int option = POSMessageDialog.showYesNoQuestionDialog(Application.getPosWindow(), Messages.getString("SwitchboardView.15") + //$NON-NLS-1$
+					Messages.getString("SwitchboardView.16"), Messages.getString("SwitchboardView.17")); //$NON-NLS-1$ //$NON-NLS-2$
+			
+			if(option == JOptionPane.YES_OPTION) {
+				DrawerAssignmentAction action = new DrawerAssignmentAction();
+				action.execute();
+				return false;
+			}
+			else {
+				POSMessageDialog.showError(Application.getPosWindow(), Messages.getString("SwitchboardView.18")); //$NON-NLS-1$
 				return false;
 			}
 		}

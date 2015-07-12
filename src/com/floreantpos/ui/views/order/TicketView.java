@@ -67,6 +67,7 @@ import com.floreantpos.ui.views.SwitchboardView;
 import com.floreantpos.ui.views.order.actions.ItemSelectionListener;
 import com.floreantpos.ui.views.order.actions.OrderListener;
 import com.floreantpos.util.NumberUtil;
+import com.floreantpos.util.POSUtil;
 import com.floreantpos.util.PosGuiUtil;
 
 /**
@@ -390,8 +391,7 @@ public class TicketView extends JPanel {
 
 	private void doPayNow(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_doPayNow
 		try {
-			if (!Application.getInstance().getTerminal().isCashDrawerAssigned()) {
-				POSMessageDialog.showError(Application.getPosWindow(), "Unable to accept payment. Configuration error or Drawer has not been assigned.");
+			if (!POSUtil.checkDrawerAssignment()) {
 				return;
 			}
 
