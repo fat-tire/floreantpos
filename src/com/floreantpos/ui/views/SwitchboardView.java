@@ -935,10 +935,16 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 	
 	private class TaskLastUpdateCheck implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			DataUpdateInfo lastUpdateInfo = DataUpdateInfoDAO.getLastUpdateInfo();
-			
-			if(lastUpdateInfo.getLastUpdateTime().after(lastUpdateTime)) {
-				btnRefreshTicketList.setBlinking(true);
+			try {
+				lastUpateCheckTimer.stop();
+
+				DataUpdateInfo lastUpdateInfo = DataUpdateInfoDAO.getLastUpdateInfo();
+
+				if (lastUpdateInfo.getLastUpdateTime().after(lastUpdateTime)) {
+					btnRefreshTicketList.setBlinking(true);
+				}
+			} finally {
+				lastUpateCheckTimer.restart();
 			}
 		}
 	}
