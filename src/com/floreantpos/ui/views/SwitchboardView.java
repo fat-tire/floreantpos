@@ -39,7 +39,6 @@ import com.floreantpos.ITicketList;
 import com.floreantpos.Messages;
 import com.floreantpos.POSConstants;
 import com.floreantpos.PosException;
-import com.floreantpos.actions.DrawerAssignmentAction;
 import com.floreantpos.actions.NewBarTabAction;
 import com.floreantpos.actions.RefundAction;
 import com.floreantpos.actions.SettleTicketAction;
@@ -536,7 +535,7 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 
 	private void doSettleTicket() {
 		try {
-			if(!checkDrawerAssignment()) {
+			if(!POSUtil.checkDrawerAssignment()) {
 				return;
 			}
 			
@@ -686,7 +685,7 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 	}
 
 	private void doGroupSettle() {
-		if(!checkDrawerAssignment()) {
+		if(!POSUtil.checkDrawerAssignment()) {
 			return;
 		}
 		
@@ -708,25 +707,6 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 		}
 
 		updateTicketList();
-	}
-
-	private boolean checkDrawerAssignment() {
-		if (!Application.getInstance().getTerminal().isCashDrawerAssigned()) {
-			int option = POSMessageDialog.showYesNoQuestionDialog(this, Messages.getString("SwitchboardView.15") + //$NON-NLS-1$
-					Messages.getString("SwitchboardView.16"), Messages.getString("SwitchboardView.17")); //$NON-NLS-1$ //$NON-NLS-2$
-			
-			if(option == JOptionPane.YES_OPTION) {
-				DrawerAssignmentAction action = new DrawerAssignmentAction();
-				action.execute();
-				return false;
-			}
-			else {
-				POSMessageDialog.showError(this, Messages.getString("SwitchboardView.18")); //$NON-NLS-1$
-				return false;
-			}
-		}
-		
-		return true;
 	}
 
 	public void updateView() {
@@ -799,6 +779,11 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 			ticketList.setTickets(tickets);
 			
 			btnRefreshTicketList.setBlinking(false);
+			
+			String title = POSConstants.OPEN_TICKETS_AND_ACTIVITY +
+					" [ FILTERS: " + paymentStatusFilter + ", " + orderTypeFilter + " ]";
+			
+			ticketsListPanelBorder.setTitle(title);
 			
 		} catch (Exception e) {
 			POSMessageDialog.showError(this, Messages.getString("SwitchboardView.19"), e); //$NON-NLS-1$
