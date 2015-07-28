@@ -12,12 +12,11 @@ import com.floreantpos.model.MenuModifier;
 import com.floreantpos.model.MenuModifierGroup;
 import com.floreantpos.model.Tax;
 
-@XmlRootElement(name="elements")
+@XmlRootElement(name = "elements")
 public class Elements {
-//	public final static Class[] classes = new Class[] { User.class, Tax.class, MenuCategory.class, MenuGroup.class, MenuModifier.class,
-//			MenuModifierGroup.class, MenuItem.class, MenuItemShift.class, Restaurant.class, UserType.class, UserPermission.class, Shift.class };
+	//	public final static Class[] classes = new Class[] { User.class, Tax.class, MenuCategory.class, MenuGroup.class, MenuModifier.class,
+	//			MenuModifierGroup.class, MenuItem.class, MenuItemShift.class, Restaurant.class, UserType.class, UserPermission.class, Shift.class };
 
-	
 	List<Tax> taxes;
 	List<MenuCategory> menuCategories;
 	List<MenuGroup> menuGroups;
@@ -25,15 +24,15 @@ public class Elements {
 	List<MenuItemModifierGroup> menuItemModifierGroups;
 	List<MenuModifierGroup> menuModifierGroups;
 	List<MenuItem> menuItems;
-	
+
 	//List<User> users;
-	
-//	List<MenuItemShift> menuItemShifts;
-//	List<Restaurant> restaurants;
-//	List<UserType> userTypes;
-//	List<UserPermission> userPermissions;
-//	List<Shift> shifts;
-	
+
+	//	List<MenuItemShift> menuItemShifts;
+	//	List<Restaurant> restaurants;
+	//	List<UserType> userTypes;
+	//	List<UserPermission> userPermissions;
+	//	List<Shift> shifts;
+
 	public List<MenuCategory> getMenuCategories() {
 		return menuCategories;
 	}
@@ -48,6 +47,14 @@ public class Elements {
 
 	public void setMenuGroups(List<MenuGroup> menuGroups) {
 		this.menuGroups = menuGroups;
+
+		if (menuGroups == null) {
+			return;
+		}
+
+		for (MenuGroup menuGroup : menuGroups) {
+			menuGroup.setParent(null);
+		}
 	}
 
 	public List<MenuModifier> getMenuModifiers() {
@@ -56,6 +63,13 @@ public class Elements {
 
 	public void setMenuModifiers(List<MenuModifier> menuModifiers) {
 		this.menuModifiers = menuModifiers;
+
+		if (menuModifiers == null)
+			return;
+
+		for (MenuModifier menuModifier : menuModifiers) {
+			menuModifier.setModifierGroup(null);
+		}
 	}
 
 	public List<MenuModifierGroup> getMenuModifierGroups() {
@@ -73,18 +87,15 @@ public class Elements {
 	public void setMenuItems(List<MenuItem> menuItems) {
 		this.menuItems = menuItems;
 	}
-	
-	
-	
 
-//	public List<User> getUsers() {
-//		return users;
-//	}
-//
-//	public void setUsers(List<User> users) {
-//		this.users = users;
-//	}
-//
+	//	public List<User> getUsers() {
+	//		return users;
+	//	}
+	//
+	//	public void setUsers(List<User> users) {
+	//		this.users = users;
+	//	}
+	//
 	public List<Tax> getTaxes() {
 		return taxes;
 	}
@@ -101,44 +112,44 @@ public class Elements {
 		this.menuItemModifierGroups = menuItemModifierGroups;
 	}
 
-//	public List<MenuItemShift> getMenuItemShifts() {
-//		return menuItemShifts;
-//	}
-//
-//	public void setMenuItemShifts(List<MenuItemShift> menuItemShifts) {
-//		this.menuItemShifts = menuItemShifts;
-//	}
-//
-//	public List<Restaurant> getRestaurants() {
-//		return restaurants;
-//	}
-//
-//	public void setRestaurants(List<Restaurant> restaurants) {
-//		this.restaurants = restaurants;
-//	}
-//
-//	public List<UserType> getUserTypes() {
-//		return userTypes;
-//	}
-//
-//	public void setUserTypes(List<UserType> userTypes) {
-//		this.userTypes = userTypes;
-//	}
-//
-//	public List<UserPermission> getUserPermissions() {
-//		return userPermissions;
-//	}
-//
-//	public void setUserPermissions(List<UserPermission> userPermissions) {
-//		this.userPermissions = userPermissions;
-//	}
-//
-//	public List<Shift> getShifts() {
-//		return shifts;
-//	}
-//
-//	public void setShifts(List<Shift> shifts) {
-//		this.shifts = shifts;
-//	}
+	//	public List<MenuItemShift> getMenuItemShifts() {
+	//		return menuItemShifts;
+	//	}
+	//
+	//	public void setMenuItemShifts(List<MenuItemShift> menuItemShifts) {
+	//		this.menuItemShifts = menuItemShifts;
+	//	}
+	//
+	//	public List<Restaurant> getRestaurants() {
+	//		return restaurants;
+	//	}
+	//
+	//	public void setRestaurants(List<Restaurant> restaurants) {
+	//		this.restaurants = restaurants;
+	//	}
+	//
+	//	public List<UserType> getUserTypes() {
+	//		return userTypes;
+	//	}
+	//
+	//	public void setUserTypes(List<UserType> userTypes) {
+	//		this.userTypes = userTypes;
+	//	}
+	//
+	//	public List<UserPermission> getUserPermissions() {
+	//		return userPermissions;
+	//	}
+	//
+	//	public void setUserPermissions(List<UserPermission> userPermissions) {
+	//		this.userPermissions = userPermissions;
+	//	}
+	//
+	//	public List<Shift> getShifts() {
+	//		return shifts;
+	//	}
+	//
+	//	public void setShifts(List<Shift> shifts) {
+	//		this.shifts = shifts;
+	//	}
 
 }
