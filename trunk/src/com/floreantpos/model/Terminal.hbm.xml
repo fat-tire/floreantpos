@@ -10,9 +10,6 @@
 		<property column="OPENING_BALANCE" length="52" name="openingBalance" type="java.lang.Double" />
 		<property column="CURRENT_BALANCE" length="52" name="currentBalance" type="java.lang.Double" />
 		<property column="HAS_CASH_DRAWER" name="hasCashDrawer" type="java.lang.Boolean" />
-		<property column="AUTODRAWERPULLENABLE" name="autoDrawerPullEnable" type="java.lang.Boolean" />
-		<property column="DRAWER_PULL_HOUR" name="autoDrawerPullHour" type="java.lang.Integer" />
-		<property column="DRAWER_PULL_MIN" name="autoDrawerPullMin" type="java.lang.Integer" />
 		<!-- Associations -->
 
 		<many-to-one class="com.floreantpos.model.User" lazy="false" name="assignedUser">

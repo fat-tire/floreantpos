@@ -86,7 +86,7 @@ public class PayoutDialog extends POSDialog {
 	private void doFinishPayout(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_doFinishPayout
 		Application application = Application.getInstance();
 
-		Terminal terminal = application.getTerminal();
+		Terminal terminal = application.refreshAndGetTerminal();
 
 		double payoutAmount = payOutView.getPayoutAmount();
 		PayoutReason reason = payOutView.getReason();

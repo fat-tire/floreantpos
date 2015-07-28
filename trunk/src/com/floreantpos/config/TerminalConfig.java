@@ -1,6 +1,7 @@
 package com.floreantpos.config;
 
 import org.apache.commons.configuration.PropertiesConfiguration;
+import org.apache.commons.lang.StringUtils;
 
 import com.floreantpos.model.OrderTypeFilter;
 import com.floreantpos.model.PaymentStatusFilter;
@@ -206,5 +207,44 @@ public class TerminalConfig {
 	
 	public static int getMiscItemDefaultTaxId() {
 		return config.getInt("mistitemdefaulttaxid", -1); //$NON-NLS-1$
+	}
+	
+	public static void setDrawerPortName(String drawerPortName) {
+		config.setProperty("drawerPortName", drawerPortName); //$NON-NLS-1$
+	}
+	
+	public static String getDrawerPortName() {
+		return config.getString("drawerPortName", "COM1"); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+	
+	public static void setDrawerControlCodes(String controlCode) {
+		config.setProperty("controlCode", controlCode); //$NON-NLS-1$
+	}
+	
+	public static String getDrawerControlCodes() {
+		return config.getString("controlCode", "27,112,0,25,250"); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+	
+	public static String getDefaultDrawerControlCodes() {
+		return "27,112,0,25,250"; //$NON-NLS-1$
+	}
+	
+	public static char[] getDrawerControlCodesArray() {
+		String drawerControlCodes = getDrawerControlCodes();
+		if(StringUtils.isEmpty(drawerControlCodes)) {
+			drawerControlCodes = getDefaultDrawerControlCodes();
+		}
+		
+		String[] split = drawerControlCodes.split(",");
+		char[] codes = new char[split.length];
+		for (int i = 0; i < split.length; i++) {
+			try {
+				codes[i] = (char) Integer.parseInt(split[i]);
+			} catch (Exception x) {
+				codes[i] = '0';
+			}
+		}
+		
+		return codes;
 	}
 }

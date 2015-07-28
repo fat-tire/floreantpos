@@ -8,11 +8,13 @@ import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 import net.miginfocom.swing.MigLayout;
 
@@ -26,6 +28,7 @@ import com.floreantpos.model.dao.TerminalDAO;
 import com.floreantpos.swing.DoubleTextField;
 import com.floreantpos.swing.IntegerTextField;
 import com.floreantpos.ui.dialog.POSMessageDialog;
+import com.floreantpos.util.DrawerUtil;
 
 public class TerminalConfigurationView extends ConfigurationView {
 	private IntegerTextField tfTerminalNumber;
@@ -45,6 +48,8 @@ public class TerminalConfigurationView extends ConfigurationView {
 	private IntegerTextField tfLogoffTime = new IntegerTextField(4);
 	
 	JCheckBox chkHasCashDrawer;
+	private JTextField tfDrawerName = new JTextField(10);
+	private JTextField tfDrawerCodes = new JTextField(15);
 	DoubleTextField tfDrawerInitialBalance = new DoubleTextField(6);
 	
 	public TerminalConfigurationView() {
@@ -123,7 +128,47 @@ public class TerminalConfigurationView extends ConfigurationView {
 		chkHasCashDrawer = new JCheckBox("This terminal has cash drawer");
 		drawerConfigPanel.add(chkHasCashDrawer, "span 5, wrap");
 		
-		drawerConfigPanel.add(new JLabel("Drawer initial balance"));
+		drawerConfigPanel.add(new JLabel("Drawer port"));
+		drawerConfigPanel.add(tfDrawerName, "");
+		
+		drawerConfigPanel.add(new JLabel("Drawer control codes"), "newline");
+		drawerConfigPanel.add(tfDrawerCodes, "");
+		
+		JButton btnDrawerTest = new JButton("TEST");
+		btnDrawerTest.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String text = tfDrawerCodes.getText();
+				if(StringUtils.isEmpty(text)) {
+					text = TerminalConfig.getDefaultDrawerControlCodes();
+				}
+				
+				String[] split = text.split(",");
+				char[] codes = new char[split.length];
+				for (int i = 0; i < split.length; i++) {
+					try {
+						codes[i] = (char) Integer.parseInt(split[i]);
+					} catch (Exception x) {
+						codes[i] = '0';
+					}
+				}
+				
+				DrawerUtil.kickDrawer(tfDrawerName.getText(), codes);
+			}
+		});
+		drawerConfigPanel.add(btnDrawerTest);
+		
+		JButton btnRestoreDrawerDefault = new JButton("RESTORE DEFAULT");
+		btnRestoreDrawerDefault.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				tfDrawerName.setText("COM1");
+				tfDrawerCodes.setText(TerminalConfig.getDefaultDrawerControlCodes());
+			}
+		});
+		drawerConfigPanel.add(btnRestoreDrawerDefault);
+
+		drawerConfigPanel.add(new JLabel("Drawer initial balance"), "newline");
 		drawerConfigPanel.add(tfDrawerInitialBalance, "span 4, wrap");
 		
 		add(drawerConfigPanel, "span 3, grow, wrap");
@@ -138,6 +183,8 @@ public class TerminalConfigurationView extends ConfigurationView {
 
 	protected void doEnableDisableDrawerPull() {
 		boolean selected = chkHasCashDrawer.isSelected();
+		tfDrawerName.setEnabled(selected);
+		tfDrawerCodes.setEnabled(selected);
 		tfDrawerInitialBalance.setEnabled(selected);
 	}
 	
@@ -200,6 +247,8 @@ public class TerminalConfigurationView extends ConfigurationView {
 		}
 		
 		TerminalConfig.setUiDefaultFont(selectedFont);
+		TerminalConfig.setDrawerPortName(tfDrawerName.getText());
+		TerminalConfig.setDrawerControlCodes(tfDrawerCodes.getText());
 		
 		TerminalDAO terminalDAO = TerminalDAO.getInstance();
 		Terminal terminal = terminalDAO.get(terminalNumber);
@@ -236,8 +285,10 @@ public class TerminalConfigurationView extends ConfigurationView {
 		
 		initializeFontConfig();
 		
-		Terminal terminal = Application.getInstance().getTerminal();
+		Terminal terminal = Application.getInstance().refreshAndGetTerminal();
 		chkHasCashDrawer.setSelected(terminal.isHasCashDrawer());
+		tfDrawerName.setText(TerminalConfig.getDrawerPortName());
+		tfDrawerCodes.setText(TerminalConfig.getDrawerControlCodes());
 		tfDrawerInitialBalance.setText("" + terminal.getOpeningBalance());
 		
 		doEnableDisableDrawerPull();

@@ -71,6 +71,7 @@ import com.floreantpos.ui.views.order.ViewPanel;
 import com.floreantpos.ui.views.payment.SettleTicketDialog;
 import com.floreantpos.util.OrderUtil;
 import com.floreantpos.util.POSUtil;
+import com.floreantpos.util.PosGuiUtil;
 import com.floreantpos.util.TicketAlreadyExistsException;
 
 /**
@@ -921,8 +922,12 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 	private class TaskLastUpdateCheck implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			try {
+				if(PosGuiUtil.isModalDialogShowing()) {
+					return;
+				}
+				
 				lastUpateCheckTimer.stop();
-
+				
 				DataUpdateInfo lastUpdateInfo = DataUpdateInfoDAO.getLastUpdateInfo();
 
 				if (lastUpdateInfo.getLastUpdateTime().after(lastUpdateTime)) {

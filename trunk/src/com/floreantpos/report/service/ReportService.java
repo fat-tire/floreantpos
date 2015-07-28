@@ -12,6 +12,7 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 
 import com.floreantpos.model.ActionHistory;
+import com.floreantpos.model.CashTransaction;
 import com.floreantpos.model.CouponAndDiscount;
 import com.floreantpos.model.CreditCardTransaction;
 import com.floreantpos.model.DebitCardTransaction;
@@ -22,8 +23,8 @@ import com.floreantpos.model.MenuCategory;
 import com.floreantpos.model.PayOutTransaction;
 import com.floreantpos.model.PosTransaction;
 import com.floreantpos.model.Ticket;
-import com.floreantpos.model.TicketCouponAndDiscount;
 import com.floreantpos.model.TicketItem;
+import com.floreantpos.model.TransactionType;
 import com.floreantpos.model.User;
 import com.floreantpos.model.dao.CouponAndDiscountDAO;
 import com.floreantpos.model.dao.GenericDAO;
@@ -265,195 +266,51 @@ public class ReportService {
 			session = dao.getSession();
 			
 			//gross taxable sales
-			Criteria criteria = session.createCriteria(Ticket.class);
-			criteria.add(Restrictions.ge(Ticket.PROP_CREATE_DATE, fromDate));
-			criteria.add(Restrictions.le(Ticket.PROP_CREATE_DATE, toDate));
-			criteria.add(Restrictions.eq(Ticket.PROP_VOIDED, Boolean.FALSE));
-			criteria.add(Restrictions.eq(Ticket.PROP_REFUNDED, Boolean.FALSE));
-			criteria.add(Restrictions.eq(Ticket.PROP_TAX_EXEMPT, Boolean.FALSE));
-			ProjectionList projectionList = Projections.projectionList();
-			projectionList.add(Projections.sum(Ticket.PROP_SUBTOTAL_AMOUNT));
-			criteria.setProjection(projectionList);
-			Object object = criteria.uniqueResult();
-			if(object != null && object instanceof Number) {
-				double amount = ((Number) object).doubleValue();
-				report.setGrossTaxableSalesAmount(amount);
-			}
-			
+			report.setGrossTaxableSalesAmount(calculateGrossSales(session, fromDate, toDate, true));
 			//gross non-taxable sales
-			criteria = session.createCriteria(Ticket.class);
-			criteria.add(Restrictions.ge(Ticket.PROP_CREATE_DATE, fromDate));
-			criteria.add(Restrictions.le(Ticket.PROP_CREATE_DATE, toDate));
-			criteria.add(Restrictions.eq(Ticket.PROP_VOIDED, Boolean.FALSE));
-			criteria.add(Restrictions.eq(Ticket.PROP_REFUNDED, Boolean.FALSE));
-			criteria.add(Restrictions.eq(Ticket.PROP_TAX_EXEMPT, Boolean.TRUE));
-			projectionList = Projections.projectionList();
-			projectionList.add(Projections.sum(Ticket.PROP_SUBTOTAL_AMOUNT));
-			criteria.setProjection(projectionList);
-			object = criteria.uniqueResult();
-			if(object != null && object instanceof Number) {
-				double amount = ((Number) object).doubleValue();
-				report.setGrossNonTaxableSalesAmount(amount);
-			}
-			
-			//discounts
-			criteria = session.createCriteria(Ticket.class);
-			criteria.add(Restrictions.ge(Ticket.PROP_CREATE_DATE, fromDate));
-			criteria.add(Restrictions.le(Ticket.PROP_CREATE_DATE, toDate));
-			criteria.add(Restrictions.eq(Ticket.PROP_VOIDED, Boolean.FALSE));
-			criteria.add(Restrictions.eq(Ticket.PROP_REFUNDED, Boolean.FALSE));
-			
-			List list = criteria.list();
-			for (Iterator iter = list.iterator(); iter.hasNext();) {
-				Ticket ticket = (Ticket) iter.next();
-				List<TicketCouponAndDiscount> discounts = ticket.getCouponAndDiscounts();
-				if (discounts != null) {
-					for (TicketCouponAndDiscount discount : discounts) {
-						report.setDiscountAmount(report.getDiscountAmount() + discount.getValue());
-					}
-				}
-			}
-
+			report.setGrossNonTaxableSalesAmount(calculateGrossSales(session, fromDate, toDate, false));
+			//discount
+			report.setDiscountAmount(calculateDiscount(session, fromDate, toDate));
 			//tax
-			criteria = session.createCriteria(Ticket.class);
-			criteria.add(Restrictions.ge(Ticket.PROP_CREATE_DATE, fromDate));
-			criteria.add(Restrictions.le(Ticket.PROP_CREATE_DATE, toDate));
-			criteria.add(Restrictions.eq(Ticket.PROP_VOIDED, Boolean.FALSE));
-			criteria.add(Restrictions.eq(Ticket.PROP_REFUNDED, Boolean.FALSE));
-			projectionList = Projections.projectionList();
-			projectionList.add(Projections.sum(Ticket.PROP_TAX_AMOUNT));
-			criteria.setProjection(projectionList);
-			Object o1 =  criteria.uniqueResult();
-			if(o1 instanceof Number) {
-				double amount = ((Number) o1).doubleValue();
-				report.setSalesTaxAmount(amount);
-			}
+			report.setSalesTaxAmount(calculateTax(session, fromDate, toDate));
+			report.setChargedTipsAmount(calculateTips(session, fromDate, toDate));
 			
-			//tips
-			criteria = session.createCriteria(Ticket.class);
-			criteria.createAlias(Ticket.PROP_GRATUITY, "g");
-			criteria.add(Restrictions.ge(Ticket.PROP_CREATE_DATE, fromDate));
-			criteria.add(Restrictions.le(Ticket.PROP_CREATE_DATE, toDate));
+			report.setCashReceiptsAmount(calculateCreditReceipt(session, CashTransaction.class, fromDate, toDate));
+			report.setCreditCardReceiptsAmount(calculateCreditReceipt(session, CreditCardTransaction.class, fromDate, toDate));
 			
-			//FIXME: HOW ABOUT TIPS ON VOID OR REFUNDED TICKET?
+			//report.setGiftCertSalesAmount(calculateGiftCertSoldAmount(session, fromDate, toDate));
+			//report.setGiftCertReturnAmount(calculateCreditReceipt(session, GiftCertificateTransaction.class, fromDate, toDate));
 			
-			criteria.add(Restrictions.eq(Ticket.PROP_VOIDED, Boolean.FALSE));
-			criteria.add(Restrictions.eq(Ticket.PROP_REFUNDED, Boolean.FALSE));
-			projectionList = Projections.projectionList();
-			projectionList.add(Projections.sum("g." + Gratuity.PROP_AMOUNT));
-			criteria.setProjection(projectionList);
-			object = (Object) criteria.uniqueResult();
-			if(object instanceof Number) {
-				double amount = ((Number) object).doubleValue();
-				report.setChargedTipsAmount(amount);
-			}
-			
-			//cash receipt
-			criteria = session.createCriteria(Ticket.class);
-			criteria.add(Restrictions.ge(Ticket.PROP_CREATE_DATE, fromDate));
-			criteria.add(Restrictions.le(Ticket.PROP_CREATE_DATE, toDate));
-			criteria.add(Restrictions.eq(Ticket.PROP_VOIDED, Boolean.FALSE));
-			criteria.add(Restrictions.eq(Ticket.PROP_REFUNDED, Boolean.FALSE));
-			//FIXME: TRANSACTION
-//			criteria.add(Restrictions.eq(Ticket.PROP_TRANSACTION_TYPE, TransactionType.CASH.name()));
-			projectionList = Projections.projectionList();
-			projectionList.add(Projections.sum(Ticket.PROP_TOTAL_AMOUNT));
-			criteria.setProjection(projectionList);
-			object = criteria.uniqueResult();
-			if(object != null && object instanceof Number) {
-				double amount = ((Number) object).doubleValue();
-				report.setCashReceiptsAmount(amount);
-			}
-			
-			//credit card receipt
-			criteria = session.createCriteria(Ticket.class);
-			criteria.add(Restrictions.ge(Ticket.PROP_CREATE_DATE, fromDate));
-			criteria.add(Restrictions.le(Ticket.PROP_CREATE_DATE, toDate));
-			criteria.add(Restrictions.eq(Ticket.PROP_VOIDED, Boolean.FALSE));
-			criteria.add(Restrictions.eq(Ticket.PROP_REFUNDED, Boolean.FALSE));
-			
-			//FIXME: TRANSACTION
-//			criteria.add(Restrictions.eq(Ticket.PROP_TRANSACTION_TYPE, TransactionType.CARD.name()));
-			projectionList = Projections.projectionList();
-			projectionList.add(Projections.sum(Ticket.PROP_SUBTOTAL_AMOUNT));
-			criteria.setProjection(projectionList);
-			object = criteria.uniqueResult();
-			if(object != null && object instanceof Number) {
-				double amount = ((Number) object).doubleValue();
-				report.setCreditCardReceiptsAmount(amount);
-			}
-			
-//			gift cert
-			criteria = session.createCriteria(GiftCertificateTransaction.class);
-			criteria.createAlias(GiftCertificateTransaction.PROP_TICKET, "t");
-			criteria.add(Restrictions.ge("t." + Ticket.PROP_CREATE_DATE, fromDate));
-			criteria.add(Restrictions.le("t." + Ticket.PROP_CREATE_DATE, toDate));
-			criteria.add(Restrictions.eq("t." + Ticket.PROP_VOIDED, Boolean.FALSE));
-			criteria.add(Restrictions.eq("t." + Ticket.PROP_REFUNDED, Boolean.FALSE));
-			projectionList = Projections.projectionList();
-			projectionList.add(Projections.sum(PosTransaction.PROP_GIFT_CERT_FACE_VALUE));
-			projectionList.add(Projections.sum(PosTransaction.PROP_GIFT_CERT_CASH_BACK_AMOUNT));
-			criteria.setProjection(projectionList);
-			Object[] o = (Object[]) criteria.uniqueResult();
-			if(o.length > 0 && o[0] instanceof Number) {
-				double amount = ((Number) o[0]).doubleValue();
-				report.setGiftCertReturnAmount(amount);
-			}
-			if(o.length > 1 && o[1] instanceof Number) {
-				double amount = ((Number) o[1]).doubleValue();
-				report.setGiftCertChangeAmount(amount);
-			}
-			
+//			
+////			gift cert
+//			criteria = session.createCriteria(GiftCertificateTransaction.class);
+//			criteria.createAlias(GiftCertificateTransaction.PROP_TICKET, "t");
+//			criteria.add(Restrictions.ge("t." + Ticket.PROP_CREATE_DATE, fromDate));
+//			criteria.add(Restrictions.le("t." + Ticket.PROP_CREATE_DATE, toDate));
+//			criteria.add(Restrictions.eq("t." + Ticket.PROP_VOIDED, Boolean.FALSE));
+//			criteria.add(Restrictions.eq("t." + Ticket.PROP_REFUNDED, Boolean.FALSE));
+//			projectionList = Projections.projectionList();
+//			projectionList.add(Projections.sum(PosTransaction.PROP_GIFT_CERT_FACE_VALUE));
+//			projectionList.add(Projections.sum(PosTransaction.PROP_GIFT_CERT_CASH_BACK_AMOUNT));
+//			criteria.setProjection(projectionList);
+//			Object[] o = (Object[]) criteria.uniqueResult();
+//			if(o.length > 0 && o[0] instanceof Number) {
+//				double amount = ((Number) o[0]).doubleValue();
+//				report.setGiftCertReturnAmount(amount);
+//			}
+//			if(o.length > 1 && o[1] instanceof Number) {
+//				double amount = ((Number) o[1]).doubleValue();
+//				report.setGiftCertChangeAmount(amount);
+//			}
+//			
 //			tips paid
-			criteria = session.createCriteria(Ticket.class);
-			criteria.createAlias(Ticket.PROP_GRATUITY, "gratuity");
-			criteria.add(Restrictions.ge(Ticket.PROP_CREATE_DATE, fromDate));
-			criteria.add(Restrictions.le(Ticket.PROP_CREATE_DATE, toDate));
-			
-			//FIXME: TIPS
-			criteria.add(Restrictions.eq(Ticket.PROP_VOIDED, Boolean.FALSE));
-			criteria.add(Restrictions.eq(Ticket.PROP_REFUNDED, Boolean.FALSE));
-			
-			criteria.add(Restrictions.eq("gratuity." + Gratuity.PROP_PAID, Boolean.TRUE));
-			projectionList = Projections.projectionList();
-			projectionList.add(Projections.sum("gratuity." + Gratuity.PROP_AMOUNT));
-			criteria.setProjection(projectionList);
-			object = criteria.uniqueResult();
-			if(object != null && object instanceof Number) {
-				double amount = ((Number) object).doubleValue();
-				report.setGrossTipsPaidAmount(amount);
-			}
-			
+			report.setGrossTipsPaidAmount(calculateTipsPaid(session, fromDate, toDate));
+//			
 			//cash payout
-			criteria = session.createCriteria(PayOutTransaction.class);
-			criteria.add(Restrictions.ge(PayOutTransaction.PROP_TRANSACTION_TIME, fromDate));
-			criteria.add(Restrictions.le(PayOutTransaction.PROP_TRANSACTION_TIME, toDate));
-			projectionList = Projections.projectionList();
-			projectionList.add(Projections.sum(PayOutTransaction.PROP_AMOUNT));
-			criteria.setProjection(projectionList);
-			object = criteria.uniqueResult();
-			if(object != null && object instanceof Number) {
-				double amount = ((Number) object).doubleValue();
-				report.setCashPayoutAmount(amount);
-			}
-			
+			report.setCashPayoutAmount(calculateCashPayout(session, fromDate, toDate));
+//			
 			//drawer pulls
-			criteria = session.createCriteria(DrawerPullReport.class);
-			criteria.add(Restrictions.ge(DrawerPullReport.PROP_REPORT_TIME, fromDate));
-			criteria.add(Restrictions.le(DrawerPullReport.PROP_REPORT_TIME, toDate));
-			projectionList = Projections.projectionList();
-			projectionList.add(Projections.sum(DrawerPullReport.PROP_DRAWER_ACCOUNTABLE));
-			projectionList.add(Projections.sum(DrawerPullReport.PROP_BEGIN_CASH));
-			criteria.setProjection(projectionList);
-			o = (Object[]) criteria.uniqueResult();
-			if(o.length > 0 && o[0] instanceof Number) {
-				double amount = ((Number) o[0]).doubleValue();
-				report.setDrawerPullsAmount(amount);
-			}
-			if(o.length > 1 && o[1] instanceof Number) {
-				double amount = ((Number) o[1]).doubleValue();
-				report.setDrawerPullsAmount(report.getDrawerPullsAmount() - amount);
-			}
+			calculateDrawerPullAmount(session, report, fromDate, toDate);
 			
 			report.calculate();
 			return report;
@@ -462,6 +319,162 @@ public class ReportService {
 				session.close();
 			}
 		}
+	}
+
+	private void calculateDrawerPullAmount(Session session, SalesBalanceReport report, Date fromDate, Date toDate) {
+		Criteria criteria = session.createCriteria(DrawerPullReport.class);
+		criteria.add(Restrictions.ge(DrawerPullReport.PROP_REPORT_TIME, fromDate));
+		criteria.add(Restrictions.le(DrawerPullReport.PROP_REPORT_TIME, toDate));
+		
+		ProjectionList projectionList = Projections.projectionList();
+		projectionList.add(Projections.sum(DrawerPullReport.PROP_DRAWER_ACCOUNTABLE));
+		projectionList.add(Projections.sum(DrawerPullReport.PROP_BEGIN_CASH));
+		criteria.setProjection(projectionList);
+		
+		Object[] o = (Object[]) criteria.uniqueResult();
+		if(o.length > 0 && o[0] instanceof Number) {
+			double amount = ((Number) o[0]).doubleValue();
+			report.setDrawerPullsAmount(amount);
+		}
+		if(o.length > 1 && o[1] instanceof Number) {
+			double amount = ((Number) o[1]).doubleValue();
+			report.setDrawerPullsAmount(report.getDrawerPullsAmount() - amount);
+		}
+	}
+
+	private double calculateCashPayout(Session session, Date fromDate, Date toDate) {
+		Criteria criteria = session.createCriteria(PayOutTransaction.class);
+		criteria.add(Restrictions.ge(PayOutTransaction.PROP_TRANSACTION_TIME, fromDate));
+		criteria.add(Restrictions.le(PayOutTransaction.PROP_TRANSACTION_TIME, toDate));
+		
+		criteria.setProjection(Projections.sum(PayOutTransaction.PROP_AMOUNT));
+		
+		return getDoubleAmount(criteria.uniqueResult());
+	}
+
+	private double calculateTipsPaid(Session session, Date fromDate, Date toDate) {
+		Criteria criteria = session.createCriteria(Ticket.class);
+		criteria.createAlias(Ticket.PROP_GRATUITY, "gratuity");
+		criteria.add(Restrictions.ge(Ticket.PROP_CREATE_DATE, fromDate));
+		criteria.add(Restrictions.le(Ticket.PROP_CREATE_DATE, toDate));
+		
+		criteria.add(Restrictions.eq("gratuity." + Gratuity.PROP_PAID, Boolean.TRUE));
+		
+		criteria.setProjection(Projections.sum("gratuity." + Gratuity.PROP_AMOUNT));
+		
+		return getDoubleAmount(criteria.uniqueResult());
+	}
+
+	private double calculateCreditReceipt(Session session, Class transactionClass, Date fromDate, Date toDate) {
+		//cash receipt
+		Criteria criteria = session.createCriteria(transactionClass);
+		criteria.add(Restrictions.ge(PosTransaction.PROP_TRANSACTION_TIME, fromDate));
+		criteria.add(Restrictions.le(PosTransaction.PROP_TRANSACTION_TIME, toDate));
+		criteria.add(Restrictions.eq(PosTransaction.PROP_TRANSACTION_TYPE, TransactionType.CREDIT.name()));
+		
+		criteria.setProjection(Projections.sum(CashTransaction.PROP_AMOUNT));
+		
+		return getDoubleAmount(criteria.uniqueResult());
+	}
+	
+	private double calculateCashReceipt(Session session, Date fromDate, Date toDate) {
+		//cash receipt
+		Criteria criteria = session.createCriteria(CashTransaction.class);
+		criteria.add(Restrictions.ge(CashTransaction.PROP_TRANSACTION_TIME, fromDate));
+		criteria.add(Restrictions.le(CashTransaction.PROP_TRANSACTION_TIME, toDate));
+		criteria.add(Restrictions.eq(CashTransaction.PROP_TRANSACTION_TYPE, TransactionType.CREDIT.name()));
+
+		criteria.setProjection(Projections.sum(CashTransaction.PROP_AMOUNT));
+		
+		return getDoubleAmount(criteria.uniqueResult());
+	}
+	
+	private double calculateCreditCardReceipt(Session session, Date fromDate, Date toDate) {
+		//cash receipt
+		Criteria criteria = session.createCriteria(CashTransaction.class);
+		criteria.add(Restrictions.ge(CreditCardTransaction.PROP_TRANSACTION_TIME, fromDate));
+		criteria.add(Restrictions.le(CreditCardTransaction.PROP_TRANSACTION_TIME, toDate));
+		criteria.add(Restrictions.eq(CreditCardTransaction.PROP_TRANSACTION_TYPE, TransactionType.CREDIT.name()));
+		
+		criteria.setProjection(Projections.sum(CashTransaction.PROP_AMOUNT));
+		
+		return getDoubleAmount(criteria.uniqueResult());
+	}
+	
+	private double calculateGiftCertSoldAmount(Session session, Date fromDate, Date toDate) {
+		//cash receipt
+		Criteria criteria = session.createCriteria(GiftCertificateTransaction.class);
+		criteria.add(Restrictions.ge(GiftCertificateTransaction.PROP_TRANSACTION_TIME, fromDate));
+		criteria.add(Restrictions.le(GiftCertificateTransaction.PROP_TRANSACTION_TIME, toDate));
+		criteria.add(Restrictions.eq(GiftCertificateTransaction.PROP_TRANSACTION_TYPE, TransactionType.CREDIT.name()));
+		
+		criteria.setProjection(Projections.sum(GiftCertificateTransaction.PROP_GIFT_CERT_FACE_VALUE));
+		
+		return getDoubleAmount(criteria.uniqueResult());
+	}
+
+	private double calculateTips(Session session, Date fromDate, Date toDate) {
+		//tips
+		Criteria criteria = session.createCriteria(Ticket.class);
+		criteria.createAlias(Ticket.PROP_GRATUITY, "g");
+		criteria.add(Restrictions.ge(Ticket.PROP_CREATE_DATE, fromDate));
+		criteria.add(Restrictions.le(Ticket.PROP_CREATE_DATE, toDate));
+		
+		//FIXME: HOW ABOUT TIPS ON VOID OR REFUNDED TICKET?
+		
+		//criteria.add(Restrictions.eq(Ticket.PROP_VOIDED, Boolean.FALSE));
+		//criteria.add(Restrictions.eq(Ticket.PROP_REFUNDED, Boolean.FALSE));
+		
+		criteria.setProjection(Projections.sum("g." + Gratuity.PROP_AMOUNT));
+		
+		return getDoubleAmount(criteria.uniqueResult());
+	}
+
+	private double calculateDiscount(Session session, Date fromDate, Date toDate) {
+		//discounts
+		Criteria criteria = session.createCriteria(Ticket.class);
+		criteria.add(Restrictions.ge(Ticket.PROP_CREATE_DATE, fromDate));
+		criteria.add(Restrictions.le(Ticket.PROP_CREATE_DATE, toDate));
+		criteria.add(Restrictions.eq(Ticket.PROP_VOIDED, Boolean.FALSE));
+		criteria.add(Restrictions.eq(Ticket.PROP_REFUNDED, Boolean.FALSE));
+		
+		criteria.setProjection(Projections.sum(Ticket.PROP_DISCOUNT_AMOUNT));
+		
+		return getDoubleAmount(criteria.uniqueResult());
+	}
+
+	private double getDoubleAmount(Object result) {
+		if(result != null && result instanceof Number) {
+			return ((Number) result).doubleValue();
+		}
+		return 0;
+	}
+	
+	private double calculateTax(Session session, Date fromDate, Date toDate) {
+		//discounts
+		Criteria criteria = session.createCriteria(Ticket.class);
+		criteria.add(Restrictions.ge(Ticket.PROP_CREATE_DATE, fromDate));
+		criteria.add(Restrictions.le(Ticket.PROP_CREATE_DATE, toDate));
+		criteria.add(Restrictions.eq(Ticket.PROP_VOIDED, Boolean.FALSE));
+		criteria.add(Restrictions.eq(Ticket.PROP_REFUNDED, Boolean.FALSE));
+		
+		criteria.setProjection(Projections.sum(Ticket.PROP_TAX_AMOUNT));
+		
+		return getDoubleAmount(criteria.uniqueResult());
+	}
+
+	private double calculateGrossSales(Session session, Date fromDate, Date toDate, boolean taxableSales) {
+		Criteria criteria = session.createCriteria(Ticket.class);
+		criteria.add(Restrictions.ge(Ticket.PROP_CREATE_DATE, fromDate));
+		criteria.add(Restrictions.le(Ticket.PROP_CREATE_DATE, toDate));
+		criteria.add(Restrictions.eq(Ticket.PROP_VOIDED, Boolean.FALSE));
+		criteria.add(Restrictions.eq(Ticket.PROP_REFUNDED, Boolean.FALSE));
+		
+		criteria.add(Restrictions.eq(Ticket.PROP_TAX_EXEMPT, Boolean.valueOf(!taxableSales)));
+		
+		criteria.setProjection(Projections.sum(Ticket.PROP_SUBTOTAL_AMOUNT));
+		
+		return getDoubleAmount(criteria.uniqueResult());
 	}
 	
 	public SalesExceptionReport getSalesExceptionReport(Date fromDate, Date toDate) {

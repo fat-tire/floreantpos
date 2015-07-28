@@ -134,31 +134,31 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 		}
 	}// GEN-LAST:event_btnApplyCoupondoApplyCoupon
 
-	public void doTaxExempt(boolean taxExempt) {// GEN-FIRST:event_doTaxExempt
-		if (ticket == null)
-			return;
-
-		boolean setTaxExempt = taxExempt;
-		if (setTaxExempt) {
-			int option = JOptionPane.showOptionDialog(this, POSConstants.CONFIRM_SET_TAX_EXEMPT, POSConstants.CONFIRM, JOptionPane.YES_NO_OPTION,
-					JOptionPane.QUESTION_MESSAGE, null, null, null);
-			if (option != JOptionPane.YES_OPTION) {
-				return;
-			}
-
-			ticket.setTaxExempt(true);
-			ticket.calculatePrice();
-			TicketDAO.getInstance().saveOrUpdate(ticket);
-		}
-		else {
-			ticket.setTaxExempt(false);
-			ticket.calculatePrice();
-			TicketDAO.getInstance().saveOrUpdate(ticket);
-		}
-
-		ticketDetailView.updateView();
-		paymentView.updateView();
-	}// GEN-LAST:event_doTaxExempt
+//	public void doTaxExempt(boolean taxExempt) {// GEN-FIRST:event_doTaxExempt
+//		if (ticket == null)
+//			return;
+//
+//		boolean setTaxExempt = taxExempt;
+//		if (setTaxExempt) {
+//			int option = JOptionPane.showOptionDialog(this, POSConstants.CONFIRM_SET_TAX_EXEMPT, POSConstants.CONFIRM, JOptionPane.YES_NO_OPTION,
+//					JOptionPane.QUESTION_MESSAGE, null, null, null);
+//			if (option != JOptionPane.YES_OPTION) {
+//				return;
+//			}
+//
+//			ticket.setTaxExempt(true);
+//			ticket.calculatePrice();
+//			TicketDAO.getInstance().saveOrUpdate(ticket);
+//		}
+//		else {
+//			ticket.setTaxExempt(false);
+//			ticket.calculatePrice();
+//			TicketDAO.getInstance().saveOrUpdate(ticket);
+//		}
+//
+//		ticketDetailView.updateView();
+//		paymentView.updateView();
+//	}// GEN-LAST:event_doTaxExempt
 
 	public void doSetGratuity() {
 		if (ticket == null)
