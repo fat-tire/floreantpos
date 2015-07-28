@@ -6,6 +6,7 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Frame;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -17,9 +18,9 @@ import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 import javax.swing.event.AncestorEvent;
 import javax.swing.event.AncestorListener;
@@ -61,23 +62,23 @@ public class KitchenTicketView extends JPanel {
 
 		createButtonPanel();
 
-		statusSelector = new KitchenTicketStatusSelector();
+		statusSelector = new KitchenTicketStatusSelector((Frame) SwingUtilities.getWindowAncestor(this));
 		statusSelector.pack();
 
 		setPreferredSize(new Dimension(400, 200));
 
 		timerWatch.start();
-		
+
 		addAncestorListener(new AncestorListener() {
 			@Override
 			public void ancestorRemoved(AncestorEvent event) {
 				timerWatch.stop();
 			}
-			
+
 			@Override
 			public void ancestorMoved(AncestorEvent event) {
 			}
-			
+
 			@Override
 			public void ancestorAdded(AncestorEvent event) {
 			}
@@ -90,9 +91,9 @@ public class KitchenTicketView extends JPanel {
 
 	private void createHeader(KitchenTicket ticket) {
 		String printerName = ticket.getPrinters().toString();
-		
+
 		String ticketInfo = "Ticket# " + ticket.getTicketId() + "-" + ticket.getId() + " " + printerName + "";
-		if(ticket.getTableNumbers() != null && ticket.getTableNumbers().size() > 0) {
+		if (ticket.getTableNumbers() != null && ticket.getTableNumbers().size() > 0) {
 			ticketInfo += "<br/>Table " + ticket.getTableNumbers();
 		}
 		ticketId.setText("<html>" + ticketInfo + "</html>");
@@ -118,15 +119,19 @@ public class KitchenTicketView extends JPanel {
 			@Override
 			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 				Component rendererComponent = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+
 				KitchenTicketItem ticketItem = tableModel.getRowData(row);
-				if (ticketItem.getStatus().equalsIgnoreCase(KitchenTicketStatus.DONE.name())) {
-					rendererComponent.setBackground(Color.green);
-				}
-				else if (ticketItem.getStatus().equalsIgnoreCase(KitchenTicketStatus.VOID.name())) {
-					rendererComponent.setBackground(Color.red);
-				}
-				else {
-					rendererComponent.setBackground(Color.white);
+
+				if (ticketItem != null && ticketItem.getStatus() != null) {
+					if (ticketItem.getStatus().equalsIgnoreCase(KitchenTicketStatus.DONE.name())) {
+						rendererComponent.setBackground(Color.green);
+					}
+					else if (ticketItem.getStatus().equalsIgnoreCase(KitchenTicketStatus.VOID.name())) {
+						rendererComponent.setBackground(Color.red);
+					}
+					else {
+						rendererComponent.setBackground(Color.white);
+					}
 				}
 
 				return rendererComponent;
@@ -140,6 +145,9 @@ public class KitchenTicketView extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				int row = Integer.parseInt(e.getActionCommand());
 				KitchenTicketItem ticketItem = tableModel.getRowData(row);
+				if(!ticketItem.isCookable()) {
+					return;
+				}
 				statusSelector.setTicketItem(ticketItem);
 				statusSelector.setLocationRelativeTo(KitchenTicketView.this);
 				statusSelector.setVisible(true);
@@ -174,34 +182,34 @@ public class KitchenTicketView extends JPanel {
 		});
 		buttonPanel.add(btnVoid);
 
-//		PosButton btnPrint = new PosButton("PRINT");
-//		btnPrint.addActionListener(new ActionListener() {
-//			@Override
-//			public void actionPerformed(ActionEvent e) {
-//				//KitchenDisplay.instance.removeTicket(KitchenTicketView.this);
-//			}
-//		});
-//		buttonPanel.add(btnPrint);
-//		
-//		PosButton btnUp = new PosButton("UP");
-//		btnUp.addActionListener(new ActionListener() {
-//			@Override
-//			public void actionPerformed(ActionEvent e) {
-//				JScrollBar scrollBar = scrollPane.getVerticalScrollBar();
-//				scrollBar.setValue(scrollBar.getValue() - 50);
-//			}
-//		});
-//		buttonPanel.add(btnUp);
-//		
-//		PosButton btnDown = new PosButton("DOWN");
-//		btnDown.addActionListener(new ActionListener() {
-//			@Override
-//			public void actionPerformed(ActionEvent e) {
-//				JScrollBar scrollBar = scrollPane.getVerticalScrollBar();
-//				scrollBar.setValue(scrollBar.getValue() + 50);
-//			}
-//		});
-//		buttonPanel.add(btnDown);
+		//		PosButton btnPrint = new PosButton("PRINT");
+		//		btnPrint.addActionListener(new ActionListener() {
+		//			@Override
+		//			public void actionPerformed(ActionEvent e) {
+		//				//KitchenDisplay.instance.removeTicket(KitchenTicketView.this);
+		//			}
+		//		});
+		//		buttonPanel.add(btnPrint);
+		//		
+		//		PosButton btnUp = new PosButton("UP");
+		//		btnUp.addActionListener(new ActionListener() {
+		//			@Override
+		//			public void actionPerformed(ActionEvent e) {
+		//				JScrollBar scrollBar = scrollPane.getVerticalScrollBar();
+		//				scrollBar.setValue(scrollBar.getValue() - 50);
+		//			}
+		//		});
+		//		buttonPanel.add(btnUp);
+		//		
+		//		PosButton btnDown = new PosButton("DOWN");
+		//		btnDown.addActionListener(new ActionListener() {
+		//			@Override
+		//			public void actionPerformed(ActionEvent e) {
+		//				JScrollBar scrollBar = scrollPane.getVerticalScrollBar();
+		//				scrollBar.setValue(scrollBar.getValue() + 50);
+		//			}
+		//		});
+		//		buttonPanel.add(btnDown);
 
 		add(buttonPanel, BorderLayout.SOUTH);
 	}
@@ -266,7 +274,7 @@ public class KitchenTicketView extends JPanel {
 	private void closeTicket(KitchenTicketStatus status) {
 		try {
 			stopTimer();
-			
+
 			int option = JOptionPane.showConfirmDialog(KitchenTicketView.this, "Confirm " + status.name() + "?", "Confirm", JOptionPane.YES_NO_OPTION);
 			if (option != JOptionPane.YES_OPTION) {
 				return;

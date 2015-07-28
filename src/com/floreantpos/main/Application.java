@@ -16,7 +16,6 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.Timer;
 import javax.swing.UIManager;
 import javax.swing.plaf.FontUIResource;
 
@@ -61,8 +60,6 @@ public class Application {
 	private static Log logger = LogFactory.getLog(Application.class);
 
 	private boolean developmentMode = false;
-
-	private Timer autoDrawerPullTimer;
 
 	private PluginManager pluginManager;
 
@@ -270,17 +267,6 @@ public class Application {
 		TerminalConfig.setTerminalId(terminalId);
 		RootView.getInstance().getLoginScreen().setTerminalId(terminalId);
 
-		if (terminal.isHasCashDrawer() && terminal.isAutoDrawerPullEnable() && autoDrawerPullTimer == null) {
-			autoDrawerPullTimer = new Timer(60 * 1000, new AutoDrawerPullAction());
-			autoDrawerPullTimer.start();
-		}
-		else {
-			if (autoDrawerPullTimer != null) {
-				autoDrawerPullTimer.stop();
-				autoDrawerPullTimer = null;
-			}
-		}
-
 		this.terminal = terminal;
 
 		OrderTypePropertiesDAO.populate();
@@ -449,9 +435,13 @@ public class Application {
 	}
 
 	public Terminal getTerminal() {
-
+		return terminal;
+	}
+	
+	public synchronized Terminal refreshAndGetTerminal() {
+		
 		TerminalDAO.getInstance().refresh(terminal);
-
+		
 		return terminal;
 	}
 
@@ -485,22 +475,6 @@ public class Application {
 
 	public void setCurrentShift(Shift currentShift) {
 		this.currentShift = currentShift;
-	}
-
-	public void setAutoDrawerPullEnable(boolean enable) {
-		if (enable) {
-			if (autoDrawerPullTimer != null) {
-				return;
-			}
-			else {
-				autoDrawerPullTimer = new Timer(60 * 1000, new AutoDrawerPullAction());
-				autoDrawerPullTimer.start();
-			}
-		}
-		else {
-			autoDrawerPullTimer.stop();
-			autoDrawerPullTimer = null;
-		}
 	}
 
 	public boolean isSystemInitialized() {

@@ -286,9 +286,9 @@ public class Ticket extends BaseTicket {
 	}
 
 	private double calculateTax() {
-		if (isTaxExempt()) {
-			return 0;
-		}
+//		if (isTaxExempt()) {
+//			return 0;
+//		}
 
 		List<TicketItem> ticketItems = getTicketItems();
 		if (ticketItems == null) {
@@ -299,7 +299,7 @@ public class Ticket extends BaseTicket {
 		for (TicketItem ticketItem : ticketItems) {
 			tax += ticketItem.getTaxAmount();
 		}
-
+		
 		return NumberUtil.roundToTwoDigit(fixInvalidAmount(tax));
 	}
 

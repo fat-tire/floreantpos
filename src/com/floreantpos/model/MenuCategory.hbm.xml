@@ -18,7 +18,7 @@
 
 		<!-- Associations -->
 		<bag cascade="none" inverse="true" lazy="false" name="menuGroups">
-			<key column="MENU_CATEGORY_ID" />
+			<key column="CATEGORY_ID" />
 			<one-to-many class="MenuGroup" />
 		</bag>
 	</class>

@@ -206,13 +206,13 @@ public class SplitTicketDialog extends POSDialog {
 		dispose();
 	}//GEN-LAST:event_btnCancelActionPerformed
 
-	private void btnFinishActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFinishActionPerformed
+	private synchronized void btnFinishActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFinishActionPerformed
 		Session session = null;
 		Transaction tx = null;
 
 		try {
 			TicketDAO dao = new TicketDAO();
-			session = dao.getSession();
+			session = dao.createNewSession();
 			tx = session.beginTransaction();
 
 			saveTicket(mainTicketView, session);
@@ -286,6 +286,7 @@ public class SplitTicketDialog extends POSDialog {
 		if (!view.isVisible())
 			return;
 
+		view.getTicket().setType(mainTicketView.getTicket().getType());
 		view.updateModel();
 
 		Ticket ticket = view.getTicket();

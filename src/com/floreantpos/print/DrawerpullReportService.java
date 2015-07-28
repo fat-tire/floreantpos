@@ -35,7 +35,7 @@ public class DrawerpullReportService {
 	public static DrawerPullReport buildDrawerPullReport() throws Exception {
 		Session session = null;
 		try {
-			Terminal terminal = Application.getInstance().getTerminal();
+			Terminal terminal = Application.getInstance().refreshAndGetTerminal();
 			DrawerPullReport report = new DrawerPullReport();
 			report.setReportTime(new Date());
 

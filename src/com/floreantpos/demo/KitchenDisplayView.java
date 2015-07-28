@@ -105,7 +105,7 @@ public class KitchenDisplayView extends ViewPanel implements ActionListener {
 		scrollPane.getHorizontalScrollBar().setPreferredSize(new Dimension(100, 60));
 		add(scrollPane);
 
-		viewUpdateTimer = new Timer(10 * 1000, this);
+		viewUpdateTimer = new Timer(5 * 1000, this);
 		viewUpdateTimer.setRepeats(true);
 	}
 

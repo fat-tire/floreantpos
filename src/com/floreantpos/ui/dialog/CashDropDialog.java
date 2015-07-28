@@ -240,7 +240,7 @@ public class CashDropDialog extends POSDialog {
 			if (index >= 0) {
 				CashDropTransaction transaction = cashDropList.get(index);
 				CashDropTransactionDAO dao = new CashDropTransactionDAO();
-				dao.deleteCashDrop(transaction, Application.getInstance().getTerminal());
+				dao.deleteCashDrop(transaction, Application.getInstance().refreshAndGetTerminal());
 				tableModel.removeCashDrop(transaction);
 			}
 		} catch (Exception e) {
