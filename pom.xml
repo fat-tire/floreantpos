@@ -9,7 +9,7 @@
 	</properties>
 
 	<scm>
-		<connection>scm:git:https://mshahriar@bitbucket.org/mshahriar/floreantpos.git</connection>
+		<connection>scm:svn:http://svn.code.sf.net/p/floreantpos/code/trunk</connection>
 	</scm>
 
 	<build>
@@ -49,8 +49,22 @@
 				<configuration>
 					<doCheck>false</doCheck>
 					<doUpdate>false</doUpdate>
-					<shortRevisionLength>8</shortRevisionLength>
+					<providerImplementations>
+						<svn>javasvn</svn>
+					</providerImplementations>
 				</configuration>
+				<dependencies>
+					<dependency>
+						<groupId>com.google.code.maven-scm-provider-svnjava</groupId>
+						<artifactId>maven-scm-provider-svnjava</artifactId>
+						<version>2.1.1</version>
+					</dependency>
+					<dependency>
+						<groupId>org.tmatesoft.svnkit</groupId>
+						<artifactId>svnkit</artifactId>
+						<version>1.8.5</version>
+					</dependency>
+				</dependencies>
 			</plugin>
 
 			<plugin>
@@ -127,7 +141,7 @@
 						<phase>package</phase>
 						<configuration>
 							<target>
-								<zip destfile="${project.build.directory}/${project.build.finalName}-1.4-${buildNumber}.zip" basedir="${project.build.directory}/${project.build.finalName}-bin/${project.build.finalName}"></zip>
+								<zip destfile="${project.build.directory}/${project.build.finalName}-1.4-build${buildNumber}.zip" basedir="${project.build.directory}/${project.build.finalName}-bin/${project.build.finalName}"></zip>
 							</target>
 						</configuration>
 						<goals>
