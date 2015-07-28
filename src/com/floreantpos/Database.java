@@ -5,7 +5,10 @@ import org.apache.commons.lang.StringUtils;
 public enum Database {
 	DERBY_SINGLE(Messages.getString("Database.DERBY_SINGLE"), "jdbc:derby:database/derby-single/posdb", "jdbc:derby:database/derby-single/posdb;create=true", "", "org.apache.derby.jdbc.EmbeddedDriver", "org.hibernate.dialect.DerbyDialect"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
 	DERBY_SERVER(Messages.getString("Database.DERBY_SERVER"), "jdbc:derby://<host>:<port>/<db>", "jdbc:derby://<host>:<port>/<db>;create=true", "51527", "org.apache.derby.jdbc.ClientDriver", "org.hibernate.dialect.DerbyDialect"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
-	MYSQL(Messages.getString("Database.MYSQL"), "jdbc:mysql://<host>:<port>/<db>?characterEncoding=UTF-8", "jdbc:mysql://<host>:<port>/<db>?characterEncoding=UTF-8", "3306", "com.mysql.jdbc.Driver", "org.hibernate.dialect.MySQLDialect"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
+	MYSQL(Messages.getString("Database.MYSQL"), "jdbc:mysql://<host>:<port>/<db>?characterEncoding=UTF-8", "jdbc:mysql://<host>:<port>/<db>?characterEncoding=UTF-8", "3306", "com.mysql.jdbc.Driver", "org.hibernate.dialect.MySQLDialect"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
+	POSTGRES(Messages.getString("Database.POSTGRES"), "jdbc:postgresql://<host>:<port>/<db>", "jdbc:postgresql://<host>:<port>/<db>", "5432", "org.postgresql.Driver", "org.hibernate.dialect.PostgreSQLDialect"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
+	
+	;
 
 	private String providerName;
 	private String jdbcUrlFormat;
