@@ -21,6 +21,7 @@ import com.floreantpos.Database;
 import com.floreantpos.Messages;
 import com.floreantpos.config.AppConfig;
 import com.floreantpos.main.Application;
+import com.floreantpos.main.Main;
 import com.floreantpos.model.User;
 import com.floreantpos.model.dao.UserDAO;
 import com.floreantpos.swing.POSPasswordField;
@@ -234,6 +235,7 @@ public class DatabaseConfigurationDialog extends POSDialog implements ActionList
 				}
 			}
 			else if (CREATE_DATABASE.equals(command)) {
+				
 				int i = JOptionPane.showConfirmDialog(this,
 						Messages.getString("DatabaseConfigurationDialog.33"), Messages.getString("DatabaseConfigurationDialog.34"), JOptionPane.YES_NO_OPTION); //$NON-NLS-1$ //$NON-NLS-2$
 				if (i != JOptionPane.YES_OPTION) {
@@ -253,7 +255,9 @@ public class DatabaseConfigurationDialog extends POSDialog implements ActionList
 
 				if (databaseCreated) {
 					JOptionPane.showMessageDialog(DatabaseConfigurationDialog.this, "Database created. You can now log in using password 1111.\n" +
-							"Do not forget to change password once you are logged in.");
+							"Do not forget to change password once you are logged in.\n\nThe system will now restart.");
+					
+					Main.restart();
 				}
 				else {
 					JOptionPane.showMessageDialog(DatabaseConfigurationDialog.this, Messages.getString("DatabaseConfigurationDialog.36")); //$NON-NLS-1$
