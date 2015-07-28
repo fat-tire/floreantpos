@@ -21,6 +21,7 @@ import com.floreantpos.Database;
 import com.floreantpos.Messages;
 import com.floreantpos.config.AppConfig;
 import com.floreantpos.main.Application;
+import com.floreantpos.main.Main;
 import com.floreantpos.swing.POSPasswordField;
 import com.floreantpos.swing.POSTextField;
 import com.floreantpos.ui.dialog.POSMessageDialog;
@@ -183,7 +184,9 @@ public class DatabaseConfigurationView extends ConfigurationView implements Acti
 
 				if (createDatabase) {
 					//JOptionPane.showMessageDialog(DatabaseConfigurationView.this, Messages.getString("DatabaseConfigurationDialog.35")); //$NON-NLS-1$
-					JOptionPane.showMessageDialog(DatabaseConfigurationView.this, "Database created. Default password is 1111."); //$NON-NLS-1$
+					JOptionPane.showMessageDialog(DatabaseConfigurationView.this, "Database created. Default password is 1111.\n\nThe system will now restart."); //$NON-NLS-1$
+					
+					Main.restart();
 				}
 				else {
 					JOptionPane.showMessageDialog(DatabaseConfigurationView.this, Messages.getString("DatabaseConfigurationDialog.36")); //$NON-NLS-1$
