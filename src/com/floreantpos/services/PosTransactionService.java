@@ -30,7 +30,7 @@ public class PosTransactionService {
 	public void settleTicket(Ticket ticket, PosTransaction transaction) throws Exception {
 		Application application = Application.getInstance();
 		User currentUser = Application.getCurrentUser();
-		Terminal terminal = application.getTerminal();
+		Terminal terminal = application.refreshAndGetTerminal();
 
 		Session session = null;
 		Transaction tx = null;

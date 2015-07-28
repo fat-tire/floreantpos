@@ -143,7 +143,7 @@ public class KitchenTicket extends BaseKitchenTicket {
 		if (cookingInstructions != null) {
 			for (TicketItemCookingInstruction ticketItemCookingInstruction : cookingInstructions) {
 				KitchenTicketItem item = new KitchenTicketItem();
-				item.setMenuItemCode("");
+				item.setCookable(false);
 				item.setMenuItemName(ticketItemCookingInstruction.getNameDisplay());
 				item.setQuantity(ticketItemCookingInstruction.getItemCountDisplay());
 				kitchenTicket.addToticketItems(item);

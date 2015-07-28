@@ -65,7 +65,7 @@ public class DrawerPullReportDialog extends POSDialog {
     }
     
     public void initialize() throws Exception {
-    	terminal = Application.getInstance().getTerminal();
+    	terminal = Application.getInstance().refreshAndGetTerminal();
     	
     	drawerPullReport = DrawerpullReportService.buildDrawerPullReport();
     	drawerPullReport.setAssignedUser(terminal.getAssignedUser());

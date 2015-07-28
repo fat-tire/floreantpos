@@ -85,17 +85,18 @@ public class TicketDAO extends BaseTicketDAO {
 	}
 
 	@Override
-	public void saveOrUpdate(Ticket ticket, Session s) {
-		adjustInventoryItems(s, ticket);
+	public void saveOrUpdate(Ticket ticket, Session session) {
+		adjustInventoryItems(session, ticket);
 		ticket.setActiveDate(Calendar.getInstance().getTime());
-		super.saveOrUpdate(ticket, s);
+		
+		session.saveOrUpdate(ticket);
 		
 		ticket.clearDeletedItems();
 		
 		DataUpdateInfo lastUpdateInfo = DataUpdateInfoDAO.getLastUpdateInfo();
 		lastUpdateInfo.setLastUpdateTime(new Date());
 		
-		s.update(lastUpdateInfo);
+		session.update(lastUpdateInfo);
 	}
 	
 	public void voidTicket(Ticket ticket) throws Exception {

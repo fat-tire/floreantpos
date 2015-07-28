@@ -94,10 +94,10 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 
 		menuItemModifierGroups = menuItem.getMenuItemModiferGroups();
 		shiftTable.setModel(shiftTableModel = new ShiftTableModel(menuItem.getShifts()));
-		
+
 		setBean(menuItem);
 	}
-	
+
 	protected void doSelectImageFile() {
 		JFileChooser fileChooser = new JFileChooser();
 		fileChooser.setMultiSelectionEnabled(false);
@@ -368,32 +368,27 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		jScrollPane1.setViewportView(tableTicketItemModifierGroups);
 
 		GroupLayout jPanel2Layout = new GroupLayout(tabModifier);
-		jPanel2Layout.setVerticalGroup(
-			jPanel2Layout.createParallelGroup(Alignment.TRAILING)
-				.addGroup(jPanel2Layout.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(jScrollPane1, GroupLayout.DEFAULT_SIZE, 412, Short.MAX_VALUE)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(jPanel2Layout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(btnDeleteModifierGroup)
-						.addComponent(btnEditModifierGroup)
-						.addComponent(btnNewModifierGroup))
-					.addContainerGap())
-		);
-		jPanel2Layout.setHorizontalGroup(
-			jPanel2Layout.createParallelGroup(Alignment.TRAILING)
-				.addGroup(jPanel2Layout.createSequentialGroup()
-					.addContainerGap()
-					.addGroup(jPanel2Layout.createParallelGroup(Alignment.LEADING)
-						.addGroup(jPanel2Layout.createSequentialGroup()
-							.addComponent(btnNewModifierGroup)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(btnEditModifierGroup)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(btnDeleteModifierGroup))
-						.addComponent(jScrollPane1, GroupLayout.DEFAULT_SIZE, 421, Short.MAX_VALUE))
-					.addContainerGap())
-		);
+		jPanel2Layout.setVerticalGroup(jPanel2Layout.createParallelGroup(Alignment.TRAILING).addGroup(
+				jPanel2Layout
+						.createSequentialGroup()
+						.addContainerGap()
+						.addComponent(jScrollPane1, GroupLayout.DEFAULT_SIZE, 412, Short.MAX_VALUE)
+						.addPreferredGap(ComponentPlacement.RELATED)
+						.addGroup(
+								jPanel2Layout.createParallelGroup(Alignment.BASELINE).addComponent(btnDeleteModifierGroup).addComponent(btnEditModifierGroup)
+										.addComponent(btnNewModifierGroup)).addContainerGap()));
+		jPanel2Layout.setHorizontalGroup(jPanel2Layout.createParallelGroup(Alignment.TRAILING).addGroup(
+				jPanel2Layout
+						.createSequentialGroup()
+						.addContainerGap()
+						.addGroup(
+								jPanel2Layout
+										.createParallelGroup(Alignment.LEADING)
+										.addGroup(
+												jPanel2Layout.createSequentialGroup().addComponent(btnNewModifierGroup)
+														.addPreferredGap(ComponentPlacement.RELATED).addComponent(btnEditModifierGroup)
+														.addPreferredGap(ComponentPlacement.RELATED).addComponent(btnDeleteModifierGroup))
+										.addComponent(jScrollPane1, GroupLayout.DEFAULT_SIZE, 421, Short.MAX_VALUE)).addContainerGap()));
 		tabModifier.setLayout(jPanel2Layout);
 
 		tabbedPane.addTab(com.floreantpos.POSConstants.MODIFIER_GROUPS, tabModifier);
@@ -508,14 +503,16 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 			if (!dialog.isCanceled()) {
 				MenuItemModifierGroup modifier = (MenuItemModifierGroup) form.getBean();
 				//modifier.setParentMenuItem((MenuItem) this.getBean());
-				
-				for (MenuItemModifierGroup modifierGroup : menuItemModifierGroups) {
-					if(modifierGroup.getModifierGroup().equals(modifier.getModifierGroup())) {
-						POSMessageDialog.showError(Application.getPosWindow(), "This modifier group already exists");
-						return;
+
+				if (menuItemModifierGroups != null) {
+					for (MenuItemModifierGroup modifierGroup : menuItemModifierGroups) {
+						if (modifierGroup.getModifierGroup().equals(modifier.getModifierGroup())) {
+							POSMessageDialog.showError(Application.getPosWindow(), "This modifier group already exists");
+							return;
+						}
 					}
 				}
-				
+
 				menuItemMGListModel.add(modifier);
 			}
 		} catch (Exception x) {

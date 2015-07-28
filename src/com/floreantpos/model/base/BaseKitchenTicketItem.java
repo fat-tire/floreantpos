@@ -1,5 +1,6 @@
 package com.floreantpos.model.base;
 
+import java.lang.Comparable;
 import java.io.Serializable;
 
 
@@ -21,6 +22,7 @@ public abstract class BaseKitchenTicketItem  implements Comparable, Serializable
 	public static String PROP_VOIDED = "voided";
 	public static String PROP_MENU_ITEM_NAME = "menuItemName";
 	public static String PROP_MENU_ITEM_CODE = "menuItemCode";
+	public static String PROP_COOKABLE = "cookable";
 
 
 	// constructors
@@ -46,6 +48,7 @@ public abstract class BaseKitchenTicketItem  implements Comparable, Serializable
 	private java.lang.Integer id;
 
 	// fields
+		protected java.lang.Boolean cookable;
 		protected java.lang.String menuItemCode;
 		protected java.lang.String menuItemName;
 		protected java.lang.Integer quantity;
@@ -73,6 +76,23 @@ public abstract class BaseKitchenTicketItem  implements Comparable, Serializable
 		this.hashCode = Integer.MIN_VALUE;
 	}
 
+
+
+
+	/**
+	 * Return the value associated with the column: COOKABLE
+	 */
+	public java.lang.Boolean isCookable () {
+								return cookable == null ? Boolean.FALSE : cookable;
+					}
+
+	/**
+	 * Set the value related to the column: COOKABLE
+	 * @param cookable the COOKABLE value
+	 */
+	public void setCookable (java.lang.Boolean cookable) {
+		this.cookable = cookable;
+	}
 
 
 
