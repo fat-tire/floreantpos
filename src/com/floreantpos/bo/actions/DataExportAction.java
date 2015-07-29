@@ -58,7 +58,7 @@ public class DataExportAction extends AbstractAction {
 				}
 			}
 
-			fixMenuItemModifierGroups();
+			// fixMenuItemModifierGroups();
 
 			JAXBContext jaxbContext = JAXBContext.newInstance(Elements.class);
 			Marshaller m = jaxbContext.createMarshaller();
