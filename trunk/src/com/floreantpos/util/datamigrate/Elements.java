@@ -53,7 +53,10 @@ public class Elements {
 		}
 
 		for (MenuGroup menuGroup : menuGroups) {
-			menuGroup.setParent(null);
+			MenuCategory parent = menuGroup.getParent();
+			if(parent != null) {
+				parent.setMenuGroups(null);
+			}
 		}
 	}
 
@@ -68,7 +71,10 @@ public class Elements {
 			return;
 
 		for (MenuModifier menuModifier : menuModifiers) {
-			menuModifier.setModifierGroup(null);
+			MenuModifierGroup modifierGroup = menuModifier.getModifierGroup();
+			if(modifierGroup != null) {
+				modifierGroup.setModifiers(null);
+			}
 		}
 	}
 
