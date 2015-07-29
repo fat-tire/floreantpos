@@ -148,7 +148,7 @@ public class DatabaseUtil {
 			
 			UserType server = new UserType();
 			server.setName("SR. CASHIER");
-			server.setPermissions(new HashSet<UserPermission>(Arrays.asList(UserPermission.CREATE_TICKET, UserPermission.EDIT_TICKET, UserPermission.SETTLE_TICKET,
+			server.setPermissions(new HashSet<UserPermission>(Arrays.asList(UserPermission.CREATE_TICKET, UserPermission.EDIT_TICKET,UserPermission.TAKE_OUT, UserPermission.SETTLE_TICKET,
 					UserPermission.SPLIT_TICKET)));
 			//server.setTest(Arrays.asList(OrderType.BAR_TAB));
 			UserTypeDAO.getInstance().saveOrUpdate(server);
