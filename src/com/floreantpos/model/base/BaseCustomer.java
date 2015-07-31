@@ -1,5 +1,6 @@
 package com.floreantpos.model.base;
 
+import java.lang.Comparable;
 import java.io.Serializable;
 
 
@@ -15,7 +16,9 @@ import java.io.Serializable;
 public abstract class BaseCustomer  implements Comparable, Serializable {
 
 	public static String REF = "Customer";
+	public static String PROP_PICTURE = "picture";
 	public static String PROP_VIP = "vip";
+	public static String PROP_LOYALTY_POINT = "loyaltyPoint";
 	public static String PROP_NOTE = "note";
 	public static String PROP_COUNTRY = "country";
 	public static String PROP_TELEPHONE_NO = "telephoneNo";
@@ -58,6 +61,8 @@ public abstract class BaseCustomer  implements Comparable, Serializable {
 
 	// fields
 		protected java.lang.String loyaltyNo;
+		protected java.lang.Integer loyaltyPoint;
+		protected byte[] picture;
 		protected java.lang.String telephoneNo;
 		protected java.lang.String email;
 		protected java.lang.String name;
@@ -114,6 +119,40 @@ public abstract class BaseCustomer  implements Comparable, Serializable {
 	 */
 	public void setLoyaltyNo (java.lang.String loyaltyNo) {
 		this.loyaltyNo = loyaltyNo;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: LOYALTY_POINT
+	 */
+	public java.lang.Integer getLoyaltyPoint () {
+					return loyaltyPoint == null ? Integer.valueOf(0) : loyaltyPoint;
+			}
+
+	/**
+	 * Set the value related to the column: LOYALTY_POINT
+	 * @param loyaltyPoint the LOYALTY_POINT value
+	 */
+	public void setLoyaltyPoint (java.lang.Integer loyaltyPoint) {
+		this.loyaltyPoint = loyaltyPoint;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: PICTURE
+	 */
+	public byte[] getPicture () {
+					return picture;
+			}
+
+	/**
+	 * Set the value related to the column: PICTURE
+	 * @param picture the PICTURE value
+	 */
+	public void setPicture (byte[] picture) {
+		this.picture = picture;
 	}
 
 
