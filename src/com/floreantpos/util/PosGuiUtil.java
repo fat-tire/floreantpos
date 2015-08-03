@@ -1,12 +1,10 @@
 package com.floreantpos.util;
 
 import java.awt.Dialog;
-import java.awt.Image;
 import java.awt.Window;
 import java.io.File;
 import java.util.List;
 
-import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -93,7 +91,7 @@ public class PosGuiUtil {
 
 	private static JFileChooser fileChooser = new JFileChooser();
 	
-	public static ImageIcon selectImageFile() throws Exception {
+	public static byte[] selectImageFile() throws Exception {
 		
 		fileChooser.setMultiSelectionEnabled(false);
 		fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
@@ -111,8 +109,10 @@ public class PosGuiUtil {
 				return null;
 			}
 
-			ImageIcon imageIcon = new ImageIcon(new ImageIcon(itemImage).getImage().getScaledInstance(150, 200, Image.SCALE_SMOOTH));
-			return imageIcon;
+//			ImageIcon imageIcon = new ImageIcon(new ImageIcon(itemImage).getImage().getScaledInstance(150, 200, Image.SCALE_SMOOTH));
+//			return imageIcon;
+			
+			return itemImage;
 		}
 		
 		return null;
