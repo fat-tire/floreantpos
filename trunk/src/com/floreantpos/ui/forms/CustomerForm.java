@@ -1,5 +1,6 @@
 package com.floreantpos.ui.forms;
 
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -50,6 +51,8 @@ public class CustomerForm extends BeanEditor<Customer> {
 	private JPanel panel_1;
 	private PosSmallButton btnSelectImage;
 	private PosSmallButton btnClearImage;
+	
+	private byte[] imageBytes;
 	
 	public CustomerForm() {
 		setLayout(new MigLayout("", "[][grow][grow]", "[19px][][][][][][][][][][grow][][grow]"));
@@ -165,13 +168,13 @@ public class CustomerForm extends BeanEditor<Customer> {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					
-					ImageIcon imageFile = PosGuiUtil.selectImageFile();
-					if(imageFile == null) {
+					imageBytes = PosGuiUtil.selectImageFile();
+					if(imageBytes == null) {
 						return;
 					}
 					
-					lblPicture.setIcon(imageFile);
-					
+					ImageIcon imageIcon = new ImageIcon(new ImageIcon(imageBytes).getImage().getScaledInstance(150, 200, Image.SCALE_SMOOTH));
+					lblPicture.setIcon(imageIcon);
 				} catch (Exception e1) {
 					e1.printStackTrace();
 				}
@@ -181,6 +184,7 @@ public class CustomerForm extends BeanEditor<Customer> {
 		btnClearImage.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				imageBytes = null;
 				lblPicture.setIcon(null);
 			}
 		});
@@ -198,6 +202,8 @@ public class CustomerForm extends BeanEditor<Customer> {
 		tfCountry.setEditable(editable);
 		cbVip.setEnabled(editable);
 		tfDoB.setEditable(editable);
+		btnClearImage.setEnabled(editable);
+		btnSelectImage.setEnabled(editable);
 	}
 
 	@Override
@@ -238,7 +244,6 @@ public class CustomerForm extends BeanEditor<Customer> {
 			byte[] picture = customer.getPicture();
 			if(picture != null) {
 				lblPicture.setIcon(new ImageIcon(picture));
-				customer.setPicture(picture);
 			}
 		}
 		else {
@@ -254,6 +259,7 @@ public class CustomerForm extends BeanEditor<Customer> {
 			tfPhone.setText("");
 			tfZip.setText("");
 			cbVip.setSelected(false);
+			lblPicture.setIcon(null);
 		}
 	}
 
@@ -287,6 +293,10 @@ public class CustomerForm extends BeanEditor<Customer> {
 		customer.setTelephoneNo(tfPhone.getText());
 		customer.setState(tfZip.getText());
 		customer.setVip(cbVip.isSelected());
+		
+		if(imageBytes != null) {
+			customer.setPicture(imageBytes);
+		}
 		
 		return true;
 	}
