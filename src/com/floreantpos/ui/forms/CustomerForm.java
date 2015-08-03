@@ -55,7 +55,7 @@ public class CustomerForm extends BeanEditor<Customer> {
 	private byte[] imageBytes;
 	
 	public CustomerForm() {
-		setLayout(new MigLayout("", "[][grow][grow]", "[19px][][][][][][][][][][grow][][grow]"));
+		setLayout(new MigLayout("", "[][grow][][][grow]", "[19px][][][][][grow][grow]"));
 		
 		JLabel lblName = new JLabel("Name");
 		add(lblName, "cell 0 0,alignx trailing,aligny center");
@@ -64,86 +64,90 @@ public class CustomerForm extends BeanEditor<Customer> {
 		tfName.setLength(60);
 		add(tfName, "cell 1 0,growx,aligny top");
 		
+		lblDob = new JLabel("DoB (MM-DD-YYYY)");
+		add(lblDob, "cell 2 0,alignx trailing");
+		
+		tfDoB = new FixedLengthTextField();
+		tfDoB.setLength(16);
+		add(tfDoB, "cell 3 0,growx");
+		
 		lblPicture = new JLabel("");
 		lblPicture.setIconTextGap(0);
 		lblPicture.setHorizontalAlignment(SwingConstants.CENTER);
 		lblPicture.setBorder(new TitledBorder(null, "Picture", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		add(lblPicture, "cell 2 0 1 10,grow");
-		
-		lblDob = new JLabel("DoB (MM/DD/YYYY)");
-		add(lblDob, "cell 0 1,alignx trailing");
-		
-		tfDoB = new FixedLengthTextField();
-		tfDoB.setLength(16);
-		add(tfDoB, "cell 1 1,growx");
+		add(lblPicture, "cell 4 0 1 5,grow");
 		
 		JLabel lblPhone = new JLabel("Phone");
-		add(lblPhone, "cell 0 2,alignx trailing");
+		add(lblPhone, "cell 0 1,alignx trailing");
 		
 		tfPhone = new FixedLengthTextField(30);
 		tfPhone.setLength(30);
-		add(tfPhone, "cell 1 2,growx");
+		add(tfPhone, "cell 1 1,growx");
 		
 		JLabel lblEmail = new JLabel("E-mail");
-		add(lblEmail, "cell 0 3,alignx trailing");
+		add(lblEmail, "cell 2 1,alignx trailing");
 		
 		tfEmail = new FixedLengthTextField(40);
 		tfEmail.setLength(40);
-		add(tfEmail, "flowx,cell 1 3,growx");
+		add(tfEmail, "flowx,cell 3 1,growx");
 		
 		JLabel lblAddress = new JLabel("Address");
-		add(lblAddress, "cell 0 4,alignx trailing");
+		add(lblAddress, "cell 0 2,alignx trailing");
 		
 		tfAddress = new FixedLengthTextField(120);
 		tfAddress.setLength(120);
-		add(tfAddress, "cell 1 4,growx");
+		add(tfAddress, "cell 1 2,growx");
 		
 		JLabel lblZip = new JLabel("Zip code");
-		add(lblZip, "flowx,cell 0 5,alignx trailing");
+		add(lblZip, "flowx,cell 2 2,alignx trailing");
 		
 		tfZip = new FixedLengthTextField(30);
 		tfZip.setLength(30);
-		add(tfZip, "cell 1 5");
+		add(tfZip, "cell 3 2,growx");
 		
 		JLabel lblCitytown = new JLabel("City");
-		add(lblCitytown, "cell 0 6,alignx trailing");
+		add(lblCitytown, "cell 0 3,alignx trailing");
 		
 		tfCity = new FixedLengthTextField(30);
 		tfCity.setLength(30);
-		add(tfCity, "flowx,cell 1 6,growx");
+		add(tfCity, "flowx,cell 1 3,growx");
 		
 		JLabel lblCountry = new JLabel("Country");
-		add(lblCountry, "cell 0 7,alignx trailing");
+		add(lblCountry, "cell 2 3,alignx trailing");
 		
 		tfCountry = new FixedLengthTextField(30);
 		tfCountry.setText("USA");
 		tfCountry.setLength(30);
-		add(tfCountry, "cell 1 7,growx");
+		add(tfCountry, "cell 3 3,growx");
 		
 		JLabel lblLoyaltyNo = new JLabel("Loyalty No");
-		add(lblLoyaltyNo, "cell 0 8,alignx trailing");
+		add(lblLoyaltyNo, "cell 0 4,alignx trailing");
 		
 		tfLoyaltyNo = new FixedLengthTextField(30);
 		tfLoyaltyNo.setLength(30);
-		add(tfLoyaltyNo, "cell 1 8");
+		add(tfLoyaltyNo, "cell 1 4");
 		
 		lblLoyaltyPoint = new JLabel("Loyalty Point");
-		add(lblLoyaltyPoint, "cell 0 9,alignx trailing");
+		add(lblLoyaltyPoint, "cell 2 4,alignx trailing");
 		
 		tfLoyaltyPoint = new IntegerTextField();
 		tfLoyaltyPoint.setColumns(10);
-		add(tfLoyaltyPoint, "cell 1 9");
+		add(tfLoyaltyPoint, "cell 3 4");
 		
 		JLabel lblCreditLimit = new JLabel("Credit Limit ($)");
-		add(lblCreditLimit, "cell 0 10,alignx trailing");
+		add(lblCreditLimit, "cell 0 5,alignx trailing,aligny top");
 		
 		tfCreditLimit = new DoubleTextField();
 		tfCreditLimit.setText("500.00");
 		tfCreditLimit.setColumns(10);
-		add(tfCreditLimit, "cell 1 10");
+		add(tfCreditLimit, "cell 1 5,aligny top");
+		
+		cbVip = new JCheckBox("VIP");
+		cbVip.setFocusable(false);
+		add(cbVip, "cell 3 5,alignx leading,aligny top");
 		
 		panel_1 = new JPanel();
-		add(panel_1, "cell 2 10 1 2,grow");
+		add(panel_1, "cell 4 5,growx,aligny top");
 		
 		btnSelectImage = new PosSmallButton();
 		btnSelectImage.setText("SELECT");
@@ -153,12 +157,8 @@ public class CustomerForm extends BeanEditor<Customer> {
 		btnClearImage.setText("CLEAR");
 		panel_1.add(btnClearImage);
 		
-		cbVip = new JCheckBox("VIP");
-		cbVip.setFocusable(false);
-		add(cbVip, "cell 1 11");
-		
 		panel = new JPanel();
-		add(panel, "cell 0 12 3 1,grow");
+		add(panel, "cell 0 6 5 1,grow");
 		
 		qwertyKeyPad = new QwertyKeyPad();
 		panel.add(qwertyKeyPad);
@@ -173,7 +173,7 @@ public class CustomerForm extends BeanEditor<Customer> {
 						return;
 					}
 					
-					ImageIcon imageIcon = new ImageIcon(new ImageIcon(imageBytes).getImage().getScaledInstance(150, 200, Image.SCALE_SMOOTH));
+					ImageIcon imageIcon = new ImageIcon(new ImageIcon(imageBytes).getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH));
 					lblPicture.setIcon(imageIcon);
 				} catch (Exception e1) {
 					e1.printStackTrace();
