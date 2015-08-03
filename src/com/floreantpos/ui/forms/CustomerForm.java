@@ -1,17 +1,24 @@
 package com.floreantpos.ui.forms;
 
-import java.awt.Image;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 import javax.swing.border.TitledBorder;
 
 import net.miginfocom.swing.MigLayout;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.StaleObjectStateException;
 
@@ -28,7 +35,6 @@ import com.floreantpos.swing.QwertyKeyPad;
 import com.floreantpos.ui.BeanEditor;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.util.PosGuiUtil;
-import javax.swing.SwingConstants;
 
 public class CustomerForm extends BeanEditor<Customer> {
 	private FixedLengthTextField tfLoyaltyNo;
@@ -52,10 +58,10 @@ public class CustomerForm extends BeanEditor<Customer> {
 	private PosSmallButton btnSelectImage;
 	private PosSmallButton btnClearImage;
 	
-	private byte[] imageBytes;
+	private BufferedImage image;
 	
 	public CustomerForm() {
-		setLayout(new MigLayout("", "[][grow][][][grow]", "[19px][][][][][grow][grow]"));
+		setLayout(new MigLayout("", "[][grow][][grow][]", "[19px][][][][][grow][grow]"));
 		
 		JLabel lblName = new JLabel("Name");
 		add(lblName, "cell 0 0,alignx trailing,aligny center");
@@ -72,6 +78,7 @@ public class CustomerForm extends BeanEditor<Customer> {
 		add(tfDoB, "cell 3 0,growx");
 		
 		lblPicture = new JLabel("");
+		lblPicture.setPreferredSize(new Dimension(120, 120));
 		lblPicture.setIconTextGap(0);
 		lblPicture.setHorizontalAlignment(SwingConstants.CENTER);
 		lblPicture.setBorder(new TitledBorder(null, "Picture", TitledBorder.LEADING, TitledBorder.TOP, null, null));
@@ -168,12 +175,12 @@ public class CustomerForm extends BeanEditor<Customer> {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					
-					imageBytes = PosGuiUtil.selectImageFile();
-					if(imageBytes == null) {
+					image = PosGuiUtil.selectImageFile();
+					if(image == null) {
 						return;
 					}
 					
-					ImageIcon imageIcon = new ImageIcon(new ImageIcon(imageBytes).getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH));
+					ImageIcon imageIcon = new ImageIcon(image);
 					lblPicture.setIcon(imageIcon);
 				} catch (Exception e1) {
 					e1.printStackTrace();
@@ -184,10 +191,11 @@ public class CustomerForm extends BeanEditor<Customer> {
 		btnClearImage.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				imageBytes = null;
-				lblPicture.setIcon(null);
+				setDefaultCustomerPicture();
 			}
 		});
+		
+		setDefaultCustomerPicture();
 	}
 	
 	public void setFieldsEditable(boolean editable) {
@@ -245,6 +253,9 @@ public class CustomerForm extends BeanEditor<Customer> {
 			if(picture != null) {
 				lblPicture.setIcon(new ImageIcon(picture));
 			}
+			else {
+				setDefaultCustomerPicture();
+			}
 		}
 		else {
 			tfName.setText("");
@@ -259,7 +270,18 @@ public class CustomerForm extends BeanEditor<Customer> {
 			tfPhone.setText("");
 			tfZip.setText("");
 			cbVip.setSelected(false);
-			lblPicture.setIcon(null);
+			setDefaultCustomerPicture();
+		}
+	}
+
+	private void setDefaultCustomerPicture() {
+		try {
+			InputStream stream = getClass().getResourceAsStream("/images/generic-profile-pic-v2.png");
+			byte[] picture2 = IOUtils.toByteArray(stream);
+			IOUtils.closeQuietly(stream);
+			lblPicture.setIcon(new ImageIcon(picture2));
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -294,8 +316,15 @@ public class CustomerForm extends BeanEditor<Customer> {
 		customer.setState(tfZip.getText());
 		customer.setVip(cbVip.isSelected());
 		
-		if(imageBytes != null) {
-			customer.setPicture(imageBytes);
+		if(image != null) {
+			try {
+				ByteArrayOutputStream baos = new ByteArrayOutputStream();
+				ImageIO.write(image, "jpg", baos);
+				byte[] bytes = baos.toByteArray();
+				customer.setPicture(bytes);
+			} catch (Exception e) {
+				//
+			}
 		}
 		
 		return true;
