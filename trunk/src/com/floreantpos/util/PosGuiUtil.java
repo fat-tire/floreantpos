@@ -1,10 +1,15 @@
 package com.floreantpos.util;
 
 import java.awt.Dialog;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.Transparency;
 import java.awt.Window;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.List;
 
+import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -90,9 +95,9 @@ public class PosGuiUtil {
 	}
 
 	private static JFileChooser fileChooser = new JFileChooser();
-	
-	public static byte[] selectImageFile() throws Exception {
-		
+
+	public static BufferedImage selectImageFile() throws Exception {
+
 		fileChooser.setMultiSelectionEnabled(false);
 		fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 
@@ -100,21 +105,65 @@ public class PosGuiUtil {
 
 		if (option == JFileChooser.APPROVE_OPTION) {
 			File imageFile = fileChooser.getSelectedFile();
-			byte[] itemImage = org.apache.commons.io.FileUtils.readFileToByteArray(imageFile);
-			int imageSize = itemImage.length;
+			
+			BufferedImage image = ImageIO.read(imageFile);
 
-			if (imageSize > (1024*1024)) {
-				POSMessageDialog.showMessage("The image is too large. Please select an image within 1MB in size");
-				itemImage = null;
-				return null;
+			return scale(image, 100, 100);
+		}
+
+		return null;
+	}
+
+	public static BufferedImage scale(BufferedImage img, int targetWidth, int targetHeight) {
+
+		int type = (img.getTransparency() == Transparency.OPAQUE) ? BufferedImage.TYPE_INT_RGB : BufferedImage.TYPE_INT_ARGB;
+		BufferedImage ret = img;
+		BufferedImage scratchImage = null;
+		Graphics2D g2 = null;
+
+		int w = img.getWidth();
+		int h = img.getHeight();
+
+		int prevW = w;
+		int prevH = h;
+
+		do {
+			if (w > targetWidth) {
+				w /= 2;
+				w = (w < targetWidth) ? targetWidth : w;
 			}
 
-//			ImageIcon imageIcon = new ImageIcon(new ImageIcon(itemImage).getImage().getScaledInstance(150, 200, Image.SCALE_SMOOTH));
-//			return imageIcon;
-			
-			return itemImage;
+			if (h > targetHeight) {
+				h /= 2;
+				h = (h < targetHeight) ? targetHeight : h;
+			}
+
+			if (scratchImage == null) {
+				scratchImage = new BufferedImage(w, h, type);
+				g2 = scratchImage.createGraphics();
+			}
+
+			g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+			g2.drawImage(ret, 0, 0, w, h, 0, 0, prevW, prevH, null);
+
+			prevW = w;
+			prevH = h;
+			ret = scratchImage;
+		} while (w != targetWidth || h != targetHeight);
+
+		if (g2 != null) {
+			g2.dispose();
 		}
-		
-		return null;
+
+		if (targetWidth != ret.getWidth() || targetHeight != ret.getHeight()) {
+			scratchImage = new BufferedImage(targetWidth, targetHeight, type);
+			g2 = scratchImage.createGraphics();
+			g2.drawImage(ret, 0, 0, null);
+			g2.dispose();
+			ret = scratchImage;
+		}
+
+		return ret;
+
 	}
 }
