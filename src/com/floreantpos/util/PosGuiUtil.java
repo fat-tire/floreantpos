@@ -1,9 +1,13 @@
 package com.floreantpos.util;
 
 import java.awt.Dialog;
+import java.awt.Image;
 import java.awt.Window;
+import java.io.File;
 import java.util.List;
 
+import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.border.TitledBorder;
@@ -27,14 +31,14 @@ public class PosGuiUtil {
 
 		if (dialog.isCanceled()) {
 			int option = POSMessageDialog.showYesNoQuestionDialog(Application.getPosWindow(), "Proceed without table?", "Confirm");
-			if(option != JOptionPane.YES_OPTION) {
+			if (option != JOptionPane.YES_OPTION) {
 				return null;
 			}
 		}
 
 		return dialog.getTables();
 	}
-	
+
 	public static int captureGuestNumber() {
 		NumberSelectionDialog2 dialog = new NumberSelectionDialog2();
 		dialog.setTitle(POSConstants.ENTER_NUMBER_OF_GUEST);
@@ -73,17 +77,44 @@ public class PosGuiUtil {
 		}
 		return false;
 	}
-	
+
 	public static void setColumnWidth(JTable table, int columnNumber, int width) {
 		TableColumn column = table.getColumnModel().getColumn(columnNumber);
 
 		column.setPreferredWidth(width);
 		column.setWidth(width);
-//		column.setMaxWidth(width);
-//		column.setMinWidth(width);
+		//		column.setMaxWidth(width);
+		//		column.setMinWidth(width);
 	}
-	
+
 	public static TitledBorder createTitledBorder(String title) {
 		return new TitledBorder(null, title, TitledBorder.CENTER, TitledBorder.CENTER);
+	}
+
+	private static JFileChooser fileChooser = new JFileChooser();
+	
+	public static ImageIcon selectImageFile() throws Exception {
+		
+		fileChooser.setMultiSelectionEnabled(false);
+		fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+
+		int option = fileChooser.showOpenDialog(null);
+
+		if (option == JFileChooser.APPROVE_OPTION) {
+			File imageFile = fileChooser.getSelectedFile();
+			byte[] itemImage = org.apache.commons.io.FileUtils.readFileToByteArray(imageFile);
+			int imageSize = itemImage.length;
+
+			if (imageSize > (1024*1024)) {
+				POSMessageDialog.showMessage("The image is too large. Please select an image within 1MB in size");
+				itemImage = null;
+				return null;
+			}
+
+			ImageIcon imageIcon = new ImageIcon(new ImageIcon(itemImage).getImage().getScaledInstance(150, 200, Image.SCALE_SMOOTH));
+			return imageIcon;
+		}
+		
+		return null;
 	}
 }

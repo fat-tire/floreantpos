@@ -438,6 +438,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		MenuGroupForm editor = new MenuGroupForm();
 		BeanEditorDialog dialog = new BeanEditorDialog(editor);
 		dialog.open();
+		
 		if (!dialog.isCanceled()) {
 			MenuGroup foodGroup = (MenuGroup) editor.getBean();
 			ComboBoxModel model = (ComboBoxModel) cbGroup.getModel();
