@@ -35,7 +35,7 @@ public class IntroPage extends JPanel {
 			g.drawImage(image, x, y, this);
 		}
 
-		g.drawImage(image2, x, height - 190, width, 200, this);
+		g.drawImage(image2, x + 30, height - 190, width - 60, 200, this);
 	}
 
 	public Image getImage() {
