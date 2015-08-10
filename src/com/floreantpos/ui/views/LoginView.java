@@ -17,7 +17,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
 
 import com.floreantpos.IconFactory;
-import com.floreantpos.swing.ImageComponent;
+import com.floreantpos.swing.IntroPage;
 import com.floreantpos.ui.views.order.ViewPanel;
 
 /**
@@ -48,7 +48,7 @@ public class LoginView extends ViewPanel {
 			icon = IconFactory.getIcon("/ui_icons/", "floreant-pos.png");
 		}
 		
-		centerPanel.add(new ImageComponent(icon.getImage()));
+		centerPanel.add(new IntroPage(icon.getImage()));
 
 		add(centerPanel);
 
