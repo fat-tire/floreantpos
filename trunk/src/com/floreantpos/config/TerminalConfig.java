@@ -230,7 +230,7 @@ public class TerminalConfig {
 	}
 	
 	public static char[] getDrawerControlCodesArray() {
-		String drawerControlCodes = getDrawerControlCodes();
+		String drawerControlCodes = getDefaultDrawerControlCodes();
 		if(StringUtils.isEmpty(drawerControlCodes)) {
 			drawerControlCodes = getDefaultDrawerControlCodes();
 		}
