@@ -25,13 +25,14 @@ import com.floreantpos.model.PrinterGroup;
 import com.floreantpos.swing.FixedLengthTextField;
 import com.floreantpos.ui.dialog.POSDialog;
 import com.floreantpos.ui.dialog.POSMessageDialog;
+import com.floreantpos.util.POSUtil;
 
 public class AddPrinterGroupDialog extends POSDialog {
 	private FixedLengthTextField tfName = new FixedLengthTextField(60);
 	JCheckBoxList printerList;
 
 	public AddPrinterGroupDialog() throws HeadlessException {
-		super();
+		super(POSUtil.getBackOfficeWindow(), true);
 		setTitle("Add/Edit Printer Group");
 		
 		init();

@@ -23,6 +23,7 @@ import com.floreantpos.model.VirtualPrinter;
 import com.floreantpos.model.dao.VirtualPrinterDAO;
 import com.floreantpos.ui.dialog.POSDialog;
 import com.floreantpos.ui.dialog.POSMessageDialog;
+import com.floreantpos.util.POSUtil;
 
 public class AddPrinterDialog extends POSDialog {
 	private Printer printer;
@@ -31,7 +32,8 @@ public class AddPrinterDialog extends POSDialog {
 	private JCheckBox chckbxDefault;
 
 	public AddPrinterDialog() throws HeadlessException {
-		super();
+		super(POSUtil.getBackOfficeWindow(), true);
+		
 		setTitle("Add/Edit Printer");
 		
 		setMinimumSize(new Dimension(400, 200));
