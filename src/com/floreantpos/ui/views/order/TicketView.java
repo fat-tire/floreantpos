@@ -673,6 +673,8 @@ public class TicketView extends JPanel {
 		/** Creates new form OthersView */
 		private ExtraTicketActionPanel() {
 			initComponents();
+			
+			setAnimated(true);
 		}
 
 		// public ExtraTicketActionPanel(ItemSelectionListener
