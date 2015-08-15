@@ -50,8 +50,7 @@ public class PosWindow extends JFrame implements WindowListener {
 	
 	public void setupSizeAndLocation() {
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		//setSize(AppConfig.getInt(WWIDTH, (int) screenSize.getWidth()), AppConfig.getInt(WHEIGHT, (int) screenSize.getHeight()));
-		setSize(1024, 768);
+		setSize(AppConfig.getInt(WWIDTH, (int) screenSize.getWidth()), AppConfig.getInt(WHEIGHT, (int) screenSize.getHeight()));
 		
 		setLocation(AppConfig.getInt(WLOCX, ((screenSize.width - getWidth()) >> 1)), AppConfig.getInt(WLOCY, ((screenSize.height - getHeight()) >> 1)));
 		setMinimumSize(new Dimension(800, 600));
@@ -64,9 +63,13 @@ public class PosWindow extends JFrame implements WindowListener {
 	}
 
 	public void enterFullScreenMode() {
-		GraphicsDevice window = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[0];
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		setSize(screenSize);
+		setExtendedState(MAXIMIZED_BOTH);
 		setUndecorated(true);
-		window.setFullScreenWindow(this);
+		setLocation(0, 0);
+		//GraphicsDevice window = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[0];
+		//window.setFullScreenWindow(this);
 	}
 	
 	public void leaveFullScreenMode() {
