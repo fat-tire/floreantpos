@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Frame;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -24,6 +25,7 @@ import org.apache.commons.lang.StringUtils;
 
 import com.floreantpos.POSConstants;
 import com.floreantpos.config.TerminalConfig;
+import com.floreantpos.main.Application;
 import com.floreantpos.model.User;
 import com.floreantpos.model.dao.UserDAO;
 import com.floreantpos.swing.PosButton;
@@ -37,6 +39,13 @@ public class PasswordEntryDialog extends POSDialog implements ActionListener {
 	private User user;
 
 	public PasswordEntryDialog() {
+		super(Application.getPosWindow(), true);
+		init();
+	}
+	
+	public PasswordEntryDialog(Frame parent) {
+		super(parent, true);
+		
 		init();
 	}
 
