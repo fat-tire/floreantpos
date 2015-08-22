@@ -148,7 +148,7 @@ public class TableSelectionDialog extends POSDialog implements ActionListener {
 			public void actionPerformed(ActionEvent e) {
 				ShopTable selectedValue = addedTableList.getSelectedValue();
 				if (selectedValue != null) {
-					selectedValue.setOccupied(false);
+					selectedValue.setServing(false);
 					addedTableListModel.removeElement(selectedValue);
 				}
 			}
@@ -191,7 +191,7 @@ public class TableSelectionDialog extends POSDialog implements ActionListener {
 			shopTable.setTableNumber(tableNumber);
 		}
 
-		if (shopTable.isOccupied()) {
+		if (shopTable.isServing()) {
 			POSMessageDialog.showError(this, "Table number " + tableNumber + " is occupied");
 			return false;
 		}

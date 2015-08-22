@@ -893,7 +893,7 @@ public class TicketView extends JPanel {
 				session.saveOrUpdate(thisTicket);
 
 				for (ShopTable shopTable : tables) {
-					shopTable.setOccupied(true);
+					shopTable.setServing(true);
 					session.merge(shopTable);
 
 					thisTicket.addTable(shopTable.getTableNumber());
@@ -921,7 +921,7 @@ public class TicketView extends JPanel {
 				return;
 
 			for (ShopTable shopTable : tables2) {
-				shopTable.setOccupied(false);
+				shopTable.setServing(false);
 				shopTable.setBooked(false);
 
 				session.saveOrUpdate(shopTable);
