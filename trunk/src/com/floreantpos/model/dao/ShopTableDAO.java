@@ -63,7 +63,7 @@ public class ShopTableDAO extends BaseShopTableDAO {
 			tx = session.beginTransaction();
 
 			for (ShopTable shopTable : tables) {
-				shopTable.setOccupied(true);
+				shopTable.setServing(true);
 				saveOrUpdate(shopTable);
 			}
 
@@ -90,7 +90,7 @@ public class ShopTableDAO extends BaseShopTableDAO {
 			tx = session.beginTransaction();
 
 			for (ShopTable shopTable : tables) {
-				shopTable.setOccupied(false);
+				shopTable.setServing(false);
 				shopTable.setBooked(false);
 				saveOrUpdate(shopTable);
 			}
