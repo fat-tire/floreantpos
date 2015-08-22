@@ -44,7 +44,7 @@ public class ShopTableButton extends PosButton {
 	}
 	
 	public void update() {
-		if(shopTable != null && shopTable.isOccupied()) {
+		if(shopTable != null && shopTable.isServing()) {
 			setEnabled(false);
 			setBackground(Color.red);
 			setForeground(Color.black);

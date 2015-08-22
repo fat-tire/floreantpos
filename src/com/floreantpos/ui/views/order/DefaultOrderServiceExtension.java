@@ -73,7 +73,7 @@ public class DefaultOrderServiceExtension implements OrderServiceExtension {
 
 		if (tables != null) {
 			for (ShopTable shopTable : tables) {
-				shopTable.setOccupied(true);
+				shopTable.setServing(true);
 				ticket.addTable(shopTable.getTableNumber());
 			}
 		}

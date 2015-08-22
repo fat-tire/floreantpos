@@ -1,5 +1,6 @@
 package com.floreantpos.model.base;
 
+import java.lang.Comparable;
 import java.io.Serializable;
 
 
@@ -15,17 +16,19 @@ import java.io.Serializable;
 public abstract class BaseShopTable  implements Comparable, Serializable {
 
 	public static String REF = "ShopTable";
-	public static String PROP_NAME = "name";
 	public static String PROP_DESCRIPTION = "description";
 	public static String PROP_TABLE_NUMBER = "tableNumber";
-	public static String PROP_OCCUPIED = "occupied";
+	public static String PROP_DISABLE = "disable";
+	public static String PROP_FREE = "free";
+	public static String PROP_SERVING = "serving";
+	public static String PROP_FLOOR = "floor";
+	public static String PROP_NAME = "name";
 	public static String PROP_ID = "id";
 	public static String PROP_DIRTY = "dirty";
 	public static String PROP_CAPACITY = "capacity";
-	public static String PROP_BOOKED = "booked";
 	public static String PROP_Y = "y";
+	public static String PROP_BOOKED = "booked";
 	public static String PROP_X = "x";
-	public static String PROP_FLOOR = "floor";
 
 
 	// constructors
@@ -57,9 +60,11 @@ public abstract class BaseShopTable  implements Comparable, Serializable {
 		protected java.lang.String tableNumber;
 		protected java.lang.Integer x;
 		protected java.lang.Integer y;
-		protected java.lang.Boolean occupied;
+		protected java.lang.Boolean free;
+		protected java.lang.Boolean serving;
 		protected java.lang.Boolean booked;
 		protected java.lang.Boolean dirty;
+		protected java.lang.Boolean disable;
 
 	// many to one
 	private com.floreantpos.model.ShopFloor floor;
@@ -194,18 +199,35 @@ public abstract class BaseShopTable  implements Comparable, Serializable {
 
 
 	/**
-	 * Return the value associated with the column: OCCUPIED
+	 * Return the value associated with the column: FREE
 	 */
-	public java.lang.Boolean isOccupied () {
-								return occupied == null ? Boolean.FALSE : occupied;
+	public java.lang.Boolean isFree () {
+								return free == null ? Boolean.FALSE : free;
 					}
 
 	/**
-	 * Set the value related to the column: OCCUPIED
-	 * @param occupied the OCCUPIED value
+	 * Set the value related to the column: FREE
+	 * @param free the FREE value
 	 */
-	public void setOccupied (java.lang.Boolean occupied) {
-		this.occupied = occupied;
+	public void setFree (java.lang.Boolean free) {
+		this.free = free;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: SERVING
+	 */
+	public java.lang.Boolean isServing () {
+								return serving == null ? Boolean.FALSE : serving;
+					}
+
+	/**
+	 * Set the value related to the column: SERVING
+	 * @param serving the SERVING value
+	 */
+	public void setServing (java.lang.Boolean serving) {
+		this.serving = serving;
 	}
 
 
@@ -240,6 +262,23 @@ public abstract class BaseShopTable  implements Comparable, Serializable {
 	 */
 	public void setDirty (java.lang.Boolean dirty) {
 		this.dirty = dirty;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: DISABLE
+	 */
+	public java.lang.Boolean isDisable () {
+								return disable == null ? Boolean.FALSE : disable;
+					}
+
+	/**
+	 * Set the value related to the column: DISABLE
+	 * @param disable the DISABLE value
+	 */
+	public void setDisable (java.lang.Boolean disable) {
+		this.disable = disable;
 	}
 
 
