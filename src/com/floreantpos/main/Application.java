@@ -8,7 +8,6 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.Date;
 import java.util.Random;
 
@@ -20,10 +19,8 @@ import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.plaf.FontUIResource;
 
-import net.xeoh.plugins.base.Plugin;
 import net.xeoh.plugins.base.PluginManager;
 import net.xeoh.plugins.base.impl.PluginManagerFactory;
-import net.xeoh.plugins.base.util.PluginManagerUtil;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.RandomUtils;
@@ -103,9 +100,6 @@ public class Application {
 			pluginManager.addPluginsFrom(new File("plugins/").toURI());
 		}
 		
-		PluginManagerUtil pmUtil = new PluginManagerUtil(pluginManager);
-		Collection<Plugin> plugins = pmUtil.getPlugins();
-
 		setApplicationLook();
 
 		rootView = RootView.getInstance();

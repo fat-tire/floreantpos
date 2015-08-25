@@ -12,13 +12,16 @@ import java.awt.Insets;
 import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.Collection;
 import java.util.Locale;
 import java.util.Set;
 
-import javax.swing.AbstractAction;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
+
+import net.xeoh.plugins.base.Plugin;
+import net.xeoh.plugins.base.util.PluginManagerUtil;
 
 import com.floreantpos.Messages;
 import com.floreantpos.actions.AboutAction;
@@ -52,7 +55,7 @@ import com.floreantpos.bo.actions.UserExplorerAction;
 import com.floreantpos.bo.actions.UserTypeExplorerAction;
 import com.floreantpos.bo.actions.ViewGratuitiesAction;
 import com.floreantpos.config.AppConfig;
-import com.floreantpos.extension.InventoryPlugin;
+import com.floreantpos.extension.FloreantPlugin;
 import com.floreantpos.extension.OrderServiceExtension;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.User;
@@ -136,7 +139,7 @@ public class BackOfficeWindow extends javax.swing.JFrame {
 			}
 		}
 
-		createInventoryMenus(menuBar);
+		configureMenuFromPlugins(menuBar);
 		
 		JMenu helpMenu = new JMenu(Messages.getString("BackOfficeWindow.0")); //$NON-NLS-1$
 		helpMenu.add(new AboutAction());
@@ -145,23 +148,14 @@ public class BackOfficeWindow extends javax.swing.JFrame {
 		setJMenuBar(menuBar);
 	}
 
-	private void createInventoryMenus(JMenuBar menuBar) {
-		InventoryPlugin plugin = Application.getPluginManager().getPlugin(InventoryPlugin.class);
-		if (plugin == null) {
-			return;
+	private void configureMenuFromPlugins(JMenuBar menuBar) {
+		PluginManagerUtil pmUtil = new PluginManagerUtil(Application.getPluginManager());
+		Collection<Plugin> plugins = pmUtil.getPlugins();
+		for (Plugin plugin : plugins) {
+			if(plugin instanceof FloreantPlugin) {
+				((FloreantPlugin) plugin).configureBackofficeMenuBar(menuBar);
+			}
 		}
-
-		AbstractAction[] actions = plugin.getActions();
-		if (actions == null) {
-			return;
-		}
-
-		JMenu inventoryMenu = new JMenu(Messages.getString("BackOfficeWindow.1")); //$NON-NLS-1$
-		for (AbstractAction abstractAction : actions) {
-			inventoryMenu.add(abstractAction);
-		}
-
-		menuBar.add(inventoryMenu);
 	}
 
 	private void createReportMenu(JMenuBar menuBar) {
