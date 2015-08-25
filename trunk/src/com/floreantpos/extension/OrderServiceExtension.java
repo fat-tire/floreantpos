@@ -2,12 +2,10 @@ package com.floreantpos.extension;
 
 import javax.swing.JMenu;
 
-import net.xeoh.plugins.base.Plugin;
-
 import com.floreantpos.model.OrderType;
 import com.floreantpos.util.TicketAlreadyExistsException;
 
-public interface OrderServiceExtension extends Plugin {
+public interface OrderServiceExtension extends FloreantPlugin {
 	String getName();
 	String getDescription();
 	

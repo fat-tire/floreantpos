@@ -13,6 +13,7 @@ import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.table.TableModel;
 
 import org.jdesktop.swingx.JXTable;
 
@@ -44,7 +45,7 @@ public class ModelBrowser<E> extends JPanel implements ActionListener, ListSelec
 		this.beanEditor = beanEditor;
 	}
 
-	public void init(ListTableModel<E> tableModel) {
+	public void init(TableModel tableModel) {
 		browserTable = new JXTable();
 		browserTable.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		browserTable.getSelectionModel().addListSelectionListener(this);
