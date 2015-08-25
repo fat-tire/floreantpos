@@ -3,9 +3,7 @@ package com.floreantpos.extension;
 import javax.swing.AbstractAction;
 import javax.swing.JTabbedPane;
 
-import net.xeoh.plugins.base.Plugin;
-
-public interface InventoryPlugin extends Plugin {
+public interface InventoryPlugin extends FloreantPlugin {
 //	void showInventoryItemEntryDialog();
 //	void showInventoryGroupEntryDialog();
 //	void showInventoryLocationEntryDialog();
