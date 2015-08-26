@@ -51,6 +51,11 @@ public class BeanTableModel<M> extends AbstractTableModel {
 		rows.remove(index);
 		fireTableRowsDeleted(index, index);
 	}
+	
+	public void removeAll() {
+		rows.clear();
+		fireTableDataChanged();
+	}
 
 	public void addRows(List<M> rows) {
 		for (M row : rows) {
