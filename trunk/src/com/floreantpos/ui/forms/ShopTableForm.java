@@ -27,9 +27,8 @@ public class ShopTableForm extends BeanEditor<ShopTable> {
 	private IntegerTextField tfY;
 	private FixedLengthTextField tfTableNo;
 	private FixedLengthTextField tfTableName;
-	private JPanel panel;
 
-	private JPanel panel_1;
+	private JPanel statusPanel;
 	private JRadioButton rbFree;
 	private JRadioButton rbBooked;
 	private JRadioButton rbDirty;
@@ -37,54 +36,36 @@ public class ShopTableForm extends BeanEditor<ShopTable> {
 	private JRadioButton rbDisable;
 
 	public ShopTableForm() {
-		setLayout(new MigLayout("", "[][grow][][grow][]", "[][][][][][][]"));
-
-		JLabel lblName = new JLabel("Table no");
-		add(lblName, "cell 0 0,alignx trailing,aligny center");
-
-		tfTableNo = new FixedLengthTextField(60);
-		tfTableNo.setLength(60);
-		add(tfTableNo, "cell 1 0,growx,aligny top");
-
-		panel_1 = new JPanel();
-		panel_1.setBorder(new TitledBorder(null, "Status", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		add(panel_1, "cell 3 0 1 6,grow");
-		panel_1.setLayout(new GridLayout(0, 1, 0, 0));
-
-		rbFree = new JRadioButton("Free");
-		panel_1.add(rbFree);
-
-		rbServing = new JRadioButton("Serving");
-		panel_1.add(rbServing);
-
-		rbBooked = new JRadioButton("Booked");
-		panel_1.add(rbBooked);
-
-		rbDirty = new JRadioButton("Dirty");
-		panel_1.add(rbDirty);
-
-		rbDisable = new JRadioButton("Disable");
-		panel_1.add(rbDisable);
+		setLayout(new MigLayout("", "[][grow][][grow][]", "[][][][][][][][]"));
 
 		JLabel lblPhone = new JLabel("Name");
-		add(lblPhone, "cell 0 1,alignx trailing");
+		add(lblPhone, "cell 0 0,alignx trailing");
 
-		tfTableName = new FixedLengthTextField(30);
-		tfTableName.setLength(30);
-		add(tfTableName, "cell 1 1,growx");
+		tfTableName = new FixedLengthTextField(20);
+		tfTableName.setColumns(20);
+		add(tfTableName, "cell 1 0,growx");
 
 		JLabel lblAddress = new JLabel("Description");
-		add(lblAddress, "cell 0 2,alignx trailing");
+		add(lblAddress, "cell 0 1,alignx trailing");
 
-		tfTableDescription = new FixedLengthTextField(120);
-		tfTableDescription.setLength(120);
-		add(tfTableDescription, "cell 1 2,growx");
+		tfTableDescription = new FixedLengthTextField(60);
+		tfTableDescription.setColumns(20);
+		add(tfTableDescription, "cell 1 1,growx");
+
+		JLabel lblName = new JLabel("Table no");
+		add(lblName, "cell 0 2,alignx trailing,aligny center");
+
+		tfTableNo = new FixedLengthTextField(60);
+		tfTableNo.setColumns(6);
+		tfTableNo.setLength(60);
+		add(tfTableNo, "cell 1 2,aligny top");
 
 		JLabel lblCitytown = new JLabel("Capacity");
 		add(lblCitytown, "cell 0 3,alignx trailing");
 
 		tfTableCapacity = new IntegerTextField();
-		add(tfTableCapacity, "flowx,cell 1 3,growx");
+		tfTableCapacity.setColumns(6);
+		add(tfTableCapacity, "flowx,cell 1 3");
 
 		JLabel lblLoyaltyNo = new JLabel("X");
 		add(lblLoyaltyNo, "cell 0 4,alignx trailing");
@@ -98,15 +79,33 @@ public class ShopTableForm extends BeanEditor<ShopTable> {
 		tfY = new IntegerTextField(6);
 		add(tfY, "cell 1 5,aligny top");
 
-		panel = new JPanel();
-		add(panel, "cell 0 6 5 1,grow");
+		statusPanel = new JPanel();
+		statusPanel.setBorder(new TitledBorder(null, "Status", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		add(statusPanel, "cell 1 6,grow");
+		statusPanel.setLayout(new GridLayout(2, 0, 0, 0));
 
+		rbFree = new JRadioButton("Free");
+		statusPanel.add(rbFree);
+
+		rbServing = new JRadioButton("Serving");
+		statusPanel.add(rbServing);
+
+		rbBooked = new JRadioButton("Booked");
+		statusPanel.add(rbBooked);
+
+		rbDirty = new JRadioButton("Dirty");
+		statusPanel.add(rbDirty);
+
+		rbDisable = new JRadioButton("Disable");
+		statusPanel.add(rbDisable);
+		
 		ButtonGroup buttonGroup = new ButtonGroup();
 		buttonGroup.add(rbFree);
 		buttonGroup.add(rbServing);
 		buttonGroup.add(rbBooked);
 		buttonGroup.add(rbDirty);
 		buttonGroup.add(rbDisable);
+
 	}
 
 	public void setFieldsEditable(boolean editable) {
@@ -127,7 +126,7 @@ public class ShopTableForm extends BeanEditor<ShopTable> {
 			ShopTable table = (ShopTable) getBean();
 			ShopTableDAO.getInstance().saveOrUpdate(table);
 			return true;
-			
+
 		} catch (IllegalModelStateException e) {
 		} catch (StaleObjectStateException e) {
 			BOMessageDialog.showError(this, "It seems this table is modified by some other person or terminal. Save failed.");

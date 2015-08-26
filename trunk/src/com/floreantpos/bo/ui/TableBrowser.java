@@ -13,8 +13,9 @@ public class TableBrowser extends ModelBrowser<ShopTable> {
 		super(new ShopTableForm());
 		
 		BeanTableModel<ShopTable> tableModel = new BeanTableModel<ShopTable>(ShopTable.class);
-		tableModel.addColumn("TABLE NUMBER", "tableNumber");
-		tableModel.addColumn("NAME", "name");
+		tableModel.addColumn("TABLE NUMBER", ShopTable.PROP_TABLE_NUMBER);
+		tableModel.addColumn("NAME", ShopTable.PROP_NAME);
+		tableModel.addColumn("CAPACITY", ShopTable.PROP_CAPACITY);
 		
 		init(tableModel);
 	}
