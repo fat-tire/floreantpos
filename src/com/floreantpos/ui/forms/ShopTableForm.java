@@ -37,7 +37,7 @@ public class ShopTableForm extends BeanEditor<ShopTable> {
 	private JRadioButton rbDisable;
 
 	public ShopTableForm() {
-		setLayout(new MigLayout("", "[][grow][][grow][]", "[19px,grow][][][][][grow][grow]"));
+		setLayout(new MigLayout("", "[][grow][][grow][]", "[][][][][][][]"));
 
 		JLabel lblName = new JLabel("Table no");
 		add(lblName, "cell 0 0,alignx trailing,aligny center");

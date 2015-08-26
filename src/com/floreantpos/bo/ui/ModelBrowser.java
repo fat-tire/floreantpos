@@ -15,10 +15,13 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableModel;
 
+import net.miginfocom.swing.MigLayout;
+
 import org.jdesktop.swingx.JXTable;
 
 import com.floreantpos.bo.ui.explorer.ListTableModel;
 import com.floreantpos.main.Application;
+import com.floreantpos.swing.BeanTableModel;
 import com.floreantpos.ui.BeanEditor;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 
@@ -67,7 +70,9 @@ public class ModelBrowser<E> extends JPanel implements ActionListener, ListSelec
 		add(browserPanel);
 		
 		beanPanel.setBorder(BorderFactory.createEtchedBorder());
-		beanPanel.add(beanEditor);
+		JPanel beanEditorPanel = new JPanel(new MigLayout("align 50% 50%"));
+		beanEditorPanel.add(beanEditor);
+		beanPanel.add(beanEditorPanel);
 		
 		JPanel buttonPanel = new JPanel();
 		
@@ -101,6 +106,8 @@ public class ModelBrowser<E> extends JPanel implements ActionListener, ListSelec
 		
 		beanEditor.clearFields();
 		beanEditor.setFieldsEnable(false);
+		
+		refreshTable();
 	}
 	
 	public void refreshTable() {
@@ -197,12 +204,12 @@ public class ModelBrowser<E> extends JPanel implements ActionListener, ListSelec
 			return;
 		}
 		
-		ListTableModel model = (ListTableModel) browserTable.getModel();
+		BeanTableModel<E> model = (BeanTableModel<E>) browserTable.getModel();
 		int selectedRow = browserTable.getSelectedRow();
 		
 		if(selectedRow < 0) return;
 		
-		E data = (E) model.getRowData(selectedRow);
+		E data = (E) model.getRow(selectedRow);
 		beanEditor.setBean(data);
 		
 		btnNew.setEnabled(true);
