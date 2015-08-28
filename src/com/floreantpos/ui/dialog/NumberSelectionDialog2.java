@@ -5,6 +5,7 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -29,6 +30,11 @@ public class NumberSelectionDialog2 extends POSDialog implements ActionListener 
 	private PosButton posButton_1;
 
 	public NumberSelectionDialog2() {
+		init();
+	}
+	
+	public NumberSelectionDialog2(Frame parent) {
+		super(parent, true);
 		init();
 	}
 
