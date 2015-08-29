@@ -1,6 +1,6 @@
 package com.floreantpos.ui.forms;
 
-import java.awt.GridLayout;
+import java.awt.FlowLayout;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JLabel;
@@ -21,10 +21,8 @@ import com.floreantpos.swing.IntegerTextField;
 import com.floreantpos.ui.BeanEditor;
 
 public class ShopTableForm extends BeanEditor<ShopTable> {
-	private IntegerTextField tfX;
 	private FixedLengthTextField tfTableDescription;
 	private IntegerTextField tfTableCapacity;
-	private IntegerTextField tfY;
 	private FixedLengthTextField tfTableNo;
 	private FixedLengthTextField tfTableName;
 
@@ -36,7 +34,7 @@ public class ShopTableForm extends BeanEditor<ShopTable> {
 	private JRadioButton rbDisable;
 
 	public ShopTableForm() {
-		setLayout(new MigLayout("", "[][grow][][grow][]", "[][][][][][][][]"));
+		setLayout(new MigLayout("", "[][grow]", "[][][][][]"));
 
 		JLabel lblPhone = new JLabel("Name");
 		add(lblPhone, "cell 0 0,alignx trailing");
@@ -67,22 +65,10 @@ public class ShopTableForm extends BeanEditor<ShopTable> {
 		tfTableCapacity.setColumns(6);
 		add(tfTableCapacity, "flowx,cell 1 3");
 
-		JLabel lblLoyaltyNo = new JLabel("X");
-		add(lblLoyaltyNo, "cell 0 4,alignx trailing");
-
-		tfX = new IntegerTextField(6);
-		add(tfX, "cell 1 4");
-
-		JLabel lblCreditLimit = new JLabel("Y");
-		add(lblCreditLimit, "cell 0 5,alignx trailing,aligny top");
-
-		tfY = new IntegerTextField(6);
-		add(tfY, "cell 1 5,aligny top");
-
 		statusPanel = new JPanel();
 		statusPanel.setBorder(new TitledBorder(null, "Status", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		add(statusPanel, "cell 1 6,grow");
-		statusPanel.setLayout(new GridLayout(2, 0, 0, 0));
+		add(statusPanel, "cell 1 4,grow");
+		statusPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
 
 		rbFree = new JRadioButton("Free");
 		statusPanel.add(rbFree);
@@ -111,10 +97,8 @@ public class ShopTableForm extends BeanEditor<ShopTable> {
 	public void setFieldsEditable(boolean editable) {
 		tfTableNo.setEditable(editable);
 		tfTableName.setEditable(editable);
-		tfX.setEditable(editable);
 		tfTableDescription.setEditable(editable);
 		tfTableCapacity.setEditable(editable);
-		tfY.setEditable(editable);
 	}
 
 	@Override
@@ -147,12 +131,8 @@ public class ShopTableForm extends BeanEditor<ShopTable> {
 		tfTableName.setText(table.getName());
 		tfTableDescription.setText(table.getDescription());
 		tfTableCapacity.setText(String.valueOf(table.getCapacity()));
-		tfX.setText(String.valueOf(table.getX()));
-		tfY.setText(String.valueOf(table.getY()));
 
 		rbFree.setSelected(true);
-
-		//rbFree.setSelected(table.isFree());
 		rbServing.setSelected(table.isServing());
 		rbBooked.setSelected(table.isBooked());
 		rbDirty.setSelected(table.isDirty());
@@ -173,8 +153,6 @@ public class ShopTableForm extends BeanEditor<ShopTable> {
 		table.setName(tfTableName.getText());
 		table.setDescription(tfTableDescription.getText());
 		table.setCapacity(tfTableCapacity.getInteger());
-		table.setX(tfX.getInteger());
-		table.setY(tfY.getInteger());
 
 		if (rbFree.isSelected()) {
 			table.setFree(true);
