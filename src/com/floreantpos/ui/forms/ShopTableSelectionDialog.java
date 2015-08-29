@@ -2,7 +2,6 @@ package com.floreantpos.ui.forms;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.lang.ref.SoftReference;
@@ -62,8 +61,6 @@ public class ShopTableSelectionDialog extends POSDialog {
 		buttonPanel.add(btnCancel);
 		
 		JPanel contentPanel = new JPanel();
-		FlowLayout flowLayout = (FlowLayout) contentPanel.getLayout();
-		flowLayout.setAlignment(FlowLayout.LEADING);
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		
 		JLabel lblSelectTable = new JLabel("Select Table");
