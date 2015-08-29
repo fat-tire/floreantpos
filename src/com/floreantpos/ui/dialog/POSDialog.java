@@ -43,7 +43,8 @@ public class POSDialog extends JDialog {
 	protected void initUI() {}
 
 	public void open() {
-		canceled = false;
+		canceled = true;
+		
 		if (isUndecorated()) {
 			Window owner = getOwner();
 			if (owner instanceof JFrame) {
