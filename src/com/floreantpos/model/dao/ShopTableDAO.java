@@ -29,6 +29,14 @@ public class ShopTableDAO extends BaseShopTableDAO {
 		return (ShopTable) criteria.uniqueResult();
 	}
 
+	public List<ShopTable> getAllUnassigned() {
+		Session session = getSession();
+		Criteria criteria = session.createCriteria(getReferenceClass());
+		criteria.add(Restrictions.isNull(ShopTable.PROP_FLOOR));
+		
+		return criteria.list();
+	}
+	
 	public List<ShopTable> getByNumbers(Collection<String> tableNumbers) {
 		if(tableNumbers == null) {
 			return null;

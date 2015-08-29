@@ -96,7 +96,7 @@ public class ShopTableSelectionDialog extends POSDialog {
 	
 	private void initModel() {
 		try {
-			cbTables.setModel(new ListComboBoxModel<ShopTable>(ShopTableDAO.getInstance().findAll()));
+			cbTables.setModel(new ListComboBoxModel<ShopTable>(ShopTableDAO.getInstance().getAllUnassigned()));
 		} catch (Exception e) {
 			POSMessageDialog.showError(this, "Failed to load tables.", e);
 		}
