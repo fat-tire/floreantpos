@@ -12,7 +12,8 @@ import java.awt.Insets;
 import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.Collection;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
@@ -150,7 +151,14 @@ public class BackOfficeWindow extends javax.swing.JFrame {
 
 	private void configureMenuFromPlugins(JMenuBar menuBar) {
 		PluginManagerUtil pmUtil = new PluginManagerUtil(Application.getPluginManager());
-		Collection<Plugin> plugins = pmUtil.getPlugins();
+		List<Plugin> plugins = (List<Plugin>) pmUtil.getPlugins();
+		java.util.Collections.sort(plugins, new Comparator<Plugin>() {
+			@Override
+			public int compare(Plugin o1, Plugin o2) {
+				return o1.getClass().getName().compareToIgnoreCase(o2.getClass().getName());
+			}
+		});
+		
 		for (Plugin plugin : plugins) {
 			if(plugin instanceof FloreantPlugin) {
 				((FloreantPlugin) plugin).configureBackofficeMenuBar(menuBar);

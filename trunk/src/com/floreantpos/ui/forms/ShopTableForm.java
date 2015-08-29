@@ -1,6 +1,7 @@
 package com.floreantpos.ui.forms;
 
 import java.awt.FlowLayout;
+import java.lang.ref.SoftReference;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JLabel;
@@ -32,6 +33,8 @@ public class ShopTableForm extends BeanEditor<ShopTable> {
 	private JRadioButton rbDirty;
 	private JRadioButton rbServing;
 	private JRadioButton rbDisable;
+	
+	private SoftReference<ShopTableForm> instance;
 
 	public ShopTableForm() {
 		setLayout(new MigLayout("", "[][grow]", "[][][][][]"));
@@ -199,5 +202,13 @@ public class ShopTableForm extends BeanEditor<ShopTable> {
 			return "Edit table";
 		}
 		return "Create table";
+	}
+	
+	public ShopTableForm getInstance() {
+		if(instance == null || instance.get() == null) {
+			instance = new SoftReference<ShopTableForm>(new ShopTableForm());
+		}
+		
+		return instance.get();
 	}
 }
