@@ -96,12 +96,44 @@ public class ShopTableForm extends BeanEditor<ShopTable> {
 		buttonGroup.add(rbDisable);
 
 	}
+	
+	@Override
+	public void createNew() {
+		setBean(new ShopTable());
+	}
 
 	public void setFieldsEditable(boolean editable) {
 		tfTableNo.setEditable(editable);
 		tfTableName.setEditable(editable);
 		tfTableDescription.setEditable(editable);
 		tfTableCapacity.setEditable(editable);
+	}
+	
+	@Override
+	public void setFieldsEnable(boolean enable) {
+		tfTableNo.setEditable(enable);
+		tfTableName.setEditable(enable);
+		tfTableDescription.setEditable(enable);
+		tfTableCapacity.setEditable(enable);
+		
+		rbFree.setEnabled(enable);
+		rbServing.setEnabled(enable);
+		rbBooked.setEnabled(enable);
+		rbDirty.setEnabled(enable);
+		rbDisable.setEnabled(enable);
+	}
+	
+	public void setOnlyStatusEnable() {
+		tfTableNo.setEditable(false);
+		tfTableName.setEditable(false);
+		tfTableDescription.setEditable(false);
+		tfTableCapacity.setEditable(false);
+		
+		rbFree.setEnabled(true);
+		rbServing.setEnabled(true);
+		rbBooked.setEnabled(true);
+		rbDirty.setEnabled(true);
+		rbDisable.setEnabled(true);
 	}
 
 	@Override
