@@ -73,7 +73,7 @@
 
 		<bag name="tableNumbers" table="TICKET_TABLE_NUM" lazy="false" cascade="all">
 			<key column="ticket_id" />
-			<element column="TABLE_ID" type="string" />
+			<element column="TABLE_ID" type="java.lang.Integer" />
 		</bag>
 
 		<!-- uni-directional many-to-one association to User -->

@@ -24,7 +24,7 @@ import com.floreantpos.ui.BeanEditor;
 public class ShopTableForm extends BeanEditor<ShopTable> {
 	private FixedLengthTextField tfTableDescription;
 	private IntegerTextField tfTableCapacity;
-	private FixedLengthTextField tfTableNo;
+	private IntegerTextField tfTableNo;
 	private FixedLengthTextField tfTableName;
 
 	private JPanel statusPanel;
@@ -56,9 +56,7 @@ public class ShopTableForm extends BeanEditor<ShopTable> {
 		JLabel lblName = new JLabel("Table no");
 		add(lblName, "cell 0 2,alignx trailing,aligny center");
 
-		tfTableNo = new FixedLengthTextField(60);
-		tfTableNo.setColumns(6);
-		tfTableNo.setLength(60);
+		tfTableNo = new IntegerTextField(6);
 		add(tfTableNo, "cell 1 2,aligny top");
 
 		JLabel lblCitytown = new JLabel("Capacity");
@@ -162,7 +160,7 @@ public class ShopTableForm extends BeanEditor<ShopTable> {
 			return;
 		}
 
-		tfTableNo.setText(table.getTableNumber());
+		tfTableNo.setText(String.valueOf(table.getTableNumber()));
 		tfTableName.setText(table.getName());
 		tfTableDescription.setText(table.getDescription());
 		tfTableCapacity.setText(String.valueOf(table.getCapacity()));
@@ -184,7 +182,7 @@ public class ShopTableForm extends BeanEditor<ShopTable> {
 			setBean(table, false);
 		}
 
-		table.setTableNumber(tfTableNo.getText());
+		table.setTableNumber(tfTableNo.getInteger());
 		table.setName(tfTableName.getText());
 		table.setDescription(tfTableDescription.getText());
 		table.setCapacity(tfTableCapacity.getInteger());
