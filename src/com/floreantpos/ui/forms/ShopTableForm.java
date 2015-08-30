@@ -182,7 +182,6 @@ public class ShopTableForm extends BeanEditor<ShopTable> {
 			setBean(table, false);
 		}
 
-		table.setTableNumber(tfTableNo.getInteger());
 		table.setName(tfTableName.getText());
 		table.setDescription(tfTableDescription.getText());
 		table.setCapacity(tfTableCapacity.getInteger());

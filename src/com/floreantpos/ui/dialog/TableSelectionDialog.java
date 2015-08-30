@@ -177,16 +177,16 @@ public class TableSelectionDialog extends POSDialog implements ActionListener {
 	private boolean addTable() {
 		int tableNumber = tfNumber.getInteger();
 		
-//		if (StringUtils.isEmpty(tableNumber)) {
-//			POSMessageDialog.showError(this, "Please insert table number");
-//			return false;
-//		}
+		if (tableNumber <= 0) {
+			POSMessageDialog.showError(this, "Please insert valid table number");
+			return false;
+		}
 
-		ShopTable shopTable = ShopTableDAO.getInstance().getByNumber(tableNumber);
+		ShopTable shopTable = ShopTableDAO.getInstance().get(tableNumber);
 
 		if (shopTable == null) {
-			shopTable = new ShopTable();
-			shopTable.setTableNumber(tableNumber);
+			POSMessageDialog.showError(this, "There is no table with that number.");
+			return false;
 		}
 
 		if (shopTable.isServing()) {

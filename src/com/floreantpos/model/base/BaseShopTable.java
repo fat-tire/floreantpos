@@ -16,19 +16,18 @@ import java.io.Serializable;
 public abstract class BaseShopTable  implements Comparable, Serializable {
 
 	public static String REF = "ShopTable";
-	public static String PROP_DESCRIPTION = "description";
-	public static String PROP_TABLE_NUMBER = "tableNumber";
-	public static String PROP_DISABLE = "disable";
-	public static String PROP_FREE = "free";
-	public static String PROP_SERVING = "serving";
-	public static String PROP_FLOOR = "floor";
 	public static String PROP_NAME = "name";
+	public static String PROP_DESCRIPTION = "description";
+	public static String PROP_DISABLE = "disable";
 	public static String PROP_ID = "id";
 	public static String PROP_DIRTY = "dirty";
 	public static String PROP_CAPACITY = "capacity";
-	public static String PROP_Y = "y";
 	public static String PROP_BOOKED = "booked";
+	public static String PROP_Y = "y";
 	public static String PROP_X = "x";
+	public static String PROP_FLOOR = "floor";
+	public static String PROP_SERVING = "serving";
+	public static String PROP_FREE = "free";
 
 
 	// constructors
@@ -57,7 +56,6 @@ public abstract class BaseShopTable  implements Comparable, Serializable {
 		protected java.lang.String name;
 		protected java.lang.String description;
 		protected java.lang.Integer capacity;
-		protected java.lang.Integer tableNumber;
 		protected java.lang.Integer x;
 		protected java.lang.Integer y;
 		protected java.lang.Boolean free;
@@ -143,23 +141,6 @@ public abstract class BaseShopTable  implements Comparable, Serializable {
 	 */
 	public void setCapacity (java.lang.Integer capacity) {
 		this.capacity = capacity;
-	}
-
-
-
-	/**
-	 * Return the value associated with the column: TABLE_NUMBER
-	 */
-	public java.lang.Integer getTableNumber () {
-					return tableNumber == null ? Integer.valueOf(0) : tableNumber;
-			}
-
-	/**
-	 * Set the value related to the column: TABLE_NUMBER
-	 * @param tableNumber the TABLE_NUMBER value
-	 */
-	public void setTableNumber (java.lang.Integer tableNumber) {
-		this.tableNumber = tableNumber;
 	}
 
 
