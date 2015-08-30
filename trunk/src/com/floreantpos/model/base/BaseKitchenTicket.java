@@ -1,5 +1,6 @@
 package com.floreantpos.model.base;
 
+import java.lang.Comparable;
 import java.io.Serializable;
 
 
@@ -61,7 +62,7 @@ public abstract class BaseKitchenTicket  implements Comparable, Serializable {
 	private com.floreantpos.model.PrinterGroup printerGroup;
 
 	// collections
-	private java.util.List<String> tableNumbers;
+	private java.util.List<Integer> tableNumbers;
 	private java.util.List<com.floreantpos.model.KitchenTicketItem> ticketItems;
 
 
@@ -227,7 +228,7 @@ public abstract class BaseKitchenTicket  implements Comparable, Serializable {
 	/**
 	 * Return the value associated with the column: tableNumbers
 	 */
-	public java.util.List<String> getTableNumbers () {
+	public java.util.List<Integer> getTableNumbers () {
 					return tableNumbers;
 			}
 
@@ -235,7 +236,7 @@ public abstract class BaseKitchenTicket  implements Comparable, Serializable {
 	 * Set the value related to the column: tableNumbers
 	 * @param tableNumbers the tableNumbers value
 	 */
-	public void setTableNumbers (java.util.List<String> tableNumbers) {
+	public void setTableNumbers (java.util.List<Integer> tableNumbers) {
 		this.tableNumbers = tableNumbers;
 	}
 

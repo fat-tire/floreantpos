@@ -1,5 +1,6 @@
 package com.floreantpos.model.base;
 
+import java.lang.Comparable;
 import java.io.Serializable;
 
 
@@ -119,7 +120,7 @@ public abstract class BaseTicket  implements Comparable, Serializable {
 	private java.util.List<com.floreantpos.model.TicketItem> ticketItems;
 	private java.util.List<com.floreantpos.model.TicketCouponAndDiscount> couponAndDiscounts;
 	private java.util.Set<com.floreantpos.model.PosTransaction> transactions;
-	private java.util.List<String> tableNumbers;
+	private java.util.List<Integer> tableNumbers;
 
 
 
@@ -826,7 +827,7 @@ public abstract class BaseTicket  implements Comparable, Serializable {
 	/**
 	 * Return the value associated with the column: tableNumbers
 	 */
-	public java.util.List<String> getTableNumbers () {
+	public java.util.List<Integer> getTableNumbers () {
 					return tableNumbers;
 			}
 
@@ -834,7 +835,7 @@ public abstract class BaseTicket  implements Comparable, Serializable {
 	 * Set the value related to the column: tableNumbers
 	 * @param tableNumbers the tableNumbers value
 	 */
-	public void setTableNumbers (java.util.List<String> tableNumbers) {
+	public void setTableNumbers (java.util.List<Integer> tableNumbers) {
 		this.tableNumbers = tableNumbers;
 	}
 

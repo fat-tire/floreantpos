@@ -102,7 +102,7 @@ public class KitchenTicket extends BaseKitchenTicket {
 				kitchenTicket.setTicketType(ticket.getTicketType());
 				
 				if(ticket.getTableNumbers() != null) {
-					kitchenTicket.setTableNumbers(new ArrayList<String>(ticket.getTableNumbers()));
+					kitchenTicket.setTableNumbers(new ArrayList<Integer>(ticket.getTableNumbers()));
 				}
 				
 				kitchenTicket.setServerName(ticket.getOwner().getFirstName());

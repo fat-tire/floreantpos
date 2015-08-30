@@ -82,10 +82,10 @@ public class Ticket extends BaseTicket {
 //		return s;
 //	}
 	
-	public void addTable(String tableNumber) {
-		List<String> numbers = getTableNumbers();
+	public void addTable(int tableNumber) {
+		List<Integer> numbers = getTableNumbers();
 		if(numbers == null) {
-			numbers = new ArrayList<String>();
+			numbers = new ArrayList<Integer>();
 			setTableNumbers(numbers);
 		}
 		
