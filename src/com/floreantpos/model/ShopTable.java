@@ -21,7 +21,7 @@ public class ShopTable extends BaseShopTable {
 
 /*[CONSTRUCTOR MARKER END]*/
 
-	public ShopTable(String number, Integer x, Integer y) {
+	public ShopTable(int number, Integer x, Integer y) {
 		super();
 		
 		setTableNumber(number);
@@ -29,7 +29,7 @@ public class ShopTable extends BaseShopTable {
 		setY(y);
 	}
 	
-	public ShopTable(ShopFloor floor, String number, Integer x, Integer y) {
+	public ShopTable(ShopFloor floor, int number, Integer x, Integer y) {
 		super();
 		
 		setFloor(floor);
@@ -40,6 +40,6 @@ public class ShopTable extends BaseShopTable {
 	
 	@Override
 	public String toString() {
-		return getTableNumber();
+		return String.valueOf(getTableNumber());
 	}
 }

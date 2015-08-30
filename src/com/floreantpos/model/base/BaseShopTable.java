@@ -57,7 +57,7 @@ public abstract class BaseShopTable  implements Comparable, Serializable {
 		protected java.lang.String name;
 		protected java.lang.String description;
 		protected java.lang.Integer capacity;
-		protected java.lang.String tableNumber;
+		protected java.lang.Integer tableNumber;
 		protected java.lang.Integer x;
 		protected java.lang.Integer y;
 		protected java.lang.Boolean free;
@@ -150,15 +150,15 @@ public abstract class BaseShopTable  implements Comparable, Serializable {
 	/**
 	 * Return the value associated with the column: TABLE_NUMBER
 	 */
-	public java.lang.String getTableNumber () {
-					return tableNumber;
+	public java.lang.Integer getTableNumber () {
+					return tableNumber == null ? Integer.valueOf(0) : tableNumber;
 			}
 
 	/**
 	 * Set the value related to the column: TABLE_NUMBER
 	 * @param tableNumber the TABLE_NUMBER value
 	 */
-	public void setTableNumber (java.lang.String tableNumber) {
+	public void setTableNumber (java.lang.Integer tableNumber) {
 		this.tableNumber = tableNumber;
 	}
 
