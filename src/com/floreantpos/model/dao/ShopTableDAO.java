@@ -24,7 +24,7 @@ public class ShopTableDAO extends BaseShopTableDAO {
 	public ShopTable getByNumber(int tableNumber) {
 		Session session = getSession();
 		Criteria criteria = session.createCriteria(getReferenceClass());
-		criteria.add(Restrictions.eq(ShopTable.PROP_TABLE_NUMBER, tableNumber));
+		criteria.add(Restrictions.eq(ShopTable.PROP_ID, tableNumber));
 		
 		return (ShopTable) criteria.uniqueResult();
 	}
@@ -47,7 +47,7 @@ public class ShopTableDAO extends BaseShopTableDAO {
 		Disjunction disjunction = Restrictions.disjunction();
 		
 		for (Integer tableNumber : tableNumbers) {
-			disjunction.add(Restrictions.eq(ShopTable.PROP_TABLE_NUMBER, tableNumber));
+			disjunction.add(Restrictions.eq(ShopTable.PROP_ID, tableNumber));
 		}
 		criteria.add(disjunction);
 		

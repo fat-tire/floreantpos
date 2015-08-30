@@ -21,21 +21,23 @@ public class ShopTable extends BaseShopTable {
 
 /*[CONSTRUCTOR MARKER END]*/
 
-	public ShopTable(int number, Integer x, Integer y) {
+	public ShopTable(Integer x, Integer y) {
 		super();
 		
-		setTableNumber(number);
 		setX(x);
 		setY(y);
 	}
 	
-	public ShopTable(ShopFloor floor, int number, Integer x, Integer y) {
+	public ShopTable(ShopFloor floor, Integer x, Integer y) {
 		super();
 		
 		setFloor(floor);
-		setTableNumber(number);
 		setX(x);
 		setY(y);
+	}
+	
+	public Integer getTableNumber() {
+		return getId();
 	}
 	
 	@Override
