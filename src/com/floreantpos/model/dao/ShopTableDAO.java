@@ -8,6 +8,7 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Disjunction;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 
 import com.floreantpos.model.ShopTable;
@@ -20,6 +21,16 @@ public class ShopTableDAO extends BaseShopTableDAO {
 	 * Default constructor.  Can be used in place of getInstance()
 	 */
 	public ShopTableDAO () {}
+	
+	public int getNextTableNumber() {
+		Session session = getSession();
+		Criteria criteria = session.createCriteria(getReferenceClass());
+		criteria.setProjection(Projections.rowCount());
+		
+		Integer result = (Integer) criteria.uniqueResult();
+		
+		return result;
+	}
 
 	public ShopTable getByNumber(int tableNumber) {
 		Session session = getSession();

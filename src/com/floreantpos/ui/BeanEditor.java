@@ -36,6 +36,8 @@ public abstract class BeanEditor<E> extends com.floreantpos.swing.TransparentPan
 	}
 
 	public abstract boolean save();
+	
+	public void cancel() {}
 
 	protected abstract void updateView();
 
