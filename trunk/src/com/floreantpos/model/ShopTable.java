@@ -20,6 +20,8 @@ public class ShopTable extends BaseShopTable {
 	}
 
 /*[CONSTRUCTOR MARKER END]*/
+	
+	private boolean isTemporary;
 
 	public ShopTable(Integer x, Integer y) {
 		super();
@@ -43,5 +45,13 @@ public class ShopTable extends BaseShopTable {
 	@Override
 	public String toString() {
 		return String.valueOf(getTableNumber());
+	}
+
+	public boolean isTemporary() {
+		return isTemporary;
+	}
+
+	public void setTemporary(boolean isTemporary) {
+		this.isTemporary = isTemporary;
 	}
 }
