@@ -92,16 +92,47 @@ public class ShopTableForm extends BeanEditor<ShopTable> {
 		buttonGroup.add(rbBooked);
 		buttonGroup.add(rbDirty);
 		buttonGroup.add(rbDisable);
+		
+		tfTableNo.setEnabled(false);
 
 	}
 	
 	@Override
 	public void createNew() {
-		setBean(new ShopTable());
+		ShopTable bean2 = new ShopTable();
+		bean2.setTemporary(true);
+		bean2.setCapacity(4);
+		
+		try {
+			
+			int nextTableNumber = ShopTableDAO.getInstance().getNextTableNumber();
+			
+			bean2.setId(nextTableNumber);
+			bean2.setName("" + nextTableNumber);
+			bean2.setDescription("" + nextTableNumber);
+
+		} catch (Exception e) {
+			BOMessageDialog.showError(this, "Problem while creating new table.");
+		}
+		
+		setBean(bean2);
+	}
+	
+	@Override
+	public void cancel() {
+//		ShopTable table = (ShopTable) getBean();
+//		if(table == null) {
+//			return;
+//		}
+//		
+//		if(table.isTemporary()) {
+//			ShopTableDAO.getInstance().delete(table);
+//		}
+//		
+//		setBean(null);
 	}
 
 	public void setFieldsEditable(boolean editable) {
-		tfTableNo.setEditable(editable);
 		tfTableName.setEditable(editable);
 		tfTableDescription.setEditable(editable);
 		tfTableCapacity.setEditable(editable);
@@ -109,7 +140,6 @@ public class ShopTableForm extends BeanEditor<ShopTable> {
 	
 	@Override
 	public void setFieldsEnable(boolean enable) {
-		tfTableNo.setEditable(enable);
 		tfTableName.setEditable(enable);
 		tfTableDescription.setEditable(enable);
 		tfTableCapacity.setEditable(enable);
@@ -134,6 +164,7 @@ public class ShopTableForm extends BeanEditor<ShopTable> {
 		rbDisable.setEnabled(true);
 	}
 
+	
 	@Override
 	public boolean save() {
 		try {
@@ -142,6 +173,9 @@ public class ShopTableForm extends BeanEditor<ShopTable> {
 
 			ShopTable table = (ShopTable) getBean();
 			ShopTableDAO.getInstance().saveOrUpdate(table);
+			table.setTemporary(false);
+			
+			updateView();
 			return true;
 
 		} catch (IllegalModelStateException e) {
@@ -180,6 +214,10 @@ public class ShopTableForm extends BeanEditor<ShopTable> {
 		if (table == null) {
 			table = new ShopTable();
 			setBean(table, false);
+		}
+		
+		if(table.isTemporary()) {
+			table.setId(null);
 		}
 
 		table.setName(tfTableName.getText());
