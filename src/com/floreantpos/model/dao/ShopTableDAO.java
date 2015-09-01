@@ -8,6 +8,7 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Disjunction;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 
@@ -21,6 +22,11 @@ public class ShopTableDAO extends BaseShopTableDAO {
 	 * Default constructor.  Can be used in place of getInstance()
 	 */
 	public ShopTableDAO () {}
+	
+	@Override
+	public Order getDefaultOrder() {
+		return Order.asc(ShopTable.PROP_ID);
+	}
 	
 	public int getNextTableNumber() {
 		Session session = getSession();
