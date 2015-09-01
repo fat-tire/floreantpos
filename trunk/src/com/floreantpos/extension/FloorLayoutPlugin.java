@@ -8,7 +8,7 @@ import com.floreantpos.model.ShopTable;
 import com.floreantpos.model.Ticket;
 
 public interface FloorLayoutPlugin extends FloreantPlugin {
-	public final static Dimension defaultFloorImageSize = new Dimension(700, 500);
+	public final static Dimension defaultFloorImageSize = new Dimension(600, 400);
 	
 	void initialize();
 	void openTicketsAndTablesDisplay();
