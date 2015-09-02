@@ -201,8 +201,17 @@ public class ModelBrowser<E> extends JPanel implements ActionListener, ListSelec
 
 	@Override
 	public void valueChanged(ListSelectionEvent e) {
+		if(e.getValueIsAdjusting()) {
+			return;
+		}
+		
 		BeanTableModel<E> model = (BeanTableModel<E>) browserTable.getModel();
-		int selectedRow = browserTable.convertRowIndexToModel(browserTable.getSelectedRow());
+		int selectedRow = browserTable.getSelectedRow();
+		if(selectedRow < 0) {
+			return;
+		}
+		
+		selectedRow = browserTable.convertRowIndexToModel(selectedRow);
 		
 		if(selectedRow < 0) return;
 		
