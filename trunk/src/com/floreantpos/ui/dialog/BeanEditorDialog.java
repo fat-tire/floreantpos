@@ -48,7 +48,7 @@ public class BeanEditorDialog extends javax.swing.JDialog implements WindowListe
 		titlePanel = new com.floreantpos.ui.TitlePanel();
 		jPanel1 = new com.floreantpos.swing.TransparentPanel();
 		jSeparator1 = new javax.swing.JSeparator();
-		jPanel2 = new com.floreantpos.swing.TransparentPanel();
+		buttonPanel = new com.floreantpos.swing.TransparentPanel();
 		btnOk = new PosButton();
 		btnCancel = new PosButton();
 		beanEditorContainer = new com.floreantpos.swing.TransparentPanel();
@@ -60,29 +60,29 @@ public class BeanEditorDialog extends javax.swing.JDialog implements WindowListe
 
 		jPanel1.add(jSeparator1, java.awt.BorderLayout.NORTH);
 
-		jPanel2.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
+		buttonPanel.setLayout(new java.awt.FlowLayout());
 
-		btnOk.setPreferredSize(new Dimension(150, 60));
-		btnOk.setText(com.floreantpos.POSConstants.OK);
+		btnOk.setPreferredSize(new Dimension(100, 60));
+		btnOk.setText(com.floreantpos.POSConstants.OK.toUpperCase());
 		btnOk.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				performOk(evt);
 			}
 		});
 
-		jPanel2.add(btnOk);
+		buttonPanel.add(btnOk);
 
-		btnCancel.setPreferredSize(new Dimension(150, 60));
-		btnCancel.setText(com.floreantpos.POSConstants.CANCEL);
+		btnCancel.setPreferredSize(new Dimension(100, 60));
+		btnCancel.setText(com.floreantpos.POSConstants.CANCEL.toUpperCase());
 		btnCancel.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				performCancel(evt);
 			}
 		});
 
-		jPanel2.add(btnCancel);
+		buttonPanel.add(btnCancel);
 
-		jPanel1.add(jPanel2, java.awt.BorderLayout.CENTER);
+		jPanel1.add(buttonPanel, java.awt.BorderLayout.CENTER);
 
 		getContentPane().add(jPanel1, java.awt.BorderLayout.SOUTH);
 
@@ -121,7 +121,7 @@ public class BeanEditorDialog extends javax.swing.JDialog implements WindowListe
 	private PosButton btnCancel;
 	private PosButton btnOk;
 	private com.floreantpos.swing.TransparentPanel jPanel1;
-	private com.floreantpos.swing.TransparentPanel jPanel2;
+	private com.floreantpos.swing.TransparentPanel buttonPanel;
 	private javax.swing.JSeparator jSeparator1;
 	private com.floreantpos.ui.TitlePanel titlePanel;
 
@@ -201,5 +201,7 @@ public class BeanEditorDialog extends javax.swing.JDialog implements WindowListe
 		}
 	}
 	
-	
+	public com.floreantpos.swing.TransparentPanel getButtonPanel() {
+		return buttonPanel;
+	}
 }
