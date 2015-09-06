@@ -6,7 +6,9 @@ import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JComponent;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 
@@ -18,6 +20,7 @@ import com.floreantpos.bo.ui.explorer.ListTableModel;
 import com.floreantpos.model.OrderType;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.User;
+import com.floreantpos.swing.PosButton;
 import com.floreantpos.swing.PosScrollPane;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 
@@ -49,11 +52,17 @@ public class TicketListView extends JPanel {
 		columnModel.getColumnExt(1).setVisible(false);
 		
 
-		PosScrollPane scrollPane = new PosScrollPane(table, PosScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, PosScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		PosScrollPane scrollPane = new PosScrollPane(table, PosScrollPane.VERTICAL_SCROLLBAR_NEVER, PosScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
 		setLayout(new BorderLayout());
 
 		add(scrollPane);
+		
+		JPanel p = new JPanel(new BorderLayout());
+		p.add(new PosButton("PREV"), BorderLayout.NORTH);
+		p.add(new PosButton("NEXT"), BorderLayout.SOUTH);
+		p.add(scrollPane.getVerticalScrollBar());
+		add(p, BorderLayout.EAST);
 		
 //		JPanel statusPanel = new JPanel(new MigLayout("ins 5 2 5 0", "[fill, grow][]10[]10[]", ""));
 //		
