@@ -356,18 +356,6 @@
 		</dependency>
 
 		<dependency>
-			<groupId>jpos</groupId>
-			<artifactId>jpos</artifactId>
-			<version>110</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>jpos</groupId>
-			<artifactId>jpos-controls</artifactId>
-			<version>110</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 			<version>5.1.30</version>
