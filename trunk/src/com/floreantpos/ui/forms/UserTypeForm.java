@@ -9,14 +9,14 @@ package com.floreantpos.ui.forms;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
-import org.gjt.sp.jedit.gui.CheckBoxListModel;
-import org.gjt.sp.jedit.gui.JCheckBoxList;
-import org.gjt.sp.jedit.gui.JCheckBoxList.Entry;
 
 import com.floreantpos.model.UserPermission;
 import com.floreantpos.model.UserType;
 import com.floreantpos.model.dao.UserTypeDAO;
 import com.floreantpos.model.util.IllegalModelStateException;
+import com.floreantpos.swing.CheckBoxList;
+import com.floreantpos.swing.CheckBoxListModel;
+import com.floreantpos.swing.CheckBoxList.Entry;
 import com.floreantpos.ui.BeanEditor;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 
@@ -52,7 +52,7 @@ public class UserTypeForm extends BeanEditor {
         tfTypeName = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        listPermissions = new JCheckBoxList();
+        listPermissions = new CheckBoxList();
 
         jLabel1.setText(com.floreantpos.POSConstants.TYPE_NAME + ":");
 
@@ -95,7 +95,7 @@ public class UserTypeForm extends BeanEditor {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private JCheckBoxList listPermissions;
+    private CheckBoxList listPermissions;
     private javax.swing.JTextField tfTypeName;
     // End of variables declaration//GEN-END:variables
 
