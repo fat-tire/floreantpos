@@ -17,11 +17,11 @@ import javax.swing.border.TitledBorder;
 import net.miginfocom.swing.MigLayout;
 
 import org.apache.commons.lang.StringUtils;
-import org.gjt.sp.jedit.gui.JCheckBoxList;
 
 import com.floreantpos.main.Application;
 import com.floreantpos.model.Printer;
 import com.floreantpos.model.PrinterGroup;
+import com.floreantpos.swing.CheckBoxList;
 import com.floreantpos.swing.FixedLengthTextField;
 import com.floreantpos.ui.dialog.POSDialog;
 import com.floreantpos.ui.dialog.POSMessageDialog;
@@ -29,7 +29,7 @@ import com.floreantpos.util.POSUtil;
 
 public class AddPrinterGroupDialog extends POSDialog {
 	private FixedLengthTextField tfName = new FixedLengthTextField(60);
-	JCheckBoxList printerList;
+	CheckBoxList printerList;
 
 	public AddPrinterGroupDialog() throws HeadlessException {
 		super(POSUtil.getBackOfficeWindow(), true);
@@ -51,7 +51,7 @@ public class AddPrinterGroupDialog extends POSDialog {
 		add(tfName, "grow");
 		
 		List<Printer> printers = Application.getPrinters().getKitchenPrinters();
-		printerList = new JCheckBoxList(new Vector<Printer>(printers));
+		printerList = new CheckBoxList(new Vector<Printer>(printers));
 		
 		JPanel listPanel = new JPanel(new BorderLayout());
 		listPanel.setBorder(new TitledBorder("Printers"));
