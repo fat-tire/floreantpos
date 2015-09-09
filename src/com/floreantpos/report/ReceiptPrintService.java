@@ -9,11 +9,13 @@ import java.util.Map;
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JRExporterParameter;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.JasperPrintManager;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRTableModelDataSource;
+import net.sf.jasperreports.engine.export.JRPrintServiceExporter;
+import net.sf.jasperreports.engine.export.JRPrintServiceExporterParameter;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -37,8 +39,13 @@ import com.floreantpos.model.dao.KitchenTicketDAO;
 import com.floreantpos.model.dao.RestaurantDAO;
 import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.util.NumberUtil;
+import com.floreantpos.util.PrintServiceUtil;
 
 public class ReceiptPrintService {
+	private static final String DATA = "data";
+	private static final String TITLE = "title";
+	private static final String ORDER_ = "ORDER-";
+	public static final String PROP_PRINTER_NAME = "printerName";
 	private static final String TIP_AMOUNT = "tipAmount";
 	private static final String SERVICE_CHARGE = "serviceCharge";
 	private static final String TAX_AMOUNT = "taxAmount";
@@ -63,33 +70,17 @@ public class ReceiptPrintService {
 	private static final String ITEM_TEXT = "itemText";
 	private static final String CURRENCY_SYMBOL = "currencySymbol";
 	private static Log logger = LogFactory.getLog(ReceiptPrintService.class);
-	
+
 	private static final SimpleDateFormat reportDateFormat = new SimpleDateFormat("M/d/yy, h:m a");
 
 	public static void printGenericReport(String title, String data) throws Exception {
 		HashMap<String, String> map = new HashMap<String, String>(2);
-		map.put("title", title);
-		map.put("data", data);
+		map.put(TITLE, title);
+		map.put(DATA, data);
 		JasperPrint jasperPrint = createJasperPrint(ReportUtil.getReport("generic-receipt"), map, new JREmptyDataSource());
-		jasperPrint.setProperty("printerName", Application.getPrinters().getReceiptPrinter());
+		jasperPrint.setProperty(PROP_PRINTER_NAME, Application.getPrinters().getReceiptPrinter());
 		printQuitely(jasperPrint);
 	}
-
-//	public static JasperPrint createJasperPrint(String reportFile, Map<String, String> properties, JRDataSource dataSource) throws Exception {
-//		InputStream ticketReportStream = null;
-//
-//		try {
-//
-//			ticketReportStream = JReportPrintService.class.getResourceAsStream(reportFile);
-//			JasperReport ticketReport = (JasperReport) JRLoader.loadObject(ticketReportStream);
-//
-//			JasperPrint jasperPrint = JasperFillManager.fillReport(ticketReport, properties, dataSource);
-//			return jasperPrint;
-//
-//		} finally {
-//			IOUtils.closeQuietly(ticketReportStream);
-//		}
-//	}
 
 	public static JasperPrint createJasperPrint(JasperReport report, Map<String, String> properties, JRDataSource dataSource) throws Exception {
 		JasperPrint jasperPrint = JasperFillManager.fillReport(report, properties, dataSource);
@@ -109,8 +100,8 @@ public class ReceiptPrintService {
 			HashMap map = populateTicketProperties(ticket, printProperties, null);
 
 			JasperPrint jasperPrint = createPrint(ticket, map, null);
-			jasperPrint.setName("ORDER_" + ticket.getId());
-			jasperPrint.setProperty("printerName", Application.getPrinters().getReceiptPrinter());
+			jasperPrint.setName(ORDER_ + ticket.getId());
+			jasperPrint.setProperty(PROP_PRINTER_NAME, Application.getPrinters().getReceiptPrinter());
 			printQuitely(jasperPrint);
 
 		} catch (Exception e) {
@@ -136,7 +127,7 @@ public class ReceiptPrintService {
 
 			JasperPrint jasperPrint = createRefundPrint(ticket, map);
 			jasperPrint.setName("REFUND_" + ticket.getId());
-			jasperPrint.setProperty("printerName", Application.getPrinters().getReceiptPrinter());
+			jasperPrint.setProperty(PROP_PRINTER_NAME, Application.getPrinters().getReceiptPrinter());
 			printQuitely(jasperPrint);
 
 		} catch (Exception e) {
@@ -154,28 +145,28 @@ public class ReceiptPrintService {
 
 			if (transaction != null && transaction.isCard()) {
 				CardReader cardReader = CardReader.fromString(transaction.getCardReader());
-				
+
 				if (cardReader == CardReader.EXTERNAL_TERMINAL) {
 					return;
 				}
-				
+
 				map.put("cardPayment", true);
 				map.put("copyType", "Customer Copy");
 				JasperPrint jasperPrint = createPrint(ticket, map, transaction);
 				jasperPrint.setName("Ticket-" + ticket.getId() + "-CustomerCopy");
-				jasperPrint.setProperty("printerName", Application.getPrinters().getReceiptPrinter());
+				jasperPrint.setProperty(PROP_PRINTER_NAME, Application.getPrinters().getReceiptPrinter());
 				printQuitely(jasperPrint);
 
 				map.put("copyType", "Merchant Copy");
 				jasperPrint = createPrint(ticket, map, transaction);
 				jasperPrint.setName("Ticket-" + ticket.getId() + "-MerchantCopy");
-				jasperPrint.setProperty("printerName", Application.getPrinters().getReceiptPrinter());
+				jasperPrint.setProperty(PROP_PRINTER_NAME, Application.getPrinters().getReceiptPrinter());
 				printQuitely(jasperPrint);
 			}
 			else {
 				JasperPrint jasperPrint = createPrint(ticket, map, transaction);
 				jasperPrint.setName("Ticket-" + ticket.getId());
-				jasperPrint.setProperty("printerName", Application.getPrinters().getReceiptPrinter());
+				jasperPrint.setProperty(PROP_PRINTER_NAME, Application.getPrinters().getReceiptPrinter());
 				printQuitely(jasperPrint);
 			}
 
@@ -198,7 +189,7 @@ public class ReceiptPrintService {
 
 				JasperPrint jasperPrint = createPrint(ticket, map, transaction);
 				jasperPrint.setName("Ticket-" + ticket.getId() + "-MerchantCopy");
-				jasperPrint.setProperty("printerName", Application.getPrinters().getReceiptPrinter());
+				jasperPrint.setProperty(PROP_PRINTER_NAME, Application.getPrinters().getReceiptPrinter());
 				printQuitely(jasperPrint);
 
 				if (printCustomerCopy) {
@@ -206,14 +197,14 @@ public class ReceiptPrintService {
 
 					jasperPrint = createPrint(ticket, map, transaction);
 					jasperPrint.setName("Ticket-" + ticket.getId() + "-CustomerCopy");
-					jasperPrint.setProperty("printerName", Application.getPrinters().getReceiptPrinter());
+					jasperPrint.setProperty(PROP_PRINTER_NAME, Application.getPrinters().getReceiptPrinter());
 					printQuitely(jasperPrint);
 				}
 			}
 			else {
 				JasperPrint jasperPrint = createPrint(ticket, map, transaction);
 				jasperPrint.setName("Ticket-" + ticket.getId());
-				jasperPrint.setProperty("printerName", Application.getPrinters().getReceiptPrinter());
+				jasperPrint.setProperty(PROP_PRINTER_NAME, Application.getPrinters().getReceiptPrinter());
 				printQuitely(jasperPrint);
 			}
 
@@ -456,17 +447,17 @@ public class ReceiptPrintService {
 		if (ticket.getTableNumbers() != null && ticket.getTableNumbers().size() > 0) {
 			map.put(TABLE_NO, POSConstants.RECEIPT_REPORT_TABLE_NO_LABEL + ticket.getTableNumbers());
 		}
-		
-		if(StringUtils.isNotEmpty(ticket.getCustomerName())) {
+
+		if (StringUtils.isNotEmpty(ticket.getCustomerName())) {
 			map.put("customer", "Customer: " + ticket.getCustomerName());
 		}
-		
+
 		map.put(SERVER_NAME, POSConstants.RECEIPT_REPORT_SERVER_LABEL + ticket.getServerName());
 		map.put(REPORT_DATE, "Printed: " + reportDateFormat.format(new Date()));
 
 		map.put("ticketHeader", "KTICHEN RECEIPT");
 		String ticketType = ticket.getTicketType();
-		if(StringUtils.isNotEmpty(ticketType)) {
+		if (StringUtils.isNotEmpty(ticketType)) {
 			ticketType = ticketType.replaceAll("_", " ");
 		}
 		map.put("orderType", "* " + ticketType + " *");
@@ -486,23 +477,23 @@ public class ReceiptPrintService {
 			List<KitchenTicket> kitchenTickets = KitchenTicket.fromTicket(ticket);
 
 			for (KitchenTicket kitchenTicket : kitchenTickets) {
-				
+
 				List<Printer> printers = kitchenTicket.getPrinters();
 				for (Printer printer : printers) {
 					String deviceName = printer.getDeviceName();
 
 					JasperPrint jasperPrint = createKitchenPrint(kitchenTicket);
 					jasperPrint.setName("KitchenReceipt-" + ticket.getId() + "-" + deviceName);
-					jasperPrint.setProperty("printerName", deviceName);
-					
+					jasperPrint.setProperty(PROP_PRINTER_NAME, deviceName);
+
 					printQuitely(jasperPrint);
 				}
-				
+
 				session.saveOrUpdate(kitchenTicket);
 			}
 
 			transaction.commit();
-			
+
 			TicketDAO.getInstance().saveOrUpdate(ticket);
 
 		} catch (Exception e) {
@@ -515,38 +506,14 @@ public class ReceiptPrintService {
 
 	private static void printQuitely(JasperPrint jasperPrint) throws JRException {
 		try {
-			JasperPrintManager.printReport(jasperPrint, false);
+			JRPrintServiceExporter exporter = new JRPrintServiceExporter();
+			exporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
+			exporter.setParameter(JRPrintServiceExporterParameter.PRINT_SERVICE, PrintServiceUtil.getPrintServiceForPrinter(jasperPrint.getProperty(PROP_PRINTER_NAME)));
+			exporter.exportReport();
 		} catch (Exception x) {
 			x.printStackTrace();
 		}
 	}
-
-	//	private static void markItemsAsPrinted(KitchenTicket ticket) {
-	//		List<TicketItem> ticketItems = ticket.getTicketItems();
-	//		if (ticketItems != null) {
-	//			for (TicketItem ticketItem : ticketItems) {
-	//				if (!ticketItem.isPrintedToKitchen()) {
-	//					ticketItem.setPrintedToKitchen(true);
-	//				}
-	//
-	//				List<TicketItemModifierGroup> modifierGroups = ticketItem.getTicketItemModifierGroups();
-	//				if (modifierGroups != null) {
-	//					for (TicketItemModifierGroup modifierGroup : modifierGroups) {
-	//						modifierGroup.setPrintedToKitchen(true);
-	//					}
-	//				}
-	//
-	//				List<TicketItemCookingInstruction> cookingInstructions = ticketItem.getCookingInstructions();
-	//				if (cookingInstructions != null) {
-	//					for (TicketItemCookingInstruction ticketItemCookingInstruction : cookingInstructions) {
-	//						ticketItemCookingInstruction.setPrintedToKitchen(true);
-	//					}
-	//				}
-	//			}
-	//		}
-	//		
-	//		KitchenTicketDAO.getInstance().saveOrUpdate(ticket);
-	//	}
 
 	private static String getCardNumber(BankCardMagneticTrack track) {
 		String no = "";

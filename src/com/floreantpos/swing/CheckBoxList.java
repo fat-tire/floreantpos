@@ -20,7 +20,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-package org.gjt.sp.jedit.gui;
+package com.floreantpos.swing;
 
 //{{{ Imports
 import java.awt.Component;
@@ -35,23 +35,24 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 
+
 //}}}
 
 /**
  * A list where items can be selected and checked off independently.
  * @since jEdit 3.2pre9
  */
-public class JCheckBoxList extends JTable {
+public class CheckBoxList extends JTable {
 	//{{{ JCheckBoxList constructor
 	/**
 	 * Creates a checkbox list with the given list of objects. The elements
 	 * of this array can either be Entry instances, or other objects (if the
 	 * latter, they will default to being unchecked).
 	 */
-	public JCheckBoxList() {
+	public CheckBoxList() {
 	}
 	
-	public JCheckBoxList(Object[] items) {
+	public CheckBoxList(Object[] items) {
 		setModel(items);
 	} //}}}
 
@@ -61,7 +62,7 @@ public class JCheckBoxList extends JTable {
 	 * of this vector can either be Entry instances, or other objects (if the
 	 * latter, they will default to being unchecked).
 	 */
-	public JCheckBoxList(Vector items) {
+	public CheckBoxList(Vector items) {
 		setModel(items);
 	} //}}}
 
