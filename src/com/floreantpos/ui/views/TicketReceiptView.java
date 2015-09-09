@@ -16,8 +16,6 @@ public class TicketReceiptView extends JPanel {
 		setLayout(new BorderLayout());
 		
 		jrViewer = new net.sf.jasperreports.swing.JRViewer(jasperPrint);
-//		jrViewer.setToolbarVisible(false);
-//		jrViewer.setStatusbarVisible(false);
 		
 		add(jrViewer);
 	}
