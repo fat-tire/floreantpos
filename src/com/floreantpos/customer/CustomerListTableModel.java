@@ -2,8 +2,8 @@ package com.floreantpos.customer;
 
 import java.util.List;
 
-import com.floreantpos.bo.ui.explorer.ListTableModel;
 import com.floreantpos.model.Customer;
+import com.floreantpos.swing.ListTableModel;
 
 public class CustomerListTableModel extends ListTableModel<Customer> {
 	private final static String[] columns = { "PHONE", "NAME", "DoB", "ADDRESS", "CITY", "STATE" };
