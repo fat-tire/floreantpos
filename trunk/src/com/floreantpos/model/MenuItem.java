@@ -23,9 +23,7 @@ import com.floreantpos.model.base.BaseMenuItem;
 @XmlRootElement(name="menu-item")
 public class MenuItem extends BaseMenuItem {
 	private static final long serialVersionUID = 1L;
-	
-	//my code
-	//private List<MenuItem> menuItem;
+
 
 	/*[CONSTRUCTOR MARKER BEGIN]*/
 	public MenuItem () {
@@ -62,7 +60,7 @@ public class MenuItem extends BaseMenuItem {
 
 	/*[CONSTRUCTOR MARKER END]*/
 	
-	//my code
+
 	public ImageIcon imageAsIcon;
 	public ImageIcon getImageAsIcon() {
 		Image scaledInstance=null;
@@ -86,17 +84,14 @@ public class MenuItem extends BaseMenuItem {
 	}
 	
 	
-	//my code
+	
 	public Color buttonAsColor;
 	public Color getButtonAsColor() {
 		Color color=null;
 		if(getButtonColor()!= null  ){
 		color = new Color(getButtonColor());
 		}
-		//int red = color.getRed();
-        //int green = color.getGreen();
-        //int blue = color.getBlue();
-		//Color color2 = new Color(red,green,blue);
+		
 		return color;
 	}
 	public void setButtonAsColor(Color col) {
@@ -209,11 +204,7 @@ public class MenuItem extends BaseMenuItem {
 		Image scaledInstance = icon.getImage().getScaledInstance(100, 100,  Image.SCALE_SMOOTH);
 		return new ImageIcon(scaledInstance);
 	}
-	//my code
-//	public void setMenu(List<MenuItem> menuItem) {
-//		this.menuItem = menuItem;
-//		//fireTableDataChanged();
-//	}
+
 	
 	
 }
