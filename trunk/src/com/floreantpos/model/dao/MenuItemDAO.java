@@ -2,9 +2,16 @@ package com.floreantpos.model.dao;
 
 import java.util.List;
 
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
+import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
@@ -12,34 +19,39 @@ import com.floreantpos.PosException;
 import com.floreantpos.model.MenuGroup;
 import com.floreantpos.model.MenuItem;
 import com.floreantpos.model.MenuItemModifierGroup;
+import com.floreantpos.model.Ticket;
 
 public class MenuItemDAO extends BaseMenuItemDAO {
 
 	/**
-	 * Default constructor.  Can be used in place of getInstance()
+	 * Default constructor. Can be used in place of getInstance()
 	 */
-	public MenuItemDAO () {}
-	
+	public MenuItemDAO() {
+	}
+
 	public MenuItem initialize(MenuItem menuItem) {
-		if(menuItem.getId() == null) return menuItem;
-		
+		if (menuItem.getId() == null)
+			return menuItem;
+
 		Session session = null;
-		
+
 		try {
 			session = createNewSession();
 			menuItem = (MenuItem) session.merge(menuItem);
-			
+
 			Hibernate.initialize(menuItem.getMenuItemModiferGroups());
-			
-			List<MenuItemModifierGroup> menuItemModiferGroups = menuItem.getMenuItemModiferGroups();
+
+			List<MenuItemModifierGroup> menuItemModiferGroups = menuItem
+					.getMenuItemModiferGroups();
 			if (menuItemModiferGroups != null) {
 				for (MenuItemModifierGroup menuItemModifierGroup : menuItemModiferGroups) {
-					Hibernate.initialize(menuItemModifierGroup.getModifierGroup().getModifiers());
+					Hibernate.initialize(menuItemModifierGroup
+							.getModifierGroup().getModifiers());
 				}
 			}
-			
+
 			Hibernate.initialize(menuItem.getShifts());
-			
+
 			return menuItem;
 		} finally {
 			closeSession(session);
@@ -47,19 +59,21 @@ public class MenuItemDAO extends BaseMenuItemDAO {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<MenuItem> findByParent(MenuGroup group, boolean includeInvisibleItems) throws PosException {
+	public List<MenuItem> findByParent(MenuGroup group,
+			boolean includeInvisibleItems) throws PosException {
 		Session session = null;
-		
+
 		try {
 			session = getSession();
 			Criteria criteria = session.createCriteria(getReferenceClass());
 			criteria.add(Restrictions.eq(MenuItem.PROP_PARENT, group));
 			criteria.addOrder(Order.asc(MenuItem.PROP_SORT_ORDER));
-			
-			if(!includeInvisibleItems) {
-				criteria.add(Restrictions.eq(MenuItem.PROP_VISIBLE, Boolean.TRUE));
+
+			if (!includeInvisibleItems) {
+				criteria.add(Restrictions.eq(MenuItem.PROP_VISIBLE,
+						Boolean.TRUE));
 			}
-			
+
 			return criteria.list();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -70,10 +84,11 @@ public class MenuItemDAO extends BaseMenuItemDAO {
 			}
 		}
 	}
-	
-	public List<MenuItemModifierGroup> findModifierGroups(MenuItem item) throws PosException {
+
+	public List<MenuItemModifierGroup> findModifierGroups(MenuItem item)
+			throws PosException {
 		Session session = null;
-		
+
 		try {
 			session = getSession();
 			Criteria criteria = session.createCriteria(getReferenceClass());
@@ -90,4 +105,127 @@ public class MenuItemDAO extends BaseMenuItemDAO {
 			}
 		}
 	}
+
+	// my code
+	// public static MenuItemDAO getInstance() {
+	// if (null == instance)
+	// instance = new MenuItemDAO();
+	// return instance;
+	// }
+
+	// public List getSimilar(String name) {
+	// Session session = null;
+	// Criteria criteria = null;
+	// try {
+	// session = getSession();
+	// criteria = session.createCriteria(MenuItem.class);
+	// //criteria.add(Restrictions.ilike(MenuItem.PROP_NAME, name,
+	// MatchMode.ANYWHERE));
+	// criteria.add(Restrictions.ilike(MenuItem.PROP_NAME , name,
+	// MatchMode.ANYWHERE));
+	// return criteria.list();
+	//
+	// } catch (Exception e) {
+	// }
+	//
+	// return criteria.list();
+	//
+	// }
+
+	// public List getAsGroup(Object groupName) {
+	// public List getAsGroup(String groupName) {
+	// public List getAsGroup(int groupId) {
+	// Session session = null;
+	// Criteria criteria = null;
+	// try {
+	// session = getSession();
+	// criteria = session.createCriteria(MenuItem.class);
+	// criteria.add(Restrictions.ilike(MenuItem.PROP_PARENT,groupName));
+	//
+	// return criteria.list();
+	//
+	// } catch (Exception e) {
+	// }
+	//
+	// return criteria.list();
+	//
+	// }
+
+	// public List findByParent(MenuGroup group) throws PosException {
+	// //public List findByParent(String group) throws PosException {
+	// Session session = null;
+	//
+	// try {
+	// session = getSession();
+	// Criteria criteria = session.createCriteria(getReferenceClass());
+	// criteria.add(Restrictions.eq(MenuItem.PROP_PARENT, group));
+	// criteria.addOrder(Order.asc(MenuItem.PROP_SORT_ORDER));
+
+	// if (!includeInvisibleItems) {
+	// criteria.add(Restrictions.eq(MenuItem.PROP_VISIBLE,
+	// Boolean.TRUE));
+	// }
+
+	// return criteria.list();
+	// } catch (Exception e) {
+	// e.printStackTrace();
+	// throw new PosException("Error occured while finding food items");
+	// } finally {
+	// if (session != null) {
+	// session.close();
+	// }
+	// }
+	// }
+	//
+
+	public List<MenuItem> getSimilar(String itemName, MenuGroup menuGroup) {
+		Session session = null;
+		Criteria criteria = null;
+		try {
+			session = getSession();
+			criteria = session.createCriteria(MenuItem.class);
+
+			if (StringUtils.isNotEmpty(itemName)) {
+				criteria.add(Restrictions.ilike(MenuItem.PROP_NAME,
+						itemName.trim(), MatchMode.ANYWHERE));
+			}
+
+//			 if(menuGroup=="FULL NAME"){
+//			 return criteria.list();
+//			 }else {
+			if (menuGroup != null) {
+				criteria.add(Restrictions.eq(MenuItem.PROP_PARENT, menuGroup));
+			}
+//			if(menuGroup.toString()=="FULL NAME"){
+//				criteria = session.createCriteria(MenuItem.class);
+//				return criteria.list();
+//			}
+			
+			
+			//Object selectedItem = menuGroup.getSelectedItem();
+//			if(selectedItem instanceof String) {
+//				
+//			}
+			String p = menuGroup.toString();
+			if(p=="FULL LIST"){
+				criteria = session.createCriteria(MenuItem.class);
+//				String hql = "FROM MenuItem";
+//				Query query = session.createQuery(hql);
+//				List results = query.list();
+//				return results;
+				return criteria.list();
+			}
+			// }
+
+			return criteria.list();
+
+		} catch (Exception e) {
+		}
+
+		return criteria.list();
+
+	}
+
+	//
+
 }
