@@ -1,8 +1,16 @@
 package com.floreantpos.model;
 
+import java.awt.Color;
 import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -15,6 +23,9 @@ import com.floreantpos.model.base.BaseMenuItem;
 @XmlRootElement(name="menu-item")
 public class MenuItem extends BaseMenuItem {
 	private static final long serialVersionUID = 1L;
+	
+	//my code
+	//private List<MenuItem> menuItem;
 
 	/*[CONSTRUCTOR MARKER BEGIN]*/
 	public MenuItem () {
@@ -27,7 +38,7 @@ public class MenuItem extends BaseMenuItem {
 	public MenuItem (java.lang.Integer id) {
 		super(id);
 	}
-
+	
 	/**
 	 * Constructor for required fields
 	 */
@@ -35,21 +46,64 @@ public class MenuItem extends BaseMenuItem {
 		java.lang.Integer id,
 		java.lang.String name,
 		java.lang.Double buyPrice,
-		java.lang.Double price) {
+		java.lang.Double price
+		//java.awt.Image image
+		 	
+		) {
 
 		super (
 			id,
 			name,
 			buyPrice,
-			price);
+			price
+			//image
+			);
 	}
 
 	/*[CONSTRUCTOR MARKER END]*/
+	
+	//my code
+	public ImageIcon imageAsIcon;
+	public ImageIcon getImageAsIcon() {
+		Image scaledInstance=null;
+		ImageIcon icon= null;
+		byte[] imageData = getImage();
+		if(imageData!=null){
+		icon = new ImageIcon(imageData);
+		scaledInstance = icon.getImage().getScaledInstance(100, 100,  Image.SCALE_SMOOTH);
+		return new ImageIcon(scaledInstance);
+		}
+		return icon;
+	}	
+	public void setImageAsIcon(ImageIcon icon) {
+		
+	}
+	//
 	
 	@Override
 	public Integer getSortOrder() {
 		return sortOrder == null ? 9999 : sortOrder;
 	}
+	
+	
+	//my code
+	public Color buttonAsColor;
+	public Color getButtonAsColor() {
+		Color color=null;
+		if(getButtonColor()!= null  ){
+		color = new Color(getButtonColor());
+		}
+		//int red = color.getRed();
+        //int green = color.getGreen();
+        //int blue = color.getBlue();
+		//Color color2 = new Color(red,green,blue);
+		return color;
+	}
+	public void setButtonAsColor(Color col) {
+		
+	}
+	//
+	
 	
 	@Override
 	public Integer getButtonColor() {
@@ -148,9 +202,18 @@ public class MenuItem extends BaseMenuItem {
 		return (this.getMenuItemModiferGroups() != null && this.getMenuItemModiferGroups().size() > 0);
 	}
 	
+	
+	
 	public ImageIcon getScaledImage(int width, int height) {
 		ImageIcon icon = new ImageIcon(getImage());
-		Image scaledInstance = icon.getImage().getScaledInstance(width, height,  Image.SCALE_SMOOTH);
+		Image scaledInstance = icon.getImage().getScaledInstance(100, 100,  Image.SCALE_SMOOTH);
 		return new ImageIcon(scaledInstance);
 	}
+	//my code
+//	public void setMenu(List<MenuItem> menuItem) {
+//		this.menuItem = menuItem;
+//		//fireTableDataChanged();
+//	}
+	
+	
 }
