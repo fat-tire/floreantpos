@@ -6,9 +6,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.floreantpos.bo.ui.explorer.ListTableModel;
 import com.floreantpos.model.CreditCardTransaction;
 import com.floreantpos.model.DebitCardTransaction;
+import com.floreantpos.swing.ListTableModel;
 
 public class SalesDetailedReport {
 	private Date fromDate;

@@ -29,12 +29,12 @@ import javax.swing.table.TableColumn;
 
 import net.miginfocom.swing.MigLayout;
 
-import com.floreantpos.bo.ui.explorer.ListTableModel;
 import com.floreantpos.model.KitchenTicket;
 import com.floreantpos.model.KitchenTicket.KitchenTicketStatus;
 import com.floreantpos.model.KitchenTicketItem;
 import com.floreantpos.model.dao.KitchenTicketDAO;
 import com.floreantpos.swing.ButtonColumn;
+import com.floreantpos.swing.ListTableModel;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.swing.TimerWatch;
 import com.floreantpos.ui.dialog.POSMessageDialog;

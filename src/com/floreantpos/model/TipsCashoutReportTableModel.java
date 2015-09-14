@@ -2,7 +2,7 @@ package com.floreantpos.model;
 
 import java.util.List;
 
-import com.floreantpos.bo.ui.explorer.ListTableModel;
+import com.floreantpos.swing.ListTableModel;
 import com.floreantpos.util.NumberUtil;
 
 public class TipsCashoutReportTableModel extends ListTableModel {

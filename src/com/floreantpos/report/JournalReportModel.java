@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import com.floreantpos.bo.ui.explorer.ListTableModel;
 import com.floreantpos.main.Application;
+import com.floreantpos.swing.ListTableModel;
 
 public class JournalReportModel {
 	private Date fromDate;

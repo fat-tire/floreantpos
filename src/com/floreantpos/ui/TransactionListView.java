@@ -13,8 +13,8 @@ import javax.swing.ListSelectionModel;
 
 import org.jdesktop.swingx.JXTable;
 
-import com.floreantpos.bo.ui.explorer.ListTableModel;
 import com.floreantpos.model.PosTransaction;
+import com.floreantpos.swing.ListTableModel;
 import com.floreantpos.swing.PosScrollPane;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 

@@ -3,7 +3,7 @@ package com.floreantpos.report;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 
-import com.floreantpos.bo.ui.explorer.ListTableModel;
+import com.floreantpos.swing.ListTableModel;
 
 public class PayrollReportModel extends ListTableModel {
 	SimpleDateFormat dateFormat2 = new SimpleDateFormat("MMM-dd-yyyy hh:mm a");
