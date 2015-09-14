@@ -106,77 +106,12 @@ public class MenuItemDAO extends BaseMenuItemDAO {
 		}
 	}
 
-	// my code
-	// public static MenuItemDAO getInstance() {
-	// if (null == instance)
-	// instance = new MenuItemDAO();
-	// return instance;
-	// }
+	
 
-	// public List getSimilar(String name) {
-	// Session session = null;
-	// Criteria criteria = null;
-	// try {
-	// session = getSession();
-	// criteria = session.createCriteria(MenuItem.class);
-	// //criteria.add(Restrictions.ilike(MenuItem.PROP_NAME, name,
-	// MatchMode.ANYWHERE));
-	// criteria.add(Restrictions.ilike(MenuItem.PROP_NAME , name,
-	// MatchMode.ANYWHERE));
-	// return criteria.list();
-	//
-	// } catch (Exception e) {
-	// }
-	//
-	// return criteria.list();
-	//
-	// }
+	
 
-	// public List getAsGroup(Object groupName) {
-	// public List getAsGroup(String groupName) {
-	// public List getAsGroup(int groupId) {
-	// Session session = null;
-	// Criteria criteria = null;
-	// try {
-	// session = getSession();
-	// criteria = session.createCriteria(MenuItem.class);
-	// criteria.add(Restrictions.ilike(MenuItem.PROP_PARENT,groupName));
-	//
-	// return criteria.list();
-	//
-	// } catch (Exception e) {
-	// }
-	//
-	// return criteria.list();
-	//
-	// }
-
-	// public List findByParent(MenuGroup group) throws PosException {
-	// //public List findByParent(String group) throws PosException {
-	// Session session = null;
-	//
-	// try {
-	// session = getSession();
-	// Criteria criteria = session.createCriteria(getReferenceClass());
-	// criteria.add(Restrictions.eq(MenuItem.PROP_PARENT, group));
-	// criteria.addOrder(Order.asc(MenuItem.PROP_SORT_ORDER));
-
-	// if (!includeInvisibleItems) {
-	// criteria.add(Restrictions.eq(MenuItem.PROP_VISIBLE,
-	// Boolean.TRUE));
-	// }
-
-	// return criteria.list();
-	// } catch (Exception e) {
-	// e.printStackTrace();
-	// throw new PosException("Error occured while finding food items");
-	// } finally {
-	// if (session != null) {
-	// session.close();
-	// }
-	// }
-	// }
-	//
+	
+	
 
 	public List<MenuItem> getSimilar(String itemName, MenuGroup menuGroup) {
 		Session session = null;
@@ -190,32 +125,18 @@ public class MenuItemDAO extends BaseMenuItemDAO {
 						itemName.trim(), MatchMode.ANYWHERE));
 			}
 
-//			 if(menuGroup=="FULL NAME"){
-//			 return criteria.list();
-//			 }else {
+
 			if (menuGroup != null) {
 				criteria.add(Restrictions.eq(MenuItem.PROP_PARENT, menuGroup));
 			}
-//			if(menuGroup.toString()=="FULL NAME"){
-//				criteria = session.createCriteria(MenuItem.class);
-//				return criteria.list();
-//			}
-			
-			
-			//Object selectedItem = menuGroup.getSelectedItem();
-//			if(selectedItem instanceof String) {
-//				
-//			}
+
 			String p = menuGroup.toString();
 			if(p=="FULL LIST"){
 				criteria = session.createCriteria(MenuItem.class);
-//				String hql = "FROM MenuItem";
-//				Query query = session.createQuery(hql);
-//				List results = query.list();
-//				return results;
+
 				return criteria.list();
 			}
-			// }
+			
 
 			return criteria.list();
 
@@ -226,6 +147,6 @@ public class MenuItemDAO extends BaseMenuItemDAO {
 
 	}
 
-	//
+	
 
 }
