@@ -2,8 +2,8 @@ package com.floreantpos.report;
 
 import java.util.List;
 
-import com.floreantpos.bo.ui.explorer.ListTableModel;
 import com.floreantpos.report.HourlyLaborReportView.LaborReportData;
+import com.floreantpos.swing.ListTableModel;
 import com.floreantpos.util.NumberUtil;
 
 /**

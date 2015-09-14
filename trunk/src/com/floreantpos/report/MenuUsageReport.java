@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import com.floreantpos.bo.ui.explorer.ListTableModel;
+import com.floreantpos.swing.ListTableModel;
 import com.floreantpos.util.NumberUtil;
 
 public class MenuUsageReport {

@@ -6,10 +6,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.floreantpos.bo.ui.explorer.ListTableModel;
 import com.floreantpos.model.CouponAndDiscount;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketCouponAndDiscount;
+import com.floreantpos.swing.ListTableModel;
 
 public class SalesExceptionReport {
 	private Date fromDate;

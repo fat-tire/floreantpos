@@ -19,9 +19,9 @@ import net.miginfocom.swing.MigLayout;
 
 import org.jdesktop.swingx.JXTable;
 
-import com.floreantpos.bo.ui.explorer.ListTableModel;
 import com.floreantpos.main.Application;
 import com.floreantpos.swing.BeanTableModel;
+import com.floreantpos.swing.ListTableModel;
 import com.floreantpos.ui.BeanEditor;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 

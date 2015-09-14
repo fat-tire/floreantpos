@@ -28,6 +28,7 @@ import com.floreantpos.model.dao.ActionHistoryDAO;
 import com.floreantpos.model.dao.GratuityDAO;
 import com.floreantpos.model.dao.UserDAO;
 import com.floreantpos.swing.ListComboBoxModel;
+import com.floreantpos.swing.ListTableModel;
 import com.floreantpos.swing.TransparentPanel;
 import com.floreantpos.util.NumberUtil;
 import com.intellij.uiDesigner.core.GridConstraints;

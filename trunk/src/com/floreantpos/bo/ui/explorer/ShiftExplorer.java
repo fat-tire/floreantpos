@@ -14,6 +14,7 @@ import com.floreantpos.model.Shift;
 import com.floreantpos.model.User;
 import com.floreantpos.model.dao.ShiftDAO;
 import com.floreantpos.model.dao.UserDAO;
+import com.floreantpos.swing.ListTableModel;
 import com.floreantpos.swing.TransparentPanel;
 import com.floreantpos.ui.PosTableRenderer;
 import com.floreantpos.ui.dialog.ConfirmDeleteDialog;

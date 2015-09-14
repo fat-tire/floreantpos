@@ -16,10 +16,10 @@ import org.jdesktop.swingx.JXTable;
 import org.jdesktop.swingx.table.TableColumnModelExt;
 
 import com.floreantpos.POSConstants;
-import com.floreantpos.bo.ui.explorer.ListTableModel;
 import com.floreantpos.model.OrderType;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.User;
+import com.floreantpos.swing.ListTableModel;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.swing.PosScrollPane;
 import com.floreantpos.ui.dialog.POSMessageDialog;

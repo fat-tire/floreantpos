@@ -10,7 +10,7 @@ import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.view.JasperViewer;
 
-import com.floreantpos.bo.ui.explorer.ListTableModel;
+import com.floreantpos.swing.ListTableModel;
 
 public class SalesAnalysisReportModel extends ListTableModel {
 

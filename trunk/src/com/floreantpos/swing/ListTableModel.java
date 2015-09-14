@@ -1,4 +1,4 @@
-package com.floreantpos.bo.ui.explorer;
+package com.floreantpos.swing;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -2,8 +2,8 @@ package com.floreantpos.report;
 
 import java.util.List;
 
-import com.floreantpos.bo.ui.explorer.ListTableModel;
 import com.floreantpos.model.CreditCardTransaction;
+import com.floreantpos.swing.ListTableModel;
 import com.floreantpos.util.NumberUtil;
 
 public class CardReportModel extends ListTableModel<CreditCardTransaction> {
