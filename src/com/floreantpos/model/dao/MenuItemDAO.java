@@ -2,14 +2,12 @@ package com.floreantpos.model.dao;
 
 import java.util.List;
 
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
+
 
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
-import org.hibernate.Query;
+
 import org.hibernate.Session;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
@@ -19,7 +17,7 @@ import com.floreantpos.PosException;
 import com.floreantpos.model.MenuGroup;
 import com.floreantpos.model.MenuItem;
 import com.floreantpos.model.MenuItemModifierGroup;
-import com.floreantpos.model.Ticket;
+
 
 public class MenuItemDAO extends BaseMenuItemDAO {
 
@@ -120,7 +118,7 @@ public class MenuItemDAO extends BaseMenuItemDAO {
 			}
 
 			String p = menuGroup.toString();
-			if (p == "FULL LIST") {
+			if (p == "< All >") {
 				criteria = session.createCriteria(MenuItem.class);
 
 				return criteria.list();
