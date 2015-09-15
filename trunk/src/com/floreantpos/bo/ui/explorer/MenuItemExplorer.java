@@ -47,8 +47,6 @@ public class MenuItemExplorer extends TransparentPanel {
 	private JXTable table;
 	private BeanTableModel<MenuItem> tableModel;
 
-	
-
 	public MenuItemExplorer() {
 		tableModel = new BeanTableModel<MenuItem>(MenuItem.class);
 		tableModel.addColumn(POSConstants.ID.toUpperCase(), "id");
@@ -61,7 +59,6 @@ public class MenuItemExplorer extends TransparentPanel {
 		tableModel.addColumn(POSConstants.TAX.toUpperCase(), "tax");
 		tableModel.addColumn(POSConstants.SORT_ORDER.toUpperCase(), "sortOrder");
 		tableModel.addColumn(POSConstants.BUTTON_COLOR.toUpperCase(), "buttonAsColor");
-		// my temp code
 		tableModel.addColumn("image", "imageAsIcon");
 
 		tableModel.addRows(MenuItemDAO.getInstance().findAll());
@@ -69,7 +66,6 @@ public class MenuItemExplorer extends TransparentPanel {
 		table = new JXTable(tableModel);
 
 		table.setRowHeight(120);
-		
 
 		setLayout(new BorderLayout(5, 5));
 		add(new JScrollPane(table));
@@ -78,40 +74,34 @@ public class MenuItemExplorer extends TransparentPanel {
 		add(buildSearchForm(), BorderLayout.NORTH);
 	}
 
-	
-
 	private JPanel buildSearchForm() {
-		
+
 		List<MenuGroup> grpName;
-		
+
 		JPanel panel = new JPanel();
 		panel.setLayout(new MigLayout("", "[][]30[][]30[]", "[]20[]"));
 
-		
 		JLabel nameLabel = new JLabel("Name : ");
 		JLabel groupLabel = new JLabel("Group : ");
 		final JTextField nameField = new JTextField(15);
-		
+
 		grpName = MenuGroupDAO.getInstance().findAll();
-		
+
 		final JComboBox cbGroup = new JComboBox();
-		
+
 		cbGroup.addItem("FULL  LIST");
 		for (MenuGroup s : grpName) {
 			cbGroup.addItem(s);
 		}
-		
-		
+
 		JButton searchBttn = new JButton("Search");
 
-	
 		panel.add(nameLabel, "align label");
 		panel.add(nameField);
 		panel.add(groupLabel);
-		
+
 		panel.add(cbGroup);
 		panel.add(searchBttn);
-		
 
 		TitledBorder title;
 		Border loweredetched;
@@ -120,11 +110,10 @@ public class MenuItemExplorer extends TransparentPanel {
 		title.setTitleJustification(TitledBorder.LEFT);
 		panel.setBorder(title);
 
-	
 		searchBttn.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
-			
+
 				String txName = nameField.getText();
 				Object selectedItem = cbGroup.getSelectedItem();
 
@@ -137,15 +126,12 @@ public class MenuItemExplorer extends TransparentPanel {
 
 				tableModel.removeAll();
 				tableModel.addRows(similarItem);
-			
 
 			}
 		});
-		
+
 		return panel;
 	}
-
-	
 
 	private TransparentPanel createButtonPanel() {
 		ExplorerButtonPanel explorerButton = new ExplorerButtonPanel();
