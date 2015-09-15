@@ -60,7 +60,8 @@ public class TicketListView extends JPanel {
 		
 		JPanel p = new JPanel(new BorderLayout());
 		p.add(new PosButton("PREV"), BorderLayout.NORTH);
-		p.add(new PosButton("NEXT"), BorderLayout.SOUTH);
+		//p.add(new PosButton("NEXT"), BorderLayout.SOUTH);
+		
 		p.add(scrollPane.getVerticalScrollBar());
 		add(p, BorderLayout.EAST);
 		
