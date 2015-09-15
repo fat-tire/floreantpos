@@ -41,26 +41,24 @@ public class MenuItemDAO extends BaseMenuItemDAO {
 
 			Hibernate.initialize(menuItem.getMenuItemModiferGroups());
 
-			List<MenuItemModifierGroup> menuItemModiferGroups = menuItem
-					.getMenuItemModiferGroups();
+			List<MenuItemModifierGroup> menuItemModiferGroups = menuItem.getMenuItemModiferGroups();
 			if (menuItemModiferGroups != null) {
 				for (MenuItemModifierGroup menuItemModifierGroup : menuItemModiferGroups) {
-					Hibernate.initialize(menuItemModifierGroup
-							.getModifierGroup().getModifiers());
+					Hibernate.initialize(menuItemModifierGroup.getModifierGroup().getModifiers());
 				}
 			}
 
 			Hibernate.initialize(menuItem.getShifts());
 
 			return menuItem;
-		} finally {
+		}
+		finally {
 			closeSession(session);
 		}
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<MenuItem> findByParent(MenuGroup group,
-			boolean includeInvisibleItems) throws PosException {
+	public List<MenuItem> findByParent(MenuGroup group, boolean includeInvisibleItems) throws PosException {
 		Session session = null;
 
 		try {
@@ -70,23 +68,22 @@ public class MenuItemDAO extends BaseMenuItemDAO {
 			criteria.addOrder(Order.asc(MenuItem.PROP_SORT_ORDER));
 
 			if (!includeInvisibleItems) {
-				criteria.add(Restrictions.eq(MenuItem.PROP_VISIBLE,
-						Boolean.TRUE));
+				criteria.add(Restrictions.eq(MenuItem.PROP_VISIBLE, Boolean.TRUE));
 			}
 
 			return criteria.list();
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new PosException("Error occured while finding food items");
-		} finally {
+		}
+		finally {
 			if (session != null) {
 				session.close();
 			}
 		}
 	}
 
-	public List<MenuItemModifierGroup> findModifierGroups(MenuItem item)
-			throws PosException {
+	public List<MenuItemModifierGroup> findModifierGroups(MenuItem item) throws PosException {
 		Session session = null;
 
 		try {
@@ -99,19 +96,13 @@ public class MenuItemDAO extends BaseMenuItemDAO {
 			return newItem.getMenuItemModiferGroups();
 		} catch (Exception e) {
 			throw new PosException("Error occured while finding food items");
-		} finally {
+		}
+		finally {
 			if (session != null) {
 				session.close();
 			}
 		}
 	}
-
-	
-
-	
-
-	
-	
 
 	public List<MenuItem> getSimilar(String itemName, MenuGroup menuGroup) {
 		Session session = null;
@@ -121,22 +112,19 @@ public class MenuItemDAO extends BaseMenuItemDAO {
 			criteria = session.createCriteria(MenuItem.class);
 
 			if (StringUtils.isNotEmpty(itemName)) {
-				criteria.add(Restrictions.ilike(MenuItem.PROP_NAME,
-						itemName.trim(), MatchMode.ANYWHERE));
+				criteria.add(Restrictions.ilike(MenuItem.PROP_NAME, itemName.trim(), MatchMode.ANYWHERE));
 			}
-
 
 			if (menuGroup != null) {
 				criteria.add(Restrictions.eq(MenuItem.PROP_PARENT, menuGroup));
 			}
 
 			String p = menuGroup.toString();
-			if(p=="FULL LIST"){
+			if (p == "FULL LIST") {
 				criteria = session.createCriteria(MenuItem.class);
 
 				return criteria.list();
 			}
-			
 
 			return criteria.list();
 
@@ -146,7 +134,5 @@ public class MenuItemDAO extends BaseMenuItemDAO {
 		return criteria.list();
 
 	}
-
-	
 
 }
