@@ -46,7 +46,7 @@ public class MenuItem extends BaseMenuItem {
 
 	/*[CONSTRUCTOR MARKER END]*/
 
-	public ImageIcon imageAsIcon;
+	private ImageIcon imageAsIcon;
 
 	public ImageIcon getImageAsIcon() {
 		Image scaledInstance = null;
@@ -69,7 +69,7 @@ public class MenuItem extends BaseMenuItem {
 		return sortOrder == null ? 9999 : sortOrder;
 	}
 
-	public Color buttonAsColor;
+	private Color buttonAsColor;
 
 	public Color getButtonAsColor() {
 		Color color = null;
