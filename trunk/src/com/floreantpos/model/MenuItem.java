@@ -22,7 +22,11 @@ import com.floreantpos.model.base.BaseMenuItem;
 
 @XmlRootElement(name = "menu-item")
 public class MenuItem extends BaseMenuItem {
+
 	private static final long serialVersionUID = 1L;
+
+	private ImageIcon imageAsIcon;
+	private Color buttonAsColor;
 
 	/*[CONSTRUCTOR MARKER BEGIN]*/
 	public MenuItem() {
@@ -46,8 +50,6 @@ public class MenuItem extends BaseMenuItem {
 
 	/*[CONSTRUCTOR MARKER END]*/
 
-	private ImageIcon imageAsIcon;
-
 	public ImageIcon getImageAsIcon() {
 		Image scaledInstance = null;
 		ImageIcon icon = null;
@@ -68,8 +70,6 @@ public class MenuItem extends BaseMenuItem {
 	public Integer getSortOrder() {
 		return sortOrder == null ? 9999 : sortOrder;
 	}
-
-	private Color buttonAsColor;
 
 	public Color getButtonAsColor() {
 		Color color = null;
