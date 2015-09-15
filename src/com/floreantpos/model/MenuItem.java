@@ -25,9 +25,6 @@ public class MenuItem extends BaseMenuItem {
 
 	private static final long serialVersionUID = 1L;
 
-	private ImageIcon imageAsIcon;
-	private Color buttonAsColor;
-
 	/*[CONSTRUCTOR MARKER BEGIN]*/
 	public MenuItem() {
 		super();
