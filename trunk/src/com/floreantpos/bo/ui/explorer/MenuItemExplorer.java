@@ -3,41 +3,28 @@ package com.floreantpos.bo.ui.explorer;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.util.List;
-
 import javax.swing.BorderFactory;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
-
 import net.miginfocom.swing.MigLayout;
-
 import org.jdesktop.swingx.JXTable;
-
 import com.floreantpos.POSConstants;
 import com.floreantpos.bo.ui.BOMessageDialog;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.MenuGroup;
 import com.floreantpos.model.MenuItem;
-import com.floreantpos.model.Ticket;
 import com.floreantpos.model.dao.MenuGroupDAO;
 import com.floreantpos.model.dao.MenuItemDAO;
-import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.swing.BeanTableModel;
-import com.floreantpos.swing.PosButton;
 import com.floreantpos.swing.TransparentPanel;
-
 import com.floreantpos.ui.dialog.BeanEditorDialog;
 import com.floreantpos.ui.dialog.ConfirmDeleteDialog;
 import com.floreantpos.ui.model.MenuItemForm;
@@ -75,9 +62,6 @@ public class MenuItemExplorer extends TransparentPanel {
 	}
 
 	private JPanel buildSearchForm() {
-
-		List<MenuGroup> grpName;
-
 		JPanel panel = new JPanel();
 		panel.setLayout(new MigLayout("", "[][]30[][]30[]", "[]20[]"));
 
@@ -85,50 +69,53 @@ public class MenuItemExplorer extends TransparentPanel {
 		JLabel groupLabel = new JLabel("Group : ");
 		final JTextField nameField = new JTextField(15);
 
-		grpName = MenuGroupDAO.getInstance().findAll();
+		try {
+			
+			List<MenuGroup> grpName = MenuGroupDAO.getInstance().findAll();
 
-		final JComboBox cbGroup = new JComboBox();
+			final JComboBox cbGroup = new JComboBox();
 
-		cbGroup.addItem("FULL  LIST");
-		for (MenuGroup s : grpName) {
-			cbGroup.addItem(s);
-		}
-
-		JButton searchBttn = new JButton("Search");
-
-		panel.add(nameLabel, "align label");
-		panel.add(nameField);
-		panel.add(groupLabel);
-
-		panel.add(cbGroup);
-		panel.add(searchBttn);
-
-		TitledBorder title;
-		Border loweredetched;
-		loweredetched = BorderFactory.createEtchedBorder(EtchedBorder.LOWERED);
-		title = BorderFactory.createTitledBorder(loweredetched, "Search");
-		title.setTitleJustification(TitledBorder.LEFT);
-		panel.setBorder(title);
-
-		searchBttn.addActionListener(new ActionListener() {
-
-			public void actionPerformed(ActionEvent e) {
-
-				String txName = nameField.getText();
-				Object selectedItem = cbGroup.getSelectedItem();
-
-				List<MenuItem> similarItem = null;
-				if (selectedItem instanceof MenuGroup) {
-					similarItem = MenuItemDAO.getInstance().getSimilar(txName, (MenuGroup) selectedItem);
-				} else {
-					similarItem = MenuItemDAO.getInstance().getSimilar(txName, null);
-				}
-
-				tableModel.removeAll();
-				tableModel.addRows(similarItem);
-
+			cbGroup.addItem("< All >");
+			for (MenuGroup s : grpName) {
+				cbGroup.addItem(s);
 			}
-		});
+
+			JButton searchBttn = new JButton("Search");
+
+			panel.add(nameLabel, "align label");
+			panel.add(nameField);
+			panel.add(groupLabel);
+			panel.add(cbGroup);
+			panel.add(searchBttn);
+
+			Border loweredetched = BorderFactory.createEtchedBorder(EtchedBorder.LOWERED);
+			TitledBorder title = BorderFactory.createTitledBorder(loweredetched, "Search");
+			title.setTitleJustification(TitledBorder.LEFT);
+			panel.setBorder(title);
+
+			searchBttn.addActionListener(new ActionListener() {
+
+				public void actionPerformed(ActionEvent e) {
+
+					String txName = nameField.getText();
+					Object selectedItem = cbGroup.getSelectedItem();
+
+					List<MenuItem> similarItem = null;
+					if (selectedItem instanceof MenuGroup) {
+						similarItem = MenuItemDAO.getInstance().getSimilar(txName, (MenuGroup) selectedItem);
+					} else {
+						similarItem = MenuItemDAO.getInstance().getSimilar(txName, null);
+					}
+
+					tableModel.removeAll();
+					tableModel.addRows(similarItem);
+
+				}
+			});
+
+		} catch (Throwable x) {
+			BOMessageDialog.showError(POSConstants.ERROR_MESSAGE, x);
+		}
 
 		return panel;
 	}
