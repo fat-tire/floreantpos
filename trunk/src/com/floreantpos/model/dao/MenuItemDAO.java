@@ -1,23 +1,17 @@
 package com.floreantpos.model.dao;
 
 import java.util.List;
-
-
-
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
-
 import org.hibernate.Session;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
-
 import com.floreantpos.PosException;
 import com.floreantpos.model.MenuGroup;
 import com.floreantpos.model.MenuItem;
 import com.floreantpos.model.MenuItemModifierGroup;
-
 
 public class MenuItemDAO extends BaseMenuItemDAO {
 
@@ -118,7 +112,7 @@ public class MenuItemDAO extends BaseMenuItemDAO {
 			}
 
 			String p = menuGroup.toString();
-			if (p == "< All >") {
+			if (p == "< ALL >") {
 				criteria = session.createCriteria(MenuItem.class);
 
 				return criteria.list();

@@ -2,20 +2,10 @@ package com.floreantpos.model;
 
 import java.awt.Color;
 import java.awt.Image;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
-
-import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.xml.bind.annotation.XmlRootElement;
-
 import org.apache.commons.lang.StringUtils;
-
 import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.base.BaseMenuItem;
@@ -50,10 +40,12 @@ public class MenuItem extends BaseMenuItem {
 	public ImageIcon getImageAsIcon() {
 		Image scaledInstance = null;
 		ImageIcon icon = null;
+		int width = 100;
+		int height = 100;
 		byte[] imageData = getImage();
 		if (imageData != null) {
 			icon = new ImageIcon(imageData);
-			scaledInstance = icon.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+			scaledInstance = icon.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH);
 			return new ImageIcon(scaledInstance);
 		}
 		return icon;
@@ -179,7 +171,7 @@ public class MenuItem extends BaseMenuItem {
 
 	public ImageIcon getScaledImage(int width, int height) {
 		ImageIcon icon = new ImageIcon(getImage());
-		Image scaledInstance = icon.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+		Image scaledInstance = icon.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH);
 		return new ImageIcon(scaledInstance);
 	}
 
