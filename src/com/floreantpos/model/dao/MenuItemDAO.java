@@ -107,12 +107,9 @@ public class MenuItemDAO extends BaseMenuItemDAO {
 				criteria.add(Restrictions.ilike(MenuItem.PROP_NAME, itemName.trim(), MatchMode.ANYWHERE));
 			}
 
-			if (menuGroup != null) {
+			if (menuGroup instanceof MenuGroup) {
 				criteria.add(Restrictions.eq(MenuItem.PROP_PARENT, menuGroup));
-			}
-
-			String p = menuGroup.toString();
-			if (p == "< ALL >") {
+			} else {
 				criteria = session.createCriteria(MenuItem.class);
 
 				return criteria.list();
