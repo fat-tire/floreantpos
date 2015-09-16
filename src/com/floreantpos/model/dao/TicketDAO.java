@@ -10,6 +10,7 @@ import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
@@ -36,6 +37,7 @@ import com.floreantpos.model.User;
 import com.floreantpos.model.VoidTransaction;
 import com.floreantpos.model.util.TicketSummary;
 import com.floreantpos.services.PosTransactionService;
+import com.floreantpos.swing.PaginatedTableModel;
 
 public class TicketDAO extends BaseTicketDAO {
 	private final static TicketDAO instance = new TicketDAO();
@@ -45,40 +47,45 @@ public class TicketDAO extends BaseTicketDAO {
 	 */
 	public TicketDAO() {
 	}
-	
+
+	@Override
+	public Order getDefaultOrder() {
+		return Order.asc(Ticket.PROP_ID);
+	}
+
 	@Override
 	public synchronized void saveOrUpdate(Ticket ticket) {
 		Session session = null;
 		Transaction tx = null;
-		
+
 		try {
-			
+
 			session = createNewSession();
 			tx = session.beginTransaction();
-			
+
 			adjustInventoryItems(session, ticket);
-			
+
 			ticket.setActiveDate(Calendar.getInstance().getTime());
-			
+
 			session.saveOrUpdate(ticket);
 
 			ticket.clearDeletedItems();
-			
+
 			DataUpdateInfo lastUpdateInfo = DataUpdateInfoDAO.getLastUpdateInfo();
 			lastUpdateInfo.setLastUpdateTime(new Date());
 			session.update(lastUpdateInfo);
-			
+
 			tx.commit();
-			
+
 		} catch (Exception e) {
-			if(tx != null) {
+			if (tx != null) {
 				tx.rollback();
 			}
-			
+
 			throwException(e);
-			
+
 		} finally {
-			if(session != null) {
+			if (session != null) {
 				session.close();
 			}
 		}
@@ -88,33 +95,33 @@ public class TicketDAO extends BaseTicketDAO {
 	public void saveOrUpdate(Ticket ticket, Session session) {
 		adjustInventoryItems(session, ticket);
 		ticket.setActiveDate(Calendar.getInstance().getTime());
-		
+
 		session.saveOrUpdate(ticket);
-		
+
 		ticket.clearDeletedItems();
-		
+
 		DataUpdateInfo lastUpdateInfo = DataUpdateInfoDAO.getLastUpdateInfo();
 		lastUpdateInfo.setLastUpdateTime(new Date());
-		
+
 		session.update(lastUpdateInfo);
 	}
-	
+
 	public void voidTicket(Ticket ticket) throws Exception {
 		Session session = null;
 		Transaction tx = null;
-		
+
 		try {
 			session = createNewSession();
 			tx = session.beginTransaction();
-		
+
 			Terminal terminal = Application.getInstance().getTerminal();
-			
+
 			ticket.setVoided(true);
 			ticket.setClosed(true);
 			ticket.setClosingDate(new Date());
 			ticket.setTerminal(terminal);
-			
-			if(ticket.isPaid()) {
+
+			if (ticket.isPaid()) {
 				VoidTransaction transaction = new VoidTransaction();
 				transaction.setTicket(ticket);
 				transaction.setTerminal(terminal);
@@ -124,15 +131,15 @@ public class TicketDAO extends BaseTicketDAO {
 				transaction.setAmount(ticket.getPaidAmount());
 				transaction.setTerminal(Application.getInstance().getTerminal());
 				transaction.setCaptured(true);
-				
+
 				PosTransactionService.adjustTerminalBalance(transaction);
-				
+
 				ticket.addTotransactions(transaction);
 			}
-			
+
 			session.update(ticket);
 			session.update(terminal);
-			
+
 			session.flush();
 			tx.commit();
 		} catch (Exception x) {
@@ -147,14 +154,15 @@ public class TicketDAO extends BaseTicketDAO {
 			closeSession(session);
 		}
 	}
-	
+
 	public Ticket loadFullTicket(int id) {
 		Session session = createNewSession();
-		
+
 		Ticket ticket = (Ticket) session.get(getReferenceClass(), id);
-		
-		if(ticket == null) return null;
-		
+
+		if (ticket == null)
+			return null;
+
 		Hibernate.initialize(ticket.getTicketItems());
 		Hibernate.initialize(ticket.getCouponAndDiscounts());
 		Hibernate.initialize(ticket.getTransactions());
@@ -171,25 +179,25 @@ public class TicketDAO extends BaseTicketDAO {
 				}
 			}
 		}
-		
+
 		session.close();
-		
+
 		return ticket;
 	}
-	
+
 	public Ticket loadCouponsAndTransactions(int id) {
 		Session session = createNewSession();
-		
+
 		Ticket ticket = (Ticket) session.get(getReferenceClass(), id);
-		
+
 		Hibernate.initialize(ticket.getCouponAndDiscounts());
 		Hibernate.initialize(ticket.getTransactions());
-		
+
 		session.close();
-		
+
 		return ticket;
 	}
-	
+
 	public List<Gratuity> getServerGratuities(Terminal terminal, String transactionType) {
 		Session session = null;
 		ArrayList<Gratuity> gratuities = new ArrayList<Gratuity>();
@@ -212,9 +220,10 @@ public class TicketDAO extends BaseTicketDAO {
 			closeSession(session);
 		}
 	}
+
 	public double getPaidGratuityAmount(Terminal terminal) {
 		Session session = null;
-		
+
 		try {
 			session = getSession();
 			Criteria criteria = session.createCriteria(getReferenceClass(), "t");
@@ -222,10 +231,11 @@ public class TicketDAO extends BaseTicketDAO {
 			criteria.add(Restrictions.eq(Ticket.PROP_DRAWER_RESETTED, Boolean.FALSE));
 			criteria.add(Restrictions.eq(Ticket.PROP_TERMINAL, terminal));
 			criteria.add(Restrictions.eq("gratuity.paid", Boolean.TRUE));
+
 			criteria.setProjection(Projections.sum("gratuity.amount"));
-			
+
 			List list = criteria.list();
-			if(list.size() > 0 && list.get(0) instanceof Number) {
+			if (list.size() > 0 && list.get(0) instanceof Number) {
 				return ((Number) list.get(0)).doubleValue();
 			}
 			return 0;
@@ -241,6 +251,8 @@ public class TicketDAO extends BaseTicketDAO {
 			session = getSession();
 			Criteria criteria = session.createCriteria(getReferenceClass());
 			criteria.add(Restrictions.eq(Ticket.PROP_CLOSED, Boolean.FALSE));
+			criteria.addOrder(getDefaultOrder());
+
 			List list = criteria.list();
 			return list;
 		} finally {
@@ -248,34 +260,96 @@ public class TicketDAO extends BaseTicketDAO {
 		}
 	}
 	
-	public List<Ticket> findOpenTicketsForUser(User user) {
+	public List<Ticket> findTickets(PaginatedTableModel tableModel) {
 		Session session = null;
+		Criteria criteria = null;
 		
 		try {
-			session = getSession();
-			Criteria criteria = session.createCriteria(getReferenceClass());
-			criteria.add(Restrictions.eq(Ticket.PROP_CLOSED, Boolean.FALSE));
-			//criteria.add(Restrictions.eq(Ticket.PROP_VOIDED, Boolean.FALSE));
-			//criteria.add(Restrictions.eq(Ticket.PROP_REFUNDED, Boolean.FALSE));
-			criteria.add(Restrictions.eq(Ticket.PROP_OWNER, user));
-			List list = criteria.list();
-			return list;
+			session = createNewSession();
+			criteria = session.createCriteria(getReferenceClass());
+			updateCriteriaFilters(criteria);
+
+			criteria.setFirstResult(0);
+			criteria.setMaxResults(tableModel.getPageSize());
+
+			List ticketList = criteria.list();
+
+			criteria.setProjection(Projections.rowCount());
+			Integer rowCount = (Integer) criteria.uniqueResult();
+			if (rowCount != null) {
+				tableModel.setNumRows(rowCount);
+
+			}
+
+			tableModel.setCurrentRowIndex(0);
+			
+			return ticketList;
+
 		} finally {
 			closeSession(session);
 		}
 	}
-	
-	public List<Ticket> findOpenTickets(Date startDate, Date endDate) {
-		Session session = null;
 
+	public List<Ticket> findNextTickets(PaginatedTableModel tableModel) {
+		Session session = null;
+		Criteria criteria = null;
+		
 		try {
-			session = getSession();
-			Criteria criteria = session.createCriteria(getReferenceClass());
-			criteria.add(Restrictions.eq(Ticket.PROP_CLOSED, Boolean.FALSE));
-			criteria.add(Restrictions.ge(Ticket.PROP_CREATE_DATE, startDate));
-			criteria.add(Restrictions.le(Ticket.PROP_CREATE_DATE, endDate));
-			List list = criteria.list();
-			return list;
+			int nextIndex = tableModel.getNextRowIndex();
+			
+			session = createNewSession();
+			criteria = session.createCriteria(getReferenceClass());
+			
+			updateCriteriaFilters(criteria);
+
+			criteria.setFirstResult(nextIndex);
+			criteria.setMaxResults(tableModel.getPageSize());
+
+			List ticketList = criteria.list();
+
+			criteria.setProjection(Projections.rowCount());
+			Integer rowCount = (Integer) criteria.uniqueResult();
+			if (rowCount != null) {
+				tableModel.setNumRows(rowCount);
+
+			}
+
+			tableModel.setCurrentRowIndex(nextIndex);
+			
+			return ticketList;
+
+		} finally {
+			closeSession(session);
+		}
+	}
+
+	public List<Ticket> findPreviousTickets(PaginatedTableModel tableModel) {
+		Session session = null;
+		Criteria criteria = null;
+		try {
+
+			int previousIndex = tableModel.getPreviousRowIndex();
+			
+			session = createNewSession();
+			criteria = session.createCriteria(getReferenceClass());
+			updateCriteriaFilters(criteria);
+
+			criteria.setFirstResult(previousIndex);
+			criteria.setMaxResults(tableModel.getPageSize());
+
+			List ticketList = criteria.list();
+
+			criteria.setProjection(Projections.rowCount());
+			Integer rowCount = (Integer) criteria.uniqueResult();
+			if (rowCount != null) {
+				tableModel.setNumRows(rowCount);
+
+			}
+
+			tableModel.setCurrentRowIndex(previousIndex);
+			
+			return ticketList;
+
 		} finally {
 			closeSession(session);
 		}
@@ -325,29 +399,38 @@ public class TicketDAO extends BaseTicketDAO {
 		}
 	}
 
-//	public Ticket findTicketByTableNumber(int tableNumber) {
-//		Session session = null;
-//
-//		try {
-//			session = getSession();
-//			Criteria criteria = session.createCriteria(getReferenceClass());
-//			criteria.add(Restrictions.eq(Ticket.PROP_CLOSED, Boolean.FALSE));
-//			criteria.add(Restrictions.eq(Ticket.PROP_TABLE_NUMBER, Integer.valueOf(tableNumber)));
-//			
-//			List list = criteria.list();
-//			if(list.size() <= 0) {
-//				return null;
-//			}
-//			
-//			return (Ticket) list.get(0);
-//		} finally {
-//			closeSession(session);
-//		}
-//	}
-	
-//	public boolean hasTicketByTableNumber(int tableNumber) {
-//		return findTicketByTableNumber(tableNumber) != null;
-//	}
+	public List<Ticket> findOpenTicketsForUser(User user) {
+		Session session = null;
+
+		try {
+			session = getSession();
+			Criteria criteria = session.createCriteria(getReferenceClass());
+			criteria.add(Restrictions.eq(Ticket.PROP_CLOSED, Boolean.FALSE));
+			//criteria.add(Restrictions.eq(Ticket.PROP_VOIDED, Boolean.FALSE));
+			//criteria.add(Restrictions.eq(Ticket.PROP_REFUNDED, Boolean.FALSE));
+			criteria.add(Restrictions.eq(Ticket.PROP_OWNER, user));
+			List list = criteria.list();
+			return list;
+		} finally {
+			closeSession(session);
+		}
+	}
+
+	public List<Ticket> findOpenTickets(Date startDate, Date endDate) {
+		Session session = null;
+
+		try {
+			session = getSession();
+			Criteria criteria = session.createCriteria(getReferenceClass());
+			criteria.add(Restrictions.eq(Ticket.PROP_CLOSED, Boolean.FALSE));
+			criteria.add(Restrictions.ge(Ticket.PROP_CREATE_DATE, startDate));
+			criteria.add(Restrictions.le(Ticket.PROP_CREATE_DATE, endDate));
+			List list = criteria.list();
+			return list;
+		} finally {
+			closeSession(session);
+		}
+	}
 
 	public TicketSummary getOpenTicketSummary() {
 		Session session = null;
@@ -522,105 +605,134 @@ public class TicketDAO extends BaseTicketDAO {
 	public static TicketDAO getInstance() {
 		return instance;
 	}
-	
+
 	private void adjustInventoryItems(Session session, Ticket ticket) {
 		List<TicketItem> ticketItems = ticket.getTicketItems();
-		if(ticketItems == null) {
+		if (ticketItems == null) {
 			return;
 		}
-		
+
 		for (TicketItem ticketItem : ticketItems) {
-			if(ticketItem.isInventoryHandled()) {
+			if (ticketItem.isInventoryHandled()) {
 				continue;
 			}
-			
+
 			Integer menuItemId = ticketItem.getItemId();
 			MenuItem menuItem = MenuItemDAO.getInstance().get(menuItemId);
-			
-			if(menuItem == null) {
+
+			if (menuItem == null) {
 				continue;
 			}
-			
+
 			Recepie recepie = menuItem.getRecepie();
-			
-			if(recepie == null) {
+
+			if (recepie == null) {
 				continue;
 			}
-			
+
 			List<RecepieItem> recepieItems = recepie.getRecepieItems();
 			for (RecepieItem recepieItem : recepieItems) {
-				if(!recepieItem.isInventoryDeductable()) {
+				if (!recepieItem.isInventoryDeductable()) {
 					continue;
 				}
-				
+
 				InventoryItem inventoryItem = recepieItem.getInventoryItem();
 				inventoryItem.setTotalPackages(inventoryItem.getTotalPackages() - ticketItem.getItemCount());
 				Double totalRecepieUnits = inventoryItem.getTotalRecepieUnits();
 				inventoryItem.setTotalRecepieUnits(totalRecepieUnits - ticketItem.getItemCount());
-				
+
 				session.saveOrUpdate(inventoryItem);
-				
+
 				InventoryTransaction transaction = new InventoryTransaction();
 				transaction.setType(InventoryTransactionType.OUT);
 				transaction.setUnitPrice(inventoryItem.getUnitSellingPrice());
 				transaction.setInventoryItem(inventoryItem);
 				transaction.setQuantity(ticketItem.getItemCount());
 				transaction.setRemark("OUT as a recepie item for " + ticketItem.getName() + " for ticket " + ticket.getId());
-				
+
 				session.save(transaction);
 			}
-			
+
 			ticketItem.setInventoryHandled(true);
 		}
-		
+
 		List deletedItems = ticket.getDeletedItems();
-		if(deletedItems == null) {
+		if (deletedItems == null) {
 			return;
 		}
-		
+
 		for (Object o : deletedItems) {
-			if(!(o instanceof TicketItem)) {
+			if (!(o instanceof TicketItem)) {
 				continue;
 			}
-			
+
 			TicketItem ticketItem = (TicketItem) o;
-			
-			if(!ticketItem.isInventoryHandled()) {
+
+			if (!ticketItem.isInventoryHandled()) {
 				continue;
 			}
-			
+
 			Integer menuItemId = ticketItem.getItemId();
 			MenuItem menuItem = MenuItemDAO.getInstance().get(menuItemId);
 			Recepie recepie = menuItem.getRecepie();
-			
-			if(recepie == null) {
+
+			if (recepie == null) {
 				return;
 			}
-			
+
 			List<RecepieItem> recepieItems = recepie.getRecepieItems();
 			for (RecepieItem recepieItem : recepieItems) {
-				if(!recepieItem.isInventoryDeductable()) {
+				if (!recepieItem.isInventoryDeductable()) {
 					continue;
 				}
-				
+
 				InventoryItem inventoryItem = recepieItem.getInventoryItem();
 				inventoryItem.setTotalPackages(inventoryItem.getTotalPackages() + ticketItem.getItemCount());
 				Double totalRecepieUnits = inventoryItem.getTotalRecepieUnits();
 				inventoryItem.setTotalRecepieUnits(totalRecepieUnits + ticketItem.getItemCount());
-				
+
 				session.saveOrUpdate(inventoryItem);
-				
+
 				InventoryTransaction transaction = new InventoryTransaction();
 				transaction.setType(InventoryTransactionType.IN);
 				transaction.setUnitPrice(inventoryItem.getUnitSellingPrice());
 				transaction.setInventoryItem(inventoryItem);
 				transaction.setQuantity(ticketItem.getItemCount());
 				transaction.setRemark("IN as " + ticketItem.getName() + " was canceled for ticket " + ticket.getId());
-				
+
 				session.save(transaction);
 			}
-			
+
 			ticketItem.setInventoryHandled(true);
+		}
+	}
+	
+	//private methods
+	
+	private void updateCriteriaFilters(Criteria criteria) {
+		User user = Application.getCurrentUser();
+		PaymentStatusFilter paymentStatusFilter = com.floreantpos.config.TerminalConfig.getPaymentStatusFilter();
+		OrderTypeFilter orderTypeFilter = com.floreantpos.config.TerminalConfig.getOrderTypeFilter();
+
+		if (paymentStatusFilter == PaymentStatusFilter.OPEN) {
+			criteria.add(Restrictions.eq(Ticket.PROP_PAID, Boolean.FALSE));
+			criteria.add(Restrictions.eq(Ticket.PROP_CLOSED, Boolean.FALSE));
+		}
+		else if (paymentStatusFilter == PaymentStatusFilter.PAID) {
+			criteria.add(Restrictions.eq(Ticket.PROP_PAID, Boolean.TRUE));
+			criteria.add(Restrictions.eq(Ticket.PROP_CLOSED, Boolean.FALSE));
+		}
+		else if (paymentStatusFilter == PaymentStatusFilter.CLOSED) {
+			criteria.add(Restrictions.eq(Ticket.PROP_DRAWER_RESETTED, Boolean.FALSE));
+			criteria.add(Restrictions.eq(Ticket.PROP_CLOSED, Boolean.TRUE));
+		}
+
+		if (orderTypeFilter != OrderTypeFilter.ALL) {
+			criteria.add(Restrictions.eq(Ticket.PROP_TICKET_TYPE, orderTypeFilter.name()));
+		}
+
+		if (!user.canViewAllOpenTickets()) {
+			criteria.add(Restrictions.eq(Ticket.PROP_OWNER, user));
 		}
 	}
 }
