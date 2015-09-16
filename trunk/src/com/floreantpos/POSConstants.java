@@ -238,6 +238,7 @@ public class POSConstants {
 	public static final String DATE_TIME = Messages.getString("PosMessage.177"); //$NON-NLS-1$
 	public static final String TAX = Messages.getString("PosMessage.178"); //$NON-NLS-1$
 	public static final String NAME = Messages.getString("PosMessage.179"); //$NON-NLS-1$
+	public static final String IMAGE = Messages.getString("PosMessage.179.1"); //$NON-NLS-1$
 	public static final String TRANSLATED_NAME = Messages.getString("Translated_Name"); //$NON-NLS-1$
 	public static final String SORT_ORDER = Messages.getString("SORT_ORDER"); //$NON-NLS-1$
 	public static final String BUTTON_COLOR = Messages.getString("BUTTON_COLOR"); //$NON-NLS-1$
