@@ -46,7 +46,7 @@ public class MenuItemExplorer extends TransparentPanel {
 		tableModel.addColumn(POSConstants.TAX.toUpperCase(), "tax");
 		tableModel.addColumn(POSConstants.SORT_ORDER.toUpperCase(), "sortOrder");
 		tableModel.addColumn(POSConstants.BUTTON_COLOR.toUpperCase(), "buttonAsColor");
-		tableModel.addColumn("image", "imageAsIcon");
+		tableModel.addColumn(POSConstants.IMAGE.toUpperCase(), "imageAsIcon");
 
 		tableModel.addRows(MenuItemDAO.getInstance().findAll());
 
@@ -70,13 +70,13 @@ public class MenuItemExplorer extends TransparentPanel {
 		final JTextField nameField = new JTextField(15);
 
 		try {
-			
-			List<MenuGroup> grpName = MenuGroupDAO.getInstance().findAll();
+
+			List<MenuGroup> menuGroupList = MenuGroupDAO.getInstance().findAll();
 
 			final JComboBox cbGroup = new JComboBox();
 
-			cbGroup.addItem("< All >");
-			for (MenuGroup s : grpName) {
+			cbGroup.addItem("< ALL >");
+			for (MenuGroup s : menuGroupList) {
 				cbGroup.addItem(s);
 			}
 
