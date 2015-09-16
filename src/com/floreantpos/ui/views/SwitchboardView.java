@@ -13,18 +13,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
 import javax.swing.BorderFactory;
-import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.Timer;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
@@ -46,7 +43,6 @@ import com.floreantpos.actions.VoidTicketAction;
 import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.extension.OrderServiceExtension;
 import com.floreantpos.main.Application;
-import com.floreantpos.model.DataUpdateInfo;
 import com.floreantpos.model.OrderType;
 import com.floreantpos.model.OrderTypeFilter;
 import com.floreantpos.model.OrderTypeProperties;
@@ -55,12 +51,10 @@ import com.floreantpos.model.Ticket;
 import com.floreantpos.model.User;
 import com.floreantpos.model.UserPermission;
 import com.floreantpos.model.UserType;
-import com.floreantpos.model.dao.DataUpdateInfoDAO;
 import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.services.TicketService;
-import com.floreantpos.swing.POSToggleButton;
-import com.floreantpos.swing.PosBlinkButton;
 import com.floreantpos.swing.PosButton;
+import com.floreantpos.ui.TicketListUpdateListener;
 import com.floreantpos.ui.dialog.NumberSelectionDialog2;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.views.order.DefaultOrderServiceExtension;
@@ -71,28 +65,27 @@ import com.floreantpos.ui.views.order.ViewPanel;
 import com.floreantpos.ui.views.payment.SettleTicketDialog;
 import com.floreantpos.util.OrderUtil;
 import com.floreantpos.util.POSUtil;
-import com.floreantpos.util.PosGuiUtil;
 import com.floreantpos.util.TicketAlreadyExistsException;
 
 /**
  * 
  * @author MShahriar
  */
-public class SwitchboardView extends ViewPanel implements ActionListener, ITicketList {
+public class SwitchboardView extends ViewPanel implements ActionListener, ITicketList, TicketListUpdateListener {
 
 	public final static String VIEW_NAME = com.floreantpos.POSConstants.SWITCHBOARD;
 
 	private OrderServiceExtension orderServiceExtension;
 
 	private static SwitchboardView instance;
-	
-	private Date lastUpdateTime;
-	
-	private Timer lastUpateCheckTimer = new Timer(5 * 1000, new TaskLastUpdateCheck());
 
+
+	//TicketListView tickteListViewObj;
 	/** Creates new form SwitchboardView */
 	private SwitchboardView() {
 		initComponents();
+
+		ticketList.addTicketListUpateListener(this);
 
 		btnDineIn.addActionListener(this);
 		btnTakeout.addActionListener(this);
@@ -124,10 +117,10 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 	}
 
 	public static SwitchboardView getInstance() {
-		if(instance == null) {
+		if (instance == null) {
 			instance = new SwitchboardView();
 		}
-		
+
 		return instance;
 	}
 
@@ -147,10 +140,9 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 
 		ticketsListPanelBorder = BorderFactory.createTitledBorder(null, POSConstants.OPEN_TICKETS_AND_ACTIVITY, TitledBorder.CENTER,
 				TitledBorder.DEFAULT_POSITION);
+
 		ticketsAndActivityPanel.setBorder(new CompoundBorder(ticketsListPanelBorder, new EmptyBorder(2, 2, 2, 2)));
 
-		orderFiltersPanel = createOrderFilters();
-		ticketsAndActivityPanel.add(orderFiltersPanel, BorderLayout.NORTH);
 		ticketsAndActivityPanel.add(ticketList, java.awt.BorderLayout.CENTER);
 
 		JPanel activityPanel = createActivityPanel();
@@ -170,11 +162,11 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 		});
 
 		centerPanel.add(ticketsAndActivityPanel, java.awt.BorderLayout.CENTER);
-		
+
 		JPanel rightPanel = new JPanel(new BorderLayout(20, 20));
 		TitledBorder titledBorder2 = BorderFactory.createTitledBorder(null, "-", TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION); //$NON-NLS-1$
 		rightPanel.setBorder(new CompoundBorder(titledBorder2, new EmptyBorder(2, 2, 6, 2)));
-		
+
 		JPanel orderPanel = new JPanel(new MigLayout("ins 2 2 0 2, fill, hidemode 3, flowy", "fill, grow", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		orderPanel.add(btnDineIn, "grow"); //$NON-NLS-1$
 		orderPanel.add(btnTakeout, "grow"); //$NON-NLS-1$
@@ -184,7 +176,7 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 		orderPanel.add(btnBarTab, "grow"); //$NON-NLS-1$
 
 		setupOrderTypes();
-		
+
 		rightPanel.add(orderPanel);
 
 		PosButton btnOthers = new PosButton(Messages.getString("SwitchboardView.1")); //$NON-NLS-1$
@@ -207,29 +199,15 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 		JPanel innerActivityPanel = new JPanel(new MigLayout("hidemode 3, fill, ins 0", "fill, grow", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 		JPanel panel1 = new JPanel(new GridLayout(1, 0, 5, 5));
-		
-		btnRefreshTicketList.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				updateTicketList();
-			}
-		});
-		panel1.add(btnRefreshTicketList);
-		
-		POSToggleButton btnOrderFilters = new POSToggleButton(Messages.getString("SwitchboardView.2")); //$NON-NLS-1$
-		btnOrderFilters.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				orderFiltersPanel.setCollapsed(!orderFiltersPanel.isCollapsed());
-			}
-		});
 
-		panel1.add(btnOrderFilters);
 		panel1.add(btnOrderInfo);
 		panel1.add(btnEditTicket);
-		
-		if(Application.getInstance().getTerminal().isHasCashDrawer()) {
+
+		if (Application.getInstance().getTerminal().isHasCashDrawer()) {
 			panel1.add(btnSettleTicket);
+		}
+		if (Application.getInstance().getTerminal().isHasCashDrawer()) {
+			panel1.add(btnGroupSettle);
 		}
 		panel1.add(btnCloseOrder);
 
@@ -238,10 +216,7 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 		final JXCollapsiblePane collapsiblePane = new JXCollapsiblePane();
 		collapsiblePane.setAnimated(false);
 		collapsiblePane.getContentPane().setLayout(new GridLayout(1, 0, 5, 5));
-		
-		if(Application.getInstance().getTerminal().isHasCashDrawer()) {
-			collapsiblePane.getContentPane().add(btnGroupSettle);
-		}
+
 		collapsiblePane.getContentPane().add(btnSplitTicket);
 		collapsiblePane.getContentPane().add(btnReopenTicket);
 		collapsiblePane.getContentPane().add(btnVoidTicket);
@@ -279,140 +254,6 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 		return activityPanel;
 	}
 
-	private JXCollapsiblePane createOrderFilters() {
-		JXCollapsiblePane filterPanel = new JXCollapsiblePane();
-		filterPanel.setCollapsed(true);
-		filterPanel.getContentPane().setLayout(new MigLayout("fill", "fill, grow", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-
-		POSToggleButton btnNoPaymentFilter = new POSToggleButton(PaymentStatusFilter.OPEN.toString());
-		POSToggleButton btnFilterByPaid = new POSToggleButton(PaymentStatusFilter.PAID.toString());
-		POSToggleButton btnFilterByUnPaid = new POSToggleButton(PaymentStatusFilter.CLOSED.toString());
-		
-		ButtonGroup paymentGroup = new ButtonGroup();
-		paymentGroup.add(btnNoPaymentFilter);
-		paymentGroup.add(btnFilterByPaid);
-		paymentGroup.add(btnFilterByUnPaid);
-		
-		PaymentStatusFilter paymentStatusFilter = TerminalConfig.getPaymentStatusFilter();
-		switch(paymentStatusFilter) {
-			case OPEN:
-				btnNoPaymentFilter.setSelected(true);
-				break;
-				
-			case PAID:
-				btnFilterByPaid.setSelected(true);
-				break;
-				
-			case CLOSED:
-				btnFilterByUnPaid.setSelected(true);
-				break;
-				
-		}
-		
-		JPanel filterByPaymentStatusPanel = new JPanel(new MigLayout("", "fill, grow", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		filterByPaymentStatusPanel.setBorder(new TitledBorder(Messages.getString("SwitchboardView.3"))); //$NON-NLS-1$
-		filterByPaymentStatusPanel.add(btnNoPaymentFilter);
-		filterByPaymentStatusPanel.add(btnFilterByPaid);
-		filterByPaymentStatusPanel.add(btnFilterByUnPaid);
-		
-		filterPanel.getContentPane().add(filterByPaymentStatusPanel);
-
-		POSToggleButton btnFilterByOrderTypeALL = new POSToggleButton(OrderTypeFilter.ALL.toString());
-		POSToggleButton btnFilterByDineIn = new POSToggleButton(OrderTypeFilter.DINE_IN.toString());
-		POSToggleButton btnFilterByTakeOut = new POSToggleButton(OrderTypeFilter.TAKE_OUT.toString());
-		POSToggleButton btnFilterByPickup = new POSToggleButton(OrderTypeFilter.PICKUP.toString());
-		POSToggleButton btnFilterByHomeDeli = new POSToggleButton(OrderTypeFilter.HOME_DELIVERY.toString());
-		POSToggleButton btnFilterByDriveThru = new POSToggleButton(OrderTypeFilter.DRIVE_THRU.toString());
-		POSToggleButton btnFilterByBarTab = new POSToggleButton(OrderTypeFilter.BAR_TAB.toString());
-		
-		ButtonGroup orderTypeGroup = new ButtonGroup();
-		orderTypeGroup.add(btnFilterByOrderTypeALL);
-		orderTypeGroup.add(btnFilterByDineIn);
-		orderTypeGroup.add(btnFilterByTakeOut);
-		orderTypeGroup.add(btnFilterByPickup);
-		orderTypeGroup.add(btnFilterByHomeDeli);
-		orderTypeGroup.add(btnFilterByDriveThru);
-		orderTypeGroup.add(btnFilterByBarTab);
-
-		OrderTypeFilter orderTypeFilter = TerminalConfig.getOrderTypeFilter();
-		switch(orderTypeFilter) {
-			case ALL:
-				btnFilterByOrderTypeALL.setSelected(true);
-				break;
-				
-			case DINE_IN:
-				btnFilterByDineIn.setSelected(true);
-				break;
-				
-			case TAKE_OUT:
-				btnFilterByTakeOut.setSelected(true);
-				break;
-				
-			case PICKUP:
-				btnFilterByPickup.setSelected(true);
-				break;
-				
-			case HOME_DELIVERY:
-				btnFilterByHomeDeli.setSelected(true);
-				break;
-				
-			case DRIVE_THRU:
-				btnFilterByDriveThru.setSelected(true);
-				break;
-				
-			case BAR_TAB:
-				btnFilterByBarTab.setSelected(true);
-				break;
-		}
-		
-		JPanel filterByOrderPanel = new JPanel(new MigLayout("", "fill, grow", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		filterByOrderPanel.setBorder(new TitledBorder(Messages.getString("SwitchboardView.4"))); //$NON-NLS-1$
-		filterByOrderPanel.add(btnFilterByOrderTypeALL);
-		filterByOrderPanel.add(btnFilterByDineIn);
-		filterByOrderPanel.add(btnFilterByTakeOut);
-		filterByOrderPanel.add(btnFilterByPickup);
-		filterByOrderPanel.add(btnFilterByHomeDeli);
-		filterByOrderPanel.add(btnFilterByDriveThru);
-		filterByOrderPanel.add(btnFilterByBarTab);
-		
-		filterPanel.getContentPane().add(filterByOrderPanel);
-		
-		ActionListener psFilterHandler = new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				String actionCommand = e.getActionCommand();
-				String filter = actionCommand.replaceAll("\\s", "_"); //$NON-NLS-1$ //$NON-NLS-2$
-				TerminalConfig.setPaymentStatusFilter(filter);
-				updateTicketList();
-			}
-		};
-		
-		btnNoPaymentFilter.addActionListener(psFilterHandler);
-		btnFilterByPaid.addActionListener(psFilterHandler);
-		btnFilterByUnPaid.addActionListener(psFilterHandler);
-		
-		ActionListener orderTypeFilterHandler = new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				String actionCommand = e.getActionCommand();
-				String filter = actionCommand.replaceAll("\\s", "_"); //$NON-NLS-1$ //$NON-NLS-2$
-				TerminalConfig.setOrderTypeFilter(filter);
-				updateTicketList();
-			}
-		};
-		
-
-		btnFilterByOrderTypeALL.addActionListener(orderTypeFilterHandler);
-		btnFilterByDineIn.addActionListener(orderTypeFilterHandler);
-		btnFilterByTakeOut.addActionListener(orderTypeFilterHandler);
-		btnFilterByPickup.addActionListener(orderTypeFilterHandler);
-		btnFilterByHomeDeli.addActionListener(orderTypeFilterHandler);
-		btnFilterByDriveThru.addActionListener(orderTypeFilterHandler);
-		btnFilterByBarTab.addActionListener(orderTypeFilterHandler);
-		
-		return filterPanel;
-	}
-
 	private void setupOrderTypes() {
 		setupOrderType(OrderType.DINE_IN, btnDineIn, OrderType.DINE_IN.name());
 		setupOrderType(OrderType.TAKE_OUT, btnTakeout, OrderType.TAKE_OUT.name());
@@ -438,14 +279,15 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 	protected void doCloseOrder() {
 		Ticket ticket = getFirstSelectedTicket();
 		ticket = TicketDAO.getInstance().loadFullTicket(ticket.getId());
-		
+
 		int due = (int) POSUtil.getDouble(ticket.getDueAmount());
 		if (due != 0) {
 			POSMessageDialog.showError(this, Messages.getString("SwitchboardView.5")); //$NON-NLS-1$
 			return;
 		}
 
-		int option = JOptionPane.showOptionDialog(Application.getPosWindow(), Messages.getString("SwitchboardView.6") + ticket.getId() + Messages.getString("SwitchboardView.7"), POSConstants.CONFIRM, //$NON-NLS-1$ //$NON-NLS-2$
+		int option = JOptionPane.showOptionDialog(Application.getPosWindow(),
+				Messages.getString("SwitchboardView.6") + ticket.getId() + Messages.getString("SwitchboardView.7"), POSConstants.CONFIRM, //$NON-NLS-1$ //$NON-NLS-2$
 				JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, null, null, null);
 
 		if (option != JOptionPane.OK_OPTION) {
@@ -454,6 +296,7 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 
 		OrderController.closeOrder(ticket);
 
+		//tickteListViewObj.updateTicketList();
 		updateTicketList();
 	}
 
@@ -525,6 +368,7 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 			dialog.setLocationRelativeTo(Application.getPosWindow());
 			dialog.setVisible(true);
 
+			//tickteListViewObj.updateTicketList();
 			updateTicketList();
 
 		} catch (PosException e) {
@@ -536,10 +380,10 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 
 	private void doSettleTicket() {
 		try {
-			if(!POSUtil.checkDrawerAssignment()) {
+			if (!POSUtil.checkDrawerAssignment()) {
 				return;
 			}
-			
+
 			Ticket ticket = null;
 
 			List<Ticket> selectedTickets = ticketList.getSelectedTickets();
@@ -549,12 +393,14 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 			}
 			else {
 				int ticketId = NumberSelectionDialog2.takeIntInput(Messages.getString("SwitchboardView.12")); //$NON-NLS-1$
-				if(ticketId == -1) return;
+				if (ticketId == -1)
+					return;
 				ticket = TicketService.getTicket(ticketId);
 			}
 
 			new SettleTicketAction(ticket.getId()).execute();
 
+			//tickteListViewObj.updateTicketList();
 			updateTicketList();
 
 		} catch (PosException e) {
@@ -628,8 +474,9 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 			}
 			else {
 				int ticketId = NumberSelectionDialog2.takeIntInput(Messages.getString("SwitchboardView.12")); //$NON-NLS-1$
-				if(ticketId == -1) return;
-				
+				if (ticketId == -1)
+					return;
+
 				ticket = TicketService.getTicket(ticketId);
 			}
 
@@ -686,10 +533,10 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 	}
 
 	private void doGroupSettle() {
-		if(!POSUtil.checkDrawerAssignment()) {
+		if (!POSUtil.checkDrawerAssignment()) {
 			return;
 		}
-		
+
 		List<Ticket> selectedTickets = ticketList.getSelectedTickets();
 		if (selectedTickets == null) {
 			return;
@@ -707,6 +554,7 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 			posDialog.open();
 		}
 
+		//tickteListViewObj.updateTicketList();
 		updateTicketList();
 	}
 
@@ -754,54 +602,11 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 		}
 
 		updateTicketList();
+
 	}
 
 	public synchronized void updateTicketList() {
-		lastUpateCheckTimer.stop();
-		
-		try {
-			Application.getPosWindow().setGlassPaneVisible(true);
-
-			User user = Application.getCurrentUser();
-
-			TicketDAO dao = TicketDAO.getInstance();
-			List<Ticket> tickets = null;
-			
-			PaymentStatusFilter paymentStatusFilter = TerminalConfig.getPaymentStatusFilter();
-			OrderTypeFilter orderTypeFilter = TerminalConfig.getOrderTypeFilter();
-
-			if (user.canViewAllOpenTickets()) {
-				tickets = dao.findTickets(paymentStatusFilter, orderTypeFilter);
-			}
-			else {
-				tickets = dao.findTicketsForUser(paymentStatusFilter, orderTypeFilter, user);
-			}
-			
-			ticketList.setTickets(tickets);
-			
-			btnRefreshTicketList.setBlinking(false);
-			
-			String title = POSConstants.OPEN_TICKETS_AND_ACTIVITY +
-					" [ FILTERS: " + paymentStatusFilter + ", " + orderTypeFilter + " ]";
-			
-			ticketsListPanelBorder.setTitle(title);
-			
-		} catch (Exception e) {
-			POSMessageDialog.showError(this, Messages.getString("SwitchboardView.19"), e); //$NON-NLS-1$
-		} finally {
-			Application.getPosWindow().setGlassPaneVisible(false);
-		}
-		
-		try {
-			
-			DataUpdateInfo lastUpdateInfo = DataUpdateInfoDAO.getLastUpdateInfo();
-			this.lastUpdateTime = new Date(lastUpdateInfo.getLastUpdateTime().getTime());
-			
-		} catch (Exception e) {
-			POSMessageDialog.showError(this, Messages.getString("SwitchboardView.20"), e); //$NON-NLS-1$
-		}
-		
-		lastUpateCheckTimer.restart();
+		ticketList.updateTicketList();
 	}
 
 	// Variables declaration - do not modify//GEN-BEGIN:variables
@@ -826,11 +631,9 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 
 	private PosButton btnAssignDriver = new PosButton(POSConstants.ASSIGN_DRIVER_BUTTON_TEXT);
 	private PosButton btnCloseOrder = new PosButton(POSConstants.CLOSE_ORDER_BUTTON_TEXT);
-	private PosBlinkButton btnRefreshTicketList = new PosBlinkButton(Messages.getString(Messages.getString("SwitchboardView.21"))); //NON-NLS-1$ //$NON-NLS-1$
+	//private PosBlinkButton btnRefreshTicketList = new PosBlinkButton(Messages.getString(Messages.getString("SwitchboardView.21"))); //NON-NLS-1$ //$NON-NLS-1$
 
 	private com.floreantpos.ui.TicketListView ticketList = new com.floreantpos.ui.TicketListView();
-
-	private JXCollapsiblePane orderFiltersPanel;
 
 	private TitledBorder ticketsListPanelBorder;
 
@@ -842,9 +645,10 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 
 		if (visible) {
 			updateView();
+			ticketList.setAutoUpdateCheck(true);
 		}
 		else {
-			lastUpateCheckTimer.stop();
+			ticketList.setAutoUpdateCheck(false);
 		}
 	}
 
@@ -918,24 +722,14 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 	public String getViewName() {
 		return VIEW_NAME;
 	}
-	
-	private class TaskLastUpdateCheck implements ActionListener {
-		public void actionPerformed(ActionEvent e) {
-			try {
-				if(PosGuiUtil.isModalDialogShowing()) {
-					return;
-				}
-				
-				lastUpateCheckTimer.stop();
-				
-				DataUpdateInfo lastUpdateInfo = DataUpdateInfoDAO.getLastUpdateInfo();
 
-				if (lastUpdateInfo.getLastUpdateTime().after(lastUpdateTime)) {
-					btnRefreshTicketList.setBlinking(true);
-				}
-			} finally {
-				lastUpateCheckTimer.restart();
-			}
-		}
+	@Override
+	public void ticketListUpdated() {
+		PaymentStatusFilter paymentStatusFilter = TerminalConfig.getPaymentStatusFilter();
+		OrderTypeFilter orderTypeFilter = TerminalConfig.getOrderTypeFilter();
+		String title = POSConstants.OPEN_TICKETS_AND_ACTIVITY + " [ FILTERS: " + paymentStatusFilter + ", " + orderTypeFilter + " ]";
+
+		ticketsListPanelBorder.setTitle(title);
+
 	}
 }
