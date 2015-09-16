@@ -111,7 +111,6 @@ public class MenuItemDAO extends BaseMenuItemDAO {
 				criteria.add(Restrictions.eq(MenuItem.PROP_PARENT, menuGroup));
 			} else {
 				criteria = session.createCriteria(MenuItem.class);
-
 				return criteria.list();
 			}
 
