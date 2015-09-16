@@ -103,15 +103,12 @@ public class MenuItemDAO extends BaseMenuItemDAO {
 			session = getSession();
 			criteria = session.createCriteria(MenuItem.class);
 
+			if (menuGroup != null ) {
+				criteria.add(Restrictions.eq(MenuItem.PROP_PARENT, menuGroup));
+			}
+			
 			if (StringUtils.isNotEmpty(itemName)) {
 				criteria.add(Restrictions.ilike(MenuItem.PROP_NAME, itemName.trim(), MatchMode.ANYWHERE));
-			}
-
-			if (menuGroup instanceof MenuGroup) {
-				criteria.add(Restrictions.eq(MenuItem.PROP_PARENT, menuGroup));
-			} else {
-				criteria = session.createCriteria(MenuItem.class);
-				return criteria.list();
 			}
 
 			return criteria.list();
