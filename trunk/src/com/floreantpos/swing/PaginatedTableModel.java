@@ -2,7 +2,8 @@ package com.floreantpos.swing;
 
 import java.util.List;
 
-public abstract class PaginatedTableModel<E> extends ListTableModel {
+
+public abstract class PaginatedTableModel extends ListTableModel {
 
 	private int numRows;
 	private int currentRowIndex;
@@ -51,4 +52,22 @@ public abstract class PaginatedTableModel<E> extends ListTableModel {
 	public boolean hasPrevious() {
 		return currentRowIndex > 0;
 	}
+
+	public int getNextRowIndex() {
+		if(numRows == 0) {
+			return 0;
+		}
+		
+		return getCurrentRowIndex() + getPageSize();
+	}
+
+	public int getPreviousRowIndex() {
+		int i = getCurrentRowIndex() - getPageSize();
+		if(i < 0) {
+			i = 0;
+		}
+		
+		return i;
+	}
+
 }
