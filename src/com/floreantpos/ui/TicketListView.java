@@ -91,7 +91,7 @@ public class TicketListView extends JPanel implements ITicketList {
 
 	private void createScrollPane() {
 		btnOrderFilters = new POSToggleButton();
-		btnOrderFilters.setText("<html>" + Messages.getString("SwitchboardView.2") + "<br />" + Messages.getString("SwitchboardView.2.1") + "</html>");
+		btnOrderFilters.setText("<html>" + Messages.getString("SwitchboardView.2") + "</html>");
 		btnRefresh = new PosBlinkButton("REFRESH");
 		btnPrevious = new PosButton("PREVIOUS");
 		btnNext = new PosButton("NEXT");
