@@ -12,15 +12,15 @@ public abstract class BaseModifierDAO extends com.floreantpos.model.dao._RootDAO
 	// query name references
 
 
-	//public static ModifierDAO instance;
+	public static ModifierDAO instance;
 
 	/**
 	 * Return a singleton of the DAO
 	 */
-	//public static ModifierDAO getInstance () {
-	//	if (null == instance) instance = new ModifierDAO();
-	//	return instance;
-	//}
+	public static ModifierDAO getInstance () {
+		if (null == instance) instance = new ModifierDAO();
+		return instance;
+	}
 
 	public Class getReferenceClass () {
 		return com.floreantpos.model.MenuModifier.class;
