@@ -34,11 +34,15 @@ public class ExplorerButtonPanel extends TransparentPanel {
 		//TransparentPanel panel = new TransparentPanel();
 		editButton = new JButton();
 		addButton = new JButton();
-		deleteButton =new JButton();
+		deleteButton = new JButton();
 
 		editButton.setText(com.floreantpos.POSConstants.EDIT);
 		addButton.setText(com.floreantpos.POSConstants.ADD);
 		deleteButton.setText(com.floreantpos.POSConstants.DELETE);
+		
+		add(addButton);
+		add(editButton);
+		add(deleteButton);
 	}
 
 	public JButton getAddButton() {
@@ -54,7 +58,6 @@ public class ExplorerButtonPanel extends TransparentPanel {
 	}
 
 	// </editor-fold>    
-	
 
 	// Variables declaration - do not modify                     
 	// End of variables declaration                   
