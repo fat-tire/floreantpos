@@ -46,7 +46,7 @@ public class MenuItemExplorer extends TransparentPanel {
 		tableModel.addColumn(POSConstants.TAX.toUpperCase(), "tax");
 		tableModel.addColumn(POSConstants.SORT_ORDER.toUpperCase(), "sortOrder");
 		tableModel.addColumn(POSConstants.BUTTON_COLOR.toUpperCase(), "buttonAsColor");
-		tableModel.addColumn(POSConstants.IMAGE.toUpperCase(), "imageAsIcon");
+		//tableModel.addColumn(POSConstants.IMAGE.toUpperCase(), "imageAsIcon");
 
 		tableModel.addRows(MenuItemDAO.getInstance().findAll());
 
