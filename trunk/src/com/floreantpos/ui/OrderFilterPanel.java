@@ -70,6 +70,7 @@ public class OrderFilterPanel extends JXCollapsiblePane {
 				TerminalConfig.setPaymentStatusFilter(filter);
 
 				ticketList.updateTicketList();
+				ticketLists.updateButtonStatus();
 				
 			}
 		};
@@ -157,8 +158,9 @@ public class OrderFilterPanel extends JXCollapsiblePane {
 				TerminalConfig.setOrderTypeFilter(filter);
 		
 			
-				ticketLists.setCurrentRowIndexZero();
+				//ticketLists.setCurrentRowIndexZero();
 				ticketList.updateTicketList();
+				ticketLists.updateButtonStatus();
 			}
 		};
 		
