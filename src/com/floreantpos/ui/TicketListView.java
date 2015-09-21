@@ -43,7 +43,7 @@ public class TicketListView extends JPanel implements ITicketList {
 	private PosBlinkButton btnRefresh;
 	private PosButton btnPrevious;
 	private PosButton btnNext;
-	
+
 	private ArrayList<TicketListUpdateListener> ticketUpdateListenerList = new ArrayList();
 
 	private Date lastUpdateTime;
@@ -60,6 +60,8 @@ public class TicketListView extends JPanel implements ITicketList {
 		createTicketTable();
 
 		updateTicketList();
+
+		updateButtonStatus();
 
 	}
 
@@ -128,6 +130,7 @@ public class TicketListView extends JPanel implements ITicketList {
 					List<Ticket> tickets = TicketDAO.getInstance().findPreviousTickets(tableModel);
 					tableModel.setRows(tickets);
 				}
+				updateButtonStatus();
 
 			}
 		});
@@ -139,6 +142,7 @@ public class TicketListView extends JPanel implements ITicketList {
 					List<Ticket> tickets = TicketDAO.getInstance().findNextTickets(tableModel);
 					tableModel.setRows(tickets);
 				}
+				updateButtonStatus();
 			}
 		});
 
@@ -148,6 +152,7 @@ public class TicketListView extends JPanel implements ITicketList {
 			public void actionPerformed(ActionEvent e) {
 				getTableModel().setCurrentRowIndex(0);
 				updateTicketList();
+				updateButtonStatus();
 
 			}
 		});
@@ -161,7 +166,11 @@ public class TicketListView extends JPanel implements ITicketList {
 
 	}
 
-	//
+	public void updateButtonStatus() {
+		btnNext.setEnabled(tableModel.hasNext());
+		btnPrevious.setEnabled(tableModel.hasPrevious());
+	}
+
 	public synchronized void updateTicketList() {
 		lastUpateCheckTimer.stop();
 
@@ -169,7 +178,7 @@ public class TicketListView extends JPanel implements ITicketList {
 			Application.getPosWindow().setGlassPaneVisible(true);
 
 			TicketListTableModel ticketListTableModel = getTableModel();
-			
+
 			List<Ticket> tickets = TicketDAO.getInstance().findTickets(ticketListTableModel);
 
 			setTickets(tickets);
@@ -391,7 +400,7 @@ public class TicketListView extends JPanel implements ITicketList {
 	}
 
 	public void setAutoUpdateCheck(boolean check) {
-		if(check) {
+		if (check) {
 			lastUpateCheckTimer.restart();
 		}
 		else {
