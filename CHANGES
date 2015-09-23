@@ -29,3 +29,4 @@ creates necessary databse schema and populate initial values.
 4. Faster database connection.
 5. Previously, it was not possible to switch database without restarting the application.
 This is now fixed. User can switch database any time from login screen by configuring database.
+1
