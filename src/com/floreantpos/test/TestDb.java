@@ -21,6 +21,7 @@ public class TestDb {
 	 * @param args
 	 */
 	public static void main(String[] args) throws Exception {
+		//test
 		JXCollapsiblePane cp = new JXCollapsiblePane();
 
 		 // JXCollapsiblePane can be used like any other container
