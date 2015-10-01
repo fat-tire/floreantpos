@@ -24,7 +24,7 @@ import com.floreantpos.ui.dialog.POSMessageDialog;
 public class DrawerAssignmentAction extends PosAction {
 
 	public DrawerAssignmentAction() {
-		super("ASSIGN DRAWER", UserPermission.DRAWER_ASSIGNMENT); //$NON-NLS-1$
+		super("ASSIGN DRAWER", UserPermission.DRAWER_ASSIGNMENT);
 		Terminal terminal = Application.getInstance().getTerminal();
 		User assignedUser = terminal.getAssignedUser();
 		
