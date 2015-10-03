@@ -138,26 +138,26 @@ public abstract class _RootDAO extends com.floreantpos.model.dao._BaseRootDAO {
 		
 		Database defaultDatabase = AppConfig.getDefaultDatabase();
 
-		configuration = configuration.setProperty("hibernate.dialect", defaultDatabase.getHibernateDialect());
-		configuration = configuration.setProperty("hibernate.connection.driver_class", defaultDatabase.getHibernateConnectionDriverClass());
+		configuration = configuration.setProperty("hibernate.dialect", defaultDatabase.getHibernateDialect()); //$NON-NLS-1$
+		configuration = configuration.setProperty("hibernate.connection.driver_class", defaultDatabase.getHibernateConnectionDriverClass()); //$NON-NLS-1$
 		
-		configuration = configuration.setProperty("hibernate.connection.url", AppConfig.getConnectString());
-		configuration = configuration.setProperty("hibernate.connection.username", AppConfig.getDatabaseUser());
-		configuration = configuration.setProperty("hibernate.connection.password", AppConfig.getDatabasePassword());
-		configuration = configuration.setProperty("hibernate.hbm2ddl.auto", "update");
-		configuration = configuration.setProperty("hibernate.connection.autocommit", "false");
-		configuration = configuration.setProperty("hibernate.max_fetch_depth", "3");
-		configuration = configuration.setProperty("hibernate.show_sql", "false");
-		configuration = configuration.setProperty("hibernate.connection.isolation", String.valueOf(Connection.TRANSACTION_READ_COMMITTED));
+		configuration = configuration.setProperty("hibernate.connection.url", AppConfig.getConnectString()); //$NON-NLS-1$
+		configuration = configuration.setProperty("hibernate.connection.username", AppConfig.getDatabaseUser()); //$NON-NLS-1$
+		configuration = configuration.setProperty("hibernate.connection.password", AppConfig.getDatabasePassword()); //$NON-NLS-1$
+		configuration = configuration.setProperty("hibernate.hbm2ddl.auto", "update"); //$NON-NLS-1$ //$NON-NLS-2$
+		configuration = configuration.setProperty("hibernate.connection.autocommit", "false"); //$NON-NLS-1$ //$NON-NLS-2$
+		configuration = configuration.setProperty("hibernate.max_fetch_depth", "3"); //$NON-NLS-1$ //$NON-NLS-2$
+		configuration = configuration.setProperty("hibernate.show_sql", "false"); //$NON-NLS-1$ //$NON-NLS-2$
+		configuration = configuration.setProperty("hibernate.connection.isolation", String.valueOf(Connection.TRANSACTION_READ_COMMITTED)); //$NON-NLS-1$
 
-		configuration = configuration.setProperty("hibernate.c3p0.min_size", "2");
-		configuration = configuration.setProperty("hibernate.c3p0.max_size", "10");
-		configuration = configuration.setProperty("hibernate.c3p0.timeout", "300");
-		configuration = configuration.setProperty("hibernate.c3p0.acquireRetryAttempts", "3");
-		configuration = configuration.setProperty("hibernate.c3p0.max_statements", "50");
+		configuration = configuration.setProperty("hibernate.c3p0.min_size", "2"); //$NON-NLS-1$ //$NON-NLS-2$
+		configuration = configuration.setProperty("hibernate.c3p0.max_size", "10"); //$NON-NLS-1$ //$NON-NLS-2$
+		configuration = configuration.setProperty("hibernate.c3p0.timeout", "300"); //$NON-NLS-1$ //$NON-NLS-2$
+		configuration = configuration.setProperty("hibernate.c3p0.acquireRetryAttempts", "3"); //$NON-NLS-1$ //$NON-NLS-2$
+		configuration = configuration.setProperty("hibernate.c3p0.max_statements", "50"); //$NON-NLS-1$ //$NON-NLS-2$
 		//configuration = configuration.setProperty("hibernate.c3p0.idle_test_period", "3000");
-		configuration = configuration.setProperty("hibernate.c3p0.validate", "true");
-		configuration = configuration.setProperty("hibernate.c3p0.breakAfterAcquireFailure", "true");
+		configuration = configuration.setProperty("hibernate.c3p0.validate", "true"); //$NON-NLS-1$ //$NON-NLS-2$
+		configuration = configuration.setProperty("hibernate.c3p0.breakAfterAcquireFailure", "true"); //$NON-NLS-1$ //$NON-NLS-2$
 
 		return configuration;
 	}

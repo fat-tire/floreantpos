@@ -27,7 +27,7 @@ public abstract class BasePrinterGroupDAO extends com.floreantpos.model.dao._Roo
 	}
 
     public Order getDefaultOrder () {
-		return Order.asc("name");
+		return Order.asc("name"); //$NON-NLS-1$
     }
 
 	/**

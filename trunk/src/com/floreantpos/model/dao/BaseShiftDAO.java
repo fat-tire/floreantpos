@@ -27,7 +27,7 @@ public abstract class BaseShiftDAO extends com.floreantpos.model.dao._RootDAO {
 	}
 
     public Order getDefaultOrder () {
-		return Order.asc("name");
+		return Order.asc("name"); //$NON-NLS-1$
     }
 
 	/**

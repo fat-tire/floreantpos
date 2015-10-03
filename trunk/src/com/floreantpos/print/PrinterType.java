@@ -1,8 +1,8 @@
 package com.floreantpos.print;
 
 public enum PrinterType {
-	OS_PRINTER("printer"),
-	JAVAPOS("javapos");
+	OS_PRINTER("printer"), //$NON-NLS-1$
+	JAVAPOS("javapos"); //$NON-NLS-1$
 	
 	private final String name;
 	

@@ -9,6 +9,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
 
+import com.floreantpos.Messages;
 import com.floreantpos.PosException;
 import com.floreantpos.model.Gratuity;
 import com.floreantpos.model.Terminal;
@@ -38,7 +39,7 @@ public class GratuityDAO extends BaseGratuityDAO {
 
 			return criteria.list();
 		} catch (Exception e) {
-			throw new PosException("An error has occured while retrieving gratuity for " + user.getFirstName() + " " + user.getLastName());
+			throw new PosException(Messages.getString("GratuityDAO.0") + user.getFirstName() + " " + user.getLastName()); //$NON-NLS-1$ //$NON-NLS-2$
 		} finally {
 			closeSession(session);
 		}
@@ -67,7 +68,7 @@ public class GratuityDAO extends BaseGratuityDAO {
 			if(tx != null) {
 				tx.rollback();
 			}
-			throw new PosException("An error occured, could not mark gratuities as paid");
+			throw new PosException(Messages.getString("GratuityDAO.2")); //$NON-NLS-1$
 		} finally {
 			closeSession(session);
 		}
@@ -93,7 +94,7 @@ public class GratuityDAO extends BaseGratuityDAO {
 			List list = criteria.list();
 			
 			TipsCashoutReport report = new TipsCashoutReport();
-			report.setServer(user.getUserId() + "/" + user.toString());
+			report.setServer(user.getUserId() + "/" + user.toString()); //$NON-NLS-1$
 			report.setFromDate(fromDate);
 			report.setToDate(toDate);
 			report.setReportTime(new Date());
@@ -120,7 +121,7 @@ public class GratuityDAO extends BaseGratuityDAO {
 			report.calculateOthers();
 			return report;
 		} catch (Exception e) {
-			throw new PosException("An error has occured while retrieving gratuity for " + user.getFirstName() + " " + user.getLastName(), e);
+			throw new PosException(Messages.getString("GratuityDAO.4") + user.getFirstName() + " " + user.getLastName(), e); //$NON-NLS-1$ //$NON-NLS-2$
 		} finally {
 			closeSession(session);
 		}

@@ -27,7 +27,7 @@ public abstract class BaseInventoryItemDAO extends com.floreantpos.model.dao._Ro
 	}
 
     public Order getDefaultOrder () {
-		return Order.asc("name");
+		return Order.asc("name"); //$NON-NLS-1$
     }
 
 	/**

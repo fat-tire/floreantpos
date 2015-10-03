@@ -4,6 +4,7 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 
+import com.floreantpos.Messages;
 import com.floreantpos.PosException;
 import com.floreantpos.model.MenuItem;
 
@@ -28,7 +29,7 @@ public class InventoryItemDAO extends BaseInventoryItemDAO {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new PosException("Error occured while finding food items");
+			throw new PosException(Messages.getString("InventoryItemDAO.0")); //$NON-NLS-1$
 		} finally {
 			if (session != null) {
 				session.close();

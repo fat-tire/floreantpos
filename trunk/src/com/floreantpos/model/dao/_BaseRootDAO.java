@@ -99,17 +99,17 @@ public abstract class _BaseRootDAO {
 	protected SessionFactory getSessionFactory(String configFile) {
 		if (null == configFile) {
 			if (null == sessionFactory)
-				throw new RuntimeException("The session factory has not been initialized (or an error occured during initialization)");
+				throw new RuntimeException("The session factory has not been initialized (or an error occured during initialization)"); //$NON-NLS-1$
 			else
 				return sessionFactory;
 		}
 		else {
 			if (null == sessionFactoryMap)
-				throw new RuntimeException("The session factory for '" + configFile + "' has not been initialized (or an error occured during initialization)");
+				throw new RuntimeException("The session factory for '" + configFile + "' has not been initialized (or an error occured during initialization)"); //$NON-NLS-1$ //$NON-NLS-2$
 			else {
 				SessionFactory sf = (SessionFactory) sessionFactoryMap.get(configFile);
 				if (null == sf)
-					throw new RuntimeException("The session factory for '" + configFile + "' has not been initialized (or an error occured during initialization)");
+					throw new RuntimeException("The session factory for '" + configFile + "' has not been initialized (or an error occured during initialization)"); //$NON-NLS-1$ //$NON-NLS-2$
 				else
 					return sf;
 			}
