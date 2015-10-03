@@ -2,6 +2,7 @@ package com.floreantpos.model;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.floreantpos.Messages;
 import com.floreantpos.model.base.BaseMenuItemModifierGroup;
 
 
@@ -28,11 +29,11 @@ public class MenuItemModifierGroup extends BaseMenuItemModifierGroup {
 		if(getModifierGroup() != null) {
 			return getModifierGroup().getName();
 		}
-		return "";
+		return ""; //$NON-NLS-1$
 	}
 
 	public String getUniqueId() {
-		return ("menuitem_modifiergroup_" + toString() + "_" + getId()).replaceAll("\\s+", "_");
+		return ("menuitem_modifiergroup_" + toString() + "_" + getId()).replaceAll("\\s+", "_"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 	}
 
 }

@@ -14,11 +14,11 @@ import java.io.Serializable;
 
 public abstract class BaseCardTransaction extends com.floreantpos.model.PosTransaction  implements Comparable, Serializable {
 
-	public static String REF = "CardTransaction";
-	public static String PROP_CARD_NUMBER = "cardNumber";
-	public static String PROP_AUTHORIZATION_CODE = "authorizationCode";
-	public static String PROP_ID = "id";
-	public static String PROP_CARD_TYPE = "cardType";
+	public static String REF = "CardTransaction"; //$NON-NLS-1$
+	public static String PROP_CARD_NUMBER = "cardNumber"; //$NON-NLS-1$
+	public static String PROP_AUTHORIZATION_CODE = "authorizationCode"; //$NON-NLS-1$
+	public static String PROP_ID = "id"; //$NON-NLS-1$
+	public static String PROP_CARD_TYPE = "cardType"; //$NON-NLS-1$
 
 
 	// constructors
@@ -115,7 +115,7 @@ public abstract class BaseCardTransaction extends com.floreantpos.model.PosTrans
 		if (Integer.MIN_VALUE == this.hashCode) {
 			if (null == this.getId()) return super.hashCode();
 			else {
-				String hashStr = this.getClass().getName() + ":" + this.getId().hashCode();
+				String hashStr = this.getClass().getName() + ":" + this.getId().hashCode(); //$NON-NLS-1$
 				this.hashCode = hashStr.hashCode();
 			}
 		}

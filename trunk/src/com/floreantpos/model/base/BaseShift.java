@@ -14,12 +14,12 @@ import java.io.Serializable;
 
 public abstract class BaseShift  implements Comparable, Serializable {
 
-	public static String REF = "Shift";
-	public static String PROP_NAME = "name";
-	public static String PROP_SHIFT_LENGTH = "shiftLength";
-	public static String PROP_ID = "id";
-	public static String PROP_END_TIME = "endTime";
-	public static String PROP_START_TIME = "startTime";
+	public static String REF = "Shift"; //$NON-NLS-1$
+	public static String PROP_NAME = "name"; //$NON-NLS-1$
+	public static String PROP_SHIFT_LENGTH = "shiftLength"; //$NON-NLS-1$
+	public static String PROP_ID = "id"; //$NON-NLS-1$
+	public static String PROP_END_TIME = "endTime"; //$NON-NLS-1$
+	public static String PROP_START_TIME = "startTime"; //$NON-NLS-1$
 
 
 	// constructors
@@ -170,7 +170,7 @@ public abstract class BaseShift  implements Comparable, Serializable {
 		if (Integer.MIN_VALUE == this.hashCode) {
 			if (null == this.getId()) return super.hashCode();
 			else {
-				String hashStr = this.getClass().getName() + ":" + this.getId().hashCode();
+				String hashStr = this.getClass().getName() + ":" + this.getId().hashCode(); //$NON-NLS-1$
 				this.hashCode = hashStr.hashCode();
 			}
 		}

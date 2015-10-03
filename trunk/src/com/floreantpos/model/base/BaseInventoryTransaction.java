@@ -14,17 +14,17 @@ import java.io.Serializable;
 
 public abstract class BaseInventoryTransaction  implements Comparable, Serializable {
 
-	public static String REF = "InventoryTransaction";
-	public static String PROP_INVENTORY_ITEM = "inventoryItem";
-	public static String PROP_QUANTITY = "quantity";
-	public static String PROP_TO_WAREHOUSE = "toWarehouse";
-	public static String PROP_VENDOR = "vendor";
-	public static String PROP_TRANSACTION_DATE = "transactionDate";
-	public static String PROP_FROM_WAREHOUSE = "fromWarehouse";
-	public static String PROP_ID = "id";
-	public static String PROP_UNIT_PRICE = "unitPrice";
-	public static String PROP_REMARK = "remark";
-	public static String PROP_REFERENCE_NO = "referenceNo";
+	public static String REF = "InventoryTransaction"; //$NON-NLS-1$
+	public static String PROP_INVENTORY_ITEM = "inventoryItem"; //$NON-NLS-1$
+	public static String PROP_QUANTITY = "quantity"; //$NON-NLS-1$
+	public static String PROP_TO_WAREHOUSE = "toWarehouse"; //$NON-NLS-1$
+	public static String PROP_VENDOR = "vendor"; //$NON-NLS-1$
+	public static String PROP_TRANSACTION_DATE = "transactionDate"; //$NON-NLS-1$
+	public static String PROP_FROM_WAREHOUSE = "fromWarehouse"; //$NON-NLS-1$
+	public static String PROP_ID = "id"; //$NON-NLS-1$
+	public static String PROP_UNIT_PRICE = "unitPrice"; //$NON-NLS-1$
+	public static String PROP_REMARK = "remark"; //$NON-NLS-1$
+	public static String PROP_REFERENCE_NO = "referenceNo"; //$NON-NLS-1$
 
 
 	// constructors
@@ -255,7 +255,7 @@ public abstract class BaseInventoryTransaction  implements Comparable, Serializa
 		if (Integer.MIN_VALUE == this.hashCode) {
 			if (null == this.getId()) return super.hashCode();
 			else {
-				String hashStr = this.getClass().getName() + ":" + this.getId().hashCode();
+				String hashStr = this.getClass().getName() + ":" + this.getId().hashCode(); //$NON-NLS-1$
 				this.hashCode = hashStr.hashCode();
 			}
 		}

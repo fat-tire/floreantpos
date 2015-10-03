@@ -1,6 +1,5 @@
 package com.floreantpos.model.base;
 
-import java.lang.Comparable;
 import java.io.Serializable;
 
 
@@ -15,16 +14,16 @@ import java.io.Serializable;
 
 public abstract class BaseKitchenTicket  implements Comparable, Serializable {
 
-	public static String REF = "KitchenTicket";
-	public static String PROP_PRINTER_GROUP = "printerGroup";
-	public static String PROP_STATUS = "status";
-	public static String PROP_CLOSING_DATE = "closingDate";
-	public static String PROP_TICKET_TYPE = "ticketType";
-	public static String PROP_ID = "id";
-	public static String PROP_VOIDED = "voided";
-	public static String PROP_SERVER_NAME = "serverName";
-	public static String PROP_CREATE_DATE = "createDate";
-	public static String PROP_TICKET_ID = "ticketId";
+	public static String REF = "KitchenTicket"; //$NON-NLS-1$
+	public static String PROP_PRINTER_GROUP = "printerGroup"; //$NON-NLS-1$
+	public static String PROP_STATUS = "status"; //$NON-NLS-1$
+	public static String PROP_CLOSING_DATE = "closingDate"; //$NON-NLS-1$
+	public static String PROP_TICKET_TYPE = "ticketType"; //$NON-NLS-1$
+	public static String PROP_ID = "id"; //$NON-NLS-1$
+	public static String PROP_VOIDED = "voided"; //$NON-NLS-1$
+	public static String PROP_SERVER_NAME = "serverName"; //$NON-NLS-1$
+	public static String PROP_CREATE_DATE = "createDate"; //$NON-NLS-1$
+	public static String PROP_TICKET_ID = "ticketId"; //$NON-NLS-1$
 
 
 	// constructors
@@ -280,7 +279,7 @@ public abstract class BaseKitchenTicket  implements Comparable, Serializable {
 		if (Integer.MIN_VALUE == this.hashCode) {
 			if (null == this.getId()) return super.hashCode();
 			else {
-				String hashStr = this.getClass().getName() + ":" + this.getId().hashCode();
+				String hashStr = this.getClass().getName() + ":" + this.getId().hashCode(); //$NON-NLS-1$
 				this.hashCode = hashStr.hashCode();
 			}
 		}

@@ -14,12 +14,12 @@ import java.io.Serializable;
 
 public abstract class BaseMenuItemModifierGroup  implements Comparable, Serializable {
 
-	public static String REF = "MenuItemModifierGroup";
-	public static String PROP_MIN_QUANTITY = "minQuantity";
-	public static String PROP_SORT_ORDER = "sortOrder";
-	public static String PROP_ID = "id";
-	public static String PROP_MODIFIER_GROUP = "modifierGroup";
-	public static String PROP_MAX_QUANTITY = "maxQuantity";
+	public static String REF = "MenuItemModifierGroup"; //$NON-NLS-1$
+	public static String PROP_MIN_QUANTITY = "minQuantity"; //$NON-NLS-1$
+	public static String PROP_SORT_ORDER = "sortOrder"; //$NON-NLS-1$
+	public static String PROP_ID = "id"; //$NON-NLS-1$
+	public static String PROP_MODIFIER_GROUP = "modifierGroup"; //$NON-NLS-1$
+	public static String PROP_MAX_QUANTITY = "maxQuantity"; //$NON-NLS-1$
 
 
 	// constructors
@@ -160,7 +160,7 @@ public abstract class BaseMenuItemModifierGroup  implements Comparable, Serializ
 		if (Integer.MIN_VALUE == this.hashCode) {
 			if (null == this.getId()) return super.hashCode();
 			else {
-				String hashStr = this.getClass().getName() + ":" + this.getId().hashCode();
+				String hashStr = this.getClass().getName() + ":" + this.getId().hashCode(); //$NON-NLS-1$
 				this.hashCode = hashStr.hashCode();
 			}
 		}

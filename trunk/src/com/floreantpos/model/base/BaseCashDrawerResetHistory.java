@@ -2,6 +2,8 @@ package com.floreantpos.model.base;
 
 import java.io.Serializable;
 
+import com.floreantpos.Messages;
+
 
 /**
  * This is an object that contains data related to the CASH_DRAWER_RESET_HISTORY table.
@@ -14,11 +16,11 @@ import java.io.Serializable;
 
 public abstract class BaseCashDrawerResetHistory  implements Comparable, Serializable {
 
-	public static String REF = "CashDrawerResetHistory";
-	public static String PROP_DRAWER_PULL_REPORT = "drawerPullReport";
-	public static String PROP_RESETED_BY = "resetedBy";
-	public static String PROP_RESET_TIME = "resetTime";
-	public static String PROP_ID = "id";
+	public static String REF = Messages.getString("BaseCashDrawerResetHistory.0"); //$NON-NLS-1$
+	public static String PROP_DRAWER_PULL_REPORT = Messages.getString("BaseCashDrawerResetHistory.1"); //$NON-NLS-1$
+	public static String PROP_RESETED_BY = Messages.getString("BaseCashDrawerResetHistory.2"); //$NON-NLS-1$
+	public static String PROP_RESET_TIME = Messages.getString("BaseCashDrawerResetHistory.3"); //$NON-NLS-1$
+	public static String PROP_ID = Messages.getString("BaseCashDrawerResetHistory.4"); //$NON-NLS-1$
 
 
 	// constructors
@@ -143,7 +145,7 @@ public abstract class BaseCashDrawerResetHistory  implements Comparable, Seriali
 		if (Integer.MIN_VALUE == this.hashCode) {
 			if (null == this.getId()) return super.hashCode();
 			else {
-				String hashStr = this.getClass().getName() + ":" + this.getId().hashCode();
+				String hashStr = this.getClass().getName() + Messages.getString("BaseCashDrawerResetHistory.5") + this.getId().hashCode(); //$NON-NLS-1$
 				this.hashCode = hashStr.hashCode();
 			}
 		}

@@ -164,7 +164,7 @@ public class KitchenTicket extends BaseKitchenTicket {
 						}
 
 						KitchenTicketItem item = new KitchenTicketItem();
-						item.setMenuItemCode("");
+						item.setMenuItemCode(""); //$NON-NLS-1$
 						item.setMenuItemName(itemModifier.getNameDisplay());
 						item.setQuantity(itemModifier.getItemCountDisplay());
 						item.setStatus(KitchenTicketStatus.WAITING.name());

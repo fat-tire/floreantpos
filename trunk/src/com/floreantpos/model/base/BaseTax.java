@@ -14,10 +14,10 @@ import java.io.Serializable;
 
 public abstract class BaseTax  implements Comparable, Serializable {
 
-	public static String REF = "Tax";
-	public static String PROP_NAME = "name";
-	public static String PROP_ID = "id";
-	public static String PROP_RATE = "rate";
+	public static String REF = "Tax"; //$NON-NLS-1$
+	public static String PROP_NAME = "name"; //$NON-NLS-1$
+	public static String PROP_ID = "id"; //$NON-NLS-1$
+	public static String PROP_RATE = "rate"; //$NON-NLS-1$
 
 
 	// constructors
@@ -132,7 +132,7 @@ public abstract class BaseTax  implements Comparable, Serializable {
 		if (Integer.MIN_VALUE == this.hashCode) {
 			if (null == this.getId()) return super.hashCode();
 			else {
-				String hashStr = this.getClass().getName() + ":" + this.getId().hashCode();
+				String hashStr = this.getClass().getName() + ":" + this.getId().hashCode(); //$NON-NLS-1$
 				this.hashCode = hashStr.hashCode();
 			}
 		}

@@ -2,6 +2,7 @@ package com.floreantpos.model;
 
 import java.util.List;
 
+import com.floreantpos.Messages;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.base.BaseTicketItemModifier;
 import com.floreantpos.util.NumberUtil;
@@ -152,11 +153,11 @@ public class TicketItemModifier extends BaseTicketItemModifier implements ITicke
 		String display = getName();
 
 		if (getModifierType() == TicketItemModifier.NO_MODIFIER) {
-			display = " - No " + display;
+			display = Messages.getString("TicketItemModifier.0") + display; //$NON-NLS-1$
 			return display;
 		}
 
-		return " - " + display;
+		return " - " + display; //$NON-NLS-1$
 	}
 
 	@Override
@@ -219,7 +220,7 @@ public class TicketItemModifier extends BaseTicketItemModifier implements ITicke
 	
 	@Override
 	public String getItemCode() {
-		return "";
+		return ""; //$NON-NLS-1$
 	}
 
 	public boolean isSelected() {

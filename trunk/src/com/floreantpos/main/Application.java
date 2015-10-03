@@ -94,10 +94,10 @@ public class Application {
 		pluginManager = PluginManagerFactory.createPluginManager();
 
 		if (developmentMode) {
-			pluginManager.addPluginsFrom(new File("/home/mshahriar/project/oro/target/classes").toURI());
+			pluginManager.addPluginsFrom(new File("/home/mshahriar/project/oro/target/classes").toURI()); //$NON-NLS-1$
 		}
 		else {
-			pluginManager.addPluginsFrom(new File("plugins/").toURI());
+			pluginManager.addPluginsFrom(new File("plugins/").toURI()); //$NON-NLS-1$
 		}
 		
 		setApplicationLook();
@@ -136,42 +136,42 @@ public class Application {
 			return;
 		}
 
-		Font sourceFont = UIManager.getFont("Label.font");
+		Font sourceFont = UIManager.getFont("Label.font"); //$NON-NLS-1$
 		Font font = new Font(uiDefaultFont, sourceFont.getStyle(), sourceFont.getSize());
 
-		UIManager.put("ArrowButton.size", 40);
-		UIManager.put("OptionPane.buttonFont", new FontUIResource(new Font("ARIAL", Font.PLAIN, 35)));
-		UIManager.put("Button.font", font);
-		UIManager.put("ToggleButton.font", font);
-		UIManager.put("RadioButton.font", font);
-		UIManager.put("CheckBox.font", font);
-		UIManager.put("ColorChooser.font", font);
-		UIManager.put("ComboBox.font", font);
-		UIManager.put("Label.font", font);
-		UIManager.put("List.font", font);
-		UIManager.put("MenuBar.font", font);
-		UIManager.put("MenuItem.font", font);
-		UIManager.put("RadioButtonMenuItem.font", font);
-		UIManager.put("CheckBoxMenuItem.font", font);
-		UIManager.put("Menu.font", font);
-		UIManager.put("PopupMenu.font", font);
-		UIManager.put("OptionPane.font", font);
-		UIManager.put("Panel.font", font);
-		UIManager.put("ProgressBar.font", font);
-		UIManager.put("ScrollPane.font", font);
-		UIManager.put("Viewport.font", font);
-		UIManager.put("TabbedPane.font", font);
-		UIManager.put("Table.font", font);
-		UIManager.put("TableHeader.font", font);
-		UIManager.put("TextField.font", font);
-		UIManager.put("PasswordField.font", font);
-		UIManager.put("TextArea.font", font);
-		UIManager.put("TextPane.font", font);
-		UIManager.put("EditorPane.font", font);
-		UIManager.put("TitledBorder.font", font);
-		UIManager.put("ToolBar.font", font);
-		UIManager.put("ToolTip.font", font);
-		UIManager.put("Tree.font", font);
+		UIManager.put("ArrowButton.size", 40); //$NON-NLS-1$
+		UIManager.put("OptionPane.buttonFont", new FontUIResource(new Font("ARIAL", Font.PLAIN, 35))); //$NON-NLS-1$ //$NON-NLS-2$
+		UIManager.put("Button.font", font); //$NON-NLS-1$
+		UIManager.put("ToggleButton.font", font); //$NON-NLS-1$
+		UIManager.put("RadioButton.font", font); //$NON-NLS-1$
+		UIManager.put("CheckBox.font", font); //$NON-NLS-1$
+		UIManager.put("ColorChooser.font", font); //$NON-NLS-1$
+		UIManager.put("ComboBox.font", font); //$NON-NLS-1$
+		UIManager.put("Label.font", font); //$NON-NLS-1$
+		UIManager.put("List.font", font); //$NON-NLS-1$
+		UIManager.put("MenuBar.font", font); //$NON-NLS-1$
+		UIManager.put("MenuItem.font", font); //$NON-NLS-1$
+		UIManager.put("RadioButtonMenuItem.font", font); //$NON-NLS-1$
+		UIManager.put("CheckBoxMenuItem.font", font); //$NON-NLS-1$
+		UIManager.put("Menu.font", font); //$NON-NLS-1$
+		UIManager.put("PopupMenu.font", font); //$NON-NLS-1$
+		UIManager.put("OptionPane.font", font); //$NON-NLS-1$
+		UIManager.put("Panel.font", font); //$NON-NLS-1$
+		UIManager.put("ProgressBar.font", font); //$NON-NLS-1$
+		UIManager.put("ScrollPane.font", font); //$NON-NLS-1$
+		UIManager.put("Viewport.font", font); //$NON-NLS-1$
+		UIManager.put("TabbedPane.font", font); //$NON-NLS-1$
+		UIManager.put("Table.font", font); //$NON-NLS-1$
+		UIManager.put("TableHeader.font", font); //$NON-NLS-1$
+		UIManager.put("TextField.font", font); //$NON-NLS-1$
+		UIManager.put("PasswordField.font", font); //$NON-NLS-1$
+		UIManager.put("TextArea.font", font); //$NON-NLS-1$
+		UIManager.put("TextPane.font", font); //$NON-NLS-1$
+		UIManager.put("EditorPane.font", font); //$NON-NLS-1$
+		UIManager.put("TitledBorder.font", font); //$NON-NLS-1$
+		UIManager.put("ToolBar.font", font); //$NON-NLS-1$
+		UIManager.put("ToolTip.font", font); //$NON-NLS-1$
+		UIManager.put("Tree.font", font); //$NON-NLS-1$
 	}
 
 	public void initializeSystem() {
@@ -198,8 +198,8 @@ public class Application {
 			StringWriter writer = new StringWriter();
 			e.printStackTrace(new PrintWriter(writer));
 
-			if (writer.toString().contains("Another instance of Derby may have already booted")) {
-				POSMessageDialog.showError(Application.getPosWindow(), "Another FloreantPOS instance may be already running.\n" + "Multiple instances cannot be run in Derby single mode");
+			if (writer.toString().contains(Messages.getString("Application.3"))) { //$NON-NLS-1$
+				POSMessageDialog.showError(Application.getPosWindow(), Messages.getString("Application.4") + Messages.getString("Application.40")); //$NON-NLS-1$ //$NON-NLS-2$
 
 				return;
 			}
@@ -284,10 +284,10 @@ public class Application {
 			}
 
 			if (restaurant.isItemPriceIncludesTax()) {
-				posWindow.setStatus("Tax is included in item price");
+				posWindow.setStatus(Messages.getString("Application.41")); //$NON-NLS-1$
 			}
 			else {
-				posWindow.setStatus("Tax is not included in item price");
+				posWindow.setStatus(Messages.getString("Application.42")); //$NON-NLS-1$
 			}
 		} catch (Exception e) {
 			throw new DatabaseConnectionException();
@@ -364,7 +364,7 @@ public class Application {
 		
 		if (!user.isClockedIn()) {
 
-			int option = POSMessageDialog.showYesNoQuestionDialog(posWindow, "You are currently clocked out. Do you want to be clocked in too?", "Confirm");
+			int option = POSMessageDialog.showYesNoQuestionDialog(posWindow, Messages.getString("Application.43"), Messages.getString("Application.44")); //$NON-NLS-1$ //$NON-NLS-2$
 			if (option == JOptionPane.YES_OPTION) {
 
 				

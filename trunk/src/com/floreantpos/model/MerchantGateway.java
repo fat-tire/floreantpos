@@ -8,8 +8,8 @@ import com.floreantpos.ui.views.payment.MercuryPayProcessor;
 
 public enum MerchantGateway {
 	
-	AUTHORIZE_NET("Authorize.net"),
-	MERCURY_PAY("Mercury Pay");
+	AUTHORIZE_NET("Authorize.net"), //$NON-NLS-1$
+	MERCURY_PAY("Mercury Pay"); //$NON-NLS-1$
 	
 	private String displayString;
 	private CardProcessor processor;

@@ -2,10 +2,12 @@ package com.floreantpos.model;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.floreantpos.Messages;
+
 public enum CardReader {
-	SWIPE("Swipe"),
-	MANUAL("Manual"),
-	EXTERNAL_TERMINAL("External Terminal");
+	SWIPE(Messages.getString("CardReader.0")), //$NON-NLS-1$
+	MANUAL(Messages.getString("CardReader.1")), //$NON-NLS-1$
+	EXTERNAL_TERMINAL(Messages.getString("CardReader.2")); //$NON-NLS-1$
 	
 	private String type;
 	

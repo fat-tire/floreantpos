@@ -14,28 +14,28 @@ import java.io.Serializable;
 
 public abstract class BaseInventoryItem  implements Comparable, Serializable {
 
-	public static String REF = "InventoryItem";
-	public static String PROP_PACKAGE_BARCODE = "packageBarcode";
-	public static String PROP_PACKAGING_UNIT = "packagingUnit";
-	public static String PROP_DESCRIPTION = "description";
-	public static String PROP_ITEM_VENDOR = "itemVendor";
-	public static String PROP_ITEM_GROUP = "itemGroup";
-	public static String PROP_VISIBLE = "visible";
-	public static String PROP_AVERAGE_PACKAGE_PRICE = "averagePackagePrice";
-	public static String PROP_SORT_ORDER = "sortOrder";
-	public static String PROP_UNIT_BARCODE = "unitBarcode";
-	public static String PROP_PACKAGE_REPLENISH_LEVEL = "packageReplenishLevel";
-	public static String PROP_NAME = "name";
-	public static String PROP_LAST_UPDATE_DATE = "lastUpdateDate";
-	public static String PROP_TOTAL_PACKAGES = "totalPackages";
-	public static String PROP_ITEM_LOCATION = "itemLocation";
-	public static String PROP_CREATE_TIME = "createTime";
-	public static String PROP_TOTAL_RECEPIE_UNITS = "totalRecepieUnits";
-	public static String PROP_ID = "id";
-	public static String PROP_UNIT_PER_PACKAGE = "unitPerPackage";
-	public static String PROP_PACKAGE_REORDER_LEVEL = "packageReorderLevel";
-	public static String PROP_UNIT_SELLING_PRICE = "unitSellingPrice";
-	public static String PROP_UNIT_PURCHASE_PRICE = "unitPurchasePrice";
+	public static String REF = "InventoryItem"; //$NON-NLS-1$
+	public static String PROP_PACKAGE_BARCODE = "packageBarcode"; //$NON-NLS-1$
+	public static String PROP_PACKAGING_UNIT = "packagingUnit"; //$NON-NLS-1$
+	public static String PROP_DESCRIPTION = "description"; //$NON-NLS-1$
+	public static String PROP_ITEM_VENDOR = "itemVendor"; //$NON-NLS-1$
+	public static String PROP_ITEM_GROUP = "itemGroup"; //$NON-NLS-1$
+	public static String PROP_VISIBLE = "visible"; //$NON-NLS-1$
+	public static String PROP_AVERAGE_PACKAGE_PRICE = "averagePackagePrice"; //$NON-NLS-1$
+	public static String PROP_SORT_ORDER = "sortOrder"; //$NON-NLS-1$
+	public static String PROP_UNIT_BARCODE = "unitBarcode"; //$NON-NLS-1$
+	public static String PROP_PACKAGE_REPLENISH_LEVEL = "packageReplenishLevel"; //$NON-NLS-1$
+	public static String PROP_NAME = "name"; //$NON-NLS-1$
+	public static String PROP_LAST_UPDATE_DATE = "lastUpdateDate"; //$NON-NLS-1$
+	public static String PROP_TOTAL_PACKAGES = "totalPackages"; //$NON-NLS-1$
+	public static String PROP_ITEM_LOCATION = "itemLocation"; //$NON-NLS-1$
+	public static String PROP_CREATE_TIME = "createTime"; //$NON-NLS-1$
+	public static String PROP_TOTAL_RECEPIE_UNITS = "totalRecepieUnits"; //$NON-NLS-1$
+	public static String PROP_ID = "id"; //$NON-NLS-1$
+	public static String PROP_UNIT_PER_PACKAGE = "unitPerPackage"; //$NON-NLS-1$
+	public static String PROP_PACKAGE_REORDER_LEVEL = "packageReorderLevel"; //$NON-NLS-1$
+	public static String PROP_UNIT_SELLING_PRICE = "unitSellingPrice"; //$NON-NLS-1$
+	public static String PROP_UNIT_PURCHASE_PRICE = "unitPurchasePrice"; //$NON-NLS-1$
 
 
 	// constructors
@@ -464,7 +464,7 @@ public abstract class BaseInventoryItem  implements Comparable, Serializable {
 		if (Integer.MIN_VALUE == this.hashCode) {
 			if (null == this.getId()) return super.hashCode();
 			else {
-				String hashStr = this.getClass().getName() + ":" + this.getId().hashCode();
+				String hashStr = this.getClass().getName() + ":" + this.getId().hashCode(); //$NON-NLS-1$
 				this.hashCode = hashStr.hashCode();
 			}
 		}

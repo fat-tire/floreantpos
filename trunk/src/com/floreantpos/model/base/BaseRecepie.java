@@ -14,9 +14,9 @@ import java.io.Serializable;
 
 public abstract class BaseRecepie  implements Comparable, Serializable {
 
-	public static String REF = "Recepie";
-	public static String PROP_MENU_ITEM = "menuItem";
-	public static String PROP_ID = "id";
+	public static String REF = "Recepie"; //$NON-NLS-1$
+	public static String PROP_MENU_ITEM = "menuItem"; //$NON-NLS-1$
+	public static String PROP_ID = "id"; //$NON-NLS-1$
 
 
 	// constructors
@@ -126,7 +126,7 @@ public abstract class BaseRecepie  implements Comparable, Serializable {
 		if (Integer.MIN_VALUE == this.hashCode) {
 			if (null == this.getId()) return super.hashCode();
 			else {
-				String hashStr = this.getClass().getName() + ":" + this.getId().hashCode();
+				String hashStr = this.getClass().getName() + ":" + this.getId().hashCode(); //$NON-NLS-1$
 				this.hashCode = hashStr.hashCode();
 			}
 		}

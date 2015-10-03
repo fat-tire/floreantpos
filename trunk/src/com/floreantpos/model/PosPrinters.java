@@ -15,6 +15,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import org.apache.commons.io.FileUtils;
 
+import com.floreantpos.Messages;
 import com.floreantpos.model.dao.VirtualPrinterDAO;
 
 @XmlRootElement(name = "printers")
@@ -145,7 +146,7 @@ public class PosPrinters {
 			
 			populatePrinterMaps();
 			
-			File file = new File("config", "printers.xml");
+			File file = new File("config", "printers.xml"); //$NON-NLS-1$ //$NON-NLS-2$
 
 			JAXBContext jaxbContext = JAXBContext.newInstance(PosPrinters.class);
 			Marshaller m = jaxbContext.createMarshaller();
@@ -165,7 +166,7 @@ public class PosPrinters {
 	public static PosPrinters load() {
 		try {
 
-			File file = new File("config", "printers.xml");
+			File file = new File("config", "printers.xml"); //$NON-NLS-1$ //$NON-NLS-2$
 			if (!file.exists()) {
 				return null;
 			}

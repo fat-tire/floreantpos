@@ -1,5 +1,6 @@
 package com.floreantpos.model;
 
+import com.floreantpos.Messages;
 import com.floreantpos.model.base.BaseCouponAndDiscount;
 
 
@@ -29,9 +30,9 @@ public class CouponAndDiscount extends BaseCouponAndDiscount {
 	public final static int PERCENTAGE_PER_ITEM = 5;
 	public final static int PERCENTAGE_PER_ORDER = 6;
 
-	public final static String[] COUPON_TYPE_NAMES = { "Free Amount", "Fixed Per Category",
-			"Fixed Per Item", "Fixed Per Order", "Percentage Per Category",
-			"Percentage Per Item", "Percentage Per Order" };
+	public final static String[] COUPON_TYPE_NAMES = { Messages.getString("CouponAndDiscount.0"), Messages.getString("CouponAndDiscount.1"), //$NON-NLS-1$ //$NON-NLS-2$
+			Messages.getString("CouponAndDiscount.2"), Messages.getString("CouponAndDiscount.3"), Messages.getString("CouponAndDiscount.4"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			Messages.getString("CouponAndDiscount.5"), Messages.getString("CouponAndDiscount.6") }; //$NON-NLS-1$ //$NON-NLS-2$
 
 	@Override
 	public String toString() {

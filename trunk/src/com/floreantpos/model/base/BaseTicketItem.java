@@ -16,30 +16,30 @@ import com.floreantpos.model.TicketItemCookingInstruction;
 
 public abstract class BaseTicketItem  implements Comparable, Serializable {
 
-	public static String REF = "TicketItem";
-	public static String PROP_BEVERAGE = "beverage";
-	public static String PROP_ITEM_ID = "itemId";
-	public static String PROP_CATEGORY_NAME = "categoryName";
-	public static String PROP_GROUP_NAME = "groupName";
-	public static String PROP_DISCOUNT_RATE = "discountRate";
-	public static String PROP_ITEM_COUNT = "itemCount";
-	public static String PROP_TAX_RATE = "taxRate";
-	public static String PROP_UNIT_PRICE = "unitPrice";
-	public static String PROP_TAX_AMOUNT = "taxAmount";
-	public static String PROP_DISCOUNT_AMOUNT = "discountAmount";
-	public static String PROP_NAME = "name";
-	public static String PROP_PRINTER_GROUP = "printerGroup";
-	public static String PROP_PRINTED_TO_KITCHEN = "printedToKitchen";
-	public static String PROP_SHOULD_PRINT_TO_KITCHEN = "shouldPrintToKitchen";
-	public static String PROP_TICKET = "ticket";
-	public static String PROP_SUBTOTAL_AMOUNT = "subtotalAmount";
-	public static String PROP_INVENTORY_HANDLED = "inventoryHandled";
-	public static String PROP_HAS_MODIFIERS = "hasModifiers";
-	public static String PROP_TAX_AMOUNT_WITHOUT_MODIFIERS = "taxAmountWithoutModifiers";
-	public static String PROP_ID = "id";
-	public static String PROP_TOTAL_AMOUNT = "totalAmount";
-	public static String PROP_SUBTOTAL_AMOUNT_WITHOUT_MODIFIERS = "subtotalAmountWithoutModifiers";
-	public static String PROP_TOTAL_AMOUNT_WITHOUT_MODIFIERS = "totalAmountWithoutModifiers";
+	public static String REF = "TicketItem"; //$NON-NLS-1$
+	public static String PROP_BEVERAGE = "beverage"; //$NON-NLS-1$
+	public static String PROP_ITEM_ID = "itemId"; //$NON-NLS-1$
+	public static String PROP_CATEGORY_NAME = "categoryName"; //$NON-NLS-1$
+	public static String PROP_GROUP_NAME = "groupName"; //$NON-NLS-1$
+	public static String PROP_DISCOUNT_RATE = "discountRate"; //$NON-NLS-1$
+	public static String PROP_ITEM_COUNT = "itemCount"; //$NON-NLS-1$
+	public static String PROP_TAX_RATE = "taxRate"; //$NON-NLS-1$
+	public static String PROP_UNIT_PRICE = "unitPrice"; //$NON-NLS-1$
+	public static String PROP_TAX_AMOUNT = "taxAmount"; //$NON-NLS-1$
+	public static String PROP_DISCOUNT_AMOUNT = "discountAmount"; //$NON-NLS-1$
+	public static String PROP_NAME = "name"; //$NON-NLS-1$
+	public static String PROP_PRINTER_GROUP = "printerGroup"; //$NON-NLS-1$
+	public static String PROP_PRINTED_TO_KITCHEN = "printedToKitchen"; //$NON-NLS-1$
+	public static String PROP_SHOULD_PRINT_TO_KITCHEN = "shouldPrintToKitchen"; //$NON-NLS-1$
+	public static String PROP_TICKET = "ticket"; //$NON-NLS-1$
+	public static String PROP_SUBTOTAL_AMOUNT = "subtotalAmount"; //$NON-NLS-1$
+	public static String PROP_INVENTORY_HANDLED = "inventoryHandled"; //$NON-NLS-1$
+	public static String PROP_HAS_MODIFIERS = "hasModifiers"; //$NON-NLS-1$
+	public static String PROP_TAX_AMOUNT_WITHOUT_MODIFIERS = "taxAmountWithoutModifiers"; //$NON-NLS-1$
+	public static String PROP_ID = "id"; //$NON-NLS-1$
+	public static String PROP_TOTAL_AMOUNT = "totalAmount"; //$NON-NLS-1$
+	public static String PROP_SUBTOTAL_AMOUNT_WITHOUT_MODIFIERS = "subtotalAmountWithoutModifiers"; //$NON-NLS-1$
+	public static String PROP_TOTAL_AMOUNT_WITHOUT_MODIFIERS = "totalAmountWithoutModifiers"; //$NON-NLS-1$
 
 
 	// constructors
@@ -439,7 +439,7 @@ public abstract class BaseTicketItem  implements Comparable, Serializable {
 	 * Custom property
 	 */
 	public static String getShouldPrintToKitchenDefaultValue () {
-		return "true";
+		return "true"; //$NON-NLS-1$
 	}
 
 
@@ -566,7 +566,7 @@ public abstract class BaseTicketItem  implements Comparable, Serializable {
 		if (Integer.MIN_VALUE == this.hashCode) {
 			if (null == this.getId()) return super.hashCode();
 			else {
-				String hashStr = this.getClass().getName() + ":" + this.getId().hashCode();
+				String hashStr = this.getClass().getName() + ":" + this.getId().hashCode(); //$NON-NLS-1$
 				this.hashCode = hashStr.hashCode();
 			}
 		}

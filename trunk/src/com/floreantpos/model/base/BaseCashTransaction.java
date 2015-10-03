@@ -14,8 +14,8 @@ import java.io.Serializable;
 
 public abstract class BaseCashTransaction extends com.floreantpos.model.PosTransaction  implements Comparable, Serializable {
 
-	public static String REF = "CashTransaction";
-	public static String PROP_ID = "id";
+	public static String REF = "CashTransaction"; //$NON-NLS-1$
+	public static String PROP_ID = "id"; //$NON-NLS-1$
 
 
 	// constructors
@@ -70,7 +70,7 @@ public abstract class BaseCashTransaction extends com.floreantpos.model.PosTrans
 		if (Integer.MIN_VALUE == this.hashCode) {
 			if (null == this.getId()) return super.hashCode();
 			else {
-				String hashStr = this.getClass().getName() + ":" + this.getId().hashCode();
+				String hashStr = this.getClass().getName() + ":" + this.getId().hashCode(); //$NON-NLS-1$
 				this.hashCode = hashStr.hashCode();
 			}
 		}

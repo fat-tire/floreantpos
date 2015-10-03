@@ -1,5 +1,6 @@
 package com.floreantpos.model;
 
+import com.floreantpos.Messages;
 import com.floreantpos.model.base.BaseInventoryTransaction;
 
 
@@ -21,7 +22,7 @@ public class InventoryTransaction extends BaseInventoryTransaction {
 
 /*[CONSTRUCTOR MARKER END]*/
 
-	public static String PROP_TYPE = "type";
+	public static String PROP_TYPE = "type"; //$NON-NLS-1$
 	
 	protected InventoryTransactionType type;
 	

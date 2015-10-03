@@ -58,16 +58,16 @@ public class VirtualPrinter extends BaseVirtualPrinter {
 		
 		List<String> typeNames = getOrderTypeNames();
 		if(typeNames != null && typeNames.size() > 0) {
-			name += " (";
+			name += " ("; //$NON-NLS-1$
 			
 			for (Iterator iterator = typeNames.iterator(); iterator.hasNext();) {
 				String string = (String) iterator.next();
 				name += string;
 				if(iterator.hasNext()) {
-					name += ", ";
+					name += ", "; //$NON-NLS-1$
 				}
 			}
-			name += ")";
+			name += ")"; //$NON-NLS-1$
 		}
 		
 		return name;

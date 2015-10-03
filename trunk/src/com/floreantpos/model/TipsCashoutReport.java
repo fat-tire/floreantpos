@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.floreantpos.Messages;
+
 
 public class TipsCashoutReport {
 	private String server;
@@ -74,7 +76,7 @@ public class TipsCashoutReport {
 			return;
 		}
 		for (TipsCashoutReportData data : datas) {
-			if("*CASH*".equals(data.getSaleType())) {
+			if(Messages.getString("TipsCashoutReport.0").equals(data.getSaleType())) { //$NON-NLS-1$
 				++cashTipsCount;
 				cashTipsAmount += data.getTips();
 			}

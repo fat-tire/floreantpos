@@ -14,23 +14,23 @@ import java.io.Serializable;
 
 public abstract class BaseRestaurant  implements Comparable, Serializable {
 
-	public static String REF = "Restaurant";
-	public static String PROP_ITEM_PRICE_INCLUDES_TAX = "itemPriceIncludesTax";
-	public static String PROP_TELEPHONE = "telephone";
-	public static String PROP_TICKET_FOOTER_MESSAGE = "ticketFooterMessage";
-	public static String PROP_SERVICE_CHARGE_PERCENTAGE = "serviceChargePercentage";
-	public static String PROP_UNIQUE_ID = "uniqueId";
-	public static String PROP_ZIP_CODE = "zipCode";
-	public static String PROP_NAME = "name";
-	public static String PROP_DEFAULT_GRATUITY_PERCENTAGE = "defaultGratuityPercentage";
-	public static String PROP_CURRENCY_NAME = "currencyName";
-	public static String PROP_TABLES = "tables";
-	public static String PROP_ID = "id";
-	public static String PROP_CAPACITY = "capacity";
-	public static String PROP_ADDRESS_LINE1 = "addressLine1";
-	public static String PROP_ADDRESS_LINE2 = "addressLine2";
-	public static String PROP_ADDRESS_LINE3 = "addressLine3";
-	public static String PROP_CURRENCY_SYMBOL = "currencySymbol";
+	public static String REF = "Restaurant"; //$NON-NLS-1$
+	public static String PROP_ITEM_PRICE_INCLUDES_TAX = "itemPriceIncludesTax"; //$NON-NLS-1$
+	public static String PROP_TELEPHONE = "telephone"; //$NON-NLS-1$
+	public static String PROP_TICKET_FOOTER_MESSAGE = "ticketFooterMessage"; //$NON-NLS-1$
+	public static String PROP_SERVICE_CHARGE_PERCENTAGE = "serviceChargePercentage"; //$NON-NLS-1$
+	public static String PROP_UNIQUE_ID = "uniqueId"; //$NON-NLS-1$
+	public static String PROP_ZIP_CODE = "zipCode"; //$NON-NLS-1$
+	public static String PROP_NAME = "name"; //$NON-NLS-1$
+	public static String PROP_DEFAULT_GRATUITY_PERCENTAGE = "defaultGratuityPercentage"; //$NON-NLS-1$
+	public static String PROP_CURRENCY_NAME = "currencyName"; //$NON-NLS-1$
+	public static String PROP_TABLES = "tables"; //$NON-NLS-1$
+	public static String PROP_ID = "id"; //$NON-NLS-1$
+	public static String PROP_CAPACITY = "capacity"; //$NON-NLS-1$
+	public static String PROP_ADDRESS_LINE1 = "addressLine1"; //$NON-NLS-1$
+	public static String PROP_ADDRESS_LINE2 = "addressLine2"; //$NON-NLS-1$
+	public static String PROP_ADDRESS_LINE3 = "addressLine3"; //$NON-NLS-1$
+	public static String PROP_CURRENCY_SYMBOL = "currencySymbol"; //$NON-NLS-1$
 
 
 	// constructors
@@ -367,7 +367,7 @@ public abstract class BaseRestaurant  implements Comparable, Serializable {
 		if (Integer.MIN_VALUE == this.hashCode) {
 			if (null == this.getId()) return super.hashCode();
 			else {
-				String hashStr = this.getClass().getName() + ":" + this.getId().hashCode();
+				String hashStr = this.getClass().getName() + ":" + this.getId().hashCode(); //$NON-NLS-1$
 				this.hashCode = hashStr.hashCode();
 			}
 		}
