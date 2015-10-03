@@ -14,12 +14,12 @@ import java.io.Serializable;
 
 public abstract class BaseInventoryLocation  implements Comparable, Serializable {
 
-	public static String REF = "InventoryLocation";
-	public static String PROP_NAME = "name";
-	public static String PROP_WAREHOUSE = "warehouse";
-	public static String PROP_VISIBLE = "visible";
-	public static String PROP_SORT_ORDER = "sortOrder";
-	public static String PROP_ID = "id";
+	public static String REF = "InventoryLocation"; //$NON-NLS-1$
+	public static String PROP_NAME = "name"; //$NON-NLS-1$
+	public static String PROP_WAREHOUSE = "warehouse"; //$NON-NLS-1$
+	public static String PROP_VISIBLE = "visible"; //$NON-NLS-1$
+	public static String PROP_SORT_ORDER = "sortOrder"; //$NON-NLS-1$
+	public static String PROP_ID = "id"; //$NON-NLS-1$
 
 
 	// constructors
@@ -172,7 +172,7 @@ public abstract class BaseInventoryLocation  implements Comparable, Serializable
 		if (Integer.MIN_VALUE == this.hashCode) {
 			if (null == this.getId()) return super.hashCode();
 			else {
-				String hashStr = this.getClass().getName() + ":" + this.getId().hashCode();
+				String hashStr = this.getClass().getName() + ":" + this.getId().hashCode(); //$NON-NLS-1$
 				this.hashCode = hashStr.hashCode();
 			}
 		}

@@ -10,9 +10,11 @@ import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.Options;
 
+import com.floreantpos.Messages;
+
 public class Main {
 
-	private static final String DEVELOPMENT_MODE = "developmentMode";
+	private static final String DEVELOPMENT_MODE = "developmentMode"; //$NON-NLS-1$
 
 	/**
 	 * @param args
@@ -20,7 +22,7 @@ public class Main {
 	 */
 	public static void main(String[] args) throws Exception {
 		Options options = new Options();
-		options.addOption(DEVELOPMENT_MODE, true, "State if this is developmentMode");
+		options.addOption(DEVELOPMENT_MODE, true, "State if this is developmentMode"); //$NON-NLS-1$
 		CommandLineParser parser = new BasicParser();
 		CommandLine commandLine = parser.parse(options, args);
 		String optionValue = commandLine.getOptionValue(DEVELOPMENT_MODE);
@@ -35,17 +37,17 @@ public class Main {
 	}
 
 	public static void restart() throws IOException, InterruptedException, URISyntaxException {
-		final String javaBin = System.getProperty("java.home") + File.separator + "bin" + File.separator + "java";
+		final String javaBin = System.getProperty("java.home") + File.separator + "bin" + File.separator + "java"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		final File currentJar = new File(Main.class.getProtectionDomain().getCodeSource().getLocation().toURI());
 
 		/* is it a jar file? */
-		if (!currentJar.getName().endsWith(".jar"))
+		if (!currentJar.getName().endsWith(".jar")) //$NON-NLS-1$
 			return;
 
 		/* Build command: java -jar application.jar */
 		final ArrayList<String> command = new ArrayList<String>();
 		command.add(javaBin);
-		command.add("-jar");
+		command.add("-jar"); //$NON-NLS-1$
 		command.add(currentJar.getPath());
 
 		final ProcessBuilder builder = new ProcessBuilder(command);

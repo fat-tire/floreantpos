@@ -35,7 +35,7 @@ public class TicketItemCookingInstruction extends BaseTicketItemCookingInstructi
 	
 	@Override
 	public String getNameDisplay() {
-		return "   * " + getDescription();
+		return "   * " + getDescription(); //$NON-NLS-1$
 	}
 
 	@Override
@@ -65,7 +65,7 @@ public class TicketItemCookingInstruction extends BaseTicketItemCookingInstructi
 	
 	@Override
 	public String getItemCode() {
-		return "";
+		return ""; //$NON-NLS-1$
 	}
 
 	@Override

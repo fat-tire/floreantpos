@@ -19,6 +19,6 @@ public enum PaymentStatusFilter {
 	}
 
 	public String toString() {
-		return name().replaceAll("_", " ");
+		return name().replaceAll("_", " "); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 }

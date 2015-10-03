@@ -42,16 +42,16 @@ public class PrinterGroup extends BasePrinterGroup {
 		
 		List<String> list = getPrinterNames();
 		if(list != null && list.size() > 0) {
-			name += " (";
+			name += " ("; //$NON-NLS-1$
 			for (Iterator iterator = list.iterator(); iterator.hasNext();) {
 				String string = (String) iterator.next();
 				name += string;
 				
 				if(iterator.hasNext()) {
-					name += ", ";
+					name += ", "; //$NON-NLS-1$
 				}
 			}
-			name += ")";
+			name += ")"; //$NON-NLS-1$
 		}
 		
 		return name;

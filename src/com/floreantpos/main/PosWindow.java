@@ -40,7 +40,7 @@ public class PosWindow extends JFrame implements WindowListener {
 		statusBar = new JXStatusBar();
 		getContentPane().add(statusBar, BorderLayout.SOUTH);
 		
-		statusLabel = new JLabel("");
+		statusLabel = new JLabel(""); //$NON-NLS-1$
 		statusBar.add(statusLabel, JXStatusBar.Constraint.ResizeBehavior.FILL);
 	}
 	

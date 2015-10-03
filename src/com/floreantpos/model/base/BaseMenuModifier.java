@@ -14,19 +14,19 @@ import java.io.Serializable;
 
 public abstract class BaseMenuModifier  implements Comparable, Serializable {
 
-	public static String REF = "MenuModifier";
-	public static String PROP_NAME = "name";
-	public static String PROP_SHOULD_PRINT_TO_KITCHEN = "shouldPrintToKitchen";
-	public static String PROP_EXTRA_PRICE = "extraPrice";
-	public static String PROP_BUTTON_COLOR = "buttonColor";
-	public static String PROP_ENABLE = "enable";
-	public static String PROP_SORT_ORDER = "sortOrder";
-	public static String PROP_PRICE = "price";
-	public static String PROP_TAX = "tax";
-	public static String PROP_ID = "id";
-	public static String PROP_MODIFIER_GROUP = "modifierGroup";
-	public static String PROP_TRANSLATED_NAME = "translatedName";
-	public static String PROP_TEXT_COLOR = "textColor";
+	public static String REF = "MenuModifier"; //$NON-NLS-1$
+	public static String PROP_NAME = "name"; //$NON-NLS-1$
+	public static String PROP_SHOULD_PRINT_TO_KITCHEN = "shouldPrintToKitchen"; //$NON-NLS-1$
+	public static String PROP_EXTRA_PRICE = "extraPrice"; //$NON-NLS-1$
+	public static String PROP_BUTTON_COLOR = "buttonColor"; //$NON-NLS-1$
+	public static String PROP_ENABLE = "enable"; //$NON-NLS-1$
+	public static String PROP_SORT_ORDER = "sortOrder"; //$NON-NLS-1$
+	public static String PROP_PRICE = "price"; //$NON-NLS-1$
+	public static String PROP_TAX = "tax"; //$NON-NLS-1$
+	public static String PROP_ID = "id"; //$NON-NLS-1$
+	public static String PROP_MODIFIER_GROUP = "modifierGroup"; //$NON-NLS-1$
+	public static String PROP_TRANSLATED_NAME = "translatedName"; //$NON-NLS-1$
+	public static String PROP_TEXT_COLOR = "textColor"; //$NON-NLS-1$
 
 
 	// constructors
@@ -246,7 +246,7 @@ public abstract class BaseMenuModifier  implements Comparable, Serializable {
 	 * Custom property
 	 */
 	public static String getShouldPrintToKitchenDefaultValue () {
-		return "true";
+		return "true"; //$NON-NLS-1$
 	}
 
 
@@ -300,7 +300,7 @@ public abstract class BaseMenuModifier  implements Comparable, Serializable {
 		if (Integer.MIN_VALUE == this.hashCode) {
 			if (null == this.getId()) return super.hashCode();
 			else {
-				String hashStr = this.getClass().getName() + ":" + this.getId().hashCode();
+				String hashStr = this.getClass().getName() + ":" + this.getId().hashCode(); //$NON-NLS-1$
 				this.hashCode = hashStr.hashCode();
 			}
 		}

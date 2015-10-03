@@ -1,5 +1,7 @@
 package com.floreantpos.model;
 
+import com.floreantpos.Messages;
+
 public class TipsCashoutReportData {
 	private Integer ticketId;
 
@@ -18,10 +20,10 @@ public class TipsCashoutReportData {
 	public void setSaleType(String saleType) {
 		this.saleType = saleType;
 		if(this.saleType == null) {
-			this.saleType = "*CASH*";
+			this.saleType = Messages.getString("TipsCashoutReportData.0"); //$NON-NLS-1$
 		}
 		else {
-			this.saleType = this.saleType.replaceAll("_", " ");
+			this.saleType = this.saleType.replaceAll("_", " "); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 	}
 

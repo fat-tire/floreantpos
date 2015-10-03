@@ -11,20 +11,22 @@ import org.hibernate.MappingException;
 import org.hibernate.usertype.ParameterizedType;
 import org.hibernate.usertype.UserType;
 
+import com.floreantpos.Messages;
+
 public class EnumUserType implements UserType, ParameterizedType {  
      
    private Class clazz = null;  
      
    public void setParameterValues(Properties params) {  
-      String enumClassName = params.getProperty("enumClassName");  
+      String enumClassName = params.getProperty("enumClassName");   //$NON-NLS-1$
       if (enumClassName == null) {  
-         throw new MappingException("enumClassName parameter not specified");  
+         throw new MappingException(Messages.getString("EnumUserType.0"));   //$NON-NLS-1$
       }  
         
       try {  
             this.clazz = Class.forName(enumClassName);  
         } catch (ClassNotFoundException e) {  
-         throw new MappingException("enumClass " + enumClassName + " not found", e);  
+         throw new MappingException("enumClass " + enumClassName + " not found", e);   //$NON-NLS-1$ //$NON-NLS-2$
         }  
    }  
      

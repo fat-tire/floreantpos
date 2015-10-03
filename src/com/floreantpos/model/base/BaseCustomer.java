@@ -1,6 +1,5 @@
 package com.floreantpos.model.base;
 
-import java.lang.Comparable;
 import java.io.Serializable;
 
 
@@ -15,26 +14,26 @@ import java.io.Serializable;
 
 public abstract class BaseCustomer  implements Comparable, Serializable {
 
-	public static String REF = "Customer";
-	public static String PROP_PICTURE = "picture";
-	public static String PROP_VIP = "vip";
-	public static String PROP_LOYALTY_POINT = "loyaltyPoint";
-	public static String PROP_NOTE = "note";
-	public static String PROP_COUNTRY = "country";
-	public static String PROP_TELEPHONE_NO = "telephoneNo";
-	public static String PROP_DOB = "dob";
-	public static String PROP_ZIP_CODE = "zipCode";
-	public static String PROP_SSN = "ssn";
-	public static String PROP_CITY = "city";
-	public static String PROP_NAME = "name";
-	public static String PROP_EMAIL = "email";
-	public static String PROP_STATE = "state";
-	public static String PROP_CREDIT_SPENT = "creditSpent";
-	public static String PROP_ADDRESS = "address";
-	public static String PROP_AUTO_ID = "autoId";
-	public static String PROP_CREDIT_CARD_NO = "creditCardNo";
-	public static String PROP_CREDIT_LIMIT = "creditLimit";
-	public static String PROP_LOYALTY_NO = "loyaltyNo";
+	public static String REF = "Customer"; //$NON-NLS-1$
+	public static String PROP_PICTURE = "picture"; //$NON-NLS-1$
+	public static String PROP_VIP = "vip"; //$NON-NLS-1$
+	public static String PROP_LOYALTY_POINT = "loyaltyPoint"; //$NON-NLS-1$
+	public static String PROP_NOTE = "note"; //$NON-NLS-1$
+	public static String PROP_COUNTRY = "country"; //$NON-NLS-1$
+	public static String PROP_TELEPHONE_NO = "telephoneNo"; //$NON-NLS-1$
+	public static String PROP_DOB = "dob"; //$NON-NLS-1$
+	public static String PROP_ZIP_CODE = "zipCode"; //$NON-NLS-1$
+	public static String PROP_SSN = "ssn"; //$NON-NLS-1$
+	public static String PROP_CITY = "city"; //$NON-NLS-1$
+	public static String PROP_NAME = "name"; //$NON-NLS-1$
+	public static String PROP_EMAIL = "email"; //$NON-NLS-1$
+	public static String PROP_STATE = "state"; //$NON-NLS-1$
+	public static String PROP_CREDIT_SPENT = "creditSpent"; //$NON-NLS-1$
+	public static String PROP_ADDRESS = "address"; //$NON-NLS-1$
+	public static String PROP_AUTO_ID = "autoId"; //$NON-NLS-1$
+	public static String PROP_CREDIT_CARD_NO = "creditCardNo"; //$NON-NLS-1$
+	public static String PROP_CREDIT_LIMIT = "creditLimit"; //$NON-NLS-1$
+	public static String PROP_LOYALTY_NO = "loyaltyNo"; //$NON-NLS-1$
 
 
 	// constructors
@@ -445,7 +444,7 @@ public abstract class BaseCustomer  implements Comparable, Serializable {
 		if (Integer.MIN_VALUE == this.hashCode) {
 			if (null == this.getAutoId()) return super.hashCode();
 			else {
-				String hashStr = this.getClass().getName() + ":" + this.getAutoId().hashCode();
+				String hashStr = this.getClass().getName() + ":" + this.getAutoId().hashCode(); //$NON-NLS-1$
 				this.hashCode = hashStr.hashCode();
 			}
 		}

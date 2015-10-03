@@ -14,24 +14,24 @@ import java.io.Serializable;
 
 public abstract class BaseMenuItem  implements Comparable, Serializable {
 
-	public static String REF = "MenuItem";
-	public static String PROP_BUY_PRICE = "buyPrice";
-	public static String PROP_PARENT = "parent";
-	public static String PROP_BARCODE = "barcode";
-	public static String PROP_VISIBLE = "visible";
-	public static String PROP_SHOW_IMAGE_ONLY = "showImageOnly";
-	public static String PROP_DISCOUNT_RATE = "discountRate";
-	public static String PROP_SORT_ORDER = "sortOrder";
-	public static String PROP_TAX = "tax";
-	public static String PROP_TEXT_COLOR = "textColor";
-	public static String PROP_NAME = "name";
-	public static String PROP_PRINTER_GROUP = "printerGroup";
-	public static String PROP_BUTTON_COLOR = "buttonColor";
-	public static String PROP_RECEPIE = "recepie";
-	public static String PROP_PRICE = "price";
-	public static String PROP_IMAGE = "image";
-	public static String PROP_ID = "id";
-	public static String PROP_TRANSLATED_NAME = "translatedName";
+	public static String REF = "MenuItem"; //$NON-NLS-1$
+	public static String PROP_BUY_PRICE = "buyPrice"; //$NON-NLS-1$
+	public static String PROP_PARENT = "parent"; //$NON-NLS-1$
+	public static String PROP_BARCODE = "barcode"; //$NON-NLS-1$
+	public static String PROP_VISIBLE = "visible"; //$NON-NLS-1$
+	public static String PROP_SHOW_IMAGE_ONLY = "showImageOnly"; //$NON-NLS-1$
+	public static String PROP_DISCOUNT_RATE = "discountRate"; //$NON-NLS-1$
+	public static String PROP_SORT_ORDER = "sortOrder"; //$NON-NLS-1$
+	public static String PROP_TAX = "tax"; //$NON-NLS-1$
+	public static String PROP_TEXT_COLOR = "textColor"; //$NON-NLS-1$
+	public static String PROP_NAME = "name"; //$NON-NLS-1$
+	public static String PROP_PRINTER_GROUP = "printerGroup"; //$NON-NLS-1$
+	public static String PROP_BUTTON_COLOR = "buttonColor"; //$NON-NLS-1$
+	public static String PROP_RECEPIE = "recepie"; //$NON-NLS-1$
+	public static String PROP_PRICE = "price"; //$NON-NLS-1$
+	public static String PROP_IMAGE = "image"; //$NON-NLS-1$
+	public static String PROP_ID = "id"; //$NON-NLS-1$
+	public static String PROP_TRANSLATED_NAME = "translatedName"; //$NON-NLS-1$
 
 
 	// constructors
@@ -242,7 +242,7 @@ public abstract class BaseMenuItem  implements Comparable, Serializable {
 	 * Custom property
 	 */
 	public static String getVisibleDefaultValue () {
-		return "true";
+		return "true"; //$NON-NLS-1$
 	}
 
 
@@ -459,7 +459,7 @@ public abstract class BaseMenuItem  implements Comparable, Serializable {
 		if (Integer.MIN_VALUE == this.hashCode) {
 			if (null == this.getId()) return super.hashCode();
 			else {
-				String hashStr = this.getClass().getName() + ":" + this.getId().hashCode();
+				String hashStr = this.getClass().getName() + ":" + this.getId().hashCode(); //$NON-NLS-1$
 				this.hashCode = hashStr.hashCode();
 			}
 		}

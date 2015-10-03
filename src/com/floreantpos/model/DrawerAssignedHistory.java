@@ -1,5 +1,6 @@
 package com.floreantpos.model;
 
+import com.floreantpos.Messages;
 import com.floreantpos.model.base.BaseDrawerAssignedHistory;
 
 
@@ -21,6 +22,6 @@ public class DrawerAssignedHistory extends BaseDrawerAssignedHistory {
 
 /*[CONSTRUCTOR MARKER END]*/
 
-	public final static String ASSIGNMENT_OPERATION = "ASSIGN";
-	public final static String CLOSE_OPERATION = "CLOSE";
+	public final static String ASSIGNMENT_OPERATION = Messages.getString("DrawerAssignedHistory.0"); //$NON-NLS-1$
+	public final static String CLOSE_OPERATION = Messages.getString("DrawerAssignedHistory.1"); //$NON-NLS-1$
 }

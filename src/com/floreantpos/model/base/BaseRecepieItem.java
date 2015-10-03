@@ -14,12 +14,12 @@ import java.io.Serializable;
 
 public abstract class BaseRecepieItem  implements Comparable, Serializable {
 
-	public static String REF = "RecepieItem";
-	public static String PROP_INVENTORY_ITEM = "inventoryItem";
-	public static String PROP_PERCENTAGE = "percentage";
-	public static String PROP_RECEPIE = "recepie";
-	public static String PROP_ID = "id";
-	public static String PROP_INVENTORY_DEDUCTABLE = "inventoryDeductable";
+	public static String REF = "RecepieItem"; //$NON-NLS-1$
+	public static String PROP_INVENTORY_ITEM = "inventoryItem"; //$NON-NLS-1$
+	public static String PROP_PERCENTAGE = "percentage"; //$NON-NLS-1$
+	public static String PROP_RECEPIE = "recepie"; //$NON-NLS-1$
+	public static String PROP_ID = "id"; //$NON-NLS-1$
+	public static String PROP_INVENTORY_DEDUCTABLE = "inventoryDeductable"; //$NON-NLS-1$
 
 
 	// constructors
@@ -172,7 +172,7 @@ public abstract class BaseRecepieItem  implements Comparable, Serializable {
 		if (Integer.MIN_VALUE == this.hashCode) {
 			if (null == this.getId()) return super.hashCode();
 			else {
-				String hashStr = this.getClass().getName() + ":" + this.getId().hashCode();
+				String hashStr = this.getClass().getName() + ":" + this.getId().hashCode(); //$NON-NLS-1$
 				this.hashCode = hashStr.hashCode();
 			}
 		}

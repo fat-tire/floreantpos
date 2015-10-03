@@ -14,16 +14,16 @@ import java.io.Serializable;
 
 public abstract class BaseAttendenceHistory  implements Comparable, Serializable {
 
-	public static String REF = "AttendenceHistory";
-	public static String PROP_USER = "user";
-	public static String PROP_CLOCK_IN_TIME = "clockInTime";
-	public static String PROP_CLOCK_OUT_TIME = "clockOutTime";
-	public static String PROP_TERMINAL = "terminal";
-	public static String PROP_CLOCK_IN_HOUR = "clockInHour";
-	public static String PROP_CLOCKED_OUT = "clockedOut";
-	public static String PROP_SHIFT = "shift";
-	public static String PROP_ID = "id";
-	public static String PROP_CLOCK_OUT_HOUR = "clockOutHour";
+	public static String REF = "AttendenceHistory"; //$NON-NLS-1$
+	public static String PROP_USER = "user"; //$NON-NLS-1$
+	public static String PROP_CLOCK_IN_TIME = "clockInTime"; //$NON-NLS-1$
+	public static String PROP_CLOCK_OUT_TIME = "clockOutTime"; //$NON-NLS-1$
+	public static String PROP_TERMINAL = "terminal"; //$NON-NLS-1$
+	public static String PROP_CLOCK_IN_HOUR = "clockInHour"; //$NON-NLS-1$
+	public static String PROP_CLOCKED_OUT = "clockedOut"; //$NON-NLS-1$
+	public static String PROP_SHIFT = "shift"; //$NON-NLS-1$
+	public static String PROP_ID = "id"; //$NON-NLS-1$
+	public static String PROP_CLOCK_OUT_HOUR = "clockOutHour"; //$NON-NLS-1$
 
 
 	// constructors
@@ -236,7 +236,7 @@ public abstract class BaseAttendenceHistory  implements Comparable, Serializable
 		if (Integer.MIN_VALUE == this.hashCode) {
 			if (null == this.getId()) return super.hashCode();
 			else {
-				String hashStr = this.getClass().getName() + ":" + this.getId().hashCode();
+				String hashStr = this.getClass().getName() + ":" + this.getId().hashCode(); //$NON-NLS-1$
 				this.hashCode = hashStr.hashCode();
 			}
 		}

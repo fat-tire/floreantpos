@@ -14,13 +14,13 @@ import java.io.Serializable;
 
 public abstract class BaseMenuModifierGroup  implements Comparable, Serializable {
 
-	public static String REF = "MenuModifierGroup";
-	public static String PROP_NAME = "name";
-	public static String PROP_EXCLUSIVE = "exclusive";
-	public static String PROP_REQUIRED = "required";
-	public static String PROP_ENABLE = "enable";
-	public static String PROP_ID = "id";
-	public static String PROP_TRANSLATED_NAME = "translatedName";
+	public static String REF = "MenuModifierGroup"; //$NON-NLS-1$
+	public static String PROP_NAME = "name"; //$NON-NLS-1$
+	public static String PROP_EXCLUSIVE = "exclusive"; //$NON-NLS-1$
+	public static String PROP_REQUIRED = "required"; //$NON-NLS-1$
+	public static String PROP_ENABLE = "enable"; //$NON-NLS-1$
+	public static String PROP_ID = "id"; //$NON-NLS-1$
+	public static String PROP_TRANSLATED_NAME = "translatedName"; //$NON-NLS-1$
 
 
 	// constructors
@@ -202,7 +202,7 @@ public abstract class BaseMenuModifierGroup  implements Comparable, Serializable
 		if (Integer.MIN_VALUE == this.hashCode) {
 			if (null == this.getId()) return super.hashCode();
 			else {
-				String hashStr = this.getClass().getName() + ":" + this.getId().hashCode();
+				String hashStr = this.getClass().getName() + ":" + this.getId().hashCode(); //$NON-NLS-1$
 				this.hashCode = hashStr.hashCode();
 			}
 		}

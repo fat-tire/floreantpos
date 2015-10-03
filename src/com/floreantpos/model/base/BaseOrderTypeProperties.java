@@ -14,14 +14,14 @@ import java.io.Serializable;
 
 public abstract class BaseOrderTypeProperties  implements Comparable, Serializable {
 
-	public static String REF = "OrderTypeProperties";
-	public static String PROP_ORDET_TYPE = "ordetType";
-	public static String PROP_BUTTON_COLOR = "buttonColor";
-	public static String PROP_VISIBLE = "visible";
-	public static String PROP_ALIAS = "alias";
-	public static String PROP_POST_PAID = "postPaid";
-	public static String PROP_ID = "id";
-	public static String PROP_TEXT_COLOR = "textColor";
+	public static String REF = "OrderTypeProperties"; //$NON-NLS-1$
+	public static String PROP_ORDET_TYPE = "ordetType"; //$NON-NLS-1$
+	public static String PROP_BUTTON_COLOR = "buttonColor"; //$NON-NLS-1$
+	public static String PROP_VISIBLE = "visible"; //$NON-NLS-1$
+	public static String PROP_ALIAS = "alias"; //$NON-NLS-1$
+	public static String PROP_POST_PAID = "postPaid"; //$NON-NLS-1$
+	public static String PROP_ID = "id"; //$NON-NLS-1$
+	public static String PROP_TEXT_COLOR = "textColor"; //$NON-NLS-1$
 
 
 	// constructors
@@ -196,7 +196,7 @@ public abstract class BaseOrderTypeProperties  implements Comparable, Serializab
 		if (Integer.MIN_VALUE == this.hashCode) {
 			if (null == this.getId()) return super.hashCode();
 			else {
-				String hashStr = this.getClass().getName() + ":" + this.getId().hashCode();
+				String hashStr = this.getClass().getName() + ":" + this.getId().hashCode(); //$NON-NLS-1$
 				this.hashCode = hashStr.hashCode();
 			}
 		}

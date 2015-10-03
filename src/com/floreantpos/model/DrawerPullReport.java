@@ -27,7 +27,7 @@ public class DrawerPullReport extends BaseDrawerPullReport {
 	}
 	
 	public String getCashReceiptNumber() {
-		return "";
+		return ""; //$NON-NLS-1$
 	}
 
 	public void setCashReceiptNumber(String s) {
@@ -35,7 +35,7 @@ public class DrawerPullReport extends BaseDrawerPullReport {
 	}
 
 	public String getCreditCardReceiptNumber() {
-		return "";
+		return ""; //$NON-NLS-1$
 	}
 
 	public void setCreditCardReceiptNumber(String s) {
@@ -43,7 +43,7 @@ public class DrawerPullReport extends BaseDrawerPullReport {
 	}
 	
 	public String getDrawerBleedNumber() {
-		return "";
+		return ""; //$NON-NLS-1$
 	}
 
 	public void setDebitCardReceiptNumber(String s) {
@@ -51,7 +51,7 @@ public class DrawerPullReport extends BaseDrawerPullReport {
 	}
 	
 	public String getDebitCardReceiptNumber() {
-		return "";
+		return ""; //$NON-NLS-1$
 	}
 
 	public void setDrawerBleedNumber(String s) {

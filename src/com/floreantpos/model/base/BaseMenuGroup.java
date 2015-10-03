@@ -14,15 +14,15 @@ import java.io.Serializable;
 
 public abstract class BaseMenuGroup  implements Comparable, Serializable {
 
-	public static String REF = "MenuGroup";
-	public static String PROP_NAME = "name";
-	public static String PROP_PARENT = "parent";
-	public static String PROP_BUTTON_COLOR = "buttonColor";
-	public static String PROP_VISIBLE = "visible";
-	public static String PROP_SORT_ORDER = "sortOrder";
-	public static String PROP_ID = "id";
-	public static String PROP_TRANSLATED_NAME = "translatedName";
-	public static String PROP_TEXT_COLOR = "textColor";
+	public static String REF = "MenuGroup"; //$NON-NLS-1$
+	public static String PROP_NAME = "name"; //$NON-NLS-1$
+	public static String PROP_PARENT = "parent"; //$NON-NLS-1$
+	public static String PROP_BUTTON_COLOR = "buttonColor"; //$NON-NLS-1$
+	public static String PROP_VISIBLE = "visible"; //$NON-NLS-1$
+	public static String PROP_SORT_ORDER = "sortOrder"; //$NON-NLS-1$
+	public static String PROP_ID = "id"; //$NON-NLS-1$
+	public static String PROP_TRANSLATED_NAME = "translatedName"; //$NON-NLS-1$
+	public static String PROP_TEXT_COLOR = "textColor"; //$NON-NLS-1$
 
 
 	// constructors
@@ -229,7 +229,7 @@ public abstract class BaseMenuGroup  implements Comparable, Serializable {
 		if (Integer.MIN_VALUE == this.hashCode) {
 			if (null == this.getId()) return super.hashCode();
 			else {
-				String hashStr = this.getClass().getName() + ":" + this.getId().hashCode();
+				String hashStr = this.getClass().getName() + ":" + this.getId().hashCode(); //$NON-NLS-1$
 				this.hashCode = hashStr.hashCode();
 			}
 		}

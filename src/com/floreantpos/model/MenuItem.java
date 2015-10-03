@@ -3,9 +3,13 @@ package com.floreantpos.model;
 import java.awt.Color;
 import java.awt.Image;
 import java.util.List;
+
 import javax.swing.ImageIcon;
 import javax.xml.bind.annotation.XmlRootElement;
+
 import org.apache.commons.lang.StringUtils;
+
+import com.floreantpos.Messages;
 import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.base.BaseMenuItem;
@@ -126,7 +130,7 @@ public class MenuItem extends BaseMenuItem {
 	}
 
 	public String getUniqueId() {
-		return ("menu_item_" + getName() + "_" + getId()).replaceAll("\\s+", "_");
+		return ("menu_item_" + getName() + "_" + getId()).replaceAll("\\s+", "_"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 	}
 
 	public TicketItem convertToTicketItem() {

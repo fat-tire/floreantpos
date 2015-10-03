@@ -14,12 +14,12 @@ import java.io.Serializable;
 
 public abstract class BaseDrawerPullVoidTicketEntry  implements Comparable, Serializable {
 
-	public static String REF = "DrawerPullVoidTicketEntry";
-	public static String PROP_AMOUNT = "amount";
-	public static String PROP_QUANTITY = "quantity";
-	public static String PROP_HAST = "hast";
-	public static String PROP_CODE = "code";
-	public static String PROP_REASON = "reason";
+	public static String REF = "DrawerPullVoidTicketEntry"; //$NON-NLS-1$
+	public static String PROP_AMOUNT = "amount"; //$NON-NLS-1$
+	public static String PROP_QUANTITY = "quantity"; //$NON-NLS-1$
+	public static String PROP_HAST = "hast"; //$NON-NLS-1$
+	public static String PROP_CODE = "code"; //$NON-NLS-1$
+	public static String PROP_REASON = "reason"; //$NON-NLS-1$
 
 
 	// constructors
