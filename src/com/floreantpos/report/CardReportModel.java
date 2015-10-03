@@ -9,7 +9,7 @@ import com.floreantpos.util.NumberUtil;
 public class CardReportModel extends ListTableModel<CreditCardTransaction> {
 	
 	public CardReportModel(List<CreditCardTransaction> datas) {
-		super(new String[] {"ticketId", "cardType", "authCode", "subtotal", "tips", "total"}, datas);
+		super(new String[] {"ticketId", "cardType", "authCode", "subtotal", "tips", "total"}, datas); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
 	}
 
 	@Override

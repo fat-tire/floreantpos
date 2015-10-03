@@ -30,7 +30,7 @@ public class ShiftDAO extends BaseShiftDAO {
 			}
 			return false;
 		} catch (Exception e) {
-			throw new PosException("An error occured while trying to check Shift duplicacy", e);
+			throw new PosException("An error occured while trying to check Shift duplicacy", e); //$NON-NLS-1$
 		} finally {
 			if(session != null) {
 				try {
@@ -48,7 +48,7 @@ public class ShiftDAO extends BaseShiftDAO {
 			session = createNewSession();
 			session.refresh(shift);
 		} catch (Exception e) {
-			throw new PosException("An error occured while refreshing Shift state.", e);
+			throw new PosException("An error occured while refreshing Shift state.", e); //$NON-NLS-1$
 		} finally {
 			if(session != null) {
 				try {

@@ -4,6 +4,7 @@ import java.util.Date;
 
 import org.apache.commons.logging.LogFactory;
 
+import com.floreantpos.Messages;
 import com.floreantpos.model.ActionHistory;
 import com.floreantpos.model.User;
 
@@ -24,7 +25,7 @@ public class ActionHistoryDAO extends BaseActionHistoryDAO {
 			history.setActionTime(new Date());
 			save(history);
 		} catch (Exception e) {
-			LogFactory.getLog(ActionHistoryDAO.class).error("Error occured while trying to save action history", e);
+			LogFactory.getLog(ActionHistoryDAO.class).error(Messages.getString("ActionHistoryDAO.0"), e); //$NON-NLS-1$
 		}
 	}
 }

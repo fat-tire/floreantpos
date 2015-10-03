@@ -28,13 +28,13 @@ public class CustomerDAO extends BaseCustomerDAO {
 			Disjunction disjunction = Restrictions.disjunction();
 			
 			if(StringUtils.isNotEmpty(phone))
-				disjunction.add(Restrictions.like(Customer.PROP_TELEPHONE_NO, "%" + phone + "%"));
+				disjunction.add(Restrictions.like(Customer.PROP_TELEPHONE_NO, "%" + phone + "%")); //$NON-NLS-1$ //$NON-NLS-2$
 			
 			if(StringUtils.isNotEmpty(loyalty))
-				disjunction.add(Restrictions.like(Customer.PROP_LOYALTY_NO, "%" + loyalty + "%"));
+				disjunction.add(Restrictions.like(Customer.PROP_LOYALTY_NO, "%" + loyalty + "%")); //$NON-NLS-1$ //$NON-NLS-2$
 			
 			if(StringUtils.isNotEmpty(name))
-				disjunction.add(Restrictions.like(Customer.PROP_NAME, "%" + name + "%"));
+				disjunction.add(Restrictions.like(Customer.PROP_NAME, "%" + name + "%")); //$NON-NLS-1$ //$NON-NLS-2$
 			
 			criteria.add(disjunction);
 

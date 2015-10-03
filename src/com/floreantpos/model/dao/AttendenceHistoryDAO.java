@@ -10,6 +10,7 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
+import com.floreantpos.Messages;
 import com.floreantpos.PosException;
 import com.floreantpos.model.AttendenceHistory;
 import com.floreantpos.model.Shift;
@@ -39,8 +40,8 @@ public class AttendenceHistoryDAO extends BaseAttendenceHistoryDAO {
 			criteria.add(Restrictions.le(AttendenceHistory.PROP_CLOCK_IN_HOUR, new Short((short) hour)));
 
 			if (userType != null) {
-				criteria.createAlias(AttendenceHistory.PROP_USER, "u");
-				criteria.add(Restrictions.eq("u.type", userType));
+				criteria.createAlias(AttendenceHistory.PROP_USER, "u"); //$NON-NLS-1$
+				criteria.add(Restrictions.eq("u.type", userType)); //$NON-NLS-1$
 			}
 			if (terminal != null) {
 				criteria.add(Restrictions.eq(Ticket.PROP_TERMINAL, terminal));
@@ -59,7 +60,7 @@ public class AttendenceHistoryDAO extends BaseAttendenceHistoryDAO {
 			}
 			return users;
 		} catch (Exception e) {
-			throw new PosException("Error while calculating number of clocked in user", e);
+			throw new PosException(Messages.getString("AttendenceHistoryDAO.2"), e); //$NON-NLS-1$
 		} finally {
 			if (session != null) {
 				closeSession(session);
@@ -79,8 +80,8 @@ public class AttendenceHistoryDAO extends BaseAttendenceHistoryDAO {
 			criteria.add(Restrictions.le(AttendenceHistory.PROP_SHIFT, shift));
 			
 			if (userType != null) {
-				criteria.createAlias(AttendenceHistory.PROP_USER, "u");
-				criteria.add(Restrictions.eq("u.type", userType));
+				criteria.createAlias(AttendenceHistory.PROP_USER, "u"); //$NON-NLS-1$
+				criteria.add(Restrictions.eq("u.type", userType)); //$NON-NLS-1$
 			}
 			if (terminal != null) {
 				criteria.add(Restrictions.eq(Ticket.PROP_TERMINAL, terminal));
@@ -100,7 +101,7 @@ public class AttendenceHistoryDAO extends BaseAttendenceHistoryDAO {
 			}
 			return users;
 		} catch (Exception e) {
-			throw new PosException("Error while calculating number of clocked in user", e);
+			throw new PosException(Messages.getString("AttendenceHistoryDAO.5"), e); //$NON-NLS-1$
 		} finally {
 			if (session != null) {
 				closeSession(session);
@@ -152,7 +153,7 @@ public class AttendenceHistoryDAO extends BaseAttendenceHistoryDAO {
 			
 			return list;
 		} catch (Exception e) {
-			throw new PosException("Unnable to payroll", e);
+			throw new PosException(Messages.getString("AttendenceHistoryDAO.6"), e); //$NON-NLS-1$
 		} finally {
 			if (session != null) {
 				session.close();

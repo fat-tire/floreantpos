@@ -27,7 +27,7 @@ public abstract class BaseRestaurantDAO extends com.floreantpos.model.dao._RootD
 	}
 
     public Order getDefaultOrder () {
-		return Order.asc("name");
+		return Order.asc("name"); //$NON-NLS-1$
     }
 
 	/**

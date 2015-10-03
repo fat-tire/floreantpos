@@ -27,7 +27,7 @@ public abstract class BaseTicketItemModifierDAO extends com.floreantpos.model.da
 	}
 
     public Order getDefaultOrder () {
-		return Order.asc("name");
+		return Order.asc("name"); //$NON-NLS-1$
     }
 
 	/**

@@ -1,6 +1,7 @@
 package com.floreantpos.model.dao;
 
 import java.util.List;
+
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
@@ -8,6 +9,8 @@ import org.hibernate.Session;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
+
+import com.floreantpos.Messages;
 import com.floreantpos.PosException;
 import com.floreantpos.model.MenuGroup;
 import com.floreantpos.model.MenuItem;
@@ -66,7 +69,7 @@ public class MenuItemDAO extends BaseMenuItemDAO {
 			return criteria.list();
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new PosException("Error occured while finding food items");
+			throw new PosException(Messages.getString("MenuItemDAO.0")); //$NON-NLS-1$
 		}
 		finally {
 			if (session != null) {
@@ -87,7 +90,7 @@ public class MenuItemDAO extends BaseMenuItemDAO {
 
 			return newItem.getMenuItemModiferGroups();
 		} catch (Exception e) {
-			throw new PosException("Error occured while finding food items");
+			throw new PosException(Messages.getString("MenuItemDAO.1")); //$NON-NLS-1$
 		}
 		finally {
 			if (session != null) {
