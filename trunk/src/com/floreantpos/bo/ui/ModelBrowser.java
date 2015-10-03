@@ -19,6 +19,7 @@ import net.miginfocom.swing.MigLayout;
 
 import org.jdesktop.swingx.JXTable;
 
+import com.floreantpos.Messages;
 import com.floreantpos.main.Application;
 import com.floreantpos.swing.BeanTableModel;
 import com.floreantpos.swing.ListTableModel;
@@ -33,11 +34,11 @@ public class ModelBrowser<E> extends JPanel implements ActionListener, ListSelec
 	protected JPanel browserPanel = new JPanel(new BorderLayout());
 	private JPanel beanPanel = new JPanel(new BorderLayout());
 	
-	private JButton btnNew = new JButton("NEW");
-	private JButton btnEdit = new JButton("EDIT");
-	private JButton btnSave = new JButton("SAVE");
-	private JButton btnDelete = new JButton("DELETE");
-	private JButton btnCancel = new JButton("CANCEL");
+	private JButton btnNew = new JButton(Messages.getString("ModelBrowser.0")); //$NON-NLS-1$
+	private JButton btnEdit = new JButton(Messages.getString("ModelBrowser.1")); //$NON-NLS-1$
+	private JButton btnSave = new JButton(Messages.getString("ModelBrowser.2")); //$NON-NLS-1$
+	private JButton btnDelete = new JButton(Messages.getString("ModelBrowser.3")); //$NON-NLS-1$
+	private JButton btnCancel = new JButton(Messages.getString("ModelBrowser.4")); //$NON-NLS-1$
 	
 	public ModelBrowser() {
 		this(null);	
@@ -70,7 +71,7 @@ public class ModelBrowser<E> extends JPanel implements ActionListener, ListSelec
 		add(browserPanel);
 		
 		beanPanel.setBorder(BorderFactory.createEtchedBorder());
-		JPanel beanEditorPanel = new JPanel(new MigLayout("align 50% 50%"));
+		JPanel beanEditorPanel = new JPanel(new MigLayout("align 50% 50%")); //$NON-NLS-1$
 		beanEditorPanel.add(beanEditor);
 		beanPanel.add(beanEditorPanel);
 		

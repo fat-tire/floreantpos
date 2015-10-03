@@ -8,6 +8,7 @@ import javax.swing.JOptionPane;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import com.floreantpos.Messages;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.DrawerAssignedHistory;
 import com.floreantpos.model.DrawerPullReport;
@@ -24,15 +25,15 @@ import com.floreantpos.ui.dialog.POSMessageDialog;
 public class DrawerAssignmentAction extends PosAction {
 
 	public DrawerAssignmentAction() {
-		super("ASSIGN DRAWER", UserPermission.DRAWER_ASSIGNMENT);
+		super(Messages.getString("DrawerAssignmentAction.0"), UserPermission.DRAWER_ASSIGNMENT); //$NON-NLS-1$
 		Terminal terminal = Application.getInstance().getTerminal();
 		User assignedUser = terminal.getAssignedUser();
 		
 		if (assignedUser != null) {
-			putValue(Action.NAME, "DRAWER CLOSE");
+			putValue(Action.NAME, Messages.getString("DrawerAssignmentAction.1")); //$NON-NLS-1$
 		}
 		else {
-			putValue(Action.NAME, "ASSIGN DRAWER");
+			putValue(Action.NAME, Messages.getString("DrawerAssignmentAction.2")); //$NON-NLS-1$
 		}
 	}
 
@@ -43,8 +44,8 @@ public class DrawerAssignmentAction extends PosAction {
 			User assignedUser = terminal.getAssignedUser();
 			
 			if (assignedUser != null) {
-				int option = POSMessageDialog.showYesNoQuestionDialog(Application.getPosWindow(), "Drawer is assigned to " + assignedUser.getFullName()
-						+ ". Do you want to close?", "Confirm");
+				int option = POSMessageDialog.showYesNoQuestionDialog(Application.getPosWindow(), Messages.getString("DrawerAssignmentAction.3") + assignedUser.getFullName() //$NON-NLS-1$
+						+ Messages.getString("DrawerAssignmentAction.4"), Messages.getString("DrawerAssignmentAction.5")); //$NON-NLS-1$ //$NON-NLS-2$
 				if (option != JOptionPane.YES_OPTION) {
 					return;
 				}
@@ -74,7 +75,7 @@ public class DrawerAssignmentAction extends PosAction {
 
 			User user = dialog.getSelectedUser();
 			
-			double drawerBalance = NumberSelectionDialog2.takeDoubleInput("Please enter drawer initial balance", "Please enter drawer initial balance", terminal.getOpeningBalance());
+			double drawerBalance = NumberSelectionDialog2.takeDoubleInput(Messages.getString("DrawerAssignmentAction.6"), Messages.getString("DrawerAssignmentAction.7"), terminal.getOpeningBalance()); //$NON-NLS-1$ //$NON-NLS-2$
 	    	if(Double.isNaN(drawerBalance)) {
 	    		return;
 	    	}
@@ -95,9 +96,9 @@ public class DrawerAssignmentAction extends PosAction {
 
 			tx.commit();
 
-			POSMessageDialog.showMessage("Drawer is assigned to " + user.getFullName());
+			POSMessageDialog.showMessage(Messages.getString("DrawerAssignmentAction.8") + user.getFullName()); //$NON-NLS-1$
 
-			putValue(Action.NAME, "CLOSE DRAWER");
+			putValue(Action.NAME, Messages.getString("DrawerAssignmentAction.9")); //$NON-NLS-1$
 			
 		} catch (Exception e) {
 			if (tx != null) {
@@ -137,9 +138,9 @@ public class DrawerAssignmentAction extends PosAction {
 //
 //			tx.commit();
 
-			POSMessageDialog.showMessage("Drawer is closed.");
+			POSMessageDialog.showMessage(Messages.getString("DrawerAssignmentAction.10")); //$NON-NLS-1$
 
-			putValue(Action.NAME, "ASSIGN DRAWER");
+			putValue(Action.NAME, Messages.getString("DrawerAssignmentAction.11")); //$NON-NLS-1$
 			
 		} catch (Exception e) {
 			throw e;
