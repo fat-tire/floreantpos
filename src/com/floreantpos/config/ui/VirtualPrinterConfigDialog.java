@@ -13,6 +13,7 @@ import net.miginfocom.swing.MigLayout;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.floreantpos.Messages;
 import com.floreantpos.model.VirtualPrinter;
 import com.floreantpos.model.dao.VirtualPrinterDAO;
 import com.floreantpos.swing.FixedLengthTextField;
@@ -32,7 +33,7 @@ public class VirtualPrinterConfigDialog extends POSDialog {
 
 	public VirtualPrinterConfigDialog() throws HeadlessException {
 		super();
-		setTitle("Add/Edit Virtual Printer");
+		setTitle(Messages.getString("VirtualPrinterConfigDialog.0")); //$NON-NLS-1$
 		
 		init();
 
@@ -42,13 +43,13 @@ public class VirtualPrinterConfigDialog extends POSDialog {
 	}
 
 	public void init() {
-		getContentPane().setLayout(new MigLayout("", "[][grow]", "[][][]"));
+		getContentPane().setLayout(new MigLayout("", "[][grow]", "[][][]")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
-		JLabel lblName = new JLabel("Virtual Printer Name");
-		getContentPane().add(lblName, "cell 0 0,alignx trailing");
+		JLabel lblName = new JLabel(Messages.getString("VirtualPrinterConfigDialog.4")); //$NON-NLS-1$
+		getContentPane().add(lblName, "cell 0 0,alignx trailing"); //$NON-NLS-1$
 
 		tfName = new FixedLengthTextField(60);
-		getContentPane().add(tfName, "cell 1 0,growx");
+		getContentPane().add(tfName, "cell 1 0,growx"); //$NON-NLS-1$
 
 //		JPanel orderTypePanel = new JPanel();
 //		orderTypePanel.setBorder(new TitledBorder("ORDER TYPE"));
@@ -61,12 +62,12 @@ public class VirtualPrinterConfigDialog extends POSDialog {
 //		add(orderTypePanel, "newline, grow, span 2");
 
 		JSeparator separator = new JSeparator();
-		getContentPane().add(separator, "cell 0 1 2 1,growx, gap top 50px");
+		getContentPane().add(separator, "cell 0 1 2 1,growx, gap top 50px"); //$NON-NLS-1$
 
 		JPanel panel = new JPanel();
-		getContentPane().add(panel, "cell 0 4 2 1,grow");
+		getContentPane().add(panel, "cell 0 4 2 1,grow"); //$NON-NLS-1$
 
-		JButton btnOk = new JButton("OK");
+		JButton btnOk = new JButton(Messages.getString("VirtualPrinterConfigDialog.9")); //$NON-NLS-1$
 		btnOk.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				doAddPrinter();
@@ -74,7 +75,7 @@ public class VirtualPrinterConfigDialog extends POSDialog {
 		});
 		panel.add(btnOk);
 
-		JButton btnCancel = new JButton("CANCEL");
+		JButton btnCancel = new JButton(Messages.getString("VirtualPrinterConfigDialog.10")); //$NON-NLS-1$
 		btnCancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				setCanceled(true);
@@ -89,14 +90,14 @@ public class VirtualPrinterConfigDialog extends POSDialog {
 
 			String name = tfName.getText();
 			if (StringUtils.isEmpty(name)) {
-				POSMessageDialog.showMessage(this, "Please provide a name");
+				POSMessageDialog.showMessage(this, Messages.getString("VirtualPrinterConfigDialog.11")); //$NON-NLS-1$
 				return;
 			}
 
 			VirtualPrinterDAO printerDAO = VirtualPrinterDAO.getInstance();
 
 			if (printerDAO.findPrinterByName(name) != null) {
-				POSMessageDialog.showMessage(this, "A printer with that name already exists.");
+				POSMessageDialog.showMessage(this, Messages.getString("VirtualPrinterConfigDialog.12")); //$NON-NLS-1$
 				return;
 			}
 

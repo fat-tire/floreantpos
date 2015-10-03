@@ -32,21 +32,21 @@ public class CustomerExplorer extends TransparentPanel {
 		customerList = dao.findAll();
 		
 		tableModel = new BeanTableModel<Customer>(Customer.class);
-		tableModel.addColumn("ID", "autoId");
-		tableModel.addColumn("NAME", "name");
-		tableModel.addColumn("LOYALTY", "loyaltyNo");
-		tableModel.addColumn("TELEPHONE", "telephoneNo");
-		tableModel.addColumn("EMAIL", "email");
-		tableModel.addColumn("DOB", "dob");
-		tableModel.addColumn("SSN", "ssn");
-		tableModel.addColumn("ADDRESS", "address");
-		tableModel.addColumn("CITY", "city");
-		tableModel.addColumn("STATE", "state");
-		tableModel.addColumn("ZIP", "zipCode");
-		tableModel.addColumn("COUNTRY", "country");
-		tableModel.addColumn("CREDIT LIMIT", "creditLimit");
-		tableModel.addColumn("CREDIT SPENT", "creditSpent");
-		tableModel.addColumn("NOTE", "note");
+		tableModel.addColumn("ID", "autoId"); //$NON-NLS-1$ //$NON-NLS-2$
+		tableModel.addColumn("NAME", "name"); //$NON-NLS-1$ //$NON-NLS-2$
+		tableModel.addColumn("LOYALTY", "loyaltyNo"); //$NON-NLS-1$ //$NON-NLS-2$
+		tableModel.addColumn("TELEPHONE", "telephoneNo"); //$NON-NLS-1$ //$NON-NLS-2$
+		tableModel.addColumn("EMAIL", "email"); //$NON-NLS-1$ //$NON-NLS-2$
+		tableModel.addColumn("DOB", "dob"); //$NON-NLS-1$ //$NON-NLS-2$
+		tableModel.addColumn("SSN", "ssn"); //$NON-NLS-1$ //$NON-NLS-2$
+		tableModel.addColumn("ADDRESS", "address"); //$NON-NLS-1$ //$NON-NLS-2$
+		tableModel.addColumn("CITY", "city"); //$NON-NLS-1$ //$NON-NLS-2$
+		tableModel.addColumn("STATE", "state"); //$NON-NLS-1$ //$NON-NLS-2$
+		tableModel.addColumn("ZIP", "zipCode"); //$NON-NLS-1$ //$NON-NLS-2$
+		tableModel.addColumn("COUNTRY", "country"); //$NON-NLS-1$ //$NON-NLS-2$
+		tableModel.addColumn("CREDIT LIMIT", "creditLimit"); //$NON-NLS-1$ //$NON-NLS-2$
+		tableModel.addColumn("CREDIT SPENT", "creditSpent"); //$NON-NLS-1$ //$NON-NLS-2$
+		tableModel.addColumn("NOTE", "note"); //$NON-NLS-1$ //$NON-NLS-2$
 		tableModel.addRows(customerList);
 
 		table = new JTable(tableModel);

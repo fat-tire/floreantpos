@@ -17,6 +17,7 @@ import org.apache.commons.io.IOUtils;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import com.floreantpos.Messages;
 import com.floreantpos.model.MenuItem;
 import com.floreantpos.model.MenuItemModifierGroup;
 import com.floreantpos.model.dao.GenericDAO;
@@ -32,7 +33,7 @@ import com.floreantpos.util.datamigrate.Elements;
 
 public class DataExportAction extends AbstractAction {
 	public DataExportAction() {
-		super("Export Menu Items");
+		super(Messages.getString("DataExportAction.0")); //$NON-NLS-1$
 	}
 
 	@Override
@@ -51,7 +52,7 @@ public class DataExportAction extends AbstractAction {
 
 			File file = fileChooser.getSelectedFile();
 			if (file.exists()) {
-				option = JOptionPane.showConfirmDialog(com.floreantpos.util.POSUtil.getFocusedWindow(), "Overwrite file " + file.getName() + "?", "Confirm",
+				option = JOptionPane.showConfirmDialog(com.floreantpos.util.POSUtil.getFocusedWindow(), Messages.getString("DataExportAction.1") + file.getName() + "?", Messages.getString("DataExportAction.3"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 						JOptionPane.YES_NO_OPTION);
 				if (option != JOptionPane.YES_OPTION) {
 					return;
@@ -109,7 +110,7 @@ public class DataExportAction extends AbstractAction {
 			fileWriter.write(writer.toString());
 			fileWriter.close();
 
-			POSMessageDialog.showMessage(com.floreantpos.util.POSUtil.getFocusedWindow(), "Saved!");
+			POSMessageDialog.showMessage(com.floreantpos.util.POSUtil.getFocusedWindow(), Messages.getString("DataExportAction.4")); //$NON-NLS-1$
 
 		} catch (Exception e1) {
 			transaction.rollback();
@@ -125,17 +126,17 @@ public class DataExportAction extends AbstractAction {
 		JFileChooser fileChooser = new JFileChooser();
 		fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 		fileChooser.setMultiSelectionEnabled(false);
-		fileChooser.setSelectedFile(new File("floreantpos-menu-items.xml"));
+		fileChooser.setSelectedFile(new File("floreantpos-menu-items.xml")); //$NON-NLS-1$
 		fileChooser.setFileFilter(new FileFilter() {
 
 			@Override
 			public String getDescription() {
-				return "XML File";
+				return "XML File"; //$NON-NLS-1$
 			}
 
 			@Override
 			public boolean accept(File f) {
-				if (f.getName().endsWith(".xml")) {
+				if (f.getName().endsWith(".xml")) { //$NON-NLS-1$
 					return true;
 				}
 

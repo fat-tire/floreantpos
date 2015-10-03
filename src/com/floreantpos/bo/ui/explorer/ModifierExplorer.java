@@ -20,6 +20,7 @@ import javax.swing.border.TitledBorder;
 
 import net.miginfocom.swing.MigLayout;
 
+import com.floreantpos.Messages;
 import com.floreantpos.POSConstants;
 import com.floreantpos.bo.ui.BOMessageDialog;
 import com.floreantpos.main.Application;
@@ -124,20 +125,20 @@ public class ModifierExplorer extends TransparentPanel {
 	private JPanel buildSearchForm() {
 		List<MenuModifierGroup> grpName;
 		JPanel panel = new JPanel();
-		panel.setLayout(new MigLayout("", "[][]30[][]30[]", "[]20[]"));
+		panel.setLayout(new MigLayout("", "[][]30[][]30[]", "[]20[]")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
-		JLabel nameLabel = new JLabel("Name : ");
-		JLabel groupLabel = new JLabel("Group : ");
+		JLabel nameLabel = new JLabel(Messages.getString("ModifierExplorer.3")); //$NON-NLS-1$
+		JLabel groupLabel = new JLabel(Messages.getString("ModifierExplorer.4")); //$NON-NLS-1$
 		final JTextField nameField = new JTextField(15);
 		grpName = MenuModifierGroupDAO.getInstance().findAll();
 		final JComboBox cbGroup = new JComboBox();
-		cbGroup.addItem("FULL  LIST");
+		cbGroup.addItem(Messages.getString("ModifierExplorer.5")); //$NON-NLS-1$
 		for (MenuModifierGroup s : grpName) {
 			cbGroup.addItem(s);
 		}
 
-		JButton searchBttn = new JButton("Search");
-		panel.add(nameLabel, "align label");
+		JButton searchBttn = new JButton(Messages.getString("ModifierExplorer.6")); //$NON-NLS-1$
+		panel.add(nameLabel, "align label"); //$NON-NLS-1$
 		panel.add(nameField);
 		panel.add(groupLabel);
 		panel.add(cbGroup);
@@ -146,7 +147,7 @@ public class ModifierExplorer extends TransparentPanel {
 		TitledBorder title;
 		Border loweredetched;
 		loweredetched = BorderFactory.createEtchedBorder(EtchedBorder.LOWERED);
-		title = BorderFactory.createTitledBorder(loweredetched, "Search");
+		title = BorderFactory.createTitledBorder(loweredetched, Messages.getString("ModifierExplorer.8")); //$NON-NLS-1$
 		title.setTitleJustification(TitledBorder.LEFT);
 		panel.setBorder(title);
 		searchBttn.addActionListener(new ActionListener() {
@@ -183,7 +184,7 @@ public class ModifierExplorer extends TransparentPanel {
 		public ModifierExplorerModel() {
 
 			super(new String[] { com.floreantpos.POSConstants.ID, com.floreantpos.POSConstants.NAME, POSConstants.TRANSLATED_NAME,
-					com.floreantpos.POSConstants.PRICE + " (" + currencySymbol + ")", com.floreantpos.POSConstants.EXTRA_PRICE,
+					com.floreantpos.POSConstants.PRICE + " (" + currencySymbol + ")", com.floreantpos.POSConstants.EXTRA_PRICE, //$NON-NLS-1$ //$NON-NLS-2$
 					com.floreantpos.POSConstants.TAX + "(%)", com.floreantpos.POSConstants.MODIFIER_GROUP, POSConstants.BUTTON_COLOR, POSConstants.SORT_ORDER }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 		}

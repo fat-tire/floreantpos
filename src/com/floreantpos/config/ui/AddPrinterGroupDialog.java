@@ -18,6 +18,7 @@ import net.miginfocom.swing.MigLayout;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.floreantpos.Messages;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.Printer;
 import com.floreantpos.model.PrinterGroup;
@@ -33,7 +34,7 @@ public class AddPrinterGroupDialog extends POSDialog {
 
 	public AddPrinterGroupDialog() throws HeadlessException {
 		super(POSUtil.getBackOfficeWindow(), true);
-		setTitle("Add/Edit Printer Group");
+		setTitle(Messages.getString("AddPrinterGroupDialog.0")); //$NON-NLS-1$
 		
 		init();
 		
@@ -45,34 +46,34 @@ public class AddPrinterGroupDialog extends POSDialog {
 
 	public void init() {
 		JPanel contentPane = (JPanel) getContentPane();
-		contentPane.setLayout(new MigLayout("", "[][grow]", ""));
+		contentPane.setLayout(new MigLayout("", "[][grow]", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		
-		add(new JLabel("Group name"));
-		add(tfName, "grow");
+		add(new JLabel(Messages.getString("AddPrinterGroupDialog.4"))); //$NON-NLS-1$
+		add(tfName, "grow"); //$NON-NLS-1$
 		
 		List<Printer> printers = Application.getPrinters().getKitchenPrinters();
 		printerList = new CheckBoxList(new Vector<Printer>(printers));
 		
 		JPanel listPanel = new JPanel(new BorderLayout());
-		listPanel.setBorder(new TitledBorder("Printers"));
+		listPanel.setBorder(new TitledBorder(Messages.getString("AddPrinterGroupDialog.6"))); //$NON-NLS-1$
 		listPanel.add(new JScrollPane(printerList));
 		
-		add(listPanel, "newline, span 2, grow");
+		add(listPanel, "newline, span 2, grow"); //$NON-NLS-1$
 		
 		JPanel panel = new JPanel();
-		contentPane.add(panel, "cell 0 4 3 1,grow");
+		contentPane.add(panel, "cell 0 4 3 1,grow"); //$NON-NLS-1$
 		
-		JButton btnOk = new JButton("OK");
+		JButton btnOk = new JButton(Messages.getString("AddPrinterGroupDialog.9")); //$NON-NLS-1$
 		btnOk.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(StringUtils.isEmpty(tfName.getText())) {
-					POSMessageDialog.showError(Application.getPosWindow(), "Name is empty");
+					POSMessageDialog.showError(Application.getPosWindow(), Messages.getString("AddPrinterGroupDialog.10")); //$NON-NLS-1$
 					return;
 				}
 				
 				Object[] checkedValues = printerList.getCheckedValues();
 				if(checkedValues == null || checkedValues.length == 0) {
-					POSMessageDialog.showError(Application.getPosWindow(), "Please select at least one printer");
+					POSMessageDialog.showError(Application.getPosWindow(), Messages.getString("AddPrinterGroupDialog.11")); //$NON-NLS-1$
 					return;
 				}
 				
@@ -82,7 +83,7 @@ public class AddPrinterGroupDialog extends POSDialog {
 		});
 		panel.add(btnOk);
 		
-		JButton btnCancel = new JButton("CANCEL");
+		JButton btnCancel = new JButton(Messages.getString("AddPrinterGroupDialog.12")); //$NON-NLS-1$
 		btnCancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				setCanceled(true);

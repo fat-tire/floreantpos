@@ -21,6 +21,7 @@ import net.miginfocom.swing.MigLayout;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.floreantpos.Messages;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.Customer;
 import com.floreantpos.model.Ticket;
@@ -51,7 +52,7 @@ public class CustomerSelectionDialog extends POSDialog {
 	public CustomerSelectionDialog(Ticket ticket) {
 		this.ticket = ticket;
 		
-		setTitle("Add/Edit Customer");
+		setTitle(Messages.getString("CustomerSelectionDialog.0")); //$NON-NLS-1$
 		
 		loadCustomerFromTicket();
 	}
@@ -59,50 +60,50 @@ public class CustomerSelectionDialog extends POSDialog {
 	@Override
 	public void initUI() {
 		setPreferredSize(new Dimension(690, 553));
-		getContentPane().setLayout(new MigLayout("", "[549px,grow]", "[grow][][shrink 0,fill][grow][grow]"));
+		getContentPane().setLayout(new MigLayout("", "[549px,grow]", "[grow][][shrink 0,fill][grow][grow]")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 		JPanel panel_4 = new JPanel();
-		panel_4.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		getContentPane().add(panel_4, "cell 0 0,grow");
-		panel_4.setLayout(new MigLayout("", "[grow][][][]", "[grow][][][]"));
+		panel_4.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null)); //$NON-NLS-1$
+		getContentPane().add(panel_4, "cell 0 0,grow"); //$NON-NLS-1$
+		panel_4.setLayout(new MigLayout("", "[grow][][][]", "[grow][][][]")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
-		JLabel lblNewLabel = new JLabel("");
-		panel_4.add(lblNewLabel, "cell 0 0 1 3,grow");
+		JLabel lblNewLabel = new JLabel(""); //$NON-NLS-1$
+		panel_4.add(lblNewLabel, "cell 0 0 1 3,grow"); //$NON-NLS-1$
 
-		JLabel lblByPhone = new JLabel("Search by Phone");
-		panel_4.add(lblByPhone, "cell 1 0");
+		JLabel lblByPhone = new JLabel(Messages.getString("CustomerSelectionDialog.1")); //$NON-NLS-1$
+		panel_4.add(lblByPhone, "cell 1 0"); //$NON-NLS-1$
 
 		tfPhone = new POSTextField();
-		panel_4.add(tfPhone, "cell 2 0");
+		panel_4.add(tfPhone, "cell 2 0"); //$NON-NLS-1$
 		tfPhone.setColumns(16);
 
 		PosSmallButton psmlbtnSearch = new PosSmallButton();
-		panel_4.add(psmlbtnSearch, "cell 3 0 1 3,growy");
+		panel_4.add(psmlbtnSearch, "cell 3 0 1 3,growy"); //$NON-NLS-1$
 		psmlbtnSearch.setFocusable(false);
 		psmlbtnSearch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				doSearchCustomer();
 			}
 		});
-		psmlbtnSearch.setText("SEARCH");
+		psmlbtnSearch.setText(Messages.getString("CustomerSelectionDialog.15")); //$NON-NLS-1$
 
-		JLabel lblByName = new JLabel("Or Loyalty #");
-		panel_4.add(lblByName, "cell 1 1,alignx trailing");
+		JLabel lblByName = new JLabel(Messages.getString("CustomerSelectionDialog.16")); //$NON-NLS-1$
+		panel_4.add(lblByName, "cell 1 1,alignx trailing"); //$NON-NLS-1$
 
 		tfLoyaltyNo = new POSTextField();
-		panel_4.add(tfLoyaltyNo, "cell 2 1");
+		panel_4.add(tfLoyaltyNo, "cell 2 1"); //$NON-NLS-1$
 		tfLoyaltyNo.setColumns(16);
 
-		JLabel lblByEmail = new JLabel("Or Name");
-		panel_4.add(lblByEmail, "cell 1 2,alignx trailing");
+		JLabel lblByEmail = new JLabel(Messages.getString("CustomerSelectionDialog.19")); //$NON-NLS-1$
+		panel_4.add(lblByEmail, "cell 1 2,alignx trailing"); //$NON-NLS-1$
 
 		tfName = new POSTextField();
-		panel_4.add(tfName, "cell 2 2");
+		panel_4.add(tfName, "cell 2 2"); //$NON-NLS-1$
 		tfName.setColumns(16);
 
 		JPanel panel_2 = new JPanel();
 		panel_2.setBorder(new EmptyBorder(10, 0, 0, 0));
-		panel_4.add(panel_2, "cell 0 3 4 1,growx");
+		panel_4.add(panel_2, "cell 0 3 4 1,growx"); //$NON-NLS-1$
 		panel_2.setLayout(new BorderLayout(0, 0));
 
 		JScrollPane scrollPane = new JScrollPane();
@@ -136,11 +137,11 @@ public class CustomerSelectionDialog extends POSDialog {
 		btnInfo.setFocusable(false);
 		panel.add(btnInfo);
 		btnInfo.setEnabled(false);
-		btnInfo.setText("DETAIL");
+		btnInfo.setText(Messages.getString("CustomerSelectionDialog.23")); //$NON-NLS-1$
 
 		PosSmallButton btnHistory = new PosSmallButton();
 		btnHistory.setEnabled(false);
-		btnHistory.setText("HISTORY");
+		btnHistory.setText(Messages.getString("CustomerSelectionDialog.24")); //$NON-NLS-1$
 		panel.add(btnHistory);
 
 		btnCreateNewCustomer = new PosSmallButton();
@@ -151,7 +152,7 @@ public class CustomerSelectionDialog extends POSDialog {
 				doCreateNewCustomer();
 			}
 		});
-		btnCreateNewCustomer.setText("NEW");
+		btnCreateNewCustomer.setText(Messages.getString("CustomerSelectionDialog.25")); //$NON-NLS-1$
 		
 		btnRemoveCustomer = new PosSmallButton();
 		btnRemoveCustomer.addActionListener(new ActionListener() {
@@ -159,7 +160,7 @@ public class CustomerSelectionDialog extends POSDialog {
 				doRemoveCustomerFromTicket();
 			}
 		});
-		btnRemoveCustomer.setText("REMOVE");
+		btnRemoveCustomer.setText(Messages.getString("CustomerSelectionDialog.26")); //$NON-NLS-1$
 		panel.add(btnRemoveCustomer);
 
 		PosSmallButton btnSelect = new PosSmallButton();
@@ -167,14 +168,14 @@ public class CustomerSelectionDialog extends POSDialog {
 			public void actionPerformed(ActionEvent e) {
 				Customer customer = customerTable.getSelectedCustomer();
 				if(customer == null) {
-					POSMessageDialog.showError(Application.getPosWindow(), "Please select a customer");
+					POSMessageDialog.showError(Application.getPosWindow(), Messages.getString("CustomerSelectionDialog.27")); //$NON-NLS-1$
 					return;
 				}
 				
 				doSetCustomer(customer);
 			}
 		});
-		btnSelect.setText("SELECT");
+		btnSelect.setText(Messages.getString("CustomerSelectionDialog.28")); //$NON-NLS-1$
 		panel.add(btnSelect);
 		
 				PosSmallButton btnCancel = new PosSmallButton();
@@ -184,11 +185,11 @@ public class CustomerSelectionDialog extends POSDialog {
 						dispose();
 					}
 				});
-				btnCancel.setText("CANCEL");
+				btnCancel.setText(Messages.getString("CustomerSelectionDialog.29")); //$NON-NLS-1$
 				panel.add(btnCancel);
 
 		JPanel panel_3 = new JPanel(new BorderLayout());
-		getContentPane().add(panel_3, "cell 0 1,grow, gapright 2px");
+		getContentPane().add(panel_3, "cell 0 1,grow, gapright 2px"); //$NON-NLS-1$
 
 		com.floreantpos.swing.QwertyKeyPad qwertyKeyPad = new com.floreantpos.swing.QwertyKeyPad();
 		panel_3.add(qwertyKeyPad);
@@ -229,7 +230,7 @@ public class CustomerSelectionDialog extends POSDialog {
 	}
 
 	protected void doRemoveCustomerFromTicket() {
-		int option = POSMessageDialog.showYesNoQuestionDialog(this, "Remove customer from ticket?", "Confirm");
+		int option = POSMessageDialog.showYesNoQuestionDialog(this, Messages.getString("CustomerSelectionDialog.2"), Messages.getString("CustomerSelectionDialog.32")); //$NON-NLS-1$ //$NON-NLS-2$
 		if(option != JOptionPane.YES_OPTION) {
 			return;
 		}
@@ -270,6 +271,6 @@ public class CustomerSelectionDialog extends POSDialog {
 	
 	@Override
 	public String getName() {
-		return "C";
+		return "C"; //$NON-NLS-1$
 	}
 }

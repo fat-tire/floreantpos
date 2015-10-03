@@ -20,7 +20,7 @@ public class PosSessionFactory {
      * <code>CONFIG_FILE_LOCATION = "/hibernate.conf.xml". 
      * CONFIG_FILE_LOCATION = "/com/foo/bar/myhiberstuff.conf.xml".</code> 
      */
-    private static String CONFIG_FILE_LOCATION = "/hibernate.cfg.xml";
+    private static String CONFIG_FILE_LOCATION = "/hibernate.cfg.xml"; //$NON-NLS-1$
 
     /** Holds a single instance of Session */
 	private static final ThreadLocal<Session> threadLocal = new ThreadLocal<Session>();
@@ -48,7 +48,7 @@ public class PosSessionFactory {
 					sessionFactory = cfg.buildSessionFactory();
 				} catch (Exception e) {
 					System.err
-							.println("%%%% Error Creating SessionFactory %%%%");
+							.println("%%%% Error Creating SessionFactory %%%%"); //$NON-NLS-1$
 					e.printStackTrace();
 				}
 			}
