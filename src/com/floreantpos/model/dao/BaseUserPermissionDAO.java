@@ -27,7 +27,7 @@ public abstract class BaseUserPermissionDAO extends com.floreantpos.model.dao._R
 	}
 
     public Order getDefaultOrder () {
-		return Order.asc("name");
+		return Order.asc("name"); //$NON-NLS-1$
     }
 
 	/**

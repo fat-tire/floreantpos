@@ -15,6 +15,7 @@ import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 
+import com.floreantpos.Messages;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.DataUpdateInfo;
 import com.floreantpos.model.Gratuity;
@@ -207,8 +208,8 @@ public class TicketDAO extends BaseTicketDAO {
 			Criteria criteria = session.createCriteria(getReferenceClass());
 			criteria.add(Restrictions.eq(Ticket.PROP_DRAWER_RESETTED, Boolean.FALSE));
 			criteria.add(Restrictions.eq(Ticket.PROP_TERMINAL, terminal));
-			criteria.createAlias(Ticket.PROP_GRATUITY, "gratuity");
-			criteria.add(Restrictions.eq("gratuity.paid", Boolean.FALSE));
+			criteria.createAlias(Ticket.PROP_GRATUITY, "gratuity"); //$NON-NLS-1$
+			criteria.add(Restrictions.eq("gratuity.paid", Boolean.FALSE)); //$NON-NLS-1$
 
 			List list = criteria.list();
 			for (Iterator iter = list.iterator(); iter.hasNext();) {
@@ -226,13 +227,13 @@ public class TicketDAO extends BaseTicketDAO {
 
 		try {
 			session = getSession();
-			Criteria criteria = session.createCriteria(getReferenceClass(), "t");
-			criteria = criteria.createAlias(Ticket.PROP_GRATUITY, "gratuity");
+			Criteria criteria = session.createCriteria(getReferenceClass(), "t"); //$NON-NLS-1$
+			criteria = criteria.createAlias(Ticket.PROP_GRATUITY, "gratuity"); //$NON-NLS-1$
 			criteria.add(Restrictions.eq(Ticket.PROP_DRAWER_RESETTED, Boolean.FALSE));
 			criteria.add(Restrictions.eq(Ticket.PROP_TERMINAL, terminal));
-			criteria.add(Restrictions.eq("gratuity.paid", Boolean.TRUE));
+			criteria.add(Restrictions.eq("gratuity.paid", Boolean.TRUE)); //$NON-NLS-1$
 
-			criteria.setProjection(Projections.sum("gratuity.amount"));
+			criteria.setProjection(Projections.sum("gratuity.amount")); //$NON-NLS-1$
 
 			List list = criteria.list();
 			if (list.size() > 0 && list.get(0) instanceof Number) {
@@ -563,8 +564,8 @@ public class TicketDAO extends BaseTicketDAO {
 			//criteria.add(Restrictions.eq(Ticket.PROP_VOIDED, Boolean.FALSE));
 
 			if (userType != null) {
-				criteria.createAlias(Ticket.PROP_OWNER, "u");
-				criteria.add(Restrictions.eq("u.type", userType));
+				criteria.createAlias(Ticket.PROP_OWNER, "u"); //$NON-NLS-1$
+				criteria.add(Restrictions.eq("u.type", userType)); //$NON-NLS-1$
 			}
 			if (terminal != null) {
 				criteria.add(Restrictions.eq(Ticket.PROP_TERMINAL, terminal));
@@ -589,8 +590,8 @@ public class TicketDAO extends BaseTicketDAO {
 			criteria.add(Restrictions.eq(Ticket.PROP_REFUNDED, Boolean.FALSE));
 
 			if (userType != null) {
-				criteria.createAlias(Ticket.PROP_OWNER, "u");
-				criteria.add(Restrictions.eq("u.type", userType));
+				criteria.createAlias(Ticket.PROP_OWNER, "u"); //$NON-NLS-1$
+				criteria.add(Restrictions.eq("u.type", userType)); //$NON-NLS-1$
 			}
 			if (terminal != null) {
 				criteria.add(Restrictions.eq(Ticket.PROP_TERMINAL, terminal));
@@ -648,7 +649,7 @@ public class TicketDAO extends BaseTicketDAO {
 				transaction.setUnitPrice(inventoryItem.getUnitSellingPrice());
 				transaction.setInventoryItem(inventoryItem);
 				transaction.setQuantity(ticketItem.getItemCount());
-				transaction.setRemark("OUT as a recepie item for " + ticketItem.getName() + " for ticket " + ticket.getId());
+				transaction.setRemark(Messages.getString("TicketDAO.0") + ticketItem.getName() + Messages.getString("TicketDAO.11") + ticket.getId()); //$NON-NLS-1$ //$NON-NLS-2$
 
 				session.save(transaction);
 			}
@@ -698,7 +699,7 @@ public class TicketDAO extends BaseTicketDAO {
 				transaction.setUnitPrice(inventoryItem.getUnitSellingPrice());
 				transaction.setInventoryItem(inventoryItem);
 				transaction.setQuantity(ticketItem.getItemCount());
-				transaction.setRemark("IN as " + ticketItem.getName() + " was canceled for ticket " + ticket.getId());
+				transaction.setRemark(Messages.getString("TicketDAO.1") + ticketItem.getName() + " was canceled for ticket " + ticket.getId()); //$NON-NLS-1$ //$NON-NLS-2$
 
 				session.save(transaction);
 			}

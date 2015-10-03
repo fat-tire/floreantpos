@@ -45,14 +45,14 @@ public class TerminalDAO extends BaseTerminalDAO {
 			session = createNewSession();
 			tx = session.beginTransaction();
 
-			String hql = "update Ticket t set t.drawerResetted=true where t." + Ticket.PROP_CLOSED + "=true and t.drawerResetted=false and t.terminal=:terminal";
+			String hql = "update Ticket t set t.drawerResetted=true where t." + Ticket.PROP_CLOSED + "=true and t.drawerResetted=false and t.terminal=:terminal"; //$NON-NLS-1$ //$NON-NLS-2$
 			Query query = session.createQuery(hql);
-			query.setEntity("terminal", terminal);
+			query.setEntity("terminal", terminal); //$NON-NLS-1$
 			query.executeUpdate();
 
-			hql = "update PosTransaction t set t.drawerResetted=true where t.drawerResetted=false and t.terminal=:terminal";
+			hql = "update PosTransaction t set t.drawerResetted=true where t.drawerResetted=false and t.terminal=:terminal"; //$NON-NLS-1$
 			query = session.createQuery(hql);
-			query.setEntity("terminal", terminal);
+			query.setEntity("terminal", terminal); //$NON-NLS-1$
 			query.executeUpdate();
 			
 			terminal.setAssignedUser(null);

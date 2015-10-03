@@ -104,7 +104,7 @@ public class DrawerpullReportService {
 			double totalDiscountPercentage = 0;
 			double totalDiscountRatio = 0;
 
-			Criteria criteria = session.createCriteria(Ticket.class, "t");
+			Criteria criteria = session.createCriteria(Ticket.class, "t"); //$NON-NLS-1$
 			//criteria.add(Restrictions.eq(Ticket.PROP_CLOSED, Boolean.TRUE));
 			criteria.add(Restrictions.eq(Ticket.PROP_VOIDED, Boolean.FALSE));
 			criteria.add(Restrictions.eq(Ticket.PROP_REFUNDED, Boolean.FALSE));
@@ -150,7 +150,7 @@ public class DrawerpullReportService {
 
 	private static void populateVoidSection(Session session, Terminal terminal, DrawerPullReport report) {
 		//void
-		Criteria criteria = session.createCriteria(Ticket.class, "t");
+		Criteria criteria = session.createCriteria(Ticket.class, "t"); //$NON-NLS-1$
 		criteria.add(Restrictions.eq(Ticket.PROP_VOIDED, Boolean.TRUE));
 		criteria.add(Restrictions.eq(Ticket.PROP_DRAWER_RESETTED, Boolean.FALSE));
 		criteria.add(Restrictions.eq(Ticket.PROP_TERMINAL, terminal));
@@ -166,10 +166,10 @@ public class DrawerpullReportService {
 			entry.setAmount(ticket.getSubtotalAmount());
 			entry.setReason(ticket.getVoidReason());
 			if (ticket.isWasted()) {
-				entry.setHast("Yes");
+				entry.setHast("Yes"); //$NON-NLS-1$
 			}
 			else {
-				entry.setHast("No");
+				entry.setHast("No"); //$NON-NLS-1$
 			}
 
 			report.addVoidTicketEntry(entry);

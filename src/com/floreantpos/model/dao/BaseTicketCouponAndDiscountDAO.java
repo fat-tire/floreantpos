@@ -27,7 +27,7 @@ public abstract class BaseTicketCouponAndDiscountDAO extends com.floreantpos.mod
 	}
 
     public Order getDefaultOrder () {
-		return Order.asc("name");
+		return Order.asc("name"); //$NON-NLS-1$
     }
 
 	/**

@@ -64,30 +64,30 @@ public class SalesSummaryDAO extends _RootDAO {
 			categories.add(miscCategory);
 
 			//find food sales
-			criteria = session.createCriteria(TicketItem.class, "item");
-			criteria.createCriteria("ticket", "t");
-			criteria.createCriteria("t.owner", "u");
+			criteria = session.createCriteria(TicketItem.class, "item"); //$NON-NLS-1$
+			criteria.createCriteria("ticket", "t"); //$NON-NLS-1$ //$NON-NLS-2$
+			criteria.createCriteria("t.owner", "u"); //$NON-NLS-1$ //$NON-NLS-2$
 			ProjectionList projectionList = Projections.projectionList();
 			projectionList.add(Projections.sum(TicketItem.PROP_ITEM_COUNT));
 			projectionList.add(Projections.sum(TicketItem.PROP_SUBTOTAL_AMOUNT));
 			projectionList.add(Projections.sum(TicketItem.PROP_DISCOUNT_AMOUNT));
 			criteria.setProjection(projectionList);
-			criteria.add(Restrictions.eq("item." + TicketItem.PROP_BEVERAGE, Boolean.FALSE));
-			criteria.add(Restrictions.ge("t." + Ticket.PROP_ACTIVE_DATE, start));
-			criteria.add(Restrictions.le("t." + Ticket.PROP_ACTIVE_DATE, end));
+			criteria.add(Restrictions.eq("item." + TicketItem.PROP_BEVERAGE, Boolean.FALSE)); //$NON-NLS-1$
+			criteria.add(Restrictions.ge("t." + Ticket.PROP_ACTIVE_DATE, start)); //$NON-NLS-1$
+			criteria.add(Restrictions.le("t." + Ticket.PROP_ACTIVE_DATE, end)); //$NON-NLS-1$
 
 			if (userType != null) {
-				criteria.add(Restrictions.eq("u." + User.PROP_TYPE, userType));
+				criteria.add(Restrictions.eq("u." + User.PROP_TYPE, userType)); //$NON-NLS-1$
 			}
 			if (terminal != null) {
-				criteria.add(Restrictions.eq("t." + Ticket.PROP_TERMINAL, terminal));
+				criteria.add(Restrictions.eq("t." + Ticket.PROP_TERMINAL, terminal)); //$NON-NLS-1$
 			}
 			List datas = criteria.list();
 			if (datas.size() > 0) {
 				Object[] objects = (Object[]) datas.get(0);
 
 				SalesAnalysisData data = new SalesAnalysisData();
-				data.setShiftName("");
+				data.setShiftName(""); //$NON-NLS-1$
 				data.setCategoryName("FOOD SALES");
 
 				if (objects.length > 0 && objects[0] != null)
@@ -104,30 +104,30 @@ public class SalesSummaryDAO extends _RootDAO {
 			}
 
 			//find non food sales
-			criteria = session.createCriteria(TicketItem.class, "item");
-			criteria.createCriteria("ticket", "t");
-			criteria.createCriteria("t.owner", "u");
+			criteria = session.createCriteria(TicketItem.class, "item"); //$NON-NLS-1$
+			criteria.createCriteria("ticket", "t"); //$NON-NLS-1$ //$NON-NLS-2$
+			criteria.createCriteria("t.owner", "u"); //$NON-NLS-1$ //$NON-NLS-2$
 			projectionList = Projections.projectionList();
 			projectionList.add(Projections.sum(TicketItem.PROP_ITEM_COUNT));
 			projectionList.add(Projections.sum(TicketItem.PROP_SUBTOTAL_AMOUNT));
 			projectionList.add(Projections.sum(TicketItem.PROP_DISCOUNT_AMOUNT));
 			criteria.setProjection(projectionList);
-			criteria.add(Restrictions.eq("item." + TicketItem.PROP_BEVERAGE, Boolean.TRUE));
-			criteria.add(Restrictions.ge("t." + Ticket.PROP_ACTIVE_DATE, start));
-			criteria.add(Restrictions.le("t." + Ticket.PROP_ACTIVE_DATE, end));
+			criteria.add(Restrictions.eq("item." + TicketItem.PROP_BEVERAGE, Boolean.TRUE)); //$NON-NLS-1$
+			criteria.add(Restrictions.ge("t." + Ticket.PROP_ACTIVE_DATE, start)); //$NON-NLS-1$
+			criteria.add(Restrictions.le("t." + Ticket.PROP_ACTIVE_DATE, end)); //$NON-NLS-1$
 
 			if (userType != null) {
-				criteria.add(Restrictions.eq("u." + User.PROP_TYPE, userType));
+				criteria.add(Restrictions.eq("u." + User.PROP_TYPE, userType)); //$NON-NLS-1$
 			}
 			if (terminal != null) {
-				criteria.add(Restrictions.eq("t." + Ticket.PROP_TERMINAL, terminal));
+				criteria.add(Restrictions.eq("t." + Ticket.PROP_TERMINAL, terminal)); //$NON-NLS-1$
 			}
 			datas = criteria.list();
 			if (datas.size() > 0) {
 				Object[] objects = (Object[]) datas.get(0);
 
 				SalesAnalysisData data = new SalesAnalysisData();
-				data.setShiftName("");
+				data.setShiftName(""); //$NON-NLS-1$
 				data.setCategoryName("NON FOOD SALES");
 
 				if (objects.length > 0 && objects[0] != null)
@@ -148,24 +148,24 @@ public class SalesSummaryDAO extends _RootDAO {
 
 				for (MenuCategory category : categories) {
 
-					criteria = session.createCriteria(TicketItem.class, "item");
-					criteria.createCriteria("ticket", "t");
-					criteria.createCriteria("t.owner", "u");
+					criteria = session.createCriteria(TicketItem.class, "item"); //$NON-NLS-1$
+					criteria.createCriteria("ticket", "t"); //$NON-NLS-1$ //$NON-NLS-2$
+					criteria.createCriteria("t.owner", "u"); //$NON-NLS-1$ //$NON-NLS-2$
 					projectionList = Projections.projectionList();
 					projectionList.add(Projections.sum(TicketItem.PROP_ITEM_COUNT));
 					projectionList.add(Projections.sum(TicketItem.PROP_SUBTOTAL_AMOUNT));
 					projectionList.add(Projections.sum(TicketItem.PROP_DISCOUNT_AMOUNT));
 					criteria.setProjection(projectionList);
-					criteria.add(Restrictions.eq("item." + TicketItem.PROP_CATEGORY_NAME, category.getName()));
-					criteria.add(Restrictions.eq("t." + Ticket.PROP_SHIFT, shift));
-					criteria.add(Restrictions.ge("t." + Ticket.PROP_ACTIVE_DATE, start));
-					criteria.add(Restrictions.le("t." + Ticket.PROP_ACTIVE_DATE, end));
+					criteria.add(Restrictions.eq("item." + TicketItem.PROP_CATEGORY_NAME, category.getName())); //$NON-NLS-1$
+					criteria.add(Restrictions.eq("t." + Ticket.PROP_SHIFT, shift)); //$NON-NLS-1$
+					criteria.add(Restrictions.ge("t." + Ticket.PROP_ACTIVE_DATE, start)); //$NON-NLS-1$
+					criteria.add(Restrictions.le("t." + Ticket.PROP_ACTIVE_DATE, end)); //$NON-NLS-1$
 
 					if (userType != null) {
-						criteria.add(Restrictions.eq("u." + User.PROP_TYPE, userType));
+						criteria.add(Restrictions.eq("u." + User.PROP_TYPE, userType)); //$NON-NLS-1$
 					}
 					if (terminal != null) {
-						criteria.add(Restrictions.eq("t." + Ticket.PROP_TERMINAL, terminal));
+						criteria.add(Restrictions.eq("t." + Ticket.PROP_TERMINAL, terminal)); //$NON-NLS-1$
 					}
 					datas = criteria.list();
 					if (datas.size() > 0) {
@@ -193,30 +193,30 @@ public class SalesSummaryDAO extends _RootDAO {
 			//find all sales
 			for (MenuCategory category : categories) {
 
-				criteria = session.createCriteria(TicketItem.class, "item");
-				criteria.createCriteria("ticket", "t");
-				criteria.createCriteria("t.owner", "u");
+				criteria = session.createCriteria(TicketItem.class, "item"); //$NON-NLS-1$
+				criteria.createCriteria("ticket", "t"); //$NON-NLS-1$ //$NON-NLS-2$
+				criteria.createCriteria("t.owner", "u"); //$NON-NLS-1$ //$NON-NLS-2$
 				projectionList = Projections.projectionList();
 				projectionList.add(Projections.sum(TicketItem.PROP_ITEM_COUNT));
 				projectionList.add(Projections.sum(TicketItem.PROP_SUBTOTAL_AMOUNT));
 				projectionList.add(Projections.sum(TicketItem.PROP_DISCOUNT_AMOUNT));
 				criteria.setProjection(projectionList);
-				criteria.add(Restrictions.eq("item." + TicketItem.PROP_CATEGORY_NAME, category.getName()));
-				criteria.add(Restrictions.ge("t." + Ticket.PROP_ACTIVE_DATE, start));
-				criteria.add(Restrictions.le("t." + Ticket.PROP_ACTIVE_DATE, end));
+				criteria.add(Restrictions.eq("item." + TicketItem.PROP_CATEGORY_NAME, category.getName())); //$NON-NLS-1$
+				criteria.add(Restrictions.ge("t." + Ticket.PROP_ACTIVE_DATE, start)); //$NON-NLS-1$
+				criteria.add(Restrictions.le("t." + Ticket.PROP_ACTIVE_DATE, end)); //$NON-NLS-1$
 
 				if (userType != null) {
-					criteria.add(Restrictions.eq("u." + User.PROP_TYPE, userType));
+					criteria.add(Restrictions.eq("u." + User.PROP_TYPE, userType)); //$NON-NLS-1$
 				}
 				if (terminal != null) {
-					criteria.add(Restrictions.eq("t." + Ticket.PROP_TERMINAL, terminal));
+					criteria.add(Restrictions.eq("t." + Ticket.PROP_TERMINAL, terminal)); //$NON-NLS-1$
 				}
 				datas = criteria.list();
 				if (datas.size() > 0) {
 					Object[] objects = (Object[]) datas.get(0);
 
 					SalesAnalysisData data = new SalesAnalysisData();
-					data.setShiftName("ALL DAY");
+					data.setShiftName("ALL DAY"); //$NON-NLS-1$
 					data.setCategoryName(category.getName());
 
 					if (objects.length > 0 && objects[0] != null)
@@ -258,8 +258,8 @@ public class SalesSummaryDAO extends _RootDAO {
 			{
 				//find gross sale, discount and tax. this excludes void tickets
 				//net sale = gross_sale - discount
-				Criteria criteria = session.createCriteria(Ticket.class, "ticket");
-				criteria.createCriteria(Ticket.PROP_OWNER, "u");
+				Criteria criteria = session.createCriteria(Ticket.class, "ticket"); //$NON-NLS-1$
+				criteria.createCriteria(Ticket.PROP_OWNER, "u"); //$NON-NLS-1$
 
 				ProjectionList projectionList = Projections.projectionList();
 				projectionList.add(Projections.rowCount());
@@ -275,7 +275,7 @@ public class SalesSummaryDAO extends _RootDAO {
 				criteria.add(Restrictions.eq(Ticket.PROP_REFUNDED, Boolean.FALSE));
 
 				if (userType != null) {
-					criteria.add(Restrictions.eq("u." + User.PROP_TYPE, userType));
+					criteria.add(Restrictions.eq("u." + User.PROP_TYPE, userType)); //$NON-NLS-1$
 				}
 
 				if (terminal != null) {
@@ -299,8 +299,8 @@ public class SalesSummaryDAO extends _RootDAO {
 
 			{
 				//determine number of guests within the specified time. this includes void tickets, 
-				Criteria criteria = session.createCriteria(Ticket.class, "ticket");
-				criteria.createCriteria(Ticket.PROP_OWNER, "u");
+				Criteria criteria = session.createCriteria(Ticket.class, "ticket"); //$NON-NLS-1$
+				criteria.createCriteria(Ticket.PROP_OWNER, "u"); //$NON-NLS-1$
 
 				ProjectionList projectionList = Projections.projectionList();
 				projectionList.add(Projections.rowCount());
@@ -310,7 +310,7 @@ public class SalesSummaryDAO extends _RootDAO {
 				criteria.add(Restrictions.le(Ticket.PROP_CREATE_DATE, end));
 
 				if (userType != null) {
-					criteria.add(Restrictions.eq("u." + User.PROP_TYPE, userType));
+					criteria.add(Restrictions.eq("u." + User.PROP_TYPE, userType)); //$NON-NLS-1$
 				}
 
 				if (terminal != null) {
@@ -329,8 +329,8 @@ public class SalesSummaryDAO extends _RootDAO {
 
 			{
 				//find number of open tickets and its total amount
-				Criteria criteria = session.createCriteria(Ticket.class, "ticket");
-				criteria.createCriteria(Ticket.PROP_OWNER, "u");
+				Criteria criteria = session.createCriteria(Ticket.class, "ticket"); //$NON-NLS-1$
+				criteria.createCriteria(Ticket.PROP_OWNER, "u"); //$NON-NLS-1$
 
 				ProjectionList projectionList = Projections.projectionList();
 				projectionList.add(Projections.rowCount());
@@ -341,7 +341,7 @@ public class SalesSummaryDAO extends _RootDAO {
 				criteria.add(Restrictions.eq(Ticket.PROP_CLOSED, Boolean.FALSE));
 
 				if (userType != null) {
-					criteria.add(Restrictions.eq("u." + User.PROP_TYPE, userType));
+					criteria.add(Restrictions.eq("u." + User.PROP_TYPE, userType)); //$NON-NLS-1$
 				}
 				if (terminal != null) {
 					criteria.add(Restrictions.eq(Ticket.PROP_TERMINAL, terminal));
@@ -359,8 +359,8 @@ public class SalesSummaryDAO extends _RootDAO {
 
 			{
 				//find number of void tickets and its total amount
-				Criteria criteria = session.createCriteria(Ticket.class, "ticket");
-				criteria.createCriteria(Ticket.PROP_OWNER, "u");
+				Criteria criteria = session.createCriteria(Ticket.class, "ticket"); //$NON-NLS-1$
+				criteria.createCriteria(Ticket.PROP_OWNER, "u"); //$NON-NLS-1$
 				ProjectionList projectionList = Projections.projectionList();
 				projectionList.add(Projections.rowCount());
 				projectionList.add(Projections.sum(Ticket.PROP_TOTAL_AMOUNT));
@@ -371,7 +371,7 @@ public class SalesSummaryDAO extends _RootDAO {
 				criteria.add(Restrictions.eq(Ticket.PROP_VOIDED, Boolean.TRUE));
 
 				if (userType != null) {
-					criteria.add(Restrictions.eq("u." + User.PROP_TYPE, userType));
+					criteria.add(Restrictions.eq("u." + User.PROP_TYPE, userType)); //$NON-NLS-1$
 				}
 				if (terminal != null) {
 					criteria.add(Restrictions.eq(Ticket.PROP_TERMINAL, terminal));
@@ -389,8 +389,8 @@ public class SalesSummaryDAO extends _RootDAO {
 
 			{
 				//find non taxable sales
-				Criteria criteria = session.createCriteria(Ticket.class, "ticket");
-				criteria.createCriteria(Ticket.PROP_OWNER, "u");
+				Criteria criteria = session.createCriteria(Ticket.class, "ticket"); //$NON-NLS-1$
+				criteria.createCriteria(Ticket.PROP_OWNER, "u"); //$NON-NLS-1$
 				ProjectionList projectionList = Projections.projectionList();
 				projectionList.add(Projections.rowCount());
 				projectionList.add(Projections.sum(Ticket.PROP_TOTAL_AMOUNT));
@@ -402,7 +402,7 @@ public class SalesSummaryDAO extends _RootDAO {
 				criteria.add(Restrictions.eq(Ticket.PROP_TAX_EXEMPT, Boolean.TRUE));
 
 				if (userType != null) {
-					criteria.add(Restrictions.eq("u." + User.PROP_TYPE, userType));
+					criteria.add(Restrictions.eq("u." + User.PROP_TYPE, userType)); //$NON-NLS-1$
 				}
 				if (terminal != null) {
 					criteria.add(Restrictions.eq(Ticket.PROP_TERMINAL, terminal));
@@ -419,8 +419,8 @@ public class SalesSummaryDAO extends _RootDAO {
 			}
 			{
 				//find reopen statistics
-				Criteria criteria = session.createCriteria(Ticket.class, "ticket");
-				criteria.createCriteria(Ticket.PROP_OWNER, "u");
+				Criteria criteria = session.createCriteria(Ticket.class, "ticket"); //$NON-NLS-1$
+				criteria.createCriteria(Ticket.PROP_OWNER, "u"); //$NON-NLS-1$
 				ProjectionList projectionList = Projections.projectionList();
 				projectionList.add(Projections.rowCount());
 				projectionList.add(Projections.sum(Ticket.PROP_TOTAL_AMOUNT));
@@ -430,7 +430,7 @@ public class SalesSummaryDAO extends _RootDAO {
 				criteria.add(Restrictions.eq(Ticket.PROP_RE_OPENED, Boolean.TRUE));
 
 				if (userType != null) {
-					criteria.add(Restrictions.eq("u." + User.PROP_TYPE, userType));
+					criteria.add(Restrictions.eq("u." + User.PROP_TYPE, userType)); //$NON-NLS-1$
 				}
 				if (terminal != null) {
 					criteria.add(Restrictions.eq(Ticket.PROP_TERMINAL, terminal));
@@ -448,13 +448,13 @@ public class SalesSummaryDAO extends _RootDAO {
 
 			{
 				//calculate totalLaborHours in the specified period
-				Criteria criteria = session.createCriteria(AttendenceHistory.class, "history");
-				criteria.createCriteria(AttendenceHistory.PROP_USER, "u");
+				Criteria criteria = session.createCriteria(AttendenceHistory.class, "history"); //$NON-NLS-1$
+				criteria.createCriteria(AttendenceHistory.PROP_USER, "u"); //$NON-NLS-1$
 				criteria.add(Restrictions.ge(AttendenceHistory.PROP_CLOCK_IN_TIME, start));
 				criteria.add(Restrictions.le(AttendenceHistory.PROP_CLOCK_IN_TIME, end));
 
 				if (userType != null) {
-					criteria.add(Restrictions.eq("u." + User.PROP_TYPE, userType));
+					criteria.add(Restrictions.eq("u." + User.PROP_TYPE, userType)); //$NON-NLS-1$
 				}
 				if (terminal != null) {
 					criteria.add(Restrictions.eq(AttendenceHistory.PROP_TERMINAL, terminal));
@@ -511,8 +511,8 @@ public class SalesSummaryDAO extends _RootDAO {
 	private void findRecordByProfitCenter(Date start, Date end, UserType userType, Terminal terminal, Session session, SalesStatistics salesSummary,
 			Shift shift, OrderType ticketType) {
 		Criteria criteria;
-		criteria = session.createCriteria(Ticket.class, "ticket");
-		criteria.createCriteria(Ticket.PROP_OWNER, "u");
+		criteria = session.createCriteria(Ticket.class, "ticket"); //$NON-NLS-1$
+		criteria.createCriteria(Ticket.PROP_OWNER, "u"); //$NON-NLS-1$
 		ProjectionList projectionList = Projections.projectionList();
 		projectionList.add(Projections.rowCount());
 		projectionList.add(Projections.sum(Ticket.PROP_NUMBER_OF_GUESTS));
@@ -524,7 +524,7 @@ public class SalesSummaryDAO extends _RootDAO {
 		criteria.add(Restrictions.eq(Ticket.PROP_TICKET_TYPE, ticketType.name()));
 
 		if (userType != null) {
-			criteria.add(Restrictions.eq("u." + User.PROP_TYPE, userType));
+			criteria.add(Restrictions.eq("u." + User.PROP_TYPE, userType)); //$NON-NLS-1$
 		}
 		if (terminal != null) {
 			criteria.add(Restrictions.eq(Ticket.PROP_TERMINAL, terminal));

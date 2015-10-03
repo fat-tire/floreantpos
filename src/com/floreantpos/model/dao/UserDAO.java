@@ -12,6 +12,7 @@ import org.hibernate.criterion.Junction;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 
+import com.floreantpos.Messages;
 import com.floreantpos.PosException;
 import com.floreantpos.model.AttendenceHistory;
 import com.floreantpos.model.Shift;
@@ -79,7 +80,7 @@ public class UserDAO extends BaseUserDAO {
 			}
 			else {
 				//TODO: externalize string
-				throw new UserNotFoundException("User with id " + id + " not found");
+				throw new UserNotFoundException(Messages.getString("UserDAO.0") + id + Messages.getString("UserDAO.1")); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 		} finally {
 			if (session != null) {
@@ -178,7 +179,7 @@ public class UserDAO extends BaseUserDAO {
 				} catch (Exception x) {
 				}
 			}
-			throw new PosException("Unable to store clock in information", e);
+			throw new PosException(Messages.getString("UserDAO.2"), e); //$NON-NLS-1$
 
 		} finally {
 			if (session != null) {
@@ -207,7 +208,7 @@ public class UserDAO extends BaseUserDAO {
 				} catch (Exception x) {
 				}
 			}
-			throw new PosException("Unable to store clock out information", e);
+			throw new PosException(Messages.getString("UserDAO.3"), e); //$NON-NLS-1$
 
 		} finally {
 			if (session != null) {
@@ -217,15 +218,15 @@ public class UserDAO extends BaseUserDAO {
 	}
 
 	private boolean validate(User user, boolean editMode) throws PosException {
-		String hql = "from User u where u.userId=:userId and u.type=:userType";
+		String hql = "from User u where u.userId=:userId and u.type=:userType"; //$NON-NLS-1$
 
 		Session session = getSession();
 		Query query = session.createQuery(hql);
-		query = query.setParameter("userId", user.getUserId());
-		query = query.setParameter("userType", user.getType());
+		query = query.setParameter("userId", user.getUserId()); //$NON-NLS-1$
+		query = query.setParameter("userType", user.getType()); //$NON-NLS-1$
 		
 		if (query.list().size() > 0) {
-			throw new PosException("Another user with same ID already exists");
+			throw new PosException(Messages.getString("UserDAO.7")); //$NON-NLS-1$
 		}
 
 		return true;
@@ -240,7 +241,7 @@ public class UserDAO extends BaseUserDAO {
 			}
 			super.saveOrUpdate(user);
 		} catch (Exception x) {
-			throw new PosException("Could not save user", x);
+			throw new PosException(Messages.getString("UserDAO.8"), x); //$NON-NLS-1$
 		} finally {
 			closeSession(session);
 		}
@@ -284,14 +285,14 @@ public class UserDAO extends BaseUserDAO {
 		Session session = null;
 		Transaction tx = null;
 
-		String hql = "select count(*) from Ticket ticket where ticket.owner=:owner and ticket."
-				+ Ticket.PROP_CLOSED + "settled=false";
+		String hql = "select count(*) from Ticket ticket where ticket.owner=:owner and ticket." //$NON-NLS-1$
+				+ Ticket.PROP_CLOSED + "settled=false"; //$NON-NLS-1$
 		int count = 0;
 		try {
 			session = getSession();
 			tx = session.beginTransaction();
 			Query query = session.createQuery(hql);
-			query = query.setEntity("owner", user);
+			query = query.setEntity("owner", user); //$NON-NLS-1$
 			Iterator iterator = query.iterate();
 			if (iterator.hasNext()) {
 				count = ((Integer) iterator.next()).intValue();
@@ -305,7 +306,7 @@ public class UserDAO extends BaseUserDAO {
 				}
 			} catch (Exception e2) {
 			}
-			throw new PosException("Unnable to find user", e);
+			throw new PosException(Messages.getString("UserDAO.12"), e); //$NON-NLS-1$
 		} finally {
 			if (session != null) {
 				session.close();

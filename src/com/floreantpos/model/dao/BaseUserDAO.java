@@ -27,7 +27,7 @@ public abstract class BaseUserDAO extends com.floreantpos.model.dao._RootDAO {
 	}
 
     public Order getDefaultOrder () {
-		return Order.asc("lastName");
+		return Order.asc("lastName"); //$NON-NLS-1$
     }
 
 	/**

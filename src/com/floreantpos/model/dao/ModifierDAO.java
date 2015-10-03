@@ -4,9 +4,7 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
-
 import org.hibernate.Session;
-
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
 
@@ -29,7 +27,7 @@ public class ModifierDAO extends BaseModifierDAO {
 			session = getSession();
 			criteria = session.createCriteria(MenuModifier.class);
 			if (StringUtils.isNotEmpty(name)) {
-				criteria.add(Restrictions.ilike(MenuModifier.PROP_NAME, name+"%".trim(),MatchMode.ANYWHERE));
+				criteria.add(Restrictions.ilike(MenuModifier.PROP_NAME, name+"%".trim(),MatchMode.ANYWHERE)); //$NON-NLS-1$
 			}
 
 			if (menuModifierGroup != null) {
