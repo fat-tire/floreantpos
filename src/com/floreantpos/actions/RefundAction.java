@@ -1,6 +1,7 @@
 package com.floreantpos.actions;
 
 import com.floreantpos.ITicketList;
+import com.floreantpos.Messages;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.UserPermission;
@@ -14,7 +15,7 @@ public class RefundAction extends PosAction {
 	private ITicketList ticketList;
 
 	public RefundAction(ITicketList ticketList) {
-		super("REFUND", UserPermission.REFUND);
+		super(Messages.getString("RefundAction.0"), UserPermission.REFUND); //$NON-NLS-1$
 
 		this.ticketList = ticketList;
 	}
@@ -25,50 +26,50 @@ public class RefundAction extends PosAction {
 			Ticket ticket = ticketList.getSelectedTicket();
 
 			if (ticket == null) {
-				int ticketId = NumberSelectionDialog2.takeIntInput("Enter or scan ticket id");
+				int ticketId = NumberSelectionDialog2.takeIntInput(Messages.getString("RefundAction.1")); //$NON-NLS-1$
 				if(ticketId == -1) return;
 				
 				ticket = TicketService.getTicket(ticketId);
 			}
 			
 			if(!ticket.isPaid()) {
-				POSMessageDialog.showError(Application.getPosWindow(), "Ticket is not paid.");
+				POSMessageDialog.showError(Application.getPosWindow(), Messages.getString("RefundAction.2")); //$NON-NLS-1$
 				return;
 			}
 			
 			if(ticket.isRefunded()) {
-				POSMessageDialog.showError(Application.getPosWindow(), "Ticket is already refunded.");
+				POSMessageDialog.showError(Application.getPosWindow(), Messages.getString("RefundAction.3")); //$NON-NLS-1$
 				return;
 			}
 			
 			Double paidAmount = ticket.getPaidAmount();
 			
-			String message = Application.getCurrencySymbol() + paidAmount + " will be refunded.";
+			String message = Application.getCurrencySymbol() + paidAmount + Messages.getString("RefundAction.4"); //$NON-NLS-1$
 			
 			ticket = TicketDAO.getInstance().loadFullTicket(ticket.getId());
 			
-			message = "<html>" +
-					"Ticket #" + ticket.getId() + "<br/>Total paid " + ticket.getPaidAmount();
+			message = "<html>" + //$NON-NLS-1$
+					Messages.getString("RefundAction.6") + ticket.getId() + Messages.getString("RefundAction.7") + ticket.getPaidAmount(); //$NON-NLS-1$ //$NON-NLS-2$
 			
 			if(ticket.getGratuity() != null) {
-				message += ", including tips " + ticket.getGratuity().getAmount();
+				message += Messages.getString("RefundAction.8") + ticket.getGratuity().getAmount(); //$NON-NLS-1$
 			}
 			
-			message += "</html>";
+			message += "</html>"; //$NON-NLS-1$
 			
-			double refundAmount = NumberSelectionDialog2.takeDoubleInput(message, "Enter refund amount", paidAmount);
+			double refundAmount = NumberSelectionDialog2.takeDoubleInput(message, Messages.getString("RefundAction.10"), paidAmount); //$NON-NLS-1$
 			if(Double.isNaN(refundAmount)) {
 				return;
 			}
 			
 			if(refundAmount > paidAmount) {
-				POSMessageDialog.showError(Application.getPosWindow(), "Refund amount cannot be greater than paid amount");
+				POSMessageDialog.showError(Application.getPosWindow(), Messages.getString("RefundAction.11")); //$NON-NLS-1$
 				return;
 			}
 
 			PosTransactionService.getInstance().refundTicket(ticket, refundAmount);
 			
-			POSMessageDialog.showMessage("Refunded " + Application.getCurrencySymbol() + refundAmount);
+			POSMessageDialog.showMessage(Messages.getString("RefundAction.12") + Application.getCurrencySymbol() + refundAmount); //$NON-NLS-1$
 			
 			ticketList.updateTicketList();
 			

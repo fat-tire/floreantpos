@@ -13,6 +13,7 @@ import javax.swing.JSeparator;
 
 import net.miginfocom.swing.MigLayout;
 
+import com.floreantpos.Messages;
 import com.floreantpos.config.CardConfig;
 import com.floreantpos.model.CardReader;
 import com.floreantpos.model.MerchantGateway;
@@ -37,34 +38,34 @@ public class CardConfigurationView extends ConfigurationView {
 	}
 
 	private void createUI() {
-		setLayout(new MigLayout("", "[][grow]", "[][][][][][][][]"));
+		setLayout(new MigLayout("", "[][grow]", "[][][][][][][][]")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		
-		chckbxAllowMagneticSwipe = new JCheckBox("Allow Magnetic Swipe Card");
+		chckbxAllowMagneticSwipe = new JCheckBox(Messages.getString("CardConfigurationView.3")); //$NON-NLS-1$
 		chckbxAllowMagneticSwipe.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				updateCardList();
 			}
 		});
-		add(chckbxAllowMagneticSwipe, "cell 0 0 2 1");
+		add(chckbxAllowMagneticSwipe, "cell 0 0 2 1"); //$NON-NLS-1$
 		
-		chckbxAllowCardManual = new JCheckBox("Allow Card Manual Entry");
+		chckbxAllowCardManual = new JCheckBox(Messages.getString("CardConfigurationView.5")); //$NON-NLS-1$
 		chckbxAllowCardManual.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				updateCardList();
 			}
 		});
-		add(chckbxAllowCardManual, "cell 0 1 2 1");
+		add(chckbxAllowCardManual, "cell 0 1 2 1"); //$NON-NLS-1$
 		
-		chckbxAllowExternalTerminal = new JCheckBox("Allow External Terminal");
+		chckbxAllowExternalTerminal = new JCheckBox(Messages.getString("CardConfigurationView.7")); //$NON-NLS-1$
 		chckbxAllowExternalTerminal.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				updateCardList();
 			}
 		});
-		add(chckbxAllowExternalTerminal, "cell 0 2 2 1");
+		add(chckbxAllowExternalTerminal, "cell 0 2 2 1"); //$NON-NLS-1$
 
-		JLabel lblMagneticCardReader = new JLabel("Default Card Entry Method");
-		add(lblMagneticCardReader, "cell 0 3,alignx leading");
+		JLabel lblMagneticCardReader = new JLabel(Messages.getString("CardConfigurationView.9")); //$NON-NLS-1$
+		add(lblMagneticCardReader, "cell 0 3,alignx leading"); //$NON-NLS-1$
 
 		cbCardReader = new JComboBox();
 		cbCardReader.addActionListener(new ActionListener() {
@@ -72,10 +73,10 @@ public class CardConfigurationView extends ConfigurationView {
 				updateCheckBoxes();
 			}
 		});
-		add(cbCardReader, "cell 1 3,growx");
+		add(cbCardReader, "cell 1 3,growx"); //$NON-NLS-1$
 
-		JLabel lblMerchantGateway = new JLabel("Merchant Gateway");
-		add(lblMerchantGateway, "cell 0 4,alignx leading");
+		JLabel lblMerchantGateway = new JLabel(Messages.getString("CardConfigurationView.12")); //$NON-NLS-1$
+		add(lblMerchantGateway, "cell 0 4,alignx leading"); //$NON-NLS-1$
 
 		cbGateway = new JComboBox();
 		cbGateway.addActionListener(new ActionListener() {
@@ -84,41 +85,41 @@ public class CardConfigurationView extends ConfigurationView {
 				MerchantGateway gateway = (MerchantGateway) cbGateway.getSelectedItem();
 				switch(gateway) {
 					case AUTHORIZE_NET:
-						tfMerchantAccount.setText("6tuU4N3H");
-						tfMerchantPass.setText("4k6955x3T8bCVPVm");
+						tfMerchantAccount.setText("6tuU4N3H"); //$NON-NLS-1$
+						tfMerchantPass.setText("4k6955x3T8bCVPVm"); //$NON-NLS-1$
 						break;
 						
 					case MERCURY_PAY:
-						tfMerchantAccount.setText("118725340908147");
-						tfMerchantPass.setText("XYZ");
+						tfMerchantAccount.setText("118725340908147"); //$NON-NLS-1$
+						tfMerchantPass.setText("XYZ"); //$NON-NLS-1$
 						break;
 				}
 			}
 		});
-		add(cbGateway, "cell 1 4,growx");
+		add(cbGateway, "cell 1 4,growx"); //$NON-NLS-1$
 
-		JLabel lblMerchantAccount = new JLabel("Merchant Account");
-		add(lblMerchantAccount, "cell 0 5,alignx leading");
+		JLabel lblMerchantAccount = new JLabel(Messages.getString("CardConfigurationView.19")); //$NON-NLS-1$
+		add(lblMerchantAccount, "cell 0 5,alignx leading"); //$NON-NLS-1$
 
 		tfMerchantAccount = new POSTextField();
-		add(tfMerchantAccount, "cell 1 5,growx");
+		add(tfMerchantAccount, "cell 1 5,growx"); //$NON-NLS-1$
 
-		JLabel lblSecretCode = new JLabel("Secret Code");
-		add(lblSecretCode, "cell 0 6,alignx leading");
+		JLabel lblSecretCode = new JLabel(Messages.getString("CardConfigurationView.22")); //$NON-NLS-1$
+		add(lblSecretCode, "cell 0 6,alignx leading"); //$NON-NLS-1$
 
 		cbCardReader.setModel(new DefaultComboBoxModel<CardReader>(CardReader.values()));
 		cbGateway.setModel(new DefaultComboBoxModel<MerchantGateway>(MerchantGateway.values()));
 
 		tfMerchantPass = new JPasswordField();
-		add(tfMerchantPass, "cell 1 6,growx");
+		add(tfMerchantPass, "cell 1 6,growx"); //$NON-NLS-1$
 		
-		cbSandboxMode = new JCheckBox("Sandbox mode");
-		add(cbSandboxMode, "cell 1 7");
+		cbSandboxMode = new JCheckBox(Messages.getString("CardConfigurationView.25")); //$NON-NLS-1$
+		add(cbSandboxMode, "cell 1 7"); //$NON-NLS-1$
 		
 		JSeparator separator = new JSeparator(JSeparator.HORIZONTAL);
-		add(separator, "newline, growx, span 10, wrap");
+		add(separator, Messages.getString("CardConfigurationView.27")); //$NON-NLS-1$
 		
-		add(new JLabel("Bar tab limit"));
+		add(new JLabel(Messages.getString("CardConfigurationView.28"))); //$NON-NLS-1$
 		add(tfBarTabLimit);
 	}
 
@@ -251,7 +252,7 @@ public class CardConfigurationView extends ConfigurationView {
 
 	@Override
 	public String getName() {
-		return "Card";
+		return Messages.getString("CardConfigurationView.29"); //$NON-NLS-1$
 	}
 
 }

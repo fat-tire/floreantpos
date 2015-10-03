@@ -235,7 +235,7 @@ public class TerminalConfig {
 			drawerControlCodes = getDefaultDrawerControlCodes();
 		}
 		
-		String[] split = drawerControlCodes.split(",");
+		String[] split = drawerControlCodes.split(","); //$NON-NLS-1$
 		char[] codes = new char[split.length];
 		for (int i = 0; i < split.length; i++) {
 			try {

@@ -9,6 +9,7 @@ import javax.swing.JScrollPane;
 
 import org.jdesktop.swingx.JXTable;
 
+import com.floreantpos.Messages;
 import com.floreantpos.POSConstants;
 import com.floreantpos.bo.ui.BOMessageDialog;
 import com.floreantpos.model.MenuGroup;
@@ -26,13 +27,13 @@ public class MenuGroupExplorer extends TransparentPanel {
 
 	public MenuGroupExplorer() {
 		tableModel = new BeanTableModel<MenuGroup>(MenuGroup.class);
-		tableModel.addColumn(POSConstants.ID.toUpperCase(), "id");
-		tableModel.addColumn(POSConstants.NAME.toUpperCase(), "name");
-		tableModel.addColumn(POSConstants.TRANSLATED_NAME.toUpperCase(), "translatedName");
-		tableModel.addColumn(POSConstants.VISIBLE.toUpperCase(), "visible");
-		tableModel.addColumn(POSConstants.MENU_CATEGORY.toUpperCase(), "parent");
-		tableModel.addColumn(POSConstants.SORT_ORDER.toUpperCase(), "sortOrder");
-		tableModel.addColumn(POSConstants.BUTTON_COLOR.toUpperCase(), "buttonColor");
+		tableModel.addColumn(POSConstants.ID.toUpperCase(), "id"); //$NON-NLS-1$
+		tableModel.addColumn(POSConstants.NAME.toUpperCase(), "name"); //$NON-NLS-1$
+		tableModel.addColumn(POSConstants.TRANSLATED_NAME.toUpperCase(), "translatedName"); //$NON-NLS-1$
+		tableModel.addColumn(POSConstants.VISIBLE.toUpperCase(), "visible"); //$NON-NLS-1$
+		tableModel.addColumn(POSConstants.MENU_CATEGORY.toUpperCase(), "parent"); //$NON-NLS-1$
+		tableModel.addColumn(POSConstants.SORT_ORDER.toUpperCase(), "sortOrder"); //$NON-NLS-1$
+		tableModel.addColumn(POSConstants.BUTTON_COLOR.toUpperCase(), "buttonColor"); //$NON-NLS-1$
 
 		tableModel.addRows(MenuGroupDAO.getInstance().findAll());
 

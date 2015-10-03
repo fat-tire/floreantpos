@@ -217,7 +217,7 @@ public class DatabaseConfigurationDialog extends POSDialog implements ActionList
 				JOptionPane.showMessageDialog(this, Messages.getString("DatabaseConfigurationDialog.31")); //$NON-NLS-1$
 			}
 			else if(UPDATE_DATABASE.equals(command)) {
-				int i = JOptionPane.showConfirmDialog(this, "This will update existing database. Existing data will not be lost. Proceed?", "Confirm", JOptionPane.YES_NO_OPTION);
+				int i = JOptionPane.showConfirmDialog(this, Messages.getString("DatabaseConfigurationDialog.0"), Messages.getString("DatabaseConfigurationDialog.1"), JOptionPane.YES_NO_OPTION); //$NON-NLS-1$ //$NON-NLS-2$
 				if (i != JOptionPane.YES_OPTION) {
 					return;
 				}
@@ -228,10 +228,10 @@ public class DatabaseConfigurationDialog extends POSDialog implements ActionList
 				
 				boolean databaseUpdated = DatabaseUtil.updateDatabase(connectionString, hibernateDialect, driverClass, user, pass);
 				if(databaseUpdated) {
-					JOptionPane.showMessageDialog(DatabaseConfigurationDialog.this, "Database successfully updated.");
+					JOptionPane.showMessageDialog(DatabaseConfigurationDialog.this, Messages.getString("DatabaseConfigurationDialog.2")); //$NON-NLS-1$
 				}
 				else {
-					JOptionPane.showMessageDialog(DatabaseConfigurationDialog.this, "Failed to update database, please see log for detail.");
+					JOptionPane.showMessageDialog(DatabaseConfigurationDialog.this, Messages.getString("DatabaseConfigurationDialog.3")); //$NON-NLS-1$
 				}
 			}
 			else if (CREATE_DATABASE.equals(command)) {
@@ -242,7 +242,7 @@ public class DatabaseConfigurationDialog extends POSDialog implements ActionList
 					return;
 				}
 
-				i = JOptionPane.showConfirmDialog(this, "Do you want to generate sample data?", "Confirm", JOptionPane.YES_NO_OPTION);
+				i = JOptionPane.showConfirmDialog(this, Messages.getString("DatabaseConfigurationDialog.4"), Messages.getString("DatabaseConfigurationDialog.5"), JOptionPane.YES_NO_OPTION); //$NON-NLS-1$ //$NON-NLS-2$
 				boolean generateSampleData = false;
 				if (i == JOptionPane.YES_OPTION)
 					generateSampleData = true;
@@ -254,8 +254,8 @@ public class DatabaseConfigurationDialog extends POSDialog implements ActionList
 				boolean databaseCreated = DatabaseUtil.createDatabase(createDbConnectString, hibernateDialect, driverClass, user, pass, generateSampleData);
 
 				if (databaseCreated) {
-					JOptionPane.showMessageDialog(DatabaseConfigurationDialog.this, "Database created. You can now log in using password 1111.\n" +
-							"Do not forget to change password once you are logged in.\n\nThe system will now restart.");
+					JOptionPane.showMessageDialog(DatabaseConfigurationDialog.this, Messages.getString("DatabaseConfigurationDialog.6") + //$NON-NLS-1$
+							Messages.getString("DatabaseConfigurationDialog.7")); //$NON-NLS-1$
 					
 					Main.restart();
 				}
@@ -279,10 +279,10 @@ public class DatabaseConfigurationDialog extends POSDialog implements ActionList
 		
 		UserDAO.getInstance().findAll();
 		
-		String password = JOptionPane.showInputDialog("Enter Administrator password.");
+		String password = JOptionPane.showInputDialog(Messages.getString("DatabaseConfigurationDialog.9")); //$NON-NLS-1$
 		User user2 = UserDAO.getInstance().findUserBySecretKey(password);
 		if(user2 == null || !user2.isAdministrator()) {
-			POSMessageDialog.showError(this, "Wrong password");
+			POSMessageDialog.showError(this, Messages.getString("DatabaseConfigurationDialog.11")); //$NON-NLS-1$
 			return;
 		}
 	}

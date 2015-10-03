@@ -12,6 +12,7 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import com.floreantpos.Messages;
 import com.floreantpos.model.PrinterGroup;
 import com.floreantpos.model.dao.PrinterGroupDAO;
 
@@ -32,7 +33,7 @@ public class PrinterGroupView extends JPanel {
 		JPanel panel = new JPanel();
 		add(panel, BorderLayout.SOUTH);
 		
-		JButton btnAdd = new JButton("ADD");
+		JButton btnAdd = new JButton(Messages.getString("PrinterGroupView.0")); //$NON-NLS-1$
 		btnAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				doAddPrinter();
@@ -40,7 +41,7 @@ public class PrinterGroupView extends JPanel {
 		});
 		panel.add(btnAdd);
 		
-		JButton btnEdit = new JButton("EDIT");
+		JButton btnEdit = new JButton(Messages.getString("PrinterGroupView.1")); //$NON-NLS-1$
 		btnEdit.addActionListener(new ActionListener() {
 			
 			@Override
