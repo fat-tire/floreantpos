@@ -14,10 +14,10 @@ import java.io.Serializable;
 
 public abstract class BaseZipCodeVsDeliveryCharge  implements Comparable, Serializable {
 
-	public static String REF = "ZipCodeVsDeliveryCharge";
-	public static String PROP_DELIVERY_CHARGE = "deliveryCharge";
-	public static String PROP_ID = "id";
-	public static String PROP_ZIP_CODE = "zipCode";
+	public static String REF = "ZipCodeVsDeliveryCharge"; //$NON-NLS-1$
+	public static String PROP_DELIVERY_CHARGE = "deliveryCharge"; //$NON-NLS-1$
+	public static String PROP_ID = "id"; //$NON-NLS-1$
+	public static String PROP_ZIP_CODE = "zipCode"; //$NON-NLS-1$
 
 
 	// constructors
@@ -134,7 +134,7 @@ public abstract class BaseZipCodeVsDeliveryCharge  implements Comparable, Serial
 		if (Integer.MIN_VALUE == this.hashCode) {
 			if (null == this.getId()) return super.hashCode();
 			else {
-				String hashStr = this.getClass().getName() + ":" + this.getId().hashCode();
+				String hashStr = this.getClass().getName() + ":" + this.getId().hashCode(); //$NON-NLS-1$
 				this.hashCode = hashStr.hashCode();
 			}
 		}

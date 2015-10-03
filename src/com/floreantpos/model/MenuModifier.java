@@ -2,6 +2,7 @@ package com.floreantpos.model;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.floreantpos.Messages;
 import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.model.base.BaseMenuModifier;
 
@@ -61,6 +62,6 @@ public class MenuModifier extends BaseMenuModifier {
 	}
 
 	public String getUniqueId() {
-		return ("menu_modifier_" + getName() + "_" + getId()).replaceAll("\\s+", "_");
+		return ("menu_modifier_" + getName() + "_" + getId()).replaceAll("\\s+", "_"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 	}
 }

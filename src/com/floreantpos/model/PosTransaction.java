@@ -32,14 +32,14 @@ public class PosTransaction extends BasePosTransaction {
 
 	/*[CONSTRUCTOR MARKER END]*/
 
-	public final static String CASH = "CASH";
-	public final static String GIFT_CERT = "GIFT_CERT";
-	public final static String CREDIT_CARD = "CREDIT_CARD";
-	public final static String DEBIT_CARD = "DEBIT_CARD";
-	public final static String CASH_DROP = "CASH_DROP";
-	public final static String REFUND = "REFUND";
-	public final static String PAY_OUT = "PAY_OUT";
-	public final static String VOID_TRANS = "VOID_TRANS";
+	public final static String CASH = "CASH"; //$NON-NLS-1$
+	public final static String GIFT_CERT = "GIFT_CERT"; //$NON-NLS-1$
+	public final static String CREDIT_CARD = "CREDIT_CARD"; //$NON-NLS-1$
+	public final static String DEBIT_CARD = "DEBIT_CARD"; //$NON-NLS-1$
+	public final static String CASH_DROP = "CASH_DROP"; //$NON-NLS-1$
+	public final static String REFUND = "REFUND"; //$NON-NLS-1$
+	public final static String PAY_OUT = "PAY_OUT"; //$NON-NLS-1$
+	public final static String VOID_TRANS = "VOID_TRANS"; //$NON-NLS-1$
 
 	@Override
 	public String getTransactionType() {

@@ -1,6 +1,5 @@
 package com.floreantpos.model.base;
 
-import java.lang.Comparable;
 import java.io.Serializable;
 
 
@@ -15,14 +14,14 @@ import java.io.Serializable;
 
 public abstract class BaseKitchenTicketItem  implements Comparable, Serializable {
 
-	public static String REF = "KitchenTicketItem";
-	public static String PROP_STATUS = "status";
-	public static String PROP_QUANTITY = "quantity";
-	public static String PROP_ID = "id";
-	public static String PROP_VOIDED = "voided";
-	public static String PROP_MENU_ITEM_NAME = "menuItemName";
-	public static String PROP_MENU_ITEM_CODE = "menuItemCode";
-	public static String PROP_COOKABLE = "cookable";
+	public static String REF = "KitchenTicketItem"; //$NON-NLS-1$
+	public static String PROP_STATUS = "status"; //$NON-NLS-1$
+	public static String PROP_QUANTITY = "quantity"; //$NON-NLS-1$
+	public static String PROP_ID = "id"; //$NON-NLS-1$
+	public static String PROP_VOIDED = "voided"; //$NON-NLS-1$
+	public static String PROP_MENU_ITEM_NAME = "menuItemName"; //$NON-NLS-1$
+	public static String PROP_MENU_ITEM_CODE = "menuItemCode"; //$NON-NLS-1$
+	public static String PROP_COOKABLE = "cookable"; //$NON-NLS-1$
 
 
 	// constructors
@@ -197,7 +196,7 @@ public abstract class BaseKitchenTicketItem  implements Comparable, Serializable
 		if (Integer.MIN_VALUE == this.hashCode) {
 			if (null == this.getId()) return super.hashCode();
 			else {
-				String hashStr = this.getClass().getName() + ":" + this.getId().hashCode();
+				String hashStr = this.getClass().getName() + ":" + this.getId().hashCode(); //$NON-NLS-1$
 				this.hashCode = hashStr.hashCode();
 			}
 		}

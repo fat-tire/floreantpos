@@ -1,6 +1,5 @@
 package com.floreantpos.model.base;
 
-import java.lang.Comparable;
 import java.io.Serializable;
 
 
@@ -15,9 +14,9 @@ import java.io.Serializable;
 
 public abstract class BaseDataUpdateInfo  implements Comparable, Serializable {
 
-	public static String REF = "DataUpdateInfo";
-	public static String PROP_ID = "id";
-	public static String PROP_LAST_UPDATE_TIME = "lastUpdateTime";
+	public static String REF = "DataUpdateInfo"; //$NON-NLS-1$
+	public static String PROP_ID = "id"; //$NON-NLS-1$
+	public static String PROP_LAST_UPDATE_TIME = "lastUpdateTime"; //$NON-NLS-1$
 
 
 	// constructors
@@ -102,7 +101,7 @@ public abstract class BaseDataUpdateInfo  implements Comparable, Serializable {
 		if (Integer.MIN_VALUE == this.hashCode) {
 			if (null == this.getId()) return super.hashCode();
 			else {
-				String hashStr = this.getClass().getName() + ":" + this.getId().hashCode();
+				String hashStr = this.getClass().getName() + ":" + this.getId().hashCode(); //$NON-NLS-1$
 				this.hashCode = hashStr.hashCode();
 			}
 		}

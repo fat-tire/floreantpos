@@ -14,11 +14,11 @@ import java.io.Serializable;
 
 public abstract class BaseDrawerAssignedHistory  implements Comparable, Serializable {
 
-	public static String REF = "DrawerAssignedHistory";
-	public static String PROP_USER = "user";
-	public static String PROP_OPERATION = "operation";
-	public static String PROP_TIME = "time";
-	public static String PROP_ID = "id";
+	public static String REF = "DrawerAssignedHistory"; //$NON-NLS-1$
+	public static String PROP_USER = "user"; //$NON-NLS-1$
+	public static String PROP_OPERATION = "operation"; //$NON-NLS-1$
+	public static String PROP_TIME = "time"; //$NON-NLS-1$
+	public static String PROP_ID = "id"; //$NON-NLS-1$
 
 
 	// constructors
@@ -141,7 +141,7 @@ public abstract class BaseDrawerAssignedHistory  implements Comparable, Serializ
 		if (Integer.MIN_VALUE == this.hashCode) {
 			if (null == this.getId()) return super.hashCode();
 			else {
-				String hashStr = this.getClass().getName() + ":" + this.getId().hashCode();
+				String hashStr = this.getClass().getName() + ":" + this.getId().hashCode(); //$NON-NLS-1$
 				this.hashCode = hashStr.hashCode();
 			}
 		}

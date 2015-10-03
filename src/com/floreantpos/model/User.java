@@ -37,9 +37,9 @@ public class User extends BaseUser {
 
 	/*[CONSTRUCTOR MARKER END]*/
 
-	public final static String USER_TYPE_MANAGER = "MANAGER";
-	public final static String USER_TYPE_CASHIER = "CASHIER";
-	public final static String USER_TYPE_SERVER = "SERVER";
+	public final static String USER_TYPE_MANAGER = "MANAGER"; //$NON-NLS-1$
+	public final static String USER_TYPE_CASHIER = "CASHIER"; //$NON-NLS-1$
+	public final static String USER_TYPE_SERVER = "SERVER"; //$NON-NLS-1$
 
 	/**
 	 * Return the value associated with the column: ACTIVE
@@ -58,7 +58,7 @@ public class User extends BaseUser {
 		setCurrentTerminal(terminal);
 		setLastClockInTime(currentTime.getTime());
 
-		LogFactory.getLog(Application.class).info("terminal id befor saving clockIn=" + terminal.getId());
+		LogFactory.getLog(Application.class).info("terminal id befor saving clockIn=" + terminal.getId()); //$NON-NLS-1$
 
 		AttendenceHistory attendenceHistory = new AttendenceHistory();
 		attendenceHistory.setClockInTime(currentTime.getTime());
@@ -106,12 +106,12 @@ public class User extends BaseUser {
 	}
 	
 	public String getFullName() {
-		return getFirstName() + " " + getLastName();
+		return getFirstName() + " " + getLastName(); //$NON-NLS-1$
 	}
 
 	@Override
 	public String toString() {
-		return getFirstName() + " " + getLastName();
+		return getFirstName() + " " + getLastName(); //$NON-NLS-1$
 	}
 
 	public boolean isManager() {

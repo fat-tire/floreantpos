@@ -14,23 +14,23 @@ import java.io.Serializable;
 
 public abstract class BaseUser  implements Comparable, Serializable {
 
-	public static String REF = "User";
-	public static String PROP_LAST_CLOCK_IN_TIME = "lastClockInTime";
-	public static String PROP_TYPE = "type";
-	public static String PROP_PASSWORD = "password";
-	public static String PROP_USER_ID = "userId";
-	public static String PROP_LAST_NAME = "lastName";
-	public static String PROP_SSN = "ssn";
-	public static String PROP_PHONE_NO = "phoneNo";
-	public static String PROP_DRIVER = "driver";
-	public static String PROP_ACTIVE = "active";
-	public static String PROP_CURRENT_TERMINAL = "currentTerminal";
-	public static String PROP_AVAILABLE_FOR_DELIVERY = "availableForDelivery";
-	public static String PROP_AUTO_ID = "autoId";
-	public static String PROP_FIRST_NAME = "firstName";
-	public static String PROP_COST_PER_HOUR = "costPerHour";
-	public static String PROP_CLOCKED_IN = "clockedIn";
-	public static String PROP_CURRENT_SHIFT = "currentShift";
+	public static String REF = "User"; //$NON-NLS-1$
+	public static String PROP_LAST_CLOCK_IN_TIME = "lastClockInTime"; //$NON-NLS-1$
+	public static String PROP_TYPE = "type"; //$NON-NLS-1$
+	public static String PROP_PASSWORD = "password"; //$NON-NLS-1$
+	public static String PROP_USER_ID = "userId"; //$NON-NLS-1$
+	public static String PROP_LAST_NAME = "lastName"; //$NON-NLS-1$
+	public static String PROP_SSN = "ssn"; //$NON-NLS-1$
+	public static String PROP_PHONE_NO = "phoneNo"; //$NON-NLS-1$
+	public static String PROP_DRIVER = "driver"; //$NON-NLS-1$
+	public static String PROP_ACTIVE = "active"; //$NON-NLS-1$
+	public static String PROP_CURRENT_TERMINAL = "currentTerminal"; //$NON-NLS-1$
+	public static String PROP_AVAILABLE_FOR_DELIVERY = "availableForDelivery"; //$NON-NLS-1$
+	public static String PROP_AUTO_ID = "autoId"; //$NON-NLS-1$
+	public static String PROP_FIRST_NAME = "firstName"; //$NON-NLS-1$
+	public static String PROP_COST_PER_HOUR = "costPerHour"; //$NON-NLS-1$
+	public static String PROP_CLOCKED_IN = "clockedIn"; //$NON-NLS-1$
+	public static String PROP_CURRENT_SHIFT = "currentShift"; //$NON-NLS-1$
 
 
 	// constructors
@@ -381,7 +381,7 @@ public abstract class BaseUser  implements Comparable, Serializable {
 		if (Integer.MIN_VALUE == this.hashCode) {
 			if (null == this.getAutoId()) return super.hashCode();
 			else {
-				String hashStr = this.getClass().getName() + ":" + this.getAutoId().hashCode();
+				String hashStr = this.getClass().getName() + ":" + this.getAutoId().hashCode(); //$NON-NLS-1$
 				this.hashCode = hashStr.hashCode();
 			}
 		}

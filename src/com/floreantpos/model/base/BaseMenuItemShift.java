@@ -14,10 +14,10 @@ import java.io.Serializable;
 
 public abstract class BaseMenuItemShift  implements Comparable, Serializable {
 
-	public static String REF = "MenuItemShift";
-	public static String PROP_SHIFT_PRICE = "shiftPrice";
-	public static String PROP_SHIFT = "shift";
-	public static String PROP_ID = "id";
+	public static String REF = "MenuItemShift"; //$NON-NLS-1$
+	public static String PROP_SHIFT_PRICE = "shiftPrice"; //$NON-NLS-1$
+	public static String PROP_SHIFT = "shift"; //$NON-NLS-1$
+	public static String PROP_ID = "id"; //$NON-NLS-1$
 
 
 	// constructors
@@ -122,7 +122,7 @@ public abstract class BaseMenuItemShift  implements Comparable, Serializable {
 		if (Integer.MIN_VALUE == this.hashCode) {
 			if (null == this.getId()) return super.hashCode();
 			else {
-				String hashStr = this.getClass().getName() + ":" + this.getId().hashCode();
+				String hashStr = this.getClass().getName() + ":" + this.getId().hashCode(); //$NON-NLS-1$
 				this.hashCode = hashStr.hashCode();
 			}
 		}

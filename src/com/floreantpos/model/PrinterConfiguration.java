@@ -1,5 +1,6 @@
 package com.floreantpos.model;
 
+import com.floreantpos.Messages;
 import com.floreantpos.model.base.BasePrinterConfiguration;
 
 
@@ -26,7 +27,7 @@ public class PrinterConfiguration extends BasePrinterConfiguration {
 	@Override
 	public String getReceiptPrinterName() {
 		if(super.getReceiptPrinterName() == null) {
-			return "PosPrinter";
+			return Messages.getString("PrinterConfiguration.0"); //$NON-NLS-1$
 		}
 		return super.getReceiptPrinterName();
 	}
@@ -34,7 +35,7 @@ public class PrinterConfiguration extends BasePrinterConfiguration {
 	@Override
 	public String getKitchenPrinterName() {
 		if(super.getKitchenPrinterName() == null) {
-			return "KitchenPrinter";
+			return Messages.getString("PrinterConfiguration.1"); //$NON-NLS-1$
 		}
 		return super.getKitchenPrinterName();
 	}

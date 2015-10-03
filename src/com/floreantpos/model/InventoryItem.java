@@ -34,7 +34,7 @@ public class InventoryItem extends BaseInventoryItem {
 			return null;
 		}
 		
-		String[] strings = csvLine.split(",");
+		String[] strings = csvLine.split(","); //$NON-NLS-1$
 		
 		InventoryItem inventoryItem = new InventoryItem();
 		

@@ -39,6 +39,6 @@ public class MenuModifierGroup extends BaseMenuModifierGroup {
 	}
 
 	public String getUniqueId() {
-		return ("menu_modifiergroup_" + getName() + "_" + getId()).replaceAll("\\s+", "_");
+		return ("menu_modifiergroup_" + getName() + "_" + getId()).replaceAll("\\s+", "_"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 	}
 }

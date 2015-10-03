@@ -1,6 +1,5 @@
 package com.floreantpos.model.base;
 
-import java.lang.Comparable;
 import java.io.Serializable;
 
 
@@ -15,19 +14,19 @@ import java.io.Serializable;
 
 public abstract class BaseShopTable  implements Comparable, Serializable {
 
-	public static String REF = "ShopTable";
-	public static String PROP_NAME = "name";
-	public static String PROP_DESCRIPTION = "description";
-	public static String PROP_DISABLE = "disable";
-	public static String PROP_ID = "id";
-	public static String PROP_DIRTY = "dirty";
-	public static String PROP_CAPACITY = "capacity";
-	public static String PROP_BOOKED = "booked";
-	public static String PROP_Y = "y";
-	public static String PROP_X = "x";
-	public static String PROP_FLOOR = "floor";
-	public static String PROP_SERVING = "serving";
-	public static String PROP_FREE = "free";
+	public static String REF = "ShopTable"; //$NON-NLS-1$
+	public static String PROP_NAME = "name"; //$NON-NLS-1$
+	public static String PROP_DESCRIPTION = "description"; //$NON-NLS-1$
+	public static String PROP_DISABLE = "disable"; //$NON-NLS-1$
+	public static String PROP_ID = "id"; //$NON-NLS-1$
+	public static String PROP_DIRTY = "dirty"; //$NON-NLS-1$
+	public static String PROP_CAPACITY = "capacity"; //$NON-NLS-1$
+	public static String PROP_BOOKED = "booked"; //$NON-NLS-1$
+	public static String PROP_Y = "y"; //$NON-NLS-1$
+	public static String PROP_X = "x"; //$NON-NLS-1$
+	public static String PROP_FLOOR = "floor"; //$NON-NLS-1$
+	public static String PROP_SERVING = "serving"; //$NON-NLS-1$
+	public static String PROP_FREE = "free"; //$NON-NLS-1$
 
 
 	// constructors
@@ -319,7 +318,7 @@ public abstract class BaseShopTable  implements Comparable, Serializable {
 		if (Integer.MIN_VALUE == this.hashCode) {
 			if (null == this.getId()) return super.hashCode();
 			else {
-				String hashStr = this.getClass().getName() + ":" + this.getId().hashCode();
+				String hashStr = this.getClass().getName() + ":" + this.getId().hashCode(); //$NON-NLS-1$
 				this.hashCode = hashStr.hashCode();
 			}
 		}

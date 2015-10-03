@@ -14,22 +14,22 @@ import java.io.Serializable;
 
 public abstract class BaseTicketItemModifier  implements Comparable, Serializable {
 
-	public static String REF = "TicketItemModifier";
-	public static String PROP_SUB_TOTAL_AMOUNT = "subTotalAmount";
-	public static String PROP_PARENT = "parent";
-	public static String PROP_ITEM_ID = "itemId";
-	public static String PROP_ITEM_COUNT = "itemCount";
-	public static String PROP_TAX_RATE = "taxRate";
-	public static String PROP_UNIT_PRICE = "unitPrice";
-	public static String PROP_TAX_AMOUNT = "taxAmount";
-	public static String PROP_GROUP_ID = "groupId";
-	public static String PROP_NAME = "name";
-	public static String PROP_PRINTED_TO_KITCHEN = "printedToKitchen";
-	public static String PROP_SHOULD_PRINT_TO_KITCHEN = "shouldPrintToKitchen";
-	public static String PROP_EXTRA_UNIT_PRICE = "extraUnitPrice";
-	public static String PROP_ID = "id";
-	public static String PROP_TOTAL_AMOUNT = "totalAmount";
-	public static String PROP_MODIFIER_TYPE = "modifierType";
+	public static String REF = "TicketItemModifier"; //$NON-NLS-1$
+	public static String PROP_SUB_TOTAL_AMOUNT = "subTotalAmount"; //$NON-NLS-1$
+	public static String PROP_PARENT = "parent"; //$NON-NLS-1$
+	public static String PROP_ITEM_ID = "itemId"; //$NON-NLS-1$
+	public static String PROP_ITEM_COUNT = "itemCount"; //$NON-NLS-1$
+	public static String PROP_TAX_RATE = "taxRate"; //$NON-NLS-1$
+	public static String PROP_UNIT_PRICE = "unitPrice"; //$NON-NLS-1$
+	public static String PROP_TAX_AMOUNT = "taxAmount"; //$NON-NLS-1$
+	public static String PROP_GROUP_ID = "groupId"; //$NON-NLS-1$
+	public static String PROP_NAME = "name"; //$NON-NLS-1$
+	public static String PROP_PRINTED_TO_KITCHEN = "printedToKitchen"; //$NON-NLS-1$
+	public static String PROP_SHOULD_PRINT_TO_KITCHEN = "shouldPrintToKitchen"; //$NON-NLS-1$
+	public static String PROP_EXTRA_UNIT_PRICE = "extraUnitPrice"; //$NON-NLS-1$
+	public static String PROP_ID = "id"; //$NON-NLS-1$
+	public static String PROP_TOTAL_AMOUNT = "totalAmount"; //$NON-NLS-1$
+	public static String PROP_MODIFIER_TYPE = "modifierType"; //$NON-NLS-1$
 
 
 	// constructors
@@ -303,7 +303,7 @@ public abstract class BaseTicketItemModifier  implements Comparable, Serializabl
 	 * Custom property
 	 */
 	public static String getShouldPrintToKitchenDefaultValue () {
-		return "true";
+		return "true"; //$NON-NLS-1$
 	}
 
 
@@ -357,7 +357,7 @@ public abstract class BaseTicketItemModifier  implements Comparable, Serializabl
 		if (Integer.MIN_VALUE == this.hashCode) {
 			if (null == this.getId()) return super.hashCode();
 			else {
-				String hashStr = this.getClass().getName() + ":" + this.getId().hashCode();
+				String hashStr = this.getClass().getName() + ":" + this.getId().hashCode(); //$NON-NLS-1$
 				this.hashCode = hashStr.hashCode();
 			}
 		}

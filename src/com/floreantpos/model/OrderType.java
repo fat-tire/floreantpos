@@ -16,7 +16,7 @@ public enum OrderType {
 		
 		String string = Messages.getString(name());
 		if(StringUtils.isEmpty(string)) {
-			return name().replaceAll("_", " ");
+			return name().replaceAll("_", " "); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		
 		return string;

@@ -16,53 +16,53 @@ import com.floreantpos.model.DrawerPullVoidTicketEntry;
 
 public abstract class BaseDrawerPullReport  implements Comparable, Serializable {
 
-	public static String REF = "DrawerPullReport";
-	public static String PROP_TOTAL_DISCOUNT_CHECK_SIZE = "totalDiscountCheckSize";
-	public static String PROP_TOTAL_DISCOUNT_SALES = "totalDiscountSales";
-	public static String PROP_VARIANCE = "variance";
-	public static String PROP_PAY_OUT_AMOUNT = "payOutAmount";
-	public static String PROP_DEBIT_CARD_RECEIPT_AMOUNT = "debitCardReceiptAmount";
-	public static String PROP_SALES_TAX = "salesTax";
-	public static String PROP_TOTAL_VOID = "totalVoid";
-	public static String PROP_CASH_RECEIPT_COUNT = "cashReceiptCount";
-	public static String PROP_PAY_OUT_COUNT = "payOutCount";
-	public static String PROP_TIPS_DIFFERENTIAL = "tipsDifferential";
-	public static String PROP_DRAWER_BLEED_COUNT = "drawerBleedCount";
-	public static String PROP_DRAWER_ACCOUNTABLE = "drawerAccountable";
-	public static String PROP_ASSIGNED_USER = "assignedUser";
-	public static String PROP_CASH_TAX = "cashTax";
-	public static String PROP_RECEIPT_DIFFERENTIAL = "receiptDifferential";
-	public static String PROP_TOTAL_DISCOUNT_GUEST = "totalDiscountGuest";
-	public static String PROP_GIFT_CERT_CHANGE_AMOUNT = "giftCertChangeAmount";
-	public static String PROP_NET_SALES = "netSales";
-	public static String PROP_CASH_BACK = "cashBack";
-	public static String PROP_REFUND_AMOUNT = "refundAmount";
-	public static String PROP_DRAWER_BLEED_AMOUNT = "drawerBleedAmount";
-	public static String PROP_CASH_RECEIPT_AMOUNT = "cashReceiptAmount";
-	public static String PROP_TOTAL_DISCOUNT_PARTY_SIZE = "totalDiscountPartySize";
-	public static String PROP_TERMINAL = "terminal";
-	public static String PROP_REG = "reg";
-	public static String PROP_TOTAL_VOID_WST = "totalVoidWst";
-	public static String PROP_CREDIT_CARD_RECEIPT_COUNT = "creditCardReceiptCount";
-	public static String PROP_DEBIT_CARD_RECEIPT_COUNT = "debitCardReceiptCount";
-	public static String PROP_REFUND_RECEIPT_COUNT = "refundReceiptCount";
-	public static String PROP_CREDIT_CARD_RECEIPT_AMOUNT = "creditCardReceiptAmount";
-	public static String PROP_TOTAL_DISCOUNT_PERCENTAGE = "totalDiscountPercentage";
-	public static String PROP_GIFT_CERT_RETURN_AMOUNT = "giftCertReturnAmount";
-	public static String PROP_BEGIN_CASH = "beginCash";
-	public static String PROP_TOTAL_DISCOUNT_RATIO = "totalDiscountRatio";
-	public static String PROP_CASH_TO_DEPOSIT = "cashToDeposit";
-	public static String PROP_TOTAL_DISCOUNT_AMOUNT = "totalDiscountAmount";
-	public static String PROP_TOTAL_DISCOUNT_COUNT = "totalDiscountCount";
-	public static String PROP_TIPS_PAID = "tipsPaid";
-	public static String PROP_TOTAL_REVENUE = "totalRevenue";
-	public static String PROP_ID = "id";
-	public static String PROP_GROSS_RECEIPTS = "grossReceipts";
-	public static String PROP_CHARGED_TIPS = "chargedTips";
-	public static String PROP_GIFT_CERT_RETURN_COUNT = "giftCertReturnCount";
-	public static String PROP_TICKET_COUNT = "ticketCount";
-	public static String PROP_REPORT_TIME = "reportTime";
-	public static String PROP_CASH_TIPS = "cashTips";
+	public static String REF = "DrawerPullReport"; //$NON-NLS-1$
+	public static String PROP_TOTAL_DISCOUNT_CHECK_SIZE = "totalDiscountCheckSize"; //$NON-NLS-1$
+	public static String PROP_TOTAL_DISCOUNT_SALES = "totalDiscountSales"; //$NON-NLS-1$
+	public static String PROP_VARIANCE = "variance"; //$NON-NLS-1$
+	public static String PROP_PAY_OUT_AMOUNT = "payOutAmount"; //$NON-NLS-1$
+	public static String PROP_DEBIT_CARD_RECEIPT_AMOUNT = "debitCardReceiptAmount"; //$NON-NLS-1$
+	public static String PROP_SALES_TAX = "salesTax"; //$NON-NLS-1$
+	public static String PROP_TOTAL_VOID = "totalVoid"; //$NON-NLS-1$
+	public static String PROP_CASH_RECEIPT_COUNT = "cashReceiptCount"; //$NON-NLS-1$
+	public static String PROP_PAY_OUT_COUNT = "payOutCount"; //$NON-NLS-1$
+	public static String PROP_TIPS_DIFFERENTIAL = "tipsDifferential"; //$NON-NLS-1$
+	public static String PROP_DRAWER_BLEED_COUNT = "drawerBleedCount"; //$NON-NLS-1$
+	public static String PROP_DRAWER_ACCOUNTABLE = "drawerAccountable"; //$NON-NLS-1$
+	public static String PROP_ASSIGNED_USER = "assignedUser"; //$NON-NLS-1$
+	public static String PROP_CASH_TAX = "cashTax"; //$NON-NLS-1$
+	public static String PROP_RECEIPT_DIFFERENTIAL = "receiptDifferential"; //$NON-NLS-1$
+	public static String PROP_TOTAL_DISCOUNT_GUEST = "totalDiscountGuest"; //$NON-NLS-1$
+	public static String PROP_GIFT_CERT_CHANGE_AMOUNT = "giftCertChangeAmount"; //$NON-NLS-1$
+	public static String PROP_NET_SALES = "netSales"; //$NON-NLS-1$
+	public static String PROP_CASH_BACK = "cashBack"; //$NON-NLS-1$
+	public static String PROP_REFUND_AMOUNT = "refundAmount"; //$NON-NLS-1$
+	public static String PROP_DRAWER_BLEED_AMOUNT = "drawerBleedAmount"; //$NON-NLS-1$
+	public static String PROP_CASH_RECEIPT_AMOUNT = "cashReceiptAmount"; //$NON-NLS-1$
+	public static String PROP_TOTAL_DISCOUNT_PARTY_SIZE = "totalDiscountPartySize"; //$NON-NLS-1$
+	public static String PROP_TERMINAL = "terminal"; //$NON-NLS-1$
+	public static String PROP_REG = "reg"; //$NON-NLS-1$
+	public static String PROP_TOTAL_VOID_WST = "totalVoidWst"; //$NON-NLS-1$
+	public static String PROP_CREDIT_CARD_RECEIPT_COUNT = "creditCardReceiptCount"; //$NON-NLS-1$
+	public static String PROP_DEBIT_CARD_RECEIPT_COUNT = "debitCardReceiptCount"; //$NON-NLS-1$
+	public static String PROP_REFUND_RECEIPT_COUNT = "refundReceiptCount"; //$NON-NLS-1$
+	public static String PROP_CREDIT_CARD_RECEIPT_AMOUNT = "creditCardReceiptAmount"; //$NON-NLS-1$
+	public static String PROP_TOTAL_DISCOUNT_PERCENTAGE = "totalDiscountPercentage"; //$NON-NLS-1$
+	public static String PROP_GIFT_CERT_RETURN_AMOUNT = "giftCertReturnAmount"; //$NON-NLS-1$
+	public static String PROP_BEGIN_CASH = "beginCash"; //$NON-NLS-1$
+	public static String PROP_TOTAL_DISCOUNT_RATIO = "totalDiscountRatio"; //$NON-NLS-1$
+	public static String PROP_CASH_TO_DEPOSIT = "cashToDeposit"; //$NON-NLS-1$
+	public static String PROP_TOTAL_DISCOUNT_AMOUNT = "totalDiscountAmount"; //$NON-NLS-1$
+	public static String PROP_TOTAL_DISCOUNT_COUNT = "totalDiscountCount"; //$NON-NLS-1$
+	public static String PROP_TIPS_PAID = "tipsPaid"; //$NON-NLS-1$
+	public static String PROP_TOTAL_REVENUE = "totalRevenue"; //$NON-NLS-1$
+	public static String PROP_ID = "id"; //$NON-NLS-1$
+	public static String PROP_GROSS_RECEIPTS = "grossReceipts"; //$NON-NLS-1$
+	public static String PROP_CHARGED_TIPS = "chargedTips"; //$NON-NLS-1$
+	public static String PROP_GIFT_CERT_RETURN_COUNT = "giftCertReturnCount"; //$NON-NLS-1$
+	public static String PROP_TICKET_COUNT = "ticketCount"; //$NON-NLS-1$
+	public static String PROP_REPORT_TIME = "reportTime"; //$NON-NLS-1$
+	public static String PROP_CASH_TIPS = "cashTips"; //$NON-NLS-1$
 
 
 	// constructors
@@ -961,7 +961,7 @@ public abstract class BaseDrawerPullReport  implements Comparable, Serializable 
 		if (Integer.MIN_VALUE == this.hashCode) {
 			if (null == this.getId()) return super.hashCode();
 			else {
-				String hashStr = this.getClass().getName() + ":" + this.getId().hashCode();
+				String hashStr = this.getClass().getName() + ":" + this.getId().hashCode(); //$NON-NLS-1$
 				this.hashCode = hashStr.hashCode();
 			}
 		}

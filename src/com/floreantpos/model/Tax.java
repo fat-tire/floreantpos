@@ -35,11 +35,11 @@ public class Tax extends BaseTax {
 	/*[CONSTRUCTOR MARKER END]*/
 	
 	public String getUniqueId() {
-		return ("tax_" + getName() + "_" + getId()).replaceAll("\\s+", "_");
+		return ("tax_" + getName() + "_" + getId()).replaceAll("\\s+", "_"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 	}
 
 	@Override
 	public String toString() {
-		return getName() + " (" + getRate() + "%)";
+		return getName() + " (" + getRate() + "%)"; //$NON-NLS-1$ //$NON-NLS-2$
 	}
 }

@@ -14,36 +14,36 @@ import java.io.Serializable;
 
 public abstract class BasePosTransaction  implements Comparable, Serializable {
 
-	public static String REF = "PosTransaction";
-	public static String PROP_USER = "user";
-	public static String PROP_RECEPIENT = "recepient";
-	public static String PROP_AUTHORIZABLE = "authorizable";
-	public static String PROP_TRANSACTION_TYPE = "transactionType";
-	public static String PROP_GIFT_CERT_CASH_BACK_AMOUNT = "giftCertCashBackAmount";
-	public static String PROP_CARD_EXPIRY_MONTH = "cardExpiryMonth";
-	public static String PROP_CARD_READER = "cardReader";
-	public static String PROP_GIFT_CERT_NUMBER = "giftCertNumber";
-	public static String PROP_TICKET = "ticket";
-	public static String PROP_CARD_MERCHANT_GATEWAY = "cardMerchantGateway";
-	public static String PROP_CARD_TYPE = "cardType";
-	public static String PROP_CARD_AUTH_CODE = "cardAuthCode";
-	public static String PROP_TRANSACTION_TIME = "transactionTime";
-	public static String PROP_DRAWER_RESETTED = "drawerResetted";
-	public static String PROP_REASON = "reason";
-	public static String PROP_CARD_NUMBER = "cardNumber";
-	public static String PROP_GIFT_CERT_FACE_VALUE = "giftCertFaceValue";
-	public static String PROP_AMOUNT = "amount";
-	public static String PROP_CAPTURED = "captured";
-	public static String PROP_CARD_EXPIRY_YEAR = "cardExpiryYear";
-	public static String PROP_TERMINAL = "terminal";
-	public static String PROP_NOTE = "note";
-	public static String PROP_CARD_TRACK = "cardTrack";
-	public static String PROP_PAYMENT_TYPE = "paymentType";
-	public static String PROP_TIPS_AMOUNT = "tipsAmount";
-	public static String PROP_TENDER_AMOUNT = "tenderAmount";
-	public static String PROP_CARD_TRANSACTION_ID = "cardTransactionId";
-	public static String PROP_ID = "id";
-	public static String PROP_GIFT_CERT_PAID_AMOUNT = "giftCertPaidAmount";
+	public static String REF = "PosTransaction"; //$NON-NLS-1$
+	public static String PROP_USER = "user"; //$NON-NLS-1$
+	public static String PROP_RECEPIENT = "recepient"; //$NON-NLS-1$
+	public static String PROP_AUTHORIZABLE = "authorizable"; //$NON-NLS-1$
+	public static String PROP_TRANSACTION_TYPE = "transactionType"; //$NON-NLS-1$
+	public static String PROP_GIFT_CERT_CASH_BACK_AMOUNT = "giftCertCashBackAmount"; //$NON-NLS-1$
+	public static String PROP_CARD_EXPIRY_MONTH = "cardExpiryMonth"; //$NON-NLS-1$
+	public static String PROP_CARD_READER = "cardReader"; //$NON-NLS-1$
+	public static String PROP_GIFT_CERT_NUMBER = "giftCertNumber"; //$NON-NLS-1$
+	public static String PROP_TICKET = "ticket"; //$NON-NLS-1$
+	public static String PROP_CARD_MERCHANT_GATEWAY = "cardMerchantGateway"; //$NON-NLS-1$
+	public static String PROP_CARD_TYPE = "cardType"; //$NON-NLS-1$
+	public static String PROP_CARD_AUTH_CODE = "cardAuthCode"; //$NON-NLS-1$
+	public static String PROP_TRANSACTION_TIME = "transactionTime"; //$NON-NLS-1$
+	public static String PROP_DRAWER_RESETTED = "drawerResetted"; //$NON-NLS-1$
+	public static String PROP_REASON = "reason"; //$NON-NLS-1$
+	public static String PROP_CARD_NUMBER = "cardNumber"; //$NON-NLS-1$
+	public static String PROP_GIFT_CERT_FACE_VALUE = "giftCertFaceValue"; //$NON-NLS-1$
+	public static String PROP_AMOUNT = "amount"; //$NON-NLS-1$
+	public static String PROP_CAPTURED = "captured"; //$NON-NLS-1$
+	public static String PROP_CARD_EXPIRY_YEAR = "cardExpiryYear"; //$NON-NLS-1$
+	public static String PROP_TERMINAL = "terminal"; //$NON-NLS-1$
+	public static String PROP_NOTE = "note"; //$NON-NLS-1$
+	public static String PROP_CARD_TRACK = "cardTrack"; //$NON-NLS-1$
+	public static String PROP_PAYMENT_TYPE = "paymentType"; //$NON-NLS-1$
+	public static String PROP_TIPS_AMOUNT = "tipsAmount"; //$NON-NLS-1$
+	public static String PROP_TENDER_AMOUNT = "tenderAmount"; //$NON-NLS-1$
+	public static String PROP_CARD_TRANSACTION_ID = "cardTransactionId"; //$NON-NLS-1$
+	public static String PROP_ID = "id"; //$NON-NLS-1$
+	public static String PROP_GIFT_CERT_PAID_AMOUNT = "giftCertPaidAmount"; //$NON-NLS-1$
 
 
 	// constructors
@@ -650,7 +650,7 @@ public abstract class BasePosTransaction  implements Comparable, Serializable {
 		if (Integer.MIN_VALUE == this.hashCode) {
 			if (null == this.getId()) return super.hashCode();
 			else {
-				String hashStr = this.getClass().getName() + ":" + this.getId().hashCode();
+				String hashStr = this.getClass().getName() + ":" + this.getId().hashCode(); //$NON-NLS-1$
 				this.hashCode = hashStr.hashCode();
 			}
 		}

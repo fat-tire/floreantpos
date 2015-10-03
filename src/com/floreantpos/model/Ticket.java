@@ -13,6 +13,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.floreantpos.Messages;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.base.BaseTicket;
 import com.floreantpos.model.dao.ShopTableDAO;
@@ -31,16 +32,16 @@ public class Ticket extends BaseTicket {
 //	public final static String DRIVE_THROUGH = "DRIVE THRU";
 //	public final static String BAR_TAB = "BAR_TAB";
 	
-	public final static String PROPERTY_CARD_TRANSACTION_ID = "card_transaction_id";
-	public final static String PROPERTY_CARD_TRACKS = "card_tracks";
-	public static final String PROPERTY_CARD_NAME = "card_name";
-	public static final String PROPERTY_PAYMENT_METHOD = "payment_method";
-	public static final String PROPERTY_CARD_READER = "card_reader";
-	public static final String PROPERTY_CARD_NUMBER = "card_number";
-	public static final String PROPERTY_CARD_EXP_YEAR = "card_exp_year";
-	public static final String PROPERTY_CARD_EXP_MONTH = "card_exp_month";
-	public static final String PROPERTY_ADVANCE_PAYMENT = "advance_payment";
-	public static final String PROPERTY_CARD_AUTH_CODE = "card_auth_code";
+	public final static String PROPERTY_CARD_TRANSACTION_ID = "card_transaction_id"; //$NON-NLS-1$
+	public final static String PROPERTY_CARD_TRACKS = "card_tracks"; //$NON-NLS-1$
+	public static final String PROPERTY_CARD_NAME = "card_name"; //$NON-NLS-1$
+	public static final String PROPERTY_PAYMENT_METHOD = "payment_method"; //$NON-NLS-1$
+	public static final String PROPERTY_CARD_READER = "card_reader"; //$NON-NLS-1$
+	public static final String PROPERTY_CARD_NUMBER = "card_number"; //$NON-NLS-1$
+	public static final String PROPERTY_CARD_EXP_YEAR = "card_exp_year"; //$NON-NLS-1$
+	public static final String PROPERTY_CARD_EXP_MONTH = "card_exp_month"; //$NON-NLS-1$
+	public static final String PROPERTY_ADVANCE_PAYMENT = "advance_payment"; //$NON-NLS-1$
+	public static final String PROPERTY_CARD_AUTH_CODE = "card_auth_code"; //$NON-NLS-1$
 	
 	/* [CONSTRUCTOR MARKER BEGIN] */
 	public Ticket () {
@@ -56,14 +57,14 @@ public class Ticket extends BaseTicket {
 
 	/* [CONSTRUCTOR MARKER END] */
 
-	private static SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd yyyy, h:m a");
+	private static SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd yyyy, h:m a"); //$NON-NLS-1$
 
 	private List deletedItems;
 	private boolean priceIncludesTax;
 
-	public static final String CUSTOMER_PHONE = "CUSTOMER_PHONE";
-	public static final String CUSTOMER_NAME = "CUSTOMER_NAME";
-	public static final String CUSTOMER_ID = "CUSTOMER_ID";
+	public static final String CUSTOMER_PHONE = "CUSTOMER_PHONE"; //$NON-NLS-1$
+	public static final String CUSTOMER_NAME = "CUSTOMER_NAME"; //$NON-NLS-1$
+	public static final String CUSTOMER_ID = "CUSTOMER_ID"; //$NON-NLS-1$
 	
 //	public String getTableNumbers() {
 //		Set<ShopTable> tables = getTables();
@@ -176,13 +177,13 @@ public class Ticket extends BaseTicket {
 	}
 
 	public String getTitle() {
-		String title = "";
+		String title = ""; //$NON-NLS-1$
 		if (getId() != null) {
-			title += "#" + getId();
+			title += "#" + getId(); //$NON-NLS-1$
 		}
-		title += " Server" + ": " + getOwner();
-		title += " Create on" + ":" + getCreateDateFormatted();
-		title += " Total" + ": " + NumberUtil.formatNumber(getTotalAmount());
+		title += Messages.getString("Ticket.1") + ": " + getOwner(); //$NON-NLS-1$ //$NON-NLS-2$
+		title += Messages.getString("Ticket.18") + ":" + getCreateDateFormatted(); //$NON-NLS-1$ //$NON-NLS-2$
+		title += Messages.getString("Ticket.20") + ": " + NumberUtil.formatNumber(getTotalAmount()); //$NON-NLS-1$ //$NON-NLS-2$
 
 		return title;
 	}
@@ -538,7 +539,7 @@ public class Ticket extends BaseTicket {
 	}
 	
 	public String toURLForm() {
-		String s = "ticket_id=" + getId();
+		String s = "ticket_id=" + getId(); //$NON-NLS-1$
 		
 		List<TicketItem> items = getTicketItems();
 		if(items == null || items.size() == 0) {
@@ -547,14 +548,14 @@ public class Ticket extends BaseTicket {
 		
 		for (int i = 0; i < items.size(); i++) {
 			TicketItem ticketItem = items.get(i);
-			s += "&items[" + i + "][id]=" + ticketItem.getId();
-			s += "&items[" + i + "][name]=" + POSUtil.encodeURLString(ticketItem.getName());
-			s += "&items[" + i + "][price]=" + ticketItem.getSubtotalAmount();
+			s += "&items[" + i + "][id]=" + ticketItem.getId(); //$NON-NLS-1$ //$NON-NLS-2$
+			s += "&items[" + i + "][name]=" + POSUtil.encodeURLString(ticketItem.getName()); //$NON-NLS-1$ //$NON-NLS-2$
+			s += "&items[" + i + "][price]=" + ticketItem.getSubtotalAmount(); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		
-		s+= "&tax=" + getTaxAmount();
-		s+= "&subtotal=" + getSubtotalAmount();
-		s+= "&grandtotal=" + getTotalAmount();
+		s+= "&tax=" + getTaxAmount(); //$NON-NLS-1$
+		s+= "&subtotal=" + getSubtotalAmount(); //$NON-NLS-1$
+		s+= "&grandtotal=" + getTotalAmount(); //$NON-NLS-1$
 		
 		return s;
 	}

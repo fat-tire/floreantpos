@@ -14,8 +14,8 @@ import java.io.Serializable;
 
 public abstract class BaseUserPermission  implements Comparable, Serializable {
 
-	public static String REF = "UserPermission";
-	public static String PROP_NAME = "name";
+	public static String REF = "UserPermission"; //$NON-NLS-1$
+	public static String PROP_NAME = "name"; //$NON-NLS-1$
 
 
 	// constructors
@@ -80,7 +80,7 @@ public abstract class BaseUserPermission  implements Comparable, Serializable {
 		if (Integer.MIN_VALUE == this.hashCode) {
 			if (null == this.getName()) return super.hashCode();
 			else {
-				String hashStr = this.getClass().getName() + ":" + this.getName().hashCode();
+				String hashStr = this.getClass().getName() + ":" + this.getName().hashCode(); //$NON-NLS-1$
 				this.hashCode = hashStr.hashCode();
 			}
 		}

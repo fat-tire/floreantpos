@@ -14,14 +14,14 @@ import java.io.Serializable;
 
 public abstract class BaseInventoryUnit  implements Comparable, Serializable {
 
-	public static String REF = "InventoryUnit";
-	public static String PROP_SHORT_NAME = "shortName";
-	public static String PROP_CONVERSION_FACTOR2 = "conversionFactor2";
-	public static String PROP_ALTERNATIVE_NAME = "alternativeName";
-	public static String PROP_CONVERSION_FACTOR1 = "conversionFactor1";
-	public static String PROP_ID = "id";
-	public static String PROP_CONVERSION_FACTOR3 = "conversionFactor3";
-	public static String PROP_LONG_NAME = "longName";
+	public static String REF = "InventoryUnit"; //$NON-NLS-1$
+	public static String PROP_SHORT_NAME = "shortName"; //$NON-NLS-1$
+	public static String PROP_CONVERSION_FACTOR2 = "conversionFactor2"; //$NON-NLS-1$
+	public static String PROP_ALTERNATIVE_NAME = "alternativeName"; //$NON-NLS-1$
+	public static String PROP_CONVERSION_FACTOR1 = "conversionFactor1"; //$NON-NLS-1$
+	public static String PROP_ID = "id"; //$NON-NLS-1$
+	public static String PROP_CONVERSION_FACTOR3 = "conversionFactor3"; //$NON-NLS-1$
+	public static String PROP_LONG_NAME = "longName"; //$NON-NLS-1$
 
 
 	// constructors
@@ -196,7 +196,7 @@ public abstract class BaseInventoryUnit  implements Comparable, Serializable {
 		if (Integer.MIN_VALUE == this.hashCode) {
 			if (null == this.getId()) return super.hashCode();
 			else {
-				String hashStr = this.getClass().getName() + ":" + this.getId().hashCode();
+				String hashStr = this.getClass().getName() + ":" + this.getId().hashCode(); //$NON-NLS-1$
 				this.hashCode = hashStr.hashCode();
 			}
 		}
