@@ -407,9 +407,9 @@ public class SalesStatistics {
 	public static class ShiftwiseDataTableModel extends ListTableModel {
 		public ShiftwiseDataTableModel(List<ShiftwiseSalesTableData> list) {
 			super(new String[] { POSConstants.DAYPART,
-					"profitCenter",
+					"profitCenter", //$NON-NLS-1$
 					POSConstants.CHECK,
-					"Guest",
+					"Guest", //$NON-NLS-1$
 					POSConstants.ENTER,
 					POSConstants.SALES,
 					POSConstants.AVGCHK,
@@ -435,7 +435,7 @@ public class SalesStatistics {
 					return String.valueOf(data.getGuestCount());
 
 				case 4:
-					return " ";
+					return " "; //$NON-NLS-1$
 
 				case 5:
 					return NumberUtil.formatNumber(data.getTotalSales());

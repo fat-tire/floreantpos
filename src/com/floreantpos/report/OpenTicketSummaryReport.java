@@ -31,12 +31,12 @@ public class OpenTicketSummaryReport extends Report {
 		
 		HashMap map = new HashMap();
 		ReportUtil.populateRestaurantProperties(map);
-		map.put("reportTitle", "============================ Open Ticket Summary =============================");
-		map.put("reportTime", ReportService.formatFullDate(new Date()));
+		map.put("reportTitle", "============================ Open Ticket Summary ============================="); //$NON-NLS-1$
+		map.put("reportTime", ReportService.formatFullDate(new Date())); //$NON-NLS-1$
 		//map.put("dateRange", Application.formatDate(date1) + " to " + Application.formatDate(date2));
-		map.put("terminalName", com.floreantpos.POSConstants.ALL);
+		map.put("terminalName", com.floreantpos.POSConstants.ALL); //$NON-NLS-1$
 		
-		JasperReport masterReport = ReportUtil.getReport("open_ticket_summary_report");
+		JasperReport masterReport = ReportUtil.getReport("open_ticket_summary_report"); //$NON-NLS-1$
 		JasperPrint print = JasperFillManager.fillReport(masterReport, map, new JRTableModelDataSource(reportModel));
 		viewer = new JRViewer(print);
 	}

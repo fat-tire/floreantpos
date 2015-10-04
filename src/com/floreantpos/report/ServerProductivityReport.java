@@ -203,11 +203,11 @@ public class ServerProductivityReport {
 	}
 
 	public static class ServerProductivityReportTableModel extends ListTableModel {
-		String[] columnNames = { "serverName", "categoryName", 
-				"totalCheckCount", "totalGuestCount", "totalSales", 
-				"netSales", "averageNetSales", "totalAllocation", 
-				"grossSales", "salesDiscount", "averageCheck", 
-				"averageGuest", "allocation","checkCount"
+		String[] columnNames = { "serverName", "categoryName",  //$NON-NLS-1$ //$NON-NLS-2$
+				"totalCheckCount", "totalGuestCount", "totalSales",  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				"netSales", "averageNetSales", "totalAllocation",  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				"grossSales", "salesDiscount", "averageCheck",  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				"averageGuest", "allocation","checkCount" //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 				};
 
 		public ServerProductivityReportTableModel(List<ServerProductivityReportData> datas) {

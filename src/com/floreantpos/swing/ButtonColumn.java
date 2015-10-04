@@ -116,12 +116,12 @@ public class ButtonColumn extends AbstractCellEditor
 	{
 		if (value == null)
 		{
-			editButton.setText( "" );
+			editButton.setText( "" ); //$NON-NLS-1$
 			editButton.setIcon( null );
 		}
 		else if (value instanceof Icon)
 		{
-			editButton.setText( "" );
+			editButton.setText( "" ); //$NON-NLS-1$
 			editButton.setIcon( (Icon)value );
 		}
 		else
@@ -154,7 +154,7 @@ public class ButtonColumn extends AbstractCellEditor
 		else
 		{
 			renderButton.setForeground(table.getForeground());
-			renderButton.setBackground(UIManager.getColor("Button.background"));
+			renderButton.setBackground(UIManager.getColor("Button.background")); //$NON-NLS-1$
 		}
 
 		if (hasFocus)
@@ -169,12 +169,12 @@ public class ButtonColumn extends AbstractCellEditor
 //		renderButton.setText( (value == null) ? "" : value.toString() );
 		if (value == null)
 		{
-			renderButton.setText( "" );
+			renderButton.setText( "" ); //$NON-NLS-1$
 			renderButton.setIcon( null );
 		}
 		else if (value instanceof Icon)
 		{
-			renderButton.setText( "" );
+			renderButton.setText( "" ); //$NON-NLS-1$
 			renderButton.setIcon( (Icon)value );
 		}
 		else
@@ -202,7 +202,7 @@ public class ButtonColumn extends AbstractCellEditor
 		ActionEvent event = new ActionEvent(
 			table,
 			ActionEvent.ACTION_PERFORMED,
-			"" + row);
+			"" + row); //$NON-NLS-1$
 		action.actionPerformed(event);
 	}
 

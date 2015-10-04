@@ -11,7 +11,7 @@ public class TicketService {
 		Ticket ticket = dao.get(Integer.valueOf(ticketId));
 
 		if (ticket == null) {
-			throw new PosException(POSConstants.NO_TICKET_WITH_ID + " " + ticketId + " " + POSConstants.FOUND);
+			throw new PosException(POSConstants.NO_TICKET_WITH_ID + " " + ticketId + " " + POSConstants.FOUND); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		
 		return ticket;

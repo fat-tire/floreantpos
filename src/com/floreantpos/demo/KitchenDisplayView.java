@@ -18,6 +18,7 @@ import javax.swing.border.EmptyBorder;
 
 import net.miginfocom.swing.MigLayout;
 
+import com.floreantpos.Messages;
 import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.KitchenTicket;
@@ -33,7 +34,7 @@ import com.floreantpos.ui.views.order.ViewPanel;
 
 public class KitchenDisplayView extends ViewPanel implements ActionListener {
 
-	public final static String VIEW_NAME = "KD";
+	public final static String VIEW_NAME = "KD"; //$NON-NLS-1$
 
 	private JComboBox<Printer> cbPrinters = new JComboBox<Printer>();
 	private JComboBox<OrderType> cbTicketTypes = new JComboBox<OrderType>();
@@ -69,9 +70,9 @@ public class KitchenDisplayView extends ViewPanel implements ActionListener {
 			firstTopPanel.add(headerPanel, BorderLayout.NORTH);
 		}
 
-		JPanel topPanel = new JPanel(new MigLayout("", "[][][][][fill,grow][]", ""));
-		topPanel.setBorder(BorderFactory.createTitledBorder("Filters"));
-		JLabel label = new JLabel("Printer");
+		JPanel topPanel = new JPanel(new MigLayout("", "[][][][][fill,grow][]", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		topPanel.setBorder(BorderFactory.createTitledBorder(Messages.getString("KitchenDisplayView.4"))); //$NON-NLS-1$
+		JLabel label = new JLabel(Messages.getString("KitchenDisplayView.5")); //$NON-NLS-1$
 		label.setFont(font);
 		topPanel.add(label);
 		topPanel.add(cbPrinters);
@@ -83,16 +84,16 @@ public class KitchenDisplayView extends ViewPanel implements ActionListener {
 		cbTicketTypes.setModel(ticketTypeModel);
 		cbTicketTypes.setSelectedIndex(0);
 		cbTicketTypes.addActionListener(this);
-		JLabel label2 = new JLabel("Order type");
+		JLabel label2 = new JLabel(Messages.getString("KitchenDisplayView.6")); //$NON-NLS-1$
 		label2.setFont(font);
 
 		topPanel.add(label2);
 		topPanel.add(cbTicketTypes);
 
 		if (TerminalConfig.isKitchenMode()) {
-			btnLogout = new PosButton("LOG OUT");
+			btnLogout = new PosButton(Messages.getString("KitchenDisplayView.7")); //$NON-NLS-1$
 			btnLogout.addActionListener(this);
-			topPanel.add(new JLabel(), "grow");
+			topPanel.add(new JLabel(), "grow"); //$NON-NLS-1$
 			topPanel.add(btnLogout);
 		}
 
@@ -158,7 +159,7 @@ public class KitchenDisplayView extends ViewPanel implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (e.getActionCommand() != null && e.getActionCommand().equalsIgnoreCase("log out")) {
+		if (e.getActionCommand() != null && e.getActionCommand().equalsIgnoreCase("log out")) { //$NON-NLS-1$
 			Application.getInstance().doLogout();
 		}
 		if (e.getSource() == viewUpdateTimer) {

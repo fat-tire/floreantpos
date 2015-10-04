@@ -30,8 +30,8 @@ import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.util.UiUtil;
 
 public class SalesDetailReportView extends JPanel {
-	private SimpleDateFormat fullDateFormatter = new SimpleDateFormat("yyyy MMM dd, hh:mm a");
-	private SimpleDateFormat shortDateFormatter = new SimpleDateFormat("yyyy MMM dd");
+	private SimpleDateFormat fullDateFormatter = new SimpleDateFormat("yyyy MMM dd, hh:mm a"); //$NON-NLS-1$
+	private SimpleDateFormat shortDateFormatter = new SimpleDateFormat("yyyy MMM dd"); //$NON-NLS-1$
 	
 	private JXDatePicker fromDatePicker = UiUtil.getCurrentMonthStart();
 	private JXDatePicker toDatePicker = UiUtil.getCurrentMonthEnd();
@@ -43,11 +43,11 @@ public class SalesDetailReportView extends JPanel {
 		
 		JPanel topPanel = new JPanel(new MigLayout());
 		
-		topPanel.add(new JLabel(com.floreantpos.POSConstants.FROM + ":"), "grow");
-		topPanel.add(fromDatePicker,"wrap");
-		topPanel.add(new JLabel(com.floreantpos.POSConstants.TO + ":"), "grow");
-		topPanel.add(toDatePicker,"wrap");
-		topPanel.add(btnGo, "skip 1, al right");
+		topPanel.add(new JLabel(com.floreantpos.POSConstants.FROM + ":"), "grow"); //$NON-NLS-1$ //$NON-NLS-2$
+		topPanel.add(fromDatePicker,"wrap"); //$NON-NLS-1$
+		topPanel.add(new JLabel(com.floreantpos.POSConstants.TO + ":"), "grow"); //$NON-NLS-1$ //$NON-NLS-2$
+		topPanel.add(toDatePicker,"wrap"); //$NON-NLS-1$
+		topPanel.add(btnGo, "skip 1, al right"); //$NON-NLS-1$
 		add(topPanel, BorderLayout.NORTH);
 		
 		JPanel centerPanel = new JPanel(new BorderLayout());
@@ -87,27 +87,27 @@ public class SalesDetailReportView extends JPanel {
 		ReportService reportService = new ReportService();
 		SalesDetailedReport report = reportService.getSalesDetailedReport(fromDate, toDate);
 		
-		JasperReport drawerPullReport = ReportUtil.getReport("sales_summary_balance_detailed__1");
-		JasperReport creditCardReport = ReportUtil.getReport("sales_summary_balance_detailed_2");
+		JasperReport drawerPullReport = ReportUtil.getReport("sales_summary_balance_detailed__1"); //$NON-NLS-1$
+		JasperReport creditCardReport = ReportUtil.getReport("sales_summary_balance_detailed_2"); //$NON-NLS-1$
 		
 		HashMap map = new HashMap();
 		ReportUtil.populateRestaurantProperties(map);
-		map.put("fromDate", shortDateFormatter.format(fromDate));
-		map.put("toDate", shortDateFormatter.format(toDate));
-		map.put("reportTime", fullDateFormatter.format(new Date()));
-		map.put("giftCertReturnCount", report.getGiftCertReturnCount());
-		map.put("giftCertReturnAmount", report.getGiftCertReturnAmount());
-		map.put("giftCertChangeCount", report.getGiftCertChangeCount());
-		map.put("giftCertChangeAmount", report.getGiftCertChangeAmount());
-		map.put("tipsCount", report.getTipsCount());
-		map.put("tipsAmount", report.getChargedTips());
-		map.put("tipsPaidAmount", report.getTipsPaid());
-		map.put("drawerPullReport", drawerPullReport);
-		map.put("drawerPullDatasource", new JRTableModelDataSource(report.getDrawerPullDataTableModel()));
-		map.put("creditCardReport", creditCardReport);
-		map.put("creditCardReportDatasource", new JRTableModelDataSource(report.getCreditCardDataTableModel()));
+		map.put("fromDate", shortDateFormatter.format(fromDate)); //$NON-NLS-1$
+		map.put("toDate", shortDateFormatter.format(toDate)); //$NON-NLS-1$
+		map.put("reportTime", fullDateFormatter.format(new Date())); //$NON-NLS-1$
+		map.put("giftCertReturnCount", report.getGiftCertReturnCount()); //$NON-NLS-1$
+		map.put("giftCertReturnAmount", report.getGiftCertReturnAmount()); //$NON-NLS-1$
+		map.put("giftCertChangeCount", report.getGiftCertChangeCount()); //$NON-NLS-1$
+		map.put("giftCertChangeAmount", report.getGiftCertChangeAmount()); //$NON-NLS-1$
+		map.put("tipsCount", report.getTipsCount()); //$NON-NLS-1$
+		map.put("tipsAmount", report.getChargedTips()); //$NON-NLS-1$
+		map.put("tipsPaidAmount", report.getTipsPaid()); //$NON-NLS-1$
+		map.put("drawerPullReport", drawerPullReport); //$NON-NLS-1$
+		map.put("drawerPullDatasource", new JRTableModelDataSource(report.getDrawerPullDataTableModel())); //$NON-NLS-1$
+		map.put("creditCardReport", creditCardReport); //$NON-NLS-1$
+		map.put("creditCardReportDatasource", new JRTableModelDataSource(report.getCreditCardDataTableModel())); //$NON-NLS-1$
 		
-		JasperReport jasperReport = ReportUtil.getReport("sales_summary_balace_detail");
+		JasperReport jasperReport = ReportUtil.getReport("sales_summary_balace_detail"); //$NON-NLS-1$
 		JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map, new JREmptyDataSource());
 		JRViewer viewer = new JRViewer(jasperPrint);
 		reportContainer.removeAll();

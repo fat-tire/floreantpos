@@ -24,11 +24,11 @@ public class PosButton extends JButton {
 	static POSButtonUI ui = new POSButtonUI();
 
 	static {
-		UIManager.put("PosButtonUI", "com.floreantpos.swing.POSButtonUI");
+		UIManager.put("PosButtonUI", "com.floreantpos.swing.POSButtonUI"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	public PosButton() {
-		this("");
+		this(""); //$NON-NLS-1$
 	}
 
 	public PosButton(String text) {
@@ -87,7 +87,7 @@ public class PosButton extends JButton {
 
 	@Override
 	public String getUIClassID() {
-		return "PosButtonUI";
+		return "PosButtonUI"; //$NON-NLS-1$
 	}
 
 	@Override

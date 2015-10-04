@@ -30,8 +30,8 @@ import com.floreantpos.ui.util.UiUtil;
 import com.floreantpos.util.NumberUtil;
 
 public class SalesBalanceReportView extends JPanel {
-	private SimpleDateFormat fullDateFormatter = new SimpleDateFormat("yyyy MMM dd, hh:mm a");
-	private SimpleDateFormat shortDateFormatter = new SimpleDateFormat("yyyy MMM dd");
+	private SimpleDateFormat fullDateFormatter = new SimpleDateFormat("yyyy MMM dd, hh:mm a"); //$NON-NLS-1$
+	private SimpleDateFormat shortDateFormatter = new SimpleDateFormat("yyyy MMM dd"); //$NON-NLS-1$
 	
 	private JXDatePicker fromDatePicker = UiUtil.getCurrentMonthStart();
 	private JXDatePicker toDatePicker = UiUtil.getCurrentMonthEnd();
@@ -43,11 +43,11 @@ public class SalesBalanceReportView extends JPanel {
 		
 		JPanel topPanel = new JPanel(new MigLayout());
 		
-		topPanel.add(new JLabel(com.floreantpos.POSConstants.FROM + ":"), "grow");
-		topPanel.add(fromDatePicker,"wrap");
-		topPanel.add(new JLabel(com.floreantpos.POSConstants.TO + ":"), "grow");
-		topPanel.add(toDatePicker,"wrap");
-		topPanel.add(btnGo, "skip 1, al right");
+		topPanel.add(new JLabel(com.floreantpos.POSConstants.FROM + ":"), "grow"); //$NON-NLS-1$ //$NON-NLS-2$
+		topPanel.add(fromDatePicker,"wrap"); //$NON-NLS-1$
+		topPanel.add(new JLabel(com.floreantpos.POSConstants.TO + ":"), "grow"); //$NON-NLS-1$ //$NON-NLS-2$
+		topPanel.add(toDatePicker,"wrap"); //$NON-NLS-1$
+		topPanel.add(btnGo, "skip 1, al right"); //$NON-NLS-1$
 		add(topPanel, BorderLayout.NORTH);
 		
 		JPanel centerPanel = new JPanel(new BorderLayout());
@@ -89,38 +89,38 @@ public class SalesBalanceReportView extends JPanel {
 		
 		HashMap<String, String> map = new HashMap<String, String>();
 		ReportUtil.populateRestaurantProperties(map);
-		map.put("fromDate", shortDateFormatter.format(fromDate));
-		map.put("toDate", shortDateFormatter.format(toDate));
-		map.put("reportTime", fullDateFormatter.format(new Date()));
+		map.put("fromDate", shortDateFormatter.format(fromDate)); //$NON-NLS-1$
+		map.put("toDate", shortDateFormatter.format(toDate)); //$NON-NLS-1$
+		map.put("reportTime", fullDateFormatter.format(new Date())); //$NON-NLS-1$
 		
-		map.put("grossTaxableSales", NumberUtil.formatNumber(report.getGrossTaxableSalesAmount()));
-		map.put("grossNonTaxableSales", NumberUtil.formatNumber(report.getGrossNonTaxableSalesAmount()));
-		map.put("discounts", NumberUtil.formatNumber(report.getDiscountAmount()));
-		map.put("netSales", NumberUtil.formatNumber(report.getNetSalesAmount()));
-		map.put("salesTaxes", NumberUtil.formatNumber(report.getSalesTaxAmount()));
-		map.put("totalRevenues", NumberUtil.formatNumber(report.getTotalRevenueAmount()));
-		map.put("giftCertSold", NumberUtil.formatNumber(report.getGiftCertSalesAmount()));
-		map.put("payIns", NumberUtil.formatNumber(report.getPayInsAmount()));
-		map.put("chargedTips", NumberUtil.formatNumber(report.getChargedTipsAmount()));
-		map.put("grossReceipts", NumberUtil.formatNumber(report.getGrossReceiptsAmount()));
-		map.put("cashReceipts", NumberUtil.formatNumber(report.getCashReceiptsAmount()));
-		map.put("creditCardReceipts", NumberUtil.formatNumber(report.getCreditCardReceiptsAmount()));
-		map.put("grossTipsPaid", NumberUtil.formatNumber(report.getGrossTipsPaidAmount()));
-		map.put("arReceipts", NumberUtil.formatNumber(report.getArReceiptsAmount()));
-		map.put("giftCertReturns", NumberUtil.formatNumber(report.getGiftCertReturnAmount()));
-		map.put("giftCertChange", NumberUtil.formatNumber(report.getGiftCertChangeAmount()));
-		map.put("cashBack", NumberUtil.formatNumber(report.getCashBackAmount()));
-		map.put("receiptDiff", NumberUtil.formatNumber(report.getReceiptDiffAmount()));
-		map.put("tipsDiscount", NumberUtil.formatNumber(report.getTipsDiscountAmount()));
-		map.put("cashPayout", NumberUtil.formatNumber(report.getCashPayoutAmount()));
-		map.put("cashAccountable", NumberUtil.formatNumber(report.getCashAccountableAmount()));
-		map.put("drawerPulls", NumberUtil.formatNumber(report.getDrawerPullsAmount()));
-		map.put("coCurrent", NumberUtil.formatNumber(report.getCoCurrentAmount()));
-		map.put("coPrevious", NumberUtil.formatNumber(report.getCoPreviousAmount()));
-		map.put("coOverShort", NumberUtil.formatNumber(report.getOverShortAmount()));
-		map.put("days", String.valueOf((int) ((toDate.getTime() - fromDate.getTime()) * (1.15740741 * Math.pow(10, -8))) + 1));
+		map.put("grossTaxableSales", NumberUtil.formatNumber(report.getGrossTaxableSalesAmount())); //$NON-NLS-1$
+		map.put("grossNonTaxableSales", NumberUtil.formatNumber(report.getGrossNonTaxableSalesAmount())); //$NON-NLS-1$
+		map.put("discounts", NumberUtil.formatNumber(report.getDiscountAmount())); //$NON-NLS-1$
+		map.put("netSales", NumberUtil.formatNumber(report.getNetSalesAmount())); //$NON-NLS-1$
+		map.put("salesTaxes", NumberUtil.formatNumber(report.getSalesTaxAmount())); //$NON-NLS-1$
+		map.put("totalRevenues", NumberUtil.formatNumber(report.getTotalRevenueAmount())); //$NON-NLS-1$
+		map.put("giftCertSold", NumberUtil.formatNumber(report.getGiftCertSalesAmount())); //$NON-NLS-1$
+		map.put("payIns", NumberUtil.formatNumber(report.getPayInsAmount())); //$NON-NLS-1$
+		map.put("chargedTips", NumberUtil.formatNumber(report.getChargedTipsAmount())); //$NON-NLS-1$
+		map.put("grossReceipts", NumberUtil.formatNumber(report.getGrossReceiptsAmount())); //$NON-NLS-1$
+		map.put("cashReceipts", NumberUtil.formatNumber(report.getCashReceiptsAmount())); //$NON-NLS-1$
+		map.put("creditCardReceipts", NumberUtil.formatNumber(report.getCreditCardReceiptsAmount())); //$NON-NLS-1$
+		map.put("grossTipsPaid", NumberUtil.formatNumber(report.getGrossTipsPaidAmount())); //$NON-NLS-1$
+		map.put("arReceipts", NumberUtil.formatNumber(report.getArReceiptsAmount())); //$NON-NLS-1$
+		map.put("giftCertReturns", NumberUtil.formatNumber(report.getGiftCertReturnAmount())); //$NON-NLS-1$
+		map.put("giftCertChange", NumberUtil.formatNumber(report.getGiftCertChangeAmount())); //$NON-NLS-1$
+		map.put("cashBack", NumberUtil.formatNumber(report.getCashBackAmount())); //$NON-NLS-1$
+		map.put("receiptDiff", NumberUtil.formatNumber(report.getReceiptDiffAmount())); //$NON-NLS-1$
+		map.put("tipsDiscount", NumberUtil.formatNumber(report.getTipsDiscountAmount())); //$NON-NLS-1$
+		map.put("cashPayout", NumberUtil.formatNumber(report.getCashPayoutAmount())); //$NON-NLS-1$
+		map.put("cashAccountable", NumberUtil.formatNumber(report.getCashAccountableAmount())); //$NON-NLS-1$
+		map.put("drawerPulls", NumberUtil.formatNumber(report.getDrawerPullsAmount())); //$NON-NLS-1$
+		map.put("coCurrent", NumberUtil.formatNumber(report.getCoCurrentAmount())); //$NON-NLS-1$
+		map.put("coPrevious", NumberUtil.formatNumber(report.getCoPreviousAmount())); //$NON-NLS-1$
+		map.put("coOverShort", NumberUtil.formatNumber(report.getOverShortAmount())); //$NON-NLS-1$
+		map.put("days", String.valueOf((int) ((toDate.getTime() - fromDate.getTime()) * (1.15740741 * Math.pow(10, -8))) + 1)); //$NON-NLS-1$
 		
-		JasperReport jasperReport = ReportUtil.getReport("sales_summary_balance_report");
+		JasperReport jasperReport = ReportUtil.getReport("sales_summary_balance_report"); //$NON-NLS-1$
 		JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map, new JREmptyDataSource());
 		JRViewer viewer = new JRViewer(jasperPrint);
 		reportContainer.removeAll();

@@ -9,7 +9,7 @@ import com.floreantpos.IconFactory;
 
 public class IntroPage extends JPanel {
 	private Image image;
-	private Image image2 = IconFactory.getIcon("/images", "open_initiative.png").getImage();
+	private Image image2 = IconFactory.getIcon("/images", "open_initiative.png").getImage(); //$NON-NLS-1$ //$NON-NLS-2$
 	private boolean scaleToSize = true;
 
 	public IntroPage() {

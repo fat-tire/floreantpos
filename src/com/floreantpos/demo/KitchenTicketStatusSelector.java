@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
+import com.floreantpos.Messages;
 import com.floreantpos.model.KitchenTicket.KitchenTicketStatus;
 import com.floreantpos.model.KitchenTicketItem;
 import com.floreantpos.model.dao.KitchenTicketItemDAO;
@@ -26,11 +27,11 @@ public class KitchenTicketStatusSelector extends POSDialog implements ActionList
 	
 	public KitchenTicketStatusSelector(Frame parent) {
 		super(parent, true);
-		setTitle("Kitchen item status selector");
+		setTitle(Messages.getString("KitchenTicketStatusSelector.0")); //$NON-NLS-1$
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		
 		TitlePanel titlePanel = new TitlePanel();
-		titlePanel.setTitle("Select item status");
+		titlePanel.setTitle(Messages.getString("KitchenTicketStatusSelector.1")); //$NON-NLS-1$
 		add(titlePanel, BorderLayout.NORTH);
 		
 		JPanel panel = new JPanel(new GridLayout(1, 0, 10, 10));

@@ -131,7 +131,7 @@ public class HourlyLaborReportView extends TransparentPanel {
         AttendenceHistoryDAO attendenceHistoryDAO = new AttendenceHistoryDAO();
         ArrayList<LaborReportData> rows = new ArrayList<LaborReportData>();
 
-        DecimalFormat formatter = new DecimalFormat("00");
+        DecimalFormat formatter = new DecimalFormat("00"); //$NON-NLS-1$
 
         int grandTotalChecks = 0;
         int grandTotalGuests = 0;
@@ -175,7 +175,7 @@ public class HourlyLaborReportView extends TransparentPanel {
             }
 
             LaborReportData reportData = new LaborReportData();
-            reportData.setPeriod(formatter.format(i) + ":00 - " + formatter.format(i) + ":59");
+            reportData.setPeriod(formatter.format(i) + ":00 - " + formatter.format(i) + ":59"); //$NON-NLS-1$ //$NON-NLS-2$
             reportData.setManHour(manHour);
             reportData.setNoOfChecks(totalChecks);
             reportData.setSales(totalSales);
@@ -248,36 +248,36 @@ public class HourlyLaborReportView extends TransparentPanel {
         }
 
         try {
-            JasperReport hourlyReport = ReportUtil.getReport("hourly_labor_subreport");
-            JasperReport shiftReport = ReportUtil.getReport("hourly_labor_shift_subreport");
+            JasperReport hourlyReport = ReportUtil.getReport("hourly_labor_subreport"); //$NON-NLS-1$
+            JasperReport shiftReport = ReportUtil.getReport("hourly_labor_shift_subreport"); //$NON-NLS-1$
 
-            JasperReport report = ReportUtil.getReport("hourly_labor_report");
+            JasperReport report = ReportUtil.getReport("hourly_labor_report"); //$NON-NLS-1$
 
             HashMap properties = new HashMap();
             ReportUtil.populateRestaurantProperties(properties);
-            properties.put("reportTitle", com.floreantpos.POSConstants.HOURLY_LABOR_REPORT);
-            properties.put("reportTime", ReportService.formatFullDate(new Date()));
-            properties.put("fromDay", ReportService.formatShortDate(fromDate));
-            properties.put("toDay", ReportService.formatShortDate(toDate));
+            properties.put("reportTitle", com.floreantpos.POSConstants.HOURLY_LABOR_REPORT); //$NON-NLS-1$
+            properties.put("reportTime", ReportService.formatFullDate(new Date())); //$NON-NLS-1$
+            properties.put("fromDay", ReportService.formatShortDate(fromDate)); //$NON-NLS-1$
+            properties.put("toDay", ReportService.formatShortDate(toDate)); //$NON-NLS-1$
             properties.put(com.floreantpos.POSConstants.TYPE, com.floreantpos.POSConstants.BY_RANGE_ACTUAL);
-            properties.put("dept", userType == null ? com.floreantpos.POSConstants.ALL : userType);
-            properties.put("incr", "60 Minute");
-            properties.put("cntr", terminal == null ? com.floreantpos.POSConstants.ALL : terminal.getName());
+            properties.put("dept", userType == null ? com.floreantpos.POSConstants.ALL : userType); //$NON-NLS-1$
+            properties.put("incr", "60 Minute"); //$NON-NLS-1$
+            properties.put("cntr", terminal == null ? com.floreantpos.POSConstants.ALL : terminal.getName()); //$NON-NLS-1$
 
-            properties.put("totalChecks", String.valueOf(grandTotalChecks));
-            properties.put("totalGuests", String.valueOf(grandTotalGuests));
-            properties.put("totalSales", NumberUtil.formatNumber(grandTotalSales));
-            properties.put("totalMHr", NumberUtil.formatNumber(grandTotalMHr));
-            properties.put("totalLabor", NumberUtil.formatNumber(grandTotalLabor));
-            properties.put("totalSalesPerMhr", NumberUtil.formatNumber(grandTotalSalesPerMHr));
-            properties.put("totalGuestsPerMhr", NumberUtil.formatNumber(grandTotalCheckPerMHr));
-            properties.put("totalCheckPerMHr", NumberUtil.formatNumber(grandTotalGuestsPerMHr));
-            properties.put("totalLaborCost", NumberUtil.formatNumber(grandTotalLaborCost));
+            properties.put("totalChecks", String.valueOf(grandTotalChecks)); //$NON-NLS-1$
+            properties.put("totalGuests", String.valueOf(grandTotalGuests)); //$NON-NLS-1$
+            properties.put("totalSales", NumberUtil.formatNumber(grandTotalSales)); //$NON-NLS-1$
+            properties.put("totalMHr", NumberUtil.formatNumber(grandTotalMHr)); //$NON-NLS-1$
+            properties.put("totalLabor", NumberUtil.formatNumber(grandTotalLabor)); //$NON-NLS-1$
+            properties.put("totalSalesPerMhr", NumberUtil.formatNumber(grandTotalSalesPerMHr)); //$NON-NLS-1$
+            properties.put("totalGuestsPerMhr", NumberUtil.formatNumber(grandTotalCheckPerMHr)); //$NON-NLS-1$
+            properties.put("totalCheckPerMHr", NumberUtil.formatNumber(grandTotalGuestsPerMHr)); //$NON-NLS-1$
+            properties.put("totalLaborCost", NumberUtil.formatNumber(grandTotalLaborCost)); //$NON-NLS-1$
 
-            properties.put("hourlyReport", hourlyReport);
-            properties.put("hourlyReportDatasource", new JRTableModelDataSource(new HourlyLaborReportModel(rows)));
-            properties.put("shiftReport", shiftReport);
-            properties.put("shiftReportDatasource", new JRTableModelDataSource(new HourlyLaborReportModel(shiftReportRows)));
+            properties.put("hourlyReport", hourlyReport); //$NON-NLS-1$
+            properties.put("hourlyReportDatasource", new JRTableModelDataSource(new HourlyLaborReportModel(rows))); //$NON-NLS-1$
+            properties.put("shiftReport", shiftReport); //$NON-NLS-1$
+            properties.put("shiftReportDatasource", new JRTableModelDataSource(new HourlyLaborReportModel(shiftReportRows))); //$NON-NLS-1$
 
             JasperPrint print = JasperFillManager.fillReport(report, properties, new JREmptyDataSource());
 
@@ -311,10 +311,10 @@ public class HourlyLaborReportView extends TransparentPanel {
         panel1.setLayout(new GridLayoutManager(6, 3, new Insets(0, 0, 0, 0), -1, -1));
         contentPane.add(panel1, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, 1, null, null, null, 0, false));
         final JLabel label1 = new JLabel();
-        label1.setText(com.floreantpos.POSConstants.FROM + ":");
+        label1.setText(com.floreantpos.POSConstants.FROM + ":"); //$NON-NLS-1$
         panel1.add(label1, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JLabel label2 = new JLabel();
-        label2.setText(com.floreantpos.POSConstants.TO + ":");
+        label2.setText(com.floreantpos.POSConstants.TO + ":"); //$NON-NLS-1$
         panel1.add(label2, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JLabel label3 = new JLabel();
         label3.setText(com.floreantpos.POSConstants.TERMINAL_LABEL);
@@ -331,7 +331,7 @@ public class HourlyLaborReportView extends TransparentPanel {
         btnGo.setText(com.floreantpos.POSConstants.GO);
         panel1.add(btnGo, new GridConstraints(4, 1, 1, 1, GridConstraints.ANCHOR_EAST, GridConstraints.FILL_NONE, 1, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(147, 23), null, 0, false));
         final JLabel label4 = new JLabel();
-        label4.setText(com.floreantpos.POSConstants.USER_TYPE + ":");
+        label4.setText(com.floreantpos.POSConstants.USER_TYPE + ":"); //$NON-NLS-1$
         panel1.add(label4, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         cbUserType = new JComboBox();
         panel1.add(cbUserType, new GridConstraints(2, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(147, 22), null, 0, false));

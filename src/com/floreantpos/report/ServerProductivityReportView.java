@@ -21,6 +21,7 @@ import net.sf.jasperreports.view.JRViewer;
 
 import org.jdesktop.swingx.JXDatePicker;
 
+import com.floreantpos.Messages;
 import com.floreantpos.POSConstants;
 import com.floreantpos.model.util.DateUtil;
 import com.floreantpos.report.service.ReportService;
@@ -38,11 +39,11 @@ public class ServerProductivityReportView extends JPanel {
 		
 		JPanel topPanel = new JPanel(new MigLayout());
 		
-		topPanel.add(new JLabel(com.floreantpos.POSConstants.FROM + ":"), "grow");
-		topPanel.add(fromDatePicker,"wrap");
-		topPanel.add(new JLabel(com.floreantpos.POSConstants.TO + ":"), "grow");
-		topPanel.add(toDatePicker,"wrap");
-		topPanel.add(btnGo, "skip 1, al right");
+		topPanel.add(new JLabel(com.floreantpos.POSConstants.FROM + ":"), "grow"); //$NON-NLS-1$ //$NON-NLS-2$
+		topPanel.add(fromDatePicker,"wrap"); //$NON-NLS-1$
+		topPanel.add(new JLabel(com.floreantpos.POSConstants.TO + ":"), "grow"); //$NON-NLS-1$ //$NON-NLS-2$
+		topPanel.add(toDatePicker,"wrap"); //$NON-NLS-1$
+		topPanel.add(btnGo, "skip 1, al right"); //$NON-NLS-1$
 		add(topPanel, BorderLayout.NORTH);
 		
 		JPanel centerPanel = new JPanel(new BorderLayout());
@@ -83,12 +84,12 @@ public class ServerProductivityReportView extends JPanel {
 		ServerProductivityReport report = reportService.getServerProductivityReport(fromDate, toDate);
 		
 		HashMap<String, String> map = new HashMap<String, String>();
-		map.put("reportTitle", "========= SERVER PRODUCTIVITY REPORT ==========");
-		map.put("fromDate", ReportService.formatShortDate(fromDate));
-		map.put("toDate", ReportService.formatShortDate(toDate));
-		map.put("reportTime", ReportService.formatFullDate(new Date()));
+		map.put("reportTitle", "========= SERVER PRODUCTIVITY REPORT =========="); //$NON-NLS-1$
+		map.put("fromDate", ReportService.formatShortDate(fromDate)); //$NON-NLS-1$
+		map.put("toDate", ReportService.formatShortDate(toDate)); //$NON-NLS-1$
+		map.put("reportTime", ReportService.formatFullDate(new Date())); //$NON-NLS-1$
 		
-		JasperReport jasperReport = ReportUtil.getReport("server_productivity_report");
+		JasperReport jasperReport = ReportUtil.getReport(Messages.getString("ServerProductivityReportView.12")); //$NON-NLS-1$
 		JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map, new JRTableModelDataSource(report.getTableModel()));
 		JRViewer viewer = new JRViewer(jasperPrint);
 		reportContainer.removeAll();

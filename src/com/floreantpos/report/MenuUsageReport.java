@@ -145,7 +145,7 @@ public class MenuUsageReport {
 	public static class MenuUsageReportTableModel extends ListTableModel {
 
 		public MenuUsageReportTableModel(List<MenuUsageReportData> datas) {
-			super(new String[] { "category", "count", "grossSale", "discount", "netSale", "avgSale", "profit", "cost", "percentage" }, datas);
+			super(new String[] { "category", "count", "grossSale", "discount", "netSale", "avgSale", "profit", "cost", "percentage" }, datas); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$
 		}
 
 		public Object getValueAt(int rowIndex, int columnIndex) {
@@ -167,13 +167,13 @@ public class MenuUsageReport {
 			case 4:
 				return NumberUtil.formatNumber(data.getNetSales());
 			case 5:
-				return " ";//Application.formatNumber(data.getAvgSales());
+				return " ";//Application.formatNumber(data.getAvgSales()); //$NON-NLS-1$
 			case 6:
 				return NumberUtil.formatNumber(data.getProfit());
 			case 7:
-				return " ";//Application.formatNumber(data.getCostPercentage());
+				return " ";//Application.formatNumber(data.getCostPercentage()); //$NON-NLS-1$
 			case 8:
-				return " ";//Application.formatNumber(data.getPercentage());
+				return " ";//Application.formatNumber(data.getPercentage()); //$NON-NLS-1$
 			}
 
 			return null;

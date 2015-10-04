@@ -43,11 +43,11 @@ public class CreditCardReportView extends JPanel {
 		
 		JPanel topPanel = new JPanel(new MigLayout());
 		
-		topPanel.add(new JLabel(com.floreantpos.POSConstants.FROM + ":"), "grow");
-		topPanel.add(fromDatePicker,"wrap");
-		topPanel.add(new JLabel(com.floreantpos.POSConstants.TO + ":"), "grow");
-		topPanel.add(toDatePicker,"wrap");
-		topPanel.add(btnGo, "skip 1, al right");
+		topPanel.add(new JLabel(com.floreantpos.POSConstants.FROM + ":"), "grow"); //$NON-NLS-1$ //$NON-NLS-2$
+		topPanel.add(fromDatePicker,"wrap"); //$NON-NLS-1$
+		topPanel.add(new JLabel(com.floreantpos.POSConstants.TO + ":"), "grow"); //$NON-NLS-1$ //$NON-NLS-2$
+		topPanel.add(toDatePicker,"wrap"); //$NON-NLS-1$
+		topPanel.add(btnGo, "skip 1, al right"); //$NON-NLS-1$
 		add(topPanel, BorderLayout.NORTH);
 		
 		JPanel centerPanel = new JPanel(new BorderLayout());
@@ -99,17 +99,17 @@ public class CreditCardReportView extends JPanel {
 		
 		HashMap<String, String> map = new HashMap<String, String>();
 		ReportUtil.populateRestaurantProperties(map);
-		map.put("reportTitle", "========= CREDIT CARD REPORT ==========");
-		map.put("fromDate", ReportService.formatShortDate(fromDate));
-		map.put("toDate", ReportService.formatShortDate(toDate));
-		map.put("reportTime", ReportService.formatFullDate(currentTime));
+		map.put("reportTitle", "========= CREDIT CARD REPORT =========="); //$NON-NLS-1$
+		map.put("fromDate", ReportService.formatShortDate(fromDate)); //$NON-NLS-1$
+		map.put("toDate", ReportService.formatShortDate(toDate)); //$NON-NLS-1$
+		map.put("reportTime", ReportService.formatFullDate(currentTime)); //$NON-NLS-1$
 		
-		map.put("saleCount", String.valueOf(saleCount));
-		map.put("totalSales", NumberUtil.formatNumber(totalSales - totalTips));
-		map.put("totalTips", NumberUtil.formatNumber(totalTips));
-		map.put("total", NumberUtil.formatNumber(totalSales));
+		map.put("saleCount", String.valueOf(saleCount)); //$NON-NLS-1$
+		map.put("totalSales", NumberUtil.formatNumber(totalSales - totalTips)); //$NON-NLS-1$
+		map.put("totalTips", NumberUtil.formatNumber(totalTips)); //$NON-NLS-1$
+		map.put("total", NumberUtil.formatNumber(totalSales)); //$NON-NLS-1$
 		
-		JasperReport jasperReport = ReportUtil.getReport("credit-card-report");
+		JasperReport jasperReport = ReportUtil.getReport("credit-card-report"); //$NON-NLS-1$
 		JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map, new JRTableModelDataSource(new CardReportModel(transactions)));
 		JRViewer viewer = new JRViewer(jasperPrint);
 		reportContainer.removeAll();
