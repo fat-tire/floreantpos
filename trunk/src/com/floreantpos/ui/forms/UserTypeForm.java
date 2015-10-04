@@ -6,6 +6,7 @@
 
 package com.floreantpos.ui.forms;
 
+import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
@@ -15,7 +16,7 @@ import com.floreantpos.model.UserType;
 import com.floreantpos.model.dao.UserTypeDAO;
 import com.floreantpos.model.util.IllegalModelStateException;
 import com.floreantpos.swing.CheckBoxList;
-import com.floreantpos.swing.CheckBoxListModel;
+import com.floreantpos.swing.CheckBoxList.CheckBoxListModel;
 import com.floreantpos.swing.CheckBoxList.Entry;
 import com.floreantpos.ui.BeanEditor;
 import com.floreantpos.ui.dialog.POSMessageDialog;
@@ -52,7 +53,7 @@ public class UserTypeForm extends BeanEditor {
         tfTypeName = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        listPermissions = new CheckBoxList();
+        listPermissions = new CheckBoxList<UserPermission>();
 
         jLabel1.setText(com.floreantpos.POSConstants.TYPE_NAME + ":");
 
@@ -95,7 +96,7 @@ public class UserTypeForm extends BeanEditor {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private CheckBoxList listPermissions;
+    private CheckBoxList<UserPermission> listPermissions;
     private javax.swing.JTextField tfTypeName;
     // End of variables declaration//GEN-END:variables
 
@@ -135,9 +136,9 @@ public class UserTypeForm extends BeanEditor {
 		userType.setName(name);
 		userType.clearPermissions();
 		
-		Object[] checkedValues = (Object[]) listPermissions.getCheckedValues();
-		for (int i = 0; i < checkedValues.length; i++) {
-			userType.addTopermissions((UserPermission) checkedValues[i]);
+		List<UserPermission> checkedValues = listPermissions.getCheckedValues();
+		for (int i = 0; i < checkedValues.size(); i++) {
+			userType.addTopermissions(checkedValues.get(i));
 		}
 		
 		setBean(userType);
@@ -162,7 +163,7 @@ public class UserTypeForm extends BeanEditor {
 		CheckBoxListModel model = (CheckBoxListModel) listPermissions.getModel();
 		for (UserPermission permission : permissions) {
 			for (int i = 0; i < model.getItems().size(); i++) {
-				Entry entry = (Entry) model.getItems().elementAt(i);
+				Entry entry = (Entry) model.getItems().get(i);
 				if(entry.getValue().equals(permission)) {
 					entry.setChecked(true);
 				}
