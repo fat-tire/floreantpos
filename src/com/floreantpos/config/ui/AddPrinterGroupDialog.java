@@ -71,8 +71,8 @@ public class AddPrinterGroupDialog extends POSDialog {
 					return;
 				}
 				
-				Object[] checkedValues = printerList.getCheckedValues();
-				if(checkedValues == null || checkedValues.length == 0) {
+				List checkedValues = printerList.getCheckedValues();
+				if(checkedValues == null || checkedValues.size() == 0) {
 					POSMessageDialog.showError(Application.getPosWindow(), Messages.getString("AddPrinterGroupDialog.11")); //$NON-NLS-1$
 					return;
 				}
@@ -97,7 +97,7 @@ public class AddPrinterGroupDialog extends POSDialog {
 		PrinterGroup group = new PrinterGroup();
 		group.setName(tfName.getText());
 		
-		Object[] checkedValues = printerList.getCheckedValues();
+		List checkedValues = printerList.getCheckedValues();
 		if(checkedValues != null) {
 			List<String> names = new ArrayList<String>();
 			

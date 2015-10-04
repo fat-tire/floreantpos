@@ -10,8 +10,6 @@ import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.Options;
 
-import com.floreantpos.Messages;
-
 public class Main {
 
 	private static final String DEVELOPMENT_MODE = "developmentMode"; //$NON-NLS-1$
