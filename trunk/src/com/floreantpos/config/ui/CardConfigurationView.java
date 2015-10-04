@@ -117,7 +117,7 @@ public class CardConfigurationView extends ConfigurationView {
 		add(cbSandboxMode, "cell 1 7"); //$NON-NLS-1$
 		
 		JSeparator separator = new JSeparator(JSeparator.HORIZONTAL);
-		add(separator, Messages.getString("CardConfigurationView.27")); //$NON-NLS-1$
+		add(separator, "newline, growx, span 10, wrap"); //$NON-NLS-1$
 		
 		add(new JLabel(Messages.getString("CardConfigurationView.28"))); //$NON-NLS-1$
 		add(tfBarTabLimit);
