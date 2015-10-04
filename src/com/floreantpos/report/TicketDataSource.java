@@ -11,11 +11,11 @@ import com.floreantpos.util.NumberUtil;
 public class TicketDataSource extends AbstractReportDataSource {
 	
 	public TicketDataSource() {
-		super(new String[] { "itemName", "itemQty", "itemSubtotal" });
+		super(new String[] { "itemName", "itemQty", "itemSubtotal" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	}
 
 	public TicketDataSource(Ticket ticket) {
-		super(new String[] { "itemName", "itemQty", "itemSubtotal" });
+		super(new String[] { "itemName", "itemQty", "itemSubtotal" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 		setTicket(ticket);
 	}

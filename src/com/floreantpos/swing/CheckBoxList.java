@@ -220,7 +220,7 @@ public class CheckBoxList extends JTable {
 		Font plainFont, boldFont;
 
 		LabelRenderer() {
-			plainFont = UIManager.getFont("Tree.font");
+			plainFont = UIManager.getFont("Tree.font"); //$NON-NLS-1$
 			boldFont = plainFont.deriveFont(Font.BOLD);
 		}
 

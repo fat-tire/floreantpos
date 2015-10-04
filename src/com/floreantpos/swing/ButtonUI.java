@@ -183,7 +183,7 @@ public class ButtonUI extends PlasticButtonUI {
      * @see #forceFlat(JComponent)
 	 */	
 	static boolean is3D(String keyPrefix) {
-		Object value = UIManager.get(keyPrefix + "is3DEnabled");
+		Object value = UIManager.get(keyPrefix + "is3DEnabled"); //$NON-NLS-1$
 		return Boolean.TRUE.equals(value);
 	}
 
@@ -255,7 +255,7 @@ public class ButtonUI extends PlasticButtonUI {
 
 
 	static void add3DEffekt(Graphics g, Rectangle r) {
-		Color brightenStop = UIManager.getColor("Plastic.brightenStop");
+		Color brightenStop = UIManager.getColor("Plastic.brightenStop"); //$NON-NLS-1$
 		if (null == brightenStop)
 			brightenStop = PlasticTheme.BRIGHTEN_STOP;
 
@@ -274,7 +274,7 @@ public class ButtonUI extends PlasticButtonUI {
 
 
 	static void addLight3DEffekt(Graphics g, Rectangle r, boolean isHorizontal) {
-		Color ltBrightenStop = UIManager.getColor("Plastic.ltBrightenStop");
+		Color ltBrightenStop = UIManager.getColor("Plastic.ltBrightenStop"); //$NON-NLS-1$
 		if (null == ltBrightenStop)
 			ltBrightenStop = PlasticTheme.LT_BRIGHTEN_STOP;
 
@@ -286,7 +286,7 @@ public class ButtonUI extends PlasticButtonUI {
 	 * FillerUI.
 	 */
 	public static void addLight3DEffekt(Graphics g, Rectangle r) {
-		Color ltBrightenStop = UIManager.getColor("Plastic.ltBrightenStop");
+		Color ltBrightenStop = UIManager.getColor("Plastic.ltBrightenStop"); //$NON-NLS-1$
 		if (null == ltBrightenStop)
 			ltBrightenStop = PlasticTheme.LT_BRIGHTEN_STOP;
 

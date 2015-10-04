@@ -12,7 +12,7 @@ public class POSToggleButton extends JToggleButton {
 	//static Insets margin = new Insets(0, 0, 0, 0);
 
 	static {
-		UIManager.put("POSToggleButtonUI", "com.floreantpos.swing.POSToggleButtonUI");
+		UIManager.put("POSToggleButtonUI", "com.floreantpos.swing.POSToggleButtonUI"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	public POSToggleButton() {
@@ -29,7 +29,7 @@ public class POSToggleButton extends JToggleButton {
 
 	@Override
 	public String getUIClassID() {
-		return "POSToggleButtonUI";
+		return "POSToggleButtonUI"; //$NON-NLS-1$
 	}
 
 	@Override

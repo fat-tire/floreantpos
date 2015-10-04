@@ -11,6 +11,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 
+import com.floreantpos.Messages;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.User;
 import com.floreantpos.model.dao.UserDAO;
@@ -23,27 +24,27 @@ public class UserListDialog extends POSDialog {
 	
 	public UserListDialog() {
 		super(Application.getPosWindow(), true);
-		setTitle("SELECT USER");
+		setTitle(Messages.getString("UserListDialog.0")); //$NON-NLS-1$
 		
 		JPanel contentPane = (JPanel) getContentPane();
 		contentPane.setLayout(new BorderLayout(5, 5));
 		contentPane.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 		
 		tableModel = new BeanTableModel<User>(User.class);
-		tableModel.addColumn("Name", "fullName");
+		tableModel.addColumn("Name", "fullName"); //$NON-NLS-1$ //$NON-NLS-2$
 		
 		userListTable = new JTable(tableModel);
 		userListTable.setRowHeight(60);
 		userListTable.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		contentPane.add(new JScrollPane(userListTable));
 		
-		PosButton btnSelct = new PosButton("SELECT");
+		PosButton btnSelct = new PosButton(Messages.getString("UserListDialog.3")); //$NON-NLS-1$
 		btnSelct.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				int selectedRow = userListTable.getSelectedRow();
 				if(selectedRow == -1) {
-					POSMessageDialog.showError(Application.getPosWindow(), "Please select user");
+					POSMessageDialog.showError(Application.getPosWindow(), Messages.getString("UserListDialog.4")); //$NON-NLS-1$
 					return;
 				}
 				
@@ -52,7 +53,7 @@ public class UserListDialog extends POSDialog {
 			}
 		});
 		
-		PosButton btnCancel = new PosButton("CANCEL");
+		PosButton btnCancel = new PosButton(Messages.getString("UserListDialog.5")); //$NON-NLS-1$
 		btnCancel.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {

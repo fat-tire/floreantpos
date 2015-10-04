@@ -8,6 +8,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
+import com.floreantpos.Messages;
+
 import net.miginfocom.swing.MigLayout;
 
 public class TimeSelector extends JPanel {
@@ -17,27 +19,27 @@ public class TimeSelector extends JPanel {
 	private IntegerTextField tfMin;
 
 	public TimeSelector() {
-		setLayout(new MigLayout("", "[][grow][][grow][][]", "[]"));
+		setLayout(new MigLayout("", "[][grow][][grow][][]", "[]")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
-		JLabel lblHour = new JLabel("Hour:");
-		add(lblHour, "cell 0 0,alignx trailing");
+		JLabel lblHour = new JLabel(Messages.getString("TimeSelector.0")); //$NON-NLS-1$
+		add(lblHour, "cell 0 0,alignx trailing"); //$NON-NLS-1$
 		
 		tfHour = new IntegerTextField();
 		tfHour.setColumns(2);
-		add(tfHour, "cell 1 0,growy");
+		add(tfHour, "cell 1 0,growy"); //$NON-NLS-1$
 
-		JLabel lblMin = new JLabel("Min:");
-		add(lblMin, "cell 2 0,alignx trailing");
+		JLabel lblMin = new JLabel(Messages.getString("TimeSelector.1")); //$NON-NLS-1$
+		add(lblMin, "cell 2 0,alignx trailing"); //$NON-NLS-1$
 		
 		tfMin = new IntegerTextField();
 		tfMin.setColumns(2);
-		add(tfMin, "cell 3 0,growy");
+		add(tfMin, "cell 3 0,growy"); //$NON-NLS-1$
 
-		rbAM = new JRadioButton("AM");
-		add(rbAM, "cell 4 0");
+		rbAM = new JRadioButton(Messages.getString("TimeSelector.9")); //$NON-NLS-1$
+		add(rbAM, "cell 4 0"); //$NON-NLS-1$
 
-		rbPM = new JRadioButton("PM");
-		add(rbPM, "cell 5 0");
+		rbPM = new JRadioButton(Messages.getString("TimeSelector.11")); //$NON-NLS-1$
+		add(rbPM, "cell 5 0"); //$NON-NLS-1$
 		
 		ButtonGroup buttonGroup = new ButtonGroup();
 		buttonGroup.add(rbAM);

@@ -12,6 +12,7 @@ import javax.swing.JPanel;
 import javax.swing.event.EventListenerList;
 import javax.swing.text.JTextComponent;
 
+import com.floreantpos.Messages;
 import com.floreantpos.swing.event.KeypadEvent;
 import com.floreantpos.swing.event.KeypadEventListener;
 
@@ -22,7 +23,7 @@ import com.floreantpos.swing.event.KeypadEventListener;
 public class NumericKeypad extends javax.swing.JComponent {
 
 	private EventListenerList eventListeners = new EventListenerList();
-	private String text = "";
+	private String text = ""; //$NON-NLS-1$
 	private KeypadEvent keypadEvent = null;
 	private boolean isProtected = false;
 
@@ -82,60 +83,60 @@ public class NumericKeypad extends javax.swing.JComponent {
 		keypadPanel.setLayout(new java.awt.GridLayout(4, 3, 5, 5));
 
 		posButton7.setAction(goAction);
-		posButton7.setIcon(com.floreantpos.IconFactory.getIcon("7.png"));
-		posButton7.setActionCommand("7");
+		posButton7.setIcon(com.floreantpos.IconFactory.getIcon("7.png")); //$NON-NLS-1$
+		posButton7.setActionCommand("7"); //$NON-NLS-1$
 		keypadPanel.add(posButton7);
 
 		posButton8.setAction(goAction);
-		posButton8.setIcon(com.floreantpos.IconFactory.getIcon("8.png"));
-		posButton8.setActionCommand("8");
+		posButton8.setIcon(com.floreantpos.IconFactory.getIcon("8.png")); //$NON-NLS-1$
+		posButton8.setActionCommand("8"); //$NON-NLS-1$
 		keypadPanel.add(posButton8);
 
 		posButton9.setAction(goAction);
-		posButton9.setIcon(com.floreantpos.IconFactory.getIcon("9.png"));
-		posButton9.setActionCommand("9");
+		posButton9.setIcon(com.floreantpos.IconFactory.getIcon("9.png")); //$NON-NLS-1$
+		posButton9.setActionCommand("9"); //$NON-NLS-1$
 		keypadPanel.add(posButton9);
 
 		posButton4.setAction(goAction);
-		posButton4.setIcon(com.floreantpos.IconFactory.getIcon("4.png"));
-		posButton4.setActionCommand("4");
+		posButton4.setIcon(com.floreantpos.IconFactory.getIcon("4.png")); //$NON-NLS-1$
+		posButton4.setActionCommand("4"); //$NON-NLS-1$
 		keypadPanel.add(posButton4);
 
 		posButton5.setAction(goAction);
-		posButton5.setIcon(com.floreantpos.IconFactory.getIcon("5.png"));
-		posButton5.setActionCommand("5");
+		posButton5.setIcon(com.floreantpos.IconFactory.getIcon("5.png")); //$NON-NLS-1$
+		posButton5.setActionCommand("5"); //$NON-NLS-1$
 		keypadPanel.add(posButton5);
 
 		posButton6.setAction(goAction);
-		posButton6.setIcon(com.floreantpos.IconFactory.getIcon("6.png"));
-		posButton6.setActionCommand("6");
+		posButton6.setIcon(com.floreantpos.IconFactory.getIcon("6.png")); //$NON-NLS-1$
+		posButton6.setActionCommand("6"); //$NON-NLS-1$
 		keypadPanel.add(posButton6);
 
 		posButton1.setAction(goAction);
-		posButton1.setIcon(com.floreantpos.IconFactory.getIcon("1.png"));
-		posButton1.setActionCommand("1");
+		posButton1.setIcon(com.floreantpos.IconFactory.getIcon("1.png")); //$NON-NLS-1$
+		posButton1.setActionCommand("1"); //$NON-NLS-1$
 		keypadPanel.add(posButton1);
 
 		posButton2.setAction(goAction);
-		posButton2.setIcon(com.floreantpos.IconFactory.getIcon("2.png"));
-		posButton2.setActionCommand("2");
+		posButton2.setIcon(com.floreantpos.IconFactory.getIcon("2.png")); //$NON-NLS-1$
+		posButton2.setActionCommand("2"); //$NON-NLS-1$
 		keypadPanel.add(posButton2);
 
 		posButton3.setAction(goAction);
-		posButton3.setIcon(com.floreantpos.IconFactory.getIcon("3.png"));
-		posButton3.setActionCommand("3");
+		posButton3.setIcon(com.floreantpos.IconFactory.getIcon("3.png")); //$NON-NLS-1$
+		posButton3.setActionCommand("3"); //$NON-NLS-1$
 		keypadPanel.add(posButton3);
 
 		btnDot = new PosButton();
 		btnDot.setFocusable(false);
 		btnDot.setAction(goAction);
-		btnDot.setActionCommand(".");
-		btnDot.setIcon(com.floreantpos.IconFactory.getIcon("dot.png"));
+		btnDot.setActionCommand("."); //$NON-NLS-1$
+		btnDot.setIcon(com.floreantpos.IconFactory.getIcon("dot.png")); //$NON-NLS-1$
 		keypadPanel.add(btnDot);
 
 		posButton0.setAction(goAction);
-		posButton0.setIcon(com.floreantpos.IconFactory.getIcon("0.png"));
-		posButton0.setActionCommand("0");
+		posButton0.setIcon(com.floreantpos.IconFactory.getIcon("0.png")); //$NON-NLS-1$
+		posButton0.setActionCommand("0"); //$NON-NLS-1$
 		keypadPanel.add(posButton0);
 		setLayout(new BorderLayout(0, 0));
 		posButton10 = new com.floreantpos.swing.PosButton();
@@ -143,8 +144,8 @@ public class NumericKeypad extends javax.swing.JComponent {
 		keypadPanel.add(posButton10);
 
 		posButton10.setAction(goAction);
-		posButton10.setIcon(com.floreantpos.IconFactory.getIcon("clear.png"));
-		posButton10.setText("CLEAR");
+		posButton10.setIcon(com.floreantpos.IconFactory.getIcon("clear.png")); //$NON-NLS-1$
+		posButton10.setText(Messages.getString("NumericKeypad.0")); //$NON-NLS-1$
 		add(keypadPanel, BorderLayout.CENTER);
 	}// </editor-fold>
 
@@ -176,7 +177,7 @@ public class NumericKeypad extends javax.swing.JComponent {
 			String command = e.getActionCommand();
 
 			if (com.floreantpos.POSConstants.CLEAR.equals(command)) {
-				focusedTextComponent.setText("");
+				focusedTextComponent.setText(""); //$NON-NLS-1$
 			}
 			else {
 				focusedTextComponent.setText(focusedTextComponent.getText() + command);

@@ -117,12 +117,12 @@ public class PayrollReportView extends TransparentPanel {
         
 
         try {
-            JasperReport report = ReportUtil.getReport("PayrollReport");
+            JasperReport report = ReportUtil.getReport("PayrollReport"); //$NON-NLS-1$
 
             HashMap properties = new HashMap();
-            properties.put("fromDate", fromDate);
-            properties.put("toDate", toDate);
-            properties.put("reportDate", new Date());
+            properties.put("fromDate", fromDate); //$NON-NLS-1$
+            properties.put("toDate", toDate); //$NON-NLS-1$
+            properties.put("reportDate", new Date()); //$NON-NLS-1$
             
 
             PayrollReportModel reportModel = new PayrollReportModel();
@@ -160,10 +160,10 @@ public class PayrollReportView extends TransparentPanel {
         panel1.setLayout(new GridLayoutManager(6, 3, new Insets(0, 0, 0, 0), -1, -1));
         contentPane.add(panel1, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, 1, null, null, null, 0, false));
         final JLabel label1 = new JLabel();
-        label1.setText(com.floreantpos.POSConstants.FROM + ":");
+        label1.setText(com.floreantpos.POSConstants.FROM + ":"); //$NON-NLS-1$
         panel1.add(label1, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JLabel label2 = new JLabel();
-        label2.setText(com.floreantpos.POSConstants.TO + ":");
+        label2.setText(com.floreantpos.POSConstants.TO + ":"); //$NON-NLS-1$
         panel1.add(label2, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         //final JLabel label3 = new JLabel();
         //label3.setText(com.floreantpos.POSConstants.TERMINAL);

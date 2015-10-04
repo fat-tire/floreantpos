@@ -14,7 +14,7 @@ public class KitchenTicketListPanel extends JPanel {
 	private Set<KitchenTicket> existingTickets = new HashSet<KitchenTicket>();
 	
 	public KitchenTicketListPanel() {
-		super(new MigLayout("filly"));
+		super(new MigLayout("filly")); //$NON-NLS-1$
 	}
 
 	public boolean addTicket(KitchenTicket ticket) {
@@ -23,7 +23,7 @@ public class KitchenTicketListPanel extends JPanel {
 		}
 		
 		existingTickets.add(ticket);
-		super.add(new KitchenTicketView(ticket), "growy, width pref!");
+		super.add(new KitchenTicketView(ticket), "growy, width pref!"); //$NON-NLS-1$
 		
 		return true;
 	}

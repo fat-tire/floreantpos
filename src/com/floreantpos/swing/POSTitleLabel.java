@@ -7,7 +7,7 @@ import javax.swing.JLabel;
 import javax.swing.UIManager;
 
 public class POSTitleLabel extends JLabel {
-	private static Font font = UIManager.getFont("Label.font").deriveFont(Font.BOLD, 12);
+	private static Font font = UIManager.getFont("Label.font").deriveFont(Font.BOLD, 12); //$NON-NLS-1$
 	private static Color forground = Color.black;
 	
 	

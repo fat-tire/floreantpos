@@ -40,8 +40,8 @@ import com.floreantpos.report.ServerProductivityReport;
 import com.floreantpos.report.ServerProductivityReport.ServerProductivityReportData;
 
 public class ReportService {
-	private static SimpleDateFormat fullDateFormatter = new SimpleDateFormat("MMM dd yyyy, hh:mm a");
-	private static SimpleDateFormat shortDateFormatter = new SimpleDateFormat("MMM dd yyyy ");
+	private static SimpleDateFormat fullDateFormatter = new SimpleDateFormat("MMM dd yyyy, hh:mm a"); //$NON-NLS-1$
+	private static SimpleDateFormat shortDateFormatter = new SimpleDateFormat("MMM dd yyyy "); //$NON-NLS-1$
 	
 	public static String formatFullDate(Date date) {
 		return fullDateFormatter.format(date);
@@ -67,17 +67,17 @@ public class ReportService {
 			categories.add(miscCategory);
 
 			for (MenuCategory category : categories) {
-				criteria = session.createCriteria(TicketItem.class, "item");
-				criteria.createCriteria("ticket", "t");
+				criteria = session.createCriteria(TicketItem.class, "item"); //$NON-NLS-1$
+				criteria.createCriteria("ticket", "t"); //$NON-NLS-1$ //$NON-NLS-2$
 				ProjectionList projectionList = Projections.projectionList();
 				projectionList.add(Projections.sum(TicketItem.PROP_ITEM_COUNT));
 				projectionList.add(Projections.sum(TicketItem.PROP_SUBTOTAL_AMOUNT));
 				projectionList.add(Projections.sum(TicketItem.PROP_DISCOUNT_AMOUNT));
 				criteria.setProjection(projectionList);
-				criteria.add(Restrictions.eq("item." + TicketItem.PROP_CATEGORY_NAME, category.getName()));
-				criteria.add(Restrictions.ge("t." + Ticket.PROP_CREATE_DATE, fromDate));
-				criteria.add(Restrictions.le("t." + Ticket.PROP_CREATE_DATE, toDate));
-				criteria.add(Restrictions.eq("t." + Ticket.PROP_PAID, Boolean.TRUE));
+				criteria.add(Restrictions.eq("item." + TicketItem.PROP_CATEGORY_NAME, category.getName())); //$NON-NLS-1$
+				criteria.add(Restrictions.ge("t." + Ticket.PROP_CREATE_DATE, fromDate)); //$NON-NLS-1$
+				criteria.add(Restrictions.le("t." + Ticket.PROP_CREATE_DATE, toDate)); //$NON-NLS-1$
+				criteria.add(Restrictions.eq("t." + Ticket.PROP_PAID, Boolean.TRUE)); //$NON-NLS-1$
 
 				List datas = criteria.list();
 				if (datas.size() > 0) {
@@ -129,7 +129,7 @@ public class ReportService {
 			
 			for (User server : servers) {
 				ServerProductivityReportData data = new ServerProductivityReportData();
-				data.setServerName(server.getUserId() + "/" + server.toString());
+				data.setServerName(server.getUserId() + "/" + server.toString()); //$NON-NLS-1$
 				criteria = session.createCriteria(Ticket.class);
 				criteria.add(Restrictions.eq(Ticket.PROP_OWNER, server));
 				criteria.add(Restrictions.eq(Ticket.PROP_PAID, Boolean.TRUE));
@@ -166,23 +166,23 @@ public class ReportService {
 				
 				for (MenuCategory category : categories) {
 					data = new ServerProductivityReportData();
-					data.setServerName(server.getUserId() + "/" + server.toString());
+					data.setServerName(server.getUserId() + "/" + server.toString()); //$NON-NLS-1$
 					
-					criteria = session.createCriteria(TicketItem.class, "item");
-					criteria.createCriteria(TicketItem.PROP_TICKET, "t");
+					criteria = session.createCriteria(TicketItem.class, "item"); //$NON-NLS-1$
+					criteria.createCriteria(TicketItem.PROP_TICKET, "t"); //$NON-NLS-1$
 					
 					projectionList = Projections.projectionList();
 					criteria.setProjection(projectionList);
 					projectionList.add(Projections.sum(TicketItem.PROP_ITEM_COUNT));
 					projectionList.add(Projections.sum(TicketItem.PROP_SUBTOTAL_AMOUNT));
-					projectionList.add(Projections.sum("t." + Ticket.PROP_DISCOUNT_AMOUNT));
+					projectionList.add(Projections.sum("t." + Ticket.PROP_DISCOUNT_AMOUNT)); //$NON-NLS-1$
 					projectionList.add(Projections.rowCount());
 					
-					criteria.add(Restrictions.eq("item." + TicketItem.PROP_CATEGORY_NAME, category.getName()));
-					criteria.add(Restrictions.ge("t." + Ticket.PROP_CREATE_DATE, fromDate));
-					criteria.add(Restrictions.le("t." + Ticket.PROP_CREATE_DATE, toDate));
-					criteria.add(Restrictions.eq("t." + Ticket.PROP_OWNER, server));
-					criteria.add(Restrictions.eq("t." + Ticket.PROP_PAID, Boolean.TRUE));
+					criteria.add(Restrictions.eq("item." + TicketItem.PROP_CATEGORY_NAME, category.getName())); //$NON-NLS-1$
+					criteria.add(Restrictions.ge("t." + Ticket.PROP_CREATE_DATE, fromDate)); //$NON-NLS-1$
+					criteria.add(Restrictions.le("t." + Ticket.PROP_CREATE_DATE, toDate)); //$NON-NLS-1$
+					criteria.add(Restrictions.eq("t." + Ticket.PROP_OWNER, server)); //$NON-NLS-1$
+					criteria.add(Restrictions.eq("t." + Ticket.PROP_PAID, Boolean.TRUE)); //$NON-NLS-1$
 
 					List datas = criteria.list();
 					if (datas.size() > 0) {
@@ -239,7 +239,7 @@ public class ReportService {
 				JournalReportData data = new JournalReportData();
 				data.setRefId(history.getId());
 				data.setAction(history.getActionName());
-				data.setUserInfo(history.getPerformer().getUserId() + "/" + history.getPerformer());
+				data.setUserInfo(history.getPerformer().getUserId() + "/" + history.getPerformer()); //$NON-NLS-1$
 				data.setTime(history.getActionTime());
 				data.setComments(history.getDescription());
 				report.addReportData(data);
@@ -354,13 +354,13 @@ public class ReportService {
 
 	private double calculateTipsPaid(Session session, Date fromDate, Date toDate) {
 		Criteria criteria = session.createCriteria(Ticket.class);
-		criteria.createAlias(Ticket.PROP_GRATUITY, "gratuity");
+		criteria.createAlias(Ticket.PROP_GRATUITY, "gratuity"); //$NON-NLS-1$
 		criteria.add(Restrictions.ge(Ticket.PROP_CREATE_DATE, fromDate));
 		criteria.add(Restrictions.le(Ticket.PROP_CREATE_DATE, toDate));
 		
-		criteria.add(Restrictions.eq("gratuity." + Gratuity.PROP_PAID, Boolean.TRUE));
+		criteria.add(Restrictions.eq("gratuity." + Gratuity.PROP_PAID, Boolean.TRUE)); //$NON-NLS-1$
 		
-		criteria.setProjection(Projections.sum("gratuity." + Gratuity.PROP_AMOUNT));
+		criteria.setProjection(Projections.sum("gratuity." + Gratuity.PROP_AMOUNT)); //$NON-NLS-1$
 		
 		return getDoubleAmount(criteria.uniqueResult());
 	}
@@ -416,7 +416,7 @@ public class ReportService {
 	private double calculateTips(Session session, Date fromDate, Date toDate) {
 		//tips
 		Criteria criteria = session.createCriteria(Ticket.class);
-		criteria.createAlias(Ticket.PROP_GRATUITY, "g");
+		criteria.createAlias(Ticket.PROP_GRATUITY, "g"); //$NON-NLS-1$
 		criteria.add(Restrictions.ge(Ticket.PROP_CREATE_DATE, fromDate));
 		criteria.add(Restrictions.le(Ticket.PROP_CREATE_DATE, toDate));
 		
@@ -425,7 +425,7 @@ public class ReportService {
 		//criteria.add(Restrictions.eq(Ticket.PROP_VOIDED, Boolean.FALSE));
 		//criteria.add(Restrictions.eq(Ticket.PROP_REFUNDED, Boolean.FALSE));
 		
-		criteria.setProjection(Projections.sum("g." + Gratuity.PROP_AMOUNT));
+		criteria.setProjection(Projections.sum("g." + Gratuity.PROP_AMOUNT)); //$NON-NLS-1$
 		
 		return getDoubleAmount(criteria.uniqueResult());
 	}
@@ -608,13 +608,13 @@ public class ReportService {
 			}
 			
 			criteria = session.createCriteria(Ticket.class);
-			criteria.createAlias(Ticket.PROP_GRATUITY, "g");
+			criteria.createAlias(Ticket.PROP_GRATUITY, "g"); //$NON-NLS-1$
 			criteria.add(Restrictions.ge(Ticket.PROP_CREATE_DATE, fromDate));
 			criteria.add(Restrictions.le(Ticket.PROP_CREATE_DATE, toDate));
-			criteria.add(Restrictions.gt("g." + Gratuity.PROP_AMOUNT, Double.valueOf(0)));
+			criteria.add(Restrictions.gt("g." + Gratuity.PROP_AMOUNT, Double.valueOf(0))); //$NON-NLS-1$
 			projectionList = Projections.projectionList();
 			projectionList.add(Projections.rowCount());
-			projectionList.add(Projections.sum("g." + Gratuity.PROP_AMOUNT));
+			projectionList.add(Projections.sum("g." + Gratuity.PROP_AMOUNT)); //$NON-NLS-1$
 			criteria.setProjection(projectionList);
 			object = (Object[]) criteria.uniqueResult();
 			if(object != null && object.length > 0 && object[0] instanceof Number) {
@@ -625,13 +625,13 @@ public class ReportService {
 			}
 			
 			criteria = session.createCriteria(Ticket.class);
-			criteria.createAlias(Ticket.PROP_GRATUITY, "g");
+			criteria.createAlias(Ticket.PROP_GRATUITY, "g"); //$NON-NLS-1$
 			criteria.add(Restrictions.ge(Ticket.PROP_CREATE_DATE, fromDate));
 			criteria.add(Restrictions.le(Ticket.PROP_CREATE_DATE, toDate));
-			criteria.add(Restrictions.gt("g." + Gratuity.PROP_AMOUNT, Double.valueOf(0)));
-			criteria.add(Restrictions.gt("g." + Gratuity.PROP_PAID, Boolean.TRUE));
+			criteria.add(Restrictions.gt("g." + Gratuity.PROP_AMOUNT, Double.valueOf(0))); //$NON-NLS-1$
+			criteria.add(Restrictions.gt("g." + Gratuity.PROP_PAID, Boolean.TRUE)); //$NON-NLS-1$
 			projectionList = Projections.projectionList();
-			projectionList.add(Projections.sum("g." + Gratuity.PROP_AMOUNT));
+			projectionList.add(Projections.sum("g." + Gratuity.PROP_AMOUNT)); //$NON-NLS-1$
 			criteria.setProjection(projectionList);
 			object = (Object[]) criteria.uniqueResult();
 			if(object != null && object.length > 0 && object[0] instanceof Number) {

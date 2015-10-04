@@ -6,11 +6,11 @@ import com.floreantpos.model.KitchenTicketItem;
 public class KitchenTicketDataSource extends AbstractReportDataSource {
 
 	public KitchenTicketDataSource() {
-		super(new String[] { "itemNo", "itemName", "itemQty" });
+		super(new String[] { "itemNo", "itemName", "itemQty" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	}
 
 	public KitchenTicketDataSource(KitchenTicket ticket) {
-		super(new String[] { "itemNo", "itemName", "itemQty" });
+		super(new String[] { "itemNo", "itemName", "itemQty" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 		setTicket(ticket);
 	}

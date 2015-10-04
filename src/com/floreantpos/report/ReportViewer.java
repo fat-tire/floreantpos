@@ -8,6 +8,7 @@ package com.floreantpos.report;
 
 import java.util.Date;
 
+import com.floreantpos.Messages;
 import com.floreantpos.swing.MessageDialog;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.util.UiUtil;
@@ -49,13 +50,13 @@ public class ReportViewer extends javax.swing.JPanel {
 
         setLayout(new java.awt.BorderLayout(5, 5));
 
-        jLabel1.setText("Report Type" + ":");
+        jLabel1.setText(Messages.getString("ReportViewer.0") + ":"); //$NON-NLS-1$ //$NON-NLS-2$
 
         cbReportType.setModel(new javax.swing.DefaultComboBoxModel(new String[] { com.floreantpos.POSConstants.PREVIOUS_SALE_AFTER_DRAWER_RESET_, com.floreantpos.POSConstants.SALE_BEFORE_DRAWER_RESET }));
 
-        jLabel2.setText(com.floreantpos.POSConstants.START_DATE + ":");
+        jLabel2.setText(com.floreantpos.POSConstants.START_DATE + ":"); //$NON-NLS-1$
 
-        jLabel3.setText(com.floreantpos.POSConstants.END_DATE + ":");
+        jLabel3.setText(com.floreantpos.POSConstants.END_DATE + ":"); //$NON-NLS-1$
 
         btnRefresh.setText(com.floreantpos.POSConstants.REFRESH);
         btnRefresh.addActionListener(new java.awt.event.ActionListener() {

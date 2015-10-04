@@ -15,7 +15,7 @@ import com.floreantpos.swing.ListTableModel;
 public class SalesAnalysisReportModel extends ListTableModel {
 
 	public SalesAnalysisReportModel(List<SalesAnalysisData> dataList) {
-		super(new String[] { "shiftName", "categoryName", "count", "gross", "discount", "netSales", "avgGross", "avgDiscount", "avgNet", "percentage" }, dataList);
+		super(new String[] { "shiftName", "categoryName", "count", "gross", "discount", "netSales", "avgGross", "avgDiscount", "avgNet", "percentage" }, dataList); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$
 	}
 
 	public Object getValueAt(int rowIndex, int columnIndex) {
@@ -41,16 +41,16 @@ public class SalesAnalysisReportModel extends ListTableModel {
 				return String.valueOf(data.netSales);
 
 			case 6:
-				return " ";//Application.formatNumber(data.avgGross);
+				return " ";//Application.formatNumber(data.avgGross); //$NON-NLS-1$
 
 			case 7:
-				return " ";//Application.formatNumber(data.avgDiscount);
+				return " ";//Application.formatNumber(data.avgDiscount); //$NON-NLS-1$
 
 			case 8:
-				return " ";//Application.formatNumber(data.avgNet);
+				return " ";//Application.formatNumber(data.avgNet); //$NON-NLS-1$
 
 			case 9:
-				return " ";//Application.formatNumber(data.percentage);
+				return " ";//Application.formatNumber(data.percentage); //$NON-NLS-1$
 		}
 
 		return null;
@@ -158,21 +158,21 @@ public class SalesAnalysisReportModel extends ListTableModel {
 		ArrayList list = new ArrayList();
 
 		SalesAnalysisData data = new SalesAnalysisData();
-		data.setShiftName("SHIFT1");
-		data.setCategoryName("C");
+		data.setShiftName("SHIFT1"); //$NON-NLS-1$
+		data.setCategoryName("C"); //$NON-NLS-1$
 		list.add(data);
 
 		data = new SalesAnalysisData();
-		data.setShiftName("SHIFT1");
-		data.setCategoryName("C2");
+		data.setShiftName("SHIFT1"); //$NON-NLS-1$
+		data.setCategoryName("C2"); //$NON-NLS-1$
 		list.add(data);
 
 		data = new SalesAnalysisData();
-		data.setShiftName("SHIFT2");
-		data.setCategoryName("C");
+		data.setShiftName("SHIFT2"); //$NON-NLS-1$
+		data.setCategoryName("C"); //$NON-NLS-1$
 		list.add(data);
 
-		JasperReport report = ReportUtil.getReport("sales_summary_report2");
+		JasperReport report = ReportUtil.getReport("sales_summary_report2"); //$NON-NLS-1$
 		JasperPrint print = JasperFillManager.fillReport(report, new HashMap(), new JRBeanCollectionDataSource(list));
 
 		JasperViewer.viewReport(print, true);

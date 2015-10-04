@@ -14,30 +14,31 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.floreantpos.Messages;
 import com.floreantpos.model.Restaurant;
 import com.floreantpos.model.dao.RestaurantDAO;
 
 public class ReportUtil {
 	private static Log logger = LogFactory.getLog(ReportUtil.class);
 	
-	private final static String USER_REPORT_DIR = "/printerlayouts/";
-	private final static String DEFAULT_REPORT_DIR = "/com/floreantpos/report/template/";
+	private final static String USER_REPORT_DIR = "/printerlayouts/"; //$NON-NLS-1$
+	private final static String DEFAULT_REPORT_DIR = "/com/floreantpos/report/template/"; //$NON-NLS-1$
 	
 	public static void populateRestaurantProperties(Map map) {
 		RestaurantDAO dao = new RestaurantDAO();
 		Restaurant restaurant = dao.get(Integer.valueOf(1));
-		map.put("restaurantName", restaurant.getName());
-		map.put("addressLine1", restaurant.getAddressLine1());
-		map.put("addressLine2", restaurant.getAddressLine2());
-		map.put("addressLine3", restaurant.getAddressLine3());
-		map.put("phone", restaurant.getTelephone());
+		map.put("restaurantName", restaurant.getName()); //$NON-NLS-1$
+		map.put("addressLine1", restaurant.getAddressLine1()); //$NON-NLS-1$
+		map.put("addressLine2", restaurant.getAddressLine2()); //$NON-NLS-1$
+		map.put("addressLine3", restaurant.getAddressLine3()); //$NON-NLS-1$
+		map.put("phone", restaurant.getTelephone()); //$NON-NLS-1$
 	}
 	
 	public static JasperReport getReport(String reportName) {
 		InputStream resource = null;
 
 		try {
-			resource = ReceiptPrintService.class.getResourceAsStream(USER_REPORT_DIR + reportName + ".jasper");
+			resource = ReceiptPrintService.class.getResourceAsStream(USER_REPORT_DIR + reportName + ".jasper"); //$NON-NLS-1$
 			if (resource == null) {
 				return compileReport(reportName);
 			}
@@ -45,7 +46,7 @@ public class ReportUtil {
 				return (JasperReport) JRLoader.loadObject(resource);
 			}
 		} catch (Exception e) {
-			logger.error("Could not load report " + reportName + " from user directory, loading default report");
+			logger.error(Messages.getString("ReportUtil.8") + reportName + " from user directory, loading default report"); //$NON-NLS-1$ //$NON-NLS-2$
 			return getDefaultReport(reportName);
 			
 		} finally {
@@ -61,15 +62,15 @@ public class ReportUtil {
 		File jasperFile = null;
 		
 		try {
-			File jrxmlFile = new File(ReceiptPrintService.class.getResource(USER_REPORT_DIR + reportName + ".jrxml").getFile());
+			File jrxmlFile = new File(ReceiptPrintService.class.getResource(USER_REPORT_DIR + reportName + ".jrxml").getFile()); //$NON-NLS-1$
 			File dir = jrxmlFile.getParentFile();
-			jasperFile = new File(dir, reportName + ".jasper");
+			jasperFile = new File(dir, reportName + ".jasper"); //$NON-NLS-1$
 
-			in = ReceiptPrintService.class.getResourceAsStream(USER_REPORT_DIR + reportName + ".jrxml");
+			in = ReceiptPrintService.class.getResourceAsStream(USER_REPORT_DIR + reportName + ".jrxml"); //$NON-NLS-1$
 			out = new FileOutputStream(jasperFile);
 			JasperCompileManager.compileReportToStream(in, out);
 			
-			in2 = ReceiptPrintService.class.getResourceAsStream(USER_REPORT_DIR + reportName + ".jasper");
+			in2 = ReceiptPrintService.class.getResourceAsStream(USER_REPORT_DIR + reportName + ".jasper"); //$NON-NLS-1$
 			return (JasperReport) JRLoader.loadObject(in2);
 			
 		} catch (Exception e) {
@@ -93,7 +94,7 @@ public class ReportUtil {
 
 		try {
 			
-			resource = ReceiptPrintService.class.getResourceAsStream(DEFAULT_REPORT_DIR + reportName + ".jasper");
+			resource = ReceiptPrintService.class.getResourceAsStream(DEFAULT_REPORT_DIR + reportName + ".jasper"); //$NON-NLS-1$
 			return (JasperReport) JRLoader.loadObject(resource);
 			
 		} catch (Exception e) {
@@ -106,7 +107,7 @@ public class ReportUtil {
 	}
 	
 	public static void main(String[] args) {
-		URL resource = ReceiptPrintService.class.getResource("/printerlayouts/ticket-receipt.jrxml");
+		URL resource = ReceiptPrintService.class.getResource("/printerlayouts/ticket-receipt.jrxml"); //$NON-NLS-1$
 		String externalForm = resource.getFile();
 		System.out.println(resource.getProtocol());
 		System.out.println(externalForm);

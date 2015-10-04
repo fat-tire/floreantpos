@@ -23,15 +23,15 @@ public class POSLabel extends JLabel {
 	}
 
 	public POSLabel(Icon image, int horizontalAlignment) {
-		this("", image, horizontalAlignment);
+		this("", image, horizontalAlignment); //$NON-NLS-1$
 	}
 
 	public POSLabel(Icon image) {
-		this("", image, SwingConstants.LEFT);
+		this("", image, SwingConstants.LEFT); //$NON-NLS-1$
 	}
 
 	public POSLabel() {
-		this("", null, SwingConstants.LEFT);
+		this("", null, SwingConstants.LEFT); //$NON-NLS-1$
 	}
 
 }

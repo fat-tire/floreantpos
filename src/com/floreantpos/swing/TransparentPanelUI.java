@@ -24,7 +24,7 @@ public class TransparentPanelUI extends BasicPanelUI {
 
 	public void update(Graphics g, JComponent c) {
 		if (c.isOpaque()) {
-			Color color1 = UIManager.getColor("control");
+			Color color1 = UIManager.getColor("control"); //$NON-NLS-1$
 			Color color2 = color1.brighter();
 
 			int x = 0;
