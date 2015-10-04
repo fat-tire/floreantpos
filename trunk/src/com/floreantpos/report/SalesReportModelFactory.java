@@ -120,19 +120,19 @@ public class SalesReportModelFactory {
 		SalesReportModel itemReportModel = factory.getItemReportModel();
 		SalesReportModel modifierReportModel = factory.getModifierReportModel();
 		
-		JasperReport itemReport = ReportUtil.getReport("SalesSubReport");
-		JasperReport modifierReport = ReportUtil.getReport("SalesSubReport");
+		JasperReport itemReport = ReportUtil.getReport("SalesSubReport"); //$NON-NLS-1$
+		JasperReport modifierReport = ReportUtil.getReport("SalesSubReport"); //$NON-NLS-1$
 		
 		HashMap map = new HashMap();
-		map.put("itemDataSource", new  JRTableModelDataSource(itemReportModel));
-		map.put("modifierDataSource", new  JRTableModelDataSource(modifierReportModel));
-		map.put("currencySymbol", Application.getCurrencySymbol());
-		map.put("itemGrandTotal", itemReportModel.getGrandTotalAsString());
-		map.put("modifierGrandTotal", modifierReportModel.getGrandTotalAsString());
-		map.put("itemReport", itemReport);
-		map.put("modifierReport", modifierReport);
+		map.put("itemDataSource", new  JRTableModelDataSource(itemReportModel)); //$NON-NLS-1$
+		map.put("modifierDataSource", new  JRTableModelDataSource(modifierReportModel)); //$NON-NLS-1$
+		map.put("currencySymbol", Application.getCurrencySymbol()); //$NON-NLS-1$
+		map.put("itemGrandTotal", itemReportModel.getGrandTotalAsString()); //$NON-NLS-1$
+		map.put("modifierGrandTotal", modifierReportModel.getGrandTotalAsString()); //$NON-NLS-1$
+		map.put("itemReport", itemReport); //$NON-NLS-1$
+		map.put("modifierReport", modifierReport); //$NON-NLS-1$
 		
-		JasperReport masterReport = ReportUtil.getReport("SalesReport");
+		JasperReport masterReport = ReportUtil.getReport("SalesReport"); //$NON-NLS-1$
 		
 		JasperPrint print = JasperFillManager.fillReport(masterReport, map, new JREmptyDataSource());
 		JasperViewer.viewReport(print, false);

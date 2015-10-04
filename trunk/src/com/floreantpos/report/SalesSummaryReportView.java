@@ -83,13 +83,13 @@ public class SalesSummaryReportView extends javax.swing.JPanel {
 		jSeparator1 = new javax.swing.JSeparator();
 		reportPanel = new javax.swing.JPanel();
 
-		jLabel1.setText(com.floreantpos.POSConstants.FROM + ":");
+		jLabel1.setText(com.floreantpos.POSConstants.FROM + ":"); //$NON-NLS-1$
 
-		jLabel2.setText(com.floreantpos.POSConstants.TO + ":");
+		jLabel2.setText(com.floreantpos.POSConstants.TO + ":"); //$NON-NLS-1$
 
-		jLabel3.setText(com.floreantpos.POSConstants.USER_TYPE + ":");
+		jLabel3.setText(com.floreantpos.POSConstants.USER_TYPE + ":"); //$NON-NLS-1$
 
-		jLabel4.setText(com.floreantpos.POSConstants.TERMINAL_LABEL + ":");
+		jLabel4.setText(com.floreantpos.POSConstants.TERMINAL_LABEL + ":"); //$NON-NLS-1$
 
 		btnGo.setText(com.floreantpos.POSConstants.GO);
 		btnGo.addActionListener(new java.awt.event.ActionListener() {
@@ -196,21 +196,21 @@ public class SalesSummaryReportView extends javax.swing.JPanel {
 
 		Map properties = new HashMap();
 		ReportUtil.populateRestaurantProperties(properties);
-		properties.put("subtitle", com.floreantpos.POSConstants.SALES_SUMMARY_REPORT);
-		properties.put("reportTime", fullDateFormatter.format(new Date()));
-		properties.put("fromDate", shortDateFormatter.format(fromDate));
-		properties.put("toDate", shortDateFormatter.format(toDate));
+		properties.put("subtitle", com.floreantpos.POSConstants.SALES_SUMMARY_REPORT); //$NON-NLS-1$
+		properties.put("reportTime", fullDateFormatter.format(new Date())); //$NON-NLS-1$
+		properties.put("fromDate", shortDateFormatter.format(fromDate)); //$NON-NLS-1$
+		properties.put("toDate", shortDateFormatter.format(toDate)); //$NON-NLS-1$
 		if (userType == null) {
-			properties.put("reportType", com.floreantpos.POSConstants.SYSTEM_TOTAL);
+			properties.put("reportType", com.floreantpos.POSConstants.SYSTEM_TOTAL); //$NON-NLS-1$
 		}
 		else {
-			properties.put("reportType", userType.getName());
+			properties.put("reportType", userType.getName()); //$NON-NLS-1$
 		}
-		properties.put("shift", com.floreantpos.POSConstants.ALL);
-		properties.put("centre", terminal == null ? com.floreantpos.POSConstants.ALL : terminal.getName());
-		properties.put("days", String.valueOf(dateDiff));
+		properties.put("shift", com.floreantpos.POSConstants.ALL); //$NON-NLS-1$
+		properties.put("centre", terminal == null ? com.floreantpos.POSConstants.ALL : terminal.getName()); //$NON-NLS-1$
+		properties.put("days", String.valueOf(dateDiff)); //$NON-NLS-1$
 
-		JasperReport report = ReportUtil.getReport("sales_summary_report2");
+		JasperReport report = ReportUtil.getReport("sales_summary_report2"); //$NON-NLS-1$
 		JasperPrint print = JasperFillManager.fillReport(report, properties, new JRTableModelDataSource(new SalesAnalysisReportModel(datas)));
 		openReport(print);
 	}
@@ -221,53 +221,53 @@ public class SalesSummaryReportView extends javax.swing.JPanel {
 
 		Map properties = new HashMap();
 		ReportUtil.populateRestaurantProperties(properties);
-		properties.put("subtitle", com.floreantpos.POSConstants.SALES_SUMMARY_REPORT);
-		properties.put("Capacity", String.valueOf(summary.getCapacity()));
-		properties.put("GuestCount", String.valueOf(summary.getGuestCount()));
-		properties.put("GuestPerSeat", NumberUtil.formatNumber(summary.getGuestPerSeat()));
-		properties.put("reportTime", fullDateFormatter.format(new Date()));
-		properties.put("fromDate", shortDateFormatter.format(fromDate));
-		properties.put("toDate", shortDateFormatter.format(toDate));
+		properties.put("subtitle", com.floreantpos.POSConstants.SALES_SUMMARY_REPORT); //$NON-NLS-1$
+		properties.put("Capacity", String.valueOf(summary.getCapacity())); //$NON-NLS-1$
+		properties.put("GuestCount", String.valueOf(summary.getGuestCount())); //$NON-NLS-1$
+		properties.put("GuestPerSeat", NumberUtil.formatNumber(summary.getGuestPerSeat())); //$NON-NLS-1$
+		properties.put("reportTime", fullDateFormatter.format(new Date())); //$NON-NLS-1$
+		properties.put("fromDate", shortDateFormatter.format(fromDate)); //$NON-NLS-1$
+		properties.put("toDate", shortDateFormatter.format(toDate)); //$NON-NLS-1$
 		if (userType == null) {
-			properties.put("reportType", com.floreantpos.POSConstants.SYSTEM_TOTAL);
+			properties.put("reportType", com.floreantpos.POSConstants.SYSTEM_TOTAL); //$NON-NLS-1$
 		}
 		else {
-			properties.put("reportType", userType.getName());
+			properties.put("reportType", userType.getName()); //$NON-NLS-1$
 		}
-		properties.put("shift", com.floreantpos.POSConstants.ALL);
-		properties.put("centre", terminal == null ? com.floreantpos.POSConstants.ALL : terminal.getName());
-		properties.put("days", String.valueOf(dateDiff));
+		properties.put("shift", com.floreantpos.POSConstants.ALL); //$NON-NLS-1$
+		properties.put("centre", terminal == null ? com.floreantpos.POSConstants.ALL : terminal.getName()); //$NON-NLS-1$
+		properties.put("days", String.valueOf(dateDiff)); //$NON-NLS-1$
 
-		properties.put("Capacity", String.valueOf(summary.getCapacity()));
-		properties.put("GuestCount", String.valueOf(summary.getGuestCount()));
-		properties.put("GuestPerSeat", NumberUtil.formatNumber(summary.getGuestPerCheck()));
-		properties.put("TableTrnOvr", NumberUtil.formatNumber(summary.getTableTurnOver()));
-		properties.put("AVGGuest", NumberUtil.formatNumber(summary.getAvgGuest()));
-		properties.put("OpenChecks", String.valueOf(summary.getOpenChecks()));
-		properties.put("VOIDChecks", String.valueOf(summary.getVoidChecks()));
-		properties.put("OPPDChecks", String.valueOf(" "));
-		properties.put("TRNGChecks", String.valueOf(" "));
-		properties.put("ROPNChecks", String.valueOf(summary.getRopnChecks()));
-		properties.put("MergeChecks", String.valueOf(" "));
-		properties.put("LaborHour", NumberUtil.formatNumber(summary.getLaborHour()));
-		properties.put("LaborSales", NumberUtil.formatNumber(summary.getGrossSale()));
-		properties.put("Tables", String.valueOf(summary.getTables()));
-		properties.put("CheckCount", String.valueOf(summary.getCheckCount()));
-		properties.put("GuestPerChecks", NumberUtil.formatNumber(summary.getGuestPerCheck()));
-		properties.put("TrnOvrTime", String.valueOf(" "));
-		properties.put("AVGChecks", NumberUtil.formatNumber(summary.getAvgCheck()));
-		properties.put("OPENAmount", NumberUtil.formatNumber(summary.getOpenAmount()));
-		properties.put("VOIDAmount", NumberUtil.formatNumber(summary.getVoidAmount()));
-		properties.put("PAIDChecks", String.valueOf(summary.getPaidChecks()));
-		properties.put("TRNGAmount", String.valueOf(" "));
-		properties.put("ROPNAmount", NumberUtil.formatNumber(summary.getRopnAmount()));
-		properties.put("NTaxChecks", String.valueOf(summary.getNtaxChecks()));
-		properties.put("NTaxAmount", NumberUtil.formatNumber(summary.getNtaxAmount()));
-		properties.put("MergeAmount", String.valueOf(" "));
-		properties.put("Labor", NumberUtil.formatNumber(summary.getLaborCost()));
-		properties.put("LaborCost", NumberUtil.formatNumber((summary.getLaborCost() / summary.getGrossSale()) * 100));
+		properties.put("Capacity", String.valueOf(summary.getCapacity())); //$NON-NLS-1$
+		properties.put("GuestCount", String.valueOf(summary.getGuestCount())); //$NON-NLS-1$
+		properties.put("GuestPerSeat", NumberUtil.formatNumber(summary.getGuestPerCheck())); //$NON-NLS-1$
+		properties.put("TableTrnOvr", NumberUtil.formatNumber(summary.getTableTurnOver())); //$NON-NLS-1$
+		properties.put("AVGGuest", NumberUtil.formatNumber(summary.getAvgGuest())); //$NON-NLS-1$
+		properties.put("OpenChecks", String.valueOf(summary.getOpenChecks())); //$NON-NLS-1$
+		properties.put("VOIDChecks", String.valueOf(summary.getVoidChecks())); //$NON-NLS-1$
+		properties.put("OPPDChecks", String.valueOf(" ")); //$NON-NLS-1$ //$NON-NLS-2$
+		properties.put("TRNGChecks", String.valueOf(" ")); //$NON-NLS-1$ //$NON-NLS-2$
+		properties.put("ROPNChecks", String.valueOf(summary.getRopnChecks())); //$NON-NLS-1$
+		properties.put("MergeChecks", String.valueOf(" ")); //$NON-NLS-1$ //$NON-NLS-2$
+		properties.put("LaborHour", NumberUtil.formatNumber(summary.getLaborHour())); //$NON-NLS-1$
+		properties.put("LaborSales", NumberUtil.formatNumber(summary.getGrossSale())); //$NON-NLS-1$
+		properties.put("Tables", String.valueOf(summary.getTables())); //$NON-NLS-1$
+		properties.put("CheckCount", String.valueOf(summary.getCheckCount())); //$NON-NLS-1$
+		properties.put("GuestPerChecks", NumberUtil.formatNumber(summary.getGuestPerCheck())); //$NON-NLS-1$
+		properties.put("TrnOvrTime", String.valueOf(" ")); //$NON-NLS-1$ //$NON-NLS-2$
+		properties.put("AVGChecks", NumberUtil.formatNumber(summary.getAvgCheck())); //$NON-NLS-1$
+		properties.put("OPENAmount", NumberUtil.formatNumber(summary.getOpenAmount())); //$NON-NLS-1$
+		properties.put("VOIDAmount", NumberUtil.formatNumber(summary.getVoidAmount())); //$NON-NLS-1$
+		properties.put("PAIDChecks", String.valueOf(summary.getPaidChecks())); //$NON-NLS-1$
+		properties.put("TRNGAmount", String.valueOf(" ")); //$NON-NLS-1$ //$NON-NLS-2$
+		properties.put("ROPNAmount", NumberUtil.formatNumber(summary.getRopnAmount())); //$NON-NLS-1$
+		properties.put("NTaxChecks", String.valueOf(summary.getNtaxChecks())); //$NON-NLS-1$
+		properties.put("NTaxAmount", NumberUtil.formatNumber(summary.getNtaxAmount())); //$NON-NLS-1$
+		properties.put("MergeAmount", String.valueOf(" ")); //$NON-NLS-1$ //$NON-NLS-2$
+		properties.put("Labor", NumberUtil.formatNumber(summary.getLaborCost())); //$NON-NLS-1$
+		properties.put("LaborCost", NumberUtil.formatNumber((summary.getLaborCost() / summary.getGrossSale()) * 100)); //$NON-NLS-1$
 
-		JasperReport report = ReportUtil.getReport("sales_summary_report1");
+		JasperReport report = ReportUtil.getReport("sales_summary_report1"); //$NON-NLS-1$
 		JasperPrint print = JasperFillManager.fillReport(report, properties, new JRTableModelDataSource(new ShiftwiseDataTableModel(summary.getSalesTableDataList())));
 		openReport(print);
 
@@ -293,8 +293,8 @@ public class SalesSummaryReportView extends javax.swing.JPanel {
 	private javax.swing.JPanel reportPanel;
 	private org.jdesktop.swingx.JXDatePicker toDatePicker;
 	// End of variables declaration//GEN-END:variables
-	private SimpleDateFormat fullDateFormatter = new SimpleDateFormat("yyyy MMM dd, hh:mm a");
-	private SimpleDateFormat shortDateFormatter = new SimpleDateFormat("yyyy MMM dd");
+	private SimpleDateFormat fullDateFormatter = new SimpleDateFormat("yyyy MMM dd, hh:mm a"); //$NON-NLS-1$
+	private SimpleDateFormat shortDateFormatter = new SimpleDateFormat("yyyy MMM dd"); //$NON-NLS-1$
 	
 	private Date fromDate;
 	private Date toDate;

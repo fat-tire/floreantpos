@@ -5,13 +5,14 @@ import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
+import com.floreantpos.Messages;
 import com.floreantpos.main.Application;
 
 public class SalesReportModel extends AbstractTableModel {
-	private static DecimalFormat formatter = new DecimalFormat("#,##0.00");
+	private static DecimalFormat formatter = new DecimalFormat("#,##0.00"); //$NON-NLS-1$
 	private String currencySymbol;
 	
-	private String[] columnNames = {"Name", "Price", "QTY", "Tax", "Total"};
+	private String[] columnNames = {Messages.getString("SalesReportModel.1"), Messages.getString("SalesReportModel.2"), Messages.getString("SalesReportModel.3"), Messages.getString("SalesReportModel.4"), Messages.getString("SalesReportModel.5")}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 	private List<ReportItem> items;
 	private double grandTotal;
 	
@@ -45,16 +46,16 @@ public class SalesReportModel extends AbstractTableModel {
 				return item.getName();
 				
 			case 1:
-				return currencySymbol + " " + formatter.format(item.getPrice());
+				return currencySymbol + " " + formatter.format(item.getPrice()); //$NON-NLS-1$
 				
 			case 2:
 				return String.valueOf(item.getQuantity());
 				
 			case 3:
-				return String.valueOf(item.getTaxRate()) + "%";
+				return String.valueOf(item.getTaxRate()) + "%"; //$NON-NLS-1$
 				
 			case 4:
-				return currencySymbol + " " + formatter.format(item.getTotal());
+				return currencySymbol + " " + formatter.format(item.getTotal()); //$NON-NLS-1$
 		}
 		
 		
@@ -74,7 +75,7 @@ public class SalesReportModel extends AbstractTableModel {
 	}
 
 	public String getGrandTotalAsString() {
-		return currencySymbol + " " + formatter.format(grandTotal);
+		return currencySymbol + " " + formatter.format(grandTotal); //$NON-NLS-1$
 	}
 
 	public void setGrandTotal(double grandTotal) {

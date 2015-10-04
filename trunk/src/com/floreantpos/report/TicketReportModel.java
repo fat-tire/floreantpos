@@ -9,10 +9,10 @@ import com.floreantpos.model.Ticket;
 import com.floreantpos.util.NumberUtil;
 
 public class TicketReportModel extends AbstractTableModel {
-	private static SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM, yyyy");
+	private static SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM, yyyy"); //$NON-NLS-1$
 //	private String currencySymbol;
 	
-	private String[] columnNames = {"id", "date", "tableNum", "status", "total"};
+	private String[] columnNames = {"id", "date", "tableNum", "status", "total"}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 	private List<Ticket> items;
 	
 	public TicketReportModel() {

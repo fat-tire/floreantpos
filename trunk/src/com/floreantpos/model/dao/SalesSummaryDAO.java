@@ -11,6 +11,7 @@ import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 
+import com.floreantpos.Messages;
 import com.floreantpos.model.AttendenceHistory;
 import com.floreantpos.model.MenuCategory;
 import com.floreantpos.model.OrderType;
@@ -60,7 +61,7 @@ public class SalesSummaryDAO extends _RootDAO {
 			criteria = session.createCriteria(MenuCategory.class);
 			List<MenuCategory> categories = criteria.list();
 			MenuCategory miscCategory = new MenuCategory();
-			miscCategory.setName("MISC");
+			miscCategory.setName(Messages.getString("SalesSummaryDAO.0")); //$NON-NLS-1$
 			categories.add(miscCategory);
 
 			//find food sales
@@ -88,7 +89,7 @@ public class SalesSummaryDAO extends _RootDAO {
 
 				SalesAnalysisData data = new SalesAnalysisData();
 				data.setShiftName(""); //$NON-NLS-1$
-				data.setCategoryName("FOOD SALES");
+				data.setCategoryName(Messages.getString("SalesSummaryDAO.1")); //$NON-NLS-1$
 
 				if (objects.length > 0 && objects[0] != null)
 					data.setCount(((Number) objects[0]).intValue());
@@ -128,7 +129,7 @@ public class SalesSummaryDAO extends _RootDAO {
 
 				SalesAnalysisData data = new SalesAnalysisData();
 				data.setShiftName(""); //$NON-NLS-1$
-				data.setCategoryName("NON FOOD SALES");
+				data.setCategoryName(Messages.getString("SalesSummaryDAO.2")); //$NON-NLS-1$
 
 				if (objects.length > 0 && objects[0] != null)
 					data.setCount(((Number) objects[0]).intValue());

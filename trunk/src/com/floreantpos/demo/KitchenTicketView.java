@@ -29,6 +29,7 @@ import javax.swing.table.TableColumn;
 
 import net.miginfocom.swing.MigLayout;
 
+import com.floreantpos.Messages;
 import com.floreantpos.model.KitchenTicket;
 import com.floreantpos.model.KitchenTicket.KitchenTicketStatus;
 import com.floreantpos.model.KitchenTicketItem;
@@ -92,17 +93,17 @@ public class KitchenTicketView extends JPanel {
 	private void createHeader(KitchenTicket ticket) {
 		String printerName = ticket.getPrinters().toString();
 
-		String ticketInfo = "Ticket# " + ticket.getTicketId() + "-" + ticket.getId() + " " + printerName + "";
+		String ticketInfo = "Ticket# " + ticket.getTicketId() + "-" + ticket.getId() + " " + printerName + ""; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 		if (ticket.getTableNumbers() != null && ticket.getTableNumbers().size() > 0) {
-			ticketInfo += "<br/>Table " + ticket.getTableNumbers();
+			ticketInfo += "<br/>Table " + ticket.getTableNumbers(); //$NON-NLS-1$
 		}
-		ticketId.setText("<html>" + ticketInfo + "</html>");
+		ticketId.setText("<html>" + ticketInfo + "</html>"); //$NON-NLS-1$ //$NON-NLS-2$
 		ticketId.setFont(ticketId.getFont().deriveFont(Font.BOLD));
 
 		timerWatch = new TimerWatch(ticket.getCreateDate());
 
-		JPanel headerPanel = new JPanel(new MigLayout("fill", "[fill, grow 100][]", ""));
-		headerPanel.add(ticketId, "grow 100");
+		JPanel headerPanel = new JPanel(new MigLayout("fill", "[fill, grow 100][]", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		headerPanel.add(ticketId, "grow 100"); //$NON-NLS-1$
 		headerPanel.add(timerWatch);
 
 		add(headerPanel, BorderLayout.NORTH);
@@ -163,7 +164,7 @@ public class KitchenTicketView extends JPanel {
 	private void createButtonPanel() {
 		JPanel buttonPanel = new JPanel(new GridLayout(1, 0, 5, 5));
 
-		PosButton btnDone = new PosButton("DONE");
+		PosButton btnDone = new PosButton(Messages.getString("KitchenTicketView.11")); //$NON-NLS-1$
 		btnDone.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -173,7 +174,7 @@ public class KitchenTicketView extends JPanel {
 
 		buttonPanel.add(btnDone);
 
-		PosButton btnVoid = new PosButton("VOID");
+		PosButton btnVoid = new PosButton(Messages.getString("KitchenTicketView.12")); //$NON-NLS-1$
 		btnVoid.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -231,7 +232,7 @@ public class KitchenTicketView extends JPanel {
 	class KitchenTicketTableModel extends ListTableModel<KitchenTicketItem> {
 
 		KitchenTicketTableModel(List<KitchenTicketItem> list) {
-			super(new String[] { "Name", "Qty", "" }, list);
+			super(new String[] { Messages.getString("KitchenTicketView.13"), Messages.getString("KitchenTicketView.14"), "" }, list); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		}
 
 		@Override
@@ -275,7 +276,7 @@ public class KitchenTicketView extends JPanel {
 		try {
 			stopTimer();
 
-			int option = JOptionPane.showConfirmDialog(KitchenTicketView.this, "Confirm " + status.name() + "?", "Confirm", JOptionPane.YES_NO_OPTION);
+			int option = JOptionPane.showConfirmDialog(KitchenTicketView.this, Messages.getString("KitchenTicketView.16") + status.name() + "?", Messages.getString("KitchenTicketView.18"), JOptionPane.YES_NO_OPTION); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			if (option != JOptionPane.YES_OPTION) {
 				return;
 			}

@@ -13,7 +13,7 @@ public class PosComboRenderer extends DefaultListRenderer {
 	@Override
 	public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
 		if(value == null && enableDefaultValueShowing) {
-			value = "ALL";
+			value = "ALL"; //$NON-NLS-1$
 		}
 		
 		Component component = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);

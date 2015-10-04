@@ -11,7 +11,7 @@ public class TitledView extends JPanel {
 	private JPanel contentPane;
 
 	public TitledView() {
-		this("");
+		this(""); //$NON-NLS-1$
 	}
 
 	public TitledView(String title) {

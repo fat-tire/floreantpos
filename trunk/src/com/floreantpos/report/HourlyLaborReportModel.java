@@ -14,7 +14,7 @@ import com.floreantpos.util.NumberUtil;
  * To change this template use File | Settings | File Templates.
  */
 public class HourlyLaborReportModel extends ListTableModel {
-	private String[] columnNames = { "period", "checks", "guests", "sales", "manHour", "labor", "salesPerMHr", "guestsPerMHr", "checksPerMHr", "laborCost" };
+	private String[] columnNames = { "period", "checks", "guests", "sales", "manHour", "labor", "salesPerMHr", "guestsPerMHr", "checksPerMHr", "laborCost" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$
 
 	public HourlyLaborReportModel() {
 		setColumnNames(columnNames);

@@ -256,7 +256,7 @@ public class SalesExceptionReport {
 
 	public class VoidTableModel extends ListTableModel {
 		public VoidTableModel() {
-			setColumnNames(new String[] { "code", "reason", "wast", "qty", "amount" });
+			setColumnNames(new String[] { "code", "reason", "wast", "qty", "amount" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 		}
 
 		public Object getValueAt(int rowIndex, int columnIndex) {
@@ -270,7 +270,7 @@ public class SalesExceptionReport {
 				return data.getReasonCode();
 
 			case 2:
-				return data.wasted ? "Y" : "N";
+				return data.wasted ? "Y" : "N"; //$NON-NLS-1$ //$NON-NLS-2$
 
 			case 3:
 				return String.valueOf(data.getCount());
@@ -286,7 +286,7 @@ public class SalesExceptionReport {
 
 	public class DiscountTableModel extends ListTableModel {
 		public DiscountTableModel() {
-			setColumnNames(new String[] { "no", "name", "code", "totalCount", "totalDiscount", "totalNetSales", "totalGuests", "partySize", "checkSize", "countPercent", "ratioDnet" });
+			setColumnNames(new String[] { "no", "name", "code", "totalCount", "totalDiscount", "totalNetSales", "totalGuests", "partySize", "checkSize", "countPercent", "ratioDnet" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$ //$NON-NLS-11$
 		}
 
 		public Object getValueAt(int rowIndex, int columnIndex) {

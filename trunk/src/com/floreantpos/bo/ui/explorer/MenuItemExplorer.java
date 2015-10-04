@@ -16,6 +16,8 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 import net.miginfocom.swing.MigLayout;
 import org.jdesktop.swingx.JXTable;
+
+import com.floreantpos.Messages;
 import com.floreantpos.POSConstants;
 import com.floreantpos.bo.ui.BOMessageDialog;
 import com.floreantpos.main.Application;
@@ -36,16 +38,16 @@ public class MenuItemExplorer extends TransparentPanel {
 
 	public MenuItemExplorer() {
 		tableModel = new BeanTableModel<MenuItem>(MenuItem.class);
-		tableModel.addColumn(POSConstants.ID.toUpperCase(), "id");
-		tableModel.addColumn(POSConstants.NAME.toUpperCase(), "name");
-		tableModel.addColumn(POSConstants.TRANSLATED_NAME.toUpperCase(), "translatedName");
-		tableModel.addColumn(POSConstants.PRICE.toUpperCase() + " (" + Application.getCurrencySymbol() + ")", "price");
-		tableModel.addColumn(POSConstants.VISIBLE.toUpperCase(), "visible");
-		tableModel.addColumn(POSConstants.DISCOUNT.toUpperCase() + "(%)", "discountRate");
-		tableModel.addColumn(POSConstants.FOOD_GROUP.toUpperCase(), "parent");
-		tableModel.addColumn(POSConstants.TAX.toUpperCase(), "tax");
-		tableModel.addColumn(POSConstants.SORT_ORDER.toUpperCase(), "sortOrder");
-		tableModel.addColumn(POSConstants.BUTTON_COLOR.toUpperCase(), "buttonAsColor");
+		tableModel.addColumn(POSConstants.ID.toUpperCase(), "id"); //$NON-NLS-1$
+		tableModel.addColumn(POSConstants.NAME.toUpperCase(), "name"); //$NON-NLS-1$
+		tableModel.addColumn(POSConstants.TRANSLATED_NAME.toUpperCase(), "translatedName"); //$NON-NLS-1$
+		tableModel.addColumn(POSConstants.PRICE.toUpperCase() + " (" + Application.getCurrencySymbol() + ")", "price"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		tableModel.addColumn(POSConstants.VISIBLE.toUpperCase(), "visible"); //$NON-NLS-1$
+		tableModel.addColumn(POSConstants.DISCOUNT.toUpperCase() + "(%)", "discountRate"); //$NON-NLS-1$ //$NON-NLS-2$
+		tableModel.addColumn(POSConstants.FOOD_GROUP.toUpperCase(), "parent"); //$NON-NLS-1$
+		tableModel.addColumn(POSConstants.TAX.toUpperCase(), "tax"); //$NON-NLS-1$
+		tableModel.addColumn(POSConstants.SORT_ORDER.toUpperCase(), "sortOrder"); //$NON-NLS-1$
+		tableModel.addColumn(POSConstants.BUTTON_COLOR.toUpperCase(), "buttonAsColor"); //$NON-NLS-1$
 		//tableModel.addColumn(POSConstants.IMAGE.toUpperCase(), "imageAsIcon");
 
 		tableModel.addRows(MenuItemDAO.getInstance().findAll());
@@ -63,10 +65,10 @@ public class MenuItemExplorer extends TransparentPanel {
 
 	private JPanel buildSearchForm() {
 		JPanel panel = new JPanel();
-		panel.setLayout(new MigLayout("", "[][]30[][]30[]", "[]20[]"));
+		panel.setLayout(new MigLayout("", "[][]30[][]30[]", "[]20[]")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
-		JLabel nameLabel = new JLabel("Name : ");
-		JLabel groupLabel = new JLabel("Group : ");
+		JLabel nameLabel = new JLabel(Messages.getString("MenuItemExplorer.2")); //$NON-NLS-1$
+		JLabel groupLabel = new JLabel(Messages.getString("MenuItemExplorer.3")); //$NON-NLS-1$
 		final JTextField nameField = new JTextField(15);
 
 		try {
@@ -75,21 +77,21 @@ public class MenuItemExplorer extends TransparentPanel {
 
 			final JComboBox cbGroup = new JComboBox();
 
-			cbGroup.addItem("< ALL >");
+			cbGroup.addItem(Messages.getString("MenuItemExplorer.0")); //$NON-NLS-1$
 			for (MenuGroup s : menuGroupList) {
 				cbGroup.addItem(s);
 			}
 
-			JButton searchBttn = new JButton("Search");
+			JButton searchBttn = new JButton(Messages.getString("MenuItemExplorer.1")); //$NON-NLS-1$
 
-			panel.add(nameLabel, "align label");
+			panel.add(nameLabel, "align label"); //$NON-NLS-1$
 			panel.add(nameField);
 			panel.add(groupLabel);
 			panel.add(cbGroup);
 			panel.add(searchBttn);
 
 			Border loweredetched = BorderFactory.createEtchedBorder(EtchedBorder.LOWERED);
-			TitledBorder title = BorderFactory.createTitledBorder(loweredetched, "Search");
+			TitledBorder title = BorderFactory.createTitledBorder(loweredetched, Messages.getString("MenuItemExplorer.21")); //$NON-NLS-1$
 			title.setTitleJustification(TitledBorder.LEFT);
 			panel.setBorder(title);
 

@@ -224,7 +224,7 @@ public class SalesDetailedReport {
 
 	public class DrawerPullDataTableModel extends ListTableModel {
 		public DrawerPullDataTableModel() {
-			setColumnNames(new String[] { "no", "count", "ideal", "actual", "variant" });
+			setColumnNames(new String[] { "no", "count", "ideal", "actual", "variant" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 		}
 
 		public Object getValueAt(int rowIndex, int columnIndex) {
@@ -254,7 +254,7 @@ public class SalesDetailedReport {
 
 	public class CreditCardDataTableModel extends ListTableModel {
 		public CreditCardDataTableModel() {
-			setColumnNames(new String[] { "creditCard", "salesCount", "salesAmount", "returnCount", "returnAmount", "netAmount", "netTipsAmount", "percentage" });
+			setColumnNames(new String[] { "creditCard", "salesCount", "salesAmount", "returnCount", "returnAmount", "netAmount", "netTipsAmount", "percentage" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
 		}
 
 		public Object getValueAt(int rowIndex, int columnIndex) {

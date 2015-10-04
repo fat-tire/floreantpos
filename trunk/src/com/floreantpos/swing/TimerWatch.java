@@ -39,7 +39,7 @@ public class TimerWatch extends JPanel implements ActionListener {
 		Interval interval = new Interval(date.getTime(), new Instant().getMillis());
 		Duration duration = interval.toDuration();
 		
-		timerLabel.setText(duration.getStandardHours() + ":" + (duration.getStandardMinutes()%60) + ":" + (duration.getStandardSeconds()%60));
+		timerLabel.setText(duration.getStandardHours() + ":" + (duration.getStandardMinutes()%60) + ":" + (duration.getStandardSeconds()%60)); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 	
 	public void start() {
