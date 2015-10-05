@@ -27,6 +27,7 @@ import net.miginfocom.swing.MigLayout;
 import org.apache.commons.logging.LogFactory;
 import org.jdesktop.swingx.JXDatePicker;
 
+import com.floreantpos.Messages;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.TipsCashoutReport;
 import com.floreantpos.model.User;
@@ -51,7 +52,7 @@ public class ManagerDialog extends JDialog {
 		initComponents();
 
 		setIconImage(Application.getPosWindow().getIconImage());
-		setTitle(Application.getTitle() + ": Manager Functions");
+		setTitle(Application.getTitle() + ": " + "Manager Functions");
 
 		glassPane = new GlassPane();
 		setGlassPane(glassPane);
@@ -139,7 +140,7 @@ public class ManagerDialog extends JDialog {
 				doDrawerKick();
 			}
 		});
-		btnDrawerKick.setText("NO SALE");
+		btnDrawerKick.setText(Messages.getString("ManagerDialog.1")); //$NON-NLS-1$
 		transparentPanel3.add(btnDrawerKick);
 
 		transparentPanel4.add(transparentPanel2, java.awt.BorderLayout.CENTER);
@@ -165,7 +166,7 @@ public class ManagerDialog extends JDialog {
 	protected void doDrawerKick() {
 		try {
 			
-			File file = new File(Application.getInstance().getLocation(), "drawer-kick.bat");
+			File file = new File(Application.getInstance().getLocation(), "drawer-kick.bat"); //$NON-NLS-1$
 			if (file.exists()) {
 				Runtime.getRuntime().exec(file.getAbsolutePath());
 			}
@@ -235,12 +236,12 @@ public class ManagerDialog extends JDialog {
 			JXDatePicker fromDatePicker = UiUtil.getCurrentMonthStart();
 			JXDatePicker toDatePicker = UiUtil.getCurrentMonthEnd();
 
-			panel.add(new JLabel(com.floreantpos.POSConstants.SELECT_USER + ":"), "grow");
+			panel.add(new JLabel(com.floreantpos.POSConstants.SELECT_USER + ":"), "grow"); //$NON-NLS-1$ //$NON-NLS-2$
 			JComboBox userCombo = new JComboBox(new ListComboBoxModel(users));
-			panel.add(userCombo, "grow, wrap");
-			panel.add(new JLabel(com.floreantpos.POSConstants.FROM + ":"), "grow");
-			panel.add(fromDatePicker, "wrap");
-			panel.add(new JLabel(com.floreantpos.POSConstants.TO_), "grow");
+			panel.add(userCombo, "grow, wrap"); //$NON-NLS-1$
+			panel.add(new JLabel(com.floreantpos.POSConstants.FROM + ":"), "grow"); //$NON-NLS-1$ //$NON-NLS-2$
+			panel.add(fromDatePicker, "wrap"); //$NON-NLS-1$
+			panel.add(new JLabel(com.floreantpos.POSConstants.TO_), "grow"); //$NON-NLS-1$
 			panel.add(toDatePicker);
 
 			int option = JOptionPane.showOptionDialog(ManagerDialog.this, panel, com.floreantpos.POSConstants.SELECT_CRIETERIA, JOptionPane.OK_CANCEL_OPTION,

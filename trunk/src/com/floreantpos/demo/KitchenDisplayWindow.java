@@ -4,6 +4,7 @@ import java.awt.Toolkit;
 
 import javax.swing.JFrame;
 
+import com.floreantpos.Messages;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.KitchenTicket;
 
@@ -12,7 +13,7 @@ public class KitchenDisplayWindow extends JFrame {
 	KitchenDisplayView view = new KitchenDisplayView(true);
 
 	public KitchenDisplayWindow() {
-		setTitle("Kitchen Display");
+		setTitle(Messages.getString("KitchenDisplayWindow.0")); //$NON-NLS-1$
 		setIconImage(Application.getApplicationIcon().getImage());
 
 		add(view);

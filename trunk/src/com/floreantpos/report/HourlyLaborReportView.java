@@ -30,6 +30,7 @@ import net.sf.jasperreports.view.JRViewer;
 
 import org.jdesktop.swingx.JXDatePicker;
 
+import com.floreantpos.Messages;
 import com.floreantpos.model.Shift;
 import com.floreantpos.model.Terminal;
 import com.floreantpos.model.Ticket;
@@ -261,7 +262,7 @@ public class HourlyLaborReportView extends TransparentPanel {
             properties.put("toDay", ReportService.formatShortDate(toDate)); //$NON-NLS-1$
             properties.put(com.floreantpos.POSConstants.TYPE, com.floreantpos.POSConstants.BY_RANGE_ACTUAL);
             properties.put("dept", userType == null ? com.floreantpos.POSConstants.ALL : userType); //$NON-NLS-1$
-            properties.put("incr", "60 Minute"); //$NON-NLS-1$
+            properties.put("incr", Messages.getString("HourlyLaborReportView.0")); //$NON-NLS-1$ //$NON-NLS-2$
             properties.put("cntr", terminal == null ? com.floreantpos.POSConstants.ALL : terminal.getName()); //$NON-NLS-1$
 
             properties.put("totalChecks", String.valueOf(grandTotalChecks)); //$NON-NLS-1$

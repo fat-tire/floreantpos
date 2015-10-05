@@ -10,6 +10,7 @@ package com.floreantpos.ui.dialog;
 import java.util.List;
 
 import com.floreantpos.IconFactory;
+import com.floreantpos.Messages;
 import com.floreantpos.POSConstants;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.ActionHistory;
@@ -92,7 +93,7 @@ public class VoidTicketDialog extends POSDialog {
 
         transparentPanel2.setPreferredSize(new java.awt.Dimension(0, 80));
 
-        btnNewVoidReason.setText("...");
+        btnNewVoidReason.setText("..."); //$NON-NLS-1$
         btnNewVoidReason.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnNewVoidReasonActionPerformed(evt);
@@ -103,7 +104,7 @@ public class VoidTicketDialog extends POSDialog {
         chkItemsWasted.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
         chkItemsWasted.setMargin(new java.awt.Insets(0, 0, 0, 0));
 
-        jLabel1.setText(com.floreantpos.POSConstants.VOID_REASON + ":");
+        jLabel1.setText(com.floreantpos.POSConstants.VOID_REASON + ":"); //$NON-NLS-1$
 
         org.jdesktop.layout.GroupLayout transparentPanel2Layout = new org.jdesktop.layout.GroupLayout(transparentPanel2);
         transparentPanel2.setLayout(transparentPanel2Layout);
@@ -145,7 +146,7 @@ public class VoidTicketDialog extends POSDialog {
 
         transparentPanel3.setLayout(new java.awt.BorderLayout());
 
-        btnVoid.setIcon(IconFactory.getIcon("/ui_icons/", "void_ticket.png")); // NOI18N
+        btnVoid.setIcon(IconFactory.getIcon("/ui_icons/", "void_ticket.png")); // NOI18N //$NON-NLS-1$ //$NON-NLS-2$
         btnVoid.setText(com.floreantpos.POSConstants.VOID);
         btnVoid.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -154,7 +155,7 @@ public class VoidTicketDialog extends POSDialog {
         });
         transparentPanel4.add(btnVoid);
 
-        btnCancel.setIcon(IconFactory.getIcon("/ui_icons/", "cancel.png")); // NOI18N
+        btnCancel.setIcon(IconFactory.getIcon("/ui_icons/", "cancel.png")); // NOI18N //$NON-NLS-1$ //$NON-NLS-2$
         btnCancel.setText(com.floreantpos.POSConstants.CANCEL);
         btnCancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -216,19 +217,19 @@ public class VoidTicketDialog extends POSDialog {
 			dao.voidTicket(ticket);
 			
 			try {
-				String title = "- VOID RECEIPT -";
+				String title = "- " + "VOID RECEIPT -"; //$NON-NLS-1$
 				String data = "Ticket #" + ticket.getId() + " was voided.";
 				
 				ReceiptPrintService.printGenericReport(title, data);
 			}catch(Exception ee) {
-				String message = "There was an error while printing void information to kitchen\n" + ee.getMessage();
+				String message = Messages.getString("VoidTicketDialog.9") + ee.getMessage(); //$NON-NLS-1$
 				POSMessageDialog.showError(Application.getPosWindow(), message, ee);
 			}
 			
 			canceled = false;
 			
 			//save the action
-			ActionHistoryDAO.getInstance().saveHistory(Application.getCurrentUser(), ActionHistory.VOID_CHECK, com.floreantpos.POSConstants.RECEIPT_REPORT_TICKET_NO_LABEL + ":"+ticket.getId() +"; Total" + ": " + NumberUtil.formatNumber(ticket.getTotalAmount()));
+			ActionHistoryDAO.getInstance().saveHistory(Application.getCurrentUser(), ActionHistory.VOID_CHECK, com.floreantpos.POSConstants.RECEIPT_REPORT_TICKET_NO_LABEL + ":"+ticket.getId() +"; Total" + ": " + NumberUtil.formatNumber(ticket.getTotalAmount())); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			
 			dispose();
 		} catch (Exception e) {

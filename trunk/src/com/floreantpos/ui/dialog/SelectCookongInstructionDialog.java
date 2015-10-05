@@ -40,11 +40,11 @@ public class SelectCookongInstructionDialog extends POSDialog implements ActionL
 		btnNew = new PosButton(com.floreantpos.POSConstants.NEW);
 		btnOk = new PosButton(com.floreantpos.POSConstants.OK);
 		btnCancel = new PosButton(com.floreantpos.POSConstants.CANCEL);
-		add(cbCookingInstructions, "wrap, span, grow, h 30");
-		add(new JSeparator(), "wrap, span, grow");
-		add(btnNew, "al right,width 120, height 30");
-		add(btnOk, "al right,width 120, height 30");
-		add(btnCancel, "width 120, height 30");
+		add(cbCookingInstructions, "wrap, span, grow, h 30"); //$NON-NLS-1$
+		add(new JSeparator(), "wrap, span, grow"); //$NON-NLS-1$
+		add(btnNew, "al right,width 120, height 30"); //$NON-NLS-1$
+		add(btnOk, "al right,width 120, height 30"); //$NON-NLS-1$
+		add(btnCancel, "width 120, height 30"); //$NON-NLS-1$
 		
 		btnNew.addActionListener(this);
 		btnOk.addActionListener(this);

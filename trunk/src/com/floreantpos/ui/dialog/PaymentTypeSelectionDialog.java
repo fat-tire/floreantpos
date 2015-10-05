@@ -18,6 +18,7 @@ import javax.swing.border.TitledBorder;
 import net.miginfocom.swing.MigLayout;
 
 import com.floreantpos.IconFactory;
+import com.floreantpos.Messages;
 import com.floreantpos.model.PaymentType;
 import com.floreantpos.swing.PosButton;
 
@@ -33,7 +34,7 @@ public class PaymentTypeSelectionDialog extends POSDialog {
 	/** Creates new form PaymentTypeSelectionDialog */
 	public PaymentTypeSelectionDialog() {
 		super();
-		setTitle("Select payment type");
+		setTitle(Messages.getString("PaymentTypeSelectionDialog.0")); //$NON-NLS-1$
 		
 		initComponents();
 	}
@@ -45,15 +46,15 @@ public class PaymentTypeSelectionDialog extends POSDialog {
 	 */
 	// <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:initComponents
 	private void initComponents() {
-		JPanel content = new JPanel(new MigLayout("gap 5px 20px, fill"));
+		JPanel content = new JPanel(new MigLayout("gap 5px 20px, fill")); //$NON-NLS-1$
 		content.setBorder(new EmptyBorder(5, 5, 5, 5));
 		
 		JPanel genericPanel = new JPanel(new GridLayout(1, 0, 15, 15));
 		btnCash = new PaymentSelectionButton(PaymentType.CASH);
-		genericPanel.add(btnCash, "grow,wrap");
+		genericPanel.add(btnCash, "grow,wrap"); //$NON-NLS-1$
 		btnGiftCert = new PaymentSelectionButton(PaymentType.GIFT_CERTIFICATE);
 		genericPanel.add(btnGiftCert);
-		content.add(genericPanel, "height 60px, wrap, growx");
+		content.add(genericPanel, "height 60px, wrap, growx"); //$NON-NLS-1$
 		
 		JPanel creditCardPanel = new JPanel(new GridLayout(1, 0, 10, 10));
 		creditCardPanel.add(new PaymentSelectionButton(PaymentType.CREDIT_VISA));
@@ -61,17 +62,17 @@ public class PaymentTypeSelectionDialog extends POSDialog {
 		creditCardPanel.add(new PaymentSelectionButton(PaymentType.CREDIT_AMEX));
 		creditCardPanel.add(new PaymentSelectionButton(PaymentType.CREDIT_DISCOVERY));
 		
-		creditCardPanel.setBorder(new CompoundBorder(new TitledBorder("CREDIT CARD"), new EmptyBorder(10, 10, 10, 10)));
-		content.add(creditCardPanel, "wrap, height 110px, growx");
+		creditCardPanel.setBorder(new CompoundBorder(new TitledBorder(Messages.getString("PaymentTypeSelectionDialog.4")), new EmptyBorder(10, 10, 10, 10))); //$NON-NLS-1$
+		content.add(creditCardPanel, "wrap, height 110px, growx"); //$NON-NLS-1$
 		
 		JPanel debitCardPanel = new JPanel(new GridLayout(1, 0, 10, 10));
 		debitCardPanel.add(new PaymentSelectionButton(PaymentType.DEBIT_VISA));
 		debitCardPanel.add(new PaymentSelectionButton(PaymentType.DEBIT_MASTER_CARD));
 		
-		debitCardPanel.setBorder(new CompoundBorder(new TitledBorder("DEBIT CARD"), new EmptyBorder(10, 10, 10, 10)));
-		content.add(debitCardPanel, "wrap, height 110px, growx");
+		debitCardPanel.setBorder(new CompoundBorder(new TitledBorder(Messages.getString("PaymentTypeSelectionDialog.6")), new EmptyBorder(10, 10, 10, 10))); //$NON-NLS-1$
+		content.add(debitCardPanel, "wrap, height 110px, growx"); //$NON-NLS-1$
 		
-		PosButton cancel = new PosButton("CANCEL");
+		PosButton cancel = new PosButton(Messages.getString("PaymentTypeSelectionDialog.8")); //$NON-NLS-1$
 		cancel.addActionListener(new ActionListener() {
 			
 			@Override
@@ -81,7 +82,7 @@ public class PaymentTypeSelectionDialog extends POSDialog {
 			}
 		});
 		
-		content.add(cancel, "alignx center, gaptop 20px");
+		content.add(cancel, "alignx center, gaptop 20px"); //$NON-NLS-1$
 		
 		add(content);
 
@@ -101,7 +102,7 @@ public class PaymentTypeSelectionDialog extends POSDialog {
 			paymentType = p;
 			
 			if (p.getImageFile() != null) {
-				setIcon(IconFactory.getIcon("/ui_icons/", "" + p.getImageFile()));
+				setIcon(IconFactory.getIcon("/ui_icons/", "" + p.getImageFile())); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 			else {
 				setText(p.getDisplayString());

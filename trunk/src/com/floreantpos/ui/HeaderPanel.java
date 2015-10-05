@@ -48,20 +48,20 @@ public class HeaderPanel extends JPanel {
 		setOpaque(true);
 		setBackground(Color.white);
 
-		JLabel logoLabel = new JLabel(IconFactory.getIcon("/ui_icons/", "header-logo.png")); //$NON-NLS-1$
+		JLabel logoLabel = new JLabel(IconFactory.getIcon("/ui_icons/", "header-logo.png")); //$NON-NLS-1$ //$NON-NLS-2$
 		add(logoLabel);
 		
-		TransparentPanel statusPanel = new TransparentPanel(new MigLayout("hidemode 3, fill, ins 0, gap 0"));
+		TransparentPanel statusPanel = new TransparentPanel(new MigLayout("hidemode 3, fill, ins 0, gap 0")); //$NON-NLS-1$
 		statusLabel = new JLabel();
 		statusLabel.setFont(statusLabel.getFont().deriveFont(Font.BOLD));
 		statusLabel.setHorizontalAlignment(JLabel.CENTER);
 		statusLabel.setVerticalAlignment(JLabel.BOTTOM);
-		statusPanel.add(statusLabel, "grow");
+		statusPanel.add(statusLabel, "grow"); //$NON-NLS-1$
 		logoffLabel = new JLabel();
 		logoffLabel.setFont(statusLabel.getFont().deriveFont(Font.BOLD));
 		logoffLabel.setHorizontalAlignment(JLabel.CENTER);
 		logoffLabel.setVerticalAlignment(JLabel.TOP);
-		statusPanel.add(logoffLabel, "newline, growx");
+		statusPanel.add(logoffLabel, "newline, growx"); //$NON-NLS-1$
 		
 		add(statusPanel, "grow"); //$NON-NLS-1$
 		
@@ -76,11 +76,11 @@ public class HeaderPanel extends JPanel {
 		add(btnLogout, "w 60!, h 60!"); //$NON-NLS-1$
 
 		PosButton btnShutdown = new PosButton(new ShutDownAction(false, true));
-		btnShutdown.setIcon(IconFactory.getIcon("/ui_icons/", "shutdown.png")); //$NON-NLS-1$
+		btnShutdown.setIcon(IconFactory.getIcon("/ui_icons/", "shutdown.png")); //$NON-NLS-1$ //$NON-NLS-2$
 		btnShutdown.setToolTipText(Messages.getString("Shutdown")); //$NON-NLS-1$
 		add(btnShutdown, "w 60!, h 60!"); //$NON-NLS-1$
 
-		add(new JSeparator(JSeparator.HORIZONTAL), "newline, span 6, grow, gap 0");
+		add(new JSeparator(JSeparator.HORIZONTAL), "newline, span 6, grow, gap 0"); //$NON-NLS-1$
 		
 		clockTimer.start();
 		
@@ -172,7 +172,7 @@ public class HeaderPanel extends JPanel {
 			int min = countDown / 60;
 			int sec = countDown % 60;
 
-			logoffLabel.setText("Auto logoff in " + min + ":" + sec);
+			logoffLabel.setText(Messages.getString("HeaderPanel.0") + min + ":" + sec); //$NON-NLS-1$ //$NON-NLS-2$
 
 			if (countDown == 0) {
 				Application.getInstance().doLogout();
@@ -180,7 +180,7 @@ public class HeaderPanel extends JPanel {
 		}
 		
 		public void reset() {
-			logoffLabel.setText("");
+			logoffLabel.setText(""); //$NON-NLS-1$
 			countDown = TerminalConfig.getAutoLogoffTime();
 			
 			autoLogoffTimer.setInitialDelay(5 * 1000);

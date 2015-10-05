@@ -86,14 +86,14 @@ public class TerminalConfigurationView extends ConfigurationView {
 			}
 		});
 		add(cbAutoLogoff, "newline"); //$NON-NLS-1$
-		add(new JLabel("Auto logoff time"));
+		add(new JLabel(Messages.getString("TerminalConfigurationView.16"))); //$NON-NLS-1$
 		add(tfLogoffTime, "wrap"); //$NON-NLS-1$
 		
 		add(cbTranslatedName, "span 2"); //$NON-NLS-1$
 		add(cbFullscreenMode, "newline, span"); //$NON-NLS-1$
 		add(cbUseSettlementPrompt, "newline, span"); //$NON-NLS-1$
 		
-		add(new JLabel("Default font"), "newline"); //$NON-NLS-2$
+		add(new JLabel(Messages.getString("TerminalConfigurationView.17")), "newline");  //$NON-NLS-1$//$NON-NLS-2$
 		add(cbFonts, "span 2, wrap"); //$NON-NLS-1$
 		
 		JPanel touchConfigPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 20, 10));

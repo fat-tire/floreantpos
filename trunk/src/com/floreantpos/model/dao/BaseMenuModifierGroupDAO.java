@@ -27,7 +27,7 @@ public abstract class BaseMenuModifierGroupDAO extends com.floreantpos.model.dao
 	}
 
     public Order getDefaultOrder () {
-		return Order.asc("name");
+		return Order.asc("name"); //$NON-NLS-1$
     }
 
 	/**

@@ -17,7 +17,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import com.floreantpos.util.NumberUtil;
 
 public class PosTableRenderer extends DefaultTableCellRenderer {
-	private static final SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd, h:m a");
+	private static final SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd, h:m a"); //$NON-NLS-1$
 	/**
 	 * 
 	 */
@@ -60,7 +60,7 @@ public class PosTableRenderer extends DefaultTableCellRenderer {
 	@Override
 	protected void setValue(Object value) {
 		if(value == null) {
-			setText("");
+			setText(""); //$NON-NLS-1$
 			return;
 		}
 		
@@ -81,6 +81,6 @@ public class PosTableRenderer extends DefaultTableCellRenderer {
 			setHorizontalAlignment(SwingConstants.LEFT);
 		}
 		
-		setText(" " + text + " ");
+		setText(" " + text + " "); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 }

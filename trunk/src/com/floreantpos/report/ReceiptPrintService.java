@@ -121,9 +121,9 @@ public class ReceiptPrintService {
 			TicketPrintProperties printProperties = new TicketPrintProperties("*** REFUND RECEIPT ***", true, true, true); //$NON-NLS-1$
 			printProperties.setPrintCookingInstructions(false);
 			HashMap map = populateTicketProperties(ticket, printProperties, posTransaction);
-			map.put("refundAmountText", "Total Refund"); //$NON-NLS-1$
+			map.put("refundAmountText", Messages.getString("ReceiptPrintService.1")); //$NON-NLS-1$ //$NON-NLS-2$
 			map.put("refundAmount", String.valueOf(posTransaction.getAmount())); //$NON-NLS-1$
-			map.put("cashRefundText", "Cash Refund"); //$NON-NLS-1$
+			map.put("cashRefundText", Messages.getString("ReceiptPrintService.2")); //$NON-NLS-1$ //$NON-NLS-2$
 			map.put("cashRefund", String.valueOf(posTransaction.getAmount())); //$NON-NLS-1$
 
 			JasperPrint jasperPrint = createRefundPrint(ticket, map);
@@ -140,7 +140,7 @@ public class ReceiptPrintService {
 		try {
 			Ticket ticket = transaction.getTicket();
 
-			TicketPrintProperties printProperties = new TicketPrintProperties("*** PAYMENT RECEIPT ***", true, true, true);
+			TicketPrintProperties printProperties = new TicketPrintProperties(Messages.getString("ReceiptPrintService.3"), true, true, true); //$NON-NLS-1$
 			printProperties.setPrintCookingInstructions(false);
 			HashMap map = populateTicketProperties(ticket, printProperties, transaction);
 
@@ -152,13 +152,13 @@ public class ReceiptPrintService {
 				}
 
 				map.put("cardPayment", true); //$NON-NLS-1$
-				map.put("copyType", "Customer Copy"); //$NON-NLS-1$
+				map.put("copyType", Messages.getString("ReceiptPrintService.4")); //$NON-NLS-1$ //$NON-NLS-2$
 				JasperPrint jasperPrint = createPrint(ticket, map, transaction);
 				jasperPrint.setName("Ticket-" + ticket.getId() + "-CustomerCopy"); //$NON-NLS-1$ //$NON-NLS-2$
 				jasperPrint.setProperty(PROP_PRINTER_NAME, Application.getPrinters().getReceiptPrinter());
 				printQuitely(jasperPrint);
 
-				map.put("copyType", "Merchant Copy"); //$NON-NLS-1$
+				map.put("copyType", Messages.getString("ReceiptPrintService.5")); //$NON-NLS-1$ //$NON-NLS-2$
 				jasperPrint = createPrint(ticket, map, transaction);
 				jasperPrint.setName("Ticket-" + ticket.getId() + "-MerchantCopy"); //$NON-NLS-1$ //$NON-NLS-2$
 				jasperPrint.setProperty(PROP_PRINTER_NAME, Application.getPrinters().getReceiptPrinter());
@@ -180,13 +180,13 @@ public class ReceiptPrintService {
 		try {
 			Ticket ticket = transaction.getTicket();
 
-			TicketPrintProperties printProperties = new TicketPrintProperties("*** PAYMENT RECEIPT ***", true, true, true);
+			TicketPrintProperties printProperties = new TicketPrintProperties(Messages.getString("ReceiptPrintService.6"), true, true, true); //$NON-NLS-1$
 			printProperties.setPrintCookingInstructions(false);
 			HashMap map = populateTicketProperties(ticket, printProperties, transaction);
 
 			if (transaction != null && transaction.isCard()) {
 				map.put("cardPayment", true); //$NON-NLS-1$
-				map.put("copyType", "Merchant Copy"); //$NON-NLS-1$
+				map.put("copyType", Messages.getString("ReceiptPrintService.7")); //$NON-NLS-1$ //$NON-NLS-2$
 
 				JasperPrint jasperPrint = createPrint(ticket, map, transaction);
 				jasperPrint.setName("Ticket-" + ticket.getId() + "-MerchantCopy"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -194,7 +194,7 @@ public class ReceiptPrintService {
 				printQuitely(jasperPrint);
 
 				if (printCustomerCopy) {
-					map.put("copyType", "Customer Copy"); //$NON-NLS-1$
+					map.put("copyType", Messages.getString("ReceiptPrintService.8")); //$NON-NLS-1$ //$NON-NLS-2$
 
 					jasperPrint = createPrint(ticket, map, transaction);
 					jasperPrint.setName("Ticket-" + ticket.getId() + "-CustomerCopy"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -398,7 +398,7 @@ public class ReceiptPrintService {
 
 			if (StringUtils.isNotEmpty(customerName)) {
 				beginRow(ticketHeaderBuilder);
-				addColumn(ticketHeaderBuilder, "*Delivery to*");
+				addColumn(ticketHeaderBuilder, Messages.getString("ReceiptPrintService.9")); //$NON-NLS-1$
 				endRow(ticketHeaderBuilder);
 
 				if (StringUtils.isNotEmpty(customerName)) {
@@ -456,7 +456,7 @@ public class ReceiptPrintService {
 		map.put(SERVER_NAME, POSConstants.RECEIPT_REPORT_SERVER_LABEL + ticket.getServerName());
 		map.put(REPORT_DATE, Messages.getString("ReceiptPrintService.119") + reportDateFormat.format(new Date())); //$NON-NLS-1$
 
-		map.put("ticketHeader", "KTICHEN RECEIPT"); //$NON-NLS-1$
+		map.put("ticketHeader", Messages.getString("ReceiptPrintService.10")); //$NON-NLS-1$ //$NON-NLS-2$
 		String ticketType = ticket.getTicketType();
 		if (StringUtils.isNotEmpty(ticketType)) {
 			ticketType = ticketType.replaceAll("_", " "); //$NON-NLS-1$ //$NON-NLS-2$

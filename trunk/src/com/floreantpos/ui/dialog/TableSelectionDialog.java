@@ -23,6 +23,7 @@ import javax.swing.JScrollPane;
 import net.miginfocom.swing.MigLayout;
 
 import com.floreantpos.IconFactory;
+import com.floreantpos.Messages;
 import com.floreantpos.POSConstants;
 import com.floreantpos.model.ShopTable;
 import com.floreantpos.model.Ticket;
@@ -53,10 +54,10 @@ public class TableSelectionDialog extends POSDialog implements ActionListener {
 		renderTableList();
 
 		titlePanel = new TitlePanel();
-		titlePanel.setTitle("Enter table number");
+		titlePanel.setTitle(Messages.getString("TableSelectionDialog.0")); //$NON-NLS-1$
 		contentPane.add(titlePanel, BorderLayout.NORTH);
 
-		JPanel keypadPanel = new JPanel(new MigLayout("fill"));
+		JPanel keypadPanel = new JPanel(new MigLayout("fill")); //$NON-NLS-1$
 
 		tfNumber = new IntegerTextField();
 		tfNumber.setText(String.valueOf(defaultValue));
@@ -64,17 +65,17 @@ public class TableSelectionDialog extends POSDialog implements ActionListener {
 		tfNumber.setFocusable(true);
 		tfNumber.requestFocus();
 		tfNumber.setBackground(Color.WHITE);
-		keypadPanel.add(tfNumber, "span 2, grow");
+		keypadPanel.add(tfNumber, "span 2, grow"); //$NON-NLS-1$
 
 		PosButton posButton = new PosButton(POSConstants.CLEAR_ALL);
 		posButton.setFocusable(false);
 		posButton.setMinimumSize(new Dimension(25, 23));
 		posButton.addActionListener(this);
-		keypadPanel.add(posButton, "growy,height 55,wrap, w 100!");
+		keypadPanel.add(posButton, "growy,height 55,wrap, w 100!"); //$NON-NLS-1$
 
-		String[][] numbers = { { "7", "8", "9" }, { "4", "5", "6" }, { "1", "2", "3" }, { ".", "0", "CLEAR" } };
-		String[][] iconNames = new String[][] { { "7.png", "8.png", "9.png" }, { "4.png", "5.png", "6.png" },
-				{ "1.png", "2.png", "3.png" }, { "dot.png", "0.png", "clear.png" } };
+		String[][] numbers = { { "7", "8", "9" }, { "4", "5", "6" }, { "1", "2", "3" }, { ".", "0", Messages.getString("TableSelectionDialog.15") } }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$ //$NON-NLS-11$ //$NON-NLS-12$
+		String[][] iconNames = new String[][] { { "7.png", "8.png", "9.png" }, { "4.png", "5.png", "6.png" }, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
+				{ "1.png", "2.png", "3.png" }, { "dot.png", "0.png", "clear.png" } }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
 
 		for (int i = 0; i < numbers.length; i++) {
 			for (int j = 0; j < numbers[i].length; j++) {
@@ -93,41 +94,41 @@ public class TableSelectionDialog extends POSDialog implements ActionListener {
 				}
 
 				posButton.setActionCommand(buttonText);
-				if(".".equals(buttonText)) {
+				if(".".equals(buttonText)) { //$NON-NLS-1$
 					posButton.setEnabled(false);
 				}
 				posButton.addActionListener(this);
-				String constraints = "grow,w 100!";
+				String constraints = "grow,w 100!"; //$NON-NLS-1$
 				if (j == numbers[i].length - 1) {
-					constraints += ", wrap";
+					constraints += ", wrap"; //$NON-NLS-1$
 				}
 				keypadPanel.add(posButton, constraints);
 			}
 		}
 
-		JPanel buttonPanel = new JPanel(new MigLayout("align 50% 50%"));
+		JPanel buttonPanel = new JPanel(new MigLayout("align 50% 50%")); //$NON-NLS-1$
 		//buttonPanel.add(new JSeparator(JSeparator.HORIZONTAL), "span 4, grow, gaptop 5");
 
-		posButton = new PosButton("NEXT");
+		posButton = new PosButton(Messages.getString("TableSelectionDialog.32")); //$NON-NLS-1$
 		posButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (addTable()) {
-					tfNumber.setText("");
+					tfNumber.setText(""); //$NON-NLS-1$
 				}
 			}
 		});
-		buttonPanel.add(posButton, "newline, w 80");
+		buttonPanel.add(posButton, "newline, w 80"); //$NON-NLS-1$
 
 		posButton = new PosButton(POSConstants.OK);
 		posButton.setFocusable(false);
 		posButton.addActionListener(this);
-		buttonPanel.add(posButton, "w 80!");
+		buttonPanel.add(posButton, "w 80!"); //$NON-NLS-1$
 
 		PosButton btnCancel = new PosButton(POSConstants.CANCEL);
 		btnCancel.setFocusable(false);
 		btnCancel.addActionListener(this);
-		buttonPanel.add(btnCancel, " w 80!");
+		buttonPanel.add(btnCancel, " w 80!"); //$NON-NLS-1$
 
 		contentPane.add(buttonPanel, BorderLayout.SOUTH);
 		contentPane.add(keypadPanel);
@@ -137,9 +138,9 @@ public class TableSelectionDialog extends POSDialog implements ActionListener {
 		JPanel tableListPanel = new JPanel(new BorderLayout(5, 5));
 		tableListPanel.setPreferredSize(new Dimension(150, 100));
 		tableListPanel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(0, 5, 5, 5),
-				BorderFactory.createTitledBorder("Added Tables")));
+				BorderFactory.createTitledBorder(Messages.getString("TableSelectionDialog.37")))); //$NON-NLS-1$
 
-		PosButton btnRemoveTable = new PosButton("REMOVE");
+		PosButton btnRemoveTable = new PosButton(Messages.getString("TableSelectionDialog.38")); //$NON-NLS-1$
 		btnRemoveTable.setFocusable(false);
 		btnRemoveTable.addActionListener(new ActionListener() {
 			@Override
@@ -178,24 +179,24 @@ public class TableSelectionDialog extends POSDialog implements ActionListener {
 		int tableNumber = tfNumber.getInteger();
 		
 		if (tableNumber <= 0) {
-			POSMessageDialog.showError(this, "Please insert valid table number");
+			POSMessageDialog.showError(this, Messages.getString("TableSelectionDialog.39")); //$NON-NLS-1$
 			return false;
 		}
 
 		ShopTable shopTable = ShopTableDAO.getInstance().get(tableNumber);
 
 		if (shopTable == null) {
-			POSMessageDialog.showError(this, "There is no table with that number.");
+			POSMessageDialog.showError(this, Messages.getString("TableSelectionDialog.40")); //$NON-NLS-1$
 			return false;
 		}
 
 		if (shopTable.isServing()) {
-			POSMessageDialog.showError(this, "Table number " + tableNumber + " is occupied");
+			POSMessageDialog.showError(this, Messages.getString("TableSelectionDialog.41") + tableNumber + " is occupied"); //$NON-NLS-1$ //$NON-NLS-2$
 			return false;
 		}
 
 		if (shopTable.isBooked()) {
-			POSMessageDialog.showError(this, "Table number " + tableNumber + " is booked");
+			POSMessageDialog.showError(this, Messages.getString("TableSelectionDialog.43") + tableNumber + " is booked"); //$NON-NLS-1$ //$NON-NLS-2$
 			return false;
 		}
 
@@ -228,7 +229,7 @@ public class TableSelectionDialog extends POSDialog implements ActionListener {
 	private void doInsertNumber(String number) {
 		String s = tfNumber.getText();
 		
-		if (s.equals("0")) {
+		if (s.equals("0")) { //$NON-NLS-1$
 			tfNumber.setText(number);
 			return;
 		}
