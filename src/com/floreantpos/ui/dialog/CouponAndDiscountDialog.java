@@ -21,6 +21,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import com.floreantpos.IconFactory;
+import com.floreantpos.Messages;
 import com.floreantpos.PosException;
 import com.floreantpos.model.CouponAndDiscount;
 import com.floreantpos.model.Ticket;
@@ -70,11 +71,11 @@ public class CouponAndDiscountDialog extends POSDialog implements ActionListener
 			}
 			
 		});
-        lblTotalDiscount.setText("");
+        lblTotalDiscount.setText(""); //$NON-NLS-1$
         btnEditValue.setEnabled(false);
         
-        btnUp.setActionCommand("scrollUP");
-		btnDown.setActionCommand("scrollDown");
+        btnUp.setActionCommand("scrollUP"); //$NON-NLS-1$
+		btnDown.setActionCommand("scrollDown"); //$NON-NLS-1$
 		btnUp.addActionListener(this);
 		btnDown.addActionListener(this);
 		listCoupons.addListSelectionListener(this);
@@ -116,39 +117,39 @@ public class CouponAndDiscountDialog extends POSDialog implements ActionListener
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        titlePanel1.setTitle("Select Coupon/Discount");
+        titlePanel1.setTitle(Messages.getString("CouponAndDiscountDialog.3")); //$NON-NLS-1$
 
         jScrollPane1.setViewportView(listCoupons);
 
-        btnCancel.setIcon(IconFactory.getIcon("/ui_icons/", "cancel.png")); // NOI18N
-        btnCancel.setText("CANCEL");
+        btnCancel.setIcon(IconFactory.getIcon("/ui_icons/", "cancel.png")); // NOI18N //$NON-NLS-1$ //$NON-NLS-2$
+        btnCancel.setText(Messages.getString("CouponAndDiscountDialog.6")); //$NON-NLS-1$
         btnCancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 doCancel(evt);
             }
         });
 
-        btnOk.setIcon(IconFactory.getIcon("/ui_icons/", "finish.png")); // NOI18N
-        btnOk.setText("OK");
+        btnOk.setIcon(IconFactory.getIcon("/ui_icons/", "finish.png")); // NOI18N //$NON-NLS-1$ //$NON-NLS-2$
+        btnOk.setText(Messages.getString("CouponAndDiscountDialog.9")); //$NON-NLS-1$
         btnOk.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 doOk(evt);
             }
         });
 
-        btnUp.setIcon(IconFactory.getIcon("/ui_icons/", "up.png")); // NOI18N
+        btnUp.setIcon(IconFactory.getIcon("/ui_icons/", "up.png")); // NOI18N //$NON-NLS-1$ //$NON-NLS-2$
 
-        btnDown.setIcon(IconFactory.getIcon("/ui_icons/", "down.png")); // NOI18N
+        btnDown.setIcon(IconFactory.getIcon("/ui_icons/", "down.png")); // NOI18N //$NON-NLS-1$ //$NON-NLS-2$
 
         jSeparator2.setOrientation(javax.swing.SwingConstants.VERTICAL);
 
-        jLabel1.setText("Coupon/Discount Name" + ":");
+        jLabel1.setText(Messages.getString("CouponAndDiscountDialog.14") + ":"); //$NON-NLS-1$ //$NON-NLS-2$
 
-        jLabel2.setText("Coupon/Discount Number" + ":");
+        jLabel2.setText(Messages.getString("CouponAndDiscountDialog.16") + ":"); //$NON-NLS-1$ //$NON-NLS-2$
 
-        jLabel3.setText("Coupon/Discount Type" + ":");
+        jLabel3.setText(Messages.getString("CouponAndDiscountDialog.18") + ":"); //$NON-NLS-1$ //$NON-NLS-2$
 
-        jLabel4.setText("Coupon/Discount Value" + ":");
+        jLabel4.setText(Messages.getString("CouponAndDiscountDialog.20") + ":"); //$NON-NLS-1$ //$NON-NLS-2$
 
         tfName.setEditable(false);
 
@@ -158,21 +159,20 @@ public class CouponAndDiscountDialog extends POSDialog implements ActionListener
 
         tfValue.setEditable(false);
 
-        btnEditValue.setText("Enter Value");
+        btnEditValue.setText(Messages.getString("CouponAndDiscountDialog.22")); //$NON-NLS-1$
         btnEditValue.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 doEnterValue(evt);
             }
         });
 
-        jLabel5.setFont(new java.awt.Font("Tahoma", 1, 18));
+        jLabel5.setFont(new java.awt.Font("Tahoma", 1, 18)); //$NON-NLS-1$
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel5.setText("TOTAL DISCOUNT");
+        jLabel5.setText(Messages.getString("CouponAndDiscountDialog.24")); //$NON-NLS-1$
 
-        lblTotalDiscount.setFont(new java.awt.Font("Tahoma", 1, 18));
+        lblTotalDiscount.setFont(new java.awt.Font("Tahoma", 1, 18)); //$NON-NLS-1$
         lblTotalDiscount.setForeground(new java.awt.Color(204, 51, 0));
         lblTotalDiscount.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblTotalDiscount.setText("jLabel6");
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -279,7 +279,7 @@ public class CouponAndDiscountDialog extends POSDialog implements ActionListener
 			ticketCoupon.setValue(parseDouble);
 			
 		}catch(Exception x) {
-			throw new PosException("CouponAndDiscount amount is not valid");
+			throw new PosException(Messages.getString("CouponAndDiscountDialog.27")); //$NON-NLS-1$
 		}
 	return ticketCoupon;
 }
@@ -287,7 +287,7 @@ public class CouponAndDiscountDialog extends POSDialog implements ActionListener
     private void doEnterValue(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_doEnterValue
         NumberSelectionDialog2 dialog = new NumberSelectionDialog2();
         dialog.setFloatingPoint(true);
-        dialog.setTitle("Enter value");
+        dialog.setTitle(Messages.getString("CouponAndDiscountDialog.28")); //$NON-NLS-1$
         dialog.pack();
         dialog.open();
         
@@ -301,7 +301,7 @@ public class CouponAndDiscountDialog extends POSDialog implements ActionListener
     	try {
 			TicketCouponAndDiscount selectedCoupon = getSelectedCoupon();
 			if (selectedCoupon == null) {
-				POSMessageDialog.showError(this, "Please select a coupon/discount");
+				POSMessageDialog.showError(this, Messages.getString("CouponAndDiscountDialog.29")); //$NON-NLS-1$
 				return;
 			}
 			setCanceled(false);
@@ -324,7 +324,7 @@ public class CouponAndDiscountDialog extends POSDialog implements ActionListener
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		if ("scrollUP".equals(e.getActionCommand())) {
+		if ("scrollUP".equals(e.getActionCommand())) { //$NON-NLS-1$
 			if (couponList == null || couponList.size() == 0)
 				return;
 
@@ -341,7 +341,7 @@ public class CouponAndDiscountDialog extends POSDialog implements ActionListener
 			Rectangle cellRect = listCoupons.getCellBounds(selectedRow, selectedRow);
 			listCoupons.scrollRectToVisible(cellRect);
 		}
-		else if ("scrollDown".equals(e.getActionCommand())) {
+		else if ("scrollDown".equals(e.getActionCommand())) { //$NON-NLS-1$
 			if (couponList == null || couponList.size() == 0)
 				return;
 
@@ -366,10 +366,10 @@ public class CouponAndDiscountDialog extends POSDialog implements ActionListener
 
 	public void updateCouponView(CouponAndDiscount coupon) {
 		if (coupon == null) {
-			tfName.setText("");
-			tfNumber.setText("");
-			tfType.setText("");
-			tfValue.setText("");
+			tfName.setText(""); //$NON-NLS-1$
+			tfNumber.setText(""); //$NON-NLS-1$
+			tfType.setText(""); //$NON-NLS-1$
+			tfValue.setText(""); //$NON-NLS-1$
 			return;
 		}
 		

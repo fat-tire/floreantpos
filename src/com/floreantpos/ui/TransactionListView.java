@@ -13,6 +13,7 @@ import javax.swing.ListSelectionModel;
 
 import org.jdesktop.swingx.JXTable;
 
+import com.floreantpos.Messages;
 import com.floreantpos.model.PosTransaction;
 import com.floreantpos.swing.ListTableModel;
 import com.floreantpos.swing.PosScrollPane;
@@ -101,7 +102,7 @@ public class TransactionListView extends JPanel {
 
 	private class TransactionListTableModel extends ListTableModel<PosTransaction> {
 		public TransactionListTableModel() {
-			super(new String[] { "TRANSACTION ID", "TICKET ID", "SERVER", "CARD TYPE", "TIPS", "AMOUNT", "TOTAL" });
+			super(new String[] { Messages.getString("TransactionListView.0"), Messages.getString("TransactionListView.1"), Messages.getString("TransactionListView.2"), Messages.getString("TransactionListView.3"), Messages.getString("TransactionListView.4"), Messages.getString("TransactionListView.5"), Messages.getString("TransactionListView.6") }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
 		}
 
 		public Object getValueAt(int rowIndex, int columnIndex) {
@@ -140,7 +141,7 @@ public class TransactionListView extends JPanel {
 		List<PosTransaction> selectedTickets = getSelectedTransactions();
 
 		if (selectedTickets.size() == 0 || selectedTickets.size() > 1) {
-			POSMessageDialog.showMessage("Please select an item");
+			POSMessageDialog.showMessage(Messages.getString("TransactionListView.7")); //$NON-NLS-1$
 			return null;
 		}
 

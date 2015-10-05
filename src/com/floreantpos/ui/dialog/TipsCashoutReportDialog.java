@@ -13,6 +13,7 @@ import javax.swing.JTable;
 
 import net.miginfocom.swing.MigLayout;
 
+import com.floreantpos.Messages;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.TipsCashoutReport;
 import com.floreantpos.model.TipsCashoutReportTableModel;
@@ -29,23 +30,23 @@ public class TipsCashoutReportDialog extends POSDialog implements ActionListener
 		
 		setTitle(com.floreantpos.POSConstants.SERVER_TIPS_REPORT);
 		
-		JPanel topPanel = new JPanel(new MigLayout("","[fill]",""));
+		JPanel topPanel = new JPanel(new MigLayout("","[fill]","")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		topPanel.add(new JLabel("Server"));
-		topPanel.add(new JLabel(": " + report.getServer()), "wrap");
+		topPanel.add(new JLabel(": " + report.getServer()), "wrap"); //$NON-NLS-1$ //$NON-NLS-2$
 		topPanel.add(new JLabel("From"));
-		topPanel.add(new JLabel(": " + Application.formatDate(report.getFromDate())), "wrap");
+		topPanel.add(new JLabel(": " + Application.formatDate(report.getFromDate())), "wrap"); //$NON-NLS-1$ //$NON-NLS-2$
 		topPanel.add(new JLabel("To"));
-		topPanel.add(new JLabel(": " + Application.formatDate(report.getToDate())), "wrap");
+		topPanel.add(new JLabel(": " + Application.formatDate(report.getToDate())), "wrap"); //$NON-NLS-1$ //$NON-NLS-2$
 		topPanel.add(new JLabel("Time"));
-		topPanel.add(new JLabel(": " + Application.formatDate(report.getReportTime())), "wrap");
+		topPanel.add(new JLabel(": " + Application.formatDate(report.getReportTime())), "wrap"); //$NON-NLS-1$ //$NON-NLS-2$
 		topPanel.add(new JLabel("Transaction Count"));
-		topPanel.add(new JLabel(": " + (report.getDatas() == null ? "0" : String.valueOf(report.getDatas().size()))), "wrap");
+		topPanel.add(new JLabel(": " + (report.getDatas() == null ? "0" : String.valueOf(report.getDatas().size()))), "wrap"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		topPanel.add(new JLabel("Cash Tips"));
-		topPanel.add(new JLabel(": " + NumberUtil.formatNumber(report.getCashTipsAmount())), "wrap");
+		topPanel.add(new JLabel(": " + NumberUtil.formatNumber(report.getCashTipsAmount())), "wrap"); //$NON-NLS-1$ //$NON-NLS-2$
 		topPanel.add(new JLabel("Charged Tips"));
-		topPanel.add(new JLabel(": " + NumberUtil.formatNumber(report.getChargedTipsAmount())), "wrap");
-		topPanel.add(new JLabel("Tips Due"));
-		topPanel.add(new JLabel(": " + report.getTipsDue()), "wrap");
+		topPanel.add(new JLabel(": " + NumberUtil.formatNumber(report.getChargedTipsAmount())), "wrap"); //$NON-NLS-1$ //$NON-NLS-2$
+		topPanel.add(new JLabel("Tips Due")); //$NON-NLS-1$
+		topPanel.add(new JLabel(": " + report.getTipsDue()), "wrap"); //$NON-NLS-1$ //$NON-NLS-2$
 		
 		add(topPanel, BorderLayout.NORTH);
 		
@@ -53,11 +54,11 @@ public class TipsCashoutReportDialog extends POSDialog implements ActionListener
 		add(new JScrollPane(table));
 		
 		JPanel bottomPanel = new JPanel(new FlowLayout());
-		PosButton print = new PosButton("PRINT");
+		PosButton print = new PosButton(Messages.getString("TipsCashoutReportDialog.28")); //$NON-NLS-1$
 		print.setPreferredSize(new Dimension(120,50));
 		print.addActionListener(this);
 		
-		PosButton close = new PosButton("CLOSE");
+		PosButton close = new PosButton(Messages.getString("TipsCashoutReportDialog.29")); //$NON-NLS-1$
 		close.setPreferredSize(new Dimension(120,50));
 		close.addActionListener(this);
 		
@@ -69,15 +70,15 @@ public class TipsCashoutReportDialog extends POSDialog implements ActionListener
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		if("CLOSE".equals(e.getActionCommand())) {
+		if(Messages.getString("TipsCashoutReportDialog.30").equals(e.getActionCommand())) { //$NON-NLS-1$
 			dispose();
 		}
-		else if("PRINT".equals(e.getActionCommand())) {
+		else if(Messages.getString("TipsCashoutReportDialog.31").equals(e.getActionCommand())) { //$NON-NLS-1$
 			try {
 				PosPrintService.printServerTipsReport(report);
 			}catch (Exception x) {
 				x.printStackTrace();
-				POSMessageDialog.showError(this, "Could not print\n" + x.getMessage());
+				POSMessageDialog.showError(this, Messages.getString("TipsCashoutReportDialog.32") + x.getMessage()); //$NON-NLS-1$
 			}
 		}
 	}

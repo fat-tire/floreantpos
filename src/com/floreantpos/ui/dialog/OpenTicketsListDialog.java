@@ -25,6 +25,7 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 
 import com.floreantpos.IconFactory;
+import com.floreantpos.Messages;
 import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.Ticket;
@@ -125,7 +126,7 @@ public class OpenTicketsListDialog extends POSDialog {
 			transparentPanel3.add(btnVoid);
 
 			btnTransferServer = new com.floreantpos.swing.PosButton();
-			btnTransferServer.setText("<html><body><center>TRANSFER<br>SERVER</center></body></html>");
+			btnTransferServer.setText("<html><body><center>TRANSFER<br>SERVER</center></body></html>"); //$NON-NLS-1$
 			btnTransferServer.setPreferredSize(new java.awt.Dimension(100, 50));
 			btnTransferServer.addActionListener(new java.awt.event.ActionListener() {
 				public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -149,7 +150,7 @@ public class OpenTicketsListDialog extends POSDialog {
 		transparentPanel1.add(transparentPanel3, java.awt.BorderLayout.CENTER);
 
 		transparentPanel4.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 5, 1, 5));
-		btnScrollUp.setIcon(IconFactory.getIcon("/ui_icons/", "up.png"));
+		btnScrollUp.setIcon(IconFactory.getIcon("/ui_icons/", "up.png")); //$NON-NLS-1$ //$NON-NLS-2$
 		btnScrollUp.setPreferredSize(new java.awt.Dimension(80, 50));
 		btnScrollUp.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -159,7 +160,7 @@ public class OpenTicketsListDialog extends POSDialog {
 
 		transparentPanel4.add(btnScrollUp);
 
-		btnScrollDown.setIcon(IconFactory.getIcon("/ui_icons/", "down.png"));
+		btnScrollDown.setIcon(IconFactory.getIcon("/ui_icons/", "down.png")); //$NON-NLS-1$ //$NON-NLS-2$
 		btnScrollDown.setPreferredSize(new java.awt.Dimension(80, 50));
 		btnScrollDown.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -243,7 +244,7 @@ public class OpenTicketsListDialog extends POSDialog {
 		dispose();
 
 		if (TerminalConfig.isCashierMode()) {
-			String message = "What do you want to do next?";
+			String message = Messages.getString("OpenTicketsListDialog.0"); //$NON-NLS-1$
 			CashierModeNextActionDialog dialog = new CashierModeNextActionDialog(message);
 			dialog.open();
 		}
@@ -271,7 +272,7 @@ public class OpenTicketsListDialog extends POSDialog {
 	}//GEN-LAST:event_doTransferServer
 
 	private void doPrintTicket(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_doPrintTicket
-		JOptionPane.showMessageDialog(this, "To be implemented");
+		JOptionPane.showMessageDialog(this, Messages.getString("OpenTicketsListDialog.6")); //$NON-NLS-1$
 	}//GEN-LAST:event_doPrintTicket
 
 	private void doVoidTicket(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_doVoidTicket
@@ -370,7 +371,7 @@ public class OpenTicketsListDialog extends POSDialog {
 
 	class TicketTableCellRenderer extends DefaultTableCellRenderer {
 		Font font = getFont().deriveFont(Font.BOLD, 12);
-		SimpleDateFormat dateFormat = new SimpleDateFormat("MMM-dd-yy hh:mm a");
+		SimpleDateFormat dateFormat = new SimpleDateFormat("MMM-dd-yy hh:mm a"); //$NON-NLS-1$
 		String currencySymbol = Application.getCurrencySymbol();
 
 		@Override

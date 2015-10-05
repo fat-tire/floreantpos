@@ -23,6 +23,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.table.AbstractTableModel;
 
 import com.floreantpos.IconFactory;
+import com.floreantpos.Messages;
 import com.floreantpos.model.CouponAndDiscount;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketCouponAndDiscount;
@@ -62,8 +63,8 @@ public class DiscountListDialog extends POSDialog implements ActionListener {
         selectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         tableDiscounts.setSelectionModel(selectionModel);
 
-        btnScrollUp.setActionCommand("scrollUP");
-        btnScrollDown.setActionCommand("scrollDown");
+        btnScrollUp.setActionCommand("scrollUP"); //$NON-NLS-1$
+        btnScrollDown.setActionCommand("scrollDown"); //$NON-NLS-1$
         btnScrollUp.addActionListener(this);
         btnScrollDown.addActionListener(this);
 
@@ -118,7 +119,7 @@ public class DiscountListDialog extends POSDialog implements ActionListener {
             Object object = discountViewTableModel.get(selectedRow);
             modified = discountViewTableModel.delete((TicketDiscount) object);
         } catch (Exception e) {
-            POSMessageDialog.showError(this, "An error occured while delete.", e);
+            POSMessageDialog.showError(this, Messages.getString("DiscountListDialog.2"), e); //$NON-NLS-1$
         }
     }
 
@@ -160,17 +161,17 @@ public class DiscountListDialog extends POSDialog implements ActionListener {
         panel2.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
         panel1.add(panel2, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         btnDeleteSelected = new PosButton();
-        btnDeleteSelected.setIcon(IconFactory.getIcon("/ui_icons/", "delete.png"));
+        btnDeleteSelected.setIcon(IconFactory.getIcon("/ui_icons/", "delete.png")); //$NON-NLS-1$ //$NON-NLS-2$
         btnDeleteSelected.setPreferredSize(new Dimension(140, 50));
-        btnDeleteSelected.setText("Delete Selected");
+        btnDeleteSelected.setText(Messages.getString("DiscountListDialog.5")); //$NON-NLS-1$
         panel2.add(btnDeleteSelected);
         buttonOK = new PosButton();
-        buttonOK.setIcon(IconFactory.getIcon("/ui_icons/", "finish.png"));
+        buttonOK.setIcon(IconFactory.getIcon("/ui_icons/", "finish.png")); //$NON-NLS-1$ //$NON-NLS-2$
         buttonOK.setPreferredSize(new Dimension(120, 50));
         buttonOK.setText(com.floreantpos.POSConstants.OK);
         panel2.add(buttonOK);
         buttonCancel = new PosButton();
-        buttonCancel.setIcon(IconFactory.getIcon("/ui_icons/", "cancel.png"));
+        buttonCancel.setIcon(IconFactory.getIcon("/ui_icons/", "cancel.png")); //$NON-NLS-1$ //$NON-NLS-2$
         buttonCancel.setPreferredSize(new Dimension(120, 50));
         buttonCancel.setText(com.floreantpos.POSConstants.CANCEL);
         panel2.add(buttonCancel);
@@ -182,18 +183,18 @@ public class DiscountListDialog extends POSDialog implements ActionListener {
         tableDiscounts = new JTable();
         scrollPane1.setViewportView(tableDiscounts);
         final JPanel panel4 = new JPanel();
-        panel4.setLayout(new FormLayout("fill:p:grow", "center:d:grow,top:4dlu:noGrow,center:d:grow"));
+        panel4.setLayout(new FormLayout("fill:p:grow", "center:d:grow,top:4dlu:noGrow,center:d:grow")); //$NON-NLS-1$ //$NON-NLS-2$
         panel3.add(panel4, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         btnScrollUp = new PosButton();
-        btnScrollUp.setIcon(IconFactory.getIcon("/ui_icons/", "up.png"));
+        btnScrollUp.setIcon(IconFactory.getIcon("/ui_icons/", "up.png")); //$NON-NLS-1$ //$NON-NLS-2$
         btnScrollUp.setPreferredSize(new Dimension(50, 50));
-        btnScrollUp.setText("");
+        btnScrollUp.setText(""); //$NON-NLS-1$
         CellConstraints cc = new CellConstraints();
         panel4.add(btnScrollUp, cc.xy(1, 1, CellConstraints.CENTER, CellConstraints.BOTTOM));
         btnScrollDown = new PosButton();
-        btnScrollDown.setIcon(IconFactory.getIcon("/ui_icons/", "down.png"));
+        btnScrollDown.setIcon(IconFactory.getIcon("/ui_icons/", "down.png")); //$NON-NLS-1$ //$NON-NLS-2$
         btnScrollDown.setPreferredSize(new Dimension(50, 50));
-        btnScrollDown.setText("");
+        btnScrollDown.setText(""); //$NON-NLS-1$
         panel4.add(btnScrollDown, cc.xy(1, 3, CellConstraints.CENTER, CellConstraints.TOP));
     }
 
@@ -205,7 +206,7 @@ public class DiscountListDialog extends POSDialog implements ActionListener {
     }
 
     class DiscountViewTableModel extends AbstractTableModel {
-        String[] columnNames = {"Name", "Rule", "Amount"};
+        String[] columnNames = {Messages.getString("DiscountListDialog.18"), Messages.getString("DiscountListDialog.19"), Messages.getString("DiscountListDialog.20")}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         ArrayList rows = new ArrayList();
 
         DiscountViewTableModel() {
@@ -283,7 +284,7 @@ public class DiscountListDialog extends POSDialog implements ActionListener {
     }
 
     public void actionPerformed(ActionEvent e) {
-        if ("scrollUP".equals(e.getActionCommand())) {
+        if ("scrollUP".equals(e.getActionCommand())) { //$NON-NLS-1$
 
             int selectedRow = selectionModel.getLeadSelectionIndex();
 
@@ -296,7 +297,7 @@ public class DiscountListDialog extends POSDialog implements ActionListener {
             selectionModel.setLeadSelectionIndex(selectedRow);
             Rectangle cellRect = tableDiscounts.getCellRect(selectedRow, 0, false);
             tableDiscounts.scrollRectToVisible(cellRect);
-        } else if ("scrollDown".equals(e.getActionCommand())) {
+        } else if ("scrollDown".equals(e.getActionCommand())) { //$NON-NLS-1$
             int selectedRow = selectionModel.getLeadSelectionIndex();
 
             if (selectedRow < 0) {

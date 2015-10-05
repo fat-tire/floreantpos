@@ -14,6 +14,7 @@ import javax.swing.JPanel;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.floreantpos.Messages;
 import com.floreantpos.actions.ActionCommand;
 import com.floreantpos.actions.CloseDialogAction;
 import com.floreantpos.config.CardConfig;
@@ -48,7 +49,7 @@ public class TicketAuthorizationDialog extends POSDialog {
 
 	private void init() {
 		TitlePanel titlePanel = new TitlePanel();
-		titlePanel.setTitle("Authorize tickets");
+		titlePanel.setTitle(Messages.getString("TicketAuthorizationDialog.0")); //$NON-NLS-1$
 		add(titlePanel, BorderLayout.NORTH);
 
 		listView.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
@@ -80,7 +81,7 @@ public class TicketAuthorizationDialog extends POSDialog {
 	}
 
 	private boolean confirmAuthorize(String message) {
-		int option = JOptionPane.showConfirmDialog(TicketAuthorizationDialog.this, message, "Confirm", JOptionPane.OK_CANCEL_OPTION);
+		int option = JOptionPane.showConfirmDialog(TicketAuthorizationDialog.this, message, Messages.getString("TicketAuthorizationDialog.1"), JOptionPane.OK_CANCEL_OPTION); //$NON-NLS-1$
 		if (option == JOptionPane.OK_OPTION) {
 			return true;
 		}
@@ -92,11 +93,11 @@ public class TicketAuthorizationDialog extends POSDialog {
 		List<PosTransaction> transactions = listView.getSelectedTransactions();
 
 		if (transactions == null || transactions.size() == 0) {
-			POSMessageDialog.showMessage(TicketAuthorizationDialog.this, "Please select transactions to authorize");
+			POSMessageDialog.showMessage(TicketAuthorizationDialog.this, Messages.getString("TicketAuthorizationDialog.2")); //$NON-NLS-1$
 			return;
 		}
 
-		if (!confirmAuthorize("Selected transactions will be authorized.")) {
+		if (!confirmAuthorize(Messages.getString("TicketAuthorizationDialog.3"))) { //$NON-NLS-1$
 			return;
 		}
 
@@ -109,7 +110,7 @@ public class TicketAuthorizationDialog extends POSDialog {
 				authorizeTransaction(transaction);
 			}
 
-			POSMessageDialog.showMessage(Application.getPosWindow(), "Authorized.");
+			POSMessageDialog.showMessage(Application.getPosWindow(), Messages.getString("TicketAuthorizationDialog.4")); //$NON-NLS-1$
 			updateTransactiontList();
 
 		} catch (Exception e) {
@@ -123,11 +124,11 @@ public class TicketAuthorizationDialog extends POSDialog {
 		List<PosTransaction> transactions = listView.getAllTransactions();
 
 		if (transactions == null || transactions.size() == 0) {
-			POSMessageDialog.showMessage(TicketAuthorizationDialog.this, "Nothing to authorize.");
+			POSMessageDialog.showMessage(TicketAuthorizationDialog.this, Messages.getString("TicketAuthorizationDialog.5")); //$NON-NLS-1$
 			return;
 		}
 
-		if (!confirmAuthorize("Authorize all transactions?")) {
+		if (!confirmAuthorize(Messages.getString("TicketAuthorizationDialog.6"))) { //$NON-NLS-1$
 			return;
 		}
 
@@ -140,7 +141,7 @@ public class TicketAuthorizationDialog extends POSDialog {
 				authorizeTransaction(transaction);
 			}
 
-			POSMessageDialog.showMessage(Application.getPosWindow(), "Authorized.");
+			POSMessageDialog.showMessage(Application.getPosWindow(), Messages.getString("TicketAuthorizationDialog.7")); //$NON-NLS-1$
 			updateTransactiontList();
 
 		} catch (Exception e) {
@@ -190,7 +191,7 @@ public class TicketAuthorizationDialog extends POSDialog {
 		}
 
 		final double oldTipsAmount = transaction.getTipsAmount();
-		final double newTipsAmount = NumberSelectionDialog2.show(TicketAuthorizationDialog.this, "Enter tips amount", oldTipsAmount);
+		final double newTipsAmount = NumberSelectionDialog2.show(TicketAuthorizationDialog.this, Messages.getString("TicketAuthorizationDialog.8"), oldTipsAmount); //$NON-NLS-1$
 
 		if (Double.isNaN(newTipsAmount))
 			return;
@@ -222,7 +223,7 @@ public class TicketAuthorizationDialog extends POSDialog {
 	private void authorizeTransaction(PosTransaction transaction) throws Exception {
 		String cardEntryType = transaction.getCardReader();
 		if (StringUtils.isEmpty(cardEntryType)) {
-			POSMessageDialog.showError(Application.getPosWindow(), "No input information found for transaction id = " + transaction.getId() + ". The record may be broken.");
+			POSMessageDialog.showError(Application.getPosWindow(), Messages.getString("TicketAuthorizationDialog.9") + transaction.getId() + Messages.getString("TicketAuthorizationDialog.10")); //$NON-NLS-1$ //$NON-NLS-2$
 			return;
 		}
 

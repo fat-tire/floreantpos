@@ -22,6 +22,7 @@ import net.sf.jasperreports.view.JRViewer;
 
 import org.jdesktop.swingx.JXDatePicker;
 
+import com.floreantpos.Messages;
 import com.floreantpos.POSConstants;
 import com.floreantpos.model.CreditCardTransaction;
 import com.floreantpos.model.dao.PosTransactionDAO;
@@ -99,7 +100,7 @@ public class CreditCardReportView extends JPanel {
 		
 		HashMap<String, String> map = new HashMap<String, String>();
 		ReportUtil.populateRestaurantProperties(map);
-		map.put("reportTitle", "========= CREDIT CARD REPORT =========="); //$NON-NLS-1$
+		map.put("reportTitle", Messages.getString("CreditCardReportView.0")); //$NON-NLS-1$ //$NON-NLS-2$
 		map.put("fromDate", ReportService.formatShortDate(fromDate)); //$NON-NLS-1$
 		map.put("toDate", ReportService.formatShortDate(toDate)); //$NON-NLS-1$
 		map.put("reportTime", ReportService.formatFullDate(currentTime)); //$NON-NLS-1$

@@ -9,6 +9,7 @@ import javax.swing.JSeparator;
 
 import net.miginfocom.swing.MigLayout;
 
+import com.floreantpos.Messages;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.PosTransaction;
 import com.floreantpos.report.ReceiptPrintService;
@@ -38,40 +39,40 @@ public class TransactionCompletionDialog extends POSDialog {
 
 		setTitle(com.floreantpos.POSConstants.TRANSACTION_COMPLETED);
 
-		setLayout(new MigLayout("align 50% 0%, ins 20", "[]20[]", ""));
+		setLayout(new MigLayout("align 50% 0%, ins 20", "[]20[]", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
-		add(createLabel("TOTAL AMOUNT" + ":", JLabel.LEFT), "grow");
-		lblTotalAmount = createLabel("0.0", JLabel.RIGHT);
-		add(lblTotalAmount, "span, grow");
+		add(createLabel(Messages.getString("TransactionCompletionDialog.3") + ":", JLabel.LEFT), "grow"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		lblTotalAmount = createLabel("0.0", JLabel.RIGHT); //$NON-NLS-1$
+		add(lblTotalAmount, "span, grow"); //$NON-NLS-1$
 
-		add(createLabel("TENDERED AMOUNT" + ":", JLabel.LEFT), "newline,grow");
-		lblTenderedAmount = createLabel("0.0", JLabel.RIGHT);
-		add(lblTenderedAmount, "span, grow");
+		add(createLabel(Messages.getString("TransactionCompletionDialog.8") + ":", JLabel.LEFT), "newline,grow"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		lblTenderedAmount = createLabel("0.0", JLabel.RIGHT); //$NON-NLS-1$
+		add(lblTenderedAmount, "span, grow"); //$NON-NLS-1$
 
-		add(new JSeparator(), "newline,span, grow");
+		add(new JSeparator(), "newline,span, grow"); //$NON-NLS-1$
 
-		add(createLabel("PAID AMOUNT" + ":", JLabel.LEFT), "newline,grow");
-		lblPaidAmount = createLabel("0.0", JLabel.RIGHT);
-		add(lblPaidAmount, "span, grow");
+		add(createLabel(Messages.getString("TransactionCompletionDialog.14") + ":", JLabel.LEFT), "newline,grow"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		lblPaidAmount = createLabel("0.0", JLabel.RIGHT); //$NON-NLS-1$
+		add(lblPaidAmount, "span, grow"); //$NON-NLS-1$
 
-		add(createLabel("DUE AMOUNT" + ":", JLabel.LEFT), "newline,grow");
-		lblDueAmount = createLabel("0.0", JLabel.RIGHT);
-		add(lblDueAmount, "span, grow");
+		add(createLabel(Messages.getString("TransactionCompletionDialog.19") + ":", JLabel.LEFT), "newline,grow"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		lblDueAmount = createLabel("0.0", JLabel.RIGHT); //$NON-NLS-1$
+		add(lblDueAmount, "span, grow"); //$NON-NLS-1$
 
-		add(new JSeparator(), "newline,span, grow");
+		add(new JSeparator(), "newline,span, grow"); //$NON-NLS-1$
 
-		add(createLabel("GRATUITY AMOUNT" + ":", JLabel.LEFT), "newline,grow");
-		lblGratuityAmount = createLabel("0.0", JLabel.RIGHT);
-		add(lblGratuityAmount, "span, grow");
+		add(createLabel(Messages.getString("TransactionCompletionDialog.25") + ":", JLabel.LEFT), "newline,grow"); //$NON-NLS-1$ //$NON-NLS-3$
+		lblGratuityAmount = createLabel("0.0", JLabel.RIGHT); //$NON-NLS-1$
+		add(lblGratuityAmount, "span, grow"); //$NON-NLS-1$
 
-		add(new JSeparator(), "newline,span, grow");
+		add(new JSeparator(), "newline,span, grow"); //$NON-NLS-1$
 
-		add(createLabel("CHANGE DUE" + ":", JLabel.LEFT), "grow");
-		lblChangeDue = createLabel("0.0", JLabel.RIGHT);
-		add(lblChangeDue, "span, grow");
+		add(createLabel(Messages.getString("TransactionCompletionDialog.31") + ":", JLabel.LEFT), "grow"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		lblChangeDue = createLabel("0.0", JLabel.RIGHT); //$NON-NLS-1$
+		add(lblChangeDue, "span, grow"); //$NON-NLS-1$
 
-		add(new JSeparator(), "sg mygroup,newline,span,grow");
-		PosButton btnClose = new PosButton("CLOSE");
+		add(new JSeparator(), "sg mygroup,newline,span,grow"); //$NON-NLS-1$
+		PosButton btnClose = new PosButton(Messages.getString("TransactionCompletionDialog.37")); //$NON-NLS-1$
 		btnClose.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
@@ -80,7 +81,7 @@ public class TransactionCompletionDialog extends POSDialog {
 
 		});
 
-		PosButton btnPrintStoreCopy = new PosButton("PRINT STORE COPY");
+		PosButton btnPrintStoreCopy = new PosButton(Messages.getString("TransactionCompletionDialog.38")); //$NON-NLS-1$
 		btnPrintStoreCopy.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -88,13 +89,13 @@ public class TransactionCompletionDialog extends POSDialog {
 					ReceiptPrintService.printTransaction(completedTransaction, false);
 
 				} catch (Exception ee) {
-					POSMessageDialog.showError(Application.getPosWindow(), "There was an error while printing.", ee);
+					POSMessageDialog.showError(Application.getPosWindow(), Messages.getString("TransactionCompletionDialog.39"), ee); //$NON-NLS-1$
 				}
 				dispose();
 			}
 		});
 
-		PosButton btnPrintAllCopy = new PosButton("PRINT STORE & MERCHANT COPY");
+		PosButton btnPrintAllCopy = new PosButton(Messages.getString("TransactionCompletionDialog.40")); //$NON-NLS-1$
 		btnPrintAllCopy.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -102,7 +103,7 @@ public class TransactionCompletionDialog extends POSDialog {
 					ReceiptPrintService.printTransaction(completedTransaction, true);
 
 				} catch (Exception ee) {
-					POSMessageDialog.showError(Application.getPosWindow(), "There was an error while printing.", ee);
+					POSMessageDialog.showError(Application.getPosWindow(), Messages.getString("TransactionCompletionDialog.41"), ee); //$NON-NLS-1$
 				}
 				dispose();
 			}
@@ -111,23 +112,23 @@ public class TransactionCompletionDialog extends POSDialog {
 		JPanel p = new JPanel();
 
 		if (completedTransaction.isCard()) {
-			p.add(btnPrintAllCopy, "newline,skip, h 50");
-			p.add(btnPrintStoreCopy, "skip, h 50");
-			p.add(btnClose, "skip, h 50");
+			p.add(btnPrintAllCopy, "newline,skip, h 50"); //$NON-NLS-1$
+			p.add(btnPrintStoreCopy, "skip, h 50"); //$NON-NLS-1$
+			p.add(btnClose, "skip, h 50"); //$NON-NLS-1$
 		}
 		else {
-			btnPrintStoreCopy.setText("PRINT");
-			p.add(btnPrintStoreCopy, "skip, h 50");
-			p.add(btnClose, "skip, h 50");
+			btnPrintStoreCopy.setText(Messages.getString("TransactionCompletionDialog.0")); //$NON-NLS-1$
+			p.add(btnPrintStoreCopy, "skip, h 50"); //$NON-NLS-1$
+			p.add(btnClose, "skip, h 50"); //$NON-NLS-1$
 		}
 
-		add(p, "newline, span 2, grow, gaptop 15px");
+		add(p, "newline, span 2, grow, gaptop 15px"); //$NON-NLS-1$
 		//setResizable(false);
 	}
 
 	protected JLabel createLabel(String text, int alignment) {
 		JLabel label = new JLabel(text);
-		label.setFont(new java.awt.Font("Tahoma", 1, 24));
+		label.setFont(new java.awt.Font("Tahoma", 1, 24)); //$NON-NLS-1$
 		//label.setForeground(new java.awt.Color(255, 102, 0));
 		label.setHorizontalAlignment(alignment);
 		label.setText(text);

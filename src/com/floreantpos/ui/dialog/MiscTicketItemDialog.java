@@ -18,6 +18,7 @@ import net.miginfocom.swing.MigLayout;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.floreantpos.Messages;
 import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.PrinterGroup;
@@ -43,7 +44,7 @@ public class MiscTicketItemDialog extends POSDialog {
 	public MiscTicketItemDialog() {
 		super(Application.getPosWindow(), true);
 		
-		setTitle("Miscellaneous item entry");
+		setTitle(Messages.getString("MiscTicketItemDialog.0")); //$NON-NLS-1$
 		
 		initComponents();
 	}
@@ -55,43 +56,43 @@ public class MiscTicketItemDialog extends POSDialog {
 	 */
 	// <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:initComponents
 	private void initComponents() {
-		JPanel contentPane = new JPanel(new MigLayout("fillx", "", ""));
+		JPanel contentPane = new JPanel(new MigLayout("fillx", "", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 		TitlePanel titlePanel = new TitlePanel();
-		titlePanel.setTitle("Insert miscellaneous item");
-		contentPane.add(titlePanel, "grow, span");
+		titlePanel.setTitle(Messages.getString("MiscTicketItemDialog.4")); //$NON-NLS-1$
+		contentPane.add(titlePanel, "grow, span"); //$NON-NLS-1$
 
-		JLabel lblName = new JLabel("Item name");
-		contentPane.add(lblName, "newline,alignx trailing");
+		JLabel lblName = new JLabel(Messages.getString("MiscTicketItemDialog.6")); //$NON-NLS-1$
+		contentPane.add(lblName, "newline,alignx trailing"); //$NON-NLS-1$
 
 		tfItemName = new FixedLengthTextField(120);
-		contentPane.add(tfItemName, "grow, span, h 40");
+		contentPane.add(tfItemName, "grow, span, h 40"); //$NON-NLS-1$
 
-		JLabel lblPrice = new JLabel("Item price");
-		contentPane.add(lblPrice, "newline,alignx trailing");
+		JLabel lblPrice = new JLabel(Messages.getString("MiscTicketItemDialog.9")); //$NON-NLS-1$
+		contentPane.add(lblPrice, "newline,alignx trailing"); //$NON-NLS-1$
 
 		tfItemPrice = new DoubleTextField();
-		contentPane.add(tfItemPrice, "grow, w 120, h 40");
+		contentPane.add(tfItemPrice, "grow, w 120, h 40"); //$NON-NLS-1$
 
-		contentPane.add(new JLabel("Tax"), "alignx trailing");
+		contentPane.add(new JLabel(Messages.getString("MiscTicketItemDialog.12")), "alignx trailing"); //$NON-NLS-1$ //$NON-NLS-2$
 		
 		PosComboRenderer comboRenderer = new PosComboRenderer();
 		comboRenderer.setEnableDefaultValueShowing(false);
 
 		cbTax = new JComboBox();
 		cbTax.setRenderer(comboRenderer);
-		contentPane.add(cbTax, "w 200!, h 40");
+		contentPane.add(cbTax, "w 200!, h 40"); //$NON-NLS-1$
 
-		contentPane.add(new JLabel("Printer group"), "alignx trailing");
+		contentPane.add(new JLabel(Messages.getString("MiscTicketItemDialog.15")), "alignx trailing"); //$NON-NLS-1$ //$NON-NLS-2$
 
 		cbPrinterGroup = new JComboBox();
 		cbPrinterGroup.setRenderer(comboRenderer);
-		contentPane.add(cbPrinterGroup, "w 200!, h 40");
+		contentPane.add(cbPrinterGroup, "w 200!, h 40"); //$NON-NLS-1$
 		
 		QwertyKeyPad keyPad = new QwertyKeyPad();
-		contentPane.add(keyPad, "newline, grow, span, h 300!, gaptop 10");
+		contentPane.add(keyPad, "newline, grow, span, h 300!, gaptop 10"); //$NON-NLS-1$
 		
-		contentPane.add(new JSeparator(JSeparator.HORIZONTAL), "newline, grow, span, gaptop 10px");
+		contentPane.add(new JSeparator(JSeparator.HORIZONTAL), "newline, grow, span, gaptop 10px"); //$NON-NLS-1$
 		
 		btnOk = new com.floreantpos.swing.PosButton();
         btnOk.setText(com.floreantpos.POSConstants.OK.toUpperCase());
@@ -115,7 +116,7 @@ public class MiscTicketItemDialog extends POSDialog {
         buttonPanel.add(btnOk);
         buttonPanel.add(btnCancel);
         
-        contentPane.add(buttonPanel, "newline, grow, span");
+        contentPane.add(buttonPanel, "newline, grow, span"); //$NON-NLS-1$
 		
 		getContentPane().add(contentPane);
 		
@@ -152,12 +153,12 @@ public class MiscTicketItemDialog extends POSDialog {
 		String itemName = tfItemName.getText();
 		
 		if(StringUtils.isEmpty(itemName)) {
-			POSMessageDialog.showError(Application.getPosWindow(), "Please intsert item name");
+			POSMessageDialog.showError(Application.getPosWindow(), Messages.getString("MiscTicketItemDialog.1")); //$NON-NLS-1$
 			return;
 		}
 		
 		if(amount <= 0 || Double.isNaN(amount)) {
-			POSMessageDialog.showError(Application.getPosWindow(), "Please intsert valid item price");
+			POSMessageDialog.showError(Application.getPosWindow(), Messages.getString("MiscTicketItemDialog.22")); //$NON-NLS-1$
 			return;
 		}
 		
