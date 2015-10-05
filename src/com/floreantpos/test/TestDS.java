@@ -1,5 +1,6 @@
 package com.floreantpos.test;
 
+import com.floreantpos.Messages;
 import com.floreantpos.report.AbstractReportDataSource;
 
 public class TestDS extends AbstractReportDataSource {
@@ -7,7 +8,7 @@ public class TestDS extends AbstractReportDataSource {
 	
 
 	public TestDS() {
-		super(new String[] {"A","B"});
+		super(new String[] {Messages.getString("TestDS.0"),Messages.getString("TestDS.1")}); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 	
 	@Override
@@ -16,7 +17,7 @@ public class TestDS extends AbstractReportDataSource {
 	}
 
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		return "A";
+		return Messages.getString("TestDS.2"); //$NON-NLS-1$
 	}
 
 }

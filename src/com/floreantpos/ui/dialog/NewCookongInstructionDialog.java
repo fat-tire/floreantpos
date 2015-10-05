@@ -31,10 +31,10 @@ public class NewCookongInstructionDialog extends POSDialog implements ActionList
 		noteView = new NoteView();
 		btnOk = new PosButton(com.floreantpos.POSConstants.OK);
 		btnCancel = new PosButton(com.floreantpos.POSConstants.CANCEL);
-		add(noteView, "wrap, span, grow");
-		add(new JSeparator(), "wrap, span, grow");
-		add(btnOk, "al right,width 120, height 50");
-		add(btnCancel, "width 120, height 50");
+		add(noteView, "wrap, span, grow"); //$NON-NLS-1$
+		add(new JSeparator(), "wrap, span, grow"); //$NON-NLS-1$
+		add(btnOk, "al right,width 120, height 50"); //$NON-NLS-1$
+		add(btnCancel, "width 120, height 50"); //$NON-NLS-1$
 		
 		btnOk.addActionListener(this);
 		btnCancel.addActionListener(this);

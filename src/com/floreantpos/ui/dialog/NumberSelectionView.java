@@ -13,6 +13,7 @@ import javax.swing.JTextField;
 import net.miginfocom.swing.MigLayout;
 
 import com.floreantpos.IconFactory;
+import com.floreantpos.Messages;
 import com.floreantpos.POSConstants;
 import com.floreantpos.swing.PosButton;
 
@@ -23,7 +24,7 @@ public class NumberSelectionView extends JPanel implements ActionListener {
 	private String defaultValue;
 
 	public NumberSelectionView() {
-		MigLayout layout = new MigLayout("fillx", "[60px,fill][60px,fill][60px,fill]", "[][][][][]");
+		MigLayout layout = new MigLayout("fillx", "[60px,fill][60px,fill][60px,fill]", "[][][][][]"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		setLayout(layout);
 
 		tfNumber = new JTextField();
@@ -32,23 +33,23 @@ public class NumberSelectionView extends JPanel implements ActionListener {
 		tfNumber.requestFocus();
 		tfNumber.setBackground(Color.WHITE);
 
-		add(tfNumber, "span 2, grow");
+		add(tfNumber, "span 2, grow"); //$NON-NLS-1$
 
 		PosButton posButton = new PosButton(POSConstants.CLEAR_ALL);
 		posButton.setFocusable(false);
 		posButton.setMinimumSize(new Dimension(25, 23));
 		posButton.addActionListener(this);
-		add(posButton, "growy,height 55,wrap");
+		add(posButton, "growy,height 55,wrap"); //$NON-NLS-1$
 
-		String[][] numbers = { { "7", "8", "9" }, { "4", "5", "6" }, { "1", "2", "3" }, { ".", "0", "CLEAR" } };
-		String[][] iconNames = new String[][] { { "7.png", "8.png", "9.png" }, { "4.png", "5.png", "6.png" }, { "1.png", "2.png", "3.png" },
-				{ "dot.png", "0.png", "clear.png" } };
+		String[][] numbers = { { "7", "8", "9" }, { "4", "5", "6" }, { "1", "2", "3" }, { ".", "0", Messages.getString("NumberSelectionView.16") } }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$ //$NON-NLS-11$ //$NON-NLS-12$
+		String[][] iconNames = new String[][] { { "7.png", "8.png", "9.png" }, { "4.png", "5.png", "6.png" }, { "1.png", "2.png", "3.png" }, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$
+				{ "dot.png", "0.png", "clear.png" } }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 		for (int i = 0; i < numbers.length; i++) {
 			for (int j = 0; j < numbers[i].length; j++) {
 				posButton = new PosButton();
 				posButton.setFocusable(false);
-				ImageIcon icon = IconFactory.getIcon("/ui_icons/", iconNames[i][j]);
+				ImageIcon icon = IconFactory.getIcon("/ui_icons/", iconNames[i][j]); //$NON-NLS-1$
 				String buttonText = String.valueOf(numbers[i][j]);
 
 				if (icon == null) {
@@ -63,9 +64,9 @@ public class NumberSelectionView extends JPanel implements ActionListener {
 
 				posButton.setActionCommand(buttonText);
 				posButton.addActionListener(this);
-				String constraints = "grow, height 55";
+				String constraints = "grow, height 55"; //$NON-NLS-1$
 				if (j == numbers[i].length - 1) {
-					constraints += ", wrap";
+					constraints += ", wrap"; //$NON-NLS-1$
 				}
 				add(posButton, constraints);
 			}
@@ -85,7 +86,7 @@ public class NumberSelectionView extends JPanel implements ActionListener {
 		else if (actionCommand.equals(POSConstants.CLEAR)) {
 			doClear();
 		}
-		else if (actionCommand.equals(".")) {
+		else if (actionCommand.equals(".")) { //$NON-NLS-1$
 			doInsertDot();
 		}
 		else {
@@ -132,7 +133,7 @@ public class NumberSelectionView extends JPanel implements ActionListener {
 	}
 
 	private void doInsertDot() {
-		String string = tfNumber.getText() + ".";
+		String string = tfNumber.getText() + "."; //$NON-NLS-1$
 		if (!validate(string)) {
 			POSMessageDialog.showError(this, POSConstants.INVALID_NUMBER);
 			return;

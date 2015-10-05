@@ -93,10 +93,10 @@ public class TicketListView extends JPanel implements ITicketList {
 
 	private void createScrollPane() {
 		btnOrderFilters = new POSToggleButton();
-		btnOrderFilters.setText("<html>" + Messages.getString("SwitchboardView.2") + "</html>");
-		btnRefresh = new PosBlinkButton("REFRESH");
-		btnPrevious = new PosButton("PREVIOUS");
-		btnNext = new PosButton("NEXT");
+		btnOrderFilters.setText("<html>" + Messages.getString("SwitchboardView.2") + "</html>"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		btnRefresh = new PosBlinkButton(Messages.getString("TicketListView.3")); //$NON-NLS-1$
+		btnPrevious = new PosButton(Messages.getString("TicketListView.4")); //$NON-NLS-1$
+		btnNext = new PosButton(Messages.getString("TicketListView.5")); //$NON-NLS-1$
 
 		createActionHandlers();
 
@@ -317,7 +317,7 @@ public class TicketListView extends JPanel implements ITicketList {
 						return customerPhone;
 					}
 
-					return "Guest";
+					return Messages.getString("TicketListView.6"); //$NON-NLS-1$
 
 				case 5:
 					return ticket.getDeliveryDate();
@@ -326,27 +326,27 @@ public class TicketListView extends JPanel implements ITicketList {
 					return ticket.getType();
 
 				case 7:
-					String status = "";
+					String status = ""; //$NON-NLS-1$
 					if (ticket.isPaid()) {
-						status = "PAID";
+						status = Messages.getString("TicketListView.8"); //$NON-NLS-1$
 					}
 					else {
-						status = "OPEN";
+						status = Messages.getString("TicketListView.9"); //$NON-NLS-1$
 					}
 
 					if (ticket.getType() == OrderType.HOME_DELIVERY) {
 						if (ticket.getAssignedDriver() == null) {
-							status += " (DRIVER NOT ASSIGNED)";
+							status += Messages.getString("TicketListView.10"); //$NON-NLS-1$
 						}
 
-						status += " (DRIVER ASSIGNED)";
+						status += Messages.getString("TicketListView.11"); //$NON-NLS-1$
 					}
 
 					if (ticket.isVoided()) {
-						status = "VOID";
+						status = Messages.getString("TicketListView.12"); //$NON-NLS-1$
 					}
 					else if (ticket.isClosed()) {
-						status += " (CLOSED)";
+						status += Messages.getString("TicketListView.13"); //$NON-NLS-1$
 					}
 
 					return status;
@@ -368,7 +368,7 @@ public class TicketListView extends JPanel implements ITicketList {
 		List<Ticket> selectedTickets = getSelectedTickets();
 
 		if (selectedTickets.size() == 0 || selectedTickets.size() > 1) {
-			POSMessageDialog.showMessage("Please select a ticket");
+			POSMessageDialog.showMessage(Messages.getString("TicketListView.14")); //$NON-NLS-1$
 			return null;
 		}
 

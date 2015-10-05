@@ -8,6 +8,7 @@ package com.floreantpos.ui.dialog;
 
 import java.util.Date;
 
+import com.floreantpos.Messages;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.ActionHistory;
 import com.floreantpos.model.PayOutTransaction;
@@ -30,7 +31,7 @@ public class PayoutDialog extends POSDialog {
 	public PayoutDialog() {
 		initComponents();
 
-		setTitle(Application.getTitle() + ": PAY OUT");
+		setTitle(Application.getTitle() + ": PAY OUT"); //$NON-NLS-1$
 
 		payOutView.initialize();
 	}
@@ -114,8 +115,8 @@ public class PayoutDialog extends POSDialog {
 			setCanceled(false);
 			
 //			PAYOUT ACTION
-			String actionMessage = "";
-			actionMessage += "TOTAL" + ":" + NumberUtil.formatNumber(payoutAmount);
+			String actionMessage = ""; //$NON-NLS-1$
+			actionMessage += Messages.getString("PayoutDialog.2") + ":" + NumberUtil.formatNumber(payoutAmount); //$NON-NLS-1$ //$NON-NLS-2$
 			ActionHistoryDAO.getInstance().saveHistory(Application.getCurrentUser(), ActionHistory.PAY_OUT, actionMessage);
 			
 			dispose();

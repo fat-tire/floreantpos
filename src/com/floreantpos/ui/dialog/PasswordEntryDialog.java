@@ -23,6 +23,7 @@ import javax.swing.border.EmptyBorder;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.floreantpos.Messages;
 import com.floreantpos.POSConstants;
 import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.main.Application;
@@ -105,7 +106,7 @@ public class PasswordEntryDialog extends POSDialog implements ActionListener {
 			public void keyReleased(KeyEvent e) {
 				String secretKey = getPasswordAsString();
 				if (secretKey != null && secretKey.length() == TerminalConfig.getDefaultPassLen()) {
-					statusLabel.setText("");
+					statusLabel.setText(""); //$NON-NLS-1$
 					if(checkLogin(secretKey)) {
 						setCanceled(false);
 						dispose();
@@ -129,9 +130,9 @@ public class PasswordEntryDialog extends POSDialog implements ActionListener {
 	private JPanel createKeyboardPanel() {
 		JPanel buttonPanel = new JPanel(new GridLayout(0, 3, 5, 5));
 
-		String[][] numbers = { { "7", "8", "9" }, { "4", "5", "6" }, { "1", "2", "3" }, { "0", "CLEAR", "CLEAR ALL" } };
-		String[][] iconNames = new String[][] { { "7.png", "8.png", "9.png" }, { "4.png", "5.png", "6.png" }, { "1.png", "2.png", "3.png" },
-				{ "0.png", "clear.png", "clear.png" } };
+		String[][] numbers = { { "7", "8", "9" }, { "4", "5", "6" }, { "1", "2", "3" }, { "0", Messages.getString("PasswordEntryDialog.11"), Messages.getString("PasswordEntryDialog.12") } }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$ //$NON-NLS-11$ //$NON-NLS-12$
+		String[][] iconNames = new String[][] { { "7.png", "8.png", "9.png" }, { "4.png", "5.png", "6.png" }, { "1.png", "2.png", "3.png" }, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$
+				{ "0.png", "clear.png", "clear.png" } }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 		Dimension size = new Dimension(120, 80);
 
@@ -140,7 +141,7 @@ public class PasswordEntryDialog extends POSDialog implements ActionListener {
 				String buttonText = String.valueOf(numbers[i][j]);
 
 				PosButton posButton = new PosButton();
-				if (buttonText.startsWith("CLEAR")) {
+				if (buttonText.startsWith(Messages.getString("PasswordEntryDialog.25"))) { //$NON-NLS-1$
 					posButton.setText(buttonText);
 					posButton.addActionListener(this);
 				}
@@ -148,7 +149,7 @@ public class PasswordEntryDialog extends POSDialog implements ActionListener {
 					posButton.setAction(loginAction);
 				}
 
-				ImageIcon icon = com.floreantpos.IconFactory.getIcon("/ui_icons/", iconNames[i][j]);
+				ImageIcon icon = com.floreantpos.IconFactory.getIcon("/ui_icons/", iconNames[i][j]); //$NON-NLS-1$
 				if (icon != null) {
 					posButton.setIcon(icon);
 				}
@@ -196,12 +197,12 @@ public class PasswordEntryDialog extends POSDialog implements ActionListener {
 	}
 
 	private void doClearAll() {
-		statusLabel.setText("");
-		tfPassword.setText("");
+		statusLabel.setText(""); //$NON-NLS-1$
+		tfPassword.setText(""); //$NON-NLS-1$
 	}
 
 	private void doClear() {
-		statusLabel.setText("");
+		statusLabel.setText(""); //$NON-NLS-1$
 		String passwordAsString = getPasswordAsString();
 		if (StringUtils.isNotEmpty(passwordAsString)) {
 			passwordAsString = passwordAsString.substring(0, passwordAsString.length() - 1);
@@ -287,7 +288,7 @@ public class PasswordEntryDialog extends POSDialog implements ActionListener {
 	private synchronized boolean checkLogin(String secretKey) {
 		user = UserDAO.getInstance().findUserBySecretKey(secretKey);
 		if (user == null) {
-			statusLabel.setText("Wrong password, please try again.");
+			statusLabel.setText(Messages.getString("PasswordEntryDialog.30")); //$NON-NLS-1$
 			return false;
 		}
 
@@ -300,7 +301,7 @@ public class PasswordEntryDialog extends POSDialog implements ActionListener {
 
 			String secretKey = getPasswordAsString();
 			if (secretKey != null && secretKey.length() == TerminalConfig.getDefaultPassLen()) {
-				statusLabel.setText("");
+				statusLabel.setText(""); //$NON-NLS-1$
 				if(checkLogin(secretKey)) {
 					setCanceled(false);
 					dispose();

@@ -14,6 +14,7 @@ import javax.swing.JLabel;
 
 import net.miginfocom.swing.MigLayout;
 
+import com.floreantpos.Messages;
 import com.floreantpos.PosException;
 import com.floreantpos.model.User;
 import com.floreantpos.model.UserType;
@@ -42,8 +43,8 @@ public class UserForm extends BeanEditor {
 
 		cbUserType.setModel(new DefaultComboBoxModel(userTypes.toArray()));
 
-		chkDriver = new JCheckBox("Driver");
-		add(chkDriver, "cell 1 9");
+		chkDriver = new JCheckBox(Messages.getString("UserForm.0")); //$NON-NLS-1$
+		add(chkDriver, "cell 1 9"); //$NON-NLS-1$
 	}
 
 	/**
@@ -60,9 +61,9 @@ public class UserForm extends BeanEditor {
 		jLabel4 = new javax.swing.JLabel();
 		jLabel9 = new javax.swing.JLabel();
 		jLabel10 = new javax.swing.JLabel();
-		tfPassword1 = new javax.swing.JPasswordField(new FixedLengthDocument(4), "", 10);
+		tfPassword1 = new javax.swing.JPasswordField(new FixedLengthDocument(4), "", 10); //$NON-NLS-1$
 		tfPassword1.setColumns(16);
-		tfPassword2 = new javax.swing.JPasswordField(new FixedLengthDocument(4), "", 10);
+		tfPassword2 = new javax.swing.JPasswordField(new FixedLengthDocument(4), "", 10); //$NON-NLS-1$
 		tfPassword2.setColumns(16);
 		tfId = new FixedLengthTextField();
 		tfSsn = new FixedLengthTextField();
@@ -78,49 +79,49 @@ public class UserForm extends BeanEditor {
 		tfCostPerHour = new DoubleTextField();
 		jLabel6 = new javax.swing.JLabel();
 		cbUserType = new javax.swing.JComboBox();
-		setLayout(new MigLayout("", "[134px][204px,grow]", "[19px][][19px][19px][19px][19px][19px][19px][24px][]"));
+		setLayout(new MigLayout("", "[134px][204px,grow]", "[19px][][19px][19px][19px][19px][19px][19px][24px][]")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
-		jLabel1.setText("ID");
-		add(jLabel1, "cell 0 0,alignx trailing,aligny center");
+		jLabel1.setText(Messages.getString("UserForm.7")); //$NON-NLS-1$
+		add(jLabel1, "cell 0 0,alignx trailing,aligny center"); //$NON-NLS-1$
 
-		lblPhone = new JLabel("Phone");
-		add(lblPhone, "cell 0 1,alignx trailing");
+		lblPhone = new JLabel(Messages.getString("UserForm.9")); //$NON-NLS-1$
+		add(lblPhone, "cell 0 1,alignx trailing"); //$NON-NLS-1$
 
 		tfPhone = new FixedLengthTextField();
 		tfPhone.setLength(20);
 		tfPhone.setColumns(20);
-		add(tfPhone, "cell 1 1,growx");
+		add(tfPhone, "cell 1 1,growx"); //$NON-NLS-1$
 
-		jLabel2.setText("SSN");
-		add(jLabel2, "cell 0 2,alignx trailing,aligny center");
+		jLabel2.setText("SSN"); //$NON-NLS-1$
+		add(jLabel2, "cell 0 2,alignx trailing,aligny center"); //$NON-NLS-1$
 
-		jLabel3.setText("First Name");
-		add(jLabel3, "cell 0 3,alignx trailing,aligny center");
+		jLabel3.setText(Messages.getString("UserForm.14")); //$NON-NLS-1$
+		add(jLabel3, "cell 0 3,alignx trailing,aligny center"); //$NON-NLS-1$
 
-		jLabel4.setText("Last Name");
-		add(jLabel4, "cell 0 4,alignx trailing,aligny center");
+		jLabel4.setText(Messages.getString("UserForm.16")); //$NON-NLS-1$
+		add(jLabel4, "cell 0 4,alignx trailing,aligny center"); //$NON-NLS-1$
 
-		jLabel9.setText("Secret Key");
-		add(jLabel9, "cell 0 5,alignx trailing,aligny center");
+		jLabel9.setText(Messages.getString("UserForm.18")); //$NON-NLS-1$
+		add(jLabel9, "cell 0 5,alignx trailing,aligny center"); //$NON-NLS-1$
 
-		jLabel10.setText("Confirm Secret Key");
-		add(jLabel10, "cell 0 6,alignx trailing,aligny center");
-		add(tfPassword1, "cell 1 5,growx,aligny center");
-		add(tfPassword2, "cell 1 6,growx,aligny center");
-		add(tfId, "cell 1 0,growx,aligny center");
-		add(tfSsn, "cell 1 2,aligny center");
-		add(tfFirstName, "cell 1 3,growx,aligny center");
-		add(tfLastName, "cell 1 4,growx,aligny center");
+		jLabel10.setText(Messages.getString("UserForm.20")); //$NON-NLS-1$
+		add(jLabel10, "cell 0 6,alignx trailing,aligny center"); //$NON-NLS-1$
+		add(tfPassword1, "cell 1 5,growx,aligny center"); //$NON-NLS-1$
+		add(tfPassword2, "cell 1 6,growx,aligny center"); //$NON-NLS-1$
+		add(tfId, "cell 1 0,growx,aligny center"); //$NON-NLS-1$
+		add(tfSsn, "cell 1 2,aligny center"); //$NON-NLS-1$
+		add(tfFirstName, "cell 1 3,growx,aligny center"); //$NON-NLS-1$
+		add(tfLastName, "cell 1 4,growx,aligny center"); //$NON-NLS-1$
 
-		jLabel5.setText("Cost Per Hour");
-		add(jLabel5, "cell 0 7,alignx trailing,aligny center");
-		add(tfCostPerHour, "cell 1 7,growx,aligny center");
+		jLabel5.setText(Messages.getString("UserForm.28")); //$NON-NLS-1$
+		add(jLabel5, "cell 0 7,alignx trailing,aligny center"); //$NON-NLS-1$
+		add(tfCostPerHour, "cell 1 7,growx,aligny center"); //$NON-NLS-1$
 
-		jLabel6.setText("User Type");
-		add(jLabel6, "cell 0 8,alignx trailing,aligny center");
+		jLabel6.setText(Messages.getString("UserForm.31")); //$NON-NLS-1$
+		add(jLabel6, "cell 0 8,alignx trailing,aligny center"); //$NON-NLS-1$
 
-		cbUserType.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Manager", "Cashier", "Server" }));
-		add(cbUserType, "cell 1 8,growx,aligny center");
+		cbUserType.setModel(new javax.swing.DefaultComboBoxModel(new String[] { Messages.getString("UserForm.33"), Messages.getString("UserForm.34"), Messages.getString("UserForm.35") })); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		add(cbUserType, "cell 1 8,growx,aligny center"); //$NON-NLS-1$
 	}// </editor-fold>//GEN-END:initComponents
 
 	// Variables declaration - do not modify//GEN-BEGIN:variables
@@ -146,9 +147,9 @@ public class UserForm extends BeanEditor {
 	@Override
 	public String getDisplayText() {
 		if (isEditMode())
-			return "Edit User";
+			return Messages.getString("UserForm.37"); //$NON-NLS-1$
 
-		return "Add new user";
+		return Messages.getString("UserForm.38"); //$NON-NLS-1$
 	}
 
 	private boolean editMode;
@@ -170,7 +171,7 @@ public class UserForm extends BeanEditor {
 
 		if (!editMode) {
 			if (userDAO.isUserExist(user.getUserId())) {
-				POSMessageDialog.showError(this, "User with ID: " + user.getUserId() + " already exists.");
+				POSMessageDialog.showError(this, Messages.getString("UserForm.39") + user.getUserId() + " already exists."); //$NON-NLS-1$
 				return false;
 			}
 		}
@@ -182,7 +183,7 @@ public class UserForm extends BeanEditor {
 			x.printStackTrace();
 			return false;
 		} catch (Exception x) {
-			POSMessageDialog.showError(this, "Could not save user", x);
+			POSMessageDialog.showError(this, Messages.getString("UserForm.41"), x); //$NON-NLS-1$
 			x.printStackTrace();
 			return false;
 		}
@@ -204,7 +205,7 @@ public class UserForm extends BeanEditor {
 		try {
 			id = Integer.parseInt(tfId.getText());
 		} catch (Exception x) {
-			throw new IllegalModelStateException("ID is not valid");
+			throw new IllegalModelStateException(Messages.getString("UserForm.42")); //$NON-NLS-1$
 		}
 
 		String ssn = tfSsn.getText();
@@ -214,25 +215,25 @@ public class UserForm extends BeanEditor {
 		String secretKey2 = new String(tfPassword2.getPassword());
 
 		if (POSUtil.isBlankOrNull(firstName)) {
-			throw new IllegalModelStateException("First name cannot be empty");
+			throw new IllegalModelStateException(Messages.getString("UserForm.43")); //$NON-NLS-1$
 		}
 		if (POSUtil.isBlankOrNull(lastName)) {
-			throw new IllegalModelStateException("Last name cannot be empty");
+			throw new IllegalModelStateException(Messages.getString("UserForm.44")); //$NON-NLS-1$
 		}
 		if (POSUtil.isBlankOrNull(secretKey1)) {
-			throw new IllegalModelStateException("Secret key cannot be empty");
+			throw new IllegalModelStateException(Messages.getString("UserForm.45")); //$NON-NLS-1$
 		}
 		if (POSUtil.isBlankOrNull(secretKey2)) {
-			throw new IllegalModelStateException("Secret key cannot be empty");
+			throw new IllegalModelStateException(Messages.getString("UserForm.46")); //$NON-NLS-1$
 		}
 		if (!secretKey1.equals(secretKey2)) {
-			throw new IllegalModelStateException("Secret key did not match");
+			throw new IllegalModelStateException(Messages.getString("UserForm.47")); //$NON-NLS-1$
 		}
 
 		if (!isEditMode()) {
 			User userBySecretKey = UserDAO.getInstance().findUserBySecretKey(secretKey1);
 			if (userBySecretKey != null) {
-				throw new IllegalModelStateException("Secret key must be unique. An user with the secret key already exists.");
+				throw new IllegalModelStateException(Messages.getString("UserForm.48")); //$NON-NLS-1$
 			}
 		}
 
@@ -241,7 +242,7 @@ public class UserForm extends BeanEditor {
 		try {
 			cost = Double.parseDouble(tfCostPerHour.getText());
 		} catch (Exception x) {
-			throw new IllegalModelStateException("Cost per hour for " + firstName + " " + lastName + " is not valid.");
+			throw new IllegalModelStateException(Messages.getString("UserForm.49") + firstName + " " + lastName + " is not valid."); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 
 		user.setType((UserType) cbUserType.getSelectedItem());
@@ -273,13 +274,13 @@ public class UserForm extends BeanEditor {
 			tfId.setText(String.valueOf(data.getUserId()));
 		}
 		else {
-			tfId.setText("");
+			tfId.setText(""); //$NON-NLS-1$
 		}
 		if (data.getSsn() != null) {
 			tfSsn.setText(data.getSsn());
 		}
 		else {
-			tfSsn.setText("");
+			tfSsn.setText(""); //$NON-NLS-1$
 		}
 		tfFirstName.setText(data.getFirstName());
 		tfLastName.setText(data.getLastName());

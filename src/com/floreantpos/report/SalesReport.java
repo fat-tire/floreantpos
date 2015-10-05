@@ -15,6 +15,7 @@ import net.sf.jasperreports.view.JRViewer;
 
 import org.jdesktop.swingx.calendar.DateUtils;
 
+import com.floreantpos.Messages;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketItem;
@@ -38,24 +39,24 @@ public class SalesReport extends Report {
 		SalesReportModel itemReportModel = this.itemReportModel;
 		SalesReportModel modifierReportModel = this.modifierReportModel;
 
-		JasperReport itemReport = ReportUtil.getReport("sales_sub_report");
-		JasperReport modifierReport = ReportUtil.getReport("sales_sub_report");
+		JasperReport itemReport = ReportUtil.getReport("sales_sub_report"); //$NON-NLS-1$
+		JasperReport modifierReport = ReportUtil.getReport("sales_sub_report"); //$NON-NLS-1$
 
 		HashMap map = new HashMap();
 		ReportUtil.populateRestaurantProperties(map);
-		map.put("reportTitle", "================================= Sales Report ================================");
-		map.put("reportTime", ReportService.formatFullDate(new Date()));
-		map.put("dateRange", ReportService.formatShortDate(getStartDate()) + " to " + ReportService.formatShortDate(getEndDate()));
-		map.put("terminalName", com.floreantpos.POSConstants.ALL);
-		map.put("itemDataSource", new JRTableModelDataSource(itemReportModel));
-		map.put("modifierDataSource", new JRTableModelDataSource(modifierReportModel));
-		map.put("currencySymbol", Application.getCurrencySymbol());
-		map.put("itemGrandTotal", itemReportModel.getGrandTotalAsString());
-		map.put("modifierGrandTotal", modifierReportModel.getGrandTotalAsString());
-		map.put("itemReport", itemReport);
-		map.put("modifierReport", modifierReport);
+		map.put("reportTitle", Messages.getString("SalesReport.3")); //$NON-NLS-1$ //$NON-NLS-2$
+		map.put("reportTime", ReportService.formatFullDate(new Date())); //$NON-NLS-1$
+		map.put("dateRange", ReportService.formatShortDate(getStartDate()) + " to " + ReportService.formatShortDate(getEndDate())); //$NON-NLS-1$ //$NON-NLS-2$
+		map.put("terminalName", com.floreantpos.POSConstants.ALL); //$NON-NLS-1$
+		map.put("itemDataSource", new JRTableModelDataSource(itemReportModel)); //$NON-NLS-1$
+		map.put("modifierDataSource", new JRTableModelDataSource(modifierReportModel)); //$NON-NLS-1$
+		map.put("currencySymbol", Application.getCurrencySymbol()); //$NON-NLS-1$
+		map.put("itemGrandTotal", itemReportModel.getGrandTotalAsString()); //$NON-NLS-1$
+		map.put("modifierGrandTotal", modifierReportModel.getGrandTotalAsString()); //$NON-NLS-1$
+		map.put("itemReport", itemReport); //$NON-NLS-1$
+		map.put("modifierReport", modifierReport); //$NON-NLS-1$
 
-		JasperReport masterReport = ReportUtil.getReport("sales_report");
+		JasperReport masterReport = ReportUtil.getReport("sales_report"); //$NON-NLS-1$
 
 		JasperPrint print = JasperFillManager.fillReport(masterReport, map, new JREmptyDataSource());
 		viewer = new JRViewer(print);

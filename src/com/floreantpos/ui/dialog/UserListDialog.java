@@ -53,7 +53,7 @@ public class UserListDialog extends POSDialog {
 
         transparentPanel1.setLayout(new java.awt.BorderLayout());
 
-        btnOk.setIcon(IconFactory.getIcon("/ui_icons/", "finish.png"));
+        btnOk.setIcon(IconFactory.getIcon("/ui_icons/", "finish.png")); //$NON-NLS-1$ //$NON-NLS-2$
         btnOk.setText(com.floreantpos.POSConstants.OK);
         btnOk.setPreferredSize(new java.awt.Dimension(120, 50));
         btnOk.addActionListener(new java.awt.event.ActionListener() {
@@ -64,7 +64,7 @@ public class UserListDialog extends POSDialog {
 
         transparentPanel2.add(btnOk);
 
-        btnCancel.setIcon(IconFactory.getIcon("/ui_icons/", "cancel.png"));
+        btnCancel.setIcon(IconFactory.getIcon("/ui_icons/", "cancel.png")); //$NON-NLS-1$ //$NON-NLS-2$
         btnCancel.setText(com.floreantpos.POSConstants.CANCEL);
         btnCancel.setPreferredSize(new java.awt.Dimension(120, 50));
         btnCancel.addActionListener(new java.awt.event.ActionListener() {
@@ -81,7 +81,7 @@ public class UserListDialog extends POSDialog {
 
         getContentPane().add(transparentPanel1, java.awt.BorderLayout.SOUTH);
 
-        cbUserList.setFont(new java.awt.Font("Tahoma", 1, 18));
+        cbUserList.setFont(new java.awt.Font("Tahoma", 1, 18)); //$NON-NLS-1$
 
         org.jdesktop.layout.GroupLayout transparentPanel3Layout = new org.jdesktop.layout.GroupLayout(transparentPanel3);
         transparentPanel3.setLayout(transparentPanel3Layout);

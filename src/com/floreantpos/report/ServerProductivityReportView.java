@@ -84,7 +84,7 @@ public class ServerProductivityReportView extends JPanel {
 		ServerProductivityReport report = reportService.getServerProductivityReport(fromDate, toDate);
 		
 		HashMap<String, String> map = new HashMap<String, String>();
-		map.put("reportTitle", "========= SERVER PRODUCTIVITY REPORT =========="); //$NON-NLS-1$
+		map.put("reportTitle", Messages.getString("ServerProductivityReportView.0")); //$NON-NLS-1$ //$NON-NLS-2$
 		map.put("fromDate", ReportService.formatShortDate(fromDate)); //$NON-NLS-1$
 		map.put("toDate", ReportService.formatShortDate(toDate)); //$NON-NLS-1$
 		map.put("reportTime", ReportService.formatFullDate(new Date())); //$NON-NLS-1$

@@ -77,7 +77,7 @@ public class TitlePanel extends com.floreantpos.swing.TransparentPanel {
     }
     
     private Color getTitleColor(){
-        return UIManager.getColor("TitledBorder.titleColor");
+        return UIManager.getColor("TitledBorder.titleColor"); //$NON-NLS-1$
     }
 
 	public String getTitle() {
