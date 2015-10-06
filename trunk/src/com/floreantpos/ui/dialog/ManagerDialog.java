@@ -52,7 +52,7 @@ public class ManagerDialog extends JDialog {
 		initComponents();
 
 		setIconImage(Application.getPosWindow().getIconImage());
-		setTitle(Application.getTitle() + ": " + "Manager Functions");
+		setTitle(Application.getTitle() + ": " + Messages.getString("ManagerDialog.2")); //$NON-NLS-1$ //$NON-NLS-2$
 
 		glassPane = new GlassPane();
 		setGlassPane(glassPane);

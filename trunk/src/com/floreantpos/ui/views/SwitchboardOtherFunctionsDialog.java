@@ -10,6 +10,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 
+import com.floreantpos.Messages;
 import com.floreantpos.POSConstants;
 import com.floreantpos.demo.KitchenDisplayWindow;
 import com.floreantpos.extension.FloorLayoutPlugin;
@@ -41,7 +42,7 @@ public class SwitchboardOtherFunctionsDialog extends POSDialog implements Action
 		super();
 		this.switchboardView = switchboardView;
 		
-		setTitle("OTHER FUNCTIONS");
+		setTitle(Messages.getString("SwitchboardOtherFunctionsDialog.0")); //$NON-NLS-1$
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setSize(800, 400);
 		

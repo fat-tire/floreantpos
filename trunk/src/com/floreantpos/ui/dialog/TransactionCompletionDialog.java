@@ -61,7 +61,7 @@ public class TransactionCompletionDialog extends POSDialog {
 
 		add(new JSeparator(), "newline,span, grow"); //$NON-NLS-1$
 
-		add(createLabel(Messages.getString("TransactionCompletionDialog.25") + ":", JLabel.LEFT), "newline,grow"); //$NON-NLS-1$ //$NON-NLS-3$
+		add(createLabel(Messages.getString("TransactionCompletionDialog.25") + ":", JLabel.LEFT), "newline,grow"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		lblGratuityAmount = createLabel("0.0", JLabel.RIGHT); //$NON-NLS-1$
 		add(lblGratuityAmount, "span, grow"); //$NON-NLS-1$
 

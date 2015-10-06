@@ -6,6 +6,8 @@ import java.awt.Component;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import com.floreantpos.Messages;
+
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.swing.JRViewerPanel;
 
@@ -34,6 +36,6 @@ public class TicketReceiptView extends JPanel {
 			}
 		}
 		
-		throw new RuntimeException("Report viewing component could not be found.");
+		throw new RuntimeException(Messages.getString("TicketReceiptView.0")); //$NON-NLS-1$
 	}
 }

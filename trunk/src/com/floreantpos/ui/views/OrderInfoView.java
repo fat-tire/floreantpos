@@ -26,14 +26,14 @@ public class OrderInfoView extends JPanel {
 	}
 	
 	private void createUI() throws Exception {
-		JPanel reportPanel = new JPanel(new MigLayout("wrap 1, ax 50%", "", ""));
+		JPanel reportPanel = new JPanel(new MigLayout("wrap 1, ax 50%", "", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		PosScrollPane scrollPane = new PosScrollPane(reportPanel);
 		scrollPane.getVerticalScrollBar().setUnitIncrement(20);
 
 		for (int i = 0; i < tickets.size(); i++) {
 			Ticket ticket = (Ticket) tickets.get(i);
 			
-			TicketPrintProperties printProperties = new TicketPrintProperties("*** ORDER " + ticket.getId() + " ***", false, true, true);
+			TicketPrintProperties printProperties = new TicketPrintProperties("*** ORDER " + ticket.getId() + " ***", false, true, true); //$NON-NLS-1$ //$NON-NLS-2$
 			HashMap map = ReceiptPrintService.populateTicketProperties(ticket, printProperties, null);
 			JasperPrint jasperPrint = ReceiptPrintService.createPrint(ticket, map, null);
 

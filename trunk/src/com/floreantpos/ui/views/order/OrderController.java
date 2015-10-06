@@ -2,6 +2,7 @@ package com.floreantpos.ui.views.order;
 
 import java.util.Date;
 
+import com.floreantpos.Messages;
 import com.floreantpos.POSConstants;
 import com.floreantpos.actions.SettleTicketAction;
 import com.floreantpos.config.TerminalConfig;
@@ -101,9 +102,9 @@ public class OrderController implements OrderListener, CategorySelectionListener
 		new SettleTicketAction(ticket.getId()).execute();
 		
 		if(TerminalConfig.isCashierMode()) {
-			String message = "Ticket no " + ticket.getId() + " saved. What do you want to do next?";
+			String message = Messages.getString("OrderController.0") + ticket.getId() + Messages.getString("OrderController.1"); //$NON-NLS-1$ //$NON-NLS-2$
 			if(ticket.isPaid()) {
-				message = "Ticket no " + ticket.getId() + " paid. What do you want to do next?";
+				message = Messages.getString("OrderController.2") + ticket.getId() + Messages.getString("OrderController.3"); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 			
 			OrderUtil.createNewTakeOutOrder(OrderType.TAKE_OUT);
@@ -133,10 +134,10 @@ public class OrderController implements OrderListener, CategorySelectionListener
 		if (newTicket) {
 			ShopTableDAO.getInstance().occupyTables(ticket);
 			
-			actionHistoryDAO.saveHistory(user, ActionHistory.NEW_CHECK, POSConstants.RECEIPT_REPORT_TICKET_NO_LABEL + ":" + ticket.getId());
+			actionHistoryDAO.saveHistory(user, ActionHistory.NEW_CHECK, POSConstants.RECEIPT_REPORT_TICKET_NO_LABEL + ":" + ticket.getId()); //$NON-NLS-1$
 		}
 		else {
-			actionHistoryDAO.saveHistory(user, ActionHistory.EDIT_CHECK, POSConstants.RECEIPT_REPORT_TICKET_NO_LABEL + ":" + ticket.getId());
+			actionHistoryDAO.saveHistory(user, ActionHistory.EDIT_CHECK, POSConstants.RECEIPT_REPORT_TICKET_NO_LABEL + ":" + ticket.getId()); //$NON-NLS-1$
 		}
 	}
 	

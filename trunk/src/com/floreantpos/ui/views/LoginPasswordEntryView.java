@@ -29,6 +29,7 @@ import net.miginfocom.swing.MigLayout;
 
 import org.apache.commons.logging.LogFactory;
 
+import com.floreantpos.Messages;
 import com.floreantpos.actions.ClockInOutAction;
 import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.config.ui.DatabaseConfigurationDialog;
@@ -73,15 +74,15 @@ class LoginPasswordEntryView extends JPanel {
 
 		buttonPanel.setOpaque(false);
 		buttonPanel.setPreferredSize(new java.awt.Dimension(200, 180));
-		buttonPanel.setLayout(new MigLayout("", "[111px][111px][111px,grow]", "[60px][60px][60px][60px]"));
+		buttonPanel.setLayout(new MigLayout("", "[111px][111px][111px,grow]", "[60px][60px][60px][60px]")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
-		lblTerminalId = new JLabel("TERMINAL ID:");
+		lblTerminalId = new JLabel("TERMINAL ID:"); //$NON-NLS-1$
 		lblTerminalId.setForeground(Color.BLACK);
-		lblTerminalId.setFont(new Font("Dialog", Font.BOLD, 18));
+		lblTerminalId.setFont(new Font("Dialog", Font.BOLD, 18)); //$NON-NLS-1$
 		lblTerminalId.setHorizontalAlignment(SwingConstants.CENTER);
 		add(lblTerminalId, BorderLayout.NORTH);
 
-		bottomPanel.setLayout(new MigLayout("hidemode 3, fill"));
+		bottomPanel.setLayout(new MigLayout("hidemode 3, fill")); //$NON-NLS-1$
 		bottomPanel.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
 		
 		ButtonGroup buttonGroup = new ButtonGroup();
@@ -111,7 +112,7 @@ class LoginPasswordEntryView extends JPanel {
 //		modePanel.add(btnCashierMode);
 		modePanel.add(btnKitchenMode);
 		
-		bottomPanel.add(modePanel, "h 60!, grow, wrap");
+		bottomPanel.add(modePanel, "h 60!, grow, wrap"); //$NON-NLS-1$
 
 		psbtnLogin = new PosButton();
 		psbtnLogin.addActionListener(new ActionListener() {
@@ -119,7 +120,7 @@ class LoginPasswordEntryView extends JPanel {
 				doLogin();
 			}
 		});
-		psbtnLogin.setText("LOGIN");
+		psbtnLogin.setText("LOGIN"); //$NON-NLS-1$
 		bottomPanel.add(psbtnLogin, "grow, wrap, gapbottom 20px");
 		
 		PosButton btnClockOUt = new PosButton(new ClockInOutAction(false, true));
@@ -130,8 +131,8 @@ class LoginPasswordEntryView extends JPanel {
 			btnConfigureDatabase.setAction(goAction);
 			btnConfigureDatabase.setText(com.floreantpos.POSConstants.CONFIGURE_DATABASE);
 			btnConfigureDatabase.setFocusable(false);
-			btnConfigureDatabase.setActionCommand("DBCONFIG");
-			bottomPanel.add(btnConfigureDatabase, "grow, wrap, h 60!");
+			btnConfigureDatabase.setActionCommand("DBCONFIG"); //$NON-NLS-1$
+			bottomPanel.add(btnConfigureDatabase, "grow, wrap, h 60!"); //$NON-NLS-1$
 		}
 
 		btnShutdown.setAction(goAction);
@@ -147,15 +148,15 @@ class LoginPasswordEntryView extends JPanel {
 			}
 		}
 		
-		bottomPanel.add(btnShutdown, "grow, wrap, h 60!");
+		bottomPanel.add(btnShutdown, "grow, wrap, h 60!"); //$NON-NLS-1$
 		add(bottomPanel, BorderLayout.SOUTH);
 
-		lblTerminalId.setText("");
+		lblTerminalId.setText(""); //$NON-NLS-1$
 	}// </editor-fold>//GEN-END:initComponents
 
 	public synchronized void doLogin() {
 		try {
-			final User user = PasswordEntryDialog.getUser(Application.getPosWindow(), "LOGIN", "ENTER SECRET KEY");
+			final User user = PasswordEntryDialog.getUser(Application.getPosWindow(), Messages.getString("LoginPasswordEntryView.13"), Messages.getString("LoginPasswordEntryView.14")); //$NON-NLS-1$ //$NON-NLS-2$
 			if (user == null) {
 				return;
 			}
@@ -164,7 +165,7 @@ class LoginPasswordEntryView extends JPanel {
 
 		} catch (UserNotFoundException e) {
 			LogFactory.getLog(Application.class).error(e);
-			POSMessageDialog.showError(Application.getPosWindow(), "User not found");
+			POSMessageDialog.showError(Application.getPosWindow(), Messages.getString("LoginPasswordEntryView.15")); //$NON-NLS-1$
 		} catch (ShiftException e) {
 			LogFactory.getLog(Application.class).error(e);
 			MessageDialog.showError(e.getMessage());
@@ -172,12 +173,12 @@ class LoginPasswordEntryView extends JPanel {
 			LogFactory.getLog(Application.class).error(e1);
 			String message = e1.getMessage();
 
-			if (message != null && message.contains("Cannot open connection")) {
-				MessageDialog.showError("Cannot open database connection, please check database configuration.");
+			if (message != null && message.contains(Messages.getString("LoginPasswordEntryView.16"))) { //$NON-NLS-1$
+				MessageDialog.showError(Messages.getString("LoginPasswordEntryView.17")); //$NON-NLS-1$
 				DatabaseConfigurationDialog.show(Application.getPosWindow());
 			}
 			else {
-				MessageDialog.showError("We are sorry, and unexpected error has occuered");
+				MessageDialog.showError(Messages.getString("LoginPasswordEntryView.18")); //$NON-NLS-1$
 			}
 		} finally {
 		}
@@ -186,7 +187,7 @@ class LoginPasswordEntryView extends JPanel {
 	
 
 	public void setTerminalId(int terminalId) {
-		lblTerminalId.setText("TERMINAL ID: " + terminalId);
+		lblTerminalId.setText(Messages.getString("LoginPasswordEntryView.19") + terminalId); //$NON-NLS-1$
 	}
 
 	// Variables declaration - do not modify//GEN-BEGIN:variables
@@ -207,7 +208,7 @@ class LoginPasswordEntryView extends JPanel {
 			else if (com.floreantpos.POSConstants.SHUTDOWN.equals(command)) {
 				Application.getInstance().shutdownPOS();
 			}
-			else if ("DBCONFIG".equalsIgnoreCase(command)) {
+			else if ("DBCONFIG".equalsIgnoreCase(command)) { //$NON-NLS-1$
 				DatabaseConfigurationDialog.show(Application.getPosWindow());
 			}
 			
@@ -216,9 +217,9 @@ class LoginPasswordEntryView extends JPanel {
 	private PosButton psbtnLogin;
 	private JLabel lblTerminalId;
 	
-	private JToggleButton btnRegularMode = new JToggleButton("<html><center>REGULAR<br/>MODE</center></html>");
+	private JToggleButton btnRegularMode = new JToggleButton("<html><center>REGULAR<br/>MODE</center></html>"); //$NON-NLS-1$
 	//private JToggleButton btnCashierMode = new JToggleButton("<html><center>CASHIER<br/>MODE</center></html>");
-	private JToggleButton btnKitchenMode = new JToggleButton("<html><center>KITCHEN<br/>MODE</center></html>");
+	private JToggleButton btnKitchenMode = new JToggleButton("<html><center>KITCHEN<br/>MODE</center></html>"); //$NON-NLS-1$
 
 	
 	class ModeSelectionListener implements ActionListener {

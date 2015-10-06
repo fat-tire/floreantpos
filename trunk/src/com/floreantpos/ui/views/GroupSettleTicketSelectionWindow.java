@@ -12,6 +12,7 @@ import javax.swing.JTable;
 
 import org.jdesktop.swingx.JXTable;
 
+import com.floreantpos.Messages;
 import com.floreantpos.POSConstants;
 import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.main.Application;
@@ -32,7 +33,7 @@ public class GroupSettleTicketSelectionWindow extends POSDialog {
 	
 	public GroupSettleTicketSelectionWindow() {
 		super(Application.getPosWindow(), true);
-		setTitle("Select tickets to settle");
+		setTitle(Messages.getString("GroupSettleTicketSelectionWindow.0")); //$NON-NLS-1$
 		
 		createTicketList();
 		
@@ -41,7 +42,7 @@ public class GroupSettleTicketSelectionWindow extends POSDialog {
 		
 		JPanel buttonPanel = new JPanel();
 		
-		PosButton btnConfirm = new PosButton("CONFIRM");
+		PosButton btnConfirm = new PosButton(Messages.getString("GroupSettleTicketSelectionWindow.1")); //$NON-NLS-1$
 		btnConfirm.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				setCanceled(false);
@@ -50,7 +51,7 @@ public class GroupSettleTicketSelectionWindow extends POSDialog {
 		});
 		buttonPanel.add(btnConfirm);
 		
-		PosButton psbtnCancel = new PosButton("CANCEL");
+		PosButton psbtnCancel = new PosButton(Messages.getString("GroupSettleTicketSelectionWindow.2")); //$NON-NLS-1$
 		psbtnCancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				setCanceled(true);

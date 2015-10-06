@@ -43,13 +43,13 @@ public class TaxForm extends BeanEditor {
         tfRate = new DoubleTextField();
         jLabel3 = new javax.swing.JLabel();
 
-        jLabel1.setText(com.floreantpos.POSConstants.NAME + ":");
+        jLabel1.setText(com.floreantpos.POSConstants.NAME + ":"); //$NON-NLS-1$
 
-        jLabel2.setText(com.floreantpos.POSConstants.RATE + ":");
+        jLabel2.setText(com.floreantpos.POSConstants.RATE + ":"); //$NON-NLS-1$
 
         tfRate.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
 
-        jLabel3.setText("%");
+        jLabel3.setText("%"); //$NON-NLS-1$
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);
         this.setLayout(layout);
@@ -114,7 +114,7 @@ public class TaxForm extends BeanEditor {
 	protected void updateView() {
 		Tax tax = (Tax) getBean();
 		tfName.setText(tax.getName());
-		tfRate.setText("" + tax.getRate());
+		tfRate.setText("" + tax.getRate()); //$NON-NLS-1$
 	}
 
 	@Override

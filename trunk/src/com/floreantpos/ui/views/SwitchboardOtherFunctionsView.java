@@ -9,6 +9,7 @@ import javax.swing.JPanel;
 
 import net.miginfocom.swing.MigLayout;
 
+import com.floreantpos.Messages;
 import com.floreantpos.actions.DrawerAssignmentAction;
 import com.floreantpos.actions.DrawerBleedAction;
 import com.floreantpos.actions.DrawerKickAction;
@@ -26,7 +27,7 @@ import com.floreantpos.ui.views.order.RootView;
 import com.floreantpos.ui.views.order.ViewPanel;
 
 public class SwitchboardOtherFunctionsView extends ViewPanel {
-	public static final String VIEW_NAME="afv";
+	public static final String VIEW_NAME="afv"; //$NON-NLS-1$
 	private static SwitchboardOtherFunctionsView instance;
 	
 	private PosAction[] actions = {
@@ -52,7 +53,7 @@ public class SwitchboardOtherFunctionsView extends ViewPanel {
 	
 	public SwitchboardOtherFunctionsView() {
 		setLayout(new BorderLayout(5, 5));
-		PosButton btnBack = new PosButton("BACK");
+		PosButton btnBack = new PosButton(Messages.getString("SwitchboardOtherFunctionsView.1")); //$NON-NLS-1$
 		btnBack.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -61,7 +62,7 @@ public class SwitchboardOtherFunctionsView extends ViewPanel {
 		});
 		add(btnBack, BorderLayout.SOUTH);
 		
-		JPanel contentPanel = new JPanel(new MigLayout("align 50% 50%, wrap 5"));
+		JPanel contentPanel = new JPanel(new MigLayout("align 50% 50%, wrap 5")); //$NON-NLS-1$
 		
 		for (PosAction action : actions) {
 			if(action instanceof DrawerAssignmentAction) {
@@ -71,7 +72,7 @@ public class SwitchboardOtherFunctionsView extends ViewPanel {
 			}
 			
 			PosButton button = new PosButton(action);
-			contentPanel.add(button, "w 150!, h 150!");
+			contentPanel.add(button, "w 150!, h 150!"); //$NON-NLS-1$
 		}
 		
 		add(contentPanel);

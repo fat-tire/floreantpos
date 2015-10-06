@@ -31,21 +31,21 @@ public class TipsCashoutReportDialog extends POSDialog implements ActionListener
 		setTitle(com.floreantpos.POSConstants.SERVER_TIPS_REPORT);
 		
 		JPanel topPanel = new JPanel(new MigLayout("","[fill]","")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		topPanel.add(new JLabel("Server"));
+		topPanel.add(new JLabel(Messages.getString("TipsCashoutReportDialog.0"))); //$NON-NLS-1$
 		topPanel.add(new JLabel(": " + report.getServer()), "wrap"); //$NON-NLS-1$ //$NON-NLS-2$
-		topPanel.add(new JLabel("From"));
+		topPanel.add(new JLabel(Messages.getString("TipsCashoutReportDialog.1"))); //$NON-NLS-1$
 		topPanel.add(new JLabel(": " + Application.formatDate(report.getFromDate())), "wrap"); //$NON-NLS-1$ //$NON-NLS-2$
-		topPanel.add(new JLabel("To"));
+		topPanel.add(new JLabel(Messages.getString("TipsCashoutReportDialog.2"))); //$NON-NLS-1$
 		topPanel.add(new JLabel(": " + Application.formatDate(report.getToDate())), "wrap"); //$NON-NLS-1$ //$NON-NLS-2$
-		topPanel.add(new JLabel("Time"));
+		topPanel.add(new JLabel(Messages.getString("TipsCashoutReportDialog.3"))); //$NON-NLS-1$
 		topPanel.add(new JLabel(": " + Application.formatDate(report.getReportTime())), "wrap"); //$NON-NLS-1$ //$NON-NLS-2$
-		topPanel.add(new JLabel("Transaction Count"));
+		topPanel.add(new JLabel(Messages.getString("TipsCashoutReportDialog.4"))); //$NON-NLS-1$
 		topPanel.add(new JLabel(": " + (report.getDatas() == null ? "0" : String.valueOf(report.getDatas().size()))), "wrap"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		topPanel.add(new JLabel("Cash Tips"));
+		topPanel.add(new JLabel(Messages.getString("TipsCashoutReportDialog.5"))); //$NON-NLS-1$
 		topPanel.add(new JLabel(": " + NumberUtil.formatNumber(report.getCashTipsAmount())), "wrap"); //$NON-NLS-1$ //$NON-NLS-2$
-		topPanel.add(new JLabel("Charged Tips"));
+		topPanel.add(new JLabel(Messages.getString("TipsCashoutReportDialog.6"))); //$NON-NLS-1$
 		topPanel.add(new JLabel(": " + NumberUtil.formatNumber(report.getChargedTipsAmount())), "wrap"); //$NON-NLS-1$ //$NON-NLS-2$
-		topPanel.add(new JLabel("Tips Due")); //$NON-NLS-1$
+		topPanel.add(new JLabel("Tips Due"));
 		topPanel.add(new JLabel(": " + report.getTipsDue()), "wrap"); //$NON-NLS-1$ //$NON-NLS-2$
 		
 		add(topPanel, BorderLayout.NORTH);
