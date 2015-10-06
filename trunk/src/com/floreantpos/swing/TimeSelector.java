@@ -8,9 +8,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
-import com.floreantpos.Messages;
-
 import net.miginfocom.swing.MigLayout;
+
+import com.floreantpos.Messages;
 
 public class TimeSelector extends JPanel {
 	private JRadioButton rbAM;
