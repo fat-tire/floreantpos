@@ -39,7 +39,7 @@ public class TicketViewerTableCellRenderer extends DefaultTableCellRenderer {
 	@Override
 	protected void setValue(Object value) {
 		if (value == null) {
-			setText("");
+			setText(""); //$NON-NLS-1$
 			return;
 		}
 

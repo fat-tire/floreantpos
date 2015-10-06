@@ -17,6 +17,7 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 
 import com.floreantpos.IconFactory;
+import com.floreantpos.Messages;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketItem;
@@ -30,7 +31,7 @@ import com.floreantpos.util.NumberUtil;
 public class TicketForSplitView extends com.floreantpos.swing.TransparentPanel implements TableModelListener {
 	private Ticket ticket;
 
-	public final static String VIEW_NAME = "TICKET_FOR_SPLIT_VIEW";
+	public final static String VIEW_NAME = "TICKET_FOR_SPLIT_VIEW"; //$NON-NLS-1$
 
 	private TicketForSplitView ticketView1;
 	private TicketForSplitView ticketView2;
@@ -112,9 +113,9 @@ public class TicketForSplitView extends com.floreantpos.swing.TransparentPanel i
 
 		jPanel3.setLayout(new java.awt.GridBagLayout());
 
-		jLabel5.setFont(new java.awt.Font("Tahoma", 1, 12));
+		jLabel5.setFont(new java.awt.Font("Tahoma", 1, 12)); //$NON-NLS-1$
 		jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-		jLabel5.setText(com.floreantpos.POSConstants.SUBTOTAL + ":");
+		jLabel5.setText(com.floreantpos.POSConstants.SUBTOTAL + ":"); //$NON-NLS-1$
 		gridBagConstraints = new java.awt.GridBagConstraints();
 		gridBagConstraints.weightx = 1.0;
 		gridBagConstraints.gridx = 0;
@@ -123,9 +124,9 @@ public class TicketForSplitView extends com.floreantpos.swing.TransparentPanel i
 		gridBagConstraints.insets = new java.awt.Insets(3, 5, 0, 0);
 		jPanel3.add(jLabel5, gridBagConstraints);
 
-		jLabel6.setFont(new java.awt.Font("Tahoma", 1, 12));
+		jLabel6.setFont(new java.awt.Font("Tahoma", 1, 12)); //$NON-NLS-1$
 		jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-		jLabel6.setText(com.floreantpos.POSConstants.TOTAL + ":");
+		jLabel6.setText(com.floreantpos.POSConstants.TOTAL + ":"); //$NON-NLS-1$
 		gridBagConstraints = new java.awt.GridBagConstraints();
 		gridBagConstraints.gridx = 0;
 		gridBagConstraints.gridy = 4;
@@ -133,9 +134,9 @@ public class TicketForSplitView extends com.floreantpos.swing.TransparentPanel i
 		gridBagConstraints.insets = new java.awt.Insets(0, 5, 3, 0);
 		jPanel3.add(jLabel6, gridBagConstraints);
 
-		jLabel1.setFont(new java.awt.Font("Tahoma", 1, 12));
+		jLabel1.setFont(new java.awt.Font("Tahoma", 1, 12)); //$NON-NLS-1$
 		jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-		jLabel1.setText(com.floreantpos.POSConstants.DISCOUNT + ":");
+		jLabel1.setText(com.floreantpos.POSConstants.DISCOUNT + ":"); //$NON-NLS-1$
 		gridBagConstraints = new java.awt.GridBagConstraints();
 		gridBagConstraints.gridx = 0;
 		gridBagConstraints.gridy = 2;
@@ -143,9 +144,9 @@ public class TicketForSplitView extends com.floreantpos.swing.TransparentPanel i
 		gridBagConstraints.insets = new java.awt.Insets(0, 5, 0, 0);
 		jPanel3.add(jLabel1, gridBagConstraints);
 
-		jLabel2.setFont(new java.awt.Font("Tahoma", 1, 12));
+		jLabel2.setFont(new java.awt.Font("Tahoma", 1, 12)); //$NON-NLS-1$
 		jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-		jLabel2.setText(com.floreantpos.POSConstants.TAX + ":");
+		jLabel2.setText(com.floreantpos.POSConstants.TAX + ":"); //$NON-NLS-1$
 		gridBagConstraints = new java.awt.GridBagConstraints();
 		gridBagConstraints.gridx = 0;
 		gridBagConstraints.gridy = 3;
@@ -170,7 +171,7 @@ public class TicketForSplitView extends com.floreantpos.swing.TransparentPanel i
 		jPanel3.add(jSeparator3, gridBagConstraints);
 
 		tfSubtotal.setEditable(false);
-		tfSubtotal.setFont(new java.awt.Font("Tahoma", 1, 12));
+		tfSubtotal.setFont(new java.awt.Font("Tahoma", 1, 12)); //$NON-NLS-1$
 		gridBagConstraints_1 = new java.awt.GridBagConstraints();
 		gridBagConstraints_1.anchor = GridBagConstraints.WEST;
 		gridBagConstraints_1.gridwidth = java.awt.GridBagConstraints.REMAINDER;
@@ -178,7 +179,7 @@ public class TicketForSplitView extends com.floreantpos.swing.TransparentPanel i
 		jPanel3.add(tfSubtotal, gridBagConstraints_1);
 
 		tfTax.setEditable(false);
-		tfTax.setFont(new java.awt.Font("Tahoma", 1, 12));
+		tfTax.setFont(new java.awt.Font("Tahoma", 1, 12)); //$NON-NLS-1$
 		gridBagConstraints_3 = new java.awt.GridBagConstraints();
 		gridBagConstraints_3.anchor = GridBagConstraints.WEST;
 		gridBagConstraints_3.gridx = 1;
@@ -187,7 +188,7 @@ public class TicketForSplitView extends com.floreantpos.swing.TransparentPanel i
 		jPanel3.add(tfTax, gridBagConstraints_3);
 
 		tfDiscount.setEditable(false);
-		tfDiscount.setFont(new java.awt.Font("Tahoma", 1, 12));
+		tfDiscount.setFont(new java.awt.Font("Tahoma", 1, 12)); //$NON-NLS-1$
 		gridBagConstraints_2 = new java.awt.GridBagConstraints();
 		gridBagConstraints_2.anchor = GridBagConstraints.WEST;
 		gridBagConstraints_2.gridx = 1;
@@ -196,7 +197,7 @@ public class TicketForSplitView extends com.floreantpos.swing.TransparentPanel i
 		jPanel3.add(tfDiscount, gridBagConstraints_2);
 
 		tfTotal.setEditable(false);
-		tfTotal.setFont(new java.awt.Font("Tahoma", 1, 12));
+		tfTotal.setFont(new java.awt.Font("Tahoma", 1, 12)); //$NON-NLS-1$
 		gridBagConstraints_4 = new java.awt.GridBagConstraints();
 		gridBagConstraints_4.anchor = GridBagConstraints.WEST;
 		gridBagConstraints_4.gridx = 1;
@@ -209,7 +210,7 @@ public class TicketForSplitView extends com.floreantpos.swing.TransparentPanel i
 
 		jPanel5.setLayout(new java.awt.GridBagLayout());
 
-		btnScrollUp.setIcon(IconFactory.getIcon("/ui_icons/", "up.png"));
+		btnScrollUp.setIcon(IconFactory.getIcon("/ui_icons/", "up.png")); //$NON-NLS-1$ //$NON-NLS-2$
 		btnScrollUp.setPreferredSize(new java.awt.Dimension(50, 45));
 		btnScrollUp.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -225,7 +226,7 @@ public class TicketForSplitView extends com.floreantpos.swing.TransparentPanel i
 		gridBagConstraints.insets = new java.awt.Insets(0, 2, 0, 0);
 		jPanel5.add(btnScrollUp, gridBagConstraints);
 
-		btnScrollDown.setIcon(IconFactory.getIcon("/ui_icons/", "down.png"));
+		btnScrollDown.setIcon(IconFactory.getIcon("/ui_icons/", "down.png")); //$NON-NLS-1$ //$NON-NLS-2$
 		btnScrollDown.setPreferredSize(new java.awt.Dimension(50, 45));
 		btnScrollDown.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -241,7 +242,7 @@ public class TicketForSplitView extends com.floreantpos.swing.TransparentPanel i
 		gridBagConstraints.insets = new java.awt.Insets(2, 2, 0, 0);
 		jPanel5.add(btnScrollDown, gridBagConstraints);
 
-		btnTransferToTicket1.setText("1");
+		btnTransferToTicket1.setText("1"); //$NON-NLS-1$
 		btnTransferToTicket1.setPreferredSize(new java.awt.Dimension(60, 45));
 		btnTransferToTicket1.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -257,7 +258,7 @@ public class TicketForSplitView extends com.floreantpos.swing.TransparentPanel i
 		gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 2);
 		jPanel5.add(btnTransferToTicket1, gridBagConstraints);
 
-		btnTransferToTicket2.setText("2");
+		btnTransferToTicket2.setText("2"); //$NON-NLS-1$
 		btnTransferToTicket2.setPreferredSize(new java.awt.Dimension(60, 45));
 		btnTransferToTicket2.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -270,7 +271,7 @@ public class TicketForSplitView extends com.floreantpos.swing.TransparentPanel i
 		gridBagConstraints.weightx = 1.0;
 		jPanel5.add(btnTransferToTicket2, gridBagConstraints);
 
-		btnTransferToTicket3.setText("3");
+		btnTransferToTicket3.setText("3"); //$NON-NLS-1$
 		btnTransferToTicket3.setPreferredSize(new java.awt.Dimension(60, 45));
 		btnTransferToTicket3.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -390,10 +391,10 @@ public class TicketForSplitView extends com.floreantpos.swing.TransparentPanel i
 
 	public void updateView() {
 		if (ticket == null || ticket.getTicketItems() == null || ticket.getTicketItems().size() <= 0) {
-			tfSubtotal.setText("");
-			tfDiscount.setText("");
-			tfTax.setText("");
-			tfTotal.setText("");
+			tfSubtotal.setText(""); //$NON-NLS-1$
+			tfDiscount.setText(""); //$NON-NLS-1$
+			tfTax.setText(""); //$NON-NLS-1$
+			tfTotal.setText(""); //$NON-NLS-1$
 
 			return;
 		}
@@ -475,10 +476,10 @@ public class TicketForSplitView extends com.floreantpos.swing.TransparentPanel i
 
 	public void tableChanged(TableModelEvent e) {
 		if (ticket == null || ticket.getTicketItems() == null || ticket.getTicketItems().size() <= 0) {
-			tfSubtotal.setText("");
-			tfDiscount.setText("");
-			tfTax.setText("");
-			tfTotal.setText("");
+			tfSubtotal.setText(""); //$NON-NLS-1$
+			tfDiscount.setText(""); //$NON-NLS-1$
+			tfTax.setText(""); //$NON-NLS-1$
+			tfTotal.setText(""); //$NON-NLS-1$
 
 			return;
 		}
@@ -522,51 +523,51 @@ public class TicketForSplitView extends com.floreantpos.swing.TransparentPanel i
 	public void setViewNumber(int viewNumber) {
 		this.viewNumber = viewNumber;
 
-		TitledBorder titledBorder = new TitledBorder("Ticket " + viewNumber);
+		TitledBorder titledBorder = new TitledBorder(Messages.getString("TicketForSplitView.1") + viewNumber); //$NON-NLS-1$
 		titledBorder.setTitleJustification(TitledBorder.CENTER);
 
 		setBorder(titledBorder);
 
 		switch (viewNumber) {
 			case 1:
-				btnTransferToTicket1.setIcon(IconFactory.getIcon("next.png"));
-				btnTransferToTicket1.setText("2");
-				btnTransferToTicket2.setIcon(IconFactory.getIcon("next.png"));
-				btnTransferToTicket2.setText("3");
-				btnTransferToTicket3.setIcon(IconFactory.getIcon("next.png"));
-				btnTransferToTicket3.setText("4");
+				btnTransferToTicket1.setIcon(IconFactory.getIcon("next.png")); //$NON-NLS-1$
+				btnTransferToTicket1.setText("2"); //$NON-NLS-1$
+				btnTransferToTicket2.setIcon(IconFactory.getIcon("next.png")); //$NON-NLS-1$
+				btnTransferToTicket2.setText("3"); //$NON-NLS-1$
+				btnTransferToTicket3.setIcon(IconFactory.getIcon("next.png")); //$NON-NLS-1$
+				btnTransferToTicket3.setText("4"); //$NON-NLS-1$
 				break;
 
 			case 2:
-				btnTransferToTicket1.setIcon(IconFactory.getIcon("previous.png"));
-				btnTransferToTicket1.setText("1");
-				btnTransferToTicket2.setIcon(IconFactory.getIcon("next.png"));
-				btnTransferToTicket2.setText("3");
-				btnTransferToTicket3.setIcon(IconFactory.getIcon("next.png"));
-				btnTransferToTicket3.setText("4");
+				btnTransferToTicket1.setIcon(IconFactory.getIcon("previous.png")); //$NON-NLS-1$
+				btnTransferToTicket1.setText("1"); //$NON-NLS-1$
+				btnTransferToTicket2.setIcon(IconFactory.getIcon("next.png")); //$NON-NLS-1$
+				btnTransferToTicket2.setText("3"); //$NON-NLS-1$
+				btnTransferToTicket3.setIcon(IconFactory.getIcon("next.png")); //$NON-NLS-1$
+				btnTransferToTicket3.setText("4"); //$NON-NLS-1$
 				break;
 
 			case 3:
-				btnTransferToTicket1.setIcon(IconFactory.getIcon("previous.png"));
-				btnTransferToTicket1.setText("1");
-				btnTransferToTicket2.setIcon(IconFactory.getIcon("previous.png"));
-				btnTransferToTicket2.setText("2");
-				btnTransferToTicket3.setIcon(IconFactory.getIcon("next.png"));
-				btnTransferToTicket3.setText("4");
+				btnTransferToTicket1.setIcon(IconFactory.getIcon("previous.png")); //$NON-NLS-1$
+				btnTransferToTicket1.setText("1"); //$NON-NLS-1$
+				btnTransferToTicket2.setIcon(IconFactory.getIcon("previous.png")); //$NON-NLS-1$
+				btnTransferToTicket2.setText("2"); //$NON-NLS-1$
+				btnTransferToTicket3.setIcon(IconFactory.getIcon("next.png")); //$NON-NLS-1$
+				btnTransferToTicket3.setText("4"); //$NON-NLS-1$
 
 				break;
 
 			case 4:
-				btnTransferToTicket1.setIcon(IconFactory.getIcon("previous.png"));
-				btnTransferToTicket1.setText("1");
-				btnTransferToTicket2.setIcon(IconFactory.getIcon("previous.png"));
-				btnTransferToTicket2.setText("2");
-				btnTransferToTicket3.setIcon(IconFactory.getIcon("previous.png"));
-				btnTransferToTicket3.setText("3");
+				btnTransferToTicket1.setIcon(IconFactory.getIcon("previous.png")); //$NON-NLS-1$
+				btnTransferToTicket1.setText("1"); //$NON-NLS-1$
+				btnTransferToTicket2.setIcon(IconFactory.getIcon("previous.png")); //$NON-NLS-1$
+				btnTransferToTicket2.setText("2"); //$NON-NLS-1$
+				btnTransferToTicket3.setIcon(IconFactory.getIcon("previous.png")); //$NON-NLS-1$
+				btnTransferToTicket3.setText("3"); //$NON-NLS-1$
 				break;
 
 			default:
-				throw new RuntimeException("Invalid viewNumber");
+				throw new RuntimeException(Messages.getString("TicketForSplitView.2")); //$NON-NLS-1$
 		}
 	}
 }

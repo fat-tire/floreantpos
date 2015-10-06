@@ -46,7 +46,7 @@ public class MenuModifierGroupForm extends BeanEditor {
 	 */
     // <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:initComponents
     private void initComponents() {
-    	setLayout(new MigLayout("", "[45px][369px,grow]", "[19px][]"));
+    	setLayout(new MigLayout("", "[45px][369px,grow]", "[19px][]")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		
         jLabel1 = new javax.swing.JLabel();
         tfName = new com.floreantpos.swing.FixedLengthTextField();
@@ -54,15 +54,15 @@ public class MenuModifierGroupForm extends BeanEditor {
 
         jLabel1.setText(com.floreantpos.POSConstants.NAME);
 
-        add(jLabel1, "cell 0 0,alignx left,aligny center");
-		add(tfName, "cell 1 0,growx,aligny top");
+        add(jLabel1, "cell 0 0,alignx left,aligny center"); //$NON-NLS-1$
+		add(tfName, "cell 1 0,growx,aligny top"); //$NON-NLS-1$
 		
 		JLabel lblTranslatedName = new JLabel(POSConstants.TRANSLATED_NAME);
-		add(lblTranslatedName, "cell 0 1,alignx trailing");
+		add(lblTranslatedName, "cell 0 1,alignx trailing"); //$NON-NLS-1$
 		
 		tfTranslatedName = new FixedLengthTextField();
 		tfTranslatedName.setLength(60);
-		add(tfTranslatedName, "cell 1 1,growx");
+		add(tfTranslatedName, "cell 1 1,growx"); //$NON-NLS-1$
     }// </editor-fold>//GEN-END:initComponents
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

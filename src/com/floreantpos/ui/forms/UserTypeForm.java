@@ -55,9 +55,9 @@ public class UserTypeForm extends BeanEditor {
         jScrollPane1 = new javax.swing.JScrollPane();
         listPermissions = new CheckBoxList<UserPermission>();
 
-        jLabel1.setText(com.floreantpos.POSConstants.TYPE_NAME + ":");
+        jLabel1.setText(com.floreantpos.POSConstants.TYPE_NAME + ":"); //$NON-NLS-1$
 
-        jLabel2.setText(com.floreantpos.POSConstants.PERMISSIONS + ":");
+        jLabel2.setText(com.floreantpos.POSConstants.PERMISSIONS + ":"); //$NON-NLS-1$
 
         jScrollPane1.setViewportView(listPermissions);
 

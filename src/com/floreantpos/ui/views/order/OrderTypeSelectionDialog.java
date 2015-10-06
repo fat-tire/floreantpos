@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import com.floreantpos.Messages;
 import com.floreantpos.POSConstants;
 import com.floreantpos.model.OrderType;
 import com.floreantpos.swing.PosButton;
@@ -18,7 +19,7 @@ public class OrderTypeSelectionDialog extends POSDialog {
 	private OrderType selectedOrderType;
 
 	public OrderTypeSelectionDialog() throws HeadlessException {
-		setTitle("Select order type");
+		setTitle(Messages.getString("OrderTypeSelectionDialog.0")); //$NON-NLS-1$
 		setResizable(false);
 		setLayout(new BorderLayout(5, 5));
 

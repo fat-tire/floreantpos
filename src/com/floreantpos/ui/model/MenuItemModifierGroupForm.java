@@ -55,11 +55,11 @@ public class MenuItemModifierGroupForm extends BeanEditor {
         tfMinQuantity = new javax.swing.JTextField();
         tfMaxQuantity = new javax.swing.JTextField();
 
-        jLabel1.setText(com.floreantpos.POSConstants.MODIFIER_GROUP + ":");
+        jLabel1.setText(com.floreantpos.POSConstants.MODIFIER_GROUP + ":"); //$NON-NLS-1$
 
-        jLabel2.setText(com.floreantpos.POSConstants.MIN_QUANTITY + ":");
+        jLabel2.setText(com.floreantpos.POSConstants.MIN_QUANTITY + ":"); //$NON-NLS-1$
 
-        jLabel3.setText(com.floreantpos.POSConstants.MAX_QUANTITY + ":");
+        jLabel3.setText(com.floreantpos.POSConstants.MAX_QUANTITY + ":"); //$NON-NLS-1$
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);
         this.setLayout(layout);

@@ -7,6 +7,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JOptionPane;
 
+import com.floreantpos.Messages;
 import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.extension.FloorLayoutPlugin;
 import com.floreantpos.extension.OrderServiceExtension;
@@ -24,12 +25,12 @@ public class DefaultOrderServiceExtension implements OrderServiceExtension {
 
 	@Override
 	public String getName() {
-		return "Order Handler";
+		return Messages.getString("DefaultOrderServiceExtension.0"); //$NON-NLS-1$
 	}
 
 	@Override
 	public String getDescription() {
-		return "Default order handler";
+		return Messages.getString("DefaultOrderServiceExtension.1"); //$NON-NLS-1$
 	}
 
 	@Override
@@ -110,11 +111,11 @@ public class DefaultOrderServiceExtension implements OrderServiceExtension {
 
 		int due = (int) POSUtil.getDouble(ticket.getDueAmount());
 		if (due != 0) {
-			POSMessageDialog.showError(Application.getPosWindow(), "Ticket is not fully paid");
+			POSMessageDialog.showError(Application.getPosWindow(), Messages.getString("DefaultOrderServiceExtension.2")); //$NON-NLS-1$
 			return false;
 		}
 
-		int option = JOptionPane.showOptionDialog(Application.getPosWindow(), "Ticket# " + ticket.getId() + " will be closed.", "Confirm",
+		int option = JOptionPane.showOptionDialog(Application.getPosWindow(), Messages.getString("DefaultOrderServiceExtension.3") + ticket.getId() + " will be closed.", Messages.getString("DefaultOrderServiceExtension.5"), //$NON-NLS-1$ //$NON-NLS-3$
 				JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, null, null, null);
 
 		if (option != JOptionPane.OK_OPTION) {

@@ -727,7 +727,7 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 	public void ticketListUpdated() {
 		PaymentStatusFilter paymentStatusFilter = TerminalConfig.getPaymentStatusFilter();
 		OrderTypeFilter orderTypeFilter = TerminalConfig.getOrderTypeFilter();
-		String title = POSConstants.OPEN_TICKETS_AND_ACTIVITY + " [ FILTERS: " + paymentStatusFilter + ", " + orderTypeFilter + " ]";
+		String title = POSConstants.OPEN_TICKETS_AND_ACTIVITY + " [ FILTERS: " + paymentStatusFilter + ", " + orderTypeFilter + " ]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 		ticketsListPanelBorder.setTitle(title);
 

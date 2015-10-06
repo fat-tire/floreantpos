@@ -15,21 +15,21 @@ import com.floreantpos.util.OrderUtil;
 import com.floreantpos.util.PosGuiUtil;
 
 public class CashierSwitchBoardView extends ViewPanel implements ActionListener {
-	public final static String VIEW_NAME = "csbv";
+	public final static String VIEW_NAME = "csbv"; //$NON-NLS-1$
 	
 	private PosButton btnNewOrder = new PosButton(POSConstants.NEW_ORDER_BUTTON_TEXT);
 	private PosButton btnEditOrder = new PosButton(POSConstants.EDIT_TICKET_BUTTON_TEXT);
 	private PosButton btnSettleOrder = new PosButton(POSConstants.SETTLE_TICKET_BUTTON_TEXT);
 	
 	public CashierSwitchBoardView() {
-		setLayout(new MigLayout("align 50% 50%"));
+		setLayout(new MigLayout("align 50% 50%")); //$NON-NLS-1$
 		
 		JPanel orderPanel = new JPanel(new MigLayout());
 		orderPanel.setBorder(PosGuiUtil.createTitledBorder(POSConstants.CashierSwitchBoardView_LABEL_ORDER));
 		
-		orderPanel.add(btnNewOrder, "w 160!, h 160!");
-		orderPanel.add(btnEditOrder, "w 160!, h 160!");
-		orderPanel.add(btnSettleOrder, "w 160!, h 160!");
+		orderPanel.add(btnNewOrder, "w 160!, h 160!"); //$NON-NLS-1$
+		orderPanel.add(btnEditOrder, "w 160!, h 160!"); //$NON-NLS-1$
+		orderPanel.add(btnSettleOrder, "w 160!, h 160!"); //$NON-NLS-1$
 		
 		btnNewOrder.addActionListener(this);
 		btnEditOrder.addActionListener(this);

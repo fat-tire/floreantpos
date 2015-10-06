@@ -15,6 +15,7 @@ import javax.swing.JToggleButton;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import com.floreantpos.Messages;
 import com.floreantpos.swing.FixedLengthDocument;
 import com.floreantpos.swing.POSToggleButton;
 import com.floreantpos.swing.PosButton;
@@ -23,10 +24,10 @@ import com.floreantpos.swing.TransparentPanel;
 public class NoteView extends JPanel implements ActionListener, ChangeListener {
 	Font buttonFont = getFont().deriveFont(Font.BOLD, 24);
 
-	String[] s1 = { "1", "2", "3", "4", "5", "6", "7", "8", "9", "0" };
-	String[] s2 = { "q", "w", "e", "r", "t", "y", "u", "i", "o", "p" };
-	String[] s3 = { "a", "s", "d", "f", "g", "h", "j", "k", "l", ";" };
-	String[] s4 = { "z", "x", "c", "v", "b", "n", "m", "-", ",", "." };
+	String[] s1 = { "1", "2", "3", "4", "5", "6", "7", "8", "9", "0" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$
+	String[] s2 = { "q", "w", "e", "r", "t", "y", "u", "i", "o", "p" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$
+	String[] s3 = { "a", "s", "d", "f", "g", "h", "j", "k", "l", ";" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$
+	String[] s4 = { "z", "x", "c", "v", "b", "n", "m", "-", ",", "." }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$
 
 	JTextArea note = new JTextArea();
 
@@ -56,12 +57,12 @@ public class NoteView extends JPanel implements ActionListener, ChangeListener {
 
 		JPanel eastPanel = new JPanel(new GridLayout(0, 1, 2, 2));
 		PosButton button = new PosButton();
-		button.setText("SPACE");
+		button.setText(Messages.getString("NoteView.40")); //$NON-NLS-1$
 		button.addActionListener(this);
 		eastPanel.add(button);
 		
 		POSToggleButton toggleButton = new POSToggleButton();
-		toggleButton.setText("CAPS");
+		toggleButton.setText(Messages.getString("NoteView.41")); //$NON-NLS-1$
 		toggleButton.addChangeListener(this);
 		eastPanel.add(toggleButton);
 
@@ -114,19 +115,19 @@ public class NoteView extends JPanel implements ActionListener, ChangeListener {
 			note.setText(str);
 		}
 		else if (s.equals(com.floreantpos.POSConstants.CLEAR_ALL)) {
-			note.setText("");
+			note.setText(""); //$NON-NLS-1$
 		}
-		else if (s.equals("SPACE")) {
+		else if (s.equals(Messages.getString("NoteView.43"))) { //$NON-NLS-1$
 			String str = note.getText();
 			if (str == null) {
-				str = "";
+				str = ""; //$NON-NLS-1$
 			}
-			note.setText(str + " ");
+			note.setText(str + " "); //$NON-NLS-1$
 		}
 		else {
 			String str = note.getText();
 			if (str == null) {
-				str = "";
+				str = ""; //$NON-NLS-1$
 			}
 			note.setText(str + s);
 		}

@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JPanel;
 
+import com.floreantpos.Messages;
 import com.floreantpos.main.Application;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.ui.dialog.POSDialog;
@@ -16,7 +17,7 @@ public class OrderInfoDialog extends POSDialog {
 	
 	public OrderInfoDialog(OrderInfoView view) {
 		this.view = view;
-		setTitle("ORDER PREVIEW");
+		setTitle(Messages.getString("OrderInfoDialog.0")); //$NON-NLS-1$
 		
 		createUI();
 	}
@@ -33,7 +34,7 @@ public class OrderInfoDialog extends POSDialog {
 				doPrint();
 			}
 		});
-		btnPrint.setText("PRINT");
+		btnPrint.setText(Messages.getString("OrderInfoDialog.1")); //$NON-NLS-1$
 		panel.add(btnPrint);
 		
 		PosButton btnClose = new PosButton();
@@ -42,7 +43,7 @@ public class OrderInfoDialog extends POSDialog {
 				dispose();
 			}
 		});
-		btnClose.setText("CLOSE");
+		btnClose.setText(Messages.getString("OrderInfoDialog.2")); //$NON-NLS-1$
 		panel.add(btnClose);
 	}
 

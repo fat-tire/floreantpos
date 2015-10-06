@@ -8,7 +8,7 @@ import org.apache.commons.io.IOUtils;
 public class StreamUtils {
 	public static String toString(InputStream in) throws IOException {
 		if(in == null) {
-			return "";
+			return ""; //$NON-NLS-1$
 		}
 		
 		try {

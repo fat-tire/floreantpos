@@ -18,6 +18,7 @@ import java.util.Vector;
 import javax.swing.AbstractButton;
 import javax.swing.SwingConstants;
 
+import com.floreantpos.Messages;
 import com.floreantpos.PosException;
 import com.floreantpos.model.MenuGroup;
 import com.floreantpos.model.MenuItem;
@@ -30,7 +31,7 @@ import com.floreantpos.ui.views.order.actions.ItemSelectionListener;
  * @author MShahriar
  */
 public class MenuItemView extends SelectionView {
-	public final static String VIEW_NAME = "ITEM_VIEW";
+	public final static String VIEW_NAME = "ITEM_VIEW"; //$NON-NLS-1$
 
 	private Vector<ItemSelectionListener> listenerList = new Vector<ItemSelectionListener>();
 
@@ -127,12 +128,12 @@ public class MenuItemView extends SelectionView {
 					h = 40;
 					
 					setIcon(menuItem.getScaledImage(w, h));
-					setText("<html><body><center>" + menuItem.getDisplayName() + "</center></body></html>");
+					setText("<html><body><center>" + menuItem.getDisplayName() + "</center></body></html>"); //$NON-NLS-1$ //$NON-NLS-2$
 				}
 				
 			}
 			else {
-				setText("<html><body><center>" + menuItem.getName() + "</center></body></html>");
+				setText("<html><body><center>" + menuItem.getName() + "</center></body></html>"); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 			
 			if(menuItem.getButtonColor() != null) {

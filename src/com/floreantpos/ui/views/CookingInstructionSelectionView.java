@@ -9,6 +9,7 @@ import javax.swing.JTable;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.AbstractTableModel;
 
+import com.floreantpos.Messages;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.CookingInstruction;
 import com.floreantpos.model.TicketItemCookingInstruction;
@@ -43,7 +44,7 @@ public class CookingInstructionSelectionView extends BeanEditor {
 		int[] selectedRows = table.getSelectedRows();
 		
 		if(selectedRows.length == 0) {
-			POSMessageDialog.showError(Application.getPosWindow(), "No cooking instruction selected");
+			POSMessageDialog.showError(Application.getPosWindow(), Messages.getString("CookingInstructionSelectionView.0")); //$NON-NLS-1$
 			return false;
 		}
 		
@@ -75,7 +76,7 @@ public class CookingInstructionSelectionView extends BeanEditor {
 
 	@Override
 	public String getDisplayText() {
-		return "Select cooking instructions";
+		return Messages.getString("CookingInstructionSelectionView.1"); //$NON-NLS-1$
 	}
 	
 	public List<TicketItemCookingInstruction> getTicketItemCookingInstructions() {
@@ -83,7 +84,7 @@ public class CookingInstructionSelectionView extends BeanEditor {
 	}
 
 	class CookingInstructionTableModel extends AbstractTableModel {
-		private final String[] columns = { "COOKING INSTRUCTIONS" };
+		private final String[] columns = { Messages.getString("CookingInstructionSelectionView.2") }; //$NON-NLS-1$
 
 		private List<CookingInstruction> rowsList;
 

@@ -56,20 +56,20 @@ public abstract class SelectionView extends JPanel implements ComponentListener 
 		buttonsPanel.addComponentListener(this);
 		add(buttonsPanel);
 
-		MigLayout migLayout2 = new MigLayout("fill,hidemode 3", "grow", "");
+		MigLayout migLayout2 = new MigLayout("fill,hidemode 3", "grow", ""); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		JPanel southPanel = new JPanel(migLayout2);
 
 		btnBack = new PosButton();
 		btnBack.setText(POSConstants.CAPITAL_BACK);
-		southPanel.add(btnBack, "grow,shrink, align center, height 50");
+		southPanel.add(btnBack, "grow,shrink, align center, height 50"); //$NON-NLS-1$
 
 		btnPrev = new PosButton();
 		btnPrev.setText(POSConstants.CAPITAL_PREV);
-		southPanel.add(btnPrev, "grow, align center, height 50");
+		southPanel.add(btnPrev, "grow, align center, height 50"); //$NON-NLS-1$
 
 		btnNext = new PosButton();
 		btnNext.setText(POSConstants.CAPITAL_NEXT);
-		southPanel.add(btnNext, "grow, align center, height 50");
+		southPanel.add(btnNext, "grow, align center, height 50"); //$NON-NLS-1$
 
 		add(southPanel, BorderLayout.SOUTH);
 
@@ -144,7 +144,7 @@ public abstract class SelectionView extends JPanel implements ComponentListener 
 		int horizontalButtonCount = getButtonCount(size.width, getButtonSize().width);
 		int verticalButtonCount = getButtonCount(size.height, getButtonSize().height);
 		
-		buttonsPanel.setLayout(new MigLayout("alignx 50%, wrap " + horizontalButtonCount));
+		buttonsPanel.setLayout(new MigLayout("alignx 50%, wrap " + horizontalButtonCount)); //$NON-NLS-1$
 		
 		int totalItem = horizontalButtonCount * verticalButtonCount;
 		
@@ -157,7 +157,7 @@ public abstract class SelectionView extends JPanel implements ComponentListener 
 				Object item = items.get(i);
 
 				AbstractButton itemButton = createItemButton(item);
-				buttonsPanel.add(itemButton, "width " + itemButtonSize.width + "!, height " + itemButtonSize.height + "!");
+				buttonsPanel.add(itemButton, "width " + itemButtonSize.width + "!, height " + itemButtonSize.height + "!"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 				if (i == items.size() - 1) {
 					break;
@@ -181,12 +181,12 @@ public abstract class SelectionView extends JPanel implements ComponentListener 
 	
 	public void addButton(AbstractButton button) {
 		button.setPreferredSize(buttonSize);
-		button.setText("<html><body><center>" + button.getText() + "</center></body></html>");
+		button.setText("<html><body><center>" + button.getText() + "</center></body></html>"); //$NON-NLS-1$ //$NON-NLS-2$
 		buttonsPanel.add(button);
 	}
 
 	public void addSeparator(String text) {
-		buttonsPanel.add(new JXTitledSeparator(text, JLabel.CENTER), "alignx 50%, newline, span, growx, height 30!");
+		buttonsPanel.add(new JXTitledSeparator(text, JLabel.CENTER), "alignx 50%, newline, span, growx, height 30!"); //$NON-NLS-1$
 	}
 
 	private void scrollDown() {

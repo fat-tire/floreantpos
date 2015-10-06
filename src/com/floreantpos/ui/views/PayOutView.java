@@ -16,6 +16,7 @@ import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
+import com.floreantpos.Messages;
 import com.floreantpos.model.PayoutReason;
 import com.floreantpos.model.PayoutRecepient;
 import com.floreantpos.model.dao.PayoutReasonDAO;
@@ -65,20 +66,20 @@ public class PayOutView extends TransparentPanel {
 
         numberSelectionView.setTitle(com.floreantpos.POSConstants.AMOUNT_PAID_OUT);
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 12));
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 12)); //$NON-NLS-1$
         jLabel1.setText(com.floreantpos.POSConstants.PAY_OUT_REASON);
 
-        cbReason.setFont(new java.awt.Font("Tahoma", 1, 18));
+        cbReason.setFont(new java.awt.Font("Tahoma", 1, 18)); //$NON-NLS-1$
 
-        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 12));
+        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 12)); //$NON-NLS-1$
         jLabel2.setText(com.floreantpos.POSConstants.SELECT_PAY_OUT_RECEPIENT);
 
-        cbRecepient.setFont(new java.awt.Font("Tahoma", 1, 18));
+        cbRecepient.setFont(new java.awt.Font("Tahoma", 1, 18)); //$NON-NLS-1$
 
-        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 12));
-        jLabel3.setText("NOTE");
+        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 12)); //$NON-NLS-1$
+        jLabel3.setText(Messages.getString("PayOutView.5")); //$NON-NLS-1$
 
-        btnAddNote.setText("...");
+        btnAddNote.setText("..."); //$NON-NLS-1$
         btnAddNote.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAddNoteActionPerformed(evt);
@@ -98,7 +99,7 @@ public class PayOutView extends TransparentPanel {
         		doNewReason();
         	}
         });
-        btnNewReason.setText("...");
+        btnNewReason.setText("..."); //$NON-NLS-1$
         
         btnNewRecepient = new PosButton();
         btnNewRecepient.addActionListener(new ActionListener() {
@@ -106,7 +107,7 @@ public class PayOutView extends TransparentPanel {
         		doNewRecepient();
         	}
         });
-        btnNewRecepient.setText("...");
+        btnNewRecepient.setText("..."); //$NON-NLS-1$
 
         GroupLayout layout = new GroupLayout(this);
         layout.setHorizontalGroup(
@@ -171,7 +172,7 @@ public class PayOutView extends TransparentPanel {
 
     protected void doNewRecepient() {
     	NotesDialog dialog = new NotesDialog();
-    	dialog.setTitle("Enter pay out recepient");
+    	dialog.setTitle(Messages.getString("PayOutView.0")); //$NON-NLS-1$
     	dialog.pack();
     	dialog.open();
     	
@@ -189,7 +190,7 @@ public class PayOutView extends TransparentPanel {
 
 	protected void doNewReason() {
 		NotesDialog dialog = new NotesDialog();
-    	dialog.setTitle("Enter pay out reason");
+    	dialog.setTitle(Messages.getString("PayOutView.10")); //$NON-NLS-1$
     	dialog.pack();
     	dialog.open();
     	

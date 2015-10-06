@@ -18,6 +18,7 @@ import javax.swing.JLabel;
 
 import net.miginfocom.swing.MigLayout;
 
+import com.floreantpos.Messages;
 import com.floreantpos.model.MenuCategory;
 import com.floreantpos.model.MenuGroup;
 import com.floreantpos.model.dao.MenuCategoryDAO;
@@ -54,7 +55,7 @@ public class MenuGroupForm extends BeanEditor {
 	 */
 	// <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:initComponents
 	private void initComponents() {
-		setLayout(new MigLayout("", "[70px][289px,grow][6px][49px]", "[19px][][25px][][][][15px]"));
+		setLayout(new MigLayout("", "[70px][289px,grow][6px][49px]", "[19px][][25px][][][][15px]")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		
 		jLabel1 = new javax.swing.JLabel();
 		tfName = new com.floreantpos.swing.FixedLengthTextField(120);
@@ -63,58 +64,58 @@ public class MenuGroupForm extends BeanEditor {
 		chkVisible = new javax.swing.JCheckBox();
 		btnNewCategory = new javax.swing.JButton();
 
-		jLabel1.setText(com.floreantpos.POSConstants.NAME + ":");
+		jLabel1.setText(com.floreantpos.POSConstants.NAME + ":"); //$NON-NLS-1$
 
-		jLabel2.setText(com.floreantpos.POSConstants.CATEGORY + ":");
+		jLabel2.setText(com.floreantpos.POSConstants.CATEGORY + ":"); //$NON-NLS-1$
 
 		chkVisible.setText(com.floreantpos.POSConstants.VISIBLE);
 		chkVisible.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
 		chkVisible.setMargin(new java.awt.Insets(0, 0, 0, 0));
 
-		btnNewCategory.setText("...");
+		btnNewCategory.setText("..."); //$NON-NLS-1$
 		btnNewCategory.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				doNewCategory(evt);
 			}
 		});
 		
-		lblTranslatedName = new JLabel("Translated name");
-		add(lblTranslatedName, "cell 0 1,alignx trailing");
+		lblTranslatedName = new JLabel(Messages.getString("MenuGroupForm.6")); //$NON-NLS-1$
+		add(lblTranslatedName, "cell 0 1,alignx trailing"); //$NON-NLS-1$
 
 		tfTranslatedName = new FixedLengthTextField(120);
-		add(tfTranslatedName, "cell 1 1,growx");
-		add(jLabel2, "cell 0 2,alignx left,aligny center");
-		add(jLabel1, "cell 0 0,alignx left,aligny center");
-		add(tfName, "cell 1 0 3 1,growx,aligny top");
+		add(tfTranslatedName, "cell 1 1,growx"); //$NON-NLS-1$
+		add(jLabel2, "cell 0 2,alignx left,aligny center"); //$NON-NLS-1$
+		add(jLabel1, "cell 0 0,alignx left,aligny center"); //$NON-NLS-1$
+		add(tfName, "cell 1 0 3 1,growx,aligny top"); //$NON-NLS-1$
 
-		lblSortOrder = new JLabel("Sort order");
-		add(lblSortOrder, "cell 0 3,alignx leading");
+		lblSortOrder = new JLabel(Messages.getString("MenuGroupForm.12")); //$NON-NLS-1$
+		add(lblSortOrder, "cell 0 3,alignx leading"); //$NON-NLS-1$
 
 		tfSortOrder = new IntegerTextField();
 		tfSortOrder.setColumns(10);
-		add(tfSortOrder, "cell 1 3");
+		add(tfSortOrder, "cell 1 3"); //$NON-NLS-1$
 
-		lblButtonColor = new JLabel("Button color");
-		add(lblButtonColor, "cell 0 4");
+		lblButtonColor = new JLabel(Messages.getString("MenuGroupForm.15")); //$NON-NLS-1$
+		add(lblButtonColor, "cell 0 4"); //$NON-NLS-1$
 
-		btnButtonColor = new JButton("");
+		btnButtonColor = new JButton(""); //$NON-NLS-1$
 		btnButtonColor.setPreferredSize(new Dimension(140, 40));
-		add(btnButtonColor, "cell 1 4,growy");
+		add(btnButtonColor, "cell 1 4,growy"); //$NON-NLS-1$
 
-		lblTextColor = new JLabel("Text color");
-		add(lblTextColor, "cell 0 5");
+		lblTextColor = new JLabel(Messages.getString("MenuGroupForm.19")); //$NON-NLS-1$
+		add(lblTextColor, "cell 0 5"); //$NON-NLS-1$
 
-		btnTextColor = new JButton("SAMPLE TEXT");
+		btnTextColor = new JButton(Messages.getString("MenuGroupForm.21")); //$NON-NLS-1$
 		btnTextColor.setPreferredSize(new Dimension(140, 40));
-		add(btnTextColor, "cell 1 5");
-		add(chkVisible, "cell 1 6,alignx left,aligny top");
-		add(cbCategory, "cell 1 2,growx,aligny top");
-		add(btnNewCategory, "cell 3 2,alignx left,aligny top");
+		add(btnTextColor, "cell 1 5"); //$NON-NLS-1$
+		add(chkVisible, "cell 1 6,alignx left,aligny top"); //$NON-NLS-1$
+		add(cbCategory, "cell 1 2,growx,aligny top"); //$NON-NLS-1$
+		add(btnNewCategory, "cell 3 2,alignx left,aligny top"); //$NON-NLS-1$
 
 		btnButtonColor.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Color color = JColorChooser.showDialog(MenuGroupForm.this, "Select color", btnButtonColor.getBackground());
+				Color color = JColorChooser.showDialog(MenuGroupForm.this, Messages.getString("MenuGroupForm.26"), btnButtonColor.getBackground()); //$NON-NLS-1$
 				btnButtonColor.setBackground(color);
 				btnTextColor.setBackground(color);
 			}
@@ -123,7 +124,7 @@ public class MenuGroupForm extends BeanEditor {
 		btnTextColor.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Color color = JColorChooser.showDialog(MenuGroupForm.this, "Select color", btnTextColor.getForeground());
+				Color color = JColorChooser.showDialog(MenuGroupForm.this, Messages.getString("MenuGroupForm.27"), btnTextColor.getForeground()); //$NON-NLS-1$
 				btnTextColor.setForeground(color);
 			}
 		});
@@ -187,7 +188,7 @@ public class MenuGroupForm extends BeanEditor {
 	protected void updateView() {
 		MenuGroup menuGroup = (MenuGroup) getBean();
 		if (menuGroup == null) {
-			tfName.setText("");
+			tfName.setText(""); //$NON-NLS-1$
 			cbCategory.setSelectedItem(null);
 			chkVisible.setSelected(false);
 			return;
@@ -225,13 +226,13 @@ public class MenuGroupForm extends BeanEditor {
 
 		String name = tfName.getText();
 		if (POSUtil.isBlankOrNull(name)) {
-			MessageDialog.showError("Name is required");
+			MessageDialog.showError(Messages.getString("MenuGroupForm.29")); //$NON-NLS-1$
 			return false;
 		}
 
 		MenuCategory category = (MenuCategory) cbCategory.getSelectedItem();
 		if (category == null) {
-			MessageDialog.showError("Category is required");
+			MessageDialog.showError(Messages.getString("MenuGroupForm.30")); //$NON-NLS-1$
 			return false;
 		}
 
@@ -252,8 +253,8 @@ public class MenuGroupForm extends BeanEditor {
 	public String getDisplayText() {
 		MenuGroup foodGroup = (MenuGroup) getBean();
 		if (foodGroup.getId() == null) {
-			return "New menu group";
+			return Messages.getString("MenuGroupForm.31"); //$NON-NLS-1$
 		}
-		return "Edit menu group";
+		return Messages.getString("MenuGroupForm.32"); //$NON-NLS-1$
 	}
 }

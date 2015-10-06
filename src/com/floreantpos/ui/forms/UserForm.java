@@ -171,7 +171,7 @@ public class UserForm extends BeanEditor {
 
 		if (!editMode) {
 			if (userDAO.isUserExist(user.getUserId())) {
-				POSMessageDialog.showError(this, Messages.getString("UserForm.39") + user.getUserId() + " already exists."); //$NON-NLS-1$
+				POSMessageDialog.showError(this, Messages.getString("UserForm.39") + user.getUserId() + " " + "already exists."); //$NON-NLS-1$ //$NON-NLS-2$
 				return false;
 			}
 		}
@@ -242,7 +242,7 @@ public class UserForm extends BeanEditor {
 		try {
 			cost = Double.parseDouble(tfCostPerHour.getText());
 		} catch (Exception x) {
-			throw new IllegalModelStateException(Messages.getString("UserForm.49") + firstName + " " + lastName + " is not valid."); //$NON-NLS-1$ //$NON-NLS-2$
+			throw new IllegalModelStateException(Messages.getString("UserForm.49") + firstName + " " + lastName + " " + "is not valid."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		}
 
 		user.setType((UserType) cbUserType.getSelectedItem());

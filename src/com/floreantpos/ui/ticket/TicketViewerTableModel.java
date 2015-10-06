@@ -10,6 +10,7 @@ import java.util.Set;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 
+import com.floreantpos.Messages;
 import com.floreantpos.model.ITicketItem;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketItem;
@@ -24,7 +25,7 @@ public class TicketViewerTableModel extends AbstractTableModel {
 
 	private boolean priceIncludesTax = false;
 	
-	protected String[] columnNames = { "Item", "U/Price", "Unit", "Price" };
+	protected String[] columnNames = { Messages.getString("TicketViewerTableModel.0"), Messages.getString("TicketViewerTableModel.1"), Messages.getString("TicketViewerTableModel.2"), Messages.getString("TicketViewerTableModel.3") }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 
 	private boolean forReciptPrint;
 	private boolean printCookingInstructions;
