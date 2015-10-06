@@ -2,7 +2,6 @@ package com.floreantpos.model;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-import com.floreantpos.Messages;
 import com.floreantpos.model.base.BaseMenuItemModifierGroup;
 
 

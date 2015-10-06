@@ -9,7 +9,6 @@ import javax.swing.JScrollPane;
 
 import org.jdesktop.swingx.JXTable;
 
-import com.floreantpos.Messages;
 import com.floreantpos.POSConstants;
 import com.floreantpos.bo.ui.BOMessageDialog;
 import com.floreantpos.model.MenuGroup;

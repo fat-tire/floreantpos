@@ -15,7 +15,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import org.apache.commons.io.FileUtils;
 
-import com.floreantpos.Messages;
 import com.floreantpos.model.dao.VirtualPrinterDAO;
 
 @XmlRootElement(name = "printers")
