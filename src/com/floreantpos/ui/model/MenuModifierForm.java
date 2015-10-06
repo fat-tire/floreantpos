@@ -21,6 +21,7 @@ import javax.swing.JLabel;
 
 import net.miginfocom.swing.MigLayout;
 
+import com.floreantpos.Messages;
 import com.floreantpos.model.MenuModifier;
 import com.floreantpos.model.MenuModifierGroup;
 import com.floreantpos.model.Tax;
@@ -89,28 +90,28 @@ public class MenuModifierForm extends BeanEditor {
 		cbModifierGroup = new javax.swing.JComboBox();
 		btnPrintToKitchen = new javax.swing.JCheckBox();
 
-		jLabel2.setText(com.floreantpos.POSConstants.PRICE + ":");
+		jLabel2.setText(com.floreantpos.POSConstants.PRICE + ":"); //$NON-NLS-1$
 
-		jLabel1.setText(com.floreantpos.POSConstants.NAME + ":");
+		jLabel1.setText(com.floreantpos.POSConstants.NAME + ":"); //$NON-NLS-1$
 
-		jLabel3.setText(com.floreantpos.POSConstants.EXTRA_PRICE + ":");
+		jLabel3.setText(com.floreantpos.POSConstants.EXTRA_PRICE + ":"); //$NON-NLS-1$
 
-		jLabel5.setText(com.floreantpos.POSConstants.TAX_RATE + ":");
+		jLabel5.setText(com.floreantpos.POSConstants.TAX_RATE + ":"); //$NON-NLS-1$
 
-		tfExtraPrice.setText("0");
+		tfExtraPrice.setText("0"); //$NON-NLS-1$
 
-		jLabel6.setText("%");
+		jLabel6.setText("%"); //$NON-NLS-1$
 
-		tfPrice.setText("0");
+		tfPrice.setText("0"); //$NON-NLS-1$
 
-		btnNewTax.setText("...");
+		btnNewTax.setText("..."); //$NON-NLS-1$
 		btnNewTax.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				btnNewTaxActionPerformed(evt);
 			}
 		});
 
-		jLabel4.setText(com.floreantpos.POSConstants.GROUP + ":");
+		jLabel4.setText(com.floreantpos.POSConstants.GROUP + ":"); //$NON-NLS-1$
 
 		btnPrintToKitchen.setText(com.floreantpos.POSConstants.PRINT_TO_KITCHEN);
 		btnPrintToKitchen.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
@@ -118,51 +119,51 @@ public class MenuModifierForm extends BeanEditor {
 
 		jTabbedPane1.addTab(com.floreantpos.POSConstants.GENERAL, jPanel1);
 
-		jPanel1.setLayout(new MigLayout("", "[80px][173px,grow][6px][49px][12px][59px]", "[19px][][24px][19px][19px][][25px][][][15px]"));
+		jPanel1.setLayout(new MigLayout("", "[80px][173px,grow][6px][49px][12px][59px]", "[19px][][24px][19px][19px][][25px][][][15px]")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
-		lblTranslatedName = new JLabel("Translated name");
-		jPanel1.add(lblTranslatedName, "cell 0 1,alignx trailing");
+		lblTranslatedName = new JLabel(Messages.getString("MenuModifierForm.0")); //$NON-NLS-1$
+		jPanel1.add(lblTranslatedName, "cell 0 1,alignx trailing"); //$NON-NLS-1$
 
 		tfTranslatedName = new FixedLengthTextField();
-		jPanel1.add(tfTranslatedName, "cell 1 1 5 1,growx");
+		jPanel1.add(tfTranslatedName, "cell 1 1 5 1,growx"); //$NON-NLS-1$
 		
-		lblSortOrder = new JLabel("Sort order");
-		jPanel1.add(lblSortOrder, "cell 0 5");
+		lblSortOrder = new JLabel(Messages.getString("MenuModifierForm.15")); //$NON-NLS-1$
+		jPanel1.add(lblSortOrder, "cell 0 5"); //$NON-NLS-1$
 		
 		tfSortOrder = new IntegerTextField();
-		jPanel1.add(tfSortOrder, "cell 1 5,growx");
-		jPanel1.add(jLabel5, "cell 0 6,alignx left,aligny center");
-		jPanel1.add(jLabel1, "cell 0 0,alignx left,aligny center");
-		jPanel1.add(jLabel4, "cell 0 2,alignx left,aligny center");
-		jPanel1.add(jLabel2, "cell 0 3,alignx left,aligny center");
-		jPanel1.add(jLabel3, "cell 0 4,alignx left,aligny center");
+		jPanel1.add(tfSortOrder, "cell 1 5,growx"); //$NON-NLS-1$
+		jPanel1.add(jLabel5, "cell 0 6,alignx left,aligny center"); //$NON-NLS-1$
+		jPanel1.add(jLabel1, "cell 0 0,alignx left,aligny center"); //$NON-NLS-1$
+		jPanel1.add(jLabel4, "cell 0 2,alignx left,aligny center"); //$NON-NLS-1$
+		jPanel1.add(jLabel2, "cell 0 3,alignx left,aligny center"); //$NON-NLS-1$
+		jPanel1.add(jLabel3, "cell 0 4,alignx left,aligny center"); //$NON-NLS-1$
 
-		JLabel lblButtonColor = new JLabel("Button color");
-		jPanel1.add(lblButtonColor, "cell 0 7");
+		JLabel lblButtonColor = new JLabel(Messages.getString("MenuModifierForm.1")); //$NON-NLS-1$
+		jPanel1.add(lblButtonColor, "cell 0 7"); //$NON-NLS-1$
 
-		btnButtonColor = new JButton("");
+		btnButtonColor = new JButton(""); //$NON-NLS-1$
 		btnButtonColor.setPreferredSize(new Dimension(140, 40));
-		jPanel1.add(btnButtonColor, "cell 1 7");
+		jPanel1.add(btnButtonColor, "cell 1 7"); //$NON-NLS-1$
 
-		JLabel lblTextColor = new JLabel("Text color");
-		jPanel1.add(lblTextColor, "cell 0 8");
+		JLabel lblTextColor = new JLabel(Messages.getString("MenuModifierForm.27")); //$NON-NLS-1$
+		jPanel1.add(lblTextColor, "cell 0 8"); //$NON-NLS-1$
 
-		btnTextColor = new JButton("SAMPLE TEXT");
+		btnTextColor = new JButton(Messages.getString("MenuModifierForm.29")); //$NON-NLS-1$
 		btnTextColor.setPreferredSize(new Dimension(140, 40));
-		jPanel1.add(btnTextColor, "cell 1 8");
-		jPanel1.add(btnPrintToKitchen, "cell 1 9,alignx left,aligny top");
-		jPanel1.add(tfName, "cell 1 0 5 1,growx,aligny top");
-		jPanel1.add(cbModifierGroup, "cell 1 2 5 1,growx,aligny top");
-		jPanel1.add(cbTaxes, "cell 1 6,growx,aligny top");
-		jPanel1.add(btnNewTax, "cell 3 6,alignx left,aligny top");
-		jPanel1.add(jLabel6, "cell 5 6,alignx left,aligny center");
-		jPanel1.add(tfExtraPrice, "cell 1 4,growx,aligny top");
-		jPanel1.add(tfPrice, "cell 1 3,growx,aligny top");
+		jPanel1.add(btnTextColor, "cell 1 8"); //$NON-NLS-1$
+		jPanel1.add(btnPrintToKitchen, "cell 1 9,alignx left,aligny top"); //$NON-NLS-1$
+		jPanel1.add(tfName, "cell 1 0 5 1,growx,aligny top"); //$NON-NLS-1$
+		jPanel1.add(cbModifierGroup, "cell 1 2 5 1,growx,aligny top"); //$NON-NLS-1$
+		jPanel1.add(cbTaxes, "cell 1 6,growx,aligny top"); //$NON-NLS-1$
+		jPanel1.add(btnNewTax, "cell 3 6,alignx left,aligny top"); //$NON-NLS-1$
+		jPanel1.add(jLabel6, "cell 5 6,alignx left,aligny center"); //$NON-NLS-1$
+		jPanel1.add(tfExtraPrice, "cell 1 4,growx,aligny top"); //$NON-NLS-1$
+		jPanel1.add(tfPrice, "cell 1 3,growx,aligny top"); //$NON-NLS-1$
 
 		btnButtonColor.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Color color = JColorChooser.showDialog(MenuModifierForm.this, "Select color", btnButtonColor.getBackground());
+				Color color = JColorChooser.showDialog(MenuModifierForm.this, Messages.getString("MenuModifierForm.39"), btnButtonColor.getBackground()); //$NON-NLS-1$
 				btnButtonColor.setBackground(color);
 				btnTextColor.setBackground(color);
 			}
@@ -171,7 +172,7 @@ public class MenuModifierForm extends BeanEditor {
 		btnTextColor.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Color color = JColorChooser.showDialog(MenuModifierForm.this, "Select color", btnTextColor.getForeground());
+				Color color = JColorChooser.showDialog(MenuModifierForm.this, Messages.getString("MenuModifierForm.40"), btnTextColor.getForeground()); //$NON-NLS-1$
 				btnTextColor.setForeground(color);
 			}
 		});
@@ -238,9 +239,9 @@ public class MenuModifierForm extends BeanEditor {
 		MenuModifier modifier = (MenuModifier) getBean();
 
 		if (modifier == null) {
-			tfName.setText("");
-			tfPrice.setText("0");
-			tfExtraPrice.setText("0");
+			tfName.setText(""); //$NON-NLS-1$
+			tfPrice.setText("0"); //$NON-NLS-1$
+			tfExtraPrice.setText("0"); //$NON-NLS-1$
 			return;
 		}
 
@@ -277,7 +278,7 @@ public class MenuModifierForm extends BeanEditor {
 
 		String name = tfName.getText();
 		if (POSUtil.isBlankOrNull(name)) {
-			MessageDialog.showError("Name is required");
+			MessageDialog.showError(Messages.getString("MenuModifierForm.44")); //$NON-NLS-1$
 			return false;
 		}
 
@@ -299,8 +300,8 @@ public class MenuModifierForm extends BeanEditor {
 	public String getDisplayText() {
 		MenuModifier modifier = (MenuModifier) getBean();
 		if (modifier.getId() == null) {
-			return "New menu modifier";
+			return Messages.getString("MenuModifierForm.45"); //$NON-NLS-1$
 		}
-		return "Edit menu modifier";
+		return Messages.getString("MenuModifierForm.46"); //$NON-NLS-1$
 	}
 }

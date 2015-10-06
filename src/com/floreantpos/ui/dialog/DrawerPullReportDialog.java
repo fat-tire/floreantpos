@@ -257,66 +257,66 @@ public class DrawerPullReportDialog extends POSDialog {
     	createReportHeader(document);
     	
     	P p = new P();
-		p.addElement("Time: " + dateFormat.format(new Date()));
+		p.addElement(Messages.getString("DrawerPullReportDialog.1") + dateFormat.format(new Date())); //$NON-NLS-1$
 		document.appendBody(p);
     	
     	
-    	createSectionHeader(document, " SALES BALANCE ");
+    	createSectionHeader(document, Messages.getString("DrawerPullReportDialog.2")); //$NON-NLS-1$
     	table = new Table();
 		table.addAttribute("width", "100%"); //$NON-NLS-1$ //$NON-NLS-2$
-		addTableRow(table, "&nbsp;" + "NET SALES", decimalFormat.format(drawerPullReport.getNetSales())); //$NON-NLS-1$
-		addTableRow(table, "+" + "SALES TAX", decimalFormat.format(drawerPullReport.getSalesTax()));
-		addTableRow(table, "=" + "TOTAL REVENUES", decimalFormat.format(drawerPullReport.getTotalRevenue()));
-		addTableRow(table, "+" + "CHARGED TIPS", decimalFormat.format(drawerPullReport.getChargedTips()));
+		addTableRow(table, "&nbsp;" + Messages.getString("DrawerPullReportDialog.3"), decimalFormat.format(drawerPullReport.getNetSales())); //$NON-NLS-1$ //$NON-NLS-2$
+		addTableRow(table, "+" + Messages.getString("DrawerPullReportDialog.5"), decimalFormat.format(drawerPullReport.getSalesTax())); //$NON-NLS-1$ //$NON-NLS-2$
+		addTableRow(table, "=" + Messages.getString("DrawerPullReportDialog.7"), decimalFormat.format(drawerPullReport.getTotalRevenue())); //$NON-NLS-1$ //$NON-NLS-2$
+		addTableRow(table, "+" + Messages.getString("DrawerPullReportDialog.10"), decimalFormat.format(drawerPullReport.getChargedTips())); //$NON-NLS-1$ //$NON-NLS-2$
 		addTableSeparator(table);
-		addTableRow(table, "=" + "GROSS RECEIPTS", decimalFormat.format(drawerPullReport.getGrossReceipts()));
+		addTableRow(table, "=" + Messages.getString("DrawerPullReportDialog.12"), decimalFormat.format(drawerPullReport.getGrossReceipts())); //$NON-NLS-1$ //$NON-NLS-2$
 		document.appendBody(table);
 		
 		document.appendBody(new BR());
 		
 		table = new Table();
 		table.addAttribute("width", "100%"); //$NON-NLS-1$ //$NON-NLS-2$
-		addTableRow(table, "-CASH RECEIPTS" + " (" + drawerPullReport.getCashReceiptCount() + ")", decimalFormat.format(drawerPullReport.getCashReceiptAmount())); //$NON-NLS-1$ //$NON-NLS-2$
-		addTableRow(table, "-" + "CREDIT CARDS" + " (" + drawerPullReport.getCreditCardReceiptCount() + ")", decimalFormat.format(drawerPullReport.getCreditCardReceiptAmount())); //$NON-NLS-1$ //$NON-NLS-2$
-		addTableRow(table, "-" + "DEBIT CARDS" + " (" + drawerPullReport.getDebitCardReceiptCount() + ")", decimalFormat.format(drawerPullReport.getDebitCardReceiptAmount())); //$NON-NLS-1$ //$NON-NLS-2$
-		addTableRow(table, "-" + "GIFT RETURNS" + " (" + drawerPullReport.getGiftCertReturnCount() + ")", decimalFormat.format(drawerPullReport.getGiftCertReturnAmount())); //$NON-NLS-1$ //$NON-NLS-2$
-		addTableRow(table, "+" + "GIFT CERT. CHANGE", decimalFormat.format(drawerPullReport.getGiftCertChangeAmount()));
-		addTableRow(table, "+" + "CASH BACK", decimalFormat.format(drawerPullReport.getCashBack()));
-		addTableRow(table, "+" + "REFUND" + " (" + drawerPullReport.getRefundReceiptCount() + ")", decimalFormat.format(drawerPullReport.getRefundAmount())); //$NON-NLS-1$ //$NON-NLS-2$
+		addTableRow(table, "-" + "CASH RECEIPTS" + " (" + drawerPullReport.getCashReceiptCount() + ")", decimalFormat.format(drawerPullReport.getCashReceiptAmount())); //$NON-NLS-1$ //$NON-NLS-3$
+		addTableRow(table, "-" + "CREDIT CARDS" + " (" + drawerPullReport.getCreditCardReceiptCount() + ")", decimalFormat.format(drawerPullReport.getCreditCardReceiptAmount())); //$NON-NLS-1$ //$NON-NLS-3$ //$NON-NLS-4$
+		addTableRow(table, "-" + "DEBIT CARDS" + " (" + drawerPullReport.getDebitCardReceiptCount() + ")", decimalFormat.format(drawerPullReport.getDebitCardReceiptAmount())); //$NON-NLS-1$ //$NON-NLS-3$ //$NON-NLS-4$
+		addTableRow(table, "-" + "GIFT RETURNS" + " (" + drawerPullReport.getGiftCertReturnCount() + ")", decimalFormat.format(drawerPullReport.getGiftCertReturnAmount())); //$NON-NLS-1$ //$NON-NLS-3$ //$NON-NLS-4$
+		addTableRow(table, "+" + Messages.getString("DrawerPullReportDialog.23"), decimalFormat.format(drawerPullReport.getGiftCertChangeAmount())); //$NON-NLS-1$ //$NON-NLS-2$
+		addTableRow(table, "+" + Messages.getString("DrawerPullReportDialog.25"), decimalFormat.format(drawerPullReport.getCashBack())); //$NON-NLS-1$ //$NON-NLS-2$
+		addTableRow(table, "+" + "REFUND" + " (" + drawerPullReport.getRefundReceiptCount() + ")", decimalFormat.format(drawerPullReport.getRefundAmount())); //$NON-NLS-1$ //$NON-NLS-3$ //$NON-NLS-4$
 		addTableSeparator(table);
-		addTableRow(table, "=" + "RECEIPT DIFFERENTIAL", decimalFormat.format(drawerPullReport.getReceiptDifferential()));
+		addTableRow(table, "=" + Messages.getString("DrawerPullReportDialog.29"), decimalFormat.format(drawerPullReport.getReceiptDifferential())); //$NON-NLS-1$ //$NON-NLS-2$
 		document.appendBody(table);
 		
 		document.appendBody(new BR());
 		
 		table = new Table();
 		table.addAttribute("width", "100%"); //$NON-NLS-1$ //$NON-NLS-2$
-		addTableRow(table, "+" + "CHARGED TIPS", decimalFormat.format(drawerPullReport.getChargedTips()));
-		addTableRow(table, "-" + "TIPS PAID", decimalFormat.format(drawerPullReport.getTipsPaid()));
+		addTableRow(table, "+" + Messages.getString("DrawerPullReportDialog.31"), decimalFormat.format(drawerPullReport.getChargedTips())); //$NON-NLS-1$ //$NON-NLS-2$
+		addTableRow(table, "-" + Messages.getString("DrawerPullReportDialog.33"), decimalFormat.format(drawerPullReport.getTipsPaid())); //$NON-NLS-1$ //$NON-NLS-2$
 		addTableSeparator(table);
-		addTableRow(table, "=" + "TIPS DIFFERENTIAL", decimalFormat.format(drawerPullReport.getTipsDifferential()));
+		addTableRow(table, "=" + Messages.getString("DrawerPullReportDialog.35"), decimalFormat.format(drawerPullReport.getTipsDifferential())); //$NON-NLS-1$ //$NON-NLS-2$
 		document.appendBody(table);
 		
 		document.appendBody(new BR());
 		
-		createSectionHeader(document, " CASH BALANCE ");
+		createSectionHeader(document, Messages.getString("DrawerPullReportDialog.36")); //$NON-NLS-1$
 		table = new Table();
 		table.addAttribute("width", "100%"); //$NON-NLS-1$ //$NON-NLS-2$
-		addTableRow(table, "CASH" + " (" + drawerPullReport.getCashReceiptCount() + ")", decimalFormat.format(drawerPullReport.getCashReceiptAmount())); //$NON-NLS-1$ //$NON-NLS-2$
+		addTableRow(table, "CASH" + " (" + drawerPullReport.getCashReceiptCount() + ")", decimalFormat.format(drawerPullReport.getCashReceiptAmount())); //$NON-NLS-2$ //$NON-NLS-3$
 		//addTableRow(table, "CASH TAX", decimalFormat.format(drawerPullReport.getCashTax()));
-		addTableRow(table, "-" + "TIPS PAID", decimalFormat.format(drawerPullReport.getTipsPaid()));
-		addTableRow(table, "-" + "PAY OUT" + "       (" + drawerPullReport.getPayOutCount() + ")", decimalFormat.format(drawerPullReport.getPayOutAmount())); //$NON-NLS-1$ //$NON-NLS-2$
-		addTableRow(table, "-" + "CASH BACK", decimalFormat.format(drawerPullReport.getCashBack()));
-		addTableRow(table, "-" + "REFUND" + " (" + drawerPullReport.getRefundReceiptCount() + ")", decimalFormat.format(drawerPullReport.getRefundAmount())); //$NON-NLS-1$ //$NON-NLS-2$
-		addTableRow(table, "+" + "BEGIN CASH", decimalFormat.format(terminal.getOpeningBalance()));
-		addTableRow(table, "-" + "DRAWER BLEED" + "  (" + drawerPullReport.getDrawerBleedCount() + ")", decimalFormat.format(drawerPullReport.getDrawerBleedAmount())); //$NON-NLS-1$ //$NON-NLS-2$
+		addTableRow(table, "-" + Messages.getString("DrawerPullReportDialog.39"), decimalFormat.format(drawerPullReport.getTipsPaid())); //$NON-NLS-1$ //$NON-NLS-2$
+		addTableRow(table, "-" + "PAY OUT" + "       (" + drawerPullReport.getPayOutCount() + ")", decimalFormat.format(drawerPullReport.getPayOutAmount())); //$NON-NLS-1$ //$NON-NLS-3$ //$NON-NLS-4$
+		addTableRow(table, "-" + Messages.getString("DrawerPullReportDialog.43"), decimalFormat.format(drawerPullReport.getCashBack())); //$NON-NLS-1$ //$NON-NLS-2$
+		addTableRow(table, "-" + "REFUND" + " (" + drawerPullReport.getRefundReceiptCount() + ")", decimalFormat.format(drawerPullReport.getRefundAmount())); //$NON-NLS-1$ //$NON-NLS-3$ //$NON-NLS-4$
+		addTableRow(table, "+" + Messages.getString("DrawerPullReportDialog.47"), decimalFormat.format(terminal.getOpeningBalance())); //$NON-NLS-1$ //$NON-NLS-2$
+		addTableRow(table, "-" + "DRAWER BLEED" + "  (" + drawerPullReport.getDrawerBleedCount() + ")", decimalFormat.format(drawerPullReport.getDrawerBleedAmount())); //$NON-NLS-1$ //$NON-NLS-3$ //$NON-NLS-4$
 		addTableSeparator(table);
-		addTableRow(table, "=" + "DRAWER ACCOUNTABLE", decimalFormat.format(drawerPullReport.getDrawerAccountable()));
-		addTableRow(table, ">" + "CASH TO DEPOSIT", decimalFormat.format(drawerPullReport.getCashToDeposit()));
+		addTableRow(table, "=" + Messages.getString("DrawerPullReportDialog.51"), decimalFormat.format(drawerPullReport.getDrawerAccountable())); //$NON-NLS-1$ //$NON-NLS-2$
+		addTableRow(table, ">" + Messages.getString("DrawerPullReportDialog.53"), decimalFormat.format(drawerPullReport.getCashToDeposit())); //$NON-NLS-1$ //$NON-NLS-2$
 		document.appendBody(table);
 		
-		createSectionHeader(document, "=== EXCEPTIONS ===");
-		createSectionHeader(document, "=== VOIDS/REFUNDS (Without Tax) ===");
+		createSectionHeader(document, Messages.getString("DrawerPullReportDialog.54")); //$NON-NLS-1$
+		createSectionHeader(document, Messages.getString("DrawerPullReportDialog.55")); //$NON-NLS-1$
 		table = new Table();
 		table.addAttribute("width", "100%"); //$NON-NLS-1$ //$NON-NLS-2$
 		addExceptionTableRow(table, Messages.getString("DrawerPullReportDialog.99"), Messages.getString("DrawerPullReportDialog.100"), Messages.getString("DrawerPullReportDialog.101"), Messages.getString("DrawerPullReportDialog.102")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$

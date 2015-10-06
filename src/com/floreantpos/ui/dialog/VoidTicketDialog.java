@@ -217,8 +217,8 @@ public class VoidTicketDialog extends POSDialog {
 			dao.voidTicket(ticket);
 			
 			try {
-				String title = "- " + "VOID RECEIPT -"; //$NON-NLS-1$
-				String data = "Ticket #" + ticket.getId() + " was voided.";
+				String title = "- " + Messages.getString("VoidTicketDialog.0"); //$NON-NLS-1$ //$NON-NLS-2$
+				String data = Messages.getString("VoidTicketDialog.1") + ticket.getId() + " was voided."; //$NON-NLS-1$ //$NON-NLS-2$
 				
 				ReceiptPrintService.printGenericReport(title, data);
 			}catch(Exception ee) {

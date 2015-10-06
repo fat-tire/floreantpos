@@ -15,6 +15,7 @@ import javax.swing.JTextField;
 
 import org.jdesktop.swingx.JXDatePicker;
 
+import com.floreantpos.Messages;
 import com.floreantpos.model.CouponAndDiscount;
 import com.floreantpos.model.dao.CouponAndDiscountDAO;
 import com.floreantpos.swing.FixedLengthDocument;
@@ -91,12 +92,12 @@ public class CouponForm extends BeanEditor {
         boolean disabled = chkDisabled.isSelected();
         boolean neverExpire = chkNeverExpire.isSelected();
 
-        if (name == null || name.trim().equals("")) {
-            MessageDialog.showError("Name cannot be empty");
+        if (name == null || name.trim().equals("")) { //$NON-NLS-1$
+            MessageDialog.showError(Messages.getString("CouponForm.1")); //$NON-NLS-1$
             return false;
         }
         if (couponType != CouponAndDiscount.FREE_AMOUNT && couponValue <= 0) {
-            MessageDialog.showError("Value must be greater than 0");
+            MessageDialog.showError(Messages.getString("CouponForm.2")); //$NON-NLS-1$
             return false;
         }
 
@@ -115,9 +116,9 @@ public class CouponForm extends BeanEditor {
     public String getDisplayText() {
         CouponAndDiscount coupon = (CouponAndDiscount) getBean();
         if (coupon.getId() == null) {
-            return "Add new coupon/discount";
+            return Messages.getString("CouponForm.3"); //$NON-NLS-1$
         }
-        return "Edit coupon/discount";
+        return Messages.getString("CouponForm.4"); //$NON-NLS-1$
     }
 
     {
@@ -136,34 +137,34 @@ public class CouponForm extends BeanEditor {
      */
     private void $$$setupUI$$$() {
         contentPane = new JPanel();
-        contentPane.setLayout(new FormLayout("fill:d:noGrow,left:4dlu:noGrow,fill:d:grow,left:4dlu:noGrow,fill:100px:grow", "center:d:noGrow,top:4dlu:noGrow,center:max(d;4px):noGrow,top:4dlu:noGrow,center:max(d;4px):noGrow,top:4dlu:noGrow,center:max(d;4px):noGrow,top:4dlu:noGrow,center:max(d;4px):noGrow,top:4dlu:noGrow,center:max(d;4px):noGrow"));
+        contentPane.setLayout(new FormLayout("fill:d:noGrow,left:4dlu:noGrow,fill:d:grow,left:4dlu:noGrow,fill:100px:grow", "center:d:noGrow,top:4dlu:noGrow,center:max(d;4px):noGrow,top:4dlu:noGrow,center:max(d;4px):noGrow,top:4dlu:noGrow,center:max(d;4px):noGrow,top:4dlu:noGrow,center:max(d;4px):noGrow,top:4dlu:noGrow,center:max(d;4px):noGrow")); //$NON-NLS-1$ //$NON-NLS-2$
         contentPane.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5), null));
         final JLabel label1 = new JLabel();
-        label1.setText("Coupon Name" + ":");
+        label1.setText(Messages.getString("CouponForm.0") + ":"); //$NON-NLS-1$ //$NON-NLS-2$
         CellConstraints cc = new CellConstraints();
         contentPane.add(label1, cc.xy(1, 1));
         final JLabel label2 = new JLabel();
-        label2.setText("Experiation Date" + ":");
+        label2.setText(Messages.getString("CouponForm.9") + ":"); //$NON-NLS-1$ //$NON-NLS-2$
         contentPane.add(label2, cc.xy(1, 5));
         tfCouponName = new JTextField();
         contentPane.add(tfCouponName, cc.xyw(3, 1, 3, CellConstraints.FILL, CellConstraints.DEFAULT));
         dpExperation = new JXDatePicker();
         contentPane.add(dpExperation, cc.xy(3, 5));
         final JLabel label3 = new JLabel();
-        label3.setText("Coupon Type" + ":");
+        label3.setText(Messages.getString("CouponForm.11") + ":"); //$NON-NLS-1$ //$NON-NLS-2$
         contentPane.add(label3, cc.xy(1, 3));
         cbCouponType = new JComboBox();
         contentPane.add(cbCouponType, cc.xy(3, 3));
         final JLabel label4 = new JLabel();
-        label4.setText("Coupon Value" + ":");
+        label4.setText(Messages.getString("CouponForm.13") + ":"); //$NON-NLS-1$ //$NON-NLS-2$
         contentPane.add(label4, cc.xy(1, 7));
         tfCouponValue = new JFormattedTextField();
         contentPane.add(tfCouponValue, cc.xy(3, 7, CellConstraints.FILL, CellConstraints.DEFAULT));
         chkDisabled = new JCheckBox();
-        chkDisabled.setText("Disabled");
+        chkDisabled.setText(Messages.getString("CouponForm.15")); //$NON-NLS-1$
         contentPane.add(chkDisabled, cc.xy(3, 9));
         chkNeverExpire = new JCheckBox();
-        chkNeverExpire.setText("Never Expires");
+        chkNeverExpire.setText(Messages.getString("CouponForm.16")); //$NON-NLS-1$
         contentPane.add(chkNeverExpire, cc.xy(3, 11));
     }
 

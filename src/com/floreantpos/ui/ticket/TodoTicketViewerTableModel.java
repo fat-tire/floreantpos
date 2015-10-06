@@ -7,6 +7,7 @@ import java.util.List;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 
+import com.floreantpos.Messages;
 import com.floreantpos.model.ITicketItem;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketItem;
@@ -20,7 +21,7 @@ public class TodoTicketViewerTableModel extends AbstractTableModel {
 
 	private List<ITicketItem> items = new ArrayList<ITicketItem>();
 
-	protected String[] columnNames = { "Item", "U/Price", "Unit", "Tax", "Value" };
+	protected String[] columnNames = { Messages.getString("TodoTicketViewerTableModel.0"), Messages.getString("TodoTicketViewerTableModel.1"), Messages.getString("TodoTicketViewerTableModel.2"), Messages.getString("TodoTicketViewerTableModel.3"), Messages.getString("TodoTicketViewerTableModel.4") }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 
 	private boolean forReciptPrint;
 	private boolean printCookingInstructions;

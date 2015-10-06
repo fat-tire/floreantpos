@@ -11,6 +11,7 @@ import java.util.HashMap;
 
 import javax.swing.JComponent;
 
+import com.floreantpos.Messages;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.ui.dialog.POSMessageDialog;
@@ -22,7 +23,7 @@ import com.floreantpos.ui.dialog.POSMessageDialog;
 public class OrderView extends ViewPanel {
 	private HashMap<String, JComponent> views = new HashMap<String, JComponent>();
 
-	public final static String VIEW_NAME = "ORDER_VIEW";
+	public final static String VIEW_NAME = "ORDER_VIEW"; //$NON-NLS-1$
 	private static OrderView instance;
 	
 	private Ticket currentTicket;
@@ -59,9 +60,9 @@ public class OrderView extends ViewPanel {
 		addView(GroupView.VIEW_NAME, groupView);
 		addView(MenuItemView.VIEW_NAME, itemView);
 		addView(ModifierView.VIEW_NAME, modifierView);
-		addView("VIEW_EMPTY", new com.floreantpos.swing.TransparentPanel());
+		addView("VIEW_EMPTY", new com.floreantpos.swing.TransparentPanel()); //$NON-NLS-1$
 
-		showView("VIEW_EMPTY");
+		showView("VIEW_EMPTY"); //$NON-NLS-1$
 
 		orderController = new OrderController(this);
 	}

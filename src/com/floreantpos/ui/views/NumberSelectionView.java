@@ -20,6 +20,7 @@ import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
 import com.floreantpos.IconFactory;
+import com.floreantpos.Messages;
 import com.floreantpos.main.Application;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.swing.TransparentPanel;
@@ -44,7 +45,7 @@ public class NumberSelectionView extends TransparentPanel implements ActionListe
 		setLayout(new BorderLayout(5,5));
 		
 		tfNumber = new JTextField();
-		tfNumber.setText("0");
+		tfNumber.setText("0"); //$NON-NLS-1$
 		tfNumber.setFont(tfNumber.getFont().deriveFont(Font.BOLD, 24));
 		tfNumber.setEditable(false);
 		tfNumber.setBackground(Color.WHITE);
@@ -63,16 +64,16 @@ public class NumberSelectionView extends TransparentPanel implements ActionListe
 		add(northPanel, BorderLayout.NORTH);
 		
 		String[][] numbers = {
-        		{"7","8","9"},
-        		{"4","5","6"},
-        		{"1","2","3"},
-        		{".","0",""}
+        		{"7","8","9"}, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        		{"4","5","6"}, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        		{"1","2","3"}, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        		{".","0",""} //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         };
         String[][] iconNames = new String[][] { 
-        		{ "7.png", "8.png", "9.png" }, 
-        		{ "4.png", "5.png", "6.png" }, 
-        		{ "1.png", "2.png", "3.png" }, 
-        		{ "dot.png", "0.png", "clear.png" } 
+        		{ "7.png", "8.png", "9.png" },  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        		{ "4.png", "5.png", "6.png" },  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        		{ "1.png", "2.png", "3.png" },  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        		{ "dot.png", "0.png", "clear.png" }  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         	};
         
         JPanel centerPanel = new JPanel(new GridLayout(4,3,5,5));
@@ -81,7 +82,7 @@ public class NumberSelectionView extends TransparentPanel implements ActionListe
         for (int i = 0; i < numbers.length; i++) {
 			for (int j = 0; j < numbers[i].length; j++) {
 				PosButton posButton = new PosButton();
-				ImageIcon icon = IconFactory.getIcon("/ui_icons/", iconNames[i][j]);
+				ImageIcon icon = IconFactory.getIcon("/ui_icons/", iconNames[i][j]); //$NON-NLS-1$
 				String buttonText = String.valueOf(numbers[i][j]);
 
 				if (icon == null) {
@@ -102,7 +103,7 @@ public class NumberSelectionView extends TransparentPanel implements ActionListe
 		}
 		add(centerPanel, BorderLayout.CENTER);
 		
-		titledBorder = new TitledBorder("");
+		titledBorder = new TitledBorder(""); //$NON-NLS-1$
 		titledBorder.setTitleJustification(TitledBorder.CENTER);
 		
 		setBorder(titledBorder);
@@ -111,7 +112,7 @@ public class NumberSelectionView extends TransparentPanel implements ActionListe
 	public void actionPerformed(ActionEvent e) {
 		String actionCommand = e.getActionCommand();
 		if(actionCommand.equals(com.floreantpos.POSConstants.CLEAR_ALL)) {
-			tfNumber.setText("0");
+			tfNumber.setText("0"); //$NON-NLS-1$
 		}
 		else if(actionCommand.equals(com.floreantpos.POSConstants.CLEAR)) {
 			String s = tfNumber.getText();
@@ -119,15 +120,15 @@ public class NumberSelectionView extends TransparentPanel implements ActionListe
 				s = s.substring(0, s.length() - 1);
 			}
 			else {
-				s = "0";
+				s = "0"; //$NON-NLS-1$
 			}
 			tfNumber.setText(s);
 		} 
-		else if (actionCommand.equals(".")) {
+		else if (actionCommand.equals(".")) { //$NON-NLS-1$
 			if (isDecimalAllowed() && tfNumber.getText().indexOf('.') < 0) {
-				String string = tfNumber.getText() + ".";
+				String string = tfNumber.getText() + "."; //$NON-NLS-1$
 				if(!validate(string)) {
-					POSMessageDialog.showError(Application.getPosWindow(), "Invalid number");
+					POSMessageDialog.showError(Application.getPosWindow(), Messages.getString("NumberSelectionView.1")); //$NON-NLS-1$
 					return;
 				}
 				tfNumber.setText(string);
@@ -135,14 +136,14 @@ public class NumberSelectionView extends TransparentPanel implements ActionListe
 		}
 		else {
 			String s = tfNumber.getText();
-			if(s.equals("0")) {
+			if(s.equals("0")) { //$NON-NLS-1$
 				tfNumber.setText(actionCommand);
 				return;
 			}
 			
 			s = s + actionCommand;
 			if(!validate(s)) {
-				POSMessageDialog.showError(Application.getPosWindow(), "Invalid number");
+				POSMessageDialog.showError(Application.getPosWindow(), Messages.getString("NumberSelectionView.0")); //$NON-NLS-1$
 				return;
 			}
 			tfNumber.setText(s);

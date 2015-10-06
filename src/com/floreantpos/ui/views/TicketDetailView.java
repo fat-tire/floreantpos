@@ -19,6 +19,7 @@ import javax.swing.border.EmptyBorder;
 import net.miginfocom.swing.MigLayout;
 import net.sf.jasperreports.engine.JasperPrint;
 
+import com.floreantpos.Messages;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.report.ReceiptPrintService;
@@ -32,7 +33,7 @@ import com.floreantpos.ui.dialog.POSMessageDialog;
  */
 public class TicketDetailView extends JPanel {
 
-	public final static String VIEW_NAME = "TICKET_DETAIL";
+	public final static String VIEW_NAME = "TICKET_DETAIL"; //$NON-NLS-1$
 
 	private JPanel topPanel;
 
@@ -66,14 +67,14 @@ public class TicketDetailView extends JPanel {
 				return;
 			}
 			
-			JPanel reportPanel = new JPanel(new MigLayout("wrap 1, ax 50%","",""));
+			JPanel reportPanel = new JPanel(new MigLayout("wrap 1, ax 50%","","")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			PosScrollPane scrollPane = new PosScrollPane(reportPanel);
 			scrollPane.getVerticalScrollBar().setUnitIncrement(20);
 
 			for (Iterator iter = tickets.iterator(); iter.hasNext();) {
 				Ticket ticket = (Ticket) iter.next();
 				
-				TicketPrintProperties printProperties = new TicketPrintProperties("*** ORDER " + ticket.getId() + " ***", false, true, true);
+				TicketPrintProperties printProperties = new TicketPrintProperties("*** ORDER " + ticket.getId() + " ***", false, true, true); //$NON-NLS-1$ //$NON-NLS-2$
 				HashMap map = ReceiptPrintService.populateTicketProperties(ticket, printProperties, null);
 				JasperPrint jasperPrint = ReceiptPrintService.createPrint(ticket, map, null);
 

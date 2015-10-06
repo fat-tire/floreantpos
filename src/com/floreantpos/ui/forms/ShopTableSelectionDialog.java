@@ -13,6 +13,7 @@ import javax.swing.JPanel;
 
 import org.jdesktop.swingx.combobox.ListComboBoxModel;
 
+import com.floreantpos.Messages;
 import com.floreantpos.model.ShopTable;
 import com.floreantpos.model.dao.ShopTableDAO;
 import com.floreantpos.ui.dialog.POSDialog;
@@ -30,7 +31,7 @@ public class ShopTableSelectionDialog extends POSDialog {
 //	private JRadioButton rbDisable;
 	
 	public ShopTableSelectionDialog() {
-		super(POSUtil.getBackOfficeWindow(), "Table selector", true);
+		super(POSUtil.getBackOfficeWindow(), Messages.getString("ShopTableSelectionDialog.0"), true); //$NON-NLS-1$
 		
 		initModel();
 	}
@@ -42,7 +43,7 @@ public class ShopTableSelectionDialog extends POSDialog {
 		JPanel buttonPanel = new JPanel();
 		getContentPane().add(buttonPanel, BorderLayout.SOUTH);
 		
-		JButton btnOk = new JButton("OK");
+		JButton btnOk = new JButton(Messages.getString("ShopTableSelectionDialog.1")); //$NON-NLS-1$
 		btnOk.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				setCanceled(false);
@@ -51,7 +52,7 @@ public class ShopTableSelectionDialog extends POSDialog {
 		});
 		buttonPanel.add(btnOk);
 		
-		JButton btnCancel = new JButton("CANCEL");
+		JButton btnCancel = new JButton(Messages.getString("ShopTableSelectionDialog.2")); //$NON-NLS-1$
 		btnCancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				setCanceled(true);
@@ -63,7 +64,7 @@ public class ShopTableSelectionDialog extends POSDialog {
 		JPanel contentPanel = new JPanel();
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		
-		JLabel lblSelectTable = new JLabel("Select Table");
+		JLabel lblSelectTable = new JLabel(Messages.getString("ShopTableSelectionDialog.3")); //$NON-NLS-1$
 		contentPanel.add(lblSelectTable);
 		
 		cbTables = new JComboBox<ShopTable>();
@@ -98,7 +99,7 @@ public class ShopTableSelectionDialog extends POSDialog {
 		try {
 			cbTables.setModel(new ListComboBoxModel<ShopTable>(ShopTableDAO.getInstance().getAllUnassigned()));
 		} catch (Exception e) {
-			POSMessageDialog.showError(this, "Failed to load tables.", e);
+			POSMessageDialog.showError(this, Messages.getString("ShopTableSelectionDialog.4"), e); //$NON-NLS-1$
 		}
 	}
 	

@@ -16,7 +16,6 @@ import javax.swing.JTextField;
 import net.miginfocom.swing.MigLayout;
 
 import com.floreantpos.IconFactory;
-import com.floreantpos.Messages;
 import com.floreantpos.POSConstants;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.ui.TitlePanel;
