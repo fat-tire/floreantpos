@@ -1,6 +1,5 @@
 package com.floreantpos.model;
 
-import com.floreantpos.Messages;
 import com.floreantpos.model.base.BaseInventoryTransaction;
 
 
