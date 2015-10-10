@@ -45,7 +45,7 @@ public class TipsCashoutReportDialog extends POSDialog implements ActionListener
 		topPanel.add(new JLabel(": " + NumberUtil.formatNumber(report.getCashTipsAmount())), "wrap"); //$NON-NLS-1$ //$NON-NLS-2$
 		topPanel.add(new JLabel(Messages.getString("TipsCashoutReportDialog.6"))); //$NON-NLS-1$
 		topPanel.add(new JLabel(": " + NumberUtil.formatNumber(report.getChargedTipsAmount())), "wrap"); //$NON-NLS-1$ //$NON-NLS-2$
-		topPanel.add(new JLabel("Tips Due"));
+		topPanel.add(new JLabel(Messages.getString("TipsCashoutReportDialog.7"))); //$NON-NLS-1$
 		topPanel.add(new JLabel(": " + report.getTipsDue()), "wrap"); //$NON-NLS-1$ //$NON-NLS-2$
 		
 		add(topPanel, BorderLayout.NORTH);

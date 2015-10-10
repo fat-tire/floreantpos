@@ -23,25 +23,25 @@ public class KalaResponse {
 	String offer;
 	
 	public void parse(javax.json.JsonObject object) {
-		 mykala_id = object.getString("id");
-		 first_name = object.getString("first_name");
-		 last_name = object.getString("last_name");
-		 company_name = object.getString("company_name");
-		 address = object.getString("address");
-		 city = object.getString("city");
-		 county = object.getString("county");
-		 state = object.getString("state");
-		 zip = object.getString("zip");
-		 phone1 = object.getString("phone1");
-		 phone2 = object.getString("phone2");
-		 email = object.getString("email");
-		 web = object.getString("first_name");
-		 offer_id = object.getString("kala_id");
-		 points = object.getString("points");
-		 success = Boolean.valueOf(object.get("success").toString());
-		 message = object.getString("message");
-		 coupon = object.getString("coupon");
-		 offer = object.getString("offer").replaceAll("%", "");
+		 mykala_id = object.getString("id"); //$NON-NLS-1$
+		 first_name = object.getString("first_name"); //$NON-NLS-1$
+		 last_name = object.getString("last_name"); //$NON-NLS-1$
+		 company_name = object.getString("company_name"); //$NON-NLS-1$
+		 address = object.getString("address"); //$NON-NLS-1$
+		 city = object.getString("city"); //$NON-NLS-1$
+		 county = object.getString("county"); //$NON-NLS-1$
+		 state = object.getString("state"); //$NON-NLS-1$
+		 zip = object.getString("zip"); //$NON-NLS-1$
+		 phone1 = object.getString("phone1"); //$NON-NLS-1$
+		 phone2 = object.getString("phone2"); //$NON-NLS-1$
+		 email = object.getString("email"); //$NON-NLS-1$
+		 web = object.getString("first_name"); //$NON-NLS-1$
+		 offer_id = object.getString("kala_id"); //$NON-NLS-1$
+		 points = object.getString("points"); //$NON-NLS-1$
+		 success = Boolean.valueOf(object.get("success").toString()); //$NON-NLS-1$
+		 message = object.getString("message"); //$NON-NLS-1$
+		 coupon = object.getString("coupon"); //$NON-NLS-1$
+		 offer = object.getString("offer").replaceAll("%", ""); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	}
 	
 	public String getMykala_id() {
@@ -197,6 +197,6 @@ public class KalaResponse {
 	}
 	
 	public String getName() {
-		return first_name + " " + last_name;
+		return first_name + " " + last_name; //$NON-NLS-1$
 	}
 }

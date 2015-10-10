@@ -30,7 +30,7 @@ public class GroupView extends SelectionView {
     
 	private MenuCategory menuCategory;
     
-    public static final String VIEW_NAME = "GROUP_VIEW";
+    public static final String VIEW_NAME = "GROUP_VIEW"; //$NON-NLS-1$
     
     /** Creates new form GroupView */
     public GroupView() {
@@ -111,7 +111,7 @@ public class GroupView extends SelectionView {
 		GroupButton(MenuGroup foodGroup) {
 			this.menuGroup = foodGroup;
 			
-			setText("<html><body><center>" + foodGroup.getDisplayName() + "</center></body></html>");
+			setText("<html><body><center>" + foodGroup.getDisplayName() + "</center></body></html>"); //$NON-NLS-1$ //$NON-NLS-2$
 			
 			if(menuGroup.getButtonColor() != null) {
 				setBackground(new Color(menuGroup.getButtonColor()));

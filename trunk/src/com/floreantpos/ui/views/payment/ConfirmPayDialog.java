@@ -10,6 +10,7 @@ import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.border.EmptyBorder;
 
+import com.floreantpos.Messages;
 import com.floreantpos.main.Application;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.ui.TitlePanel;
@@ -42,7 +43,7 @@ public class ConfirmPayDialog extends POSDialog {
 				dispose();
 			}
 		});
-		psbtnConfirm.setText("CONFIRM");
+		psbtnConfirm.setText(Messages.getString("ConfirmPayDialog.0")); //$NON-NLS-1$
 		panel_1.add(psbtnConfirm);
 		
 		PosButton psbtnCancel = new PosButton();
@@ -52,16 +53,16 @@ public class ConfirmPayDialog extends POSDialog {
 				dispose();
 			}
 		});
-		psbtnCancel.setText("CANCEL");
+		psbtnCancel.setText(Messages.getString("ConfirmPayDialog.1")); //$NON-NLS-1$
 		panel_1.add(psbtnCancel);
 		
 		TitlePanel titlePanel = new TitlePanel();
-		titlePanel.setTitle("Confirm payment");
+		titlePanel.setTitle(Messages.getString("ConfirmPayDialog.2")); //$NON-NLS-1$
 		getContentPane().add(titlePanel, BorderLayout.NORTH);
 		
-		lblInfo = new JLabel("");
+		lblInfo = new JLabel(""); //$NON-NLS-1$
 		lblInfo.setBorder(new EmptyBorder(10, 10, 10, 10));
-		lblInfo.setFont(new Font("Dialog", Font.BOLD, 16));
+		lblInfo.setFont(new Font("Dialog", Font.BOLD, 16)); //$NON-NLS-1$
 		getContentPane().add(lblInfo, BorderLayout.CENTER);
 	}
 

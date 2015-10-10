@@ -17,6 +17,7 @@ import javax.swing.border.TitledBorder;
 import javax.swing.table.TableColumn;
 import javax.swing.text.JTextComponent;
 
+import com.floreantpos.Messages;
 import com.floreantpos.POSConstants;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.ShopTable;
@@ -33,7 +34,7 @@ public class PosGuiUtil {
 		dialog.open();
 
 		if (dialog.isCanceled()) {
-			int option = POSMessageDialog.showYesNoQuestionDialog(Application.getPosWindow(), "Proceed without table?", "Confirm");
+			int option = POSMessageDialog.showYesNoQuestionDialog(Application.getPosWindow(), Messages.getString("PosGuiUtil.0"), Messages.getString("PosGuiUtil.1")); //$NON-NLS-1$ //$NON-NLS-2$
 			if (option != JOptionPane.YES_OPTION) {
 				return null;
 			}

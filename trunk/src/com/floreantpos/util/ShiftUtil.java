@@ -8,15 +8,16 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
+import com.floreantpos.Messages;
 import com.floreantpos.model.Shift;
 import com.floreantpos.model.dao.ShiftDAO;
 
 public class ShiftUtil {
 
-	private static final String DEFAULT_SHIFT = "DEFAULT SHIFT";
+	private static final String DEFAULT_SHIFT = "DEFAULT SHIFT"; //$NON-NLS-1$
 	private static final Calendar calendar = Calendar.getInstance();
 	private static final Calendar calendar2 = Calendar.getInstance();
-	private static final NumberFormat format = new DecimalFormat("00");
+	private static final NumberFormat format = new DecimalFormat("00"); //$NON-NLS-1$
 	
 	static {
 		calendar.clear();
@@ -73,15 +74,15 @@ public class ShiftUtil {
 	public static String buildShiftTimeRepresentation(Date shiftTime) {
 		calendar.setTime(shiftTime);
 		
-		String s = "";
+		String s = ""; //$NON-NLS-1$
 		s = format.format(calendar.get(Calendar.HOUR) == 0 ? 12 : calendar.get(Calendar.HOUR));
-		s += ":" + format.format(calendar.get(Calendar.MINUTE));
-		s += calendar.get(Calendar.AM_PM) == Calendar.AM ? " AM" : " PM";
+		s += ":" + format.format(calendar.get(Calendar.MINUTE)); //$NON-NLS-1$
+		s += calendar.get(Calendar.AM_PM) == Calendar.AM ? " AM" : " PM"; //$NON-NLS-1$ //$NON-NLS-2$
 		return s;
 	}
 	
 	public static String getDateRepresentation(Date date) {
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MMM-dd hh:mm:ss a");
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MMM-dd hh:mm:ss a"); //$NON-NLS-1$
 		return formatter.format(date);
 	}
 	

@@ -12,6 +12,7 @@ import net.miginfocom.swing.MigLayout;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.floreantpos.Messages;
 import com.floreantpos.swing.DoubleTextField;
 import com.floreantpos.swing.FixedLengthTextField;
 import com.floreantpos.swing.PosButton;
@@ -28,45 +29,45 @@ public class GiftCertDialog extends POSDialog {
 	public GiftCertDialog(JDialog parent) {
 		super();
 		
-		setTitle("Gift Cert");
+		setTitle(Messages.getString("GiftCertDialog.0")); //$NON-NLS-1$
 		
 		TitlePanel titlePanel = new TitlePanel();
-		titlePanel.setTitle("Enter Gift Certificate Detail");
+		titlePanel.setTitle(Messages.getString("GiftCertDialog.1")); //$NON-NLS-1$
 		getContentPane().add(titlePanel, BorderLayout.NORTH);
 		
 		JPanel panel = new JPanel();
 		getContentPane().add(panel, BorderLayout.CENTER);
-		panel.setLayout(new MigLayout("", "[][grow]", "[][]"));
+		panel.setLayout(new MigLayout("", "[][grow]", "[][]")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		
-		JLabel lblGiftCertificateNumber = new JLabel("Gift certificate number");
-		panel.add(lblGiftCertificateNumber, "cell 0 0,alignx trailing");
+		JLabel lblGiftCertificateNumber = new JLabel(Messages.getString("GiftCertDialog.5")); //$NON-NLS-1$
+		panel.add(lblGiftCertificateNumber, "cell 0 0,alignx trailing"); //$NON-NLS-1$
 		
 		tfGiftCertNumber = new FixedLengthTextField(64);
-		panel.add(tfGiftCertNumber, "cell 1 0,growx");
+		panel.add(tfGiftCertNumber, "cell 1 0,growx"); //$NON-NLS-1$
 		
-		JLabel lblFaceValue = new JLabel("Face value");
-		panel.add(lblFaceValue, "cell 0 1,alignx trailing");
+		JLabel lblFaceValue = new JLabel(Messages.getString("GiftCertDialog.8")); //$NON-NLS-1$
+		panel.add(lblFaceValue, "cell 0 1,alignx trailing"); //$NON-NLS-1$
 		
 		tfFaceValue = new DoubleTextField();
-		tfFaceValue.setText("50");
-		panel.add(tfFaceValue, "cell 1 1,growx");
+		tfFaceValue.setText("50"); //$NON-NLS-1$
+		panel.add(tfFaceValue, "cell 1 1,growx"); //$NON-NLS-1$
 		
 		qwertyKeyPad = new QwertyKeyPad();
-		panel.add(qwertyKeyPad, "newline, gaptop 10px, span");
+		panel.add(qwertyKeyPad, "newline, gaptop 10px, span"); //$NON-NLS-1$
 		
-		JPanel buttonPanel = new JPanel(new MigLayout("align 50%"));
+		JPanel buttonPanel = new JPanel(new MigLayout("align 50%")); //$NON-NLS-1$
 		getContentPane().add(buttonPanel, BorderLayout.SOUTH);
 		
 		PosButton psbtnOk = new PosButton();
 		psbtnOk.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(StringUtils.isEmpty(getGiftCertNumber())) {
-					POSMessageDialog.showMessage("Please enter gift certificate number");
+					POSMessageDialog.showMessage(Messages.getString("GiftCertDialog.14")); //$NON-NLS-1$
 					return;
 				}
 				
 				if(getGiftCertFaceValue() <= 0) {
-					POSMessageDialog.showMessage("Please enter valid face value");
+					POSMessageDialog.showMessage(Messages.getString("GiftCertDialog.15")); //$NON-NLS-1$
 					return;
 				}
 				
@@ -74,8 +75,8 @@ public class GiftCertDialog extends POSDialog {
 				dispose();
 			}
 		});
-		psbtnOk.setText("OK");
-		buttonPanel.add(psbtnOk, "w 100!, h 60!");
+		psbtnOk.setText(Messages.getString("GiftCertDialog.16")); //$NON-NLS-1$
+		buttonPanel.add(psbtnOk, "w 100!, h 60!"); //$NON-NLS-1$
 		
 		PosButton psbtnCancel = new PosButton();
 		psbtnCancel.addActionListener(new ActionListener() {
@@ -84,8 +85,8 @@ public class GiftCertDialog extends POSDialog {
 				dispose();
 			}
 		});
-		psbtnCancel.setText("CANCEL");
-		buttonPanel.add(psbtnCancel, "w 100!, h 60!");
+		psbtnCancel.setText(Messages.getString("GiftCertDialog.18")); //$NON-NLS-1$
+		buttonPanel.add(psbtnCancel, "w 100!, h 60!"); //$NON-NLS-1$
 		
 	}
 	
