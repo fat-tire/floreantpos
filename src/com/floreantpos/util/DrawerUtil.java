@@ -3,6 +3,7 @@ package com.floreantpos.util;
 import jssc.SerialPort;
 import jssc.SerialPortException;
 
+import com.floreantpos.Messages;
 import com.floreantpos.config.TerminalConfig;
 
 public class DrawerUtil {
@@ -163,7 +164,7 @@ public class DrawerUtil {
 	}
 
 	public static void kick() {
-		print("Start kicking drawer\n");
+		print("Start kicking drawer\n"); //$NON-NLS-1$
 
 		//print(ESC);
 		//print(AT);
@@ -199,7 +200,7 @@ public class DrawerUtil {
 			print(_55);
 			print(_121);
 		*/
-		print("End kicking drawer\n");
+		print("End kicking drawer\n"); //$NON-NLS-1$
 	}
 
 	public static void proportionalMode(boolean proportional) {
@@ -289,7 +290,7 @@ public class DrawerUtil {
 
 	public static String getShare() {
 		//post: returns printer share name (Windows network)
-		return ""; //dummy
+		return ""; //dummy //$NON-NLS-1$
 	}
 
 	public static void kickDrawer() {

@@ -10,7 +10,7 @@ import sun.misc.BASE64Encoder;
 
 public class AESencrp {
 
-	private static final String ALGO = "AES";
+	private static final String ALGO = "AES"; //$NON-NLS-1$
 	private static final byte[] keyValue = new byte[] { 'T', 'h', 'e', 'B', 'e', 's', 't',
 
 	'S', 'e', 'c', 'r', 'e', 't', 'K', 'e', 'y' };
@@ -44,7 +44,7 @@ public class AESencrp {
 //		String encrypt = encrypt(s);
 //		System.out.println(encrypt);
 		
-		String decrypt = decrypt("4T9H+1LqawVTsVvifd/TxA==");
+		String decrypt = decrypt("4T9H+1LqawVTsVvifd/TxA=="); //$NON-NLS-1$
 		System.out.println(decrypt);
 	}
 

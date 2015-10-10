@@ -115,7 +115,7 @@ public class DefaultOrderServiceExtension implements OrderServiceExtension {
 			return false;
 		}
 
-		int option = JOptionPane.showOptionDialog(Application.getPosWindow(), Messages.getString("DefaultOrderServiceExtension.3") + ticket.getId() + " will be closed.", Messages.getString("DefaultOrderServiceExtension.5"), //$NON-NLS-1$ //$NON-NLS-3$
+		int option = JOptionPane.showOptionDialog(Application.getPosWindow(), Messages.getString("DefaultOrderServiceExtension.3") + ticket.getId() + Messages.getString("DefaultOrderServiceExtension.4"), Messages.getString("DefaultOrderServiceExtension.5"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 				JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, null, null, null);
 
 		if (option != JOptionPane.OK_OPTION) {

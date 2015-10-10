@@ -10,6 +10,7 @@ import javax.swing.JSeparator;
 
 import net.miginfocom.swing.MigLayout;
 
+import com.floreantpos.Messages;
 import com.floreantpos.main.Application;
 import com.floreantpos.swing.FocusedTextField;
 import com.floreantpos.swing.PosButton;
@@ -35,17 +36,17 @@ public class AuthorizationCodeDialog extends POSDialog implements CardInputter {
 	private void createUI() {
 		JPanel panel = new JPanel();
 		getContentPane().add(panel, BorderLayout.CENTER);
-		panel.setLayout(new MigLayout("", "[][grow]", "[50][grow]"));
+		panel.setLayout(new MigLayout("", "[][grow]", "[50][grow]")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		
-		JLabel lblAuthorizationCode = new JLabel("Authorization Code");
-		panel.add(lblAuthorizationCode, "cell 0 0,alignx trailing");
+		JLabel lblAuthorizationCode = new JLabel(Messages.getString("AuthorizationCodeDialog.3")); //$NON-NLS-1$
+		panel.add(lblAuthorizationCode, "cell 0 0,alignx trailing"); //$NON-NLS-1$
 		
 		tfAuthorizationCode = new FocusedTextField();
 		tfAuthorizationCode.setColumns(12);
-		panel.add(tfAuthorizationCode, "cell 1 0,growx");
+		panel.add(tfAuthorizationCode, "cell 1 0,growx"); //$NON-NLS-1$
 		
 		QwertyKeyPad qwertyKeyPad = new QwertyKeyPad();
-		panel.add(qwertyKeyPad, "cell 0 1 2 1,grow");
+		panel.add(qwertyKeyPad, "cell 0 1 2 1,grow"); //$NON-NLS-1$
 		
 		JPanel panel_1 = new JPanel();
 		getContentPane().add(panel_1, BorderLayout.SOUTH);
@@ -64,7 +65,7 @@ public class AuthorizationCodeDialog extends POSDialog implements CardInputter {
 				cardInputListener.cardInputted(AuthorizationCodeDialog.this);
 			}
 		});
-		btnSubmit.setText("SUBMIT");
+		btnSubmit.setText(Messages.getString("AuthorizationCodeDialog.7")); //$NON-NLS-1$
 		
 		PosButton btnCancel = new PosButton();
 		panel_2.add(btnCancel);
@@ -74,13 +75,13 @@ public class AuthorizationCodeDialog extends POSDialog implements CardInputter {
 				dispose();
 			}
 		});
-		btnCancel.setText("CANCEL");
+		btnCancel.setText(Messages.getString("AuthorizationCodeDialog.8")); //$NON-NLS-1$
 		
 		JSeparator separator = new JSeparator();
 		panel_1.add(separator, BorderLayout.NORTH);
 		
 		TitlePanel titlePanel = new TitlePanel();
-		titlePanel.setTitle("Enter Authorization Code");
+		titlePanel.setTitle(Messages.getString("AuthorizationCodeDialog.9")); //$NON-NLS-1$
 		getContentPane().add(titlePanel, BorderLayout.NORTH);
 	}
 	

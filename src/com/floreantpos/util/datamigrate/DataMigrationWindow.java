@@ -17,6 +17,7 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.classic.Session;
 
 import com.floreantpos.Database;
+import com.floreantpos.Messages;
 import com.floreantpos.model.MenuCategory;
 import com.floreantpos.model.dao.MenuCategoryDAO;
 import com.floreantpos.model.dao._RootDAO;
@@ -35,7 +36,7 @@ public class DataMigrationWindow extends JFrame {
 	public DataMigrationWindow() {
 
 		TitlePanel titlePanel = new TitlePanel();
-		titlePanel.setTitle("Migrate data");
+		titlePanel.setTitle(Messages.getString("DataMigrationWindow.0")); //$NON-NLS-1$
 
 		getContentPane().add(titlePanel, BorderLayout.NORTH);
 
@@ -46,13 +47,13 @@ public class DataMigrationWindow extends JFrame {
 		getContentPane().add(centerPanel, BorderLayout.CENTER);
 		centerPanel.setLayout(new GridLayout(1, 0, 10, 10));
 
-		sourceDbPanel.setBorder(BorderFactory.createTitledBorder("Source"));
-		destDbPanel.setBorder(BorderFactory.createTitledBorder("Destination"));
+		sourceDbPanel.setBorder(BorderFactory.createTitledBorder(Messages.getString("DataMigrationWindow.1"))); //$NON-NLS-1$
+		destDbPanel.setBorder(BorderFactory.createTitledBorder(Messages.getString("DataMigrationWindow.2"))); //$NON-NLS-1$
 
 		centerPanel.add(sourceDbPanel);
 		centerPanel.add(destDbPanel);
 
-		JButton btnMigrate = new JButton("Migrate");
+		JButton btnMigrate = new JButton(Messages.getString("DataMigrationWindow.3")); //$NON-NLS-1$
 		btnMigrate.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -73,21 +74,21 @@ public class DataMigrationWindow extends JFrame {
 		
 		Configuration sourceConfiguration = _RootDAO.getNewConfiguration(null);
 
-		sourceConfiguration = sourceConfiguration.setProperty("hibernate.dialect", sourceDatabase.getHibernateDialect());
-		sourceConfiguration = sourceConfiguration.setProperty("hibernate.connection.driver_class", sourceDatabase.getHibernateConnectionDriverClass());
+		sourceConfiguration = sourceConfiguration.setProperty("hibernate.dialect", sourceDatabase.getHibernateDialect()); //$NON-NLS-1$
+		sourceConfiguration = sourceConfiguration.setProperty("hibernate.connection.driver_class", sourceDatabase.getHibernateConnectionDriverClass()); //$NON-NLS-1$
 
-		sourceConfiguration = sourceConfiguration.setProperty("hibernate.connection.url", sourceConnectString);
-		sourceConfiguration = sourceConfiguration.setProperty("hibernate.connection.username", sourceDbPanel.getUser());
-		sourceConfiguration = sourceConfiguration.setProperty("hibernate.connection.password", sourceDbPanel.getPass());
+		sourceConfiguration = sourceConfiguration.setProperty("hibernate.connection.url", sourceConnectString); //$NON-NLS-1$
+		sourceConfiguration = sourceConfiguration.setProperty("hibernate.connection.username", sourceDbPanel.getUser()); //$NON-NLS-1$
+		sourceConfiguration = sourceConfiguration.setProperty("hibernate.connection.password", sourceDbPanel.getPass()); //$NON-NLS-1$
 		
 		Configuration destConfiguration = _RootDAO.getNewConfiguration(null);
 
-		destConfiguration = destConfiguration.setProperty("hibernate.dialect", destDatabase.getHibernateDialect());
-		destConfiguration = destConfiguration.setProperty("hibernate.connection.driver_class", destDatabase.getHibernateConnectionDriverClass());
+		destConfiguration = destConfiguration.setProperty("hibernate.dialect", destDatabase.getHibernateDialect()); //$NON-NLS-1$
+		destConfiguration = destConfiguration.setProperty("hibernate.connection.driver_class", destDatabase.getHibernateConnectionDriverClass()); //$NON-NLS-1$
 
-		destConfiguration = destConfiguration.setProperty("hibernate.connection.url", destConnectString);
-		destConfiguration = destConfiguration.setProperty("hibernate.connection.username", destDbPanel.getUser());
-		destConfiguration = destConfiguration.setProperty("hibernate.connection.password", destDbPanel.getPass());
+		destConfiguration = destConfiguration.setProperty("hibernate.connection.url", destConnectString); //$NON-NLS-1$
+		destConfiguration = destConfiguration.setProperty("hibernate.connection.username", destDbPanel.getUser()); //$NON-NLS-1$
+		destConfiguration = destConfiguration.setProperty("hibernate.connection.password", destDbPanel.getPass()); //$NON-NLS-1$
 		
 		SessionFactory sourceSessionFactory = sourceConfiguration.buildSessionFactory();
 		SessionFactory destSessionFactory = destConfiguration.buildSessionFactory();
@@ -112,7 +113,7 @@ public class DataMigrationWindow extends JFrame {
 		transaction.commit();
 		destSession.close();
 		
-		System.out.println("done");
+		System.out.println("done"); //$NON-NLS-1$
 	}
 
 

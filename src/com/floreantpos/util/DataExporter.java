@@ -14,7 +14,7 @@ import com.floreantpos.model.dao._RootDAO;
 public class DataExporter {
 	public static void main(String[] args) throws Exception {
 		_RootDAO.initialize();
-		ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("default-data.obj"));
+		ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("default-data.obj")); //$NON-NLS-1$
 		
 		write(MenuModifierGroupDAO.getInstance().findAll(), out);
 		write(MenuModifierDAO.getInstance().findAll(), out);

@@ -39,14 +39,14 @@ public class POSUtil {
 		if (str == null) {
 			return true;
 		}
-		if (str.trim().equals("")) {
+		if (str.trim().equals("")) { //$NON-NLS-1$
 			return true;
 		}
 		return false;
 	}
 
 	public static String escapePropertyKey(String propertyKey) {
-		return propertyKey.replaceAll("\\s+", "_");
+		return propertyKey.replaceAll("\\s+", "_"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	public static boolean getBoolean(String b) {
@@ -128,7 +128,7 @@ public class POSUtil {
 
 	public static String encodeURLString(String s) {
 		try {
-			return URLEncoder.encode(s, "UTF-8");
+			return URLEncoder.encode(s, "UTF-8"); //$NON-NLS-1$
 		} catch (Exception x) {
 			return s;
 		}

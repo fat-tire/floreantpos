@@ -19,6 +19,7 @@ import javax.swing.JOptionPane;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 
+import com.floreantpos.Messages;
 import com.floreantpos.POSConstants;
 import com.floreantpos.PosException;
 import com.floreantpos.config.CardConfig;
@@ -54,13 +55,13 @@ import com.floreantpos.ui.views.order.OrderController;
 import com.floreantpos.util.POSUtil;
 
 public class SettleTicketDialog extends POSDialog implements CardInputListener {
-	public static final String LOYALTY_DISCOUNT_PERCENTAGE = "loyalty_discount_percentage";
-	public static final String LOYALTY_POINT = "loyalty_point";
-	public static final String LOYALTY_COUPON = "loyalty_coupon";
-	public static final String LOYALTY_DISCOUNT = "loyalty_discount";
-	public static final String LOYALTY_ID = "loyalty_id";
+	public static final String LOYALTY_DISCOUNT_PERCENTAGE = "loyalty_discount_percentage"; //$NON-NLS-1$
+	public static final String LOYALTY_POINT = "loyalty_point"; //$NON-NLS-1$
+	public static final String LOYALTY_COUPON = "loyalty_coupon"; //$NON-NLS-1$
+	public static final String LOYALTY_DISCOUNT = "loyalty_discount"; //$NON-NLS-1$
+	public static final String LOYALTY_ID = "loyalty_id"; //$NON-NLS-1$
 
-	public final static String VIEW_NAME = "PAYMENT_VIEW";
+	public final static String VIEW_NAME = "PAYMENT_VIEW"; //$NON-NLS-1$
 
 	private String previousViewName = SwitchboardView.VIEW_NAME;
 
@@ -78,7 +79,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 
 	public SettleTicketDialog() {
 		super();
-		setTitle("Settle ticket");
+		setTitle(Messages.getString("SettleTicketDialog.6")); //$NON-NLS-1$
 
 		getContentPane().setLayout(new BorderLayout(5, 5));
 
@@ -106,7 +107,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 				return;
 			
 			if(!Application.getCurrentUser().hasPermission(UserPermission.ADD_DISCOUNT)) {
-				POSMessageDialog.showError(Application.getPosWindow(), "You do not have permission to execute this action");
+				POSMessageDialog.showError(Application.getPosWindow(), Messages.getString("SettleTicketDialog.7")); //$NON-NLS-1$
 				return;
 			}
 
@@ -336,8 +337,8 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 			transaction.setCardType(ticket.getProperty(Ticket.PROPERTY_CARD_NAME));
 			transaction.setCaptured(false);
 			transaction.setCardMerchantGateway(CardConfig.getMerchantGateway().name());
-			transaction.setCardAuthCode(ticket.getProperty("AuthCode"));
-			transaction.addProperty("AcqRefData", ticket.getProperty("AcqRefData"));
+			transaction.setCardAuthCode(ticket.getProperty("AuthCode")); //$NON-NLS-1$
+			transaction.addProperty("AcqRefData", ticket.getProperty("AcqRefData")); //$NON-NLS-1$ //$NON-NLS-2$
 
 			CardReader cardReader = CardReader.valueOf(ticket.getProperty(Ticket.PROPERTY_CARD_READER));
 
@@ -361,7 +362,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 			setTransactionAmounts(transaction);
 
 			if (cardReader == CardReader.SWIPE || cardReader == CardReader.MANUAL) {
-				double advanceAmount = Double.parseDouble(ticket.getProperty(Ticket.PROPERTY_ADVANCE_PAYMENT, "" + CardConfig.getMerchantGateway()));
+				double advanceAmount = Double.parseDouble(ticket.getProperty(Ticket.PROPERTY_ADVANCE_PAYMENT, "" + CardConfig.getMerchantGateway())); //$NON-NLS-1$
 				
 				CardProcessor cardProcessor = CardConfig.getMerchantGateway().getProcessor();
 				if (tenderAmount > advanceAmount) {
@@ -411,7 +412,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 				dispose();
 			}
 		} catch (UnknownHostException e) {
-			POSMessageDialog.showError(Application.getPosWindow(), "My Kala discount server connection error");
+			POSMessageDialog.showError(Application.getPosWindow(), Messages.getString("SettleTicketDialog.12")); //$NON-NLS-1$
 		} catch (Exception e) {
 			POSMessageDialog.showError(this, POSConstants.ERROR_MESSAGE, e);
 		}
@@ -442,7 +443,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 		try {
 			if (ticket.hasProperty(LOYALTY_ID)) {
 				String url = buildLoyaltyApiURL(ticket, ticket.getProperty(LOYALTY_ID));
-				url += "&paid=1";
+				url += "&paid=1"; //$NON-NLS-1$
 
 				IOUtils.toString(new URL(url).openStream());
 			}
@@ -534,7 +535,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 				String cardString = swipeCardDialog.getCardString();
 
 				if (StringUtils.isEmpty(cardString) || cardString.length() < 16) {
-					throw new RuntimeException("Invalid card string");
+					throw new RuntimeException(Messages.getString("SettleTicketDialog.16")); //$NON-NLS-1$
 				}
 
 				if(!confirmPayment()) {
@@ -572,7 +573,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 				AuthorizationCodeDialog authDialog = (AuthorizationCodeDialog) inputter;
 				String authorizationCode = authDialog.getAuthorizationCode();
 				if (StringUtils.isEmpty(authorizationCode)) {
-					throw new PosException("Invalid authorization code");
+					throw new PosException(Messages.getString("SettleTicketDialog.17")); //$NON-NLS-1$
 				}
 
 				transaction.setCardType(cardName);
@@ -615,12 +616,12 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 
 	public void submitMyKalaDiscount() {
 		if (ticket.hasProperty(LOYALTY_ID)) {
-			POSMessageDialog.showError(Application.getPosWindow(), "Loyalty discount already added.");
+			POSMessageDialog.showError(Application.getPosWindow(), Messages.getString("SettleTicketDialog.18")); //$NON-NLS-1$
 			return;
 		}
 
 		try {
-			String loyaltyid = JOptionPane.showInputDialog("Enter loyalty id:");
+			String loyaltyid = JOptionPane.showInputDialog(Messages.getString("SettleTicketDialog.19")); //$NON-NLS-1$
 
 			if (StringUtils.isEmpty(loyaltyid)) {
 				return;
@@ -634,7 +635,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 
 			JsonReader reader = Json.createReader(new StringReader(string));
 			JsonObject object = reader.readObject();
-			JsonArray jsonArray = (JsonArray) object.get("discounts");
+			JsonArray jsonArray = (JsonArray) object.get("discounts"); //$NON-NLS-1$
 			for (int i = 0; i < jsonArray.size(); i++) {
 				JsonObject jsonObject = (JsonObject) jsonArray.get(i);
 				addCoupon(ticket, jsonObject);
@@ -644,7 +645,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 
 			OrderController.saveOrder(ticket);
 
-			POSMessageDialog.showMessage(Application.getPosWindow(), "Congrations! you have discounts from Kala Loyalty Check discounts list for more.");
+			POSMessageDialog.showMessage(Application.getPosWindow(), Messages.getString("SettleTicketDialog.21")); //$NON-NLS-1$
 
 			ticketDetailView.updateView();
 			paymentView.updateView();
@@ -653,21 +654,21 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 			//				POSMessageDialog.showError(Application.getPosWindow(), "Coupon already used.");
 			//			}
 		} catch (Exception e) {
-			POSMessageDialog.showError(Application.getPosWindow(), "Error setting My Kala discount.", e);
+			POSMessageDialog.showError(Application.getPosWindow(), Messages.getString("SettleTicketDialog.22"), e); //$NON-NLS-1$
 		}
 	}
 
 	public String buildLoyaltyApiURL(Ticket ticket, String loyaltyid) {
 		Restaurant restaurant = Application.getInstance().getRestaurant();
 
-		String transactionURL = "http://cloud.floreantpos.org/tri2/kala_api?";
-		transactionURL += "kala_id=" + loyaltyid;
-		transactionURL += "&store_id=" + restaurant.getUniqueId();
-		transactionURL += "&store_name=" + POSUtil.encodeURLString(restaurant.getName());
-		transactionURL += "&store_zip=" + restaurant.getZipCode();
-		transactionURL += "&terminal=" + ticket.getTerminal().getId();
-		transactionURL += "&server=" + POSUtil.encodeURLString(ticket.getOwner().getFirstName() + " " + ticket.getOwner().getLastName());
-		transactionURL += "&" + ticket.toURLForm();
+		String transactionURL = "http://cloud.floreantpos.org/tri2/kala_api?"; //$NON-NLS-1$
+		transactionURL += "kala_id=" + loyaltyid; //$NON-NLS-1$
+		transactionURL += "&store_id=" + restaurant.getUniqueId(); //$NON-NLS-1$
+		transactionURL += "&store_name=" + POSUtil.encodeURLString(restaurant.getName()); //$NON-NLS-1$
+		transactionURL += "&store_zip=" + restaurant.getZipCode(); //$NON-NLS-1$
+		transactionURL += "&terminal=" + ticket.getTerminal().getId(); //$NON-NLS-1$
+		transactionURL += "&server=" + POSUtil.encodeURLString(ticket.getOwner().getFirstName() + " " + ticket.getOwner().getLastName()); //$NON-NLS-1$ //$NON-NLS-2$
+		transactionURL += "&" + ticket.toURLForm(); //$NON-NLS-1$
 
 		return transactionURL;
 	}

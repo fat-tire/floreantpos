@@ -21,6 +21,7 @@ import net.miginfocom.swing.MigLayout;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import com.floreantpos.Messages;
 import com.floreantpos.POSConstants;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.ActionHistory;
@@ -107,7 +108,7 @@ public class SplitTicketDialog extends POSDialog {
         btnNumSplit4 = new com.floreantpos.swing.POSToggleButton();
         lblTicketId = new com.floreantpos.swing.POSTitleLabel();
         
-        lblTicketId.setText("ORIGINAL TICKET ID: TICKET_ID");
+        lblTicketId.setText(Messages.getString("SplitTicketDialog.0")); //$NON-NLS-1$
         toolbarPanel.add(lblTicketId);
         JSeparator separator = new JSeparator(JSeparator.VERTICAL);
         separator.setPreferredSize(new Dimension(5, 20));
@@ -116,7 +117,7 @@ public class SplitTicketDialog extends POSDialog {
 
         buttonGroup.add(btnNumSplit2);
         btnNumSplit2.setSelected(true);
-        btnNumSplit2.setText("2");
+        btnNumSplit2.setText("2"); //$NON-NLS-1$
         btnNumSplit2.setPreferredSize(new java.awt.Dimension(60, 40));
         btnNumSplit2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -127,7 +128,7 @@ public class SplitTicketDialog extends POSDialog {
         toolbarPanel.add(btnNumSplit2);
 
         buttonGroup.add(btnNumSplit3);
-        btnNumSplit3.setText("3");
+        btnNumSplit3.setText("3"); //$NON-NLS-1$
         btnNumSplit3.setPreferredSize(new java.awt.Dimension(60, 40));
         btnNumSplit3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -138,7 +139,7 @@ public class SplitTicketDialog extends POSDialog {
         toolbarPanel.add(btnNumSplit3);
 
         buttonGroup.add(btnNumSplit4);
-        btnNumSplit4.setText("4");
+        btnNumSplit4.setText("4"); //$NON-NLS-1$
         btnNumSplit4.setPreferredSize(new java.awt.Dimension(60, 40));
         btnNumSplit4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -150,7 +151,7 @@ public class SplitTicketDialog extends POSDialog {
 	}
 
 	private void createTicketViewPanel() {
-		ticketPanel = new TransparentPanel(new MigLayout("fill, hidemode 3"));
+		ticketPanel = new TransparentPanel(new MigLayout("fill, hidemode 3")); //$NON-NLS-1$
         
 		mainTicketView = new TicketForSplitView();
         ticketView2 = new TicketForSplitView();
@@ -160,10 +161,10 @@ public class SplitTicketDialog extends POSDialog {
         ticketView3.setVisible(false);
 		ticketView4.setVisible(false);
 
-        ticketPanel.add(mainTicketView, "grow");
-        ticketPanel.add(ticketView2, "grow");
-        ticketPanel.add(ticketView3, "grow");
-        ticketPanel.add(ticketView4, "grow");
+        ticketPanel.add(mainTicketView, "grow"); //$NON-NLS-1$
+        ticketPanel.add(ticketView2, "grow"); //$NON-NLS-1$
+        ticketPanel.add(ticketView3, "grow"); //$NON-NLS-1$
+        ticketPanel.add(ticketView4, "grow"); //$NON-NLS-1$
         
 	}
 
@@ -223,7 +224,7 @@ public class SplitTicketDialog extends POSDialog {
 			tx.commit();
 			
 			//save the action
-			ActionHistoryDAO.getInstance().saveHistory(Application.getCurrentUser(), ActionHistory.SPLIT_CHECK, com.floreantpos.POSConstants.RECEIPT_REPORT_TICKET_NO_LABEL + ":"+mainTicketView.getTicket().getId());
+			ActionHistoryDAO.getInstance().saveHistory(Application.getCurrentUser(), ActionHistory.SPLIT_CHECK, com.floreantpos.POSConstants.RECEIPT_REPORT_TICKET_NO_LABEL + ":"+mainTicketView.getTicket().getId()); //$NON-NLS-1$
 			
 			dispose();
 		} catch (Exception e) {
@@ -328,7 +329,7 @@ public class SplitTicketDialog extends POSDialog {
 	public void setTicket(Ticket ticket) {
 		this.ticket = ticket;
 		if (ticket != null)
-			lblTicketId.setText(com.floreantpos.POSConstants.ORIGINAL_TICKET_ID + ": " + ticket.getId());
+			lblTicketId.setText(com.floreantpos.POSConstants.ORIGINAL_TICKET_ID + ": " + ticket.getId()); //$NON-NLS-1$
 		mainTicketView.setTicket(ticket);
 	}
 }
