@@ -23,6 +23,7 @@ import javax.swing.UIManager;
 
 import net.miginfocom.swing.MigLayout;
 
+import com.floreantpos.Messages;
 import com.floreantpos.PosException;
 import com.floreantpos.model.MenuItem;
 import com.floreantpos.model.MenuItemModifierGroup;
@@ -54,7 +55,7 @@ public class ModifierView extends SelectionView implements ModifierStateChangeLi
 
 	private int separatorCount;
 
-	public static final String VIEW_NAME = "MODIFIER_VIEW";
+	public static final String VIEW_NAME = "MODIFIER_VIEW"; //$NON-NLS-1$
 
 	private ModifierButton currentSelectedButton;
 
@@ -114,7 +115,7 @@ public class ModifierView extends SelectionView implements ModifierStateChangeLi
 		int horizontalButtonCount = getButtonCount(size.width, getButtonSize().width);
 		int verticalButtonCount = getButtonCount(size.height, getButtonSize().height);
 
-		buttonsPanel.setLayout(new MigLayout("alignx 50%, wrap " + horizontalButtonCount));
+		buttonsPanel.setLayout(new MigLayout("alignx 50%, wrap " + horizontalButtonCount)); //$NON-NLS-1$
 
 		//TODO: REVISE CODE
 		int totalItem = horizontalButtonCount * verticalButtonCount;
@@ -143,7 +144,7 @@ public class ModifierView extends SelectionView implements ModifierStateChangeLi
 				}
 
 				AbstractButton itemButton = createItemButton(item);
-				buttonsPanel.add(itemButton, "width " + itemButtonSize.width + "!, height " + itemButtonSize.height + "!");
+				buttonsPanel.add(itemButton, "width " + itemButtonSize.width + "!, height " + itemButtonSize.height + "!"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 				if (i == items.size() - 1) {
 					break;
@@ -188,7 +189,7 @@ public class ModifierView extends SelectionView implements ModifierStateChangeLi
 	protected AbstractButton createItemButton(Object item) {
 		MenuModifier modifier = (MenuModifier) item;
 		ModifierButton modifierButton = new ModifierButton(modifier);
-		String key = modifier.getId() + "_" + modifier.getModifierGroup().getId();
+		String key = modifier.getId() + "_" + modifier.getModifierGroup().getId(); //$NON-NLS-1$
 		buttonMap.put(key, modifierButton);
 
 		return modifierButton;
@@ -217,7 +218,7 @@ public class ModifierView extends SelectionView implements ModifierStateChangeLi
 					int total = 0;
 					int max = ticketItemModifierGroup.getMaxQuantity();
 					for (TicketItemModifier ticketItemModifier : ticketItemModifiers) {
-						String key = ticketItemModifier.getItemId() + "_" + ticketItemModifier.getGroupId();
+						String key = ticketItemModifier.getItemId() + "_" + ticketItemModifier.getGroupId(); //$NON-NLS-1$
 						ModifierButton button = buttonMap.get(key);
 						if (ticketItemModifier.getModifierType() != TicketItemModifier.NO_MODIFIER) {
 							total += ticketItemModifier.getItemCount();
@@ -287,7 +288,7 @@ public class ModifierView extends SelectionView implements ModifierStateChangeLi
 		public ModifierButton(MenuModifier modifier) {
 			this.menuModifier = modifier;
 
-			setText("<html><center>" + modifier.getDisplayName() + "</center></html>");
+			setText("<html><center>" + modifier.getDisplayName() + "</center></html>"); //$NON-NLS-1$ //$NON-NLS-2$
 
 			if (modifier.getButtonColor() != null) {
 				setBackground(new Color(modifier.getButtonColor()));
@@ -306,33 +307,33 @@ public class ModifierView extends SelectionView implements ModifierStateChangeLi
 			Integer itemCount = ticketItemModifier.getItemCount();
 
 			String text = menuModifier.getDisplayName();
-			String style = "";
+			String style = ""; //$NON-NLS-1$
 
 			if (ticketItemModifier == null || ticketItemModifier.getModifierType() == TicketItemModifier.MODIFIER_NOT_INITIALIZED) {
 			}
 			else if (ticketItemModifier.getModifierType() == TicketItemModifier.NORMAL_MODIFIER) {
-				style = "color: green;";
+				style = "color: green;"; //$NON-NLS-1$
 			}
 			//			else if (ticketItemModifier.getModifierType() == TicketItemModifier.NO_MODIFIER) {
 			//				//setIcon(noIcon);
 			//				setBackground(Color.RED.darker());
 			//			}
 			else if (ticketItemModifier.getModifierType() == TicketItemModifier.EXTRA_MODIFIER) {
-				style = "color: red;";
+				style = "color: red;"; //$NON-NLS-1$
 			}
 
 			StringBuilder sb = new StringBuilder();
-			sb.append("<html>");
-			sb.append("<center>");
+			sb.append("<html>"); //$NON-NLS-1$
+			sb.append("<center>"); //$NON-NLS-1$
 			sb.append(text);
 
 			if (itemCount != 0) {
-				sb.append("<h2 style='" + style + "'>");
-				sb.append("(" + itemCount + ")");
-				sb.append("</h2>");
+				sb.append("<h2 style='" + style + "'>"); //$NON-NLS-1$ //$NON-NLS-2$
+				sb.append("(" + itemCount + ")"); //$NON-NLS-1$ //$NON-NLS-2$
+				sb.append("</h2>"); //$NON-NLS-1$
 			}
-			sb.append("</center>");
-			sb.append("</html>");
+			sb.append("</center>"); //$NON-NLS-1$
+			sb.append("</html>"); //$NON-NLS-1$
 
 			setText(sb.toString());
 		}
@@ -394,7 +395,7 @@ public class ModifierView extends SelectionView implements ModifierStateChangeLi
 
 	@Override
 	public void updateView(TicketItemModifier modifier) {
-		String key = modifier.getItemId() + "_" + modifier.getGroupId();
+		String key = modifier.getItemId() + "_" + modifier.getGroupId(); //$NON-NLS-1$
 		ModifierButton modifierButton = buttonMap.get(key);
 		if (modifierButton == null) {
 			return;
@@ -405,14 +406,14 @@ public class ModifierView extends SelectionView implements ModifierStateChangeLi
 	
 	@Override
 	public void select(TicketItemModifier modifier) {
-		String key = modifier.getItemId() + "_" + modifier.getGroupId();
+		String key = modifier.getItemId() + "_" + modifier.getGroupId(); //$NON-NLS-1$
 		ModifierButton modifierButton = buttonMap.get(key);
 		if (modifierButton == null) {
 			return;
 		}
 		
 		if(currentSelectedButton != null) {
-			currentSelectedButton.setBorder(UIManager.getBorder("Button.border"));
+			currentSelectedButton.setBorder(UIManager.getBorder("Button.border")); //$NON-NLS-1$
 		}
 		currentSelectedButton = modifierButton;
 		//modifierButton.setBorder(BorderFactory.createLineBorder(Color.blue.brighter(), 2));
@@ -422,7 +423,7 @@ public class ModifierView extends SelectionView implements ModifierStateChangeLi
 	@Override
 	public void clearSelection() {
 		if(currentSelectedButton != null) {
-			currentSelectedButton.setBorder(UIManager.getBorder("Button.border"));
+			currentSelectedButton.setBorder(UIManager.getBorder("Button.border")); //$NON-NLS-1$
 		}
 		currentSelectedButton = null;
 	}

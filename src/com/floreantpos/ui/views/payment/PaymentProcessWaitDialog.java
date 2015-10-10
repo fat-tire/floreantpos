@@ -6,13 +6,15 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
+import com.floreantpos.Messages;
+
 public class PaymentProcessWaitDialog extends JDialog {
 
 	public PaymentProcessWaitDialog(JDialog parent) {
 		super(parent, false);
-		setTitle("Processing...");
+		setTitle(Messages.getString("PaymentProcessWaitDialog.0")); //$NON-NLS-1$
 		
-		JLabel label = new JLabel("Processing payment, please wait...");
+		JLabel label = new JLabel(Messages.getString("PaymentProcessWaitDialog.1")); //$NON-NLS-1$
 		label.setHorizontalAlignment(JLabel.CENTER);
 		label.setFont(label.getFont().deriveFont(24).deriveFont(Font.BOLD));
 		add(label);
@@ -24,9 +26,9 @@ public class PaymentProcessWaitDialog extends JDialog {
 
 	public PaymentProcessWaitDialog(JFrame parent) {
 		super(parent, false);
-		setTitle("Processing...");
+		setTitle(Messages.getString("PaymentProcessWaitDialog.2")); //$NON-NLS-1$
 		
-		JLabel label = new JLabel("Processing payment, please wait...");
+		JLabel label = new JLabel(Messages.getString("PaymentProcessWaitDialog.3")); //$NON-NLS-1$
 		label.setHorizontalAlignment(JLabel.CENTER);
 		label.setFont(label.getFont().deriveFont(24).deriveFont(Font.BOLD));
 		add(label);

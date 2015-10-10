@@ -121,7 +121,7 @@ class LoginPasswordEntryView extends JPanel {
 			}
 		});
 		psbtnLogin.setText("LOGIN"); //$NON-NLS-1$
-		bottomPanel.add(psbtnLogin, "grow, wrap, gapbottom 20px");
+		bottomPanel.add(psbtnLogin, "grow, wrap, gapbottom 20px"); //$NON-NLS-1$
 		
 		PosButton btnClockOUt = new PosButton(new ClockInOutAction(false, true));
 		bottomPanel.add(btnClockOUt, "grow, wrap, h 60!"); //$NON-NLS-1$

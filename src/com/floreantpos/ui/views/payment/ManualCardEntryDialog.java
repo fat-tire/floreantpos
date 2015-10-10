@@ -10,6 +10,7 @@ import javax.swing.JSeparator;
 
 import net.miginfocom.swing.MigLayout;
 
+import com.floreantpos.Messages;
 import com.floreantpos.config.CardConfig;
 import com.floreantpos.swing.POSTextField;
 import com.floreantpos.swing.PosButton;
@@ -34,28 +35,28 @@ public class ManualCardEntryDialog extends POSDialog implements CardInputter {
 	private void createUI() {
 		JPanel panel = new JPanel();
 		getContentPane().add(panel, BorderLayout.CENTER);
-		panel.setLayout(new MigLayout("", "[][grow]", "[][][][][][][][grow]"));
+		panel.setLayout(new MigLayout("", "[][grow]", "[][][][][][][][grow]")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		
-		JLabel lblCardNumber = new JLabel("Card Number");
-		panel.add(lblCardNumber, "cell 0 0,alignx trailing");
+		JLabel lblCardNumber = new JLabel(Messages.getString("ManualCardEntryDialog.3")); //$NON-NLS-1$
+		panel.add(lblCardNumber, "cell 0 0,alignx trailing"); //$NON-NLS-1$
 		
 		tfCardNumber = new POSTextField();
 		tfCardNumber.setColumns(20);
-		panel.add(tfCardNumber, "cell 1 0");
+		panel.add(tfCardNumber, "cell 1 0"); //$NON-NLS-1$
 		
-		JLabel lblExpieryMonth = new JLabel("Expiery Month");
-		panel.add(lblExpieryMonth, "cell 0 1,alignx trailing");
+		JLabel lblExpieryMonth = new JLabel(Messages.getString("ManualCardEntryDialog.6")); //$NON-NLS-1$
+		panel.add(lblExpieryMonth, "cell 0 1,alignx trailing"); //$NON-NLS-1$
 		
 		tfExpMonth = new POSTextField();
 		tfExpMonth.setColumns(4);
-		panel.add(tfExpMonth, "cell 1 1");
+		panel.add(tfExpMonth, "cell 1 1"); //$NON-NLS-1$
 		
-		JLabel lblExpieryYear = new JLabel("Expiery Year");
-		panel.add(lblExpieryYear, "cell 0 2,alignx trailing");
+		JLabel lblExpieryYear = new JLabel(Messages.getString("ManualCardEntryDialog.9")); //$NON-NLS-1$
+		panel.add(lblExpieryYear, "cell 0 2,alignx trailing"); //$NON-NLS-1$
 		
 		tfExpYear = new POSTextField();
 		tfExpYear.setColumns(4);
-		panel.add(tfExpYear, "cell 1 2");
+		panel.add(tfExpYear, "cell 1 2"); //$NON-NLS-1$
 		
 //		JLabel lblZipCode = new JLabel("ZIP Code");
 //		lblZipCode.setVisible(false);
@@ -90,7 +91,7 @@ public class ManualCardEntryDialog extends POSDialog implements CardInputter {
 //		panel.add(tfCardAddress, "cell 1 6,growx");
 		
 		QwertyKeyPad qwertyKeyPad = new QwertyKeyPad();
-		panel.add(qwertyKeyPad, "cell 0 7 2 1,grow");
+		panel.add(qwertyKeyPad, "cell 0 7 2 1,grow"); //$NON-NLS-1$
 		
 		JPanel panel_1 = new JPanel();
 		getContentPane().add(panel_1, BorderLayout.SOUTH);
@@ -106,7 +107,7 @@ public class ManualCardEntryDialog extends POSDialog implements CardInputter {
 				openSwipeCardDialog();
 			}
 		});
-		btnSwipeCard.setText("SWIPE CARD");
+		btnSwipeCard.setText(Messages.getString("ManualCardEntryDialog.13")); //$NON-NLS-1$
 		
 		PosButton btnEnterAuthorizationCode = new PosButton();
 		panel_2.add(btnEnterAuthorizationCode);
@@ -115,7 +116,7 @@ public class ManualCardEntryDialog extends POSDialog implements CardInputter {
 				openAuthorizationCodeEntryDialog();
 			}
 		});
-		btnEnterAuthorizationCode.setText("ENTER AUTHORIZATION CODE");
+		btnEnterAuthorizationCode.setText(Messages.getString("ManualCardEntryDialog.14")); //$NON-NLS-1$
 		
 		PosButton btnSubmit = new PosButton();
 		panel_2.add(btnSubmit);
@@ -124,7 +125,7 @@ public class ManualCardEntryDialog extends POSDialog implements CardInputter {
 				submitCard();
 			}
 		});
-		btnSubmit.setText("SUBMIT");
+		btnSubmit.setText(Messages.getString("ManualCardEntryDialog.15")); //$NON-NLS-1$
 		
 		PosButton btnCancel = new PosButton();
 		panel_2.add(btnCancel);
@@ -134,13 +135,13 @@ public class ManualCardEntryDialog extends POSDialog implements CardInputter {
 				dispose();
 			}
 		});
-		btnCancel.setText("CANCEL");
+		btnCancel.setText(Messages.getString("ManualCardEntryDialog.16")); //$NON-NLS-1$
 		
 		JSeparator separator = new JSeparator();
 		panel_1.add(separator, BorderLayout.NORTH);
 		
 		TitlePanel titlePanel = new TitlePanel();
-		titlePanel.setTitle("Enter Card Manually");
+		titlePanel.setTitle(Messages.getString("ManualCardEntryDialog.17")); //$NON-NLS-1$
 		getContentPane().add(titlePanel, BorderLayout.NORTH);
 		
 		if (!CardConfig.isSwipeCardSupported()) {

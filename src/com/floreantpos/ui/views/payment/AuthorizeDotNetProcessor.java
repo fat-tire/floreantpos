@@ -14,6 +14,7 @@ import org.apache.commons.lang.StringUtils;
 
 import us.fatehi.magnetictrack.bankcard.BankCardMagneticTrack;
 
+import com.floreantpos.Messages;
 import com.floreantpos.config.CardConfig;
 import com.floreantpos.model.PosTransaction;
 import com.floreantpos.model.Ticket;
@@ -36,10 +37,10 @@ public class AuthorizeDotNetProcessor implements CardProcessor {
 			return result.getTransId();
 		}
 		else if (result.isDeclined()) {
-			throw new Exception("Card declined\n" + result.getResponseReasonCodes().get(0).getReasonText());
+			throw new Exception(Messages.getString("AuthorizeDotNetProcessor.0") + result.getResponseReasonCodes().get(0).getReasonText()); //$NON-NLS-1$
 		}
 		else {
-			throw new Exception("Error\n" + result.getResponseReasonCodes().get(0).getReasonText());
+			throw new Exception(Messages.getString("AuthorizeDotNetProcessor.1") + result.getResponseReasonCodes().get(0).getReasonText()); //$NON-NLS-1$
 		}
 	}
 
@@ -60,10 +61,10 @@ public class AuthorizeDotNetProcessor implements CardProcessor {
 			transaction.setCardAuthCode(result.getAuthCode());
 		}
 		else if (result.isDeclined()) {
-			throw new Exception("Card declined\n" + result.getResponseReasonCodes().get(0).getReasonText());
+			throw new Exception(Messages.getString("AuthorizeDotNetProcessor.2") + result.getResponseReasonCodes().get(0).getReasonText()); //$NON-NLS-1$
 		}
 		else {
-			throw new Exception("Error\n" + result.getResponseReasonCodes().get(0).getReasonText());
+			throw new Exception(Messages.getString("AuthorizeDotNetProcessor.3") + result.getResponseReasonCodes().get(0).getReasonText()); //$NON-NLS-1$
 		}
 	}
 
@@ -87,10 +88,10 @@ public class AuthorizeDotNetProcessor implements CardProcessor {
 			return result.getTransId();
 		}
 		else if (result.isDeclined()) {
-			throw new Exception("Card declined\n" + result.getResponseReasonCodes().get(0).getReasonText());
+			throw new Exception(Messages.getString("AuthorizeDotNetProcessor.4") + result.getResponseReasonCodes().get(0).getReasonText()); //$NON-NLS-1$
 		}
 		else {
-			throw new Exception("Error\n" + result.getResponseReasonCodes().get(0).getReasonText());
+			throw new Exception(Messages.getString("AuthorizeDotNetProcessor.5") + result.getResponseReasonCodes().get(0).getReasonText()); //$NON-NLS-1$
 		}
 	}
 
@@ -109,10 +110,10 @@ public class AuthorizeDotNetProcessor implements CardProcessor {
 			transaction.setCardAuthCode(result.getAuthCode());
 		}
 		else if (result.isDeclined()) {
-			throw new Exception("Transaction declined\n" + result.getResponseReasonCodes().get(0).getReasonText());
+			throw new Exception(Messages.getString("AuthorizeDotNetProcessor.6") + result.getResponseReasonCodes().get(0).getReasonText()); //$NON-NLS-1$
 		}
 		else {
-			throw new Exception("Error\n" + result.getResponseReasonCodes().get(0).getReasonText());
+			throw new Exception(Messages.getString("AuthorizeDotNetProcessor.7") + result.getResponseReasonCodes().get(0).getReasonText()); //$NON-NLS-1$
 		}
 	}
 
@@ -133,10 +134,10 @@ public class AuthorizeDotNetProcessor implements CardProcessor {
 			transaction.setCardAuthCode(result.getAuthCode());
 		}
 		else if (result.isDeclined()) {
-			throw new Exception("Card declined\n" + result.getResponseReasonCodes().get(0).getReasonText());
+			throw new Exception(Messages.getString("AuthorizeDotNetProcessor.8") + result.getResponseReasonCodes().get(0).getReasonText()); //$NON-NLS-1$
 		}
 		else {
-			throw new Exception("Error\n" + result.getResponseReasonCodes().get(0).getReasonText());
+			throw new Exception(Messages.getString("AuthorizeDotNetProcessor.9") + result.getResponseReasonCodes().get(0).getReasonText()); //$NON-NLS-1$
 		}
 	}
 
@@ -155,10 +156,10 @@ public class AuthorizeDotNetProcessor implements CardProcessor {
 			transaction.setCardAuthCode(result.getAuthCode());
 		}
 		else if (result.isDeclined()) {
-			throw new Exception("Transaction declined\n" + result.getResponseReasonCodes().get(0).getReasonText());
+			throw new Exception(Messages.getString("AuthorizeDotNetProcessor.10") + result.getResponseReasonCodes().get(0).getReasonText()); //$NON-NLS-1$
 		}
 		else {
-			throw new Exception("Error\n" + result.getResponseReasonCodes().get(0).getReasonText());
+			throw new Exception(Messages.getString("AuthorizeDotNetProcessor.11") + result.getResponseReasonCodes().get(0).getReasonText()); //$NON-NLS-1$
 		}
 	}
 
@@ -177,10 +178,10 @@ public class AuthorizeDotNetProcessor implements CardProcessor {
 			//			transaction.setAuthorizationCode(result.getAuthCode());
 		}
 		else if (result.isDeclined()) {
-			throw new Exception("Transaction declined\n" + result.getResponseReasonCodes().get(0).getReasonText());
+			throw new Exception(Messages.getString("AuthorizeDotNetProcessor.12") + result.getResponseReasonCodes().get(0).getReasonText()); //$NON-NLS-1$
 		}
 		else {
-			throw new Exception("Error\n" + result.getResponseReasonCodes().get(0).getReasonText());
+			throw new Exception(Messages.getString("AuthorizeDotNetProcessor.13") + result.getResponseReasonCodes().get(0).getReasonText()); //$NON-NLS-1$
 		}
 	}
 
@@ -202,11 +203,11 @@ public class AuthorizeDotNetProcessor implements CardProcessor {
 		creditCard.setCardType(CardType.findByValue(cardType));
 
 		//%B4111111111111111^SHAH/RIAR^1803101000000000020000831000000?;4111111111111111=1803101000020000831?
-		String[] tracks = cardTrack.split(";");
+		String[] tracks = cardTrack.split(";"); //$NON-NLS-1$
 
 		creditCard.setTrack1(tracks[0]);
 		if (tracks.length > 1) {
-			creditCard.setTrack2(";" + tracks[1]);
+			creditCard.setTrack2(";" + tracks[1]); //$NON-NLS-1$
 		}
 
 		return creditCard;
@@ -299,7 +300,7 @@ public class AuthorizeDotNetProcessor implements CardProcessor {
 		//		}
 
 		final BankCardMagneticTrack track = BankCardMagneticTrack
-				.from("%B4111111111111111^SHAH/RIAR^1803101000000000020000831000000?;4111111111111111=1803101000020000831?");
+				.from("%B4111111111111111^SHAH/RIAR^1803101000000000020000831000000?;4111111111111111=1803101000020000831?"); //$NON-NLS-1$
 		System.out.println(track.getTrack1());
 
 	}

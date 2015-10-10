@@ -21,6 +21,7 @@ import javax.swing.ButtonGroup;
 
 import org.apache.log4j.Logger;
 
+import com.floreantpos.Messages;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.MenuCategory;
 import com.floreantpos.model.MenuItemModifierGroup;
@@ -41,7 +42,7 @@ public class CategoryView extends SelectionView implements ActionListener {
 	private ButtonGroup categoryButtonGroup;
 	private Map<String, CategoryButton> buttonMap = new HashMap<String, CategoryButton>();
 	
-	public static final String VIEW_NAME = "CATEGORY_VIEW";
+	public static final String VIEW_NAME = "CATEGORY_VIEW"; //$NON-NLS-1$
 	
 	//private int panelCount = 0;
 	
@@ -109,7 +110,7 @@ public class CategoryView extends SelectionView implements ActionListener {
 		
 		CategoryButton(CategoryView view, MenuCategory menuCategory) {
 			this.foodCategory = menuCategory;
-			setText("<html><body><center>" + menuCategory.getDisplayName() + "</center></body></html>");
+			setText("<html><body><center>" + menuCategory.getDisplayName() + "</center></body></html>"); //$NON-NLS-1$ //$NON-NLS-2$
 			
 			if(menuCategory.getButtonColor() != null) {
 				setBackground(new Color(menuCategory.getButtonColor()));
@@ -133,7 +134,7 @@ public class CategoryView extends SelectionView implements ActionListener {
 			boolean requiredModifierAdded = modifierView.isRequiredModifiersAdded(menuItemModifierGroups, ticketItemModifierGroups);
 
 			if (!requiredModifierAdded) {
-				POSMessageDialog.showError(Application.getPosWindow(), "Please add required modifiers");
+				POSMessageDialog.showError(Application.getPosWindow(), Messages.getString("CategoryView.3")); //$NON-NLS-1$
 				return;
 			}
 		}
@@ -152,7 +153,7 @@ public class CategoryView extends SelectionView implements ActionListener {
 		}
 		buttonMap.clear();
 		
-		logger.debug("Cleared category buttons");
+		logger.debug(Messages.getString("CategoryView.4")); //$NON-NLS-1$
 		
 	}
 	

@@ -9,7 +9,7 @@ import org.apache.commons.codec.binary.Hex;
 public class PasswordHasher {
 
 	public static void main(String[] args) throws Exception {
-		System.out.println(hashPassword("123"));
+		System.out.println(hashPassword("123")); //$NON-NLS-1$
 	}
 
 	public static String hashPassword(String password) {
@@ -17,13 +17,13 @@ public class PasswordHasher {
 		MessageDigest md = null;
 
 		try {
-			passwordBytes = password.getBytes("UTF-8");
+			passwordBytes = password.getBytes("UTF-8"); //$NON-NLS-1$
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
 
 		try {
-			md = MessageDigest.getInstance("SHA1");
+			md = MessageDigest.getInstance("SHA1"); //$NON-NLS-1$
 		} catch (NoSuchAlgorithmException e) {
 			e.printStackTrace();
 		}
