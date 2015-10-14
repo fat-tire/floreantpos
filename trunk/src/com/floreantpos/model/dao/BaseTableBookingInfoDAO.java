@@ -2,65 +2,65 @@ package com.floreantpos.model.dao;
 
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
-import com.floreantpos.model.dao.ShopTableTypeDAO;
+import com.floreantpos.model.dao.TableBookingInfoDAO;
 import org.hibernate.criterion.Order;
 
 /**
  * This is an automatically generated DAO class which should not be edited.
  */
-public abstract class BaseShopTableTypeDAO extends com.floreantpos.model.dao._RootDAO {
+public abstract class BaseTableBookingInfoDAO extends com.floreantpos.model.dao._RootDAO {
 
 	// query name references
 
 
-	public static ShopTableTypeDAO instance;
+	public static TableBookingInfoDAO instance;
 
 	/**
 	 * Return a singleton of the DAO
 	 */
-	public static ShopTableTypeDAO getInstance () {
-		if (null == instance) instance = new ShopTableTypeDAO();
+	public static TableBookingInfoDAO getInstance () {
+		if (null == instance) instance = new TableBookingInfoDAO();
 		return instance;
 	}
 
 	public Class getReferenceClass () {
-		return com.floreantpos.model.ShopTableType.class;
+		return com.floreantpos.model.TableBookingInfo.class;
 	}
 
     public Order getDefaultOrder () {
-		return Order.asc("name"); //$NON-NLS-1$
+		return null;
     }
 
 	/**
-	 * Cast the object as a com.floreantpos.model.ShopTableType
+	 * Cast the object as a com.floreantpos.model.TableBookingInfo
 	 */
-	public com.floreantpos.model.ShopTableType cast (Object object) {
-		return (com.floreantpos.model.ShopTableType) object;
+	public com.floreantpos.model.TableBookingInfo cast (Object object) {
+		return (com.floreantpos.model.TableBookingInfo) object;
 	}
 
-	public com.floreantpos.model.ShopTableType get(java.lang.Integer key)
+	public com.floreantpos.model.TableBookingInfo get(java.lang.Integer key)
 		throws org.hibernate.HibernateException {
-		return (com.floreantpos.model.ShopTableType) get(getReferenceClass(), key);
+		return (com.floreantpos.model.TableBookingInfo) get(getReferenceClass(), key);
 	}
 
-	public com.floreantpos.model.ShopTableType get(java.lang.Integer key, Session s)
+	public com.floreantpos.model.TableBookingInfo get(java.lang.Integer key, Session s)
 		throws org.hibernate.HibernateException {
-		return (com.floreantpos.model.ShopTableType) get(getReferenceClass(), key, s);
+		return (com.floreantpos.model.TableBookingInfo) get(getReferenceClass(), key, s);
 	}
 
-	public com.floreantpos.model.ShopTableType load(java.lang.Integer key)
+	public com.floreantpos.model.TableBookingInfo load(java.lang.Integer key)
 		throws org.hibernate.HibernateException {
-		return (com.floreantpos.model.ShopTableType) load(getReferenceClass(), key);
+		return (com.floreantpos.model.TableBookingInfo) load(getReferenceClass(), key);
 	}
 
-	public com.floreantpos.model.ShopTableType load(java.lang.Integer key, Session s)
+	public com.floreantpos.model.TableBookingInfo load(java.lang.Integer key, Session s)
 		throws org.hibernate.HibernateException {
-		return (com.floreantpos.model.ShopTableType) load(getReferenceClass(), key, s);
+		return (com.floreantpos.model.TableBookingInfo) load(getReferenceClass(), key, s);
 	}
 
-	public com.floreantpos.model.ShopTableType loadInitialize(java.lang.Integer key, Session s) 
+	public com.floreantpos.model.TableBookingInfo loadInitialize(java.lang.Integer key, Session s) 
 			throws org.hibernate.HibernateException { 
-		com.floreantpos.model.ShopTableType obj = load(key, s); 
+		com.floreantpos.model.TableBookingInfo obj = load(key, s); 
 		if (!Hibernate.isInitialized(obj)) {
 			Hibernate.initialize(obj);
 		} 
@@ -72,14 +72,14 @@ public abstract class BaseShopTableTypeDAO extends com.floreantpos.model.dao._Ro
 	/**
 	 * Return all objects related to the implementation of this DAO with no filter.
 	 */
-	public java.util.List<com.floreantpos.model.ShopTableType> findAll () {
+	public java.util.List<com.floreantpos.model.TableBookingInfo> findAll () {
 		return super.findAll();
 	}
 
 	/**
 	 * Return all objects related to the implementation of this DAO with no filter.
 	 */
-	public java.util.List<com.floreantpos.model.ShopTableType> findAll (Order defaultOrder) {
+	public java.util.List<com.floreantpos.model.TableBookingInfo> findAll (Order defaultOrder) {
 		return super.findAll(defaultOrder);
 	}
 
@@ -88,43 +88,43 @@ public abstract class BaseShopTableTypeDAO extends com.floreantpos.model.dao._Ro
 	 * Use the session given.
 	 * @param s the Session
 	 */
-	public java.util.List<com.floreantpos.model.ShopTableType> findAll (Session s, Order defaultOrder) {
+	public java.util.List<com.floreantpos.model.TableBookingInfo> findAll (Session s, Order defaultOrder) {
 		return super.findAll(s, defaultOrder);
 	}
 
 	/**
 	 * Persist the given transient instance, first assigning a generated identifier. (Or using the current value
 	 * of the identifier property if the assigned generator is used.) 
-	 * @param shopTableType a transient instance of a persistent class 
+	 * @param tableBookingInfo a transient instance of a persistent class 
 	 * @return the class identifier
 	 */
-	public java.lang.Integer save(com.floreantpos.model.ShopTableType shopTableType)
+	public java.lang.Integer save(com.floreantpos.model.TableBookingInfo tableBookingInfo)
 		throws org.hibernate.HibernateException {
-		return (java.lang.Integer) super.save(shopTableType);
+		return (java.lang.Integer) super.save(tableBookingInfo);
 	}
 
 	/**
 	 * Persist the given transient instance, first assigning a generated identifier. (Or using the current value
 	 * of the identifier property if the assigned generator is used.) 
 	 * Use the Session given.
-	 * @param shopTableType a transient instance of a persistent class
+	 * @param tableBookingInfo a transient instance of a persistent class
 	 * @param s the Session
 	 * @return the class identifier
 	 */
-	public java.lang.Integer save(com.floreantpos.model.ShopTableType shopTableType, Session s)
+	public java.lang.Integer save(com.floreantpos.model.TableBookingInfo tableBookingInfo, Session s)
 		throws org.hibernate.HibernateException {
-		return (java.lang.Integer) save((Object) shopTableType, s);
+		return (java.lang.Integer) save((Object) tableBookingInfo, s);
 	}
 
 	/**
 	 * Either save() or update() the given instance, depending upon the value of its identifier property. By default
 	 * the instance is always saved. This behaviour may be adjusted by specifying an unsaved-value attribute of the
 	 * identifier property mapping. 
-	 * @param shopTableType a transient instance containing new or updated state 
+	 * @param tableBookingInfo a transient instance containing new or updated state 
 	 */
-	public void saveOrUpdate(com.floreantpos.model.ShopTableType shopTableType)
+	public void saveOrUpdate(com.floreantpos.model.TableBookingInfo tableBookingInfo)
 		throws org.hibernate.HibernateException {
-		saveOrUpdate((Object) shopTableType);
+		saveOrUpdate((Object) tableBookingInfo);
 	}
 
 	/**
@@ -132,34 +132,34 @@ public abstract class BaseShopTableTypeDAO extends com.floreantpos.model.dao._Ro
 	 * instance is always saved. This behaviour may be adjusted by specifying an unsaved-value attribute of the identifier
 	 * property mapping. 
 	 * Use the Session given.
-	 * @param shopTableType a transient instance containing new or updated state.
+	 * @param tableBookingInfo a transient instance containing new or updated state.
 	 * @param s the Session.
 	 */
-	public void saveOrUpdate(com.floreantpos.model.ShopTableType shopTableType, Session s)
+	public void saveOrUpdate(com.floreantpos.model.TableBookingInfo tableBookingInfo, Session s)
 		throws org.hibernate.HibernateException {
-		saveOrUpdate((Object) shopTableType, s);
+		saveOrUpdate((Object) tableBookingInfo, s);
 	}
 
 	/**
 	 * Update the persistent state associated with the given identifier. An exception is thrown if there is a persistent
 	 * instance with the same identifier in the current session.
-	 * @param shopTableType a transient instance containing updated state
+	 * @param tableBookingInfo a transient instance containing updated state
 	 */
-	public void update(com.floreantpos.model.ShopTableType shopTableType) 
+	public void update(com.floreantpos.model.TableBookingInfo tableBookingInfo) 
 		throws org.hibernate.HibernateException {
-		update((Object) shopTableType);
+		update((Object) tableBookingInfo);
 	}
 
 	/**
 	 * Update the persistent state associated with the given identifier. An exception is thrown if there is a persistent
 	 * instance with the same identifier in the current session.
 	 * Use the Session given.
-	 * @param shopTableType a transient instance containing updated state
+	 * @param tableBookingInfo a transient instance containing updated state
 	 * @param the Session
 	 */
-	public void update(com.floreantpos.model.ShopTableType shopTableType, Session s)
+	public void update(com.floreantpos.model.TableBookingInfo tableBookingInfo, Session s)
 		throws org.hibernate.HibernateException {
-		update((Object) shopTableType, s);
+		update((Object) tableBookingInfo, s);
 	}
 
 	/**
@@ -187,23 +187,23 @@ public abstract class BaseShopTableTypeDAO extends com.floreantpos.model.dao._Ro
 	/**
 	 * Remove a persistent instance from the datastore. The argument may be an instance associated with the receiving
 	 * Session or a transient instance with an identifier associated with existing persistent state. 
-	 * @param shopTableType the instance to be removed
+	 * @param tableBookingInfo the instance to be removed
 	 */
-	public void delete(com.floreantpos.model.ShopTableType shopTableType)
+	public void delete(com.floreantpos.model.TableBookingInfo tableBookingInfo)
 		throws org.hibernate.HibernateException {
-		delete((Object) shopTableType);
+		delete((Object) tableBookingInfo);
 	}
 
 	/**
 	 * Remove a persistent instance from the datastore. The argument may be an instance associated with the receiving
 	 * Session or a transient instance with an identifier associated with existing persistent state. 
 	 * Use the Session given.
-	 * @param shopTableType the instance to be removed
+	 * @param tableBookingInfo the instance to be removed
 	 * @param s the Session
 	 */
-	public void delete(com.floreantpos.model.ShopTableType shopTableType, Session s)
+	public void delete(com.floreantpos.model.TableBookingInfo tableBookingInfo, Session s)
 		throws org.hibernate.HibernateException {
-		delete((Object) shopTableType, s);
+		delete((Object) tableBookingInfo, s);
 	}
 	
 	/**
@@ -216,9 +216,9 @@ public abstract class BaseShopTableTypeDAO extends com.floreantpos.model.dao._Ro
 	 * <li>after inserting a Blob or Clob</li>
 	 * </ul>
 	 */
-	public void refresh (com.floreantpos.model.ShopTableType shopTableType, Session s)
+	public void refresh (com.floreantpos.model.TableBookingInfo tableBookingInfo, Session s)
 		throws org.hibernate.HibernateException {
-		refresh((Object) shopTableType, s);
+		refresh((Object) tableBookingInfo, s);
 	}
 
 
