@@ -20,6 +20,12 @@ public class ShopTableType extends BaseShopTableType {
 	}
 
 /*[CONSTRUCTOR MARKER END]*/
+	
+	public String toString () {
+		return getName();
+	}
+	
+
 
 
 }

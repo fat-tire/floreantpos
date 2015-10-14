@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.floreantpos.model">
+	<class lazy="false" name="com.floreantpos.model.TableBookingInfo"
+		table="TABLE_BOOKING_INFO">
+		<id column="ID" name="id" type="java.lang.Integer">
+			<generator class="identity" />
+		</id>
+
+
+		<property column="FROM_DATE" index="fromDate" name="fromDate"
+			type="java.util.Date" />
+		<property column="TO_DATE" index="toDate" name="toDate"
+			type="java.util.Date" />
+		<property column="GUEST_COUNT" name="guestCount" type="java.lang.Integer" />
+		<property column="CURRENT_STATUS" name="currentStatus" type="string"
+			length="30" />
+		<property column="PAYMENT_STATUS" name="paymentStatus" type="string"
+			length="30" />
+		<property column="BOOKING_CONFIRM" name="bookingConfirm"
+			type="string" length="30" />
+		<property column="TOTAL_AMOUNT" name="totalAmouunt" type="java.lang.Integer" />
+		<property column="PAID_AMOUNT" name="paidAmount" type="java.lang.Integer" />
+
+		<property column="BOOKING_TYPE" name="bookingType"
+			type="string" length="30" />
+			
+		<!-- Associations -->
+
+
+		<bag name="tables" cascade="all" inverse="false" lazy="false"
+			table="TABLE_BOOKING_MAPPING">
+			<key column="BOOKING_ID" />
+			<many-to-many column="TABLE_ID" class="com.floreantpos.model.ShopTable" />
+		</bag>
+
+		<many-to-one class="com.floreantpos.model.User" lazy="false"
+			name="user">
+			<column name="user_id" />
+		</many-to-one>
+
+		<many-to-one class="com.floreantpos.model.Customer" lazy="false"
+			name="customer">
+			<column name="customer_id" />
+		</many-to-one>
+
+
+
+
+
+	</class>
+</hibernate-mapping>
