@@ -1,5 +1,6 @@
 package com.floreantpos.model.dao;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -13,6 +14,7 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 
 import com.floreantpos.model.ShopTable;
+import com.floreantpos.model.ShopTableType;
 import com.floreantpos.model.Ticket;
 
 
@@ -151,4 +153,19 @@ public class ShopTableDAO extends BaseShopTableDAO {
 			closeSession(session);
 		}
 	}
+	
+	public List<ShopTableType> getTableByTypes(List<ShopTableType> types) {
+		List<Integer> typeIds = new ArrayList<Integer>();
+		for (ShopTableType shopTableType : types) {
+			typeIds.add(shopTableType.getId());
+		}
+
+		Session session = getSession();
+		Criteria criteria = session.createCriteria(ShopTable.class);
+		criteria.createAlias("types", "t"); //$NON-NLS-1$ //$NON-NLS-2$
+		criteria.add(Restrictions.in("t.id", typeIds)); //$NON-NLS-1$
+		criteria.addOrder(Order.asc(ShopTable.PROP_ID));
+		return criteria.list();
+	}
+
 }
