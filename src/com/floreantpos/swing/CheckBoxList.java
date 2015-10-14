@@ -10,6 +10,7 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 
+
 /**
  * A list from which multiple items can be selected.
  */
@@ -56,6 +57,43 @@ public class CheckBoxList<E> extends JTable {
 		for (int i = 0; i < model.items.size(); i++) {
 			Entry entry = (Entry) model.items.get(i);
 			entry.checked = true;
+
+		}
+
+		model.fireTableRowsUpdated(0, model.getRowCount());
+	}
+
+	public void selectItems(List types) {
+		CheckBoxListModel model = (CheckBoxListModel) getModel();
+
+		if (types != null) {
+			for (int i = 0; i < model.items.size(); i++) {
+				Entry entry = (Entry) model.items.get(i);
+
+				for (int j = 0; j < types.size(); j++) {
+
+					Object type = types.get(j);
+
+					if (type.equals(entry.value)) {
+						entry.checked = true;
+						break;
+
+					}
+
+				}
+			}
+
+			model.fireTableRowsUpdated(0, model.getRowCount());
+
+		}
+	}
+
+	public void unCheckAll() {
+		CheckBoxListModel model = (CheckBoxListModel) getModel();
+		for (int i = 0; i < model.items.size(); i++) {
+			Entry entry = (Entry) model.items.get(i);
+			entry.checked = false;
+
 		}
 
 		model.fireTableRowsUpdated(0, model.getRowCount());
@@ -109,20 +147,25 @@ public class CheckBoxList<E> extends JTable {
 		}
 
 		public boolean isChecked() {
+
 			return checked;
 		}
 
 		public Object getValue() {
+
 			return value;
 		}
 
 		public void setChecked(boolean checked) {
+
 			this.checked = checked;
 		}
 
 		public void setValue(E value) {
+
 			this.value = value;
 		}
+
 	}
 
 	public static class CheckBoxListModel<E> extends AbstractTableModel {
@@ -166,11 +209,13 @@ public class CheckBoxList<E> extends JTable {
 			CheckBoxList.Entry entry = items.get(row);
 			switch (col) {
 				case 0:
+
 					return Boolean.valueOf(entry.checked);
-					
+
 				case 1:
+
 					return entry.value;
-					
+
 				default:
 					throw new InternalError();
 			}
@@ -198,16 +243,22 @@ public class CheckBoxList<E> extends JTable {
 			if (col == 0) {
 				CheckBoxList.Entry entry = items.get(row);
 				entry.checked = (value.equals(Boolean.TRUE));
+				
 				fireTableRowsUpdated(row, row);
 			}
 		}
+		
+		
+		
 
 		public List<CheckBoxList.Entry<E>> getItems() {
+			
 			return items;
 		}
 
 		public void setItems(List<CheckBoxList.Entry<E>> items) {
 			this.items = items;
 		}
+
 	}
 }
