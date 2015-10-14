@@ -1,5 +1,6 @@
 package com.floreantpos.model.base;
 
+import java.lang.Comparable;
 import java.io.Serializable;
 
 
@@ -15,6 +16,7 @@ import java.io.Serializable;
 public abstract class BaseShopTableType  implements Comparable, Serializable {
 
 	public static String REF = "ShopTableType"; //$NON-NLS-1$
+	public static String PROP_NAME = "name"; //$NON-NLS-1$
 	public static String PROP_DESCRIPTION = "description"; //$NON-NLS-1$
 	public static String PROP_ID = "id"; //$NON-NLS-1$
 
@@ -43,6 +45,7 @@ public abstract class BaseShopTableType  implements Comparable, Serializable {
 
 	// fields
 		protected java.lang.String description;
+		protected java.lang.String name;
 
 
 
@@ -81,6 +84,23 @@ public abstract class BaseShopTableType  implements Comparable, Serializable {
 	 */
 	public void setDescription (java.lang.String description) {
 		this.description = description;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: NAME
+	 */
+	public java.lang.String getName () {
+					return name;
+			}
+
+	/**
+	 * Set the value related to the column: NAME
+	 * @param name the NAME value
+	 */
+	public void setName (java.lang.String name) {
+		this.name = name;
 	}
 
 
