@@ -167,5 +167,4 @@ public class ShopTableDAO extends BaseShopTableDAO {
 		criteria.addOrder(Order.asc(ShopTable.PROP_ID));
 		return criteria.list();
 	}
-
 }
