@@ -91,7 +91,7 @@ public class ModelBrowser<E> extends JPanel implements ActionListener, ListSelec
 		buttonPanel.add(btnDelete);
 		buttonPanel.add(btnCancel);
 
-		beanPanel.setPreferredSize(new Dimension(600, 400));
+		beanPanel.setPreferredSize(new Dimension(800, 400));
 		beanPanel.add(buttonPanel, BorderLayout.SOUTH);
 
 		add(beanPanel, BorderLayout.EAST);
