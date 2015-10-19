@@ -3,19 +3,22 @@ package com.floreantpos.ui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.Timer;
 
+import net.miginfocom.swing.MigLayout;
+
 import org.jdesktop.swingx.JXTable;
+import org.jdesktop.swingx.table.ColumnControlButton;
 import org.jdesktop.swingx.table.TableColumnModelExt;
 
 import com.floreantpos.ITicketList;
@@ -101,16 +104,19 @@ public class TicketListView extends JPanel implements ITicketList {
 		createActionHandlers();
 
 		PosScrollPane scrollPane = new PosScrollPane(table, PosScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, PosScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		
+		JPanel topButtonPanel = new JPanel(new MigLayout("ins 0", "grow", ""));
+		ColumnControlButton controlButton = new ColumnControlButton(table);
+		topButtonPanel.add(controlButton, "h 40!, grow, wrap");
+		topButtonPanel.add(btnRefresh, "h 40!, grow, wrap");
+		topButtonPanel.add(btnPrevious, "h 40!, grow, wrap");
 
-		JPanel topButtonPanel = new JPanel(new GridLayout(0, 1));
-		topButtonPanel.add(btnRefresh);
-		topButtonPanel.add(btnPrevious);
-
-		JPanel downButtonPanel = new JPanel(new GridLayout(0, 1));
-		downButtonPanel.add(btnNext);
-		downButtonPanel.add(btnOrderFilters);
+		JPanel downButtonPanel = new JPanel(new MigLayout("ins 0", "grow", ""));
+		downButtonPanel.add(btnNext, "h 40!, grow, wrap");
+		downButtonPanel.add(btnOrderFilters, "h 40!, grow, wrap");
 
 		JPanel tableButtonPanel = new JPanel(new BorderLayout());
+		tableButtonPanel.setBorder(BorderFactory.createEmptyBorder(0, 2, 0, 2));
 		tableButtonPanel.setPreferredSize(new Dimension(80, 0));
 		tableButtonPanel.add(topButtonPanel, BorderLayout.NORTH);
 		tableButtonPanel.add(downButtonPanel, BorderLayout.SOUTH);
