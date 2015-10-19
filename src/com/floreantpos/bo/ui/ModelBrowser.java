@@ -23,14 +23,16 @@ import com.floreantpos.Messages;
 import com.floreantpos.main.Application;
 
 import com.floreantpos.swing.BeanTableModel;
-import com.floreantpos.swing.ListTableModel;
+
 import com.floreantpos.ui.BeanEditor;
+import com.floreantpos.ui.SearchPanel;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 
 public class ModelBrowser<E> extends JPanel implements ActionListener, ListSelectionListener {
 
 	protected JXTable browserTable;
 	protected BeanEditor<E> beanEditor;
+	SearchPanel<E> searchPanel;
 
 	protected JPanel browserPanel = new JPanel(new BorderLayout());
 	private JPanel beanPanel = new JPanel(new BorderLayout());
@@ -51,6 +53,12 @@ public class ModelBrowser<E> extends JPanel implements ActionListener, ListSelec
 
 	}
 
+	public ModelBrowser(BeanEditor<E> beanEditor, SearchPanel<E> searchPanel) {
+		super();
+		this.beanEditor = beanEditor;
+		this.searchPanel = searchPanel;
+	}
+
 	public void init(TableModel tableModel) {
 		browserTable = new JXTable();
 		browserTable.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -65,11 +73,10 @@ public class ModelBrowser<E> extends JPanel implements ActionListener, ListSelec
 
 		browserPanel.add(new JScrollPane(browserTable));
 
-		JPanel searchPanel = createSearchPanel();
 		if (searchPanel != null) {
-			browserPanel.add(searchPanel, BorderLayout.NORTH);
+			searchPanel.setModelBrowser(this);
+			add(searchPanel, BorderLayout.NORTH);
 		}
-
 		add(browserPanel);
 
 		beanPanel.setBorder(BorderFactory.createEtchedBorder());
@@ -91,7 +98,7 @@ public class ModelBrowser<E> extends JPanel implements ActionListener, ListSelec
 		buttonPanel.add(btnDelete);
 		buttonPanel.add(btnCancel);
 
-		beanPanel.setPreferredSize(new Dimension(800, 400));
+		beanPanel.setPreferredSize(new Dimension(600, 400));
 		beanPanel.add(buttonPanel, BorderLayout.SOUTH);
 
 		add(beanPanel, BorderLayout.EAST);
@@ -116,10 +123,6 @@ public class ModelBrowser<E> extends JPanel implements ActionListener, ListSelec
 
 	public void refreshTable() {
 
-	}
-
-	public JPanel createSearchPanel() {
-		return null;
 	}
 
 	protected JButton getAdditionalButton() {
@@ -231,7 +234,9 @@ public class ModelBrowser<E> extends JPanel implements ActionListener, ListSelec
 	}
 
 	public void setModels(List<E> models) {
-		ListTableModel tableModel = (ListTableModel) browserTable.getModel();
-		tableModel.setRows(models);
+		BeanTableModel<E> tableModel = (BeanTableModel<E>) browserTable.getModel();
+		tableModel.removeAll();
+		tableModel.addRows(models);
 	}
+
 }
