@@ -1,5 +1,6 @@
 package com.floreantpos.model.base;
 
+import java.lang.Comparable;
 import java.io.Serializable;
 
 
@@ -73,28 +74,29 @@ public abstract class BaseMenuItem  implements Comparable, Serializable {
 	private java.lang.Integer id;
 
 	// fields
-		protected java.lang.String name;
-		protected java.lang.String translatedName;
 		protected java.lang.String barcode;
-		protected java.lang.Double buyPrice;
-		protected java.lang.Double price;
-		protected java.lang.Double discountRate;
-		protected java.lang.Boolean visible;
-		protected java.lang.Integer sortOrder;
 		protected java.lang.Integer buttonColor;
-		protected java.lang.Integer textColor;
+		protected java.lang.Double buyPrice;
+		protected java.lang.Double discountRate;
 		protected byte[] image;
+		protected java.lang.String name;
+		protected java.lang.Double price;
 		protected java.lang.Boolean showImageOnly;
+		protected java.lang.Integer sortOrder;
+		protected java.lang.Integer textColor;
+		protected java.lang.String translatedName;
+		protected java.lang.Boolean visible;
 
 	// many to one
 	private com.floreantpos.model.MenuGroup parent;
-	private com.floreantpos.model.Tax tax;
-	private com.floreantpos.model.Recepie recepie;
 	private com.floreantpos.model.PrinterGroup printerGroup;
+	private com.floreantpos.model.Recepie recepie;
+	private com.floreantpos.model.Tax tax;
 
 	// collections
-	private java.util.List<com.floreantpos.model.MenuItemShift> shifts;
 	private java.util.List<com.floreantpos.model.MenuItemModifierGroup> menuItemModiferGroups;
+	private java.util.List<com.floreantpos.model.MenuItemShift> shifts;
+	private java.util.List<com.floreantpos.model.Terminal> terminals;
 
 
 
@@ -121,40 +123,6 @@ public abstract class BaseMenuItem  implements Comparable, Serializable {
 
 
 	/**
-	 * Return the value associated with the column: NAME
-	 */
-	public java.lang.String getName () {
-					return name;
-			}
-
-	/**
-	 * Set the value related to the column: NAME
-	 * @param name the NAME value
-	 */
-	public void setName (java.lang.String name) {
-		this.name = name;
-	}
-
-
-
-	/**
-	 * Return the value associated with the column: TRANSLATED_NAME
-	 */
-	public java.lang.String getTranslatedName () {
-					return translatedName;
-			}
-
-	/**
-	 * Set the value related to the column: TRANSLATED_NAME
-	 * @param translatedName the TRANSLATED_NAME value
-	 */
-	public void setTranslatedName (java.lang.String translatedName) {
-		this.translatedName = translatedName;
-	}
-
-
-
-	/**
 	 * Return the value associated with the column: BARCODE
 	 */
 	public java.lang.String getBarcode () {
@@ -167,6 +135,23 @@ public abstract class BaseMenuItem  implements Comparable, Serializable {
 	 */
 	public void setBarcode (java.lang.String barcode) {
 		this.barcode = barcode;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: BTN_COLOR
+	 */
+	public java.lang.Integer getButtonColor () {
+					return buttonColor == null ? Integer.valueOf(0) : buttonColor;
+			}
+
+	/**
+	 * Set the value related to the column: BTN_COLOR
+	 * @param buttonColor the BTN_COLOR value
+	 */
+	public void setButtonColor (java.lang.Integer buttonColor) {
+		this.buttonColor = buttonColor;
 	}
 
 
@@ -189,6 +174,57 @@ public abstract class BaseMenuItem  implements Comparable, Serializable {
 
 
 	/**
+	 * Return the value associated with the column: DISCOUNT_RATE
+	 */
+	public java.lang.Double getDiscountRate () {
+									return discountRate == null ? Double.valueOf(0) : discountRate;
+					}
+
+	/**
+	 * Set the value related to the column: DISCOUNT_RATE
+	 * @param discountRate the DISCOUNT_RATE value
+	 */
+	public void setDiscountRate (java.lang.Double discountRate) {
+		this.discountRate = discountRate;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: IMAGE
+	 */
+	public byte[] getImage () {
+					return image;
+			}
+
+	/**
+	 * Set the value related to the column: IMAGE
+	 * @param image the IMAGE value
+	 */
+	public void setImage (byte[] image) {
+		this.image = image;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: NAME
+	 */
+	public java.lang.String getName () {
+					return name;
+			}
+
+	/**
+	 * Set the value related to the column: NAME
+	 * @param name the NAME value
+	 */
+	public void setName (java.lang.String name) {
+		this.name = name;
+	}
+
+
+
+	/**
 	 * Return the value associated with the column: PRICE
 	 */
 	public java.lang.Double getPrice () {
@@ -206,18 +242,69 @@ public abstract class BaseMenuItem  implements Comparable, Serializable {
 
 
 	/**
-	 * Return the value associated with the column: DISCOUNT_RATE
+	 * Return the value associated with the column: SHOW_IMAGE_ONLY
 	 */
-	public java.lang.Double getDiscountRate () {
-									return discountRate == null ? Double.valueOf(0) : discountRate;
+	public java.lang.Boolean isShowImageOnly () {
+								return showImageOnly == null ? Boolean.FALSE : showImageOnly;
 					}
 
 	/**
-	 * Set the value related to the column: DISCOUNT_RATE
-	 * @param discountRate the DISCOUNT_RATE value
+	 * Set the value related to the column: SHOW_IMAGE_ONLY
+	 * @param showImageOnly the SHOW_IMAGE_ONLY value
 	 */
-	public void setDiscountRate (java.lang.Double discountRate) {
-		this.discountRate = discountRate;
+	public void setShowImageOnly (java.lang.Boolean showImageOnly) {
+		this.showImageOnly = showImageOnly;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: SORT_ORDER
+	 */
+	public java.lang.Integer getSortOrder () {
+					return sortOrder == null ? Integer.valueOf(0) : sortOrder;
+			}
+
+	/**
+	 * Set the value related to the column: SORT_ORDER
+	 * @param sortOrder the SORT_ORDER value
+	 */
+	public void setSortOrder (java.lang.Integer sortOrder) {
+		this.sortOrder = sortOrder;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: TEXT_COLOR
+	 */
+	public java.lang.Integer getTextColor () {
+					return textColor == null ? Integer.valueOf(0) : textColor;
+			}
+
+	/**
+	 * Set the value related to the column: TEXT_COLOR
+	 * @param textColor the TEXT_COLOR value
+	 */
+	public void setTextColor (java.lang.Integer textColor) {
+		this.textColor = textColor;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: TRANSLATED_NAME
+	 */
+	public java.lang.String getTranslatedName () {
+					return translatedName;
+			}
+
+	/**
+	 * Set the value related to the column: TRANSLATED_NAME
+	 * @param translatedName the TRANSLATED_NAME value
+	 */
+	public void setTranslatedName (java.lang.String translatedName) {
+		this.translatedName = translatedName;
 	}
 
 
@@ -242,93 +329,8 @@ public abstract class BaseMenuItem  implements Comparable, Serializable {
 	 * Custom property
 	 */
 	public static String getVisibleDefaultValue () {
-		return "true"; //$NON-NLS-1$
+		return "true";
 	}
-
-
-	/**
-	 * Return the value associated with the column: SORT_ORDER
-	 */
-	public java.lang.Integer getSortOrder () {
-					return sortOrder == null ? Integer.valueOf(0) : sortOrder;
-			}
-
-	/**
-	 * Set the value related to the column: SORT_ORDER
-	 * @param sortOrder the SORT_ORDER value
-	 */
-	public void setSortOrder (java.lang.Integer sortOrder) {
-		this.sortOrder = sortOrder;
-	}
-
-
-
-	/**
-	 * Return the value associated with the column: BTN_COLOR
-	 */
-	public java.lang.Integer getButtonColor () {
-					return buttonColor == null ? Integer.valueOf(0) : buttonColor;
-			}
-
-	/**
-	 * Set the value related to the column: BTN_COLOR
-	 * @param buttonColor the BTN_COLOR value
-	 */
-	public void setButtonColor (java.lang.Integer buttonColor) {
-		this.buttonColor = buttonColor;
-	}
-
-
-
-	/**
-	 * Return the value associated with the column: TEXT_COLOR
-	 */
-	public java.lang.Integer getTextColor () {
-					return textColor == null ? Integer.valueOf(0) : textColor;
-			}
-
-	/**
-	 * Set the value related to the column: TEXT_COLOR
-	 * @param textColor the TEXT_COLOR value
-	 */
-	public void setTextColor (java.lang.Integer textColor) {
-		this.textColor = textColor;
-	}
-
-
-
-	/**
-	 * Return the value associated with the column: IMAGE
-	 */
-	public byte[] getImage () {
-					return image;
-			}
-
-	/**
-	 * Set the value related to the column: IMAGE
-	 * @param image the IMAGE value
-	 */
-	public void setImage (byte[] image) {
-		this.image = image;
-	}
-
-
-
-	/**
-	 * Return the value associated with the column: SHOW_IMAGE_ONLY
-	 */
-	public java.lang.Boolean isShowImageOnly () {
-								return showImageOnly == null ? Boolean.FALSE : showImageOnly;
-					}
-
-	/**
-	 * Set the value related to the column: SHOW_IMAGE_ONLY
-	 * @param showImageOnly the SHOW_IMAGE_ONLY value
-	 */
-	public void setShowImageOnly (java.lang.Boolean showImageOnly) {
-		this.showImageOnly = showImageOnly;
-	}
-
 
 
 	/**
@@ -349,18 +351,18 @@ public abstract class BaseMenuItem  implements Comparable, Serializable {
 
 
 	/**
-	 * Return the value associated with the column: TAX_ID
+	 * Return the value associated with the column: PG_ID
 	 */
-	public com.floreantpos.model.Tax getTax () {
-					return tax;
+	public com.floreantpos.model.PrinterGroup getPrinterGroup () {
+					return printerGroup;
 			}
 
 	/**
-	 * Set the value related to the column: TAX_ID
-	 * @param tax the TAX_ID value
+	 * Set the value related to the column: PG_ID
+	 * @param printerGroup the PG_ID value
 	 */
-	public void setTax (com.floreantpos.model.Tax tax) {
-		this.tax = tax;
+	public void setPrinterGroup (com.floreantpos.model.PrinterGroup printerGroup) {
+		this.printerGroup = printerGroup;
 	}
 
 
@@ -383,18 +385,40 @@ public abstract class BaseMenuItem  implements Comparable, Serializable {
 
 
 	/**
-	 * Return the value associated with the column: PG_ID
+	 * Return the value associated with the column: TAX_ID
 	 */
-	public com.floreantpos.model.PrinterGroup getPrinterGroup () {
-					return printerGroup;
+	public com.floreantpos.model.Tax getTax () {
+					return tax;
 			}
 
 	/**
-	 * Set the value related to the column: PG_ID
-	 * @param printerGroup the PG_ID value
+	 * Set the value related to the column: TAX_ID
+	 * @param tax the TAX_ID value
 	 */
-	public void setPrinterGroup (com.floreantpos.model.PrinterGroup printerGroup) {
-		this.printerGroup = printerGroup;
+	public void setTax (com.floreantpos.model.Tax tax) {
+		this.tax = tax;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: menuItemModiferGroups
+	 */
+	public java.util.List<com.floreantpos.model.MenuItemModifierGroup> getMenuItemModiferGroups () {
+					return menuItemModiferGroups;
+			}
+
+	/**
+	 * Set the value related to the column: menuItemModiferGroups
+	 * @param menuItemModiferGroups the menuItemModiferGroups value
+	 */
+	public void setMenuItemModiferGroups (java.util.List<com.floreantpos.model.MenuItemModifierGroup> menuItemModiferGroups) {
+		this.menuItemModiferGroups = menuItemModiferGroups;
+	}
+
+	public void addTomenuItemModiferGroups (com.floreantpos.model.MenuItemModifierGroup menuItemModifierGroup) {
+		if (null == getMenuItemModiferGroups()) setMenuItemModiferGroups(new java.util.ArrayList<com.floreantpos.model.MenuItemModifierGroup>());
+		getMenuItemModiferGroups().add(menuItemModifierGroup);
 	}
 
 
@@ -422,23 +446,23 @@ public abstract class BaseMenuItem  implements Comparable, Serializable {
 
 
 	/**
-	 * Return the value associated with the column: menuItemModiferGroups
+	 * Return the value associated with the column: terminals
 	 */
-	public java.util.List<com.floreantpos.model.MenuItemModifierGroup> getMenuItemModiferGroups () {
-					return menuItemModiferGroups;
+	public java.util.List<com.floreantpos.model.Terminal> getTerminals () {
+					return terminals;
 			}
 
 	/**
-	 * Set the value related to the column: menuItemModiferGroups
-	 * @param menuItemModiferGroups the menuItemModiferGroups value
+	 * Set the value related to the column: terminals
+	 * @param terminals the terminals value
 	 */
-	public void setMenuItemModiferGroups (java.util.List<com.floreantpos.model.MenuItemModifierGroup> menuItemModiferGroups) {
-		this.menuItemModiferGroups = menuItemModiferGroups;
+	public void setTerminals (java.util.List<com.floreantpos.model.Terminal> terminals) {
+		this.terminals = terminals;
 	}
 
-	public void addTomenuItemModiferGroups (com.floreantpos.model.MenuItemModifierGroup menuItemModifierGroup) {
-		if (null == getMenuItemModiferGroups()) setMenuItemModiferGroups(new java.util.ArrayList<com.floreantpos.model.MenuItemModifierGroup>());
-		getMenuItemModiferGroups().add(menuItemModifierGroup);
+	public void addToterminals (com.floreantpos.model.Terminal terminal) {
+		if (null == getTerminals()) setTerminals(new java.util.ArrayList<com.floreantpos.model.Terminal>());
+		getTerminals().add(terminal);
 	}
 
 
@@ -459,7 +483,7 @@ public abstract class BaseMenuItem  implements Comparable, Serializable {
 		if (Integer.MIN_VALUE == this.hashCode) {
 			if (null == this.getId()) return super.hashCode();
 			else {
-				String hashStr = this.getClass().getName() + ":" + this.getId().hashCode(); //$NON-NLS-1$
+				String hashStr = this.getClass().getName() + ":" + this.getId().hashCode();
 				this.hashCode = hashStr.hashCode();
 			}
 		}
