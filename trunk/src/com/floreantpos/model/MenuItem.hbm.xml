@@ -57,5 +57,10 @@
 		<many-to-one class="com.floreantpos.model.PrinterGroup" lazy="false" cascade="none" name="printerGroup">
 			<column name="PG_ID" />
 		</many-to-one>
+		
+		<bag cascade="save-update" inverse="true" name="terminals" lazy="false">
+			<key column="MENU_ITEM_ID"/>
+			<many-to-many class="Terminal" column="TERMINAL_ID"/>
+		</bag>
 	</class>
 </hibernate-mapping>
