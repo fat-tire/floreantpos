@@ -22,6 +22,9 @@ public class TableBookingInfo extends BaseTableBookingInfo {
 
 
 /*[CONSTRUCTOR MARKER END]*/
+	public String toString () {
+		return getId().toString();
+	}
 
 
 }

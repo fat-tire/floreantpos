@@ -25,4 +25,12 @@ public class UiUtil {
 		
 		return datePicker;
 	}
+	
+	public static JXDatePicker getDeafultDate() {
+
+		JXDatePicker datePicker = new JXDatePicker();
+		
+		return datePicker;
+	}
+	
 }

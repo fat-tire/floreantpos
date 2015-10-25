@@ -164,6 +164,7 @@ public class ShopTableDAO extends BaseShopTableDAO {
 		Criteria criteria = session.createCriteria(ShopTable.class);
 		criteria.createAlias("types", "t"); //$NON-NLS-1$ //$NON-NLS-2$
 		criteria.add(Restrictions.in("t.id", typeIds)); //$NON-NLS-1$
+		//criteria.add(Restrictions("t.id", typeIds)); //$NON-NLS-1$
 		criteria.addOrder(Order.asc(ShopTable.PROP_ID));
 		return criteria.list();
 	}
