@@ -94,7 +94,7 @@ public class Application {
 		pluginManager = PluginManagerFactory.createPluginManager();
 
 		if (developmentMode) {
-			pluginManager.addPluginsFrom(new File("../oro/target/classes").toURI());
+			pluginManager.addPluginsFrom(new File("/home/amir/git/oro/target/classes").toURI());
 		}
 		else {
 			pluginManager.addPluginsFrom(new File("plugins/").toURI()); //$NON-NLS-1$

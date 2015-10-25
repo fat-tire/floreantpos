@@ -13,14 +13,19 @@ import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
 import net.miginfocom.swing.MigLayout;
 
 import org.jdesktop.swingx.JXTable;
 
+
 import com.floreantpos.Messages;
 import com.floreantpos.main.Application;
+
 
 import com.floreantpos.swing.BeanTableModel;
 
@@ -61,11 +66,24 @@ public class ModelBrowser<E> extends JPanel implements ActionListener, ListSelec
 
 	public void init(TableModel tableModel) {
 		browserTable = new JXTable();
+
 		browserTable.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		browserTable.getSelectionModel().addListSelectionListener(this);
 
 		if (tableModel != null) {
+			
 			browserTable.setModel(tableModel);
+			
+		
+			
+		TableColumnModel tcModel = browserTable.getColumnModel();
+			
+			TableColumn tc = tcModel.getColumn(2);
+			
+			TableColumn tc2 = tcModel.getColumn(3);
+			tc.setCellRenderer(new MyCellRenderer());
+			tc2.setCellRenderer(new MyCellRenderer());
+			
 		}
 
 		setLayout(new BorderLayout(10, 10));
@@ -120,6 +138,8 @@ public class ModelBrowser<E> extends JPanel implements ActionListener, ListSelec
 
 		refreshTable();
 	}
+
+
 
 	public void refreshTable() {
 

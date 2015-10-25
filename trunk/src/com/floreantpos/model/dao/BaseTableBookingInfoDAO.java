@@ -12,74 +12,69 @@ public abstract class BaseTableBookingInfoDAO extends com.floreantpos.model.dao.
 
 	// query name references
 
-
 	public static TableBookingInfoDAO instance;
 
 	/**
 	 * Return a singleton of the DAO
 	 */
-	public static TableBookingInfoDAO getInstance () {
-		if (null == instance) instance = new TableBookingInfoDAO();
+	public static TableBookingInfoDAO getInstance() {
+		if (null == instance)
+			instance = new TableBookingInfoDAO();
 		return instance;
 	}
 
-	public Class getReferenceClass () {
+	public Class getReferenceClass() {
 		return com.floreantpos.model.TableBookingInfo.class;
 	}
 
-    public Order getDefaultOrder () {
+	public Order getDefaultOrder() {
 		return null;
-    }
+	}
 
 	/**
 	 * Cast the object as a com.floreantpos.model.TableBookingInfo
 	 */
-	public com.floreantpos.model.TableBookingInfo cast (Object object) {
+	public com.floreantpos.model.TableBookingInfo cast(Object object) {
 		return (com.floreantpos.model.TableBookingInfo) object;
 	}
 
-	public com.floreantpos.model.TableBookingInfo get(java.lang.Integer key)
-		throws org.hibernate.HibernateException {
+	public com.floreantpos.model.TableBookingInfo get(java.lang.Integer key) throws org.hibernate.HibernateException {
 		return (com.floreantpos.model.TableBookingInfo) get(getReferenceClass(), key);
 	}
 
-	public com.floreantpos.model.TableBookingInfo get(java.lang.Integer key, Session s)
-		throws org.hibernate.HibernateException {
+	public com.floreantpos.model.TableBookingInfo get(java.lang.Integer key, Session s) throws org.hibernate.HibernateException {
 		return (com.floreantpos.model.TableBookingInfo) get(getReferenceClass(), key, s);
 	}
 
-	public com.floreantpos.model.TableBookingInfo load(java.lang.Integer key)
-		throws org.hibernate.HibernateException {
+	public com.floreantpos.model.TableBookingInfo load(java.lang.Integer key) throws org.hibernate.HibernateException {
 		return (com.floreantpos.model.TableBookingInfo) load(getReferenceClass(), key);
 	}
 
-	public com.floreantpos.model.TableBookingInfo load(java.lang.Integer key, Session s)
-		throws org.hibernate.HibernateException {
+	public com.floreantpos.model.TableBookingInfo load(java.lang.Integer key, Session s) throws org.hibernate.HibernateException {
 		return (com.floreantpos.model.TableBookingInfo) load(getReferenceClass(), key, s);
 	}
 
-	public com.floreantpos.model.TableBookingInfo loadInitialize(java.lang.Integer key, Session s) 
-			throws org.hibernate.HibernateException { 
-		com.floreantpos.model.TableBookingInfo obj = load(key, s); 
+	public com.floreantpos.model.TableBookingInfo loadInitialize(java.lang.Integer key, Session s) throws org.hibernate.HibernateException {
+		com.floreantpos.model.TableBookingInfo obj = load(key, s);
 		if (!Hibernate.isInitialized(obj)) {
 			Hibernate.initialize(obj);
-		} 
-		return obj; 
+		}
+		return obj;
 	}
 
-/* Generic methods */
+	/* Generic methods */
 
 	/**
 	 * Return all objects related to the implementation of this DAO with no filter.
 	 */
-	public java.util.List<com.floreantpos.model.TableBookingInfo> findAll () {
+	public java.util.List<com.floreantpos.model.TableBookingInfo> findAll() {
 		return super.findAll();
 	}
 
 	/**
 	 * Return all objects related to the implementation of this DAO with no filter.
 	 */
-	public java.util.List<com.floreantpos.model.TableBookingInfo> findAll (Order defaultOrder) {
+	public java.util.List<com.floreantpos.model.TableBookingInfo> findAll(Order defaultOrder) {
 		return super.findAll(defaultOrder);
 	}
 
@@ -88,7 +83,7 @@ public abstract class BaseTableBookingInfoDAO extends com.floreantpos.model.dao.
 	 * Use the session given.
 	 * @param s the Session
 	 */
-	public java.util.List<com.floreantpos.model.TableBookingInfo> findAll (Session s, Order defaultOrder) {
+	public java.util.List<com.floreantpos.model.TableBookingInfo> findAll(Session s, Order defaultOrder) {
 		return super.findAll(s, defaultOrder);
 	}
 
@@ -98,8 +93,7 @@ public abstract class BaseTableBookingInfoDAO extends com.floreantpos.model.dao.
 	 * @param tableBookingInfo a transient instance of a persistent class 
 	 * @return the class identifier
 	 */
-	public java.lang.Integer save(com.floreantpos.model.TableBookingInfo tableBookingInfo)
-		throws org.hibernate.HibernateException {
+	public java.lang.Integer save(com.floreantpos.model.TableBookingInfo tableBookingInfo) throws org.hibernate.HibernateException {
 		return (java.lang.Integer) super.save(tableBookingInfo);
 	}
 
@@ -111,8 +105,7 @@ public abstract class BaseTableBookingInfoDAO extends com.floreantpos.model.dao.
 	 * @param s the Session
 	 * @return the class identifier
 	 */
-	public java.lang.Integer save(com.floreantpos.model.TableBookingInfo tableBookingInfo, Session s)
-		throws org.hibernate.HibernateException {
+	public java.lang.Integer save(com.floreantpos.model.TableBookingInfo tableBookingInfo, Session s) throws org.hibernate.HibernateException {
 		return (java.lang.Integer) save((Object) tableBookingInfo, s);
 	}
 
@@ -122,8 +115,7 @@ public abstract class BaseTableBookingInfoDAO extends com.floreantpos.model.dao.
 	 * identifier property mapping. 
 	 * @param tableBookingInfo a transient instance containing new or updated state 
 	 */
-	public void saveOrUpdate(com.floreantpos.model.TableBookingInfo tableBookingInfo)
-		throws org.hibernate.HibernateException {
+	public void saveOrUpdate(com.floreantpos.model.TableBookingInfo tableBookingInfo) throws org.hibernate.HibernateException {
 		saveOrUpdate((Object) tableBookingInfo);
 	}
 
@@ -135,8 +127,7 @@ public abstract class BaseTableBookingInfoDAO extends com.floreantpos.model.dao.
 	 * @param tableBookingInfo a transient instance containing new or updated state.
 	 * @param s the Session.
 	 */
-	public void saveOrUpdate(com.floreantpos.model.TableBookingInfo tableBookingInfo, Session s)
-		throws org.hibernate.HibernateException {
+	public void saveOrUpdate(com.floreantpos.model.TableBookingInfo tableBookingInfo, Session s) throws org.hibernate.HibernateException {
 		saveOrUpdate((Object) tableBookingInfo, s);
 	}
 
@@ -145,8 +136,7 @@ public abstract class BaseTableBookingInfoDAO extends com.floreantpos.model.dao.
 	 * instance with the same identifier in the current session.
 	 * @param tableBookingInfo a transient instance containing updated state
 	 */
-	public void update(com.floreantpos.model.TableBookingInfo tableBookingInfo) 
-		throws org.hibernate.HibernateException {
+	public void update(com.floreantpos.model.TableBookingInfo tableBookingInfo) throws org.hibernate.HibernateException {
 		update((Object) tableBookingInfo);
 	}
 
@@ -157,8 +147,7 @@ public abstract class BaseTableBookingInfoDAO extends com.floreantpos.model.dao.
 	 * @param tableBookingInfo a transient instance containing updated state
 	 * @param the Session
 	 */
-	public void update(com.floreantpos.model.TableBookingInfo tableBookingInfo, Session s)
-		throws org.hibernate.HibernateException {
+	public void update(com.floreantpos.model.TableBookingInfo tableBookingInfo, Session s) throws org.hibernate.HibernateException {
 		update((Object) tableBookingInfo, s);
 	}
 
@@ -167,8 +156,7 @@ public abstract class BaseTableBookingInfoDAO extends com.floreantpos.model.dao.
 	 * Session or a transient instance with an identifier associated with existing persistent state. 
 	 * @param id the instance ID to be removed
 	 */
-	public void delete(java.lang.Integer id)
-		throws org.hibernate.HibernateException {
+	public void delete(java.lang.Integer id) throws org.hibernate.HibernateException {
 		delete((Object) load(id));
 	}
 
@@ -179,8 +167,7 @@ public abstract class BaseTableBookingInfoDAO extends com.floreantpos.model.dao.
 	 * @param id the instance ID to be removed
 	 * @param s the Session
 	 */
-	public void delete(java.lang.Integer id, Session s)
-		throws org.hibernate.HibernateException {
+	public void delete(java.lang.Integer id, Session s) throws org.hibernate.HibernateException {
 		delete((Object) load(id, s), s);
 	}
 
@@ -189,8 +176,7 @@ public abstract class BaseTableBookingInfoDAO extends com.floreantpos.model.dao.
 	 * Session or a transient instance with an identifier associated with existing persistent state. 
 	 * @param tableBookingInfo the instance to be removed
 	 */
-	public void delete(com.floreantpos.model.TableBookingInfo tableBookingInfo)
-		throws org.hibernate.HibernateException {
+	public void delete(com.floreantpos.model.TableBookingInfo tableBookingInfo) throws org.hibernate.HibernateException {
 		delete((Object) tableBookingInfo);
 	}
 
@@ -201,11 +187,10 @@ public abstract class BaseTableBookingInfoDAO extends com.floreantpos.model.dao.
 	 * @param tableBookingInfo the instance to be removed
 	 * @param s the Session
 	 */
-	public void delete(com.floreantpos.model.TableBookingInfo tableBookingInfo, Session s)
-		throws org.hibernate.HibernateException {
+	public void delete(com.floreantpos.model.TableBookingInfo tableBookingInfo, Session s) throws org.hibernate.HibernateException {
 		delete((Object) tableBookingInfo, s);
 	}
-	
+
 	/**
 	 * Re-read the state of the given instance from the underlying database. It is inadvisable to use this to implement
 	 * long-running sessions that span many business tasks. This method is, however, useful in certain special circumstances.
@@ -216,10 +201,8 @@ public abstract class BaseTableBookingInfoDAO extends com.floreantpos.model.dao.
 	 * <li>after inserting a Blob or Clob</li>
 	 * </ul>
 	 */
-	public void refresh (com.floreantpos.model.TableBookingInfo tableBookingInfo, Session s)
-		throws org.hibernate.HibernateException {
+	public void refresh(com.floreantpos.model.TableBookingInfo tableBookingInfo, Session s) throws org.hibernate.HibernateException {
 		refresh((Object) tableBookingInfo, s);
 	}
-
 
 }
