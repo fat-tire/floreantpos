@@ -125,6 +125,8 @@ public class BeanTableModel<M> extends AbstractTableModel {
 	public enum EditMode {
 		NON_EDITABLE, EDITABLE;
 	}
+	
+	
 
 	/** One column in the table */
 	private static class BeanColumn {
@@ -138,4 +140,10 @@ public class BeanTableModel<M> extends AbstractTableModel {
 			this.descriptor = descriptor;
 		}
 	}
+
+
+
+
+	
+
 }
