@@ -1,15 +1,14 @@
 package com.floreantpos.model.dao;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
-import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
 
 import com.floreantpos.model.TableBookingInfo;
-import com.floreantpos.model.dao.BaseTableBookingInfoDAO;
 
 public class TableBookingInfoDAO extends BaseTableBookingInfoDAO {
 
@@ -25,35 +24,25 @@ public class TableBookingInfoDAO extends BaseTableBookingInfoDAO {
 		try {
 			session = getSession();
 			Criteria criteria = session.createCriteria(getReferenceClass());
-		/*	Criterion startInRange = Restrictions.between(TableBookingInfo.PROP_FROM_DATE, startDate, endDate);
-
-			Criterion endInRange = Restrictions.between(TableBookingInfo.PROP_TO_DATE, startDate, endDate);
-
-			Criterion thirdCondition = 
-			    Restrictions.conjunction().add(Restrictions.le(TableBookingInfo.PROP_FROM_DATE, startDate))
-			                              .add(Restrictions.ge(TableBookingInfo.PROP_TO_DATE, endDate));
-
-			Criterion completeCondition = 
-			    Restrictions.disjunction().add(startInRange)
-			                              .add(endInRange)
-			                              .add(thirdCondition);
-
-			criteria.add(completeCondition);*/
+			
+			long durationInMillis = (endDate.getTime() - startDate.getTime()) / 2;
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTimeInMillis(startDate.getTime() - durationInMillis);
+			startDate = calendar.getTime();
+			
+			calendar.setTimeInMillis(endDate.getTime() + durationInMillis);
+			endDate = calendar.getTime();
 			
 			
+			System.out.println("time: " + startDate+":"+endDate);
 			
-			
-			Criterion rest1= Restrictions.and(Restrictions.ge(TableBookingInfo.PROP_FROM_DATE, startDate), 
-					Restrictions.le(TableBookingInfo.PROP_FROM_DATE,endDate));
-			System.out.println("rest 1"+rest1.toString());
-			
-			Criterion rest2= Restrictions.and(Restrictions.ge(TableBookingInfo.PROP_TO_DATE,endDate), 
-					Restrictions.le(TableBookingInfo.PROP_FROM_DATE, startDate));
-			System.out.println("rest 2"+rest2.toString());
-			criteria.add(Restrictions.or(rest1, rest2));
-			
+	
 		
-			return criteria.list();
+			criteria.add(Restrictions.ge(TableBookingInfo.PROP_FROM_DATE, startDate));
+			criteria.add(Restrictions.le(TableBookingInfo.PROP_TO_DATE, endDate));
+			
+			List list = criteria.list();
+			return list;
 		} catch (Exception e) {
 
 		} finally {
