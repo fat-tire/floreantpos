@@ -28,7 +28,7 @@
 		<!-- Associations -->
 
 
-		<bag name="tables" cascade="all" inverse="false" lazy="false"
+		<bag name="tables" cascade="all" inverse="true" lazy="false"
 			table="TABLE_BOOKING_MAPPING">
 			<key column="BOOKING_ID" />
 			<many-to-many column="TABLE_ID" class="com.floreantpos.model.ShopTable" />
