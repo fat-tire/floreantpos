@@ -168,4 +168,21 @@ public class ShopTableDAO extends BaseShopTableDAO {
 		criteria.addOrder(Order.asc(ShopTable.PROP_ID));
 		return criteria.list();
 	}
+	
+	public List<ShopTable> getCapacityByNumbers(List<ShopTable> tableNumbers) {
+		if(tableNumbers == null) {
+			return null;
+		}
+		
+		Session session = getSession();
+		Criteria criteria = session.createCriteria(getReferenceClass());
+		Disjunction disjunction = Restrictions.disjunction();
+		
+		for (ShopTable tableNumber : tableNumbers) {
+			disjunction.add(Restrictions.eq(ShopTable.PROP_ID, tableNumber.getId()));
+		}
+		criteria.add(disjunction);
+		
+		return criteria.list();
+	}
 }
