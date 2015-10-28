@@ -8,21 +8,13 @@ import java.util.Date;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 
-
-public class MyCellRenderer extends DefaultTableCellRenderer {
+public class DateTimeRenderer extends DefaultTableCellRenderer {
 	
-	
-
 	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-		if(value instanceof Date) {
+		if (value instanceof Date) {
 			DateFormat dateFormat = SimpleDateFormat.getDateTimeInstance();
-			String format = dateFormat.format(value);
-			return super.getTableCellRendererComponent(table, format, isSelected, hasFocus, row, column);
+			return super.getTableCellRendererComponent(table, dateFormat.format(value), isSelected, hasFocus, row, column);
 		}
-		
-		
-		
 		return super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-
 	}
 }
