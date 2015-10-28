@@ -17,26 +17,26 @@ import com.floreantpos.model.ShopTable;
 import com.floreantpos.model.ShopTableType;
 import com.floreantpos.model.Ticket;
 
-
 public class ShopTableDAO extends BaseShopTableDAO {
 
 	/**
 	 * Default constructor.  Can be used in place of getInstance()
 	 */
-	public ShopTableDAO () {}
-	
+	public ShopTableDAO() {
+	}
+
 	@Override
 	public Order getDefaultOrder() {
 		return Order.asc(ShopTable.PROP_ID);
 	}
-	
+
 	public int getNextTableNumber() {
 		Session session = getSession();
 		Criteria criteria = session.createCriteria(getReferenceClass());
 		criteria.setProjection(Projections.rowCount());
-		
+
 		Integer result = (Integer) criteria.uniqueResult();
-		
+
 		return result;
 	}
 
@@ -44,7 +44,7 @@ public class ShopTableDAO extends BaseShopTableDAO {
 		Session session = getSession();
 		Criteria criteria = session.createCriteria(getReferenceClass());
 		criteria.add(Restrictions.eq(ShopTable.PROP_ID, tableNumber));
-		
+
 		return (ShopTable) criteria.uniqueResult();
 	}
 
@@ -52,39 +52,40 @@ public class ShopTableDAO extends BaseShopTableDAO {
 		Session session = getSession();
 		Criteria criteria = session.createCriteria(getReferenceClass());
 		criteria.add(Restrictions.isNull(ShopTable.PROP_FLOOR));
-		
+
 		return criteria.list();
 	}
-	
+
 	public List<ShopTable> getByNumbers(Collection<Integer> tableNumbers) {
-		if(tableNumbers == null) {
+		if (tableNumbers == null) {
 			return null;
 		}
-		
+
 		Session session = getSession();
 		Criteria criteria = session.createCriteria(getReferenceClass());
 		Disjunction disjunction = Restrictions.disjunction();
-		
+
 		for (Integer tableNumber : tableNumbers) {
 			disjunction.add(Restrictions.eq(ShopTable.PROP_ID, tableNumber));
 		}
 		criteria.add(disjunction);
-		
+
 		return criteria.list();
 	}
-	
+
 	public List<ShopTable> getTables(Ticket ticket) {
-		return getByNumbers(ticket.getTableNumbers()); 
+		return getByNumbers(ticket.getTableNumbers());
 	}
-	
+
 	public void occupyTables(Ticket ticket) {
 		List<ShopTable> tables = getTables(ticket);
-		
-		if(tables == null) return;
-		
+
+		if (tables == null)
+			return;
+
 		Session session = null;
 		Transaction tx = null;
-		
+
 		try {
 			session = createNewSession();
 			tx = session.beginTransaction();
@@ -103,15 +104,16 @@ public class ShopTableDAO extends BaseShopTableDAO {
 			closeSession(session);
 		}
 	}
-	
+
 	public void releaseTables(Ticket ticket) {
 		List<ShopTable> tables = getTables(ticket);
-		
-		if(tables == null) return;
-		
+
+		if (tables == null)
+			return;
+
 		Session session = null;
 		Transaction tx = null;
-		
+
 		try {
 			session = createNewSession();
 			tx = session.beginTransaction();
@@ -131,11 +133,11 @@ public class ShopTableDAO extends BaseShopTableDAO {
 			closeSession(session);
 		}
 	}
-	
+
 	public void deleteTables(Collection<ShopTable> tables) {
 		Session session = null;
 		Transaction tx = null;
-		
+
 		try {
 			session = createNewSession();
 			tx = session.beginTransaction();
@@ -153,7 +155,7 @@ public class ShopTableDAO extends BaseShopTableDAO {
 			closeSession(session);
 		}
 	}
-	
+
 	public List<ShopTableType> getTableByTypes(List<ShopTableType> types) {
 		List<Integer> typeIds = new ArrayList<Integer>();
 		for (ShopTableType shopTableType : types) {
@@ -168,21 +170,5 @@ public class ShopTableDAO extends BaseShopTableDAO {
 		criteria.addOrder(Order.asc(ShopTable.PROP_ID));
 		return criteria.list();
 	}
-	
-	public List<ShopTable> getCapacityByNumbers(List<ShopTable> tableNumbers) {
-		if(tableNumbers == null) {
-			return null;
-		}
-		
-		Session session = getSession();
-		Criteria criteria = session.createCriteria(getReferenceClass());
-		Disjunction disjunction = Restrictions.disjunction();
-		
-		for (ShopTable tableNumber : tableNumbers) {
-			disjunction.add(Restrictions.eq(ShopTable.PROP_ID, tableNumber.getId()));
-		}
-		criteria.add(disjunction);
-		
-		return criteria.list();
-	}
+
 }
