@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Date;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -13,22 +14,15 @@ import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-
-import javax.swing.table.TableColumn;
-import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
 import net.miginfocom.swing.MigLayout;
 
 import org.jdesktop.swingx.JXTable;
 
-
 import com.floreantpos.Messages;
 import com.floreantpos.main.Application;
-
-
 import com.floreantpos.swing.BeanTableModel;
-
 import com.floreantpos.ui.BeanEditor;
 import com.floreantpos.ui.SearchPanel;
 import com.floreantpos.ui.dialog.POSMessageDialog;
@@ -70,20 +64,10 @@ public class ModelBrowser<E> extends JPanel implements ActionListener, ListSelec
 		browserTable.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		browserTable.getSelectionModel().addListSelectionListener(this);
 
+		browserTable.setDefaultRenderer(Date.class, new DateTimeRenderer());
+
 		if (tableModel != null) {
-			
 			browserTable.setModel(tableModel);
-			
-		
-			
-		TableColumnModel tcModel = browserTable.getColumnModel();
-			
-			TableColumn tc = tcModel.getColumn(2);
-			
-			TableColumn tc2 = tcModel.getColumn(3);
-			tc.setCellRenderer(new MyCellRenderer());
-			tc2.setCellRenderer(new MyCellRenderer());
-			
 		}
 
 		setLayout(new BorderLayout(10, 10));
@@ -138,8 +122,6 @@ public class ModelBrowser<E> extends JPanel implements ActionListener, ListSelec
 
 		refreshTable();
 	}
-
-
 
 	public void refreshTable() {
 
