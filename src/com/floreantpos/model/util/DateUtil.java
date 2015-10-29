@@ -24,4 +24,12 @@ public class DateUtil {
 
 		return new Date(cal.getTimeInMillis());
 	}
+	
+	public static boolean between(Date startDate, Date endDate, Date guniping) {
+		if(startDate == null || endDate == null) {
+			return false;
+		}
+		
+		return guniping.after(startDate) && guniping.before(endDate);
+	}
 }
