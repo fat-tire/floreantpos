@@ -5,7 +5,7 @@
     <id column="ID" name="id" type="java.lang.Integer">
       <generator class="identity"/>
     </id>
-    <property column="RESET_TIME" index="drawer_reset_time" name="resetTime" type="java.util.Date"/>
+    <property column="RESET_TIME" name="resetTime" type="java.util.Date"/>
     <one-to-one class="DrawerPullReport" lazy="false" name="drawerPullReport">
             	
             </one-to-one>
