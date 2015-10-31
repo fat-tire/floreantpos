@@ -20,6 +20,7 @@ import net.miginfocom.swing.MigLayout;
 
 import org.jdesktop.swingx.JXTable;
 
+
 import com.floreantpos.Messages;
 import com.floreantpos.POSConstants;
 import com.floreantpos.bo.ui.BOMessageDialog;
@@ -70,8 +71,8 @@ public class MenuItemExplorer extends TransparentPanel {
 		JPanel panel = new JPanel();
 		panel.setLayout(new MigLayout("", "[][]30[][]30[]", "[]20[]")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
-		JLabel nameLabel = new JLabel(Messages.getString("MenuItemExplorer.2")); //$NON-NLS-1$
-		JLabel groupLabel = new JLabel(Messages.getString("MenuItemExplorer.3")); //$NON-NLS-1$
+		JLabel nameLabel = new JLabel(Messages.getString("MenuItemExplorer.0"));  //$NON-NLS-1$
+		JLabel groupLabel = new JLabel(Messages.getString("MenuItemExplorer.1"));  //$NON-NLS-1$
 		final JTextField nameField = new JTextField(15);
 
 		try {
@@ -80,12 +81,12 @@ public class MenuItemExplorer extends TransparentPanel {
 
 			final JComboBox cbGroup = new JComboBox();
 
-			cbGroup.addItem(Messages.getString("MenuItemExplorer.0")); //$NON-NLS-1$
+			cbGroup.addItem(Messages.getString("MenuItemExplorer.2")); //$NON-NLS-1$
 			for (MenuGroup s : menuGroupList) {
 				cbGroup.addItem(s);
 			}
 
-			JButton searchBttn = new JButton(Messages.getString("MenuItemExplorer.1")); //$NON-NLS-1$
+			JButton searchBttn = new JButton(Messages.getString("MenuItemExplorer.3")); //$NON-NLS-1$
 
 			panel.add(nameLabel, "align label"); //$NON-NLS-1$
 			panel.add(nameField);
@@ -94,7 +95,7 @@ public class MenuItemExplorer extends TransparentPanel {
 			panel.add(searchBttn);
 
 			Border loweredetched = BorderFactory.createEtchedBorder(EtchedBorder.LOWERED);
-			TitledBorder title = BorderFactory.createTitledBorder(loweredetched, Messages.getString("MenuItemExplorer.21")); //$NON-NLS-1$
+			TitledBorder title = BorderFactory.createTitledBorder(loweredetched, "Search"); //$NON-NLS-1$
 			title.setTitleJustification(TitledBorder.LEFT);
 			panel.setBorder(title);
 

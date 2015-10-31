@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -69,5 +70,29 @@ public class TableBookingInfoDAO extends BaseTableBookingInfoDAO {
 		allTables.removeAll(bookedTables);
 		
 		return allTables;
+	}
+	
+	
+	public List<ShopTable>  bookedShopTable(){
+		
+		Set storeShopTable = new LinkedHashSet();
+		for (TableBookingInfo tableBookingInfo : TableBookingInfoDAO.getInstance().findAll()) {
+			if (!tableBookingInfo.getTables().isEmpty()) {
+				List<ShopTable> shopTables = tableBookingInfo.getTables();
+				if (!shopTables.isEmpty()) {
+					for (ShopTable shopTable : shopTables) {
+						if (shopTable != null) {
+							storeShopTable.add(shopTable);
+						}
+					}
+				}
+			}
+		}
+
+		List bookedShopTable = new ArrayList();
+		bookedShopTable.addAll(storeShopTable);
+		
+		
+		return bookedShopTable;
 	}
 }
