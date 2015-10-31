@@ -29,7 +29,13 @@ public class DateUtil {
 		if(startDate == null || endDate == null) {
 			return false;
 		}
-		
-		return guniping.after(startDate) && guniping.before(endDate);
+		System.out.println("StartDate"+startDate);
+		System.out.println("guniping"+guniping);
+		System.out.println("after..."+(guniping == startDate||guniping.after(startDate)));
+		System.out.println("nn");
+		System.out.println("EndDate"+endDate);
+		System.out.println("guniping"+guniping);
+		System.out.println("befr..."+guniping.before(endDate));
+		return (guniping == startDate||guniping.after(startDate)) && guniping.before(endDate);
 	}
 }
