@@ -140,7 +140,6 @@ public class ModelBrowser<E> extends JPanel implements ActionListener, ListSelec
 		Command command = Command.fromString(e.getActionCommand());
 
 		try {
-			System.out.println("Hi");
 			switch (command) {
 				case NEW:
 					beanEditor.createNew();
