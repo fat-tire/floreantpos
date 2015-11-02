@@ -20,7 +20,6 @@ public class DateUtil {
 		cal.set(Calendar.HOUR_OF_DAY, 23);
 		cal.set(Calendar.MINUTE, 0);
 		cal.set(Calendar.SECOND, 0);
-		//cal.set(Calendar.DAY_OF_MONTH, cal.get(Calendar.DAY_OF_MONTH) + 1);
 
 		return new Date(cal.getTimeInMillis());
 	}
@@ -29,13 +28,7 @@ public class DateUtil {
 		if(startDate == null || endDate == null) {
 			return false;
 		}
-		System.out.println("StartDate"+startDate);
-		System.out.println("guniping"+guniping);
-		System.out.println("after..."+(guniping == startDate||guniping.after(startDate)));
-		System.out.println("nn");
-		System.out.println("EndDate"+endDate);
-		System.out.println("guniping"+guniping);
-		System.out.println("befr..."+guniping.before(endDate));
-		return (guniping == startDate||guniping.after(startDate)) && guniping.before(endDate);
+		
+		return (guniping.equals(startDate) || guniping.after(startDate)) && (guniping.equals(endDate) || guniping.before(endDate));
 	}
 }
