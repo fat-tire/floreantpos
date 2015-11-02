@@ -140,6 +140,7 @@ public class ModelBrowser<E> extends JPanel implements ActionListener, ListSelec
 		Command command = Command.fromString(e.getActionCommand());
 
 		try {
+			System.out.println("Hi");
 			switch (command) {
 				case NEW:
 					beanEditor.createNew();
@@ -228,12 +229,12 @@ public class ModelBrowser<E> extends JPanel implements ActionListener, ListSelec
 
 		E data = (E) model.getRow(selectedRow);
 		beanEditor.setBean(data);
-
 		btnNew.setEnabled(true);
 		btnEdit.setEnabled(true);
 		btnSave.setEnabled(false);
 		btnDelete.setEnabled(true);
 		btnCancel.setEnabled(false);
+		beanEditor.setFieldsEnable(false);
 	}
 
 	public void setModels(List<E> models) {
