@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -50,8 +51,10 @@ public class MenuItem extends BaseMenuItem {
 	
 	private Color buttonColor;
 	private Color textColor;
+	
 	private ImageIcon image;
 
+	@XmlTransient
 	public ImageIcon getImage() {
 		if(image != null) {
 			return image;
@@ -76,6 +79,7 @@ public class MenuItem extends BaseMenuItem {
 		return sortOrder == null ? 9999 : sortOrder;
 	}
 
+	@XmlTransient
 	public Color getButtonColor() {
 		if(buttonColor != null) {
 			return buttonColor;
@@ -88,6 +92,7 @@ public class MenuItem extends BaseMenuItem {
 		return buttonColor = new Color(getButtonColorCode());
 	}
 
+	@XmlTransient
 	public Color getTextColor() {
 		if(textColor != null) {
 			return textColor;
@@ -100,6 +105,7 @@ public class MenuItem extends BaseMenuItem {
 		return textColor = new Color(getTextColorCode());
 	}
 
+	@XmlTransient
 	public String getDisplayName() {
 		if (TerminalConfig.isUseTranslatedName() && StringUtils.isNotEmpty(getTranslatedName())) {
 			return getTranslatedName();
