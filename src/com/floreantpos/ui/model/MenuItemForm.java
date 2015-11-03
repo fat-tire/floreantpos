@@ -121,7 +121,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 				lblImagePreview.setIcon(imageIcon);
 
 				MenuItem menuItem = (MenuItem) getBean();
-				menuItem.setImage(itemImage);
+				menuItem.setImageData(itemImage);
 
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -131,7 +131,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 
 	protected void doClearImage() {
 		MenuItem menuItem = (MenuItem) getBean();
-		menuItem.setImage(null);
+		menuItem.setImageData(null);
 		lblImagePreview.setIcon(null);
 	}
 
@@ -591,9 +591,9 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		tfDiscountRate.setText(String.valueOf(menuItem.getDiscountRate()));
 		chkVisible.setSelected(menuItem.isVisible());
 		cbShowTextWithImage.setSelected(menuItem.isShowImageOnly());
-		if (menuItem.getImage() != null) {
-			ImageIcon imageIcon = new ImageIcon(new ImageIcon(menuItem.getImage()).getImage().getScaledInstance(60, 60, Image.SCALE_SMOOTH));
-			lblImagePreview.setIcon(imageIcon);
+		ImageIcon menuItemImage = menuItem.getImage();
+		if (menuItemImage != null) {
+			lblImagePreview.setIcon(menuItemImage);
 		}
 
 		cbGroup.setSelectedItem(menuItem.getParent());
@@ -605,15 +605,14 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 			tfSortOrder.setText(menuItem.getSortOrder().toString());
 		}
 
-		if (menuItem.getButtonColor() != null) {
-			Color color = new Color(menuItem.getButtonColor());
-			btnButtonColor.setBackground(color);
-			btnTextColor.setBackground(color);
+		Color buttonColor = menuItem.getButtonColor();
+		if (buttonColor != null) {
+			btnButtonColor.setBackground(buttonColor);
+			btnTextColor.setBackground(buttonColor);
 		}
 
 		if (menuItem.getTextColor() != null) {
-			Color color = new Color(menuItem.getTextColor());
-			btnTextColor.setForeground(color);
+			btnTextColor.setForeground(menuItem.getTextColor());
 		}
 	}
 
@@ -637,8 +636,8 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		menuItem.setTranslatedName(tfTranslatedName.getText());
 		menuItem.setSortOrder(tfSortOrder.getInteger());
 
-		menuItem.setButtonColor(btnButtonColor.getBackground().getRGB());
-		menuItem.setTextColor(btnTextColor.getForeground().getRGB());
+		menuItem.setButtonColorCode(btnButtonColor.getBackground().getRGB());
+		menuItem.setTextColorCode(btnTextColor.getForeground().getRGB());
 
 		try {
 			menuItem.setDiscountRate(Double.parseDouble(tfDiscountRate.getText()));
