@@ -18,29 +18,38 @@
 		</property>
 
 		<property column="SORT_ORDER" name="sortOrder" type="java.lang.Integer" />
-		<property column="BTN_COLOR" name="buttonColor" type="java.lang.Integer" />
-		<property column="TEXT_COLOR" name="textColor" type="java.lang.Integer" />
+		<property column="BTN_COLOR" name="buttonColorCode" type="java.lang.Integer">
+			<meta attribute="defaultValue">null</meta>
+		</property>
+		<property column="TEXT_COLOR" name="textColorCode" type="java.lang.Integer">
+			<meta attribute="defaultValue">null</meta>
+		</property>
 
-		<property name="image" column="IMAGE" not-null="false" type="binary" length="20480" />
+		<property name="imageData" column="IMAGE" not-null="false" type="binary" length="20480" />
 		<property name="showImageOnly" column="SHOW_IMAGE_ONLY" type="java.lang.Boolean" />
-		<!-- <property name="smallImage" column="SMALL_IMAGE" length="120" not-null="false" type="string"/> <property name="largeImage" column="LARGE_IMAGE" length="120" 
-			not-null="false" type="string"/> -->
+
 		<!-- uni-directional many-to-one association to FoodGroup -->
 		<many-to-one class="com.floreantpos.model.MenuGroup" name="parent">
 			<column name="GROUP_ID" />
 		</many-to-one>
-		<list cascade="all" inverse="false" lazy="true" name="shifts" table="MENUITEM_SHIFT">
+
+		<bag cascade="all" inverse="false" lazy="true" name="shifts" table="MENUITEM_SHIFT">
 			<key column="MENUITEM_ID" />
-			<list-index column="SHIFT_ORDER" />
 			<one-to-many class="MenuItemShift" />
-		</list>
-		<list cascade="all" inverse="false" lazy="true" name="menuItemModiferGroups">
+		</bag>
+
+		<bag cascade="all" inverse="false" lazy="true" name="menuItemModiferGroups">
 			<key>
 				<column name="MENUITEM_MODIFIERGROUP_ID" />
 			</key>
-			<list-index column="GR_ORDER" />
 			<one-to-many class="MenuItemModifierGroup" />
-		</list>
+		</bag>
+		
+		<bag cascade="save-update" inverse="true" name="terminals" lazy="false" table="MENU_ITEM_TERMINAL_REF">
+			<key column="MENU_ITEM_ID"/>
+			<many-to-many class="Terminal" column="TERMINAL_ID"/>
+		</bag>
+
 		<!-- uni-directional many-to-one association to Tax -->
 		<many-to-one class="com.floreantpos.model.Tax" lazy="false" name="tax">
 			<column name="TAX_ID" />
@@ -57,10 +66,5 @@
 		<many-to-one class="com.floreantpos.model.PrinterGroup" lazy="false" cascade="none" name="printerGroup">
 			<column name="PG_ID" />
 		</many-to-one>
-		
-		<bag cascade="save-update" inverse="true" name="terminals" lazy="false" table="MENU_ITEM_TERMINAL_REF">
-			<key column="MENU_ITEM_ID"/>
-			<many-to-many class="Terminal" column="TERMINAL_ID"/>
-		</bag>
 	</class>
 </hibernate-mapping>
