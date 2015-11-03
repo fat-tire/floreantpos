@@ -40,23 +40,23 @@ public class MenuItem extends BaseMenuItem {
 
 	/*[CONSTRUCTOR MARKER END]*/
 
-	public ImageIcon getImageAsIcon() {
-		Image scaledInstance = null;
-		ImageIcon icon = null;
-		int width = 100;
-		int height = 100;
-		byte[] imageData = getImage();
-		if (imageData != null) {
-			icon = new ImageIcon(imageData);
-			scaledInstance = icon.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH);
-			return new ImageIcon(scaledInstance);
-		}
-		return icon;
-	}
-
-	public void setImageAsIcon(ImageIcon icon) {
-
-	}
+//	public ImageIcon getImageAsIcon() {
+//		Image scaledInstance = null;
+//		ImageIcon icon = null;
+//		int width = 100;
+//		int height = 100;
+//		byte[] imageData = getImage();
+//		if (imageData != null) {
+//			icon = new ImageIcon(imageData);
+//			scaledInstance = icon.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH);
+//			return new ImageIcon(scaledInstance);
+//		}
+//		return icon;
+//	}
+//
+//	public void setImageAsIcon(ImageIcon icon) {
+//
+//	}
 
 	@Override
 	public Integer getSortOrder() {
