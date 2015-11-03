@@ -19,71 +19,85 @@ public class MenuItem extends BaseMenuItem {
 	private static final long serialVersionUID = 1L;
 
 	/*[CONSTRUCTOR MARKER BEGIN]*/
-	public MenuItem() {
+	public MenuItem () {
 		super();
 	}
 
 	/**
 	 * Constructor for primary key
 	 */
-	public MenuItem(java.lang.Integer id) {
+	public MenuItem (java.lang.Integer id) {
 		super(id);
 	}
 
 	/**
 	 * Constructor for required fields
 	 */
-	public MenuItem(java.lang.Integer id, java.lang.String name, java.lang.Double buyPrice, java.lang.Double price) {
+	public MenuItem (
+		java.lang.Integer id,
+		java.lang.String name,
+		java.lang.Double buyPrice,
+		java.lang.Double price) {
 
-		super(id, name, buyPrice, price);
+		super (
+			id,
+			name,
+			buyPrice,
+			price);
 	}
 
 	/*[CONSTRUCTOR MARKER END]*/
+	
+	private Color buttonColor;
+	private Color textColor;
+	private ImageIcon image;
 
-//	public ImageIcon getImageAsIcon() {
-//		Image scaledInstance = null;
-//		ImageIcon icon = null;
-//		int width = 100;
-//		int height = 100;
-//		byte[] imageData = getImage();
-//		if (imageData != null) {
-//			icon = new ImageIcon(imageData);
-//			scaledInstance = icon.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH);
-//			return new ImageIcon(scaledInstance);
-//		}
-//		return icon;
-//	}
-//
-//	public void setImageAsIcon(ImageIcon icon) {
-//
-//	}
+	public ImageIcon getImage() {
+		if(image != null) {
+			return image;
+		}
+		
+		int width = 100;
+		int height = 100;
+		byte[] imageData = getImageData();
+		if (imageData != null) {
+			image = new ImageIcon(imageData);
+			image = new ImageIcon(image.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH));
+		}
+		return image;
+	}
+
+	public void setImage(ImageIcon icon) {
+
+	}
 
 	@Override
 	public Integer getSortOrder() {
 		return sortOrder == null ? 9999 : sortOrder;
 	}
 
-	public Color getButtonAsColor() {
-		Color color = null;
-		if (getButtonColor() != null) {
-			color = new Color(getButtonColor());
+	public Color getButtonColor() {
+		if(buttonColor != null) {
+			return buttonColor;
 		}
-
-		return color;
+		
+		if(getButtonColorCode() == null) {
+			return null;
+		}
+		
+		return buttonColor = new Color(getButtonColorCode());
 	}
 
-	public void setButtonAsColor(Color col) {
-
-	}
-
-	@Override
-	public Integer getButtonColor() {
-		return buttonColor;
-	}
-
-	@Override
-	public Integer getTextColor() {
-		return textColor;
+	public Color getTextColor() {
+		if(textColor != null) {
+			return textColor;
+		}
+		
+		if(getTextColorCode() == null) {
+			return null;
+		}
+		
+		return textColor = new Color(getTextColorCode());
 	}
 
 	public String getDisplayName() {
@@ -173,7 +187,7 @@ public class MenuItem extends BaseMenuItem {
 	}
 
 	public ImageIcon getScaledImage(int width, int height) {
-		ImageIcon icon = new ImageIcon(getImage());
+		ImageIcon icon = new ImageIcon(getImageData());
 		Image scaledInstance = icon.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH);
 		return new ImageIcon(scaledInstance);
 	}

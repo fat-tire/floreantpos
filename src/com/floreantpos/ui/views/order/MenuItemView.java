@@ -18,7 +18,6 @@ import java.util.Vector;
 import javax.swing.AbstractButton;
 import javax.swing.SwingConstants;
 
-import com.floreantpos.Messages;
 import com.floreantpos.PosException;
 import com.floreantpos.model.MenuGroup;
 import com.floreantpos.model.MenuItem;
@@ -136,11 +135,13 @@ public class MenuItemView extends SelectionView {
 				setText("<html><body><center>" + menuItem.getName() + "</center></body></html>"); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 			
-			if(menuItem.getButtonColor() != null) {
-				setBackground(new Color(menuItem.getButtonColor()));
+			Color buttonColor = menuItem.getButtonColor();
+			if(buttonColor != null) {
+				setBackground(buttonColor);
 			}
-			if(menuItem.getTextColor() != null) {
-				setForeground(new Color(menuItem.getTextColor()));
+			Color textColor = menuItem.getTextColor();
+			if(textColor != null) {
+				setForeground(textColor);
 			}
 			
 			setPreferredSize(new Dimension(BUTTON_SIZE, BUTTON_SIZE));

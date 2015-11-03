@@ -18,7 +18,11 @@ $!{prop.getJavaDoc("field-description", "	 ")}
 				return ${prop.VarName} == null ? Double.valueOf(0) : ${prop.VarName};
 		#end
 		#elseif(${prop.isPrimitive()} == false && ${prop.ObjectClass} == "java.lang.Integer")
-			return ${prop.VarName} == null ? Integer.valueOf(0) : ${prop.VarName};
+			#if(${prop.get("defaultValue")})
+				return ${prop.VarName} == null ? ${prop.get("defaultValue")} : ${prop.VarName};
+			#else
+				return ${prop.VarName} == null ? Integer.valueOf(0) : ${prop.VarName};
+		#end
 		#elseif(${prop.isPrimitive()} == false && ${prop.ObjectClass} == "java.lang.Boolean")
 			#if( ${prop.get("defaultValue")})
 				return ${prop.VarName} == null ? Boolean.valueOf(${prop.get("defaultValue")}) : ${prop.VarName};
