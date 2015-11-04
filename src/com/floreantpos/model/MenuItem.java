@@ -91,6 +91,10 @@ public class MenuItem extends BaseMenuItem {
 		
 		return buttonColor = new Color(getButtonColorCode());
 	}
+	
+	public void setButtonColor(Color buttonColor) {
+		this.buttonColor = buttonColor;
+	}
 
 	@XmlTransient
 	public Color getTextColor() {
@@ -103,6 +107,10 @@ public class MenuItem extends BaseMenuItem {
 		}
 		
 		return textColor = new Color(getTextColorCode());
+	}
+	
+	public void setTextColor(Color textColor) {
+		this.textColor = textColor;
 	}
 
 	@XmlTransient

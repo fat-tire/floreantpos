@@ -1,6 +1,7 @@
 package com.floreantpos.bo.ui.explorer;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
@@ -19,7 +20,6 @@ import javax.swing.border.TitledBorder;
 import net.miginfocom.swing.MigLayout;
 
 import org.jdesktop.swingx.JXTable;
-
 
 import com.floreantpos.Messages;
 import com.floreantpos.POSConstants;
@@ -51,14 +51,18 @@ public class MenuItemExplorer extends TransparentPanel {
 		tableModel.addColumn(POSConstants.FOOD_GROUP.toUpperCase(), "parent"); //$NON-NLS-1$
 		tableModel.addColumn(POSConstants.TAX.toUpperCase(), "tax"); //$NON-NLS-1$
 		tableModel.addColumn(POSConstants.SORT_ORDER.toUpperCase(), "sortOrder"); //$NON-NLS-1$
-		tableModel.addColumn(POSConstants.BUTTON_COLOR.toUpperCase(), "buttonAsColor"); //$NON-NLS-1$
-		//tableModel.addColumn(POSConstants.IMAGE.toUpperCase(), "imageAsIcon");
+		tableModel.addColumn(POSConstants.BUTTON_COLOR.toUpperCase(), "buttonColor"); //$NON-NLS-1$
+		tableModel.addColumn(POSConstants.IMAGE.toUpperCase(), "image");
 
 		tableModel.addRows(MenuItemDAO.getInstance().findAll());
 
+		//set the cell renderers -->
+		
 		table = new JXTable(tableModel);
-
 		table.setRowHeight(120);
+		
+		table.setDefaultRenderer(Color.class, new ColorCellRenderer());
+	
 
 		setLayout(new BorderLayout(5, 5));
 		add(new JScrollPane(table));
@@ -71,8 +75,8 @@ public class MenuItemExplorer extends TransparentPanel {
 		JPanel panel = new JPanel();
 		panel.setLayout(new MigLayout("", "[][]30[][]30[]", "[]20[]")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
-		JLabel nameLabel = new JLabel(Messages.getString("MenuItemExplorer.0"));  //$NON-NLS-1$
-		JLabel groupLabel = new JLabel(Messages.getString("MenuItemExplorer.1"));  //$NON-NLS-1$
+		JLabel nameLabel = new JLabel(Messages.getString("MenuItemExplorer.0")); //$NON-NLS-1$
+		JLabel groupLabel = new JLabel(Messages.getString("MenuItemExplorer.1")); //$NON-NLS-1$
 		final JTextField nameField = new JTextField(15);
 
 		try {
@@ -109,7 +113,8 @@ public class MenuItemExplorer extends TransparentPanel {
 					List<MenuItem> similarItem = null;
 					if (selectedItem instanceof MenuGroup) {
 						similarItem = MenuItemDAO.getInstance().getSimilar(txName, (MenuGroup) selectedItem);
-					} else {
+					}
+					else {
 						similarItem = MenuItemDAO.getInstance().getSimilar(txName, null);
 					}
 
