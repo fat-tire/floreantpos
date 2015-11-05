@@ -91,14 +91,7 @@ public class Application {
 	}
 
 	public void start() {
-		pluginManager = PluginManagerFactory.createPluginManager();
-
-		if (developmentMode) {
-			pluginManager.addPluginsFrom(new File("/home/amir/git/oro/target/classes").toURI());
-		}
-		else {
-			pluginManager.addPluginsFrom(new File("plugins/").toURI()); //$NON-NLS-1$
-		}
+		initializePluginManager();
 		
 		setApplicationLook();
 
@@ -113,6 +106,19 @@ public class Application {
 		posWindow.setVisible(true);
 
 		initializeSystem();
+	}
+
+	private void initializePluginManager() {
+		pluginManager = PluginManagerFactory.createPluginManager();
+		
+		String pluginsPath = System.getProperty("pluginsPath");
+
+		if (StringUtils.isNotEmpty(pluginsPath)) {
+			pluginManager.addPluginsFrom(new File(pluginsPath).toURI());
+		}
+		else {
+			pluginManager.addPluginsFrom(new File("plugins/").toURI()); //$NON-NLS-1$
+		}
 	}
 
 	private void setApplicationLook() {
