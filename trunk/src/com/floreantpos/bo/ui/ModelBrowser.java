@@ -159,6 +159,7 @@ public class ModelBrowser<E> extends JPanel implements ActionListener, ListSelec
 					btnSave.setEnabled(true);
 					btnDelete.setEnabled(false);
 					btnCancel.setEnabled(true);
+					beanEditor.setEditMode(true);
 					break;
 
 				case CANCEL:
