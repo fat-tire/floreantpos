@@ -4,12 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JCheckBox;
+import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 
+import com.floreantpos.model.ShopTable;
 
 /**
  * A list from which multiple items can be selected.
@@ -33,6 +36,7 @@ public class CheckBoxList<E> extends JTable {
 	}
 
 	public void setModel(List<E> items) {
+
 		setModel(new CheckBoxListModel<E>(items));
 		init();
 	}
@@ -42,7 +46,7 @@ public class CheckBoxList<E> extends JTable {
 		CheckBoxListModel model = (CheckBoxListModel) getModel();
 		for (int i = 0; i < model.items.size(); i++) {
 			CheckBoxList.Entry<E> entry = (Entry<E>) model.items.get(i);
-			if (entry.checked) {
+			if(entry.checked) {
 				values.add(entry.value);
 			}
 		}
@@ -66,7 +70,7 @@ public class CheckBoxList<E> extends JTable {
 	public void selectItems(List types) {
 		CheckBoxListModel model = (CheckBoxListModel) getModel();
 
-		if (types != null) {
+		if(types != null) {
 			for (int i = 0; i < model.items.size(); i++) {
 				Entry entry = (Entry) model.items.get(i);
 
@@ -74,7 +78,7 @@ public class CheckBoxList<E> extends JTable {
 
 					Object type = types.get(j);
 
-					if (type.equals(entry.value)) {
+					if(type.equals(entry.value)) {
 						entry.checked = true;
 						break;
 
@@ -106,7 +110,7 @@ public class CheckBoxList<E> extends JTable {
 
 	public Object getSelectedValue() {
 		int row = getSelectedRow();
-		if (row == -1) {
+		if(row == -1) {
 			return null;
 		}
 		else {
@@ -116,12 +120,34 @@ public class CheckBoxList<E> extends JTable {
 
 	@Override
 	public TableCellRenderer getCellRenderer(int row, int column) {
-		return super.getCellRenderer(row, column);
+		TableCellRenderer cellRenderer = super.getCellRenderer(row, column);
+		
+		if(cellRenderer instanceof JCheckBox) {
+			((JCheckBox) cellRenderer).setEnabled(isEnabled());
+		}
+		
+		if(getColumnCount() == 3) {
+			if(column == 0) {
+				return cellRenderer;
+			}
+			DefaultTableCellRenderer center = new DefaultTableCellRenderer();
+			center.setHorizontalAlignment(JLabel.CENTER);
+			this.getColumnModel().getColumn(column).setCellRenderer(center);
+			return cellRenderer;
+		}
+		
+		
+		return cellRenderer;
 	}
 
 	private void init() {
 		getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		setShowGrid(false);
+		if(getColumnCount() == 3) {
+			setShowGrid(true);
+		}
+		else {
+			setShowGrid(false);
+		}
 		setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
 		TableColumn column = getColumnModel().getColumn(0);
 		int checkBoxWidth = new JCheckBox().getPreferredSize().width;
@@ -169,9 +195,11 @@ public class CheckBoxList<E> extends JTable {
 	}
 
 	public static class CheckBoxListModel<E> extends AbstractTableModel {
+		private boolean status;
 		List<CheckBoxList.Entry<E>> items;
 
 		CheckBoxListModel(List<E> _items) {
+			checkType(_items);
 			items = new ArrayList<CheckBoxList.Entry<E>>(_items.size());
 			for (int i = 0; i < _items.size(); i++) {
 				items.add(createEntry(_items.get(i)));
@@ -186,7 +214,7 @@ public class CheckBoxList<E> extends JTable {
 		}
 
 		private CheckBoxList.Entry createEntry(E obj) {
-			if (obj instanceof CheckBoxList.Entry)
+			if(obj instanceof CheckBoxList.Entry)
 				return (CheckBoxList.Entry) obj;
 			else
 				return new CheckBoxList.Entry(false, obj);
@@ -197,16 +225,49 @@ public class CheckBoxList<E> extends JTable {
 		}
 
 		public int getColumnCount() {
+			if(status) {
+				return 3;
+			}
 			return 2;
 		}
 
 		@Override
 		public String getColumnName(int col) {
+			if(status) {
+				if(col == 2) {
+					return "Capacity";
+				}
+
+				if(col == 1) {
+					return "Table Name";
+				}
+
+				return null;
+			}
+
 			return null;
 		}
 
 		public Object getValueAt(int row, int col) {
 			CheckBoxList.Entry entry = items.get(row);
+			if(status) {
+				switch (col) {
+					case 0:
+
+						return Boolean.valueOf(entry.checked);
+
+					case 1:
+
+						return entry.value;
+					case 2:
+
+						return ((ShopTable) entry.value).getCapacity();
+
+					default:
+						throw new InternalError();
+				}
+			}
+
 			switch (col) {
 				case 0:
 
@@ -223,11 +284,27 @@ public class CheckBoxList<E> extends JTable {
 
 		@Override
 		public Class getColumnClass(int col) {
+			if(status) {
+
+				switch (col) {
+					case 0:
+						return Boolean.class;
+					case 1:
+						return String.class;
+
+					case 2:
+						return Integer.class;
+					default:
+						throw new InternalError();
+				}
+			}
+
 			switch (col) {
 				case 0:
 					return Boolean.class;
 				case 1:
 					return String.class;
+
 				default:
 					throw new InternalError();
 			}
@@ -240,24 +317,32 @@ public class CheckBoxList<E> extends JTable {
 
 		@Override
 		public void setValueAt(Object value, int row, int col) {
-			if (col == 0) {
+			if(col == 0) {
 				CheckBoxList.Entry entry = items.get(row);
 				entry.checked = (value.equals(Boolean.TRUE));
-				
+
 				fireTableRowsUpdated(row, row);
 			}
 		}
-		
-		
-		
 
 		public List<CheckBoxList.Entry<E>> getItems() {
-			
+
 			return items;
 		}
 
 		public void setItems(List<CheckBoxList.Entry<E>> items) {
 			this.items = items;
+		}
+
+		public boolean checkType(List<E> l) {
+			try {
+				ShopTable dd = (ShopTable) l.get(0);
+				dd.getCapacity();
+				status = true;
+				return true;
+			} catch (Exception e) {
+			}
+			return false;
 		}
 
 	}
