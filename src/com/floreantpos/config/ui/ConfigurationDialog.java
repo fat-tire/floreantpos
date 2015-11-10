@@ -16,9 +16,9 @@ import net.miginfocom.swing.MigLayout;
 import com.floreantpos.Messages;
 import com.floreantpos.POSConstants;
 import com.floreantpos.PosException;
+import com.floreantpos.extension.ExtensionManager;
 import com.floreantpos.extension.FloorLayoutPlugin;
 import com.floreantpos.extension.TicketImportPlugin;
-import com.floreantpos.main.Application;
 import com.floreantpos.ui.dialog.POSDialog;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.util.POSUtil;
@@ -48,7 +48,7 @@ public class ConfigurationDialog extends POSDialog implements ChangeListener, Ac
 		addView(new DatabaseConfigurationView());
 		addView(new TaxConfigurationView());
 		
-		TicketImportPlugin ticketImportPlugin = Application.getPluginManager().getPlugin(TicketImportPlugin.class);
+		TicketImportPlugin ticketImportPlugin = (TicketImportPlugin) ExtensionManager.getPlugin(TicketImportPlugin.class);
 		if(ticketImportPlugin != null) {
 			addView(new TicketImportConfigurationView());
 		}
@@ -67,7 +67,7 @@ public class ConfigurationDialog extends POSDialog implements ChangeListener, Ac
 		add(bottomPanel, "newline,growx, gaptop 10"); //$NON-NLS-1$
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		
-		FloorLayoutPlugin floorLayoutPlugin = Application.getPluginManager().getPlugin(FloorLayoutPlugin.class);
+		FloorLayoutPlugin floorLayoutPlugin = (FloorLayoutPlugin) ExtensionManager.getPlugin(FloorLayoutPlugin.class);
 		if(floorLayoutPlugin != null) {
 			floorLayoutPlugin.initConfigurationView(this);
 		}

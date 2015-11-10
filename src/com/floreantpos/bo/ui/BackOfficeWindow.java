@@ -19,8 +19,6 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 
-import net.xeoh.plugins.base.Plugin;
-
 import com.floreantpos.Messages;
 import com.floreantpos.actions.AboutAction;
 import com.floreantpos.bo.actions.CategoryExplorerAction;
@@ -53,6 +51,7 @@ import com.floreantpos.bo.actions.UserExplorerAction;
 import com.floreantpos.bo.actions.UserTypeExplorerAction;
 import com.floreantpos.bo.actions.ViewGratuitiesAction;
 import com.floreantpos.config.AppConfig;
+import com.floreantpos.extension.ExtensionManager;
 import com.floreantpos.extension.FloreantPlugin;
 import com.floreantpos.extension.OrderServiceExtension;
 import com.floreantpos.main.Application;
@@ -142,10 +141,8 @@ public class BackOfficeWindow extends javax.swing.JFrame {
 			}
 		}
 		
-		for (Plugin plugin : Application.getPlugins()) {
-			if(plugin instanceof FloreantPlugin) {
-				((FloreantPlugin) plugin).initBackoffice();
-			}
+		for (FloreantPlugin plugin : ExtensionManager.getPlugins()) {
+			plugin.initBackoffice();
 		}
 		
 		JMenu helpMenu = new JMenu(Messages.getString("BackOfficeWindow.0")); //$NON-NLS-1$
@@ -187,7 +184,7 @@ public class BackOfficeWindow extends javax.swing.JFrame {
 		explorerMenu.add(new CookingInstructionExplorerAction());
 		explorerMenu.add(new TaxExplorerAction());
 		
-		OrderServiceExtension plugin = Application.getPluginManager().getPlugin(OrderServiceExtension.class);
+		OrderServiceExtension plugin = (OrderServiceExtension) ExtensionManager.getPlugin(OrderServiceExtension.class);
 		if (plugin == null) {
 			return;
 		}

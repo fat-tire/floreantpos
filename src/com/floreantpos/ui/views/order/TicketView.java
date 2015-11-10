@@ -37,6 +37,7 @@ import com.floreantpos.POSConstants;
 import com.floreantpos.PosException;
 import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.customer.CustomerSelectionDialog;
+import com.floreantpos.extension.ExtensionManager;
 import com.floreantpos.extension.FloorLayoutPlugin;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.CookingInstruction;
@@ -873,7 +874,7 @@ public class TicketView extends JPanel {
 
 				Ticket thisTicket = getTicket();
 
-				FloorLayoutPlugin floorLayoutPlugin = Application.getPluginManager().getPlugin(FloorLayoutPlugin.class);
+				FloorLayoutPlugin floorLayoutPlugin = (FloorLayoutPlugin) ExtensionManager.getPlugin(FloorLayoutPlugin.class);
 				List<ShopTable> tables = null;
 
 				if (floorLayoutPlugin != null) {

@@ -44,6 +44,7 @@ import org.hibernate.Hibernate;
 import org.hibernate.Session;
 
 import com.floreantpos.Messages;
+import com.floreantpos.extension.ExtensionManager;
 import com.floreantpos.extension.InventoryPlugin;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.MenuGroup;
@@ -139,7 +140,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 	}
 
 	public void addRecepieExtension() {
-		InventoryPlugin plugin = Application.getPluginManager().getPlugin(InventoryPlugin.class);
+		InventoryPlugin plugin = (InventoryPlugin) ExtensionManager.getPlugin(InventoryPlugin.class);
 		if (plugin == null) {
 			return;
 		}
