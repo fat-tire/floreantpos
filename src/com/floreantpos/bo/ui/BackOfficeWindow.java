@@ -12,8 +12,6 @@ import java.awt.Insets;
 import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.Comparator;
-import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
@@ -22,7 +20,6 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 
 import net.xeoh.plugins.base.Plugin;
-import net.xeoh.plugins.base.util.PluginManagerUtil;
 
 import com.floreantpos.Messages;
 import com.floreantpos.actions.AboutAction;
@@ -74,13 +71,16 @@ public class BackOfficeWindow extends javax.swing.JFrame {
 	private static final String POSX = "bwx";//$NON-NLS-1$
 	private static final String WINDOW_HEIGHT = "bwheight";//$NON-NLS-1$
 	private static final String WINDOW_WIDTH = "bwwidth";//$NON-NLS-1$
+	
+	private static BackOfficeWindow instance;
+	private JMenuBar menuBar; 
 
 	/** Creates new form BackOfficeWindow */
 	public BackOfficeWindow() {
 		setIconImage(Application.getApplicationIcon().getImage());
 
 		initComponents();
-
+		
 		createMenus();
 		positionWindow();
 
@@ -94,6 +94,8 @@ public class BackOfficeWindow extends javax.swing.JFrame {
 
 		setTitle(Application.getTitle() + "- " + com.floreantpos.POSConstants.BACK_OFFICE); //$NON-NLS-1$
 		applyComponentOrientation(ComponentOrientation.getOrientation(Locale.getDefault()));
+		
+		//call plugin's initBackoffice
 	}
 
 	private void positionWindow() {
@@ -120,9 +122,9 @@ public class BackOfficeWindow extends javax.swing.JFrame {
 		if (newUserType != null) {
 			permissions = newUserType.getPermissions();
 		}
-
-		JMenuBar menuBar = new JMenuBar();
-
+		
+		menuBar = new JMenuBar();
+		
 		if (newUserType == null) {
 			createAdminMenu(menuBar);
 			createExplorerMenu(menuBar);
@@ -139,31 +141,18 @@ public class BackOfficeWindow extends javax.swing.JFrame {
 				createReportMenu(menuBar);
 			}
 		}
-
-		configureMenuFromPlugins(menuBar);
+		
+		for (Plugin plugin : Application.getPlugins()) {
+			if(plugin instanceof FloreantPlugin) {
+				((FloreantPlugin) plugin).initBackoffice();
+			}
+		}
 		
 		JMenu helpMenu = new JMenu(Messages.getString("BackOfficeWindow.0")); //$NON-NLS-1$
 		helpMenu.add(new AboutAction());
 		menuBar.add(helpMenu);
 
 		setJMenuBar(menuBar);
-	}
-
-	private void configureMenuFromPlugins(JMenuBar menuBar) {
-		PluginManagerUtil pmUtil = new PluginManagerUtil(Application.getPluginManager());
-		List<Plugin> plugins = (List<Plugin>) pmUtil.getPlugins();
-		java.util.Collections.sort(plugins, new Comparator<Plugin>() {
-			@Override
-			public int compare(Plugin o1, Plugin o2) {
-				return o1.getClass().getName().compareToIgnoreCase(o2.getClass().getName());
-			}
-		});
-		
-		for (Plugin plugin : plugins) {
-			if(plugin instanceof FloreantPlugin) {
-				((FloreantPlugin) plugin).configureBackofficeMenuBar(menuBar);
-			}
-		}
 	}
 
 	private void createReportMenu(JMenuBar menuBar) {
@@ -273,6 +262,17 @@ public class BackOfficeWindow extends javax.swing.JFrame {
 		saveSizeAndLocation();
 //		instance = null;
 		dispose();
+	}
+	
+	public static BackOfficeWindow getInstance() {
+		if (instance == null) {
+			instance = new BackOfficeWindow();
+		}
+		return instance;
+	}
+	
+	public JMenuBar getBackOfficeMenuBar() {
+		return menuBar;
 	}
 
 //	public static BackOfficeWindow getInstance() {

@@ -64,7 +64,7 @@ public class ModelBrowser<E> extends JPanel implements ActionListener, ListSelec
 		browserTable.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		browserTable.getSelectionModel().addListSelectionListener(this);
 
-		browserTable.setDefaultRenderer(Date.class, new DateTimeRenderer());
+		browserTable.setDefaultRenderer(Date.class, new CustomCellRenderer());
 
 		if (tableModel != null) {
 			browserTable.setModel(tableModel);

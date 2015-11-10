@@ -179,16 +179,6 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 
 		rightPanel.add(orderPanel);
 
-		PosButton btnOthers = new PosButton(Messages.getString("SwitchboardView.1")); //$NON-NLS-1$
-		btnOthers.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				SwitchboardOtherFunctionsView view = SwitchboardOtherFunctionsView.getInstance();
-				RootView.getInstance().showView(view);
-			}
-		});
-		rightPanel.add(btnOthers, BorderLayout.SOUTH);
-
 		centerPanel.add(rightPanel, java.awt.BorderLayout.EAST);
 
 		add(centerPanel, java.awt.BorderLayout.CENTER);
@@ -732,4 +722,6 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 		ticketsListPanelBorder.setTitle(title);
 
 	}
+	
+	
 }
