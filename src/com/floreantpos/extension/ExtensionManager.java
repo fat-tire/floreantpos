@@ -1,6 +1,7 @@
 package com.floreantpos.extension;
 
 import java.io.File;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -16,13 +17,17 @@ import com.floreantpos.main.Application;
 import com.floreantpos.util.JarUtil;
 
 public class ExtensionManager {
-	private static List<FloreantPlugin> plugins = new ArrayList<FloreantPlugin>();
+	private List<FloreantPlugin> plugins = new ArrayList<FloreantPlugin>();
+	public PluginManager pluginManager;
 	
-	public static void initialize() {
-		PluginManager pluginManager = PluginManagerFactory.createPluginManager();
+	private static ExtensionManager instance;
+	
+	public void initialize() {
+		pluginManager = PluginManagerFactory.createPluginManager();
 
 		String jarLocation = JarUtil.getExecutableJarLocation(Application.class);
-		pluginManager.addPluginsFrom(new File(jarLocation).toURI());
+		URI uri = new File(jarLocation).toURI();
+		pluginManager.addPluginsFrom(uri);
 
 		String pluginsPath = System.getProperty("pluginsPath");
 
@@ -33,7 +38,7 @@ public class ExtensionManager {
 			pluginManager.addPluginsFrom(new File("plugins/").toURI()); //$NON-NLS-1$
 		}
 
-		PluginManagerUtil pmUtil = new PluginManagerUtil(Application.getPluginManager());
+		PluginManagerUtil pmUtil = new PluginManagerUtil(pluginManager);
 		List<Plugin> plugins = (List<Plugin>) pmUtil.getPlugins();
 		
 		//sort plugins
@@ -46,12 +51,12 @@ public class ExtensionManager {
 		
 		for (Plugin plugin : plugins) {
 			if(plugin instanceof FloreantPlugin) {
-				ExtensionManager.plugins.add((FloreantPlugin) plugin);
+				this.plugins.add((FloreantPlugin) plugin);
 			}
 		}
 	}
 	
-	public static List<FloreantPlugin> getPlugins() {
+	public List<FloreantPlugin> getPlugins() {
 		return plugins;
 	}
 	
@@ -62,4 +67,13 @@ public class ExtensionManager {
 //			if(floreantPlugin instanceof pluginClass)
 //		}
 //	}
+	
+	public static ExtensionManager getInstance() {
+		if(instance == null) {
+			instance = new ExtensionManager();
+			instance.initialize();
+		}
+		
+		return instance;
+	}
 }
