@@ -30,26 +30,7 @@ public class SwitchboardOtherFunctionsView extends ViewPanel {
 	public static final String VIEW_NAME="afv"; //$NON-NLS-1$
 	private static SwitchboardOtherFunctionsView instance;
 	
-	private PosAction[] actions = {
-			new DrawerAssignmentAction(),
-			new DrawerPullAction(),
-			new DrawerBleedAction(),
-			new DrawerKickAction(),
-			new PayoutAction(),
-			new ServerTipsAction(),
-			new ShowTransactionsAuthorizationsAction(),
-			new ShowKitchenDisplayAction(),
-			new ManageTableLayoutAction(),
-			new ShowOnlineTicketManagementAction()
-	};
-	
-//	private PosButton btnDrawerPull = new PosButton(new DrawerPullAction());
-//	
-//	private PosButton btnAuthorize = new PosButton(new ShowTransactionsAuthorizationsAction());
-//	private PosButton btnKitchenDisplay = new PosButton(new ShowKitchenDisplayAction());
-//	private PosButton btnPayout = new PosButton(new PayoutAction());
-//	private PosButton btnTableManage = new PosButton(new ManageTableLayoutAction());
-//	private PosButton btnOnlineTickets = new PosButton(POSConstants.ONLINE_TICKET_BUTTON_TEXT);
+	private JPanel contentPanel;
 	
 	public SwitchboardOtherFunctionsView() {
 		setLayout(new BorderLayout(5, 5));
@@ -62,7 +43,20 @@ public class SwitchboardOtherFunctionsView extends ViewPanel {
 		});
 		add(btnBack, BorderLayout.SOUTH);
 		
-		JPanel contentPanel = new JPanel(new MigLayout("align 50% 50%, wrap 5")); //$NON-NLS-1$
+		contentPanel = new JPanel(new MigLayout("align 50% 50%, wrap 6"));
+		
+		PosAction[] actions = {
+				new DrawerAssignmentAction(),
+				new DrawerPullAction(),
+				new DrawerBleedAction(),
+				new DrawerKickAction(),
+				new PayoutAction(),
+				new ServerTipsAction(),
+				new ShowTransactionsAuthorizationsAction(),
+				new ShowKitchenDisplayAction(),
+				new ManageTableLayoutAction(),
+				new ShowOnlineTicketManagementAction()
+		};
 		
 		for (PosAction action : actions) {
 			if(action instanceof DrawerAssignmentAction) {
@@ -76,12 +70,6 @@ public class SwitchboardOtherFunctionsView extends ViewPanel {
 		}
 		
 		add(contentPanel);
-		
-//		add(btnAuthorize, "w 150!, h 150!");
-//		add(btnKitchenDisplay, "w 150!, h 150!");
-//		add(btnPayout, "w 150!, h 150!");
-//		add(btnTableManage, "w 150!, h 150!");
-//		add(btnOnlineTickets, "w 150!, h 150!");
 	}
 	
 	public static SwitchboardOtherFunctionsView getInstance() {
@@ -97,4 +85,7 @@ public class SwitchboardOtherFunctionsView extends ViewPanel {
 		return VIEW_NAME;
 	}
 
+	public JPanel getContentPanel() {
+		return contentPanel;
+	}
 }

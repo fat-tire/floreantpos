@@ -8,7 +8,9 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.List;
 import java.util.Random;
 
 import javax.swing.ImageIcon;
@@ -19,8 +21,10 @@ import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.plaf.FontUIResource;
 
+import net.xeoh.plugins.base.Plugin;
 import net.xeoh.plugins.base.PluginManager;
 import net.xeoh.plugins.base.impl.PluginManagerFactory;
+import net.xeoh.plugins.base.util.PluginManagerUtil;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.RandomUtils;
@@ -33,6 +37,7 @@ import com.floreantpos.config.AppProperties;
 import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.config.ui.DatabaseConfigurationDialog;
 import com.floreantpos.demo.KitchenDisplayView;
+import com.floreantpos.extension.FloreantPlugin;
 import com.floreantpos.model.PosPrinters;
 import com.floreantpos.model.PrinterConfiguration;
 import com.floreantpos.model.Restaurant;
@@ -62,6 +67,7 @@ public class Application {
 	private boolean developmentMode = false;
 
 	private PluginManager pluginManager;
+	private static List<Plugin> plugins; 
 
 	private Terminal terminal;
 	private PosWindow posWindow;
@@ -91,8 +97,6 @@ public class Application {
 	}
 
 	public void start() {
-		initializePluginManager();
-		
 		setApplicationLook();
 
 		rootView = RootView.getInstance();
@@ -106,6 +110,8 @@ public class Application {
 		posWindow.setVisible(true);
 
 		initializeSystem();
+		
+		initializePluginManager();
 	}
 
 	private void initializePluginManager() {
@@ -118,6 +124,21 @@ public class Application {
 		}
 		else {
 			pluginManager.addPluginsFrom(new File("plugins/").toURI()); //$NON-NLS-1$
+		}
+		
+		PluginManagerUtil pmUtil = new PluginManagerUtil(Application.getPluginManager());
+		plugins = (List<Plugin>) pmUtil.getPlugins();
+		java.util.Collections.sort(plugins, new Comparator<Plugin>() {
+			@Override
+			public int compare(Plugin o1, Plugin o2) {
+				return o1.getClass().getName().compareToIgnoreCase(o2.getClass().getName());
+			}
+		});
+		
+		for (Plugin plugin : plugins) {
+			if(plugin instanceof FloreantPlugin) {
+				((FloreantPlugin) plugin).init();
+			}
 		}
 	}
 
@@ -499,6 +520,10 @@ public class Application {
 
 	public static PluginManager getPluginManager() {
 		return getInstance().pluginManager;
+	}
+	
+	public static List<Plugin> getPlugins() {
+		return plugins;
 	}
 
 	public static File getWorkingDir() {

@@ -9,9 +9,19 @@ public class AbstractFloreantPlugin implements FloreantPlugin {
 		return null;
 	}
 
-	@Override
 	public void configureBackofficeMenuBar(JMenuBar menuBar) {
 
+	}
+
+	@Override
+	public void init() {
+		
+	}
+
+	@Override
+	public void initBackoffice() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
