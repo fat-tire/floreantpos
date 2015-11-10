@@ -1,5 +1,6 @@
 package com.floreantpos.actions;
 
+import com.floreantpos.extension.ExtensionManager;
 import com.floreantpos.extension.TicketImportPlugin;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.UserPermission;
@@ -11,7 +12,7 @@ public class ShowOnlineTicketManagementAction extends PosAction {
 
 	public ShowOnlineTicketManagementAction() {
 		super("ONLINE TICKET STAT", UserPermission.DRAWER_PULL); //$NON-NLS-1$
-		ticketImportPlugin = Application.getPluginManager().getPlugin(TicketImportPlugin.class);
+		ticketImportPlugin = (TicketImportPlugin) ExtensionManager.getPlugin(TicketImportPlugin.class);
 		setVisible(ticketImportPlugin != null);
 	}
 

@@ -8,9 +8,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Comparator;
 import java.util.Date;
-import java.util.List;
 import java.util.Random;
 
 import javax.swing.ImageIcon;
@@ -20,11 +18,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.plaf.FontUIResource;
-
-import net.xeoh.plugins.base.Plugin;
-import net.xeoh.plugins.base.PluginManager;
-import net.xeoh.plugins.base.impl.PluginManagerFactory;
-import net.xeoh.plugins.base.util.PluginManagerUtil;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.RandomUtils;
@@ -37,7 +30,7 @@ import com.floreantpos.config.AppProperties;
 import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.config.ui.DatabaseConfigurationDialog;
 import com.floreantpos.demo.KitchenDisplayView;
-import com.floreantpos.extension.FloreantPlugin;
+import com.floreantpos.extension.ExtensionManager;
 import com.floreantpos.model.PosPrinters;
 import com.floreantpos.model.PrinterConfiguration;
 import com.floreantpos.model.Restaurant;
@@ -65,9 +58,6 @@ public class Application {
 	private static Log logger = LogFactory.getLog(Application.class);
 
 	private boolean developmentMode = false;
-
-	private PluginManager pluginManager;
-	private static List<Plugin> plugins; 
 
 	private Terminal terminal;
 	private PosWindow posWindow;
@@ -111,35 +101,7 @@ public class Application {
 
 		initializeSystem();
 		
-		initializePluginManager();
-	}
-
-	private void initializePluginManager() {
-		pluginManager = PluginManagerFactory.createPluginManager();
-		
-		String pluginsPath = System.getProperty("pluginsPath");
-
-		if (StringUtils.isNotEmpty(pluginsPath)) {
-			pluginManager.addPluginsFrom(new File(pluginsPath).toURI());
-		}
-		else {
-			pluginManager.addPluginsFrom(new File("plugins/").toURI()); //$NON-NLS-1$
-		}
-		
-		PluginManagerUtil pmUtil = new PluginManagerUtil(Application.getPluginManager());
-		plugins = (List<Plugin>) pmUtil.getPlugins();
-		java.util.Collections.sort(plugins, new Comparator<Plugin>() {
-			@Override
-			public int compare(Plugin o1, Plugin o2) {
-				return o1.getClass().getName().compareToIgnoreCase(o2.getClass().getName());
-			}
-		});
-		
-		for (Plugin plugin : plugins) {
-			if(plugin instanceof FloreantPlugin) {
-				((FloreantPlugin) plugin).init();
-			}
-		}
+		ExtensionManager.getInstance().initialize();
 	}
 
 	private void setApplicationLook() {
@@ -157,49 +119,7 @@ public class Application {
 		}
 	}
 
-	private void initializeFont() {
-		String uiDefaultFont = TerminalConfig.getUiDefaultFont();
-		if (StringUtils.isEmpty(uiDefaultFont)) {
-			return;
-		}
-
-		Font sourceFont = UIManager.getFont("Label.font"); //$NON-NLS-1$
-		Font font = new Font(uiDefaultFont, sourceFont.getStyle(), sourceFont.getSize());
-
-		UIManager.put("ArrowButton.size", 40); //$NON-NLS-1$
-		UIManager.put("OptionPane.buttonFont", new FontUIResource(new Font("ARIAL", Font.PLAIN, 35))); //$NON-NLS-1$ //$NON-NLS-2$
-		UIManager.put("Button.font", font); //$NON-NLS-1$
-		UIManager.put("ToggleButton.font", font); //$NON-NLS-1$
-		UIManager.put("RadioButton.font", font); //$NON-NLS-1$
-		UIManager.put("CheckBox.font", font); //$NON-NLS-1$
-		UIManager.put("ColorChooser.font", font); //$NON-NLS-1$
-		UIManager.put("ComboBox.font", font); //$NON-NLS-1$
-		UIManager.put("Label.font", font); //$NON-NLS-1$
-		UIManager.put("List.font", font); //$NON-NLS-1$
-		UIManager.put("MenuBar.font", font); //$NON-NLS-1$
-		UIManager.put("MenuItem.font", font); //$NON-NLS-1$
-		UIManager.put("RadioButtonMenuItem.font", font); //$NON-NLS-1$
-		UIManager.put("CheckBoxMenuItem.font", font); //$NON-NLS-1$
-		UIManager.put("Menu.font", font); //$NON-NLS-1$
-		UIManager.put("PopupMenu.font", font); //$NON-NLS-1$
-		UIManager.put("OptionPane.font", font); //$NON-NLS-1$
-		UIManager.put("Panel.font", font); //$NON-NLS-1$
-		UIManager.put("ProgressBar.font", font); //$NON-NLS-1$
-		UIManager.put("ScrollPane.font", font); //$NON-NLS-1$
-		UIManager.put("Viewport.font", font); //$NON-NLS-1$
-		UIManager.put("TabbedPane.font", font); //$NON-NLS-1$
-		UIManager.put("Table.font", font); //$NON-NLS-1$
-		UIManager.put("TableHeader.font", font); //$NON-NLS-1$
-		UIManager.put("TextField.font", font); //$NON-NLS-1$
-		UIManager.put("PasswordField.font", font); //$NON-NLS-1$
-		UIManager.put("TextArea.font", font); //$NON-NLS-1$
-		UIManager.put("TextPane.font", font); //$NON-NLS-1$
-		UIManager.put("EditorPane.font", font); //$NON-NLS-1$
-		UIManager.put("TitledBorder.font", font); //$NON-NLS-1$
-		UIManager.put("ToolBar.font", font); //$NON-NLS-1$
-		UIManager.put("ToolTip.font", font); //$NON-NLS-1$
-		UIManager.put("Tree.font", font); //$NON-NLS-1$
-	}
+	
 
 	public void initializeSystem() {
 		if (isSystemInitialized()) {
@@ -518,14 +438,6 @@ public class Application {
 		return restaurant;
 	}
 
-	public static PluginManager getPluginManager() {
-		return getInstance().pluginManager;
-	}
-	
-	public static List<Plugin> getPlugins() {
-		return plugins;
-	}
-
 	public static File getWorkingDir() {
 		File file = new File(Application.class.getProtectionDomain().getCodeSource().getLocation().getPath());
 
@@ -552,5 +464,49 @@ public class Application {
 	public String getLocation() {
 		File file = new File(getClass().getProtectionDomain().getCodeSource().getLocation().getFile());
 		return file.getParent();
+	}
+	
+	private void initializeFont() {
+		String uiDefaultFont = TerminalConfig.getUiDefaultFont();
+		if (StringUtils.isEmpty(uiDefaultFont)) {
+			return;
+		}
+
+		Font sourceFont = UIManager.getFont("Label.font"); //$NON-NLS-1$
+		Font font = new Font(uiDefaultFont, sourceFont.getStyle(), sourceFont.getSize());
+
+		UIManager.put("ArrowButton.size", 40); //$NON-NLS-1$
+		UIManager.put("OptionPane.buttonFont", new FontUIResource(new Font("ARIAL", Font.PLAIN, 35))); //$NON-NLS-1$ //$NON-NLS-2$
+		UIManager.put("Button.font", font); //$NON-NLS-1$
+		UIManager.put("ToggleButton.font", font); //$NON-NLS-1$
+		UIManager.put("RadioButton.font", font); //$NON-NLS-1$
+		UIManager.put("CheckBox.font", font); //$NON-NLS-1$
+		UIManager.put("ColorChooser.font", font); //$NON-NLS-1$
+		UIManager.put("ComboBox.font", font); //$NON-NLS-1$
+		UIManager.put("Label.font", font); //$NON-NLS-1$
+		UIManager.put("List.font", font); //$NON-NLS-1$
+		UIManager.put("MenuBar.font", font); //$NON-NLS-1$
+		UIManager.put("MenuItem.font", font); //$NON-NLS-1$
+		UIManager.put("RadioButtonMenuItem.font", font); //$NON-NLS-1$
+		UIManager.put("CheckBoxMenuItem.font", font); //$NON-NLS-1$
+		UIManager.put("Menu.font", font); //$NON-NLS-1$
+		UIManager.put("PopupMenu.font", font); //$NON-NLS-1$
+		UIManager.put("OptionPane.font", font); //$NON-NLS-1$
+		UIManager.put("Panel.font", font); //$NON-NLS-1$
+		UIManager.put("ProgressBar.font", font); //$NON-NLS-1$
+		UIManager.put("ScrollPane.font", font); //$NON-NLS-1$
+		UIManager.put("Viewport.font", font); //$NON-NLS-1$
+		UIManager.put("TabbedPane.font", font); //$NON-NLS-1$
+		UIManager.put("Table.font", font); //$NON-NLS-1$
+		UIManager.put("TableHeader.font", font); //$NON-NLS-1$
+		UIManager.put("TextField.font", font); //$NON-NLS-1$
+		UIManager.put("PasswordField.font", font); //$NON-NLS-1$
+		UIManager.put("TextArea.font", font); //$NON-NLS-1$
+		UIManager.put("TextPane.font", font); //$NON-NLS-1$
+		UIManager.put("EditorPane.font", font); //$NON-NLS-1$
+		UIManager.put("TitledBorder.font", font); //$NON-NLS-1$
+		UIManager.put("ToolBar.font", font); //$NON-NLS-1$
+		UIManager.put("ToolTip.font", font); //$NON-NLS-1$
+		UIManager.put("Tree.font", font); //$NON-NLS-1$
 	}
 }
