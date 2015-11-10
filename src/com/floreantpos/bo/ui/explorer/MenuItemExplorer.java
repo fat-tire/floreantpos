@@ -24,6 +24,7 @@ import org.jdesktop.swingx.JXTable;
 import com.floreantpos.Messages;
 import com.floreantpos.POSConstants;
 import com.floreantpos.bo.ui.BOMessageDialog;
+import com.floreantpos.bo.ui.CustomCellRenderer;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.MenuGroup;
 import com.floreantpos.model.MenuItem;
@@ -61,7 +62,7 @@ public class MenuItemExplorer extends TransparentPanel {
 		table = new JXTable(tableModel);
 		table.setRowHeight(120);
 		
-		table.setDefaultRenderer(Color.class, new ColorCellRenderer());
+		table.setDefaultRenderer(Color.class, new CustomCellRenderer());
 	
 
 		setLayout(new BorderLayout(5, 5));

@@ -132,6 +132,7 @@ public class DefaultOrderServiceExtension implements OrderServiceExtension {
 	}
 
 	@Override
-	public void configureBackofficeMenuBar(JMenuBar menuBar) {
+	public void initBackoffice() {
+		
 	}
 }

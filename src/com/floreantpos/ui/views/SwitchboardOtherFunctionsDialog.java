@@ -34,6 +34,7 @@ public class SwitchboardOtherFunctionsDialog extends POSDialog implements Action
 	private PosButton btnPayout = new PosButton(POSConstants.PAYOUT_BUTTON_TEXT);
 	private PosButton btnTableManage = new PosButton(POSConstants.TABLE_MANAGE_BUTTON_TEXT);
 	private PosButton btnOnlineTickets = new PosButton(POSConstants.ONLINE_TICKET_BUTTON_TEXT);
+ 
 	
 	private FloorLayoutPlugin floorLayoutPlugin;
 	private TicketImportPlugin ticketImportPlugin;
@@ -46,7 +47,7 @@ public class SwitchboardOtherFunctionsDialog extends POSDialog implements Action
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setSize(800, 400);
 		
-		JPanel contentPane = new JPanel(new GridLayout(2, 0, 10, 10));
+		JPanel contentPane = new JPanel(new GridLayout(3, 0, 10, 10));
 		contentPane.add(btnManager);
 		contentPane.add(btnAuthorize);
 		contentPane.add(btnKitchenDisplay);
