@@ -14,7 +14,7 @@ public class JarUtil {
 	 * @param clazz
 	 * @return
 	 */
-	public static String getExecutableJarLocation(Class clazz) {
+	public static String getJarLocation(Class clazz) {
 		String executableLocation;
 		
 		try {

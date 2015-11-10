@@ -41,6 +41,7 @@ import com.floreantpos.actions.RefundAction;
 import com.floreantpos.actions.SettleTicketAction;
 import com.floreantpos.actions.VoidTicketAction;
 import com.floreantpos.config.TerminalConfig;
+import com.floreantpos.extension.ExtensionManager;
 import com.floreantpos.extension.OrderServiceExtension;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.OrderType;
@@ -102,7 +103,7 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 		btnSplitTicket.addActionListener(this);
 		btnVoidTicket.setAction(new VoidTicketAction(this));
 
-		orderServiceExtension = Application.getPluginManager().getPlugin(OrderServiceExtension.class);
+		orderServiceExtension = (OrderServiceExtension) ExtensionManager.getPlugin(OrderServiceExtension.class);
 
 		if (orderServiceExtension == null) {
 			btnHomeDelivery.setEnabled(false);

@@ -4,11 +4,11 @@ import java.util.Calendar;
 import java.util.List;
 
 import javax.swing.JMenu;
-import javax.swing.JMenuBar;
 import javax.swing.JOptionPane;
 
 import com.floreantpos.Messages;
 import com.floreantpos.config.TerminalConfig;
+import com.floreantpos.extension.ExtensionManager;
 import com.floreantpos.extension.FloorLayoutPlugin;
 import com.floreantpos.extension.OrderServiceExtension;
 import com.floreantpos.main.Application;
@@ -42,7 +42,7 @@ public class DefaultOrderServiceExtension implements OrderServiceExtension {
 		List<ShopTable> tables = null;
 
 		if (TerminalConfig.isShouldShowTableSelection()) {
-			FloorLayoutPlugin floorLayoutPlugin = Application.getPluginManager().getPlugin(FloorLayoutPlugin.class);
+			FloorLayoutPlugin floorLayoutPlugin = (FloorLayoutPlugin) ExtensionManager.getPlugin(FloorLayoutPlugin.class);
 			if (floorLayoutPlugin != null) {
 				tables = floorLayoutPlugin.captureTableNumbers(null);
 			}

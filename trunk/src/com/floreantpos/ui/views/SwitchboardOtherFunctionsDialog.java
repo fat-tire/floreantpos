@@ -13,6 +13,7 @@ import javax.swing.JPanel;
 import com.floreantpos.Messages;
 import com.floreantpos.POSConstants;
 import com.floreantpos.demo.KitchenDisplayWindow;
+import com.floreantpos.extension.ExtensionManager;
 import com.floreantpos.extension.FloorLayoutPlugin;
 import com.floreantpos.extension.TicketImportPlugin;
 import com.floreantpos.main.Application;
@@ -53,12 +54,12 @@ public class SwitchboardOtherFunctionsDialog extends POSDialog implements Action
 		contentPane.add(btnKitchenDisplay);
 		contentPane.add(btnPayout);
 		
-		floorLayoutPlugin = Application.getPluginManager().getPlugin(FloorLayoutPlugin.class);
+		floorLayoutPlugin = (FloorLayoutPlugin) ExtensionManager.getPlugin(FloorLayoutPlugin.class);
 		if (floorLayoutPlugin != null) {
 			contentPane.add(btnTableManage);
 		}
 
-		ticketImportPlugin = Application.getPluginManager().getPlugin(TicketImportPlugin.class);
+		ticketImportPlugin = (TicketImportPlugin) ExtensionManager.getPlugin(TicketImportPlugin.class);
 		if (ticketImportPlugin != null) {
 			contentPane.add(btnOnlineTickets);
 		}
@@ -108,7 +109,7 @@ public class SwitchboardOtherFunctionsDialog extends POSDialog implements Action
 	}
 	
 	private void doShowTicketImportDialog() {
-		TicketImportPlugin ticketImportPlugin = Application.getPluginManager().getPlugin(TicketImportPlugin.class);
+		TicketImportPlugin ticketImportPlugin = (TicketImportPlugin) ExtensionManager.getPlugin(TicketImportPlugin.class);
 		if(ticketImportPlugin != null) {
 			ticketImportPlugin.startService();
 		}
