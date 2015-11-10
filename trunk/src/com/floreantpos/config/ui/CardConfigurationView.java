@@ -2,6 +2,7 @@ package com.floreantpos.config.ui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 import java.util.Vector;
 
 import javax.swing.DefaultComboBoxModel;
@@ -15,6 +16,9 @@ import net.miginfocom.swing.MigLayout;
 
 import com.floreantpos.Messages;
 import com.floreantpos.config.CardConfig;
+import com.floreantpos.extension.ExtensionManager;
+import com.floreantpos.extension.FloreantPlugin;
+import com.floreantpos.extension.PaymentGatewayPlugin;
 import com.floreantpos.model.CardReader;
 import com.floreantpos.model.MerchantGateway;
 import com.floreantpos.swing.DoubleTextField;
@@ -108,8 +112,7 @@ public class CardConfigurationView extends ConfigurationView {
 		add(lblSecretCode, "cell 0 6,alignx leading"); //$NON-NLS-1$
 
 		cbCardReader.setModel(new DefaultComboBoxModel<CardReader>(CardReader.values()));
-		cbGateway.setModel(new DefaultComboBoxModel<MerchantGateway>(MerchantGateway.values()));
-
+		
 		tfMerchantPass = new JPasswordField();
 		add(tfMerchantPass, "cell 1 6,growx"); //$NON-NLS-1$
 		
@@ -121,6 +124,19 @@ public class CardConfigurationView extends ConfigurationView {
 		
 		add(new JLabel(Messages.getString("CardConfigurationView.28"))); //$NON-NLS-1$
 		add(tfBarTabLimit);
+		
+		initialMerchantGateways();
+	}
+
+	private void initialMerchantGateways() {
+		DefaultComboBoxModel<PaymentGatewayPlugin> model = new DefaultComboBoxModel<PaymentGatewayPlugin>();
+		List<FloreantPlugin> plugins = ExtensionManager.getPlugins(PaymentGatewayPlugin.class);
+		
+		for (FloreantPlugin plugin : plugins) {
+			model.addElement((PaymentGatewayPlugin) plugin);
+		}
+		
+		cbGateway.setModel(model);
 	}
 
 	protected void updateCheckBoxes() {
