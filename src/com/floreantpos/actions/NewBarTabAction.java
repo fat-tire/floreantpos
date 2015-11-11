@@ -142,7 +142,7 @@ public class NewBarTabAction extends AbstractAction implements CardInputListener
 		try {
 			Ticket ticket = createTicket(application);
 			
-			String transactionId = CardConfig.getMerchantGateway().getProcessor().authorizeAmount(ticket, cardString, CardConfig.getBartabLimit(), selectedPaymentType.getDisplayString());
+			String transactionId = CardConfig.getPaymentGateway().getProcessor().authorizeAmount(ticket, cardString, CardConfig.getBartabLimit(), selectedPaymentType.getDisplayString());
 			
 			ticket.addProperty(Ticket.PROPERTY_PAYMENT_METHOD, selectedPaymentType.name());
 			ticket.addProperty(Ticket.PROPERTY_CARD_NAME, selectedPaymentType.name());
@@ -194,7 +194,7 @@ public class NewBarTabAction extends AbstractAction implements CardInputListener
 		try {
 			CardType cardType = CardType.findByValue(selectedPaymentType.getDisplayString());
 			
-			String transactionId = CardConfig.getMerchantGateway().getProcessor().authorizeAmount(cardNumber, expMonth, expYear, CardConfig.getBartabLimit(), cardType);
+			String transactionId = CardConfig.getPaymentGateway().getProcessor().authorizeAmount(cardNumber, expMonth, expYear, CardConfig.getBartabLimit(), cardType);
 			
 			Ticket ticket = createTicket(application);
 			
