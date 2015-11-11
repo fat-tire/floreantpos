@@ -155,7 +155,7 @@ public class TicketAuthorizationDialog extends POSDialog {
 		double authorizedAmount = transaction.calculateAuthorizeAmount();
 		double totalAmount = transaction.getAmount();
 
-		CardProcessor cardProcessor = CardConfig.getMerchantGateway().getProcessor();
+		CardProcessor cardProcessor = CardConfig.getPaymentGateway().getProcessor();
 		
 		if (totalAmount > authorizedAmount) {
 			cardProcessor.voidAmount(transaction);

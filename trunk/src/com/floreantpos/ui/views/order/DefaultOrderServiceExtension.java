@@ -135,4 +135,9 @@ public class DefaultOrderServiceExtension implements OrderServiceExtension {
 	public void initBackoffice() {
 		
 	}
+	
+	@Override
+	public String getId() {
+		return String.valueOf("DefaultOrderServiceExtension".hashCode());
+	}
 }
