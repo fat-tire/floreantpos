@@ -1,6 +1,7 @@
 package com.floreantpos.extension;
 
 
+
 public class AbstractFloreantPlugin implements FloreantPlugin {
 
 	@Override
@@ -17,6 +18,12 @@ public class AbstractFloreantPlugin implements FloreantPlugin {
 	@Override
 	public void initBackoffice() {
 		
+	}
+
+
+	@Override
+	public String getId() {
+		return null;
 	}
 
 }

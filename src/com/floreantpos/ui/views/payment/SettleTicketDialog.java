@@ -24,6 +24,9 @@ import com.floreantpos.POSConstants;
 import com.floreantpos.PosException;
 import com.floreantpos.config.CardConfig;
 import com.floreantpos.config.TerminalConfig;
+import com.floreantpos.extension.AuthorizeNetGatewayPlugin;
+import com.floreantpos.extension.MercuryGatewayPlugin;
+import com.floreantpos.extension.PaymentGatewayPlugin;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.CardReader;
 import com.floreantpos.model.CashTransaction;
@@ -31,7 +34,6 @@ import com.floreantpos.model.CouponAndDiscount;
 import com.floreantpos.model.CreditCardTransaction;
 import com.floreantpos.model.GiftCertificateTransaction;
 import com.floreantpos.model.Gratuity;
-import com.floreantpos.model.MerchantGateway;
 import com.floreantpos.model.OrderType;
 import com.floreantpos.model.PaymentType;
 import com.floreantpos.model.PosTransaction;
@@ -328,6 +330,8 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 		waitDialog.setVisible(true);
 
 		try {
+			PaymentGatewayPlugin paymentGateway = CardConfig.getPaymentGateway();
+			
 			String transactionId = ticket.getProperty(Ticket.PROPERTY_CARD_TRANSACTION_ID);
 
 			CreditCardTransaction transaction = new CreditCardTransaction();
@@ -336,7 +340,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 			transaction.setTicket(ticket);
 			transaction.setCardType(ticket.getProperty(Ticket.PROPERTY_CARD_NAME));
 			transaction.setCaptured(false);
-			transaction.setCardMerchantGateway(CardConfig.getMerchantGateway().name());
+			transaction.setCardMerchantGateway(paymentGateway.getName());
 			transaction.setCardAuthCode(ticket.getProperty("AuthCode")); //$NON-NLS-1$
 			transaction.addProperty("AcqRefData", ticket.getProperty("AcqRefData")); //$NON-NLS-1$ //$NON-NLS-2$
 
@@ -362,9 +366,9 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 			setTransactionAmounts(transaction);
 
 			if (cardReader == CardReader.SWIPE || cardReader == CardReader.MANUAL) {
-				double advanceAmount = Double.parseDouble(ticket.getProperty(Ticket.PROPERTY_ADVANCE_PAYMENT, "" + CardConfig.getMerchantGateway())); //$NON-NLS-1$
+				double advanceAmount = Double.parseDouble(ticket.getProperty(Ticket.PROPERTY_ADVANCE_PAYMENT, paymentGateway.getName())); //$NON-NLS-1$
 				
-				CardProcessor cardProcessor = CardConfig.getMerchantGateway().getProcessor();
+				CardProcessor cardProcessor = paymentGateway.getProcessor();
 				if (tenderAmount > advanceAmount) {
 					cardProcessor.voidAmount(transactionId, advanceAmount);
 				}
@@ -465,9 +469,15 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 	}
 
 	private void payUsingCard(String cardName, final double tenderedAmount) throws Exception {
-		if (!CardConfig.getMerchantGateway().isCardTypeSupported(cardName)) {
-			POSMessageDialog.showError(Application.getPosWindow(), "<html>Card <b>" + cardName + "</b> not supported.</html>");
-			return;
+//		if (!CardConfig.getMerchantGateway().isCardTypeSupported(cardName)) {
+//			POSMessageDialog.showError(Application.getPosWindow(), "<html>Card <b>" + cardName + "</b> not supported.</html>");
+//			return;
+//		}
+		
+		//FIXME: generalize code
+		PaymentGatewayPlugin paymentGateway = CardConfig.getPaymentGateway();
+		if(!(paymentGateway instanceof AuthorizeNetGatewayPlugin) || !(paymentGateway instanceof MercuryGatewayPlugin)) {
+			
 		}
 
 		CardReader cardReader = CardConfig.getCardReader();
@@ -528,7 +538,8 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 			PosTransaction transaction = paymentType.createTransaction();
 			transaction.setTicket(ticket);
 
-			CardProcessor cardProcessor =  CardConfig.getMerchantGateway().getProcessor();
+			PaymentGatewayPlugin paymentGateway = CardConfig.getPaymentGateway();
+			CardProcessor cardProcessor =  paymentGateway.getProcessor();
 			
 			if (inputter instanceof SwipeCardDialog) {
 				SwipeCardDialog swipeCardDialog = (SwipeCardDialog) inputter;
@@ -545,7 +556,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 				transaction.setCardType(cardName);
 				transaction.setCardTrack(cardString);
 				transaction.setCaptured(false);
-				transaction.setCardMerchantGateway(CardConfig.getMerchantGateway().name());
+				transaction.setCardMerchantGateway(paymentGateway.getName());
 				transaction.setCardReader(CardReader.SWIPE.name());
 				setTransactionAmounts(transaction);
 
@@ -558,7 +569,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 
 				transaction.setCardType(cardName);
 				transaction.setCaptured(false);
-				transaction.setCardMerchantGateway(MerchantGateway.AUTHORIZE_NET.name());
+				transaction.setCardMerchantGateway(paymentGateway.getName());
 				transaction.setCardReader(CardReader.MANUAL.name());
 				transaction.setCardNumber(mDialog.getCardNumber());
 				transaction.setCardExpiryMonth(mDialog.getExpMonth());
