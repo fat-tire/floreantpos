@@ -22,13 +22,12 @@ import com.floreantpos.Messages;
 import com.floreantpos.actions.ClockInOutAction;
 import com.floreantpos.actions.LogoutAction;
 import com.floreantpos.actions.ShowBackofficeAction;
+import com.floreantpos.actions.ShowOtherFunctionsAction;
 import com.floreantpos.actions.ShutDownAction;
 import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.main.Application;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.swing.TransparentPanel;
-import com.floreantpos.ui.views.SwitchboardOtherFunctionsView;
-import com.floreantpos.ui.views.order.RootView;
 import com.floreantpos.util.PosGuiUtil;
 
 public class HeaderPanel extends JPanel {
@@ -70,18 +69,9 @@ public class HeaderPanel extends JPanel {
 		PosButton btnBackoffice = new PosButton(new ShowBackofficeAction(false, true));
 		add(btnBackoffice, "w 60!, h 60!"); //$NON-NLS-1$
 		
-		PosButton btnOthers = new PosButton(); //$NON-NLS-1$
-		btnOthers.setIcon(IconFactory.getIcon("/ui_icons/", "other.png")); //$NON-NLS-1$ //$NON-NLS-2$
-		
-		btnOthers.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				SwitchboardOtherFunctionsView view = SwitchboardOtherFunctionsView.getInstance();
-				RootView.getInstance().showView(view);
-			}
-		});
+		PosButton btnOthers = new PosButton(new ShowOtherFunctionsAction(false, true)); //$NON-NLS-1$
 		add(btnOthers, "w 60!, h 60!"); //$NON-NLS-1$
-
+		
 		PosButton btnClockOUt = new PosButton(new ClockInOutAction(false, true));
 		add(btnClockOUt, "w 60!, h 60!"); //$NON-NLS-1$
 
