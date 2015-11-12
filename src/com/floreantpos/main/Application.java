@@ -31,6 +31,7 @@ import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.config.ui.DatabaseConfigurationDialog;
 import com.floreantpos.demo.KitchenDisplayView;
 import com.floreantpos.extension.ExtensionManager;
+import com.floreantpos.extension.FloreantPlugin;
 import com.floreantpos.model.PosPrinters;
 import com.floreantpos.model.PrinterConfiguration;
 import com.floreantpos.model.Restaurant;
@@ -102,6 +103,10 @@ public class Application {
 		initializeSystem();
 		
 		ExtensionManager.getInstance().initialize();
+		
+		for (FloreantPlugin plugin : ExtensionManager.getPlugins()) {
+			plugin.init();
+		}
 	}
 
 	private void setApplicationLook() {
