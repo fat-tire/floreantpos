@@ -21,6 +21,7 @@ public class POSConstants {
 	public static final String AUTHORIZE_BUTTON_TEXT = Messages.getString("AUTHORIZE_BUTTON_TEXT"); //$NON-NLS-1$
 	public static final String KITCHEN_DISPLAY_BUTTON_TEXT = Messages.getString("KITCHEN_DISPLAY_BUTTON_TEXT"); //$NON-NLS-1$
 	public static final String PAYOUT_BUTTON_TEXT = Messages.getString("PAYOUT_BUTTON_TEXT"); //$NON-NLS-1$
+	public static final String BOOKING_BUTTON_TEXT = Messages.getString("BOOKING_BUTTON_TEXT"); //$NON-NLS-1$
 	public static final String ORDER_INFO_BUTTON_TEXT = Messages.getString("ORDER_INFO_BUTTON_TEXT"); //$NON-NLS-1$
 	public static final String REOPEN_TICKET_BUTTON_TEXT = Messages.getString("REOPEN_TICKET_BUTTON_TEXT"); //$NON-NLS-1$
 	public static final String SETTLE_TICKET_BUTTON_TEXT = Messages.getString("SETTLE_TICKET_BUTTON_TEXT"); //$NON-NLS-1$
@@ -238,7 +239,7 @@ public class POSConstants {
 	public static final String DATE_TIME = Messages.getString("PosMessage.177"); //$NON-NLS-1$
 	public static final String TAX = Messages.getString("PosMessage.178"); //$NON-NLS-1$
 	public static final String NAME = Messages.getString("PosMessage.179"); //$NON-NLS-1$
-	public static final String IMAGE = Messages.getString("PosMessage.179.1"); //$NON-NLS-1$
+	public static final String IMAGE = ""; //$NON-NLS-1$
 	public static final String TRANSLATED_NAME = Messages.getString("Translated_Name"); //$NON-NLS-1$
 	public static final String SORT_ORDER = Messages.getString("SORT_ORDER"); //$NON-NLS-1$
 	public static final String BUTTON_COLOR = Messages.getString("BUTTON_COLOR"); //$NON-NLS-1$
