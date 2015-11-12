@@ -98,7 +98,9 @@ public class CardConfigurationView extends ConfigurationView {
 	private void updatePluginConfigUI() throws Exception {
 		PaymentGatewayPlugin plugin = (PaymentGatewayPlugin) cbGateway.getSelectedItem();
 		pluginConfigPanel.removeAll();
-		pluginConfigPanel.add(plugin.getConfigurationPane());
+		ConfigurationView configurationPane = plugin.getConfigurationPane();
+		configurationPane.initialize();
+		pluginConfigPanel.add(configurationPane);
 		revalidate();
 		repaint();
 	}
