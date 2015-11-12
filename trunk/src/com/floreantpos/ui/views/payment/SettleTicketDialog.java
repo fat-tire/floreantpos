@@ -477,7 +477,8 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 		//FIXME: generalize code
 		PaymentGatewayPlugin paymentGateway = CardConfig.getPaymentGateway();
 		if(!(paymentGateway instanceof AuthorizeNetGatewayPlugin) || !(paymentGateway instanceof MercuryGatewayPlugin)) {
-			
+			paymentGateway.getProcessor().authorizeAmount(ticket, null, tenderedAmount, null);
+			return;
 		}
 
 		CardReader cardReader = CardConfig.getCardReader();
