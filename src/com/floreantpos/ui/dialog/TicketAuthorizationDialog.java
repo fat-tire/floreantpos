@@ -170,7 +170,7 @@ public class TicketAuthorizationDialog extends POSDialog {
 
 			transaction.setCaptured(true);
 
-			PosTransactionDAO.getInstance().saveOrUpdate(transaction);
+			//PosTransactionDAO.getInstance().saveOrUpdate(transaction);
 		}
 	}
 
@@ -223,7 +223,8 @@ public class TicketAuthorizationDialog extends POSDialog {
 	private void authorizeTransaction(PosTransaction transaction) throws Exception {
 		String cardEntryType = transaction.getCardReader();
 		if (StringUtils.isEmpty(cardEntryType)) {
-			POSMessageDialog.showError(Application.getPosWindow(), Messages.getString("TicketAuthorizationDialog.9") + transaction.getId() + Messages.getString("TicketAuthorizationDialog.10")); //$NON-NLS-1$ //$NON-NLS-2$
+//			POSMessageDialog.showError(Application.getPosWindow(), Messages.getString("TicketAuthorizationDialog.9") + transaction.getId() + Messages.getString("TicketAuthorizationDialog.10")); //$NON-NLS-1$ //$NON-NLS-2$
+			authorizeSwipeCard(transaction);
 			return;
 		}
 
@@ -241,6 +242,7 @@ public class TicketAuthorizationDialog extends POSDialog {
 				break;
 
 			default:
+				authorizeSwipeCard(transaction);
 				break;
 		}
 	}
