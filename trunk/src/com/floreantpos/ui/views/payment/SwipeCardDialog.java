@@ -15,7 +15,7 @@ import com.floreantpos.swing.PosButton;
 import com.floreantpos.ui.TitlePanel;
 import com.floreantpos.ui.dialog.POSDialog;
 
-public class SwipeCardDialog extends POSDialog implements CardInputter {
+public class SwipeCardDialog extends POSDialog implements CardInputProcessor {
 	private CardInputListener cardInputListener;
 	private JPasswordField passwordField;
 	private String cardString;
