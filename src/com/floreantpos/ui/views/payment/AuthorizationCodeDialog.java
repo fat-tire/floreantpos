@@ -18,7 +18,7 @@ import com.floreantpos.swing.QwertyKeyPad;
 import com.floreantpos.ui.TitlePanel;
 import com.floreantpos.ui.dialog.POSDialog;
 
-public class AuthorizationCodeDialog extends POSDialog implements CardInputter {
+public class AuthorizationCodeDialog extends POSDialog implements CardInputProcessor {
 	private CardInputListener cardInputListener;
 	private FocusedTextField tfAuthorizationCode;
 	

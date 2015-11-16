@@ -529,7 +529,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 	}
 
 	@Override
-	public void cardInputted(CardInputter inputter) {
+	public void cardInputted(CardInputProcessor inputter) {
 		//authorize only, do not capture
 		PaymentProcessWaitDialog waitDialog = new PaymentProcessWaitDialog(this);
 
