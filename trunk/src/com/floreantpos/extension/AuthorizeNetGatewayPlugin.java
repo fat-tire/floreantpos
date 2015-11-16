@@ -53,4 +53,9 @@ public class AuthorizeNetGatewayPlugin implements PaymentGatewayPlugin {
 	public CardProcessor getProcessor() {
 		return new AuthorizeDotNetProcessor();
 	}
+
+	@Override
+	public boolean shouldShowCardInputProcessor() {
+		return true;
+	}
 }

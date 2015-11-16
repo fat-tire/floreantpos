@@ -107,8 +107,8 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 		try {
 			if (ticket == null)
 				return;
-			
-			if(!Application.getCurrentUser().hasPermission(UserPermission.ADD_DISCOUNT)) {
+
+			if (!Application.getCurrentUser().hasPermission(UserPermission.ADD_DISCOUNT)) {
 				POSMessageDialog.showError(Application.getPosWindow(), Messages.getString("SettleTicketDialog.7")); //$NON-NLS-1$
 				return;
 			}
@@ -137,31 +137,31 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 		}
 	}// GEN-LAST:event_btnApplyCoupondoApplyCoupon
 
-//	public void doTaxExempt(boolean taxExempt) {// GEN-FIRST:event_doTaxExempt
-//		if (ticket == null)
-//			return;
-//
-//		boolean setTaxExempt = taxExempt;
-//		if (setTaxExempt) {
-//			int option = JOptionPane.showOptionDialog(this, POSConstants.CONFIRM_SET_TAX_EXEMPT, POSConstants.CONFIRM, JOptionPane.YES_NO_OPTION,
-//					JOptionPane.QUESTION_MESSAGE, null, null, null);
-//			if (option != JOptionPane.YES_OPTION) {
-//				return;
-//			}
-//
-//			ticket.setTaxExempt(true);
-//			ticket.calculatePrice();
-//			TicketDAO.getInstance().saveOrUpdate(ticket);
-//		}
-//		else {
-//			ticket.setTaxExempt(false);
-//			ticket.calculatePrice();
-//			TicketDAO.getInstance().saveOrUpdate(ticket);
-//		}
-//
-//		ticketDetailView.updateView();
-//		paymentView.updateView();
-//	}// GEN-LAST:event_doTaxExempt
+	//	public void doTaxExempt(boolean taxExempt) {// GEN-FIRST:event_doTaxExempt
+	//		if (ticket == null)
+	//			return;
+	//
+	//		boolean setTaxExempt = taxExempt;
+	//		if (setTaxExempt) {
+	//			int option = JOptionPane.showOptionDialog(this, POSConstants.CONFIRM_SET_TAX_EXEMPT, POSConstants.CONFIRM, JOptionPane.YES_NO_OPTION,
+	//					JOptionPane.QUESTION_MESSAGE, null, null, null);
+	//			if (option != JOptionPane.YES_OPTION) {
+	//				return;
+	//			}
+	//
+	//			ticket.setTaxExempt(true);
+	//			ticket.calculatePrice();
+	//			TicketDAO.getInstance().saveOrUpdate(ticket);
+	//		}
+	//		else {
+	//			ticket.setTaxExempt(false);
+	//			ticket.calculatePrice();
+	//			TicketDAO.getInstance().saveOrUpdate(ticket);
+	//		}
+	//
+	//		ticketDetailView.updateView();
+	//		paymentView.updateView();
+	//	}// GEN-LAST:event_doTaxExempt
 
 	public void doSetGratuity() {
 		if (ticket == null)
@@ -237,7 +237,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 
 			switch (paymentType) {
 				case CASH:
-					if(!confirmPayment()) {
+					if (!confirmPayment()) {
 						return;
 					}
 
@@ -306,10 +306,10 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 	}
 
 	private boolean confirmPayment() {
-		if(!TerminalConfig.isUseSettlementPrompt()) {
+		if (!TerminalConfig.isUseSettlementPrompt()) {
 			return true;
 		}
-		
+
 		ConfirmPayDialog confirmPayDialog = new ConfirmPayDialog();
 		confirmPayDialog.setAmount(tenderAmount);
 		confirmPayDialog.open();
@@ -317,12 +317,12 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 		if (confirmPayDialog.isCanceled()) {
 			return false;
 		}
-		
+
 		return true;
 	}
 
 	private void doSettleBarTabTicket(Ticket ticket) {
-		if(!confirmPayment()) {
+		if (!confirmPayment()) {
 			return;
 		}
 
@@ -331,7 +331,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 
 		try {
 			PaymentGatewayPlugin paymentGateway = CardConfig.getPaymentGateway();
-			
+
 			String transactionId = ticket.getProperty(Ticket.PROPERTY_CARD_TRANSACTION_ID);
 
 			CreditCardTransaction transaction = new CreditCardTransaction();
@@ -367,7 +367,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 
 			if (cardReader == CardReader.SWIPE || cardReader == CardReader.MANUAL) {
 				double advanceAmount = Double.parseDouble(ticket.getProperty(Ticket.PROPERTY_ADVANCE_PAYMENT, paymentGateway.getName())); //$NON-NLS-1$
-				
+
 				CardProcessor cardProcessor = paymentGateway.getProcessor();
 				if (tenderAmount > advanceAmount) {
 					cardProcessor.voidAmount(transactionId, advanceAmount);
@@ -404,7 +404,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 						JOptionPane.YES_NO_OPTION);
 
 				if (option != JOptionPane.YES_OPTION) {
-					
+
 					setCanceled(false);
 					dispose();
 				}
@@ -469,15 +469,31 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 	}
 
 	private void payUsingCard(String cardName, final double tenderedAmount) throws Exception {
-//		if (!CardConfig.getMerchantGateway().isCardTypeSupported(cardName)) {
-//			POSMessageDialog.showError(Application.getPosWindow(), "<html>Card <b>" + cardName + "</b> not supported.</html>");
-//			return;
-//		}
-		
-		//FIXME: generalize code
+		//		if (!CardConfig.getMerchantGateway().isCardTypeSupported(cardName)) {
+		//			POSMessageDialog.showError(Application.getPosWindow(), "<html>Card <b>" + cardName + "</b> not supported.</html>");
+		//			return;
+		//		}
+
 		PaymentGatewayPlugin paymentGateway = CardConfig.getPaymentGateway();
-		if(!(paymentGateway instanceof AuthorizeNetGatewayPlugin) || !(paymentGateway instanceof MercuryGatewayPlugin)) {
-			paymentGateway.getProcessor().authorizeAmount(ticket, null, tenderedAmount, null);
+		if (!paymentGateway.shouldShowCardInputProcessor()) {
+
+			PosTransaction transaction = paymentType.createTransaction();
+			transaction.setTicket(ticket);
+
+			if (!confirmPayment()) {
+				return;
+			}
+
+			transaction.setCardType(cardName);
+			transaction.setCaptured(false);
+			transaction.setCardMerchantGateway(paymentGateway.getName());
+
+			setTransactionAmounts(transaction);
+
+			paymentGateway.getProcessor().authorizeAmount(transaction);
+
+			settleTicket(transaction);
+			
 			return;
 		}
 
@@ -540,8 +556,8 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 			transaction.setTicket(ticket);
 
 			PaymentGatewayPlugin paymentGateway = CardConfig.getPaymentGateway();
-			CardProcessor cardProcessor =  paymentGateway.getProcessor();
-			
+			CardProcessor cardProcessor = paymentGateway.getProcessor();
+
 			if (inputter instanceof SwipeCardDialog) {
 				SwipeCardDialog swipeCardDialog = (SwipeCardDialog) inputter;
 				String cardString = swipeCardDialog.getCardString();
@@ -550,10 +566,10 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 					throw new RuntimeException(Messages.getString("SettleTicketDialog.16")); //$NON-NLS-1$
 				}
 
-				if(!confirmPayment()) {
+				if (!confirmPayment()) {
 					return;
 				}
-				
+
 				transaction.setCardType(cardName);
 				transaction.setCardTrack(cardString);
 				transaction.setCaptured(false);
