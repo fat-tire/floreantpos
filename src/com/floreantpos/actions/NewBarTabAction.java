@@ -25,7 +25,7 @@ import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.dialog.PaymentTypeSelectionDialog;
 import com.floreantpos.ui.views.payment.AuthorizationCodeDialog;
 import com.floreantpos.ui.views.payment.CardInputListener;
-import com.floreantpos.ui.views.payment.CardInputter;
+import com.floreantpos.ui.views.payment.CardInputProcessor;
 import com.floreantpos.ui.views.payment.ManualCardEntryDialog;
 import com.floreantpos.ui.views.payment.PaymentProcessWaitDialog;
 import com.floreantpos.ui.views.payment.SwipeCardDialog;
@@ -76,7 +76,7 @@ public class NewBarTabAction extends AbstractAction implements CardInputListener
 	}
 
 	@Override
-	public void cardInputted(CardInputter inputter) {
+	public void cardInputted(CardInputProcessor inputter) {
 		if (inputter instanceof SwipeCardDialog) {
 			useSwipeCard(inputter);
 		}
@@ -88,7 +88,7 @@ public class NewBarTabAction extends AbstractAction implements CardInputListener
 		}
 	}
 
-	private void useAuthCode(CardInputter inputter) {
+	private void useAuthCode(CardInputProcessor inputter) {
 		try {
 			
 			AuthorizationCodeDialog authDialog = (AuthorizationCodeDialog) inputter;
@@ -122,7 +122,7 @@ public class NewBarTabAction extends AbstractAction implements CardInputListener
 		}
 	}
 
-	private void useSwipeCard(CardInputter inputter) {
+	private void useSwipeCard(CardInputProcessor inputter) {
 		Application application = Application.getInstance();
 		
 		String symbol = Application.getCurrencySymbol();
@@ -172,7 +172,7 @@ public class NewBarTabAction extends AbstractAction implements CardInputListener
 		}
 	}
 	
-	private void useManualCard(CardInputter inputter) {
+	private void useManualCard(CardInputProcessor inputter) {
 		Application application = Application.getInstance();
 		
 		String symbol = Application.getCurrencySymbol();
