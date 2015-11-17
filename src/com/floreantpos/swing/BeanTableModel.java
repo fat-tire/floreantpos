@@ -62,10 +62,12 @@ public class BeanTableModel<M> extends AbstractTableModel {
 			addRow(row);
 		}
 		fireTableDataChanged();
+		
 	}
 
 	public int getColumnCount() {
 		return columns.size();
+		
 	}
 
 	public int getRowCount() {

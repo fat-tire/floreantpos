@@ -1,8 +1,7 @@
 package com.floreantpos.model;
 
+import java.util.Iterator;
 import java.util.List;
-
-import org.apache.commons.lang.StringUtils;
 
 import com.floreantpos.model.base.BaseTableBookingInfo;
 
@@ -25,33 +24,36 @@ public class TableBookingInfo extends BaseTableBookingInfo {
 	public String toString() {
 		return getId().toString();
 	}
-
-	private String bookedTables;
+	
+	private String bookedTableNumbers;
 
 	/**
-	 * @return the bookedTables
+	 * @return table numbers as comma separated string.
 	 */
-	public String getBookedTables() {
+	public String getBookedTableNumbers() {
+		if(bookedTableNumbers != null) {
+			return bookedTableNumbers;
+		}
+		
 		List<ShopTable> shopTables = getTables();
 		if(shopTables == null || shopTables.isEmpty()) {
 			return null;
 		}
-		bookedTables=String.valueOf("");
-		for (ShopTable table : shopTables) {
-			bookedTables += table + String.valueOf(",");
+		String tableNumbers = "";
+		
+		for (Iterator iterator = shopTables.iterator(); iterator.hasNext();) {
+			ShopTable shopTable = (ShopTable) iterator.next();
+			tableNumbers += shopTable.getTableNumber();
+			
+			if(iterator.hasNext()) {
+				tableNumbers += ", ";
+			}
 		}
-
-		if(StringUtils.endsWith(bookedTables, String.valueOf(","))) {
-			bookedTables = StringUtils.removeEnd(bookedTables, String.valueOf(","));
-		}
-		return bookedTables;
+		
+		return tableNumbers;
 	}
-
-	/**
-	 * @param bookedTables the bookedTables to set
-	 */
-	public void setBookedTables(String bookedTables) {
-		this.bookedTables = bookedTables;
+	
+	public void setBookedTableNumbers(String bookTableNumbers) {
+		this.bookedTableNumbers = bookTableNumbers;
 	}
-
 }

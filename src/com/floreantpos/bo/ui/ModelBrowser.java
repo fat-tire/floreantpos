@@ -21,6 +21,7 @@ import net.miginfocom.swing.MigLayout;
 import org.jdesktop.swingx.JXTable;
 
 import com.floreantpos.Messages;
+import com.floreantpos.bo.ui.CustomCellRenderer;
 import com.floreantpos.main.Application;
 import com.floreantpos.swing.BeanTableModel;
 import com.floreantpos.ui.BeanEditor;
@@ -60,10 +61,8 @@ public class ModelBrowser<E> extends JPanel implements ActionListener, ListSelec
 
 	public void init(TableModel tableModel) {
 		browserTable = new JXTable();
-
 		browserTable.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		browserTable.getSelectionModel().addListSelectionListener(this);
-
 		browserTable.setDefaultRenderer(Date.class, new CustomCellRenderer());
 
 		if (tableModel != null) {
@@ -153,18 +152,19 @@ public class ModelBrowser<E> extends JPanel implements ActionListener, ListSelec
 					break;
 
 				case EDIT:
+					beanEditor.edit();
 					beanEditor.setFieldsEnable(true);
 					btnNew.setEnabled(false);
 					btnEdit.setEnabled(false);
 					btnSave.setEnabled(true);
 					btnDelete.setEnabled(false);
 					btnCancel.setEnabled(true);
-					beanEditor.setEditMode(true);
+					
 					break;
 
 				case CANCEL:
 					beanEditor.cancel();
-					beanEditor.setBean(null);
+					//beanEditor.setBean(null);
 					beanEditor.setFieldsEnable(false);
 					btnNew.setEnabled(true);
 					btnEdit.setEnabled(false);
@@ -181,7 +181,6 @@ public class ModelBrowser<E> extends JPanel implements ActionListener, ListSelec
 						btnSave.setEnabled(false);
 						btnDelete.setEnabled(false);
 						btnCancel.setEnabled(false);
-
 						refreshTable();
 					}
 					break;
@@ -234,13 +233,14 @@ public class ModelBrowser<E> extends JPanel implements ActionListener, ListSelec
 		btnSave.setEnabled(false);
 		btnDelete.setEnabled(true);
 		btnCancel.setEnabled(false);
-		beanEditor.setFieldsEnable(false);
+		
 	}
 
 	public void setModels(List<E> models) {
 		BeanTableModel<E> tableModel = (BeanTableModel<E>) browserTable.getModel();
 		tableModel.removeAll();
 		tableModel.addRows(models);
+		
 	}
 
 }
