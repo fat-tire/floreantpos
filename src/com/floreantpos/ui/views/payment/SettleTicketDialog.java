@@ -24,8 +24,6 @@ import com.floreantpos.POSConstants;
 import com.floreantpos.PosException;
 import com.floreantpos.config.CardConfig;
 import com.floreantpos.config.TerminalConfig;
-import com.floreantpos.extension.AuthorizeNetGatewayPlugin;
-import com.floreantpos.extension.MercuryGatewayPlugin;
 import com.floreantpos.extension.PaymentGatewayPlugin;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.CardReader;
