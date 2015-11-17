@@ -22,6 +22,10 @@ public abstract class BeanEditor<E> extends com.floreantpos.swing.TransparentPan
 	public void createNew() {
 
 	}
+	
+	public void edit() {
+		
+	}
 
 	public void clearFields() {
 
