@@ -152,26 +152,30 @@ public class TicketAuthorizationDialog extends POSDialog {
 	}
 
 	private void authorizeSwipeCard(PosTransaction transaction) throws Exception {
-		double authorizedAmount = transaction.calculateAuthorizeAmount();
-		double totalAmount = transaction.getAmount();
+//		double authorizedAmount = transaction.calculateAuthorizeAmount();
+//		double totalAmount = transaction.getAmount();
 
 		CardProcessor cardProcessor = CardConfig.getPaymentGateway().getProcessor();
+		cardProcessor.captureAuthorizedAmount(transaction);
+		transaction.setCaptured(true);
+
+		PosTransactionDAO.getInstance().saveOrUpdate(transaction);
 		
-		if (totalAmount > authorizedAmount) {
-			cardProcessor.voidAmount(transaction);
-			cardProcessor.captureNewAmount(transaction);
-
-			transaction.setCaptured(true);
-
-			PosTransactionDAO.getInstance().saveOrUpdate(transaction);
-		}
-		else {
-			cardProcessor.captureAuthorizedAmount(transaction);
-
-			transaction.setCaptured(true);
-
-			//PosTransactionDAO.getInstance().saveOrUpdate(transaction);
-		}
+//		if (totalAmount > authorizedAmount) {
+//			cardProcessor.voidAmount(transaction);
+//			cardProcessor.captureNewAmount(transaction);
+//
+//			transaction.setCaptured(true);
+//
+//			PosTransactionDAO.getInstance().saveOrUpdate(transaction);
+//		}
+//		else {
+//			cardProcessor.captureAuthorizedAmount(transaction);
+//
+//			transaction.setCaptured(true);
+//
+//			PosTransactionDAO.getInstance().saveOrUpdate(transaction);
+//		}
 	}
 
 	private void doEditTips() {
