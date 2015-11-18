@@ -45,7 +45,7 @@
 			<one-to-many class="MenuItemModifierGroup" />
 		</bag>
 		
-		<bag cascade="save-update" inverse="true" name="terminals" lazy="false" table="MENU_ITEM_TERMINAL_REF">
+		<bag cascade="save-update" inverse="false" name="terminals" lazy="false" table="MENU_ITEM_TERMINAL_REF">
 			<key column="MENU_ITEM_ID"/>
 			<many-to-many class="Terminal" column="TERMINAL_ID"/>
 		</bag>

@@ -19,6 +19,7 @@ import javax.swing.AbstractButton;
 import javax.swing.SwingConstants;
 
 import com.floreantpos.PosException;
+import com.floreantpos.main.Application;
 import com.floreantpos.model.MenuGroup;
 import com.floreantpos.model.MenuItem;
 import com.floreantpos.model.dao.MenuItemDAO;
@@ -59,7 +60,7 @@ public class MenuItemView extends SelectionView {
 
 		MenuItemDAO dao = new MenuItemDAO();
 		try {
-			List<MenuItem> items = dao.findByParent(menuGroup, false);
+			List<MenuItem> items = dao.findByParent(Application.getInstance().getTerminal(), menuGroup, false);
 			setBackEnable(items.size() > 0);
 			
 			setItems(items);
