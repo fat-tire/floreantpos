@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import javax.swing.JOptionPane;
+
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -92,12 +94,42 @@ public class ShopTableDAO extends BaseShopTableDAO {
 
 			for (ShopTable shopTable : tables) {
 				shopTable.setServing(true);
-				saveOrUpdate(shopTable);
+				saveOrUpdate(shopTable, session);
 			}
 
 			tx.commit();
 		} catch (Exception e) {
 			tx.rollback();
+			LogFactory.getLog(ShopTableDAO.class).error(e);
+			throw new RuntimeException(e);
+		} finally {
+			closeSession(session);
+		}
+	}
+	
+	public void bookTables(List<ShopTable> tables) {
+		if (tables == null)
+			return;
+
+		Session session = null;
+		Transaction tx = null;
+		
+
+		try {
+			session = createNewSession();
+			tx = session.beginTransaction();
+
+			for (ShopTable shopTable : tables) {
+				shopTable.setBooked(true);
+				shopTable.setFree(false);
+				session.saveOrUpdate(shopTable);
+			}
+
+			tx.commit();
+			JOptionPane.showMessageDialog(null, "Success");
+		} catch (Exception e) {
+			tx.rollback();
+			JOptionPane.showMessageDialog(null, "", "Error", JOptionPane.ERROR_MESSAGE);
 			LogFactory.getLog(ShopTableDAO.class).error(e);
 			throw new RuntimeException(e);
 		} finally {
@@ -121,7 +153,7 @@ public class ShopTableDAO extends BaseShopTableDAO {
 			for (ShopTable shopTable : tables) {
 				shopTable.setServing(false);
 				shopTable.setBooked(false);
-				saveOrUpdate(shopTable);
+				saveOrUpdate(shopTable, session);
 			}
 
 			tx.commit();

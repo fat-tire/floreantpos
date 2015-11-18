@@ -15,6 +15,7 @@ import com.floreantpos.PosException;
 import com.floreantpos.model.MenuGroup;
 import com.floreantpos.model.MenuItem;
 import com.floreantpos.model.MenuItemModifierGroup;
+import com.floreantpos.model.Terminal;
 
 public class MenuItemDAO extends BaseMenuItemDAO {
 
@@ -53,13 +54,14 @@ public class MenuItemDAO extends BaseMenuItemDAO {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<MenuItem> findByParent(MenuGroup group, boolean includeInvisibleItems) throws PosException {
+	public List<MenuItem> findByParent(Terminal terminal, MenuGroup group, boolean includeInvisibleItems) throws PosException {
 		Session session = null;
 
 		try {
 			session = getSession();
 			Criteria criteria = session.createCriteria(getReferenceClass());
 			criteria.add(Restrictions.eq(MenuItem.PROP_PARENT, group));
+			//
 			criteria.addOrder(Order.asc(MenuItem.PROP_SORT_ORDER));
 
 			if (!includeInvisibleItems) {

@@ -13,7 +13,7 @@
 		<property column="TO_DATE" index="toDate" name="toDate"
 			type="java.util.Date" />
 		<property column="GUEST_COUNT" name="guestCount" type="java.lang.Integer" />
-		<property column="CURRENT_STATUS" name="currentStatus" type="string"
+		<property column="STATUS" name="status" type="string"
 			length="30" />
 		<property column="PAYMENT_STATUS" name="paymentStatus" type="string"
 			length="30" />
@@ -28,7 +28,7 @@
 		<!-- Associations -->
 
 
-		<bag name="tables" cascade="all" inverse="false" lazy="false"
+		<bag name="tables" cascade="none" inverse="false" lazy="false" 
 			table="TABLE_BOOKING_MAPPING">
 			<key column="BOOKING_ID" />
 			<many-to-many column="TABLE_ID" class="com.floreantpos.model.ShopTable" />

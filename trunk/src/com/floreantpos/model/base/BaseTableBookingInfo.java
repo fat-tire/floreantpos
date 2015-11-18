@@ -15,19 +15,19 @@ import java.io.Serializable;
 
 public abstract class BaseTableBookingInfo  implements Comparable, Serializable {
 
-	public static String REF = "TableBookingInfo"; //$NON-NLS-1$
-	public static String PROP_CUSTOMER = "customer"; //$NON-NLS-1$
-	public static String PROP_USER = "user"; //$NON-NLS-1$
-	public static String PROP_TO_DATE = "toDate"; //$NON-NLS-1$
-	public static String PROP_GUEST_COUNT = "guestCount"; //$NON-NLS-1$
-	public static String PROP_CURRENT_STATUS = "currentStatus"; //$NON-NLS-1$
-	public static String PROP_FROM_DATE = "fromDate"; //$NON-NLS-1$
-	public static String PROP_ID = "id"; //$NON-NLS-1$
-	public static String PROP_BOOKING_CONFIRM = "bookingConfirm"; //$NON-NLS-1$
-	public static String PROP_PAID_AMOUNT = "paidAmount"; //$NON-NLS-1$
-	public static String PROP_TOTAL_AMOUUNT = "totalAmouunt"; //$NON-NLS-1$
-	public static String PROP_PAYMENT_STATUS = "paymentStatus"; //$NON-NLS-1$
-	public static String PROP_BOOKING_TYPE = "bookingType"; //$NON-NLS-1$
+	public static String REF = "TableBookingInfo";
+	public static String PROP_CUSTOMER = "customer";
+	public static String PROP_USER = "user";
+	public static String PROP_STATUS = "status";
+	public static String PROP_TO_DATE = "toDate";
+	public static String PROP_GUEST_COUNT = "guestCount";
+	public static String PROP_FROM_DATE = "fromDate";
+	public static String PROP_ID = "id";
+	public static String PROP_BOOKING_CONFIRM = "bookingConfirm";
+	public static String PROP_PAID_AMOUNT = "paidAmount";
+	public static String PROP_TOTAL_AMOUUNT = "totalAmouunt";
+	public static String PROP_PAYMENT_STATUS = "paymentStatus";
+	public static String PROP_BOOKING_TYPE = "bookingType";
 
 
 	// constructors
@@ -56,7 +56,7 @@ public abstract class BaseTableBookingInfo  implements Comparable, Serializable 
 		protected java.util.Date fromDate;
 		protected java.util.Date toDate;
 		protected java.lang.Integer guestCount;
-		protected java.lang.String currentStatus;
+		protected java.lang.String status;
 		protected java.lang.String paymentStatus;
 		protected java.lang.String bookingConfirm;
 		protected java.lang.Integer totalAmouunt;
@@ -132,8 +132,8 @@ public abstract class BaseTableBookingInfo  implements Comparable, Serializable 
 	 * Return the value associated with the column: GUEST_COUNT
 	 */
 	public java.lang.Integer getGuestCount () {
-					return guestCount == null ? Integer.valueOf(0) : guestCount;
-			}
+									return guestCount == null ? Integer.valueOf(0) : guestCount;
+					}
 
 	/**
 	 * Set the value related to the column: GUEST_COUNT
@@ -146,18 +146,18 @@ public abstract class BaseTableBookingInfo  implements Comparable, Serializable 
 
 
 	/**
-	 * Return the value associated with the column: CURRENT_STATUS
+	 * Return the value associated with the column: STATUS
 	 */
-	public java.lang.String getCurrentStatus () {
-					return currentStatus;
+	public java.lang.String getStatus () {
+					return status;
 			}
 
 	/**
-	 * Set the value related to the column: CURRENT_STATUS
-	 * @param currentStatus the CURRENT_STATUS value
+	 * Set the value related to the column: STATUS
+	 * @param status the STATUS value
 	 */
-	public void setCurrentStatus (java.lang.String currentStatus) {
-		this.currentStatus = currentStatus;
+	public void setStatus (java.lang.String status) {
+		this.status = status;
 	}
 
 
@@ -200,8 +200,8 @@ public abstract class BaseTableBookingInfo  implements Comparable, Serializable 
 	 * Return the value associated with the column: TOTAL_AMOUNT
 	 */
 	public java.lang.Integer getTotalAmouunt () {
-					return totalAmouunt == null ? Integer.valueOf(0) : totalAmouunt;
-			}
+									return totalAmouunt == null ? Integer.valueOf(0) : totalAmouunt;
+					}
 
 	/**
 	 * Set the value related to the column: TOTAL_AMOUNT
@@ -217,8 +217,8 @@ public abstract class BaseTableBookingInfo  implements Comparable, Serializable 
 	 * Return the value associated with the column: PAID_AMOUNT
 	 */
 	public java.lang.Integer getPaidAmount () {
-					return paidAmount == null ? Integer.valueOf(0) : paidAmount;
-			}
+									return paidAmount == null ? Integer.valueOf(0) : paidAmount;
+					}
 
 	/**
 	 * Set the value related to the column: PAID_AMOUNT
