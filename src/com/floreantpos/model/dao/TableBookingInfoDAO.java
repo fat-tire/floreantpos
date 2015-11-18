@@ -33,9 +33,9 @@ public class TableBookingInfoDAO extends BaseTableBookingInfoDAO {
 
 			List<TableBookingInfo> list = criteria.list();
 			List<TableBookingInfo> bookings = new ArrayList<TableBookingInfo>();
-			
+
 			for (TableBookingInfo tableBookingInfo : list) {
-				if (DateUtil.between(tableBookingInfo.getFromDate(), tableBookingInfo.getToDate(), startDate)
+				if(DateUtil.between(tableBookingInfo.getFromDate(), tableBookingInfo.getToDate(), startDate)
 						|| DateUtil.between(tableBookingInfo.getFromDate(), tableBookingInfo.getToDate(), endDate)) {
 					bookings.add(tableBookingInfo);
 				}
@@ -44,7 +44,7 @@ public class TableBookingInfoDAO extends BaseTableBookingInfoDAO {
 			Set<ShopTable> bookedTables = new HashSet<ShopTable>();
 			for (TableBookingInfo tableBookingInfo : bookings) {
 				List<ShopTable> tables = tableBookingInfo.getTables();
-				if (tables != null) {
+				if(tables != null) {
 					bookedTables.addAll(tables);
 				}
 			}
@@ -53,7 +53,7 @@ public class TableBookingInfoDAO extends BaseTableBookingInfoDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			if (session != null) {
+			if(session != null) {
 				closeSession(session);
 			}
 		}
@@ -67,6 +67,27 @@ public class TableBookingInfoDAO extends BaseTableBookingInfoDAO {
 		allTables.removeAll(bookedTables);
 
 		return allTables;
+	}
+
+	public List<TableBookingInfo> getAllOpenBookedTable() {
+		Session session = null;
+		try {
+			session = createNewSession();
+			
+			Criteria criteria = session.createCriteria(getReferenceClass());
+			criteria.add(Restrictions.eq(TableBookingInfo.PROP_STATUS, "open"));
+			List list = criteria.list();
+			return list;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				session.close();
+			} catch (Exception e2) {
+			}
+		}
+		return null;
+
 	}
 
 }
