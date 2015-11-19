@@ -467,56 +467,60 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 	}
 
 	private void payUsingCard(String cardName, final double tenderedAmount) throws Exception {
-		//		if (!CardConfig.getMerchantGateway().isCardTypeSupported(cardName)) {
-		//			POSMessageDialog.showError(Application.getPosWindow(), "<html>Card <b>" + cardName + "</b> not supported.</html>");
-		//			return;
-		//		}
+		try {
+			//		if (!CardConfig.getMerchantGateway().isCardTypeSupported(cardName)) {
+			//			POSMessageDialog.showError(Application.getPosWindow(), "<html>Card <b>" + cardName + "</b> not supported.</html>");
+			//			return;
+			//		}
 
-		PaymentGatewayPlugin paymentGateway = CardConfig.getPaymentGateway();
-		if (!paymentGateway.shouldShowCardInputProcessor()) {
+			PaymentGatewayPlugin paymentGateway = CardConfig.getPaymentGateway();
+			if (!paymentGateway.shouldShowCardInputProcessor()) {
 
-			PosTransaction transaction = paymentType.createTransaction();
-			transaction.setTicket(ticket);
+				PosTransaction transaction = paymentType.createTransaction();
+				transaction.setTicket(ticket);
 
-			if (!confirmPayment()) {
+				if (!confirmPayment()) {
+					return;
+				}
+
+				transaction.setCardType(cardName);
+				transaction.setCaptured(false);
+				transaction.setCardMerchantGateway(paymentGateway.getName());
+
+				setTransactionAmounts(transaction);
+
+				paymentGateway.getProcessor().authorizeAmount(transaction);
+
+				settleTicket(transaction);
+
 				return;
 			}
 
-			transaction.setCardType(cardName);
-			transaction.setCaptured(false);
-			transaction.setCardMerchantGateway(paymentGateway.getName());
+			CardReader cardReader = CardConfig.getCardReader();
+			switch (cardReader) {
+				case SWIPE:
+					SwipeCardDialog swipeCardDialog = new SwipeCardDialog(this);
+					swipeCardDialog.pack();
+					swipeCardDialog.open();
+					break;
 
-			setTransactionAmounts(transaction);
+				case MANUAL:
+					ManualCardEntryDialog dialog = new ManualCardEntryDialog(this);
+					dialog.pack();
+					dialog.open();
+					break;
 
-			paymentGateway.getProcessor().authorizeAmount(transaction);
+				case EXTERNAL_TERMINAL:
+					AuthorizationCodeDialog authorizationCodeDialog = new AuthorizationCodeDialog(this);
+					authorizationCodeDialog.pack();
+					authorizationCodeDialog.open();
+					break;
 
-			settleTicket(transaction);
-			
-			return;
-		}
-
-		CardReader cardReader = CardConfig.getCardReader();
-		switch (cardReader) {
-			case SWIPE:
-				SwipeCardDialog swipeCardDialog = new SwipeCardDialog(this);
-				swipeCardDialog.pack();
-				swipeCardDialog.open();
-				break;
-
-			case MANUAL:
-				ManualCardEntryDialog dialog = new ManualCardEntryDialog(this);
-				dialog.pack();
-				dialog.open();
-				break;
-
-			case EXTERNAL_TERMINAL:
-				AuthorizationCodeDialog authorizationCodeDialog = new AuthorizationCodeDialog(this);
-				authorizationCodeDialog.pack();
-				authorizationCodeDialog.open();
-				break;
-
-			default:
-				break;
+				default:
+					break;
+			}
+		} catch (Exception e) {
+			POSMessageDialog.showError(this, e.getMessage(), e);
 		}
 
 	}
