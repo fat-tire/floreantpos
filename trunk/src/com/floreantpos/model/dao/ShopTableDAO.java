@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import javax.swing.JOptionPane;
-
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -33,29 +31,47 @@ public class ShopTableDAO extends BaseShopTableDAO {
 	}
 
 	public int getNextTableNumber() {
-		Session session = getSession();
-		Criteria criteria = session.createCriteria(getReferenceClass());
-		criteria.setProjection(Projections.rowCount());
+		Session session = null;
+		
+		try {
+			session = createNewSession();
+			
+			Criteria criteria = session.createCriteria(getReferenceClass());
+			criteria.setProjection(Projections.rowCount());
 
-		Integer result = (Integer) criteria.uniqueResult();
-
-		return result;
+			return (Integer) criteria.uniqueResult();
+		} finally {
+			closeSession(session);
+		}
 	}
 
 	public ShopTable getByNumber(int tableNumber) {
-		Session session = getSession();
-		Criteria criteria = session.createCriteria(getReferenceClass());
-		criteria.add(Restrictions.eq(ShopTable.PROP_ID, tableNumber));
+		Session session = null;
+		try {
+			session = createNewSession();
+			
+			Criteria criteria = session.createCriteria(getReferenceClass());
+			criteria.add(Restrictions.eq(ShopTable.PROP_ID, tableNumber));
 
-		return (ShopTable) criteria.uniqueResult();
+			return (ShopTable) criteria.uniqueResult();
+		} finally {
+			closeSession(session);
+		}
 	}
 
 	public List<ShopTable> getAllUnassigned() {
-		Session session = getSession();
-		Criteria criteria = session.createCriteria(getReferenceClass());
-		criteria.add(Restrictions.isNull(ShopTable.PROP_FLOOR));
+		Session session = null;
+		
+		try {
+			session = createNewSession();
+			
+			Criteria criteria = session.createCriteria(getReferenceClass());
+			criteria.add(Restrictions.isNull(ShopTable.PROP_FLOOR));
 
-		return criteria.list();
+			return criteria.list();
+		} finally {
+			closeSession(session);
+		}
 	}
 
 	public List<ShopTable> getByNumbers(Collection<Integer> tableNumbers) {
@@ -63,16 +79,23 @@ public class ShopTableDAO extends BaseShopTableDAO {
 			return null;
 		}
 
-		Session session = getSession();
-		Criteria criteria = session.createCriteria(getReferenceClass());
-		Disjunction disjunction = Restrictions.disjunction();
+		Session session = null;
+		
+		try {
+			session = createNewSession();
+			
+			Criteria criteria = session.createCriteria(getReferenceClass());
+			Disjunction disjunction = Restrictions.disjunction();
 
-		for (Integer tableNumber : tableNumbers) {
-			disjunction.add(Restrictions.eq(ShopTable.PROP_ID, tableNumber));
+			for (Integer tableNumber : tableNumbers) {
+				disjunction.add(Restrictions.eq(ShopTable.PROP_ID, tableNumber));
+			}
+			criteria.add(disjunction);
+
+			return criteria.list();
+		} finally {
+			closeSession(session);
 		}
-		criteria.add(disjunction);
-
-		return criteria.list();
 	}
 
 	public List<ShopTable> getTables(Ticket ticket) {
@@ -106,14 +129,13 @@ public class ShopTableDAO extends BaseShopTableDAO {
 			closeSession(session);
 		}
 	}
-	
+
 	public void bookTables(List<ShopTable> tables) {
 		if (tables == null)
 			return;
 
 		Session session = null;
 		Transaction tx = null;
-		
 
 		try {
 			session = createNewSession();
@@ -126,10 +148,8 @@ public class ShopTableDAO extends BaseShopTableDAO {
 			}
 
 			tx.commit();
-			JOptionPane.showMessageDialog(null, "Success");
 		} catch (Exception e) {
 			tx.rollback();
-			JOptionPane.showMessageDialog(null, "", "Error", JOptionPane.ERROR_MESSAGE);
 			LogFactory.getLog(ShopTableDAO.class).error(e);
 			throw new RuntimeException(e);
 		} finally {

@@ -287,7 +287,11 @@ public class PaymentView extends JPanel {
 	}
 
 	private void doFinish(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_doFinish
-		settleTicketView.doSettle();
+		try {
+			settleTicketView.doSettle();
+		} catch (Exception x) {
+			POSMessageDialog.showError(this, x.getMessage(), x);
+		}
 	}//GEN-LAST:event_doFinish
 
 	private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
