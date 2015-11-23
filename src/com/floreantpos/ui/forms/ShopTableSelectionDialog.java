@@ -2,6 +2,7 @@ package com.floreantpos.ui.forms;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.lang.ref.SoftReference;
@@ -24,6 +25,7 @@ public class ShopTableSelectionDialog extends POSDialog {
 	private JComboBox<ShopTable> cbTables;
 	
 	private SoftReference<ShopTableSelectionDialog> instance;
+	private JPanel buttonPanel; 
 //	private JRadioButton rbFree;
 //	private JRadioButton rbServing;
 //	private JRadioButton rbBooked;
@@ -40,7 +42,7 @@ public class ShopTableSelectionDialog extends POSDialog {
 	protected void initUI() {
 		getContentPane().setLayout(new BorderLayout(0, 0));
 		
-		JPanel buttonPanel = new JPanel();
+		buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		getContentPane().add(buttonPanel, BorderLayout.SOUTH);
 		
 		JButton btnOk = new JButton(Messages.getString("ShopTableSelectionDialog.1")); //$NON-NLS-1$
@@ -117,5 +119,17 @@ public class ShopTableSelectionDialog extends POSDialog {
 		}
 		
 		return instance.get();
+	}
+	
+	public JPanel getButtonPanel() {
+		return this.buttonPanel;
+	}
+	
+	public void refresh(){
+		try {
+			cbTables.setModel(new ListComboBoxModel<ShopTable>(ShopTableDAO.getInstance().getAllUnassigned()));
+		} catch (Exception e) {
+			POSMessageDialog.showError(this, Messages.getString("ShopTableSelectionDialog.4"), e); //$NON-NLS-1$
+		}
 	}
 }
