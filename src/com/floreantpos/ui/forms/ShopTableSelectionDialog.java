@@ -25,6 +25,7 @@ public class ShopTableSelectionDialog extends POSDialog {
 	private JComboBox<ShopTable> cbTables;
 	
 	private SoftReference<ShopTableSelectionDialog> instance;
+	private javax.swing.JSeparator jSeparator1;
 	private JPanel buttonPanel; 
 //	private JRadioButton rbFree;
 //	private JRadioButton rbServing;
@@ -52,6 +53,7 @@ public class ShopTableSelectionDialog extends POSDialog {
 				dispose();
 			}
 		});
+		btnOk.setPreferredSize(new Dimension(80, 50));
 		buttonPanel.add(btnOk);
 		
 		JButton btnCancel = new JButton(Messages.getString("ShopTableSelectionDialog.2")); //$NON-NLS-1$
@@ -61,10 +63,12 @@ public class ShopTableSelectionDialog extends POSDialog {
 				dispose();
 			}
 		});
+		btnCancel.setPreferredSize(new Dimension(80, 50));
 		buttonPanel.add(btnCancel);
 		
 		JPanel contentPanel = new JPanel();
-		getContentPane().add(contentPanel, BorderLayout.CENTER);
+		contentPanel.setPreferredSize(new Dimension(132, 65));
+		getContentPane().add(contentPanel, BorderLayout.NORTH);
 		
 		JLabel lblSelectTable = new JLabel(Messages.getString("ShopTableSelectionDialog.3")); //$NON-NLS-1$
 		contentPanel.add(lblSelectTable);
@@ -72,6 +76,9 @@ public class ShopTableSelectionDialog extends POSDialog {
 		cbTables = new JComboBox<ShopTable>();
 		cbTables.setPreferredSize(new Dimension(132, 24));
 		contentPanel.add(cbTables);
+		
+		jSeparator1 = new javax.swing.JSeparator();
+		getContentPane().add(jSeparator1, BorderLayout.CENTER);
 		
 //		JPanel panel = new JPanel();
 //		panel.setBorder(new TitledBorder(null, "Status", TitledBorder.LEADING, TitledBorder.TOP, null, null));
@@ -93,7 +100,7 @@ public class ShopTableSelectionDialog extends POSDialog {
 //		rbDisable = new JRadioButton("Disable");
 //		panel.add(rbDisable);
 		
-		setSize(400, 166);
+		setSize(300, 166);
 		setResizable(false);
 	}
 	
