@@ -32,10 +32,10 @@ public class ShopTableDAO extends BaseShopTableDAO {
 
 	public int getNextTableNumber() {
 		Session session = null;
-		
+
 		try {
 			session = createNewSession();
-			
+
 			Criteria criteria = session.createCriteria(getReferenceClass());
 			criteria.setProjection(Projections.rowCount());
 
@@ -49,7 +49,7 @@ public class ShopTableDAO extends BaseShopTableDAO {
 		Session session = null;
 		try {
 			session = createNewSession();
-			
+
 			Criteria criteria = session.createCriteria(getReferenceClass());
 			criteria.add(Restrictions.eq(ShopTable.PROP_ID, tableNumber));
 
@@ -61,10 +61,10 @@ public class ShopTableDAO extends BaseShopTableDAO {
 
 	public List<ShopTable> getAllUnassigned() {
 		Session session = null;
-		
+
 		try {
 			session = createNewSession();
-			
+
 			Criteria criteria = session.createCriteria(getReferenceClass());
 			criteria.add(Restrictions.isNull(ShopTable.PROP_FLOOR));
 
@@ -75,15 +75,15 @@ public class ShopTableDAO extends BaseShopTableDAO {
 	}
 
 	public List<ShopTable> getByNumbers(Collection<Integer> tableNumbers) {
-		if (tableNumbers == null) {
+		if(tableNumbers == null) {
 			return null;
 		}
 
 		Session session = null;
-		
+
 		try {
 			session = createNewSession();
-			
+
 			Criteria criteria = session.createCriteria(getReferenceClass());
 			Disjunction disjunction = Restrictions.disjunction();
 
@@ -105,7 +105,7 @@ public class ShopTableDAO extends BaseShopTableDAO {
 	public void occupyTables(Ticket ticket) {
 		List<ShopTable> tables = getTables(ticket);
 
-		if (tables == null)
+		if(tables == null)
 			return;
 
 		Session session = null;
@@ -131,8 +131,9 @@ public class ShopTableDAO extends BaseShopTableDAO {
 	}
 
 	public void bookTables(List<ShopTable> tables) {
-		if (tables == null)
+		if(tables == null) {
 			return;
+		}
 
 		Session session = null;
 		Transaction tx = null;
@@ -157,10 +158,38 @@ public class ShopTableDAO extends BaseShopTableDAO {
 		}
 	}
 
+	public void freeTables(List<ShopTable> tables) {
+		if(tables == null) {
+			return;
+		}
+
+		Session session = null;
+		Transaction tx = null;
+
+		try {
+			session = createNewSession();
+			tx = session.beginTransaction();
+
+			for (ShopTable shopTable : tables) {
+				shopTable.setBooked(false);
+				shopTable.setFree(true);
+				session.saveOrUpdate(shopTable);
+			}
+
+			tx.commit();
+		} catch (Exception e) {
+			tx.rollback();
+			LogFactory.getLog(ShopTableDAO.class).error(e);
+			throw new RuntimeException(e);
+		} finally {
+			closeSession(session);
+		}
+	}
+
 	public void releaseTables(Ticket ticket) {
 		List<ShopTable> tables = getTables(ticket);
 
-		if (tables == null)
+		if(tables == null)
 			return;
 
 		Session session = null;
@@ -222,5 +251,4 @@ public class ShopTableDAO extends BaseShopTableDAO {
 		criteria.addOrder(Order.asc(ShopTable.PROP_ID));
 		return criteria.list();
 	}
-
 }

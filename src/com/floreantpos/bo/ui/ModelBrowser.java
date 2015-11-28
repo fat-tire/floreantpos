@@ -65,7 +65,7 @@ public class ModelBrowser<E> extends JPanel implements ActionListener, ListSelec
 		browserTable.getSelectionModel().addListSelectionListener(this);
 		browserTable.setDefaultRenderer(Date.class, new CustomCellRenderer());
 
-		if (tableModel != null) {
+		if(tableModel != null) {
 			browserTable.setModel(tableModel);
 		}
 
@@ -74,7 +74,7 @@ public class ModelBrowser<E> extends JPanel implements ActionListener, ListSelec
 
 		browserPanel.add(new JScrollPane(browserTable));
 
-		if (searchPanel != null) {
+		if(searchPanel != null) {
 			searchPanel.setModelBrowser(this);
 			add(searchPanel, BorderLayout.NORTH);
 		}
@@ -88,7 +88,7 @@ public class ModelBrowser<E> extends JPanel implements ActionListener, ListSelec
 		JPanel buttonPanel = new JPanel();
 
 		JButton additionalButton = getAdditionalButton();
-		if (additionalButton != null) {
+		if(additionalButton != null) {
 			buttonPanel.add(additionalButton);
 			additionalButton.addActionListener(this);
 		}
@@ -159,7 +159,6 @@ public class ModelBrowser<E> extends JPanel implements ActionListener, ListSelec
 					btnSave.setEnabled(true);
 					btnDelete.setEnabled(false);
 					btnCancel.setEnabled(true);
-					
 					break;
 
 				case CANCEL:
@@ -171,10 +170,11 @@ public class ModelBrowser<E> extends JPanel implements ActionListener, ListSelec
 					btnSave.setEnabled(false);
 					btnDelete.setEnabled(false);
 					btnCancel.setEnabled(false);
+					browserTable.clearSelection();
 					break;
 
 				case SAVE:
-					if (beanEditor.save()) {
+					if(beanEditor.save()) {
 						beanEditor.setFieldsEnable(false);
 						btnNew.setEnabled(true);
 						btnEdit.setEnabled(false);
@@ -186,7 +186,7 @@ public class ModelBrowser<E> extends JPanel implements ActionListener, ListSelec
 					break;
 
 				case DELETE:
-					if (beanEditor.delete()) {
+					if(beanEditor.delete()) {
 						beanEditor.setBean(null);
 						beanEditor.setFieldsEnable(false);
 						btnNew.setEnabled(true);
@@ -211,19 +211,19 @@ public class ModelBrowser<E> extends JPanel implements ActionListener, ListSelec
 
 	@Override
 	public void valueChanged(ListSelectionEvent e) {
-		if (e.getValueIsAdjusting()) {
+		if(e.getValueIsAdjusting()) {
 			return;
 		}
 
 		BeanTableModel<E> model = (BeanTableModel<E>) browserTable.getModel();
 		int selectedRow = browserTable.getSelectedRow();
-		if (selectedRow < 0) {
+		if(selectedRow < 0) {
 			return;
 		}
 
 		selectedRow = browserTable.convertRowIndexToModel(selectedRow);
 
-		if (selectedRow < 0)
+		if(selectedRow < 0)
 			return;
 
 		E data = (E) model.getRow(selectedRow);
@@ -233,14 +233,18 @@ public class ModelBrowser<E> extends JPanel implements ActionListener, ListSelec
 		btnSave.setEnabled(false);
 		btnDelete.setEnabled(true);
 		btnCancel.setEnabled(false);
-		
+
 	}
 
 	public void setModels(List<E> models) {
 		BeanTableModel<E> tableModel = (BeanTableModel<E>) browserTable.getModel();
 		tableModel.removeAll();
 		tableModel.addRows(models);
-		
+
+	}
+
+	public BeanEditor<E> getBeanEditor() {
+		return beanEditor;
 	}
 
 }
