@@ -7,6 +7,7 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import com.floreantpos.model.Customer;
@@ -18,6 +19,11 @@ public class CustomerDAO extends BaseCustomerDAO {
 	 */
 	public CustomerDAO() {
 	}
+	
+	@Override
+	public Order getDefaultOrder() {
+		return Order.asc(Customer.PROP_AUTO_ID);
+	}
 
 	public List<Customer> findBy(String phone, String loyalty, String name) {
 		Session session = null;
@@ -28,13 +34,13 @@ public class CustomerDAO extends BaseCustomerDAO {
 			Disjunction disjunction = Restrictions.disjunction();
 
 			if (StringUtils.isNotEmpty(phone))
-				disjunction.add(Restrictions.like(Customer.PROP_TELEPHONE_NO, "%" + phone + "%")); //$NON-NLS-1$ //$NON-NLS-2$
+				disjunction.add(Restrictions.like(Customer.PROP_HOME_PHONE_NO, "%" + phone + "%")); //$NON-NLS-1$ //$NON-NLS-2$
 
 			if (StringUtils.isNotEmpty(loyalty))
 				disjunction.add(Restrictions.like(Customer.PROP_LOYALTY_NO, "%" + loyalty + "%")); //$NON-NLS-1$ //$NON-NLS-2$
 
 			if (StringUtils.isNotEmpty(name))
-				disjunction.add(Restrictions.like(Customer.PROP_NAME, "%" + name + "%")); //$NON-NLS-1$ //$NON-NLS-2$
+				disjunction.add(Restrictions.like(Customer.PROP_FIRST_NAME, "%" + name + "%")); //$NON-NLS-1$ //$NON-NLS-2$
 
 			criteria.add(disjunction);
 
@@ -57,9 +63,7 @@ public class CustomerDAO extends BaseCustomerDAO {
 			
 			
 			if (StringUtils.isNotEmpty(name))
-				criteria.add(Restrictions.ilike(Customer.PROP_NAME, name+"%".trim(),MatchMode.ANYWHERE)); //$NON-NLS-1$ //$NON-NLS-2$
-
-			
+				criteria.add(Restrictions.ilike(Customer.PROP_FIRST_NAME, name+"%".trim(),MatchMode.ANYWHERE)); //$NON-NLS-1$ //$NON-NLS-2$
 
 			return criteria.list();
 

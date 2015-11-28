@@ -562,8 +562,8 @@ public class Ticket extends BaseTicket {
 	
 	public void setCustomer(Customer customer) {
 		addProperty(Ticket.CUSTOMER_ID, String.valueOf(customer.getAutoId()));
-		addProperty(Ticket.CUSTOMER_NAME, customer.getName());
-		addProperty(Ticket.CUSTOMER_PHONE, customer.getTelephoneNo());
+		addProperty(Ticket.CUSTOMER_NAME, customer.getFirstName());
+		addProperty(Ticket.CUSTOMER_PHONE, customer.getHomePhoneNo());
 	}
 	
 	public void removeCustomer() {

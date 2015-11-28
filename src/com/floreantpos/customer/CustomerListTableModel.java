@@ -24,9 +24,9 @@ public class CustomerListTableModel extends ListTableModel<Customer> {
 
 		switch (columnIndex) {
 			case 0:
-				return customer.getTelephoneNo();
+				return customer.getHomePhoneNo();
 			case 1:
-				return customer.getName();
+				return customer.getFirstName();
 
 			case 2:
 				return customer.getDob();
