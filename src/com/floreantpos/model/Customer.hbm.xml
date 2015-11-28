@@ -9,10 +9,15 @@
 		
 		<property name="loyaltyNo" column="LOYALTY_NO" length="30" type="string" />
 		<property name="loyaltyPoint" column="LOYALTY_POINT" type="java.lang.Integer" />
+		<property name="nationalIdNo" column="NATIONAL_ID_NO" length="20" type="java.lang.Long" />
 		<property name="picture" column="PICTURE" not-null="false" type="binary" length="20480" />
-		<property name="telephoneNo" column="TELEPHONE_NO" length="30" type="string" />
+		<property name="homePhoneNo" column="HOMEPHONE_NO" length="30" type="string" />
+		<property name="mobileNo" column="MOBILE_NO" length="30" type="string" />
+		<property name="workPhoneNo" column="WORKPHONE_NO" length="30" type="string" />
 		<property name="email" column="EMAIL" length="40" type="string" />
-		<property name="name" column="NAME" length="60" type="string" />
+		<property name="salutation" column="SALUTATION" length="60" type="string" />
+		<property name="firstName" column="FIRST_NAME" length="60" type="string" />
+		<property name="lastName" column="LAST_NAME" length="60" type="string" />
 		<property name="dob" column="DOB" length="16" type="string" />
 		<property name="ssn" column="SSN" length="30" type="string" />
 		<property name="address" column="ADDRESS" length="120" type="string" />
