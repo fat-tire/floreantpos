@@ -52,6 +52,7 @@ import com.floreantpos.ui.dialog.TransactionCompletionDialog;
 import com.floreantpos.ui.views.SwitchboardView;
 import com.floreantpos.ui.views.TicketDetailView;
 import com.floreantpos.ui.views.order.OrderController;
+import com.floreantpos.util.DrawerUtil;
 import com.floreantpos.util.POSUtil;
 
 public class SettleTicketDialog extends POSDialog implements CardInputListener {
@@ -461,6 +462,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 			}
 
 			ReceiptPrintService.printTransaction(transaction);
+			DrawerUtil.kickDrawer();
 		} catch (Exception ee) {
 			POSMessageDialog.showError(Application.getPosWindow(), com.floreantpos.POSConstants.PRINT_ERROR, ee);
 		}
