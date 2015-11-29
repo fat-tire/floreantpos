@@ -3,7 +3,6 @@ package com.floreantpos.util;
 import jssc.SerialPort;
 import jssc.SerialPortException;
 
-import com.floreantpos.Messages;
 import com.floreantpos.config.TerminalConfig;
 
 public class DrawerUtil {
@@ -60,7 +59,7 @@ public class DrawerUtil {
 	public static final char USA = ARGUMENT_1;
 	public static final char BRAZIL = ARGUMENT_25;
 	public static SerialPort serialPort;
-	
+
 	private static char[] controlCodes;
 
 	public void close() {
@@ -169,17 +168,26 @@ public class DrawerUtil {
 		//print(ESC);
 		//print(AT);
 
-//		print((char) 27);
-//		print((char) 112);
-//		print((char) 0);
-//		print((char) 100);
-//		print((char) 250);
-		
-		print(controlCodes[0]);
-		print(controlCodes[1]);
-		print(controlCodes[2]);
-		print(controlCodes[3]);
-		print(controlCodes[4]);
+		//		print((char) 27);
+		//		print((char) 112);
+		//		print((char) 0);
+		//		print((char) 100);
+		//		print((char) 250);
+
+		if (controlCodes.length >= 5) {
+			print(controlCodes[0]);
+			print(controlCodes[1]);
+			print(controlCodes[2]);
+			print(controlCodes[3]);
+			print(controlCodes[4]);
+		}
+		else {
+			print((char) 27);
+			print((char) 112);
+			print((char) 0);
+			print((char) 25);
+			print((char) 250);
+		}
 
 		/*	
 		print(ESC);
@@ -299,7 +307,7 @@ public class DrawerUtil {
 
 		kickDrawer(portName, codesArray);
 	}
-	
+
 	public static void kickDrawer(String portName, char[] codes) {
 		DrawerUtil.controlCodes = codes;
 		serialPort = new SerialPort(portName);

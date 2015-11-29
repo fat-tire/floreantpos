@@ -462,7 +462,10 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 			}
 
 			ReceiptPrintService.printTransaction(transaction);
-			DrawerUtil.kickDrawer();
+			
+			if(transaction instanceof CashTransaction) {
+				DrawerUtil.kickDrawer();
+			}
 		} catch (Exception ee) {
 			POSMessageDialog.showError(Application.getPosWindow(), com.floreantpos.POSConstants.PRINT_ERROR, ee);
 		}
