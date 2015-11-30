@@ -136,39 +136,8 @@ public class TicketAuthorizationDialog extends POSDialog {
 			return;
 		}
 
-		AuthorizationDialog authorizingDialog = new AuthorizationDialog(TicketAuthorizationDialog.this) {
-
-			@Override
-			protected void doInBackground() throws Exception {
-				for (PosTransaction transaction : transactions) {
-					CardProcessor cardProcessor = CardConfig.getPaymentGateway().getProcessor();
-					cardProcessor.captureAuthorizedAmount(transaction);
-					if(transaction.isCaptured()) {
-						PosTransactionDAO.getInstance().saveOrUpdate(transaction);
-						setStatus("Authorizing transaction id # " + transaction.getId() + " : Success\n", Color.black);
-					}
-					else {
-						setStatus("Authorizing transaction id # " + transaction.getId() + " : Failed\n", Color.red);
-					}
-					Thread.sleep(6000);
-				}
-			}
-
-			@Override
-			protected void done() {
-				POSMessageDialog.showMessage(Application.getPosWindow(), Messages.getString("TicketAuthorizationDialog.7")); //$NON-NLS-1$
-				updateTransactiontList();
-				setVisible(false);
-			}
-		};
-
-		try {
-			authorizingDialog.startAuthorizing();
-		} catch (Exception e) {
-			POSMessageDialog.showError(Application.getPosWindow(), e.getMessage(), e);
-		} finally {
-			authorizingDialog.dispose();
-		}
+		AuthorizationDialog authorizingDialog = new AuthorizationDialog(TicketAuthorizationDialog.this, transactions);
+		authorizingDialog.setVisible(true);
 	}
 
 	private void authorizeSwipeCard(PosTransaction transaction) throws Exception {
