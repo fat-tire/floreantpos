@@ -3,24 +3,30 @@ package com.floreantpos.ui.views.payment;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
-import javax.swing.SwingWorker;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
 import com.floreantpos.Messages;
+import com.floreantpos.config.CardConfig;
+import com.floreantpos.model.PosTransaction;
+import com.floreantpos.model.dao.PosTransactionDAO;
 
-public abstract class AuthorizationDialog extends JDialog {
-	private final SwingWorker<Void, Void> worker = new AuthorizingProcess();
+public class AuthorizationDialog extends JDialog implements Runnable {
 	JTextArea txtStatus = new JTextArea();
 
-	public AuthorizationDialog(JDialog parent) {
+	private List<PosTransaction> transactions;
+
+	public AuthorizationDialog(JDialog parent, List<PosTransaction> transactions) {
 		super(parent, false);
+		this.transactions = transactions;
+
 		setLayout(new BorderLayout(10, 10));
 		setTitle(Messages.getString("PaymentProcessWaitDialog.0")); //$NON-NLS-1$
 
@@ -32,7 +38,6 @@ public abstract class AuthorizationDialog extends JDialog {
 		txtStatus.setEditable(false);
 		txtStatus.setBorder(BorderFactory.createCompoundBorder(new EmptyBorder(10, 10, 10, 10), new LineBorder(Color.black)));
 		txtStatus.setFont(label.getFont().deriveFont(Font.BOLD));
-		txtStatus.setBackground(Color.white);
 		add(txtStatus, BorderLayout.CENTER);
 
 		setSize(500, 400);
@@ -40,41 +45,39 @@ public abstract class AuthorizationDialog extends JDialog {
 		setLocationRelativeTo(parent);
 	}
 
-	public void startAuthorizing() {
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				before();
-			}
-		});
+	@Override
+	public void setVisible(boolean b) {
+		if (b) {
+			SwingUtilities.invokeLater(this);
+		}
 
-		worker.execute();
-	}
-
-	protected void before() {
-		setVisible(true);
+		super.setVisible(b);
 	}
 
 	public void setStatus(String status, Color color) {
 		txtStatus.append(status);
-		txtStatus.setForeground(color);
 	}
 
-	protected abstract void doInBackground() throws Exception;
+	@Override
+	public void run() {
+		for (PosTransaction transaction : transactions) {
+			try {
+				CardProcessor cardProcessor = CardConfig.getPaymentGateway().getProcessor();
+				cardProcessor.captureAuthorizedAmount(transaction);
+				if (transaction.isCaptured()) {
+					PosTransactionDAO.getInstance().saveOrUpdate(transaction);
+					setStatus("Authorizing transaction id # " + transaction.getId() + " : Success\n", Color.black);
+				} else {
 
-	protected abstract void done();
+				}
+				Thread.sleep(6000);
 
-	private class AuthorizingProcess extends SwingWorker<Void, Void> {
-		@Override
-		protected Void doInBackground() throws Exception {
-			AuthorizationDialog.this.doInBackground();
+			} catch (InterruptedException x) {
 
-			return null;
+			} catch (Exception e) {
+				setStatus("Authorizing transaction id # " + transaction.getId() + " : Failed. " + e.getMessage(), Color.red);
+			}
 		}
 
-		@Override
-		protected void done() {
-			AuthorizationDialog.this.done();
-		}
 	}
 }
