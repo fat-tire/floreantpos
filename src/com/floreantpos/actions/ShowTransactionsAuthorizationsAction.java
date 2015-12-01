@@ -5,7 +5,7 @@ import javax.swing.JDialog;
 import com.floreantpos.POSConstants;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.UserPermission;
-import com.floreantpos.ui.dialog.TicketAuthorizationDialog;
+import com.floreantpos.ui.views.payment.AuthorizableTicketBrowser;
 
 public class ShowTransactionsAuthorizationsAction extends PosAction {
 
@@ -15,7 +15,7 @@ public class ShowTransactionsAuthorizationsAction extends PosAction {
 
 	@Override
 	public void execute() {
-		TicketAuthorizationDialog dialog = new TicketAuthorizationDialog(Application.getPosWindow());
+		AuthorizableTicketBrowser dialog = new AuthorizableTicketBrowser(Application.getPosWindow());
     	dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
     	dialog.setSize(800, 600);
     	dialog.setLocationRelativeTo(Application.getPosWindow());

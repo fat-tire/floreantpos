@@ -1,7 +1,6 @@
-package com.floreantpos.ui.dialog;
+package com.floreantpos.ui.views.payment;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
@@ -13,14 +12,10 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-import org.apache.commons.lang.StringUtils;
-
 import com.floreantpos.Messages;
 import com.floreantpos.actions.ActionCommand;
 import com.floreantpos.actions.CloseDialogAction;
-import com.floreantpos.config.CardConfig;
 import com.floreantpos.main.Application;
-import com.floreantpos.model.CardReader;
 import com.floreantpos.model.PosTransaction;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.User;
@@ -30,20 +25,20 @@ import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.ui.TitlePanel;
 import com.floreantpos.ui.TransactionListView;
-import com.floreantpos.ui.views.payment.AuthorizationDialog;
-import com.floreantpos.ui.views.payment.CardProcessor;
-import com.floreantpos.ui.views.payment.PaymentProcessWaitDialog;
+import com.floreantpos.ui.dialog.NumberSelectionDialog2;
+import com.floreantpos.ui.dialog.POSDialog;
+import com.floreantpos.ui.dialog.POSMessageDialog;
 
-public class TicketAuthorizationDialog extends POSDialog {
+public class AuthorizableTicketBrowser extends POSDialog {
 	private TransactionListView listView = new TransactionListView();
 
-	public TicketAuthorizationDialog(JDialog parent) {
+	public AuthorizableTicketBrowser(JDialog parent) {
 		super();
 
 		init();
 	}
 
-	public TicketAuthorizationDialog(JFrame parent) {
+	public AuthorizableTicketBrowser(JFrame parent) {
 		super();
 
 		init();
@@ -83,7 +78,7 @@ public class TicketAuthorizationDialog extends POSDialog {
 	}
 
 	private boolean confirmAuthorize(String message) {
-		int option = JOptionPane.showConfirmDialog(TicketAuthorizationDialog.this, message,
+		int option = JOptionPane.showConfirmDialog(AuthorizableTicketBrowser.this, message,
 				Messages.getString("TicketAuthorizationDialog.1"), JOptionPane.OK_CANCEL_OPTION); //$NON-NLS-1$
 		if(option == JOptionPane.OK_OPTION) {
 			return true;
@@ -96,7 +91,7 @@ public class TicketAuthorizationDialog extends POSDialog {
 		List<PosTransaction> transactions = listView.getSelectedTransactions();
 
 		if(transactions == null || transactions.size() == 0) {
-			POSMessageDialog.showMessage(TicketAuthorizationDialog.this, Messages.getString("TicketAuthorizationDialog.2")); //$NON-NLS-1$
+			POSMessageDialog.showMessage(AuthorizableTicketBrowser.this, Messages.getString("TicketAuthorizationDialog.2")); //$NON-NLS-1$
 			return;
 		}
 
@@ -104,31 +99,17 @@ public class TicketAuthorizationDialog extends POSDialog {
 			return;
 		}
 
-		PaymentProcessWaitDialog waitDialog = new PaymentProcessWaitDialog(TicketAuthorizationDialog.this);
-		waitDialog.setVisible(true);
-
-		try {
-
-			for (PosTransaction transaction : transactions) {
-				authorizeTransaction(transaction);
-				Thread.sleep(6000);
-			}
-
-			POSMessageDialog.showMessage(Application.getPosWindow(), Messages.getString("TicketAuthorizationDialog.4")); //$NON-NLS-1$
-			updateTransactiontList();
-
-		} catch (Exception e) {
-			POSMessageDialog.showError(Application.getPosWindow(), e.getMessage(), e);
-		} finally {
-			waitDialog.setVisible(false);
-		}
+		AuthorizationDialog authorizingDialog = new AuthorizationDialog(AuthorizableTicketBrowser.this, transactions);
+		authorizingDialog.setVisible(true);
+		
+		updateTransactiontList();
 	}
 
 	public void doAuthorizeAll() {
 		final List<PosTransaction> transactions = listView.getAllTransactions();
 
 		if(transactions == null || transactions.size() == 0) {
-			POSMessageDialog.showMessage(TicketAuthorizationDialog.this, Messages.getString("TicketAuthorizationDialog.5")); //$NON-NLS-1$
+			POSMessageDialog.showMessage(AuthorizableTicketBrowser.this, Messages.getString("TicketAuthorizationDialog.5")); //$NON-NLS-1$
 			return;
 		}
 
@@ -136,35 +117,10 @@ public class TicketAuthorizationDialog extends POSDialog {
 			return;
 		}
 
-		AuthorizationDialog authorizingDialog = new AuthorizationDialog(TicketAuthorizationDialog.this, transactions);
+		AuthorizationDialog authorizingDialog = new AuthorizationDialog(AuthorizableTicketBrowser.this, transactions);
 		authorizingDialog.setVisible(true);
-	}
-
-	private void authorizeSwipeCard(PosTransaction transaction) throws Exception {
-		//		double authorizedAmount = transaction.calculateAuthorizeAmount();
-		//		double totalAmount = transaction.getAmount();
-
-		CardProcessor cardProcessor = CardConfig.getPaymentGateway().getProcessor();
-		cardProcessor.captureAuthorizedAmount(transaction);
-		transaction.setCaptured(true);
-
-		PosTransactionDAO.getInstance().saveOrUpdate(transaction);
-
-		//		if (totalAmount > authorizedAmount) {
-		//			cardProcessor.voidAmount(transaction);
-		//			cardProcessor.captureNewAmount(transaction);
-		//
-		//			transaction.setCaptured(true);
-		//
-		//			PosTransactionDAO.getInstance().saveOrUpdate(transaction);
-		//		}
-		//		else {
-		//			cardProcessor.captureAuthorizedAmount(transaction);
-		//
-		//			transaction.setCaptured(true);
-		//
-		//			PosTransactionDAO.getInstance().saveOrUpdate(transaction);
-		//		}
+		
+		updateTransactiontList();
 	}
 
 	private void doEditTips() {
@@ -184,7 +140,7 @@ public class TicketAuthorizationDialog extends POSDialog {
 		}
 
 		final double oldTipsAmount = transaction.getTipsAmount();
-		final double newTipsAmount = NumberSelectionDialog2.show(TicketAuthorizationDialog.this,
+		final double newTipsAmount = NumberSelectionDialog2.show(AuthorizableTicketBrowser.this,
 				Messages.getString("TicketAuthorizationDialog.8"), oldTipsAmount); //$NON-NLS-1$
 
 		if(Double.isNaN(newTipsAmount))
@@ -214,33 +170,6 @@ public class TicketAuthorizationDialog extends POSDialog {
 		updateTransactiontList();
 	}
 
-	private void authorizeTransaction(PosTransaction transaction) throws Exception {
-		String cardEntryType = transaction.getCardReader();
-		if(StringUtils.isEmpty(cardEntryType)) {
-			//			POSMessageDialog.showError(Application.getPosWindow(), Messages.getString("TicketAuthorizationDialog.9") + transaction.getId() + Messages.getString("TicketAuthorizationDialog.10")); //$NON-NLS-1$ //$NON-NLS-2$
-			authorizeSwipeCard(transaction);
-			return;
-		}
-
-		CardReader cardReader = CardReader.valueOf(cardEntryType);
-
-		switch (cardReader) {
-		case SWIPE:
-		case MANUAL:
-			authorizeSwipeCard(transaction);
-			break;
-
-		case EXTERNAL_TERMINAL:
-			transaction.setCaptured(true);
-			PosTransactionDAO.getInstance().saveOrUpdate(transaction);
-			break;
-
-		default:
-			authorizeSwipeCard(transaction);
-			break;
-		}
-	}
-
 	class ActionHandler implements ActionListener {
 
 		@Override
@@ -265,7 +194,7 @@ public class TicketAuthorizationDialog extends POSDialog {
 					break;
 				}
 			} catch (Exception e2) {
-				POSMessageDialog.showError(TicketAuthorizationDialog.this, e2.getMessage(), e2);
+				POSMessageDialog.showError(AuthorizableTicketBrowser.this, e2.getMessage(), e2);
 			}
 		}
 	}
