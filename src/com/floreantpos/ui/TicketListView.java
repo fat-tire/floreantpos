@@ -104,7 +104,7 @@ public class TicketListView extends JPanel implements ITicketList {
 		createActionHandlers();
 
 		PosScrollPane scrollPane = new PosScrollPane(table, PosScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, PosScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		
+
 		JPanel topButtonPanel = new JPanel(new MigLayout("ins 0", "grow", ""));
 		ColumnControlButton controlButton = new ColumnControlButton(table);
 		topButtonPanel.add(controlButton, "h 40!, grow, wrap");
@@ -132,7 +132,7 @@ public class TicketListView extends JPanel implements ITicketList {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (tableModel.hasPrevious()) {
+				if(tableModel.hasPrevious()) {
 					List<Ticket> tickets = TicketDAO.getInstance().findPreviousTickets(tableModel);
 					tableModel.setRows(tickets);
 				}
@@ -144,7 +144,7 @@ public class TicketListView extends JPanel implements ITicketList {
 		btnNext.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (tableModel.hasNext()) {
+				if(tableModel.hasNext()) {
 					List<Ticket> tickets = TicketDAO.getInstance().findNextTickets(tableModel);
 					tableModel.setRows(tickets);
 				}
@@ -205,7 +205,10 @@ public class TicketListView extends JPanel implements ITicketList {
 		try {
 
 			DataUpdateInfo lastUpdateInfo = DataUpdateInfoDAO.getLastUpdateInfo();
-			this.lastUpdateTime = new Date(lastUpdateInfo.getLastUpdateTime().getTime());
+
+			if(lastUpdateInfo != null) {
+				this.lastUpdateTime = new Date(lastUpdateInfo.getLastUpdateTime().getTime());
+			}
 
 		} catch (Exception e) {
 			POSMessageDialog.showError(this, Messages.getString("SwitchboardView.20"), e); //$NON-NLS-1$
@@ -222,7 +225,7 @@ public class TicketListView extends JPanel implements ITicketList {
 	private class TaskLastUpdateCheck implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			try {
-				if (PosGuiUtil.isModalDialogShowing()) {
+				if(PosGuiUtil.isModalDialogShowing()) {
 					return;
 				}
 
@@ -230,7 +233,7 @@ public class TicketListView extends JPanel implements ITicketList {
 
 				DataUpdateInfo lastUpdateInfo = DataUpdateInfoDAO.getLastUpdateInfo();
 
-				if (lastUpdateInfo.getLastUpdateTime().after(lastUpdateTime)) {
+				if(lastUpdateInfo.getLastUpdateTime().after(lastUpdateTime)) {
 					btnRefresh.setBlinking(true);
 				}
 			} finally {
@@ -252,7 +255,7 @@ public class TicketListView extends JPanel implements ITicketList {
 
 	public Ticket getSelectedTicket() {
 		int selectedRow = table.getSelectedRow();
-		if (selectedRow < 0) {
+		if(selectedRow < 0) {
 			return null;
 		}
 
@@ -281,7 +284,7 @@ public class TicketListView extends JPanel implements ITicketList {
 		public void changeSelection(int rowIndex, int columnIndex, boolean toggle, boolean extend) {
 			ListSelectionModel selectionModel = getSelectionModel();
 			boolean selected = selectionModel.isSelectedIndex(rowIndex);
-			if (selected) {
+			if(selected) {
 				selectionModel.removeSelectionInterval(rowIndex, rowIndex);
 			}
 			else {
@@ -303,65 +306,65 @@ public class TicketListView extends JPanel implements ITicketList {
 			Ticket ticket = (Ticket) rows.get(rowIndex);
 
 			switch (columnIndex) {
-				case 0:
-					return Integer.valueOf(ticket.getId());
+			case 0:
+				return Integer.valueOf(ticket.getId());
 
-				case 1:
-					return ticket.getTableNumbers();
+			case 1:
+				return ticket.getTableNumbers();
 
-				case 2:
-					User owner = ticket.getOwner();
-					return owner.getFirstName();
+			case 2:
+				User owner = ticket.getOwner();
+				return owner.getFirstName();
 
-				case 3:
-					return ticket.getCreateDate();
+			case 3:
+				return ticket.getCreateDate();
 
-				case 4:
-					String customerPhone = ticket.getProperty(Ticket.CUSTOMER_PHONE);
+			case 4:
+				String customerPhone = ticket.getProperty(Ticket.CUSTOMER_PHONE);
 
-					if (customerPhone != null) {
-						return customerPhone;
+				if(customerPhone != null) {
+					return customerPhone;
+				}
+
+				return Messages.getString("TicketListView.6"); //$NON-NLS-1$
+
+			case 5:
+				return ticket.getDeliveryDate();
+
+			case 6:
+				return ticket.getType();
+
+			case 7:
+				String status = ""; //$NON-NLS-1$
+				if(ticket.isPaid()) {
+					status = Messages.getString("TicketListView.8"); //$NON-NLS-1$
+				}
+				else {
+					status = Messages.getString("TicketListView.9"); //$NON-NLS-1$
+				}
+
+				if(ticket.getType() == OrderType.HOME_DELIVERY) {
+					if(ticket.getAssignedDriver() == null) {
+						status += Messages.getString("TicketListView.10"); //$NON-NLS-1$
 					}
 
-					return Messages.getString("TicketListView.6"); //$NON-NLS-1$
+					status += Messages.getString("TicketListView.11"); //$NON-NLS-1$
+				}
 
-				case 5:
-					return ticket.getDeliveryDate();
+				if(ticket.isVoided()) {
+					status = Messages.getString("TicketListView.12"); //$NON-NLS-1$
+				}
+				else if(ticket.isClosed()) {
+					status += Messages.getString("TicketListView.13"); //$NON-NLS-1$
+				}
 
-				case 6:
-					return ticket.getType();
+				return status;
 
-				case 7:
-					String status = ""; //$NON-NLS-1$
-					if (ticket.isPaid()) {
-						status = Messages.getString("TicketListView.8"); //$NON-NLS-1$
-					}
-					else {
-						status = Messages.getString("TicketListView.9"); //$NON-NLS-1$
-					}
+			case 8:
+				return ticket.getTotalAmount();
 
-					if (ticket.getType() == OrderType.HOME_DELIVERY) {
-						if (ticket.getAssignedDriver() == null) {
-							status += Messages.getString("TicketListView.10"); //$NON-NLS-1$
-						}
-
-						status += Messages.getString("TicketListView.11"); //$NON-NLS-1$
-					}
-
-					if (ticket.isVoided()) {
-						status = Messages.getString("TicketListView.12"); //$NON-NLS-1$
-					}
-					else if (ticket.isClosed()) {
-						status += Messages.getString("TicketListView.13"); //$NON-NLS-1$
-					}
-
-					return status;
-
-				case 8:
-					return ticket.getTotalAmount();
-
-				case 9:
-					return ticket.getDueAmount();
+			case 9:
+				return ticket.getDueAmount();
 
 			}
 
@@ -373,7 +376,7 @@ public class TicketListView extends JPanel implements ITicketList {
 	public Ticket getFirstSelectedTicket() {
 		List<Ticket> selectedTickets = getSelectedTickets();
 
-		if (selectedTickets.size() == 0 || selectedTickets.size() > 1) {
+		if(selectedTickets.size() == 0 || selectedTickets.size() > 1) {
 			POSMessageDialog.showMessage(Messages.getString("TicketListView.14")); //$NON-NLS-1$
 			return null;
 		}
@@ -385,7 +388,7 @@ public class TicketListView extends JPanel implements ITicketList {
 
 	public int getFirstSelectedTicketId() {
 		Ticket ticket = getFirstSelectedTicket();
-		if (ticket == null) {
+		if(ticket == null) {
 			return -1;
 		}
 
@@ -406,7 +409,7 @@ public class TicketListView extends JPanel implements ITicketList {
 	}
 
 	public void setAutoUpdateCheck(boolean check) {
-		if (check) {
+		if(check) {
 			lastUpateCheckTimer.restart();
 		}
 		else {

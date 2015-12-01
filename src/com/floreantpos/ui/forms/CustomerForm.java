@@ -11,8 +11,11 @@ import java.io.InputStream;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.TitledBorder;
 
@@ -35,152 +38,201 @@ import com.floreantpos.swing.PosSmallButton;
 import com.floreantpos.swing.QwertyKeyPad;
 import com.floreantpos.ui.BeanEditor;
 import com.floreantpos.ui.dialog.POSMessageDialog;
+import com.floreantpos.util.POSUtil;
 import com.floreantpos.util.PosGuiUtil;
 
 public class CustomerForm extends BeanEditor<Customer> {
 	private FixedLengthTextField tfLoyaltyNo;
-	private FixedLengthTextField tfAddress;
+	private JTextField tfAddress;
 	private FixedLengthTextField tfCity;
 	private FixedLengthTextField tfZip;
 	private FixedLengthTextField tfCountry;
 	private DoubleTextField tfCreditLimit;
 	private JCheckBox cbVip;
-	private FixedLengthTextField tfName;
-	private FixedLengthTextField tfPhone;
+	private FixedLengthTextField tfFirstName;
+	private FixedLengthTextField tfLastName;
 	private FixedLengthTextField tfEmail;
 	private JLabel lblDob;
 	private FixedLengthTextField tfDoB;
-	private JPanel panel;
-	private QwertyKeyPad qwertyKeyPad;
 	private JLabel lblLoyaltyPoint;
 	private IntegerTextField tfLoyaltyPoint;
 	private JLabel lblPicture;
-	private JPanel panel_1;
+	private JPanel picturePanel;
 	private PosSmallButton btnSelectImage;
 	private PosSmallButton btnClearImage;
-
 	private BufferedImage image;
+	private JComboBox cbSalutation;
+	private JLabel lblHomePhone;
+	private JLabel lblWorkPhone;
+	private JLabel lblMobile;
+	private JLabel lblNationalId;
+	private FixedLengthTextField tfHomePhone;
+	private FixedLengthTextField tfWorkPhone;
+	private IntegerTextField tfMobile;
+	private FixedLengthTextField tfNationalId;
+	private QwertyKeyPad qwertyKeyPad;
+
+	public boolean isKeypad;
 
 	public CustomerForm() {
-		setLayout(new MigLayout("", "[][grow][][grow][]", "[19px][][][][][grow][grow]")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		createCustomerForm();
+	}
 
-		JLabel lblName = new JLabel(Messages.getString("CustomerForm.3")); //$NON-NLS-1$
-		add(lblName, "cell 0 0,alignx trailing,aligny center"); //$NON-NLS-1$
+	public CustomerForm(boolean enable) {
+		isKeypad = enable;
+		createCustomerForm();
+	}
 
-		tfName = new FixedLengthTextField(60);
-		tfName.setLength(60);
-		add(tfName, "cell 1 0,growx,aligny top"); //$NON-NLS-1$
-
-		lblDob = new JLabel("DoB (MM-DD-YYYY)"); //$NON-NLS-1$
-		add(lblDob, "cell 2 0,alignx trailing"); //$NON-NLS-1$
-
-		tfDoB = new FixedLengthTextField();
-		tfDoB.setLength(16);
-		add(tfDoB, "cell 3 0,growx"); //$NON-NLS-1$
+	private void createCustomerForm() {
+		setLayout(new MigLayout("", "[][][grow][][grow]", "[][][][][][][][][][][][][][][][][]")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		picturePanel = new JPanel(new MigLayout());
 
 		lblPicture = new JLabel(""); //$NON-NLS-1$
-		lblPicture.setPreferredSize(new Dimension(120, 120));
 		lblPicture.setIconTextGap(0);
 		lblPicture.setHorizontalAlignment(SwingConstants.CENTER);
-		lblPicture.setBorder(new TitledBorder(null, Messages.getString("CustomerForm.10"), TitledBorder.LEADING, TitledBorder.TOP, null, null)); //$NON-NLS-1$
-		add(lblPicture, "cell 4 0 1 5,grow"); //$NON-NLS-1$
-
-		JLabel lblPhone = new JLabel(Messages.getString("CustomerForm.12")); //$NON-NLS-1$
-		add(lblPhone, "cell 0 1,alignx trailing"); //$NON-NLS-1$
-
-		tfPhone = new FixedLengthTextField(30);
-		tfPhone.setLength(30);
-		add(tfPhone, "cell 1 1,growx"); //$NON-NLS-1$
-
-		JLabel lblEmail = new JLabel(Messages.getString("CustomerForm.15")); //$NON-NLS-1$
-		add(lblEmail, "cell 2 1,alignx trailing"); //$NON-NLS-1$
-
-		tfEmail = new FixedLengthTextField(40);
-		tfEmail.setLength(40);
-		add(tfEmail, "flowx,cell 3 1,growx"); //$NON-NLS-1$
-
-		JLabel lblAddress = new JLabel(Messages.getString("CustomerForm.18")); //$NON-NLS-1$
-		add(lblAddress, "cell 0 2,alignx trailing"); //$NON-NLS-1$
-
-		tfAddress = new FixedLengthTextField(120);
-		tfAddress.setLength(120);
-		add(tfAddress, "cell 1 2,growx"); //$NON-NLS-1$
-
-		JLabel lblZip = new JLabel(Messages.getString("CustomerForm.21")); //$NON-NLS-1$
-		add(lblZip, "flowx,cell 2 2,alignx trailing"); //$NON-NLS-1$
-
-		tfZip = new FixedLengthTextField(30);
-		tfZip.setLength(30);
-		add(tfZip, "cell 3 2,growx"); //$NON-NLS-1$
-
-		JLabel lblCitytown = new JLabel(Messages.getString("CustomerForm.24")); //$NON-NLS-1$
-		add(lblCitytown, "cell 0 3,alignx trailing"); //$NON-NLS-1$
-
-		tfCity = new FixedLengthTextField(30);
-		tfCity.setLength(30);
-		add(tfCity, "flowx,cell 1 3,growx"); //$NON-NLS-1$
-
-		JLabel lblCountry = new JLabel(Messages.getString("CustomerForm.27")); //$NON-NLS-1$
-		add(lblCountry, "cell 2 3,alignx trailing"); //$NON-NLS-1$
-
-		tfCountry = new FixedLengthTextField(30);
-		tfCountry.setText(Messages.getString("CustomerForm.29")); //$NON-NLS-1$
-		tfCountry.setLength(30);
-		add(tfCountry, "cell 3 3,growx"); //$NON-NLS-1$
-
-		JLabel lblLoyaltyNo = new JLabel(Messages.getString("CustomerForm.31")); //$NON-NLS-1$
-		add(lblLoyaltyNo, "cell 0 4,alignx trailing"); //$NON-NLS-1$
-
-		tfLoyaltyNo = new FixedLengthTextField(30);
-		tfLoyaltyNo.setLength(30);
-		add(tfLoyaltyNo, "cell 1 4"); //$NON-NLS-1$
-
-		lblLoyaltyPoint = new JLabel(Messages.getString("CustomerForm.34")); //$NON-NLS-1$
-		add(lblLoyaltyPoint, "cell 2 4,alignx trailing"); //$NON-NLS-1$
-
-		tfLoyaltyPoint = new IntegerTextField();
-		tfLoyaltyPoint.setColumns(10);
-		add(tfLoyaltyPoint, "cell 3 4"); //$NON-NLS-1$
-
-		JLabel lblCreditLimit = new JLabel(Messages.getString("CustomerForm.37")); //$NON-NLS-1$
-		add(lblCreditLimit, "cell 0 5,alignx trailing,aligny top"); //$NON-NLS-1$
-
-		tfCreditLimit = new DoubleTextField();
-		tfCreditLimit.setText("500.00"); //$NON-NLS-1$
-		tfCreditLimit.setColumns(10);
-		add(tfCreditLimit, "cell 1 5,aligny top"); //$NON-NLS-1$
-
-		cbVip = new JCheckBox(Messages.getString("CustomerForm.41")); //$NON-NLS-1$
-		cbVip.setFocusable(false);
-		add(cbVip, "cell 3 5,alignx leading,aligny top"); //$NON-NLS-1$
-
-		panel_1 = new JPanel();
-		add(panel_1, "cell 4 5,growx,aligny top"); //$NON-NLS-1$
+		picturePanel.setBorder(new TitledBorder(null, Messages.getString("CustomerForm.10"), TitledBorder.LEADING, TitledBorder.TOP, null, null)); //$NON-NLS-1$
+		picturePanel.add(lblPicture, "wrap,center"); //$NON-NLS-1$
 
 		btnSelectImage = new PosSmallButton();
 		btnSelectImage.setText(Messages.getString("CustomerForm.44")); //$NON-NLS-1$
-		panel_1.add(btnSelectImage);
+		picturePanel.add(btnSelectImage, "split 2"); //$NON-NLS-1$
 
 		btnClearImage = new PosSmallButton();
 		btnClearImage.setText(Messages.getString("CustomerForm.45")); //$NON-NLS-1$
-		panel_1.add(btnClearImage);
+		picturePanel.add(btnClearImage);
 
-		panel = new JPanel();
-		add(panel, "cell 0 6 5 1,grow"); //$NON-NLS-1$
+		add(picturePanel, "cell 0 0 0 8"); //$NON-NLS-1$
+
+		JLabel lblSalutation = new JLabel("Salutation");
+		add(lblSalutation, "cell 1 0,right");
+
+		cbSalutation = new JComboBox();
+		cbSalutation.addItem("Mr.");
+		cbSalutation.addItem("Ms.");
+		cbSalutation.addItem("Mrs.");
+		cbSalutation.addItem("Miss.");
+
+		cbSalutation.setPreferredSize(new Dimension(100, 0));
+
+		add(cbSalutation, "cell 2 0,grow");
+
+		JLabel lblFirstName = new JLabel(Messages.getString("CustomerForm.3")); //$NON-NLS-1$
+
+		add(lblFirstName, "cell 1 1,right ");
+
+		tfFirstName = new FixedLengthTextField(30);
+		add(tfFirstName, "cell 2 1,grow");
+
+		JLabel lblLastName = new JLabel("Last Name");
+		add(lblLastName, "cell 1 2,right");
+
+		tfLastName = new FixedLengthTextField();
+		add(tfLastName, "cell 2 2,grow");
+
+		lblDob = new JLabel("DoB (MM-DD-YYYY)"); //$NON-NLS-1$
+		add(lblDob, "cell 1 3,right");
+
+		tfDoB = new FixedLengthTextField();
+		add(tfDoB, "cell 2 3,grow"); //$NON-NLS-1$
+
+		JLabel lblAddress = new JLabel(Messages.getString("CustomerForm.18")); //$NON-NLS-1$
+		add(lblAddress, "cell 1 4,right");
+
+		tfAddress = new JTextField();
+		add(tfAddress, "cell 2 4,grow");
+
+		JLabel lblZip = new JLabel(Messages.getString("CustomerForm.21")); //$NON-NLS-1$
+		add(lblZip, "cell 1 5,right");
+
+		tfZip = new FixedLengthTextField();
+		add(tfZip, "cell 2 5,grow"); //$NON-NLS-1$
+
+		lblNationalId = new JLabel("National Id");
+		add(lblNationalId, "cell 3 0,right");
+
+		tfNationalId = new FixedLengthTextField();
+		add(tfNationalId, "cell 4 0,grow");
+
+		JLabel lblCitytown = new JLabel(Messages.getString("CustomerForm.24")); //$NON-NLS-1$
+		add(lblCitytown, "cell 3 1,right");
+		//
+		tfCity = new FixedLengthTextField();
+		add(tfCity, "cell 4 1,grow");
+
+		JLabel lblCountry = new JLabel(Messages.getString("CustomerForm.27")); //$NON-NLS-1$
+		add(lblCountry, "cell 3 2,right");
+
+		tfCountry = new FixedLengthTextField();
+		tfCountry.setText(Messages.getString("CustomerForm.29")); //$NON-NLS-1$
+		add(tfCountry, "cell 4 2,grow"); //$NON-NLS-1$
+
+		lblMobile = new JLabel("Mobile");
+		add(lblMobile, "cell 3 3 ,right");
+
+		tfMobile = new IntegerTextField(10);
+		add(tfMobile, "cell 4 3,grow");
+
+		lblHomePhone = new JLabel("Home Phone");//$NON-NLS-1$
+		add(lblHomePhone, "cell 3 4,right");
+
+		tfHomePhone = new FixedLengthTextField();
+		add(tfHomePhone, "cell 4 4,grow");
+
+		lblWorkPhone = new JLabel("Work Phone");
+		add(lblWorkPhone, "cell 3 5,right");
+
+		tfWorkPhone = new FixedLengthTextField();
+		add(tfWorkPhone, "cell 4 5,grow");
+
+		JLabel lblEmail = new JLabel(Messages.getString("CustomerForm.15")); //$NON-NLS-1$
+		add(lblEmail, "cell 3 6 ,right");
+
+		tfEmail = new FixedLengthTextField();
+		add(tfEmail, "cell 4 6,grow");
+
+		lblLoyaltyPoint = new JLabel(Messages.getString("CustomerForm.34")); //$NON-NLS-1$
+		add(lblLoyaltyPoint, "cell 3 7,right");
+
+		tfLoyaltyPoint = new IntegerTextField();
+		add(tfLoyaltyPoint, "cell 4 7,grow"); //$NON-NLS-1$
+
+		cbVip = new JCheckBox(Messages.getString("CustomerForm.41")); //$NON-NLS-1$
+		cbVip.setFocusable(false);
+		add(cbVip, "cell 4 8,wrap");
+
+		JLabel lblLoyaltyNo = new JLabel(Messages.getString("CustomerForm.31")); //$NON-NLS-1$
+		add(lblLoyaltyNo, "cell 1 6,right");
+
+		tfLoyaltyNo = new FixedLengthTextField();
+		tfLoyaltyNo.setLength(8);
+		add(tfLoyaltyNo, "cell 2 6,grow"); //$NON-NLS-1$
+
+		JLabel lblCreditLimit = new JLabel(Messages.getString("CustomerForm.37")); //$NON-NLS-1$
+		add(lblCreditLimit, "cell 1 7,right");
+
+		tfCreditLimit = new DoubleTextField();
+		tfCreditLimit.setText("500.00"); //$NON-NLS-1$
+		add(tfCreditLimit, "cell 2 7,grow");
 
 		qwertyKeyPad = new QwertyKeyPad();
-		panel.add(qwertyKeyPad);
+
+		if(isKeypad) {
+			add(qwertyKeyPad, "cell 0 10 5 5,grow");
+		}
+		
 
 		btnSelectImage.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
-
-					image = PosGuiUtil.selectImageFile();
+					BufferedImage tmpImage;
+					tmpImage = PosGuiUtil.selectImageFile();
+					if(tmpImage != null) {
+						image = tmpImage;
+					}
 					if(image == null) {
 						return;
 					}
-
 					ImageIcon imageIcon = new ImageIcon(image);
 					lblPicture.setIcon(imageIcon);
 				} catch (Exception e1) {
@@ -188,7 +240,6 @@ public class CustomerForm extends BeanEditor<Customer> {
 				}
 			}
 		});
-
 		btnClearImage.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -197,11 +248,60 @@ public class CustomerForm extends BeanEditor<Customer> {
 		});
 
 		setDefaultCustomerPicture();
+		enableCustomerFields(false);
+	}
+
+	public void enableCustomerFields(boolean enable) {
+		cbSalutation.setEnabled(enable);
+		tfLastName.setEnabled(enable);
+		tfFirstName.setEnabled(enable);
+		tfEmail.setEnabled(enable);
+		tfLoyaltyNo.setEnabled(enable);
+		tfAddress.setEnabled(enable);
+		tfCity.setEnabled(enable);
+		tfCreditLimit.setEnabled(enable);
+		tfZip.setEnabled(enable);
+		tfCountry.setEnabled(enable);
+		cbVip.setEnabled(enable);
+		tfDoB.setEnabled(enable);
+		btnClearImage.setEnabled(enable);
+		btnSelectImage.setEnabled(enable);
+		tfLoyaltyPoint.setEnabled(enable);
+
+		tfHomePhone.setEnabled(enable);
+		tfWorkPhone.setEnabled(enable);
+		tfMobile.setEnabled(enable);
+		tfNationalId.setEnabled(enable);
+	}
+
+	@Override
+	public void setFieldsEnable(boolean enable) {
+		cbSalutation.setEnabled(enable);
+		tfFirstName.setEnabled(enable);
+		tfLastName.setEnabled(enable);
+		tfEmail.setEnabled(enable);
+		tfLoyaltyNo.setEnabled(enable);
+		tfAddress.setEnabled(enable);
+		tfCity.setEnabled(enable);
+		tfCreditLimit.setEnabled(enable);
+		tfZip.setEnabled(enable);
+		tfCountry.setEnabled(enable);
+		cbVip.setEnabled(enable);
+		tfDoB.setEnabled(enable);
+		btnClearImage.setEnabled(enable);
+		btnSelectImage.setEnabled(enable);
+		tfLoyaltyPoint.setEnabled(enable);
+
+		tfHomePhone.setEnabled(enable);
+		tfWorkPhone.setEnabled(enable);
+		tfMobile.setEnabled(enable);
+		tfNationalId.setEnabled(enable);
 	}
 
 	public void setFieldsEditable(boolean editable) {
-		tfName.setEditable(editable);
-		tfPhone.setEditable(editable);
+		cbSalutation.setEditable(editable);
+		tfFirstName.setEditable(editable);
+		tfLastName.setEditable(editable);
 		tfEmail.setEditable(editable);
 		tfLoyaltyNo.setEditable(editable);
 		tfAddress.setEditable(editable);
@@ -213,6 +313,36 @@ public class CustomerForm extends BeanEditor<Customer> {
 		tfDoB.setEditable(editable);
 		btnClearImage.setEnabled(editable);
 		btnSelectImage.setEnabled(editable);
+		tfLoyaltyPoint.setEditable(editable);
+
+		tfHomePhone.setEditable(editable);
+		tfWorkPhone.setEditable(editable);
+		tfMobile.setEditable(editable);
+		tfNationalId.setEditable(editable);
+	}
+
+	@Override
+	public void createNew() {
+		setBean(new Customer());
+
+		tfFirstName.setText("");//$NON-NLS-1$
+		tfLastName.setText("");//$NON-NLS-1$
+		cbSalutation.setSelectedIndex(0);
+		tfDoB.setText(""); //$NON-NLS-1$
+		tfAddress.setText(""); //$NON-NLS-1$
+		tfCity.setText(""); //$NON-NLS-1$
+		tfCountry.setText(""); //$NON-NLS-1$
+		tfCreditLimit.setText(""); //$NON-NLS-1$
+		tfEmail.setText(""); //$NON-NLS-1$
+		tfLoyaltyNo.setText(""); //$NON-NLS-1$
+		tfLoyaltyPoint.setText(""); //$NON-NLS-1$
+		tfHomePhone.setText(""); //$NON-NLS-1$
+		tfZip.setText(""); //$NON-NLS-1$
+		cbVip.setSelected(false);
+		tfWorkPhone.setText("");//$NON-NLS-1$
+		tfMobile.setText("");//$NON-NLS-1$
+		tfNationalId.setText("");//$NON-NLS-1$
+		setDefaultCustomerPicture();
 	}
 
 	@Override
@@ -220,46 +350,55 @@ public class CustomerForm extends BeanEditor<Customer> {
 		try {
 			if(!updateModel())
 				return false;
-
 			Customer customer = (Customer) getBean();
 			CustomerDAO.getInstance().saveOrUpdate(customer);
+			updateView();
 			return true;
 		} catch (IllegalModelStateException e) {
 		} catch (StaleObjectStateException e) {
 			BOMessageDialog.showError(this, Messages.getString("CustomerForm.47")); //$NON-NLS-1$
 		}
-
 		return false;
 	}
 
 	@Override
 	protected void updateView() {
 		Customer customer = (Customer) getBean();
+		if(customer == null) {
+			return;
+		}
+		cbSalutation.setSelectedItem(customer.getSalutation());
+		tfFirstName.setText(customer.getFirstName());
+		tfLastName.setText(customer.getLastName());
+		tfDoB.setText(customer.getDob());
+		tfAddress.setText(customer.getAddress());
+		tfCity.setText(customer.getCity());
+		tfCountry.setText(customer.getCountry());
+		tfCreditLimit.setText(String.valueOf(customer.getCreditLimit()));
+		tfEmail.setText(customer.getEmail());
+		tfLoyaltyNo.setText(customer.getLoyaltyNo());
+		tfLoyaltyPoint.setText(customer.getLoyaltyPoint().toString());
+		tfHomePhone.setText(customer.getHomePhoneNo());
+		tfZip.setText(customer.getState());
+		cbVip.setSelected(customer.isVip());
+		tfWorkPhone.setText(customer.getWorkPhoneNo());
+		tfMobile.setText(customer.getMobileNo());
+		if(customer.getNationalIdNo() != null) {
+			tfNationalId.setText(String.valueOf(customer.getNationalIdNo()));
+		}
 
-		if(customer != null) {
-			tfName.setText(customer.getName());
-			tfDoB.setText(customer.getDob());
-			tfAddress.setText(customer.getAddress());
-			tfCity.setText(customer.getCity());
-			tfCountry.setText(customer.getCountry());
-			tfCreditLimit.setText(String.valueOf(customer.getCreditLimit()));
-			tfEmail.setText(customer.getEmail());
-			tfLoyaltyNo.setText(customer.getLoyaltyNo());
-			tfLoyaltyPoint.setText(customer.getLoyaltyPoint().toString());
-			tfPhone.setText(customer.getTelephoneNo());
-			tfZip.setText(customer.getState());
-			cbVip.setSelected(customer.isVip());
-
-			byte[] picture = customer.getPicture();
-			if(picture != null) {
-				lblPicture.setIcon(new ImageIcon(picture));
-			}
-			else {
-				setDefaultCustomerPicture();
-			}
+		byte[] picture = customer.getPicture();
+		if(picture != null) {
+			lblPicture.setIcon(new ImageIcon(picture));
 		}
 		else {
-			tfName.setText(""); //$NON-NLS-1$
+			setDefaultCustomerPicture();
+		}
+
+		/*else {
+			cbSalutaion.setSelectedIndex(0);
+			tfFirstName.setText(""); //$NON-NLS-1$
+			tfLastName.setText("");
 			tfDoB.setText(""); //$NON-NLS-1$
 			tfAddress.setText(""); //$NON-NLS-1$
 			tfCity.setText(""); //$NON-NLS-1$
@@ -268,11 +407,14 @@ public class CustomerForm extends BeanEditor<Customer> {
 			tfEmail.setText(""); //$NON-NLS-1$
 			tfLoyaltyNo.setText(""); //$NON-NLS-1$
 			tfLoyaltyPoint.setText(""); //$NON-NLS-1$
-			tfPhone.setText(""); //$NON-NLS-1$
+			tfHomePhone.setText(""); //$NON-NLS-1$
 			tfZip.setText(""); //$NON-NLS-1$
 			cbVip.setSelected(false);
+			tfWorkPhone.setText("");
+			tfMobile.setText("");
+			tfNationalId.setText("");
 			setDefaultCustomerPicture();
-		}
+		}*/
 	}
 
 	private void setDefaultCustomerPicture() {
@@ -288,23 +430,23 @@ public class CustomerForm extends BeanEditor<Customer> {
 
 	@Override
 	protected boolean updateModel() throws IllegalModelStateException {
-		String phoneString = tfPhone.getText();
-		String name = tfName.getText();
+		String phoneString = tfHomePhone.getText();
+		String fname = tfFirstName.getText();
 		String email = tfEmail.getText();
 
-		if(StringUtils.isEmpty(phoneString) && StringUtils.isEmpty(name) && StringUtils.isEmpty(email)) {
+		if(StringUtils.isEmpty(phoneString) && StringUtils.isEmpty(fname) && StringUtils.isEmpty(email)) {
 			POSMessageDialog.showError(Application.getPosWindow(), Messages.getString("CustomerForm.60")); //$NON-NLS-1$
 			return false;
 		}
-
 		Customer customer = (Customer) getBean();
 
 		if(customer == null) {
 			customer = new Customer();
 			setBean(customer, false);
 		}
-
-		customer.setName(tfName.getText());
+		customer.setSalutation(cbSalutation.getSelectedItem().toString());
+		customer.setFirstName(tfFirstName.getText());
+		customer.setLastName(tfLastName.getText());
 		customer.setDob(tfDoB.getText());
 		customer.setAddress(tfAddress.getText());
 		customer.setCity(tfCity.getText());
@@ -313,9 +455,12 @@ public class CustomerForm extends BeanEditor<Customer> {
 		customer.setEmail(tfEmail.getText());
 		customer.setLoyaltyNo(tfLoyaltyNo.getText());
 		customer.setLoyaltyPoint(tfLoyaltyPoint.getInteger());
-		customer.setTelephoneNo(tfPhone.getText());
+		customer.setHomePhoneNo(tfHomePhone.getText());
 		customer.setState(tfZip.getText());
 		customer.setVip(cbVip.isSelected());
+		customer.setMobileNo(tfMobile.getText());
+		customer.setNationalIdNo(Long.parseLong(tfNationalId.getText()));
+		customer.setWorkPhoneNo(tfWorkPhone.getText());
 
 		if(image != null) {
 			try {
@@ -327,16 +472,35 @@ public class CustomerForm extends BeanEditor<Customer> {
 				//
 			}
 		}
-
 		return true;
 	}
 
 	@Override
-	public String getDisplayText() {
-		/*	if(editMode) {
-				return Messages.getString("CustomerForm.62"); //$NON-NLS-1$
+	public boolean delete() {
+		try {
+			Customer bean2 = getBean();
+			if(bean2 == null)
+				return false;
+
+			int option = POSMessageDialog.showYesNoQuestionDialog(POSUtil.getBackOfficeWindow(), "Are you sure to delete selected table?", "Confirm"); //$NON-NLS-1$ //$NON-NLS-2$
+			if(option != JOptionPane.YES_OPTION) {
+				return false;
 			}
-			return Messages.getString("CustomerForm.63"); //$NON-NLS-1$
-		*/return null;
+			CustomerDAO.getInstance().delete(bean2);
+			return true;
+		} catch (Exception e) {
+			POSMessageDialog.showError(POSUtil.getBackOfficeWindow(), e.getMessage(), e);
+		}
+		return false;
+	}
+
+	@Override
+	public String getDisplayText() {
+		/*			if (editMode) {
+						return Messages.getString("CustomerExplorerForm.19"); //$NON-NLS-1$
+					}
+					return Messages.getString("CustomerExplorerForm.20"); //$NON-NLS-1$
+		*/
+		return "Create Customer";
 	}
 }

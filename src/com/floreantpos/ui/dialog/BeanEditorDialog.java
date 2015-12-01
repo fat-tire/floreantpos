@@ -11,6 +11,7 @@ import java.awt.Frame;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
+import com.floreantpos.main.Application;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.ui.BeanEditor;
 import com.floreantpos.util.POSUtil;
@@ -53,7 +54,8 @@ public class BeanEditorDialog extends javax.swing.JDialog implements WindowListe
 		btnCancel = new PosButton();
 		beanEditorContainer = new com.floreantpos.swing.TransparentPanel();
 
-		setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+		setIconImage(Application.getApplicationIcon().getImage());
+		setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE); 
 		getContentPane().add(titlePanel, java.awt.BorderLayout.NORTH);
 
 		jPanel1.setLayout(new java.awt.BorderLayout());

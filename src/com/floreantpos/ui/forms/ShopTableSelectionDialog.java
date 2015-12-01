@@ -2,6 +2,7 @@ package com.floreantpos.ui.forms;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.lang.ref.SoftReference;
@@ -24,6 +25,8 @@ public class ShopTableSelectionDialog extends POSDialog {
 	private JComboBox<ShopTable> cbTables;
 	
 	private SoftReference<ShopTableSelectionDialog> instance;
+	private javax.swing.JSeparator jSeparator1;
+	private JPanel buttonPanel; 
 //	private JRadioButton rbFree;
 //	private JRadioButton rbServing;
 //	private JRadioButton rbBooked;
@@ -40,7 +43,7 @@ public class ShopTableSelectionDialog extends POSDialog {
 	protected void initUI() {
 		getContentPane().setLayout(new BorderLayout(0, 0));
 		
-		JPanel buttonPanel = new JPanel();
+		buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		getContentPane().add(buttonPanel, BorderLayout.SOUTH);
 		
 		JButton btnOk = new JButton(Messages.getString("ShopTableSelectionDialog.1")); //$NON-NLS-1$
@@ -50,6 +53,7 @@ public class ShopTableSelectionDialog extends POSDialog {
 				dispose();
 			}
 		});
+		btnOk.setPreferredSize(new Dimension(80, 50));
 		buttonPanel.add(btnOk);
 		
 		JButton btnCancel = new JButton(Messages.getString("ShopTableSelectionDialog.2")); //$NON-NLS-1$
@@ -59,10 +63,12 @@ public class ShopTableSelectionDialog extends POSDialog {
 				dispose();
 			}
 		});
+		btnCancel.setPreferredSize(new Dimension(80, 50));
 		buttonPanel.add(btnCancel);
 		
 		JPanel contentPanel = new JPanel();
-		getContentPane().add(contentPanel, BorderLayout.CENTER);
+		contentPanel.setPreferredSize(new Dimension(132, 65));
+		getContentPane().add(contentPanel, BorderLayout.NORTH);
 		
 		JLabel lblSelectTable = new JLabel(Messages.getString("ShopTableSelectionDialog.3")); //$NON-NLS-1$
 		contentPanel.add(lblSelectTable);
@@ -70,6 +76,9 @@ public class ShopTableSelectionDialog extends POSDialog {
 		cbTables = new JComboBox<ShopTable>();
 		cbTables.setPreferredSize(new Dimension(132, 24));
 		contentPanel.add(cbTables);
+		
+		jSeparator1 = new javax.swing.JSeparator();
+		getContentPane().add(jSeparator1, BorderLayout.CENTER);
 		
 //		JPanel panel = new JPanel();
 //		panel.setBorder(new TitledBorder(null, "Status", TitledBorder.LEADING, TitledBorder.TOP, null, null));
@@ -91,7 +100,7 @@ public class ShopTableSelectionDialog extends POSDialog {
 //		rbDisable = new JRadioButton("Disable");
 //		panel.add(rbDisable);
 		
-		setSize(400, 166);
+		setSize(300, 166);
 		setResizable(false);
 	}
 	
@@ -117,5 +126,17 @@ public class ShopTableSelectionDialog extends POSDialog {
 		}
 		
 		return instance.get();
+	}
+	
+	public JPanel getButtonPanel() {
+		return this.buttonPanel;
+	}
+	
+	public void refresh(){
+		try {
+			cbTables.setModel(new ListComboBoxModel<ShopTable>(ShopTableDAO.getInstance().getAllUnassigned()));
+		} catch (Exception e) {
+			POSMessageDialog.showError(this, Messages.getString("ShopTableSelectionDialog.4"), e); //$NON-NLS-1$
+		}
 	}
 }

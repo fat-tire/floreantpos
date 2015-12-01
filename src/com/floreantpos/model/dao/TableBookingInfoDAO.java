@@ -7,8 +7,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
 
 import com.floreantpos.model.ShopTable;
@@ -73,14 +75,14 @@ public class TableBookingInfoDAO extends BaseTableBookingInfoDAO {
 		Session session = null;
 		try {
 			session = createNewSession();
-			
+
 			Criteria criteria = session.createCriteria(getReferenceClass());
 			criteria.add(Restrictions.eq(TableBookingInfo.PROP_STATUS, "open"));
 			List list = criteria.list();
 			return list;
 		} catch (Exception e) {
 			e.printStackTrace();
-		}finally {
+		} finally {
 			try {
 				session.close();
 			} catch (Exception e2) {
@@ -90,4 +92,30 @@ public class TableBookingInfoDAO extends BaseTableBookingInfoDAO {
 
 	}
 
+	public void closeBooked(TableBookingInfo bookingInfo, List<ShopTable> tables) {
+
+		Session session = null;
+		Transaction tx = null;
+
+		try {
+			session = createNewSession();
+			tx = session.beginTransaction();
+
+			bookingInfo.setStatus("close");
+
+			saveOrUpdate(bookingInfo);
+
+			ShopTableDAO.getInstance().freeTables(tables);
+
+			tx.commit();
+
+		} catch (Exception e) {
+			tx.rollback();
+			LogFactory.getLog(TableBookingInfo.class).error(e);
+			throw new RuntimeException(e);
+		} finally {
+			closeSession(session);
+		}
+
+	}
 }

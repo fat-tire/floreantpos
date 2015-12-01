@@ -2,6 +2,7 @@ package com.floreantpos.model.dao;
 
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
+import com.floreantpos.model.dao.CustomerDAO;
 import org.hibernate.criterion.Order;
 
 /**
@@ -27,7 +28,7 @@ public abstract class BaseCustomerDAO extends com.floreantpos.model.dao._RootDAO
 	}
 
     public Order getDefaultOrder () {
-		return Order.asc("name"); //$NON-NLS-1$
+		return Order.asc("lastName");
     }
 
 	/**

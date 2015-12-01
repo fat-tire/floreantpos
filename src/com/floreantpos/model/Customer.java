@@ -45,7 +45,7 @@ public class Customer extends BaseCustomer {
 	
 	@Override
 	public String toString() {
-		String name = getName();
-		return name;
+		String fName = getFirstName();
+		return fName;
 	}
 }

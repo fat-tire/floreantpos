@@ -1,5 +1,6 @@
 package com.floreantpos.model.base;
 
+import java.lang.Comparable;
 import java.io.Serializable;
 
 
@@ -14,26 +15,31 @@ import java.io.Serializable;
 
 public abstract class BaseCustomer  implements Comparable, Serializable {
 
-	public static String REF = "Customer"; //$NON-NLS-1$
-	public static String PROP_PICTURE = "picture"; //$NON-NLS-1$
-	public static String PROP_VIP = "vip"; //$NON-NLS-1$
-	public static String PROP_LOYALTY_POINT = "loyaltyPoint"; //$NON-NLS-1$
-	public static String PROP_NOTE = "note"; //$NON-NLS-1$
-	public static String PROP_COUNTRY = "country"; //$NON-NLS-1$
-	public static String PROP_TELEPHONE_NO = "telephoneNo"; //$NON-NLS-1$
-	public static String PROP_DOB = "dob"; //$NON-NLS-1$
-	public static String PROP_ZIP_CODE = "zipCode"; //$NON-NLS-1$
-	public static String PROP_SSN = "ssn"; //$NON-NLS-1$
-	public static String PROP_CITY = "city"; //$NON-NLS-1$
-	public static String PROP_NAME = "name"; //$NON-NLS-1$
-	public static String PROP_EMAIL = "email"; //$NON-NLS-1$
-	public static String PROP_STATE = "state"; //$NON-NLS-1$
-	public static String PROP_CREDIT_SPENT = "creditSpent"; //$NON-NLS-1$
-	public static String PROP_ADDRESS = "address"; //$NON-NLS-1$
-	public static String PROP_AUTO_ID = "autoId"; //$NON-NLS-1$
-	public static String PROP_CREDIT_CARD_NO = "creditCardNo"; //$NON-NLS-1$
-	public static String PROP_CREDIT_LIMIT = "creditLimit"; //$NON-NLS-1$
-	public static String PROP_LOYALTY_NO = "loyaltyNo"; //$NON-NLS-1$
+	public static String REF = "Customer";//$NON-NLS-1$
+	public static String PROP_PICTURE = "picture";//$NON-NLS-1$
+	public static String PROP_WORK_PHONE_NO = "workPhoneNo";//$NON-NLS-1$
+	public static String PROP_VIP = "vip";//$NON-NLS-1$
+	public static String PROP_LOYALTY_POINT = "loyaltyPoint";//$NON-NLS-1$
+	public static String PROP_SALUTATION = "salutation";//$NON-NLS-1$
+	public static String PROP_NOTE = "note";//$NON-NLS-1$
+	public static String PROP_HOME_PHONE_NO = "homePhoneNo";//$NON-NLS-1$
+	public static String PROP_COUNTRY = "country";//$NON-NLS-1$
+	public static String PROP_LAST_NAME = "lastName";//$NON-NLS-1$
+	public static String PROP_ZIP_CODE = "zipCode";//$NON-NLS-1$
+	public static String PROP_DOB = "dob";//$NON-NLS-1$
+	public static String PROP_CITY = "city";//$NON-NLS-1$
+	public static String PROP_SSN = "ssn";//$NON-NLS-1$
+	public static String PROP_MOBILE_NO = "mobileNo";//$NON-NLS-1$
+	public static String PROP_NATIONAL_ID_NO = "nationalIdNo";//$NON-NLS-1$
+	public static String PROP_STATE = "state";//$NON-NLS-1$
+	public static String PROP_EMAIL = "email";//$NON-NLS-1$
+	public static String PROP_CREDIT_SPENT = "creditSpent";//$NON-NLS-1$
+	public static String PROP_ADDRESS = "address";//$NON-NLS-1$
+	public static String PROP_AUTO_ID = "autoId";//$NON-NLS-1$
+	public static String PROP_FIRST_NAME = "firstName";//$NON-NLS-1$
+	public static String PROP_CREDIT_CARD_NO = "creditCardNo";//$NON-NLS-1$
+	public static String PROP_CREDIT_LIMIT = "creditLimit";//$NON-NLS-1$
+	public static String PROP_LOYALTY_NO = "loyaltyNo";//$NON-NLS-1$
 
 
 	// constructors
@@ -61,10 +67,15 @@ public abstract class BaseCustomer  implements Comparable, Serializable {
 	// fields
 		protected java.lang.String loyaltyNo;
 		protected java.lang.Integer loyaltyPoint;
+		protected java.lang.Long nationalIdNo;
 		protected byte[] picture;
-		protected java.lang.String telephoneNo;
+		protected java.lang.String homePhoneNo;
+		protected java.lang.String mobileNo;
+		protected java.lang.String workPhoneNo;
 		protected java.lang.String email;
-		protected java.lang.String name;
+		protected java.lang.String salutation;
+		protected java.lang.String firstName;
+		protected java.lang.String lastName;
 		protected java.lang.String dob;
 		protected java.lang.String ssn;
 		protected java.lang.String address;
@@ -79,7 +90,7 @@ public abstract class BaseCustomer  implements Comparable, Serializable {
 		protected java.lang.String note;
 
 	// collections
-	private java.util.Map<String, String> properties;
+	private java.util.Map<String,String> properties;
 
 
 
@@ -126,8 +137,8 @@ public abstract class BaseCustomer  implements Comparable, Serializable {
 	 * Return the value associated with the column: LOYALTY_POINT
 	 */
 	public java.lang.Integer getLoyaltyPoint () {
-					return loyaltyPoint == null ? Integer.valueOf(0) : loyaltyPoint;
-			}
+									return loyaltyPoint == null ? Integer.valueOf(0) : loyaltyPoint;
+					}
 
 	/**
 	 * Set the value related to the column: LOYALTY_POINT
@@ -135,6 +146,23 @@ public abstract class BaseCustomer  implements Comparable, Serializable {
 	 */
 	public void setLoyaltyPoint (java.lang.Integer loyaltyPoint) {
 		this.loyaltyPoint = loyaltyPoint;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: NATIONAL_ID_NO
+	 */
+	public java.lang.Long getNationalIdNo () {
+					return nationalIdNo;
+			}
+
+	/**
+	 * Set the value related to the column: NATIONAL_ID_NO
+	 * @param nationalIdNo the NATIONAL_ID_NO value
+	 */
+	public void setNationalIdNo (java.lang.Long nationalIdNo) {
+		this.nationalIdNo = nationalIdNo;
 	}
 
 
@@ -157,18 +185,52 @@ public abstract class BaseCustomer  implements Comparable, Serializable {
 
 
 	/**
-	 * Return the value associated with the column: TELEPHONE_NO
+	 * Return the value associated with the column: HOMEPHONE_NO
 	 */
-	public java.lang.String getTelephoneNo () {
-					return telephoneNo;
+	public java.lang.String getHomePhoneNo () {
+					return homePhoneNo;
 			}
 
 	/**
-	 * Set the value related to the column: TELEPHONE_NO
-	 * @param telephoneNo the TELEPHONE_NO value
+	 * Set the value related to the column: HOMEPHONE_NO
+	 * @param homePhoneNo the HOMEPHONE_NO value
 	 */
-	public void setTelephoneNo (java.lang.String telephoneNo) {
-		this.telephoneNo = telephoneNo;
+	public void setHomePhoneNo (java.lang.String homePhoneNo) {
+		this.homePhoneNo = homePhoneNo;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: MOBILE_NO
+	 */
+	public java.lang.String getMobileNo () {
+					return mobileNo;
+			}
+
+	/**
+	 * Set the value related to the column: MOBILE_NO
+	 * @param mobileNo the MOBILE_NO value
+	 */
+	public void setMobileNo (java.lang.String mobileNo) {
+		this.mobileNo = mobileNo;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: WORKPHONE_NO
+	 */
+	public java.lang.String getWorkPhoneNo () {
+					return workPhoneNo;
+			}
+
+	/**
+	 * Set the value related to the column: WORKPHONE_NO
+	 * @param workPhoneNo the WORKPHONE_NO value
+	 */
+	public void setWorkPhoneNo (java.lang.String workPhoneNo) {
+		this.workPhoneNo = workPhoneNo;
 	}
 
 
@@ -191,18 +253,52 @@ public abstract class BaseCustomer  implements Comparable, Serializable {
 
 
 	/**
-	 * Return the value associated with the column: NAME
+	 * Return the value associated with the column: SALUTATION
 	 */
-	public java.lang.String getName () {
-					return name;
+	public java.lang.String getSalutation () {
+					return salutation;
 			}
 
 	/**
-	 * Set the value related to the column: NAME
-	 * @param name the NAME value
+	 * Set the value related to the column: SALUTATION
+	 * @param salutation the SALUTATION value
 	 */
-	public void setName (java.lang.String name) {
-		this.name = name;
+	public void setSalutation (java.lang.String salutation) {
+		this.salutation = salutation;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: FIRST_NAME
+	 */
+	public java.lang.String getFirstName () {
+					return firstName;
+			}
+
+	/**
+	 * Set the value related to the column: FIRST_NAME
+	 * @param firstName the FIRST_NAME value
+	 */
+	public void setFirstName (java.lang.String firstName) {
+		this.firstName = firstName;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: LAST_NAME
+	 */
+	public java.lang.String getLastName () {
+					return lastName;
+			}
+
+	/**
+	 * Set the value related to the column: LAST_NAME
+	 * @param lastName the LAST_NAME value
+	 */
+	public void setLastName (java.lang.String lastName) {
+		this.lastName = lastName;
 	}
 
 
@@ -414,7 +510,7 @@ public abstract class BaseCustomer  implements Comparable, Serializable {
 	/**
 	 * Return the value associated with the column: properties
 	 */
-	public java.util.Map<String, String> getProperties () {
+	public java.util.Map<String,String> getProperties () {
 					return properties;
 			}
 
@@ -422,7 +518,7 @@ public abstract class BaseCustomer  implements Comparable, Serializable {
 	 * Set the value related to the column: properties
 	 * @param properties the properties value
 	 */
-	public void setProperties (java.util.Map<String, String> properties) {
+	public void setProperties (java.util.Map<String,String> properties) {
 		this.properties = properties;
 	}
 
@@ -444,7 +540,7 @@ public abstract class BaseCustomer  implements Comparable, Serializable {
 		if (Integer.MIN_VALUE == this.hashCode) {
 			if (null == this.getAutoId()) return super.hashCode();
 			else {
-				String hashStr = this.getClass().getName() + ":" + this.getAutoId().hashCode(); //$NON-NLS-1$
+				String hashStr = this.getClass().getName() + ":" + this.getAutoId().hashCode();
 				this.hashCode = hashStr.hashCode();
 			}
 		}
