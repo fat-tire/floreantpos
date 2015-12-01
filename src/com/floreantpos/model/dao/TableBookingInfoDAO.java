@@ -1,6 +1,7 @@
 package com.floreantpos.model.dao;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
@@ -31,7 +32,9 @@ public class TableBookingInfoDAO extends BaseTableBookingInfoDAO {
 		try {
 			session = createNewSession();
 			Criteria criteria = session.createCriteria(getReferenceClass());
-			criteria.add(Restrictions.ge(TableBookingInfo.PROP_TO_DATE, startDate));
+		//	criteria.add(Restrictions.ge(TableBookingInfo.PROP_TO_DATE, startDate));
+			
+			criteria.add(Restrictions.ge(TableBookingInfo.PROP_TO_DATE, startDate)).add(Restrictions.eq(TableBookingInfo.PROP_STATUS, "open"));
 
 			List<TableBookingInfo> list = criteria.list();
 			List<TableBookingInfo> bookings = new ArrayList<TableBookingInfo>();
@@ -71,10 +74,11 @@ public class TableBookingInfoDAO extends BaseTableBookingInfoDAO {
 		return allTables;
 	}
 
-	public List<TableBookingInfo> getAllOpenBookedTable() {
+	public List<TableBookingInfo> getAllOpenBooking() {
 		Session session = null;
 		try {
 			session = createNewSession();
+			
 
 			Criteria criteria = session.createCriteria(getReferenceClass());
 			criteria.add(Restrictions.eq(TableBookingInfo.PROP_STATUS, "open"));
@@ -92,7 +96,7 @@ public class TableBookingInfoDAO extends BaseTableBookingInfoDAO {
 
 	}
 
-	public void closeBooked(TableBookingInfo bookingInfo, List<ShopTable> tables) {
+	public void closeBooking(TableBookingInfo bookingInfo, List<ShopTable> tables) {
 
 		Session session = null;
 		Transaction tx = null;
@@ -117,5 +121,65 @@ public class TableBookingInfoDAO extends BaseTableBookingInfoDAO {
 			closeSession(session);
 		}
 
+	}
+
+	public List getTodaysBooking() {
+
+		Session session = null;
+		try {
+
+			Calendar startDate = Calendar.getInstance();
+			startDate.setLenient(false);
+			startDate.setTime(new Date());
+			startDate.set(Calendar.HOUR_OF_DAY, 0);
+			startDate.set(Calendar.MINUTE, 0);
+			startDate.set(Calendar.SECOND, 0);
+			startDate.set(Calendar.MILLISECOND, 0);
+
+			Calendar endDate = Calendar.getInstance();
+			endDate.setLenient(false);
+			endDate.setTime(new Date());
+			endDate.set(Calendar.HOUR_OF_DAY, 23);
+			endDate.set(Calendar.MINUTE, 59);
+			endDate.set(Calendar.SECOND, 59);
+			
+			session = createNewSession();
+
+			Criteria criteria = session.createCriteria(TableBookingInfo.class);
+
+			criteria.add(Restrictions.ge(TableBookingInfo.PROP_FROM_DATE,startDate.getTime() ))
+					.add(Restrictions.le(TableBookingInfo.PROP_FROM_DATE,endDate.getTime()))
+					.add(Restrictions.eq(TableBookingInfo.PROP_STATUS, "open"));
+
+			List list = criteria.list();
+
+			return list;
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return null;
+	}
+	
+	public List getAllBookingByDate(Date startDate,Date endDate) {
+		
+		Session session=null;
+		try {
+			session=createNewSession();
+			Criteria criteria=session.createCriteria(TableBookingInfo.class);
+			
+			criteria.add(Restrictions.ge(TableBookingInfo.PROP_FROM_DATE,startDate ))
+			.add(Restrictions.le(TableBookingInfo.PROP_FROM_DATE,endDate));
+			
+			List list = criteria.list();
+
+			return list;
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return null;
 	}
 }
