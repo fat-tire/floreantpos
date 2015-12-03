@@ -78,7 +78,11 @@ public class CustomerExplorer extends TransparentPanel {
 		addButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					CustomerForm editor = new CustomerForm();
+					
+					boolean setKeyPad=true;
+					CustomerForm editor = new CustomerForm(setKeyPad);
+					editor.enableCustomerFields(true);
+					
 					BeanEditorDialog dialog = new BeanEditorDialog(editor);
 					dialog.open();
 					if (dialog.isCanceled())
@@ -102,7 +106,10 @@ public class CustomerExplorer extends TransparentPanel {
 
 					Customer customer = customerList.get(index);
 
+					boolean setKeyPad=true;
 					CustomerForm editor = new CustomerForm();
+					editor.enableCustomerFields(true);
+					
 					editor.setBean(customer);
 					BeanEditorDialog dialog = new BeanEditorDialog(editor);
 					dialog.open();
