@@ -1,20 +1,3 @@
-/**
- * ************************************************************************
- * * The contents of this file are subject to the MRPL 1.2
- * * (the  "License"),  being   the  Mozilla   Public  License
- * * Version 1.1  with a permitted attribution clause; you may not  use this
- * * file except in compliance with the License. You  may  obtain  a copy of
- * * the License at http://www.floreantpos.org/license.html
- * * Software distributed under the License  is  distributed  on  an "AS IS"
- * * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * * License for the specific  language  governing  rights  and  limitations
- * * under the License.
- * * The Original Code is FLOREANT POS.
- * * The Initial Developer of the Original Code is OROCUBE LLC
- * * All portions are Copyright (C) 2015 OROCUBE LLC
- * * All Rights Reserved.
- * ************************************************************************
- */
 package com.floreantpos.model.base;
 
 import java.lang.Comparable;
@@ -32,31 +15,31 @@ import java.io.Serializable;
 
 public abstract class BaseCustomer  implements Comparable, Serializable {
 
-	public static String REF = "Customer";//$NON-NLS-1$
-	public static String PROP_PICTURE = "picture";//$NON-NLS-1$
-	public static String PROP_WORK_PHONE_NO = "workPhoneNo";//$NON-NLS-1$
-	public static String PROP_VIP = "vip";//$NON-NLS-1$
-	public static String PROP_LOYALTY_POINT = "loyaltyPoint";//$NON-NLS-1$
-	public static String PROP_SALUTATION = "salutation";//$NON-NLS-1$
-	public static String PROP_NOTE = "note";//$NON-NLS-1$
-	public static String PROP_HOME_PHONE_NO = "homePhoneNo";//$NON-NLS-1$
-	public static String PROP_COUNTRY = "country";//$NON-NLS-1$
-	public static String PROP_LAST_NAME = "lastName";//$NON-NLS-1$
-	public static String PROP_ZIP_CODE = "zipCode";//$NON-NLS-1$
-	public static String PROP_DOB = "dob";//$NON-NLS-1$
-	public static String PROP_CITY = "city";//$NON-NLS-1$
-	public static String PROP_SSN = "ssn";//$NON-NLS-1$
-	public static String PROP_MOBILE_NO = "mobileNo";//$NON-NLS-1$
-	public static String PROP_NATIONAL_ID_NO = "nationalIdNo";//$NON-NLS-1$
-	public static String PROP_STATE = "state";//$NON-NLS-1$
-	public static String PROP_EMAIL = "email";//$NON-NLS-1$
-	public static String PROP_CREDIT_SPENT = "creditSpent";//$NON-NLS-1$
-	public static String PROP_ADDRESS = "address";//$NON-NLS-1$
-	public static String PROP_AUTO_ID = "autoId";//$NON-NLS-1$
-	public static String PROP_FIRST_NAME = "firstName";//$NON-NLS-1$
-	public static String PROP_CREDIT_CARD_NO = "creditCardNo";//$NON-NLS-1$
-	public static String PROP_CREDIT_LIMIT = "creditLimit";//$NON-NLS-1$
-	public static String PROP_LOYALTY_NO = "loyaltyNo";//$NON-NLS-1$
+	public static String REF = "Customer";
+	public static String PROP_PICTURE = "picture";
+	public static String PROP_WORK_PHONE_NO = "workPhoneNo";
+	public static String PROP_VIP = "vip";
+	public static String PROP_LOYALTY_POINT = "loyaltyPoint";
+	public static String PROP_SALUTATION = "salutation";
+	public static String PROP_NOTE = "note";
+	public static String PROP_HOME_PHONE_NO = "homePhoneNo";
+	public static String PROP_COUNTRY = "country";
+	public static String PROP_LAST_NAME = "lastName";
+	public static String PROP_ZIP_CODE = "zipCode";
+	public static String PROP_DOB = "dob";
+	public static String PROP_CITY = "city";
+	public static String PROP_SSN = "ssn";
+	public static String PROP_MOBILE_NO = "mobileNo";
+	public static String PROP_NATIONAL_ID_NO = "nationalIdNo";
+	public static String PROP_STATE = "state";
+	public static String PROP_EMAIL = "email";
+	public static String PROP_CREDIT_SPENT = "creditSpent";
+	public static String PROP_ADDRESS = "address";
+	public static String PROP_AUTO_ID = "autoId";
+	public static String PROP_FIRST_NAME = "firstName";
+	public static String PROP_CREDIT_CARD_NO = "creditCardNo";
+	public static String PROP_CREDIT_LIMIT = "creditLimit";
+	public static String PROP_LOYALTY_NO = "loyaltyNo";
 
 
 	// constructors
@@ -84,7 +67,7 @@ public abstract class BaseCustomer  implements Comparable, Serializable {
 	// fields
 		protected java.lang.String loyaltyNo;
 		protected java.lang.Integer loyaltyPoint;
-		protected java.lang.Long nationalIdNo;
+		protected java.lang.String nationalIdNo;
 		protected byte[] picture;
 		protected java.lang.String homePhoneNo;
 		protected java.lang.String mobileNo;
@@ -170,7 +153,7 @@ public abstract class BaseCustomer  implements Comparable, Serializable {
 	/**
 	 * Return the value associated with the column: NATIONAL_ID_NO
 	 */
-	public java.lang.Long getNationalIdNo () {
+	public java.lang.String getNationalIdNo () {
 					return nationalIdNo;
 			}
 
@@ -178,7 +161,7 @@ public abstract class BaseCustomer  implements Comparable, Serializable {
 	 * Set the value related to the column: NATIONAL_ID_NO
 	 * @param nationalIdNo the NATIONAL_ID_NO value
 	 */
-	public void setNationalIdNo (java.lang.Long nationalIdNo) {
+	public void setNationalIdNo (java.lang.String nationalIdNo) {
 		this.nationalIdNo = nationalIdNo;
 	}
 

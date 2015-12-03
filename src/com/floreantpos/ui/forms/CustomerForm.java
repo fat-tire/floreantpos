@@ -476,7 +476,7 @@ public class CustomerForm extends BeanEditor<Customer> {
 		customer.setState(tfZip.getText());
 		customer.setVip(cbVip.isSelected());
 		customer.setMobileNo(tfMobile.getText());
-		customer.setNationalIdNo(Long.parseLong(tfNationalId.getText()));
+		customer.setNationalIdNo(tfNationalId.getText());
 		customer.setWorkPhoneNo(tfWorkPhone.getText());
 
 		if(image != null) {

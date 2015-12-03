@@ -274,7 +274,9 @@ public class CustomerSelectionDialog extends POSDialog {
 	}
 
 	protected void doCreateNewCustomer() {
-		CustomerForm form = new CustomerForm();
+		boolean setKeyPad=true;
+		CustomerForm form = new CustomerForm(setKeyPad);
+		form.enableCustomerFields(true);
 		BeanEditorDialog dialog = new BeanEditorDialog(form);
 		dialog.open();
 
