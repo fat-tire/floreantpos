@@ -167,7 +167,7 @@ public class TicketView extends JPanel {
 				btnIncreaseAmount.setEnabled(!printedToKitchen);
 				btnDecreaseAmount.setEnabled(!printedToKitchen);
 				btnDelete.setEnabled(!printedToKitchen);
-				
+
 				getExtraActionPanel().updateView(item);
 			}
 
@@ -226,7 +226,7 @@ public class TicketView extends JPanel {
 		tfSubtotal = new javax.swing.JTextField(10);
 		tfSubtotal.setHorizontalAlignment(SwingConstants.TRAILING);
 		tfSubtotal.setEditable(false);
-		
+
 		tfDiscount = new javax.swing.JTextField(10);
 		tfDiscount.setHorizontalAlignment(SwingConstants.TRAILING);
 		tfDiscount.setEditable(false);
@@ -493,7 +493,7 @@ public class TicketView extends JPanel {
 	private javax.swing.JTextField tfTotal;
 	private com.floreantpos.ui.ticket.TicketViewerTable ticketViewerTable;
 	private ExtraTicketActionPanel extraActionPanel = new ExtraTicketActionPanel();
-	
+
 	private TitledBorder titledBorder = new TitledBorder(""); //$NON-NLS-1$
 	private Border border = new CompoundBorder(titledBorder, new EmptyBorder(5, 5, 5, 5));
 
@@ -509,6 +509,7 @@ public class TicketView extends JPanel {
 		ticketViewerTable.setTicket(_ticket);
 
 		updateView();
+		extraActionPanel.updateView();
 	}
 
 	public void addTicketItem(TicketItem ticketItem) {
@@ -692,7 +693,7 @@ public class TicketView extends JPanel {
 		/** Creates new form OthersView */
 		private ExtraTicketActionPanel() {
 			initComponents();
-			
+
 			setAnimated(true);
 		}
 
@@ -732,7 +733,7 @@ public class TicketView extends JPanel {
 			});
 
 			buttonPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
-			buttonPanel.setLayout(new java.awt.GridLayout(3, 0, 5, 5));
+			buttonPanel.setLayout(new java.awt.GridLayout(2, 0, 5, 5));
 
 			btnOrderType.setText(com.floreantpos.POSConstants.ORDER_TYPE_BUTTON_TEXT);
 			btnOrderType.addActionListener(new java.awt.event.ActionListener() {
@@ -770,35 +771,36 @@ public class TicketView extends JPanel {
 					btnTableNumberActionPerformed(evt);
 				}
 			});
-			
+
 			btnCookingInstruction.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					doAddCookingInstruction();
 				}
 			});
-			
+
 			btnDiscount.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					ITicketItem selectedObject = (ITicketItem) ticketViewerTable.getSelected();
-					if(selectedObject == null || !selectedObject.canAddDiscount()) {
+					if (selectedObject == null || !selectedObject.canAddDiscount()) {
 						return;
 					}
-					
-					double d = NumberSelectionDialog2.takeDoubleInput(Messages.getString("TicketView.39"), Messages.getString("TicketView.40"), selectedObject.getDiscountAmount()); //$NON-NLS-1$ //$NON-NLS-2$
-					if(Double.isNaN(d)) {
+
+					double d = NumberSelectionDialog2.takeDoubleInput(
+							Messages.getString("TicketView.39"), Messages.getString("TicketView.40"), selectedObject.getDiscountAmount()); //$NON-NLS-1$ //$NON-NLS-2$
+					if (Double.isNaN(d)) {
 						return;
 					}
-					
-					if(selectedObject instanceof TicketItem) {
+
+					if (selectedObject instanceof TicketItem) {
 						((TicketItem) selectedObject).setDiscountRate(-1.0);
 					}
-					
+
 					selectedObject.setDiscountAmount(d);
 					ticketViewerTable.repaint();
 					TicketView.this.updateView();
 				}
 			});
-			
+
 			buttonPanel.add(btnCookingInstruction);
 			buttonPanel.add(btnDiscount);
 			//buttonPanel.add(btnAddOn);
@@ -934,17 +936,13 @@ public class TicketView extends JPanel {
 		}
 
 		private void clearShopTable(Session session, Ticket thisTicket) {
-			List<ShopTable> tables2 = ShopTableDAO.getInstance().getTables(thisTicket);
+			ShopTableDAO shopTableDao = ShopTableDAO.getInstance();
+			List<ShopTable> tables2 = shopTableDao.getTables(thisTicket);
 
 			if (tables2 == null)
 				return;
 
-			for (ShopTable shopTable : tables2) {
-				shopTable.setServing(false);
-				shopTable.setBooked(false);
-
-				session.saveOrUpdate(shopTable);
-			}
+			shopTableDao.releaseAndDeleteTicketTables(thisTicket);
 
 			tables2.clear();
 		}
@@ -955,7 +953,7 @@ public class TicketView extends JPanel {
 		private com.floreantpos.swing.PosButton btnTableNumber;
 		private com.floreantpos.swing.PosButton btnCustomer;
 		private com.floreantpos.swing.PosButton btnSearchItem;
-		
+
 		private PosButton btnCookingInstruction = new PosButton(IconFactory.getIcon("/ui_icons/", "cooking-instruction.png")); //$NON-NLS-1$ //$NON-NLS-2$
 		private PosButton btnDiscount = new PosButton(Messages.getString("TicketView.43")); //$NON-NLS-1$
 		//private PosButton btnAddOn = new PosButton("ADD ON");
@@ -981,21 +979,21 @@ public class TicketView extends JPanel {
 				}
 			}
 		}
-		
+
 		public void updateView(ITicketItem item) {
-			if(item == null) {
+			if (item == null) {
 				btnCookingInstruction.setEnabled(false);
 				btnDiscount.setEnabled(false);
-//				btnVoid.setEnabled(false);
-//				btnAddOn.setEnabled(false);
-				
+				//				btnVoid.setEnabled(false);
+				//				btnAddOn.setEnabled(false);
+
 				return;
 			}
-			
+
 			btnCookingInstruction.setEnabled(item.canAddCookingInstruction());
 			btnDiscount.setEnabled(item.canAddDiscount());
-//			btnVoid.setEnabled(item.canAddAdOn());
-//			btnAddOn.setEnabled(item.canVoid());
+			//			btnVoid.setEnabled(item.canAddAdOn());
+			//			btnAddOn.setEnabled(item.canVoid());
 		}
 
 		public ItemSelectionListener getItemSelectionListener() {
