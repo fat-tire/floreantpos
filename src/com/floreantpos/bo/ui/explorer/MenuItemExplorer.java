@@ -19,6 +19,7 @@ package com.floreantpos.bo.ui.explorer;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
@@ -27,12 +28,15 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
+import javax.swing.table.DefaultTableCellRenderer;
 
 import net.miginfocom.swing.MigLayout;
 
@@ -50,7 +54,7 @@ import com.floreantpos.model.dao.MenuItemDAO;
 import com.floreantpos.swing.BeanTableModel;
 import com.floreantpos.swing.TransparentPanel;
 import com.floreantpos.ui.dialog.BeanEditorDialog;
-import com.floreantpos.ui.dialog.ConfirmDeleteDialog;
+import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.model.MenuItemForm;
 
 public class MenuItemExplorer extends TransparentPanel {
@@ -70,17 +74,23 @@ public class MenuItemExplorer extends TransparentPanel {
 		tableModel.addColumn(POSConstants.TAX.toUpperCase(), "tax"); //$NON-NLS-1$
 		tableModel.addColumn(POSConstants.SORT_ORDER.toUpperCase(), "sortOrder"); //$NON-NLS-1$
 		tableModel.addColumn(POSConstants.BUTTON_COLOR.toUpperCase(), "buttonColor"); //$NON-NLS-1$
-		tableModel.addColumn(POSConstants.IMAGE.toUpperCase(), "image");
+		tableModel.addColumn(POSConstants.TEXT_COLOR.toUpperCase(), "textColor"); //$NON-NLS-1$
+		tableModel.addColumn(POSConstants.IMAGE.toUpperCase(), "imageData"); //$NON-NLS-1$
 
 		tableModel.addRows(MenuItemDAO.getInstance().findAll());
 
-		//set the cell renderers -->
-		
 		table = new JXTable(tableModel);
-		table.setRowHeight(120);
-		
-		table.setDefaultRenderer(Color.class, new CustomCellRenderer());
-	
+		table.setRowHeight(30);
+
+		table.setDefaultRenderer(Object.class, new CustomCellRenderer());
+		table.getColumnModel().getColumn(10).setCellRenderer(new DefaultTableCellRenderer() {
+			@Override
+			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+				JLabel lblColor = new JLabel("TEXT COLOR", JLabel.CENTER);
+				lblColor.setForeground((Color) value);
+				return lblColor;
+			}
+		});
 
 		setLayout(new BorderLayout(5, 5));
 		add(new JScrollPane(table));
@@ -129,7 +139,7 @@ public class MenuItemExplorer extends TransparentPanel {
 					Object selectedItem = cbGroup.getSelectedItem();
 
 					List<MenuItem> similarItem = null;
-					if (selectedItem instanceof MenuGroup) {
+					if(selectedItem instanceof MenuGroup) {
 						similarItem = MenuItemDAO.getInstance().getSimilar(txName, (MenuGroup) selectedItem);
 					}
 					else {
@@ -159,7 +169,7 @@ public class MenuItemExplorer extends TransparentPanel {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					int index = table.getSelectedRow();
-					if (index < 0)
+					if(index < 0)
 						return;
 
 					index = table.convertRowIndexToModel(index);
@@ -172,7 +182,7 @@ public class MenuItemExplorer extends TransparentPanel {
 					MenuItemForm editor = new MenuItemForm(menuItem);
 					BeanEditorDialog dialog = new BeanEditorDialog(editor);
 					dialog.open();
-					if (dialog.isCanceled())
+					if(dialog.isCanceled())
 						return;
 
 					table.repaint();
@@ -189,7 +199,7 @@ public class MenuItemExplorer extends TransparentPanel {
 					MenuItemForm editor = new MenuItemForm();
 					BeanEditorDialog dialog = new BeanEditorDialog(editor);
 					dialog.open();
-					if (dialog.isCanceled())
+					if(dialog.isCanceled())
 						return;
 					MenuItem foodItem = (MenuItem) editor.getBean();
 					tableModel.addRow(foodItem);
@@ -204,18 +214,19 @@ public class MenuItemExplorer extends TransparentPanel {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					int index = table.getSelectedRow();
-					if (index < 0)
+					if(index < 0)
 						return;
 
 					index = table.convertRowIndexToModel(index);
 
-					if (ConfirmDeleteDialog.showMessage(MenuItemExplorer.this, POSConstants.CONFIRM_DELETE, POSConstants.DELETE) != ConfirmDeleteDialog.NO) {
-						MenuItem item = tableModel.getRow(index);
-						MenuItemDAO foodItemDAO = new MenuItemDAO();
-						foodItemDAO.delete(item);
-
-						tableModel.removeRow(index);
+					if(POSMessageDialog.showYesNoQuestionDialog(MenuItemExplorer.this, POSConstants.CONFIRM_DELETE, POSConstants.DELETE) != JOptionPane.YES_OPTION) {
+						return;
 					}
+					MenuItem item = tableModel.getRow(index);
+					MenuItemDAO foodItemDAO = new MenuItemDAO();
+					foodItemDAO.delete(item);
+
+					tableModel.removeRow(index);
 				} catch (Throwable x) {
 					BOMessageDialog.showError(POSConstants.ERROR_MESSAGE, x);
 				}

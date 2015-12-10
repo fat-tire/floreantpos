@@ -19,9 +19,11 @@ package com.floreantpos.bo.ui;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Image;
 import java.text.DateFormat;
 import java.util.Date;
 
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -29,17 +31,30 @@ import javax.swing.table.DefaultTableCellRenderer;
 public class CustomCellRenderer extends DefaultTableCellRenderer {
 
 	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+		if (value instanceof byte[]) {
 
-		if(value instanceof Color) {
-			JLabel backgroundLabel = new JLabel();
-			backgroundLabel.setOpaque(true);
-			backgroundLabel.setBackground((Color) value);
-			return backgroundLabel;
+			byte[] imageData = (byte[]) value;
+			ImageIcon image = new ImageIcon(imageData);
+			image = new ImageIcon(image.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH));
+			if (imageData != null) {
+				table.setRowHeight(row, 120);
+			}
+			return new JLabel(image);
 		}
-		if(value instanceof Date) {
+
+		if (value instanceof Color) {
+			JLabel lblColor = new JLabel();
+			lblColor.setOpaque(true);
+			lblColor.setForeground((Color) value);
+			lblColor.setBackground((Color) value);
+			return lblColor;
+		}
+
+		if (value instanceof Date) {
 			value = DateFormat.getDateTimeInstance(DateFormat.DEFAULT, DateFormat.SHORT).format((Date) value);
 			return super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 		}
+
 		return super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 	}
 }

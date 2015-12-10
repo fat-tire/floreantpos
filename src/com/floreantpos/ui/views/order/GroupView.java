@@ -23,7 +23,6 @@
 
 package com.floreantpos.ui.views.order;
 
-import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
@@ -130,11 +129,11 @@ public class GroupView extends SelectionView {
 			
 			setText("<html><body><center>" + foodGroup.getDisplayName() + "</center></body></html>"); //$NON-NLS-1$ //$NON-NLS-2$
 			
-			if(menuGroup.getButtonColor() != null) {
-				setBackground(new Color(menuGroup.getButtonColor()));
+			if(menuGroup.getButtonColorCode() != null) {
+				setBackground(menuGroup.getButtonColor());
 			}
-			if(menuGroup.getTextColor() != null) {
-				setForeground(new Color(menuGroup.getTextColor()));
+			if(menuGroup.getTextColorCode() != null) {
+				setForeground(menuGroup.getTextColor());
 			}
 			
 			addActionListener(this);

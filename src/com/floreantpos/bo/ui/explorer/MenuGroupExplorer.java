@@ -18,22 +18,33 @@
 package com.floreantpos.bo.ui.explorer;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableCellRenderer;
 
 import org.jdesktop.swingx.JXTable;
 
+import com.floreantpos.Messages;
 import com.floreantpos.POSConstants;
 import com.floreantpos.bo.ui.BOMessageDialog;
+import com.floreantpos.bo.ui.CustomCellRenderer;
 import com.floreantpos.model.MenuGroup;
+import com.floreantpos.model.MenuItem;
 import com.floreantpos.model.dao.MenuGroupDAO;
+import com.floreantpos.model.dao.MenuItemDAO;
 import com.floreantpos.swing.BeanTableModel;
 import com.floreantpos.swing.TransparentPanel;
 import com.floreantpos.ui.dialog.BeanEditorDialog;
-import com.floreantpos.ui.dialog.ConfirmDeleteDialog;
+import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.model.MenuGroupForm;
 
 public class MenuGroupExplorer extends TransparentPanel {
@@ -50,11 +61,20 @@ public class MenuGroupExplorer extends TransparentPanel {
 		tableModel.addColumn(POSConstants.MENU_CATEGORY.toUpperCase(), "parent"); //$NON-NLS-1$
 		tableModel.addColumn(POSConstants.SORT_ORDER.toUpperCase(), "sortOrder"); //$NON-NLS-1$
 		tableModel.addColumn(POSConstants.BUTTON_COLOR.toUpperCase(), "buttonColor"); //$NON-NLS-1$
+		tableModel.addColumn(POSConstants.TEXT_COLOR.toUpperCase(), "textColor"); //$NON-NLS-1$
 
 		tableModel.addRows(MenuGroupDAO.getInstance().findAll());
 
 		table = new JXTable(tableModel);
-//		table.setDefaultRenderer(Object.class, new PosTableRenderer());
+		table.setDefaultRenderer(Object.class, new CustomCellRenderer());
+		table.getColumnModel().getColumn(7).setCellRenderer(new DefaultTableCellRenderer() {
+			@Override
+			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+				JLabel lblColor = new JLabel("TEXT COLOR", JLabel.CENTER);
+				lblColor.setForeground((Color) value);
+				return lblColor;
+			}
+		});
 
 		setLayout(new BorderLayout(5, 5));
 		add(new JScrollPane(table));
@@ -72,17 +92,17 @@ public class MenuGroupExplorer extends TransparentPanel {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					int index = table.getSelectedRow();
-					if (index < 0)
+					if(index < 0)
 						return;
 
 					index = table.convertRowIndexToModel(index);
 
-					MenuGroup category = tableModel.getRow(index);
+					MenuGroup menuGroup = tableModel.getRow(index);
 
-					MenuGroupForm editor = new MenuGroupForm(category);
+					MenuGroupForm editor = new MenuGroupForm(menuGroup);
 					BeanEditorDialog dialog = new BeanEditorDialog(editor);
 					dialog.open();
-					if (dialog.isCanceled())
+					if(dialog.isCanceled())
 						return;
 					table.repaint();
 				} catch (Exception x) {
@@ -98,7 +118,7 @@ public class MenuGroupExplorer extends TransparentPanel {
 					MenuGroupForm editor = new MenuGroupForm();
 					BeanEditorDialog dialog = new BeanEditorDialog(editor);
 					dialog.open();
-					if (dialog.isCanceled())
+					if(dialog.isCanceled())
 						return;
 					MenuGroup foodGroup = (MenuGroup) editor.getBean();
 					tableModel.addRow(foodGroup);
@@ -113,18 +133,29 @@ public class MenuGroupExplorer extends TransparentPanel {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					int index = table.getSelectedRow();
-					if (index < 0)
+					if(index < 0)
 						return;
 
 					index = table.convertRowIndexToModel(index);
+					MenuGroup group = tableModel.getRow(index);
 
-					if (ConfirmDeleteDialog.showMessage(MenuGroupExplorer.this, POSConstants.CONFIRM_DELETE, POSConstants.DELETE) != ConfirmDeleteDialog.NO) {
-						MenuGroup group = tableModel.getRow(index);
-						MenuGroupDAO foodGroupDAO = new MenuGroupDAO();
-						foodGroupDAO.delete(group);
-
-						tableModel.removeRow(index);
+					if(POSMessageDialog.showYesNoQuestionDialog(MenuGroupExplorer.this, POSConstants.CONFIRM_DELETE, POSConstants.DELETE) != JOptionPane.YES_OPTION) {
+						return;
 					}
+
+					MenuItemDAO menuItemDao = new MenuItemDAO();
+					List<MenuItem> menuItems = menuItemDao.findByParent(null, group, true);
+
+					if(menuItems.size() > 0) {
+						if(POSMessageDialog.showYesNoQuestionDialog(MenuGroupExplorer.this, Messages.getString("MenuGroupExplorer.0"), POSConstants.DELETE) != JOptionPane.YES_OPTION) { //$NON-NLS-1$
+							return;
+						}
+						menuItemDao.releaseParent(menuItems);
+					}
+					MenuGroupDAO foodGroupDAO = new MenuGroupDAO();
+					foodGroupDAO.delete(group);
+
+					tableModel.removeRow(index);
 				} catch (Exception x) {
 					BOMessageDialog.showError(POSConstants.ERROR_MESSAGE, x);
 				}
