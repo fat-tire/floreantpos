@@ -73,7 +73,7 @@ public class MenuGroupForm extends BeanEditor {
 	// <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:initComponents
 	private void initComponents() {
 		setLayout(new MigLayout("", "[70px][289px,grow][6px][49px]", "[19px][][25px][][][][15px]")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		
+
 		jLabel1 = new javax.swing.JLabel();
 		tfName = new com.floreantpos.swing.FixedLengthTextField(120);
 		jLabel2 = new javax.swing.JLabel();
@@ -95,7 +95,7 @@ public class MenuGroupForm extends BeanEditor {
 				doNewCategory(evt);
 			}
 		});
-		
+
 		lblTranslatedName = new JLabel(Messages.getString("MenuGroupForm.6")); //$NON-NLS-1$
 		add(lblTranslatedName, "cell 0 1,alignx trailing"); //$NON-NLS-1$
 
@@ -145,7 +145,7 @@ public class MenuGroupForm extends BeanEditor {
 				btnTextColor.setForeground(color);
 			}
 		});
-		
+
 		MenuCategoryDAO categoryDAO = new MenuCategoryDAO();
 		List<MenuCategory> foodCategories = categoryDAO.findAll();
 		cbCategory.setModel(new ComboBoxModel(foodCategories));
@@ -217,16 +217,16 @@ public class MenuGroupForm extends BeanEditor {
 			tfSortOrder.setText(menuGroup.getSortOrder().toString());
 		}
 
-		if (menuGroup.getButtonColor() != null) {
-			Color color = new Color(menuGroup.getButtonColor());
-			btnButtonColor.setBackground(color);
-			btnTextColor.setBackground(color);
+		Color buttonColor = menuGroup.getButtonColor();
+		if (buttonColor != null) {
+			btnButtonColor.setBackground(buttonColor);
+			btnTextColor.setBackground(buttonColor);
 		}
 
 		if (menuGroup.getTextColor() != null) {
-			Color color = new Color(menuGroup.getTextColor());
-			btnTextColor.setForeground(color);
+			btnTextColor.setForeground(menuGroup.getTextColor());
 		}
+
 		chkVisible.setSelected(menuGroup.isVisible());
 
 		if (menuGroup.getParent() != null) {
@@ -254,12 +254,15 @@ public class MenuGroupForm extends BeanEditor {
 		}
 
 		menuGroup.setName(tfName.getText());
-		
+
 		menuGroup.setTranslatedName(tfTranslatedName.getText());
 		menuGroup.setSortOrder(tfSortOrder.getInteger());
 
-		menuGroup.setButtonColor(btnButtonColor.getBackground().getRGB());
-		menuGroup.setTextColor(btnTextColor.getForeground().getRGB());
+		menuGroup.setButtonColor(btnButtonColor.getBackground());
+		menuGroup.setTextColor(btnTextColor.getForeground());
+
+		menuGroup.setButtonColorCode(btnButtonColor.getBackground().getRGB());
+		menuGroup.setTextColorCode(btnTextColor.getForeground().getRGB());
 
 		menuGroup.setParent(category);
 		menuGroup.setVisible(chkVisible.isSelected());

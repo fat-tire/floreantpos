@@ -34,12 +34,12 @@ public abstract class BaseMenuGroup  implements Comparable, Serializable {
 	public static String REF = "MenuGroup"; //$NON-NLS-1$
 	public static String PROP_NAME = "name"; //$NON-NLS-1$
 	public static String PROP_PARENT = "parent"; //$NON-NLS-1$
-	public static String PROP_BUTTON_COLOR = "buttonColor"; //$NON-NLS-1$
+	public static String PROP_BUTTON_COLOR_CODE = "buttonColorCode"; //$NON-NLS-1$
 	public static String PROP_VISIBLE = "visible"; //$NON-NLS-1$
 	public static String PROP_SORT_ORDER = "sortOrder"; //$NON-NLS-1$
 	public static String PROP_ID = "id"; //$NON-NLS-1$
 	public static String PROP_TRANSLATED_NAME = "translatedName"; //$NON-NLS-1$
-	public static String PROP_TEXT_COLOR = "textColor"; //$NON-NLS-1$
+	public static String PROP_TEXT_COLOR_CODE = "textColorCode"; //$NON-NLS-1$
 
 
 	// constructors
@@ -81,8 +81,8 @@ public abstract class BaseMenuGroup  implements Comparable, Serializable {
 		protected java.lang.String translatedName;
 		protected java.lang.Boolean visible;
 		protected java.lang.Integer sortOrder;
-		protected java.lang.Integer buttonColor;
-		protected java.lang.Integer textColor;
+		protected java.lang.Integer buttonColorCode;
+		protected java.lang.Integer textColorCode;
 
 	// many to one
 	private com.floreantpos.model.MenuCategory parent;
@@ -182,16 +182,16 @@ public abstract class BaseMenuGroup  implements Comparable, Serializable {
 	/**
 	 * Return the value associated with the column: BTN_COLOR
 	 */
-	public java.lang.Integer getButtonColor () {
-					return buttonColor == null ? Integer.valueOf(0) : buttonColor;
+	public java.lang.Integer getButtonColorCode () {
+					return buttonColorCode == null ? Integer.valueOf(0) : buttonColorCode;
 			}
 
 	/**
 	 * Set the value related to the column: BTN_COLOR
-	 * @param buttonColor the BTN_COLOR value
+	 * @param buttonColorCode the BTN_COLOR value
 	 */
-	public void setButtonColor (java.lang.Integer buttonColor) {
-		this.buttonColor = buttonColor;
+	public void setButtonColorCode (java.lang.Integer buttonColorCode) {
+		this.buttonColorCode = buttonColorCode;
 	}
 
 
@@ -199,16 +199,16 @@ public abstract class BaseMenuGroup  implements Comparable, Serializable {
 	/**
 	 * Return the value associated with the column: TEXT_COLOR
 	 */
-	public java.lang.Integer getTextColor () {
-					return textColor == null ? Integer.valueOf(0) : textColor;
+	public java.lang.Integer getTextColorCode () {
+					return textColorCode == null ? Integer.valueOf(0) : textColorCode;
 			}
 
 	/**
 	 * Set the value related to the column: TEXT_COLOR
-	 * @param textColor the TEXT_COLOR value
+	 * @param textColorCode the TEXT_COLOR value
 	 */
-	public void setTextColor (java.lang.Integer textColor) {
-		this.textColor = textColor;
+	public void setTextColorCode (java.lang.Integer textColorCode) {
+		this.textColorCode = textColorCode;
 	}
 
 

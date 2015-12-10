@@ -20,9 +20,11 @@ package com.floreantpos.model.dao;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
@@ -140,6 +142,33 @@ public class MenuItemDAO extends BaseMenuItemDAO {
 
 		return criteria.list();
 
+	}
+	
+	public void releaseParent(List<MenuItem> menuItemList) {
+		if(menuItemList == null) {
+			return;
+		}
+
+		Session session = null;
+		Transaction tx = null;
+
+		try {
+			session = createNewSession();
+			tx = session.beginTransaction();
+			
+			for (MenuItem menuItem : menuItemList) {
+				menuItem.setParent(null);
+				session.saveOrUpdate(menuItem);
+			}
+
+			tx.commit();
+		} catch (Exception e) {
+			tx.rollback();
+			LogFactory.getLog(ShopTableDAO.class).error(e);
+			throw new RuntimeException(e);
+		} finally {
+			closeSession(session);
+		}
 	}
 
 }

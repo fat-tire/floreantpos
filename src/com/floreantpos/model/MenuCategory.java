@@ -17,66 +17,92 @@
  */
 package com.floreantpos.model;
 
+import java.awt.Color;
+
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 import org.apache.commons.lang.StringUtils;
 
 import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.model.base.BaseMenuCategory;
 
-@XmlRootElement(name="menu-category")
+@XmlRootElement(name = "menu-category")
 public class MenuCategory extends BaseMenuCategory {
 	private static final long serialVersionUID = 1L;
 
 	/*[CONSTRUCTOR MARKER BEGIN]*/
-	public MenuCategory () {
+	public MenuCategory() {
 		super();
 	}
 
 	/**
 	 * Constructor for primary key
 	 */
-	public MenuCategory (java.lang.Integer id) {
+	public MenuCategory(java.lang.Integer id) {
 		super(id);
 	}
 
 	/**
 	 * Constructor for required fields
 	 */
-	public MenuCategory (
-		java.lang.Integer id,
-		java.lang.String name) {
+	public MenuCategory(java.lang.Integer id, java.lang.String name) {
 
-		super (
-			id,
-			name);
+		super(id, name);
 	}
 
 	/*[CONSTRUCTOR MARKER END]*/
-	
+
+	private Color buttonColor;
+	private Color textColor;
+
 	@Override
 	public Integer getSortOrder() {
 		return sortOrder == null ? 9999 : sortOrder;
 	}
-	
-	@Override
-	public Integer getButtonColor() {
-		return buttonColor;
+
+	@XmlTransient
+	public Color getButtonColor() {
+		if (buttonColor != null) {
+			return buttonColor;
+		}
+
+		if (getButtonColorCode() == null || getButtonColorCode() == 0) {
+			return null;
+		}
+
+		return buttonColor = new Color(getButtonColorCode());
 	}
-	
-	@Override
-	public Integer getTextColor() {
-		return textColor;
+
+	public void setButtonColor(Color buttonColor) {
+		this.buttonColor = buttonColor;
 	}
-	
+
+	@XmlTransient
+	public Color getTextColor() {
+		if (textColor != null) {
+			return textColor;
+		}
+
+		if (getTextColorCode() == null || getTextColorCode() == 0) {
+			return null;
+		}
+
+		return textColor = new Color(getTextColorCode());
+	}
+
+	public void setTextColor(Color textColor) {
+		this.textColor = textColor;
+	}
+
 	public String getDisplayName() {
-		if(TerminalConfig.isUseTranslatedName() && StringUtils.isNotEmpty(getTranslatedName())) {
+		if (TerminalConfig.isUseTranslatedName() && StringUtils.isNotEmpty(getTranslatedName())) {
 			return getTranslatedName();
 		}
-		
+
 		return super.getName();
 	}
-	
+
 	@Override
 	public String toString() {
 		return getDisplayName();

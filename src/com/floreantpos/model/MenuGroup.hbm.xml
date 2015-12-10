@@ -13,8 +13,8 @@
     <property column="VISIBLE" index="menugroupvisible" name="visible" type="java.lang.Boolean"/>
     
     <property column="SORT_ORDER" name="sortOrder" type="java.lang.Integer"/>
-    <property column="BTN_COLOR" name="buttonColor" type="java.lang.Integer" />
-    <property column="TEXT_COLOR" name="textColor" type="java.lang.Integer" />
+    <property column="BTN_COLOR" name="buttonColorCode" type="java.lang.Integer" />
+    <property column="TEXT_COLOR" name="textColorCode" type="java.lang.Integer" />
     
     <!-- Associations -->
     <!-- uni-directional many-to-one association to FoodCategory -->

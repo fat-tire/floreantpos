@@ -16,20 +16,21 @@
  * ************************************************************************
  */
 package com.floreantpos;
+
 public class POSConstants {
 	public static final String COLON = ":"; //$NON-NLS-1$
-	
+
 	public static final String DINE_IN_BUTTON_TEXT = Messages.getString("DINE_IN_BUTTON_TEXT"); //$NON-NLS-1$
 	public static final String TAKE_OUT_BUTTON_TEXT = Messages.getString("TAKE_OUT_BUTTON_TEXT"); //$NON-NLS-1$
 	public static final String PICKUP_BUTTON_TEXT = Messages.getString("PICKUP_BUTTON_TEXT"); //$NON-NLS-1$
 	public static final String HOME_DELIVERY_BUTTON_TEXT = Messages.getString("HOME_DELIVERY_BUTTON_TEXT"); //$NON-NLS-1$
 	public static final String DRIVE_THRU_BUTTON_TEXT = Messages.getString("DRIVE_THRU_BUTTON_TEXT"); //$NON-NLS-1$
 	public static final String BAR_TAB_BUTTON_TEXT = Messages.getString("BAR_TAB_BUTTON_TEXT"); //$NON-NLS-1$
-	
+
 	public static final String SEARCH_ITEM_BUTTON_TEXT = Messages.getString("SEARCH_ITEM_BUTTON_TEXT"); //$NON-NLS-1$
-	
+
 	public static final String CashierSwitchBoardView_LABEL_ORDER = Messages.getString("CashierSwitchBoardView.LABEL_ORDER"); //$NON-NLS-1$
-	
+
 	public static final String BACK_OFFICE_BUTTON_TEXT = Messages.getString("BACK_OFFICE_BUTTON_TEXT"); //$NON-NLS-1$
 	public static final String NEW_ORDER_BUTTON_TEXT = Messages.getString("NEW_ORDER_BUTTON_TEXT"); //$NON-NLS-1$
 	public static final String EDIT_TICKET_BUTTON_TEXT = Messages.getString("EDIT_TICKET_BUTTON_TEXT"); //$NON-NLS-1$
@@ -58,7 +59,7 @@ public class POSConstants {
 	public static final String CANCEL_BUTTON_TEXT = Messages.getString("CANCEL_BUTTON_TEXT"); //$NON-NLS-1$
 	public static final String SAVE_BUTTON_TEXT = Messages.getString("SAVE_BUTTON_TEXT"); //$NON-NLS-1$
 	public static final String PAY_BUTTON_TEXT = Messages.getString("PAY_BUTTON_TEXT"); //$NON-NLS-1$
-	
+
 	public static final String TICKET_LIST_COLUMN_ID = Messages.getString("TICKET_LIST_COLUMN_ID"); //$NON-NLS-1$
 	public static final String TICKET_LIST_COLUMN_TABLE = Messages.getString("TICKET_LIST_COLUMN_TABLE"); //$NON-NLS-1$
 	public static final String TICKET_LIST_COLUMN_SERVER = Messages.getString("TICKET_LIST_COLUMN_SERVER"); //$NON-NLS-1$
@@ -69,9 +70,7 @@ public class POSConstants {
 	public static final String TICKET_LIST_COLUMN_STATUS = Messages.getString("TICKET_LIST_COLUMN_STATUS"); //$NON-NLS-1$
 	public static final String TICKET_LIST_COLUMN_TOTAL = Messages.getString("TICKET_LIST_COLUMN_TOTAL"); //$NON-NLS-1$
 	public static final String TICKET_LIST_COLUMN_DUE = Messages.getString("TICKET_LIST_COLUMN_DUE"); //$NON-NLS-1$
-	
-	
-	
+
 	public static final String EDIT_TAX_RATE = Messages.getString("PosMessage.0"); //$NON-NLS-1$
 	public static final String ENTER_PAYOUT_NOTE = Messages.getString("PosMessage.1"); //$NON-NLS-1$
 	public static final String LOADING = Messages.getString("PosMessage.2"); //$NON-NLS-1$
@@ -176,10 +175,10 @@ public class POSConstants {
 	public static final String TICKET_DETAIL = Messages.getString("PosMessage.99"); //$NON-NLS-1$
 	public static final String ERROR_MESSAGE = Messages.getString("PosMessage.100"); //$NON-NLS-1$
 	public static final String CONFIRM_SHUTDOWN = Messages.getString("PosMessage.101"); //$NON-NLS-1$
-	
+
 	public static final String NEW_TAX_RATE = Messages.getString("PosMessage.103"); //$NON-NLS-1$
 	public static final String HOURLY_LABOR_REPORT = Messages.getString("PosMessage.104"); //$NON-NLS-1$
-	
+
 	public static final String GIFT_CERTIFICATE = Messages.getString("PosMessage.106"); //$NON-NLS-1$
 	public static final String AMOUNT_PAID_OUT = Messages.getString("PosMessage.107"); //$NON-NLS-1$
 	public static final String AM = Messages.getString("PosMessage.108"); //$NON-NLS-1$
@@ -259,6 +258,7 @@ public class POSConstants {
 	public static final String TRANSLATED_NAME = Messages.getString("Translated_Name"); //$NON-NLS-1$
 	public static final String SORT_ORDER = Messages.getString("SORT_ORDER"); //$NON-NLS-1$
 	public static final String BUTTON_COLOR = Messages.getString("BUTTON_COLOR"); //$NON-NLS-1$
+	public static final String TEXT_COLOR = Messages.getString("TEXT_COLOR"); //$NON-NLS-1$
 	public static final String EDIT_MENU_CATEGORY = Messages.getString("PosMessage.180"); //$NON-NLS-1$
 	public static final String DESCRIPTION = Messages.getString("PosMessage.181"); //$NON-NLS-1$
 	public static final String INVALID_AMOUNT = Messages.getString("PosMessage.182"); //$NON-NLS-1$
@@ -283,7 +283,7 @@ public class POSConstants {
 	public static final String TABLE_NUMBER = Messages.getString("PosMessage.201"); //$NON-NLS-1$
 	public static final String ACTIVE_TICKETS_BEFORE_DRAWER_RESET = Messages.getString("PosMessage.202"); //$NON-NLS-1$
 	public static final String DUE = Messages.getString("PosMessage.203"); //$NON-NLS-1$
-	
+
 	public static final String MODIFIER_GROUPS = Messages.getString("PosMessage.205"); //$NON-NLS-1$
 	public static final String CATEGORY = Messages.getString("PosMessage.206"); //$NON-NLS-1$
 	public static final String OK = Messages.getString("PosMessage.207"); //$NON-NLS-1$
@@ -346,7 +346,7 @@ public class POSConstants {
 	public static final String COOKING_INSTRUCTIONS = Messages.getString("PosMessage.265"); //$NON-NLS-1$
 	public static final String LAST_NAME = Messages.getString("PosMessage.266"); //$NON-NLS-1$
 	public static final String TYPE_NAME = Messages.getString("PosMessage.267"); //$NON-NLS-1$
-	
+
 	public static final String CASH_TRANSACTION = Messages.getString("PosMessage.269"); //$NON-NLS-1$
 	public static final String ENTER_VOID_REASON = Messages.getString("PosMessage.270"); //$NON-NLS-1$
 	public static final String DRAWER_PULL_ = Messages.getString("PosMessage.271"); //$NON-NLS-1$
@@ -436,11 +436,11 @@ public class POSConstants {
 	public static final String TICKET_TYPE = Messages.getString("POSConstants.TICKET_TYPE"); //$NON-NLS-1$
 
 	public static final String POS_MESSAGE_ERROR = "PosMessage.Error"; //$NON-NLS-1$
-	
+
 	public static final String CONFIG_TAB_RESTAURANT = Messages.getString("CONFIG_TAB_RESTAURANT"); //$NON-NLS-1$
 	public static final String CONFIG_TAB_TAX = Messages.getString("CONFIG_TAB_TAX"); //$NON-NLS-1$
 	public static final String CONFIG_TAB_PRINT = Messages.getString("CONFIG_TAB_PRINT"); //$NON-NLS-1$
-	
+
 	public static final String RECEIPT_REPORT_TERMINAL_LABEL = Messages.getString("RECEIPT_REPORT_TERMINAL_LABEL"); //$NON-NLS-1$
 	public static final String RECEIPT_REPORT_TICKET_NO_LABEL = Messages.getString("RECEIPT_REPORT_TICKET_NO_LABEL"); //$NON-NLS-1$
 	public static final String RECEIPT_REPORT_TABLE_NO_LABEL = Messages.getString("RECEIPT_REPORT_TABLE_NO_LABEL"); //$NON-NLS-1$
@@ -450,7 +450,7 @@ public class POSConstants {
 	public static final String RECEIPT_REPORT_ITEM_LABEL = Messages.getString("RECEIPT_REPORT_ITEM_LABEL"); //$NON-NLS-1$
 	public static final String RECEIPT_REPORT_QUANTITY_LABEL = Messages.getString("RECEIPT_REPORT_QUANTITY_LABEL"); //$NON-NLS-1$
 	public static final String RECEIPT_REPORT_SUBTOTAL_LABEL = Messages.getString("RECEIPT_REPORT_SUBTOTAL_LABEL"); //$NON-NLS-1$
-	
+
 	public static final String RECEIPT_REPORT_TOTAL_LABEL = Messages.getString("RECEIPT_REPORT_TOTAL_LABEL"); //$NON-NLS-1$
 	public static final String RECEIPT_REPORT_DISCOUNT_LABEL = Messages.getString("RECEIPT_REPORT_DISCOUNT_LABEL"); //$NON-NLS-1$
 	public static final String RECEIPT_REPORT_TAX_LABEL = Messages.getString("RECEIPT_REPORT_TAX_LABEL"); //$NON-NLS-1$
