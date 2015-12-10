@@ -1,6 +1,6 @@
 /**
  * ************************************************************************
- * * The contents of this file are subject to the MRPL 1.2
+d * * The contents of this file are subject to the MRPL 1.2
  * * (the  "License"),  being   the  Mozilla   Public  License
  * * Version 1.1  with a permitted attribution clause; you may not  use this
  * * file except in compliance with the License. You  may  obtain  a copy of
@@ -92,7 +92,7 @@ public class ShopTableDAO extends BaseShopTableDAO {
 	}
 
 	public List<ShopTable> getByNumbers(Collection<Integer> tableNumbers) {
-		if(tableNumbers == null) {
+		if(tableNumbers == null || tableNumbers.size()==0) {
 			return null;
 		}
 
@@ -221,6 +221,29 @@ public class ShopTableDAO extends BaseShopTableDAO {
 				shopTable.setBooked(false);
 				saveOrUpdate(shopTable, session);
 			}
+
+			tx.commit();
+		} catch (Exception e) {
+			tx.rollback();
+			LogFactory.getLog(ShopTableDAO.class).error(e);
+			throw new RuntimeException(e);
+		} finally {
+			closeSession(session);
+		}
+	}
+	
+	public void releaseAndDeleteTicketTables(Ticket ticket) {
+
+		Session session = null;
+		Transaction tx = null;
+
+		try {
+			session = createNewSession();
+			tx = session.beginTransaction();
+			
+			releaseTables(ticket);
+			ticket.setTableNumbers(null); 
+			TicketDAO.getInstance().saveOrUpdate(ticket); 
 
 			tx.commit();
 		} catch (Exception e) {
