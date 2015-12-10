@@ -291,4 +291,28 @@ public class ShopTableDAO extends BaseShopTableDAO {
 		criteria.addOrder(Order.asc(ShopTable.PROP_ID));
 		return criteria.list();
 	}
+
+	public void createNewTables(int totalNumberOfTableHaveToCreate) {
+		
+		Session session = null;
+		Transaction tx = null;
+
+		try {
+			session = createNewSession();
+			tx = session.beginTransaction();
+			
+			for (int i = 0; i < totalNumberOfTableHaveToCreate; i++) {
+				super.save(new ShopTable(), session);
+			}
+
+			tx.commit();
+		} catch (Exception e) {
+			tx.rollback();
+			LogFactory.getLog(ShopTableDAO.class).error(e);
+			throw new RuntimeException(e);
+		} finally {
+			closeSession(session);
+		}
+
+	}
 }

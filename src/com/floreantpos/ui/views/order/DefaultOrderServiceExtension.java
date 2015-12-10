@@ -32,7 +32,9 @@ import com.floreantpos.main.Application;
 import com.floreantpos.model.OrderType;
 import com.floreantpos.model.ShopTable;
 import com.floreantpos.model.Ticket;
+import com.floreantpos.model.dao.ShopTableDAO;
 import com.floreantpos.model.dao.TicketDAO;
+import com.floreantpos.ui.dialog.NumberSelectionDialog2;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.util.POSUtil;
 import com.floreantpos.util.PosGuiUtil;
@@ -56,26 +58,63 @@ public class DefaultOrderServiceExtension implements OrderServiceExtension {
 
 	@Override
 	public void createNewTicket(OrderType ticketType) throws TicketAlreadyExistsException {
+
+		List<ShopTable> allTables = ShopTableDAO.getInstance().findAll();
+		if(allTables == null || allTables.isEmpty()) {
+
+			int userInput = 0;
+
+			int result = POSMessageDialog.showYesNoQuestionDialog(Application.getPosWindow(),
+					Messages.getString("DefaultOrderServiceExtension.6"), Messages.getString("DefaultOrderServiceExtension.7")); //$NON-NLS-1$ //$NON-NLS-2$
+
+			if(result == JOptionPane.YES_OPTION) {
+				
+				userInput = NumberSelectionDialog2.takeIntInput(Messages.getString("DefaultOrderServiceExtension.8")); //$NON-NLS-1$
+				
+				if(userInput == 0) {
+					POSMessageDialog.showError(Application.getPosWindow(), Messages.getString("DefaultOrderServiceExtension.9")); //$NON-NLS-1$
+					return;
+				}
+				
+				if(userInput != -1) {
+					ShopTableDAO.getInstance().createNewTables(userInput);
+				}
+			}
+
+			if(result != JOptionPane.YES_OPTION || userInput == -1) {
+				int option = POSMessageDialog.showYesNoQuestionDialog(Application.getPosWindow(),
+						Messages.getString("DefaultOrderServiceExtension.10"), Messages.getString("DefaultOrderServiceExtension.11")); //$NON-NLS-1$ //$NON-NLS-2$
+				if(option != 0) {
+					return;
+				}
+			}
+		}
+
 		List<ShopTable> tables = null;
+		List<ShopTable> shopTables = ShopTableDAO.getInstance().findAll();
 
-		if (TerminalConfig.isShouldShowTableSelection()) {
-			FloorLayoutPlugin floorLayoutPlugin = (FloorLayoutPlugin) ExtensionManager.getPlugin(FloorLayoutPlugin.class);
-			if (floorLayoutPlugin != null) {
-				tables = floorLayoutPlugin.captureTableNumbers(null);
-			}
-			else {
-				tables = PosGuiUtil.captureTable(null);
-			}
+		if(shopTables != null && !shopTables.isEmpty()) {
 
-			if (tables == null) {
-				return;
+			if(TerminalConfig.isShouldShowTableSelection()) {
+				FloorLayoutPlugin floorLayoutPlugin = (FloorLayoutPlugin) ExtensionManager.getPlugin(FloorLayoutPlugin.class);
+
+				if(floorLayoutPlugin != null) {
+					tables = floorLayoutPlugin.captureTableNumbers(null);
+				}
+				else {
+					tables = PosGuiUtil.captureTable(null);
+				}
+
+				if(tables == null) {
+					return;
+				}
 			}
 		}
 
 		int numberOfGuests = 0;
-		if (TerminalConfig.isShouldShowGuestSelection()) {
+		if(TerminalConfig.isShouldShowGuestSelection()) {
 			numberOfGuests = PosGuiUtil.captureGuestNumber();
-			if (numberOfGuests == -1) {
+			if(numberOfGuests == -1) {
 				return;
 			}
 		}
@@ -90,7 +129,7 @@ public class DefaultOrderServiceExtension implements OrderServiceExtension {
 		ticket.setOwner(Application.getCurrentUser());
 		ticket.setShift(application.getCurrentShift());
 
-		if (tables != null) {
+		if(tables != null) {
 			for (ShopTable shopTable : tables) {
 				shopTable.setServing(true);
 				ticket.addTable(shopTable.getTableNumber());
@@ -127,15 +166,18 @@ public class DefaultOrderServiceExtension implements OrderServiceExtension {
 		//		}
 
 		int due = (int) POSUtil.getDouble(ticket.getDueAmount());
-		if (due != 0) {
+		if(due != 0) {
 			POSMessageDialog.showError(Application.getPosWindow(), Messages.getString("DefaultOrderServiceExtension.2")); //$NON-NLS-1$
 			return false;
 		}
 
-		int option = JOptionPane.showOptionDialog(Application.getPosWindow(), Messages.getString("DefaultOrderServiceExtension.3") + ticket.getId() + Messages.getString("DefaultOrderServiceExtension.4"), Messages.getString("DefaultOrderServiceExtension.5"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-				JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, null, null, null);
+		int option = JOptionPane
+				.showOptionDialog(
+						Application.getPosWindow(),
+						Messages.getString("DefaultOrderServiceExtension.3") + ticket.getId() + Messages.getString("DefaultOrderServiceExtension.4"), Messages.getString("DefaultOrderServiceExtension.5"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+						JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, null, null, null);
 
-		if (option != JOptionPane.OK_OPTION) {
+		if(option != JOptionPane.OK_OPTION) {
 			return false;
 		}
 
@@ -150,11 +192,11 @@ public class DefaultOrderServiceExtension implements OrderServiceExtension {
 
 	@Override
 	public void initBackoffice() {
-		
+
 	}
-	
+
 	@Override
 	public String getId() {
-		return String.valueOf("DefaultOrderServiceExtension".hashCode());
+		return String.valueOf("DefaultOrderServiceExtension".hashCode()); //$NON-NLS-1$
 	}
 }
