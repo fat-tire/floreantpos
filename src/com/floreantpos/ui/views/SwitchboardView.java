@@ -25,6 +25,7 @@ package com.floreantpos.ui.views;
 
 import java.awt.BorderLayout;
 import java.awt.ComponentOrientation;
+import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -239,6 +240,8 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 		final Border border1 = BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(0, 0, 5, 0), btnMore.getBorder());
 		final Border border2 = BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0), btnMore.getBorder());
 		btnMore.setBorder(border1);
+		btnMore.setPreferredSize(new Dimension(78,0));
+
 
 		btnMore.addActionListener(new ActionListener() {
 			@Override
@@ -513,7 +516,7 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 			OrderServiceExtension orderService = new DefaultOrderServiceExtension();
 			orderService.createNewTicket(ticketType);
 
-		} catch (TicketAlreadyExistsException e) {
+			} catch (TicketAlreadyExistsException e) {
 
 			int option = JOptionPane.showOptionDialog(Application.getPosWindow(), POSConstants.EDIT_TICKET_CONFIRMATION, POSConstants.CONFIRM,
 					JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);

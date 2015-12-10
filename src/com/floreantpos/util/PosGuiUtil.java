@@ -44,7 +44,9 @@ import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.dialog.TableSelectionDialog;
 
 public class PosGuiUtil {
+	
 	public static List<ShopTable> captureTable(Ticket ticket) {
+		
 		TableSelectionDialog dialog = new TableSelectionDialog();
 		dialog.setTicket(ticket);
 		dialog.pack();
@@ -55,8 +57,12 @@ public class PosGuiUtil {
 			if (option != JOptionPane.YES_OPTION) {
 				return null;
 			}
+		}else if(dialog.getTables()==null || dialog.getTables().isEmpty()) {
+			int option = POSMessageDialog.showYesNoQuestionDialog(Application.getPosWindow(), Messages.getString("PosGuiUtil.0"), Messages.getString("PosGuiUtil.1")); //$NON-NLS-1$ //$NON-NLS-2$
+			if (option != JOptionPane.YES_OPTION) {
+				return null;
+			}
 		}
-
 		return dialog.getTables();
 	}
 
