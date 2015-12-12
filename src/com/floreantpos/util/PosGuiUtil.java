@@ -49,7 +49,6 @@ public class PosGuiUtil {
 		
 		TableSelectionDialog dialog = new TableSelectionDialog();
 		dialog.setTicket(ticket);
-		dialog.pack();
 		dialog.open();
 
 		if (dialog.isCanceled()) {
