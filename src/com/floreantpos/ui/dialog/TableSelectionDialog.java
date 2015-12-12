@@ -20,6 +20,7 @@ package com.floreantpos.ui.dialog;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Insets;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -45,6 +46,7 @@ import com.floreantpos.model.Ticket;
 import com.floreantpos.model.dao.ShopTableDAO;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.swing.PosScrollPane;
+import com.floreantpos.swing.ScrollableFlowPanel;
 import com.floreantpos.swing.ShopTableButton;
 import com.floreantpos.ui.TitlePanel;
 
@@ -59,8 +61,8 @@ public class TableSelectionDialog extends POSDialog implements ActionListener {
 	private void init() {
 		setTitle("Table Selector");
 		setPreferredSize(Application.getPosWindow().getSize());
-		
-		TitlePanel	titlePanel = new TitlePanel();
+
+		TitlePanel titlePanel = new TitlePanel();
 		titlePanel.setTitle(Messages.getString("TableSelectionDialog.0")); //$NON-NLS-1$
 		add(titlePanel, BorderLayout.NORTH);
 
@@ -83,7 +85,7 @@ public class TableSelectionDialog extends POSDialog implements ActionListener {
 
 		add(footerPanel, BorderLayout.SOUTH);
 
-		JPanel keypadPanel = new JPanel(new MigLayout("center,wrap 14", "", ""));
+		ScrollableFlowPanel buttonsPanel = new ScrollableFlowPanel(FlowLayout.LEADING);
 		List<ShopTable> tables = ShopTableDAO.getInstance().findAll();
 
 		for (ShopTable shopTable : tables) {
@@ -96,25 +98,25 @@ public class TableSelectionDialog extends POSDialog implements ActionListener {
 				}
 			});
 
-			if(shopTable.isServing() || shopTable.isBooked()) {
+			if (shopTable.isServing() || shopTable.isBooked()) {
 				tableButton.setEnabled(false);
 				tableButton.repaint();
 			}
-			keypadPanel.add(tableButton);
+			buttonsPanel.add(tableButton);
 		}
-		
-		JScrollPane scrollPane = new PosScrollPane(keypadPanel, PosScrollPane.VERTICAL_SCROLLBAR_ALWAYS, PosScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+
+		JScrollPane scrollPane = new PosScrollPane(buttonsPanel, PosScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, PosScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		scrollPane.getVerticalScrollBar().setPreferredSize(new Dimension(80, 0));
-		scrollPane.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+		scrollPane.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5), scrollPane.getBorder()));
+
 		add(scrollPane, BorderLayout.CENTER);
-		
-		
+
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
 		Insets scnMax = Toolkit.getDefaultToolkit().getScreenInsets(getGraphicsConfiguration());
 		int taskBarSize = scnMax.bottom;
-		
-		setLocation(screenSize.width - getWidth(), screenSize.height - taskBarSize - getHeight());
+
+		setSize(screenSize.width, screenSize.height - taskBarSize);
 	}
 
 	private boolean addTable(ActionEvent e) {
@@ -123,17 +125,17 @@ public class TableSelectionDialog extends POSDialog implements ActionListener {
 
 		ShopTable shopTable = ShopTableDAO.getInstance().getByNumber(tableNumber);
 
-		if(shopTable == null) {
+		if (shopTable == null) {
 			POSMessageDialog.showError(this, "Table number " + e + " does not exist");
 			return false;
 		}
 
-		if(shopTable.isServing()) {
+		if (shopTable.isServing()) {
 			POSMessageDialog.showError(this, "Table number " + e + " is occupied");
 			return false;
 		}
 
-		if(addedTableListModel.contains(button)) {
+		if (addedTableListModel.contains(button)) {
 			addedTableListModel.removeElement(button);
 			button.getShopTable().setServing(false);
 			button.getShopTable().setBooked(false);
@@ -151,10 +153,10 @@ public class TableSelectionDialog extends POSDialog implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		String actionCommand = e.getActionCommand();
 
-		if(POSConstants.CANCEL.equalsIgnoreCase(actionCommand)) {
+		if (POSConstants.CANCEL.equalsIgnoreCase(actionCommand)) {
 			doCancel();
 		}
-		else if(POSConstants.OK.equalsIgnoreCase(actionCommand)) {
+		else if (POSConstants.OK.equalsIgnoreCase(actionCommand)) {
 			doOk();
 		}
 	}
