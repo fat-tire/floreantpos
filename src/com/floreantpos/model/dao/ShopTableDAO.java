@@ -147,7 +147,8 @@ public class ShopTableDAO extends BaseShopTableDAO {
 		}
 	}
 
-	public void bookTables(List<ShopTable> tables) {
+	
+	public void bookedTables(List<ShopTable> tables) {
 		if(tables == null) {
 			return;
 		}

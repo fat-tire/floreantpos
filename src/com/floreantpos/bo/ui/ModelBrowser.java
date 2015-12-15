@@ -86,14 +86,11 @@ public class ModelBrowser<E> extends JPanel implements ActionListener, ListSelec
 			browserTable.setModel(tableModel);
 		}
 
-		setLayout(new BorderLayout(10, 10));
+		setLayout(new BorderLayout(10,10));
 		setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-
-		
 
 		if(searchPanel != null) {
 			searchPanel.setModelBrowser(this);
-			browserPanel.setLayout(new BorderLayout());
 			browserPanel.add(searchPanel,BorderLayout.NORTH);
 		}
 		browserPanel.add(new JScrollPane(browserTable));
@@ -143,7 +140,6 @@ public class ModelBrowser<E> extends JPanel implements ActionListener, ListSelec
 	}
 
 	public void refreshTable() {
-
 	}
 
 	protected JButton getAdditionalButton() {
@@ -182,15 +178,7 @@ public class ModelBrowser<E> extends JPanel implements ActionListener, ListSelec
 					break;
 
 				case CANCEL:
-					beanEditor.cancel();
-					beanEditor.setBean(null);
-					beanEditor.setFieldsEnable(false);
-					btnNew.setEnabled(true);
-					btnEdit.setEnabled(false);
-					btnSave.setEnabled(false);
-					btnDelete.setEnabled(false);
-					btnCancel.setEnabled(false);
-					browserTable.clearSelection();
+					doCancelEditing();
 					break;
 
 				case SAVE:
@@ -229,6 +217,18 @@ public class ModelBrowser<E> extends JPanel implements ActionListener, ListSelec
 		}
 	}
 
+	public void doCancelEditing() {
+		beanEditor.cancel();
+		beanEditor.setBean(null);
+		beanEditor.setFieldsEnable(false);
+		btnNew.setEnabled(true);
+		btnEdit.setEnabled(false);
+		btnSave.setEnabled(false);
+		btnDelete.setEnabled(false);
+		btnCancel.setEnabled(false);
+		browserTable.clearSelection();
+	}
+
 	@Override
 	public void valueChanged(ListSelectionEvent e) {
 		if(e.getValueIsAdjusting()) {
@@ -253,6 +253,8 @@ public class ModelBrowser<E> extends JPanel implements ActionListener, ListSelec
 		btnSave.setEnabled(false);
 		btnDelete.setEnabled(true);
 		btnCancel.setEnabled(false);
+		beanEditor.setFieldsEnable(false);
+		
 
 	}
 
