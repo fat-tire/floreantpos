@@ -14,7 +14,7 @@ import javax.swing.SwingConstants;
 
 public class ScrollableFlowPanel extends JPanel implements Scrollable {
 	private ScrollableFlowLayout layout;
-	private JPanel container;
+	private JPanel contentPane;
 	
 	public ScrollableFlowPanel() {
 		this(FlowLayout.CENTER);
@@ -24,14 +24,14 @@ public class ScrollableFlowPanel extends JPanel implements Scrollable {
 		super(new BorderLayout());
 		
 		layout = new ScrollableFlowLayout(alignment);
-		container = new JPanel(layout);
+		contentPane = new JPanel(layout);
 		
-		super.add(container);
+		super.add(contentPane);
 	}
 	
 	@Override
 	public Component add(Component comp) {
-		return container.add(comp);
+		return contentPane.add(comp);
 	}
 	
 	public Dimension getPreferredScrollableViewportSize() {
@@ -44,6 +44,10 @@ public class ScrollableFlowPanel extends JPanel implements Scrollable {
 		preferredSize.height = layout.getLayoutHeight();
 		
 		return preferredSize;
+	}
+	
+	public JPanel getContentPane() {
+		return contentPane;
 	}
 
 	public int getScrollableUnitIncrement(Rectangle visibleRect, int orientation, int direction) {
