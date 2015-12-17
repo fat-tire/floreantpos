@@ -21,6 +21,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Image;
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.swing.ImageIcon;
@@ -49,9 +50,10 @@ public class CustomCellRenderer extends DefaultTableCellRenderer {
 			lblColor.setBackground((Color) value);
 			return lblColor;
 		}
-
 		if (value instanceof Date) {
-			value = DateFormat.getDateTimeInstance(DateFormat.DEFAULT, DateFormat.SHORT).format((Date) value);
+			String pattern = "MM/dd hh:mm a";
+		    SimpleDateFormat format = new SimpleDateFormat(pattern);
+			value =	format.format((Date) value);
 			return super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 		}
 
