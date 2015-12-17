@@ -37,18 +37,19 @@ import com.floreantpos.model.dao.ShopTableDAO;
 import com.floreantpos.util.NumberUtil;
 import com.floreantpos.util.POSUtil;
 
-@XmlRootElement(name="ticket")
+@XmlRootElement(name = "ticket")
 public class Ticket extends BaseTicket {
+	
 	private static final long serialVersionUID = 1L;
 	// public final static int TAKE_OUT = -1;
 
-//	public final static String DINE_IN = "DINE IN";
-//	public final static String TAKE_OUT = "TAKE OUT";
-//	public final static String PICKUP = "PICKUP";
-//	public final static String HOME_DELIVERY = "HOME DELIVERY";
-//	public final static String DRIVE_THROUGH = "DRIVE THRU";
-//	public final static String BAR_TAB = "BAR_TAB";
-	
+	//	public final static String DINE_IN = "DINE IN";
+	//	public final static String TAKE_OUT = "TAKE OUT";
+	//	public final static String PICKUP = "PICKUP";
+	//	public final static String HOME_DELIVERY = "HOME DELIVERY";
+	//	public final static String DRIVE_THROUGH = "DRIVE THRU";
+	//	public final static String BAR_TAB = "BAR_TAB";
+
 	public final static String PROPERTY_CARD_TRANSACTION_ID = "card_transaction_id"; //$NON-NLS-1$
 	public final static String PROPERTY_CARD_TRACKS = "card_tracks"; //$NON-NLS-1$
 	public static final String PROPERTY_CARD_NAME = "card_name"; //$NON-NLS-1$
@@ -59,16 +60,16 @@ public class Ticket extends BaseTicket {
 	public static final String PROPERTY_CARD_EXP_MONTH = "card_exp_month"; //$NON-NLS-1$
 	public static final String PROPERTY_ADVANCE_PAYMENT = "advance_payment"; //$NON-NLS-1$
 	public static final String PROPERTY_CARD_AUTH_CODE = "card_auth_code"; //$NON-NLS-1$
-	
+
 	/* [CONSTRUCTOR MARKER BEGIN] */
-	public Ticket () {
+	public Ticket() {
 		super();
 	}
 
 	/**
 	 * Constructor for primary key
 	 */
-	public Ticket (java.lang.Integer id) {
+	public Ticket(java.lang.Integer id) {
 		super(id);
 	}
 
@@ -79,41 +80,41 @@ public class Ticket extends BaseTicket {
 	private List deletedItems;
 	private boolean priceIncludesTax;
 
-	public static final String CUSTOMER_PHONE = "CUSTOMER_PHONE"; //$NON-NLS-1$
+	public static final String CUSTOMER_MOBILE = "CUSTOMER_MOBILE"; //$NON-NLS-1$
 	public static final String CUSTOMER_NAME = "CUSTOMER_NAME"; //$NON-NLS-1$
 	public static final String CUSTOMER_ID = "CUSTOMER_ID"; //$NON-NLS-1$
-	
-//	public String getTableNumbers() {
-//		Set<ShopTable> tables = getTables();
-//		if(tables == null) return "";
-//		
-//		String s = "";
-//		for (Iterator iterator = tables.iterator(); iterator.hasNext();) {
-//			ShopTable shopTable = (ShopTable) iterator.next();
-//			s += shopTable.getTableNumber();
-//			
-//			if(iterator.hasNext()) {
-//				s += ", ";
-//			}
-//		}
-//		
-//		return s;
-//	}
-	
+
+	//	public String getTableNumbers() {
+	//		Set<ShopTable> tables = getTables();
+	//		if(tables == null) return "";
+	//		
+	//		String s = "";
+	//		for (Iterator iterator = tables.iterator(); iterator.hasNext();) {
+	//			ShopTable shopTable = (ShopTable) iterator.next();
+	//			s += shopTable.getTableNumber();
+	//			
+	//			if(iterator.hasNext()) {
+	//				s += ", ";
+	//			}
+	//		}
+	//		
+	//		return s;
+	//	}
+
 	public void addTable(int tableNumber) {
 		List<Integer> numbers = getTableNumbers();
 		if(numbers == null) {
 			numbers = new ArrayList<Integer>();
 			setTableNumbers(numbers);
 		}
-		
+
 		numbers.add(tableNumber);
 	}
-	
+
 	@Override
 	public void setClosed(Boolean closed) {
 		super.setClosed(closed);
-		
+
 		if(closed) {
 			ShopTableDAO.getInstance().releaseTables(this);
 		}
@@ -125,10 +126,10 @@ public class Ticket extends BaseTicket {
 			gratuity = createGratuity();
 			setGratuity(gratuity);
 		}
-		
+
 		gratuity.setAmount(amount);
 	}
-	
+
 	public Gratuity createGratuity() {
 		Gratuity gratuity;
 		gratuity = new Gratuity();
@@ -138,7 +139,7 @@ public class Ticket extends BaseTicket {
 		gratuity.setPaid(false);
 		return gratuity;
 	}
-	
+
 	public boolean hasGratuity() {
 		return getGratuity() != null;
 	}
@@ -153,7 +154,7 @@ public class Ticket extends BaseTicket {
 	public Date getDeliveryDate() {
 		Date deliveryDate = super.getDeliveryDate();
 
-		if (deliveryDate == null) {
+		if(deliveryDate == null) {
 			deliveryDate = getCreateDate();
 			Calendar c = Calendar.getInstance();
 			c.setTime(deliveryDate);
@@ -168,7 +169,7 @@ public class Ticket extends BaseTicket {
 	public List<TicketItem> getTicketItems() {
 		List<TicketItem> items = super.getTicketItems();
 
-		if (items == null) {
+		if(items == null) {
 			items = new ArrayList<TicketItem>();
 			super.setTicketItems(items);
 		}
@@ -178,7 +179,7 @@ public class Ticket extends BaseTicket {
 	@Override
 	public Integer getNumberOfGuests() {
 		Integer guests = super.getNumberOfGuests();
-		if (guests == null || guests.intValue() == 0) {
+		if(guests == null || guests.intValue() == 0) {
 			return Integer.valueOf(1);
 		}
 		return guests;
@@ -195,7 +196,7 @@ public class Ticket extends BaseTicket {
 
 	public String getTitle() {
 		String title = ""; //$NON-NLS-1$
-		if (getId() != null) {
+		if(getId() != null) {
 			title += "#" + getId(); //$NON-NLS-1$
 		}
 		title += Messages.getString("Ticket.1") + ": " + getOwner(); //$NON-NLS-1$ //$NON-NLS-2$
@@ -207,23 +208,23 @@ public class Ticket extends BaseTicket {
 
 	public int getBeverageCount() {
 		List<TicketItem> ticketItems = getTicketItems();
-		if (ticketItems == null)
+		if(ticketItems == null)
 			return 0;
 
 		int count = 0;
 		for (TicketItem ticketItem : ticketItems) {
-			if (ticketItem.isBeverage()) {
+			if(ticketItem.isBeverage()) {
 				count += ticketItem.getItemCount();
 			}
 		}
 		return count;
 	}
-	
+
 	public void calculatePrice() {
 		priceIncludesTax = Application.getInstance().isPriceIncludesTax();
 
 		List<TicketItem> ticketItems = getTicketItems();
-		if (ticketItems == null) {
+		if(ticketItems == null) {
 			return;
 		}
 
@@ -243,14 +244,14 @@ public class Ticket extends BaseTicket {
 		double serviceChargeAmount = calculateServiceCharge();
 		double totalAmount = 0;
 
-		if (priceIncludesTax) {
+		if(priceIncludesTax) {
 			totalAmount = subtotalAmount - discountAmount + serviceChargeAmount;
 		}
 		else {
 			totalAmount = subtotalAmount - discountAmount + taxAmount + serviceChargeAmount;
 		}
 
-		if (getGratuity() != null) {
+		if(getGratuity() != null) {
 			totalAmount += getGratuity().getAmount();
 		}
 
@@ -267,7 +268,7 @@ public class Ticket extends BaseTicket {
 		double subtotalAmount = 0;
 
 		List<TicketItem> ticketItems = getTicketItems();
-		if (ticketItems == null) {
+		if(ticketItems == null) {
 			return subtotalAmount;
 		}
 
@@ -285,14 +286,14 @@ public class Ticket extends BaseTicket {
 		double discountAmount = 0;
 
 		List<TicketItem> ticketItems = getTicketItems();
-		if (ticketItems != null) {
+		if(ticketItems != null) {
 			for (TicketItem ticketItem : ticketItems) {
 				discountAmount += ticketItem.getDiscountAmount();
 			}
 		}
 
 		List<TicketCouponAndDiscount> discounts = getCouponAndDiscounts();
-		if (discounts != null) {
+		if(discounts != null) {
 			for (TicketCouponAndDiscount discount : discounts) {
 				discountAmount += calculateDiscountFromType(discount, subtotalAmount);
 			}
@@ -304,12 +305,12 @@ public class Ticket extends BaseTicket {
 	}
 
 	private double calculateTax() {
-//		if (isTaxExempt()) {
-//			return 0;
-//		}
+		//		if (isTaxExempt()) {
+		//			return 0;
+		//		}
 
 		List<TicketItem> ticketItems = getTicketItems();
-		if (ticketItems == null) {
+		if(ticketItems == null) {
 			return 0;
 		}
 
@@ -317,12 +318,12 @@ public class Ticket extends BaseTicket {
 		for (TicketItem ticketItem : ticketItems) {
 			tax += ticketItem.getTaxAmount();
 		}
-		
+
 		return NumberUtil.roundToTwoDigit(fixInvalidAmount(tax));
 	}
 
 	private double fixInvalidAmount(double tax) {
-		if (tax < 0 || Double.isNaN(tax)) {
+		if(tax < 0 || Double.isNaN(tax)) {
 			tax = 0;
 		}
 		return tax;
@@ -344,7 +345,7 @@ public class Ticket extends BaseTicket {
 				HashSet<Integer> categoryIds = new HashSet<Integer>();
 				for (TicketItem item : ticketItems) {
 					Integer itemId = item.getItemId();
-					if (!categoryIds.contains(itemId)) {
+					if(!categoryIds.contains(itemId)) {
 						discount += couponValue;
 						categoryIds.add(itemId);
 					}
@@ -365,7 +366,7 @@ public class Ticket extends BaseTicket {
 				categoryIds = new HashSet<Integer>();
 				for (TicketItem item : ticketItems) {
 					Integer itemId = item.getItemId();
-					if (!categoryIds.contains(itemId)) {
+					if(!categoryIds.contains(itemId)) {
 						discount += ((item.getUnitPrice() * couponValue) / 100.0);
 						categoryIds.add(itemId);
 					}
@@ -386,7 +387,7 @@ public class Ticket extends BaseTicket {
 	}
 
 	public void addDeletedItems(Object o) {
-		if (deletedItems == null) {
+		if(deletedItems == null) {
 			deletedItems = new ArrayList();
 		}
 
@@ -398,7 +399,7 @@ public class Ticket extends BaseTicket {
 	}
 
 	public void clearDeletedItems() {
-		if (deletedItems != null) {
+		if(deletedItems != null) {
 			deletedItems.clear();
 		}
 
@@ -406,23 +407,23 @@ public class Ticket extends BaseTicket {
 	}
 
 	public boolean needsKitchenPrint() {
-		if (getDeletedItems() != null && getDeletedItems().size() > 0) {
+		if(getDeletedItems() != null && getDeletedItems().size() > 0) {
 			return true;
 		}
 
 		List<TicketItem> ticketItems = getTicketItems();
 		for (TicketItem item : ticketItems) {
-			if (item.isShouldPrintToKitchen() && !item.isPrintedToKitchen()) {
+			if(item.isShouldPrintToKitchen() && !item.isPrintedToKitchen()) {
 				return true;
 			}
 
 			List<TicketItemModifierGroup> modifierGroups = item.getTicketItemModifierGroups();
-			if (modifierGroups != null) {
+			if(modifierGroups != null) {
 				for (TicketItemModifierGroup modifierGroup : modifierGroups) {
 					List<TicketItemModifier> ticketItemModifiers = modifierGroup.getTicketItemModifiers();
-					if (ticketItemModifiers != null) {
+					if(ticketItemModifiers != null) {
 						for (TicketItemModifier modifier : ticketItemModifiers) {
-							if (modifier.isShouldPrintToKitchen() && !modifier.isPrintedToKitchen()) {
+							if(modifier.isShouldPrintToKitchen() && !modifier.isPrintedToKitchen()) {
 								return true;
 							}
 						}
@@ -431,9 +432,9 @@ public class Ticket extends BaseTicket {
 			}
 
 			List<TicketItemCookingInstruction> cookingInstructions = item.getCookingInstructions();
-			if (cookingInstructions != null) {
+			if(cookingInstructions != null) {
 				for (TicketItemCookingInstruction ticketItemCookingInstruction : cookingInstructions) {
-					if (!ticketItemCookingInstruction.isPrintedToKitchen()) {
+					if(!ticketItemCookingInstruction.isPrintedToKitchen()) {
 						return true;
 					}
 				}
@@ -469,7 +470,7 @@ public class Ticket extends BaseTicket {
 	//	}
 
 	public double calculateServiceCharge() {
-		if (getType() != OrderType.DINE_IN) {
+		if(getType() != OrderType.DINE_IN) {
 			return 0;
 		}
 
@@ -478,7 +479,7 @@ public class Ticket extends BaseTicket {
 
 		double serviceCharge = 0.0;
 
-		if (serviceChargePercentage > 0.0) {
+		if(serviceChargePercentage > 0.0) {
 			serviceCharge = (getSubtotalAmount() - getDiscountAmount()) * (serviceChargePercentage / 100.0);
 		}
 
@@ -487,14 +488,14 @@ public class Ticket extends BaseTicket {
 
 	public OrderType getType() {
 		String type = getTicketType();
-		
+
 		if(StringUtils.isEmpty(type)) {
 			return OrderType.DINE_IN;
 		}
-		
+
 		return OrderType.valueOf(type);
 	}
-	
+
 	public void setType(OrderType type) {
 		setTicketType(type.name());
 	}
@@ -508,7 +509,7 @@ public class Ticket extends BaseTicket {
 	}
 
 	public void addProperty(String name, String value) {
-		if (getProperties() == null) {
+		if(getProperties() == null) {
 			setProperties(new HashMap<String, String>());
 		}
 
@@ -520,72 +521,72 @@ public class Ticket extends BaseTicket {
 	}
 
 	public String getProperty(String key) {
-		if (getProperties() == null) {
+		if(getProperties() == null) {
 			return null;
 		}
 
 		return getProperties().get(key);
 	}
-	
+
 	public String getProperty(String key, String defaultValue) {
-		if (getProperties() == null) {
+		if(getProperties() == null) {
 			return null;
 		}
-		
+
 		String string = getProperties().get(key);
 		if(StringUtils.isEmpty(string)) {
 			return defaultValue;
 		}
-		
+
 		return string;
 	}
-	
+
 	public void removeProperty(String propertyName) {
 		Map<String, String> properties = getProperties();
-		if (properties == null) {
+		if(properties == null) {
 			return;
 		}
-		
+
 		properties.remove(propertyName);
 	}
-	
+
 	public boolean isPropertyValueTrue(String propertyName) {
 		String property = getProperty(propertyName);
-		
+
 		return POSUtil.getBoolean(property);
 	}
-	
+
 	public String toURLForm() {
 		String s = "ticket_id=" + getId(); //$NON-NLS-1$
-		
+
 		List<TicketItem> items = getTicketItems();
 		if(items == null || items.size() == 0) {
 			return s;
 		}
-		
+
 		for (int i = 0; i < items.size(); i++) {
 			TicketItem ticketItem = items.get(i);
 			s += "&items[" + i + "][id]=" + ticketItem.getId(); //$NON-NLS-1$ //$NON-NLS-2$
 			s += "&items[" + i + "][name]=" + POSUtil.encodeURLString(ticketItem.getName()); //$NON-NLS-1$ //$NON-NLS-2$
 			s += "&items[" + i + "][price]=" + ticketItem.getSubtotalAmount(); //$NON-NLS-1$ //$NON-NLS-2$
 		}
-		
-		s+= "&tax=" + getTaxAmount(); //$NON-NLS-1$
-		s+= "&subtotal=" + getSubtotalAmount(); //$NON-NLS-1$
-		s+= "&grandtotal=" + getTotalAmount(); //$NON-NLS-1$
-		
+
+		s += "&tax=" + getTaxAmount(); //$NON-NLS-1$
+		s += "&subtotal=" + getSubtotalAmount(); //$NON-NLS-1$
+		s += "&grandtotal=" + getTotalAmount(); //$NON-NLS-1$
+
 		return s;
 	}
-	
+
 	public void setCustomer(Customer customer) {
 		addProperty(Ticket.CUSTOMER_ID, String.valueOf(customer.getAutoId()));
 		addProperty(Ticket.CUSTOMER_NAME, customer.getFirstName());
-		addProperty(Ticket.CUSTOMER_PHONE, customer.getHomePhoneNo());
+		addProperty(Ticket.CUSTOMER_MOBILE, customer.getMobileNo());
 	}
-	
+
 	public void removeCustomer() {
 		removeProperty(CUSTOMER_ID);
 		removeProperty(CUSTOMER_NAME);
-		removeProperty(CUSTOMER_PHONE);
+		removeProperty(CUSTOMER_MOBILE);
 	}
 }

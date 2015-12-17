@@ -42,7 +42,7 @@ public class CustomerDAO extends BaseCustomerDAO {
 		return Order.asc(Customer.PROP_AUTO_ID);
 	}
 
-	public List<Customer> findBy(String phone, String loyalty, String name) {
+	public List<Customer> findBy(String mobile, String loyalty, String name) {
 		Session session = null;
 
 		try {
@@ -50,8 +50,8 @@ public class CustomerDAO extends BaseCustomerDAO {
 			Criteria criteria = session.createCriteria(getReferenceClass());
 			Disjunction disjunction = Restrictions.disjunction();
 
-			if (StringUtils.isNotEmpty(phone))
-				disjunction.add(Restrictions.like(Customer.PROP_HOME_PHONE_NO, "%" + phone + "%")); //$NON-NLS-1$ //$NON-NLS-2$
+			if (StringUtils.isNotEmpty(mobile))
+				disjunction.add(Restrictions.like(Customer.PROP_MOBILE_NO, "%" + mobile + "%")); //$NON-NLS-1$ //$NON-NLS-2$
 
 			if (StringUtils.isNotEmpty(loyalty))
 				disjunction.add(Restrictions.like(Customer.PROP_LOYALTY_NO, "%" + loyalty + "%")); //$NON-NLS-1$ //$NON-NLS-2$
