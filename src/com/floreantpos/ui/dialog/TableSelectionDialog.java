@@ -27,7 +27,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
@@ -53,6 +55,9 @@ import com.floreantpos.ui.TitlePanel;
 public class TableSelectionDialog extends POSDialog implements ActionListener {
 
 	private DefaultListModel<ShopTableButton> addedTableListModel = new DefaultListModel<ShopTableButton>();
+	private Ticket ticket;
+
+	private Map<ShopTable, ShopTableButton> tableButtonMap = new HashMap<ShopTable, ShopTableButton>();
 
 	public TableSelectionDialog() {
 		init();
@@ -98,11 +103,9 @@ public class TableSelectionDialog extends POSDialog implements ActionListener {
 				}
 			});
 
-			if (shopTable.isServing() || shopTable.isBooked()) {
-				tableButton.setEnabled(false);
-				tableButton.repaint();
-			}
+			tableButton.update();
 			buttonsPanel.add(tableButton);
+			tableButtonMap.put(shopTable, tableButton);
 		}
 
 		JScrollPane scrollPane = new PosScrollPane(buttonsPanel, PosScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, PosScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
@@ -128,6 +131,11 @@ public class TableSelectionDialog extends POSDialog implements ActionListener {
 		if (shopTable == null) {
 			POSMessageDialog.showError(this, "Table number " + e + " does not exist");
 			return false;
+		}
+
+		if (ticket != null) {
+			shopTable.setServing(false);
+			shopTable.setBooked(false);
 		}
 
 		if (shopTable.isServing()) {
@@ -192,5 +200,24 @@ public class TableSelectionDialog extends POSDialog implements ActionListener {
 	}
 
 	public void setTicket(Ticket ticket) {
+		if (ticket == null) {
+			return;
+		}
+
+		this.ticket = ticket;
+
+		List<ShopTable> tables = ShopTableDAO.getInstance().getTables(ticket);
+		if (tables == null)
+			return;
+
+		for (ShopTable shopTable : tables) {
+			ShopTableButton shopTableButton = tableButtonMap.get(shopTable);
+			shopTableButton.update();
+			shopTableButton.setEnabled(true);
+
+			if (shopTableButton != null) {
+				addedTableListModel.addElement(shopTableButton);
+			}
+		}
 	}
 }
