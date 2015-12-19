@@ -122,15 +122,15 @@ public class TicketListView extends JPanel implements ITicketList {
 
 		PosScrollPane scrollPane = new PosScrollPane(table, PosScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, PosScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
-		JPanel topButtonPanel = new JPanel(new MigLayout("ins 0", "grow", ""));
+		JPanel topButtonPanel = new JPanel(new MigLayout("ins 0", "grow", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		ColumnControlButton controlButton = new ColumnControlButton(table);
-		topButtonPanel.add(controlButton, "h 40!, grow, wrap");
-		topButtonPanel.add(btnRefresh, "h 40!, grow, wrap");
-		topButtonPanel.add(btnPrevious, "h 40!, grow, wrap");
+		topButtonPanel.add(controlButton, "h 40!, grow, wrap"); //$NON-NLS-1$
+		topButtonPanel.add(btnRefresh, "h 40!, grow, wrap"); //$NON-NLS-1$
+		topButtonPanel.add(btnPrevious, "h 40!, grow, wrap"); //$NON-NLS-1$
 
-		JPanel downButtonPanel = new JPanel(new MigLayout("ins 0", "grow", ""));
-		downButtonPanel.add(btnNext, "h 40!, grow, wrap");
-		downButtonPanel.add(btnOrderFilters, "h 40!, grow, wrap");
+		JPanel downButtonPanel = new JPanel(new MigLayout("ins 0", "grow", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		downButtonPanel.add(btnNext, "h 40!, grow, wrap"); //$NON-NLS-1$
+		downButtonPanel.add(btnOrderFilters, "h 40!, grow, wrap"); //$NON-NLS-1$
 
 		JPanel tableButtonPanel = new JPanel(new BorderLayout());
 		tableButtonPanel.setBorder(BorderFactory.createEmptyBorder(0, 2, 0, 2));
@@ -323,65 +323,71 @@ public class TicketListView extends JPanel implements ITicketList {
 			Ticket ticket = (Ticket) rows.get(rowIndex);
 
 			switch (columnIndex) {
-			case 0:
-				return Integer.valueOf(ticket.getId());
+				case 0:
+					return Integer.valueOf(ticket.getId());
 
-			case 1:
-				return ticket.getTableNumbers();
+				case 1:
+					return ticket.getTableNumbers();
 
-			case 2:
-				User owner = ticket.getOwner();
-				return owner.getFirstName();
+				case 2:
+					User owner = ticket.getOwner();
+					return owner.getFirstName();
 
-			case 3:
-				return ticket.getCreateDate();
+				case 3:
+					return ticket.getCreateDate();
 
-			case 4:
-				String customerPhone = ticket.getProperty(Ticket.CUSTOMER_PHONE);
+				case 4:
+					String customerName = ticket.getProperty(Ticket.CUSTOMER_NAME);
 
-				if(customerPhone != null) {
-					return customerPhone;
-				}
-
-				return Messages.getString("TicketListView.6"); //$NON-NLS-1$
-
-			case 5:
-				return ticket.getDeliveryDate();
-
-			case 6:
-				return ticket.getType();
-
-			case 7:
-				String status = ""; //$NON-NLS-1$
-				if(ticket.isPaid()) {
-					status = Messages.getString("TicketListView.8"); //$NON-NLS-1$
-				}
-				else {
-					status = Messages.getString("TicketListView.9"); //$NON-NLS-1$
-				}
-
-				if(ticket.getType() == OrderType.HOME_DELIVERY) {
-					if(ticket.getAssignedDriver() == null) {
-						status += Messages.getString("TicketListView.10"); //$NON-NLS-1$
+					if(customerName != null && !customerName.equals("")) { //$NON-NLS-1$
+						return customerName;
 					}
 
-					status += Messages.getString("TicketListView.11"); //$NON-NLS-1$
-				}
+					String customerMobile = ticket.getProperty(Ticket.CUSTOMER_MOBILE);
 
-				if(ticket.isVoided()) {
-					status = Messages.getString("TicketListView.12"); //$NON-NLS-1$
-				}
-				else if(ticket.isClosed()) {
-					status += Messages.getString("TicketListView.13"); //$NON-NLS-1$
-				}
+					if(customerMobile != null) {
+						return customerMobile;
+					}
 
-				return status;
+					return Messages.getString("TicketListView.6"); //$NON-NLS-1$
 
-			case 8:
-				return ticket.getTotalAmount();
+				case 5:
+					return ticket.getDeliveryDate();
 
-			case 9:
-				return ticket.getDueAmount();
+				case 6:
+					return ticket.getType();
+
+				case 7:
+					String status = ""; //$NON-NLS-1$
+					if(ticket.isPaid()) {
+						status = Messages.getString("TicketListView.8"); //$NON-NLS-1$
+					}
+					else {
+						status = Messages.getString("TicketListView.9"); //$NON-NLS-1$
+					}
+
+					if(ticket.getType() == OrderType.HOME_DELIVERY) {
+						if(ticket.getAssignedDriver() == null) {
+							status += Messages.getString("TicketListView.10"); //$NON-NLS-1$
+						}
+
+						status += Messages.getString("TicketListView.11"); //$NON-NLS-1$
+					}
+
+					if(ticket.isVoided()) {
+						status = Messages.getString("TicketListView.12"); //$NON-NLS-1$
+					}
+					else if(ticket.isClosed()) {
+						status += Messages.getString("TicketListView.13"); //$NON-NLS-1$
+					}
+
+					return status;
+
+				case 8:
+					return ticket.getTotalAmount();
+
+				case 9:
+					return ticket.getDueAmount();
 
 			}
 

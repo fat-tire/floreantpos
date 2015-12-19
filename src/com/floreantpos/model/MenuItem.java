@@ -129,7 +129,7 @@ public class MenuItem extends BaseMenuItem {
 	public void setTextColor(Color textColor) {
 		this.textColor = textColor;
 	}
-
+	
 	@XmlTransient
 	public String getDisplayName() {
 		if (TerminalConfig.isUseTranslatedName() && StringUtils.isNotEmpty(getTranslatedName())) {

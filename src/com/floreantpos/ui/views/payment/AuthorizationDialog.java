@@ -79,7 +79,7 @@ class AuthorizationDialog extends POSDialog implements Runnable {
 				if(cardReader == CardReader.EXTERNAL_TERMINAL) {
 					transaction.setCaptured(true);
 					PosTransactionDAO.getInstance().saveOrUpdate(transaction);
-					txtStatus.append(Messages.getString("AuthorizationDialog.1") + transaction.getId() + Messages.getString("AuthorizationDialog.2"));  //$NON-NLS-1$ //$NON-NLS-2$
+					txtStatus.append(Messages.getString("AuthorizationDialog.1") + transaction.getId() + Messages.getString("AuthorizationDialog.2")); //$NON-NLS-1$ //$NON-NLS-2$
 					continue;
 				}
 
@@ -88,7 +88,7 @@ class AuthorizationDialog extends POSDialog implements Runnable {
 				transaction.setCaptured(true);
 
 				PosTransactionDAO.getInstance().saveOrUpdate(transaction);
-				txtStatus.append(Messages.getString("AuthorizationDialog.1") + transaction.getId() + Messages.getString("AuthorizationDialog.2"));  //$NON-NLS-1$ //$NON-NLS-2$
+				txtStatus.append(Messages.getString("AuthorizationDialog.1") + transaction.getId() + Messages.getString("AuthorizationDialog.2")); //$NON-NLS-1$ //$NON-NLS-2$
 
 				if(iterator.hasNext()) {
 					Thread.sleep(6000);
@@ -97,8 +97,8 @@ class AuthorizationDialog extends POSDialog implements Runnable {
 			} catch (InterruptedException x) {
 
 			} catch (Exception e) {
-				System.out.println(CardConfig.getPaymentGateway().getName());
-				txtStatus.append(Messages.getString("AuthorizationDialog.1") + transaction.getId() + Messages.getString("AuthorizationDialog.4") + e.getMessage() + "\n");  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				txtStatus
+						.append(Messages.getString("AuthorizationDialog.1") + transaction.getId() + Messages.getString("AuthorizationDialog.4") + e.getMessage() + "\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			}
 		}
 
@@ -111,15 +111,19 @@ class AuthorizationDialog extends POSDialog implements Runnable {
 		transparentPanel1.setLayout(new BorderLayout());
 		transparentPanel1.setOpaque(true);
 
-		label = new JLabel(Messages.getString("PaymentProcessWaitDialog.1") + CardConfig.getPaymentGateway().getName() + Messages.getString("PaymentProcessWaitDialog.8"));  //$NON-NLS-1$ //$NON-NLS-2$
+		label = new JLabel(Messages.getString("PaymentProcessWaitDialog.1")); //$NON-NLS-1$ 
 		label.setHorizontalAlignment(JLabel.CENTER);
 		label.setFont(label.getFont().deriveFont(24).deriveFont(Font.BOLD));
+
+		JLabel labelGateway = new JLabel(Messages.getString("PaymentProcessWaitDialog.8") + CardConfig.getPaymentGateway().getName()); //$NON-NLS-1$
+		labelGateway.setHorizontalAlignment(JLabel.CENTER);
+		labelGateway.setFont(label.getFont().deriveFont(24).deriveFont(Font.BOLD));
 
 		txtStatus = new JTextArea();
 		txtStatus.setEditable(false);
 		txtStatus.setLineWrap(true);
 
-		transparentPanel1.add(label, BorderLayout.NORTH);
+		transparentPanel1.add(labelGateway, BorderLayout.NORTH);
 		JScrollPane scrollPane = new JScrollPane(txtStatus);
 		scrollPane.setBorder(BorderFactory.createCompoundBorder(new EmptyBorder(20, 30, 20, 30), scrollPane.getBorder()));
 		transparentPanel1.add(scrollPane, BorderLayout.CENTER);
@@ -141,6 +145,7 @@ class AuthorizationDialog extends POSDialog implements Runnable {
 
 		transparentPanel1.add(transparentPanel2, BorderLayout.SOUTH);
 
+		getContentPane().add(label, BorderLayout.NORTH);
 		getContentPane().add(transparentPanel1, BorderLayout.CENTER);
 
 		setSize(500, 400);

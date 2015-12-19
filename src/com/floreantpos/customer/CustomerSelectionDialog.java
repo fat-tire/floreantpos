@@ -56,7 +56,7 @@ public class CustomerSelectionDialog extends POSDialog {
 	private PosSmallButton btnCreateNewCustomer;
 
 	private CustomerTable customerTable;
-	private POSTextField tfPhone;
+	private POSTextField tfMobile;
 	private POSTextField tfLoyaltyNo;
 	private POSTextField tfName;
 	private PosSmallButton btnInfo;
@@ -90,9 +90,9 @@ public class CustomerSelectionDialog extends POSDialog {
 		JLabel lblByPhone = new JLabel(Messages.getString("CustomerSelectionDialog.1")); //$NON-NLS-1$
 		panel_4.add(lblByPhone, "cell 1 0"); //$NON-NLS-1$
 
-		tfPhone = new POSTextField();
-		panel_4.add(tfPhone, "cell 2 0"); //$NON-NLS-1$
-		tfPhone.setColumns(16);
+		tfMobile = new POSTextField();
+		panel_4.add(tfMobile, "cell 2 0"); //$NON-NLS-1$
+		tfMobile.setColumns(16);
 
 		PosSmallButton psmlbtnSearch = new PosSmallButton();
 		panel_4.add(psmlbtnSearch, "cell 3 0 1 3,growy"); //$NON-NLS-1$
@@ -220,7 +220,7 @@ public class CustomerSelectionDialog extends POSDialog {
 				doSearchCustomer();
 			}
 		});
-		tfPhone.addActionListener(new ActionListener() {
+		tfMobile.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				doSearchCustomer();
 			}
@@ -259,17 +259,17 @@ public class CustomerSelectionDialog extends POSDialog {
 	}
 
 	protected void doSearchCustomer() {
-		String phone = tfPhone.getText();
+		String mobile = tfMobile.getText();
 		String name = tfName.getText();
 		String loyalty = tfLoyaltyNo.getText();
 
-		if (StringUtils.isEmpty(phone) && StringUtils.isEmpty(loyalty) && StringUtils.isEmpty(name)) {
+		if (StringUtils.isEmpty(mobile) && StringUtils.isEmpty(loyalty) && StringUtils.isEmpty(name)) {
 			List<Customer> list = CustomerDAO.getInstance().findAll();
 			customerTable.setModel(new CustomerListTableModel(list));
 			return;
 		}
 
-		List<Customer> list = CustomerDAO.getInstance().findBy(phone, loyalty, name);
+		List<Customer> list = CustomerDAO.getInstance().findBy(mobile, loyalty, name);
 		customerTable.setModel(new CustomerListTableModel(list));
 	}
 

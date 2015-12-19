@@ -23,7 +23,6 @@
 
 package com.floreantpos.ui.views.order;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -130,10 +129,10 @@ public class CategoryView extends SelectionView implements ActionListener {
 			setText("<html><body><center>" + menuCategory.getDisplayName() + "</center></body></html>"); //$NON-NLS-1$ //$NON-NLS-2$
 			
 			if(menuCategory.getButtonColor() != null) {
-				setBackground(new Color(menuCategory.getButtonColor()));
+				setBackground(menuCategory.getButtonColor());
 			}
 			if(menuCategory.getTextColor() != null) {
-				setForeground(new Color(menuCategory.getTextColor()));
+				setForeground(menuCategory.getTextColor());
 			}
 			
 			addActionListener(view);

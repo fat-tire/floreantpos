@@ -1,6 +1,6 @@
 /**
  * ************************************************************************
- * * The contents of this file are subject to the MRPL 1.2
+d * * The contents of this file are subject to the MRPL 1.2
  * * (the  "License"),  being   the  Mozilla   Public  License
  * * Version 1.1  with a permitted attribution clause; you may not  use this
  * * file except in compliance with the License. You  may  obtain  a copy of
@@ -92,7 +92,7 @@ public class ShopTableDAO extends BaseShopTableDAO {
 	}
 
 	public List<ShopTable> getByNumbers(Collection<Integer> tableNumbers) {
-		if(tableNumbers == null) {
+		if(tableNumbers == null || tableNumbers.size()==0) {
 			return null;
 		}
 
@@ -147,7 +147,8 @@ public class ShopTableDAO extends BaseShopTableDAO {
 		}
 	}
 
-	public void bookTables(List<ShopTable> tables) {
+	
+	public void bookedTables(List<ShopTable> tables) {
 		if(tables == null) {
 			return;
 		}
@@ -231,6 +232,29 @@ public class ShopTableDAO extends BaseShopTableDAO {
 			closeSession(session);
 		}
 	}
+	
+	public void releaseAndDeleteTicketTables(Ticket ticket) {
+
+		Session session = null;
+		Transaction tx = null;
+
+		try {
+			session = createNewSession();
+			tx = session.beginTransaction();
+			
+			releaseTables(ticket);
+			ticket.setTableNumbers(null); 
+			TicketDAO.getInstance().saveOrUpdate(ticket); 
+
+			tx.commit();
+		} catch (Exception e) {
+			tx.rollback();
+			LogFactory.getLog(ShopTableDAO.class).error(e);
+			throw new RuntimeException(e);
+		} finally {
+			closeSession(session);
+		}
+	}
 
 	public void deleteTables(Collection<ShopTable> tables) {
 		Session session = null;
@@ -267,5 +291,29 @@ public class ShopTableDAO extends BaseShopTableDAO {
 		//criteria.add(Restrictions("t.id", typeIds)); //$NON-NLS-1$
 		criteria.addOrder(Order.asc(ShopTable.PROP_ID));
 		return criteria.list();
+	}
+
+	public void createNewTables(int totalNumberOfTableHaveToCreate) {
+		
+		Session session = null;
+		Transaction tx = null;
+
+		try {
+			session = createNewSession();
+			tx = session.beginTransaction();
+			
+			for (int i = 0; i < totalNumberOfTableHaveToCreate; i++) {
+				super.save(new ShopTable(), session);
+			}
+
+			tx.commit();
+		} catch (Exception e) {
+			tx.rollback();
+			LogFactory.getLog(ShopTableDAO.class).error(e);
+			throw new RuntimeException(e);
+		} finally {
+			closeSession(session);
+		}
+
 	}
 }

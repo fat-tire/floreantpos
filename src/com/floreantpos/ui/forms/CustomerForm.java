@@ -120,121 +120,121 @@ public class CustomerForm extends BeanEditor<Customer> {
 
 		add(picturePanel, "cell 0 0 0 8"); //$NON-NLS-1$
 
-		JLabel lblSalutation = new JLabel("Salutation");
-		add(lblSalutation, "cell 1 0,right");
+		JLabel lblSalutation = new JLabel(Messages.getString("CustomerForm.0")); //$NON-NLS-1$
+		add(lblSalutation, "cell 1 0,right"); //$NON-NLS-1$
 
 		cbSalutation = new JComboBox();
-		cbSalutation.addItem("Mr.");
-		cbSalutation.addItem("Ms.");
-		cbSalutation.addItem("Mrs.");
-		cbSalutation.addItem("Miss.");
+		cbSalutation.addItem(Messages.getString("CustomerForm.2")); //$NON-NLS-1$
+		cbSalutation.addItem(Messages.getString("CustomerForm.4")); //$NON-NLS-1$
+		cbSalutation.addItem(Messages.getString("CustomerForm.5")); //$NON-NLS-1$
+		cbSalutation.addItem(Messages.getString("CustomerForm.6")); //$NON-NLS-1$
 
 		cbSalutation.setPreferredSize(new Dimension(100, 0));
 
-		add(cbSalutation, "cell 2 0,grow");
+		add(cbSalutation, "cell 2 0,grow"); //$NON-NLS-1$
 
 		JLabel lblFirstName = new JLabel(Messages.getString("CustomerForm.3")); //$NON-NLS-1$
 
-		add(lblFirstName, "cell 1 1,right ");
+		add(lblFirstName, "cell 1 1,right "); //$NON-NLS-1$
 
 		tfFirstName = new FixedLengthTextField(30);
-		add(tfFirstName, "cell 2 1,grow");
+		add(tfFirstName, "cell 2 1,grow"); //$NON-NLS-1$
 
-		JLabel lblLastName = new JLabel("Last Name");
-		add(lblLastName, "cell 1 2,right");
+		JLabel lblLastName = new JLabel(Messages.getString("CustomerForm.11")); //$NON-NLS-1$
+		add(lblLastName, "cell 1 2,right"); //$NON-NLS-1$
 
 		tfLastName = new FixedLengthTextField();
-		add(tfLastName, "cell 2 2,grow");
+		add(tfLastName, "cell 2 2,grow"); //$NON-NLS-1$
 
 		lblDob = new JLabel("DoB (MM-DD-YYYY)"); //$NON-NLS-1$
-		add(lblDob, "cell 1 3,right");
+		add(lblDob, "cell 1 3,right"); //$NON-NLS-1$
 
 		tfDoB = new FixedLengthTextField();
 		add(tfDoB, "cell 2 3,grow"); //$NON-NLS-1$
 
 		JLabel lblAddress = new JLabel(Messages.getString("CustomerForm.18")); //$NON-NLS-1$
-		add(lblAddress, "cell 1 4,right");
+		add(lblAddress, "cell 1 4,right"); //$NON-NLS-1$
 
 		tfAddress = new JTextField();
-		add(tfAddress, "cell 2 4,grow");
+		add(tfAddress, "cell 2 4,grow"); //$NON-NLS-1$
 
 		JLabel lblZip = new JLabel(Messages.getString("CustomerForm.21")); //$NON-NLS-1$
-		add(lblZip, "cell 1 5,right");
+		add(lblZip, "cell 1 5,right"); //$NON-NLS-1$
 
 		tfZip = new FixedLengthTextField();
 		add(tfZip, "cell 2 5,grow"); //$NON-NLS-1$
 
-		lblNationalId = new JLabel("National Id");
-		add(lblNationalId, "cell 3 0,right");
+		lblNationalId = new JLabel(Messages.getString("CustomerForm.22")); //$NON-NLS-1$
+		add(lblNationalId, "cell 3 0,right"); //$NON-NLS-1$
 
 		tfNationalId = new FixedLengthTextField();
-		add(tfNationalId, "cell 4 0,grow");
+		add(tfNationalId, "cell 4 0,grow"); //$NON-NLS-1$
 
 		JLabel lblCitytown = new JLabel(Messages.getString("CustomerForm.24")); //$NON-NLS-1$
-		add(lblCitytown, "cell 3 1,right");
+		add(lblCitytown, "cell 3 1,right"); //$NON-NLS-1$
 		//
 		tfCity = new FixedLengthTextField();
-		add(tfCity, "cell 4 1,grow");
+		add(tfCity, "cell 4 1,grow"); //$NON-NLS-1$
 
 		JLabel lblCountry = new JLabel(Messages.getString("CustomerForm.27")); //$NON-NLS-1$
-		add(lblCountry, "cell 3 2,right");
+		add(lblCountry, "cell 3 2,right"); //$NON-NLS-1$
 
 		tfCountry = new FixedLengthTextField();
 		tfCountry.setText(Messages.getString("CustomerForm.29")); //$NON-NLS-1$
 		add(tfCountry, "cell 4 2,grow"); //$NON-NLS-1$
 
-		lblMobile = new JLabel("Mobile");
-		add(lblMobile, "cell 3 3 ,right");
+		lblMobile = new JLabel(Messages.getString("CustomerForm.32")); //$NON-NLS-1$
+		add(lblMobile, "cell 3 3 ,right"); //$NON-NLS-1$
 
 		tfMobile = new IntegerTextField(10);
-		add(tfMobile, "cell 4 3,grow");
+		add(tfMobile, "cell 4 3,grow"); //$NON-NLS-1$
 
 		lblHomePhone = new JLabel("Home Phone");//$NON-NLS-1$
-		add(lblHomePhone, "cell 3 4,right");
+		add(lblHomePhone, "cell 3 4,right"); //$NON-NLS-1$
 
 		tfHomePhone = new FixedLengthTextField();
-		add(tfHomePhone, "cell 4 4,grow");
+		add(tfHomePhone, "cell 4 4,grow"); //$NON-NLS-1$
 
-		lblWorkPhone = new JLabel("Work Phone");
-		add(lblWorkPhone, "cell 3 5,right");
+		lblWorkPhone = new JLabel(Messages.getString("CustomerForm.39")); //$NON-NLS-1$
+		add(lblWorkPhone, "cell 3 5,right"); //$NON-NLS-1$
 
 		tfWorkPhone = new FixedLengthTextField();
-		add(tfWorkPhone, "cell 4 5,grow");
+		add(tfWorkPhone, "cell 4 5,grow"); //$NON-NLS-1$
 
 		JLabel lblEmail = new JLabel(Messages.getString("CustomerForm.15")); //$NON-NLS-1$
-		add(lblEmail, "cell 3 6 ,right");
+		add(lblEmail, "cell 3 6 ,right"); //$NON-NLS-1$
 
 		tfEmail = new FixedLengthTextField();
-		add(tfEmail, "cell 4 6,grow");
+		add(tfEmail, "cell 4 6,grow"); //$NON-NLS-1$
 
 		lblLoyaltyPoint = new JLabel(Messages.getString("CustomerForm.34")); //$NON-NLS-1$
-		add(lblLoyaltyPoint, "cell 3 7,right");
+		add(lblLoyaltyPoint, "cell 3 7,right"); //$NON-NLS-1$
 
 		tfLoyaltyPoint = new IntegerTextField();
 		add(tfLoyaltyPoint, "cell 4 7,grow"); //$NON-NLS-1$
 
 		cbVip = new JCheckBox(Messages.getString("CustomerForm.41")); //$NON-NLS-1$
 		cbVip.setFocusable(false);
-		add(cbVip, "cell 4 8,wrap");
+		add(cbVip, "cell 4 8,wrap"); //$NON-NLS-1$
 
 		JLabel lblLoyaltyNo = new JLabel(Messages.getString("CustomerForm.31")); //$NON-NLS-1$
-		add(lblLoyaltyNo, "cell 1 6,right");
+		add(lblLoyaltyNo, "cell 1 6,right"); //$NON-NLS-1$
 
 		tfLoyaltyNo = new FixedLengthTextField();
 		tfLoyaltyNo.setLength(8);
 		add(tfLoyaltyNo, "cell 2 6,grow"); //$NON-NLS-1$
 
 		JLabel lblCreditLimit = new JLabel(Messages.getString("CustomerForm.37")); //$NON-NLS-1$
-		add(lblCreditLimit, "cell 1 7,right");
+		add(lblCreditLimit, "cell 1 7,right"); //$NON-NLS-1$
 
 		tfCreditLimit = new DoubleTextField();
 		tfCreditLimit.setText("500.00"); //$NON-NLS-1$
-		add(tfCreditLimit, "cell 2 7,grow");
+		add(tfCreditLimit, "cell 2 7,grow"); //$NON-NLS-1$
 
 		qwertyKeyPad = new QwertyKeyPad();
 
 		if(isKeypad) {
-			add(qwertyKeyPad, "cell 0 10 5 5,grow");
+			add(qwertyKeyPad, "cell 0 10 5 5,grow"); //$NON-NLS-1$
 		}
 		
 
@@ -400,8 +400,8 @@ public class CustomerForm extends BeanEditor<Customer> {
 		cbVip.setSelected(customer.isVip());
 		tfWorkPhone.setText(customer.getWorkPhoneNo());
 		tfMobile.setText(customer.getMobileNo());
-		if(customer.getNationalIdNo() != null) {
-			tfNationalId.setText(String.valueOf(customer.getNationalIdNo()));
+		if(customer.getNationalId() != null) {
+			tfNationalId.setText(String.valueOf(customer.getNationalId()));
 		}
 
 		byte[] picture = customer.getPicture();
@@ -447,11 +447,11 @@ public class CustomerForm extends BeanEditor<Customer> {
 
 	@Override
 	protected boolean updateModel() throws IllegalModelStateException {
-		String phoneString = tfHomePhone.getText();
+		String mobile = tfMobile.getText();
 		String fname = tfFirstName.getText();
-		String email = tfEmail.getText();
+		String loyaltyNo = tfLoyaltyNo.getText();
 
-		if(StringUtils.isEmpty(phoneString) && StringUtils.isEmpty(fname) && StringUtils.isEmpty(email)) {
+		if(StringUtils.isEmpty(mobile) && StringUtils.isEmpty(fname) && StringUtils.isEmpty(loyaltyNo)) {
 			POSMessageDialog.showError(Application.getPosWindow(), Messages.getString("CustomerForm.60")); //$NON-NLS-1$
 			return false;
 		}
@@ -476,7 +476,7 @@ public class CustomerForm extends BeanEditor<Customer> {
 		customer.setState(tfZip.getText());
 		customer.setVip(cbVip.isSelected());
 		customer.setMobileNo(tfMobile.getText());
-		customer.setNationalIdNo(tfNationalId.getText());
+		customer.setNationalId(tfNationalId.getText());
 		customer.setWorkPhoneNo(tfWorkPhone.getText());
 
 		if(image != null) {
@@ -518,6 +518,6 @@ public class CustomerForm extends BeanEditor<Customer> {
 					}
 					return Messages.getString("CustomerExplorerForm.20"); //$NON-NLS-1$
 		*/
-		return "Create Customer";
+		return Messages.getString("CustomerForm.54"); //$NON-NLS-1$
 	}
 }

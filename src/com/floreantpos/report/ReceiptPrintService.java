@@ -44,6 +44,7 @@ import us.fatehi.magnetictrack.bankcard.BankCardMagneticTrack;
 
 import com.floreantpos.Messages;
 import com.floreantpos.POSConstants;
+import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.CardReader;
 import com.floreantpos.model.KitchenTicket;
@@ -161,10 +162,10 @@ public class ReceiptPrintService {
 			printProperties.setPrintCookingInstructions(false);
 			HashMap map = populateTicketProperties(ticket, printProperties, transaction);
 
-			if (transaction != null && transaction.isCard()) {
+			if(transaction != null && transaction.isCard()) {
 				CardReader cardReader = CardReader.fromString(transaction.getCardReader());
 
-				if (cardReader == CardReader.EXTERNAL_TERMINAL) {
+				if(cardReader == CardReader.EXTERNAL_TERMINAL) {
 					return;
 				}
 
@@ -201,7 +202,7 @@ public class ReceiptPrintService {
 			printProperties.setPrintCookingInstructions(false);
 			HashMap map = populateTicketProperties(ticket, printProperties, transaction);
 
-			if (transaction != null && transaction.isCard()) {
+			if(transaction != null && transaction.isCard()) {
 				map.put("cardPayment", true); //$NON-NLS-1$
 				map.put("copyType", Messages.getString("ReceiptPrintService.7")); //$NON-NLS-1$ //$NON-NLS-2$
 
@@ -210,7 +211,7 @@ public class ReceiptPrintService {
 				jasperPrint.setProperty(PROP_PRINTER_NAME, Application.getPrinters().getReceiptPrinter());
 				printQuitely(jasperPrint);
 
-				if (printCustomerCopy) {
+				if(printCustomerCopy) {
 					map.put("copyType", Messages.getString("ReceiptPrintService.8")); //$NON-NLS-1$ //$NON-NLS-2$
 
 					jasperPrint = createPrint(ticket, map, transaction);
@@ -270,9 +271,12 @@ public class ReceiptPrintService {
 		StringBuilder ticketHeaderBuilder = buildTicketHeader(ticket, printProperties);
 
 		map.put("ticketHeader", ticketHeaderBuilder.toString()); //$NON-NLS-1$
-		map.put("barcode", String.valueOf(ticket.getId())); //$NON-NLS-1$
 
-		if (printProperties.isShowHeader()) {
+		if(TerminalConfig.isShowBarcodeOnReceipt()) {
+			map.put("barcode", String.valueOf(ticket.getId())); //$NON-NLS-1$
+		}
+
+		if(printProperties.isShowHeader()) {
 			map.put(HEADER_LINE1, restaurant.getName());
 			map.put(HEADER_LINE2, restaurant.getAddressLine1());
 			map.put(HEADER_LINE3, restaurant.getAddressLine2());
@@ -280,20 +284,20 @@ public class ReceiptPrintService {
 			map.put(HEADER_LINE5, restaurant.getTelephone());
 		}
 
-		if (printProperties.isShowFooter()) {
-			if (ticket.getDiscountAmount() > 0.0) {
+		if(printProperties.isShowFooter()) {
+			if(ticket.getDiscountAmount() > 0.0) {
 				map.put(DISCOUNT_AMOUNT, NumberUtil.formatNumber(ticket.getDiscountAmount()));
 			}
 
-			if (ticket.getTaxAmount() > 0.0) {
+			if(ticket.getTaxAmount() > 0.0) {
 				map.put(TAX_AMOUNT, NumberUtil.formatNumber(ticket.getTaxAmount()));
 			}
 
-			if (ticket.getServiceCharge() > 0.0) {
+			if(ticket.getServiceCharge() > 0.0) {
 				map.put(SERVICE_CHARGE, NumberUtil.formatNumber(ticket.getServiceCharge()));
 			}
 
-			if (ticket.getGratuity() != null) {
+			if(ticket.getGratuity() != null) {
 				tipAmount = ticket.getGratuity().getAmount();
 				map.put(TIP_AMOUNT, NumberUtil.formatNumber(tipAmount));
 			}
@@ -315,17 +319,17 @@ public class ReceiptPrintService {
 			map.put("footerMessage", restaurant.getTicketFooterMessage()); //$NON-NLS-1$
 			map.put("copyType", printProperties.getReceiptCopyType()); //$NON-NLS-1$
 
-			if (transaction != null) {
+			if(transaction != null) {
 				double changedAmount = transaction.getTenderAmount() - transaction.getAmount();
-				if (changedAmount < 0) {
+				if(changedAmount < 0) {
 					changedAmount = 0;
 				}
 				map.put("changedAmount", NumberUtil.formatNumber(changedAmount)); //$NON-NLS-1$
 
-				if (transaction.isCard()) {
+				if(transaction.isCard()) {
 					map.put("cardPayment", true); //$NON-NLS-1$
 
-					if (StringUtils.isNotEmpty(transaction.getCardTrack())) {
+					if(StringUtils.isNotEmpty(transaction.getCardTrack())) {
 						BankCardMagneticTrack track = BankCardMagneticTrack.from(transaction.getCardTrack());
 						String string = transaction.getCardType();
 						string += "<br/>" + "APPROVAL: " + transaction.getCardAuthCode(); //$NON-NLS-1$ //$NON-NLS-2$
@@ -357,7 +361,7 @@ public class ReceiptPrintService {
 			//					messageString += "<br/>Customer: " + customer.getName();
 			//				}
 			//			}
-			if (ticket.hasProperty("mykaladiscount")) { //$NON-NLS-1$
+			if(ticket.hasProperty("mykaladiscount")) { //$NON-NLS-1$
 				messageString += "<br/>My Kala point: " + ticket.getProperty("mykalapoing"); //$NON-NLS-1$ //$NON-NLS-2$
 				messageString += "<br/>My Kala discount: " + ticket.getDiscountAmount(); //$NON-NLS-1$
 			}
@@ -385,7 +389,7 @@ public class ReceiptPrintService {
 		addColumn(ticketHeaderBuilder, POSConstants.RECEIPT_REPORT_TICKET_NO_LABEL + ticket.getId());
 		endRow(ticketHeaderBuilder);
 
-		if (ticket.getType() == OrderType.DINE_IN) {
+		if(ticket.getType() == OrderType.DINE_IN) {
 			beginRow(ticketHeaderBuilder);
 			addColumn(ticketHeaderBuilder, POSConstants.RECEIPT_REPORT_TABLE_NO_LABEL + ticket.getTableNumbers());
 			endRow(ticketHeaderBuilder);
@@ -408,23 +412,23 @@ public class ReceiptPrintService {
 		endRow(ticketHeaderBuilder);
 
 		//customer info section
-		if (ticket.getType() != OrderType.DINE_IN) {
+		if(ticket.getType() != OrderType.DINE_IN) {
 
 			String customerName = ticket.getProperty(Ticket.CUSTOMER_NAME);
-			String customerPhone = ticket.getProperty(Ticket.CUSTOMER_PHONE);
+			String customerMobile = ticket.getProperty(Ticket.CUSTOMER_MOBILE);
 
-			if (StringUtils.isNotEmpty(customerName)) {
+			if(StringUtils.isNotEmpty(customerName)) {
 				beginRow(ticketHeaderBuilder);
 				addColumn(ticketHeaderBuilder, Messages.getString("ReceiptPrintService.9")); //$NON-NLS-1$
 				endRow(ticketHeaderBuilder);
 
-				if (StringUtils.isNotEmpty(customerName)) {
+				if(StringUtils.isNotEmpty(customerName)) {
 					beginRow(ticketHeaderBuilder);
 					addColumn(ticketHeaderBuilder, customerName);
 					endRow(ticketHeaderBuilder);
 				}
 
-				if (StringUtils.isNotEmpty(ticket.getDeliveryAddress())) {
+				if(StringUtils.isNotEmpty(ticket.getDeliveryAddress())) {
 					beginRow(ticketHeaderBuilder);
 					addColumn(ticketHeaderBuilder, ticket.getDeliveryAddress());
 					endRow(ticketHeaderBuilder);
@@ -435,13 +439,13 @@ public class ReceiptPrintService {
 					endRow(ticketHeaderBuilder);
 				}
 
-				if (StringUtils.isNotEmpty(customerPhone)) {
+				if(StringUtils.isNotEmpty(customerMobile)) {
 					beginRow(ticketHeaderBuilder);
-					addColumn(ticketHeaderBuilder, "Tel: " + customerPhone); //$NON-NLS-1$
+					addColumn(ticketHeaderBuilder, "Tel: " + customerMobile); //$NON-NLS-1$
 					endRow(ticketHeaderBuilder);
 				}
 
-				if (ticket.getDeliveryDate() != null) {
+				if(ticket.getDeliveryDate() != null) {
 					beginRow(ticketHeaderBuilder);
 					addColumn(ticketHeaderBuilder, "Delivery: " + reportDateFormat.format(ticket.getDeliveryDate())); //$NON-NLS-1$
 					endRow(ticketHeaderBuilder);
@@ -462,11 +466,11 @@ public class ReceiptPrintService {
 		map.put(SHOW_HEADER_SEPARATOR, Boolean.TRUE);
 		map.put(SHOW_HEADER_SEPARATOR, Boolean.TRUE);
 		map.put(CHECK_NO, POSConstants.RECEIPT_REPORT_TICKET_NO_LABEL + ticket.getTicketId());
-		if (ticket.getTableNumbers() != null && ticket.getTableNumbers().size() > 0) {
+		if(ticket.getTableNumbers() != null && ticket.getTableNumbers().size() > 0) {
 			map.put(TABLE_NO, POSConstants.RECEIPT_REPORT_TABLE_NO_LABEL + ticket.getTableNumbers());
 		}
 
-		if (StringUtils.isNotEmpty(ticket.getCustomerName())) {
+		if(StringUtils.isNotEmpty(ticket.getCustomerName())) {
 			map.put("customer", Messages.getString("ReceiptPrintService.0") + ticket.getCustomerName()); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 
@@ -475,7 +479,7 @@ public class ReceiptPrintService {
 
 		map.put("ticketHeader", Messages.getString("ReceiptPrintService.10")); //$NON-NLS-1$ //$NON-NLS-2$
 		String ticketType = ticket.getTicketType();
-		if (StringUtils.isNotEmpty(ticketType)) {
+		if(StringUtils.isNotEmpty(ticketType)) {
 			ticketType = ticketType.replaceAll("_", " "); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		map.put("orderType", "* " + ticketType + " *"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
@@ -526,7 +530,8 @@ public class ReceiptPrintService {
 		try {
 			JRPrintServiceExporter exporter = new JRPrintServiceExporter();
 			exporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
-			exporter.setParameter(JRPrintServiceExporterParameter.PRINT_SERVICE, PrintServiceUtil.getPrintServiceForPrinter(jasperPrint.getProperty(PROP_PRINTER_NAME)));
+			exporter.setParameter(JRPrintServiceExporterParameter.PRINT_SERVICE,
+					PrintServiceUtil.getPrintServiceForPrinter(jasperPrint.getProperty(PROP_PRINTER_NAME)));
 			exporter.exportReport();
 		} catch (Exception x) {
 			x.printStackTrace();
@@ -537,11 +542,11 @@ public class ReceiptPrintService {
 		String no = ""; //$NON-NLS-1$
 
 		try {
-			if (track.getTrack1().hasPrimaryAccountNumber()) {
+			if(track.getTrack1().hasPrimaryAccountNumber()) {
 				no = track.getTrack1().getPrimaryAccountNumber().getAccountNumber();
 				no = "************" + no.substring(12); //$NON-NLS-1$
 			}
-			else if (track.getTrack2().hasPrimaryAccountNumber()) {
+			else if(track.getTrack2().hasPrimaryAccountNumber()) {
 				no = track.getTrack2().getPrimaryAccountNumber().getAccountNumber();
 				no = "************" + no.substring(12); //$NON-NLS-1$
 			}

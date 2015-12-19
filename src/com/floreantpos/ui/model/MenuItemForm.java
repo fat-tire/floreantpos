@@ -126,13 +126,13 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 
 		int option = fileChooser.showOpenDialog(null);
 
-		if (option == JFileChooser.APPROVE_OPTION) {
+		if(option == JFileChooser.APPROVE_OPTION) {
 			File imageFile = fileChooser.getSelectedFile();
 			try {
 				byte[] itemImage = FileUtils.readFileToByteArray(imageFile);
 				int imageSize = itemImage.length / 1024;
 
-				if (imageSize > 20) {
+				if(imageSize > 20) {
 					POSMessageDialog.showMessage(Messages.getString("MenuItemForm.0")); //$NON-NLS-1$
 					itemImage = null;
 					return;
@@ -158,7 +158,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 
 	public void addRecepieExtension() {
 		InventoryPlugin plugin = (InventoryPlugin) ExtensionManager.getPlugin(InventoryPlugin.class);
-		if (plugin == null) {
+		if(plugin == null) {
 			return;
 		}
 
@@ -208,9 +208,6 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		shiftTable = new javax.swing.JTable();
 		lTerminal = new JLabel("Terminal");
 
-		
-		
-		
 		lgroup.setText(Messages.getString("LABEL_GROUP")); //$NON-NLS-1$
 
 		btnNewGroup.setText("..."); //$NON-NLS-1$
@@ -220,7 +217,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 			}
 		});
 
-		if (Application.getInstance().isPriceIncludesTax()) {
+		if(Application.getInstance().isPriceIncludesTax()) {
 			lSalePrice.setText(Messages.getString("LABEL_SALES_PRICE_INCLUDING_TAX")); //$NON-NLS-1$
 		}
 		else {
@@ -245,7 +242,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		chkVisible.setText(com.floreantpos.POSConstants.VISIBLE);
 		chkVisible.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
 		chkVisible.setMargin(new java.awt.Insets(0, 0, 0, 0));
-		tabbedPane.setPreferredSize(new Dimension(700,410));
+		tabbedPane.setPreferredSize(new Dimension(700, 410));
 		tabbedPane.addTab(com.floreantpos.POSConstants.GENERAL, tabGeneral);
 
 		btnNewModifierGroup.setText(com.floreantpos.POSConstants.ADD);
@@ -272,14 +269,9 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		btnDeleteShift.addActionListener(this);
 
 		tfDiscountRate.setDocument(new DoubleDocument());
-		
+
 		tabGeneral.setLayout(new MigLayout("", "[][grow]20px[][grow]", "[][][][][][][][][][][]")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
-		
-		
-		
-		
-		
 		JLabel lblImage = new JLabel(Messages.getString("MenuItemForm.28")); //$NON-NLS-1$
 		lblImage.setHorizontalAlignment(SwingConstants.TRAILING);
 		tabGeneral.add(lblImage, "cell 0 0,right"); //$NON-NLS-1$
@@ -302,29 +294,29 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		btnClearImage.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				/*doClearImage();*/
-				
-				List<MenuItem> item=MenuItemDAO.getInstance().findAll();
+
+				List<MenuItem> item = MenuItemDAO.getInstance().findAll();
 				for (MenuItem menuItem : item) {
 					System.out.println(menuItem.getButtonColor());
 				}
-				
+
 			}
 		});
 		tabGeneral.add(btnClearImage, "cell 1 0"); //$NON-NLS-1$
-		
+
 		tabGeneral.add(lgroup, "cell 0 1 ,right"); //$NON-NLS-1$
-		cbGroup.setPreferredSize(new Dimension(140,0));
+		cbGroup.setPreferredSize(new Dimension(140, 0));
 		tabGeneral.add(cbGroup, "cell 1 1,grow"); //$NON-NLS-1$
 		tabGeneral.add(btnNewGroup, "cell 1 1"); //$NON-NLS-1$
-		
+
 		lblKitchenPrinter = new JLabel(Messages.getString("MenuItemForm.27")); //$NON-NLS-1$
 		tabGeneral.add(lblKitchenPrinter, "cell 2 1,right"); //$NON-NLS-1$
 
 		cbPrinterGroup = new JComboBox<PrinterGroup>(new DefaultComboBoxModel<PrinterGroup>(PrinterGroupDAO.getInstance().findAll()
 				.toArray(new PrinterGroup[0])));
-		cbPrinterGroup.setPreferredSize(new Dimension(180,0));
+		cbPrinterGroup.setPreferredSize(new Dimension(180, 0));
 		tabGeneral.add(cbPrinterGroup, "cell 3 1,grow"); //$NON-NLS-1$
-		
+
 		lfname.setText(Messages.getString("LABEL_NAME")); //$NON-NLS-1$
 		tabGeneral.add(lfname, "cell 0 2,right"); //$NON-NLS-1$
 		tfName.setLength(120);
@@ -332,7 +324,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 
 		lblTranslatedName = new JLabel(Messages.getString("MenuItemForm.lblTranslatedName.text")); //$NON-NLS-1$
 		tabGeneral.add(lblTranslatedName, "cell 2 2,right"); //$NON-NLS-1$
-		
+
 		tfTranslatedName = new FixedLengthTextField();
 		tfTranslatedName.setLength(120);
 		tabGeneral.add(tfTranslatedName, "cell 3 2,grow"); //$NON-NLS-1$
@@ -360,7 +352,6 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		tabGeneral.add(lSalePrice, "cell 2 5,right"); //$NON-NLS-1$
 		tabGeneral.add(tfPrice, "cell 3 5,grow"); //$NON-NLS-1$
 
-		
 		setLayout(new BorderLayout(0, 0));
 
 		tabGeneral.add(lDiscountRate, "cell 0 6,right"); //$NON-NLS-1$
@@ -370,10 +361,6 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		tabGeneral.add(lTax, "cell 2 6,right"); //$NON-NLS-1$
 		tabGeneral.add(cbTax, "cell 3 6,grow"); //$NON-NLS-1$
 		tabGeneral.add(btnNewTax, "cell 3 6"); //$NON-NLS-1$
-		
-		
-
-		
 
 		lblButtonColor = new JLabel(Messages.getString("MenuItemForm.lblButtonColor.text")); //$NON-NLS-1$
 		tabGeneral.add(lblButtonColor, "cell 2 7,right"); //$NON-NLS-1$
@@ -385,7 +372,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		tabGeneral.add(lblTextColor, "cell 0 7,right"); //$NON-NLS-1$
 
 		btnTextColor = new JButton(Messages.getString("MenuItemForm.SAMPLE_TEXT")); //$NON-NLS-1$
-		btnTextColor.setPreferredSize(new Dimension(0,40));
+		btnTextColor.setPreferredSize(new Dimension(0, 40));
 		tabGeneral.add(btnTextColor, "cell 1 7,grow"); //$NON-NLS-1$
 
 		cbShowTextWithImage = new JCheckBox(Messages.getString("MenuItemForm.40")); //$NON-NLS-1$
@@ -495,7 +482,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		BeanEditorDialog dialog = new BeanEditorDialog(editor);
 		dialog.open();
 
-		if (!dialog.isCanceled()) {
+		if(!dialog.isCanceled()) {
 			MenuGroup foodGroup = (MenuGroup) editor.getBean();
 			ComboBoxModel model = (ComboBoxModel) cbGroup.getModel();
 			model.addElement(foodGroup);
@@ -559,13 +546,13 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 			MenuItemModifierGroupForm form = new MenuItemModifierGroupForm();
 			BeanEditorDialog dialog = new BeanEditorDialog(form);
 			dialog.open();
-			if (!dialog.isCanceled()) {
+			if(!dialog.isCanceled()) {
 				MenuItemModifierGroup modifier = (MenuItemModifierGroup) form.getBean();
 				//modifier.setParentMenuItem((MenuItem) this.getBean());
 
-				if (menuItemModifierGroups != null) {
+				if(menuItemModifierGroups != null) {
 					for (MenuItemModifierGroup modifierGroup : menuItemModifierGroups) {
-						if (modifierGroup.getModifierGroup().equals(modifier.getModifierGroup())) {
+						if(modifierGroup.getModifierGroup().equals(modifier.getModifierGroup())) {
 							POSMessageDialog.showError(Application.getPosWindow(), Messages.getString("MenuItemForm.48")); //$NON-NLS-1$
 							return;
 						}
@@ -582,7 +569,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 	private void editMenuItemModifierGroup() {
 		try {
 			int index = tableTicketItemModifierGroups.getSelectedRow();
-			if (index < 0)
+			if(index < 0)
 				return;
 
 			MenuItemModifierGroup menuItemModifierGroup = menuItemMGListModel.get(index);
@@ -590,7 +577,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 			MenuItemModifierGroupForm form = new MenuItemModifierGroupForm(menuItemModifierGroup);
 			BeanEditorDialog dialog = new BeanEditorDialog(form);
 			dialog.open();
-			if (!dialog.isCanceled()) {
+			if(!dialog.isCanceled()) {
 				//menuItemModifierGroup.setParentMenuItem((MenuItem) this.getBean());
 				menuItemMGListModel.fireTableDataChanged();
 			}
@@ -602,10 +589,10 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 	private void deleteMenuItemModifierGroup() {
 		try {
 			int index = tableTicketItemModifierGroups.getSelectedRow();
-			if (index < 0)
+			if(index < 0)
 				return;
 
-			if (ConfirmDeleteDialog.showMessage(this, com.floreantpos.POSConstants.CONFIRM_DELETE, com.floreantpos.POSConstants.CONFIRM) == ConfirmDeleteDialog.YES) {
+			if(ConfirmDeleteDialog.showMessage(this, com.floreantpos.POSConstants.CONFIRM_DELETE, com.floreantpos.POSConstants.CONFIRM) == ConfirmDeleteDialog.YES) {
 				menuItemMGListModel.remove(index);
 			}
 		} catch (Exception x) {
@@ -616,7 +603,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 	@Override
 	public boolean save() {
 		try {
-			if (!updateModel())
+			if(!updateModel())
 				return false;
 
 			MenuItem menuItem = (MenuItem) getBean();
@@ -633,7 +620,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 	protected void updateView() {
 		MenuItem menuItem = getBean();
 
-		if (menuItem.getId() != null && !Hibernate.isInitialized(menuItem.getMenuItemModiferGroups())) {
+		if(menuItem.getId() != null && !Hibernate.isInitialized(menuItem.getMenuItemModiferGroups())) {
 			//initialize food item modifer groups.
 			MenuItemDAO dao = new MenuItemDAO();
 			Session session = dao.getSession();
@@ -651,7 +638,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		chkVisible.setSelected(menuItem.isVisible());
 		cbShowTextWithImage.setSelected(menuItem.isShowImageOnly());
 		ImageIcon menuItemImage = menuItem.getImage();
-		if (menuItemImage != null) {
+		if(menuItemImage != null) {
 			lblImagePreview.setIcon(menuItemImage);
 		}
 
@@ -660,17 +647,17 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 
 		cbPrinterGroup.setSelectedItem(menuItem.getPrinterGroup());
 
-		if (menuItem.getSortOrder() != null) {
+		if(menuItem.getSortOrder() != null) {
 			tfSortOrder.setText(menuItem.getSortOrder().toString());
 		}
 
 		Color buttonColor = menuItem.getButtonColor();
-		if (buttonColor != null) {
+		if(buttonColor != null) {
 			btnButtonColor.setBackground(buttonColor);
 			btnTextColor.setBackground(buttonColor);
 		}
 
-		if (menuItem.getTextColor() != null) {
+		if(menuItem.getTextColor() != null) {
 			btnTextColor.setForeground(menuItem.getTextColor());
 		}
 	}
@@ -678,7 +665,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 	@Override
 	protected boolean updateModel() {
 		String itemName = tfName.getText();
-		if (POSUtil.isBlankOrNull(itemName)) {
+		if(POSUtil.isBlankOrNull(itemName)) {
 			MessageDialog.showError(com.floreantpos.POSConstants.NAME_REQUIRED);
 			return false;
 		}
@@ -701,7 +688,6 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		if(!terminalList.getCheckedValues().isEmpty()) {
 			menuItem.setTerminals(terminalList.getCheckedValues());
 		}
-		
 
 		try {
 			menuItem.setDiscountRate(Double.parseDouble(tfDiscountRate.getText()));
@@ -713,9 +699,9 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		int tabCount = tabbedPane.getTabCount();
 		for (int i = 0; i < tabCount; i++) {
 			Component componentAt = tabbedPane.getComponent(i);
-			if (componentAt instanceof IUpdatebleView) {
+			if(componentAt instanceof IUpdatebleView) {
 				IUpdatebleView view = (IUpdatebleView) componentAt;
-				if (!view.updateModel(menuItem)) {
+				if(!view.updateModel(menuItem)) {
 					return false;
 				}
 			}
@@ -728,7 +714,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 
 	public String getDisplayText() {
 		MenuItem foodItem = (MenuItem) getBean();
-		if (foodItem.getId() == null) {
+		if(foodItem.getId() == null) {
 			return com.floreantpos.POSConstants.NEW_MENU_ITEM;
 		}
 		return com.floreantpos.POSConstants.EDIT_MENU_ITEM;
@@ -745,7 +731,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		}
 
 		public void add(MenuItemModifierGroup group) {
-			if (menuItemModifierGroups == null) {
+			if(menuItemModifierGroups == null) {
 				menuItemModifierGroups = new ArrayList<MenuItemModifierGroup>();
 			}
 			menuItemModifierGroups.add(group);
@@ -753,7 +739,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		}
 
 		public void remove(int index) {
-			if (menuItemModifierGroups == null) {
+			if(menuItemModifierGroups == null) {
 				return;
 			}
 			menuItemModifierGroups.remove(index);
@@ -761,7 +747,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		}
 
 		public void remove(MenuItemModifierGroup group) {
-			if (menuItemModifierGroups == null) {
+			if(menuItemModifierGroups == null) {
 				return;
 			}
 			menuItemModifierGroups.remove(group);
@@ -769,7 +755,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		}
 
 		public int getRowCount() {
-			if (menuItemModifierGroups == null)
+			if(menuItemModifierGroups == null)
 				return 0;
 
 			return menuItemModifierGroups.size();
@@ -789,14 +775,14 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 			MenuItemModifierGroup menuItemModifierGroup = menuItemModifierGroups.get(rowIndex);
 
 			switch (columnIndex) {
-				case 0:
-					return menuItemModifierGroup.getModifierGroup().getName();
+			case 0:
+				return menuItemModifierGroup.getModifierGroup().getName();
 
-				case 1:
-					return Integer.valueOf(menuItemModifierGroup.getMinQuantity());
+			case 1:
+				return Integer.valueOf(menuItemModifierGroup.getMinQuantity());
 
-				case 2:
-					return Integer.valueOf(menuItemModifierGroup.getMaxQuantity());
+			case 2:
+				return Integer.valueOf(menuItemModifierGroup.getMaxQuantity());
 			}
 			return null;
 		}
@@ -808,7 +794,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		Calendar calendar = Calendar.getInstance();
 
 		ShiftTableModel(List<MenuItemShift> shifts) {
-			if (shifts == null) {
+			if(shifts == null) {
 				this.shifts = new ArrayList<MenuItemShift>();
 			}
 			else {
@@ -821,7 +807,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		}
 
 		public void add(MenuItemShift group) {
-			if (shifts == null) {
+			if(shifts == null) {
 				shifts = new ArrayList<MenuItemShift>();
 			}
 			shifts.add(group);
@@ -829,7 +815,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		}
 
 		public void remove(int index) {
-			if (shifts == null) {
+			if(shifts == null) {
 				return;
 			}
 			shifts.remove(index);
@@ -837,7 +823,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		}
 
 		public void remove(MenuItemShift group) {
-			if (shifts == null) {
+			if(shifts == null) {
 				return;
 			}
 			shifts.remove(group);
@@ -845,7 +831,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		}
 
 		public int getRowCount() {
-			if (shifts == null)
+			if(shifts == null)
 				return 0;
 
 			return shifts.size();
@@ -869,14 +855,14 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 			MenuItemShift shift = shifts.get(rowIndex);
 
 			switch (columnIndex) {
-				case 0:
-					return ShiftUtil.buildShiftTimeRepresentation(shift.getShift().getStartTime());
+			case 0:
+				return ShiftUtil.buildShiftTimeRepresentation(shift.getShift().getStartTime());
 
-				case 1:
-					return ShiftUtil.buildShiftTimeRepresentation(shift.getShift().getEndTime());
+			case 1:
+				return ShiftUtil.buildShiftTimeRepresentation(shift.getShift().getEndTime());
 
-				case 2:
-					return String.valueOf(shift.getShiftPrice());
+			case 2:
+				return String.valueOf(shift.getShiftPrice());
 			}
 			return null;
 		}
@@ -887,7 +873,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		dialog.setSize(350, 220);
 		dialog.open();
 
-		if (!dialog.isCanceled()) {
+		if(!dialog.isCanceled()) {
 			MenuItemShift menuItemShift = dialog.getMenuItemShift();
 			shiftTableModel.add(menuItemShift);
 		}
@@ -895,26 +881,26 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 
 	private void deleteShift() {
 		int selectedRow = shiftTable.getSelectedRow();
-		if (selectedRow >= 0) {
+		if(selectedRow >= 0) {
 			shiftTableModel.remove(selectedRow);
 		}
 	}
 
 	public void actionPerformed(ActionEvent e) {
 		String actionCommand = e.getActionCommand();
-		if (actionCommand.equals("AddModifierGroup")) { //$NON-NLS-1$
+		if(actionCommand.equals("AddModifierGroup")) { //$NON-NLS-1$
 			addMenuItemModifierGroup();
 		}
-		else if (actionCommand.equals("EditModifierGroup")) { //$NON-NLS-1$
+		else if(actionCommand.equals("EditModifierGroup")) { //$NON-NLS-1$
 			editMenuItemModifierGroup();
 		}
-		else if (actionCommand.equals("DeleteModifierGroup")) { //$NON-NLS-1$
+		else if(actionCommand.equals("DeleteModifierGroup")) { //$NON-NLS-1$
 			deleteMenuItemModifierGroup();
 		}
-		else if (actionCommand.equals(com.floreantpos.POSConstants.ADD_SHIFT)) {
+		else if(actionCommand.equals(com.floreantpos.POSConstants.ADD_SHIFT)) {
 			addShift();
 		}
-		else if (actionCommand.equals(com.floreantpos.POSConstants.DELETE_SHIFT)) {
+		else if(actionCommand.equals(com.floreantpos.POSConstants.DELETE_SHIFT)) {
 			deleteShift();
 		}
 	}
@@ -922,7 +908,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 	@Override
 	public void stateChanged(ChangeEvent e) {
 		Component selectedComponent = tabbedPane.getSelectedComponent();
-		if (!(selectedComponent instanceof IUpdatebleView)) {
+		if(!(selectedComponent instanceof IUpdatebleView)) {
 			return;
 		}
 
