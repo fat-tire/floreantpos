@@ -120,6 +120,7 @@ public class TableSelectionDialog extends POSDialog implements ActionListener {
 		int taskBarSize = scnMax.bottom;
 
 		setSize(screenSize.width, screenSize.height - taskBarSize);
+		setSize(400, 300);
 	}
 
 	private boolean addTable(ActionEvent e) {
