@@ -68,7 +68,6 @@ public class MenuItemView extends SelectionView {
 	public void setMenuGroup(MenuGroup menuGroup) {
 		this.menuGroup = menuGroup;
 
-		reset();
 		menuItemButtonMap.clear();
 		
 		if (menuGroup == null) {
