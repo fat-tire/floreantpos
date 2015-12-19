@@ -23,10 +23,12 @@
 
 package com.floreantpos.ui.views.order;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -36,6 +38,7 @@ import java.util.Vector;
 
 import javax.swing.AbstractButton;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
 import javax.swing.UIManager;
 
 import net.miginfocom.swing.MigLayout;
@@ -50,6 +53,7 @@ import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.TicketItemModifier;
 import com.floreantpos.model.TicketItemModifierGroup;
 import com.floreantpos.swing.PosButton;
+import com.floreantpos.swing.ScrollableFlowPanel;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.views.order.actions.ModifierSelectionListener;
 import com.floreantpos.util.ModifierStateChangeListener;
@@ -69,6 +73,8 @@ public class ModifierView extends SelectionView implements ModifierStateChangeLi
 	//	private final static ImageIcon normalIcon = IconFactory.getIcon("normalModifier16.png");
 	//	private final static ImageIcon noIcon = IconFactory.getIcon("noModifier16.png");
 	//	private final static ImageIcon extraIcon = IconFactory.getIcon("extraModifier16.png");
+	
+	ScrollableFlowPanel contentPanel = new ScrollableFlowPanel();
 
 	private int separatorCount;
 
@@ -118,70 +124,69 @@ public class ModifierView extends SelectionView implements ModifierStateChangeLi
 			POSMessageDialog.showError(this, com.floreantpos.POSConstants.ERROR_MESSAGE, e);
 		}
 	}
+	
+	public void componentResized(ComponentEvent e) {
+	}
 
 	protected void renderItems() {
-		reset();
-
 		if (this.items == null || items.size() == 0) {
 			return;
 		}
-
-		Dimension size = buttonsPanel.getSize();
 		Dimension itemButtonSize = getButtonSize();
-
-		int horizontalButtonCount = getButtonCount(size.width, getButtonSize().width);
-		int verticalButtonCount = getButtonCount(size.height, getButtonSize().height);
-
-		buttonsPanel.setLayout(new MigLayout("alignx 50%, wrap " + horizontalButtonCount)); //$NON-NLS-1$
-
-		//TODO: REVISE CODE
-		int totalItem = horizontalButtonCount * verticalButtonCount;
-
-		previousBlockIndex = currentBlockIndex - totalItem + separatorCount;
-		nextBlockIndex = currentBlockIndex + totalItem;
-
-		int spCount = getSeparatorCount();
-
-		if (spCount > 0) {
-			verticalButtonCount = getButtonCount(size.height - (spCount * 40), getButtonSize().height);
-
-			totalItem = horizontalButtonCount * verticalButtonCount;
-			previousBlockIndex = (currentBlockIndex - totalItem) + spCount;
-			nextBlockIndex = currentBlockIndex + totalItem + spCount;
-		}
-
+//
+//		int horizontalButtonCount = getButtonCount(size.width, getButtonSize().width);
+//		int verticalButtonCount = getButtonCount(size.height, getButtonSize().height);
+//
+//		buttonsPanel.setLayout(new MigLayout("alignx 50%, wrap " + horizontalButtonCount)); //$NON-NLS-1$
+//
+//		//TODO: REVISE CODE
+//		int totalItem = horizontalButtonCount * verticalButtonCount;
+//
+//		previousBlockIndex = currentBlockIndex - totalItem + separatorCount;
+//		nextBlockIndex = currentBlockIndex + totalItem;
+//
+//		int spCount = getSeparatorCount();
+//
+//		if (spCount > 0) {
+//			verticalButtonCount = getButtonCount(size.height - (spCount * 40), getButtonSize().height);
+//
+//			totalItem = horizontalButtonCount * verticalButtonCount;
+//			previousBlockIndex = (currentBlockIndex - totalItem) + spCount;
+//			nextBlockIndex = currentBlockIndex + totalItem + spCount;
+//		}
+//
 		try {
-			for (int i = currentBlockIndex; i < nextBlockIndex; i++) {
+			for (int i = 0; i < items.size(); i++) {
 
 				Object item = items.get(i);
 
 				if (item instanceof String) {
-					addSeparator(item.toString());
+					//addSeparator(item.toString());
 					continue;
 				}
 
 				AbstractButton itemButton = createItemButton(item);
-				buttonsPanel.add(itemButton, "width " + itemButtonSize.width + "!, height " + itemButtonSize.height + "!"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				contentPanel.add(itemButton, "width " + itemButtonSize.width + "!, height " + itemButtonSize.height + "!"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
-				if (i == items.size() - 1) {
-					break;
-				}
+//				if (i == items.size() - 1) {
+//					break;
+//				}
 			}
 		} catch (Exception e) {
 			// TODO: fix it.
 		}
-
-		if (previousBlockIndex >= 0 && currentBlockIndex != 0) {
-			btnPrev.setEnabled(true);
-		}
-
-		if (nextBlockIndex < items.size()) {
-			btnNext.setEnabled(true);
-		}
-		separatorCount = spCount;
+//
+//		if (previousBlockIndex >= 0 && currentBlockIndex != 0) {
+//			btnPrev.setEnabled(true);
+//		}
+//
+//		if (nextBlockIndex < items.size()) {
+//			btnNext.setEnabled(true);
+//		}
+//		separatorCount = spCount;
 		//		revalidate();
 		//		repaint();
-		updateVisualRepresentation();
+		//updateVisualRepresentation();
 	}
 
 	protected int getSeparatorCount() {
@@ -190,15 +195,6 @@ public class ModifierView extends SelectionView implements ModifierStateChangeLi
 		}
 
 		int count = 0;
-		for (int i = currentBlockIndex; i < nextBlockIndex; i++) {
-			if (i == items.size() - 1) {
-				break;
-			}
-
-			if (items.get(i) instanceof String) {
-				++count;
-			}
-		}
 		return count;
 	}
 
