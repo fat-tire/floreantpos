@@ -18,11 +18,8 @@
 package com.floreantpos.ui.views.order;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
@@ -32,8 +29,6 @@ import java.util.List;
 import javax.swing.AbstractButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.SwingConstants;
-import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
 import net.miginfocom.swing.MigLayout;
@@ -42,20 +37,21 @@ import org.jdesktop.swingx.JXTitledSeparator;
 
 import com.floreantpos.POSConstants;
 import com.floreantpos.swing.PosButton;
-import com.floreantpos.swing.ScrollableFlowPanel;
-import com.jidesoft.swing.SimpleScrollPane;
 
-public abstract class SelectionView extends JPanel {
+public abstract class SelectionView extends JPanel implements ComponentListener {
 	private final static int HORIZONTAL_GAP = 15;
 	private final static int VERTICAL_GAP = 15;
 
 	private Dimension buttonSize;
 
-	private SimpleScrollPane scrollPane;
-	private final ScrollableFlowPanel buttonsPanel = new ScrollableFlowPanel(FlowLayout.LEADING);
+	protected final JPanel buttonsPanel = new JPanel();
 
 	protected List items;
 	
+	protected int previousBlockIndex = -1;
+	protected int currentBlockIndex = 0;
+	protected int nextBlockIndex;
+
 	protected com.floreantpos.swing.PosButton btnBack;
 	protected com.floreantpos.swing.PosButton btnNext;
 	protected com.floreantpos.swing.PosButton btnPrev;
@@ -74,10 +70,8 @@ public abstract class SelectionView extends JPanel {
 
 		setLayout(new BorderLayout(HORIZONTAL_GAP, VERTICAL_GAP));
 
-		scrollPane = new SimpleScrollPane();
-		scrollPane.setAutoscrolls(false);
-		scrollPane.setBorder(null);
-		add(scrollPane);
+		buttonsPanel.addComponentListener(this);
+		add(buttonsPanel);
 
 		MigLayout migLayout2 = new MigLayout("fill,hidemode 3", "grow", ""); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		JPanel southPanel = new JPanel(migLayout2);
@@ -88,50 +82,30 @@ public abstract class SelectionView extends JPanel {
 
 		btnPrev = new PosButton();
 		btnPrev.setText(POSConstants.CAPITAL_PREV);
-		btnPrev.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				scrollPane.scroll(scrollPane.getViewport(), SwingConstants.NORTH);
-				updateButtonStatus();
-			}
-		});
 		southPanel.add(btnPrev, "grow, align center, height 50"); //$NON-NLS-1$
 
 		btnNext = new PosButton();
 		btnNext.setText(POSConstants.CAPITAL_NEXT);
-		btnNext.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				scrollPane.scroll(scrollPane.getViewport(), SwingConstants.SOUTH);
-				updateButtonStatus();
-			}
-		});
 		southPanel.add(btnNext, "grow, align center, height 50"); //$NON-NLS-1$
 
 		add(southPanel, BorderLayout.SOUTH);
 
 		ScrollAction action = new ScrollAction();
 		btnBack.addActionListener(action);
-		//btnPrev.addActionListener(action);
-		//btnNext.addActionListener(action);
-		
-		updateButtonStatus();
+		btnPrev.addActionListener(action);
+		btnNext.addActionListener(action);
 
-	}
-
-	private void updateButtonStatus() {
-		btnPrev.setEnabled(scrollPane.getScrollUpButton().isEnabled());
-		btnNext.setEnabled(scrollPane.getScrollDownButton().isEnabled());
 	}
 
 	public SelectionView(String title) {
 		this(title, 120, 80);
 	}
 
-	public final void setItems(List items) {
+	public void setItems(List items) {
 		this.items = items;
+		currentBlockIndex = 0;
+		nextBlockIndex = 0;
 		
-		reset();
 		renderItems();
 	}
 
@@ -151,10 +125,10 @@ public abstract class SelectionView extends JPanel {
 
 	public void reset() {
 		//btnBack.setEnabled(false);
-//		btnNext.setEnabled(false);
-//		btnPrev.setEnabled(false);
-//		
-		Component[] components = buttonsPanel.getContentPane().getComponents();
+		btnNext.setEnabled(false);
+		btnPrev.setEnabled(false);
+		
+		Component[] components = buttonsPanel.getComponents();
 		for (int i = 0; i < components.length; i++) {
 			Component c = components[i];
 			if (c instanceof AbstractButton) {
@@ -169,36 +143,57 @@ public abstract class SelectionView extends JPanel {
 				}
 			}
 		}
-		buttonsPanel.getContentPane().removeAll();
-//		buttonsPanel.revalidate();
-//		buttonsPanel.repaint();
+		buttonsPanel.removeAll();
+		buttonsPanel.revalidate();
+		buttonsPanel.repaint();
 	}
 
 	protected void renderItems() {
+		reset();
+
 		if (this.items == null || items.size() == 0) {
 			return;
 		}
 
+		Dimension size = buttonsPanel.getSize();
 		Dimension itemButtonSize = getButtonSize();
 
+		int horizontalButtonCount = getButtonCount(size.width, getButtonSize().width);
+		int verticalButtonCount = getButtonCount(size.height, getButtonSize().height);
+		
+		buttonsPanel.setLayout(new MigLayout("alignx 50%, wrap " + horizontalButtonCount)); //$NON-NLS-1$
+		
+		int totalItem = horizontalButtonCount * verticalButtonCount;
+		
+		previousBlockIndex = currentBlockIndex - totalItem;
+		nextBlockIndex = currentBlockIndex + totalItem;
 		
 		try {
-			for (int i = 0; i < items.size(); i++) {
+			for (int i = currentBlockIndex; i < nextBlockIndex; i++) {
 
 				Object item = items.get(i);
 
 				AbstractButton itemButton = createItemButton(item);
-				itemButton.setPreferredSize(itemButtonSize);
-				buttonsPanel.add(itemButton); //, "width " + itemButtonSize.width + "!, height " + itemButtonSize.height + "!"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				buttonsPanel.add(itemButton, "width " + itemButtonSize.width + "!, height " + itemButtonSize.height + "!"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+
+				if (i == items.size() - 1) {
+					break;
+				}
 			}
 		} catch (Exception e) {
 			// TODO: fix it.
 		}
 		
-		scrollPane.setViewportView(buttonsPanel);
-		add(scrollPane);
-		scrollPane.setVerticalUnitIncrement(scrollPane.getVisibleRect().height);
-		updateButtonStatus();
+		if(previousBlockIndex >= 0 && currentBlockIndex != 0) {
+			btnPrev.setEnabled(true);
+		}
+		
+		if(nextBlockIndex < items.size()) {
+			btnNext.setEnabled(true);
+		}
+		
+		revalidate();
+		repaint();
 	}
 	
 	public void addButton(AbstractButton button) {
@@ -206,19 +201,19 @@ public abstract class SelectionView extends JPanel {
 		button.setText("<html><body><center>" + button.getText() + "</center></body></html>"); //$NON-NLS-1$ //$NON-NLS-2$
 		buttonsPanel.add(button);
 	}
-	
-	public AbstractButton getItemButton(int index) {
-		return (AbstractButton) buttonsPanel.getContentPane().getComponent(index);
-	}
 
 	public void addSeparator(String text) {
 		buttonsPanel.add(new JXTitledSeparator(text, JLabel.CENTER), "alignx 50%, newline, span, growx, height 30!"); //$NON-NLS-1$
 	}
 
 	private void scrollDown() {
+		currentBlockIndex = nextBlockIndex;
+		renderItems();
 	}
 
 	private void scrollUp() {
+		currentBlockIndex = previousBlockIndex;
+		renderItems();
 	}
 
 	public void setBackEnable(boolean enable) {
@@ -270,5 +265,4 @@ public abstract class SelectionView extends JPanel {
 
 	public void componentHidden(ComponentEvent e) {
 	}
-	
 }

@@ -69,17 +69,19 @@ public class CategoryView extends SelectionView implements ActionListener {
 		setBackVisible(false);
 		
 		categoryButtonGroup = new ButtonGroup();
-		setPreferredSize(new Dimension(120, 500));
+		setPreferredSize(new Dimension(120, 100));
 	}
 
 	public void initialize() {
+		reset();
+		
 		MenuCategoryDAO categoryDAO = new MenuCategoryDAO();
 		List<MenuCategory> categories = categoryDAO.findAllEnable();
 		if(categories.size() == 0) return;
 		
 		setItems(categories);
 		
-		CategoryButton categoryButton = (CategoryButton) getItemButton(0);
+		CategoryButton categoryButton = (CategoryButton) buttonsPanel.getComponent(0);
 		if(categoryButton != null) {
 			categoryButton.setSelected(true);
 			fireCategorySelected(categoryButton.foodCategory);
