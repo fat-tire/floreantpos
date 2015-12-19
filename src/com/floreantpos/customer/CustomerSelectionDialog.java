@@ -54,23 +54,25 @@ import com.floreantpos.ui.forms.CustomerForm;
 public class CustomerSelectionDialog extends POSDialog {
 
 	private PosSmallButton btnCreateNewCustomer;
-
 	private CustomerTable customerTable;
 	private POSTextField tfMobile;
 	private POSTextField tfLoyaltyNo;
 	private POSTextField tfName;
 	private PosSmallButton btnInfo;
-
 	protected Customer selectedCustomer;
 	private PosSmallButton btnRemoveCustomer;
-	
+
 	private Ticket ticket;
-	
+
+	public CustomerSelectionDialog() {
+		setTitle(Messages.getString("CustomerSelectionDialog.3")); //$NON-NLS-1$
+	}
+
 	public CustomerSelectionDialog(Ticket ticket) {
 		this.ticket = ticket;
-		
+
 		setTitle(Messages.getString("CustomerSelectionDialog.0")); //$NON-NLS-1$
-		
+
 		loadCustomerFromTicket();
 	}
 
@@ -137,8 +139,8 @@ public class CustomerSelectionDialog extends POSDialog {
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
 				selectedCustomer = customerTable.getSelectedCustomer();
-				if (selectedCustomer != null) {
-//					btnInfo.setEnabled(true);
+				if(selectedCustomer != null) {
+					//					btnInfo.setEnabled(true);
 				}
 				else {
 					btnInfo.setEnabled(false);
@@ -170,7 +172,7 @@ public class CustomerSelectionDialog extends POSDialog {
 			}
 		});
 		btnCreateNewCustomer.setText(Messages.getString("CustomerSelectionDialog.25")); //$NON-NLS-1$
-		
+
 		btnRemoveCustomer = new PosSmallButton();
 		btnRemoveCustomer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -183,27 +185,33 @@ public class CustomerSelectionDialog extends POSDialog {
 		PosSmallButton btnSelect = new PosSmallButton();
 		btnSelect.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+
 				Customer customer = customerTable.getSelectedCustomer();
+
+				selectedCustomer = customer;
+
 				if(customer == null) {
 					POSMessageDialog.showError(Application.getPosWindow(), Messages.getString("CustomerSelectionDialog.27")); //$NON-NLS-1$
 					return;
 				}
-				
+
 				doSetCustomer(customer);
+				setCanceled(false);
+				dispose();
 			}
 		});
 		btnSelect.setText(Messages.getString("CustomerSelectionDialog.28")); //$NON-NLS-1$
 		panel.add(btnSelect);
-		
-				PosSmallButton btnCancel = new PosSmallButton();
-				btnCancel.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-						setCanceled(true);
-						dispose();
-					}
-				});
-				btnCancel.setText(Messages.getString("CustomerSelectionDialog.29")); //$NON-NLS-1$
-				panel.add(btnCancel);
+
+		PosSmallButton btnCancel = new PosSmallButton();
+		btnCancel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				setCanceled(true);
+				dispose();
+			}
+		});
+		btnCancel.setText(Messages.getString("CustomerSelectionDialog.29")); //$NON-NLS-1$
+		panel.add(btnCancel);
 
 		JPanel panel_3 = new JPanel(new BorderLayout());
 		getContentPane().add(panel_3, "cell 0 1,grow, gapright 2px"); //$NON-NLS-1$
@@ -232,7 +240,7 @@ public class CustomerSelectionDialog extends POSDialog {
 		if(StringUtils.isNotEmpty(customerIdString)) {
 			int customerId = Integer.parseInt(customerIdString);
 			Customer customer = CustomerDAO.getInstance().get(customerId);
-			
+
 			List<Customer> list = new ArrayList<Customer>();
 			list.add(customer);
 			customerTable.setModel(new CustomerListTableModel(list));
@@ -240,18 +248,20 @@ public class CustomerSelectionDialog extends POSDialog {
 	}
 
 	protected void doSetCustomer(Customer customer) {
-		ticket.setCustomer(customer);
-		TicketDAO.getInstance().saveOrUpdate(ticket);
-		setCanceled(false);
-		dispose();
+		if(ticket != null) {
+			ticket.setCustomer(customer);
+			TicketDAO.getInstance().saveOrUpdate(ticket);
+		}
+
 	}
 
 	protected void doRemoveCustomerFromTicket() {
-		int option = POSMessageDialog.showYesNoQuestionDialog(this, Messages.getString("CustomerSelectionDialog.2"), Messages.getString("CustomerSelectionDialog.32")); //$NON-NLS-1$ //$NON-NLS-2$
+		int option = POSMessageDialog.showYesNoQuestionDialog(this,
+				Messages.getString("CustomerSelectionDialog.2"), Messages.getString("CustomerSelectionDialog.32")); //$NON-NLS-1$ //$NON-NLS-2$
 		if(option != JOptionPane.YES_OPTION) {
 			return;
 		}
-		
+
 		ticket.removeCustomer();
 		TicketDAO.getInstance().saveOrUpdate(ticket);
 		setCanceled(false);
@@ -263,7 +273,7 @@ public class CustomerSelectionDialog extends POSDialog {
 		String name = tfName.getText();
 		String loyalty = tfLoyaltyNo.getText();
 
-		if (StringUtils.isEmpty(mobile) && StringUtils.isEmpty(loyalty) && StringUtils.isEmpty(name)) {
+		if(StringUtils.isEmpty(mobile) && StringUtils.isEmpty(loyalty) && StringUtils.isEmpty(name)) {
 			List<Customer> list = CustomerDAO.getInstance().findAll();
 			customerTable.setModel(new CustomerListTableModel(list));
 			return;
@@ -274,22 +284,30 @@ public class CustomerSelectionDialog extends POSDialog {
 	}
 
 	protected void doCreateNewCustomer() {
-		boolean setKeyPad=true;
+		boolean setKeyPad = true;
 		CustomerForm form = new CustomerForm(setKeyPad);
 		form.enableCustomerFields(true);
 		BeanEditorDialog dialog = new BeanEditorDialog(form);
 		dialog.open();
 
-		if (!dialog.isCanceled()) {
+		if(!dialog.isCanceled()) {
 			selectedCustomer = (Customer) form.getBean();
-			
+
 			CustomerListTableModel model = (CustomerListTableModel) customerTable.getModel();
 			model.addItem(selectedCustomer);
 		}
 	}
-	
+
 	@Override
 	public String getName() {
 		return "C"; //$NON-NLS-1$
+	}
+
+	public Customer getSelectedCustomer() {
+		return selectedCustomer;
+	}
+
+	public void setRemoveButtonEnable(boolean enable) {
+		btnRemoveCustomer.setEnabled(enable);
 	}
 }
