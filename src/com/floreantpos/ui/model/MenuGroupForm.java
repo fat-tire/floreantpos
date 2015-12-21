@@ -149,6 +149,7 @@ public class MenuGroupForm extends BeanEditor {
 		MenuCategoryDAO categoryDAO = new MenuCategoryDAO();
 		List<MenuCategory> foodCategories = categoryDAO.findAll();
 		cbCategory.setModel(new ComboBoxModel(foodCategories));
+		cbCategory.setSelectedItem(null);
 	}// </editor-fold>//GEN-END:initComponents
 
 	private void doNewCategory(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_doNewCategory
@@ -229,9 +230,7 @@ public class MenuGroupForm extends BeanEditor {
 
 		chkVisible.setSelected(menuGroup.isVisible());
 
-		if (menuGroup.getParent() != null) {
-			cbCategory.setSelectedItem(menuGroup.getParent());
-		}
+		cbCategory.setSelectedItem(menuGroup.getParent());
 	}
 
 	@Override
@@ -264,7 +263,7 @@ public class MenuGroupForm extends BeanEditor {
 		menuGroup.setButtonColorCode(btnButtonColor.getBackground().getRGB());
 		menuGroup.setTextColorCode(btnTextColor.getForeground().getRGB());
 
-		menuGroup.setParent(category);
+		menuGroup.setParent((MenuCategory) cbCategory.getSelectedItem());
 		menuGroup.setVisible(chkVisible.isSelected());
 
 		return true;

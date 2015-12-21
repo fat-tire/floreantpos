@@ -70,9 +70,12 @@ public class MenuGroupExplorer extends TransparentPanel {
 		table.getColumnModel().getColumn(7).setCellRenderer(new DefaultTableCellRenderer() {
 			@Override
 			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-				JLabel lblColor = new JLabel("TEXT COLOR", JLabel.CENTER);
-				lblColor.setForeground((Color) value);
-				return lblColor;
+				if (value instanceof Color) {
+					JLabel lblColor = new JLabel("TEXT COLOR", JLabel.CENTER);
+					lblColor.setForeground((Color) value);
+					return lblColor;
+				}
+				return super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 			}
 		});
 
@@ -92,7 +95,7 @@ public class MenuGroupExplorer extends TransparentPanel {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					int index = table.getSelectedRow();
-					if(index < 0)
+					if (index < 0)
 						return;
 
 					index = table.convertRowIndexToModel(index);
@@ -102,7 +105,7 @@ public class MenuGroupExplorer extends TransparentPanel {
 					MenuGroupForm editor = new MenuGroupForm(menuGroup);
 					BeanEditorDialog dialog = new BeanEditorDialog(editor);
 					dialog.open();
-					if(dialog.isCanceled())
+					if (dialog.isCanceled())
 						return;
 					table.repaint();
 				} catch (Exception x) {
@@ -118,7 +121,7 @@ public class MenuGroupExplorer extends TransparentPanel {
 					MenuGroupForm editor = new MenuGroupForm();
 					BeanEditorDialog dialog = new BeanEditorDialog(editor);
 					dialog.open();
-					if(dialog.isCanceled())
+					if (dialog.isCanceled())
 						return;
 					MenuGroup foodGroup = (MenuGroup) editor.getBean();
 					tableModel.addRow(foodGroup);
@@ -133,21 +136,21 @@ public class MenuGroupExplorer extends TransparentPanel {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					int index = table.getSelectedRow();
-					if(index < 0)
+					if (index < 0)
 						return;
 
 					index = table.convertRowIndexToModel(index);
 					MenuGroup group = tableModel.getRow(index);
 
-					if(POSMessageDialog.showYesNoQuestionDialog(MenuGroupExplorer.this, POSConstants.CONFIRM_DELETE, POSConstants.DELETE) != JOptionPane.YES_OPTION) {
+					if (POSMessageDialog.showYesNoQuestionDialog(MenuGroupExplorer.this, POSConstants.CONFIRM_DELETE, POSConstants.DELETE) != JOptionPane.YES_OPTION) {
 						return;
 					}
 
 					MenuItemDAO menuItemDao = new MenuItemDAO();
 					List<MenuItem> menuItems = menuItemDao.findByParent(null, group, true);
 
-					if(menuItems.size() > 0) {
-						if(POSMessageDialog.showYesNoQuestionDialog(MenuGroupExplorer.this, Messages.getString("MenuGroupExplorer.0"), POSConstants.DELETE) != JOptionPane.YES_OPTION) { //$NON-NLS-1$
+					if (menuItems.size() > 0) {
+						if (POSMessageDialog.showYesNoQuestionDialog(MenuGroupExplorer.this, Messages.getString("MenuGroupExplorer.0"), POSConstants.DELETE) != JOptionPane.YES_OPTION) { //$NON-NLS-1$
 							return;
 						}
 						menuItemDao.releaseParent(menuItems);
