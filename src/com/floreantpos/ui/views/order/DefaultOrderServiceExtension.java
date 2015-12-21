@@ -59,8 +59,11 @@ public class DefaultOrderServiceExtension implements OrderServiceExtension {
 	@Override
 	public void createNewTicket(OrderType ticketType) throws TicketAlreadyExistsException {
 
+		FloorLayoutPlugin floorLayoutPlugin = (FloorLayoutPlugin) ExtensionManager.getPlugin(FloorLayoutPlugin.class);
+
 		List<ShopTable> allTables = ShopTableDAO.getInstance().findAll();
-		if(allTables == null || allTables.isEmpty()) {
+		
+		if((allTables == null || allTables.isEmpty()) && floorLayoutPlugin == null) {
 
 			int userInput = 0;
 
@@ -68,14 +71,14 @@ public class DefaultOrderServiceExtension implements OrderServiceExtension {
 					Messages.getString("DefaultOrderServiceExtension.6"), Messages.getString("DefaultOrderServiceExtension.7")); //$NON-NLS-1$ //$NON-NLS-2$
 
 			if(result == JOptionPane.YES_OPTION) {
-				
+
 				userInput = NumberSelectionDialog2.takeIntInput(Messages.getString("DefaultOrderServiceExtension.8")); //$NON-NLS-1$
-				
+
 				if(userInput == 0) {
 					POSMessageDialog.showError(Application.getPosWindow(), Messages.getString("DefaultOrderServiceExtension.9")); //$NON-NLS-1$
 					return;
 				}
-				
+
 				if(userInput != -1) {
 					ShopTableDAO.getInstance().createNewTables(userInput);
 				}
@@ -90,22 +93,35 @@ public class DefaultOrderServiceExtension implements OrderServiceExtension {
 			}
 		}
 
-		List<ShopTable> tables = null;
-		List<ShopTable> shopTables = ShopTableDAO.getInstance().findAll();
+		List<ShopTable> selectedTables = null;
 
-		if(shopTables != null && !shopTables.isEmpty()) {
+		if(TerminalConfig.isShouldShowTableSelection()) {
 
-			if(TerminalConfig.isShouldShowTableSelection()) {
-				FloorLayoutPlugin floorLayoutPlugin = (FloorLayoutPlugin) ExtensionManager.getPlugin(FloorLayoutPlugin.class);
+			if(floorLayoutPlugin != null) {
 
-				if(floorLayoutPlugin != null) {
-					tables = floorLayoutPlugin.captureTableNumbers(null);
+				selectedTables = floorLayoutPlugin.captureTableNumbers(null);
+				
+				if(selectedTables == null) {
+					return;
 				}
-				else {
-					tables = PosGuiUtil.captureTable(null);
-				}
+				
+				if(selectedTables.isEmpty()) {
 
-				if(tables == null) {
+					int option = POSMessageDialog.showYesNoQuestionDialog(Application.getPosWindow(),
+							Messages.getString("DefaultOrderServiceExtension.12"), Messages.getString("DefaultOrderServiceExtension.13")); //$NON-NLS-1$ //$NON-NLS-2$
+					if(option != 0) {
+						return;
+					}
+				}
+			}
+
+			List<ShopTable> shopTables = ShopTableDAO.getInstance().findAll();
+
+			if(shopTables != null && !shopTables.isEmpty() && floorLayoutPlugin == null) {
+				
+				selectedTables = PosGuiUtil.captureTable(null);
+				
+				if(selectedTables == null) {
 					return;
 				}
 			}
@@ -129,8 +145,8 @@ public class DefaultOrderServiceExtension implements OrderServiceExtension {
 		ticket.setOwner(Application.getCurrentUser());
 		ticket.setShift(application.getCurrentShift());
 
-		if(tables != null) {
-			for (ShopTable shopTable : tables) {
+		if(selectedTables != null) {
+			for (ShopTable shopTable : selectedTables) {
 				shopTable.setServing(true);
 				ticket.addTable(shopTable.getTableNumber());
 			}
