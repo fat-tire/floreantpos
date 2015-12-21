@@ -64,7 +64,7 @@ public class TableSelectionDialog extends POSDialog implements ActionListener {
 	}
 
 	private void init() {
-		setTitle("Table Selector");
+		setTitle(Messages.getString("TableSelectionDialog.1")); //$NON-NLS-1$
 		setPreferredSize(Application.getPosWindow().getSize());
 
 		TitlePanel titlePanel = new TitlePanel();
@@ -120,17 +120,17 @@ public class TableSelectionDialog extends POSDialog implements ActionListener {
 		int taskBarSize = scnMax.bottom;
 
 		setSize(screenSize.width, screenSize.height - taskBarSize);
-		setSize(400, 300);
 	}
 
 	private boolean addTable(ActionEvent e) {
+		
 		ShopTableButton button = (ShopTableButton) e.getSource();
 		int tableNumber = Integer.parseInt(e.getActionCommand());
 
 		ShopTable shopTable = ShopTableDAO.getInstance().getByNumber(tableNumber);
 
 		if (shopTable == null) {
-			POSMessageDialog.showError(this, "Table number " + e + " does not exist");
+			POSMessageDialog.showError(this, Messages.getString("TableSelectionDialog.2") + e + Messages.getString("TableSelectionDialog.3")); //$NON-NLS-1$ //$NON-NLS-2$
 			return false;
 		}
 
@@ -140,7 +140,7 @@ public class TableSelectionDialog extends POSDialog implements ActionListener {
 		}
 
 		if (shopTable.isServing()) {
-			POSMessageDialog.showError(this, "Table number " + e + " is occupied");
+			POSMessageDialog.showError(this, Messages.getString("TableSelectionDialog.4") + e + Messages.getString("TableSelectionDialog.5")); //$NON-NLS-1$ //$NON-NLS-2$
 			return false;
 		}
 
@@ -151,7 +151,6 @@ public class TableSelectionDialog extends POSDialog implements ActionListener {
 			button.update();
 			return true;
 		}
-
 		button.getShopTable().setServing(true);
 		button.setBackground(Color.red);
 		button.setForeground(Color.black);
@@ -213,7 +212,8 @@ public class TableSelectionDialog extends POSDialog implements ActionListener {
 
 		for (ShopTable shopTable : tables) {
 			ShopTableButton shopTableButton = tableButtonMap.get(shopTable);
-			shopTableButton.update();
+			shopTableButton.setBackground(Color.red);
+			shopTableButton.setForeground(Color.black);
 			shopTableButton.setEnabled(true);
 
 			if (shopTableButton != null) {

@@ -61,18 +61,22 @@ public class ShopTableButton extends PosButton {
 	}
 	
 	public void update() {
+		
 		if(shopTable != null && shopTable.isServing()) {
+			
 			setEnabled(false);
-			setBackground(Color.red);
-			setForeground(Color.black);
+			setBackground(Color.GRAY);
+			setForeground(Color.BLACK);
 		}
 		else if(shopTable != null && shopTable.isBooked()) {
+			
 			setEnabled(false);
 			setOpaque(true); 
-			setBackground(Color.gray);
-			setForeground(Color.black);
+			setBackground(Color.GRAY);
+			setForeground(Color.BLACK);
 		}
 		else {
+			
 			setEnabled(true);
 			setBackground(Color.green);
 			setForeground(Color.black);
