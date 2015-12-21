@@ -86,9 +86,12 @@ public class MenuItemExplorer extends TransparentPanel {
 		table.getColumnModel().getColumn(10).setCellRenderer(new DefaultTableCellRenderer() {
 			@Override
 			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-				JLabel lblColor = new JLabel("TEXT COLOR", JLabel.CENTER);
-				lblColor.setForeground((Color) value);
-				return lblColor;
+				if (value instanceof Color) {
+					JLabel lblColor = new JLabel("TEXT COLOR", JLabel.CENTER);
+					lblColor.setForeground((Color) value);
+					return lblColor;
+				}
+				return super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 			}
 		});
 

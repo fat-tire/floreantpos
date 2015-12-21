@@ -126,13 +126,13 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 
 		int option = fileChooser.showOpenDialog(null);
 
-		if(option == JFileChooser.APPROVE_OPTION) {
+		if (option == JFileChooser.APPROVE_OPTION) {
 			File imageFile = fileChooser.getSelectedFile();
 			try {
 				byte[] itemImage = FileUtils.readFileToByteArray(imageFile);
 				int imageSize = itemImage.length / 1024;
 
-				if(imageSize > 20) {
+				if (imageSize > 20) {
 					POSMessageDialog.showMessage(Messages.getString("MenuItemForm.0")); //$NON-NLS-1$
 					itemImage = null;
 					return;
@@ -158,7 +158,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 
 	public void addRecepieExtension() {
 		InventoryPlugin plugin = (InventoryPlugin) ExtensionManager.getPlugin(InventoryPlugin.class);
-		if(plugin == null) {
+		if (plugin == null) {
 			return;
 		}
 
@@ -217,7 +217,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 			}
 		});
 
-		if(Application.getInstance().isPriceIncludesTax()) {
+		if (Application.getInstance().isPriceIncludesTax()) {
 			lSalePrice.setText(Messages.getString("LABEL_SALES_PRICE_INCLUDING_TAX")); //$NON-NLS-1$
 		}
 		else {
@@ -482,7 +482,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		BeanEditorDialog dialog = new BeanEditorDialog(editor);
 		dialog.open();
 
-		if(!dialog.isCanceled()) {
+		if (!dialog.isCanceled()) {
 			MenuGroup foodGroup = (MenuGroup) editor.getBean();
 			ComboBoxModel model = (ComboBoxModel) cbGroup.getModel();
 			model.addElement(foodGroup);
@@ -546,13 +546,13 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 			MenuItemModifierGroupForm form = new MenuItemModifierGroupForm();
 			BeanEditorDialog dialog = new BeanEditorDialog(form);
 			dialog.open();
-			if(!dialog.isCanceled()) {
+			if (!dialog.isCanceled()) {
 				MenuItemModifierGroup modifier = (MenuItemModifierGroup) form.getBean();
 				//modifier.setParentMenuItem((MenuItem) this.getBean());
 
-				if(menuItemModifierGroups != null) {
+				if (menuItemModifierGroups != null) {
 					for (MenuItemModifierGroup modifierGroup : menuItemModifierGroups) {
-						if(modifierGroup.getModifierGroup().equals(modifier.getModifierGroup())) {
+						if (modifierGroup.getModifierGroup().equals(modifier.getModifierGroup())) {
 							POSMessageDialog.showError(Application.getPosWindow(), Messages.getString("MenuItemForm.48")); //$NON-NLS-1$
 							return;
 						}
@@ -569,7 +569,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 	private void editMenuItemModifierGroup() {
 		try {
 			int index = tableTicketItemModifierGroups.getSelectedRow();
-			if(index < 0)
+			if (index < 0)
 				return;
 
 			MenuItemModifierGroup menuItemModifierGroup = menuItemMGListModel.get(index);
@@ -577,7 +577,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 			MenuItemModifierGroupForm form = new MenuItemModifierGroupForm(menuItemModifierGroup);
 			BeanEditorDialog dialog = new BeanEditorDialog(form);
 			dialog.open();
-			if(!dialog.isCanceled()) {
+			if (!dialog.isCanceled()) {
 				//menuItemModifierGroup.setParentMenuItem((MenuItem) this.getBean());
 				menuItemMGListModel.fireTableDataChanged();
 			}
@@ -589,10 +589,10 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 	private void deleteMenuItemModifierGroup() {
 		try {
 			int index = tableTicketItemModifierGroups.getSelectedRow();
-			if(index < 0)
+			if (index < 0)
 				return;
 
-			if(ConfirmDeleteDialog.showMessage(this, com.floreantpos.POSConstants.CONFIRM_DELETE, com.floreantpos.POSConstants.CONFIRM) == ConfirmDeleteDialog.YES) {
+			if (ConfirmDeleteDialog.showMessage(this, com.floreantpos.POSConstants.CONFIRM_DELETE, com.floreantpos.POSConstants.CONFIRM) == ConfirmDeleteDialog.YES) {
 				menuItemMGListModel.remove(index);
 			}
 		} catch (Exception x) {
@@ -603,7 +603,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 	@Override
 	public boolean save() {
 		try {
-			if(!updateModel())
+			if (!updateModel())
 				return false;
 
 			MenuItem menuItem = (MenuItem) getBean();
@@ -620,7 +620,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 	protected void updateView() {
 		MenuItem menuItem = getBean();
 
-		if(menuItem.getId() != null && !Hibernate.isInitialized(menuItem.getMenuItemModiferGroups())) {
+		if (menuItem.getId() != null && !Hibernate.isInitialized(menuItem.getMenuItemModiferGroups())) {
 			//initialize food item modifer groups.
 			MenuItemDAO dao = new MenuItemDAO();
 			Session session = dao.getSession();
@@ -638,7 +638,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		chkVisible.setSelected(menuItem.isVisible());
 		cbShowTextWithImage.setSelected(menuItem.isShowImageOnly());
 		ImageIcon menuItemImage = menuItem.getImage();
-		if(menuItemImage != null) {
+		if (menuItemImage != null) {
 			lblImagePreview.setIcon(menuItemImage);
 		}
 
@@ -647,17 +647,17 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 
 		cbPrinterGroup.setSelectedItem(menuItem.getPrinterGroup());
 
-		if(menuItem.getSortOrder() != null) {
+		if (menuItem.getSortOrder() != null) {
 			tfSortOrder.setText(menuItem.getSortOrder().toString());
 		}
 
 		Color buttonColor = menuItem.getButtonColor();
-		if(buttonColor != null) {
+		if (buttonColor != null) {
 			btnButtonColor.setBackground(buttonColor);
 			btnTextColor.setBackground(buttonColor);
 		}
 
-		if(menuItem.getTextColor() != null) {
+		if (menuItem.getTextColor() != null) {
 			btnTextColor.setForeground(menuItem.getTextColor());
 		}
 	}
@@ -665,7 +665,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 	@Override
 	protected boolean updateModel() {
 		String itemName = tfName.getText();
-		if(POSUtil.isBlankOrNull(itemName)) {
+		if (POSUtil.isBlankOrNull(itemName)) {
 			MessageDialog.showError(com.floreantpos.POSConstants.NAME_REQUIRED);
 			return false;
 		}
@@ -685,7 +685,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		menuItem.setButtonColorCode(btnButtonColor.getBackground().getRGB());
 		menuItem.setTextColorCode(btnTextColor.getForeground().getRGB());
 
-		if(!terminalList.getCheckedValues().isEmpty()) {
+		if (!terminalList.getCheckedValues().isEmpty()) {
 			menuItem.setTerminals(terminalList.getCheckedValues());
 		}
 
@@ -699,9 +699,9 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		int tabCount = tabbedPane.getTabCount();
 		for (int i = 0; i < tabCount; i++) {
 			Component componentAt = tabbedPane.getComponent(i);
-			if(componentAt instanceof IUpdatebleView) {
+			if (componentAt instanceof IUpdatebleView) {
 				IUpdatebleView view = (IUpdatebleView) componentAt;
-				if(!view.updateModel(menuItem)) {
+				if (!view.updateModel(menuItem)) {
 					return false;
 				}
 			}
@@ -714,7 +714,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 
 	public String getDisplayText() {
 		MenuItem foodItem = (MenuItem) getBean();
-		if(foodItem.getId() == null) {
+		if (foodItem.getId() == null) {
 			return com.floreantpos.POSConstants.NEW_MENU_ITEM;
 		}
 		return com.floreantpos.POSConstants.EDIT_MENU_ITEM;
@@ -731,7 +731,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		}
 
 		public void add(MenuItemModifierGroup group) {
-			if(menuItemModifierGroups == null) {
+			if (menuItemModifierGroups == null) {
 				menuItemModifierGroups = new ArrayList<MenuItemModifierGroup>();
 			}
 			menuItemModifierGroups.add(group);
@@ -739,7 +739,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		}
 
 		public void remove(int index) {
-			if(menuItemModifierGroups == null) {
+			if (menuItemModifierGroups == null) {
 				return;
 			}
 			menuItemModifierGroups.remove(index);
@@ -747,7 +747,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		}
 
 		public void remove(MenuItemModifierGroup group) {
-			if(menuItemModifierGroups == null) {
+			if (menuItemModifierGroups == null) {
 				return;
 			}
 			menuItemModifierGroups.remove(group);
@@ -755,7 +755,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		}
 
 		public int getRowCount() {
-			if(menuItemModifierGroups == null)
+			if (menuItemModifierGroups == null)
 				return 0;
 
 			return menuItemModifierGroups.size();
@@ -794,7 +794,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		Calendar calendar = Calendar.getInstance();
 
 		ShiftTableModel(List<MenuItemShift> shifts) {
-			if(shifts == null) {
+			if (shifts == null) {
 				this.shifts = new ArrayList<MenuItemShift>();
 			}
 			else {
@@ -807,7 +807,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		}
 
 		public void add(MenuItemShift group) {
-			if(shifts == null) {
+			if (shifts == null) {
 				shifts = new ArrayList<MenuItemShift>();
 			}
 			shifts.add(group);
@@ -815,7 +815,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		}
 
 		public void remove(int index) {
-			if(shifts == null) {
+			if (shifts == null) {
 				return;
 			}
 			shifts.remove(index);
@@ -823,7 +823,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		}
 
 		public void remove(MenuItemShift group) {
-			if(shifts == null) {
+			if (shifts == null) {
 				return;
 			}
 			shifts.remove(group);
@@ -831,7 +831,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		}
 
 		public int getRowCount() {
-			if(shifts == null)
+			if (shifts == null)
 				return 0;
 
 			return shifts.size();
@@ -873,7 +873,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		dialog.setSize(350, 220);
 		dialog.open();
 
-		if(!dialog.isCanceled()) {
+		if (!dialog.isCanceled()) {
 			MenuItemShift menuItemShift = dialog.getMenuItemShift();
 			shiftTableModel.add(menuItemShift);
 		}
@@ -881,26 +881,26 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 
 	private void deleteShift() {
 		int selectedRow = shiftTable.getSelectedRow();
-		if(selectedRow >= 0) {
+		if (selectedRow >= 0) {
 			shiftTableModel.remove(selectedRow);
 		}
 	}
 
 	public void actionPerformed(ActionEvent e) {
 		String actionCommand = e.getActionCommand();
-		if(actionCommand.equals("AddModifierGroup")) { //$NON-NLS-1$
+		if (actionCommand.equals("AddModifierGroup")) { //$NON-NLS-1$
 			addMenuItemModifierGroup();
 		}
-		else if(actionCommand.equals("EditModifierGroup")) { //$NON-NLS-1$
+		else if (actionCommand.equals("EditModifierGroup")) { //$NON-NLS-1$
 			editMenuItemModifierGroup();
 		}
-		else if(actionCommand.equals("DeleteModifierGroup")) { //$NON-NLS-1$
+		else if (actionCommand.equals("DeleteModifierGroup")) { //$NON-NLS-1$
 			deleteMenuItemModifierGroup();
 		}
-		else if(actionCommand.equals(com.floreantpos.POSConstants.ADD_SHIFT)) {
+		else if (actionCommand.equals(com.floreantpos.POSConstants.ADD_SHIFT)) {
 			addShift();
 		}
-		else if(actionCommand.equals(com.floreantpos.POSConstants.DELETE_SHIFT)) {
+		else if (actionCommand.equals(com.floreantpos.POSConstants.DELETE_SHIFT)) {
 			deleteShift();
 		}
 	}
@@ -908,7 +908,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 	@Override
 	public void stateChanged(ChangeEvent e) {
 		Component selectedComponent = tabbedPane.getSelectedComponent();
-		if(!(selectedComponent instanceof IUpdatebleView)) {
+		if (!(selectedComponent instanceof IUpdatebleView)) {
 			return;
 		}
 
