@@ -17,9 +17,11 @@
  */
 package com.floreantpos.main;
 
+import java.awt.AWTEvent;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Toolkit;
 import java.io.File;
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -59,6 +61,7 @@ import com.floreantpos.model.dao.OrderTypePropertiesDAO;
 import com.floreantpos.model.dao.PrinterConfigurationDAO;
 import com.floreantpos.model.dao.RestaurantDAO;
 import com.floreantpos.model.dao.TerminalDAO;
+import com.floreantpos.swing.TouchScrollHandler;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.views.CashierSwitchBoardView;
 import com.floreantpos.ui.views.LoginView;
@@ -106,7 +109,8 @@ public class Application {
 
 	public void start() {
 		setApplicationLook();
-
+		initializeTouchScroll();
+		
 		rootView = RootView.getInstance();
 
 		posWindow.getContentPane().add(rootView);
@@ -124,6 +128,10 @@ public class Application {
 		for (FloreantPlugin plugin : ExtensionManager.getPlugins()) {
 			plugin.init();
 		}
+	}
+
+	private void initializeTouchScroll() {
+		Toolkit.getDefaultToolkit().addAWTEventListener(new TouchScrollHandler(), AWTEvent.MOUSE_EVENT_MASK + AWTEvent.MOUSE_MOTION_EVENT_MASK);
 	}
 
 	private void setApplicationLook() {
