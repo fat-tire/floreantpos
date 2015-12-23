@@ -73,10 +73,10 @@ public class PosWindow extends JFrame implements WindowListener {
 		setMinimumSize(new Dimension(800, 600));
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		
-		int extendedState = AppConfig.getInt(EXTENDEDSTATE, -1);
-		if(extendedState != -1) {
-			setExtendedState(extendedState);
-		}
+//		int extendedState = AppConfig.getInt(EXTENDEDSTATE, -1);
+//		if(extendedState != -1) {
+//			setExtendedState(extendedState);
+//		}
 	}
 
 	public void enterFullScreenMode() {
