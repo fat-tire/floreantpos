@@ -24,7 +24,7 @@ public abstract class PaginatedTableModel extends ListTableModel {
 
 	private int numRows;
 	private int currentRowIndex;
-	private int pageSize = 10;
+	private int pageSize = 100;
 
 	public PaginatedTableModel() {
 		super();
