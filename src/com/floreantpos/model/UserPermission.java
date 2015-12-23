@@ -87,6 +87,7 @@ public class UserPermission extends BaseUserPermission {
 	public final static UserPermission MANAGE_TABLE_LAYOUT = new UserPermission(Messages.getString("UserPermission.20")); //$NON-NLS-1$
 	public final static UserPermission TABLE_BOOKING = new UserPermission(Messages.getString("UserPermission.22"));  //$NON-NLS-1$
 	public final static UserPermission MODIFY_PRINTED_TICKET = new UserPermission(Messages.getString("UserPermission.21")); //$NON-NLS-1$
+	public final static UserPermission TRANSFER_TICKET = new UserPermission("Transfer Ticket");
 	
 	//public final static UserPermission VIEW_USER_LIST = new UserPermission("View User List");
 	//public final static UserPermission GRATUITY_ADMINISTRATION = new UserPermission("Gratuity Administration");
@@ -95,7 +96,7 @@ public class UserPermission extends BaseUserPermission {
 	
 	public final static UserPermission[] permissions = new UserPermission[] {VIEW_ALL_OPEN_TICKETS,CREATE_TICKET,EDIT_TICKET, VOID_TICKET,
 			VIEW_BACK_OFFICE, AUTHORIZE_TICKETS, SPLIT_TICKET, SETTLE_TICKET, REOPEN_TICKET, PAY_OUT, DRAWER_ASSIGNMENT, DRAWER_PULL,
-			TAKE_OUT, VIEW_EXPLORERS, VIEW_REPORTS, SHUT_DOWN, ADD_DISCOUNT, REFUND, PERFORM_MANAGER_TASK, PERFORM_ADMINISTRATIVE_TASK, MANAGE_TABLE_LAYOUT, TABLE_BOOKING,MODIFY_PRINTED_TICKET};
+			TAKE_OUT, VIEW_EXPLORERS, VIEW_REPORTS, SHUT_DOWN, ADD_DISCOUNT, REFUND, PERFORM_MANAGER_TASK, PERFORM_ADMINISTRATIVE_TASK, MANAGE_TABLE_LAYOUT, TABLE_BOOKING,MODIFY_PRINTED_TICKET,TRANSFER_TICKET};
 
 	public boolean isVisibleWithoutPermission() {
 		return visibleWithoutPermission;
