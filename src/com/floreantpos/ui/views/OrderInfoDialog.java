@@ -20,11 +20,16 @@ package com.floreantpos.ui.views;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Iterator;
 
+import javax.swing.JDialog;
 import javax.swing.JPanel;
 
 import com.floreantpos.Messages;
 import com.floreantpos.main.Application;
+import com.floreantpos.model.Ticket;
+import com.floreantpos.model.User;
+import com.floreantpos.model.UserPermission;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.ui.dialog.POSDialog;
 import com.floreantpos.ui.dialog.POSMessageDialog;
@@ -39,11 +44,43 @@ public class OrderInfoDialog extends POSDialog {
 		createUI();
 	}
 
-	private void createUI() {
+	public void createUI() {
 		add(view);
 		
 		JPanel panel = new JPanel();
 		getContentPane().add(panel, BorderLayout.SOUTH);
+		
+		PosButton btnTransferUser = new PosButton();
+		btnTransferUser.setText(Messages.getString("OrderInfoDialog.3")); //$NON-NLS-1$
+		btnTransferUser.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				
+				User currentUser=Application.getCurrentUser();
+				
+				for (Iterator iter = view.getTickets().iterator(); iter.hasNext();) {
+					
+					Ticket ticket = (Ticket) iter.next();
+					
+					if(!currentUser.equals(ticket.getOwner())) {
+						
+						if(!currentUser.hasPermission(UserPermission.TRANSFER_TICKET)) {
+							POSMessageDialog.showError(getParent(), Messages.getString("OrderInfoDialog.4")+ticket.getId()); //$NON-NLS-1$
+							return;
+						}
+					}
+				}
+				
+				UserTransferDialog dialog=new UserTransferDialog(view);
+				dialog.setSize(360, 555);
+				dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+				dialog.setLocationRelativeTo(Application.getPosWindow());
+				dialog.setVisible(true);
+			}
+		});
+
+		panel.add(btnTransferUser);
 		
 		PosButton btnPrint = new PosButton();
 		btnPrint.addActionListener(new ActionListener() {
@@ -71,5 +108,4 @@ public class OrderInfoDialog extends POSDialog {
 			POSMessageDialog.showError(Application.getPosWindow(), e.getMessage());
 		}
 	}
-
 }

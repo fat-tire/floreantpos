@@ -98,7 +98,6 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 
 	private static SwitchboardView instance;
 
-
 	//TicketListView tickteListViewObj;
 	/** Creates new form SwitchboardView */
 	private SwitchboardView() {
@@ -240,8 +239,7 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 		final Border border1 = BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(0, 0, 5, 0), btnMore.getBorder());
 		final Border border2 = BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0), btnMore.getBorder());
 		btnMore.setBorder(border1);
-		btnMore.setPreferredSize(new Dimension(78,0));
-
+		btnMore.setPreferredSize(new Dimension(78, 0));
 
 		btnMore.addActionListener(new ActionListener() {
 			@Override
@@ -430,8 +428,14 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 		try {
 
 			if (tickets.size() == 0) {
-				POSMessageDialog.showMessage(this, POSConstants.SELECT_ONE_TICKET_TO_PRINT);
-				return;
+
+				int ticketId = NumberSelectionDialog2.takeIntInput(Messages.getString("SwitchboardView.0")); //$NON-NLS-1$
+				if (ticketId == -1) {
+					return;
+				}
+
+				Ticket ticket = TicketService.getTicket(ticketId);
+				tickets.add(ticket);
 			}
 
 			List<Ticket> ticketsToShow = new ArrayList<Ticket>();
@@ -516,7 +520,7 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 			OrderServiceExtension orderService = new DefaultOrderServiceExtension();
 			orderService.createNewTicket(ticketType);
 
-			} catch (TicketAlreadyExistsException e) {
+		} catch (TicketAlreadyExistsException e) {
 
 			int option = JOptionPane.showOptionDialog(Application.getPosWindow(), POSConstants.EDIT_TICKET_CONFIRMATION, POSConstants.CONFIRM,
 					JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
@@ -743,6 +747,5 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 		ticketsListPanelBorder.setTitle(title);
 
 	}
-	
-	
+
 }
