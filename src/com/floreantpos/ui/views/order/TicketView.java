@@ -68,6 +68,7 @@ import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.TicketItemCookingInstruction;
 import com.floreantpos.model.TicketItemModifier;
+import com.floreantpos.model.UserPermission;
 import com.floreantpos.model.dao.CookingInstructionDAO;
 import com.floreantpos.model.dao.MenuItemDAO;
 import com.floreantpos.model.dao.ShopTableDAO;
@@ -140,12 +141,14 @@ public class TicketView extends JPanel {
 		add(centerPanel);
 		add(ticketActionPanel, BorderLayout.SOUTH);
 		add(ticketItemActionPanel, BorderLayout.EAST);
-
 		ticketViewerTable.getRenderer().setInTicketScreen(true);
 		ticketViewerTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
 				if (!e.getValueIsAdjusting()) {
+					//	if(hasModifire()) {
+
+					//}
 					updateSelectionView();
 				}
 			}
@@ -154,23 +157,25 @@ public class TicketView extends JPanel {
 		ticketViewerTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
-
 				Object selected = ticketViewerTable.getSelected();
 				if (!(selected instanceof ITicketItem)) {
 					return;
 				}
 
 				ITicketItem item = (ITicketItem) selected;
-
 				Boolean printedToKitchen = item.isPrintedToKitchen();
 
-				btnIncreaseAmount.setEnabled(!printedToKitchen);
-				btnDecreaseAmount.setEnabled(!printedToKitchen);
-				btnDelete.setEnabled(!printedToKitchen);
-
+				if (Application.getCurrentUser().hasPermission(UserPermission.MODIFY_PRINTED_TICKET)) {
+					btnIncreaseAmount.setEnabled(true);
+					btnDecreaseAmount.setEnabled(true);
+					btnDelete.setEnabled(true);
+				}else {
+					btnIncreaseAmount.setEnabled(!printedToKitchen);
+					btnDecreaseAmount.setEnabled(!printedToKitchen);
+					btnDelete.setEnabled(!printedToKitchen);
+				}
 				getExtraActionPanel().updateView(item);
 			}
-
 		});
 
 		getExtraActionPanel().updateView(null);
@@ -1019,4 +1024,15 @@ public class TicketView extends JPanel {
 			itemSelectionListener.itemSelected(menuItem);
 		}
 	}
+
+	/*	private boolean hasModifire() {
+			ModifierView modifierView = OrderView.getInstance().getModifierView();
+			if(modifierView.isShowing()) {
+				if(!modifierView.isRequiredModifierAdded()) {
+					POSMessageDialog.showError(Application.getPosWindow(), "Please add required modifiers");
+					return false;
+				}
+			}
+			return true;
+		}*/
 }
