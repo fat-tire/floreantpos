@@ -21,7 +21,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import org.apache.commons.lang.StringUtils;
 
-import com.floreantpos.Messages;
 import com.floreantpos.model.base.BaseRestaurant;
 
 
@@ -47,7 +46,7 @@ public class Restaurant extends BaseRestaurant {
 	public String getCurrencyName() {
 		String currencyName = super.getCurrencyName();
 		if(StringUtils.isEmpty(currencyName)) {
-			return Messages.getString("Restaurant.0"); //$NON-NLS-1$
+			return "Sample Currency"; //$NON-NLS-1$
 		}
 		return currencyName;
 	}
