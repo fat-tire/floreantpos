@@ -156,7 +156,7 @@ public class PrintConfigurationView extends ConfigurationView {
 		add(multiPrinterPane, "cell 0 3 2 1,grow"); //$NON-NLS-1$
 		
 		PrinterGroupView printerGroupView = new PrinterGroupView(Messages.getString("PrintConfigurationView.13")); //$NON-NLS-1$
-		add(printerGroupView, "newline, grow, span 2"); //$NON-NLS-1$
+	add(printerGroupView, "newline, grow, span 2"); //$NON-NLS-1$
 
 	}// </editor-fold>//GEN-END:initComponents
 
