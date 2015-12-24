@@ -17,8 +17,8 @@ public abstract class BaseCustomer  implements Comparable, Serializable {
 
 	public static String REF = "Customer"; //$NON-NLS-1$
 	public static String PROP_PICTURE = "picture"; //$NON-NLS-1$
+	public static String PROP_SOCIAL_SECURITY_NUMBER = "socialSecurityNumber"; //$NON-NLS-1$
 	public static String PROP_WORK_PHONE_NO = "workPhoneNo"; //$NON-NLS-1$
-	public static String PROP_NATIONAL_ID = "nationalId"; //$NON-NLS-1$
 	public static String PROP_VIP = "vip"; //$NON-NLS-1$
 	public static String PROP_LOYALTY_POINT = "loyaltyPoint"; //$NON-NLS-1$
 	public static String PROP_SALUTATION = "salutation"; //$NON-NLS-1$
@@ -67,7 +67,7 @@ public abstract class BaseCustomer  implements Comparable, Serializable {
 	// fields
 		protected java.lang.String loyaltyNo;
 		protected java.lang.Integer loyaltyPoint;
-		protected java.lang.String nationalId;
+		protected java.lang.String socialSecurityNumber;
 		protected byte[] picture;
 		protected java.lang.String homePhoneNo;
 		protected java.lang.String mobileNo;
@@ -151,18 +151,18 @@ public abstract class BaseCustomer  implements Comparable, Serializable {
 
 
 	/**
-	 * Return the value associated with the column: NATIONAL_ID
+	 * Return the value associated with the column: SOCIAL_SECURITY_NUMBER
 	 */
-	public java.lang.String getNationalId () {
-					return nationalId;
+	public java.lang.String getSocialSecurityNumber () {
+					return socialSecurityNumber;
 			}
 
 	/**
-	 * Set the value related to the column: NATIONAL_ID
-	 * @param nationalId the NATIONAL_ID value
+	 * Set the value related to the column: SOCIAL_SECURITY_NUMBER
+	 * @param socialSecurityNumber the SOCIAL_SECURITY_NUMBER value
 	 */
-	public void setNationalId (java.lang.String nationalId) {
-		this.nationalId = nationalId;
+	public void setSocialSecurityNumber (java.lang.String socialSecurityNumber) {
+		this.socialSecurityNumber = socialSecurityNumber;
 	}
 
 

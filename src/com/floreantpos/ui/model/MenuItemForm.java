@@ -452,13 +452,13 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 						.addContainerGap(76, Short.MAX_VALUE)
 						.add(jPanel3Layout
 								.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-								.add(org.jdesktop.layout.GroupLayout.TRAILING, jScrollPane2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 387,
+								.add(org.jdesktop.layout.GroupLayout.TRAILING, jScrollPane2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 670,
 										org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
 								.add(org.jdesktop.layout.GroupLayout.TRAILING,
 										jPanel3Layout.createSequentialGroup().add(btnAddShift).add(5, 5, 5).add(btnDeleteShift))).addContainerGap()));
 		jPanel3Layout.setVerticalGroup(jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(
 				jPanel3Layout.createSequentialGroup()
-						.add(jScrollPane2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 281, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+						.add(jScrollPane2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 345, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
 						.addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
 						.add(jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE).add(btnAddShift).add(btnDeleteShift))
 						.addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));

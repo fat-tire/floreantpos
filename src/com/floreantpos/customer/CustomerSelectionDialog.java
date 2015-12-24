@@ -39,6 +39,7 @@ import net.miginfocom.swing.MigLayout;
 import org.apache.commons.lang.StringUtils;
 
 import com.floreantpos.Messages;
+import com.floreantpos.bo.ui.BackOfficeWindow;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.Customer;
 import com.floreantpos.model.Ticket;
@@ -65,6 +66,7 @@ public class CustomerSelectionDialog extends POSDialog {
 	private Ticket ticket;
 
 	public CustomerSelectionDialog() {
+		super(BackOfficeWindow.getInstance(),true);
 		setTitle(Messages.getString("CustomerSelectionDialog.3")); //$NON-NLS-1$
 	}
 

@@ -44,7 +44,6 @@ import org.hibernate.StaleObjectStateException;
 
 import com.floreantpos.Messages;
 import com.floreantpos.bo.ui.BOMessageDialog;
-import com.floreantpos.main.Application;
 import com.floreantpos.model.Customer;
 import com.floreantpos.model.dao.CustomerDAO;
 import com.floreantpos.model.util.IllegalModelStateException;
@@ -82,11 +81,11 @@ public class CustomerForm extends BeanEditor<Customer> {
 	private JLabel lblHomePhone;
 	private JLabel lblWorkPhone;
 	private JLabel lblMobile;
-	private JLabel lblNationalId;
+	private JLabel lblSocialSecurityNumber;
 	private FixedLengthTextField tfHomePhone;
 	private FixedLengthTextField tfWorkPhone;
 	private IntegerTextField tfMobile;
-	private FixedLengthTextField tfNationalId;
+	private FixedLengthTextField tfSocialSecurityNumber;
 	private QwertyKeyPad qwertyKeyPad;
 
 	public boolean isKeypad;
@@ -164,11 +163,11 @@ public class CustomerForm extends BeanEditor<Customer> {
 		tfZip = new FixedLengthTextField();
 		add(tfZip, "cell 2 5,grow"); //$NON-NLS-1$
 
-		lblNationalId = new JLabel(Messages.getString("CustomerForm.22")); //$NON-NLS-1$
-		add(lblNationalId, "cell 3 0,right"); //$NON-NLS-1$
+		lblSocialSecurityNumber = new JLabel(Messages.getString("CustomerForm.22")); //$NON-NLS-1$
+		add(lblSocialSecurityNumber, "cell 3 0,right"); //$NON-NLS-1$
 
-		tfNationalId = new FixedLengthTextField();
-		add(tfNationalId, "cell 4 0,grow"); //$NON-NLS-1$
+		tfSocialSecurityNumber = new FixedLengthTextField();
+		add(tfSocialSecurityNumber, "cell 4 0,grow"); //$NON-NLS-1$
 
 		JLabel lblCitytown = new JLabel(Messages.getString("CustomerForm.24")); //$NON-NLS-1$
 		add(lblCitytown, "cell 3 1,right"); //$NON-NLS-1$
@@ -288,7 +287,7 @@ public class CustomerForm extends BeanEditor<Customer> {
 		tfHomePhone.setEnabled(enable);
 		tfWorkPhone.setEnabled(enable);
 		tfMobile.setEnabled(enable);
-		tfNationalId.setEnabled(enable);
+		tfSocialSecurityNumber.setEnabled(enable);
 	}
 
 	@Override
@@ -312,7 +311,7 @@ public class CustomerForm extends BeanEditor<Customer> {
 		tfHomePhone.setEnabled(enable);
 		tfWorkPhone.setEnabled(enable);
 		tfMobile.setEnabled(enable);
-		tfNationalId.setEnabled(enable);
+		tfSocialSecurityNumber.setEnabled(enable);
 	}
 
 	public void setFieldsEditable(boolean editable) {
@@ -335,7 +334,7 @@ public class CustomerForm extends BeanEditor<Customer> {
 		tfHomePhone.setEditable(editable);
 		tfWorkPhone.setEditable(editable);
 		tfMobile.setEditable(editable);
-		tfNationalId.setEditable(editable);
+		tfSocialSecurityNumber.setEditable(editable);
 	}
 
 	@Override
@@ -358,7 +357,7 @@ public class CustomerForm extends BeanEditor<Customer> {
 		cbVip.setSelected(false);
 		tfWorkPhone.setText("");//$NON-NLS-1$
 		tfMobile.setText("");//$NON-NLS-1$
-		tfNationalId.setText("");//$NON-NLS-1$
+		tfSocialSecurityNumber.setText("");//$NON-NLS-1$
 		setDefaultCustomerPicture();
 	}
 
@@ -400,8 +399,8 @@ public class CustomerForm extends BeanEditor<Customer> {
 		cbVip.setSelected(customer.isVip());
 		tfWorkPhone.setText(customer.getWorkPhoneNo());
 		tfMobile.setText(customer.getMobileNo());
-		if(customer.getNationalId() != null) {
-			tfNationalId.setText(String.valueOf(customer.getNationalId()));
+		if(customer.getSocialSecurityNumber() != null) {
+			tfSocialSecurityNumber.setText(String.valueOf(customer.getSocialSecurityNumber()));
 		}
 
 		byte[] picture = customer.getPicture();
@@ -452,7 +451,7 @@ public class CustomerForm extends BeanEditor<Customer> {
 		String loyaltyNo = tfLoyaltyNo.getText();
 
 		if(StringUtils.isEmpty(mobile) && StringUtils.isEmpty(fname) && StringUtils.isEmpty(loyaltyNo)) {
-			POSMessageDialog.showError(Application.getPosWindow(), Messages.getString("CustomerForm.60")); //$NON-NLS-1$
+			POSMessageDialog.showError(null, Messages.getString("CustomerForm.60")); //$NON-NLS-1$
 			return false;
 		}
 		Customer customer = (Customer) getBean();
@@ -476,7 +475,7 @@ public class CustomerForm extends BeanEditor<Customer> {
 		customer.setState(tfZip.getText());
 		customer.setVip(cbVip.isSelected());
 		customer.setMobileNo(tfMobile.getText());
-		customer.setNationalId(tfNationalId.getText());
+		customer.setSocialSecurityNumber(tfSocialSecurityNumber.getText());
 		customer.setWorkPhoneNo(tfWorkPhone.getText());
 
 		if(image != null) {
