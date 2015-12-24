@@ -9,7 +9,7 @@
 		
 		<property name="loyaltyNo" column="LOYALTY_NO" length="30" type="string" />
 		<property name="loyaltyPoint" column="LOYALTY_POINT" type="java.lang.Integer" />
-		<property name="nationalId" column="NATIONAL_ID" length="60" type="string" />
+		<property name="socialSecurityNumber" column="SOCIAL_SECURITY_NUMBER" length="60" type="string" />
 		<property name="picture" column="PICTURE" not-null="false" type="binary" length="20480" />
 		<property name="homePhoneNo" column="HOMEPHONE_NO" length="30" type="string" />
 		<property name="mobileNo" column="MOBILE_NO" length="30" type="string" />
