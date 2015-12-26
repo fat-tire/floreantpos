@@ -109,7 +109,7 @@ public class Application {
 
 	public void start() {
 		setApplicationLook();
-		initializeTouchScroll();
+		//initializeTouchScroll();
 		
 		rootView = RootView.getInstance();
 
@@ -130,9 +130,9 @@ public class Application {
 		}
 	}
 
-	private void initializeTouchScroll() {
+	/*private void initializeTouchScroll() {
 		Toolkit.getDefaultToolkit().addAWTEventListener(new TouchScrollHandler(), AWTEvent.MOUSE_EVENT_MASK + AWTEvent.MOUSE_MOTION_EVENT_MASK);
-	}
+	}*/
 
 	private void setApplicationLook() {
 		try {
