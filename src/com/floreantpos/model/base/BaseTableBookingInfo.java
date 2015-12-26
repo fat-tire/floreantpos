@@ -1,20 +1,3 @@
-/**
- * ************************************************************************
- * * The contents of this file are subject to the MRPL 1.2
- * * (the  "License"),  being   the  Mozilla   Public  License
- * * Version 1.1  with a permitted attribution clause; you may not  use this
- * * file except in compliance with the License. You  may  obtain  a copy of
- * * the License at http://www.floreantpos.org/license.html
- * * Software distributed under the License  is  distributed  on  an "AS IS"
- * * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * * License for the specific  language  governing  rights  and  limitations
- * * under the License.
- * * The Original Code is FLOREANT POS.
- * * The Initial Developer of the Original Code is OROCUBE LLC
- * * All portions are Copyright (C) 2015 OROCUBE LLC
- * * All Rights Reserved.
- * ************************************************************************
- */
 package com.floreantpos.model.base;
 
 import java.lang.Comparable;
@@ -33,18 +16,19 @@ import java.io.Serializable;
 public abstract class BaseTableBookingInfo  implements Comparable, Serializable {
 
 	public static String REF = "TableBookingInfo";
-	public static String PROP_CUSTOMER = "customer";
 	public static String PROP_USER = "user";
+	public static String PROP_CUSTOMER = "customer";
+	public static String PROP_BOOKING_CHARGE = "bookingCharge";
+	public static String PROP_FROM_DATE = "fromDate";
+	public static String PROP_PAYMENT_STATUS = "paymentStatus";
+	public static String PROP_REMAINING_BALANCE = "remainingBalance";
+	public static String PROP_BOOKING_TYPE = "bookingType";
 	public static String PROP_STATUS = "status";
 	public static String PROP_TO_DATE = "toDate";
 	public static String PROP_GUEST_COUNT = "guestCount";
-	public static String PROP_FROM_DATE = "fromDate";
 	public static String PROP_ID = "id";
 	public static String PROP_BOOKING_CONFIRM = "bookingConfirm";
 	public static String PROP_PAID_AMOUNT = "paidAmount";
-	public static String PROP_TOTAL_AMOUUNT = "totalAmouunt";
-	public static String PROP_PAYMENT_STATUS = "paymentStatus";
-	public static String PROP_BOOKING_TYPE = "bookingType";
 
 
 	// constructors
@@ -76,8 +60,9 @@ public abstract class BaseTableBookingInfo  implements Comparable, Serializable 
 		protected java.lang.String status;
 		protected java.lang.String paymentStatus;
 		protected java.lang.String bookingConfirm;
-		protected java.lang.Integer totalAmouunt;
-		protected java.lang.Integer paidAmount;
+		protected java.lang.Double bookingCharge;
+		protected java.lang.Double remainingBalance;
+		protected java.lang.Double paidAmount;
 		protected java.lang.String bookingType;
 
 	// many to one
@@ -214,18 +199,35 @@ public abstract class BaseTableBookingInfo  implements Comparable, Serializable 
 
 
 	/**
-	 * Return the value associated with the column: TOTAL_AMOUNT
+	 * Return the value associated with the column: BOOKING_CHARGE
 	 */
-	public java.lang.Integer getTotalAmouunt () {
-									return totalAmouunt == null ? Integer.valueOf(0) : totalAmouunt;
+	public java.lang.Double getBookingCharge () {
+									return bookingCharge == null ? Double.valueOf(0) : bookingCharge;
 					}
 
 	/**
-	 * Set the value related to the column: TOTAL_AMOUNT
-	 * @param totalAmouunt the TOTAL_AMOUNT value
+	 * Set the value related to the column: BOOKING_CHARGE
+	 * @param bookingCharge the BOOKING_CHARGE value
 	 */
-	public void setTotalAmouunt (java.lang.Integer totalAmouunt) {
-		this.totalAmouunt = totalAmouunt;
+	public void setBookingCharge (java.lang.Double bookingCharge) {
+		this.bookingCharge = bookingCharge;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: REMAINING_BALANCE
+	 */
+	public java.lang.Double getRemainingBalance () {
+									return remainingBalance == null ? Double.valueOf(0) : remainingBalance;
+					}
+
+	/**
+	 * Set the value related to the column: REMAINING_BALANCE
+	 * @param remainingBalance the REMAINING_BALANCE value
+	 */
+	public void setRemainingBalance (java.lang.Double remainingBalance) {
+		this.remainingBalance = remainingBalance;
 	}
 
 
@@ -233,15 +235,15 @@ public abstract class BaseTableBookingInfo  implements Comparable, Serializable 
 	/**
 	 * Return the value associated with the column: PAID_AMOUNT
 	 */
-	public java.lang.Integer getPaidAmount () {
-									return paidAmount == null ? Integer.valueOf(0) : paidAmount;
+	public java.lang.Double getPaidAmount () {
+									return paidAmount == null ? Double.valueOf(0) : paidAmount;
 					}
 
 	/**
 	 * Set the value related to the column: PAID_AMOUNT
 	 * @param paidAmount the PAID_AMOUNT value
 	 */
-	public void setPaidAmount (java.lang.Integer paidAmount) {
+	public void setPaidAmount (java.lang.Double paidAmount) {
 		this.paidAmount = paidAmount;
 	}
 

@@ -26,14 +26,14 @@ public class TableBookingInfo extends BaseTableBookingInfo {
 	private static final long serialVersionUID = 1L;
 
 	/*[CONSTRUCTOR MARKER BEGIN]*/
-	public TableBookingInfo() {
+	public TableBookingInfo () {
 		super();
 	}
 
 	/**
 	 * Constructor for primary key
 	 */
-	public TableBookingInfo(java.lang.Integer id) {
+	public TableBookingInfo (java.lang.Integer id) {
 		super(id);
 	}
 
@@ -107,4 +107,5 @@ public class TableBookingInfo extends BaseTableBookingInfo {
 	public void setBookedTableNumbers(String bookTableNumbers) {
 		this.bookedTableNumbers = bookTableNumbers;
 	}
+
 }

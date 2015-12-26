@@ -13,22 +13,22 @@
 		<property column="TO_DATE" index="toDate" name="toDate"
 			type="java.util.Date" />
 		<property column="GUEST_COUNT" name="guestCount" type="java.lang.Integer" />
-		<property column="STATUS" name="status" type="string"
-			length="30" />
+		<property column="STATUS" name="status" type="string" length="30" />
 		<property column="PAYMENT_STATUS" name="paymentStatus" type="string"
 			length="30" />
 		<property column="BOOKING_CONFIRM" name="bookingConfirm"
 			type="string" length="30" />
-		<property column="TOTAL_AMOUNT" name="totalAmouunt" type="java.lang.Integer" />
-		<property column="PAID_AMOUNT" name="paidAmount" type="java.lang.Integer" />
+		<property column="BOOKING_CHARGE" name="bookingCharge" type="java.lang.Double" />
+		<property column="REMAINING_BALANCE" name="remainingBalance" type="java.lang.Double" />
+		<property column="PAID_AMOUNT" name="paidAmount" type="java.lang.Double" />
 
-		<property column="BOOKING_TYPE" name="bookingType"
-			type="string" length="30" />
-			
+		<property column="BOOKING_TYPE" name="bookingType" type="string"
+			length="30" />
+
 		<!-- Associations -->
 
 
-		<bag name="tables" cascade="none" inverse="false" lazy="false" 
+		<bag name="tables" cascade="none" inverse="false" lazy="false"
 			table="TABLE_BOOKING_MAPPING">
 			<key column="BOOKING_ID" />
 			<many-to-many column="TABLE_ID" class="com.floreantpos.model.ShopTable" />
