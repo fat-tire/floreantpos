@@ -34,12 +34,8 @@ import com.floreantpos.main.Application;
 import com.floreantpos.model.MenuItem;
 import com.floreantpos.model.MenuModifier;
 import com.floreantpos.model.MenuModifierGroup;
-import com.floreantpos.model.Ticket;
-import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.TicketItemModifier;
 import com.floreantpos.model.TicketItemModifierGroup;
-import com.floreantpos.model.dao.MenuItemDAO;
-import com.floreantpos.model.dao._RootDAO;
 import com.floreantpos.swing.POSToggleButton;
 import com.floreantpos.swing.TransparentPanel;
 import com.floreantpos.ui.dialog.POSDialog;
@@ -49,11 +45,7 @@ import com.floreantpos.ui.dialog.POSDialog;
  * @author  MShahriar
  */
 public class ModifierSelectionDialog extends POSDialog implements ModifierGroupSelectionListener, ModifierSelectionListener {
-	private static ModifierSelectionDialog instance;
-
-
-	private TicketItem ticketItem;
-	private MenuItem menuItem;
+	private ModifierSelectionModel modifierSelectionModel;
 
 	private ModifierGroupView modifierGroupView;
 	private ModifierView modifierView;
@@ -64,11 +56,9 @@ public class ModifierSelectionDialog extends POSDialog implements ModifierGroupS
 	private com.floreantpos.swing.PosButton btnSave;
 	private com.floreantpos.swing.PosButton btnCancel;
 
-	//private TicketItemModifierView modifierViewer;
-
-	public ModifierSelectionDialog(TicketItem ticketItem, MenuItem menuItem) {
-		this.ticketItem = ticketItem;
-		this.menuItem = menuItem;
+	
+	public ModifierSelectionDialog(ModifierSelectionModel modifierSelectionModel) {
+		this.modifierSelectionModel = modifierSelectionModel;
 
 		initComponents();
 	}
@@ -79,17 +69,14 @@ public class ModifierSelectionDialog extends POSDialog implements ModifierGroupS
 
 		Dimension screenSize = Application.getPosWindow().getSize();
 
-		modifierGroupView = new com.floreantpos.ui.views.order.modifier.ModifierGroupView(menuItem);
-		modifierView = new ModifierView();
-		//ticketItemModifierView = new TicketItemModifierView();
+		modifierGroupView = new com.floreantpos.ui.views.order.modifier.ModifierGroupView(modifierSelectionModel);
+		modifierView = new ModifierView(modifierSelectionModel);
 		buttonPanel = new com.floreantpos.swing.TransparentPanel();
 		buttonPanel.setLayout(new BorderLayout());
 
 		add(modifierGroupView, java.awt.BorderLayout.EAST);
 		add(modifierView);
 
-		//ticketItemModifierView.setPreferredSize(new Dimension(350,0));
-		//add(ticketItemModifierView, java.awt.BorderLayout.WEST);
 
 		createButtonPanel();
 
@@ -157,13 +144,6 @@ public class ModifierSelectionDialog extends POSDialog implements ModifierGroupS
 		this.modifierView = modifierView;
 	}
 
-	public MenuItem getMenuItem() {
-		return menuItem;
-	}
-
-	public TicketItem getTicketItem() {
-		return ticketItem;
-	}
 
 	private void closeView(boolean orderCanceled) {
 		dispose();
@@ -173,18 +153,6 @@ public class ModifierSelectionDialog extends POSDialog implements ModifierGroupS
 
 	}
 
-	public static void main(String[] args) {
-		_RootDAO.initialize();
-
-		MenuItemDAO dao = new MenuItemDAO();
-		MenuItem menuItem = dao.get(2);
-		menuItem = dao.initialize(menuItem);
-
-		ModifierSelectionDialog dialog = new ModifierSelectionDialog(null, menuItem);
-		dialog.setSize(1024, 600);
-		dialog.open();
-	}
-
 	@Override
 	public void modifierGroupSelected(MenuModifierGroup menuModifierGroup) {
 		modifierView.setModifierGroup(menuModifierGroup);
@@ -192,7 +160,7 @@ public class ModifierSelectionDialog extends POSDialog implements ModifierGroupS
 
 	@Override
 	public void modifierSelected(MenuItem parent, MenuModifier modifier) {
-		TicketItemModifierGroup ticketItemModifierGroup = ticketItem.findTicketItemModifierGroup(modifier, true);
+		TicketItemModifierGroup ticketItemModifierGroup = modifierSelectionModel.getTicketItem().findTicketItemModifierGroup(modifier, true);
 		
 		TicketItemModifier ticketItemModifier = ticketItemModifierGroup.findTicketItemModifier(modifier);
 		if(ticketItemModifier == null) {
@@ -205,6 +173,14 @@ public class ModifierSelectionDialog extends POSDialog implements ModifierGroupS
 
 	@Override
 	public void modifierSelectionFiniched(MenuItem parent) {
+	}
+
+	public ModifierSelectionModel getModifierSelectionModel() {
+		return modifierSelectionModel;
+	}
+
+	public void setModifierSelectionModel(ModifierSelectionModel modifierSelectionModel) {
+		this.modifierSelectionModel = modifierSelectionModel;
 	}
 
 }

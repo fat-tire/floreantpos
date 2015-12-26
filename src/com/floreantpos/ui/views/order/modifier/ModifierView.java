@@ -27,6 +27,7 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 import java.util.Vector;
@@ -52,19 +53,25 @@ import com.floreantpos.util.ModifierStateChangeListener;
 public class ModifierView extends SelectionView implements ModifierStateChangeListener {
 	private Vector<ModifierSelectionListener> listenerList = new Vector<ModifierSelectionListener>();
 
+	private ModifierSelectionModel modifierSelectionModel;
 	private MenuModifierGroup modifierGroup;
 
 	private ModifierButton currentSelectedButton;
+	private HashMap<String, ModifierButton> buttonMap = new HashMap<String, ModifierButton>();
 
 	private boolean addOnMode;
 
 	/** Creates new form GroupView */
-	public ModifierView() {
+	public ModifierView(ModifierSelectionModel modifierSelectionModel) {
 		super(com.floreantpos.POSConstants.MODIFIERS);
+		
+		this.modifierSelectionModel = modifierSelectionModel;
 	}
 
 	public void setModifierGroup(MenuModifierGroup modifierGroup) {
 		this.modifierGroup = modifierGroup;
+		buttonMap.clear();
+		
 		if (modifierGroup == null) {
 			return;
 		}
@@ -101,7 +108,7 @@ public class ModifierView extends SelectionView implements ModifierStateChangeLi
 		MenuModifier modifier = (MenuModifier) item;
 		ModifierButton modifierButton = new ModifierButton(modifier);
 		String key = modifier.getId() + "_" + modifier.getModifierGroup().getId(); //$NON-NLS-1$
-		// buttonMap.put(key, modifierButton);
+		buttonMap.put(key, modifierButton);
 
 		return modifierButton;
 	}
@@ -121,34 +128,30 @@ public class ModifierView extends SelectionView implements ModifierStateChangeLi
 	}
 
 	public void updateVisualRepresentation() {
-		// List<TicketItemModifierGroup> ticketItemModifierGroups =
-		// parentTicketItem.getTicketItemModifierGroups();
-		// if (ticketItemModifierGroups != null) {
-		// for (TicketItemModifierGroup ticketItemModifierGroup :
-		// ticketItemModifierGroups) {
-		// List<TicketItemModifier> ticketItemModifiers =
-		// ticketItemModifierGroup.getTicketItemModifiers();
-		// if (ticketItemModifiers != null) {
-		// int total = 0;
-		// int max = ticketItemModifierGroup.getMaxQuantity();
-		// for (TicketItemModifier ticketItemModifier : ticketItemModifiers) {
-		//						String key = ticketItemModifier.getItemId() + "_" + ticketItemModifier.getGroupId(); //$NON-NLS-1$
-		// ModifierButton button = buttonMap.get(key);
-		// if (ticketItemModifier.getModifierType() !=
-		// TicketItemModifier.NO_MODIFIER) {
-		// total += ticketItemModifier.getItemCount();
-		// if (total > max) {
-		// ticketItemModifier.setModifierType(TicketItemModifier.EXTRA_MODIFIER);
-		// }
-		// else {
-		// ticketItemModifier.setModifierType(TicketItemModifier.NORMAL_MODIFIER);
-		// }
-		// }
-		// button.updateView(ticketItemModifier);
-		// }
-		// }
-		// }
-		// }
+		List<TicketItemModifierGroup> ticketItemModifierGroups = modifierSelectionModel.getTicketItem().getTicketItemModifierGroups();
+		if (ticketItemModifierGroups != null) {
+			for (TicketItemModifierGroup ticketItemModifierGroup : ticketItemModifierGroups) {
+				List<TicketItemModifier> ticketItemModifiers = ticketItemModifierGroup.getTicketItemModifiers();
+				if (ticketItemModifiers != null) {
+					int total = 0;
+					int max = ticketItemModifierGroup.getMaxQuantity();
+					for (TicketItemModifier ticketItemModifier : ticketItemModifiers) {
+						String key = ticketItemModifier.getItemId() + "_" + ticketItemModifier.getGroupId(); //$NON-NLS-1$
+						ModifierButton button = buttonMap.get(key);
+						if (ticketItemModifier.getModifierType() != TicketItemModifier.NO_MODIFIER) {
+							total += ticketItemModifier.getItemCount();
+							if (total > max) {
+								ticketItemModifier.setModifierType(TicketItemModifier.EXTRA_MODIFIER);
+							}
+							else {
+								ticketItemModifier.setModifierType(TicketItemModifier.NORMAL_MODIFIER);
+							}
+						}
+						button.updateView(ticketItemModifier);
+					}
+				}
+			}
+		}
 	}
 
 	@Override

@@ -106,10 +106,13 @@ public class TicketItemModifierGroup extends BaseTicketItemModifierGroup {
 		
 		if(addOn) {
 			ticketItemModifier.setUnitPrice(menuModifier.getExtraPrice());
-			//ticketItemModifier.setExtraUnitPrice(menuModifier.getExtraPrice());
+			ticketItemModifier.setModifierType(TicketItemModifier.EXTRA_MODIFIER);
+		}
+		else {
+			ticketItemModifier.setUnitPrice(menuModifier.getPrice());
+			ticketItemModifier.setModifierType(TicketItemModifier.NORMAL_MODIFIER);
 		}
 		ticketItemModifier.setTaxRate(menuModifier.getTax() == null ? 0 : menuModifier.getTax().getRate());
-		//ticketItemModifier.setModifierType(modifierType);
 		ticketItemModifier.setShouldPrintToKitchen(menuModifier.isShouldPrintToKitchen());
 		ticketItemModifier.setParent(this);
 
