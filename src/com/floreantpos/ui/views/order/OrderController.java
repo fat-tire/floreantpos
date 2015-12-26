@@ -44,6 +44,7 @@ import com.floreantpos.ui.views.order.actions.GroupSelectionListener;
 import com.floreantpos.ui.views.order.actions.ItemSelectionListener;
 import com.floreantpos.ui.views.order.actions.ModifierSelectionListener;
 import com.floreantpos.ui.views.order.actions.OrderListener;
+import com.floreantpos.ui.views.order.modifier.ModifierSelectionDialog;
 import com.floreantpos.util.OrderUtil;
 
 public class OrderController implements OrderListener, CategorySelectionListener, GroupSelectionListener, ItemSelectionListener, ModifierSelectionListener {
@@ -78,9 +79,14 @@ public class OrderController implements OrderListener, CategorySelectionListener
 		orderView.getTicketView().addTicketItem(ticketItem);
 
 		if (menuItem.hasModifiers()) {
-			ModifierView modifierView = orderView.getModifierView();
-			modifierView.setMenuItem(menuItem, ticketItem);
-			orderView.showView(ModifierView.VIEW_NAME);
+//			ModifierView modifierView = orderView.getModifierView();
+//			modifierView.setMenuItem(menuItem, ticketItem);
+//			orderView.showView(ModifierView.VIEW_NAME);
+			
+			ModifierSelectionDialog dialog = new ModifierSelectionDialog(ticketItem, menuItem);
+			dialog.setSize(1024, 650);
+			dialog.open();
+			orderView.getTicketView().updateAllView();
 		}
 	}
 

@@ -96,6 +96,27 @@ public class TicketItemModifierGroup extends BaseTicketItemModifierGroup {
 
 		return ticketItemModifier;
 	}
+	
+	public TicketItemModifier addTicketItemModifier(MenuModifier menuModifier, boolean addOn) {
+		TicketItemModifier ticketItemModifier = new TicketItemModifier();
+		ticketItemModifier.setItemId(menuModifier.getId());
+		ticketItemModifier.setGroupId(menuModifier.getModifierGroup().getId());
+		ticketItemModifier.setItemCount(1);
+		ticketItemModifier.setName(menuModifier.getDisplayName());
+		
+		if(addOn) {
+			ticketItemModifier.setUnitPrice(menuModifier.getExtraPrice());
+			//ticketItemModifier.setExtraUnitPrice(menuModifier.getExtraPrice());
+		}
+		ticketItemModifier.setTaxRate(menuModifier.getTax() == null ? 0 : menuModifier.getTax().getRate());
+		//ticketItemModifier.setModifierType(modifierType);
+		ticketItemModifier.setShouldPrintToKitchen(menuModifier.isShouldPrintToKitchen());
+		ticketItemModifier.setParent(this);
+
+		addToticketItemModifiers(ticketItemModifier);
+
+		return ticketItemModifier;
+	}
 
 	public TicketItemModifier removeTicketItemModifier(TicketItemModifier ticketItemModifier) {
 		List<TicketItemModifier> ticketItemModifiers = getTicketItemModifiers();

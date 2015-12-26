@@ -42,6 +42,8 @@ public class MenuModifierGroup extends BaseMenuModifierGroup {
 
 	/*[CONSTRUCTOR MARKER END]*/
 	
+	private MenuItemModifierGroup menuItemModifierGroup;
+	
 	public String getDisplayName() {
 		if(TerminalConfig.isUseTranslatedName() && StringUtils.isNotEmpty(getTranslatedName())) {
 			return getTranslatedName();
@@ -57,5 +59,13 @@ public class MenuModifierGroup extends BaseMenuModifierGroup {
 
 	public String getUniqueId() {
 		return ("menu_modifiergroup_" + getName() + "_" + getId()).replaceAll("\\s+", "_"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+	}
+
+	public MenuItemModifierGroup getMenuItemModifierGroup() {
+		return menuItemModifierGroup;
+	}
+
+	public void setMenuItemModifierGroup(MenuItemModifierGroup menuItemModifierGroup) {
+		this.menuItemModifierGroup = menuItemModifierGroup;
 	}
 }
