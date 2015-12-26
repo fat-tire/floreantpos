@@ -1,22 +1,6 @@
-/**
- * ************************************************************************
- * * The contents of this file are subject to the MRPL 1.2
- * * (the  "License"),  being   the  Mozilla   Public  License
- * * Version 1.1  with a permitted attribution clause; you may not  use this
- * * file except in compliance with the License. You  may  obtain  a copy of
- * * the License at http://www.floreantpos.org/license.html
- * * Software distributed under the License  is  distributed  on  an "AS IS"
- * * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * * License for the specific  language  governing  rights  and  limitations
- * * under the License.
- * * The Original Code is FLOREANT POS.
- * * The Initial Developer of the Original Code is OROCUBE LLC
- * * All portions are Copyright (C) 2015 OROCUBE LLC
- * * All Rights Reserved.
- * ************************************************************************
- */
 package com.floreantpos.model.base;
 
+import java.lang.Comparable;
 import java.io.Serializable;
 
 
@@ -33,9 +17,9 @@ public abstract class BaseTicketItemModifierGroup  implements Comparable, Serial
 
 	public static String REF = "TicketItemModifierGroup"; //$NON-NLS-1$
 	public static String PROP_MIN_QUANTITY = "minQuantity"; //$NON-NLS-1$
-	public static String PROP_MODIFIER_GROUP_ID = "modifierGroupId"; //$NON-NLS-1$
 	public static String PROP_PARENT = "parent"; //$NON-NLS-1$
 	public static String PROP_ID = "id"; //$NON-NLS-1$
+	public static String PROP_MENU_ITEM_MODIFIER_GROUP = "menuItemModifierGroup"; //$NON-NLS-1$
 	public static String PROP_MAX_QUANTITY = "maxQuantity"; //$NON-NLS-1$
 
 
@@ -62,12 +46,12 @@ public abstract class BaseTicketItemModifierGroup  implements Comparable, Serial
 	private java.lang.Integer id;
 
 	// fields
-		protected java.lang.Integer modifierGroupId;
 		protected java.lang.Integer minQuantity;
 		protected java.lang.Integer maxQuantity;
 
 	// many to one
 	private com.floreantpos.model.TicketItem parent;
+	private com.floreantpos.model.MenuItemModifierGroup menuItemModifierGroup;
 
 	// collections
 	private java.util.List<com.floreantpos.model.TicketItemModifier> ticketItemModifiers;
@@ -97,28 +81,11 @@ public abstract class BaseTicketItemModifierGroup  implements Comparable, Serial
 
 
 	/**
-	 * Return the value associated with the column: GROUP_ID
-	 */
-	public java.lang.Integer getModifierGroupId () {
-					return modifierGroupId == null ? Integer.valueOf(0) : modifierGroupId;
-			}
-
-	/**
-	 * Set the value related to the column: GROUP_ID
-	 * @param modifierGroupId the GROUP_ID value
-	 */
-	public void setModifierGroupId (java.lang.Integer modifierGroupId) {
-		this.modifierGroupId = modifierGroupId;
-	}
-
-
-
-	/**
 	 * Return the value associated with the column: MIN_QUANTITY
 	 */
 	public java.lang.Integer getMinQuantity () {
-					return minQuantity == null ? Integer.valueOf(0) : minQuantity;
-			}
+									return minQuantity == null ? Integer.valueOf(0) : minQuantity;
+					}
 
 	/**
 	 * Set the value related to the column: MIN_QUANTITY
@@ -134,8 +101,8 @@ public abstract class BaseTicketItemModifierGroup  implements Comparable, Serial
 	 * Return the value associated with the column: MAX_QUANTITY
 	 */
 	public java.lang.Integer getMaxQuantity () {
-					return maxQuantity == null ? Integer.valueOf(0) : maxQuantity;
-			}
+									return maxQuantity == null ? Integer.valueOf(0) : maxQuantity;
+					}
 
 	/**
 	 * Set the value related to the column: MAX_QUANTITY
@@ -160,6 +127,23 @@ public abstract class BaseTicketItemModifierGroup  implements Comparable, Serial
 	 */
 	public void setParent (com.floreantpos.model.TicketItem parent) {
 		this.parent = parent;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: GROUP_ID
+	 */
+	public com.floreantpos.model.MenuItemModifierGroup getMenuItemModifierGroup () {
+					return menuItemModifierGroup;
+			}
+
+	/**
+	 * Set the value related to the column: GROUP_ID
+	 * @param menuItemModifierGroup the GROUP_ID value
+	 */
+	public void setMenuItemModifierGroup (com.floreantpos.model.MenuItemModifierGroup menuItemModifierGroup) {
+		this.menuItemModifierGroup = menuItemModifierGroup;
 	}
 
 
@@ -202,7 +186,7 @@ public abstract class BaseTicketItemModifierGroup  implements Comparable, Serial
 		if (Integer.MIN_VALUE == this.hashCode) {
 			if (null == this.getId()) return super.hashCode();
 			else {
-				String hashStr = this.getClass().getName() + ":" + this.getId().hashCode(); //$NON-NLS-1$
+				String hashStr = this.getClass().getName() + ":" + this.getId().hashCode();
 				this.hashCode = hashStr.hashCode();
 			}
 		}

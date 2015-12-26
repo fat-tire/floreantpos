@@ -68,7 +68,6 @@ import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.TicketItemCookingInstruction;
 import com.floreantpos.model.TicketItemModifier;
-import com.floreantpos.model.UserPermission;
 import com.floreantpos.model.dao.CookingInstructionDAO;
 import com.floreantpos.model.dao.MenuItemDAO;
 import com.floreantpos.model.dao.ShopTableDAO;
@@ -94,7 +93,7 @@ import com.floreantpos.util.PosGuiUtil;
  * 
  * @author MShahriar
  */
-public class TicketView extends JPanel {
+public class TicketView extends JPanel implements ListSelectionListener {
 	private java.util.Vector<OrderListener> orderListeners = new java.util.Vector<OrderListener>();
 	private Ticket ticket;
 
@@ -153,30 +152,31 @@ public class TicketView extends JPanel {
 				}
 			}
 		});
-
-		ticketViewerTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-			@Override
-			public void valueChanged(ListSelectionEvent e) {
-				Object selected = ticketViewerTable.getSelected();
-				if (!(selected instanceof ITicketItem)) {
-					return;
-				}
-
-				ITicketItem item = (ITicketItem) selected;
-				Boolean printedToKitchen = item.isPrintedToKitchen();
-
-				if (Application.getCurrentUser().hasPermission(UserPermission.MODIFY_PRINTED_TICKET)) {
-					btnIncreaseAmount.setEnabled(true);
-					btnDecreaseAmount.setEnabled(true);
-					btnDelete.setEnabled(true);
-				}else {
-					btnIncreaseAmount.setEnabled(!printedToKitchen);
-					btnDecreaseAmount.setEnabled(!printedToKitchen);
-					btnDelete.setEnabled(!printedToKitchen);
-				}
-				getExtraActionPanel().updateView(item);
-			}
-		});
+		ticketViewerTable.getSelectionModel().addListSelectionListener(this);
+//		ticketViewerTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+//			@Override
+//			public void valueChanged(ListSelectionEvent e) {
+//				Object selected = ticketViewerTable.getSelected();
+//				if (!(selected instanceof ITicketItem)) {
+//					return;
+//				}
+//
+//				ITicketItem item = (ITicketItem) selected;
+//				Boolean printedToKitchen = item.isPrintedToKitchen();
+//
+//				if (Application.getCurrentUser().hasPermission(UserPermission.MODIFY_PRINTED_TICKET)) {
+//					btnIncreaseAmount.setEnabled(true);
+//					btnDecreaseAmount.setEnabled(true);
+//					btnDelete.setEnabled(true);
+//				}
+//				else {
+//					btnIncreaseAmount.setEnabled(!printedToKitchen);
+//					btnDecreaseAmount.setEnabled(!printedToKitchen);
+//					btnDelete.setEnabled(!printedToKitchen);
+//				}
+//				getExtraActionPanel().updateView(item);
+//			}
+//		});
 
 		getExtraActionPanel().updateView(null);
 		setPreferredSize(new java.awt.Dimension(480, 463));
@@ -430,17 +430,14 @@ public class TicketView extends JPanel {
 	}// GEN-LAST:event_doPayNow
 
 	private void doDeleteSelection(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_doDeleteSelection
-		Object object = ticketViewerTable.deleteSelectedItem();
-		if (object != null) {
-			updateView();
+		Object object = ticketViewerTable.getSelected();
 
-			// if (object instanceof TicketItemModifier) {
-			// ModifierView modifierView =
-			// OrderView.getInstance().getModifierView();
-			// if (modifierView.isVisible()) {
-			// modifierView.updateVisualRepresentation();
-			// }
-			// }
+		if (object instanceof TicketItemModifier) {
+			TicketItemModifier ticketItemModifier = (TicketItemModifier) object;
+			OrderController.openModifierDialog(ticketItemModifier);
+		}
+		else {
+			ticketViewerTable.deleteSelectedItem();
 		}
 
 	}// GEN-LAST:event_doDeleteSelection
@@ -524,7 +521,7 @@ public class TicketView extends JPanel {
 
 	public void removeModifier(TicketItem parent, TicketItemModifier modifier) {
 		modifier.setItemCount(0);
-		modifier.setModifierType(TicketItemModifier.MODIFIER_NOT_INITIALIZED);
+		//modifier.setModifierType(TicketItemModifier.MODIFIER_NOT_INITIALIZED);
 		ticketViewerTable.removeModifier(parent, modifier);
 	}
 
@@ -613,66 +610,66 @@ public class TicketView extends JPanel {
 		if (selectedObject instanceof TicketItem) {
 			selectedTicketItem = (TicketItem) selectedObject;
 
-			ModifierView modifierView = orderView.getModifierView();
+			//			ModifierView modifierView = orderView.getModifierView();
 
-			if (selectedTicketItem.isHasModifiers()) {
-				MenuItemDAO dao = new MenuItemDAO();
-				MenuItem menuItem = dao.get(selectedTicketItem.getItemId());
-				if (!menuItem.equals(modifierView.getMenuItem())) {
-					menuItem = dao.initialize(menuItem);
-					modifierView.setMenuItem(menuItem, selectedTicketItem);
+			//			if (selectedTicketItem.isHasModifiers()) {
+			//				MenuItemDAO dao = new MenuItemDAO();
+			//				MenuItem menuItem = dao.get(selectedTicketItem.getItemId());
+			//				if (!menuItem.equals(modifierView.getMenuItem())) {
+			//					menuItem = dao.initialize(menuItem);
+			//					modifierView.setMenuItem(menuItem, selectedTicketItem);
+			//				}
+			//
+			//				MenuCategory menuCategory = menuItem.getParent().getParent();
+			//				orderView.getCategoryView().setSelectedCategory(menuCategory);
+			//
+			//				modifierView.clearSelection();
+			//				//orderView.showView(ModifierView.VIEW_NAME);
+			//			}
+			//			else {
+			MenuItemDAO dao = new MenuItemDAO();
+			MenuItem menuItem = dao.get(selectedTicketItem.getItemId());
+
+			if (menuItem != null) {
+				MenuGroup menuGroup = menuItem.getParent();
+				MenuItemView itemView = OrderView.getInstance().getItemView();
+				if (!menuGroup.equals(itemView.getMenuGroup())) {
+					itemView.setMenuGroup(menuGroup);
 				}
 
-				MenuCategory menuCategory = menuItem.getParent().getParent();
+				orderView.showView(MenuItemView.VIEW_NAME);
+				itemView.selectItem(menuItem);
+
+				MenuCategory menuCategory = menuGroup.getParent();
 				orderView.getCategoryView().setSelectedCategory(menuCategory);
-
-				modifierView.clearSelection();
-				//orderView.showView(ModifierView.VIEW_NAME);
 			}
-			else {
-				MenuItemDAO dao = new MenuItemDAO();
-				MenuItem menuItem = dao.get(selectedTicketItem.getItemId());
-
-				if (menuItem != null) {
-					MenuGroup menuGroup = menuItem.getParent();
-					MenuItemView itemView = OrderView.getInstance().getItemView();
-					if (!menuGroup.equals(itemView.getMenuGroup())) {
-						itemView.setMenuGroup(menuGroup);
-					}
-
-					orderView.showView(MenuItemView.VIEW_NAME);
-					itemView.selectItem(menuItem);
-
-					MenuCategory menuCategory = menuGroup.getParent();
-					orderView.getCategoryView().setSelectedCategory(menuCategory);
-				}
-			}
+			//			}
 		}
-		else if (selectedObject instanceof TicketItemModifier) {
-			selectedTicketItem = ((TicketItemModifier) selectedObject).getParent().getParent();
-			if (selectedTicketItem == null)
-				return;
-
-			ModifierView modifierView = orderView.getModifierView();
-
-			if (selectedTicketItem.isHasModifiers()) {
-				MenuItemDAO dao = new MenuItemDAO();
-				MenuItem menuItem = dao.get(selectedTicketItem.getItemId());
-				if (!menuItem.equals(modifierView.getMenuItem())) {
-					menuItem = dao.initialize(menuItem);
-					modifierView.setMenuItem(menuItem, selectedTicketItem);
-				}
-
-				MenuCategory menuCategory = menuItem.getParent().getParent();
-				orderView.getCategoryView().setSelectedCategory(menuCategory);
-
-				TicketItemModifier ticketItemModifier = (TicketItemModifier) selectedObject;
-				ticketItemModifier.setSelected(true);
-				modifierView.select(ticketItemModifier);
-
-				orderView.showView(ModifierView.VIEW_NAME);
-			}
-		}
+		//		else if (selectedObject instanceof TicketItemModifier) {
+		//			selectedTicketItem = ((TicketItemModifier) selectedObject).getParent().getParent();
+		//			if (selectedTicketItem == null)
+		//				return;
+		//
+		//			ModifierView modifierView = orderView.getModifierView();
+		//
+		//			if (selectedTicketItem.isHasModifiers()) {
+		//				MenuItemDAO dao = new MenuItemDAO();
+		//				MenuItem menuItem = dao.get(selectedTicketItem.getItemId());
+		//				if (!menuItem.equals(modifierView.getMenuItem())) {
+		//					menuItem = dao.initialize(menuItem);
+		//					modifierView.setMenuItem(menuItem, selectedTicketItem);
+		//				}
+		//
+		//				MenuCategory menuCategory = menuItem.getParent().getParent();
+		//				orderView.getCategoryView().setSelectedCategory(menuCategory);
+		//
+		//				TicketItemModifier ticketItemModifier = (TicketItemModifier) selectedObject;
+		//				ticketItemModifier.setSelected(true);
+		//				modifierView.select(ticketItemModifier);
+		//
+		//				orderView.showView(ModifierView.VIEW_NAME);
+		//			}
+		//		}
 	}
 
 	public ExtraTicketActionPanel getExtraActionPanel() {
@@ -1022,6 +1019,34 @@ public class TicketView extends JPanel {
 				return;
 			}
 			itemSelectionListener.itemSelected(menuItem);
+		}
+	}
+
+	@Override
+	public void valueChanged(ListSelectionEvent e) {
+		Object selected = ticketViewerTable.getSelected();
+		if (!(selected instanceof ITicketItem)) {
+			return;
+		}
+
+		if (selected instanceof TicketItemModifier) {
+			btnIncreaseAmount.setEnabled(false);
+			btnDecreaseAmount.setEnabled(false);
+		}
+		else if (selected instanceof TicketItem) {
+			TicketItem ticketItem = (TicketItem) selected;
+			if (ticketItem.isHasModifiers()) {
+				btnIncreaseAmount.setEnabled(false);
+				btnDecreaseAmount.setEnabled(false);
+			}
+			else {
+				btnIncreaseAmount.setEnabled(true);
+				btnDecreaseAmount.setEnabled(true);
+			}
+		}
+		else if (selected instanceof ITicketItem) {
+			btnIncreaseAmount.setEnabled(true);
+			btnDecreaseAmount.setEnabled(true);
 		}
 	}
 

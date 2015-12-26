@@ -17,6 +17,9 @@
  */
 package com.floreantpos.model.dao;
 
+import com.floreantpos.model.MenuModifier;
+import com.floreantpos.model.TicketItemModifier;
+
 
 
 public class MenuModifierDAO extends BaseMenuModifierDAO {
@@ -26,5 +29,9 @@ public class MenuModifierDAO extends BaseMenuModifierDAO {
 	 */
 	public MenuModifierDAO () {}
 
-
+	public MenuModifier getMenuModifierFromTicketItemModifier(TicketItemModifier ticketItemModifier) {
+		MenuModifier menuModifier = get(ticketItemModifier.getItemId());
+		menuModifier.setMenuItemModifierGroup(ticketItemModifier.getParent().getMenuItemModifierGroup());
+		return menuModifier;
+	}
 }

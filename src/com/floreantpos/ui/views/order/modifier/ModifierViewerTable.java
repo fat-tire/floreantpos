@@ -27,7 +27,6 @@ import javax.swing.ListSelectionModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 
-import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.TicketItemModifier;
 import com.floreantpos.util.ModifierStateChangeListener;
@@ -44,8 +43,8 @@ public class ModifierViewerTable extends JTable {
 		this(null);
 	}
 
-	public ModifierViewerTable(Ticket ticket) {
-		model = new ModifierViewerTableModel(this);
+	public ModifierViewerTable(TicketItem ticketItem) {
+		model = new ModifierViewerTableModel(ticketItem);
 		setModel(model);
 		
 		selectionModel = new DefaultListSelectionModel();
@@ -63,8 +62,6 @@ public class ModifierViewerTable extends JTable {
 		
 		setRowHeight(60);
 		resizeTableColumns();
-		
-		setTicket(ticket);
 	}
 
 	private void resizeTableColumns() {
@@ -92,13 +89,13 @@ public class ModifierViewerTable extends JTable {
 	}
 
 	private boolean isTicketNull() {
-		Ticket ticket = getTicket();
-		if (ticket == null) {
-			return true;
-		}
-		if (ticket.getTicketItems() == null) {
-			return true;
-		}
+//		Ticket ticket = getTicket();
+//		if (ticket == null) {
+//			return true;
+//		}
+//		if (ticket.getTicketItems() == null) {
+//			return true;
+//		}
 		return false;
 	}
 
@@ -208,56 +205,15 @@ public class ModifierViewerTable extends JTable {
 			modifier.setItemCount(--itemCount);
 			repaint();
 			
-			modifierStateChangeListener.modifierStateChanged();
-			
 			return true;
 		}
 		return false;
 	}
 
-	public void setTicket(Ticket ticket) {
-		model.setTicket(ticket);
-	}
-
-	public Ticket getTicket() {
-		return model.getTicket();
-	}
-
-	public void addTicketItem(TicketItem ticketItem) {
-		int addTicketItem = model.addTicketItem(ticketItem);
-		
-		int actualRowCount = addTicketItem;
-		selectionModel.addSelectionInterval(actualRowCount, actualRowCount);
-		Rectangle cellRect = getCellRect(actualRowCount, 0, false);
-		scrollRectToVisible(cellRect);
-	}
-	
-	public void addModifierItem(TicketItem ticketItem){
-		int addModifierItem= model.addTicketItem(ticketItem); 
-		
-		int actualRowCount = addModifierItem;
-		selectionModel.addSelectionInterval(actualRowCount, actualRowCount);
-		Rectangle cellRect = getCellRect(actualRowCount, 0, false);
-		scrollRectToVisible(cellRect);
-	}
-
 	public Object deleteSelectedItem() {
 		int selectedRow = getSelectedRow();
 		Object delete = model.delete(selectedRow);
-		
-		if(delete instanceof TicketItemModifier) {
-			if(modifierStateChangeListener != null) {
-				TicketItemModifier modifier = (TicketItemModifier) delete;
-				modifier.setModifierType(TicketItemModifier.MODIFIER_NOT_INITIALIZED);
-				modifier.setItemCount(0);
-				modifierStateChangeListener.updateView(modifier);
-			}
-		}
 		return delete;
-	}
-
-	public boolean containsTicketItem(TicketItem ticketItem) {
-		return model.containsTicketItem(ticketItem);
 	}
 
 	public void delete(int index) {
@@ -272,10 +228,6 @@ public class ModifierViewerTable extends JTable {
 		int index = getSelectedRow();
 		
 		return model.get(index);
-	}
-
-	public void addAllTicketItem(TicketItem ticketItem) {
-		model.addAllTicketItem(ticketItem);
 	}
 
 	public void removeModifier(TicketItem parent, TicketItemModifier modifier) {

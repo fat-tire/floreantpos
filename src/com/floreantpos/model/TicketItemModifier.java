@@ -17,20 +17,17 @@
  */
 package com.floreantpos.model;
 
-import java.util.List;
-
-import com.floreantpos.Messages;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.base.BaseTicketItemModifier;
 import com.floreantpos.util.NumberUtil;
 
 public class TicketItemModifier extends BaseTicketItemModifier implements ITicketItem {
-	private static final long	serialVersionUID			= 1L;
+	private static final long serialVersionUID = 1L;
 
-	public final static int		MODIFIER_NOT_INITIALIZED	= 0;
-	public final static int		NORMAL_MODIFIER				= 1;
-	public final static int		NO_MODIFIER					= 2;
-	public final static int		EXTRA_MODIFIER				= 3;
+	//public final static int		MODIFIER_NOT_INITIALIZED	= 0;
+	public final static int NORMAL_MODIFIER = 1;
+	//public final static int		NO_MODIFIER					= 2;
+	public final static int EXTRA_MODIFIER = 3;
 
 	/*[CONSTRUCTOR MARKER BEGIN]*/
 	public TicketItemModifier() {
@@ -45,12 +42,12 @@ public class TicketItemModifier extends BaseTicketItemModifier implements ITicke
 	}
 
 	/*[CONSTRUCTOR MARKER END]*/
-	
+
 	private boolean selected;
-	
+
 	boolean priceIncludesTax;
 
-	private int	tableRowNum;
+	private int tableRowNum;
 
 	public int getTableRowNum() {
 		return tableRowNum;
@@ -69,25 +66,23 @@ public class TicketItemModifier extends BaseTicketItemModifier implements ITicke
 		return false;
 	}
 
-	private int getPreviousItemsCount() {
-		TicketItemModifierGroup ticketItemModifierGroup = getParent();
-		List<TicketItemModifier> ticketItemModifiers = ticketItemModifierGroup.getTicketItemModifiers();
-
-		int count = 0;
-		for (TicketItemModifier modifier : ticketItemModifiers) {
-			if (modifier == this) {
-				return count;
-			}
-			if (modifier.getModifierType() != TicketItemModifier.NO_MODIFIER) {
-				count += modifier.getItemCount();
-			}
-		}
-		return count;
-	}
+//	private int getPreviousItemsCount() {
+//		TicketItemModifierGroup ticketItemModifierGroup = getParent();
+//		List<TicketItemModifier> ticketItemModifiers = ticketItemModifierGroup.getTicketItemModifiers();
+//
+//		int count = 0;
+//		for (TicketItemModifier modifier : ticketItemModifiers) {
+//			if (modifier == this) {
+//				return count;
+//			}
+//			count += modifier.getItemCount();
+//		}
+//		return count;
+//	}
 
 	public void calculatePrice() {
 		priceIncludesTax = Application.getInstance().isPriceIncludesTax();
-		
+
 		calculateSubTotal();
 		calculateTax();
 		setTotalAmount(NumberUtil.roundToTwoDigit(calculateTotal()));
@@ -97,22 +92,22 @@ public class TicketItemModifier extends BaseTicketItemModifier implements ITicke
 		double tax = getSubTotalAmount() * (getTaxRate() / 100);
 		double subtotal = getSubTotalAmount();
 		double taxRate = getTaxRate();
-		
-		if(priceIncludesTax) {
+
+		if (priceIncludesTax) {
 			tax = getSubTotalAmount() * (getTaxRate() / 100);
 		}
 		else {
 			tax = subtotal * (taxRate / 100);
 		}
-		
+
 		setTaxAmount(NumberUtil.roundToTwoDigit(tax));
 	}
 
 	private double calculateTotal() {
-		if(priceIncludesTax) {
+		if (priceIncludesTax) {
 			return getSubTotalAmount();
 		}
-		
+
 		return getSubTotalAmount() + getTaxAmount();
 	}
 
@@ -125,42 +120,42 @@ public class TicketItemModifier extends BaseTicketItemModifier implements ITicke
 			return total;
 		}
 
-//		int previousItemCount = getPreviousItemsCount();
-//		int maxItemCount = ticketItemModifierGroup.getMaxQuantity();
-//
-//		int normalItemCount = 0;
-//		int extraItemCount = 0;
-//
-//		if (previousItemCount == 0) {
-//			if (getItemCount() <= maxItemCount) {
-//				normalItemCount = getItemCount();
-//				extraItemCount = 0;
-//			}
-//			else {
-//				normalItemCount = maxItemCount;
-//				extraItemCount = getItemCount() - maxItemCount;
-//			}
-//		}
-//
-//		else {
-//			maxItemCount = maxItemCount - previousItemCount;
-//			if (maxItemCount < 0)
-//				maxItemCount = 0;
-//
-//			if (getItemCount() <= maxItemCount) {
-//				normalItemCount = getItemCount();
-//				extraItemCount = 0;
-//			}
-//			else {
-//				normalItemCount = maxItemCount;
-//				extraItemCount = getItemCount() - maxItemCount;
-//			}
-//		}
-//
-//		total = normalItemCount * getUnitPrice();
-//		total += extraItemCount * getExtraUnitPrice();
-//		total = NumberUtil.roundToTwoDigit(total);
-		
+		//		int previousItemCount = getPreviousItemsCount();
+		//		int maxItemCount = ticketItemModifierGroup.getMaxQuantity();
+		//
+		//		int normalItemCount = 0;
+		//		int extraItemCount = 0;
+		//
+		//		if (previousItemCount == 0) {
+		//			if (getItemCount() <= maxItemCount) {
+		//				normalItemCount = getItemCount();
+		//				extraItemCount = 0;
+		//			}
+		//			else {
+		//				normalItemCount = maxItemCount;
+		//				extraItemCount = getItemCount() - maxItemCount;
+		//			}
+		//		}
+		//
+		//		else {
+		//			maxItemCount = maxItemCount - previousItemCount;
+		//			if (maxItemCount < 0)
+		//				maxItemCount = 0;
+		//
+		//			if (getItemCount() <= maxItemCount) {
+		//				normalItemCount = getItemCount();
+		//				extraItemCount = 0;
+		//			}
+		//			else {
+		//				normalItemCount = maxItemCount;
+		//				extraItemCount = getItemCount() - maxItemCount;
+		//			}
+		//		}
+		//
+		//		total = normalItemCount * getUnitPrice();
+		//		total += extraItemCount * getExtraUnitPrice();
+		//		total = NumberUtil.roundToTwoDigit(total);
+
 		total = NumberUtil.roundToTwoDigit(getItemCount() * getUnitPrice());
 		setSubTotalAmount(total);
 		return total;
@@ -170,61 +165,43 @@ public class TicketItemModifier extends BaseTicketItemModifier implements ITicke
 	public String getNameDisplay() {
 		String display = getName();
 
-		if (getModifierType() == TicketItemModifier.NO_MODIFIER) {
-			display = Messages.getString("TicketItemModifier.0") + display; //$NON-NLS-1$
-			return display;
-		}
+//		if (getModifierType() == TicketItemModifier.NO_MODIFIER) {
+//			display = Messages.getString("TicketItemModifier.0") + display; //$NON-NLS-1$
+//			return display;
+//		}
 
 		return " - " + display; //$NON-NLS-1$
 	}
 
 	@Override
 	public Double getUnitPriceDisplay() {
-		if (getModifierType() == TicketItemModifier.NO_MODIFIER) {
-			return null;
-		}
-		if (getModifierType() == TicketItemModifier.NORMAL_MODIFIER) {
-			return getUnitPrice();
-		}
-		if (getModifierType() == TicketItemModifier.EXTRA_MODIFIER) {
-			return getExtraUnitPrice();
-		}
-
-		return null;
+		return getUnitPrice();
 	}
 
 	@Override
 	public Integer getItemCountDisplay() {
-		if (getModifierType() == TicketItemModifier.NO_MODIFIER) {
-			return null;
-		}
-		
 		return getItemCount();
 	}
 
 	@Override
 	public Double getTaxAmountWithoutModifiersDisplay() {
-		if (getModifierType() == TicketItemModifier.NO_MODIFIER) {
-			return null;
-		}
-
 		return getTaxAmount();
 	}
 
 	@Override
 	public Double getTotalAmountWithoutModifiersDisplay() {
-		if (getModifierType() == TicketItemModifier.NO_MODIFIER) {
-			return null;
-		}
+//		if (getModifierType() == TicketItemModifier.NO_MODIFIER) {
+//			return null;
+//		}
 
 		return getTotalAmount();
 	}
-	
+
 	@Override
 	public Double getSubTotalAmountWithoutModifiersDisplay() {
-		if (getModifierType() == TicketItemModifier.NO_MODIFIER) {
-			return null;
-		}
+//		if (getModifierType() == TicketItemModifier.NO_MODIFIER) {
+//			return null;
+//		}
 		return getSubTotalAmount();
 	}
 
@@ -235,7 +212,7 @@ public class TicketItemModifier extends BaseTicketItemModifier implements ITicke
 	public void setPriceIncludesTax(boolean priceIncludesTax) {
 		this.priceIncludesTax = priceIncludesTax;
 	}
-	
+
 	@Override
 	public String getItemCode() {
 		return ""; //$NON-NLS-1$

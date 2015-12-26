@@ -32,12 +32,14 @@ import com.floreantpos.model.MenuModifier;
 import com.floreantpos.model.OrderType;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketItem;
+import com.floreantpos.model.TicketItemModifier;
 import com.floreantpos.model.User;
 import com.floreantpos.model.dao.ActionHistoryDAO;
 import com.floreantpos.model.dao.MenuItemDAO;
 import com.floreantpos.model.dao.ShopTableDAO;
 import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.model.dao.UserDAO;
+import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.views.SwitchboardView;
 import com.floreantpos.ui.views.order.actions.CategorySelectionListener;
 import com.floreantpos.ui.views.order.actions.GroupSelectionListener;
@@ -77,17 +79,17 @@ public class OrderController implements OrderListener, CategorySelectionListener
 		menuItem = dao.initialize(menuItem);
 
 		TicketItem ticketItem = menuItem.convertToTicketItem();
-		orderView.getTicketView().addTicketItem(ticketItem);
-
+		ticketItem.setTicket(orderView.getTicketView().getTicket());
+		
 		if (menuItem.hasModifiers()) {
-//			ModifierView modifierView = orderView.getModifierView();
-//			modifierView.setMenuItem(menuItem, ticketItem);
-//			orderView.showView(ModifierView.VIEW_NAME);
-			
 			ModifierSelectionDialog dialog = new ModifierSelectionDialog(new ModifierSelectionModel(ticketItem, menuItem));
-			dialog.setSize(1024, 650);
 			dialog.open();
-			orderView.getTicketView().updateAllView();
+			if (!dialog.isCanceled()) {
+				orderView.getTicketView().addTicketItem(ticketItem);
+			}
+		}
+		else {
+			orderView.getTicketView().addTicketItem(ticketItem);
 		}
 	}
 
@@ -124,13 +126,13 @@ public class OrderController implements OrderListener, CategorySelectionListener
 
 	public void payOrderSelected(Ticket ticket) {
 		new SettleTicketAction(ticket.getId()).execute();
-		
-		if(TerminalConfig.isCashierMode()) {
+
+		if (TerminalConfig.isCashierMode()) {
 			String message = Messages.getString("OrderController.0") + ticket.getId() + Messages.getString("OrderController.1"); //$NON-NLS-1$ //$NON-NLS-2$
-			if(ticket.isPaid()) {
+			if (ticket.isPaid()) {
 				message = Messages.getString("OrderController.2") + ticket.getId() + Messages.getString("OrderController.3"); //$NON-NLS-1$ //$NON-NLS-2$
 			}
-			
+
 			OrderUtil.createNewTakeOutOrder(OrderType.TAKE_OUT);
 			CashierModeNextActionDialog dialog = new CashierModeNextActionDialog(message);
 			dialog.open();
@@ -138,6 +140,26 @@ public class OrderController implements OrderListener, CategorySelectionListener
 		else {
 			RootView.getInstance().showView(SwitchboardView.VIEW_NAME);
 			SwitchboardView.getInstance().updateTicketList();
+		}
+	}
+
+	public static void openModifierDialog(TicketItem ticketItem, MenuItem menuItem) {
+		ModifierSelectionDialog dialog = new ModifierSelectionDialog(new ModifierSelectionModel(ticketItem, menuItem));
+		dialog.open();
+		OrderView.getInstance().getTicketView().updateAllView();
+	}
+
+	public static void openModifierDialog(TicketItemModifier ticketItemModifier) {
+		try {
+			TicketItem ticketItem = ticketItemModifier.getParent().getParent();
+			MenuItem menuItem = MenuItemDAO.getInstance().get(ticketItem.getItemId());
+			menuItem = MenuItemDAO.getInstance().initialize(menuItem);
+
+			ModifierSelectionDialog dialog = new ModifierSelectionDialog(new ModifierSelectionModel(ticketItem, menuItem));
+			dialog.open();
+			OrderView.getInstance().getTicketView().updateAllView();
+		} catch (Exception e) {
+			POSMessageDialog.showError(Application.getPosWindow(), e.getMessage(), e);
 		}
 	}
 
@@ -154,24 +176,24 @@ public class OrderController implements OrderListener, CategorySelectionListener
 		//			save the action
 		ActionHistoryDAO actionHistoryDAO = ActionHistoryDAO.getInstance();
 		User user = Application.getCurrentUser();
-		
+
 		if (newTicket) {
 			ShopTableDAO.getInstance().occupyTables(ticket);
-			
+
 			actionHistoryDAO.saveHistory(user, ActionHistory.NEW_CHECK, POSConstants.RECEIPT_REPORT_TICKET_NO_LABEL + ":" + ticket.getId()); //$NON-NLS-1$
 		}
 		else {
 			actionHistoryDAO.saveHistory(user, ActionHistory.EDIT_CHECK, POSConstants.RECEIPT_REPORT_TICKET_NO_LABEL + ":" + ticket.getId()); //$NON-NLS-1$
 		}
 	}
-	
+
 	public synchronized static void closeOrder(Ticket ticket) {
 		ticket.setClosed(true);
 		ticket.setClosingDate(new Date());
-		
+
 		TicketDAO ticketDAO = new TicketDAO();
 		ticketDAO.saveOrUpdate(ticket);
-		
+
 		User driver = ticket.getAssignedDriver();
 		if (driver != null) {
 			driver.setAvailableForDelivery(true);

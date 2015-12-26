@@ -39,6 +39,21 @@ public class TicketItemModifierGroup extends BaseTicketItemModifierGroup {
 
 	/* [CONSTRUCTOR MARKER END] */
 
+	public int countFreeModifiers() {
+		List<TicketItemModifier> ticketItemModifiers = getTicketItemModifiers();
+		if (ticketItemModifiers == null)
+			return 0;
+
+		int count = 0;
+		for (TicketItemModifier modifier : ticketItemModifiers) {
+			if (modifier.getModifierType() == TicketItemModifier.NORMAL_MODIFIER) {
+				count += modifier.getItemCount();
+			}
+		}
+
+		return count;
+	}
+
 	public int countItems(boolean excludeNoModifier) {
 		List<TicketItemModifier> ticketItemModifiers = getTicketItemModifiers();
 		if (ticketItemModifiers == null)
@@ -46,19 +61,20 @@ public class TicketItemModifierGroup extends BaseTicketItemModifierGroup {
 
 		int count = 0;
 		for (TicketItemModifier modifier : ticketItemModifiers) {
-			if (excludeNoModifier) {
-				if (modifier.getModifierType() != TicketItemModifier.NO_MODIFIER) {
-					count += modifier.getItemCount();
-				}
-			}
-			else {
-				if (modifier.getModifierType() == TicketItemModifier.NO_MODIFIER) {
-					count++;
-				}
-				else {
-					count += modifier.getItemCount();
-				}
-			}
+			//			if (excludeNoModifier) {
+			//				if (modifier.getModifierType() != TicketItemModifier.NO_MODIFIER) {
+			//					count += modifier.getItemCount();
+			//				}
+			//			}
+			//			else {
+			//				if (modifier.getModifierType() == TicketItemModifier.NO_MODIFIER) {
+			//					count++;
+			//				}
+			//				else {
+			//					count += modifier.getItemCount();
+			//				}
+			//			}
+			count += modifier.getItemCount();
 		}
 		return count;
 	}
@@ -72,6 +88,27 @@ public class TicketItemModifierGroup extends BaseTicketItemModifierGroup {
 			for (TicketItemModifier ticketItemModifier : ticketItemModifiers) {
 				if (modifier.getId().equals(ticketItemModifier.getItemId())) {
 					return ticketItemModifier;
+				}
+			}
+		}
+
+		return null;
+	}
+
+	public TicketItemModifier findTicketItemModifier(MenuModifier modifier, boolean addOn) {
+		List<TicketItemModifier> ticketItemModifiers = getTicketItemModifiers();
+		if (ticketItemModifiers == null) {
+			return null;
+		}
+		else {
+			for (TicketItemModifier ticketItemModifier : ticketItemModifiers) {
+				if (modifier.getId().equals(ticketItemModifier.getItemId())) {
+					if (addOn && ticketItemModifier.getModifierType() == TicketItemModifier.EXTRA_MODIFIER) {
+						return ticketItemModifier;
+					}
+					else if (!addOn && ticketItemModifier.getModifierType() == TicketItemModifier.NORMAL_MODIFIER) {
+						return ticketItemModifier;
+					}
 				}
 			}
 		}
@@ -96,15 +133,15 @@ public class TicketItemModifierGroup extends BaseTicketItemModifierGroup {
 
 		return ticketItemModifier;
 	}
-	
+
 	public TicketItemModifier addTicketItemModifier(MenuModifier menuModifier, boolean addOn) {
 		TicketItemModifier ticketItemModifier = new TicketItemModifier();
 		ticketItemModifier.setItemId(menuModifier.getId());
 		ticketItemModifier.setGroupId(menuModifier.getModifierGroup().getId());
 		ticketItemModifier.setItemCount(1);
 		ticketItemModifier.setName(menuModifier.getDisplayName());
-		
-		if(addOn) {
+
+		if (addOn) {
 			ticketItemModifier.setUnitPrice(menuModifier.getExtraPrice());
 			ticketItemModifier.setModifierType(TicketItemModifier.EXTRA_MODIFIER);
 		}
@@ -128,14 +165,15 @@ public class TicketItemModifierGroup extends BaseTicketItemModifierGroup {
 
 		for (Iterator iter = ticketItemModifiers.iterator(); iter.hasNext();) {
 			TicketItemModifier oldTicketItemModifier = (TicketItemModifier) iter.next();
-			if (oldTicketItemModifier.getItemId().equals(ticketItemModifier.getItemId())) {
+			if (oldTicketItemModifier.getItemId().equals(ticketItemModifier.getItemId())
+					&& oldTicketItemModifier.getModifierType() == ticketItemModifier.getModifierType()) {
 				iter.remove();
 				return oldTicketItemModifier;
 			}
 		}
 		return ticketItemModifier;
 	}
-	
+
 	public void calculatePrice() {
 		if (getTicketItemModifiers() == null) {
 			return;
@@ -170,7 +208,7 @@ public class TicketItemModifierGroup extends BaseTicketItemModifierGroup {
 		for (TicketItemModifier modifier : ticketItemModifiers) {
 			tax += modifier.getTaxAmount();
 		}
-		
+
 		return tax;
 	}
 

@@ -26,19 +26,23 @@ package com.floreantpos.ui.views.order.modifier;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.util.List;
 
 import javax.swing.JSeparator;
 
 import com.floreantpos.POSConstants;
+import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.main.Application;
-import com.floreantpos.model.MenuItem;
+import com.floreantpos.model.MenuItemModifierGroup;
 import com.floreantpos.model.MenuModifier;
 import com.floreantpos.model.MenuModifierGroup;
 import com.floreantpos.model.TicketItemModifier;
 import com.floreantpos.model.TicketItemModifierGroup;
 import com.floreantpos.swing.POSToggleButton;
+import com.floreantpos.swing.PosButton;
 import com.floreantpos.swing.TransparentPanel;
 import com.floreantpos.ui.dialog.POSDialog;
+import com.floreantpos.ui.dialog.POSMessageDialog;
 
 /**
  *
@@ -49,13 +53,13 @@ public class ModifierSelectionDialog extends POSDialog implements ModifierGroupS
 
 	private ModifierGroupView modifierGroupView;
 	private ModifierView modifierView;
+	private TicketItemModifierTableView ticketItemModifierView;
 
 	private com.floreantpos.swing.TransparentPanel buttonPanel;
 
 	public com.floreantpos.swing.POSToggleButton btnAddsOn;
 	private com.floreantpos.swing.PosButton btnSave;
 	private com.floreantpos.swing.PosButton btnCancel;
-
 	
 	public ModifierSelectionDialog(ModifierSelectionModel modifierSelectionModel) {
 		this.modifierSelectionModel = modifierSelectionModel;
@@ -64,59 +68,62 @@ public class ModifierSelectionDialog extends POSDialog implements ModifierGroupS
 	}
 
 	private void initComponents() {
-		setTitle("Select Modifiers");
+		setTitle("MODIFIERS and ADD-ONs");
 		setLayout(new java.awt.BorderLayout(10, 10));
 
 		Dimension screenSize = Application.getPosWindow().getSize();
 
 		modifierGroupView = new com.floreantpos.ui.views.order.modifier.ModifierGroupView(modifierSelectionModel);
 		modifierView = new ModifierView(modifierSelectionModel);
+		ticketItemModifierView = new TicketItemModifierTableView(modifierSelectionModel);
 		buttonPanel = new com.floreantpos.swing.TransparentPanel();
 		buttonPanel.setLayout(new BorderLayout());
 
+		add(ticketItemModifierView, java.awt.BorderLayout.WEST);
 		add(modifierGroupView, java.awt.BorderLayout.EAST);
 		add(modifierView);
 
 
 		createButtonPanel();
 
-		setSize(screenSize.width - 200, screenSize.height - 80);
+		setSize(screenSize);
 
+		ticketItemModifierView.addModifierSelectionListener(this);
 		modifierGroupView.addModifierGroupSelectionListener(this);
 		modifierView.addModifierSelectionListener(this);
+		
+		modifierGroupView.selectFirst();
 	}
 
 	public void createButtonPanel() {
 
 		TransparentPanel panel2 = new TransparentPanel(new FlowLayout(FlowLayout.CENTER));
 
-		btnAddsOn = new POSToggleButton("ADDS ON");
+		btnAddsOn = new POSToggleButton("ADD-ONs");
 		btnAddsOn.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				modifierView.setAddOnMode(btnAddsOn.isSelected());
 			}
 		});
-		btnAddsOn.setPreferredSize(new Dimension(80, 60));
+		btnAddsOn.setPreferredSize(new Dimension(100, TerminalConfig.getTouchScreenButtonHeight()));
 
-		btnCancel = new com.floreantpos.swing.PosButton();
-		btnSave = new com.floreantpos.swing.PosButton();
-
-		btnCancel.setText(POSConstants.CANCEL_BUTTON_TEXT);
-		btnCancel.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				closeView(true);
-			}
-		});
-		btnCancel.setPreferredSize(new Dimension(80, 60));
-
-		btnSave.setText("DONE");
+		btnSave = new PosButton("DONE");
 		btnSave.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				doFinishModifierSelection(evt);
+				doFinishModifierSelection();
 			}
 		});
-		btnSave.setPreferredSize(new Dimension(80, 60));
+		btnSave.setPreferredSize(new Dimension(100, TerminalConfig.getTouchScreenButtonHeight()));
 
+		btnCancel = new PosButton(POSConstants.CANCEL.toUpperCase());
+		btnCancel.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				setCanceled(true);
+				dispose();
+			}
+		});
+		btnCancel.setPreferredSize(new Dimension(100, TerminalConfig.getTouchScreenButtonHeight()));
+		
 		panel2.add(btnAddsOn);
 		panel2.add(btnSave);
 		panel2.add(btnCancel);
@@ -144,13 +151,27 @@ public class ModifierSelectionDialog extends POSDialog implements ModifierGroupS
 		this.modifierView = modifierView;
 	}
 
-
-	private void closeView(boolean orderCanceled) {
+	private void doFinishModifierSelection() {
+		List<MenuItemModifierGroup> menuItemModiferGroups = modifierSelectionModel.getMenuItem().getMenuItemModiferGroups();
+		if(menuItemModiferGroups == null) {
+			dispose();
+			return;
+		}
+		
+		for (MenuItemModifierGroup menuItemModifierGroup : menuItemModiferGroups) {
+			Integer minQuantity = menuItemModifierGroup.getMinQuantity();
+			if(minQuantity > 0) {
+				TicketItemModifierGroup ticketItemModifierGroup = modifierSelectionModel.getTicketItem().findTicketItemModifierGroup(menuItemModifierGroup.getId());
+				if(ticketItemModifierGroup == null || ticketItemModifierGroup.countFreeModifiers() < minQuantity) {
+					POSMessageDialog.showError("You must select at least " + minQuantity + " modifiers from group " + menuItemModifierGroup.getModifierGroup().getDisplayName());
+					modifierGroupView.setSelectedModifierGroup(menuItemModifierGroup.getModifierGroup());
+					return;
+				}
+			}
+		}
+		
+		setCanceled(false);
 		dispose();
-	}
-
-	private void doFinishModifierSelection(java.awt.event.ActionEvent evt) {
-
 	}
 
 	@Override
@@ -159,20 +180,35 @@ public class ModifierSelectionDialog extends POSDialog implements ModifierGroupS
 	}
 
 	@Override
-	public void modifierSelected(MenuItem parent, MenuModifier modifier) {
-		TicketItemModifierGroup ticketItemModifierGroup = modifierSelectionModel.getTicketItem().findTicketItemModifierGroup(modifier, true);
+	public void modifierSelected(MenuModifier modifier) {
+		TicketItemModifierGroup ticketItemModifierGroup = modifierSelectionModel.getTicketItem().findTicketItemModifierGroup(modifier, false);
 		
-		TicketItemModifier ticketItemModifier = ticketItemModifierGroup.findTicketItemModifier(modifier);
+		boolean addOn = btnAddsOn.isSelected();
+		if(!addOn) {
+			int freeModifiers = ticketItemModifierGroup.countFreeModifiers();
+			int minQuantity = ticketItemModifierGroup.getMinQuantity();
+			int maxQuantity = ticketItemModifierGroup.getMaxQuantity();
+			
+			if(maxQuantity < minQuantity) {
+				maxQuantity = minQuantity;
+			}
+			
+			if(freeModifiers >= maxQuantity) {
+				POSMessageDialog.showError("You have added maximum number of allowed modifiers from group " + modifier.getModifierGroup().getDisplayName());
+				return;
+			}
+		}
+		
+		TicketItemModifier ticketItemModifier = ticketItemModifierGroup.findTicketItemModifier(modifier, addOn);
 		if(ticketItemModifier == null) {
-			ticketItemModifierGroup.addTicketItemModifier(modifier, btnAddsOn.isSelected());
+			ticketItemModifierGroup.addTicketItemModifier(modifier, addOn);
 		}
 		else {
 			ticketItemModifier.setItemCount(ticketItemModifier.getItemCount() + 1);
 		}
-	}
-
-	@Override
-	public void modifierSelectionFiniched(MenuItem parent) {
+		
+		modifierSelectionModel.getTicketItem().calculatePrice();
+		ticketItemModifierView.updateView();
 	}
 
 	public ModifierSelectionModel getModifierSelectionModel() {
