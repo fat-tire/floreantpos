@@ -34,7 +34,6 @@ import java.util.Vector;
 import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
 
-import com.floreantpos.model.MenuItem;
 import com.floreantpos.model.MenuItemModifierGroup;
 import com.floreantpos.model.MenuModifierGroup;
 import com.floreantpos.swing.POSToggleButton;
@@ -47,20 +46,16 @@ import com.floreantpos.ui.views.order.SelectionView;
 public class ModifierGroupView extends SelectionView {
 	private Vector<ModifierGroupSelectionListener> listenerList = new Vector<ModifierGroupSelectionListener>();
 
-	private boolean addOnMode;
-
-	private MenuItem menuItem;
+	private ModifierSelectionModel modifierSelectionModel;
 
 	private ButtonGroup modifierGroupButtonGroup;
 
 	public static final String VIEW_NAME = "MODIFIER_GROUP_VIEW"; //$NON-NLS-1$
 
-	// private int panelCount = 0;
-
 	/** Creates new form CategoryView */
-	public ModifierGroupView(MenuItem menuItem) {
+	public ModifierGroupView(ModifierSelectionModel modifierSelectionModel) {
 		super(com.floreantpos.POSConstants.MODIFIER_GROUP, 100, 80);
-		this.menuItem = menuItem;
+		this.modifierSelectionModel = modifierSelectionModel;
 
 		setBackVisible(false);
 
@@ -80,7 +75,7 @@ public class ModifierGroupView extends SelectionView {
 	private void init() {
 		List itemList = new ArrayList();
 
-		List<MenuItemModifierGroup> modifierGroups = menuItem.getMenuItemModiferGroups();
+		List<MenuItemModifierGroup> modifierGroups = modifierSelectionModel.getMenuItem().getMenuItemModiferGroups();
 
 		for (Iterator<MenuItemModifierGroup> iter = modifierGroups.iterator(); iter.hasNext();) {
 			MenuItemModifierGroup menuItemModifierGroup = iter.next();
@@ -145,13 +140,5 @@ public class ModifierGroupView extends SelectionView {
 
 	@Override
 	public void doGoBack() {
-	}
-
-	public boolean isAddOnMode() {
-		return addOnMode;
-	}
-
-	public void setAddOnMode(boolean addOnMode) {
-		this.addOnMode = addOnMode;
 	}
 }
