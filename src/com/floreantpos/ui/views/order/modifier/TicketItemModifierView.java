@@ -319,20 +319,20 @@ public class TicketItemModifierView extends JPanel {
 	}
 
 	private void updateSelectionView() {
-		Object selectedObject = modifierViewerTable.getSelected();
-
-		ModifierSelectionDialog modifierSelectionView = ModifierSelectionDialog.getInstance();
-
-		TicketItem selectedTicketItem = null;
-		
-		if (selectedObject instanceof TicketItemModifier) {
-			selectedTicketItem = ((TicketItemModifier) selectedObject).getParent().getParent();
-			if (selectedTicketItem == null)
-				return;
-			
-			TicketItemModifier ticketItemModifier = (TicketItemModifier) selectedObject;
-			
-		}
+//		Object selectedObject = modifierViewerTable.getSelected();
+//
+//		ModifierSelectionDialog modifierSelectionView = ModifierSelectionDialog.getInstance();
+//
+//		TicketItem selectedTicketItem = null;
+//		
+//		if (selectedObject instanceof TicketItemModifier) {
+//			selectedTicketItem = ((TicketItemModifier) selectedObject).getParent().getParent();
+//			if (selectedTicketItem == null)
+//				return;
+//			
+//			TicketItemModifier ticketItemModifier = (TicketItemModifier) selectedObject;
+//			
+//		}
 	}
 
 	public com.floreantpos.ui.views.order.modifier.ModifierViewerTable getTicketViewerTable() {

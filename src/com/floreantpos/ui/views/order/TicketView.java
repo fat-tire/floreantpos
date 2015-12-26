@@ -627,7 +627,7 @@ public class TicketView extends JPanel {
 				orderView.getCategoryView().setSelectedCategory(menuCategory);
 
 				modifierView.clearSelection();
-				orderView.showView(ModifierView.VIEW_NAME);
+				//orderView.showView(ModifierView.VIEW_NAME);
 			}
 			else {
 				MenuItemDAO dao = new MenuItemDAO();

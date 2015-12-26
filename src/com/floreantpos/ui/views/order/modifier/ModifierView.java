@@ -49,8 +49,7 @@ import com.floreantpos.util.ModifierStateChangeListener;
  * 
  * @author MShahriar
  */
-public class ModifierView extends SelectionView implements
-		ModifierStateChangeListener {
+public class ModifierView extends SelectionView implements ModifierStateChangeListener {
 	private Vector<ModifierSelectionListener> listenerList = new Vector<ModifierSelectionListener>();
 
 	private MenuModifierGroup modifierGroup;
@@ -66,7 +65,7 @@ public class ModifierView extends SelectionView implements
 
 	public void setModifierGroup(MenuModifierGroup modifierGroup) {
 		this.modifierGroup = modifierGroup;
-		if(modifierGroup == null) {
+		if (modifierGroup == null) {
 			return;
 		}
 
@@ -76,11 +75,13 @@ public class ModifierView extends SelectionView implements
 
 			Set<MenuModifier> modifiers = modifierGroup.getModifiers();
 			for (MenuModifier modifier : modifiers) {
+				modifier.setMenuItemModifierGroup(modifierGroup.getMenuItemModifierGroup());
 				if (isAddOnMode()) {
 					if (modifier.getPrice() > 0 || modifier.getExtraPrice() > 0) {
 						itemList.add(modifier);
 					}
-				} else {
+				}
+				else {
 					if (modifier.getPrice() == 0) {
 						itemList.add(modifier);
 					}
@@ -91,8 +92,7 @@ public class ModifierView extends SelectionView implements
 			setItems(itemList);
 
 		} catch (PosException e) {
-			POSMessageDialog.showError(this,
-					com.floreantpos.POSConstants.ERROR_MESSAGE, e);
+			POSMessageDialog.showError(this, com.floreantpos.POSConstants.ERROR_MESSAGE, e);
 		}
 	}
 
@@ -100,8 +100,7 @@ public class ModifierView extends SelectionView implements
 	protected AbstractButton createItemButton(Object item) {
 		MenuModifier modifier = (MenuModifier) item;
 		ModifierButton modifierButton = new ModifierButton(modifier);
-		String key = modifier.getId()
-				+ "_" + modifier.getModifierGroup().getId(); //$NON-NLS-1$
+		String key = modifier.getId() + "_" + modifier.getModifierGroup().getId(); //$NON-NLS-1$
 		// buttonMap.put(key, modifierButton);
 
 		return modifierButton;
@@ -111,8 +110,7 @@ public class ModifierView extends SelectionView implements
 		listenerList.add(listener);
 	}
 
-	public void removeModifierSelectionListener(
-			ModifierSelectionListener listener) {
+	public void removeModifierSelectionListener(ModifierSelectionListener listener) {
 		listenerList.remove(listener);
 	}
 
@@ -155,12 +153,10 @@ public class ModifierView extends SelectionView implements
 
 	@Override
 	public void doGoBack() {
-		
+
 	}
 
-	public boolean isRequiredModifiersAdded(
-			List<MenuItemModifierGroup> menuItemModifierGroups,
-			List<TicketItemModifierGroup> ticketItemModifierGroups) {
+	public boolean isRequiredModifiersAdded(List<MenuItemModifierGroup> menuItemModifierGroups, List<TicketItemModifierGroup> ticketItemModifierGroups) {
 		boolean requiredModifierAdded = true;
 		if (menuItemModifierGroups != null) {
 			outer: for (MenuItemModifierGroup menuItemModifierGroup : menuItemModifierGroups) {
@@ -211,9 +207,9 @@ public class ModifierView extends SelectionView implements
 			String text = menuModifier.getDisplayName();
 			String style = ""; //$NON-NLS-1$
 
-			if (ticketItemModifier == null
-					|| ticketItemModifier.getModifierType() == TicketItemModifier.MODIFIER_NOT_INITIALIZED) {
-			} else if (ticketItemModifier.getModifierType() == TicketItemModifier.NORMAL_MODIFIER) {
+			if (ticketItemModifier == null || ticketItemModifier.getModifierType() == TicketItemModifier.MODIFIER_NOT_INITIALIZED) {
+			}
+			else if (ticketItemModifier.getModifierType() == TicketItemModifier.NORMAL_MODIFIER) {
 				style = "color: green;"; //$NON-NLS-1$
 			}
 			// else if (ticketItemModifier.getModifierType() ==
@@ -242,7 +238,9 @@ public class ModifierView extends SelectionView implements
 		}
 
 		public void actionPerformed(ActionEvent e) {
-
+			for (ModifierSelectionListener listener : ModifierView.this.listenerList) {
+				listener.modifierSelected(null, menuModifier);
+			}
 		}
 	}
 
@@ -282,8 +280,7 @@ public class ModifierView extends SelectionView implements
 	@Override
 	public void clearSelection() {
 		if (currentSelectedButton != null) {
-			currentSelectedButton.setBorder(UIManager
-					.getBorder("Button.border")); //$NON-NLS-1$
+			currentSelectedButton.setBorder(UIManager.getBorder("Button.border")); //$NON-NLS-1$
 		}
 		currentSelectedButton = null;
 	}

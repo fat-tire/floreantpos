@@ -125,42 +125,43 @@ public class TicketItemModifier extends BaseTicketItemModifier implements ITicke
 			return total;
 		}
 
-		int previousItemCount = getPreviousItemsCount();
-		int maxItemCount = ticketItemModifierGroup.getMaxQuantity();
-
-		int normalItemCount = 0;
-		int extraItemCount = 0;
-
-		if (previousItemCount == 0) {
-			if (getItemCount() <= maxItemCount) {
-				normalItemCount = getItemCount();
-				extraItemCount = 0;
-			}
-			else {
-				normalItemCount = maxItemCount;
-				extraItemCount = getItemCount() - maxItemCount;
-			}
-		}
-
-		else {
-			maxItemCount = maxItemCount - previousItemCount;
-			if (maxItemCount < 0)
-				maxItemCount = 0;
-
-			if (getItemCount() <= maxItemCount) {
-				normalItemCount = getItemCount();
-				extraItemCount = 0;
-			}
-			else {
-				normalItemCount = maxItemCount;
-				extraItemCount = getItemCount() - maxItemCount;
-			}
-		}
-
-		total = normalItemCount * getUnitPrice();
-		total += extraItemCount * getExtraUnitPrice();
-		total = NumberUtil.roundToTwoDigit(total);
-
+//		int previousItemCount = getPreviousItemsCount();
+//		int maxItemCount = ticketItemModifierGroup.getMaxQuantity();
+//
+//		int normalItemCount = 0;
+//		int extraItemCount = 0;
+//
+//		if (previousItemCount == 0) {
+//			if (getItemCount() <= maxItemCount) {
+//				normalItemCount = getItemCount();
+//				extraItemCount = 0;
+//			}
+//			else {
+//				normalItemCount = maxItemCount;
+//				extraItemCount = getItemCount() - maxItemCount;
+//			}
+//		}
+//
+//		else {
+//			maxItemCount = maxItemCount - previousItemCount;
+//			if (maxItemCount < 0)
+//				maxItemCount = 0;
+//
+//			if (getItemCount() <= maxItemCount) {
+//				normalItemCount = getItemCount();
+//				extraItemCount = 0;
+//			}
+//			else {
+//				normalItemCount = maxItemCount;
+//				extraItemCount = getItemCount() - maxItemCount;
+//			}
+//		}
+//
+//		total = normalItemCount * getUnitPrice();
+//		total += extraItemCount * getExtraUnitPrice();
+//		total = NumberUtil.roundToTwoDigit(total);
+		
+		total = NumberUtil.roundToTwoDigit(getItemCount() * getUnitPrice());
 		setSubTotalAmount(total);
 		return total;
 	}
