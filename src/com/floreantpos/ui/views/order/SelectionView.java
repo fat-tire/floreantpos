@@ -51,6 +51,8 @@ public abstract class SelectionView extends JPanel implements ComponentListener 
 	protected int previousBlockIndex = -1;
 	protected int currentBlockIndex = 0;
 	protected int nextBlockIndex;
+	
+	private TitledBorder border;
 
 	protected com.floreantpos.swing.PosButton btnBack;
 	protected com.floreantpos.swing.PosButton btnNext;
@@ -63,7 +65,7 @@ public abstract class SelectionView extends JPanel implements ComponentListener 
 		this.title = title;
 		this.buttonSize = new Dimension(buttonWidth, buttonHeight);
 
-		TitledBorder border = new TitledBorder(title);
+		border = new TitledBorder(title);
 		border.setTitleJustification(TitledBorder.CENTER);
 
 		setBorder(border);
@@ -99,6 +101,10 @@ public abstract class SelectionView extends JPanel implements ComponentListener 
 
 	public SelectionView(String title) {
 		this(title, 120, 80);
+	}
+	
+	public void setTitle(String title) {
+		border.setTitle(title);
 	}
 
 	public void setItems(List items) {

@@ -236,7 +236,7 @@ public class ModifierView extends SelectionView implements ModifierStateChangeLi
 					for (TicketItemModifier ticketItemModifier : ticketItemModifiers) {
 						String key = ticketItemModifier.getItemId() + "_" + ticketItemModifier.getGroupId(); //$NON-NLS-1$
 						ModifierButton button = buttonMap.get(key);
-						if (ticketItemModifier.getModifierType() != TicketItemModifier.NO_MODIFIER) {
+						//if (ticketItemModifier.getModifierType() != TicketItemModifier.NO_MODIFIER) {
 							total += ticketItemModifier.getItemCount();
 							if (total > max) {
 								ticketItemModifier.setModifierType(TicketItemModifier.EXTRA_MODIFIER);
@@ -244,7 +244,7 @@ public class ModifierView extends SelectionView implements ModifierStateChangeLi
 							else {
 								ticketItemModifier.setModifierType(TicketItemModifier.NORMAL_MODIFIER);
 							}
-						}
+						//}
 						button.updateView(ticketItemModifier);
 					}
 				}
@@ -325,9 +325,7 @@ public class ModifierView extends SelectionView implements ModifierStateChangeLi
 			String text = menuModifier.getDisplayName();
 			String style = ""; //$NON-NLS-1$
 
-			if (ticketItemModifier == null || ticketItemModifier.getModifierType() == TicketItemModifier.MODIFIER_NOT_INITIALIZED) {
-			}
-			else if (ticketItemModifier.getModifierType() == TicketItemModifier.NORMAL_MODIFIER) {
+			if (ticketItemModifier.getModifierType() == TicketItemModifier.NORMAL_MODIFIER) {
 				style = "color: green;"; //$NON-NLS-1$
 			}
 			//			else if (ticketItemModifier.getModifierType() == TicketItemModifier.NO_MODIFIER) {
@@ -371,18 +369,18 @@ public class ModifierView extends SelectionView implements ModifierStateChangeLi
 				return;
 			}
 
-			int modifierType = TicketItemModifier.MODIFIER_NOT_INITIALIZED;
+			int modifierType = TicketItemModifier.NORMAL_MODIFIER;
 			if (ticketItemModifier.getModifierType() != null) {
 				modifierType = ticketItemModifier.getModifierType().intValue();
 			}
 			switch (modifierType) {
-				case TicketItemModifier.MODIFIER_NOT_INITIALIZED:
-					ticketItemModifier.setItemCount(ticketItemModifier.getItemCount() + 1);
-					ticketItemModifier.setModifierType(TicketItemModifier.NORMAL_MODIFIER);
-					updateVisualRepresentation();
-					ticketView.updateAllView();
-					ticketView.selectRow(ticketItemModifier.getTableRowNum());
-					break;
+//				case TicketItemModifier.MODIFIER_NOT_INITIALIZED:
+//					ticketItemModifier.setItemCount(ticketItemModifier.getItemCount() + 1);
+//					ticketItemModifier.setModifierType(TicketItemModifier.NORMAL_MODIFIER);
+//					updateVisualRepresentation();
+//					ticketView.updateAllView();
+//					ticketView.selectRow(ticketItemModifier.getTableRowNum());
+//					break;
 
 				case TicketItemModifier.NORMAL_MODIFIER:
 				case TicketItemModifier.EXTRA_MODIFIER:

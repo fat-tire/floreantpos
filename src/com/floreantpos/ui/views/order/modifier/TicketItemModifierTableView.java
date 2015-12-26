@@ -26,8 +26,8 @@ package com.floreantpos.ui.views.order.modifier;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.util.Vector;
 
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
@@ -35,32 +35,29 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+
 import com.floreantpos.IconFactory;
-import com.floreantpos.PosException;
-import com.floreantpos.main.Application;
 import com.floreantpos.model.ITicketItem;
-import com.floreantpos.model.MenuItem;
-import com.floreantpos.model.OrderType;
-import com.floreantpos.model.Ticket;
+import com.floreantpos.model.MenuModifier;
 import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.TicketItemModifier;
+import com.floreantpos.model.dao.MenuModifierDAO;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.swing.PosScrollPane;
-import com.floreantpos.ui.views.order.OrderTypeSelectionDialog;
 import com.floreantpos.ui.views.order.actions.OrderListener;
 
 /**
  * 
  * @author MShahriar
  */
-public class TicketItemModifierView extends JPanel {
+public class TicketItemModifierTableView extends JPanel {
 	private java.util.Vector<OrderListener> orderListeners = new java.util.Vector<OrderListener>();
 	
-	private Ticket ticket;
-	private TicketItem ticketItem;
-	private MenuItem menuItem; 
-
 	public final static String VIEW_NAME = "TICKET_MODIFIER_VIEW"; //$NON-NLS-1$
+
+	private Vector<ModifierSelectionListener> listenerList = new Vector<ModifierSelectionListener>();
+	
+	private ModifierSelectionModel modifierSelectionModel;
 	
 	private com.floreantpos.swing.TransparentPanel ticketActionPanel = new com.floreantpos.swing.TransparentPanel();
 
@@ -78,11 +75,14 @@ public class TicketItemModifierView extends JPanel {
 	private TitledBorder titledBorder = new TitledBorder(""); //$NON-NLS-1$
 	private Border border = new CompoundBorder(titledBorder, new EmptyBorder(5, 5, 5, 5));
 
-	public TicketItemModifierView() {
+	public TicketItemModifierTableView(ModifierSelectionModel modifierSelectionModel) {
+		this.modifierSelectionModel = modifierSelectionModel;
+		
 		initComponents();
 	}
 
 	private void initComponents() {
+		titledBorder.setTitle(modifierSelectionModel.getTicketItem().getName());
 		titledBorder.setTitleJustification(TitledBorder.CENTER);
 		setBorder(border);
 		setLayout(new java.awt.BorderLayout(5, 5));
@@ -90,7 +90,7 @@ public class TicketItemModifierView extends JPanel {
 		ticketItemActionPanel = new com.floreantpos.swing.TransparentPanel();
 		btnDecreaseAmount = new com.floreantpos.swing.PosButton();
 		btnScrollDown = new com.floreantpos.swing.PosButton();
-		modifierViewerTable = new com.floreantpos.ui.views.order.modifier.ModifierViewerTable();
+		modifierViewerTable = new com.floreantpos.ui.views.order.modifier.ModifierViewerTable(modifierSelectionModel.getTicketItem());
 		ticketScrollPane = new PosScrollPane(modifierViewerTable);
 		ticketScrollPane.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		ticketScrollPane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
@@ -189,13 +189,13 @@ public class TicketItemModifierView extends JPanel {
 
 		ticketItemActionPanel.setPreferredSize(new Dimension(70, 360));
 	}
+	
+	public void addModifierSelectionListener(ModifierSelectionListener listener) {
+		listenerList.add(listener);
+	}
 
-	private synchronized void updateModel() {
-		if (ticket.getTicketItems() == null || ticket.getTicketItems().size() == 0) {
-			throw new PosException(com.floreantpos.POSConstants.TICKET_IS_EMPTY_);
-		}
-
-		ticket.calculatePrice();
+	public void removeModifierSelectionListener(ModifierSelectionListener listener) {
+		listenerList.remove(listener);
 	}
 
 	private void doDeleteSelection(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_doDeleteSelection
@@ -207,10 +207,14 @@ public class TicketItemModifierView extends JPanel {
 	}
 
 	private void doIncreaseAmount(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_doIncreaseAmount
-		if (modifierViewerTable.increaseItemAmount()) {
-			updateView();
+		Object selected = modifierViewerTable.getSelected();
+		if(selected instanceof TicketItemModifier) {
+			TicketItemModifier ticketItemModifier = (TicketItemModifier) selected;
+			MenuModifier modifier = MenuModifierDAO.getInstance().getMenuModifierFromTicketItemModifier(ticketItemModifier);
+			for (ModifierSelectionListener listener : listenerList) {
+				listener.modifierSelected(modifier);
+			}
 		}
-
 	}
 
 	private void doDecreaseAmount(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_doDecreaseAmount
@@ -227,38 +231,9 @@ public class TicketItemModifierView extends JPanel {
 		modifierViewerTable.scrollUp();
 	}
 
-	public Ticket getTicket() {
-		return ticket;
-	}
-
-	public void setTicket(Ticket _ticket) {
-		this.ticket = _ticket;
-
-		modifierViewerTable.setTicket(_ticket);
-
-		updateView();
-	}
-	
-	public TicketItem getTicketItem() {
-		return this.ticketItem;
-	}
-
-	public void setTicketItem(TicketItem _ticketItem) {
-		this.ticketItem = _ticketItem;
-
-		modifierViewerTable.addTicketItem(_ticketItem);
-
-		updateView();
-	}
-
-	public void addTicketItem(TicketItem ticketItem) {
-		modifierViewerTable.addTicketItem(ticketItem);
-		updateView();
-	}
-
 	public void removeModifier(TicketItem parent, TicketItemModifier modifier) {
 		modifier.setItemCount(0);
-		modifier.setModifierType(TicketItemModifier.MODIFIER_NOT_INITIALIZED);
+		//modifier.setModifierType(TicketItemModifier.MODIFIER_NOT_INITIALIZED);
 		modifierViewerTable.removeModifier(parent, modifier);
 	}
 
@@ -272,25 +247,26 @@ public class TicketItemModifierView extends JPanel {
 	}
 
 	public void updateView() {
-		if (ticket == null) {
-			titledBorder.setTitle("Modifiers #"); //$NON-NLS-1$
-			return;
-		}
-
-		ticket.calculatePrice();
-		
-
-		if (Application.getInstance().isPriceIncludesTax()) {
-		}
-		else {
-		}
-
-		if (ticket.getId() == null) {
-			titledBorder.setTitle("ITEM"); //$NON-NLS-1$
-		}
-		else {
-			titledBorder.setTitle("ITEM #" + ticketItem.getName()); //$NON-NLS-1$
-		}
+		modifierViewerTable.updateView();
+//		if (ticket == null) {
+//			titledBorder.setTitle("Modifiers #"); //$NON-NLS-1$
+//			return;
+//		}
+//
+//		ticket.calculatePrice();
+//		
+//
+//		if (Application.getInstance().isPriceIncludesTax()) {
+//		}
+//		else {
+//		}
+//
+//		if (ticket.getId() == null) {
+//			titledBorder.setTitle("ITEM"); //$NON-NLS-1$
+//		}
+//		else {
+//			titledBorder.setTitle("ITEM #" + ticketItem.getName()); //$NON-NLS-1$
+//		}
 
 	}
 	
@@ -338,30 +314,4 @@ public class TicketItemModifierView extends JPanel {
 	public com.floreantpos.ui.views.order.modifier.ModifierViewerTable getTicketViewerTable() {
 		return modifierViewerTable;
 	}
-
-	public static void main(String[] args) {
-		TicketItemModifierView ticketView = new TicketItemModifierView();
-		JFrame frame = new JFrame();
-		frame.add(ticketView);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.pack();
-		frame.setVisible(true);
-	}
-
-
-		public void setOrderType(OrderType orderType) {
-			ticket.setType(orderType);
-
-		}
-
-		protected void doChangeOrderType() {
-			OrderTypeSelectionDialog dialog = new OrderTypeSelectionDialog();
-			dialog.open();
-
-			if (dialog.isCanceled())
-				return;
-
-			OrderType selectedOrderType = dialog.getSelectedOrderType();
-			setOrderType(selectedOrderType);
-		}
 }

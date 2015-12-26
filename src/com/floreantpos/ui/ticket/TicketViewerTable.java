@@ -155,22 +155,48 @@ public class TicketViewerTable extends JTable {
 			TicketItem ticketItem = (TicketItem) object;
 			int itemCount = ticketItem.getItemCount();
 			ticketItem.setItemCount(++itemCount);
+			
+//			if(ticketItem.isHasModifiers()) {
+//				List<TicketItemModifierGroup> ticketItemModifierGroups = ticketItem.getTicketItemModifierGroups();
+//				if(ticketItemModifierGroups != null) {
+//					for (TicketItemModifierGroup ticketItemModifierGroup : ticketItemModifierGroups) {
+//						List<TicketItemModifier> ticketItemModifiers = ticketItemModifierGroup.getTicketItemModifiers();
+//						if(ticketItemModifiers != null) {
+//							for (TicketItemModifier ticketItemModifier : ticketItemModifiers) {
+//								
+//							}
+//						}
+//					}
+//				}
+//			}
+			
 			repaint();
 
 			return true;
 		}
-		else if (object instanceof TicketItemModifier) {
-			TicketItemModifier modifier = (TicketItemModifier) object;
-			int itemCount = modifier.getItemCount();
-			modifier.setItemCount(++itemCount);
-			repaint();
-			
-			if(modifierStateChangeListener != null) {
-				modifierStateChangeListener.modifierStateChanged();
-			}
-			
-			return true;
-		}
+//		else if (object instanceof TicketItemModifier) {
+//			TicketItemModifier modifier = (TicketItemModifier) object;
+//			int itemCount = modifier.getItemCount();
+//			modifier.setItemCount(++itemCount);
+//			repaint();
+//			
+//			if(modifierStateChangeListener != null) {
+//				modifierStateChangeListener.modifierStateChanged();
+//			}
+//			else if (object instanceof TicketItemModifier) {
+//		TicketItemModifier modifier = (TicketItemModifier) object;
+//		int itemCount = modifier.getItemCount();
+//		modifier.setItemCount(++itemCount);
+//		repaint();
+//		
+//		if(modifierStateChangeListener != null) {
+//			modifierStateChangeListener.modifierStateChanged();
+//		}
+//		
+//		return true;
+//	}
+//			return true;
+//		}
 		return false;
 	}
 
@@ -195,21 +221,21 @@ public class TicketViewerTable extends JTable {
 			
 			return true;
 		}
-		else if (object instanceof TicketItemModifier) {
-			TicketItemModifier modifier = (TicketItemModifier) object;
-			int itemCount = modifier.getItemCount();
-			if (itemCount == 1)
-				return false;
-
-			modifier.setItemCount(--itemCount);
-			repaint();
-			
-			if(modifierStateChangeListener != null) {
-				modifierStateChangeListener.modifierStateChanged();
-			}
-			
-			return true;
-		}
+//		else if (object instanceof TicketItemModifier) {
+//			TicketItemModifier modifier = (TicketItemModifier) object;
+//			int itemCount = modifier.getItemCount();
+//			if (itemCount == 1)
+//				return false;
+//
+//			modifier.setItemCount(--itemCount);
+//			repaint();
+//			
+//			if(modifierStateChangeListener != null) {
+//				modifierStateChangeListener.modifierStateChanged();
+//			}
+//			
+//			return true;
+//		}
 		return false;
 	}
 
@@ -238,7 +264,7 @@ public class TicketViewerTable extends JTable {
 		if(delete instanceof TicketItemModifier) {
 			if(modifierStateChangeListener != null) {
 				TicketItemModifier modifier = (TicketItemModifier) delete;
-				modifier.setModifierType(TicketItemModifier.MODIFIER_NOT_INITIALIZED);
+//				modifier.setModifierType(TicketItemModifier.MODIFIER_NOT_INITIALIZED);
 				modifier.setItemCount(0);
 				modifierStateChangeListener.updateView(modifier);
 			}

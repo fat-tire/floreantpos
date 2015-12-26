@@ -130,14 +130,14 @@ public class TicketItem extends BaseTicketItem implements ITicketItem {
 
 		if (ticketItemModifierGroups != null) {
 			for (TicketItemModifierGroup ticketItemModifierGroup : ticketItemModifierGroups) {
-				if (ticketItemModifierGroup.getModifierGroupId().equals(menuItemModifierGroup.getId())) {
+				if (ticketItemModifierGroup.getMenuItemModifierGroup().getId().equals(menuItemModifierGroup.getId())) {
 					return ticketItemModifierGroup;
 				}
 			}
 		}
 
 		TicketItemModifierGroup ticketItemModifierGroup = new TicketItemModifierGroup();
-		ticketItemModifierGroup.setModifierGroupId(menuItemModifierGroup.getId());
+		ticketItemModifierGroup.setMenuItemModifierGroup(menuItemModifierGroup);
 		ticketItemModifierGroup.setMinQuantity(menuItemModifierGroup.getMinQuantity());
 		ticketItemModifierGroup.setMaxQuantity(menuItemModifierGroup.getMaxQuantity());
 		ticketItemModifierGroup.setParent(this);
@@ -146,12 +146,12 @@ public class TicketItem extends BaseTicketItem implements ITicketItem {
 		return ticketItemModifierGroup;
 	}
 	
-	public TicketItemModifierGroup findTicketItemModifierGroup(Integer menuModifierGroupId) {
+	public TicketItemModifierGroup findTicketItemModifierGroup(int menuModifierGroupId) {
 		List<TicketItemModifierGroup> ticketItemModifierGroups = getTicketItemModifierGroups();
 		
 		if (ticketItemModifierGroups != null) {
 			for (TicketItemModifierGroup ticketItemModifierGroup : ticketItemModifierGroups) {
-				if (ticketItemModifierGroup.getModifierGroupId() == menuModifierGroupId) {
+				if (ticketItemModifierGroup.getMenuItemModifierGroup().getId() == menuModifierGroupId) {
 					return ticketItemModifierGroup;
 				}
 			}
