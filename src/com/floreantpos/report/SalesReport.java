@@ -100,7 +100,7 @@ public class SalesReport extends Report {
 
 		for (Iterator iter = tickets.iterator(); iter.hasNext();) {
 			Ticket t = (Ticket) iter.next();
-			
+
 			Ticket ticket = TicketDAO.getInstance().loadFullTicket(t.getId());
 
 			List<TicketItem> ticketItems = ticket.getTicketItems();
@@ -115,6 +115,8 @@ public class SalesReport extends Report {
 				else {
 					key = ticketItem.getItemId().toString();
 				}
+				key+= "-" + ticketItem.getUnitPrice().toString();
+
 				ReportItem reportItem = itemMap.get(key);
 
 				if (reportItem == null) {
@@ -127,7 +129,7 @@ public class SalesReport extends Report {
 					itemMap.put(key, reportItem);
 				}
 				reportItem.setQuantity(ticketItem.getItemCount() + reportItem.getQuantity());
-				reportItem.setTotal(reportItem.getTotal() + ticketItem.getSubtotalAmountWithoutModifiers());
+				reportItem.setTotal(reportItem.getTotal() + ticketItem.getTaxAmountWithoutModifiers()+ticketItem.getSubtotalAmountWithoutModifiers());
 
 				if (ticketItem.isHasModifiers() && ticketItem.getTicketItemModifierGroups() != null) {
 					List<TicketItemModifierGroup> ticketItemModifierGroups = ticketItem.getTicketItemModifierGroups();
@@ -141,18 +143,26 @@ public class SalesReport extends Report {
 							else {
 								key = modifier.getItemId().toString();
 							}
+							key +="-"+modifier.getModifierType() +"-" + modifier.getUnitPrice() + "-" + modifier.getExtraUnitPrice();
+
 							ReportItem modifierReportItem = modifierMap.get(key);
 							if (modifierReportItem == null) {
 								modifierReportItem = new ReportItem();
 								modifierReportItem.setId(key);
-								modifierReportItem.setPrice(modifier.getUnitPrice());
+
+								if (modifier.getUnitPrice() == 0 && modifier.getSubTotalAmount()>0) {
+									modifierReportItem.setPrice(modifier.getExtraUnitPrice());
+								}
+								else {
+									modifierReportItem.setPrice(modifier.getUnitPrice());
+								}
 								modifierReportItem.setName(modifier.getName());
 								modifierReportItem.setTaxRate(modifier.getTaxRate());
 
 								modifierMap.put(key, modifierReportItem);
 							}
-							modifierReportItem.setQuantity(modifierReportItem.getQuantity() + 1);
-							//modifierReportItem.setTotal(modifierReportItem.getTotal() + modifier.getTotal());
+							modifierReportItem.setQuantity(modifierReportItem.getQuantity() + modifier.getItemCount());
+							modifierReportItem.setTotal(modifierReportItem.getTotal() + modifier.getTaxAmount() + modifier.getSubTotalAmount());
 						}
 					}
 				}
