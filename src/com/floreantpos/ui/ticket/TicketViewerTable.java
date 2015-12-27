@@ -29,7 +29,6 @@ import javax.swing.table.TableColumn;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.TicketItemModifier;
-import com.floreantpos.util.ModifierStateChangeListener;
 
 public class TicketViewerTable extends JTable {
 	
@@ -37,8 +36,6 @@ public class TicketViewerTable extends JTable {
 	private DefaultListSelectionModel selectionModel;
 	private TicketViewerTableCellRenderer cellRenderer;
 	
-	private ModifierStateChangeListener modifierStateChangeListener;
-
 	public TicketViewerTable() {
 		this(null);
 	}
@@ -261,14 +258,6 @@ public class TicketViewerTable extends JTable {
 		int selectedRow = getSelectedRow();
 		Object delete = model.delete(selectedRow);
 		
-		if(delete instanceof TicketItemModifier) {
-			if(modifierStateChangeListener != null) {
-				TicketItemModifier modifier = (TicketItemModifier) delete;
-//				modifier.setModifierType(TicketItemModifier.MODIFIER_NOT_INITIALIZED);
-				modifier.setItemCount(0);
-				modifierStateChangeListener.updateView(modifier);
-			}
-		}
 		return delete;
 	}
 
@@ -328,13 +317,5 @@ public class TicketViewerTable extends JTable {
 		selectionModel.addSelectionInterval(index, index);
 		Rectangle cellRect = getCellRect(index, 0, false);
 		scrollRectToVisible(cellRect);
-	}
-
-	public ModifierStateChangeListener getModifierStateChangeListener() {
-		return modifierStateChangeListener;
-	}
-
-	public void setModifierStateChangeListener(ModifierStateChangeListener modifierStateChangeListener) {
-		this.modifierStateChangeListener = modifierStateChangeListener;
 	}
 }

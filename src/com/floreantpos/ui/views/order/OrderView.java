@@ -28,7 +28,6 @@ import java.util.HashMap;
 
 import javax.swing.JComponent;
 
-import com.floreantpos.Messages;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.ui.dialog.POSMessageDialog;
@@ -70,13 +69,9 @@ public class OrderView extends ViewPanel {
 
 		groupView = new GroupView();
 		itemView = new MenuItemView();
-		modifierView = new ModifierView();
-		
-		ticketView.getTicketViewerTable().setModifierStateChangeListener(modifierView);
 
 		addView(GroupView.VIEW_NAME, groupView);
 		addView(MenuItemView.VIEW_NAME, itemView);
-		addView(ModifierView.VIEW_NAME, modifierView);
 		addView("VIEW_EMPTY", new com.floreantpos.swing.TransparentPanel()); //$NON-NLS-1$
 
 		showView("VIEW_EMPTY"); //$NON-NLS-1$
@@ -124,7 +119,6 @@ public class OrderView extends ViewPanel {
 	private CardLayout cardLayout;
 	private GroupView groupView;
 	private MenuItemView itemView;
-	private ModifierView modifierView;
 	private OrderController orderController;
 
 	public void showView(final String viewName) {
@@ -153,14 +147,6 @@ public class OrderView extends ViewPanel {
 
 	public void setItemView(MenuItemView itemView) {
 		this.itemView = itemView;
-	}
-
-	public ModifierView getModifierView() {
-		return modifierView;
-	}
-
-	public void setModifierView(ModifierView modifierView) {
-		this.modifierView = modifierView;
 	}
 
 	public com.floreantpos.ui.views.order.TicketView getTicketView() {
