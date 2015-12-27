@@ -98,7 +98,7 @@ public class ModelBrowser<E> extends JPanel implements ActionListener, ListSelec
 		add(browserPanel);
 
 		beanPanel.setBorder(BorderFactory.createEtchedBorder());
-		JPanel beanEditorPanel = new JPanel(new MigLayout("align 50% 50%")); //$NON-NLS-1$
+		JPanel beanEditorPanel = new JPanel(new MigLayout()); //$NON-NLS-1$
 		beanEditorPanel.add(beanEditor);
 		beanPanel.add(beanEditorPanel);
 
