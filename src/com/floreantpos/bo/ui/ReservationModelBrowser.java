@@ -13,9 +13,9 @@ public class ReservationModelBrowser<E> extends ModelBrowser {
 
 	BookingBeanEditor beanEditor;
 	private JButton btnSeat = new JButton("SEAT");
-	private JButton btnNoAppear = new JButton("NO APPEAR");
+	private JButton btnNoAppear = new JButton("NO APR");
 	private JButton btnDelay = new JButton("DELAY");
-	private JButton btnBookingCancel = new JButton("CANCEL BOOKING");
+	private JButton btnBookingCancel = new JButton("CANCEL BK");
 
 	public ReservationModelBrowser(BookingBeanEditor<E> beanEditor, SearchPanel<E> searchPanel) {
 		super(beanEditor, searchPanel);
@@ -24,7 +24,7 @@ public class ReservationModelBrowser<E> extends ModelBrowser {
 		btnNoAppear.setEnabled(false);
 		btnDelay.setEnabled(false);
 		btnBookingCancel.setEnabled(false);
-
+		btnDelete.setText("DEL");
 	}
 
 	@Override
