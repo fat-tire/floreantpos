@@ -33,7 +33,6 @@ import java.util.Set;
 import java.util.Vector;
 
 import javax.swing.AbstractButton;
-import javax.swing.UIManager;
 
 import com.floreantpos.PosException;
 import com.floreantpos.model.MenuItemModifierGroup;
@@ -44,19 +43,17 @@ import com.floreantpos.model.TicketItemModifierGroup;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.views.order.SelectionView;
-import com.floreantpos.util.ModifierStateChangeListener;
 
 /**
  * 
  * @author MShahriar
  */
-public class ModifierView extends SelectionView implements ModifierStateChangeListener {
+public class ModifierView extends SelectionView {
 	private Vector<ModifierSelectionListener> listenerList = new Vector<ModifierSelectionListener>();
 
 	private ModifierSelectionModel modifierSelectionModel;
 	private MenuModifierGroup modifierGroup;
 
-	private ModifierButton currentSelectedButton;
 	private HashMap<String, ModifierButton> buttonMap = new HashMap<String, ModifierButton>();
 
 	private boolean addOnMode;
@@ -236,47 +233,6 @@ public class ModifierView extends SelectionView implements ModifierStateChangeLi
 				listener.modifierSelected(menuModifier);
 			}
 		}
-	}
-
-	@Override
-	public void modifierStateChanged() {
-		updateVisualRepresentation();
-	}
-
-	@Override
-	public void updateView(TicketItemModifier modifier) {
-		//		String key = modifier.getItemId() + "_" + modifier.getGroupId(); //$NON-NLS-1$
-		// ModifierButton modifierButton = buttonMap.get(key);
-		// if (modifierButton == null) {
-		// return;
-		// }
-		//
-		// modifierButton.updateView(modifier);
-	}
-
-	@Override
-	public void select(TicketItemModifier modifier) {
-		//		String key = modifier.getItemId() + "_" + modifier.getGroupId(); //$NON-NLS-1$
-		// ModifierButton modifierButton = buttonMap.get(key);
-		// if (modifierButton == null) {
-		// return;
-		// }
-		//
-		// if(currentSelectedButton != null) {
-		//			currentSelectedButton.setBorder(UIManager.getBorder("Button.border")); //$NON-NLS-1$
-		// }
-		// currentSelectedButton = modifierButton;
-		// //modifierButton.setBorder(BorderFactory.createLineBorder(Color.blue.brighter(),
-		// 2));
-		// modifierButton.requestFocus(true);
-	}
-
-	@Override
-	public void clearSelection() {
-		if (currentSelectedButton != null) {
-			currentSelectedButton.setBorder(UIManager.getBorder("Button.border")); //$NON-NLS-1$
-		}
-		currentSelectedButton = null;
 	}
 
 	public boolean isAddOnMode() {

@@ -38,13 +38,9 @@ import javax.swing.ButtonGroup;
 import org.apache.log4j.Logger;
 
 import com.floreantpos.Messages;
-import com.floreantpos.main.Application;
 import com.floreantpos.model.MenuCategory;
-import com.floreantpos.model.MenuItemModifierGroup;
-import com.floreantpos.model.TicketItemModifierGroup;
 import com.floreantpos.model.dao.MenuCategoryDAO;
 import com.floreantpos.swing.POSToggleButton;
-import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.views.order.actions.CategorySelectionListener;
 
 /**
@@ -141,20 +137,6 @@ public class CategoryView extends SelectionView implements ActionListener {
 	
 
 	public void actionPerformed(ActionEvent e) {
-		ModifierView modifierView = OrderView.getInstance().getModifierView();
-		
-		if(modifierView.isShowing()) {
-			List<MenuItemModifierGroup> menuItemModifierGroups = modifierView.getMenuItem().getMenuItemModiferGroups();
-			List<TicketItemModifierGroup> ticketItemModifierGroups = modifierView.getParentTicketItem().getTicketItemModifierGroups();
-
-			boolean requiredModifierAdded = modifierView.isRequiredModifiersAdded(menuItemModifierGroups, ticketItemModifierGroups);
-
-			if (!requiredModifierAdded) {
-				POSMessageDialog.showError(Application.getPosWindow(), Messages.getString("CategoryView.3")); //$NON-NLS-1$
-				return;
-			}
-		}
-		
 		CategoryButton button = (CategoryButton) e.getSource();
 		if(button.isSelected()) {
 			fireCategorySelected(button.foodCategory);

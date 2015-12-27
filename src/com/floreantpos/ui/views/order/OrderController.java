@@ -60,7 +60,6 @@ public class OrderController implements OrderListener, CategorySelectionListener
 		orderView.getGroupView().addGroupSelectionListener(this);
 		orderView.getItemView().addItemSelectionListener(this);
 		orderView.getOthersView().setItemSelectionListener(this);
-		orderView.getModifierView().addModifierSelectionListener(this);
 		orderView.getTicketView().addOrderListener(this);
 	}
 
