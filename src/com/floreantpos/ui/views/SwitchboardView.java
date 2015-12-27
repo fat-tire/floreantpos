@@ -82,6 +82,7 @@ import com.floreantpos.ui.views.order.OrderView;
 import com.floreantpos.ui.views.order.RootView;
 import com.floreantpos.ui.views.order.ViewPanel;
 import com.floreantpos.ui.views.payment.SettleTicketDialog;
+import com.floreantpos.ui.views.payment.TicketSelectionDialog;
 import com.floreantpos.util.OrderUtil;
 import com.floreantpos.util.POSUtil;
 import com.floreantpos.util.TicketAlreadyExistsException;
@@ -551,8 +552,15 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 		if (!POSUtil.checkDrawerAssignment()) {
 			return;
 		}
+		
+		TicketSelectionDialog ticketSelectionDialog=new TicketSelectionDialog();
+		ticketSelectionDialog.open(); 
+		
+		if(ticketSelectionDialog.isCanceled()){
+			return; 
+		}
 
-		List<Ticket> selectedTickets = ticketList.getSelectedTickets();
+		List<Ticket> selectedTickets = ticketSelectionDialog.getSelectedTickets();
 		if (selectedTickets == null) {
 			return;
 		}
