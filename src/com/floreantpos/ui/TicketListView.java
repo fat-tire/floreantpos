@@ -61,7 +61,6 @@ public class TicketListView extends JPanel implements ITicketList {
 	private JXTable table;
 	private TicketListTableModel tableModel;
 	private PosBlinkButton btnRefresh;
-	private PosButton btnUnselect;
 	private PosButton btnPrevious;
 	private PosButton btnNext;
 
@@ -87,8 +86,9 @@ public class TicketListView extends JPanel implements ITicketList {
 	}
 
 	private void createTicketTable() {
-		table = new TicketListTable();
+		table = new JXTable();
 		table.setSortable(true);
+		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.setColumnControlVisible(true);
 		table.setModel(tableModel = new TicketListTableModel());
 		table.setRowHeight(60);
@@ -116,7 +116,6 @@ public class TicketListView extends JPanel implements ITicketList {
 		btnOrderFilters = new POSToggleButton();
 		btnOrderFilters.setText("<html>" + Messages.getString("SwitchboardView.2") + "</html>"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		btnRefresh = new PosBlinkButton(Messages.getString("TicketListView.3")); //$NON-NLS-1$
-		btnUnselect = new PosButton("X");
 		btnPrevious = new PosButton(Messages.getString("TicketListView.4")); //$NON-NLS-1$
 		btnNext = new PosButton(Messages.getString("TicketListView.5")); //$NON-NLS-1$
 
@@ -128,7 +127,6 @@ public class TicketListView extends JPanel implements ITicketList {
 		ColumnControlButton controlButton = new ColumnControlButton(table);
 		topButtonPanel.add(controlButton, "h 40!, grow, wrap"); //$NON-NLS-1$
 		topButtonPanel.add(btnRefresh, "h 40!, grow, wrap"); //$NON-NLS-1$
-		topButtonPanel.add(btnUnselect, "h 40!, grow, wrap"); //$NON-NLS-1$
 		topButtonPanel.add(btnPrevious, "h 40!, grow, wrap"); //$NON-NLS-1$
 
 		JPanel downButtonPanel = new JPanel(new MigLayout("ins 0", "grow", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
@@ -190,12 +188,6 @@ public class TicketListView extends JPanel implements ITicketList {
 			}
 		});
 
-		btnUnselect.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				table.clearSelection();
-			}
-		});
 	}
 
 	public void updateButtonStatus() {
@@ -299,24 +291,6 @@ public class TicketListView extends JPanel implements ITicketList {
 		}
 
 		return tickets;
-	}
-
-	private class TicketListTable extends JXTable {
-
-		public TicketListTable() {
-		}
-
-		@Override
-		public void changeSelection(int rowIndex, int columnIndex, boolean toggle, boolean extend) {
-			ListSelectionModel selectionModel = getSelectionModel();
-			boolean selected = selectionModel.isSelectedIndex(rowIndex);
-			if(selected) {
-//				selectionModel.removeSelectionInterval(rowIndex, rowIndex);
-			}
-			else {
-				selectionModel.addSelectionInterval(rowIndex, rowIndex);
-			}
-		}
 	}
 
 	private class TicketListTableModel extends PaginatedTableModel {

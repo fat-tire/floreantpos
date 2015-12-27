@@ -195,7 +195,7 @@ public class ModifierGroupView extends JPanel implements ComponentListener {
 			this.menuModifierGroup = menuModifierGroup;
 			String text = "<html><body>" +
 					"<center>" + menuModifierGroup.getDisplayName() + "" +
-					"<br/>(" + menuModifierGroup.getMenuItemModifierGroup().getMaxQuantity() + ")</center>" +
+					"<br/>(" + menuModifierGroup.getMenuItemModifierGroup().getMinQuantity() + ")</center>" +
 					"</body></html>";
 			setText(text); //$NON-NLS-1$ //$NON-NLS-2$
 
