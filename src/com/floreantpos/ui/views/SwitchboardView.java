@@ -40,7 +40,6 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
@@ -207,53 +206,56 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 		JPanel activityPanel = new JPanel(new BorderLayout(5, 5));
 		JPanel innerActivityPanel = new JPanel(new MigLayout("hidemode 3, fill, ins 0", "fill, grow", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
-		JPanel panel1 = new JPanel(new GridLayout(1, 0, 5, 5));
-
-		panel1.add(btnOrderInfo);
-		panel1.add(btnEditTicket);
+		JPanel firstRowButtonPanel = new JPanel(new GridLayout(1, 0, 5, 5));
+		final JXCollapsiblePane secondRowButtonPanel = new JXCollapsiblePane();
+		secondRowButtonPanel.setAnimated(false);
+		secondRowButtonPanel.setCollapsed(true);
+		secondRowButtonPanel.setVisible(false);
+		secondRowButtonPanel.getContentPane().setLayout(new GridLayout(1, 0, 5, 5));
 
 		if (Application.getInstance().getTerminal().isHasCashDrawer()) {
-			panel1.add(btnSettleTicket);
+			firstRowButtonPanel.add(btnOrderInfo);
+			firstRowButtonPanel.add(btnEditTicket);
+			firstRowButtonPanel.add(btnSettleTicket);
+			firstRowButtonPanel.add(btnGroupSettle);
+			firstRowButtonPanel.add(btnCloseOrder);
+			
+			secondRowButtonPanel.getContentPane().add(btnSplitTicket);
+			secondRowButtonPanel.getContentPane().add(btnReopenTicket);
+			secondRowButtonPanel.getContentPane().add(btnVoidTicket);
+			secondRowButtonPanel.getContentPane().add(btnRefundTicket);
+			secondRowButtonPanel.getContentPane().add(btnAssignDriver);
 		}
-		if (Application.getInstance().getTerminal().isHasCashDrawer()) {
-			panel1.add(btnGroupSettle);
+		else {
+			firstRowButtonPanel.add(btnOrderInfo);
+			firstRowButtonPanel.add(btnEditTicket);
+			firstRowButtonPanel.add(btnCloseOrder);
+			firstRowButtonPanel.add(btnSplitTicket);
+			
+			secondRowButtonPanel.getContentPane().add(btnReopenTicket);
+			secondRowButtonPanel.getContentPane().add(btnVoidTicket);
+			secondRowButtonPanel.getContentPane().add(btnRefundTicket);
+			secondRowButtonPanel.getContentPane().add(btnAssignDriver);
 		}
-		panel1.add(btnCloseOrder);
+		
 
-		innerActivityPanel.add(panel1);
-
-		final JXCollapsiblePane collapsiblePane = new JXCollapsiblePane();
-		collapsiblePane.setAnimated(false);
-		collapsiblePane.getContentPane().setLayout(new GridLayout(1, 0, 5, 5));
-
-		collapsiblePane.getContentPane().add(btnSplitTicket);
-		collapsiblePane.getContentPane().add(btnReopenTicket);
-		collapsiblePane.getContentPane().add(btnVoidTicket);
-
-		collapsiblePane.getContentPane().add(btnRefundTicket);
-		collapsiblePane.getContentPane().add(btnAssignDriver);
-
-		collapsiblePane.setCollapsed(true);
-		innerActivityPanel.add(collapsiblePane, "newline"); //$NON-NLS-1$
+		innerActivityPanel.add(firstRowButtonPanel);
+		innerActivityPanel.add(secondRowButtonPanel, "newline"); //$NON-NLS-1$
 
 		final PosButton btnMore = new PosButton(POSConstants.MORE_ACTIVITY_BUTTON_TEXT);
-		final Border border1 = BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(0, 0, 5, 0), btnMore.getBorder());
-		final Border border2 = BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0), btnMore.getBorder());
-		btnMore.setBorder(border1);
 		btnMore.setPreferredSize(new Dimension(78, 0));
 
 		btnMore.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				boolean collapsed = collapsiblePane.isCollapsed();
-				collapsiblePane.setCollapsed(!collapsed);
+				boolean collapsed = secondRowButtonPanel.isCollapsed();
+				secondRowButtonPanel.setVisible(collapsed);
+				secondRowButtonPanel.setCollapsed(!collapsed);
 				if (collapsed) {
 					btnMore.setText(POSConstants.LESS_ACTIVITY_BUTTON_TEXT);
-					btnMore.setBorder(border2);
 				}
 				else {
 					btnMore.setText(POSConstants.MORE_ACTIVITY_BUTTON_TEXT);
-					btnMore.setBorder(border1);
 				}
 			}
 		});

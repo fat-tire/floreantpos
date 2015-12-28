@@ -60,6 +60,7 @@ public class TerminalConfigurationView extends ConfigurationView {
 	private JComboBox<String> cbFonts = new JComboBox<String>();
 
 	private IntegerTextField tfButtonHeight;
+	private IntegerTextField tfMenuButtonHeight;
 
 	private IntegerTextField tfFontSize;
 	private JCheckBox cbAutoLogoff = new JCheckBox(Messages.getString("TerminalConfigurationView.7")); //$NON-NLS-1$
@@ -120,6 +121,10 @@ public class TerminalConfigurationView extends ConfigurationView {
 		touchConfigPanel.add(new JLabel(Messages.getString("TerminalConfigurationView.19"))); //$NON-NLS-1$
 		tfButtonHeight = new IntegerTextField(5);
 		touchConfigPanel.add(tfButtonHeight);
+		
+		touchConfigPanel.add(new JLabel("Menu item button height"));
+		tfMenuButtonHeight = new IntegerTextField(5);
+		touchConfigPanel.add(tfMenuButtonHeight);
 
 		touchConfigPanel.add(new JLabel(Messages.getString("TerminalConfigurationView.20"))); //$NON-NLS-1$
 		tfFontSize = new IntegerTextField(5);
@@ -223,9 +228,15 @@ public class TerminalConfigurationView extends ConfigurationView {
 	public boolean save() {
 		int terminalNumber = 0;
 		int buttonHeight = tfButtonHeight.getInteger();
+		int menuItemButtonHeight = tfMenuButtonHeight.getInteger();
 		int fontSize = tfFontSize.getInteger();
 
 		if(buttonHeight < 20) {
+			POSMessageDialog.showError(com.floreantpos.util.POSUtil.getFocusedWindow(), Messages.getString("TerminalConfigurationView.38")); //$NON-NLS-1$
+			return false;
+		}
+		
+		if(menuItemButtonHeight < 20) {
 			POSMessageDialog.showError(com.floreantpos.util.POSUtil.getFocusedWindow(), Messages.getString("TerminalConfigurationView.38")); //$NON-NLS-1$
 			return false;
 		}
@@ -253,6 +264,7 @@ public class TerminalConfigurationView extends ConfigurationView {
 		TerminalConfig.setUseTranslatedName(cbTranslatedName.isSelected());
 
 		TerminalConfig.setTouchScreenButtonHeight(buttonHeight);
+		TerminalConfig.setMenuItemButtonHeight(menuItemButtonHeight);
 		TerminalConfig.setTouchScreenFontSize(fontSize);
 
 		TerminalConfig.setAutoLogoffEnable(cbAutoLogoff.isSelected());
@@ -298,6 +310,7 @@ public class TerminalConfigurationView extends ConfigurationView {
 		cbShowBarCodeOnReceipt.setSelected(TerminalConfig.isShowBarcodeOnReceipt());
 
 		tfButtonHeight.setText("" + TerminalConfig.getTouchScreenButtonHeight()); //$NON-NLS-1$
+		tfMenuButtonHeight.setText("" + TerminalConfig.getMenuItemButtonHeight()); //$NON-NLS-1$
 		tfFontSize.setText("" + TerminalConfig.getTouchScreenFontSize()); //$NON-NLS-1$
 
 		cbTranslatedName.setSelected(TerminalConfig.isUseTranslatedName());

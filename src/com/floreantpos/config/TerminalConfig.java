@@ -99,6 +99,22 @@ public class TerminalConfig {
 	public static int getTouchScreenButtonHeight() {
 		return config.getInt(TOUCH_BUTTON_HEIGHT, 80);
 	}
+	
+	public static void setMenuItemButtonHeight(int height) {
+		config.setProperty("menu_button_height", height);
+	}
+
+	public static int getMenuItemButtonHeight() {
+		return config.getInt("menu_button_height", 80);
+	}
+	
+	public static void setMenuItemButtonWidth(int width) {
+		config.setProperty("menu_button_width", width);
+	}
+
+	public static int getMenuItemButtonWidth() {
+		return config.getInt("menu_button_width", 80);
+	}
 
 	public static void setTouchScreenFontSize(int size) {
 		config.setProperty(TOUCH_FONT_SIZE, size);

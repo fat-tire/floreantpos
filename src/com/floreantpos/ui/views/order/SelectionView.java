@@ -36,6 +36,7 @@ import net.miginfocom.swing.MigLayout;
 import org.jdesktop.swingx.JXTitledSeparator;
 
 import com.floreantpos.POSConstants;
+import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.swing.PosButton;
 
 public abstract class SelectionView extends JPanel implements ComponentListener {
@@ -75,20 +76,20 @@ public abstract class SelectionView extends JPanel implements ComponentListener 
 		buttonsPanel.addComponentListener(this);
 		add(buttonsPanel);
 
-		MigLayout migLayout2 = new MigLayout("fill,hidemode 3", "grow", ""); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		MigLayout migLayout2 = new MigLayout("fill,hidemode 3, ins 5", "grow", ""); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		JPanel southPanel = new JPanel(migLayout2);
 
 		btnBack = new PosButton();
 		btnBack.setText(POSConstants.CAPITAL_BACK);
-		southPanel.add(btnBack, "grow,shrink, align center, height 50"); //$NON-NLS-1$
+		southPanel.add(btnBack, "grow,shrink, align center"); //$NON-NLS-1$
 
 		btnPrev = new PosButton();
 		btnPrev.setText(POSConstants.CAPITAL_PREV);
-		southPanel.add(btnPrev, "grow, align center, height 50"); //$NON-NLS-1$
+		southPanel.add(btnPrev, "grow, align center"); //$NON-NLS-1$
 
 		btnNext = new PosButton();
 		btnNext.setText(POSConstants.CAPITAL_NEXT);
-		southPanel.add(btnNext, "grow, align center, height 50"); //$NON-NLS-1$
+		southPanel.add(btnNext, "grow, align center"); //$NON-NLS-1$
 
 		add(southPanel, BorderLayout.SOUTH);
 
@@ -100,7 +101,7 @@ public abstract class SelectionView extends JPanel implements ComponentListener 
 	}
 
 	public SelectionView(String title) {
-		this(title, 120, 80);
+		this(title, 120, TerminalConfig.getMenuItemButtonHeight());
 	}
 	
 	public void setTitle(String title) {

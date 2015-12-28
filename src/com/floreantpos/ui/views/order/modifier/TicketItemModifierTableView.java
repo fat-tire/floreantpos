@@ -138,7 +138,7 @@ public class TicketItemModifierTableView extends JPanel {
 
 		});
 
-		setPreferredSize(new java.awt.Dimension(480, 463));
+		setPreferredSize(new java.awt.Dimension(360, 463));
 
 	}// </editor-fold>//GEN-END:initComponents
 
@@ -187,7 +187,7 @@ public class TicketItemModifierTableView extends JPanel {
 		ticketItemActionPanel.add(btnDelete);
 		ticketItemActionPanel.add(btnScrollDown);
 
-		ticketItemActionPanel.setPreferredSize(new Dimension(70, 360));
+		ticketItemActionPanel.setPreferredSize(new Dimension(60, 360));
 	}
 	
 	public void addModifierSelectionListener(ModifierSelectionListener listener) {
