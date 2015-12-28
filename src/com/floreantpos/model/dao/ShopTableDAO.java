@@ -92,7 +92,7 @@ public class ShopTableDAO extends BaseShopTableDAO {
 	}
 
 	public List<ShopTable> getByNumbers(Collection<Integer> tableNumbers) {
-		if(tableNumbers == null || tableNumbers.size()==0) {
+		if (tableNumbers == null || tableNumbers.size() == 0) {
 			return null;
 		}
 
@@ -122,7 +122,7 @@ public class ShopTableDAO extends BaseShopTableDAO {
 	public void occupyTables(Ticket ticket) {
 		List<ShopTable> tables = getTables(ticket);
 
-		if(tables == null)
+		if (tables == null)
 			return;
 
 		Session session = null;
@@ -147,9 +147,8 @@ public class ShopTableDAO extends BaseShopTableDAO {
 		}
 	}
 
-	
 	public void bookedTables(List<ShopTable> tables) {
-		if(tables == null) {
+		if (tables == null) {
 			return;
 		}
 
@@ -177,7 +176,7 @@ public class ShopTableDAO extends BaseShopTableDAO {
 	}
 
 	public void freeTables(List<ShopTable> tables) {
-		if(tables == null) {
+		if (tables == null) {
 			return;
 		}
 
@@ -207,7 +206,7 @@ public class ShopTableDAO extends BaseShopTableDAO {
 	public void releaseTables(Ticket ticket) {
 		List<ShopTable> tables = getTables(ticket);
 
-		if(tables == null)
+		if (tables == null)
 			return;
 
 		Session session = null;
@@ -232,7 +231,7 @@ public class ShopTableDAO extends BaseShopTableDAO {
 			closeSession(session);
 		}
 	}
-	
+
 	public void releaseAndDeleteTicketTables(Ticket ticket) {
 
 		Session session = null;
@@ -241,10 +240,10 @@ public class ShopTableDAO extends BaseShopTableDAO {
 		try {
 			session = createNewSession();
 			tx = session.beginTransaction();
-			
+
 			releaseTables(ticket);
-			ticket.setTableNumbers(null); 
-			TicketDAO.getInstance().saveOrUpdate(ticket); 
+			ticket.setTableNumbers(null);
+			TicketDAO.getInstance().saveOrUpdate(ticket);
 
 			tx.commit();
 		} catch (Exception e) {
@@ -294,16 +293,18 @@ public class ShopTableDAO extends BaseShopTableDAO {
 	}
 
 	public void createNewTables(int totalNumberOfTableHaveToCreate) {
-		
+
 		Session session = null;
 		Transaction tx = null;
 
 		try {
 			session = createNewSession();
 			tx = session.beginTransaction();
-			
+
 			for (int i = 0; i < totalNumberOfTableHaveToCreate; i++) {
-				super.save(new ShopTable(), session);
+				ShopTable table = new ShopTable();
+				table.setId(i + 1);
+				super.save(table, session);
 			}
 
 			tx.commit();
