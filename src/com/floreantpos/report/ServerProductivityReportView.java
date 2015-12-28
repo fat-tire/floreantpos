@@ -106,7 +106,7 @@ public class ServerProductivityReportView extends JPanel {
 		map.put("toDate", ReportService.formatShortDate(toDate)); //$NON-NLS-1$
 		map.put("reportTime", ReportService.formatFullDate(new Date())); //$NON-NLS-1$
 		
-		JasperReport jasperReport = ReportUtil.getReport(Messages.getString("ServerProductivityReportView.12")); //$NON-NLS-1$
+		JasperReport jasperReport = ReportUtil.getReport("server_productivity_report"); //$NON-NLS-1$
 		JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map, new JRTableModelDataSource(report.getTableModel()));
 		JRViewer viewer = new JRViewer(jasperPrint);
 		reportContainer.removeAll();
