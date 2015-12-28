@@ -21,7 +21,7 @@
  * Created on August 5, 2006, 9:29 PM
  */
 
-package com.floreantpos.ui.views.payment;
+package com.floreantpos.ui.views.order;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -46,6 +46,7 @@ import net.miginfocom.swing.MigLayout;
 import com.floreantpos.Messages;
 import com.floreantpos.POSConstants;
 import com.floreantpos.PosException;
+import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.swing.POSToggleButton;
@@ -97,27 +98,26 @@ public class TicketSelectionDialog extends POSDialog {
 				dispose();
 			}
 		});
-		
+
+		buttonActionPanel.add(btnOk, "w 80!,split 2,align center"); //$NON-NLS-1$
+		buttonActionPanel.add(btnCancel, "w 80!"); //$NON-NLS-1$
+
 		JPanel footerPanel = new JPanel(new BorderLayout());
 		footerPanel.setBorder(BorderFactory.createEmptyBorder(2, 0, 0, 0));
 		footerPanel.add(new JSeparator(), BorderLayout.NORTH);
 		footerPanel.add(buttonActionPanel);
-		
-		buttonActionPanel.add(btnOk,"w 80!,split 2,align center");
-		buttonActionPanel.add(btnCancel,"w 80!");
 
 		add(footerPanel, BorderLayout.SOUTH);
-		
+
 		buttonsPanel = new ScrollableFlowPanel(FlowLayout.LEADING);
-		
+
 		JScrollPane scrollPane = new PosScrollPane(buttonsPanel, PosScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, PosScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		scrollPane.getVerticalScrollBar().setPreferredSize(new Dimension(80, 0));
 		scrollPane.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5), scrollPane.getBorder()));
 
 		add(scrollPane, BorderLayout.CENTER);
 
-		setSize(600, 600);
-
+		setSize(1024, 600);
 	}
 
 	public void initialize() {
@@ -131,7 +131,7 @@ public class TicketSelectionDialog extends POSDialog {
 				TicketButton ticketButton = new TicketButton(ticket);
 				Integer key = ticket.getId();
 				ticketButtonMap.put(key, ticketButton);
-				buttonsPanel.add(ticketButton); 
+				buttonsPanel.add(ticketButton);
 			}
 
 		} catch (PosException e) {
@@ -161,7 +161,7 @@ public class TicketSelectionDialog extends POSDialog {
 	}
 
 	private class TicketButton extends POSToggleButton implements ActionListener {
-		private static final int BUTTON_SIZE = 80;
+		private static final int BUTTON_SIZE = 119;
 		Ticket ticket;
 
 		TicketButton(Ticket ticket) {
@@ -172,9 +172,9 @@ public class TicketSelectionDialog extends POSDialog {
 			setHorizontalTextPosition(SwingConstants.CENTER);
 			setFont(getFont().deriveFont(18.0f));
 
-			setText("<html><body><center><u>" + ticket.getId() + "</u><br>" + ticket.getDueAmount() + "</center></body></html>"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			setText("<html><body><center>#" + ticket.getId() + "<br>"+Messages.getString("TicketSelectionDialog.7") + ticket.getDueAmount() + "</center></body></html>"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 
-			setPreferredSize(new Dimension(BUTTON_SIZE, BUTTON_SIZE));
+			setPreferredSize(new Dimension(BUTTON_SIZE, TerminalConfig.getMenuItemButtonHeight()));
 			addActionListener(this);
 		}
 
