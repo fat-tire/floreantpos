@@ -34,9 +34,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 
 import net.miginfocom.swing.MigLayout;
@@ -44,11 +46,11 @@ import net.miginfocom.swing.MigLayout;
 import com.floreantpos.Messages;
 import com.floreantpos.POSConstants;
 import com.floreantpos.PosException;
-import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.swing.POSToggleButton;
 import com.floreantpos.swing.PosButton;
+import com.floreantpos.swing.PosScrollPane;
 import com.floreantpos.swing.ScrollableFlowPanel;
 import com.floreantpos.ui.TitlePanel;
 import com.floreantpos.ui.dialog.POSDialog;
@@ -60,7 +62,7 @@ import com.floreantpos.ui.dialog.POSMessageDialog;
  */
 public class TicketSelectionDialog extends POSDialog {
 
-	JPanel buttonsPanel = new JPanel();
+	private ScrollableFlowPanel buttonsPanel;
 
 	private Map<Integer, TicketButton> ticketButtonMap = new HashMap<Integer, TicketSelectionDialog.TicketButton>();
 	private DefaultListModel<TicketButton> addedTicketListModel = new DefaultListModel<TicketButton>();
@@ -76,14 +78,9 @@ public class TicketSelectionDialog extends POSDialog {
 
 		TitlePanel titlePanel = new TitlePanel();
 		titlePanel.setTitle(Messages.getString("TicketSelectionDialog.0"));//$NON-NLS-1$
+		add(titlePanel, BorderLayout.NORTH);
 
-		buttonsPanel.setLayout(new MigLayout("fill")); //$NON-NLS-1$
-
-		ScrollableFlowPanel scrollablePanel = new ScrollableFlowPanel(FlowLayout.LEADING);
-		scrollablePanel.add(buttonsPanel);
-
-		JPanel actionButtonPanel = new JPanel();
-		actionButtonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+		JPanel buttonActionPanel = new JPanel(new MigLayout("fill")); //$NON-NLS-1$
 
 		PosButton btnOk = new PosButton(Messages.getString("TicketSelectionDialog.3")); //$NON-NLS-1$
 		btnOk.addActionListener(new java.awt.event.ActionListener() {
@@ -91,7 +88,6 @@ public class TicketSelectionDialog extends POSDialog {
 				doFinishTicketSelection();
 			}
 		});
-		btnOk.setPreferredSize(new Dimension(100, TerminalConfig.getTouchScreenButtonHeight()));
 
 		PosButton btnCancel = new PosButton(POSConstants.CANCEL.toUpperCase());
 		btnCancel.addActionListener(new java.awt.event.ActionListener() {
@@ -101,14 +97,25 @@ public class TicketSelectionDialog extends POSDialog {
 				dispose();
 			}
 		});
-		btnCancel.setPreferredSize(new Dimension(100, TerminalConfig.getTouchScreenButtonHeight()));
+		
+		JPanel footerPanel = new JPanel(new BorderLayout());
+		footerPanel.setBorder(BorderFactory.createEmptyBorder(2, 0, 0, 0));
+		footerPanel.add(new JSeparator(), BorderLayout.NORTH);
+		footerPanel.add(buttonActionPanel);
+		
+		buttonActionPanel.add(btnOk,"w 80!,split 2,align center");
+		buttonActionPanel.add(btnCancel,"w 80!");
 
-		actionButtonPanel.add(btnOk);
-		actionButtonPanel.add(btnCancel);
+		add(footerPanel, BorderLayout.SOUTH);
+		
+		buttonsPanel = new ScrollableFlowPanel(FlowLayout.LEADING);
+		
+		JScrollPane scrollPane = new PosScrollPane(buttonsPanel, PosScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, PosScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		scrollPane.getVerticalScrollBar().setPreferredSize(new Dimension(80, 0));
+		scrollPane.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5), scrollPane.getBorder()));
 
-		add(titlePanel, BorderLayout.NORTH);
-		add(new JScrollPane(scrollablePanel), BorderLayout.CENTER);
-		add(actionButtonPanel, BorderLayout.SOUTH);
+		add(scrollPane, BorderLayout.CENTER);
+
 		setSize(600, 600);
 
 	}
@@ -124,7 +131,7 @@ public class TicketSelectionDialog extends POSDialog {
 				TicketButton ticketButton = new TicketButton(ticket);
 				Integer key = ticket.getId();
 				ticketButtonMap.put(key, ticketButton);
-				buttonsPanel.add(ticketButton, "split 2,align center"); //$NON-NLS-1$
+				buttonsPanel.add(ticketButton); 
 			}
 
 		} catch (PosException e) {
