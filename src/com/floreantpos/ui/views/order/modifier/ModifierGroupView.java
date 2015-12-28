@@ -31,6 +31,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -102,6 +104,12 @@ public class ModifierGroupView extends JPanel implements ComponentListener {
 		//List itemList = new ArrayList();
 
 		List<MenuItemModifierGroup> modifierGroups = modifierSelectionModel.getMenuItem().getMenuItemModiferGroups();
+		Collections.sort(modifierGroups, new Comparator<MenuItemModifierGroup>() {
+			@Override
+			public int compare(MenuItemModifierGroup o1, MenuItemModifierGroup o2) {
+				return o2.getMinQuantity() - o1.getMinQuantity();
+			}
+		});
 
 		for (Iterator<MenuItemModifierGroup> iter = modifierGroups.iterator(); iter.hasNext();) {
 			MenuItemModifierGroup menuItemModifierGroup = iter.next();
@@ -171,13 +179,36 @@ public class ModifierGroupView extends JPanel implements ComponentListener {
 		}
 	}
 
+	public void selectNextGroup() {
+		ModifierGroupButton button = getNextGroupButton();
+		button.setSelected(true);
+		fireModifierGroupSelected(button.menuModifierGroup);
+	}
+	
+	public boolean hasNextGroup() {
+		return getNextGroupButton() != null;
+	}
+
+	private ModifierGroupButton getNextGroupButton() {
+		Component[] components = contentPanel.getContentPane().getComponents();
+		if (components != null && components.length > 0) {
+			for (int i = 0; i < components.length; i++) {
+				ModifierGroupButton button = (ModifierGroupButton) components[i];
+				if (button.isSelected() && i < (components.length - 1)) {
+					return (ModifierGroupButton) components[i + 1];
+				}
+			}
+		}
+		
+		return null;
+	}
+
 	private class ModifierGroupButton extends POSToggleButton implements ActionListener {
 		MenuModifierGroup menuModifierGroup;
 
 		ModifierGroupButton(MenuModifierGroup menuModifierGroup) {
 			this.menuModifierGroup = menuModifierGroup;
-			String text = "<html><body><center>" + menuModifierGroup.getDisplayName() + "" + "<br/>("  //$NON-NLS-1$ //$NON-NLS-2$ 
-					+ menuModifierGroup.getMenuItemModifierGroup().getMinQuantity() + "*)</center></body></html>";  //$NON-NLS-1$ 
+			String text = "<html><body><center>" + menuModifierGroup.getDisplayName() + "</center></body></html>"; //$NON-NLS-1$ //$NON-NLS-2$ 
 			setText(text);
 
 			addActionListener(this);
