@@ -123,7 +123,7 @@ public class TicketItemModifierGroup extends BaseTicketItemModifierGroup {
 		ticketItemModifier.setItemCount(1);
 		ticketItemModifier.setName(menuModifier.getDisplayName());
 		ticketItemModifier.setUnitPrice(menuModifier.getPrice());
-		ticketItemModifier.setExtraUnitPrice(menuModifier.getExtraPrice());
+//		ticketItemModifier.setExtraUnitPrice(menuModifier.getExtraPrice());
 		ticketItemModifier.setTaxRate(menuModifier.getTax() == null ? 0 : menuModifier.getTax().getRate());
 		ticketItemModifier.setModifierType(modifierType);
 		ticketItemModifier.setShouldPrintToKitchen(menuModifier.isShouldPrintToKitchen());
