@@ -415,6 +415,7 @@ public class TicketView extends JPanel implements ListSelectionListener {
 		else {
 			ticketViewerTable.deleteSelectedItem();
 		}
+		updateView(); 
 
 	}// GEN-LAST:event_doDeleteSelection
 
