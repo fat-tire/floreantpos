@@ -53,7 +53,9 @@ public abstract class SelectionView extends JPanel implements ComponentListener 
 	protected int currentBlockIndex = 0;
 	protected int nextBlockIndex;
 	
-	private TitledBorder border;
+	protected TitledBorder border;
+	
+	protected JPanel actionButtonPanel = new JPanel(new MigLayout("fill,hidemode 3, ins 2", "sg, fill", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 	protected com.floreantpos.swing.PosButton btnBack;
 	protected com.floreantpos.swing.PosButton btnNext;
@@ -73,31 +75,28 @@ public abstract class SelectionView extends JPanel implements ComponentListener 
 
 		setLayout(new BorderLayout(HORIZONTAL_GAP, VERTICAL_GAP));
 
-		buttonsPanel.addComponentListener(this);
 		add(buttonsPanel);
-
-		MigLayout migLayout2 = new MigLayout("fill,hidemode 3, ins 5", "grow", ""); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		JPanel southPanel = new JPanel(migLayout2);
 
 		btnBack = new PosButton();
 		btnBack.setText(POSConstants.CAPITAL_BACK);
-		southPanel.add(btnBack, "grow,shrink, align center"); //$NON-NLS-1$
+		actionButtonPanel.add(btnBack, "grow,shrink, align center"); //$NON-NLS-1$
 
 		btnPrev = new PosButton();
 		btnPrev.setText(POSConstants.CAPITAL_PREV);
-		southPanel.add(btnPrev, "grow, align center"); //$NON-NLS-1$
+		actionButtonPanel.add(btnPrev, "grow, align center"); //$NON-NLS-1$
 
 		btnNext = new PosButton();
 		btnNext.setText(POSConstants.CAPITAL_NEXT);
-		southPanel.add(btnNext, "grow, align center"); //$NON-NLS-1$
+		actionButtonPanel.add(btnNext, "grow, align center"); //$NON-NLS-1$
 
-		add(southPanel, BorderLayout.SOUTH);
+		add(actionButtonPanel, BorderLayout.SOUTH);
 
 		ScrollAction action = new ScrollAction();
 		btnBack.addActionListener(action);
 		btnPrev.addActionListener(action);
 		btnNext.addActionListener(action);
 
+		addComponentListener(this);
 	}
 
 	public SelectionView(String title) {

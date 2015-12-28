@@ -61,9 +61,9 @@ public class TicketItemModifierTableView extends JPanel {
 	
 	private com.floreantpos.swing.TransparentPanel ticketActionPanel = new com.floreantpos.swing.TransparentPanel();
 
-	private com.floreantpos.swing.PosButton btnDecreaseAmount;
+	//private com.floreantpos.swing.PosButton btnDecreaseAmount;
 	private com.floreantpos.swing.PosButton btnDelete = new PosButton(IconFactory.getIcon("/ui_icons/", "delete.png")); //$NON-NLS-1$ //$NON-NLS-2$	
-	private com.floreantpos.swing.PosButton btnIncreaseAmount = new PosButton(IconFactory.getIcon("/ui_icons/", "add_user.png")); //$NON-NLS-1$ //$NON-NLS-2$
+	//private com.floreantpos.swing.PosButton btnIncreaseAmount = new PosButton(IconFactory.getIcon("/ui_icons/", "add_user.png")); //$NON-NLS-1$ //$NON-NLS-2$
 	private com.floreantpos.swing.PosButton btnScrollDown;
 	private com.floreantpos.swing.PosButton btnScrollUp = new PosButton(IconFactory.getIcon("/ui_icons/", "up.png")); //$NON-NLS-1$ //$NON-NLS-2$
 
@@ -88,7 +88,7 @@ public class TicketItemModifierTableView extends JPanel {
 		setLayout(new java.awt.BorderLayout(5, 5));
 
 		ticketItemActionPanel = new com.floreantpos.swing.TransparentPanel();
-		btnDecreaseAmount = new com.floreantpos.swing.PosButton();
+		//btnDecreaseAmount = new com.floreantpos.swing.PosButton();
 		btnScrollDown = new com.floreantpos.swing.PosButton();
 		modifierViewerTable = new com.floreantpos.ui.views.order.modifier.ModifierViewerTable(modifierSelectionModel.getTicketItem());
 		ticketScrollPane = new PosScrollPane(modifierViewerTable);
@@ -130,8 +130,8 @@ public class TicketItemModifierTableView extends JPanel {
 
 				Boolean printedToKitchen = item.isPrintedToKitchen();
 
-				btnIncreaseAmount.setEnabled(!printedToKitchen);
-				btnDecreaseAmount.setEnabled(!printedToKitchen);
+				//btnIncreaseAmount.setEnabled(!printedToKitchen);
+				//btnDecreaseAmount.setEnabled(!printedToKitchen);
 				btnDelete.setEnabled(!printedToKitchen);
 
 			}
@@ -155,18 +155,18 @@ public class TicketItemModifierTableView extends JPanel {
 			}
 		});
 
-		btnIncreaseAmount.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				doIncreaseAmount(evt);
-			}
-		});
-
-		btnDecreaseAmount.setIcon(IconFactory.getIcon("/ui_icons/", "minus.png")); //$NON-NLS-1$ //$NON-NLS-2$
-		btnDecreaseAmount.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				doDecreaseAmount(evt);
-			}
-		});
+//		btnIncreaseAmount.addActionListener(new java.awt.event.ActionListener() {
+//			public void actionPerformed(java.awt.event.ActionEvent evt) {
+//				doIncreaseAmount(evt);
+//			}
+//		});
+//
+//		btnDecreaseAmount.setIcon(IconFactory.getIcon("/ui_icons/", "minus.png")); //$NON-NLS-1$ //$NON-NLS-2$
+//		btnDecreaseAmount.addActionListener(new java.awt.event.ActionListener() {
+//			public void actionPerformed(java.awt.event.ActionEvent evt) {
+//				doDecreaseAmount(evt);
+//			}
+//		});
 
 		btnScrollDown.setIcon(IconFactory.getIcon("/ui_icons/", "down.png")); //$NON-NLS-1$ //$NON-NLS-2$
 		btnScrollDown.addActionListener(new java.awt.event.ActionListener() {
@@ -182,8 +182,8 @@ public class TicketItemModifierTableView extends JPanel {
 		});
 
 		ticketItemActionPanel.add(btnScrollUp);
-		ticketItemActionPanel.add(btnIncreaseAmount);
-		ticketItemActionPanel.add(btnDecreaseAmount);
+//		ticketItemActionPanel.add(btnIncreaseAmount);
+//		ticketItemActionPanel.add(btnDecreaseAmount);
 		ticketItemActionPanel.add(btnDelete);
 		ticketItemActionPanel.add(btnScrollDown);
 
@@ -282,14 +282,14 @@ public class TicketItemModifierTableView extends JPanel {
 	public void setControlsVisible(boolean visible) {
 		if (visible) {
 			ticketActionPanel.setVisible(true);
-			btnIncreaseAmount.setEnabled(true);
-			btnDecreaseAmount.setEnabled(true);
+//			btnIncreaseAmount.setEnabled(true);
+//			btnDecreaseAmount.setEnabled(true);
 			btnDelete.setEnabled(true);
 		}
 		else {
 			ticketActionPanel.setVisible(false);
-			btnIncreaseAmount.setEnabled(false);
-			btnDecreaseAmount.setEnabled(false);
+//			btnIncreaseAmount.setEnabled(false);
+//			btnDecreaseAmount.setEnabled(false);
 			btnDelete.setEnabled(false);
 		}
 	}

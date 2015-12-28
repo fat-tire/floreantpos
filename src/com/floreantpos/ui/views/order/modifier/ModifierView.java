@@ -36,7 +36,6 @@ import javax.swing.AbstractButton;
 
 import com.floreantpos.POSConstants;
 import com.floreantpos.PosException;
-import com.floreantpos.model.MenuItemModifierGroup;
 import com.floreantpos.model.MenuModifier;
 import com.floreantpos.model.MenuModifierGroup;
 import com.floreantpos.model.TicketItemModifier;
@@ -55,6 +54,9 @@ public class ModifierView extends SelectionView {
 	private ModifierSelectionModel modifierSelectionModel;
 	private MenuModifierGroup modifierGroup;
 
+	private PosButton btnClear = new PosButton(POSConstants.CLEAR);
+	private PosButton btnDone = new PosButton(POSConstants.GROUP.toUpperCase() + " " + "DONE");
+
 	private HashMap<String, ModifierButton> buttonMap = new HashMap<String, ModifierButton>();
 
 	private boolean addOnMode;
@@ -64,6 +66,27 @@ public class ModifierView extends SelectionView {
 		super(com.floreantpos.POSConstants.MODIFIERS);
 
 		this.modifierSelectionModel = modifierSelectionModel;
+
+		actionButtonPanel.add(btnClear);
+		actionButtonPanel.add(btnDone);
+
+		btnDone.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				for (ModifierSelectionListener listener : ModifierView.this.listenerList) {
+					listener.modifierGroupSelectionDone(modifierGroup);
+				}
+			}
+		});
+		btnClear.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				for (ModifierSelectionListener listener : ModifierView.this.listenerList) {
+					listener.clearModifiers(modifierGroup);
+				}
+			}
+		});
+
 		setBackVisible(false);
 	}
 
@@ -74,7 +97,7 @@ public class ModifierView extends SelectionView {
 		if (modifierGroup == null) {
 			return;
 		}
-		
+
 		renderTitle();
 
 		try {
@@ -109,8 +132,10 @@ public class ModifierView extends SelectionView {
 			setTitle("ADD-ONs");
 		}
 		else {
-			setTitle(POSConstants.GROUP + ": " + modifierGroup.getDisplayName() + ", Min: " + modifierGroup.getMenuItemModifierGroup().getMinQuantity()
-					+ ", Max: " + modifierGroup.getMenuItemModifierGroup().getMaxQuantity());
+			String displayName = modifierGroup.getDisplayName();
+			int minQuantity = modifierGroup.getMenuItemModifierGroup().getMinQuantity();
+			int maxQuantity = modifierGroup.getMenuItemModifierGroup().getMaxQuantity();
+			setTitle(displayName + ", Min: " + minQuantity + ", Max: " + maxQuantity);
 		}
 	}
 
@@ -160,30 +185,6 @@ public class ModifierView extends SelectionView {
 	@Override
 	public void doGoBack() {
 
-	}
-
-	public boolean isRequiredModifiersAdded(List<MenuItemModifierGroup> menuItemModifierGroups, List<TicketItemModifierGroup> ticketItemModifierGroups) {
-		boolean requiredModifierAdded = true;
-		if (menuItemModifierGroups != null) {
-			outer: for (MenuItemModifierGroup menuItemModifierGroup : menuItemModifierGroups) {
-				int minQuantity = menuItemModifierGroup.getMinQuantity();
-				if (minQuantity == 0)
-					continue;
-
-				if (ticketItemModifierGroups == null) {
-					requiredModifierAdded = false;
-					break outer;
-				}
-
-				for (TicketItemModifierGroup ticketItemModifierGroup : ticketItemModifierGroups) {
-					if (ticketItemModifierGroup.countItems(false) < minQuantity) {
-						requiredModifierAdded = false;
-						break outer;
-					}
-				}
-			}
-		}
-		return requiredModifierAdded;
 	}
 
 	private class ModifierButton extends PosButton implements ActionListener {
@@ -255,6 +256,8 @@ public class ModifierView extends SelectionView {
 	public void setAddOnMode(boolean addOnMode) {
 		this.addOnMode = addOnMode;
 		renderTitle();
+		btnClear.setEnabled(!addOnMode);
+		btnDone.setEnabled(!addOnMode);
 		setModifierGroup(modifierGroup);
 	}
 }
