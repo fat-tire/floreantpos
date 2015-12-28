@@ -41,8 +41,9 @@ public class TicketViewerTableModel extends AbstractTableModel {
 	protected final HashMap<String, ITicketItem> tableRows = new LinkedHashMap<String, ITicketItem>();
 
 	private boolean priceIncludesTax = false;
-	
-	protected String[] columnNames = { Messages.getString("TicketViewerTableModel.0"), Messages.getString("TicketViewerTableModel.1"), Messages.getString("TicketViewerTableModel.2"), Messages.getString("TicketViewerTableModel.3") }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+
+	protected String[] columnNames = {
+			Messages.getString("TicketViewerTableModel.0"), Messages.getString("TicketViewerTableModel.1"), Messages.getString("TicketViewerTableModel.2"), Messages.getString("TicketViewerTableModel.3") }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 
 	private boolean forReciptPrint;
 	private boolean printCookingInstructions;
@@ -62,7 +63,7 @@ public class TicketViewerTableModel extends AbstractTableModel {
 
 	public int getRowCount() {
 		int size = tableRows.size();
-		
+
 		return size;
 	}
 
@@ -81,14 +82,14 @@ public class TicketViewerTableModel extends AbstractTableModel {
 
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		ITicketItem ticketItem = tableRows.get(String.valueOf(rowIndex));
-		
-		if(ticketItem == null) {
+
+		if (ticketItem == null) {
 			return null;
 		}
 
 		switch (columnIndex) {
 			case 0:
-				return ticketItem.getNameDisplay();
+				return "<html>" + ticketItem.getNameDisplay() + "</html>"; //$NON-NLS-1$ //$NON-NLS-2$
 
 			case 1:
 				return ticketItem.getUnitPriceDisplay();

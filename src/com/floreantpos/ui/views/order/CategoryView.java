@@ -38,6 +38,7 @@ import javax.swing.ButtonGroup;
 import org.apache.log4j.Logger;
 
 import com.floreantpos.Messages;
+import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.model.MenuCategory;
 import com.floreantpos.model.dao.MenuCategoryDAO;
 import com.floreantpos.swing.POSToggleButton;
@@ -60,7 +61,7 @@ public class CategoryView extends SelectionView implements ActionListener {
 	
 	/** Creates new form CategoryView */
 	public CategoryView() {
-		super(com.floreantpos.POSConstants.CATEGORIES, 100, 80);
+		super(com.floreantpos.POSConstants.CATEGORIES, 100, TerminalConfig.getMenuItemButtonHeight());
 		
 		setBackVisible(false);
 		

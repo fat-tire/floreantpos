@@ -36,7 +36,7 @@ import com.floreantpos.config.UIConfig;
 
 public class PosButton extends JButton {
 	public static Border border = new LineBorder(Color.BLACK, 1);
-	static Insets margin = new Insets(0, 0, 0, 0);
+	static Insets margin = new Insets(1, 1, 1, 1);
 
 	static POSButtonUI ui = new POSButtonUI();
 
@@ -51,47 +51,48 @@ public class PosButton extends JButton {
 	public PosButton(String text) {
 		super(text);
 		setFont(UIConfig.getButtonFont());
-		
+
 		setFocusable(false);
 		setFocusPainted(false);
 		setMargin(margin);
 	}
+
 	public PosButton(String text, Action action) {
 		super(action);
 		setText(text);
-		
-		setFont(UIConfig.getButtonFont());
-		
-		setFocusable(false);
-		setFocusPainted(false);
-		setMargin(margin);
-	}
-	
-	public PosButton(Action a) {
-		super(a);
-		
+
 		setFont(UIConfig.getButtonFont());
 
 		setFocusable(false);
 		setFocusPainted(false);
 		setMargin(margin);
 	}
-	
+
+	public PosButton(Action a) {
+		super(a);
+
+		setFont(UIConfig.getButtonFont());
+
+		setFocusable(false);
+		setFocusPainted(false);
+		setMargin(margin);
+	}
+
 	public PosButton(ActionCommand command) {
 		this(command.toString());
-		
+
 		setActionCommand(command.name());
 	}
-	
+
 	public PosButton(String text, ActionCommand command) {
 		this(text);
-		
+
 		setActionCommand(command.name());
 	}
-	
+
 	public PosButton(ActionCommand command, ActionListener listener) {
 		this(command.toString());
-		
+
 		setActionCommand(command.name());
 		addActionListener(listener);
 	}
@@ -114,24 +115,23 @@ public class PosButton extends JButton {
 		if (isPreferredSizeSet()) {
 			return size;
 		}
-		
+
 		if (ui != null) {
 			size = ui.getPreferredSize(this);
 		}
-		
-		if(size != null) {
+
+		if (size != null) {
 			size.setSize(size.width + 20, TerminalConfig.getTouchScreenButtonHeight());
 		}
-		
-		
+
 		return (size != null) ? size : super.getPreferredSize();
 	}
-	
+
 	@Override
 	public void setAction(Action a) {
 		super.setAction(a);
-		
-		if(a instanceof PosAction) {
+
+		if (a instanceof PosAction) {
 			PosAction action = (PosAction) a;
 			setVisible(action.isVisible());
 		}

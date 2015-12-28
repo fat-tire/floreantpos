@@ -153,33 +153,9 @@ public class TicketView extends JPanel implements ListSelectionListener {
 			}
 		});
 		ticketViewerTable.getSelectionModel().addListSelectionListener(this);
-//		ticketViewerTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-//			@Override
-//			public void valueChanged(ListSelectionEvent e) {
-//				Object selected = ticketViewerTable.getSelected();
-//				if (!(selected instanceof ITicketItem)) {
-//					return;
-//				}
-//
-//				ITicketItem item = (ITicketItem) selected;
-//				Boolean printedToKitchen = item.isPrintedToKitchen();
-//
-//				if (Application.getCurrentUser().hasPermission(UserPermission.MODIFY_PRINTED_TICKET)) {
-//					btnIncreaseAmount.setEnabled(true);
-//					btnDecreaseAmount.setEnabled(true);
-//					btnDelete.setEnabled(true);
-//				}
-//				else {
-//					btnIncreaseAmount.setEnabled(!printedToKitchen);
-//					btnDecreaseAmount.setEnabled(!printedToKitchen);
-//					btnDelete.setEnabled(!printedToKitchen);
-//				}
-//				getExtraActionPanel().updateView(item);
-//			}
-//		});
 
 		getExtraActionPanel().updateView(null);
-		setPreferredSize(new java.awt.Dimension(480, 463));
+		setPreferredSize(new java.awt.Dimension(360, 463));
 
 	}// </editor-fold>//GEN-END:initComponents
 
@@ -308,7 +284,7 @@ public class TicketView extends JPanel implements ListSelectionListener {
 		ticketItemActionPanel.add(btnDelete);
 		ticketItemActionPanel.add(btnScrollDown);
 
-		ticketItemActionPanel.setPreferredSize(new Dimension(70, 360));
+		ticketItemActionPanel.setPreferredSize(new Dimension(60, 360));
 	}
 
 	protected void doAddCookingInstruction() {
