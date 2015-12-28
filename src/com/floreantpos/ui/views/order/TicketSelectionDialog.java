@@ -29,13 +29,9 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.swing.BorderFactory;
-import javax.swing.DefaultListModel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
@@ -65,12 +61,13 @@ public class TicketSelectionDialog extends POSDialog {
 
 	private ScrollableFlowPanel buttonsPanel;
 
-	private Map<Integer, TicketButton> ticketButtonMap = new HashMap<Integer, TicketSelectionDialog.TicketButton>();
-	private DefaultListModel<TicketButton> addedTicketListModel = new DefaultListModel<TicketButton>();
+	private List<Ticket> addedTicketListModel = new ArrayList<Ticket>();
 
 	public TicketSelectionDialog() {
 		initializeComponent();
-		initialize();
+		initializeData();
+		
+		setResizable(true);
 	}
 
 	private void initializeComponent() {
@@ -93,7 +90,7 @@ public class TicketSelectionDialog extends POSDialog {
 		PosButton btnCancel = new PosButton(POSConstants.CANCEL.toUpperCase());
 		btnCancel.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				addedTicketListModel.removeAllElements();
+				addedTicketListModel.clear();
 				setCanceled(true);
 				dispose();
 			}
@@ -120,22 +117,16 @@ public class TicketSelectionDialog extends POSDialog {
 		setSize(1024, 600);
 	}
 
-	public void initialize() {
-
-		ticketButtonMap.clear();
-
+	private void initializeData() {
 		TicketDAO dao = new TicketDAO();
 		try {
 			List<Ticket> tickets = dao.findOpenTickets();
 			for (Ticket ticket : tickets) {
-				TicketButton ticketButton = new TicketButton(ticket);
-				Integer key = ticket.getId();
-				ticketButtonMap.put(key, ticketButton);
-				buttonsPanel.add(ticketButton);
+				buttonsPanel.add(new TicketButton(ticket));
 			}
 
 		} catch (PosException e) {
-			e.printStackTrace();
+			POSMessageDialog.showError(TicketSelectionDialog.this, e.getLocalizedMessage(), e);
 		}
 	}
 
@@ -149,15 +140,7 @@ public class TicketSelectionDialog extends POSDialog {
 	}
 
 	public List<Ticket> getSelectedTickets() {
-		Enumeration<TicketButton> elements = addedTicketListModel.elements();
-		List<Ticket> tickets = new ArrayList<Ticket>();
-
-		while (elements.hasMoreElements()) {
-			TicketButton ticketButton = (TicketButton) elements.nextElement();
-			tickets.add(ticketButton.getTicket());
-		}
-
-		return tickets;
+		return addedTicketListModel;
 	}
 
 	private class TicketButton extends POSToggleButton implements ActionListener {
@@ -172,23 +155,19 @@ public class TicketSelectionDialog extends POSDialog {
 			setHorizontalTextPosition(SwingConstants.CENTER);
 			setFont(getFont().deriveFont(18.0f));
 
-			setText("<html><body><center>#" + ticket.getId() + "<br>"+Messages.getString("TicketSelectionDialog.7") + ticket.getDueAmount() + "</center></body></html>"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+			setText("<html><body><center>#" + ticket.getId() + "<br>" + POSConstants.DUE.toUpperCase() + ":" + ticket.getDueAmount() + "</center></body></html>"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 
 			setPreferredSize(new Dimension(BUTTON_SIZE, TerminalConfig.getMenuItemButtonHeight()));
 			addActionListener(this);
 		}
 
 		public void actionPerformed(ActionEvent e) {
-			if (isSelected() && !addedTicketListModel.contains(this)) {
-				addedTicketListModel.addElement(this);
+			if (isSelected()) {
+				addedTicketListModel.add(this.ticket);
 			}
 			else {
-				addedTicketListModel.removeElement(this);
+				addedTicketListModel.remove(this.ticket);
 			}
-		}
-
-		Ticket getTicket() {
-			return ticket;
 		}
 	}
 }
