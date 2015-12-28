@@ -77,7 +77,7 @@ public abstract class BaseTicketItemModifier  implements Comparable, Serializabl
 	private java.lang.Integer itemCount;
 	private java.lang.String name;
 	private java.lang.Double unitPrice;
-	private java.lang.Double extraUnitPrice;
+//	private java.lang.Double extraUnitPrice;
 	private java.lang.Double taxRate;
 	private java.lang.Integer modifierType;
 	private java.lang.Double subTotalAmount;
@@ -198,20 +198,20 @@ public abstract class BaseTicketItemModifier  implements Comparable, Serializabl
 
 
 
-	/**
-	 * Return the value associated with the column: EXTRA_PRICE
-	 */
-	public java.lang.Double getExtraUnitPrice () {
-					return extraUnitPrice == null ? Double.valueOf(0) : extraUnitPrice;
-			}
-
-	/**
-	 * Set the value related to the column: EXTRA_PRICE
-	 * @param extraUnitPrice the EXTRA_PRICE value
-	 */
-	public void setExtraUnitPrice (java.lang.Double extraUnitPrice) {
-		this.extraUnitPrice = extraUnitPrice;
-	}
+//	/**
+//	 * Return the value associated with the column: EXTRA_PRICE
+//	 */
+//	public java.lang.Double getExtraUnitPrice () {
+//					return extraUnitPrice == null ? Double.valueOf(0) : extraUnitPrice;
+//			}
+//
+//	/**
+//	 * Set the value related to the column: EXTRA_PRICE
+//	 * @param extraUnitPrice the EXTRA_PRICE value
+//	 */
+//	public void setExtraUnitPrice (java.lang.Double extraUnitPrice) {
+//		this.extraUnitPrice = extraUnitPrice;
+//	}
 
 
 
