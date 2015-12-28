@@ -66,6 +66,8 @@ public class ModifierGroupView extends JPanel implements ComponentListener {
 	private SimpleScrollPane simpleScrollPane;
 	private ScrollableFlowPanel contentPanel;
 
+	private boolean addOnMode;
+
 	public static final String VIEW_NAME = "MODIFIER_GROUP_VIEW"; //$NON-NLS-1$
 
 	/** Creates new form CategoryView */
@@ -180,26 +182,29 @@ public class ModifierGroupView extends JPanel implements ComponentListener {
 	}
 
 	public void selectNextGroup() {
-		ModifierGroupButton button = getNextGroupButton();
+		ModifierGroupButton button = getNextMandatoryGroup();
 		button.setSelected(true);
 		fireModifierGroupSelected(button.menuModifierGroup);
 	}
-	
-	public boolean hasNextGroup() {
-		return getNextGroupButton() != null;
+
+	public boolean hasNextMandatoryGroup() {
+		return getNextMandatoryGroup() != null;
 	}
 
-	private ModifierGroupButton getNextGroupButton() {
+	private ModifierGroupButton getNextMandatoryGroup() {
 		Component[] components = contentPanel.getContentPane().getComponents();
 		if (components != null && components.length > 0) {
 			for (int i = 0; i < components.length; i++) {
 				ModifierGroupButton button = (ModifierGroupButton) components[i];
 				if (button.isSelected() && i < (components.length - 1)) {
-					return (ModifierGroupButton) components[i + 1];
+					ModifierGroupButton modifierGroupButton = (ModifierGroupButton) components[i + 1];
+					if (modifierGroupButton.menuModifierGroup.getMenuItemModifierGroup().getMinQuantity() > 0) {
+						return modifierGroupButton;
+					}
 				}
 			}
 		}
-		
+
 		return null;
 	}
 
@@ -208,10 +213,21 @@ public class ModifierGroupView extends JPanel implements ComponentListener {
 
 		ModifierGroupButton(MenuModifierGroup menuModifierGroup) {
 			this.menuModifierGroup = menuModifierGroup;
-			String text = "<html><body><center>" + menuModifierGroup.getDisplayName() + "</center></body></html>"; //$NON-NLS-1$ //$NON-NLS-2$ 
-			setText(text);
-
+			updateButtonText();
 			addActionListener(this);
+		}
+
+		private void updateButtonText() {
+			String string = "";
+			if (addOnMode) {
+				string = "<html><body><center>" + menuModifierGroup.getDisplayName() + "</center></body></html>";//$NON-NLS-1$ //$NON-NLS-2$ 
+			}
+			else {
+				string = "<html><body><center>" + menuModifierGroup.getDisplayName() + "<br/>"
+						+ "(" + menuModifierGroup.getMenuItemModifierGroup().getMinQuantity() + "*)</center></body></html>"; //$NON-NLS-1$ //$NON-NLS-2$ 
+			}
+
+			setText(string);
 		}
 
 		@Override
@@ -241,6 +257,21 @@ public class ModifierGroupView extends JPanel implements ComponentListener {
 
 	@Override
 	public void componentHidden(ComponentEvent e) {
+	}
+
+	public boolean isAddOnMode() {
+		return addOnMode;
+	}
+
+	public void setAddOnMode(boolean addOnMode) {
+		this.addOnMode = addOnMode;
+		Component[] components = contentPanel.getContentPane().getComponents();
+		if (components != null && components.length > 0) {
+			for (int i = 0; i < components.length; i++) {
+				ModifierGroupButton button = (ModifierGroupButton) components[i];
+				button.updateButtonText();
+			}
+		}
 	}
 
 }

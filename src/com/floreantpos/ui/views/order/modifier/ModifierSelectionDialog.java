@@ -105,7 +105,9 @@ public class ModifierSelectionDialog extends POSDialog implements ModifierGroupS
 		btnAddsOn = new POSToggleButton("ADD-ONs");
 		btnAddsOn.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				modifierView.setAddOnMode(btnAddsOn.isSelected());
+				boolean addOnMode = btnAddsOn.isSelected();
+				modifierGroupView.setAddOnMode(addOnMode);
+				modifierView.setAddOnMode(addOnMode);
 			}
 		});
 		btnAddsOn.setPreferredSize(preferredButtonSize);
@@ -232,7 +234,7 @@ public class ModifierSelectionDialog extends POSDialog implements ModifierGroupS
 			return;
 		}
 		
-		if(modifierGroupView.hasNextGroup()) {
+		if(modifierGroupView.hasNextMandatoryGroup()) {
 			modifierGroupView.selectNextGroup();
 		}
 		else {
