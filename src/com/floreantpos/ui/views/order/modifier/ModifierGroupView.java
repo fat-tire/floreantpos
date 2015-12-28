@@ -68,7 +68,6 @@ public class ModifierGroupView extends JPanel implements ComponentListener {
 
 	/** Creates new form CategoryView */
 	public ModifierGroupView(ModifierSelectionModel modifierSelectionModel) {
-		//super(com.floreantpos.POSConstants.GROUPS, 100, 80);
 		this.modifierSelectionModel = modifierSelectionModel;
 
 		setLayout(new BorderLayout());
@@ -172,32 +171,14 @@ public class ModifierGroupView extends JPanel implements ComponentListener {
 		}
 	}
 
-	//	@Override
-	//	protected void renderItems() {
-	//		super.renderItems();
-	//		
-	//		if(modifierGroupButtonGroup.getSelection() != null) {
-	//			return;
-	//		}
-	//		
-	//		Component[] components = buttonsPanel.getComponents();
-	//		if(components != null && components.length > 0) {
-	//			ModifierGroupButton button = (ModifierGroupButton) components[0];
-	//			button.setSelected(true);
-	//			fireModifierGroupSelected(button.menuModifierGroup);
-	//		}
-	//	}
-
 	private class ModifierGroupButton extends POSToggleButton implements ActionListener {
 		MenuModifierGroup menuModifierGroup;
 
 		ModifierGroupButton(MenuModifierGroup menuModifierGroup) {
 			this.menuModifierGroup = menuModifierGroup;
-			String text = "<html><body>" +
-					"<center>" + menuModifierGroup.getDisplayName() + "" +
-					"<br/>(" + menuModifierGroup.getMenuItemModifierGroup().getMinQuantity() + ")</center>" +
-					"</body></html>";
-			setText(text); //$NON-NLS-1$ //$NON-NLS-2$
+			String text = "<html><body><center>" + menuModifierGroup.getDisplayName() + "" + "<br/>("  //$NON-NLS-1$ //$NON-NLS-2$ 
+					+ menuModifierGroup.getMenuItemModifierGroup().getMinQuantity() + "*)</center></body></html>";  //$NON-NLS-1$ 
+			setText(text);
 
 			addActionListener(this);
 		}

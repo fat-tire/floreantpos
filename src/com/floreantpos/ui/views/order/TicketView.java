@@ -672,7 +672,7 @@ public class TicketView extends JPanel implements ListSelectionListener {
 		private ExtraTicketActionPanel() {
 			initComponents();
 
-			setAnimated(true);
+			setAnimated(false);
 		}
 
 		// public ExtraTicketActionPanel(ItemSelectionListener

@@ -34,6 +34,7 @@ import java.util.Vector;
 
 import javax.swing.AbstractButton;
 
+import com.floreantpos.POSConstants;
 import com.floreantpos.PosException;
 import com.floreantpos.model.MenuItemModifierGroup;
 import com.floreantpos.model.MenuModifier;
@@ -73,6 +74,8 @@ public class ModifierView extends SelectionView {
 		if (modifierGroup == null) {
 			return;
 		}
+		
+		renderTitle();
 
 		try {
 
@@ -98,6 +101,16 @@ public class ModifierView extends SelectionView {
 
 		} catch (PosException e) {
 			POSMessageDialog.showError(this, com.floreantpos.POSConstants.ERROR_MESSAGE, e);
+		}
+	}
+
+	private void renderTitle() {
+		if (addOnMode) {
+			setTitle("ADD-ONs");
+		}
+		else {
+			setTitle(POSConstants.GROUP + ": " + modifierGroup.getDisplayName() + ", Min: " + modifierGroup.getMenuItemModifierGroup().getMinQuantity()
+					+ ", Max: " + modifierGroup.getMenuItemModifierGroup().getMaxQuantity());
 		}
 	}
 
@@ -241,12 +254,7 @@ public class ModifierView extends SelectionView {
 
 	public void setAddOnMode(boolean addOnMode) {
 		this.addOnMode = addOnMode;
-		if(addOnMode) {
-			setTitle("ADD-ONs");
-		}
-		else {
-			setTitle("MODIFIERS");
-		}
+		renderTitle();
 		setModifierGroup(modifierGroup);
 	}
 }
