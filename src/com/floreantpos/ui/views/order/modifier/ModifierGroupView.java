@@ -207,7 +207,7 @@ public class ModifierGroupView extends JPanel implements ComponentListener {
 
 		return null;
 	}
-
+	
 	private class ModifierGroupButton extends POSToggleButton implements ActionListener {
 		MenuModifierGroup menuModifierGroup;
 

@@ -206,6 +206,7 @@ public class ModifierSelectionDialog extends POSDialog implements ModifierGroupS
 		}
 
 		modifierSelectionModel.getTicketItem().calculatePrice();
+		modifierView.updateView();
 		ticketItemModifierView.updateView();
 	}
 	
@@ -224,6 +225,7 @@ public class ModifierSelectionDialog extends POSDialog implements ModifierGroupS
 		}
 		
 		modifierSelectionModel.getTicketItem().calculatePrice();
+		modifierView.updateView();
 		ticketItemModifierView.updateView();
 	}
 
