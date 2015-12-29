@@ -24,6 +24,7 @@
 package com.floreantpos.ui.views.order.modifier;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -157,27 +158,24 @@ public class ModifierView extends SelectionView {
 		listenerList.remove(listener);
 	}
 
-	public void updateVisualRepresentation() {
-		List<TicketItemModifierGroup> ticketItemModifierGroups = modifierSelectionModel.getTicketItem().getTicketItemModifierGroups();
-		if (ticketItemModifierGroups != null) {
-			for (TicketItemModifierGroup ticketItemModifierGroup : ticketItemModifierGroups) {
-				List<TicketItemModifier> ticketItemModifiers = ticketItemModifierGroup.getTicketItemModifiers();
-				if (ticketItemModifiers != null) {
-					int total = 0;
-					int max = ticketItemModifierGroup.getMaxQuantity();
-					for (TicketItemModifier ticketItemModifier : ticketItemModifiers) {
-						String key = ticketItemModifier.getItemId() + "_" + ticketItemModifier.getGroupId(); //$NON-NLS-1$
-						ModifierButton button = buttonMap.get(key);
-						total += ticketItemModifier.getItemCount();
-						if (total > max) {
-							ticketItemModifier.setModifierType(TicketItemModifier.EXTRA_MODIFIER);
-						}
-						else {
-							ticketItemModifier.setModifierType(TicketItemModifier.NORMAL_MODIFIER);
-						}
-						button.updateView(ticketItemModifier);
-					}
-				}
+	public void updateView() {
+		Component[] components = buttonsPanel.getComponents();
+		if (components == null || components.length == 0)
+			return;
+
+		for (Component component : components) {
+			ModifierButton modifierButton = (ModifierButton) component;
+			MenuModifier modifier = modifierButton.menuModifier;
+
+			TicketItemModifierGroup ticketItemModifierGroup = modifierSelectionModel.getTicketItem().findTicketItemModifierGroup(modifier, addOnMode);
+			TicketItemModifier ticketItemModifier = ticketItemModifierGroup.findTicketItemModifier(modifier, addOnMode);
+			if (ticketItemModifier != null) {
+				String color = addOnMode ? "red" : "green";
+				modifierButton.setText("<html><center>" + modifier.getDisplayName() + "<br/><span style='color:" + color
+						+ "'>(" + ticketItemModifier.getItemCount() + ")</span></center></html>"); //$NON-NLS-1$ //$NON-NLS-2$
+			}
+			else {
+				modifierButton.setText("<html><center>" + modifier.getDisplayName() + "</center></html>"); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 		}
 	}
@@ -208,39 +206,39 @@ public class ModifierView extends SelectionView {
 			addActionListener(this);
 		}
 
-		void updateView(TicketItemModifier ticketItemModifier) {
-			Integer itemCount = ticketItemModifier.getItemCount();
-
-			String text = menuModifier.getDisplayName();
-			String style = ""; //$NON-NLS-1$
-
-			if (ticketItemModifier.getModifierType() == TicketItemModifier.NORMAL_MODIFIER) {
-				style = "color: green;"; //$NON-NLS-1$
-			}
-			// else if (ticketItemModifier.getModifierType() ==
-			// TicketItemModifier.NO_MODIFIER) {
-			// //setIcon(noIcon);
-			// setBackground(Color.RED.darker());
-			// }
-			else if (ticketItemModifier.getModifierType() == TicketItemModifier.EXTRA_MODIFIER) {
-				style = "color: red;"; //$NON-NLS-1$
-			}
-
-			StringBuilder sb = new StringBuilder();
-			sb.append("<html>"); //$NON-NLS-1$
-			sb.append("<center>"); //$NON-NLS-1$
-			sb.append(text);
-
-			if (itemCount != 0) {
-				sb.append("<h2 style='" + style + "'>"); //$NON-NLS-1$ //$NON-NLS-2$
-				sb.append("(" + itemCount + ")"); //$NON-NLS-1$ //$NON-NLS-2$
-				sb.append("</h2>"); //$NON-NLS-1$
-			}
-			sb.append("</center>"); //$NON-NLS-1$
-			sb.append("</html>"); //$NON-NLS-1$
-
-			setText(sb.toString());
-		}
+//		void updateView(TicketItemModifier ticketItemModifier) {
+//			Integer itemCount = ticketItemModifier.getItemCount();
+//
+//			String text = menuModifier.getDisplayName();
+//			String style = ""; //$NON-NLS-1$
+//
+//			if (ticketItemModifier.getModifierType() == TicketItemModifier.NORMAL_MODIFIER) {
+//				style = "color: green;"; //$NON-NLS-1$
+//			}
+//			// else if (ticketItemModifier.getModifierType() ==
+//			// TicketItemModifier.NO_MODIFIER) {
+//			// //setIcon(noIcon);
+//			// setBackground(Color.RED.darker());
+//			// }
+//			else if (ticketItemModifier.getModifierType() == TicketItemModifier.EXTRA_MODIFIER) {
+//				style = "color: red;"; //$NON-NLS-1$
+//			}
+//
+//			StringBuilder sb = new StringBuilder();
+//			sb.append("<html>"); //$NON-NLS-1$
+//			sb.append("<center>"); //$NON-NLS-1$
+//			sb.append(text);
+//
+//			if (itemCount != 0) {
+//				sb.append("<h2 style='" + style + "'>"); //$NON-NLS-1$ //$NON-NLS-2$
+//				sb.append("(" + itemCount + ")"); //$NON-NLS-1$ //$NON-NLS-2$
+//				sb.append("</h2>"); //$NON-NLS-1$
+//			}
+//			sb.append("</center>"); //$NON-NLS-1$
+//			sb.append("</html>"); //$NON-NLS-1$
+//
+//			setText(sb.toString());
+//		}
 
 		public void actionPerformed(ActionEvent e) {
 			for (ModifierSelectionListener listener : ModifierView.this.listenerList) {
