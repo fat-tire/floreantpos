@@ -40,6 +40,7 @@ import org.apache.log4j.Logger;
 import com.floreantpos.Messages;
 import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.model.MenuCategory;
+import com.floreantpos.model.MenuGroup;
 import com.floreantpos.model.dao.MenuCategoryDAO;
 import com.floreantpos.swing.POSToggleButton;
 import com.floreantpos.ui.views.order.actions.CategorySelectionListener;
@@ -88,6 +89,10 @@ public class CategoryView extends SelectionView implements ActionListener {
 	@Override
 	protected AbstractButton createItemButton(Object item) {
 		MenuCategory menuCategory = (MenuCategory) item;
+		List<MenuGroup> menuGroups = menuCategory.getMenuGroups();
+		if(menuGroups == null || menuGroups.size() == 0) {
+			return null;
+		}
 		
 		CategoryButton button = new CategoryButton(this,menuCategory);
 		categoryButtonGroup.add(button);
