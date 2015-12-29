@@ -47,6 +47,7 @@ public class ShopTable extends BaseShopTable {
 
 	public ShopTable(ShopFloor floor, Integer x, Integer y, Integer id) {
 		super();
+		setCapacity(4);
 		setId(id);
 		setFloor(floor);
 		setX(x);
