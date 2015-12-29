@@ -145,7 +145,7 @@ public class OrderController implements OrderListener, CategorySelectionListener
 	public static void openModifierDialog(TicketItem ticketItem, MenuItem menuItem) {
 		ModifierSelectionDialog dialog = new ModifierSelectionDialog(new ModifierSelectionModel(ticketItem, menuItem));
 		dialog.open();
-		OrderView.getInstance().getTicketView().updateAllView();
+		OrderView.getInstance().getTicketView().updateView();
 	}
 
 	public static void openModifierDialog(TicketItemModifier ticketItemModifier) {
@@ -156,7 +156,7 @@ public class OrderController implements OrderListener, CategorySelectionListener
 
 			ModifierSelectionDialog dialog = new ModifierSelectionDialog(new ModifierSelectionModel(ticketItem, menuItem));
 			dialog.open();
-			OrderView.getInstance().getTicketView().updateAllView();
+			OrderView.getInstance().getTicketView().updateView();
 		} catch (Exception e) {
 			POSMessageDialog.showError(Application.getPosWindow(), e.getMessage(), e);
 		}

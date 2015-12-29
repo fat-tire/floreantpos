@@ -27,6 +27,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import javax.swing.JPanel;
 
@@ -163,6 +164,7 @@ public class ModifierSelectionDialog extends POSDialog implements ModifierGroupS
 			if (!isRequiredModifiersAdded(menuItemModifierGroup)) {
 				showModifierSelectionMessage(menuItemModifierGroup);
 				modifierGroupView.setSelectedModifierGroup(menuItemModifierGroup.getModifierGroup());
+				return;
 			}
 		}
 
@@ -254,6 +256,11 @@ public class ModifierSelectionDialog extends POSDialog implements ModifierGroupS
 	private boolean isRequiredModifiersAdded(MenuItemModifierGroup menuItemModifierGroup) {
 		int minQuantity = menuItemModifierGroup.getMinQuantity();
 		if (minQuantity <= 0) {
+			return true;
+		}
+		
+		Set<MenuModifier> modifiers = menuItemModifierGroup.getModifierGroup().getModifiers();
+		if(modifiers == null || modifiers.size() == 0) {
 			return true;
 		}
 		

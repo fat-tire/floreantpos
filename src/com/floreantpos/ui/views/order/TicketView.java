@@ -93,7 +93,7 @@ import com.floreantpos.util.PosGuiUtil;
  * 
  * @author MShahriar
  */
-public class TicketView extends JPanel implements ListSelectionListener {
+public class TicketView extends JPanel {
 	private java.util.Vector<OrderListener> orderListeners = new java.util.Vector<OrderListener>();
 	private Ticket ticket;
 
@@ -126,6 +126,8 @@ public class TicketView extends JPanel implements ListSelectionListener {
 		ticketScrollPane.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		ticketScrollPane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
 		ticketScrollPane.setPreferredSize(new java.awt.Dimension(180, 200));
+		
+		btnEdit.setEnabled(false);
 
 		JPanel totalViewPanel = createTotalViewerPanel();
 
@@ -145,14 +147,11 @@ public class TicketView extends JPanel implements ListSelectionListener {
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
 				if (!e.getValueIsAdjusting()) {
-					//	if(hasModifire()) {
-
-					//}
 					updateSelectionView();
 				}
 			}
 		});
-		ticketViewerTable.getSelectionModel().addListSelectionListener(this);
+		ticketViewerTable.getSelectionModel().addListSelectionListener(new TicketItemSelectionListener());
 
 		getExtraActionPanel().updateView(null);
 		setPreferredSize(new java.awt.Dimension(360, 463));
@@ -278,10 +277,17 @@ public class TicketView extends JPanel implements ListSelectionListener {
 			}
 		});
 
+		btnEdit.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				doEditSelection();
+			}
+		});
+
 		ticketItemActionPanel.add(btnScrollUp);
 		ticketItemActionPanel.add(btnIncreaseAmount);
 		ticketItemActionPanel.add(btnDecreaseAmount);
 		ticketItemActionPanel.add(btnDelete);
+		ticketItemActionPanel.add(btnEdit);
 		ticketItemActionPanel.add(btnScrollDown);
 
 		ticketItemActionPanel.setPreferredSize(new Dimension(60, 360));
@@ -406,26 +412,24 @@ public class TicketView extends JPanel implements ListSelectionListener {
 	}// GEN-LAST:event_doPayNow
 
 	private void doDeleteSelection(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_doDeleteSelection
+		ticketViewerTable.deleteSelectedItem();
+		updateView();
+
+	}// GEN-LAST:event_doDeleteSelection
+
+	private void doEditSelection() {// GEN-FIRST:event_doDeleteSelection
 		Object object = ticketViewerTable.getSelected();
 
 		if (object instanceof TicketItemModifier) {
 			TicketItemModifier ticketItemModifier = (TicketItemModifier) object;
 			OrderController.openModifierDialog(ticketItemModifier);
 		}
-		else {
-			ticketViewerTable.deleteSelectedItem();
-		}
-		updateView(); 
+		updateView();
 
 	}// GEN-LAST:event_doDeleteSelection
 
 	private void doIncreaseAmount(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_doIncreaseAmount
 		if (ticketViewerTable.increaseItemAmount()) {
-			// ModifierView modifierView =
-			// OrderView.getInstance().getModifierView();
-			// if (modifierView.isVisible()) {
-			// modifierView.updateVisualRepresentation();
-			// }
 			updateView();
 		}
 
@@ -433,11 +437,6 @@ public class TicketView extends JPanel implements ListSelectionListener {
 
 	private void doDecreaseAmount(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_doDecreaseAmount
 		if (ticketViewerTable.decreaseItemAmount()) {
-			// ModifierView modifierView =
-			// OrderView.getInstance().getModifierView();
-			// if (modifierView.isVisible()) {
-			// modifierView.updateVisualRepresentation();
-			// }
 			updateView();
 		}
 	}// GEN-LAST:event_doDecreaseAmount
@@ -457,6 +456,7 @@ public class TicketView extends JPanel implements ListSelectionListener {
 	private com.floreantpos.swing.PosButton btnDelete = new PosButton(IconFactory.getIcon("/ui_icons/", "delete.png")); //$NON-NLS-1$ //$NON-NLS-2$
 	private com.floreantpos.swing.PosButton btnSave;
 	private com.floreantpos.swing.PosButton btnIncreaseAmount = new PosButton(IconFactory.getIcon("/ui_icons/", "add_user.png")); //$NON-NLS-1$ //$NON-NLS-2$
+	private com.floreantpos.swing.PosButton btnEdit = new PosButton("..."); //$NON-NLS-1$ //$NON-NLS-2$
 	private com.floreantpos.swing.PosButton btnPay;
 	private com.floreantpos.swing.POSToggleButton btnMore = new POSToggleButton(POSConstants.MORE_ACTIVITY_BUTTON_TEXT);
 	private com.floreantpos.swing.PosButton btnScrollDown;
@@ -502,11 +502,6 @@ public class TicketView extends JPanel implements ListSelectionListener {
 		ticketViewerTable.removeModifier(parent, modifier);
 	}
 
-	public void updateAllView() {
-		ticketViewerTable.updateView();
-		updateView();
-	}
-
 	public void selectRow(int rowIndex) {
 		ticketViewerTable.selectRow(rowIndex);
 	}
@@ -547,6 +542,8 @@ public class TicketView extends JPanel implements ListSelectionListener {
 		else {
 			btnSave.setVisible(true);
 		}
+
+		ticketViewerTable.updateView();
 	}
 
 	public void addOrderListener(OrderListener listenre) {
@@ -999,42 +996,39 @@ public class TicketView extends JPanel implements ListSelectionListener {
 		}
 	}
 
-	@Override
-	public void valueChanged(ListSelectionEvent e) {
-		Object selected = ticketViewerTable.getSelected();
-		if (!(selected instanceof ITicketItem)) {
-			return;
-		}
+	private class TicketItemSelectionListener implements ListSelectionListener {
 
-		if (selected instanceof TicketItemModifier) {
-			btnIncreaseAmount.setEnabled(false);
-			btnDecreaseAmount.setEnabled(false);
-		}
-		else if (selected instanceof TicketItem) {
-			TicketItem ticketItem = (TicketItem) selected;
-			if (ticketItem.isHasModifiers()) {
+		@Override
+		public void valueChanged(ListSelectionEvent e) {
+			Object selected = ticketViewerTable.getSelected();
+			if (!(selected instanceof ITicketItem)) {
+				return;
+			}
+
+			if (selected instanceof TicketItemModifier) {
 				btnIncreaseAmount.setEnabled(false);
 				btnDecreaseAmount.setEnabled(false);
+				btnEdit.setEnabled(true);
+				btnDelete.setEnabled(false);
 			}
 			else {
-				btnIncreaseAmount.setEnabled(true);
-				btnDecreaseAmount.setEnabled(true);
-			}
-		}
-		else if (selected instanceof ITicketItem) {
-			btnIncreaseAmount.setEnabled(true);
-			btnDecreaseAmount.setEnabled(true);
-		}
-	}
+				btnEdit.setEnabled(false);
+				btnDelete.setEnabled(true);
 
-	/*	private boolean hasModifire() {
-			ModifierView modifierView = OrderView.getInstance().getModifierView();
-			if(modifierView.isShowing()) {
-				if(!modifierView.isRequiredModifierAdded()) {
-					POSMessageDialog.showError(Application.getPosWindow(), "Please add required modifiers");
-					return false;
+				if (selected instanceof TicketItem) {
+					TicketItem ticketItem = (TicketItem) selected;
+					if (ticketItem.isHasModifiers()) {
+						btnIncreaseAmount.setEnabled(false);
+						btnDecreaseAmount.setEnabled(false);
+						btnEdit.setEnabled(true);
+					}
+					else {
+						btnIncreaseAmount.setEnabled(true);
+						btnDecreaseAmount.setEnabled(true);
+					}
 				}
 			}
-			return true;
-		}*/
+		}
+
+	}
 }

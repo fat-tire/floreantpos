@@ -110,6 +110,9 @@ public class TicketViewerTable extends JTable {
 		}
 
 		--selectedRow;
+		if(selectedRow < 0) {
+			selectedRow = 0;
+		}
 
 		selectionModel.addSelectionInterval(selectedRow, selectedRow);
 		Rectangle cellRect = getCellRect(selectedRow, 0, false);
@@ -152,48 +155,10 @@ public class TicketViewerTable extends JTable {
 			TicketItem ticketItem = (TicketItem) object;
 			int itemCount = ticketItem.getItemCount();
 			ticketItem.setItemCount(++itemCount);
-			
-//			if(ticketItem.isHasModifiers()) {
-//				List<TicketItemModifierGroup> ticketItemModifierGroups = ticketItem.getTicketItemModifierGroups();
-//				if(ticketItemModifierGroups != null) {
-//					for (TicketItemModifierGroup ticketItemModifierGroup : ticketItemModifierGroups) {
-//						List<TicketItemModifier> ticketItemModifiers = ticketItemModifierGroup.getTicketItemModifiers();
-//						if(ticketItemModifiers != null) {
-//							for (TicketItemModifier ticketItemModifier : ticketItemModifiers) {
-//								
-//							}
-//						}
-//					}
-//				}
-//			}
-			
-			repaint();
 
 			return true;
 		}
-//		else if (object instanceof TicketItemModifier) {
-//			TicketItemModifier modifier = (TicketItemModifier) object;
-//			int itemCount = modifier.getItemCount();
-//			modifier.setItemCount(++itemCount);
-//			repaint();
-//			
-//			if(modifierStateChangeListener != null) {
-//				modifierStateChangeListener.modifierStateChanged();
-//			}
-//			else if (object instanceof TicketItemModifier) {
-//		TicketItemModifier modifier = (TicketItemModifier) object;
-//		int itemCount = modifier.getItemCount();
-//		modifier.setItemCount(++itemCount);
-//		repaint();
-//		
-//		if(modifierStateChangeListener != null) {
-//			modifierStateChangeListener.modifierStateChanged();
-//		}
-//		
-//		return true;
-//	}
-//			return true;
-//		}
+
 		return false;
 	}
 
@@ -210,29 +175,14 @@ public class TicketViewerTable extends JTable {
 		if (object instanceof TicketItem) {
 			TicketItem ticketItem = (TicketItem) object;
 			int itemCount = ticketItem.getItemCount();
-			if (itemCount == 1)
-				return false;
+			if (itemCount == 1) {
+				model.delete(selectedRow);
+				return true;
+			}
 
 			ticketItem.setItemCount(--itemCount);
-			repaint();
-			
 			return true;
 		}
-//		else if (object instanceof TicketItemModifier) {
-//			TicketItemModifier modifier = (TicketItemModifier) object;
-//			int itemCount = modifier.getItemCount();
-//			if (itemCount == 1)
-//				return false;
-//
-//			modifier.setItemCount(--itemCount);
-//			repaint();
-//			
-//			if(modifierStateChangeListener != null) {
-//				modifierStateChangeListener.modifierStateChanged();
-//			}
-//			
-//			return true;
-//		}
 		return false;
 	}
 
