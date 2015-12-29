@@ -163,12 +163,10 @@ public class TicketItemModifier extends BaseTicketItemModifier implements ITicke
 
 	@Override
 	public String getNameDisplay() {
-		String display = getName();
-
-//		if (getModifierType() == TicketItemModifier.NO_MODIFIER) {
-//			display = Messages.getString("TicketItemModifier.0") + display; //$NON-NLS-1$
-//			return display;
-//		}
+		String display = " - " + getName();
+		if(getModifierType() == NORMAL_MODIFIER) {
+			display += "*";
+		}
 
 		return " - " + display; //$NON-NLS-1$
 	}

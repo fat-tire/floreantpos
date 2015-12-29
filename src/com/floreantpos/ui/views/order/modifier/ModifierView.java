@@ -34,11 +34,13 @@ import java.util.Set;
 import java.util.Vector;
 
 import javax.swing.AbstractButton;
+import javax.swing.UIManager;
 
 import com.floreantpos.POSConstants;
 import com.floreantpos.PosException;
 import com.floreantpos.model.MenuModifier;
 import com.floreantpos.model.MenuModifierGroup;
+import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.TicketItemModifier;
 import com.floreantpos.model.TicketItemModifierGroup;
 import com.floreantpos.swing.PosButton;
@@ -122,10 +124,15 @@ public class ModifierView extends SelectionView {
 			}
 
 			setItems(itemList);
-
 		} catch (PosException e) {
 			POSMessageDialog.showError(this, com.floreantpos.POSConstants.ERROR_MESSAGE, e);
 		}
+	}
+	
+	@Override
+	protected void renderItems() {
+		super.renderItems();
+		updateView();
 	}
 
 	private void renderTitle() {
@@ -163,11 +170,13 @@ public class ModifierView extends SelectionView {
 		if (components == null || components.length == 0)
 			return;
 
+		TicketItem ticketItem = modifierSelectionModel.getTicketItem();
+		
 		for (Component component : components) {
 			ModifierButton modifierButton = (ModifierButton) component;
 			MenuModifier modifier = modifierButton.menuModifier;
 
-			TicketItemModifierGroup ticketItemModifierGroup = modifierSelectionModel.getTicketItem().findTicketItemModifierGroup(modifier, addOnMode);
+			TicketItemModifierGroup ticketItemModifierGroup = ticketItem.findTicketItemModifierGroup(modifier, addOnMode);
 			TicketItemModifier ticketItemModifier = ticketItemModifierGroup.findTicketItemModifier(modifier, addOnMode);
 			if (ticketItemModifier != null) {
 				String color = addOnMode ? "red" : "green";
@@ -177,6 +186,13 @@ public class ModifierView extends SelectionView {
 			else {
 				modifierButton.setText("<html><center>" + modifier.getDisplayName() + "</center></html>"); //$NON-NLS-1$ //$NON-NLS-2$
 			}
+		}
+		
+		if(ModifierSelectionDialog.isRequiredModifiersAdded(ticketItem, modifierGroup.getMenuItemModifierGroup())) {
+			btnDone.setBackground(Color.green);
+		}
+		else {
+			btnDone.setBackground(UIManager.getColor("Control"));
 		}
 	}
 
@@ -255,7 +271,7 @@ public class ModifierView extends SelectionView {
 		this.addOnMode = addOnMode;
 		renderTitle();
 		btnClear.setEnabled(!addOnMode);
-		btnDone.setEnabled(!addOnMode);
+		btnDone.setVisible(!addOnMode);
 		setModifierGroup(modifierGroup);
 	}
 }

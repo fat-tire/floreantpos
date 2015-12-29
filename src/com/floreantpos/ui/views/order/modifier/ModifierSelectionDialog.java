@@ -161,7 +161,7 @@ public class ModifierSelectionDialog extends POSDialog implements ModifierGroupS
 		}
 
 		for (MenuItemModifierGroup menuItemModifierGroup : menuItemModiferGroups) {
-			if (!isRequiredModifiersAdded(menuItemModifierGroup)) {
+			if (!isRequiredModifiersAdded(modifierSelectionModel.getTicketItem(), menuItemModifierGroup)) {
 				showModifierSelectionMessage(menuItemModifierGroup);
 				modifierGroupView.setSelectedModifierGroup(menuItemModifierGroup.getModifierGroup());
 				return;
@@ -232,7 +232,7 @@ public class ModifierSelectionDialog extends POSDialog implements ModifierGroupS
 	@Override
 	public void modifierGroupSelectionDone(MenuModifierGroup modifierGroup) {
 		MenuItemModifierGroup menuItemModifierGroup = modifierGroup.getMenuItemModifierGroup();
-		if (!isRequiredModifiersAdded(menuItemModifierGroup)) {
+		if (!isRequiredModifiersAdded(modifierSelectionModel.getTicketItem(), menuItemModifierGroup)) {
 			showModifierSelectionMessage(menuItemModifierGroup);
 			modifierGroupView.setSelectedModifierGroup(menuItemModifierGroup.getModifierGroup());
 			return;
@@ -255,7 +255,7 @@ public class ModifierSelectionDialog extends POSDialog implements ModifierGroupS
 		this.modifierSelectionModel = modifierSelectionModel;
 	}
 
-	private boolean isRequiredModifiersAdded(MenuItemModifierGroup menuItemModifierGroup) {
+	public static boolean isRequiredModifiersAdded(TicketItem ticketItem, MenuItemModifierGroup menuItemModifierGroup) {
 		int minQuantity = menuItemModifierGroup.getMinQuantity();
 		if (minQuantity <= 0) {
 			return true;
@@ -266,7 +266,6 @@ public class ModifierSelectionDialog extends POSDialog implements ModifierGroupS
 			return true;
 		}
 		
-		TicketItem ticketItem = modifierSelectionModel.getTicketItem();
 		TicketItemModifierGroup ticketItemModifierGroup = ticketItem.findTicketItemModifierGroup(menuItemModifierGroup.getId());
 
 		if (ticketItemModifierGroup == null || ticketItemModifierGroup.countFreeModifiers() < minQuantity) {
