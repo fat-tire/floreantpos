@@ -25,16 +25,13 @@ package com.floreantpos.ui.views.order;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
@@ -115,9 +112,9 @@ public class TicketView extends JPanel {
 		setBorder(border);
 		setLayout(new java.awt.BorderLayout(5, 5));
 
-		btnPay = new com.floreantpos.swing.PosButton();
 		btnCancel = new com.floreantpos.swing.PosButton();
-		btnSave = new com.floreantpos.swing.PosButton();
+		btnDone = new com.floreantpos.swing.PosButton();
+		btnSend = new com.floreantpos.swing.PosButton();
 		ticketItemActionPanel = new com.floreantpos.swing.TransparentPanel();
 		btnDecreaseAmount = new com.floreantpos.swing.PosButton();
 		btnScrollDown = new com.floreantpos.swing.PosButton();
@@ -126,7 +123,7 @@ public class TicketView extends JPanel {
 		ticketScrollPane.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		ticketScrollPane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
 		ticketScrollPane.setPreferredSize(new java.awt.Dimension(180, 200));
-		
+
 		btnEdit.setEnabled(false);
 
 		JPanel totalViewPanel = createTotalViewerPanel();
@@ -164,21 +161,15 @@ public class TicketView extends JPanel {
 		btnCancel.setText(POSConstants.CANCEL_BUTTON_TEXT);
 		btnCancel.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				doCancelOrder(evt);
+				doCancelOrder();
 			}
 		});
 
-		btnSave.setText(com.floreantpos.POSConstants.SAVE_BUTTON_TEXT);
-		btnSave.addActionListener(new java.awt.event.ActionListener() {
+		btnDone.setText(com.floreantpos.POSConstants.SAVE_BUTTON_TEXT);
+		btnDone.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				doFinishOrder(evt);
-			}
-		});
-
-		btnPay.setText(com.floreantpos.POSConstants.PAY_BUTTON_TEXT);
-		btnPay.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				doPayNow(evt);
+				doFinishOrder();
+				closeView(true);
 			}
 		});
 
@@ -188,57 +179,40 @@ public class TicketView extends JPanel {
 				extraActionPanel.setCollapsed(!btnMore.isSelected());
 			}
 		});
-
-		if (Application.getInstance().getTerminal().isHasCashDrawer()) {
-			ticketActionPanel.add(btnPay);
-		}
-		ticketActionPanel.add(btnSave);
+		btnSend.setText(com.floreantpos.POSConstants.SEND_TO_KITCHEN);
+		btnSend.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				sendTicketToKitchen();
+				ticketViewerTable.updateView();
+				POSMessageDialog.showMessage("Items sent to kitchen");
+			}
+		});
+		ticketActionPanel.add(btnSend);
+		ticketActionPanel.add(btnDone);
 		ticketActionPanel.add(btnMore);
 		ticketActionPanel.add(btnCancel);
 
 	}
 
 	private JPanel createTotalViewerPanel() {
-		lblSubtotal = new javax.swing.JLabel();
-		lblSubtotal.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-		lblSubtotal.setText(com.floreantpos.POSConstants.SUBTOTAL + ":"); //$NON-NLS-1$
-
-		tfSubtotal = new javax.swing.JTextField(10);
-		tfSubtotal.setHorizontalAlignment(SwingConstants.TRAILING);
-		tfSubtotal.setEditable(false);
-
-		tfDiscount = new javax.swing.JTextField(10);
-		tfDiscount.setHorizontalAlignment(SwingConstants.TRAILING);
-		tfDiscount.setEditable(false);
-
-		lblTax = new javax.swing.JLabel();
-		lblTax.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-		lblTax.setText(com.floreantpos.POSConstants.TAX + ":"); //$NON-NLS-1$
-
-		tfTax = new javax.swing.JTextField();
-		tfTax.setEditable(false);
-		tfTax.setHorizontalAlignment(SwingConstants.TRAILING);
-
-		lblTotal = new javax.swing.JLabel();
-		lblTotal.setFont(lblTotal.getFont().deriveFont(Font.BOLD, 16));
-		lblTotal.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-		lblTotal.setText(com.floreantpos.POSConstants.TOTAL + ":"); //$NON-NLS-1$
-		tfTotal = new javax.swing.JTextField(10);
-		tfTotal.setFont(tfTotal.getFont().deriveFont(Font.BOLD, 16));
-		tfTotal.setHorizontalAlignment(SwingConstants.TRAILING);
-		tfTotal.setEditable(false);
-
 		JPanel ticketAmountPanel = new com.floreantpos.swing.TransparentPanel(new MigLayout("ins 2 2 3 2,alignx trailing,fill", "[grow][]", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
-		ticketAmountPanel.add(lblSubtotal, "growx,aligny center"); //$NON-NLS-1$
-		ticketAmountPanel.add(tfSubtotal, "growx,aligny center"); //$NON-NLS-1$
-		ticketAmountPanel.add(new JLabel(Messages.getString("TicketView.9"), JLabel.TRAILING), "newline,growx,aligny center"); //$NON-NLS-1$ //$NON-NLS-2$
-		ticketAmountPanel.add(tfDiscount, "growx,aligny center"); //$NON-NLS-1$
-		ticketAmountPanel.add(lblTax, "newline,growx,aligny center"); //$NON-NLS-1$
-		ticketAmountPanel.add(tfTax, "growx,aligny center"); //$NON-NLS-1$
-		ticketAmountPanel.add(lblTotal, "newline,growx,aligny center"); //$NON-NLS-1$
-		ticketAmountPanel.add(tfTotal, "growx,aligny center"); //$NON-NLS-1$
-
+		btnTotal = new PosButton("TOTAL");
+		ticketAmountPanel.add(btnTotal, "growx,aligny center"); //$NON-NLS-1$
+		
+		if(!Application.getInstance().getTerminal().isHasCashDrawer()) {
+			btnTotal.setEnabled(false);
+			//btnTotal.set
+		}
+		
+		btnTotal.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				doPayNow(e);
+			}
+		});
 		return ticketAmountPanel;
 	}
 
@@ -331,27 +305,10 @@ public class TicketView extends JPanel {
 		}
 	}
 
-	private synchronized void doFinishOrder(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_doFinishOrder
+	private synchronized void doFinishOrder() {// GEN-FIRST:event_doFinishOrder
 		try {
-
-			updateModel();
-
-			TicketDAO ticketDAO = TicketDAO.getInstance();
-
-			if (ticket.getId() == null) {
-				// save ticket first. ticket needs to save so that it
-				// contains an id.
-				OrderController.saveOrder(ticket);
-				ticketDAO.refresh(ticket);
-			}
-
-			if (ticket.needsKitchenPrint()) {
-				ReceiptPrintService.printToKitchen(ticket);
-				ticketDAO.refresh(ticket);
-			}
-
-			OrderController.saveOrder(ticket);
-
+			
+			sendTicketToKitchen();
 			closeView(false);
 
 		} catch (StaleObjectStateException e) {
@@ -363,19 +320,43 @@ public class TicketView extends JPanel {
 			POSMessageDialog.showError(Application.getPosWindow(), POSConstants.ERROR_MESSAGE, e);
 		}
 	}// GEN-LAST:event_doFinishOrder
+	
+	private synchronized void sendTicketToKitchen() {// GEN-FIRST:event_doFinishOrder
+		try {
+			saveTicketIfNeeded();
+
+			if (ticket.needsKitchenPrint()) {
+				ReceiptPrintService.printToKitchen(ticket);
+				TicketDAO.getInstance().refresh(ticket);
+			}
+			
+			OrderController.saveOrder(ticket);
+			
+		} catch (StaleObjectStateException e) {
+			POSMessageDialog.showError(Application.getPosWindow(), Messages.getString("TicketView.22")); //$NON-NLS-1$
+			return;
+		} catch (PosException x) {
+			POSMessageDialog.showError(x.getMessage());
+		} catch (Exception e) {
+			POSMessageDialog.showError(Application.getPosWindow(), POSConstants.ERROR_MESSAGE, e);
+		}
+	}
+
+	public void saveTicketIfNeeded() {
+		updateModel();
+		
+		TicketDAO ticketDAO = TicketDAO.getInstance();
+
+		if (ticket.getId() == null) {
+			// save ticket first. ticket needs to save so that it
+			// contains an id.
+			OrderController.saveOrder(ticket);
+			ticketDAO.refresh(ticket);
+		}
+	}
 
 	private void closeView(boolean orderCanceled) {
 		if (TerminalConfig.isCashierMode()) {
-			// String message = "Order canceled. What do you want to do next?";
-			// if(!orderCanceled) {
-			// message = "Ticket no " + getTicket().getId() +
-			// " saved. What do you want to do next?";
-			// }
-			//
-			// Window ancestor = SwingUtilities.getWindowAncestor(this);
-			// CashierModeNextActionDialog dialog = new
-			// CashierModeNextActionDialog((Frame) ancestor, message);
-			// dialog.open();
 			RootView.getInstance().showView(CashierSwitchBoardView.VIEW_NAME);
 		}
 		else {
@@ -383,7 +364,7 @@ public class TicketView extends JPanel {
 		}
 	}
 
-	private void doCancelOrder(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_doCancelOrder
+	private void doCancelOrder() {// GEN-FIRST:event_doCancelOrder
 		closeView(true);
 	}// GEN-LAST:event_doCancelOrder
 
@@ -454,22 +435,16 @@ public class TicketView extends JPanel {
 	private com.floreantpos.swing.PosButton btnCancel;
 	private com.floreantpos.swing.PosButton btnDecreaseAmount;
 	private com.floreantpos.swing.PosButton btnDelete = new PosButton(IconFactory.getIcon("/ui_icons/", "delete.png")); //$NON-NLS-1$ //$NON-NLS-2$
-	private com.floreantpos.swing.PosButton btnSave;
+	private com.floreantpos.swing.PosButton btnDone;
+	private com.floreantpos.swing.PosButton btnSend;
 	private com.floreantpos.swing.PosButton btnIncreaseAmount = new PosButton(IconFactory.getIcon("/ui_icons/", "add_user.png")); //$NON-NLS-1$ //$NON-NLS-2$
 	private com.floreantpos.swing.PosButton btnEdit = new PosButton("..."); //$NON-NLS-1$ //$NON-NLS-2$
-	private com.floreantpos.swing.PosButton btnPay;
 	private com.floreantpos.swing.POSToggleButton btnMore = new POSToggleButton(POSConstants.MORE_ACTIVITY_BUTTON_TEXT);
 	private com.floreantpos.swing.PosButton btnScrollDown;
 	private com.floreantpos.swing.PosButton btnScrollUp = new PosButton(IconFactory.getIcon("/ui_icons/", "up.png")); //$NON-NLS-1$ //$NON-NLS-2$
-	private javax.swing.JLabel lblTax;
-	private javax.swing.JLabel lblSubtotal;
-	private javax.swing.JLabel lblTotal;
 	private com.floreantpos.swing.TransparentPanel ticketItemActionPanel;
 	private javax.swing.JScrollPane ticketScrollPane;
-	private javax.swing.JTextField tfSubtotal;
-	private javax.swing.JTextField tfDiscount;
-	private javax.swing.JTextField tfTax;
-	private javax.swing.JTextField tfTotal;
+	private PosButton btnTotal;
 	private com.floreantpos.ui.ticket.TicketViewerTable ticketViewerTable;
 	private ExtraTicketActionPanel extraActionPanel = new ExtraTicketActionPanel();
 
@@ -508,26 +483,13 @@ public class TicketView extends JPanel {
 
 	public void updateView() {
 		if (ticket == null) {
-			tfSubtotal.setText(""); //$NON-NLS-1$
-			tfDiscount.setText(""); //$NON-NLS-1$
-			tfTax.setText(""); //$NON-NLS-1$
-			tfTotal.setText(""); //$NON-NLS-1$
+			btnTotal.setText("TOTAL ");
 			titledBorder.setTitle(Messages.getString("TicketView.36")); //$NON-NLS-1$
 			return;
 		}
 
 		ticket.calculatePrice();
-
-		tfSubtotal.setText(NumberUtil.formatNumber(ticket.getSubtotalAmount()));
-		tfDiscount.setText(NumberUtil.formatNumber(ticket.getDiscountAmount()));
-
-		if (Application.getInstance().isPriceIncludesTax()) {
-			tfTax.setText(Messages.getString("TicketView.35")); //$NON-NLS-1$
-		}
-		else {
-			tfTax.setText(NumberUtil.formatNumber(ticket.getTaxAmount()));
-		}
-		tfTotal.setText(NumberUtil.formatNumber(ticket.getTotalAmount()));
+		btnTotal.setText("TOTAL $" + NumberUtil.formatNumber(ticket.getTotalAmount()));
 
 		if (ticket.getId() == null) {
 			titledBorder.setTitle(Messages.getString("TicketView.36")); //$NON-NLS-1$
@@ -537,10 +499,10 @@ public class TicketView extends JPanel {
 		}
 
 		if (ticket.getType() != null && ticket.getType().getProperties() != null) {
-			btnSave.setVisible(ticket.getType().getProperties().isPostPaid());
+			btnDone.setVisible(ticket.getType().getProperties().isPostPaid());
 		}
 		else {
-			btnSave.setVisible(true);
+			btnDone.setVisible(true);
 		}
 
 		ticketViewerTable.updateView();
