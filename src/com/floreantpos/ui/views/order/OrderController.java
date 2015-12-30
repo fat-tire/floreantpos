@@ -124,7 +124,9 @@ public class OrderController implements OrderListener, CategorySelectionListener
 	}
 
 	public void payOrderSelected(Ticket ticket) {
-		new SettleTicketAction(ticket.getId()).execute();
+		if(!new SettleTicketAction(ticket.getId()).execute()) {
+			return;
+		}
 
 		if (TerminalConfig.isCashierMode()) {
 			String message = Messages.getString("OrderController.0") + ticket.getId() + Messages.getString("OrderController.1"); //$NON-NLS-1$ //$NON-NLS-2$
