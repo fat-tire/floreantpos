@@ -93,6 +93,25 @@ import com.floreantpos.util.PosGuiUtil;
 public class TicketView extends JPanel {
 	private java.util.Vector<OrderListener> orderListeners = new java.util.Vector<OrderListener>();
 	private Ticket ticket;
+	private com.floreantpos.swing.TransparentPanel ticketActionPanel = new com.floreantpos.swing.TransparentPanel();
+	private com.floreantpos.swing.PosButton btnCancel;
+	private com.floreantpos.swing.PosButton btnDecreaseAmount;
+	private com.floreantpos.swing.PosButton btnDelete = new PosButton(IconFactory.getIcon("/ui_icons/", "delete.png")); //$NON-NLS-1$ //$NON-NLS-2$
+	private com.floreantpos.swing.PosButton btnDone;
+	private com.floreantpos.swing.PosButton btnSend;
+	private com.floreantpos.swing.PosButton btnIncreaseAmount = new PosButton(IconFactory.getIcon("/ui_icons/", "add_user.png")); //$NON-NLS-1$ //$NON-NLS-2$
+	private com.floreantpos.swing.PosButton btnEdit = new PosButton("..."); //$NON-NLS-1$ //$NON-NLS-2$
+	private com.floreantpos.swing.POSToggleButton btnMore = new POSToggleButton(POSConstants.MORE_ACTIVITY_BUTTON_TEXT);
+	private com.floreantpos.swing.PosButton btnScrollDown;
+	private com.floreantpos.swing.PosButton btnScrollUp = new PosButton(IconFactory.getIcon("/ui_icons/", "up.png")); //$NON-NLS-1$ //$NON-NLS-2$
+	private com.floreantpos.swing.TransparentPanel ticketItemActionPanel;
+	private javax.swing.JScrollPane ticketScrollPane;
+	private PosButton btnTotal;
+	private com.floreantpos.ui.ticket.TicketViewerTable ticketViewerTable;
+	private ExtraTicketActionPanel extraActionPanel = new ExtraTicketActionPanel();
+
+	private TitledBorder titledBorder = new TitledBorder(""); //$NON-NLS-1$
+	private Border border = new CompoundBorder(titledBorder, new EmptyBorder(5, 5, 5, 5));
 
 	public final static String VIEW_NAME = "TICKET_VIEW"; //$NON-NLS-1$
 
@@ -169,7 +188,6 @@ public class TicketView extends JPanel {
 		btnDone.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				doFinishOrder();
-				closeView(true);
 			}
 		});
 
@@ -193,7 +211,6 @@ public class TicketView extends JPanel {
 		ticketActionPanel.add(btnDone);
 		ticketActionPanel.add(btnMore);
 		ticketActionPanel.add(btnCancel);
-
 	}
 
 	private JPanel createTotalViewerPanel() {
@@ -210,7 +227,7 @@ public class TicketView extends JPanel {
 		btnTotal.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				doPayNow(e);
+				doPayNow();
 			}
 		});
 		return ticketAmountPanel;
@@ -221,33 +238,33 @@ public class TicketView extends JPanel {
 
 		btnScrollUp.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				doScrollUp(evt);
+				doScrollUp();
 			}
 		});
 
 		btnIncreaseAmount.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				doIncreaseAmount(evt);
+				doIncreaseAmount();
 			}
 		});
 
 		btnDecreaseAmount.setIcon(IconFactory.getIcon("/ui_icons/", "minus.png")); //$NON-NLS-1$ //$NON-NLS-2$
 		btnDecreaseAmount.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				doDecreaseAmount(evt);
+				doDecreaseAmount();
 			}
 		});
 
 		btnScrollDown.setIcon(IconFactory.getIcon("/ui_icons/", "down.png")); //$NON-NLS-1$ //$NON-NLS-2$
 		btnScrollDown.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				doScrollDown(evt);
+				doScrollDown();
 			}
 		});
 
 		btnDelete.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				doDeleteSelection(evt);
+				doDeleteSelection();
 			}
 		});
 
@@ -376,7 +393,7 @@ public class TicketView extends JPanel {
 		ticket.calculatePrice();
 	}
 
-	private void doPayNow(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_doPayNow
+	private void doPayNow() {// GEN-FIRST:event_doPayNow
 		try {
 			if (!POSUtil.checkDrawerAssignment()) {
 				return;
@@ -392,7 +409,7 @@ public class TicketView extends JPanel {
 		}
 	}// GEN-LAST:event_doPayNow
 
-	private void doDeleteSelection(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_doDeleteSelection
+	private void doDeleteSelection() {// GEN-FIRST:event_doDeleteSelection
 		ticketViewerTable.deleteSelectedItem();
 		updateView();
 
@@ -409,49 +426,26 @@ public class TicketView extends JPanel {
 
 	}// GEN-LAST:event_doDeleteSelection
 
-	private void doIncreaseAmount(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_doIncreaseAmount
+	private void doIncreaseAmount() {// GEN-FIRST:event_doIncreaseAmount
 		if (ticketViewerTable.increaseItemAmount()) {
 			updateView();
 		}
 
 	}// GEN-LAST:event_doIncreaseAmount
 
-	private void doDecreaseAmount(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_doDecreaseAmount
+	private void doDecreaseAmount() {// GEN-FIRST:event_doDecreaseAmount
 		if (ticketViewerTable.decreaseItemAmount()) {
 			updateView();
 		}
 	}// GEN-LAST:event_doDecreaseAmount
 
-	private void doScrollDown(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_doScrollDown
+	private void doScrollDown() {// GEN-FIRST:event_doScrollDown
 		ticketViewerTable.scrollDown();
 	}// GEN-LAST:event_doScrollDown
 
-	private void doScrollUp(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_doScrollUp
+	private void doScrollUp() {// GEN-FIRST:event_doScrollUp
 		ticketViewerTable.scrollUp();
 	}// GEN-LAST:event_doScrollUp
-
-	// Variables declaration - do not modify//GEN-BEGIN:variables
-	private com.floreantpos.swing.TransparentPanel ticketActionPanel = new com.floreantpos.swing.TransparentPanel();
-	private com.floreantpos.swing.PosButton btnCancel;
-	private com.floreantpos.swing.PosButton btnDecreaseAmount;
-	private com.floreantpos.swing.PosButton btnDelete = new PosButton(IconFactory.getIcon("/ui_icons/", "delete.png")); //$NON-NLS-1$ //$NON-NLS-2$
-	private com.floreantpos.swing.PosButton btnDone;
-	private com.floreantpos.swing.PosButton btnSend;
-	private com.floreantpos.swing.PosButton btnIncreaseAmount = new PosButton(IconFactory.getIcon("/ui_icons/", "add_user.png")); //$NON-NLS-1$ //$NON-NLS-2$
-	private com.floreantpos.swing.PosButton btnEdit = new PosButton("..."); //$NON-NLS-1$ //$NON-NLS-2$
-	private com.floreantpos.swing.POSToggleButton btnMore = new POSToggleButton(POSConstants.MORE_ACTIVITY_BUTTON_TEXT);
-	private com.floreantpos.swing.PosButton btnScrollDown;
-	private com.floreantpos.swing.PosButton btnScrollUp = new PosButton(IconFactory.getIcon("/ui_icons/", "up.png")); //$NON-NLS-1$ //$NON-NLS-2$
-	private com.floreantpos.swing.TransparentPanel ticketItemActionPanel;
-	private javax.swing.JScrollPane ticketScrollPane;
-	private PosButton btnTotal;
-	private com.floreantpos.ui.ticket.TicketViewerTable ticketViewerTable;
-	private ExtraTicketActionPanel extraActionPanel = new ExtraTicketActionPanel();
-
-	private TitledBorder titledBorder = new TitledBorder(""); //$NON-NLS-1$
-	private Border border = new CompoundBorder(titledBorder, new EmptyBorder(5, 5, 5, 5));
-
-	// End of variables declaration//GEN-END:variables
 
 	public Ticket getTicket() {
 		return ticket;
