@@ -28,7 +28,6 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -41,48 +40,29 @@ import javax.swing.event.ListSelectionListener;
 
 import net.miginfocom.swing.MigLayout;
 
-import org.hibernate.Session;
-import org.jdesktop.swingx.JXCollapsiblePane;
-
 import com.floreantpos.IconFactory;
 import com.floreantpos.Messages;
-import com.floreantpos.POSConstants;
 import com.floreantpos.PosException;
 import com.floreantpos.config.TerminalConfig;
-import com.floreantpos.customer.CustomerSelectionDialog;
-import com.floreantpos.extension.ExtensionManager;
-import com.floreantpos.extension.FloorLayoutPlugin;
 import com.floreantpos.main.Application;
-import com.floreantpos.model.CookingInstruction;
 import com.floreantpos.model.ITicketItem;
 import com.floreantpos.model.MenuCategory;
 import com.floreantpos.model.MenuGroup;
 import com.floreantpos.model.MenuItem;
-import com.floreantpos.model.OrderType;
-import com.floreantpos.model.ShopTable;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketItem;
-import com.floreantpos.model.TicketItemCookingInstruction;
 import com.floreantpos.model.TicketItemModifier;
-import com.floreantpos.model.dao.CookingInstructionDAO;
 import com.floreantpos.model.dao.MenuItemDAO;
-import com.floreantpos.model.dao.ShopTableDAO;
 import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.report.ReceiptPrintService;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.swing.PosScrollPane;
-import com.floreantpos.ui.dialog.BeanEditorDialog;
-import com.floreantpos.ui.dialog.MiscTicketItemDialog;
-import com.floreantpos.ui.dialog.NumberSelectionDialog2;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.views.CashierSwitchBoardView;
-import com.floreantpos.ui.views.CookingInstructionSelectionView;
 import com.floreantpos.ui.views.SwitchboardView;
-import com.floreantpos.ui.views.order.actions.ItemSelectionListener;
 import com.floreantpos.ui.views.order.actions.OrderListener;
 import com.floreantpos.util.NumberUtil;
 import com.floreantpos.util.POSUtil;
-import com.floreantpos.util.PosGuiUtil;
 
 /**
  * 
@@ -100,8 +80,7 @@ public class TicketView extends JPanel {
 	private com.floreantpos.swing.TransparentPanel ticketItemActionPanel;
 	private javax.swing.JScrollPane ticketScrollPane;
 	private PosButton btnTotal;
-	private com.floreantpos.ui.ticket.TicketViewerTable ticketViewerTable;
-	private ExtraTicketActionPanel extraActionPanel = new ExtraTicketActionPanel();
+	public com.floreantpos.ui.ticket.TicketViewerTable ticketViewerTable;
 
 	private TitledBorder titledBorder = new TitledBorder(""); //$NON-NLS-1$
 	private Border border = new CompoundBorder(titledBorder, new EmptyBorder(5, 5, 5, 5));
@@ -146,17 +125,16 @@ public class TicketView extends JPanel {
 		add(centerPanel);
 		add(ticketItemActionPanel, BorderLayout.EAST);
 		ticketViewerTable.getRenderer().setInTicketScreen(true);
-		ticketViewerTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+	/*	ticketViewerTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
 				if (!e.getValueIsAdjusting()) {
 					updateSelectionView();
 				}
 			}
-		});
+		});*/
 		ticketViewerTable.getSelectionModel().addListSelectionListener(new TicketItemSelectionListener());
-
-		getExtraActionPanel().updateView(null);
+	//	OrderView.getInstance().actionUpdate(null);
 		setPreferredSize(new java.awt.Dimension(360, 463));
 
 	}// </editor-fold>//GEN-END:initComponents
@@ -230,44 +208,6 @@ public class TicketView extends JPanel {
 		ticketItemActionPanel.add(btnScrollDown);
 
 		ticketItemActionPanel.setPreferredSize(new Dimension(60, 360));
-	}
-
-	protected void doAddCookingInstruction() {
-
-		try {
-			Object object = ticketViewerTable.getSelected();
-			if (!(object instanceof TicketItem)) {
-				POSMessageDialog.showError(Application.getPosWindow(), Messages.getString("TicketView.20")); //$NON-NLS-1$
-				return;
-			}
-
-			TicketItem ticketItem = (TicketItem) object;
-
-			if (ticketItem.isPrintedToKitchen()) {
-				POSMessageDialog.showError(Application.getPosWindow(), Messages.getString("TicketView.21")); //$NON-NLS-1$
-				return;
-			}
-
-			List<CookingInstruction> list = CookingInstructionDAO.getInstance().findAll();
-			CookingInstructionSelectionView cookingInstructionSelectionView = new CookingInstructionSelectionView();
-			BeanEditorDialog dialog = new BeanEditorDialog(cookingInstructionSelectionView);
-			dialog.setBean(list);
-			dialog.setSize(800, 600);
-			dialog.setLocationRelativeTo(Application.getPosWindow());
-			dialog.setVisible(true);
-
-			if (dialog.isCanceled()) {
-				return;
-			}
-
-			List<TicketItemCookingInstruction> instructions = cookingInstructionSelectionView.getTicketItemCookingInstructions();
-			ticketItem.addCookingInstructions(instructions);
-
-			ticketViewerTable.updateView();
-		} catch (Exception e) {
-			e.printStackTrace();
-			POSMessageDialog.showError(e.getMessage());
-		}
 	}
 
 	public synchronized void doFinishOrder() {// GEN-FIRST:event_doFinishOrder
@@ -384,7 +324,6 @@ public class TicketView extends JPanel {
 		ticketViewerTable.setTicket(_ticket);
 
 		updateView();
-		extraActionPanel.updateView();
 	}
 
 	public void addTicketItem(TicketItem ticketItem) {
@@ -456,7 +395,7 @@ public class TicketView extends JPanel {
 		}
 	}
 
-	private void updateSelectionView() {
+	/*private void updateSelectionView() {
 		Object selectedObject = ticketViewerTable.getSelected();
 
 		OrderView orderView = OrderView.getInstance();
@@ -500,6 +439,7 @@ public class TicketView extends JPanel {
 			}
 			//			}
 		}
+		
 		//		else if (selectedObject instanceof TicketItemModifier) {
 		//			selectedTicketItem = ((TicketItemModifier) selectedObject).getParent().getParent();
 		//			if (selectedTicketItem == null)
@@ -525,11 +465,7 @@ public class TicketView extends JPanel {
 		//				orderView.showView(ModifierView.VIEW_NAME);
 		//			}
 		//		}
-	}
-
-	public ExtraTicketActionPanel getExtraActionPanel() {
-		return extraActionPanel;
-	}
+	}*/
 
 	public com.floreantpos.ui.ticket.TicketViewerTable getTicketViewerTable() {
 		return ticketViewerTable;
@@ -544,339 +480,6 @@ public class TicketView extends JPanel {
 		frame.setVisible(true);
 	}
 
-	public class ExtraTicketActionPanel extends JXCollapsiblePane {
-		private ItemSelectionListener itemSelectionListener;
-
-		/** Creates new form OthersView */
-		private ExtraTicketActionPanel() {
-			initComponents();
-
-			setAnimated(false);
-		}
-
-		// public ExtraTicketActionPanel(ItemSelectionListener
-		// itemSelectionListener) {
-		// initComponents();
-		//
-		// setItemSelectionListener(itemSelectionListener);
-		// }
-
-		/**
-		 * This method is called from within the constructor to initialize the
-		 * form. WARNING: Do NOT modify this code. The content of this method is
-		 * always regenerated by the Form Editor.
-		 */
-		// <editor-fold defaultstate="collapsed"
-		// desc=" Generated Code ">//GEN-BEGIN:initComponents
-		private void initComponents() {
-			setCollapsed(true);
-			setAnimated(false);
-
-			buttonPanel = new JPanel();
-			btnOrderType = new com.floreantpos.swing.PosButton();
-			btnMisc = new com.floreantpos.swing.PosButton();
-			btnGuestNo = new com.floreantpos.swing.PosButton();
-			btnTableNumber = new com.floreantpos.swing.PosButton();
-
-			setBorder(new CompoundBorder(new EmptyBorder(10, 2, 2, 1), new TitledBorder(""))); //$NON-NLS-1$
-			setLayout(new BorderLayout());
-
-			btnSearchItem = new PosButton(POSConstants.SEARCH_ITEM_BUTTON_TEXT);
-			btnSearchItem.addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					searchItem();
-				}
-			});
-
-			buttonPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
-			buttonPanel.setLayout(new java.awt.GridLayout(2, 0, 5, 5));
-
-			btnOrderType.setText(com.floreantpos.POSConstants.ORDER_TYPE_BUTTON_TEXT);
-			btnOrderType.addActionListener(new java.awt.event.ActionListener() {
-				public void actionPerformed(java.awt.event.ActionEvent evt) {
-					// doViewOrderInfo();
-					doChangeOrderType();
-				}
-			});
-
-			btnCustomer = new PosButton(POSConstants.CUSTOMER_SELECTION_BUTTON_TEXT);
-			btnCustomer.addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					doAddEditCustomer();
-				}
-			});
-
-			btnMisc.setText(com.floreantpos.POSConstants.MISC_BUTTON_TEXT);
-			btnMisc.addActionListener(new java.awt.event.ActionListener() {
-				public void actionPerformed(java.awt.event.ActionEvent evt) {
-					doInsertMisc(evt);
-				}
-			});
-
-			btnGuestNo.setText(com.floreantpos.POSConstants.GUEST_NO_BUTTON_TEXT);
-			btnGuestNo.addActionListener(new java.awt.event.ActionListener() {
-				public void actionPerformed(java.awt.event.ActionEvent evt) {
-					btnCustomerNumberActionPerformed(evt);
-				}
-			});
-
-			btnTableNumber.setText(com.floreantpos.POSConstants.TABLE_NO_BUTTON_TEXT);
-			btnTableNumber.addActionListener(new java.awt.event.ActionListener() {
-				public void actionPerformed(java.awt.event.ActionEvent evt) {
-					btnTableNumberActionPerformed(evt);
-				}
-			});
-
-			btnCookingInstruction.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					doAddCookingInstruction();
-				}
-			});
-
-			btnDiscount.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					ITicketItem selectedObject = (ITicketItem) ticketViewerTable.getSelected();
-					if (selectedObject == null || !selectedObject.canAddDiscount()) {
-						return;
-					}
-
-					double d = NumberSelectionDialog2.takeDoubleInput(
-							Messages.getString("TicketView.39"), Messages.getString("TicketView.40"), selectedObject.getDiscountAmount()); //$NON-NLS-1$ //$NON-NLS-2$
-					if (Double.isNaN(d)) {
-						return;
-					}
-
-					if (selectedObject instanceof TicketItem) {
-						((TicketItem) selectedObject).setDiscountRate(-1.0);
-					}
-
-					selectedObject.setDiscountAmount(d);
-					ticketViewerTable.repaint();
-					TicketView.this.updateView();
-				}
-			});
-
-			buttonPanel.add(btnCookingInstruction);
-			buttonPanel.add(btnDiscount);
-			//buttonPanel.add(btnAddOn);
-			//buttonPanel.add(btnVoid);
-
-			buttonPanel.add(btnMisc);
-			buttonPanel.add(btnSearchItem);
-			buttonPanel.add(btnOrderType);
-			buttonPanel.add(btnCustomer);
-			buttonPanel.add(btnTableNumber);
-			buttonPanel.add(btnGuestNo);
-
-			add(buttonPanel);
-		}// </editor-fold>//GEN-END:initComponents
-
-		public void setOrderType(OrderType orderType) {
-			ticket.setType(orderType);
-
-			btnGuestNo.setEnabled(orderType == OrderType.DINE_IN);
-			btnTableNumber.setEnabled(orderType == OrderType.DINE_IN);
-		}
-
-		protected void doChangeOrderType() {
-			OrderTypeSelectionDialog dialog = new OrderTypeSelectionDialog();
-			dialog.open();
-
-			if (dialog.isCanceled())
-				return;
-
-			OrderType selectedOrderType = dialog.getSelectedOrderType();
-			setOrderType(selectedOrderType);
-		}
-
-		protected void doAddEditCustomer() {
-			CustomerSelectionDialog dialog = new CustomerSelectionDialog(getTicket());
-			dialog.setSize(800, 650);
-			dialog.open();
-		}
-
-		private void doInsertMisc(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_doInsertMisc
-			MiscTicketItemDialog dialog = new MiscTicketItemDialog();
-			dialog.setSize(900, 580);
-			dialog.open();
-			if (!dialog.isCanceled()) {
-				TicketItem ticketItem = dialog.getTicketItem();
-				ticketItem.setTicket(ticket);
-				ticketItem.calculatePrice();
-				OrderView.getInstance().getTicketView().addTicketItem(ticketItem);
-			}
-		}// GEN-LAST:event_doInsertMisc
-
-		private void btnCustomerNumberActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnCustomerNumberActionPerformed
-			updateGuestNumber();
-		}// GEN-LAST:event_btnCustomerNumberActionPerformed
-
-		private void updateGuestNumber() {
-			Ticket thisTicket = getTicket();
-			int guestNumber = thisTicket.getNumberOfGuests();
-
-			NumberSelectionDialog2 dialog = new NumberSelectionDialog2();
-			dialog.setTitle(com.floreantpos.POSConstants.NUMBER_OF_GUESTS);
-			dialog.setValue(guestNumber);
-			dialog.pack();
-			dialog.open();
-
-			if (dialog.isCanceled()) {
-				return;
-			}
-
-			guestNumber = (int) dialog.getValue();
-			if (guestNumber == 0) {
-				POSMessageDialog.showError(Application.getPosWindow(), com.floreantpos.POSConstants.GUEST_NUMBER_CANNOT_BE_0);
-				return;
-			}
-
-			thisTicket.setNumberOfGuests(guestNumber);
-			updateView();
-
-		}
-
-		private void btnTableNumberActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnTableNumberActionPerformed
-			updateTableNumber();
-		}// GEN-LAST:event_btnTableNumberActionPerformed
-
-		private void updateTableNumber() {
-			Session session = null;
-			org.hibernate.Transaction transaction = null;
-
-			try {
-
-				Ticket thisTicket = getTicket();
-
-				FloorLayoutPlugin floorLayoutPlugin = (FloorLayoutPlugin) ExtensionManager.getPlugin(FloorLayoutPlugin.class);
-				List<ShopTable> tables = null;
-
-				if (floorLayoutPlugin != null) {
-					tables = floorLayoutPlugin.captureTableNumbers(thisTicket);
-				}
-				else {
-					tables = PosGuiUtil.captureTable(thisTicket);
-				}
-
-				if (tables == null) {
-					return;
-				}
-
-				session = TicketDAO.getInstance().createNewSession();
-				transaction = session.beginTransaction();
-
-				clearShopTable(session, thisTicket);
-				session.saveOrUpdate(thisTicket);
-
-				for (ShopTable shopTable : tables) {
-					shopTable.setServing(true);
-					session.merge(shopTable);
-
-					thisTicket.addTable(shopTable.getTableNumber());
-				}
-
-				session.merge(thisTicket);
-				transaction.commit();
-
-				updateView();
-
-			} catch (Exception e) {
-				e.printStackTrace();
-				transaction.rollback();
-			} finally {
-				if (session != null) {
-					session.close();
-				}
-			}
-		}
-
-		private void clearShopTable(Session session, Ticket thisTicket) {
-			ShopTableDAO shopTableDao = ShopTableDAO.getInstance();
-			List<ShopTable> tables2 = shopTableDao.getTables(thisTicket);
-
-			if (tables2 == null)
-				return;
-
-			shopTableDao.releaseAndDeleteTicketTables(thisTicket);
-
-			tables2.clear();
-		}
-
-		private com.floreantpos.swing.PosButton btnGuestNo;
-		private com.floreantpos.swing.PosButton btnMisc;
-		private com.floreantpos.swing.PosButton btnOrderType;
-		private com.floreantpos.swing.PosButton btnTableNumber;
-		private com.floreantpos.swing.PosButton btnCustomer;
-		private com.floreantpos.swing.PosButton btnSearchItem;
-
-		private PosButton btnCookingInstruction = new PosButton(IconFactory.getIcon("/ui_icons/", "cooking-instruction.png")); //$NON-NLS-1$ //$NON-NLS-2$
-		private PosButton btnDiscount = new PosButton(Messages.getString("TicketView.43")); //$NON-NLS-1$
-		//private PosButton btnAddOn = new PosButton("ADD ON");
-		//private PosButton btnVoid = new PosButton("VOID");
-		private JPanel buttonPanel;
-
-		// End of variables declaration//GEN-END:variables
-
-		public void updateView() {
-			if (ticket != null) {
-				if (ticket.getType() != OrderType.DINE_IN) {
-					btnGuestNo.setEnabled(false);
-					btnTableNumber.setEnabled(false);
-				}
-				else {
-					btnGuestNo.setEnabled(true);
-					btnTableNumber.setEnabled(true);
-
-					// btnGuestNo.setText(currentTicket.getNumberOfGuests() +
-					// " " + POSConstants.GUEST + "s");
-					// btnTableNumber.setText(POSConstants.RECEIPT_REPORT_TABLE_NO_LABEL
-					// + ": " + currentTicket.getTableNumbers());
-				}
-			}
-		}
-
-		public void updateView(ITicketItem item) {
-			if (item == null) {
-				btnCookingInstruction.setEnabled(false);
-				btnDiscount.setEnabled(false);
-				//				btnVoid.setEnabled(false);
-				//				btnAddOn.setEnabled(false);
-
-				return;
-			}
-
-			btnCookingInstruction.setEnabled(item.canAddCookingInstruction());
-			btnDiscount.setEnabled(item.canAddDiscount());
-			//			btnVoid.setEnabled(item.canAddAdOn());
-			//			btnAddOn.setEnabled(item.canVoid());
-		}
-
-		public ItemSelectionListener getItemSelectionListener() {
-			return itemSelectionListener;
-		}
-
-		public void setItemSelectionListener(ItemSelectionListener itemSelectionListener) {
-			this.itemSelectionListener = itemSelectionListener;
-		}
-
-		public void searchItem() {
-			int itemId = NumberSelectionDialog2.takeIntInput(Messages.getString("TicketView.44")); //$NON-NLS-1$
-
-			if (itemId == -1) {
-				return;
-			}
-
-			MenuItem menuItem = MenuItemDAO.getInstance().get(itemId);
-			if (menuItem == null) {
-				POSMessageDialog.showError(Application.getPosWindow(), Messages.getString("TicketView.45")); //$NON-NLS-1$
-				return;
-			}
-			itemSelectionListener.itemSelected(menuItem);
-		}
-	}
-
 	private class TicketItemSelectionListener implements ListSelectionListener {
 
 		@Override
@@ -885,7 +488,6 @@ public class TicketView extends JPanel {
 			if (!(selected instanceof ITicketItem)) {
 				return;
 			}
-
 			if (selected instanceof TicketItemModifier) {
 				btnIncreaseAmount.setEnabled(false);
 				btnDecreaseAmount.setEnabled(false);
@@ -910,6 +512,5 @@ public class TicketView extends JPanel {
 				}
 			}
 		}
-
 	}
 }
