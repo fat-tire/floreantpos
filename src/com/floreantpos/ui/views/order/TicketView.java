@@ -42,7 +42,6 @@ import javax.swing.event.ListSelectionListener;
 import net.miginfocom.swing.MigLayout;
 
 import org.hibernate.Session;
-import org.hibernate.StaleObjectStateException;
 import org.jdesktop.swingx.JXCollapsiblePane;
 
 import com.floreantpos.IconFactory;
@@ -70,7 +69,6 @@ import com.floreantpos.model.dao.MenuItemDAO;
 import com.floreantpos.model.dao.ShopTableDAO;
 import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.report.ReceiptPrintService;
-import com.floreantpos.swing.POSToggleButton;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.swing.PosScrollPane;
 import com.floreantpos.ui.dialog.BeanEditorDialog;
@@ -93,15 +91,10 @@ import com.floreantpos.util.PosGuiUtil;
 public class TicketView extends JPanel {
 	private java.util.Vector<OrderListener> orderListeners = new java.util.Vector<OrderListener>();
 	private Ticket ticket;
-	private com.floreantpos.swing.TransparentPanel ticketActionPanel = new com.floreantpos.swing.TransparentPanel();
-	private com.floreantpos.swing.PosButton btnCancel;
 	private com.floreantpos.swing.PosButton btnDecreaseAmount;
 	private com.floreantpos.swing.PosButton btnDelete = new PosButton(IconFactory.getIcon("/ui_icons/", "delete.png")); //$NON-NLS-1$ //$NON-NLS-2$
-	private com.floreantpos.swing.PosButton btnDone;
-	private com.floreantpos.swing.PosButton btnSend;
 	private com.floreantpos.swing.PosButton btnIncreaseAmount = new PosButton(IconFactory.getIcon("/ui_icons/", "add_user.png")); //$NON-NLS-1$ //$NON-NLS-2$
 	private com.floreantpos.swing.PosButton btnEdit = new PosButton("..."); //$NON-NLS-1$ //$NON-NLS-2$
-	private com.floreantpos.swing.POSToggleButton btnMore = new POSToggleButton(POSConstants.MORE_ACTIVITY_BUTTON_TEXT);
 	private com.floreantpos.swing.PosButton btnScrollDown;
 	private com.floreantpos.swing.PosButton btnScrollUp = new PosButton(IconFactory.getIcon("/ui_icons/", "up.png")); //$NON-NLS-1$ //$NON-NLS-2$
 	private com.floreantpos.swing.TransparentPanel ticketItemActionPanel;
@@ -131,9 +124,6 @@ public class TicketView extends JPanel {
 		setBorder(border);
 		setLayout(new java.awt.BorderLayout(5, 5));
 
-		btnCancel = new com.floreantpos.swing.PosButton();
-		btnDone = new com.floreantpos.swing.PosButton();
-		btnSend = new com.floreantpos.swing.PosButton();
 		ticketItemActionPanel = new com.floreantpos.swing.TransparentPanel();
 		btnDecreaseAmount = new com.floreantpos.swing.PosButton();
 		btnScrollDown = new com.floreantpos.swing.PosButton();
@@ -147,8 +137,6 @@ public class TicketView extends JPanel {
 
 		JPanel totalViewPanel = createTotalViewerPanel();
 
-		createTicketActionPanel();
-
 		createTicketItemControlPanel();
 
 		JPanel centerPanel = new JPanel(new BorderLayout(5, 5));
@@ -156,7 +144,6 @@ public class TicketView extends JPanel {
 		centerPanel.add(totalViewPanel, BorderLayout.SOUTH);
 
 		add(centerPanel);
-		add(ticketActionPanel, BorderLayout.SOUTH);
 		add(ticketItemActionPanel, BorderLayout.EAST);
 		ticketViewerTable.getRenderer().setInTicketScreen(true);
 		ticketViewerTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
@@ -174,56 +161,17 @@ public class TicketView extends JPanel {
 
 	}// </editor-fold>//GEN-END:initComponents
 
-	private void createTicketActionPanel() {
-		ticketActionPanel.setLayout(new GridLayout(1, 0, 5, 5));
-
-		btnCancel.setText(POSConstants.CANCEL_BUTTON_TEXT);
-		btnCancel.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				doCancelOrder();
-			}
-		});
-
-		btnDone.setText(com.floreantpos.POSConstants.SAVE_BUTTON_TEXT);
-		btnDone.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				doFinishOrder();
-			}
-		});
-
-		btnMore.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				extraActionPanel.setCollapsed(!btnMore.isSelected());
-			}
-		});
-		btnSend.setText(com.floreantpos.POSConstants.SEND_TO_KITCHEN);
-		btnSend.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				sendTicketToKitchen();
-				ticketViewerTable.updateView();
-				POSMessageDialog.showMessage("Items sent to kitchen");
-			}
-		});
-		ticketActionPanel.add(btnSend);
-		ticketActionPanel.add(btnDone);
-		ticketActionPanel.add(btnMore);
-		ticketActionPanel.add(btnCancel);
-	}
-
 	private JPanel createTotalViewerPanel() {
 		JPanel ticketAmountPanel = new com.floreantpos.swing.TransparentPanel(new MigLayout("ins 2 2 3 2,alignx trailing,fill", "[grow][]", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 		btnTotal = new PosButton("TOTAL");
 		ticketAmountPanel.add(btnTotal, "growx,aligny center"); //$NON-NLS-1$
-		
-		if(!Application.getInstance().getTerminal().isHasCashDrawer()) {
+
+		if (!Application.getInstance().getTerminal().isHasCashDrawer()) {
 			btnTotal.setEnabled(false);
 			//btnTotal.set
 		}
-		
+
 		btnTotal.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -322,46 +270,25 @@ public class TicketView extends JPanel {
 		}
 	}
 
-	private synchronized void doFinishOrder() {// GEN-FIRST:event_doFinishOrder
-		try {
-			
-			sendTicketToKitchen();
-			closeView(false);
-
-		} catch (StaleObjectStateException e) {
-			POSMessageDialog.showError(Application.getPosWindow(), Messages.getString("TicketView.22")); //$NON-NLS-1$
-			return;
-		} catch (PosException x) {
-			POSMessageDialog.showError(x.getMessage());
-		} catch (Exception e) {
-			POSMessageDialog.showError(Application.getPosWindow(), POSConstants.ERROR_MESSAGE, e);
-		}
+	public synchronized void doFinishOrder() {// GEN-FIRST:event_doFinishOrder
+		sendTicketToKitchen();
+		closeView(false);
 	}// GEN-LAST:event_doFinishOrder
-	
-	private synchronized void sendTicketToKitchen() {// GEN-FIRST:event_doFinishOrder
-		try {
-			saveTicketIfNeeded();
 
-			if (ticket.needsKitchenPrint()) {
-				ReceiptPrintService.printToKitchen(ticket);
-				TicketDAO.getInstance().refresh(ticket);
-			}
-			
-			OrderController.saveOrder(ticket);
-			
-		} catch (StaleObjectStateException e) {
-			POSMessageDialog.showError(Application.getPosWindow(), Messages.getString("TicketView.22")); //$NON-NLS-1$
-			return;
-		} catch (PosException x) {
-			POSMessageDialog.showError(x.getMessage());
-		} catch (Exception e) {
-			POSMessageDialog.showError(Application.getPosWindow(), POSConstants.ERROR_MESSAGE, e);
+	public synchronized void sendTicketToKitchen() {// GEN-FIRST:event_doFinishOrder
+		saveTicketIfNeeded();
+
+		if (ticket.needsKitchenPrint()) {
+			ReceiptPrintService.printToKitchen(ticket);
+			TicketDAO.getInstance().refresh(ticket);
 		}
+
+		OrderController.saveOrder(ticket);
 	}
 
 	public void saveTicketIfNeeded() {
 		updateModel();
-		
+
 		TicketDAO ticketDAO = TicketDAO.getInstance();
 
 		if (ticket.getId() == null) {
@@ -381,7 +308,7 @@ public class TicketView extends JPanel {
 		}
 	}
 
-	private void doCancelOrder() {// GEN-FIRST:event_doCancelOrder
+	public void doCancelOrder() {// GEN-FIRST:event_doCancelOrder
 		closeView(true);
 	}// GEN-LAST:event_doCancelOrder
 
@@ -492,12 +419,12 @@ public class TicketView extends JPanel {
 			titledBorder.setTitle(Messages.getString("TicketView.37") + ticket.getId()); //$NON-NLS-1$
 		}
 
-		if (ticket.getType() != null && ticket.getType().getProperties() != null) {
-			btnDone.setVisible(ticket.getType().getProperties().isPostPaid());
-		}
-		else {
-			btnDone.setVisible(true);
-		}
+		//		if (ticket.getType() != null && ticket.getType().getProperties() != null) {
+		//			btnDone.setVisible(ticket.getType().getProperties().isPostPaid());
+		//		}
+		//		else {
+		//			btnDone.setVisible(true);
+		//		}
 
 		ticketViewerTable.updateView();
 	}
@@ -518,13 +445,11 @@ public class TicketView extends JPanel {
 
 	public void setControlsVisible(boolean visible) {
 		if (visible) {
-			ticketActionPanel.setVisible(true);
 			btnIncreaseAmount.setEnabled(true);
 			btnDecreaseAmount.setEnabled(true);
 			btnDelete.setEnabled(true);
 		}
 		else {
-			ticketActionPanel.setVisible(false);
 			btnIncreaseAmount.setEnabled(false);
 			btnDecreaseAmount.setEnabled(false);
 			btnDelete.setEnabled(false);
