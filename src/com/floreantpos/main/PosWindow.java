@@ -28,6 +28,8 @@ import java.awt.event.WindowListener;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JSeparator;
 
 import org.jdesktop.swingx.JXStatusBar;
 
@@ -55,10 +57,14 @@ public class PosWindow extends JFrame implements WindowListener {
 		setGlassPane(glassPane);
 		
 		statusBar = new JXStatusBar();
-		getContentPane().add(statusBar, BorderLayout.SOUTH);
-		
 		statusLabel = new JLabel(""); //$NON-NLS-1$
 		statusBar.add(statusLabel, JXStatusBar.Constraint.ResizeBehavior.FILL);
+		
+		JPanel statusBarContainer = new JPanel(new BorderLayout());
+		statusBarContainer.add(new JSeparator(JSeparator.HORIZONTAL), BorderLayout.NORTH);
+		
+		statusBarContainer.add(statusBar);
+		getContentPane().add(statusBarContainer, BorderLayout.SOUTH);
 	}
 	
 	public void setStatus(String status) {
