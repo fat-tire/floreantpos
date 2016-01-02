@@ -162,57 +162,57 @@ public class HourlyLaborReportView extends TransparentPanel {
         double grandTotalLaborCost = 0;
 
         for (int i = 0; i < 24; i++) {
-            List<Ticket> tickets = ticketDAO.findTicketsForLaborHour(fromDate, toDate, i, userType, terminal);
-            List<User> users = attendenceHistoryDAO.findNumberOfClockedInUserAtHour(fromDate, toDate, i, userType, terminal);
-
-            int manHour = users.size();
-            int totalChecks = 0;
-            int totalGuests = 0;
-            double totalSales = 0;
-            double labor = 0;
-            double salesPerMHr = 0;
-            double guestsPerMHr = 0;
-            double checksPerMHr = 0;
-            //double laborCost = 0;
-
-            for (Ticket ticket : tickets) {
-                ++totalChecks;
-                totalGuests += ticket.getNumberOfGuests();
-                totalSales += ticket.getTotalAmount();
-            }
-
-            for (User user : users) {
-                labor += (user.getCostPerHour() == null ? 0 : user.getCostPerHour());
-            }
-            if (manHour > 0) {
-                labor = labor / manHour;
-                salesPerMHr = totalSales / manHour;
-                guestsPerMHr = (double) totalGuests / manHour;
-                checksPerMHr = totalChecks / manHour;
-                //laborCost =
-            }
-
-            LaborReportData reportData = new LaborReportData();
-            reportData.setPeriod(formatter.format(i) + ":00 - " + formatter.format(i) + ":59"); //$NON-NLS-1$ //$NON-NLS-2$
-            reportData.setManHour(manHour);
-            reportData.setNoOfChecks(totalChecks);
-            reportData.setSales(totalSales);
-            reportData.setNoOfGuests(totalGuests);
-            reportData.setLabor(labor);
-            reportData.setSalesPerMHr(salesPerMHr);
-            reportData.setGuestsPerMHr(guestsPerMHr);
-            reportData.setCheckPerMHr(checksPerMHr);
-
-            rows.add(reportData);
-
-            grandTotalChecks += totalChecks;
-            grandTotalGuests += totalGuests;
-            grandTotalSales += totalSales;
-            grandTotalMHr += manHour;
-            grandTotalLabor += labor;
-            grandTotalSalesPerMHr += salesPerMHr;
-            grandTotalCheckPerMHr += checksPerMHr;
-            grandTotalGuestsPerMHr += guestsPerMHr;
+//            List<Ticket> tickets = ticketDAO.findTicketsForLaborHour(fromDate, toDate, i, userType, terminal);
+//            List<User> users = attendenceHistoryDAO.findNumberOfClockedInUserAtHour(fromDate, toDate, i, userType, terminal);
+//
+//            int manHour = users.size();
+//            int totalChecks = 0;
+//            int totalGuests = 0;
+//            double totalSales = 0;
+//            double labor = 0;
+//            double salesPerMHr = 0;
+//            double guestsPerMHr = 0;
+//            double checksPerMHr = 0;
+//            //double laborCost = 0;
+//
+//            for (Ticket ticket : tickets) {
+//                ++totalChecks;
+//                totalGuests += ticket.getNumberOfGuests();
+//                totalSales += ticket.getTotalAmount();
+//            }
+//
+//            for (User user : users) {
+//                labor += (user.getCostPerHour() == null ? 0 : user.getCostPerHour());
+//            }
+//            if (manHour > 0) {
+//                labor = labor / manHour;
+//                salesPerMHr = totalSales / manHour;
+//                guestsPerMHr = (double) totalGuests / manHour;
+//                checksPerMHr = totalChecks / manHour;
+//                //laborCost =
+//            }
+//
+//            LaborReportData reportData = new LaborReportData();
+//            reportData.setPeriod(formatter.format(i) + ":00 - " + formatter.format(i) + ":59"); //$NON-NLS-1$ //$NON-NLS-2$
+//            reportData.setManHour(manHour);
+//            reportData.setNoOfChecks(totalChecks);
+//            reportData.setSales(totalSales);
+//            reportData.setNoOfGuests(totalGuests);
+//            reportData.setLabor(labor);
+//            reportData.setSalesPerMHr(salesPerMHr);
+//            reportData.setGuestsPerMHr(guestsPerMHr);
+//            reportData.setCheckPerMHr(checksPerMHr);
+//
+//            rows.add(reportData);
+//
+//            grandTotalChecks += totalChecks;
+//            grandTotalGuests += totalGuests;
+//            grandTotalSales += totalSales;
+//            grandTotalMHr += manHour;
+//            grandTotalLabor += labor;
+//            grandTotalSalesPerMHr += salesPerMHr;
+//            grandTotalCheckPerMHr += checksPerMHr;
+//            grandTotalGuestsPerMHr += guestsPerMHr;
             //grandTotalLaborCost +=
 
         }
@@ -221,48 +221,48 @@ public class HourlyLaborReportView extends TransparentPanel {
         ShiftDAO shiftDAO = new ShiftDAO();
         List<Shift> shifts = shiftDAO.findAll();
         for (Shift shift : shifts) {
-            List<Ticket> tickets = ticketDAO.findTicketsForShift(fromDate, toDate, shift, userType, terminal);
-            List<User> users = attendenceHistoryDAO.findNumberOfClockedInUserAtShift(fromDate, toDate, shift, userType, terminal);
-
-            int manHour = users.size();
-            int totalChecks = 0;
-            int totalGuests = 0;
-            double totalSales = 0;
-            double labor = 0;
-            double salesPerMHr = 0;
-            double guestsPerMHr = 0;
-            double checksPerMHr = 0;
-            //double laborCost = 0;
-
-            for (Ticket ticket : tickets) {
-                ++totalChecks;
-                totalGuests += ticket.getNumberOfGuests();
-                totalSales += ticket.getTotalAmount();
-            }
-
-            for (User user : users) {
-                labor += (user.getCostPerHour() == null ? 0 : user.getCostPerHour());
-            }
-            if (manHour > 0) {
-                labor = labor / manHour;
-                salesPerMHr = totalSales / manHour;
-                guestsPerMHr = (double) totalGuests / manHour;
-                checksPerMHr = totalChecks / manHour;
-                //laborCost =
-            }
-
-            LaborReportData reportData = new LaborReportData();
-            reportData.setPeriod(shift.getName());
-            reportData.setManHour(manHour);
-            reportData.setNoOfChecks(totalChecks);
-            reportData.setSales(totalSales);
-            reportData.setNoOfGuests(totalGuests);
-            reportData.setLabor(labor);
-            reportData.setSalesPerMHr(salesPerMHr);
-            reportData.setGuestsPerMHr(guestsPerMHr);
-            reportData.setCheckPerMHr(checksPerMHr);
-
-            shiftReportRows.add(reportData);
+//            List<Ticket> tickets = ticketDAO.findTicketsForShift(fromDate, toDate, shift, userType, terminal);
+//            List<User> users = attendenceHistoryDAO.findNumberOfClockedInUserAtShift(fromDate, toDate, shift, userType, terminal);
+//
+//            int manHour = users.size();
+//            int totalChecks = 0;
+//            int totalGuests = 0;
+//            double totalSales = 0;
+//            double labor = 0;
+//            double salesPerMHr = 0;
+//            double guestsPerMHr = 0;
+//            double checksPerMHr = 0;
+//            //double laborCost = 0;
+//
+//            for (Ticket ticket : tickets) {
+//                ++totalChecks;
+//                totalGuests += ticket.getNumberOfGuests();
+//                totalSales += ticket.getTotalAmount();
+//            }
+//
+//            for (User user : users) {
+//                labor += (user.getCostPerHour() == null ? 0 : user.getCostPerHour());
+//            }
+//            if (manHour > 0) {
+//                labor = labor / manHour;
+//                salesPerMHr = totalSales / manHour;
+//                guestsPerMHr = (double) totalGuests / manHour;
+//                checksPerMHr = totalChecks / manHour;
+//                //laborCost =
+//            }
+//
+//            LaborReportData reportData = new LaborReportData();
+//            reportData.setPeriod(shift.getName());
+//            reportData.setManHour(manHour);
+//            reportData.setNoOfChecks(totalChecks);
+//            reportData.setSales(totalSales);
+//            reportData.setNoOfGuests(totalGuests);
+//            reportData.setLabor(labor);
+//            reportData.setSalesPerMHr(salesPerMHr);
+//            reportData.setGuestsPerMHr(guestsPerMHr);
+//            reportData.setCheckPerMHr(checksPerMHr);
+//
+//            shiftReportRows.add(reportData);
         }
 
         try {
