@@ -46,7 +46,7 @@ public abstract class SelectionView extends JPanel implements ComponentListener 
 
 	private Dimension buttonSize;
 
-	protected final JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.LEADING));
+	protected final JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 
 	protected List items;
 	
