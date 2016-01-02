@@ -16,10 +16,10 @@
 		<property column="BTN_COLOR" name="buttonColorCode" type="java.lang.Integer" />
 		<property column="TEXT_COLOR" name="textColorCode" type="java.lang.Integer" />
 
-		<bag cascade="save-update" inverse="false" name="menuItems" lazy="false">
+		<!-- <bag cascade="save-update" inverse="false" name="menuItems" lazy="false">
 			<key column="GROUP_ID" />
 			<many-to-many class="MenuItem" column="ITEM_ID" />
-		</bag>
+		</bag> -->
 
 		<!-- Associations -->
 		<!-- uni-directional many-to-one association to FoodCategory -->
