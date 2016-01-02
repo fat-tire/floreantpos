@@ -1,25 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping package="com.floreantpos.model">
-  <class lazy="false" name="com.floreantpos.model.MenuGroup"  table="MENU_GROUP">
-    <id column="ID" name="id" type="java.lang.Integer">
-      <generator class="identity"/>
-    </id>
-    
-    <property column="NAME" length="120" name="name" not-null="true" type="java.lang.String"/>
-    <property column="TRANSLATED_NAME" length="120" name="translatedName" not-null="false" type="java.lang.String" />
-    
-    <!-- property name="image" type="java.sql.Blob" column="IMAGE" length="1048576" /-->
-    <property column="VISIBLE" index="menugroupvisible" name="visible" type="java.lang.Boolean"/>
-    
-    <property column="SORT_ORDER" name="sortOrder" type="java.lang.Integer"/>
-    <property column="BTN_COLOR" name="buttonColorCode" type="java.lang.Integer" />
-    <property column="TEXT_COLOR" name="textColorCode" type="java.lang.Integer" />
-    
-    <!-- Associations -->
-    <!-- uni-directional many-to-one association to FoodCategory -->
-    <many-to-one class="com.floreantpos.model.MenuCategory" lazy="false" name="parent">
-      <column name="CATEGORY_ID"/>
-    </many-to-one>
-  </class>
+	<class lazy="false" name="com.floreantpos.model.MenuGroup" table="MENU_GROUP">
+		<id column="ID" name="id" type="java.lang.Integer">
+			<generator class="identity" />
+		</id>
+
+		<property column="NAME" length="120" name="name" not-null="true" type="java.lang.String" />
+		<property column="TRANSLATED_NAME" length="120" name="translatedName" not-null="false" type="java.lang.String" />
+
+		<!-- property name="image" type="java.sql.Blob" column="IMAGE" length="1048576" / -->
+		<property column="VISIBLE" index="menugroupvisible" name="visible" type="java.lang.Boolean" />
+
+		<property column="SORT_ORDER" name="sortOrder" type="java.lang.Integer" />
+		<property column="BTN_COLOR" name="buttonColorCode" type="java.lang.Integer" />
+		<property column="TEXT_COLOR" name="textColorCode" type="java.lang.Integer" />
+
+		<bag cascade="save-update" inverse="false" name="menuItems" lazy="false">
+			<key column="GROUP_ID" />
+			<many-to-many class="MenuItem" column="ITEM_ID" />
+		</bag>
+
+		<!-- Associations -->
+		<!-- uni-directional many-to-one association to FoodCategory -->
+		<many-to-one class="com.floreantpos.model.MenuCategory" lazy="false" name="parent">
+			<column name="CATEGORY_ID" />
+		</many-to-one>
+	</class>
 </hibernate-mapping>
