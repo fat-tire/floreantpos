@@ -50,7 +50,7 @@ public class GroupView extends SelectionView {
     
     /** Creates new form GroupView */
     public GroupView() {
-        super(com.floreantpos.POSConstants.GROUPS);
+        super(com.floreantpos.POSConstants.GROUPS, 120, 120);
         
         setBackEnable(false);
     }

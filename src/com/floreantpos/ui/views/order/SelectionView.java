@@ -20,6 +20,7 @@ package com.floreantpos.ui.views.order;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
@@ -45,7 +46,7 @@ public abstract class SelectionView extends JPanel implements ComponentListener 
 
 	private Dimension buttonSize;
 
-	protected final JPanel buttonsPanel = new JPanel();
+	protected final JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.LEADING));
 
 	protected List items;
 	
@@ -153,6 +154,18 @@ public abstract class SelectionView extends JPanel implements ComponentListener 
 		buttonsPanel.revalidate();
 		buttonsPanel.repaint();
 	}
+	
+	protected int getFitableButtonCount() {
+		Dimension size = buttonsPanel.getSize();
+		Dimension itemButtonSize = getButtonSize();
+
+		int horizontalButtonCount = getButtonCount(size.width, itemButtonSize.width);
+		int verticalButtonCount = getButtonCount(size.height, itemButtonSize.height);
+		
+		int totalItem = horizontalButtonCount * verticalButtonCount;
+		
+		return totalItem;
+	}
 
 	protected void renderItems() {
 		reset();
@@ -161,15 +174,11 @@ public abstract class SelectionView extends JPanel implements ComponentListener 
 			return;
 		}
 
-		Dimension size = buttonsPanel.getSize();
 		Dimension itemButtonSize = getButtonSize();
 
-		int horizontalButtonCount = getButtonCount(size.width, getButtonSize().width);
-		int verticalButtonCount = getButtonCount(size.height, getButtonSize().height);
+		//buttonsPanel.setLayout(new MigLayout("alignx 50%, wrap " + horizontalButtonCount)); //$NON-NLS-1$
 		
-		buttonsPanel.setLayout(new MigLayout("alignx 50%, wrap " + horizontalButtonCount)); //$NON-NLS-1$
-		
-		int totalItem = horizontalButtonCount * verticalButtonCount;
+		int totalItem = getFitableButtonCount();
 		
 		previousBlockIndex = currentBlockIndex - totalItem;
 		nextBlockIndex = currentBlockIndex + totalItem;
@@ -183,8 +192,8 @@ public abstract class SelectionView extends JPanel implements ComponentListener 
 				if(itemButton == null) {
 					continue;
 				}
-				
-				buttonsPanel.add(itemButton, "width " + itemButtonSize.width + "!, height " + itemButtonSize.height + "!"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				itemButton.setPreferredSize(itemButtonSize);
+				buttonsPanel.add(itemButton);//, "width " + itemButtonSize.width + "!, height " + itemButtonSize.height + "!"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 				if (i == items.size() - 1) {
 					break;
@@ -258,12 +267,17 @@ public abstract class SelectionView extends JPanel implements ComponentListener 
 	}
 
 	protected int getButtonCount(int containerSize, int itemSize) {
-		int buttonCount = containerSize / itemSize;
-		buttonCount = (containerSize - ((containerSize / itemSize) * 5)) / itemSize;
+		int buttonCount = containerSize / (itemSize + 5);
+		//buttonCount = (containerSize - ((containerSize / itemSize) * 5)) / itemSize;
 		return buttonCount;
 	}
 
 	public void componentResized(ComponentEvent e) {
+		int totalItem = getFitableButtonCount();
+		if(totalItem == buttonsPanel.getComponentCount()) {
+			return;
+		}
+		
 		renderItems();
 	}
 

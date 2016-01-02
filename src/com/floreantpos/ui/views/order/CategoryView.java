@@ -28,6 +28,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
@@ -76,6 +77,15 @@ public class CategoryView extends SelectionView implements ActionListener {
 		MenuCategoryDAO categoryDAO = new MenuCategoryDAO();
 		List<MenuCategory> categories = categoryDAO.findAllEnable();
 		if(categories.size() == 0) return;
+		
+		for (Iterator iterator = categories.iterator(); iterator.hasNext();) {
+			MenuCategory menuCategory = (MenuCategory) iterator.next();
+			List<MenuGroup> menuGroups = menuCategory.getMenuGroups();
+			
+			if(menuGroups == null || menuGroups.size() == 0) {
+				iterator.remove();
+			}
+		}
 		
 		setItems(categories);
 		
