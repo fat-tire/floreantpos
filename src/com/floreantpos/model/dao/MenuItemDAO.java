@@ -170,5 +170,20 @@ public class MenuItemDAO extends BaseMenuItemDAO {
 			closeSession(session);
 		}
 	}
+	
+	public MenuItem getMenuItemByBarcode(String barcode) {
+		Session session = null;
+		Criteria criteria = null;
+		try {
+			session = createNewSession();
+			criteria=session.createCriteria(MenuItem.class);
+			criteria.add(Restrictions.like(MenuItem.PROP_BARCODE, barcode));
+			Object result = criteria.uniqueResult();
+			return (MenuItem) result;
+		}
+		finally {
+			closeSession(session);
+		}
+	}
 
 }

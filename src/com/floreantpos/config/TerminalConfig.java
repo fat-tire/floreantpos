@@ -58,6 +58,8 @@ public class TerminalConfig {
 	private static final String ADMIN_PASSWORD = "admin_pass";//$NON-NLS-1$
 
 	private static final String SHOW_BARCODE_ON_RECEIPT = "show_barcode_on_receipt";//$NON-NLS-1$
+	
+	private static final String SHOW_ITEM_BY_BARCODE = "show_item_by_barcode";
 
 	static final String TERMINAL_ID = "terminal_id"; //$NON-NLS-1$
 	static final String FULLSCREEN_MODE = "fullscreen_mode"; //$NON-NLS-1$
@@ -171,7 +173,15 @@ public class TerminalConfig {
 	public static boolean isShowBarcodeOnReceipt() {
 		return config.getBoolean(SHOW_BARCODE_ON_RECEIPT, false);
 	}
-
+	
+	public static void setShowItemByBarcode(boolean show) {
+		config.setProperty(SHOW_ITEM_BY_BARCODE, show);
+	}
+	
+	public static boolean isShowItemByBarcode() {
+		return config.getBoolean(SHOW_ITEM_BY_BARCODE, true);
+	}
+	
 	public static boolean isCashierMode() {
 		return false; //config.getBoolean(CASHIER_MODE, false);
 	}
