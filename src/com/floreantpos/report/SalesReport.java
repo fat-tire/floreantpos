@@ -18,6 +18,8 @@
 package com.floreantpos.report;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -53,22 +55,28 @@ public class SalesReport extends Report {
 	public void refresh() throws Exception {
 		createModels();
 
-		SalesReportModel itemReportModel = this.itemReportModel;
-		SalesReportModel modifierReportModel = this.modifierReportModel;
-
+		JasperReport reportHeader = ReportUtil.getReport("report_header"); //$NON-NLS-1$
 		JasperReport itemReport = ReportUtil.getReport("sales_sub_report"); //$NON-NLS-1$
 		JasperReport modifierReport = ReportUtil.getReport("sales_sub_report"); //$NON-NLS-1$
 
 		HashMap map = new HashMap();
 		ReportUtil.populateRestaurantProperties(map);
+		map.put("reportHeader", reportHeader); //$NON-NLS-1$ 
 		map.put("reportTitle", Messages.getString("SalesReport.3")); //$NON-NLS-1$ //$NON-NLS-2$
 		map.put("reportTime", ReportService.formatFullDate(new Date())); //$NON-NLS-1$
 		map.put("dateRange", ReportService.formatShortDate(getStartDate()) + " to " + ReportService.formatShortDate(getEndDate())); //$NON-NLS-1$ //$NON-NLS-2$
-		map.put("terminalName", com.floreantpos.POSConstants.ALL); //$NON-NLS-1$
+		map.put("terminalName", getTerminal() == null ? com.floreantpos.POSConstants.ALL : getTerminal().getName()); //$NON-NLS-1$
 		map.put("itemDataSource", new JRTableModelDataSource(itemReportModel)); //$NON-NLS-1$
 		map.put("modifierDataSource", new JRTableModelDataSource(modifierReportModel)); //$NON-NLS-1$
-		map.put("currencySymbol", Application.getCurrencySymbol()); //$NON-NLS-1$
+		map.put("currency", Messages.getString("SalesReport.8") + Application.getCurrencyName() + " (" + Application.getCurrencySymbol() + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ 
+		map.put("itemTotalQuantity", itemReportModel.getTotalQuantityAsString()); //$NON-NLS-1$
+		map.put("itemNetTotal", itemReportModel.getNetTotalAsString()); //$NON-NLS-1$
+		map.put("itemDiscountTotal", itemReportModel.getDiscountTotalAsString()); //$NON-NLS-1$
+		map.put("itemTaxTotal", itemReportModel.getTaxTotalAsString()); //$NON-NLS-1$
 		map.put("itemGrandTotal", itemReportModel.getGrandTotalAsString()); //$NON-NLS-1$
+		map.put("modifierTotalQuantity", modifierReportModel.getTotalQuantityAsString()); //$NON-NLS-1$
+		map.put("modifierNetTotal", modifierReportModel.getNetTotalAsString()); //$NON-NLS-1$
+		map.put("modifierTaxTotal", modifierReportModel.getTaxTotalAsString()); //$NON-NLS-1$
 		map.put("modifierGrandTotal", modifierReportModel.getGrandTotalAsString()); //$NON-NLS-1$
 		map.put("itemReport", itemReport); //$NON-NLS-1$
 		map.put("modifierReport", modifierReport); //$NON-NLS-1$
@@ -93,7 +101,7 @@ public class SalesReport extends Report {
 		Date date1 = DateUtils.startOfDay(getStartDate());
 		Date date2 = DateUtils.endOfDay(getEndDate());
 
-		List<Ticket> tickets = TicketDAO.getInstance().findTickets(date1, date2, getReportType() == Report.REPORT_TYPE_1 ? true : false);
+		List<Ticket> tickets = TicketDAO.getInstance().findTickets(date1, date2, getReportType() == Report.REPORT_TYPE_1 ? true : false, getTerminal());
 
 		HashMap<String, ReportItem> itemMap = new HashMap<String, ReportItem>();
 		HashMap<String, ReportItem> modifierMap = new HashMap<String, ReportItem>();
@@ -109,19 +117,23 @@ public class SalesReport extends Report {
 
 			String key = null;
 			for (TicketItem ticketItem : ticketItems) {
+				if (ticketItem.getUnitPrice() == 0 && !isIncludedFreeItems()) {
+					continue;
+				}
 				if (ticketItem.getItemId() == null) {
 					key = ticketItem.getName();
 				}
 				else {
 					key = ticketItem.getItemId().toString();
 				}
-				key += "-" + ticketItem.getUnitPrice() + ticketItem.getTaxRate();
+				key += "-" + ticketItem.getName() + ticketItem.getUnitPrice() + ticketItem.getTaxRate(); //$NON-NLS-1$
 
 				ReportItem reportItem = itemMap.get(key);
 
 				if (reportItem == null) {
 					reportItem = new ReportItem();
 					reportItem.setId(key);
+					reportItem.setUniqueId(ticketItem.getItemId().toString());
 					reportItem.setPrice(ticketItem.getUnitPrice());
 					reportItem.setName(ticketItem.getName());
 					reportItem.setTaxRate(ticketItem.getTaxRate());
@@ -129,7 +141,10 @@ public class SalesReport extends Report {
 					itemMap.put(key, reportItem);
 				}
 				reportItem.setQuantity(ticketItem.getItemCount() + reportItem.getQuantity());
-				reportItem.setTotal(reportItem.getTotal() + ticketItem.getTotalAmountWithoutModifiers());
+				reportItem.setNetTotal(reportItem.getNetTotal() + ticketItem.getSubtotalAmountWithoutModifiers() - ticketItem.getDiscountAmount());
+				reportItem.setDiscount(reportItem.getDiscount() + ticketItem.getDiscountAmount());
+				reportItem.setTaxTotal(reportItem.getTaxTotal() + ticketItem.getTotalAmountWithoutModifiers());
+				reportItem.setTotal(reportItem.getTotal() +ticketItem.getTotalAmountWithoutModifiers());
 
 				if (ticketItem.isHasModifiers() && ticketItem.getTicketItemModifierGroups() != null) {
 					List<TicketItemModifierGroup> ticketItemModifierGroups = ticketItem.getTicketItemModifierGroups();
@@ -137,22 +152,23 @@ public class SalesReport extends Report {
 					for (TicketItemModifierGroup ticketItemModifierGroup : ticketItemModifierGroups) {
 						List<TicketItemModifier> modifiers = ticketItemModifierGroup.getTicketItemModifiers();
 						for (TicketItemModifier modifier : modifiers) {
-							if(modifier.getUnitPrice() == 0) {
+							if (modifier.getUnitPrice() == 0 && !isIncludedFreeItems()) {
 								continue;
 							}
-							
+
 							if (modifier.getItemId() == null) {
 								key = modifier.getName();
 							}
 							else {
 								key = modifier.getItemId().toString();
 							}
-							key += "-" + modifier.getModifierType() + "-" + modifier.getUnitPrice() + modifier.getTaxRate();
+							key += "-" + modifier.getName() + modifier.getModifierType() + "-" + modifier.getUnitPrice() + modifier.getTaxRate(); //$NON-NLS-1$ //$NON-NLS-2$
 
 							ReportItem modifierReportItem = modifierMap.get(key);
 							if (modifierReportItem == null) {
 								modifierReportItem = new ReportItem();
 								modifierReportItem.setId(key);
+								modifierReportItem.setUniqueId(modifier.getItemId().toString());
 
 								modifierReportItem.setPrice(modifier.getUnitPrice());
 								modifierReportItem.setName(modifier.getName());
@@ -161,6 +177,8 @@ public class SalesReport extends Report {
 								modifierMap.put(key, modifierReportItem);
 							}
 							modifierReportItem.setQuantity(modifierReportItem.getQuantity() + modifier.getItemCount());
+							modifierReportItem.setNetTotal(modifierReportItem.getNetTotal() + modifier.getSubTotalAmount());
+							modifierReportItem.setTaxTotal(modifierReportItem.getTaxTotal() + modifier.getTotalAmount());
 							modifierReportItem.setTotal(modifierReportItem.getTotal() + modifier.getTotalAmount());
 						}
 					}
@@ -170,11 +188,35 @@ public class SalesReport extends Report {
 			iter.remove();
 		}
 		itemReportModel = new SalesReportModel();
-		itemReportModel.setItems(new ArrayList<ReportItem>(itemMap.values()));
+
+		List<ReportItem> itemList = new ArrayList<ReportItem>(itemMap.values());
+		Collections.sort(itemList, new Comparator<ReportItem>() {
+
+			public int compare(ReportItem o1, ReportItem o2) {
+				return Integer.parseInt(o1.getUniqueId()) - Integer.parseInt(o2.getUniqueId());
+			}
+		});
+
+		itemReportModel.setItems(itemList);
+		itemReportModel.calculateTotalQuantity();
+		itemReportModel.calculateDiscountTotal();
+		itemReportModel.calculateNetTotal();
+		itemReportModel.calculateTaxTotal();
 		itemReportModel.calculateGrandTotal();
 
 		modifierReportModel = new SalesReportModel();
-		modifierReportModel.setItems(new ArrayList<ReportItem>(modifierMap.values()));
+
+		List<ReportItem> modifierList = new ArrayList<ReportItem>(modifierMap.values());
+		Collections.sort(modifierList, new Comparator<ReportItem>() {
+
+			public int compare(ReportItem o1, ReportItem o2) {
+				return Integer.parseInt(o1.getUniqueId()) - Integer.parseInt(o2.getUniqueId());
+			}
+		});
+		modifierReportModel.setItems(modifierList);
+		modifierReportModel.calculateTotalQuantity();
+		modifierReportModel.calculateNetTotal();
+		modifierReportModel.calculateTaxTotal();
 		modifierReportModel.calculateGrandTotal();
 	}
 }
