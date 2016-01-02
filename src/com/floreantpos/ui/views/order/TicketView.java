@@ -81,7 +81,8 @@ public class TicketView extends JPanel {
 	private javax.swing.JScrollPane ticketScrollPane;
 	private PosButton btnTotal;
 	public com.floreantpos.ui.ticket.TicketViewerTable ticketViewerTable;
-
+	public ItemSearchPanel itemSearchPanel;
+	
 	private TitledBorder titledBorder = new TitledBorder(""); //$NON-NLS-1$
 	private Border border = new CompoundBorder(titledBorder, new EmptyBorder(5, 5, 5, 5));
 
@@ -103,6 +104,7 @@ public class TicketView extends JPanel {
 		setBorder(border);
 		setLayout(new java.awt.BorderLayout(5, 5));
 
+		itemSearchPanel=new ItemSearchPanel();
 		ticketItemActionPanel = new com.floreantpos.swing.TransparentPanel();
 		btnDecreaseAmount = new com.floreantpos.swing.PosButton();
 		btnScrollDown = new com.floreantpos.swing.PosButton();
@@ -122,19 +124,12 @@ public class TicketView extends JPanel {
 		centerPanel.add(ticketScrollPane);
 		centerPanel.add(totalViewPanel, BorderLayout.SOUTH);
 
+		add(itemSearchPanel,BorderLayout.NORTH);
 		add(centerPanel);
 		add(ticketItemActionPanel, BorderLayout.EAST);
 		ticketViewerTable.getRenderer().setInTicketScreen(true);
-	/*	ticketViewerTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-			@Override
-			public void valueChanged(ListSelectionEvent e) {
-				if (!e.getValueIsAdjusting()) {
-					updateSelectionView();
-				}
-			}
-		});*/
 		ticketViewerTable.getSelectionModel().addListSelectionListener(new TicketItemSelectionListener());
-	//	OrderView.getInstance().actionUpdate(null);
+		//	OrderView.getInstance().actionUpdate(null);
 		setPreferredSize(new java.awt.Dimension(360, 463));
 
 	}// </editor-fold>//GEN-END:initComponents

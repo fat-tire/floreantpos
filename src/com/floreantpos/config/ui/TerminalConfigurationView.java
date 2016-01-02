@@ -56,6 +56,7 @@ public class TerminalConfigurationView extends ConfigurationView {
 	private JCheckBox cbUseSettlementPrompt = new JCheckBox(Messages.getString("TerminalConfigurationView.4")); //$NON-NLS-1$
 	private JCheckBox cbShowDbConfiguration = new JCheckBox(Messages.getString("TerminalConfigurationView.5")); //$NON-NLS-1$
 	private JCheckBox cbShowBarCodeOnReceipt = new JCheckBox(Messages.getString("TerminalConfigurationView.21")); //$NON-NLS-1$
+	private JCheckBox cbSearchProductByBarCode = new JCheckBox("Search product by barcode"); //$NON-NLS-1$
 
 	private JComboBox<String> cbFonts = new JComboBox<String>();
 
@@ -96,7 +97,7 @@ public class TerminalConfigurationView extends ConfigurationView {
 		cbAutoLogoff.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if(cbAutoLogoff.isSelected()) {
+				if (cbAutoLogoff.isSelected()) {
 					tfLogoffTime.setEnabled(true);
 				}
 				else {
@@ -112,6 +113,7 @@ public class TerminalConfigurationView extends ConfigurationView {
 		add(cbFullscreenMode, "newline, span"); //$NON-NLS-1$
 		add(cbUseSettlementPrompt, "newline, span"); //$NON-NLS-1$
 		add(cbShowBarCodeOnReceipt, "newline,span"); //$NON-NLS-1$
+		add(cbSearchProductByBarCode, "newline,span");
 
 		add(new JLabel(Messages.getString("TerminalConfigurationView.17")), "newline"); //$NON-NLS-1$//$NON-NLS-2$
 		add(cbFonts, "span 2, wrap"); //$NON-NLS-1$
@@ -121,7 +123,7 @@ public class TerminalConfigurationView extends ConfigurationView {
 		touchConfigPanel.add(new JLabel(Messages.getString("TerminalConfigurationView.19"))); //$NON-NLS-1$
 		tfButtonHeight = new IntegerTextField(5);
 		touchConfigPanel.add(tfButtonHeight);
-		
+
 		touchConfigPanel.add(new JLabel("Menu item button height"));
 		tfMenuButtonHeight = new IntegerTextField(5);
 		touchConfigPanel.add(tfMenuButtonHeight);
@@ -163,7 +165,7 @@ public class TerminalConfigurationView extends ConfigurationView {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String text = tfDrawerCodes.getText();
-				if(StringUtils.isEmpty(text)) {
+				if (StringUtils.isEmpty(text)) {
 					text = TerminalConfig.getDefaultDrawerControlCodes();
 				}
 
@@ -231,17 +233,17 @@ public class TerminalConfigurationView extends ConfigurationView {
 		int menuItemButtonHeight = tfMenuButtonHeight.getInteger();
 		int fontSize = tfFontSize.getInteger();
 
-		if(buttonHeight < 20) {
-			POSMessageDialog.showError(com.floreantpos.util.POSUtil.getFocusedWindow(), Messages.getString("TerminalConfigurationView.38")); //$NON-NLS-1$
-			return false;
-		}
-		
-		if(menuItemButtonHeight < 20) {
+		if (buttonHeight < 20) {
 			POSMessageDialog.showError(com.floreantpos.util.POSUtil.getFocusedWindow(), Messages.getString("TerminalConfigurationView.38")); //$NON-NLS-1$
 			return false;
 		}
 
-		if(fontSize < 8) {
+		if (menuItemButtonHeight < 20) {
+			POSMessageDialog.showError(com.floreantpos.util.POSUtil.getFocusedWindow(), Messages.getString("TerminalConfigurationView.38")); //$NON-NLS-1$
+			return false;
+		}
+
+		if (fontSize < 8) {
 			POSMessageDialog.showError(com.floreantpos.util.POSUtil.getFocusedWindow(), Messages.getString("TerminalConfigurationView.39")); //$NON-NLS-1$
 			return false;
 		}
@@ -254,7 +256,7 @@ public class TerminalConfigurationView extends ConfigurationView {
 		}
 
 		int defaultPassLen = tfSecretKeyLength.getInteger();
-		if(defaultPassLen == 0)
+		if (defaultPassLen == 0)
 			defaultPassLen = 4;
 
 		TerminalConfig.setTerminalId(terminalNumber);
@@ -271,11 +273,12 @@ public class TerminalConfigurationView extends ConfigurationView {
 		TerminalConfig.setAutoLogoffTime(tfLogoffTime.getInteger() <= 0 ? 10 : tfLogoffTime.getInteger());
 		TerminalConfig.setUseSettlementPrompt(cbUseSettlementPrompt.isSelected());
 		TerminalConfig.setShowBarcodeOnReceipt(cbShowBarCodeOnReceipt.isSelected());
-
+		TerminalConfig.setShowItemByBarcode(cbSearchProductByBarCode.isSelected());
+		
 		POSMessageDialog.showMessage(com.floreantpos.util.POSUtil.getFocusedWindow(), Messages.getString("TerminalConfigurationView.40")); //$NON-NLS-1$
 
 		String selectedFont = (String) cbFonts.getSelectedItem();
-		if("<select>".equals(selectedFont)) { //$NON-NLS-1$
+		if ("<select>".equals(selectedFont)) { //$NON-NLS-1$
 			selectedFont = null;
 		}
 
@@ -285,7 +288,7 @@ public class TerminalConfigurationView extends ConfigurationView {
 
 		TerminalDAO terminalDAO = TerminalDAO.getInstance();
 		Terminal terminal = terminalDAO.get(terminalNumber);
-		if(terminal == null) {
+		if (terminal == null) {
 			terminal = new Terminal();
 			terminal.setId(terminalNumber);
 			terminal.setCurrentBalance(tfDrawerInitialBalance.getDouble());
@@ -302,12 +305,14 @@ public class TerminalConfigurationView extends ConfigurationView {
 
 	@Override
 	public void initialize() throws Exception {
+
 		tfTerminalNumber.setText(String.valueOf(TerminalConfig.getTerminalId()));
 		tfSecretKeyLength.setText(String.valueOf(TerminalConfig.getDefaultPassLen()));
 		cbFullscreenMode.setSelected(TerminalConfig.isFullscreenMode());
 		cbShowDbConfiguration.setSelected(TerminalConfig.isShowDbConfigureButton());
 		cbUseSettlementPrompt.setSelected(TerminalConfig.isUseSettlementPrompt());
 		cbShowBarCodeOnReceipt.setSelected(TerminalConfig.isShowBarcodeOnReceipt());
+		cbSearchProductByBarCode.setSelected(TerminalConfig.isShowItemByBarcode());
 
 		tfButtonHeight.setText("" + TerminalConfig.getTouchScreenButtonHeight()); //$NON-NLS-1$
 		tfMenuButtonHeight.setText("" + TerminalConfig.getMenuItemButtonHeight()); //$NON-NLS-1$
@@ -342,7 +347,7 @@ public class TerminalConfigurationView extends ConfigurationView {
 		}
 
 		String uiDefaultFont = TerminalConfig.getUiDefaultFont();
-		if(StringUtils.isNotEmpty(uiDefaultFont)) {
+		if (StringUtils.isNotEmpty(uiDefaultFont)) {
 			cbFonts.setSelectedItem(uiDefaultFont);
 		}
 	}
