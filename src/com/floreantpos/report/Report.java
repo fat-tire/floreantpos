@@ -19,6 +19,8 @@ package com.floreantpos.report;
 
 import java.util.Date;
 
+import com.floreantpos.model.Terminal;
+
 import net.sf.jasperreports.view.JRViewer;
 
 public abstract class Report {
@@ -27,7 +29,9 @@ public abstract class Report {
 
 	private Date startDate;
 	private Date endDate;
+	private Terminal terminal;
 	private int reportType = REPORT_TYPE_1;
+	private boolean includeFreeItem = false;
 	protected JRViewer viewer;
 
 	public abstract void refresh() throws Exception;
@@ -35,13 +39,13 @@ public abstract class Report {
 	public abstract boolean isDateRangeSupported();
 
 	public abstract boolean isTypeSupported();
-	
+
 	public JRViewer getViewer() {
 		return viewer;
 	}
 
 	public Date getEndDate() {
-		if(endDate == null) {
+		if (endDate == null) {
 			return new Date();
 		}
 		return endDate;
@@ -59,8 +63,24 @@ public abstract class Report {
 		this.reportType = reportType;
 	}
 
+	public boolean isIncludedFreeItems() {
+		return includeFreeItem;
+	}
+
+	public void setIncludeFreeItems(boolean includeFreeItem) {
+		this.includeFreeItem = includeFreeItem;
+	}
+
+	public Terminal getTerminal() {
+		return terminal;
+	}
+
+	public void setTerminal(Terminal terminal) {
+		this.terminal = terminal;
+	}
+
 	public Date getStartDate() {
-		if(startDate == null) {
+		if (startDate == null) {
 			return new Date();
 		}
 		return startDate;

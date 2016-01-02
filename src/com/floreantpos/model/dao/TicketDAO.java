@@ -52,6 +52,7 @@ import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.TicketItemModifierGroup;
 import com.floreantpos.model.TransactionType;
 import com.floreantpos.model.User;
+import com.floreantpos.model.UserType;
 import com.floreantpos.model.VoidTransaction;
 import com.floreantpos.model.util.TicketSummary;
 import com.floreantpos.services.PosTransactionService;
@@ -568,8 +569,30 @@ public class TicketDAO extends BaseTicketDAO {
 			closeSession(session);
 		}
 	}
+	
+	public List<Ticket> findTickets(Date startDate, Date endDate, boolean closed, Terminal terminal) {
+		Session session = null;
+		try {
+			session = getSession();
+			Criteria criteria = session.createCriteria(getReferenceClass());
+			criteria.add(Restrictions.ge(Ticket.PROP_CREATE_DATE, startDate));
+			criteria.add(Restrictions.le(Ticket.PROP_CREATE_DATE, endDate));
+			criteria.add(Restrictions.eq(Ticket.PROP_CLOSED, Boolean.TRUE));
+			criteria.add(Restrictions.eq(Ticket.PROP_VOIDED, Boolean.FALSE));
+			criteria.add(Restrictions.eq(Ticket.PROP_REFUNDED, Boolean.FALSE));
+			criteria.add(Restrictions.eq(Ticket.PROP_DRAWER_RESETTED, Boolean.valueOf(closed)));
+			
+			if (terminal != null) {
+				criteria.add(Restrictions.eq(Ticket.PROP_TERMINAL, terminal));
+			}
 
-	public List<Ticket> findTicketsForLaborHour(Date startDate, Date endDate, int hour, String userType, Terminal terminal) {
+			return criteria.list();
+		} finally {
+			closeSession(session);
+		}
+	}
+
+	public List<Ticket> findTicketsForLaborHour(Date startDate, Date endDate, int hour, UserType userType, Terminal terminal) {
 		Session session = null;
 		try {
 			session = getSession();
@@ -594,7 +617,7 @@ public class TicketDAO extends BaseTicketDAO {
 		}
 	}
 
-	public List<Ticket> findTicketsForShift(Date startDate, Date endDate, Shift shit, String userType, Terminal terminal) {
+	public List<Ticket> findTicketsForShift(Date startDate, Date endDate, Shift shit, UserType userType, Terminal terminal) {
 		Session session = null;
 		try {
 			session = getSession();
