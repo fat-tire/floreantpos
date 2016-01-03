@@ -144,15 +144,13 @@ public class OrderView extends ViewPanel {
 		showView("VIEW_EMPTY"); //$NON-NLS-1$
 	}// </editor-fold>//GEN-END:initComponents
 
-	public void updateSelectionView() {
-
-		Object selectedObject = ticketView.ticketViewerTable.getSelected();
+	private void handleTicketItemSelection() {
+		ITicketItem selectedItem = (ITicketItem) ticketView.ticketViewerTable.getSelected();
 
 		OrderView orderView = OrderView.getInstance();
 
-		TicketItem selectedTicketItem = null;
-		if (selectedObject instanceof TicketItem) {
-			selectedTicketItem = (TicketItem) selectedObject;
+		if (selectedItem instanceof TicketItem) {
+			TicketItem selectedTicketItem = (TicketItem) selectedItem;
 			MenuItemDAO dao = new MenuItemDAO();
 			MenuItem menuItem = dao.get(selectedTicketItem.getItemId());
 
@@ -169,10 +167,19 @@ public class OrderView extends ViewPanel {
 				MenuCategory menuCategory = menuGroup.getParent();
 				orderView.getCategoryView().setSelectedCategory(menuCategory);
 			}
-			//			}
 		}
 
-		actionUpdate(null);
+		if (selectedItem == null) {
+			btnCookingInstruction.setEnabled(false);
+			btnDiscount.setEnabled(false);
+		}
+		else {
+			btnCookingInstruction.setEnabled(selectedItem.canAddCookingInstruction());
+			btnDiscount.setEnabled(selectedItem.canAddDiscount());
+		}
+		//			btnVoid.setEnabled(item.canAddAdOn());
+		//			btnAddOn.setEnabled(item.canVoid());
+
 		//		else if (selectedObject instanceof TicketItemModifier) {
 		//			selectedTicketItem = ((TicketItemModifier) selectedObject).getParent().getParent();
 		//			if (selectedTicketItem == null)
@@ -201,12 +208,11 @@ public class OrderView extends ViewPanel {
 	}
 
 	private void addActionButtonPanel() {
-
 		ticketView.ticketViewerTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
 				if (!e.getValueIsAdjusting()) {
-					updateSelectionView();
+					handleTicketItemSelection();
 				}
 			}
 		});
@@ -536,22 +542,6 @@ public class OrderView extends ViewPanel {
 				// + ": " + currentTicket.getTableNumbers());
 			}
 		}
-	}
-
-	public void actionUpdate(ITicketItem item) {
-
-		if (item == null) {
-			btnCookingInstruction.setEnabled(false);
-			btnDiscount.setEnabled(false);
-			//				btnVoid.setEnabled(false);
-			//				btnAddOn.setEnabled(false);
-			return;
-		}
-
-		btnCookingInstruction.setEnabled(item.canAddCookingInstruction());
-		btnDiscount.setEnabled(item.canAddDiscount());
-		//			btnVoid.setEnabled(item.canAddAdOn());
-		//			btnAddOn.setEnabled(item.canVoid());
 	}
 
 	///

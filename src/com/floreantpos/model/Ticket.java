@@ -305,10 +305,6 @@ public class Ticket extends BaseTicket {
 	}
 
 	private double calculateTax() {
-		//		if (isTaxExempt()) {
-		//			return 0;
-		//		}
-
 		List<TicketItem> ticketItems = getTicketItems();
 		if(ticketItems == null) {
 			return 0;
