@@ -171,7 +171,7 @@
 		<band splitType="Stretch"/>
 	</columnHeader>
 	<detail>
-		<band height="48" splitType="Stretch">
+		<band height="70" splitType="Stretch">
 			<subreport isUsingCache="true">
 				<reportElement key="subreport-1" x="0" y="2" width="539" height="21"/>
 				<subreportParameter name="totalQuantity">
@@ -196,7 +196,7 @@
 				<subreportExpression class="net.sf.jasperreports.engine.JasperReport"><![CDATA[$P{itemReport}]]></subreportExpression>
 			</subreport>
 			<subreport isUsingCache="true">
-				<reportElement key="subreport-2" positionType="Float" x="0" y="27" width="539" height="21"/>
+				<reportElement key="subreport-2" positionType="Float" x="0" y="47" width="539" height="21"/>
 				<subreportParameter name="totalQuantity">
 					<subreportParameterExpression><![CDATA[$P{modifierTotalQuantity}]]></subreportParameterExpression>
 				</subreportParameter>
