@@ -34,6 +34,7 @@ import com.floreantpos.model.Shift;
 import com.floreantpos.model.Terminal;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.User;
+import com.floreantpos.model.UserType;
 import com.floreantpos.report.PayrollReportData;
 
 public class AttendenceHistoryDAO extends BaseAttendenceHistoryDAO {
@@ -44,7 +45,7 @@ public class AttendenceHistoryDAO extends BaseAttendenceHistoryDAO {
 	public AttendenceHistoryDAO() {
 	}
 
-	public List<User> findNumberOfClockedInUserAtHour(Date fromDay, Date toDay, int hour, String userType, Terminal terminal) {
+	public List<User> findNumberOfClockedInUserAtHour(Date fromDay, Date toDay, int hour, UserType userType, Terminal terminal) {
 		Session session = null;
 
 		ArrayList<User> users = new ArrayList<User>();
@@ -84,7 +85,7 @@ public class AttendenceHistoryDAO extends BaseAttendenceHistoryDAO {
 			}
 		}
 	}
-	public List<User> findNumberOfClockedInUserAtShift(Date fromDay, Date toDay, Shift shift, String userType, Terminal terminal) {
+	public List<User> findNumberOfClockedInUserAtShift(Date fromDay, Date toDay, Shift shift, UserType userType, Terminal terminal) {
 		Session session = null;
 		
 		ArrayList<User> users = new ArrayList<User>();

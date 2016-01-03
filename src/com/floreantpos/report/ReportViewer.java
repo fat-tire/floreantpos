@@ -23,18 +23,19 @@
 
 package com.floreantpos.report;
 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JSeparator;
 
 import net.miginfocom.swing.MigLayout;
 
@@ -64,7 +65,7 @@ public class ReportViewer extends JPanel {
 	private JLabel lblToDate;
 	private JLabel lblTerminal;
 	private JCheckBox chkBoxFree;
-	private TransparentPanel reportConstraintPanel;
+	private TransparentPanel reportSearchOptionPanel; 
 	private TransparentPanel reportPanel;
 
 	private Report report;
@@ -94,11 +95,10 @@ public class ReportViewer extends JPanel {
 
 	private void initComponents() {
 		setLayout(new java.awt.BorderLayout(5, 5));
-
-		reportConstraintPanel = new TransparentPanel();
+		
+		reportSearchOptionPanel=new TransparentPanel(new BorderLayout()); 
+		TransparentPanel reportConstraintPanel = new TransparentPanel();
 		reportConstraintPanel.setLayout(new MigLayout());
-		reportConstraintPanel.setPreferredSize(new Dimension(300,0)); 
-		reportConstraintPanel.setBorder(BorderFactory.createRaisedBevelBorder()); 
 
 		lblReportType = new JLabel(Messages.getString("ReportViewer.0") + ":");
 		cbReportType = new JComboBox();
@@ -141,11 +141,14 @@ public class ReportViewer extends JPanel {
 		reportConstraintPanel.add(new JLabel(""));
 		reportConstraintPanel.add(btnRefresh, "wrap");
 
-		add(reportConstraintPanel, java.awt.BorderLayout.WEST);
+		reportSearchOptionPanel.add(reportConstraintPanel, BorderLayout.NORTH);
+		reportSearchOptionPanel.add(new JSeparator(), BorderLayout.CENTER); 
 
-		reportPanel.setLayout(new java.awt.BorderLayout());
-
-		add(reportPanel, java.awt.BorderLayout.CENTER);
+		reportPanel.setLayout(new BorderLayout());
+		
+		
+		add(reportSearchOptionPanel, BorderLayout.NORTH); 
+		add(reportPanel, BorderLayout.CENTER);
 
 	}
 
@@ -194,6 +197,11 @@ public class ReportViewer extends JPanel {
 
 	public void setReport(Report report) {
 		this.report = report;
+		if(report instanceof OpenTicketSummaryReport){
+			chkBoxFree.setVisible(false);
+			lblReportType.setVisible(false); 
+			cbReportType.setVisible(false); 
+		}
 	}
 
 }

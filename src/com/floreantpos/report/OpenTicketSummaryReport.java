@@ -42,6 +42,7 @@ public class OpenTicketSummaryReport extends Report {
 	public void refresh() throws Exception {
 		//Date date1 = DateUtils.startOfDay(getStartDate());
 		//Date date2 = DateUtils.endOfDay(getEndDate());
+		JasperReport reportHeader = ReportUtil.getReport("report_header"); //$NON-NLS-1$
 		
 		List<Ticket> tickets = TicketDAO.getInstance().findOpenTickets();
 		TicketReportModel reportModel = new TicketReportModel();
@@ -49,6 +50,7 @@ public class OpenTicketSummaryReport extends Report {
 		
 		HashMap map = new HashMap();
 		ReportUtil.populateRestaurantProperties(map);
+		map.put("reportHeader", reportHeader); //$NON-NLS-1$
 		map.put("reportTitle", Messages.getString("OpenTicketSummaryReport.0")); //$NON-NLS-1$ //$NON-NLS-2$
 		map.put("reportTime", ReportService.formatFullDate(new Date())); //$NON-NLS-1$
 		//map.put("dateRange", Application.formatDate(date1) + " to " + Application.formatDate(date2));
