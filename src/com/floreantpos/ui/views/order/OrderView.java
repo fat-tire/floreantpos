@@ -103,6 +103,7 @@ public class OrderView extends ViewPanel {
 	private com.floreantpos.swing.PosButton btnSearchItem = new PosButton(POSConstants.SEARCH_ITEM_BUTTON_TEXT);
 	private PosButton btnCookingInstruction = new PosButton(IconFactory.getIcon("/ui_icons/", "cooking-instruction.png"));
 	private PosButton btnDiscount = new PosButton(Messages.getString("TicketView.43")); //$NON-NLS-1$
+
 	/** Creates new form OrderView */
 	private OrderView() {
 		initComponents();
@@ -143,9 +144,8 @@ public class OrderView extends ViewPanel {
 		showView("VIEW_EMPTY"); //$NON-NLS-1$
 	}// </editor-fold>//GEN-END:initComponents
 
-	
-	public  void updateSelectionView() {
-		
+	public void updateSelectionView() {
+
 		Object selectedObject = ticketView.ticketViewerTable.getSelected();
 
 		OrderView orderView = OrderView.getInstance();
@@ -171,7 +171,7 @@ public class OrderView extends ViewPanel {
 			}
 			//			}
 		}
-		
+
 		actionUpdate(null);
 		//		else if (selectedObject instanceof TicketItemModifier) {
 		//			selectedTicketItem = ((TicketItemModifier) selectedObject).getParent().getParent();
@@ -199,9 +199,9 @@ public class OrderView extends ViewPanel {
 		//			}
 		//		}
 	}
+
 	private void addActionButtonPanel() {
-		
-		
+
 		ticketView.ticketViewerTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
@@ -210,10 +210,7 @@ public class OrderView extends ViewPanel {
 				}
 			}
 		});
-		
-		
-		
-		
+
 		btnDone.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
