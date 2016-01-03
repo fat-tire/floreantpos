@@ -127,8 +127,7 @@ public class MenuItemView extends SelectionView {
 
 		ItemButton(MenuItem menuItem) {
 			this.foodItem = menuItem;
-			setFocusable(true);
-			setFocusPainted(true);
+			setFocusable(false);
 			setVerticalTextPosition(SwingConstants.BOTTOM);
 			setHorizontalTextPosition(SwingConstants.CENTER);
 			
