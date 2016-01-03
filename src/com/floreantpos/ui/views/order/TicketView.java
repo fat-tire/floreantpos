@@ -30,6 +30,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
@@ -45,13 +46,16 @@ import com.floreantpos.PosException;
 import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.ITicketItem;
+import com.floreantpos.model.MenuItem;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.TicketItemModifier;
+import com.floreantpos.model.dao.MenuItemDAO;
 import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.report.ReceiptPrintService;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.swing.PosScrollPane;
+import com.floreantpos.ui.dialog.ItemNumberSelectionDialog;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.views.CashierSwitchBoardView;
 import com.floreantpos.ui.views.SwitchboardView;
@@ -76,8 +80,8 @@ public class TicketView extends JPanel {
 	private javax.swing.JScrollPane ticketScrollPane;
 	private PosButton btnTotal;
 	public com.floreantpos.ui.ticket.TicketViewerTable ticketViewerTable;
-	public ItemSearchPanel itemSearchPanel;
-
+	private JPanel itemSearchPanel;
+	
 	private TitledBorder titledBorder = new TitledBorder(""); //$NON-NLS-1$
 	private Border border = new CompoundBorder(titledBorder, new EmptyBorder(5, 5, 5, 5));
 
@@ -98,8 +102,8 @@ public class TicketView extends JPanel {
 		titledBorder.setTitleJustification(TitledBorder.CENTER);
 		setBorder(border);
 		setLayout(new java.awt.BorderLayout(5, 5));
-
-		itemSearchPanel = new ItemSearchPanel();
+		itemSearchPanel = new JPanel();
+		
 		ticketItemActionPanel = new com.floreantpos.swing.TransparentPanel();
 		btnDecreaseAmount = new com.floreantpos.swing.PosButton();
 		btnScrollDown = new com.floreantpos.swing.PosButton();
@@ -114,7 +118,9 @@ public class TicketView extends JPanel {
 		JPanel totalViewPanel = createTotalViewerPanel();
 
 		createTicketItemControlPanel();
-
+		createItemSearchPanel();
+		
+		
 		JPanel centerPanel = new JPanel(new BorderLayout(5, 5));
 		centerPanel.add(ticketScrollPane);
 		centerPanel.add(totalViewPanel, BorderLayout.SOUTH);
@@ -129,6 +135,100 @@ public class TicketView extends JPanel {
 
 	}// </editor-fold>//GEN-END:initComponents
 
+	private void createItemSearchPanel() {
+		
+		itemSearchPanel.setLayout(new BorderLayout(5, 5));
+
+		PosButton btnSearch = new PosButton("...");
+		btnSearch.setPreferredSize(new Dimension(60, 40));
+
+		final JTextField txtSearchItem = new JTextField();
+
+		txtSearchItem.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				if (txtSearchItem.getText().equals("")) {
+					POSMessageDialog.showMessage("Please enter item number or barcode ");
+					return;
+				}
+
+				if (!addMenuItemByBarcode(txtSearchItem.getText())) {
+					if (!addMenuItemByItemId(txtSearchItem.getText())) {
+						POSMessageDialog.showError(Application.getPosWindow(), "Item not found");
+					}
+				}
+				txtSearchItem.setText("");
+			}
+		});
+
+		btnSearch.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				ItemNumberSelectionDialog dialog = new ItemNumberSelectionDialog(Application.getPosWindow());
+				dialog.setTitle("Search item");
+				dialog.setSize(600, 400);
+				dialog.open();
+
+				if (dialog.isCanceled()) {
+					return;
+				}
+
+				if (!addMenuItemByBarcode(dialog.getValue())) {
+					if (!addMenuItemByItemId(dialog.getValue())) {
+						POSMessageDialog.showError(Application.getPosWindow(), "Item not found");
+					}
+				}
+			}
+		});
+		itemSearchPanel.add(txtSearchItem);
+		itemSearchPanel.add(btnSearch, BorderLayout.EAST);
+	}
+	private static boolean isParsable(String input) {
+		boolean parsable = true;
+		try {
+			Integer.parseInt(input);
+		} catch (NumberFormatException e) {
+			parsable = false;
+		}
+		return parsable;
+	}
+
+	private boolean addMenuItemByItemId(String id) {
+
+		if (!isParsable(id)) {
+			return false;
+		}
+
+		Integer itemId = Integer.parseInt(id);
+
+		MenuItem menuItem = MenuItemDAO.getInstance().get(itemId);
+
+		if (menuItem == null) {
+			return false;
+		}
+		
+		OrderView.getInstance().getOrderController().itemSelected(menuItem);
+		return true;
+	}
+
+	private boolean addMenuItemByBarcode(String barcode) {
+
+		MenuItemDAO dao = new MenuItemDAO();
+
+		MenuItem menuItem = dao.getMenuItemByBarcode(barcode);
+
+		if (menuItem == null) {
+			return false;
+		}
+
+		OrderView.getInstance().getOrderController().itemSelected(menuItem);
+		return true;
+	}
+	
 	private JPanel createTotalViewerPanel() {
 		JPanel ticketAmountPanel = new com.floreantpos.swing.TransparentPanel(new MigLayout("ins 2 2 3 2,alignx trailing,fill", "[grow][]", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
