@@ -29,7 +29,6 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
@@ -46,13 +45,9 @@ import com.floreantpos.PosException;
 import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.ITicketItem;
-import com.floreantpos.model.MenuCategory;
-import com.floreantpos.model.MenuGroup;
-import com.floreantpos.model.MenuItem;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.TicketItemModifier;
-import com.floreantpos.model.dao.MenuItemDAO;
 import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.report.ReceiptPrintService;
 import com.floreantpos.swing.PosButton;
@@ -82,7 +77,7 @@ public class TicketView extends JPanel {
 	private PosButton btnTotal;
 	public com.floreantpos.ui.ticket.TicketViewerTable ticketViewerTable;
 	public ItemSearchPanel itemSearchPanel;
-	
+
 	private TitledBorder titledBorder = new TitledBorder(""); //$NON-NLS-1$
 	private Border border = new CompoundBorder(titledBorder, new EmptyBorder(5, 5, 5, 5));
 
@@ -104,7 +99,7 @@ public class TicketView extends JPanel {
 		setBorder(border);
 		setLayout(new java.awt.BorderLayout(5, 5));
 
-		itemSearchPanel=new ItemSearchPanel();
+		itemSearchPanel = new ItemSearchPanel();
 		ticketItemActionPanel = new com.floreantpos.swing.TransparentPanel();
 		btnDecreaseAmount = new com.floreantpos.swing.PosButton();
 		btnScrollDown = new com.floreantpos.swing.PosButton();
@@ -124,7 +119,7 @@ public class TicketView extends JPanel {
 		centerPanel.add(ticketScrollPane);
 		centerPanel.add(totalViewPanel, BorderLayout.SOUTH);
 
-		add(itemSearchPanel,BorderLayout.NORTH);
+		add(itemSearchPanel, BorderLayout.NORTH);
 		add(centerPanel);
 		add(ticketItemActionPanel, BorderLayout.EAST);
 		ticketViewerTable.getRenderer().setInTicketScreen(true);
@@ -390,89 +385,8 @@ public class TicketView extends JPanel {
 		}
 	}
 
-	/*private void updateSelectionView() {
-		Object selectedObject = ticketViewerTable.getSelected();
-
-		OrderView orderView = OrderView.getInstance();
-
-		TicketItem selectedTicketItem = null;
-		if (selectedObject instanceof TicketItem) {
-			selectedTicketItem = (TicketItem) selectedObject;
-
-			//			ModifierView modifierView = orderView.getModifierView();
-
-			//			if (selectedTicketItem.isHasModifiers()) {
-			//				MenuItemDAO dao = new MenuItemDAO();
-			//				MenuItem menuItem = dao.get(selectedTicketItem.getItemId());
-			//				if (!menuItem.equals(modifierView.getMenuItem())) {
-			//					menuItem = dao.initialize(menuItem);
-			//					modifierView.setMenuItem(menuItem, selectedTicketItem);
-			//				}
-			//
-			//				MenuCategory menuCategory = menuItem.getParent().getParent();
-			//				orderView.getCategoryView().setSelectedCategory(menuCategory);
-			//
-			//				modifierView.clearSelection();
-			//				//orderView.showView(ModifierView.VIEW_NAME);
-			//			}
-			//			else {
-			MenuItemDAO dao = new MenuItemDAO();
-			MenuItem menuItem = dao.get(selectedTicketItem.getItemId());
-
-			if (menuItem != null) {
-				MenuGroup menuGroup = menuItem.getParent();
-				MenuItemView itemView = OrderView.getInstance().getItemView();
-				if (!menuGroup.equals(itemView.getMenuGroup())) {
-					itemView.setMenuGroup(menuGroup);
-				}
-
-				orderView.showView(MenuItemView.VIEW_NAME);
-				itemView.selectItem(menuItem);
-
-				MenuCategory menuCategory = menuGroup.getParent();
-				orderView.getCategoryView().setSelectedCategory(menuCategory);
-			}
-			//			}
-		}
-		
-		//		else if (selectedObject instanceof TicketItemModifier) {
-		//			selectedTicketItem = ((TicketItemModifier) selectedObject).getParent().getParent();
-		//			if (selectedTicketItem == null)
-		//				return;
-		//
-		//			ModifierView modifierView = orderView.getModifierView();
-		//
-		//			if (selectedTicketItem.isHasModifiers()) {
-		//				MenuItemDAO dao = new MenuItemDAO();
-		//				MenuItem menuItem = dao.get(selectedTicketItem.getItemId());
-		//				if (!menuItem.equals(modifierView.getMenuItem())) {
-		//					menuItem = dao.initialize(menuItem);
-		//					modifierView.setMenuItem(menuItem, selectedTicketItem);
-		//				}
-		//
-		//				MenuCategory menuCategory = menuItem.getParent().getParent();
-		//				orderView.getCategoryView().setSelectedCategory(menuCategory);
-		//
-		//				TicketItemModifier ticketItemModifier = (TicketItemModifier) selectedObject;
-		//				ticketItemModifier.setSelected(true);
-		//				modifierView.select(ticketItemModifier);
-		//
-		//				orderView.showView(ModifierView.VIEW_NAME);
-		//			}
-		//		}
-	}*/
-
 	public com.floreantpos.ui.ticket.TicketViewerTable getTicketViewerTable() {
 		return ticketViewerTable;
-	}
-
-	public static void main(String[] args) {
-		TicketView ticketView = new TicketView();
-		JFrame frame = new JFrame();
-		frame.add(ticketView);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.pack();
-		frame.setVisible(true);
 	}
 
 	private class TicketItemSelectionListener implements ListSelectionListener {
