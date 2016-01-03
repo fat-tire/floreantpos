@@ -28,6 +28,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Vector;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -52,10 +53,12 @@ import com.floreantpos.model.Shift;
 import com.floreantpos.model.Terminal;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.User;
+import com.floreantpos.model.UserType;
 import com.floreantpos.model.dao.AttendenceHistoryDAO;
 import com.floreantpos.model.dao.ShiftDAO;
 import com.floreantpos.model.dao.TerminalDAO;
 import com.floreantpos.model.dao.TicketDAO;
+import com.floreantpos.model.dao.UserTypeDAO;
 import com.floreantpos.report.service.ReportService;
 import com.floreantpos.swing.ListComboBoxModel;
 import com.floreantpos.swing.TransparentPanel;
@@ -74,390 +77,411 @@ import com.intellij.uiDesigner.core.Spacer;
  * To change this template use File | Settings | File Templates.
  */
 public class HourlyLaborReportView extends TransparentPanel {
-    private JButton btnGo;
-    private JComboBox cbTerminal;
-    private JXDatePicker fromDatePicker;
-    private JXDatePicker toDatePicker;
-    private JPanel reportPanel;
-    private JPanel contentPane;
-    private JComboBox cbUserType;
+	private JButton btnGo;
+	private JComboBox cbTerminal;
+	private JXDatePicker fromDatePicker;
+	private JXDatePicker toDatePicker;
+	private JPanel reportPanel;
+	private JPanel contentPane;
+	private JComboBox cbUserType;
 
-    public HourlyLaborReportView() {
-        cbUserType.setModel(new DefaultComboBoxModel(new String[]{com.floreantpos.POSConstants.ALL, com.floreantpos.POSConstants.SERVER, com.floreantpos.POSConstants.CASHIER, com.floreantpos.POSConstants.MANAGER}));
+	public HourlyLaborReportView() {
 
-        TerminalDAO terminalDAO = new TerminalDAO();
-        List terminals = terminalDAO.findAll();
-        terminals.add(0, com.floreantpos.POSConstants.ALL);
-        cbTerminal.setModel(new ListComboBoxModel(terminals));
+		UserTypeDAO dao = new UserTypeDAO();
+		List<UserType> userTypes = dao.findAll();
 
+		Vector list = new Vector();
+		list.add(null);
+		list.addAll(userTypes);
 
-        setLayout(new BorderLayout());
-        add(contentPane);
+		cbUserType.setModel(new DefaultComboBoxModel(list));
 
-        btnGo.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                viewReport();
-            }
-        });
-    }
+		TerminalDAO terminalDAO = new TerminalDAO();
+		List terminals = terminalDAO.findAll();
+		terminals.add(0, com.floreantpos.POSConstants.ALL);
+		cbTerminal.setModel(new ListComboBoxModel(terminals));
 
-    private void viewReport() {
-        Date fromDate = fromDatePicker.getDate();
-        Date toDate = toDatePicker.getDate();
+		setLayout(new BorderLayout());
+		add(contentPane);
 
-        if (fromDate.after(toDate)) {
-            POSMessageDialog.showError(com.floreantpos.util.POSUtil.getFocusedWindow(), com.floreantpos.POSConstants.FROM_DATE_CANNOT_BE_GREATER_THAN_TO_DATE_);
-            return;
-        }
+		btnGo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				viewReport();
+			}
+		});
+	}
 
-        String userType = (String) cbUserType.getSelectedItem();
-        if (userType.equalsIgnoreCase(com.floreantpos.POSConstants.ALL)) {
-            userType = null;
-        }
-        Terminal terminal = null;
-        if (cbTerminal.getSelectedItem() instanceof Terminal) {
-            terminal = (Terminal) cbTerminal.getSelectedItem();
-        }
+	private void viewReport() {
+		Date fromDate = fromDatePicker.getDate();
+		Date toDate = toDatePicker.getDate();
 
+		if (fromDate.after(toDate)) {
+			POSMessageDialog.showError(com.floreantpos.util.POSUtil.getFocusedWindow(), com.floreantpos.POSConstants.FROM_DATE_CANNOT_BE_GREATER_THAN_TO_DATE_);
+			return;
+		}
 
-        Calendar calendar = Calendar.getInstance();
-        calendar.clear();
+		UserType userType = (UserType) cbUserType.getSelectedItem();
 
-        Calendar calendar2 = Calendar.getInstance();
-        calendar2.setTime(fromDate);
+		Terminal terminal = null;
+		if (cbTerminal.getSelectedItem() instanceof Terminal) {
+			terminal = (Terminal) cbTerminal.getSelectedItem();
+		}
 
-        calendar.set(Calendar.YEAR, calendar2.get(Calendar.YEAR));
-        calendar.set(Calendar.MONTH, calendar2.get(Calendar.MONTH));
-        calendar.set(Calendar.DATE, calendar2.get(Calendar.DATE));
-        calendar.set(Calendar.HOUR, 0);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 0);
-        fromDate = calendar.getTime();
+		Calendar calendar = Calendar.getInstance();
+		calendar.clear();
 
-        calendar.clear();
-        calendar2.setTime(toDate);
-        calendar.set(Calendar.YEAR, calendar2.get(Calendar.YEAR));
-        calendar.set(Calendar.MONTH, calendar2.get(Calendar.MONTH));
-        calendar.set(Calendar.DATE, calendar2.get(Calendar.DATE));
-        calendar.set(Calendar.HOUR, 23);
-        calendar.set(Calendar.MINUTE, 59);
-        calendar.set(Calendar.SECOND, 59);
-        toDate = calendar.getTime();
+		Calendar calendar2 = Calendar.getInstance();
+		calendar2.setTime(fromDate);
 
+		calendar.set(Calendar.YEAR, calendar2.get(Calendar.YEAR));
+		calendar.set(Calendar.MONTH, calendar2.get(Calendar.MONTH));
+		calendar.set(Calendar.DATE, calendar2.get(Calendar.DATE));
+		calendar.set(Calendar.HOUR, 0);
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.SECOND, 0);
+		fromDate = calendar.getTime();
 
-        TicketDAO ticketDAO = TicketDAO.getInstance();
-        AttendenceHistoryDAO attendenceHistoryDAO = new AttendenceHistoryDAO();
-        ArrayList<LaborReportData> rows = new ArrayList<LaborReportData>();
+		calendar.clear();
+		calendar2.setTime(toDate);
+		calendar.set(Calendar.YEAR, calendar2.get(Calendar.YEAR));
+		calendar.set(Calendar.MONTH, calendar2.get(Calendar.MONTH));
+		calendar.set(Calendar.DATE, calendar2.get(Calendar.DATE));
+		calendar.set(Calendar.HOUR, 23);
+		calendar.set(Calendar.MINUTE, 59);
+		calendar.set(Calendar.SECOND, 59);
+		toDate = calendar.getTime();
 
-        DecimalFormat formatter = new DecimalFormat("00"); //$NON-NLS-1$
+		TicketDAO ticketDAO = TicketDAO.getInstance();
+		AttendenceHistoryDAO attendenceHistoryDAO = new AttendenceHistoryDAO();
+		ArrayList<LaborReportData> rows = new ArrayList<LaborReportData>();
 
-        int grandTotalChecks = 0;
-        int grandTotalGuests = 0;
-        double grandTotalSales = 0;
-        double grandTotalMHr = 0;
-        double grandTotalLabor = 0;
-        double grandTotalSalesPerMHr = 0;
-        double grandTotalGuestsPerMHr = 0;
-        double grandTotalCheckPerMHr = 0;
-        double grandTotalLaborCost = 0;
+		DecimalFormat formatter = new DecimalFormat("00"); //$NON-NLS-1$
 
-        for (int i = 0; i < 24; i++) {
-//            List<Ticket> tickets = ticketDAO.findTicketsForLaborHour(fromDate, toDate, i, userType, terminal);
-//            List<User> users = attendenceHistoryDAO.findNumberOfClockedInUserAtHour(fromDate, toDate, i, userType, terminal);
-//
-//            int manHour = users.size();
-//            int totalChecks = 0;
-//            int totalGuests = 0;
-//            double totalSales = 0;
-//            double labor = 0;
-//            double salesPerMHr = 0;
-//            double guestsPerMHr = 0;
-//            double checksPerMHr = 0;
-//            //double laborCost = 0;
-//
-//            for (Ticket ticket : tickets) {
-//                ++totalChecks;
-//                totalGuests += ticket.getNumberOfGuests();
-//                totalSales += ticket.getTotalAmount();
-//            }
-//
-//            for (User user : users) {
-//                labor += (user.getCostPerHour() == null ? 0 : user.getCostPerHour());
-//            }
-//            if (manHour > 0) {
-//                labor = labor / manHour;
-//                salesPerMHr = totalSales / manHour;
-//                guestsPerMHr = (double) totalGuests / manHour;
-//                checksPerMHr = totalChecks / manHour;
-//                //laborCost =
-//            }
-//
-//            LaborReportData reportData = new LaborReportData();
-//            reportData.setPeriod(formatter.format(i) + ":00 - " + formatter.format(i) + ":59"); //$NON-NLS-1$ //$NON-NLS-2$
-//            reportData.setManHour(manHour);
-//            reportData.setNoOfChecks(totalChecks);
-//            reportData.setSales(totalSales);
-//            reportData.setNoOfGuests(totalGuests);
-//            reportData.setLabor(labor);
-//            reportData.setSalesPerMHr(salesPerMHr);
-//            reportData.setGuestsPerMHr(guestsPerMHr);
-//            reportData.setCheckPerMHr(checksPerMHr);
-//
-//            rows.add(reportData);
-//
-//            grandTotalChecks += totalChecks;
-//            grandTotalGuests += totalGuests;
-//            grandTotalSales += totalSales;
-//            grandTotalMHr += manHour;
-//            grandTotalLabor += labor;
-//            grandTotalSalesPerMHr += salesPerMHr;
-//            grandTotalCheckPerMHr += checksPerMHr;
-//            grandTotalGuestsPerMHr += guestsPerMHr;
-            //grandTotalLaborCost +=
+		int grandTotalChecks = 0;
+		int grandTotalGuests = 0;
+		double grandTotalSales = 0;
+		double grandTotalMHr = 0;
+		double grandTotalLabor = 0;
+		double grandTotalSalesPerMHr = 0;
+		double grandTotalGuestsPerMHr = 0;
+		double grandTotalCheckPerMHr = 0;
+		double grandTotalLaborCost = 0;
 
-        }
+		for (int i = 0; i < 24; i++) {
+			List<Ticket> tickets = ticketDAO.findTicketsForLaborHour(fromDate, toDate, i, userType, terminal);
+			List<User> users = attendenceHistoryDAO.findNumberOfClockedInUserAtHour(fromDate, toDate, i, userType, terminal);
 
-        ArrayList<LaborReportData> shiftReportRows = new ArrayList<LaborReportData>();
-        ShiftDAO shiftDAO = new ShiftDAO();
-        List<Shift> shifts = shiftDAO.findAll();
-        for (Shift shift : shifts) {
-//            List<Ticket> tickets = ticketDAO.findTicketsForShift(fromDate, toDate, shift, userType, terminal);
-//            List<User> users = attendenceHistoryDAO.findNumberOfClockedInUserAtShift(fromDate, toDate, shift, userType, terminal);
-//
-//            int manHour = users.size();
-//            int totalChecks = 0;
-//            int totalGuests = 0;
-//            double totalSales = 0;
-//            double labor = 0;
-//            double salesPerMHr = 0;
-//            double guestsPerMHr = 0;
-//            double checksPerMHr = 0;
-//            //double laborCost = 0;
-//
-//            for (Ticket ticket : tickets) {
-//                ++totalChecks;
-//                totalGuests += ticket.getNumberOfGuests();
-//                totalSales += ticket.getTotalAmount();
-//            }
-//
-//            for (User user : users) {
-//                labor += (user.getCostPerHour() == null ? 0 : user.getCostPerHour());
-//            }
-//            if (manHour > 0) {
-//                labor = labor / manHour;
-//                salesPerMHr = totalSales / manHour;
-//                guestsPerMHr = (double) totalGuests / manHour;
-//                checksPerMHr = totalChecks / manHour;
-//                //laborCost =
-//            }
-//
-//            LaborReportData reportData = new LaborReportData();
-//            reportData.setPeriod(shift.getName());
-//            reportData.setManHour(manHour);
-//            reportData.setNoOfChecks(totalChecks);
-//            reportData.setSales(totalSales);
-//            reportData.setNoOfGuests(totalGuests);
-//            reportData.setLabor(labor);
-//            reportData.setSalesPerMHr(salesPerMHr);
-//            reportData.setGuestsPerMHr(guestsPerMHr);
-//            reportData.setCheckPerMHr(checksPerMHr);
-//
-//            shiftReportRows.add(reportData);
-        }
+			int manHour = users.size();
+			int totalChecks = 0;
+			int totalGuests = 0;
+			double totalSales = 0;
+			double labor = 0;
+			double salesPerMHr = 0;
+			double guestsPerMHr = 0;
+			double checksPerMHr = 0;
+			//double laborCost = 0;
 
-        try {
-            JasperReport hourlyReport = ReportUtil.getReport("hourly_labor_subreport"); //$NON-NLS-1$
-            JasperReport shiftReport = ReportUtil.getReport("hourly_labor_shift_subreport"); //$NON-NLS-1$
+			for (Ticket ticket : tickets) {
+				++totalChecks;
+				totalGuests += ticket.getNumberOfGuests();
+				totalSales += ticket.getTotalAmount();
+			}
 
-            JasperReport report = ReportUtil.getReport("hourly_labor_report"); //$NON-NLS-1$
+			for (User user : users) {
+				labor += (user.getCostPerHour() == null ? 0 : user.getCostPerHour());
+			}
+			if (manHour > 0) {
+				labor = labor / manHour;
+				salesPerMHr = totalSales / manHour;
+				guestsPerMHr = (double) totalGuests / manHour;
+				checksPerMHr = totalChecks / manHour;
+				//laborCost =
+			}
 
-            HashMap properties = new HashMap();
-            ReportUtil.populateRestaurantProperties(properties);
-            properties.put("reportTitle", com.floreantpos.POSConstants.HOURLY_LABOR_REPORT); //$NON-NLS-1$
-            properties.put("reportTime", ReportService.formatFullDate(new Date())); //$NON-NLS-1$
-            properties.put("fromDay", ReportService.formatShortDate(fromDate)); //$NON-NLS-1$
-            properties.put("toDay", ReportService.formatShortDate(toDate)); //$NON-NLS-1$
-            properties.put(com.floreantpos.POSConstants.TYPE, com.floreantpos.POSConstants.BY_RANGE_ACTUAL);
-            properties.put("dept", userType == null ? com.floreantpos.POSConstants.ALL : userType); //$NON-NLS-1$
-            properties.put("incr", Messages.getString("HourlyLaborReportView.0")); //$NON-NLS-1$ //$NON-NLS-2$
-            properties.put("cntr", terminal == null ? com.floreantpos.POSConstants.ALL : terminal.getName()); //$NON-NLS-1$
+			LaborReportData reportData = new LaborReportData();
+			reportData.setPeriod(formatter.format(i) + ":00 - " + formatter.format(i) + ":59"); //$NON-NLS-1$ //$NON-NLS-2$
+			reportData.setManHour(manHour);
+			reportData.setNoOfChecks(totalChecks);
+			reportData.setSales(totalSales);
+			reportData.setNoOfGuests(totalGuests);
+			reportData.setLabor(labor);
+			reportData.setSalesPerMHr(salesPerMHr);
+			reportData.setGuestsPerMHr(guestsPerMHr);
+			reportData.setCheckPerMHr(checksPerMHr);
 
-            properties.put("totalChecks", String.valueOf(grandTotalChecks)); //$NON-NLS-1$
-            properties.put("totalGuests", String.valueOf(grandTotalGuests)); //$NON-NLS-1$
-            properties.put("totalSales", NumberUtil.formatNumber(grandTotalSales)); //$NON-NLS-1$
-            properties.put("totalMHr", NumberUtil.formatNumber(grandTotalMHr)); //$NON-NLS-1$
-            properties.put("totalLabor", NumberUtil.formatNumber(grandTotalLabor)); //$NON-NLS-1$
-            properties.put("totalSalesPerMhr", NumberUtil.formatNumber(grandTotalSalesPerMHr)); //$NON-NLS-1$
-            properties.put("totalGuestsPerMhr", NumberUtil.formatNumber(grandTotalCheckPerMHr)); //$NON-NLS-1$
-            properties.put("totalCheckPerMHr", NumberUtil.formatNumber(grandTotalGuestsPerMHr)); //$NON-NLS-1$
-            properties.put("totalLaborCost", NumberUtil.formatNumber(grandTotalLaborCost)); //$NON-NLS-1$
+			rows.add(reportData);
 
-            properties.put("hourlyReport", hourlyReport); //$NON-NLS-1$
-            properties.put("hourlyReportDatasource", new JRTableModelDataSource(new HourlyLaborReportModel(rows))); //$NON-NLS-1$
-            properties.put("shiftReport", shiftReport); //$NON-NLS-1$
-            properties.put("shiftReportDatasource", new JRTableModelDataSource(new HourlyLaborReportModel(shiftReportRows))); //$NON-NLS-1$
+			grandTotalChecks += totalChecks;
+			grandTotalGuests += totalGuests;
+			grandTotalSales += totalSales;
+			grandTotalMHr += manHour;
+			grandTotalLabor += labor;
+			grandTotalSalesPerMHr += salesPerMHr;
+			grandTotalCheckPerMHr += checksPerMHr;
+			grandTotalGuestsPerMHr += guestsPerMHr;
+			//grandTotalLaborCost +=
 
-            JasperPrint print = JasperFillManager.fillReport(report, properties, new JREmptyDataSource());
+		}
 
-            JRViewer viewer = new JRViewer(print);
-            reportPanel.removeAll();
-            reportPanel.add(viewer);
-            reportPanel.revalidate();
-        } catch (JRException e) {
-            e.printStackTrace();
-        }
-    }
+		ArrayList<LaborReportData> shiftReportRows = new ArrayList<LaborReportData>();
+		ShiftDAO shiftDAO = new ShiftDAO();
+		List<Shift> shifts = shiftDAO.findAll();
+		for (Shift shift : shifts) {
+			List<Ticket> tickets = ticketDAO.findTicketsForShift(fromDate, toDate, shift, userType, terminal);
+			List<User> users = attendenceHistoryDAO.findNumberOfClockedInUserAtShift(fromDate, toDate, shift, userType, terminal);
 
-    {
-// GUI initializer generated by IntelliJ IDEA GUI Designer
-// >>> IMPORTANT!! <<<
-// DO NOT EDIT OR ADD ANY CODE HERE!
-        $$$setupUI$$$();
-    }
+			int manHour = users.size();
+			int totalChecks = 0;
+			int totalGuests = 0;
+			double totalSales = 0;
+			double labor = 0;
+			double salesPerMHr = 0;
+			double guestsPerMHr = 0;
+			double checksPerMHr = 0;
+			//double laborCost = 0;
 
-    /**
-     * Method generated by IntelliJ IDEA GUI Designer
-     * >>> IMPORTANT!! <<<
-     * DO NOT edit this method OR call it in your code!
-     *
-     * @noinspection ALL
-     */
-    private void $$$setupUI$$$() {
-        contentPane = new JPanel();
-        contentPane.setLayout(new GridLayoutManager(2, 1, new Insets(0, 0, 0, 0), -1, -1));
-        final JPanel panel1 = new JPanel();
-        panel1.setLayout(new GridLayoutManager(6, 3, new Insets(0, 0, 0, 0), -1, -1));
-        contentPane.add(panel1, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, 1, null, null, null, 0, false));
-        final JLabel label1 = new JLabel();
-        label1.setText(com.floreantpos.POSConstants.FROM + ":"); //$NON-NLS-1$
-        panel1.add(label1, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        final JLabel label2 = new JLabel();
-        label2.setText(com.floreantpos.POSConstants.TO + ":"); //$NON-NLS-1$
-        panel1.add(label2, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        final JLabel label3 = new JLabel();
-        label3.setText(com.floreantpos.POSConstants.TERMINAL_LABEL);
-        panel1.add(label3, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        fromDatePicker = UiUtil.getCurrentMonthStart();
-        panel1.add(fromDatePicker, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, new Dimension(147, 24), null, 0, false));
-        toDatePicker = UiUtil.getCurrentMonthEnd();
-        panel1.add(toDatePicker, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, new Dimension(147, 24), null, 0, false));
-        final Spacer spacer1 = new Spacer();
-        panel1.add(spacer1, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
-        cbTerminal = new JComboBox();
-        panel1.add(cbTerminal, new GridConstraints(3, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(147, 22), null, 0, false));
-        btnGo = new JButton();
-        btnGo.setText(com.floreantpos.POSConstants.GO);
-        panel1.add(btnGo, new GridConstraints(4, 1, 1, 1, GridConstraints.ANCHOR_EAST, GridConstraints.FILL_NONE, 1, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(147, 23), null, 0, false));
-        final JLabel label4 = new JLabel();
-        label4.setText(com.floreantpos.POSConstants.USER_TYPE + ":"); //$NON-NLS-1$
-        panel1.add(label4, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        cbUserType = new JComboBox();
-        panel1.add(cbUserType, new GridConstraints(2, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(147, 22), null, 0, false));
-        final JSeparator separator1 = new JSeparator();
-        panel1.add(separator1, new GridConstraints(5, 0, 1, 3, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
-        reportPanel = new JPanel();
-        reportPanel.setLayout(new BorderLayout(0, 0));
-        contentPane.add(reportPanel, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
-    }
+			for (Ticket ticket : tickets) {
+				++totalChecks;
+				totalGuests += ticket.getNumberOfGuests();
+				totalSales += ticket.getTotalAmount();
+			}
 
-    /**
-     * @noinspection ALL
-     */
-    public JComponent $$$getRootComponent$$$() {
-        return contentPane;
-    }
+			for (User user : users) {
+				labor += (user.getCostPerHour() == null ? 0 : user.getCostPerHour());
+			}
+			if (manHour > 0) {
+				labor = labor / manHour;
+				salesPerMHr = totalSales / manHour;
+				guestsPerMHr = (double) totalGuests / manHour;
+				checksPerMHr = totalChecks / manHour;
+				//laborCost =
+			}
 
-    public static class LaborReportData {
-        private String period;
-        private int noOfChecks;
-        private int noOfGuests;
-        private double sales;
-        private double manHour;
-        private double labor;
-        private double salesPerMHr;
-        private double guestsPerMHr;
-        private double checkPerMHr;
-        private double laborCost;
+			LaborReportData reportData = new LaborReportData();
+			reportData.setPeriod(shift.getName());
+			reportData.setManHour(manHour);
+			reportData.setNoOfChecks(totalChecks);
+			reportData.setSales(totalSales);
+			reportData.setNoOfGuests(totalGuests);
+			reportData.setLabor(labor);
+			reportData.setSalesPerMHr(salesPerMHr);
+			reportData.setGuestsPerMHr(guestsPerMHr);
+			reportData.setCheckPerMHr(checksPerMHr);
 
-        public double getCheckPerMHr() {
-            return checkPerMHr;
-        }
+			shiftReportRows.add(reportData);
+		}
 
-        public void setCheckPerMHr(double checkPerMHr) {
-            this.checkPerMHr = checkPerMHr;
-        }
+		try {
+			//JasperReport reportHeader = ReportUtil.getReport("report_header"); //$NON-NLS-1$
+			JasperReport hourlyReport = ReportUtil.getReport("hourly_labor_subreport"); //$NON-NLS-1$
+			JasperReport shiftReport = ReportUtil.getReport("hourly_labor_shift_subreport"); //$NON-NLS-1$
 
-        public double getGuestsPerMHr() {
-            return guestsPerMHr;
-        }
+			JasperReport report = ReportUtil.getReport("hourly_labor_report"); //$NON-NLS-1$
 
-        public void setGuestsPerMHr(double guestsPerMHr) {
-            this.guestsPerMHr = guestsPerMHr;
-        }
+			HashMap properties = new HashMap();
+			ReportUtil.populateRestaurantProperties(properties);
+			//properties.put("reportHeader", reportHeader); //$NON-NLS-1$
+			properties.put("reportTitle", com.floreantpos.POSConstants.HOURLY_LABOR_REPORT); //$NON-NLS-1$
+			properties.put("reportTime", ReportService.formatFullDate(new Date())); //$NON-NLS-1$
+			properties.put("fromDay", ReportService.formatShortDate(fromDate)); //$NON-NLS-1$
+			properties.put("toDay", ReportService.formatShortDate(toDate)); //$NON-NLS-1$
+			properties.put(com.floreantpos.POSConstants.TYPE, com.floreantpos.POSConstants.BY_RANGE_ACTUAL);
+			properties.put("dept", userType == null ? com.floreantpos.POSConstants.ALL : userType.getName()); //$NON-NLS-1$
+			properties.put("incr", Messages.getString("HourlyLaborReportView.0")); //$NON-NLS-1$ //$NON-NLS-2$
+			properties.put("cntr", terminal == null ? com.floreantpos.POSConstants.ALL : terminal.getName()); //$NON-NLS-1$
 
-        public double getLabor() {
-            return labor;
-        }
+			properties.put("totalChecks", String.valueOf(grandTotalChecks)); //$NON-NLS-1$
+			properties.put("totalGuests", String.valueOf(grandTotalGuests)); //$NON-NLS-1$
+			properties.put("totalSales", NumberUtil.formatNumber(grandTotalSales)); //$NON-NLS-1$
+			properties.put("totalMHr", NumberUtil.formatNumber(grandTotalMHr)); //$NON-NLS-1$
+			properties.put("totalLabor", NumberUtil.formatNumber(grandTotalLabor)); //$NON-NLS-1$
+			properties.put("totalSalesPerMhr", NumberUtil.formatNumber(grandTotalSalesPerMHr)); //$NON-NLS-1$
+			properties.put("totalGuestsPerMhr", NumberUtil.formatNumber(grandTotalCheckPerMHr)); //$NON-NLS-1$
+			properties.put("totalCheckPerMHr", NumberUtil.formatNumber(grandTotalGuestsPerMHr)); //$NON-NLS-1$
+			properties.put("totalLaborCost", NumberUtil.formatNumber(grandTotalLaborCost)); //$NON-NLS-1$
 
-        public void setLabor(double labor) {
-            this.labor = labor;
-        }
+			properties.put("hourlyReport", hourlyReport); //$NON-NLS-1$
+			properties.put("hourlyReportDatasource", new JRTableModelDataSource(new HourlyLaborReportModel(rows))); //$NON-NLS-1$
+			properties.put("shiftReport", shiftReport); //$NON-NLS-1$
+			properties.put("shiftReportDatasource", new JRTableModelDataSource(new HourlyLaborReportModel(shiftReportRows))); //$NON-NLS-1$
 
-        public double getLaborCost() {
-            return laborCost;
-        }
+			JasperPrint print = JasperFillManager.fillReport(report, properties, new JREmptyDataSource());
 
-        public void setLaborCost(double laborCost) {
-            this.laborCost = laborCost;
-        }
+			JRViewer viewer = new JRViewer(print);
+			reportPanel.removeAll();
+			reportPanel.add(viewer);
+			reportPanel.revalidate();
+		} catch (JRException e) {
+			e.printStackTrace();
+		}
+	}
 
-        public double getManHour() {
-            return manHour;
-        }
+	{
+		// GUI initializer generated by IntelliJ IDEA GUI Designer
+		// >>> IMPORTANT!! <<<
+		// DO NOT EDIT OR ADD ANY CODE HERE!
+		$$$setupUI$$$();
+	}
 
-        public void setManHour(double manHour) {
-            this.manHour = manHour;
-        }
+	/**
+	 * Method generated by IntelliJ IDEA GUI Designer
+	 * >>> IMPORTANT!! <<<
+	 * DO NOT edit this method OR call it in your code!
+	 *
+	 * @noinspection ALL
+	 */
+	private void $$$setupUI$$$() {
+		contentPane = new JPanel();
+		contentPane.setLayout(new GridLayoutManager(2, 1, new Insets(0, 0, 0, 0), -1, -1));
+		final JPanel panel1 = new JPanel();
+		panel1.setLayout(new GridLayoutManager(6, 3, new Insets(0, 0, 0, 0), -1, -1));
+		contentPane.add(panel1, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK
+				| GridConstraints.SIZEPOLICY_CAN_GROW, 1, null, null, null, 0, false));
+		final JLabel label1 = new JLabel();
+		label1.setText(com.floreantpos.POSConstants.FROM + ":"); //$NON-NLS-1$
+		panel1.add(label1, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED,
+				GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+		final JLabel label2 = new JLabel();
+		label2.setText(com.floreantpos.POSConstants.TO + ":"); //$NON-NLS-1$
+		panel1.add(label2, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED,
+				GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+		final JLabel label3 = new JLabel();
+		label3.setText(com.floreantpos.POSConstants.TERMINAL_LABEL);
+		panel1.add(label3, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED,
+				GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+		fromDatePicker = UiUtil.getCurrentMonthStart();
+		panel1.add(fromDatePicker, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE,
+				GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK
+						| GridConstraints.SIZEPOLICY_CAN_GROW, null, new Dimension(147, 24), null, 0, false));
+		toDatePicker = UiUtil.getCurrentMonthEnd();
+		panel1.add(toDatePicker, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE,
+				GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK
+						| GridConstraints.SIZEPOLICY_CAN_GROW, null, new Dimension(147, 24), null, 0, false));
+		final Spacer spacer1 = new Spacer();
+		panel1.add(spacer1, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL,
+				GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
+		cbTerminal = new JComboBox();
+		panel1.add(cbTerminal, new GridConstraints(3, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL,
+				GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(147, 22), null, 0, false));
+		btnGo = new JButton();
+		btnGo.setText(com.floreantpos.POSConstants.GO);
+		panel1.add(btnGo, new GridConstraints(4, 1, 1, 1, GridConstraints.ANCHOR_EAST, GridConstraints.FILL_NONE, 1, GridConstraints.SIZEPOLICY_FIXED, null,
+				new Dimension(147, 23), null, 0, false));
+		final JLabel label4 = new JLabel();
+		label4.setText(com.floreantpos.POSConstants.USER_TYPE + ":"); //$NON-NLS-1$
+		panel1.add(label4, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED,
+				GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+		cbUserType = new JComboBox();
+		panel1.add(cbUserType, new GridConstraints(2, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL,
+				GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(147, 22), null, 0, false));
+		final JSeparator separator1 = new JSeparator();
+		panel1.add(separator1, new GridConstraints(5, 0, 1, 3, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_WANT_GROW,
+				GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+		reportPanel = new JPanel();
+		reportPanel.setLayout(new BorderLayout(0, 0));
+		contentPane.add(reportPanel, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
+				GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK
+						| GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+	}
 
-        public int getNoOfChecks() {
-            return noOfChecks;
-        }
+	/**
+	 * @noinspection ALL
+	 */
+	public JComponent $$$getRootComponent$$$() {
+		return contentPane;
+	}
 
-        public void setNoOfChecks(int noOfChecks) {
-            this.noOfChecks = noOfChecks;
-        }
+	public static class LaborReportData {
+		private String period;
+		private int noOfChecks;
+		private int noOfGuests;
+		private double sales;
+		private double manHour;
+		private double labor;
+		private double salesPerMHr;
+		private double guestsPerMHr;
+		private double checkPerMHr;
+		private double laborCost;
 
-        public int getNoOfGuests() {
-            return noOfGuests;
-        }
+		public double getCheckPerMHr() {
+			return checkPerMHr;
+		}
 
-        public void setNoOfGuests(int noOfGuests) {
-            this.noOfGuests = noOfGuests;
-        }
+		public void setCheckPerMHr(double checkPerMHr) {
+			this.checkPerMHr = checkPerMHr;
+		}
 
-        public String getPeriod() {
-            return period;
-        }
+		public double getGuestsPerMHr() {
+			return guestsPerMHr;
+		}
 
-        public void setPeriod(String period) {
-            this.period = period;
-        }
+		public void setGuestsPerMHr(double guestsPerMHr) {
+			this.guestsPerMHr = guestsPerMHr;
+		}
 
-        public double getSales() {
-            return sales;
-        }
+		public double getLabor() {
+			return labor;
+		}
 
-        public void setSales(double sales) {
-            this.sales = sales;
-        }
+		public void setLabor(double labor) {
+			this.labor = labor;
+		}
 
-        public double getSalesPerMHr() {
-            return salesPerMHr;
-        }
+		public double getLaborCost() {
+			return laborCost;
+		}
 
-        public void setSalesPerMHr(double salesPerMHr) {
-            this.salesPerMHr = salesPerMHr;
-        }
+		public void setLaborCost(double laborCost) {
+			this.laborCost = laborCost;
+		}
 
-    }
+		public double getManHour() {
+			return manHour;
+		}
+
+		public void setManHour(double manHour) {
+			this.manHour = manHour;
+		}
+
+		public int getNoOfChecks() {
+			return noOfChecks;
+		}
+
+		public void setNoOfChecks(int noOfChecks) {
+			this.noOfChecks = noOfChecks;
+		}
+
+		public int getNoOfGuests() {
+			return noOfGuests;
+		}
+
+		public void setNoOfGuests(int noOfGuests) {
+			this.noOfGuests = noOfGuests;
+		}
+
+		public String getPeriod() {
+			return period;
+		}
+
+		public void setPeriod(String period) {
+			this.period = period;
+		}
+
+		public double getSales() {
+			return sales;
+		}
+
+		public void setSales(double sales) {
+			this.sales = sales;
+		}
+
+		public double getSalesPerMHr() {
+			return salesPerMHr;
+		}
+
+		public void setSalesPerMHr(double salesPerMHr) {
+			this.salesPerMHr = salesPerMHr;
+		}
+
+	}
 }

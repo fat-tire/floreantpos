@@ -59,7 +59,7 @@
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
+						<font size="11" isBold="true" pdfFontName="Helvetica-Bold"/>
 					</textElement>
 					<text><![CDATA[Name]]></text>
 				</staticText>
@@ -72,7 +72,7 @@
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
+						<font size="11" isBold="true" pdfFontName="Helvetica-Bold"/>
 					</textElement>
 					<text><![CDATA[Price]]></text>
 				</staticText>
@@ -85,7 +85,7 @@
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
+						<font size="11" isBold="true" pdfFontName="Helvetica-Bold"/>
 					</textElement>
 					<text><![CDATA[QTY]]></text>
 				</staticText>
@@ -98,7 +98,7 @@
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
+						<font size="11" isBold="true" pdfFontName="Helvetica-Bold"/>
 					</textElement>
 					<text><![CDATA[Tax]]></text>
 				</staticText>
@@ -111,7 +111,7 @@
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
+						<font size="11" isBold="true" pdfFontName="Helvetica-Bold"/>
 					</textElement>
 					<text><![CDATA[ID]]></text>
 				</staticText>
@@ -124,7 +124,7 @@
 						<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
+						<font size="11" isBold="true" pdfFontName="Helvetica-Bold"/>
 					</textElement>
 					<text><![CDATA[Tax Total]]></text>
 				</staticText>
@@ -137,7 +137,7 @@
 						<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
+						<font size="11" isBold="true" pdfFontName="Helvetica-Bold"/>
 					</textElement>
 					<text><![CDATA[Gross Total]]></text>
 				</staticText>
@@ -150,7 +150,7 @@
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
+						<font size="11" isBold="true" pdfFontName="Helvetica-Bold"/>
 					</textElement>
 					<text><![CDATA[Net Total]]></text>
 				</staticText>
@@ -163,7 +163,7 @@
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
+						<font size="11" isBold="true" pdfFontName="Helvetica-Bold"/>
 					</textElement>
 					<text><![CDATA[Dis]]></text>
 				</staticText>

@@ -79,7 +79,7 @@ public class User extends BaseUser {
 
 		AttendenceHistory attendenceHistory = new AttendenceHistory();
 		attendenceHistory.setClockInTime(currentTime.getTime());
-		attendenceHistory.setClockInHour(Short.valueOf((short) currentTime.get(Calendar.HOUR)));
+		attendenceHistory.setClockInHour(Short.valueOf((short) currentTime.get(Calendar.HOUR_OF_DAY)));
 		attendenceHistory.setUser(this);
 		attendenceHistory.setTerminal(terminal);
 		attendenceHistory.setShift(shift);
@@ -95,7 +95,7 @@ public class User extends BaseUser {
 
 		attendenceHistory.setClockedOut(true);
 		attendenceHistory.setClockOutTime(currentTime.getTime());
-		attendenceHistory.setClockOutHour(Short.valueOf((short) currentTime.get(Calendar.HOUR)));
+		attendenceHistory.setClockOutHour(Short.valueOf((short) currentTime.get(Calendar.HOUR_OF_DAY)));
 
 		UserDAO.getInstance().saveClockOut(this, attendenceHistory, shift, currentTime);
 	}
