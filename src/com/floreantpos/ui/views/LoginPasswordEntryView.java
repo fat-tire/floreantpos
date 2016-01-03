@@ -190,14 +190,13 @@ class LoginPasswordEntryView extends JPanel {
 			LogFactory.getLog(Application.class).error(e1);
 			String message = e1.getMessage();
 
-			if (message != null && message.contains(Messages.getString("LoginPasswordEntryView.16"))) { //$NON-NLS-1$
-				MessageDialog.showError(Messages.getString("LoginPasswordEntryView.17")); //$NON-NLS-1$
+			if (message != null && message.contains("Cannot open connection")) { //$NON-NLS-1$
+				MessageDialog.showError(Messages.getString("LoginPasswordEntryView.17"), e1); //$NON-NLS-1$
 				DatabaseConfigurationDialog.show(Application.getPosWindow());
 			}
 			else {
-				MessageDialog.showError(Messages.getString("LoginPasswordEntryView.18")); //$NON-NLS-1$
+				MessageDialog.showError(Messages.getString("LoginPasswordEntryView.18"), e1); //$NON-NLS-1$
 			}
-		} finally {
 		}
 	}
 

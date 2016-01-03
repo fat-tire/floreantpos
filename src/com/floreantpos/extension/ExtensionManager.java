@@ -39,7 +39,7 @@ public class ExtensionManager {
 
 	private static ExtensionManager instance;
 	
-	public void initialize() {
+	public synchronized void initialize() {
 		PluginManager pluginManager = PluginManagerFactory.createPluginManager();
 
 		String jarLocation = JarUtil.getJarLocation(Application.class);
@@ -103,9 +103,10 @@ public class ExtensionManager {
 		return null;
 	}
 	
-	public static ExtensionManager getInstance() {
+	public synchronized static ExtensionManager getInstance() {
 		if(instance == null) {
 			instance = new ExtensionManager();
+			instance.initialize();
 		}
 		
 		return instance;

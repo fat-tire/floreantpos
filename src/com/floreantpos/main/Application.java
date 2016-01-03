@@ -120,8 +120,6 @@ public class Application {
 
 		initializeSystem();
 		
-		ExtensionManager.getInstance().initialize();
-		
 		for (FloreantPlugin plugin : ExtensionManager.getPlugins()) {
 			plugin.init();
 		}
