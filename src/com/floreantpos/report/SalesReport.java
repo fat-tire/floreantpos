@@ -141,10 +141,10 @@ public class SalesReport extends Report {
 					itemMap.put(key, reportItem);
 				}
 				reportItem.setQuantity(ticketItem.getItemCount() + reportItem.getQuantity());
-				reportItem.setNetTotal(reportItem.getNetTotal() + ticketItem.getSubtotalAmountWithoutModifiers());
+				reportItem.setNetTotal(reportItem.getNetTotal() + ticketItem.getTotalAmountWithoutModifiers());
 				reportItem.setDiscount(reportItem.getDiscount() + ticketItem.getDiscountAmount());
 				reportItem.setTaxTotal(reportItem.getTaxTotal() + ticketItem.getTaxAmount());
-				reportItem.setTotal(reportItem.getTotal() +ticketItem.getTotalAmountWithoutModifiers());
+				reportItem.setTotal(reportItem.getTotal() +ticketItem.getSubtotalAmountWithoutModifiers());
 
 				if (ticketItem.isHasModifiers() && ticketItem.getTicketItemModifierGroups() != null) {
 					List<TicketItemModifierGroup> ticketItemModifierGroups = ticketItem.getTicketItemModifierGroups();
