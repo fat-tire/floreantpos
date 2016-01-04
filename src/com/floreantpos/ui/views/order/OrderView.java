@@ -100,7 +100,6 @@ public class OrderView extends ViewPanel {
 	private com.floreantpos.swing.PosButton btnOrderType = new com.floreantpos.swing.PosButton(POSConstants.ORDER_TYPE_BUTTON_TEXT);
 	private com.floreantpos.swing.PosButton btnTableNumber = new com.floreantpos.swing.PosButton(POSConstants.TABLE_NO_BUTTON_TEXT);
 	private com.floreantpos.swing.PosButton btnCustomer = new PosButton(POSConstants.CUSTOMER_SELECTION_BUTTON_TEXT);
-	private com.floreantpos.swing.PosButton btnSearchItem = new PosButton(POSConstants.SEARCH_ITEM_BUTTON_TEXT);
 	private PosButton btnCookingInstruction = new PosButton(IconFactory.getIcon("/ui_icons/", "cooking-instruction.png"));
 	private PosButton btnDiscount = new PosButton(Messages.getString("TicketView.43")); //$NON-NLS-1$
 
@@ -114,7 +113,6 @@ public class OrderView extends ViewPanel {
 		if (oldView != null) {
 			return;
 		}
-
 		midContainer.add(view, viewName);
 	}
 
@@ -129,7 +127,6 @@ public class OrderView extends ViewPanel {
 		setLayout(new java.awt.BorderLayout(10, 10));
 
 		midContainer.setOpaque(false);
-
 		add(categoryView, java.awt.BorderLayout.EAST);
 		add(ticketView, java.awt.BorderLayout.WEST);
 		add(midContainer, java.awt.BorderLayout.CENTER);
@@ -262,13 +259,6 @@ public class OrderView extends ViewPanel {
 			}
 		});
 
-		btnSearchItem.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				searchItem();
-			}
-		});
-
 		btnOrderType.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				// doViewOrderInfo();
@@ -313,35 +303,17 @@ public class OrderView extends ViewPanel {
 			}
 		});
 
-		actionButtonPanel.add(btnCancel);
-		actionButtonPanel.add(btnDone);
-		actionButtonPanel.add(btnSend);
-		actionButtonPanel.add(btnCookingInstruction);
-		actionButtonPanel.add(btnDiscount);
-		actionButtonPanel.add(btnMisc);
-		actionButtonPanel.add(btnSearchItem);
 		actionButtonPanel.add(btnOrderType);
 		actionButtonPanel.add(btnCustomer);
 		actionButtonPanel.add(btnTableNumber);
 		actionButtonPanel.add(btnGuestNo);
+		actionButtonPanel.add(btnCookingInstruction);
+		actionButtonPanel.add(btnDiscount);
+		actionButtonPanel.add(btnMisc);
+		actionButtonPanel.add(btnSend);
+		actionButtonPanel.add(btnCancel);
+		actionButtonPanel.add(btnDone);
 
-	}
-
-	//
-
-	public void searchItem() {
-		int itemId = NumberSelectionDialog2.takeIntInput(Messages.getString("TicketView.44")); //$NON-NLS-1$
-
-		if (itemId == -1) {
-			return;
-		}
-
-		MenuItem menuItem = MenuItemDAO.getInstance().get(itemId);
-		if (menuItem == null) {
-			POSMessageDialog.showError(Application.getPosWindow(), Messages.getString("TicketView.45")); //$NON-NLS-1$
-			return;
-		}
-		orderController.itemSelected(menuItem);
 	}
 
 	public void updateTableNumber() {
@@ -546,7 +518,9 @@ public class OrderView extends ViewPanel {
 
 	///
 	public void showView(final String viewName) {
+
 		cardLayout.show(midContainer, viewName);
+		//getTicketView().txtSearchItem.requestFocus();
 	}
 
 	public com.floreantpos.ui.views.order.CategoryView getCategoryView() {
@@ -590,6 +564,7 @@ public class OrderView extends ViewPanel {
 	}
 
 	public void setCurrentTicket(Ticket currentTicket) {
+
 		this.currentTicket = currentTicket;
 
 		ticketView.setTicket(currentTicket);
