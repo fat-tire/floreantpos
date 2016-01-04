@@ -76,7 +76,7 @@ public class PosWindow extends JFrame implements WindowListener {
 		setSize(AppConfig.getInt(WWIDTH, (int) screenSize.getWidth()), AppConfig.getInt(WHEIGHT, (int) screenSize.getHeight()));
 		
 		setLocation(AppConfig.getInt(WLOCX, ((screenSize.width - getWidth()) >> 1)), AppConfig.getInt(WLOCY, ((screenSize.height - getHeight()) >> 1)));
-		setMinimumSize(new Dimension(800, 600));
+		setMinimumSize(new Dimension(1024, 724));
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		
 //		int extendedState = AppConfig.getInt(EXTENDEDSTATE, -1);
