@@ -38,8 +38,6 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import net.miginfocom.swing.MigLayout;
-
 import com.floreantpos.IconFactory;
 import com.floreantpos.Messages;
 import com.floreantpos.PosException;
@@ -68,6 +66,7 @@ import com.floreantpos.util.POSUtil;
  * @author MShahriar
  */
 public class TicketView extends JPanel {
+
 	private java.util.Vector<OrderListener> orderListeners = new java.util.Vector<OrderListener>();
 	private Ticket ticket;
 	private com.floreantpos.swing.PosButton btnDecreaseAmount;
@@ -81,7 +80,7 @@ public class TicketView extends JPanel {
 	private PosButton btnTotal;
 	public com.floreantpos.ui.ticket.TicketViewerTable ticketViewerTable;
 	private JPanel itemSearchPanel;
-	
+	private JTextField txtSearchItem;
 	private TitledBorder titledBorder = new TitledBorder(""); //$NON-NLS-1$
 	private Border border = new CompoundBorder(titledBorder, new EmptyBorder(5, 5, 5, 5));
 
@@ -99,11 +98,12 @@ public class TicketView extends JPanel {
 	// <editor-fold defaultstate="collapsed"
 	// desc=" Generated Code ">//GEN-BEGIN:initComponents
 	private void initComponents() {
+
 		titledBorder.setTitleJustification(TitledBorder.CENTER);
 		setBorder(border);
 		setLayout(new java.awt.BorderLayout(5, 5));
 		itemSearchPanel = new JPanel();
-		
+
 		ticketItemActionPanel = new com.floreantpos.swing.TransparentPanel();
 		btnDecreaseAmount = new com.floreantpos.swing.PosButton();
 		btnScrollDown = new com.floreantpos.swing.PosButton();
@@ -119,8 +119,7 @@ public class TicketView extends JPanel {
 
 		createTicketItemControlPanel();
 		createItemSearchPanel();
-		
-		
+
 		JPanel centerPanel = new JPanel(new BorderLayout(5, 5));
 		centerPanel.add(ticketScrollPane);
 		centerPanel.add(totalViewPanel, BorderLayout.SOUTH);
@@ -130,19 +129,16 @@ public class TicketView extends JPanel {
 		add(ticketItemActionPanel, BorderLayout.EAST);
 		ticketViewerTable.getRenderer().setInTicketScreen(true);
 		ticketViewerTable.getSelectionModel().addListSelectionListener(new TicketItemSelectionListener());
-		//	OrderView.getInstance().actionUpdate(null);
 		setPreferredSize(new java.awt.Dimension(360, 463));
-
 	}// </editor-fold>//GEN-END:initComponents
 
 	private void createItemSearchPanel() {
-		
-		itemSearchPanel.setLayout(new BorderLayout(5, 5));
 
+		itemSearchPanel.setLayout(new BorderLayout(5, 5));
 		PosButton btnSearch = new PosButton("...");
 		btnSearch.setPreferredSize(new Dimension(60, 40));
 
-		final JTextField txtSearchItem = new JTextField();
+		txtSearchItem = new JTextField();
 
 		txtSearchItem.addActionListener(new ActionListener() {
 
@@ -172,10 +168,11 @@ public class TicketView extends JPanel {
 				dialog.setTitle("Search item");
 				dialog.setSize(600, 400);
 				dialog.open();
-
 				if (dialog.isCanceled()) {
 					return;
 				}
+
+				txtSearchItem.requestFocus();
 
 				if (!addMenuItemByBarcode(dialog.getValue())) {
 					if (!addMenuItemByItemId(dialog.getValue())) {
@@ -186,7 +183,9 @@ public class TicketView extends JPanel {
 		});
 		itemSearchPanel.add(txtSearchItem);
 		itemSearchPanel.add(btnSearch, BorderLayout.EAST);
+
 	}
+
 	private static boolean isParsable(String input) {
 		boolean parsable = true;
 		try {
@@ -210,7 +209,7 @@ public class TicketView extends JPanel {
 		if (menuItem == null) {
 			return false;
 		}
-		
+
 		OrderView.getInstance().getOrderController().itemSelected(menuItem);
 		return true;
 	}
@@ -228,13 +227,13 @@ public class TicketView extends JPanel {
 		OrderView.getInstance().getOrderController().itemSelected(menuItem);
 		return true;
 	}
-	
+
 	private JPanel createTotalViewerPanel() {
-		JPanel ticketAmountPanel = new com.floreantpos.swing.TransparentPanel(new MigLayout("ins 2 2 3 2,alignx trailing,fill", "[grow][]", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-
+		//	JPanel ticketAmountPanel = new com.floreantpos.swing.TransparentPanel(new MigLayout("ins 2 2 3 2,alignx trailing,fill", "[grow][]", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		JPanel ticketAmountPanel = new com.floreantpos.swing.TransparentPanel(new BorderLayout(5, 5)); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		btnTotal = new PosButton("TOTAL");
-		ticketAmountPanel.add(btnTotal, "growx,aligny center"); //$NON-NLS-1$
-
+		//ticketAmountPanel.add(btnTotal, "growx,aligny center"); //$NON-NLS-1$
+		ticketAmountPanel.add(btnTotal);
 		if (!Application.getInstance().getTerminal().isHasCashDrawer()) {
 			btnTotal.setEnabled(false);
 			//btnTotal.set
@@ -412,7 +411,6 @@ public class TicketView extends JPanel {
 		this.ticket = _ticket;
 
 		ticketViewerTable.setTicket(_ticket);
-
 		updateView();
 	}
 
@@ -437,7 +435,6 @@ public class TicketView extends JPanel {
 			titledBorder.setTitle(Messages.getString("TicketView.36")); //$NON-NLS-1$
 			return;
 		}
-
 		ticket.calculatePrice();
 		btnTotal.setText("TOTAL $" + NumberUtil.formatNumber(ticket.getTotalAmount()));
 
@@ -521,5 +518,12 @@ public class TicketView extends JPanel {
 				}
 			}
 		}
+	}
+
+	/**
+	 * @return the txtSearchItem
+	 */
+	public JTextField getTxtSearchItem() {
+		return txtSearchItem;
 	}
 }
