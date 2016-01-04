@@ -21,8 +21,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map.Entry;
-import java.util.Set;
 
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
@@ -114,21 +112,18 @@ public class TicketViewerTableModel extends AbstractTableModel {
 			return addTicketItemToTicket(ticketItem);
 		}
 
-		Set<Entry<String, ITicketItem>> entries = tableRows.entrySet();
-		for (Entry<String, ITicketItem> entry : entries) {
+		Object[] values = tableRows.values().toArray();
+		if (values == null || values.length == 0) {
+			return addTicketItemToTicket(ticketItem);
+		}
 
-			if (!(entry.getValue() instanceof TicketItem)) {
-				continue;
-			}
+		Object object = values[values.length - 1];
+		if (object instanceof TicketItem) {
+			TicketItem item = (TicketItem) object;
+			if (ticketItem.getItemId().equals(item.getItemId()) && !item.isPrintedToKitchen() && !item.isInventoryHandled()) {
+				item.setItemCount(item.getItemCount() + 1);
 
-			TicketItem t = (TicketItem) entry.getValue();
-
-			if (ticketItem.getName().equals(t.getName()) && !t.isPrintedToKitchen() && !t.isInventoryHandled()) {
-				t.setItemCount(t.getItemCount() + 1);
-
-				table.repaint();
-
-				return Integer.parseInt(entry.getKey());
+				return values.length - 1;
 			}
 		}
 
