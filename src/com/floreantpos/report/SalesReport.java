@@ -143,7 +143,7 @@ public class SalesReport extends Report {
 				reportItem.setQuantity(ticketItem.getItemCount() + reportItem.getQuantity());
 				reportItem.setNetTotal(reportItem.getNetTotal() + ticketItem.getTotalAmountWithoutModifiers());
 				reportItem.setDiscount(reportItem.getDiscount() + ticketItem.getDiscountAmount());
-				reportItem.setTaxTotal(reportItem.getTaxTotal() + ticketItem.getTaxAmount());
+				reportItem.setTaxTotal(reportItem.getTaxTotal() + ticketItem.getTaxAmountWithoutModifiers());
 				reportItem.setTotal(reportItem.getTotal() +ticketItem.getSubtotalAmountWithoutModifiers());
 
 				if (ticketItem.isHasModifiers() && ticketItem.getTicketItemModifierGroups() != null) {
@@ -177,9 +177,9 @@ public class SalesReport extends Report {
 								modifierMap.put(key, modifierReportItem);
 							}
 							modifierReportItem.setQuantity(modifierReportItem.getQuantity() + modifier.getItemCount());
-							modifierReportItem.setNetTotal(modifierReportItem.getNetTotal() + modifier.getSubTotalAmount());
+							modifierReportItem.setNetTotal(modifierReportItem.getNetTotal() +  modifier.getTotalAmount());
 							modifierReportItem.setTaxTotal(modifierReportItem.getTaxTotal() + modifier.getTaxAmount());
-							modifierReportItem.setTotal(modifierReportItem.getTotal() + modifier.getTotalAmount());
+							modifierReportItem.setTotal(modifierReportItem.getTotal() + modifier.getSubTotalAmount());
 						}
 					}
 				}
