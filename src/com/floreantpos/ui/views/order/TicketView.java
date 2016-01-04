@@ -25,7 +25,6 @@ package com.floreantpos.ui.views.order;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -37,6 +36,8 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+
+import net.miginfocom.swing.MigLayout;
 
 import com.floreantpos.IconFactory;
 import com.floreantpos.Messages;
@@ -82,7 +83,7 @@ public class TicketView extends JPanel {
 	private JPanel itemSearchPanel;
 	private JTextField txtSearchItem;
 	private TitledBorder titledBorder = new TitledBorder(""); //$NON-NLS-1$
-	private Border border = new CompoundBorder(titledBorder, new EmptyBorder(5, 5, 5, 5));
+	private Border border = new CompoundBorder(titledBorder, new EmptyBorder(2, 2, 2, 2));
 
 	public final static String VIEW_NAME = "TICKET_VIEW"; //$NON-NLS-1$
 
@@ -115,14 +116,13 @@ public class TicketView extends JPanel {
 
 		btnEdit.setEnabled(false);
 
-		JPanel totalViewPanel = createTotalViewerPanel();
+		createPayButton();
 
 		createTicketItemControlPanel();
 		createItemSearchPanel();
 
 		JPanel centerPanel = new JPanel(new BorderLayout(5, 5));
 		centerPanel.add(ticketScrollPane);
-		centerPanel.add(totalViewPanel, BorderLayout.SOUTH);
 
 		add(itemSearchPanel, BorderLayout.NORTH);
 		add(centerPanel);
@@ -151,9 +151,7 @@ public class TicketView extends JPanel {
 				}
 
 				if (!addMenuItemByBarcode(txtSearchItem.getText())) {
-					if (!addMenuItemByItemId(txtSearchItem.getText())) {
-						POSMessageDialog.showError(Application.getPosWindow(), "Item not found");
-					}
+					addMenuItemByItemId(txtSearchItem.getText());
 				}
 				txtSearchItem.setText("");
 			}
@@ -228,15 +226,10 @@ public class TicketView extends JPanel {
 		return true;
 	}
 
-	private JPanel createTotalViewerPanel() {
-		//	JPanel ticketAmountPanel = new com.floreantpos.swing.TransparentPanel(new MigLayout("ins 2 2 3 2,alignx trailing,fill", "[grow][]", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		JPanel ticketAmountPanel = new com.floreantpos.swing.TransparentPanel(new BorderLayout(5, 5)); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+	private void createPayButton() {
 		btnTotal = new PosButton("TOTAL");
-		//ticketAmountPanel.add(btnTotal, "growx,aligny center"); //$NON-NLS-1$
-		ticketAmountPanel.add(btnTotal);
 		if (!Application.getInstance().getTerminal().isHasCashDrawer()) {
 			btnTotal.setEnabled(false);
-			//btnTotal.set
 		}
 
 		btnTotal.addActionListener(new ActionListener() {
@@ -245,11 +238,12 @@ public class TicketView extends JPanel {
 				doPayNow();
 			}
 		});
-		return ticketAmountPanel;
+
+		add(btnTotal, BorderLayout.SOUTH);
 	}
 
 	private void createTicketItemControlPanel() {
-		ticketItemActionPanel.setLayout(new GridLayout(0, 1, 5, 5));
+		ticketItemActionPanel.setLayout(new MigLayout("wrap 1, ins 0, fill", "fill", "sg, fill"));
 
 		btnScrollUp.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -296,7 +290,7 @@ public class TicketView extends JPanel {
 		ticketItemActionPanel.add(btnEdit);
 		ticketItemActionPanel.add(btnScrollDown);
 
-		ticketItemActionPanel.setPreferredSize(new Dimension(60, 360));
+		ticketItemActionPanel.setPreferredSize(new Dimension(60, 380));
 	}
 
 	public synchronized void doFinishOrder() {// GEN-FIRST:event_doFinishOrder
@@ -436,7 +430,7 @@ public class TicketView extends JPanel {
 			return;
 		}
 		ticket.calculatePrice();
-		btnTotal.setText("TOTAL $" + NumberUtil.formatNumber(ticket.getTotalAmount()));
+		btnTotal.setText("TOTAL " + Application.getCurrencySymbol() + NumberUtil.formatNumber(ticket.getTotalAmount()));
 
 		if (ticket.getId() == null) {
 			titledBorder.setTitle(Messages.getString("TicketView.36")); //$NON-NLS-1$
