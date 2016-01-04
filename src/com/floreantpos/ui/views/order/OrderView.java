@@ -125,7 +125,7 @@ public class OrderView extends ViewPanel {
 	// <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:initComponents
 	private void initComponents() {
 		setOpaque(false);
-		setLayout(new java.awt.BorderLayout(10, 10));
+		setLayout(new java.awt.BorderLayout(2, 1));
 
 		midContainer.setOpaque(false);
 		add(categoryView, java.awt.BorderLayout.EAST);
@@ -420,6 +420,25 @@ public class OrderView extends ViewPanel {
 		currentTicket.setType(orderType);
 		btnGuestNo.setEnabled(orderType == OrderType.DINE_IN);
 		btnTableNumber.setEnabled(orderType == OrderType.DINE_IN);
+		
+		if (currentTicket.getType() == OrderType.DINE_IN) {
+			btnOrderType.setText(POSConstants.DINE_IN_BUTTON_TEXT);
+		}
+		else if (currentTicket.getType() == OrderType.BAR_TAB) {
+			btnOrderType.setText(POSConstants.BAR_TAB_BUTTON_TEXT);
+		}
+		else if (currentTicket.getType() == OrderType.DRIVE_THRU) {
+			btnOrderType.setText(POSConstants.DRIVE_THRU_BUTTON_TEXT);
+		}
+		else if (currentTicket.getType() == OrderType.HOME_DELIVERY) {
+			btnOrderType.setText(POSConstants.HOME_DELIVERY_BUTTON_TEXT);
+		}
+		else if (currentTicket.getType() == OrderType.PICKUP) {
+			btnOrderType.setText(POSConstants.PICKUP_BUTTON_TEXT);
+		}
+		else if (currentTicket.getType() == OrderType.TAKE_OUT) {
+			btnOrderType.setText(POSConstants.TAKE_OUT_BUTTON_TEXT);
+		}
 	}
 
 	public void doChangeOrderType() {
@@ -590,13 +609,10 @@ public class OrderView extends ViewPanel {
 	}
 
 	public void setCurrentTicket(Ticket currentTicket) {
-
 		this.currentTicket = currentTicket;
-
 		ticketView.setTicket(currentTicket);
 		actionUpdate();
 		resetView();
-		changeOrderType();
 	}
 
 	public synchronized static OrderView getInstance() {
@@ -607,32 +623,6 @@ public class OrderView extends ViewPanel {
 	}
 
 	public void resetView() {
-	}
-
-	private void changeOrderType() {
-
-		if (currentTicket == null) {
-			return;
-		}
-
-		if (currentTicket.getType() == OrderType.DINE_IN) {
-			btnOrderType.setText(POSConstants.DINE_IN_BUTTON_TEXT);
-		}
-		else if (currentTicket.getType() == OrderType.BAR_TAB) {
-			btnOrderType.setText(POSConstants.BAR_TAB_BUTTON_TEXT);
-		}
-		else if (currentTicket.getType() == OrderType.DRIVE_THRU) {
-			btnOrderType.setText(POSConstants.DRIVE_THRU_BUTTON_TEXT);
-		}
-		else if (currentTicket.getType() == OrderType.HOME_DELIVERY) {
-			btnOrderType.setText(POSConstants.HOME_DELIVERY_BUTTON_TEXT);
-		}
-		else if (currentTicket.getType() == OrderType.PICKUP) {
-			btnOrderType.setText(POSConstants.PICKUP_BUTTON_TEXT);
-		}
-		else if (currentTicket.getType() == OrderType.TAKE_OUT) {
-			btnOrderType.setText(POSConstants.TAKE_OUT_BUTTON_TEXT);
-		}
 	}
 
 	@Override
