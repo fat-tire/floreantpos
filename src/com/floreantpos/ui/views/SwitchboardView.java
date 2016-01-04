@@ -219,7 +219,7 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 			firstRowButtonPanel.add(btnSettleTicket);
 			firstRowButtonPanel.add(btnGroupSettle);
 			firstRowButtonPanel.add(btnCloseOrder);
-			
+
 			secondRowButtonPanel.getContentPane().add(btnSplitTicket);
 			secondRowButtonPanel.getContentPane().add(btnReopenTicket);
 			secondRowButtonPanel.getContentPane().add(btnVoidTicket);
@@ -231,13 +231,12 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 			firstRowButtonPanel.add(btnEditTicket);
 			firstRowButtonPanel.add(btnCloseOrder);
 			firstRowButtonPanel.add(btnSplitTicket);
-			
+
 			secondRowButtonPanel.getContentPane().add(btnReopenTicket);
 			secondRowButtonPanel.getContentPane().add(btnVoidTicket);
 			secondRowButtonPanel.getContentPane().add(btnRefundTicket);
 			secondRowButtonPanel.getContentPane().add(btnAssignDriver);
 		}
-		
 
 		innerActivityPanel.add(firstRowButtonPanel);
 		innerActivityPanel.add(secondRowButtonPanel, "newline"); //$NON-NLS-1$
@@ -513,9 +512,10 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 		}
 
 		Ticket ticketToEdit = TicketDAO.getInstance().loadFullTicket(ticket.getId());
-		OrderView.getInstance().setCurrentTicket(ticketToEdit);
 
+		OrderView.getInstance().setCurrentTicket(ticketToEdit);
 		RootView.getInstance().showView(OrderView.VIEW_NAME);
+		OrderView.getInstance().getTicketView().getTxtSearchItem().requestFocus();
 	}
 
 	private void doCreateNewTicket(final OrderType ticketType) {
@@ -554,12 +554,12 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 		if (!POSUtil.checkDrawerAssignment()) {
 			return;
 		}
-		
-		TicketSelectionDialog ticketSelectionDialog=new TicketSelectionDialog();
-		ticketSelectionDialog.open(); 
-		
-		if(ticketSelectionDialog.isCanceled()){
-			return; 
+
+		TicketSelectionDialog ticketSelectionDialog = new TicketSelectionDialog();
+		ticketSelectionDialog.open();
+
+		if (ticketSelectionDialog.isCanceled()) {
+			return;
 		}
 
 		List<Ticket> selectedTickets = ticketSelectionDialog.getSelectedTickets();

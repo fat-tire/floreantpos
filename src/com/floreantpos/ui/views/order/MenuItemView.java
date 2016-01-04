@@ -54,7 +54,7 @@ public class MenuItemView extends SelectionView {
 
 	private MenuGroup menuGroup;
 	private Map<Integer, ItemButton> menuItemButtonMap = new HashMap<Integer, MenuItemView.ItemButton>();
-	
+
 	/** Creates new form GroupView */
 	public MenuItemView() {
 		super(com.floreantpos.POSConstants.ITEMS, 120, 120);
@@ -69,7 +69,7 @@ public class MenuItemView extends SelectionView {
 		this.menuGroup = menuGroup;
 
 		menuItemButtonMap.clear();
-		
+
 		if (menuGroup == null) {
 			return;
 		}
@@ -78,19 +78,19 @@ public class MenuItemView extends SelectionView {
 		try {
 			List<MenuItem> items = dao.findByParent(Application.getInstance().getTerminal(), menuGroup, false);
 			setBackEnable(items.size() > 0);
-			
+
 			setItems(items);
 		} catch (PosException e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	@Override
 	protected AbstractButton createItemButton(Object item) {
 		MenuItem menuItem = (MenuItem) item;
 		ItemButton itemButton = new ItemButton(menuItem);
 		menuItemButtonMap.put(menuItem.getId(), itemButton);
-		
+
 		return itemButton;
 	}
 
@@ -113,12 +113,12 @@ public class MenuItemView extends SelectionView {
 			listener.itemSelectionFinished(menuGroup);
 		}
 	}
-	
+
 	public void selectItem(MenuItem menuItem) {
 		ItemButton button = menuItemButtonMap.get(menuItem.getId());
-		if(button != null) {
+		/*if(button != null) {
 			button.requestFocus();
-		}
+		}*/
 	}
 
 	private class ItemButton extends PosButton implements ActionListener {
@@ -130,36 +130,36 @@ public class MenuItemView extends SelectionView {
 			setFocusable(false);
 			setVerticalTextPosition(SwingConstants.BOTTOM);
 			setHorizontalTextPosition(SwingConstants.CENTER);
-			
-			if(menuItem.getImage() != null) {
+
+			if (menuItem.getImage() != null) {
 				int w = BUTTON_SIZE - 10;
 				int h = BUTTON_SIZE - 10;
-				
-				if(menuItem.isShowImageOnly()) {
+
+				if (menuItem.isShowImageOnly()) {
 					setIcon(menuItem.getScaledImage(w, h));
 				}
 				else {
 					w = 80;
 					h = 40;
-					
+
 					setIcon(menuItem.getScaledImage(w, h));
 					setText("<html><body><center>" + menuItem.getDisplayName() + "</center></body></html>"); //$NON-NLS-1$ //$NON-NLS-2$
 				}
-				
+
 			}
 			else {
 				setText("<html><body><center>" + menuItem.getName() + "</center></body></html>"); //$NON-NLS-1$ //$NON-NLS-2$
 			}
-			
+
 			Color buttonColor = menuItem.getButtonColor();
-			if(buttonColor != null) {
+			if (buttonColor != null) {
 				setBackground(buttonColor);
 			}
 			Color textColor = menuItem.getTextColor();
-			if(textColor != null) {
+			if (textColor != null) {
 				setForeground(textColor);
 			}
-			
+
 			setPreferredSize(new Dimension(BUTTON_SIZE, BUTTON_SIZE));
 			addActionListener(this);
 		}
