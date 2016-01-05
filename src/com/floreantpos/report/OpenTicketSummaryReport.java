@@ -28,6 +28,7 @@ import net.sf.jasperreports.engine.data.JRTableModelDataSource;
 import net.sf.jasperreports.view.JRViewer;
 
 import com.floreantpos.Messages;
+import com.floreantpos.main.Application;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.report.service.ReportService;
@@ -42,19 +43,22 @@ public class OpenTicketSummaryReport extends Report {
 	public void refresh() throws Exception {
 		//Date date1 = DateUtils.startOfDay(getStartDate());
 		//Date date2 = DateUtils.endOfDay(getEndDate());
-		JasperReport reportHeader = ReportUtil.getReport("report_header"); //$NON-NLS-1$
 		
-		List<Ticket> tickets = TicketDAO.getInstance().findOpenTickets();
+		
+		List<Ticket> tickets = TicketDAO.getInstance().findOpenTickets(getTerminal(), getUserType());
 		TicketReportModel reportModel = new TicketReportModel();
 		reportModel.setItems(tickets);
+		reportModel.calculateGrandTotal(); 
 		
 		HashMap map = new HashMap();
 		ReportUtil.populateRestaurantProperties(map);
-		map.put("reportHeader", reportHeader); //$NON-NLS-1$
 		map.put("reportTitle", Messages.getString("OpenTicketSummaryReport.0")); //$NON-NLS-1$ //$NON-NLS-2$
 		map.put("reportTime", ReportService.formatFullDate(new Date())); //$NON-NLS-1$
 		//map.put("dateRange", Application.formatDate(date1) + " to " + Application.formatDate(date2));
-		map.put("terminalName", com.floreantpos.POSConstants.ALL); //$NON-NLS-1$
+		map.put("userType", getUserType() == null ? com.floreantpos.POSConstants.ALL : getUserType().getName()); //$NON-NLS-1$
+		map.put("terminalName", getTerminal() == null ? com.floreantpos.POSConstants.ALL : getTerminal().getName()); //$NON-NLS-1$
+		map.put("currency", Messages.getString("SalesReport.8") + Application.getCurrencyName() + " (" + Application.getCurrencySymbol() + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+		map.put("grandTotal", reportModel.getGrandTotalAsString()); //$NON-NLS-1$
 		
 		JasperReport masterReport = ReportUtil.getReport("open_ticket_summary_report"); //$NON-NLS-1$
 		JasperPrint print = JasperFillManager.fillReport(masterReport, map, new JRTableModelDataSource(reportModel));

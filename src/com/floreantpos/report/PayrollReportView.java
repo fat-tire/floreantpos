@@ -137,6 +137,7 @@ public class PayrollReportView extends TransparentPanel {
             JasperReport report = ReportUtil.getReport("PayrollReport"); //$NON-NLS-1$
 
             HashMap properties = new HashMap();
+            ReportUtil.populateRestaurantProperties(properties);
             properties.put("fromDate", fromDate); //$NON-NLS-1$
             properties.put("toDate", toDate); //$NON-NLS-1$
             properties.put("reportDate", new Date()); //$NON-NLS-1$

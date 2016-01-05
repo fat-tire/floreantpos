@@ -279,6 +279,30 @@ public class TicketDAO extends BaseTicketDAO {
 		}
 	}
 	
+	public List<Ticket> findOpenTickets(Terminal terminal, UserType userType) {
+		Session session = null;
+
+		try {
+			session = getSession();
+			Criteria criteria = session.createCriteria(getReferenceClass());
+			criteria.add(Restrictions.eq(Ticket.PROP_CLOSED, Boolean.FALSE));
+			
+			if (userType != null) {
+				criteria.createAlias(Ticket.PROP_OWNER, "u"); //$NON-NLS-1$
+				criteria.add(Restrictions.eq("u.type", userType)); //$NON-NLS-1$
+			}
+			if (terminal != null) {
+				criteria.add(Restrictions.eq(Ticket.PROP_TERMINAL, terminal));
+			}
+			criteria.addOrder(getDefaultOrder());
+
+			List list = criteria.list();
+			return list;
+		} finally {
+			closeSession(session);
+		}
+	}
+	
 	public List<Ticket> findTickets(PaginatedTableModel tableModel) {
 		Session session = null;
 		Criteria criteria = null;

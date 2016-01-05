@@ -43,7 +43,9 @@ import org.jdesktop.swingx.JXDatePicker;
 
 import com.floreantpos.Messages;
 import com.floreantpos.model.Terminal;
+import com.floreantpos.model.UserType;
 import com.floreantpos.model.dao.TerminalDAO;
+import com.floreantpos.model.dao.UserTypeDAO;
 import com.floreantpos.swing.ListComboBoxModel;
 import com.floreantpos.swing.MessageDialog;
 import com.floreantpos.swing.TransparentPanel;
@@ -65,7 +67,10 @@ public class ReportViewer extends JPanel {
 	private JLabel lblToDate;
 	private JLabel lblTerminal;
 	private JCheckBox chkBoxFree;
-	private TransparentPanel reportSearchOptionPanel; 
+	private JLabel lblUserType;
+	private JComboBox cbUserType;
+	private TransparentPanel reportSearchOptionPanel;
+	private TransparentPanel reportConstraintPanel;
 	private TransparentPanel reportPanel;
 
 	private Report report;
@@ -95,15 +100,16 @@ public class ReportViewer extends JPanel {
 
 	private void initComponents() {
 		setLayout(new java.awt.BorderLayout(5, 5));
-		
-		reportSearchOptionPanel=new TransparentPanel(new BorderLayout()); 
-		TransparentPanel reportConstraintPanel = new TransparentPanel();
+
+		reportSearchOptionPanel = new TransparentPanel(new BorderLayout());
+		reportConstraintPanel = new TransparentPanel();
 		reportConstraintPanel.setLayout(new MigLayout());
 
 		lblReportType = new JLabel(Messages.getString("ReportViewer.0") + ":");
 		cbReportType = new JComboBox();
 		cbReportType.setModel(new DefaultComboBoxModel(new String[] { com.floreantpos.POSConstants.PREVIOUS_SALE_AFTER_DRAWER_RESET_,
 				com.floreantpos.POSConstants.SALE_BEFORE_DRAWER_RESET }));
+		cbReportType.setSelectedIndex(1);
 
 		lblTerminal = new JLabel("Terminal");
 
@@ -118,6 +124,9 @@ public class ReportViewer extends JPanel {
 
 		chkBoxFree = new JCheckBox("Include Free Items");
 
+		lblUserType = new JLabel("User Type");
+		cbUserType = new JComboBox();
+
 		btnRefresh = new JButton();
 		reportPanel = new TransparentPanel();
 
@@ -129,25 +138,24 @@ public class ReportViewer extends JPanel {
 		});
 
 		reportConstraintPanel.add(lblReportType);
-		reportConstraintPanel.add(cbReportType, "wrap");
+		reportConstraintPanel.add(cbReportType, "gap 0px 20px");
 		reportConstraintPanel.add(lblTerminal);
 		reportConstraintPanel.add(cbTerminal, "wrap");
 		reportConstraintPanel.add(lblFromDate);
-		reportConstraintPanel.add(dpStartDate, "wrap");
+		reportConstraintPanel.add(dpStartDate);
 		reportConstraintPanel.add(lblToDate);
 		reportConstraintPanel.add(dpEndDate, "wrap");
 		reportConstraintPanel.add(new JLabel(""));
-		reportConstraintPanel.add(chkBoxFree,"wrap");
+		reportConstraintPanel.add(chkBoxFree, "wrap");
 		reportConstraintPanel.add(new JLabel(""));
-		reportConstraintPanel.add(btnRefresh, "wrap");
-
+		reportConstraintPanel.add(btnRefresh);
+		
 		reportSearchOptionPanel.add(reportConstraintPanel, BorderLayout.NORTH);
-		reportSearchOptionPanel.add(new JSeparator(), BorderLayout.CENTER); 
+		reportSearchOptionPanel.add(new JSeparator(), BorderLayout.CENTER);
 
 		reportPanel.setLayout(new BorderLayout());
-		
-		
-		add(reportSearchOptionPanel, BorderLayout.NORTH); 
+
+		add(reportSearchOptionPanel, BorderLayout.NORTH);
 		add(reportPanel, BorderLayout.CENTER);
 
 	}
@@ -168,6 +176,12 @@ public class ReportViewer extends JPanel {
 			if (report != null) {
 				int reportType = cbReportType.getSelectedIndex();
 				report.setReportType(reportType);
+
+				UserType userType = null;
+				if (cbUserType.getSelectedItem() instanceof UserType) {
+					userType = (UserType) cbUserType.getSelectedItem();
+				}
+				report.setUserType(userType);
 
 				Terminal terminal = null;
 				if (cbTerminal.getSelectedItem() instanceof Terminal) {
@@ -197,11 +211,26 @@ public class ReportViewer extends JPanel {
 
 	public void setReport(Report report) {
 		this.report = report;
-		if(report instanceof OpenTicketSummaryReport){
-			chkBoxFree.setVisible(false);
-			lblReportType.setVisible(false); 
-			cbReportType.setVisible(false); 
-		}
-	}
 
+		if (report instanceof OpenTicketSummaryReport) {
+			reportConstraintPanel.removeAll();
+
+			UserTypeDAO dao = new UserTypeDAO();
+			List<UserType> userTypes = dao.findAll();
+
+			List list = new ArrayList<UserType>();
+			list.add(0, com.floreantpos.POSConstants.ALL);
+			list.addAll(userTypes);
+
+			cbUserType.setModel(new ListComboBoxModel(list));
+			cbUserType.setPreferredSize(cbTerminal.getPreferredSize());
+			reportConstraintPanel.add(lblUserType);
+			reportConstraintPanel.add(cbUserType, "wrap");
+			reportConstraintPanel.add(lblTerminal);
+			reportConstraintPanel.add(cbTerminal, "wrap");
+			reportConstraintPanel.add(new JLabel(""));
+			reportConstraintPanel.add(btnRefresh, "wrap");
+		}
+
+	}
 }

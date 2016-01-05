@@ -272,7 +272,6 @@ public class HourlyLaborReportView extends TransparentPanel {
 		}
 
 		try {
-			//JasperReport reportHeader = ReportUtil.getReport("report_header"); //$NON-NLS-1$
 			JasperReport hourlyReport = ReportUtil.getReport("hourly_labor_subreport"); //$NON-NLS-1$
 			JasperReport shiftReport = ReportUtil.getReport("hourly_labor_shift_subreport"); //$NON-NLS-1$
 
@@ -280,7 +279,6 @@ public class HourlyLaborReportView extends TransparentPanel {
 
 			HashMap properties = new HashMap();
 			ReportUtil.populateRestaurantProperties(properties);
-			//properties.put("reportHeader", reportHeader); //$NON-NLS-1$
 			properties.put("reportTitle", com.floreantpos.POSConstants.HOURLY_LABOR_REPORT); //$NON-NLS-1$
 			properties.put("reportTime", ReportService.formatFullDate(new Date())); //$NON-NLS-1$
 			properties.put("fromDay", ReportService.formatShortDate(fromDate)); //$NON-NLS-1$

@@ -51,7 +51,7 @@
 		<band height="20" splitType="Stretch">
 			<elementGroup>
 				<staticText>
-					<reportElement key="staticText-1" mode="Opaque" x="35" y="0" width="145" height="20" backcolor="#808080"/>
+					<reportElement key="staticText-1" mode="Opaque" x="35" y="0" width="145" height="20" backcolor="#CCCCCC"/>
 					<box>
 						<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -64,7 +64,7 @@
 					<text><![CDATA[Name]]></text>
 				</staticText>
 				<staticText>
-					<reportElement key="staticText-2" mode="Opaque" x="180" y="0" width="46" height="20" backcolor="#808080"/>
+					<reportElement key="staticText-2" mode="Opaque" x="180" y="0" width="46" height="20" backcolor="#CCCCCC"/>
 					<box>
 						<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -77,7 +77,7 @@
 					<text><![CDATA[Price]]></text>
 				</staticText>
 				<staticText>
-					<reportElement key="staticText-3" mode="Opaque" x="226" y="0" width="44" height="20" backcolor="#808080"/>
+					<reportElement key="staticText-3" mode="Opaque" x="226" y="0" width="44" height="20" backcolor="#CCCCCC"/>
 					<box>
 						<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -90,7 +90,7 @@
 					<text><![CDATA[QTY]]></text>
 				</staticText>
 				<staticText>
-					<reportElement key="staticText-5" mode="Opaque" x="378" y="0" width="36" height="20" backcolor="#808080"/>
+					<reportElement key="staticText-5" mode="Opaque" x="378" y="0" width="36" height="20" backcolor="#CCCCCC"/>
 					<box>
 						<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -103,7 +103,7 @@
 					<text><![CDATA[Tax]]></text>
 				</staticText>
 				<staticText>
-					<reportElement key="staticText-0" mode="Opaque" x="0" y="0" width="35" height="20" backcolor="#808080"/>
+					<reportElement key="staticText-0" mode="Opaque" x="0" y="0" width="35" height="20" backcolor="#CCCCCC"/>
 					<box>
 						<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -116,7 +116,7 @@
 					<text><![CDATA[ID]]></text>
 				</staticText>
 				<staticText>
-					<reportElement key="staticText-6" mode="Opaque" x="414" y="0" width="62" height="20" backcolor="#808080"/>
+					<reportElement key="staticText-6" mode="Opaque" x="414" y="0" width="62" height="20" backcolor="#CCCCCC"/>
 					<box>
 						<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -129,7 +129,7 @@
 					<text><![CDATA[Tax Total]]></text>
 				</staticText>
 				<staticText>
-					<reportElement key="staticText-7" mode="Opaque" x="270" y="0" width="70" height="20" backcolor="#808080"/>
+					<reportElement key="staticText-7" mode="Opaque" x="270" y="0" width="70" height="20" backcolor="#CCCCCC"/>
 					<box>
 						<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -142,7 +142,7 @@
 					<text><![CDATA[Gross Total]]></text>
 				</staticText>
 				<staticText>
-					<reportElement key="staticText-5" mode="Opaque" x="476" y="0" width="63" height="20" backcolor="#808080"/>
+					<reportElement key="staticText-5" mode="Opaque" x="476" y="0" width="63" height="20" backcolor="#CCCCCC"/>
 					<box>
 						<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -155,7 +155,7 @@
 					<text><![CDATA[Net Total]]></text>
 				</staticText>
 				<staticText>
-					<reportElement key="staticText-5" mode="Opaque" x="340" y="0" width="38" height="20" backcolor="#808080"/>
+					<reportElement key="staticText-5" mode="Opaque" x="340" y="0" width="38" height="20" backcolor="#CCCCCC"/>
 					<box>
 						<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>

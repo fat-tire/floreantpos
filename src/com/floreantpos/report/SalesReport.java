@@ -55,13 +55,11 @@ public class SalesReport extends Report {
 	public void refresh() throws Exception {
 		createModels();
 
-		JasperReport reportHeader = ReportUtil.getReport("report_header"); //$NON-NLS-1$
 		JasperReport itemReport = ReportUtil.getReport("sales_sub_report"); //$NON-NLS-1$
 		JasperReport modifierReport = ReportUtil.getReport("sales_sub_report"); //$NON-NLS-1$
 
 		HashMap map = new HashMap();
 		ReportUtil.populateRestaurantProperties(map);
-		map.put("reportHeader", reportHeader); //$NON-NLS-1$ 
 		map.put("reportTitle", Messages.getString("SalesReport.3")); //$NON-NLS-1$ //$NON-NLS-2$
 		map.put("reportTime", ReportService.formatFullDate(new Date())); //$NON-NLS-1$
 		map.put("dateRange", ReportService.formatShortDate(getStartDate()) + " to " + ReportService.formatShortDate(getEndDate())); //$NON-NLS-1$ //$NON-NLS-2$

@@ -115,7 +115,7 @@ public class CreditCardReportView extends JPanel {
 			totalTips += transaction.getTipsAmount();
 		}
 		
-		HashMap<String, String> map = new HashMap<String, String>();
+		HashMap map = new HashMap();
 		ReportUtil.populateRestaurantProperties(map);
 		map.put("reportTitle", Messages.getString("CreditCardReportView.0")); //$NON-NLS-1$ //$NON-NLS-2$
 		map.put("fromDate", ReportService.formatShortDate(fromDate)); //$NON-NLS-1$
