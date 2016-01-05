@@ -99,8 +99,9 @@ public class MenuUsageReportView extends JPanel {
 		ReportService reportService = new ReportService();
 		MenuUsageReport report = reportService.getMenuUsageReport(fromDate, toDate);
 		
-		HashMap<String, String> map = new HashMap<String, String>();
-		map.put("reportTitle", "========= MENU USAGE REPORT =========="); //$NON-NLS-1$ //$NON-NLS-2$
+		HashMap map = new HashMap();
+		ReportUtil.populateRestaurantProperties(map);
+		map.put("reportTitle", "MENU USAGE REPORT"); //$NON-NLS-1$ //$NON-NLS-2$
 		map.put("fromDate", ReportService.formatShortDate(fromDate)); //$NON-NLS-1$
 		map.put("toDate", ReportService.formatShortDate(toDate)); //$NON-NLS-1$
 		map.put("reportTime", ReportService.formatFullDate(new Date())); //$NON-NLS-1$

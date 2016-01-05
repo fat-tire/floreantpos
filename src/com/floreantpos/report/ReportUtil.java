@@ -42,6 +42,8 @@ public class ReportUtil {
 	private final static String DEFAULT_REPORT_DIR = "/com/floreantpos/report/template/"; //$NON-NLS-1$
 	
 	public static void populateRestaurantProperties(Map map) {
+		JasperReport reportHeader = ReportUtil.getReport("report_header"); //$NON-NLS-1$
+		
 		RestaurantDAO dao = new RestaurantDAO();
 		Restaurant restaurant = dao.get(Integer.valueOf(1));
 		map.put("restaurantName", restaurant.getName()); //$NON-NLS-1$
@@ -49,6 +51,7 @@ public class ReportUtil {
 		map.put("addressLine2", restaurant.getAddressLine2()); //$NON-NLS-1$
 		map.put("addressLine3", restaurant.getAddressLine3()); //$NON-NLS-1$
 		map.put("phone", restaurant.getTelephone()); //$NON-NLS-1$
+		map.put("reportHeader", reportHeader); //$NON-NLS-1$
 	}
 	
 	public static JasperReport getReport(String reportName) {

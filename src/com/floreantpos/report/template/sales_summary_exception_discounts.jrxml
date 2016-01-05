@@ -137,8 +137,7 @@
 					<textElement textAlignment="Right">
 						<font pdfFontName="Helvetica-Bold" isBold="true"/>
 					</textElement>
-				<text><![CDATA[TOTAL
-COUNT]]></text>
+				<text><![CDATA[TOTALCOUNT]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
@@ -151,8 +150,7 @@ COUNT]]></text>
 					<textElement textAlignment="Right">
 						<font pdfFontName="Helvetica-Bold" isBold="true"/>
 					</textElement>
-				<text><![CDATA[TOTAL
-DISCOUNT]]></text>
+				<text><![CDATA[TOTALDISCOUNT]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
@@ -165,8 +163,7 @@ DISCOUNT]]></text>
 					<textElement textAlignment="Right">
 						<font pdfFontName="Helvetica-Bold" isBold="true"/>
 					</textElement>
-				<text><![CDATA[TOTAL
-NETSALES]]></text>
+				<text><![CDATA[TOTALNETSALES]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
@@ -179,8 +176,7 @@ NETSALES]]></text>
 					<textElement textAlignment="Right">
 						<font pdfFontName="Helvetica-Bold" isBold="true"/>
 					</textElement>
-				<text><![CDATA[TOTAL
-GUESTS]]></text>
+				<text><![CDATA[TOTALGUESTS]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
@@ -193,8 +189,7 @@ GUESTS]]></text>
 					<textElement textAlignment="Right">
 						<font pdfFontName="Helvetica-Bold" isBold="true"/>
 					</textElement>
-				<text><![CDATA[PARTY
-SIZE]]></text>
+				<text><![CDATA[PARTYSIZE]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
@@ -207,8 +202,7 @@ SIZE]]></text>
 					<textElement textAlignment="Right">
 						<font pdfFontName="Helvetica-Bold" isBold="true"/>
 					</textElement>
-				<text><![CDATA[CHECK
-SIZE]]></text>
+				<text><![CDATA[CHECKSIZE]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
@@ -221,8 +215,7 @@ SIZE]]></text>
 					<textElement textAlignment="Right">
 						<font pdfFontName="Helvetica-Bold" isBold="true"/>
 					</textElement>
-				<text><![CDATA[COUNT
-[%]]]></text>
+				<text><![CDATA[COUNT[%]]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
@@ -235,8 +228,7 @@ SIZE]]></text>
 					<textElement textAlignment="Right">
 						<font pdfFontName="Helvetica-Bold" isBold="true"/>
 					</textElement>
-				<text><![CDATA[RATIO
-D/NET]]></text>
+				<text><![CDATA[RATIOD/NET]]></text>
 				</staticText>
 				<line direction="TopDown">
 					<reportElement
@@ -398,11 +390,7 @@ D/NET]]></text>
 					</textElement>
 				<textFieldExpression   class="java.lang.Integer"><![CDATA[$V{totalCountSum}]]></textFieldExpression>
 				</textField>
-<<<<<<< .mine
-				<textField isStretchWithOverflow="false" pattern="0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-=======
 				<textField isStretchWithOverflow="false" pattern="0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
->>>>>>> .r114
 					<reportElement
 						x="222"
 						y="3"
@@ -415,11 +403,7 @@ D/NET]]></text>
 					</textElement>
 				<textFieldExpression   class="java.lang.Double"><![CDATA[$V{totalDiscountSum}]]></textFieldExpression>
 				</textField>
-<<<<<<< .mine
-				<textField isStretchWithOverflow="false" pattern="0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-=======
 				<textField isStretchWithOverflow="false" pattern="0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
->>>>>>> .r114
 					<reportElement
 						x="279"
 						y="3"
@@ -432,11 +416,7 @@ D/NET]]></text>
 					</textElement>
 				<textFieldExpression   class="java.lang.Double"><![CDATA[$V{totalNetSalesSum}]]></textFieldExpression>
 				</textField>
-<<<<<<< .mine
-				<textField isStretchWithOverflow="false" pattern="0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-=======
 				<textField isStretchWithOverflow="false" pattern="0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
->>>>>>> .r114
 					<reportElement
 						x="336"
 						y="3"
@@ -449,11 +429,7 @@ D/NET]]></text>
 					</textElement>
 				<textFieldExpression   class="java.lang.Double"><![CDATA[$V{totalGuestsSum}]]></textFieldExpression>
 				</textField>
-<<<<<<< .mine
-				<textField isStretchWithOverflow="false" pattern="0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-=======
 				<textField isStretchWithOverflow="false" pattern="0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
->>>>>>> .r114
 					<reportElement
 						x="381"
 						y="3"
@@ -466,11 +442,7 @@ D/NET]]></text>
 					</textElement>
 				<textFieldExpression   class="java.lang.Double"><![CDATA[$V{partySizeSum}]]></textFieldExpression>
 				</textField>
-<<<<<<< .mine
-				<textField isStretchWithOverflow="false" pattern="0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-=======
 				<textField isStretchWithOverflow="false" pattern="0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
->>>>>>> .r114
 					<reportElement
 						x="419"
 						y="3"
@@ -483,11 +455,7 @@ D/NET]]></text>
 					</textElement>
 				<textFieldExpression   class="java.lang.Double"><![CDATA[$V{checkSizeSum}]]></textFieldExpression>
 				</textField>
-<<<<<<< .mine
-				<textField isStretchWithOverflow="false" pattern="0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-=======
 				<textField isStretchWithOverflow="false" pattern="0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
->>>>>>> .r114
 					<reportElement
 						x="457"
 						y="3"
@@ -500,11 +468,7 @@ D/NET]]></text>
 					</textElement>
 				<textFieldExpression   class="java.lang.Double"><![CDATA[$V{countPercentSum}]]></textFieldExpression>
 				</textField>
-<<<<<<< .mine
-				<textField isStretchWithOverflow="false" pattern="0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-=======
 				<textField isStretchWithOverflow="false" pattern="0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
->>>>>>> .r114
 					<reportElement
 						x="496"
 						y="3"

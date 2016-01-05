@@ -20,6 +20,7 @@ package com.floreantpos.report;
 import java.util.Date;
 
 import com.floreantpos.model.Terminal;
+import com.floreantpos.model.UserType;
 
 import net.sf.jasperreports.view.JRViewer;
 
@@ -30,6 +31,7 @@ public abstract class Report {
 	private Date startDate;
 	private Date endDate;
 	private Terminal terminal;
+	private UserType userType; 
 	private int reportType = REPORT_TYPE_1;
 	private boolean includeFreeItem = false;
 	protected JRViewer viewer;
@@ -77,6 +79,14 @@ public abstract class Report {
 
 	public void setTerminal(Terminal terminal) {
 		this.terminal = terminal;
+	}
+	
+	public UserType getUserType() {
+		return userType;
+	}
+
+	public void setUserType(UserType userType) {
+		this.userType = userType;
 	}
 
 	public Date getStartDate() {

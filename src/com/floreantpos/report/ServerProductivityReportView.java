@@ -100,7 +100,8 @@ public class ServerProductivityReportView extends JPanel {
 		ReportService reportService = new ReportService();
 		ServerProductivityReport report = reportService.getServerProductivityReport(fromDate, toDate);
 		
-		HashMap<String, String> map = new HashMap<String, String>();
+		HashMap map = new HashMap();
+		ReportUtil.populateRestaurantProperties(map);
 		map.put("reportTitle", Messages.getString("ServerProductivityReportView.0")); //$NON-NLS-1$ //$NON-NLS-2$
 		map.put("fromDate", ReportService.formatShortDate(fromDate)); //$NON-NLS-1$
 		map.put("toDate", ReportService.formatShortDate(toDate)); //$NON-NLS-1$
