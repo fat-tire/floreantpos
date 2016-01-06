@@ -1,22 +1,6 @@
-/**
- * ************************************************************************
- * * The contents of this file are subject to the MRPL 1.2
- * * (the  "License"),  being   the  Mozilla   Public  License
- * * Version 1.1  with a permitted attribution clause; you may not  use this
- * * file except in compliance with the License. You  may  obtain  a copy of
- * * the License at http://www.floreantpos.org/license.html
- * * Software distributed under the License  is  distributed  on  an "AS IS"
- * * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * * License for the specific  language  governing  rights  and  limitations
- * * under the License.
- * * The Original Code is FLOREANT POS.
- * * The Initial Developer of the Original Code is OROCUBE LLC
- * * All portions are Copyright (C) 2015 OROCUBE LLC
- * * All Rights Reserved.
- * ************************************************************************
- */
 package com.floreantpos.model.base;
 
+import java.lang.Comparable;
 import java.io.Serializable;
 
 import com.floreantpos.model.TicketItemCookingInstruction;
@@ -33,30 +17,29 @@ import com.floreantpos.model.TicketItemCookingInstruction;
 
 public abstract class BaseTicketItem  implements Comparable, Serializable {
 
-	public static String REF = "TicketItem"; //$NON-NLS-1$
-	public static String PROP_BEVERAGE = "beverage"; //$NON-NLS-1$
-	public static String PROP_ITEM_ID = "itemId"; //$NON-NLS-1$
-	public static String PROP_CATEGORY_NAME = "categoryName"; //$NON-NLS-1$
-	public static String PROP_GROUP_NAME = "groupName"; //$NON-NLS-1$
-	public static String PROP_DISCOUNT_RATE = "discountRate"; //$NON-NLS-1$
-	public static String PROP_ITEM_COUNT = "itemCount"; //$NON-NLS-1$
-	public static String PROP_TAX_RATE = "taxRate"; //$NON-NLS-1$
-	public static String PROP_UNIT_PRICE = "unitPrice"; //$NON-NLS-1$
-	public static String PROP_TAX_AMOUNT = "taxAmount"; //$NON-NLS-1$
-	public static String PROP_DISCOUNT_AMOUNT = "discountAmount"; //$NON-NLS-1$
-	public static String PROP_NAME = "name"; //$NON-NLS-1$
-	public static String PROP_PRINTER_GROUP = "printerGroup"; //$NON-NLS-1$
-	public static String PROP_PRINTED_TO_KITCHEN = "printedToKitchen"; //$NON-NLS-1$
-	public static String PROP_SHOULD_PRINT_TO_KITCHEN = "shouldPrintToKitchen"; //$NON-NLS-1$
-	public static String PROP_TICKET = "ticket"; //$NON-NLS-1$
-	public static String PROP_SUBTOTAL_AMOUNT = "subtotalAmount"; //$NON-NLS-1$
-	public static String PROP_INVENTORY_HANDLED = "inventoryHandled"; //$NON-NLS-1$
-	public static String PROP_HAS_MODIFIERS = "hasModifiers"; //$NON-NLS-1$
-	public static String PROP_TAX_AMOUNT_WITHOUT_MODIFIERS = "taxAmountWithoutModifiers"; //$NON-NLS-1$
-	public static String PROP_ID = "id"; //$NON-NLS-1$
-	public static String PROP_TOTAL_AMOUNT = "totalAmount"; //$NON-NLS-1$
-	public static String PROP_SUBTOTAL_AMOUNT_WITHOUT_MODIFIERS = "subtotalAmountWithoutModifiers"; //$NON-NLS-1$
-	public static String PROP_TOTAL_AMOUNT_WITHOUT_MODIFIERS = "totalAmountWithoutModifiers"; //$NON-NLS-1$
+	public static String REF = "TicketItem";
+	public static String PROP_BEVERAGE = "beverage";
+	public static String PROP_ITEM_ID = "itemId";
+	public static String PROP_CATEGORY_NAME = "categoryName";
+	public static String PROP_GROUP_NAME = "groupName";
+	public static String PROP_ITEM_COUNT = "itemCount";
+	public static String PROP_TAX_RATE = "taxRate";
+	public static String PROP_UNIT_PRICE = "unitPrice";
+	public static String PROP_TAX_AMOUNT = "taxAmount";
+	public static String PROP_DISCOUNT_AMOUNT = "discountAmount";
+	public static String PROP_NAME = "name";
+	public static String PROP_PRINTER_GROUP = "printerGroup";
+	public static String PROP_PRINTED_TO_KITCHEN = "printedToKitchen";
+	public static String PROP_SHOULD_PRINT_TO_KITCHEN = "shouldPrintToKitchen";
+	public static String PROP_TICKET = "ticket";
+	public static String PROP_SUBTOTAL_AMOUNT = "subtotalAmount";
+	public static String PROP_INVENTORY_HANDLED = "inventoryHandled";
+	public static String PROP_HAS_MODIFIERS = "hasModifiers";
+	public static String PROP_TAX_AMOUNT_WITHOUT_MODIFIERS = "taxAmountWithoutModifiers";
+	public static String PROP_ID = "id";
+	public static String PROP_TOTAL_AMOUNT = "totalAmount";
+	public static String PROP_SUBTOTAL_AMOUNT_WITHOUT_MODIFIERS = "subtotalAmountWithoutModifiers";
+	public static String PROP_TOTAL_AMOUNT_WITHOUT_MODIFIERS = "totalAmountWithoutModifiers";
 
 
 	// constructors
@@ -100,7 +83,6 @@ public abstract class BaseTicketItem  implements Comparable, Serializable {
 		protected java.lang.String groupName;
 		protected java.lang.String categoryName;
 		protected java.lang.Double unitPrice;
-		protected java.lang.Double discountRate;
 		protected java.lang.Double taxRate;
 		protected java.lang.Double subtotalAmount;
 		protected java.lang.Double subtotalAmountWithoutModifiers;
@@ -122,6 +104,7 @@ public abstract class BaseTicketItem  implements Comparable, Serializable {
 	// collections
 	private java.util.List<com.floreantpos.model.TicketItemModifierGroup> ticketItemModifierGroups;
 	private java.util.List<TicketItemCookingInstruction> cookingInstructions;
+	private java.util.List<com.floreantpos.model.CouponAndDiscount> discounts;
 
 
 
@@ -151,8 +134,8 @@ public abstract class BaseTicketItem  implements Comparable, Serializable {
 	 * Return the value associated with the column: ITEM_ID
 	 */
 	public java.lang.Integer getItemId () {
-					return itemId == null ? Integer.valueOf(0) : itemId;
-			}
+									return itemId == null ? Integer.valueOf(0) : itemId;
+					}
 
 	/**
 	 * Set the value related to the column: ITEM_ID
@@ -168,8 +151,8 @@ public abstract class BaseTicketItem  implements Comparable, Serializable {
 	 * Return the value associated with the column: ITEM_COUNT
 	 */
 	public java.lang.Integer getItemCount () {
-					return itemCount == null ? Integer.valueOf(0) : itemCount;
-			}
+									return itemCount == null ? Integer.valueOf(0) : itemCount;
+					}
 
 	/**
 	 * Set the value related to the column: ITEM_COUNT
@@ -245,23 +228,6 @@ public abstract class BaseTicketItem  implements Comparable, Serializable {
 	 */
 	public void setUnitPrice (java.lang.Double unitPrice) {
 		this.unitPrice = unitPrice;
-	}
-
-
-
-	/**
-	 * Return the value associated with the column: DISCOUNT_RATE
-	 */
-	public java.lang.Double getDiscountRate () {
-									return discountRate == null ? Double.valueOf(0) : discountRate;
-					}
-
-	/**
-	 * Set the value related to the column: DISCOUNT_RATE
-	 * @param discountRate the DISCOUNT_RATE value
-	 */
-	public void setDiscountRate (java.lang.Double discountRate) {
-		this.discountRate = discountRate;
 	}
 
 
@@ -456,7 +422,7 @@ public abstract class BaseTicketItem  implements Comparable, Serializable {
 	 * Custom property
 	 */
 	public static String getShouldPrintToKitchenDefaultValue () {
-		return "true"; //$NON-NLS-1$
+		return "true";
 	}
 
 
@@ -567,6 +533,28 @@ public abstract class BaseTicketItem  implements Comparable, Serializable {
 
 
 
+	/**
+	 * Return the value associated with the column: discounts
+	 */
+	public java.util.List<com.floreantpos.model.CouponAndDiscount> getDiscounts () {
+					return discounts;
+			}
+
+	/**
+	 * Set the value related to the column: discounts
+	 * @param discounts the discounts value
+	 */
+	public void setDiscounts (java.util.List<com.floreantpos.model.CouponAndDiscount> discounts) {
+		this.discounts = discounts;
+	}
+
+	public void addTodiscounts (com.floreantpos.model.CouponAndDiscount couponAndDiscount) {
+		if (null == getDiscounts()) setDiscounts(new java.util.ArrayList<com.floreantpos.model.CouponAndDiscount>());
+		getDiscounts().add(couponAndDiscount);
+	}
+
+
+
 
 
 	public boolean equals (Object obj) {
@@ -583,7 +571,7 @@ public abstract class BaseTicketItem  implements Comparable, Serializable {
 		if (Integer.MIN_VALUE == this.hashCode) {
 			if (null == this.getId()) return super.hashCode();
 			else {
-				String hashStr = this.getClass().getName() + ":" + this.getId().hashCode(); //$NON-NLS-1$
+				String hashStr = this.getClass().getName() + ":" + this.getId().hashCode();
 				this.hashCode = hashStr.hashCode();
 			}
 		}

@@ -446,7 +446,7 @@ public class TicketForSplitView extends com.floreantpos.swing.TransparentPanel i
 		newTicketItem.setGroupName(ticketItem.getGroupName());
 		newTicketItem.setCategoryName(ticketItem.getCategoryName());
 		newTicketItem.setUnitPrice(ticketItem.getUnitPrice());
-		newTicketItem.setDiscountRate(ticketItem.getDiscountRate());
+		newTicketItem.setDiscounts(ticketItem.getDiscounts());
 		newTicketItem.setTaxRate(ticketItem.getTaxRate());
 		newTicketItem.setBeverage(ticketItem.isBeverage());
 		newTicketItem.setShouldPrintToKitchen(ticketItem.isShouldPrintToKitchen());
@@ -477,7 +477,7 @@ public class TicketForSplitView extends com.floreantpos.swing.TransparentPanel i
 		newTicketItem.setGroupName(ticketItem.getGroupName());
 		newTicketItem.setCategoryName(ticketItem.getCategoryName());
 		newTicketItem.setUnitPrice(ticketItem.getUnitPrice());
-		newTicketItem.setDiscountRate(ticketItem.getDiscountRate());
+		newTicketItem.setDiscounts(ticketItem.getDiscounts());
 		newTicketItem.setTaxRate(ticketItem.getTaxRate());
 		newTicketItem.setBeverage(ticketItem.isBeverage());
 		newTicketItem.setShouldPrintToKitchen(ticketItem.isShouldPrintToKitchen());

@@ -470,10 +470,6 @@ public class OrderView extends ViewPanel {
 			return;
 		}
 
-		if (selectedObject instanceof TicketItem) {
-			((TicketItem) selectedObject).setDiscountRate(-1.0);
-		}
-
 		selectedObject.setDiscountAmount(d);
 		ticketView.ticketViewerTable.repaint();
 		ticketView.updateView();
