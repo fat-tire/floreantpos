@@ -12,7 +12,6 @@
 		<property column="GROUP_NAME" length="120" name="groupName" type="string" />
 		<property column="CATEGORY_NAME" length="120" name="categoryName" type="string" />
 		<property column="ITEM_PRICE" length="52" name="unitPrice" type="java.lang.Double" />
-		<property column="DISCOUNT_RATE" length="52" name="discountRate" type="java.lang.Double" />
 		<property column="ITEM_TAX_RATE" length="52" name="taxRate" type="java.lang.Double" />
 		<property column="SUB_TOTAL" name="subtotalAmount" type="java.lang.Double" />
 		<property column="SUB_TOTAL_WITHOUT_MODIFIERS" name="subtotalAmountWithoutModifiers" type="java.lang.Double" />

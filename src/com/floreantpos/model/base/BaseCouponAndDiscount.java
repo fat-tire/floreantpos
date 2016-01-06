@@ -1,22 +1,6 @@
-/**
- * ************************************************************************
- * * The contents of this file are subject to the MRPL 1.2
- * * (the  "License"),  being   the  Mozilla   Public  License
- * * Version 1.1  with a permitted attribution clause; you may not  use this
- * * file except in compliance with the License. You  may  obtain  a copy of
- * * the License at http://www.floreantpos.org/license.html
- * * Software distributed under the License  is  distributed  on  an "AS IS"
- * * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * * License for the specific  language  governing  rights  and  limitations
- * * under the License.
- * * The Original Code is FLOREANT POS.
- * * The Initial Developer of the Original Code is OROCUBE LLC
- * * All portions are Copyright (C) 2015 OROCUBE LLC
- * * All Rights Reserved.
- * ************************************************************************
- */
 package com.floreantpos.model.base;
 
+import java.lang.Comparable;
 import java.io.Serializable;
 
 
@@ -31,14 +15,15 @@ import java.io.Serializable;
 
 public abstract class BaseCouponAndDiscount  implements Comparable, Serializable {
 
-	public static String REF = "CouponAndDiscount"; //$NON-NLS-1$
-	public static String PROP_NAME = "name"; //$NON-NLS-1$
-	public static String PROP_EXPIRY_DATE = "expiryDate"; //$NON-NLS-1$
-	public static String PROP_NEVER_EXPIRE = "neverExpire"; //$NON-NLS-1$
-	public static String PROP_VALUE = "value"; //$NON-NLS-1$
-	public static String PROP_TYPE = "type"; //$NON-NLS-1$
-	public static String PROP_DISABLED = "disabled"; //$NON-NLS-1$
-	public static String PROP_ID = "id"; //$NON-NLS-1$
+	public static String REF = "CouponAndDiscount";
+	public static String PROP_NAME = "name";
+	public static String PROP_ENABLED = "enabled";
+	public static String PROP_EXPIRY_DATE = "expiryDate";
+	public static String PROP_NEVER_EXPIRE = "neverExpire";
+	public static String PROP_VALUE = "value";
+	public static String PROP_TYPE = "type";
+	public static String PROP_QUALIFICATION_TYPE = "QUALIFICATION_TYPE";
+	public static String PROP_ID = "id";
 
 
 	// constructors
@@ -64,12 +49,13 @@ public abstract class BaseCouponAndDiscount  implements Comparable, Serializable
 	private java.lang.Integer id;
 
 	// fields
-	private java.lang.String name;
-	private java.lang.Integer type;
-	private java.lang.Double value;
-	private java.util.Date expiryDate;
-	private java.lang.Boolean disabled;
-	private java.lang.Boolean neverExpire;
+		protected java.lang.String name;
+		protected java.lang.Integer type;
+		protected java.lang.Integer qUALIFICATION_TYPE;
+		protected java.lang.Double value;
+		protected java.util.Date expiryDate;
+		protected java.lang.Boolean enabled;
+		protected java.lang.Boolean neverExpire;
 
 
 
@@ -99,8 +85,8 @@ public abstract class BaseCouponAndDiscount  implements Comparable, Serializable
 	 * Return the value associated with the column: NAME
 	 */
 	public java.lang.String getName () {
-			return name;
-	}
+					return name;
+			}
 
 	/**
 	 * Set the value related to the column: NAME
@@ -113,15 +99,15 @@ public abstract class BaseCouponAndDiscount  implements Comparable, Serializable
 
 
 	/**
-	 * Return the value associated with the column: TYPE
+	 * Return the value associated with the column: type
 	 */
 	public java.lang.Integer getType () {
-			return type == null ? Integer.valueOf(0) : type;
-	}
+									return type == null ? Integer.valueOf(0) : type;
+					}
 
 	/**
-	 * Set the value related to the column: TYPE
-	 * @param type the TYPE value
+	 * Set the value related to the column: type
+	 * @param type the type value
 	 */
 	public void setType (java.lang.Integer type) {
 		this.type = type;
@@ -130,11 +116,28 @@ public abstract class BaseCouponAndDiscount  implements Comparable, Serializable
 
 
 	/**
+	 * Return the value associated with the column: qualificationType
+	 */
+	public java.lang.Integer getQUALIFICATION_TYPE () {
+									return qUALIFICATION_TYPE == null ? Integer.valueOf(0) : qUALIFICATION_TYPE;
+					}
+
+	/**
+	 * Set the value related to the column: qualificationType
+	 * @param qUALIFICATION_TYPE the qualificationType value
+	 */
+	public void setQUALIFICATION_TYPE (java.lang.Integer qUALIFICATION_TYPE) {
+		this.qUALIFICATION_TYPE = qUALIFICATION_TYPE;
+	}
+
+
+
+	/**
 	 * Return the value associated with the column: VALUE
 	 */
 	public java.lang.Double getValue () {
-					return value == null ? Double.valueOf(0) : value;
-			}
+									return value == null ? Double.valueOf(0) : value;
+					}
 
 	/**
 	 * Set the value related to the column: VALUE
@@ -150,8 +153,8 @@ public abstract class BaseCouponAndDiscount  implements Comparable, Serializable
 	 * Return the value associated with the column: EXPIRY_DATE
 	 */
 	public java.util.Date getExpiryDate () {
-			return expiryDate;
-	}
+					return expiryDate;
+			}
 
 	/**
 	 * Set the value related to the column: EXPIRY_DATE
@@ -164,18 +167,18 @@ public abstract class BaseCouponAndDiscount  implements Comparable, Serializable
 
 
 	/**
-	 * Return the value associated with the column: DISABLED
+	 * Return the value associated with the column: ENABLED
 	 */
-	public java.lang.Boolean isDisabled () {
-					return disabled == null ? Boolean.FALSE : disabled;
-			}
+	public java.lang.Boolean isEnabled () {
+								return enabled == null ? Boolean.FALSE : enabled;
+					}
 
 	/**
-	 * Set the value related to the column: DISABLED
-	 * @param disabled the DISABLED value
+	 * Set the value related to the column: ENABLED
+	 * @param enabled the ENABLED value
 	 */
-	public void setDisabled (java.lang.Boolean disabled) {
-		this.disabled = disabled;
+	public void setEnabled (java.lang.Boolean enabled) {
+		this.enabled = enabled;
 	}
 
 
@@ -184,8 +187,8 @@ public abstract class BaseCouponAndDiscount  implements Comparable, Serializable
 	 * Return the value associated with the column: NEVER_EXPIRE
 	 */
 	public java.lang.Boolean isNeverExpire () {
-					return neverExpire == null ? Boolean.FALSE : neverExpire;
-			}
+								return neverExpire == null ? Boolean.FALSE : neverExpire;
+					}
 
 	/**
 	 * Set the value related to the column: NEVER_EXPIRE
@@ -213,7 +216,7 @@ public abstract class BaseCouponAndDiscount  implements Comparable, Serializable
 		if (Integer.MIN_VALUE == this.hashCode) {
 			if (null == this.getId()) return super.hashCode();
 			else {
-				String hashStr = this.getClass().getName() + ":" + this.getId().hashCode(); //$NON-NLS-1$
+				String hashStr = this.getClass().getName() + ":" + this.getId().hashCode();
 				this.hashCode = hashStr.hashCode();
 			}
 		}

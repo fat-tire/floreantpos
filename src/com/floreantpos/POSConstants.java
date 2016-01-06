@@ -164,6 +164,7 @@ public class POSConstants {
 	public static final String TOTAL = Messages.getString("PosMessage.87"); //$NON-NLS-1$
 	public static final String REQUIRED_MODIFIERS_NOT_ADDED = Messages.getString("PosMessage.88"); //$NON-NLS-1$
 	public static final String DISABLED = Messages.getString("PosMessage.89"); //$NON-NLS-1$
+	public static final String ENABLED = Messages.getString("ENABLED"); //$NON-NLS-1$
 	public static final String INSTRUCTION_CANNOT_BE_EMPTY = Messages.getString("PosMessage.90"); //$NON-NLS-1$
 	public static final String TABLE_NO_BUTTON_TEXT = Messages.getString("TABLE_NO_BUTTON_TEXT"); //$NON-NLS-1$
 	public static final String NAME_REQUIRED = Messages.getString("PosMessage.92"); //$NON-NLS-1$

@@ -53,7 +53,7 @@ public class CouponForm extends BeanEditor {
     private JTextField tfCouponName;
     private JComboBox cbCouponType;
     private JFormattedTextField tfCouponValue;
-    private JCheckBox chkDisabled;
+    private JCheckBox chkEnabled;
     private JCheckBox chkNeverExpire;
     private JXDatePicker dpExperation;
 
@@ -95,7 +95,7 @@ public class CouponForm extends BeanEditor {
         tfCouponValue.setValue(Double.valueOf(coupon.getValue()));
         cbCouponType.setSelectedIndex(coupon.getType());
         dpExperation.setDate(coupon.getExpiryDate());
-        chkDisabled.setSelected(coupon.isDisabled());
+        chkEnabled.setSelected(coupon.isEnabled());
         chkNeverExpire.setSelected(coupon.isNeverExpire());
     }
 
@@ -106,7 +106,7 @@ public class CouponForm extends BeanEditor {
         couponValue = ((Double) tfCouponValue.getValue()).doubleValue();
         int couponType = cbCouponType.getSelectedIndex();
         Date expiryDate = dpExperation.getDate();
-        boolean disabled = chkDisabled.isSelected();
+        boolean enabled = chkEnabled.isSelected();
         boolean neverExpire = chkNeverExpire.isSelected();
 
         if (name == null || name.trim().equals("")) { //$NON-NLS-1$
@@ -123,7 +123,7 @@ public class CouponForm extends BeanEditor {
         coupon.setValue(couponValue);
         coupon.setExpiryDate(expiryDate);
         coupon.setType(couponType);
-        coupon.setDisabled(disabled);
+        coupon.setEnabled(enabled);
         coupon.setNeverExpire(neverExpire);
 
         return true;
@@ -177,9 +177,10 @@ public class CouponForm extends BeanEditor {
         contentPane.add(label4, cc.xy(1, 7));
         tfCouponValue = new JFormattedTextField();
         contentPane.add(tfCouponValue, cc.xy(3, 7, CellConstraints.FILL, CellConstraints.DEFAULT));
-        chkDisabled = new JCheckBox();
-        chkDisabled.setText(Messages.getString("CouponForm.15")); //$NON-NLS-1$
-        contentPane.add(chkDisabled, cc.xy(3, 9));
+        chkEnabled = new JCheckBox();
+        //FIXME
+        chkEnabled.setText(Messages.getString("CouponForm.15")); //$NON-NLS-1$
+        contentPane.add(chkEnabled, cc.xy(3, 9));
         chkNeverExpire = new JCheckBox();
         chkNeverExpire.setText(Messages.getString("CouponForm.16")); //$NON-NLS-1$
         contentPane.add(chkNeverExpire, cc.xy(3, 11));

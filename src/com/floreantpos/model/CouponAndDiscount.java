@@ -17,15 +17,12 @@
  */
 package com.floreantpos.model;
 
-import com.floreantpos.Messages;
 import com.floreantpos.model.base.BaseCouponAndDiscount;
-
-
 
 public class CouponAndDiscount extends BaseCouponAndDiscount {
 	private static final long serialVersionUID = 1L;
 
-/*[CONSTRUCTOR MARKER BEGIN]*/
+	/*[CONSTRUCTOR MARKER BEGIN]*/
 	public CouponAndDiscount () {
 		super();
 	}
@@ -37,7 +34,7 @@ public class CouponAndDiscount extends BaseCouponAndDiscount {
 		super(id);
 	}
 
-/*[CONSTRUCTOR MARKER END]*/
+	/*[CONSTRUCTOR MARKER END]*/
 
 	public final static int FREE_AMOUNT = 0;
 	public final static int FIXED_PER_CATEGORY = 1;
@@ -47,9 +44,17 @@ public class CouponAndDiscount extends BaseCouponAndDiscount {
 	public final static int PERCENTAGE_PER_ITEM = 5;
 	public final static int PERCENTAGE_PER_ORDER = 6;
 
-	public final static String[] COUPON_TYPE_NAMES = { Messages.getString("CouponAndDiscount.0"), Messages.getString("CouponAndDiscount.1"), //$NON-NLS-1$ //$NON-NLS-2$
-			Messages.getString("CouponAndDiscount.2"), Messages.getString("CouponAndDiscount.3"), Messages.getString("CouponAndDiscount.4"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-			Messages.getString("CouponAndDiscount.5"), Messages.getString("CouponAndDiscount.6") }; //$NON-NLS-1$ //$NON-NLS-2$
+	public final static int DISCOUNT_TYPE_AMOUNT = 0;
+	public final static int DISCOUNT_TYPE_PERCENTAGE = 1;
+	public final static int DISCOUNT_TYPE_RE_PRICE = 2;
+	public final static int DISCOUNT_TYPE_ALT_PRICE = 3;
+	
+	public final static int QUALIFICATION_TYPE_ITEM = 0;
+	public final static int QUALIFICATION_TYPE_GROUP = 1;
+	public final static int QUALIFICATION_TYPE_CATEGORY = 2;
+	public final static int QUALIFICATION_TYPE_ORDER = 3;
+
+	public final static String[] COUPON_TYPE_NAMES = { "AMOUNT", "PERCENTAGE" }; //$NON-NLS-1$ //$NON-NLS-2$
 
 	@Override
 	public String toString() {
