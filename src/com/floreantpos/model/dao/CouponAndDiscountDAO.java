@@ -42,7 +42,7 @@ public class CouponAndDiscountDAO extends BaseCouponAndDiscountDAO {
         try {
 			session = createNewSession();
 			Criteria criteria = session.createCriteria(getReferenceClass());
-			criteria.add(Restrictions.eq(CouponAndDiscount.PROP_DISABLED, Boolean.FALSE));
+			criteria.add(Restrictions.eq(CouponAndDiscount.PROP_ENABLED, Boolean.TRUE));
 			criteria.add(Restrictions.or(Restrictions.eq(CouponAndDiscount.PROP_NEVER_EXPIRE, Boolean.TRUE), Restrictions.ge(CouponAndDiscount.PROP_EXPIRY_DATE, currentDate)));
 			return criteria.list();
 		} finally {
