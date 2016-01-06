@@ -52,6 +52,11 @@
 			</composite-element>
 		</list>
 		
+		<bag cascade="save-update" inverse="false" name="discounts" lazy="false">
+			<key column="ITEM_ID" />
+			<many-to-many class="CouponAndDiscount" column="DISCOUNT_GROUP_ID" />
+		</bag>
+		
 		<many-to-one class="com.floreantpos.model.PrinterGroup" lazy="false" cascade="none" name="printerGroup">
 			<column name="PG_ID" />
 		</many-to-one>

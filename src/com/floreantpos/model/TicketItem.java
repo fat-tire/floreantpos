@@ -206,20 +206,20 @@ public class TicketItem extends BaseTicketItem implements ITicketItem {
 		return subTotalAmount;
 	}
 
+	//TODO: ITERATE ALL discount and calculate discounts
 	private double calculateDiscount() {
-		double discountRate = getDiscountRate();
-		
-		if(discountRate < 0) {
-			return getDiscountAmount();
-		}
-		
-		double subtotalWithoutModifiers = getSubtotalAmountWithoutModifiers();
-		double discount = 0;
-		if (discountRate > 0) {
-			discount = subtotalWithoutModifiers * discountRate / 100.0;
-		}
-
-		return discount;
+//		double discountRate = getDiscountRate();
+//		
+//		if(discountRate < 0) {
+//			return getDiscountAmount();
+//		}
+//		
+//		double subtotalWithoutModifiers = getSubtotalAmountWithoutModifiers();
+//		double discount = 0;
+//		if (discountRate > 0) {
+//			discount = subtotalWithoutModifiers * discountRate / 100.0;
+//		}
+		return 0;
 	}
 
 	private double calculateTax(boolean includeModifierTax) {
