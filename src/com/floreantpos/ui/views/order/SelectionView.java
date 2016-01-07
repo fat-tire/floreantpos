@@ -18,6 +18,7 @@
 package com.floreantpos.ui.views.order;
 
 import java.awt.BorderLayout;
+import java.awt.CardLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -37,6 +38,7 @@ import net.miginfocom.swing.MigLayout;
 import org.jdesktop.swingx.JXTitledSeparator;
 
 import com.floreantpos.POSConstants;
+import com.floreantpos.actions.NewBarTabAction;
 import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.swing.PosButton;
 
@@ -46,7 +48,8 @@ public abstract class SelectionView extends JPanel implements ComponentListener 
 
 	private Dimension buttonSize;
 
-	protected final JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+	protected CardLayout cardLayout = new CardLayout();
+	protected final JPanel buttonsPanel = new JPanel(cardLayout);
 
 	protected List items;
 	
@@ -135,21 +138,21 @@ public abstract class SelectionView extends JPanel implements ComponentListener 
 		btnNext.setEnabled(false);
 		btnPrev.setEnabled(false);
 		
-		Component[] components = buttonsPanel.getComponents();
-		for (int i = 0; i < components.length; i++) {
-			Component c = components[i];
-			if (c instanceof AbstractButton) {
-				AbstractButton button = (AbstractButton) c;
-				button.setPreferredSize(null);
-
-				ActionListener[] actionListeners = button.getActionListeners();
-				if (actionListeners != null) {
-					for (int j = 0; j < actionListeners.length; j++) {
-						button.removeActionListener(actionListeners[j]);
-					}
-				}
-			}
-		}
+//		Component[] components = buttonsPanel.getComponents();
+//		for (int i = 0; i < components.length; i++) {
+//			Component c = components[i];
+//			if (c instanceof AbstractButton) {
+//				AbstractButton button = (AbstractButton) c;
+//				button.setPreferredSize(null);
+//
+//				ActionListener[] actionListeners = button.getActionListeners();
+//				if (actionListeners != null) {
+//					for (int j = 0; j < actionListeners.length; j++) {
+//						button.removeActionListener(actionListeners[j]);
+//					}
+//				}
+//			}
+//		}
 		buttonsPanel.removeAll();
 		buttonsPanel.revalidate();
 		buttonsPanel.repaint();
@@ -184,7 +187,8 @@ public abstract class SelectionView extends JPanel implements ComponentListener 
 		nextBlockIndex = currentBlockIndex + totalItem;
 		
 		try {
-			for (int i = currentBlockIndex; i < nextBlockIndex; i++) {
+			JPanel buttonContainer = null;
+			for (int i = 0; i < items.size(); i++) {
 
 				Object item = items.get(i);
 
@@ -193,23 +197,33 @@ public abstract class SelectionView extends JPanel implements ComponentListener 
 					continue;
 				}
 				itemButton.setPreferredSize(itemButtonSize);
-				buttonsPanel.add(itemButton);//, "width " + itemButtonSize.width + "!, height " + itemButtonSize.height + "!"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-
-				if (i == items.size() - 1) {
-					break;
+				
+				if(i % totalItem == 0) {
+					buttonContainer = new JPanel();
+					buttonsPanel.add(buttonContainer);
 				}
+				
+				buttonContainer.add(itemButton);//, "width " + itemButtonSize.width + "!, height " + itemButtonSize.height + "!"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+
+//				if (i == items.size() - 1) {
+//					break;
+//				}
 			}
 		} catch (Exception e) {
 			// TODO: fix it.
 		}
 		
-		if(previousBlockIndex >= 0 && currentBlockIndex != 0) {
-			btnPrev.setEnabled(true);
-		}
+		cardLayout.first(buttonsPanel);
+		btnPrev.setEnabled(buttonsPanel.getComponentCount() > 1);
+		btnNext.setEnabled(buttonsPanel.getComponentCount() > 1);
 		
-		if(nextBlockIndex < items.size()) {
-			btnNext.setEnabled(true);
-		}
+//		if(previousBlockIndex >= 0 && currentBlockIndex != 0) {
+//			btnPrev.setEnabled(true);
+//		}
+//		
+//		if(nextBlockIndex < items.size()) {
+//			btnNext.setEnabled(true);
+//		}
 		
 		revalidate();
 		repaint();
@@ -226,13 +240,15 @@ public abstract class SelectionView extends JPanel implements ComponentListener 
 	}
 
 	private void scrollDown() {
-		currentBlockIndex = nextBlockIndex;
-		renderItems();
+//		currentBlockIndex = nextBlockIndex;
+//		renderItems();
+		cardLayout.next(buttonsPanel);
 	}
 
 	private void scrollUp() {
-		currentBlockIndex = previousBlockIndex;
-		renderItems();
+//		currentBlockIndex = previousBlockIndex;
+//		renderItems();
+		cardLayout.previous(buttonsPanel);
 	}
 
 	public void setBackEnable(boolean enable) {

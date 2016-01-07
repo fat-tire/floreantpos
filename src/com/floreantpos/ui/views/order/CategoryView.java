@@ -89,11 +89,11 @@ public class CategoryView extends SelectionView implements ActionListener {
 		
 		setItems(categories);
 		
-		CategoryButton categoryButton = (CategoryButton) buttonsPanel.getComponent(0);
-		if(categoryButton != null) {
-			categoryButton.setSelected(true);
-			fireCategorySelected(categoryButton.foodCategory);
-		}
+//		CategoryButton categoryButton = (CategoryButton) buttonsPanel.getComponent(0);
+//		if(categoryButton != null) {
+//			categoryButton.setSelected(true);
+//			fireCategorySelected(categoryButton.foodCategory);
+//		}
 	}
 	
 	@Override
