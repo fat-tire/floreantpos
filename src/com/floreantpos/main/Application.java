@@ -131,14 +131,14 @@ public class Application {
 
 	private void setApplicationLook() {
 		try {
-
+			//UIManager.put("control", UIManager.getColor("control").brighter());
+			//UIManager.put("Button.background", UIManager.getColor("Button.background").brighter());
+			//UIManager.put("ToggleButton.background", UIManager.getColor("ToggleButton.background").brighter());
+			
 			initializeFont();
 
 			PlasticXPLookAndFeel.setPlasticTheme(new ExperienceBlue());
 			UIManager.setLookAndFeel(new PlasticXPLookAndFeel());
-			//UIManager.setLookAndFeel(new NimbusLookAndFeel());
-			UIManager.put("ComboBox.is3DEnabled", Boolean.FALSE); //$NON-NLS-1$
-			//UIManager.put("ToggleButtonUI", "com.floreantpos.swing.POSButtonUI");
 		} catch (Exception ignored) {
 		}
 	}

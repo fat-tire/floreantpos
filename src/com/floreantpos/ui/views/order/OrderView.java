@@ -23,7 +23,9 @@
 
 package com.floreantpos.ui.views.order;
 
+import java.awt.BorderLayout;
 import java.awt.CardLayout;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
@@ -44,6 +46,7 @@ import com.floreantpos.IconFactory;
 import com.floreantpos.Messages;
 import com.floreantpos.POSConstants;
 import com.floreantpos.PosException;
+import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.customer.CustomerSelectionDialog;
 import com.floreantpos.extension.ExtensionManager;
 import com.floreantpos.extension.FloorLayoutPlugin;
@@ -69,6 +72,7 @@ import com.floreantpos.ui.dialog.NumberSelectionDialog2;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.views.CookingInstructionSelectionView;
 import com.floreantpos.util.PosGuiUtil;
+import com.jidesoft.swing.SimpleScrollPane;
 
 /**
  *
@@ -82,9 +86,8 @@ public class OrderView extends ViewPanel {
 
 	private Ticket currentTicket;
 
-	private CardLayout cardLayout = new CardLayout();
 	private com.floreantpos.ui.views.order.CategoryView categoryView = new com.floreantpos.ui.views.order.CategoryView();
-	private com.floreantpos.swing.TransparentPanel midContainer = new com.floreantpos.swing.TransparentPanel(cardLayout);
+	private com.floreantpos.swing.TransparentPanel midContainer = new com.floreantpos.swing.TransparentPanel(new BorderLayout(5, 5));
 	private com.floreantpos.ui.views.order.TicketView ticketView = new com.floreantpos.ui.views.order.TicketView();
 
 	private GroupView groupView = new GroupView();
@@ -128,14 +131,18 @@ public class OrderView extends ViewPanel {
 		setLayout(new java.awt.BorderLayout(2, 1));
 
 		midContainer.setOpaque(false);
+		midContainer.setBorder(null);
+		midContainer.add(groupView, BorderLayout.NORTH);
+		midContainer.add(itemView);
+		
 		add(categoryView, java.awt.BorderLayout.EAST);
 		add(ticketView, java.awt.BorderLayout.WEST);
 		add(midContainer, java.awt.BorderLayout.CENTER);
 		add(actionButtonPanel, java.awt.BorderLayout.SOUTH);
 
-		addView(GroupView.VIEW_NAME, groupView);
-		addView(MenuItemView.VIEW_NAME, itemView);
-		addView("VIEW_EMPTY", new com.floreantpos.swing.TransparentPanel()); //$NON-NLS-1$
+//		addView(GroupView.VIEW_NAME, groupView);
+//		addView(MenuItemView.VIEW_NAME, itemView);
+//		addView("VIEW_EMPTY", new com.floreantpos.swing.TransparentPanel()); //$NON-NLS-1$
 
 		addActionButtonPanel();
 
@@ -144,7 +151,7 @@ public class OrderView extends ViewPanel {
 
 	private void handleTicketItemSelection() {
 
-		ITicketItem selectedItem = (ITicketItem) ticketView.ticketViewerTable.getSelected();
+		ITicketItem selectedItem = (ITicketItem) ticketView.getTicketViewerTable().getSelected();
 
 		OrderView orderView = OrderView.getInstance();
 
@@ -207,7 +214,7 @@ public class OrderView extends ViewPanel {
 	}
 
 	private void addActionButtonPanel() {
-		ticketView.ticketViewerTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+		ticketView.getTicketViewerTable().getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
 				if (!e.getValueIsAdjusting()) {
@@ -459,7 +466,7 @@ public class OrderView extends ViewPanel {
 	}
 
 	protected void addDiscount() {
-		ITicketItem selectedObject = (ITicketItem) ticketView.ticketViewerTable.getSelected();
+		ITicketItem selectedObject = (ITicketItem) ticketView.getTicketViewerTable().getSelected();
 		if (selectedObject == null || !selectedObject.canAddDiscount()) {
 			return;
 		}
@@ -471,14 +478,14 @@ public class OrderView extends ViewPanel {
 		}
 
 		selectedObject.setDiscountAmount(d);
-		ticketView.ticketViewerTable.repaint();
+		ticketView.getTicketViewerTable().repaint();
 		ticketView.updateView();
 	}
 
 	protected void doAddCookingInstruction() {
 
 		try {
-			Object object = ticketView.ticketViewerTable.getSelected();
+			Object object = ticketView.getTicketViewerTable().getSelected();
 			if (!(object instanceof TicketItem)) {
 				POSMessageDialog.showError(Application.getPosWindow(), Messages.getString("TicketView.20")); //$NON-NLS-1$
 				return;
@@ -506,7 +513,7 @@ public class OrderView extends ViewPanel {
 			List<TicketItemCookingInstruction> instructions = cookingInstructionSelectionView.getTicketItemCookingInstructions();
 			ticketItem.addCookingInstructions(instructions);
 
-			ticketView.ticketViewerTable.updateView();
+			ticketView.getTicketViewerTable().updateView();
 		} catch (Exception e) {
 			e.printStackTrace();
 			POSMessageDialog.showError(e.getMessage());
@@ -560,7 +567,7 @@ public class OrderView extends ViewPanel {
 
 	public void showView(final String viewName) {
 
-		cardLayout.show(midContainer, viewName);
+		//scardLayout.show(midContainer, viewName);
 		//getTicketView().txtSearchItem.requestFocus();
 	}
 

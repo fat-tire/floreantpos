@@ -89,8 +89,6 @@ public class ModifierView extends SelectionView {
 				}
 			}
 		});
-
-		setBackVisible(false);
 	}
 
 	public void setModifierGroup(MenuModifierGroup modifierGroup) {
@@ -166,39 +164,34 @@ public class ModifierView extends SelectionView {
 	}
 
 	public void updateView() {
-		Component[] components = buttonsPanel.getComponents();
-		if (components == null || components.length == 0)
-			return;
-
-		TicketItem ticketItem = modifierSelectionModel.getTicketItem();
-		
-		for (Component component : components) {
-			ModifierButton modifierButton = (ModifierButton) component;
-			MenuModifier modifier = modifierButton.menuModifier;
-
-			TicketItemModifierGroup ticketItemModifierGroup = ticketItem.findTicketItemModifierGroup(modifier, addOnMode);
-			TicketItemModifier ticketItemModifier = ticketItemModifierGroup.findTicketItemModifier(modifier, addOnMode);
-			if (ticketItemModifier != null) {
-				String color = addOnMode ? "red" : "green";
-				modifierButton.setText("<html><center>" + modifier.getDisplayName() + "<br/><span style='color:" + color
-						+ "'>(" + ticketItemModifier.getItemCount() + ")</span></center></html>"); //$NON-NLS-1$ //$NON-NLS-2$
-			}
-			else {
-				modifierButton.setText("<html><center>" + modifier.getDisplayName() + "</center></html>"); //$NON-NLS-1$ //$NON-NLS-2$
-			}
-		}
-		
-		if(ModifierSelectionDialog.isRequiredModifiersAdded(ticketItem, modifierGroup.getMenuItemModifierGroup())) {
-			btnDone.setBackground(Color.green);
-		}
-		else {
-			btnDone.setBackground(UIManager.getColor("Control"));
-		}
-	}
-
-	@Override
-	public void doGoBack() {
-
+//		Component[] components = buttonsPanel.getComponents();
+//		if (components == null || components.length == 0)
+//			return;
+//
+//		TicketItem ticketItem = modifierSelectionModel.getTicketItem();
+//		
+//		for (Component component : components) {
+//			ModifierButton modifierButton = (ModifierButton) component;
+//			MenuModifier modifier = modifierButton.menuModifier;
+//
+//			TicketItemModifierGroup ticketItemModifierGroup = ticketItem.findTicketItemModifierGroup(modifier, addOnMode);
+//			TicketItemModifier ticketItemModifier = ticketItemModifierGroup.findTicketItemModifier(modifier, addOnMode);
+//			if (ticketItemModifier != null) {
+//				String color = addOnMode ? "red" : "green";
+//				modifierButton.setText("<html><center>" + modifier.getDisplayName() + "<br/><span style='color:" + color
+//						+ "'>(" + ticketItemModifier.getItemCount() + ")</span></center></html>"); //$NON-NLS-1$ //$NON-NLS-2$
+//			}
+//			else {
+//				modifierButton.setText("<html><center>" + modifier.getDisplayName() + "</center></html>"); //$NON-NLS-1$ //$NON-NLS-2$
+//			}
+//		}
+//		
+//		if(ModifierSelectionDialog.isRequiredModifiersAdded(ticketItem, modifierGroup.getMenuItemModifierGroup())) {
+//			btnDone.setBackground(Color.green);
+//		}
+//		else {
+//			btnDone.setBackground(UIManager.getColor("Control"));
+//		}
 	}
 
 	private class ModifierButton extends PosButton implements ActionListener {
