@@ -18,6 +18,7 @@
 package com.floreantpos.ui.views.payment;
 
 import java.awt.BorderLayout;
+import java.awt.Font;
 import java.io.IOException;
 import java.io.StringReader;
 import java.net.MalformedURLException;
@@ -31,7 +32,14 @@ import javax.json.JsonArray;
 import javax.json.JsonNumber;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
+import javax.swing.BorderFactory;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+
+import net.miginfocom.swing.MigLayout;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
@@ -60,16 +68,17 @@ import com.floreantpos.model.UserPermission;
 import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.report.ReceiptPrintService;
 import com.floreantpos.services.PosTransactionService;
+import com.floreantpos.swing.PosScrollPane;
 import com.floreantpos.ui.dialog.CouponAndDiscountDialog;
 import com.floreantpos.ui.dialog.DiscountListDialog;
 import com.floreantpos.ui.dialog.POSDialog;
 import com.floreantpos.ui.dialog.POSMessageDialog;
-import com.floreantpos.ui.dialog.PaymentTypeSelectionDialog;
 import com.floreantpos.ui.dialog.TransactionCompletionDialog;
+import com.floreantpos.ui.ticket.TicketViewerTable;
 import com.floreantpos.ui.views.SwitchboardView;
-import com.floreantpos.ui.views.TicketDetailView;
 import com.floreantpos.ui.views.order.OrderController;
 import com.floreantpos.util.DrawerUtil;
+import com.floreantpos.util.NumberUtil;
 import com.floreantpos.util.POSUtil;
 
 public class SettleTicketDialog extends POSDialog implements CardInputListener {
@@ -86,36 +95,176 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 	private com.floreantpos.swing.TransparentPanel leftPanel = new com.floreantpos.swing.TransparentPanel(new BorderLayout());
 	private com.floreantpos.swing.TransparentPanel rightPanel = new com.floreantpos.swing.TransparentPanel(new BorderLayout());
 
-	private TicketDetailView ticketDetailView;
 	private PaymentView paymentView;
-
+	private TicketViewerTable ticketViewerTable;
+	private javax.swing.JScrollPane ticketScrollPane;
 	private Ticket ticket;
-
 	private double tenderAmount;
 	private PaymentType paymentType;
 	private String cardName;
+	JTextField tfSubtotal;
+	JTextField tfDiscount;
+	JTextField tfTax;
+	JTextField tfTotal;
 
 	public SettleTicketDialog() {
-		super();
+		/*super();
 		setTitle(Messages.getString("SettleTicketDialog.6")); //$NON-NLS-1$
 
 		getContentPane().setLayout(new BorderLayout(5, 5));
 
-		ticketDetailView = new TicketDetailView();
 		paymentView = new PaymentView(this);
+		ticketViewerTable = new TicketViewerTable(ticket);
+		ticketScrollPane = new PosScrollPane(ticketViewerTable);
+		leftPanel.add(ticketScrollPane);
+		rightPanel.add(paymentView);
 
-		leftPanel.add(ticketDetailView);
+		getContentPane().add(leftPanel, BorderLayout.CENTER);
+		getContentPane().add(rightPanel, BorderLayout.EAST);*/
+
+	}
+
+	public SettleTicketDialog(Ticket ticket) {
+		super();
+		this.ticket = ticket;
+
+		setTitle(Messages.getString("SettleTicketDialog.6")); //$NON-NLS-1$
+
+		getContentPane().setLayout(new BorderLayout(5, 5));
+
+		paymentView = new PaymentView(this);
+		ticketViewerTable = new TicketViewerTable(ticket);
+		ticketScrollPane = new PosScrollPane(ticketViewerTable);
+
+		JPanel centerPanel = new JPanel(new BorderLayout(5, 5));
+		centerPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 5));
+
+		centerPanel.add(ticketScrollPane, BorderLayout.NORTH);
+		centerPanel.add(createTotalViewerPanel(), BorderLayout.CENTER);
+
+		leftPanel.add(centerPanel, BorderLayout.NORTH);
+
 		rightPanel.add(paymentView);
 
 		getContentPane().add(leftPanel, BorderLayout.CENTER);
 		getContentPane().add(rightPanel, BorderLayout.EAST);
+		paymentView.updateView();
+		updateView();
+	}
+
+	public void updateView() {
+		if (ticket == null) {
+			tfSubtotal.setText(""); //$NON-NLS-1$
+			tfDiscount.setText(""); //$NON-NLS-1$
+			tfTax.setText(""); //$NON-NLS-1$
+			tfTotal.setText(""); //$NON-NLS-1$
+			return;
+		}
+		tfSubtotal.setText(NumberUtil.formatNumber(ticket.getSubtotalAmount()));
+		tfDiscount.setText(NumberUtil.formatNumber(ticket.getDiscountAmount()));
+
+		if (Application.getInstance().isPriceIncludesTax()) {
+			tfTax.setText(Messages.getString("TicketView.35")); //$NON-NLS-1$
+		}
+		else {
+			tfTax.setText(NumberUtil.formatNumber(ticket.getTaxAmount()));
+		}
+
+		tfTotal.setText(NumberUtil.formatNumber(ticket.getTotalAmount()));
+
+	}
+
+	/*public JPanel buttonPanel() {
+
+		JPanel ticketAmountPanel = new com.floreantpos.swing.TransparentPanel(new MigLayout("fill","sg","sg")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+
+		PosButton btnGratuity = new PosButton("GRATUITY");
+		PosButton btnDiscount = new PosButton("DISCOUNTS");
+
+		ticketAmountPanel.add(btnGratuity,"grow"); //$NON-NLS-1$
+		ticketAmountPanel.add(btnDiscount,"grow"); //$NON-NLS-1$
+		btnGratuity.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				doSetGratuity();
+			}
+		});
+
+		btnDiscount.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				doViewDiscounts();
+			}
+		});
+
+		return ticketAmountPanel;
+	}*/
+
+	private JPanel createTotalViewerPanel() {
+
+		JLabel lblSubtotal = new javax.swing.JLabel();
+		lblSubtotal.setFont(lblSubtotal.getFont().deriveFont(Font.PLAIN, 18));
+		lblSubtotal.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+		lblSubtotal.setText(com.floreantpos.POSConstants.SUBTOTAL + ":"); //$NON-NLS-1$
+
+		tfSubtotal = new javax.swing.JTextField(10);
+		tfSubtotal.setFont(tfSubtotal.getFont().deriveFont(Font.PLAIN, 16));
+		tfSubtotal.setHorizontalAlignment(SwingConstants.TRAILING);
+		tfSubtotal.setEditable(false);
+
+		JLabel lblDiscount = new javax.swing.JLabel();
+
+		lblDiscount.setFont(lblSubtotal.getFont().deriveFont(Font.PLAIN, 18));
+		lblDiscount.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+		lblDiscount.setText(Messages.getString("TicketView.9")); //$NON-NLS-1$
+
+		tfDiscount = new javax.swing.JTextField(10);
+		tfDiscount.setFont(tfDiscount.getFont().deriveFont(Font.PLAIN, 16));
+		tfDiscount.setHorizontalAlignment(SwingConstants.TRAILING);
+		tfDiscount.setEditable(false);
+		tfDiscount.setText(ticket.getDiscountAmount().toString());
+
+		JLabel lblTax = new javax.swing.JLabel();
+		lblTax.setFont(lblTax.getFont().deriveFont(Font.PLAIN, 18));
+		lblTax.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+		lblTax.setText(com.floreantpos.POSConstants.TAX + ":"); //$NON-NLS-1$
+
+		tfTax = new javax.swing.JTextField();
+		tfTax.setFont(tfTax.getFont().deriveFont(Font.PLAIN, 16));
+		tfTax.setEditable(false);
+		tfTax.setHorizontalAlignment(SwingConstants.TRAILING);
+
+		JLabel lblTotal = new javax.swing.JLabel();
+		lblTotal.setFont(lblTotal.getFont().deriveFont(Font.PLAIN, 20));
+		lblTotal.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+		lblTotal.setText(com.floreantpos.POSConstants.TOTAL + ":"); //$NON-NLS-1$
+
+		tfTotal = new javax.swing.JTextField(10);
+
+		tfTotal.setFont(tfTotal.getFont().deriveFont(Font.BOLD, 18));
+		tfTotal.setHorizontalAlignment(SwingConstants.TRAILING);
+		tfTotal.setEditable(false);
+
+		JPanel ticketAmountPanel = new com.floreantpos.swing.TransparentPanel(new MigLayout("ins 2 2 3 2,alignx trailing,fill", "[grow][]", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+
+		ticketAmountPanel.add(lblSubtotal, "growx,aligny center"); //$NON-NLS-1$
+		ticketAmountPanel.add(tfSubtotal, "growx,aligny center"); //$NON-NLS-1$
+		ticketAmountPanel.add(lblDiscount, "newline,growx,aligny center"); //$NON-NLS-1$ //$NON-NLS-2$
+		ticketAmountPanel.add(tfDiscount, "growx,aligny center"); //$NON-NLS-1$
+		ticketAmountPanel.add(lblTax, "newline,growx,aligny center"); //$NON-NLS-1$
+		ticketAmountPanel.add(tfTax, "growx,aligny center"); //$NON-NLS-1$
+		ticketAmountPanel.add(lblTotal, "newline,growx,aligny center"); //$NON-NLS-1$
+		ticketAmountPanel.add(tfTotal, "growx,aligny center"); //$NON-NLS-1$
+
+		return ticketAmountPanel;
 	}
 
 	private void updateModel() {
 		if (ticket == null) {
 			return;
 		}
-
 		ticket.calculatePrice();
 	}
 
@@ -145,7 +294,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 				updateModel();
 
 				OrderController.saveOrder(ticket);
-				ticketDetailView.updateView();
+				//ticketDetailView.updateView();
 				paymentView.updateView();
 			}
 		} catch (Exception e) {
@@ -200,7 +349,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 		ticket.calculatePrice();
 		OrderController.saveOrder(ticket);
 
-		ticketDetailView.updateView();
+		//ticketDetailView.updateView();
 		paymentView.updateView();
 	}
 
@@ -218,7 +367,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 
 				TicketDAO.getInstance().saveOrUpdate(ticket);
 
-				ticketDetailView.updateView();
+				//	ticketDetailView.updateView();
 				paymentView.updateView();
 			}
 
@@ -227,7 +376,94 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 		}
 	}// GEN-LAST:event_btnViewDiscountsdoViewDiscounts
 
-	public void doSettle() {
+	public void doSettle(PaymentType paymentType) {
+		try {
+			if (ticket == null)
+				return;
+			this.paymentType = paymentType;
+			tenderAmount = paymentView.getTenderedAmount();
+
+			if (ticket.getType() == OrderType.BAR_TAB) {
+				doSettleBarTabTicket(ticket);
+				return;
+			}
+
+			cardName = paymentType.getDisplayString();
+			PosTransaction transaction = null;
+
+			switch (paymentType) {
+				case CASH:
+					if (!confirmPayment()) {
+						return;
+					}
+
+					transaction = new CashTransaction();
+					transaction.setPaymentType(paymentType.name());
+					transaction.setTicket(ticket);
+					transaction.setCaptured(true);
+					setTransactionAmounts(transaction);
+
+					settleTicket(transaction);
+					break;
+
+				case CREDIT_CARD:
+				case CREDIT_VISA:
+				case CREDIT_MASTER_CARD:
+				case CREDIT_AMEX:
+				case CREDIT_DISCOVERY:
+					payUsingCard(cardName, tenderAmount);
+					break;
+
+				case DEBIT_CARD:
+				case DEBIT_VISA:
+				case DEBIT_MASTER_CARD:
+					payUsingCard(cardName, tenderAmount);
+					break;
+
+				case GIFT_CERTIFICATE:
+					GiftCertDialog giftCertDialog = new GiftCertDialog(this);
+					giftCertDialog.pack();
+					giftCertDialog.open();
+
+					if (giftCertDialog.isCanceled())
+						return;
+
+					transaction = new GiftCertificateTransaction();
+					transaction.setPaymentType(PaymentType.GIFT_CERTIFICATE.name());
+					transaction.setTicket(ticket);
+					transaction.setCaptured(true);
+					setTransactionAmounts(transaction);
+
+					double giftCertFaceValue = giftCertDialog.getGiftCertFaceValue();
+					double giftCertCashBackAmount = 0;
+					transaction.setTenderAmount(giftCertFaceValue);
+
+					if (giftCertFaceValue >= ticket.getDueAmount()) {
+						transaction.setAmount(ticket.getDueAmount());
+						giftCertCashBackAmount = giftCertFaceValue - ticket.getDueAmount();
+					}
+					else {
+						transaction.setAmount(giftCertFaceValue);
+					}
+
+					transaction.setGiftCertNumber(giftCertDialog.getGiftCertNumber());
+					transaction.setGiftCertFaceValue(giftCertFaceValue);
+					transaction.setGiftCertPaidAmount(transaction.getAmount());
+					transaction.setGiftCertCashBackAmount(giftCertCashBackAmount);
+
+					settleTicket(transaction);
+					break;
+
+				default:
+					break;
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	/*public void doSettle() {
 		try {
 			if (ticket == null)
 				return;
@@ -319,7 +555,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
+	}*/
 
 	private boolean confirmPayment() {
 		if (!TerminalConfig.isUseSettlementPrompt()) {
@@ -479,8 +715,8 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 			}
 
 			ReceiptPrintService.printTransaction(transaction);
-			
-			if(transaction instanceof CashTransaction) {
+
+			if (transaction instanceof CashTransaction) {
 				DrawerUtil.kickDrawer();
 			}
 		} catch (Exception ee) {
@@ -559,9 +795,9 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 		this.previousViewName = previousViewName;
 	}
 
-	public TicketDetailView getTicketDetailView() {
+	/*public TicketDetailView getTicketDetailView() {
 		return ticketDetailView;
-	}
+	}*/
 
 	@Override
 	public void open() {
@@ -699,7 +935,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 
 			POSMessageDialog.showMessage(Application.getPosWindow(), Messages.getString("SettleTicketDialog.21")); //$NON-NLS-1$
 
-			ticketDetailView.updateView();
+			//ticketDetailView.updateView();
 			paymentView.updateView();
 
 			//			if (string.contains("\"success\":false")) {
@@ -747,7 +983,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 	public void setTicket(Ticket ticket) {
 		this.ticket = ticket;
 
-		ticketDetailView.setTickets(Arrays.asList(ticket));
+		//ticketDetailView.setTickets(Arrays.asList(ticket));
 		paymentView.updateView();
 	}
 }
