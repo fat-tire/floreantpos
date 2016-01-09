@@ -26,7 +26,6 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 
 import javax.swing.AbstractButton;
-import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
@@ -37,7 +36,6 @@ import com.jgoodies.looks.plastic.PlasticToggleButtonUI;
 public class POSToggleButtonUI extends PlasticToggleButtonUI {
 	private static final POSToggleButtonUI INSTANCE = new POSToggleButtonUI();
 	
-	private final static Border pressedBorder = BorderFactory.createLineBorder(Color.black, 5);
 	private final static Border defaultBorder = UIManager.getBorder("Button.border"); //$NON-NLS-1$
 
 	public static ComponentUI createUI(JComponent b) {

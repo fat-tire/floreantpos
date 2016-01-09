@@ -79,7 +79,7 @@ public class TicketView extends JPanel {
 	private com.floreantpos.swing.TransparentPanel ticketItemActionPanel;
 	private javax.swing.JScrollPane ticketScrollPane;
 	private PosButton btnTotal;
-	public com.floreantpos.ui.ticket.TicketViewerTable ticketViewerTable;
+	private com.floreantpos.ui.ticket.TicketViewerTable ticketViewerTable;
 	private JPanel itemSearchPanel;
 	private JTextField txtSearchItem;
 	private TitledBorder titledBorder = new TitledBorder(""); //$NON-NLS-1$

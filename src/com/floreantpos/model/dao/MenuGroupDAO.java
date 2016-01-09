@@ -47,7 +47,12 @@ public class MenuGroupDAO extends BaseMenuGroupDAO {
 			criteria.add(Restrictions.eq(MenuGroup.PROP_VISIBLE, Boolean.TRUE));
 			criteria.add(Restrictions.eq(MenuGroup.PROP_PARENT, category));
 
-			return criteria.list();
+			List<MenuGroup> list = criteria.list();
+			for (MenuGroup menuGroup : list) {
+				menuGroup.setParent(category);
+			}
+			
+			return list;
 		} finally {
 			closeSession(session);
 		}

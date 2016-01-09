@@ -24,6 +24,8 @@
 package com.floreantpos.ui.views.order;
 
 import java.awt.Dimension;
+import java.awt.GridLayout;
+import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Collection;
@@ -65,8 +67,6 @@ public class CategoryView extends SelectionView implements ActionListener {
 	public CategoryView() {
 		super(com.floreantpos.POSConstants.CATEGORIES, 100, TerminalConfig.getMenuItemButtonHeight());
 		
-		setBackVisible(false);
-		
 		categoryButtonGroup = new ButtonGroup();
 		setPreferredSize(new Dimension(120, 100));
 	}
@@ -89,11 +89,11 @@ public class CategoryView extends SelectionView implements ActionListener {
 		
 		setItems(categories);
 		
-//		CategoryButton categoryButton = (CategoryButton) buttonsPanel.getComponent(0);
-//		if(categoryButton != null) {
-//			categoryButton.setSelected(true);
-//			fireCategorySelected(categoryButton.foodCategory);
-//		}
+		CategoryButton categoryButton = (CategoryButton) getFirstItemButton();
+		if(categoryButton != null) {
+			categoryButton.setSelected(true);
+			fireCategorySelected(categoryButton.foodCategory);
+		}
 	}
 	
 	@Override
@@ -110,6 +110,11 @@ public class CategoryView extends SelectionView implements ActionListener {
 		buttonMap.put(String.valueOf(menuCategory.getId()), button);
 		
 		return button;
+	}
+	
+	@Override
+	protected LayoutManager createButtonPanelLayout() {
+		return new GridLayout(0, 1, 2, 5);
 	}
 	
 	public void addCategorySelectionListener(CategorySelectionListener listener) {
@@ -172,8 +177,4 @@ public class CategoryView extends SelectionView implements ActionListener {
 	}
 	
 	private static Logger logger = Logger.getLogger(MenuItemView.class);
-
-	@Override
-	public void doGoBack() {
-	}
 }

@@ -11,7 +11,7 @@
 		
 		<property column="COOKABLE" name="cookable" type="java.lang.Boolean" />
 		<property column="MENU_ITEM_CODE" name="menuItemCode" type="string" />
-		<property column="MENU_ITEM_NAME" name="menuItemName" type="string" length="30"/>
+		<property column="MENU_ITEM_NAME" name="menuItemName" type="string" length="120"/>
 		<property column="QUANTITY" name="quantity" type="java.lang.Integer"/>
 		
 		<property column="VOIDED" name="voided" type="java.lang.Boolean" />

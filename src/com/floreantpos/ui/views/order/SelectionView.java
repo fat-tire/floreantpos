@@ -19,9 +19,9 @@ package com.floreantpos.ui.views.order;
 
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
@@ -31,6 +31,8 @@ import java.util.List;
 import javax.swing.AbstractButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
 import net.miginfocom.swing.MigLayout;
@@ -38,30 +40,25 @@ import net.miginfocom.swing.MigLayout;
 import org.jdesktop.swingx.JXTitledSeparator;
 
 import com.floreantpos.POSConstants;
-import com.floreantpos.actions.NewBarTabAction;
 import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.swing.PosButton;
 
 public abstract class SelectionView extends JPanel implements ComponentListener {
-	private final static int HORIZONTAL_GAP = 15;
-	private final static int VERTICAL_GAP = 15;
-
-	private Dimension buttonSize;
-
-	protected CardLayout cardLayout = new CardLayout();
-	protected final JPanel buttonsPanel = new JPanel(cardLayout);
+	private final static int HORIZONTAL_GAP = 5;
+	private final static int VERTICAL_GAP = 5;
 
 	protected List items;
 	
-	protected int previousBlockIndex = -1;
-	protected int currentBlockIndex = 0;
-	protected int nextBlockIndex;
+	private Dimension buttonSize;
+	
+	protected CardLayout cardLayout = new CardLayout();
+	private JPanel cardLayoutContainer = new JPanel(cardLayout);
+	protected JPanel buttonPanelContainer = new JPanel(new BorderLayout());
 	
 	protected TitledBorder border;
 	
 	protected JPanel actionButtonPanel = new JPanel(new MigLayout("fill,hidemode 3, ins 2", "sg, fill", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
-	protected com.floreantpos.swing.PosButton btnBack;
 	protected com.floreantpos.swing.PosButton btnNext;
 	protected com.floreantpos.swing.PosButton btnPrev;
 	
@@ -74,16 +71,12 @@ public abstract class SelectionView extends JPanel implements ComponentListener 
 
 		border = new TitledBorder(title);
 		border.setTitleJustification(TitledBorder.CENTER);
-
-		setBorder(border);
+		setBorder(new CompoundBorder(border, new EmptyBorder(2, 2, 2, 2)));
 
 		setLayout(new BorderLayout(HORIZONTAL_GAP, VERTICAL_GAP));
-
-		add(buttonsPanel);
-
-		btnBack = new PosButton();
-		btnBack.setText(POSConstants.CAPITAL_BACK);
-		actionButtonPanel.add(btnBack, "grow,shrink, align center"); //$NON-NLS-1$
+		
+		buttonPanelContainer.add(cardLayoutContainer);
+		add(buttonPanelContainer);
 
 		btnPrev = new PosButton();
 		btnPrev.setText(POSConstants.CAPITAL_PREV);
@@ -96,7 +89,6 @@ public abstract class SelectionView extends JPanel implements ComponentListener 
 		add(actionButtonPanel, BorderLayout.SOUTH);
 
 		ScrollAction action = new ScrollAction();
-		btnBack.addActionListener(action);
 		btnPrev.addActionListener(action);
 		btnNext.addActionListener(action);
 
@@ -113,9 +105,6 @@ public abstract class SelectionView extends JPanel implements ComponentListener 
 
 	public void setItems(List items) {
 		this.items = items;
-		currentBlockIndex = 0;
-		nextBlockIndex = 0;
-		
 		renderItems();
 	}
 
@@ -134,10 +123,10 @@ public abstract class SelectionView extends JPanel implements ComponentListener 
 	protected abstract AbstractButton createItemButton(Object item);
 
 	public void reset() {
-		//btnBack.setEnabled(false);
-		btnNext.setEnabled(false);
-		btnPrev.setEnabled(false);
-		
+		cardLayoutContainer.removeAll();
+//		btnNext.setEnabled(false);
+//		btnPrev.setEnabled(false);
+//		
 //		Component[] components = buttonsPanel.getComponents();
 //		for (int i = 0; i < components.length; i++) {
 //			Component c = components[i];
@@ -153,13 +142,20 @@ public abstract class SelectionView extends JPanel implements ComponentListener 
 //				}
 //			}
 //		}
-		buttonsPanel.removeAll();
-		buttonsPanel.revalidate();
-		buttonsPanel.repaint();
+//		buttonsPanel.removeAll();
+//		buttonsPanel.revalidate();
+//		buttonsPanel.repaint();
+	}
+	
+	protected int getHorizontalButtonCount() {
+		Dimension size = buttonPanelContainer.getSize();
+		Dimension itemButtonSize = getButtonSize();
+
+		return getButtonCount(size.width, itemButtonSize.width);
 	}
 	
 	protected int getFitableButtonCount() {
-		Dimension size = buttonsPanel.getSize();
+		Dimension size = buttonPanelContainer.getSize();
 		Dimension itemButtonSize = getButtonSize();
 
 		int horizontalButtonCount = getButtonCount(size.width, itemButtonSize.width);
@@ -183,12 +179,14 @@ public abstract class SelectionView extends JPanel implements ComponentListener 
 		
 		int totalItem = getFitableButtonCount();
 		
-		previousBlockIndex = currentBlockIndex - totalItem;
-		nextBlockIndex = currentBlockIndex + totalItem;
-		
 		try {
-			JPanel buttonContainer = null;
+			ButtonPanel buttonPanel = null;
 			for (int i = 0; i < items.size(); i++) {
+				if(i % totalItem == 0) {
+					buttonPanel = new ButtonPanel("buttonpanel-" + i);
+					buttonPanel.setLayout(createButtonPanelLayout());
+					cardLayoutContainer.add(buttonPanel, buttonPanel.getName());
+				}
 
 				Object item = items.get(i);
 
@@ -196,79 +194,55 @@ public abstract class SelectionView extends JPanel implements ComponentListener 
 				if(itemButton == null) {
 					continue;
 				}
+				
 				itemButton.setPreferredSize(itemButtonSize);
-				
-				if(i % totalItem == 0) {
-					buttonContainer = new JPanel();
-					buttonsPanel.add(buttonContainer);
-				}
-				
-				buttonContainer.add(itemButton);//, "width " + itemButtonSize.width + "!, height " + itemButtonSize.height + "!"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-
-//				if (i == items.size() - 1) {
-//					break;
-//				}
+				buttonPanel.add(itemButton);
 			}
 		} catch (Exception e) {
 			// TODO: fix it.
 		}
 		
-		cardLayout.first(buttonsPanel);
-		btnPrev.setEnabled(buttonsPanel.getComponentCount() > 1);
-		btnNext.setEnabled(buttonsPanel.getComponentCount() > 1);
-		
-//		if(previousBlockIndex >= 0 && currentBlockIndex != 0) {
-//			btnPrev.setEnabled(true);
-//		}
-//		
-//		if(nextBlockIndex < items.size()) {
-//			btnNext.setEnabled(true);
-//		}
+		cardLayout.first(cardLayoutContainer);
+		if(cardLayoutContainer.getComponentCount() > 1) {
+			btnPrev.setVisible(true);
+			btnNext.setVisible(true);
+		}
+		else {
+			btnPrev.setVisible(false);
+			btnNext.setVisible(false);
+		}
 		
 		revalidate();
 		repaint();
+	}
+
+	protected LayoutManager createButtonPanelLayout() {
+		return new FlowLayout(FlowLayout.CENTER);
 	}
 	
 	public void addButton(AbstractButton button) {
 		button.setPreferredSize(buttonSize);
 		button.setText("<html><body><center>" + button.getText() + "</center></body></html>"); //$NON-NLS-1$ //$NON-NLS-2$
-		buttonsPanel.add(button);
+		cardLayoutContainer.add(button);
 	}
 
 	public void addSeparator(String text) {
-		buttonsPanel.add(new JXTitledSeparator(text, JLabel.CENTER), "alignx 50%, newline, span, growx, height 30!"); //$NON-NLS-1$
+		cardLayoutContainer.add(new JXTitledSeparator(text, JLabel.CENTER), "alignx 50%, newline, span, growx, height 30!"); //$NON-NLS-1$
 	}
 
 	private void scrollDown() {
-//		currentBlockIndex = nextBlockIndex;
-//		renderItems();
-		cardLayout.next(buttonsPanel);
+		cardLayout.next(cardLayoutContainer);
 	}
 
 	private void scrollUp() {
-//		currentBlockIndex = previousBlockIndex;
-//		renderItems();
-		cardLayout.previous(buttonsPanel);
+		cardLayout.previous(cardLayoutContainer);
 	}
-
-	public void setBackEnable(boolean enable) {
-		btnBack.setEnabled(enable);
-	}
-
-	public void setBackVisible(boolean enable) {
-		btnBack.setVisible(enable);
-	}
-
-	public abstract void doGoBack();
 
 	private class ScrollAction implements ActionListener {
 
 		public void actionPerformed(ActionEvent e) {
 			Object source = e.getSource();
-			if (source == btnBack) {
-				doGoBack();
-			}
-			else if (source == btnPrev) {
+			if (source == btnPrev) {
 				scrollUp();
 			}
 			else if (source == btnNext) {
@@ -279,7 +253,21 @@ public abstract class SelectionView extends JPanel implements ComponentListener 
 	}
 
 	public JPanel getButtonsPanel() {
-		return buttonsPanel;
+		return cardLayoutContainer;
+	}
+	
+	public AbstractButton getFirstItemButton() {
+		int componentCount = cardLayoutContainer.getComponentCount();
+		if(componentCount == 0) {
+			return null;
+		}
+		
+		ButtonPanel buttonPanel = (ButtonPanel) cardLayoutContainer.getComponent(0);
+		if(buttonPanel.getComponentCount() == 0) {
+			return null;
+		}
+		
+		return (AbstractButton) buttonPanel.getComponent(0);
 	}
 
 	protected int getButtonCount(int containerSize, int itemSize) {
@@ -290,7 +278,7 @@ public abstract class SelectionView extends JPanel implements ComponentListener 
 
 	public void componentResized(ComponentEvent e) {
 		int totalItem = getFitableButtonCount();
-		if(totalItem == buttonsPanel.getComponentCount()) {
+		if(totalItem == cardLayoutContainer.getComponentCount()) {
 			return;
 		}
 		
@@ -304,5 +292,13 @@ public abstract class SelectionView extends JPanel implements ComponentListener 
 	}
 
 	public void componentHidden(ComponentEvent e) {
+	}
+	
+	private class ButtonPanel extends JPanel {
+		
+		public ButtonPanel(String name) {
+			setName(name);
+			setBorder(null);
+		}
 	}
 }

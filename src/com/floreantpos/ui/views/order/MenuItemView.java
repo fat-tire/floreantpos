@@ -23,6 +23,7 @@
 
 package com.floreantpos.ui.views.order;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -58,7 +59,13 @@ public class MenuItemView extends SelectionView {
 	/** Creates new form GroupView */
 	public MenuItemView() {
 		super(com.floreantpos.POSConstants.ITEMS, 120, 120);
-		setBackEnable(false);
+		remove(actionButtonPanel);
+
+		btnPrev.setText("<");
+		btnNext.setText(">");
+
+		add(btnPrev, BorderLayout.WEST);
+		add(btnNext, BorderLayout.EAST);
 	}
 
 	public MenuGroup getMenuGroup() {
@@ -77,7 +84,6 @@ public class MenuItemView extends SelectionView {
 		MenuItemDAO dao = new MenuItemDAO();
 		try {
 			List<MenuItem> items = dao.findByParent(Application.getInstance().getTerminal(), menuGroup, false);
-			setBackEnable(items.size() > 0);
 
 			setItems(items);
 		} catch (PosException e) {
@@ -105,12 +111,6 @@ public class MenuItemView extends SelectionView {
 	private void fireItemSelected(MenuItem foodItem) {
 		for (ItemSelectionListener listener : listenerList) {
 			listener.itemSelected(foodItem);
-		}
-	}
-
-	private void fireBackFromItemSelected() {
-		for (ItemSelectionListener listener : listenerList) {
-			listener.itemSelectionFinished(menuGroup);
 		}
 	}
 
@@ -167,10 +167,5 @@ public class MenuItemView extends SelectionView {
 		public void actionPerformed(ActionEvent e) {
 			fireItemSelected(foodItem);
 		}
-	}
-
-	@Override
-	public void doGoBack() {
-		fireBackFromItemSelected();
 	}
 }

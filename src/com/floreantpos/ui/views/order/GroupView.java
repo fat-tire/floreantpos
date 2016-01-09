@@ -23,18 +23,23 @@
 
 package com.floreantpos.ui.views.order;
 
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.GridLayout;
+import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.Vector;
 
-import javax.swing.JButton;
+import javax.swing.AbstractButton;
+import javax.swing.ButtonGroup;
 
 import com.floreantpos.model.MenuCategory;
 import com.floreantpos.model.MenuGroup;
 import com.floreantpos.model.dao.MenuGroupDAO;
 import com.floreantpos.swing.MessageDialog;
-import com.floreantpos.swing.PosButton;
+import com.floreantpos.swing.POSToggleButton;
 import com.floreantpos.ui.views.order.actions.GroupSelectionListener;
 
 /**
@@ -43,17 +48,29 @@ import com.floreantpos.ui.views.order.actions.GroupSelectionListener;
  */
 public class GroupView extends SelectionView {
 	private Vector<GroupSelectionListener> listenerList = new Vector<GroupSelectionListener>();
-    
+
 	private MenuCategory menuCategory;
-    
-    public static final String VIEW_NAME = "GROUP_VIEW"; //$NON-NLS-1$
-    
-    /** Creates new form GroupView */
-    public GroupView() {
-        super(com.floreantpos.POSConstants.GROUPS, 120, 120);
-        
-        setBackEnable(false);
-    }
+
+	public static final String VIEW_NAME = "GROUP_VIEW"; //$NON-NLS-1$
+
+	private ButtonGroup buttonGroup;
+
+	/** Creates new form GroupView */
+	public GroupView() {
+		super(com.floreantpos.POSConstants.GROUPS, 100, 60);
+
+		//removeAll();
+		//buttonsPanel.setLayout(new GridLayout(1, 0, 5, 5));
+		remove(actionButtonPanel);
+
+		btnPrev.setText("<");
+		btnNext.setText(">");
+		//btnPrev.setPreferredSize(new Dimension(50,40));
+		//btnNext.setPreferredSize(new Dimension(50,40));
+
+		add(btnPrev, BorderLayout.WEST);
+		add(btnNext, BorderLayout.EAST);
+	}
 
 	public MenuCategory getMenuCategory() {
 		return menuCategory;
@@ -62,89 +79,93 @@ public class GroupView extends SelectionView {
 	public void setMenuCategory(MenuCategory menuCategory) {
 		this.menuCategory = menuCategory;
 
-		//reset();
-		
 		if (menuCategory == null) {
 			return;
 		}
-		
+
 		try {
 			MenuGroupDAO dao = new MenuGroupDAO();
 			List<MenuGroup> groups = dao.findEnabledByParent(menuCategory);
-			
-			if(groups.size() == 1) {
+			setItems(groups);
+
+			if (groups.size() > 0) {
 				MenuGroup menuGroup = groups.get(0);
-				fireGroupSelected(menuGroup);
+				GroupButton groupButton = (GroupButton) getFirstItemButton();
+				if (groupButton != null) {
+					groupButton.setSelected(true);
+					fireGroupSelected(menuGroup);
+				}
 				return;
 			}
 
-//			int v = 0;
-//			List<MenuGroup> groups2 = new ArrayList<MenuGroup>();
-//			for (MenuGroup menuGroup : groups) {
-//				String name = menuGroup.getName();
-//				for (int i = 0; i < 30; i++) {
-//					MenuGroup menuGroup2 = new MenuGroup(menuGroup.getId());
-//					menuGroup2.setParent(menuGroup.getParent());
-//					menuGroup2.setName(name + (++v));
-//					groups2.add(menuGroup2);
-//				}
-//			}
-//			
-//			setItems(groups2);
-			
-			setItems(groups);
 		} catch (Exception e) {
 			MessageDialog.showError(e);
 		}
 	}
+
+	@Override
+	protected void renderItems() {
+		buttonGroup = new ButtonGroup();
+		super.renderItems();
+	}
+
+	protected int getFitableButtonCount() {
+		Dimension size = buttonPanelContainer.getSize();
+		Dimension itemButtonSize = getButtonSize();
+
+		int horizontalButtonCount = getButtonCount(size.width, itemButtonSize.width);
+
+		return horizontalButtonCount;
+	}
 	
+	@Override
+	protected LayoutManager createButtonPanelLayout() {
+		return new GridLayout(1, 0, 5, 0);
+	}
+
 	public void addGroupSelectionListener(GroupSelectionListener listener) {
 		listenerList.add(listener);
 	}
-	
+
 	public void removeGroupSelectionListener(GroupSelectionListener listener) {
 		listenerList.remove(listener);
 	}
-	
+
 	private void fireGroupSelected(MenuGroup foodGroup) {
 		for (GroupSelectionListener listener : listenerList) {
 			listener.groupSelected(foodGroup);
 		}
 	}
-	
+
 	@Override
-	protected JButton createItemButton(Object item) {
+	protected AbstractButton createItemButton(Object item) {
 		MenuGroup menuGroup = (MenuGroup) item;
 		GroupButton button = new GroupButton(menuGroup);
-		
+		buttonGroup.add(button);
+
 		return button;
 	}
-	
-	
-	private class GroupButton extends PosButton implements ActionListener {
+
+	private class GroupButton extends POSToggleButton implements ActionListener {
 		MenuGroup menuGroup;
-		
+
 		GroupButton(MenuGroup foodGroup) {
 			this.menuGroup = foodGroup;
-			
+
 			setText("<html><body><center>" + foodGroup.getDisplayName() + "</center></body></html>"); //$NON-NLS-1$ //$NON-NLS-2$
-			
-			if(menuGroup.getButtonColorCode() != null) {
+
+			if (menuGroup.getButtonColorCode() != null) {
 				setBackground(menuGroup.getButtonColor());
 			}
-			if(menuGroup.getTextColorCode() != null) {
+			if (menuGroup.getTextColorCode() != null) {
 				setForeground(menuGroup.getTextColor());
 			}
-			
+
 			addActionListener(this);
 		}
 
 		public void actionPerformed(ActionEvent e) {
 			fireGroupSelected(menuGroup);
 		}
-	}
-
-	@Override
-	public void doGoBack() {
 	}
 }
