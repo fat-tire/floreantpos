@@ -17,14 +17,18 @@
  */
 package com.floreantpos.ui.views.payment;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -37,9 +41,11 @@ import com.floreantpos.IconFactory;
 import com.floreantpos.Messages;
 import com.floreantpos.POSConstants;
 import com.floreantpos.model.Gratuity;
+import com.floreantpos.model.PaymentType;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.swing.PosButton;
+import com.floreantpos.swing.TransparentPanel;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.util.NumberUtil;
 
@@ -52,226 +58,324 @@ public class PaymentView extends JPanel {
 
 	private PosButton btnGratuity;
 	private com.floreantpos.swing.PosButton btnCancel;
-	private com.floreantpos.swing.PosButton btnFinish;
+	private com.floreantpos.swing.PosButton btnCash;
+	private com.floreantpos.swing.PosButton btnDebitCard;
+	private com.floreantpos.swing.PosButton btnCreditCard;
+	private com.floreantpos.swing.PosButton btnGift;
+
 	private com.floreantpos.swing.TransparentPanel calcButtonPanel;
-	private javax.swing.JLabel jLabel4;
-	private javax.swing.JLabel jLabel6;
+	private javax.swing.JLabel labelDueAmount;
+	private javax.swing.JLabel labelTenderedAmount;
 	private com.floreantpos.swing.TransparentPanel actionButtonPanel;
-	private com.floreantpos.swing.PosButton posButton1;
-	private com.floreantpos.swing.PosButton posButton10;
-	private com.floreantpos.swing.PosButton posButton11;
-	private com.floreantpos.swing.PosButton posButton12;
-	private com.floreantpos.swing.PosButton posButton2;
-	private com.floreantpos.swing.PosButton posButton3;
-	private com.floreantpos.swing.PosButton posButton4;
-	private com.floreantpos.swing.PosButton posButton5;
-	private com.floreantpos.swing.PosButton posButton6;
-	private com.floreantpos.swing.PosButton posButton7;
-	private com.floreantpos.swing.PosButton posButton8;
-	private com.floreantpos.swing.PosButton posButton9;
-	private com.floreantpos.swing.FocusedTextField tfAmountTendered;
-	private com.floreantpos.swing.FocusedTextField tfDueAmount;
-	private com.floreantpos.swing.TransparentPanel transparentPanel1;
-//	private POSToggleButton btnTaxExempt;
-	private PosButton btnCoupon;
-	private PosButton btnViewCoupons;
-	private JLabel label;
+	private com.floreantpos.swing.PosButton btn7;
+	private com.floreantpos.swing.PosButton btnDot;
+	private com.floreantpos.swing.PosButton btn0;
+	private com.floreantpos.swing.PosButton btnClear;
+	private com.floreantpos.swing.PosButton btn8;
+	private com.floreantpos.swing.PosButton btn9;
+	private com.floreantpos.swing.PosButton btn4;
+	private com.floreantpos.swing.PosButton btn5;
+	private com.floreantpos.swing.PosButton btn6;
+	private com.floreantpos.swing.PosButton btn3;
+	private com.floreantpos.swing.PosButton btn2;
+	private com.floreantpos.swing.PosButton btn1;
+	private com.floreantpos.swing.PosButton btn00;
+	private com.floreantpos.swing.PosButton btnNextAmount;
+
+	private com.floreantpos.swing.PosButton btnAmount10;
+	private com.floreantpos.swing.PosButton btnAmount20;
+	private com.floreantpos.swing.PosButton btnAmount50;
+	private com.floreantpos.swing.PosButton btnAmount100;
+	private com.floreantpos.swing.PosButton btnExactAmount;
+
+	private JTextField txtTenderedAmount;
+	private JTextField txtDueAmount;
+	private PosButton btnDiscount;
 
 	public PaymentView(SettleTicketDialog settleTicketView) {
 		this.settleTicketView = settleTicketView;
 
 		initComponents();
-
-		//		btnUseKalaId.setActionCommand(ADD);
 	}
 
 	private void initComponents() {
+
+		setLayout(new BorderLayout(5, 5));
+
+		JPanel centerPanel = new JPanel(new BorderLayout(5, 5));
+		centerPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(20, 15, 20, 20));
+
+		TransparentPanel rightPanel = new TransparentPanel(new BorderLayout());
+		rightPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(20, 0, 20, 20));
+
+		TransparentPanel transparentPanel1 = new TransparentPanel(new BorderLayout());
+
+		labelDueAmount = new javax.swing.JLabel();
+		labelTenderedAmount = new javax.swing.JLabel();
+		txtDueAmount = new JTextField();
+		txtTenderedAmount = new JTextField();
+
+		labelTenderedAmount.setFont(new java.awt.Font("Tahoma", 1, 20)); // NOI18N //$NON-NLS-1$
+		labelTenderedAmount.setText(Messages.getString("PaymentView.54")); //$NON-NLS-1$
+		labelTenderedAmount.setForeground(Color.gray);
+
+		txtTenderedAmount.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+		txtTenderedAmount.setFont(new java.awt.Font("Tahoma", 1, 20)); // NOI18N //$NON-NLS-1$
+
+		labelDueAmount.setFont(new java.awt.Font("Tahoma", 1, 20)); // NOI18N //$NON-NLS-1$
+		labelDueAmount.setText(Messages.getString("PaymentView.52")); //$NON-NLS-1$
+		labelDueAmount.setForeground(Color.gray);
+
+		txtDueAmount.setFont(new java.awt.Font("Tahoma", 1, 20)); // NOI18N //$NON-NLS-1$
+		txtDueAmount.setEditable(false);
+		txtDueAmount.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+
+		transparentPanel1.setLayout(new MigLayout("", "[][grow,fill]", "[19px][][19px]")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		transparentPanel1.add(labelDueAmount, "cell 0 0,alignx right,aligny center"); //$NON-NLS-1$
+
+		transparentPanel1.add(labelTenderedAmount, "cell 0 2,alignx left,aligny center"); //$NON-NLS-1$
+		transparentPanel1.add(txtDueAmount, "cell 1 0,growx,aligny top"); //$NON-NLS-1$
+		transparentPanel1.add(txtTenderedAmount, "cell 1 2,growx,aligny top"); //$NON-NLS-1$
+
+		centerPanel.add(transparentPanel1, BorderLayout.NORTH);
 		calcButtonPanel = new com.floreantpos.swing.TransparentPanel();
-		posButton1 = new com.floreantpos.swing.PosButton();
-		posButton2 = new com.floreantpos.swing.PosButton();
-		posButton3 = new com.floreantpos.swing.PosButton();
-		posButton4 = new com.floreantpos.swing.PosButton();
-		posButton5 = new com.floreantpos.swing.PosButton();
-		posButton6 = new com.floreantpos.swing.PosButton();
-		posButton9 = new com.floreantpos.swing.PosButton();
-		posButton8 = new com.floreantpos.swing.PosButton();
-		posButton7 = new com.floreantpos.swing.PosButton();
-		posButton11 = new com.floreantpos.swing.PosButton();
-		posButton10 = new com.floreantpos.swing.PosButton();
-		posButton12 = new com.floreantpos.swing.PosButton();
-		actionButtonPanel = new com.floreantpos.swing.TransparentPanel();
-		transparentPanel1 = new com.floreantpos.swing.TransparentPanel();
-		jLabel4 = new javax.swing.JLabel();
-		jLabel6 = new javax.swing.JLabel();
-		tfDueAmount = new com.floreantpos.swing.FocusedTextField();
-		tfDueAmount.setFocusable(false);
-		tfAmountTendered = new com.floreantpos.swing.FocusedTextField();
+		//calcButtonPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 5, 0, 5));
+		calcButtonPanel.setLayout(new MigLayout("wrap 4,fill, ins 2", "sg, fill", "sg, fill")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
-		setLayout(new MigLayout("", "[fill,grow]", "[73px][grow,fill][grow,fill][][shrink 0]")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		btnNextAmount = new com.floreantpos.swing.PosButton();
+		btnAmount10 = new com.floreantpos.swing.PosButton();
+		btnAmount10.setFont(new Font("Arial", Font.PLAIN, 30)); //$NON-NLS-1$
 
-		calcButtonPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 5, 0, 5));
-		calcButtonPanel.setLayout(new java.awt.GridLayout(0, 3, 5, 5));
+		btnAmount20 = new com.floreantpos.swing.PosButton();
+		btnAmount20.setFont(new Font("Arial", Font.PLAIN, 30)); //$NON-NLS-1$
 
-		posButton1.setAction(calAction);
-		posButton1.setIcon(IconFactory.getIcon("/ui_icons/", "7.png")); // NOI18N //$NON-NLS-1$ //$NON-NLS-2$
-		posButton1.setActionCommand("7"); //$NON-NLS-1$
-		posButton1.setFocusable(false);
-		calcButtonPanel.add(posButton1);
+		btnAmount50 = new com.floreantpos.swing.PosButton();
+		btnAmount50.setFont(new Font("Arial", Font.PLAIN, 30)); //$NON-NLS-1$
 
-		posButton2.setAction(calAction);
-		posButton2.setIcon(IconFactory.getIcon("/ui_icons/", "8.png")); // NOI18N //$NON-NLS-1$ //$NON-NLS-2$
-		posButton2.setActionCommand("8"); //$NON-NLS-1$
-		posButton2.setFocusable(false);
-		calcButtonPanel.add(posButton2);
+		btnAmount100 = new com.floreantpos.swing.PosButton();
+		btnAmount100.setFont(new Font("Arial", Font.PLAIN, 30)); //$NON-NLS-1$
 
-		posButton3.setAction(calAction);
-		posButton3.setIcon(IconFactory.getIcon("/ui_icons/", "9.png")); // NOI18N //$NON-NLS-1$ //$NON-NLS-2$
-		posButton3.setActionCommand("9"); //$NON-NLS-1$
-		posButton3.setFocusable(false);
-		calcButtonPanel.add(posButton3);
+		btnExactAmount = new com.floreantpos.swing.PosButton();
 
-		posButton4.setAction(calAction);
-		posButton4.setIcon(IconFactory.getIcon("/ui_icons/", "4.png")); // NOI18N //$NON-NLS-1$ //$NON-NLS-2$
-		posButton4.setActionCommand("4"); //$NON-NLS-1$
-		posButton4.setFocusable(false);
-		calcButtonPanel.add(posButton4);
+		btn7 = new com.floreantpos.swing.PosButton();
+		btn8 = new com.floreantpos.swing.PosButton();
+		btn9 = new com.floreantpos.swing.PosButton();
+		btn4 = new com.floreantpos.swing.PosButton();
+		btn5 = new com.floreantpos.swing.PosButton();
+		btn6 = new com.floreantpos.swing.PosButton();
+		btn1 = new com.floreantpos.swing.PosButton();
+		btn2 = new com.floreantpos.swing.PosButton();
+		btn3 = new com.floreantpos.swing.PosButton();
+		btn0 = new com.floreantpos.swing.PosButton();
+		btnDot = new com.floreantpos.swing.PosButton();
+		btnClear = new com.floreantpos.swing.PosButton();
+		btn00 = new com.floreantpos.swing.PosButton();
 
-		posButton5.setAction(calAction);
-		posButton5.setIcon(IconFactory.getIcon("/ui_icons/", "5.png")); // NOI18N //$NON-NLS-1$ //$NON-NLS-2$
-		posButton5.setActionCommand("5"); //$NON-NLS-1$
-		posButton5.setFocusable(false);
-		calcButtonPanel.add(posButton5);
+		/*calcButtonPanel.add(labelDueAmount, "span 2");
+		calcButtonPanel.add(txtDueAmount, "span 2,grow");
+		calcButtonPanel.add(labelTenderedAmount, "span 2");
+		calcButtonPanel.add(txtTenderedAmount, "span 2,grow");*/
 
-		posButton6.setAction(calAction);
-		posButton6.setIcon(IconFactory.getIcon("/ui_icons/", "6.png")); // NOI18N //$NON-NLS-1$ //$NON-NLS-2$
-		posButton6.setActionCommand("6"); //$NON-NLS-1$
-		posButton6.setFocusable(false);
-		calcButtonPanel.add(posButton6);
+		btnAmount10.setAction(nextButtonAction);
+		btnAmount10.setText(Messages.getString("PaymentView.1")); //$NON-NLS-1$
+		btnAmount10.setActionCommand("10"); //$NON-NLS-1$
+		btnAmount10.setFocusable(false);
+		calcButtonPanel.add(btnAmount10);
 
-		posButton9.setAction(calAction);
-		posButton9.setIcon(IconFactory.getIcon("/ui_icons/", "1.png")); // NOI18N //$NON-NLS-1$ //$NON-NLS-2$
-		posButton9.setActionCommand(REMOVE);
-		posButton9.setFocusable(false);
-		calcButtonPanel.add(posButton9);
+		btn7.setAction(calAction);
+		btn7.setIcon(IconFactory.getIcon("/ui_icons/", "7.png")); // NOI18N //$NON-NLS-1$ //$NON-NLS-2$
+		btn7.setActionCommand("7"); //$NON-NLS-1$
+		btn7.setFocusable(false);
+		calcButtonPanel.add(btn7);
 
-		posButton8.setAction(calAction);
-		posButton8.setIcon(IconFactory.getIcon("/ui_icons/", "2.png")); // NOI18N //$NON-NLS-1$ //$NON-NLS-2$
-		posButton8.setActionCommand("2"); //$NON-NLS-1$
-		posButton8.setFocusable(false);
-		calcButtonPanel.add(posButton8);
+		btn8.setAction(calAction);
+		btn8.setIcon(IconFactory.getIcon("/ui_icons/", "8.png")); // NOI18N //$NON-NLS-1$ //$NON-NLS-2$
+		btn8.setActionCommand("8"); //$NON-NLS-1$
+		btn8.setFocusable(false);
+		calcButtonPanel.add(btn8);
 
-		posButton7.setAction(calAction);
-		posButton7.setIcon(IconFactory.getIcon("/ui_icons/", "3.png")); // NOI18N //$NON-NLS-1$ //$NON-NLS-2$
-		posButton7.setActionCommand("3"); //$NON-NLS-1$
-		posButton7.setFocusable(false);
-		calcButtonPanel.add(posButton7);
+		btn9.setAction(calAction);
+		btn9.setIcon(IconFactory.getIcon("/ui_icons/", "9.png")); // NOI18N //$NON-NLS-1$ //$NON-NLS-2$
+		btn9.setActionCommand("9"); //$NON-NLS-1$
+		btn9.setFocusable(false);
+		calcButtonPanel.add(btn9);
 
-		posButton11.setAction(calAction);
-		posButton11.setIcon(IconFactory.getIcon("/ui_icons/", "0.png")); // NOI18N //$NON-NLS-1$ //$NON-NLS-2$
-		posButton11.setActionCommand(ADD);
-		posButton11.setFocusable(false);
-		calcButtonPanel.add(posButton11);
+		btnAmount20.setAction(nextButtonAction);
+		btnAmount20.setText(Messages.getString("PaymentView.10")); //$NON-NLS-1$
+		btnAmount20.setActionCommand("20"); //$NON-NLS-1$
+		btnAmount20.setFocusable(false);
 
-		posButton10.setAction(calAction);
-		posButton10.setIcon(IconFactory.getIcon("/ui_icons/", "dot.png")); // NOI18N //$NON-NLS-1$ //$NON-NLS-2$
-		posButton10.setActionCommand("."); //$NON-NLS-1$
-		posButton10.setFocusable(false);
-		calcButtonPanel.add(posButton10);
+		calcButtonPanel.add(btnAmount20);
 
-		posButton12.setAction(calAction);
-		posButton12.setIcon(IconFactory.getIcon("/ui_icons/", "clear.png")); // NOI18N //$NON-NLS-1$ //$NON-NLS-2$
-		posButton12.setText(Messages.getString("PaymentView.38")); //$NON-NLS-1$
-		posButton12.setFocusable(false);
-		calcButtonPanel.add(posButton12);
+		btn4.setAction(calAction);
+		btn4.setIcon(IconFactory.getIcon("/ui_icons/", "4.png")); // NOI18N //$NON-NLS-1$ //$NON-NLS-2$
+		btn4.setActionCommand("4"); //$NON-NLS-1$
+		btn4.setFocusable(false);
+		calcButtonPanel.add(btn4);
 
-		add(calcButtonPanel, "cell 0 1,grow, gapy 0 20px"); //$NON-NLS-1$
-		actionButtonPanel.setLayout(new MigLayout("", "[fill,grow][fill,grow]", "[][][][]")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		btn5.setAction(calAction);
+		btn5.setIcon(IconFactory.getIcon("/ui_icons/", "5.png")); // NOI18N //$NON-NLS-1$ //$NON-NLS-2$
+		btn5.setActionCommand("5"); //$NON-NLS-1$
+		btn5.setFocusable(false);
+		calcButtonPanel.add(btn5);
 
-//		btnTaxExempt = new POSToggleButton(com.floreantpos.POSConstants.TAX_EXEMPT);
-//		btnTaxExempt.setText("TAX EXEMPT");
-//		btnTaxExempt.addActionListener(new ActionListener() {
-//			public void actionPerformed(ActionEvent e) {
-//				settleTicketView.doTaxExempt(btnTaxExempt.isSelected());
-//			}
-//		});
+		btn6.setAction(calAction);
+		btn6.setIcon(IconFactory.getIcon("/ui_icons/", "6.png")); // NOI18N //$NON-NLS-1$ //$NON-NLS-2$
+		btn6.setActionCommand("6"); //$NON-NLS-1$
+		btn6.setFocusable(false);
+		calcButtonPanel.add(btn6);
 
+		btnAmount50.setAction(nextButtonAction);
+		btnAmount50.setText(Messages.getString("PaymentView.12")); //$NON-NLS-1$
+		btnAmount50.setActionCommand("50"); //$NON-NLS-1$
+		btnAmount50.setFocusable(false);
 
-//		btnMyKalaDiscount = new PosButton();
-//		btnMyKalaDiscount.addActionListener(new ActionListener() {
-//			public void actionPerformed(ActionEvent e) {
-//				settleTicketView.submitMyKalaDiscount();
-//			}
-//		});
-//
-//		btnMyKalaDiscount.setText("LOYALTY DISCOUNT");
-//		jPanel4.add(btnMyKalaDiscount, "cell 1 0,growx");
-		
-		btnFinish = new com.floreantpos.swing.PosButton(POSConstants.PAY.toUpperCase());
-		actionButtonPanel.add(btnFinish, "span 2, growx, wrap"); //$NON-NLS-1$
-		btnFinish.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				doFinish(evt);
-			}
-		});
-		
+		calcButtonPanel.add(btnAmount50);
+
+		btn1.setAction(calAction);
+		btn1.setIcon(IconFactory.getIcon("/ui_icons/", "1.png")); // NOI18N //$NON-NLS-1$ //$NON-NLS-2$
+		btn1.setActionCommand(REMOVE);
+		btn1.setFocusable(false);
+		calcButtonPanel.add(btn1);
+
+		btn2.setAction(calAction);
+		btn2.setIcon(IconFactory.getIcon("/ui_icons/", "2.png")); // NOI18N //$NON-NLS-1$ //$NON-NLS-2$
+		btn2.setActionCommand("2"); //$NON-NLS-1$
+		btn2.setFocusable(false);
+		calcButtonPanel.add(btn2);
+
+		btn3.setAction(calAction);
+		btn3.setIcon(IconFactory.getIcon("/ui_icons/", "3.png")); // NOI18N //$NON-NLS-1$ //$NON-NLS-2$
+		btn3.setActionCommand("3"); //$NON-NLS-1$
+		btn3.setFocusable(false);
+		calcButtonPanel.add(btn3);
+
+		btnAmount100.setAction(nextButtonAction);
+		btnAmount100.setText(Messages.getString("PaymentView.14")); //$NON-NLS-1$
+		btnAmount100.setActionCommand("100"); //$NON-NLS-1$
+		btnAmount100.setFocusable(false);
+		calcButtonPanel.add(btnAmount100, "grow"); //$NON-NLS-1$
+
+		btn0.setAction(calAction);
+		btn0.setIcon(IconFactory.getIcon("/ui_icons/", "0.png")); // NOI18N //$NON-NLS-1$ //$NON-NLS-2$
+		btn0.setActionCommand(ADD);
+		btn0.setFocusable(false);
+		calcButtonPanel.add(btn0);
+
+		btn00.setFont(new Font("Arial", Font.PLAIN, 30)); //$NON-NLS-1$
+		btn00.setAction(calAction);
+		btn00.setText(Messages.getString("PaymentView.18")); //$NON-NLS-1$
+		btn00.setActionCommand("00"); //$NON-NLS-1$
+		btn00.setFocusable(false);
+		calcButtonPanel.add(btn00);
+
+		btnDot.setAction(calAction);
+		btnDot.setIcon(IconFactory.getIcon("/ui_icons/", "dot.png")); // NOI18N //$NON-NLS-1$ //$NON-NLS-2$
+		btnDot.setActionCommand("."); //$NON-NLS-1$
+		btnDot.setFocusable(false);
+		calcButtonPanel.add(btnDot);
+
+		btnExactAmount.setAction(nextButtonAction);
+		btnExactAmount.setText(Messages.getString("PaymentView.20")); //$NON-NLS-1$
+		btnExactAmount.setActionCommand("exactAmount"); //$NON-NLS-1$
+		btnExactAmount.setFocusable(false);
+		calcButtonPanel.add(btnExactAmount, "grow"); //$NON-NLS-1$
+
+		btnNextAmount.setAction(nextButtonAction);
+		btnNextAmount.setText(Messages.getString("PaymentView.23")); //$NON-NLS-1$
+		btnNextAmount.setActionCommand("nextAmount"); //$NON-NLS-1$
+		btnNextAmount.setFocusable(false);
+		calcButtonPanel.add(btnNextAmount, "span 2,grow"); //$NON-NLS-1$
+
+		btnClear.setAction(calAction);
+		btnClear.setIcon(IconFactory.getIcon("/ui_icons/", "clear.png")); // NOI18N //$NON-NLS-1$ //$NON-NLS-2$
+		btnClear.setText(Messages.getString("PaymentView.38")); //$NON-NLS-1$
+		btnClear.setFocusable(false);
+		calcButtonPanel.add(btnClear);
+
 		btnGratuity = new PosButton(com.floreantpos.POSConstants.ADD_GRATUITY_TEXT);
-		actionButtonPanel.add(btnGratuity, "growx"); //$NON-NLS-1$
 		btnGratuity.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				doSetGratuity();
 			}
 		});
-		
-		btnCoupon = new PosButton(com.floreantpos.POSConstants.COUPON_DISCOUNT);
-		actionButtonPanel.add(btnCoupon, "growx, wrap"); //$NON-NLS-1$
-		btnCoupon.addActionListener(new ActionListener() {
+
+		calcButtonPanel.add(btnGratuity, "span 2,growx"); //$NON-NLS-1$
+		btnDiscount = new PosButton(com.floreantpos.POSConstants.COUPON_DISCOUNT);
+		btnDiscount.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				settleTicketView.doApplyCoupon();
 			}
 		});
+		calcButtonPanel.add(btnDiscount, "span 2,growx"); //$NON-NLS-1$
 
-		btnViewCoupons = new PosButton(com.floreantpos.POSConstants.VIEW_DISCOUNTS);
-		actionButtonPanel.add(btnViewCoupons, "growx"); //$NON-NLS-1$
-		btnViewCoupons.addActionListener(new ActionListener() {
+		centerPanel.add(calcButtonPanel, BorderLayout.CENTER);
+
+		actionButtonPanel = new com.floreantpos.swing.TransparentPanel();
+		//	actionButtonPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(10,10,10,10));
+		actionButtonPanel.setLayout(new MigLayout("wrap 1, ins 0, fill", "fill", "sg, fill")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		actionButtonPanel.setPreferredSize(new Dimension(160, 380));
+
+		btnCash = new com.floreantpos.swing.PosButton(Messages.getString("PaymentView.31")); //$NON-NLS-1$
+		btnCash.setForeground(Color.white);
+		btnCash.setBackground(Color.GREEN);
+		actionButtonPanel.add(btnCash); //$NON-NLS-1$
+		btnCash.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				int x = (int) Double.parseDouble(txtTenderedAmount.getText());
+				if (x <= 0) {
+					POSMessageDialog.showError(Messages.getString("PaymentView.32")); //$NON-NLS-1$
+					return;
+				}
+				settleTicketView.doSettle(PaymentType.CASH);
+			}
+		});
+
+		btnCreditCard = new PosButton(Messages.getString("PaymentView.33")); //$NON-NLS-1$
+		btnCreditCard.setBackground(Color.BLUE);
+		btnCreditCard.setForeground(Color.white);
+		actionButtonPanel.add(btnCreditCard); //$NON-NLS-1$
+		btnCreditCard.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				settleTicketView.doViewDiscounts();
+				settleTicketView.doSettle(PaymentType.CREDIT_CARD);
+			}
+		});
+
+		btnDebitCard = new PosButton(Messages.getString("PaymentView.34")); //$NON-NLS-1$
+		btnDebitCard.setBackground(Color.BLUE);
+		btnDebitCard.setForeground(Color.white);
+		actionButtonPanel.add(btnDebitCard); //$NON-NLS-1$
+		btnDebitCard.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				settleTicketView.doSettle(PaymentType.DEBIT_CARD);
+			}
+		});
+
+		btnGift = new PosButton(Messages.getString("PaymentView.35")); //$NON-NLS-1$
+		btnGift.setBackground(Color.BLUE);
+		btnGift.setForeground(Color.white);
+		actionButtonPanel.add(btnGift); //$NON-NLS-1$
+		btnGift.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				settleTicketView.doSettle(PaymentType.GIFT_CERTIFICATE);
 			}
 		});
 
 		btnCancel = new com.floreantpos.swing.PosButton(POSConstants.CANCEL.toUpperCase());
-		actionButtonPanel.add(btnCancel, "growx"); //$NON-NLS-1$
+		btnCancel.setForeground(Color.white);
+		btnCancel.setBackground(Color.red);
+		actionButtonPanel.add(btnCancel); //$NON-NLS-1$
 		btnCancel.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				btnCancelActionPerformed(evt);
 			}
 		});
 
-		label = new JLabel(""); //$NON-NLS-1$
-		add(label, "cell 0 2,growy"); //$NON-NLS-1$
+		rightPanel.add(actionButtonPanel, BorderLayout.EAST);
 
-		add(actionButtonPanel, "cell 0 4,grow"); //$NON-NLS-1$
+		add(rightPanel, BorderLayout.EAST);
+		add(centerPanel, BorderLayout.CENTER);
 
-		transparentPanel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 15, 15, 15));
-
-		jLabel4.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N //$NON-NLS-1$
-		jLabel4.setText(Messages.getString("PaymentView.52")); //$NON-NLS-1$
-
-		jLabel6.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N //$NON-NLS-1$
-		jLabel6.setText(Messages.getString("PaymentView.54")); //$NON-NLS-1$
-
-		tfDueAmount.setEditable(false);
-		tfDueAmount.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-
-		tfAmountTendered.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-
-		add(transparentPanel1, "cell 0 0,growx,aligny top"); //$NON-NLS-1$
-
-		transparentPanel1.setLayout(new MigLayout("", "[][grow,fill]", "[19px][][19px]")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		transparentPanel1.add(jLabel4, "cell 0 0,alignx right,aligny center"); //$NON-NLS-1$
-
-		transparentPanel1.add(jLabel6, "cell 0 2,alignx left,aligny center"); //$NON-NLS-1$
-		transparentPanel1.add(tfDueAmount, "cell 1 0,growx,aligny top"); //$NON-NLS-1$
-		transparentPanel1.add(tfAmountTendered, "cell 1 2,growx,aligny top"); //$NON-NLS-1$
 	}// </editor-fold>//GEN-END:initComponents
 
 	protected void removeKalaId() {
@@ -305,7 +409,7 @@ public class PaymentView extends JPanel {
 
 	private void doFinish(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_doFinish
 		try {
-			settleTicketView.doSettle();
+			//settleTicketView.doSettle();
 		} catch (Exception x) {
 			POSMessageDialog.showError(this, x.getMessage(), x);
 		}
@@ -320,7 +424,8 @@ public class PaymentView extends JPanel {
 
 	Action calAction = new AbstractAction() {
 		public void actionPerformed(ActionEvent e) {
-			JTextField textField = tfAmountTendered;
+
+			JTextField textField = txtTenderedAmount;
 
 			PosButton button = (PosButton) e.getSource();
 			String s = button.getActionCommand();
@@ -355,20 +460,44 @@ public class PaymentView extends JPanel {
 			}
 		}
 	};
-//	private PosButton btnMyKalaDiscount;
+
+	Action nextButtonAction = new AbstractAction() {
+		public void actionPerformed(ActionEvent e) {
+			JTextField textField = txtTenderedAmount;
+
+			PosButton button = (PosButton) e.getSource();
+			String s = button.getActionCommand();
+			if (s.equals("exactAmount")) { //$NON-NLS-1$
+				double dueAmount = getDueAmount();
+				textField.setText(NumberUtil.formatNumber(dueAmount));
+			}
+			else if (s.equals("nextAmount")) { //$NON-NLS-1$
+
+				double dd = Double.parseDouble(txtDueAmount.getText());
+				double amount = Math.ceil(dd);
+				DecimalFormat format = new DecimalFormat("##.00"); //$NON-NLS-1$
+				textField.setText(String.valueOf(format.format(amount)));
+			}
+			else {
+				textField.setText(s);
+			}
+		}
+	};
+
+	//	private PosButton btnMyKalaDiscount;
 
 	public void updateView() {
-//		btnTaxExempt.setEnabled(true);
-//		btnTaxExempt.setSelected(settleTicketView.getTicket().isTaxExempt());
+		//		btnTaxExempt.setEnabled(true);
+		//		btnTaxExempt.setSelected(settleTicketView.getTicket().isTaxExempt());
 
 		double dueAmount = getDueAmount();
 
-		tfDueAmount.setText(NumberUtil.formatNumber(dueAmount));
-		tfAmountTendered.setText(NumberUtil.formatNumber(dueAmount));
+		txtDueAmount.setText(NumberUtil.formatNumber(dueAmount));
+		txtTenderedAmount.setText(NumberUtil.formatNumber(dueAmount));
 	}
 
 	public double getTenderedAmount() throws ParseException {
-		double doubleValue = NumberUtil.parse(tfAmountTendered.getText()).doubleValue();
+		double doubleValue = NumberUtil.parse(txtTenderedAmount.getText()).doubleValue();
 		return doubleValue;
 	}
 
@@ -398,7 +527,7 @@ public class PaymentView extends JPanel {
 	}
 
 	public void setDefaultFocus() {
-		tfAmountTendered.requestFocus();
+		txtTenderedAmount.requestFocus();
 	}
 
 }
