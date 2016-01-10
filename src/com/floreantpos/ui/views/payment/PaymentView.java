@@ -50,7 +50,7 @@ import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.util.NumberUtil;
 
 public class PaymentView extends JPanel {
-	private static final String ADD = "0"; //$NON-NLS-1$
+	private static final String ZERO = "0"; //$NON-NLS-1$
 
 	private static final String REMOVE = "1"; //$NON-NLS-1$
 
@@ -94,6 +94,8 @@ public class PaymentView extends JPanel {
 	private JTextField txtTenderedAmount;
 	private JTextField txtDueAmount;
 	private PosButton btnDiscount;
+	
+	private boolean clearPreviousAmount = true;
 
 	public PaymentView(SettleTicketDialog settleTicketView) {
 		this.settleTicketView = settleTicketView;
@@ -157,13 +159,13 @@ public class PaymentView extends JPanel {
 
 		btnAmount10 = new com.floreantpos.swing.PosButton();
 		btnAmount10.setFont(new Font("Arial", Font.PLAIN, 30)); //$NON-NLS-1$
-		
+
 		btnAmount20 = new com.floreantpos.swing.PosButton();
 		btnAmount20.setFont(new Font("Arial", Font.PLAIN, 30)); //$NON-NLS-1$
-		
+
 		btnAmount50 = new com.floreantpos.swing.PosButton();
 		btnAmount50.setFont(new Font("Arial", Font.PLAIN, 30)); //$NON-NLS-1$
-		
+
 		btnAmount100 = new com.floreantpos.swing.PosButton();
 		btnAmount100.setFont(new Font("Arial", Font.PLAIN, 30)); //$NON-NLS-1$
 
@@ -274,7 +276,7 @@ public class PaymentView extends JPanel {
 
 		btn0.setAction(calAction);
 		btn0.setIcon(IconFactory.getIcon("/ui_icons/", "0.png")); // NOI18N //$NON-NLS-1$ //$NON-NLS-2$
-		btn0.setActionCommand(ADD);
+		btn0.setActionCommand(ZERO);
 		btn0.setFocusable(false);
 		calcButtonPanel.add(btn0);
 
@@ -291,14 +293,12 @@ public class PaymentView extends JPanel {
 		btnDot.setFocusable(false);
 		calcButtonPanel.add(btnDot);
 
-		
 		btnAmount20.setForeground(Color.BLUE);
 		btnAmount20.setAction(nextButtonAction);
 		btnAmount20.setText("20"); //$NON-NLS-1$
 		btnAmount20.setActionCommand("20"); //$NON-NLS-1$
 		btnAmount20.setFocusable(false);
 		calcButtonPanel.add(btnAmount20, "grow"); //$NON-NLS-1$
-		
 
 		btnAmount50.setForeground(Color.blue);
 		btnAmount50.setAction(nextButtonAction);
@@ -306,28 +306,26 @@ public class PaymentView extends JPanel {
 		btnAmount50.setActionCommand("50"); //$NON-NLS-1$
 		btnAmount50.setFocusable(false);
 		calcButtonPanel.add(btnAmount50, "grow"); //$NON-NLS-1$
-		
-		
+
 		btnAmount100.setForeground(Color.blue);
 		btnAmount100.setAction(nextButtonAction);
 		btnAmount100.setText("100"); //$NON-NLS-1$
 		btnAmount100.setActionCommand("100"); //$NON-NLS-1$
 		btnAmount100.setFocusable(false);
 		calcButtonPanel.add(btnAmount100, "grow"); //$NON-NLS-1$
-		
+
 		btnClear.setAction(calAction);
 		btnClear.setIcon(IconFactory.getIcon("/ui_icons/", "clear.png")); // NOI18N //$NON-NLS-1$ //$NON-NLS-2$
 		btnClear.setText(Messages.getString("PaymentView.38")); //$NON-NLS-1$
 		btnClear.setFocusable(false);
 		calcButtonPanel.add(btnClear);
-		
+
 		btnExactAmount.setAction(nextButtonAction);
 		btnExactAmount.setText(Messages.getString("PaymentView.20")); //$NON-NLS-1$
 		btnExactAmount.setActionCommand("exactAmount"); //$NON-NLS-1$
 		btnExactAmount.setFocusable(false);
 		calcButtonPanel.add(btnExactAmount, "span 2,grow"); //$NON-NLS-1$
 
-		
 		btnNextAmount.setAction(nextButtonAction);
 		btnNextAmount.setText(Messages.getString("PaymentView.23")); //$NON-NLS-1$
 		btnNextAmount.setActionCommand("nextAmount"); //$NON-NLS-1$
@@ -378,13 +376,13 @@ public class PaymentView extends JPanel {
 			}
 		});
 
-//		btnDebitCard = new PosButton(Messages.getString("PaymentView.34")); //$NON-NLS-1$
-//		//actionButtonPanel.add(btnDebitCard); //$NON-NLS-1$
-//		btnDebitCard.addActionListener(new ActionListener() {
-//			public void actionPerformed(ActionEvent e) {
-//				settleTicketView.doSettle(PaymentType.DEBIT_CARD);
-//			}
-//		});
+		//		btnDebitCard = new PosButton(Messages.getString("PaymentView.34")); //$NON-NLS-1$
+		//		//actionButtonPanel.add(btnDebitCard); //$NON-NLS-1$
+		//		btnDebitCard.addActionListener(new ActionListener() {
+		//			public void actionPerformed(ActionEvent e) {
+		//				settleTicketView.doSettle(PaymentType.DEBIT_CARD);
+		//			}
+		//		});
 
 		btnGift = new PosButton(Messages.getString("PaymentView.35")); //$NON-NLS-1$
 		actionButtonPanel.add(btnGift); //$NON-NLS-1$
@@ -438,14 +436,6 @@ public class PaymentView extends JPanel {
 	protected void doTaxExempt() {
 	}
 
-	private void doFinish(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_doFinish
-		try {
-			//settleTicketView.doSettle();
-		} catch (Exception x) {
-			POSMessageDialog.showError(this, x.getMessage(), x);
-		}
-	}//GEN-LAST:event_doFinish
-
 	private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
 		settleTicketView.setCanceled(true);
 		settleTicketView.dispose();
@@ -461,7 +451,7 @@ public class PaymentView extends JPanel {
 			PosButton button = (PosButton) e.getSource();
 			String s = button.getActionCommand();
 			if (s.equals(Messages.getString("PaymentView.66"))) { //$NON-NLS-1$
-				textField.setText(ADD);
+				textField.setText(ZERO);
 			}
 			else if (s.equals(".")) { //$NON-NLS-1$
 				if (textField.getText().indexOf('.') < 0) {
@@ -469,6 +459,10 @@ public class PaymentView extends JPanel {
 				}
 			}
 			else {
+				if (clearPreviousAmount) {
+					textField.setText("");
+					clearPreviousAmount = false;
+				}
 				String string = textField.getText();
 				int index = string.indexOf('.');
 				if (index < 0) {
@@ -494,7 +488,6 @@ public class PaymentView extends JPanel {
 
 	Action nextButtonAction = new AbstractAction() {
 		public void actionPerformed(ActionEvent e) {
-			
 
 			PosButton button = (PosButton) e.getSource();
 			String s = button.getActionCommand();
@@ -510,10 +503,15 @@ public class PaymentView extends JPanel {
 				txtTenderedAmount.setText(String.valueOf(format.format(amount)));
 			}
 			else {
-				double x=Double.parseDouble(txtTenderedAmount.getText());
-				double y=Double.parseDouble(s);
-				double z=x+y;
-				DecimalFormat format = new DecimalFormat("##.00"); //$NON-NLS-1$
+				if (clearPreviousAmount) {
+					txtTenderedAmount.setText("0");
+					clearPreviousAmount = false;
+				}
+				
+				double x = Double.parseDouble(txtTenderedAmount.getText());//FIXME: what if exception occurs?
+				double y = Double.parseDouble(s);
+				double z = x + y;
+				DecimalFormat format = new DecimalFormat("##.##"); //$NON-NLS-1$
 				txtTenderedAmount.setText(String.valueOf(format.format(z)));
 			}
 		}
