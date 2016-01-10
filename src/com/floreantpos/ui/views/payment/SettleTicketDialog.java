@@ -25,6 +25,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 import javax.json.Json;
@@ -139,10 +141,11 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 		JPanel centerPanel = new JPanel(new BorderLayout(5, 5));
 		centerPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 5));
 
-		centerPanel.add(ticketScrollPane, BorderLayout.NORTH);
-		centerPanel.add(createTotalViewerPanel(), BorderLayout.CENTER);
+		centerPanel.add(createTicketInfoPanel(), BorderLayout.NORTH);
+		centerPanel.add(ticketScrollPane, BorderLayout.CENTER);
+		centerPanel.add(createTotalViewerPanel(), BorderLayout.SOUTH);
 
-		leftPanel.add(centerPanel, BorderLayout.NORTH);
+		leftPanel.add(centerPanel, BorderLayout.CENTER);
 
 		rightPanel.add(paymentView);
 
@@ -201,11 +204,66 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 
 		return ticketAmountPanel;
 	}*/
+	private JPanel createTicketInfoPanel() {
+
+		JLabel lblTicket = new javax.swing.JLabel();
+		lblTicket.setText("Ticket #");
+
+		JLabel labelTicketNumber = new JLabel();
+		labelTicketNumber.setText(String.valueOf(ticket.getId()));
+
+		JLabel lblTable = new javax.swing.JLabel();
+		lblTable.setText("Table #");
+
+		JLabel labelTableNumber = new JLabel();
+		labelTableNumber.setText(getTableNumbers(ticket.getTableNumbers()));
+
+		if (ticket.getTableNumbers().isEmpty()) {
+			labelTableNumber.setVisible(false);
+			lblTable.setVisible(false);
+		}
+
+		JLabel lblCustomer = new javax.swing.JLabel();
+		lblCustomer.setText("Customer :");
+
+		JLabel labelCustomer = new JLabel();
+		labelCustomer.setText(ticket.getProperty(Ticket.CUSTOMER_NAME));
+
+		if (ticket.getProperty(Ticket.CUSTOMER_NAME) == null) {
+			labelCustomer.setVisible(false);
+			lblCustomer.setVisible(false);
+		}
+
+		JPanel ticketInfoPanel = new com.floreantpos.swing.TransparentPanel(new MigLayout("wrap 2,fill, hidemode 3", "[][grow]", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+
+		ticketInfoPanel.add(lblTicket, "");
+		ticketInfoPanel.add(labelTicketNumber, "grow");
+		ticketInfoPanel.add(lblTable, "");
+		ticketInfoPanel.add(labelTableNumber, "grow");
+		ticketInfoPanel.add(lblCustomer, "");
+		ticketInfoPanel.add(labelCustomer, "grow");
+
+		return ticketInfoPanel;
+	}
+
+	private String getTableNumbers(List<Integer> numbers) {
+
+		String tableNumbers = "";
+
+		for (Iterator iterator = numbers.iterator(); iterator.hasNext();) {
+			Integer n = (Integer) iterator.next();
+			tableNumbers += n;
+
+			if (iterator.hasNext()) {
+				tableNumbers += ", ";
+			}
+		}
+		return tableNumbers;
+	}
 
 	private JPanel createTotalViewerPanel() {
 
 		JLabel lblSubtotal = new javax.swing.JLabel();
-		lblSubtotal.setFont(lblSubtotal.getFont().deriveFont(Font.PLAIN, 18));
 		lblSubtotal.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
 		lblSubtotal.setText(com.floreantpos.POSConstants.SUBTOTAL + ":"); //$NON-NLS-1$
 
@@ -216,7 +274,6 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 
 		JLabel lblDiscount = new javax.swing.JLabel();
 
-		lblDiscount.setFont(lblSubtotal.getFont().deriveFont(Font.PLAIN, 18));
 		lblDiscount.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
 		lblDiscount.setText(Messages.getString("TicketView.9")); //$NON-NLS-1$
 
@@ -227,7 +284,6 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 		tfDiscount.setText(ticket.getDiscountAmount().toString());
 
 		JLabel lblTax = new javax.swing.JLabel();
-		lblTax.setFont(lblTax.getFont().deriveFont(Font.PLAIN, 18));
 		lblTax.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
 		lblTax.setText(com.floreantpos.POSConstants.TAX + ":"); //$NON-NLS-1$
 
@@ -237,12 +293,10 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 		tfTax.setHorizontalAlignment(SwingConstants.TRAILING);
 
 		JLabel lblTotal = new javax.swing.JLabel();
-		lblTotal.setFont(lblTotal.getFont().deriveFont(Font.PLAIN, 20));
 		lblTotal.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
 		lblTotal.setText(com.floreantpos.POSConstants.TOTAL + ":"); //$NON-NLS-1$
 
 		tfTotal = new javax.swing.JTextField(10);
-
 		tfTotal.setFont(tfTotal.getFont().deriveFont(Font.BOLD, 18));
 		tfTotal.setHorizontalAlignment(SwingConstants.TRAILING);
 		tfTotal.setEditable(false);
@@ -414,7 +468,6 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 					payUsingCard(cardName, tenderAmount);
 					break;
 
-				case DEBIT_CARD:
 				case DEBIT_VISA:
 				case DEBIT_MASTER_CARD:
 					payUsingCard(cardName, tenderAmount);
