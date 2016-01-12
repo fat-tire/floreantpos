@@ -50,7 +50,6 @@ import com.floreantpos.model.CardReader;
 import com.floreantpos.model.KitchenTicket;
 import com.floreantpos.model.OrderType;
 import com.floreantpos.model.PosTransaction;
-import com.floreantpos.model.Printer;
 import com.floreantpos.model.RefundTransaction;
 import com.floreantpos.model.Restaurant;
 import com.floreantpos.model.Ticket;
@@ -497,10 +496,9 @@ public class ReceiptPrintService {
 			transaction = session.beginTransaction();
 
 			List<KitchenTicket> kitchenTickets = KitchenTicket.fromTicket(ticket);
-
+			
 			for (KitchenTicket kitchenTicket : kitchenTickets) {
-
-				List<Printer> printers = kitchenTicket.getPrinters();
+				/*	List<Printer> printers = kitchenTicket.getPrinters();//
 				for (Printer printer : printers) {
 					String deviceName = printer.getDeviceName();
 
@@ -509,8 +507,8 @@ public class ReceiptPrintService {
 					jasperPrint.setProperty(PROP_PRINTER_NAME, deviceName);
 
 					printQuitely(jasperPrint);
-				}
-
+				}//
+*/
 				session.saveOrUpdate(kitchenTicket);
 			}
 

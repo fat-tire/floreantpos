@@ -55,7 +55,6 @@ public class SettleTicketAction extends AbstractAction {
 		posDialog.setSize(1024, 700);
 		posDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		posDialog.open();
-
 		return !posDialog.isCanceled();
 	}
 

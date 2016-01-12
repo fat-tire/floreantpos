@@ -94,7 +94,6 @@ public class ModelBrowser<E> extends JPanel implements ActionListener, ListSelec
 			browserPanel.add(searchPanel, BorderLayout.NORTH);
 		}
 		browserPanel.add(new JScrollPane(browserTable));
-
 		add(browserPanel);
 
 		beanPanel.setBorder(BorderFactory.createEtchedBorder());

@@ -1,22 +1,6 @@
-/**
- * ************************************************************************
- * * The contents of this file are subject to the MRPL 1.2
- * * (the  "License"),  being   the  Mozilla   Public  License
- * * Version 1.1  with a permitted attribution clause; you may not  use this
- * * file except in compliance with the License. You  may  obtain  a copy of
- * * the License at http://www.floreantpos.org/license.html
- * * Software distributed under the License  is  distributed  on  an "AS IS"
- * * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * * License for the specific  language  governing  rights  and  limitations
- * * under the License.
- * * The Original Code is FLOREANT POS.
- * * The Initial Developer of the Original Code is OROCUBE LLC
- * * All portions are Copyright (C) 2015 OROCUBE LLC
- * * All Rights Reserved.
- * ************************************************************************
- */
 package com.floreantpos.model.base;
 
+import java.lang.Comparable;
 import java.io.Serializable;
 
 
@@ -31,15 +15,15 @@ import java.io.Serializable;
 
 public abstract class BaseMenuGroup  implements Comparable, Serializable {
 
-	public static String REF = "MenuGroup"; //$NON-NLS-1$
-	public static String PROP_NAME = "name"; //$NON-NLS-1$
-	public static String PROP_PARENT = "parent"; //$NON-NLS-1$
-	public static String PROP_BUTTON_COLOR_CODE = "buttonColorCode"; //$NON-NLS-1$
-	public static String PROP_VISIBLE = "visible"; //$NON-NLS-1$
-	public static String PROP_SORT_ORDER = "sortOrder"; //$NON-NLS-1$
-	public static String PROP_ID = "id"; //$NON-NLS-1$
-	public static String PROP_TRANSLATED_NAME = "translatedName"; //$NON-NLS-1$
-	public static String PROP_TEXT_COLOR_CODE = "textColorCode"; //$NON-NLS-1$
+	public static String REF = "MenuGroup";
+	public static String PROP_NAME = "name";
+	public static String PROP_PARENT = "parent";
+	public static String PROP_TEXT_COLOR_CODE = "textColorCode";
+	public static String PROP_VISIBLE = "visible";
+	public static String PROP_SORT_ORDER = "sortOrder";
+	public static String PROP_BUTTON_COLOR_CODE = "buttonColorCode";
+	public static String PROP_ID = "id";
+	public static String PROP_TRANSLATED_NAME = "translatedName";
 
 
 	// constructors
@@ -166,8 +150,8 @@ public abstract class BaseMenuGroup  implements Comparable, Serializable {
 	 * Return the value associated with the column: SORT_ORDER
 	 */
 	public java.lang.Integer getSortOrder () {
-					return sortOrder == null ? Integer.valueOf(0) : sortOrder;
-			}
+									return sortOrder == null ? Integer.valueOf(0) : sortOrder;
+					}
 
 	/**
 	 * Set the value related to the column: SORT_ORDER
@@ -183,8 +167,8 @@ public abstract class BaseMenuGroup  implements Comparable, Serializable {
 	 * Return the value associated with the column: BTN_COLOR
 	 */
 	public java.lang.Integer getButtonColorCode () {
-					return buttonColorCode == null ? Integer.valueOf(0) : buttonColorCode;
-			}
+									return buttonColorCode == null ? Integer.valueOf(0) : buttonColorCode;
+					}
 
 	/**
 	 * Set the value related to the column: BTN_COLOR
@@ -200,8 +184,8 @@ public abstract class BaseMenuGroup  implements Comparable, Serializable {
 	 * Return the value associated with the column: TEXT_COLOR
 	 */
 	public java.lang.Integer getTextColorCode () {
-					return textColorCode == null ? Integer.valueOf(0) : textColorCode;
-			}
+									return textColorCode == null ? Integer.valueOf(0) : textColorCode;
+					}
 
 	/**
 	 * Set the value related to the column: TEXT_COLOR
@@ -246,7 +230,7 @@ public abstract class BaseMenuGroup  implements Comparable, Serializable {
 		if (Integer.MIN_VALUE == this.hashCode) {
 			if (null == this.getId()) return super.hashCode();
 			else {
-				String hashStr = this.getClass().getName() + ":" + this.getId().hashCode(); //$NON-NLS-1$
+				String hashStr = this.getClass().getName() + ":" + this.getId().hashCode();
 				this.hashCode = hashStr.hashCode();
 			}
 		}

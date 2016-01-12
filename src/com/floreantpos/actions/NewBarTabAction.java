@@ -93,7 +93,7 @@ public class NewBarTabAction extends AbstractAction implements CardInputListener
 	}
 
 	@Override
-	public void cardInputted(CardInputProcessor inputter) {
+	public void cardInputted(CardInputProcessor inputter,PaymentType paymentType ) {
 		if (inputter instanceof SwipeCardDialog) {
 			useSwipeCard(inputter);
 		}

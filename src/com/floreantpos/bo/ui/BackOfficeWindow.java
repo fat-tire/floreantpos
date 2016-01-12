@@ -75,6 +75,7 @@ import com.floreantpos.main.Application;
 import com.floreantpos.model.User;
 import com.floreantpos.model.UserPermission;
 import com.floreantpos.model.UserType;
+import com.floreantpos.table.ShowTableBrowserAction;
 import com.jidesoft.swing.JideTabbedPane;
 
 /**
@@ -87,16 +88,16 @@ public class BackOfficeWindow extends javax.swing.JFrame {
 	private static final String POSX = "bwx";//$NON-NLS-1$
 	private static final String WINDOW_HEIGHT = "bwheight";//$NON-NLS-1$
 	private static final String WINDOW_WIDTH = "bwwidth";//$NON-NLS-1$
-	
+	private JMenu floorPlanMenu;
 	private static BackOfficeWindow instance;
-	private JMenuBar menuBar; 
+	private JMenuBar menuBar;
 
 	/** Creates new form BackOfficeWindow */
 	public BackOfficeWindow() {
 		setIconImage(Application.getApplicationIcon().getImage());
 
 		initComponents();
-		
+
 		createMenus();
 		positionWindow();
 
@@ -110,7 +111,7 @@ public class BackOfficeWindow extends javax.swing.JFrame {
 
 		setTitle(Application.getTitle() + "- " + com.floreantpos.POSConstants.BACK_OFFICE); //$NON-NLS-1$
 		applyComponentOrientation(ComponentOrientation.getOrientation(Locale.getDefault()));
-		
+
 		//call plugin's initBackoffice
 	}
 
@@ -138,13 +139,14 @@ public class BackOfficeWindow extends javax.swing.JFrame {
 		if (newUserType != null) {
 			permissions = newUserType.getPermissions();
 		}
-		
+
 		menuBar = new JMenuBar();
-		
+
 		if (newUserType == null) {
 			createAdminMenu(menuBar);
 			createExplorerMenu(menuBar);
 			createReportMenu(menuBar);
+			createFloorMenu(menuBar);
 		}
 		else {
 			if (permissions != null && permissions.contains(UserPermission.PERFORM_ADMINISTRATIVE_TASK)) {
@@ -158,10 +160,14 @@ public class BackOfficeWindow extends javax.swing.JFrame {
 			}
 		}
 		
+		createFloorMenu(menuBar);
+		
 		for (FloreantPlugin plugin : ExtensionManager.getPlugins()) {
 			plugin.initBackoffice();
 		}
 		
+		
+
 		JMenu helpMenu = new JMenu(Messages.getString("BackOfficeWindow.0")); //$NON-NLS-1$
 		helpMenu.add(new AboutAction());
 		menuBar.add(helpMenu);
@@ -190,7 +196,7 @@ public class BackOfficeWindow extends javax.swing.JFrame {
 	private void createExplorerMenu(JMenuBar menuBar) {
 		JMenu explorerMenu = new JMenu(com.floreantpos.POSConstants.EXPLORERS);
 		menuBar.add(explorerMenu);
-		
+
 		explorerMenu.add(new CategoryExplorerAction());
 		explorerMenu.add(new GroupExplorerAction());
 		explorerMenu.add(new ItemExplorerAction());
@@ -200,12 +206,13 @@ public class BackOfficeWindow extends javax.swing.JFrame {
 		explorerMenu.add(new CouponExplorerAction());
 		explorerMenu.add(new CookingInstructionExplorerAction());
 		explorerMenu.add(new TaxExplorerAction());
-		
+		explorerMenu.add(new ShowTableBrowserAction());
+
 		OrderServiceExtension plugin = (OrderServiceExtension) ExtensionManager.getPlugin(OrderServiceExtension.class);
 		if (plugin == null) {
 			return;
 		}
-		
+
 		plugin.createCustomerMenu(explorerMenu);
 	}
 
@@ -219,6 +226,15 @@ public class BackOfficeWindow extends javax.swing.JFrame {
 		adminMenu.add(new DataExportAction());
 		adminMenu.add(new DataImportAction());
 		menuBar.add(adminMenu);
+	}
+
+	private void createFloorMenu(JMenuBar menuBar) {
+		
+			floorPlanMenu = new JMenu("Floor Plan");
+			floorPlanMenu.add(new ShowTableBrowserAction());
+			
+			menuBar.add(floorPlanMenu);
+		
 	}
 
 	/** This method is called from within the constructor to
@@ -274,28 +290,42 @@ public class BackOfficeWindow extends javax.swing.JFrame {
 
 	public void close() {
 		saveSizeAndLocation();
-//		instance = null;
+		//		instance = null;
 		dispose();
 	}
-	
+
 	public static BackOfficeWindow getInstance() {
 		if (instance == null) {
 			instance = new BackOfficeWindow();
 		}
 		return instance;
 	}
-	
+
 	public JMenuBar getBackOfficeMenuBar() {
 		return menuBar;
 	}
 
-//	public static BackOfficeWindow getInstance() {
-//		if (instance == null) {
-//			instance = new BackOfficeWindow();
-//			Application.getInstance().setBackOfficeWindow(instance);
-//		}
-//
-//		return instance;
-//	}
+	/**
+	 * @return the floorPlanMenu
+	 */
+	public JMenu getFloorPlanMenu() {
+		return floorPlanMenu;
+	}
+
+	/**
+	 * @param floorPlanMenu the floorPlanMenu to set
+	 */
+	public void setFloorPlanMenu(JMenu floorPlanMenu) {
+		this.floorPlanMenu = floorPlanMenu;
+	}
+
+	//	public static BackOfficeWindow getInstance() {
+	//		if (instance == null) {
+	//			instance = new BackOfficeWindow();
+	//			Application.getInstance().setBackOfficeWindow(instance);
+	//		}
+	//
+	//		return instance;
+	//	}
 
 }

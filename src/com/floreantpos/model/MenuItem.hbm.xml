@@ -8,15 +8,13 @@
 
 		<property column="NAME" length="120" name="name" not-null="true" type="java.lang.String" />
 		<property column="TRANSLATED_NAME" length="120" name="translatedName" not-null="false" type="java.lang.String" />
-		
-		<property column="BARCODE" length="120" name="barcode" type="java.lang.String" />
+		<property column="BARCODE" length="120" name="barcode" unique="true" type="java.lang.String" />
 		<property column="BUY_PRICE" length="52" name="buyPrice" not-null="true" type="java.lang.Double" />
 		<property column="PRICE" length="52" name="price" not-null="true" type="java.lang.Double" />
 		<property column="DISCOUNT_RATE" length="52" name="discountRate" type="java.lang.Double" />
 		<property column="VISIBLE" name="visible" type="java.lang.Boolean">
 			<meta attribute="defaultValue">true</meta>
 		</property>
-
 		<property column="SORT_ORDER" name="sortOrder" type="java.lang.Integer" />
 		<property column="BTN_COLOR" name="buttonColorCode" type="java.lang.Integer">
 			<meta attribute="defaultValue">null</meta>
@@ -44,10 +42,10 @@
 			</key>
 			<one-to-many class="MenuItemModifierGroup" />
 		</bag>
-		
+
 		<bag cascade="save-update" inverse="false" name="terminals" lazy="false" table="MENU_ITEM_TERMINAL_REF">
-			<key column="MENU_ITEM_ID"/>
-			<many-to-many class="Terminal" column="TERMINAL_ID"/>
+			<key column="MENU_ITEM_ID" />
+			<many-to-many class="Terminal" column="TERMINAL_ID" />
 		</bag>
 
 		<!-- uni-directional many-to-one association to Tax -->
@@ -62,7 +60,7 @@
 		<!-- <many-to-one class="com.floreantpos.model.VirtualPrinter" lazy="false" cascade="none" name="virtualPrinter">
 			<column name="VPRINTER_ID" />
 		</many-to-one> -->
-		
+
 		<many-to-one class="com.floreantpos.model.PrinterGroup" lazy="false" cascade="none" name="printerGroup">
 			<column name="PG_ID" />
 		</many-to-one>

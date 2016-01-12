@@ -21,6 +21,7 @@ import com.floreantpos.config.CardConfig;
 
 public enum PaymentType {
 	CASH("CASH"),
+	//CASH("CASH"),
 	CREDIT_CARD("CREDIT CARD"),
 	DEBIT_CARD("DEBIT CARD"),
 	DEBIT_VISA("Visa", "visa_card.png"), DEBIT_MASTER_CARD("MasterCard", "master_card.png"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ 
@@ -74,6 +75,7 @@ public enum PaymentType {
 	public PosTransaction createTransaction() {
 		PosTransaction transaction = null;
 		switch (this) {
+			case CREDIT_CARD:
 			case CREDIT_VISA:
 			case CREDIT_AMEX:
 			case CREDIT_DISCOVERY:
@@ -97,7 +99,7 @@ public enum PaymentType {
 				break;
 		}
 
-		transaction.setPaymentType(name());
+		transaction.setPaymentType(getDisplayString());
 		return transaction;
 	}
 }

@@ -39,7 +39,7 @@ import com.floreantpos.main.Application;
  * 
  * @author MShahriar
  */
-public class POSMessageDialog extends javax.swing.JDialog {
+public class POSMessageDialog {
 
 	private static Logger logger = Logger.getLogger(Application.class);
 	

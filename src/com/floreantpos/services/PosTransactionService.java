@@ -77,7 +77,7 @@ public class PosTransactionService {
 			}
 
 			transaction.setTransactionType(TransactionType.CREDIT.name());
-			//transaction.setPaymentType(transaction.getPaymentType());
+			transaction.setPaymentType(transaction.getPaymentType());
 			transaction.setTerminal(terminal);
 			transaction.setUser(currentUser);
 			transaction.setTransactionTime(currentDate);

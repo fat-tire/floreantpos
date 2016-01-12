@@ -23,6 +23,7 @@ import java.util.List;
 import com.floreantpos.config.ui.ConfigurationDialog;
 import com.floreantpos.model.ShopTable;
 import com.floreantpos.model.Ticket;
+import com.floreantpos.ui.BeanEditor;
 
 public interface FloorLayoutPlugin extends FloreantPlugin {
 	
@@ -34,4 +35,5 @@ public interface FloorLayoutPlugin extends FloreantPlugin {
 	void openTicketsAndTablesDisplay();
 	void initConfigurationView(ConfigurationDialog dialog);
 	List<ShopTable> captureTableNumbers(Ticket ticket);
+	BeanEditor getBeanEditor();
 }

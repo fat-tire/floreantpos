@@ -28,6 +28,7 @@ import javax.swing.border.EmptyBorder;
 import com.floreantpos.Messages;
 import com.floreantpos.config.CardConfig;
 import com.floreantpos.main.Application;
+import com.floreantpos.model.PaymentType;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.ui.TitlePanel;
 import com.floreantpos.ui.dialog.POSDialog;
@@ -155,8 +156,7 @@ public class SwipeCardDialog extends POSDialog implements CardInputProcessor {
 		cardString = new String(passwordField.getPassword());
 		setCanceled(false);
 		dispose();
-		
-		cardInputListener.cardInputted(this);
+		cardInputListener.cardInputted(this,PaymentType.CREDIT_CARD);
 	}
 	
 	public void setManualEntryVisible(boolean visible) {

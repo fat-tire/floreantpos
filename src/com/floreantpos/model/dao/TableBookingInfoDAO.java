@@ -229,4 +229,25 @@ public class TableBookingInfoDAO extends BaseTableBookingInfoDAO {
 		}
 		return null;
 	}
+	
+	
+/*	public List getIdByTable(ShopTable table) {
+
+		Session session = null;
+		try {
+			session = createNewSession();
+			Criteria criteria = session.createCriteria(TableBookingInfo.class);
+
+			criteria.add(Restrictions.eq(TableBookingInfo.p))
+
+			List list = criteria.list();
+
+			return list;
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return null;
+	}*/
 }

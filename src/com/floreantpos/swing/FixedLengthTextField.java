@@ -23,11 +23,11 @@ public class FixedLengthTextField extends FocusedTextField {
 	private FixedLengthDocument fixedLengthDocument;
 	
 	public FixedLengthTextField() {
-		this(20);
+		this(30);
 	}
 	
 	public FixedLengthTextField(int length) {
-		super(10);
+		super(length);
 		
 		fixedLengthDocument = new FixedLengthDocument(length);
 		setDocument(fixedLengthDocument);
