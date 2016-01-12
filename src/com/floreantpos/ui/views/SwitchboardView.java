@@ -572,10 +572,9 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 
 			Ticket fullTicket = TicketDAO.getInstance().loadFullTicket(ticket.getId());
 
-			SettleTicketDialog posDialog = new SettleTicketDialog();
-			posDialog.setTicket(fullTicket);
-			posDialog.setSize(800, 700);
+			SettleTicketDialog posDialog = new SettleTicketDialog(fullTicket);
 			posDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+			posDialog.pack();
 			posDialog.open();
 		}
 

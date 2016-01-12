@@ -19,6 +19,7 @@ package com.floreantpos.ui.views.order;
 
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.LayoutManager;
@@ -218,6 +219,17 @@ public abstract class SelectionView extends JPanel implements ComponentListener 
 
 	protected LayoutManager createButtonPanelLayout() {
 		return new FlowLayout(FlowLayout.CENTER);
+	}
+	
+	public ButtonPanel getActivePanel() {
+		Component[] components = cardLayoutContainer.getComponents();
+		for (Component component : components) {
+			if(component instanceof ButtonPanel && component.isVisible()) {
+				return (ButtonPanel) component;
+			}
+		}
+		
+		return null;
 	}
 	
 	public void addButton(AbstractButton button) {
