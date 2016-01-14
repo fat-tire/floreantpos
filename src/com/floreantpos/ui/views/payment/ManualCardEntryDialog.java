@@ -18,9 +18,11 @@
 package com.floreantpos.ui.views.payment;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
@@ -47,13 +49,12 @@ public class ManualCardEntryDialog extends POSDialog implements CardInputProcess
 		setResizable(false);
 
 		createUI();
-		
+
 	}
 
 	private void createUI() {
-
+		setPreferredSize(new Dimension(900, 500));
 		JPanel panel = new JPanel();
-		getContentPane().add(panel, BorderLayout.CENTER);
 		panel.setLayout(new MigLayout("", "[][grow]", "[][][][][][][][grow]")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 		JLabel lblCardNumber = new JLabel(Messages.getString("ManualCardEntryDialog.3")); //$NON-NLS-1$
@@ -77,40 +78,13 @@ public class ManualCardEntryDialog extends POSDialog implements CardInputProcess
 		tfExpYear.setColumns(4);
 		panel.add(tfExpYear, "cell 1 2"); //$NON-NLS-1$
 
-		//		JLabel lblZipCode = new JLabel("ZIP Code");
-		//		lblZipCode.setVisible(false);
-		//		panel.add(lblZipCode, "cell 0 3,alignx trailing");
-		//		
-		//		POSTextField tfZipCode = new POSTextField();
-		//		tfZipCode.setVisible(false);
-		//		panel.add(tfZipCode, "cell 1 3,growx");
-		//		
-		//		JLabel lblNewLabel = new JLabel("Card Value Code");
-		//		lblNewLabel.setVisible(false);
-		//		panel.add(lblNewLabel, "cell 0 4,alignx trailing");
-		//		
-		//		POSTextField tfCardValueCode = new POSTextField();
-		//		tfCardValueCode.setVisible(false);
-		//		panel.add(tfCardValueCode, "cell 1 4,growx");
-		//		
-		//		JLabel lblNameOnCard = new JLabel("Name on Card");
-		//		lblNameOnCard.setVisible(false);
-		//		panel.add(lblNameOnCard, "cell 0 5,alignx trailing");
-		//		
-		//		POSTextField tfCardName = new POSTextField();
-		//		tfCardName.setVisible(false);
-		//		panel.add(tfCardName, "cell 1 5,growx");
-		//		
-		//		JLabel lblAddress = new JLabel("Address");
-		//		lblAddress.setVisible(false);
-		//		panel.add(lblAddress, "cell 0 6,alignx trailing");
-		//		
-		//		POSTextField tfCardAddress = new POSTextField();
-		//		tfCardAddress.setVisible(false);
-		//		panel.add(tfCardAddress, "cell 1 6,growx");
-
 		QwertyKeyPad qwertyKeyPad = new QwertyKeyPad();
-		panel.add(qwertyKeyPad, "cell 0 7 2 1,grow"); //$NON-NLS-1$
+		JPanel centerPanel = new JPanel(new BorderLayout());
+		centerPanel.setBorder(BorderFactory.createEmptyBorder(5, 3, 5, 5));
+		centerPanel.add(panel, BorderLayout.NORTH);
+		centerPanel.add(qwertyKeyPad, BorderLayout.CENTER);
+
+		getContentPane().add(centerPanel, BorderLayout.CENTER);
 
 		JPanel panel_1 = new JPanel();
 		getContentPane().add(panel_1, BorderLayout.SOUTH);
@@ -183,7 +157,7 @@ public class ManualCardEntryDialog extends POSDialog implements CardInputProcess
 	protected void submitCard() {
 		setCanceled(false);
 		dispose();
-		cardInputListener.cardInputted(this,null );
+		cardInputListener.cardInputted(this, null);
 	}
 
 	private void openSwipeCardDialog() {

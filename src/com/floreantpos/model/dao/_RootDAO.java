@@ -30,6 +30,7 @@ import com.floreantpos.model.AttendenceHistory;
 import com.floreantpos.model.CashDrawerResetHistory;
 import com.floreantpos.model.CookingInstruction;
 import com.floreantpos.model.CouponAndDiscount;
+import com.floreantpos.model.CustomPayment;
 import com.floreantpos.model.Customer;
 import com.floreantpos.model.DataUpdateInfo;
 import com.floreantpos.model.DrawerAssignedHistory;
@@ -100,7 +101,7 @@ public abstract class _RootDAO extends com.floreantpos.model.dao._BaseRootDAO {
 	 * (SessionFactory) new
 	 * InitialContext().lookup("java:/{SessionFactoryName}"); }
 	 */
-	
+
 	public static void initialize(String configFileName, Configuration configuration) {
 		com.floreantpos.model.dao._RootDAO.setSessionFactory(configuration.buildSessionFactory());
 	}
@@ -152,14 +153,15 @@ public abstract class _RootDAO extends com.floreantpos.model.dao._BaseRootDAO {
 		configuration = configuration.addClass(DrawerAssignedHistory.class);
 		configuration = configuration.addClass(DataUpdateInfo.class);
 		configuration = configuration.addClass(TableBookingInfo.class);
-		
+		configuration = configuration.addClass(CustomPayment.class);
+
 		configuration = configureInventoryClasses(configuration);
-		
+
 		Database defaultDatabase = AppConfig.getDefaultDatabase();
 
 		configuration = configuration.setProperty("hibernate.dialect", defaultDatabase.getHibernateDialect()); //$NON-NLS-1$
 		configuration = configuration.setProperty("hibernate.connection.driver_class", defaultDatabase.getHibernateConnectionDriverClass()); //$NON-NLS-1$
-		
+
 		configuration = configuration.setProperty("hibernate.connection.url", AppConfig.getConnectString()); //$NON-NLS-1$
 		configuration = configuration.setProperty("hibernate.connection.username", AppConfig.getDatabaseUser()); //$NON-NLS-1$
 		configuration = configuration.setProperty("hibernate.connection.password", AppConfig.getDatabasePassword()); //$NON-NLS-1$
@@ -180,7 +182,7 @@ public abstract class _RootDAO extends com.floreantpos.model.dao._BaseRootDAO {
 
 		return configuration;
 	}
-	
+
 	private static AnnotationConfiguration configureInventoryClasses(AnnotationConfiguration configuration) {
 		configuration = configuration.addClass(InventoryGroup.class);
 		configuration = configuration.addClass(InventoryItem.class);
@@ -193,17 +195,17 @@ public abstract class _RootDAO extends com.floreantpos.model.dao._BaseRootDAO {
 		configuration = configuration.addClass(Recepie.class);
 		configuration = configuration.addClass(RecepieItem.class);
 		configuration = configuration.addClass(PackagingUnit.class);
-		
+
 		return configuration;
 	}
-	
+
 	public static Configuration reInitialize() {
 		Configuration configuration = getNewConfiguration(null);
 		com.floreantpos.model.dao._RootDAO.setSessionFactory(configuration.buildSessionFactory());
-		
+
 		return configuration;
 	}
-	
+
 	public void refresh(Object obj) {
 		Session session = createNewSession();
 		super.refresh(obj, session);

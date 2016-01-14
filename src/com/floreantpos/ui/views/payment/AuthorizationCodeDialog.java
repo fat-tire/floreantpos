@@ -18,6 +18,7 @@
 package com.floreantpos.ui.views.payment;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -52,7 +53,7 @@ public class AuthorizationCodeDialog extends POSDialog implements CardInputProce
 	private POSToggleButton btnDiscoverCard;
 	private POSToggleButton btnDebitVisaCard;
 	private POSToggleButton btnDebitMasterCard;
-	
+
 	public AuthorizationCodeDialog(CardInputListener cardInputListener) {
 		super(Application.getPosWindow(), true);
 
@@ -67,17 +68,18 @@ public class AuthorizationCodeDialog extends POSDialog implements CardInputProce
 
 	private void createUI() {
 
+		setPreferredSize(new Dimension(1000, 600));
 		btnVisaCard = new POSToggleButton();
-		btnVisaCard.setIcon(IconFactory.getIcon("/ui_icons/", "" + "visa_card.png"));
+		btnVisaCard.setIcon(IconFactory.getIcon("/ui_icons/", "" + "visa_card.png")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
-		btnMasterCard = new POSToggleButton("");
-		btnMasterCard.setIcon(IconFactory.getIcon("/ui_icons/", "" + "master_card.png"));
+		btnMasterCard = new POSToggleButton(""); //$NON-NLS-1$
+		btnMasterCard.setIcon(IconFactory.getIcon("/ui_icons/", "" + "master_card.png")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 		btnAmericanExpress = new POSToggleButton();
-		btnAmericanExpress.setIcon(IconFactory.getIcon("/ui_icons/", "" + "am_ex_card.png"));
+		btnAmericanExpress.setIcon(IconFactory.getIcon("/ui_icons/", "" + "am_ex_card.png")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 		btnDiscoverCard = new POSToggleButton();
-		btnDiscoverCard.setIcon(IconFactory.getIcon("/ui_icons/", "" + "discover_card.png"));
+		btnDiscoverCard.setIcon(IconFactory.getIcon("/ui_icons/", "" + "discover_card.png")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 		ButtonGroup group = new ButtonGroup();
 		group.add(btnVisaCard);
@@ -94,32 +96,31 @@ public class AuthorizationCodeDialog extends POSDialog implements CardInputProce
 
 		creditCardPanel.setBorder(new CompoundBorder(new TitledBorder(Messages.getString("PaymentTypeSelectionDialog.4")), new EmptyBorder(10, 10, 10, 10))); //$NON-NLS-1$
 
-	JPanel debitCardPanel = new JPanel(new GridLayout(1, 0, 10, 10));
-		
+		JPanel debitCardPanel = new JPanel(new GridLayout(1, 0, 10, 10));
+
 		btnDebitVisaCard = new POSToggleButton();
-		btnDebitVisaCard.setIcon(IconFactory.getIcon("/ui_icons/", "" + "visa_card.png"));
-		
+		btnDebitVisaCard.setIcon(IconFactory.getIcon("/ui_icons/", "" + "visa_card.png")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+
 		btnDebitMasterCard = new POSToggleButton();
-		btnDebitMasterCard.setIcon(IconFactory.getIcon("/ui_icons/", "" + "master_card.png"));
-		
+		btnDebitMasterCard.setIcon(IconFactory.getIcon("/ui_icons/", "" + "master_card.png")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+
 		group.add(btnDebitVisaCard);
 		group.add(btnDebitMasterCard);
-		
+
 		debitCardPanel.add(btnDebitVisaCard);
 		debitCardPanel.add(btnDebitMasterCard);
-		
+
 		debitCardPanel.setBorder(new CompoundBorder(new TitledBorder(Messages.getString("PaymentTypeSelectionDialog.6")), new EmptyBorder(10, 10, 10, 10))); //$NON-NLS-1$
-		
-		
+
 		JPanel panel = new JPanel();
 
 		JPanel centralPanel = new JPanel(new BorderLayout());
 		centralPanel.add(panel, BorderLayout.CENTER);
-		
-		JPanel cardPanel = new JPanel(new BorderLayout());
-		cardPanel.add(creditCardPanel,BorderLayout.WEST);
-		cardPanel.add(debitCardPanel,BorderLayout.EAST);
-		centralPanel.add(cardPanel,BorderLayout.NORTH);
+
+		JPanel cardPanel = new JPanel(new MigLayout("fill, ins 2", "sg, fill", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		cardPanel.add(creditCardPanel);
+		cardPanel.add(debitCardPanel);
+		centralPanel.add(cardPanel, BorderLayout.NORTH);
 
 		getContentPane().add(centralPanel, BorderLayout.CENTER);
 		panel.setLayout(new MigLayout("", "[][grow]", "[50][grow]")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
@@ -147,7 +148,7 @@ public class AuthorizationCodeDialog extends POSDialog implements CardInputProce
 			public void actionPerformed(ActionEvent e) {
 				setCanceled(false);
 				dispose();
-				cardInputListener.cardInputted(AuthorizationCodeDialog.this,getPaymentType());
+				cardInputListener.cardInputted(AuthorizationCodeDialog.this, getPaymentType());
 			}
 		});
 		btnSubmit.setText(Messages.getString("AuthorizationCodeDialog.7")); //$NON-NLS-1$
@@ -169,23 +170,31 @@ public class AuthorizationCodeDialog extends POSDialog implements CardInputProce
 		titlePanel.setTitle(Messages.getString("AuthorizationCodeDialog.9")); //$NON-NLS-1$
 		getContentPane().add(titlePanel, BorderLayout.NORTH);
 	}
+
 	private PaymentType getPaymentType() {
-		if(btnVisaCard.isSelected()) {
+		if (btnVisaCard.isSelected()) {
 			return PaymentType.CREDIT_VISA;
-		}else if(btnMasterCard.isSelected()) {
+		}
+		else if (btnMasterCard.isSelected()) {
 			return PaymentType.CREDIT_MASTER_CARD;
-		}else if(btnAmericanExpress.isSelected()) {
+		}
+		else if (btnAmericanExpress.isSelected()) {
 			return PaymentType.CREDIT_AMEX;
-		}else if(btnDiscoverCard.isSelected()) {
+		}
+		else if (btnDiscoverCard.isSelected()) {
 			return PaymentType.CREDIT_DISCOVERY;
-		}else if(btnDebitMasterCard.isSelected()) {
+		}
+		else if (btnDebitMasterCard.isSelected()) {
 			return PaymentType.DEBIT_MASTER_CARD;
-		}else if(btnDebitVisaCard.isSelected()) {
+		}
+		else if (btnDebitVisaCard.isSelected()) {
 			return PaymentType.DEBIT_VISA;
-		}else {
+		}
+		else {
 			return PaymentType.CREDIT_VISA;
 		}
 	}
+
 	public String getAuthorizationCode() {
 		return tfAuthorizationCode.getText();
 	}

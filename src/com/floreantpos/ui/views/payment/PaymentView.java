@@ -382,6 +382,7 @@ public class PaymentView extends JPanel {
 		actionButtonPanel.add(btnOther); //$NON-NLS-1$
 		btnOther.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				settleTicketView.doSettle(PaymentType.CUSTOM_PAYMENT);
 			}
 		});
 
@@ -453,7 +454,7 @@ public class PaymentView extends JPanel {
 			}
 			else {
 				if (clearPreviousAmount) {
-					textField.setText("");
+					textField.setText(""); //$NON-NLS-1$
 					clearPreviousAmount = false;
 				}
 				String string = textField.getText();
@@ -501,7 +502,7 @@ public class PaymentView extends JPanel {
 			}
 			else {
 				if (clearPreviousAmount) {
-					txtTenderedAmount.setText("0");
+					txtTenderedAmount.setText("0"); //$NON-NLS-1$
 					clearPreviousAmount = false;
 				}
 

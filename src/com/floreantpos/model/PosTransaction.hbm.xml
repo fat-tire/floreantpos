@@ -15,6 +15,8 @@
 		<property column="TIPS_AMOUNT" length="52" name="tipsAmount" type="java.lang.Double" />
 		<property column="TENDER_AMOUNT" length="52" name="tenderAmount" type="java.lang.Double" />
 		<property column="TRANSACTION_TYPE" name="transactionType" type="string" length="20" not-null="true" />
+		<property column="CUSTOM_PAYMENT_NAME" name="customPaymentName" type="string" length="60" />
+		<property column="CUSTOM_PAYMENT_REF" name="customPaymentRef" type="string" length="120" />
 
 		<!-- this field will be renamed in future release -->
 		<property column="PAYMENT_SUB_TYPE" name="paymentType" type="string" length="40" not-null="true" />
@@ -74,6 +76,9 @@
 		</many-to-one>
 
 		<subclass discriminator-value="CASH" name="com.floreantpos.model.CashTransaction">
+		</subclass>
+
+		<subclass discriminator-value="CUSTOM_PAYMENT" name="com.floreantpos.model.CustomPaymentTransaction">
 		</subclass>
 
 		<subclass discriminator-value="GIFT_CERT" name="com.floreantpos.model.GiftCertificateTransaction">

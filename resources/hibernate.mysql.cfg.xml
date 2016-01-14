@@ -55,5 +55,6 @@
 		<mapping resource="com/floreantpos/model/PrinterConfiguration.hbm.xml" />
 		<mapping resource="com/floreantpos/model/UserPermission.hbm.xml" />
 		<mapping resource="com/floreantpos/model/UserType.hbm.xml" />
+		<mapping resource="com/floreantpos/model/CustomPayment.hbm.xml" />
 	</session-factory>
 </hibernate-configuration>

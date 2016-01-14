@@ -12,27 +12,27 @@ import java.io.Serializable;
  *  table="TRANSACTIONS"
  */
 
-public abstract class BaseVoidTransaction extends com.floreantpos.model.PosTransaction implements Comparable, Serializable {
+public abstract class BaseCustomPaymentTransaction extends com.floreantpos.model.PosTransaction implements Comparable, Serializable {
 
-	public static String REF = "VoidTransaction"; //$NON-NLS-1$
+	public static String REF = "CustomPaymentTransaction"; //$NON-NLS-1$
 	public static String PROP_ID = "id"; //$NON-NLS-1$
 
 	// constructors
-	public BaseVoidTransaction() {
+	public BaseCustomPaymentTransaction() {
 		initialize();
 	}
 
 	/**
 	 * Constructor for primary key
 	 */
-	public BaseVoidTransaction(java.lang.Integer id) {
+	public BaseCustomPaymentTransaction(java.lang.Integer id) {
 		super(id);
 	}
 
 	/**
 	 * Constructor for required fields
 	 */
-	public BaseVoidTransaction(java.lang.Integer id, java.lang.String transactionType, java.lang.String paymentType) {
+	public BaseCustomPaymentTransaction(java.lang.Integer id, java.lang.String transactionType, java.lang.String paymentType) {
 
 		super(id, transactionType, paymentType);
 	}
@@ -42,14 +42,14 @@ public abstract class BaseVoidTransaction extends com.floreantpos.model.PosTrans
 	public boolean equals(Object obj) {
 		if (null == obj)
 			return false;
-		if (!(obj instanceof com.floreantpos.model.VoidTransaction))
+		if (!(obj instanceof com.floreantpos.model.CustomPaymentTransaction))
 			return false;
 		else {
-			com.floreantpos.model.VoidTransaction voidTransaction = (com.floreantpos.model.VoidTransaction) obj;
-			if (null == this.getId() || null == voidTransaction.getId())
+			com.floreantpos.model.CustomPaymentTransaction customPaymentTransaction = (com.floreantpos.model.CustomPaymentTransaction) obj;
+			if (null == this.getId() || null == customPaymentTransaction.getId())
 				return false;
 			else
-				return (this.getId().equals(voidTransaction.getId()));
+				return (this.getId().equals(customPaymentTransaction.getId()));
 		}
 	}
 

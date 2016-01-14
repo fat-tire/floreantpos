@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.floreantpos.model">
+	<class lazy="false" name="com.floreantpos.model.CustomPayment" table="CUSTOM_PAYMENT">
+		<id column="ID" name="id" type="java.lang.Integer">
+			<generator class="identity" />
+		</id>
+
+		<property column="NAME" length="60" name="name" type="java.lang.String" />
+		<property column="REQUIRED_REF_NUMBER" name="requiredRefNumber" type="java.lang.Boolean" />
+		<property column="REF_NUMBER_FIELD_NAME" length="60" name="refNumberFieldName" type="java.lang.String" />
+
+	</class>
+</hibernate-mapping>

@@ -68,6 +68,7 @@ import com.floreantpos.bo.actions.UserExplorerAction;
 import com.floreantpos.bo.actions.UserTypeExplorerAction;
 import com.floreantpos.bo.actions.ViewGratuitiesAction;
 import com.floreantpos.config.AppConfig;
+import com.floreantpos.customPayment.CustomPaymentBrowserAction;
 import com.floreantpos.extension.ExtensionManager;
 import com.floreantpos.extension.FloreantPlugin;
 import com.floreantpos.extension.OrderServiceExtension;
@@ -159,14 +160,11 @@ public class BackOfficeWindow extends javax.swing.JFrame {
 				createReportMenu(menuBar);
 			}
 		}
-		
 		createFloorMenu(menuBar);
-		
+
 		for (FloreantPlugin plugin : ExtensionManager.getPlugins()) {
 			plugin.initBackoffice();
 		}
-		
-		
 
 		JMenu helpMenu = new JMenu(Messages.getString("BackOfficeWindow.0")); //$NON-NLS-1$
 		helpMenu.add(new AboutAction());
@@ -207,6 +205,7 @@ public class BackOfficeWindow extends javax.swing.JFrame {
 		explorerMenu.add(new CookingInstructionExplorerAction());
 		explorerMenu.add(new TaxExplorerAction());
 		explorerMenu.add(new ShowTableBrowserAction());
+		explorerMenu.add(new CustomPaymentBrowserAction());
 
 		OrderServiceExtension plugin = (OrderServiceExtension) ExtensionManager.getPlugin(OrderServiceExtension.class);
 		if (plugin == null) {
@@ -229,12 +228,12 @@ public class BackOfficeWindow extends javax.swing.JFrame {
 	}
 
 	private void createFloorMenu(JMenuBar menuBar) {
-		
-			floorPlanMenu = new JMenu("Floor Plan");
-			floorPlanMenu.add(new ShowTableBrowserAction());
-			
-			menuBar.add(floorPlanMenu);
-		
+
+		floorPlanMenu = new JMenu("Floor Plan");
+		floorPlanMenu.add(new ShowTableBrowserAction());
+
+		menuBar.add(floorPlanMenu);
+
 	}
 
 	/** This method is called from within the constructor to

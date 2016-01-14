@@ -88,7 +88,6 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 
 	public final static String VIEW_NAME = "PAYMENT_VIEW"; //$NON-NLS-1$
 
-
 	private com.floreantpos.swing.TransparentPanel leftPanel = new com.floreantpos.swing.TransparentPanel(new BorderLayout());
 	private com.floreantpos.swing.TransparentPanel rightPanel = new com.floreantpos.swing.TransparentPanel(new BorderLayout());
 
@@ -103,6 +102,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 	JTextField tfDiscount;
 	JTextField tfTax;
 	JTextField tfTotal;
+	JTextField tfGratuity;
 
 	public SettleTicketDialog() {
 
@@ -145,6 +145,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 			tfDiscount.setText(""); //$NON-NLS-1$
 			tfTax.setText(""); //$NON-NLS-1$
 			tfTotal.setText(""); //$NON-NLS-1$
+			tfGratuity.setText(""); //$NON-NLS-1$
 			return;
 		}
 		tfSubtotal.setText(NumberUtil.formatNumber(ticket.getSubtotalAmount()));
@@ -156,9 +157,13 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 		else {
 			tfTax.setText(NumberUtil.formatNumber(ticket.getTaxAmount()));
 		}
-
+		if (ticket.getGratuity() != null) {
+			tfGratuity.setText(NumberUtil.formatNumber(ticket.getGratuity().getAmount()));
+		}
+		else {
+			tfGratuity.setText("0.00"); //$NON-NLS-1$
+		}
 		tfTotal.setText(NumberUtil.formatNumber(ticket.getTotalAmount()));
-
 	}
 
 	private JPanel createTicketInfoPanel() {
@@ -233,7 +238,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 		lblDiscount.setText(Messages.getString("TicketView.9")); //$NON-NLS-1$
 
 		tfDiscount = new javax.swing.JTextField(10);
-	//	tfDiscount.setFont(tfDiscount.getFont().deriveFont(Font.PLAIN, 16));
+		//	tfDiscount.setFont(tfDiscount.getFont().deriveFont(Font.PLAIN, 16));
 		tfDiscount.setHorizontalAlignment(SwingConstants.TRAILING);
 		tfDiscount.setEditable(false);
 		tfDiscount.setText(ticket.getDiscountAmount().toString());
@@ -243,9 +248,17 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 		lblTax.setText(com.floreantpos.POSConstants.TAX + ":"); //$NON-NLS-1$
 
 		tfTax = new javax.swing.JTextField();
-	//	tfTax.setFont(tfTax.getFont().deriveFont(Font.PLAIN, 16));
+		//	tfTax.setFont(tfTax.getFont().deriveFont(Font.PLAIN, 16));
 		tfTax.setEditable(false);
 		tfTax.setHorizontalAlignment(SwingConstants.TRAILING);
+
+		JLabel lblGratuity = new javax.swing.JLabel();
+		lblGratuity.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+		lblGratuity.setText(Messages.getString("SettleTicketDialog.5") + ":");  //$NON-NLS-1$//$NON-NLS-2$
+
+		tfGratuity = new javax.swing.JTextField();
+		tfGratuity.setEditable(false);
+		tfGratuity.setHorizontalAlignment(SwingConstants.TRAILING);
 
 		JLabel lblTotal = new javax.swing.JLabel();
 		lblTotal.setFont(lblTotal.getFont().deriveFont(Font.BOLD, 18));
@@ -265,6 +278,8 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 		ticketAmountPanel.add(tfDiscount, "growx,aligny center"); //$NON-NLS-1$
 		ticketAmountPanel.add(lblTax, "newline,growx,aligny center"); //$NON-NLS-1$
 		ticketAmountPanel.add(tfTax, "growx,aligny center"); //$NON-NLS-1$
+		ticketAmountPanel.add(lblGratuity, "newline,growx,aligny center"); //$NON-NLS-1$
+		ticketAmountPanel.add(tfGratuity, "growx,aligny center"); //$NON-NLS-1$
 		ticketAmountPanel.add(lblTotal, "newline,growx,aligny center"); //$NON-NLS-1$
 		ticketAmountPanel.add(tfTotal, "growx,aligny center"); //$NON-NLS-1$
 
@@ -332,7 +347,10 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 		ticket.calculatePrice();
 		OrderController.saveOrder(ticket);
 		paymentView.updateView();
+		updateView();
+
 	}
+
 	public void doSettle(PaymentType paymentType) {
 		try {
 			if (ticket == null)
@@ -344,7 +362,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 				doSettleBarTabTicket(ticket);
 				return;
 			}
-			
+
 			cardName = paymentType.getDisplayString();
 			PosTransaction transaction = null;
 
@@ -355,6 +373,30 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 					}
 
 					transaction = paymentType.createTransaction();
+					transaction.setTicket(ticket);
+					transaction.setCaptured(true);
+					setTransactionAmounts(transaction);
+
+					settleTicket(transaction);
+					break;
+
+				case CUSTOM_PAYMENT:
+
+					CustomPaymentSelectionDialog customPaymentDialog = new CustomPaymentSelectionDialog();
+					customPaymentDialog.setTitle(Messages.getString("SettleTicketDialog.8")); //$NON-NLS-1$
+					customPaymentDialog.pack();
+					customPaymentDialog.open();
+
+					if (customPaymentDialog.isCanceled())
+						return;
+
+					if (!confirmPayment()) {
+						return;
+					}
+
+					transaction = paymentType.createTransaction();
+					transaction.setCustomPaymentName(customPaymentDialog.getPaymentName());
+					transaction.setCustomPaymentRef(customPaymentDialog.getPaymentRef());
 					transaction.setTicket(ticket);
 					transaction.setCaptured(true);
 					setTransactionAmounts(transaction);
@@ -652,7 +694,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 		//authorize only, do not capture
 		PaymentProcessWaitDialog waitDialog = new PaymentProcessWaitDialog(this);
 		try {
-			
+
 			waitDialog.setVisible(true);
 
 			PosTransaction transaction = paymentType.createTransaction();
@@ -662,7 +704,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 			CardProcessor cardProcessor = paymentGateway.getProcessor();
 
 			if (inputter instanceof SwipeCardDialog) {
-				
+
 				SwipeCardDialog swipeCardDialog = (SwipeCardDialog) inputter;
 				String cardString = swipeCardDialog.getCardString();
 
@@ -685,7 +727,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 				settleTicket(transaction);
 			}
 			else if (inputter instanceof ManualCardEntryDialog) {
-				
+
 				ManualCardEntryDialog mDialog = (ManualCardEntryDialog) inputter;
 
 				transaction.setCaptured(false);
@@ -701,10 +743,10 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 				settleTicket(transaction);
 			}
 			else if (inputter instanceof AuthorizationCodeDialog) {
-				
+
 				PosTransaction selectedTransaction = selectedPaymentType.createTransaction();
 				selectedTransaction.setTicket(ticket);
-				
+
 				AuthorizationCodeDialog authDialog = (AuthorizationCodeDialog) inputter;
 				String authorizationCode = authDialog.getAuthorizationCode();
 				if (StringUtils.isEmpty(authorizationCode)) {
