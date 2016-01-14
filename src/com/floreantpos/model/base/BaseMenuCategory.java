@@ -70,6 +70,7 @@ public abstract class BaseMenuCategory  implements Comparable, Serializable {
 		protected java.lang.Integer textColorCode;
 
 	// collections
+	private java.util.List<com.floreantpos.model.Discount> discounts;
 	private java.util.List<com.floreantpos.model.MenuGroup> menuGroups;
 
 
@@ -211,6 +212,28 @@ public abstract class BaseMenuCategory  implements Comparable, Serializable {
 	 */
 	public void setTextColorCode (java.lang.Integer textColorCode) {
 		this.textColorCode = textColorCode;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: discounts
+	 */
+	public java.util.List<com.floreantpos.model.Discount> getDiscounts () {
+					return discounts;
+			}
+
+	/**
+	 * Set the value related to the column: discounts
+	 * @param discounts the discounts value
+	 */
+	public void setDiscounts (java.util.List<com.floreantpos.model.Discount> discounts) {
+		this.discounts = discounts;
+	}
+
+	public void addTodiscounts (com.floreantpos.model.Discount discount) {
+		if (null == getDiscounts()) setDiscounts(new java.util.ArrayList<com.floreantpos.model.Discount>());
+		getDiscounts().add(discount);
 	}
 
 

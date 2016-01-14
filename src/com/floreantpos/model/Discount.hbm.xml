@@ -1,16 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping package="com.floreantpos.model">
-	<class lazy="false" name="CouponAndDiscount" table="COUPON_AND_DISCOUNT">
+	<class lazy="false" name="Discount" table="COUPON_AND_DISCOUNT">
 		<id column="ID" name="id" type="java.lang.Integer">
 			<generator class="identity" />
 		</id>
 		<property column="NAME" length="120" name="name" type="string" />
 		<property column="type" name="type" type="java.lang.Integer" />
+		<property column="BARCODE" length="120" name="barcode" type="string" />
 		<property column="qualificationType" name="QUALIFICATION_TYPE" type="java.lang.Integer" />
 		<property column="VALUE" name="value" type="java.lang.Double" />
 		<property column="EXPIRY_DATE" name="expiryDate" type="java.util.Date" />
 		<property column="ENABLED" name="enabled" type="java.lang.Boolean" />
+		<property column="AUTO_APPLY" name="autoApply" type="java.lang.Boolean" />
 		<property column="NEVER_EXPIRE" name="neverExpire" type="java.lang.Boolean" />
+		
+		<bag cascade="save-update" inverse="false" lazy="false" name="menuItems" table="MENUITEM_DISCOUNT">
+			<key column="DISCOUNT_ID" />
+			<many-to-many class="MenuItem" column="MENUITEM_ID"/>
+		</bag>
+		
+		<bag cascade="save-update" inverse="false" lazy="false" name="menuGroups"
+			table="MENUGROUP_DISCOUNT">
+			<key column="DISCOUNT_ID" />
+			<many-to-many class="MenuGroup" column="MENUGROUP_ID" />
+		</bag>
+		
+		<bag cascade="save-update" inverse="false" lazy="false" name="menuCategories"
+			table="MENUCATEGORY_DISCOUNT">
+			<key column="DISCOUNT_ID" />
+			<many-to-many class="MenuCategory" column="MENUCATEGORY_ID" />
+		</bag> 
 	</class>
 </hibernate-mapping>

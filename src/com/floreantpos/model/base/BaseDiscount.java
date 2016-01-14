@@ -13,28 +13,30 @@ import java.io.Serializable;
  *  table="COUPON_AND_DISCOUNT"
  */
 
-public abstract class BaseCouponAndDiscount  implements Comparable, Serializable {
+public abstract class BaseDiscount  implements Comparable, Serializable {
 
-	public static String REF = "CouponAndDiscount";
+	public static String REF = "Discount";
 	public static String PROP_NAME = "name";
 	public static String PROP_ENABLED = "enabled";
 	public static String PROP_EXPIRY_DATE = "expiryDate";
+	public static String PROP_BARCODE = "barcode";
 	public static String PROP_NEVER_EXPIRE = "neverExpire";
 	public static String PROP_VALUE = "value";
 	public static String PROP_TYPE = "type";
 	public static String PROP_QUALIFICATION_TYPE = "QUALIFICATION_TYPE";
 	public static String PROP_ID = "id";
+	public static String PROP_AUTO_APPLY = "autoApply";
 
 
 	// constructors
-	public BaseCouponAndDiscount () {
+	public BaseDiscount () {
 		initialize();
 	}
 
 	/**
 	 * Constructor for primary key
 	 */
-	public BaseCouponAndDiscount (java.lang.Integer id) {
+	public BaseDiscount (java.lang.Integer id) {
 		this.setId(id);
 		initialize();
 	}
@@ -51,11 +53,18 @@ public abstract class BaseCouponAndDiscount  implements Comparable, Serializable
 	// fields
 		protected java.lang.String name;
 		protected java.lang.Integer type;
+		protected java.lang.String barcode;
 		protected java.lang.Integer qUALIFICATION_TYPE;
 		protected java.lang.Double value;
 		protected java.util.Date expiryDate;
 		protected java.lang.Boolean enabled;
+		protected java.lang.Boolean autoApply;
 		protected java.lang.Boolean neverExpire;
+
+	// collections
+	private java.util.List<com.floreantpos.model.MenuItem> menuItems;
+	private java.util.List<com.floreantpos.model.MenuGroup> menuGroups;
+	private java.util.List<com.floreantpos.model.MenuCategory> menuCategories;
 
 
 
@@ -111,6 +120,23 @@ public abstract class BaseCouponAndDiscount  implements Comparable, Serializable
 	 */
 	public void setType (java.lang.Integer type) {
 		this.type = type;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: BARCODE
+	 */
+	public java.lang.String getBarcode () {
+					return barcode;
+			}
+
+	/**
+	 * Set the value related to the column: BARCODE
+	 * @param barcode the BARCODE value
+	 */
+	public void setBarcode (java.lang.String barcode) {
+		this.barcode = barcode;
 	}
 
 
@@ -184,6 +210,23 @@ public abstract class BaseCouponAndDiscount  implements Comparable, Serializable
 
 
 	/**
+	 * Return the value associated with the column: AUTO_APPLY
+	 */
+	public java.lang.Boolean isAutoApply () {
+								return autoApply == null ? Boolean.FALSE : autoApply;
+					}
+
+	/**
+	 * Set the value related to the column: AUTO_APPLY
+	 * @param autoApply the AUTO_APPLY value
+	 */
+	public void setAutoApply (java.lang.Boolean autoApply) {
+		this.autoApply = autoApply;
+	}
+
+
+
+	/**
 	 * Return the value associated with the column: NEVER_EXPIRE
 	 */
 	public java.lang.Boolean isNeverExpire () {
@@ -200,15 +243,81 @@ public abstract class BaseCouponAndDiscount  implements Comparable, Serializable
 
 
 
+	/**
+	 * Return the value associated with the column: menuItems
+	 */
+	public java.util.List<com.floreantpos.model.MenuItem> getMenuItems () {
+					return menuItems;
+			}
+
+	/**
+	 * Set the value related to the column: menuItems
+	 * @param menuItems the menuItems value
+	 */
+	public void setMenuItems (java.util.List<com.floreantpos.model.MenuItem> menuItems) {
+		this.menuItems = menuItems;
+	}
+
+	public void addTomenuItems (com.floreantpos.model.MenuItem menuItem) {
+		if (null == getMenuItems()) setMenuItems(new java.util.ArrayList<com.floreantpos.model.MenuItem>());
+		getMenuItems().add(menuItem);
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: menuGroups
+	 */
+	public java.util.List<com.floreantpos.model.MenuGroup> getMenuGroups () {
+					return menuGroups;
+			}
+
+	/**
+	 * Set the value related to the column: menuGroups
+	 * @param menuGroups the menuGroups value
+	 */
+	public void setMenuGroups (java.util.List<com.floreantpos.model.MenuGroup> menuGroups) {
+		this.menuGroups = menuGroups;
+	}
+
+	public void addTomenuGroups (com.floreantpos.model.MenuGroup menuGroup) {
+		if (null == getMenuGroups()) setMenuGroups(new java.util.ArrayList<com.floreantpos.model.MenuGroup>());
+		getMenuGroups().add(menuGroup);
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: menuCategories
+	 */
+	public java.util.List<com.floreantpos.model.MenuCategory> getMenuCategories () {
+					return menuCategories;
+			}
+
+	/**
+	 * Set the value related to the column: menuCategories
+	 * @param menuCategories the menuCategories value
+	 */
+	public void setMenuCategories (java.util.List<com.floreantpos.model.MenuCategory> menuCategories) {
+		this.menuCategories = menuCategories;
+	}
+
+	public void addTomenuCategories (com.floreantpos.model.MenuCategory menuCategory) {
+		if (null == getMenuCategories()) setMenuCategories(new java.util.ArrayList<com.floreantpos.model.MenuCategory>());
+		getMenuCategories().add(menuCategory);
+	}
+
+
+
 
 
 	public boolean equals (Object obj) {
 		if (null == obj) return false;
-		if (!(obj instanceof com.floreantpos.model.CouponAndDiscount)) return false;
+		if (!(obj instanceof com.floreantpos.model.Discount)) return false;
 		else {
-			com.floreantpos.model.CouponAndDiscount couponAndDiscount = (com.floreantpos.model.CouponAndDiscount) obj;
-			if (null == this.getId() || null == couponAndDiscount.getId()) return false;
-			else return (this.getId().equals(couponAndDiscount.getId()));
+			com.floreantpos.model.Discount discount = (com.floreantpos.model.Discount) obj;
+			if (null == this.getId() || null == discount.getId()) return false;
+			else return (this.getId().equals(discount.getId()));
 		}
 	}
 

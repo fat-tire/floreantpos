@@ -23,7 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.floreantpos.model.CouponAndDiscount;
+import com.floreantpos.model.Discount;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketCouponAndDiscount;
 import com.floreantpos.swing.ListTableModel;
@@ -84,9 +84,9 @@ public class SalesExceptionReport {
 		}
 	}
 	
-	public void addEmptyDiscounts(List<CouponAndDiscount> discounts) {
+	public void addEmptyDiscounts(List<Discount> discounts) {
 		if(discounts != null) {
-			for (CouponAndDiscount discount : discounts) {
+			for (Discount discount : discounts) {
 				String name = discount.getName();
 				DiscountData discountData = disountMap.get(discount.getId());
 				if (discountData == null) {

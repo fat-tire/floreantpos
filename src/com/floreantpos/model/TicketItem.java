@@ -74,10 +74,10 @@ public class TicketItem extends BaseTicketItem implements ITicketItem {
 	}
 
 	public java.lang.Double getTaxAmount() {
-		if(getTicket().isTaxExempt()) {
+		if (getTicket().isTaxExempt()) {
 			return 0.0;
 		}
-		
+
 		return super.getTaxAmount();
 	}
 
@@ -85,7 +85,7 @@ public class TicketItem extends BaseTicketItem implements ITicketItem {
 	public String toString() {
 		return getName();
 	}
-
+	
 	public void addCookingInstruction(TicketItemCookingInstruction cookingInstruction) {
 		List<TicketItemCookingInstruction> cookingInstructions = getCookingInstructions();
 
@@ -145,10 +145,10 @@ public class TicketItem extends BaseTicketItem implements ITicketItem {
 
 		return ticketItemModifierGroup;
 	}
-	
+
 	public TicketItemModifierGroup findTicketItemModifierGroup(int menuModifierGroupId) {
 		List<TicketItemModifierGroup> ticketItemModifierGroups = getTicketItemModifierGroups();
-		
+
 		if (ticketItemModifierGroups != null) {
 			for (TicketItemModifierGroup ticketItemModifierGroup : ticketItemModifierGroups) {
 				if (ticketItemModifierGroup.getMenuItemModifierGroup().getId() == menuModifierGroupId) {
@@ -156,7 +156,7 @@ public class TicketItem extends BaseTicketItem implements ITicketItem {
 				}
 			}
 		}
-		
+
 		return null;
 	}
 
@@ -207,18 +207,48 @@ public class TicketItem extends BaseTicketItem implements ITicketItem {
 	}
 
 	//TODO: ITERATE ALL discount and calculate discounts
+	//	private double calculateDiscount() {
+	//		double discountRate = getDiscountRate();
+	//		
+	//		if(discountRate < 0) {
+	//			return getDiscountAmount();
+	//		}
+	//		
+	//		double subtotalWithoutModifiers = getSubtotalAmountWithoutModifiers();
+	//		double discount = 0;
+	//		if (discountRate > 0) {
+	//			discount = subtotalWithoutModifiers * discountRate / 100.0;
+	//		}
+	//		return 0;
+	//	}
+
 	private double calculateDiscount() {
-//		double discountRate = getDiscountRate();
-//		
-//		if(discountRate < 0) {
-//			return getDiscountAmount();
-//		}
-//		
-//		double subtotalWithoutModifiers = getSubtotalAmountWithoutModifiers();
-//		double discount = 0;
-//		if (discountRate > 0) {
-//			discount = subtotalWithoutModifiers * discountRate / 100.0;
-//		}
+		if(getDiscounts()==null || getDiscounts().isEmpty()){
+			return 0;
+		}
+		
+		double discount = 0;
+		for (TicketItemDiscount ticketItemDiscount : getDiscounts()) {
+			if (ticketItemDiscount.getValue() > 0) {
+				discount += getAmountByType(ticketItemDiscount);
+			}
+		}
+		return getItemCount()*discount;
+	}
+
+	public double getAmountByType(TicketItemDiscount discount) {
+
+		switch (discount.getType()) {
+			case Discount.DISCOUNT_TYPE_AMOUNT:
+				return discount.getValue();
+
+			case Discount.DISCOUNT_TYPE_PERCENTAGE:
+				return (discount.getValue() * getUnitPrice()) / 100;
+
+			default:
+				break;
+		}
+
 		return 0;
 	}
 
@@ -302,7 +332,7 @@ public class TicketItem extends BaseTicketItem implements ITicketItem {
 	public Double getTotalAmountWithoutModifiersDisplay() {
 		return getTotalAmountWithoutModifiers();
 	}
-	
+
 	@Override
 	public Double getSubTotalAmountWithoutModifiersDisplay() {
 		return getSubtotalAmountWithoutModifiers();
@@ -315,29 +345,29 @@ public class TicketItem extends BaseTicketItem implements ITicketItem {
 	public void setPriceIncludesTax(boolean priceIncludesTax) {
 		this.priceIncludesTax = priceIncludesTax;
 	}
-	
+
 	@Override
 	public String getItemCode() {
 		return String.valueOf(getItemId());
 	}
-	
+
 	public Printer getPrinter(OrderType orderType) {
 		PosPrinters printers = Application.getPrinters();
 		PrinterGroup printerGroup = getPrinterGroup();
-		
-		if(printerGroup == null) {
+
+		if (printerGroup == null) {
 			return printers.getDefaultKitchenPrinter();
 		}
-		
+
 		//return printers.getKitchenPrinterFor(virtualPrinter);
 		List<String> printerNames = printerGroup.getPrinterNames();
 		List<Printer> kitchenPrinters = printers.getKitchenPrinters();
 		for (Printer printer : kitchenPrinters) {
-			if(printerNames.contains(printer.getVirtualPrinter().getName())) {
+			if (printerNames.contains(printer.getVirtualPrinter().getName())) {
 				return printer;
 			}
 		}
-		
+
 		return printers.getDefaultKitchenPrinter();
 	}
 

@@ -24,6 +24,7 @@ import com.floreantpos.model.ITicketItem;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.TicketItemCookingInstruction;
+import com.floreantpos.model.TicketItemDiscount;
 import com.floreantpos.model.TicketItemModifier;
 import com.floreantpos.model.TicketItemModifierGroup;
 
@@ -47,6 +48,8 @@ public class TicketItemRowCreator {
 			ticketItem.setTableRowNum(rowNum);
 			tableRows.put(String.valueOf(rowNum), ticketItem);
 			rowNum++;
+			
+			rowNum = includeDiscounts(ticketItem, tableRows, rowNum);
 
 			if (includeModifiers) {
 				rowNum = includeModifiers(ticketItem, tableRows, rowNum, false);
@@ -89,6 +92,18 @@ public class TicketItemRowCreator {
 		}
 		return rowNum;
 	}
+	
+	private static int includeDiscounts(TicketItem ticketItem, Map<String, ITicketItem> tableRows, int rowNum) {
+		List<TicketItemDiscount> ticketItemDiscounts = ticketItem.getDiscounts();
+		if (ticketItemDiscounts != null) {
+			for (TicketItemDiscount ticketItemDiscount : ticketItemDiscounts) {
+				ticketItemDiscount.setTableRowNum(rowNum);
+				tableRows.put(String.valueOf(rowNum), ticketItemDiscount);
+				rowNum++;
+			}
+		}
+		return rowNum;
+	}
 
 	private static int includeModifiers(TicketItem ticketItem, Map<String, ITicketItem> tableRows, int rowNum, boolean kitchenPrint) {
 		List<TicketItemModifierGroup> ticketItemModifierGroups = ticketItem.getTicketItemModifierGroups();
@@ -111,5 +126,4 @@ public class TicketItemRowCreator {
 		}
 		return rowNum;
 	}
-
 }

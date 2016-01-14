@@ -71,6 +71,9 @@ public abstract class BaseMenuGroup  implements Comparable, Serializable {
 	// many to one
 	private com.floreantpos.model.MenuCategory parent;
 
+	// collections
+	private java.util.List<com.floreantpos.model.Discount> discounts;
+
 
 
 	/**
@@ -210,6 +213,28 @@ public abstract class BaseMenuGroup  implements Comparable, Serializable {
 	 */
 	public void setParent (com.floreantpos.model.MenuCategory parent) {
 		this.parent = parent;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: discounts
+	 */
+	public java.util.List<com.floreantpos.model.Discount> getDiscounts () {
+					return discounts;
+			}
+
+	/**
+	 * Set the value related to the column: discounts
+	 * @param discounts the discounts value
+	 */
+	public void setDiscounts (java.util.List<com.floreantpos.model.Discount> discounts) {
+		this.discounts = discounts;
+	}
+
+	public void addTodiscounts (com.floreantpos.model.Discount discount) {
+		if (null == getDiscounts()) setDiscounts(new java.util.ArrayList<com.floreantpos.model.Discount>());
+		getDiscounts().add(discount);
 	}
 
 

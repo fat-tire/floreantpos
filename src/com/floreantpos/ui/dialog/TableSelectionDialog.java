@@ -21,6 +21,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.Insets;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -37,20 +38,27 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 
+import org.apache.commons.lang.StringUtils;
+
 import net.miginfocom.swing.MigLayout;
 
 import com.floreantpos.Messages;
 import com.floreantpos.POSConstants;
-import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.ShopTable;
 import com.floreantpos.model.Ticket;
+import com.floreantpos.model.User;
+import com.floreantpos.model.UserPermission;
 import com.floreantpos.model.dao.ShopTableDAO;
+import com.floreantpos.model.dao.TicketDAO;
+import com.floreantpos.model.dao.UserDAO;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.swing.PosScrollPane;
 import com.floreantpos.swing.ScrollableFlowPanel;
 import com.floreantpos.swing.ShopTableButton;
 import com.floreantpos.ui.TitlePanel;
+import com.floreantpos.ui.views.order.OrderView;
+import com.floreantpos.ui.views.order.RootView;
 
 public class TableSelectionDialog extends POSDialog implements ActionListener {
 
@@ -95,7 +103,8 @@ public class TableSelectionDialog extends POSDialog implements ActionListener {
 
 		for (ShopTable shopTable : tables) {
 			ShopTableButton tableButton = new ShopTableButton(shopTable);
-			tableButton.setPreferredSize(new Dimension(80, TerminalConfig.getTouchScreenButtonHeight()));
+			tableButton.setPreferredSize(new Dimension(143, 120));
+			tableButton.setFont(new Font(tableButton.getFont().getName(), tableButton.getFont().getStyle(),30)); 
 			tableButton.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -135,13 +144,15 @@ public class TableSelectionDialog extends POSDialog implements ActionListener {
 		}
 
 		if (ticket != null) {
-			shopTable.setServing(false);
-			shopTable.setBooked(false);
+			if(button.getShopTable().isServing()){
+				POSMessageDialog.showError(this, Messages.getString("TableSelectionDialog.2") + "is not empty"); //$NON-NLS-1$ //$NON-NLS-2$
+				return false; 
+			}
 		}
 
-		if (shopTable.isServing()) {
-			POSMessageDialog.showError(this, Messages.getString("TableSelectionDialog.4") + e + Messages.getString("TableSelectionDialog.5")); //$NON-NLS-1$ //$NON-NLS-2$
-			return false;
+		if (shopTable.isServing() && ticket==null) {
+			editTicket(tableNumber); 
+			return false; 
 		}
 
 		if (addedTableListModel.contains(button)) {
@@ -198,6 +209,50 @@ public class TableSelectionDialog extends POSDialog implements ActionListener {
 
 		return tables;
 	}
+	
+	private boolean editTicket(Integer shopTableNumber) {
+		List<Ticket> openTickets=TicketDAO.getInstance().findOpenTickets(); 
+		Integer ticketId = null; 
+		for(Ticket ticket:openTickets){
+			if(ticket.getTableNumbers().contains(shopTableNumber)){
+				ticketId=ticket.getId(); 
+				if(ticketId==null){
+					return false; 
+				}
+				UserPermission requiredPermission=UserPermission.EDIT_TICKET;
+				User user = Application.getCurrentUser();
+
+				if (requiredPermission == null) {
+					return false; 
+				}
+
+				if (!user.hasPermission(requiredPermission)) {
+					String password = PasswordEntryDialog.show(Application.getPosWindow(), Messages.getString("PosAction.0")); //$NON-NLS-1$
+					if(StringUtils.isEmpty(password)) {
+						return false; 
+					}
+					
+					User user2 = UserDAO.getInstance().findUserBySecretKey(password);
+					if(user2 == null) {
+						POSMessageDialog.showError(Application.getPosWindow(), Messages.getString("PosAction.1")); //$NON-NLS-1$
+						return false; 
+					}
+					else if(!user2.hasPermission(requiredPermission)) {
+						POSMessageDialog.showError(Application.getPosWindow(), Messages.getString("PosAction.2")); //$NON-NLS-1$
+						return false; 
+					}
+				}
+			}
+		}
+		
+		Ticket ticketToEdit = TicketDAO.getInstance().loadFullTicket(ticketId);
+
+		OrderView.getInstance().setCurrentTicket(ticketToEdit);
+		RootView.getInstance().showView(OrderView.VIEW_NAME);
+		OrderView.getInstance().getTicketView().getTxtSearchItem().requestFocus();
+		doCancel();
+		return true; 
+	}
 
 	public void setTicket(Ticket ticket) {
 		if (ticket == null) {
@@ -212,6 +267,8 @@ public class TableSelectionDialog extends POSDialog implements ActionListener {
 
 		for (ShopTable shopTable : tables) {
 			ShopTableButton shopTableButton = tableButtonMap.get(shopTable);
+			shopTableButton.getShopTable().setServing(false);
+			shopTableButton.getShopTable().setBooked(false);
 			shopTableButton.setBackground(Color.red);
 			shopTableButton.setForeground(Color.black);
 			shopTableButton.setEnabled(true);

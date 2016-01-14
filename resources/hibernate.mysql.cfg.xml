@@ -48,6 +48,7 @@
 		<mapping resource="com/floreantpos/model/TicketItem.hbm.xml" />
 		<mapping resource="com/floreantpos/model/TicketItemModifier.hbm.xml" />
 		<mapping resource="com/floreantpos/model/TicketItemModifierGroup.hbm.xml" />
+		<mapping resource="com/floreantpos/model/TicketItemDiscount.hbm.xml" />
 		<mapping resource="com/floreantpos/model/PosTransaction.hbm.xml" />
 		<mapping resource="com/floreantpos/model/User.hbm.xml" />
 		<mapping resource="com/floreantpos/model/VoidReason.hbm.xml" />

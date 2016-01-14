@@ -37,46 +37,38 @@ public class MenuItem extends BaseMenuItem {
 	private static final long serialVersionUID = 1L;
 
 	/*[CONSTRUCTOR MARKER BEGIN]*/
-	public MenuItem () {
+	public MenuItem() {
 		super();
 	}
 
 	/**
 	 * Constructor for primary key
 	 */
-	public MenuItem (java.lang.Integer id) {
+	public MenuItem(java.lang.Integer id) {
 		super(id);
 	}
 
 	/**
 	 * Constructor for required fields
 	 */
-	public MenuItem (
-		java.lang.Integer id,
-		java.lang.String name,
-		java.lang.Double buyPrice,
-		java.lang.Double price) {
+	public MenuItem(java.lang.Integer id, java.lang.String name, java.lang.Double buyPrice, java.lang.Double price) {
 
-		super (
-			id,
-			name,
-			buyPrice,
-			price);
+		super(id, name, buyPrice, price);
 	}
 
 	/*[CONSTRUCTOR MARKER END]*/
-	
+
 	private Color buttonColor;
 	private Color textColor;
-	
+
 	private ImageIcon image;
 
 	@XmlTransient
 	public ImageIcon getImage() {
-		if(image != null) {
+		if (image != null) {
 			return image;
 		}
-		
+
 		int width = 100;
 		int height = 100;
 		byte[] imageData = getImageData();
@@ -98,38 +90,38 @@ public class MenuItem extends BaseMenuItem {
 
 	@XmlTransient
 	public Color getButtonColor() {
-		if(buttonColor != null) {
+		if (buttonColor != null) {
 			return buttonColor;
 		}
-		
-		if(getButtonColorCode() == null) {
+
+		if (getButtonColorCode() == null) {
 			return null;
 		}
-		
+
 		return buttonColor = new Color(getButtonColorCode());
 	}
-	
+
 	public void setButtonColor(Color buttonColor) {
 		this.buttonColor = buttonColor;
 	}
 
 	@XmlTransient
 	public Color getTextColor() {
-		if(textColor != null) {
+		if (textColor != null) {
 			return textColor;
 		}
-		
-		if(getTextColorCode() == null) {
+
+		if (getTextColorCode() == null) {
 			return null;
 		}
-		
+
 		return textColor = new Color(getTextColorCode());
 	}
-	
+
 	public void setTextColor(Color textColor) {
 		this.textColor = textColor;
 	}
-	
+
 	@XmlTransient
 	public String getDisplayName() {
 		if (TerminalConfig.isUseTranslatedName() && StringUtils.isNotEmpty(getTranslatedName())) {
@@ -179,6 +171,7 @@ public class MenuItem extends BaseMenuItem {
 
 	public TicketItem convertToTicketItem() {
 		TicketItem ticketItem = new TicketItem();
+
 		ticketItem.setItemId(this.getId());
 		ticketItem.setItemCount(1);
 		ticketItem.setName(this.getDisplayName());
@@ -187,14 +180,25 @@ public class MenuItem extends BaseMenuItem {
 		ticketItem.setUnitPrice(this.getPrice(Application.getInstance().getCurrentShift()));
 		ticketItem.setTaxRate(this.getTax() == null ? 0 : this.getTax().getRate());
 		ticketItem.setHasModifiers(hasModifiers());
+
 		if (this.getParent().getParent().isBeverage()) {
 			ticketItem.setBeverage(true);
 			ticketItem.setShouldPrintToKitchen(false);
-		} else {
+		}
+		else {
 			ticketItem.setBeverage(false);
 			ticketItem.setShouldPrintToKitchen(true);
 		}
 		ticketItem.setPrinterGroup(this.getPrinterGroup());
+
+		if (this.getDiscounts() != null) {
+			for (Discount discount : this.getDiscounts()) {
+				if (discount.isAutoApply()) {
+					TicketItemDiscount ticketItemDiscount = convertToTicketItemDiscount(discount, ticketItem);
+					ticketItem.addTodiscounts(ticketItemDiscount);
+				}
+			}
+		}
 
 		Recepie recepie = getRecepie();
 		if (recepie != null) {
@@ -210,6 +214,18 @@ public class MenuItem extends BaseMenuItem {
 		}
 
 		return ticketItem;
+	}
+
+	public static TicketItemDiscount convertToTicketItemDiscount(Discount discount, TicketItem ticketItem) {
+		TicketItemDiscount ticketItemDiscount = new TicketItemDiscount();
+		ticketItemDiscount.setDiscountId(discount.getId());
+		ticketItemDiscount.setAutoApply(discount.isAutoApply());
+		ticketItemDiscount.setName(discount.getName());
+		ticketItemDiscount.setType(discount.getType());
+		ticketItemDiscount.setValue(discount.getValue());
+		ticketItemDiscount.setTicketItem(ticketItem);
+		return ticketItemDiscount;
+
 	}
 
 	public boolean hasModifiers() {

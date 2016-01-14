@@ -17,20 +17,24 @@
  */
 package com.floreantpos.model;
 
-import com.floreantpos.model.base.BaseCouponAndDiscount;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
-public class CouponAndDiscount extends BaseCouponAndDiscount {
+import com.floreantpos.model.base.BaseDiscount;
+
+public class Discount extends BaseDiscount {
 	private static final long serialVersionUID = 1L;
 
 	/*[CONSTRUCTOR MARKER BEGIN]*/
-	public CouponAndDiscount () {
+	public Discount () {
 		super();
 	}
 
 	/**
 	 * Constructor for primary key
 	 */
-	public CouponAndDiscount (java.lang.Integer id) {
+	public Discount (java.lang.Integer id) {
 		super(id);
 	}
 
@@ -48,17 +52,64 @@ public class CouponAndDiscount extends BaseCouponAndDiscount {
 	public final static int DISCOUNT_TYPE_PERCENTAGE = 1;
 	public final static int DISCOUNT_TYPE_RE_PRICE = 2;
 	public final static int DISCOUNT_TYPE_ALT_PRICE = 3;
-	
+
 	public final static int QUALIFICATION_TYPE_ITEM = 0;
-	public final static int QUALIFICATION_TYPE_GROUP = 1;
-	public final static int QUALIFICATION_TYPE_CATEGORY = 2;
-	public final static int QUALIFICATION_TYPE_ORDER = 3;
+	public final static int QUALIFICATION_TYPE_ORDER = 1;
+	
+	//public final static int QUALIFICATION_TYPE_GROUP = 1;
+	//public final static int QUALIFICATION_TYPE_CATEGORY = 2;
 
 	public final static String[] COUPON_TYPE_NAMES = { "AMOUNT", "PERCENTAGE" }; //$NON-NLS-1$ //$NON-NLS-2$
+
+	public final static String[] COUPON_QUALIFICATION_NAMES = { "ITEM", "ORDER" }; //$NON-NLS-1$ //$NON-NLS-2$
 
 	@Override
 	public String toString() {
 		return COUPON_TYPE_NAMES[getType()];
 	}
 
+	public double calculateDiscount(ITicketItem ticketItem) {
+		
+		switch (getType()) {
+			case DISCOUNT_TYPE_AMOUNT:
+				return ticketItem.getUnitPriceDisplay(); 
+
+			case DISCOUNT_TYPE_PERCENTAGE:
+				return (getValue()*ticketItem.getUnitPriceDisplay())/100; 
+
+			default:
+				break;
+		}
+		
+		return 0;
+	}
+	
+	public static Discount getMaxDiscount(List<Discount> discounts){
+		Discount maxDiscount = Collections.max(discounts, new Comparator<Discount>() {
+			@Override
+			public int compare(Discount o1, Discount o2) {
+				 if (o1.getAmountByType() < o2.getAmountByType())
+			            return -1;
+			        if (o1.getAmountByType() == o2.getAmountByType())
+			            return 0;
+			        return 1;
+			}
+		});
+		
+		return maxDiscount; 
+	}
+	
+	public double getAmountByType() {
+		switch (getType()) {
+			case Discount.DISCOUNT_TYPE_AMOUNT:
+				return getValue();
+
+			case Discount.DISCOUNT_TYPE_PERCENTAGE:
+				return getValue() / 100;
+
+			default:
+				break;
+		}
+		return 0;
+	}
 }

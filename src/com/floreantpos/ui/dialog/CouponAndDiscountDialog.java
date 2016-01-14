@@ -40,10 +40,10 @@ import javax.swing.event.ListSelectionListener;
 import com.floreantpos.IconFactory;
 import com.floreantpos.Messages;
 import com.floreantpos.PosException;
-import com.floreantpos.model.CouponAndDiscount;
+import com.floreantpos.model.Discount;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketCouponAndDiscount;
-import com.floreantpos.model.dao.CouponAndDiscountDAO;
+import com.floreantpos.model.dao.DiscountDAO;
 import com.floreantpos.util.NumberUtil;
 
 /**
@@ -51,7 +51,7 @@ import com.floreantpos.util.NumberUtil;
  * @author  mahbub.shahriar
  */
 public class CouponAndDiscountDialog extends POSDialog implements ActionListener, ListSelectionListener{
-	private List<CouponAndDiscount> couponList;
+	private List<Discount> couponList;
 	private TicketCouponAndDiscount ticketCoupon;
 	private Ticket ticket;
     
@@ -335,7 +335,7 @@ public class CouponAndDiscountDialog extends POSDialog implements ActionListener
     
     
     public void initData() throws Exception {
-		CouponAndDiscountDAO dao = new CouponAndDiscountDAO();
+		DiscountDAO dao = new DiscountDAO();
 		couponList = dao.getValidCoupons();
 		listCoupons.setModel(new CouponListModel());
 	}
@@ -381,7 +381,7 @@ public class CouponAndDiscountDialog extends POSDialog implements ActionListener
 		}
 	}
 
-	public void updateCouponView(CouponAndDiscount coupon) {
+	public void updateCouponView(Discount coupon) {
 		if (coupon == null) {
 			tfName.setText(""); //$NON-NLS-1$
 			tfNumber.setText(""); //$NON-NLS-1$
@@ -393,12 +393,12 @@ public class CouponAndDiscountDialog extends POSDialog implements ActionListener
 		btnEditValue.setEnabled(false);
 
 		tfName.setText(coupon.getName());
-		if (coupon.getType() == CouponAndDiscount.FREE_AMOUNT) {
+		if (coupon.getType() == Discount.FREE_AMOUNT) {
 			btnEditValue.setEnabled(true);
 		}
 
 		tfNumber.setText(String.valueOf(coupon.getId()));
-		tfType.setText(CouponAndDiscount.COUPON_TYPE_NAMES[coupon.getType()]);
+		tfType.setText(Discount.COUPON_TYPE_NAMES[coupon.getType()]);
 		tfValue.setText(NumberUtil.formatNumber(coupon.getValue()));
 		
 		double totalDiscount = 0;
@@ -416,7 +416,7 @@ public class CouponAndDiscountDialog extends POSDialog implements ActionListener
 	}
 
 	public void valueChanged(ListSelectionEvent e) {
-		CouponAndDiscount coupon = (CouponAndDiscount) listCoupons.getSelectedValue();
+		Discount coupon = (Discount) listCoupons.getSelectedValue();
 		updateCouponView(coupon);
 	}
 	
@@ -446,7 +446,7 @@ public class CouponAndDiscountDialog extends POSDialog implements ActionListener
 	class CouponListRenderer extends DefaultListCellRenderer {
 		@Override
 		public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-			CouponAndDiscount coupon = (CouponAndDiscount) value;
+			Discount coupon = (Discount) value;
 			//			String displayText = "<html><body>";
 			//			displayText += "<p align='center'>Name:" + coupon.getName() + "</p>";
 			//			displayText += "<p align='center'>" + coupon.getValue() + "</p>";

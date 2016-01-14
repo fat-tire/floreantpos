@@ -2,29 +2,29 @@ package com.floreantpos.model.dao;
 
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
-import com.floreantpos.model.dao.CouponAndDiscountDAO;
+import com.floreantpos.model.dao.TicketItemDiscountDAO;
 import org.hibernate.criterion.Order;
 
 /**
  * This is an automatically generated DAO class which should not be edited.
  */
-public abstract class BaseCouponAndDiscountDAO extends com.floreantpos.model.dao._RootDAO {
+public abstract class BaseTicketItemDiscountDAO extends com.floreantpos.model.dao._RootDAO {
 
 	// query name references
 
 
-	public static CouponAndDiscountDAO instance;
+	public static TicketItemDiscountDAO instance;
 
 	/**
 	 * Return a singleton of the DAO
 	 */
-	public static CouponAndDiscountDAO getInstance () {
-		if (null == instance) instance = new CouponAndDiscountDAO();
+	public static TicketItemDiscountDAO getInstance () {
+		if (null == instance) instance = new TicketItemDiscountDAO();
 		return instance;
 	}
 
 	public Class getReferenceClass () {
-		return com.floreantpos.model.CouponAndDiscount.class;
+		return com.floreantpos.model.TicketItemDiscount.class;
 	}
 
     public Order getDefaultOrder () {
@@ -32,35 +32,35 @@ public abstract class BaseCouponAndDiscountDAO extends com.floreantpos.model.dao
     }
 
 	/**
-	 * Cast the object as a com.floreantpos.model.CouponAndDiscount
+	 * Cast the object as a com.floreantpos.model.TicketItemDiscount
 	 */
-	public com.floreantpos.model.CouponAndDiscount cast (Object object) {
-		return (com.floreantpos.model.CouponAndDiscount) object;
+	public com.floreantpos.model.TicketItemDiscount cast (Object object) {
+		return (com.floreantpos.model.TicketItemDiscount) object;
 	}
 
-	public com.floreantpos.model.CouponAndDiscount get(java.lang.Integer key)
+	public com.floreantpos.model.TicketItemDiscount get(java.lang.Integer key)
 		throws org.hibernate.HibernateException {
-		return (com.floreantpos.model.CouponAndDiscount) get(getReferenceClass(), key);
+		return (com.floreantpos.model.TicketItemDiscount) get(getReferenceClass(), key);
 	}
 
-	public com.floreantpos.model.CouponAndDiscount get(java.lang.Integer key, Session s)
+	public com.floreantpos.model.TicketItemDiscount get(java.lang.Integer key, Session s)
 		throws org.hibernate.HibernateException {
-		return (com.floreantpos.model.CouponAndDiscount) get(getReferenceClass(), key, s);
+		return (com.floreantpos.model.TicketItemDiscount) get(getReferenceClass(), key, s);
 	}
 
-	public com.floreantpos.model.CouponAndDiscount load(java.lang.Integer key)
+	public com.floreantpos.model.TicketItemDiscount load(java.lang.Integer key)
 		throws org.hibernate.HibernateException {
-		return (com.floreantpos.model.CouponAndDiscount) load(getReferenceClass(), key);
+		return (com.floreantpos.model.TicketItemDiscount) load(getReferenceClass(), key);
 	}
 
-	public com.floreantpos.model.CouponAndDiscount load(java.lang.Integer key, Session s)
+	public com.floreantpos.model.TicketItemDiscount load(java.lang.Integer key, Session s)
 		throws org.hibernate.HibernateException {
-		return (com.floreantpos.model.CouponAndDiscount) load(getReferenceClass(), key, s);
+		return (com.floreantpos.model.TicketItemDiscount) load(getReferenceClass(), key, s);
 	}
 
-	public com.floreantpos.model.CouponAndDiscount loadInitialize(java.lang.Integer key, Session s) 
+	public com.floreantpos.model.TicketItemDiscount loadInitialize(java.lang.Integer key, Session s) 
 			throws org.hibernate.HibernateException { 
-		com.floreantpos.model.CouponAndDiscount obj = load(key, s); 
+		com.floreantpos.model.TicketItemDiscount obj = load(key, s); 
 		if (!Hibernate.isInitialized(obj)) {
 			Hibernate.initialize(obj);
 		} 
@@ -72,14 +72,14 @@ public abstract class BaseCouponAndDiscountDAO extends com.floreantpos.model.dao
 	/**
 	 * Return all objects related to the implementation of this DAO with no filter.
 	 */
-	public java.util.List<com.floreantpos.model.CouponAndDiscount> findAll () {
+	public java.util.List<com.floreantpos.model.TicketItemDiscount> findAll () {
 		return super.findAll();
 	}
 
 	/**
 	 * Return all objects related to the implementation of this DAO with no filter.
 	 */
-	public java.util.List<com.floreantpos.model.CouponAndDiscount> findAll (Order defaultOrder) {
+	public java.util.List<com.floreantpos.model.TicketItemDiscount> findAll (Order defaultOrder) {
 		return super.findAll(defaultOrder);
 	}
 
@@ -88,43 +88,43 @@ public abstract class BaseCouponAndDiscountDAO extends com.floreantpos.model.dao
 	 * Use the session given.
 	 * @param s the Session
 	 */
-	public java.util.List<com.floreantpos.model.CouponAndDiscount> findAll (Session s, Order defaultOrder) {
+	public java.util.List<com.floreantpos.model.TicketItemDiscount> findAll (Session s, Order defaultOrder) {
 		return super.findAll(s, defaultOrder);
 	}
 
 	/**
 	 * Persist the given transient instance, first assigning a generated identifier. (Or using the current value
 	 * of the identifier property if the assigned generator is used.) 
-	 * @param couponAndDiscount a transient instance of a persistent class 
+	 * @param ticketItemDiscount a transient instance of a persistent class 
 	 * @return the class identifier
 	 */
-	public java.lang.Integer save(com.floreantpos.model.CouponAndDiscount couponAndDiscount)
+	public java.lang.Integer save(com.floreantpos.model.TicketItemDiscount ticketItemDiscount)
 		throws org.hibernate.HibernateException {
-		return (java.lang.Integer) super.save(couponAndDiscount);
+		return (java.lang.Integer) super.save(ticketItemDiscount);
 	}
 
 	/**
 	 * Persist the given transient instance, first assigning a generated identifier. (Or using the current value
 	 * of the identifier property if the assigned generator is used.) 
 	 * Use the Session given.
-	 * @param couponAndDiscount a transient instance of a persistent class
+	 * @param ticketItemDiscount a transient instance of a persistent class
 	 * @param s the Session
 	 * @return the class identifier
 	 */
-	public java.lang.Integer save(com.floreantpos.model.CouponAndDiscount couponAndDiscount, Session s)
+	public java.lang.Integer save(com.floreantpos.model.TicketItemDiscount ticketItemDiscount, Session s)
 		throws org.hibernate.HibernateException {
-		return (java.lang.Integer) save((Object) couponAndDiscount, s);
+		return (java.lang.Integer) save((Object) ticketItemDiscount, s);
 	}
 
 	/**
 	 * Either save() or update() the given instance, depending upon the value of its identifier property. By default
 	 * the instance is always saved. This behaviour may be adjusted by specifying an unsaved-value attribute of the
 	 * identifier property mapping. 
-	 * @param couponAndDiscount a transient instance containing new or updated state 
+	 * @param ticketItemDiscount a transient instance containing new or updated state 
 	 */
-	public void saveOrUpdate(com.floreantpos.model.CouponAndDiscount couponAndDiscount)
+	public void saveOrUpdate(com.floreantpos.model.TicketItemDiscount ticketItemDiscount)
 		throws org.hibernate.HibernateException {
-		saveOrUpdate((Object) couponAndDiscount);
+		saveOrUpdate((Object) ticketItemDiscount);
 	}
 
 	/**
@@ -132,34 +132,34 @@ public abstract class BaseCouponAndDiscountDAO extends com.floreantpos.model.dao
 	 * instance is always saved. This behaviour may be adjusted by specifying an unsaved-value attribute of the identifier
 	 * property mapping. 
 	 * Use the Session given.
-	 * @param couponAndDiscount a transient instance containing new or updated state.
+	 * @param ticketItemDiscount a transient instance containing new or updated state.
 	 * @param s the Session.
 	 */
-	public void saveOrUpdate(com.floreantpos.model.CouponAndDiscount couponAndDiscount, Session s)
+	public void saveOrUpdate(com.floreantpos.model.TicketItemDiscount ticketItemDiscount, Session s)
 		throws org.hibernate.HibernateException {
-		saveOrUpdate((Object) couponAndDiscount, s);
+		saveOrUpdate((Object) ticketItemDiscount, s);
 	}
 
 	/**
 	 * Update the persistent state associated with the given identifier. An exception is thrown if there is a persistent
 	 * instance with the same identifier in the current session.
-	 * @param couponAndDiscount a transient instance containing updated state
+	 * @param ticketItemDiscount a transient instance containing updated state
 	 */
-	public void update(com.floreantpos.model.CouponAndDiscount couponAndDiscount) 
+	public void update(com.floreantpos.model.TicketItemDiscount ticketItemDiscount) 
 		throws org.hibernate.HibernateException {
-		update((Object) couponAndDiscount);
+		update((Object) ticketItemDiscount);
 	}
 
 	/**
 	 * Update the persistent state associated with the given identifier. An exception is thrown if there is a persistent
 	 * instance with the same identifier in the current session.
 	 * Use the Session given.
-	 * @param couponAndDiscount a transient instance containing updated state
+	 * @param ticketItemDiscount a transient instance containing updated state
 	 * @param the Session
 	 */
-	public void update(com.floreantpos.model.CouponAndDiscount couponAndDiscount, Session s)
+	public void update(com.floreantpos.model.TicketItemDiscount ticketItemDiscount, Session s)
 		throws org.hibernate.HibernateException {
-		update((Object) couponAndDiscount, s);
+		update((Object) ticketItemDiscount, s);
 	}
 
 	/**
@@ -187,23 +187,23 @@ public abstract class BaseCouponAndDiscountDAO extends com.floreantpos.model.dao
 	/**
 	 * Remove a persistent instance from the datastore. The argument may be an instance associated with the receiving
 	 * Session or a transient instance with an identifier associated with existing persistent state. 
-	 * @param couponAndDiscount the instance to be removed
+	 * @param ticketItemDiscount the instance to be removed
 	 */
-	public void delete(com.floreantpos.model.CouponAndDiscount couponAndDiscount)
+	public void delete(com.floreantpos.model.TicketItemDiscount ticketItemDiscount)
 		throws org.hibernate.HibernateException {
-		delete((Object) couponAndDiscount);
+		delete((Object) ticketItemDiscount);
 	}
 
 	/**
 	 * Remove a persistent instance from the datastore. The argument may be an instance associated with the receiving
 	 * Session or a transient instance with an identifier associated with existing persistent state. 
 	 * Use the Session given.
-	 * @param couponAndDiscount the instance to be removed
+	 * @param ticketItemDiscount the instance to be removed
 	 * @param s the Session
 	 */
-	public void delete(com.floreantpos.model.CouponAndDiscount couponAndDiscount, Session s)
+	public void delete(com.floreantpos.model.TicketItemDiscount ticketItemDiscount, Session s)
 		throws org.hibernate.HibernateException {
-		delete((Object) couponAndDiscount, s);
+		delete((Object) ticketItemDiscount, s);
 	}
 	
 	/**
@@ -216,9 +216,9 @@ public abstract class BaseCouponAndDiscountDAO extends com.floreantpos.model.dao
 	 * <li>after inserting a Blob or Clob</li>
 	 * </ul>
 	 */
-	public void refresh (com.floreantpos.model.CouponAndDiscount couponAndDiscount, Session s)
+	public void refresh (com.floreantpos.model.TicketItemDiscount ticketItemDiscount, Session s)
 		throws org.hibernate.HibernateException {
-		refresh((Object) couponAndDiscount, s);
+		refresh((Object) ticketItemDiscount, s);
 	}
 
 

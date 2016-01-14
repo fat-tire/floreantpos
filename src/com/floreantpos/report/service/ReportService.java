@@ -30,7 +30,7 @@ import org.hibernate.criterion.Restrictions;
 
 import com.floreantpos.model.ActionHistory;
 import com.floreantpos.model.CashTransaction;
-import com.floreantpos.model.CouponAndDiscount;
+import com.floreantpos.model.Discount;
 import com.floreantpos.model.CreditCardTransaction;
 import com.floreantpos.model.DebitCardTransaction;
 import com.floreantpos.model.DrawerPullReport;
@@ -43,7 +43,7 @@ import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.TransactionType;
 import com.floreantpos.model.User;
-import com.floreantpos.model.dao.CouponAndDiscountDAO;
+import com.floreantpos.model.dao.DiscountDAO;
 import com.floreantpos.model.dao.GenericDAO;
 import com.floreantpos.report.JournalReportModel;
 import com.floreantpos.report.JournalReportModel.JournalReportData;
@@ -535,8 +535,8 @@ public class ReportService {
 			}
 			
 			//find all valid discounts
-			CouponAndDiscountDAO discountDAO = new CouponAndDiscountDAO();
-			List<CouponAndDiscount> availableCoupons = discountDAO.getValidCoupons();
+			DiscountDAO discountDAO = new DiscountDAO();
+			List<Discount> availableCoupons = discountDAO.getValidCoupons();
 			report.addEmptyDiscounts(availableCoupons);
 			
 			return report;

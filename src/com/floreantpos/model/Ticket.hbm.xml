@@ -49,20 +49,18 @@
 
 		<!-- Associations -->
 		<!-- bi-directional one-to-many association to TicketItem -->
-		<list cascade="all" inverse="false" lazy="true" name="ticketItems">
+		<bag cascade="all,,delete-orphan" inverse="true" lazy="false" name="ticketItems" table="TICKET_ITEM">
 			<key>
 				<column name="TICKET_ID" />
 			</key>
-			<list-index column="ITEM_ORDER" />
 			<one-to-many class="com.floreantpos.model.TicketItem" />
-		</list>
-		<list cascade="all" inverse="false" lazy="true" name="couponAndDiscounts">
+		</bag>
+		<bag cascade="all,delete-orphan" inverse="true" lazy="false" name="couponAndDiscounts" table="TICKET_COUPON_DISCOUNT">
 			<key>
 				<column name="TICKET_ID" />
 			</key>
-			<list-index column="D_ORDER" />
 			<one-to-many class="com.floreantpos.model.TicketCouponAndDiscount" />
-		</list>
+		</bag>
 
 		<set cascade="all" inverse="true" lazy="false" name="transactions">
 			<key>

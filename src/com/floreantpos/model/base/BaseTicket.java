@@ -1,24 +1,7 @@
-/**
- * ************************************************************************
- * * The contents of this file are subject to the MRPL 1.2
- * * (the  "License"),  being   the  Mozilla   Public  License
- * * Version 1.1  with a permitted attribution clause; you may not  use this
- * * file except in compliance with the License. You  may  obtain  a copy of
- * * the License at http://www.floreantpos.org/license.html
- * * Software distributed under the License  is  distributed  on  an "AS IS"
- * * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * * License for the specific  language  governing  rights  and  limitations
- * * under the License.
- * * The Original Code is FLOREANT POS.
- * * The Initial Developer of the Original Code is OROCUBE LLC
- * * All portions are Copyright (C) 2015 OROCUBE LLC
- * * All Rights Reserved.
- * ************************************************************************
- */
 package com.floreantpos.model.base;
 
+import java.lang.Comparable;
 import java.io.Serializable;
-
 
 
 /**
@@ -32,43 +15,43 @@ import java.io.Serializable;
 
 public abstract class BaseTicket  implements Comparable, Serializable {
 
-	public static String REF = "Ticket"; //$NON-NLS-1$
-	public static String PROP_RE_OPENED = "reOpened"; //$NON-NLS-1$
-	public static String PROP_VOID_REASON = "voidReason"; //$NON-NLS-1$
-	public static String PROP_DUE_AMOUNT = "dueAmount"; //$NON-NLS-1$
-	public static String PROP_DISCOUNT_AMOUNT = "discountAmount"; //$NON-NLS-1$
-	public static String PROP_CREATE_DATE = "createDate"; //$NON-NLS-1$
-	public static String PROP_DELIVERY_CHARGE = "deliveryCharge"; //$NON-NLS-1$
-	public static String PROP_NUMBER_OF_GUESTS = "numberOfGuests"; //$NON-NLS-1$
-	public static String PROP_PAID = "paid"; //$NON-NLS-1$
-	public static String PROP_ADVANCE_AMOUNT = "advanceAmount"; //$NON-NLS-1$
-	public static String PROP_ACTIVE_DATE = "activeDate"; //$NON-NLS-1$
-	public static String PROP_ASSIGNED_DRIVER = "assignedDriver"; //$NON-NLS-1$
-	public static String PROP_CREATION_HOUR = "creationHour"; //$NON-NLS-1$
-	public static String PROP_CUSTOMER_WILL_PICKUP = "customerWillPickup"; //$NON-NLS-1$
-	public static String PROP_DRAWER_RESETTED = "drawerResetted"; //$NON-NLS-1$
-	public static String PROP_OWNER = "owner"; //$NON-NLS-1$
-	public static String PROP_DELIVERY_DATE = "deliveryDate"; //$NON-NLS-1$
-	public static String PROP_GRATUITY = "gratuity"; //$NON-NLS-1$
-	public static String PROP_TERMINAL = "terminal"; //$NON-NLS-1$
-	public static String PROP_CLOSED = "closed"; //$NON-NLS-1$
-	public static String PROP_CLOSING_DATE = "closingDate"; //$NON-NLS-1$
-	public static String PROP_DELIVERY_ADDRESS = "deliveryAddress"; //$NON-NLS-1$
-	public static String PROP_SHIFT = "shift"; //$NON-NLS-1$
-	public static String PROP_TAX_AMOUNT = "taxAmount"; //$NON-NLS-1$
-	public static String PROP_REFUNDED = "refunded"; //$NON-NLS-1$
-	public static String PROP_STATUS = "status"; //$NON-NLS-1$
-	public static String PROP_SUBTOTAL_AMOUNT = "subtotalAmount"; //$NON-NLS-1$
-	public static String PROP_VOIDED_BY = "voidedBy"; //$NON-NLS-1$
-	public static String PROP_TICKET_TYPE = "ticketType"; //$NON-NLS-1$
-	public static String PROP_TAX_EXEMPT = "taxExempt"; //$NON-NLS-1$
-	public static String PROP_ID = "id"; //$NON-NLS-1$
-	public static String PROP_WASTED = "wasted"; //$NON-NLS-1$
-	public static String PROP_VOIDED = "voided"; //$NON-NLS-1$
-	public static String PROP_TOTAL_AMOUNT = "totalAmount"; //$NON-NLS-1$
-	public static String PROP_PAID_AMOUNT = "paidAmount"; //$NON-NLS-1$
-	public static String PROP_EXTRA_DELIVERY_INFO = "extraDeliveryInfo"; //$NON-NLS-1$
-	public static String PROP_SERVICE_CHARGE = "serviceCharge"; //$NON-NLS-1$
+	public static String REF = "Ticket";
+	public static String PROP_RE_OPENED = "reOpened";
+	public static String PROP_VOID_REASON = "voidReason";
+	public static String PROP_DUE_AMOUNT = "dueAmount";
+	public static String PROP_DISCOUNT_AMOUNT = "discountAmount";
+	public static String PROP_CREATE_DATE = "createDate";
+	public static String PROP_DELIVERY_CHARGE = "deliveryCharge";
+	public static String PROP_NUMBER_OF_GUESTS = "numberOfGuests";
+	public static String PROP_PAID = "paid";
+	public static String PROP_ADVANCE_AMOUNT = "advanceAmount";
+	public static String PROP_ACTIVE_DATE = "activeDate";
+	public static String PROP_ASSIGNED_DRIVER = "assignedDriver";
+	public static String PROP_CREATION_HOUR = "creationHour";
+	public static String PROP_CUSTOMER_WILL_PICKUP = "customerWillPickup";
+	public static String PROP_DRAWER_RESETTED = "drawerResetted";
+	public static String PROP_OWNER = "owner";
+	public static String PROP_DELIVERY_DATE = "deliveryDate";
+	public static String PROP_GRATUITY = "gratuity";
+	public static String PROP_TERMINAL = "terminal";
+	public static String PROP_CLOSED = "closed";
+	public static String PROP_CLOSING_DATE = "closingDate";
+	public static String PROP_DELIVERY_ADDRESS = "deliveryAddress";
+	public static String PROP_SHIFT = "shift";
+	public static String PROP_TAX_AMOUNT = "taxAmount";
+	public static String PROP_REFUNDED = "refunded";
+	public static String PROP_STATUS = "status";
+	public static String PROP_SUBTOTAL_AMOUNT = "subtotalAmount";
+	public static String PROP_VOIDED_BY = "voidedBy";
+	public static String PROP_TICKET_TYPE = "ticketType";
+	public static String PROP_TAX_EXEMPT = "taxExempt";
+	public static String PROP_ID = "id";
+	public static String PROP_WASTED = "wasted";
+	public static String PROP_VOIDED = "voided";
+	public static String PROP_TOTAL_AMOUNT = "totalAmount";
+	public static String PROP_PAID_AMOUNT = "paidAmount";
+	public static String PROP_EXTRA_DELIVERY_INFO = "extraDeliveryInfo";
+	public static String PROP_SERVICE_CHARGE = "serviceCharge";
 
 
 	// constructors
@@ -235,8 +218,8 @@ public abstract class BaseTicket  implements Comparable, Serializable {
 	 * Return the value associated with the column: CREATION_HOUR
 	 */
 	public java.lang.Integer getCreationHour () {
-					return creationHour == null ? Integer.valueOf(0) : creationHour;
-			}
+									return creationHour == null ? Integer.valueOf(0) : creationHour;
+					}
 
 	/**
 	 * Set the value related to the column: CREATION_HOUR
@@ -490,8 +473,8 @@ public abstract class BaseTicket  implements Comparable, Serializable {
 	 * Return the value associated with the column: NUMBER_OF_GUESTS
 	 */
 	public java.lang.Integer getNumberOfGuests () {
-					return numberOfGuests == null ? Integer.valueOf(0) : numberOfGuests;
-			}
+									return numberOfGuests == null ? Integer.valueOf(0) : numberOfGuests;
+					}
 
 	/**
 	 * Set the value related to the column: NUMBER_OF_GUESTS
@@ -874,7 +857,7 @@ public abstract class BaseTicket  implements Comparable, Serializable {
 		if (Integer.MIN_VALUE == this.hashCode) {
 			if (null == this.getId()) return super.hashCode();
 			else {
-				String hashStr = this.getClass().getName() + ":" + this.getId().hashCode(); //$NON-NLS-1$
+				String hashStr = this.getClass().getName() + ":" + this.getId().hashCode();
 				this.hashCode = hashStr.hashCode();
 			}
 		}

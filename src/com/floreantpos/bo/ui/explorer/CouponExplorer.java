@@ -28,8 +28,8 @@ import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 
 import com.floreantpos.bo.ui.BOMessageDialog;
-import com.floreantpos.model.CouponAndDiscount;
-import com.floreantpos.model.dao.CouponAndDiscountDAO;
+import com.floreantpos.model.Discount;
+import com.floreantpos.model.dao.DiscountDAO;
 import com.floreantpos.swing.TransparentPanel;
 import com.floreantpos.ui.PosTableRenderer;
 import com.floreantpos.ui.dialog.BeanEditorDialog;
@@ -68,8 +68,8 @@ public class CouponExplorer extends TransparentPanel implements ActionListener {
 	}
 
 	public void initData() throws Exception {
-		CouponAndDiscountDAO dao = new CouponAndDiscountDAO();
-		List<CouponAndDiscount> couponList = dao.findAll();
+		DiscountDAO dao = new DiscountDAO();
+		List<Discount> couponList = dao.findAll();
 		explorerModel = new CouponExplorerTableModel(couponList);
 		explorerView.setModel(explorerModel);
 	}
@@ -82,14 +82,14 @@ public class CouponExplorer extends TransparentPanel implements ActionListener {
 
 			if (dialog.isCanceled())
 				return;
-			CouponAndDiscount coupon = (CouponAndDiscount) editor.getBean();
+			Discount coupon = (Discount) editor.getBean();
 			explorerModel.addCoupon(coupon);
 		} catch (Exception x) {
 			BOMessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
 		}
 	}
 
-	private void editCoupon(CouponAndDiscount coupon) {
+	private void editCoupon(Discount coupon) {
 		try {
 			CouponForm editor = new CouponForm(coupon);
 			BeanEditorDialog dialog = new BeanEditorDialog(editor);
@@ -103,10 +103,10 @@ public class CouponExplorer extends TransparentPanel implements ActionListener {
 		}
 	}
 
-	private void deleteCoupon(int index, CouponAndDiscount coupon) {
+	private void deleteCoupon(int index, Discount coupon) {
 		try {
 			if (ConfirmDeleteDialog.showMessage(this, com.floreantpos.POSConstants.CONFIRM_DELETE, com.floreantpos.POSConstants.DELETE) == ConfirmDeleteDialog.YES) {
-				CouponAndDiscountDAO dao = new CouponAndDiscountDAO();
+				DiscountDAO dao = new DiscountDAO();
 				dao.delete(coupon);
 				explorerModel.deleteCoupon(coupon, index);
 			}
@@ -118,9 +118,9 @@ public class CouponExplorer extends TransparentPanel implements ActionListener {
 	private class CouponExplorerTableModel extends AbstractTableModel {
 		String[] columnNames = { com.floreantpos.POSConstants.NAME, com.floreantpos.POSConstants.COUPON_TYPE, com.floreantpos.POSConstants.COUPON_VALUE,
 				com.floreantpos.POSConstants.EXPIRY_DATE, com.floreantpos.POSConstants.ENABLED, com.floreantpos.POSConstants.NEVER_EXPIRE };
-		List<CouponAndDiscount> couponList;
+		List<Discount> couponList;
 
-		CouponExplorerTableModel(List<CouponAndDiscount> list) {
+		CouponExplorerTableModel(List<Discount> list) {
 			this.couponList = list;
 		}
 
@@ -144,7 +144,7 @@ public class CouponExplorer extends TransparentPanel implements ActionListener {
 			if (couponList == null)
 				return ""; //$NON-NLS-1$
 
-			CouponAndDiscount coupon = couponList.get(row);
+			Discount coupon = couponList.get(row);
 			switch (column) {
 				case 0:
 					return coupon.getName();
@@ -168,18 +168,18 @@ public class CouponExplorer extends TransparentPanel implements ActionListener {
 			return null;
 		}
 
-		public void addCoupon(CouponAndDiscount coupon) {
+		public void addCoupon(Discount coupon) {
 			int size = couponList.size();
 			couponList.add(coupon);
 			fireTableRowsInserted(size, size);
 		}
 
-		public void deleteCoupon(CouponAndDiscount coupon, int index) {
+		public void deleteCoupon(Discount coupon, int index) {
 			couponList.remove(coupon);
 			fireTableRowsDeleted(index, index);
 		}
 
-		public CouponAndDiscount getCoupon(int index) {
+		public Discount getCoupon(int index) {
 			return couponList.get(index);
 		}
 	}
@@ -195,7 +195,7 @@ public class CouponExplorer extends TransparentPanel implements ActionListener {
 				BOMessageDialog.showError(com.floreantpos.POSConstants.SELECT_COUPON_TO_EDIT);
 				return;
 			}
-			CouponAndDiscount coupon = explorerModel.getCoupon(index);
+			Discount coupon = explorerModel.getCoupon(index);
 			editCoupon(coupon);
 		}
 		else if (com.floreantpos.POSConstants.DELETE.equals(actionCommand)) {
@@ -204,7 +204,7 @@ public class CouponExplorer extends TransparentPanel implements ActionListener {
 				BOMessageDialog.showError(com.floreantpos.POSConstants.SELECT_COUPON_TO_DELETE);
 				return;
 			}
-			CouponAndDiscount coupon = explorerModel.getCoupon(index);
+			Discount coupon = explorerModel.getCoupon(index);
 			deleteCoupon(index, coupon);
 		}
 	}

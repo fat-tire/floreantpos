@@ -77,7 +77,8 @@ public class MenuItemExplorer extends TransparentPanel {
 		tableModel.addColumn(POSConstants.TEXT_COLOR.toUpperCase(), "textColor"); //$NON-NLS-1$
 		tableModel.addColumn(POSConstants.IMAGE.toUpperCase(), "imageData"); //$NON-NLS-1$
 
-		tableModel.addRows(MenuItemDAO.getInstance().findAll());
+		List<MenuItem> findAll = MenuItemDAO.getInstance().findAll();
+		tableModel.addRows(findAll);
 
 		table = new JXTable(tableModel);
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
@@ -143,7 +144,7 @@ public class MenuItemExplorer extends TransparentPanel {
 					Object selectedItem = cbGroup.getSelectedItem();
 
 					List<MenuItem> similarItem = null;
-					if(selectedItem instanceof MenuGroup) {
+					if (selectedItem instanceof MenuGroup) {
 						similarItem = MenuItemDAO.getInstance().getSimilar(txName, (MenuGroup) selectedItem);
 					}
 					else {
@@ -173,7 +174,7 @@ public class MenuItemExplorer extends TransparentPanel {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					int index = table.getSelectedRow();
-					if(index < 0)
+					if (index < 0)
 						return;
 
 					index = table.convertRowIndexToModel(index);
@@ -186,7 +187,7 @@ public class MenuItemExplorer extends TransparentPanel {
 					MenuItemForm editor = new MenuItemForm(menuItem);
 					BeanEditorDialog dialog = new BeanEditorDialog(editor);
 					dialog.open();
-					if(dialog.isCanceled())
+					if (dialog.isCanceled())
 						return;
 
 					table.repaint();
@@ -203,7 +204,7 @@ public class MenuItemExplorer extends TransparentPanel {
 					MenuItemForm editor = new MenuItemForm();
 					BeanEditorDialog dialog = new BeanEditorDialog(editor);
 					dialog.open();
-					if(dialog.isCanceled())
+					if (dialog.isCanceled())
 						return;
 					MenuItem foodItem = (MenuItem) editor.getBean();
 					tableModel.addRow(foodItem);
@@ -218,17 +219,23 @@ public class MenuItemExplorer extends TransparentPanel {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					int index = table.getSelectedRow();
-					if(index < 0)
+					if (index < 0)
 						return;
 
 					index = table.convertRowIndexToModel(index);
 
-					if(POSMessageDialog.showYesNoQuestionDialog(MenuItemExplorer.this, POSConstants.CONFIRM_DELETE, POSConstants.DELETE) != JOptionPane.YES_OPTION) {
+					if (POSMessageDialog.showYesNoQuestionDialog(MenuItemExplorer.this, POSConstants.CONFIRM_DELETE, POSConstants.DELETE) != JOptionPane.YES_OPTION) {
 						return;
 					}
 					MenuItem item = tableModel.getRow(index);
+
 					MenuItemDAO foodItemDAO = new MenuItemDAO();
-					foodItemDAO.delete(item);
+					if (item.getDiscounts().size() > 0) {
+						foodItemDAO.releaseParentAndDelete(item);
+					}
+					else {
+						foodItemDAO.delete(item);
+					}
 
 					tableModel.removeRow(index);
 				} catch (Throwable x) {

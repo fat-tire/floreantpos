@@ -24,8 +24,6 @@
 package com.floreantpos.ui.views.order;
 
 import java.awt.BorderLayout;
-import java.awt.CardLayout;
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
@@ -46,7 +44,6 @@ import com.floreantpos.IconFactory;
 import com.floreantpos.Messages;
 import com.floreantpos.POSConstants;
 import com.floreantpos.PosException;
-import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.customer.CustomerSelectionDialog;
 import com.floreantpos.extension.ExtensionManager;
 import com.floreantpos.extension.FloorLayoutPlugin;
@@ -61,18 +58,19 @@ import com.floreantpos.model.ShopTable;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.TicketItemCookingInstruction;
+import com.floreantpos.model.TicketItemDiscount;
 import com.floreantpos.model.dao.CookingInstructionDAO;
 import com.floreantpos.model.dao.MenuItemDAO;
 import com.floreantpos.model.dao.ShopTableDAO;
 import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.ui.dialog.BeanEditorDialog;
+import com.floreantpos.ui.dialog.DiscountSelectionDialog;
 import com.floreantpos.ui.dialog.MiscTicketItemDialog;
 import com.floreantpos.ui.dialog.NumberSelectionDialog2;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.views.CookingInstructionSelectionView;
 import com.floreantpos.util.PosGuiUtil;
-import com.jidesoft.swing.SimpleScrollPane;
 
 /**
  *
@@ -134,15 +132,15 @@ public class OrderView extends ViewPanel {
 		midContainer.setBorder(null);
 		midContainer.add(groupView, BorderLayout.NORTH);
 		midContainer.add(itemView);
-		
+
 		add(categoryView, java.awt.BorderLayout.EAST);
 		add(ticketView, java.awt.BorderLayout.WEST);
 		add(midContainer, java.awt.BorderLayout.CENTER);
 		add(actionButtonPanel, java.awt.BorderLayout.SOUTH);
 
-//		addView(GroupView.VIEW_NAME, groupView);
-//		addView(MenuItemView.VIEW_NAME, itemView);
-//		addView("VIEW_EMPTY", new com.floreantpos.swing.TransparentPanel()); //$NON-NLS-1$
+		//		addView(GroupView.VIEW_NAME, groupView);
+		//		addView(MenuItemView.VIEW_NAME, itemView);
+		//		addView("VIEW_EMPTY", new com.floreantpos.swing.TransparentPanel()); //$NON-NLS-1$
 
 		addActionButtonPanel();
 
@@ -317,7 +315,7 @@ public class OrderView extends ViewPanel {
 		actionButtonPanel.add(btnTableNumber);
 		actionButtonPanel.add(btnGuestNo);
 		actionButtonPanel.add(btnCookingInstruction);
-		actionButtonPanel.add(btnDiscount);
+		//actionButtonPanel.add(btnDiscount);
 		actionButtonPanel.add(btnMisc);
 		actionButtonPanel.add(btnSend);
 		actionButtonPanel.add(btnCancel);
@@ -427,7 +425,7 @@ public class OrderView extends ViewPanel {
 		currentTicket.setType(orderType);
 		btnGuestNo.setEnabled(orderType == OrderType.DINE_IN);
 		btnTableNumber.setEnabled(orderType == OrderType.DINE_IN);
-		
+
 		if (currentTicket.getType() == OrderType.DINE_IN) {
 			btnOrderType.setText(POSConstants.DINE_IN_BUTTON_TEXT);
 		}
@@ -466,20 +464,24 @@ public class OrderView extends ViewPanel {
 	}
 
 	protected void addDiscount() {
-		ITicketItem selectedObject = (ITicketItem) ticketView.getTicketViewerTable().getSelected();
-		if (selectedObject == null || !selectedObject.canAddDiscount()) {
+		Object selectedObject = (ITicketItem) ticketView.getTicketViewerTable().getSelected();
+
+		if (!(selectedObject instanceof TicketItem)) {
+			POSMessageDialog.showError(Application.getPosWindow(), Messages.getString("TicketView.20")); //$NON-NLS-1$
 			return;
 		}
 
+		/*TicketItem ticketItem = (TicketItem) selectedObject;
+
 		double d = NumberSelectionDialog2.takeDoubleInput(
-				Messages.getString("TicketView.39"), Messages.getString("TicketView.40"), selectedObject.getDiscountAmount()); //$NON-NLS-1$ //$NON-NLS-2$
+				Messages.getString("TicketView.39"), Messages.getString("TicketView.40"), ticketItem.getDiscountAmount()); //$NON-NLS-1$ //$NON-NLS-2$
 		if (Double.isNaN(d)) {
 			return;
 		}
 
-		selectedObject.setDiscountAmount(d);
+		ticketItem.setDiscountAmount(d);
 		ticketView.getTicketViewerTable().repaint();
-		ticketView.updateView();
+		ticketView.updateView();*/
 	}
 
 	protected void doAddCookingInstruction() {

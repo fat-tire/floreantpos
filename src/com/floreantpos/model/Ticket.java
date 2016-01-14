@@ -62,14 +62,14 @@ public class Ticket extends BaseTicket {
 	public static final String PROPERTY_CARD_AUTH_CODE = "card_auth_code"; //$NON-NLS-1$
 
 	/* [CONSTRUCTOR MARKER BEGIN] */
-	public Ticket() {
+	public Ticket () {
 		super();
 	}
 
 	/**
 	 * Constructor for primary key
 	 */
-	public Ticket(java.lang.Integer id) {
+	public Ticket (java.lang.Integer id) {
 		super(id);
 	}
 
@@ -282,7 +282,6 @@ public class Ticket extends BaseTicket {
 	}
 
 	private double calculateDiscountAmount() {
-		double subtotalAmount = getSubtotalAmount();
 		double discountAmount = 0;
 
 		List<TicketItem> ticketItems = getTicketItems();
@@ -295,13 +294,40 @@ public class Ticket extends BaseTicket {
 		List<TicketCouponAndDiscount> discounts = getCouponAndDiscounts();
 		if(discounts != null) {
 			for (TicketCouponAndDiscount discount : discounts) {
-				discountAmount += calculateDiscountFromType(discount, subtotalAmount);
+				discountAmount += getAmountByType(discount);
 			}
 		}
 
 		discountAmount = fixInvalidAmount(discountAmount);
 
 		return NumberUtil.roundToTwoDigit(discountAmount);
+	}
+	
+	public double getAmountByType(TicketCouponAndDiscount discount) {
+
+		switch (discount.getType()) {
+			case Discount.DISCOUNT_TYPE_AMOUNT:
+				return discount.getValue();
+
+			case Discount.DISCOUNT_TYPE_PERCENTAGE:
+				return (discount.getValue() * getSubtotalAmount()) / 100;
+
+			default:
+				break;
+		}
+
+		return 0;
+
+	}
+	
+	public TicketCouponAndDiscount convertToTicketDiscount(Discount discount) {
+		TicketCouponAndDiscount ticketDiscount = new TicketCouponAndDiscount();
+		ticketDiscount.setCouponAndDiscountId(discount.getId());
+		ticketDiscount.setName(discount.getName());
+		ticketDiscount.setType(discount.getType());
+		ticketDiscount.setValue(discount.getValue());
+		ticketDiscount.setTicket(this); 
+		return ticketDiscount;
 	}
 
 	private double calculateTax() {
@@ -314,7 +340,7 @@ public class Ticket extends BaseTicket {
 		for (TicketItem ticketItem : ticketItems) {
 			tax += ticketItem.getTaxAmount();
 		}
-
+		
 		return NumberUtil.roundToTwoDigit(fixInvalidAmount(tax));
 	}
 
@@ -333,11 +359,11 @@ public class Ticket extends BaseTicket {
 		double couponValue = coupon.getValue();
 
 		switch (type) {
-			case CouponAndDiscount.FIXED_PER_ORDER:
+			case Discount.FIXED_PER_ORDER:
 				discount += couponValue;
 				break;
 
-			case CouponAndDiscount.FIXED_PER_CATEGORY:
+			case Discount.FIXED_PER_CATEGORY:
 				HashSet<Integer> categoryIds = new HashSet<Integer>();
 				for (TicketItem item : ticketItems) {
 					Integer itemId = item.getItemId();
@@ -348,17 +374,17 @@ public class Ticket extends BaseTicket {
 				}
 				break;
 
-			case CouponAndDiscount.FIXED_PER_ITEM:
+			case Discount.FIXED_PER_ITEM:
 				for (TicketItem item : ticketItems) {
 					discount += (couponValue * item.getItemCount());
 				}
 				break;
 
-			case CouponAndDiscount.PERCENTAGE_PER_ORDER:
+			case Discount.PERCENTAGE_PER_ORDER:
 				discount += ((subtotal * couponValue) / 100.0);
 				break;
 
-			case CouponAndDiscount.PERCENTAGE_PER_CATEGORY:
+			case Discount.PERCENTAGE_PER_CATEGORY:
 				categoryIds = new HashSet<Integer>();
 				for (TicketItem item : ticketItems) {
 					Integer itemId = item.getItemId();
@@ -369,13 +395,13 @@ public class Ticket extends BaseTicket {
 				}
 				break;
 
-			case CouponAndDiscount.PERCENTAGE_PER_ITEM:
+			case Discount.PERCENTAGE_PER_ITEM:
 				for (TicketItem item : ticketItems) {
 					discount += ((item.getSubtotalAmountWithoutModifiers() * couponValue) / 100.0);
 				}
 				break;
 
-			case CouponAndDiscount.FREE_AMOUNT:
+			case Discount.FREE_AMOUNT:
 				discount += couponValue;
 				break;
 		}

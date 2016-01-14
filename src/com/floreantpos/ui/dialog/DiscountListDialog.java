@@ -41,7 +41,7 @@ import javax.swing.table.AbstractTableModel;
 
 import com.floreantpos.IconFactory;
 import com.floreantpos.Messages;
-import com.floreantpos.model.CouponAndDiscount;
+import com.floreantpos.model.Discount;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketCouponAndDiscount;
 import com.floreantpos.swing.PosButton;
@@ -268,7 +268,7 @@ public class DiscountListDialog extends POSDialog implements ActionListener {
 
                 case 1:
                     if (discountObject instanceof TicketCouponAndDiscount) {
-                        return CouponAndDiscount.COUPON_TYPE_NAMES[((TicketCouponAndDiscount) discountObject).getType()];
+                        return Discount.COUPON_TYPE_NAMES[((TicketCouponAndDiscount) discountObject).getType()];
                     }
                     return null;
 

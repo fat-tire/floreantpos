@@ -64,7 +64,7 @@ public class ShopTableButton extends PosButton {
 		
 		if(shopTable != null && shopTable.isServing()) {
 			
-			setEnabled(false);
+			//setEnabled(false);
 			setBackground(Color.GRAY);
 			setForeground(Color.BLACK);
 		}

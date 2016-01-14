@@ -35,6 +35,11 @@
 			<key column="MENUITEM_ID" />
 			<one-to-many class="MenuItemShift" />
 		</bag>
+		
+		<bag cascade="none" inverse="true" lazy="false" name="discounts" table="MENUITEM_DISCOUNT">
+			<key column="MENUITEM_ID" />
+			<many-to-many class="Discount" column="DISCOUNT_ID" />
+		</bag>
 
 		<bag cascade="all" inverse="false" lazy="true" name="menuItemModiferGroups">
 			<key>

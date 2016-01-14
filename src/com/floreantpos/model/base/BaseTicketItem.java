@@ -103,8 +103,8 @@ public abstract class BaseTicketItem  implements Comparable, Serializable {
 
 	// collections
 	private java.util.List<com.floreantpos.model.TicketItemModifierGroup> ticketItemModifierGroups;
+	private java.util.List<com.floreantpos.model.TicketItemDiscount> discounts;
 	private java.util.List<TicketItemCookingInstruction> cookingInstructions;
-	private java.util.List<com.floreantpos.model.CouponAndDiscount> discounts;
 
 
 
@@ -517,6 +517,28 @@ public abstract class BaseTicketItem  implements Comparable, Serializable {
 
 
 	/**
+	 * Return the value associated with the column: discounts
+	 */
+	public java.util.List<com.floreantpos.model.TicketItemDiscount> getDiscounts () {
+					return discounts;
+			}
+
+	/**
+	 * Set the value related to the column: discounts
+	 * @param discounts the discounts value
+	 */
+	public void setDiscounts (java.util.List<com.floreantpos.model.TicketItemDiscount> discounts) {
+		this.discounts = discounts;
+	}
+
+	public void addTodiscounts (com.floreantpos.model.TicketItemDiscount ticketItemDiscount) {
+		if (null == getDiscounts()) setDiscounts(new java.util.ArrayList<com.floreantpos.model.TicketItemDiscount>());
+		getDiscounts().add(ticketItemDiscount);
+	}
+
+
+
+	/**
 	 * Return the value associated with the column: cookingInstructions
 	 */
 	public java.util.List<TicketItemCookingInstruction> getCookingInstructions () {
@@ -529,28 +551,6 @@ public abstract class BaseTicketItem  implements Comparable, Serializable {
 	 */
 	public void setCookingInstructions (java.util.List<TicketItemCookingInstruction> cookingInstructions) {
 		this.cookingInstructions = cookingInstructions;
-	}
-
-
-
-	/**
-	 * Return the value associated with the column: discounts
-	 */
-	public java.util.List<com.floreantpos.model.CouponAndDiscount> getDiscounts () {
-					return discounts;
-			}
-
-	/**
-	 * Set the value related to the column: discounts
-	 * @param discounts the discounts value
-	 */
-	public void setDiscounts (java.util.List<com.floreantpos.model.CouponAndDiscount> discounts) {
-		this.discounts = discounts;
-	}
-
-	public void addTodiscounts (com.floreantpos.model.CouponAndDiscount couponAndDiscount) {
-		if (null == getDiscounts()) setDiscounts(new java.util.ArrayList<com.floreantpos.model.CouponAndDiscount>());
-		getDiscounts().add(couponAndDiscount);
 	}
 
 

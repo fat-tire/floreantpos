@@ -5,34 +5,36 @@ import java.io.Serializable;
 
 
 /**
- * This is an object that contains data related to the TICKET_COUPON_DISCOUNT table.
+ * This is an object that contains data related to the TICKET_ITEM_DISCOUNT table.
  * Do not modify this class because it will be overwritten if the configuration file
  * related to this class is modified.
  *
  * @hibernate.class
- *  table="TICKET_COUPON_DISCOUNT"
+ *  table="TICKET_ITEM_DISCOUNT"
  */
 
-public abstract class BaseTicketCouponAndDiscount  implements Comparable, Serializable {
+public abstract class BaseTicketItemDiscount  implements Comparable, Serializable {
 
-	public static String REF = "TicketCouponAndDiscount";
+	public static String REF = "TicketItemDiscount";
 	public static String PROP_NAME = "name";
-	public static String PROP_COUPON_AND_DISCOUNT_ID = "couponAndDiscountId";
-	public static String PROP_TICKET = "ticket";
+	public static String PROP_AMOUNT = "amount";
 	public static String PROP_VALUE = "value";
+	public static String PROP_DISCOUNT_ID = "discountId";
 	public static String PROP_TYPE = "type";
 	public static String PROP_ID = "id";
+	public static String PROP_TICKET_ITEM = "ticketItem";
+	public static String PROP_AUTO_APPLY = "autoApply";
 
 
 	// constructors
-	public BaseTicketCouponAndDiscount () {
+	public BaseTicketItemDiscount () {
 		initialize();
 	}
 
 	/**
 	 * Constructor for primary key
 	 */
-	public BaseTicketCouponAndDiscount (java.lang.Integer id) {
+	public BaseTicketItemDiscount (java.lang.Integer id) {
 		this.setId(id);
 		initialize();
 	}
@@ -47,13 +49,15 @@ public abstract class BaseTicketCouponAndDiscount  implements Comparable, Serial
 	private java.lang.Integer id;
 
 	// fields
-		protected java.lang.Integer couponAndDiscountId;
+		protected java.lang.Integer discountId;
 		protected java.lang.String name;
 		protected java.lang.Integer type;
+		protected java.lang.Boolean autoApply;
 		protected java.lang.Double value;
+		protected java.lang.Double amount;
 
 	// many to one
-	private com.floreantpos.model.Ticket ticket;
+	private com.floreantpos.model.TicketItem ticketItem;
 
 
 
@@ -80,18 +84,18 @@ public abstract class BaseTicketCouponAndDiscount  implements Comparable, Serial
 
 
 	/**
-	 * Return the value associated with the column: COUPON_DISCOUNT_ID
+	 * Return the value associated with the column: DISCOUNT_ID
 	 */
-	public java.lang.Integer getCouponAndDiscountId () {
-									return couponAndDiscountId == null ? Integer.valueOf(0) : couponAndDiscountId;
+	public java.lang.Integer getDiscountId () {
+									return discountId == null ? Integer.valueOf(0) : discountId;
 					}
 
 	/**
-	 * Set the value related to the column: COUPON_DISCOUNT_ID
-	 * @param couponAndDiscountId the COUPON_DISCOUNT_ID value
+	 * Set the value related to the column: DISCOUNT_ID
+	 * @param discountId the DISCOUNT_ID value
 	 */
-	public void setCouponAndDiscountId (java.lang.Integer couponAndDiscountId) {
-		this.couponAndDiscountId = couponAndDiscountId;
+	public void setDiscountId (java.lang.Integer discountId) {
+		this.discountId = discountId;
 	}
 
 
@@ -131,6 +135,23 @@ public abstract class BaseTicketCouponAndDiscount  implements Comparable, Serial
 
 
 	/**
+	 * Return the value associated with the column: AUTO_APPLY
+	 */
+	public java.lang.Boolean isAutoApply () {
+								return autoApply == null ? Boolean.FALSE : autoApply;
+					}
+
+	/**
+	 * Set the value related to the column: AUTO_APPLY
+	 * @param autoApply the AUTO_APPLY value
+	 */
+	public void setAutoApply (java.lang.Boolean autoApply) {
+		this.autoApply = autoApply;
+	}
+
+
+
+	/**
 	 * Return the value associated with the column: VALUE
 	 */
 	public java.lang.Double getValue () {
@@ -148,18 +169,35 @@ public abstract class BaseTicketCouponAndDiscount  implements Comparable, Serial
 
 
 	/**
-	 * Return the value associated with the column: TICKET_ID
+	 * Return the value associated with the column: AMOUNT
 	 */
-	public com.floreantpos.model.Ticket getTicket () {
-					return ticket;
+	public java.lang.Double getAmount () {
+									return amount == null ? Double.valueOf(0) : amount;
+					}
+
+	/**
+	 * Set the value related to the column: AMOUNT
+	 * @param amount the AMOUNT value
+	 */
+	public void setAmount (java.lang.Double amount) {
+		this.amount = amount;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: TICKET_ITEMID
+	 */
+	public com.floreantpos.model.TicketItem getTicketItem () {
+					return ticketItem;
 			}
 
 	/**
-	 * Set the value related to the column: TICKET_ID
-	 * @param ticket the TICKET_ID value
+	 * Set the value related to the column: TICKET_ITEMID
+	 * @param ticketItem the TICKET_ITEMID value
 	 */
-	public void setTicket (com.floreantpos.model.Ticket ticket) {
-		this.ticket = ticket;
+	public void setTicketItem (com.floreantpos.model.TicketItem ticketItem) {
+		this.ticketItem = ticketItem;
 	}
 
 
@@ -168,11 +206,11 @@ public abstract class BaseTicketCouponAndDiscount  implements Comparable, Serial
 
 	public boolean equals (Object obj) {
 		if (null == obj) return false;
-		if (!(obj instanceof com.floreantpos.model.TicketCouponAndDiscount)) return false;
+		if (!(obj instanceof com.floreantpos.model.TicketItemDiscount)) return false;
 		else {
-			com.floreantpos.model.TicketCouponAndDiscount ticketCouponAndDiscount = (com.floreantpos.model.TicketCouponAndDiscount) obj;
-			if (null == this.getId() || null == ticketCouponAndDiscount.getId()) return false;
-			else return (this.getId().equals(ticketCouponAndDiscount.getId()));
+			com.floreantpos.model.TicketItemDiscount ticketItemDiscount = (com.floreantpos.model.TicketItemDiscount) obj;
+			if (null == this.getId() || null == ticketItemDiscount.getId()) return false;
+			else return (this.getId().equals(ticketItemDiscount.getId()));
 		}
 	}
 

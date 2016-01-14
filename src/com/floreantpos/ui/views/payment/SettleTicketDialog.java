@@ -54,27 +54,31 @@ import com.floreantpos.extension.PaymentGatewayPlugin;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.CardReader;
 import com.floreantpos.model.CashTransaction;
-import com.floreantpos.model.CouponAndDiscount;
+import com.floreantpos.model.Discount;
 import com.floreantpos.model.CreditCardTransaction;
 import com.floreantpos.model.GiftCertificateTransaction;
 import com.floreantpos.model.Gratuity;
+import com.floreantpos.model.ITicketItem;
+import com.floreantpos.model.MenuItem;
 import com.floreantpos.model.OrderType;
 import com.floreantpos.model.PaymentType;
 import com.floreantpos.model.PosTransaction;
 import com.floreantpos.model.Restaurant;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketCouponAndDiscount;
+import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.TransactionType;
 import com.floreantpos.model.UserPermission;
 import com.floreantpos.report.ReceiptPrintService;
 import com.floreantpos.services.PosTransactionService;
 import com.floreantpos.swing.PosScrollPane;
-import com.floreantpos.ui.dialog.CouponAndDiscountDialog;
+import com.floreantpos.ui.dialog.DiscountSelectionDialog;
 import com.floreantpos.ui.dialog.POSDialog;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.dialog.TransactionCompletionDialog;
 import com.floreantpos.ui.ticket.TicketViewerTable;
 import com.floreantpos.ui.views.order.OrderController;
+import com.floreantpos.ui.views.order.OrderView;
 import com.floreantpos.util.DrawerUtil;
 import com.floreantpos.util.NumberUtil;
 import com.floreantpos.util.POSUtil;
@@ -303,24 +307,45 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 				return;
 			}
 
-			if (ticket.getCouponAndDiscounts() != null && ticket.getCouponAndDiscounts().size() > 0) {
-				POSMessageDialog.showError(Application.getPosWindow(), com.floreantpos.POSConstants.DISCOUNT_COUPON_LIMIT_);
-				return;
-			}
+			Object selectedObject = (ITicketItem) ticketViewerTable.getSelected();
 
-			CouponAndDiscountDialog dialog = new CouponAndDiscountDialog();
-			dialog.setTicket(ticket);
-			dialog.initData();
+			TicketItem ticketItem = (TicketItem) selectedObject;
+
+			DiscountSelectionDialog dialog = new DiscountSelectionDialog(ticketItem, ticket);
+
+			if (selectedObject instanceof TicketItem) {
+				dialog.setSelectedItem(true);
+
+			}
+			else {
+				dialog.setSelectedItem(false);
+			}
 			dialog.open();
+
 			if (!dialog.isCanceled()) {
-				TicketCouponAndDiscount coupon = dialog.getSelectedCoupon();
-				ticket.addTocouponAndDiscounts(coupon);
+				if (ticketItem != null) {
+					ticketItem.getDiscounts().clear();
+					List<Discount> selectedDiscount = dialog.getSelectedTicketItemDiscounts();
+					for (Discount ticketItemDiscount : selectedDiscount) {
+						ticketItem.addTodiscounts(MenuItem.convertToTicketItemDiscount(ticketItemDiscount, ticketItem));
+					}
+				}
 
-				updateModel();
-
-				OrderController.saveOrder(ticket);
-				paymentView.updateView();
+				ticket.getCouponAndDiscounts().clear();
+				List<Discount> ticketDiscounts = dialog.getSelectedTicketDiscounts();
+				for (Discount ticketDiscount : ticketDiscounts) {
+					ticket.addTocouponAndDiscounts(ticket.convertToTicketDiscount(ticketDiscount));
+				}
 			}
+
+			updateModel();
+			ticketViewerTable.repaint();
+			ticketViewerTable.updateView();
+			updateView();
+
+			OrderController.saveOrder(ticket);
+			paymentView.updateView();
+			OrderView.getInstance().setCurrentTicket(ticket);
 		} catch (Exception e) {
 			POSMessageDialog.showError(this, com.floreantpos.POSConstants.ERROR_MESSAGE, e);
 		}
@@ -853,7 +878,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 
 			TicketCouponAndDiscount coupon = new TicketCouponAndDiscount();
 			coupon.setName(key);
-			coupon.setType(CouponAndDiscount.FIXED_PER_ORDER);
+			coupon.setType(Discount.FIXED_PER_ORDER);
 			coupon.setValue(doubleValue);
 
 			ticket.addTocouponAndDiscounts(coupon);

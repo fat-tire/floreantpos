@@ -17,6 +17,7 @@
  */
 package com.floreantpos.model.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -31,6 +32,7 @@ import org.hibernate.criterion.Restrictions;
 
 import com.floreantpos.Messages;
 import com.floreantpos.PosException;
+import com.floreantpos.model.Discount;
 import com.floreantpos.model.MenuGroup;
 import com.floreantpos.model.MenuItem;
 import com.floreantpos.model.MenuItemModifierGroup;
@@ -66,8 +68,7 @@ public class MenuItemDAO extends BaseMenuItemDAO {
 			Hibernate.initialize(menuItem.getShifts());
 
 			return menuItem;
-		}
-		finally {
+		} finally {
 			closeSession(session);
 		}
 	}
@@ -91,8 +92,7 @@ public class MenuItemDAO extends BaseMenuItemDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new PosException(Messages.getString("MenuItemDAO.0")); //$NON-NLS-1$
-		}
-		finally {
+		} finally {
 			if (session != null) {
 				session.close();
 			}
@@ -112,8 +112,7 @@ public class MenuItemDAO extends BaseMenuItemDAO {
 			return newItem.getMenuItemModiferGroups();
 		} catch (Exception e) {
 			throw new PosException(Messages.getString("MenuItemDAO.1")); //$NON-NLS-1$
-		}
-		finally {
+		} finally {
 			if (session != null) {
 				session.close();
 			}
@@ -127,10 +126,10 @@ public class MenuItemDAO extends BaseMenuItemDAO {
 			session = getSession();
 			criteria = session.createCriteria(MenuItem.class);
 
-			if (menuGroup != null ) {
+			if (menuGroup != null) {
 				criteria.add(Restrictions.eq(MenuItem.PROP_PARENT, menuGroup));
 			}
-			
+
 			if (StringUtils.isNotEmpty(itemName)) {
 				criteria.add(Restrictions.ilike(MenuItem.PROP_NAME, itemName.trim(), MatchMode.ANYWHERE));
 			}
@@ -143,9 +142,9 @@ public class MenuItemDAO extends BaseMenuItemDAO {
 		return criteria.list();
 
 	}
-	
+
 	public void releaseParent(List<MenuItem> menuItemList) {
-		if(menuItemList == null) {
+		if (menuItemList == null) {
 			return;
 		}
 
@@ -155,7 +154,7 @@ public class MenuItemDAO extends BaseMenuItemDAO {
 		try {
 			session = createNewSession();
 			tx = session.beginTransaction();
-			
+
 			for (MenuItem menuItem : menuItemList) {
 				menuItem.setParent(null);
 				session.saveOrUpdate(menuItem);
@@ -170,18 +169,53 @@ public class MenuItemDAO extends BaseMenuItemDAO {
 			closeSession(session);
 		}
 	}
-	
+
+	public void releaseParentAndDelete(MenuItem item) {
+		if (item == null) {
+			return;
+		}
+
+		Session session = null;
+		Transaction tx = null;
+
+		try {
+			session = createNewSession();
+			tx = session.beginTransaction();
+
+			List<Discount> itemCoupons = item.getDiscounts();
+
+			for (Discount coupon : itemCoupons) {
+				List<MenuItem> mergeItems = new ArrayList();
+				for (MenuItem menuItem : coupon.getMenuItems()) {
+					if (menuItem != item) {
+						mergeItems.add(menuItem);
+					}
+				}
+				coupon.setMenuItems(mergeItems);
+				DiscountDAO.getInstance().saveOrUpdate(coupon);
+			}
+			delete(item);
+
+			tx.commit();
+		} catch (Exception e) {
+			tx.rollback();
+			LogFactory.getLog(ShopTableDAO.class).error(e);
+			throw new RuntimeException(e);
+		} finally {
+			closeSession(session);
+		}
+	}
+
 	public MenuItem getMenuItemByBarcode(String barcode) {
 		Session session = null;
 		Criteria criteria = null;
 		try {
 			session = createNewSession();
-			criteria=session.createCriteria(MenuItem.class);
+			criteria = session.createCriteria(MenuItem.class);
 			criteria.add(Restrictions.like(MenuItem.PROP_BARCODE, barcode));
 			Object result = criteria.uniqueResult();
 			return (MenuItem) result;
-		}
-		finally {
+		} finally {
 			closeSession(session);
 		}
 	}
