@@ -16,6 +16,7 @@ public abstract class BasePosTransaction implements Comparable, Serializable {
 
 	public static String REF = "PosTransaction"; //$NON-NLS-1$
 	public static String PROP_USER = "user"; //$NON-NLS-1$
+	public static String PROP_CUSTOM_PAYMENT_FIELD_NAME = "customPaymentFieldName"; //$NON-NLS-1$
 	public static String PROP_RECEPIENT = "recepient"; //$NON-NLS-1$
 	public static String PROP_AUTHORIZABLE = "authorizable"; //$NON-NLS-1$
 	public static String PROP_CUSTOM_PAYMENT_REF = "customPaymentRef"; //$NON-NLS-1$
@@ -27,9 +28,9 @@ public abstract class BasePosTransaction implements Comparable, Serializable {
 	public static String PROP_TICKET = "ticket"; //$NON-NLS-1$
 	public static String PROP_CARD_MERCHANT_GATEWAY = "cardMerchantGateway"; //$NON-NLS-1$
 	public static String PROP_CARD_TYPE = "cardType"; //$NON-NLS-1$
+	public static String PROP_DRAWER_RESETTED = "drawerResetted"; //$NON-NLS-1$
 	public static String PROP_TRANSACTION_TIME = "transactionTime"; //$NON-NLS-1$
 	public static String PROP_CARD_AUTH_CODE = "cardAuthCode"; //$NON-NLS-1$
-	public static String PROP_DRAWER_RESETTED = "drawerResetted"; //$NON-NLS-1$
 	public static String PROP_REASON = "reason"; //$NON-NLS-1$
 	public static String PROP_CARD_NUMBER = "cardNumber"; //$NON-NLS-1$
 	public static String PROP_GIFT_CERT_FACE_VALUE = "giftCertFaceValue"; //$NON-NLS-1$
@@ -87,6 +88,7 @@ public abstract class BasePosTransaction implements Comparable, Serializable {
 	protected java.lang.String transactionType;
 	protected java.lang.String customPaymentName;
 	protected java.lang.String customPaymentRef;
+	protected java.lang.String customPaymentFieldName;
 	protected java.lang.String paymentType;
 	protected java.lang.Boolean captured;
 	protected java.lang.Boolean authorizable;
@@ -238,6 +240,21 @@ public abstract class BasePosTransaction implements Comparable, Serializable {
 	 */
 	public void setCustomPaymentRef(java.lang.String customPaymentRef) {
 		this.customPaymentRef = customPaymentRef;
+	}
+
+	/**
+	 * Return the value associated with the column: CUSTOM_PAYMENT_FIELD_NAME
+	 */
+	public java.lang.String getCustomPaymentFieldName() {
+		return customPaymentFieldName;
+	}
+
+	/**
+	 * Set the value related to the column: CUSTOM_PAYMENT_FIELD_NAME
+	 * @param customPaymentFieldName the CUSTOM_PAYMENT_FIELD_NAME value
+	 */
+	public void setCustomPaymentFieldName(java.lang.String customPaymentFieldName) {
+		this.customPaymentFieldName = customPaymentFieldName;
 	}
 
 	/**

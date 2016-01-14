@@ -17,6 +17,7 @@
 		<property column="TRANSACTION_TYPE" name="transactionType" type="string" length="20" not-null="true" />
 		<property column="CUSTOM_PAYMENT_NAME" name="customPaymentName" type="string" length="60" />
 		<property column="CUSTOM_PAYMENT_REF" name="customPaymentRef" type="string" length="120" />
+		<property column="CUSTOM_PAYMENT_FIELD_NAME" name="customPaymentFieldName" type="string" length="60" />
 
 		<!-- this field will be renamed in future release -->
 		<property column="PAYMENT_SUB_TYPE" name="paymentType" type="string" length="40" not-null="true" />

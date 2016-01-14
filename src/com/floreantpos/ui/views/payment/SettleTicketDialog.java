@@ -395,6 +395,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 					}
 
 					transaction = paymentType.createTransaction();
+					transaction.setCustomPaymentFieldName(customPaymentDialog.getPaymentFieldName());
 					transaction.setCustomPaymentName(customPaymentDialog.getPaymentName());
 					transaction.setCustomPaymentRef(customPaymentDialog.getPaymentRef());
 					transaction.setTicket(ticket);

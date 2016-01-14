@@ -41,6 +41,7 @@ public class CustomPaymentSelectionDialog extends POSDialog {
 
 	private String paymentName;
 	private String paymentRef;
+	private String paymentFieldName;
 
 	public CustomPaymentSelectionDialog() {
 
@@ -74,6 +75,7 @@ public class CustomPaymentSelectionDialog extends POSDialog {
 					setPaymentName(paymentName);
 
 					CustomPayment payment = CustomPaymentDAO.getInstance().getByName(paymentName);
+					setPaymentFieldName(payment.getRefNumberFieldName());
 
 					if (payment.isRequiredRefNumber()) {
 
@@ -144,5 +146,19 @@ public class CustomPaymentSelectionDialog extends POSDialog {
 	 */
 	public void setPaymentRef(String paymentRef) {
 		this.paymentRef = paymentRef;
+	}
+
+	/**
+	 * @return the paymentFieldName
+	 */
+	public String getPaymentFieldName() {
+		return paymentFieldName;
+	}
+
+	/**
+	 * @param paymentFieldName the paymentFieldName to set
+	 */
+	public void setPaymentFieldName(String paymentFieldName) {
+		this.paymentFieldName = paymentFieldName;
 	}
 }
