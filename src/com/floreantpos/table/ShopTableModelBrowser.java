@@ -135,5 +135,6 @@ public class ShopTableModelBrowser<E> extends ModelBrowser {
 	@Override
 	public void doCancelEditing() {
 		super.doCancelEditing();
+		btnDuplicate.setEnabled(false);
 	}
 }
