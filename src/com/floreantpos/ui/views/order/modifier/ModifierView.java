@@ -66,11 +66,18 @@ public class ModifierView extends SelectionView {
 	private boolean addOnMode;
 
 	/** Creates new form GroupView */
-	public ModifierView(ModifierSelectionModel modifierSelectionModel) {
+	public ModifierView(ModifierSelectionModel modifierSelectionModel, boolean addOnMode) {
 		super(com.floreantpos.POSConstants.MODIFIERS);
 
 		this.modifierSelectionModel = modifierSelectionModel;
+		this.addOnMode = addOnMode;
 
+		if (!addOnMode) {
+			addActionButtons();
+		}
+	}
+
+	private void addActionButtons() {
 		actionButtonPanel.add(btnClear);
 		actionButtonPanel.add(btnDone);
 
@@ -110,7 +117,7 @@ public class ModifierView extends SelectionView {
 			for (MenuModifier modifier : modifiers) {
 				modifier.setMenuItemModifierGroup(modifierGroup.getMenuItemModifierGroup());
 				if (isAddOnMode()) {
-					if (modifier.getPrice() > 0 || modifier.getExtraPrice() > 0) {
+					if (modifier.getExtraPrice() > 0) {
 						itemList.add(modifier);
 					}
 				}
@@ -127,7 +134,7 @@ public class ModifierView extends SelectionView {
 			POSMessageDialog.showError(this, com.floreantpos.POSConstants.ERROR_MESSAGE, e);
 		}
 	}
-	
+
 	@Override
 	protected void renderItems() {
 		super.renderItems();
@@ -166,7 +173,7 @@ public class ModifierView extends SelectionView {
 
 	public void updateView() {
 		JPanel activePanel = getActivePanel();
-		if(activePanel == null) {
+		if (activePanel == null) {
 			return;
 		}
 		Component[] components = activePanel.getComponents();
@@ -174,7 +181,7 @@ public class ModifierView extends SelectionView {
 			return;
 
 		TicketItem ticketItem = modifierSelectionModel.getTicketItem();
-		
+
 		for (Component component : components) {
 			ModifierButton modifierButton = (ModifierButton) component;
 			MenuModifier modifier = modifierButton.menuModifier;
@@ -190,8 +197,8 @@ public class ModifierView extends SelectionView {
 				modifierButton.setText("<html><center>" + modifier.getDisplayName() + "</center></html>"); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 		}
-		
-		if(ModifierSelectionDialog.isRequiredModifiersAdded(ticketItem, modifierGroup.getMenuItemModifierGroup())) {
+
+		if (ModifierSelectionDialog.isRequiredModifiersAdded(ticketItem, modifierGroup.getMenuItemModifierGroup())) {
 			btnDone.setBackground(Color.green);
 		}
 		else {
@@ -220,40 +227,6 @@ public class ModifierView extends SelectionView {
 			addActionListener(this);
 		}
 
-//		void updateView(TicketItemModifier ticketItemModifier) {
-//			Integer itemCount = ticketItemModifier.getItemCount();
-//
-//			String text = menuModifier.getDisplayName();
-//			String style = ""; //$NON-NLS-1$
-//
-//			if (ticketItemModifier.getModifierType() == TicketItemModifier.NORMAL_MODIFIER) {
-//				style = "color: green;"; //$NON-NLS-1$
-//			}
-//			// else if (ticketItemModifier.getModifierType() ==
-//			// TicketItemModifier.NO_MODIFIER) {
-//			// //setIcon(noIcon);
-//			// setBackground(Color.RED.darker());
-//			// }
-//			else if (ticketItemModifier.getModifierType() == TicketItemModifier.EXTRA_MODIFIER) {
-//				style = "color: red;"; //$NON-NLS-1$
-//			}
-//
-//			StringBuilder sb = new StringBuilder();
-//			sb.append("<html>"); //$NON-NLS-1$
-//			sb.append("<center>"); //$NON-NLS-1$
-//			sb.append(text);
-//
-//			if (itemCount != 0) {
-//				sb.append("<h2 style='" + style + "'>"); //$NON-NLS-1$ //$NON-NLS-2$
-//				sb.append("(" + itemCount + ")"); //$NON-NLS-1$ //$NON-NLS-2$
-//				sb.append("</h2>"); //$NON-NLS-1$
-//			}
-//			sb.append("</center>"); //$NON-NLS-1$
-//			sb.append("</html>"); //$NON-NLS-1$
-//
-//			setText(sb.toString());
-//		}
-
 		public void actionPerformed(ActionEvent e) {
 			for (ModifierSelectionListener listener : ModifierView.this.listenerList) {
 				listener.modifierSelected(menuModifier);
@@ -265,11 +238,11 @@ public class ModifierView extends SelectionView {
 		return addOnMode;
 	}
 
-	public void setAddOnMode(boolean addOnMode) {
-		this.addOnMode = addOnMode;
-		renderTitle();
-		btnClear.setEnabled(!addOnMode);
-		btnDone.setVisible(!addOnMode);
-		setModifierGroup(modifierGroup);
-	}
+	//	public void setAddOnMode(boolean addOnMode) {
+	//		this.addOnMode = addOnMode;
+	//		renderTitle();
+	//		btnClear.setEnabled(!addOnMode);
+	//		btnDone.setVisible(!addOnMode);
+	//		setModifierGroup(modifierGroup);
+	//	}
 }

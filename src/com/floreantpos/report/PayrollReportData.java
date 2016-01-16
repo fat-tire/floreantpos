@@ -103,12 +103,8 @@ public class PayrollReportData {
 		
 		double diff = toTime - fromTime;
 		diff = diff / (1000 * 60 * 60 * 24);
-		//System.out.println(from.toString() + ":" + diff);
 		totalHour = hours;
 		rate = user.getCostPerHour();
 		payment = totalHour * rate;
-		
-		//SimpleDateFormat df = new SimpleDateFormat("yyyy-MMM-dd hh:hh a");
-		//System.out.println(df.format(to) + "-" + df.format(from) + "=" + totalHour);
 	}
 }

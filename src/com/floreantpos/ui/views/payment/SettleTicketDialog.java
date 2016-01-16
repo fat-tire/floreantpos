@@ -83,6 +83,7 @@ import com.floreantpos.util.DrawerUtil;
 import com.floreantpos.util.NumberUtil;
 import com.floreantpos.util.POSUtil;
 
+//TODO: REVISE CODE
 public class SettleTicketDialog extends POSDialog implements CardInputListener {
 	public static final String LOYALTY_DISCOUNT_PERCENTAGE = "loyalty_discount_percentage"; //$NON-NLS-1$
 	public static final String LOYALTY_POINT = "loyalty_point"; //$NON-NLS-1$

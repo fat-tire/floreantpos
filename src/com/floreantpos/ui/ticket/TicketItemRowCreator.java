@@ -31,10 +31,10 @@ import com.floreantpos.model.TicketItemModifierGroup;
 public class TicketItemRowCreator {
 
 	public static void calculateTicketRows(Ticket ticket, Map<String, ITicketItem> tableRows) {
-		calculateTicketRows(ticket, tableRows, true, true);
+		calculateTicketRows(ticket, tableRows, true, true, true);
 	}
 
-	public static void calculateTicketRows(Ticket ticket, Map<String, ITicketItem> tableRows, boolean includeModifiers, boolean includeCookingInstructions) {
+	public static void calculateTicketRows(Ticket ticket, Map<String, ITicketItem> tableRows, boolean includeModifiers, boolean includeAddOns, boolean includeCookingInstructions) {
 		tableRows.clear();
 
 		int rowNum = 0;
@@ -53,6 +53,10 @@ public class TicketItemRowCreator {
 
 			if (includeModifiers) {
 				rowNum = includeModifiers(ticketItem, tableRows, rowNum, false);
+			}
+			
+			if (includeAddOns) {
+				rowNum = includeAddOns(ticketItem, tableRows, rowNum);
 			}
 
 			if (includeCookingInstructions) {
@@ -122,6 +126,18 @@ public class TicketItemRowCreator {
 						rowNum++;
 					}
 				}
+			}
+		}
+		return rowNum;
+	}
+	
+	private static int includeAddOns(TicketItem ticketItem, Map<String, ITicketItem> tableRows, int rowNum) {
+		List<TicketItemModifier> ticketItemAddOns = ticketItem.getAddOns();
+		if (ticketItemAddOns != null) {
+			for (TicketItemModifier ticketItemDiscount : ticketItemAddOns) {
+				ticketItemDiscount.setTableRowNum(rowNum);
+				tableRows.put(String.valueOf(rowNum), ticketItemDiscount);
+				rowNum++;
 			}
 		}
 		return rowNum;

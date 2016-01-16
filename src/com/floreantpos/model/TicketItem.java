@@ -29,27 +29,23 @@ public class TicketItem extends BaseTicketItem implements ITicketItem {
 	private static final long serialVersionUID = 1L;
 
 	/*[CONSTRUCTOR MARKER BEGIN]*/
-	public TicketItem () {
+	public TicketItem() {
 		super();
 	}
 
 	/**
 	 * Constructor for primary key
 	 */
-	public TicketItem (java.lang.Integer id) {
+	public TicketItem(java.lang.Integer id) {
 		super(id);
 	}
 
 	/**
 	 * Constructor for required fields
 	 */
-	public TicketItem (
-		java.lang.Integer id,
-		com.floreantpos.model.Ticket ticket) {
+	public TicketItem(java.lang.Integer id, com.floreantpos.model.Ticket ticket) {
 
-		super (
-			id,
-			ticket);
+		super(id, ticket);
 	}
 
 	/*[CONSTRUCTOR MARKER END]*/
@@ -85,7 +81,7 @@ public class TicketItem extends BaseTicketItem implements ITicketItem {
 	public String toString() {
 		return getName();
 	}
-	
+
 	public void addCookingInstruction(TicketItemCookingInstruction cookingInstruction) {
 		List<TicketItemCookingInstruction> cookingInstructions = getCookingInstructions();
 
@@ -160,6 +156,61 @@ public class TicketItem extends BaseTicketItem implements ITicketItem {
 		return null;
 	}
 
+	public TicketItemModifier findAddOnFor(MenuModifier modifier) {
+		List<TicketItemModifier> list = getAddOns();
+		if (list == null) {
+			return null;
+		}
+
+		for (TicketItemModifier ticketItemModifier : list) {
+			if (modifier.getId().equals(ticketItemModifier.getItemId())) {
+				return ticketItemModifier;
+			}
+		}
+
+		return null;
+	}
+
+	public void addAddOn(MenuModifier menuModifier) {
+		List<TicketItemModifier> list = getAddOns();
+		if (list == null) {
+			list = new ArrayList<TicketItemModifier>(2);
+			setAddOns(list);
+		}
+
+		for (int i = list.size() - 1; i >= 0; i--) {
+			TicketItemModifier ticketItemModifier = (TicketItemModifier) list.get(i);
+			if (menuModifier.getId().equals(ticketItemModifier.getItemId())) {
+				if ((i != list.size() - 1) || ticketItemModifier.isPrintedToKitchen()) {
+					list.add(convertToAddOn(menuModifier));
+				}
+				else {
+					ticketItemModifier.setItemCount(ticketItemModifier.getItemCount() + 1);
+				}
+				return;
+			}
+		}
+
+		list.add(convertToAddOn(menuModifier));
+	}
+
+	public TicketItemModifier convertToAddOn(MenuModifier menuModifier) {
+		TicketItemModifier ticketItemModifier = new TicketItemModifier();
+		ticketItemModifier.setItemId(menuModifier.getId());
+		ticketItemModifier.setGroupId(menuModifier.getModifierGroup().getId());
+		ticketItemModifier.setItemCount(1);
+		ticketItemModifier.setName(menuModifier.getDisplayName());
+
+		ticketItemModifier.setUnitPrice(menuModifier.getExtraPrice());
+		ticketItemModifier.setModifierType(TicketItemModifier.EXTRA_MODIFIER);
+
+		ticketItemModifier.setTaxRate(menuModifier.getTax() == null ? 0 : menuModifier.getTax().getRate());
+		ticketItemModifier.setShouldPrintToKitchen(menuModifier.isShouldPrintToKitchen());
+		ticketItemModifier.setTicketItem(this);
+
+		return ticketItemModifier;
+	}
+
 	public void calculatePrice() {
 		priceIncludesTax = Application.getInstance().isPriceIncludesTax();
 
@@ -167,6 +218,13 @@ public class TicketItem extends BaseTicketItem implements ITicketItem {
 		if (ticketItemModifierGroups != null) {
 			for (TicketItemModifierGroup ticketItemModifierGroup : ticketItemModifierGroups) {
 				ticketItemModifierGroup.calculatePrice();
+			}
+		}
+
+		List<TicketItemModifier> addOns = getAddOns();
+		if (addOns != null) {
+			for (TicketItemModifier ticketItemModifier : addOns) {
+				ticketItemModifier.calculatePrice();
 			}
 		}
 
@@ -201,6 +259,13 @@ public class TicketItem extends BaseTicketItem implements ITicketItem {
 					subTotalAmount += ticketItemModifierGroup.getSubtotal();
 				}
 			}
+			
+			List<TicketItemModifier> addOns = getAddOns();
+			if (addOns != null) {
+				for (TicketItemModifier ticketItemModifier : addOns) {
+					subTotalAmount += ticketItemModifier.getSubTotalAmount();
+				}
+			}
 		}
 
 		return subTotalAmount;
@@ -223,17 +288,17 @@ public class TicketItem extends BaseTicketItem implements ITicketItem {
 	//	}
 
 	private double calculateDiscount() {
-		if(getDiscounts()==null || getDiscounts().isEmpty()){
+		if (getDiscounts() == null || getDiscounts().isEmpty()) {
 			return 0;
 		}
-		
+
 		double discount = 0;
 		for (TicketItemDiscount ticketItemDiscount : getDiscounts()) {
 			if (ticketItemDiscount.getValue() > 0) {
 				discount += getAmountByType(ticketItemDiscount);
 			}
 		}
-		return getItemCount()*discount;
+		return getItemCount() * discount;
 	}
 
 	public double getAmountByType(TicketItemDiscount discount) {
@@ -278,6 +343,13 @@ public class TicketItem extends BaseTicketItem implements ITicketItem {
 			if (ticketItemModifierGroups != null) {
 				for (TicketItemModifierGroup ticketItemModifierGroup : ticketItemModifierGroups) {
 					tax += ticketItemModifierGroup.getTax();
+				}
+			}
+			
+			List<TicketItemModifier> addOns = getAddOns();
+			if (addOns != null) {
+				for (TicketItemModifier ticketItemModifier : addOns) {
+					tax += ticketItemModifier.getTaxAmount();
 				}
 			}
 		}

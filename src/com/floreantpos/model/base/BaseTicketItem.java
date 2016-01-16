@@ -17,29 +17,29 @@ import com.floreantpos.model.TicketItemCookingInstruction;
 
 public abstract class BaseTicketItem  implements Comparable, Serializable {
 
-	public static String REF = "TicketItem";
-	public static String PROP_BEVERAGE = "beverage";
-	public static String PROP_ITEM_ID = "itemId";
-	public static String PROP_CATEGORY_NAME = "categoryName";
-	public static String PROP_GROUP_NAME = "groupName";
-	public static String PROP_ITEM_COUNT = "itemCount";
-	public static String PROP_TAX_RATE = "taxRate";
-	public static String PROP_UNIT_PRICE = "unitPrice";
-	public static String PROP_TAX_AMOUNT = "taxAmount";
-	public static String PROP_DISCOUNT_AMOUNT = "discountAmount";
-	public static String PROP_NAME = "name";
-	public static String PROP_PRINTER_GROUP = "printerGroup";
-	public static String PROP_PRINTED_TO_KITCHEN = "printedToKitchen";
-	public static String PROP_SHOULD_PRINT_TO_KITCHEN = "shouldPrintToKitchen";
-	public static String PROP_TICKET = "ticket";
-	public static String PROP_SUBTOTAL_AMOUNT = "subtotalAmount";
-	public static String PROP_INVENTORY_HANDLED = "inventoryHandled";
-	public static String PROP_HAS_MODIFIERS = "hasModifiers";
-	public static String PROP_TAX_AMOUNT_WITHOUT_MODIFIERS = "taxAmountWithoutModifiers";
-	public static String PROP_ID = "id";
-	public static String PROP_TOTAL_AMOUNT = "totalAmount";
-	public static String PROP_SUBTOTAL_AMOUNT_WITHOUT_MODIFIERS = "subtotalAmountWithoutModifiers";
-	public static String PROP_TOTAL_AMOUNT_WITHOUT_MODIFIERS = "totalAmountWithoutModifiers";
+	public static String REF = "TicketItem"; //$NON-NLS-1$
+	public static String PROP_BEVERAGE = "beverage"; //$NON-NLS-1$
+	public static String PROP_ITEM_ID = "itemId"; //$NON-NLS-1$
+	public static String PROP_CATEGORY_NAME = "categoryName"; //$NON-NLS-1$
+	public static String PROP_GROUP_NAME = "groupName"; //$NON-NLS-1$
+	public static String PROP_ITEM_COUNT = "itemCount"; //$NON-NLS-1$
+	public static String PROP_TAX_RATE = "taxRate"; //$NON-NLS-1$
+	public static String PROP_UNIT_PRICE = "unitPrice"; //$NON-NLS-1$
+	public static String PROP_TAX_AMOUNT = "taxAmount"; //$NON-NLS-1$
+	public static String PROP_DISCOUNT_AMOUNT = "discountAmount"; //$NON-NLS-1$
+	public static String PROP_NAME = "name"; //$NON-NLS-1$
+	public static String PROP_PRINTER_GROUP = "printerGroup"; //$NON-NLS-1$
+	public static String PROP_PRINTED_TO_KITCHEN = "printedToKitchen"; //$NON-NLS-1$
+	public static String PROP_SHOULD_PRINT_TO_KITCHEN = "shouldPrintToKitchen"; //$NON-NLS-1$
+	public static String PROP_TICKET = "ticket"; //$NON-NLS-1$
+	public static String PROP_SUBTOTAL_AMOUNT = "subtotalAmount"; //$NON-NLS-1$
+	public static String PROP_INVENTORY_HANDLED = "inventoryHandled"; //$NON-NLS-1$
+	public static String PROP_HAS_MODIFIERS = "hasModifiers"; //$NON-NLS-1$
+	public static String PROP_TAX_AMOUNT_WITHOUT_MODIFIERS = "taxAmountWithoutModifiers"; //$NON-NLS-1$
+	public static String PROP_ID = "id"; //$NON-NLS-1$
+	public static String PROP_TOTAL_AMOUNT = "totalAmount"; //$NON-NLS-1$
+	public static String PROP_SUBTOTAL_AMOUNT_WITHOUT_MODIFIERS = "subtotalAmountWithoutModifiers"; //$NON-NLS-1$
+	public static String PROP_TOTAL_AMOUNT_WITHOUT_MODIFIERS = "totalAmountWithoutModifiers"; //$NON-NLS-1$
 
 
 	// constructors
@@ -103,6 +103,7 @@ public abstract class BaseTicketItem  implements Comparable, Serializable {
 
 	// collections
 	private java.util.List<com.floreantpos.model.TicketItemModifierGroup> ticketItemModifierGroups;
+	private java.util.List<com.floreantpos.model.TicketItemModifier> addOns;
 	private java.util.List<com.floreantpos.model.TicketItemDiscount> discounts;
 	private java.util.List<TicketItemCookingInstruction> cookingInstructions;
 
@@ -512,6 +513,28 @@ public abstract class BaseTicketItem  implements Comparable, Serializable {
 	public void addToticketItemModifierGroups (com.floreantpos.model.TicketItemModifierGroup ticketItemModifierGroup) {
 		if (null == getTicketItemModifierGroups()) setTicketItemModifierGroups(new java.util.ArrayList<com.floreantpos.model.TicketItemModifierGroup>());
 		getTicketItemModifierGroups().add(ticketItemModifierGroup);
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: addOns
+	 */
+	public java.util.List<com.floreantpos.model.TicketItemModifier> getAddOns () {
+					return addOns;
+			}
+
+	/**
+	 * Set the value related to the column: addOns
+	 * @param addOns the addOns value
+	 */
+	public void setAddOns (java.util.List<com.floreantpos.model.TicketItemModifier> addOns) {
+		this.addOns = addOns;
+	}
+
+	public void addToaddOns (com.floreantpos.model.TicketItemModifier ticketItemModifier) {
+		if (null == getAddOns()) setAddOns(new java.util.ArrayList<com.floreantpos.model.TicketItemModifier>());
+		getAddOns().add(ticketItemModifier);
 	}
 
 

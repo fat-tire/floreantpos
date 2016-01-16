@@ -33,13 +33,17 @@ public class ModifierViewerTableModel extends AbstractTableModel {
 
 	private final List<ITicketItem> tableRows = new ArrayList<ITicketItem>();
 	private boolean priceIncludesTax = false;
-	
-	protected String[] columnNames = { Messages.getString("TicketViewerTableModel.0"), Messages.getString("TicketViewerTableModel.1"), Messages.getString("TicketViewerTableModel.2"), Messages.getString("TicketViewerTableModel.3") }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+
+	protected String[] columnNames = {
+			Messages.getString("TicketViewerTableModel.0"), Messages.getString("TicketViewerTableModel.1"), Messages.getString("TicketViewerTableModel.2"), Messages.getString("TicketViewerTableModel.3") }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 
 	private boolean forReciptPrint;
 	private boolean printCookingInstructions;
 
-	public ModifierViewerTableModel(TicketItem ticketItem) {
+	private boolean addOnMode;
+
+	public ModifierViewerTableModel(TicketItem ticketItem, boolean addOnMode) {
+		this.addOnMode = addOnMode;
 		setTicketItem(ticketItem);
 	}
 
@@ -49,7 +53,7 @@ public class ModifierViewerTableModel extends AbstractTableModel {
 
 	public int getRowCount() {
 		int size = tableRows.size();
-		
+
 		return size;
 	}
 
@@ -68,8 +72,8 @@ public class ModifierViewerTableModel extends AbstractTableModel {
 
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		ITicketItem ticketItem = tableRows.get(rowIndex);
-		
-		if(ticketItem == null) {
+
+		if (ticketItem == null) {
 			return null;
 		}
 
@@ -93,13 +97,34 @@ public class ModifierViewerTableModel extends AbstractTableModel {
 	private void calculateRows() {
 		//TicketItemRowCreator.calculateTicketRows(ticket, tableRows);
 		tableRows.clear();
-		
+
+		if (addOnMode) {
+			calculateRowsForAddOns();
+		}
+		else {
+			calculateRowsForModifiers();
+		}
+	}
+
+	private void calculateRowsForAddOns() {
+		List<TicketItemModifier> addOns = ticketItem.getAddOns();
+		if (addOns == null) {
+			return;
+		}
+
+		for (TicketItemModifier ticketItemModifier : addOns) {
+			tableRows.add(ticketItemModifier);
+		}
+	}
+
+	private void calculateRowsForModifiers() {
 		List<TicketItemModifierGroup> ticketItemModifierGroups = ticketItem.getTicketItemModifierGroups();
-		if(ticketItemModifierGroups == null) return;
-		
+		if (ticketItemModifierGroups == null)
+			return;
+
 		for (TicketItemModifierGroup ticketItemModifierGroup : ticketItemModifierGroups) {
 			List<TicketItemModifier> ticketItemModifiers = ticketItemModifierGroup.getTicketItemModifiers();
-			if(ticketItemModifiers != null) {
+			if (ticketItemModifiers != null) {
 				for (TicketItemModifier ticketItemModifier : ticketItemModifiers) {
 					tableRows.add(ticketItemModifier);
 				}
@@ -108,32 +133,37 @@ public class ModifierViewerTableModel extends AbstractTableModel {
 	}
 
 	public void removeModifier(TicketItem parent, TicketItemModifier modifierToDelete) {
-//		TicketItemModifierGroup ticketItemModifierGroup = modifierToDelete.getParent();
-//		List<TicketItemModifier> ticketItemModifiers = ticketItemModifierGroup.getTicketItemModifiers();
-//
-//		for (Iterator iter = ticketItemModifiers.iterator(); iter.hasNext();) {
-//			TicketItemModifier modifier = (TicketItemModifier) iter.next();
-//			if (modifier.getItemId() == modifierToDelete.getItemId()) {
-//				iter.remove();
-//
-//				if (modifier.isPrintedToKitchen()) {
-//					ticket.addDeletedItems(modifier);
-//				}
-//
-//				calculateRows();
-//				fireTableDataChanged();
-//				return;
-//			}
-//		}
+		//		TicketItemModifierGroup ticketItemModifierGroup = modifierToDelete.getParent();
+		//		List<TicketItemModifier> ticketItemModifiers = ticketItemModifierGroup.getTicketItemModifiers();
+		//
+		//		for (Iterator iter = ticketItemModifiers.iterator(); iter.hasNext();) {
+		//			TicketItemModifier modifier = (TicketItemModifier) iter.next();
+		//			if (modifier.getItemId() == modifierToDelete.getItemId()) {
+		//				iter.remove();
+		//
+		//				if (modifier.isPrintedToKitchen()) {
+		//					ticket.addDeletedItems(modifier);
+		//				}
+		//
+		//				calculateRows();
+		//				fireTableDataChanged();
+		//				return;
+		//			}
+		//		}
 	}
 
 	public Object delete(int index) {
 		if (index < 0 || index >= tableRows.size())
 			return null;
-		
+
 		TicketItemModifier ticketItemModifier = (TicketItemModifier) tableRows.remove(index);
-		TicketItemModifierGroup ticketItemModifierGroup = ticketItemModifier.getParent();
-		ticketItemModifierGroup.removeTicketItemModifier(ticketItemModifier);
+		if (ticketItemModifier.getModifierType() == TicketItemModifier.EXTRA_MODIFIER) {
+			ticketItemModifier.getTicketItem().getAddOns().remove(ticketItemModifier);
+		}
+		else {
+			TicketItemModifierGroup ticketItemModifierGroup = ticketItemModifier.getParent();
+			ticketItemModifierGroup.removeTicketItemModifier(ticketItemModifier);
+		}
 		fireTableRowsDeleted(index, index);
 		return ticketItemModifier;
 	}
@@ -183,4 +213,12 @@ public class ModifierViewerTableModel extends AbstractTableModel {
 	public void setPriceIncludesTax(boolean priceIncludesTax) {
 		this.priceIncludesTax = priceIncludesTax;
 	}
+
+	public boolean isAddOnMode() {
+		return addOnMode;
+	}
+
+	//	public void setAddOnMode(boolean addOnMode) {
+	//		this.addOnMode = addOnMode;
+	//	}
 }

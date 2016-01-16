@@ -28,6 +28,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -115,13 +117,13 @@ public class MenuItemView extends SelectionView {
 	}
 
 	public void selectItem(MenuItem menuItem) {
-		ItemButton button = menuItemButtonMap.get(menuItem.getId());
+		//ItemButton button = menuItemButtonMap.get(menuItem.getId());
 		/*if(button != null) {
 			button.requestFocus();
 		}*/
 	}
 
-	private class ItemButton extends PosButton implements ActionListener {
+	private class ItemButton extends PosButton implements ActionListener, MouseListener {
 		private static final int BUTTON_SIZE = 100;
 		MenuItem foodItem;
 
@@ -162,10 +164,31 @@ public class MenuItemView extends SelectionView {
 
 			setPreferredSize(new Dimension(BUTTON_SIZE, BUTTON_SIZE));
 			addActionListener(this);
+			addMouseListener(this);
 		}
 
 		public void actionPerformed(ActionEvent e) {
 			fireItemSelected(foodItem);
+		}
+
+		@Override
+		public void mouseClicked(MouseEvent e) {
+		}
+
+		@Override
+		public void mousePressed(MouseEvent e) {
+		}
+
+		@Override
+		public void mouseReleased(MouseEvent e) {
+		}
+
+		@Override
+		public void mouseEntered(MouseEvent e) {
+		}
+
+		@Override
+		public void mouseExited(MouseEvent e) {
 		}
 	}
 }

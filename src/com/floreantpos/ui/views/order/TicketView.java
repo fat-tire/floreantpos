@@ -370,7 +370,7 @@ public class TicketView extends JPanel {
 
 		if (object instanceof TicketItemModifier) {
 			TicketItemModifier ticketItemModifier = (TicketItemModifier) object;
-			OrderController.openModifierDialog(ticketItemModifier);
+			OrderController.openModifierDialog(ticketItemModifier, ticketItemModifier.getModifierType() == TicketItemModifier.EXTRA_MODIFIER);
 		}
 		updateView();
 

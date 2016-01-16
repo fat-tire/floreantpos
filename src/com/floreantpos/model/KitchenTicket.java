@@ -192,6 +192,24 @@ public class KitchenTicket extends BaseKitchenTicket {
 				}
 			}
 		}
+		
+		List<TicketItemModifier> addOns = ticketItem.getAddOns();
+		if (addOns != null) {
+			for (TicketItemModifier ticketItemModifier : addOns) {
+				if (ticketItemModifier.isPrintedToKitchen() || !ticketItemModifier.isShouldPrintToKitchen()) {
+					continue;
+				}
+
+				KitchenTicketItem item = new KitchenTicketItem();
+				item.setMenuItemCode(""); //$NON-NLS-1$
+				item.setMenuItemName(ticketItemModifier.getNameDisplay());
+				item.setQuantity(ticketItemModifier.getItemCountDisplay());
+				item.setStatus(KitchenTicketStatus.WAITING.name());
+				kitchenTicket.addToticketItems(item);
+				
+				ticketItemModifier.setPrintedToKitchen(true);
+			}
+		}
 	}
 	
 	public static enum KitchenTicketStatus {

@@ -152,6 +152,7 @@ public class TicketItemModifierGroup extends BaseTicketItemModifierGroup {
 		ticketItemModifier.setTaxRate(menuModifier.getTax() == null ? 0 : menuModifier.getTax().getRate());
 		ticketItemModifier.setShouldPrintToKitchen(menuModifier.isShouldPrintToKitchen());
 		ticketItemModifier.setParent(this);
+		ticketItemModifier.setTicketItem(getParent());
 
 		addToticketItemModifiers(ticketItemModifier);
 

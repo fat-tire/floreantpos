@@ -20,6 +20,8 @@ package com.floreantpos;
 public class POSConstants {
 	public static final String COLON = ":"; //$NON-NLS-1$
 
+	public static final String ADD_ON = Messages.getString("ADD_ON"); //$NON-NLS-1$
+	
 	public static final String DINE_IN_BUTTON_TEXT = Messages.getString("DINE_IN_BUTTON_TEXT"); //$NON-NLS-1$
 	public static final String TAKE_OUT_BUTTON_TEXT = Messages.getString("TAKE_OUT_BUTTON_TEXT"); //$NON-NLS-1$
 	public static final String PICKUP_BUTTON_TEXT = Messages.getString("PICKUP_BUTTON_TEXT"); //$NON-NLS-1$

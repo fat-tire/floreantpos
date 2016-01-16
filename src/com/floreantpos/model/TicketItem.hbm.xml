@@ -43,6 +43,14 @@
 			<column name="TICKET_ID" />
 		</many-to-one>
 		
+		<list cascade="all,delete-orphan" inverse="false" lazy="false" name="addOns" table="TICKET_ITEM_ADDON">
+			<key>
+				<column name="ADDON_TICKET_ITEM_ID" />
+			</key>
+			<list-index column="ADDON_ORDER" />
+			<one-to-many class="com.floreantpos.model.TicketItemModifier" />
+		</list>
+		
 		<bag cascade="all,delete-orphan" inverse="true" lazy="false" name="discounts" table="TICKET_ITEM_DISCOUNT">
 			<key>
 				<column name="TICKET_ITEMID" />

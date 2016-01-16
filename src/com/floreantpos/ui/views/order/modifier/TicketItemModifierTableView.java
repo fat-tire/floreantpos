@@ -38,10 +38,8 @@ import javax.swing.event.ListSelectionListener;
 
 import com.floreantpos.IconFactory;
 import com.floreantpos.model.ITicketItem;
-import com.floreantpos.model.MenuModifier;
 import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.TicketItemModifier;
-import com.floreantpos.model.dao.MenuModifierDAO;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.swing.PosScrollPane;
 import com.floreantpos.ui.views.order.actions.OrderListener;
@@ -74,9 +72,12 @@ public class TicketItemModifierTableView extends JPanel {
 
 	private TitledBorder titledBorder = new TitledBorder(""); //$NON-NLS-1$
 	private Border border = new CompoundBorder(titledBorder, new EmptyBorder(5, 5, 5, 5));
+	
+	private boolean addOnMode;
 
-	public TicketItemModifierTableView(ModifierSelectionModel modifierSelectionModel) {
+	public TicketItemModifierTableView(ModifierSelectionModel modifierSelectionModel, boolean addOnMode) {
 		this.modifierSelectionModel = modifierSelectionModel;
+		this.addOnMode = addOnMode;
 		
 		initComponents();
 	}
@@ -90,7 +91,7 @@ public class TicketItemModifierTableView extends JPanel {
 		ticketItemActionPanel = new com.floreantpos.swing.TransparentPanel();
 		//btnDecreaseAmount = new com.floreantpos.swing.PosButton();
 		btnScrollDown = new com.floreantpos.swing.PosButton();
-		modifierViewerTable = new com.floreantpos.ui.views.order.modifier.ModifierViewerTable(modifierSelectionModel.getTicketItem());
+		modifierViewerTable = new com.floreantpos.ui.views.order.modifier.ModifierViewerTable(modifierSelectionModel.getTicketItem(), addOnMode);
 		ticketScrollPane = new PosScrollPane(modifierViewerTable);
 		ticketScrollPane.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		ticketScrollPane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
@@ -132,8 +133,12 @@ public class TicketItemModifierTableView extends JPanel {
 
 				//btnIncreaseAmount.setEnabled(!printedToKitchen);
 				//btnDecreaseAmount.setEnabled(!printedToKitchen);
-				btnDelete.setEnabled(!printedToKitchen);
-
+				if(isAddOnMode() && item.getUnitPriceDisplay() <= 0) {
+					btnDelete.setEnabled(false);
+				}
+				else {
+					btnDelete.setEnabled(!printedToKitchen);
+				}
 			}
 
 		});
@@ -204,23 +209,6 @@ public class TicketItemModifierTableView extends JPanel {
 			updateView();
 		}
 
-	}
-
-	private void doIncreaseAmount(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_doIncreaseAmount
-		Object selected = modifierViewerTable.getSelected();
-		if(selected instanceof TicketItemModifier) {
-			TicketItemModifier ticketItemModifier = (TicketItemModifier) selected;
-			MenuModifier modifier = MenuModifierDAO.getInstance().getMenuModifierFromTicketItemModifier(ticketItemModifier);
-			for (ModifierSelectionListener listener : listenerList) {
-				listener.modifierSelected(modifier);
-			}
-		}
-	}
-
-	private void doDecreaseAmount(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_doDecreaseAmount
-		if (modifierViewerTable.decreaseItemAmount()) {
-			updateView();
-		}
 	}
 
 	private void doScrollDown(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_doScrollDown
@@ -314,4 +302,12 @@ public class TicketItemModifierTableView extends JPanel {
 	public com.floreantpos.ui.views.order.modifier.ModifierViewerTable getTicketViewerTable() {
 		return modifierViewerTable;
 	}
+
+	public boolean isAddOnMode() {
+		return addOnMode;
+	}
+//
+//	public void setAddOnMode(boolean addOnMode) {
+//		this.addOnMode = addOnMode;
+//	}
 }

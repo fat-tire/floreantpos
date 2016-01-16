@@ -71,9 +71,10 @@ public class ModifierGroupView extends JPanel implements ComponentListener {
 	public static final String VIEW_NAME = "MODIFIER_GROUP_VIEW"; //$NON-NLS-1$
 
 	/** Creates new form CategoryView */
-	public ModifierGroupView(ModifierSelectionModel modifierSelectionModel) {
+	public ModifierGroupView(ModifierSelectionModel modifierSelectionModel, boolean addOnMode) {
 		this.modifierSelectionModel = modifierSelectionModel;
-
+		this.addOnMode = addOnMode;
+		
 		setLayout(new BorderLayout());
 		TitledBorder border = new TitledBorder(POSConstants.GROUPS);
 		border.setTitleJustification(TitledBorder.CENTER);
@@ -103,8 +104,6 @@ public class ModifierGroupView extends JPanel implements ComponentListener {
 	}
 
 	private void init() {
-		//List itemList = new ArrayList();
-
 		List<MenuItemModifierGroup> modifierGroups = modifierSelectionModel.getMenuItem().getMenuItemModiferGroups();
 		Collections.sort(modifierGroups, new Comparator<MenuItemModifierGroup>() {
 			@Override
@@ -123,12 +122,9 @@ public class ModifierGroupView extends JPanel implements ComponentListener {
 
 			menuModifierGroup.setMenuItemModifierGroup(menuItemModifierGroup);
 
-			//itemList.add(group);
 			contentPanel.add(createItemButton(menuModifierGroup));
 
 		}
-
-		//setItems(itemList);
 	}
 
 	protected AbstractButton createItemButton(Object item) {
@@ -262,16 +258,4 @@ public class ModifierGroupView extends JPanel implements ComponentListener {
 	public boolean isAddOnMode() {
 		return addOnMode;
 	}
-
-	public void setAddOnMode(boolean addOnMode) {
-		this.addOnMode = addOnMode;
-		Component[] components = contentPanel.getContentPane().getComponents();
-		if (components != null && components.length > 0) {
-			for (int i = 0; i < components.length; i++) {
-				ModifierGroupButton button = (ModifierGroupButton) components[i];
-				button.updateButtonText();
-			}
-		}
-	}
-
 }

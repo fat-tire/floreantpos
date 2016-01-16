@@ -28,7 +28,6 @@ import com.floreantpos.model.ActionHistory;
 import com.floreantpos.model.MenuCategory;
 import com.floreantpos.model.MenuGroup;
 import com.floreantpos.model.MenuItem;
-import com.floreantpos.model.MenuModifier;
 import com.floreantpos.model.OrderType;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketItem;
@@ -44,13 +43,12 @@ import com.floreantpos.ui.views.SwitchboardView;
 import com.floreantpos.ui.views.order.actions.CategorySelectionListener;
 import com.floreantpos.ui.views.order.actions.GroupSelectionListener;
 import com.floreantpos.ui.views.order.actions.ItemSelectionListener;
-import com.floreantpos.ui.views.order.actions.ModifierSelectionListener;
 import com.floreantpos.ui.views.order.actions.OrderListener;
 import com.floreantpos.ui.views.order.modifier.ModifierSelectionDialog;
 import com.floreantpos.ui.views.order.modifier.ModifierSelectionModel;
 import com.floreantpos.util.OrderUtil;
 
-public class OrderController implements OrderListener, CategorySelectionListener, GroupSelectionListener, ItemSelectionListener, ModifierSelectionListener {
+public class OrderController implements OrderListener, CategorySelectionListener, GroupSelectionListener, ItemSelectionListener {
 	private OrderView orderView;
 
 	public OrderController(OrderView orderView) {
@@ -80,7 +78,7 @@ public class OrderController implements OrderListener, CategorySelectionListener
 		ticketItem.setTicket(orderView.getTicketView().getTicket());
 		
 		if (menuItem.hasModifiers()) {
-			ModifierSelectionDialog dialog = new ModifierSelectionDialog(new ModifierSelectionModel(ticketItem, menuItem));
+			ModifierSelectionDialog dialog = new ModifierSelectionDialog(new ModifierSelectionModel(ticketItem, menuItem), false);
 			dialog.open();
 			if (!dialog.isCanceled()) {
 				orderView.getTicketView().addTicketItem(ticketItem);
@@ -91,19 +89,6 @@ public class OrderController implements OrderListener, CategorySelectionListener
 		}
 	}
 
-	public void modifierSelected(MenuItem parent, MenuModifier modifier) {
-		//		TicketItemModifier itemModifier = new TicketItemModifier();
-		//		itemModifier.setItemId(modifier.getId());
-		//		itemModifier.setName(modifier.getName());
-		//		itemModifier.setPrice(modifier.getPrice());
-		//		itemModifier.setExtraPrice(modifier.getExtraPrice());
-		//		itemModifier.setMinQuantity(modifier.getMinQuantity());
-		//		itemModifier.setMaxQuantity(modifier.getMaxQuantity());
-		//		itemModifier.setTaxRate(modifier.getTax() == null ? 0 : modifier.getTax().getRate());
-		//		
-		//		orderView.getTicketView().addModifier(itemModifier);
-	}
-
 	public void itemSelectionFinished(MenuGroup parent) {
 		MenuCategory menuCategory = parent.getParent();
 		GroupView groupView = orderView.getGroupView();
@@ -111,15 +96,6 @@ public class OrderController implements OrderListener, CategorySelectionListener
 			groupView.setMenuCategory(menuCategory);
 		}
 		orderView.showView(GroupView.VIEW_NAME);
-	}
-
-	public void modifierSelectionFiniched(MenuItem parent) {
-		MenuGroup menuGroup = parent.getParent();
-		MenuItemView itemView = orderView.getItemView();
-		if (!menuGroup.equals(itemView.getMenuGroup())) {
-			itemView.setMenuGroup(menuGroup);
-		}
-		orderView.showView(MenuItemView.VIEW_NAME);
 	}
 
 	public void payOrderSelected(Ticket ticket) {
@@ -143,19 +119,18 @@ public class OrderController implements OrderListener, CategorySelectionListener
 		}
 	}
 
-	public static void openModifierDialog(TicketItem ticketItem, MenuItem menuItem) {
-		ModifierSelectionDialog dialog = new ModifierSelectionDialog(new ModifierSelectionModel(ticketItem, menuItem));
-		dialog.open();
-		OrderView.getInstance().getTicketView().updateView();
-	}
-
-	public static void openModifierDialog(TicketItemModifier ticketItemModifier) {
+	public static void openModifierDialog(TicketItemModifier ticketItemModifier, boolean addOnMode) {
 		try {
-			TicketItem ticketItem = ticketItemModifier.getParent().getParent();
+			TicketItem ticketItem = ticketItemModifier.getTicketItem();
+			
+			//for backward compatibility
+			if(ticketItem == null) {
+				ticketItem = ticketItemModifier.getParent().getParent();
+			}
 			MenuItem menuItem = MenuItemDAO.getInstance().get(ticketItem.getItemId());
 			menuItem = MenuItemDAO.getInstance().initialize(menuItem);
 
-			ModifierSelectionDialog dialog = new ModifierSelectionDialog(new ModifierSelectionModel(ticketItem, menuItem));
+			ModifierSelectionDialog dialog = new ModifierSelectionDialog(new ModifierSelectionModel(ticketItem, menuItem), addOnMode);
 			dialog.open();
 			OrderView.getInstance().getTicketView().updateView();
 		} catch (Exception e) {

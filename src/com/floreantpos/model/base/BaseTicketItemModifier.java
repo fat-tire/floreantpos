@@ -1,22 +1,6 @@
-/**
- * ************************************************************************
- * * The contents of this file are subject to the MRPL 1.2
- * * (the  "License"),  being   the  Mozilla   Public  License
- * * Version 1.1  with a permitted attribution clause; you may not  use this
- * * file except in compliance with the License. You  may  obtain  a copy of
- * * the License at http://www.floreantpos.org/license.html
- * * Software distributed under the License  is  distributed  on  an "AS IS"
- * * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * * License for the specific  language  governing  rights  and  limitations
- * * under the License.
- * * The Original Code is FLOREANT POS.
- * * The Initial Developer of the Original Code is OROCUBE LLC
- * * All portions are Copyright (C) 2015 OROCUBE LLC
- * * All Rights Reserved.
- * ************************************************************************
- */
 package com.floreantpos.model.base;
 
+import java.lang.Comparable;
 import java.io.Serializable;
 
 
@@ -41,11 +25,11 @@ public abstract class BaseTicketItemModifier  implements Comparable, Serializabl
 	public static String PROP_TAX_AMOUNT = "taxAmount"; //$NON-NLS-1$
 	public static String PROP_GROUP_ID = "groupId"; //$NON-NLS-1$
 	public static String PROP_NAME = "name"; //$NON-NLS-1$
-	public static String PROP_PRINTED_TO_KITCHEN = "printedToKitchen"; //$NON-NLS-1$
 	public static String PROP_SHOULD_PRINT_TO_KITCHEN = "shouldPrintToKitchen"; //$NON-NLS-1$
-	public static String PROP_EXTRA_UNIT_PRICE = "extraUnitPrice"; //$NON-NLS-1$
+	public static String PROP_PRINTED_TO_KITCHEN = "printedToKitchen"; //$NON-NLS-1$
 	public static String PROP_ID = "id"; //$NON-NLS-1$
 	public static String PROP_TOTAL_AMOUNT = "totalAmount"; //$NON-NLS-1$
+	public static String PROP_TICKET_ITEM = "ticketItem"; //$NON-NLS-1$
 	public static String PROP_MODIFIER_TYPE = "modifierType"; //$NON-NLS-1$
 
 
@@ -72,22 +56,22 @@ public abstract class BaseTicketItemModifier  implements Comparable, Serializabl
 	private java.lang.Integer id;
 
 	// fields
-	private java.lang.Integer itemId;
-	private java.lang.Integer groupId;
-	private java.lang.Integer itemCount;
-	private java.lang.String name;
-	private java.lang.Double unitPrice;
-//	private java.lang.Double extraUnitPrice;
-	private java.lang.Double taxRate;
-	private java.lang.Integer modifierType;
-	private java.lang.Double subTotalAmount;
-	private java.lang.Double totalAmount;
-	private java.lang.Double taxAmount;
-	private java.lang.Boolean shouldPrintToKitchen;
-	private java.lang.Boolean printedToKitchen;
+		protected java.lang.Integer itemId;
+		protected java.lang.Integer groupId;
+		protected java.lang.Integer itemCount;
+		protected java.lang.String name;
+		protected java.lang.Double unitPrice;
+		protected java.lang.Double taxRate;
+		protected java.lang.Integer modifierType;
+		protected java.lang.Double subTotalAmount;
+		protected java.lang.Double totalAmount;
+		protected java.lang.Double taxAmount;
+		protected java.lang.Boolean shouldPrintToKitchen;
+		protected java.lang.Boolean printedToKitchen;
 
 	// many to one
 	private com.floreantpos.model.TicketItemModifierGroup parent;
+	private com.floreantpos.model.TicketItem ticketItem;
 
 
 
@@ -117,8 +101,8 @@ public abstract class BaseTicketItemModifier  implements Comparable, Serializabl
 	 * Return the value associated with the column: ITEM_ID
 	 */
 	public java.lang.Integer getItemId () {
-			return itemId == null ? Integer.valueOf(0) : itemId;
-	}
+									return itemId == null ? Integer.valueOf(0) : itemId;
+					}
 
 	/**
 	 * Set the value related to the column: ITEM_ID
@@ -134,8 +118,8 @@ public abstract class BaseTicketItemModifier  implements Comparable, Serializabl
 	 * Return the value associated with the column: GROUP_ID
 	 */
 	public java.lang.Integer getGroupId () {
-			return groupId == null ? Integer.valueOf(0) : groupId;
-	}
+									return groupId == null ? Integer.valueOf(0) : groupId;
+					}
 
 	/**
 	 * Set the value related to the column: GROUP_ID
@@ -151,8 +135,8 @@ public abstract class BaseTicketItemModifier  implements Comparable, Serializabl
 	 * Return the value associated with the column: ITEM_COUNT
 	 */
 	public java.lang.Integer getItemCount () {
-			return itemCount == null ? Integer.valueOf(0) : itemCount;
-	}
+									return itemCount == null ? Integer.valueOf(0) : itemCount;
+					}
 
 	/**
 	 * Set the value related to the column: ITEM_COUNT
@@ -168,8 +152,8 @@ public abstract class BaseTicketItemModifier  implements Comparable, Serializabl
 	 * Return the value associated with the column: MODIFIER_NAME
 	 */
 	public java.lang.String getName () {
-			return name;
-	}
+					return name;
+			}
 
 	/**
 	 * Set the value related to the column: MODIFIER_NAME
@@ -185,8 +169,8 @@ public abstract class BaseTicketItemModifier  implements Comparable, Serializabl
 	 * Return the value associated with the column: MODIFIER_PRICE
 	 */
 	public java.lang.Double getUnitPrice () {
-					return unitPrice == null ? Double.valueOf(0) : unitPrice;
-			}
+									return unitPrice == null ? Double.valueOf(0) : unitPrice;
+					}
 
 	/**
 	 * Set the value related to the column: MODIFIER_PRICE
@@ -198,29 +182,12 @@ public abstract class BaseTicketItemModifier  implements Comparable, Serializabl
 
 
 
-//	/**
-//	 * Return the value associated with the column: EXTRA_PRICE
-//	 */
-//	public java.lang.Double getExtraUnitPrice () {
-//					return extraUnitPrice == null ? Double.valueOf(0) : extraUnitPrice;
-//			}
-//
-//	/**
-//	 * Set the value related to the column: EXTRA_PRICE
-//	 * @param extraUnitPrice the EXTRA_PRICE value
-//	 */
-//	public void setExtraUnitPrice (java.lang.Double extraUnitPrice) {
-//		this.extraUnitPrice = extraUnitPrice;
-//	}
-
-
-
 	/**
 	 * Return the value associated with the column: MODIFIER_TAX_RATE
 	 */
 	public java.lang.Double getTaxRate () {
-					return taxRate == null ? Double.valueOf(0) : taxRate;
-			}
+									return taxRate == null ? Double.valueOf(0) : taxRate;
+					}
 
 	/**
 	 * Set the value related to the column: MODIFIER_TAX_RATE
@@ -236,8 +203,8 @@ public abstract class BaseTicketItemModifier  implements Comparable, Serializabl
 	 * Return the value associated with the column: MODIFIER_TYPE
 	 */
 	public java.lang.Integer getModifierType () {
-			return modifierType == null ? Integer.valueOf(0) : modifierType;
-	}
+									return modifierType == null ? Integer.valueOf(0) : modifierType;
+					}
 
 	/**
 	 * Set the value related to the column: MODIFIER_TYPE
@@ -253,8 +220,8 @@ public abstract class BaseTicketItemModifier  implements Comparable, Serializabl
 	 * Return the value associated with the column: SUBTOTAL_PRICE
 	 */
 	public java.lang.Double getSubTotalAmount () {
-					return subTotalAmount == null ? Double.valueOf(0) : subTotalAmount;
-			}
+									return subTotalAmount == null ? Double.valueOf(0) : subTotalAmount;
+					}
 
 	/**
 	 * Set the value related to the column: SUBTOTAL_PRICE
@@ -270,8 +237,8 @@ public abstract class BaseTicketItemModifier  implements Comparable, Serializabl
 	 * Return the value associated with the column: TOTAL_PRICE
 	 */
 	public java.lang.Double getTotalAmount () {
-					return totalAmount == null ? Double.valueOf(0) : totalAmount;
-			}
+									return totalAmount == null ? Double.valueOf(0) : totalAmount;
+					}
 
 	/**
 	 * Set the value related to the column: TOTAL_PRICE
@@ -287,8 +254,8 @@ public abstract class BaseTicketItemModifier  implements Comparable, Serializabl
 	 * Return the value associated with the column: TAX_AMOUNT
 	 */
 	public java.lang.Double getTaxAmount () {
-					return taxAmount == null ? Double.valueOf(0) : taxAmount;
-			}
+									return taxAmount == null ? Double.valueOf(0) : taxAmount;
+					}
 
 	/**
 	 * Set the value related to the column: TAX_AMOUNT
@@ -304,8 +271,8 @@ public abstract class BaseTicketItemModifier  implements Comparable, Serializabl
 	 * Return the value associated with the column: PRINT_TO_KITCHEN
 	 */
 	public java.lang.Boolean isShouldPrintToKitchen () {
-					return shouldPrintToKitchen == null ? Boolean.valueOf(true) : shouldPrintToKitchen;
-			}
+									return shouldPrintToKitchen == null ? Boolean.valueOf(true) : shouldPrintToKitchen;
+						}
 
 	/**
 	 * Set the value related to the column: PRINT_TO_KITCHEN
@@ -320,7 +287,7 @@ public abstract class BaseTicketItemModifier  implements Comparable, Serializabl
 	 * Custom property
 	 */
 	public static String getShouldPrintToKitchenDefaultValue () {
-		return "true"; //$NON-NLS-1$
+		return "true";
 	}
 
 
@@ -328,8 +295,8 @@ public abstract class BaseTicketItemModifier  implements Comparable, Serializabl
 	 * Return the value associated with the column: PRINTED_TO_KITCHEN
 	 */
 	public java.lang.Boolean isPrintedToKitchen () {
-					return printedToKitchen == null ? Boolean.FALSE : printedToKitchen;
-			}
+								return printedToKitchen == null ? Boolean.FALSE : printedToKitchen;
+					}
 
 	/**
 	 * Set the value related to the column: PRINTED_TO_KITCHEN
@@ -345,8 +312,8 @@ public abstract class BaseTicketItemModifier  implements Comparable, Serializabl
 	 * Return the value associated with the column: ModifierGroup_ID
 	 */
 	public com.floreantpos.model.TicketItemModifierGroup getParent () {
-			return parent;
-	}
+					return parent;
+			}
 
 	/**
 	 * Set the value related to the column: ModifierGroup_ID
@@ -354,6 +321,23 @@ public abstract class BaseTicketItemModifier  implements Comparable, Serializabl
 	 */
 	public void setParent (com.floreantpos.model.TicketItemModifierGroup parent) {
 		this.parent = parent;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: TICKET_ITEM_ID
+	 */
+	public com.floreantpos.model.TicketItem getTicketItem () {
+					return ticketItem;
+			}
+
+	/**
+	 * Set the value related to the column: TICKET_ITEM_ID
+	 * @param ticketItem the TICKET_ITEM_ID value
+	 */
+	public void setTicketItem (com.floreantpos.model.TicketItem ticketItem) {
+		this.ticketItem = ticketItem;
 	}
 
 
@@ -374,7 +358,7 @@ public abstract class BaseTicketItemModifier  implements Comparable, Serializabl
 		if (Integer.MIN_VALUE == this.hashCode) {
 			if (null == this.getId()) return super.hashCode();
 			else {
-				String hashStr = this.getClass().getName() + ":" + this.getId().hashCode(); //$NON-NLS-1$
+				String hashStr = this.getClass().getName() + ":" + this.getId().hashCode();
 				this.hashCode = hashStr.hashCode();
 			}
 		}
