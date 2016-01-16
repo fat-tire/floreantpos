@@ -1,6 +1,5 @@
 package com.floreantpos.table;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -67,9 +66,9 @@ public class ShopTableForm extends BeanEditor<ShopTable> {
 	private String dupName;
 	private  Integer dupCapacity;
 	private String dupDescription;
+	private int selectedTable;
 	
 	private boolean tmp;
-	private boolean editMode;
 
 	public ShopTableForm() {
 		setPreferredSize(new Dimension(600, 800));
@@ -216,7 +215,6 @@ public class ShopTableForm extends BeanEditor<ShopTable> {
 
 	@Override
 	public void createNew() {
-		tfTableNo.setEnabled(true);
 		ShopTable bean2 = new ShopTable();
 		bean2.setCapacity(4);
 
@@ -308,10 +306,11 @@ public class ShopTableForm extends BeanEditor<ShopTable> {
 		tableTypeCBoxList.setEnabled(enable);
 		tableTypeCBoxList.clearSelection();
 
-		tfTableName.setEditable(enable);
-		tfTableDescription.setEditable(enable);
-		tfTableCapacity.setEditable(enable);
+		tfTableName.setEnabled(enable);
+		tfTableDescription.setEnabled(enable);
+		tfTableCapacity.setEnabled(enable);
 
+		tfTableNo.setEnabled(enable);
 		btnCapacityOne.setEnabled(enable);
 		btnCapacityTwo.setEnabled(enable);
 		btnCapacityFour.setEnabled(enable);
@@ -348,18 +347,19 @@ public class ShopTableForm extends BeanEditor<ShopTable> {
 
 			ShopTable table = (ShopTable) getBean();
 
-			if (!isEditMode()) {
 
 				ShopTable shopTable = ShopTableDAO.getInstance().get(table.getId());
 
+				
+				if (shopTable != null && selectedTable != shopTable.getId()) {
+				
+				
 				if (shopTable != null) {
 					POSMessageDialog.showError(POSUtil.getBackOfficeWindow(), "This number already assigned, please choose another one");
 					return false;
-				}
-			}
+				}}
 			ShopTableDAO.getInstance().saveOrUpdate(table);
 			updateView();
-			setEditMode(false);
 			return true;
 
 		} catch (IllegalModelStateException e) {
@@ -391,12 +391,13 @@ public class ShopTableForm extends BeanEditor<ShopTable> {
 		rbDirty.setSelected(table.isDirty());
 		rbDisable.setSelected(table.isDisable());
 		
+		selectedTable=table.getTableNumber();
 		nextTableNumber=table.getTableNumber();
-		System.out.println("ss"+table.getTableNumber());
-		dupName=table.getName();
-		dupCapacity=table.getCapacity();
-		dupDescription=table.getDescription();
-System.out.println(dupDescription);
+		if (!isTmp()) {
+			dupCapacity = table.getCapacity();
+			dupDescription = table.getDescription();
+			dupName = table.getName();
+		}
 	}
 
 	@Override
@@ -410,8 +411,6 @@ System.out.println(dupDescription);
 		}
 
 		if (isTmp()) {
-			System.out.println("in");
-			nextTableNumber = nextTableNumber + 1;
 			table.setId(nextTableNumber);
 			table.setCapacity(dupCapacity);
 			table.setDescription(dupDescription);
@@ -419,7 +418,6 @@ System.out.println(dupDescription);
 			setTmp(false);
 		}
 		else {
-			System.out.println("else");
 			
 			nextTableNumber = Integer.parseInt(tfTableNo.getText());
 			table.setId(nextTableNumber);
@@ -472,8 +470,6 @@ System.out.println(dupDescription);
 	@Override
 	public void edit() {
 		setBorder(BorderFactory.createTitledBorder(Messages.getString("ShopTableForm.17")));
-		tfTableNo.setEnabled(false);
-		setEditMode(true);
 	}
 
 	@Override
@@ -493,11 +489,4 @@ System.out.println(dupDescription);
 		this.tmp = tmp;
 	}
 
-	public boolean isEditMode() {
-		return editMode;
-	}
-
-	public void setEditMode(boolean editMode) {
-		this.editMode = editMode;
-	}
 }

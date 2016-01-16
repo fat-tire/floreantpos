@@ -1,23 +1,14 @@
 package com.floreantpos.table;
 
 import java.awt.event.ActionEvent;
-import java.util.List;
 
 import javax.swing.JButton;
-import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.table.TableModel;
 
-import com.floreantpos.Messages;
 import com.floreantpos.bo.ui.Command;
 import com.floreantpos.bo.ui.ModelBrowser;
-import com.floreantpos.model.ShopTable;
-import com.floreantpos.model.TableBookingInfo;
-import com.floreantpos.model.dao.ShopTableDAO;
-import com.floreantpos.model.dao.TableBookingInfoDAO;
 import com.floreantpos.ui.BeanEditor;
-import com.floreantpos.ui.dialog.POSMessageDialog;
-import com.floreantpos.util.POSUtil;
 
 public class ShopTableModelBrowser<E> extends ModelBrowser {
 
@@ -36,7 +27,7 @@ public class ShopTableModelBrowser<E> extends ModelBrowser {
 		buttonPanel.add(btnDuplicate);
 		btnDuplicate.addActionListener(this);
 		btnDuplicate.setEnabled(false);
-		
+
 		buttonPanel.add(btnDeleteAll);
 		btnDeleteAll.addActionListener(this);
 	}
@@ -47,76 +38,87 @@ public class ShopTableModelBrowser<E> extends ModelBrowser {
 		try {
 
 			switch (command) {
-				case NEW:
-					beanEditor.createNew();
-					beanEditor.setFieldsEnable(true);
-					btnNew.setEnabled(false);
+			case NEW:
+				beanEditor.createNew();
+				beanEditor.setFieldsEnable(true);
+				btnNew.setEnabled(false);
+				btnEdit.setEnabled(false);
+				btnSave.setEnabled(true);
+				btnDelete.setEnabled(false);
+				btnCancel.setEnabled(true);
+				browserTable.clearSelection();
+				btnDuplicate.setEnabled(false);
+				break;
+
+			case EDIT:
+				beanEditor.edit();
+				beanEditor.setFieldsEnable(true);
+				btnNew.setEnabled(false);
+				btnEdit.setEnabled(false);
+				btnSave.setEnabled(true);
+				btnDelete.setEnabled(false);
+				btnCancel.setEnabled(true);
+				btnDuplicate.setEnabled(false);
+				break;
+
+			case CANCEL:
+				doCancelEditing();
+				break;
+
+			case SAVE:
+				if (beanEditor.save()) {
+					beanEditor.setFieldsEnable(false);
+					btnNew.setEnabled(true);
 					btnEdit.setEnabled(false);
-					btnSave.setEnabled(true);
+					btnSave.setEnabled(false);
 					btnDelete.setEnabled(false);
-					btnCancel.setEnabled(true);
-					browserTable.clearSelection();
-					btnDuplicate.setEnabled(false);
-					break;
+					btnCancel.setEnabled(false);
+					refreshTable();
+					btnDuplicate.setEnabled(true);
+				}
+				break;
 
-				case EDIT:
-					beanEditor.edit();
-					beanEditor.setFieldsEnable(true);
-					btnNew.setEnabled(false);
+			case DELETE:
+				if (beanEditor.delete()) {
+					beanEditor.setBean(null);
+					beanEditor.setFieldsEnable(false);
+					btnNew.setEnabled(true);
 					btnEdit.setEnabled(false);
-					btnSave.setEnabled(true);
+					btnSave.setEnabled(false);
 					btnDelete.setEnabled(false);
-					btnCancel.setEnabled(true);
+					btnCancel.setEnabled(false);
 					btnDuplicate.setEnabled(false);
-					break;
+					refreshTable();
+				}
+				break;
 
-				case CANCEL:
-					doCancelEditing();
-					break;
-
-				case SAVE:
-					if (beanEditor.save()) {
-						beanEditor.setFieldsEnable(false);
-						btnNew.setEnabled(true);
-						btnEdit.setEnabled(false);
-						btnSave.setEnabled(false);
-						btnDelete.setEnabled(false);
-						btnCancel.setEnabled(false);
-						refreshTable();
-						btnDuplicate.setEnabled(true);
-					}
-					break;
-
-				case DELETE:
-					if (beanEditor.delete()) {
-						beanEditor.setBean(null);
-						beanEditor.setFieldsEnable(false);
-						btnNew.setEnabled(true);
-						btnEdit.setEnabled(false);
-						btnSave.setEnabled(false);
-						btnDelete.setEnabled(false);
-						btnCancel.setEnabled(false);
-						btnDuplicate.setEnabled(false);
-						refreshTable();
-					}
-					break;
-
-				default:
-					break;
+			default:
+				break;
 			}
 
 			handleAdditionaButtonActionIfApplicable(e);
-			
+
 			ShopTableForm form = (ShopTableForm) beanEditor;
 			if (e.getSource() == btnDuplicate) {
-				
+
 				form.setTmp(true);
 				form.createNew();
 				form.save();
 				refreshTable();
-			}else if(e.getSource()==btnDeleteAll) {
+				btnEdit.setEnabled(false);
+				btnSave.setEnabled(false);
+				btnDelete.setEnabled(false);
+				btnCancel.setEnabled(false);
+			} else if (e.getSource() == btnDeleteAll) {
+				
 				form.deleteAllTables();
 				refreshTable();
+				btnNew.setEnabled(true);
+				btnEdit.setEnabled(false);
+				btnSave.setEnabled(false);
+				btnDelete.setEnabled(false);
+				btnCancel.setEnabled(false);
+				btnDuplicate.setEnabled(false);
 			}
 
 		} catch (Exception e2) {
