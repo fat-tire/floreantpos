@@ -62,13 +62,12 @@ public class ShopTableForm extends BeanEditor<ShopTable> {
 	private JButton btnCapacityTen;
 	private JButton btnCreateType;
 
-	private Integer nextTableNumber;
 	private String dupName;
 	private Integer dupCapacity;
 	private String dupDescription;
 	private int selectedTable;
 
-	private boolean tmp;
+	private boolean duplicate;
 
 	public ShopTableForm() {
 		setPreferredSize(new Dimension(600, 800));
@@ -206,19 +205,12 @@ public class ShopTableForm extends BeanEditor<ShopTable> {
 	@Override
 	public void createNew() {
 		ShopTable bean2 = new ShopTable();
-		bean2.setCapacity(4);
-
-		try {
-			int nxtTableNumber = ShopTableDAO.getInstance().getNextTableNumber();
-			bean2.setId(nxtTableNumber + 1);
-			bean2.setName("" + (nxtTableNumber + 1)); //$NON-NLS-1$
-			bean2.setDescription("" + (nxtTableNumber + 1)); //$NON-NLS-1$
-
-		} catch (Exception e) {
-			BOMessageDialog.showError(this, Messages.getString("ShopTableForm.13")); //$NON-NLS-1$
-		}
-
 		setBean(bean2);
+
+		tfTableNo.setText("");
+		tfTableCapacity.setText("");
+		tfTableDescription.setText("");
+		tfTableName.setText("");
 		setBorder(BorderFactory.createTitledBorder(Messages.getString("ShopTableForm.18")));
 	}
 
@@ -377,9 +369,11 @@ public class ShopTableForm extends BeanEditor<ShopTable> {
 		rbDirty.setSelected(table.isDirty());
 		rbDisable.setSelected(table.isDisable());
 
-		selectedTable = table.getTableNumber();
-		nextTableNumber = table.getTableNumber();
-		if (!isTmp()) {
+		if (table.getTableNumber() != null) {
+			selectedTable = table.getTableNumber();
+		}
+
+		if (!isDuplicateOn()) {
 			dupCapacity = table.getCapacity();
 			dupDescription = table.getDescription();
 			dupName = table.getName();
@@ -396,16 +390,34 @@ public class ShopTableForm extends BeanEditor<ShopTable> {
 			setBean(table, false);
 		}
 
-		if (isTmp()) {
-			table.setId(nextTableNumber);
+		if (!isDuplicateOn() && tfTableNo.getInteger() == 0) {
+			POSMessageDialog.showError(null, "Invalid table number");
+			return false;
+		}
+
+		//TODO: handle exception
+		if (isDuplicateOn()) {
+
+			int nxtTableNumber = ShopTableDAO.getInstance().getNextTableNumber();
+
+			for (int i = 1; i <= nxtTableNumber; i++) {
+				ShopTable shopTable = ShopTableDAO.getInstance().get(i);
+				if (shopTable == null) {
+					table.setId(i);
+					break;
+				}
+			}
+
+			if (table.getId() == null) {
+				table.setId(nxtTableNumber + 1);
+			}
 			table.setCapacity(dupCapacity);
 			table.setDescription(dupDescription);
 			table.setName(dupName);
-			setTmp(false);
+			setDuplicate(false);
 		}
 		else {
-			nextTableNumber = tfTableNo.getInteger();
-			table.setId(nextTableNumber);
+			table.setId(tfTableNo.getInteger());
 			table.setName(tfTableName.getText());
 			table.setDescription(tfTableDescription.getText());
 			table.setCapacity(tfTableCapacity.getInteger());
@@ -466,12 +478,12 @@ public class ShopTableForm extends BeanEditor<ShopTable> {
 		this.tableTypeCBoxList.setEnabled(enable);
 	}
 
-	public boolean isTmp() {
-		return tmp;
+	public boolean isDuplicateOn() {
+		return duplicate;
 	}
 
-	public void setTmp(boolean tmp) {
-		this.tmp = tmp;
+	public void setDuplicate(boolean tmp) {
+		this.duplicate = tmp;
 	}
 
 }

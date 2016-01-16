@@ -39,7 +39,6 @@ import net.miginfocom.swing.MigLayout;
 import org.apache.commons.lang.StringUtils;
 
 import com.floreantpos.Messages;
-import com.floreantpos.bo.ui.BackOfficeWindow;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.Customer;
 import com.floreantpos.model.Ticket;
@@ -51,6 +50,7 @@ import com.floreantpos.ui.dialog.BeanEditorDialog;
 import com.floreantpos.ui.dialog.POSDialog;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.forms.CustomerForm;
+import com.floreantpos.util.POSUtil;
 
 public class CustomerSelectionDialog extends POSDialog {
 
@@ -66,7 +66,7 @@ public class CustomerSelectionDialog extends POSDialog {
 	private Ticket ticket;
 
 	public CustomerSelectionDialog() {
-		super(BackOfficeWindow.getInstance(),true);
+		super(POSUtil.getBackOfficeWindow(), true);
 		setTitle(Messages.getString("CustomerSelectionDialog.3")); //$NON-NLS-1$
 	}
 
@@ -141,7 +141,7 @@ public class CustomerSelectionDialog extends POSDialog {
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
 				selectedCustomer = customerTable.getSelectedCustomer();
-				if(selectedCustomer != null) {
+				if (selectedCustomer != null) {
 					//					btnInfo.setEnabled(true);
 				}
 				else {
@@ -192,7 +192,7 @@ public class CustomerSelectionDialog extends POSDialog {
 
 				selectedCustomer = customer;
 
-				if(customer == null) {
+				if (customer == null) {
 					POSMessageDialog.showError(Application.getPosWindow(), Messages.getString("CustomerSelectionDialog.27")); //$NON-NLS-1$
 					return;
 				}
@@ -239,7 +239,7 @@ public class CustomerSelectionDialog extends POSDialog {
 
 	private void loadCustomerFromTicket() {
 		String customerIdString = ticket.getProperty(Ticket.CUSTOMER_ID);
-		if(StringUtils.isNotEmpty(customerIdString)) {
+		if (StringUtils.isNotEmpty(customerIdString)) {
 			int customerId = Integer.parseInt(customerIdString);
 			Customer customer = CustomerDAO.getInstance().get(customerId);
 
@@ -250,17 +250,16 @@ public class CustomerSelectionDialog extends POSDialog {
 	}
 
 	protected void doSetCustomer(Customer customer) {
-		if(ticket != null) {
+		if (ticket != null) {
 			ticket.setCustomer(customer);
 			TicketDAO.getInstance().saveOrUpdate(ticket);
 		}
-
 	}
 
 	protected void doRemoveCustomerFromTicket() {
 		int option = POSMessageDialog.showYesNoQuestionDialog(this,
 				Messages.getString("CustomerSelectionDialog.2"), Messages.getString("CustomerSelectionDialog.32")); //$NON-NLS-1$ //$NON-NLS-2$
-		if(option != JOptionPane.YES_OPTION) {
+		if (option != JOptionPane.YES_OPTION) {
 			return;
 		}
 
@@ -275,7 +274,7 @@ public class CustomerSelectionDialog extends POSDialog {
 		String name = tfName.getText();
 		String loyalty = tfLoyaltyNo.getText();
 
-		if(StringUtils.isEmpty(mobile) && StringUtils.isEmpty(loyalty) && StringUtils.isEmpty(name)) {
+		if (StringUtils.isEmpty(mobile) && StringUtils.isEmpty(loyalty) && StringUtils.isEmpty(name)) {
 			List<Customer> list = CustomerDAO.getInstance().findAll();
 			customerTable.setModel(new CustomerListTableModel(list));
 			return;
@@ -292,7 +291,7 @@ public class CustomerSelectionDialog extends POSDialog {
 		BeanEditorDialog dialog = new BeanEditorDialog(form);
 		dialog.open();
 
-		if(!dialog.isCanceled()) {
+		if (!dialog.isCanceled()) {
 			selectedCustomer = (Customer) form.getBean();
 
 			CustomerListTableModel model = (CustomerListTableModel) customerTable.getModel();

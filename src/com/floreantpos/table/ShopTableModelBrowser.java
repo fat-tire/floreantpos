@@ -38,62 +38,62 @@ public class ShopTableModelBrowser<E> extends ModelBrowser {
 		try {
 
 			switch (command) {
-			case NEW:
-				beanEditor.createNew();
-				beanEditor.setFieldsEnable(true);
-				btnNew.setEnabled(false);
-				btnEdit.setEnabled(false);
-				btnSave.setEnabled(true);
-				btnDelete.setEnabled(false);
-				btnCancel.setEnabled(true);
-				browserTable.clearSelection();
-				btnDuplicate.setEnabled(false);
-				break;
-
-			case EDIT:
-				beanEditor.edit();
-				beanEditor.setFieldsEnable(true);
-				btnNew.setEnabled(false);
-				btnEdit.setEnabled(false);
-				btnSave.setEnabled(true);
-				btnDelete.setEnabled(false);
-				btnCancel.setEnabled(true);
-				btnDuplicate.setEnabled(false);
-				break;
-
-			case CANCEL:
-				doCancelEditing();
-				break;
-
-			case SAVE:
-				if (beanEditor.save()) {
-					beanEditor.setFieldsEnable(false);
-					btnNew.setEnabled(true);
+				case NEW:
+					beanEditor.createNew();
+					beanEditor.setFieldsEnable(true);
+					btnNew.setEnabled(false);
 					btnEdit.setEnabled(false);
-					btnSave.setEnabled(false);
+					btnSave.setEnabled(true);
 					btnDelete.setEnabled(false);
-					btnCancel.setEnabled(false);
-					refreshTable();
-					btnDuplicate.setEnabled(true);
-				}
-				break;
-
-			case DELETE:
-				if (beanEditor.delete()) {
-					beanEditor.setBean(null);
-					beanEditor.setFieldsEnable(false);
-					btnNew.setEnabled(true);
-					btnEdit.setEnabled(false);
-					btnSave.setEnabled(false);
-					btnDelete.setEnabled(false);
-					btnCancel.setEnabled(false);
+					btnCancel.setEnabled(true);
+					browserTable.clearSelection();
 					btnDuplicate.setEnabled(false);
-					refreshTable();
-				}
-				break;
+					break;
 
-			default:
-				break;
+				case EDIT:
+					beanEditor.edit();
+					beanEditor.setFieldsEnable(true);
+					btnNew.setEnabled(false);
+					btnEdit.setEnabled(false);
+					btnSave.setEnabled(true);
+					btnDelete.setEnabled(false);
+					btnCancel.setEnabled(true);
+					btnDuplicate.setEnabled(false);
+					break;
+
+				case CANCEL:
+					doCancelEditing();
+					break;
+
+				case SAVE:
+					if (beanEditor.save()) {
+						beanEditor.setFieldsEnable(false);
+						btnNew.setEnabled(true);
+						btnEdit.setEnabled(false);
+						btnSave.setEnabled(false);
+						btnDelete.setEnabled(false);
+						btnCancel.setEnabled(false);
+						refreshTable();
+						btnDuplicate.setEnabled(false);
+					}
+					break;
+
+				case DELETE:
+					if (beanEditor.delete()) {
+						beanEditor.setBean(null);
+						beanEditor.setFieldsEnable(false);
+						btnNew.setEnabled(true);
+						btnEdit.setEnabled(false);
+						btnSave.setEnabled(false);
+						btnDelete.setEnabled(false);
+						btnCancel.setEnabled(false);
+						btnDuplicate.setEnabled(false);
+						refreshTable();
+					}
+					break;
+
+				default:
+					break;
 			}
 
 			handleAdditionaButtonActionIfApplicable(e);
@@ -101,7 +101,7 @@ public class ShopTableModelBrowser<E> extends ModelBrowser {
 			ShopTableForm form = (ShopTableForm) beanEditor;
 			if (e.getSource() == btnDuplicate) {
 
-				form.setTmp(true);
+				form.setDuplicate(true);
 				form.createNew();
 				form.save();
 				refreshTable();
@@ -109,8 +109,9 @@ public class ShopTableModelBrowser<E> extends ModelBrowser {
 				btnSave.setEnabled(false);
 				btnDelete.setEnabled(false);
 				btnCancel.setEnabled(false);
-			} else if (e.getSource() == btnDeleteAll) {
-				
+			}
+			else if (e.getSource() == btnDeleteAll) {
+
 				form.deleteAllTables();
 				refreshTable();
 				btnNew.setEnabled(true);
