@@ -36,9 +36,8 @@ import com.floreantpos.ui.dialog.POSDialog;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 
 public class KitchenTicketStatusSelector extends POSDialog implements ActionListener {
-	private PosButton btnWaiting = new PosButton(KitchenTicketStatus.WAITING.name());
 	private PosButton btnVoid= new PosButton(KitchenTicketStatus.VOID.name());
-	private PosButton btnReady = new PosButton(KitchenTicketStatus.DONE.name());
+	private PosButton btnReady = new PosButton(Messages.getString("KitchenTicketView.11"));
 	
 	private KitchenTicketItem ticketItem;
 	
@@ -53,13 +52,12 @@ public class KitchenTicketStatusSelector extends POSDialog implements ActionList
 		
 		JPanel panel = new JPanel(new GridLayout(1, 0, 10, 10));
 		panel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-		panel.add(btnWaiting);
 		panel.add(btnVoid);
 		panel.add(btnReady);
 		
 		add(panel);
 		
-		btnWaiting.addActionListener(this);
+		btnReady.setActionCommand(KitchenTicketStatus.DONE.name());
 		btnVoid.addActionListener(this);
 		btnReady.addActionListener(this);
 	}

@@ -69,10 +69,10 @@ public class KitchenTicketView extends JPanel {
 	public KitchenTicketView(KitchenTicket ticket) {
 		this.ticket = ticket;
 
-		Border emptyBorder = BorderFactory.createEmptyBorder(5, 5, 5, 5);
-		setBorder(BorderFactory.createCompoundBorder(emptyBorder,
-				BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY), emptyBorder)));
-		setLayout(new BorderLayout(5, 5));
+//		Border emptyBorder = BorderFactory.createEmptyBorder(5, 5, 5, 5);
+//		setBorder(BorderFactory.createCompoundBorder(emptyBorder,
+//				BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY), emptyBorder)));
+		setLayout(new BorderLayout(1, 1));
 
 		createHeader(ticket);
 
@@ -83,7 +83,7 @@ public class KitchenTicketView extends JPanel {
 		statusSelector = new KitchenTicketStatusSelector((Frame) SwingUtilities.getWindowAncestor(this));
 		statusSelector.pack();
 
-		setPreferredSize(new Dimension(400, 200));
+		setPreferredSize(new Dimension(300, 200));
 
 		timerWatch.start();
 
@@ -181,15 +181,7 @@ public class KitchenTicketView extends JPanel {
 	private void createButtonPanel() {
 		JPanel buttonPanel = new JPanel(new GridLayout(1, 0, 5, 5));
 
-		PosButton btnDone = new PosButton(Messages.getString("KitchenTicketView.11")); //$NON-NLS-1$
-		btnDone.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				closeTicket(KitchenTicketStatus.DONE);
-			}
-		});
-
-		buttonPanel.add(btnDone);
+		
 
 		PosButton btnVoid = new PosButton(Messages.getString("KitchenTicketView.12")); //$NON-NLS-1$
 		btnVoid.addActionListener(new ActionListener() {
@@ -199,6 +191,16 @@ public class KitchenTicketView extends JPanel {
 			}
 		});
 		buttonPanel.add(btnVoid);
+		
+		PosButton btnDone = new PosButton(Messages.getString("KitchenTicketView.11")); //$NON-NLS-1$
+		btnDone.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				closeTicket(KitchenTicketStatus.DONE);
+			}
+		});
+
+		buttonPanel.add(btnDone);
 
 		//		PosButton btnPrint = new PosButton("PRINT");
 		//		btnPrint.addActionListener(new ActionListener() {
@@ -273,7 +275,7 @@ public class KitchenTicketView extends JPanel {
 					return String.valueOf(ticketItem.getQuantity());
 
 				case 2:
-					return ticketItem.getStatus();
+					return "GO";
 			}
 
 			return null;
@@ -292,11 +294,6 @@ public class KitchenTicketView extends JPanel {
 	private void closeTicket(KitchenTicketStatus status) {
 		try {
 			stopTimer();
-
-			int option = JOptionPane.showConfirmDialog(KitchenTicketView.this, Messages.getString("KitchenTicketView.16") + status.name() + "?", Messages.getString("KitchenTicketView.18"), JOptionPane.YES_NO_OPTION); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-			if (option != JOptionPane.YES_OPTION) {
-				return;
-			}
 
 			ticket.setStatus(status.name());
 			ticket.setClosingDate(new Date());

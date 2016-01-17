@@ -27,7 +27,7 @@ import com.floreantpos.model.KitchenTicket;
 
 public class KitchenDisplayWindow extends JFrame {
 
-	KitchenDisplayView view = new KitchenDisplayView(true);
+	KitchenDisplayView view = new KitchenDisplayView(false);
 
 	public KitchenDisplayWindow() {
 		setTitle(Messages.getString("KitchenDisplayWindow.0")); //$NON-NLS-1$
