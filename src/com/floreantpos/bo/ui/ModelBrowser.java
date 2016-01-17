@@ -101,8 +101,6 @@ public class ModelBrowser<E> extends JPanel implements ActionListener, ListSelec
 		beanEditorPanel.add(beanEditor);
 		beanPanel.add(beanEditorPanel);
 
-		//	JPanel buttonPanel = new JPanel();
-
 		buttonPanel = new JPanel();
 
 		JButton additionalButton = getAdditionalButton();
@@ -219,16 +217,26 @@ public class ModelBrowser<E> extends JPanel implements ActionListener, ListSelec
 	}
 
 	public void doCancelEditing() {
-		beanEditor.cancel();
-		beanEditor.setBean(null);
-		beanEditor.setFieldsEnable(false);
-		btnNew.setEnabled(true);
-		btnEdit.setEnabled(false);
-		btnSave.setEnabled(false);
-		btnDelete.setEnabled(false);
-		btnCancel.setEnabled(false);
-		browserTable.clearSelection();
 
+		if (browserTable.getSelectedRow() != -1) {
+			beanEditor.setFieldsEnable(false);
+			btnNew.setEnabled(true);
+			btnEdit.setEnabled(true);
+			btnSave.setEnabled(false);
+			btnDelete.setEnabled(true);
+			btnCancel.setEnabled(false);
+			beanEditor.cancel();
+		}
+		else {
+			beanEditor.cancel();
+			beanEditor.setBean(null);
+			beanEditor.setFieldsEnable(false);
+			btnNew.setEnabled(true);
+			btnEdit.setEnabled(false);
+			btnSave.setEnabled(false);
+			btnDelete.setEnabled(false);
+			btnCancel.setEnabled(false);
+		}
 	}
 
 	@Override
@@ -242,7 +250,6 @@ public class ModelBrowser<E> extends JPanel implements ActionListener, ListSelec
 		if (selectedRow < 0) {
 			return;
 		}
-
 		selectedRow = browserTable.convertRowIndexToModel(selectedRow);
 
 		if (selectedRow < 0)

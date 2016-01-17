@@ -50,9 +50,6 @@ public class ShopTableForm extends BeanEditor<ShopTable> {
 	private CheckBoxList tableTypeCBoxList;
 	private JPanel statusPanel;
 	private JRadioButton rbFree;
-	private JRadioButton rbBooked;
-	private JRadioButton rbDirty;
-	private JRadioButton rbServing;
 	private JRadioButton rbDisable;
 	private JButton btnCapacityOne;
 	private JButton btnCapacityTwo;
@@ -61,10 +58,14 @@ public class ShopTableForm extends BeanEditor<ShopTable> {
 	private JButton btnCapacityEight;
 	private JButton btnCapacityTen;
 	private JButton btnCreateType;
+	private int newTable;
 
+	private boolean dupTableEnable;
+	private boolean dupTableDisable;
 	private String dupName;
 	private Integer dupCapacity;
 	private String dupDescription;
+	private List<ShopTableType> dupCheckValues;
 	private int selectedTable;
 
 	private boolean duplicate;
@@ -72,7 +73,7 @@ public class ShopTableForm extends BeanEditor<ShopTable> {
 	public ShopTableForm() {
 		setPreferredSize(new Dimension(600, 800));
 		setLayout(new MigLayout("", "[][grow]", "[][][][][][][][]")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		setBorder(BorderFactory.createTitledBorder(Messages.getString("ShopTableForm.19")));
+		setBorder(BorderFactory.createTitledBorder(Messages.getString("ShopTableForm.19")));//$NON-NLS-3$ //$NON-NLS-1$
 		tableTypeCBoxList = new CheckBoxList();
 		tableTypeCBoxList.setModel(ShopTableTypeDAO.getInstance().findAll());
 		JScrollPane tableTypeCheckBoxList = new JScrollPane(tableTypeCBoxList);
@@ -105,37 +106,37 @@ public class ShopTableForm extends BeanEditor<ShopTable> {
 			public void actionPerformed(ActionEvent e) {
 
 				if (e.getSource() == btnCapacityOne) {
-					tfTableCapacity.setText("1");
+					tfTableCapacity.setText("1"); //$NON-NLS-1$
 				}
 				else if (e.getSource() == btnCapacityTwo) {
-					tfTableCapacity.setText("2");
+					tfTableCapacity.setText("2"); //$NON-NLS-1$
 				}
 				else if (e.getSource() == btnCapacityFour) {
-					tfTableCapacity.setText("4");
+					tfTableCapacity.setText("4"); //$NON-NLS-1$
 				}
 				else if (e.getSource() == btnCapacitySix) {
-					tfTableCapacity.setText("6");
+					tfTableCapacity.setText("6"); //$NON-NLS-1$
 				}
 				else if (e.getSource() == btnCapacityEight) {
-					tfTableCapacity.setText("8");
+					tfTableCapacity.setText("8"); //$NON-NLS-1$
 				}
 				else if (e.getSource() == btnCapacityTen) {
-					tfTableCapacity.setText("10");
+					tfTableCapacity.setText("10"); //$NON-NLS-1$
 				}
 			}
 		};
 
-		btnCapacityOne = new PosButton("1");
+		btnCapacityOne = new PosButton("1"); //$NON-NLS-1$
 		btnCapacityOne.setPreferredSize(new Dimension(52, 52));
-		btnCapacityTwo = new PosButton("2");
+		btnCapacityTwo = new PosButton("2"); //$NON-NLS-1$
 		btnCapacityTwo.setPreferredSize(new Dimension(52, 52));
-		btnCapacityFour = new PosButton("4");
+		btnCapacityFour = new PosButton("4"); //$NON-NLS-1$
 		btnCapacityFour.setPreferredSize(new Dimension(52, 52));
-		btnCapacitySix = new PosButton("6");
+		btnCapacitySix = new PosButton("6"); //$NON-NLS-1$
 		btnCapacitySix.setPreferredSize(new Dimension(52, 52));
-		btnCapacityEight = new PosButton("8");
+		btnCapacityEight = new PosButton("8"); //$NON-NLS-1$
 		btnCapacityEight.setPreferredSize(new Dimension(52, 52));
-		btnCapacityTen = new PosButton("10");
+		btnCapacityTen = new PosButton("10"); //$NON-NLS-1$
 		btnCapacityTen.setPreferredSize(new Dimension(52, 52));
 
 		btnCapacityOne.addActionListener(action);
@@ -145,12 +146,12 @@ public class ShopTableForm extends BeanEditor<ShopTable> {
 		btnCapacityEight.addActionListener(action);
 		btnCapacityTen.addActionListener(action);
 
-		add(btnCapacityOne, "cell 1 3");
-		add(btnCapacityTwo, "cell 1 3");
-		add(btnCapacityFour, "cell 1 3");
-		add(btnCapacitySix, "cell 1 3");
-		add(btnCapacityEight, "cell 1 3");
-		add(btnCapacityTen, "cell 1 3");
+		add(btnCapacityOne, "cell 1 3"); //$NON-NLS-1$
+		add(btnCapacityTwo, "cell 1 3"); //$NON-NLS-1$
+		add(btnCapacityFour, "cell 1 3"); //$NON-NLS-1$
+		add(btnCapacitySix, "cell 1 3"); //$NON-NLS-1$
+		add(btnCapacityEight, "cell 1 3"); //$NON-NLS-1$
+		add(btnCapacityTen, "cell 1 3"); //$NON-NLS-1$
 
 		statusPanel = new JPanel();
 		statusPanel.setBorder(new TitledBorder(null, Messages.getString("ShopTableForm.4"), TitledBorder.LEADING, TitledBorder.TOP, null, null)); //$NON-NLS-1$
@@ -160,35 +161,22 @@ public class ShopTableForm extends BeanEditor<ShopTable> {
 		rbFree = new JRadioButton(Messages.getString("ShopTableForm.5")); //$NON-NLS-1$
 		statusPanel.add(rbFree);
 
-		rbServing = new JRadioButton(Messages.getString("ShopTableForm.6")); //$NON-NLS-1$
-		statusPanel.add(rbServing);
-
-		rbBooked = new JRadioButton(Messages.getString("ShopTableForm.7")); //$NON-NLS-1$
-		statusPanel.add(rbBooked);
-
-		rbDirty = new JRadioButton(Messages.getString("ShopTableForm.8")); //$NON-NLS-1$
-		statusPanel.add(rbDirty);
-
 		rbDisable = new JRadioButton(Messages.getString("ShopTableForm.9")); //$NON-NLS-1$
 		statusPanel.add(rbDisable);
 
 		ButtonGroup buttonGroup = new ButtonGroup();
 		buttonGroup.add(rbFree);
-		buttonGroup.add(rbServing);
-		buttonGroup.add(rbBooked);
-		buttonGroup.add(rbDirty);
 		buttonGroup.add(rbDisable);
 
-		add(new JLabel(), "grow,span");
-		btnCreateType = new JButton("Create Table Type");
+		add(new JLabel(), "grow,span"); //$NON-NLS-1$
 
 		final FloorLayoutPlugin floorLayoutPlugin = (FloorLayoutPlugin) ExtensionManager.getPlugin(FloorLayoutPlugin.class);
 
 		if (floorLayoutPlugin != null) {
-
+			btnCreateType = new JButton(Messages.getString("ShopTableForm.40")); //$NON-NLS-1$
 			add(new JLabel(Messages.getString("ShopTableForm.10")), "cell 0 5"); //$NON-NLS-1$ //$NON-NLS-2$
 			add(tableTypeCheckBoxList, "cell 1 5,wrap,grow"); //$NON-NLS-1$
-			add(btnCreateType, "cell 1 6");
+			add(btnCreateType, "cell 1 6"); //$NON-NLS-1$
 
 			btnCreateType.addActionListener(new ActionListener() {
 
@@ -207,26 +195,27 @@ public class ShopTableForm extends BeanEditor<ShopTable> {
 		ShopTable bean2 = new ShopTable();
 		setBean(bean2);
 
-		tfTableNo.setText("");
-		tfTableCapacity.setText("");
-		tfTableDescription.setText("");
-		tfTableName.setText("");
-		setBorder(BorderFactory.createTitledBorder(Messages.getString("ShopTableForm.18")));
+		int nxtTableNumber = ShopTableDAO.getInstance().getNextTableNumber();
+		if (nxtTableNumber == 0) {
+			nxtTableNumber = 1;
+		}
+
+		for (int i = 1; i <= nxtTableNumber + 1; i++) {
+			ShopTable shopTable = ShopTableDAO.getInstance().get(i);
+			if (shopTable == null) {
+				tfTableNo.setText(String.valueOf(i));
+				break;
+			}
+		}
+		tfTableCapacity.setText("4"); //$NON-NLS-1$
+		tfTableDescription.setText(""); //$NON-NLS-1$
+		tfTableName.setText(""); //$NON-NLS-1$
+		setBorder(BorderFactory.createTitledBorder(Messages.getString("ShopTableForm.18"))); //$NON-NLS-1$
 	}
 
 	@Override
 	public void cancel() {
-		//		ShopTable table = (ShopTable) getBean();
-		//		if(table == null) {
-		//			return;
-		//		}
-		//		
-		//		if(table.isTemporary()) {
-		//			ShopTableDAO.getInstance().delete(table);
-		//		}
-		//		
-		//		setBean(null);
-		setBorder(BorderFactory.createTitledBorder("Table Details"));
+		setBorder(BorderFactory.createTitledBorder(Messages.getString("ShopTableForm.46"))); //$NON-NLS-1$
 	}
 
 	@Override
@@ -243,6 +232,12 @@ public class ShopTableForm extends BeanEditor<ShopTable> {
 			}
 			ShopTableDAO.getInstance().delete(bean2);
 
+			tfTableCapacity.setText(""); //$NON-NLS-1$
+			tfTableDescription.setText(""); //$NON-NLS-1$
+			tfTableName.setText(""); //$NON-NLS-1$
+			tfTableNo.setText(""); //$NON-NLS-1$
+			tableTypeCBoxList.unCheckAll();
+
 			return true;
 		} catch (Exception e) {
 			POSMessageDialog.showError(POSUtil.getBackOfficeWindow(), e.getMessage(), e);
@@ -250,14 +245,19 @@ public class ShopTableForm extends BeanEditor<ShopTable> {
 		return false;
 	}
 
-	public void deleteAllTables() {
+	public boolean deleteAllTables() {
+
+		List<ShopTable> list = ShopTableDAO.getInstance().findAll();
+
+		if (list.isEmpty()) {
+			POSMessageDialog.showError(POSUtil.getBackOfficeWindow(), Messages.getString("ShopTableForm.51")); //$NON-NLS-1$
+			return false;
+		}
 
 		int option = POSMessageDialog.showYesNoQuestionDialog(POSUtil.getBackOfficeWindow(), "This will Remove all your tables. Are you sure?", "Confirm"); //$NON-NLS-1$ //$NON-NLS-2$
 		if (option != JOptionPane.YES_OPTION) {
-			return;
+			return false;
 		}
-
-		List<ShopTable> list = ShopTableDAO.getInstance().findAll();
 
 		List<TableBookingInfo> bookingList = TableBookingInfoDAO.getInstance().findAll();
 
@@ -271,6 +271,14 @@ public class ShopTableForm extends BeanEditor<ShopTable> {
 			table.setTypes(null);
 			ShopTableDAO.getInstance().delete(table);
 		}
+
+		tfTableNo.setText(""); //$NON-NLS-1$
+		tfTableCapacity.setText(""); //$NON-NLS-1$
+		tfTableDescription.setText(""); //$NON-NLS-1$
+		tfTableName.setText(""); //$NON-NLS-1$
+		tableTypeCBoxList.unCheckAll();
+
+		return true;
 	}
 
 	public void setFieldsEditable(boolean editable) {
@@ -286,11 +294,11 @@ public class ShopTableForm extends BeanEditor<ShopTable> {
 		tableTypeCBoxList.setEnabled(enable);
 		tableTypeCBoxList.clearSelection();
 
+		tfTableNo.setEnabled(enable);
 		tfTableName.setEnabled(enable);
 		tfTableDescription.setEnabled(enable);
 		tfTableCapacity.setEnabled(enable);
 
-		tfTableNo.setEnabled(enable);
 		btnCapacityOne.setEnabled(enable);
 		btnCapacityTwo.setEnabled(enable);
 		btnCapacityFour.setEnabled(enable);
@@ -300,9 +308,6 @@ public class ShopTableForm extends BeanEditor<ShopTable> {
 		btnCreateType.setEnabled(enable);
 
 		rbFree.setEnabled(enable);
-		rbServing.setEnabled(enable);
-		rbBooked.setEnabled(enable);
-		rbDirty.setEnabled(enable);
 		rbDisable.setEnabled(enable);
 	}
 
@@ -313,9 +318,6 @@ public class ShopTableForm extends BeanEditor<ShopTable> {
 		tfTableCapacity.setEditable(false);
 
 		rbFree.setEnabled(true);
-		rbServing.setEnabled(true);
-		rbBooked.setEnabled(true);
-		rbDirty.setEnabled(true);
 		rbDisable.setEnabled(true);
 	}
 
@@ -326,16 +328,6 @@ public class ShopTableForm extends BeanEditor<ShopTable> {
 				return false;
 
 			ShopTable table = (ShopTable) getBean();
-
-			ShopTable shopTable = ShopTableDAO.getInstance().get(table.getId());
-
-			if (shopTable != null && selectedTable != shopTable.getId()) {
-
-				if (shopTable != null) {
-					POSMessageDialog.showError(POSUtil.getBackOfficeWindow(), "This number already assigned, please choose another one");
-					return false;
-				}
-			}
 			ShopTableDAO.getInstance().saveOrUpdate(table);
 			updateView();
 			return true;
@@ -364,9 +356,6 @@ public class ShopTableForm extends BeanEditor<ShopTable> {
 		tfTableCapacity.setText(String.valueOf(table.getCapacity()));
 
 		rbFree.setSelected(true);
-		rbServing.setSelected(table.isServing());
-		rbBooked.setSelected(table.isBooked());
-		rbDirty.setSelected(table.isDirty());
 		rbDisable.setSelected(table.isDisable());
 
 		if (table.getTableNumber() != null) {
@@ -374,10 +363,16 @@ public class ShopTableForm extends BeanEditor<ShopTable> {
 		}
 
 		if (!isDuplicateOn()) {
+			List<ShopTableType> checkValues = tableTypeCBoxList.getCheckedValues();
+			dupCheckValues = checkValues;
 			dupCapacity = table.getCapacity();
 			dupDescription = table.getDescription();
 			dupName = table.getName();
+			dupTableEnable = rbFree.isSelected();
+			dupTableDisable = rbDisable.isSelected();
 		}
+
+		setBorder(BorderFactory.createTitledBorder(Messages.getString("ShopTableForm.56"))); //$NON-NLS-1$
 	}
 
 	@Override
@@ -391,7 +386,14 @@ public class ShopTableForm extends BeanEditor<ShopTable> {
 		}
 
 		if (!isDuplicateOn() && tfTableNo.getInteger() == 0) {
-			POSMessageDialog.showError(null, "Invalid table number");
+			POSMessageDialog.showError(null, Messages.getString("ShopTableForm.57")); //$NON-NLS-1$
+			return false;
+		}
+
+		ShopTable tableTocheck = ShopTableDAO.getInstance().get(tfTableNo.getInteger());
+
+		if (tableTocheck != null && selectedTable != tableTocheck.getId()) {
+			POSMessageDialog.showError(POSUtil.getBackOfficeWindow(), Messages.getString("ShopTableForm.58")); //$NON-NLS-1$
 			return false;
 		}
 
@@ -411,62 +413,49 @@ public class ShopTableForm extends BeanEditor<ShopTable> {
 			if (table.getId() == null) {
 				table.setId(nxtTableNumber + 1);
 			}
+			table.setTypes(dupCheckValues);
 			table.setCapacity(dupCapacity);
 			table.setDescription(dupDescription);
 			table.setName(dupName);
+			table.setFree(dupTableEnable);
+			table.setDisable(dupTableDisable);
+
 			setDuplicate(false);
 		}
 		else {
+
 			table.setId(tfTableNo.getInteger());
 			table.setName(tfTableName.getText());
 			table.setDescription(tfTableDescription.getText());
 			table.setCapacity(tfTableCapacity.getInteger());
+
+			List<ShopTableType> checkValues = tableTypeCBoxList.getCheckedValues();
+			table.setTypes(checkValues);
+
+			if (rbFree.isSelected()) {
+				table.setFree(true);
+				table.setServing(false);
+				table.setBooked(false);
+				table.setDirty(false);
+				table.setDisable(false);
+			}
+			else if (rbDisable.isSelected()) {
+				table.setFree(false);
+				table.setServing(false);
+				table.setBooked(false);
+				table.setDirty(false);
+				table.setDisable(true);
+			}
 		}
 
-		List<ShopTableType> checkValues = tableTypeCBoxList.getCheckedValues();
-		table.setTypes(checkValues);
+		setNewTable(table.getId());
 
-		if (rbFree.isSelected()) {
-			table.setFree(true);
-			table.setServing(false);
-			table.setBooked(false);
-			table.setDirty(false);
-			table.setDisable(false);
-		}
-		else if (rbServing.isSelected()) {
-			table.setFree(false);
-			table.setServing(true);
-			table.setBooked(false);
-			table.setDirty(false);
-			table.setDisable(false);
-		}
-		else if (rbBooked.isSelected()) {
-			table.setFree(false);
-			table.setServing(false);
-			table.setBooked(true);
-			table.setDirty(false);
-			table.setDisable(false);
-		}
-		else if (rbDirty.isSelected()) {
-			table.setFree(false);
-			table.setServing(false);
-			table.setBooked(false);
-			table.setDirty(true);
-			table.setDisable(false);
-		}
-		else if (rbDisable.isSelected()) {
-			table.setFree(false);
-			table.setServing(false);
-			table.setBooked(false);
-			table.setDirty(false);
-			table.setDisable(true);
-		}
 		return true;
 	}
 
 	@Override
 	public void edit() {
-		setBorder(BorderFactory.createTitledBorder(Messages.getString("ShopTableForm.17")));
+		setBorder(BorderFactory.createTitledBorder(Messages.getString("ShopTableForm.17"))); //$NON-NLS-1$
 	}
 
 	@Override
@@ -482,8 +471,22 @@ public class ShopTableForm extends BeanEditor<ShopTable> {
 		return duplicate;
 	}
 
-	public void setDuplicate(boolean tmp) {
-		this.duplicate = tmp;
+	public void setDuplicate(boolean duplicate) {
+		this.duplicate = duplicate;
+	}
+
+	/**
+	 * @return the newTable
+	 */
+	public int getNewTable() {
+		return newTable;
+	}
+
+	/**
+	 * @param newTable the newTable to set
+	 */
+	public void setNewTable(int newTable) {
+		this.newTable = newTable;
 	}
 
 }
