@@ -305,8 +305,11 @@ public class ShopTableForm extends BeanEditor<ShopTable> {
 		btnCapacitySix.setEnabled(enable);
 		btnCapacityEight.setEnabled(enable);
 		btnCapacityTen.setEnabled(enable);
-		btnCreateType.setEnabled(enable);
-
+		
+		if(btnCreateType!=null) {
+			btnCreateType.setEnabled(enable);
+		}
+		
 		rbFree.setEnabled(enable);
 		rbDisable.setEnabled(enable);
 	}
