@@ -29,6 +29,7 @@ import java.awt.GridLayout;
 import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 
@@ -86,6 +87,12 @@ public class GroupView extends SelectionView {
 		try {
 			MenuGroupDAO dao = new MenuGroupDAO();
 			List<MenuGroup> groups = dao.findEnabledByParent(menuCategory);
+			for (Iterator iterator = groups.iterator(); iterator.hasNext();) {
+				MenuGroup menuGroup = (MenuGroup) iterator.next();
+				if(!dao.hasChildren(null, menuGroup)) {
+					iterator.remove();
+				}
+			}
 			setItems(groups);
 
 			if (groups.size() > 0) {
