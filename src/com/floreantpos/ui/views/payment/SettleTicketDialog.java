@@ -54,12 +54,11 @@ import com.floreantpos.extension.PaymentGatewayPlugin;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.CardReader;
 import com.floreantpos.model.CashTransaction;
-import com.floreantpos.model.Discount;
 import com.floreantpos.model.CreditCardTransaction;
+import com.floreantpos.model.Discount;
 import com.floreantpos.model.GiftCertificateTransaction;
 import com.floreantpos.model.Gratuity;
 import com.floreantpos.model.ITicketItem;
-import com.floreantpos.model.MenuItem;
 import com.floreantpos.model.OrderType;
 import com.floreantpos.model.PaymentType;
 import com.floreantpos.model.PosTransaction;
@@ -259,7 +258,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 
 		JLabel lblGratuity = new javax.swing.JLabel();
 		lblGratuity.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-		lblGratuity.setText(Messages.getString("SettleTicketDialog.5") + ":");  //$NON-NLS-1$//$NON-NLS-2$
+		lblGratuity.setText(Messages.getString("SettleTicketDialog.5") + ":"); //$NON-NLS-1$//$NON-NLS-2$
 
 		tfGratuity = new javax.swing.JTextField();
 		tfGratuity.setEditable(false);
@@ -313,30 +312,10 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 			TicketItem ticketItem = (TicketItem) selectedObject;
 
 			DiscountSelectionDialog dialog = new DiscountSelectionDialog(ticketItem, ticket);
-
-			if (selectedObject instanceof TicketItem) {
-				dialog.setSelectedItem(true);
-
-			}
-			else {
-				dialog.setSelectedItem(false);
-			}
 			dialog.open();
 
-			if (!dialog.isCanceled()) {
-				if (ticketItem != null) {
-					ticketItem.getDiscounts().clear();
-					List<Discount> selectedDiscount = dialog.getSelectedTicketItemDiscounts();
-					for (Discount ticketItemDiscount : selectedDiscount) {
-						ticketItem.addTodiscounts(MenuItem.convertToTicketItemDiscount(ticketItemDiscount, ticketItem));
-					}
-				}
-
-				ticket.getCouponAndDiscounts().clear();
-				List<Discount> ticketDiscounts = dialog.getSelectedTicketDiscounts();
-				for (Discount ticketDiscount : ticketDiscounts) {
-					ticket.addTocouponAndDiscounts(ticket.convertToTicketDiscount(ticketDiscount));
-				}
+			if (dialog.isCanceled()) {
+				return;
 			}
 
 			updateModel();

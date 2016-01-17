@@ -19,7 +19,6 @@ package com.floreantpos.ui.model;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.util.ArrayList;
 import java.util.List;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -43,19 +42,15 @@ import org.jdesktop.swingx.JXDatePicker;
 
 import com.floreantpos.Messages;
 import com.floreantpos.model.Discount;
-import com.floreantpos.model.MenuCategory;
-import com.floreantpos.model.MenuGroup;
 import com.floreantpos.model.MenuItem;
 import com.floreantpos.model.dao.DiscountDAO;
-import com.floreantpos.model.dao.MenuCategoryDAO;
-import com.floreantpos.model.dao.MenuGroupDAO;
 import com.floreantpos.model.dao.MenuItemDAO;
 import com.floreantpos.swing.FixedLengthDocument;
 import com.floreantpos.swing.ItemCheckBoxList;
 import com.floreantpos.swing.MessageDialog;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.ui.BeanEditor;
-import com.floreantpos.ui.dialog.ItemNumberSelectionDialog;
+import com.floreantpos.ui.dialog.ItemSelectionDialog;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 
 public class CouponForm extends BeanEditor implements ItemListener {
@@ -77,6 +72,7 @@ public class CouponForm extends BeanEditor implements ItemListener {
 	private JScrollPane itemScrollPane;
 
 	private ItemCheckBoxList cbListItems;
+	private ItemCheckBoxList addedListItems; 
 
 	public CouponForm() {
 		this(new Discount());
@@ -103,12 +99,12 @@ public class CouponForm extends BeanEditor implements ItemListener {
 		contentPane.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5), null));
 		contentPane.setPreferredSize(new Dimension(400, 0));
 
-		final JLabel label1 = new JLabel(Messages.getString("CouponForm.0") + ":");
-		final JLabel label2 = new JLabel(Messages.getString("CouponForm.9") + ":");
-		final JLabel label3 = new JLabel(Messages.getString("CouponForm.11") + ":");
-		final JLabel label4 = new JLabel(Messages.getString("CouponForm.13") + ":");
-		final JLabel label6 = new JLabel("Coupon Barcode");
-		final JLabel label5 = new JLabel("Discount on :");
+		JLabel label1 = new JLabel(Messages.getString("CouponForm.0") + ":");
+		JLabel label2 = new JLabel(Messages.getString("CouponForm.9") + ":");
+		JLabel label3 = new JLabel(Messages.getString("CouponForm.11") + ":");
+		JLabel label4 = new JLabel(Messages.getString("CouponForm.13") + ":");
+		JLabel label6 = new JLabel("Coupon Barcode");
+		JLabel label5 = new JLabel("Discount on :");
 
 		tfCouponName = new JTextField(20);
 		tfBarcode = new JTextField();
@@ -147,9 +143,13 @@ public class CouponForm extends BeanEditor implements ItemListener {
 		cbListItems = new ItemCheckBoxList();
 		List<MenuItem> menuItems = MenuItemDAO.getInstance().findAll();
 		cbListItems.setModel(menuItems);
+		
+		addedListItems= new ItemCheckBoxList();
+		addedListItems.setModel(cbListItems.getCheckedValues()); 
 
 		itemPanel.add(itemSearchPanel, BorderLayout.NORTH);
-		itemScrollPane = new JScrollPane(cbListItems);
+		itemScrollPane = new JScrollPane(addedListItems);
+		
 		itemPanel.add(itemScrollPane, BorderLayout.CENTER);
 
 		add(contentPane, BorderLayout.WEST);
@@ -161,7 +161,8 @@ public class CouponForm extends BeanEditor implements ItemListener {
 		itemSearchPanel = new JPanel();
 		itemSearchPanel.setLayout(new BorderLayout(5, 5));
 
-		PosButton btnSearch = new PosButton("...");
+		PosButton btnSearch = new PosButton("ADD");
+		//btnSearch.setIcon(IconFactory.getIcon("/images", "add_user.png")); 
 		btnSearch.setPreferredSize(new Dimension(60, 40));
 
 		txtSearchItem = new JTextField();
@@ -188,21 +189,17 @@ public class CouponForm extends BeanEditor implements ItemListener {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				ItemNumberSelectionDialog dialog = new ItemNumberSelectionDialog(null);
-				dialog.setTitle("Search item");
-				dialog.setSize(600, 400);
+				ItemSelectionDialog dialog = new ItemSelectionDialog();
+				dialog.setModel(cbListItems.getModel()); 
 				dialog.open();
 				if (dialog.isCanceled()) {
 					return;
 				}
-
+				cbListItems.setModel(dialog.getModel()); 
+				addedListItems.setModel(cbListItems.getCheckedValues()); 
+				addedListItems.selectItems(cbListItems.getCheckedValues()); 
 				txtSearchItem.requestFocus();
 
-				if (!addMenuItemByBarcode(dialog.getValue())) {
-					if (!addMenuItemByItemId(dialog.getValue())) {
-						POSMessageDialog.showError(null, "Item not found");
-					}
-				}
 			}
 		});
 		itemSearchPanel.add(txtSearchItem);
@@ -213,7 +210,9 @@ public class CouponForm extends BeanEditor implements ItemListener {
 	public void itemStateChanged(ItemEvent event) {
 		if (event.getItem() == Discount.COUPON_QUALIFICATION_NAMES[0]) {
 			List<MenuItem> menuItems = MenuItemDAO.getInstance().findAll();
+			itemPanel.setVisible(true);
 			cbListItems.setModel(menuItems);
+			addedListItems.setModel(cbListItems.getCheckedValues()); 
 		}
 		/*else if (event.getItem() == Discount.COUPON_QUALIFICATION_NAMES[1]) {
 			List<MenuGroup> menuGroups = MenuGroupDAO.getInstance().findAll();
@@ -224,7 +223,7 @@ public class CouponForm extends BeanEditor implements ItemListener {
 			cbListItems.setModel(menuCategories);
 		}*/
 		else {
-			cbListItems.setModel(new ArrayList());
+			itemPanel.setVisible(false);
 		}
 	}
 
@@ -251,6 +250,7 @@ public class CouponForm extends BeanEditor implements ItemListener {
 			return false;
 		}
 		cbListItems.setSelected(menuItem);
+		updateView(); 
 		return true;
 	}
 
@@ -260,7 +260,7 @@ public class CouponForm extends BeanEditor implements ItemListener {
 
 			if (!updateModel())
 				return false;
-
+			
 			Discount coupon = (Discount) getBean();
 			DiscountDAO.getInstance().saveOrUpdate(coupon);
 
@@ -289,6 +289,8 @@ public class CouponForm extends BeanEditor implements ItemListener {
 
 		if (coupon.getQUALIFICATION_TYPE() == Discount.QUALIFICATION_TYPE_ITEM) {
 			cbListItems.selectItems(coupon.getMenuItems());
+			addedListItems.setModel(cbListItems.getCheckedValues()); 
+			addedListItems.selectItems(cbListItems.getCheckedValues()); 
 		}
 		/*else if (coupon.getQUALIFICATION_TYPE() == Discount.QUALIFICATION_TYPE_GROUP) {
 			cbListItems.selectItems(coupon.getMenuGroups());
@@ -304,7 +306,7 @@ public class CouponForm extends BeanEditor implements ItemListener {
 		String name = tfCouponName.getText();
 		String barcode = tfBarcode.getText();
 		double couponValue = 0;
-		couponValue = ((Double) tfCouponValue.getValue()).doubleValue();
+		couponValue =(Double) tfCouponValue.getValue();
 		int couponType = cbCouponType.getSelectedIndex();
 		Date expiryDate = dpExperation.getDate();
 		boolean enabled = chkEnabled.isSelected();
@@ -313,12 +315,16 @@ public class CouponForm extends BeanEditor implements ItemListener {
 		int qualificationType = cbQualificationType.getSelectedIndex();
 
 		if (name == null || name.trim().equals("")) { //$NON-NLS-1$
-			MessageDialog.showError(Messages.getString("CouponForm.1")); //$NON-NLS-1$
+			POSMessageDialog.showError(null, Messages.getString("CouponForm.1")); //$NON-NLS-1$
 			return false;
 		}
-		if (couponType != Discount.FREE_AMOUNT && couponValue <= 0) {
-			MessageDialog.showError(Messages.getString("CouponForm.2")); //$NON-NLS-1$
+		if (couponValue <= 0) {
+			POSMessageDialog.showError(null,Messages.getString("CouponForm.2")); //$NON-NLS-1$
 			return false;
+		}
+		if(qualificationType==Discount.QUALIFICATION_TYPE_ITEM && couponValueOverflow()){
+			POSMessageDialog.showError(null, "Coupon value must be less then item price"); 
+			return false; 
 		}
 
 		Discount coupon = (Discount) getBean();
@@ -333,7 +339,7 @@ public class CouponForm extends BeanEditor implements ItemListener {
 		coupon.setNeverExpire(neverExpire);
 
 		if (qualificationType == Discount.QUALIFICATION_TYPE_ITEM) {
-			coupon.setMenuItems(cbListItems.getCheckedValues());
+			coupon.setMenuItems(addedListItems.getCheckedValues());
 		}
 		/*else if (qualificationType == Discount.QUALIFICATION_TYPE_GROUP) {
 			coupon.setMenuGroups(cbListItems.getCheckedValues());
@@ -343,6 +349,20 @@ public class CouponForm extends BeanEditor implements ItemListener {
 		}*/
 
 		return true;
+	}
+	
+	private boolean couponValueOverflow() {
+		List<MenuItem> menuItems=addedListItems.getCheckedValues();
+		double couponValue=Double.parseDouble(tfCouponValue.getText()); 
+		if(cbCouponType.getSelectedIndex()==Discount.DISCOUNT_TYPE_PERCENTAGE){
+			couponValue=couponValue / 100;
+		}
+		for(MenuItem menuItem: menuItems){
+			if(couponValue>menuItem.getPrice()){
+				return true; 
+			}
+		}
+		return false;
 	}
 
 	@Override

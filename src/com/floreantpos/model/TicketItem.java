@@ -23,6 +23,7 @@ import java.util.List;
 
 import com.floreantpos.main.Application;
 import com.floreantpos.model.base.BaseTicketItem;
+import com.floreantpos.util.DiscountUtil;
 import com.floreantpos.util.NumberUtil;
 
 public class TicketItem extends BaseTicketItem implements ITicketItem {
@@ -259,7 +260,7 @@ public class TicketItem extends BaseTicketItem implements ITicketItem {
 					subTotalAmount += ticketItemModifierGroup.getSubtotal();
 				}
 			}
-			
+
 			List<TicketItemModifier> addOns = getAddOns();
 			if (addOns != null) {
 				for (TicketItemModifier ticketItemModifier : addOns) {
@@ -288,17 +289,23 @@ public class TicketItem extends BaseTicketItem implements ITicketItem {
 	//	}
 
 	private double calculateDiscount() {
-		if (getDiscounts() == null || getDiscounts().isEmpty()) {
-			return 0;
+		double discount = 0;
+		TicketItemDiscount maxDiscount = DiscountUtil.getMaxDiscount(getDiscounts());
+		if (maxDiscount != null) {
+			discount = maxDiscount.getSubTotalAmountWithoutModifiersDisplay();
 		}
 
-		double discount = 0;
-		for (TicketItemDiscount ticketItemDiscount : getDiscounts()) {
-			if (ticketItemDiscount.getValue() > 0) {
-				discount += getAmountByType(ticketItemDiscount);
+		Ticket ticket = getTicket();
+		if (ticket != null) {
+			TicketCouponAndDiscount ticketCouponAndDiscount = DiscountUtil.getMaxDiscount(ticket.getCouponAndDiscounts(), getSubtotalAmountWithoutModifiers());
+			if (ticketCouponAndDiscount != null) {
+				discount += DiscountUtil.calculateDiscountAmount(getSubtotalAmountWithoutModifiers() - discount, ticketCouponAndDiscount);
 			}
+			System.out.println();
+
 		}
-		return getItemCount() * discount;
+
+		return discount;
 	}
 
 	public double getAmountByType(TicketItemDiscount discount) {
@@ -345,7 +352,7 @@ public class TicketItem extends BaseTicketItem implements ITicketItem {
 					tax += ticketItemModifierGroup.getTax();
 				}
 			}
-			
+
 			List<TicketItemModifier> addOns = getAddOns();
 			if (addOns != null) {
 				for (TicketItemModifier ticketItemModifier : addOns) {

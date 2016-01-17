@@ -1,6 +1,7 @@
 package com.floreantpos.model;
 
 import com.floreantpos.model.base.BaseTicketItemDiscount;
+import com.floreantpos.util.DiscountUtil;
 
 
 
@@ -94,9 +95,7 @@ public class TicketItemDiscount extends BaseTicketItemDiscount implements ITicke
 
 	@Override
 	public Double getSubTotalAmountWithoutModifiersDisplay() {
-		TicketItem ticketItem2 = getTicketItem();
-		
-		return (ticketItem2.getSubtotalAmountWithoutModifiers() * getValue()) / 100.0;
+		return DiscountUtil.calculateDiscountAmount(getTicketItem().getSubtotalAmount(), this);
 	}
 
 	@Override

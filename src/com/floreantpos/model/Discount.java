@@ -27,14 +27,14 @@ public class Discount extends BaseDiscount {
 	private static final long serialVersionUID = 1L;
 
 	/*[CONSTRUCTOR MARKER BEGIN]*/
-	public Discount () {
+	public Discount() {
 		super();
 	}
 
 	/**
 	 * Constructor for primary key
 	 */
-	public Discount (java.lang.Integer id) {
+	public Discount(java.lang.Integer id) {
 		super(id);
 	}
 
@@ -55,7 +55,7 @@ public class Discount extends BaseDiscount {
 
 	public final static int QUALIFICATION_TYPE_ITEM = 0;
 	public final static int QUALIFICATION_TYPE_ORDER = 1;
-	
+
 	//public final static int QUALIFICATION_TYPE_GROUP = 1;
 	//public final static int QUALIFICATION_TYPE_CATEGORY = 2;
 
@@ -69,43 +69,29 @@ public class Discount extends BaseDiscount {
 	}
 
 	public double calculateDiscount(ITicketItem ticketItem) {
-		
+
 		switch (getType()) {
 			case DISCOUNT_TYPE_AMOUNT:
-				return ticketItem.getUnitPriceDisplay(); 
+				return ticketItem.getUnitPriceDisplay();
 
 			case DISCOUNT_TYPE_PERCENTAGE:
-				return (getValue()*ticketItem.getUnitPriceDisplay())/100; 
+				return (getValue() * ticketItem.getUnitPriceDisplay()) / 100;
 
 			default:
 				break;
 		}
-		
+
 		return 0;
 	}
+
 	
-	public static Discount getMaxDiscount(List<Discount> discounts){
-		Discount maxDiscount = Collections.max(discounts, new Comparator<Discount>() {
-			@Override
-			public int compare(Discount o1, Discount o2) {
-				 if (o1.getAmountByType() < o2.getAmountByType())
-			            return -1;
-			        if (o1.getAmountByType() == o2.getAmountByType())
-			            return 0;
-			        return 1;
-			}
-		});
-		
-		return maxDiscount; 
-	}
-	
-	public double getAmountByType() {
+	public double getAmountByType(double price) {
 		switch (getType()) {
 			case Discount.DISCOUNT_TYPE_AMOUNT:
-				return getValue();
+				return price - getValue();
 
 			case Discount.DISCOUNT_TYPE_PERCENTAGE:
-				return getValue() / 100;
+				return price - (getValue() / 100);
 
 			default:
 				break;

@@ -27,6 +27,7 @@ import com.floreantpos.model.TicketItemCookingInstruction;
 import com.floreantpos.model.TicketItemDiscount;
 import com.floreantpos.model.TicketItemModifier;
 import com.floreantpos.model.TicketItemModifierGroup;
+import com.floreantpos.util.DiscountUtil;
 
 public class TicketItemRowCreator {
 
@@ -98,13 +99,10 @@ public class TicketItemRowCreator {
 	}
 	
 	private static int includeDiscounts(TicketItem ticketItem, Map<String, ITicketItem> tableRows, int rowNum) {
-		List<TicketItemDiscount> ticketItemDiscounts = ticketItem.getDiscounts();
-		if (ticketItemDiscounts != null) {
-			for (TicketItemDiscount ticketItemDiscount : ticketItemDiscounts) {
-				ticketItemDiscount.setTableRowNum(rowNum);
-				tableRows.put(String.valueOf(rowNum), ticketItemDiscount);
-				rowNum++;
-			}
+		TicketItemDiscount maxDiscount = DiscountUtil.getMaxDiscount(ticketItem.getDiscounts());
+		if (maxDiscount != null) {
+			tableRows.put(String.valueOf(rowNum), maxDiscount);
+			rowNum++;
 		}
 		return rowNum;
 	}

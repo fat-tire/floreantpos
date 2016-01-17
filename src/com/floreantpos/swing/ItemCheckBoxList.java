@@ -1,5 +1,6 @@
 package com.floreantpos.swing;
 
+import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -108,16 +109,26 @@ public class ItemCheckBoxList<E> extends CheckBoxList {
 		if(column == 0) {
 			return super.getCellRenderer(row, column);
 		}
-		DefaultTableCellRenderer center = new DefaultTableCellRenderer();
-		center.setHorizontalAlignment(JLabel.LEFT);
-		this.getColumnModel().getColumn(column).setCellRenderer(center);
+		if(column==1){
+			DefaultTableCellRenderer center = new DefaultTableCellRenderer();
+			center.setHorizontalAlignment(JLabel.LEFT);
+			this.getColumnModel().getColumn(column).setCellRenderer(center);
+			return super.getCellRenderer(row, column);
+		}
+		if(column==2){
+			DefaultTableCellRenderer right = new DefaultTableCellRenderer();
+			right.setHorizontalAlignment(JLabel.RIGHT);
+			this.getColumnModel().getColumn(column).setCellRenderer(right);
+			this.getColumnModel().getColumn(column).setPreferredWidth(15);
+			return super.getCellRenderer(row, column);
+		}
 		return super.getCellRenderer(row, column);
 	}
 
 	public void init() {
 		getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		setShowGrid(true);
-		setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
+		setRowHeight(25); 
 		TableColumn column = getColumnModel().getColumn(0);
 		int checkBoxWidth = new JCheckBox().getPreferredSize().width;
 		column.setPreferredWidth(checkBoxWidth);
@@ -140,7 +151,7 @@ public class ItemCheckBoxList<E> extends CheckBoxList {
 
 		@Override
 		public int getColumnCount() {
-			return 2;
+			return 3;
 		}
 
 		@Override
@@ -152,6 +163,9 @@ public class ItemCheckBoxList<E> extends CheckBoxList {
 				
 				case 1:
 					return "Name";
+					
+				case 2:
+					return "Price";
 
 				default:
 					return null;
@@ -174,6 +188,10 @@ public class ItemCheckBoxList<E> extends CheckBoxList {
 						return ((MenuCategory) entry.value).getName();
 					}
 					return entry.value; 
+					
+				case 2:
+					return ((MenuItem) entry.value).getPrice();
+					
 				default:
 					throw new InternalError();
 			}
