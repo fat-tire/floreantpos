@@ -24,8 +24,8 @@ public class ShopTableBrowser extends ShopTableModelBrowser<ShopTable> {
 		init(tableModel);
 		
 		browserTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
-		setColumnWidth(0, 120);
-		setColumnWidth(1, 120);
+	//	setColumnWidth(0, 120);
+		//setColumnWidth(1, 120);
 	}
 
 	@Override

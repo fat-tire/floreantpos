@@ -49,7 +49,7 @@ public class ModelBrowser<E> extends JPanel implements ActionListener, ListSelec
 
 	protected JXTable browserTable;
 	protected BeanEditor<E> beanEditor;
-	SearchPanel<E> searchPanel;
+	protected SearchPanel<E> searchPanel;
 	protected JPanel buttonPanel;
 	protected JPanel browserPanel = new JPanel(new BorderLayout());
 	private JPanel beanPanel = new JPanel(new BorderLayout());
@@ -229,6 +229,7 @@ public class ModelBrowser<E> extends JPanel implements ActionListener, ListSelec
 		}
 		else {
 			beanEditor.cancel();
+			beanEditor.clearFields();
 			beanEditor.setBean(null);
 			beanEditor.setFieldsEnable(false);
 			btnNew.setEnabled(true);
@@ -279,6 +280,10 @@ public class ModelBrowser<E> extends JPanel implements ActionListener, ListSelec
 
 	public JPanel getButtonPanel() {
 		return buttonPanel;
+	}
+	
+	public SearchPanel<E> getSearchPanel() {
+		return searchPanel;
 	}
 
 }

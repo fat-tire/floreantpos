@@ -216,6 +216,18 @@ public class ShopTableForm extends BeanEditor<ShopTable> {
 	@Override
 	public void cancel() {
 		setBorder(BorderFactory.createTitledBorder(Messages.getString("ShopTableForm.46"))); //$NON-NLS-1$
+
+	}
+
+	@Override
+	public void clearFields() {
+		tfTableNo.setText("");//$NON-NLS-1$
+		tfTableCapacity.setText(""); //$NON-NLS-1$
+		tfTableDescription.setText(""); //$NON-NLS-1$
+		tfTableName.setText(""); //$NON-NLS-1$
+		tableTypeCBoxList.unCheckAll();
+		rbFree.setSelected(false);
+		rbDisable.setSelected(false);
 	}
 
 	@Override
@@ -305,11 +317,11 @@ public class ShopTableForm extends BeanEditor<ShopTable> {
 		btnCapacitySix.setEnabled(enable);
 		btnCapacityEight.setEnabled(enable);
 		btnCapacityTen.setEnabled(enable);
-		
-		if(btnCreateType!=null) {
+
+		if (btnCreateType != null) {
 			btnCreateType.setEnabled(enable);
 		}
-		
+
 		rbFree.setEnabled(enable);
 		rbDisable.setEnabled(enable);
 	}
