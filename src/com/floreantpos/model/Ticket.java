@@ -318,13 +318,13 @@ public class Ticket extends BaseTicket {
 
 	}
 	
-	public TicketCouponAndDiscount convertToTicketDiscount(Discount discount) {
+	public static TicketCouponAndDiscount convertToTicketDiscount(Discount discount, Ticket ticket) {
 		TicketCouponAndDiscount ticketDiscount = new TicketCouponAndDiscount();
 		ticketDiscount.setCouponAndDiscountId(discount.getId());
 		ticketDiscount.setName(discount.getName());
 		ticketDiscount.setType(discount.getType());
 		ticketDiscount.setValue(discount.getValue());
-		ticketDiscount.setTicket(this); 
+		ticketDiscount.setTicket(ticket); 
 		return ticketDiscount;
 	}
 
