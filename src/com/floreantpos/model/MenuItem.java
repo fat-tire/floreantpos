@@ -30,7 +30,6 @@ import org.apache.commons.lang.StringUtils;
 import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.base.BaseMenuItem;
-import com.floreantpos.model.dao.DiscountDAO;
 
 @XmlRootElement(name = "menu-item")
 public class MenuItem extends BaseMenuItem {
@@ -192,7 +191,7 @@ public class MenuItem extends BaseMenuItem {
 		}
 		ticketItem.setPrinterGroup(this.getPrinterGroup());
 
-		List<Discount> discountList = DiscountDAO.getInstance().getValidCoupon(this);
+		List<Discount> discountList = getDiscounts();
 		if (this.getDiscounts() != null) {
 			for (Discount discount : discountList) {
 				if (discount.isAutoApply()) {
