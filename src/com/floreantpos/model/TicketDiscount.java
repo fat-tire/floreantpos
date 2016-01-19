@@ -17,22 +17,22 @@
  */
 package com.floreantpos.model;
 
-import com.floreantpos.model.base.BaseTicketCouponAndDiscount;
+import com.floreantpos.model.base.BaseTicketDiscount;
 
 
 
-public class TicketCouponAndDiscount extends BaseTicketCouponAndDiscount {
+public class TicketDiscount extends BaseTicketDiscount {
 	private static final long serialVersionUID = 1L;
 
 /*[CONSTRUCTOR MARKER BEGIN]*/
-	public TicketCouponAndDiscount () {
+	public TicketDiscount () {
 		super();
 	}
 
 	/**
 	 * Constructor for primary key
 	 */
-	public TicketCouponAndDiscount (java.lang.Integer id) {
+	public TicketDiscount (java.lang.Integer id) {
 		super(id);
 	}
 

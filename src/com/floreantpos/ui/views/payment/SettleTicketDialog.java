@@ -64,8 +64,9 @@ import com.floreantpos.model.PaymentType;
 import com.floreantpos.model.PosTransaction;
 import com.floreantpos.model.Restaurant;
 import com.floreantpos.model.Ticket;
-import com.floreantpos.model.TicketCouponAndDiscount;
+import com.floreantpos.model.TicketDiscount;
 import com.floreantpos.model.TicketItem;
+import com.floreantpos.model.TicketItemDiscount;
 import com.floreantpos.model.TransactionType;
 import com.floreantpos.model.UserPermission;
 import com.floreantpos.report.ReceiptPrintService;
@@ -309,7 +310,14 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 
 			Object selectedObject = (ITicketItem) ticketViewerTable.getSelected();
 
-			TicketItem ticketItem = (TicketItem) selectedObject;
+			TicketItem ticketItem;
+
+			if (selectedObject instanceof TicketItemDiscount) {
+				ticketItem = ((TicketItemDiscount) selectedObject).getTicketItem();
+			}
+			else {
+				ticketItem = (TicketItem) selectedObject;
+			}
 
 			DiscountSelectionDialog dialog = new DiscountSelectionDialog(ticketItem, ticket);
 			dialog.open();
@@ -856,12 +864,12 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 			JsonNumber jsonNumber = jsonObject.getJsonNumber(key);
 			double doubleValue = jsonNumber.doubleValue();
 
-			TicketCouponAndDiscount coupon = new TicketCouponAndDiscount();
+			TicketDiscount coupon = new TicketDiscount();
 			coupon.setName(key);
 			coupon.setType(Discount.FIXED_PER_ORDER);
 			coupon.setValue(doubleValue);
 
-			ticket.addTocouponAndDiscounts(coupon);
+			ticket.addTodiscounts(coupon);
 		}
 	}
 

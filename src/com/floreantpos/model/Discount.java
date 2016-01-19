@@ -17,10 +17,6 @@
  */
 package com.floreantpos.model;
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-
 import com.floreantpos.model.base.BaseDiscount;
 
 public class Discount extends BaseDiscount {
@@ -50,8 +46,9 @@ public class Discount extends BaseDiscount {
 
 	public final static int DISCOUNT_TYPE_AMOUNT = 0;
 	public final static int DISCOUNT_TYPE_PERCENTAGE = 1;
-	public final static int DISCOUNT_TYPE_RE_PRICE = 2;
-	public final static int DISCOUNT_TYPE_ALT_PRICE = 3;
+	//public final static int DISCOUNT_TYPE_BUYANDGETFREE =2;
+	public final static int DISCOUNT_TYPE_RE_PRICE = 3;
+	public final static int DISCOUNT_TYPE_ALT_PRICE = 4;
 
 	public final static int QUALIFICATION_TYPE_ITEM = 0;
 	public final static int QUALIFICATION_TYPE_ORDER = 1;
@@ -84,7 +81,6 @@ public class Discount extends BaseDiscount {
 		return 0;
 	}
 
-	
 	public double getAmountByType(double price) {
 		switch (getType()) {
 			case Discount.DISCOUNT_TYPE_AMOUNT:

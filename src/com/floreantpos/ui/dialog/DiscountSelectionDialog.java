@@ -49,7 +49,7 @@ import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.model.Discount;
 import com.floreantpos.model.MenuItem;
 import com.floreantpos.model.Ticket;
-import com.floreantpos.model.TicketCouponAndDiscount;
+import com.floreantpos.model.TicketDiscount;
 import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.TicketItemDiscount;
 import com.floreantpos.model.dao.DiscountDAO;
@@ -69,7 +69,7 @@ public class DiscountSelectionDialog extends POSDialog implements ActionListener
 	private ScrollableFlowPanel buttonsPanel;
 
 	private HashMap<Integer, TicketItemDiscount> addedTicketItemDiscounts = new HashMap<Integer, TicketItemDiscount>();
-	private HashMap<Integer,TicketCouponAndDiscount> addedTicketDiscounts = new HashMap<Integer,TicketCouponAndDiscount>();
+	private HashMap<Integer, TicketDiscount> addedTicketDiscounts = new HashMap<Integer, TicketDiscount>();
 
 	private HashMap<Integer, DiscountButton> buttonMap = new HashMap<Integer, DiscountButton>();
 
@@ -87,14 +87,14 @@ public class DiscountSelectionDialog extends POSDialog implements ActionListener
 		initializeComponent();
 
 		if (ticketItem != null && ticketItem.getDiscounts() != null) {
-			for(TicketItemDiscount ticketItemDiscount:ticketItem.getDiscounts()){
+			for (TicketItemDiscount ticketItemDiscount : ticketItem.getDiscounts()) {
 				addedTicketItemDiscounts.put(ticketItemDiscount.getDiscountId(), ticketItemDiscount);
 			}
 		}
 
-		if (ticket.getCouponAndDiscounts() != null) {
-			for(TicketCouponAndDiscount ticketDiscount:ticket.getCouponAndDiscounts()){
-				addedTicketDiscounts.put(ticketDiscount.getCouponAndDiscountId(), ticketDiscount);
+		if (ticket.getDiscounts() != null) {
+			for (TicketDiscount ticketDiscount : ticket.getDiscounts()) {
+				addedTicketDiscounts.put(ticketDiscount.getDiscountId(), ticketDiscount);
 			}
 		}
 	}
@@ -239,9 +239,9 @@ public class DiscountSelectionDialog extends POSDialog implements ActionListener
 			buttonMap.put(discount.getId(), btnDiscount);
 		}
 
-		if (ticket.getCouponAndDiscounts() != null) {
-			for (TicketCouponAndDiscount ticketCouponAndDiscount : ticket.getCouponAndDiscounts()) {
-				DiscountButton ticketDiscountButton = buttonMap.get(ticketCouponAndDiscount.getCouponAndDiscountId());
+		if (ticket.getDiscounts() != null) {
+			for (TicketDiscount ticketCouponAndDiscount : ticket.getDiscounts()) {
+				DiscountButton ticketDiscountButton = buttonMap.get(ticketCouponAndDiscount.getDiscountId());
 
 				if (ticketDiscountButton != null) {
 					ticketDiscountButton.setSelected(true);
@@ -265,14 +265,14 @@ public class DiscountSelectionDialog extends POSDialog implements ActionListener
 				}
 			}
 		}
-		List<TicketCouponAndDiscount> couponAndDiscounts = ticket.getCouponAndDiscounts();
+		List<TicketDiscount> couponAndDiscounts = ticket.getDiscounts();
 		if (couponAndDiscounts == null)
-			couponAndDiscounts = new ArrayList<TicketCouponAndDiscount>();
+			couponAndDiscounts = new ArrayList<TicketDiscount>();
 		if (!CollectionUtils.isEqualCollection(couponAndDiscounts, addedTicketDiscounts.values())) {
 			couponAndDiscounts.clear();
 
-			for (TicketCouponAndDiscount ticketDiscount : addedTicketDiscounts.values()) {
-				ticket.addTocouponAndDiscounts(ticketDiscount);
+			for (TicketDiscount ticketDiscount : addedTicketDiscounts.values()) {
+				ticket.addTodiscounts(ticketDiscount);
 			}
 		}
 
@@ -301,19 +301,23 @@ public class DiscountSelectionDialog extends POSDialog implements ActionListener
 		public void actionPerformed(ActionEvent e) {
 			if (btnItem.isSelected()) {
 				if (isSelected()) {
-					addedTicketItemDiscounts.put(discount.getId(), MenuItem.convertToTicketItemDiscount(discount, ticketItem));
+					if (ticketItem.getItemCount() >= discount.getMinimunBuy()) {
+						addedTicketItemDiscounts.put(discount.getId(), MenuItem.convertToTicketItemDiscount(discount, ticketItem));
+					}
 				}
 				else {
 					addedTicketItemDiscounts.remove(discount.getId());
 				}
 			}
 			else {
-				
+
 				if (isSelected()) {
-					addedTicketDiscounts.put(discount.getId(), Ticket.convertToTicketDiscount(discount, ticket));
+					if (ticket.getSubtotalAmount() >= discount.getMinimunBuy()) {
+						addedTicketDiscounts.put(discount.getId(), Ticket.convertToTicketDiscount(discount, ticket));
+					}
 				}
 				else {
-					addedTicketDiscounts.remove(discount.getId()); 
+					addedTicketDiscounts.remove(discount.getId());
 				}
 			}
 

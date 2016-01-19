@@ -41,11 +41,13 @@ import net.miginfocom.swing.MigLayout;
 import org.jdesktop.swingx.JXDatePicker;
 
 import com.floreantpos.Messages;
+import com.floreantpos.POSConstants;
 import com.floreantpos.model.Discount;
 import com.floreantpos.model.MenuItem;
 import com.floreantpos.model.dao.DiscountDAO;
 import com.floreantpos.model.dao.MenuItemDAO;
 import com.floreantpos.swing.FixedLengthDocument;
+import com.floreantpos.swing.IntegerTextField;
 import com.floreantpos.swing.ItemCheckBoxList;
 import com.floreantpos.swing.MessageDialog;
 import com.floreantpos.swing.PosButton;
@@ -65,14 +67,18 @@ public class CouponForm extends BeanEditor implements ItemListener {
 	private JCheckBox chkAutoApply;
 	private JCheckBox chkNeverExpire;
 	private JXDatePicker dpExperation;
+	private JLabel lblMinimum;
+
+	private IntegerTextField tfMinimumQua;
 
 	private JPanel itemSearchPanel;
+
 	private JTextField txtSearchItem;
 
 	private JScrollPane itemScrollPane;
 
 	private ItemCheckBoxList cbListItems;
-	private ItemCheckBoxList addedListItems; 
+	private ItemCheckBoxList addedListItems;
 
 	public CouponForm() {
 		this(new Discount());
@@ -92,19 +98,19 @@ public class CouponForm extends BeanEditor implements ItemListener {
 
 	private void initializeComponent() {
 		setLayout(new BorderLayout(10, 10));
-		setPreferredSize(new Dimension(650, 400));
 
 		contentPane = new JPanel();
 		contentPane.setLayout(new MigLayout());
 		contentPane.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5), null));
 		contentPane.setPreferredSize(new Dimension(400, 0));
 
-		JLabel label1 = new JLabel(Messages.getString("CouponForm.0") + ":");
-		JLabel label2 = new JLabel(Messages.getString("CouponForm.9") + ":");
-		JLabel label3 = new JLabel(Messages.getString("CouponForm.11") + ":");
-		JLabel label4 = new JLabel(Messages.getString("CouponForm.13") + ":");
-		JLabel label6 = new JLabel("Coupon Barcode");
-		JLabel label5 = new JLabel("Discount on :");
+		JLabel label1 = new JLabel(Messages.getString("CouponForm.0") + ":"); //$NON-NLS-1$ //$NON-NLS-2$
+		JLabel label2 = new JLabel(Messages.getString("CouponForm.9") + ":"); //$NON-NLS-1$ //$NON-NLS-2$
+		JLabel label3 = new JLabel(Messages.getString("CouponForm.11") + ":"); //$NON-NLS-1$ //$NON-NLS-2$
+		JLabel label4 = new JLabel(Messages.getString("CouponForm.13") + ":"); //$NON-NLS-1$ //$NON-NLS-2$
+		JLabel label6 = new JLabel(Messages.getString("CouponForm.12")); //$NON-NLS-1$
+		JLabel label5 = new JLabel(Messages.getString("CouponForm.7")); //$NON-NLS-1$
+		lblMinimum = new JLabel(Messages.getString("CouponForm.5")); //$NON-NLS-1$
 
 		tfCouponName = new JTextField(20);
 		tfBarcode = new JTextField();
@@ -112,28 +118,31 @@ public class CouponForm extends BeanEditor implements ItemListener {
 		cbQualificationType = new JComboBox();
 		dpExperation = new JXDatePicker();
 		tfCouponValue = new JFormattedTextField();
-		chkEnabled = new JCheckBox("Enabled");
-		chkAutoApply = new JCheckBox("Auto Apply");
-		chkNeverExpire = new JCheckBox(Messages.getString("CouponForm.16"));
+		tfMinimumQua = new IntegerTextField();
+		chkEnabled = new JCheckBox(POSConstants.ENABLED); //$NON-NLS-1$
+		chkAutoApply = new JCheckBox(Messages.getString("CouponForm.6")); //$NON-NLS-1$
+		chkNeverExpire = new JCheckBox(Messages.getString("CouponForm.16")); //$NON-NLS-1$
 
 		contentPane.add(label1);
-		contentPane.add(tfCouponName, "grow, wrap");
+		contentPane.add(tfCouponName, "grow, wrap"); //$NON-NLS-1$
 		contentPane.add(label2);
-		contentPane.add(dpExperation, "grow, wrap");
+		contentPane.add(dpExperation, "grow, wrap"); //$NON-NLS-1$
 		contentPane.add(label3);
-		contentPane.add(cbCouponType, "grow, wrap");
+		contentPane.add(cbCouponType, "grow, wrap"); //$NON-NLS-1$
 		contentPane.add(label6);
-		contentPane.add(tfBarcode, "grow, wrap");
+		contentPane.add(tfBarcode, "grow, wrap"); //$NON-NLS-1$
 		contentPane.add(label5);
-		contentPane.add(cbQualificationType, "grow, wrap");
+		contentPane.add(cbQualificationType, "grow, wrap"); //$NON-NLS-1$
+		contentPane.add(lblMinimum);
+		contentPane.add(tfMinimumQua, "grow, wrap"); //$NON-NLS-1$
 		contentPane.add(label4);
-		contentPane.add(tfCouponValue, "grow, wrap");
-		contentPane.add(new JLabel(""));
-		contentPane.add(chkEnabled, "wrap");
-		contentPane.add(new JLabel(""));
-		contentPane.add(chkAutoApply, "wrap");
-		contentPane.add(new JLabel(""));
-		contentPane.add(chkNeverExpire, "wrap");
+		contentPane.add(tfCouponValue, "grow, wrap"); //$NON-NLS-1$
+		contentPane.add(new JLabel("")); //$NON-NLS-1$
+		contentPane.add(chkEnabled, "wrap"); //$NON-NLS-1$
+		contentPane.add(new JLabel("")); //$NON-NLS-1$
+		contentPane.add(chkAutoApply, "wrap"); //$NON-NLS-1$
+		contentPane.add(new JLabel("")); //$NON-NLS-1$
+		contentPane.add(chkNeverExpire, "wrap"); //$NON-NLS-1$
 
 		createItemSearchPanel();
 
@@ -143,17 +152,19 @@ public class CouponForm extends BeanEditor implements ItemListener {
 		cbListItems = new ItemCheckBoxList();
 		List<MenuItem> menuItems = MenuItemDAO.getInstance().findAll();
 		cbListItems.setModel(menuItems);
-		
-		addedListItems= new ItemCheckBoxList();
-		addedListItems.setModel(cbListItems.getCheckedValues()); 
+
+		addedListItems = new ItemCheckBoxList();
+		addedListItems.setModel(cbListItems.getCheckedValues());
 
 		itemPanel.add(itemSearchPanel, BorderLayout.NORTH);
 		itemScrollPane = new JScrollPane(addedListItems);
-		
+
 		itemPanel.add(itemScrollPane, BorderLayout.CENTER);
 
 		add(contentPane, BorderLayout.WEST);
 		add(itemPanel, BorderLayout.CENTER);
+
+		setPreferredSize(new Dimension(700, 350));
 
 	}
 
@@ -161,8 +172,7 @@ public class CouponForm extends BeanEditor implements ItemListener {
 		itemSearchPanel = new JPanel();
 		itemSearchPanel.setLayout(new BorderLayout(5, 5));
 
-		PosButton btnSearch = new PosButton("ADD");
-		//btnSearch.setIcon(IconFactory.getIcon("/images", "add_user.png")); 
+		PosButton btnSearch = new PosButton(POSConstants.ADD); //$NON-NLS-1$
 		btnSearch.setPreferredSize(new Dimension(60, 40));
 
 		txtSearchItem = new JTextField();
@@ -172,15 +182,15 @@ public class CouponForm extends BeanEditor implements ItemListener {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				if (txtSearchItem.getText().equals("")) {
-					POSMessageDialog.showMessage("Please enter item number or barcode ");
+				if (txtSearchItem.getText().equals("")) { //$NON-NLS-1$
+					POSMessageDialog.showMessage(Messages.getString("CouponForm.8")); //$NON-NLS-1$
 					return;
 				}
 
 				if (!addMenuItemByBarcode(txtSearchItem.getText())) {
 					addMenuItemByItemId(txtSearchItem.getText());
 				}
-				txtSearchItem.setText("");
+				txtSearchItem.setText(""); //$NON-NLS-1$
 			}
 		});
 
@@ -190,14 +200,14 @@ public class CouponForm extends BeanEditor implements ItemListener {
 			public void actionPerformed(ActionEvent e) {
 
 				ItemSelectionDialog dialog = new ItemSelectionDialog();
-				dialog.setModel(cbListItems.getModel()); 
+				dialog.setModel(cbListItems.getModel());
 				dialog.open();
 				if (dialog.isCanceled()) {
 					return;
 				}
-				cbListItems.setModel(dialog.getModel()); 
-				addedListItems.setModel(cbListItems.getCheckedValues()); 
-				addedListItems.selectItems(cbListItems.getCheckedValues()); 
+				cbListItems.setModel(dialog.getModel());
+				addedListItems.setModel(cbListItems.getCheckedValues());
+				addedListItems.selectItems(cbListItems.getCheckedValues());
 				txtSearchItem.requestFocus();
 
 			}
@@ -212,7 +222,7 @@ public class CouponForm extends BeanEditor implements ItemListener {
 			List<MenuItem> menuItems = MenuItemDAO.getInstance().findAll();
 			itemPanel.setVisible(true);
 			cbListItems.setModel(menuItems);
-			addedListItems.setModel(cbListItems.getCheckedValues()); 
+			addedListItems.setModel(cbListItems.getCheckedValues());
 		}
 		/*else if (event.getItem() == Discount.COUPON_QUALIFICATION_NAMES[1]) {
 			List<MenuGroup> menuGroups = MenuGroupDAO.getInstance().findAll();
@@ -250,7 +260,8 @@ public class CouponForm extends BeanEditor implements ItemListener {
 			return false;
 		}
 		cbListItems.setSelected(menuItem);
-		updateView(); 
+		addedListItems.setModel(cbListItems.getCheckedValues());
+		addedListItems.selectItems(cbListItems.getCheckedValues());
 		return true;
 	}
 
@@ -260,7 +271,7 @@ public class CouponForm extends BeanEditor implements ItemListener {
 
 			if (!updateModel())
 				return false;
-			
+
 			Discount coupon = (Discount) getBean();
 			DiscountDAO.getInstance().saveOrUpdate(coupon);
 
@@ -278,19 +289,20 @@ public class CouponForm extends BeanEditor implements ItemListener {
 			return;
 
 		tfCouponName.setText(coupon.getName());
+		tfMinimumQua.setText(coupon.getMinimunBuy().toString());
 		tfCouponValue.setValue(Double.valueOf(coupon.getValue()));
 		cbCouponType.setSelectedIndex(coupon.getType());
-		cbQualificationType.setSelectedIndex(coupon.getQUALIFICATION_TYPE());
+		cbQualificationType.setSelectedIndex(coupon.getQualificationType());
 		dpExperation.setDate(coupon.getExpiryDate());
 		tfBarcode.setText(coupon.getBarcode());
 		chkEnabled.setSelected(coupon.isEnabled());
 		chkAutoApply.setSelected(coupon.isAutoApply());
 		chkNeverExpire.setSelected(coupon.isNeverExpire());
 
-		if (coupon.getQUALIFICATION_TYPE() == Discount.QUALIFICATION_TYPE_ITEM) {
+		if (coupon.getQualificationType() == Discount.QUALIFICATION_TYPE_ITEM) {
 			cbListItems.selectItems(coupon.getMenuItems());
-			addedListItems.setModel(cbListItems.getCheckedValues()); 
-			addedListItems.selectItems(cbListItems.getCheckedValues()); 
+			addedListItems.setModel(cbListItems.getCheckedValues());
+			addedListItems.selectItems(cbListItems.getCheckedValues());
 		}
 		/*else if (coupon.getQUALIFICATION_TYPE() == Discount.QUALIFICATION_TYPE_GROUP) {
 			cbListItems.selectItems(coupon.getMenuGroups());
@@ -306,7 +318,8 @@ public class CouponForm extends BeanEditor implements ItemListener {
 		String name = tfCouponName.getText();
 		String barcode = tfBarcode.getText();
 		double couponValue = 0;
-		couponValue =(Double) tfCouponValue.getValue();
+		couponValue = (Double) tfCouponValue.getValue();
+		int couponMinimumQua = Integer.parseInt(tfMinimumQua.getText());
 		int couponType = cbCouponType.getSelectedIndex();
 		Date expiryDate = dpExperation.getDate();
 		boolean enabled = chkEnabled.isSelected();
@@ -319,27 +332,34 @@ public class CouponForm extends BeanEditor implements ItemListener {
 			return false;
 		}
 		if (couponValue <= 0) {
-			POSMessageDialog.showError(null,Messages.getString("CouponForm.2")); //$NON-NLS-1$
+			POSMessageDialog.showError(null, Messages.getString("CouponForm.2")); //$NON-NLS-1$
 			return false;
 		}
-		if(qualificationType==Discount.QUALIFICATION_TYPE_ITEM && couponValueOverflow()){
-			POSMessageDialog.showError(null, "Coupon value must be less then item price"); 
-			return false; 
+		if (qualificationType == Discount.QUALIFICATION_TYPE_ITEM && couponValueOverflow()) {
+			POSMessageDialog.showError(null, Messages.getString("CouponForm.10")); //$NON-NLS-1$
+			return false;
 		}
 
 		Discount coupon = (Discount) getBean();
 		coupon.setName(name);
+		coupon.setMinimunBuy(couponMinimumQua);
 		coupon.setValue(couponValue);
 		coupon.setExpiryDate(expiryDate);
 		coupon.setBarcode(barcode);
 		coupon.setType(couponType);
-		coupon.setQUALIFICATION_TYPE(qualificationType);
+		coupon.setQualificationType(qualificationType);
 		coupon.setEnabled(enabled);
 		coupon.setAutoApply(autoApply);
 		coupon.setNeverExpire(neverExpire);
 
 		if (qualificationType == Discount.QUALIFICATION_TYPE_ITEM) {
-			coupon.setMenuItems(addedListItems.getCheckedValues());
+			if (addedListItems.getCheckedValues().size() > 0) {
+				coupon.setMenuItems(addedListItems.getCheckedValues());
+				coupon.setApplyToAll(false);
+			}
+			else {
+				coupon.setApplyToAll(true);
+			}
 		}
 		/*else if (qualificationType == Discount.QUALIFICATION_TYPE_GROUP) {
 			coupon.setMenuGroups(cbListItems.getCheckedValues());
@@ -350,16 +370,26 @@ public class CouponForm extends BeanEditor implements ItemListener {
 
 		return true;
 	}
-	
+
 	private boolean couponValueOverflow() {
-		List<MenuItem> menuItems=addedListItems.getCheckedValues();
-		double couponValue=Double.parseDouble(tfCouponValue.getText()); 
-		if(cbCouponType.getSelectedIndex()==Discount.DISCOUNT_TYPE_PERCENTAGE){
-			couponValue=couponValue / 100;
+		List<MenuItem> menuItems = addedListItems.getCheckedValues();
+		double couponValue = Double.parseDouble(tfCouponValue.getText());
+		if (cbCouponType.getSelectedIndex() == Discount.DISCOUNT_TYPE_PERCENTAGE) {
+			couponValue = couponValue / 100;
 		}
-		for(MenuItem menuItem: menuItems){
-			if(couponValue>menuItem.getPrice()){
-				return true; 
+		if (Integer.parseInt(tfMinimumQua.getText()) > 0) {
+			int minimumQua = Integer.parseInt(tfMinimumQua.getText());
+			for (MenuItem menuItem : menuItems) {
+				if (couponValue > (menuItem.getPrice() * minimumQua)) {
+					return true;
+				}
+			}
+		}
+		else {
+			for (MenuItem menuItem : menuItems) {
+				if (couponValue > menuItem.getPrice()) {
+					return true;
+				}
 			}
 		}
 		return false;

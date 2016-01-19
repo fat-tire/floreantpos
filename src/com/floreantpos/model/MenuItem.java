@@ -165,7 +165,7 @@ public class MenuItem extends BaseMenuItem {
 	public String toString() {
 		return getName();
 	}
-	
+
 	public String getUniqueId() {
 		return ("menu_item_" + getName() + "_" + getId()).replaceAll("\\s+", "_"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 	}
@@ -224,6 +224,7 @@ public class MenuItem extends BaseMenuItem {
 		ticketItemDiscount.setAutoApply(discount.isAutoApply());
 		ticketItemDiscount.setName(discount.getName());
 		ticketItemDiscount.setType(discount.getType());
+		ticketItemDiscount.setMinimumQuantity(discount.getMinimunBuy());
 		ticketItemDiscount.setValue(discount.getValue());
 		ticketItemDiscount.setTicketItem(ticketItem);
 		return ticketItemDiscount;

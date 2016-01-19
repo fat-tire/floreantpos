@@ -9,6 +9,7 @@
     <property column="NAME" length="30" name="name" type="string"/>
     <property column="TYPE" name="type" type="java.lang.Integer"/>
      <property column="AUTO_APPLY" name="autoApply" type="java.lang.Boolean"/>
+     <property column="MINIMUM_QUANTITY" name="minimumQuantity" type="java.lang.Integer"/>
     <property column="VALUE" name="value" type="java.lang.Double"/>
     <property column="AMOUNT" name="amount" type="java.lang.Double"/>
    	<many-to-one class="com.floreantpos.model.TicketItem" lazy="false" name="ticketItem">

@@ -33,6 +33,7 @@ import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.hibernate.tool.hbm2ddl.SchemaUpdate;
 
 import com.floreantpos.bo.actions.DataImportAction;
+import com.floreantpos.model.Discount;
 import com.floreantpos.model.PosTransaction;
 import com.floreantpos.model.Restaurant;
 import com.floreantpos.model.Shift;
@@ -41,6 +42,7 @@ import com.floreantpos.model.Ticket;
 import com.floreantpos.model.User;
 import com.floreantpos.model.UserPermission;
 import com.floreantpos.model.UserType;
+import com.floreantpos.model.dao.DiscountDAO;
 import com.floreantpos.model.dao.PosTransactionDAO;
 import com.floreantpos.model.dao.RestaurantDAO;
 import com.floreantpos.model.dao.ShiftDAO;
@@ -49,6 +51,7 @@ import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.model.dao.UserDAO;
 import com.floreantpos.model.dao.UserTypeDAO;
 import com.floreantpos.model.dao._RootDAO;
+import com.floreantpos.ui.dialog.DiscountSelectionDialog;
 
 public class DatabaseUtil {
 	private static Log logger = LogFactory.getLog(DatabaseUtil.class);
@@ -214,6 +217,47 @@ public class DatabaseUtil {
 			serverUser.setActive(true);
 
 			dao.saveOrUpdate(serverUser);
+			
+			DiscountDAO discountDao = new DiscountDAO();
+			
+			Discount discount1=new Discount();
+			discount1.setName("Buy 1 and get 1 free"); 
+			discount1.setType(1);
+			discount1.setValue(100.0); 
+			discount1.setAutoApply(false);
+			discount1.setMinimunBuy(1); 
+			discount1.setQualificationType(0); 
+			discount1.setApplyToAll(true); 
+			discount1.setNeverExpire(true); 
+			discount1.setEnabled(true); 
+			
+			discountDao.saveOrUpdate(discount1); 
+			
+			Discount discount2=new Discount();
+			discount2.setName("Buy 2 and get 1 free"); 
+			discount2.setType(1);
+			discount2.setValue(100.0); 
+			discount2.setAutoApply(true);
+			discount2.setMinimunBuy(2); 
+			discount2.setQualificationType(0); 
+			discount2.setApplyToAll(true); 
+			discount2.setNeverExpire(true); 
+			discount2.setEnabled(true); 
+			
+			discountDao.saveOrUpdate(discount2); 
+			
+			Discount discount3=new Discount();
+			discount3.setName("10% Off"); 
+			discount3.setType(1);
+			discount3.setValue(10.0); 
+			discount3.setAutoApply(false);
+			discount3.setMinimunBuy(1); 
+			discount3.setQualificationType(0); 
+			discount3.setApplyToAll(true); 
+			discount3.setNeverExpire(true); 
+			discount3.setEnabled(true); 
+			
+			discountDao.saveOrUpdate(discount3); 
 			
 			if(!exportSampleData) {
 				return true;

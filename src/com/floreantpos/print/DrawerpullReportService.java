@@ -38,7 +38,7 @@ import com.floreantpos.model.PayOutTransaction;
 import com.floreantpos.model.PosTransaction;
 import com.floreantpos.model.Terminal;
 import com.floreantpos.model.Ticket;
-import com.floreantpos.model.TicketCouponAndDiscount;
+import com.floreantpos.model.TicketDiscount;
 import com.floreantpos.model.dao.CashDropTransactionDAO;
 import com.floreantpos.model.dao.GenericDAO;
 import com.floreantpos.model.dao.PayOutTransactionDAO;
@@ -131,9 +131,9 @@ public class DrawerpullReportService {
 
 			for (Iterator iter = list.iterator(); iter.hasNext();) {
 				Ticket ticket = (Ticket) iter.next();
-				if (ticket.getCouponAndDiscounts() != null) {
-					List<TicketCouponAndDiscount> discounts = ticket.getCouponAndDiscounts();
-					for (TicketCouponAndDiscount discount2 : discounts) {
+				if (ticket.getDiscounts() != null) {
+					List<TicketDiscount> discounts = ticket.getDiscounts();
+					for (TicketDiscount discount2 : discounts) {
 						++totalDiscountCount;
 						totalDiscountAmount += discount2.getValue();
 						totalDiscountGuest += ticket.getNumberOfGuests();
@@ -256,7 +256,6 @@ public class DrawerpullReportService {
 
 		for (Ticket ticket : list) {
 			ticket = dao.loadCouponsAndTransactions(ticket.getId());
-
 
 			TransactionSummary ts = calculateTransactionSummary(ticket, CashTransaction.class);
 			report.setCashReceiptCount(report.getCashReceiptCount() + ts.getCount());

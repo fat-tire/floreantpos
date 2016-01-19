@@ -25,7 +25,7 @@ import java.util.Map;
 
 import com.floreantpos.model.Discount;
 import com.floreantpos.model.Ticket;
-import com.floreantpos.model.TicketCouponAndDiscount;
+import com.floreantpos.model.TicketDiscount;
 import com.floreantpos.swing.ListTableModel;
 
 public class SalesExceptionReport {
@@ -62,16 +62,16 @@ public class SalesExceptionReport {
 	}
 
 	public void addDiscountData(Ticket ticket) {
-		List<TicketCouponAndDiscount> discounts = ticket.getCouponAndDiscounts();
+		List<TicketDiscount> discounts = ticket.getDiscounts();
 		if (discounts != null) {
-			for (TicketCouponAndDiscount discount : discounts) {
+			for (TicketDiscount discount : discounts) {
 				String name = discount.getName();
-				DiscountData discountData = disountMap.get(discount.getCouponAndDiscountId());
+				DiscountData discountData = disountMap.get(discount.getDiscountId());
 				if (discountData == null) {
 					discountData = new DiscountData();
-					discountData.code = discount.getCouponAndDiscountId();
+					discountData.code = discount.getDiscountId();
 					discountData.name = name;
-					disountMap.put(discount.getCouponAndDiscountId(), discountData);
+					disountMap.put(discount.getDiscountId(), discountData);
 				}
 
 				discountData.totalCount = ++discountData.totalCount;
@@ -83,9 +83,9 @@ public class SalesExceptionReport {
 			}
 		}
 	}
-	
+
 	public void addEmptyDiscounts(List<Discount> discounts) {
-		if(discounts != null) {
+		if (discounts != null) {
 			for (Discount discount : discounts) {
 				String name = discount.getName();
 				DiscountData discountData = disountMap.get(discount.getId());
@@ -280,20 +280,20 @@ public class SalesExceptionReport {
 			VoidData data = (VoidData) rows.get(rowIndex);
 
 			switch (columnIndex) {
-			case 0:
-				return String.valueOf(data.id);
+				case 0:
+					return String.valueOf(data.id);
 
-			case 1:
-				return data.getReasonCode();
+				case 1:
+					return data.getReasonCode();
 
-			case 2:
-				return data.wasted ? "Y" : "N"; //$NON-NLS-1$ //$NON-NLS-2$
+				case 2:
+					return data.wasted ? "Y" : "N"; //$NON-NLS-1$ //$NON-NLS-2$
 
-			case 3:
-				return String.valueOf(data.getCount());
+				case 3:
+					return String.valueOf(data.getCount());
 
-			case 4:
-				return data.getAmount();
+				case 4:
+					return data.getAmount();
 			}
 
 			return null;
@@ -303,39 +303,40 @@ public class SalesExceptionReport {
 
 	public class DiscountTableModel extends ListTableModel {
 		public DiscountTableModel() {
-			setColumnNames(new String[] { "no", "name", "code", "totalCount", "totalDiscount", "totalNetSales", "totalGuests", "partySize", "checkSize", "countPercent", "ratioDnet" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$ //$NON-NLS-11$
+			setColumnNames(new String[] {
+					"no", "name", "code", "totalCount", "totalDiscount", "totalNetSales", "totalGuests", "partySize", "checkSize", "countPercent", "ratioDnet" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$ //$NON-NLS-11$
 		}
 
 		public Object getValueAt(int rowIndex, int columnIndex) {
 			DiscountData data = (DiscountData) rows.get(rowIndex);
 
 			switch (columnIndex) {
-			case 0:
-				return data.code;
+				case 0:
+					return data.code;
 
-			case 1:
-				return data.name;
+				case 1:
+					return data.name;
 
-			case 2:
-				return data.code;
+				case 2:
+					return data.code;
 
-			case 3:
-				return data.totalCount;
+				case 3:
+					return data.totalCount;
 
-			case 4:
-				return data.totalDiscount;
-			case 5:
-				return data.totalNetSales;
-			case 6:
-				return data.totalGuest;
-			case 7:
-				return data.partySize;
-			case 8:
-				return data.checkSize;
-			case 9:
-				return data.countPercentage;
-			case 10:
-				return data.ratioDNet;
+				case 4:
+					return data.totalDiscount;
+				case 5:
+					return data.totalNetSales;
+				case 6:
+					return data.totalGuest;
+				case 7:
+					return data.partySize;
+				case 8:
+					return data.checkSize;
+				case 9:
+					return data.countPercentage;
+				case 10:
+					return data.ratioDNet;
 			}
 
 			return null;

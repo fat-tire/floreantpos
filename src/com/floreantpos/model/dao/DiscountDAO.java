@@ -45,6 +45,7 @@ public class DiscountDAO extends BaseDiscountDAO {
 			session = createNewSession();
 			Criteria criteria = session.createCriteria(getReferenceClass());
 			criteria.add(Restrictions.eq(Discount.PROP_ENABLED, Boolean.TRUE));
+			criteria.add(Restrictions.eq(Discount.PROP_QUALIFICATION_TYPE, Discount.QUALIFICATION_TYPE_ITEM));
 			criteria.add(Restrictions.or(Restrictions.eq(Discount.PROP_NEVER_EXPIRE, Boolean.TRUE), Restrictions.ge(Discount.PROP_EXPIRY_DATE, currentDate)));
 			return criteria.list();
 		} finally {
@@ -56,13 +57,13 @@ public class DiscountDAO extends BaseDiscountDAO {
 	public List<Discount> getValidCoupon(MenuItem menuItem) {
 		List<Discount> discountList = new ArrayList<Discount>();
 		for (Discount discount : getValidCoupons()) {
-			if (discount.getMenuItems().contains(menuItem)) {
+			if (discount.getMenuItems().contains(menuItem) || discount.isApplyToAll()) {
 				discountList.add(discount);
 			}
 		}
 		return discountList;
 	}
-	
+
 	public List<Discount> getTicketValidCoupon() {
 		Session session = null;
 

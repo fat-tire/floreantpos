@@ -55,11 +55,11 @@
 			</key>
 			<one-to-many class="com.floreantpos.model.TicketItem" />
 		</bag>
-		<bag cascade="all,delete-orphan" inverse="true" lazy="false" name="couponAndDiscounts" table="TICKET_COUPON_DISCOUNT">
+		<bag cascade="all,delete-orphan" inverse="true" lazy="false" name="discounts" table="TICKET_DISCOUNT">
 			<key>
 				<column name="TICKET_ID" />
 			</key>
-			<one-to-many class="com.floreantpos.model.TicketCouponAndDiscount" />
+			<one-to-many class="com.floreantpos.model.TicketDiscount" />
 		</bag>
 
 		<set cascade="all" inverse="true" lazy="false" name="transactions">

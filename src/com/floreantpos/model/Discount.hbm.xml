@@ -6,9 +6,12 @@
 			<generator class="identity" />
 		</id>
 		<property column="NAME" length="120" name="name" type="string" />
-		<property column="type" name="type" type="java.lang.Integer" />
+		<property column="TYPE" name="type" type="java.lang.Integer" />
 		<property column="BARCODE" length="120" name="barcode" type="string" />
-		<property column="qualificationType" name="QUALIFICATION_TYPE" type="java.lang.Integer" />
+		<property column="QUALIFICATION_TYPE" name="qualificationType" type="java.lang.Integer" />
+		<property column="APPLY_TO_ALL" name="applyToAll" type="java.lang.Boolean" />
+		<property column="MINIMUM_BUY" name="minimunBuy" type="java.lang.Integer" />
+		<property column="MAXIMUM_OFF" name="miximumOff" type="java.lang.Integer" />
 		<property column="VALUE" name="value" type="java.lang.Double" />
 		<property column="EXPIRY_DATE" name="expiryDate" type="java.util.Date" />
 		<property column="ENABLED" name="enabled" type="java.lang.Boolean" />

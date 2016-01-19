@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping package="com.floreantpos.model">
-  <class lazy="false" name="TicketCouponAndDiscount" table="TICKET_COUPON_DISCOUNT">
+  <class lazy="false" name="TicketDiscount" table="TICKET_DISCOUNT">
     <id column="ID" name="id" type="java.lang.Integer">
       <generator class="identity"/>
     </id>
-    <property column="COUPON_DISCOUNT_ID" name="couponAndDiscountId" type="java.lang.Integer"/>
+    <property column="DISCOUNT_ID" name="discountId" type="java.lang.Integer"/>
     <property column="NAME" length="30" name="name" type="string"/>
     <property column="TYPE" name="type" type="java.lang.Integer"/>
+    <property column="AUTO_APPLY" name="autoApply" type="java.lang.Boolean"/>
+     <property column="MINIMUM_AMOUNT" name="minimumAmount" type="java.lang.Integer"/>
     <property column="VALUE" name="value" type="java.lang.Double"/>
     <!--property name="amount" column="AMOUNT" type="java.lang.Double"></property-->
     <many-to-one class="com.floreantpos.model.Ticket" lazy="false" name="ticket">
