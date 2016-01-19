@@ -51,7 +51,6 @@ import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.model.dao.UserDAO;
 import com.floreantpos.model.dao.UserTypeDAO;
 import com.floreantpos.model.dao._RootDAO;
-import com.floreantpos.ui.dialog.DiscountSelectionDialog;
 
 public class DatabaseUtil {
 	private static Log logger = LogFactory.getLog(DatabaseUtil.class);
@@ -79,9 +78,9 @@ public class DatabaseUtil {
 		try {
 			SessionFactory sessionFactory = configuration.buildSessionFactory();
 			Session session = sessionFactory.openSession();
-			
+
 			dropModifiedTimeColumn(session);
-			
+
 			session.beginTransaction();
 			session.close();
 		} catch (Exception e) {
@@ -91,13 +90,11 @@ public class DatabaseUtil {
 
 	private static void dropModifiedTimeColumn(Session session) throws SQLException {
 		Connection connection = session.connection();
-		String[] tables = {"CUSTOMER","GRATUITY","INVENTORY_GROUP","INVENTORY_ITEM","INVENTORY_LOCATION",
-				"INVENTORY_META_CODE","INVENTORY_TRANSACTION","INVENTORY_TRANSACTION_TYPE","INVENTORY_UNIT",
-				"INVENTORY_VENDOR","INVENTORY_WAREHOUSE","KITCHEN_TICKET","KITCHEN_TICKET_ITEM",
-				"MENUITEM_MODIFIERGROUP","MENU_CATEGORY","MENU_GROUP","MENU_ITEM","MENU_MODIFIER",
-				"MENU_MODIFIER_GROUP","PURCHASE_ORDER","TAX","TERMINAL","TICKET","TICKETITEM_MODIFIERGROUP",
-				"TICKET_ITEM","TICKETITEM_DISCOUNT","TRANSACTIONS","USERS","ZIP_CODE_VS_DELIVERY_CHARGE"};
-		
+		String[] tables = { "CUSTOMER", "GRATUITY", "INVENTORY_GROUP", "INVENTORY_ITEM", "INVENTORY_LOCATION", "INVENTORY_META_CODE", "INVENTORY_TRANSACTION",
+				"INVENTORY_TRANSACTION_TYPE", "INVENTORY_UNIT", "INVENTORY_VENDOR", "INVENTORY_WAREHOUSE", "KITCHEN_TICKET", "KITCHEN_TICKET_ITEM",
+				"MENUITEM_MODIFIERGROUP", "MENU_CATEGORY", "MENU_GROUP", "MENU_ITEM", "MENU_MODIFIER", "MENU_MODIFIER_GROUP", "PURCHASE_ORDER", "TAX",
+				"TERMINAL", "TICKET", "TICKETITEM_MODIFIERGROUP", "TICKET_ITEM", "TICKETITEM_DISCOUNT", "TRANSACTIONS", "USERS", "ZIP_CODE_VS_DELIVERY_CHARGE" };
+
 		for (String table : tables) {
 			try {
 				Statement statement = connection.createStatement();
@@ -109,7 +106,8 @@ public class DatabaseUtil {
 		connection.commit();
 	}
 
-	public static boolean createDatabase(String connectionString, String hibernateDialect, String hibernateConnectionDriverClass, String user, String password, boolean exportSampleData) {
+	public static boolean createDatabase(String connectionString, String hibernateDialect, String hibernateConnectionDriverClass, String user, String password,
+			boolean exportSampleData) {
 		try {
 			Configuration configuration = _RootDAO.getNewConfiguration(null);
 
@@ -154,22 +152,22 @@ public class DatabaseUtil {
 			administrator.setName(com.floreantpos.POSConstants.ADMINISTRATOR);
 			administrator.setPermissions(new HashSet<UserPermission>(Arrays.asList(UserPermission.permissions)));
 			UserTypeDAO.getInstance().saveOrUpdate(administrator);
-			
+
 			UserType manager = new UserType();
 			manager.setName(com.floreantpos.POSConstants.MANAGER);
 			manager.setPermissions(new HashSet<UserPermission>(Arrays.asList(UserPermission.permissions)));
 			UserTypeDAO.getInstance().saveOrUpdate(manager);
-			
+
 			UserType cashier = new UserType();
 			cashier.setName(com.floreantpos.POSConstants.CASHIER);
-			cashier.setPermissions(new HashSet<UserPermission>(Arrays.asList(UserPermission.CREATE_TICKET, UserPermission.EDIT_TICKET, UserPermission.SETTLE_TICKET,
-					UserPermission.SPLIT_TICKET, UserPermission.VIEW_ALL_OPEN_TICKETS)));
+			cashier.setPermissions(new HashSet<UserPermission>(Arrays.asList(UserPermission.CREATE_TICKET, UserPermission.EDIT_TICKET,
+					UserPermission.SETTLE_TICKET, UserPermission.SPLIT_TICKET, UserPermission.VIEW_ALL_OPEN_TICKETS)));
 			UserTypeDAO.getInstance().saveOrUpdate(cashier);
-			
+
 			UserType server = new UserType();
 			server.setName("SR. CASHIER");
-			server.setPermissions(new HashSet<UserPermission>(Arrays.asList(UserPermission.CREATE_TICKET, UserPermission.EDIT_TICKET,UserPermission.TAKE_OUT, UserPermission.SETTLE_TICKET,
-					UserPermission.SPLIT_TICKET)));
+			server.setPermissions(new HashSet<UserPermission>(Arrays.asList(UserPermission.CREATE_TICKET, UserPermission.EDIT_TICKET, UserPermission.TAKE_OUT,
+					UserPermission.SETTLE_TICKET, UserPermission.SPLIT_TICKET)));
 			//server.setTest(Arrays.asList(OrderType.BAR_TAB));
 			UserTypeDAO.getInstance().saveOrUpdate(server);
 
@@ -184,7 +182,7 @@ public class DatabaseUtil {
 
 			UserDAO dao = new UserDAO();
 			dao.saveOrUpdate(administratorUser);
-			
+
 			User managerUser = new User();
 			managerUser.setUserId(124);
 			managerUser.setSsn("124");
@@ -195,7 +193,7 @@ public class DatabaseUtil {
 			managerUser.setActive(true);
 
 			dao.saveOrUpdate(managerUser);
-			
+
 			User cashierUser = new User();
 			cashierUser.setUserId(125);
 			cashierUser.setSsn("125");
@@ -206,7 +204,7 @@ public class DatabaseUtil {
 			cashierUser.setActive(true);
 
 			dao.saveOrUpdate(cashierUser);
-			
+
 			User serverUser = new User();
 			serverUser.setUserId(126);
 			serverUser.setSsn("126");
@@ -217,52 +215,52 @@ public class DatabaseUtil {
 			serverUser.setActive(true);
 
 			dao.saveOrUpdate(serverUser);
-			
+
 			DiscountDAO discountDao = new DiscountDAO();
-			
-			Discount discount1=new Discount();
-			discount1.setName("Buy 1 and get 1 free"); 
+
+			Discount discount1 = new Discount();
+			discount1.setName("Buy 1 and get 1 free");
 			discount1.setType(1);
-			discount1.setValue(100.0); 
+			discount1.setValue(100.0);
 			discount1.setAutoApply(false);
-			discount1.setMinimunBuy(1); 
-			discount1.setQualificationType(0); 
-			discount1.setApplyToAll(true); 
-			discount1.setNeverExpire(true); 
-			discount1.setEnabled(true); 
-			
-			discountDao.saveOrUpdate(discount1); 
-			
-			Discount discount2=new Discount();
-			discount2.setName("Buy 2 and get 1 free"); 
+			discount1.setMinimunBuy(2);
+			discount1.setQualificationType(0);
+			discount1.setApplyToAll(true);
+			discount1.setNeverExpire(true);
+			discount1.setEnabled(true);
+
+			discountDao.saveOrUpdate(discount1);
+
+			Discount discount2 = new Discount();
+			discount2.setName("Buy 2 and get 1 free");
 			discount2.setType(1);
-			discount2.setValue(100.0); 
+			discount2.setValue(100.0);
 			discount2.setAutoApply(true);
-			discount2.setMinimunBuy(2); 
-			discount2.setQualificationType(0); 
-			discount2.setApplyToAll(true); 
-			discount2.setNeverExpire(true); 
-			discount2.setEnabled(true); 
-			
-			discountDao.saveOrUpdate(discount2); 
-			
-			Discount discount3=new Discount();
-			discount3.setName("10% Off"); 
+			discount2.setMinimunBuy(3);
+			discount2.setQualificationType(0);
+			discount2.setApplyToAll(true);
+			discount2.setNeverExpire(true);
+			discount2.setEnabled(true);
+
+			discountDao.saveOrUpdate(discount2);
+
+			Discount discount3 = new Discount();
+			discount3.setName("10% Off");
 			discount3.setType(1);
-			discount3.setValue(10.0); 
+			discount3.setValue(10.0);
 			discount3.setAutoApply(false);
-			discount3.setMinimunBuy(1); 
-			discount3.setQualificationType(0); 
-			discount3.setApplyToAll(true); 
-			discount3.setNeverExpire(true); 
-			discount3.setEnabled(true); 
-			
-			discountDao.saveOrUpdate(discount3); 
-			
-			if(!exportSampleData) {
+			discount3.setMinimunBuy(1);
+			discount3.setQualificationType(0);
+			discount3.setApplyToAll(true);
+			discount3.setNeverExpire(true);
+			discount3.setEnabled(true);
+
+			discountDao.saveOrUpdate(discount3);
+
+			if (!exportSampleData) {
 				return true;
 			}
-			
+
 			DataImportAction.importMenuItems(DatabaseUtil.class.getResourceAsStream("/floreantpos-menu-items.xml"));
 
 			return true;
@@ -272,7 +270,7 @@ public class DatabaseUtil {
 			return false;
 		}
 	}
-	
+
 	public static boolean updateDatabase(String connectionString, String hibernateDialect, String hibernateConnectionDriverClass, String user, String password) {
 		try {
 			Configuration configuration = _RootDAO.getNewConfiguration(null);
