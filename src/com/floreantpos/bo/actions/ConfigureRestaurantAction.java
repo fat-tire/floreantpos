@@ -40,7 +40,7 @@ public class ConfigureRestaurantAction extends AbstractAction {
 
 	public void actionPerformed(ActionEvent e) {
 		ConfigurationDialog dialog = new ConfigurationDialog();
-		dialog.pack();
+		dialog.setSize(1024, 700);
 		dialog.open();
 	}
 
