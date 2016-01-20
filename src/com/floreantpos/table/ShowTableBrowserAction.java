@@ -2,13 +2,14 @@ package com.floreantpos.table;
 
 import javax.swing.JTabbedPane;
 
+import com.floreantpos.Messages;
 import com.floreantpos.actions.PosAction;
 import com.floreantpos.bo.ui.BackOfficeWindow;
 
 public class ShowTableBrowserAction extends PosAction {
 
 	public ShowTableBrowserAction() {
-		super("Tables");
+		super(Messages.getString("ShowTableBrowserAction.0")); //$NON-NLS-1$
 	}
 
 	@Override
@@ -17,10 +18,10 @@ public class ShowTableBrowserAction extends PosAction {
 
 		ShopTableBrowser explorer = null;
 		JTabbedPane tabbedPane = backOfficeWindow.getTabbedPane();
-		int index = tabbedPane.indexOfTab("Tables");
+		int index = tabbedPane.indexOfTab(Messages.getString("ShowTableBrowserAction.1")); //$NON-NLS-1$
 		if (index == -1) {
 			explorer = new ShopTableBrowser();
-			tabbedPane.addTab("Tables", explorer);
+			tabbedPane.addTab(Messages.getString("ShowTableBrowserAction.2"), explorer); //$NON-NLS-1$
 		}
 		else {
 			explorer = (ShopTableBrowser) tabbedPane.getComponentAt(index);

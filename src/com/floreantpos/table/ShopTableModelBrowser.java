@@ -37,7 +37,6 @@ public class ShopTableModelBrowser<E> extends ModelBrowser {
 	public void actionPerformed(ActionEvent e) {
 		Command command = Command.fromString(e.getActionCommand());
 		try {
-
 			switch (command) {
 				case NEW:
 					beanEditor.createNew();
@@ -76,7 +75,6 @@ public class ShopTableModelBrowser<E> extends ModelBrowser {
 						btnCancel.setEnabled(false);
 						refreshTable();
 						customSelectedRow();
-
 					}
 					break;
 
@@ -152,11 +150,9 @@ public class ShopTableModelBrowser<E> extends ModelBrowser {
 	}
 
 	private int getRowByValue(TableModel model, Object value) {
-		for (int i = model.getRowCount() - 1; i >= 0; --i) {
-			for (int j = model.getColumnCount() - 1; j >= 0; --j) {
-				if (model.getValueAt(i, j).equals(value)) {
-					return i;
-				}
+		for (int i = 0; i <= model.getRowCount(); i++) {
+			if (model.getValueAt(i, 0).equals(value)) {
+				return i;
 			}
 		}
 		return -1;

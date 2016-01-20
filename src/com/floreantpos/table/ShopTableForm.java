@@ -73,7 +73,7 @@ public class ShopTableForm extends BeanEditor<ShopTable> {
 	public ShopTableForm() {
 		setPreferredSize(new Dimension(600, 800));
 		setLayout(new MigLayout("", "[][grow]", "[][][][][][][][]")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		setBorder(BorderFactory.createTitledBorder(Messages.getString("ShopTableForm.19")));//$NON-NLS-3$ //$NON-NLS-1$
+		setBorder(BorderFactory.createTitledBorder(Messages.getString("ShopTableForm.19"))); //$NON-NLS-1$
 		tableTypeCBoxList = new CheckBoxList();
 		tableTypeCBoxList.setModel(ShopTableTypeDAO.getInstance().findAll());
 		JScrollPane tableTypeCheckBoxList = new JScrollPane(tableTypeCBoxList);
@@ -242,6 +242,21 @@ public class ShopTableForm extends BeanEditor<ShopTable> {
 			if (option != JOptionPane.YES_OPTION) {
 				return false;
 			}
+
+			List<TableBookingInfo> bookingList = TableBookingInfoDAO.getInstance().findAll();
+
+			for (TableBookingInfo info : bookingList) {
+				List<ShopTable> tableList = info.getTables();
+				for (ShopTable shopTable : tableList) {
+					if (shopTable.getId().equals(bean2.getId())) {
+						tableList.remove(shopTable);
+						info.setTables(tableList);
+						TableBookingInfoDAO.getInstance().saveOrUpdate(info);
+						break;
+					}
+				}
+			}
+
 			ShopTableDAO.getInstance().delete(bean2);
 
 			tfTableCapacity.setText(""); //$NON-NLS-1$
@@ -266,7 +281,7 @@ public class ShopTableForm extends BeanEditor<ShopTable> {
 			return false;
 		}
 
-		int option = POSMessageDialog.showYesNoQuestionDialog(POSUtil.getBackOfficeWindow(), "This will Remove all your tables. Are you sure?", "Confirm"); //$NON-NLS-1$ //$NON-NLS-2$
+		int option = POSMessageDialog.showYesNoQuestionDialog(POSUtil.getBackOfficeWindow(), Messages.getString("ShopTableForm.20"), Messages.getString("ShopTableForm.21")); //$NON-NLS-1$ //$NON-NLS-2$
 		if (option != JOptionPane.YES_OPTION) {
 			return false;
 		}

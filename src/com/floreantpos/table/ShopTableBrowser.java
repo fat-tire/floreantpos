@@ -6,6 +6,7 @@ import javax.swing.JTable;
 import javax.swing.table.TableColumn;
 
 
+import com.floreantpos.Messages;
 import com.floreantpos.model.ShopTable;
 import com.floreantpos.model.dao.ShopTableDAO;
 import com.floreantpos.swing.BeanTableModel;
@@ -17,9 +18,9 @@ public class ShopTableBrowser extends ShopTableModelBrowser<ShopTable> {
 		
 		BeanTableModel<ShopTable> tableModel = new BeanTableModel<ShopTable>(ShopTable.class);
 		
-		tableModel.addColumn("Table No", ShopTable.PROP_ID);  //$NON-NLS-1$
-		tableModel.addColumn("Capacity", ShopTable.PROP_CAPACITY); //$NON-NLS-1$
-		tableModel.addColumn("Description", ShopTable.PROP_DESCRIPTION); //$NON-NLS-1$
+		tableModel.addColumn(Messages.getString("ShopTableBrowser.0"), ShopTable.PROP_ID); //$NON-NLS-1$
+		tableModel.addColumn(Messages.getString("ShopTableBrowser.1"), ShopTable.PROP_CAPACITY); //$NON-NLS-1$
+		tableModel.addColumn(Messages.getString("ShopTableBrowser.2"), ShopTable.PROP_DESCRIPTION); //$NON-NLS-1$
 		
 		init(tableModel);
 		
