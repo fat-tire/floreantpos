@@ -40,6 +40,7 @@ import org.apache.commons.lang.StringUtils;
 import com.floreantpos.IconFactory;
 import com.floreantpos.Messages;
 import com.floreantpos.POSConstants;
+import com.floreantpos.main.Application;
 import com.floreantpos.model.Gratuity;
 import com.floreantpos.model.PaymentType;
 import com.floreantpos.model.Ticket;
@@ -121,14 +122,14 @@ public class PaymentView extends JPanel {
 		txtTenderedAmount = new JTextField();
 
 		labelTenderedAmount.setFont(new java.awt.Font("Tahoma", 1, 20)); // NOI18N //$NON-NLS-1$
-		labelTenderedAmount.setText(Messages.getString("PaymentView.54")); //$NON-NLS-1$
+		labelTenderedAmount.setText(Messages.getString("PaymentView.54")+" "+Application.getCurrencySymbol()); //$NON-NLS-1$ //$NON-NLS-2$
 		labelTenderedAmount.setForeground(Color.gray);
 
 		txtTenderedAmount.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
 		txtTenderedAmount.setFont(new java.awt.Font("Tahoma", 1, 20)); // NOI18N //$NON-NLS-1$
 
 		labelDueAmount.setFont(new java.awt.Font("Tahoma", 1, 20)); // NOI18N //$NON-NLS-1$
-		labelDueAmount.setText(Messages.getString("PaymentView.52")); //$NON-NLS-1$
+		labelDueAmount.setText(Messages.getString("PaymentView.52")+" "+Application.getCurrencySymbol()); //$NON-NLS-1$ //$NON-NLS-2$
 		labelDueAmount.setForeground(Color.gray);
 
 		txtDueAmount.setFont(new java.awt.Font("Tahoma", 1, 20)); // NOI18N //$NON-NLS-1$

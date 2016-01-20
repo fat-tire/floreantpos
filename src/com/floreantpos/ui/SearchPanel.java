@@ -38,4 +38,8 @@ public abstract class SearchPanel<E> extends JPanel {
 		this.modelBrowser = modelBrowser;
 	}
 
+	public void refreshSearchPanel() {
+
+	}
+
 }

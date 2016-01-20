@@ -24,6 +24,14 @@ import com.floreantpos.model.base.BaseTableBookingInfo;
 
 public class TableBookingInfo extends BaseTableBookingInfo {
 	private static final long serialVersionUID = 1L;
+	
+	public static final String STATUS_CANCEL="cancel";
+	public static final String STATUS_CLOSE="close";
+	public static final String STATUS_NO_APR="no appear";
+	public static final String STATUS_SEAT="seat";
+	public static final String STATUS_DELAY="delay";
+	public static final String STATUS_OPEN="open";
+	
 
 	/*[CONSTRUCTOR MARKER BEGIN]*/
 	public TableBookingInfo () {
@@ -49,7 +57,6 @@ public class TableBookingInfo extends BaseTableBookingInfo {
 	 * @return the customerInfo
 	 */
 	public String getCustomerInfo() {
-		
 		Customer customer = getCustomer();
 
 		if(customer == null) {

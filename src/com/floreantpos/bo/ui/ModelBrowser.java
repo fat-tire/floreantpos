@@ -278,12 +278,16 @@ public class ModelBrowser<E> extends JPanel implements ActionListener, ListSelec
 		return beanEditor;
 	}
 
-	public JPanel getButtonPanel() {
-		return buttonPanel;
-	}
-	
 	public SearchPanel<E> getSearchPanel() {
 		return searchPanel;
 	}
-
+	
+	public void refreshButtonPanel() {
+		beanEditor.clearFields();
+		btnNew.setEnabled(true);
+		btnEdit.setEnabled(false);
+		btnSave.setEnabled(false);
+		btnDelete.setEnabled(false);
+		btnCancel.setEnabled(false);
+	}
 }

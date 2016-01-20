@@ -51,13 +51,16 @@ public class TableBookingInfoDAO extends BaseTableBookingInfoDAO {
 			Criteria criteria = session.createCriteria(getReferenceClass());
 			//	criteria.add(Restrictions.ge(TableBookingInfo.PROP_TO_DATE, startDate));
 
-			criteria.add(Restrictions.ge(TableBookingInfo.PROP_TO_DATE, startDate)).add(Restrictions.eq(TableBookingInfo.PROP_STATUS, "open"));
+			criteria.add(Restrictions.ge(TableBookingInfo.PROP_TO_DATE, startDate))
+					.add(Restrictions.ne(TableBookingInfo.PROP_STATUS, TableBookingInfo.STATUS_CANCEL))
+					.add(Restrictions.ne(TableBookingInfo.PROP_STATUS, TableBookingInfo.STATUS_NO_APR))
+					.add(Restrictions.ne(TableBookingInfo.PROP_STATUS, TableBookingInfo.STATUS_CLOSE));
 
 			List<TableBookingInfo> list = criteria.list();
 			List<TableBookingInfo> bookings = new ArrayList<TableBookingInfo>();
 
 			for (TableBookingInfo tableBookingInfo : list) {
-				if(DateUtil.between(tableBookingInfo.getFromDate(), tableBookingInfo.getToDate(), startDate)
+				if (DateUtil.between(tableBookingInfo.getFromDate(), tableBookingInfo.getToDate(), startDate)
 						|| DateUtil.between(tableBookingInfo.getFromDate(), tableBookingInfo.getToDate(), endDate)) {
 					bookings.add(tableBookingInfo);
 				}
@@ -66,7 +69,7 @@ public class TableBookingInfoDAO extends BaseTableBookingInfoDAO {
 			Set<ShopTable> bookedTables = new HashSet<ShopTable>();
 			for (TableBookingInfo tableBookingInfo : bookings) {
 				List<ShopTable> tables = tableBookingInfo.getTables();
-				if(tables != null) {
+				if (tables != null) {
 					bookedTables.addAll(tables);
 				}
 			}
@@ -75,7 +78,7 @@ public class TableBookingInfoDAO extends BaseTableBookingInfoDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			if(session != null) {
+			if (session != null) {
 				closeSession(session);
 			}
 		}
@@ -97,7 +100,7 @@ public class TableBookingInfoDAO extends BaseTableBookingInfoDAO {
 			session = createNewSession();
 
 			Criteria criteria = session.createCriteria(getReferenceClass());
-			criteria.add(Restrictions.ne(TableBookingInfo.PROP_STATUS, "close"));
+			criteria.add(Restrictions.ne(TableBookingInfo.PROP_STATUS, TableBookingInfo.STATUS_CLOSE));
 			List list = criteria.list();
 			return list;
 		} catch (Exception e) {
@@ -124,11 +127,12 @@ public class TableBookingInfoDAO extends BaseTableBookingInfoDAO {
 			bookingInfo.setStatus(bookingStatus);
 			saveOrUpdate(bookingInfo);
 
-			if(bookingStatus.equals("seat")) {
+			if (bookingStatus.equals(TableBookingInfo.STATUS_SEAT) || bookingStatus.equals(TableBookingInfo.STATUS_DELAY)) {
 				ShopTableDAO.getInstance().bookedTables(tables);
 			}
 
-			if(bookingStatus.equals("cancel") || bookingStatus.equals("close")) {
+			if (bookingStatus.equals(TableBookingInfo.STATUS_CANCEL) || bookingStatus.equals(TableBookingInfo.STATUS_NO_APR)
+					|| bookingStatus.equals(TableBookingInfo.STATUS_CLOSE)) {
 				ShopTableDAO.getInstance().freeTables(tables);
 			}
 
@@ -196,8 +200,8 @@ public class TableBookingInfoDAO extends BaseTableBookingInfoDAO {
 			Criteria criteria = session.createCriteria(TableBookingInfo.class);
 
 			criteria.add(Restrictions.ge(TableBookingInfo.PROP_FROM_DATE, startDate.getTime()))
-					.add(Restrictions.le(TableBookingInfo.PROP_FROM_DATE, endDate.getTime())).add(Restrictions.eq(TableBookingInfo.PROP_STATUS, "open"));
-
+					.add(Restrictions.le(TableBookingInfo.PROP_FROM_DATE, endDate.getTime()))
+					.add(Restrictions.eq(TableBookingInfo.PROP_STATUS, TableBookingInfo.STATUS_OPEN));
 			List list = criteria.list();
 
 			return list;
@@ -217,7 +221,7 @@ public class TableBookingInfoDAO extends BaseTableBookingInfoDAO {
 			Criteria criteria = session.createCriteria(TableBookingInfo.class);
 
 			criteria.add(Restrictions.ge(TableBookingInfo.PROP_FROM_DATE, startDate)).add(Restrictions.le(TableBookingInfo.PROP_FROM_DATE, endDate))
-					.add(Restrictions.eq(TableBookingInfo.PROP_STATUS, "open"));
+					.add(Restrictions.ne(TableBookingInfo.PROP_STATUS, TableBookingInfo.STATUS_CLOSE));
 
 			List list = criteria.list();
 
@@ -229,25 +233,4 @@ public class TableBookingInfoDAO extends BaseTableBookingInfoDAO {
 		}
 		return null;
 	}
-	
-	
-/*	public List getIdByTable(ShopTable table) {
-
-		Session session = null;
-		try {
-			session = createNewSession();
-			Criteria criteria = session.createCriteria(TableBookingInfo.class);
-
-			criteria.add(Restrictions.eq(TableBookingInfo.p))
-
-			List list = criteria.list();
-
-			return list;
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			session.close();
-		}
-		return null;
-	}*/
 }

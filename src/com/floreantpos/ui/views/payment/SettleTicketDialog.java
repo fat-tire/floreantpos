@@ -232,7 +232,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 
 		JLabel lblSubtotal = new javax.swing.JLabel();
 		lblSubtotal.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-		lblSubtotal.setText(com.floreantpos.POSConstants.SUBTOTAL + ":"); //$NON-NLS-1$
+		lblSubtotal.setText(com.floreantpos.POSConstants.SUBTOTAL + ":"+" "+Application.getCurrencySymbol()); //$NON-NLS-1$ //$NON-NLS-2$
 
 		tfSubtotal = new javax.swing.JTextField(10);
 		tfSubtotal.setHorizontalAlignment(SwingConstants.TRAILING);
@@ -240,7 +240,8 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 
 		JLabel lblDiscount = new javax.swing.JLabel();
 		lblDiscount.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-		lblDiscount.setText(Messages.getString("TicketView.9")); //$NON-NLS-1$
+		lblDiscount.setText(Messages.getString("TicketView.9")+" "+Application.getCurrencySymbol()); //$NON-NLS-1$ //$NON-NLS-2$
+		
 
 		tfDiscount = new javax.swing.JTextField(10);
 		//	tfDiscount.setFont(tfDiscount.getFont().deriveFont(Font.PLAIN, 16));
@@ -250,7 +251,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 
 		JLabel lblTax = new javax.swing.JLabel();
 		lblTax.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-		lblTax.setText(com.floreantpos.POSConstants.TAX + ":"); //$NON-NLS-1$
+		lblTax.setText(com.floreantpos.POSConstants.TAX + ":"+" "+Application.getCurrencySymbol()); //$NON-NLS-1$ //$NON-NLS-2$
 
 		tfTax = new javax.swing.JTextField();
 		//	tfTax.setFont(tfTax.getFont().deriveFont(Font.PLAIN, 16));
@@ -259,7 +260,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 
 		JLabel lblGratuity = new javax.swing.JLabel();
 		lblGratuity.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-		lblGratuity.setText(Messages.getString("SettleTicketDialog.5") + ":"); //$NON-NLS-1$//$NON-NLS-2$
+		lblGratuity.setText(Messages.getString("SettleTicketDialog.5") + ":"+" "+Application.getCurrencySymbol()); //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
 
 		tfGratuity = new javax.swing.JTextField();
 		tfGratuity.setEditable(false);
@@ -268,7 +269,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 		JLabel lblTotal = new javax.swing.JLabel();
 		lblTotal.setFont(lblTotal.getFont().deriveFont(Font.BOLD, 18));
 		lblTotal.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-		lblTotal.setText(com.floreantpos.POSConstants.TOTAL + ":"); //$NON-NLS-1$
+		lblTotal.setText(com.floreantpos.POSConstants.TOTAL + ":"+" "+Application.getCurrencySymbol()); //$NON-NLS-1$ //$NON-NLS-2$
 
 		tfTotal = new javax.swing.JTextField(10);
 		tfTotal.setFont(tfTotal.getFont().deriveFont(Font.BOLD, 18));
