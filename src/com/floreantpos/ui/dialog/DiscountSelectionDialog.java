@@ -301,9 +301,7 @@ public class DiscountSelectionDialog extends POSDialog implements ActionListener
 		public void actionPerformed(ActionEvent e) {
 			if (btnItem.isSelected()) {
 				if (isSelected()) {
-					if (ticketItem.getItemCount() >= discount.getMinimunBuy()) {
-						addedTicketItemDiscounts.put(discount.getId(), MenuItem.convertToTicketItemDiscount(discount, ticketItem));
-					}
+					addedTicketItemDiscounts.put(discount.getId(), MenuItem.convertToTicketItemDiscount(discount, ticketItem));
 				}
 				else {
 					addedTicketItemDiscounts.remove(discount.getId());
@@ -312,9 +310,7 @@ public class DiscountSelectionDialog extends POSDialog implements ActionListener
 			else {
 
 				if (isSelected()) {
-					if (ticket.getSubtotalAmount() >= discount.getMinimunBuy()) {
-						addedTicketDiscounts.put(discount.getId(), Ticket.convertToTicketDiscount(discount, ticket));
-					}
+					addedTicketDiscounts.put(discount.getId(), Ticket.convertToTicketDiscount(discount, ticket));
 				}
 				else {
 					addedTicketDiscounts.remove(discount.getId());
