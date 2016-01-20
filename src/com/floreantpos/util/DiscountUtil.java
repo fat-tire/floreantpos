@@ -20,7 +20,7 @@ public class DiscountUtil {
 
 			switch (ticketItemDiscount.getType()) {
 				case Discount.DISCOUNT_TYPE_AMOUNT:
-					return Math.floor(itemCount / minQuantity) * ticketItem.getUnitPrice() - ticketItemDiscount.getValue();
+					return Math.floor(itemCount / minQuantity) * ticketItemDiscount.getValue();
 
 				case Discount.DISCOUNT_TYPE_PERCENTAGE:
 					return Math.floor(itemCount / minQuantity) * (ticketItem.getUnitPrice() * ticketItemDiscount.getValue() / 100);
