@@ -58,6 +58,8 @@ public class TerminalConfig {
 	private static final String ADMIN_PASSWORD = "admin_pass";//$NON-NLS-1$
 
 	private static final String SHOW_BARCODE_ON_RECEIPT = "show_barcode_on_receipt";//$NON-NLS-1$
+	
+	private static final String DEFAULT_VIEW = "default_view";//$NON-NLS-1$
 
 	static final String TERMINAL_ID = "terminal_id"; //$NON-NLS-1$
 	static final String FULLSCREEN_MODE = "fullscreen_mode"; //$NON-NLS-1$
@@ -155,11 +157,20 @@ public class TerminalConfig {
 	public static void setUiDefaultFont(String fontName) {
 		config.setProperty(UI_DEFAULT_FONT, fontName);
 	}
+	
+	public static String getDefaultView() {
+		return config.getString(DEFAULT_VIEW);
+	}
+	
+	public static void setDefaultView(String viewName) {
+		config.setProperty(DEFAULT_VIEW, viewName);
+	}
+
 
 	public static void setShowDbConfigureButton(boolean show) {
 		config.setProperty(SHOW_DB_CONFIGURATION, show);
 	}
-
+	
 	public static boolean isShowDbConfigureButton() {
 		return config.getBoolean(SHOW_DB_CONFIGURATION, true);
 	}

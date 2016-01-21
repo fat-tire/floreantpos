@@ -38,6 +38,7 @@ import com.floreantpos.actions.ServerTipsAction;
 import com.floreantpos.actions.ShowKitchenDisplayAction;
 import com.floreantpos.actions.ShowOnlineTicketManagementAction;
 import com.floreantpos.actions.ShowTransactionsAuthorizationsAction;
+import com.floreantpos.actions.SwithboardViewAction;
 import com.floreantpos.main.Application;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.ui.views.order.RootView;
@@ -55,7 +56,7 @@ public class SwitchboardOtherFunctionsView extends ViewPanel {
 		btnBack.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				RootView.getInstance().showView(SwitchboardView.VIEW_NAME);
+				RootView.getInstance().showDefaultView();
 			}
 		});
 		add(btnBack, BorderLayout.SOUTH);
@@ -71,6 +72,7 @@ public class SwitchboardOtherFunctionsView extends ViewPanel {
 				new ServerTipsAction(),
 				new ShowTransactionsAuthorizationsAction(),
 				new ShowKitchenDisplayAction(),
+				new SwithboardViewAction(),
 				new ManageTableLayoutAction(),
 				new ShowOnlineTicketManagementAction()
 		};

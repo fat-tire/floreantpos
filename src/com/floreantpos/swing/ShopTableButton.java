@@ -18,8 +18,11 @@
 package com.floreantpos.swing;
 
 import java.awt.Color;
+import java.util.List;
 
 import com.floreantpos.model.ShopTable;
+import com.floreantpos.model.Ticket;
+import com.floreantpos.model.dao.TicketDAO;
 
 public class ShopTableButton extends PosButton {
 	private ShopTable shopTable;
@@ -29,6 +32,10 @@ public class ShopTableButton extends PosButton {
 		setText(shopTable.toString());
 		
 		update();
+	}
+	
+	public int getId(){
+		return shopTable.getId(); 
 	}
 
 	public void setShopTable(ShopTable shopTable) {
@@ -65,21 +72,33 @@ public class ShopTableButton extends PosButton {
 		if(shopTable != null && shopTable.isServing()) {
 			
 			//setEnabled(false);
-			setBackground(Color.GRAY);
+			setBackground(Color.red);
 			setForeground(Color.BLACK);
 		}
 		else if(shopTable != null && shopTable.isBooked()) {
 			
 			setEnabled(false);
 			setOpaque(true); 
-			setBackground(Color.GRAY);
+			setBackground(Color.orange);
 			setForeground(Color.BLACK);
 		}
 		else {
 			
 			setEnabled(true);
-			setBackground(Color.green);
+			setBackground(Color.white);
 			setForeground(Color.black);
 		}
+	}
+	
+	public Ticket getTicket(){
+		List<Ticket> openTickets = TicketDAO.getInstance().findOpenTickets();
+		Ticket selectedTicket=null; 
+		for (Ticket ticket : openTickets) {
+			if (ticket.getTableNumbers().contains(getId())) {
+				selectedTicket=ticket; 
+
+			}
+		}
+		return selectedTicket;
 	}
 }

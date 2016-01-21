@@ -22,6 +22,7 @@ import java.awt.Font;
 import java.awt.GraphicsEnvironment;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
@@ -40,6 +41,7 @@ import org.apache.commons.lang.StringUtils;
 import com.floreantpos.Messages;
 import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.main.Application;
+import com.floreantpos.model.OrderType;
 import com.floreantpos.model.Terminal;
 import com.floreantpos.model.dao.TerminalDAO;
 import com.floreantpos.swing.DoubleTextField;
@@ -58,6 +60,7 @@ public class TerminalConfigurationView extends ConfigurationView {
 	private JCheckBox cbShowBarCodeOnReceipt = new JCheckBox(Messages.getString("TerminalConfigurationView.21")); //$NON-NLS-1$
 
 	private JComboBox<String> cbFonts = new JComboBox<String>();
+	private JComboBox<String> cbDefaultView;
 
 	private IntegerTextField tfButtonHeight;
 	private IntegerTextField tfMenuButtonHeight;
@@ -115,6 +118,17 @@ public class TerminalConfigurationView extends ConfigurationView {
 
 		add(new JLabel(Messages.getString("TerminalConfigurationView.17")), "newline"); //$NON-NLS-1$//$NON-NLS-2$
 		add(cbFonts, "span 2, wrap"); //$NON-NLS-1$
+		
+		Vector<String> defaultViewList=new Vector<String>();
+		defaultViewList.add(OrderType.DINE_IN.toString()); 
+		defaultViewList.add(OrderType.TAKE_OUT.toString()); 
+		defaultViewList.add("OTHER FUNCTION");
+		defaultViewList.add("SWITCHBOARD VIEW"); 
+		
+		cbDefaultView= new JComboBox<String>(defaultViewList); 
+		
+		add(new JLabel("Default View"), "newline"); //$NON-NLS-1$//$NON-NLS-2$
+		add(cbDefaultView, "span 2, wrap"); //$NON-NLS-1$
 
 		JPanel touchConfigPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 20, 10));
 		touchConfigPanel.setBorder(BorderFactory.createTitledBorder(Messages.getString("TerminalConfigurationView.18"))); //$NON-NLS-1$
@@ -278,7 +292,10 @@ public class TerminalConfigurationView extends ConfigurationView {
 		if ("<select>".equals(selectedFont)) { //$NON-NLS-1$
 			selectedFont = null;
 		}
-
+		
+		String selectedView = (String) cbDefaultView.getSelectedItem();
+		
+		TerminalConfig.setDefaultView(selectedView); 
 		TerminalConfig.setUiDefaultFont(selectedFont);
 		TerminalConfig.setDrawerPortName(tfDrawerName.getText());
 		TerminalConfig.setDrawerControlCodes(tfDrawerCodes.getText());
@@ -320,6 +337,8 @@ public class TerminalConfigurationView extends ConfigurationView {
 		tfLogoffTime.setEnabled(cbAutoLogoff.isSelected());
 
 		initializeFontConfig();
+		
+		cbDefaultView.setSelectedItem(TerminalConfig.getDefaultView()); 
 
 		Terminal terminal = Application.getInstance().refreshAndGetTerminal();
 		chkHasCashDrawer.setSelected(terminal.isHasCashDrawer());

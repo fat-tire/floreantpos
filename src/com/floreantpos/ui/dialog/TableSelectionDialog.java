@@ -163,7 +163,7 @@ public class TableSelectionDialog extends POSDialog implements ActionListener {
 			return true;
 		}
 		button.getShopTable().setServing(true);
-		button.setBackground(Color.red);
+		button.setBackground(Color.green);
 		button.setForeground(Color.black);
 		this.addedTableListModel.addElement(button);
 		return true;
@@ -269,7 +269,7 @@ public class TableSelectionDialog extends POSDialog implements ActionListener {
 			ShopTableButton shopTableButton = tableButtonMap.get(shopTable);
 			shopTableButton.getShopTable().setServing(false);
 			shopTableButton.getShopTable().setBooked(false);
-			shopTableButton.setBackground(Color.red);
+			shopTableButton.setBackground(Color.green);
 			shopTableButton.setForeground(Color.black);
 			shopTableButton.setEnabled(true);
 

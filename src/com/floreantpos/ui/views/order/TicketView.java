@@ -57,7 +57,6 @@ import com.floreantpos.swing.PosScrollPane;
 import com.floreantpos.ui.dialog.ItemNumberSelectionDialog;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.views.CashierSwitchBoardView;
-import com.floreantpos.ui.views.SwitchboardView;
 import com.floreantpos.ui.views.order.actions.OrderListener;
 import com.floreantpos.util.NumberUtil;
 import com.floreantpos.util.POSUtil;
@@ -327,7 +326,7 @@ public class TicketView extends JPanel {
 			RootView.getInstance().showView(CashierSwitchBoardView.VIEW_NAME);
 		}
 		else {
-			RootView.getInstance().showView(SwitchboardView.VIEW_NAME);
+			RootView.getInstance().showDefaultView(); 
 		}
 	}
 

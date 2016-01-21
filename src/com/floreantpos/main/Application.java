@@ -62,7 +62,6 @@ import com.floreantpos.model.dao.TerminalDAO;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.views.CashierSwitchBoardView;
 import com.floreantpos.ui.views.LoginView;
-import com.floreantpos.ui.views.SwitchboardView;
 import com.floreantpos.ui.views.order.OrderView;
 import com.floreantpos.ui.views.order.RootView;
 import com.floreantpos.util.DatabaseConnectionException;
@@ -107,7 +106,7 @@ public class Application {
 	public void start() {
 		setApplicationLook();
 		//initializeTouchScroll();
-		
+
 		rootView = RootView.getInstance();
 
 		posWindow.getContentPane().add(rootView);
@@ -119,7 +118,7 @@ public class Application {
 		posWindow.setVisible(true);
 
 		initializeSystem();
-		
+
 		for (FloreantPlugin plugin : ExtensionManager.getPlugins()) {
 			plugin.init();
 		}
@@ -134,7 +133,7 @@ public class Application {
 			//UIManager.put("control", UIManager.getColor("control").brighter());
 			//UIManager.put("Button.background", UIManager.getColor("Button.background").brighter());
 			//UIManager.put("ToggleButton.background", UIManager.getColor("ToggleButton.background").brighter());
-			
+
 			initializeFont();
 
 			PlasticXPLookAndFeel.setPlasticTheme(new ExperienceBlue());
@@ -142,8 +141,6 @@ public class Application {
 		} catch (Exception ignored) {
 		}
 	}
-
-	
 
 	public void initializeSystem() {
 		if (isSystemInitialized()) {
@@ -329,16 +326,14 @@ public class Application {
 		if (user == null) {
 			return;
 		}
-		
+
 		Shift currentShift = ShiftUtil.getCurrentShift();
 		setCurrentShift(currentShift);
-		
+
 		if (!user.isClockedIn()) {
 
 			int option = POSMessageDialog.showYesNoQuestionDialog(posWindow, Messages.getString("Application.43"), Messages.getString("Application.44")); //$NON-NLS-1$ //$NON-NLS-2$
 			if (option == JOptionPane.YES_OPTION) {
-
-				
 
 				//			if (currentShift == null) {
 				//				throw new ShiftException(POSConstants.NO_SHIFT_CONFIGURED);
@@ -351,7 +346,7 @@ public class Application {
 		}
 
 		setCurrentUser(user);
-		
+
 		RootView rootView = getRootView();
 
 		if (!rootView.hasView(OrderView.VIEW_NAME)) {
@@ -377,7 +372,7 @@ public class Application {
 			}
 		}
 		else {
-			rootView.showView(SwitchboardView.getInstance());
+			rootView.showDefaultView();
 		}
 	}
 
@@ -410,11 +405,11 @@ public class Application {
 	public Terminal getTerminal() {
 		return terminal;
 	}
-	
+
 	public synchronized Terminal refreshAndGetTerminal() {
-		
+
 		TerminalDAO.getInstance().refresh(terminal);
-		
+
 		return terminal;
 	}
 
@@ -489,7 +484,7 @@ public class Application {
 		File file = new File(getClass().getProtectionDomain().getCodeSource().getLocation().getFile());
 		return file.getParent();
 	}
-	
+
 	private void initializeFont() {
 		String uiDefaultFont = TerminalConfig.getUiDefaultFont();
 		if (StringUtils.isEmpty(uiDefaultFont)) {
