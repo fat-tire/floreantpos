@@ -17,7 +17,6 @@
  */
 package com.floreantpos.ui.views;
 
-
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -45,11 +44,11 @@ import com.floreantpos.ui.views.order.RootView;
 import com.floreantpos.ui.views.order.ViewPanel;
 
 public class SwitchboardOtherFunctionsView extends ViewPanel {
-	public static final String VIEW_NAME="afv"; //$NON-NLS-1$
+	public static final String VIEW_NAME = "ALL FUNCTIONS"; //$NON-NLS-1$
 	private static SwitchboardOtherFunctionsView instance;
-	
+
 	private JPanel contentPanel;
-	
+
 	public SwitchboardOtherFunctionsView() {
 		setLayout(new BorderLayout(5, 5));
 		PosButton btnBack = new PosButton(Messages.getString("SwitchboardOtherFunctionsView.1")); //$NON-NLS-1$
@@ -60,45 +59,35 @@ public class SwitchboardOtherFunctionsView extends ViewPanel {
 			}
 		});
 		add(btnBack, BorderLayout.SOUTH);
-		
+
 		contentPanel = new JPanel(new MigLayout("align 50% 50%, wrap 6"));
-		
-		PosAction[] actions = {
-				new DrawerAssignmentAction(),
-				new DrawerPullAction(),
-				new DrawerBleedAction(),
-				new DrawerKickAction(),
-				new PayoutAction(),
-				new ServerTipsAction(),
-				new ShowTransactionsAuthorizationsAction(),
-				new ShowKitchenDisplayAction(),
-				new SwithboardViewAction(),
-				new ManageTableLayoutAction(),
-				new ShowOnlineTicketManagementAction()
-		};
-		
+
+		PosAction[] actions = { new DrawerAssignmentAction(), new DrawerPullAction(), new DrawerBleedAction(), new DrawerKickAction(), new PayoutAction(),
+				new ServerTipsAction(), new ShowTransactionsAuthorizationsAction(), new ShowKitchenDisplayAction(), new SwithboardViewAction(),
+				new ManageTableLayoutAction(), new ShowOnlineTicketManagementAction() };
+
 		for (PosAction action : actions) {
-			if(action instanceof DrawerAssignmentAction) {
-				if(!Application.getInstance().getTerminal().isHasCashDrawer()) {
+			if (action instanceof DrawerAssignmentAction) {
+				if (!Application.getInstance().getTerminal().isHasCashDrawer()) {
 					continue;
 				}
 			}
-			
+
 			PosButton button = new PosButton(action);
 			contentPanel.add(button, "w 150!, h 150!"); //$NON-NLS-1$
 		}
-		
+
 		add(contentPanel);
 	}
-	
+
 	public static SwitchboardOtherFunctionsView getInstance() {
-		if(instance == null) {
+		if (instance == null) {
 			instance = new SwitchboardOtherFunctionsView();
 		}
-		
+
 		return instance;
 	}
-	
+
 	@Override
 	public String getViewName() {
 		return VIEW_NAME;
