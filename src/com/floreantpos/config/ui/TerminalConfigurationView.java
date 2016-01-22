@@ -47,6 +47,8 @@ import com.floreantpos.model.dao.TerminalDAO;
 import com.floreantpos.swing.DoubleTextField;
 import com.floreantpos.swing.IntegerTextField;
 import com.floreantpos.ui.dialog.POSMessageDialog;
+import com.floreantpos.ui.views.SwitchboardOtherFunctionsView;
+import com.floreantpos.ui.views.SwitchboardView;
 import com.floreantpos.util.DrawerUtil;
 
 public class TerminalConfigurationView extends ConfigurationView {
@@ -122,8 +124,8 @@ public class TerminalConfigurationView extends ConfigurationView {
 		Vector<String> defaultViewList=new Vector<String>();
 		defaultViewList.add(OrderType.DINE_IN.toString()); 
 		defaultViewList.add(OrderType.TAKE_OUT.toString()); 
-		defaultViewList.add("OTHER FUNCTION");
-		defaultViewList.add("SWITCHBOARD VIEW"); 
+		defaultViewList.add(SwitchboardOtherFunctionsView.VIEW_NAME);
+		defaultViewList.add(SwitchboardView.VIEW_NAME); 
 		
 		cbDefaultView= new JComboBox<String>(defaultViewList); 
 		

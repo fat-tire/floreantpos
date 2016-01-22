@@ -22,6 +22,7 @@ import org.apache.commons.lang.StringUtils;
 
 import com.floreantpos.model.OrderTypeFilter;
 import com.floreantpos.model.PaymentStatusFilter;
+import com.floreantpos.ui.views.SwitchboardView;
 import com.floreantpos.util.PasswordHasher;
 
 public class TerminalConfig {
@@ -159,7 +160,7 @@ public class TerminalConfig {
 	}
 	
 	public static String getDefaultView() {
-		return config.getString(DEFAULT_VIEW);
+		return config.getString(DEFAULT_VIEW, SwitchboardView.VIEW_NAME);
 	}
 	
 	public static void setDefaultView(String viewName) {

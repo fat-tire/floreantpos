@@ -137,7 +137,7 @@ public class RootView extends com.floreantpos.swing.TransparentPanel {
 			OrderUtil.createNewTakeOutOrder(OrderType.TAKE_OUT);
 			showView(OrderView.getInstance());
 		}
-		else if (defaultViewName.equals("OTHER FUNCTION")) { //$NON-NLS-1$
+		else if (defaultViewName.equals(SwitchboardOtherFunctionsView.VIEW_NAME)) { //$NON-NLS-1$
 			showView(SwitchboardOtherFunctionsView.getInstance());
 		}
 		else {
