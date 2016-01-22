@@ -61,7 +61,7 @@ public class TableSelectionView extends JPanel {
 	private void init() {
 		setLayout(new BorderLayout());
 
-		buttonsPanel = new ScrollableFlowPanel(FlowLayout.LEADING);
+		buttonsPanel = new ScrollableFlowPanel(FlowLayout.CENTER);
 
 		redererTable();
 
