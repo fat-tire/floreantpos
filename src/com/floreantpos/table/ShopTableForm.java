@@ -346,17 +346,17 @@ public class ShopTableForm extends BeanEditor<ShopTable> {
 		tfTableDescription.setEditable(false);
 		tfTableCapacity.setEditable(false);
 
-		btnCapacityOne.setEnabled(false);
-		btnCapacityTwo.setEnabled(false);
-		btnCapacityFour.setEnabled(false);
-		btnCapacitySix.setEnabled(false);
-		btnCapacityEight.setEnabled(false);
-		btnCapacityTen.setEnabled(false);
+		btnCapacityOne.setVisible(false);
+		btnCapacityTwo.setVisible(false);
+		btnCapacityFour.setVisible(false);
+		btnCapacitySix.setVisible(false);
+		btnCapacityEight.setVisible(false);
+		btnCapacityTen.setVisible(false);
 
 		tableTypeCBoxList.setEnabled(false);
 
 		if (btnCreateType != null) {
-			btnCreateType.setEnabled(false);
+			btnCreateType.setVisible(false);
 		}
 
 		rbFree.setEnabled(true);
