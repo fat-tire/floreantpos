@@ -78,14 +78,12 @@ public class ShopTableForm extends BeanEditor<ShopTable> {
 		tableTypeCBoxList.setModel(ShopTableTypeDAO.getInstance().findAll());
 		JScrollPane tableTypeCheckBoxList = new JScrollPane(tableTypeCBoxList);
 		tableTypeCheckBoxList.setPreferredSize(new Dimension(0, 350));
-		tableTypeCBoxList.setEnabled(false);
 
 		JLabel lblName = new JLabel(Messages.getString("ShopTableForm.0")); //$NON-NLS-1$
 		add(lblName, "cell 0 0,alignx trailing,aligny center"); //$NON-NLS-1$
 
 		tfTableNo = new IntegerTextField(6);
 		add(tfTableNo, "cell 1 0,aligny top"); //$NON-NLS-1$
-		tfTableNo.setEnabled(false);
 
 		tfTableName = new FixedLengthTextField();
 		JLabel lblAddress = new JLabel(Messages.getString("ShopTableForm.2")); //$NON-NLS-1$
@@ -281,7 +279,8 @@ public class ShopTableForm extends BeanEditor<ShopTable> {
 			return false;
 		}
 
-		int option = POSMessageDialog.showYesNoQuestionDialog(POSUtil.getBackOfficeWindow(), Messages.getString("ShopTableForm.20"), Messages.getString("ShopTableForm.21")); //$NON-NLS-1$ //$NON-NLS-2$
+		int option = POSMessageDialog.showYesNoQuestionDialog(POSUtil.getBackOfficeWindow(),
+				Messages.getString("ShopTableForm.20"), Messages.getString("ShopTableForm.21")); //$NON-NLS-1$ //$NON-NLS-2$
 		if (option != JOptionPane.YES_OPTION) {
 			return false;
 		}
@@ -346,6 +345,19 @@ public class ShopTableForm extends BeanEditor<ShopTable> {
 		tfTableName.setEditable(false);
 		tfTableDescription.setEditable(false);
 		tfTableCapacity.setEditable(false);
+
+		btnCapacityOne.setEnabled(false);
+		btnCapacityTwo.setEnabled(false);
+		btnCapacityFour.setEnabled(false);
+		btnCapacitySix.setEnabled(false);
+		btnCapacityEight.setEnabled(false);
+		btnCapacityTen.setEnabled(false);
+
+		tableTypeCBoxList.setEnabled(false);
+
+		if (btnCreateType != null) {
+			btnCreateType.setEnabled(false);
+		}
 
 		rbFree.setEnabled(true);
 		rbDisable.setEnabled(true);
