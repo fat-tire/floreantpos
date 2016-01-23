@@ -27,6 +27,7 @@ import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRExporterParameter;
+import net.sf.jasperreports.engine.JRParameter;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
@@ -251,6 +252,9 @@ public class ReceiptPrintService {
 		double tipAmount = 0;
 
 		HashMap map = new HashMap();
+		
+		map.put(JRParameter.IS_IGNORE_PAGINATION, false);
+		
 		String currencySymbol = Application.getCurrencySymbol();
 		map.put(CURRENCY_SYMBOL, currencySymbol);
 		map.put(ITEM_TEXT, POSConstants.RECEIPT_REPORT_ITEM_LABEL);
