@@ -45,6 +45,7 @@ import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.model.MenuCategory;
 import com.floreantpos.model.MenuGroup;
 import com.floreantpos.model.dao.MenuCategoryDAO;
+import com.floreantpos.model.dao.MenuGroupDAO;
 import com.floreantpos.swing.POSToggleButton;
 import com.floreantpos.ui.views.order.actions.CategorySelectionListener;
 
@@ -81,6 +82,14 @@ public class CategoryView extends SelectionView implements ActionListener {
 		for (Iterator iterator = categories.iterator(); iterator.hasNext();) {
 			MenuCategory menuCategory = (MenuCategory) iterator.next();
 			List<MenuGroup> menuGroups = menuCategory.getMenuGroups();
+			
+			for (Iterator iterator2 = menuGroups.iterator(); iterator2.hasNext();) {
+				MenuGroup menuGroup = (MenuGroup) iterator2.next();
+				MenuGroupDAO menuGroupDAO = MenuGroupDAO.getInstance();
+				if(!menuGroupDAO.hasChildren(null, menuGroup)) {
+					iterator2.remove();
+				}
+			}
 			
 			if(menuGroups == null || menuGroups.size() == 0) {
 				iterator.remove();
