@@ -74,7 +74,7 @@ public class ShopTableSelectionDialog extends POSDialog {
 				dispose();
 			}
 		});
-		btnOk.setPreferredSize(new Dimension(80, 50));
+	//	btnOk.setPreferredSize(new Dimension(0, 50));
 		buttonPanel.add(btnOk);
 
 		JButton btnCancel = new JButton(Messages.getString("ShopTableSelectionDialog.2")); //$NON-NLS-1$
@@ -84,7 +84,7 @@ public class ShopTableSelectionDialog extends POSDialog {
 				dispose();
 			}
 		});
-		btnCancel.setPreferredSize(new Dimension(80, 50));
+		//btnCancel.setPreferredSize(new Dimension(0, 50));
 		buttonPanel.add(btnCancel);
 
 		JPanel contentPanel = new JPanel();
@@ -121,8 +121,7 @@ public class ShopTableSelectionDialog extends POSDialog {
 		//		rbDisable = new JRadioButton("Disable");
 		//		panel.add(rbDisable);
 
-		setSize(300, 166);
-		setResizable(false);
+		//setResizable(false);
 	}
 
 	private void initModel() {
