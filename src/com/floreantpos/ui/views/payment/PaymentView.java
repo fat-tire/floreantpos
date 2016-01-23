@@ -354,12 +354,16 @@ public class PaymentView extends JPanel {
 		actionButtonPanel.add(btnCash); //$NON-NLS-1$
 		btnCash.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				int x = (int) Double.parseDouble(txtTenderedAmount.getText());
-				if (x <= 0) {
-					POSMessageDialog.showError(Messages.getString("PaymentView.32")); //$NON-NLS-1$
-					return;
+				try {
+					double x = NumberUtil.parse(txtTenderedAmount.getText()).doubleValue();
+					if (x <= 0) {
+						POSMessageDialog.showError(Messages.getString("PaymentView.32")); //$NON-NLS-1$
+						return;
+					}
+					settleTicketView.doSettle(PaymentType.CASH);
+				} catch (Exception e) {
+					org.apache.commons.logging.LogFactory.getLog(getClass()).error(e);
 				}
-				settleTicketView.doSettle(PaymentType.CASH);
 			}
 		});
 
@@ -484,33 +488,37 @@ public class PaymentView extends JPanel {
 	Action nextButtonAction = new AbstractAction() {
 		public void actionPerformed(ActionEvent e) {
 
-			DecimalFormat format = new DecimalFormat("##.00"); //$NON-NLS-1$
+			try {
+				DecimalFormat format = new DecimalFormat("##.00"); //$NON-NLS-1$
 
-			PosButton button = (PosButton) e.getSource();
+				PosButton button = (PosButton) e.getSource();
 
-			String command = button.getActionCommand();
+				String command = button.getActionCommand();
 
-			if (command.equals("exactAmount")) { //$NON-NLS-1$
-				double dueAmount = getDueAmount();
-				txtTenderedAmount.setText(NumberUtil.formatNumber(dueAmount));
-			}
-			else if (command.equals("nextAmount")) { //$NON-NLS-1$
-
-				double dd = Double.parseDouble(txtDueAmount.getText());
-				double amount = Math.ceil(dd);
-
-				txtTenderedAmount.setText(String.valueOf(format.format(amount)));
-			}
-			else {
-				if (clearPreviousAmount) {
-					txtTenderedAmount.setText("0"); //$NON-NLS-1$
-					clearPreviousAmount = false;
+				if (command.equals("exactAmount")) { //$NON-NLS-1$
+					double dueAmount = getDueAmount();
+					txtTenderedAmount.setText(NumberUtil.formatNumber(dueAmount));
 				}
+				else if (command.equals("nextAmount")) { //$NON-NLS-1$
 
-				double x = Double.parseDouble(txtTenderedAmount.getText());//FIXME: what if exception occurs?
-				double y = Double.parseDouble(command);
-				double z = x + y;
-				txtTenderedAmount.setText(String.valueOf(format.format(z)));
+					double dd = NumberUtil.parse(txtDueAmount.getText()).doubleValue();
+					double amount = Math.ceil(dd);
+
+					txtTenderedAmount.setText(String.valueOf(format.format(amount)));
+				}
+				else {
+					if (clearPreviousAmount) {
+						txtTenderedAmount.setText("0"); //$NON-NLS-1$
+						clearPreviousAmount = false;
+					}
+
+					double x = NumberUtil.parse(txtTenderedAmount.getText()).doubleValue();//FIXME: what if exception occurs?
+					double y = Double.parseDouble(command);
+					double z = x + y;
+					txtTenderedAmount.setText(String.valueOf(format.format(z)));
+				}
+			} catch (Exception e2) {
+				org.apache.commons.logging.LogFactory.getLog(getClass()).error(e2);
 			}
 		}
 	};
