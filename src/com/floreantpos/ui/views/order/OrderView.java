@@ -92,7 +92,7 @@ public class OrderView extends ViewPanel {
 	private MenuItemView itemView = new MenuItemView();
 	private OrderController orderController = new OrderController(this);
 
-	private JPanel actionButtonPanel = new JPanel(new MigLayout("fill, ins 2", "sg, fill", ""));
+	private JPanel actionButtonPanel = new JPanel(new MigLayout("fill, ins 2, hidemode 3", "sg, fill", ""));
 
 	private com.floreantpos.swing.PosButton btnDone = new com.floreantpos.swing.PosButton(com.floreantpos.POSConstants.SAVE_BUTTON_TEXT);
 	private com.floreantpos.swing.PosButton btnSend = new com.floreantpos.swing.PosButton(com.floreantpos.POSConstants.SEND_TO_KITCHEN);
@@ -144,7 +144,7 @@ public class OrderView extends ViewPanel {
 		//		addView("VIEW_EMPTY", new com.floreantpos.swing.TransparentPanel()); //$NON-NLS-1$
 
 		addActionButtonPanel();
-
+		btnOrderType.setVisible(false);
 		showView("VIEW_EMPTY"); //$NON-NLS-1$
 	}// </editor-fold>//GEN-END:initComponents
 
@@ -306,7 +306,7 @@ public class OrderView extends ViewPanel {
 				doAddCookingInstruction();
 			}
 		});
-		
+
 		btnAddOn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -533,7 +533,7 @@ public class OrderView extends ViewPanel {
 			POSMessageDialog.showError(e.getMessage());
 		}
 	}
-	
+
 	private void doAddAddOn() {
 		Object object = ticketView.getTicketViewerTable().getSelected();
 		if (!(object instanceof TicketItem)) {
@@ -546,13 +546,13 @@ public class OrderView extends ViewPanel {
 		if (!ticketItem.isHasModifiers()) {
 			return;
 		}
-		
+
 		Integer itemId = ticketItem.getItemId();
 		MenuItem menuItem = MenuItemDAO.getInstance().get(itemId);
-		if(menuItem == null) {
+		if (menuItem == null) {
 			return;
 		}
-		
+
 		menuItem = MenuItemDAO.getInstance().initialize(menuItem);
 		ModifierSelectionDialog dialog = new ModifierSelectionDialog(new ModifierSelectionModel(ticketItem, menuItem), true);
 		dialog.open();
@@ -563,13 +563,20 @@ public class OrderView extends ViewPanel {
 
 		if (currentTicket != null) {
 
-			if (currentTicket.getType() != OrderType.DINE_IN) {
-				btnGuestNo.setEnabled(false);
-				btnTableNumber.setEnabled(false);
+			if (currentTicket.getType() == OrderType.TAKE_OUT) {
+				btnDone.setVisible(false);
 			}
 			else {
-				btnGuestNo.setEnabled(true);
-				btnTableNumber.setEnabled(true);
+				btnDone.setVisible(true);
+			}
+
+			if (currentTicket.getType() != OrderType.DINE_IN) {
+				btnGuestNo.setVisible(false);
+				btnTableNumber.setVisible(false);
+			}
+			else {
+				btnGuestNo.setVisible(true);
+				btnTableNumber.setVisible(true);
 
 				List<Integer> tableNumbers = currentTicket.getTableNumbers();
 
