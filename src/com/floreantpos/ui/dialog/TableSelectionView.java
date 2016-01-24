@@ -31,28 +31,56 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.BorderFactory;
+import javax.swing.ButtonGroup;
 import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
 import javax.swing.JPanel;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.TitledBorder;
+
+import net.miginfocom.swing.MigLayout;
+
+import org.apache.commons.lang.StringUtils;
 
 import com.floreantpos.Messages;
+import com.floreantpos.POSConstants;
+import com.floreantpos.extension.OrderServiceExtension;
+import com.floreantpos.main.Application;
+import com.floreantpos.model.OrderType;
 import com.floreantpos.model.ShopTable;
 import com.floreantpos.model.Ticket;
+import com.floreantpos.model.User;
 import com.floreantpos.model.dao.ShopTableDAO;
 import com.floreantpos.model.dao.TicketDAO;
+import com.floreantpos.model.dao.UserDAO;
+import com.floreantpos.swing.POSToggleButton;
+import com.floreantpos.swing.PosButton;
 import com.floreantpos.swing.ScrollableFlowPanel;
 import com.floreantpos.swing.ShopTableButton;
-import com.floreantpos.ui.views.TableMapView;
+import com.floreantpos.ui.views.order.CustomOrderServiceExtension;
+import com.floreantpos.ui.views.order.OrderView;
+import com.floreantpos.ui.views.order.RootView;
+import com.floreantpos.util.TicketAlreadyExistsException;
 import com.jidesoft.swing.JideScrollPane;
 
-public class TableSelectionView extends JPanel {
+public class TableSelectionView extends JPanel implements ActionListener {
 
 	private DefaultListModel<ShopTableButton> addedTableListModel = new DefaultListModel<ShopTableButton>();
 	private Map<ShopTable, ShopTableButton> tableButtonMap = new HashMap<ShopTable, ShopTableButton>();
 
-	private static TableSelectionView instance;
 	private ScrollableFlowPanel buttonsPanel;
 
-	private Ticket ticket;
+	private POSToggleButton btnGroup;
+	private POSToggleButton btnUnGroup;
+	private POSToggleButton btnTransfer;
+
+	private PosButton btnDone;
+	private PosButton btnCancel;
+	private PosButton btnRefresh;
+
+	private ButtonGroup btnGroups;
 
 	public TableSelectionView() {
 		init();
@@ -63,12 +91,78 @@ public class TableSelectionView extends JPanel {
 
 		buttonsPanel = new ScrollableFlowPanel(FlowLayout.CENTER);
 
+		setLayout(new java.awt.BorderLayout(10, 10));
+
+		TitledBorder titledBorder1 = BorderFactory.createTitledBorder(null, POSConstants.DINE_IN_BUTTON_TEXT, TitledBorder.CENTER,
+				TitledBorder.DEFAULT_POSITION);
+
+		JPanel leftPanel = new JPanel(new java.awt.BorderLayout(5, 5));
+		leftPanel.setBorder(new CompoundBorder(titledBorder1, new EmptyBorder(2, 2, 2, 2)));
+
 		redererTable();
 
 		JideScrollPane scrollPane = new JideScrollPane(buttonsPanel, JideScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JideScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		scrollPane.getVerticalScrollBar().setPreferredSize(new Dimension(60, 0));
 
-		add(scrollPane, BorderLayout.CENTER);
+		leftPanel.add(scrollPane, java.awt.BorderLayout.CENTER);
+
+		add(leftPanel, java.awt.BorderLayout.CENTER);
+
+		createButtonActionPanel();
+	}
+
+	private void createButtonActionPanel() {
+		TitledBorder titledBorder2 = BorderFactory.createTitledBorder(null, "-", TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION); //$NON-NLS-1$
+
+		JPanel rightPanel = new JPanel(new BorderLayout(20, 20));
+		rightPanel.setPreferredSize(new Dimension(120, 0));
+		rightPanel.setBorder(new CompoundBorder(titledBorder2, new EmptyBorder(2, 2, 6, 2)));
+
+		JPanel actionBtnPanel = new JPanel(new MigLayout("ins 2 2 0 2, hidemode 3, flowy", "grow", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+
+		btnGroups = new ButtonGroup();
+
+		btnGroup = new POSToggleButton(Messages.getString("TableMapView.1")); //$NON-NLS-1$
+		btnUnGroup = new POSToggleButton(Messages.getString("TableMapView.2")); //$NON-NLS-1$
+		btnTransfer = new POSToggleButton(Messages.getString("TableMapView.3")); //$NON-NLS-1$
+		btnDone = new PosButton(Messages.getString("TableMapView.4")); //$NON-NLS-1$
+		btnCancel = new PosButton(POSConstants.CANCEL); //$NON-NLS-1$
+
+		btnGroup.addActionListener(this);
+		btnUnGroup.addActionListener(this);
+		btnDone.addActionListener(this);
+		btnCancel.addActionListener(this);
+
+		btnDone.setVisible(false);
+		btnCancel.setVisible(false);
+
+		btnGroup.setIcon(new ImageIcon(getClass().getResource("/images/plus.png"))); //$NON-NLS-1$
+		btnUnGroup.setIcon(new ImageIcon(getClass().getResource("/images/minus2.png"))); //$NON-NLS-1$
+
+		btnGroups.add(btnGroup);
+		btnGroups.add(btnUnGroup);
+		btnGroups.add(btnTransfer);
+
+		actionBtnPanel.add(btnGroup, "grow"); //$NON-NLS-1$
+		actionBtnPanel.add(btnUnGroup, "grow"); //$NON-NLS-1$
+		actionBtnPanel.add(btnDone, "grow"); //$NON-NLS-1$
+		actionBtnPanel.add(btnCancel, "grow"); //$NON-NLS-1$
+
+		rightPanel.add(actionBtnPanel);
+
+		btnRefresh = new PosButton(POSConstants.REFRESH);
+		btnRefresh.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				redererTable();
+				btnGroups.clearSelection();
+			}
+		});
+		rightPanel.add(btnRefresh, BorderLayout.SOUTH);
+
+		add(rightPanel, java.awt.BorderLayout.EAST);
+
 	}
 
 	public synchronized void redererTable() {
@@ -78,7 +172,7 @@ public class TableSelectionView extends JPanel {
 
 		for (ShopTable shopTable : tables) {
 			ShopTableButton tableButton = new ShopTableButton(shopTable);
-			tableButton.setPreferredSize(new Dimension(159, 138));
+			tableButton.setPreferredSize(new Dimension(157, 138));
 			tableButton.setFont(new Font(tableButton.getFont().getName(), tableButton.getFont().getStyle(), 30));
 
 			tableButton.setText(tableButton.getText());
@@ -102,8 +196,9 @@ public class TableSelectionView extends JPanel {
 		for (Ticket ticket : openTickets) {
 			for (ShopTableButton shopTableButton : tableButtonMap.values()) {
 				if (ticket.getTableNumbers().contains(shopTableButton.getId())) {
-					shopTableButton.setText("<html><center>" + shopTableButton.getText() + "<br><h4>" + ticket.getOwner().getFirstName() + "<br>" //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-							+ ticket.getTotalAmount() + "</h4></center></html>"); //$NON-NLS-1$
+					shopTableButton.setText("<html><center>" + shopTableButton.getText() + "<br><h4>" + ticket.getOwner().getFirstName() + "<br>Chk#" //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+							+ ticket.getId() + "</h4></center></html>"); //$NON-NLS-1$
+					shopTableButton.setUser(ticket.getOwner());
 				}
 			}
 		}
@@ -121,14 +216,7 @@ public class TableSelectionView extends JPanel {
 			return false;
 		}
 
-		if (ticket != null) {
-			if (button.getShopTable().isServing()) {
-				POSMessageDialog.showError(this, Messages.getString("TableSelectionDialog.2") + "is not empty"); //$NON-NLS-1$ //$NON-NLS-2$
-				return false;
-			}
-		}
-
-		if (TableMapView.btnAttach.isSelected()) {
+		if (btnGroup.isSelected() && !shopTable.isServing()) {
 			if (addedTableListModel.contains(button)) {
 				return true;
 			}
@@ -136,47 +224,76 @@ public class TableSelectionView extends JPanel {
 			button.setBackground(Color.green);
 			button.setForeground(Color.black);
 			this.addedTableListModel.addElement(button);
-		}
-
-		if (TableMapView.btnDetach.isSelected()) {
-			Ticket ticket = button.getTicket();
-			if (ticket != null) {
-				for (Iterator iterator = ticket.getTableNumbers().iterator(); iterator.hasNext();) {
-					Integer id = (Integer) iterator.next();
-					if (button.getId() == id) {
-						iterator.remove();
-					}
-
-				}
-				button.getShopTable().setServing(false);
-				button.getShopTable().setBooked(false);
-				button.update();
-				shopTable.setServing(false);
-				ShopTableDAO.getInstance().saveOrUpdate(shopTable);
-				TicketDAO.getInstance().saveOrUpdate(ticket);
-				redererTable();
-				return false;
-			}
-
-			if (addedTableListModel.contains(button)) {
-				addedTableListModel.removeElement(button);
-				button.getShopTable().setServing(false);
-				button.update();
-				return true;
-			}
-		}
-
-		if (shopTable.isServing() && ticket == null) {
-			TableMapView.getInstance().editTicket(tableNumber);
 			return false;
 		}
 
-		if (!TableMapView.btnAttach.isSelected() && !TableMapView.btnDetach.isSelected()) {
+		if (btnUnGroup.isSelected()) {
+			if (addedTableListModel.contains(button)) {
+				return true;
+			}
+			Ticket ticket = button.getTicket();
+			if (ticket == null) {
+				return false;
+			}
+
+			int ticketId = ticket.getId();
+
+			Enumeration<ShopTableButton> elements = addedTableListModel.elements();
+			while (elements.hasMoreElements()) {
+				ShopTableButton shopTableButton = (ShopTableButton) elements.nextElement();
+				if (shopTableButton.getTicket().getId() != ticketId) {
+					return false;
+				}
+			}
+
+			if (addedTableListModel.size() >= ticket.getTableNumbers().size() - 1) {
+				return false;
+			}
+
+			button.getShopTable().setServing(true);
+			button.setBackground(Color.green);
+			button.setForeground(Color.black);
+			this.addedTableListModel.addElement(button);
+			return false;
+		}
+
+		if (shopTable.isServing()) {
+			int userId = Application.getCurrentUser().getAutoId();
+			int userId2 = button.getUser().getAutoId();
+			if (userId != userId2) {
+				if (!hasUserAccess(button.getUser())) {
+					return false;
+				}
+			}
+			editTicket(tableNumber);
+			return false;
+		}
+
+		if (!btnGroup.isSelected() && !btnGroup.isSelected()) {
 			if (!addedTableListModel.contains(button)) {
 				button.getShopTable().setServing(true);
 				this.addedTableListModel.addElement(button);
 			}
-			TableMapView.getInstance().doCreateNewTicket();
+			doCreateNewTicket();
+		}
+		return true;
+	}
+
+	private boolean hasUserAccess(User ticketUser) {
+
+		if (ticketUser == null) {
+			return false;
+		}
+
+		String password = PasswordEntryDialog.show(Application.getPosWindow(), Messages.getString("PosAction.0")); //$NON-NLS-1$
+		if (StringUtils.isEmpty(password)) {
+			return false;
+		}
+
+		int inputUserId = UserDAO.getInstance().findUserBySecretKey(password).getAutoId();
+		if (inputUserId != ticketUser.getAutoId()) {
+			POSMessageDialog.showError(Application.getPosWindow(), "Incorrect password"); //$NON-NLS-1$
+			return false;
 		}
 		return true;
 	}
@@ -193,10 +310,106 @@ public class TableSelectionView extends JPanel {
 		return tables;
 	}
 
-	public static TableSelectionView getInstance() {
-		if (instance == null) {
-			instance = new TableSelectionView();
+	private void clearSelection() {
+		addedTableListModel.clear();
+		redererTable();
+		btnGroups.clearSelection();
+		btnGroup.setVisible(true);
+		btnUnGroup.setVisible(true);
+		btnDone.setVisible(false);
+		btnCancel.setVisible(false);
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		Object object = e.getSource();
+		if (object == btnGroup) {
+			addedTableListModel.clear();
+			btnUnGroup.setVisible(false);
+			btnDone.setVisible(true);
+			btnCancel.setVisible(true);
 		}
-		return instance;
+		else if (object == btnUnGroup) {
+			addedTableListModel.clear();
+			btnGroup.setVisible(false);
+			btnDone.setVisible(true);
+			btnCancel.setVisible(true);
+		}
+		else if (object == btnDone) {
+			if (btnGroup.isSelected()) {
+				doCreateNewTicket();
+				clearSelection();
+			}
+			else if (btnUnGroup.isSelected()) {
+				doUnGroupAction();
+				clearSelection();
+			}
+		}
+		else if (object == btnCancel) {
+			clearSelection();
+		}
+
+	}
+
+	private void doCreateNewTicket() {
+		try {
+			List<ShopTable> selectedTables = getTables();
+
+			OrderServiceExtension orderService = new CustomOrderServiceExtension(selectedTables);
+			orderService.createNewTicket(OrderType.DINE_IN);
+
+		} catch (TicketAlreadyExistsException e) {
+
+		}
+	}
+
+	private boolean editTicket(Integer shopTableNumber) {
+		List<Ticket> openTickets = TicketDAO.getInstance().findOpenTickets();
+		Integer ticketId = null;
+		for (Ticket ticket : openTickets) {
+			if (ticket.getTableNumbers().contains(shopTableNumber)) {
+				ticketId = ticket.getId();
+				if (ticketId == null) {
+					return false;
+				}
+			}
+		}
+
+		Ticket ticketToEdit = null;
+		if (ticketId != null) {
+			ticketToEdit = TicketDAO.getInstance().loadFullTicket(ticketId);
+		}
+		else {
+			return false;
+		}
+		OrderView.getInstance().setCurrentTicket(ticketToEdit);
+		RootView.getInstance().showView(OrderView.VIEW_NAME);
+		OrderView.getInstance().getTicketView().getTxtSearchItem().requestFocus();
+		return true;
+	}
+
+	private void doUnGroupAction() {
+		if (addedTableListModel != null) {
+			Enumeration<ShopTableButton> elements = this.addedTableListModel.elements();
+
+			while (elements.hasMoreElements()) {
+				ShopTableButton button = (ShopTableButton) elements.nextElement();
+				ShopTable shopTable = button.getShopTable();
+				Ticket ticket = button.getTicket();
+				if (ticket != null) {
+					for (Iterator iterator = ticket.getTableNumbers().iterator(); iterator.hasNext();) {
+						Integer id = (Integer) iterator.next();
+						if (button.getId() == id) {
+							iterator.remove();
+						}
+
+					}
+
+					shopTable.setServing(false);
+					ShopTableDAO.getInstance().saveOrUpdate(shopTable);
+					TicketDAO.getInstance().saveOrUpdate(ticket);
+				}
+			}
+		}
 	}
 }

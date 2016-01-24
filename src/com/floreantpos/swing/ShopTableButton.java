@@ -22,10 +22,12 @@ import java.util.List;
 
 import com.floreantpos.model.ShopTable;
 import com.floreantpos.model.Ticket;
+import com.floreantpos.model.User;
 import com.floreantpos.model.dao.TicketDAO;
 
 public class ShopTableButton extends PosButton {
 	private ShopTable shopTable;
+	private User user; 
 	
 	public ShopTableButton(ShopTable shopTable) {
 		this.shopTable = shopTable;
@@ -90,13 +92,22 @@ public class ShopTableButton extends PosButton {
 		}
 	}
 	
+	public void setUser(User user){
+			if(user!=null){
+				this.user=user; 
+			}
+	}
+	
+	public User getUser(){
+		return user;
+	}
+	
 	public Ticket getTicket(){
 		List<Ticket> openTickets = TicketDAO.getInstance().findOpenTickets();
 		Ticket selectedTicket=null; 
 		for (Ticket ticket : openTickets) {
 			if (ticket.getTableNumbers().contains(getId())) {
-				selectedTicket=ticket; 
-
+				selectedTicket=TicketDAO.getInstance().loadFullTicket(ticket.getId()); 	
 			}
 		}
 		return selectedTicket;
