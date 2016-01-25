@@ -19,6 +19,16 @@ public class TicketItemDiscount extends BaseTicketItemDiscount implements ITicke
 	}
 
 	/*[CONSTRUCTOR MARKER END]*/
+	
+	public TicketItemDiscount(TicketItemDiscount fromDiscount) {
+		setDiscountId(fromDiscount.getDiscountId());
+		setName(fromDiscount.getName());
+		setType(fromDiscount.getType());
+		setAutoApply(fromDiscount.isAutoApply());
+		setMinimumQuantity(fromDiscount.getMinimumQuantity());
+		setValue(fromDiscount.getValue());
+		setAmount(fromDiscount.getAmount());
+	}
 
 	private int tableRowNum;
 

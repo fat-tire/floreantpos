@@ -27,6 +27,7 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import javax.swing.SwingConstants;
 import javax.swing.border.TitledBorder;
@@ -38,6 +39,7 @@ import com.floreantpos.Messages;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketItem;
+import com.floreantpos.model.TicketItemDiscount;
 import com.floreantpos.model.TicketItemModifierGroup;
 import com.floreantpos.util.NumberUtil;
 
@@ -61,7 +63,7 @@ public class TicketForSplitView extends com.floreantpos.swing.TransparentPanel i
 
 		//ticketViewerTable.getColumnExt(1).setVisible(false);
 		//ticketViewerTable.getColumnExt(2).setVisible(false);
-		
+
 		ticket = new Ticket();
 		ticket.setPriceIncludesTax(Application.getInstance().isPriceIncludesTax());
 		ticket.setTerminal(Application.getInstance().getTerminal());
@@ -122,7 +124,8 @@ public class TicketForSplitView extends com.floreantpos.swing.TransparentPanel i
 
 		setLayout(new java.awt.BorderLayout(5, 5));
 
-		setBorder(javax.swing.BorderFactory.createTitledBorder(null, com.floreantpos.POSConstants.TICKET, javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
+		setBorder(javax.swing.BorderFactory.createTitledBorder(null, com.floreantpos.POSConstants.TICKET, javax.swing.border.TitledBorder.CENTER,
+				javax.swing.border.TitledBorder.DEFAULT_POSITION));
 		setPreferredSize(new java.awt.Dimension(280, 463));
 		jPanel1.setLayout(new java.awt.BorderLayout(5, 5));
 
@@ -446,13 +449,24 @@ public class TicketForSplitView extends com.floreantpos.swing.TransparentPanel i
 		newTicketItem.setGroupName(ticketItem.getGroupName());
 		newTicketItem.setCategoryName(ticketItem.getCategoryName());
 		newTicketItem.setUnitPrice(ticketItem.getUnitPrice());
-		newTicketItem.setDiscounts(ticketItem.getDiscounts());
+
+		List<TicketItemDiscount> discounts = ticketItem.getDiscounts();
+		if (discounts != null) {
+			List<TicketItemDiscount> newDiscounts = new ArrayList<TicketItemDiscount>();
+			for (TicketItemDiscount ticketItemDiscount : discounts) {
+				TicketItemDiscount newDiscount = new TicketItemDiscount(ticketItemDiscount);
+				newDiscount.setTicketItem(newTicketItem);
+				newDiscounts.add(newDiscount);
+			}
+			newTicketItem.setDiscounts(newDiscounts);
+		}
+
 		newTicketItem.setTaxRate(ticketItem.getTaxRate());
 		newTicketItem.setBeverage(ticketItem.isBeverage());
 		newTicketItem.setShouldPrintToKitchen(ticketItem.isShouldPrintToKitchen());
 		newTicketItem.setPrinterGroup(ticketItem.getPrinterGroup());
 		newTicketItem.setPrintedToKitchen(ticketItem.isPrintedToKitchen());
-		
+
 		int itemCount = ticketItem.getItemCount();
 
 		toTicketView.ticketViewerTable.addTicketItem(newTicketItem);
@@ -478,13 +492,22 @@ public class TicketForSplitView extends com.floreantpos.swing.TransparentPanel i
 		newTicketItem.setGroupName(ticketItem.getGroupName());
 		newTicketItem.setCategoryName(ticketItem.getCategoryName());
 		newTicketItem.setUnitPrice(ticketItem.getUnitPrice());
-		newTicketItem.setDiscounts(ticketItem.getDiscounts());
+		List<TicketItemDiscount> discounts = ticketItem.getDiscounts();
+		if (discounts != null) {
+			List<TicketItemDiscount> newDiscounts = new ArrayList<TicketItemDiscount>();
+			for (TicketItemDiscount ticketItemDiscount : discounts) {
+				TicketItemDiscount newDiscount = new TicketItemDiscount(ticketItemDiscount);
+				newDiscount.setTicketItem(newTicketItem);
+				newDiscounts.add(newDiscount);
+			}
+			newTicketItem.setDiscounts(newDiscounts);
+		}
 		newTicketItem.setTaxRate(ticketItem.getTaxRate());
 		newTicketItem.setBeverage(ticketItem.isBeverage());
 		newTicketItem.setShouldPrintToKitchen(ticketItem.isShouldPrintToKitchen());
 		newTicketItem.setPrinterGroup(ticketItem.getPrinterGroup());
 		newTicketItem.setPrintedToKitchen(ticketItem.isPrintedToKitchen());
-		
+
 		toTicketView.ticketViewerTable.addAllTicketItem(newTicketItem);
 		ticketViewerTable.delete(ticketItem.getTableRowNum());
 		repaint();
