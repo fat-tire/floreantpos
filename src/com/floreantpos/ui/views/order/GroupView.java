@@ -94,6 +94,13 @@ public class GroupView extends SelectionView {
 				}
 			}
 			setItems(groups);
+			
+			if(groups.size() <= 1) {
+				setVisible(false);
+			}
+			else {
+				setVisible(true);
+			}
 
 			if (groups.size() > 0) {
 				MenuGroup menuGroup = groups.get(0);

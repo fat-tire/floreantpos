@@ -103,6 +103,13 @@ public class CategoryView extends SelectionView implements ActionListener {
 			categoryButton.setSelected(true);
 			fireCategorySelected(categoryButton.foodCategory);
 		}
+		
+		if(categories.size() <= 1) {
+			setVisible(false);
+		}
+		else {
+			setVisible(true);
+		}
 	}
 	
 	@Override
