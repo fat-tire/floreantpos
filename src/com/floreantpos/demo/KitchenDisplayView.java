@@ -47,12 +47,13 @@ import com.floreantpos.swing.PosButton;
 import com.floreantpos.swing.PosComboRenderer;
 import com.floreantpos.ui.HeaderPanel;
 import com.floreantpos.ui.dialog.POSMessageDialog;
+import com.floreantpos.ui.views.order.OrderView;
 import com.floreantpos.ui.views.order.ViewPanel;
 
 public class KitchenDisplayView extends ViewPanel implements ActionListener {
 
 	public final static String VIEW_NAME = "KD"; //$NON-NLS-1$
-
+	private static KitchenDisplayView instance;
 	private JComboBox<Printer> cbPrinters = new JComboBox<Printer>();
 	private JComboBox<OrderType> cbTicketTypes = new JComboBox<OrderType>();
 
@@ -75,7 +76,7 @@ public class KitchenDisplayView extends ViewPanel implements ActionListener {
 		}
 
 		Font font = getFont().deriveFont(18f);
-
+		
 		cbPrinters.setFont(font);
 		cbPrinters.setRenderer(new PosComboRenderer());
 		cbPrinters.setModel(printerModel);
@@ -211,5 +212,12 @@ public class KitchenDisplayView extends ViewPanel implements ActionListener {
 	@Override
 	public String getViewName() {
 		return VIEW_NAME;
+	}
+	
+	public synchronized static KitchenDisplayView getInstance() {
+		if (instance == null) {
+			instance = new KitchenDisplayView(false);
+		}
+		return instance;
 	}
 }

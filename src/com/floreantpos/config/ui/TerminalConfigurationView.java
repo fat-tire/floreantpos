@@ -40,6 +40,7 @@ import org.apache.commons.lang.StringUtils;
 
 import com.floreantpos.Messages;
 import com.floreantpos.config.TerminalConfig;
+import com.floreantpos.demo.KitchenDisplayView;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.OrderType;
 import com.floreantpos.model.Terminal;
@@ -125,6 +126,11 @@ public class TerminalConfigurationView extends ConfigurationView {
 		defaultViewList.add(OrderType.DINE_IN.toString()); 
 		defaultViewList.add(OrderType.TAKE_OUT.toString()); 
 		defaultViewList.add(SwitchboardOtherFunctionsView.VIEW_NAME);
+		//defaultViewList.add(OrderType.BAR_TAB.toString());
+		defaultViewList.add(OrderType.DRIVE_THRU.toString()); 
+		defaultViewList.add(OrderType.HOME_DELIVERY.toString()); 
+		defaultViewList.add(OrderType.PICKUP.toString()); 
+		defaultViewList.add(KitchenDisplayView.VIEW_NAME); 
 		defaultViewList.add(SwitchboardView.VIEW_NAME); 
 		
 		cbDefaultView= new JComboBox<String>(defaultViewList); 

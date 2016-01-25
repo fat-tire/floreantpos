@@ -26,8 +26,10 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import com.floreantpos.config.TerminalConfig;
+import com.floreantpos.demo.KitchenDisplayView;
 import com.floreantpos.model.OrderType;
 import com.floreantpos.ui.HeaderPanel;
+import com.floreantpos.ui.dialog.PaymentTypeSelectionDialog;
 import com.floreantpos.ui.views.IView;
 import com.floreantpos.ui.views.LoginView;
 import com.floreantpos.ui.views.SwitchboardOtherFunctionsView;
@@ -140,9 +142,29 @@ public class RootView extends com.floreantpos.swing.TransparentPanel {
 		else if (defaultViewName.equals(SwitchboardOtherFunctionsView.VIEW_NAME)) { //$NON-NLS-1$
 			showView(SwitchboardOtherFunctionsView.getInstance());
 		}
-		else {
+		else if (defaultViewName.equals(OrderType.BAR_TAB.toString())) {
+			showView(SwitchboardView.getInstance());
+		}
+		else if (defaultViewName.equals(OrderType.DRIVE_THRU.toString())) {
+			showView(OrderView.getInstance());
+			OrderUtil.createNewTakeOutOrder(OrderType.DRIVE_THRU);
+		}
+		else if (defaultViewName.equals(OrderType.HOME_DELIVERY)) {
+			showView(SwitchboardView.getInstance());
+			SwitchboardView.getInstance().doHomeDelivery(OrderType.HOME_DELIVERY);
+		}
+		else if (defaultViewName.equals(OrderType.PICKUP.toString())) {
+			showView(OrderView.getInstance());
+			OrderUtil.createNewTakeOutOrder(OrderType.PICKUP);
+		}
+		else if (defaultViewName.equals(KitchenDisplayView.VIEW_NAME)) {
+			if(!hasView(KitchenDisplayView.getInstance())) {
+				addView(KitchenDisplayView.getInstance());
+			}
+			showView(KitchenDisplayView.VIEW_NAME);
+		}
+		else if (defaultViewName.equals(SwitchboardView.VIEW_NAME)) {
 			showView(SwitchboardView.getInstance());
 		}
 	}
-
 }

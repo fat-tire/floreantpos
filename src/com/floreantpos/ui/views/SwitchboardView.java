@@ -518,7 +518,7 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 		OrderView.getInstance().getTicketView().getTxtSearchItem().requestFocus();
 	}
 
-	private void doCreateNewTicket(final OrderType ticketType) {
+	public void doCreateNewTicket(final OrderType ticketType) {
 		try {
 			OrderServiceExtension orderService = new DefaultOrderServiceExtension();
 			orderService.createNewTicket(ticketType);
@@ -534,7 +534,7 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 		}
 	}
 
-	protected void doHomeDelivery(OrderType ticketType) {
+	public void doHomeDelivery(OrderType ticketType) {
 		try {
 
 			orderServiceExtension.createNewTicket(ticketType);
@@ -716,7 +716,7 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 			doSplitTicket();
 		}
 	}
-
+	
 	public Ticket getFirstSelectedTicket() {
 		List<Ticket> selectedTickets = ticketList.getSelectedTickets();
 

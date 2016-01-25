@@ -28,7 +28,9 @@ public class POSConstants {
 	public static final String HOME_DELIVERY_BUTTON_TEXT = Messages.getString("HOME_DELIVERY_BUTTON_TEXT"); //$NON-NLS-1$
 	public static final String DRIVE_THRU_BUTTON_TEXT = Messages.getString("DRIVE_THRU_BUTTON_TEXT"); //$NON-NLS-1$
 	public static final String BAR_TAB_BUTTON_TEXT = Messages.getString("BAR_TAB_BUTTON_TEXT"); //$NON-NLS-1$
-
+	public static final String FOR_HERE_BUTTON_TEXT = Messages.getString("FOR_HERE_BUTTON_TEXT"); //$NON-NLS-1$
+	public static final String RETAIL_BUTTON_TEXT = Messages.getString("RETAIL_BUTTON_TEXT"); //$NON-NLS-1$
+	
 	public static final String SEARCH_ITEM_BUTTON_TEXT = Messages.getString("SEARCH_ITEM_BUTTON_TEXT"); //$NON-NLS-1$
 
 	public static final String CashierSwitchBoardView_LABEL_ORDER = Messages.getString("CashierSwitchBoardView.LABEL_ORDER"); //$NON-NLS-1$

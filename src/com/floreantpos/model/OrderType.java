@@ -22,7 +22,7 @@ import org.apache.commons.lang.StringUtils;
 import com.floreantpos.Messages;
 
 public enum OrderType {
-	DINE_IN, TAKE_OUT, PICKUP, HOME_DELIVERY, DRIVE_THRU, BAR_TAB;
+	DINE_IN, TAKE_OUT, PICKUP, HOME_DELIVERY, DRIVE_THRU, BAR_TAB,RETAIL,FOR_HERE;
 	
 	private OrderTypeProperties properties;
 	

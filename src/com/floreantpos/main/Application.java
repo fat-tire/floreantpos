@@ -46,7 +46,6 @@ import com.floreantpos.POSConstants;
 import com.floreantpos.config.AppProperties;
 import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.config.ui.DatabaseConfigurationDialog;
-import com.floreantpos.demo.KitchenDisplayView;
 import com.floreantpos.extension.ExtensionManager;
 import com.floreantpos.extension.FloreantPlugin;
 import com.floreantpos.model.PosPrinters;
@@ -60,7 +59,6 @@ import com.floreantpos.model.dao.PrinterConfigurationDAO;
 import com.floreantpos.model.dao.RestaurantDAO;
 import com.floreantpos.model.dao.TerminalDAO;
 import com.floreantpos.ui.dialog.POSMessageDialog;
-import com.floreantpos.ui.views.CashierSwitchBoardView;
 import com.floreantpos.ui.views.LoginView;
 import com.floreantpos.ui.views.order.OrderView;
 import com.floreantpos.ui.views.order.RootView;
@@ -353,27 +351,7 @@ public class Application {
 			rootView.addView(OrderView.getInstance());
 		}
 
-		if (TerminalConfig.isCashierMode()) {
-			if (!rootView.hasView(CashierSwitchBoardView.VIEW_NAME)) {
-				CashierSwitchBoardView view = new CashierSwitchBoardView();
-				rootView.addView(view);
-			}
-
-			rootView.showView(CashierSwitchBoardView.VIEW_NAME);
-		}
-		else if (TerminalConfig.isKitchenMode()) {
-			if (rootView.hasView(KitchenDisplayView.VIEW_NAME)) {
-				rootView.showView(KitchenDisplayView.VIEW_NAME);
-			}
-			else {
-				KitchenDisplayView kitchenDisplayView = new KitchenDisplayView(false);
-				rootView.addView(kitchenDisplayView);
-				rootView.showView(KitchenDisplayView.VIEW_NAME);
-			}
-		}
-		else {
-			rootView.showDefaultView();
-		}
+		rootView.showDefaultView();
 	}
 
 	public void doLogout() {
