@@ -51,24 +51,24 @@ public class HeaderPanel extends JPanel {
 	private static final SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd yyyy, hh:mm:ss aaa"); //$NON-NLS-1$
 
 	private JLabel statusLabel;
-	
+
 	private Timer clockTimer = new Timer(1000, new ClockTimerHandler());
 	private Timer autoLogoffTimer;
 
 	private String userString = Messages.getString("PosMessage.70"); //$NON-NLS-1$
 	private String terminalString = Messages.getString("TERMINAL_LABEL"); //$NON-NLS-1$
-	
+
 	private JLabel logoffLabel;
-	
+
 	public HeaderPanel() {
 		super(new MigLayout("ins 2 2 0 2", "[][fill, grow][]", "")); //$NON-NLS-1$  //$NON-NLS-2$  //$NON-NLS-3$
-		
+
 		setOpaque(true);
 		setBackground(Color.white);
 
 		JLabel logoLabel = new JLabel(IconFactory.getIcon("/ui_icons/", "header-logo.png")); //$NON-NLS-1$ //$NON-NLS-2$
 		add(logoLabel);
-		
+
 		TransparentPanel statusPanel = new TransparentPanel(new MigLayout("hidemode 3, fill, ins 0, gap 0")); //$NON-NLS-1$
 		statusLabel = new JLabel();
 		statusLabel.setFont(statusLabel.getFont().deriveFont(Font.BOLD));
@@ -80,15 +80,15 @@ public class HeaderPanel extends JPanel {
 		logoffLabel.setHorizontalAlignment(JLabel.CENTER);
 		logoffLabel.setVerticalAlignment(JLabel.TOP);
 		statusPanel.add(logoffLabel, "newline, growx"); //$NON-NLS-1$
-		
+
 		add(statusPanel, "grow"); //$NON-NLS-1$
-		
+
 		PosButton btnBackoffice = new PosButton(new ShowBackofficeAction(false, true));
 		add(btnBackoffice, "w 60!, h 60!"); //$NON-NLS-1$
-		
+
 		PosButton btnOthers = new PosButton(new ShowOtherFunctionsAction(false, true)); //$NON-NLS-1$
 		add(btnOthers, "w 60!, h 60!"); //$NON-NLS-1$
-		
+
 		PosButton btnClockOUt = new PosButton(new ClockInOutAction(false, true));
 		add(btnClockOUt, "w 60!, h 60!"); //$NON-NLS-1$
 
@@ -102,10 +102,10 @@ public class HeaderPanel extends JPanel {
 		add(btnShutdown, "w 60!, h 60!"); //$NON-NLS-1$
 
 		add(new JSeparator(JSeparator.HORIZONTAL), "newline, span 6, grow, gap 0"); //$NON-NLS-1$
-		
+
 		clockTimer.start();
-		
-		if(TerminalConfig.isAutoLogoffEnable()) {
+
+		if (TerminalConfig.isAutoLogoffEnable()) {
 			autoLogoffTimer = new Timer(1000, new AutoLogoffHandler());
 		}
 	}
@@ -120,35 +120,35 @@ public class HeaderPanel extends JPanel {
 
 		statusLabel.setText(sb.toString());
 	}
-	
+
 	private void startTimer() {
 		clockTimer.start();
-		
-		if(autoLogoffTimer != null) {
+
+		if (autoLogoffTimer != null) {
 			autoLogoffTimer.start();
 		}
 	}
-	
+
 	private void stopTimer() {
 		clockTimer.stop();
-		
-		if(autoLogoffTimer != null) {
+
+		if (autoLogoffTimer != null) {
 			autoLogoffTimer.stop();
 		}
 	}
-	
+
 	@Override
 	public void setVisible(boolean aFlag) {
 		super.setVisible(aFlag);
-		
-		if(aFlag) {
+
+		if (aFlag) {
 			startTimer();
 		}
 		else {
 			stopTimer();
 		}
 	}
-	
+
 	private class ClockTimerHandler implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -156,18 +156,18 @@ public class HeaderPanel extends JPanel {
 				clockTimer.stop();
 				return;
 			}
-			
+
 			showHeader();
 		}
 	}
-	
+
 	class AutoLogoffHandler implements ActionListener, AWTEventListener {
 		int countDown = TerminalConfig.getAutoLogoffTime();
-		
+
 		public AutoLogoffHandler() {
 			Toolkit.getDefaultToolkit().addAWTEventListener(this, AWTEvent.KEY_EVENT_MASK | AWTEvent.MOUSE_EVENT_MASK | AWTEvent.MOUSE_MOTION_EVENT_MASK);
 		}
-		
+
 		@Override
 		public void eventDispatched(AWTEvent event) {
 			reset();
@@ -179,11 +179,11 @@ public class HeaderPanel extends JPanel {
 				autoLogoffTimer.stop();
 				return;
 			}
-			
-			if(!TerminalConfig.isAutoLogoffEnable()) {
+
+			if (!TerminalConfig.isAutoLogoffEnable()) {
 				return;
 			}
-			
+
 			if (PosGuiUtil.isModalDialogShowing()) {
 				reset();
 				return;
@@ -196,14 +196,15 @@ public class HeaderPanel extends JPanel {
 			logoffLabel.setText(Messages.getString("HeaderPanel.0") + min + ":" + sec); //$NON-NLS-1$ //$NON-NLS-2$
 
 			if (countDown == 0) {
-				Application.getInstance().doLogout();
+				//Application.getInstance().doLogout();
+				Application.getInstance().doAutoLogout();
 			}
 		}
-		
+
 		public void reset() {
 			logoffLabel.setText(""); //$NON-NLS-1$
 			countDown = TerminalConfig.getAutoLogoffTime();
-			
+
 			autoLogoffTimer.setInitialDelay(5 * 1000);
 			autoLogoffTimer.restart();
 		}

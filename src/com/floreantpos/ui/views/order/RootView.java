@@ -29,7 +29,6 @@ import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.demo.KitchenDisplayView;
 import com.floreantpos.model.OrderType;
 import com.floreantpos.ui.HeaderPanel;
-import com.floreantpos.ui.dialog.PaymentTypeSelectionDialog;
 import com.floreantpos.ui.views.IView;
 import com.floreantpos.ui.views.LoginView;
 import com.floreantpos.ui.views.SwitchboardOtherFunctionsView;
@@ -54,6 +53,11 @@ public class RootView extends com.floreantpos.swing.TransparentPanel {
 		setLayout(new BorderLayout());
 		setBorder(new EmptyBorder(3, 3, 3, 3));
 
+		initView();
+
+	}
+
+	public void initView() {
 		headerPanel.setVisible(false);
 		add(headerPanel, BorderLayout.NORTH);
 
@@ -158,7 +162,7 @@ public class RootView extends com.floreantpos.swing.TransparentPanel {
 			OrderUtil.createNewTakeOutOrder(OrderType.PICKUP);
 		}
 		else if (defaultViewName.equals(KitchenDisplayView.VIEW_NAME)) {
-			if(!hasView(KitchenDisplayView.getInstance())) {
+			if (!hasView(KitchenDisplayView.getInstance())) {
 				addView(KitchenDisplayView.getInstance());
 			}
 			showView(KitchenDisplayView.VIEW_NAME);

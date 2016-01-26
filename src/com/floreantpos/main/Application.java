@@ -59,13 +59,14 @@ import com.floreantpos.model.dao.PrinterConfigurationDAO;
 import com.floreantpos.model.dao.RestaurantDAO;
 import com.floreantpos.model.dao.TerminalDAO;
 import com.floreantpos.ui.dialog.POSMessageDialog;
-import com.floreantpos.ui.views.LoginView;
+import com.floreantpos.ui.dialog.PasswordEntryDialog;
 import com.floreantpos.ui.views.order.OrderView;
 import com.floreantpos.ui.views.order.RootView;
 import com.floreantpos.util.DatabaseConnectionException;
 import com.floreantpos.util.DatabaseUtil;
 import com.floreantpos.util.POSUtil;
 import com.floreantpos.util.ShiftUtil;
+import com.floreantpos.util.UserNotFoundException;
 import com.jgoodies.looks.plastic.PlasticXPLookAndFeel;
 import com.jgoodies.looks.plastic.theme.ExperienceBlue;
 
@@ -82,6 +83,7 @@ public class Application {
 	public PrinterConfiguration printConfiguration;
 	private Restaurant restaurant;
 	private PosPrinters printers;
+	private boolean autoLogOffMode;
 
 	private static Application instance;
 
@@ -355,9 +357,56 @@ public class Application {
 	}
 
 	public void doLogout() {
+		/*
+		KitchenDisplayView disPlayview = KitchenDisplayView.getInstance();
+		if (disPlayview.isVisible()) {
+			disPlayview.setVisible(false);
+		}
+		
+		BackOfficeWindow window = com.floreantpos.util.POSUtil.getBackOfficeWindow();
+		if (window.isVisible()) {
+			window.setVisible(false);
+		}
+		
+		SwitchboardOtherFunctionsView view = SwitchboardOtherFunctionsView.getInstance();
+		if (view.isVisible()) {
+			view.setVisible(false);
+		}*/
+
 		currentShift = null;
 		setCurrentUser(null);
-		RootView.getInstance().showView(LoginView.VIEW_NAME);
+
+		RootView.getInstance().initView();
+	}
+
+	public void doAutoLogout() {
+		try {
+			setAutoLogOffMode(true);
+			posWindow.setGlassPaneVisible(true);
+			PasswordEntryDialog dialog2 = new PasswordEntryDialog();
+			dialog2.setTitle("ENTER SECRET KEY");
+			dialog2.setDialogTitle("LOGIN");
+			dialog2.pack();
+			dialog2.setLocationRelativeTo(Application.getPosWindow());
+			dialog2.setVisible(true);
+
+			if (dialog2.isCanceled()) {
+				doLogout();
+				return;
+			}
+			User user = dialog2.getUser();
+
+			doAutoLogin(user);
+		} catch (UserNotFoundException e) {
+			LogFactory.getLog(Application.class).error(e);
+			POSMessageDialog.showError(Application.getPosWindow(), Messages.getString("LoginPasswordEntryView.15")); //$NON-NLS-1$
+		} finally {
+			posWindow.setGlassPaneVisible(false);
+		}
+	}
+
+	public void doAutoLogin(User user) {
+		setCurrentUser(user);
 	}
 
 	public static User getCurrentUser() {
@@ -505,5 +554,19 @@ public class Application {
 		UIManager.put("ToolBar.font", font); //$NON-NLS-1$
 		UIManager.put("ToolTip.font", font); //$NON-NLS-1$
 		UIManager.put("Tree.font", font); //$NON-NLS-1$
+	}
+
+	/**
+	 * @return the autoLogOffMode
+	 */
+	public boolean isAutoLogOffMode() {
+		return autoLogOffMode;
+	}
+
+	/**
+	 * @param autoLogOffMode the autoLogOffMode to set
+	 */
+	public void setAutoLogOffMode(boolean autoLogOffMode) {
+		this.autoLogOffMode = autoLogOffMode;
 	}
 }

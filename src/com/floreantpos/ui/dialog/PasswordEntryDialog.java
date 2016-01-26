@@ -43,11 +43,15 @@ import org.apache.commons.lang.StringUtils;
 import com.floreantpos.Messages;
 import com.floreantpos.POSConstants;
 import com.floreantpos.config.TerminalConfig;
+import com.floreantpos.demo.KitchenDisplayView;
 import com.floreantpos.main.Application;
+import com.floreantpos.model.OrderType;
 import com.floreantpos.model.User;
+import com.floreantpos.model.UserPermission;
 import com.floreantpos.model.dao.UserDAO;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.ui.TitlePanel;
+import com.floreantpos.ui.views.SwitchboardView;
 
 public class PasswordEntryDialog extends POSDialog implements ActionListener {
 	private TitlePanel titlePanel;
@@ -130,9 +134,9 @@ public class PasswordEntryDialog extends POSDialog implements ActionListener {
 			@Override
 			public void keyReleased(KeyEvent e) {
 				String secretKey = getPasswordAsString();
-				if(secretKey != null && secretKey.length() == TerminalConfig.getDefaultPassLen()) {
+				if (secretKey != null && secretKey.length() == TerminalConfig.getDefaultPassLen()) {
 					statusLabel.setText(""); //$NON-NLS-1$
-					if(checkLogin(secretKey)) {
+					if (checkLogin(secretKey)) {
 						setCanceled(false);
 						dispose();
 					}
@@ -168,7 +172,7 @@ public class PasswordEntryDialog extends POSDialog implements ActionListener {
 				PosButton posButton = new PosButton();
 				posButton.setAction(loginAction);
 				ImageIcon icon = com.floreantpos.IconFactory.getIcon("/ui_icons/", iconNames[i][j]); //$NON-NLS-1$
-				if(icon != null) {
+				if (icon != null) {
 					posButton.setIcon(icon);
 				}
 				else {
@@ -229,7 +233,7 @@ public class PasswordEntryDialog extends POSDialog implements ActionListener {
 		//		setCanceled(false);
 		//		dispose();
 
-		if(checkLogin(getPasswordAsString())) {
+		if (checkLogin(getPasswordAsString())) {
 			setCanceled(false);
 			dispose();
 		}
@@ -249,7 +253,7 @@ public class PasswordEntryDialog extends POSDialog implements ActionListener {
 	private void doClear() {
 		statusLabel.setText(""); //$NON-NLS-1$
 		String passwordAsString = getPasswordAsString();
-		if(StringUtils.isNotEmpty(passwordAsString)) {
+		if (StringUtils.isNotEmpty(passwordAsString)) {
 			passwordAsString = passwordAsString.substring(0, passwordAsString.length() - 1);
 		}
 		tfPassword.setText(passwordAsString);
@@ -258,14 +262,14 @@ public class PasswordEntryDialog extends POSDialog implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		String actionCommand = e.getActionCommand();
 
-		if(POSConstants.CANCEL.equalsIgnoreCase(actionCommand)) {
+		if (POSConstants.CANCEL.equalsIgnoreCase(actionCommand)) {
 			doCancel();
 		}
-		else if(POSConstants.OK.equalsIgnoreCase(actionCommand)) {
+		else if (POSConstants.OK.equalsIgnoreCase(actionCommand)) {
 			doOk();
 		}
 		else {
-			if(StringUtils.isNotEmpty(actionCommand)) {
+			if (StringUtils.isNotEmpty(actionCommand)) {
 				tfPassword.setText(getPasswordAsString() + actionCommand);
 			}
 		}
@@ -298,7 +302,7 @@ public class PasswordEntryDialog extends POSDialog implements ActionListener {
 		dialog2.setLocationRelativeTo(parent);
 		dialog2.setVisible(true);
 
-		if(dialog2.isCanceled()) {
+		if (dialog2.isCanceled()) {
 			return null;
 		}
 
@@ -317,20 +321,64 @@ public class PasswordEntryDialog extends POSDialog implements ActionListener {
 		dialog2.setLocationRelativeTo(parent);
 		dialog2.setVisible(true);
 
-		if(dialog2.isCanceled()) {
+		if (dialog2.isCanceled()) {
 			return null;
 		}
 
 		return dialog2.getUser();
 	}
 
-	private synchronized boolean checkLogin(String secretKey) {
+	/*private synchronized boolean checkLogin(String secretKey) {
 		user = UserDAO.getInstance().findUserBySecretKey(secretKey);
 		if(user == null) {
 			statusLabel.setText(Messages.getString("PasswordEntryDialog.30")); //$NON-NLS-1$
 			return false;
 		}
 
+		return true;
+	}*/
+
+	private synchronized boolean checkLogin(String secretKey) {
+		user = UserDAO.getInstance().findUserBySecretKey(secretKey);
+
+		if (user == null) {
+			statusLabel.setText(Messages.getString("PasswordEntryDialog.30")); //$NON-NLS-1$
+			return false;
+		}
+
+		if (Application.getInstance().isAutoLogOffMode()) {
+			if (TerminalConfig.getDefaultView().equals(OrderType.DINE_IN.toString())) {
+				if (!user.hasPermission(UserPermission.CREATE_TICKET)) {
+					statusLabel.setText("user has no permission to access this view");
+					return false;
+				}
+			}
+			else if (TerminalConfig.getDefaultView().equals(SwitchboardView.VIEW_NAME)) {
+				if (!user.hasPermission(UserPermission.VIEW_ALL_OPEN_TICKETS)) {
+					statusLabel.setText("user has no permission to access this view");
+					return false;
+				}
+			}
+			else if (TerminalConfig.getDefaultView().equals(OrderType.TAKE_OUT.toString())) {
+				if (!user.hasPermission(UserPermission.TAKE_OUT)) {
+					statusLabel.setText("user has no permission to access this view");
+					return false;
+				}
+			}
+			/*else if (TerminalConfig.getDefaultView().equals(SwitchboardOtherFunctionsView.VIEW_NAME)) {
+				//if (!user.hasPermission(UserPermission.VIEW_BACK_OFFICE)) {
+					statusLabel.setText("user has no permission to access this view");
+					return false;
+				//}
+			}*/
+			else if (TerminalConfig.getDefaultView().equals(KitchenDisplayView.VIEW_NAME)) {
+				if (!user.hasPermission(UserPermission.KITCHEN_DISPLAY)) {
+					statusLabel.setText("user has no permission to access this view");
+					return false;
+				}
+			}
+		}
+		Application.getInstance().setAutoLogOffMode(false);
 		return true;
 	}
 
@@ -339,9 +387,9 @@ public class PasswordEntryDialog extends POSDialog implements ActionListener {
 			tfPassword.setText(getPasswordAsString() + e.getActionCommand());
 
 			String secretKey = getPasswordAsString();
-			if(secretKey != null && secretKey.length() == TerminalConfig.getDefaultPassLen()) {
+			if (secretKey != null && secretKey.length() == TerminalConfig.getDefaultPassLen()) {
 				statusLabel.setText(""); //$NON-NLS-1$
-				if(checkLogin(secretKey)) {
+				if (checkLogin(secretKey)) {
 					setCanceled(false);
 					dispose();
 				}
