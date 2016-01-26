@@ -42,19 +42,15 @@ import javax.swing.border.TitledBorder;
 
 import net.miginfocom.swing.MigLayout;
 
-import org.apache.commons.lang.StringUtils;
 
 import com.floreantpos.Messages;
 import com.floreantpos.POSConstants;
 import com.floreantpos.extension.OrderServiceExtension;
-import com.floreantpos.main.Application;
 import com.floreantpos.model.OrderType;
 import com.floreantpos.model.ShopTable;
 import com.floreantpos.model.Ticket;
-import com.floreantpos.model.User;
 import com.floreantpos.model.dao.ShopTableDAO;
 import com.floreantpos.model.dao.TicketDAO;
-import com.floreantpos.model.dao.UserDAO;
 import com.floreantpos.swing.POSToggleButton;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.swing.ScrollableFlowPanel;
@@ -74,7 +70,6 @@ public class TableSelectionView extends JPanel implements ActionListener {
 
 	private POSToggleButton btnGroup;
 	private POSToggleButton btnUnGroup;
-	private POSToggleButton btnTransfer;
 
 	private PosButton btnDone;
 	private PosButton btnCancel;
@@ -122,10 +117,9 @@ public class TableSelectionView extends JPanel implements ActionListener {
 
 		btnGroups = new ButtonGroup();
 
-		btnGroup = new POSToggleButton(Messages.getString("TableMapView.1")); //$NON-NLS-1$
-		btnUnGroup = new POSToggleButton(Messages.getString("TableMapView.2")); //$NON-NLS-1$
-		btnTransfer = new POSToggleButton(Messages.getString("TableMapView.3")); //$NON-NLS-1$
-		btnDone = new PosButton(Messages.getString("TableMapView.4")); //$NON-NLS-1$
+		btnGroup = new POSToggleButton(POSConstants.GROUP); //$NON-NLS-1$
+		btnUnGroup = new POSToggleButton(POSConstants.UNGROUP); //$NON-NLS-1$
+		btnDone = new PosButton(POSConstants.SAVE_BUTTON_TEXT); //$NON-NLS-1$
 		btnCancel = new PosButton(POSConstants.CANCEL); //$NON-NLS-1$
 
 		btnGroup.addActionListener(this);
@@ -141,7 +135,6 @@ public class TableSelectionView extends JPanel implements ActionListener {
 
 		btnGroups.add(btnGroup);
 		btnGroups.add(btnUnGroup);
-		btnGroups.add(btnTransfer);
 
 		actionBtnPanel.add(btnGroup, "grow"); //$NON-NLS-1$
 		actionBtnPanel.add(btnUnGroup, "grow"); //$NON-NLS-1$
@@ -198,6 +191,7 @@ public class TableSelectionView extends JPanel implements ActionListener {
 				if (ticket.getTableNumbers().contains(shopTableButton.getId())) {
 					shopTableButton.setText("<html><center>" + shopTableButton.getText() + "<br><h4>" + ticket.getOwner().getFirstName() + "<br>Chk#" //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 							+ ticket.getId() + "</h4></center></html>"); //$NON-NLS-1$
+					shopTableButton.setTicket(ticket);
 					shopTableButton.setUser(ticket.getOwner());
 				}
 			}
@@ -216,10 +210,14 @@ public class TableSelectionView extends JPanel implements ActionListener {
 			return false;
 		}
 
-		if (btnGroup.isSelected() && !shopTable.isServing()) {
+		if (btnGroup.isSelected()) {
 			if (addedTableListModel.contains(button)) {
 				return true;
 			}
+			if (button.getShopTable().isServing()) {
+				return true;
+			}
+
 			button.getShopTable().setServing(true);
 			button.setBackground(Color.green);
 			button.setForeground(Color.black);
@@ -257,15 +255,11 @@ public class TableSelectionView extends JPanel implements ActionListener {
 			return false;
 		}
 
-		if (shopTable.isServing()) {
-			int userId = Application.getCurrentUser().getAutoId();
-			int userId2 = button.getUser().getAutoId();
-			if (userId != userId2) {
-				if (!hasUserAccess(button.getUser())) {
-					return false;
-				}
+		if (shopTable.isServing() && !btnGroup.isSelected()) {
+			if (!button.hasUserAccess()) {
+				return false;
 			}
-			editTicket(tableNumber);
+			editTicket(button.getTicket());
 			return false;
 		}
 
@@ -275,25 +269,7 @@ public class TableSelectionView extends JPanel implements ActionListener {
 				this.addedTableListModel.addElement(button);
 			}
 			doCreateNewTicket();
-		}
-		return true;
-	}
-
-	private boolean hasUserAccess(User ticketUser) {
-
-		if (ticketUser == null) {
-			return false;
-		}
-
-		String password = PasswordEntryDialog.show(Application.getPosWindow(), Messages.getString("PosAction.0")); //$NON-NLS-1$
-		if (StringUtils.isEmpty(password)) {
-			return false;
-		}
-
-		int inputUserId = UserDAO.getInstance().findUserBySecretKey(password).getAutoId();
-		if (inputUserId != ticketUser.getAutoId()) {
-			POSMessageDialog.showError(Application.getPosWindow(), "Incorrect password"); //$NON-NLS-1$
-			return false;
+			clearSelection();
 		}
 		return true;
 	}
@@ -311,7 +287,6 @@ public class TableSelectionView extends JPanel implements ActionListener {
 	}
 
 	private void clearSelection() {
-		addedTableListModel.clear();
 		redererTable();
 		btnGroups.clearSelection();
 		btnGroup.setVisible(true);
@@ -337,7 +312,7 @@ public class TableSelectionView extends JPanel implements ActionListener {
 		}
 		else if (object == btnDone) {
 			if (btnGroup.isSelected()) {
-				doCreateNewTicket();
+				doGroupAction();
 				clearSelection();
 			}
 			else if (btnUnGroup.isSelected()) {
@@ -363,35 +338,30 @@ public class TableSelectionView extends JPanel implements ActionListener {
 		}
 	}
 
-	private boolean editTicket(Integer shopTableNumber) {
-		List<Ticket> openTickets = TicketDAO.getInstance().findOpenTickets();
-		Integer ticketId = null;
-		for (Ticket ticket : openTickets) {
-			if (ticket.getTableNumbers().contains(shopTableNumber)) {
-				ticketId = ticket.getId();
-				if (ticketId == null) {
-					return false;
-				}
-			}
-		}
-
-		Ticket ticketToEdit = null;
-		if (ticketId != null) {
-			ticketToEdit = TicketDAO.getInstance().loadFullTicket(ticketId);
-		}
-		else {
+	private boolean editTicket(Ticket ticket) {
+		if (ticket == null) {
 			return false;
+			
 		}
+		Ticket ticketToEdit = TicketDAO.getInstance().loadFullTicket(ticket.getId());
+		
 		OrderView.getInstance().setCurrentTicket(ticketToEdit);
 		RootView.getInstance().showView(OrderView.VIEW_NAME);
 		OrderView.getInstance().getTicketView().getTxtSearchItem().requestFocus();
 		return true;
 	}
 
+	private void doGroupAction() {
+		doCreateNewTicket();
+	}
+
 	private void doUnGroupAction() {
 		if (addedTableListModel != null) {
 			Enumeration<ShopTableButton> elements = this.addedTableListModel.elements();
 
+			if (!addedTableListModel.elementAt(0).hasUserAccess()) {
+				return;
+			}
 			while (elements.hasMoreElements()) {
 				ShopTableButton button = (ShopTableButton) elements.nextElement();
 				ShopTable shopTable = button.getShopTable();

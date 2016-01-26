@@ -18,16 +18,23 @@
 package com.floreantpos.swing;
 
 import java.awt.Color;
-import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
+
+import com.floreantpos.Messages;
+import com.floreantpos.main.Application;
 import com.floreantpos.model.ShopTable;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.User;
-import com.floreantpos.model.dao.TicketDAO;
+import com.floreantpos.model.UserPermission;
+import com.floreantpos.model.dao.UserDAO;
+import com.floreantpos.ui.dialog.POSMessageDialog;
+import com.floreantpos.ui.dialog.PasswordEntryDialog;
 
 public class ShopTableButton extends PosButton {
 	private ShopTable shopTable;
 	private User user; 
+	private Ticket ticket; 
 	
 	public ShopTableButton(ShopTable shopTable) {
 		this.shopTable = shopTable;
@@ -70,22 +77,18 @@ public class ShopTableButton extends PosButton {
 	}
 	
 	public void update() {
-		
 		if(shopTable != null && shopTable.isServing()) {
-			
 			//setEnabled(false);
 			setBackground(Color.red);
 			setForeground(Color.BLACK);
 		}
 		else if(shopTable != null && shopTable.isBooked()) {
-			
 			setEnabled(false);
 			setOpaque(true); 
 			setBackground(Color.orange);
 			setForeground(Color.BLACK);
 		}
 		else {
-			
 			setEnabled(true);
 			setBackground(Color.white);
 			setForeground(Color.black);
@@ -102,14 +105,42 @@ public class ShopTableButton extends PosButton {
 		return user;
 	}
 	
-	public Ticket getTicket(){
-		List<Ticket> openTickets = TicketDAO.getInstance().findOpenTickets();
-		Ticket selectedTicket=null; 
-		for (Ticket ticket : openTickets) {
-			if (ticket.getTableNumbers().contains(getId())) {
-				selectedTicket=TicketDAO.getInstance().loadFullTicket(ticket.getId()); 	
-			}
+	public boolean hasUserAccess() {
+
+		if (user == null) {
+			return false;
 		}
-		return selectedTicket;
+		User currentUser = Application.getCurrentUser();
+		
+		int currentUserId = currentUser.getUserId();
+		int ticketUserId = user.getUserId();
+		
+		if (currentUserId == ticketUserId) {
+			return true; 
+		}
+
+		if (currentUser.hasPermission(UserPermission.PERFORM_MANAGER_TASK) || currentUser.hasPermission(UserPermission.PERFORM_ADMINISTRATIVE_TASK)) {
+			return true;
+		}
+
+		String password = PasswordEntryDialog.show(Application.getPosWindow(), Messages.getString("PosAction.0")); //$NON-NLS-1$
+		if (StringUtils.isEmpty(password)) {
+			return false;
+		}
+
+		int inputUserId = UserDAO.getInstance().findUserBySecretKey(password).getAutoId();
+		if (inputUserId != user.getAutoId()) {
+			POSMessageDialog.showError(Application.getPosWindow(), "Incorrect password"); //$NON-NLS-1$
+			return false;
+		}
+		return true;
+	}
+	
+	public void setTicket(Ticket ticket){
+		this.ticket=ticket; 
+	}
+	
+	public Ticket getTicket(){
+		return ticket;
 	}
 }

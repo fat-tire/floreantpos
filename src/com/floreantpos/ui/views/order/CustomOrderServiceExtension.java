@@ -44,8 +44,6 @@ public class CustomOrderServiceExtension implements OrderServiceExtension {
 	
 	List<ShopTable> selectedTables; 
 	
-	
-
 	public CustomOrderServiceExtension(List<ShopTable> selectedTables) {
 		super();
 		this.selectedTables = selectedTables;
@@ -108,7 +106,7 @@ public class CustomOrderServiceExtension implements OrderServiceExtension {
 
 			if(floorLayoutPlugin != null) {
 
-				selectedTables = floorLayoutPlugin.captureTableNumbers(null);
+				selectedTables = this.selectedTables;
 				
 				if(selectedTables == null) {
 					return;

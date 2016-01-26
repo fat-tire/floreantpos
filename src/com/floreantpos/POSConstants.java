@@ -140,6 +140,7 @@ public class POSConstants {
 	public static final String CUSTOMER_SELECTION_BUTTON_TEXT = Messages.getString("CUSTOMER_SELECTION_BUTTON_TEXT"); //$NON-NLS-1$
 	public static final String GENERAL = Messages.getString("PosMessage.62"); //$NON-NLS-1$
 	public static final String GROUP = Messages.getString("PosMessage.63"); //$NON-NLS-1$
+	public static final String UNGROUP = Messages.getString("UNGROUP"); //$NON-NLS-1$
 	public static final String RATE = Messages.getString("PosMessage.64"); //$NON-NLS-1$
 	public static final String ORDER_INFO = Messages.getString("PosMessage.65"); //$NON-NLS-1$
 	public static final String ORDER_TYPE_BUTTON_TEXT = Messages.getString("ORDER_TYPE_BUTTON_TEXT"); //$NON-NLS-1$

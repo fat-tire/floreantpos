@@ -44,6 +44,7 @@ public class TableMapView extends ViewPanel {
 
 	public final static String VIEW_NAME = "TABLE_MAP"; //$NON-NLS-1$
 
+	private JPanel centerPanel;
 	private TableSelectionView tableView;
 
 	private OrderServiceExtension orderServiceExtension;
@@ -64,15 +65,26 @@ public class TableMapView extends ViewPanel {
 
 	private void initComponents() {
 		setLayout(new BorderLayout());
-		tableView = new TableSelectionView();
+		centerPanel = new JPanel(new BorderLayout());
 		FloorLayoutPlugin floorLayoutPlugin = (FloorLayoutPlugin) ExtensionManager.getPlugin(FloorLayoutPlugin.class);
 		if (floorLayoutPlugin == null) {
-			add(tableView, java.awt.BorderLayout.CENTER);
+			tableView = new TableSelectionView();
+			centerPanel.add(tableView, BorderLayout.CENTER);
 		}
+		else {
+			centerPanel.add(floorLayoutPlugin.initFloorView(), BorderLayout.CENTER);
+		}
+		add(centerPanel, BorderLayout.CENTER);
 	}
 
 	public synchronized void updateTableView() {
-		tableView.redererTable();
+		FloorLayoutPlugin floorLayoutPlugin = (FloorLayoutPlugin) ExtensionManager.getPlugin(FloorLayoutPlugin.class);
+		if (floorLayoutPlugin == null) {
+			tableView.redererTable();
+		}
+		else {
+			floorLayoutPlugin.updateView();
+		}
 	}
 
 	public static TableMapView getInstance() {
@@ -84,7 +96,7 @@ public class TableMapView extends ViewPanel {
 	}
 
 	public JPanel getTableSelectorPanel() {
-		return tableView;
+		return centerPanel;
 	}
 
 	@Override
