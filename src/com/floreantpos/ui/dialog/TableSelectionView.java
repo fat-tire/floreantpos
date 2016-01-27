@@ -42,7 +42,6 @@ import javax.swing.border.TitledBorder;
 
 import net.miginfocom.swing.MigLayout;
 
-
 import com.floreantpos.Messages;
 import com.floreantpos.POSConstants;
 import com.floreantpos.extension.OrderServiceExtension;
@@ -88,7 +87,7 @@ public class TableSelectionView extends JPanel implements ActionListener {
 
 		setLayout(new java.awt.BorderLayout(10, 10));
 
-		TitledBorder titledBorder1 = BorderFactory.createTitledBorder(null, POSConstants.DINE_IN_BUTTON_TEXT, TitledBorder.CENTER,
+		TitledBorder titledBorder1 = BorderFactory.createTitledBorder(null, POSConstants.TABLES, TitledBorder.CENTER,
 				TitledBorder.DEFAULT_POSITION);
 
 		JPanel leftPanel = new JPanel(new java.awt.BorderLayout(5, 5));
@@ -96,7 +95,7 @@ public class TableSelectionView extends JPanel implements ActionListener {
 
 		redererTable();
 
-		JideScrollPane scrollPane = new JideScrollPane(buttonsPanel, JideScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JideScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		JideScrollPane scrollPane = new JideScrollPane(buttonsPanel, JideScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JideScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		scrollPane.getVerticalScrollBar().setPreferredSize(new Dimension(60, 0));
 
 		leftPanel.add(scrollPane, java.awt.BorderLayout.CENTER);
@@ -265,8 +264,7 @@ public class TableSelectionView extends JPanel implements ActionListener {
 
 		if (!btnGroup.isSelected() && !btnGroup.isSelected()) {
 			if (!addedTableListModel.contains(button)) {
-				button.getShopTable().setServing(true);
-				this.addedTableListModel.addElement(button);
+				addedTableListModel.addElement(button);
 			}
 			doCreateNewTicket();
 			clearSelection();
@@ -275,7 +273,7 @@ public class TableSelectionView extends JPanel implements ActionListener {
 	}
 
 	public List<ShopTable> getTables() {
-		Enumeration<ShopTableButton> elements = this.addedTableListModel.elements();
+		Enumeration<ShopTableButton> elements = addedTableListModel.elements();
 		List<ShopTable> tables = new ArrayList<ShopTable>();
 
 		while (elements.hasMoreElements()) {
@@ -330,6 +328,10 @@ public class TableSelectionView extends JPanel implements ActionListener {
 		try {
 			List<ShopTable> selectedTables = getTables();
 
+			if (selectedTables.isEmpty()) {
+				return;
+			}
+
 			OrderServiceExtension orderService = new CustomOrderServiceExtension(selectedTables);
 			orderService.createNewTicket(OrderType.DINE_IN);
 
@@ -341,10 +343,10 @@ public class TableSelectionView extends JPanel implements ActionListener {
 	private boolean editTicket(Ticket ticket) {
 		if (ticket == null) {
 			return false;
-			
+
 		}
 		Ticket ticketToEdit = TicketDAO.getInstance().loadFullTicket(ticket.getId());
-		
+
 		OrderView.getInstance().setCurrentTicket(ticketToEdit);
 		RootView.getInstance().showView(OrderView.VIEW_NAME);
 		OrderView.getInstance().getTicketView().getTxtSearchItem().requestFocus();
@@ -356,29 +358,31 @@ public class TableSelectionView extends JPanel implements ActionListener {
 	}
 
 	private void doUnGroupAction() {
-		if (addedTableListModel != null) {
-			Enumeration<ShopTableButton> elements = this.addedTableListModel.elements();
+		if (addedTableListModel == null || addedTableListModel.isEmpty()) {
+			return;
+		}
 
-			if (!addedTableListModel.elementAt(0).hasUserAccess()) {
-				return;
-			}
-			while (elements.hasMoreElements()) {
-				ShopTableButton button = (ShopTableButton) elements.nextElement();
-				ShopTable shopTable = button.getShopTable();
-				Ticket ticket = button.getTicket();
-				if (ticket != null) {
-					for (Iterator iterator = ticket.getTableNumbers().iterator(); iterator.hasNext();) {
-						Integer id = (Integer) iterator.next();
-						if (button.getId() == id) {
-							iterator.remove();
-						}
+		Enumeration<ShopTableButton> elements = this.addedTableListModel.elements();
 
+		if (!addedTableListModel.elementAt(0).hasUserAccess()) {
+			return;
+		}
+		while (elements.hasMoreElements()) {
+			ShopTableButton button = (ShopTableButton) elements.nextElement();
+			ShopTable shopTable = button.getShopTable();
+			Ticket ticket = button.getTicket();
+			if (ticket != null) {
+				for (Iterator iterator = ticket.getTableNumbers().iterator(); iterator.hasNext();) {
+					Integer id = (Integer) iterator.next();
+					if (button.getId() == id) {
+						iterator.remove();
 					}
 
-					shopTable.setServing(false);
-					ShopTableDAO.getInstance().saveOrUpdate(shopTable);
-					TicketDAO.getInstance().saveOrUpdate(ticket);
 				}
+
+				shopTable.setServing(false);
+				ShopTableDAO.getInstance().saveOrUpdate(shopTable);
+				TicketDAO.getInstance().saveOrUpdate(ticket);
 			}
 		}
 	}
