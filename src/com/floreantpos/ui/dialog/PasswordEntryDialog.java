@@ -51,7 +51,11 @@ import com.floreantpos.model.UserPermission;
 import com.floreantpos.model.dao.UserDAO;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.ui.TitlePanel;
+import com.floreantpos.ui.views.SwitchboardOtherFunctionsView;
 import com.floreantpos.ui.views.SwitchboardView;
+import com.floreantpos.ui.views.TableMapView;
+import com.floreantpos.ui.views.order.OrderView;
+import com.floreantpos.ui.views.order.RootView;
 
 public class PasswordEntryDialog extends POSDialog implements ActionListener {
 	private TitlePanel titlePanel;
@@ -60,7 +64,7 @@ public class PasswordEntryDialog extends POSDialog implements ActionListener {
 
 	private PosButton btnClear;
 	private PosButton btnClearAll;
-
+	private boolean autoLogOffMode;
 	private User user;
 
 	public PasswordEntryDialog() {
@@ -320,7 +324,6 @@ public class PasswordEntryDialog extends POSDialog implements ActionListener {
 		dialog2.pack();
 		dialog2.setLocationRelativeTo(parent);
 		dialog2.setVisible(true);
-
 		if (dialog2.isCanceled()) {
 			return null;
 		}
@@ -345,32 +348,57 @@ public class PasswordEntryDialog extends POSDialog implements ActionListener {
 			statusLabel.setText(Messages.getString("PasswordEntryDialog.30")); //$NON-NLS-1$
 			return false;
 		}
+		if (isAutoLogOffMode()) {
 
-		if (Application.getInstance().isAutoLogOffMode()) {
+			String viewName = RootView.getInstance().getCurrentView();
+
+			if (viewName.equals(TableMapView.VIEW_NAME)) {
+				if (!user.hasPermission(UserPermission.CREATE_TICKET)) {
+					statusLabel.setText("user has no permission to access this view");
+					return false;
+				}
+			}/*
+			else if (viewName.equals(SwitchboardView.VIEW_NAME)) {
+				if (!user.hasPermission(UserPermission.VIEW_ALL_OPEN_TICKETS)) {
+					statusLabel.setText("user has no permission to access this view");
+					return false;
+				}
+			}*/
+			else if (viewName.equals(SwitchboardOtherFunctionsView.VIEW_NAME)) {
+				if (!user.hasPermission(UserPermission.ALL_FUNCTIONS)) {
+					statusLabel.setText("user has no permission to access this view");
+					return false;
+				}
+			}
+			else if (viewName.equals(OrderView.VIEW_NAME)) {
+				if (!OrderView.getInstance().getCurrentTicket().getOwner().getUserId().equals(user.getUserId())) {
+					if (!user.hasPermission(UserPermission.CREATE_TICKET)
+							|| (!user.hasPermission(UserPermission.PERFORM_ADMINISTRATIVE_TASK) && !user.hasPermission(UserPermission.PERFORM_MANAGER_TASK))) {
+						statusLabel.setText("user has no permission to access this view");
+						return false;
+					}
+				}
+			}
+			else if (viewName.equals(KitchenDisplayView.VIEW_NAME)) {
+				if (!user.hasPermission(UserPermission.KITCHEN_DISPLAY)) {
+					statusLabel.setText("user has no permission to access this view");
+					return false;
+				}
+			}
+		}
+		else {// to check login view access 
 			if (TerminalConfig.getDefaultView().equals(OrderType.DINE_IN.toString())) {
 				if (!user.hasPermission(UserPermission.CREATE_TICKET)) {
 					statusLabel.setText("user has no permission to access this view");
 					return false;
 				}
 			}
-			else if (TerminalConfig.getDefaultView().equals(SwitchboardView.VIEW_NAME)) {
-				if (!user.hasPermission(UserPermission.VIEW_ALL_OPEN_TICKETS)) {
-					statusLabel.setText("user has no permission to access this view");
-					return false;
-				}
-			}
 			else if (TerminalConfig.getDefaultView().equals(OrderType.TAKE_OUT.toString())) {
-				if (!user.hasPermission(UserPermission.TAKE_OUT)) {
+				if (!user.hasPermission(UserPermission.CREATE_TICKET)) {
 					statusLabel.setText("user has no permission to access this view");
 					return false;
 				}
 			}
-			/*else if (TerminalConfig.getDefaultView().equals(SwitchboardOtherFunctionsView.VIEW_NAME)) {
-				//if (!user.hasPermission(UserPermission.VIEW_BACK_OFFICE)) {
-					statusLabel.setText("user has no permission to access this view");
-					return false;
-				//}
-			}*/
 			else if (TerminalConfig.getDefaultView().equals(KitchenDisplayView.VIEW_NAME)) {
 				if (!user.hasPermission(UserPermission.KITCHEN_DISPLAY)) {
 					statusLabel.setText("user has no permission to access this view");
@@ -378,7 +406,7 @@ public class PasswordEntryDialog extends POSDialog implements ActionListener {
 				}
 			}
 		}
-		Application.getInstance().setAutoLogOffMode(false);
+		setAutoLogOffMode(false);
 		return true;
 	}
 
@@ -399,5 +427,19 @@ public class PasswordEntryDialog extends POSDialog implements ActionListener {
 
 	public User getUser() {
 		return user;
+	}
+
+	/**
+	 * @return the autoLogOffMode
+	 */
+	public boolean isAutoLogOffMode() {
+		return autoLogOffMode;
+	}
+
+	/**
+	 * @param autoLogOffMode the autoLogOffMode to set
+	 */
+	public void setAutoLogOffMode(boolean autoLogOffMode) {
+		this.autoLogOffMode = autoLogOffMode;
 	}
 }

@@ -17,10 +17,9 @@
  */
 package com.floreantpos.actions;
 
-import java.awt.Window;
-
 import com.floreantpos.POSConstants;
-import com.floreantpos.demo.KitchenDisplayWindow;
+import com.floreantpos.demo.KitchenDisplayView;
+import com.floreantpos.ui.views.order.RootView;
 
 public class ShowKitchenDisplayAction extends PosAction {
 
@@ -30,7 +29,7 @@ public class ShowKitchenDisplayAction extends PosAction {
 
 	@Override
 	public void execute() {
-		Window[] windows = Window.getWindows();
+		/*Window[] windows = Window.getWindows();
 		for (Window window : windows) {
 			if(window instanceof KitchenDisplayWindow) {
 				window.setVisible(true);
@@ -40,7 +39,8 @@ public class ShowKitchenDisplayAction extends PosAction {
 		}
 		
 		KitchenDisplayWindow window = new KitchenDisplayWindow();
-		window.setVisible(true);
+		window.setVisible(true);*/
+		RootView.getInstance().showView(KitchenDisplayView.getInstance());
 	}
 
 }

@@ -44,6 +44,7 @@ public class RootView extends com.floreantpos.swing.TransparentPanel {
 	private JPanel contentPanel = new JPanel(cards);
 	private LoginView loginScreen;
 	private SettleTicketDialog paymentView;
+	private String currentView;
 
 	private Map<String, IView> views = new HashMap<String, IView>();
 
@@ -81,7 +82,8 @@ public class RootView extends com.floreantpos.swing.TransparentPanel {
 		else {
 			headerPanel.setVisible(true);
 		}
-
+		
+		currentView=viewName;
 		cards.show(contentPanel, viewName);
 	}
 
@@ -89,7 +91,6 @@ public class RootView extends com.floreantpos.swing.TransparentPanel {
 		if (!views.containsKey(view.getViewName())) {
 			addView(view);
 		}
-
 		showView(view.getViewName());
 	}
 
@@ -130,6 +131,11 @@ public class RootView extends com.floreantpos.swing.TransparentPanel {
 
 	public HeaderPanel getHeaderPanel() {
 		return headerPanel;
+	}
+	
+	public String getCurrentView() {
+		
+		return currentView;
 	}
 
 	public void showDefaultView() {

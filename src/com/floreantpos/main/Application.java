@@ -43,6 +43,7 @@ import org.apache.commons.logging.LogFactory;
 
 import com.floreantpos.Messages;
 import com.floreantpos.POSConstants;
+import com.floreantpos.bo.ui.BackOfficeWindow;
 import com.floreantpos.config.AppProperties;
 import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.config.ui.DatabaseConfigurationDialog;
@@ -83,7 +84,6 @@ public class Application {
 	public PrinterConfiguration printConfiguration;
 	private Restaurant restaurant;
 	private PosPrinters printers;
-	private boolean autoLogOffMode;
 
 	private static Application instance;
 
@@ -373,21 +373,27 @@ public class Application {
 			view.setVisible(false);
 		}*/
 
+		BackOfficeWindow window = com.floreantpos.util.POSUtil.getBackOfficeWindow();
+		if (window != null && window.isVisible()) {
+			window.setVisible(false);
+		}
+
 		currentShift = null;
 		setCurrentUser(null);
-
 		RootView.getInstance().initView();
+		RootView.getInstance().getLoginScreen().setTerminalId(terminal.getId());
+		
 	}
 
 	public void doAutoLogout() {
 		try {
-			setAutoLogOffMode(true);
 			posWindow.setGlassPaneVisible(true);
 			PasswordEntryDialog dialog2 = new PasswordEntryDialog();
 			dialog2.setTitle("ENTER SECRET KEY");
 			dialog2.setDialogTitle("LOGIN");
 			dialog2.pack();
 			dialog2.setLocationRelativeTo(Application.getPosWindow());
+			dialog2.setAutoLogOffMode(true);
 			dialog2.setVisible(true);
 
 			if (dialog2.isCanceled()) {
@@ -554,19 +560,5 @@ public class Application {
 		UIManager.put("ToolBar.font", font); //$NON-NLS-1$
 		UIManager.put("ToolTip.font", font); //$NON-NLS-1$
 		UIManager.put("Tree.font", font); //$NON-NLS-1$
-	}
-
-	/**
-	 * @return the autoLogOffMode
-	 */
-	public boolean isAutoLogOffMode() {
-		return autoLogOffMode;
-	}
-
-	/**
-	 * @param autoLogOffMode the autoLogOffMode to set
-	 */
-	public void setAutoLogOffMode(boolean autoLogOffMode) {
-		this.autoLogOffMode = autoLogOffMode;
 	}
 }

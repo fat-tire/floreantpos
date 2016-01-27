@@ -615,7 +615,7 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 					else if (permission.equals(UserPermission.TAKE_OUT)) {
 						btnTakeout.setEnabled(true);
 					}
-					else if (permission.equals(UserPermission.EDIT_TICKET)) {
+					else if (permission.equals(UserPermission.CREATE_TICKET)) {
 						btnEditTicket.setEnabled(true);
 					}
 					else if (permission.equals(UserPermission.CREATE_TICKET)) {

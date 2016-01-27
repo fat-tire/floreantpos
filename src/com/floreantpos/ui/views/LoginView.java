@@ -31,6 +31,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 
 import org.apache.commons.logging.LogFactory;
@@ -86,7 +87,11 @@ public class LoginView extends ViewPanel implements ActionListener {
 		titleLabel.setOpaque(true);
 		titleLabel.setBackground(Color.WHITE);
 
-		add(titleLabel, BorderLayout.NORTH);
+		JPanel panel = new JPanel(new BorderLayout());
+		panel.add(titleLabel, BorderLayout.CENTER);
+		panel.add(new JSeparator(JSeparator.HORIZONTAL), BorderLayout.SOUTH);
+
+		add(panel, BorderLayout.NORTH);
 
 		add(createCenterPanel(), BorderLayout.CENTER);
 	}
@@ -229,8 +234,8 @@ public class LoginView extends ViewPanel implements ActionListener {
 			POSMessageDialog.showMessage(Messages.getString("LoginView.18")); //$NON-NLS-1$
 		}
 		else if (POSConstants.PICKUP_BUTTON_TEXT.equals(e.getActionCommand())) {
-			/*	TerminalConfig.setDefaultView(OrderType.PICKUP.toString());
-				doLogin();*/
+			/*TerminalConfig.setDefaultView(OrderType.PICKUP.toString());
+			doLogin();*/
 			POSMessageDialog.showMessage(Messages.getString("LoginView.19")); //$NON-NLS-1$
 		}
 		else if (POSConstants.HOME_DELIVERY_BUTTON_TEXT.equals(e.getActionCommand())) {
