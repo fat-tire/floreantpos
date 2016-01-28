@@ -398,6 +398,16 @@ public class PasswordEntryDialog extends POSDialog implements ActionListener {
 					statusLabel.setText("user has no permission to access this view");
 					return false;
 				}
+			}else if (TerminalConfig.getDefaultView().equals(OrderType.RETAIL.toString())) {
+				if (!user.hasPermission(UserPermission.CREATE_TICKET)) {
+					statusLabel.setText("user has no permission to access this view");
+					return false;
+				}
+			}else if (TerminalConfig.getDefaultView().equals(OrderType.FOR_HERE.toString())) {
+				if (!user.hasPermission(UserPermission.CREATE_TICKET)) {
+					statusLabel.setText("user has no permission to access this view");
+					return false;
+				}
 			}
 			else if (TerminalConfig.getDefaultView().equals(KitchenDisplayView.VIEW_NAME)) {
 				if (!user.hasPermission(UserPermission.KITCHEN_DISPLAY)) {

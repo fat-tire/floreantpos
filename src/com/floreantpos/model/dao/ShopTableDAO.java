@@ -304,6 +304,7 @@ public class ShopTableDAO extends BaseShopTableDAO {
 			for (int i = 0; i < totalNumberOfTableHaveToCreate; i++) {
 				ShopTable table = new ShopTable();
 				table.setId(i + 1);
+				table.setCapacity(4);
 				super.save(table, session);
 			}
 

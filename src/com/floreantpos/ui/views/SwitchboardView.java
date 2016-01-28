@@ -612,15 +612,18 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 					else if (permission.equals(UserPermission.SPLIT_TICKET)) {
 						btnSplitTicket.setEnabled(true);
 					}
-					else if (permission.equals(UserPermission.TAKE_OUT)) {
+					else if (permission.equals(UserPermission.CREATE_TICKET)) {
+						btnEditTicket.setEnabled(true);
+						btnDineIn.setEnabled(true);
+						btnTakeout.setEnabled(true);
+					}
+					/*
+					 else if (permission.equals(UserPermission.TAKE_OUT)) {
 						btnTakeout.setEnabled(true);
 					}
 					else if (permission.equals(UserPermission.CREATE_TICKET)) {
-						btnEditTicket.setEnabled(true);
-					}
-					else if (permission.equals(UserPermission.CREATE_TICKET)) {
 						btnDineIn.setEnabled(true);
-					}
+					}*/
 				}
 			}
 		}
@@ -716,7 +719,7 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 			doSplitTicket();
 		}
 	}
-	
+
 	public Ticket getFirstSelectedTicket() {
 		List<Ticket> selectedTickets = ticketList.getSelectedTickets();
 

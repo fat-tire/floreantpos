@@ -61,6 +61,7 @@ import com.floreantpos.model.dao.RestaurantDAO;
 import com.floreantpos.model.dao.TerminalDAO;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.dialog.PasswordEntryDialog;
+import com.floreantpos.ui.views.LoginView;
 import com.floreantpos.ui.views.order.OrderView;
 import com.floreantpos.ui.views.order.RootView;
 import com.floreantpos.util.DatabaseConnectionException;
@@ -115,6 +116,7 @@ public class Application {
 		if (TerminalConfig.isFullscreenMode()) {
 			posWindow.enterFullScreenMode();
 		}
+		rootView.addView(LoginView.getInstance());
 		posWindow.setVisible(true);
 
 		initializeSystem();
@@ -235,7 +237,7 @@ public class Application {
 		}
 
 		TerminalConfig.setTerminalId(terminalId);
-		RootView.getInstance().getLoginScreen().setTerminalId(terminalId);
+		LoginView.getInstance().setTerminalId(terminalId);
 
 		this.terminal = terminal;
 
@@ -357,32 +359,14 @@ public class Application {
 	}
 
 	public void doLogout() {
-		/*
-		KitchenDisplayView disPlayview = KitchenDisplayView.getInstance();
-		if (disPlayview.isVisible()) {
-			disPlayview.setVisible(false);
-		}
-		
-		BackOfficeWindow window = com.floreantpos.util.POSUtil.getBackOfficeWindow();
-		if (window.isVisible()) {
-			window.setVisible(false);
-		}
-		
-		SwitchboardOtherFunctionsView view = SwitchboardOtherFunctionsView.getInstance();
-		if (view.isVisible()) {
-			view.setVisible(false);
-		}*/
-
 		BackOfficeWindow window = com.floreantpos.util.POSUtil.getBackOfficeWindow();
 		if (window != null && window.isVisible()) {
-			window.setVisible(false);
+			window.dispose();
 		}
 
 		currentShift = null;
 		setCurrentUser(null);
-		RootView.getInstance().initView();
-		RootView.getInstance().getLoginScreen().setTerminalId(terminal.getId());
-		
+		RootView.getInstance().showView(LoginView.getInstance());
 	}
 
 	public void doAutoLogout() {

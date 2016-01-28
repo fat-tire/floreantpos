@@ -76,7 +76,6 @@ public class UserPermission extends BaseUserPermission {
 	public final static UserPermission SETTLE_TICKET = new UserPermission(Messages.getString("UserPermission.11")); //$NON-NLS-1$
 	public final static UserPermission REOPEN_TICKET = new UserPermission(Messages.getString("UserPermission.12")); //$NON-NLS-1$
 	public final static UserPermission PAY_OUT = new UserPermission(Messages.getString("UserPermission.13")); //$NON-NLS-1$
-	public final static UserPermission TAKE_OUT = new UserPermission(Messages.getString("UserPermission.14")); //$NON-NLS-1$
 	public final static UserPermission SHUT_DOWN = new UserPermission(Messages.getString("UserPermission.15")); //$NON-NLS-1$
 	public final static UserPermission ADD_DISCOUNT = new UserPermission(Messages.getString("UserPermission.16")); //$NON-NLS-1$
 	public final static UserPermission REFUND = new UserPermission(Messages.getString("UserPermission.17")); //$NON-NLS-1$
@@ -88,15 +87,15 @@ public class UserPermission extends BaseUserPermission {
 	public final static UserPermission TRANSFER_TICKET = new UserPermission("Transfer Ticket");
 	public final static UserPermission KITCHEN_DISPLAY = new UserPermission("Kitchen Display");
 	public final static UserPermission ALL_FUNCTIONS = new UserPermission("All Functions");
-
+	
 	//public final static UserPermission VIEW_USER_LIST = new UserPermission("View User List");
 	//public final static UserPermission GRATUITY_ADMINISTRATION = new UserPermission("Gratuity Administration");
 	//public final static UserPermission VIEW_DRAWER_PULL_REPORT = new UserPermission("View Drawer Pull Report");
 
 	public final static UserPermission[] permissions = new UserPermission[] { VIEW_ALL_OPEN_TICKETS, CREATE_TICKET, VOID_TICKET, VIEW_BACK_OFFICE,
-			AUTHORIZE_TICKETS, SPLIT_TICKET, SETTLE_TICKET, REOPEN_TICKET, PAY_OUT, DRAWER_ASSIGNMENT, DRAWER_PULL, TAKE_OUT, VIEW_EXPLORERS, VIEW_REPORTS,
+			AUTHORIZE_TICKETS, SPLIT_TICKET, SETTLE_TICKET, REOPEN_TICKET, PAY_OUT, DRAWER_ASSIGNMENT, DRAWER_PULL, VIEW_EXPLORERS, VIEW_REPORTS,
 			SHUT_DOWN, ADD_DISCOUNT, REFUND, PERFORM_MANAGER_TASK, PERFORM_ADMINISTRATIVE_TASK, MANAGE_TABLE_LAYOUT, TABLE_BOOKING, MODIFY_PRINTED_TICKET,
-			TRANSFER_TICKET, KITCHEN_DISPLAY,ALL_FUNCTIONS };
+			TRANSFER_TICKET, KITCHEN_DISPLAY, ALL_FUNCTIONS};
 
 	public boolean isVisibleWithoutPermission() {
 		return visibleWithoutPermission;

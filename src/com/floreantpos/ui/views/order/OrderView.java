@@ -101,7 +101,7 @@ public class OrderView extends ViewPanel {
 	private com.floreantpos.swing.PosButton btnTableNumber = new com.floreantpos.swing.PosButton(POSConstants.TABLE_NO_BUTTON_TEXT);
 	private com.floreantpos.swing.PosButton btnCustomer = new PosButton(POSConstants.CUSTOMER_SELECTION_BUTTON_TEXT);
 	private PosButton btnCookingInstruction = new PosButton(IconFactory.getIcon("/ui_icons/", "cooking-instruction.png"));
-//	private PosButton btnAddOn = new PosButton(POSConstants.ADD_ON);
+	//	private PosButton btnAddOn = new PosButton(POSConstants.ADD_ON);
 	private PosButton btnDiscount = new PosButton(Messages.getString("TicketView.43")); //$NON-NLS-1$
 
 	/** Creates new form OrderView */
@@ -175,12 +175,12 @@ public class OrderView extends ViewPanel {
 		if (selectedItem == null) {
 			btnCookingInstruction.setEnabled(false);
 			btnDiscount.setEnabled(false);
-//			btnAddOn.setEnabled(false);
+			//			btnAddOn.setEnabled(false);
 		}
 		else {
 			btnCookingInstruction.setEnabled(selectedItem.canAddCookingInstruction());
 			btnDiscount.setEnabled(selectedItem.canAddDiscount());
-//			btnAddOn.setEnabled(selectedTicketItem != null && selectedTicketItem.isHasModifiers());
+			//			btnAddOn.setEnabled(selectedTicketItem != null && selectedTicketItem.isHasModifiers());
 		}
 		//			btnVoid.setEnabled(item.canAddAdOn());
 		//			btnAddOn.setEnabled(item.canVoid());
@@ -305,12 +305,12 @@ public class OrderView extends ViewPanel {
 			}
 		});
 
-//		btnAddOn.addActionListener(new ActionListener() {
-//			@Override
-//			public void actionPerformed(ActionEvent e) {
-//				doAddAddOn();
-//			}
-//		});
+		//		btnAddOn.addActionListener(new ActionListener() {
+		//			@Override
+		//			public void actionPerformed(ActionEvent e) {
+		//				doAddAddOn();
+		//			}
+		//		});
 
 		btnDiscount.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -323,14 +323,14 @@ public class OrderView extends ViewPanel {
 		actionButtonPanel.add(btnTableNumber);
 		actionButtonPanel.add(btnGuestNo);
 		actionButtonPanel.add(btnCookingInstruction);
-//		actionButtonPanel.add(btnAddOn);
+		//		actionButtonPanel.add(btnAddOn);
 		actionButtonPanel.add(btnMisc);
 		actionButtonPanel.add(btnSend);
 		actionButtonPanel.add(btnCancel);
 		actionButtonPanel.add(btnDone);
 
 		btnCookingInstruction.setEnabled(false);
-//		btnAddOn.setEnabled(false);
+		//		btnAddOn.setEnabled(false);
 	}
 
 	public void updateTableNumber() {
@@ -532,43 +532,43 @@ public class OrderView extends ViewPanel {
 		}
 	}
 
-//	private void doAddAddOn() {
-//		Object object = ticketView.getTicketViewerTable().getSelected();
-//		if (!(object instanceof TicketItem)) {
-//			POSMessageDialog.showError(Application.getPosWindow(), Messages.getString("TicketView.20")); //$NON-NLS-1$
-//			return;
-//		}
-//
-//		TicketItem ticketItem = (TicketItem) object;
-//
-//		if (!ticketItem.isHasModifiers()) {
-//			return;
-//		}
-//
-//		Integer itemId = ticketItem.getItemId();
-//		MenuItem menuItem = MenuItemDAO.getInstance().get(itemId);
-//		if (menuItem == null) {
-//			return;
-//		}
-//
-//		menuItem = MenuItemDAO.getInstance().initialize(menuItem);
-//		ModifierSelectionDialog dialog = new ModifierSelectionDialog(new ModifierSelectionModel(ticketItem, menuItem), true);
-//		dialog.open();
-//		ticketView.updateView();
-//	}
+	//	private void doAddAddOn() {
+	//		Object object = ticketView.getTicketViewerTable().getSelected();
+	//		if (!(object instanceof TicketItem)) {
+	//			POSMessageDialog.showError(Application.getPosWindow(), Messages.getString("TicketView.20")); //$NON-NLS-1$
+	//			return;
+	//		}
+	//
+	//		TicketItem ticketItem = (TicketItem) object;
+	//
+	//		if (!ticketItem.isHasModifiers()) {
+	//			return;
+	//		}
+	//
+	//		Integer itemId = ticketItem.getItemId();
+	//		MenuItem menuItem = MenuItemDAO.getInstance().get(itemId);
+	//		if (menuItem == null) {
+	//			return;
+	//		}
+	//
+	//		menuItem = MenuItemDAO.getInstance().initialize(menuItem);
+	//		ModifierSelectionDialog dialog = new ModifierSelectionDialog(new ModifierSelectionModel(ticketItem, menuItem), true);
+	//		dialog.open();
+	//		ticketView.updateView();
+	//	}
 
 	public void actionUpdate() {
 
 		if (currentTicket != null) {
-
-			if (currentTicket.getType() == OrderType.TAKE_OUT) {
+			OrderType type = currentTicket.getType();
+			if (type == OrderType.TAKE_OUT || type == OrderType.RETAIL || type == OrderType.FOR_HERE) {
 				btnDone.setVisible(false);
 			}
 			else {
 				btnDone.setVisible(true);
 			}
 
-			if (currentTicket.getType() != OrderType.DINE_IN) {
+			if (type != OrderType.DINE_IN) {
 				btnGuestNo.setVisible(false);
 				btnTableNumber.setVisible(false);
 			}
