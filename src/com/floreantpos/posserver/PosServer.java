@@ -8,9 +8,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.StringReader;
+import java.io.StringWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.Iterator;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.JAXBContext;
@@ -19,8 +20,10 @@ import javax.xml.bind.Unmarshaller;
 
 import org.xml.sax.InputSource;
 
+import com.floreantpos.model.ShopTable;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.User;
+import com.floreantpos.model.dao.ShopTableDAO;
 import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.model.dao.UserDAO;
 
@@ -57,8 +60,8 @@ public class PosServer implements Runnable {
 		DataOutputStream dos = null;
 		String posdft = "", pamt = "", tamt = "", cardtype = "", server = "", table = "", check = "", edc = "";
 		String Card[] = { "DEBIT", "MCRD", "VISA", "DINER", "DSCVR", "AMEX", "JCB", "PL", "CASH", "GIFT" };
-		//Get Table Response Samples
-		//general response
+		// Get Table Response Samples
+		// general response
 		String prepend = "<POSResponse><Ident id='";
 
 		String respTable = "' ttype='45'/>";
@@ -66,14 +69,14 @@ public class PosServer implements Runnable {
 		String resp = "";
 		String ids = "";
 		while (true) {
-			//ACCEPT Connections
+			// ACCEPT Connections
 			System.out.println("Waiting For Connections....");
 			Socket s = ss.accept();
 			BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(s.getOutputStream()));
 			BufferedReader br = new BufferedReader(new InputStreamReader(s.getInputStream()));
 			dis = new DataInputStream(s.getInputStream());
 			dos = new DataOutputStream(s.getOutputStream());
-			//Read from the socket
+			// Read from the socket
 			byte[] b1 = new byte[3000];
 			s.getInputStream().read(b1);
 			if (b1.length <= 1)
@@ -87,27 +90,73 @@ public class PosServer implements Runnable {
 
 			InputSource is = new InputSource();
 			is.setCharacterStream(new StringReader(request));
-			
+
 			JAXBContext jaxbContext = JAXBContext.newInstance(POSRequest.class);
 			Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
 			POSRequest posRequest = (POSRequest) unmarshaller.unmarshal(is);
-			
+
 			int serverId = Integer.parseInt(posRequest.posDefaultInfo.server);
 			User user = UserDAO.getInstance().get(serverId);
 			List<Ticket> ticketsForUser = TicketDAO.getInstance().findOpenTicketsForUser(user);
-			
-			for (Iterator iterator = ticketsForUser.iterator(); iterator.hasNext();) {
-				Ticket ticket = (Ticket) iterator.next();
-			}
-			
-			POSDefaultInfo posDefaultInfo=new POSDefaultInfo(); 
-			
-			JAXBContext jaxbContext2 = JAXBContext.newInstance(POSResponse.class);
-			Marshaller marshaller = jaxbContext2.createMarshaller();
-			//Object marshal = marshaller.marshal();
-			//System.out.println(marshal);
-			
 
+			POSResponse posResponse = new POSResponse();
+
+			Ident ident = new Ident();
+			ident.setId("345");
+			ident.setTtype("45");
+
+			POSDefaultInfo posDefaultInfo = new POSDefaultInfo();
+			posDefaultInfo.setServer(user.getAutoId().toString());
+			posDefaultInfo.setRes("1");
+			posDefaultInfo.setrText("Success");
+
+			posResponse.setIdent(ident);
+			posResponse.setPosDefaultInfo(posDefaultInfo);
+
+			Checks checks = new Checks();
+
+			checks.setCheckList(new ArrayList<Check>());
+
+			List<ShopTable> tables = ShopTableDAO.getInstance().findAll();
+
+			if (tables == null) {
+				return;
+			}
+			for (Ticket ticket : ticketsForUser) {
+				for (ShopTable shopTable : tables) {
+					if (ticket.getTableNumbers().contains(shopTable.getId())) {
+						Check chk = new Check();
+						chk.setTableNo(String.valueOf(shopTable.getId()));
+						chk.setTableName("-");
+						chk.setChkName("-");
+						chk.setChkNo(String.valueOf(ticket.getId()));
+						chk.setAmt(String.valueOf(Math.round(ticket.getDueAmount())));
+						chk.setTax(String.valueOf(Math.round(ticket.getTaxAmount())));
+						checks.getCheckList().add(chk);
+					}
+				}
+			}
+
+			posResponse.setChecks(checks);
+
+			JAXBContext messageContext = JAXBContext.newInstance(POSResponse.class);
+			Marshaller marshaller = messageContext.createMarshaller();
+			final StringWriter dataWriter = new StringWriter();
+			marshaller.marshal(posResponse, dataWriter);
+			BufferedWriter out = new BufferedWriter(new OutputStreamWriter(s.getOutputStream()));
+			resp = dataWriter.toString();
+
+			// /append the appropriate length of response
+			String len = String.format("%05d", resp.length());
+			resp = len + resp;
+			byte[] tosend = resp.getBytes();
+
+			System.out.println("Reponse to Terminal===>[" + resp + "]");
+			dos.write(tosend, 0, tosend.length);
+			dos.flush();
+			// close the connection after 5 seconds
+			Thread.sleep(60000);
+			s.close();
 		}
 	}
 }

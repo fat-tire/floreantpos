@@ -3,12 +3,12 @@ package com.floreantpos.posserver;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-@XmlRootElement(name = "POSRequest")
+@XmlRootElement(name = "POSResponse")
 public class POSResponse {
 
-	
 	Ident ident;
-	POSDefaultInfo posDefaultInfo; 
+	POSDefaultInfo posDefaultInfo;
+	Checks checks;
 
 	public POSResponse() {
 		super();
@@ -30,5 +30,14 @@ public class POSResponse {
 
 	public void setPosDefaultInfo(POSDefaultInfo posDefaultInfo) {
 		this.posDefaultInfo = posDefaultInfo;
+	}
+
+	@XmlElement(name = "Checks")
+	public Checks getChecks() {
+		return checks;
+	}
+
+	public void setChecks(Checks checks) {
+		this.checks = checks;
 	}
 }
