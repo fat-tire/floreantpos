@@ -77,8 +77,8 @@ public class OrderController implements OrderListener, CategorySelectionListener
 
 		TicketItem ticketItem = menuItem.convertToTicketItem();
 		ticketItem.setTicket(orderView.getTicketView().getTicket());
-		
-		if (menuItem.hasModifiers()) {
+
+		if (menuItem.hasMandatoryModifiers()) {
 			ModifierSelectionDialog dialog = new ModifierSelectionDialog(new ModifierSelectionModel(ticketItem, menuItem));
 			dialog.open();
 			if (!dialog.isCanceled()) {
@@ -100,7 +100,7 @@ public class OrderController implements OrderListener, CategorySelectionListener
 	}
 
 	public void payOrderSelected(Ticket ticket) {
-		if(!new SettleTicketAction(ticket.getId()).execute()) {
+		if (!new SettleTicketAction(ticket.getId()).execute()) {
 			return;
 		}
 
@@ -115,16 +115,29 @@ public class OrderController implements OrderListener, CategorySelectionListener
 			dialog.open();
 		}
 		else {
-			RootView.getInstance().showDefaultView(); 
+			RootView.getInstance().showDefaultView();
+		}
+	}
+
+	public static void openModifierDialog(TicketItem ticketItem) {
+		try {
+			MenuItem menuItem = MenuItemDAO.getInstance().get(ticketItem.getItemId());
+			menuItem = MenuItemDAO.getInstance().initialize(menuItem);
+
+			ModifierSelectionDialog dialog = new ModifierSelectionDialog(new ModifierSelectionModel(ticketItem, menuItem));
+			dialog.open();
+			OrderView.getInstance().getTicketView().updateView();
+		} catch (Exception e) {
+			POSMessageDialog.showError(Application.getPosWindow(), e.getMessage(), e);
 		}
 	}
 
 	public static void openModifierDialog(TicketItemModifier ticketItemModifier) {
 		try {
 			TicketItem ticketItem = ticketItemModifier.getTicketItem();
-			
+
 			//for backward compatibility
-			if(ticketItem == null) {
+			if (ticketItem == null) {
 				ticketItem = ticketItemModifier.getParent().getParent();
 			}
 			MenuItem menuItem = MenuItemDAO.getInstance().get(ticketItem.getItemId());

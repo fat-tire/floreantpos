@@ -234,6 +234,21 @@ public class MenuItem extends BaseMenuItem {
 		return (this.getMenuItemModiferGroups() != null && this.getMenuItemModiferGroups().size() > 0);
 	}
 
+	public boolean hasMandatoryModifiers() {
+		List<MenuItemModifierGroup> modiferGroups = getMenuItemModiferGroups();
+		if (modiferGroups == null || modiferGroups.size() == 0) {
+			return false;
+		}
+
+		for (MenuItemModifierGroup menuItemModifierGroup : modiferGroups) {
+			if (menuItemModifierGroup.getMinQuantity() > 0) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 	public ImageIcon getScaledImage(int width, int height) {
 		ImageIcon icon = new ImageIcon(getImageData());
 		Image scaledInstance = icon.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH);

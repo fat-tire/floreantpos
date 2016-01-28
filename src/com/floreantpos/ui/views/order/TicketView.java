@@ -326,7 +326,7 @@ public class TicketView extends JPanel {
 			RootView.getInstance().showView(CashierSwitchBoardView.VIEW_NAME);
 		}
 		else {
-			RootView.getInstance().showDefaultView(); 
+			RootView.getInstance().showDefaultView();
 		}
 	}
 
@@ -367,7 +367,10 @@ public class TicketView extends JPanel {
 	private void doEditSelection() {// GEN-FIRST:event_doDeleteSelection
 		Object object = ticketViewerTable.getSelected();
 
-		if (object instanceof TicketItemModifier) {
+		if (object instanceof TicketItem) {
+			OrderController.openModifierDialog((TicketItem) object);
+		}
+		else if (object instanceof TicketItemModifier) {
 			TicketItemModifier ticketItemModifier = (TicketItemModifier) object;
 			OrderController.openModifierDialog(ticketItemModifier);
 		}

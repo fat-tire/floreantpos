@@ -94,6 +94,9 @@ public abstract class SelectionView extends JPanel implements ComponentListener 
 		btnNext.addActionListener(action);
 
 		addComponentListener(this);
+		
+		btnNext.setVisible(false);
+		btnPrev.setVisible(false);
 	}
 
 	public SelectionView(String title) {
