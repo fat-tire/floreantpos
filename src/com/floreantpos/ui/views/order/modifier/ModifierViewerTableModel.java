@@ -40,10 +40,7 @@ public class ModifierViewerTableModel extends AbstractTableModel {
 	private boolean forReciptPrint;
 	private boolean printCookingInstructions;
 
-	private boolean addOnMode;
-
-	public ModifierViewerTableModel(TicketItem ticketItem, boolean addOnMode) {
-		this.addOnMode = addOnMode;
+	public ModifierViewerTableModel(TicketItem ticketItem) {
 		setTicketItem(ticketItem);
 	}
 
@@ -98,12 +95,13 @@ public class ModifierViewerTableModel extends AbstractTableModel {
 		//TicketItemRowCreator.calculateTicketRows(ticket, tableRows);
 		tableRows.clear();
 
-		if (addOnMode) {
+		calculateRowsForModifiers();
+		//if (addOnMode) {
 			calculateRowsForAddOns();
-		}
-		else {
-			calculateRowsForModifiers();
-		}
+		//}
+		//else {
+			
+		//}
 	}
 
 	private void calculateRowsForAddOns() {
@@ -158,7 +156,7 @@ public class ModifierViewerTableModel extends AbstractTableModel {
 
 		TicketItemModifier ticketItemModifier = (TicketItemModifier) tableRows.remove(index);
 		if (ticketItemModifier.getModifierType() == TicketItemModifier.EXTRA_MODIFIER) {
-			ticketItemModifier.getTicketItem().getAddOns().remove(ticketItemModifier);
+			ticketItemModifier.getTicketItem().removeAddOn(ticketItemModifier);
 		}
 		else {
 			TicketItemModifierGroup ticketItemModifierGroup = ticketItemModifier.getParent();
@@ -214,11 +212,4 @@ public class ModifierViewerTableModel extends AbstractTableModel {
 		this.priceIncludesTax = priceIncludesTax;
 	}
 
-	public boolean isAddOnMode() {
-		return addOnMode;
-	}
-
-	//	public void setAddOnMode(boolean addOnMode) {
-	//		this.addOnMode = addOnMode;
-	//	}
 }

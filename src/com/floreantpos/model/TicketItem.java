@@ -211,6 +211,20 @@ public class TicketItem extends BaseTicketItem implements ITicketItem {
 
 		return ticketItemModifier;
 	}
+	
+	public void removeAddOn(TicketItemModifier addOn) {
+		List<TicketItemModifier> addOns = getAddOns();
+		if(addOns == null) {
+			return;
+		}
+		
+		for (Iterator iterator = addOns.iterator(); iterator.hasNext();) {
+			TicketItemModifier ticketItemModifier = (TicketItemModifier) iterator.next();
+			if(ticketItemModifier.getItemId().equals(addOn.getItemId())) {
+				iterator.remove();
+			}
+		}
+	}
 
 	public void calculatePrice() {
 		priceIncludesTax = Application.getInstance().isPriceIncludesTax();

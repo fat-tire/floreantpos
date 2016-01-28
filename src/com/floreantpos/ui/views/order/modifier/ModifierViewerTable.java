@@ -36,16 +36,16 @@ public class ModifierViewerTable extends JTable {
 	private DefaultListSelectionModel selectionModel;
 	private ModifierViewerTableCellRenderer cellRenderer;
 	
-	private boolean addOnMode;
+	//private boolean addOnMode;
 	
 	public ModifierViewerTable() {
-		this(null, false);
+		this(null);
 	}
 
-	public ModifierViewerTable(TicketItem ticketItem, boolean addOnMOde) {
-		this.addOnMode = addOnMOde;
+	public ModifierViewerTable(TicketItem ticketItem) {
+		//this.addOnMode = addOnMOde;
 		
-		model = new ModifierViewerTableModel(ticketItem, addOnMOde);
+		model = new ModifierViewerTableModel(ticketItem);
 		setModel(model);
 		
 		selectionModel = new DefaultListSelectionModel();
@@ -266,7 +266,7 @@ public class ModifierViewerTable extends JTable {
 	}
 
 	public boolean isAddOnMode() {
-		return addOnMode;
+		return false;
 	}
 
 //	public void setAddOnMode(boolean addOnMode) {

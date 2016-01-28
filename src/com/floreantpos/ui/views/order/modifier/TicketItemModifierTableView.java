@@ -50,13 +50,13 @@ import com.floreantpos.ui.views.order.actions.OrderListener;
  */
 public class TicketItemModifierTableView extends JPanel {
 	private java.util.Vector<OrderListener> orderListeners = new java.util.Vector<OrderListener>();
-	
+
 	public final static String VIEW_NAME = "TICKET_MODIFIER_VIEW"; //$NON-NLS-1$
 
 	private Vector<ModifierSelectionListener> listenerList = new Vector<ModifierSelectionListener>();
-	
+
 	private ModifierSelectionModel modifierSelectionModel;
-	
+
 	private com.floreantpos.swing.TransparentPanel ticketActionPanel = new com.floreantpos.swing.TransparentPanel();
 
 	//private com.floreantpos.swing.PosButton btnDecreaseAmount;
@@ -72,13 +72,10 @@ public class TicketItemModifierTableView extends JPanel {
 
 	private TitledBorder titledBorder = new TitledBorder(""); //$NON-NLS-1$
 	private Border border = new CompoundBorder(titledBorder, new EmptyBorder(5, 5, 5, 5));
-	
-	private boolean addOnMode;
 
-	public TicketItemModifierTableView(ModifierSelectionModel modifierSelectionModel, boolean addOnMode) {
+	public TicketItemModifierTableView(ModifierSelectionModel modifierSelectionModel) {
 		this.modifierSelectionModel = modifierSelectionModel;
-		this.addOnMode = addOnMode;
-		
+
 		initComponents();
 	}
 
@@ -91,7 +88,7 @@ public class TicketItemModifierTableView extends JPanel {
 		ticketItemActionPanel = new com.floreantpos.swing.TransparentPanel();
 		//btnDecreaseAmount = new com.floreantpos.swing.PosButton();
 		btnScrollDown = new com.floreantpos.swing.PosButton();
-		modifierViewerTable = new com.floreantpos.ui.views.order.modifier.ModifierViewerTable(modifierSelectionModel.getTicketItem(), addOnMode);
+		modifierViewerTable = new com.floreantpos.ui.views.order.modifier.ModifierViewerTable(modifierSelectionModel.getTicketItem());
 		ticketScrollPane = new PosScrollPane(modifierViewerTable);
 		ticketScrollPane.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		ticketScrollPane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
@@ -130,15 +127,7 @@ public class TicketItemModifierTableView extends JPanel {
 				ITicketItem item = (ITicketItem) selected;
 
 				Boolean printedToKitchen = item.isPrintedToKitchen();
-
-				//btnIncreaseAmount.setEnabled(!printedToKitchen);
-				//btnDecreaseAmount.setEnabled(!printedToKitchen);
-				if(isAddOnMode() && item.getUnitPriceDisplay() <= 0) {
-					btnDelete.setEnabled(false);
-				}
-				else {
-					btnDelete.setEnabled(!printedToKitchen);
-				}
+				btnDelete.setEnabled(!printedToKitchen);
 			}
 
 		});
@@ -160,18 +149,18 @@ public class TicketItemModifierTableView extends JPanel {
 			}
 		});
 
-//		btnIncreaseAmount.addActionListener(new java.awt.event.ActionListener() {
-//			public void actionPerformed(java.awt.event.ActionEvent evt) {
-//				doIncreaseAmount(evt);
-//			}
-//		});
-//
-//		btnDecreaseAmount.setIcon(IconFactory.getIcon("/ui_icons/", "minus.png")); //$NON-NLS-1$ //$NON-NLS-2$
-//		btnDecreaseAmount.addActionListener(new java.awt.event.ActionListener() {
-//			public void actionPerformed(java.awt.event.ActionEvent evt) {
-//				doDecreaseAmount(evt);
-//			}
-//		});
+		//		btnIncreaseAmount.addActionListener(new java.awt.event.ActionListener() {
+		//			public void actionPerformed(java.awt.event.ActionEvent evt) {
+		//				doIncreaseAmount(evt);
+		//			}
+		//		});
+		//
+		//		btnDecreaseAmount.setIcon(IconFactory.getIcon("/ui_icons/", "minus.png")); //$NON-NLS-1$ //$NON-NLS-2$
+		//		btnDecreaseAmount.addActionListener(new java.awt.event.ActionListener() {
+		//			public void actionPerformed(java.awt.event.ActionEvent evt) {
+		//				doDecreaseAmount(evt);
+		//			}
+		//		});
 
 		btnScrollDown.setIcon(IconFactory.getIcon("/ui_icons/", "down.png")); //$NON-NLS-1$ //$NON-NLS-2$
 		btnScrollDown.addActionListener(new java.awt.event.ActionListener() {
@@ -187,14 +176,14 @@ public class TicketItemModifierTableView extends JPanel {
 		});
 
 		ticketItemActionPanel.add(btnScrollUp);
-//		ticketItemActionPanel.add(btnIncreaseAmount);
-//		ticketItemActionPanel.add(btnDecreaseAmount);
+		//		ticketItemActionPanel.add(btnIncreaseAmount);
+		//		ticketItemActionPanel.add(btnDecreaseAmount);
 		ticketItemActionPanel.add(btnDelete);
 		ticketItemActionPanel.add(btnScrollDown);
 
 		ticketItemActionPanel.setPreferredSize(new Dimension(60, 360));
 	}
-	
+
 	public void addModifierSelectionListener(ModifierSelectionListener listener) {
 		listenerList.add(listener);
 	}
@@ -236,28 +225,28 @@ public class TicketItemModifierTableView extends JPanel {
 
 	public void updateView() {
 		modifierViewerTable.updateView();
-//		if (ticket == null) {
-//			titledBorder.setTitle("Modifiers #"); //$NON-NLS-1$
-//			return;
-//		}
-//
-//		ticket.calculatePrice();
-//		
-//
-//		if (Application.getInstance().isPriceIncludesTax()) {
-//		}
-//		else {
-//		}
-//
-//		if (ticket.getId() == null) {
-//			titledBorder.setTitle("ITEM"); //$NON-NLS-1$
-//		}
-//		else {
-//			titledBorder.setTitle("ITEM #" + ticketItem.getName()); //$NON-NLS-1$
-//		}
+		//		if (ticket == null) {
+		//			titledBorder.setTitle("Modifiers #"); //$NON-NLS-1$
+		//			return;
+		//		}
+		//
+		//		ticket.calculatePrice();
+		//		
+		//
+		//		if (Application.getInstance().isPriceIncludesTax()) {
+		//		}
+		//		else {
+		//		}
+		//
+		//		if (ticket.getId() == null) {
+		//			titledBorder.setTitle("ITEM"); //$NON-NLS-1$
+		//		}
+		//		else {
+		//			titledBorder.setTitle("ITEM #" + ticketItem.getName()); //$NON-NLS-1$
+		//		}
 
 	}
-	
+
 	public void addOrderListener(OrderListener listenre) {
 		orderListeners.add(listenre);
 	}
@@ -266,48 +255,40 @@ public class TicketItemModifierTableView extends JPanel {
 		orderListeners.remove(listenre);
 	}
 
-
 	public void setControlsVisible(boolean visible) {
 		if (visible) {
 			ticketActionPanel.setVisible(true);
-//			btnIncreaseAmount.setEnabled(true);
-//			btnDecreaseAmount.setEnabled(true);
+			//			btnIncreaseAmount.setEnabled(true);
+			//			btnDecreaseAmount.setEnabled(true);
 			btnDelete.setEnabled(true);
 		}
 		else {
 			ticketActionPanel.setVisible(false);
-//			btnIncreaseAmount.setEnabled(false);
-//			btnDecreaseAmount.setEnabled(false);
+			//			btnIncreaseAmount.setEnabled(false);
+			//			btnDecreaseAmount.setEnabled(false);
 			btnDelete.setEnabled(false);
 		}
 	}
 
 	private void updateSelectionView() {
-//		Object selectedObject = modifierViewerTable.getSelected();
-//
-//		ModifierSelectionDialog modifierSelectionView = ModifierSelectionDialog.getInstance();
-//
-//		TicketItem selectedTicketItem = null;
-//		
-//		if (selectedObject instanceof TicketItemModifier) {
-//			selectedTicketItem = ((TicketItemModifier) selectedObject).getParent().getParent();
-//			if (selectedTicketItem == null)
-//				return;
-//			
-//			TicketItemModifier ticketItemModifier = (TicketItemModifier) selectedObject;
-//			
-//		}
+		//		Object selectedObject = modifierViewerTable.getSelected();
+		//
+		//		ModifierSelectionDialog modifierSelectionView = ModifierSelectionDialog.getInstance();
+		//
+		//		TicketItem selectedTicketItem = null;
+		//		
+		//		if (selectedObject instanceof TicketItemModifier) {
+		//			selectedTicketItem = ((TicketItemModifier) selectedObject).getParent().getParent();
+		//			if (selectedTicketItem == null)
+		//				return;
+		//			
+		//			TicketItemModifier ticketItemModifier = (TicketItemModifier) selectedObject;
+		//			
+		//		}
 	}
 
 	public com.floreantpos.ui.views.order.modifier.ModifierViewerTable getTicketViewerTable() {
 		return modifierViewerTable;
 	}
 
-	public boolean isAddOnMode() {
-		return addOnMode;
-	}
-//
-//	public void setAddOnMode(boolean addOnMode) {
-//		this.addOnMode = addOnMode;
-//	}
 }

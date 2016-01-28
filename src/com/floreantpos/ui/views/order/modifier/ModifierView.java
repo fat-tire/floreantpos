@@ -63,18 +63,13 @@ public class ModifierView extends SelectionView {
 
 	private HashMap<String, ModifierButton> buttonMap = new HashMap<String, ModifierButton>();
 
-	private boolean addOnMode;
-
 	/** Creates new form GroupView */
-	public ModifierView(ModifierSelectionModel modifierSelectionModel, boolean addOnMode) {
+	public ModifierView(ModifierSelectionModel modifierSelectionModel) {
 		super(com.floreantpos.POSConstants.MODIFIERS);
 
 		this.modifierSelectionModel = modifierSelectionModel;
-		this.addOnMode = addOnMode;
 
-		if (!addOnMode) {
-			addActionButtons();
-		}
+		addActionButtons();
 	}
 
 	private void addActionButtons() {
@@ -116,17 +111,17 @@ public class ModifierView extends SelectionView {
 			Set<MenuModifier> modifiers = modifierGroup.getModifiers();
 			for (MenuModifier modifier : modifiers) {
 				modifier.setMenuItemModifierGroup(modifierGroup.getMenuItemModifierGroup());
-				if (isAddOnMode()) {
-					if (modifier.getExtraPrice() > 0) {
-						itemList.add(modifier);
-					}
-				}
-				else {
-					if (modifier.getPrice() == 0) {
-						itemList.add(modifier);
-					}
-				}
-
+//				if (isAddOnMode()) {
+//					if (modifier.getExtraPrice() > 0) {
+//						itemList.add(modifier);
+//					}
+//				}
+//				else {
+//					if (modifier.getPrice() == 0) {
+//						itemList.add(modifier);
+//					}
+//				}
+				itemList.add(modifier);
 			}
 
 			setItems(itemList);
@@ -142,15 +137,10 @@ public class ModifierView extends SelectionView {
 	}
 
 	private void renderTitle() {
-		if (addOnMode) {
-			setTitle("ADD-ONs");
-		}
-		else {
 			String displayName = modifierGroup.getDisplayName();
 			int minQuantity = modifierGroup.getMenuItemModifierGroup().getMinQuantity();
 			int maxQuantity = modifierGroup.getMenuItemModifierGroup().getMaxQuantity();
 			setTitle(displayName + ", Min: " + minQuantity + ", Max: " + maxQuantity);
-		}
 	}
 
 	@Override
@@ -186,11 +176,10 @@ public class ModifierView extends SelectionView {
 			ModifierButton modifierButton = (ModifierButton) component;
 			MenuModifier modifier = modifierButton.menuModifier;
 
-			TicketItemModifierGroup ticketItemModifierGroup = ticketItem.findTicketItemModifierGroup(modifier, addOnMode);
-			TicketItemModifier ticketItemModifier = ticketItemModifierGroup.findTicketItemModifier(modifier, addOnMode);
+			TicketItemModifierGroup ticketItemModifierGroup = ticketItem.findTicketItemModifierGroup(modifier, false);
+			TicketItemModifier ticketItemModifier = ticketItemModifierGroup.findTicketItemModifier(modifier, false);
 			if (ticketItemModifier != null) {
-				String color = addOnMode ? "red" : "green";
-				modifierButton.setText("<html><center>" + modifier.getDisplayName() + "<br/><span style='color:" + color
+				modifierButton.setText("<html><center>" + modifier.getDisplayName() + "<br/><span style='color:green;"
 						+ "'>(" + ticketItemModifier.getItemCount() + ")</span></center></html>"); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 			else {
@@ -233,16 +222,4 @@ public class ModifierView extends SelectionView {
 			}
 		}
 	}
-
-	public boolean isAddOnMode() {
-		return addOnMode;
-	}
-
-	//	public void setAddOnMode(boolean addOnMode) {
-	//		this.addOnMode = addOnMode;
-	//		renderTitle();
-	//		btnClear.setEnabled(!addOnMode);
-	//		btnDone.setVisible(!addOnMode);
-	//		setModifierGroup(modifierGroup);
-	//	}
 }

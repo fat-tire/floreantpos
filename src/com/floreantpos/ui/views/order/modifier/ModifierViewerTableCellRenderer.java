@@ -25,6 +25,7 @@ import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 
 import com.floreantpos.model.ITicketItem;
+import com.floreantpos.model.TicketItemModifier;
 import com.floreantpos.util.NumberUtil;
 
 public class ModifierViewerTableCellRenderer extends DefaultTableCellRenderer {
@@ -42,6 +43,16 @@ public class ModifierViewerTableCellRenderer extends DefaultTableCellRenderer {
 		}
 
 		rendererComponent.setBackground(Color.WHITE);
+
+		if (object instanceof TicketItemModifier) {
+			TicketItemModifier modifier = (TicketItemModifier) object;
+			if (modifier.getModifierType() == TicketItemModifier.EXTRA_MODIFIER) {
+				rendererComponent.setForeground(Color.red);
+			}
+			else {
+				rendererComponent.setForeground(Color.black);
+			}
+		}
 
 		if (object instanceof ITicketItem) {
 			ITicketItem ticketItem = (ITicketItem) object;

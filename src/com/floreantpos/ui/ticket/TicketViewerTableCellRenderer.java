@@ -44,6 +44,16 @@ public class TicketViewerTableCellRenderer extends DefaultTableCellRenderer {
 		if (!inTicketScreen || isSelected) {
 			return rendererComponent;
 		}
+		
+//		if (object instanceof TicketItemModifier) {
+//			TicketItemModifier modifier = (TicketItemModifier) object;
+//			if (modifier.getModifierType() == TicketItemModifier.EXTRA_MODIFIER) {
+//				rendererComponent.setForeground(Color.red);
+//			}
+//			else {
+//				rendererComponent.setForeground(Color.black);
+//			}
+//		}
 
 		rendererComponent.setBackground(Color.WHITE);
 

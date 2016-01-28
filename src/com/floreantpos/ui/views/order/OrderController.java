@@ -79,7 +79,7 @@ public class OrderController implements OrderListener, CategorySelectionListener
 		ticketItem.setTicket(orderView.getTicketView().getTicket());
 		
 		if (menuItem.hasModifiers()) {
-			ModifierSelectionDialog dialog = new ModifierSelectionDialog(new ModifierSelectionModel(ticketItem, menuItem), false);
+			ModifierSelectionDialog dialog = new ModifierSelectionDialog(new ModifierSelectionModel(ticketItem, menuItem));
 			dialog.open();
 			if (!dialog.isCanceled()) {
 				orderView.getTicketView().addTicketItem(ticketItem);
@@ -119,7 +119,7 @@ public class OrderController implements OrderListener, CategorySelectionListener
 		}
 	}
 
-	public static void openModifierDialog(TicketItemModifier ticketItemModifier, boolean addOnMode) {
+	public static void openModifierDialog(TicketItemModifier ticketItemModifier) {
 		try {
 			TicketItem ticketItem = ticketItemModifier.getTicketItem();
 			
@@ -130,7 +130,7 @@ public class OrderController implements OrderListener, CategorySelectionListener
 			MenuItem menuItem = MenuItemDAO.getInstance().get(ticketItem.getItemId());
 			menuItem = MenuItemDAO.getInstance().initialize(menuItem);
 
-			ModifierSelectionDialog dialog = new ModifierSelectionDialog(new ModifierSelectionModel(ticketItem, menuItem), addOnMode);
+			ModifierSelectionDialog dialog = new ModifierSelectionDialog(new ModifierSelectionModel(ticketItem, menuItem));
 			dialog.open();
 			OrderView.getInstance().getTicketView().updateView();
 		} catch (Exception e) {

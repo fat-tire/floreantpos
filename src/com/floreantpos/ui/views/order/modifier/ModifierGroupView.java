@@ -66,14 +66,11 @@ public class ModifierGroupView extends JPanel implements ComponentListener {
 	private SimpleScrollPane simpleScrollPane;
 	private ScrollableFlowPanel contentPanel;
 
-	private boolean addOnMode;
-
 	public static final String VIEW_NAME = "MODIFIER_GROUP_VIEW"; //$NON-NLS-1$
 
 	/** Creates new form CategoryView */
-	public ModifierGroupView(ModifierSelectionModel modifierSelectionModel, boolean addOnMode) {
+	public ModifierGroupView(ModifierSelectionModel modifierSelectionModel) {
 		this.modifierSelectionModel = modifierSelectionModel;
-		this.addOnMode = addOnMode;
 		
 		setLayout(new BorderLayout());
 		TitledBorder border = new TitledBorder(POSConstants.GROUPS);
@@ -215,13 +212,13 @@ public class ModifierGroupView extends JPanel implements ComponentListener {
 
 		private void updateButtonText() {
 			String string = "";
-			if (addOnMode) {
-				string = "<html><body><center>" + menuModifierGroup.getDisplayName() + "</center></body></html>";//$NON-NLS-1$ //$NON-NLS-2$ 
-			}
-			else {
+//			if (addOnMode) {
+//				string = "<html><body><center>" + menuModifierGroup.getDisplayName() + "</center></body></html>";//$NON-NLS-1$ //$NON-NLS-2$ 
+//			}
+//			else {
 				string = "<html><body><center>" + menuModifierGroup.getDisplayName() + "<br/>"
 						+ "(" + menuModifierGroup.getMenuItemModifierGroup().getMinQuantity() + "*)</center></body></html>"; //$NON-NLS-1$ //$NON-NLS-2$ 
-			}
+//			}
 
 			setText(string);
 		}
@@ -253,9 +250,5 @@ public class ModifierGroupView extends JPanel implements ComponentListener {
 
 	@Override
 	public void componentHidden(ComponentEvent e) {
-	}
-
-	public boolean isAddOnMode() {
-		return addOnMode;
 	}
 }
