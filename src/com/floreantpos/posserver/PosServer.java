@@ -95,8 +95,7 @@ public class PosServer implements Runnable {
 			Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
 			POSRequest posRequest = (POSRequest) unmarshaller.unmarshal(is);
 
-			int serverId = Integer.parseInt(posRequest.posDefaultInfo.server);
-			User user = UserDAO.getInstance().get(serverId);
+			User user = UserDAO.getInstance().findUserBySecretKey(posRequest.posDefaultInfo.server);
 			List<Ticket> ticketsForUser = TicketDAO.getInstance().findOpenTicketsForUser(user);
 
 			POSResponse posResponse = new POSResponse();
