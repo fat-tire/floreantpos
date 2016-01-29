@@ -129,8 +129,8 @@ public class PosServer implements Runnable {
 						chk.setTableName("-");
 						chk.setChkName("-");
 						chk.setChkNo(String.valueOf(ticket.getId()));
-						chk.setAmt(String.valueOf(Math.round(ticket.getDueAmount())));
-						chk.setTax(String.valueOf(Math.round(ticket.getTaxAmount())));
+						chk.setAmt(String.valueOf(Math.round(ticket.getDueAmount() * 100)));
+						chk.setTax(String.valueOf(Math.round(ticket.getTaxAmount() * 100)));
 						checks.getCheckList().add(chk);
 					}
 				}
