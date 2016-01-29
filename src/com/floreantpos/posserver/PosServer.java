@@ -20,10 +20,8 @@ import javax.xml.bind.Unmarshaller;
 
 import org.xml.sax.InputSource;
 
-import com.floreantpos.model.ShopTable;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.User;
-import com.floreantpos.model.dao.ShopTableDAO;
 import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.model.dao.UserDAO;
 
@@ -116,16 +114,11 @@ public class PosServer implements Runnable {
 
 			checks.setCheckList(new ArrayList<Check>());
 
-			List<ShopTable> tables = ShopTableDAO.getInstance().findAll();
-
-			if (tables == null) {
-				return;
-			}
 			for (Ticket ticket : ticketsForUser) {
-				for (ShopTable shopTable : tables) {
-					if (ticket.getTableNumbers().contains(shopTable.getId())) {
+					List<Integer> tableNumbers  = ticket.getTableNumbers();
+					if (tableNumbers != null && tableNumbers.size() > 0) {
 						Check chk = new Check();
-						chk.setTableNo(String.valueOf(shopTable.getId()));
+						chk.setTableNo(String.valueOf(tableNumbers.get(0)));
 						chk.setTableName("-");
 						chk.setChkName("-");
 						chk.setChkNo(String.valueOf(ticket.getId()));
@@ -133,7 +126,6 @@ public class PosServer implements Runnable {
 						chk.setTax(String.valueOf(Math.round(ticket.getTaxAmount() * 100)));
 						checks.getCheckList().add(chk);
 					}
-				}
 			}
 
 			posResponse.setChecks(checks);
