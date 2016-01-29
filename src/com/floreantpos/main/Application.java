@@ -59,6 +59,7 @@ import com.floreantpos.model.dao.OrderTypePropertiesDAO;
 import com.floreantpos.model.dao.PrinterConfigurationDAO;
 import com.floreantpos.model.dao.RestaurantDAO;
 import com.floreantpos.model.dao.TerminalDAO;
+import com.floreantpos.posserver.PosServer;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.dialog.PasswordEntryDialog;
 import com.floreantpos.ui.views.LoginView;
@@ -259,6 +260,8 @@ public class Application {
 			else {
 				posWindow.setStatus(Messages.getString("Application.42")); //$NON-NLS-1$
 			}
+			
+			new PosServer();
 		} catch (Exception e) {
 			throw new DatabaseConnectionException();
 		}
