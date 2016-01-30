@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
@@ -24,6 +25,7 @@ import com.floreantpos.model.Ticket;
 import com.floreantpos.model.User;
 import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.model.dao.UserDAO;
+import com.floreantpos.model.dao._RootDAO;
 
 public class PosServer implements Runnable {
 	public static final int PORT = 5656;
@@ -103,7 +105,7 @@ public class PosServer implements Runnable {
 			ident.setTtype("45");
 
 			POSDefaultInfo posDefaultInfo = new POSDefaultInfo();
-			posDefaultInfo.setServer(user.getAutoId().toString());
+			posDefaultInfo.setServer(posRequest.posDefaultInfo.server);
 			posDefaultInfo.setRes("1");
 			posDefaultInfo.setrText("Success");
 
@@ -134,9 +136,11 @@ public class PosServer implements Runnable {
 			Marshaller marshaller = messageContext.createMarshaller();
 			final StringWriter dataWriter = new StringWriter();
 			marshaller.marshal(posResponse, dataWriter);
-			BufferedWriter out = new BufferedWriter(new OutputStreamWriter(s.getOutputStream()));
+			
 			resp = dataWriter.toString();
-
+			resp = resp.replaceAll("<\\?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"\\?>", "");
+			System.out.println(resp);
+			
 			// /append the appropriate length of response
 			String len = String.format("%05d", resp.length());
 			resp = len + resp;
@@ -149,5 +153,55 @@ public class PosServer implements Runnable {
 			Thread.sleep(60000);
 			s.close();
 		}
+	}
+	
+	public static void main(String[] args) throws Exception {
+		_RootDAO.initialize();
+		
+		User user = UserDAO.getInstance().findUserBySecretKey("1111");
+		List<Ticket> ticketsForUser = TicketDAO.getInstance().findOpenTicketsForUser(user);
+
+		POSResponse posResponse = new POSResponse();
+
+		Ident ident = new Ident();
+		ident.setId("345");
+		ident.setTtype("45");
+
+		POSDefaultInfo posDefaultInfo = new POSDefaultInfo();
+		posDefaultInfo.setServer("1111");
+		posDefaultInfo.setRes("1");
+		posDefaultInfo.setrText("Success");
+
+		posResponse.setIdent(ident);
+		posResponse.setPosDefaultInfo(posDefaultInfo);
+
+		Checks checks = new Checks();
+
+		checks.setCheckList(new ArrayList<Check>());
+
+		for (Ticket ticket : ticketsForUser) {
+				List<Integer> tableNumbers  = ticket.getTableNumbers();
+				if (tableNumbers != null && tableNumbers.size() > 0) {
+					Check chk = new Check();
+					chk.setTableNo(String.valueOf(tableNumbers.get(0)));
+					chk.setTableName("-");
+					chk.setChkName("-");
+					chk.setChkNo(String.valueOf(ticket.getId()));
+					chk.setAmt(String.valueOf(Math.round(ticket.getDueAmount() * 100)));
+					chk.setTax(String.valueOf(Math.round(ticket.getTaxAmount() * 100)));
+					checks.getCheckList().add(chk);
+				}
+		}
+
+		posResponse.setChecks(checks);
+
+		JAXBContext messageContext = JAXBContext.newInstance(POSResponse.class);
+		Marshaller marshaller = messageContext.createMarshaller();
+		final StringWriter dataWriter = new StringWriter();
+		marshaller.marshal(posResponse, dataWriter);
+		
+		String string = dataWriter.toString();
+		string = string.replaceAll("<\\?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"\\?>", "");
+		System.out.println(string);
 	}
 }
