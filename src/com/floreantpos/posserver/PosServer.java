@@ -94,14 +94,14 @@ public class PosServer implements Runnable {
 			JAXBContext jaxbContext = JAXBContext.newInstance(POSRequest.class);
 			Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
 			POSRequest posRequest = (POSRequest) unmarshaller.unmarshal(is);
-
+			
 			User user = UserDAO.getInstance().findUserBySecretKey(posRequest.posDefaultInfo.server);
 			List<Ticket> ticketsForUser = TicketDAO.getInstance().findOpenTicketsForUser(user);
 
 			POSResponse posResponse = new POSResponse();
 
 			Ident ident = new Ident();
-			ident.setId("345");
+			ident.setId(posRequest.ident.id);
 			ident.setTtype("45");
 
 			POSDefaultInfo posDefaultInfo = new POSDefaultInfo();
@@ -124,7 +124,7 @@ public class PosServer implements Runnable {
 						chk.setTableName("-");
 						chk.setChkName("-");
 						chk.setChkNo(String.valueOf(ticket.getId()));
-						chk.setAmt(String.valueOf(Math.round(ticket.getDueAmount() * 100)));
+						chk.setAmt(String.valueOf(Math.round((ticket.getDueAmount()-ticket.getTaxAmount()) * 100)));
 						chk.setTax(String.valueOf(Math.round(ticket.getTaxAmount() * 100)));
 						checks.getCheckList().add(chk);
 					}
@@ -187,7 +187,7 @@ public class PosServer implements Runnable {
 					chk.setTableName("-");
 					chk.setChkName("-");
 					chk.setChkNo(String.valueOf(ticket.getId()));
-					chk.setAmt(String.valueOf(Math.round(ticket.getDueAmount() * 100)));
+					chk.setAmt(String.valueOf(Math.round((ticket.getDueAmount()-ticket.getTaxAmount()) * 100)));
 					chk.setTax(String.valueOf(Math.round(ticket.getTaxAmount() * 100)));
 					checks.getCheckList().add(chk);
 				}
