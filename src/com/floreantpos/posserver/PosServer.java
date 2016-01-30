@@ -150,7 +150,7 @@ public class PosServer implements Runnable {
 			dos.write(tosend, 0, tosend.length);
 			dos.flush();
 			// close the connection after 5 seconds
-			Thread.sleep(60000);
+			Thread.sleep(2000);
 			s.close();
 		}
 	}
@@ -160,7 +160,7 @@ public class PosServer implements Runnable {
 		
 		User user = UserDAO.getInstance().findUserBySecretKey("1111");
 		List<Ticket> ticketsForUser = TicketDAO.getInstance().findOpenTicketsForUser(user);
-
+		
 		POSResponse posResponse = new POSResponse();
 
 		Ident ident = new Ident();
