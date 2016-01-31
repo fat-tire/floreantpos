@@ -40,5 +40,4 @@ public interface FloorLayoutPlugin extends FloreantPlugin {
 	void updateView();
 	List<ShopTable> captureTableNumbers(Ticket ticket);
 	BeanEditor getBeanEditor();
-	void createDefaultFloor();
 }
