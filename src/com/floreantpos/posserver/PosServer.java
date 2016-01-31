@@ -72,91 +72,97 @@ public class PosServer implements Runnable {
 			// ACCEPT Connections
 			System.out.println("Waiting For Connections....");
 			Socket s = ss.accept();
-			//BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(s.getOutputStream()));
-			//BufferedReader br = new BufferedReader(new InputStreamReader(s.getInputStream()));
-			//dis = new DataInputStream(s.getInputStream());
-			//dos = new DataOutputStream(s.getOutputStream());
-			// Read from the socket
-			byte[] b1 = new byte[3000];
-			s.getInputStream().read(b1);
-			if (b1.length <= 1)
-				continue;
-			// Read from Terminal
-			String request = new String(b1).trim();
-			System.out.println("Request From Terminal==>[" + request + "]");
-
-			int index = request.indexOf("<");
-			request = request.substring(index);
-
-			InputSource is = new InputSource();
-			is.setCharacterStream(new StringReader(request));
-
-			JAXBContext jaxbContext = JAXBContext.newInstance(POSRequest.class);
-			Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
-			POSRequest posRequest = (POSRequest) unmarshaller.unmarshal(is);
-
+			
 			PosRequestHandler posRequestHandler = new PosRequestHandler(s);
-			posRequestHandler.acceptRequest(posRequest);
 			posRequestHandler.start();
-
-			/*User user = UserDAO.getInstance().findUserBySecretKey(posRequest.posDefaultInfo.server);
-			List<Ticket> ticketsForUser = TicketDAO.getInstance().findOpenTicketsForUser(user);
-
-			POSResponse posResponse = new POSResponse();
-
-			Ident ident = new Ident();
-			ident.setId(posRequest.ident.id);
-			ident.setTermserialno(posRequest.ident.termserialno);
-			ident.setTtype("45");
-
-			POSDefaultInfo posDefaultInfo = new POSDefaultInfo();
-			posDefaultInfo.setServer(posRequest.posDefaultInfo.server);
-			posDefaultInfo.setRes("1");
-			posDefaultInfo.setrText("Success");
-
-			posResponse.setIdent(ident);
-			posResponse.setPosDefaultInfo(posDefaultInfo);
-
-			Checks checks = new Checks();
-
-			checks.setCheckList(new ArrayList<Check>());
-
-			for (Ticket ticket : ticketsForUser) {
-				List<Integer> tableNumbers = ticket.getTableNumbers();
-				if (tableNumbers != null && tableNumbers.size() > 0) {
-					Check chk = new Check();
-					chk.setTableNo(String.valueOf(tableNumbers.get(0)));
-					chk.setTableName("bar1");
-					chk.setChkName(String.valueOf(ticket.getId()));
-					chk.setChkNo(String.valueOf(ticket.getId()));
-					chk.setAmt(String.valueOf(Math.round((ticket.getDueAmount() - ticket.getTaxAmount()) * 100)));
-					chk.setTax(String.valueOf(Math.round(ticket.getTaxAmount() * 100)));
-					checks.getCheckList().add(chk);
-				}
-			}
-
-			posResponse.setChecks(checks);
-
-			JAXBContext messageContext = JAXBContext.newInstance(POSResponse.class);
-			Marshaller marshaller = messageContext.createMarshaller();
-			final StringWriter dataWriter = new StringWriter();
-			marshaller.marshal(posResponse, dataWriter);
-
-			resp = dataWriter.toString();
-			resp = resp.replaceAll("<\\?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"\\?>", "");
-			//System.out.println(resp);
-
-			// /append the appropriate length of response
-			String len = String.format("%05d", resp.length());
-			resp = len + resp;
-			byte[] tosend = resp.getBytes();
-
-			System.out.println("Reponse to Terminal===>[" + resp + "]");
-			dos.write(tosend, 0, tosend.length);*/
-			//dos.flush();
-			// close the connection after 5 seconds
+			
 			Thread.sleep(5000);
 			s.close();
+//			//BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(s.getOutputStream()));
+//			//BufferedReader br = new BufferedReader(new InputStreamReader(s.getInputStream()));
+//			//dis = new DataInputStream(s.getInputStream());
+//			//dos = new DataOutputStream(s.getOutputStream());
+//			// Read from the socket
+//			byte[] b1 = new byte[3000];
+//			s.getInputStream().read(b1);
+//			if (b1.length <= 1)
+//				continue;
+//			// Read from Terminal
+//			String request = new String(b1).trim();
+//			System.out.println("Request From Terminal==>[" + request + "]");
+//
+//			int index = request.indexOf("<");
+//			request = request.substring(index);
+//
+//			InputSource is = new InputSource();
+//			is.setCharacterStream(new StringReader(request));
+//
+//			JAXBContext jaxbContext = JAXBContext.newInstance(POSRequest.class);
+//			Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
+//			POSRequest posRequest = (POSRequest) unmarshaller.unmarshal(is);
+//
+////			PosRequestHandler posRequestHandler = new PosRequestHandler(s);
+////			posRequestHandler.acceptRequest(posRequest);
+//			
+//
+//			/*User user = UserDAO.getInstance().findUserBySecretKey(posRequest.posDefaultInfo.server);
+//			List<Ticket> ticketsForUser = TicketDAO.getInstance().findOpenTicketsForUser(user);
+//
+//			POSResponse posResponse = new POSResponse();
+//
+//			Ident ident = new Ident();
+//			ident.setId(posRequest.ident.id);
+//			ident.setTermserialno(posRequest.ident.termserialno);
+//			ident.setTtype("45");
+//
+//			POSDefaultInfo posDefaultInfo = new POSDefaultInfo();
+//			posDefaultInfo.setServer(posRequest.posDefaultInfo.server);
+//			posDefaultInfo.setRes("1");
+//			posDefaultInfo.setrText("Success");
+//
+//			posResponse.setIdent(ident);
+//			posResponse.setPosDefaultInfo(posDefaultInfo);
+//
+//			Checks checks = new Checks();
+//
+//			checks.setCheckList(new ArrayList<Check>());
+//
+//			for (Ticket ticket : ticketsForUser) {
+//				List<Integer> tableNumbers = ticket.getTableNumbers();
+//				if (tableNumbers != null && tableNumbers.size() > 0) {
+//					Check chk = new Check();
+//					chk.setTableNo(String.valueOf(tableNumbers.get(0)));
+//					chk.setTableName("bar1");
+//					chk.setChkName(String.valueOf(ticket.getId()));
+//					chk.setChkNo(String.valueOf(ticket.getId()));
+//					chk.setAmt(String.valueOf(Math.round((ticket.getDueAmount() - ticket.getTaxAmount()) * 100)));
+//					chk.setTax(String.valueOf(Math.round(ticket.getTaxAmount() * 100)));
+//					checks.getCheckList().add(chk);
+//				}
+//			}
+//
+//			posResponse.setChecks(checks);
+//
+//			JAXBContext messageContext = JAXBContext.newInstance(POSResponse.class);
+//			Marshaller marshaller = messageContext.createMarshaller();
+//			final StringWriter dataWriter = new StringWriter();
+//			marshaller.marshal(posResponse, dataWriter);
+//
+//			resp = dataWriter.toString();
+//			resp = resp.replaceAll("<\\?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"\\?>", "");
+//			//System.out.println(resp);
+//
+//			// /append the appropriate length of response
+//			String len = String.format("%05d", resp.length());
+//			resp = len + resp;
+//			byte[] tosend = resp.getBytes();
+//
+//			System.out.println("Reponse to Terminal===>[" + resp + "]");
+//			dos.write(tosend, 0, tosend.length);*/
+//			//dos.flush();
+//			// close the connection after 5 seconds
+//			Thread.sleep(5000);
+//			s.close();
 		}
 	}
 
