@@ -97,7 +97,7 @@ public class LoginView extends ViewPanel {
 		add(createCenterPanel(), BorderLayout.CENTER);
 	}
 
-	public JPanel createCenterPanel() {
+	private JPanel createCenterPanel() {
 
 		lblTerminalId = new JLabel(Messages.getString("LoginView.0")); //$NON-NLS-1$
 		lblTerminalId.setForeground(Color.BLACK);
@@ -124,11 +124,9 @@ public class LoginView extends ViewPanel {
 		btnShutdown = new PosButton(POSConstants.SHUTDOWN);
 		btnClockOUt = new PosButton(new ClockInOutAction(false, true));
 
-		
-
-		centerPanel.add(btnDineIn, "grow, span 4"); //$NON-NLS-1$
+		centerPanel.add(btnDineIn, "grow"); //$NON-NLS-1$
 		centerPanel.add(btnForHere, "grow"); //$NON-NLS-1$
-		centerPanel.add(btnTakeOut, "grow,span 2"); //$NON-NLS-1$
+		centerPanel.add(btnTakeOut, "grow"); //$NON-NLS-1$
 		centerPanel.add(btnRetail, "grow"); //$NON-NLS-1$
 		centerPanel.add(btnSwitchBoard, "span 2,grow"); //$NON-NLS-1$
 		centerPanel.add(btnKitchenDisplay, "span 2,grow"); //$NON-NLS-1$

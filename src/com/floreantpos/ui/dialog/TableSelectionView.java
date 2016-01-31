@@ -35,6 +35,7 @@ import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
@@ -45,6 +46,7 @@ import net.miginfocom.swing.MigLayout;
 import com.floreantpos.Messages;
 import com.floreantpos.POSConstants;
 import com.floreantpos.extension.OrderServiceExtension;
+import com.floreantpos.main.Application;
 import com.floreantpos.model.OrderType;
 import com.floreantpos.model.ShopTable;
 import com.floreantpos.model.Ticket;
@@ -87,13 +89,12 @@ public class TableSelectionView extends JPanel implements ActionListener {
 
 		setLayout(new java.awt.BorderLayout(10, 10));
 
-		TitledBorder titledBorder1 = BorderFactory.createTitledBorder(null, POSConstants.TABLES, TitledBorder.CENTER,
-				TitledBorder.DEFAULT_POSITION);
+		TitledBorder titledBorder1 = BorderFactory.createTitledBorder(null, POSConstants.TABLES, TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION);
 
 		JPanel leftPanel = new JPanel(new java.awt.BorderLayout(5, 5));
 		leftPanel.setBorder(new CompoundBorder(titledBorder1, new EmptyBorder(2, 2, 2, 2)));
 
-		redererTable();
+		//redererTable();
 
 		JideScrollPane scrollPane = new JideScrollPane(buttonsPanel, JideScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JideScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		scrollPane.getVerticalScrollBar().setPreferredSize(new Dimension(60, 0));
@@ -160,6 +161,9 @@ public class TableSelectionView extends JPanel implements ActionListener {
 	public synchronized void redererTable() {
 		addedTableListModel.clear();
 		buttonsPanel.getContentPane().removeAll();
+
+		checkTables();
+
 		List<ShopTable> tables = ShopTableDAO.getInstance().findAll();
 
 		for (ShopTable shopTable : tables) {
@@ -383,6 +387,33 @@ public class TableSelectionView extends JPanel implements ActionListener {
 				shopTable.setServing(false);
 				ShopTableDAO.getInstance().saveOrUpdate(shopTable);
 				TicketDAO.getInstance().saveOrUpdate(ticket);
+			}
+		}
+	}
+
+	private void checkTables() {
+
+		List<ShopTable> allTables = ShopTableDAO.getInstance().findAll();
+
+		if ((allTables == null || allTables.isEmpty())) {
+
+			int userInput = 0;
+
+			int result = POSMessageDialog.showYesNoQuestionDialog(Application.getPosWindow(),
+					Messages.getString("TableSelectionView.0"), Messages.getString("TableSelectionView.1")); //$NON-NLS-1$ //$NON-NLS-2$
+
+			if (result == JOptionPane.YES_OPTION) {
+
+				userInput = NumberSelectionDialog2.takeIntInput(Messages.getString("TableSelectionView.2")); //$NON-NLS-1$
+
+				if (userInput == 0) {
+					POSMessageDialog.showError(Application.getPosWindow(), Messages.getString("TableSelectionView.3")); //$NON-NLS-1$
+					return;
+				}
+
+				if (userInput != -1) {
+					ShopTableDAO.getInstance().createNewTables(userInput);
+				}
 			}
 		}
 	}
