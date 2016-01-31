@@ -10,6 +10,10 @@ public class PrintText {
 	public PrintText() {
 		super();
 	}
+	public PrintText(String txt) {
+		super();
+		this.text=txt; 
+	}
 
 	@XmlAttribute(name = "text")
 	public String getText() {

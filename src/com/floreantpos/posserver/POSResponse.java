@@ -1,5 +1,7 @@
 package com.floreantpos.posserver;
 
+import java.util.List;
+
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -9,6 +11,8 @@ public class POSResponse {
 	Ident ident;
 	POSDefaultInfo posDefaultInfo;
 	Checks checks;
+	
+	List<PrintText> printTexts; 
 
 	public POSResponse() {
 		super();
@@ -39,5 +43,14 @@ public class POSResponse {
 
 	public void setChecks(Checks checks) {
 		this.checks = checks;
+	}
+	
+	@XmlElement(type=PrintText.class)
+	public List<PrintText> getPrintText() {
+		return printTexts;
+	}
+
+	public void setPrintChecks(List<PrintText> printTexts) {
+		this.printTexts = printTexts;
 	}
 }

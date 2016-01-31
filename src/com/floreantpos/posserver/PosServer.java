@@ -56,15 +56,15 @@ public class PosServer implements Runnable {
 	}
 
 	static void listen(ServerSocket ss) throws Exception {
-		DataInputStream dis = null;
-		DataOutputStream dos = null;
-		String posdft = "", pamt = "", tamt = "", cardtype = "", server = "", table = "", check = "", edc = "";
-		String Card[] = { "DEBIT", "MCRD", "VISA", "DINER", "DSCVR", "AMEX", "JCB", "PL", "CASH", "GIFT" };
+		//DataInputStream dis = null;
+		//DataOutputStream dos = null;
+		//String posdft = "", pamt = "", tamt = "", cardtype = "", server = "", table = "", check = "", edc = "";
+		//String Card[] = { "DEBIT", "MCRD", "VISA", "DINER", "DSCVR", "AMEX", "JCB", "PL", "CASH", "GIFT" };
 		// Get Table Response Samples
 		// general response
-		String prepend = "<POSResponse><Ident id='";
+		//String prepend = "<POSResponse><Ident id='";
 
-		String respTable = "' ttype='45'/>";
+		//String respTable = "' ttype='45'/>";
 
 		String resp = "";
 		String ids = "";
@@ -72,10 +72,10 @@ public class PosServer implements Runnable {
 			// ACCEPT Connections
 			System.out.println("Waiting For Connections....");
 			Socket s = ss.accept();
-			BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(s.getOutputStream()));
-			BufferedReader br = new BufferedReader(new InputStreamReader(s.getInputStream()));
-			dis = new DataInputStream(s.getInputStream());
-			dos = new DataOutputStream(s.getOutputStream());
+			//BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(s.getOutputStream()));
+			//BufferedReader br = new BufferedReader(new InputStreamReader(s.getInputStream()));
+			//dis = new DataInputStream(s.getInputStream());
+			//dos = new DataOutputStream(s.getOutputStream());
 			// Read from the socket
 			byte[] b1 = new byte[3000];
 			s.getInputStream().read(b1);
@@ -94,14 +94,19 @@ public class PosServer implements Runnable {
 			JAXBContext jaxbContext = JAXBContext.newInstance(POSRequest.class);
 			Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
 			POSRequest posRequest = (POSRequest) unmarshaller.unmarshal(is);
-			
-			User user = UserDAO.getInstance().findUserBySecretKey(posRequest.posDefaultInfo.server);
+
+			PosRequestHandler posRequestHandler = new PosRequestHandler(s);
+			posRequestHandler.acceptRequest(posRequest);
+			posRequestHandler.start();
+
+			/*User user = UserDAO.getInstance().findUserBySecretKey(posRequest.posDefaultInfo.server);
 			List<Ticket> ticketsForUser = TicketDAO.getInstance().findOpenTicketsForUser(user);
 
 			POSResponse posResponse = new POSResponse();
 
 			Ident ident = new Ident();
 			ident.setId(posRequest.ident.id);
+			ident.setTermserialno(posRequest.ident.termserialno);
 			ident.setTtype("45");
 
 			POSDefaultInfo posDefaultInfo = new POSDefaultInfo();
@@ -117,17 +122,17 @@ public class PosServer implements Runnable {
 			checks.setCheckList(new ArrayList<Check>());
 
 			for (Ticket ticket : ticketsForUser) {
-					List<Integer> tableNumbers  = ticket.getTableNumbers();
-					if (tableNumbers != null && tableNumbers.size() > 0) {
-						Check chk = new Check();
-						chk.setTableNo(String.valueOf(tableNumbers.get(0)));
-						chk.setTableName("-");
-						chk.setChkName("-");
-						chk.setChkNo(String.valueOf(ticket.getId()));
-						chk.setAmt(String.valueOf(Math.round((ticket.getDueAmount()-ticket.getTaxAmount()) * 100)));
-						chk.setTax(String.valueOf(Math.round(ticket.getTaxAmount() * 100)));
-						checks.getCheckList().add(chk);
-					}
+				List<Integer> tableNumbers = ticket.getTableNumbers();
+				if (tableNumbers != null && tableNumbers.size() > 0) {
+					Check chk = new Check();
+					chk.setTableNo(String.valueOf(tableNumbers.get(0)));
+					chk.setTableName("bar1");
+					chk.setChkName(String.valueOf(ticket.getId()));
+					chk.setChkNo(String.valueOf(ticket.getId()));
+					chk.setAmt(String.valueOf(Math.round((ticket.getDueAmount() - ticket.getTaxAmount()) * 100)));
+					chk.setTax(String.valueOf(Math.round(ticket.getTaxAmount() * 100)));
+					checks.getCheckList().add(chk);
+				}
 			}
 
 			posResponse.setChecks(checks);
@@ -136,31 +141,31 @@ public class PosServer implements Runnable {
 			Marshaller marshaller = messageContext.createMarshaller();
 			final StringWriter dataWriter = new StringWriter();
 			marshaller.marshal(posResponse, dataWriter);
-			
+
 			resp = dataWriter.toString();
 			resp = resp.replaceAll("<\\?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"\\?>", "");
-			System.out.println(resp);
-			
+			//System.out.println(resp);
+
 			// /append the appropriate length of response
 			String len = String.format("%05d", resp.length());
 			resp = len + resp;
 			byte[] tosend = resp.getBytes();
 
 			System.out.println("Reponse to Terminal===>[" + resp + "]");
-			dos.write(tosend, 0, tosend.length);
-			dos.flush();
+			dos.write(tosend, 0, tosend.length);*/
+			//dos.flush();
 			// close the connection after 5 seconds
-			Thread.sleep(2000);
+			Thread.sleep(5000);
 			s.close();
 		}
 	}
-	
+
 	public static void main(String[] args) throws Exception {
 		_RootDAO.initialize();
-		
-		User user = UserDAO.getInstance().findUserBySecretKey("1111");
+
+		/*User user = UserDAO.getInstance().findUserBySecretKey("1111");
 		List<Ticket> ticketsForUser = TicketDAO.getInstance().findOpenTicketsForUser(user);
-		
+
 		POSResponse posResponse = new POSResponse();
 
 		Ident ident = new Ident();
@@ -180,17 +185,17 @@ public class PosServer implements Runnable {
 		checks.setCheckList(new ArrayList<Check>());
 
 		for (Ticket ticket : ticketsForUser) {
-				List<Integer> tableNumbers  = ticket.getTableNumbers();
-				if (tableNumbers != null && tableNumbers.size() > 0) {
-					Check chk = new Check();
-					chk.setTableNo(String.valueOf(tableNumbers.get(0)));
-					chk.setTableName("-");
-					chk.setChkName("-");
-					chk.setChkNo(String.valueOf(ticket.getId()));
-					chk.setAmt(String.valueOf(Math.round((ticket.getDueAmount()-ticket.getTaxAmount()) * 100)));
-					chk.setTax(String.valueOf(Math.round(ticket.getTaxAmount() * 100)));
-					checks.getCheckList().add(chk);
-				}
+			List<Integer> tableNumbers = ticket.getTableNumbers();
+			if (tableNumbers != null && tableNumbers.size() > 0) {
+				Check chk = new Check();
+				chk.setTableNo(String.valueOf(tableNumbers.get(0)));
+				chk.setTableName("-");
+				chk.setChkName("-");
+				chk.setChkNo(String.valueOf(ticket.getId()));
+				chk.setAmt(String.valueOf(Math.round((ticket.getDueAmount() - ticket.getTaxAmount()) * 100)));
+				chk.setTax(String.valueOf(Math.round(ticket.getTaxAmount() * 100)));
+				checks.getCheckList().add(chk);
+			}
 		}
 
 		posResponse.setChecks(checks);
@@ -199,9 +204,9 @@ public class PosServer implements Runnable {
 		Marshaller marshaller = messageContext.createMarshaller();
 		final StringWriter dataWriter = new StringWriter();
 		marshaller.marshal(posResponse, dataWriter);
-		
+
 		String string = dataWriter.toString();
 		string = string.replaceAll("<\\?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"\\?>", "");
-		System.out.println(string);
+		System.out.println(string);*/
 	}
 }

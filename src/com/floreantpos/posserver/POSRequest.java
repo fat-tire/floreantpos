@@ -6,9 +6,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name = "POSRequest")
 public class POSRequest {
 
-	
 	Ident ident;
-	POSDefaultInfo posDefaultInfo; 
+	POSDefaultInfo posDefaultInfo;
+
+	Payment payment;
 
 	public POSRequest() {
 		super();
@@ -30,5 +31,14 @@ public class POSRequest {
 
 	public void setPosDefaultInfo(POSDefaultInfo posDefaultInfo) {
 		this.posDefaultInfo = posDefaultInfo;
+	}
+
+	@XmlElement(name = "Payment")
+	public Payment getPayment() {
+		return payment;
+	}
+
+	public void setPayment(Payment payment) {
+		this.payment = payment;
 	}
 }
