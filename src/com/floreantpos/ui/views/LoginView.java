@@ -45,6 +45,8 @@ import com.floreantpos.actions.ClockInOutAction;
 import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.config.ui.DatabaseConfigurationDialog;
 import com.floreantpos.demo.KitchenDisplayView;
+import com.floreantpos.extension.ExtensionManager;
+import com.floreantpos.extension.OrderServiceExtension;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.OrderType;
 import com.floreantpos.model.User;
@@ -78,7 +80,7 @@ public class LoginView extends ViewPanel {
 	private com.floreantpos.swing.PosButton btnShutdown;
 	private com.floreantpos.swing.PosButton btnClockOUt;
 	private JLabel lblTerminalId;
-	private JPanel centerPanel  = new JPanel(new MigLayout("wrap 4,al center center", "sg", "100")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+	private JPanel centerPanel = new JPanel(new MigLayout("wrap 4,al center center", "sg", "100")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	private static LoginView instance;
 	private JPanel mainPanel;
 
@@ -124,19 +126,30 @@ public class LoginView extends ViewPanel {
 		btnShutdown = new PosButton(POSConstants.SHUTDOWN);
 		btnClockOUt = new PosButton(new ClockInOutAction(false, true));
 
-		centerPanel.add(btnDineIn, "grow"); //$NON-NLS-1$
-		centerPanel.add(btnForHere, "grow"); //$NON-NLS-1$
-		centerPanel.add(btnTakeOut, "grow"); //$NON-NLS-1$
-		centerPanel.add(btnRetail, "grow"); //$NON-NLS-1$
-		centerPanel.add(btnSwitchBoard, "span 2,grow"); //$NON-NLS-1$
-		centerPanel.add(btnKitchenDisplay, "span 2,grow"); //$NON-NLS-1$
-		centerPanel.add(btnClockOUt, "grow"); //$NON-NLS-1$
-		
-		if (TerminalConfig.isShowDbConfigureButton()) {
-			btnConfigureDatabase = new PosButton(POSConstants.CONFIGURE_DATABASE);
-				centerPanel.add(btnConfigureDatabase, "span 2,grow"); //$NON-NLS-1$
+		OrderServiceExtension orderServiceExtension = (OrderServiceExtension) ExtensionManager.getPlugin(OrderServiceExtension.class);
+
+		if (orderServiceExtension != null) {
+			centerPanel.add(btnDineIn, "grow");//$NON-NLS-1$
+			centerPanel.add(btnTakeOut, "grow");//$NON-NLS-1$
+			centerPanel.add(btnForHere, "grow");//$NON-NLS-1$
+			centerPanel.add(btnRetail, "grow");//$NON-NLS-1$
+			centerPanel.add(btnPickUp, "grow");//$NON-NLS-1$
+			centerPanel.add(btnHomeDelivery, "grow");//$NON-NLS-1$
+			centerPanel.add(btnDriveThru, "grow");//$NON-NLS-1$
+			centerPanel.add(btnBarTab, "grow");//$NON-NLS-1$
+			centerPanel.add(btnSwitchBoard, "span 2,grow"); //$NON-NLS-1$
+			centerPanel.add(btnKitchenDisplay, "span 2,grow"); //$NON-NLS-1$
 		}
-		centerPanel.add(btnShutdown, "grow"); //$NON-NLS-1$
+		else {
+			centerPanel.add(btnDineIn, "grow"); //$NON-NLS-1$
+			centerPanel.add(btnForHere, "grow"); //$NON-NLS-1$
+			centerPanel.add(btnTakeOut, "grow"); //$NON-NLS-1$
+			centerPanel.add(btnRetail, "grow"); //$NON-NLS-1$
+			centerPanel.add(btnSwitchBoard, "span 2,grow"); //$NON-NLS-1$
+			centerPanel.add(btnKitchenDisplay, "span 2,grow"); //$NON-NLS-1$
+		}
+
+		btnConfigureDatabase = new PosButton(POSConstants.CONFIGURE_DATABASE);
 
 		if (TerminalConfig.isFullscreenMode()) {
 			if (btnConfigureDatabase != null) {
@@ -144,6 +157,19 @@ public class LoginView extends ViewPanel {
 			}
 			if (btnShutdown != null) {
 				btnShutdown.setVisible(false);
+			}
+			centerPanel.add(btnClockOUt, "span 4,grow"); //$NON-NLS-1$
+		}
+		else {
+
+			if (TerminalConfig.isShowDbConfigureButton()) {
+				centerPanel.add(btnClockOUt, "grow"); //$NON-NLS-1$
+				centerPanel.add(btnConfigureDatabase, "span 2,grow"); //$NON-NLS-1$
+				centerPanel.add(btnShutdown, "grow"); //$NON-NLS-1$
+			}
+			else {
+				centerPanel.add(btnClockOUt, "span 2,grow"); //$NON-NLS-1$
+				centerPanel.add(btnShutdown, "span 2,grow"); //$NON-NLS-1$
 			}
 		}
 
