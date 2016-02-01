@@ -624,7 +624,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 		}
 	}
 
-	private void printTicket(Ticket ticket, PosTransaction transaction) {
+	public static void printTicket(Ticket ticket, PosTransaction transaction) {
 		try {
 			if (ticket.needsKitchenPrint()) {
 				ReceiptPrintService.printToKitchen(ticket);

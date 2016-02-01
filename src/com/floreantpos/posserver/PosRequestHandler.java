@@ -16,10 +16,16 @@ import javax.xml.bind.Unmarshaller;
 
 import org.xml.sax.InputSource;
 
+import com.floreantpos.model.CardReader;
+import com.floreantpos.model.PaymentType;
+import com.floreantpos.model.PosTransaction;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.User;
 import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.model.dao.UserDAO;
+import com.floreantpos.services.PosTransactionService;
+import com.floreantpos.ui.dialog.POSMessageDialog;
+import com.floreantpos.ui.views.payment.SettleTicketDialog;
 
 public class PosRequestHandler extends Thread {
 	private Socket socket;
@@ -31,6 +37,7 @@ public class PosRequestHandler extends Thread {
 
 	public PosRequestHandler(Socket socket) throws Exception {
 		this.socket = socket;
+
 		posRequest = new POSRequest();
 		posResponse = new POSResponse();
 
@@ -147,7 +154,6 @@ public class PosRequestHandler extends Thread {
 		}
 
 		posResponse.setChecks(checks);
-
 	}
 
 	private void addTable() {
@@ -176,7 +182,11 @@ public class PosRequestHandler extends Thread {
 			if (tableNumbers != null && tableNumbers.size() > 0) {
 				if (tableNumbers.contains(Integer.parseInt(posRequest.posDefaultInfo.table))) {
 					Check chk = new Check();
-					chk.setTableNo(String.valueOf(posDefaultInfo.table));
+					String tableNumber = tableNumbers.get(0).toString();
+					if (tableNumbers.get(0) < 10) {
+						tableNumber = "0" + tableNumbers.get(0).toString();
+					}
+					chk.setTableNo(String.valueOf(tableNumber));
 					chk.setTableName("");
 					chk.setChkName("");
 					chk.setChkNo(String.valueOf(ticket.getId()));
@@ -196,29 +206,59 @@ public class PosRequestHandler extends Thread {
 
 		Ticket ticket = TicketDAO.getInstance().loadFullTicket(Integer.parseInt(posRequest.posDefaultInfo.check));
 
-		Ident ident = new Ident();
-		ident.setId(posRequest.ident.id);
-		ident.setTtype("46");
+		PosTransaction transaction = null;
+		if (posRequest.payment.cardType.equals("8")) {
+			transaction = PaymentType.CASH.createTransaction();
+			transaction.setTicket(ticket);
+			transaction.setCaptured(true);
+		}
+		else {
 
-		POSDefaultInfo posDefaultInfo = new POSDefaultInfo();
-		posDefaultInfo.setTable(posRequest.posDefaultInfo.table);
-		posDefaultInfo.setCheck(posRequest.posDefaultInfo.check);
-		posDefaultInfo.setServer(posRequest.posDefaultInfo.server);
-		posDefaultInfo.setRes("1");
-		posDefaultInfo.setrText("success");
+			if (posRequest.payment.cardType.equals("1")) {
+				transaction = PaymentType.CREDIT_MASTER_CARD.createTransaction();
+			}
+			else if (posRequest.payment.cardType.equals("2")) {
+				transaction = PaymentType.CREDIT_VISA.createTransaction();
+			}
 
-		posResponse.setIdent(ident);
-		posResponse.setPosDefaultInfo(posDefaultInfo);
-		/*
-				PrintText line1 = new PrintText("---Restaurant Name---");
-				PrintText line2 = new PrintText("---Address---");
-				PrintText line3 = new PrintText("---Cell---");
-				//PrintText line4 = new PrintText("-------" + ticket.getId() + "-------");
+			transaction.setCaptured(false);
+			transaction.setCardNumber(posRequest.payment.acct);
+			transaction.setCardExpiryMonth(posRequest.payment.exp);
+			transaction.setCardExpiryYear(posRequest.payment.exp);
+		}
 
-				posResponse.getPrintText().add(line1);
-				posResponse.getPrintText().add(line2);
-				posResponse.getPrintText().add(line3);*/
-		//posResponse.getPrintText().add(line4);
+		double tenderAmount = Double.parseDouble(posRequest.payment.pamt);
+		transaction.setTenderAmount(tenderAmount);
+
+		if (tenderAmount >= ticket.getDueAmount()) {
+			transaction.setAmount(ticket.getDueAmount());
+		}
+		else {
+			transaction.setAmount(tenderAmount);
+		}
+
+		PosTransactionService transactionService = PosTransactionService.getInstance();
+		try {
+			transactionService.settleTicket(ticket, transaction);
+			SettleTicketDialog.printTicket(ticket, transaction);
+
+			Ident ident = new Ident();
+			ident.setId(posRequest.ident.id);
+			ident.setTtype("46");
+
+			POSDefaultInfo posDefaultInfo = new POSDefaultInfo();
+			posDefaultInfo.setTable(posRequest.posDefaultInfo.table);
+			posDefaultInfo.setCheck(posRequest.posDefaultInfo.check);
+			posDefaultInfo.setServer(posRequest.posDefaultInfo.server);
+			posDefaultInfo.setRes("1");
+			posDefaultInfo.setrText("success");
+
+			posResponse.setIdent(ident);
+			posResponse.setPosDefaultInfo(posDefaultInfo);
+
+		} catch (Exception e) {
+			POSMessageDialog.showError("Error" + e);
+		}
 	}
 
 	private void printCheck() {
