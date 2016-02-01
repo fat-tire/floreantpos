@@ -112,7 +112,6 @@ public class PosRequestHandler extends Thread {
 
 		Ident ident = new Ident();
 		ident.setId(posRequest.ident.id);
-		//ident.setTermserialno(posRequest.ident.termserialno);
 		ident.setTtype(posRequest.ident.ttype);
 
 		POSDefaultInfo posDefaultInfo = new POSDefaultInfo();
@@ -133,9 +132,9 @@ public class PosRequestHandler extends Thread {
 			List<Integer> tableNumbers = ticket.getTableNumbers();
 			if (tableNumbers != null && tableNumbers.size() > 0) {
 				Check chk = new Check();
-				String tableNumber=""; 
-				if(tableNumbers.get(0)<10) {
-					tableNumber="0"+tableNumbers.get(0).toString(); 
+				String tableNumber = tableNumbers.get(0).toString();
+				if (tableNumbers.get(0) < 10) {
+					tableNumber = "0" + tableNumbers.get(0).toString();
 				}
 				chk.setTableNo(tableNumber);
 				chk.setTableName("");
@@ -157,7 +156,6 @@ public class PosRequestHandler extends Thread {
 
 		Ident ident = new Ident();
 		ident.setId(posRequest.ident.id);
-		//ident.setTermserialno(posRequest.ident.termserialno);
 		ident.setTtype(posRequest.ident.ttype);
 
 		POSDefaultInfo posDefaultInfo = new POSDefaultInfo();
@@ -211,15 +209,15 @@ public class PosRequestHandler extends Thread {
 
 		posResponse.setIdent(ident);
 		posResponse.setPosDefaultInfo(posDefaultInfo);
-/*
-		PrintText line1 = new PrintText("---Restaurant Name---");
-		PrintText line2 = new PrintText("---Address---");
-		PrintText line3 = new PrintText("---Cell---");
-		//PrintText line4 = new PrintText("-------" + ticket.getId() + "-------");
+		/*
+				PrintText line1 = new PrintText("---Restaurant Name---");
+				PrintText line2 = new PrintText("---Address---");
+				PrintText line3 = new PrintText("---Cell---");
+				//PrintText line4 = new PrintText("-------" + ticket.getId() + "-------");
 
-		posResponse.getPrintText().add(line1);
-		posResponse.getPrintText().add(line2);
-		posResponse.getPrintText().add(line3);*/
+				posResponse.getPrintText().add(line1);
+				posResponse.getPrintText().add(line2);
+				posResponse.getPrintText().add(line3);*/
 		//posResponse.getPrintText().add(line4);
 	}
 
