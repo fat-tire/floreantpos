@@ -112,13 +112,15 @@ public class PosRequestHandler extends Thread {
 
 		Ident ident = new Ident();
 		ident.setId(posRequest.ident.id);
-		ident.setTermserialno(posRequest.ident.termserialno);
-		ident.setTtype("45");
+		//ident.setTermserialno(posRequest.ident.termserialno);
+		ident.setTtype(posRequest.ident.ttype);
 
 		POSDefaultInfo posDefaultInfo = new POSDefaultInfo();
 		posDefaultInfo.setServer(posRequest.posDefaultInfo.server);
+		posDefaultInfo.setTable(posRequest.posDefaultInfo.table);
+		posDefaultInfo.setCheck(posRequest.posDefaultInfo.check);
 		posDefaultInfo.setRes("1");
-		posDefaultInfo.setrText("Success");
+		posDefaultInfo.setrText("success");
 
 		posResponse.setIdent(ident);
 		posResponse.setPosDefaultInfo(posDefaultInfo);
@@ -131,7 +133,11 @@ public class PosRequestHandler extends Thread {
 			List<Integer> tableNumbers = ticket.getTableNumbers();
 			if (tableNumbers != null && tableNumbers.size() > 0) {
 				Check chk = new Check();
-				chk.setTableNo(String.valueOf(tableNumbers.get(0)));
+				String tableNumber=""; 
+				if(tableNumbers.get(0)<10) {
+					tableNumber="0"+tableNumbers.get(0).toString(); 
+				}
+				chk.setTableNo(tableNumber);
 				chk.setTableName("");
 				chk.setChkName(String.valueOf(ticket.getId()));
 				chk.setChkNo(String.valueOf(ticket.getId()));
@@ -151,14 +157,14 @@ public class PosRequestHandler extends Thread {
 
 		Ident ident = new Ident();
 		ident.setId(posRequest.ident.id);
-		ident.setTermserialno(posRequest.ident.termserialno);
-		ident.setTtype("45");
+		//ident.setTermserialno(posRequest.ident.termserialno);
+		ident.setTtype(posRequest.ident.ttype);
 
 		POSDefaultInfo posDefaultInfo = new POSDefaultInfo();
 		posDefaultInfo.setServer(posRequest.posDefaultInfo.server);
 		posDefaultInfo.setTable(posRequest.posDefaultInfo.table);
 		posDefaultInfo.setRes("1");
-		posDefaultInfo.setrText("Success");
+		posDefaultInfo.setrText("success");
 
 		posResponse.setIdent(ident);
 		posResponse.setPosDefaultInfo(posDefaultInfo);
@@ -194,7 +200,6 @@ public class PosRequestHandler extends Thread {
 
 		Ident ident = new Ident();
 		ident.setId(posRequest.ident.id);
-		ident.setTermserialno(posRequest.ident.termserialno);
 		ident.setTtype("46");
 
 		POSDefaultInfo posDefaultInfo = new POSDefaultInfo();
@@ -202,11 +207,11 @@ public class PosRequestHandler extends Thread {
 		posDefaultInfo.setCheck(posRequest.posDefaultInfo.check);
 		posDefaultInfo.setServer(posRequest.posDefaultInfo.server);
 		posDefaultInfo.setRes("1");
-		posDefaultInfo.setrText("Success");
+		posDefaultInfo.setrText("success");
 
 		posResponse.setIdent(ident);
 		posResponse.setPosDefaultInfo(posDefaultInfo);
-
+/*
 		PrintText line1 = new PrintText("---Restaurant Name---");
 		PrintText line2 = new PrintText("---Address---");
 		PrintText line3 = new PrintText("---Cell---");
@@ -214,9 +219,8 @@ public class PosRequestHandler extends Thread {
 
 		posResponse.getPrintText().add(line1);
 		posResponse.getPrintText().add(line2);
-		posResponse.getPrintText().add(line3);
+		posResponse.getPrintText().add(line3);*/
 		//posResponse.getPrintText().add(line4);
-
 	}
 
 	private void printCheck() {
@@ -233,7 +237,7 @@ public class PosRequestHandler extends Thread {
 		posDefaultInfo.setCheck(posRequest.posDefaultInfo.check);
 		posDefaultInfo.setServer(posRequest.posDefaultInfo.server);
 		posDefaultInfo.setRes("1");
-		posDefaultInfo.setrText("Success");
+		posDefaultInfo.setrText("success");
 
 		for (Ticket ticket : ticketsForUser) {
 			List<Integer> tableNumbers = ticket.getTableNumbers();
