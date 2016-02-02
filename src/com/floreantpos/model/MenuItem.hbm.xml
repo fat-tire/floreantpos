@@ -69,5 +69,13 @@
 		<many-to-one class="com.floreantpos.model.PrinterGroup" lazy="false" cascade="none" name="printerGroup">
 			<column name="PG_ID" />
 		</many-to-one>
+		
+		<map name="properties" cascade="all" lazy="false" table="MENU_ITEM_PROPERTIES">
+			<key column="MENU_ITEM_ID" />
+			<index column="PROPERTY_NAME" type="string" />
+			<element column="PROPERTY_VALUE" type="string" length="100"/>
+		</map>
+		
+		
 	</class>
 </hibernate-mapping>

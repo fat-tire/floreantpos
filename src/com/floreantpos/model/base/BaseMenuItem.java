@@ -98,6 +98,7 @@ public abstract class BaseMenuItem  implements Comparable, Serializable {
 	private java.util.List<com.floreantpos.model.Discount> discounts;
 	private java.util.List<com.floreantpos.model.MenuItemModifierGroup> menuItemModiferGroups;
 	private java.util.List<com.floreantpos.model.Terminal> terminals;
+	private java.util.Map<String,String> properties;
 
 
 
@@ -500,6 +501,23 @@ public abstract class BaseMenuItem  implements Comparable, Serializable {
 	public void addToterminals (com.floreantpos.model.Terminal terminal) {
 		if (null == getTerminals()) setTerminals(new java.util.ArrayList<com.floreantpos.model.Terminal>());
 		getTerminals().add(terminal);
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: properties
+	 */
+	public java.util.Map<String,String> getProperties () {
+					return properties;
+			}
+
+	/**
+	 * Set the value related to the column: properties
+	 * @param properties the properties value
+	 */
+	public void setProperties (java.util.Map<String,String> properties) {
+		this.properties = properties;
 	}
 
 

@@ -35,6 +35,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.GroupLayout;
@@ -46,6 +47,7 @@ import javax.swing.JColorChooser;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.SwingConstants;
@@ -96,6 +98,8 @@ import com.floreantpos.util.ShiftUtil;
  */
 public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener, ChangeListener {
 	ShiftTableModel shiftTableModel;
+	PriceByOrderTypeTableModel priceTableModel;
+	private MenuItem menuItem;
 
 	/** Creates new form FoodItemEditor */
 	public MenuItemForm() throws Exception {
@@ -103,6 +107,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 	}
 
 	public MenuItemForm(MenuItem menuItem) throws Exception {
+		this.menuItem = menuItem;
 		initComponents();
 
 		MenuGroupDAO foodGroupDAO = new MenuGroupDAO();
@@ -115,6 +120,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 
 		menuItemModifierGroups = menuItem.getMenuItemModiferGroups();
 		shiftTable.setModel(shiftTableModel = new ShiftTableModel(menuItem.getShifts()));
+		priceTable.setModel(priceTableModel = new PriceByOrderTypeTableModel(menuItem.getProperties()));
 
 		setBean(menuItem);
 	}
@@ -202,10 +208,17 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		jScrollPane1 = new javax.swing.JScrollPane();
 		tableTicketItemModifierGroups = new javax.swing.JTable();
 		tabShift = new javax.swing.JPanel();
+		tabPrice = new javax.swing.JPanel();
 		btnDeleteShift = new javax.swing.JButton();
 		btnAddShift = new javax.swing.JButton();
+		btnNewPrice = new javax.swing.JButton();
+		btnUpdatePrice = new javax.swing.JButton();
+		btnDeletePrice = new javax.swing.JButton();
+		btnDeleteAll = new javax.swing.JButton();
 		jScrollPane2 = new javax.swing.JScrollPane();
+		jScrollPane3 = new javax.swing.JScrollPane();
 		shiftTable = new javax.swing.JTable();
+		priceTable = new javax.swing.JTable();
 		lTerminal = new JLabel("Terminal");
 
 		lgroup.setText(Messages.getString("LABEL_GROUP")); //$NON-NLS-1$
@@ -465,6 +478,69 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 
 		tabbedPane.addTab(com.floreantpos.POSConstants.SHIFTS, tabShift);
 
+		//
+
+		priceTable.setModel(new javax.swing.table.DefaultTableModel(new Object[][] { { null, null, null, null }, { null, null, null, null },
+				{ null, null, null, null }, { null, null, null, null } }, new String[] { "Title 1", "Title 2", "Title 3", "Title 4" })); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+
+		jScrollPane3.setViewportView(priceTable);
+		btnNewPrice.setText("New Price");
+		btnNewPrice.addActionListener(new ActionListener() {
+			//TODO: handle exception
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				addNewPrice();
+			}
+		});
+		btnUpdatePrice.setText("Update Price");
+		btnUpdatePrice.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				updatePrice();
+			}
+		});
+		btnDeletePrice.setText("Delete");
+		btnDeletePrice.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				deletePrice();
+			}
+		});
+		btnDeleteAll.setText("Delete All");
+		btnDeleteAll.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				deleteAll();
+			}
+		});
+		org.jdesktop.layout.GroupLayout jPanel4Layout = new org.jdesktop.layout.GroupLayout(tabPrice);
+		tabPrice.setLayout(jPanel4Layout);
+		jPanel4Layout.setHorizontalGroup(jPanel4Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(
+				jPanel4Layout
+						.createSequentialGroup()
+						.addContainerGap(76, Short.MAX_VALUE)
+						.add(jPanel4Layout
+								.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+								.add(org.jdesktop.layout.GroupLayout.TRAILING, jScrollPane3, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 670,
+										org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+								.add(org.jdesktop.layout.GroupLayout.TRAILING,
+										jPanel4Layout.createSequentialGroup().add(btnNewPrice).add(5, 5, 5).add(btnUpdatePrice).add(5, 5, 5)
+												.add(btnDeletePrice).add(5, 5, 5).add(btnDeleteAll))).addContainerGap()));
+		jPanel4Layout.setVerticalGroup(jPanel4Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(
+				jPanel4Layout
+						.createSequentialGroup()
+						.add(jScrollPane3, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 345, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+						.addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+						.add(jPanel4Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE).add(btnNewPrice).add(btnUpdatePrice)
+								.add(btnDeletePrice).add(btnDeleteAll)).addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
+
+		tabbedPane.addTab("Price By Order Type", tabPrice);
+
+		//
+
 		tabbedPane.addChangeListener(this);
 	}// </editor-fold>//GEN-END:initComponents
 
@@ -492,6 +568,10 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 
 	// Variables declaration - do not modify//GEN-BEGIN:variables
 	private javax.swing.JButton btnAddShift;
+	private javax.swing.JButton btnNewPrice;
+	private javax.swing.JButton btnUpdatePrice;
+	private javax.swing.JButton btnDeletePrice;
+	private javax.swing.JButton btnDeleteAll;
 	private javax.swing.JButton btnDeleteModifierGroup;
 	private javax.swing.JButton btnDeleteShift;
 	private javax.swing.JButton btnEditModifierGroup;
@@ -510,10 +590,13 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 	private javax.swing.JPanel tabGeneral;
 	private javax.swing.JPanel tabModifier;
 	private javax.swing.JPanel tabShift;
+	private javax.swing.JPanel tabPrice;
 	private javax.swing.JScrollPane jScrollPane1;
 	private javax.swing.JScrollPane jScrollPane2;
+	private javax.swing.JScrollPane jScrollPane3;
 	private javax.swing.JTabbedPane tabbedPane;
 	private javax.swing.JTable shiftTable;
+	private javax.swing.JTable priceTable;
 	private javax.swing.JTable tableTicketItemModifierGroups;
 	private DoubleTextField tfDiscountRate;
 	private com.floreantpos.swing.FixedLengthTextField tfName;
@@ -775,14 +858,14 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 			MenuItemModifierGroup menuItemModifierGroup = menuItemModifierGroups.get(rowIndex);
 
 			switch (columnIndex) {
-			case 0:
-				return menuItemModifierGroup.getModifierGroup().getName();
+				case 0:
+					return menuItemModifierGroup.getModifierGroup().getName();
 
-			case 1:
-				return Integer.valueOf(menuItemModifierGroup.getMinQuantity());
+				case 1:
+					return Integer.valueOf(menuItemModifierGroup.getMinQuantity());
 
-			case 2:
-				return Integer.valueOf(menuItemModifierGroup.getMaxQuantity());
+				case 2:
+					return Integer.valueOf(menuItemModifierGroup.getMaxQuantity());
 			}
 			return null;
 		}
@@ -855,19 +938,110 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 			MenuItemShift shift = shifts.get(rowIndex);
 
 			switch (columnIndex) {
-			case 0:
-				return ShiftUtil.buildShiftTimeRepresentation(shift.getShift().getStartTime());
+				case 0:
+					return ShiftUtil.buildShiftTimeRepresentation(shift.getShift().getStartTime());
 
-			case 1:
-				return ShiftUtil.buildShiftTimeRepresentation(shift.getShift().getEndTime());
+				case 1:
+					return ShiftUtil.buildShiftTimeRepresentation(shift.getShift().getEndTime());
 
-			case 2:
-				return String.valueOf(shift.getShiftPrice());
+				case 2:
+					return String.valueOf(shift.getShiftPrice());
 			}
 			return null;
 		}
 	}
 
+	//
+
+	class PriceByOrderTypeTableModel extends AbstractTableModel {
+		List<MenuItem> propertiesKey;
+		List<MenuItem> propertiesValue;
+		String[] cn = { "Order Type", "Price", "Tax" };
+
+		PriceByOrderTypeTableModel(Map<String, String> properties) {
+
+			if (properties == null) {
+				this.propertiesKey = new ArrayList<MenuItem>();
+				this.propertiesValue = new ArrayList<MenuItem>();
+			}
+			else {
+				this.propertiesKey = new ArrayList(properties.keySet());
+				this.propertiesValue = new ArrayList(properties.values());
+			}
+		}
+
+		public MenuItem get(int index) {
+			return propertiesKey.get(index);
+		}
+
+		public void add(MenuItem menuItem) {
+			if (propertiesKey == null) {
+				propertiesKey = new ArrayList<MenuItem>();
+			}
+			this.propertiesKey = new ArrayList(menuItem.getProperties().keySet());
+			this.propertiesValue = new ArrayList(menuItem.getProperties().values());
+			fireTableDataChanged();
+		}
+
+		public void remove(int index) {
+			if (propertiesKey == null) {
+				return;
+			}
+			menuItem.removeProperty(String.valueOf(propertiesKey.get(index)));
+			MenuItemDAO.getInstance().saveOrUpdate(menuItem);
+			propertiesKey.remove(index);
+			fireTableDataChanged();
+		}
+
+		public void removeAll() {
+			menuItem.getProperties().clear();
+			MenuItemDAO.getInstance().saveOrUpdate(menuItem);
+			propertiesKey.clear();
+			fireTableDataChanged();
+		}
+
+		public int getRowCount() {
+			if (propertiesKey == null)
+				return 0;
+
+			return propertiesKey.size();
+		}
+
+		public int getColumnCount() {
+			return cn.length;
+		}
+
+		@Override
+		public String getColumnName(int column) {
+			return cn[column];
+		}
+
+		public List<MenuItem> getProperties() {
+			return propertiesKey;
+		}
+
+		public Object getValueAt(int rowIndex, int columnIndex) {
+			//MenuItem item = properties.get(rowIndex);
+
+			switch (columnIndex) {
+				case 0:
+					String key = String.valueOf(propertiesKey.get(rowIndex));
+					key = key.replaceAll("_PRICE", "");
+					key = key.replaceAll("_", " ");
+					return key;
+					//return propertiesKey.get(rowIndex);
+
+				case 1:
+					return propertiesValue.get(rowIndex);
+					/*
+										case 2:
+											return String.valueOf(shift.getShiftPrice());*/
+			}
+			return null;
+		}
+	}
+
+	//
 	private void addShift() {
 		MenuItemShiftDialog dialog = new MenuItemShiftDialog();
 		dialog.setSize(350, 220);
@@ -879,10 +1053,59 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		}
 	}
 
+	private void addNewPrice() {
+
+		MenuItemPriceByOrderTypeDialog dialog = new MenuItemPriceByOrderTypeDialog(menuItem);
+		dialog.setSize(350, 220);
+		dialog.open();
+		if (!dialog.isCanceled()) {
+			priceTableModel.add(dialog.getMenuItem());
+		}
+	}
+
 	private void deleteShift() {
 		int selectedRow = shiftTable.getSelectedRow();
 		if (selectedRow >= 0) {
 			shiftTableModel.remove(selectedRow);
+		}
+	}
+
+	private void deletePrice() {
+		int selectedRow = priceTable.getSelectedRow();
+		if (selectedRow == -1) {
+			POSMessageDialog.showMessage("Please select a row to delete");
+			return;
+		}
+		int option = POSMessageDialog.showYesNoQuestionDialog(POSUtil.getBackOfficeWindow(), "Are you sure to delete selected row ?", "Confirm");
+		if (option != JOptionPane.YES_OPTION) {
+			return;
+		}
+
+		priceTableModel.remove(selectedRow);
+	}
+
+	private void deleteAll() {
+
+		int option = POSMessageDialog.showYesNoQuestionDialog(POSUtil.getBackOfficeWindow(), "This will Remove all your info. Are you sure?", "Confirm");
+		if (option != JOptionPane.YES_OPTION) {
+			return;
+		}
+		priceTableModel.removeAll();
+	}
+
+	private void updatePrice() {
+		int selectedRow = priceTable.getSelectedRow();
+		if (selectedRow == -1) {
+			POSMessageDialog.showMessage("Please select a row to update");
+			return;
+		}
+
+		priceTableModel.propertiesKey.get(selectedRow);
+		MenuItemPriceByOrderTypeDialog dialog = new MenuItemPriceByOrderTypeDialog(menuItem, String.valueOf(priceTableModel.propertiesKey.get(selectedRow)));
+		dialog.setSize(350, 220);
+		dialog.open();
+		if (!dialog.isCanceled()) {
+			priceTableModel.add(dialog.getMenuItem());
 		}
 	}
 

@@ -19,7 +19,9 @@ package com.floreantpos.model;
 
 import java.awt.Color;
 import java.awt.Image;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.ImageIcon;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -30,6 +32,7 @@ import org.apache.commons.lang.StringUtils;
 import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.base.BaseMenuItem;
+import com.floreantpos.util.POSUtil;
 
 @XmlRootElement(name = "menu-item")
 public class MenuItem extends BaseMenuItem {
@@ -180,7 +183,59 @@ public class MenuItem extends BaseMenuItem {
 		ticketItem.setUnitPrice(this.getPrice(Application.getInstance().getCurrentShift()));
 		ticketItem.setTaxRate(this.getTax() == null ? 0 : this.getTax().getRate());
 		ticketItem.setHasModifiers(hasModifiers());
+		if (this.getParent().getParent().isBeverage()) {
+			ticketItem.setBeverage(true);
+			ticketItem.setShouldPrintToKitchen(false);
+		}
+		else {
+			ticketItem.setBeverage(false);
+			ticketItem.setShouldPrintToKitchen(true);
+		}
+		ticketItem.setPrinterGroup(this.getPrinterGroup());
 
+		List<Discount> discountList = getDiscounts();
+		if (this.getDiscounts() != null) {
+			for (Discount discount : discountList) {
+				if (discount.isAutoApply()) {
+					TicketItemDiscount ticketItemDiscount = convertToTicketItemDiscount(discount, ticketItem);
+					ticketItem.addTodiscounts(ticketItemDiscount);
+				}
+			}
+		}
+
+		Recepie recepie = getRecepie();
+		if (recepie != null) {
+			List<RecepieItem> recepieItems = recepie.getRecepieItems();
+			for (RecepieItem recepieItem : recepieItems) {
+				InventoryItem inventoryItem = recepieItem.getInventoryItem();
+				Double recepieUnits = inventoryItem.getTotalRecepieUnits();
+				//Double percentage = recepieItem.getPercentage();
+				--recepieUnits;
+
+			}
+
+		}
+
+		return ticketItem;
+	}
+
+	public TicketItem convertToTicketItem(OrderType orderType) {
+		TicketItem ticketItem = new TicketItem();
+
+		ticketItem.setItemId(this.getId());
+		ticketItem.setItemCount(1);
+		ticketItem.setName(this.getDisplayName());
+		ticketItem.setGroupName(this.getParent().getDisplayName());
+		ticketItem.setCategoryName(this.getParent().getParent().getDisplayName());
+
+		if (this.getProperties().get(orderType.name() + "_PRICE") != null) {
+			ticketItem.setUnitPrice(Double.parseDouble(this.getProperties().get(orderType.name() + "_PRICE")));
+		}
+		else {
+			ticketItem.setUnitPrice(this.getPrice(Application.getInstance().getCurrentShift()));
+		}
+		ticketItem.setTaxRate(this.getTax() == null ? 0 : this.getTax().getRate());
+		ticketItem.setHasModifiers(hasModifiers());
 		if (this.getParent().getParent().isBeverage()) {
 			ticketItem.setBeverage(true);
 			ticketItem.setShouldPrintToKitchen(false);
@@ -255,4 +310,68 @@ public class MenuItem extends BaseMenuItem {
 		return new ImageIcon(scaledInstance);
 	}
 
+	//
+
+	public void addProperty(String name, String value) {
+		if (getProperties() == null) {
+			setProperties(new HashMap<String, String>());
+		}
+		getProperties().put(name, value);
+	}
+
+	public boolean hasProperty(String key) {
+		return getProperty(key) != null;
+	}
+
+	public String getProperty(String key) {
+		if (getProperties() == null) {
+			return null;
+		}
+
+		return getProperties().get(key);
+	}
+
+	public String getProperty(String key, String defaultValue) {
+		if (getProperties() == null) {
+			return null;
+		}
+
+		String string = getProperties().get(key);
+		if (StringUtils.isEmpty(string)) {
+			return defaultValue;
+		}
+
+		return string;
+	}
+
+	public void removeProperty(String propertyName) {
+		Map<String, String> properties = getProperties();
+		if (properties == null) {
+			return;
+		}
+
+		properties.remove(propertyName);
+	}
+
+	public boolean isPropertyValueTrue(String propertyName) {
+		String property = getProperty(propertyName);
+
+		return POSUtil.getBoolean(property);
+	}
+
+	public void setPriceByOrderType(String type, double price) {
+		type = type.replaceAll(" ", "_");
+		addProperty(type + "_PRICE", String.valueOf(price));
+	}
+
+	double getPriceByOrderType(OrderType type) {
+		String price = getProperty(type.name());
+		if (price == null)
+			return getPrice();
+		return Double.parseDouble(price);
+	}
+
+	public void removePriceByOrderType(OrderType type) {
+		removeProperty(type.name());
+	}
 }

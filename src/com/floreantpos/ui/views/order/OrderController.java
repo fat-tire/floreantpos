@@ -75,7 +75,7 @@ public class OrderController implements OrderListener, CategorySelectionListener
 		MenuItemDAO dao = new MenuItemDAO();
 		menuItem = dao.initialize(menuItem);
 
-		TicketItem ticketItem = menuItem.convertToTicketItem();
+		TicketItem ticketItem = menuItem.convertToTicketItem(orderView.getTicketView().getTicket().getType());
 		ticketItem.setTicket(orderView.getTicketView().getTicket());
 
 		if (menuItem.hasMandatoryModifiers()) {
