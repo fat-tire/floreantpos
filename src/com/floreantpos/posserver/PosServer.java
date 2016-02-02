@@ -76,8 +76,6 @@ public class PosServer implements Runnable {
 			PosRequestHandler posRequestHandler = new PosRequestHandler(s);
 			posRequestHandler.start();
 			
-			Thread.sleep(5000);
-			s.close();
 //			//BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(s.getOutputStream()));
 //			//BufferedReader br = new BufferedReader(new InputStreamReader(s.getInputStream()));
 //			//dis = new DataInputStream(s.getInputStream());

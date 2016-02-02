@@ -1,9 +1,6 @@
 package com.floreantpos.posserver;
 
-import java.io.BufferedReader;
 import java.io.DataOutputStream;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.net.Socket;
@@ -16,7 +13,6 @@ import javax.xml.bind.Unmarshaller;
 
 import org.xml.sax.InputSource;
 
-import com.floreantpos.model.CardReader;
 import com.floreantpos.model.PaymentType;
 import com.floreantpos.model.PosTransaction;
 import com.floreantpos.model.Ticket;
@@ -29,20 +25,9 @@ import com.floreantpos.ui.views.payment.SettleTicketDialog;
 
 public class PosRequestHandler extends Thread {
 	private Socket socket;
-	private PrintWriter writer;
-	private BufferedReader reader;
-
-	private POSRequest posRequest;
-	private POSResponse posResponse;
 
 	public PosRequestHandler(Socket socket) throws Exception {
 		this.socket = socket;
-
-		posRequest = new POSRequest();
-		posResponse = new POSResponse();
-
-		writer = new PrintWriter(socket.getOutputStream());
-		reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 	}
 
 	@Override
@@ -61,59 +46,77 @@ public class PosRequestHandler extends Thread {
 				int index = request.indexOf("<");
 				request = request.substring(index);
 
-				InputSource is = new InputSource();
-				is.setCharacterStream(new StringReader(request));
-
-				JAXBContext jaxbContext = JAXBContext.newInstance(POSRequest.class);
-				Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
-				posRequest = (POSRequest) unmarshaller.unmarshal(is);
-
+				POSRequest posRequest = createRequest(request);
+				POSResponse posResponse = null;
 				String ttype = posRequest.ident.ttype;
 
-				if (ttype.equals("45")) {
+				if (ttype.equals(Ident.GET_TABLES)) {
 					if (posRequest.posDefaultInfo.table.equals("0")) {
-						addAllTables();
+						posResponse = addAllTables(posRequest);
 					}
 					else {
-						addTable();
+						posResponse = addTable(posRequest);
 					}
 				}
-				else if (ttype.equals("46")) {
-					applyPayment();
+				else if (ttype.equals(Ident.APPLY_PAYMENT)) {
+					posResponse = applyPayment(posRequest);
 				}
-				else if (ttype.equals("47")) {
-					printCheck();
+				else if (ttype.equals(Ident.PRINT_CHECK)) {
+					posResponse = printCheck(posRequest);
 				}
 
-				JAXBContext messageContext = JAXBContext.newInstance(POSResponse.class);
-				Marshaller marshaller = messageContext.createMarshaller();
-				StringWriter dataWriter = new StringWriter();
-				marshaller.marshal(posResponse, dataWriter);
+				String resp = createResponse(posResponse);
+				System.out.println("Reponse to Terminal===>[" + resp + "]");
 
 				DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
-
-				String resp = "";
-				resp = dataWriter.toString();
-				resp = resp.replaceAll("<\\?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"\\?>", "");
-
-				String len = String.format("%05d", resp.length());
-				resp = len + resp;
 				byte[] tosend = resp.getBytes();
-
-				System.out.println("Reponse to Terminal===>[" + resp + "]");
 				dos.write(tosend, 0, tosend.length);
 				dos.flush();
+				dos.close();
 
-				writer.close();
-				reader.close();
+				Thread.sleep(5000);
 			}
 
 		} catch (Exception e) {
+			System.out.println("Error:" + e);
 
+		} finally {
+			try {
+				socket.close();
+			} catch (Exception e) {
+				System.out.println("Error:" + e);
+			}
 		}
 	}
 
-	private void addAllTables() {
+	private POSRequest createRequest(String requestString) throws Exception {
+		InputSource is = new InputSource();
+		is.setCharacterStream(new StringReader(requestString));
+
+		JAXBContext jaxbContext = JAXBContext.newInstance(POSRequest.class);
+		Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
+		return (POSRequest) unmarshaller.unmarshal(is);
+	}
+
+	private String createResponse(POSResponse posResponse) throws Exception {
+		JAXBContext messageContext = JAXBContext.newInstance(POSResponse.class);
+		Marshaller marshaller = messageContext.createMarshaller();
+		StringWriter dataWriter = new StringWriter();
+		marshaller.marshal(posResponse, dataWriter);
+
+		String resp = "";
+		resp = dataWriter.toString();
+		resp = resp.replaceAll("<\\?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"\\?>", "");
+
+		String len = String.format("%05d", resp.length());
+		resp = len + resp;
+
+		return resp;
+	}
+
+	private POSResponse addAllTables(POSRequest posRequest) {
+		POSResponse posResponse = new POSResponse();
+
 		User user = UserDAO.getInstance().findUserBySecretKey(posRequest.posDefaultInfo.server);
 		List<Ticket> ticketsForUser = TicketDAO.getInstance().findOpenTicketsForUser(user);
 
@@ -154,9 +157,14 @@ public class PosRequestHandler extends Thread {
 		}
 
 		posResponse.setChecks(checks);
+
+		return posResponse;
 	}
 
-	private void addTable() {
+	private POSResponse addTable(POSRequest posRequest) {
+
+		POSResponse posResponse = new POSResponse();
+
 		User user = UserDAO.getInstance().findUserBySecretKey(posRequest.posDefaultInfo.server);
 		List<Ticket> ticketsForUser = TicketDAO.getInstance().findOpenTicketsForUser(user);
 
@@ -197,38 +205,54 @@ public class PosRequestHandler extends Thread {
 				}
 			}
 		}
-
 		posResponse.setChecks(checks);
 
+		return posResponse;
 	}
 
-	private void applyPayment() {
+	private POSResponse applyPayment(POSRequest posRequest) {
 
 		Ticket ticket = TicketDAO.getInstance().loadFullTicket(Integer.parseInt(posRequest.posDefaultInfo.check));
 
+		POSResponse posResponse = new POSResponse();
+		String paymentType = posRequest.payment.cardType;
+
 		PosTransaction transaction = null;
-		if (posRequest.payment.cardType.equals("8")) {
+		if (paymentType.equals(CardType.CASH)) {
 			transaction = PaymentType.CASH.createTransaction();
-			transaction.setTicket(ticket);
 			transaction.setCaptured(true);
 		}
 		else {
 
-			if (posRequest.payment.cardType.equals("1")) {
+			if (paymentType.equals(CardType.CREDIT_MASTER_CARD)) {
 				transaction = PaymentType.CREDIT_MASTER_CARD.createTransaction();
 			}
-			else if (posRequest.payment.cardType.equals("2")) {
+			else if (paymentType.equals(CardType.CREDIT_VISA)) {
 				transaction = PaymentType.CREDIT_VISA.createTransaction();
 			}
+			else if (paymentType.equals(CardType.CREDIT_DISCOVERY)) {
+				transaction = PaymentType.CREDIT_DISCOVERY.createTransaction();
+			}
+			else if (paymentType.equals(CardType.CREDIT_AMEX)) {
+				transaction = PaymentType.CREDIT_AMEX.createTransaction();
+			}
+			/*else if (paymentType.equals(CardType.GIFT_CERTIFICATE)) {
+				transaction = PaymentType.GIFT_CERTIFICATE.createTransaction();
+			}*/
 
 			transaction.setCaptured(false);
 			transaction.setCardNumber(posRequest.payment.acct);
-			transaction.setCardExpiryMonth(posRequest.payment.exp);
-			transaction.setCardExpiryYear(posRequest.payment.exp);
+
+			String exp = posRequest.payment.exp;
+			if (exp != null) {
+				transaction.setCardExpiryMonth(exp.substring(0, 2));
+				transaction.setCardExpiryYear(exp.substring(2, 4));
+			}
 		}
 
-		double tenderAmount = Double.parseDouble(posRequest.payment.pamt);
+		double tenderAmount = Double.parseDouble(posRequest.payment.pamt) / 100;
 		transaction.setTenderAmount(tenderAmount);
+		transaction.setTicket(ticket);
 
 		if (tenderAmount >= ticket.getDueAmount()) {
 			transaction.setAmount(ticket.getDueAmount());
@@ -244,7 +268,7 @@ public class PosRequestHandler extends Thread {
 
 			Ident ident = new Ident();
 			ident.setId(posRequest.ident.id);
-			ident.setTtype("46");
+			ident.setTtype(posRequest.ident.ttype);
 
 			POSDefaultInfo posDefaultInfo = new POSDefaultInfo();
 			posDefaultInfo.setTable(posRequest.posDefaultInfo.table);
@@ -259,16 +283,21 @@ public class PosRequestHandler extends Thread {
 		} catch (Exception e) {
 			POSMessageDialog.showError("Error" + e);
 		}
+
+		return posResponse;
 	}
 
-	private void printCheck() {
+	private POSResponse printCheck(POSRequest posRequest) {
+
+		POSResponse posResponse = new POSResponse();
+
 		User user = UserDAO.getInstance().findUserBySecretKey(posRequest.posDefaultInfo.server);
 		List<Ticket> ticketsForUser = TicketDAO.getInstance().findOpenTicketsForUser(user);
 
 		Ident ident = new Ident();
 		ident.setId(posRequest.ident.id);
 		ident.setTermserialno(posRequest.ident.termserialno);
-		ident.setTtype("47");
+		ident.setTtype(posRequest.ident.ttype);
 
 		POSDefaultInfo posDefaultInfo = new POSDefaultInfo();
 		posDefaultInfo.setTable(posRequest.posDefaultInfo.table);
@@ -299,6 +328,8 @@ public class PosRequestHandler extends Thread {
 
 		posResponse.setIdent(ident);
 		posResponse.setPosDefaultInfo(posDefaultInfo);
+
+		return posResponse;
 
 	}
 }

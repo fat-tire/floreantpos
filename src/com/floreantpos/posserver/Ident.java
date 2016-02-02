@@ -5,6 +5,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "Ident")
 public class Ident {
+	
+	public final static String GET_TABLES = "45";
+	public final static String APPLY_PAYMENT = "46";
+	public final static String PRINT_CHECK = "47";
+	
 	String id;
 	String ttype;
 	String termserialno; 
