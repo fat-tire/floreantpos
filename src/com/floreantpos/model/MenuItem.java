@@ -173,50 +173,7 @@ public class MenuItem extends BaseMenuItem {
 	}
 
 	public TicketItem convertToTicketItem() {
-		TicketItem ticketItem = new TicketItem();
-
-		ticketItem.setItemId(this.getId());
-		ticketItem.setItemCount(1);
-		ticketItem.setName(this.getDisplayName());
-		ticketItem.setGroupName(this.getParent().getDisplayName());
-		ticketItem.setCategoryName(this.getParent().getParent().getDisplayName());
-		ticketItem.setUnitPrice(this.getPrice(Application.getInstance().getCurrentShift()));
-		ticketItem.setTaxRate(this.getTax() == null ? 0 : this.getTax().getRate());
-		ticketItem.setHasModifiers(hasModifiers());
-		if (this.getParent().getParent().isBeverage()) {
-			ticketItem.setBeverage(true);
-			ticketItem.setShouldPrintToKitchen(false);
-		}
-		else {
-			ticketItem.setBeverage(false);
-			ticketItem.setShouldPrintToKitchen(true);
-		}
-		ticketItem.setPrinterGroup(this.getPrinterGroup());
-
-		List<Discount> discountList = getDiscounts();
-		if (this.getDiscounts() != null) {
-			for (Discount discount : discountList) {
-				if (discount.isAutoApply()) {
-					TicketItemDiscount ticketItemDiscount = convertToTicketItemDiscount(discount, ticketItem);
-					ticketItem.addTodiscounts(ticketItemDiscount);
-				}
-			}
-		}
-
-		Recepie recepie = getRecepie();
-		if (recepie != null) {
-			List<RecepieItem> recepieItems = recepie.getRecepieItems();
-			for (RecepieItem recepieItem : recepieItems) {
-				InventoryItem inventoryItem = recepieItem.getInventoryItem();
-				Double recepieUnits = inventoryItem.getTotalRecepieUnits();
-				//Double percentage = recepieItem.getPercentage();
-				--recepieUnits;
-
-			}
-
-		}
-
-		return ticketItem;
+		return convertToTicketItem(null);
 	}
 
 	public TicketItem convertToTicketItem(OrderType orderType) {
@@ -227,13 +184,9 @@ public class MenuItem extends BaseMenuItem {
 		ticketItem.setName(this.getDisplayName());
 		ticketItem.setGroupName(this.getParent().getDisplayName());
 		ticketItem.setCategoryName(this.getParent().getParent().getDisplayName());
-
-		if (this.getProperties().get(orderType.name() + "_PRICE") != null) {
-			ticketItem.setUnitPrice(Double.parseDouble(this.getProperties().get(orderType.name() + "_PRICE")));
-		}
-		else {
-			ticketItem.setUnitPrice(this.getPrice(Application.getInstance().getCurrentShift()));
-		}
+		
+		ticketItem.setUnitPrice(getPriceByOrderType(orderType));
+		
 		ticketItem.setTaxRate(this.getTax() == null ? 0 : this.getTax().getRate());
 		ticketItem.setHasModifiers(hasModifiers());
 		if (this.getParent().getParent().isBeverage()) {
@@ -364,11 +317,21 @@ public class MenuItem extends BaseMenuItem {
 		addProperty(type + "_PRICE", String.valueOf(price));
 	}
 
-	double getPriceByOrderType(OrderType type) {
-		String price = getProperty(type.name());
-		if (price == null)
-			return getPrice();
-		return Double.parseDouble(price);
+	private double getPriceByOrderType(OrderType type) {
+		double defaultPrice = this.getPrice(Application.getInstance().getCurrentShift());
+		if (type == null) {
+			return defaultPrice;
+		}
+
+		String priceProp = getProperty(type.name() + "_PRICE");
+		if (priceProp == null)
+			return defaultPrice;
+
+		try {
+			return Double.parseDouble(priceProp);
+		} catch (Exception e) {
+			return defaultPrice;
+		}
 	}
 
 	public void removePriceByOrderType(OrderType type) {
