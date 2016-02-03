@@ -40,6 +40,7 @@ import java.util.Map;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -48,6 +49,7 @@ import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.SwingConstants;
@@ -219,7 +221,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		jScrollPane3 = new javax.swing.JScrollPane();
 		shiftTable = new javax.swing.JTable();
 		priceTable = new javax.swing.JTable();
-		lTerminal = new JLabel("Terminal");
+		lTerminal = new JLabel(Messages.getString("MenuItemForm.3")); //$NON-NLS-1$
 
 		lgroup.setText(Messages.getString("LABEL_GROUP")); //$NON-NLS-1$
 
@@ -347,7 +349,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 
 		tfSortOrder = new IntegerTextField();
 		tfSortOrder.setColumns(10);
-		tfSortOrder.setText(Messages.getString("MenuItemForm.integerTextField.text")); //$NON-NLS-1$
+		tfSortOrder.setText(""); //$NON-NLS-1$
 		tabGeneral.add(tfSortOrder, "cell 1 3,grow"); //$NON-NLS-1$
 
 		lblBarcode = new JLabel(Messages.getString("MenuItemForm.lblBarcode.text")); //$NON-NLS-1$
@@ -393,12 +395,12 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		tabGeneral.add(cbShowTextWithImage, "cell 1 8"); //$NON-NLS-1$
 		tabGeneral.add(chkVisible, "cell 1 9"); //$NON-NLS-1$
 
-		tabGeneral.add(lTerminal, "cell 2 8,right");
+		tabGeneral.add(lTerminal, "cell 2 8,right"); //$NON-NLS-1$
 		terminalList = new CheckBoxList();
 		terminalList.setModel(TerminalDAO.getInstance().findAll());
 		JScrollPane terminalCheckBoxList = new JScrollPane(terminalList);
 		terminalCheckBoxList.setPreferredSize(new Dimension(0, 80));
-		tabGeneral.add(terminalCheckBoxList, "cell 3 8 9 10,grow");
+		tabGeneral.add(terminalCheckBoxList, "cell 3 8 9 10,grow"); //$NON-NLS-1$
 
 		add(tabbedPane);
 
@@ -480,11 +482,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 
 		//
 
-		priceTable.setModel(new javax.swing.table.DefaultTableModel(new Object[][] { { null, null, null, null }, { null, null, null, null },
-				{ null, null, null, null }, { null, null, null, null } }, new String[] { "Title 1", "Title 2", "Title 3", "Title 4" })); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-
-		jScrollPane3.setViewportView(priceTable);
-		btnNewPrice.setText("New Price");
+		btnNewPrice.setText(Messages.getString("MenuItemForm.9")); //$NON-NLS-1$
 		btnNewPrice.addActionListener(new ActionListener() {
 			//TODO: handle exception
 			@Override
@@ -492,7 +490,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 				addNewPrice();
 			}
 		});
-		btnUpdatePrice.setText("Update Price");
+		btnUpdatePrice.setText(Messages.getString("MenuItemForm.13")); //$NON-NLS-1$
 		btnUpdatePrice.addActionListener(new ActionListener() {
 
 			@Override
@@ -500,7 +498,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 				updatePrice();
 			}
 		});
-		btnDeletePrice.setText("Delete");
+		btnDeletePrice.setText(Messages.getString("MenuItemForm.14")); //$NON-NLS-1$
 		btnDeletePrice.addActionListener(new ActionListener() {
 
 			@Override
@@ -508,7 +506,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 				deletePrice();
 			}
 		});
-		btnDeleteAll.setText("Delete All");
+		btnDeleteAll.setText(Messages.getString("MenuItemForm.15")); //$NON-NLS-1$
 		btnDeleteAll.addActionListener(new ActionListener() {
 
 			@Override
@@ -516,28 +514,24 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 				deleteAll();
 			}
 		});
-		org.jdesktop.layout.GroupLayout jPanel4Layout = new org.jdesktop.layout.GroupLayout(tabPrice);
-		tabPrice.setLayout(jPanel4Layout);
-		jPanel4Layout.setHorizontalGroup(jPanel4Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(
-				jPanel4Layout
-						.createSequentialGroup()
-						.addContainerGap(76, Short.MAX_VALUE)
-						.add(jPanel4Layout
-								.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-								.add(org.jdesktop.layout.GroupLayout.TRAILING, jScrollPane3, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 670,
-										org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-								.add(org.jdesktop.layout.GroupLayout.TRAILING,
-										jPanel4Layout.createSequentialGroup().add(btnNewPrice).add(5, 5, 5).add(btnUpdatePrice).add(5, 5, 5)
-												.add(btnDeletePrice).add(5, 5, 5).add(btnDeleteAll))).addContainerGap()));
-		jPanel4Layout.setVerticalGroup(jPanel4Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(
-				jPanel4Layout
-						.createSequentialGroup()
-						.add(jScrollPane3, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 345, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-						.addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-						.add(jPanel4Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE).add(btnNewPrice).add(btnUpdatePrice)
-								.add(btnDeletePrice).add(btnDeleteAll)).addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
+		priceTable.setModel(new javax.swing.table.DefaultTableModel(new Object[][] { { null, null, null, null }, { null, null, null, null },
+				{ null, null, null, null }, { null, null, null, null } }, new String[] { "Title 1", "Title 2", "Title 3", "Title 4" })); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 
-		tabbedPane.addTab("Price By Order Type", tabPrice);
+		jScrollPane3.setViewportView(priceTable);
+
+		tabPrice.setLayout(new BorderLayout());
+		tabPrice.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+		tabPrice.add(jScrollPane3, BorderLayout.CENTER);
+
+		JPanel buttonPanel = new JPanel();
+
+		buttonPanel.add(btnNewPrice);
+		buttonPanel.add(btnUpdatePrice);
+		buttonPanel.add(btnDeletePrice);
+		//	buttonPanel.add(btnDeleteAll);
+
+		tabPrice.add(buttonPanel, BorderLayout.SOUTH);
+		tabbedPane.addTab(Messages.getString("MenuItemForm.16"), tabPrice); //$NON-NLS-1$
 
 		//
 
@@ -954,32 +948,37 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 	//
 
 	class PriceByOrderTypeTableModel extends AbstractTableModel {
-		List<MenuItem> propertiesKey;
-		List<MenuItem> propertiesValue;
-		String[] cn = { "Order Type", "Price", "Tax" };
+		List<String> propertiesKey = new ArrayList<String>();
+
+		String[] cn = { "Order Type", "Price", "Tax" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 		PriceByOrderTypeTableModel(Map<String, String> properties) {
 
-			if (properties == null) {
-				this.propertiesKey = new ArrayList<MenuItem>();
-				this.propertiesValue = new ArrayList<MenuItem>();
-			}
-			else {
-				this.propertiesKey = new ArrayList(properties.keySet());
-				this.propertiesValue = new ArrayList(properties.values());
+			if (properties != null) {
+				List<String> keys = new ArrayList(properties.keySet());
+				setPropertiesToTable(keys);
 			}
 		}
 
-		public MenuItem get(int index) {
+		private void setPropertiesToTable(List<String> keys) {
+			propertiesKey.clear();
+
+			for (int i = 0; i < keys.size(); i++) {
+				if (keys.get(i).contains(Messages.getString("MenuItemForm.20"))) { //$NON-NLS-1$
+					this.propertiesKey.add(keys.get(i));
+				}
+			}
+		}
+
+		public String get(int index) {
 			return propertiesKey.get(index);
 		}
 
 		public void add(MenuItem menuItem) {
 			if (propertiesKey == null) {
-				propertiesKey = new ArrayList<MenuItem>();
+				propertiesKey = new ArrayList<String>();
 			}
-			this.propertiesKey = new ArrayList(menuItem.getProperties().keySet());
-			this.propertiesValue = new ArrayList(menuItem.getProperties().values());
+			setPropertiesToTable(new ArrayList(menuItem.getProperties().keySet()));
 			fireTableDataChanged();
 		}
 
@@ -987,8 +986,12 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 			if (propertiesKey == null) {
 				return;
 			}
-			menuItem.removeProperty(String.valueOf(propertiesKey.get(index)));
+			String typeProperty = propertiesKey.get(index);
+			String taxProperty = typeProperty.replaceAll(Messages.getString("MenuItemForm.21"), Messages.getString("MenuItemForm.23")); //$NON-NLS-1$ //$NON-NLS-2$
+
+			menuItem.removeProperty(typeProperty, taxProperty);
 			MenuItemDAO.getInstance().saveOrUpdate(menuItem);
+
 			propertiesKey.remove(index);
 			fireTableDataChanged();
 		}
@@ -1016,26 +1019,23 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 			return cn[column];
 		}
 
-		public List<MenuItem> getProperties() {
+		public List<String> getProperties() {
 			return propertiesKey;
 		}
 
 		public Object getValueAt(int rowIndex, int columnIndex) {
-			//MenuItem item = properties.get(rowIndex);
-
+			String key = String.valueOf(propertiesKey.get(rowIndex));
 			switch (columnIndex) {
-				case 0:
-					String key = String.valueOf(propertiesKey.get(rowIndex));
-					key = key.replaceAll("_PRICE", "");
-					key = key.replaceAll("_", " ");
-					return key;
-					//return propertiesKey.get(rowIndex);
 
+				case 0:
+					key = key.replaceAll(Messages.getString("MenuItemForm.24"), Messages.getString("MenuItemForm.25")); //$NON-NLS-1$ //$NON-NLS-2$
+					key = key.replaceAll(Messages.getString("MenuItemForm.26"), Messages.getString("MenuItemForm.29")); //$NON-NLS-1$ //$NON-NLS-2$
+					return key;
 				case 1:
-					return propertiesValue.get(rowIndex);
-					/*
-										case 2:
-											return String.valueOf(shift.getShiftPrice());*/
+					return menuItem.getProperty(key);
+				case 2:
+					key = key.replaceAll(Messages.getString("MenuItemForm.30"), Messages.getString("MenuItemForm.31")); //$NON-NLS-1$ //$NON-NLS-2$
+					return menuItem.getProperty(key);
 			}
 			return null;
 		}
@@ -1073,10 +1073,11 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 	private void deletePrice() {
 		int selectedRow = priceTable.getSelectedRow();
 		if (selectedRow == -1) {
-			POSMessageDialog.showMessage("Please select a row to delete");
+			POSMessageDialog.showMessage(Messages.getString("MenuItemForm.32")); //$NON-NLS-1$
 			return;
 		}
-		int option = POSMessageDialog.showYesNoQuestionDialog(POSUtil.getBackOfficeWindow(), "Are you sure to delete selected row ?", "Confirm");
+		int option = POSMessageDialog.showYesNoQuestionDialog(POSUtil.getBackOfficeWindow(),
+				Messages.getString("MenuItemForm.33"), Messages.getString("MenuItemForm.35")); //$NON-NLS-1$ //$NON-NLS-2$
 		if (option != JOptionPane.YES_OPTION) {
 			return;
 		}
@@ -1086,7 +1087,8 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 
 	private void deleteAll() {
 
-		int option = POSMessageDialog.showYesNoQuestionDialog(POSUtil.getBackOfficeWindow(), "This will Remove all your info. Are you sure?", "Confirm");
+		int option = POSMessageDialog.showYesNoQuestionDialog(POSUtil.getBackOfficeWindow(),
+				Messages.getString("MenuItemForm.36"), Messages.getString("MenuItemForm.37")); //$NON-NLS-1$ //$NON-NLS-2$
 		if (option != JOptionPane.YES_OPTION) {
 			return;
 		}
@@ -1096,12 +1098,12 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 	private void updatePrice() {
 		int selectedRow = priceTable.getSelectedRow();
 		if (selectedRow == -1) {
-			POSMessageDialog.showMessage("Please select a row to update");
+			POSMessageDialog.showMessage(Messages.getString("MenuItemForm.38")); //$NON-NLS-1$
 			return;
 		}
 
 		priceTableModel.propertiesKey.get(selectedRow);
-		MenuItemPriceByOrderTypeDialog dialog = new MenuItemPriceByOrderTypeDialog(menuItem, String.valueOf(priceTableModel.propertiesKey.get(selectedRow)));
+		MenuItemPriceByOrderTypeDialog dialog = new MenuItemPriceByOrderTypeDialog(menuItem, priceTableModel.propertiesKey.get(selectedRow));
 		dialog.setSize(350, 220);
 		dialog.open();
 		if (!dialog.isCanceled()) {

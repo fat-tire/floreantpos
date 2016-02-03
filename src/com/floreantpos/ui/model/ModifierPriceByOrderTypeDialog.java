@@ -36,15 +36,15 @@ import javax.swing.KeyStroke;
 import net.miginfocom.swing.MigLayout;
 
 import com.floreantpos.Messages;
-import com.floreantpos.model.MenuItem;
+import com.floreantpos.model.MenuModifier;
 import com.floreantpos.model.OrderType;
 import com.floreantpos.model.Tax;
-import com.floreantpos.model.dao.MenuItemDAO;
+import com.floreantpos.model.dao.MenuModifierDAO;
 import com.floreantpos.model.dao.TaxDAO;
 import com.floreantpos.ui.dialog.POSDialog;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 
-public class MenuItemPriceByOrderTypeDialog extends POSDialog {
+public class ModifierPriceByOrderTypeDialog extends POSDialog {
 	private JPanel contentPane;
 	private JButton btnOK;
 	private JButton btnCancel;
@@ -53,15 +53,15 @@ public class MenuItemPriceByOrderTypeDialog extends POSDialog {
 	private JTextField tfPrice;
 	private String key;
 
-	private MenuItem menuItem;
+	private MenuModifier modifier;
 
-	public MenuItemPriceByOrderTypeDialog(MenuItem item) {
-		this.menuItem = item;
+	public ModifierPriceByOrderTypeDialog(MenuModifier modifier) {
+		this.modifier = modifier;
 		init();
 	}
 
-	public MenuItemPriceByOrderTypeDialog(MenuItem item, String key) {
-		this.menuItem = item;
+	public ModifierPriceByOrderTypeDialog(MenuModifier modifier, String key) {
+		this.modifier = modifier;
 		this.key = key;
 		init();
 	}
@@ -107,7 +107,7 @@ public class MenuItemPriceByOrderTypeDialog extends POSDialog {
 			}
 		}, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 
-		setMenuItem(menuItem);
+		setMenuModifier(modifier);
 	}
 
 	private void onOK() {
@@ -115,8 +115,8 @@ public class MenuItemPriceByOrderTypeDialog extends POSDialog {
 			return;
 
 		try {
-			MenuItemDAO dao = new MenuItemDAO();
-			dao.saveOrUpdate(menuItem);
+			MenuModifierDAO dao = new MenuModifierDAO();
+			dao.saveOrUpdate(modifier);
 			setCanceled(false);
 			dispose();
 		} catch (Exception e) {
@@ -130,7 +130,7 @@ public class MenuItemPriceByOrderTypeDialog extends POSDialog {
 	}
 
 	private void updateView() {
-		if (menuItem == null)
+		if (modifier == null)
 			return;
 
 		String modifiedKey = key;
@@ -142,10 +142,10 @@ public class MenuItemPriceByOrderTypeDialog extends POSDialog {
 
 			String taxKey = key;
 			taxKey = taxKey.replaceAll("_PRICE", "_TAX"); //$NON-NLS-1$ //$NON-NLS-2$
-			Tax newtax = TaxDAO.getInstance().findByTaxRate(Double.parseDouble(menuItem.getProperty(taxKey)));
+			Tax newtax = TaxDAO.getInstance().findByTaxRate(Double.parseDouble(modifier.getProperty(taxKey)));
 			cbTax.setSelectedItem(newtax);
 
-			tfPrice.setText(String.valueOf(menuItem.getProperties().get(key)));
+			tfPrice.setText(String.valueOf(modifier.getProperties().get(key)));
 		}
 	}
 
@@ -159,17 +159,17 @@ public class MenuItemPriceByOrderTypeDialog extends POSDialog {
 		}
 
 		Tax tax = (Tax) cbTax.getSelectedItem();
-		menuItem.setTaxByOrderType(cbOrderTypes.getSelectedItem().toString(), tax.getRate());
-		menuItem.setPriceByOrderType(cbOrderTypes.getSelectedItem().toString(), price);
+		modifier.setTaxByOrderType(cbOrderTypes.getSelectedItem().toString(), tax.getRate());
+		modifier.setPriceByOrderType(cbOrderTypes.getSelectedItem().toString(), price);
 		return true;
 	}
 
-	public MenuItem getMenuItem() {
-		return menuItem;
+	public MenuModifier getMenuModifier() {
+		return modifier;
 	}
 
-	public void setMenuItem(MenuItem menuItem) {
-		this.menuItem = menuItem;
+	public void setMenuModifier(MenuModifier modifier) {
+		this.modifier = modifier;
 
 		updateView();
 	}
@@ -177,11 +177,11 @@ public class MenuItemPriceByOrderTypeDialog extends POSDialog {
 	private void createView() {
 		contentPane = new JPanel(new BorderLayout());
 		final JLabel label1 = new JLabel();
-		label1.setText(Messages.getString("MenuItemPriceByOrderTypeDialog.6")); //$NON-NLS-1$
+		label1.setText("Order type:"); //$NON-NLS-1$
 		cbOrderTypes = new JComboBox();
 
 		final JLabel label3 = new JLabel();
-		label3.setText(Messages.getString("MenuItemPriceByOrderTypeDialog.7")); //$NON-NLS-1$
+		label3.setText("Tax:"); //$NON-NLS-1$
 		cbTax = new JComboBox(new DefaultComboBoxModel(TaxDAO.getInstance().findAll().toArray()));
 
 		final JLabel label2 = new JLabel();
@@ -190,18 +190,18 @@ public class MenuItemPriceByOrderTypeDialog extends POSDialog {
 
 		JPanel panel = new JPanel(new MigLayout("", "grow", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
-		panel.add(label1,"right"); //$NON-NLS-1$
+		panel.add(label1, "right"); //$NON-NLS-1$
 		panel.add(cbOrderTypes, "grow,wrap"); //$NON-NLS-1$
-		panel.add(label2,"right"); //$NON-NLS-1$
+		panel.add(label2, "right"); //$NON-NLS-1$
 		panel.add(tfPrice, "grow,wrap"); //$NON-NLS-1$
-		panel.add(label3,"right"); //$NON-NLS-1$
+		panel.add(label3, "right"); //$NON-NLS-1$
 		panel.add(cbTax, "grow"); //$NON-NLS-1$
 
 		contentPane.add(panel, BorderLayout.CENTER);
 
 		JPanel buttonPanel = new JPanel(new MigLayout("al center center", "sg", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		btnOK = new JButton(Messages.getString("MenuItemPriceByOrderTypeDialog.0")); //$NON-NLS-1$
-		btnCancel = new JButton(Messages.getString("MenuItemPriceByOrderTypeDialog.21")); //$NON-NLS-1$
+		btnOK = new JButton(Messages.getString("ModifierPriceByOrderTypeDialog.0")); //$NON-NLS-1$
+		btnCancel = new JButton(Messages.getString("ModifierPriceByOrderTypeDialog.19")); //$NON-NLS-1$
 
 		buttonPanel.add(btnOK, "grow"); //$NON-NLS-1$
 		buttonPanel.add(btnCancel, "grow"); //$NON-NLS-1$

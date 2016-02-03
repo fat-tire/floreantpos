@@ -1,22 +1,6 @@
-/**
- * ************************************************************************
- * * The contents of this file are subject to the MRPL 1.2
- * * (the  "License"),  being   the  Mozilla   Public  License
- * * Version 1.1  with a permitted attribution clause; you may not  use this
- * * file except in compliance with the License. You  may  obtain  a copy of
- * * the License at http://www.floreantpos.org/license.html
- * * Software distributed under the License  is  distributed  on  an "AS IS"
- * * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * * License for the specific  language  governing  rights  and  limitations
- * * under the License.
- * * The Original Code is FLOREANT POS.
- * * The Initial Developer of the Original Code is OROCUBE LLC
- * * All portions are Copyright (C) 2015 OROCUBE LLC
- * * All Rights Reserved.
- * ************************************************************************
- */
 package com.floreantpos.model.base;
 
+import java.lang.Comparable;
 import java.io.Serializable;
 
 
@@ -82,6 +66,9 @@ public abstract class BaseMenuModifier  implements Comparable, Serializable {
 	// many to one
 	private com.floreantpos.model.MenuModifierGroup modifierGroup;
 	private com.floreantpos.model.Tax tax;
+
+	// collections
+	private java.util.Map<String,String> properties;
 
 
 
@@ -179,8 +166,8 @@ public abstract class BaseMenuModifier  implements Comparable, Serializable {
 	 * Return the value associated with the column: SORT_ORDER
 	 */
 	public java.lang.Integer getSortOrder () {
-					return sortOrder == null ? Integer.valueOf(0) : sortOrder;
-			}
+									return sortOrder == null ? Integer.valueOf(0) : sortOrder;
+					}
 
 	/**
 	 * Set the value related to the column: SORT_ORDER
@@ -196,8 +183,8 @@ public abstract class BaseMenuModifier  implements Comparable, Serializable {
 	 * Return the value associated with the column: BTN_COLOR
 	 */
 	public java.lang.Integer getButtonColor () {
-					return buttonColor == null ? Integer.valueOf(0) : buttonColor;
-			}
+									return buttonColor == null ? Integer.valueOf(0) : buttonColor;
+					}
 
 	/**
 	 * Set the value related to the column: BTN_COLOR
@@ -213,8 +200,8 @@ public abstract class BaseMenuModifier  implements Comparable, Serializable {
 	 * Return the value associated with the column: TEXT_COLOR
 	 */
 	public java.lang.Integer getTextColor () {
-					return textColor == null ? Integer.valueOf(0) : textColor;
-			}
+									return textColor == null ? Integer.valueOf(0) : textColor;
+					}
 
 	/**
 	 * Set the value related to the column: TEXT_COLOR
@@ -297,6 +284,23 @@ public abstract class BaseMenuModifier  implements Comparable, Serializable {
 	 */
 	public void setTax (com.floreantpos.model.Tax tax) {
 		this.tax = tax;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: properties
+	 */
+	public java.util.Map<String,String> getProperties () {
+					return properties;
+			}
+
+	/**
+	 * Set the value related to the column: properties
+	 * @param properties the properties value
+	 */
+	public void setProperties (java.util.Map<String,String> properties) {
+		this.properties = properties;
 	}
 
 

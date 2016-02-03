@@ -24,5 +24,12 @@
 		<many-to-one class="Tax" lazy="false" name="tax">
 			<column name="TAX_ID" />
 		</many-to-one>
+		
+		<map name="properties" cascade="all" lazy="false" table="MENU_MODIFIER_PROPERTIES">
+			<key column="MENU_MODIFIER_ID" />
+			<index column="PROPERTY_NAME" type="string" />
+			<element column="PROPERTY_VALUE" type="string" length="100"/>
+		</map>
+		
 	</class>
 </hibernate-mapping>

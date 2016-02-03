@@ -28,13 +28,19 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Vector;
 
+import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JColorChooser;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.table.AbstractTableModel;
 
 import net.miginfocom.swing.MigLayout;
 
@@ -42,6 +48,7 @@ import com.floreantpos.Messages;
 import com.floreantpos.model.MenuModifier;
 import com.floreantpos.model.MenuModifierGroup;
 import com.floreantpos.model.Tax;
+import com.floreantpos.model.dao.MenuModifierDAO;
 import com.floreantpos.model.dao.ModifierDAO;
 import com.floreantpos.model.dao.ModifierGroupDAO;
 import com.floreantpos.model.dao.TaxDAO;
@@ -52,6 +59,7 @@ import com.floreantpos.swing.IntegerTextField;
 import com.floreantpos.swing.MessageDialog;
 import com.floreantpos.ui.BeanEditor;
 import com.floreantpos.ui.dialog.BeanEditorDialog;
+import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.util.POSUtil;
 
 /**
@@ -59,6 +67,8 @@ import com.floreantpos.util.POSUtil;
  * @author  MShahriar
  */
 public class MenuModifierForm extends BeanEditor {
+	private MenuModifier modifier;
+	private PriceByOrderType priceTableModel;
 
 	/** Creates new form ModifierEditor */
 	public MenuModifierForm() throws Exception {
@@ -66,6 +76,7 @@ public class MenuModifierForm extends BeanEditor {
 	}
 
 	public MenuModifierForm(MenuModifier modifier) throws Exception {
+		this.modifier = modifier;
 		setLayout(new BorderLayout(0, 0));
 
 		initComponents();
@@ -73,6 +84,7 @@ public class MenuModifierForm extends BeanEditor {
 		ModifierGroupDAO modifierGroupDAO = new ModifierGroupDAO();
 		List<MenuModifierGroup> groups = modifierGroupDAO.findAll();
 		cbModifierGroup.setModel(new DefaultComboBoxModel(new Vector<MenuModifierGroup>(groups)));
+		priceTable.setModel(priceTableModel = new PriceByOrderType(modifier.getProperties()));
 
 		TaxDAO taxDAO = new TaxDAO();
 		List<Tax> taxes = taxDAO.findAll();
@@ -106,6 +118,14 @@ public class MenuModifierForm extends BeanEditor {
 		jLabel4 = new javax.swing.JLabel();
 		cbModifierGroup = new javax.swing.JComboBox();
 		btnPrintToKitchen = new javax.swing.JCheckBox();
+
+		btnNewPrice = new javax.swing.JButton();
+		btnUpdatePrice = new javax.swing.JButton();
+		btnDeletePrice = new javax.swing.JButton();
+		btnDeleteAll = new javax.swing.JButton();
+		tabPrice = new javax.swing.JPanel();
+		jScrollPane3 = new javax.swing.JScrollPane();
+		priceTable = new javax.swing.JTable();
 
 		jLabel2.setText(com.floreantpos.POSConstants.PRICE + ":"); //$NON-NLS-1$
 
@@ -143,10 +163,10 @@ public class MenuModifierForm extends BeanEditor {
 
 		tfTranslatedName = new FixedLengthTextField();
 		jPanel1.add(tfTranslatedName, "cell 1 1 5 1,growx"); //$NON-NLS-1$
-		
+
 		lblSortOrder = new JLabel(Messages.getString("MenuModifierForm.15")); //$NON-NLS-1$
 		jPanel1.add(lblSortOrder, "cell 0 5"); //$NON-NLS-1$
-		
+
 		tfSortOrder = new IntegerTextField();
 		jPanel1.add(tfSortOrder, "cell 1 5,growx"); //$NON-NLS-1$
 		jPanel1.add(jLabel5, "cell 0 6,alignx left,aligny center"); //$NON-NLS-1$
@@ -193,6 +213,58 @@ public class MenuModifierForm extends BeanEditor {
 				btnTextColor.setForeground(color);
 			}
 		});
+
+		btnNewPrice.setText(Messages.getString("MenuModifierForm.2")); //$NON-NLS-1$
+		btnNewPrice.addActionListener(new ActionListener() {
+			//TODO: handle exception
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				addNewPrice();
+			}
+		});
+		btnUpdatePrice.setText(Messages.getString("MenuModifierForm.3")); //$NON-NLS-1$
+		btnUpdatePrice.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				updatePrice();
+			}
+		});
+		btnDeletePrice.setText(Messages.getString("MenuModifierForm.4")); //$NON-NLS-1$
+		btnDeletePrice.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				deletePrice();
+			}
+		});
+		btnDeleteAll.setText(Messages.getString("MenuModifierForm.5")); //$NON-NLS-1$
+		btnDeleteAll.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				deleteAll();
+			}
+		});
+		priceTable.setModel(new javax.swing.table.DefaultTableModel(new Object[][] { { null, null, null, null }, { null, null, null, null },
+				{ null, null, null, null }, { null, null, null, null } }, new String[] { "Title 1", "Title 2", "Title 3", "Title 4" })); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+
+		jScrollPane3.setViewportView(priceTable);
+
+		tabPrice.setLayout(new BorderLayout());
+		tabPrice.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+		tabPrice.add(jScrollPane3, BorderLayout.CENTER);
+
+		JPanel buttonPanel = new JPanel();
+
+		buttonPanel.add(btnNewPrice);
+		buttonPanel.add(btnUpdatePrice);
+		buttonPanel.add(btnDeletePrice);
+		//buttonPanel.add(btnDeleteAll);
+
+		tabPrice.add(buttonPanel, BorderLayout.SOUTH);
+		jTabbedPane1.addTab(Messages.getString("MenuModifierForm.6"), tabPrice); //$NON-NLS-1$
+
 	}// </editor-fold>//GEN-END:initComponents
 
 	private void btnNewTaxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewTaxActionPerformed
@@ -234,6 +306,14 @@ public class MenuModifierForm extends BeanEditor {
 	private IntegerTextField tfSortOrder;
 	private JLabel lblSortOrder;
 
+	private javax.swing.JButton btnNewPrice;
+	private javax.swing.JButton btnUpdatePrice;
+	private javax.swing.JButton btnDeletePrice;
+	private javax.swing.JButton btnDeleteAll;
+	private javax.swing.JPanel tabPrice;
+	private javax.swing.JScrollPane jScrollPane3;
+	private javax.swing.JTable priceTable;
+
 	// End of variables declaration//GEN-END:variables
 	@Override
 	public boolean save() {
@@ -268,11 +348,11 @@ public class MenuModifierForm extends BeanEditor {
 		tfExtraPrice.setText(String.valueOf(modifier.getExtraPrice()));
 		cbModifierGroup.setSelectedItem(modifier.getModifierGroup());
 		btnPrintToKitchen.setSelected(modifier.isShouldPrintToKitchen());
-		
+
 		if (modifier.getSortOrder() != null) {
 			tfSortOrder.setText(modifier.getSortOrder().toString());
 		}
-		
+
 		if (modifier.getButtonColor() != null) {
 			Color color = new Color(modifier.getButtonColor());
 			btnButtonColor.setBackground(color);
@@ -305,7 +385,7 @@ public class MenuModifierForm extends BeanEditor {
 		modifier.setTax((Tax) cbTaxes.getSelectedItem());
 		modifier.setModifierGroup((MenuModifierGroup) cbModifierGroup.getSelectedItem());
 		modifier.setShouldPrintToKitchen(Boolean.valueOf(btnPrintToKitchen.isSelected()));
-		
+
 		modifier.setTranslatedName(tfTranslatedName.getText());
 		modifier.setButtonColor(btnButtonColor.getBackground().getRGB());
 		modifier.setTextColor(btnTextColor.getForeground().getRGB());
@@ -314,11 +394,154 @@ public class MenuModifierForm extends BeanEditor {
 		return true;
 	}
 
+	class PriceByOrderType extends AbstractTableModel {
+		List<String> propertiesKey = new ArrayList<String>();
+
+		String[] cn = { "Order Type", "Price", "Tax" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+
+		PriceByOrderType(Map<String, String> properties) {
+
+			if (properties != null) {
+				List<String> keys = new ArrayList(properties.keySet());
+				setPropertiesToTable(keys);
+			}
+		}
+
+		private void setPropertiesToTable(List<String> keys) {
+			propertiesKey.clear();
+
+			for (int i = 0; i < keys.size(); i++) {
+				if (keys.get(i).contains("_PRICE")) { //$NON-NLS-1$
+					this.propertiesKey.add(keys.get(i));
+				}
+			}
+		}
+
+		public String get(int index) {
+			return propertiesKey.get(index);
+		}
+
+		public void add(MenuModifier modifier) {
+			if (propertiesKey == null) {
+				propertiesKey = new ArrayList<String>();
+			}
+			setPropertiesToTable(new ArrayList(modifier.getProperties().keySet()));
+			fireTableDataChanged();
+		}
+
+		public void remove(int index) {
+			if (propertiesKey == null) {
+				return;
+			}
+			String typeProperty = propertiesKey.get(index);
+			String taxProperty = typeProperty.replaceAll("_PRICE", "_TAX"); //$NON-NLS-1$ //$NON-NLS-2$
+
+			modifier.removeProperty(typeProperty, taxProperty);
+			MenuModifierDAO.getInstance().saveOrUpdate(modifier);
+
+			propertiesKey.remove(index);
+			fireTableDataChanged();
+		}
+
+		public void removeAll() {
+			modifier.getProperties().clear();
+			MenuModifierDAO.getInstance().saveOrUpdate(modifier);
+			propertiesKey.clear();
+			fireTableDataChanged();
+		}
+
+		public int getRowCount() {
+			if (propertiesKey == null)
+				return 0;
+
+			return propertiesKey.size();
+		}
+
+		public int getColumnCount() {
+			return cn.length;
+		}
+
+		@Override
+		public String getColumnName(int column) {
+			return cn[column];
+		}
+
+		public List<String> getProperties() {
+			return propertiesKey;
+		}
+
+		public Object getValueAt(int rowIndex, int columnIndex) {
+			String key = String.valueOf(propertiesKey.get(rowIndex));
+			switch (columnIndex) {
+
+				case 0:
+					key = key.replaceAll("_PRICE", ""); //$NON-NLS-1$ //$NON-NLS-2$
+					key = key.replaceAll("_", " "); //$NON-NLS-1$ //$NON-NLS-2$
+					return key;
+				case 1:
+					return modifier.getProperty(key);
+				case 2:
+					key = key.replaceAll("_PRICE", "_TAX"); //$NON-NLS-1$ //$NON-NLS-2$
+					return modifier.getProperty(key);
+			}
+			return null;
+		}
+	}
+
 	public String getDisplayText() {
 		MenuModifier modifier = (MenuModifier) getBean();
 		if (modifier.getId() == null) {
 			return Messages.getString("MenuModifierForm.45"); //$NON-NLS-1$
 		}
 		return Messages.getString("MenuModifierForm.46"); //$NON-NLS-1$
+	}
+
+	private void addNewPrice() {
+
+		ModifierPriceByOrderTypeDialog dialog = new ModifierPriceByOrderTypeDialog(modifier);
+		dialog.setSize(350, 220);
+		dialog.open();
+		if (!dialog.isCanceled()) {
+			priceTableModel.add(dialog.getMenuModifier());
+		}
+	}
+
+	private void deletePrice() {
+		int selectedRow = priceTable.getSelectedRow();
+		if (selectedRow == -1) {
+			POSMessageDialog.showMessage(Messages.getString("MenuModifierForm.7")); //$NON-NLS-1$
+			return;
+		}
+		int option = POSMessageDialog.showYesNoQuestionDialog(POSUtil.getBackOfficeWindow(), Messages.getString("MenuModifierForm.21"), Messages.getString("MenuModifierForm.22")); //$NON-NLS-1$ //$NON-NLS-2$
+		if (option != JOptionPane.YES_OPTION) {
+			return;
+		}
+
+		priceTableModel.remove(selectedRow);
+	}
+
+	private void deleteAll() {
+
+		int option = POSMessageDialog.showYesNoQuestionDialog(POSUtil.getBackOfficeWindow(), Messages.getString("MenuModifierForm.23"), Messages.getString("MenuModifierForm.24")); //$NON-NLS-1$ //$NON-NLS-2$
+		if (option != JOptionPane.YES_OPTION) {
+			return;
+		}
+		priceTableModel.removeAll();
+	}
+
+	private void updatePrice() {
+		int selectedRow = priceTable.getSelectedRow();
+		if (selectedRow == -1) {
+			POSMessageDialog.showMessage(Messages.getString("MenuModifierForm.25")); //$NON-NLS-1$
+			return;
+		}
+
+		priceTableModel.propertiesKey.get(selectedRow);
+		ModifierPriceByOrderTypeDialog dialog = new ModifierPriceByOrderTypeDialog(modifier, String.valueOf(priceTableModel.propertiesKey.get(selectedRow)));
+		dialog.setSize(350, 220);
+		dialog.open();
+		if (!dialog.isCanceled()) {
+			priceTableModel.add(dialog.getMenuModifier());
+		}
 	}
 }

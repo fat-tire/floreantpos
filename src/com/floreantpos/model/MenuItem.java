@@ -184,10 +184,13 @@ public class MenuItem extends BaseMenuItem {
 		ticketItem.setName(this.getDisplayName());
 		ticketItem.setGroupName(this.getParent().getDisplayName());
 		ticketItem.setCategoryName(this.getParent().getParent().getDisplayName());
-		
+
 		ticketItem.setUnitPrice(getPriceByOrderType(orderType));
-		
-		ticketItem.setTaxRate(this.getTax() == null ? 0 : this.getTax().getRate());
+
+		//ticketItem.setTaxRate(this.getTax() == null ? 0 : this.getTax().getRate());
+
+		ticketItem.setTaxRate(getTaxByOrderType(orderType));
+
 		ticketItem.setHasModifiers(hasModifiers());
 		if (this.getParent().getParent().isBeverage()) {
 			ticketItem.setBeverage(true);
@@ -297,13 +300,13 @@ public class MenuItem extends BaseMenuItem {
 		return string;
 	}
 
-	public void removeProperty(String propertyName) {
+	public void removeProperty(String typeProperty, String taxProperty) {
 		Map<String, String> properties = getProperties();
 		if (properties == null) {
 			return;
 		}
-
-		properties.remove(propertyName);
+		properties.remove(typeProperty);
+		properties.remove(taxProperty);
 	}
 
 	public boolean isPropertyValueTrue(String propertyName) {
@@ -313,8 +316,13 @@ public class MenuItem extends BaseMenuItem {
 	}
 
 	public void setPriceByOrderType(String type, double price) {
-		type = type.replaceAll(" ", "_");
-		addProperty(type + "_PRICE", String.valueOf(price));
+		type = type.replaceAll(" ", "_"); //$NON-NLS-1$ //$NON-NLS-2$
+		addProperty(type + "_PRICE", String.valueOf(price)); //$NON-NLS-1$
+	}
+
+	public void setTaxByOrderType(String type, double price) {
+		type = type.replaceAll(" ", "_"); //$NON-NLS-1$ //$NON-NLS-2$
+		addProperty(type + "_TAX", String.valueOf(price)); //$NON-NLS-1$
 	}
 
 	private double getPriceByOrderType(OrderType type) {
@@ -323,7 +331,7 @@ public class MenuItem extends BaseMenuItem {
 			return defaultPrice;
 		}
 
-		String priceProp = getProperty(type.name() + "_PRICE");
+		String priceProp = getProperty(type.name() + "_PRICE"); //$NON-NLS-1$
 		if (priceProp == null)
 			return defaultPrice;
 
@@ -334,7 +342,20 @@ public class MenuItem extends BaseMenuItem {
 		}
 	}
 
-	public void removePriceByOrderType(OrderType type) {
-		removeProperty(type.name());
+	private double getTaxByOrderType(OrderType type) {
+		double defaultTax = this.getTax().getRate();
+		if (type == null) {
+			return defaultTax;
+		}
+
+		String taxProp = getProperty(type.name() + "_TAX"); //$NON-NLS-1$
+		if (taxProp == null)
+			return defaultTax;
+
+		try {
+			return Double.parseDouble(taxProp);
+		} catch (Exception e) {
+			return defaultTax;
+		}
 	}
 }

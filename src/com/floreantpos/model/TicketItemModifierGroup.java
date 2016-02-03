@@ -26,14 +26,14 @@ public class TicketItemModifierGroup extends BaseTicketItemModifierGroup {
 	private static final long serialVersionUID = 1L;
 
 	/* [CONSTRUCTOR MARKER BEGIN] */
-	public TicketItemModifierGroup () {
+	public TicketItemModifierGroup() {
 		super();
 	}
 
 	/**
 	 * Constructor for primary key
 	 */
-	public TicketItemModifierGroup (java.lang.Integer id) {
+	public TicketItemModifierGroup(java.lang.Integer id) {
 		super(id);
 	}
 
@@ -116,15 +116,17 @@ public class TicketItemModifierGroup extends BaseTicketItemModifierGroup {
 		return null;
 	}
 
-	public TicketItemModifier addTicketItemModifier(MenuModifier menuModifier, int modifierType) {
+	public TicketItemModifier addTicketItemModifier(MenuModifier menuModifier, int modifierType, OrderType type) {
 		TicketItemModifier ticketItemModifier = new TicketItemModifier();
 		ticketItemModifier.setItemId(menuModifier.getId());
 		ticketItemModifier.setGroupId(menuModifier.getModifierGroup().getId());
 		ticketItemModifier.setItemCount(1);
 		ticketItemModifier.setName(menuModifier.getDisplayName());
-		ticketItemModifier.setUnitPrice(menuModifier.getPrice());
-//		ticketItemModifier.setExtraUnitPrice(menuModifier.getExtraPrice());
-		ticketItemModifier.setTaxRate(menuModifier.getTax() == null ? 0 : menuModifier.getTax().getRate());
+		//		ticketItemModifier.setExtraUnitPrice(menuModifier.getExtraPrice());
+		//ticketItemModifier.setTaxRate(menuModifier.getTax() == null ? 0 : menuModifier.getTax().getRate());
+		ticketItemModifier.setUnitPrice(menuModifier.getPriceByOrderType(type));
+		ticketItemModifier.setTaxRate(menuModifier.getTaxByOrderType(type));
+
 		ticketItemModifier.setModifierType(modifierType);
 		ticketItemModifier.setShouldPrintToKitchen(menuModifier.isShouldPrintToKitchen());
 		ticketItemModifier.setParent(this);

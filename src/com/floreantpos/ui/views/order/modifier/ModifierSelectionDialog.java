@@ -39,6 +39,7 @@ import com.floreantpos.main.Application;
 import com.floreantpos.model.MenuItemModifierGroup;
 import com.floreantpos.model.MenuModifier;
 import com.floreantpos.model.MenuModifierGroup;
+import com.floreantpos.model.OrderType;
 import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.TicketItemModifier;
 import com.floreantpos.model.TicketItemModifierGroup;
@@ -172,7 +173,7 @@ public class ModifierSelectionDialog extends POSDialog implements ModifierGroupS
 		//			updateView();
 		//			return;
 		//		}
-
+		
 		TicketItemModifierGroup ticketItemModifierGroup = modifierSelectionModel.getTicketItem().findTicketItemModifierGroup(modifier, false);
 
 		int freeModifiers = ticketItemModifierGroup.countFreeModifiers();
@@ -194,7 +195,8 @@ public class ModifierSelectionDialog extends POSDialog implements ModifierGroupS
 
 		TicketItemModifier ticketItemModifier = ticketItemModifierGroup.findTicketItemModifier(modifier, false);
 		if (ticketItemModifier == null) {
-			ticketItemModifierGroup.addTicketItemModifier(modifier, TicketItemModifier.NORMAL_MODIFIER);
+			OrderType type=modifierSelectionModel.getTicketItem().getTicket().getType();
+			ticketItemModifierGroup.addTicketItemModifier(modifier, TicketItemModifier.NORMAL_MODIFIER,type);
 		}
 		else {
 			ticketItemModifier.setItemCount(ticketItemModifier.getItemCount() + 1);
