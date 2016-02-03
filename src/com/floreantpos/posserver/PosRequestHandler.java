@@ -5,22 +5,26 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
+import org.jfree.util.Log;
 import org.xml.sax.InputSource;
 
+import com.floreantpos.main.Application;
 import com.floreantpos.model.PaymentType;
 import com.floreantpos.model.PosTransaction;
+import com.floreantpos.model.Restaurant;
 import com.floreantpos.model.Ticket;
+import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.User;
 import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.model.dao.UserDAO;
 import com.floreantpos.services.PosTransactionService;
-import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.views.payment.SettleTicketDialog;
 
 public class PosRequestHandler extends Thread {
@@ -37,54 +41,40 @@ public class PosRequestHandler extends Thread {
 			while (true) {
 				byte[] b1 = new byte[3000];
 				socket.getInputStream().read(b1);
-				if (b1.length <= 1)
-					continue;
 
 				String request = new String(b1).trim();
+				if (request.length() <= 0) {
+					break;
+				}
+
 				System.out.println("Request From Terminal==>[" + request + "]");
 
 				int index = request.indexOf("<");
 				request = request.substring(index);
 
 				POSRequest posRequest = createRequest(request);
-				POSResponse posResponse = null;
-				String ttype = posRequest.ident.ttype;
+				POSResponse posResponse = createResponse(posRequest);
 
-				if (ttype.equals(Ident.GET_TABLES)) {
-					if (posRequest.posDefaultInfo.table.equals("0")) {
-						posResponse = addAllTables(posRequest);
-					}
-					else {
-						posResponse = addTable(posRequest);
-					}
-				}
-				else if (ttype.equals(Ident.APPLY_PAYMENT)) {
-					posResponse = applyPayment(posRequest);
-				}
-				else if (ttype.equals(Ident.PRINT_CHECK)) {
-					posResponse = printCheck(posRequest);
-				}
+				String resp = convertResponseToString(posResponse);
 
-				String resp = createResponse(posResponse);
 				System.out.println("Reponse to Terminal===>[" + resp + "]");
 
 				DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
 				byte[] tosend = resp.getBytes();
 				dos.write(tosend, 0, tosend.length);
 				dos.flush();
-				dos.close();
 
-				Thread.sleep(5000);
 			}
 
 		} catch (Exception e) {
-			System.out.println("Error:" + e);
+			Log.debug("Error:" + e);
 
 		} finally {
 			try {
+				Thread.sleep(5000);
 				socket.close();
 			} catch (Exception e) {
-				System.out.println("Error:" + e);
+				Log.debug("Error:" + e);
 			}
 		}
 	}
@@ -98,7 +88,42 @@ public class PosRequestHandler extends Thread {
 		return (POSRequest) unmarshaller.unmarshal(is);
 	}
 
-	private String createResponse(POSResponse posResponse) throws Exception {
+	private POSResponse createResponse(POSRequest posRequest) {
+		POSResponse posResponse = new POSResponse();
+
+		String ttype = posRequest.ident.ttype;
+
+		if (ttype.equals(Ident.GET_TABLES)) {
+			if (posRequest.posDefaultInfo.table.equals("0")) {
+				posResponse = addAllTables(posRequest);
+			}
+			else {
+				posResponse = addTable(posRequest);
+			}
+		}
+		else if (ttype.equals(Ident.APPLY_PAYMENT)) {
+			posResponse = applyPayment(posRequest);
+
+			if (posRequest.payment.edc.equals("1")) {
+				int checkId = Integer.parseInt(posRequest.posDefaultInfo.check);
+				posResponse.setPrintChecks(getPrintText(checkId));
+			}
+		}
+		else if (ttype.equals(Ident.PRINT_CHECK)) {
+			posResponse = printCheck(posRequest);
+		}
+
+		Ident ident = new Ident();
+		ident.setId(posRequest.ident.id);
+		ident.setTermserialno(posRequest.ident.termserialno);
+		ident.setTtype(posRequest.ident.ttype);
+
+		posResponse.setIdent(ident);
+
+		return posResponse;
+	}
+
+	private String convertResponseToString(POSResponse posResponse) throws Exception {
 		JAXBContext messageContext = JAXBContext.newInstance(POSResponse.class);
 		Marshaller marshaller = messageContext.createMarshaller();
 		StringWriter dataWriter = new StringWriter();
@@ -119,20 +144,6 @@ public class PosRequestHandler extends Thread {
 
 		User user = UserDAO.getInstance().findUserBySecretKey(posRequest.posDefaultInfo.server);
 		List<Ticket> ticketsForUser = TicketDAO.getInstance().findOpenTicketsForUser(user);
-
-		Ident ident = new Ident();
-		ident.setId(posRequest.ident.id);
-		ident.setTtype(posRequest.ident.ttype);
-
-		POSDefaultInfo posDefaultInfo = new POSDefaultInfo();
-		posDefaultInfo.setServer(posRequest.posDefaultInfo.server);
-		posDefaultInfo.setTable(posRequest.posDefaultInfo.table);
-		posDefaultInfo.setCheck(posRequest.posDefaultInfo.check);
-		posDefaultInfo.setRes("1");
-		posDefaultInfo.setrText("success");
-
-		posResponse.setIdent(ident);
-		posResponse.setPosDefaultInfo(posDefaultInfo);
 
 		Checks checks = new Checks();
 
@@ -155,31 +166,25 @@ public class PosRequestHandler extends Thread {
 				checks.getCheckList().add(chk);
 			}
 		}
-
 		posResponse.setChecks(checks);
+
+		POSDefaultInfo posDefaultInfo = new POSDefaultInfo();
+		posDefaultInfo.setServer(posRequest.posDefaultInfo.server);
+		posDefaultInfo.setTable(posRequest.posDefaultInfo.table);
+		posDefaultInfo.setCheck(posRequest.posDefaultInfo.check);
+		posDefaultInfo.setRes("1");
+		posDefaultInfo.setrText("success");
+
+		posResponse.setPosDefaultInfo(posDefaultInfo);
 
 		return posResponse;
 	}
 
 	private POSResponse addTable(POSRequest posRequest) {
-
 		POSResponse posResponse = new POSResponse();
 
 		User user = UserDAO.getInstance().findUserBySecretKey(posRequest.posDefaultInfo.server);
 		List<Ticket> ticketsForUser = TicketDAO.getInstance().findOpenTicketsForUser(user);
-
-		Ident ident = new Ident();
-		ident.setId(posRequest.ident.id);
-		ident.setTtype(posRequest.ident.ttype);
-
-		POSDefaultInfo posDefaultInfo = new POSDefaultInfo();
-		posDefaultInfo.setServer(posRequest.posDefaultInfo.server);
-		posDefaultInfo.setTable(posRequest.posDefaultInfo.table);
-		posDefaultInfo.setRes("1");
-		posDefaultInfo.setrText("success");
-
-		posResponse.setIdent(ident);
-		posResponse.setPosDefaultInfo(posDefaultInfo);
 
 		Checks checks = new Checks();
 
@@ -207,14 +212,22 @@ public class PosRequestHandler extends Thread {
 		}
 		posResponse.setChecks(checks);
 
+		POSDefaultInfo posDefaultInfo = new POSDefaultInfo();
+		posDefaultInfo.setServer(posRequest.posDefaultInfo.server);
+		posDefaultInfo.setTable(posRequest.posDefaultInfo.table);
+		posDefaultInfo.setCheck(posRequest.posDefaultInfo.check);
+		posDefaultInfo.setRes("1");
+		posDefaultInfo.setrText("success");
+
+		posResponse.setPosDefaultInfo(posDefaultInfo);
+
 		return posResponse;
 	}
 
 	private POSResponse applyPayment(POSRequest posRequest) {
+		POSResponse posResponse = new POSResponse();
 
 		Ticket ticket = TicketDAO.getInstance().loadFullTicket(Integer.parseInt(posRequest.posDefaultInfo.check));
-
-		POSResponse posResponse = new POSResponse();
 		String paymentType = posRequest.payment.cardType;
 
 		PosTransaction transaction = null;
@@ -266,70 +279,86 @@ public class PosRequestHandler extends Thread {
 			transactionService.settleTicket(ticket, transaction);
 			SettleTicketDialog.printTicket(ticket, transaction);
 
-			Ident ident = new Ident();
-			ident.setId(posRequest.ident.id);
-			ident.setTtype(posRequest.ident.ttype);
-
 			POSDefaultInfo posDefaultInfo = new POSDefaultInfo();
+			posDefaultInfo.setServer(posRequest.posDefaultInfo.server);
 			posDefaultInfo.setTable(posRequest.posDefaultInfo.table);
 			posDefaultInfo.setCheck(posRequest.posDefaultInfo.check);
-			posDefaultInfo.setServer(posRequest.posDefaultInfo.server);
 			posDefaultInfo.setRes("1");
 			posDefaultInfo.setrText("success");
 
-			posResponse.setIdent(ident);
 			posResponse.setPosDefaultInfo(posDefaultInfo);
 
-		} catch (Exception e) {
-			POSMessageDialog.showError("Error" + e);
-		}
+			return posResponse;
 
+		} catch (Exception e) {
+			Log.debug("Error:" + e);
+		}
 		return posResponse;
 	}
 
 	private POSResponse printCheck(POSRequest posRequest) {
-
 		POSResponse posResponse = new POSResponse();
 
-		User user = UserDAO.getInstance().findUserBySecretKey(posRequest.posDefaultInfo.server);
-		List<Ticket> ticketsForUser = TicketDAO.getInstance().findOpenTicketsForUser(user);
-
-		Ident ident = new Ident();
-		ident.setId(posRequest.ident.id);
-		ident.setTermserialno(posRequest.ident.termserialno);
-		ident.setTtype(posRequest.ident.ttype);
-
 		POSDefaultInfo posDefaultInfo = new POSDefaultInfo();
+		posDefaultInfo.setServer(posRequest.posDefaultInfo.server);
 		posDefaultInfo.setTable(posRequest.posDefaultInfo.table);
 		posDefaultInfo.setCheck(posRequest.posDefaultInfo.check);
-		posDefaultInfo.setServer(posRequest.posDefaultInfo.server);
-		posDefaultInfo.setRes("1");
-		posDefaultInfo.setrText("success");
 
-		for (Ticket ticket : ticketsForUser) {
-			List<Integer> tableNumbers = ticket.getTableNumbers();
-			if (tableNumbers != null && tableNumbers.size() > 0) {
-				if (tableNumbers.contains(Integer.parseInt(posRequest.posDefaultInfo.table))) {
-					posDefaultInfo.setCheck(ticket.getId().toString());
-					break;
-				}
-			}
-		}
+		List<PrintText> printTexts = getPrintText(Integer.parseInt(posRequest.posDefaultInfo.check));
 
-		PrintText line1 = new PrintText("---Restaurant Name---");
-		PrintText line2 = new PrintText("---Address---");
-		PrintText line3 = new PrintText("---Cell---");
-		//PrintText line4 = new PrintText("-------" + ticket.getId() + "-------");
-
-		posResponse.getPrintText().add(line1);
-		posResponse.getPrintText().add(line2);
-		posResponse.getPrintText().add(line3);
-		//posResponse.getPrintText().add(line4);
-
-		posResponse.setIdent(ident);
+		posResponse.setPrintChecks(printTexts);
 		posResponse.setPosDefaultInfo(posDefaultInfo);
 
 		return posResponse;
+	}
 
+	private List<PrintText> getPrintText(Integer checkId) {
+
+		Ticket ticket = TicketDAO.getInstance().loadFullTicket(checkId);
+
+		List<PrintText> printTexts = new ArrayList<PrintText>();
+
+		Restaurant restaurant = Application.getInstance().getRestaurant();
+
+		printTexts.add(new PrintText(restaurant.getName(), PrintText.CENTER));
+		printTexts.add(new PrintText(restaurant.getAddressLine1(), PrintText.CENTER));
+		printTexts.add(new PrintText(restaurant.getTelephone(), PrintText.CENTER));
+
+		printTexts.add(new PrintText("***Payment Receipt***", PrintText.CENTER));
+
+		String line = "__________________________________";
+
+		printTexts.add(new PrintText(line, PrintText.CENTER));
+		printTexts.add(new PrintText("*" + ticket.getTicketType() + "*",PrintText.CENTER));
+		printTexts.add(new PrintText("Terminal: " + ticket.getTerminal().getId()));
+		printTexts.add(new PrintText("CHK#: " + ticket.getId()));
+		printTexts.add(new PrintText("Table: " + ticket.getTableNumbers()));
+		printTexts.add(new PrintText("Guests: " + ticket.getNumberOfGuests()));
+		printTexts.add(new PrintText("Server: " + ticket.getOwner().getFirstName()));
+		printTexts.add(new PrintText("Printed: " + new Date()));
+
+		printTexts.add(new PrintText(line, PrintText.CENTER));
+		printTexts.add(new PrintText("ITEM     QTY    SUB", PrintText.RIGHT));
+		printTexts.add(new PrintText(line, PrintText.CENTER));
+
+		if (ticket.getTicketItems() != null) {
+			List<TicketItem> ticketItems = ticket.getTicketItems();
+			for (TicketItem ticketItem : ticketItems) {
+				printTexts.add(new PrintText(ticketItem.getName() + "   " + ticketItem.getItemCount() + "    " + ticketItem.getUnitPriceDisplay(),
+						PrintText.RIGHT));
+			}
+		}
+		printTexts.add(new PrintText(line, PrintText.CENTER));
+
+		printTexts.add(new PrintText("Total    " + ticket.getSubtotalAmount(), PrintText.RIGHT));
+		printTexts.add(new PrintText("Tax    " + ticket.getTaxAmount(), PrintText.RIGHT));
+
+		printTexts.add(new PrintText(line, PrintText.CENTER));
+
+		printTexts.add(new PrintText("Net Amount    " + ticket.getTotalAmount(), PrintText.RIGHT));
+		printTexts.add(new PrintText("Paid Amount   " + ticket.getPaidAmount(), PrintText.RIGHT));
+		printTexts.add(new PrintText("Due Amount    " + ticket.getDueAmount(), PrintText.RIGHT));
+
+		return printTexts;
 	}
 }

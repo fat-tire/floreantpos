@@ -5,14 +5,57 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "PrintText")
 public class PrintText {
-	String text="Test";
+	public static final String CENTER = "center";
+	public static final String LEFT = "left";
+	public static final String RIGHT = "right";
+
+	String text = "";
+	int lengthLimit = 35;
 
 	public PrintText() {
 		super();
 	}
+
 	public PrintText(String txt) {
 		super();
-		this.text=txt; 
+		if (txt.length() > 42) {
+			txt = txt.substring(0, 42);
+		}
+
+		int space = (lengthLimit - txt.length());
+		for (int i = 1; i < space; i++) {
+			txt = txt + " ";
+		}
+		this.text = txt;
+	}
+
+	public PrintText(String txt, String align) {
+		super();
+		if (txt.length() > 42) {
+			txt = txt.substring(0, 42);
+		}
+
+		if (align.equals(CENTER)) {
+			int space = (lengthLimit - txt.length()) / 2;
+			for (int i = 1; i < space; i++) {
+				txt = " " + txt + " ";
+			}
+			this.text = txt;
+		}
+		else if (align.equals(RIGHT)) {
+			int space = (lengthLimit - txt.length());
+			for (int i = 1; i < space; i++) {
+				txt = " " + txt;
+			}
+			this.text = txt;
+		}
+		else if (align.equals(LEFT)) {
+			int space = (lengthLimit - txt.length());
+			for (int i = 1; i < space; i++) {
+				txt = txt + " ";
+			}
+			this.text = txt;
+		}
 	}
 
 	@XmlAttribute(name = "text")

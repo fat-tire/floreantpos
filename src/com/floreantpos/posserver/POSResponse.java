@@ -45,7 +45,7 @@ public class POSResponse {
 		this.checks = checks;
 	}
 	
-	@XmlElement(type=PrintText.class)
+	@XmlElement(name = "PrintText")
 	public List<PrintText> getPrintText() {
 		return printTexts;
 	}
