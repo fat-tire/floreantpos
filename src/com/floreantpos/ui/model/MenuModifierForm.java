@@ -122,6 +122,7 @@ public class MenuModifierForm extends BeanEditor {
 		btnNewPrice = new javax.swing.JButton();
 		btnUpdatePrice = new javax.swing.JButton();
 		btnDeletePrice = new javax.swing.JButton();
+		btnDefaultValue = new javax.swing.JButton();
 		btnDeleteAll = new javax.swing.JButton();
 		tabPrice = new javax.swing.JPanel();
 		jScrollPane3 = new javax.swing.JScrollPane();
@@ -246,6 +247,15 @@ public class MenuModifierForm extends BeanEditor {
 				deleteAll();
 			}
 		});
+
+		btnDefaultValue.setText(Messages.getString("MenuModifierForm.8")); //$NON-NLS-1$
+		btnDefaultValue.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				setDefaultValue();
+			}
+		});
 		priceTable.setModel(new javax.swing.table.DefaultTableModel(new Object[][] { { null, null, null, null }, { null, null, null, null },
 				{ null, null, null, null }, { null, null, null, null } }, new String[] { "Title 1", "Title 2", "Title 3", "Title 4" })); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 
@@ -259,7 +269,9 @@ public class MenuModifierForm extends BeanEditor {
 
 		buttonPanel.add(btnNewPrice);
 		buttonPanel.add(btnUpdatePrice);
+		buttonPanel.add(btnDefaultValue);
 		buttonPanel.add(btnDeletePrice);
+
 		//buttonPanel.add(btnDeleteAll);
 
 		tabPrice.add(buttonPanel, BorderLayout.SOUTH);
@@ -308,6 +320,7 @@ public class MenuModifierForm extends BeanEditor {
 
 	private javax.swing.JButton btnNewPrice;
 	private javax.swing.JButton btnUpdatePrice;
+	private javax.swing.JButton btnDefaultValue;
 	private javax.swing.JButton btnDeletePrice;
 	private javax.swing.JButton btnDeleteAll;
 	private javax.swing.JPanel tabPrice;
@@ -397,7 +410,7 @@ public class MenuModifierForm extends BeanEditor {
 	class PriceByOrderType extends AbstractTableModel {
 		List<String> propertiesKey = new ArrayList<String>();
 
-		String[] cn = { "Order Type", "Price", "Tax" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		String[] cn = { "MODIFIER", "ORDER TYPE", "PRICE", "TAX" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 
 		PriceByOrderType(Map<String, String> properties) {
 
@@ -422,10 +435,28 @@ public class MenuModifierForm extends BeanEditor {
 		}
 
 		public void add(MenuModifier modifier) {
-			if (propertiesKey == null) {
-				propertiesKey = new ArrayList<String>();
-			}
 			setPropertiesToTable(new ArrayList(modifier.getProperties().keySet()));
+			fireTableDataChanged();
+		}
+
+		public void setDefaultValue() {
+			int selectedRow = priceTable.getSelectedRow();
+			if (selectedRow == -1) {
+				POSMessageDialog.showMessage(Messages.getString("MenuModifierForm.9")); //$NON-NLS-1$
+				return;
+			}
+			String modifiedKey = priceTableModel.propertiesKey.get(selectedRow);
+			modifiedKey = modifiedKey.replaceAll("_PRICE", ""); //$NON-NLS-1$ //$NON-NLS-2$
+			modifiedKey = modifiedKey.replaceAll("_", " ");//$NON-NLS-1$ //$NON-NLS-2$
+			modifier.setPriceByOrderType(modifiedKey, modifier.getPrice());
+			if (modifier.getTax() != null) {
+				modifier.setTaxByOrderType(modifiedKey, modifier.getTax().getRate());
+			}
+			else {
+				modifier.setTaxByOrderType(modifiedKey, 0.0);
+			}
+			MenuModifierDAO.getInstance().saveOrUpdate(modifier);
+			add(modifier);
 			fireTableDataChanged();
 		}
 
@@ -473,14 +504,15 @@ public class MenuModifierForm extends BeanEditor {
 		public Object getValueAt(int rowIndex, int columnIndex) {
 			String key = String.valueOf(propertiesKey.get(rowIndex));
 			switch (columnIndex) {
-
 				case 0:
+					return modifier.getName();
+				case 1:
 					key = key.replaceAll("_PRICE", ""); //$NON-NLS-1$ //$NON-NLS-2$
 					key = key.replaceAll("_", " "); //$NON-NLS-1$ //$NON-NLS-2$
 					return key;
-				case 1:
-					return modifier.getProperty(key);
 				case 2:
+					return modifier.getProperty(key);
+				case 3:
 					key = key.replaceAll("_PRICE", "_TAX"); //$NON-NLS-1$ //$NON-NLS-2$
 					return modifier.getProperty(key);
 			}
@@ -512,7 +544,8 @@ public class MenuModifierForm extends BeanEditor {
 			POSMessageDialog.showMessage(Messages.getString("MenuModifierForm.7")); //$NON-NLS-1$
 			return;
 		}
-		int option = POSMessageDialog.showYesNoQuestionDialog(POSUtil.getBackOfficeWindow(), Messages.getString("MenuModifierForm.21"), Messages.getString("MenuModifierForm.22")); //$NON-NLS-1$ //$NON-NLS-2$
+		int option = POSMessageDialog.showYesNoQuestionDialog(POSUtil.getBackOfficeWindow(),
+				Messages.getString("MenuModifierForm.21"), Messages.getString("MenuModifierForm.22")); //$NON-NLS-1$ //$NON-NLS-2$
 		if (option != JOptionPane.YES_OPTION) {
 			return;
 		}
@@ -522,11 +555,16 @@ public class MenuModifierForm extends BeanEditor {
 
 	private void deleteAll() {
 
-		int option = POSMessageDialog.showYesNoQuestionDialog(POSUtil.getBackOfficeWindow(), Messages.getString("MenuModifierForm.23"), Messages.getString("MenuModifierForm.24")); //$NON-NLS-1$ //$NON-NLS-2$
+		int option = POSMessageDialog.showYesNoQuestionDialog(POSUtil.getBackOfficeWindow(),
+				Messages.getString("MenuModifierForm.23"), Messages.getString("MenuModifierForm.24")); //$NON-NLS-1$ //$NON-NLS-2$
 		if (option != JOptionPane.YES_OPTION) {
 			return;
 		}
 		priceTableModel.removeAll();
+	}
+
+	private void setDefaultValue() {
+		priceTableModel.setDefaultValue();
 	}
 
 	private void updatePrice() {

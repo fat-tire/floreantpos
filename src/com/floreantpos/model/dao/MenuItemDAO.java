@@ -213,8 +213,8 @@ public class MenuItemDAO extends BaseMenuItemDAO {
 			session = createNewSession();
 			criteria = session.createCriteria(MenuItem.class);
 			criteria.add(Restrictions.like(MenuItem.PROP_BARCODE, barcode));
-			Object result = criteria.uniqueResult();
-			return (MenuItem) result;
+			List<MenuItem> result = criteria.list();
+			return (MenuItem) result.get(0);
 		} finally {
 			closeSession(session);
 		}

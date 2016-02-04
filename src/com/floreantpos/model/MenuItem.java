@@ -343,6 +343,9 @@ public class MenuItem extends BaseMenuItem {
 	}
 
 	private double getTaxByOrderType(OrderType type) {
+		if (this.getTax() == null) {
+			return 0;
+		}
 		double defaultTax = this.getTax().getRate();
 		if (type == null) {
 			return defaultTax;

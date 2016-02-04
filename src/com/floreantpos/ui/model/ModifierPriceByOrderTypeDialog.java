@@ -43,6 +43,7 @@ import com.floreantpos.model.dao.MenuModifierDAO;
 import com.floreantpos.model.dao.TaxDAO;
 import com.floreantpos.ui.dialog.POSDialog;
 import com.floreantpos.ui.dialog.POSMessageDialog;
+import com.floreantpos.util.POSUtil;
 
 public class ModifierPriceByOrderTypeDialog extends POSDialog {
 	private JPanel contentPane;
@@ -56,11 +57,13 @@ public class ModifierPriceByOrderTypeDialog extends POSDialog {
 	private MenuModifier modifier;
 
 	public ModifierPriceByOrderTypeDialog(MenuModifier modifier) {
+		super(POSUtil.getBackOfficeWindow(),true);
 		this.modifier = modifier;
 		init();
 	}
 
 	public ModifierPriceByOrderTypeDialog(MenuModifier modifier, String key) {
+		super(POSUtil.getBackOfficeWindow(),true);
 		this.modifier = modifier;
 		this.key = key;
 		init();

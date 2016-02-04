@@ -127,7 +127,7 @@ public class MenuModifier extends BaseMenuModifier {
 		properties.remove(typeProperty);
 		properties.remove(taxProperty);
 	}
-	
+
 	public double getPriceByOrderType(OrderType type) {
 		double defaultPrice = this.getPrice();
 		if (type == null) {
@@ -144,8 +144,11 @@ public class MenuModifier extends BaseMenuModifier {
 			return defaultPrice;
 		}
 	}
-	
+
 	public double getTaxByOrderType(OrderType type) {
+		if (this.getTax() == null) {
+			return 0;
+		}
 		double defaultTax = this.getTax().getRate();
 		if (type == null) {
 			return defaultTax;

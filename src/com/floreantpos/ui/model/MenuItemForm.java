@@ -217,6 +217,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		btnUpdatePrice = new javax.swing.JButton();
 		btnDeletePrice = new javax.swing.JButton();
 		btnDeleteAll = new javax.swing.JButton();
+		btnDefaultValue = new javax.swing.JButton();
 		jScrollPane2 = new javax.swing.JScrollPane();
 		jScrollPane3 = new javax.swing.JScrollPane();
 		shiftTable = new javax.swing.JTable();
@@ -514,6 +515,15 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 				deleteAll();
 			}
 		});
+
+		btnDefaultValue.setText(Messages.getString("MenuItemForm.7")); //$NON-NLS-1$
+		btnDefaultValue.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				setDefaultValue();
+			}
+		});
 		priceTable.setModel(new javax.swing.table.DefaultTableModel(new Object[][] { { null, null, null, null }, { null, null, null, null },
 				{ null, null, null, null }, { null, null, null, null } }, new String[] { "Title 1", "Title 2", "Title 3", "Title 4" })); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 
@@ -527,7 +537,9 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 
 		buttonPanel.add(btnNewPrice);
 		buttonPanel.add(btnUpdatePrice);
+		buttonPanel.add(btnDefaultValue);
 		buttonPanel.add(btnDeletePrice);
+		
 		//	buttonPanel.add(btnDeleteAll);
 
 		tabPrice.add(buttonPanel, BorderLayout.SOUTH);
@@ -566,6 +578,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 	private javax.swing.JButton btnUpdatePrice;
 	private javax.swing.JButton btnDeletePrice;
 	private javax.swing.JButton btnDeleteAll;
+	private javax.swing.JButton btnDefaultValue;
 	private javax.swing.JButton btnDeleteModifierGroup;
 	private javax.swing.JButton btnDeleteShift;
 	private javax.swing.JButton btnEditModifierGroup;
@@ -950,11 +963,11 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 	class PriceByOrderTypeTableModel extends AbstractTableModel {
 		List<String> propertiesKey = new ArrayList<String>();
 
-		String[] cn = { "Order Type", "Price", "Tax" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		String[] cn = { "ITEM", "ORDER TYPE", "PRICE", "TAX" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 
 		PriceByOrderTypeTableModel(Map<String, String> properties) {
 
-			if (properties != null) {
+			if (properties != null && !properties.isEmpty()) {
 				List<String> keys = new ArrayList(properties.keySet());
 				setPropertiesToTable(keys);
 			}
@@ -964,7 +977,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 			propertiesKey.clear();
 
 			for (int i = 0; i < keys.size(); i++) {
-				if (keys.get(i).contains(Messages.getString("MenuItemForm.20"))) { //$NON-NLS-1$
+				if (keys.get(i).contains("_PRICE")) { //$NON-NLS-1$
 					this.propertiesKey.add(keys.get(i));
 				}
 			}
@@ -975,10 +988,29 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		}
 
 		public void add(MenuItem menuItem) {
-			if (propertiesKey == null) {
-				propertiesKey = new ArrayList<String>();
-			}
 			setPropertiesToTable(new ArrayList(menuItem.getProperties().keySet()));
+			fireTableDataChanged();
+		}
+
+		public void setDefaultValue() {
+			int selectedRow = priceTable.getSelectedRow();
+			if (selectedRow == -1) {
+				POSMessageDialog.showMessage(Messages.getString("MenuItemForm.8")); //$NON-NLS-1$
+				return;
+			}
+			String modifiedKey = priceTableModel.propertiesKey.get(selectedRow);
+			modifiedKey = modifiedKey.replaceAll("_PRICE", ""); //$NON-NLS-1$ //$NON-NLS-2$
+			modifiedKey = modifiedKey.replaceAll("_", " ");//$NON-NLS-1$ //$NON-NLS-2$
+			menuItem.setPriceByOrderType(modifiedKey, menuItem.getPrice());
+			if (menuItem.getTax() != null) {
+				menuItem.setTaxByOrderType(modifiedKey, menuItem.getTax().getRate());
+			}
+			else {
+				menuItem.setTaxByOrderType(modifiedKey, 0.0);
+			}
+
+			MenuItemDAO.getInstance().saveOrUpdate(menuItem);
+			add(menuItem);
 			fireTableDataChanged();
 		}
 
@@ -987,7 +1019,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 				return;
 			}
 			String typeProperty = propertiesKey.get(index);
-			String taxProperty = typeProperty.replaceAll(Messages.getString("MenuItemForm.21"), Messages.getString("MenuItemForm.23")); //$NON-NLS-1$ //$NON-NLS-2$
+			String taxProperty = typeProperty.replaceAll("_PRICE", "_TAX"); //$NON-NLS-1$ //$NON-NLS-2$
 
 			menuItem.removeProperty(typeProperty, taxProperty);
 			MenuItemDAO.getInstance().saveOrUpdate(menuItem);
@@ -1028,13 +1060,15 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 			switch (columnIndex) {
 
 				case 0:
-					key = key.replaceAll(Messages.getString("MenuItemForm.24"), Messages.getString("MenuItemForm.25")); //$NON-NLS-1$ //$NON-NLS-2$
-					key = key.replaceAll(Messages.getString("MenuItemForm.26"), Messages.getString("MenuItemForm.29")); //$NON-NLS-1$ //$NON-NLS-2$
-					return key;
+					return menuItem.getName();
 				case 1:
-					return menuItem.getProperty(key);
+					key = key.replaceAll("_PRICE", ""); //$NON-NLS-1$ //$NON-NLS-2$
+					key = key.replaceAll("_", " "); //$NON-NLS-1$ //$NON-NLS-2$
+					return key;
 				case 2:
-					key = key.replaceAll(Messages.getString("MenuItemForm.30"), Messages.getString("MenuItemForm.31")); //$NON-NLS-1$ //$NON-NLS-2$
+					return menuItem.getProperty(key);
+				case 3:
+					key = key.replaceAll("_PRICE", "_TAX"); //$NON-NLS-1$ //$NON-NLS-2$
 					return menuItem.getProperty(key);
 			}
 			return null;
@@ -1095,13 +1129,17 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		priceTableModel.removeAll();
 	}
 
+	private void setDefaultValue() {
+		priceTableModel.setDefaultValue();
+	}
+
 	private void updatePrice() {
 		int selectedRow = priceTable.getSelectedRow();
 		if (selectedRow == -1) {
 			POSMessageDialog.showMessage(Messages.getString("MenuItemForm.38")); //$NON-NLS-1$
 			return;
 		}
-
+		//System.out.println(priceTableModel.propertiesKey.get(priceTable.getSelectedRow()));
 		priceTableModel.propertiesKey.get(selectedRow);
 		MenuItemPriceByOrderTypeDialog dialog = new MenuItemPriceByOrderTypeDialog(menuItem, priceTableModel.propertiesKey.get(selectedRow));
 		dialog.setSize(350, 220);
