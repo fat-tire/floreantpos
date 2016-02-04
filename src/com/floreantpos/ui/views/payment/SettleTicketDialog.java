@@ -50,6 +50,7 @@ import com.floreantpos.POSConstants;
 import com.floreantpos.PosException;
 import com.floreantpos.config.CardConfig;
 import com.floreantpos.config.TerminalConfig;
+import com.floreantpos.extension.InginicoPlugin;
 import com.floreantpos.extension.PaymentGatewayPlugin;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.CardReader;
@@ -99,7 +100,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 	private PaymentView paymentView;
 	private TicketViewerTable ticketViewerTable;
 	private javax.swing.JScrollPane ticketScrollPane;
-	private Ticket ticket;
+	private static Ticket ticket;
 	private double tenderAmount;
 	private PaymentType paymentType;
 	private String cardName;
@@ -108,6 +109,9 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 	JTextField tfTax;
 	JTextField tfTotal;
 	JTextField tfGratuity;
+	
+	public static PosPaymentWaitDialog waitDialog=new PosPaymentWaitDialog(); 
+	private static SettleTicketDialog instance;
 
 	public SettleTicketDialog() {
 
@@ -116,7 +120,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 	public SettleTicketDialog(Ticket ticket) {
 		super();
 		this.ticket = ticket;
-
+		
 		setTitle(Messages.getString("SettleTicketDialog.6")); //$NON-NLS-1$
 
 		getContentPane().setLayout(new BorderLayout(5, 5));
@@ -592,7 +596,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 		}
 	}
 
-	private void showTransactionCompleteMsg(final double dueAmount, final double tenderedAmount, Ticket ticket, PosTransaction transaction) {
+	public static void showTransactionCompleteMsg(final double dueAmount, final double tenderedAmount, Ticket ticket, PosTransaction transaction) {
 		TransactionCompletionDialog dialog = new TransactionCompletionDialog(transaction);
 		dialog.setCompletedTransaction(transaction);
 		dialog.setTenderedAmount(tenderedAmount);
@@ -648,6 +652,14 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 			//		}
 
 			PaymentGatewayPlugin paymentGateway = CardConfig.getPaymentGateway();
+			
+			if(paymentGateway instanceof InginicoPlugin) {
+				waitDialog.setVisible(true); 
+				if(!waitDialog.isCanceled()) {
+					dispose(); 
+				}
+				return; 
+			}
 			if (!paymentGateway.shouldShowCardInputProcessor()) {
 
 				PosTransaction transaction = paymentType.createTransaction();
@@ -882,4 +894,12 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 		this.ticket = ticket;
 		paymentView.updateView();
 	}
+	
+	public synchronized static SettleTicketDialog getInstance() {
+		if (instance == null) {
+			instance = new SettleTicketDialog(ticket);
+		}
+		return instance;
+	}
+
 }

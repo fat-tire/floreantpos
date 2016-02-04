@@ -45,10 +45,13 @@ import com.floreantpos.Messages;
 import com.floreantpos.POSConstants;
 import com.floreantpos.bo.ui.BackOfficeWindow;
 import com.floreantpos.config.AppProperties;
+import com.floreantpos.config.CardConfig;
 import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.config.ui.DatabaseConfigurationDialog;
 import com.floreantpos.extension.ExtensionManager;
 import com.floreantpos.extension.FloreantPlugin;
+import com.floreantpos.extension.InginicoPlugin;
+import com.floreantpos.extension.PaymentGatewayPlugin;
 import com.floreantpos.model.PosPrinters;
 import com.floreantpos.model.PrinterConfiguration;
 import com.floreantpos.model.Restaurant;
@@ -260,8 +263,13 @@ public class Application {
 			else {
 				posWindow.setStatus(Messages.getString("Application.42")); //$NON-NLS-1$
 			}
-			
-			new PosServer();
+
+			PaymentGatewayPlugin paymentGateway = CardConfig.getPaymentGateway();
+
+			if (paymentGateway instanceof InginicoPlugin) {
+				new PosServer();
+			}
+
 		} catch (Exception e) {
 			throw new DatabaseConnectionException();
 		}

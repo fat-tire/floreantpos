@@ -25,6 +25,7 @@ import com.floreantpos.model.User;
 import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.model.dao.UserDAO;
 import com.floreantpos.services.PosTransactionService;
+import com.floreantpos.ui.views.order.RootView;
 import com.floreantpos.ui.views.payment.SettleTicketDialog;
 
 public class PosRequestHandler extends Thread {
@@ -92,6 +93,12 @@ public class PosRequestHandler extends Thread {
 		POSResponse posResponse = new POSResponse();
 
 		String ttype = posRequest.ident.ttype;
+
+		if (SettleTicketDialog.waitDialog.isVisible()) {
+			Ticket ticket = SettleTicketDialog.getInstance().getTicket();
+			posRequest.posDefaultInfo.check = ticket.getId().toString();
+			posRequest.posDefaultInfo.table = ticket.getTableNumbers().get(0).toString();
+		}
 
 		if (ttype.equals(Ident.GET_TABLES)) {
 			if (posRequest.posDefaultInfo.table.equals("0")) {
@@ -276,8 +283,16 @@ public class PosRequestHandler extends Thread {
 
 		PosTransactionService transactionService = PosTransactionService.getInstance();
 		try {
+			final double dueAmount = ticket.getDueAmount();
 			transactionService.settleTicket(ticket, transaction);
 			SettleTicketDialog.printTicket(ticket, transaction);
+			SettleTicketDialog.showTransactionCompleteMsg(dueAmount, tenderAmount, ticket, transaction);
+
+			if (SettleTicketDialog.waitDialog.isVisible()) {
+				SettleTicketDialog.waitDialog.setCanceled(false);
+				SettleTicketDialog.waitDialog.dispose();
+				RootView.getInstance().showDefaultView();
+			}
 
 			POSDefaultInfo posDefaultInfo = new POSDefaultInfo();
 			posDefaultInfo.setServer(posRequest.posDefaultInfo.server);
@@ -329,7 +344,7 @@ public class PosRequestHandler extends Thread {
 		String line = "__________________________________";
 
 		printTexts.add(new PrintText(line, PrintText.CENTER));
-		printTexts.add(new PrintText("*" + ticket.getTicketType() + "*",PrintText.CENTER));
+		printTexts.add(new PrintText("*" + ticket.getTicketType() + "*", PrintText.CENTER));
 		printTexts.add(new PrintText("Terminal: " + ticket.getTerminal().getId()));
 		printTexts.add(new PrintText("CHK#: " + ticket.getId()));
 		printTexts.add(new PrintText("Table: " + ticket.getTableNumbers()));
@@ -361,4 +376,5 @@ public class PosRequestHandler extends Thread {
 
 		return printTexts;
 	}
+
 }
