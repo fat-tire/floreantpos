@@ -262,7 +262,6 @@ public class PosRequestHandler extends Thread {
 
 			transaction.setCaptured(false);
 			transaction.setCardNumber(posRequest.payment.acct);
-			transaction.setCardAuthCode(posRequest.payment.acct.substring(11,16) + " Ref:" + posRequest.ident.termserialno + " ");
 
 			String exp = posRequest.payment.exp;
 			if (exp != null) {

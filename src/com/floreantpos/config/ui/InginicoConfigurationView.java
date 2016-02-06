@@ -59,14 +59,14 @@ public class InginicoConfigurationView extends ConfigurationView {
 		add(lblCommunicationTitle);
 		add(new JLabel("TCP"), "wrap");
 
-		add(lblIp);
+		/*add(lblIp);
 		add(txtIp1, "split 7");
 		add(new JLabel("."));
 		add(txtIp2);
 		add(new JLabel("."));
 		add(txtIp3);
 		add(new JLabel("."));
-		add(txtIp4, "wrap");
+		add(txtIp4, "wrap");*/
 
 		add(lblPort);
 		add(txtPort, "grow,wrap");
@@ -121,10 +121,10 @@ public class InginicoConfigurationView extends ConfigurationView {
 
 			File file = new File(jarLocation, COMMSETTING_INI);
 			if(!file.exists()) {
-				txtIp1.setText(String.valueOf("127"));
+				/*txtIp1.setText(String.valueOf("127"));
 				txtIp2.setText(String.valueOf("0"));
 				txtIp3.setText(String.valueOf("0"));
-				txtIp4.setText(String.valueOf("1"));
+				txtIp4.setText(String.valueOf("1"));*/
 				txtPort.setText(String.valueOf("5656"));
 				txtTimeOut.setText(String.valueOf("5000"));
 				return;

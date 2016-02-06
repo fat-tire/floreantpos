@@ -12,7 +12,7 @@ public class InginicoPlugin implements PaymentGatewayPlugin {
 	
 	@Override
 	public String getName() {
-		return "Inginico";
+		return "Ingenico IWL220 TGI";
 	}
 
 	@Override

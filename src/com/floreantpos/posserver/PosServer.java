@@ -1,30 +1,9 @@
 package com.floreantpos.posserver;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.StringReader;
-import java.io.StringWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.List;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
-
-import org.xml.sax.InputSource;
-
-import com.floreantpos.model.Ticket;
-import com.floreantpos.model.User;
-import com.floreantpos.model.dao.TicketDAO;
-import com.floreantpos.model.dao.UserDAO;
 import com.floreantpos.model.dao._RootDAO;
 
 public class PosServer implements Runnable {

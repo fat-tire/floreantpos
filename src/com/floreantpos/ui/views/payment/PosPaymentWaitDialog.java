@@ -33,11 +33,10 @@ public class PosPaymentWaitDialog extends POSDialog {
 
 		label = new JLabel("Waiting for response from credit card Device.........."); //$NON-NLS-1$
 		label.setHorizontalAlignment(JLabel.CENTER);
-		label.setFont(getFont().deriveFont(Font.BOLD,18));
+		label.setFont(label.getFont().deriveFont(Font.BOLD,20));
 		add(label);
 
 		setSize(500, 400);
-		//setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		setLocationRelativeTo(null);
 	}
 

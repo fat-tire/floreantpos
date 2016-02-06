@@ -112,7 +112,10 @@ public class KitchenTicketView extends JPanel {
 
 		String ticketInfo = "Ticket# " + ticket.getTicketId() + "-" + ticket.getId() + " " + printerName + ""; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 		if (ticket.getTableNumbers() != null && ticket.getTableNumbers().size() > 0) {
-			ticketInfo += "<br/>Table " + ticket.getTableNumbers(); //$NON-NLS-1$
+			ticketInfo += "    Table " + ticket.getTableNumbers(); //$NON-NLS-1$
+		}
+		if (ticket.getServerName() != null) {
+			ticketInfo += "<br/>Server: " + ticket.getServerName(); //$NON-NLS-1$
 		}
 		ticketId.setText("<html>" + ticketInfo + "</html>"); //$NON-NLS-1$ //$NON-NLS-2$
 		ticketId.setFont(ticketId.getFont().deriveFont(Font.BOLD));
