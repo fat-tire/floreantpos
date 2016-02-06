@@ -269,7 +269,7 @@ public class MenuModifierForm extends BeanEditor {
 
 		buttonPanel.add(btnNewPrice);
 		buttonPanel.add(btnUpdatePrice);
-		buttonPanel.add(btnDefaultValue);
+		//buttonPanel.add(btnDefaultValue);
 		buttonPanel.add(btnDeletePrice);
 
 		//buttonPanel.add(btnDeleteAll);

@@ -24,14 +24,13 @@ import java.awt.Window;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 
-import com.floreantpos.main.Application;
+import com.floreantpos.util.POSUtil;
 
 public class POSDialog extends JDialog {
 	protected boolean canceled = true;
 
 	public POSDialog() throws HeadlessException {
-		super(Application.getPosWindow(), true);
-		
+		super(POSUtil.getBackOfficeWindow(), true);
 		initUI();
 	}
 	

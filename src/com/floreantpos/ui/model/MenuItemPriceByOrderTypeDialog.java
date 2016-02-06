@@ -43,7 +43,6 @@ import com.floreantpos.model.dao.MenuItemDAO;
 import com.floreantpos.model.dao.TaxDAO;
 import com.floreantpos.ui.dialog.POSDialog;
 import com.floreantpos.ui.dialog.POSMessageDialog;
-import com.floreantpos.util.POSUtil;
 
 public class MenuItemPriceByOrderTypeDialog extends POSDialog {
 	private JPanel contentPane;
@@ -57,13 +56,11 @@ public class MenuItemPriceByOrderTypeDialog extends POSDialog {
 	private MenuItem menuItem;
 
 	public MenuItemPriceByOrderTypeDialog(MenuItem item) {
-		super(POSUtil.getBackOfficeWindow(),true);
 		this.menuItem = item;
 		init();
 	}
 
 	public MenuItemPriceByOrderTypeDialog(MenuItem item, String key) {
-		super(POSUtil.getBackOfficeWindow(),true);
 		this.menuItem = item;
 		this.key = key;
 		init();

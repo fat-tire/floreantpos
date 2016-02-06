@@ -537,7 +537,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 
 		buttonPanel.add(btnNewPrice);
 		buttonPanel.add(btnUpdatePrice);
-		buttonPanel.add(btnDefaultValue);
+		//buttonPanel.add(btnDefaultValue);
 		buttonPanel.add(btnDeletePrice);
 		
 		//	buttonPanel.add(btnDeleteAll);
