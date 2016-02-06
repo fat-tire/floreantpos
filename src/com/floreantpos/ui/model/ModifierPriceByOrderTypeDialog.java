@@ -18,6 +18,7 @@
 package com.floreantpos.ui.model;
 
 import java.awt.BorderLayout;
+import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -55,12 +56,14 @@ public class ModifierPriceByOrderTypeDialog extends POSDialog {
 
 	private MenuModifier modifier;
 
-	public ModifierPriceByOrderTypeDialog(MenuModifier modifier) {
+	public ModifierPriceByOrderTypeDialog(Frame owner,MenuModifier modifier) {
+		super(owner,true);
 		this.modifier = modifier;
 		init();
 	}
 
-	public ModifierPriceByOrderTypeDialog(MenuModifier modifier, String key) {
+	public ModifierPriceByOrderTypeDialog(Frame owner,MenuModifier modifier, String key) {
+		super(owner,true);
 		this.modifier = modifier;
 		this.key = key;
 		init();

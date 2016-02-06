@@ -37,6 +37,7 @@ import com.floreantpos.ui.PosTableRenderer;
 import com.floreantpos.ui.dialog.BeanEditorDialog;
 import com.floreantpos.ui.dialog.ConfirmDeleteDialog;
 import com.floreantpos.ui.model.MenuModifierGroupForm;
+import com.floreantpos.util.POSUtil;
 
 public class ModifierGroupExplorer extends TransparentPanel {
 	private List<MenuModifierGroup> mGroupList;
@@ -74,7 +75,7 @@ public class ModifierGroupExplorer extends TransparentPanel {
 					MenuModifierGroup category = mGroupList.get(index);
 
 					MenuModifierGroupForm editor = new MenuModifierGroupForm(category);
-					BeanEditorDialog dialog = new BeanEditorDialog(editor);
+					BeanEditorDialog dialog = new BeanEditorDialog(POSUtil.getBackOfficeWindow(),editor);
 					dialog.open();
 					if (dialog.isCanceled())
 						return;
@@ -136,7 +137,7 @@ public class ModifierGroupExplorer extends TransparentPanel {
 		panel.add(deleteButton);
 		add(panel, BorderLayout.SOUTH);
 	}
-
+	
 	class ModifierGroupExplorerTableModel extends AbstractTableModel {
 		String[] columnNames = { com.floreantpos.POSConstants.ID, com.floreantpos.POSConstants.NAME, POSConstants.TRANSLATED_NAME };
 

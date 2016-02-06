@@ -1077,7 +1077,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 
 	//
 	private void addShift() {
-		MenuItemShiftDialog dialog = new MenuItemShiftDialog();
+		MenuItemShiftDialog dialog = new MenuItemShiftDialog(this.getParentFrame());
 		dialog.setSize(350, 220);
 		dialog.open();
 
@@ -1092,7 +1092,6 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		MenuItemPriceByOrderTypeDialog dialog = new MenuItemPriceByOrderTypeDialog(this.getParentFrame(), menuItem);
 		dialog.setSize(350, 220);
 		dialog.open();
-		Application.getPosWindow();
 		if (!dialog.isCanceled()) {
 			priceTableModel.add(dialog.getMenuItem());
 		}
@@ -1108,10 +1107,10 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 	private void deletePrice() {
 		int selectedRow = priceTable.getSelectedRow();
 		if (selectedRow == -1) {
-			POSMessageDialog.showMessage(null, Messages.getString("MenuItemForm.32")); //$NON-NLS-1$
+			POSMessageDialog.showMessage(this.getParentFrame(), Messages.getString("MenuItemForm.32")); //$NON-NLS-1$
 			return;
 		}
-		int option = POSMessageDialog.showYesNoQuestionDialog(null, Messages.getString("MenuItemForm.33"), Messages.getString("MenuItemForm.35")); //$NON-NLS-1$ //$NON-NLS-2$
+		int option = POSMessageDialog.showYesNoQuestionDialog(this.getParentFrame(), Messages.getString("MenuItemForm.33"), Messages.getString("MenuItemForm.35")); //$NON-NLS-1$ //$NON-NLS-2$
 		if (option != JOptionPane.YES_OPTION) {
 			return;
 		}
@@ -1121,7 +1120,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 
 	private void deleteAll() {
 
-		int option = POSMessageDialog.showYesNoQuestionDialog(POSUtil.getBackOfficeWindow(),
+		int option = POSMessageDialog.showYesNoQuestionDialog(this.getParentFrame(),
 				Messages.getString("MenuItemForm.36"), Messages.getString("MenuItemForm.37")); //$NON-NLS-1$ //$NON-NLS-2$
 		if (option != JOptionPane.YES_OPTION) {
 			return;
@@ -1136,10 +1135,9 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 	private void updatePrice() {
 		int selectedRow = priceTable.getSelectedRow();
 		if (selectedRow == -1) {
-			POSMessageDialog.showMessage(Messages.getString("MenuItemForm.38")); //$NON-NLS-1$
+			POSMessageDialog.showMessage(this.getParentFrame(),Messages.getString("MenuItemForm.38")); //$NON-NLS-1$
 			return;
 		}
-		//System.out.println(priceTableModel.propertiesKey.get(priceTable.getSelectedRow()));
 		priceTableModel.propertiesKey.get(selectedRow);
 		MenuItemPriceByOrderTypeDialog dialog = new MenuItemPriceByOrderTypeDialog(this.getParentFrame(), menuItem,
 				priceTableModel.propertiesKey.get(selectedRow));

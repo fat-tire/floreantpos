@@ -18,6 +18,7 @@
 package com.floreantpos.ui.model;
 
 import java.awt.Dimension;
+import java.awt.Frame;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -53,7 +54,8 @@ public class MenuItemShiftDialog extends POSDialog {
 
     private MenuItemShift menuItemShift;
 
-    public MenuItemShiftDialog() {
+    public MenuItemShiftDialog(Frame owner) {
+    	super(owner,true);
         setContentPane(contentPane);
 
         ShiftDAO dao = new ShiftDAO();

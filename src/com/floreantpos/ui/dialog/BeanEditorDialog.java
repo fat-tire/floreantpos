@@ -40,11 +40,10 @@ import com.floreantpos.util.POSUtil;
 public class BeanEditorDialog extends javax.swing.JDialog implements WindowListener {
 	protected BeanEditor beanEditor;
 	private boolean canceled = false;
-	
+
 	public BeanEditorDialog() {
 		this(null);
 	}
-
 
 	public BeanEditorDialog(BeanEditor beanEditor) {
 		super(POSUtil.getFocusedWindow(), ModalityType.APPLICATION_MODAL);
@@ -55,6 +54,14 @@ public class BeanEditorDialog extends javax.swing.JDialog implements WindowListe
 		addWindowListener(this);
 	}
 
+	public BeanEditorDialog(Frame owner, BeanEditor beanEditor) {
+		super(owner, ModalityType.APPLICATION_MODAL);
+		initComponents();
+
+		setBeanEditor(beanEditor);
+
+		addWindowListener(this);
+	}
 
 	/** This method is called from within the constructor to
 	 * initialize the form.
@@ -72,7 +79,7 @@ public class BeanEditorDialog extends javax.swing.JDialog implements WindowListe
 		beanEditorContainer = new com.floreantpos.swing.TransparentPanel();
 
 		setIconImage(Application.getApplicationIcon().getImage());
-		setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE); 
+		setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
 		getContentPane().add(titlePanel, java.awt.BorderLayout.NORTH);
 
 		jPanel1.setLayout(new java.awt.BorderLayout());
@@ -219,7 +226,7 @@ public class BeanEditorDialog extends javax.swing.JDialog implements WindowListe
 			beanEditorContainer.revalidate();
 		}
 	}
-	
+
 	public com.floreantpos.swing.TransparentPanel getButtonPanel() {
 		return buttonPanel;
 	}

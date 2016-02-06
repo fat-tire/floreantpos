@@ -530,7 +530,7 @@ public class MenuModifierForm extends BeanEditor {
 
 	private void addNewPrice() {
 
-		ModifierPriceByOrderTypeDialog dialog = new ModifierPriceByOrderTypeDialog(modifier);
+		ModifierPriceByOrderTypeDialog dialog = new ModifierPriceByOrderTypeDialog(this.getParentFrame(),modifier);
 		dialog.setSize(350, 220);
 		dialog.open();
 		if (!dialog.isCanceled()) {
@@ -541,10 +541,10 @@ public class MenuModifierForm extends BeanEditor {
 	private void deletePrice() {
 		int selectedRow = priceTable.getSelectedRow();
 		if (selectedRow == -1) {
-			POSMessageDialog.showMessage(Messages.getString("MenuModifierForm.7")); //$NON-NLS-1$
+			POSMessageDialog.showMessage(this.getParentFrame(),Messages.getString("MenuModifierForm.7")); //$NON-NLS-1$
 			return;
 		}
-		int option = POSMessageDialog.showYesNoQuestionDialog(POSUtil.getBackOfficeWindow(),
+		int option = POSMessageDialog.showYesNoQuestionDialog(this.getParentFrame(),
 				Messages.getString("MenuModifierForm.21"), Messages.getString("MenuModifierForm.22")); //$NON-NLS-1$ //$NON-NLS-2$
 		if (option != JOptionPane.YES_OPTION) {
 			return;
@@ -555,7 +555,7 @@ public class MenuModifierForm extends BeanEditor {
 
 	private void deleteAll() {
 
-		int option = POSMessageDialog.showYesNoQuestionDialog(POSUtil.getBackOfficeWindow(),
+		int option = POSMessageDialog.showYesNoQuestionDialog(this.getParentFrame(),
 				Messages.getString("MenuModifierForm.23"), Messages.getString("MenuModifierForm.24")); //$NON-NLS-1$ //$NON-NLS-2$
 		if (option != JOptionPane.YES_OPTION) {
 			return;
@@ -570,12 +570,12 @@ public class MenuModifierForm extends BeanEditor {
 	private void updatePrice() {
 		int selectedRow = priceTable.getSelectedRow();
 		if (selectedRow == -1) {
-			POSMessageDialog.showMessage(Messages.getString("MenuModifierForm.25")); //$NON-NLS-1$
+			POSMessageDialog.showMessage(this.getParentFrame(),Messages.getString("MenuModifierForm.25")); //$NON-NLS-1$
 			return;
 		}
 
 		priceTableModel.propertiesKey.get(selectedRow);
-		ModifierPriceByOrderTypeDialog dialog = new ModifierPriceByOrderTypeDialog(modifier, String.valueOf(priceTableModel.propertiesKey.get(selectedRow)));
+		ModifierPriceByOrderTypeDialog dialog = new ModifierPriceByOrderTypeDialog(this.getParentFrame(),modifier, String.valueOf(priceTableModel.propertiesKey.get(selectedRow)));
 		dialog.setSize(350, 220);
 		dialog.open();
 		if (!dialog.isCanceled()) {
