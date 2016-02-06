@@ -539,7 +539,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		buttonPanel.add(btnUpdatePrice);
 		//buttonPanel.add(btnDefaultValue);
 		buttonPanel.add(btnDeletePrice);
-		
+
 		//	buttonPanel.add(btnDeleteAll);
 
 		tabPrice.add(buttonPanel, BorderLayout.SOUTH);
@@ -1089,9 +1089,10 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 
 	private void addNewPrice() {
 
-		MenuItemPriceByOrderTypeDialog dialog = new MenuItemPriceByOrderTypeDialog(menuItem);
+		MenuItemPriceByOrderTypeDialog dialog = new MenuItemPriceByOrderTypeDialog(this.getParentFrame(), menuItem);
 		dialog.setSize(350, 220);
 		dialog.open();
+		Application.getPosWindow();
 		if (!dialog.isCanceled()) {
 			priceTableModel.add(dialog.getMenuItem());
 		}
@@ -1107,11 +1108,10 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 	private void deletePrice() {
 		int selectedRow = priceTable.getSelectedRow();
 		if (selectedRow == -1) {
-			POSMessageDialog.showMessage(Messages.getString("MenuItemForm.32")); //$NON-NLS-1$
+			POSMessageDialog.showMessage(null, Messages.getString("MenuItemForm.32")); //$NON-NLS-1$
 			return;
 		}
-		int option = POSMessageDialog.showYesNoQuestionDialog(POSUtil.getBackOfficeWindow(),
-				Messages.getString("MenuItemForm.33"), Messages.getString("MenuItemForm.35")); //$NON-NLS-1$ //$NON-NLS-2$
+		int option = POSMessageDialog.showYesNoQuestionDialog(null, Messages.getString("MenuItemForm.33"), Messages.getString("MenuItemForm.35")); //$NON-NLS-1$ //$NON-NLS-2$
 		if (option != JOptionPane.YES_OPTION) {
 			return;
 		}
@@ -1141,7 +1141,8 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		}
 		//System.out.println(priceTableModel.propertiesKey.get(priceTable.getSelectedRow()));
 		priceTableModel.propertiesKey.get(selectedRow);
-		MenuItemPriceByOrderTypeDialog dialog = new MenuItemPriceByOrderTypeDialog(menuItem, priceTableModel.propertiesKey.get(selectedRow));
+		MenuItemPriceByOrderTypeDialog dialog = new MenuItemPriceByOrderTypeDialog(this.getParentFrame(), menuItem,
+				priceTableModel.propertiesKey.get(selectedRow));
 		dialog.setSize(350, 220);
 		dialog.open();
 		if (!dialog.isCanceled()) {

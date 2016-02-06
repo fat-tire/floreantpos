@@ -18,6 +18,7 @@
 package com.floreantpos.ui.model;
 
 import java.awt.BorderLayout;
+import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -55,12 +56,14 @@ public class MenuItemPriceByOrderTypeDialog extends POSDialog {
 
 	private MenuItem menuItem;
 
-	public MenuItemPriceByOrderTypeDialog(MenuItem item) {
+	public MenuItemPriceByOrderTypeDialog(Frame owner, MenuItem item) {
+		super(owner, true);
 		this.menuItem = item;
 		init();
 	}
 
-	public MenuItemPriceByOrderTypeDialog(MenuItem item, String key) {
+	public MenuItemPriceByOrderTypeDialog(Frame owner, MenuItem item, String key) {
+		super(owner, true);
 		this.menuItem = item;
 		this.key = key;
 		init();
@@ -190,11 +193,11 @@ public class MenuItemPriceByOrderTypeDialog extends POSDialog {
 
 		JPanel panel = new JPanel(new MigLayout("", "grow", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
-		panel.add(label1,"right"); //$NON-NLS-1$
+		panel.add(label1, "right"); //$NON-NLS-1$
 		panel.add(cbOrderTypes, "grow,wrap"); //$NON-NLS-1$
-		panel.add(label2,"right"); //$NON-NLS-1$
+		panel.add(label2, "right"); //$NON-NLS-1$
 		panel.add(tfPrice, "grow,wrap"); //$NON-NLS-1$
-		panel.add(label3,"right"); //$NON-NLS-1$
+		panel.add(label3, "right"); //$NON-NLS-1$
 		panel.add(cbTax, "grow"); //$NON-NLS-1$
 
 		contentPane.add(panel, BorderLayout.CENTER);
