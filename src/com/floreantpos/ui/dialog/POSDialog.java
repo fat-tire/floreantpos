@@ -30,7 +30,7 @@ public class POSDialog extends JDialog {
 	protected boolean canceled = true;
 
 	public POSDialog() throws HeadlessException {
-		super(Application.getPosWindow(), true);
+//		super(Application.getPosWindow(), true);
 		initUI();
 	}
 	
