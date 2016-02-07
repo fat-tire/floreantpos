@@ -136,6 +136,7 @@ public class KitchenTicketView extends JPanel {
 		timerWatch = new TimerWatch(ticket.getCreateDate());
 
 		headerPanel = new JPanel(new MigLayout("", "grow", "grow")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		headerPanel.setPreferredSize(new Dimension(300,60)); 
 		headerPanel.setBorder(BorderFactory.createLineBorder(Color.gray));
 		headerPanel.add(ticketInfo);
 		headerPanel.add(timerWatch, "wrap,right,span"); //$NON-NLS-1$

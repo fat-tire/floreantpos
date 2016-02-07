@@ -59,8 +59,16 @@ public class TimerWatch extends JPanel implements ActionListener {
 		Interval interval = new Interval(date.getTime(), new Instant().getMillis());
 		Duration duration = interval.toDuration();
 
-		int timeOutValueYellow = Integer.parseInt(AppConfig.getString("YellowTimeOut")); //$NON-NLS-1$
-		int timeOutValueRed = Integer.parseInt(AppConfig.getString("RedTimeOut")); //$NON-NLS-1$
+		int timeOutValueYellow = 300; 
+		int timeOutValueRed = 600; 
+		
+		if(AppConfig.getString("YellowTimeOut")!=null ) {
+			timeOutValueYellow = Integer.parseInt(AppConfig.getString("YellowTimeOut")); //$NON-NLS-1$
+		}
+		
+		if(AppConfig.getString("RedTimeOut")!=null){
+			timeOutValueRed = Integer.parseInt(AppConfig.getString("RedTimeOut")); //$NON-NLS-1$
+		}
 
 		if (timeOutValueYellow < duration.getStandardSeconds() && timeOutValueRed > duration.getStandardSeconds()) {
 			backColor = Color.yellow;
