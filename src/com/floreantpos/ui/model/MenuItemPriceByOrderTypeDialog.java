@@ -53,13 +53,17 @@ public class MenuItemPriceByOrderTypeDialog extends POSDialog {
 	private JComboBox cbTax;
 	private JTextField tfPrice;
 	private String key;
+	private boolean newPrice;
 
 	private MenuItem menuItem;
 
 	public MenuItemPriceByOrderTypeDialog(Frame owner, MenuItem item) {
 		super(owner, true);
 		this.menuItem = item;
+
 		init();
+		fieldsEnable(false);
+		setNewPrice(true);
 	}
 
 	public MenuItemPriceByOrderTypeDialog(Frame owner, MenuItem item, String key) {
@@ -67,6 +71,7 @@ public class MenuItemPriceByOrderTypeDialog extends POSDialog {
 		this.menuItem = item;
 		this.key = key;
 		init();
+		fieldsEnable(true);
 	}
 
 	private void init() {
@@ -113,6 +118,11 @@ public class MenuItemPriceByOrderTypeDialog extends POSDialog {
 		setMenuItem(menuItem);
 	}
 
+	public void fieldsEnable(boolean enable) {
+		tfPrice.setEnabled(enable);
+		cbTax.setEnabled(enable);
+	}
+
 	private void onOK() {
 		if (!updateModel())
 			return;
@@ -153,6 +163,14 @@ public class MenuItemPriceByOrderTypeDialog extends POSDialog {
 	}
 
 	public boolean updateModel() {
+
+		if (isNewPrice()) {
+			menuItem.setTaxByOrderType(cbOrderTypes.getSelectedItem().toString(), menuItem.getTax() == null ? 0 : menuItem.getTax().getRate());
+			menuItem.setPriceByOrderType(cbOrderTypes.getSelectedItem().toString(), menuItem.getPrice());
+			setNewPrice(false);
+			return true;
+		}
+
 		double price = 0;
 		try {
 			price = Double.parseDouble(tfPrice.getText());
@@ -210,5 +228,19 @@ public class MenuItemPriceByOrderTypeDialog extends POSDialog {
 		buttonPanel.add(btnCancel, "grow"); //$NON-NLS-1$
 		contentPane.add(buttonPanel, BorderLayout.SOUTH);
 		add(contentPane);
+	}
+
+	/**
+	 * @return the newPrice
+	 */
+	public boolean isNewPrice() {
+		return newPrice;
+	}
+
+	/**
+	 * @param newPrice the newPrice to set
+	 */
+	public void setNewPrice(boolean newPrice) {
+		this.newPrice = newPrice;
 	}
 }
