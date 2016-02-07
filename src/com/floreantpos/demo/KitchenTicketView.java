@@ -132,16 +132,16 @@ public class KitchenTicketView extends JPanel {
 		ticketInfo.setFont(font);
 		tableInfo.setFont(font);
 		serverInfo.setFont(font);
-
+		
 		timerWatch = new TimerWatch(ticket.getCreateDate());
 
 		headerPanel = new JPanel(new MigLayout("", "grow", "grow")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		headerPanel.setPreferredSize(new Dimension(300,60)); 
+		headerPanel.setPreferredSize(new Dimension(350,70)); 
 		headerPanel.setBorder(BorderFactory.createLineBorder(Color.gray));
 		headerPanel.add(ticketInfo);
-		headerPanel.add(timerWatch, "wrap,right,span"); //$NON-NLS-1$
+		headerPanel.add(timerWatch, "wrap,right"); //$NON-NLS-1$
 		headerPanel.add(tableInfo);
-		headerPanel.add(serverInfo, "wrap,right,span"); //$NON-NLS-1$
+		headerPanel.add(serverInfo, "wrap, right"); //$NON-NLS-1$
 
 		add(headerPanel, BorderLayout.NORTH);
 	}
