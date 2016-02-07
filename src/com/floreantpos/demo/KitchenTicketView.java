@@ -33,12 +33,10 @@ import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SwingUtilities;
-import javax.swing.border.Border;
 import javax.swing.event.AncestorEvent;
 import javax.swing.event.AncestorListener;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -66,12 +64,18 @@ public class KitchenTicketView extends JPanel {
 	private TimerWatch timerWatch;
 	private JScrollPane scrollPane;
 
+	private JPanel headerPanel;
+
+	private JLabel ticketInfo;
+	private JLabel tableInfo;
+	private JLabel serverInfo;
+
 	public KitchenTicketView(KitchenTicket ticket) {
 		this.ticket = ticket;
 
-//		Border emptyBorder = BorderFactory.createEmptyBorder(5, 5, 5, 5);
-//		setBorder(BorderFactory.createCompoundBorder(emptyBorder,
-//				BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY), emptyBorder)));
+		//		Border emptyBorder = BorderFactory.createEmptyBorder(5, 5, 5, 5);
+		//		setBorder(BorderFactory.createCompoundBorder(emptyBorder,
+		//				BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY), emptyBorder)));
 		setLayout(new BorderLayout(1, 1));
 
 		createHeader(ticket);
@@ -110,21 +114,33 @@ public class KitchenTicketView extends JPanel {
 	private void createHeader(KitchenTicket ticket) {
 		String printerName = ticket.getPrinters().toString();
 
-		String ticketInfo = "Ticket# " + ticket.getTicketId() + "-" + ticket.getId() + " " + printerName + ""; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+		ticketInfo = new JLabel("Ticket# " + ticket.getTicketId() + "-" + ticket.getId() + " " + printerName + ""); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+
+		tableInfo = new JLabel();
 		if (ticket.getTableNumbers() != null && ticket.getTableNumbers().size() > 0) {
-			ticketInfo += "    Table " + ticket.getTableNumbers(); //$NON-NLS-1$
+			String tableNumbers = ticket.getTableNumbers().toString();
+			tableNumbers = tableNumbers.replace("[", "").replace("]", ""); //$NON-NLS-1$  //$NON-NLS-2$ //$NON-NLS-3$  //$NON-NLS-4$
+			tableInfo.setText("Table# " + tableNumbers); //$NON-NLS-1$
 		}
+		serverInfo = new JLabel();
 		if (ticket.getServerName() != null) {
-			ticketInfo += "<br/>Server: " + ticket.getServerName(); //$NON-NLS-1$
+			serverInfo.setText("Server: " + ticket.getServerName()); //$NON-NLS-1$
 		}
-		ticketId.setText("<html>" + ticketInfo + "</html>"); //$NON-NLS-1$ //$NON-NLS-2$
-		ticketId.setFont(ticketId.getFont().deriveFont(Font.BOLD));
+
+		Font font = getFont().deriveFont(Font.BOLD, 13f);
+
+		ticketInfo.setFont(font);
+		tableInfo.setFont(font);
+		serverInfo.setFont(font);
 
 		timerWatch = new TimerWatch(ticket.getCreateDate());
 
-		JPanel headerPanel = new JPanel(new MigLayout("fill", "[fill, grow 100][]", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		headerPanel.add(ticketId, "grow 100"); //$NON-NLS-1$
-		headerPanel.add(timerWatch);
+		headerPanel = new JPanel(new MigLayout("", "grow", "grow")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		headerPanel.setBorder(BorderFactory.createLineBorder(Color.gray));
+		headerPanel.add(ticketInfo);
+		headerPanel.add(timerWatch, "wrap,right,span"); //$NON-NLS-1$
+		headerPanel.add(tableInfo);
+		headerPanel.add(serverInfo, "wrap,right,span"); //$NON-NLS-1$
 
 		add(headerPanel, BorderLayout.NORTH);
 	}
@@ -142,13 +158,19 @@ public class KitchenTicketView extends JPanel {
 				Component rendererComponent = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 
 				KitchenTicketItem ticketItem = tableModel.getRowData(row);
+				headerPanel.setBackground(timerWatch.backColor);
+				ticketInfo.setForeground(timerWatch.textColor);
+				tableInfo.setForeground(timerWatch.textColor);
+				serverInfo.setForeground(timerWatch.textColor);
+				headerPanel.repaint();
+				headerPanel.revalidate();
 
 				if (ticketItem != null && ticketItem.getStatus() != null) {
 					if (ticketItem.getStatus().equalsIgnoreCase(KitchenTicketStatus.DONE.name())) {
 						rendererComponent.setBackground(Color.green);
 					}
 					else if (ticketItem.getStatus().equalsIgnoreCase(KitchenTicketStatus.VOID.name())) {
-						rendererComponent.setBackground(Color.red);
+						rendererComponent.setBackground(new Color(128, 0, 128));
 					}
 					else {
 						rendererComponent.setBackground(Color.white);
@@ -166,7 +188,7 @@ public class KitchenTicketView extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				int row = Integer.parseInt(e.getActionCommand());
 				KitchenTicketItem ticketItem = tableModel.getRowData(row);
-				if(!ticketItem.isCookable()) {
+				if (!ticketItem.isCookable()) {
 					return;
 				}
 				statusSelector.setTicketItem(ticketItem);
@@ -184,8 +206,6 @@ public class KitchenTicketView extends JPanel {
 	private void createButtonPanel() {
 		JPanel buttonPanel = new JPanel(new GridLayout(1, 0, 5, 5));
 
-		
-
 		PosButton btnVoid = new PosButton(Messages.getString("KitchenTicketView.12")); //$NON-NLS-1$
 		btnVoid.addActionListener(new ActionListener() {
 			@Override
@@ -194,7 +214,7 @@ public class KitchenTicketView extends JPanel {
 			}
 		});
 		buttonPanel.add(btnVoid);
-		
+
 		PosButton btnDone = new PosButton(Messages.getString("KitchenTicketView.11")); //$NON-NLS-1$
 		btnDone.addActionListener(new ActionListener() {
 			@Override

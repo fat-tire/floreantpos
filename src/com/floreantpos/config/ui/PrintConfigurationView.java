@@ -32,15 +32,19 @@ import java.awt.Component;
 
 import javax.print.PrintService;
 import javax.print.PrintServiceLookup;
+import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 import net.miginfocom.swing.MigLayout;
 
 import com.floreantpos.Messages;
+import com.floreantpos.config.AppConfig;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.PosPrinters;
 import com.floreantpos.ui.dialog.POSMessageDialog;
@@ -54,6 +58,9 @@ public class PrintConfigurationView extends ConfigurationView {
 	// Variables declaration - do not modify//GEN-BEGIN:variables
 	private JComboBox cbReceiptPrinterName;
 	private JComboBox cbReportPrinterName;
+
+	private JTextField txtYellowTime;
+	private JTextField txtRedTime;
 
 	// End of variables declaration//GEN-END:variables
 
@@ -83,11 +90,20 @@ public class PrintConfigurationView extends ConfigurationView {
 		setSelectedPrinter(cbReportPrinterName, printers.getReportPrinter());
 		setSelectedPrinter(cbReceiptPrinterName, printers.getReceiptPrinter());
 
+		String yellowTimeOut = AppConfig.getString("YellowTimeOut"); //$NON-NLS-1$
+		String redTimeOut = AppConfig.getString("RedTimeOut"); //$NON-NLS-1$
+		
+		if (yellowTimeOut!=null) {
+			txtYellowTime.setText(yellowTimeOut);
+		}
+		if (redTimeOut!=null) {
+			txtRedTime.setText(redTimeOut);
+		}
+
 		setInitialized(true);
 
 		if (printServices == null || printServices.length == 0) {
-			POSMessageDialog.showMessage(com.floreantpos.util.POSUtil.getFocusedWindow(),
-					Messages.getString("PrintConfigurationView.0")); //$NON-NLS-1$
+			POSMessageDialog.showMessage(com.floreantpos.util.POSUtil.getFocusedWindow(), Messages.getString("PrintConfigurationView.0")); //$NON-NLS-1$
 		}
 	}
 
@@ -123,6 +139,9 @@ public class PrintConfigurationView extends ConfigurationView {
 		//printService = (PrintService) cbKitchenPrinterName.getSelectedItem();
 		//AppConfig.put(PrintConfig.KITCHEN_PRINTER_NAME, printService == null ? null : printService.getName());
 
+		AppConfig.put("YellowTimeOut", txtYellowTime.getText());
+		AppConfig.put("RedTimeOut", txtRedTime.getText());
+
 		Application.getPrinters().save();
 
 		return true;
@@ -136,7 +155,7 @@ public class PrintConfigurationView extends ConfigurationView {
 	@SuppressWarnings("unchecked")
 	// <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
 	private void initComponents() {
-		setLayout(new MigLayout("", "[][grow,fill]", "[][][][18px,grow]")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		setLayout(new MigLayout("", "[][grow,fill]", "[][][][18px,grow][][]")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 		JLabel lblReportPrinter = new JLabel(Messages.getString("PrintConfigurationView.4")); //$NON-NLS-1$
 		add(lblReportPrinter, "cell 0 0,alignx trailing"); //$NON-NLS-1$
@@ -154,9 +173,31 @@ public class PrintConfigurationView extends ConfigurationView {
 
 		MultiPrinterPane multiPrinterPane = new MultiPrinterPane(Messages.getString("PrintConfigurationView.11"), printers.getKitchenPrinters()); //$NON-NLS-1$
 		add(multiPrinterPane, "cell 0 3 2 1,grow"); //$NON-NLS-1$
-		
+
 		PrinterGroupView printerGroupView = new PrinterGroupView(Messages.getString("PrintConfigurationView.13")); //$NON-NLS-1$
-	add(printerGroupView, "newline, grow, span 2"); //$NON-NLS-1$
+		add(printerGroupView,"cell 0 4 2 2,grow,wrap"); //$NON-NLS-1$
+
+		JPanel footerPanel = new JPanel(new MigLayout());
+
+		txtYellowTime = new JTextField(5);
+		txtRedTime = new JTextField(5);
+
+		txtYellowTime.setText("90");
+		txtRedTime.setText("120");
+
+		footerPanel.setBorder(BorderFactory.createTitledBorder("Kitchen Display"));
+
+		JLabel lblYellowTime = new JLabel("Yellow Time Out: ");
+		JLabel lblRedTime = new JLabel("Red Time Out: ");
+
+		footerPanel.add(lblYellowTime, "grow");
+		footerPanel.add(txtYellowTime, "grow");
+		footerPanel.add(new JLabel("sec"), "grow, wrap");
+		footerPanel.add(lblRedTime, "grow");
+		footerPanel.add(txtRedTime, "grow");
+		footerPanel.add(new JLabel("sec"), "grow");
+
+		add(footerPanel,  "newline, grow, span 2,wrap");
 
 	}// </editor-fold>//GEN-END:initComponents
 

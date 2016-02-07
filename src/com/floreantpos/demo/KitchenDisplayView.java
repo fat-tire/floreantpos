@@ -18,13 +18,13 @@
 package com.floreantpos.demo;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
-import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -47,7 +47,6 @@ import com.floreantpos.swing.PosButton;
 import com.floreantpos.swing.PosComboRenderer;
 import com.floreantpos.ui.HeaderPanel;
 import com.floreantpos.ui.dialog.POSMessageDialog;
-import com.floreantpos.ui.views.order.OrderView;
 import com.floreantpos.ui.views.order.ViewPanel;
 
 public class KitchenDisplayView extends ViewPanel implements ActionListener {
@@ -58,7 +57,7 @@ public class KitchenDisplayView extends ViewPanel implements ActionListener {
 	private JComboBox<OrderType> cbTicketTypes = new JComboBox<OrderType>();
 
 	HeaderPanel headerPanel;
-	
+
 	KitchenTicketListPanel ticketPanel = new KitchenTicketListPanel();
 
 	private Timer viewUpdateTimer;
@@ -76,24 +75,29 @@ public class KitchenDisplayView extends ViewPanel implements ActionListener {
 		}
 
 		Font font = getFont().deriveFont(18f);
-		
+
 		cbPrinters.setFont(font);
 		cbPrinters.setRenderer(new PosComboRenderer());
 		cbPrinters.setModel(printerModel);
 		cbPrinters.addActionListener(this);
-		
+
 		JPanel firstTopPanel = new JPanel(new BorderLayout(5, 5));
-		if(showHeader) {
+		if (showHeader) {
 			headerPanel = new HeaderPanel();
 			firstTopPanel.add(headerPanel, BorderLayout.NORTH);
 		}
 
 		JPanel topPanel = new JPanel(new MigLayout("", "[][][][][fill,grow][]", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		topPanel.setBorder(BorderFactory.createTitledBorder(Messages.getString("KitchenDisplayView.4"))); //$NON-NLS-1$
+		//topPanel.setBorder(BorderFactory.createTitledBorder(Messages.getString("KitchenDisplayView.4"))); //$NON-NLS-1$
 		JLabel label = new JLabel(Messages.getString("KitchenDisplayView.5")); //$NON-NLS-1$
 		label.setFont(font);
-		topPanel.add(label);
-		topPanel.add(cbPrinters);
+		//topPanel.add(label);
+		//topPanel.add(cbPrinters);
+		Font filterFont = getFont().deriveFont(Font.BOLD, 12f);
+		JLabel lblFilter = new JLabel("Filter: All Printers- All Orders"); //$NON-NLS-1$
+		lblFilter.setForeground(new Color(49, 106, 196));
+		lblFilter.setFont(filterFont);
+		topPanel.add(lblFilter);
 
 		cbTicketTypes.setFont(font);
 		cbTicketTypes.setRenderer(new PosComboRenderer());
@@ -105,8 +109,8 @@ public class KitchenDisplayView extends ViewPanel implements ActionListener {
 		JLabel label2 = new JLabel(Messages.getString("KitchenDisplayView.6")); //$NON-NLS-1$
 		label2.setFont(font);
 
-		topPanel.add(label2);
-		topPanel.add(cbTicketTypes);
+		//topPanel.add(label2);
+		//topPanel.add(cbTicketTypes);
 
 		if (TerminalConfig.isKitchenMode()) {
 			btnLogout = new PosButton(Messages.getString("KitchenDisplayView.7")); //$NON-NLS-1$
@@ -213,7 +217,7 @@ public class KitchenDisplayView extends ViewPanel implements ActionListener {
 	public String getViewName() {
 		return VIEW_NAME;
 	}
-	
+
 	public synchronized static KitchenDisplayView getInstance() {
 		if (instance == null) {
 			instance = new KitchenDisplayView(false);
