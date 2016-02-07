@@ -87,7 +87,7 @@ public class KitchenTicketView extends JPanel {
 		statusSelector = new KitchenTicketStatusSelector((Frame) SwingUtilities.getWindowAncestor(this));
 		statusSelector.pack();
 
-		setPreferredSize(new Dimension(300, 200));
+		setPreferredSize(new Dimension(350, 200));
 
 		timerWatch.start();
 
@@ -136,12 +136,11 @@ public class KitchenTicketView extends JPanel {
 		timerWatch = new TimerWatch(ticket.getCreateDate());
 
 		headerPanel = new JPanel(new MigLayout("", "grow", "grow")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		headerPanel.setPreferredSize(new Dimension(350,70)); 
 		headerPanel.setBorder(BorderFactory.createLineBorder(Color.gray));
 		headerPanel.add(ticketInfo);
-		headerPanel.add(timerWatch, "wrap,right"); //$NON-NLS-1$
+		headerPanel.add(timerWatch, "wrap,right,span"); //$NON-NLS-1$
 		headerPanel.add(tableInfo);
-		headerPanel.add(serverInfo, "wrap, right"); //$NON-NLS-1$
+		headerPanel.add(serverInfo, "wrap, right,span"); //$NON-NLS-1$
 
 		add(headerPanel, BorderLayout.NORTH);
 	}
