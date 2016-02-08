@@ -17,13 +17,17 @@
  */
 package com.floreantpos.ui.forms;
 
+import java.awt.Component;
+import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.FocusTraversalPolicy;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Vector;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -58,6 +62,7 @@ import com.floreantpos.util.POSUtil;
 import com.floreantpos.util.PosGuiUtil;
 
 public class CustomerForm extends BeanEditor<Customer> {
+	static MyOwnFocusTraversalPolicy newPolicy;
 	private FixedLengthTextField tfLoyaltyNo;
 	private JTextField tfAddress;
 	private FixedLengthTextField tfCity;
@@ -97,9 +102,11 @@ public class CustomerForm extends BeanEditor<Customer> {
 	public CustomerForm(boolean enable) {
 		isKeypad = enable;
 		createCustomerForm();
+
 	}
 
 	private void createCustomerForm() {
+		setOpaque(true);
 		setLayout(new MigLayout("", "[][][grow][][grow]", "[][][][][][][][][][][][][][][][][]")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		picturePanel = new JPanel(new MigLayout());
 
@@ -138,6 +145,7 @@ public class CustomerForm extends BeanEditor<Customer> {
 
 		tfFirstName = new FixedLengthTextField(30);
 		add(tfFirstName, "cell 2 1,grow"); //$NON-NLS-1$
+		//tfFirstName.setFocusTraversalPolicy(policy)
 
 		JLabel lblLastName = new JLabel(Messages.getString("CustomerForm.11")); //$NON-NLS-1$
 		add(lblLastName, "cell 1 2,right"); //$NON-NLS-1$
@@ -232,10 +240,9 @@ public class CustomerForm extends BeanEditor<Customer> {
 
 		qwertyKeyPad = new QwertyKeyPad();
 
-		if(isKeypad) {
+		if (isKeypad) {
 			add(qwertyKeyPad, "cell 0 10 5 5,grow"); //$NON-NLS-1$
 		}
-		
 
 		btnSelectImage.addActionListener(new ActionListener() {
 			@Override
@@ -243,10 +250,10 @@ public class CustomerForm extends BeanEditor<Customer> {
 				try {
 					BufferedImage tmpImage;
 					tmpImage = PosGuiUtil.selectImageFile();
-					if(tmpImage != null) {
+					if (tmpImage != null) {
 						image = tmpImage;
 					}
-					if(image == null) {
+					if (image == null) {
 						return;
 					}
 					ImageIcon imageIcon = new ImageIcon(image);
@@ -265,6 +272,42 @@ public class CustomerForm extends BeanEditor<Customer> {
 
 		setDefaultCustomerPicture();
 		enableCustomerFields(false);
+		callOrderController();
+	}
+
+	public void callOrderController() {
+		Vector<Component> order = new Vector<Component>();
+		order.add(tfFirstName);
+		order.add(tfLastName);
+		order.add(tfDoB);
+		order.add(tfAddress);
+		order.add(tfZip);
+		order.add(tfLoyaltyNo);
+		order.add(tfCreditLimit);
+		order.add(tfSocialSecurityNumber);
+		order.add(tfCity);
+		order.add(tfCountry);
+		order.add(tfMobile);
+		order.add(tfHomePhone);
+		order.add(tfWorkPhone);
+		order.add(tfEmail);
+		order.add(tfLoyaltyPoint);
+
+		newPolicy = new MyOwnFocusTraversalPolicy(order);
+
+		this.setFocusCycleRoot(true);
+		this.setFocusTraversalPolicy(newPolicy);
+		/*JFrame frame=new JFrame();
+		 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+		    //Create and set up the content pane.
+		    JComponent newContentPane = this;
+		    newContentPane.setOpaque(true); //content panes must be opaque
+		    frame.setContentPane(newContentPane);
+		    frame.setFocusTraversalPolicy(newPolicy);
+		    //Display the window.
+		    frame.pack();
+		    frame.setVisible(true);*/
 	}
 
 	public void enableCustomerFields(boolean enable) {
@@ -340,7 +383,6 @@ public class CustomerForm extends BeanEditor<Customer> {
 	@Override
 	public void createNew() {
 		setBean(new Customer());
-
 		tfFirstName.setText("");//$NON-NLS-1$
 		tfLastName.setText("");//$NON-NLS-1$
 		cbSalutation.setSelectedIndex(0);
@@ -364,7 +406,7 @@ public class CustomerForm extends BeanEditor<Customer> {
 	@Override
 	public boolean save() {
 		try {
-			if(!updateModel())
+			if (!updateModel())
 				return false;
 			Customer customer = (Customer) getBean();
 			CustomerDAO.getInstance().saveOrUpdate(customer);
@@ -380,7 +422,7 @@ public class CustomerForm extends BeanEditor<Customer> {
 	@Override
 	protected void updateView() {
 		Customer customer = (Customer) getBean();
-		if(customer == null) {
+		if (customer == null) {
 			return;
 		}
 		cbSalutation.setSelectedItem(customer.getSalutation());
@@ -399,12 +441,12 @@ public class CustomerForm extends BeanEditor<Customer> {
 		cbVip.setSelected(customer.isVip());
 		tfWorkPhone.setText(customer.getWorkPhoneNo());
 		tfMobile.setText(customer.getMobileNo());
-		if(customer.getSocialSecurityNumber() != null) {
+		if (customer.getSocialSecurityNumber() != null) {
 			tfSocialSecurityNumber.setText(String.valueOf(customer.getSocialSecurityNumber()));
 		}
 
 		byte[] picture = customer.getPicture();
-		if(picture != null) {
+		if (picture != null) {
 			lblPicture.setIcon(new ImageIcon(picture));
 		}
 		else {
@@ -450,13 +492,13 @@ public class CustomerForm extends BeanEditor<Customer> {
 		String fname = tfFirstName.getText();
 		String loyaltyNo = tfLoyaltyNo.getText();
 
-		if(StringUtils.isEmpty(mobile) && StringUtils.isEmpty(fname) && StringUtils.isEmpty(loyaltyNo)) {
+		if (StringUtils.isEmpty(mobile) && StringUtils.isEmpty(fname) && StringUtils.isEmpty(loyaltyNo)) {
 			POSMessageDialog.showError(null, Messages.getString("CustomerForm.60")); //$NON-NLS-1$
 			return false;
 		}
 		Customer customer = (Customer) getBean();
 
-		if(customer == null) {
+		if (customer == null) {
 			customer = new Customer();
 			setBean(customer, false);
 		}
@@ -478,7 +520,7 @@ public class CustomerForm extends BeanEditor<Customer> {
 		customer.setSocialSecurityNumber(tfSocialSecurityNumber.getText());
 		customer.setWorkPhoneNo(tfWorkPhone.getText());
 
-		if(image != null) {
+		if (image != null) {
 			try {
 				ByteArrayOutputStream baos = new ByteArrayOutputStream();
 				ImageIO.write(image, "jpg", baos); //$NON-NLS-1$
@@ -495,11 +537,11 @@ public class CustomerForm extends BeanEditor<Customer> {
 	public boolean delete() {
 		try {
 			Customer bean2 = getBean();
-			if(bean2 == null)
+			if (bean2 == null)
 				return false;
 
 			int option = POSMessageDialog.showYesNoQuestionDialog(POSUtil.getBackOfficeWindow(), "Are you sure to delete selected table?", "Confirm"); //$NON-NLS-1$ //$NON-NLS-2$
-			if(option != JOptionPane.YES_OPTION) {
+			if (option != JOptionPane.YES_OPTION) {
 				return false;
 			}
 			CustomerDAO.getInstance().delete(bean2);
@@ -518,5 +560,41 @@ public class CustomerForm extends BeanEditor<Customer> {
 					return Messages.getString("CustomerExplorerForm.20"); //$NON-NLS-1$
 		*/
 		return Messages.getString("CustomerForm.54"); //$NON-NLS-1$
+	}
+
+	//
+
+	public static class MyOwnFocusTraversalPolicy extends FocusTraversalPolicy {
+		Vector<Component> order;
+
+		public MyOwnFocusTraversalPolicy(Vector<Component> order) {
+			this.order = new Vector<Component>(order.size());
+			this.order.addAll(order);
+		}
+
+		public Component getComponentAfter(Container focusCycleRoot, Component aComponent) {
+			int idx = (order.indexOf(aComponent) + 1) % order.size();
+			return order.get(idx);
+		}
+
+		public Component getComponentBefore(Container focusCycleRoot, Component aComponent) {
+			int idx = order.indexOf(aComponent) - 1;
+			if (idx < 0) {
+				idx = order.size() - 1;
+			}
+			return order.get(idx);
+		}
+
+		public Component getDefaultComponent(Container focusCycleRoot) {
+			return order.get(0);
+		}
+
+		public Component getLastComponent(Container focusCycleRoot) {
+			return order.lastElement();
+		}
+
+		public Component getFirstComponent(Container focusCycleRoot) {
+			return order.get(0);
+		}
 	}
 }
