@@ -41,6 +41,7 @@ public class ShowKitchenDisplayAction extends PosAction {
 		KitchenDisplayWindow window = new KitchenDisplayWindow();
 		window.setVisible(true);*/
 		RootView.getInstance().showView(KitchenDisplayView.getInstance());
+		RootView.getInstance().getHeaderPanel().setVisible(false); 
 	}
 
 }

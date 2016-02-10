@@ -29,14 +29,14 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
 import javax.swing.Timer;
 import javax.swing.border.EmptyBorder;
 
 import net.miginfocom.swing.MigLayout;
 
 import com.floreantpos.Messages;
-import com.floreantpos.config.TerminalConfig;
+import com.floreantpos.actions.LogoutAction;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.KitchenTicket;
 import com.floreantpos.model.OrderType;
@@ -47,6 +47,7 @@ import com.floreantpos.swing.PosButton;
 import com.floreantpos.swing.PosComboRenderer;
 import com.floreantpos.ui.HeaderPanel;
 import com.floreantpos.ui.dialog.POSMessageDialog;
+import com.floreantpos.ui.views.order.RootView;
 import com.floreantpos.ui.views.order.ViewPanel;
 
 public class KitchenDisplayView extends ViewPanel implements ActionListener {
@@ -56,9 +57,13 @@ public class KitchenDisplayView extends ViewPanel implements ActionListener {
 	private JComboBox<Printer> cbPrinters = new JComboBox<Printer>();
 	private JComboBox<OrderType> cbTicketTypes = new JComboBox<OrderType>();
 
-	HeaderPanel headerPanel;
+	private HeaderPanel headerPanel;
+	private JPanel filterPanel;
+	private JLabel lblFilter;
 
-	KitchenTicketListPanel ticketPanel = new KitchenTicketListPanel();
+	private PosButton btnFilter;
+
+	private KitchenTicketListPanel ticketPanel = new KitchenTicketListPanel();
 
 	private Timer viewUpdateTimer;
 
@@ -87,17 +92,54 @@ public class KitchenDisplayView extends ViewPanel implements ActionListener {
 			firstTopPanel.add(headerPanel, BorderLayout.NORTH);
 		}
 
-		JPanel topPanel = new JPanel(new MigLayout("", "[][][][][fill,grow][]", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		//topPanel.setBorder(BorderFactory.createTitledBorder(Messages.getString("KitchenDisplayView.4"))); //$NON-NLS-1$
+		filterPanel = new JPanel();
+
+		PosButton btnBack = new PosButton("Back");
+		btnBack.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				RootView.getInstance().showDefaultView();
+			}
+		});
+
 		JLabel label = new JLabel(Messages.getString("KitchenDisplayView.5")); //$NON-NLS-1$
 		label.setFont(font);
+
+		JLabel label2 = new JLabel(Messages.getString("KitchenDisplayView.6")); //$NON-NLS-1$
+		label2.setFont(font);
+
+		filterPanel.setLayout(new MigLayout("", "[][][][][fill,grow][]", ""));
+		filterPanel.add(label);
+		filterPanel.add(cbPrinters);
+
+		filterPanel.add(label2);
+		filterPanel.add(cbTicketTypes);
+
+		btnFilter = new PosButton("Filter");
+		btnFilter.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				KitchenFilterDialog dialog = new KitchenFilterDialog();
+				dialog.add(filterPanel, BorderLayout.CENTER);
+				dialog.open();
+			}
+		});
+
+		JPanel topPanel = new JPanel(new MigLayout("ins 2 2 0 2", "[][fill, grow][]", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		//topPanel.setBorder(BorderFactory.createTitledBorder("Filter: All Printers- All Orders")); //$NON-NLS-1$
+
 		//topPanel.add(label);
 		//topPanel.add(cbPrinters);
 		Font filterFont = getFont().deriveFont(Font.BOLD, 12f);
-		JLabel lblFilter = new JLabel("Filter: All Printers- All Orders"); //$NON-NLS-1$
+		lblFilter = new JLabel("Filter: All Printers- All Orders"); //$NON-NLS-1$
 		lblFilter.setForeground(new Color(49, 106, 196));
 		lblFilter.setFont(filterFont);
 		topPanel.add(lblFilter);
+		topPanel.add(btnFilter, "w 60!, h 40!");
+		topPanel.add(btnBack, "w 60!, h 40!");
+		topPanel.setBackground(Color.white);
 
 		cbTicketTypes.setFont(font);
 		cbTicketTypes.setRenderer(new PosComboRenderer());
@@ -106,27 +148,27 @@ public class KitchenDisplayView extends ViewPanel implements ActionListener {
 		cbTicketTypes.setModel(ticketTypeModel);
 		cbTicketTypes.setSelectedIndex(0);
 		cbTicketTypes.addActionListener(this);
-		JLabel label2 = new JLabel(Messages.getString("KitchenDisplayView.6")); //$NON-NLS-1$
-		label2.setFont(font);
 
 		//topPanel.add(label2);
 		//topPanel.add(cbTicketTypes);
 
-		if (TerminalConfig.isKitchenMode()) {
-			btnLogout = new PosButton(Messages.getString("KitchenDisplayView.7")); //$NON-NLS-1$
-			btnLogout.addActionListener(this);
-			topPanel.add(new JLabel(), "grow"); //$NON-NLS-1$
-			topPanel.add(btnLogout);
-		}
+		btnLogout = new PosButton(new LogoutAction(true, false)); //$NON-NLS-1$
+		//btnLogout.addActionListener(this);
+		topPanel.add(btnLogout, "w 60!, h 40!, wrap");
 
+		topPanel.add(new JSeparator(), "grow,span");
+
+		firstTopPanel.setPreferredSize(new Dimension(0, 50));
 		firstTopPanel.add(topPanel);
 		add(firstTopPanel, BorderLayout.NORTH);
 
 		ticketPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
-		JScrollPane scrollPane = new JScrollPane(ticketPanel);
-		scrollPane.getHorizontalScrollBar().setSize(new Dimension(100, 60));
-		scrollPane.getHorizontalScrollBar().setPreferredSize(new Dimension(100, 60));
-		add(scrollPane);
+		//JScrollPane scrollPane = new JScrollPane(ticketPanel);
+		//scrollPane.getHorizontalScrollBar().setSize(new Dimension(100, 60));
+		//scrollPane.getHorizontalScrollBar().setPreferredSize(new Dimension(100, 60));
+		add(ticketPanel);
+
+		add(ticketPanel.getPaginationPanel(), BorderLayout.SOUTH);
 
 		viewUpdateTimer = new Timer(5 * 1000, this);
 		viewUpdateTimer.setRepeats(true);
@@ -202,8 +244,7 @@ public class KitchenDisplayView extends ViewPanel implements ActionListener {
 			for (KitchenTicket kitchenTicket : list) {
 				addTicket(kitchenTicket, false);
 			}
-
-			//ticketPanel.revalidate();
+			//ticketPanel.updateView();
 			ticketPanel.repaint();
 
 		} catch (Exception e2) {

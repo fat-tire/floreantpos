@@ -177,6 +177,7 @@ public class RootView extends com.floreantpos.swing.TransparentPanel {
 				addView(KitchenDisplayView.getInstance());
 			}
 			showView(KitchenDisplayView.VIEW_NAME);
+			headerPanel.setVisible(false);
 		}
 		else if (defaultViewName.equals(SwitchboardView.VIEW_NAME)) {
 			showView(SwitchboardView.getInstance());

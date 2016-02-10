@@ -32,6 +32,8 @@ import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -87,7 +89,7 @@ public class KitchenTicketView extends JPanel {
 		statusSelector = new KitchenTicketStatusSelector((Frame) SwingUtilities.getWindowAncestor(this));
 		statusSelector.pack();
 
-		setPreferredSize(new Dimension(350, 200));
+		setPreferredSize(new Dimension(350, 240));
 
 		timerWatch.start();
 
@@ -150,7 +152,7 @@ public class KitchenTicketView extends JPanel {
 		table = new JTable(tableModel);
 		table.setRowSelectionAllowed(false);
 		table.setCellSelectionEnabled(false);
-		table.setRowHeight(50);
+		table.setRowHeight(30);
 		table.setTableHeader(null);
 		table.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
 			@Override
@@ -207,6 +209,8 @@ public class KitchenTicketView extends JPanel {
 		JPanel buttonPanel = new JPanel(new GridLayout(1, 0, 5, 5));
 
 		PosButton btnVoid = new PosButton(Messages.getString("KitchenTicketView.12")); //$NON-NLS-1$
+		btnVoid.setPreferredSize(new Dimension(100,40)); 
+		
 		btnVoid.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -222,6 +226,8 @@ public class KitchenTicketView extends JPanel {
 				closeTicket(KitchenTicketStatus.DONE);
 			}
 		});
+		
+		btnDone.setPreferredSize(new Dimension(100,40)); 
 
 		buttonPanel.add(btnDone);
 
@@ -260,7 +266,7 @@ public class KitchenTicketView extends JPanel {
 	private void resizeTableColumns() {
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 		setColumnWidth(1, 40);
-		setColumnWidth(2, 100);
+		setColumnWidth(2, 50);
 	}
 
 	private void setColumnWidth(int columnNumber, int width) {
