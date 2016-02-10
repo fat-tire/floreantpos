@@ -40,23 +40,31 @@ public class MenuItem extends BaseMenuItem {
 	private static final long serialVersionUID = 1L;
 
 	/*[CONSTRUCTOR MARKER BEGIN]*/
-	public MenuItem() {
+	public MenuItem () {
 		super();
 	}
 
 	/**
 	 * Constructor for primary key
 	 */
-	public MenuItem(java.lang.Integer id) {
+	public MenuItem (java.lang.Integer id) {
 		super(id);
 	}
 
 	/**
 	 * Constructor for required fields
 	 */
-	public MenuItem(java.lang.Integer id, java.lang.String name, java.lang.Double buyPrice, java.lang.Double price) {
+	public MenuItem (
+		java.lang.Integer id,
+		java.lang.String name,
+		java.lang.Double buyPrice,
+		java.lang.Double price) {
 
-		super(id, name, buyPrice, price);
+		super (
+			id,
+			name,
+			buyPrice,
+			price);
 	}
 
 	/*[CONSTRUCTOR MARKER END]*/
