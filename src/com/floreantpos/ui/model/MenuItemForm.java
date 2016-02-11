@@ -84,6 +84,7 @@ import com.floreantpos.swing.CheckBoxList;
 import com.floreantpos.swing.ComboBoxModel;
 import com.floreantpos.swing.DoubleDocument;
 import com.floreantpos.swing.DoubleTextField;
+import com.floreantpos.swing.FixedLengthDocument;
 import com.floreantpos.swing.FixedLengthTextField;
 import com.floreantpos.swing.IUpdatebleView;
 import com.floreantpos.swing.IntegerTextField;
@@ -186,15 +187,17 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		tabGeneral = new javax.swing.JPanel();
 		lfname = new javax.swing.JLabel();
 		lfname.setHorizontalAlignment(SwingConstants.TRAILING);
-		tfName = new com.floreantpos.swing.FixedLengthTextField();
+		tfName = new com.floreantpos.swing.FixedLengthTextField(20);
 		lgroup = new javax.swing.JLabel();
 		lgroup.setHorizontalAlignment(SwingConstants.TRAILING);
 		cbGroup = new javax.swing.JComboBox();
 		btnNewGroup = new javax.swing.JButton();
 		lSalePrice = new javax.swing.JLabel();
 		lSalePrice.setHorizontalAlignment(SwingConstants.TRAILING);
-		tfPrice = new DoubleTextField(10);
-		tfDescription = new JTextArea();
+		tfPrice = new DoubleTextField(20);
+		tfDescription = new JTextArea(3, 20);
+		tfDescription.setDocument(new FixedLengthDocument(120));
+
 		lTax = new javax.swing.JLabel();
 		lTax.setHorizontalAlignment(SwingConstants.TRAILING);
 		cbTax = new javax.swing.JComboBox();
@@ -202,7 +205,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		lDiscountRate = new javax.swing.JLabel();
 		lDiscountRate.setHorizontalAlignment(SwingConstants.TRAILING);
 		lPercentage = new javax.swing.JLabel();
-		tfDiscountRate = new DoubleTextField(10);
+		tfDiscountRate = new DoubleTextField(18);
 		tfDiscountRate.setHorizontalAlignment(SwingConstants.TRAILING);
 		chkVisible = new javax.swing.JCheckBox();
 		tabModifier = new javax.swing.JPanel();
@@ -260,7 +263,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		chkVisible.setText(com.floreantpos.POSConstants.VISIBLE);
 		chkVisible.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
 		chkVisible.setMargin(new java.awt.Insets(0, 0, 0, 0));
-		tabbedPane.setPreferredSize(new Dimension(700, 410));
+		tabbedPane.setPreferredSize(new Dimension(765, 440));
 		tabbedPane.addTab(com.floreantpos.POSConstants.GENERAL, tabGeneral);
 
 		btnNewModifierGroup.setText(com.floreantpos.POSConstants.ADD);
@@ -288,8 +291,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 
 		tfDiscountRate.setDocument(new DoubleDocument());
 
-		tabGeneral.setLayout(new MigLayout("", "[][grow]20px[][grow]", "[][][][][][][][][][][][]")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-
+		tabGeneral.setLayout(new MigLayout("", "[][]20px[][]", "[][][][][][][][][][][][]")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		JLabel lblImage = new JLabel(Messages.getString("MenuItemForm.28")); //$NON-NLS-1$
 		lblImage.setHorizontalAlignment(SwingConstants.TRAILING);
 		tabGeneral.add(lblImage, "cell 0 0,right"); //$NON-NLS-1$
@@ -311,20 +313,14 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		btnClearImage = new JButton(Messages.getString("MenuItemForm.34")); //$NON-NLS-1$
 		btnClearImage.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				/*doClearImage();*/
-
-				List<MenuItem> item = MenuItemDAO.getInstance().findAll();
-				for (MenuItem menuItem : item) {
-					System.out.println(menuItem.getButtonColor());
-				}
-
+				doClearImage();
 			}
 		});
 		tabGeneral.add(btnClearImage, "cell 1 0"); //$NON-NLS-1$
 
 		tabGeneral.add(lgroup, "cell 0 1 ,right"); //$NON-NLS-1$
-		cbGroup.setPreferredSize(new Dimension(140, 0));
-		tabGeneral.add(cbGroup, "cell 1 1,grow"); //$NON-NLS-1$
+		cbGroup.setPreferredSize(new Dimension(198, 0));
+		tabGeneral.add(cbGroup, "cell 1 1"); //$NON-NLS-1$
 		tabGeneral.add(btnNewGroup, "cell 1 1"); //$NON-NLS-1$
 
 		lblKitchenPrinter = new JLabel(Messages.getString("MenuItemForm.27")); //$NON-NLS-1$
@@ -332,80 +328,82 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 
 		cbPrinterGroup = new JComboBox<PrinterGroup>(new DefaultComboBoxModel<PrinterGroup>(PrinterGroupDAO.getInstance().findAll()
 				.toArray(new PrinterGroup[0])));
-		cbPrinterGroup.setPreferredSize(new Dimension(180, 0));
-		tabGeneral.add(cbPrinterGroup, "cell 3 1,grow"); //$NON-NLS-1$
+		cbPrinterGroup.setPreferredSize(new Dimension(224, 0));
+		tabGeneral.add(cbPrinterGroup, "cell 3 1"); //$NON-NLS-1$
 		lfname.setText(Messages.getString("LABEL_NAME")); //$NON-NLS-1$
 		tabGeneral.add(lfname, "cell 0 2,right"); //$NON-NLS-1$
 		tfName.setLength(120);
-		tabGeneral.add(tfName, "cell 1 2,grow"); //$NON-NLS-1$
+		tabGeneral.add(tfName, "cell 1 2"); //$NON-NLS-1$
 
 		lblTranslatedName = new JLabel(Messages.getString("MenuItemForm.lblTranslatedName.text")); //$NON-NLS-1$
 		tabGeneral.add(lblTranslatedName, "cell 2 2,right"); //$NON-NLS-1$
 
-		tfTranslatedName = new FixedLengthTextField();
+		tfTranslatedName = new FixedLengthTextField(20);
 		tfTranslatedName.setLength(120);
-		tabGeneral.add(tfTranslatedName, "cell 3 2,grow"); //$NON-NLS-1$
+		tabGeneral.add(tfTranslatedName, "cell 3 2"); //$NON-NLS-1$
 
 		tabGeneral.add(new JLabel("Description"), "cell 0 3,right");
-		tabGeneral.add(tfDescription, "cell 1 3,grow");
+		tabGeneral.add(new JScrollPane(tfDescription), "cell 1 3 1 5");
 
 		lblSortOrder = new JLabel(Messages.getString("MenuItemForm.lblSortOrder.text")); //$NON-NLS-1$
-		tabGeneral.add(lblSortOrder, "cell 0 5,right"); //$NON-NLS-1$
+		tabGeneral.add(lblSortOrder, "cell 0 6,right"); //$NON-NLS-1$
 
-		tfSortOrder = new IntegerTextField();
-		tfSortOrder.setColumns(10);
+		tfSortOrder = new IntegerTextField(20);
+
 		tfSortOrder.setText(""); //$NON-NLS-1$
-		tabGeneral.add(tfSortOrder, "cell 1 5,grow"); //$NON-NLS-1$
+		tabGeneral.add(tfSortOrder, "cell 1 6,gaptop 4"); //$NON-NLS-1$
 
 		lblBarcode = new JLabel(Messages.getString("MenuItemForm.lblBarcode.text")); //$NON-NLS-1$
 		tabGeneral.add(lblBarcode, "cell 2 3,right"); //$NON-NLS-1$
 
-		tfBarcode = new FixedLengthTextField();
-		tabGeneral.add(tfBarcode, "cell 3 3,grow"); //$NON-NLS-1$
+		tfBarcode = new FixedLengthTextField(20);
+		tabGeneral.add(tfBarcode, "cell 3 3"); //$NON-NLS-1$
 
 		lblBuyPrice = new JLabel(Messages.getString("LABEL_BUY_PRICE")); //$NON-NLS-1$
-		tabGeneral.add(lblBuyPrice, "cell 0 6,right"); //$NON-NLS-1$
-		tfBuyPrice = new DoubleTextField();
+		tabGeneral.add(lblBuyPrice, "cell 0 7,right"); //$NON-NLS-1$
+		tfBuyPrice = new DoubleTextField(20);
 		tfBuyPrice.setHorizontalAlignment(SwingConstants.TRAILING);
-		tabGeneral.add(tfBuyPrice, "cell 1 6,grow"); //$NON-NLS-1$
+		tabGeneral.add(tfBuyPrice, "cell 1 7"); //$NON-NLS-1$
 
 		tabGeneral.add(lSalePrice, "cell 2 5,right"); //$NON-NLS-1$
-		tabGeneral.add(tfPrice, "cell 3 5,grow"); //$NON-NLS-1$
+		tabGeneral.add(tfPrice, "cell 3 5"); //$NON-NLS-1$
 
 		setLayout(new BorderLayout(0, 0));
 
-		tabGeneral.add(lDiscountRate, "cell 0 7,right"); //$NON-NLS-1$
-		tabGeneral.add(tfDiscountRate, "cell 1 7,grow"); //$NON-NLS-1$
-		tabGeneral.add(lPercentage, "cell 1 7,right"); //$NON-NLS-1$
+		//tabGeneral.add(lDiscountRate, "cell 0 7,right"); //$NON-NLS-1$
+		//tabGeneral.add(tfDiscountRate, "cell 1 7"); //$NON-NLS-1$
+		//tabGeneral.add(lPercentage, "cell 1 7,right"); //$NON-NLS-1$
 
 		tabGeneral.add(lTax, "cell 2 6,right"); //$NON-NLS-1$
-		tabGeneral.add(cbTax, "cell 3 6,grow"); //$NON-NLS-1$
+		cbTax.setPreferredSize(new Dimension(198, 0));
+		tabGeneral.add(cbTax, "cell 3 6"); //$NON-NLS-1$
 		tabGeneral.add(btnNewTax, "cell 3 6"); //$NON-NLS-1$
 
 		lblButtonColor = new JLabel(Messages.getString("MenuItemForm.lblButtonColor.text")); //$NON-NLS-1$
 		tabGeneral.add(lblButtonColor, "cell 2 7,right"); //$NON-NLS-1$
 
 		btnButtonColor = new JButton(); //$NON-NLS-1$
-		tabGeneral.add(btnButtonColor, "cell 3 7,grow"); //$NON-NLS-1$
+		btnButtonColor.setPreferredSize(new Dimension(228, 40));
+		tabGeneral.add(btnButtonColor, "cell 3 7 8 9"); //$NON-NLS-1$
 
 		lblTextColor = new JLabel(Messages.getString("MenuItemForm.lblTextColor.text")); //$NON-NLS-1$
 		tabGeneral.add(lblTextColor, "cell 0 8,right"); //$NON-NLS-1$
 
 		btnTextColor = new JButton(Messages.getString("MenuItemForm.SAMPLE_TEXT")); //$NON-NLS-1$
-		btnTextColor.setPreferredSize(new Dimension(0, 40));
-		tabGeneral.add(btnTextColor, "cell 1 8,grow"); //$NON-NLS-1$
+		btnTextColor.setPreferredSize(new Dimension(228, 40));
+		tabGeneral.add(btnTextColor, "cell 1 8 9 10"); //$NON-NLS-1$
 
 		cbShowTextWithImage = new JCheckBox(Messages.getString("MenuItemForm.40")); //$NON-NLS-1$
 		cbShowTextWithImage.setActionCommand(Messages.getString("MenuItemForm.41")); //$NON-NLS-1$
-		tabGeneral.add(cbShowTextWithImage, "cell 1 9"); //$NON-NLS-1$
-		tabGeneral.add(chkVisible, "cell 1 10"); //$NON-NLS-1$
+		tabGeneral.add(cbShowTextWithImage, "cell 1 11"); //$NON-NLS-1$
+		tabGeneral.add(chkVisible, "cell 1 12"); //$NON-NLS-1$
 
-		tabGeneral.add(lTerminal, "cell 2 8,right"); //$NON-NLS-1$
+		tabGeneral.add(lTerminal, "cell 2 9,right"); //$NON-NLS-1$
 		terminalList = new CheckBoxList();
 		terminalList.setModel(TerminalDAO.getInstance().findAll());
 		JScrollPane terminalCheckBoxList = new JScrollPane(terminalList);
-		terminalCheckBoxList.setPreferredSize(new Dimension(0, 80));
-		tabGeneral.add(terminalCheckBoxList, "cell 3 8 9 10,grow"); //$NON-NLS-1$
+		terminalCheckBoxList.setPreferredSize(new Dimension(228, 80));
+		tabGeneral.add(terminalCheckBoxList, "cell 3 9 10 11"); //$NON-NLS-1$
 
 		add(tabbedPane);
 
