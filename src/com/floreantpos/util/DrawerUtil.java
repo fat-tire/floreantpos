@@ -372,9 +372,10 @@ public class DrawerUtil {
 	public static void setCustomerDisplayMessage(String portName, String customerDisplayMessage) {
 		serialPort = new SerialPort(portName);
 
-		printToThePort();
-
+		//printToThePort();
+		initialize();
 		try {
+			print((char)13); //added line feed
 			serialPort.writeBytes(customerDisplayMessage.getBytes());
 
 			serialPort.closePort();//Close serial port
