@@ -64,6 +64,7 @@ public class ConfigurationDialog extends POSDialog implements ChangeListener, Ac
 		addView(new CardConfigurationView());
 		addView(new DatabaseConfigurationView());
 		addView(new TaxConfigurationView());
+		addView(new PeripheralConfigurationView());
 		
 		TicketImportPlugin ticketImportPlugin = (TicketImportPlugin) ExtensionManager.getPlugin(TicketImportPlugin.class);
 		if(ticketImportPlugin != null) {

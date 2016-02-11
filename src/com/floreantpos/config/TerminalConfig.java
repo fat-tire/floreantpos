@@ -59,7 +59,7 @@ public class TerminalConfig {
 	private static final String ADMIN_PASSWORD = "admin_pass";//$NON-NLS-1$
 
 	private static final String SHOW_BARCODE_ON_RECEIPT = "show_barcode_on_receipt";//$NON-NLS-1$
-	
+
 	private static final String DEFAULT_VIEW = "default_view";//$NON-NLS-1$
 
 	static final String TERMINAL_ID = "terminal_id"; //$NON-NLS-1$
@@ -102,7 +102,7 @@ public class TerminalConfig {
 	public static int getTouchScreenButtonHeight() {
 		return config.getInt(TOUCH_BUTTON_HEIGHT, 80);
 	}
-	
+
 	public static void setMenuItemButtonHeight(int height) {
 		config.setProperty("menu_button_height", height);
 	}
@@ -110,7 +110,7 @@ public class TerminalConfig {
 	public static int getMenuItemButtonHeight() {
 		return config.getInt("menu_button_height", 80);
 	}
-	
+
 	public static void setMenuItemButtonWidth(int width) {
 		config.setProperty("menu_button_width", width);
 	}
@@ -158,20 +158,19 @@ public class TerminalConfig {
 	public static void setUiDefaultFont(String fontName) {
 		config.setProperty(UI_DEFAULT_FONT, fontName);
 	}
-	
+
 	public static String getDefaultView() {
 		return config.getString(DEFAULT_VIEW, SwitchboardView.VIEW_NAME);
 	}
-	
+
 	public static void setDefaultView(String viewName) {
 		config.setProperty(DEFAULT_VIEW, viewName);
 	}
 
-
 	public static void setShowDbConfigureButton(boolean show) {
 		config.setProperty(SHOW_DB_CONFIGURATION, show);
 	}
-	
+
 	public static boolean isShowDbConfigureButton() {
 		return config.getBoolean(SHOW_DB_CONFIGURATION, true);
 	}
@@ -183,7 +182,7 @@ public class TerminalConfig {
 	public static boolean isShowBarcodeOnReceipt() {
 		return config.getBoolean(SHOW_BARCODE_ON_RECEIPT, false);
 	}
-	
+
 	public static boolean isCashierMode() {
 		return false; //config.getBoolean(CASHIER_MODE, false);
 	}
@@ -272,6 +271,22 @@ public class TerminalConfig {
 		return config.getString("drawerPortName", "COM1"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
+	public static void setCustomerDisplayPort(String customerDisplayPort) {
+		config.setProperty("customerDisplayPort", customerDisplayPort); //$NON-NLS-1$
+	}
+
+	public static String getCustomerDisplayPort() {
+		return config.getString("customerDisplayPort", "COM1"); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+	
+	public static void setCustomerDisplayMessage(String customerDisplayMessage) {
+		config.setProperty("customerDisplayMessage", customerDisplayMessage); //$NON-NLS-1$
+	}
+
+	public static String getCustomerDisplayMessage() {
+		return config.getString("customerDisplayMessage", "12345678912345678912"); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+
 	public static void setDrawerControlCodes(String controlCode) {
 		config.setProperty("controlCode", controlCode); //$NON-NLS-1$
 	}
@@ -286,7 +301,7 @@ public class TerminalConfig {
 
 	public static char[] getDrawerControlCodesArray() {
 		String drawerControlCodes = getDefaultDrawerControlCodes();
-		if(StringUtils.isEmpty(drawerControlCodes)) {
+		if (StringUtils.isEmpty(drawerControlCodes)) {
 			drawerControlCodes = getDefaultDrawerControlCodes();
 		}
 
