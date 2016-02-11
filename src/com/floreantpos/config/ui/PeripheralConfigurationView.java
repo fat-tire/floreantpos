@@ -102,18 +102,16 @@ public class PeripheralConfigurationView extends ConfigurationView {
 
 		tfCustomerDisplayPort = new JTextField(20);
 		tfCustomerDisplayMessage = new FixedLengthTextField(20);
-		
+
 		JButton btnTest = new JButton("Test");
 		btnTest.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				String portNumber=tfCustomerDisplayMessage.getText();
-				tfCustomerDisplayPort.setText(portNumber);
-				tfCustomerDisplayMessage.setText("");
+				DrawerUtil.setCustomerDisplayMessage(tfCustomerDisplayPort.getText(), tfCustomerDisplayMessage.getText().toCharArray());
 			}
 		});
-		
+
 		JButton btnRestoreCustomerDefault = new JButton(Messages.getString("TerminalConfigurationView.32")); //$NON-NLS-1$
 		btnRestoreCustomerDefault.addActionListener(new ActionListener() {
 			@Override
@@ -122,17 +120,16 @@ public class PeripheralConfigurationView extends ConfigurationView {
 				tfCustomerDisplayMessage.setText("1234567891234567891");
 			}
 		});
-		
-		
+
 		customerDisplayPanel.add(new JLabel("Customer Display Port"));
-		customerDisplayPanel.add(tfCustomerDisplayPort,"wrap");
+		customerDisplayPanel.add(tfCustomerDisplayPort, "wrap");
 		customerDisplayPanel.add(new JLabel("Text Message"));
 		customerDisplayPanel.add(tfCustomerDisplayMessage);
 		customerDisplayPanel.add(btnTest);
 		customerDisplayPanel.add(btnRestoreCustomerDefault);
-		
-		add(customerDisplayPanel,"grow");
-		
+
+		add(customerDisplayPanel, "grow");
+
 	}
 
 	protected void doEnableDisableDrawerPull() {
@@ -147,7 +144,7 @@ public class PeripheralConfigurationView extends ConfigurationView {
 
 		TerminalConfig.setDrawerPortName(tfDrawerName.getText());
 		TerminalConfig.setDrawerControlCodes(tfDrawerCodes.getText());
-		
+
 		TerminalConfig.setCustomerDisplayPort(tfCustomerDisplayPort.getText());
 		TerminalConfig.setCustomerDisplayMessage(tfCustomerDisplayMessage.getText());
 
@@ -175,7 +172,7 @@ public class PeripheralConfigurationView extends ConfigurationView {
 		tfDrawerName.setText(TerminalConfig.getDrawerPortName());
 		tfDrawerCodes.setText(TerminalConfig.getDrawerControlCodes());
 		tfDrawerInitialBalance.setText("" + terminal.getOpeningBalance()); //$NON-NLS-1$
-		
+
 		tfCustomerDisplayPort.setText(TerminalConfig.getCustomerDisplayPort());
 		tfCustomerDisplayMessage.setText(TerminalConfig.getCustomerDisplayMessage());
 

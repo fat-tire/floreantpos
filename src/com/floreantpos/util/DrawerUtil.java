@@ -114,6 +114,34 @@ public class DrawerUtil {
 
 		return true;
 	}
+	
+	public static boolean printToThePort() {
+
+		try {
+			serialPort.openPort();//Open serial port
+			serialPort.setParams(SerialPort.BAUDRATE_9600, SerialPort.DATABITS_8, SerialPort.STOPBITS_1, SerialPort.PARITY_NONE);
+			//Set params. Also you can set params by this string: serialPort.setParams(9600, 8, 1, 0);
+			//serialPort.writeBytes( reconstitutedString.getBytes());//
+
+			//reset default settings
+			print(ESC);
+			print(AT);
+
+			//select 10-cpi character pitch
+			//select10CPI();
+
+			//select draft quality printing
+			//selectDraftPrinting();
+
+			//set character set
+			setCharacterSet(USA);
+
+		} catch (SerialPortException ex) {
+			return false;
+		}
+
+		return true;
+	}
 
 	public static void select10CPI() { //10 characters per inch (condensed available)
 		print(ESC);
@@ -334,6 +362,21 @@ public class DrawerUtil {
 		try {
 			kick();
 			//tear();
+
+			serialPort.closePort();//Close serial port
+		} catch (SerialPortException ex) {
+			System.out.println(ex);
+		}
+	}
+	
+	public static void setCustomerDisplayMessage(String portName, char[] codes) {
+		DrawerUtil.controlCodes = codes;
+		serialPort = new SerialPort(portName);
+
+		printToThePort();
+
+		try {
+			serialPort.writeBytes("Please pay          Total     US$ 123.50".getBytes());
 
 			serialPort.closePort();//Close serial port
 		} catch (SerialPortException ex) {
