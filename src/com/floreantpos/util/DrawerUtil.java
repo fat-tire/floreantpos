@@ -114,7 +114,7 @@ public class DrawerUtil {
 
 		return true;
 	}
-	
+
 	public static boolean printToThePort() {
 
 		try {
@@ -368,15 +368,14 @@ public class DrawerUtil {
 			System.out.println(ex);
 		}
 	}
-	
-	public static void setCustomerDisplayMessage(String portName, char[] codes) {
-		DrawerUtil.controlCodes = codes;
+
+	public static void setCustomerDisplayMessage(String portName, String customerDisplayMessage) {
 		serialPort = new SerialPort(portName);
 
 		printToThePort();
 
 		try {
-			serialPort.writeBytes("Please pay          Total     US$ 123.50".getBytes());
+			serialPort.writeBytes(customerDisplayMessage.getBytes());
 
 			serialPort.closePort();//Close serial port
 		} catch (SerialPortException ex) {
