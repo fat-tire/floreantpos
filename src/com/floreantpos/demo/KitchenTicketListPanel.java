@@ -21,7 +21,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashSet;
@@ -33,23 +32,25 @@ import javax.swing.JPanel;
 import net.miginfocom.swing.MigLayout;
 
 import com.floreantpos.POSConstants;
+import com.floreantpos.main.Application;
 import com.floreantpos.model.KitchenTicket;
 import com.floreantpos.swing.PosButton;
 
 public class KitchenTicketListPanel extends JPanel {
-	protected static int previousBlockIndex = -1;
-	protected static int currentBlockIndex = 0;
-	protected static int nextBlockIndex;
+	private static int previousBlockIndex = -1;
+	private static int currentBlockIndex = 0;
+	private static int nextBlockIndex;
 
-	static int horizontalPanelCount = 4;
+	private static int horizontalPanelCount;
 
-	protected PosButton btnNext;
-	protected PosButton btnPrev;
+	private PosButton btnNext = new PosButton();;
+	private PosButton btnPrev = new PosButton();;
 
-	public Set<KitchenTicket> existingTickets = new HashSet<KitchenTicket>();
+	private Set<KitchenTicket> existingTickets = new HashSet<KitchenTicket>();
 
 	public KitchenTicketListPanel() {
-		super(new MigLayout("filly, wrap " + horizontalPanelCount, "sg, fill", "")); //$NON-NLS-1$
+		updatePanelCount();
+		super.setLayout(new MigLayout("filly, wrap " + horizontalPanelCount, "sg, fill", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	}
 
 	public boolean addTicket(KitchenTicket ticket) {
@@ -57,62 +58,25 @@ public class KitchenTicketListPanel extends JPanel {
 			return false;
 		}
 
-		Dimension size = getSize();
-		Dimension panelSize = new Dimension();
-		if (size.width == 0 && size.height == 0) {
-			size = Toolkit.getDefaultToolkit().getScreenSize();
-		}
-		panelSize.width = 330;
-		panelSize.height = 280;
-
-		int horizontalPanelCount = getCount(size.width, panelSize.width);
-		int verticalPanelCount = getCount(size.height, panelSize.height);
-
-		int totalItem = horizontalPanelCount * verticalPanelCount;
-
-		previousBlockIndex = currentBlockIndex - totalItem;
-		nextBlockIndex = currentBlockIndex + totalItem;
-
 		existingTickets.add(ticket);
-
 		updateButton();
 
 		if (nextBlockIndex < existingTickets.size()) {
 			return false;
 		}
-
 		super.add(new KitchenTicketView(ticket), "growy"); //$NON-NLS-1$ 
 
 		return true;
 	}
 
-	protected void updateView() {
-		Dimension size = getSize();
-		Dimension panelSize = new Dimension();
-		if (size.width == 0 && size.height == 0) {
-			size = Toolkit.getDefaultToolkit().getScreenSize();
-		}
-		panelSize.width = 330;
-		panelSize.height = 280;
-
-		int horizontalPanelCount = getCount(size.width, panelSize.width);
-		int verticalPanelCount = getCount(size.height, panelSize.height);
-
-		int totalItem = horizontalPanelCount * verticalPanelCount;
-
-		previousBlockIndex = currentBlockIndex - totalItem;
-		nextBlockIndex = currentBlockIndex + totalItem;
-
+	protected void rendererKitchenTickets() {
+		updatePanelCount();
 		for (int i = currentBlockIndex; i < nextBlockIndex; i++) {
 			if (i == existingTickets.size()) {
 				break;
 			}
 			KitchenTicket item = (KitchenTicket) existingTickets.toArray()[i];
 			super.add(new KitchenTicketView(item), "growy"); //$NON-NLS-1$ 
-
-			if (i == existingTickets.size() - 1) {
-				break;
-			}
 		}
 		updateButton();
 	}
@@ -137,12 +101,10 @@ public class KitchenTicketListPanel extends JPanel {
 		JPanel southPanel = new JPanel(new BorderLayout(5, 5));
 		southPanel.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
 
-		btnPrev = new PosButton();
 		btnPrev.setText(POSConstants.CAPITAL_PREV);
 		btnPrev.setPreferredSize(new Dimension(100, 30));
 		southPanel.add(btnPrev, BorderLayout.WEST);
 
-		btnNext = new PosButton();
 		btnNext.setPreferredSize(new Dimension(100, 30));
 		btnNext.setText(POSConstants.CAPITAL_NEXT);
 		southPanel.add(btnNext, BorderLayout.EAST);
@@ -165,26 +127,37 @@ public class KitchenTicketListPanel extends JPanel {
 				scrollDown();
 			}
 		}
-
 	}
 
 	private void scrollDown() {
 		currentBlockIndex = nextBlockIndex;
 		super.removeAll();
-		updateView();
-		this.repaint();
+		rendererKitchenTickets();
+		repaint();
 	}
 
 	private void scrollUp() {
 		currentBlockIndex = previousBlockIndex;
-		this.removeAll();
-		updateView();
-		this.repaint();
+		super.removeAll();
+		rendererKitchenTickets();
+		repaint();
 	}
 
 	protected int getCount(int containerSize, int itemSize) {
 		int panelCount = containerSize / itemSize;
 		return panelCount;
+	}
+
+	private void updatePanelCount() {
+		Dimension size = Application.getInstance().getRootView().getSize();
+
+		horizontalPanelCount = getCount(size.width, 330);
+		int verticalPanelCount = getCount(size.height, 280);
+
+		int totalItem = horizontalPanelCount * verticalPanelCount;
+
+		previousBlockIndex = currentBlockIndex - totalItem;
+		nextBlockIndex = currentBlockIndex + totalItem;
 	}
 
 	@Override
@@ -193,8 +166,9 @@ public class KitchenTicketListPanel extends JPanel {
 			KitchenTicketView view = (KitchenTicketView) comp;
 			existingTickets.remove(view.getTicket());
 		}
-
 		super.remove(comp);
+		super.removeAll();
+		rendererKitchenTickets();
 	}
 
 	@Override
@@ -208,7 +182,6 @@ public class KitchenTicketListPanel extends JPanel {
 				kitchenTicketView.stopTimer();
 			}
 		}
-
 		super.removeAll();
 	}
 }
