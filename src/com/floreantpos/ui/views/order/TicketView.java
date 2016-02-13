@@ -441,7 +441,6 @@ public class TicketView extends JPanel {
 
 			String displayMessageToSend = getFirstLine(getCurrentItem().toString()) + "\n" //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 					+ getSecondLine(ticket.getTotalAmount().toString());
-			System.out.println(displayMessageToSend);
 			DrawerUtil.setItemDisplay(TerminalConfig.getCustomerDisplayPort(), displayMessageToSend);
 		}
 
