@@ -438,7 +438,7 @@ public class TicketView extends JPanel {
 
 			btnTotal.setText("TOTAL " + Application.getCurrencySymbol() + NumberUtil.formatNumber(ticket.getTotalAmount()));
 			
-			String displayMessageToSend = getFirstLine(getCurrentItem().toString()) + "\n" //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			String displayMessageToSend = getFirstLine(getCurrentItem().toString())
 					+ getSecondLine(ticket.getTotalAmount().toString());
 			
 			DrawerUtil.setItemDisplay(TerminalConfig.getCustomerDisplayPort(), displayMessageToSend);
@@ -570,7 +570,7 @@ public class TicketView extends JPanel {
 		String total = "TOTAL" + Application.getCurrencySymbol();
 		int displayTotalLenth = total.toCharArray().length;
 
-		int remainingChar = 19 - (totalPricelenth + displayTotalLenth);
+		int remainingChar = 20 - (totalPricelenth + displayTotalLenth);
 		String space = "";
 		for (int i = 0; i < remainingChar; i++) {
 			space = space + " ";
