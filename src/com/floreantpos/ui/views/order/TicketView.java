@@ -59,6 +59,7 @@ import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.views.CashierSwitchBoardView;
 import com.floreantpos.ui.views.order.actions.OrderListener;
 import com.floreantpos.util.DrawerUtil;
+import com.floreantpos.util.NumberUtil;
 import com.floreantpos.util.POSUtil;
 
 /**
@@ -435,12 +436,11 @@ public class TicketView extends JPanel {
 
 		if (getCurrentItem() != null) {
 
-			String displayMessage = "<html>" + getFirstLine(getCurrentItem().toString()) + "<br>" //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-					+ getSecondLine(ticket.getTotalAmount().toString()) + "</html>";
-			btnTotal.setText(displayMessage);
-
+			btnTotal.setText("TOTAL " + Application.getCurrencySymbol() + NumberUtil.formatNumber(ticket.getTotalAmount()));
+			
 			String displayMessageToSend = getFirstLine(getCurrentItem().toString()) + "\n" //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 					+ getSecondLine(ticket.getTotalAmount().toString());
+			
 			DrawerUtil.setItemDisplay(TerminalConfig.getCustomerDisplayPort(), displayMessageToSend);
 		}
 
@@ -570,7 +570,7 @@ public class TicketView extends JPanel {
 		String total = "TOTAL" + Application.getCurrencySymbol();
 		int displayTotalLenth = total.toCharArray().length;
 
-		int remainingChar = 20 - (totalPricelenth + displayTotalLenth);
+		int remainingChar = 19 - (totalPricelenth + displayTotalLenth);
 		String space = "";
 		for (int i = 0; i < remainingChar; i++) {
 			space = space + " ";

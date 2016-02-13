@@ -388,6 +388,7 @@ public class DrawerUtil {
 		serialPort = new SerialPort(port);
 		initialize();
 		try {
+			System.out.println(message);
 			print((char) 13); //added line feed
 			serialPort.writeBytes(message.getBytes());
 			serialPort.closePort();//Close serial port
