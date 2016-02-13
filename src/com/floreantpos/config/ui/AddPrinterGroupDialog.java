@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Vector;
 
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -48,6 +49,7 @@ import com.floreantpos.util.POSUtil;
 public class AddPrinterGroupDialog extends POSDialog {
 	private FixedLengthTextField tfName = new FixedLengthTextField(60);
 	CheckBoxList printerList;
+	JCheckBox chkDefault; 
 
 	public AddPrinterGroupDialog() throws HeadlessException {
 		super(POSUtil.getBackOfficeWindow(), true);
@@ -66,7 +68,12 @@ public class AddPrinterGroupDialog extends POSDialog {
 		contentPane.setLayout(new MigLayout("", "[][grow]", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		
 		add(new JLabel(Messages.getString("AddPrinterGroupDialog.4"))); //$NON-NLS-1$
-		add(tfName, "grow"); //$NON-NLS-1$
+		add(tfName, "grow, wrap"); //$NON-NLS-1$
+		
+		chkDefault=new JCheckBox("Default"); 
+		
+		add(new JLabel(), "grow"); 
+		add(chkDefault, "wrap"); 
 		
 		List<Printer> printers = Application.getPrinters().getKitchenPrinters();
 		printerList = new CheckBoxList(new Vector<Printer>(printers));
@@ -112,6 +119,7 @@ public class AddPrinterGroupDialog extends POSDialog {
 
 	public PrinterGroup getPrinterGroup() {
 		PrinterGroup group = new PrinterGroup();
+		group.setIsDefault(chkDefault.isSelected()); 
 		group.setName(tfName.getText());
 		
 		List checkedValues = printerList.getCheckedValues();

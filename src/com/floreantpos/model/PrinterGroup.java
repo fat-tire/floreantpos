@@ -69,6 +69,10 @@ public class PrinterGroup extends BasePrinterGroup {
 				}
 			}
 			name += ")"; //$NON-NLS-1$
+			
+			if(isDefault) {
+				name+="   -  Default"; 
+			}
 		}
 		
 		return name;

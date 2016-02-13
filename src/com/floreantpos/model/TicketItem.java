@@ -23,6 +23,7 @@ import java.util.List;
 
 import com.floreantpos.main.Application;
 import com.floreantpos.model.base.BaseTicketItem;
+import com.floreantpos.model.dao.PrinterGroupDAO;
 import com.floreantpos.util.DiscountUtil;
 import com.floreantpos.util.NumberUtil;
 
@@ -211,16 +212,16 @@ public class TicketItem extends BaseTicketItem implements ITicketItem {
 
 		return ticketItemModifier;
 	}
-	
+
 	public void removeAddOn(TicketItemModifier addOn) {
 		List<TicketItemModifier> addOns = getAddOns();
-		if(addOns == null) {
+		if (addOns == null) {
 			return;
 		}
-		
+
 		for (Iterator iterator = addOns.iterator(); iterator.hasNext();) {
 			TicketItemModifier ticketItemModifier = (TicketItemModifier) iterator.next();
-			if(ticketItemModifier.getItemId().equals(addOn.getItemId())) {
+			if (ticketItemModifier.getItemId().equals(addOn.getItemId())) {
 				iterator.remove();
 			}
 		}
@@ -462,6 +463,18 @@ public class TicketItem extends BaseTicketItem implements ITicketItem {
 		}
 
 		return printers.getDefaultKitchenPrinter();
+	}
+
+	public PrinterGroup getPrinterGroup() {
+		if (super.getPrinterGroup() == null) {
+			List<PrinterGroup> printerGroups = PrinterGroupDAO.getInstance().findAll();
+			for (PrinterGroup printerGroup : printerGroups) {
+				if (printerGroup.isIsDefault()) {
+					return printerGroup;
+				}
+			}
+		}
+		return super.getPrinterGroup();
 	}
 
 	@Override

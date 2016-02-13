@@ -17,6 +17,7 @@
  */
 package com.floreantpos.model.base;
 
+import java.lang.Comparable;
 import java.io.Serializable;
 
 
@@ -31,9 +32,10 @@ import java.io.Serializable;
 
 public abstract class BasePrinterGroup  implements Comparable, Serializable {
 
-	public static String REF = "PrinterGroup"; //$NON-NLS-1$
-	public static String PROP_NAME = "name"; //$NON-NLS-1$
-	public static String PROP_ID = "id"; //$NON-NLS-1$
+	public static String REF = "PrinterGroup";
+	public static String PROP_IS_DEFAULT = "isDefault";
+	public static String PROP_ID = "id";
+	public static String PROP_NAME = "name";
 
 
 	// constructors
@@ -72,6 +74,7 @@ public abstract class BasePrinterGroup  implements Comparable, Serializable {
 
 	// fields
 		protected java.lang.String name;
+		protected boolean isDefault;
 
 	// collections
 	private java.util.List<String> printerNames;
@@ -118,18 +121,35 @@ public abstract class BasePrinterGroup  implements Comparable, Serializable {
 
 
 	/**
-	 * Return the value associated with the column: printers
+	 * Return the value associated with the column: IS_DEFAULT
+	 */
+	public boolean isIsDefault () {
+					return isDefault;
+			}
+
+	/**
+	 * Set the value related to the column: IS_DEFAULT
+	 * @param isDefault the IS_DEFAULT value
+	 */
+	public void setIsDefault (boolean isDefault) {
+		this.isDefault = isDefault;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: printerNames
 	 */
 	public java.util.List<String> getPrinterNames () {
 					return printerNames;
 			}
 
 	/**
-	 * Set the value related to the column: printers
-	 * @param printers the printers value
+	 * Set the value related to the column: printerNames
+	 * @param printerNames the printerNames value
 	 */
-	public void setPrinterNames (java.util.List<String> printers) {
-		this.printerNames = printers;
+	public void setPrinterNames (java.util.List<String> printerNames) {
+		this.printerNames = printerNames;
 	}
 
 

@@ -32,8 +32,6 @@ import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -136,13 +134,14 @@ public class KitchenTicketView extends JPanel {
 		serverInfo.setFont(font);
 		
 		timerWatch = new TimerWatch(ticket.getCreateDate());
+		timerWatch.setPreferredSize(new Dimension(100,30)); 
 
-		headerPanel = new JPanel(new MigLayout("", "grow", "grow")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		headerPanel = new JPanel(new MigLayout("fill", "sg, fill", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		headerPanel.setBorder(BorderFactory.createLineBorder(Color.gray));
-		headerPanel.add(ticketInfo);
-		headerPanel.add(timerWatch, "wrap,right,span"); //$NON-NLS-1$
-		headerPanel.add(tableInfo);
-		headerPanel.add(serverInfo, "wrap, right,span"); //$NON-NLS-1$
+		headerPanel.add(ticketInfo, "split 2"); //$NON-NLS-1$
+		headerPanel.add(timerWatch, "right,wrap, span"); //$NON-NLS-1$
+		headerPanel.add(tableInfo, "split 2, grow"); //$NON-NLS-1$
+		headerPanel.add(serverInfo, "right,span"); //$NON-NLS-1$
 
 		add(headerPanel, BorderLayout.NORTH);
 	}
@@ -160,13 +159,7 @@ public class KitchenTicketView extends JPanel {
 				Component rendererComponent = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 
 				KitchenTicketItem ticketItem = tableModel.getRowData(row);
-				headerPanel.setBackground(timerWatch.backColor);
-				ticketInfo.setForeground(timerWatch.textColor);
-				tableInfo.setForeground(timerWatch.textColor);
-				serverInfo.setForeground(timerWatch.textColor);
-				headerPanel.repaint();
-				headerPanel.revalidate();
-
+				
 				if (ticketItem != null && ticketItem.getStatus() != null) {
 					if (ticketItem.getStatus().equalsIgnoreCase(KitchenTicketStatus.DONE.name())) {
 						rendererComponent.setBackground(Color.green);
@@ -178,7 +171,8 @@ public class KitchenTicketView extends JPanel {
 						rendererComponent.setBackground(Color.white);
 					}
 				}
-
+				
+				updateHeaderView(); 
 				return rendererComponent;
 			}
 		});
@@ -203,6 +197,13 @@ public class KitchenTicketView extends JPanel {
 		new ButtonColumn(table, action, 2);
 		scrollPane = new JScrollPane(table);
 		add(scrollPane);
+	}
+	
+	private void updateHeaderView() {
+		headerPanel.setBackground(timerWatch.backColor);
+		ticketInfo.setForeground(timerWatch.textColor);
+		tableInfo.setForeground(timerWatch.textColor);
+		serverInfo.setForeground(timerWatch.textColor);
 	}
 
 	private void createButtonPanel() {
