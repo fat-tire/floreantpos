@@ -375,9 +375,21 @@ public class DrawerUtil {
 		//printToThePort();
 		initialize();
 		try {
-			print((char)13); //added line feed
+			print((char) 13); //added line feed
 			serialPort.writeBytes(customerDisplayMessage.getBytes());
 
+			serialPort.closePort();//Close serial port
+		} catch (SerialPortException ex) {
+			System.out.println(ex);
+		}
+	}
+
+	public static void setItemDisplay(String port, String message) {
+		serialPort = new SerialPort(port);
+		initialize();
+		try {
+			print((char) 13); //added line feed
+			serialPort.writeBytes(message.getBytes());
 			serialPort.closePort();//Close serial port
 		} catch (SerialPortException ex) {
 			System.out.println(ex);

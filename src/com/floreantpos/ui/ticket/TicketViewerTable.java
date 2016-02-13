@@ -269,4 +269,8 @@ public class TicketViewerTable extends JTable {
 		Rectangle cellRect = getCellRect(index, 0, false);
 		scrollRectToVisible(cellRect);
 	}
+	
+	public TicketViewerTableModel getModel() {
+		return model;
+	}
 }
