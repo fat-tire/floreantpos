@@ -434,10 +434,15 @@ public class TicketView extends JPanel {
 		ticket.calculatePrice();
 
 		if (getCurrentItem() != null) {
+
 			String displayMessage = "<html>" + getFirstLine(getCurrentItem().toString()) + "<br>" //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 					+ getSecondLine(ticket.getTotalAmount().toString()) + "</html>";
 			btnTotal.setText(displayMessage);
-			DrawerUtil.setItemDisplay(TerminalConfig.getCustomerDisplayPort(), displayMessage);
+
+			String displayMessageToSend = getFirstLine(getCurrentItem().toString()) + "\n" //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					+ getSecondLine(ticket.getTotalAmount().toString());
+			System.out.println(displayMessageToSend);
+			DrawerUtil.setItemDisplay(TerminalConfig.getCustomerDisplayPort(), displayMessageToSend);
 		}
 
 		//btnTotal.setText("TOTAL " + Application.getCurrencySymbol() + NumberUtil.formatNumber(ticket.getTotalAmount()));
