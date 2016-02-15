@@ -610,7 +610,7 @@ public class TicketView extends JPanel {
 		int quantity = ticketViewerTable.getModel().getCurrentItemDisplayCount();
 		double itemPrice = ticketItem.getUnitPrice();
 
-		String line = String.format("%-2s %-12s %4s", quantity, ticketItems, itemPrice);
+		String line = String.format("%-1s %-12s @%4s", quantity, ticketItems, itemPrice);
 
 		String total = "TOTAL" + Application.getCurrencySymbol();
 		String line2 = String.format("%-6s %13s", total, totalPrice);
