@@ -437,11 +437,10 @@ public class TicketView extends JPanel {
 		if (getCurrentItem() != null) {
 
 			btnTotal.setText("TOTAL " + Application.getCurrencySymbol() + NumberUtil.formatNumber(ticket.getTotalAmount()));
-			
-			String displayMessageToSend = getFirstLine(getCurrentItem().toString())
-					+ getSecondLine(ticket.getTotalAmount().toString());
-			
-			DrawerUtil.setItemDisplay(TerminalConfig.getCustomerDisplayPort(), displayMessageToSend);
+
+			//String displayMessageToSend = getFirstLine(getCurrentItem().toString()) + getSecondLine(ticket.getTotalAmount().toString());
+			String sendMessageToDisplay = getDisplayMessage(getCurrentItem(), ticket.getTotalAmount().toString());
+			DrawerUtil.setItemDisplay(TerminalConfig.getCustomerDisplayPort(), sendMessageToDisplay);
 		}
 
 		//btnTotal.setText("TOTAL " + Application.getCurrencySymbol() + NumberUtil.formatNumber(ticket.getTotalAmount()));
@@ -549,7 +548,7 @@ public class TicketView extends JPanel {
 		this.currentItem = currentItem;
 	}
 
-	private String getFirstLine(String ticketItem) {
+	/*private String getFirstLine(String ticketItem) {
 		int currentItemLenth = ticketItem.toCharArray().length;
 		int displayCountLenth = ("x" + ticketViewerTable.getModel().getCurrentItemDisplayCount()).toCharArray().length;
 
@@ -579,5 +578,20 @@ public class TicketView extends JPanel {
 		String line2 = total + space + totalPrice;
 		space = "";
 		return line2;
+	}*/
+
+	private String getDisplayMessage(TicketItem ticketItem, String totalPrice) {
+
+		String ticketItems = ticketItem.toString().substring(0, 12);
+		
+		int quantity = ticketViewerTable.getModel().getCurrentItemDisplayCount();
+		double itemPrice = ticketItem.getUnitPrice();
+		
+		String line = String.format("%-2s %-12s %4s", quantity, ticketItems, itemPrice);
+
+		String total = "TOTAL" + Application.getCurrencySymbol();
+		String line2 = String.format("%-6s %13s", total, totalPrice);
+		
+		return line + line2;
 	}
 }
