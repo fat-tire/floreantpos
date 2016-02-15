@@ -598,7 +598,14 @@ public class TicketView extends JPanel {
 
 	private String getDisplayMessage(TicketItem ticketItem, String totalPrice) {
 
-		String ticketItems = ticketItem.toString().substring(0, 12);
+		int currentItemLenth = ticketItem.toString().toCharArray().length;
+		String ticketItems;
+		if (currentItemLenth > 12) {
+			ticketItems = ticketItem.toString().substring(0, 12);
+		}
+		else {
+			ticketItems = ticketItem.toString();
+		}
 
 		int quantity = ticketViewerTable.getModel().getCurrentItemDisplayCount();
 		double itemPrice = ticketItem.getUnitPrice();
