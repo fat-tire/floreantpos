@@ -29,6 +29,7 @@
 package com.floreantpos.config.ui;
 
 import java.awt.Component;
+import java.awt.Dimension;
 
 import javax.print.PrintService;
 import javax.print.PrintServiceLookup;
@@ -45,7 +46,6 @@ import net.miginfocom.swing.MigLayout;
 
 import com.floreantpos.Messages;
 import com.floreantpos.config.AppConfig;
-import com.floreantpos.main.Application;
 import com.floreantpos.model.PosPrinters;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 
@@ -64,7 +64,7 @@ public class PrintConfigurationView extends ConfigurationView {
 
 	// End of variables declaration//GEN-END:variables
 
-	PosPrinters printers = Application.getPrinters();
+	PosPrinters printers = PosPrinters.load();
 
 	/** Creates new form PrintConfiguration */
 	public PrintConfigurationView() {
@@ -92,11 +92,11 @@ public class PrintConfigurationView extends ConfigurationView {
 
 		String yellowTimeOut = AppConfig.getString("YellowTimeOut"); //$NON-NLS-1$
 		String redTimeOut = AppConfig.getString("RedTimeOut"); //$NON-NLS-1$
-		
-		if (yellowTimeOut!=null) {
+
+		if (yellowTimeOut != null) {
 			txtYellowTime.setText(yellowTimeOut);
 		}
-		if (redTimeOut!=null) {
+		if (redTimeOut != null) {
 			txtRedTime.setText(redTimeOut);
 		}
 
@@ -142,7 +142,7 @@ public class PrintConfigurationView extends ConfigurationView {
 		AppConfig.put("YellowTimeOut", txtYellowTime.getText());
 		AppConfig.put("RedTimeOut", txtRedTime.getText());
 
-		Application.getPrinters().save();
+		//Application.getPrinters().save();
 
 		return true;
 	}
@@ -158,24 +158,25 @@ public class PrintConfigurationView extends ConfigurationView {
 		setLayout(new MigLayout("", "[][grow,fill]", "[][][][18px,grow][][]")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 		JLabel lblReportPrinter = new JLabel(Messages.getString("PrintConfigurationView.4")); //$NON-NLS-1$
-		add(lblReportPrinter, "cell 0 0,alignx trailing"); //$NON-NLS-1$
+		//add(lblReportPrinter, "cell 0 0,alignx trailing"); //$NON-NLS-1$
 
 		cbReportPrinterName = new JComboBox();
-		add(cbReportPrinterName, "cell 1 0,growx"); //$NON-NLS-1$
+		//add(cbReportPrinterName, "cell 1 0,growx"); //$NON-NLS-1$
 		javax.swing.JLabel jLabel1 = new javax.swing.JLabel();
-		add(jLabel1, "cell 0 1,alignx right"); //$NON-NLS-1$
+		//add(jLabel1, "cell 0 1,alignx right"); //$NON-NLS-1$
 
 		jLabel1.setText(Messages.getString("PrintConfigurationView.8")); //$NON-NLS-1$
 		cbReceiptPrinterName = new javax.swing.JComboBox();
-		add(cbReceiptPrinterName, "cell 1 1,growx"); //$NON-NLS-1$
+		//add(cbReceiptPrinterName, "cell 1 1,growx"); //$NON-NLS-1$
 		javax.swing.JLabel jLabel2 = new javax.swing.JLabel();
-		add(jLabel2, "cell 0 2,alignx right"); //$NON-NLS-1$
+		//add(jLabel2, "cell 0 2,alignx right"); //$NON-NLS-1$
 
-		MultiPrinterPane multiPrinterPane = new MultiPrinterPane(Messages.getString("PrintConfigurationView.11"), printers.getKitchenPrinters()); //$NON-NLS-1$
-		add(multiPrinterPane, "cell 0 3 2 1,grow"); //$NON-NLS-1$
+		MultiPrinterPane multiPrinterPane = new MultiPrinterPane("Printers", printers.getKitchenPrinters()); //$NON-NLS-1$
+		add(multiPrinterPane, "cell 0 1 2 1,grow"); //$NON-NLS-1$
 
 		PrinterGroupView printerGroupView = new PrinterGroupView(Messages.getString("PrintConfigurationView.13")); //$NON-NLS-1$
-		add(printerGroupView,"cell 0 4 2 2,grow,wrap"); //$NON-NLS-1$
+		printerGroupView.setPreferredSize(new Dimension(0, 400));
+		add(printerGroupView, "cell 0 2 2 2,grow,wrap"); //$NON-NLS-1$
 
 		JPanel footerPanel = new JPanel(new MigLayout());
 
@@ -197,7 +198,7 @@ public class PrintConfigurationView extends ConfigurationView {
 		footerPanel.add(txtRedTime, "grow");
 		footerPanel.add(new JLabel("sec"), "grow");
 
-		add(footerPanel,  "newline, grow, span 2,wrap");
+		add(footerPanel, "newline, grow, span 2,wrap");
 
 	}// </editor-fold>//GEN-END:initComponents
 

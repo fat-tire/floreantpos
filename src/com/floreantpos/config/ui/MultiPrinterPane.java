@@ -20,6 +20,7 @@ package com.floreantpos.config.ui;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -29,71 +30,187 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import org.jdesktop.swingx.JXTable;
+
 import com.floreantpos.Messages;
+import com.floreantpos.POSConstants;
+import com.floreantpos.main.Application;
 import com.floreantpos.model.Printer;
+import com.floreantpos.model.TerminalPrinters;
 import com.floreantpos.model.VirtualPrinter;
+import com.floreantpos.model.dao.TerminalPrintersDAO;
+import com.floreantpos.model.dao.VirtualPrinterDAO;
+import com.floreantpos.swing.BeanTableModel;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 
 public class MultiPrinterPane extends JPanel {
-	
+
 	private JList<Printer> list;
-	private List<Printer> printers;
+	private List<Printer> printers = new ArrayList<Printer>();;
 	private DefaultListModel<Printer> listModel;
-	
+
+	private JXTable table;
+	private BeanTableModel<Printer> tableModel;
+
+	private int selectedPrinterType;
+
 	public MultiPrinterPane() {
-		
+
 	}
 
-	public MultiPrinterPane(String title, List<Printer> printers) {
-		this.printers = printers;
-		
+	public MultiPrinterPane(String title, List<Printer> allPrinters) {
+		//this.printers = allPrinters;
+
 		setBorder(BorderFactory.createTitledBorder(title));
 		setLayout(new BorderLayout(10, 10));
-		
+
 		JPanel panel = new JPanel();
 		add(panel, BorderLayout.SOUTH);
-		
+
 		JButton btnAdd = new JButton(Messages.getString("MultiPrinterPane.0")); //$NON-NLS-1$
 		btnAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				PrinterTypeSelectionDialog dialog = new PrinterTypeSelectionDialog();
+				dialog.open();
+				if (dialog.isCanceled()) {
+					return;
+				}
+				selectedPrinterType = dialog.getSelectedPrinterType();
 				doAddPrinter();
 			}
 		});
 		panel.add(btnAdd);
-		
+
 		JButton btnEdit = new JButton(Messages.getString("MultiPrinterPane.1")); //$NON-NLS-1$
 		btnEdit.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				doEditPrinter();
 			}
 		});
 		panel.add(btnEdit);
-		
-		JScrollPane scrollPane = new JScrollPane();
-		add(scrollPane, BorderLayout.CENTER);
-		
+
+		JButton btnDelete = new JButton(POSConstants.DELETE.toUpperCase()); //$NON-NLS-1$
+		btnDelete.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				doDeletePrinter();
+			}
+		});
+		panel.add(btnDelete);
+
 		listModel = new DefaultListModel<Printer>();
 		list = new JList<Printer>(listModel);
-		scrollPane.setViewportView(list);
-		
-		if(printers != null) {
+		//scrollPane.setViewportView(list);
+
+		if (printers != null) {
 			for (Printer printer : printers) {
 				listModel.addElement(printer);
 			}
 		}
-		
+
+		tableModel = new BeanTableModel<Printer>(Printer.class);
+		tableModel.addColumn("Name", "virtualPrinter"); //$NON-NLS-1$
+		tableModel.addColumn("Printer", "deviceName"); //$NON-NLS-1$
+		tableModel.addColumn("Type", "type"); //$NON-NLS-1$
+
+		List<VirtualPrinter> virtualPrinters = VirtualPrinterDAO.getInstance().findAll();
+
+		if (virtualPrinters != null && !virtualPrinters.isEmpty()) {
+			for (VirtualPrinter virtualPrinter : virtualPrinters) {
+				Printer printer = new Printer();
+				printer.setVirtualPrinter(virtualPrinter);
+				printer.setDeviceName("");
+				TerminalPrinters terminalPrinter = TerminalPrintersDAO.getInstance().findPrinters(printer.getVirtualPrinter());
+				if (terminalPrinter != null) {
+					if (virtualPrinter.getName().equals(terminalPrinter.getVirtualPrinter().getName())) {
+						printer.setDeviceName(terminalPrinter.getPrinterName());
+					}
+				}
+
+				printers.add(printer);
+			}
+		}
+
+		tableModel.addRows(printers);
+		table = new JXTable(tableModel);
+		add(new JScrollPane(table), BorderLayout.CENTER);
+
 	}
 
 	protected void doEditPrinter() {
-		Printer printer = list.getSelectedValue();
-		if(printer == null) {
+		//Printer printer = list.getSelectedValue();
+		/*if(printer == null) {
 			return;
 		}
-		
+		*/
+		int index = table.getSelectedRow();
+		if (index < 0)
+			return;
+
+		index = table.convertRowIndexToModel(index);
+		Printer customPrinter = tableModel.getRow(index);
+
 		AddPrinterDialog dialog = new AddPrinterDialog();
-		dialog.setPrinter(printer);
+		dialog.setPrinter(customPrinter);
+		dialog.open();
+
+		if (dialog.isCanceled()) {
+			return;
+		}
+		Printer p = dialog.getPrinter();
+
+		if (p.isDefaultPrinter()) {
+			for (Printer printer2 : printers) {
+				printer2.setDefaultPrinter(false);
+			}
+		}
+
+		//printer.setDefaultPrinter(true);
+
+		VirtualPrinter virtualPrinter = p.getVirtualPrinter();
+
+		VirtualPrinterDAO.getInstance().saveOrUpdate(virtualPrinter);
+
+		TerminalPrinters terminalPrinter = TerminalPrintersDAO.getInstance().findPrinters(virtualPrinter);
+
+		if (terminalPrinter == null) {
+			terminalPrinter = new TerminalPrinters();
+		}
+		terminalPrinter.setTerminal(Application.getInstance().getTerminal());
+		terminalPrinter.setPrinterName(p.getDeviceName());
+		terminalPrinter.setVirtualPrinter(p.getVirtualPrinter());
+		TerminalPrintersDAO.getInstance().saveOrUpdate(terminalPrinter);
+
+		refresh();
+	}
+
+	protected void doDeletePrinter() {
+		int index = table.getSelectedRow();
+		if (index < 0)
+			return;
+
+		index = table.convertRowIndexToModel(index);
+		Printer customPrinter = tableModel.getRow(index);
+
+		List<TerminalPrinters> terminalPrinters = TerminalPrintersDAO.getInstance().findAll();
+		for (TerminalPrinters terminalPrinter : terminalPrinters) {
+			if (terminalPrinter.getVirtualPrinter().equals(customPrinter.getVirtualPrinter())) {
+				TerminalPrintersDAO.getInstance().delete(terminalPrinter);
+			}
+		}
+
+		if (customPrinter.getVirtualPrinter() != null) {
+			VirtualPrinterDAO.getInstance().delete(customPrinter.getVirtualPrinter());
+		}
+		refresh();
+	}
+
+	protected void doAddPrinter() {
+		AddPrinterDialog dialog = new AddPrinterDialog();
+		dialog.titlePanel.setTitle(VirtualPrinter.PRINTER_TYPE_NAMES[selectedPrinterType] + " - Printer");
 		dialog.open();
 
 		if (dialog.isCanceled()) {
@@ -102,41 +219,65 @@ public class MultiPrinterPane extends JPanel {
 
 		Printer p = dialog.getPrinter();
 
-		if (p.isDefaultPrinter()) {
-			for (Printer printer2 : printers) {
-				printer2.setDefaultPrinter(false);
-			}
-		}
-		
-		printer.setDefaultPrinter(true);
-	}
+		VirtualPrinterDAO printerDAO = VirtualPrinterDAO.getInstance();
 
-	protected void doAddPrinter() {
-		AddPrinterDialog dialog = new AddPrinterDialog();
-		dialog.open();
-		
-		if(dialog.isCanceled()) {
+		if (printerDAO.findPrinterByName(p.getVirtualPrinter().getName()) != null) {
+			POSMessageDialog.showMessage(this, Messages.getString("VirtualPrinterConfigDialog.12")); //$NON-NLS-1$
 			return;
 		}
-		
-		Printer p = dialog.getPrinter();
-		
-		if(p.isDefaultPrinter()) {
+
+		if (p.isDefaultPrinter()) {
 			for (Printer printer : printers) {
 				printer.setDefaultPrinter(false);
 			}
 		}
-		
+
 		VirtualPrinter virtualPrinter = p.getVirtualPrinter();
-		
+
 		for (Printer printer : printers) {
-			if(virtualPrinter.equals(printer.getVirtualPrinter())) {
+			if (virtualPrinter.equals(printer.getVirtualPrinter())) {
 				POSMessageDialog.showError(this.getParent(), Messages.getString("MultiPrinterPane.2")); //$NON-NLS-1$
 				return;
 			}
 		}
-		
+
+		virtualPrinter.setType(selectedPrinterType);
+		VirtualPrinterDAO.getInstance().saveOrUpdate(virtualPrinter);
+
+		TerminalPrinters terminalPrinters = new TerminalPrinters();
+		terminalPrinters.setTerminal(Application.getInstance().getTerminal());
+		terminalPrinters.setPrinterName(p.getDeviceName());
+		terminalPrinters.setVirtualPrinter(p.getVirtualPrinter());
+		TerminalPrintersDAO.getInstance().saveOrUpdate(terminalPrinters);
+
 		printers.add(p);
 		listModel.addElement(p);
+
+		refresh();
+	}
+
+	private void refresh() {
+		printers.clear();
+		List<VirtualPrinter> virtualPrinters = VirtualPrinterDAO.getInstance().findAll();
+
+		if (virtualPrinters != null && !virtualPrinters.isEmpty()) {
+			for (VirtualPrinter virtualPrinter : virtualPrinters) {
+				Printer printer = new Printer();
+				printer.setVirtualPrinter(virtualPrinter);
+				printer.setDeviceName("");
+				TerminalPrinters terminalPrinter = TerminalPrintersDAO.getInstance().findPrinters(printer.getVirtualPrinter());
+				if (terminalPrinter != null) {
+					if (virtualPrinter.getName().equals(terminalPrinter.getVirtualPrinter().getName())) {
+						printer.setDeviceName(terminalPrinter.getPrinterName());
+					}
+				}
+
+				printers.add(printer);
+			}
+		}
+		tableModel.removeAll();
+		tableModel.addRows(printers);
+		table.validate();
+		table.repaint();
 	}
 }

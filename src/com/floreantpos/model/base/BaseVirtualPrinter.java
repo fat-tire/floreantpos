@@ -1,22 +1,6 @@
-/**
- * ************************************************************************
- * * The contents of this file are subject to the MRPL 1.2
- * * (the  "License"),  being   the  Mozilla   Public  License
- * * Version 1.1  with a permitted attribution clause; you may not  use this
- * * file except in compliance with the License. You  may  obtain  a copy of
- * * the License at http://www.floreantpos.org/license.html
- * * Software distributed under the License  is  distributed  on  an "AS IS"
- * * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * * License for the specific  language  governing  rights  and  limitations
- * * under the License.
- * * The Original Code is FLOREANT POS.
- * * The Initial Developer of the Original Code is OROCUBE LLC
- * * All portions are Copyright (C) 2015 OROCUBE LLC
- * * All Rights Reserved.
- * ************************************************************************
- */
 package com.floreantpos.model.base;
 
+import java.lang.Comparable;
 import java.io.Serializable;
 
 
@@ -31,9 +15,12 @@ import java.io.Serializable;
 
 public abstract class BaseVirtualPrinter  implements Comparable, Serializable {
 
-	public static String REF = "VirtualPrinter"; //$NON-NLS-1$
-	public static String PROP_NAME = "name"; //$NON-NLS-1$
-	public static String PROP_ID = "id"; //$NON-NLS-1$
+	public static String REF = "VirtualPrinter";
+	public static String PROP_TYPE = "type";
+	public static String PROP_PRIORITY = "priority";
+	public static String PROP_ENABLED = "enabled";
+	public static String PROP_ID = "id";
+	public static String PROP_NAME = "name";
 
 
 	// constructors
@@ -72,6 +59,9 @@ public abstract class BaseVirtualPrinter  implements Comparable, Serializable {
 
 	// fields
 		protected java.lang.String name;
+		protected java.lang.Integer type;
+		protected java.lang.Integer priority;
+		protected java.lang.Boolean enabled;
 
 	// collections
 	private java.util.List<String> orderTypeNames;
@@ -118,6 +108,57 @@ public abstract class BaseVirtualPrinter  implements Comparable, Serializable {
 
 
 	/**
+	 * Return the value associated with the column: TYPE
+	 */
+	public java.lang.Integer getType () {
+									return type == null ? Integer.valueOf(0) : type;
+					}
+
+	/**
+	 * Set the value related to the column: TYPE
+	 * @param type the TYPE value
+	 */
+	public void setType (java.lang.Integer type) {
+		this.type = type;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: PRIORITY
+	 */
+	public java.lang.Integer getPriority () {
+									return priority == null ? Integer.valueOf(0) : priority;
+					}
+
+	/**
+	 * Set the value related to the column: PRIORITY
+	 * @param priority the PRIORITY value
+	 */
+	public void setPriority (java.lang.Integer priority) {
+		this.priority = priority;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: ENABLED
+	 */
+	public java.lang.Boolean isEnabled () {
+								return enabled == null ? Boolean.FALSE : enabled;
+					}
+
+	/**
+	 * Set the value related to the column: ENABLED
+	 * @param enabled the ENABLED value
+	 */
+	public void setEnabled (java.lang.Boolean enabled) {
+		this.enabled = enabled;
+	}
+
+
+
+	/**
 	 * Return the value associated with the column: orderTypeNames
 	 */
 	public java.util.List<String> getOrderTypeNames () {
@@ -131,10 +172,6 @@ public abstract class BaseVirtualPrinter  implements Comparable, Serializable {
 	public void setOrderTypeNames (java.util.List<String> orderTypeNames) {
 		this.orderTypeNames = orderTypeNames;
 	}
-
-
-
-
 
 	public boolean equals (Object obj) {
 		if (null == obj) return false;
@@ -150,7 +187,7 @@ public abstract class BaseVirtualPrinter  implements Comparable, Serializable {
 		if (Integer.MIN_VALUE == this.hashCode) {
 			if (null == this.getId()) return super.hashCode();
 			else {
-				String hashStr = this.getClass().getName() + ":" + this.getId().hashCode(); //$NON-NLS-1$
+				String hashStr = this.getClass().getName() + ":" + this.getId().hashCode();
 				this.hashCode = hashStr.hashCode();
 			}
 		}

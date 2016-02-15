@@ -1,22 +1,6 @@
-/**
- * ************************************************************************
- * * The contents of this file are subject to the MRPL 1.2
- * * (the  "License"),  being   the  Mozilla   Public  License
- * * Version 1.1  with a permitted attribution clause; you may not  use this
- * * file except in compliance with the License. You  may  obtain  a copy of
- * * the License at http://www.floreantpos.org/license.html
- * * Software distributed under the License  is  distributed  on  an "AS IS"
- * * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * * License for the specific  language  governing  rights  and  limitations
- * * under the License.
- * * The Original Code is FLOREANT POS.
- * * The Initial Developer of the Original Code is OROCUBE LLC
- * * All portions are Copyright (C) 2015 OROCUBE LLC
- * * All Rights Reserved.
- * ************************************************************************
- */
 package com.floreantpos.model.base;
 
+import java.lang.Comparable;
 import java.io.Serializable;
 
 
@@ -31,13 +15,13 @@ import java.io.Serializable;
 
 public abstract class BaseTerminal  implements Comparable, Serializable {
 
-	public static String REF = "Terminal"; //$NON-NLS-1$
-	public static String PROP_NAME = "name"; //$NON-NLS-1$
-	public static String PROP_OPENING_BALANCE = "openingBalance"; //$NON-NLS-1$
-	public static String PROP_ASSIGNED_USER = "assignedUser"; //$NON-NLS-1$
-	public static String PROP_HAS_CASH_DRAWER = "hasCashDrawer"; //$NON-NLS-1$
-	public static String PROP_CURRENT_BALANCE = "currentBalance"; //$NON-NLS-1$
-	public static String PROP_ID = "id"; //$NON-NLS-1$
+	public static String REF = "Terminal";
+	public static String PROP_OPENING_BALANCE = "openingBalance";
+	public static String PROP_HAS_CASH_DRAWER = "hasCashDrawer";
+	public static String PROP_CURRENT_BALANCE = "currentBalance";
+	public static String PROP_ASSIGNED_USER = "assignedUser";
+	public static String PROP_ID = "id";
+	public static String PROP_NAME = "name";
 
 
 	// constructors
@@ -196,7 +180,7 @@ public abstract class BaseTerminal  implements Comparable, Serializable {
 		if (Integer.MIN_VALUE == this.hashCode) {
 			if (null == this.getId()) return super.hashCode();
 			else {
-				String hashStr = this.getClass().getName() + ":" + this.getId().hashCode(); //$NON-NLS-1$
+				String hashStr = this.getClass().getName() + ":" + this.getId().hashCode();
 				this.hashCode = hashStr.hashCode();
 			}
 		}

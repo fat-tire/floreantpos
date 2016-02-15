@@ -33,6 +33,7 @@ import org.apache.commons.lang.StringUtils;
 import com.floreantpos.Messages;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.base.BaseTicket;
+import com.floreantpos.model.dao.MenuItemDAO;
 import com.floreantpos.model.dao.ShopTableDAO;
 import com.floreantpos.util.NumberUtil;
 import com.floreantpos.util.POSUtil;
@@ -229,6 +230,12 @@ public class Ticket extends BaseTicket {
 		}
 
 		for (TicketItem ticketItem : ticketItems) {
+			Integer itemId = Integer.parseInt(ticketItem.getItemId().toString());
+			MenuItem menuItem = MenuItemDAO.getInstance().initialize(MenuItemDAO.getInstance().get(itemId));
+
+			ticketItem.setUnitPrice(menuItem.getPriceByOrderType(OrderType.valueOf(getTicketType())));
+			ticketItem.setTaxRate(menuItem.getTaxByOrderType(OrderType.valueOf(getTicketType()))); 
+
 			ticketItem.calculatePrice();
 		}
 

@@ -38,6 +38,7 @@ import org.apache.commons.lang.StringUtils;
 
 import com.floreantpos.Messages;
 import com.floreantpos.main.Application;
+import com.floreantpos.model.PosPrinters;
 import com.floreantpos.model.Printer;
 import com.floreantpos.model.PrinterGroup;
 import com.floreantpos.swing.CheckBoxList;
@@ -49,14 +50,16 @@ import com.floreantpos.util.POSUtil;
 public class AddPrinterGroupDialog extends POSDialog {
 	private FixedLengthTextField tfName = new FixedLengthTextField(60);
 	CheckBoxList printerList;
-	JCheckBox chkDefault; 
+	JCheckBox chkDefault;
+
+	PrinterGroup printerGroup;
 
 	public AddPrinterGroupDialog() throws HeadlessException {
 		super(POSUtil.getBackOfficeWindow(), true);
 		setTitle(Messages.getString("AddPrinterGroupDialog.0")); //$NON-NLS-1$
-		
+
 		init();
-		
+
 		//setMinimumSize(new Dimension(400, 200));
 		//setResizable(false);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -66,47 +69,48 @@ public class AddPrinterGroupDialog extends POSDialog {
 	public void init() {
 		JPanel contentPane = (JPanel) getContentPane();
 		contentPane.setLayout(new MigLayout("", "[][grow]", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		
+
 		add(new JLabel(Messages.getString("AddPrinterGroupDialog.4"))); //$NON-NLS-1$
 		add(tfName, "grow, wrap"); //$NON-NLS-1$
-		
-		chkDefault=new JCheckBox("Default"); 
-		
-		add(new JLabel(), "grow"); 
-		add(chkDefault, "wrap"); 
-		
-		List<Printer> printers = Application.getPrinters().getKitchenPrinters();
+
+		chkDefault = new JCheckBox("Default");
+
+		add(new JLabel(), "grow");
+		add(chkDefault, "wrap");
+
+		PosPrinters printersKitchen = Application.getInstance().getPrinters().load();
+		List<Printer> printers = printersKitchen.getKitchenPrinters();
 		printerList = new CheckBoxList(new Vector<Printer>(printers));
-		
+
 		JPanel listPanel = new JPanel(new BorderLayout());
 		listPanel.setBorder(new TitledBorder(Messages.getString("AddPrinterGroupDialog.6"))); //$NON-NLS-1$
 		listPanel.add(new JScrollPane(printerList));
-		
+
 		add(listPanel, "newline, span 2, grow"); //$NON-NLS-1$
-		
+
 		JPanel panel = new JPanel();
 		contentPane.add(panel, "cell 0 4 3 1,grow"); //$NON-NLS-1$
-		
+
 		JButton btnOk = new JButton(Messages.getString("AddPrinterGroupDialog.9")); //$NON-NLS-1$
 		btnOk.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(StringUtils.isEmpty(tfName.getText())) {
+				if (StringUtils.isEmpty(tfName.getText())) {
 					POSMessageDialog.showError(Application.getPosWindow(), Messages.getString("AddPrinterGroupDialog.10")); //$NON-NLS-1$
 					return;
 				}
-				
+
 				List checkedValues = printerList.getCheckedValues();
-				if(checkedValues == null || checkedValues.size() == 0) {
+				if (checkedValues == null || checkedValues.size() == 0) {
 					POSMessageDialog.showError(Application.getPosWindow(), Messages.getString("AddPrinterGroupDialog.11")); //$NON-NLS-1$
 					return;
 				}
-				
+
 				setCanceled(false);
 				dispose();
 			}
 		});
 		panel.add(btnOk);
-		
+
 		JButton btnCancel = new JButton(Messages.getString("AddPrinterGroupDialog.12")); //$NON-NLS-1$
 		btnCancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -118,22 +122,28 @@ public class AddPrinterGroupDialog extends POSDialog {
 	}
 
 	public PrinterGroup getPrinterGroup() {
-		PrinterGroup group = new PrinterGroup();
-		group.setIsDefault(chkDefault.isSelected()); 
-		group.setName(tfName.getText());
-		
+		if (this.printerGroup == null) {
+			printerGroup = new PrinterGroup();
+		}
+		printerGroup.setIsDefault(chkDefault.isSelected());
+		printerGroup.setName(tfName.getText());
+
 		List checkedValues = printerList.getCheckedValues();
-		if(checkedValues != null) {
+		if (checkedValues != null) {
 			List<String> names = new ArrayList<String>();
-			
+
 			for (Object object : checkedValues) {
 				Printer p = (Printer) object;
 				names.add(p.getVirtualPrinter().getName());
 			}
-			
-			group.setPrinterNames(names);
+
+			printerGroup.setPrinterNames(names);
 		}
-		
-		return group;
+		return printerGroup;
+	}
+
+	public void setPrinterGroup(PrinterGroup group) {
+		this.printerGroup = group;
+		tfName.setText(group.getName());
 	}
 }

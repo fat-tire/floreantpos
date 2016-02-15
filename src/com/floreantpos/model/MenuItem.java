@@ -333,7 +333,7 @@ public class MenuItem extends BaseMenuItem {
 		addProperty(type + "_TAX", String.valueOf(price)); //$NON-NLS-1$
 	}
 
-	private double getPriceByOrderType(OrderType type) {
+	double getPriceByOrderType(OrderType type) {
 		double defaultPrice = this.getPrice(Application.getInstance().getCurrentShift());
 		if (type == null) {
 			return defaultPrice;
@@ -350,7 +350,7 @@ public class MenuItem extends BaseMenuItem {
 		}
 	}
 
-	private double getTaxByOrderType(OrderType type) {
+	public double getTaxByOrderType(OrderType type) {
 		if (this.getTax() == null) {
 			return 0;
 		}

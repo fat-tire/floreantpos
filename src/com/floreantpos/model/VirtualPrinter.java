@@ -22,71 +22,77 @@ import java.util.List;
 
 import com.floreantpos.model.base.BaseVirtualPrinter;
 
-
-
 public class VirtualPrinter extends BaseVirtualPrinter {
 	private static final long serialVersionUID = 1L;
 
-/*[CONSTRUCTOR MARKER BEGIN]*/
-	public VirtualPrinter () {
+	public final static int REPORT = 0;
+	public final static int RECEIPT = 1;
+	public final static int KITCHEN = 2;
+	public final static int PACKING = 3;
+	public final static int KITCHEN_DISPLAY = 4;
+
+	public final static String[] PRINTER_TYPE_NAMES = { "Report", "Receipt", "Kitchen", "Packing", "KDS" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+
+	/*[CONSTRUCTOR MARKER BEGIN]*/
+	public VirtualPrinter() {
 		super();
 	}
 
 	/**
 	 * Constructor for primary key
 	 */
-	public VirtualPrinter (java.lang.Integer id) {
+	public VirtualPrinter(java.lang.Integer id) {
 		super(id);
 	}
 
 	/**
 	 * Constructor for required fields
 	 */
-	public VirtualPrinter (
-		java.lang.Integer id,
-		java.lang.String name) {
+	public VirtualPrinter(java.lang.Integer id, java.lang.String name) {
 
-		super (
-			id,
-			name);
+		super(id, name);
 	}
 
-/*[CONSTRUCTOR MARKER END]*/
-	
+	/*[CONSTRUCTOR MARKER END]*/
+
 	@Override
 	public int hashCode() {
 		return this.name.hashCode();
 	}
-	
+
 	@Override
 	public boolean equals(Object obj) {
-		if(!(obj instanceof VirtualPrinter)) {
+		if (!(obj instanceof VirtualPrinter)) {
 			return false;
 		}
-		
+
 		VirtualPrinter other = (VirtualPrinter) obj;
-		
+
 		return this.name.equalsIgnoreCase(other.name);
+	}
+
+	public String getDisplayName() {
+		return PRINTER_TYPE_NAMES[getType()];
 	}
 
 	@Override
 	public String toString() {
 		String name = getName();
-		
+
 		List<String> typeNames = getOrderTypeNames();
-		if(typeNames != null && typeNames.size() > 0) {
+		if (typeNames != null && typeNames.size() > 0) {
 			name += " ("; //$NON-NLS-1$
-			
+
 			for (Iterator iterator = typeNames.iterator(); iterator.hasNext();) {
 				String string = (String) iterator.next();
 				name += string;
-				if(iterator.hasNext()) {
+				if (iterator.hasNext()) {
 					name += ", "; //$NON-NLS-1$
 				}
 			}
 			name += ")"; //$NON-NLS-1$
 		}
-		
+
 		return name;
 	}
 }

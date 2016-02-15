@@ -17,6 +17,7 @@
  */
 package com.floreantpos.config.ui;
 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
@@ -33,21 +34,31 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 
+import org.apache.commons.lang.StringUtils;
+
 import net.miginfocom.swing.MigLayout;
 
 import com.floreantpos.Messages;
 import com.floreantpos.model.Printer;
 import com.floreantpos.model.VirtualPrinter;
 import com.floreantpos.model.dao.VirtualPrinterDAO;
+import com.floreantpos.swing.FixedLengthTextField;
+import com.floreantpos.ui.TitlePanel;
 import com.floreantpos.ui.dialog.POSDialog;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.util.POSUtil;
 
 public class AddPrinterDialog extends POSDialog {
 	private Printer printer;
+	
+	private VirtualPrinter virtualPrinter;
+	private FixedLengthTextField tfName;
+	
 	private JComboBox cbVirtualPrinter;
 	private JComboBox cbDevice;
 	private JCheckBox chckbxDefault;
+	
+	TitlePanel titlePanel; 
 
 	public AddPrinterDialog() throws HeadlessException {
 		super(POSUtil.getBackOfficeWindow(), true);
@@ -62,15 +73,25 @@ public class AddPrinterDialog extends POSDialog {
 
 	@Override
 	public void initUI() {
-		getContentPane().setLayout(new MigLayout("", "[][grow][]", "[][][][][grow]")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		setLayout(new BorderLayout(5,5)); 
+		JPanel centerPanel=new JPanel(); 
+		centerPanel.setLayout(new MigLayout("", "[][grow][]", "[][][][][grow]")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		
-		JLabel lblName = new JLabel(Messages.getString("AddPrinterDialog.4")); //$NON-NLS-1$
-		getContentPane().add(lblName, "cell 0 0,alignx trailing"); //$NON-NLS-1$
+		titlePanel = new TitlePanel();
+		titlePanel.setTitle("Printer Type:");//$NON-NLS-1$
+		add(titlePanel, BorderLayout.NORTH);
+		
+		JLabel lblName = new JLabel("Virtual Printer Name : "); //$NON-NLS-1$
+		centerPanel.add(lblName, "cell 0 0,alignx trailing"); //$NON-NLS-1$
+		
+		tfName = new FixedLengthTextField(20);
 		
 		cbVirtualPrinter = new JComboBox();
 		List<VirtualPrinter> virtualPrinters = VirtualPrinterDAO.getInstance().findAll();
 		cbVirtualPrinter.setModel(new DefaultComboBoxModel<VirtualPrinter>(virtualPrinters.toArray(new VirtualPrinter[0])));
-		getContentPane().add(cbVirtualPrinter, "cell 1 0,growx"); //$NON-NLS-1$
+		//centerPanel.add(cbVirtualPrinter, "cell 1 0,growx"); //$NON-NLS-1$
+		
+		centerPanel.add(tfName, "cell 1 0,growx"); //$NON-NLS-1$
 		
 		JButton btnNew = new JButton(Messages.getString("AddPrinterDialog.7")); //$NON-NLS-1$
 		btnNew.addActionListener(new ActionListener() {
@@ -78,24 +99,25 @@ public class AddPrinterDialog extends POSDialog {
 				doAddNewVirtualPrinter();
 			}
 		});
-		getContentPane().add(btnNew, "cell 2 0"); //$NON-NLS-1$
+		//centerPanel.add(btnNew, "cell 2 0"); //$NON-NLS-1$
 		
 		JLabel lblDevice = new JLabel(Messages.getString("AddPrinterDialog.9")); //$NON-NLS-1$
-		getContentPane().add(lblDevice, "cell 0 1,alignx trailing"); //$NON-NLS-1$
+		centerPanel.add(lblDevice, "cell 0 1,alignx trailing"); //$NON-NLS-1$
 		
 		cbDevice = new JComboBox();
 		cbDevice.setModel(new DefaultComboBoxModel(PrintServiceLookup.lookupPrintServices(null, null)));
 		cbDevice.setRenderer(new PrintServiceComboRenderer());
-		getContentPane().add(cbDevice, "cell 1 1,growx"); //$NON-NLS-1$
+		centerPanel.add(cbDevice, "cell 1 1,growx"); //$NON-NLS-1$
 		
 		chckbxDefault = new JCheckBox(Messages.getString("AddPrinterDialog.12")); //$NON-NLS-1$
-		getContentPane().add(chckbxDefault, "cell 1 2"); //$NON-NLS-1$
+		centerPanel.add(chckbxDefault, "cell 1 2"); //$NON-NLS-1$
 		
 		JSeparator separator = new JSeparator();
-		getContentPane().add(separator, "cell 0 3 3 1,growx,gapy 50px"); //$NON-NLS-1$
+		centerPanel.add(separator, "cell 0 3 3 1,growx,gapy 50px"); //$NON-NLS-1$
+		
+		add(centerPanel, BorderLayout.CENTER); 
 		
 		JPanel panel = new JPanel();
-		getContentPane().add(panel, "cell 0 4 3 1,grow"); //$NON-NLS-1$
 		
 		JButton btnOk = new JButton(Messages.getString("AddPrinterDialog.16")); //$NON-NLS-1$
 		btnOk.addActionListener(new ActionListener() {
@@ -113,6 +135,7 @@ public class AddPrinterDialog extends POSDialog {
 			}
 		});
 		panel.add(btnCancel);
+		add(panel, BorderLayout.SOUTH); //$NON-NLS-1$
 	}
 
 	protected void doAddNewVirtualPrinter() {
@@ -130,12 +153,23 @@ public class AddPrinterDialog extends POSDialog {
 	}
 
 	protected void doAddPrinter() {
-		VirtualPrinter vp = (VirtualPrinter) cbVirtualPrinter.getSelectedItem();
+		/*VirtualPrinter vp = (VirtualPrinter) cbVirtualPrinter.getSelectedItem();
 		if (vp == null) {
 			POSMessageDialog.showError(this, Messages.getString("AddPrinterDialog.18")); //$NON-NLS-1$
 			return;
+		}*/
+		String name = tfName.getText();
+		if (StringUtils.isEmpty(name)) {
+			POSMessageDialog.showMessage(this, Messages.getString("VirtualPrinterConfigDialog.11")); //$NON-NLS-1$
+			return;
+		}
+
+		if (virtualPrinter == null) {
+			virtualPrinter = new VirtualPrinter();
 		}
 		
+		virtualPrinter.setName(name);
+
 		PrintService printService = (PrintService) cbDevice.getSelectedItem();
 		if(printService == null) {
 			POSMessageDialog.showMessage(this, Messages.getString("AddPrinterDialog.19")); //$NON-NLS-1$
@@ -147,7 +181,7 @@ public class AddPrinterDialog extends POSDialog {
 		if(printer == null) {
 			printer = new Printer();
 		}
-		printer.setVirtualPrinter(vp);
+		printer.setVirtualPrinter(virtualPrinter);
 		printer.setDeviceName(printService.getName());
 		printer.setDefaultPrinter(defaultPrinter);
 		
@@ -161,7 +195,9 @@ public class AddPrinterDialog extends POSDialog {
 
 	public void setPrinter(Printer printer) {
 		this.printer = printer;
+		this.virtualPrinter=printer.getVirtualPrinter(); 
 		
+		tfName.setText(printer.getVirtualPrinter().getName()); 
 		if (printer != null) {
 			cbVirtualPrinter.setSelectedItem(printer.getVirtualPrinter());
 			chckbxDefault.setSelected(printer.isDefaultPrinter());

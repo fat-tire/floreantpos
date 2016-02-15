@@ -46,6 +46,7 @@ import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.ITicketItem;
 import com.floreantpos.model.MenuItem;
+import com.floreantpos.model.OrderType;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.TicketItemModifier;
@@ -236,6 +237,21 @@ public class TicketView extends JPanel {
 		btnTotal.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				if (ticket.getTicketType().equals(OrderType.TAKE_OUT.name()) || ticket.getTicketType().equals(OrderType.FOR_HERE.name())) {
+					OrderTypeSelectionDialog2 dialog = new OrderTypeSelectionDialog2(ticket);
+					dialog.open();
+
+					if (dialog.isCanceled()) {
+						return;
+					}
+					OrderType orderType = dialog.getSelectedOrderType();
+					if (orderType != null) {
+						ticket.setType(orderType);
+						updateModel();
+						updateView();
+						btnTotal.setText(orderType.toString() + " : " + Application.getCurrencySymbol() + NumberUtil.formatNumber(ticket.getTotalAmount()));
+					}
+				}
 				doPayNow();
 			}
 		});
@@ -583,15 +599,15 @@ public class TicketView extends JPanel {
 	private String getDisplayMessage(TicketItem ticketItem, String totalPrice) {
 
 		String ticketItems = ticketItem.toString().substring(0, 12);
-		
+
 		int quantity = ticketViewerTable.getModel().getCurrentItemDisplayCount();
 		double itemPrice = ticketItem.getUnitPrice();
-		
+
 		String line = String.format("%-2s %-12s %4s", quantity, ticketItems, itemPrice);
 
 		String total = "TOTAL" + Application.getCurrencySymbol();
 		String line2 = String.format("%-6s %13s", total, totalPrice);
-		
+
 		return line + line2;
 	}
 }

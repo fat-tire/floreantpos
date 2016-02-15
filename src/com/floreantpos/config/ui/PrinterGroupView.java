@@ -20,6 +20,8 @@ package com.floreantpos.config.ui;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -29,97 +31,183 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import com.floreantpos.Messages;
+import net.sf.jasperreports.engine.JasperPrint;
+
+import com.floreantpos.POSConstants;
+import com.floreantpos.main.Application;
+import com.floreantpos.model.KitchenTicket;
+import com.floreantpos.model.KitchenTicket.KitchenTicketStatus;
+import com.floreantpos.model.KitchenTicketItem;
 import com.floreantpos.model.PrinterGroup;
+import com.floreantpos.model.VirtualPrinter;
 import com.floreantpos.model.dao.PrinterGroupDAO;
+import com.floreantpos.model.dao.TerminalPrintersDAO;
+import com.floreantpos.model.dao.VirtualPrinterDAO;
+import com.floreantpos.report.ReceiptPrintService;
+import com.floreantpos.ui.dialog.POSMessageDialog;
 
 public class PrinterGroupView extends JPanel {
-	
+
 	private JList<PrinterGroup> list;
 	private DefaultListModel<PrinterGroup> listModel;
-	
+
 	public PrinterGroupView() {
-		
+
 	}
 
 	public PrinterGroupView(String title) {
-		
+
 		setBorder(BorderFactory.createTitledBorder(title));
 		setLayout(new BorderLayout(10, 10));
-		
+
 		JPanel panel = new JPanel();
 		add(panel, BorderLayout.SOUTH);
-		
-		JButton btnAdd = new JButton(Messages.getString("PrinterGroupView.0")); //$NON-NLS-1$
+
+		JButton btnAdd = new JButton(POSConstants.ADD.toUpperCase()); //$NON-NLS-1$
 		btnAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				doAddPrinter();
 			}
 		});
 		panel.add(btnAdd);
-		
-		JButton btnEdit = new JButton(Messages.getString("PrinterGroupView.1")); //$NON-NLS-1$
+
+		JButton btnEdit = new JButton(POSConstants.EDIT.toUpperCase()); //$NON-NLS-1$
 		btnEdit.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				doEditPrinter();
 			}
 		});
 		panel.add(btnEdit);
-		
+
+		JButton btnDelete = new JButton(POSConstants.DELETE.toUpperCase()); //$NON-NLS-1$
+		btnDelete.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				doDeletePrinterGroup();
+			}
+		});
+		panel.add(btnDelete);
+
+		JButton btnTest = new JButton("TEST"); //$NON-NLS-1$
+		btnTest.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				testPrinter();
+			}
+		});
+		panel.add(btnTest);
+
 		JScrollPane scrollPane = new JScrollPane();
 		add(scrollPane, BorderLayout.CENTER);
-		
+
 		listModel = new DefaultListModel<PrinterGroup>();
-		
+
 		List<PrinterGroup> all = PrinterGroupDAO.getInstance().findAll();
 		for (PrinterGroup printerGroup : all) {
 			listModel.addElement(printerGroup);
 		}
-		
+
 		list = new JList<PrinterGroup>(listModel);
 		scrollPane.setViewportView(list);
-		
-		
+	}
+
+	private void doDeletePrinterGroup() {
+		PrinterGroup pGroup = list.getSelectedValue();
+		if (pGroup == null) {
+			return;
+		}
+
+		try {
+			PrinterGroupDAO.getInstance().delete(pGroup.getId());
+			listModel.removeElement(pGroup);
+		} catch (Exception e) {
+			POSMessageDialog.showError("Cannot Delete..");
+		}
+		refresh();
 	}
 
 	protected void doEditPrinter() {
-//		PrinterGroup printer = list.getSelectedValue();
-//		if(printer == null) {
-//			return;
-//		}
-//		
-//		AddPrinterDialog dialog = new AddPrinterDialog();
-//		dialog.setPrinter(printer);
-//		dialog.open();
-//
-//		if (dialog.isCanceled()) {
-//			return;
-//		}
-//
-//		Printer p = dialog.getPrinter();
-//
-//		if (p.isDefaultPrinter()) {
-//			for (Printer printer2 : printerGroups) {
-//				printer2.setDefaultPrinter(false);
-//			}
-//		}
-//		
-//		printer.setDefaultPrinter(true);
+		PrinterGroup pGroup = list.getSelectedValue();
+		if (pGroup == null) {
+			return;
+		}
+
+		AddPrinterGroupDialog dialog = new AddPrinterGroupDialog();
+		dialog.setPrinterGroup(pGroup);
+		dialog.open();
+
+		if (dialog.isCanceled()) {
+			return;
+		}
+
+		PrinterGroup printerGroup = dialog.getPrinterGroup();
+		PrinterGroupDAO.getInstance().saveOrUpdate(printerGroup);
+		refresh();
 	}
 
 	protected void doAddPrinter() {
 		AddPrinterGroupDialog dialog = new AddPrinterGroupDialog();
 		dialog.open();
-		
-		if(dialog.isCanceled()) {
+
+		if (dialog.isCanceled()) {
 			return;
 		}
-		
+
 		PrinterGroup printerGroup = dialog.getPrinterGroup();
 		PrinterGroupDAO.getInstance().saveOrUpdate(printerGroup);
-		
+
 		listModel.addElement(printerGroup);
+		refresh();
+	}
+
+	private void testPrinter() {
+		PrinterGroup printerGroup = list.getSelectedValue();
+		if (printerGroup == null) {
+			return;
+		}
+
+		KitchenTicket kitchenTicket = new KitchenTicket();
+		kitchenTicket.setPrinterGroup(printerGroup);
+		kitchenTicket.setTicketId(1);
+		kitchenTicket.setCreateDate(new Date());
+		kitchenTicket.setTicketType("DINE IN");
+
+		List<KitchenTicketItem> kitchenTicketItems = new ArrayList<KitchenTicketItem>();
+		KitchenTicketItem kitchenTicketItem = new KitchenTicketItem();
+		kitchenTicketItem.setId(1);
+		kitchenTicketItem.setMenuItemName("--------------------");
+		kitchenTicketItems.addAll(kitchenTicketItems);
+		kitchenTicket.setTicketItems(kitchenTicketItems);
+
+		kitchenTicket.setServerName(Application.getCurrentUser().getFirstName());
+		kitchenTicket.setStatus(KitchenTicketStatus.WAITING.name());
+
+		List<String> printerList = printerGroup.getPrinterNames();
+
+		for (String printerName : printerList) {
+			JasperPrint jasperPrint;
+			try {
+				VirtualPrinter virtualPrinter = VirtualPrinterDAO.getInstance().findPrinterByName(printerName);
+				String deviceName = TerminalPrintersDAO.getInstance().findPrinters(virtualPrinter).getPrinterName();
+				jasperPrint = ReceiptPrintService.createKitchenPrint(kitchenTicket);
+				jasperPrint.setName("KitchenReceipt-" + kitchenTicket.getId() + "-" + deviceName); //$NON-NLS-1$ //$NON-NLS-2$
+				jasperPrint.setProperty(ReceiptPrintService.PROP_PRINTER_NAME, deviceName);
+
+				ReceiptPrintService.printQuitely(jasperPrint);
+			} catch (Exception e) {
+			}
+		}
+	}
+
+	private void refresh() {
+		listModel.clear();
+		List<PrinterGroup> all = PrinterGroupDAO.getInstance().findAll();
+		for (PrinterGroup printersG : all) {
+			listModel.addElement(printersG);
+		}
 	}
 }

@@ -21,10 +21,13 @@ import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 
 import com.floreantpos.model.KitchenTicket;
+import com.floreantpos.model.Ticket;
 import com.floreantpos.model.KitchenTicket.KitchenTicketStatus;
+import com.floreantpos.swing.PaginatedTableModel;
 
 public class KitchenTicketDAO extends BaseKitchenTicketDAO {
 
@@ -44,6 +47,67 @@ public class KitchenTicketDAO extends BaseKitchenTicketDAO {
 			List list = criteria.list();
 
 			return list;
+		} finally {
+			closeSession(session);
+		}
+	}
+	
+	public List<Ticket> findNextKitchenTickets(PaginatedTableModel tableModel) {
+		Session session = null;
+		Criteria criteria = null;
+
+		try {
+			int nextIndex = tableModel.getNextRowIndex();
+
+			session = createNewSession();
+			criteria = session.createCriteria(getReferenceClass());
+
+			criteria.setFirstResult(nextIndex);
+			criteria.setMaxResults(tableModel.getPageSize());
+
+			List kitchenTicketList = criteria.list();
+
+			criteria.setProjection(Projections.rowCount());
+			Integer rowCount = (Integer) criteria.uniqueResult();
+			if (rowCount != null) {
+				tableModel.setNumRows(rowCount);
+
+			}
+			tableModel.setCurrentRowIndex(nextIndex);
+
+			return kitchenTicketList;
+
+		} finally {
+			closeSession(session);
+		}
+	}
+	
+	public List<Ticket> findPreviousKitchenTickets(PaginatedTableModel tableModel) {
+		Session session = null;
+		Criteria criteria = null;
+		try {
+
+			int previousIndex = tableModel.getPreviousRowIndex();
+
+			session = createNewSession();
+			criteria = session.createCriteria(getReferenceClass());
+
+			criteria.setFirstResult(previousIndex);
+			criteria.setMaxResults(tableModel.getPageSize());
+
+			List kitchenTicketList = criteria.list();
+
+			criteria.setProjection(Projections.rowCount());
+			Integer rowCount = (Integer) criteria.uniqueResult();
+			if (rowCount != null) {
+				tableModel.setNumRows(rowCount);
+
+			}
+
+			tableModel.setCurrentRowIndex(previousIndex);
+
+			return kitchenTicketList;
+
 		} finally {
 			closeSession(session);
 		}

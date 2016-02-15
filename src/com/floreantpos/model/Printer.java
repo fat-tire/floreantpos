@@ -21,6 +21,7 @@ public class Printer {
 	private VirtualPrinter virtualPrinter;
 	private String deviceName;
 	private boolean defaultPrinter;
+	private String type;
 
 	public Printer() {
 		super();
@@ -62,25 +63,38 @@ public class Printer {
 	public void setDefaultPrinter(boolean defaultPrinter) {
 		this.defaultPrinter = defaultPrinter;
 	}
-	
+
 	@Override
 	public int hashCode() {
 		return this.virtualPrinter.hashCode();
 	}
-	
+
 	@Override
 	public boolean equals(Object obj) {
-		if(!(obj instanceof Printer)) {
+		if (!(obj instanceof Printer)) {
 			return false;
 		}
-		
+
 		Printer that = (Printer) obj;
-		
+
 		return this.virtualPrinter.equals(that.virtualPrinter);
 	}
-	
+
 	@Override
 	public String toString() {
 		return virtualPrinter.toString();
+	}
+
+	public String getDisplayName() {
+		return virtualPrinter.toString() + " -    " + getDeviceName();
+	}
+
+	public String getType() {
+		type=VirtualPrinter.PRINTER_TYPE_NAMES[virtualPrinter.getType()]; 
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 }

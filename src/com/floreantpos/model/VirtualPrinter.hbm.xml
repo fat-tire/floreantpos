@@ -7,10 +7,14 @@
 		</id>
 		
 		<property column="NAME" name="name" type="string" unique="true" length="60" not-null="true" />
+		<property column="TYPE" name="type" type="java.lang.Integer"/>
 
 		<bag name="orderTypeNames" table="VIRTUALPRINTER_ORDER_TYPE" lazy="false" cascade="all">
 			<key column="printer_id" />
 			<element column="ORDER_TYPE" type="string" />
 		</bag>
+		
+		<property column="PRIORITY" name="priority" type="java.lang.Integer"/>
+		<property column="ENABLED" name="enabled" type="java.lang.Boolean"/>
 	</class>
 </hibernate-mapping>
