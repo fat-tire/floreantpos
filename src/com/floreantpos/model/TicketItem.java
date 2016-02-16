@@ -445,50 +445,25 @@ public class TicketItem extends BaseTicketItem implements ITicketItem {
 		return String.valueOf(getItemId());
 	}
 
-	public Printer getPrinter(OrderType orderType) {
-		PosPrinters printers = PosPrinters.load();
-		PrinterGroup printerGroup = getPrinterGroup();
-		
-		//System.out.println(printerGroup.getName()); 
-
-		if (printerGroup == null) {
-			return printers.getDefaultKitchenPrinter();
-		}
-
-		//return printers.getKitchenPrinterFor(virtualPrinter);
-		List<String> printerNames = printerGroup.getPrinterNames();
-		List<Printer> kitchenPrinters = printers.getKitchenPrinters();
-		for (Printer printer : kitchenPrinters) {
-			if (printerNames.contains(printer.getVirtualPrinter().getName())) {
-				//System.out.println(printer.getDeviceName()); 
-				return printer;
-			}
-		}
-
-		return printers.getDefaultKitchenPrinter();
-	}
-	
 	public List<Printer> getPrinters(OrderType orderType) {
 		PosPrinters printers = PosPrinters.load();
 		PrinterGroup printerGroup = getPrinterGroup();
-		
-		//System.out.println(printerGroup.getName()); 
-		List<Printer> printerAll=new ArrayList<Printer>(); 
-		
+
+		List<Printer> printerAll = new ArrayList<Printer>();
+
 		if (printerGroup == null) {
 			printerAll.add(printers.getDefaultKitchenPrinter());
+			return printerAll;
 		}
 
-		//return printers.getKitchenPrinterFor(virtualPrinter);
 		List<String> printerNames = printerGroup.getPrinterNames();
 		List<Printer> kitchenPrinters = printers.getKitchenPrinters();
 		for (Printer printer : kitchenPrinters) {
 			if (printerNames.contains(printer.getVirtualPrinter().getName())) {
-				//System.out.println(printer.getDeviceName()); 
-				printerAll.add(printer); 
+				printerAll.add(printer);
 			}
 		}
-		return printerAll; 
+		return printerAll;
 	}
 
 	public PrinterGroup getPrinterGroup() {

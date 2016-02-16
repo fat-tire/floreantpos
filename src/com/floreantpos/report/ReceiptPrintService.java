@@ -17,6 +17,7 @@
  */
 package com.floreantpos.report;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -59,6 +60,7 @@ import com.floreantpos.model.Ticket;
 import com.floreantpos.model.dao.KitchenTicketDAO;
 import com.floreantpos.model.dao.RestaurantDAO;
 import com.floreantpos.model.dao.TicketDAO;
+import com.floreantpos.model.util.DateUtil;
 import com.floreantpos.util.NumberUtil;
 import com.floreantpos.util.PrintServiceUtil;
 
@@ -100,6 +102,15 @@ public class ReceiptPrintService {
 		map.put(DATA, data);
 		JasperPrint jasperPrint = createJasperPrint(ReportUtil.getReport("generic-receipt"), map, new JREmptyDataSource()); //$NON-NLS-1$
 		jasperPrint.setProperty(PROP_PRINTER_NAME, Application.getPrinters().getReceiptPrinter());
+		printQuitely(jasperPrint);
+	}
+
+	public static void testPrinter(String deviceName, String title, String data) throws Exception {
+		HashMap<String, String> map = new HashMap<String, String>(2);
+		map.put(TITLE, title);
+		map.put(DATA, data);
+		JasperPrint jasperPrint = createJasperPrint(ReportUtil.getReport("test-printer"), map, new JREmptyDataSource()); //$NON-NLS-1$
+		jasperPrint.setProperty(PROP_PRINTER_NAME, deviceName);
 		printQuitely(jasperPrint);
 	}
 
@@ -506,7 +517,7 @@ public class ReceiptPrintService {
 		map.put("cardPayment", true); //$NON-NLS-1$
 		map.put(SHOW_HEADER_SEPARATOR, Boolean.TRUE);
 		map.put(SHOW_HEADER_SEPARATOR, Boolean.TRUE);
-		map.put(CHECK_NO, POSConstants.RECEIPT_REPORT_TICKET_NO_LABEL + ticket.getTicketId());
+		map.put(CHECK_NO, POSConstants.RECEIPT_REPORT_TICKET_NO_LABEL + ticket.getTicketId() + "-" + ticket.getId());
 		if (ticket.getTableNumbers() != null && ticket.getTableNumbers().size() > 0) {
 			map.put(TABLE_NO, POSConstants.RECEIPT_REPORT_TABLE_NO_LABEL + ticket.getTableNumbers());
 		}
@@ -516,7 +527,8 @@ public class ReceiptPrintService {
 		}
 
 		map.put(SERVER_NAME, POSConstants.RECEIPT_REPORT_SERVER_LABEL + ticket.getServerName());
-		map.put(REPORT_DATE, Messages.getString("ReceiptPrintService.119") + reportDateFormat.format(new Date())); //$NON-NLS-1$
+
+		map.put(REPORT_DATE, Messages.getString("ReceiptPrintService.119") + DateUtil.getReportDate()); //$NON-NLS-1$
 
 		map.put("ticketHeader", Messages.getString("ReceiptPrintService.10")); //$NON-NLS-1$ //$NON-NLS-2$
 		String ticketType = ticket.getTicketType();
@@ -524,6 +536,8 @@ public class ReceiptPrintService {
 			ticketType = ticketType.replaceAll("_", " "); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		map.put("orderType", "* " + ticketType + " *"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+
+		map.put("printerName", "Printer Name : " + virtualPrinterName); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 		KitchenTicketDataSource dataSource = new KitchenTicketDataSource(ticket);
 
@@ -549,7 +563,7 @@ public class ReceiptPrintService {
 
 				JasperPrint jasperPrint = createKitchenPrint(printer.getVirtualPrinter().getName(), kitchenTicket, deviceName);
 
-				jasperPrint.setName("KitchenReceipt-" + ticket.getId() + "-" + deviceName); //$NON-NLS-1$ //$NON-NLS-2$
+				jasperPrint.setName("FP_KitchenReceipt_" + ticket.getId() + "_" + kitchenTicket.getId()); //$NON-NLS-1$ //$NON-NLS-2$ 
 				jasperPrint.setProperty(PROP_PRINTER_NAME, deviceName);
 
 				printQuitely(jasperPrint);

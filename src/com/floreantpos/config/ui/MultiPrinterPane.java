@@ -34,12 +34,14 @@ import org.jdesktop.swingx.JXTable;
 
 import com.floreantpos.Messages;
 import com.floreantpos.POSConstants;
+import com.floreantpos.config.AppConfig;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.Printer;
 import com.floreantpos.model.TerminalPrinters;
 import com.floreantpos.model.VirtualPrinter;
 import com.floreantpos.model.dao.TerminalPrintersDAO;
 import com.floreantpos.model.dao.VirtualPrinterDAO;
+import com.floreantpos.report.ReceiptPrintService;
 import com.floreantpos.swing.BeanTableModel;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 
@@ -101,6 +103,16 @@ public class MultiPrinterPane extends JPanel {
 		});
 		panel.add(btnDelete);
 
+		JButton btnTest = new JButton("TEST"); //$NON-NLS-1$
+		btnTest.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				testPrinter();
+			}
+		});
+		panel.add(btnTest);
+
 		listModel = new DefaultListModel<Printer>();
 		list = new JList<Printer>(listModel);
 		//scrollPane.setViewportView(list);
@@ -112,9 +124,9 @@ public class MultiPrinterPane extends JPanel {
 		}
 
 		tableModel = new BeanTableModel<Printer>(Printer.class);
-		tableModel.addColumn("Name", "virtualPrinter"); //$NON-NLS-1$
-		tableModel.addColumn("Printer", "deviceName"); //$NON-NLS-1$
-		tableModel.addColumn("Type", "type"); //$NON-NLS-1$
+		tableModel.addColumn("Name", "virtualPrinter"); //$NON-NLS-1$ //$NON-NLS-2$
+		tableModel.addColumn("Printer", "deviceName"); //$NON-NLS-1$ //$NON-NLS-2$
+		tableModel.addColumn("Type", "type"); //$NON-NLS-1$ //$NON-NLS-2$
 
 		List<VirtualPrinter> virtualPrinters = VirtualPrinterDAO.getInstance().findAll();
 
@@ -122,7 +134,7 @@ public class MultiPrinterPane extends JPanel {
 			for (VirtualPrinter virtualPrinter : virtualPrinters) {
 				Printer printer = new Printer();
 				printer.setVirtualPrinter(virtualPrinter);
-				printer.setDeviceName("");
+				printer.setDeviceName(""); //$NON-NLS-1$
 				TerminalPrinters terminalPrinter = TerminalPrintersDAO.getInstance().findPrinters(printer.getVirtualPrinter());
 				if (terminalPrinter != null) {
 					if (virtualPrinter.getName().equals(terminalPrinter.getVirtualPrinter().getName())) {
@@ -210,7 +222,7 @@ public class MultiPrinterPane extends JPanel {
 
 	protected void doAddPrinter() {
 		AddPrinterDialog dialog = new AddPrinterDialog();
-		dialog.titlePanel.setTitle(VirtualPrinter.PRINTER_TYPE_NAMES[selectedPrinterType] + " - Printer");
+		dialog.titlePanel.setTitle(VirtualPrinter.PRINTER_TYPE_NAMES[selectedPrinterType] + " - Printer"); //$NON-NLS-1$
 		dialog.open();
 
 		if (dialog.isCanceled()) {
@@ -264,7 +276,7 @@ public class MultiPrinterPane extends JPanel {
 			for (VirtualPrinter virtualPrinter : virtualPrinters) {
 				Printer printer = new Printer();
 				printer.setVirtualPrinter(virtualPrinter);
-				printer.setDeviceName("");
+				printer.setDeviceName(""); //$NON-NLS-1$
 				TerminalPrinters terminalPrinter = TerminalPrintersDAO.getInstance().findPrinters(printer.getVirtualPrinter());
 				if (terminalPrinter != null) {
 					if (virtualPrinter.getName().equals(terminalPrinter.getVirtualPrinter().getName())) {
@@ -279,5 +291,30 @@ public class MultiPrinterPane extends JPanel {
 		tableModel.addRows(printers);
 		table.validate();
 		table.repaint();
+	}
+
+	private void testPrinter() {
+		int index = table.getSelectedRow();
+		if (index < 0)
+			return;
+
+		index = table.convertRowIndexToModel(index);
+		Printer printer = tableModel.getRow(index);
+
+		if (printer.getDeviceName() == null) {
+			return;
+		}
+
+		try {
+			String title = "System Information"; //$NON-NLS-1$
+			String data = printer.getDeviceName() + "-" + printer.getVirtualPrinter().getName(); //$NON-NLS-1$
+			data += "\n Terminal : " + Application.getInstance().getTerminal().getName(); //$NON-NLS-1$
+			data += "\n Current User : " + Application.getCurrentUser().getFirstName(); //$NON-NLS-1$
+			data += "\n Floreant Version : " + Application.VERSION; //$NON-NLS-1$
+			data += "\n Database Name : " + AppConfig.getDatabaseName() + AppConfig.getDatabaseHost() + AppConfig.getDatabasePort(); //$NON-NLS-1$
+			ReceiptPrintService.testPrinter(printer.getDeviceName(), title, data);
+
+		} catch (Exception e) {
+		}
 	}
 }

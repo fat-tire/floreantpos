@@ -49,10 +49,11 @@ import com.floreantpos.util.POSUtil;
 
 public class AddPrinterGroupDialog extends POSDialog {
 	private FixedLengthTextField tfName = new FixedLengthTextField(60);
-	CheckBoxList printerList;
-	JCheckBox chkDefault;
+	private CheckBoxList<Printer> printerList;
+	private JCheckBox chkDefault;
 
-	PrinterGroup printerGroup;
+	private PrinterGroup printerGroup;
+	private List<Printer> printers;
 
 	public AddPrinterGroupDialog() throws HeadlessException {
 		super(POSUtil.getBackOfficeWindow(), true);
@@ -60,13 +61,11 @@ public class AddPrinterGroupDialog extends POSDialog {
 
 		init();
 
-		//setMinimumSize(new Dimension(400, 200));
-		//setResizable(false);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		pack();
 	}
 
-	public void init() {
+	private void init() {
 		JPanel contentPane = (JPanel) getContentPane();
 		contentPane.setLayout(new MigLayout("", "[][grow]", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
@@ -78,8 +77,8 @@ public class AddPrinterGroupDialog extends POSDialog {
 		add(new JLabel(), "grow");
 		add(chkDefault, "wrap");
 
-		PosPrinters printersKitchen = Application.getInstance().getPrinters().load();
-		List<Printer> printers = printersKitchen.getKitchenPrinters();
+		PosPrinters printersKitchen = PosPrinters.load();
+		printers = printersKitchen.getKitchenPrinters();
 		printerList = new CheckBoxList(new Vector<Printer>(printers));
 
 		JPanel listPanel = new JPanel(new BorderLayout());
@@ -145,5 +144,16 @@ public class AddPrinterGroupDialog extends POSDialog {
 	public void setPrinterGroup(PrinterGroup group) {
 		this.printerGroup = group;
 		tfName.setText(group.getName());
+
+		chkDefault.setSelected(group.isIsDefault());
+
+		Vector<Printer> selectedPrinters = new Vector<Printer>();
+		for (Printer printer : printers) {
+			if (printerGroup.getPrinterNames().contains(printer.getVirtualPrinter().getName())) {
+				selectedPrinters.add(printer);
+			}
+		}
+		printerList.selectItems(selectedPrinters);
+
 	}
 }

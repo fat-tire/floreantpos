@@ -26,10 +26,8 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 
-import com.floreantpos.main.Application;
 import com.floreantpos.model.base.BaseKitchenTicket;
 import com.floreantpos.model.dao.KitchenTicketDAO;
-import com.floreantpos.model.dao.PrinterGroupDAO;
 
 public class KitchenTicket extends BaseKitchenTicket {
 	private static final long serialVersionUID = 1L;
@@ -49,7 +47,7 @@ public class KitchenTicket extends BaseKitchenTicket {
 	/*[CONSTRUCTOR MARKER END]*/
 
 	private String customerName;
-	private Printer printer; 
+	private Printer printer;
 
 	public OrderType getType() {
 		String type = getTicketType();
@@ -64,22 +62,13 @@ public class KitchenTicket extends BaseKitchenTicket {
 	public void setType(OrderType type) {
 		setTicketType(type.name());
 	}
-	
+
 	public void setPrinter(Printer printer) {
-		this.printer=printer; 
+		this.printer = printer;
 	}
-	
+
 	public Printer getPrinter() {
-		return this.printer; 
-	}
-	
-	public List<String> getPrinterNames() {
-		List<PrinterGroup> printerGroups = PrinterGroupDAO.getInstance().findAll();
-		List<String> printerNames = null;
-		for (PrinterGroup printerGroup : printerGroups) {
-			printerNames.addAll(printerGroup.getPrinterNames());
-		}
-		return printerNames;
+		return this.printer;
 	}
 
 	public List<Printer> getPrinters() {
@@ -149,11 +138,11 @@ public class KitchenTicket extends BaseKitchenTicket {
 
 					KitchenTicketDAO.getInstance().saveOrUpdate(kitchenTicket);
 
-					kitchenTicket.setPrinter(printer); 
-					
+					kitchenTicket.setPrinter(printer);
+
 					itemMap.put(printer, kitchenTicket);
 				}
-				
+
 				KitchenTicketItem item = new KitchenTicketItem();
 				item.setMenuItemCode(ticketItem.getItemCode());
 				item.setMenuItemName(ticketItem.getNameDisplay());
@@ -161,11 +150,12 @@ public class KitchenTicket extends BaseKitchenTicket {
 				item.setStatus(KitchenTicketStatus.WAITING.name());
 
 				kitchenTicket.addToticketItems(item);
-
+				
 				ticketItem.setPrintedToKitchen(true);
 
 				includeModifiers(ticketItem, kitchenTicket);
 				includeCookintInstructions(ticketItem, kitchenTicket);
+				
 			}
 
 		}
@@ -199,9 +189,15 @@ public class KitchenTicket extends BaseKitchenTicket {
 				if (ticketItemModifiers != null) {
 					for (TicketItemModifier itemModifier : ticketItemModifiers) {
 
-						if (itemModifier.isPrintedToKitchen() || !itemModifier.isShouldPrintToKitchen()) {
+						if (!itemModifier.isShouldPrintToKitchen()) {
 							continue;
 						}
+						
+						/*if (itemModifier.isPrintedToKitchen() || !itemModifier.isShouldPrintToKitchen()) {
+							continue;
+						}*/
+						
+						System.out.println(itemModifier.getName()); 
 
 						KitchenTicketItem item = new KitchenTicketItem();
 						item.setMenuItemCode(""); //$NON-NLS-1$
@@ -219,10 +215,13 @@ public class KitchenTicket extends BaseKitchenTicket {
 		List<TicketItemModifier> addOns = ticketItem.getAddOns();
 		if (addOns != null) {
 			for (TicketItemModifier ticketItemModifier : addOns) {
-				if (ticketItemModifier.isPrintedToKitchen() || !ticketItemModifier.isShouldPrintToKitchen()) {
+				if (!ticketItemModifier.isShouldPrintToKitchen()) {
 					continue;
 				}
 
+				/*if (ticketItemModifier.isPrintedToKitchen() || !ticketItemModifier.isShouldPrintToKitchen()) {
+					continue;
+				}*/
 				KitchenTicketItem item = new KitchenTicketItem();
 				item.setMenuItemCode(""); //$NON-NLS-1$
 				item.setMenuItemName(ticketItemModifier.getNameDisplay());

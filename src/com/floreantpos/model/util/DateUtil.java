@@ -17,6 +17,7 @@
  */
 package com.floreantpos.model.util;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -27,7 +28,7 @@ public class DateUtil {
 		cal.set(Calendar.HOUR_OF_DAY, 0);
 		cal.set(Calendar.MINUTE, 0);
 		cal.set(Calendar.SECOND, 0);
-		
+
 		return new Date(cal.getTimeInMillis());
 	}
 
@@ -40,12 +41,20 @@ public class DateUtil {
 
 		return new Date(cal.getTimeInMillis());
 	}
-	
+
 	public static boolean between(Date startDate, Date endDate, Date guniping) {
-		if(startDate == null || endDate == null) {
+		if (startDate == null || endDate == null) {
 			return false;
 		}
-		
+
 		return (guniping.equals(startDate) || guniping.after(startDate)) && (guniping.equals(endDate) || guniping.before(endDate));
+	}
+
+	public static String getReportDate() {
+		SimpleDateFormat dateFormat = new SimpleDateFormat("MMM d h:mm:ss a");
+		String date = dateFormat.format(new Date());
+
+		return date;
+
 	}
 }

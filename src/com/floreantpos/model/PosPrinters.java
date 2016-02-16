@@ -24,6 +24,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.print.PrintService;
+import javax.print.PrintServiceLookup;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -38,13 +40,9 @@ public class PosPrinters {
 	private static String reportPrinter;
 	private static String receiptPrinter;
 
-	//	private Printer defaultReceiptPrinter;
 	private Printer defaultKitchenPrinter;
-
-	//private List<Printer> receiptPrinters;
 	private static List<Printer> kitchenPrinters;
 
-	//private Map<VirtualPrinter, Printer> receiptPrinterMap = new HashMap<VirtualPrinter, Printer>();
 	private Map<VirtualPrinter, Printer> kitchePrinterMap = new HashMap<VirtualPrinter, Printer>();
 
 	public String getReportPrinter() {
@@ -63,18 +61,6 @@ public class PosPrinters {
 		this.receiptPrinter = receiptPrinter;
 	}
 
-	//	public List<Printer> getReceiptPrinters() {
-	//		if (receiptPrinters == null) {
-	//			receiptPrinters = new ArrayList<Printer>(2);
-	//		}
-	//
-	//		return receiptPrinters;
-	//	}
-	//
-	//	public void setReceiptPrinters(List<Printer> receiptPrinters) {
-	//		this.receiptPrinters = receiptPrinters;
-	//	}
-
 	public List<Printer> getKitchenPrinters() {
 		if (kitchenPrinters == null) {
 			kitchenPrinters = new ArrayList<Printer>(4);
@@ -87,32 +73,9 @@ public class PosPrinters {
 		this.kitchenPrinters = kitchenPrinters;
 	}
 
-	//	public void addReceiptPrinter(Printer printer) {
-	//		getReceiptPrinters().add(printer);
-	//	}
-
 	public void addKitchenPrinter(Printer printer) {
 		getKitchenPrinters().add(printer);
 	}
-
-	//	public void setDefaultReceiptPrinter(Printer defaultReceiptPrinter) {
-	//		this.defaultReceiptPrinter = defaultReceiptPrinter;
-	//	}
-
-	//	public Printer getDefaultReceiptPrinter() {
-	//		if(defaultReceiptPrinter == null && getReceiptPrinters().size() > 0) {
-	//			defaultReceiptPrinter = receiptPrinters.get(0);
-	//			
-	//			for (Printer printer : receiptPrinters) {
-	//				if(printer.isDefaultPrinter()) {
-	//					defaultReceiptPrinter = printer;
-	//					break;
-	//				}
-	//			}
-	//		}
-	//		
-	//		return defaultReceiptPrinter;
-	//	}
 
 	public void setDefaultKitchenPrinter(Printer defaultKitchenPrinter) {
 		this.defaultKitchenPrinter = defaultKitchenPrinter;
@@ -148,21 +111,12 @@ public class PosPrinters {
 		return defaultKitchenPrinter;
 	}
 
-	//	public Printer getReceiptPrinterFor(VirtualPrinter vp) {
-	//		return receiptPrinterMap.get(vp);
-	//	}
-
 	public Printer getKitchenPrinterFor(VirtualPrinter vp) {
 		return kitchePrinterMap.get(vp);
 	}
 
 	private void populatePrinterMaps() {
-		//receiptPrinterMap.clear();
 		kitchePrinterMap.clear();
-
-		//		for (Printer printer : getReceiptPrinters()) {
-		//			receiptPrinterMap.put(printer.getVirtualPrinter(), printer);
-		//		}
 
 		for (Printer printer : getKitchenPrinters()) {
 			kitchePrinterMap.put(printer.getVirtualPrinter(), printer);
@@ -171,7 +125,6 @@ public class PosPrinters {
 
 	public void save() {
 		try {
-			//			getDefaultReceiptPrinter();
 			getDefaultKitchenPrinter();
 
 			populatePrinterMaps();
@@ -181,7 +134,6 @@ public class PosPrinters {
 			JAXBContext jaxbContext = JAXBContext.newInstance(PosPrinters.class);
 			Marshaller m = jaxbContext.createMarshaller();
 			m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
-			//m.setProperty(Marshaller.JAXB_FRAGMENT, Boolean.TRUE);
 
 			StringWriter writer = new StringWriter();
 			m.marshal(this, writer);
@@ -196,26 +148,17 @@ public class PosPrinters {
 	public static PosPrinters load() {
 		try {
 
-			/*File file = new File("config", "printers.xml"); //$NON-NLS-1$ //$NON-NLS-2$
-			if (!file.exists()) {
-				return null;
-			}
-
-			FileReader reader = new FileReader(file);
-
-			JAXBContext jaxbContext = JAXBContext.newInstance(PosPrinters.class);
-			Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
-			PosPrinters printers = (PosPrinters) unmarshaller.unmarshal(reader);
-			*/
 			List<TerminalPrinters> terminalPrinters = TerminalPrintersDAO.getInstance().findTerminalPrinters();
 
 			PosPrinters printers = new PosPrinters();
 
-			List<Printer> terminalKitchenPrinters = new ArrayList<Printer>();
+			List<Printer> terminalActivePrinters = new ArrayList<Printer>();
 			for (TerminalPrinters terminalPrinter : terminalPrinters) {
 				int printerType = terminalPrinter.getVirtualPrinter().getType();
 				if (printerType == VirtualPrinter.REPORT) {
-					reportPrinter = terminalPrinter.getPrinterName();
+					if (terminalPrinter.getPrinterName() != null) {
+						reportPrinter = terminalPrinter.getPrinterName();
+					}
 				}
 				else if (printerType == VirtualPrinter.RECEIPT) {
 					receiptPrinter = terminalPrinter.getPrinterName();
@@ -224,19 +167,22 @@ public class PosPrinters {
 				}
 				else {
 					Printer printer = new Printer(terminalPrinter.getVirtualPrinter(), terminalPrinter.getPrinterName());
-					terminalKitchenPrinters.add(printer);
+					terminalActivePrinters.add(printer);
 				}
 			}
-			kitchenPrinters = terminalKitchenPrinters;
+			kitchenPrinters = terminalActivePrinters;
 
+			if (receiptPrinter == null) {
+				receiptPrinter = getDefaultPrinterName();
+			}
+			if (reportPrinter == null) {
+				reportPrinter = getDefaultPrinterName();
+			}
+			if (kitchenPrinters == null || kitchenPrinters.isEmpty()) {
+				Printer printer = new Printer(new VirtualPrinter(1, "kitchen"), getDefaultPrinterName());
+				kitchenPrinters.add(printer);
+			}
 			printers.populatePrinterMaps();
-
-			//initVirtualPrinter(printers.defaultKitchenPrinter);
-
-			/*List<Printer> kitchenPrinters2 = printers.kitchenPrinters;
-			for (Printer printer : kitchenPrinters2) {
-				initVirtualPrinter(printer);
-			}*/
 
 			return printers;
 
@@ -244,6 +190,14 @@ public class PosPrinters {
 			e.printStackTrace();
 		}
 
+		return null;
+	}
+
+	public static String getDefaultPrinterName() {
+		PrintService[] services = PrintServiceLookup.lookupPrintServices(null, null);
+		if (services.length > 0) {
+			return services[0].getName();
+		}
 		return null;
 	}
 

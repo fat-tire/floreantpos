@@ -20,8 +20,6 @@ package com.floreantpos.config.ui;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -31,18 +29,13 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import net.sf.jasperreports.engine.JasperPrint;
-
 import com.floreantpos.POSConstants;
+import com.floreantpos.config.AppConfig;
 import com.floreantpos.main.Application;
-import com.floreantpos.model.KitchenTicket;
-import com.floreantpos.model.KitchenTicket.KitchenTicketStatus;
-import com.floreantpos.model.KitchenTicketItem;
 import com.floreantpos.model.PrinterGroup;
-import com.floreantpos.model.VirtualPrinter;
+import com.floreantpos.model.TerminalPrinters;
 import com.floreantpos.model.dao.PrinterGroupDAO;
 import com.floreantpos.model.dao.TerminalPrintersDAO;
-import com.floreantpos.model.dao.VirtualPrinterDAO;
 import com.floreantpos.report.ReceiptPrintService;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 
@@ -164,50 +157,38 @@ public class PrinterGroupView extends JPanel {
 		refresh();
 	}
 
+	private void refresh() {
+		listModel.clear();
+		List<PrinterGroup> all = PrinterGroupDAO.getInstance().findAll();
+		for (PrinterGroup printersG : all) {
+			listModel.addElement(printersG);
+		}
+	}
+
 	private void testPrinter() {
 		PrinterGroup printerGroup = list.getSelectedValue();
 		if (printerGroup == null) {
 			return;
 		}
 
-		KitchenTicket kitchenTicket = new KitchenTicket();
-		kitchenTicket.setPrinterGroup(printerGroup);
-		kitchenTicket.setTicketId(1);
-		kitchenTicket.setCreateDate(new Date());
-		kitchenTicket.setTicketType("DINE IN");
-
-		List<KitchenTicketItem> kitchenTicketItems = new ArrayList<KitchenTicketItem>();
-		KitchenTicketItem kitchenTicketItem = new KitchenTicketItem();
-		kitchenTicketItem.setId(1);
-		kitchenTicketItem.setMenuItemName("--------------------");
-		kitchenTicketItems.addAll(kitchenTicketItems);
-		kitchenTicket.setTicketItems(kitchenTicketItems);
-
-		kitchenTicket.setServerName(Application.getCurrentUser().getFirstName());
-		kitchenTicket.setStatus(KitchenTicketStatus.WAITING.name());
-
 		List<String> printerList = printerGroup.getPrinterNames();
 
-		for (String printerName : printerList) {
-			JasperPrint jasperPrint;
-			try {
-				VirtualPrinter virtualPrinter = VirtualPrinterDAO.getInstance().findPrinterByName(printerName);
-				String deviceName = TerminalPrintersDAO.getInstance().findPrinters(virtualPrinter).getPrinterName();
-				jasperPrint = ReceiptPrintService.createKitchenPrint(kitchenTicket);
-				jasperPrint.setName("KitchenReceipt-" + kitchenTicket.getId() + "-" + deviceName); //$NON-NLS-1$ //$NON-NLS-2$
-				jasperPrint.setProperty(ReceiptPrintService.PROP_PRINTER_NAME, deviceName);
+		List<TerminalPrinters> terminalPrinters = TerminalPrintersDAO.getInstance().findTerminalPrinters();
 
-				ReceiptPrintService.printQuitely(jasperPrint);
-			} catch (Exception e) {
+		for (TerminalPrinters terminalPrinter : terminalPrinters) {
+			if (printerList.contains(terminalPrinter.getVirtualPrinter().getName())) {
+				try {
+					String title = "System Information"; //$NON-NLS-1$
+					String data = terminalPrinter.getPrinterName() + "-" + terminalPrinter.getVirtualPrinter().getName(); //$NON-NLS-1$
+					data += "\n Terminal : " + Application.getInstance().getTerminal().getName(); //$NON-NLS-1$
+					data += "\n Current User : " + Application.getCurrentUser().getFirstName(); //$NON-NLS-1$
+					data += "\n Floreant Version : " + Application.VERSION; //$NON-NLS-1$
+					data += "\n Database Name : " + AppConfig.getDatabaseName() + AppConfig.getDatabaseHost() + AppConfig.getDatabasePort(); //$NON-NLS-1$
+					ReceiptPrintService.testPrinter(terminalPrinter.getPrinterName(), title, data);
+
+				} catch (Exception e) {
+				}
 			}
-		}
-	}
-
-	private void refresh() {
-		listModel.clear();
-		List<PrinterGroup> all = PrinterGroupDAO.getInstance().findAll();
-		for (PrinterGroup printersG : all) {
-			listModel.addElement(printersG);
 		}
 	}
 }
