@@ -96,8 +96,8 @@ public class DrawerUtil {
 			//serialPort.writeBytes( reconstitutedString.getBytes());//
 
 			//reset default settings
-			print(ESC);
-			print(AT);
+			//print(ESC);
+			//print(AT);
 
 			//select 10-cpi character pitch
 			//select10CPI();
@@ -322,7 +322,6 @@ public class DrawerUtil {
 			serialPort.writeBytes(text.getBytes());
 
 		} catch (SerialPortException ex) {
-			System.out.println(ex);
 		}
 
 	}
@@ -385,14 +384,18 @@ public class DrawerUtil {
 	}
 
 	public static void setItemDisplay(String port, String message) {
-		serialPort = new SerialPort(port);
-		initialize();
 		try {
+			serialPort = new SerialPort(port);
+			initialize();
 			print((char) 13); //added line feed
-			serialPort.writeBytes(message.getBytes());
-			serialPort.closePort();//Close serial port
-		} catch (SerialPortException ex) {
+			print(message);
+		} catch (Exception ex) {
 			System.out.println(ex);
+		} finally {
+			try {
+				serialPort.closePort();
+			} catch (SerialPortException e) {
+			}
 		}
 	}
 }
