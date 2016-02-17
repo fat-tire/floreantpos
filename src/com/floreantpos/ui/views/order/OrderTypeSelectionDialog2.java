@@ -104,13 +104,14 @@ public class OrderTypeSelectionDialog2 extends POSDialog {
 
 		Ticket ticketToGo = (Ticket) SerializationUtils.clone(ticket);
 		ticketToGo.setTicketType(OrderType.TAKE_OUT.name());
+		ticketToGo.updateTicketItemPriceByOrderType(); 
 		ticketToGo.calculatePrice();
-
 		ticketToGo.calculatePrice();
 		btnToGo.setText("To Go  " + Application.getCurrencySymbol() + NumberUtil.formatNumber(ticketToGo.getTotalAmount()));
 
 		Ticket ticketForHere = (Ticket) SerializationUtils.clone(ticket);
 		ticketForHere.setTicketType(OrderType.FOR_HERE.name());
+		ticketForHere.updateTicketItemPriceByOrderType(); 
 		ticketForHere.calculatePrice();
 
 		btnForHere.setText("For Here  " + Application.getCurrencySymbol() + NumberUtil.formatNumber(ticketForHere.getTotalAmount()));

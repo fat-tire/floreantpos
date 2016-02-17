@@ -250,9 +250,9 @@ public class TicketView extends JPanel {
 					OrderType orderType = dialog.getSelectedOrderType();
 					if (orderType != null) {
 						ticket.setType(orderType);
-						updateModel();
-						updateView();
-						btnTotal.setText(orderType.toString() + " : " + Application.getCurrencySymbol() + NumberUtil.formatNumber(ticket.getTotalAmount()));
+						ticket.updateTicketItemPriceByOrderType(); 
+						updateModel(); 
+						updateView(); 
 					}
 				}
 				doPayNow();

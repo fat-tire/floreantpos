@@ -230,12 +230,6 @@ public class Ticket extends BaseTicket {
 		}
 
 		for (TicketItem ticketItem : ticketItems) {
-			Integer itemId = Integer.parseInt(ticketItem.getItemId().toString());
-			MenuItem menuItem = MenuItemDAO.getInstance().initialize(MenuItemDAO.getInstance().get(itemId));
-
-			ticketItem.setUnitPrice(menuItem.getPriceByOrderType(OrderType.valueOf(getTicketType())));
-			ticketItem.setTaxRate(menuItem.getTaxByOrderType(OrderType.valueOf(getTicketType()))); 
-
 			ticketItem.calculatePrice();
 		}
 
@@ -270,6 +264,21 @@ public class Ticket extends BaseTicket {
 
 		double dueAmount = totalAmount - getPaidAmount();
 		setDueAmount(NumberUtil.roundToTwoDigit(dueAmount));
+	}
+	
+	public void updateTicketItemPriceByOrderType() {
+		List<TicketItem> ticketItems = getTicketItems();
+		if (ticketItems == null) {
+			return;
+		}
+
+		for (TicketItem ticketItem : ticketItems) {
+			Integer itemId = Integer.parseInt(ticketItem.getItemId().toString());
+			MenuItem menuItem = MenuItemDAO.getInstance().initialize(MenuItemDAO.getInstance().get(itemId));
+			
+			ticketItem.setUnitPrice(menuItem.getPriceByOrderType(OrderType.valueOf(getTicketType())));
+			ticketItem.setTaxRate(menuItem.getTaxByOrderType(OrderType.valueOf(getTicketType()))); 
+		}
 	}
 
 	//	public TicketCouponAndDiscount getLargestDiscoutn() {
