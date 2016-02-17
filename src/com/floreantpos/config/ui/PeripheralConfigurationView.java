@@ -29,6 +29,7 @@ public class PeripheralConfigurationView extends ConfigurationView {
 	private JTextField tfDrawerName = new JTextField(10);
 	private JTextField tfDrawerCodes = new JTextField(15);
 	private DoubleTextField tfDrawerInitialBalance = new DoubleTextField(6);
+	private JCheckBox cbCustomerDisplay;
 
 	private JTextField tfCustomerDisplayPort;
 	private JTextField tfCustomerDisplayMessage;
@@ -100,6 +101,7 @@ public class PeripheralConfigurationView extends ConfigurationView {
 		JPanel customerDisplayPanel = new JPanel(new MigLayout());
 		customerDisplayPanel.setBorder(BorderFactory.createTitledBorder("CUSTOMER DISPLAY"));
 
+		cbCustomerDisplay=new JCheckBox("Active customer display");
 		tfCustomerDisplayPort = new JTextField(20);
 		tfCustomerDisplayMessage = new FixedLengthTextField(20);
 
@@ -122,6 +124,7 @@ public class PeripheralConfigurationView extends ConfigurationView {
 			}
 		});
 
+		customerDisplayPanel.add(cbCustomerDisplay,"wrap");
 		customerDisplayPanel.add(new JLabel("Customer Display Port"));
 		customerDisplayPanel.add(tfCustomerDisplayPort, "wrap");
 		customerDisplayPanel.add(new JLabel("Text Message"));
@@ -146,6 +149,7 @@ public class PeripheralConfigurationView extends ConfigurationView {
 		TerminalConfig.setDrawerPortName(tfDrawerName.getText());
 		TerminalConfig.setDrawerControlCodes(tfDrawerCodes.getText());
 
+		TerminalConfig.setCustomerDisplay(cbCustomerDisplay.isSelected());
 		TerminalConfig.setCustomerDisplayPort(tfCustomerDisplayPort.getText());
 		TerminalConfig.setCustomerDisplayMessage(tfCustomerDisplayMessage.getText());
 
@@ -174,6 +178,7 @@ public class PeripheralConfigurationView extends ConfigurationView {
 		tfDrawerCodes.setText(TerminalConfig.getDrawerControlCodes());
 		tfDrawerInitialBalance.setText("" + terminal.getOpeningBalance()); //$NON-NLS-1$
 
+		cbCustomerDisplay.setSelected(TerminalConfig.isActiveCustomerDisplay());
 		tfCustomerDisplayPort.setText(TerminalConfig.getCustomerDisplayPort());
 		tfCustomerDisplayMessage.setText(TerminalConfig.getCustomerDisplayMessage());
 

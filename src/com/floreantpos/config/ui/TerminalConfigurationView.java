@@ -26,7 +26,6 @@ import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -50,7 +49,6 @@ import com.floreantpos.swing.IntegerTextField;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.views.SwitchboardOtherFunctionsView;
 import com.floreantpos.ui.views.SwitchboardView;
-import com.floreantpos.util.DrawerUtil;
 
 public class TerminalConfigurationView extends ConfigurationView {
 	private IntegerTextField tfTerminalNumber;
@@ -72,7 +70,6 @@ public class TerminalConfigurationView extends ConfigurationView {
 	private JCheckBox cbAutoLogoff = new JCheckBox(Messages.getString("TerminalConfigurationView.7")); //$NON-NLS-1$
 	private IntegerTextField tfLogoffTime = new IntegerTextField(4);
 
-	JCheckBox chkHasCashDrawer;
 	private JTextField tfDrawerName = new JTextField(10);
 	private JTextField tfDrawerCodes = new JTextField(15);
 	DoubleTextField tfDrawerInitialBalance = new DoubleTextField(6);
@@ -121,20 +118,20 @@ public class TerminalConfigurationView extends ConfigurationView {
 
 		add(new JLabel(Messages.getString("TerminalConfigurationView.17")), "newline"); //$NON-NLS-1$//$NON-NLS-2$
 		add(cbFonts, "span 2, wrap"); //$NON-NLS-1$
-		
-		Vector<String> defaultViewList=new Vector<String>();
-		defaultViewList.add(OrderType.DINE_IN.toString()); 
-		defaultViewList.add(OrderType.TAKE_OUT.toString()); 
+
+		Vector<String> defaultViewList = new Vector<String>();
+		defaultViewList.add(OrderType.DINE_IN.toString());
+		defaultViewList.add(OrderType.TAKE_OUT.toString());
 		defaultViewList.add(SwitchboardOtherFunctionsView.VIEW_NAME);
 		//defaultViewList.add(OrderType.BAR_TAB.toString());
-		defaultViewList.add(OrderType.DRIVE_THRU.toString()); 
-		defaultViewList.add(OrderType.HOME_DELIVERY.toString()); 
-		defaultViewList.add(OrderType.PICKUP.toString()); 
-		defaultViewList.add(KitchenDisplayView.VIEW_NAME); 
-		defaultViewList.add(SwitchboardView.VIEW_NAME); 
-		
-		cbDefaultView= new JComboBox<String>(defaultViewList); 
-		
+		defaultViewList.add(OrderType.DRIVE_THRU.toString());
+		defaultViewList.add(OrderType.HOME_DELIVERY.toString());
+		defaultViewList.add(OrderType.PICKUP.toString());
+		defaultViewList.add(KitchenDisplayView.VIEW_NAME);
+		defaultViewList.add(SwitchboardView.VIEW_NAME);
+
+		cbDefaultView = new JComboBox<String>(defaultViewList);
+
 		add(new JLabel("Default View"), "newline"); //$NON-NLS-1$//$NON-NLS-2$
 		add(cbDefaultView, "span 2, wrap"); //$NON-NLS-1$
 
@@ -167,71 +164,6 @@ public class TerminalConfigurationView extends ConfigurationView {
 		for (int i = 0; i < 60; i++) {
 			minutes[i] = Integer.valueOf(i);
 		}
-
-		JPanel drawerConfigPanel = new JPanel(new MigLayout());
-		drawerConfigPanel.setBorder(BorderFactory.createTitledBorder(Messages.getString("TerminalConfigurationView.22"))); //$NON-NLS-1$
-
-		chkHasCashDrawer = new JCheckBox(Messages.getString("TerminalConfigurationView.15")); //$NON-NLS-1$
-		drawerConfigPanel.add(chkHasCashDrawer, "span 5, wrap"); //$NON-NLS-1$
-
-		drawerConfigPanel.add(new JLabel(Messages.getString("TerminalConfigurationView.25"))); //$NON-NLS-1$
-		drawerConfigPanel.add(tfDrawerName, ""); //$NON-NLS-1$
-
-		drawerConfigPanel.add(new JLabel(Messages.getString("TerminalConfigurationView.27")), "newline"); //$NON-NLS-1$ //$NON-NLS-2$
-		drawerConfigPanel.add(tfDrawerCodes, Messages.getString("TerminalConfigurationView.29")); //$NON-NLS-1$
-
-		JButton btnDrawerTest = new JButton(Messages.getString("TerminalConfigurationView.11")); //$NON-NLS-1$
-		btnDrawerTest.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				String text = tfDrawerCodes.getText();
-				if (StringUtils.isEmpty(text)) {
-					text = TerminalConfig.getDefaultDrawerControlCodes();
-				}
-
-				String[] split = text.split(","); //$NON-NLS-1$
-				char[] codes = new char[split.length];
-				for (int i = 0; i < split.length; i++) {
-					try {
-						codes[i] = (char) Integer.parseInt(split[i]);
-					} catch (Exception x) {
-						codes[i] = '0';
-					}
-				}
-
-				DrawerUtil.kickDrawer(tfDrawerName.getText(), codes);
-			}
-		});
-		drawerConfigPanel.add(btnDrawerTest);
-
-		JButton btnRestoreDrawerDefault = new JButton(Messages.getString("TerminalConfigurationView.32")); //$NON-NLS-1$
-		btnRestoreDrawerDefault.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				tfDrawerName.setText("COM1"); //$NON-NLS-1$
-				tfDrawerCodes.setText(TerminalConfig.getDefaultDrawerControlCodes());
-			}
-		});
-		drawerConfigPanel.add(btnRestoreDrawerDefault);
-
-		drawerConfigPanel.add(new JLabel(Messages.getString("TerminalConfigurationView.34")), "newline"); //$NON-NLS-1$ //$NON-NLS-2$
-		drawerConfigPanel.add(tfDrawerInitialBalance, "span 4, wrap"); //$NON-NLS-1$
-
-		add(drawerConfigPanel, "span 3, grow, wrap"); //$NON-NLS-1$
-
-		chkHasCashDrawer.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				doEnableDisableDrawerPull();
-			}
-		});
-	}
-
-	protected void doEnableDisableDrawerPull() {
-		boolean selected = chkHasCashDrawer.isSelected();
-		tfDrawerName.setEnabled(selected);
-		tfDrawerCodes.setEnabled(selected);
-		tfDrawerInitialBalance.setEnabled(selected);
 	}
 
 	public static void main(String[] args) {
@@ -293,17 +225,17 @@ public class TerminalConfigurationView extends ConfigurationView {
 		TerminalConfig.setAutoLogoffTime(tfLogoffTime.getInteger() <= 0 ? 10 : tfLogoffTime.getInteger());
 		TerminalConfig.setUseSettlementPrompt(cbUseSettlementPrompt.isSelected());
 		TerminalConfig.setShowBarcodeOnReceipt(cbShowBarCodeOnReceipt.isSelected());
-		
+
 		POSMessageDialog.showMessage(com.floreantpos.util.POSUtil.getFocusedWindow(), Messages.getString("TerminalConfigurationView.40")); //$NON-NLS-1$
 
 		String selectedFont = (String) cbFonts.getSelectedItem();
 		if ("<select>".equals(selectedFont)) { //$NON-NLS-1$
 			selectedFont = null;
 		}
-		
+
 		String selectedView = (String) cbDefaultView.getSelectedItem();
-		
-		TerminalConfig.setDefaultView(selectedView); 
+
+		TerminalConfig.setDefaultView(selectedView);
 		TerminalConfig.setUiDefaultFont(selectedFont);
 		TerminalConfig.setDrawerPortName(tfDrawerName.getText());
 		TerminalConfig.setDrawerControlCodes(tfDrawerCodes.getText());
@@ -317,7 +249,6 @@ public class TerminalConfigurationView extends ConfigurationView {
 			terminal.setName(String.valueOf(terminalNumber));
 		}
 
-		terminal.setHasCashDrawer(chkHasCashDrawer.isSelected());
 		terminal.setOpeningBalance(tfDrawerInitialBalance.getDouble());
 
 		terminalDAO.saveOrUpdate(terminal);
@@ -345,16 +276,13 @@ public class TerminalConfigurationView extends ConfigurationView {
 		tfLogoffTime.setEnabled(cbAutoLogoff.isSelected());
 
 		initializeFontConfig();
-		
-		cbDefaultView.setSelectedItem(TerminalConfig.getDefaultView()); 
+
+		cbDefaultView.setSelectedItem(TerminalConfig.getDefaultView());
 
 		Terminal terminal = Application.getInstance().refreshAndGetTerminal();
-		chkHasCashDrawer.setSelected(terminal.isHasCashDrawer());
 		tfDrawerName.setText(TerminalConfig.getDrawerPortName());
 		tfDrawerCodes.setText(TerminalConfig.getDrawerControlCodes());
 		tfDrawerInitialBalance.setText("" + terminal.getOpeningBalance()); //$NON-NLS-1$
-
-		doEnableDisableDrawerPull();
 
 		setInitialized(true);
 	}

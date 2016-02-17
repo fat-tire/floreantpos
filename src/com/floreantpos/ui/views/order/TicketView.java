@@ -25,6 +25,7 @@ package com.floreantpos.ui.views.order;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -229,7 +230,9 @@ public class TicketView extends JPanel {
 	}
 
 	private void createPayButton() {
-		btnTotal = new PosButton("TOTAL");
+		btnTotal = new PosButton("Total");
+		btnTotal.setFont(new Font("", Font.BOLD, 22));
+
 		if (!Application.getInstance().getTerminal().isHasCashDrawer()) {
 			btnTotal.setEnabled(false);
 		}
@@ -444,25 +447,30 @@ public class TicketView extends JPanel {
 
 	public void updateView() {
 		if (ticket == null) {
-			btnTotal.setText("TOTAL ");
-			titledBorder.setTitle(Messages.getString("TicketView.36")); //$NON-NLS-1$
+			btnTotal.setText("Total");
+			//titledBorder.setTitle(Messages.getString("TicketView.36")); //$NON-NLS-1$
+
+			titledBorder.setTitle("<html><h3> " + ticket.getTicketType().toString() + "[New Ticket]" + "</h3></html>"); //$NON-NLS-1$
 			return;
 		}
 		ticket.calculatePrice();
 
 		if (getCurrentItem() != null) {
 
-			btnTotal.setText("TOTAL " + Application.getCurrencySymbol() + NumberUtil.formatNumber(ticket.getTotalAmount()));
+			btnTotal.setText("<html><h2>Total" + Application.getCurrencySymbol() + " " + NumberUtil.formatNumber(ticket.getTotalAmount()) + "</h2></html>");
 
 			//String displayMessageToSend = getFirstLine(getCurrentItem().toString()) + getSecondLine(ticket.getTotalAmount().toString());
-			String sendMessageToDisplay = getDisplayMessage(getCurrentItem(), ticket.getTotalAmount().toString());
-			DrawerUtil.setItemDisplay(TerminalConfig.getCustomerDisplayPort(), sendMessageToDisplay);
+			if (TerminalConfig.isActiveCustomerDisplay()) {
+				String sendMessageToCustomerDisplay = getDisplayMessage(getCurrentItem(), ticket.getTotalAmount().toString());
+				DrawerUtil.setItemDisplay(TerminalConfig.getCustomerDisplayPort(), sendMessageToCustomerDisplay);
+			}
 		}
 
 		//btnTotal.setText("TOTAL " + Application.getCurrencySymbol() + NumberUtil.formatNumber(ticket.getTotalAmount()));
 
 		if (ticket.getId() == null) {
-			titledBorder.setTitle(Messages.getString("TicketView.36")); //$NON-NLS-1$
+			//titledBorder.setTitle(Messages.getString("TicketView.36")); //$NON-NLS-1$
+			titledBorder.setTitle("<html><h3> " + ticket.getTicketType().toString() + "[New Ticket]" + "</h3></html>"); //$NON-NLS-1$
 		}
 		else {
 			titledBorder.setTitle(Messages.getString("TicketView.37") + ticket.getId()); //$NON-NLS-1$

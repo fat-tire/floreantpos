@@ -62,6 +62,8 @@ public class TerminalConfig {
 
 	private static final String DEFAULT_VIEW = "default_view";//$NON-NLS-1$
 
+	private static final String ACTIVE_CUSTOMER_DISPLAY = "active_customer_display";//$NON-NLS-1$
+
 	static final String TERMINAL_ID = "terminal_id"; //$NON-NLS-1$
 	static final String FULLSCREEN_MODE = "fullscreen_mode"; //$NON-NLS-1$
 
@@ -183,6 +185,14 @@ public class TerminalConfig {
 		return config.getBoolean(SHOW_BARCODE_ON_RECEIPT, false);
 	}
 
+	public static void setCustomerDisplay(boolean show) {
+		config.setProperty(ACTIVE_CUSTOMER_DISPLAY, show);
+	}
+
+	public static boolean isActiveCustomerDisplay() {
+		return config.getBoolean(ACTIVE_CUSTOMER_DISPLAY, false);
+	}
+
 	public static boolean isCashierMode() {
 		return false; //config.getBoolean(CASHIER_MODE, false);
 	}
@@ -278,7 +288,7 @@ public class TerminalConfig {
 	public static String getCustomerDisplayPort() {
 		return config.getString("customerDisplayPort", "COM1"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
-	
+
 	public static void setCustomerDisplayMessage(String customerDisplayMessage) {
 		config.setProperty("customerDisplayMessage", customerDisplayMessage); //$NON-NLS-1$
 	}
