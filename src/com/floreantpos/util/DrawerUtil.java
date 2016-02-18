@@ -17,6 +17,9 @@
  */
 package com.floreantpos.util;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import jssc.SerialPort;
 import jssc.SerialPortException;
 
@@ -24,7 +27,7 @@ import com.floreantpos.config.TerminalConfig;
 
 public class DrawerUtil {
 	/* fields */
-
+	private static Log logger = LogFactory.getLog(DrawerUtil.class);
 	private boolean escp24pin; //boolean to indicate whether the printer is a 24 pin esc/p2 epson
 
 	private static int MAX_ADVANCE_9PIN = 216; //for 24/48 pin esc/p2 printers this should be 180
@@ -84,6 +87,7 @@ public class DrawerUtil {
 		try {
 			serialPort.closePort();
 		} catch (SerialPortException ex) {
+			logger.error(ex);
 		}
 	}
 
@@ -330,9 +334,8 @@ public class DrawerUtil {
 		try {
 			serialPort.writeByte((byte) text);
 		} catch (SerialPortException ex) {
-			System.out.println(ex);
+			logger.error(ex);
 		}
-
 	}
 
 	public static boolean isInitialized() {
@@ -364,7 +367,7 @@ public class DrawerUtil {
 
 			serialPort.closePort();//Close serial port
 		} catch (SerialPortException ex) {
-			System.out.println(ex);
+			logger.error(ex);
 		}
 	}
 
@@ -379,7 +382,7 @@ public class DrawerUtil {
 
 			serialPort.closePort();//Close serial port
 		} catch (SerialPortException ex) {
-			System.out.println(ex);
+			logger.error(ex);
 		}
 	}
 
@@ -390,7 +393,7 @@ public class DrawerUtil {
 			print((char) 13); //added line feed
 			print(message);
 		} catch (Exception ex) {
-			System.out.println(ex);
+			logger.error(ex);
 		} finally {
 			try {
 				serialPort.closePort();

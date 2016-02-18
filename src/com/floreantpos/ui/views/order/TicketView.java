@@ -451,11 +451,13 @@ public class TicketView extends JPanel {
 		}
 		ticket.calculatePrice();
 
-		ITicketItem object = (ITicketItem) ticketViewerTable.getSelected();
+		ITicketItem selectedItem = (ITicketItem) ticketViewerTable.getSelected();
 
-		if (TerminalConfig.isActiveCustomerDisplay()) {
-			String sendMessageToCustomerDisplay = getDisplayMessage(object, ticket.getTotalAmount().toString());
-			DrawerUtil.setItemDisplay(TerminalConfig.getCustomerDisplayPort(), sendMessageToCustomerDisplay);
+		if (selectedItem != null) {
+			if (TerminalConfig.isActiveCustomerDisplay()) {
+				String sendMessageToCustomerDisplay = getDisplayMessage(selectedItem, ticket.getTotalAmount().toString());
+				DrawerUtil.setItemDisplay(TerminalConfig.getCustomerDisplayPort(), sendMessageToCustomerDisplay);
+			}
 		}
 
 		if (ticket.getTotalAmount() > 0) {
@@ -548,10 +550,6 @@ public class TicketView extends JPanel {
 	}
 
 	private String getDisplayMessage(ITicketItem item, String totalPrice) {
-
-		if (item == null) {
-			return "";
-		}
 
 		int currentItemLenth = item.getNameDisplay().length();
 		String ticketItems;
