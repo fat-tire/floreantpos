@@ -410,7 +410,7 @@ public class MenuModifierForm extends BeanEditor {
 	class PriceByOrderType extends AbstractTableModel {
 		List<String> propertiesKey = new ArrayList<String>();
 
-		String[] cn = { "MODIFIER", "ORDER TYPE", "PRICE", "TAX" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+		String[] cn = { "MODIFIER", "ORDER TYPE", "PRICE", "TAX", "EXTRA PRICE", "EXTRA TAX" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 
 		PriceByOrderType(Map<String, String> properties) {
 
@@ -424,7 +424,7 @@ public class MenuModifierForm extends BeanEditor {
 			propertiesKey.clear();
 
 			for (int i = 0; i < keys.size(); i++) {
-				if (keys.get(i).contains("_PRICE")) { //$NON-NLS-1$
+				if (keys.get(i).contains("_PRICE") && !keys.get(i).contains("EXTRA_PRICE")) { //$NON-NLS-1$
 					this.propertiesKey.add(keys.get(i));
 				}
 			}
@@ -515,6 +515,12 @@ public class MenuModifierForm extends BeanEditor {
 				case 3:
 					key = key.replaceAll("_PRICE", "_TAX"); //$NON-NLS-1$ //$NON-NLS-2$
 					return modifier.getProperty(key);
+				case 4:
+					key = key.replaceAll("_PRICE", "_EXTRA_PRICE"); //$NON-NLS-1$ //$NON-NLS-2$
+					return modifier.getProperty(key);
+				case 5:
+					key = key.replaceAll("_PRICE", "_EXTRA_TAX"); //$NON-NLS-1$ //$NON-NLS-2$
+					return modifier.getProperty(key);
 			}
 			return null;
 		}
@@ -530,7 +536,7 @@ public class MenuModifierForm extends BeanEditor {
 
 	private void addNewPrice() {
 
-		ModifierPriceByOrderTypeDialog dialog = new ModifierPriceByOrderTypeDialog(this.getParentFrame(),modifier);
+		ModifierPriceByOrderTypeDialog dialog = new ModifierPriceByOrderTypeDialog(this.getParentFrame(), modifier);
 		dialog.setSize(350, 220);
 		dialog.open();
 		if (!dialog.isCanceled()) {
@@ -541,7 +547,7 @@ public class MenuModifierForm extends BeanEditor {
 	private void deletePrice() {
 		int selectedRow = priceTable.getSelectedRow();
 		if (selectedRow == -1) {
-			POSMessageDialog.showMessage(this.getParentFrame(),Messages.getString("MenuModifierForm.7")); //$NON-NLS-1$
+			POSMessageDialog.showMessage(this.getParentFrame(), Messages.getString("MenuModifierForm.7")); //$NON-NLS-1$
 			return;
 		}
 		int option = POSMessageDialog.showYesNoQuestionDialog(this.getParentFrame(),
@@ -570,12 +576,13 @@ public class MenuModifierForm extends BeanEditor {
 	private void updatePrice() {
 		int selectedRow = priceTable.getSelectedRow();
 		if (selectedRow == -1) {
-			POSMessageDialog.showMessage(this.getParentFrame(),Messages.getString("MenuModifierForm.25")); //$NON-NLS-1$
+			POSMessageDialog.showMessage(this.getParentFrame(), Messages.getString("MenuModifierForm.25")); //$NON-NLS-1$
 			return;
 		}
 
 		priceTableModel.propertiesKey.get(selectedRow);
-		ModifierPriceByOrderTypeDialog dialog = new ModifierPriceByOrderTypeDialog(this.getParentFrame(),modifier, String.valueOf(priceTableModel.propertiesKey.get(selectedRow)));
+		ModifierPriceByOrderTypeDialog dialog = new ModifierPriceByOrderTypeDialog(this.getParentFrame(), modifier,
+				String.valueOf(priceTableModel.propertiesKey.get(selectedRow)));
 		dialog.setSize(350, 220);
 		dialog.open();
 		if (!dialog.isCanceled()) {

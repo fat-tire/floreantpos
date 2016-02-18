@@ -51,19 +51,21 @@ public class ModifierPriceByOrderTypeDialog extends POSDialog {
 	private JButton btnCancel;
 	private JComboBox cbOrderTypes;
 	private JComboBox cbTax;
+	private JComboBox cbExtraTax;
 	private JTextField tfPrice;
+	private JTextField tfExtraPrice;
 	private String key;
 
 	private MenuModifier modifier;
 
-	public ModifierPriceByOrderTypeDialog(Frame owner,MenuModifier modifier) {
-		super(owner,true);
+	public ModifierPriceByOrderTypeDialog(Frame owner, MenuModifier modifier) {
+		super(owner, true);
 		this.modifier = modifier;
 		init();
 	}
 
-	public ModifierPriceByOrderTypeDialog(Frame owner,MenuModifier modifier, String key) {
-		super(owner,true);
+	public ModifierPriceByOrderTypeDialog(Frame owner, MenuModifier modifier, String key) {
+		super(owner, true);
 		this.modifier = modifier;
 		this.key = key;
 		init();
@@ -137,7 +139,6 @@ public class ModifierPriceByOrderTypeDialog extends POSDialog {
 			return;
 
 		String modifiedKey = key;
-
 		if (modifiedKey != null) {
 			modifiedKey = modifiedKey.replaceAll("_PRICE", ""); //$NON-NLS-1$ //$NON-NLS-2$
 			modifiedKey = modifiedKey.replaceAll("_", " "); //$NON-NLS-1$ //$NON-NLS-2$
@@ -145,8 +146,26 @@ public class ModifierPriceByOrderTypeDialog extends POSDialog {
 
 			String taxKey = key;
 			taxKey = taxKey.replaceAll("_PRICE", "_TAX"); //$NON-NLS-1$ //$NON-NLS-2$
-			Tax newtax = TaxDAO.getInstance().findByTaxRate(Double.parseDouble(modifier.getProperty(taxKey)));
-			cbTax.setSelectedItem(newtax);
+			if (modifier.getProperty(taxKey) != null) {
+				Tax newtax = TaxDAO.getInstance().findByTaxRate(Double.parseDouble(modifier.getProperty(taxKey)));
+				if (newtax != null) {
+					cbTax.setSelectedItem(newtax);
+				}
+			}
+
+			String extraTaxKey = key;
+			extraTaxKey = extraTaxKey.replaceAll("_PRICE", "_EXTRA_TAX"); //$NON-NLS-1$ //$NON-NLS-2$
+
+			if (modifier.getProperty(extraTaxKey) != null) {
+				Tax extraTax = TaxDAO.getInstance().findByTaxRate(Double.parseDouble(modifier.getProperty(extraTaxKey)));
+				if (extraTax != null) {
+					cbExtraTax.setSelectedItem(extraTax);
+				}
+			}
+
+			String extraPrice = key;
+			extraPrice = extraPrice.replaceAll("_PRICE", "_EXTRA_PRICE"); //$NON-NLS-1$ //$NON-NLS-2$
+			tfExtraPrice.setText(modifier.getProperty(extraPrice));
 
 			tfPrice.setText(String.valueOf(modifier.getProperties().get(key)));
 		}
@@ -154,8 +173,10 @@ public class ModifierPriceByOrderTypeDialog extends POSDialog {
 
 	public boolean updateModel() {
 		double price = 0;
+		double extraPrice = 0;
 		try {
 			price = Double.parseDouble(tfPrice.getText());
+			extraPrice = Double.parseDouble(tfExtraPrice.getText());
 		} catch (Exception x) {
 			POSMessageDialog.showError(this, com.floreantpos.POSConstants.PRICE_IS_NOT_VALID_);
 			return false;
@@ -164,6 +185,10 @@ public class ModifierPriceByOrderTypeDialog extends POSDialog {
 		Tax tax = (Tax) cbTax.getSelectedItem();
 		modifier.setTaxByOrderType(cbOrderTypes.getSelectedItem().toString(), tax.getRate());
 		modifier.setPriceByOrderType(cbOrderTypes.getSelectedItem().toString(), price);
+
+		Tax extraTax = (Tax) cbExtraTax.getSelectedItem();
+		modifier.setExtraTaxByOrderType(cbOrderTypes.getSelectedItem().toString(), extraTax.getRate());
+		modifier.setExtraPriceByOrderType(cbOrderTypes.getSelectedItem().toString(), extraPrice);
 		return true;
 	}
 
@@ -183,13 +208,21 @@ public class ModifierPriceByOrderTypeDialog extends POSDialog {
 		label1.setText("Order type:"); //$NON-NLS-1$
 		cbOrderTypes = new JComboBox();
 
-		final JLabel label3 = new JLabel();
+		JLabel label3 = new JLabel();
 		label3.setText("Tax:"); //$NON-NLS-1$
 		cbTax = new JComboBox(new DefaultComboBoxModel(TaxDAO.getInstance().findAll().toArray()));
+
+		JLabel lblExtraTax = new JLabel();
+		lblExtraTax.setText("Extra tax:"); //$NON-NLS-1$
+		cbExtraTax = new JComboBox(new DefaultComboBoxModel(TaxDAO.getInstance().findAll().toArray()));
 
 		final JLabel label2 = new JLabel();
 		label2.setText(com.floreantpos.POSConstants.PRICE + ":"); //$NON-NLS-1$
 		tfPrice = new JTextField();
+
+		final JLabel lblExtraPrice = new JLabel();
+		lblExtraPrice.setText("Extra price");
+		tfExtraPrice = new JTextField();
 
 		JPanel panel = new JPanel(new MigLayout("", "grow", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
@@ -197,8 +230,12 @@ public class ModifierPriceByOrderTypeDialog extends POSDialog {
 		panel.add(cbOrderTypes, "grow,wrap"); //$NON-NLS-1$
 		panel.add(label2, "right"); //$NON-NLS-1$
 		panel.add(tfPrice, "grow,wrap"); //$NON-NLS-1$
+		panel.add(lblExtraPrice, "right"); //$NON-NLS-1$
+		panel.add(tfExtraPrice, "grow,wrap"); //$NON-NLS-1$
 		panel.add(label3, "right"); //$NON-NLS-1$
-		panel.add(cbTax, "grow"); //$NON-NLS-1$
+		panel.add(cbTax, "grow,wrap"); //$NON-NLS-1$
+		panel.add(lblExtraTax, "right"); //$NON-NLS-1$
+		panel.add(cbExtraTax, "grow"); //$NON-NLS-1$
 
 		contentPane.add(panel, BorderLayout.CENTER);
 

@@ -123,7 +123,6 @@ public class TicketViewerTableModel extends AbstractTableModel {
 			TicketItem item = (TicketItem) object;
 			if (ticketItem.getItemId().equals(item.getItemId()) && !item.isPrintedToKitchen() && !item.isInventoryHandled()) {
 				item.setItemCount(item.getItemCount() + 1);
-				setCurrentItemDisplayCount(item.getItemCount());
 				return values.length - 1;
 			}
 		}
@@ -309,22 +308,5 @@ public class TicketViewerTableModel extends AbstractTableModel {
 
 	public void setPriceIncludesTax(boolean priceIncludesTax) {
 		this.priceIncludesTax = priceIncludesTax;
-	}
-
-	/**
-	 * @return the currentItemDisplayCount
-	 */
-	public int getCurrentItemDisplayCount() {
-		if (currentItemDisplayCount == 0) {
-			return 1;
-		}
-		return currentItemDisplayCount;
-	}
-
-	/**
-	 * @param currentItemDisplayCount the currentItemDisplayCount to set
-	 */
-	public void setCurrentItemDisplayCount(int currentItemDisplayCount) {
-		this.currentItemDisplayCount = currentItemDisplayCount;
 	}
 }

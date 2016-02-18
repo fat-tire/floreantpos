@@ -76,9 +76,6 @@ public class OrderController implements OrderListener, CategorySelectionListener
 		menuItem = dao.initialize(menuItem);
 
 		TicketItem ticketItem = menuItem.convertToTicketItem(orderView.getTicketView().getTicket().getType());
-		
-		orderView.getTicketView().setCurrentItem(ticketItem);// to show item price in display
-		
 		ticketItem.setTicket(orderView.getTicketView().getTicket());
 
 		if (menuItem.hasMandatoryModifiers()) {

@@ -25,7 +25,6 @@ package com.floreantpos.ui.views.order;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -86,7 +85,6 @@ public class TicketView extends JPanel {
 	private JTextField txtSearchItem;
 	private TitledBorder titledBorder = new TitledBorder(""); //$NON-NLS-1$
 	private Border border = new CompoundBorder(titledBorder, new EmptyBorder(2, 2, 2, 2));
-	private TicketItem currentItem;
 
 	public final static String VIEW_NAME = "TICKET_VIEW"; //$NON-NLS-1$
 
@@ -230,8 +228,8 @@ public class TicketView extends JPanel {
 	}
 
 	private void createPayButton() {
-		btnTotal = new PosButton("Total");
-		btnTotal.setFont(new Font("", Font.BOLD, 22));
+		btnTotal = new PosButton();
+		btnTotal.setText("<html><h2>Total</h2></html>");
 
 		if (!Application.getInstance().getTerminal().isHasCashDrawer()) {
 			btnTotal.setEnabled(false);
@@ -250,9 +248,9 @@ public class TicketView extends JPanel {
 					OrderType orderType = dialog.getSelectedOrderType();
 					if (orderType != null) {
 						ticket.setType(orderType);
-						ticket.updateTicketItemPriceByOrderType(); 
-						updateModel(); 
-						updateView(); 
+						ticket.updateTicketItemPriceByOrderType();
+						updateModel();
+						updateView();
 					}
 				}
 				doPayNow();
@@ -447,41 +445,32 @@ public class TicketView extends JPanel {
 
 	public void updateView() {
 		if (ticket == null) {
-			btnTotal.setText("Total");
-			//titledBorder.setTitle(Messages.getString("TicketView.36")); //$NON-NLS-1$
-
-			titledBorder.setTitle("<html><h3> " + ticket.getTicketType().toString() + "[New Ticket]" + "</h3></html>"); //$NON-NLS-1$
+			btnTotal.setText("<html><h2>Total</h2></html>");
+			titledBorder.setTitle(ticket.getTicketType().toString() + "[New Ticket]"); //$NON-NLS-1$
 			return;
 		}
 		ticket.calculatePrice();
 
-		if (getCurrentItem() != null) {
+		ITicketItem object = (ITicketItem) ticketViewerTable.getSelected();
 
-			btnTotal.setText("<html><h2>Total" + Application.getCurrencySymbol() + " " + NumberUtil.formatNumber(ticket.getTotalAmount()) + "</h2></html>");
-
-			//String displayMessageToSend = getFirstLine(getCurrentItem().toString()) + getSecondLine(ticket.getTotalAmount().toString());
-			if (TerminalConfig.isActiveCustomerDisplay()) {
-				String sendMessageToCustomerDisplay = getDisplayMessage(getCurrentItem(), ticket.getTotalAmount().toString());
-				DrawerUtil.setItemDisplay(TerminalConfig.getCustomerDisplayPort(), sendMessageToCustomerDisplay);
-			}
+		if (TerminalConfig.isActiveCustomerDisplay()) {
+			String sendMessageToCustomerDisplay = getDisplayMessage(object, ticket.getTotalAmount().toString());
+			DrawerUtil.setItemDisplay(TerminalConfig.getCustomerDisplayPort(), sendMessageToCustomerDisplay);
 		}
 
-		//btnTotal.setText("TOTAL " + Application.getCurrencySymbol() + NumberUtil.formatNumber(ticket.getTotalAmount()));
-
-		if (ticket.getId() == null) {
-			//titledBorder.setTitle(Messages.getString("TicketView.36")); //$NON-NLS-1$
-			titledBorder.setTitle("<html><h3> " + ticket.getTicketType().toString() + "[New Ticket]" + "</h3></html>"); //$NON-NLS-1$
+		if (ticket.getTotalAmount() > 0) {
+			btnTotal.setText("<html><h2>Total" + Application.getCurrencySymbol() + " " + NumberUtil.formatNumber(ticket.getTotalAmount()) + "</h2></html>");
 		}
 		else {
-			titledBorder.setTitle(Messages.getString("TicketView.37") + ticket.getId()); //$NON-NLS-1$
+			btnTotal.setText("<html><h2>Total</h2></html>");
 		}
 
-		//		if (ticket.getType() != null && ticket.getType().getProperties() != null) {
-		//			btnDone.setVisible(ticket.getType().getProperties().isPostPaid());
-		//		}
-		//		else {
-		//			btnDone.setVisible(true);
-		//		}
+		if (ticket.getId() == null) {
+			titledBorder.setTitle(" [New Ticket]"); //$NON-NLS-1$
+		}
+		else {
+			titledBorder.setTitle(Messages.getString("TicketView.37") + ticket.getId()); //$NON-NLS-1$ //$NON-NLS-2$
+		}
 
 		ticketViewerTable.updateView();
 	}
@@ -558,67 +547,24 @@ public class TicketView extends JPanel {
 		return txtSearchItem;
 	}
 
-	/**
-	 * @return the currentItemPrice
-	 */
-	public TicketItem getCurrentItem() {
-		return currentItem;
-	}
+	private String getDisplayMessage(ITicketItem item, String totalPrice) {
 
-	/**
-	 * @param currentItemPrice the currentItemPrice to set
-	 */
-	public void setCurrentItem(TicketItem currentItem) {
-		this.currentItem = currentItem;
-	}
-
-	/*private String getFirstLine(String ticketItem) {
-		int currentItemLenth = ticketItem.toCharArray().length;
-		int displayCountLenth = ("x" + ticketViewerTable.getModel().getCurrentItemDisplayCount()).toCharArray().length;
-
-		int remainingChar = 20 - (currentItemLenth + displayCountLenth);
-		String space = "";
-		for (int i = 0; i < remainingChar; i++) {
-			space = space + " ";
+		if (item == null) {
+			return "";
 		}
 
-		String line1 = ticketItem + space + "x" + ticketViewerTable.getModel().getCurrentItemDisplayCount();
-		space = "";
-		return line1;
-	}
-
-	private String getSecondLine(String totalPrice) {
-
-		int totalPricelenth = totalPrice.toCharArray().length;
-		String total = "TOTAL" + Application.getCurrencySymbol();
-		int displayTotalLenth = total.toCharArray().length;
-
-		int remainingChar = 20 - (totalPricelenth + displayTotalLenth);
-		String space = "";
-		for (int i = 0; i < remainingChar; i++) {
-			space = space + " ";
-		}
-
-		String line2 = total + space + totalPrice;
-		space = "";
-		return line2;
-	}*/
-
-	private String getDisplayMessage(TicketItem ticketItem, String totalPrice) {
-
-		int currentItemLenth = ticketItem.toString().toCharArray().length;
+		int currentItemLenth = item.getNameDisplay().length();
 		String ticketItems;
 		if (currentItemLenth > 12) {
-			ticketItems = ticketItem.toString().substring(0, 12);
+			ticketItems = item.getNameDisplay().substring(0, 12);
 		}
 		else {
-			ticketItems = ticketItem.toString();
+			ticketItems = item.getNameDisplay();
 		}
+		int quantity = item.getItemCountDisplay();
+		double itemPrice = item.getUnitPriceDisplay();
 
-		int quantity = ticketViewerTable.getModel().getCurrentItemDisplayCount();
-		double itemPrice = ticketItem.getUnitPrice();
-
-		String line = String.format("%-1s %-12s @%4s", quantity, ticketItems, itemPrice);
+		String line = String.format("%-1s %-12s %4s", quantity, ticketItems, itemPrice);
 
 		String total = "TOTAL" + Application.getCurrencySymbol();
 		String line2 = String.format("%-6s %13s", total, totalPrice);

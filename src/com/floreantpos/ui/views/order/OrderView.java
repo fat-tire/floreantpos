@@ -31,6 +31,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.JComponent;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -242,6 +243,20 @@ public class OrderView extends ViewPanel {
 
 		btnCancel.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
+
+				if (ticketView.getTicket().getTicketItems().isEmpty()) {
+					ticketView.doCancelOrder();
+					return;
+				}
+
+				if (!ticketView.getTicket().needsKitchenPrint()) {
+
+					int result = POSMessageDialog.showYesNoQuestionDialog(null, "Items have been sent to kitchen, are you sure to cancel this ticket?",
+							"Confirm");
+					if (result != JOptionPane.YES_OPTION) {
+						return;
+					}
+				}
 				ticketView.doCancelOrder();
 			}
 		});

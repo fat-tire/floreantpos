@@ -165,6 +165,43 @@ public class MenuModifier extends BaseMenuModifier {
 		}
 	}
 
+	public double getExtraPriceByOrderType(OrderType type) {
+		double defaultPrice = this.getExtraPrice();
+		if (type == null) {
+			return defaultPrice;
+		}
+
+		String extraPriceProp = getProperty(type.name() + "_EXTRA_PRICE"); //$NON-NLS-1$
+		if (extraPriceProp == null)
+			return defaultPrice;
+
+		try {
+			return Double.parseDouble(extraPriceProp);
+		} catch (Exception e) {
+			return defaultPrice;
+		}
+	}
+
+	public double getExtraTaxByOrderType(OrderType type) {
+		if (this.getTax() == null) {
+			return 0;
+		}
+		double defaultTax = this.getTax().getRate();
+		if (type == null) {
+			return defaultTax;
+		}
+
+		String extraTaxProp = getProperty(type.name() + "_EXTRA_TAX"); //$NON-NLS-1$
+		if (extraTaxProp == null)
+			return defaultTax;
+
+		try {
+			return Double.parseDouble(extraTaxProp);
+		} catch (Exception e) {
+			return defaultTax;
+		}
+	}
+
 	public boolean isPropertyValueTrue(String propertyName) {
 		String property = getProperty(propertyName);
 
@@ -176,8 +213,18 @@ public class MenuModifier extends BaseMenuModifier {
 		addProperty(type + "_PRICE", String.valueOf(price)); //$NON-NLS-1$
 	}
 
-	public void setTaxByOrderType(String type, double price) {
+	public void setTaxByOrderType(String type, double taxRate) {
 		type = type.replaceAll(" ", "_"); //$NON-NLS-1$ //$NON-NLS-2$
-		addProperty(type + "_TAX", String.valueOf(price)); //$NON-NLS-1$
+		addProperty(type + "_TAX", String.valueOf(taxRate)); //$NON-NLS-1$
+	}
+
+	public void setExtraPriceByOrderType(String type, double extraPrice) {
+		type = type.replaceAll(" ", "_"); //$NON-NLS-1$ //$NON-NLS-2$
+		addProperty(type + "_EXTRA_PRICE", String.valueOf(extraPrice)); //$NON-NLS-1$
+	}
+
+	public void setExtraTaxByOrderType(String type, double extraTaxRate) {
+		type = type.replaceAll(" ", "_"); //$NON-NLS-1$ //$NON-NLS-2$
+		addProperty(type + "_EXTRA_TAX", String.valueOf(extraTaxRate)); //$NON-NLS-1$
 	}
 }
