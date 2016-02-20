@@ -26,6 +26,7 @@ package com.floreantpos.ui.views;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -80,7 +81,7 @@ public class LoginView extends ViewPanel {
 	private com.floreantpos.swing.PosButton btnShutdown;
 	private com.floreantpos.swing.PosButton btnClockOUt;
 	private JLabel lblTerminalId;
-	private JPanel centerPanel = new JPanel(new MigLayout("wrap 4,al center center", "sg", "100")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+	private JPanel centerPanel = new JPanel(new MigLayout("al center center", "sg", "100")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	private static LoginView instance;
 	private JPanel mainPanel;
 
@@ -123,34 +124,45 @@ public class LoginView extends ViewPanel {
 		btnSwitchBoard = new PosButton(POSConstants.SWITCHBOARD);
 		btnKitchenDisplay = new PosButton(POSConstants.KITCHEN_DISPLAY_BUTTON_TEXT);
 
+		btnConfigureDatabase = new PosButton(POSConstants.CONFIGURE_DATABASE);
 		btnShutdown = new PosButton(POSConstants.SHUTDOWN);
 		btnClockOUt = new PosButton(new ClockInOutAction(false, true));
+		
+		JPanel panel1 = new JPanel(new GridLayout(1, 0, 5, 5));
+		JPanel panel2 = new JPanel(new GridLayout(1, 0, 5, 5));
+		JPanel panel3 = new JPanel(new GridLayout(1, 0, 5, 5));
+		JPanel panel4 = new JPanel(new GridLayout(1, 0, 5, 5));
 
 		OrderServiceExtension orderServiceExtension = (OrderServiceExtension) ExtensionManager.getPlugin(OrderServiceExtension.class);
-
+		
+		panel1.add(btnDineIn);
+		panel1.add(btnTakeOut);
+		panel1.add(btnForHere);
+		
+		centerPanel.add(panel1, "wrap, w 600px, h 100px, grow");
+		
 		if (orderServiceExtension != null) {
-			centerPanel.add(btnDineIn, "grow");//$NON-NLS-1$
-			centerPanel.add(btnTakeOut, "grow");//$NON-NLS-1$
-			centerPanel.add(btnForHere, "grow");//$NON-NLS-1$
-			centerPanel.add(btnRetail, "grow");//$NON-NLS-1$
-			centerPanel.add(btnPickUp, "grow");//$NON-NLS-1$
-			centerPanel.add(btnHomeDelivery, "grow");//$NON-NLS-1$
-			centerPanel.add(btnDriveThru, "grow");//$NON-NLS-1$
-			centerPanel.add(btnBarTab, "grow");//$NON-NLS-1$
-			centerPanel.add(btnSwitchBoard, "span 2,grow"); //$NON-NLS-1$
-			centerPanel.add(btnKitchenDisplay, "span 2,grow"); //$NON-NLS-1$
+			panel2.add(btnPickUp);
+			panel2.add(btnHomeDelivery);
+			panel2.add(btnDriveThru);
+			
+			centerPanel.add(panel2, "wrap, w 600px, h 100px, grow");
+			
+			//centerPanel.add(btnRetail, "grow");//$NON-NLS-1$
+			//centerPanel.add(btnBarTab, "grow");//$NON-NLS-1$
+			
 		}
-		else {
-			centerPanel.add(btnDineIn, "grow"); //$NON-NLS-1$
-			centerPanel.add(btnForHere, "grow"); //$NON-NLS-1$
-			centerPanel.add(btnTakeOut, "grow"); //$NON-NLS-1$
-			centerPanel.add(btnRetail, "grow"); //$NON-NLS-1$
-			centerPanel.add(btnSwitchBoard, "span 2,grow"); //$NON-NLS-1$
-			centerPanel.add(btnKitchenDisplay, "span 2,grow"); //$NON-NLS-1$
-		}
-
-		btnConfigureDatabase = new PosButton(POSConstants.CONFIGURE_DATABASE);
-
+		
+		panel3.add(btnSwitchBoard);
+		panel3.add(btnKitchenDisplay);
+		centerPanel.add(panel3, "wrap, w 600px, h 100px, grow");
+		
+		panel4.add(btnClockOUt);
+		panel4.add(btnConfigureDatabase);
+		panel4.add(btnShutdown);
+		
+		centerPanel.add(panel4, "wrap, w 600px, h 100px, grow");
+		
 		if (TerminalConfig.isFullscreenMode()) {
 			if (btnConfigureDatabase != null) {
 				btnConfigureDatabase.setVisible(false);
@@ -158,21 +170,15 @@ public class LoginView extends ViewPanel {
 			if (btnShutdown != null) {
 				btnShutdown.setVisible(false);
 			}
-			centerPanel.add(btnClockOUt, "span 4,grow"); //$NON-NLS-1$
+			centerPanel.add(btnClockOUt, "grow"); //$NON-NLS-1$
 		}
 		else {
 
-			if (TerminalConfig.isShowDbConfigureButton()) {
-				centerPanel.add(btnClockOUt, "grow"); //$NON-NLS-1$
-				centerPanel.add(btnConfigureDatabase, "span 2,grow"); //$NON-NLS-1$
-				centerPanel.add(btnShutdown, "grow"); //$NON-NLS-1$
-			}
-			else {
-				centerPanel.add(btnClockOUt, "span 2,grow"); //$NON-NLS-1$
-				centerPanel.add(btnShutdown, "span 2,grow"); //$NON-NLS-1$
+			if (!TerminalConfig.isShowDbConfigureButton()) {
+				btnConfigureDatabase.setVisible(false);
 			}
 		}
-
+		
 		initActionHandlers();
 
 		mainPanel.add(centerPanel, BorderLayout.CENTER);
