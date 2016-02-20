@@ -244,18 +244,14 @@ public class OrderView extends ViewPanel {
 		btnCancel.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 
-				if (ticketView.getTicket().getTicketItems().isEmpty()) {
+				if (ticketView.isCancelable()) {
 					ticketView.doCancelOrder();
 					return;
 				}
 
-				if (!ticketView.getTicket().needsKitchenPrint()) {
-
-					int result = POSMessageDialog.showYesNoQuestionDialog(null, "Items have been sent to kitchen, are you sure to cancel this ticket?",
-							"Confirm");
-					if (result != JOptionPane.YES_OPTION) {
-						return;
-					}
+				int result = POSMessageDialog.showYesNoQuestionDialog(null, "Items have been sent to kitchen, are you sure to cancel this ticket?", "Confirm");
+				if (result != JOptionPane.YES_OPTION) {
+					return;
 				}
 				ticketView.doCancelOrder();
 			}
@@ -269,7 +265,6 @@ public class OrderView extends ViewPanel {
 					ticketView.sendTicketToKitchen();
 					ticketView.updateView();
 					POSMessageDialog.showMessage("Items sent to kitchen");
-
 				} catch (StaleObjectStateException x) {
 					POSMessageDialog.showError(Application.getPosWindow(), Messages.getString("TicketView.22")); //$NON-NLS-1$
 					return;

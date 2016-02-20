@@ -85,7 +85,7 @@ public class TicketView extends JPanel {
 	private JTextField txtSearchItem;
 	private TitledBorder titledBorder = new TitledBorder(""); //$NON-NLS-1$
 	private Border border = new CompoundBorder(titledBorder, new EmptyBorder(2, 2, 2, 2));
-
+	private boolean cancelable;
 	public final static String VIEW_NAME = "TICKET_VIEW"; //$NON-NLS-1$
 
 	public TicketView() {
@@ -321,6 +321,7 @@ public class TicketView extends JPanel {
 		if (ticket.needsKitchenPrint()) {
 			ReceiptPrintService.printToKitchen(ticket);
 			TicketDAO.getInstance().refresh(ticket);
+			setCancelable(false);
 		}
 
 		OrderController.saveOrder(ticket);
@@ -426,6 +427,7 @@ public class TicketView extends JPanel {
 
 		ticketViewerTable.setTicket(_ticket);
 		updateView();
+		setCancelable(true);
 	}
 
 	public void addTicketItem(TicketItem ticketItem) {
@@ -568,5 +570,19 @@ public class TicketView extends JPanel {
 		String line2 = String.format("%-6s %13s", total, totalPrice);
 
 		return line + line2;
+	}
+
+	/**
+	 * @return the cancelable
+	 */
+	public boolean isCancelable() {
+		return cancelable;
+	}
+
+	/**
+	 * @param cancelable the cancelable to set
+	 */
+	public void setCancelable(boolean cancelable) {
+		this.cancelable = cancelable;
 	}
 }

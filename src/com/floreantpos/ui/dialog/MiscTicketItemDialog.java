@@ -56,13 +56,22 @@ import com.floreantpos.ui.TitlePanel;
  */
 public class MiscTicketItemDialog extends POSDialog {
 	private TicketItem ticketItem;
+	// Variables declaration - do not modify//GEN-BEGIN:variables
+	private javax.swing.JComboBox cbTax;
+	private com.floreantpos.swing.PosButton btnOk;
+	private com.floreantpos.swing.PosButton btnCancel;
+	// End of variables declaration//GEN-END:variables
+	private FixedLengthTextField tfItemName;
+	private DoubleTextField tfItemPrice;
+	private JComboBox cbPrinterGroup;
+	private JLabel lblTax;
 
 	/** Creates new form MiscTicketItemDialog */
 	public MiscTicketItemDialog() {
 		super(Application.getPosWindow(), true);
-		
+
 		setTitle(Messages.getString("MiscTicketItemDialog.0")); //$NON-NLS-1$
-		
+
 		initComponents();
 	}
 
@@ -91,8 +100,9 @@ public class MiscTicketItemDialog extends POSDialog {
 		tfItemPrice = new DoubleTextField();
 		contentPane.add(tfItemPrice, "grow, w 120, h 40"); //$NON-NLS-1$
 
-		contentPane.add(new JLabel(Messages.getString("MiscTicketItemDialog.12")), "alignx trailing"); //$NON-NLS-1$ //$NON-NLS-2$
-		
+		lblTax = new JLabel(Messages.getString("MiscTicketItemDialog.12"));//$NON-NLS-2$
+		contentPane.add(lblTax, "alignx trailing"); //$NON-NLS-1$ 
+
 		PosComboRenderer comboRenderer = new PosComboRenderer();
 		comboRenderer.setEnableDefaultValueShowing(false);
 
@@ -105,56 +115,59 @@ public class MiscTicketItemDialog extends POSDialog {
 		cbPrinterGroup = new JComboBox();
 		cbPrinterGroup.setRenderer(comboRenderer);
 		contentPane.add(cbPrinterGroup, "w 200!, h 40"); //$NON-NLS-1$
-		
+
 		QwertyKeyPad keyPad = new QwertyKeyPad();
 		contentPane.add(keyPad, "newline, grow, span, h 300!, gaptop 10"); //$NON-NLS-1$
-		
+
 		contentPane.add(new JSeparator(JSeparator.HORIZONTAL), "newline, grow, span, gaptop 10px"); //$NON-NLS-1$
-		
+
 		btnOk = new com.floreantpos.swing.PosButton();
-        btnOk.setText(com.floreantpos.POSConstants.OK.toUpperCase());
-        btnOk.setPreferredSize(new java.awt.Dimension(120, 50));
-        btnOk.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                doFinish(evt);
-            }
-        });
-        
-        btnCancel = new com.floreantpos.swing.PosButton();
-        btnCancel.setText(com.floreantpos.POSConstants.CANCEL.toUpperCase());
-        btnCancel.setPreferredSize(new java.awt.Dimension(120, 50));
-        btnCancel.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                doCancel(evt);
-            }
-        });
-        
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        buttonPanel.add(btnOk);
-        buttonPanel.add(btnCancel);
-        
-        contentPane.add(buttonPanel, "newline, grow, span"); //$NON-NLS-1$
-		
+		btnOk.setText(com.floreantpos.POSConstants.OK.toUpperCase());
+		btnOk.setPreferredSize(new java.awt.Dimension(120, 50));
+		btnOk.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				doFinish(evt);
+			}
+		});
+
+		btnCancel = new com.floreantpos.swing.PosButton();
+		btnCancel.setText(com.floreantpos.POSConstants.CANCEL.toUpperCase());
+		btnCancel.setPreferredSize(new java.awt.Dimension(120, 50));
+		btnCancel.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				doCancel(evt);
+			}
+		});
+
+		JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+		buttonPanel.add(btnOk);
+		buttonPanel.add(btnCancel);
+
+		contentPane.add(buttonPanel, "newline, grow, span"); //$NON-NLS-1$
+
 		getContentPane().add(contentPane);
-		
+
 		initData();
 	}// </editor-fold>//GEN-END:initComponents
 
 	private void initData() {
 		List<Tax> taxes = TaxDAO.getInstance().findAll();
-		cbTax.setModel(new ComboBoxModel(taxes));
 
-		int defaultTaxId = TerminalConfig.getMiscItemDefaultTaxId();
-		if (defaultTaxId != -1) {
-			for (int i = 0; i < taxes.size(); i++) {
-				Tax tax = taxes.get(i);
-				if (tax.getId() == defaultTaxId) {
-					cbTax.setSelectedIndex(i);
-					break;
+		cbTax.addItem("Select Tax");
+		for (Tax tax : taxes) {
+			cbTax.addItem(tax);
+		}
+			int defaultTaxId = TerminalConfig.getMiscItemDefaultTaxId();
+			if (defaultTaxId != -1) {
+				for (int i = 0; i < taxes.size(); i++) {
+					Tax tax = taxes.get(i);
+					if (tax.getId() == defaultTaxId) {
+						cbTax.setSelectedIndex(i);
+						break;
+					}
 				}
 			}
-		}
-		
+
 		List<PrinterGroup> printerGroups = PrinterGroupDAO.getInstance().findAll();
 		cbPrinterGroup.setModel(new ComboBoxModel(printerGroups));
 	}
@@ -168,17 +181,17 @@ public class MiscTicketItemDialog extends POSDialog {
 	private void doFinish(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_doFinish
 		double amount = tfItemPrice.getDouble();
 		String itemName = tfItemName.getText();
-		
-		if(StringUtils.isEmpty(itemName)) {
+
+		if (StringUtils.isEmpty(itemName)) {
 			POSMessageDialog.showError(Application.getPosWindow(), Messages.getString("MiscTicketItemDialog.1")); //$NON-NLS-1$
 			return;
 		}
-		
-		if(amount <= 0 || Double.isNaN(amount)) {
+
+		if (amount <= 0 || Double.isNaN(amount)) {
 			POSMessageDialog.showError(Application.getPosWindow(), Messages.getString("MiscTicketItemDialog.22")); //$NON-NLS-1$
 			return;
 		}
-		
+
 		setCanceled(false);
 
 		ticketItem = new TicketItem();
@@ -188,15 +201,19 @@ public class MiscTicketItemDialog extends POSDialog {
 		ticketItem.setCategoryName(com.floreantpos.POSConstants.MISC_BUTTON_TEXT);
 		ticketItem.setGroupName(com.floreantpos.POSConstants.MISC_BUTTON_TEXT);
 		ticketItem.setShouldPrintToKitchen(true);
+
+		Object selectedObject = cbTax.getSelectedItem();
 		
-		Tax tax = (Tax) cbTax.getSelectedItem();
-		if (tax != null) {
-			ticketItem.setTaxRate(tax.getRate());
-			TerminalConfig.setMiscItemDefaultTaxId(tax.getId());
+		if (selectedObject instanceof Tax) {
+			Tax tax = (Tax) selectedObject;
+			if (tax != null) {
+				ticketItem.setTaxRate(tax.getRate());
+				TerminalConfig.setMiscItemDefaultTaxId(tax.getId());
+			}
 		}
-		
+
 		PrinterGroup printerGroup = (PrinterGroup) cbPrinterGroup.getSelectedItem();
-		if(printerGroup != null) {
+		if (printerGroup != null) {
 			ticketItem.setPrinterGroup(printerGroup);
 		}
 
@@ -206,14 +223,4 @@ public class MiscTicketItemDialog extends POSDialog {
 	public TicketItem getTicketItem() {
 		return ticketItem;
 	}
-
-	// Variables declaration - do not modify//GEN-BEGIN:variables
-	private javax.swing.JComboBox cbTax;
-	private com.floreantpos.swing.PosButton btnOk;
-	private com.floreantpos.swing.PosButton btnCancel;
-	// End of variables declaration//GEN-END:variables
-	private FixedLengthTextField tfItemName;
-	private DoubleTextField tfItemPrice;
-	private JComboBox cbPrinterGroup;
-
 }
