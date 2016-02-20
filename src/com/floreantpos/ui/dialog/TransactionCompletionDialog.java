@@ -19,6 +19,7 @@ package com.floreantpos.ui.dialog;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -50,10 +51,25 @@ public class TransactionCompletionDialog extends POSDialog {
 	private JLabel lblGratuityAmount;
 
 	private PosTransaction completedTransaction;
+	private List<PosTransaction> completedTransactions;
+	
+	private boolean isCard; 
 
 	public TransactionCompletionDialog(PosTransaction transaction) {
 		this.completedTransaction = transaction;
+		isCard=completedTransaction.isCard(); 
+		initializeComponents(); 
+		//setResizable(false);
+	}
+	
+	public TransactionCompletionDialog(List<PosTransaction> transaction) {
+		this.completedTransactions = transaction;
 
+		initializeComponents(); 
+		//setResizable(false);
+	}
+	
+	private void initializeComponents() {
 		setTitle(com.floreantpos.POSConstants.TRANSACTION_COMPLETED);
 
 		setLayout(new MigLayout("align 50% 0%, ins 20", "[]20[]", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
@@ -128,7 +144,7 @@ public class TransactionCompletionDialog extends POSDialog {
 
 		JPanel p = new JPanel();
 
-		if (completedTransaction.isCard()) {
+		if (isCard) {
 			p.add(btnPrintAllCopy, "newline,skip, h 50"); //$NON-NLS-1$
 			p.add(btnPrintStoreCopy, "skip, h 50"); //$NON-NLS-1$
 			p.add(btnClose, "skip, h 50"); //$NON-NLS-1$
@@ -140,7 +156,6 @@ public class TransactionCompletionDialog extends POSDialog {
 		}
 
 		add(p, "newline, span 2, grow, gaptop 15px"); //$NON-NLS-1$
-		//setResizable(false);
 	}
 
 	protected JLabel createLabel(String text, int alignment) {
@@ -212,5 +227,13 @@ public class TransactionCompletionDialog extends POSDialog {
 
 	public void setCompletedTransaction(PosTransaction completedTransaction) {
 		this.completedTransaction = completedTransaction;
+	}
+
+	public boolean isCard() {
+		return isCard;
+	}
+
+	public void setCard(boolean isCard) {
+		this.isCard = isCard;
 	}
 }

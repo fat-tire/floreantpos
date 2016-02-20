@@ -81,6 +81,7 @@ import com.floreantpos.ui.views.order.OrderView;
 import com.floreantpos.ui.views.order.RootView;
 import com.floreantpos.ui.views.order.TicketSelectionDialog;
 import com.floreantpos.ui.views.order.ViewPanel;
+import com.floreantpos.ui.views.payment.GroupSettleTicketDialog;
 import com.floreantpos.ui.views.payment.SettleTicketDialog;
 import com.floreantpos.util.OrderUtil;
 import com.floreantpos.util.POSUtil;
@@ -566,17 +567,19 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 		if (selectedTickets == null) {
 			return;
 		}
+		
+		List<Ticket> tickets=new ArrayList<Ticket>(); 
 
 		for (int i = 0; i < selectedTickets.size(); i++) {
 			Ticket ticket = selectedTickets.get(i);
 
 			Ticket fullTicket = TicketDAO.getInstance().loadFullTicket(ticket.getId());
-
-			SettleTicketDialog posDialog = new SettleTicketDialog(fullTicket);
-			posDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			posDialog.pack();
-			posDialog.open();
+			tickets.add(fullTicket); 
 		}
+		
+		GroupSettleTicketDialog posDialog = new GroupSettleTicketDialog(tickets);
+		posDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+		posDialog.open();
 
 		//tickteListViewObj.updateTicketList();
 		updateTicketList();

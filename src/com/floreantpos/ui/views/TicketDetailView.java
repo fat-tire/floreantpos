@@ -34,6 +34,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import net.miginfocom.swing.MigLayout;
+import net.sf.jasperreports.engine.JRParameter;
 import net.sf.jasperreports.engine.JasperPrint;
 
 import com.floreantpos.Messages;
@@ -93,6 +94,7 @@ public class TicketDetailView extends JPanel {
 				
 				TicketPrintProperties printProperties = new TicketPrintProperties("*** ORDER " + ticket.getId() + " ***", false, true, true); //$NON-NLS-1$ //$NON-NLS-2$
 				HashMap map = ReceiptPrintService.populateTicketProperties(ticket, printProperties, null);
+				map.put(JRParameter.IS_IGNORE_PAGINATION, true);
 				JasperPrint jasperPrint = ReceiptPrintService.createPrint(ticket, map, null);
 
 				TicketReceiptView receiptView = new TicketReceiptView(jasperPrint);

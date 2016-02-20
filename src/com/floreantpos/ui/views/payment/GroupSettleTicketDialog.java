@@ -1,0 +1,853 @@
+/**
+ * ************************************************************************
+ * * The contents of this file are subject to the MRPL 1.2
+ * * (the  "License"),  being   the  Mozilla   Public  License
+ * * Version 1.1  with a permitted attribution clause; you may not  use this
+ * * file except in compliance with the License. You  may  obtain  a copy of
+ * * the License at http://www.floreantpos.org/license.html
+ * * Software distributed under the License  is  distributed  on  an "AS IS"
+ * * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+ * * License for the specific  language  governing  rights  and  limitations
+ * * under the License.
+ * * The Original Code is FLOREANT POS.
+ * * The Initial Developer of the Original Code is OROCUBE LLC
+ * * All portions are Copyright (C) 2015 OROCUBE LLC
+ * * All Rights Reserved.
+ * ************************************************************************
+ */
+package com.floreantpos.ui.views.payment;
+
+import java.awt.BorderLayout;
+import java.awt.Font;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
+import javax.json.JsonNumber;
+import javax.json.JsonObject;
+import javax.swing.BorderFactory;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+
+import net.miginfocom.swing.MigLayout;
+
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.SerializationUtils;
+import org.apache.commons.lang.StringUtils;
+
+import com.floreantpos.Messages;
+import com.floreantpos.POSConstants;
+import com.floreantpos.PosException;
+import com.floreantpos.config.CardConfig;
+import com.floreantpos.config.TerminalConfig;
+import com.floreantpos.extension.InginicoPlugin;
+import com.floreantpos.extension.PaymentGatewayPlugin;
+import com.floreantpos.main.Application;
+import com.floreantpos.model.CardReader;
+import com.floreantpos.model.CashTransaction;
+import com.floreantpos.model.CreditCardTransaction;
+import com.floreantpos.model.Discount;
+import com.floreantpos.model.GiftCertificateTransaction;
+import com.floreantpos.model.Gratuity;
+import com.floreantpos.model.PaymentType;
+import com.floreantpos.model.PosTransaction;
+import com.floreantpos.model.Restaurant;
+import com.floreantpos.model.Ticket;
+import com.floreantpos.model.TicketDiscount;
+import com.floreantpos.model.TransactionType;
+import com.floreantpos.report.ReceiptPrintService;
+import com.floreantpos.services.PosTransactionService;
+import com.floreantpos.swing.PosScrollPane;
+import com.floreantpos.ui.dialog.POSDialog;
+import com.floreantpos.ui.dialog.POSMessageDialog;
+import com.floreantpos.ui.dialog.TransactionCompletionDialog;
+import com.floreantpos.ui.views.TicketDetailView;
+import com.floreantpos.ui.views.order.OrderController;
+import com.floreantpos.util.DrawerUtil;
+import com.floreantpos.util.NumberUtil;
+import com.floreantpos.util.POSUtil;
+
+//TODO: REVISE CODE
+public class GroupSettleTicketDialog extends POSDialog implements CardInputListener {
+	public static final String LOYALTY_DISCOUNT_PERCENTAGE = "loyalty_discount_percentage"; //$NON-NLS-1$
+	public static final String LOYALTY_POINT = "loyalty_point"; //$NON-NLS-1$
+	public static final String LOYALTY_COUPON = "loyalty_coupon"; //$NON-NLS-1$
+	public static final String LOYALTY_DISCOUNT = "loyalty_discount"; //$NON-NLS-1$
+	public static final String LOYALTY_ID = "loyalty_id"; //$NON-NLS-1$
+
+	public final static String VIEW_NAME = "PAYMENT_VIEW"; //$NON-NLS-1$
+
+	private com.floreantpos.swing.TransparentPanel leftPanel = new com.floreantpos.swing.TransparentPanel(new BorderLayout());
+	private com.floreantpos.swing.TransparentPanel rightPanel = new com.floreantpos.swing.TransparentPanel(new BorderLayout());
+
+	private GroupPaymentView paymentView;
+	private static List<Ticket> tickets;
+	private TicketDetailView ticketDetailView;
+	private javax.swing.JScrollPane ticketScrollPane;
+	private static Ticket ticket;
+	private double totalTenderAmount;
+	private PaymentType paymentType;
+	private String cardName;
+	private JTextField tfSubtotal;
+	private JTextField tfDiscount;
+	private JTextField tfTax;
+	private JTextField tfTotal;
+	private JTextField tfGratuity;
+
+	private String ticketNumbers = "";
+	private List<Integer> tableNumbers = new ArrayList<Integer>();
+	private String customerName;
+	private double totalDueAmount;
+
+	private JLabel labelTicketNumber;
+	private JLabel labelTableNumber;
+	private JLabel labelCustomer;
+
+	public static PosPaymentWaitDialog waitDialog = new PosPaymentWaitDialog();
+	private static GroupSettleTicketDialog instance;
+
+	public GroupSettleTicketDialog(List<Ticket> tickets) {
+		super();
+		this.tickets = tickets;
+
+		setTitle(Messages.getString("SettleTicketDialog.6")); //$NON-NLS-1$
+
+		getContentPane().setLayout(new BorderLayout(5, 5));
+
+		ticketDetailView = new TicketDetailView();
+		paymentView = new GroupPaymentView(this);
+		ticketScrollPane = new PosScrollPane(ticketDetailView);
+
+		JPanel centerPanel = new JPanel(new BorderLayout(5, 5));
+		centerPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 5));
+
+		centerPanel.add(createTicketInfoPanel(), BorderLayout.NORTH);
+		centerPanel.add(ticketScrollPane, BorderLayout.CENTER);
+		centerPanel.add(createTotalViewerPanel(), BorderLayout.SOUTH);
+
+		leftPanel.add(centerPanel, BorderLayout.CENTER);
+
+		rightPanel.add(paymentView);
+
+		getContentPane().add(leftPanel, BorderLayout.CENTER);
+		getContentPane().add(rightPanel, BorderLayout.EAST);
+
+		setSize(Application.getPosWindow().getSize());
+		updateView();
+		paymentView.updateView();
+		paymentView.setDefaultFocus();
+
+	}
+
+	public void updateView() {
+		if (tickets == null && !tickets.isEmpty()) {
+			tfSubtotal.setText(""); //$NON-NLS-1$
+			tfDiscount.setText(""); //$NON-NLS-1$
+			tfTax.setText(""); //$NON-NLS-1$
+			tfTotal.setText(""); //$NON-NLS-1$
+			tfGratuity.setText(""); //$NON-NLS-1$
+			return;
+		}
+		double subtotalAmount = 0;
+		double discountAmount = 0;
+		double taxAmount = 0;
+		double gratuityAmount = 0;
+		double totalAmount = 0;
+
+		for (Ticket ticket : tickets) {
+			subtotalAmount += ticket.getSubtotalAmount();
+			discountAmount += ticket.getDiscountAmount();
+			taxAmount += ticket.getTaxAmount();
+			if (ticket.getGratuity() != null) {
+				gratuityAmount = +ticket.getGratuity().getAmount();
+			}
+			totalAmount += ticket.getTotalAmount();
+
+			totalDueAmount += ticket.getDueAmount();
+
+			ticketNumbers += "[" + ticket.getId().toString() + "] ";
+			for (Integer tableNumber : ticket.getTableNumbers()) {
+				if (!tableNumbers.contains(tableNumber)) {
+					tableNumbers.add(tableNumber);
+				}
+			}
+			customerName = ticket.getProperty(Ticket.CUSTOMER_NAME);
+		}
+		tfSubtotal.setText(NumberUtil.formatNumber(subtotalAmount));
+		tfDiscount.setText(NumberUtil.formatNumber(discountAmount));
+
+		if (Application.getInstance().isPriceIncludesTax()) {
+			tfTax.setText(Messages.getString("TicketView.35")); //$NON-NLS-1$
+		}
+		else {
+			tfTax.setText(NumberUtil.formatNumber(taxAmount));
+		}
+		if (gratuityAmount > 0) {
+			tfGratuity.setText(NumberUtil.formatNumber(gratuityAmount));
+		}
+		else {
+			tfGratuity.setText("0.00"); //$NON-NLS-1$
+		}
+		tfTotal.setText(NumberUtil.formatNumber(totalAmount));
+
+		labelTicketNumber.setText(ticketNumbers);
+		labelTableNumber.setText(tableNumbers.toString());
+
+		if (tableNumbers.toString().isEmpty()) {
+			labelTableNumber.setVisible(false);
+		}
+
+		labelCustomer.setText(customerName);
+
+		if (customerName == null) {
+			labelCustomer.setVisible(false);
+		}
+
+		ticketDetailView.setTickets(tickets);
+
+	}
+
+	private JPanel createTicketInfoPanel() {
+
+		JLabel lblTicket = new javax.swing.JLabel();
+		lblTicket.setText(Messages.getString("SettleTicketDialog.0")); //$NON-NLS-1$
+
+		labelTicketNumber = new JLabel();
+
+		JLabel lblTable = new javax.swing.JLabel();
+		lblTable.setText(Messages.getString("SettleTicketDialog.1")); //$NON-NLS-1$
+
+		labelTableNumber = new JLabel();
+
+		JLabel lblCustomer = new javax.swing.JLabel();
+		lblCustomer.setText(Messages.getString("SettleTicketDialog.2")); //$NON-NLS-1$
+
+		labelCustomer = new JLabel();
+
+		JPanel ticketInfoPanel = new com.floreantpos.swing.TransparentPanel(new MigLayout("wrap 2,fill, hidemode 3", "[][grow]", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+
+		ticketInfoPanel.add(lblTicket);
+		ticketInfoPanel.add(labelTicketNumber, "grow"); //$NON-NLS-1$
+		ticketInfoPanel.add(lblTable);
+		ticketInfoPanel.add(labelTableNumber, "grow"); //$NON-NLS-1$
+		ticketInfoPanel.add(lblCustomer);
+		ticketInfoPanel.add(labelCustomer, "grow"); //$NON-NLS-1$
+
+		return ticketInfoPanel;
+	}
+
+	private JPanel createTotalViewerPanel() {
+
+		JLabel lblSubtotal = new javax.swing.JLabel();
+		lblSubtotal.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+		lblSubtotal.setText(com.floreantpos.POSConstants.SUBTOTAL + ":" + " " + Application.getCurrencySymbol()); //$NON-NLS-1$ //$NON-NLS-2$
+
+		tfSubtotal = new javax.swing.JTextField(10);
+		tfSubtotal.setHorizontalAlignment(SwingConstants.TRAILING);
+		tfSubtotal.setEditable(false);
+
+		JLabel lblDiscount = new javax.swing.JLabel();
+		lblDiscount.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+		lblDiscount.setText(Messages.getString("TicketView.9") + " " + Application.getCurrencySymbol()); //$NON-NLS-1$ //$NON-NLS-2$
+
+		tfDiscount = new javax.swing.JTextField(10);
+		//	tfDiscount.setFont(tfDiscount.getFont().deriveFont(Font.PLAIN, 16));
+		tfDiscount.setHorizontalAlignment(SwingConstants.TRAILING);
+		tfDiscount.setEditable(false);
+		//tfDiscount.setText(ticket.getDiscountAmount().toString());
+
+		JLabel lblTax = new javax.swing.JLabel();
+		lblTax.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+		lblTax.setText(com.floreantpos.POSConstants.TAX + ":" + " " + Application.getCurrencySymbol()); //$NON-NLS-1$ //$NON-NLS-2$
+
+		tfTax = new javax.swing.JTextField();
+		//	tfTax.setFont(tfTax.getFont().deriveFont(Font.PLAIN, 16));
+		tfTax.setEditable(false);
+		tfTax.setHorizontalAlignment(SwingConstants.TRAILING);
+
+		JLabel lblGratuity = new javax.swing.JLabel();
+		lblGratuity.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+		lblGratuity.setText(Messages.getString("SettleTicketDialog.5") + ":" + " " + Application.getCurrencySymbol()); //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
+
+		tfGratuity = new javax.swing.JTextField();
+		tfGratuity.setEditable(false);
+		tfGratuity.setHorizontalAlignment(SwingConstants.TRAILING);
+
+		JLabel lblTotal = new javax.swing.JLabel();
+		lblTotal.setFont(lblTotal.getFont().deriveFont(Font.BOLD, 18));
+		lblTotal.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+		lblTotal.setText(com.floreantpos.POSConstants.TOTAL + ":" + " " + Application.getCurrencySymbol()); //$NON-NLS-1$ //$NON-NLS-2$
+
+		tfTotal = new javax.swing.JTextField(10);
+		tfTotal.setFont(tfTotal.getFont().deriveFont(Font.BOLD, 18));
+		tfTotal.setHorizontalAlignment(SwingConstants.TRAILING);
+		tfTotal.setEditable(false);
+
+		JPanel ticketAmountPanel = new com.floreantpos.swing.TransparentPanel(new MigLayout("ins 2 2 3 2,alignx trailing,fill", "[grow][]", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+
+		ticketAmountPanel.add(lblSubtotal, "growx,aligny center"); //$NON-NLS-1$
+		ticketAmountPanel.add(tfSubtotal, "growx,aligny center"); //$NON-NLS-1$
+		ticketAmountPanel.add(lblDiscount, "newline,growx,aligny center"); //$NON-NLS-1$ //$NON-NLS-2$
+		ticketAmountPanel.add(tfDiscount, "growx,aligny center"); //$NON-NLS-1$
+		ticketAmountPanel.add(lblTax, "newline,growx,aligny center"); //$NON-NLS-1$
+		ticketAmountPanel.add(tfTax, "growx,aligny center"); //$NON-NLS-1$
+		ticketAmountPanel.add(lblGratuity, "newline,growx,aligny center"); //$NON-NLS-1$
+		ticketAmountPanel.add(tfGratuity, "growx,aligny center"); //$NON-NLS-1$
+		ticketAmountPanel.add(lblTotal, "newline,growx,aligny center"); //$NON-NLS-1$
+		ticketAmountPanel.add(tfTotal, "growx,aligny center"); //$NON-NLS-1$
+
+		return ticketAmountPanel;
+	}
+
+	public void doSetGratuity() {
+		if (ticket == null)
+			return;
+
+		GratuityInputDialog d = new GratuityInputDialog();
+		d.pack();
+		d.setResizable(false);
+		d.open();
+
+		if (d.isCanceled()) {
+			return;
+		}
+
+		double gratuityAmount = d.getGratuityAmount();
+		Gratuity gratuity = ticket.createGratuity();
+		gratuity.setAmount(gratuityAmount);
+
+		ticket.setGratuity(gratuity);
+		ticket.calculatePrice();
+		OrderController.saveOrder(ticket);
+		paymentView.updateView();
+		updateView();
+
+	}
+
+	public void doGroupSettle(PaymentType paymentType) {
+		try {
+			if (tickets == null)
+				return;
+			this.paymentType = paymentType;
+			totalTenderAmount = paymentView.getTenderedAmount();
+
+			/*if (ticket.getType() == OrderType.BAR_TAB) {
+				doSettleBarTabTicket(ticket);
+				return;
+			}*/
+
+			cardName = paymentType.getDisplayString();
+			PosTransaction transaction = null;
+
+			List<PosTransaction> transactionList = null;
+
+			switch (paymentType) {
+				case CASH:
+					if (!confirmPayment()) {
+						return;
+					}
+
+					transaction = paymentType.createTransaction();
+					transaction.setCaptured(true);
+
+					//transaction.setTicket(ticket);
+					//setTransactionAmounts(transaction);
+
+					settleTicket(transaction);
+					break;
+
+				case CUSTOM_PAYMENT:
+
+					CustomPaymentSelectionDialog customPaymentDialog = new CustomPaymentSelectionDialog();
+					customPaymentDialog.setTitle(Messages.getString("SettleTicketDialog.8")); //$NON-NLS-1$
+					customPaymentDialog.pack();
+					customPaymentDialog.open();
+
+					if (customPaymentDialog.isCanceled())
+						return;
+
+					if (!confirmPayment()) {
+						return;
+					}
+
+					transaction = paymentType.createTransaction();
+					transaction.setCustomPaymentFieldName(customPaymentDialog.getPaymentFieldName());
+					transaction.setCustomPaymentName(customPaymentDialog.getPaymentName());
+					transaction.setCustomPaymentRef(customPaymentDialog.getPaymentRef());
+					transaction.setCaptured(true);
+
+					//transaction.setTicket(ticket);
+					//setTransactionAmounts(transaction);
+
+					settleTicket(transaction);
+					break;
+
+				case CREDIT_CARD:
+				case CREDIT_VISA:
+				case CREDIT_MASTER_CARD:
+				case CREDIT_AMEX:
+				case CREDIT_DISCOVERY:
+					payUsingCard(cardName, totalTenderAmount);
+					break;
+
+				case DEBIT_VISA:
+				case DEBIT_MASTER_CARD:
+					payUsingCard(cardName, totalTenderAmount);
+					break;
+
+				case GIFT_CERTIFICATE:
+					GiftCertDialog giftCertDialog = new GiftCertDialog(this);
+					giftCertDialog.pack();
+					giftCertDialog.open();
+
+					if (giftCertDialog.isCanceled())
+						return;
+
+					transaction = new GiftCertificateTransaction();
+					transaction.setPaymentType(PaymentType.GIFT_CERTIFICATE.name());
+					//transaction.setTicket(ticket);
+					transaction.setCaptured(true);
+					//setTransactionAmounts(transaction);
+
+					double giftCertFaceValue = giftCertDialog.getGiftCertFaceValue();
+					double giftCertCashBackAmount = 0;
+					transaction.setTenderAmount(giftCertFaceValue);
+
+					if (giftCertFaceValue >= totalDueAmount) {
+						transaction.setAmount(totalDueAmount);
+						giftCertCashBackAmount = giftCertFaceValue - totalDueAmount;
+					}
+					else {
+						transaction.setAmount(giftCertFaceValue);
+					}
+
+					transaction.setGiftCertNumber(giftCertDialog.getGiftCertNumber());
+					transaction.setGiftCertFaceValue(giftCertFaceValue);
+					transaction.setGiftCertPaidAmount(transaction.getAmount());
+					transaction.setGiftCertCashBackAmount(giftCertCashBackAmount);
+
+					settleTicket(transaction);
+					break;
+
+				default:
+					break;
+
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	private boolean confirmPayment() {
+		if (!TerminalConfig.isUseSettlementPrompt()) {
+			return true;
+		}
+
+		ConfirmPayDialog confirmPayDialog = new ConfirmPayDialog();
+		confirmPayDialog.setAmount(totalTenderAmount);
+		confirmPayDialog.open();
+
+		if (confirmPayDialog.isCanceled()) {
+			return false;
+		}
+
+		return true;
+	}
+
+	private void doSettleBarTabTicket(Ticket ticket) {
+		if (!confirmPayment()) {
+			return;
+		}
+
+		PaymentProcessWaitDialog waitDialog = new PaymentProcessWaitDialog(this);
+		waitDialog.setVisible(true);
+
+		try {
+			PaymentGatewayPlugin paymentGateway = CardConfig.getPaymentGateway();
+
+			String transactionId = ticket.getProperty(Ticket.PROPERTY_CARD_TRANSACTION_ID);
+
+			CreditCardTransaction transaction = new CreditCardTransaction();
+			transaction.setPaymentType(ticket.getProperty(Ticket.PROPERTY_PAYMENT_METHOD));
+			transaction.setTransactionType(TransactionType.CREDIT.name());
+			//transaction.setTicket(ticket);
+			transaction.setCardType(ticket.getProperty(Ticket.PROPERTY_CARD_NAME));
+			transaction.setCaptured(false);
+			transaction.setCardMerchantGateway(paymentGateway.getName());
+			transaction.setCardAuthCode(ticket.getProperty("AuthCode")); //$NON-NLS-1$
+			transaction.addProperty("AcqRefData", ticket.getProperty("AcqRefData")); //$NON-NLS-1$ //$NON-NLS-2$
+
+			CardReader cardReader = CardReader.valueOf(ticket.getProperty(Ticket.PROPERTY_CARD_READER));
+
+			if (cardReader == CardReader.SWIPE) {
+				transaction.setCardReader(CardReader.SWIPE.name());
+				transaction.setCardTrack(ticket.getProperty(Ticket.PROPERTY_CARD_TRACKS));
+				transaction.setCardTransactionId(transactionId);
+			}
+			else if (cardReader == CardReader.MANUAL) {
+				transaction.setCardReader(CardReader.MANUAL.name());
+				transaction.setCardTransactionId(transactionId);
+				transaction.setCardNumber(ticket.getProperty(Ticket.PROPERTY_CARD_NUMBER));
+				transaction.setCardExpiryMonth(ticket.getProperty(Ticket.PROPERTY_CARD_EXP_MONTH));
+				transaction.setCardExpiryYear(ticket.getProperty(Ticket.PROPERTY_CARD_EXP_YEAR));
+			}
+			else {
+				transaction.setCardReader(CardReader.EXTERNAL_TERMINAL.name());
+				transaction.setCardAuthCode(ticket.getProperty(Ticket.PROPERTY_CARD_AUTH_CODE));
+			}
+
+			//setTransactionAmounts(transaction);
+
+			if (cardReader == CardReader.SWIPE || cardReader == CardReader.MANUAL) {
+				double advanceAmount = Double.parseDouble(ticket.getProperty(Ticket.PROPERTY_ADVANCE_PAYMENT, paymentGateway.getName())); //$NON-NLS-1$
+
+				CardProcessor cardProcessor = paymentGateway.getProcessor();
+				if (totalTenderAmount > advanceAmount) {
+					cardProcessor.voidAmount(transactionId, advanceAmount);
+				}
+
+				cardProcessor.authorizeAmount(transaction);
+			}
+
+			settleTicket(transaction);
+
+		} catch (Exception e) {
+			POSMessageDialog.showError(Application.getPosWindow(), e.getMessage(), e);
+		} finally {
+			waitDialog.setVisible(false);
+		}
+	}
+
+	public void settleTicket(PosTransaction posTransaction) {
+		try {
+			List<PosTransaction> transactionList = new ArrayList<PosTransaction>();
+			double dueAmount = 0;
+			double tenderAmount = 0;
+
+			for (Ticket ticket : tickets) {
+				PosTransaction transaction = null;
+				if (totalTenderAmount <= 0) {
+					break;
+				}
+
+				transaction = (PosTransaction) SerializationUtils.clone(posTransaction);
+
+				transaction.setTicket(ticket);
+				setTransactionAmounts(transaction);
+
+				dueAmount += ticket.getDueAmount();
+				tenderAmount += transaction.getTenderAmount();
+
+				confirmLoyaltyDiscount(ticket);
+
+				PosTransactionService transactionService = PosTransactionService.getInstance();
+				transactionService.settleTicket(ticket, transaction);
+
+				transactionList.add(transaction);
+				printTicket(ticket, transaction);
+			}
+
+			//FIXME
+			showTransactionCompleteMsg(dueAmount, tenderAmount, tickets, transactionList);
+
+			setCanceled(false);
+			dispose();
+
+		} catch (UnknownHostException e) {
+			POSMessageDialog.showError(Application.getPosWindow(), Messages.getString("SettleTicketDialog.12")); //$NON-NLS-1$
+		} catch (Exception e) {
+			POSMessageDialog.showError(this, POSConstants.ERROR_MESSAGE, e);
+		}
+	}
+
+	public static void showTransactionCompleteMsg(final double dueAmount, final double tenderedAmount, List<Ticket> ticket, List<PosTransaction> transactions) {
+		TransactionCompletionDialog dialog = new TransactionCompletionDialog(transactions);
+		//dialog.setCompletedTransaction(transaction);
+
+		double paidAmount = 0;
+		double tenderAmount = 0;
+		double ticketsDueAmount = 0;
+		for (PosTransaction transaction : transactions) {
+			paidAmount += transaction.getAmount();
+			tenderAmount += transaction.getTenderAmount();
+			dialog.setCard(transaction.isCard());
+		}
+		dialog.setTenderedAmount(tenderAmount);
+		dialog.setTotalAmount(dueAmount);
+		dialog.setPaidAmount(paidAmount);
+		for (Ticket tTicket : tickets) {
+			ticketsDueAmount += tTicket.getDueAmount();
+		}
+		dialog.setDueAmount(ticketsDueAmount);
+		if (tenderedAmount > paidAmount) {
+			dialog.setChangeAmount(tenderedAmount - paidAmount);
+		}
+		else {
+			dialog.setChangeAmount(0);
+		}
+
+		dialog.updateView();
+		dialog.pack();
+		dialog.open();
+	}
+
+	public void confirmLoyaltyDiscount(Ticket ticket) throws IOException, MalformedURLException {
+		try {
+			if (ticket.hasProperty(LOYALTY_ID)) {
+				String url = buildLoyaltyApiURL(ticket, ticket.getProperty(LOYALTY_ID));
+				url += "&paid=1"; //$NON-NLS-1$
+
+				IOUtils.toString(new URL(url).openStream());
+			}
+		} catch (Exception e) {
+			POSMessageDialog.showError(Application.getPosWindow(), e.getMessage(), e);
+		}
+	}
+
+	public static void printTicket(Ticket ticket, PosTransaction transaction) {
+		try {
+			if (ticket.needsKitchenPrint()) {
+				ReceiptPrintService.printToKitchen(ticket);
+			}
+
+			ReceiptPrintService.printTransaction(transaction);
+
+			if (transaction instanceof CashTransaction) {
+				DrawerUtil.kickDrawer();
+			}
+		} catch (Exception ee) {
+			POSMessageDialog.showError(Application.getPosWindow(), com.floreantpos.POSConstants.PRINT_ERROR, ee);
+		}
+	}
+
+	private void payUsingCard(String cardName, final double tenderedAmount) throws Exception {
+		try {
+			//		if (!CardConfig.getMerchantGateway().isCardTypeSupported(cardName)) {
+			//			POSMessageDialog.showError(Application.getPosWindow(), "<html>Card <b>" + cardName + "</b> not supported.</html>");
+			//			return;
+			//		}
+
+			PaymentGatewayPlugin paymentGateway = CardConfig.getPaymentGateway();
+
+			if (paymentGateway instanceof InginicoPlugin) {
+				waitDialog.setVisible(true);
+				if (!waitDialog.isCanceled()) {
+					dispose();
+				}
+				return;
+			}
+			if (!paymentGateway.shouldShowCardInputProcessor()) {
+
+				PosTransaction transaction = paymentType.createTransaction();
+
+				if (!confirmPayment()) {
+					return;
+				}
+
+				//transaction.setCardType(cardName);
+				transaction.setCaptured(false);
+				transaction.setCardMerchantGateway(paymentGateway.getName());
+
+				paymentGateway.getProcessor().authorizeAmount(transaction);
+
+				settleTicket(transaction);
+
+				return;
+			}
+
+			CardReader cardReader = CardConfig.getCardReader();
+			switch (cardReader) {
+				case SWIPE:
+					SwipeCardDialog swipeCardDialog = new SwipeCardDialog(this);
+					swipeCardDialog.pack();
+					swipeCardDialog.open();
+					break;
+
+				case MANUAL:
+					ManualCardEntryDialog dialog = new ManualCardEntryDialog(this);
+					dialog.pack();
+					dialog.open();
+					break;
+
+				case EXTERNAL_TERMINAL:
+					AuthorizationCodeDialog authorizationCodeDialog = new AuthorizationCodeDialog(this);
+					authorizationCodeDialog.pack();
+					authorizationCodeDialog.open();
+					break;
+
+				default:
+					break;
+			}
+		} catch (Exception e) {
+			POSMessageDialog.showError(this, e.getMessage(), e);
+		}
+
+	}
+
+	@Override
+	public void open() {
+		super.open();
+	}
+
+	@Override
+	public void cardInputted(CardInputProcessor inputter, PaymentType selectedPaymentType) {
+		//authorize only, do not capture
+		PaymentProcessWaitDialog waitDialog = new PaymentProcessWaitDialog(this);
+		try {
+
+			waitDialog.setVisible(true);
+
+			PosTransaction transaction = paymentType.createTransaction();
+
+			PaymentGatewayPlugin paymentGateway = CardConfig.getPaymentGateway();
+			CardProcessor cardProcessor = paymentGateway.getProcessor();
+
+			if (inputter instanceof SwipeCardDialog) {
+
+				SwipeCardDialog swipeCardDialog = (SwipeCardDialog) inputter;
+				String cardString = swipeCardDialog.getCardString();
+
+				if (StringUtils.isEmpty(cardString) || cardString.length() < 16) {
+					throw new RuntimeException(Messages.getString("SettleTicketDialog.16")); //$NON-NLS-1$
+				}
+
+				if (!confirmPayment()) {
+					return;
+				}
+				transaction.setCardType(paymentType.getDisplayString());
+				transaction.setCardTrack(cardString);
+				transaction.setCaptured(false);
+				transaction.setCardMerchantGateway(paymentGateway.getName());
+				transaction.setCardReader(CardReader.SWIPE.name());
+
+				cardProcessor.authorizeAmount(transaction);
+
+				settleTicket(transaction);
+			}
+			else if (inputter instanceof ManualCardEntryDialog) {
+
+				ManualCardEntryDialog mDialog = (ManualCardEntryDialog) inputter;
+
+				transaction.setCaptured(false);
+				transaction.setCardMerchantGateway(paymentGateway.getName());
+				transaction.setCardReader(CardReader.MANUAL.name());
+				transaction.setCardNumber(mDialog.getCardNumber());
+				transaction.setCardExpiryMonth(mDialog.getExpMonth());
+				transaction.setCardExpiryYear(mDialog.getExpYear());
+
+				cardProcessor.authorizeAmount(transaction);
+
+				settleTicket(transaction);
+			}
+			else if (inputter instanceof AuthorizationCodeDialog) {
+
+				PosTransaction selectedTransaction = selectedPaymentType.createTransaction();
+
+				AuthorizationCodeDialog authDialog = (AuthorizationCodeDialog) inputter;
+				String authorizationCode = authDialog.getAuthorizationCode();
+				if (StringUtils.isEmpty(authorizationCode)) {
+					throw new PosException(Messages.getString("SettleTicketDialog.17")); //$NON-NLS-1$
+				}
+
+				selectedTransaction.setCardType(selectedPaymentType.getDisplayString());
+				selectedTransaction.setCaptured(false);
+				selectedTransaction.setCardReader(CardReader.EXTERNAL_TERMINAL.name());
+				selectedTransaction.setCardAuthCode(authorizationCode);
+
+				settleTicket(selectedTransaction);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			POSMessageDialog.showError(Application.getPosWindow(), e.getMessage());
+		} finally {
+			waitDialog.setVisible(false);
+		}
+	}
+
+	private void setTransactionAmounts(PosTransaction transaction) {
+		if (totalTenderAmount >= transaction.getTicket().getDueAmount()) {
+			transaction.setTenderAmount(transaction.getTicket().getDueAmount());
+			transaction.setAmount(transaction.getTicket().getDueAmount());
+			totalTenderAmount = totalTenderAmount - transaction.getTicket().getDueAmount();
+		}
+		else {
+			transaction.setTenderAmount(totalTenderAmount);
+			transaction.setAmount(totalTenderAmount);
+			totalTenderAmount = totalTenderAmount - transaction.getTicket().getDueAmount();
+		}
+	}
+
+	public boolean hasMyKalaId() {
+		if (ticket == null)
+			return false;
+
+		if (ticket.hasProperty(LOYALTY_ID)) {
+			return true;
+		}
+
+		return false;
+	}
+
+	public String buildLoyaltyApiURL(Ticket ticket, String loyaltyid) {
+		Restaurant restaurant = Application.getInstance().getRestaurant();
+
+		String transactionURL = "http://cloud.floreantpos.org/tri2/kala_api?"; //$NON-NLS-1$
+		transactionURL += "kala_id=" + loyaltyid; //$NON-NLS-1$
+		transactionURL += "&store_id=" + restaurant.getUniqueId(); //$NON-NLS-1$
+		transactionURL += "&store_name=" + POSUtil.encodeURLString(restaurant.getName()); //$NON-NLS-1$
+		transactionURL += "&store_zip=" + restaurant.getZipCode(); //$NON-NLS-1$
+		transactionURL += "&terminal=" + ticket.getTerminal().getId(); //$NON-NLS-1$
+		transactionURL += "&server=" + POSUtil.encodeURLString(ticket.getOwner().getFirstName() + " " + ticket.getOwner().getLastName()); //$NON-NLS-1$ //$NON-NLS-2$
+		transactionURL += "&" + ticket.toURLForm(); //$NON-NLS-1$
+
+		return transactionURL;
+	}
+
+	private void addCoupon(Ticket ticket, JsonObject jsonObject) {
+		Set<String> keys = jsonObject.keySet();
+		for (String key : keys) {
+			JsonNumber jsonNumber = jsonObject.getJsonNumber(key);
+			double doubleValue = jsonNumber.doubleValue();
+
+			TicketDiscount coupon = new TicketDiscount();
+			coupon.setName(key);
+			coupon.setType(Discount.FIXED_PER_ORDER);
+			coupon.setValue(doubleValue);
+
+			ticket.addTodiscounts(coupon);
+		}
+	}
+
+	public Ticket getTicket() {
+		return ticket;
+	}
+
+	public double getDueAmount() {
+		return totalDueAmount;
+	}
+
+	public void setTicket(Ticket ticket) {
+		this.ticket = ticket;
+		paymentView.updateView();
+	}
+
+	public void setTickets(List<Ticket> tickets) {
+		this.tickets = tickets;
+
+		paymentView.updateView();
+	}
+
+	public synchronized static GroupSettleTicketDialog getInstance() {
+		if (instance == null) {
+			instance = new GroupSettleTicketDialog(tickets);
+		}
+		return instance;
+	}
+
+}
