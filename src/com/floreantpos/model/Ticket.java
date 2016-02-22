@@ -265,7 +265,7 @@ public class Ticket extends BaseTicket {
 		double dueAmount = totalAmount - getPaidAmount();
 		setDueAmount(NumberUtil.roundToTwoDigit(dueAmount));
 	}
-	
+
 	public void updateTicketItemPriceByOrderType() {
 		List<TicketItem> ticketItems = getTicketItems();
 		if (ticketItems == null) {
@@ -275,9 +275,10 @@ public class Ticket extends BaseTicket {
 		for (TicketItem ticketItem : ticketItems) {
 			Integer itemId = Integer.parseInt(ticketItem.getItemId().toString());
 			MenuItem menuItem = MenuItemDAO.getInstance().initialize(MenuItemDAO.getInstance().get(itemId));
-			
-			ticketItem.setUnitPrice(menuItem.getPriceByOrderType(OrderType.valueOf(getTicketType())));
-			ticketItem.setTaxRate(menuItem.getTaxByOrderType(OrderType.valueOf(getTicketType()))); 
+			if (menuItem != null) {
+				ticketItem.setUnitPrice(menuItem.getPriceByOrderType(OrderType.valueOf(getTicketType())));
+				ticketItem.setTaxRate(menuItem.getTaxByOrderType(OrderType.valueOf(getTicketType())));
+			}
 		}
 	}
 

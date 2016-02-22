@@ -47,7 +47,7 @@ public class MenuItemDAO extends BaseMenuItemDAO {
 	}
 
 	public MenuItem initialize(MenuItem menuItem) {
-		if (menuItem.getId() == null)
+		if (menuItem == null || menuItem.getId() == null)
 			return menuItem;
 
 		Session session = null;
