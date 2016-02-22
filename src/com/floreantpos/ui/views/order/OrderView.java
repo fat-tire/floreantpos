@@ -431,8 +431,10 @@ public class OrderView extends ViewPanel {
 
 	protected void doInsertMisc(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_doInsertMisc
 		MiscTicketItemDialog dialog = new MiscTicketItemDialog();
-		dialog.setSize(900, 580);
+		//dialog.setSize(900, 580);
+		dialog.pack();
 		dialog.open();
+		
 		if (!dialog.isCanceled()) {
 			TicketItem ticketItem = dialog.getTicketItem();
 			ticketItem.setTicket(currentTicket);

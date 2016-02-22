@@ -256,6 +256,7 @@ public class POSConstants {
 	public static final String SELECT_SHIFT = Messages.getString("PosMessage.172"); //$NON-NLS-1$
 	public static final String PRINT_RECEIPT_WHEN_TICKET_SETTLED = Messages.getString("PosMessage.173"); //$NON-NLS-1$
 	public static final String CANCEL = Messages.getString("PosMessage.174"); //$NON-NLS-1$
+	public static final String PRINT_TICKET = "PRINT";
 	public static final String TICKET_IS_EMPTY_ = Messages.getString("PosMessage.175"); //$NON-NLS-1$
 	public static final String MENU_ITEMS = Messages.getString("PosMessage.176"); //$NON-NLS-1$
 	public static final String DATE_TIME = Messages.getString("PosMessage.177"); //$NON-NLS-1$

@@ -463,7 +463,7 @@ public class TicketView extends JPanel {
 		}
 
 		if (ticket.getTotalAmount() > 0) {
-			btnTotal.setText("<html><h2>Total" + Application.getCurrencySymbol() + " " + NumberUtil.formatNumber(ticket.getTotalAmount()) + "</h2></html>");
+			btnTotal.setText("<html><h2>Total " + Application.getCurrencySymbol()+ NumberUtil.formatNumber(ticket.getTotalAmount()) + "</h2></html>");
 		}
 		else {
 			btnTotal.setText("<html><h2>Total</h2></html>");

@@ -257,7 +257,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 		lblTax.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
 		lblTax.setText(com.floreantpos.POSConstants.TAX + ":"+" "+Application.getCurrencySymbol()); //$NON-NLS-1$ //$NON-NLS-2$
 
-		tfTax = new javax.swing.JTextField();
+		tfTax = new javax.swing.JTextField(10);
 		//	tfTax.setFont(tfTax.getFont().deriveFont(Font.PLAIN, 16));
 		tfTax.setEditable(false);
 		tfTax.setHorizontalAlignment(SwingConstants.TRAILING);
@@ -266,7 +266,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 		lblGratuity.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
 		lblGratuity.setText(Messages.getString("SettleTicketDialog.5") + ":"+" "+Application.getCurrencySymbol()); //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
 
-		tfGratuity = new javax.swing.JTextField();
+		tfGratuity = new javax.swing.JTextField(10);
 		tfGratuity.setEditable(false);
 		tfGratuity.setHorizontalAlignment(SwingConstants.TRAILING);
 
@@ -280,7 +280,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 		tfTotal.setHorizontalAlignment(SwingConstants.TRAILING);
 		tfTotal.setEditable(false);
 
-		JPanel ticketAmountPanel = new com.floreantpos.swing.TransparentPanel(new MigLayout("ins 2 2 3 2,alignx trailing,fill", "[grow][]", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		JPanel ticketAmountPanel = new com.floreantpos.swing.TransparentPanel(new MigLayout("ins 2 2 3 2,alignx trailing,fill", "[grow]2[]", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 		ticketAmountPanel.add(lblSubtotal, "growx,aligny center"); //$NON-NLS-1$
 		ticketAmountPanel.add(tfSubtotal, "growx,aligny center"); //$NON-NLS-1$

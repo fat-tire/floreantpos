@@ -45,6 +45,7 @@ import com.floreantpos.model.Gratuity;
 import com.floreantpos.model.PaymentType;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.dao.TicketDAO;
+import com.floreantpos.report.ReceiptPrintService;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.swing.TransparentPanel;
 import com.floreantpos.ui.dialog.POSMessageDialog;
@@ -60,6 +61,7 @@ public class PaymentView extends JPanel {
 	private PosButton btnGratuity;
 	private com.floreantpos.swing.PosButton btnCancel;
 	private com.floreantpos.swing.PosButton btnCash;
+	private com.floreantpos.swing.PosButton btnPrint;
 	private com.floreantpos.swing.PosButton btnCreditCard;
 	private com.floreantpos.swing.PosButton btnGift;
 	private com.floreantpos.swing.PosButton btnOther;
@@ -388,6 +390,15 @@ public class PaymentView extends JPanel {
 		btnOther.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				settleTicketView.doSettle(PaymentType.CUSTOM_PAYMENT);
+			}
+		});
+		
+		
+		btnPrint = new com.floreantpos.swing.PosButton(POSConstants.PRINT_TICKET);
+		actionButtonPanel.add(btnPrint); //$NON-NLS-1$
+		btnPrint.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				ReceiptPrintService.printTicket(settleTicketView.getTicket());
 			}
 		});
 
