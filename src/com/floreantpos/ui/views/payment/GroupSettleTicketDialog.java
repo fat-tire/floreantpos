@@ -25,10 +25,7 @@ import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
-import javax.json.JsonNumber;
-import javax.json.JsonObject;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -52,14 +49,12 @@ import com.floreantpos.main.Application;
 import com.floreantpos.model.CardReader;
 import com.floreantpos.model.CashTransaction;
 import com.floreantpos.model.CreditCardTransaction;
-import com.floreantpos.model.Discount;
 import com.floreantpos.model.GiftCertificateTransaction;
 import com.floreantpos.model.Gratuity;
 import com.floreantpos.model.PaymentType;
 import com.floreantpos.model.PosTransaction;
 import com.floreantpos.model.Restaurant;
 import com.floreantpos.model.Ticket;
-import com.floreantpos.model.TicketDiscount;
 import com.floreantpos.model.TransactionType;
 import com.floreantpos.report.ReceiptPrintService;
 import com.floreantpos.services.PosTransactionService;
@@ -257,17 +252,14 @@ public class GroupSettleTicketDialog extends POSDialog implements CardInputListe
 		lblDiscount.setText(Messages.getString("TicketView.9") + " " + Application.getCurrencySymbol()); //$NON-NLS-1$ //$NON-NLS-2$
 
 		tfDiscount = new javax.swing.JTextField(10);
-		//	tfDiscount.setFont(tfDiscount.getFont().deriveFont(Font.PLAIN, 16));
 		tfDiscount.setHorizontalAlignment(SwingConstants.TRAILING);
 		tfDiscount.setEditable(false);
-		//tfDiscount.setText(ticket.getDiscountAmount().toString());
 
 		JLabel lblTax = new javax.swing.JLabel();
 		lblTax.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
 		lblTax.setText(com.floreantpos.POSConstants.TAX + ":" + " " + Application.getCurrencySymbol()); //$NON-NLS-1$ //$NON-NLS-2$
 
 		tfTax = new javax.swing.JTextField();
-		//	tfTax.setFont(tfTax.getFont().deriveFont(Font.PLAIN, 16));
 		tfTax.setEditable(false);
 		tfTax.setHorizontalAlignment(SwingConstants.TRAILING);
 
@@ -337,15 +329,18 @@ public class GroupSettleTicketDialog extends POSDialog implements CardInputListe
 			this.paymentType = paymentType;
 			totalTenderAmount = paymentView.getTenderedAmount();
 
-			/*if (ticket.getType() == OrderType.BAR_TAB) {
+			if (totalTenderAmount < totalDueAmount) {
+				POSMessageDialog.showMessage("Partial payment not allowed."); //$NON-NLS-1$
+				return;
+			}
+
+			/*if (orderType == OrderType.BAR_TAB) {
 				doSettleBarTabTicket(ticket);
 				return;
 			}*/
 
 			cardName = paymentType.getDisplayString();
 			PosTransaction transaction = null;
-
-			List<PosTransaction> transactionList = null;
 
 			switch (paymentType) {
 				case CASH:
@@ -355,9 +350,6 @@ public class GroupSettleTicketDialog extends POSDialog implements CardInputListe
 
 					transaction = paymentType.createTransaction();
 					transaction.setCaptured(true);
-
-					//transaction.setTicket(ticket);
-					//setTransactionAmounts(transaction);
 
 					settleTicket(transaction);
 					break;
@@ -381,9 +373,6 @@ public class GroupSettleTicketDialog extends POSDialog implements CardInputListe
 					transaction.setCustomPaymentName(customPaymentDialog.getPaymentName());
 					transaction.setCustomPaymentRef(customPaymentDialog.getPaymentRef());
 					transaction.setCaptured(true);
-
-					//transaction.setTicket(ticket);
-					//setTransactionAmounts(transaction);
 
 					settleTicket(transaction);
 					break;
@@ -411,9 +400,7 @@ public class GroupSettleTicketDialog extends POSDialog implements CardInputListe
 
 					transaction = new GiftCertificateTransaction();
 					transaction.setPaymentType(PaymentType.GIFT_CERTIFICATE.name());
-					//transaction.setTicket(ticket);
 					transaction.setCaptured(true);
-					//setTransactionAmounts(transaction);
 
 					double giftCertFaceValue = giftCertDialog.getGiftCertFaceValue();
 					double giftCertCashBackAmount = 0;
@@ -476,7 +463,6 @@ public class GroupSettleTicketDialog extends POSDialog implements CardInputListe
 			CreditCardTransaction transaction = new CreditCardTransaction();
 			transaction.setPaymentType(ticket.getProperty(Ticket.PROPERTY_PAYMENT_METHOD));
 			transaction.setTransactionType(TransactionType.CREDIT.name());
-			//transaction.setTicket(ticket);
 			transaction.setCardType(ticket.getProperty(Ticket.PROPERTY_CARD_NAME));
 			transaction.setCaptured(false);
 			transaction.setCardMerchantGateway(paymentGateway.getName());
@@ -502,7 +488,7 @@ public class GroupSettleTicketDialog extends POSDialog implements CardInputListe
 				transaction.setCardAuthCode(ticket.getProperty(Ticket.PROPERTY_CARD_AUTH_CODE));
 			}
 
-			//setTransactionAmounts(transaction);
+			setTransactionAmounts(transaction);
 
 			if (cardReader == CardReader.SWIPE || cardReader == CardReader.MANUAL) {
 				double advanceAmount = Double.parseDouble(ticket.getProperty(Ticket.PROPERTY_ADVANCE_PAYMENT, paymentGateway.getName())); //$NON-NLS-1$
@@ -527,7 +513,6 @@ public class GroupSettleTicketDialog extends POSDialog implements CardInputListe
 	public void settleTicket(PosTransaction posTransaction) {
 		try {
 			List<PosTransaction> transactionList = new ArrayList<PosTransaction>();
-			double dueAmount = 0;
 			double tenderAmount = 0;
 
 			for (Ticket ticket : tickets) {
@@ -541,7 +526,6 @@ public class GroupSettleTicketDialog extends POSDialog implements CardInputListe
 				transaction.setTicket(ticket);
 				setTransactionAmounts(transaction);
 
-				dueAmount += ticket.getDueAmount();
 				tenderAmount += transaction.getTenderAmount();
 
 				confirmLoyaltyDiscount(ticket);
@@ -554,7 +538,7 @@ public class GroupSettleTicketDialog extends POSDialog implements CardInputListe
 			}
 
 			//FIXME
-			showTransactionCompleteMsg(dueAmount, tenderAmount, tickets, transactionList);
+			showTransactionCompleteMsg(totalDueAmount, tenderAmount, tickets, transactionList);
 
 			setCanceled(false);
 			dispose();
@@ -568,7 +552,6 @@ public class GroupSettleTicketDialog extends POSDialog implements CardInputListe
 
 	public static void showTransactionCompleteMsg(final double dueAmount, final double tenderedAmount, List<Ticket> ticket, List<PosTransaction> transactions) {
 		TransactionCompletionDialog dialog = new TransactionCompletionDialog(transactions);
-		//dialog.setCompletedTransaction(transaction);
 
 		double paidAmount = 0;
 		double tenderAmount = 0;
@@ -628,11 +611,6 @@ public class GroupSettleTicketDialog extends POSDialog implements CardInputListe
 
 	private void payUsingCard(String cardName, final double tenderedAmount) throws Exception {
 		try {
-			//		if (!CardConfig.getMerchantGateway().isCardTypeSupported(cardName)) {
-			//			POSMessageDialog.showError(Application.getPosWindow(), "<html>Card <b>" + cardName + "</b> not supported.</html>");
-			//			return;
-			//		}
-
 			PaymentGatewayPlugin paymentGateway = CardConfig.getPaymentGateway();
 
 			if (paymentGateway instanceof InginicoPlugin) {
@@ -650,7 +628,6 @@ public class GroupSettleTicketDialog extends POSDialog implements CardInputListe
 					return;
 				}
 
-				//transaction.setCardType(cardName);
 				transaction.setCaptured(false);
 				transaction.setCardMerchantGateway(paymentGateway.getName());
 
@@ -725,6 +702,15 @@ public class GroupSettleTicketDialog extends POSDialog implements CardInputListe
 				transaction.setCaptured(false);
 				transaction.setCardMerchantGateway(paymentGateway.getName());
 				transaction.setCardReader(CardReader.SWIPE.name());
+
+				transaction.setTenderAmount(totalTenderAmount);
+
+				if (totalTenderAmount >= totalDueAmount) {
+					transaction.setAmount(totalDueAmount);
+				}
+				else {
+					transaction.setAmount(totalTenderAmount);
+				}
 
 				cardProcessor.authorizeAmount(transaction);
 
@@ -809,38 +795,12 @@ public class GroupSettleTicketDialog extends POSDialog implements CardInputListe
 		return transactionURL;
 	}
 
-	private void addCoupon(Ticket ticket, JsonObject jsonObject) {
-		Set<String> keys = jsonObject.keySet();
-		for (String key : keys) {
-			JsonNumber jsonNumber = jsonObject.getJsonNumber(key);
-			double doubleValue = jsonNumber.doubleValue();
-
-			TicketDiscount coupon = new TicketDiscount();
-			coupon.setName(key);
-			coupon.setType(Discount.FIXED_PER_ORDER);
-			coupon.setValue(doubleValue);
-
-			ticket.addTodiscounts(coupon);
-		}
-	}
-
 	public Ticket getTicket() {
 		return ticket;
 	}
 
 	public double getDueAmount() {
 		return totalDueAmount;
-	}
-
-	public void setTicket(Ticket ticket) {
-		this.ticket = ticket;
-		paymentView.updateView();
-	}
-
-	public void setTickets(List<Ticket> tickets) {
-		this.tickets = tickets;
-
-		paymentView.updateView();
 	}
 
 	public synchronized static GroupSettleTicketDialog getInstance() {

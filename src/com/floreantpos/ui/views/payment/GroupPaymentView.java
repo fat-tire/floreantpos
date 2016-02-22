@@ -52,7 +52,6 @@ public class GroupPaymentView extends JPanel {
 
 	protected GroupSettleTicketDialog groupSettleTicketView;
 
-	private PosButton btnGratuity;
 	private com.floreantpos.swing.PosButton btnCancel;
 	private com.floreantpos.swing.PosButton btnCash;
 	private com.floreantpos.swing.PosButton btnCreditCard;
@@ -89,7 +88,6 @@ public class GroupPaymentView extends JPanel {
 
 	private JTextField txtTenderedAmount;
 	private JTextField txtDueAmount;
-	private PosButton btnDiscount;
 
 	private boolean clearPreviousAmount = true;
 
@@ -322,21 +320,6 @@ public class GroupPaymentView extends JPanel {
 		btnNextAmount.setActionCommand("nextAmount"); //$NON-NLS-1$
 		btnNextAmount.setFocusable(false);
 		calcButtonPanel.add(btnNextAmount, "span 2,grow"); //$NON-NLS-1$
-
-		btnGratuity = new PosButton(com.floreantpos.POSConstants.ADD_GRATUITY_TEXT);
-		btnGratuity.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				//doSetGratuity();
-			}
-		});
-
-		calcButtonPanel.add(btnGratuity, "span 2,growx"); //$NON-NLS-1$
-		btnDiscount = new PosButton(com.floreantpos.POSConstants.COUPON_DISCOUNT);
-		btnDiscount.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		calcButtonPanel.add(btnDiscount, "span 2,growx"); //$NON-NLS-1$
 
 		centerPanel.add(calcButtonPanel, BorderLayout.CENTER);
 
