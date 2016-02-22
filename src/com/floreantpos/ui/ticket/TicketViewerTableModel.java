@@ -121,6 +121,11 @@ public class TicketViewerTableModel extends AbstractTableModel {
 		Object object = values[values.length - 1];
 		if (object instanceof TicketItem) {
 			TicketItem item = (TicketItem) object;
+			
+			if(ticketItem.getItemId()==0) {// MISC item
+				return addTicketItemToTicket(ticketItem);
+			}
+			
 			if (ticketItem.getItemId().equals(item.getItemId()) && !item.isPrintedToKitchen() && !item.isInventoryHandled()) {
 				item.setItemCount(item.getItemCount() + 1);
 				return values.length - 1;
