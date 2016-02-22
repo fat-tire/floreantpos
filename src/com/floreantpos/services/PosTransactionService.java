@@ -163,6 +163,7 @@ public class PosTransactionService {
 			case DINE_IN:
 			case BAR_TAB:
 			case TAKE_OUT:
+			case FOR_HERE:
 				ticket.setClosed(true);
 				ticket.setClosingDate(currentDate);
 				break;
