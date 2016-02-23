@@ -38,6 +38,13 @@ public class TicketItemModifierGroup extends BaseTicketItemModifierGroup {
 	}
 
 	/* [CONSTRUCTOR MARKER END] */
+	
+	public void merge(TicketItemModifierGroup thatGroup) {
+		List<TicketItemModifier> thisModifiers = getTicketItemModifiers();
+		List<TicketItemModifier> thatModifiers = thatGroup.getTicketItemModifiers();
+		
+		
+	}
 
 	public int countFreeModifiers() {
 		List<TicketItemModifier> ticketItemModifiers = getTicketItemModifiers();

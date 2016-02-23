@@ -18,6 +18,8 @@
 package com.floreantpos.model;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
@@ -253,6 +255,54 @@ public class TicketItem extends BaseTicketItem implements ITicketItem {
 		setTaxAmountWithoutModifiers(NumberUtil.roundToTwoDigit(calculateTax(false)));
 		setTotalAmount(NumberUtil.roundToTwoDigit(calculateTotal(true)));
 		setTotalAmountWithoutModifiers(NumberUtil.roundToTwoDigit(calculateTotal(false)));
+	}
+	
+	public boolean isMergable(TicketItem otherItem) {
+		if(!this.isHasModifiers() && !otherItem.isHasModifiers()) {
+			if(this.getItemId().equals(otherItem.getItemId())) {
+				return true;
+			}
+			
+			return false;
+		}
+		
+		List<TicketItemModifierGroup> thisModifierGroups = this.getTicketItemModifierGroups();
+		List<TicketItemModifierGroup> thatModifierGroups = otherItem.getTicketItemModifierGroups();
+		
+		if(thisModifierGroups.size() != thatModifierGroups.size()) {
+			return false;
+		}
+		
+		Comparator<TicketItemModifierGroup> comparator = new Comparator<TicketItemModifierGroup>() {
+			@Override
+			public int compare(TicketItemModifierGroup o1, TicketItemModifierGroup o2) {
+				return o1.getMenuItemModifierGroup().getId() - o2.getMenuItemModifierGroup().getId();
+			}
+		};
+		
+		Collections.sort(thisModifierGroups, comparator);
+		Collections.sort(thatModifierGroups, comparator);
+		
+		Iterator<TicketItemModifierGroup> thisIterator = thisModifierGroups.iterator();
+		Iterator<TicketItemModifierGroup> thatIterator = thatModifierGroups.iterator();
+		
+		while(thisIterator.hasNext()) {
+			TicketItemModifierGroup next1 = thisIterator.next();
+			TicketItemModifierGroup next2 = thatIterator.next();
+			
+			if(comparator.compare(next1, next2) != 0) {
+				return false;
+			}
+		}
+		
+		return true;
+	}
+	
+	public void merge(TicketItem otherItem) {
+		if(!this.isHasModifiers() && !otherItem.isHasModifiers()) {
+			this.setItemCount(this.getItemCount() + otherItem.getItemCount());
+			return;
+		}
 	}
 
 	//	public double calculateSubtotal() {
