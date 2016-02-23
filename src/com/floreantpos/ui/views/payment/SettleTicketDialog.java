@@ -25,7 +25,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.json.Json;
@@ -109,8 +111,8 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 	JTextField tfTax;
 	JTextField tfTotal;
 	JTextField tfGratuity;
-	
-	public static PosPaymentWaitDialog waitDialog=new PosPaymentWaitDialog(); 
+
+	public static PosPaymentWaitDialog waitDialog = new PosPaymentWaitDialog();
 	private static SettleTicketDialog instance;
 
 	public SettleTicketDialog() {
@@ -120,7 +122,8 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 	public SettleTicketDialog(Ticket ticket) {
 		super();
 		this.ticket = ticket;
-		
+		mergeDuplicateTicketItem();
+
 		setTitle(Messages.getString("SettleTicketDialog.6")); //$NON-NLS-1$
 
 		getContentPane().setLayout(new BorderLayout(5, 5));
@@ -146,6 +149,35 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 		paymentView.setDefaultFocus();
 		updateView();
 
+	}
+
+	private void mergeDuplicateTicketItem() {
+		List<TicketItem> ticketItems = ticket.getTicketItems();
+
+		Map<String, TicketItem> itemMap = new LinkedHashMap<String, TicketItem>();
+
+		for (Iterator iterator = ticketItems.iterator(); iterator.hasNext();) {
+			TicketItem mergeTicketItem = (TicketItem) iterator.next();
+
+			TicketItem ticketItem2 = itemMap.get(mergeTicketItem.getItemId().toString());
+			if (ticketItem2 == null) {
+				itemMap.put(mergeTicketItem.getItemId().toString(), mergeTicketItem);
+			}
+			else {
+				if (mergeTicketItem.isHasModifiers()) {
+					itemMap.put(mergeTicketItem.getItemId().toString() + "-" + ticketItem2.getId(), mergeTicketItem);
+					continue;
+				}
+				else {
+					ticketItem2.setItemCount(ticketItem2.getItemCount() + mergeTicketItem.getItemCount());
+				}
+			}
+		}
+
+		ticket.getTicketItems().clear();
+		ticket.getTicketItems().addAll(itemMap.values());
+
+		ticket.calculatePrice();
 	}
 
 	public void updateView() {
@@ -236,7 +268,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 
 		JLabel lblSubtotal = new javax.swing.JLabel();
 		lblSubtotal.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-		lblSubtotal.setText(com.floreantpos.POSConstants.SUBTOTAL + ":"+" "+Application.getCurrencySymbol()); //$NON-NLS-1$ //$NON-NLS-2$
+		lblSubtotal.setText(com.floreantpos.POSConstants.SUBTOTAL + ":" + " " + Application.getCurrencySymbol()); //$NON-NLS-1$ //$NON-NLS-2$
 
 		tfSubtotal = new javax.swing.JTextField(10);
 		tfSubtotal.setHorizontalAlignment(SwingConstants.TRAILING);
@@ -244,8 +276,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 
 		JLabel lblDiscount = new javax.swing.JLabel();
 		lblDiscount.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-		lblDiscount.setText(Messages.getString("TicketView.9")+" "+Application.getCurrencySymbol()); //$NON-NLS-1$ //$NON-NLS-2$
-		
+		lblDiscount.setText(Messages.getString("TicketView.9") + " " + Application.getCurrencySymbol()); //$NON-NLS-1$ //$NON-NLS-2$
 
 		tfDiscount = new javax.swing.JTextField(10);
 		//	tfDiscount.setFont(tfDiscount.getFont().deriveFont(Font.PLAIN, 16));
@@ -255,7 +286,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 
 		JLabel lblTax = new javax.swing.JLabel();
 		lblTax.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-		lblTax.setText(com.floreantpos.POSConstants.TAX + ":"+" "+Application.getCurrencySymbol()); //$NON-NLS-1$ //$NON-NLS-2$
+		lblTax.setText(com.floreantpos.POSConstants.TAX + ":" + " " + Application.getCurrencySymbol()); //$NON-NLS-1$ //$NON-NLS-2$
 
 		tfTax = new javax.swing.JTextField(10);
 		//	tfTax.setFont(tfTax.getFont().deriveFont(Font.PLAIN, 16));
@@ -264,7 +295,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 
 		JLabel lblGratuity = new javax.swing.JLabel();
 		lblGratuity.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-		lblGratuity.setText(Messages.getString("SettleTicketDialog.5") + ":"+" "+Application.getCurrencySymbol()); //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
+		lblGratuity.setText(Messages.getString("SettleTicketDialog.5") + ":" + " " + Application.getCurrencySymbol()); //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
 
 		tfGratuity = new javax.swing.JTextField(10);
 		tfGratuity.setEditable(false);
@@ -273,7 +304,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 		JLabel lblTotal = new javax.swing.JLabel();
 		lblTotal.setFont(lblTotal.getFont().deriveFont(Font.BOLD, 18));
 		lblTotal.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-		lblTotal.setText(com.floreantpos.POSConstants.TOTAL + ":"+" "+Application.getCurrencySymbol()); //$NON-NLS-1$ //$NON-NLS-2$
+		lblTotal.setText(com.floreantpos.POSConstants.TOTAL + ":" + " " + Application.getCurrencySymbol()); //$NON-NLS-1$ //$NON-NLS-2$
 
 		tfTotal = new javax.swing.JTextField(10);
 		tfTotal.setFont(tfTotal.getFont().deriveFont(Font.BOLD, 18));
@@ -652,13 +683,13 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 			//		}
 
 			PaymentGatewayPlugin paymentGateway = CardConfig.getPaymentGateway();
-			
-			if(paymentGateway instanceof InginicoPlugin) {
-				waitDialog.setVisible(true); 
-				if(!waitDialog.isCanceled()) {
-					dispose(); 
+
+			if (paymentGateway instanceof InginicoPlugin) {
+				waitDialog.setVisible(true);
+				if (!waitDialog.isCanceled()) {
+					dispose();
 				}
-				return; 
+				return;
 			}
 			if (!paymentGateway.shouldShowCardInputProcessor()) {
 
@@ -894,7 +925,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 		this.ticket = ticket;
 		paymentView.updateView();
 	}
-	
+
 	public synchronized static SettleTicketDialog getInstance() {
 		if (instance == null) {
 			instance = new SettleTicketDialog(ticket);
