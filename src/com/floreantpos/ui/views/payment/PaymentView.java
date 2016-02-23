@@ -21,6 +21,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -337,15 +338,29 @@ public class PaymentView extends JPanel {
 			}
 		});
 
-		calcButtonPanel.add(btnGratuity, "span 2,growx"); //$NON-NLS-1$
+		//calcButtonPanel.add(btnGratuity, "split 3,span,growx"); //$NON-NLS-1$
 		btnDiscount = new PosButton(com.floreantpos.POSConstants.COUPON_DISCOUNT);
 		btnDiscount.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				settleTicketView.doApplyCoupon();
 			}
 		});
-		calcButtonPanel.add(btnDiscount, "span 2,growx"); //$NON-NLS-1$
-
+		//calcButtonPanel.add(btnDiscount, "growx"); //$NON-NLS-1$
+		
+		btnPrint = new com.floreantpos.swing.PosButton(POSConstants.PRINT_TICKET);
+		btnPrint.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				ReceiptPrintService.printTicket(settleTicketView.getTicket());
+			}
+		});
+	//	calcButtonPanel.add(btnPrint, "growx"); //$NON-NLS-1$
+		
+		JPanel panel4 = new JPanel(new GridLayout(1, 0, 5, 5));
+		panel4.add(btnGratuity);
+		panel4.add(btnDiscount);
+		panel4.add(btnPrint);
+		
+		calcButtonPanel.add(panel4, "span 4,growx"); //$NON-NLS-1$
 		centerPanel.add(calcButtonPanel, BorderLayout.CENTER);
 
 		actionButtonPanel = new com.floreantpos.swing.TransparentPanel();
@@ -394,14 +409,6 @@ public class PaymentView extends JPanel {
 		});
 		
 		
-		btnPrint = new com.floreantpos.swing.PosButton(POSConstants.PRINT_TICKET);
-		actionButtonPanel.add(btnPrint); //$NON-NLS-1$
-		btnPrint.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				ReceiptPrintService.printTicket(settleTicketView.getTicket());
-			}
-		});
-
 		btnCancel = new com.floreantpos.swing.PosButton(POSConstants.CANCEL.toUpperCase());
 		actionButtonPanel.add(btnCancel); //$NON-NLS-1$
 		btnCancel.addActionListener(new java.awt.event.ActionListener() {
