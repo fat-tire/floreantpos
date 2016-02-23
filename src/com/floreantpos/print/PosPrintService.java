@@ -66,7 +66,7 @@ public class PosPrintService {
 			JasperReport mainReport = ReportUtil.getReport("drawer-pull-report"); //$NON-NLS-1$
 			JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(Arrays.asList(new DrawerPullReport[] {drawerPullReport}));
 			JasperPrint jasperPrint = JasperFillManager.fillReport(mainReport, parameters, dataSource);
-			jasperPrint.setProperty("printerName", Application.getPrinters().getReportPrinter()); //$NON-NLS-1$
+			jasperPrint.setProperty("printerName", Application.getPrinters().getReceiptPrinter()); //$NON-NLS-1$
 			JasperPrintManager.printReport(jasperPrint, false);
 			
 			//JasperViewer.viewReport(jasperPrint, false);
