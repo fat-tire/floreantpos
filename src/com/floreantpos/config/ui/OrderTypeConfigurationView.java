@@ -70,6 +70,8 @@ public class OrderTypeConfigurationView extends ConfigurationView {
 	private JComboBox<VirtualPrinter> cbDriveThruPrinter = new JComboBox<VirtualPrinter>();
 	private JComboBox<VirtualPrinter> cbBarPrinter = new JComboBox<VirtualPrinter>();
 
+	private JCheckBox cbConsolidateTicketItems = new JCheckBox(Messages.getString("OrderTypeConfigurationView.2")); //$NON-NLS-1$
+
 	public OrderTypeConfigurationView() {
 		setLayout(new MigLayout("", "", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
@@ -79,6 +81,8 @@ public class OrderTypeConfigurationView extends ConfigurationView {
 		addOption(OrderType.HOME_DELIVERY, cbHomeDeliveryEnable, cbHomeDeliveryDelayPay, tfHomeDeliveryAlias, cbHomeDeliPrinter);
 		addOption(OrderType.DRIVE_THRU, cbDriveThruEnable, cbDriveThruDelayPay, tfDriveThruAlias, cbDriveThruPrinter);
 		addOption(OrderType.BAR_TAB, cbBarTabEnable, cbBarTabDelayPay, tfBarTabAlias, cbBarPrinter);
+
+		add(cbConsolidateTicketItems, "newline,gapleft 10, gaptop 25"); //$NON-NLS-1$
 
 		cbDineInEnable.addActionListener(new ActionListener() {
 			@Override
@@ -97,8 +101,8 @@ public class OrderTypeConfigurationView extends ConfigurationView {
 		panel.add(cbPostPaid, "gapright 25"); //$NON-NLS-1$
 		panel.add(new JLabel(POSConstants.ALIAS_LABEL));
 		panel.add(tfAlias);
-//		panel.add(new JLabel("Printer"), "newline");
-//		panel.add(cbPrinter, "span 3, grow");
+		//		panel.add(new JLabel("Printer"), "newline");
+		//		panel.add(cbPrinter, "span 3, grow");
 
 		if (orderType == OrderType.DINE_IN) {
 			panel.add(cbShowTableSelection, "span 2, newline, wrap"); //$NON-NLS-1$
@@ -121,20 +125,21 @@ public class OrderTypeConfigurationView extends ConfigurationView {
 
 		TerminalConfig.setShouldShowTableSelection(cbShowTableSelection.isSelected());
 		TerminalConfig.setShouldShowGuestSelection(cbShowGuestSelection.isSelected());
+		TerminalConfig.setConsolidateTicketItems(cbConsolidateTicketItems.isSelected());
 
 		return true;
 	}
 
 	@Override
 	public void initialize() throws Exception {
-//		List<VirtualPrinter> virtualPrinters = VirtualPrinterDAO.getInstance().findAll();
-//
-//		cbDineInPrinter.setModel(new ListComboBoxModel(virtualPrinters));
-//		cbTakeoutPrinter.setModel(new ListComboBoxModel(virtualPrinters));
-//		cbPickupPrinter.setModel(new ListComboBoxModel(virtualPrinters));
-//		cbHomeDeliPrinter.setModel(new ListComboBoxModel(virtualPrinters));
-//		cbDriveThruPrinter.setModel(new ListComboBoxModel(virtualPrinters));
-//		cbBarPrinter.setModel(new ListComboBoxModel(virtualPrinters));
+		//		List<VirtualPrinter> virtualPrinters = VirtualPrinterDAO.getInstance().findAll();
+		//
+		//		cbDineInPrinter.setModel(new ListComboBoxModel(virtualPrinters));
+		//		cbTakeoutPrinter.setModel(new ListComboBoxModel(virtualPrinters));
+		//		cbPickupPrinter.setModel(new ListComboBoxModel(virtualPrinters));
+		//		cbHomeDeliPrinter.setModel(new ListComboBoxModel(virtualPrinters));
+		//		cbDriveThruPrinter.setModel(new ListComboBoxModel(virtualPrinters));
+		//		cbBarPrinter.setModel(new ListComboBoxModel(virtualPrinters));
 
 		setupView(OrderType.DINE_IN, cbDineInEnable, cbDineInDelayPay, tfDineInAlias, cbDineInPrinter);
 		setupView(OrderType.TAKE_OUT, cbTakeOutEnable, cbTakeOutDelayPay, tfTakeOutAlias, cbTakeoutPrinter);
@@ -145,6 +150,7 @@ public class OrderTypeConfigurationView extends ConfigurationView {
 
 		cbShowTableSelection.setSelected(TerminalConfig.isShouldShowTableSelection());
 		cbShowGuestSelection.setSelected(TerminalConfig.isShouldShowGuestSelection());
+		cbConsolidateTicketItems.setSelected(TerminalConfig.isConsolidateTicketItems());
 
 		setInitialized(true);
 	}

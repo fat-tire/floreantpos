@@ -124,7 +124,10 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 	public SettleTicketDialog(Ticket ticket) {
 		super();
 		this.ticket = ticket;
-		mergeDuplicateTicketItem();
+
+		if (TerminalConfig.isConsolidateTicketItems()) {
+			consolidateTicketItems();
+		}
 
 		setTitle(Messages.getString("SettleTicketDialog.6")); //$NON-NLS-1$
 
@@ -153,7 +156,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 
 	}
 
-	private void mergeDuplicateTicketItem() {
+	private void consolidateTicketItems() {
 		List<TicketItem> ticketItems = ticket.getTicketItems();
 
 		Map<String, List<TicketItem>> itemMap = new LinkedHashMap<String, List<TicketItem>>();
