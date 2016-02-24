@@ -52,7 +52,6 @@ import com.floreantpos.model.dao.UserDAO;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.ui.TitlePanel;
 import com.floreantpos.ui.views.SwitchboardOtherFunctionsView;
-import com.floreantpos.ui.views.SwitchboardView;
 import com.floreantpos.ui.views.TableMapView;
 import com.floreantpos.ui.views.order.OrderView;
 import com.floreantpos.ui.views.order.RootView;
@@ -350,7 +349,7 @@ public class PasswordEntryDialog extends POSDialog implements ActionListener {
 		}
 		if (isAutoLogOffMode()) {
 
-			String viewName = RootView.getInstance().getCurrentView();
+			String viewName = RootView.getInstance().getCurrentViewName();
 
 			if (viewName.equals(TableMapView.VIEW_NAME)) {
 				if (!user.hasPermission(UserPermission.CREATE_TICKET)) {
