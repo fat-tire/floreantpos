@@ -796,7 +796,7 @@ public class TicketDAO extends BaseTicketDAO {
 			criteria.add(Restrictions.eq(Ticket.PROP_TICKET_TYPE, orderTypeFilter.name()));
 		}
 
-		if (!user.canViewAllOpenTickets()) {
+		if (!user.canViewAllOpenTickets() || !user.canViewAllCloseTickets()) {
 			criteria.add(Restrictions.eq(Ticket.PROP_OWNER, user));
 		}
 	}

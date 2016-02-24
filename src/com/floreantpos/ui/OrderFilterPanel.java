@@ -31,20 +31,24 @@ import org.jdesktop.swingx.JXCollapsiblePane;
 import com.floreantpos.ITicketList;
 import com.floreantpos.Messages;
 import com.floreantpos.config.TerminalConfig;
+import com.floreantpos.main.Application;
 import com.floreantpos.model.OrderTypeFilter;
 import com.floreantpos.model.PaymentStatusFilter;
+import com.floreantpos.model.UserPermission;
 import com.floreantpos.swing.POSToggleButton;
-
+import com.floreantpos.ui.dialog.POSMessageDialog;
 
 public class OrderFilterPanel extends JXCollapsiblePane {
 	private ITicketList ticketList;
 	private TicketListView ticketLists;
-	
-	
+
+	//POSToggleButton btnFilterByUnPaidStatus ;
+	//ButtonGroup paymentGroup;
+
 	public OrderFilterPanel(ITicketList ticketList) {
 		this.ticketList = ticketList;
 		this.ticketLists = (TicketListView) ticketList;
-		
+
 		setCollapsed(true);
 		getContentPane().setLayout(new MigLayout("fill", "fill, grow", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
@@ -52,59 +56,77 @@ public class OrderFilterPanel extends JXCollapsiblePane {
 		createOrderTypeFilterPanel();
 	}
 
-
 	private void createPaymentStatusFilterPanel() {
-		POSToggleButton btnFilterByOpenStatus = new POSToggleButton(PaymentStatusFilter.OPEN.toString());
-		POSToggleButton btnFilterByPaidStatus = new POSToggleButton(PaymentStatusFilter.PAID.toString());
-		POSToggleButton btnFilterByUnPaidStatus = new POSToggleButton(PaymentStatusFilter.CLOSED.toString());
-		
-		ButtonGroup paymentGroup = new ButtonGroup();
+		final POSToggleButton btnFilterByOpenStatus = new POSToggleButton(PaymentStatusFilter.OPEN.toString());
+		final POSToggleButton btnFilterByPaidStatus = new POSToggleButton(PaymentStatusFilter.PAID.toString());
+		final POSToggleButton btnFilterByUnPaidStatus = new POSToggleButton(PaymentStatusFilter.CLOSED.toString());
+
+		final ButtonGroup paymentGroup = new ButtonGroup();
 		paymentGroup.add(btnFilterByOpenStatus);
 		paymentGroup.add(btnFilterByPaidStatus);
 		paymentGroup.add(btnFilterByUnPaidStatus);
-		
+
 		PaymentStatusFilter paymentStatusFilter = TerminalConfig.getPaymentStatusFilter();
-		switch(paymentStatusFilter) {
+
+		switch (paymentStatusFilter) {
 			case OPEN:
 				btnFilterByOpenStatus.setSelected(true);
 				break;
-				
+
 			case PAID:
 				btnFilterByPaidStatus.setSelected(true);
 				break;
-				
+
 			case CLOSED:
 				btnFilterByUnPaidStatus.setSelected(true);
 				break;
-				
+
 		}
-		
+
 		ActionListener psFilterHandler = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+
 				String actionCommand = e.getActionCommand();
+
+				if (actionCommand.equals("CLOSED") && !Application.getCurrentUser().hasPermission(UserPermission.VIEW_ALL_CLOSE_TICKETS)) {
+					POSMessageDialog.showError("You have no permission to view all closed tickets");
+
+					PaymentStatusFilter paymentStatusFilter = TerminalConfig.getPaymentStatusFilter();
+					if (paymentStatusFilter.name().equals("OPEN")) {
+						btnFilterByOpenStatus.setSelected(true);
+					}
+					else if (paymentStatusFilter.name().equals("PAID")) {
+						btnFilterByPaidStatus.setSelected(true);
+					}
+					else if (paymentStatusFilter.name().equals("CLOSE")) {
+						btnFilterByUnPaidStatus.setSelected(true);
+					}
+					return;
+				}
+
 				String filter = actionCommand.replaceAll("\\s", "_"); //$NON-NLS-1$ //$NON-NLS-2$
 				TerminalConfig.setPaymentStatusFilter(filter);
 
 				ticketList.updateTicketList();
 				ticketLists.updateButtonStatus();
-				
+
 			}
 		};
-		
+
 		btnFilterByOpenStatus.addActionListener(psFilterHandler);
 		btnFilterByPaidStatus.addActionListener(psFilterHandler);
 		btnFilterByUnPaidStatus.addActionListener(psFilterHandler);
-		
+
 		JPanel filterByPaymentStatusPanel = new JPanel(new MigLayout("", "fill, grow", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		filterByPaymentStatusPanel.setBorder(new TitledBorder(Messages.getString("SwitchboardView.3"))); //$NON-NLS-1$
 		filterByPaymentStatusPanel.add(btnFilterByOpenStatus);
 		filterByPaymentStatusPanel.add(btnFilterByPaidStatus);
 		filterByPaymentStatusPanel.add(btnFilterByUnPaidStatus);
-		
+
 		getContentPane().add(filterByPaymentStatusPanel);
 	}
-	
+
 	private void createOrderTypeFilterPanel() {
 		POSToggleButton btnFilterByOrderTypeALL = new POSToggleButton(OrderTypeFilter.ALL.toString());
 		POSToggleButton btnFilterByDineIn = new POSToggleButton(OrderTypeFilter.DINE_IN.toString());
@@ -113,7 +135,7 @@ public class OrderFilterPanel extends JXCollapsiblePane {
 		POSToggleButton btnFilterByHomeDeli = new POSToggleButton(OrderTypeFilter.HOME_DELIVERY.toString());
 		POSToggleButton btnFilterByDriveThru = new POSToggleButton(OrderTypeFilter.DRIVE_THRU.toString());
 		POSToggleButton btnFilterByBarTab = new POSToggleButton(OrderTypeFilter.BAR_TAB.toString());
-		
+
 		ButtonGroup orderTypeGroup = new ButtonGroup();
 		orderTypeGroup.add(btnFilterByOrderTypeALL);
 		orderTypeGroup.add(btnFilterByDineIn);
@@ -124,36 +146,36 @@ public class OrderFilterPanel extends JXCollapsiblePane {
 		orderTypeGroup.add(btnFilterByBarTab);
 
 		OrderTypeFilter orderTypeFilter = TerminalConfig.getOrderTypeFilter();
-		switch(orderTypeFilter) {
+		switch (orderTypeFilter) {
 			case ALL:
 				btnFilterByOrderTypeALL.setSelected(true);
 				break;
-				
+
 			case DINE_IN:
 				btnFilterByDineIn.setSelected(true);
 				break;
-				
+
 			case TAKE_OUT:
 				btnFilterByTakeOut.setSelected(true);
 				break;
-				
+
 			case PICKUP:
 				btnFilterByPickup.setSelected(true);
 				break;
-				
+
 			case HOME_DELIVERY:
 				btnFilterByHomeDeli.setSelected(true);
 				break;
-				
+
 			case DRIVE_THRU:
 				btnFilterByDriveThru.setSelected(true);
 				break;
-				
+
 			case BAR_TAB:
 				btnFilterByBarTab.setSelected(true);
 				break;
 		}
-		
+
 		JPanel filterByOrderPanel = new JPanel(new MigLayout("", "fill, grow", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		filterByOrderPanel.setBorder(new TitledBorder(Messages.getString("SwitchboardView.4"))); //$NON-NLS-1$
 		filterByOrderPanel.add(btnFilterByOrderTypeALL);
@@ -163,24 +185,21 @@ public class OrderFilterPanel extends JXCollapsiblePane {
 		filterByOrderPanel.add(btnFilterByHomeDeli);
 		filterByOrderPanel.add(btnFilterByDriveThru);
 		filterByOrderPanel.add(btnFilterByBarTab);
-		
+
 		getContentPane().add(filterByOrderPanel);
-		
-		
+
 		ActionListener orderTypeFilterHandler = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String actionCommand = e.getActionCommand();
 				String filter = actionCommand.replaceAll("\\s", "_"); //$NON-NLS-1$ //$NON-NLS-2$
 				TerminalConfig.setOrderTypeFilter(filter);
-		
-			
+
 				//ticketLists.setCurrentRowIndexZero();
 				ticketList.updateTicketList();
 				ticketLists.updateButtonStatus();
 			}
 		};
-		
 
 		btnFilterByOrderTypeALL.addActionListener(orderTypeFilterHandler);
 		btnFilterByDineIn.addActionListener(orderTypeFilterHandler);

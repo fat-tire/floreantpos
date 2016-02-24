@@ -119,9 +119,28 @@ public class User extends BaseUser {
 		return false;
 	}
 
+	public boolean canViewAllCloseTickets() {
+		if (getType() == null) {
+			return false;
+		}
+
+		Set<UserPermission> permissions = getType().getPermissions();
+		if (permissions == null) {
+			return false;
+		}
+
+		for (UserPermission permission : permissions) {
+			if (permission.equals(UserPermission.VIEW_ALL_CLOSE_TICKETS)) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 	public void setFullName(String str) {
 	}
-	
+
 	public String getFullName() {
 		return getFirstName() + " " + getLastName(); //$NON-NLS-1$
 	}
