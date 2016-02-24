@@ -87,6 +87,11 @@ public class TicketItemModifier extends BaseTicketItemModifier implements ITicke
 		calculateTax();
 		setTotalAmount(NumberUtil.roundToTwoDigit(calculateTotal()));
 	}
+	
+	public void merge(TicketItemModifier otherItem) {
+		setItemCount(getItemCount() + otherItem.getItemCount());
+		return;
+	}
 
 	private void calculateTax() {
 		double tax = getSubTotalAmount() * (getTaxRate() / 100);

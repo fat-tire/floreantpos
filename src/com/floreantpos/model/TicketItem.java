@@ -256,53 +256,90 @@ public class TicketItem extends BaseTicketItem implements ITicketItem {
 		setTotalAmount(NumberUtil.roundToTwoDigit(calculateTotal(true)));
 		setTotalAmountWithoutModifiers(NumberUtil.roundToTwoDigit(calculateTotal(false)));
 	}
-	
-	public boolean isMergable(TicketItem otherItem) {
-		if(!this.isHasModifiers() && !otherItem.isHasModifiers()) {
-			if(this.getItemId().equals(otherItem.getItemId())) {
+
+	public boolean merge(TicketItem otherItem) {
+		if (!this.isHasModifiers() && !otherItem.isHasModifiers()) {
+			if (this.getItemId().equals(otherItem.getItemId())) {
+				this.setItemCount(this.getItemCount() + otherItem.getItemCount());
 				return true;
 			}
-			
+
 			return false;
 		}
-		
+
 		List<TicketItemModifierGroup> thisModifierGroups = this.getTicketItemModifierGroups();
 		List<TicketItemModifierGroup> thatModifierGroups = otherItem.getTicketItemModifierGroups();
-		
-		if(thisModifierGroups.size() != thatModifierGroups.size()) {
+
+		if (thisModifierGroups.size() != thatModifierGroups.size()) {
 			return false;
 		}
-		
+
 		Comparator<TicketItemModifierGroup> comparator = new Comparator<TicketItemModifierGroup>() {
 			@Override
 			public int compare(TicketItemModifierGroup o1, TicketItemModifierGroup o2) {
 				return o1.getMenuItemModifierGroup().getId() - o2.getMenuItemModifierGroup().getId();
 			}
 		};
-		
+
 		Collections.sort(thisModifierGroups, comparator);
 		Collections.sort(thatModifierGroups, comparator);
-		
+
 		Iterator<TicketItemModifierGroup> thisIterator = thisModifierGroups.iterator();
 		Iterator<TicketItemModifierGroup> thatIterator = thatModifierGroups.iterator();
-		
-		while(thisIterator.hasNext()) {
+
+		while (thisIterator.hasNext()) {
 			TicketItemModifierGroup next1 = thisIterator.next();
 			TicketItemModifierGroup next2 = thatIterator.next();
-			
-			if(!next1.isMergable(next2)) {
+
+			if (comparator.compare(next1, next2) != 0) {
+				return false;
+			}
+			if (!next1.merge(next2)) {
 				return false;
 			}
 		}
-		
+
+		if (!mergeAddOns(otherItem)) {
+			return false;
+		}
+
+		this.setItemCount(this.getItemCount() + otherItem.getItemCount());
+
 		return true;
 	}
-	
-	public void merge(TicketItem otherItem) {
-		if(!this.isHasModifiers() && !otherItem.isHasModifiers()) {
-			this.setItemCount(this.getItemCount() + otherItem.getItemCount());
-			return;
+
+	public boolean mergeAddOns(TicketItem otherItem) {
+		List<TicketItemModifier> thisModifiers = getAddOns();
+		List<TicketItemModifier> thatModifiers = otherItem.getAddOns();
+
+		if (thisModifiers.size() != thatModifiers.size()) {
+			return false;
 		}
+
+		Comparator<TicketItemModifier> comparator = new Comparator<TicketItemModifier>() {
+			@Override
+			public int compare(TicketItemModifier o1, TicketItemModifier o2) {
+				return o1.getItemId() - o2.getItemId();
+			}
+		};
+
+		Collections.sort(thisModifiers, comparator);
+		Collections.sort(thatModifiers, comparator);
+
+		Iterator<TicketItemModifier> thisIterator = thisModifiers.iterator();
+		Iterator<TicketItemModifier> thatIterator = thatModifiers.iterator();
+
+		while (thisIterator.hasNext()) {
+			TicketItemModifier next1 = thisIterator.next();
+			TicketItemModifier next2 = thatIterator.next();
+
+			if (comparator.compare(next1, next2) != 0) {
+				return false;
+			}
+
+			next1.merge(next2);
+		}
+		return true;
 	}
 
 	//	public double calculateSubtotal() {

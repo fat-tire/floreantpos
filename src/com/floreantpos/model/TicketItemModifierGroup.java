@@ -34,52 +34,45 @@ public class TicketItemModifierGroup extends BaseTicketItemModifierGroup {
 
 	/**
 	 * Constructor for primary key
-	 * 
 	 */
 	public TicketItemModifierGroup(java.lang.Integer id) {
 		super(id);
 	}
 
 	/* [CONSTRUCTOR MARKER END] */
-	
-	public boolean isMergable(TicketItemModifierGroup otherItem) {
-		List<TicketItemModifier> thisModifierGroups = getTicketItemModifiers();
-		List<TicketItemModifier> thatModifierGroups = otherItem.getTicketItemModifiers();
-		
-		if(thisModifierGroups.size() != thatModifierGroups.size()) {
+
+	public boolean merge(TicketItemModifierGroup thatGroup) {
+		List<TicketItemModifier> thisModifiers = getTicketItemModifiers();
+		List<TicketItemModifier> thatModifiers = thatGroup.getTicketItemModifiers();
+
+		if (thisModifiers.size() != thatModifiers.size()) {
 			return false;
 		}
-		
+
 		Comparator<TicketItemModifier> comparator = new Comparator<TicketItemModifier>() {
 			@Override
 			public int compare(TicketItemModifier o1, TicketItemModifier o2) {
-				return o1.getItemId().intValue() - o2.getItemId().intValue();
+				return o1.getItemId() - o2.getItemId();
 			}
 		};
-		
-		Collections.sort(thisModifierGroups, comparator);
-		Collections.sort(thatModifierGroups, comparator);
-		
-		Iterator<TicketItemModifier> thisIterator = thisModifierGroups.iterator();
-		Iterator<TicketItemModifier> thatIterator = thatModifierGroups.iterator();
-		
-		while(thisIterator.hasNext()) {
+
+		Collections.sort(thisModifiers, comparator);
+		Collections.sort(thatModifiers, comparator);
+
+		Iterator<TicketItemModifier> thisIterator = thisModifiers.iterator();
+		Iterator<TicketItemModifier> thatIterator = thatModifiers.iterator();
+
+		while (thisIterator.hasNext()) {
 			TicketItemModifier next1 = thisIterator.next();
 			TicketItemModifier next2 = thatIterator.next();
-			
-			if(comparator.compare(next1, next2) != 0) {
+
+			if (comparator.compare(next1, next2) != 0) {
 				return false;
 			}
+
+			next1.merge(next2);
 		}
-		
 		return true;
-	}
-	
-	public void merge(TicketItemModifierGroup thatGroup) {
-		List<TicketItemModifier> thisModifiers = getTicketItemModifiers();
-		List<TicketItemModifier> thatModifiers = thatGroup.getTicketItemModifiers();
-		
-		
 	}
 
 	public int countFreeModifiers() {

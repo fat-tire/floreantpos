@@ -172,14 +172,13 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 			else {
 				boolean merged = false;
 				for (TicketItem itemInMap : itemListInMap) {
-					if (itemInMap.isMergable(newItem)) {
-						itemInMap.merge(newItem);
+					if (itemInMap.merge(newItem)) {
 						merged = true;
 						break;
 					}
 				}
 
-				if(!merged) {
+				if (!merged) {
 					itemListInMap.add(newItem);
 				}
 			}
@@ -188,11 +187,10 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 		ticket.getTicketItems().clear();
 		Collection<List<TicketItem>> values = itemMap.values();
 		for (List<TicketItem> list : values) {
-			if(list != null) {
+			if (list != null) {
 				ticket.getTicketItems().addAll(list);
 			}
 		}
-		
 
 		ticket.calculatePrice();
 	}
