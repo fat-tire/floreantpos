@@ -24,6 +24,8 @@ import java.io.StringReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -154,23 +156,43 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 	private void mergeDuplicateTicketItem() {
 		List<TicketItem> ticketItems = ticket.getTicketItems();
 
-		Map<String, TicketItem> itemMap = new LinkedHashMap<String, TicketItem>();
+		Map<String, List<TicketItem>> itemMap = new LinkedHashMap<String, List<TicketItem>>();
 
 		for (Iterator iterator = ticketItems.iterator(); iterator.hasNext();) {
 			TicketItem newItem = (TicketItem) iterator.next();
 
-			TicketItem itemInMap = itemMap.get(newItem.getItemId().toString());
+			List<TicketItem> itemListInMap = itemMap.get(newItem.getItemId().toString());
 
-			if (itemInMap == null) {
-				itemMap.put(newItem.getItemId().toString(), newItem);
+			if (itemListInMap == null) {
+				List<TicketItem> list = new ArrayList<TicketItem>();
+				list.add(newItem);
+
+				itemMap.put(newItem.getItemId().toString(), list);
 			}
-			else if (itemInMap.isMergable(newItem)) {
-				itemInMap.merge(newItem);
+			else {
+				boolean merged = false;
+				for (TicketItem itemInMap : itemListInMap) {
+					if (itemInMap.isMergable(newItem)) {
+						itemInMap.merge(newItem);
+						merged = true;
+						break;
+					}
+				}
+
+				if(!merged) {
+					itemListInMap.add(newItem);
+				}
 			}
 		}
 
 		ticket.getTicketItems().clear();
-		ticket.getTicketItems().addAll(itemMap.values());
+		Collection<List<TicketItem>> values = itemMap.values();
+		for (List<TicketItem> list : values) {
+			if(list != null) {
+				ticket.getTicketItems().addAll(list);
+			}
+		}
+		
 
 		ticket.calculatePrice();
 	}
