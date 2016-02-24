@@ -26,7 +26,7 @@ import com.floreantpos.Messages;
 import com.floreantpos.main.Application;
 import com.floreantpos.main.PosWindow;
 
-public class LogoutAction extends PosAction {
+public class LogoutAction extends ViewChangeAction {
 
 	public LogoutAction() {
 		super(Messages.getString("Logout")); //$NON-NLS-1$

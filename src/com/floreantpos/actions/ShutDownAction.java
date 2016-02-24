@@ -25,7 +25,7 @@ import com.floreantpos.POSConstants;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.UserPermission;
 
-public class ShutDownAction extends PosAction {
+public class ShutDownAction extends ViewChangeAction {
 
 	public ShutDownAction() {
 		super(POSConstants.CAPITAL_SHUTDOWN, UserPermission.SHUT_DOWN);

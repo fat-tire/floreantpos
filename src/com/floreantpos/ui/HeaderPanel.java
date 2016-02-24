@@ -41,6 +41,7 @@ import com.floreantpos.actions.LogoutAction;
 import com.floreantpos.actions.ShowBackofficeAction;
 import com.floreantpos.actions.ShowOtherFunctionsAction;
 import com.floreantpos.actions.ShutDownAction;
+import com.floreantpos.actions.SwithboardViewAction;
 import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.main.Application;
 import com.floreantpos.swing.PosButton;
@@ -88,6 +89,9 @@ public class HeaderPanel extends JPanel {
 
 		PosButton btnOthers = new PosButton(new ShowOtherFunctionsAction(false, true)); //$NON-NLS-1$
 		add(btnOthers, "w 60!, h 60!"); //$NON-NLS-1$
+
+		PosButton btnSwithboardView = new PosButton(new SwithboardViewAction(false, true)); //$NON-NLS-1$
+		add(btnSwithboardView, "w 60!, h 60!"); //$NON-NLS-1$
 
 		PosButton btnClockOUt = new PosButton(new ClockInOutAction(false, true));
 		add(btnClockOUt, "w 60!, h 60!"); //$NON-NLS-1$

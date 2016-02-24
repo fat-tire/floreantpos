@@ -86,6 +86,7 @@ public class TicketView extends JPanel {
 	private TitledBorder titledBorder = new TitledBorder(""); //$NON-NLS-1$
 	private Border border = new CompoundBorder(titledBorder, new EmptyBorder(2, 2, 2, 2));
 	private boolean cancelable;
+	private boolean allowToLogOut;
 	public final static String VIEW_NAME = "TICKET_VIEW"; //$NON-NLS-1$
 
 	public TicketView() {
@@ -322,10 +323,16 @@ public class TicketView extends JPanel {
 			ReceiptPrintService.printToKitchen(ticket);
 			TicketDAO.getInstance().refresh(ticket);
 			setCancelable(false);
+			setAllowToLogOut(false);
 		}
 
 		OrderController.saveOrder(ticket);
 	}
+
+	public synchronized void doHoldOrder() {// GEN-FIRST:event_doFinishOrder
+		saveTicketIfNeeded();
+		closeView(false);
+	}// GEN-LAST:event_doFinishOrder
 
 	public void saveTicketIfNeeded() {
 		updateModel();
@@ -428,6 +435,7 @@ public class TicketView extends JPanel {
 		ticketViewerTable.setTicket(_ticket);
 		updateView();
 		setCancelable(true);
+		setAllowToLogOut(true);
 	}
 
 	public void addTicketItem(TicketItem ticketItem) {
@@ -463,7 +471,7 @@ public class TicketView extends JPanel {
 		}
 
 		if (ticket.getTotalAmount() > 0) {
-			btnTotal.setText("<html><h2>Total " + Application.getCurrencySymbol()+ NumberUtil.formatNumber(ticket.getTotalAmount()) + "</h2></html>");
+			btnTotal.setText("<html><h2>Total " + Application.getCurrencySymbol() + NumberUtil.formatNumber(ticket.getTotalAmount()) + "</h2></html>");
 		}
 		else {
 			btnTotal.setText("<html><h2>Total</h2></html>");
@@ -585,4 +593,20 @@ public class TicketView extends JPanel {
 	public void setCancelable(boolean cancelable) {
 		this.cancelable = cancelable;
 	}
+
+	/**
+	 * @return the allowToLogOut
+	 */
+	public boolean isAllowToLogOut() {
+		return allowToLogOut;
+	}
+
+	/**
+	 * @param allowToLogOut the allowToLogOut to set
+	 */
+	public void setAllowToLogOut(boolean allowToLogOut) {
+		this.allowToLogOut = allowToLogOut;
+	}
+	
+	
 }

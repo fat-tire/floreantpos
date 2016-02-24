@@ -23,7 +23,7 @@ import com.floreantpos.IconFactory;
 import com.floreantpos.ui.views.SwitchboardOtherFunctionsView;
 import com.floreantpos.ui.views.order.RootView;
 
-public class ShowOtherFunctionsAction extends PosAction {
+public class ShowOtherFunctionsAction extends ViewChangeAction {
 
 	public ShowOtherFunctionsAction() {
 		super(); 

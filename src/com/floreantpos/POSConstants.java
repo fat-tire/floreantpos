@@ -64,6 +64,7 @@ public class POSConstants {
 	public static final String SAVE_BUTTON_TEXT = Messages.getString("SAVE_BUTTON_TEXT"); //$NON-NLS-1$
 	public static final String PAY_BUTTON_TEXT = Messages.getString("PAY_BUTTON_TEXT"); //$NON-NLS-1$
 	public static final String SEND_TO_KITCHEN = Messages.getString("SEND_TO_KITCHEN"); //$NON-NLS-1$
+	public static final String HOLD_BUTTON_TEXT = Messages.getString("HOLD_BUTTON_TEXT"); //$NON-NLS-1$
 	
 	public static final String TICKET_LIST_COLUMN_ID = Messages.getString("TICKET_LIST_COLUMN_ID"); //$NON-NLS-1$
 	public static final String TICKET_LIST_COLUMN_TABLE = Messages.getString("TICKET_LIST_COLUMN_TABLE"); //$NON-NLS-1$

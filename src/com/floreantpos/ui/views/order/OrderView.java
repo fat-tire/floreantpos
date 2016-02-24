@@ -59,6 +59,7 @@ import com.floreantpos.model.ShopTable;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.TicketItemCookingInstruction;
+import com.floreantpos.model.UserPermission;
 import com.floreantpos.model.dao.CookingInstructionDAO;
 import com.floreantpos.model.dao.MenuItemDAO;
 import com.floreantpos.model.dao.ShopTableDAO;
@@ -93,6 +94,7 @@ public class OrderView extends ViewPanel {
 
 	private JPanel actionButtonPanel = new JPanel(new MigLayout("fill, ins 2, hidemode 3", "sg, fill", ""));
 
+	private com.floreantpos.swing.PosButton btnHold = new com.floreantpos.swing.PosButton(com.floreantpos.POSConstants.HOLD_BUTTON_TEXT);
 	private com.floreantpos.swing.PosButton btnDone = new com.floreantpos.swing.PosButton(com.floreantpos.POSConstants.SAVE_BUTTON_TEXT);
 	private com.floreantpos.swing.PosButton btnSend = new com.floreantpos.swing.PosButton(com.floreantpos.POSConstants.SEND_TO_KITCHEN);
 	private com.floreantpos.swing.PosButton btnCancel = new com.floreantpos.swing.PosButton(POSConstants.CANCEL_BUTTON_TEXT);
@@ -253,7 +255,9 @@ public class OrderView extends ViewPanel {
 				if (result != JOptionPane.YES_OPTION) {
 					return;
 				}
+
 				ticketView.doCancelOrder();
+				ticketView.setAllowToLogOut(true);
 			}
 		});
 
@@ -315,6 +319,25 @@ public class OrderView extends ViewPanel {
 			}
 		});
 
+		btnHold.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (currentTicket.getType() != OrderType.DINE_IN && currentTicket.getType() != OrderType.HOME_DELIVERY
+						&& !Application.getCurrentUser().hasPermission(UserPermission.HOLD_TICKET)) {
+					POSMessageDialog.showError("You have no permission to hold ticket");
+					return;
+				}
+
+				if (ticketView.getTicket().getTicketItems() == null || ticketView.getTicket().getTicketItems().size() == 0) {
+					POSMessageDialog.showError(com.floreantpos.POSConstants.TICKET_IS_EMPTY_);
+					return;
+				}
+				ticketView.doHoldOrder();
+				ticketView.setAllowToLogOut(true);
+			}
+		});
+
 		//		btnAddOn.addActionListener(new ActionListener() {
 		//			@Override
 		//			public void actionPerformed(ActionEvent e) {
@@ -335,6 +358,7 @@ public class OrderView extends ViewPanel {
 		actionButtonPanel.add(btnCookingInstruction);
 		//		actionButtonPanel.add(btnAddOn);
 		actionButtonPanel.add(btnMisc);
+		actionButtonPanel.add(btnHold);
 		actionButtonPanel.add(btnSend);
 		actionButtonPanel.add(btnCancel);
 		actionButtonPanel.add(btnDone);
@@ -434,7 +458,7 @@ public class OrderView extends ViewPanel {
 		//dialog.setSize(900, 580);
 		dialog.pack();
 		dialog.open();
-		
+
 		if (!dialog.isCanceled()) {
 			TicketItem ticketItem = dialog.getTicketItem();
 			ticketItem.setTicket(currentTicket);
