@@ -172,7 +172,8 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 			else {
 				boolean merged = false;
 				for (TicketItem itemInMap : itemListInMap) {
-					if (itemInMap.merge(newItem)) {
+					if (itemInMap.isMergable(newItem, false)) {
+						itemInMap.merge(newItem);
 						merged = true;
 						break;
 					}

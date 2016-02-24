@@ -257,10 +257,9 @@ public class TicketItem extends BaseTicketItem implements ITicketItem {
 		setTotalAmountWithoutModifiers(NumberUtil.roundToTwoDigit(calculateTotal(false)));
 	}
 
-	public boolean merge(TicketItem otherItem) {
+	public boolean isMergable(TicketItem otherItem, boolean merge) {
 		if (!this.isHasModifiers() && !otherItem.isHasModifiers()) {
 			if (this.getItemId().equals(otherItem.getItemId())) {
-				this.setItemCount(this.getItemCount() + otherItem.getItemCount());
 				return true;
 			}
 
@@ -294,21 +293,23 @@ public class TicketItem extends BaseTicketItem implements ITicketItem {
 			if (comparator.compare(next1, next2) != 0) {
 				return false;
 			}
-			if (!next1.merge(next2)) {
+			if (!next1.isMergable(next2, false)) {
 				return false;
+			}
+
+			if (merge) {
+				next1.isMergable(next2, merge);
 			}
 		}
 
-		if (!mergeAddOns(otherItem)) {
+		if (!isMergableAddOns(otherItem, merge)) {
 			return false;
 		}
-
-		this.setItemCount(this.getItemCount() + otherItem.getItemCount());
 
 		return true;
 	}
 
-	public boolean mergeAddOns(TicketItem otherItem) {
+	public boolean isMergableAddOns(TicketItem otherItem, boolean merge) {
 		List<TicketItemModifier> thisModifiers = getAddOns();
 		List<TicketItemModifier> thatModifiers = otherItem.getAddOns();
 
@@ -337,9 +338,21 @@ public class TicketItem extends BaseTicketItem implements ITicketItem {
 				return false;
 			}
 
-			next1.merge(next2);
+			if (merge) {
+				next1.merge(next2);
+			}
 		}
 		return true;
+	}
+
+	public void merge(TicketItem otherItem) {
+		if (!this.isHasModifiers() && !otherItem.isHasModifiers()) {
+			this.setItemCount(this.getItemCount() + otherItem.getItemCount());
+			return;
+		}
+		if (isMergable(otherItem, true)) {
+			this.setItemCount(this.getItemCount() + otherItem.getItemCount());
+		}
 	}
 
 	//	public double calculateSubtotal() {

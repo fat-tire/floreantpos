@@ -41,7 +41,7 @@ public class TicketItemModifierGroup extends BaseTicketItemModifierGroup {
 
 	/* [CONSTRUCTOR MARKER END] */
 
-	public boolean merge(TicketItemModifierGroup thatGroup) {
+	public boolean isMergable(TicketItemModifierGroup thatGroup, boolean merge) {
 		List<TicketItemModifier> thisModifiers = getTicketItemModifiers();
 		List<TicketItemModifier> thatModifiers = thatGroup.getTicketItemModifiers();
 
@@ -70,7 +70,9 @@ public class TicketItemModifierGroup extends BaseTicketItemModifierGroup {
 				return false;
 			}
 
-			next1.merge(next2);
+			if (merge) {
+				next1.merge(next2);
+			}
 		}
 		return true;
 	}
