@@ -290,7 +290,7 @@ public class TicketItem extends BaseTicketItem implements ITicketItem {
 			TicketItemModifierGroup next1 = thisIterator.next();
 			TicketItemModifierGroup next2 = thatIterator.next();
 			
-			if(comparator.compare(next1, next2) != 0) {
+			if(!next1.isMergable(next2)) {
 				return false;
 			}
 		}

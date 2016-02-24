@@ -157,20 +157,15 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 		Map<String, TicketItem> itemMap = new LinkedHashMap<String, TicketItem>();
 
 		for (Iterator iterator = ticketItems.iterator(); iterator.hasNext();) {
-			TicketItem mergeTicketItem = (TicketItem) iterator.next();
+			TicketItem newItem = (TicketItem) iterator.next();
 
-			TicketItem ticketItem2 = itemMap.get(mergeTicketItem.getItemId().toString());
-			if (ticketItem2 == null) {
-				itemMap.put(mergeTicketItem.getItemId().toString(), mergeTicketItem);
+			TicketItem itemInMap = itemMap.get(newItem.getItemId().toString());
+
+			if (itemInMap == null) {
+				itemMap.put(newItem.getItemId().toString(), newItem);
 			}
-			else {
-				if (mergeTicketItem.isHasModifiers()) {
-					itemMap.put(mergeTicketItem.getItemId().toString() + "-" + ticketItem2.getId(), mergeTicketItem);
-					continue;
-				}
-				else {
-					ticketItem2.setItemCount(ticketItem2.getItemCount() + mergeTicketItem.getItemCount());
-				}
+			else if (itemInMap.isMergable(newItem)) {
+				itemInMap.merge(newItem);
 			}
 		}
 

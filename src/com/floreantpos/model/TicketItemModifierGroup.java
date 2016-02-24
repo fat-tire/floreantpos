@@ -17,6 +17,8 @@
  */
 package com.floreantpos.model;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
@@ -32,12 +34,46 @@ public class TicketItemModifierGroup extends BaseTicketItemModifierGroup {
 
 	/**
 	 * Constructor for primary key
+	 * 
 	 */
 	public TicketItemModifierGroup(java.lang.Integer id) {
 		super(id);
 	}
 
 	/* [CONSTRUCTOR MARKER END] */
+	
+	public boolean isMergable(TicketItemModifierGroup otherItem) {
+		List<TicketItemModifier> thisModifierGroups = getTicketItemModifiers();
+		List<TicketItemModifier> thatModifierGroups = otherItem.getTicketItemModifiers();
+		
+		if(thisModifierGroups.size() != thatModifierGroups.size()) {
+			return false;
+		}
+		
+		Comparator<TicketItemModifier> comparator = new Comparator<TicketItemModifier>() {
+			@Override
+			public int compare(TicketItemModifier o1, TicketItemModifier o2) {
+				return o1.getItemId().intValue() - o2.getItemId().intValue();
+			}
+		};
+		
+		Collections.sort(thisModifierGroups, comparator);
+		Collections.sort(thatModifierGroups, comparator);
+		
+		Iterator<TicketItemModifier> thisIterator = thisModifierGroups.iterator();
+		Iterator<TicketItemModifier> thatIterator = thatModifierGroups.iterator();
+		
+		while(thisIterator.hasNext()) {
+			TicketItemModifier next1 = thisIterator.next();
+			TicketItemModifier next2 = thatIterator.next();
+			
+			if(comparator.compare(next1, next2) != 0) {
+				return false;
+			}
+		}
+		
+		return true;
+	}
 	
 	public void merge(TicketItemModifierGroup thatGroup) {
 		List<TicketItemModifier> thisModifiers = getTicketItemModifiers();
