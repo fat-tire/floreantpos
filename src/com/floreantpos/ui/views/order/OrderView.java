@@ -38,6 +38,7 @@ import javax.swing.event.ListSelectionListener;
 
 import net.miginfocom.swing.MigLayout;
 
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.Session;
 import org.hibernate.StaleObjectStateException;
 
@@ -59,16 +60,19 @@ import com.floreantpos.model.ShopTable;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.TicketItemCookingInstruction;
+import com.floreantpos.model.User;
 import com.floreantpos.model.UserPermission;
 import com.floreantpos.model.dao.CookingInstructionDAO;
 import com.floreantpos.model.dao.MenuItemDAO;
 import com.floreantpos.model.dao.ShopTableDAO;
 import com.floreantpos.model.dao.TicketDAO;
+import com.floreantpos.model.dao.UserDAO;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.ui.dialog.BeanEditorDialog;
 import com.floreantpos.ui.dialog.MiscTicketItemDialog;
 import com.floreantpos.ui.dialog.NumberSelectionDialog2;
 import com.floreantpos.ui.dialog.POSMessageDialog;
+import com.floreantpos.ui.dialog.PasswordEntryDialog;
 import com.floreantpos.ui.views.CookingInstructionSelectionView;
 import com.floreantpos.util.PosGuiUtil;
 
@@ -325,8 +329,24 @@ public class OrderView extends ViewPanel {
 			public void actionPerformed(ActionEvent e) {
 				if (currentTicket.getType() != OrderType.DINE_IN && currentTicket.getType() != OrderType.HOME_DELIVERY
 						&& !Application.getCurrentUser().hasPermission(UserPermission.HOLD_TICKET)) {
-					POSMessageDialog.showError("You have no permission to hold ticket");
-					return;
+					//
+
+					String password = PasswordEntryDialog.show(Application.getPosWindow(), "Please enter privileged password");
+					if (StringUtils.isEmpty(password)) {
+						return;
+					}
+
+					User user2 = UserDAO.getInstance().findUserBySecretKey(password);
+					if (user2 == null) {
+						POSMessageDialog.showError(Application.getPosWindow(), "No user found with that secret key");
+						return;
+					}
+					else {
+						if (!user2.hasPermission(UserPermission.HOLD_TICKET)) {
+							POSMessageDialog.showError(Application.getPosWindow(), "No permission");
+							return;
+						}
+					}
 				}
 
 				if (ticketView.getTicket().getTicketItems() == null || ticketView.getTicket().getTicketItems().size() == 0) {
@@ -634,13 +654,16 @@ public class OrderView extends ViewPanel {
 
 		String tableNumbers = "";
 
-		for (Iterator iterator = numbers.iterator(); iterator.hasNext();) {
-			Integer n = (Integer) iterator.next();
-			tableNumbers += n;
+		if (numbers != null && !numbers.isEmpty()) {
+			for (Iterator iterator = numbers.iterator(); iterator.hasNext();) {
+				Integer n = (Integer) iterator.next();
+				tableNumbers += n;
 
-			if (iterator.hasNext()) {
-				tableNumbers += ", ";
+				if (iterator.hasNext()) {
+					tableNumbers += ", ";
+				}
 			}
+			return tableNumbers;
 		}
 		return tableNumbers;
 	}

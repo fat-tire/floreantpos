@@ -26,6 +26,7 @@ import javax.swing.border.TitledBorder;
 
 import net.miginfocom.swing.MigLayout;
 
+import org.apache.commons.lang.StringUtils;
 import org.jdesktop.swingx.JXCollapsiblePane;
 
 import com.floreantpos.ITicketList;
@@ -34,13 +35,19 @@ import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.OrderTypeFilter;
 import com.floreantpos.model.PaymentStatusFilter;
+import com.floreantpos.model.User;
 import com.floreantpos.model.UserPermission;
+import com.floreantpos.model.dao.UserDAO;
 import com.floreantpos.swing.POSToggleButton;
 import com.floreantpos.ui.dialog.POSMessageDialog;
+import com.floreantpos.ui.dialog.PasswordEntryDialog;
 
 public class OrderFilterPanel extends JXCollapsiblePane {
 	private ITicketList ticketList;
 	private TicketListView ticketLists;
+	POSToggleButton btnFilterByOpenStatus;
+	POSToggleButton btnFilterByPaidStatus;
+	POSToggleButton btnFilterByUnPaidStatus;
 
 	//POSToggleButton btnFilterByUnPaidStatus ;
 	//ButtonGroup paymentGroup;
@@ -57,9 +64,9 @@ public class OrderFilterPanel extends JXCollapsiblePane {
 	}
 
 	private void createPaymentStatusFilterPanel() {
-		final POSToggleButton btnFilterByOpenStatus = new POSToggleButton(PaymentStatusFilter.OPEN.toString());
-		final POSToggleButton btnFilterByPaidStatus = new POSToggleButton(PaymentStatusFilter.PAID.toString());
-		final POSToggleButton btnFilterByUnPaidStatus = new POSToggleButton(PaymentStatusFilter.CLOSED.toString());
+		btnFilterByOpenStatus = new POSToggleButton(PaymentStatusFilter.OPEN.toString());
+		btnFilterByPaidStatus = new POSToggleButton(PaymentStatusFilter.PAID.toString());
+		btnFilterByUnPaidStatus = new POSToggleButton(PaymentStatusFilter.CLOSED.toString());
 
 		final ButtonGroup paymentGroup = new ButtonGroup();
 		paymentGroup.add(btnFilterByOpenStatus);
@@ -90,19 +97,27 @@ public class OrderFilterPanel extends JXCollapsiblePane {
 				String actionCommand = e.getActionCommand();
 
 				if (actionCommand.equals("CLOSED") && !Application.getCurrentUser().hasPermission(UserPermission.VIEW_ALL_CLOSE_TICKETS)) {
-					POSMessageDialog.showError("You have no permission to view all closed tickets");
 
-					PaymentStatusFilter paymentStatusFilter = TerminalConfig.getPaymentStatusFilter();
-					if (paymentStatusFilter.name().equals("OPEN")) {
-						btnFilterByOpenStatus.setSelected(true);
+					//
+					String password = PasswordEntryDialog.show(Application.getPosWindow(), "Please enter privileged password");
+					if (StringUtils.isEmpty(password)) {
+						updateButton();
+						return;
 					}
-					else if (paymentStatusFilter.name().equals("PAID")) {
-						btnFilterByPaidStatus.setSelected(true);
+
+					User user2 = UserDAO.getInstance().findUserBySecretKey(password);
+					if (user2 == null) {
+						POSMessageDialog.showError(Application.getPosWindow(), "No user found with that secret key");
+						updateButton();
+						return;
 					}
-					else if (paymentStatusFilter.name().equals("CLOSE")) {
-						btnFilterByUnPaidStatus.setSelected(true);
+					else {
+						if (!user2.hasPermission(UserPermission.VIEW_ALL_CLOSE_TICKETS)) {
+							POSMessageDialog.showError(Application.getPosWindow(), "No permission");
+							updateButton();
+							return;
+						}
 					}
-					return;
 				}
 
 				String filter = actionCommand.replaceAll("\\s", "_"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -208,5 +223,18 @@ public class OrderFilterPanel extends JXCollapsiblePane {
 		btnFilterByHomeDeli.addActionListener(orderTypeFilterHandler);
 		btnFilterByDriveThru.addActionListener(orderTypeFilterHandler);
 		btnFilterByBarTab.addActionListener(orderTypeFilterHandler);
+	}
+
+	private void updateButton() {
+		PaymentStatusFilter paymentStatusFilter = TerminalConfig.getPaymentStatusFilter();
+		if (paymentStatusFilter.name().equals("OPEN")) {
+			btnFilterByOpenStatus.setSelected(true);
+		}
+		else if (paymentStatusFilter.name().equals("PAID")) {
+			btnFilterByPaidStatus.setSelected(true);
+		}
+		else if (paymentStatusFilter.name().equals("CLOSE")) {
+			btnFilterByUnPaidStatus.setSelected(true);
+		}
 	}
 }
