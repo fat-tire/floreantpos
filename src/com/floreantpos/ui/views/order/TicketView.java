@@ -27,6 +27,8 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Iterator;
+import java.util.List;
 
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -230,7 +232,8 @@ public class TicketView extends JPanel {
 
 	private void createPayButton() {
 		btnTotal = new PosButton();
-		btnTotal.setText("<html><h2>Total</h2></html>");
+		//	btnTotal.setText("<html><h2>Total</h2></html>");
+		btnTotal.setText("Total");
 
 		if (!Application.getInstance().getTerminal().isHasCashDrawer()) {
 			btnTotal.setEnabled(false);
@@ -455,7 +458,8 @@ public class TicketView extends JPanel {
 
 	public void updateView() {
 		if (ticket == null) {
-			btnTotal.setText("<html><h2>Total</h2></html>");
+			//	btnTotal.setText("<html><h2>Total</h2></html>");
+			btnTotal.setText("Total");
 			titledBorder.setTitle(ticket.getTicketType().toString() + "[New Ticket]"); //$NON-NLS-1$
 			return;
 		}
@@ -470,18 +474,22 @@ public class TicketView extends JPanel {
 			}
 		}
 
-		if (ticket.getTotalAmount() > 0) {
-			btnTotal.setText("<html><h2>Total " + Application.getCurrencySymbol() + NumberUtil.formatNumber(ticket.getTotalAmount()) + "</h2></html>");
+		btnTotal.setText("Total " + Application.getCurrencySymbol() + NumberUtil.formatNumber(ticket.getTotalAmount()));
+
+		/*if (ticket.getTotalAmount() > 0) {
+			//btnTotal.setText("<html><h2>Total " + Application.getCurrencySymbol() + NumberUtil.formatNumber(ticket.getTotalAmount()) + "</h2></html>");
+			btnTotal.setText("Total " +Application.getCurrencySymbol() + NumberUtil.formatNumber(ticket.getTotalAmount()));
 		}
 		else {
-			btnTotal.setText("<html><h2>Total</h2></html>");
-		}
+			//btnTotal.setText("<html><h2>Total</h2></html>");
+			btnTotal.setText("<html><b>Total</b></html>");
+		}*/
 
 		if (ticket.getId() == null) {
 			titledBorder.setTitle(" [New Ticket]"); //$NON-NLS-1$
 		}
 		else {
-			titledBorder.setTitle(Messages.getString("TicketView.37") + ticket.getId()); //$NON-NLS-1$ //$NON-NLS-2$
+			titledBorder.setTitle(Messages.getString("TicketView.37") + ticket.getId() + " Table# " + getTableNumbers(ticket.getTableNumbers())); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 
 		ticketViewerTable.updateView();
@@ -607,6 +615,21 @@ public class TicketView extends JPanel {
 	public void setAllowToLogOut(boolean allowToLogOut) {
 		this.allowToLogOut = allowToLogOut;
 	}
-	
-	
+
+	private String getTableNumbers(List<Integer> numbers) {
+
+		String tableNumbers = "";
+		if (numbers != null && !numbers.isEmpty()) {
+			for (Iterator iterator = numbers.iterator(); iterator.hasNext();) {
+				Integer n = (Integer) iterator.next();
+				tableNumbers += n;
+
+				if (iterator.hasNext()) {
+					tableNumbers += ", ";
+				}
+			}
+			return tableNumbers;
+		}
+		return tableNumbers;
+	}
 }
