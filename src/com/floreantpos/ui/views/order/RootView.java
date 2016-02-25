@@ -45,6 +45,7 @@ public class RootView extends com.floreantpos.swing.TransparentPanel {
 	private LoginView loginScreen;
 	private SettleTicketDialog paymentView;
 	private String currentViewName;
+	private IView loginView;
 
 	private Map<String, IView> views = new HashMap<String, IView>();
 
@@ -82,6 +83,15 @@ public class RootView extends com.floreantpos.swing.TransparentPanel {
 
 		currentViewName = viewName;
 		cards.show(contentPanel, viewName);
+
+		/*headerPanel.showHomeButton(!loginView.getViewName().equals(currentViewName));
+		headerPanel.showOthersFunctionButton(!loginView.getViewName().equals(currentViewName));
+		headerPanel.showSwitchBoardButton(!loginView.getViewName().equals(currentViewName));*/
+
+		//headerPanel.showOthersFunctionButton(currentViewName);
+		//headerPanel.showSwitchBoardButton(currentViewName);
+
+		headerPanel.updateButtons(currentViewName, !loginView.getViewName().equals(currentViewName));
 	}
 
 	public void showView(IView view) {
@@ -144,48 +154,98 @@ public class RootView extends com.floreantpos.swing.TransparentPanel {
 		String defaultViewName = TerminalConfig.getDefaultView();
 
 		if (defaultViewName.equals(OrderType.DINE_IN.toString())) {
+
+			loginView = TableMapView.getInstance();
+
 			showView(TableMapView.getInstance());
 			TableMapView.getInstance().updateTableView();
 		}
 		else if (defaultViewName.equals(OrderType.TAKE_OUT.toString())) {
+
+			loginView = OrderView.getInstance();
+
 			OrderUtil.createNewTakeOutOrder(OrderType.TAKE_OUT);
 			showView(OrderView.getInstance());
+
 		}
 		else if (defaultViewName.equals(OrderType.RETAIL.toString())) {
+
+			loginView = OrderView.getInstance();
+
 			OrderUtil.createNewTakeOutOrder(OrderType.RETAIL);
 			showView(OrderView.getInstance());
+
 		}
 		else if (defaultViewName.equals(OrderType.FOR_HERE.toString())) {
+
+			loginView = OrderView.getInstance();
+
 			OrderUtil.createNewTakeOutOrder(OrderType.FOR_HERE);
 			showView(OrderView.getInstance());
+
 		}
 		else if (defaultViewName.equals(SwitchboardOtherFunctionsView.VIEW_NAME)) { //$NON-NLS-1$
+
+			loginView = SwitchboardOtherFunctionsView.getInstance();
+
 			showView(SwitchboardOtherFunctionsView.getInstance());
 		}
 		else if (defaultViewName.equals(OrderType.BAR_TAB.toString())) {
+
+			loginView = SwitchboardView.getInstance();
+
 			showView(SwitchboardView.getInstance());
 		}
 		else if (defaultViewName.equals(OrderType.DRIVE_THRU.toString())) {
+			loginView = OrderView.getInstance();
 			showView(OrderView.getInstance());
 			OrderUtil.createNewTakeOutOrder(OrderType.DRIVE_THRU);
+
 		}
 		else if (defaultViewName.equals(OrderType.HOME_DELIVERY)) {
+			loginView = SwitchboardView.getInstance();
 			showView(SwitchboardView.getInstance());
 			SwitchboardView.getInstance().doHomeDelivery(OrderType.HOME_DELIVERY);
+
 		}
 		else if (defaultViewName.equals(OrderType.PICKUP.toString())) {
+			loginView = OrderView.getInstance();
 			showView(OrderView.getInstance());
 			OrderUtil.createNewTakeOutOrder(OrderType.PICKUP);
+
 		}
 		else if (defaultViewName.equals(KitchenDisplayView.VIEW_NAME)) {
+
 			if (!hasView(KitchenDisplayView.getInstance())) {
 				addView(KitchenDisplayView.getInstance());
 			}
+			loginView = KitchenDisplayView.getInstance();
 			showView(KitchenDisplayView.VIEW_NAME);
 			headerPanel.setVisible(false);
+
 		}
 		else if (defaultViewName.equals(SwitchboardView.VIEW_NAME)) {
+			loginView = SwitchboardView.getInstance();
 			showView(SwitchboardView.getInstance());
+
 		}
+	}
+
+	/**
+	 * @return the loginView
+	 */
+	public IView getLoginView() {
+		return loginView;
+	}
+
+	/**
+	 * @param loginView the loginView to set
+	 */
+	public void setLoginView(IView loginView) {
+		this.loginView = loginView;
+	}
+
+	public void showHomeScreen() {
+		showView(getLoginView());
 	}
 }

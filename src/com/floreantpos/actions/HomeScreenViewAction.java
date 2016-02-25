@@ -20,24 +20,29 @@ package com.floreantpos.actions;
 import javax.swing.Action;
 
 import com.floreantpos.IconFactory;
-import com.floreantpos.ui.views.SwitchboardOtherFunctionsView;
+import com.floreantpos.main.Application;
+import com.floreantpos.ui.HeaderPanel;
+import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.views.order.RootView;
 
-public class ShowOtherFunctionsAction extends ViewChangeAction {
-
-	public ShowOtherFunctionsAction() {
-		super();
+public class HomeScreenViewAction extends ViewChangeAction {
+	public HomeScreenViewAction() {
+		super(); //$NON-NLS-1$
 	}
-
-	public ShowOtherFunctionsAction(boolean showText, boolean showIcon) {
+	
+	public HomeScreenViewAction(boolean showText, boolean showIcon) {
 		if (showIcon) {
-			putValue(Action.SMALL_ICON, IconFactory.getIcon("other_functions.png")); //$NON-NLS-1$
+			putValue(Action.SMALL_ICON, IconFactory.getIcon("home.png")); //$NON-NLS-1$
 		}
 	}
 
 	@Override
 	public void execute() {
-		SwitchboardOtherFunctionsView view = SwitchboardOtherFunctionsView.getInstance();
-		RootView.getInstance().showView(view);
+		try {
+			RootView.getInstance().showHomeScreen();
+		} catch (Exception e) {
+			POSMessageDialog.showError(Application.getPosWindow(),e.getMessage(), e);
+		}
 	}
+
 }

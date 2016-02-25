@@ -37,8 +37,8 @@ import net.miginfocom.swing.MigLayout;
 import com.floreantpos.IconFactory;
 import com.floreantpos.Messages;
 import com.floreantpos.actions.ClockInOutAction;
+import com.floreantpos.actions.HomeScreenViewAction;
 import com.floreantpos.actions.LogoutAction;
-import com.floreantpos.actions.ShowBackofficeAction;
 import com.floreantpos.actions.ShowOtherFunctionsAction;
 import com.floreantpos.actions.ShutDownAction;
 import com.floreantpos.actions.SwithboardViewAction;
@@ -46,6 +46,8 @@ import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.main.Application;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.swing.TransparentPanel;
+import com.floreantpos.ui.views.SwitchboardOtherFunctionsView;
+import com.floreantpos.ui.views.SwitchboardView;
 import com.floreantpos.util.PosGuiUtil;
 
 public class HeaderPanel extends JPanel {
@@ -60,9 +62,12 @@ public class HeaderPanel extends JPanel {
 	private String terminalString = Messages.getString("TERMINAL_LABEL"); //$NON-NLS-1$
 
 	private JLabel logoffLabel;
+	private PosButton btnHomeScreen;
+	private PosButton btnOthers;
+	PosButton btnSwithboardView;
 
 	public HeaderPanel() {
-		super(new MigLayout("ins 2 2 0 2", "[][fill, grow][]", "")); //$NON-NLS-1$  //$NON-NLS-2$  //$NON-NLS-3$
+		super(new MigLayout("ins 2 2 0 2,hidemode 3", "[][fill, grow][]", "")); //$NON-NLS-1$  //$NON-NLS-2$  //$NON-NLS-3$
 
 		setOpaque(true);
 		setBackground(Color.white);
@@ -84,13 +89,13 @@ public class HeaderPanel extends JPanel {
 
 		add(statusPanel, "grow"); //$NON-NLS-1$
 
-		PosButton btnBackoffice = new PosButton(new ShowBackofficeAction(false, true));
-		add(btnBackoffice, "w 60!, h 60!"); //$NON-NLS-1$
+		btnHomeScreen = new PosButton(new HomeScreenViewAction(false, true));
+		add(btnHomeScreen, "w 60!, h 60!"); //$NON-NLS-1$
 
-		PosButton btnOthers = new PosButton(new ShowOtherFunctionsAction(false, true)); //$NON-NLS-1$
+		btnOthers = new PosButton(new ShowOtherFunctionsAction(false, true));
 		add(btnOthers, "w 60!, h 60!"); //$NON-NLS-1$
 
-		PosButton btnSwithboardView = new PosButton(new SwithboardViewAction(false, true)); //$NON-NLS-1$
+		btnSwithboardView = new PosButton(new SwithboardViewAction(false, true));
 		add(btnSwithboardView, "w 60!, h 60!"); //$NON-NLS-1$
 
 		PosButton btnClockOUt = new PosButton(new ClockInOutAction(false, true));
@@ -212,5 +217,56 @@ public class HeaderPanel extends JPanel {
 			autoLogoffTimer.setInitialDelay(5 * 1000);
 			autoLogoffTimer.restart();
 		}
+	}
+
+	/*	public void showHomeButton(boolean show) {
+			btnHomeScreen.setVisible(show);
+		}
+
+		public void showOthersFunctionButton(boolean show) {
+			btnOthers.setVisible(show);
+		}
+
+		public void showSwitchBoardButton(boolean show) {
+			btnSwithboardView.setVisible(show);
+		}
+		*/
+	public void showOthersFunctionButton(String viewName) {
+		if (viewName.equals(SwitchboardOtherFunctionsView.VIEW_NAME)) {
+			btnOthers.setVisible(false);
+		}
+		else {
+			btnOthers.setVisible(true);
+		}
+	}
+
+	public void showSwitchBoardButton(String viewName) {
+		if (viewName.equals(SwitchboardView.VIEW_NAME)) {
+			btnSwithboardView.setVisible(false);
+		}
+		else {
+			btnSwithboardView.setVisible(true);
+		}
+	}
+
+	/*public void updateButtons(String viewName, boolean enable) {
+
+		if (viewName.equals(SwitchboardView.VIEW_NAME)) {
+			btnSwithboardView.setVisible(enable);
+			btnHomeScreen.setVisible(enable);
+		}
+		else if (viewName.equals(SwitchboardOtherFunctionsView.VIEW_NAME)) {
+			btnOthers.setVisible(enable);
+			btnHomeScreen.setVisible(enable);
+		}
+		else {
+			btnHomeScreen.setVisible(enable);
+			btnSwithboardView.setVisible(enable);
+			
+		}
+	}*/
+
+	public void updateButtons(String viewName, boolean enable) {
+		btnHomeScreen.setVisible(enable);
 	}
 }

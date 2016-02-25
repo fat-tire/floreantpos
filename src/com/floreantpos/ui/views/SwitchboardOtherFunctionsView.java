@@ -34,10 +34,10 @@ import com.floreantpos.actions.ManageTableLayoutAction;
 import com.floreantpos.actions.PayoutAction;
 import com.floreantpos.actions.PosAction;
 import com.floreantpos.actions.ServerTipsAction;
+import com.floreantpos.actions.ShowBackofficeAction;
 import com.floreantpos.actions.ShowKitchenDisplayAction;
 import com.floreantpos.actions.ShowOnlineTicketManagementAction;
 import com.floreantpos.actions.ShowTransactionsAuthorizationsAction;
-import com.floreantpos.actions.SwithboardViewAction;
 import com.floreantpos.main.Application;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.ui.views.order.RootView;
@@ -64,7 +64,7 @@ public class SwitchboardOtherFunctionsView extends ViewPanel {
 
 		PosAction[] actions = { new DrawerAssignmentAction(), new DrawerPullAction(), new DrawerBleedAction(), new DrawerKickAction(), new PayoutAction(),
 				new ServerTipsAction(), new ShowTransactionsAuthorizationsAction(), new ShowKitchenDisplayAction()/*, new SwithboardViewAction()*/,
-				new ManageTableLayoutAction(), new ShowOnlineTicketManagementAction() };
+				new ManageTableLayoutAction(), new ShowOnlineTicketManagementAction() ,new ShowBackofficeAction()};
 
 		for (PosAction action : actions) {
 			if (action instanceof DrawerAssignmentAction) {
