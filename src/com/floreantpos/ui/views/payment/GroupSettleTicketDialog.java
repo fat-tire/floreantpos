@@ -513,7 +513,7 @@ public class GroupSettleTicketDialog extends POSDialog implements CardInputListe
 	public void settleTicket(PosTransaction posTransaction) {
 		try {
 			List<PosTransaction> transactionList = new ArrayList<PosTransaction>();
-			double tenderAmount = 0;
+			totalTenderAmount = paymentView.getTenderedAmount();
 
 			for (Ticket ticket : tickets) {
 				PosTransaction transaction = null;
@@ -526,8 +526,6 @@ public class GroupSettleTicketDialog extends POSDialog implements CardInputListe
 				transaction.setTicket(ticket);
 				setTransactionAmounts(transaction);
 
-				tenderAmount += transaction.getTenderAmount();
-
 				confirmLoyaltyDiscount(ticket);
 
 				PosTransactionService transactionService = PosTransactionService.getInstance();
@@ -538,7 +536,7 @@ public class GroupSettleTicketDialog extends POSDialog implements CardInputListe
 			}
 
 			//FIXME
-			showTransactionCompleteMsg(totalDueAmount, tenderAmount, tickets, transactionList);
+			showTransactionCompleteMsg(totalDueAmount, totalTenderAmount, tickets, transactionList);
 
 			setCanceled(false);
 			dispose();
@@ -554,14 +552,12 @@ public class GroupSettleTicketDialog extends POSDialog implements CardInputListe
 		TransactionCompletionDialog dialog = new TransactionCompletionDialog(transactions);
 
 		double paidAmount = 0;
-		double tenderAmount = 0;
 		double ticketsDueAmount = 0;
 		for (PosTransaction transaction : transactions) {
 			paidAmount += transaction.getAmount();
-			tenderAmount += transaction.getTenderAmount();
 			dialog.setCard(transaction.isCard());
 		}
-		dialog.setTenderedAmount(tenderAmount);
+		dialog.setTenderedAmount(tenderedAmount);
 		dialog.setTotalAmount(dueAmount);
 		dialog.setPaidAmount(paidAmount);
 		for (Ticket tTicket : tickets) {
@@ -757,15 +753,13 @@ public class GroupSettleTicketDialog extends POSDialog implements CardInputListe
 	}
 
 	private void setTransactionAmounts(PosTransaction transaction) {
-		if (totalTenderAmount >= transaction.getTicket().getDueAmount()) {
-			transaction.setTenderAmount(transaction.getTicket().getDueAmount());
+		if (tickets.get(tickets.size() - 1).getId() == transaction.getTicket().getId() && totalTenderAmount>totalDueAmount) {
+			transaction.setTenderAmount(totalTenderAmount-totalDueAmount+transaction.getTicket().getDueAmount());
 			transaction.setAmount(transaction.getTicket().getDueAmount());
-			totalTenderAmount = totalTenderAmount - transaction.getTicket().getDueAmount();
 		}
 		else {
-			transaction.setTenderAmount(totalTenderAmount);
-			transaction.setAmount(totalTenderAmount);
-			totalTenderAmount = totalTenderAmount - transaction.getTicket().getDueAmount();
+			transaction.setTenderAmount(transaction.getTicket().getDueAmount());
+			transaction.setAmount(transaction.getTicket().getDueAmount());
 		}
 	}
 
