@@ -35,6 +35,7 @@ import com.floreantpos.main.Application;
 import com.floreantpos.model.base.BaseTicket;
 import com.floreantpos.model.dao.MenuItemDAO;
 import com.floreantpos.model.dao.ShopTableDAO;
+import com.floreantpos.util.DiscountUtil;
 import com.floreantpos.util.NumberUtil;
 import com.floreantpos.util.POSUtil;
 
@@ -304,18 +305,23 @@ public class Ticket extends BaseTicket {
 	}
 
 	private double calculateDiscountAmount() {
-		double discountAmount = 0;
+		double ticketItemDiscounts = 0;
 
 		List<TicketItem> ticketItems = getTicketItems();
 		if (ticketItems != null) {
 			for (TicketItem ticketItem : ticketItems) {
-				discountAmount += ticketItem.getDiscountAmount();
+				ticketItemDiscounts += ticketItem.getDiscountAmount();
 			}
 		}
+		double discount = ticketItemDiscounts;
+		TicketDiscount ticketCouponAndDiscount = DiscountUtil.getMaxDiscount(getDiscounts(), ticketItemDiscounts);
+		if (ticketCouponAndDiscount != null) {
+			discount = DiscountUtil.calculateDiscountAmount(getSubtotalAmount() - discount, ticketCouponAndDiscount);
+		}
 
-		discountAmount = fixInvalidAmount(discountAmount);
+		ticketItemDiscounts = fixInvalidAmount(discount);
 
-		return NumberUtil.roundToTwoDigit(discountAmount);
+		return NumberUtil.roundToTwoDigit(discount);
 	}
 
 	public double getAmountByType(TicketDiscount discount) {

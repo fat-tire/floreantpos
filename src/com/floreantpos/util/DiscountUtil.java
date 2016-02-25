@@ -41,7 +41,7 @@ public class DiscountUtil {
 
 		switch (discount.getType()) {
 			case Discount.DISCOUNT_TYPE_AMOUNT:
-				//return discount.getValue();
+				return discount.getValue();
 
 			case Discount.DISCOUNT_TYPE_PERCENTAGE:
 				return (price * discount.getValue()) / 100.0;

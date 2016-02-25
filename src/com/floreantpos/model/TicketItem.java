@@ -411,17 +411,6 @@ public class TicketItem extends BaseTicketItem implements ITicketItem {
 		if (maxDiscount != null) {
 			discount = maxDiscount.calculateDiscount();
 		}
-
-		Ticket ticket = getTicket();
-		if (ticket != null) {
-			TicketDiscount ticketCouponAndDiscount = DiscountUtil.getMaxDiscount(ticket.getDiscounts(), getSubtotalAmountWithoutModifiers());
-			if (ticketCouponAndDiscount != null) {
-				discount += DiscountUtil.calculateDiscountAmount(getSubtotalAmountWithoutModifiers() - discount, ticketCouponAndDiscount);
-			}
-			System.out.println();
-
-		}
-
 		return discount;
 	}
 

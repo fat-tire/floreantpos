@@ -19,18 +19,17 @@ package com.floreantpos.ui.model;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.util.List;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.Date;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
-import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -46,8 +45,8 @@ import com.floreantpos.model.Discount;
 import com.floreantpos.model.MenuItem;
 import com.floreantpos.model.dao.DiscountDAO;
 import com.floreantpos.model.dao.MenuItemDAO;
-import com.floreantpos.swing.FixedLengthDocument;
-import com.floreantpos.swing.IntegerTextField;
+import com.floreantpos.swing.DoubleTextField;
+import com.floreantpos.swing.FixedLengthTextField;
 import com.floreantpos.swing.ItemCheckBoxList;
 import com.floreantpos.swing.MessageDialog;
 import com.floreantpos.swing.PosButton;
@@ -58,18 +57,18 @@ import com.floreantpos.ui.dialog.POSMessageDialog;
 public class CouponForm extends BeanEditor implements ItemListener {
 	private JPanel contentPane;
 	private JPanel itemPanel;
-	private JTextField tfCouponName;
-	private JTextField tfBarcode;
+	private FixedLengthTextField tfCouponName;
+	private FixedLengthTextField tfBarcode;
 	private JComboBox cbQualificationType;
 	private JComboBox cbCouponType;
-	private JFormattedTextField tfCouponValue;
+	private DoubleTextField tfCouponValue;
 	private JCheckBox chkEnabled;
 	private JCheckBox chkAutoApply;
 	private JCheckBox chkNeverExpire;
 	private JXDatePicker dpExperation;
 	private JLabel lblMinimum;
 
-	private IntegerTextField tfMinimumQua;
+	private DoubleTextField tfMinimumQua;
 
 	private JPanel itemSearchPanel;
 
@@ -87,7 +86,6 @@ public class CouponForm extends BeanEditor implements ItemListener {
 	public CouponForm(Discount coupon) {
 		initializeComponent();
 
-		tfCouponName.setDocument(new FixedLengthDocument(30));
 		cbCouponType.setModel(new DefaultComboBoxModel(Discount.COUPON_TYPE_NAMES));
 
 		cbQualificationType.setModel(new DefaultComboBoxModel(Discount.COUPON_QUALIFICATION_NAMES));
@@ -112,13 +110,13 @@ public class CouponForm extends BeanEditor implements ItemListener {
 		JLabel label5 = new JLabel(Messages.getString("CouponForm.7")); //$NON-NLS-1$
 		lblMinimum = new JLabel(Messages.getString("CouponForm.5")); //$NON-NLS-1$
 
-		tfCouponName = new JTextField(20);
-		tfBarcode = new JTextField();
+		tfCouponName = new FixedLengthTextField(120);
+		tfBarcode = new FixedLengthTextField(120);
 		cbCouponType = new JComboBox();
 		cbQualificationType = new JComboBox();
 		dpExperation = new JXDatePicker();
-		tfCouponValue = new JFormattedTextField();
-		tfMinimumQua = new IntegerTextField();
+		tfCouponValue = new DoubleTextField();
+		tfMinimumQua = new DoubleTextField();
 		chkEnabled = new JCheckBox(POSConstants.ENABLED); //$NON-NLS-1$
 		chkAutoApply = new JCheckBox(Messages.getString("CouponForm.6")); //$NON-NLS-1$
 		chkNeverExpire = new JCheckBox(Messages.getString("CouponForm.16")); //$NON-NLS-1$
@@ -290,7 +288,7 @@ public class CouponForm extends BeanEditor implements ItemListener {
 
 		tfCouponName.setText(coupon.getName());
 		tfMinimumQua.setText(coupon.getMinimunBuy().toString());
-		tfCouponValue.setValue(Double.valueOf(coupon.getValue()));
+		tfCouponValue.setText(String.valueOf(coupon.getValue()));
 		cbCouponType.setSelectedIndex(coupon.getType());
 		cbQualificationType.setSelectedIndex(coupon.getQualificationType());
 		dpExperation.setDate(coupon.getExpiryDate());
@@ -318,7 +316,7 @@ public class CouponForm extends BeanEditor implements ItemListener {
 		String name = tfCouponName.getText();
 		String barcode = tfBarcode.getText();
 		double couponValue = 0;
-		couponValue = (Double) tfCouponValue.getValue();
+		couponValue = (Double) tfCouponValue.getDouble();
 		int couponMinimumQua = Integer.parseInt(tfMinimumQua.getText());
 		int couponType = cbCouponType.getSelectedIndex();
 		Date expiryDate = dpExperation.getDate();
