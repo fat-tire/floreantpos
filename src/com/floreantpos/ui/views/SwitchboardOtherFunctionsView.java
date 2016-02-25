@@ -62,9 +62,9 @@ public class SwitchboardOtherFunctionsView extends ViewPanel {
 
 		contentPanel = new JPanel(new MigLayout("align 50% 50%, wrap 6"));
 
-		PosAction[] actions = { new DrawerAssignmentAction(), new DrawerPullAction(), new DrawerBleedAction(), new DrawerKickAction(), new PayoutAction(),
+		PosAction[] actions = {new ShowBackofficeAction(), new DrawerAssignmentAction(), new DrawerPullAction(), new DrawerBleedAction(), new DrawerKickAction(), new PayoutAction(),
 				new ServerTipsAction(), new ShowTransactionsAuthorizationsAction(), new ShowKitchenDisplayAction()/*, new SwithboardViewAction()*/,
-				new ManageTableLayoutAction(), new ShowOnlineTicketManagementAction() ,new ShowBackofficeAction()};
+				new ManageTableLayoutAction(), new ShowOnlineTicketManagementAction()};
 
 		for (PosAction action : actions) {
 			if (action instanceof DrawerAssignmentAction) {
