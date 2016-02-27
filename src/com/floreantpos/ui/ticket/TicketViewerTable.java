@@ -26,16 +26,17 @@ import javax.swing.ListSelectionModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 
+import com.floreantpos.model.ITicketItem;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.TicketItemModifier;
 
 public class TicketViewerTable extends JTable {
-	
+
 	private TicketViewerTableModel model;
 	private DefaultListSelectionModel selectionModel;
 	private TicketViewerTableCellRenderer cellRenderer;
-	
+
 	public TicketViewerTable() {
 		this(null);
 	}
@@ -43,24 +44,24 @@ public class TicketViewerTable extends JTable {
 	public TicketViewerTable(Ticket ticket) {
 		model = new TicketViewerTableModel(this);
 		setModel(model);
-		
+
 		selectionModel = new DefaultListSelectionModel();
 		selectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
 		cellRenderer = new TicketViewerTableCellRenderer();
-		
+
 		//getColumnModel().setColumnMargin(0);
 		setGridColor(Color.LIGHT_GRAY);
 		setSelectionModel(selectionModel);
 		setAutoscrolls(true);
 		setShowGrid(true);
 		setBorder(null);
-		
+
 		setFocusable(false);
-		
+
 		setRowHeight(50);
 		resizeTableColumns();
-		
+
 		setTicket(ticket);
 	}
 
@@ -78,12 +79,12 @@ public class TicketViewerTable extends JTable {
 		column.setMaxWidth(width);
 		column.setMinWidth(width);
 	}
-	
+
 	@Override
 	public TableCellRenderer getCellRenderer(int row, int column) {
 		return cellRenderer;
 	}
-	
+
 	public TicketViewerTableCellRenderer getRenderer() {
 		return cellRenderer;
 	}
@@ -111,8 +112,14 @@ public class TicketViewerTable extends JTable {
 		}
 
 		--selectedRow;
-		if(selectedRow < 0) {
+		if (selectedRow < 0) {
 			selectedRow = 0;
+		}
+		while (isModifierOrOther(selectedRow)) {
+			--selectedRow;
+			if (selectedRow > (rowCount - 1)) {
+				return;
+			}
 		}
 
 		selectionModel.addSelectionInterval(selectedRow, selectedRow);
@@ -130,10 +137,26 @@ public class TicketViewerTable extends JTable {
 		}
 
 		++selectedRow;
+		while (isModifierOrOther(selectedRow)) {
+			++selectedRow;
+			if (selectedRow >= model.getItemCount() - 1) {
+				return;
+			}
+		}
 
 		selectionModel.addSelectionInterval(selectedRow, selectedRow);
 		Rectangle cellRect = getCellRect(selectedRow, 0, false);
 		scrollRectToVisible(cellRect);
+	}
+
+	private boolean isModifierOrOther(int selectedRow) {
+		ITicketItem selectedItem = (ITicketItem) get(selectedRow);
+		if (selectedItem instanceof TicketItem) {
+			return false;
+		}
+		else {
+			return true;
+		}
 	}
 
 	public void increaseItemAmount(TicketItem ticketItem) {
@@ -198,7 +221,7 @@ public class TicketViewerTable extends JTable {
 	public void addTicketItem(TicketItem ticketItem) {
 		ticketItem.setTicket(getTicket());
 		int addTicketItem = model.addTicketItem(ticketItem);
-		
+
 		int actualRowCount = addTicketItem;//getActualRowCount() - 1;
 		selectionModel.addSelectionInterval(actualRowCount, actualRowCount);
 		Rectangle cellRect = getCellRect(actualRowCount, 0, false);
@@ -208,7 +231,7 @@ public class TicketViewerTable extends JTable {
 	public Object deleteSelectedItem() {
 		int selectedRow = getSelectedRow();
 		Object delete = model.delete(selectedRow);
-		
+
 		return delete;
 	}
 
@@ -223,10 +246,10 @@ public class TicketViewerTable extends JTable {
 	public Object get(int index) {
 		return model.get(index);
 	}
-	
+
 	public Object getSelected() {
 		int index = getSelectedRow();
-		
+
 		return model.get(index);
 	}
 
@@ -237,39 +260,39 @@ public class TicketViewerTable extends JTable {
 	public void removeModifier(TicketItem parent, TicketItemModifier modifier) {
 		model.removeModifier(parent, modifier);
 	}
-	
+
 	public void updateView() {
 		int selectedRow = getSelectedRow();
-		
+
 		model.update();
-		
+
 		try {
 			getSelectionModel().setSelectionInterval(selectedRow, selectedRow);
-		}catch (Exception e) {
+		} catch (Exception e) {
 			// do nothing
 		}
 	}
-	
+
 	public int getActualRowCount() {
 		return model.getActualRowCount();
 	}
-	
+
 	public void selectLast() {
 		int actualRowCount = getActualRowCount() - 1;
 		selectionModel.addSelectionInterval(actualRowCount, actualRowCount);
 		Rectangle cellRect = getCellRect(actualRowCount, 0, false);
 		scrollRectToVisible(cellRect);
 	}
-	
+
 	public void selectRow(int index) {
-		if(index < 0 || index >= getActualRowCount()) {
+		if (index < 0 || index >= getActualRowCount()) {
 			index = 0;
 		}
 		selectionModel.addSelectionInterval(index, index);
 		Rectangle cellRect = getCellRect(index, 0, false);
 		scrollRectToVisible(cellRect);
 	}
-	
+
 	public TicketViewerTableModel getModel() {
 		return model;
 	}
