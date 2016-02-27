@@ -23,14 +23,14 @@ public class Discount extends BaseDiscount {
 	private static final long serialVersionUID = 1L;
 
 	/*[CONSTRUCTOR MARKER BEGIN]*/
-	public Discount() {
+	public Discount () {
 		super();
 	}
 
 	/**
 	 * Constructor for primary key
 	 */
-	public Discount(java.lang.Integer id) {
+	public Discount (java.lang.Integer id) {
 		super(id);
 	}
 

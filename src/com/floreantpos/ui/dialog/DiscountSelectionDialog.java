@@ -24,19 +24,24 @@
 package com.floreantpos.ui.dialog;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
+import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import net.miginfocom.swing.MigLayout;
@@ -46,6 +51,7 @@ import org.apache.commons.collections.CollectionUtils;
 import com.floreantpos.Messages;
 import com.floreantpos.POSConstants;
 import com.floreantpos.config.TerminalConfig;
+import com.floreantpos.main.Application;
 import com.floreantpos.model.Discount;
 import com.floreantpos.model.MenuItem;
 import com.floreantpos.model.Ticket;
@@ -75,6 +81,9 @@ public class DiscountSelectionDialog extends POSDialog implements ActionListener
 
 	private TicketItem ticketItem;
 	private Ticket ticket;
+
+	private JPanel itemSearchPanel;
+	private JTextField txtSearchItem;
 
 	private ButtonGroup btnGroup;
 	private POSToggleButton btnItem;
@@ -107,6 +116,8 @@ public class DiscountSelectionDialog extends POSDialog implements ActionListener
 
 		TitlePanel titlePanel = new TitlePanel();
 		titlePanel.setTitle(Messages.getString("DiscountSelectionDialog.0")); //$NON-NLS-1$
+		
+		JPanel searchPanel=new JPanel(new BorderLayout()); 
 
 		JPanel toggleBtnPanel = new JPanel(new FlowLayout(FlowLayout.LEADING));
 
@@ -121,11 +132,18 @@ public class DiscountSelectionDialog extends POSDialog implements ActionListener
 		btnGroup.add(btnItem);
 		btnGroup.add(btnOrder);
 
+		itemSearchPanel = new JPanel();
+		
+		createCouponSearchPanel();
+
 		toggleBtnPanel.add(btnItem);
 		toggleBtnPanel.add(btnOrder);
+		
+		searchPanel.add(toggleBtnPanel, BorderLayout.WEST); 
+		searchPanel.add(itemSearchPanel, BorderLayout.EAST);
 
 		headerPanel.add(titlePanel, BorderLayout.NORTH);
-		headerPanel.add(toggleBtnPanel, BorderLayout.SOUTH);
+		headerPanel.add(searchPanel, BorderLayout.SOUTH);
 
 		add(headerPanel, BorderLayout.NORTH);
 
@@ -178,6 +196,142 @@ public class DiscountSelectionDialog extends POSDialog implements ActionListener
 
 		setSize(1024, 720);
 		setResizable(true);
+	}
+
+	private void createCouponSearchPanel() {
+		itemSearchPanel.setLayout(new BorderLayout(5, 5));
+		itemSearchPanel.setPreferredSize(new Dimension(400, 30));
+		PosButton btnSearch = new PosButton("...");
+		btnSearch.setPreferredSize(new Dimension(60, 40));
+
+		txtSearchItem = new JTextField("Enter Coupon Number");
+		txtSearchItem.addFocusListener(new FocusListener() {
+
+			@Override
+			public void focusLost(FocusEvent e) {
+				txtSearchItem.setText("Scan Coupon Number");
+				txtSearchItem.setForeground(Color.gray);
+			}
+
+			@Override
+			public void focusGained(FocusEvent e) {
+				txtSearchItem.setForeground(Color.black);
+				txtSearchItem.setText("");
+			}
+		});
+
+		txtSearchItem.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (txtSearchItem.getText().equals("")) {
+					POSMessageDialog.showMessage("Please enter coupon number or barcode ");
+					return;
+				}
+				if (!addCouponByBarcode(txtSearchItem.getText())) {
+					addCouponById(txtSearchItem.getText());
+				}
+				txtSearchItem.setText("");
+			}
+		});
+
+		btnSearch.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				ItemNumberSelectionDialog dialog = new ItemNumberSelectionDialog(Application.getPosWindow());
+				dialog.setTitle("Search Coupon");
+				dialog.setSize(600, 400);
+				dialog.open();
+				if (dialog.isCanceled()) {
+					return;
+				}
+
+				txtSearchItem.requestFocus();
+
+				if (!addCouponByBarcode(dialog.getValue())) {
+					if (!addCouponById(dialog.getValue())) {
+						POSMessageDialog.showError(Application.getPosWindow(), "Coupon not found");
+					}
+				}
+			}
+		});
+		itemSearchPanel.add(new JLabel("Scan Coupon Number"), BorderLayout.WEST); 
+		itemSearchPanel.add(txtSearchItem);
+		itemSearchPanel.add(btnSearch, BorderLayout.EAST);
+	}
+
+	private static boolean isParsable(String input) {
+		boolean parsable = true;
+		try {
+			Integer.parseInt(input);
+		} catch (NumberFormatException e) {
+			parsable = false;
+		}
+		return parsable;
+	}
+
+	private boolean addCouponById(String id) {
+
+		if (!isParsable(id)) {
+			return false;
+		}
+
+		Integer itemId = Integer.parseInt(id);
+		Discount discount = DiscountDAO.getInstance().get(itemId);
+
+		if (discount == null) {
+			return false;
+		}
+
+		if (discount.getQualificationType() == Discount.QUALIFICATION_TYPE_ITEM) {
+			addedTicketItemDiscounts.put(discount.getId(), MenuItem.convertToTicketItemDiscount(discount, ticketItem));
+		}
+		else {
+			if (discount.isModifiable()) {
+				double newValue = getModifiedValue(discount);
+				if (newValue <= 0) {
+					newValue = discount.getValue();
+				}
+				discount.setValue(newValue);
+			}
+			addedTicketDiscounts.put(discount.getId(), Ticket.convertToTicketDiscount(discount, ticket));
+		}
+
+		DiscountButton button = buttonMap.get(discount.getId());
+		if (button != null) {
+			button.setSelected(true);
+		}
+
+		return true;
+	}
+
+	private boolean addCouponByBarcode(String barcode) {
+
+		Discount discount = DiscountDAO.getInstance().getDiscountByBarcode(barcode);
+
+		if (discount == null) {
+			return false;
+		}
+
+		if (discount.getQualificationType() == Discount.QUALIFICATION_TYPE_ITEM) {
+			addedTicketItemDiscounts.put(discount.getId(), MenuItem.convertToTicketItemDiscount(discount, ticketItem));
+		}
+		else {
+			if (discount.isModifiable()) {
+				double newValue = getModifiedValue(discount);
+				if (newValue <= 0) {
+					newValue = discount.getValue();
+				}
+				discount.setValue(newValue);
+			}
+			addedTicketDiscounts.put(discount.getId(), Ticket.convertToTicketDiscount(discount, ticket));
+		}
+
+		DiscountButton button = buttonMap.get(discount.getId());
+		button.setSelected(true);
+
+		return true;
 	}
 
 	@Override
@@ -280,6 +434,14 @@ public class DiscountSelectionDialog extends POSDialog implements ActionListener
 		dispose();
 	}
 
+	private double getModifiedValue(Discount discount) {
+		Double newValue = NumberSelectionDialog2.takeDoubleInput("Enter Amount", "Enter Amount", discount.getValue()); //$NON-NLS-1$ //$NON-NLS-2$
+		if (newValue > 0) {
+			return newValue;
+		}
+		return 0;
+	}
+
 	private class DiscountButton extends POSToggleButton implements ActionListener {
 		private static final int BUTTON_SIZE = 119;
 		Discount discount;
@@ -310,6 +472,13 @@ public class DiscountSelectionDialog extends POSDialog implements ActionListener
 			else {
 
 				if (isSelected()) {
+					if (discount.isModifiable()) {
+						double newValue = getModifiedValue(discount);
+						if (newValue <= 0) {
+							newValue = discount.getValue();
+						}
+						discount.setValue(newValue);
+					}
 					addedTicketDiscounts.put(discount.getId(), Ticket.convertToTicketDiscount(discount, ticket));
 				}
 				else {

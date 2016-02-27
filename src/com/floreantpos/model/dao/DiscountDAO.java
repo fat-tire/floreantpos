@@ -80,4 +80,21 @@ public class DiscountDAO extends BaseDiscountDAO {
 			closeSession(session);
 		}
 	}
+	
+	public Discount getDiscountByBarcode(String barcode) {
+		Session session = null;
+		Criteria criteria = null;
+		try {
+			session = createNewSession();
+			criteria = session.createCriteria(Discount.class);
+			criteria.add(Restrictions.like(Discount.PROP_BARCODE, barcode));
+			List<Discount> result = criteria.list();
+			if (result == null || result.isEmpty()) {
+				return null;
+			}
+			return (Discount) result.get(0);
+		} finally {
+			closeSession(session);
+		}
+	}
 }

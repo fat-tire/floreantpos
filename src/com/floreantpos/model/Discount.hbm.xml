@@ -16,7 +16,9 @@
 		<property column="EXPIRY_DATE" name="expiryDate" type="java.util.Date" />
 		<property column="ENABLED" name="enabled" type="java.lang.Boolean" />
 		<property column="AUTO_APPLY" name="autoApply" type="java.lang.Boolean" />
+		<property column="MODIFIABLE" name="modifiable" type="java.lang.Boolean" />
 		<property column="NEVER_EXPIRE" name="neverExpire" type="java.lang.Boolean" />
+		<property column="UUID" length="36" name="UUID" unique="true" type="java.lang.String" />
 		
 		<bag cascade="save-update" inverse="false" lazy="false" name="menuItems" table="MENUITEM_DISCOUNT">
 			<key column="DISCOUNT_ID" />

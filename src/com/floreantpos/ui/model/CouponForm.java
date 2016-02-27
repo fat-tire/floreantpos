@@ -19,6 +19,7 @@ package com.floreantpos.ui.model;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.util.UUID;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -38,6 +39,8 @@ import javax.swing.JTextField;
 import net.miginfocom.swing.MigLayout;
 
 import org.jdesktop.swingx.JXDatePicker;
+
+import sun.security.krb5.internal.crypto.CksumType;
 
 import com.floreantpos.Messages;
 import com.floreantpos.POSConstants;
@@ -63,6 +66,7 @@ public class CouponForm extends BeanEditor implements ItemListener {
 	private JComboBox cbCouponType;
 	private DoubleTextField tfCouponValue;
 	private JCheckBox chkEnabled;
+	private JCheckBox chkModifiable;
 	private JCheckBox chkAutoApply;
 	private JCheckBox chkNeverExpire;
 	private JXDatePicker dpExperation;
@@ -79,6 +83,8 @@ public class CouponForm extends BeanEditor implements ItemListener {
 	private ItemCheckBoxList cbListItems;
 	private ItemCheckBoxList addedListItems;
 
+	private String uuid;
+
 	public CouponForm() {
 		this(new Discount());
 	}
@@ -90,6 +96,7 @@ public class CouponForm extends BeanEditor implements ItemListener {
 
 		cbQualificationType.setModel(new DefaultComboBoxModel(Discount.COUPON_QUALIFICATION_NAMES));
 		cbQualificationType.addItemListener(this);
+		cbCouponType.addItemListener(this);
 
 		setBean(coupon);
 	}
@@ -118,6 +125,7 @@ public class CouponForm extends BeanEditor implements ItemListener {
 		tfCouponValue = new DoubleTextField();
 		tfMinimumQua = new DoubleTextField();
 		chkEnabled = new JCheckBox(POSConstants.ENABLED); //$NON-NLS-1$
+		chkModifiable = new JCheckBox("Modifiable Amount"); //$NON-NLS-1$
 		chkAutoApply = new JCheckBox(Messages.getString("CouponForm.6")); //$NON-NLS-1$
 		chkNeverExpire = new JCheckBox(Messages.getString("CouponForm.16")); //$NON-NLS-1$
 
@@ -141,6 +149,8 @@ public class CouponForm extends BeanEditor implements ItemListener {
 		contentPane.add(chkAutoApply, "wrap"); //$NON-NLS-1$
 		contentPane.add(new JLabel("")); //$NON-NLS-1$
 		contentPane.add(chkNeverExpire, "wrap"); //$NON-NLS-1$
+		contentPane.add(new JLabel("")); //$NON-NLS-1$
+		contentPane.add(chkModifiable, "wrap"); //$NON-NLS-1$
 
 		createItemSearchPanel();
 
@@ -163,7 +173,6 @@ public class CouponForm extends BeanEditor implements ItemListener {
 		add(itemPanel, BorderLayout.CENTER);
 
 		setPreferredSize(new Dimension(700, 350));
-
 	}
 
 	private void createItemSearchPanel() {
@@ -221,6 +230,12 @@ public class CouponForm extends BeanEditor implements ItemListener {
 			itemPanel.setVisible(true);
 			cbListItems.setModel(menuItems);
 			addedListItems.setModel(cbListItems.getCheckedValues());
+		}
+		else if (event.getItem() == Discount.COUPON_TYPE_NAMES[Discount.DISCOUNT_TYPE_AMOUNT]) {
+			chkModifiable.setVisible(true);
+		}
+		else if (event.getItem() == Discount.COUPON_TYPE_NAMES[Discount.DISCOUNT_TYPE_PERCENTAGE]) {
+			chkModifiable.setVisible(false);
 		}
 		/*else if (event.getItem() == Discount.COUPON_QUALIFICATION_NAMES[1]) {
 			List<MenuGroup> menuGroups = MenuGroupDAO.getInstance().findAll();
@@ -283,8 +298,15 @@ public class CouponForm extends BeanEditor implements ItemListener {
 	@Override
 	protected void updateView() {
 		Discount coupon = (Discount) getBean();
-		if (coupon == null)
+		if (coupon.getId() == null) {
+			chkEnabled.setSelected(true); 
+			tfMinimumQua.setText("1"); 
+			cbCouponType.setSelectedIndex(Discount.DISCOUNT_TYPE_PERCENTAGE); 
 			return;
+		}
+			
+
+		uuid = coupon.getUUID();
 
 		tfCouponName.setText(coupon.getName());
 		tfMinimumQua.setText(coupon.getMinimunBuy().toString());
@@ -294,6 +316,7 @@ public class CouponForm extends BeanEditor implements ItemListener {
 		dpExperation.setDate(coupon.getExpiryDate());
 		tfBarcode.setText(coupon.getBarcode());
 		chkEnabled.setSelected(coupon.isEnabled());
+		chkModifiable.setSelected(coupon.isModifiable());
 		chkAutoApply.setSelected(coupon.isAutoApply());
 		chkNeverExpire.setSelected(coupon.isNeverExpire());
 
@@ -321,6 +344,7 @@ public class CouponForm extends BeanEditor implements ItemListener {
 		int couponType = cbCouponType.getSelectedIndex();
 		Date expiryDate = dpExperation.getDate();
 		boolean enabled = chkEnabled.isSelected();
+		boolean modifiable = chkModifiable.isSelected();
 		boolean autoApply = chkAutoApply.isSelected();
 		boolean neverExpire = chkNeverExpire.isSelected();
 		int qualificationType = cbQualificationType.getSelectedIndex();
@@ -347,8 +371,14 @@ public class CouponForm extends BeanEditor implements ItemListener {
 		coupon.setType(couponType);
 		coupon.setQualificationType(qualificationType);
 		coupon.setEnabled(enabled);
+		coupon.setModifiable(modifiable);
 		coupon.setAutoApply(autoApply);
 		coupon.setNeverExpire(neverExpire);
+
+		if (uuid == null) {
+			uuid = UUID.randomUUID().toString();
+		}
+		coupon.setUUID(uuid);
 
 		if (qualificationType == Discount.QUALIFICATION_TYPE_ITEM) {
 			if (addedListItems.getCheckedValues().size() > 0) {
