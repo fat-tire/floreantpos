@@ -347,6 +347,7 @@ public class TicketView extends JPanel {
 			// contains an id.
 			OrderController.saveOrder(ticket);
 			ticketDAO.refresh(ticket);
+			ReceiptPrintService.printTicket(ticket);
 		}
 	}
 
