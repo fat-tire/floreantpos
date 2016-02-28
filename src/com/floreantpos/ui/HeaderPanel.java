@@ -46,8 +46,6 @@ import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.main.Application;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.swing.TransparentPanel;
-import com.floreantpos.ui.views.SwitchboardOtherFunctionsView;
-import com.floreantpos.ui.views.SwitchboardView;
 import com.floreantpos.util.PosGuiUtil;
 
 public class HeaderPanel extends JPanel {
@@ -217,56 +215,5 @@ public class HeaderPanel extends JPanel {
 			autoLogoffTimer.setInitialDelay(5 * 1000);
 			autoLogoffTimer.restart();
 		}
-	}
-
-	/*	public void showHomeButton(boolean show) {
-			btnHomeScreen.setVisible(show);
-		}
-
-		public void showOthersFunctionButton(boolean show) {
-			btnOthers.setVisible(show);
-		}
-
-		public void showSwitchBoardButton(boolean show) {
-			btnSwithboardView.setVisible(show);
-		}
-		*/
-	public void showOthersFunctionButton(String viewName) {
-		if (viewName.equals(SwitchboardOtherFunctionsView.VIEW_NAME)) {
-			btnOthers.setVisible(false);
-		}
-		else {
-			btnOthers.setVisible(true);
-		}
-	}
-
-	public void showSwitchBoardButton(String viewName) {
-		if (viewName.equals(SwitchboardView.VIEW_NAME)) {
-			btnSwithboardView.setVisible(false);
-		}
-		else {
-			btnSwithboardView.setVisible(true);
-		}
-	}
-
-	/*public void updateButtons(String viewName, boolean enable) {
-
-		if (viewName.equals(SwitchboardView.VIEW_NAME)) {
-			btnSwithboardView.setVisible(enable);
-			btnHomeScreen.setVisible(enable);
-		}
-		else if (viewName.equals(SwitchboardOtherFunctionsView.VIEW_NAME)) {
-			btnOthers.setVisible(enable);
-			btnHomeScreen.setVisible(enable);
-		}
-		else {
-			btnHomeScreen.setVisible(enable);
-			btnSwithboardView.setVisible(enable);
-			
-		}
-	}*/
-
-	public void updateButtons(String viewName, boolean enable) {
-		btnHomeScreen.setVisible(enable);
 	}
 }
