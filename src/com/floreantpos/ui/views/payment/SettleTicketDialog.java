@@ -72,6 +72,7 @@ import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketDiscount;
 import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.TicketItemDiscount;
+import com.floreantpos.model.TicketItemModifier;
 import com.floreantpos.model.TransactionType;
 import com.floreantpos.model.UserPermission;
 import com.floreantpos.report.ReceiptPrintService;
@@ -365,16 +366,9 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 
 			Object selectedObject = (ITicketItem) ticketViewerTable.getSelected();
 
-			TicketItem ticketItem;
+			TicketItem ticketItem=(TicketItem) selectedObject; 
 
-			if (selectedObject instanceof TicketItemDiscount) {
-				ticketItem = ((TicketItemDiscount) selectedObject).getTicketItem();
-			}
-			else {
-				ticketItem = (TicketItem) selectedObject;
-			}
-
-			DiscountSelectionDialog dialog = new DiscountSelectionDialog(ticketItem, ticket);
+			DiscountSelectionDialog dialog = new DiscountSelectionDialog(ticket);
 			dialog.open();
 
 			if (dialog.isCanceled()) {

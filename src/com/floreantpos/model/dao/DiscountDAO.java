@@ -36,6 +36,22 @@ public class DiscountDAO extends BaseDiscountDAO {
 	public DiscountDAO() {
 	}
 
+	public List<Discount> findAllValidCoupons() {
+		Session session = null;
+
+		Date currentDate = new Date();
+
+		try {
+			session = createNewSession();
+			Criteria criteria = session.createCriteria(getReferenceClass());
+			criteria.add(Restrictions.eq(Discount.PROP_ENABLED, Boolean.TRUE));
+			criteria.add(Restrictions.or(Restrictions.eq(Discount.PROP_NEVER_EXPIRE, Boolean.TRUE), Restrictions.ge(Discount.PROP_EXPIRY_DATE, currentDate)));
+			return criteria.list();
+		} finally {
+			closeSession(session);
+		}
+
+	}
 	public List<Discount> getValidCoupons() {
 		Session session = null;
 
