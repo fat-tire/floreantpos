@@ -17,8 +17,8 @@
  */
 package com.floreantpos.report;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -52,7 +52,6 @@ import com.floreantpos.model.CardReader;
 import com.floreantpos.model.KitchenTicket;
 import com.floreantpos.model.KitchenTicketItem;
 import com.floreantpos.model.OrderType;
-import com.floreantpos.model.PosPrinters;
 import com.floreantpos.model.PosTransaction;
 import com.floreantpos.model.Printer;
 import com.floreantpos.model.RefundTransaction;
@@ -154,37 +153,26 @@ public class ReceiptPrintService {
 
 	public static void printTicket(Ticket ticket) {
 		try {
-			/*TicketPrintProperties printProperties = new TicketPrintProperties("*** ORDER " + ticket.getId() + " ***", false, true, true); //$NON-NLS-1$ //$NON-NLS-2$
-			printProperties.setPrintCookingInstructions(false);
-			HashMap map = populateTicketProperties(ticket, printProperties, null);
-
-			List<Printer> receiptPrinters = Application.getPrinters().getRPrinters();
-
-			if (receiptPrinters == null || receiptPrinters.isEmpty()) {
-
-				JasperPrint jasperPrint = createPrint(ticket, map, null);
-				jasperPrint.setName(ORDER_ + ticket.getId());
-				jasperPrint.setProperty(PROP_PRINTER_NAME, Application.getPrinters().getReceiptPrinter());
-				printQuitely(jasperPrint);
-
-			}
-			else {
-				for (Printer printer : receiptPrinters) {
-
-					JasperPrint jasperPrint = createPrint(ticket, map, null);
-					jasperPrint.setName(ORDER_ + ticket.getId() + printer.getDeviceName());
-					jasperPrint.setProperty(PROP_PRINTER_NAME, printer.getDeviceName());
-					printQuitely(jasperPrint);
-				}
-			}
-			*/
 			TicketPrintProperties printProperties = new TicketPrintProperties("*** ORDER " + ticket.getId() + " ***", false, true, true); //$NON-NLS-1$ //$NON-NLS-2$
 			printProperties.setPrintCookingInstructions(false);
 			HashMap map = populateTicketProperties(ticket, printProperties, null);
 
-			List<Printer> receiptPrinters = Application.getPrinters().getRPrinters();
+			List<TerminalPrinters> terminalPrinters = TerminalPrintersDAO.getInstance().findTerminalPrinters();
 
-			if (receiptPrinters == null || receiptPrinters.isEmpty()) {
+			List<Printer> activeReceiptPrinters = new ArrayList<Printer>();
+
+			for (TerminalPrinters terminalPrinters2 : terminalPrinters) {
+
+				int printerType = terminalPrinters2.getVirtualPrinter().getType();
+
+				if (printerType == VirtualPrinter.RECEIPT) {
+
+					Printer printer = new Printer(terminalPrinters2.getVirtualPrinter(), terminalPrinters2.getPrinterName());
+					activeReceiptPrinters.add(printer);
+				}
+			}
+
+			if (activeReceiptPrinters == null || activeReceiptPrinters.isEmpty()) {
 
 				JasperPrint jasperPrint = createPrint(ticket, map, null);
 				jasperPrint.setName(ORDER_ + ticket.getId());
@@ -194,32 +182,15 @@ public class ReceiptPrintService {
 			}
 			else {
 
-				List<TerminalPrinters> terminalPrinters = TerminalPrintersDAO.getInstance().findTerminalPrinters();
+				for (Printer activeReceiptPrinter : activeReceiptPrinters) {
 
-				for (TerminalPrinters terminalPrinters2 : terminalPrinters) {
-
-					int printerType = terminalPrinters2.getVirtualPrinter().getType();
-
-					if (printerType == VirtualPrinter.RECEIPT) {
-
-						Printer printer = new Printer(terminalPrinters2.getVirtualPrinter(), terminalPrinters2.getPrinterName());
-
-						JasperPrint jasperPrint = createPrint(ticket, map, null);
-						jasperPrint.setName(ORDER_ + ticket.getId() + printer.getDeviceName());
-						jasperPrint.setProperty(PROP_PRINTER_NAME, printer.getDeviceName());
-						printQuitely(jasperPrint);
-					}
-
+					JasperPrint jasperPrint = createPrint(ticket, map, null);
+					jasperPrint.setName(ORDER_ + ticket.getId() + activeReceiptPrinter.getDeviceName());
+					jasperPrint.setProperty(PROP_PRINTER_NAME, activeReceiptPrinter.getDeviceName());
+					printQuitely(jasperPrint);
 				}
+
 			}
-
-			//TODO: handle exception
-
-			/*JasperPrint jasperPrint = createPrint(ticket, map, null);
-			jasperPrint.setName(ORDER_ + ticket.getId());
-			jasperPrint.setProperty(PROP_PRINTER_NAME, Application.getPrinters().getReceiptPrinter());
-			printQuitely(jasperPrint);*/
-
 		} catch (Exception e) {
 			logger.error(com.floreantpos.POSConstants.PRINT_ERROR, e);
 		}
