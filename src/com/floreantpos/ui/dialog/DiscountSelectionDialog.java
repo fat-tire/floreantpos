@@ -381,13 +381,20 @@ public class DiscountSelectionDialog extends POSDialog implements ActionListener
 
 		DiscountButton(Discount discount) {
 			this.discount = discount;
-			setFocusable(true);
-			setFocusPainted(true);
+			setFocusable(false);
+			setFocusPainted(false);
 			setVerticalTextPosition(SwingConstants.BOTTOM);
 			setHorizontalTextPosition(SwingConstants.CENTER);
 			setFont(getFont().deriveFont(18.0f));
 
-			setText("<html><body><center>" + discount.getName() + "<br></center></body></html>"); //$NON-NLS-1$ //$NON-NLS-2$ 
+			setText("<html><body><center>" + discount.getName() + "<br></center></body></html>"); //$NON-NLS-1$ //$NON-NLS-2$
+			
+			if(discount.getQualificationType() == Discount.QUALIFICATION_TYPE_ITEM) {
+				setBackground(Color.CYAN);
+			}
+			else {
+				setBackground(Color.MAGENTA);
+			}
 
 			setPreferredSize(new Dimension(BUTTON_SIZE, TerminalConfig.getMenuItemButtonHeight()));
 			addActionListener(this);
