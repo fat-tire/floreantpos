@@ -31,6 +31,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
@@ -53,7 +54,6 @@ import com.floreantpos.ui.views.order.actions.ItemSelectionListener;
  */
 public class MenuItemView extends SelectionView {
 	public final static String VIEW_NAME = "ITEM_VIEW"; //$NON-NLS-1$
-	private String orderType;
 
 	private Vector<ItemSelectionListener> listenerList = new Vector<ItemSelectionListener>();
 
@@ -63,18 +63,6 @@ public class MenuItemView extends SelectionView {
 	/** Creates new form GroupView */
 	public MenuItemView() {
 		super(com.floreantpos.POSConstants.ITEMS, 120, TerminalConfig.getMenuItemButtonHeight());
-		remove(actionButtonPanel);
-
-		btnPrev.setText("<");
-		btnNext.setText(">");
-
-		add(btnPrev, BorderLayout.WEST);
-		add(btnNext, BorderLayout.EAST);
-	}
-
-	public MenuItemView(String orderType) {
-		super(com.floreantpos.POSConstants.ITEMS, 120, TerminalConfig.getMenuItemButtonHeight());
-		this.orderType = orderType;
 		remove(actionButtonPanel);
 
 		btnPrev.setText("<");
@@ -100,6 +88,7 @@ public class MenuItemView extends SelectionView {
 		MenuItemDAO dao = new MenuItemDAO();
 		try {
 			List<MenuItem> items = dao.findByParent(Application.getInstance().getTerminal(), menuGroup, false);
+			filterItemsByOrderType(items);
 
 			setItems(items);
 		} catch (PosException e) {
@@ -110,20 +99,11 @@ public class MenuItemView extends SelectionView {
 	@Override
 	protected AbstractButton createItemButton(Object item) {
 		MenuItem menuItem = (MenuItem) item;
-		orderType = OrderView.getInstance().getTicketView().getTicket().getType().toString();
 
-		if (menuItem.getOrderType().contains(orderType)) {
-			ItemButton itemButton = new ItemButton(menuItem);
-			menuItemButtonMap.put(menuItem.getId(), itemButton);
-
-			return itemButton;
-		}
-		return null;
-		
-		/*ItemButton itemButton = new ItemButton(menuItem);
+		ItemButton itemButton = new ItemButton(menuItem);
 		menuItemButtonMap.put(menuItem.getId(), itemButton);
 
-		return itemButton;*/
+		return itemButton;
 	}
 
 	public void addItemSelectionListener(ItemSelectionListener listener) {
@@ -145,6 +125,22 @@ public class MenuItemView extends SelectionView {
 		/*if(button != null) {
 			button.requestFocus();
 		}*/
+	}
+	
+	private void filterItemsByOrderType(List<MenuItem> items) {
+		String orderType = OrderView.getInstance().getTicketView().getTicket().getType().toString();
+		for (Iterator iterator = items.iterator(); iterator.hasNext();) {
+			MenuItem menuItem = (MenuItem) iterator.next();
+			List<String> orderTypeList = menuItem.getOrderType();
+
+			if (orderTypeList == null || orderTypeList.size() == 0) {
+				continue;
+			}
+
+			if (!orderTypeList.contains(orderType)) {
+				iterator.remove();
+			}
+		}
 	}
 
 	private class ItemButton extends PosButton implements ActionListener, MouseListener {
