@@ -27,12 +27,14 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -54,6 +56,8 @@ import com.floreantpos.main.Application;
 import com.floreantpos.model.Discount;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketDiscount;
+import com.floreantpos.model.TicketItem;
+import com.floreantpos.model.TicketItemDiscount;
 import com.floreantpos.model.dao.DiscountDAO;
 import com.floreantpos.swing.POSToggleButton;
 import com.floreantpos.swing.PosButton;
@@ -70,6 +74,7 @@ public class DiscountSelectionDialog extends POSDialog implements ActionListener
 	private ScrollableFlowPanel buttonsPanel;
 
 	private HashMap<Integer, TicketDiscount> addedTicketDiscounts = new HashMap<Integer, TicketDiscount>();
+	private List<Integer> clearTicketItemDiscounts = new ArrayList<Integer>();
 
 	private HashMap<Integer, DiscountButton> buttonMap = new HashMap<Integer, DiscountButton>();
 
@@ -77,11 +82,6 @@ public class DiscountSelectionDialog extends POSDialog implements ActionListener
 
 	private JPanel itemSearchPanel;
 	private JTextField txtSearchItem;
-
-	//private ButtonGroup btnGroup;
-
-	//private POSToggleButton btnItem;
-	//private POSToggleButton btnOrder;
 
 	public DiscountSelectionDialog(Ticket ticket) {
 		this.ticket = ticket;
@@ -105,8 +105,6 @@ public class DiscountSelectionDialog extends POSDialog implements ActionListener
 		titlePanel.setTitle(Messages.getString("DiscountSelectionDialog.0")); //$NON-NLS-1$
 
 		JPanel searchPanel = new JPanel(new FlowLayout(FlowLayout.LEADING));
-
-		JPanel toggleBtnPanel = new JPanel(new FlowLayout(FlowLayout.LEADING));
 
 		itemSearchPanel = new JPanel();
 
@@ -163,15 +161,17 @@ public class DiscountSelectionDialog extends POSDialog implements ActionListener
 
 	private void createCouponSearchPanel() {
 		itemSearchPanel.setLayout(new BorderLayout(5, 5));
-		itemSearchPanel.setPreferredSize(new Dimension(400, 30));
+		itemSearchPanel.setPreferredSize(new Dimension(400, 40));
 		PosButton btnSearch = new PosButton("...");
 		btnSearch.setPreferredSize(new Dimension(60, 40));
+		
+		JLabel lblCoupon=new JLabel("Enter Coupon Number"); 
 
-		txtSearchItem = new JTextField("Enter Coupon Number");
+		txtSearchItem = new JTextField();
 		txtSearchItem.addFocusListener(new FocusListener() {
 			@Override
 			public void focusLost(FocusEvent e) {
-				txtSearchItem.setText("Scan Coupon Number");
+				txtSearchItem.setText("Scan barcode");
 				txtSearchItem.setForeground(Color.gray);
 			}
 
@@ -216,7 +216,7 @@ public class DiscountSelectionDialog extends POSDialog implements ActionListener
 				}
 			}
 		});
-		itemSearchPanel.add(new JLabel("Scan Coupon Number"), BorderLayout.WEST);
+		itemSearchPanel.add(lblCoupon, BorderLayout.WEST);
 		itemSearchPanel.add(txtSearchItem);
 		itemSearchPanel.add(btnSearch, BorderLayout.EAST);
 	}
@@ -340,6 +340,17 @@ public class DiscountSelectionDialog extends POSDialog implements ActionListener
 			}
 		}
 
+		for (Iterator iterator = ticket.getTicketItems().iterator(); iterator.hasNext();) {
+			TicketItem ticketItem = (TicketItem) iterator.next();
+			for (Iterator iterator2 = ticketItem.getDiscounts().iterator(); iterator2.hasNext();) {
+				TicketItemDiscount ticketItemDiscount = (TicketItemDiscount) iterator2.next();
+				if (clearTicketItemDiscounts.contains((Integer) ticketItemDiscount.getDiscountId())) {
+					iterator2.remove();
+				}
+
+			}
+		}
+
 		setCanceled(false);
 		dispose();
 	}
@@ -389,8 +400,7 @@ public class DiscountSelectionDialog extends POSDialog implements ActionListener
 			}
 			else {
 				if (discount.getQualificationType() == Discount.QUALIFICATION_TYPE_ITEM) {
-					TicketItemDiscountSelectionDialog dialog = new TicketItemDiscountSelectionDialog(ticket, discount);
-					dialog.open();
+					clearTicketItemDiscounts.add(discount.getId());
 				}
 				else {
 					addedTicketDiscounts.remove(discount.getId());

@@ -19,13 +19,13 @@ package com.floreantpos.ui.model;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.util.UUID;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
@@ -39,8 +39,6 @@ import javax.swing.JTextField;
 import net.miginfocom.swing.MigLayout;
 
 import org.jdesktop.swingx.JXDatePicker;
-
-import sun.security.krb5.internal.crypto.CksumType;
 
 import com.floreantpos.Messages;
 import com.floreantpos.POSConstants;
@@ -300,11 +298,10 @@ public class CouponForm extends BeanEditor implements ItemListener {
 		Discount coupon = (Discount) getBean();
 		if (coupon.getId() == null) {
 			chkEnabled.setSelected(true); 
-			tfMinimumQua.setText("1"); 
+			tfMinimumQua.setText("0"); 
 			cbCouponType.setSelectedIndex(Discount.DISCOUNT_TYPE_PERCENTAGE); 
 			return;
 		}
-			
 
 		uuid = coupon.getUUID();
 

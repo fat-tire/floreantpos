@@ -65,6 +65,7 @@ public class TicketItemDiscountSelectionDialog extends POSDialog {
 	private Ticket ticket;
 	private Discount discount;
 
+	private List<TicketItemDiscount> addedTicketItemDiscount = new ArrayList<TicketItemDiscount>();
 	private List<TicketItemButton> addedTicketItemList = new ArrayList<TicketItemButton>();
 
 	public TicketItemDiscountSelectionDialog(Ticket ticket, Discount discount) {
@@ -102,7 +103,7 @@ public class TicketItemDiscountSelectionDialog extends POSDialog {
 			}
 		});
 
-		buttonActionPanel.add(btnOk, "w 120!,split 3,align center"); //$NON-NLS-1$
+		buttonActionPanel.add(btnOk, "w 120!,split 2,align center"); //$NON-NLS-1$
 		buttonActionPanel.add(btnCancel, "w 120!"); //$NON-NLS-1$
 
 		JPanel footerPanel = new JPanel(new BorderLayout());
@@ -155,6 +156,10 @@ public class TicketItemDiscountSelectionDialog extends POSDialog {
 	}
 
 	protected void doApplyDiscount() {
+		if (addedTicketItemDiscount.isEmpty()) {
+			POSMessageDialog.showMessage("Please select one item");
+			return;
+		}
 		for (TicketItemButton ticketItemButton : addedTicketItemList) {
 			TicketItem ticketItem = ticketItemButton.getTicketItem();
 			ticketItem.getDiscounts().clear();
@@ -189,13 +194,21 @@ public class TicketItemDiscountSelectionDialog extends POSDialog {
 
 		public void actionPerformed(ActionEvent e) {
 			if (isSelected()) {
-				ticketItemDiscounts.add(MenuItem.convertToTicketItemDiscount(discount, ticketItem));
+				TicketItemDiscount ticketItemDiscount = MenuItem.convertToTicketItemDiscount(discount, ticketItem);
+				ticketItemDiscounts.add(ticketItemDiscount);
+				addedTicketItemDiscount.add(ticketItemDiscount);
 			}
 			else {
 				for (Iterator iterator = ticketItemDiscounts.iterator(); iterator.hasNext();) {
 					TicketItemDiscount ticketItemDiscount = (TicketItemDiscount) iterator.next();
 					if (ticketItemDiscount.getDiscountId().intValue() == discount.getId().intValue()) {
 						iterator.remove();
+					}
+					if (addedTicketItemDiscount.contains(ticketItemDiscount)) {
+						addedTicketItemDiscount.remove(ticketItemDiscount);
+					}
+					else {
+						addedTicketItemDiscount.add(ticketItemDiscount);
 					}
 				}
 			}
