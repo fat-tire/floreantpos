@@ -77,6 +77,11 @@
 			<element column="PROPERTY_VALUE" type="string" length="100"/>
 		</map>
 		
+		<bag name="orderType" table="ITEM_ORDER_TYPE" lazy="false" cascade="all">
+			<key column="MENU_ITEM_ID" />
+			<element column="ORDER_TYPE" type="java.lang.String" />
+		</bag>
+		
 		
 	</class>
 </hibernate-mapping>

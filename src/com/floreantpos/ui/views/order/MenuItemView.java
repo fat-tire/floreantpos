@@ -53,6 +53,7 @@ import com.floreantpos.ui.views.order.actions.ItemSelectionListener;
  */
 public class MenuItemView extends SelectionView {
 	public final static String VIEW_NAME = "ITEM_VIEW"; //$NON-NLS-1$
+	private String orderType;
 
 	private Vector<ItemSelectionListener> listenerList = new Vector<ItemSelectionListener>();
 
@@ -62,6 +63,18 @@ public class MenuItemView extends SelectionView {
 	/** Creates new form GroupView */
 	public MenuItemView() {
 		super(com.floreantpos.POSConstants.ITEMS, 120, TerminalConfig.getMenuItemButtonHeight());
+		remove(actionButtonPanel);
+
+		btnPrev.setText("<");
+		btnNext.setText(">");
+
+		add(btnPrev, BorderLayout.WEST);
+		add(btnNext, BorderLayout.EAST);
+	}
+
+	public MenuItemView(String orderType) {
+		super(com.floreantpos.POSConstants.ITEMS, 120, TerminalConfig.getMenuItemButtonHeight());
+		this.orderType = orderType;
 		remove(actionButtonPanel);
 
 		btnPrev.setText("<");
@@ -97,10 +110,20 @@ public class MenuItemView extends SelectionView {
 	@Override
 	protected AbstractButton createItemButton(Object item) {
 		MenuItem menuItem = (MenuItem) item;
-		ItemButton itemButton = new ItemButton(menuItem);
+		orderType = OrderView.getInstance().getTicketView().getTicket().getType().toString();
+
+		if (menuItem.getOrderType().contains(orderType)) {
+			ItemButton itemButton = new ItemButton(menuItem);
+			menuItemButtonMap.put(menuItem.getId(), itemButton);
+
+			return itemButton;
+		}
+		return null;
+		
+		/*ItemButton itemButton = new ItemButton(menuItem);
 		menuItemButtonMap.put(menuItem.getId(), itemButton);
 
-		return itemButton;
+		return itemButton;*/
 	}
 
 	public void addItemSelectionListener(ItemSelectionListener listener) {

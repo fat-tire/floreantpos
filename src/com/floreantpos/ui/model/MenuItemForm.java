@@ -73,6 +73,7 @@ import com.floreantpos.model.MenuGroup;
 import com.floreantpos.model.MenuItem;
 import com.floreantpos.model.MenuItemModifierGroup;
 import com.floreantpos.model.MenuItemShift;
+import com.floreantpos.model.OrderType;
 import com.floreantpos.model.PrinterGroup;
 import com.floreantpos.model.Tax;
 import com.floreantpos.model.dao.MenuGroupDAO;
@@ -263,8 +264,8 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		chkVisible.setText(com.floreantpos.POSConstants.VISIBLE);
 		chkVisible.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
 		chkVisible.setMargin(new java.awt.Insets(0, 0, 0, 0));
-		tabbedPane.setPreferredSize(new Dimension(765, 440));
 		tabbedPane.addTab(com.floreantpos.POSConstants.GENERAL, tabGeneral);
+		tabbedPane.setPreferredSize(new Dimension(750, 430));
 
 		btnNewModifierGroup.setText(com.floreantpos.POSConstants.ADD);
 		btnNewModifierGroup.setActionCommand("AddModifierGroup"); //$NON-NLS-1$
@@ -342,8 +343,11 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		tfTranslatedName.setLength(120);
 		tabGeneral.add(tfTranslatedName, "cell 3 2"); //$NON-NLS-1$
 
-		tabGeneral.add(new JLabel("Description"), "cell 0 3,right");
-		tabGeneral.add(new JScrollPane(tfDescription), "cell 1 3 1 5");
+		tabGeneral.add(new JLabel("Description"), "cell 0 3");
+
+		JScrollPane scrlDescription = new JScrollPane(tfDescription, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+
+		tabGeneral.add(scrlDescription, "cell 1 3 1 5");
 
 		lblSortOrder = new JLabel(Messages.getString("MenuItemForm.lblSortOrder.text")); //$NON-NLS-1$
 		tabGeneral.add(lblSortOrder, "cell 0 6,right"); //$NON-NLS-1$
@@ -384,26 +388,43 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 
 		btnButtonColor = new JButton(); //$NON-NLS-1$
 		btnButtonColor.setPreferredSize(new Dimension(228, 40));
-		tabGeneral.add(btnButtonColor, "cell 3 7 8 9"); //$NON-NLS-1$
+		tabGeneral.add(btnButtonColor, "cell 3 7 3 9"); //$NON-NLS-1$
 
 		lblTextColor = new JLabel(Messages.getString("MenuItemForm.lblTextColor.text")); //$NON-NLS-1$
 		tabGeneral.add(lblTextColor, "cell 0 8,right"); //$NON-NLS-1$
 
 		btnTextColor = new JButton(Messages.getString("MenuItemForm.SAMPLE_TEXT")); //$NON-NLS-1$
 		btnTextColor.setPreferredSize(new Dimension(228, 40));
-		tabGeneral.add(btnTextColor, "cell 1 8 9 10"); //$NON-NLS-1$
+		tabGeneral.add(btnTextColor, "cell 1 8 1 10"); //$NON-NLS-1$
 
 		cbShowTextWithImage = new JCheckBox(Messages.getString("MenuItemForm.40")); //$NON-NLS-1$
 		cbShowTextWithImage.setActionCommand(Messages.getString("MenuItemForm.41")); //$NON-NLS-1$
 		tabGeneral.add(cbShowTextWithImage, "cell 1 11"); //$NON-NLS-1$
 		tabGeneral.add(chkVisible, "cell 1 12"); //$NON-NLS-1$
 
-		tabGeneral.add(lTerminal, "cell 2 9,right"); //$NON-NLS-1$
+		/*tabGeneral.add(lTerminal, "cell 2 9,right"); //$NON-NLS-1$
 		terminalList = new CheckBoxList();
 		terminalList.setModel(TerminalDAO.getInstance().findAll());
 		JScrollPane terminalCheckBoxList = new JScrollPane(terminalList);
 		terminalCheckBoxList.setPreferredSize(new Dimension(228, 80));
-		tabGeneral.add(terminalCheckBoxList, "cell 3 9 10 11"); //$NON-NLS-1$
+		tabGeneral.add(terminalCheckBoxList, "cell 3 9 3 11"); //$NON-NLS-1$
+		*/
+		tabGeneral.add(new JLabel("OrderType"), "cell 2 9,right"); //$NON-NLS-1$
+		orderList = new CheckBoxList();
+		List<String> orderListM = new ArrayList();
+		orderListM.add(OrderType.DINE_IN.toString());
+		orderListM.add(OrderType.BAR_TAB.toString());
+		orderListM.add(OrderType.DRIVE_THRU.toString());
+		orderListM.add(OrderType.HOME_DELIVERY.toString());
+		orderListM.add(OrderType.PICKUP.toString());
+		orderListM.add(OrderType.RETAIL.toString());
+		orderListM.add(OrderType.TAKE_OUT.toString());
+
+		orderList.setModel(orderListM);
+
+		JScrollPane orderCheckBoxList = new JScrollPane(orderList);
+		orderCheckBoxList.setPreferredSize(new Dimension(228, 80));
+		tabGeneral.add(orderCheckBoxList, "cell 3 9 3 11"); //$NON-NLS-1$
 
 		add(tabbedPane);
 
@@ -632,7 +653,8 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 	private JLabel lblSortOrder;
 	private IntegerTextField tfSortOrder;
 	private JLabel lTerminal;
-	private CheckBoxList terminalList;
+	//private CheckBoxList terminalList;
+	private CheckBoxList orderList;
 
 	private void addMenuItemModifierGroup() {
 		try {
@@ -722,7 +744,8 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 			session.close();
 		}
 
-		terminalList.selectItems(menuItem.getTerminals());
+	//	terminalList.selectItems(menuItem.getTerminals());
+		orderList.selectItems(menuItem.getOrderType());
 		tfName.setText(menuItem.getName());
 		tfDescription.setText(menuItem.getDescription());
 		tfTranslatedName.setText(menuItem.getTranslatedName());
@@ -780,10 +803,13 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		menuItem.setButtonColorCode(btnButtonColor.getBackground().getRGB());
 		menuItem.setTextColorCode(btnTextColor.getForeground().getRGB());
 
-		if (!terminalList.getCheckedValues().isEmpty()) {
+	/*	if (!terminalList.getCheckedValues().isEmpty()) {
 			menuItem.setTerminals(terminalList.getCheckedValues());
-		}
+		}*/
 
+		if (!orderList.getCheckedValues().isEmpty()) {
+			menuItem.setOrderType(orderList.getCheckedValues());
+		}
 		try {
 			menuItem.setDiscountRate(Double.parseDouble(tfDiscountRate.getText()));
 		} catch (Exception x) {

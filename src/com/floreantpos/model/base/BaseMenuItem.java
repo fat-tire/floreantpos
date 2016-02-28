@@ -101,6 +101,7 @@ public abstract class BaseMenuItem  implements Comparable, Serializable {
 	private java.util.List<com.floreantpos.model.MenuItemModifierGroup> menuItemModiferGroups;
 	private java.util.List<com.floreantpos.model.Terminal> terminals;
 	private java.util.Map<String,String> properties;
+	private java.util.List<String> orderType;
 
 
 
@@ -537,6 +538,23 @@ public abstract class BaseMenuItem  implements Comparable, Serializable {
 	 */
 	public void setProperties (java.util.Map<String,String> properties) {
 		this.properties = properties;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: orderType
+	 */
+	public java.util.List<String> getOrderType () {
+					return orderType;
+			}
+
+	/**
+	 * Set the value related to the column: orderType
+	 * @param orderType the orderType value
+	 */
+	public void setOrderType (java.util.List<String> orderType) {
+		this.orderType = orderType;
 	}
 
 
