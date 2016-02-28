@@ -131,7 +131,7 @@ public class MenuItemView extends SelectionView {
 		String orderType = OrderView.getInstance().getTicketView().getTicket().getType().toString();
 		for (Iterator iterator = items.iterator(); iterator.hasNext();) {
 			MenuItem menuItem = (MenuItem) iterator.next();
-			List<String> orderTypeList = menuItem.getOrderType();
+			List<String> orderTypeList = menuItem.getOrderTypes();
 
 			if (orderTypeList == null || orderTypeList.size() == 0) {
 				continue;

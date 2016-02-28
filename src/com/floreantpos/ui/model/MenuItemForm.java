@@ -80,7 +80,6 @@ import com.floreantpos.model.dao.MenuGroupDAO;
 import com.floreantpos.model.dao.MenuItemDAO;
 import com.floreantpos.model.dao.PrinterGroupDAO;
 import com.floreantpos.model.dao.TaxDAO;
-import com.floreantpos.model.dao.TerminalDAO;
 import com.floreantpos.swing.CheckBoxList;
 import com.floreantpos.swing.ComboBoxModel;
 import com.floreantpos.swing.DoubleDocument;
@@ -744,8 +743,8 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 			session.close();
 		}
 
-	//	terminalList.selectItems(menuItem.getTerminals());
-		orderList.selectItems(menuItem.getOrderType());
+		//	terminalList.selectItems(menuItem.getTerminals());
+		orderList.selectItems(menuItem.getOrderTypes());
 		tfName.setText(menuItem.getName());
 		tfDescription.setText(menuItem.getDescription());
 		tfTranslatedName.setText(menuItem.getTranslatedName());
@@ -803,12 +802,12 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		menuItem.setButtonColorCode(btnButtonColor.getBackground().getRGB());
 		menuItem.setTextColorCode(btnTextColor.getForeground().getRGB());
 
-	/*	if (!terminalList.getCheckedValues().isEmpty()) {
-			menuItem.setTerminals(terminalList.getCheckedValues());
-		}*/
+		/*	if (!terminalList.getCheckedValues().isEmpty()) {
+				menuItem.setTerminals(terminalList.getCheckedValues());
+			}*/
 
 		if (!orderList.getCheckedValues().isEmpty()) {
-			menuItem.setOrderType(orderList.getCheckedValues());
+			menuItem.setOrderTypes(orderList.getCheckedValues());
 		}
 		try {
 			menuItem.setDiscountRate(Double.parseDouble(tfDiscountRate.getText()));
