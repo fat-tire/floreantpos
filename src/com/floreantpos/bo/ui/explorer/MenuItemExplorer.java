@@ -18,8 +18,6 @@
 package com.floreantpos.bo.ui.explorer;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
@@ -36,7 +34,6 @@ import javax.swing.JTextField;
 import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
-import javax.swing.table.DefaultTableCellRenderer;
 
 import net.miginfocom.swing.MigLayout;
 
@@ -80,21 +77,10 @@ public class MenuItemExplorer extends TransparentPanel {
 		tableModel.addRows(findAll);
 
 		table = new JXTable(tableModel);
-		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 		table.setRowHeight(30);
 
 		table.setDefaultRenderer(Object.class, new CustomCellRenderer());
-		table.getColumnModel().getColumn(10).setCellRenderer(new DefaultTableCellRenderer() {
-			@Override
-			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-				if (value instanceof Color) {
-					JLabel lblColor = new JLabel("TEXT COLOR", JLabel.CENTER);
-					lblColor.setForeground((Color) value);
-					return lblColor;
-				}
-				return super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-			}
-		});
 
 		setLayout(new BorderLayout(5, 5));
 		add(new JScrollPane(table));
