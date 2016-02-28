@@ -27,7 +27,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
@@ -54,6 +53,7 @@ import com.floreantpos.POSConstants;
 import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.Discount;
+import com.floreantpos.model.MenuItem;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketDiscount;
 import com.floreantpos.model.TicketItem;
@@ -164,8 +164,8 @@ public class DiscountSelectionDialog extends POSDialog implements ActionListener
 		itemSearchPanel.setPreferredSize(new Dimension(400, 40));
 		PosButton btnSearch = new PosButton("...");
 		btnSearch.setPreferredSize(new Dimension(60, 40));
-		
-		JLabel lblCoupon=new JLabel("Enter Coupon Number"); 
+
+		JLabel lblCoupon = new JLabel("Enter Coupon Number");
 
 		txtSearchItem = new JTextField();
 		txtSearchItem.addFocusListener(new FocusListener() {
@@ -324,6 +324,18 @@ public class DiscountSelectionDialog extends POSDialog implements ActionListener
 			}
 		}
 
+		for (TicketItem ticketItem : ticket.getTicketItems()) {
+			if (ticket.getDiscounts() != null) {
+				for (TicketItemDiscount ticketItemDiscount : ticketItem.getDiscounts()) {
+					DiscountButton ticketDiscountButton = buttonMap.get(ticketItemDiscount.getDiscountId());
+
+					if (ticketDiscountButton != null) {
+						ticketDiscountButton.setSelected(true);
+					}
+				}
+			}
+		}
+
 		buttonsPanel.repaint();
 		buttonsPanel.revalidate();
 	}
@@ -386,6 +398,19 @@ public class DiscountSelectionDialog extends POSDialog implements ActionListener
 				if (discount.getQualificationType() == Discount.QUALIFICATION_TYPE_ITEM) {
 					TicketItemDiscountSelectionDialog dialog = new TicketItemDiscountSelectionDialog(ticket, discount);
 					dialog.open();
+					if (!dialog.isCanceled()) {
+						List<TicketItem> selectedTicketItems = dialog.getSelectedTicketItems();
+						for (TicketItem ticketItem : ticket.getTicketItems()) {
+							if (selectedTicketItems.contains(ticketItem)) {
+								TicketItemDiscount ticketItemDiscount = MenuItem.convertToTicketItemDiscount(discount, ticketItem);
+								ticketItem.addTodiscounts(ticketItemDiscount);
+							}
+						}
+						setSelected(true);
+					}
+					else {
+						setSelected(false);
+					}
 				}
 				else {
 					if (discount.isModifiable()) {

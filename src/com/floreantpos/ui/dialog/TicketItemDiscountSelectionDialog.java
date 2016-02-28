@@ -29,7 +29,6 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -47,7 +46,6 @@ import com.floreantpos.model.Discount;
 import com.floreantpos.model.MenuItem;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketItem;
-import com.floreantpos.model.TicketItemDiscount;
 import com.floreantpos.model.dao.MenuItemDAO;
 import com.floreantpos.swing.POSToggleButton;
 import com.floreantpos.swing.PosButton;
@@ -65,8 +63,7 @@ public class TicketItemDiscountSelectionDialog extends POSDialog {
 	private Ticket ticket;
 	private Discount discount;
 
-	private List<TicketItemDiscount> addedTicketItemDiscount = new ArrayList<TicketItemDiscount>();
-	private List<TicketItemButton> addedTicketItemList = new ArrayList<TicketItemButton>();
+	private List<TicketItem> addedTicketItems = new ArrayList<TicketItem>();
 
 	public TicketItemDiscountSelectionDialog(Ticket ticket, Discount discount) {
 		this.ticket = ticket;
@@ -97,7 +94,7 @@ public class TicketItemDiscountSelectionDialog extends POSDialog {
 		PosButton btnCancel = new PosButton(POSConstants.CANCEL.toUpperCase());
 		btnCancel.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				addedTicketItemList.clear();
+				addedTicketItems.clear();
 				setCanceled(true);
 				dispose();
 			}
@@ -137,13 +134,7 @@ public class TicketItemDiscountSelectionDialog extends POSDialog {
 				if (menuItem != null) {
 					if (discount.isApplyToAll() || menuItems.contains(menuItem)) {
 						TicketItemButton ticketItemButton = new TicketItemButton(ticketItem);
-						for (TicketItemDiscount ticketItemDiscount : ticketItem.getDiscounts()) {
-							if (discount.getId().intValue() == ticketItemDiscount.getDiscountId().intValue()) {
-								ticketItemButton.setSelected(true);
-							}
-						}
 						buttonsPanel.add(ticketItemButton);
-						addedTicketItemList.add(ticketItemButton);
 					}
 				}
 			}
@@ -156,23 +147,21 @@ public class TicketItemDiscountSelectionDialog extends POSDialog {
 	}
 
 	protected void doApplyDiscount() {
-		if (addedTicketItemDiscount.isEmpty()) {
-			POSMessageDialog.showMessage("Please select one item");
+		if (addedTicketItems.isEmpty()) {
+			POSMessageDialog.showMessage("Please select one or more item.");
 			return;
-		}
-		for (TicketItemButton ticketItemButton : addedTicketItemList) {
-			TicketItem ticketItem = ticketItemButton.getTicketItem();
-			ticketItem.getDiscounts().clear();
-			ticketItem.getDiscounts().addAll(ticketItemButton.ticketItemDiscounts);
 		}
 		setCanceled(false);
 		dispose();
 	}
 
+	public List<TicketItem> getSelectedTicketItems() {
+		return addedTicketItems;
+	}
+
 	private class TicketItemButton extends POSToggleButton implements ActionListener {
 		private static final int BUTTON_SIZE = 119;
 		TicketItem ticketItem;
-		List<TicketItemDiscount> ticketItemDiscounts = new ArrayList<TicketItemDiscount>();
 
 		TicketItemButton(TicketItem ticketItem) {
 			this.ticketItem = ticketItem;
@@ -180,37 +169,18 @@ public class TicketItemDiscountSelectionDialog extends POSDialog {
 			setFocusPainted(true);
 			setVerticalTextPosition(SwingConstants.BOTTOM);
 			setHorizontalTextPosition(SwingConstants.CENTER);
-			ticketItemDiscounts.addAll(ticketItem.getDiscounts());
-
 			setText("<html><body><center>#" + ticketItem.getName() + "</center></body></html>"); //$NON-NLS-1$ //$NON-NLS-2$ 
 
 			setPreferredSize(new Dimension(BUTTON_SIZE, TerminalConfig.getMenuItemButtonHeight()));
 			addActionListener(this);
 		}
 
-		public TicketItem getTicketItem() {
-			return ticketItem;
-		}
-
 		public void actionPerformed(ActionEvent e) {
 			if (isSelected()) {
-				TicketItemDiscount ticketItemDiscount = MenuItem.convertToTicketItemDiscount(discount, ticketItem);
-				ticketItemDiscounts.add(ticketItemDiscount);
-				addedTicketItemDiscount.add(ticketItemDiscount);
+				addedTicketItems.add(ticketItem);
 			}
 			else {
-				for (Iterator iterator = ticketItemDiscounts.iterator(); iterator.hasNext();) {
-					TicketItemDiscount ticketItemDiscount = (TicketItemDiscount) iterator.next();
-					if (ticketItemDiscount.getDiscountId().intValue() == discount.getId().intValue()) {
-						iterator.remove();
-					}
-					if (addedTicketItemDiscount.contains(ticketItemDiscount)) {
-						addedTicketItemDiscount.remove(ticketItemDiscount);
-					}
-					else {
-						addedTicketItemDiscount.add(ticketItemDiscount);
-					}
-				}
+				addedTicketItems.remove(ticketItem);
 			}
 		}
 	}
