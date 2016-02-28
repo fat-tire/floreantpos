@@ -227,7 +227,6 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		jScrollPane3 = new javax.swing.JScrollPane();
 		shiftTable = new javax.swing.JTable();
 		priceTable = new javax.swing.JTable();
-		lTerminal = new JLabel(Messages.getString("MenuItemForm.3")); //$NON-NLS-1$
 
 		lgroup.setText(Messages.getString("LABEL_GROUP")); //$NON-NLS-1$
 
@@ -651,7 +650,6 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 	private FixedLengthTextField tfTranslatedName;
 	private JLabel lblSortOrder;
 	private IntegerTextField tfSortOrder;
-	private JLabel lTerminal;
 	//private CheckBoxList terminalList;
 	private CheckBoxList orderList;
 
@@ -993,7 +991,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 	class PriceByOrderTypeTableModel extends AbstractTableModel {
 		List<String> propertiesKey = new ArrayList<String>();
 
-		String[] cn = { "ITEM", "ORDER TYPE", "PRICE", "TAX" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+		String[] cn = { "ORDER TYPE", "PRICE", "TAX" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 
 		PriceByOrderTypeTableModel(Map<String, String> properties) {
 
@@ -1090,14 +1088,12 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 			switch (columnIndex) {
 
 				case 0:
-					return menuItem.getName();
-				case 1:
 					key = key.replaceAll("_PRICE", ""); //$NON-NLS-1$ //$NON-NLS-2$
 					key = key.replaceAll("_", " "); //$NON-NLS-1$ //$NON-NLS-2$
 					return key;
-				case 2:
+				case 1:
 					return menuItem.getProperty(key);
-				case 3:
+				case 2:
 					key = key.replaceAll("_PRICE", "_TAX"); //$NON-NLS-1$ //$NON-NLS-2$
 					return menuItem.getProperty(key);
 			}

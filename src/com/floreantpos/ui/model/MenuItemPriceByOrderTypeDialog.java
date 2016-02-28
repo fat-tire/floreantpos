@@ -40,7 +40,6 @@ import com.floreantpos.Messages;
 import com.floreantpos.model.MenuItem;
 import com.floreantpos.model.OrderType;
 import com.floreantpos.model.Tax;
-import com.floreantpos.model.dao.MenuItemDAO;
 import com.floreantpos.model.dao.TaxDAO;
 import com.floreantpos.ui.dialog.POSDialog;
 import com.floreantpos.ui.dialog.POSMessageDialog;
@@ -118,8 +117,6 @@ public class MenuItemPriceByOrderTypeDialog extends POSDialog {
 			return;
 
 		try {
-			MenuItemDAO dao = new MenuItemDAO();
-			dao.saveOrUpdate(menuItem);
 			setCanceled(false);
 			dispose();
 		} catch (Exception e) {
