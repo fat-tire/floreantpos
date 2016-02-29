@@ -75,7 +75,6 @@ public class DiscountSelectionDialog extends POSDialog implements ActionListener
 
 	private HashMap<Integer, TicketDiscount> addedTicketDiscounts = new HashMap<Integer, TicketDiscount>();
 	private List<Integer> clearTicketItemDiscounts = new ArrayList<Integer>();
-
 	private HashMap<Integer, DiscountButton> buttonMap = new HashMap<Integer, DiscountButton>();
 
 	private Ticket ticket;
@@ -130,6 +129,7 @@ public class DiscountSelectionDialog extends POSDialog implements ActionListener
 		btnCancel.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				addedTicketDiscounts.clear();
+				buttonMap.clear();
 				setCanceled(true);
 				dispose();
 			}
@@ -245,8 +245,8 @@ public class DiscountSelectionDialog extends POSDialog implements ActionListener
 		}
 
 		if (discount.getQualificationType() == Discount.QUALIFICATION_TYPE_ITEM) {
-			TicketItemDiscountSelectionDialog dialog = new TicketItemDiscountSelectionDialog(ticket, discount);
-			dialog.open();
+			DiscountButton discountButton = buttonMap.get(discount.getId());
+			applyDiscountToTicketItems(discountButton);
 		}
 		else {
 			if (discount.isModifiable()) {
@@ -276,8 +276,8 @@ public class DiscountSelectionDialog extends POSDialog implements ActionListener
 		}
 
 		if (discount.getQualificationType() == Discount.QUALIFICATION_TYPE_ITEM) {
-			TicketItemDiscountSelectionDialog dialog = new TicketItemDiscountSelectionDialog(ticket, discount);
-			dialog.open();
+			DiscountButton discountButton = buttonMap.get(discount.getId());
+			applyDiscountToTicketItems(discountButton);
 		}
 		else {
 			if (discount.isModifiable()) {
@@ -325,13 +325,10 @@ public class DiscountSelectionDialog extends POSDialog implements ActionListener
 		}
 
 		for (TicketItem ticketItem : ticket.getTicketItems()) {
-			if (ticket.getDiscounts() != null) {
-				for (TicketItemDiscount ticketItemDiscount : ticketItem.getDiscounts()) {
-					DiscountButton ticketDiscountButton = buttonMap.get(ticketItemDiscount.getDiscountId());
-
-					if (ticketDiscountButton != null) {
-						ticketDiscountButton.setSelected(true);
-					}
+			for (TicketItemDiscount ticketItemDiscount : ticketItem.getDiscounts()) {
+				DiscountButton ticketDiscountButton = buttonMap.get(ticketItemDiscount.getDiscountId());
+				if (ticketDiscountButton != null) {
+					ticketDiscountButton.setSelected(true);
 				}
 			}
 		}
@@ -363,6 +360,14 @@ public class DiscountSelectionDialog extends POSDialog implements ActionListener
 			}
 		}
 
+		for (TicketItem ticketItem : ticket.getTicketItems()) {
+			for (DiscountButton discountButton : buttonMap.values()) {
+				if (discountButton.ticketItems.contains(ticketItem)) {
+					ticketItem.getDiscounts().add(MenuItem.convertToTicketItemDiscount(discountButton.discount, ticketItem));
+				}
+			}
+		}
+
 		setCanceled(false);
 		dispose();
 	}
@@ -378,23 +383,19 @@ public class DiscountSelectionDialog extends POSDialog implements ActionListener
 	private class DiscountButton extends POSToggleButton implements ActionListener {
 		private static final int BUTTON_SIZE = 119;
 		Discount discount;
+		List<TicketItem> ticketItems;
 
 		DiscountButton(Discount discount) {
 			this.discount = discount;
-			setFocusable(false);
-			setFocusPainted(false);
+			setFocusable(true);
+			setFocusPainted(true);
 			setVerticalTextPosition(SwingConstants.BOTTOM);
 			setHorizontalTextPosition(SwingConstants.CENTER);
 			setFont(getFont().deriveFont(18.0f));
 
-			setText("<html><body><center>" + discount.getName() + "<br></center></body></html>"); //$NON-NLS-1$ //$NON-NLS-2$
-			
-			if(discount.getQualificationType() == Discount.QUALIFICATION_TYPE_ITEM) {
-				setBackground(Color.CYAN);
-			}
-			else {
-				setBackground(Color.MAGENTA);
-			}
+			ticketItems = new ArrayList<TicketItem>();
+
+			setText("<html><body><center>" + discount.getName() + "<br></center></body></html>"); //$NON-NLS-1$ //$NON-NLS-2$ 
 
 			setPreferredSize(new Dimension(BUTTON_SIZE, TerminalConfig.getMenuItemButtonHeight()));
 			addActionListener(this);
@@ -403,21 +404,7 @@ public class DiscountSelectionDialog extends POSDialog implements ActionListener
 		public void actionPerformed(ActionEvent e) {
 			if (isSelected()) {
 				if (discount.getQualificationType() == Discount.QUALIFICATION_TYPE_ITEM) {
-					TicketItemDiscountSelectionDialog dialog = new TicketItemDiscountSelectionDialog(ticket, discount);
-					dialog.open();
-					if (!dialog.isCanceled()) {
-						List<TicketItem> selectedTicketItems = dialog.getSelectedTicketItems();
-						for (TicketItem ticketItem : ticket.getTicketItems()) {
-							if (selectedTicketItems.contains(ticketItem)) {
-								TicketItemDiscount ticketItemDiscount = MenuItem.convertToTicketItemDiscount(discount, ticketItem);
-								ticketItem.addTodiscounts(ticketItemDiscount);
-							}
-						}
-						setSelected(true);
-					}
-					else {
-						setSelected(false);
-					}
+					applyDiscountToTicketItems(this);
 				}
 				else {
 					if (discount.isModifiable()) {
@@ -438,6 +425,18 @@ public class DiscountSelectionDialog extends POSDialog implements ActionListener
 					addedTicketDiscounts.remove(discount.getId());
 				}
 			}
+		}
+	}
+
+	private void applyDiscountToTicketItems(DiscountButton discountButton) {
+		TicketItemDiscountSelectionDialog dialog = new TicketItemDiscountSelectionDialog(ticket, discountButton.discount);
+		dialog.open();
+		if (!dialog.isCanceled()) {
+			discountButton.ticketItems = dialog.getSelectedTicketItems();
+			discountButton.setSelected(true);
+		}
+		else {
+			discountButton.setSelected(false);
 		}
 	}
 }
