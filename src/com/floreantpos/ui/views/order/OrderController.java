@@ -132,18 +132,31 @@ public class OrderController implements OrderListener, CategorySelectionListener
 			List<TicketItemModifierGroup> ticketItemModifierGroups = new ArrayList<TicketItemModifierGroup>();
 			List<TicketItemModifier> addOns = new ArrayList<TicketItemModifier>();
 
-			ticketItemModifierGroups.addAll(ticketItem.getTicketItemModifierGroups());
-			addOns.addAll(ticketItem.getAddOns());
+			if (ticketItem.getTicketItemModifierGroups() != null) {
+				ticketItemModifierGroups.addAll(ticketItem.getTicketItemModifierGroups());
+			}
+
+			if (ticketItem.getAddOns() != null) {
+				addOns.addAll(ticketItem.getAddOns());
+			}
 
 			ModifierSelectionDialog dialog = new ModifierSelectionDialog(new ModifierSelectionModel(ticketItem, menuItem));
 			dialog.open();
 
 			if (dialog.isCanceled()) {
-				if (!CollectionUtils.isEqualCollection(ticketItem.getTicketItemModifierGroups(), ticketItemModifierGroups)) {
+				List<TicketItemModifierGroup> addedTicketItemModifierGroup = ticketItem.getTicketItemModifierGroups();
+				if (addedTicketItemModifierGroup == null) {
+					addedTicketItemModifierGroup = new ArrayList<TicketItemModifierGroup>();
+				}
+				if (!CollectionUtils.isEqualCollection(addedTicketItemModifierGroup, ticketItemModifierGroups)) {
 					ticketItem.getTicketItemModifierGroups().clear();
 					ticketItem.getTicketItemModifierGroups().addAll(ticketItemModifierGroups);
 				}
-				if (!CollectionUtils.isEqualCollection(ticketItem.getAddOns(), addOns)) {
+				List<TicketItemModifier> addedAddOns = ticketItem.getAddOns();
+				if (addedAddOns == null) {
+					addedAddOns = new ArrayList<TicketItemModifier>();
+				}
+				if (!CollectionUtils.isEqualCollection(addedAddOns, addOns)) {
 					ticketItem.getAddOns().clear();
 					ticketItem.getAddOns().addAll(addOns);
 				}
@@ -168,18 +181,31 @@ public class OrderController implements OrderListener, CategorySelectionListener
 			List<TicketItemModifierGroup> ticketItemModifierGroups = new ArrayList<TicketItemModifierGroup>();
 			List<TicketItemModifier> addOns = new ArrayList<TicketItemModifier>();
 
-			ticketItemModifierGroups.addAll(ticketItem.getTicketItemModifierGroups());
-			addOns.addAll(ticketItem.getAddOns());
+			if (ticketItem.getTicketItemModifierGroups() != null) {
+				ticketItemModifierGroups.addAll(ticketItem.getTicketItemModifierGroups());
+			}
+
+			if (ticketItem.getAddOns() != null) {
+				addOns.addAll(ticketItem.getAddOns());
+			}
 
 			ModifierSelectionDialog dialog = new ModifierSelectionDialog(new ModifierSelectionModel(ticketItem, menuItem));
 			dialog.open();
 
 			if (dialog.isCanceled()) {
-				if (!CollectionUtils.isEqualCollection(ticketItem.getTicketItemModifierGroups(), ticketItemModifierGroups)) {
+				List<TicketItemModifierGroup> addedTicketItemModifierGroup = ticketItem.getTicketItemModifierGroups();
+				if (addedTicketItemModifierGroup == null) {
+					addedTicketItemModifierGroup = new ArrayList<TicketItemModifierGroup>();
+				}
+				if (!CollectionUtils.isEqualCollection(addedTicketItemModifierGroup, ticketItemModifierGroups)) {
 					ticketItem.getTicketItemModifierGroups().clear();
 					ticketItem.getTicketItemModifierGroups().addAll(ticketItemModifierGroups);
 				}
-				if (!CollectionUtils.isEqualCollection(ticketItem.getAddOns(), addOns)) {
+				List<TicketItemModifier> addedAddOns = ticketItem.getAddOns();
+				if (addedAddOns == null) {
+					addedAddOns = new ArrayList<TicketItemModifier>();
+				}
+				if (!CollectionUtils.isEqualCollection(addedAddOns, addOns)) {
 					ticketItem.getAddOns().clear();
 					ticketItem.getAddOns().addAll(addOns);
 				}
