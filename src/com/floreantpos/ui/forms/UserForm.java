@@ -78,10 +78,8 @@ public class UserForm extends BeanEditor {
 		jLabel4 = new javax.swing.JLabel();
 		jLabel9 = new javax.swing.JLabel();
 		jLabel10 = new javax.swing.JLabel();
-		tfPassword1 = new javax.swing.JPasswordField(new FixedLengthDocument(4), "", 10); //$NON-NLS-1$
-		tfPassword1.setColumns(16);
-		tfPassword2 = new javax.swing.JPasswordField(new FixedLengthDocument(4), "", 10); //$NON-NLS-1$
-		tfPassword2.setColumns(16);
+		tfPassword1 = new javax.swing.JPasswordField(new FixedLengthDocument(16), "", 10); //$NON-NLS-1$
+		tfPassword2 = new javax.swing.JPasswordField(new FixedLengthDocument(16), "", 10); //$NON-NLS-1$
 		tfId = new FixedLengthTextField();
 		tfSsn = new FixedLengthTextField();
 		tfSsn.setLength(30);
