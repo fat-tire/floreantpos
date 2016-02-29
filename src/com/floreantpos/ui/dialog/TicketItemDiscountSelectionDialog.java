@@ -169,7 +169,7 @@ public class TicketItemDiscountSelectionDialog extends POSDialog {
 			setFocusPainted(true);
 			setVerticalTextPosition(SwingConstants.BOTTOM);
 			setHorizontalTextPosition(SwingConstants.CENTER);
-			setText("<html><body><center>#" + ticketItem.getName() + "</center></body></html>"); //$NON-NLS-1$ //$NON-NLS-2$ 
+			setText("<html><body><center>" + ticketItem.getName() + "</center></body></html>"); //$NON-NLS-1$ //$NON-NLS-2$ 
 
 			setPreferredSize(new Dimension(BUTTON_SIZE, TerminalConfig.getMenuItemButtonHeight()));
 			addActionListener(this);

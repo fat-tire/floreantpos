@@ -17,7 +17,11 @@
  */
 package com.floreantpos.ui.views.order;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
+import org.apache.commons.collections.CollectionUtils;
 
 import com.floreantpos.Messages;
 import com.floreantpos.POSConstants;
@@ -32,6 +36,7 @@ import com.floreantpos.model.OrderType;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.TicketItemModifier;
+import com.floreantpos.model.TicketItemModifierGroup;
 import com.floreantpos.model.User;
 import com.floreantpos.model.dao.ActionHistoryDAO;
 import com.floreantpos.model.dao.MenuItemDAO;
@@ -124,9 +129,26 @@ public class OrderController implements OrderListener, CategorySelectionListener
 			MenuItem menuItem = MenuItemDAO.getInstance().get(ticketItem.getItemId());
 			menuItem = MenuItemDAO.getInstance().initialize(menuItem);
 
+			List<TicketItemModifierGroup> ticketItemModifierGroups = new ArrayList<TicketItemModifierGroup>();
+			List<TicketItemModifier> addOns = new ArrayList<TicketItemModifier>();
+
+			ticketItemModifierGroups.addAll(ticketItem.getTicketItemModifierGroups());
+			addOns.addAll(ticketItem.getAddOns());
+
 			ModifierSelectionDialog dialog = new ModifierSelectionDialog(new ModifierSelectionModel(ticketItem, menuItem));
 			dialog.open();
-			OrderView.getInstance().getTicketView().updateView();
+
+			if (dialog.isCanceled()) {
+				if (!CollectionUtils.isEqualCollection(ticketItem.getTicketItemModifierGroups(), ticketItemModifierGroups)) {
+					ticketItem.getTicketItemModifierGroups().clear();
+					ticketItem.getTicketItemModifierGroups().addAll(ticketItemModifierGroups);
+				}
+				if (!CollectionUtils.isEqualCollection(ticketItem.getAddOns(), addOns)) {
+					ticketItem.getAddOns().clear();
+					ticketItem.getAddOns().addAll(addOns);
+				}
+			}
+			//OrderView.getInstance().getTicketView().updateView();
 		} catch (Exception e) {
 			POSMessageDialog.showError(Application.getPosWindow(), e.getMessage(), e);
 		}
@@ -143,9 +165,26 @@ public class OrderController implements OrderListener, CategorySelectionListener
 			MenuItem menuItem = MenuItemDAO.getInstance().get(ticketItem.getItemId());
 			menuItem = MenuItemDAO.getInstance().initialize(menuItem);
 
+			List<TicketItemModifierGroup> ticketItemModifierGroups = new ArrayList<TicketItemModifierGroup>();
+			List<TicketItemModifier> addOns = new ArrayList<TicketItemModifier>();
+
+			ticketItemModifierGroups.addAll(ticketItem.getTicketItemModifierGroups());
+			addOns.addAll(ticketItem.getAddOns());
+
 			ModifierSelectionDialog dialog = new ModifierSelectionDialog(new ModifierSelectionModel(ticketItem, menuItem));
 			dialog.open();
-			OrderView.getInstance().getTicketView().updateView();
+
+			if (dialog.isCanceled()) {
+				if (!CollectionUtils.isEqualCollection(ticketItem.getTicketItemModifierGroups(), ticketItemModifierGroups)) {
+					ticketItem.getTicketItemModifierGroups().clear();
+					ticketItem.getTicketItemModifierGroups().addAll(ticketItemModifierGroups);
+				}
+				if (!CollectionUtils.isEqualCollection(ticketItem.getAddOns(), addOns)) {
+					ticketItem.getAddOns().clear();
+					ticketItem.getAddOns().addAll(addOns);
+				}
+			}
+			//OrderView.getInstance().getTicketView().updateView();
 		} catch (Exception e) {
 			POSMessageDialog.showError(Application.getPosWindow(), e.getMessage(), e);
 		}
