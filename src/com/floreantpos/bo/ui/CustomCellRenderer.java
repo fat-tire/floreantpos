@@ -35,6 +35,13 @@ public class CustomCellRenderer extends DefaultTableCellRenderer {
 	private Border selectedBorder = null;
 
 	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+		if (selectedBorder == null) {
+			selectedBorder = BorderFactory.createMatteBorder(5, 5, 5, 5, table.getSelectionBackground());
+		}
+		if (unselectedBorder == null) {
+			unselectedBorder = BorderFactory.createMatteBorder(5, 5, 5, 5, table.getBackground());
+		}
+
 		if (value instanceof byte[]) {
 
 			byte[] imageData = (byte[]) value;
@@ -43,7 +50,15 @@ public class CustomCellRenderer extends DefaultTableCellRenderer {
 			if (imageData != null) {
 				table.setRowHeight(row, 120);
 			}
-			return new JLabel(image);
+
+			JLabel l = new JLabel(image);
+			if (isSelected) {
+				l.setBorder(selectedBorder);
+			}
+			else {
+				l.setBorder(unselectedBorder);
+			}
+			return l;
 		}
 
 		if (value instanceof Color) {
@@ -53,20 +68,14 @@ public class CustomCellRenderer extends DefaultTableCellRenderer {
 			l.setOpaque(true);
 			l.setBackground(newColor);
 			if (isSelected) {
-				if (selectedBorder == null) {
-					selectedBorder = BorderFactory.createMatteBorder(5, 5, 5, 5, table.getSelectionBackground());
-				}
 				l.setBorder(selectedBorder);
 			}
 			else {
-				if (unselectedBorder == null) {
-					unselectedBorder = BorderFactory.createMatteBorder(5, 5, 5, 5, table.getBackground());
-				}
 				l.setBorder(unselectedBorder);
 			}
 			return l;
 		}
-		
+
 		if (value instanceof Date) {
 			String pattern = "MM/dd hh:mm a";
 			SimpleDateFormat format = new SimpleDateFormat(pattern);
