@@ -28,16 +28,12 @@ import javax.swing.border.EmptyBorder;
 
 import net.miginfocom.swing.MigLayout;
 
-import org.apache.commons.lang.SerializationUtils;
-
 import com.floreantpos.Messages;
 import com.floreantpos.POSConstants;
-import com.floreantpos.main.Application;
 import com.floreantpos.model.OrderType;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.ui.dialog.POSDialog;
-import com.floreantpos.util.NumberUtil;
 
 public class OrderTypeSelectionDialog2 extends POSDialog {
 	Ticket ticket;
@@ -49,7 +45,6 @@ public class OrderTypeSelectionDialog2 extends POSDialog {
 		this.ticket = ticket;
 
 		initializeComponent();
-		intializeData();
 	}
 
 	private void initializeComponent() {
@@ -60,7 +55,7 @@ public class OrderTypeSelectionDialog2 extends POSDialog {
 		JPanel orderTypePanel = new JPanel(new GridLayout(1, 0, 10, 10));
 		orderTypePanel.setBorder(new EmptyBorder(10, 10, 10, 10));
 
-		btnForHere = new PosButton(OrderType.FOR_HERE.toString());
+		btnForHere = new PosButton("For Here");
 		btnForHere.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -71,7 +66,7 @@ public class OrderTypeSelectionDialog2 extends POSDialog {
 		});
 		orderTypePanel.add(btnForHere);
 
-		btnToGo = new PosButton(OrderType.TAKE_OUT.toString());
+		btnToGo = new PosButton("To Go");
 		btnToGo.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -98,23 +93,6 @@ public class OrderTypeSelectionDialog2 extends POSDialog {
 		add(actionPanel, BorderLayout.SOUTH);
 
 		setSize(400, 250);
-	}
-
-	private void intializeData() {
-
-		Ticket ticketToGo = (Ticket) SerializationUtils.clone(ticket);
-		ticketToGo.setTicketType(OrderType.TAKE_OUT.name());
-		ticketToGo.updateTicketItemPriceByOrderType(); 
-		ticketToGo.calculatePrice();
-		ticketToGo.calculatePrice();
-		btnToGo.setText("To Go  " + Application.getCurrencySymbol() + NumberUtil.formatNumber(ticketToGo.getTotalAmount()));
-
-		Ticket ticketForHere = (Ticket) SerializationUtils.clone(ticket);
-		ticketForHere.setTicketType(OrderType.FOR_HERE.name());
-		ticketForHere.updateTicketItemPriceByOrderType(); 
-		ticketForHere.calculatePrice();
-
-		btnForHere.setText("For Here  " + Application.getCurrencySymbol() + NumberUtil.formatNumber(ticketForHere.getTotalAmount()));
 	}
 
 	public OrderType getSelectedOrderType() {
