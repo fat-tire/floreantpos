@@ -26,6 +26,7 @@
 
 		<property name="imageData" column="IMAGE" not-null="false" type="binary" length="20480" />
 		<property name="showImageOnly" column="SHOW_IMAGE_ONLY" type="java.lang.Boolean" />
+		<property name="fractionalUnit" column="FRACTIONAL_UNIT" type="java.lang.Boolean" />
 
 		<!-- uni-directional many-to-one association to FoodGroup -->
 		<many-to-one class="com.floreantpos.model.MenuGroup" name="parent">

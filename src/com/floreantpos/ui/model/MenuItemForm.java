@@ -227,6 +227,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		jScrollPane3 = new javax.swing.JScrollPane();
 		shiftTable = new javax.swing.JTable();
 		priceTable = new javax.swing.JTable();
+		cbFractionalUnit = new JCheckBox("Fractional Unit");
 
 		lgroup.setText(Messages.getString("LABEL_GROUP")); //$NON-NLS-1$
 
@@ -399,6 +400,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		cbShowTextWithImage.setActionCommand(Messages.getString("MenuItemForm.41")); //$NON-NLS-1$
 		tabGeneral.add(cbShowTextWithImage, "cell 1 11"); //$NON-NLS-1$
 		tabGeneral.add(chkVisible, "cell 1 12"); //$NON-NLS-1$
+		tabGeneral.add(cbFractionalUnit, "cell 1 13"); //$NON-NLS-1$
 
 		/*tabGeneral.add(lTerminal, "cell 2 9,right"); //$NON-NLS-1$
 		terminalList = new CheckBoxList();
@@ -636,6 +638,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 	private JLabel lblImagePreview;
 	private JButton btnClearImage;
 	private JCheckBox cbShowTextWithImage;
+	private JCheckBox cbFractionalUnit;
 	private JLabel lblBuyPrice;
 	private DoubleTextField tfBuyPrice;
 	private JLabel lblKitchenPrinter;
@@ -774,6 +777,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		if (menuItem.getTextColor() != null) {
 			btnTextColor.setForeground(menuItem.getTextColor());
 		}
+		cbFractionalUnit.setSelected(menuItem.isFractionalUnit());
 	}
 
 	@Override
@@ -793,6 +797,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		menuItem.setTax((Tax) cbTax.getSelectedItem());
 		menuItem.setVisible(chkVisible.isSelected());
 		menuItem.setShowImageOnly(cbShowTextWithImage.isSelected());
+		menuItem.setFractionalUnit(cbFractionalUnit.isSelected());
 
 		menuItem.setTranslatedName(tfTranslatedName.getText());
 		menuItem.setSortOrder(tfSortOrder.getInteger());
