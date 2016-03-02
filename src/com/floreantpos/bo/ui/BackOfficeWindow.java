@@ -205,6 +205,8 @@ public class BackOfficeWindow extends javax.swing.JFrame {
 		explorerMenu.add(new CookingInstructionExplorerAction());
 		explorerMenu.add(new TaxExplorerAction());
 		explorerMenu.add(new CustomPaymentBrowserAction());
+		explorerMenu.add(new DrawerPullReportExplorerAction());
+		
 
 		OrderServiceExtension plugin = (OrderServiceExtension) ExtensionManager.getPlugin(OrderServiceExtension.class);
 		if (plugin == null) {
@@ -220,7 +222,6 @@ public class BackOfficeWindow extends javax.swing.JFrame {
 		adminMenu.add(new UserExplorerAction());
 		adminMenu.add(new UserTypeExplorerAction());
 		adminMenu.add(new ViewGratuitiesAction());
-		adminMenu.add(new DrawerPullReportExplorerAction());
 		adminMenu.add(new DataExportAction());
 		adminMenu.add(new DataImportAction());
 		menuBar.add(adminMenu);
