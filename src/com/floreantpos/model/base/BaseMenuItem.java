@@ -16,25 +16,26 @@ import java.io.Serializable;
 public abstract class BaseMenuItem  implements Comparable, Serializable {
 
 	public static String REF = "MenuItem";
-	public static String PROP_SHOW_IMAGE_ONLY = "showImageOnly";
-	public static String PROP_DESCRIPTION = "description";
-	public static String PROP_PRINTER_GROUP = "printerGroup";
+	public static String PROP_UNIT_NAME = "unitName";
+	public static String PROP_BUY_PRICE = "buyPrice";
 	public static String PROP_PARENT = "parent";
+	public static String PROP_BARCODE = "barcode";
+	public static String PROP_DESCRIPTION = "description";
+	public static String PROP_SHOW_IMAGE_ONLY = "showImageOnly";
+	public static String PROP_VISIBLE = "visible";
+	public static String PROP_DISCOUNT_RATE = "discountRate";
 	public static String PROP_SORT_ORDER = "sortOrder";
 	public static String PROP_TAX = "tax";
-	public static String PROP_RECEPIE = "recepie";
-	public static String PROP_DISCOUNT_RATE = "discountRate";
-	public static String PROP_NAME = "name";
-	public static String PROP_TEXT_COLOR_CODE = "textColorCode";
-	public static String PROP_TRANSLATED_NAME = "translatedName";
-	public static String PROP_PRICE = "price";
-	public static String PROP_BARCODE = "barcode";
 	public static String PROP_IMAGE_DATA = "imageData";
 	public static String PROP_FRACTIONAL_UNIT = "fractionalUnit";
-	public static String PROP_VISIBLE = "visible";
-	public static String PROP_ID = "id";
-	public static String PROP_BUY_PRICE = "buyPrice";
+	public static String PROP_NAME = "name";
+	public static String PROP_PRINTER_GROUP = "printerGroup";
+	public static String PROP_TEXT_COLOR_CODE = "textColorCode";
+	public static String PROP_RECEPIE = "recepie";
+	public static String PROP_PRICE = "price";
 	public static String PROP_BUTTON_COLOR_CODE = "buttonColorCode";
+	public static String PROP_ID = "id";
+	public static String PROP_TRANSLATED_NAME = "translatedName";
 
 
 	// constructors
@@ -78,6 +79,7 @@ public abstract class BaseMenuItem  implements Comparable, Serializable {
 	// fields
 		protected java.lang.String name;
 		protected java.lang.String description;
+		protected java.lang.String unitName;
 		protected java.lang.String translatedName;
 		protected java.lang.String barcode;
 		protected java.lang.Double buyPrice;
@@ -102,8 +104,10 @@ public abstract class BaseMenuItem  implements Comparable, Serializable {
 	private java.util.List<com.floreantpos.model.Discount> discounts;
 	private java.util.List<com.floreantpos.model.MenuItemModifierGroup> menuItemModiferGroups;
 	private java.util.List<com.floreantpos.model.Terminal> terminals;
-	private java.util.Map<String, String> properties;
+	private java.util.Map<String,String> properties;
 	private java.util.List<String> orderTypes;
+
+
 
 	/**
 	 * Return the unique identifier of this class
@@ -157,6 +161,23 @@ public abstract class BaseMenuItem  implements Comparable, Serializable {
 	 */
 	public void setDescription (java.lang.String description) {
 		this.description = description;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: UNIT_NAME
+	 */
+	public java.lang.String getUnitName () {
+					return unitName;
+			}
+
+	/**
+	 * Set the value related to the column: UNIT_NAME
+	 * @param unitName the UNIT_NAME value
+	 */
+	public void setUnitName (java.lang.String unitName) {
+		this.unitName = unitName;
 	}
 
 
@@ -545,7 +566,7 @@ public abstract class BaseMenuItem  implements Comparable, Serializable {
 	/**
 	 * Return the value associated with the column: properties
 	 */
-	public java.util.Map<String, String> getProperties() {
+	public java.util.Map<String,String> getProperties () {
 					return properties;
 			}
 
@@ -553,7 +574,7 @@ public abstract class BaseMenuItem  implements Comparable, Serializable {
 	 * Set the value related to the column: properties
 	 * @param properties the properties value
 	 */
-	public void setProperties(java.util.Map<String, String> properties) {
+	public void setProperties (java.util.Map<String,String> properties) {
 		this.properties = properties;
 	}
 
@@ -562,7 +583,7 @@ public abstract class BaseMenuItem  implements Comparable, Serializable {
 	/**
 	 * Return the value associated with the column: orderTypes
 	 */
-	public java.util.List<String> getOrderTypes() {
+	public java.util.List<String> getOrderTypes () {
 					return orderTypes;
 			}
 
@@ -570,7 +591,7 @@ public abstract class BaseMenuItem  implements Comparable, Serializable {
 	 * Set the value related to the column: orderTypes
 	 * @param orderTypes the orderTypes value
 	 */
-	public void setOrderTypes(java.util.List<String> orderTypes) {
+	public void setOrderTypes (java.util.List<String> orderTypes) {
 		this.orderTypes = orderTypes;
 	}
 

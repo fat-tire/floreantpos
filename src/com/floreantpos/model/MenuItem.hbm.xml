@@ -8,6 +8,7 @@
 
 		<property column="NAME" length="120" name="name" not-null="true" type="java.lang.String" />
 		<property column="DESCRIPTION" name="description" type="java.lang.String" length="120"/>
+		<property column="UNIT_NAME" length="20" name="unitName" type="java.lang.String" />
 		<property column="TRANSLATED_NAME" length="120" name="translatedName" not-null="false" type="java.lang.String" />
 		<property column="BARCODE" length="120" name="barcode" unique="false" type="java.lang.String" />
 		<property column="BUY_PRICE" length="52" name="buyPrice" not-null="true" type="java.lang.Double" />
@@ -16,6 +17,7 @@
 		<property column="VISIBLE" name="visible" type="java.lang.Boolean">
 			<meta attribute="defaultValue">true</meta>
 		</property>
+		
 		<property column="SORT_ORDER" name="sortOrder" type="java.lang.Integer" />
 		<property column="BTN_COLOR" name="buttonColorCode" type="java.lang.Integer">
 			<meta attribute="defaultValue">null</meta>
