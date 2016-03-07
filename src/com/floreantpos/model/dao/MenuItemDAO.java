@@ -20,7 +20,8 @@ package com.floreantpos.model.dao;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
+import net.authorize.util.StringUtils;
+
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
@@ -119,13 +120,13 @@ public class MenuItemDAO extends BaseMenuItemDAO {
 		}
 	}
 
-	public List<MenuItem> getSimilar(String itemName, MenuGroup menuGroup) {
+	public List<MenuItem> getMenuItems(String itemName, MenuGroup menuGroup, String selectedType) {
 		Session session = null;
 		Criteria criteria = null;
 		try {
 			session = getSession();
 			criteria = session.createCriteria(MenuItem.class);
-
+			
 			if (menuGroup != null) {
 				criteria.add(Restrictions.eq(MenuItem.PROP_PARENT, menuGroup));
 			}
@@ -134,13 +135,30 @@ public class MenuItemDAO extends BaseMenuItemDAO {
 				criteria.add(Restrictions.ilike(MenuItem.PROP_NAME, itemName.trim(), MatchMode.ANYWHERE));
 			}
 
-			return criteria.list();
+			List<MenuItem> similarItems = criteria.list();
+			
+			if (!selectedType.equals("Select Order Type")) {
+
+				List<MenuItem> selectedMenuItems = new ArrayList();
+
+				List<MenuItem> items = findAll();
+
+				for (MenuItem item : items) {
+
+					List<String> types = item.getOrderTypes();
+
+					if (types.contains(selectedType)) {
+						selectedMenuItems.add(item);
+					}
+				}
+				similarItems.retainAll(selectedMenuItems);
+			}
+
+			return similarItems;
 
 		} catch (Exception e) {
 		}
-
 		return criteria.list();
-
 	}
 
 	public void releaseParent(List<MenuItem> menuItemList) {

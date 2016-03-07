@@ -122,7 +122,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 	private javax.swing.JCheckBox chkVisible;
 	private javax.swing.JLabel lfname;
 	private javax.swing.JLabel lDiscountRate;
-	private javax.swing.JLabel lblUnitPrice;
+	private javax.swing.JLabel lblPrice;
 	private javax.swing.JLabel lgroup;
 	private javax.swing.JLabel lPercentage;
 	private javax.swing.JLabel lTax;
@@ -242,7 +242,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 	 */
 	// <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:initComponents
 	private void initComponents() {
-		lblButtonColor=new JLabel("Button Color");
+		lblButtonColor = new JLabel("Button Color");
 		tabbedPane = new javax.swing.JTabbedPane();
 		tabGeneral = new javax.swing.JPanel();
 		lfname = new javax.swing.JLabel();
@@ -253,8 +253,8 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		cbGroup = new javax.swing.JComboBox();
 		cbGroup.setPreferredSize(new Dimension(198, 0));
 		btnNewGroup = new javax.swing.JButton();
-		lblUnitPrice = new javax.swing.JLabel();
-		lblUnitPrice.setHorizontalAlignment(SwingConstants.TRAILING);
+		lblPrice = new javax.swing.JLabel();
+		lblPrice.setHorizontalAlignment(SwingConstants.TRAILING);
 		tfPrice = new DoubleTextField(20);
 		tfPrice.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
 		tfDescription = new JTextArea(3, 20);
@@ -331,10 +331,10 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		});
 
 		if (Application.getInstance().isPriceIncludesTax()) {
-			lblUnitPrice.setText(Messages.getString("LABEL_SALES_PRICE_INCLUDING_TAX")); //$NON-NLS-1$
+			lblPrice.setText(Messages.getString("LABEL_SALES_PRICE_INCLUDING_TAX")); //$NON-NLS-1$
 		}
 		else {
-			lblUnitPrice.setText(Messages.getString("LABEL_SALES_PRICE_EXCLUDING_TAX")); //$NON-NLS-1$
+			lblPrice.setText(Messages.getString("LABEL_SALES_PRICE_EXCLUDING_TAX")); //$NON-NLS-1$
 		}
 
 		tfPrice.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
@@ -419,11 +419,11 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		JScrollPane scrlDescription = new JScrollPane(tfDescription, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		tabGeneral.add(scrlDescription, "cell 1 3");
 
-		tabGeneral.add(lblUnitPrice, "cell 0 4,right"); //$NON-NLS-1$
-		tabGeneral.add(tfPrice, "cell 1 4,grow"); //$NON-NLS-1$
+		tabGeneral.add(lblUnitName, "cell 0 4,right"); //$NON-NLS-1$
+		tabGeneral.add(tfUnitName, "cell 1 4,grow"); //$NON-NLS-1$
 
-		tabGeneral.add(lblUnitName, "cell 0 5,right"); //$NON-NLS-1$
-		tabGeneral.add(tfUnitName, "cell 1 5,grow"); //$NON-NLS-1$
+		tabGeneral.add(lblPrice, "cell 0 5,right"); //$NON-NLS-1$
+		tabGeneral.add(tfPrice, "cell 1 5,grow"); //$NON-NLS-1$
 
 		tabGeneral.add(lblBarcode, "cell 0 6,right"); //$NON-NLS-1$
 		tabGeneral.add(tfBarcode, "cell 1 6,grow"); //$NON-NLS-1$
@@ -440,39 +440,45 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		tabGeneral.add(lTax, "cell 2 2,right"); //$NON-NLS-1$
 		tabGeneral.add(cbTax, "cell 3 2"); //$NON-NLS-1$
 		tabGeneral.add(btnNewTax, "cell 3 2,grow"); //$NON-NLS-1$
-		
-		
 
 		tabGeneral.add(lblButtonColor, "cell 2 3,right"); //$NON-NLS-1$
 		tabGeneral.add(btnButtonColor, "cell 3 3,grow"); //$NON-NLS-1$
-		
+
 		tabGeneral.add(lblTextColor, "cell 2 4,right"); //$NON-NLS-1$
 		tabGeneral.add(btnTextColor, "cell 3 4 3 5"); //$NON-NLS-1$
 		btnTextColor.setPreferredSize(new Dimension(228, 50));
-		
+
 		tabGeneral.add(lgroup, "cell 2 6,right"); //$NON-NLS-1$
 		tabGeneral.add(cbGroup, "cell 3 6"); //$NON-NLS-1$
 		tabGeneral.add(btnNewGroup, "cell 3 6"); //$NON-NLS-1$
 
 		tabGeneral.add(new JLabel("OrderType"), "cell 2 7,right"); //$NON-NLS-1$
 		orderList = new CheckBoxList();
-//		List<String> orderListM = new ArrayList();
-//		orderListM.add(OrderType.DINE_IN.toString());
-//		orderListM.add(OrderType.BAR_TAB.toString());
-//		orderListM.add(OrderType.DRIVE_THRU.toString());
-//		orderListM.add(OrderType.HOME_DELIVERY.toString());
-//		orderListM.add(OrderType.PICKUP.toString());
-//		orderListM.add(OrderType.RETAIL.toString());
-//		orderListM.add(OrderType.TAKE_OUT.toString());
+		
+		List<String> orderListM = new ArrayList();
+		List<OrderType> orderTypes = Application.getInstance().getOrderTypes();
 
-//		orderList.setModel(orderListM);
+		for (OrderType orderType : orderTypes) {
+			orderListM.add(orderType.getName());
+		}
+		orderList.setModel(orderListM);
+		//		List<String> orderListM = new ArrayList();
+		//		orderListM.add(OrderType.DINE_IN.toString());
+		//		orderListM.add(OrderType.BAR_TAB.toString());
+		//		orderListM.add(OrderType.DRIVE_THRU.toString());
+		//		orderListM.add(OrderType.HOME_DELIVERY.toString());
+		//		orderListM.add(OrderType.PICKUP.toString());
+		//		orderListM.add(OrderType.RETAIL.toString());
+		//		orderListM.add(OrderType.TAKE_OUT.toString());
+
+		//		orderList.setModel(orderListM);
 
 		JScrollPane orderCheckBoxList = new JScrollPane(orderList);
 		orderCheckBoxList.setPreferredSize(new Dimension(228, 100));
 		tabGeneral.add(orderCheckBoxList, "cell 3 7 3 10"); //$NON-NLS-1$
 
 		add(tabbedPane);
-
+		//TODO: 
 		addRecepieExtension();
 
 		btnButtonColor.addActionListener(new ActionListener() {
@@ -728,12 +734,13 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		}
 
 		//	terminalList.selectItems(menuItem.getTerminals());
-		//orderList.selectItems(menuItem.getOrderTypes());
+		orderList.selectItems(menuItem.getOrderTypes());
 		tfName.setText(menuItem.getName());
 		tfDescription.setText(menuItem.getDescription());
 		tfTranslatedName.setText(menuItem.getTranslatedName());
 		tfBarcode.setText(menuItem.getBarcode());
 		tfPrice.setText(String.valueOf(menuItem.getPrice()));
+		tfUnitName.setText(menuItem.getUnitName());
 		tfDiscountRate.setText(String.valueOf(menuItem.getDiscountRate()));
 		chkVisible.setSelected(menuItem.isVisible());
 		cbShowTextWithImage.setSelected(menuItem.isShowImageOnly());
@@ -777,6 +784,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		menuItem.setBarcode(tfBarcode.getText());
 		menuItem.setParent((MenuGroup) cbGroup.getSelectedItem());
 		menuItem.setPrice(Double.valueOf(tfPrice.getText()));
+		menuItem.setUnitName(tfUnitName.getText());
 		menuItem.setTax((Tax) cbTax.getSelectedItem());
 		menuItem.setVisible(chkVisible.isSelected());
 		menuItem.setShowImageOnly(cbShowTextWithImage.isSelected());

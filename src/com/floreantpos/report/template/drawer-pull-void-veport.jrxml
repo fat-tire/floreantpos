@@ -25,14 +25,21 @@
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="16" splitType="Stretch">
+		<band height="27" splitType="Stretch">
 			<staticText>
-				<reportElement x="0" y="0" width="224" height="12"/>
+				<reportElement x="0" y="15" width="224" height="12"/>
 				<box leftPadding="2" rightPadding="2"/>
 				<textElement textAlignment="Center">
 					<font size="9" isBold="true"/>
 				</textElement>
 				<text><![CDATA[VOID/REFUNDS (WITHOUT TAX)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="67" y="0" width="100" height="15"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[EXCEPTIONS]]></text>
 			</staticText>
 		</band>
 	</title>

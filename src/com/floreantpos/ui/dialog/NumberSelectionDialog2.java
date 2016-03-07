@@ -49,7 +49,7 @@ public class NumberSelectionDialog2 extends POSDialog implements ActionListener 
 	public NumberSelectionDialog2() {
 		init();
 	}
-	
+
 	public NumberSelectionDialog2(Frame parent) {
 		super(parent, true);
 		init();
@@ -302,6 +302,21 @@ public class NumberSelectionDialog2 extends POSDialog implements ActionListener 
 
 		if (dialog.isCanceled()) {
 			return Double.NaN;
+		}
+
+		return dialog.getValue();
+	}
+
+	public static double takeDoubleInput(String title, double initialAmount) {
+		NumberSelectionDialog2 dialog = new NumberSelectionDialog2();
+		dialog.setFloatingPoint(true);
+		dialog.setTitle(title);
+		dialog.setValue(initialAmount);
+		dialog.pack();
+		dialog.open();
+
+		if (dialog.isCanceled()) {
+			return -1;
 		}
 
 		return dialog.getValue();

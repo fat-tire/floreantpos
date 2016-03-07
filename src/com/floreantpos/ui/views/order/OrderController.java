@@ -40,6 +40,7 @@ import com.floreantpos.model.dao.MenuItemDAO;
 import com.floreantpos.model.dao.ShopTableDAO;
 import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.model.dao.UserDAO;
+import com.floreantpos.ui.dialog.NumberSelectionDialog2;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.views.order.actions.CategorySelectionListener;
 import com.floreantpos.ui.views.order.actions.GroupSelectionListener;
@@ -76,7 +77,20 @@ public class OrderController implements OrderListener, CategorySelectionListener
 		MenuItemDAO dao = new MenuItemDAO();
 		menuItem = dao.initialize(menuItem);
 
-		TicketItem ticketItem = menuItem.convertToTicketItem(orderView.getTicketView().getTicket().getType());
+		double itemQuantity = 0;
+		if (menuItem.isFractionalUnit()) {
+			itemQuantity = NumberSelectionDialog2.takeDoubleInput("Please Enter Item Quantity", 1);
+			if (itemQuantity == -1) {
+				return;
+			}
+
+			if (itemQuantity == 0) {
+				POSMessageDialog.showError("Unit can not be zero");
+				return;
+			}
+		}
+
+		TicketItem ticketItem = menuItem.convertToTicketItem(orderView.getTicketView().getTicket().getType(), itemQuantity);
 		ticketItem.setTicket(orderView.getTicketView().getTicket());
 
 		if (menuItem.hasMandatoryModifiers()) {

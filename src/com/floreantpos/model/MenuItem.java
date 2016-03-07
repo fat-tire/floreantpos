@@ -174,14 +174,23 @@ public class MenuItem extends BaseMenuItem {
 	}
 
 	public TicketItem convertToTicketItem() {
-		return convertToTicketItem(null);
+		return convertToTicketItem(null, 0);
 	}
 
-	public TicketItem convertToTicketItem(OrderType orderType) {
+	public TicketItem convertToTicketItem(OrderType orderType, double itemQuantity) {
 		TicketItem ticketItem = new TicketItem();
 
 		ticketItem.setItemId(this.getId());
-		ticketItem.setItemCount(1);
+
+		ticketItem.setFractionalUnit(this.isFractionalUnit());
+
+		if (this.isFractionalUnit()) {
+			ticketItem.setItemQuantity(itemQuantity);
+		}
+		else {
+			ticketItem.setItemCount(1);
+		}
+
 		ticketItem.setName(this.getDisplayName());
 		ticketItem.setGroupName(this.getParent().getDisplayName());
 		ticketItem.setCategoryName(this.getParent().getParent().getDisplayName());

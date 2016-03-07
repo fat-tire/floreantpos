@@ -20,6 +20,7 @@ package com.floreantpos.bo.ui.explorer;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -46,6 +47,7 @@ import com.floreantpos.bo.ui.CustomCellRenderer;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.MenuGroup;
 import com.floreantpos.model.MenuItem;
+import com.floreantpos.model.OrderType;
 import com.floreantpos.model.dao.MenuGroupDAO;
 import com.floreantpos.model.dao.MenuItemDAO;
 import com.floreantpos.swing.BeanTableModel;
@@ -58,6 +60,8 @@ public class MenuItemExplorer extends TransparentPanel {
 
 	private JXTable table;
 	private BeanTableModel<MenuItem> tableModel;
+	private JComboBox cbGroup;
+	private JComboBox cbOrderTypes;
 
 	public MenuItemExplorer() {
 		tableModel = new BeanTableModel<MenuItem>(MenuItem.class);
@@ -91,17 +95,34 @@ public class MenuItemExplorer extends TransparentPanel {
 
 	private JPanel buildSearchForm() {
 		JPanel panel = new JPanel();
-		panel.setLayout(new MigLayout("", "[][]30[][]30[]", "[]20[]")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		panel.setLayout(new MigLayout("", "[][]30[][]30[][]30[]", "[]20[]")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
-		JLabel nameLabel = new JLabel(Messages.getString("MenuItemExplorer.0")); //$NON-NLS-1$
-		JLabel groupLabel = new JLabel(Messages.getString("MenuItemExplorer.1")); //$NON-NLS-1$
+		JLabel lblOrderType = new JLabel("Order Type");
+		cbOrderTypes = new JComboBox();
+
+		cbOrderTypes.addItem("Select Order Type");
+		
+		List<OrderType> orderTypes = Application.getInstance().getOrderTypes();
+		for (OrderType orderType : orderTypes) {
+			cbOrderTypes.addItem(orderType.getName());
+		}
+		/*cbOrderTypes.addItem(OrderType.DINE_IN.toString());
+		cbOrderTypes.addItem(OrderType.BAR_TAB.toString());
+		cbOrderTypes.addItem(OrderType.DRIVE_THRU.toString());
+		cbOrderTypes.addItem(OrderType.HOME_DELIVERY.toString());
+		cbOrderTypes.addItem(OrderType.PICKUP.toString());
+		cbOrderTypes.addItem(OrderType.TAKE_OUT.toString());
+		cbOrderTypes.addItem(OrderType.RETAIL.toString());*/
+
+		JLabel lblName = new JLabel(Messages.getString("MenuItemExplorer.0")); //$NON-NLS-1$
+		JLabel lblGroup = new JLabel(Messages.getString("MenuItemExplorer.1")); //$NON-NLS-1$
 		final JTextField nameField = new JTextField(15);
 
 		try {
 
 			List<MenuGroup> menuGroupList = MenuGroupDAO.getInstance().findAll();
 
-			final JComboBox cbGroup = new JComboBox();
+			cbGroup = new JComboBox();
 
 			cbGroup.addItem(Messages.getString("MenuItemExplorer.2")); //$NON-NLS-1$
 			for (MenuGroup s : menuGroupList) {
@@ -110,10 +131,12 @@ public class MenuItemExplorer extends TransparentPanel {
 
 			JButton searchBttn = new JButton(Messages.getString("MenuItemExplorer.3")); //$NON-NLS-1$
 
-			panel.add(nameLabel, "align label"); //$NON-NLS-1$
+			panel.add(lblName, "align label"); //$NON-NLS-1$
 			panel.add(nameField);
-			panel.add(groupLabel);
+			panel.add(lblGroup);
 			panel.add(cbGroup);
+			panel.add(lblOrderType);
+			panel.add(cbOrderTypes);
 			panel.add(searchBttn);
 
 			Border loweredetched = BorderFactory.createEtchedBorder(EtchedBorder.LOWERED);
@@ -124,16 +147,17 @@ public class MenuItemExplorer extends TransparentPanel {
 			searchBttn.addActionListener(new ActionListener() {
 
 				public void actionPerformed(ActionEvent e) {
-
+					String selectedType = cbOrderTypes.getSelectedItem().toString();
 					String txName = nameField.getText();
 					Object selectedItem = cbGroup.getSelectedItem();
 
 					List<MenuItem> similarItem = null;
+
 					if (selectedItem instanceof MenuGroup) {
-						similarItem = MenuItemDAO.getInstance().getSimilar(txName, (MenuGroup) selectedItem);
+						similarItem = MenuItemDAO.getInstance().getMenuItems(txName, (MenuGroup) selectedItem, selectedType);
 					}
 					else {
-						similarItem = MenuItemDAO.getInstance().getSimilar(txName, null);
+						similarItem = MenuItemDAO.getInstance().getMenuItems(txName, null, selectedType);
 					}
 
 					tableModel.removeAll();
@@ -186,12 +210,32 @@ public class MenuItemExplorer extends TransparentPanel {
 		addButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					MenuItemForm editor = new MenuItemForm();
+					MenuItem menuItem = new MenuItem();
+
+					Object group = cbGroup.getSelectedItem();
+
+					if (group instanceof MenuGroup) {
+						menuItem.setParent((MenuGroup) group);
+					}
+
+					String selectedType = cbOrderTypes.getSelectedItem().toString();
+
+					if (!selectedType.equals("Select Order Type")) {
+						List types = new ArrayList();
+						types.add(selectedType);
+
+						menuItem.setOrderTypes(types);
+					}
+					MenuItemForm editor = new MenuItemForm(menuItem);
+
 					BeanEditorDialog dialog = new BeanEditorDialog(editor);
 					dialog.open();
+
 					if (dialog.isCanceled())
 						return;
+
 					MenuItem foodItem = (MenuItem) editor.getBean();
+
 					tableModel.addRow(foodItem);
 				} catch (Throwable x) {
 					BOMessageDialog.showError(POSConstants.ERROR_MESSAGE, x);

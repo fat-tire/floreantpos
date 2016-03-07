@@ -59,6 +59,8 @@ public class PosPrintService {
 			parameters.put("date", new Date()); //$NON-NLS-1$
 			parameters.put("totalVoid", drawerPullReport.getTotalVoid()); //$NON-NLS-1$
 			
+			
+			
 			JasperReport subReport = ReportUtil.getReport("drawer-pull-void-veport"); //$NON-NLS-1$
 			
 			parameters.put("subreportParameter", subReport); //$NON-NLS-1$
@@ -66,7 +68,9 @@ public class PosPrintService {
 			JasperReport mainReport = ReportUtil.getReport("drawer-pull-report"); //$NON-NLS-1$
 			JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(Arrays.asList(new DrawerPullReport[] {drawerPullReport}));
 			JasperPrint jasperPrint = JasperFillManager.fillReport(mainReport, parameters, dataSource);
-			jasperPrint.setProperty("printerName", Application.getPrinters().getReceiptPrinter()); //$NON-NLS-1$
+			//TODO: handle exception
+			//jasperPrint.setProperty("printerName", Application.getPrinters().getReceiptPrinter()); //$NON-NLS-1$
+			jasperPrint.setName("DrawerPullReport"+drawerPullReport.getId());
 			JasperPrintManager.printReport(jasperPrint, false);
 			
 			//JasperViewer.viewReport(jasperPrint, false);

@@ -47,6 +47,7 @@ import com.floreantpos.bo.ui.BOMessageDialog;
 import com.floreantpos.model.DrawerPullReport;
 import com.floreantpos.model.dao.DrawerPullReportDAO;
 import com.floreantpos.model.util.DateUtil;
+import com.floreantpos.print.PosPrintService;
 import com.floreantpos.swing.ListTableModel;
 import com.floreantpos.swing.TransparentPanel;
 import com.floreantpos.ui.PosTableRenderer;
@@ -57,6 +58,7 @@ public class DrawerPullReportExplorer extends TransparentPanel {
 	private JXDatePicker toDatePicker = UiUtil.getCurrentMonthEnd();
 	private JButton btnGo = new JButton(com.floreantpos.POSConstants.GO);
 	private JButton btnEditActualAmount = new JButton(com.floreantpos.POSConstants.EDIT_ACTUAL_AMOUNT);
+	private JButton btnPrint=new JButton("Print");
 
 	private static SimpleDateFormat dateTimeFormatter = new SimpleDateFormat("dd MMM, yyyy hh:mm a"); //$NON-NLS-1$
 
@@ -83,7 +85,24 @@ public class DrawerPullReportExplorer extends TransparentPanel {
 
 		JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		bottomPanel.add(btnEditActualAmount);
+		bottomPanel.add(btnPrint);
 		add(bottomPanel, BorderLayout.SOUTH);
+		
+		btnPrint.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				int selectedRow = table.getSelectedRow();
+				if (selectedRow < 0) {
+					BOMessageDialog.showError(DrawerPullReportExplorer.this, "Please select a row to print");
+					return;
+				}
+				DrawerPullExplorerTableModel model = (DrawerPullExplorerTableModel) table.getModel();
+				DrawerPullReport report = (DrawerPullReport) model.getRowData(selectedRow);
+				
+				PosPrintService.printDrawerPullReport(report, report.getTerminal());
+			}
+		});
 
 		btnGo.addActionListener(new ActionListener() {
 

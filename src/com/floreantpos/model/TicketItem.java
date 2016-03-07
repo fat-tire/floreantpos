@@ -34,23 +34,27 @@ public class TicketItem extends BaseTicketItem implements ITicketItem {
 	private static final long serialVersionUID = 1L;
 
 	/*[CONSTRUCTOR MARKER BEGIN]*/
-	public TicketItem() {
+	public TicketItem () {
 		super();
 	}
 
 	/**
 	 * Constructor for primary key
 	 */
-	public TicketItem(java.lang.Integer id) {
+	public TicketItem (java.lang.Integer id) {
 		super(id);
 	}
 
 	/**
 	 * Constructor for required fields
 	 */
-	public TicketItem(java.lang.Integer id, com.floreantpos.model.Ticket ticket) {
+	public TicketItem (
+		java.lang.Integer id,
+		com.floreantpos.model.Ticket ticket) {
 
-		super(id, ticket);
+		super (
+			id,
+			ticket);
 	}
 
 	/*[CONSTRUCTOR MARKER END]*/
@@ -369,7 +373,14 @@ public class TicketItem extends BaseTicketItem implements ITicketItem {
 	//	}
 
 	private double calculateSubtotal(boolean includeModifierPrice) {
-		double subTotalAmount = NumberUtil.roundToTwoDigit(getUnitPrice() * getItemCount());
+		//TODO: added Fractional Item Unit Quantity
+		double subTotalAmount;
+		if(this.isFractionalUnit()) {
+			subTotalAmount= NumberUtil.roundToTwoDigit(getUnitPrice() * getItemQuantity());
+		}else {
+			subTotalAmount= NumberUtil.roundToTwoDigit(getUnitPrice() * getItemCount());
+		}
+		
 
 		if (includeModifierPrice) {
 			List<TicketItemModifierGroup> ticketItemModifierGroups = getTicketItemModifierGroups();

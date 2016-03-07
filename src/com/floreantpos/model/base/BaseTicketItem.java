@@ -17,29 +17,32 @@ import com.floreantpos.model.TicketItemCookingInstruction;
 
 public abstract class BaseTicketItem  implements Comparable, Serializable {
 
-	public static String REF = "TicketItem"; //$NON-NLS-1$
-	public static String PROP_BEVERAGE = "beverage"; //$NON-NLS-1$
-	public static String PROP_ITEM_ID = "itemId"; //$NON-NLS-1$
-	public static String PROP_CATEGORY_NAME = "categoryName"; //$NON-NLS-1$
-	public static String PROP_GROUP_NAME = "groupName"; //$NON-NLS-1$
-	public static String PROP_ITEM_COUNT = "itemCount"; //$NON-NLS-1$
-	public static String PROP_TAX_RATE = "taxRate"; //$NON-NLS-1$
-	public static String PROP_UNIT_PRICE = "unitPrice"; //$NON-NLS-1$
-	public static String PROP_TAX_AMOUNT = "taxAmount"; //$NON-NLS-1$
-	public static String PROP_DISCOUNT_AMOUNT = "discountAmount"; //$NON-NLS-1$
-	public static String PROP_NAME = "name"; //$NON-NLS-1$
-	public static String PROP_PRINTER_GROUP = "printerGroup"; //$NON-NLS-1$
-	public static String PROP_PRINTED_TO_KITCHEN = "printedToKitchen"; //$NON-NLS-1$
-	public static String PROP_SHOULD_PRINT_TO_KITCHEN = "shouldPrintToKitchen"; //$NON-NLS-1$
-	public static String PROP_TICKET = "ticket"; //$NON-NLS-1$
-	public static String PROP_SUBTOTAL_AMOUNT = "subtotalAmount"; //$NON-NLS-1$
-	public static String PROP_INVENTORY_HANDLED = "inventoryHandled"; //$NON-NLS-1$
-	public static String PROP_HAS_MODIFIERS = "hasModifiers"; //$NON-NLS-1$
-	public static String PROP_TAX_AMOUNT_WITHOUT_MODIFIERS = "taxAmountWithoutModifiers"; //$NON-NLS-1$
-	public static String PROP_ID = "id"; //$NON-NLS-1$
-	public static String PROP_TOTAL_AMOUNT = "totalAmount"; //$NON-NLS-1$
-	public static String PROP_SUBTOTAL_AMOUNT_WITHOUT_MODIFIERS = "subtotalAmountWithoutModifiers"; //$NON-NLS-1$
-	public static String PROP_TOTAL_AMOUNT_WITHOUT_MODIFIERS = "totalAmountWithoutModifiers"; //$NON-NLS-1$
+	public static String REF = "TicketItem";
+	public static String PROP_BEVERAGE = "beverage";
+	public static String PROP_TAX_RATE = "taxRate";
+	public static String PROP_ITEM_UNIT_NAME = "itemUnitName";
+	public static String PROP_DISCOUNT_AMOUNT = "discountAmount";
+	public static String PROP_SHOULD_PRINT_TO_KITCHEN = "shouldPrintToKitchen";
+	public static String PROP_TICKET = "ticket";
+	public static String PROP_INVENTORY_HANDLED = "inventoryHandled";
+	public static String PROP_HAS_MODIFIERS = "hasModifiers";
+	public static String PROP_TOTAL_AMOUNT_WITHOUT_MODIFIERS = "totalAmountWithoutModifiers";
+	public static String PROP_ITEM_QUANTITY = "itemQuantity";
+	public static String PROP_ITEM_ID = "itemId";
+	public static String PROP_CATEGORY_NAME = "categoryName";
+	public static String PROP_GROUP_NAME = "groupName";
+	public static String PROP_ITEM_COUNT = "itemCount";
+	public static String PROP_UNIT_PRICE = "unitPrice";
+	public static String PROP_TAX_AMOUNT = "taxAmount";
+	public static String PROP_FRACTIONAL_UNIT = "fractionalUnit";
+	public static String PROP_NAME = "name";
+	public static String PROP_PRINTED_TO_KITCHEN = "printedToKitchen";
+	public static String PROP_PRINTER_GROUP = "printerGroup";
+	public static String PROP_SUBTOTAL_AMOUNT = "subtotalAmount";
+	public static String PROP_TAX_AMOUNT_WITHOUT_MODIFIERS = "taxAmountWithoutModifiers";
+	public static String PROP_ID = "id";
+	public static String PROP_SUBTOTAL_AMOUNT_WITHOUT_MODIFIERS = "subtotalAmountWithoutModifiers";
+	public static String PROP_TOTAL_AMOUNT = "totalAmount";
 
 
 	// constructors
@@ -79,7 +82,9 @@ public abstract class BaseTicketItem  implements Comparable, Serializable {
 	// fields
 		protected java.lang.Integer itemId;
 		protected java.lang.Integer itemCount;
+		protected java.lang.Double itemQuantity;
 		protected java.lang.String name;
+		protected java.lang.String itemUnitName;
 		protected java.lang.String groupName;
 		protected java.lang.String categoryName;
 		protected java.lang.Double unitPrice;
@@ -94,6 +99,7 @@ public abstract class BaseTicketItem  implements Comparable, Serializable {
 		protected java.lang.Boolean beverage;
 		protected java.lang.Boolean inventoryHandled;
 		protected java.lang.Boolean shouldPrintToKitchen;
+		protected java.lang.Boolean fractionalUnit;
 		protected java.lang.Boolean hasModifiers;
 		protected java.lang.Boolean printedToKitchen;
 
@@ -166,6 +172,23 @@ public abstract class BaseTicketItem  implements Comparable, Serializable {
 
 
 	/**
+	 * Return the value associated with the column: ITEM_QUANTITY
+	 */
+	public java.lang.Double getItemQuantity () {
+									return itemQuantity == null ? Double.valueOf(0) : itemQuantity;
+					}
+
+	/**
+	 * Set the value related to the column: ITEM_QUANTITY
+	 * @param itemQuantity the ITEM_QUANTITY value
+	 */
+	public void setItemQuantity (java.lang.Double itemQuantity) {
+		this.itemQuantity = itemQuantity;
+	}
+
+
+
+	/**
 	 * Return the value associated with the column: ITEM_NAME
 	 */
 	public java.lang.String getName () {
@@ -178,6 +201,23 @@ public abstract class BaseTicketItem  implements Comparable, Serializable {
 	 */
 	public void setName (java.lang.String name) {
 		this.name = name;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: ITEM_UNIT_NAME
+	 */
+	public java.lang.String getItemUnitName () {
+					return itemUnitName;
+			}
+
+	/**
+	 * Set the value related to the column: ITEM_UNIT_NAME
+	 * @param itemUnitName the ITEM_UNIT_NAME value
+	 */
+	public void setItemUnitName (java.lang.String itemUnitName) {
+		this.itemUnitName = itemUnitName;
 	}
 
 
@@ -425,6 +465,23 @@ public abstract class BaseTicketItem  implements Comparable, Serializable {
 	public static String getShouldPrintToKitchenDefaultValue () {
 		return "true";
 	}
+
+
+	/**
+	 * Return the value associated with the column: FRACTIONAL_UNIT
+	 */
+	public java.lang.Boolean isFractionalUnit () {
+								return fractionalUnit == null ? Boolean.FALSE : fractionalUnit;
+					}
+
+	/**
+	 * Set the value related to the column: FRACTIONAL_UNIT
+	 * @param fractionalUnit the FRACTIONAL_UNIT value
+	 */
+	public void setFractionalUnit (java.lang.Boolean fractionalUnit) {
+		this.fractionalUnit = fractionalUnit;
+	}
+
 
 
 	/**

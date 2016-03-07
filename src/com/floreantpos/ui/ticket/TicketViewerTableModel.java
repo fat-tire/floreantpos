@@ -36,7 +36,7 @@ import com.floreantpos.model.TicketItemModifierGroup;
 public class TicketViewerTableModel extends AbstractTableModel {
 	private JTable table;
 	protected Ticket ticket;
-	protected int currentItemDisplayCount;
+	private double previousFractionalItemQuantity;
 	protected final HashMap<String, ITicketItem> tableRows = new LinkedHashMap<String, ITicketItem>();
 
 	private boolean priceIncludesTax = false;
@@ -82,6 +82,8 @@ public class TicketViewerTableModel extends AbstractTableModel {
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		ITicketItem ticketItem = tableRows.get(String.valueOf(rowIndex));
 
+		TicketItem item = (TicketItem) tableRows.get(String.valueOf(rowIndex));
+
 		if (ticketItem == null) {
 			return null;
 		}
@@ -94,7 +96,18 @@ public class TicketViewerTableModel extends AbstractTableModel {
 				return ticketItem.getUnitPriceDisplay();
 
 			case 2:
-				return ticketItem.getItemCountDisplay();
+
+				if (item.isFractionalUnit()) {
+					double d = item.getItemQuantity();
+
+					if (d % 1 == 0) {
+						return (int) d;
+					}
+					return item.getItemQuantity();
+				}
+				else {
+					return ticketItem.getItemCountDisplay();
+				}
 
 			case 3:
 				return ticketItem.getSubTotalAmountWithoutModifiersDisplay();
@@ -108,30 +121,36 @@ public class TicketViewerTableModel extends AbstractTableModel {
 	}
 
 	public int addTicketItem(TicketItem ticketItem) {
-		currentItemDisplayCount = 0;
 		if (ticketItem.isHasModifiers()) {
 			return addTicketItemToTicket(ticketItem);
 		}
 
 		Object[] values = tableRows.values().toArray();
 		if (values == null || values.length == 0) {
+			previousFractionalItemQuantity = ticketItem.getItemQuantity();
 			return addTicketItemToTicket(ticketItem);
 		}
 
 		Object object = values[values.length - 1];
 		if (object instanceof TicketItem) {
 			TicketItem item = (TicketItem) object;
-			
-			if(ticketItem.getItemId()==0) {// MISC item
+
+			if (ticketItem.getItemId() == 0) {// MISC item
 				return addTicketItemToTicket(ticketItem);
 			}
-			
+
 			if (ticketItem.getItemId().equals(item.getItemId()) && !item.isPrintedToKitchen() && !item.isInventoryHandled()) {
-				item.setItemCount(item.getItemCount() + 1);
+				if (ticketItem.isFractionalUnit()) {
+					item.setItemQuantity(previousFractionalItemQuantity + ticketItem.getItemQuantity());
+					previousFractionalItemQuantity = item.getItemQuantity();
+				}
+				else {
+					item.setItemCount(item.getItemCount() + 1);
+				}
 				return values.length - 1;
 			}
 		}
-
+		previousFractionalItemQuantity = ticketItem.getItemQuantity();
 		return addTicketItemToTicket(ticketItem);
 	}
 

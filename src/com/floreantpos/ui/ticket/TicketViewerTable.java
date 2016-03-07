@@ -68,7 +68,7 @@ public class TicketViewerTable extends JTable {
 	private void resizeTableColumns() {
 		setAutoResizeMode(AUTO_RESIZE_ALL_COLUMNS);
 		setColumnWidth(1, 50);
-		setColumnWidth(2, 30);
+		setColumnWidth(2, 50);
 		setColumnWidth(3, 60);
 	}
 
@@ -165,7 +165,7 @@ public class TicketViewerTable extends JTable {
 		repaint();
 	}
 
-	public boolean increaseItemAmount() {
+	public boolean increaseItemAmount(double selectedQuantity) {
 		int selectedRow = getSelectedRow();
 		if (selectedRow < 0) {
 			return false;
@@ -177,16 +177,21 @@ public class TicketViewerTable extends JTable {
 		Object object = model.get(selectedRow);
 		if (object instanceof TicketItem) {
 			TicketItem ticketItem = (TicketItem) object;
+
+			if (ticketItem.isFractionalUnit()) {
+				double itemQuantity = ticketItem.getItemQuantity();
+				ticketItem.setItemQuantity(itemQuantity + selectedQuantity);
+				return true;
+			}
+
 			int itemCount = ticketItem.getItemCount();
 			ticketItem.setItemCount(++itemCount);
-
 			return true;
 		}
-
 		return false;
 	}
 
-	public boolean decreaseItemAmount() {
+	public boolean decreaseItemAmount(double selectedQuantity) {
 		int selectedRow = getSelectedRow();
 		if (selectedRow < 0) {
 			return false;
@@ -198,6 +203,16 @@ public class TicketViewerTable extends JTable {
 		Object object = model.get(selectedRow);
 		if (object instanceof TicketItem) {
 			TicketItem ticketItem = (TicketItem) object;
+
+			if (ticketItem.isFractionalUnit()) {
+				double itemQuantity = ticketItem.getItemQuantity();
+				ticketItem.setItemQuantity(itemQuantity - selectedQuantity);
+				if (ticketItem.getItemQuantity() <= 0) {
+					model.delete(selectedRow);
+				}
+				return true;
+			}
+
 			int itemCount = ticketItem.getItemCount();
 			if (itemCount == 1) {
 				model.delete(selectedRow);
