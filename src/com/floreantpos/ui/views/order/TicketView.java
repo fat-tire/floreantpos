@@ -57,7 +57,6 @@ import com.floreantpos.report.ReceiptPrintService;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.swing.PosScrollPane;
 import com.floreantpos.ui.dialog.ItemNumberSelectionDialog;
-import com.floreantpos.ui.dialog.NumberSelectionDialog2;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.views.CashierSwitchBoardView;
 import com.floreantpos.ui.views.order.actions.OrderListener;
@@ -410,28 +409,14 @@ public class TicketView extends JPanel {
 	}// GEN-LAST:event_doDeleteSelection
 
 	private void doIncreaseAmount() {// GEN-FIRST:event_doIncreaseAmount
-
-		double selectedQuantity = getSelectedQuantity();
-
-		if (selectedQuantity == -1) {
-			return;
-		}
-
-		if (ticketViewerTable.increaseItemAmount(selectedQuantity)) {
+		if (ticketViewerTable.increaseItemAmount()) {
 			updateView();
 		}
 
 	}// GEN-LAST:event_doIncreaseAmount
 
 	private void doDecreaseAmount() {// GEN-FIRST:event_doDecreaseAmount
-
-		double selectedQuantity = getSelectedQuantity();
-
-		if (selectedQuantity == -1) {
-			return;
-		}
-
-		if (ticketViewerTable.decreaseItemAmount(selectedQuantity)) {
+		if (ticketViewerTable.decreaseItemAmount()) {
 			updateView();
 		}
 	}// GEN-LAST:event_doDecreaseAmount
@@ -649,29 +634,4 @@ public class TicketView extends JPanel {
 		}
 		return tableNumbers;
 	}
-
-	private double getSelectedQuantity() {
-		Object object = ticketViewerTable.getSelected();
-
-		double selectedQuantity = 0;
-		TicketItem ticketItem = null;
-
-		if (object instanceof TicketItem) {
-			ticketItem = (TicketItem) object;
-		}
-
-		if (ticketItem.isFractionalUnit()) {
-			selectedQuantity = NumberSelectionDialog2.takeDoubleInput("Please Enter Item Quantity", 1);
-			if (selectedQuantity == -1) {
-				return -1;
-			}
-
-			if (selectedQuantity == 0) {
-				POSMessageDialog.showError("Unit can not be zero");
-				return -1;
-			}
-		}
-		return selectedQuantity;
-	}
-
 }

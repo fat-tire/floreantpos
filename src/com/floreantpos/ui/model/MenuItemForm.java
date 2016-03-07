@@ -425,12 +425,16 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		tabGeneral.add(lblPrice, "cell 0 5,right"); //$NON-NLS-1$
 		tabGeneral.add(tfPrice, "cell 1 5,grow"); //$NON-NLS-1$
 
-		tabGeneral.add(lblBarcode, "cell 0 6,right"); //$NON-NLS-1$
-		tabGeneral.add(tfBarcode, "cell 1 6,grow"); //$NON-NLS-1$
+		tabGeneral.add(lgroup, "cell 0 6,right"); //$NON-NLS-1$
+		tabGeneral.add(cbGroup, "cell 1 6"); //$NON-NLS-1$
+		tabGeneral.add(btnNewGroup, "cell 1 6"); //$NON-NLS-1$
+		
+		tabGeneral.add(lblBarcode, "cell 0 7,right"); //$NON-NLS-1$
+		tabGeneral.add(tfBarcode, "cell 1 7,grow"); //$NON-NLS-1$
 
-		tabGeneral.add(cbShowTextWithImage, "cell 1 7"); //$NON-NLS-1$
-		tabGeneral.add(chkVisible, "cell 1 8"); //$NON-NLS-1$
-		tabGeneral.add(cbFractionalUnit, "cell 1 9"); //$NON-NLS-1$
+		tabGeneral.add(cbShowTextWithImage, "cell 1 8"); //$NON-NLS-1$
+		tabGeneral.add(chkVisible, "cell 1 9"); //$NON-NLS-1$
+		tabGeneral.add(cbFractionalUnit, "cell 1 10"); //$NON-NLS-1$
 
 		// right side
 
@@ -448,11 +452,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		tabGeneral.add(btnTextColor, "cell 3 4 3 5"); //$NON-NLS-1$
 		btnTextColor.setPreferredSize(new Dimension(228, 50));
 
-		tabGeneral.add(lgroup, "cell 2 6,right"); //$NON-NLS-1$
-		tabGeneral.add(cbGroup, "cell 3 6"); //$NON-NLS-1$
-		tabGeneral.add(btnNewGroup, "cell 3 6"); //$NON-NLS-1$
-
-		tabGeneral.add(new JLabel("OrderType"), "cell 2 7,right"); //$NON-NLS-1$
+		tabGeneral.add(new JLabel("OrderType"), "cell 2 6,right"); //$NON-NLS-1$
 		orderList = new CheckBoxList();
 		
 		List<String> orderListM = new ArrayList();
@@ -475,7 +475,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 
 		JScrollPane orderCheckBoxList = new JScrollPane(orderList);
 		orderCheckBoxList.setPreferredSize(new Dimension(228, 100));
-		tabGeneral.add(orderCheckBoxList, "cell 3 7 3 10"); //$NON-NLS-1$
+		tabGeneral.add(orderCheckBoxList, "cell 3 6 3 10"); //$NON-NLS-1$
 
 		add(tabbedPane);
 		//TODO: 
