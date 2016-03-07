@@ -439,7 +439,6 @@ public class ShopTableForm extends BeanEditor<ShopTable> {
 			return false;
 		}
 
-		//TODO: handle exception
 		if (isDuplicateOn()) {
 
 			int nxtTableNumber = ShopTableDAO.getInstance().getNextTableNumber();

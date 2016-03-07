@@ -39,7 +39,6 @@ import com.floreantpos.Messages;
 import com.floreantpos.actions.LogoutAction;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.KitchenTicket;
-import com.floreantpos.model.OrderType;
 import com.floreantpos.model.PosPrinters;
 import com.floreantpos.model.Printer;
 import com.floreantpos.model.dao.KitchenTicketDAO;
@@ -47,6 +46,7 @@ import com.floreantpos.swing.PosButton;
 import com.floreantpos.swing.PosComboRenderer;
 import com.floreantpos.ui.HeaderPanel;
 import com.floreantpos.ui.dialog.POSMessageDialog;
+import com.floreantpos.model.OrderType;
 import com.floreantpos.ui.views.order.RootView;
 import com.floreantpos.ui.views.order.ViewPanel;
 
@@ -143,7 +143,10 @@ public class KitchenDisplayView extends ViewPanel implements ActionListener {
 
 		cbTicketTypes.setFont(font);
 		cbTicketTypes.setRenderer(new PosComboRenderer());
-		DefaultComboBoxModel<OrderType> ticketTypeModel = new DefaultComboBoxModel<OrderType>(OrderType.values());
+		DefaultComboBoxModel<OrderType> ticketTypeModel = new DefaultComboBoxModel<OrderType>();
+		for(OrderType orderType:Application.getInstance().getOrderTypes()) {
+			ticketTypeModel.addElement(orderType); 
+		}
 		ticketTypeModel.insertElementAt(null, 0);
 		cbTicketTypes.setModel(ticketTypeModel);
 		cbTicketTypes.setSelectedIndex(0);

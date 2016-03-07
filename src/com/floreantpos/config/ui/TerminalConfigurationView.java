@@ -41,7 +41,6 @@ import com.floreantpos.Messages;
 import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.demo.KitchenDisplayView;
 import com.floreantpos.main.Application;
-import com.floreantpos.model.OrderType;
 import com.floreantpos.model.Terminal;
 import com.floreantpos.model.dao.TerminalDAO;
 import com.floreantpos.swing.DoubleTextField;
@@ -49,6 +48,7 @@ import com.floreantpos.swing.IntegerTextField;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.views.SwitchboardOtherFunctionsView;
 import com.floreantpos.ui.views.SwitchboardView;
+import com.floreantpos.ui.views.order.OrderType;
 
 public class TerminalConfigurationView extends ConfigurationView {
 	private IntegerTextField tfTerminalNumber;

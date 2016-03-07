@@ -45,7 +45,6 @@ import com.floreantpos.POSConstants;
 import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.demo.KitchenDisplayView;
 import com.floreantpos.main.Application;
-import com.floreantpos.model.OrderType;
 import com.floreantpos.model.User;
 import com.floreantpos.model.UserPermission;
 import com.floreantpos.model.dao.UserDAO;
@@ -53,6 +52,7 @@ import com.floreantpos.swing.PosButton;
 import com.floreantpos.ui.TitlePanel;
 import com.floreantpos.ui.views.SwitchboardOtherFunctionsView;
 import com.floreantpos.ui.views.TableMapView;
+import com.floreantpos.ui.views.order.OrderType;
 import com.floreantpos.ui.views.order.OrderView;
 import com.floreantpos.ui.views.order.RootView;
 

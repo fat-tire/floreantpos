@@ -36,7 +36,6 @@ import java.util.Locale;
 import java.util.Set;
 
 import javax.swing.BorderFactory;
-import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -63,7 +62,6 @@ import com.floreantpos.extension.OrderServiceExtension;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.OrderType;
 import com.floreantpos.model.OrderTypeFilter;
-import com.floreantpos.model.OrderTypeProperties;
 import com.floreantpos.model.PaymentStatusFilter;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.User;
@@ -71,6 +69,7 @@ import com.floreantpos.model.UserPermission;
 import com.floreantpos.model.UserType;
 import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.services.TicketService;
+import com.floreantpos.swing.OrderTypeButton;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.ui.TicketListUpdateListener;
 import com.floreantpos.ui.dialog.NumberSelectionDialog2;
@@ -82,8 +81,6 @@ import com.floreantpos.ui.views.order.RootView;
 import com.floreantpos.ui.views.order.TicketSelectionDialog;
 import com.floreantpos.ui.views.order.ViewPanel;
 import com.floreantpos.ui.views.payment.GroupSettleTicketDialog;
-import com.floreantpos.ui.views.payment.SettleTicketDialog;
-import com.floreantpos.util.OrderUtil;
 import com.floreantpos.util.POSUtil;
 import com.floreantpos.util.TicketAlreadyExistsException;
 
@@ -99,6 +96,8 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 
 	private static SwitchboardView instance;
 
+	private JPanel orderPanel;
+
 	//TicketListView tickteListViewObj;
 	/** Creates new form SwitchboardView */
 	private SwitchboardView() {
@@ -106,11 +105,6 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 
 		ticketList.addTicketListUpateListener(this);
 
-		btnDineIn.addActionListener(this);
-		btnTakeout.addActionListener(this);
-		btnPickup.addActionListener(this);
-		btnHomeDelivery.addActionListener(this);
-		btnDriveThrough.addActionListener(this);
 		btnBarTab.addActionListener(this);
 
 		btnEditTicket.addActionListener(this);
@@ -124,9 +118,6 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 		orderServiceExtension = (OrderServiceExtension) ExtensionManager.getPlugin(OrderServiceExtension.class);
 
 		if (orderServiceExtension == null) {
-			btnHomeDelivery.setEnabled(false);
-			btnPickup.setEnabled(false);
-			btnDriveThrough.setEnabled(false);
 			btnAssignDriver.setEnabled(false);
 
 			orderServiceExtension = new DefaultOrderServiceExtension();
@@ -186,22 +177,30 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 		TitledBorder titledBorder2 = BorderFactory.createTitledBorder(null, "-", TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION); //$NON-NLS-1$
 		rightPanel.setBorder(new CompoundBorder(titledBorder2, new EmptyBorder(2, 2, 6, 2)));
 
-		JPanel orderPanel = new JPanel(new MigLayout("ins 2 2 0 2, fill, hidemode 3, flowy", "fill, grow", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		orderPanel.add(btnDineIn, "grow"); //$NON-NLS-1$
-		orderPanel.add(btnTakeout, "grow"); //$NON-NLS-1$
-		orderPanel.add(btnPickup, "grow"); //$NON-NLS-1$
-		orderPanel.add(btnHomeDelivery, "grow"); //$NON-NLS-1$
-		orderPanel.add(btnDriveThrough, "grow"); //$NON-NLS-1$
-		orderPanel.add(btnBarTab, "grow"); //$NON-NLS-1$
+		orderPanel = new JPanel(new MigLayout("ins 2 2 0 2, fill, hidemode 3, flowy", "fill, grow", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
-		setupOrderTypes();
+		rendererOrderPanel();
 
 		rightPanel.add(orderPanel);
 
 		centerPanel.add(rightPanel, java.awt.BorderLayout.EAST);
 
 		add(centerPanel, java.awt.BorderLayout.CENTER);
-	}// </editor-fold>//GEN-END:initComponents
+	}
+
+	public void rendererOrderPanel() {
+		orderPanel.removeAll();
+		List<com.floreantpos.model.OrderType> orderTypes = Application.getInstance().getOrderTypes();
+//		int buttonCount = 0;
+		for (com.floreantpos.model.OrderType orderType : orderTypes) {
+//			++buttonCount;
+//			if (buttonCount >= 6) {
+//				break;
+//			}
+			orderPanel.add(new OrderTypeButton(orderType), "grow");
+		}
+		orderPanel.repaint();
+	}
 
 	private JPanel createActivityPanel() {
 		JPanel activityPanel = new JPanel(new BorderLayout(5, 5));
@@ -266,28 +265,6 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 		return activityPanel;
 	}
 
-	private void setupOrderTypes() {
-		setupOrderType(OrderType.DINE_IN, btnDineIn, OrderType.DINE_IN.name());
-		setupOrderType(OrderType.TAKE_OUT, btnTakeout, OrderType.TAKE_OUT.name());
-		setupOrderType(OrderType.PICKUP, btnPickup, OrderType.PICKUP.name());
-		setupOrderType(OrderType.HOME_DELIVERY, btnHomeDelivery, OrderType.HOME_DELIVERY.name());
-		setupOrderType(OrderType.DRIVE_THRU, btnDriveThrough, OrderType.DRIVE_THRU.name());
-		setupOrderType(OrderType.BAR_TAB, btnBarTab, OrderType.BAR_TAB.name());
-	}
-
-	private void setupOrderType(OrderType orderType, JButton button, String textKey) {
-		button.setText(orderType.toString());
-
-		OrderTypeProperties properties = orderType.getProperties();
-
-		if (properties == null) {
-			button.setVisible(true);
-		}
-		else {
-			button.setVisible(properties.isVisible());
-		}
-	}
-
 	protected void doCloseOrder() {
 		Ticket ticket = getFirstSelectedTicket();
 		ticket = TicketDAO.getInstance().loadFullTicket(ticket.getId());
@@ -321,7 +298,7 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 				return;
 			}
 
-			if (ticket.getType() != OrderType.HOME_DELIVERY) {
+			if (ticket.getType().isRequiredCustomerData()) {//added
 				POSMessageDialog.showError(this, Messages.getString("SwitchboardView.8")); //$NON-NLS-1$
 				return;
 			}
@@ -519,36 +496,41 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 		OrderView.getInstance().getTicketView().getTxtSearchItem().requestFocus();
 	}
 
-	public void doCreateNewTicket(final OrderType ticketType) {
-		try {
-			OrderServiceExtension orderService = new DefaultOrderServiceExtension();
-			orderService.createNewTicket(ticketType);
-
-		} catch (TicketAlreadyExistsException e) {
-
-			int option = JOptionPane.showOptionDialog(Application.getPosWindow(), POSConstants.EDIT_TICKET_CONFIRMATION, POSConstants.CONFIRM,
-					JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
-			if (option == JOptionPane.YES_OPTION) {
-				editTicket(e.getTicket());
-				return;
-			}
-		}
-	}
+//	public void doCreateNewTicket(final OrderType ticketType) {
+//		try {
+//			if (ticketType.isShowTableSelection()) {
+//				OrderServiceExtension orderService = new DefaultOrderServiceExtension();
+//				orderService.createNewTicket(ticketType);
+//			}
+//			else {
+//				OrderUtil.createNewTakeOutOrder(ticketType);
+//			}
+//
+//		} catch (TicketAlreadyExistsException e) {
+//
+//			int option = JOptionPane.showOptionDialog(Application.getPosWindow(), POSConstants.EDIT_TICKET_CONFIRMATION, POSConstants.CONFIRM,
+//					JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+//			if (option == JOptionPane.YES_OPTION) {
+//				editTicket(e.getTicket());
+//				return;
+//			}
+//		}
+//	}
 
 	public void doHomeDelivery(OrderType ticketType) {
-		try {
-
-			orderServiceExtension.createNewTicket(ticketType);
-
-		} catch (TicketAlreadyExistsException e) {
-
-			int option = JOptionPane.showOptionDialog(Application.getPosWindow(), POSConstants.EDIT_TICKET_CONFIRMATION, POSConstants.CONFIRM,
-					JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
-			if (option == JOptionPane.YES_OPTION) {
-				editTicket(e.getTicket());
-				return;
-			}
-		}
+//		try {
+//
+//			orderServiceExtension.createNewTicket(ticketType);
+//
+//		} catch (TicketAlreadyExistsException e) {
+//
+//			int option = JOptionPane.showOptionDialog(Application.getPosWindow(), POSConstants.EDIT_TICKET_CONFIRMATION, POSConstants.CONFIRM,
+//					JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+//			if (option == JOptionPane.YES_OPTION) {
+//				editTicket(e.getTicket());
+//				return;
+//			}
+//		}
 	}
 
 	private void doGroupSettle() {
@@ -567,16 +549,16 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 		if (selectedTickets == null) {
 			return;
 		}
-		
-		List<Ticket> tickets=new ArrayList<Ticket>(); 
+
+		List<Ticket> tickets = new ArrayList<Ticket>();
 
 		for (int i = 0; i < selectedTickets.size(); i++) {
 			Ticket ticket = selectedTickets.get(i);
 
 			Ticket fullTicket = TicketDAO.getInstance().loadFullTicket(ticket.getId());
-			tickets.add(fullTicket); 
+			tickets.add(fullTicket);
 		}
-		
+
 		GroupSettleTicketDialog posDialog = new GroupSettleTicketDialog(tickets);
 		posDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		posDialog.open();
@@ -586,20 +568,17 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 	}
 
 	public void updateView() {
-		setupOrderTypes();
-
 		User user = Application.getCurrentUser();
 		UserType userType = user.getType();
 		if (userType != null) {
 			Set<UserPermission> permissions = userType.getPermissions();
 			if (permissions != null) {
-				btnDineIn.setEnabled(false);
+
 				btnEditTicket.setEnabled(false);
 				btnGroupSettle.setEnabled(false);
 				btnReopenTicket.setEnabled(false);
 				btnSettleTicket.setEnabled(false);
 				btnSplitTicket.setEnabled(false);
-				btnTakeout.setEnabled(false);
 
 				for (UserPermission permission : permissions) {
 					if (permission.equals(UserPermission.VOID_TICKET)) {
@@ -617,8 +596,6 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 					}
 					else if (permission.equals(UserPermission.CREATE_TICKET)) {
 						btnEditTicket.setEnabled(true);
-						btnDineIn.setEnabled(true);
-						btnTakeout.setEnabled(true);
 					}
 					/*
 					 else if (permission.equals(UserPermission.TAKE_OUT)) {
@@ -641,11 +618,6 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 
 	// Variables declaration - do not modify//GEN-BEGIN:variables
 
-	private PosButton btnDineIn = new PosButton(POSConstants.DINE_IN_BUTTON_TEXT);
-	private PosButton btnTakeout = new PosButton(POSConstants.TAKE_OUT_BUTTON_TEXT);
-	private PosButton btnPickup = new PosButton(POSConstants.PICKUP_BUTTON_TEXT);
-	private PosButton btnHomeDelivery = new PosButton(POSConstants.HOME_DELIVERY_BUTTON_TEXT);
-	private PosButton btnDriveThrough = new PosButton(POSConstants.DRIVE_THRU_BUTTON_TEXT);
 	private PosButton btnBarTab = new PosButton(POSConstants.BAR_TAB_BUTTON_TEXT);
 
 	private PosButton btnEditTicket = new PosButton(POSConstants.EDIT_TICKET_BUTTON_TEXT);
@@ -667,8 +639,6 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 
 	private TitledBorder ticketsListPanelBorder;
 
-	// End of variables declaration//GEN-END:variables
-
 	@Override
 	public void setVisible(boolean visible) {
 		super.setVisible(visible);
@@ -685,22 +655,7 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 	public void actionPerformed(ActionEvent e) {
 		Object source = e.getSource();
 
-		if (source == btnDineIn) {
-			doCreateNewTicket(OrderType.DINE_IN);
-		}
-		else if (source == btnTakeout) {
-			OrderUtil.createNewTakeOutOrder(OrderType.TAKE_OUT);
-		}
-		else if (source == btnPickup) {
-			doHomeDelivery(OrderType.PICKUP);
-		}
-		else if (source == btnHomeDelivery) {
-			doHomeDelivery(OrderType.HOME_DELIVERY);
-		}
-		else if (source == btnDriveThrough) {
-			OrderUtil.createNewTakeOutOrder(OrderType.DRIVE_THRU);
-		}
-		else if (source == btnBarTab) {
+		if (source == btnBarTab) {
 			new NewBarTabAction(this).actionPerformed(e);
 		}
 		else if (source == btnEditTicket) {

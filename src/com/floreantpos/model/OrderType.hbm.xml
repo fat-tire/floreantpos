@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.floreantpos.model">
+	<class lazy="false" name="com.floreantpos.model.OrderType"
+		table="ORDER_TYPE">
+		<id column="ID" name="id" type="java.lang.Integer">
+			<generator class="identity" />
+		</id>
+
+		<property column="NAME" length="120" name="name" not-null="true" type="java.lang.String" />
+		<property column="ENABLED" name="enabled" type="java.lang.Boolean" />
+		<property column="SHOW_TABLE_SELECTION" name="showTableSelection" type="java.lang.Boolean" />
+		<property column="SHOW_GUEST_SELECTION" name="showGuestSelection" type="java.lang.Boolean" />
+		<property column="SHOULD_PRINT_TO_KITCHEN" name="shouldPrintToKitchen" type="java.lang.Boolean" />
+		<property column="CLOSE_ON_PAID" name="closeOnPaid" type="java.lang.Boolean" />
+		<property column="REQURIED_CUSTOMER_DATA" name="requiredCustomerData" type="java.lang.Boolean" />
+		<property column="SHOW_ITEM_BARCODE" name="showItemBarcode" type="java.lang.Boolean" />
+		<property column="SHOW_IN_LOGIN_SCREEN" name="showInLoginScreen" type="java.lang.Boolean" />
+		<property column="CONSOLIDATE_TIEMS_IN_RECEIPT" name="consolidateItemsInReceipt" type="java.lang.Boolean" />
+		<property column="HIDE_ITEM_WITH_EMPTY_INVENTORY" name="hideItemWithEmptyInventory" type="java.lang.Boolean" />
+		
+		<bag name="orderSubTypes" table="ORDER_SUB_TYPE" lazy="false" cascade="all">
+			<key column="ORDER_TYPE_ID" />
+			<element column="NAME" type="java.lang.String" />
+		</bag>
+	</class>
+</hibernate-mapping>

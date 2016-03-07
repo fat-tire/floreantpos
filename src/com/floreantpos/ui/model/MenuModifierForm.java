@@ -45,6 +45,7 @@ import javax.swing.table.AbstractTableModel;
 import net.miginfocom.swing.MigLayout;
 
 import com.floreantpos.Messages;
+import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.model.MenuModifier;
 import com.floreantpos.model.MenuModifierGroup;
 import com.floreantpos.model.Tax;
@@ -69,6 +70,40 @@ import com.floreantpos.util.POSUtil;
 public class MenuModifierForm extends BeanEditor {
 	private MenuModifier modifier;
 	private PriceByOrderType priceTableModel;
+
+	// Variables declaration - do not modify//GEN-BEGIN:variables
+	private javax.swing.JButton btnNewTax;
+	private javax.swing.JCheckBox btnPrintToKitchen;
+	private javax.swing.JComboBox cbModifierGroup;
+	private javax.swing.JComboBox cbTaxes;
+	private javax.swing.JLabel jLabel1;
+	private javax.swing.JLabel jLabel2;
+	private javax.swing.JLabel jLabel3;
+	private javax.swing.JLabel jLabel4;
+	private javax.swing.JLabel jLabel5;
+	private javax.swing.JLabel jLabel6;
+	private com.floreantpos.swing.TransparentPanel jPanel1;
+	private javax.swing.JTabbedPane jTabbedPane1;
+	private DoubleTextField tfExtraPrice;
+	private javax.swing.JFormattedTextField tfName;
+	private DoubleTextField tfPrice;
+	private JLabel lblTranslatedName;
+	private FixedLengthTextField tfTranslatedName;
+	private JButton btnButtonColor;
+	private JButton btnTextColor;
+	private IntegerTextField tfSortOrder;
+	private JLabel lblSortOrder;
+
+	private javax.swing.JButton btnNewPrice;
+	private javax.swing.JButton btnUpdatePrice;
+	private javax.swing.JButton btnDefaultValue;
+	private javax.swing.JButton btnDeletePrice;
+	private javax.swing.JButton btnDeleteAll;
+	private javax.swing.JPanel tabPrice;
+	private javax.swing.JScrollPane jScrollPane3;
+	private javax.swing.JTable priceTable;
+
+	// End of variables declaration//GEN-END:variables
 
 	/** Creates new form ModifierEditor */
 	public MenuModifierForm() throws Exception {
@@ -217,7 +252,6 @@ public class MenuModifierForm extends BeanEditor {
 
 		btnNewPrice.setText(Messages.getString("MenuModifierForm.2")); //$NON-NLS-1$
 		btnNewPrice.addActionListener(new ActionListener() {
-			//TODO: handle exception
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				addNewPrice();
@@ -275,7 +309,9 @@ public class MenuModifierForm extends BeanEditor {
 		//buttonPanel.add(btnDeleteAll);
 
 		tabPrice.add(buttonPanel, BorderLayout.SOUTH);
-		jTabbedPane1.addTab(Messages.getString("MenuModifierForm.6"), tabPrice); //$NON-NLS-1$
+		if (TerminalConfig.isMultipleOrderSupported()) {
+			jTabbedPane1.addTab(Messages.getString("MenuModifierForm.6"), tabPrice); //$NON-NLS-1$
+		}
 
 	}// </editor-fold>//GEN-END:initComponents
 
@@ -295,39 +331,6 @@ public class MenuModifierForm extends BeanEditor {
 		}
 	}//GEN-LAST:event_btnNewTaxActionPerformed
 
-	// Variables declaration - do not modify//GEN-BEGIN:variables
-	private javax.swing.JButton btnNewTax;
-	private javax.swing.JCheckBox btnPrintToKitchen;
-	private javax.swing.JComboBox cbModifierGroup;
-	private javax.swing.JComboBox cbTaxes;
-	private javax.swing.JLabel jLabel1;
-	private javax.swing.JLabel jLabel2;
-	private javax.swing.JLabel jLabel3;
-	private javax.swing.JLabel jLabel4;
-	private javax.swing.JLabel jLabel5;
-	private javax.swing.JLabel jLabel6;
-	private com.floreantpos.swing.TransparentPanel jPanel1;
-	private javax.swing.JTabbedPane jTabbedPane1;
-	private DoubleTextField tfExtraPrice;
-	private javax.swing.JFormattedTextField tfName;
-	private DoubleTextField tfPrice;
-	private JLabel lblTranslatedName;
-	private FixedLengthTextField tfTranslatedName;
-	private JButton btnButtonColor;
-	private JButton btnTextColor;
-	private IntegerTextField tfSortOrder;
-	private JLabel lblSortOrder;
-
-	private javax.swing.JButton btnNewPrice;
-	private javax.swing.JButton btnUpdatePrice;
-	private javax.swing.JButton btnDefaultValue;
-	private javax.swing.JButton btnDeletePrice;
-	private javax.swing.JButton btnDeleteAll;
-	private javax.swing.JPanel tabPrice;
-	private javax.swing.JScrollPane jScrollPane3;
-	private javax.swing.JTable priceTable;
-
-	// End of variables declaration//GEN-END:variables
 	@Override
 	public boolean save() {
 		try {

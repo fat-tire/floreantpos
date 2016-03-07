@@ -51,7 +51,6 @@ import com.floreantpos.main.Application;
 import com.floreantpos.model.CardReader;
 import com.floreantpos.model.KitchenTicket;
 import com.floreantpos.model.KitchenTicketItem;
-import com.floreantpos.model.OrderType;
 import com.floreantpos.model.PosTransaction;
 import com.floreantpos.model.Printer;
 import com.floreantpos.model.RefundTransaction;
@@ -64,6 +63,7 @@ import com.floreantpos.model.dao.RestaurantDAO;
 import com.floreantpos.model.dao.TerminalPrintersDAO;
 import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.model.util.DateUtil;
+import com.floreantpos.model.OrderType;
 import com.floreantpos.util.NumberUtil;
 import com.floreantpos.util.PrintServiceUtil;
 
@@ -138,8 +138,6 @@ public class ReceiptPrintService {
 			jasperPrint.setName(ORDER_ + ticket.getId());
 			jasperPrint.setProperty(PROP_PRINTER_NAME, Application.getPrinters().getReceiptPrinter());
 			printQuitely(jasperPrint);
-
-			//TODO: handle exception
 
 			JasperPrint jasperPrint = createPrint(ticket, map, null);
 			jasperPrint.setName(ORDER_ + ticket.getId());
@@ -460,7 +458,8 @@ public class ReceiptPrintService {
 		addColumn(ticketHeaderBuilder, POSConstants.RECEIPT_REPORT_TICKET_NO_LABEL + ticket.getId());
 		endRow(ticketHeaderBuilder);
 
-		if (ticket.getType() == OrderType.DINE_IN) {
+		OrderType orderType=ticket.getType(); 
+		if (orderType.isShowTableSelection() || orderType.isShowGuestSelection()) {//fix
 			beginRow(ticketHeaderBuilder);
 			addColumn(ticketHeaderBuilder, POSConstants.RECEIPT_REPORT_TABLE_NO_LABEL + ticket.getTableNumbers());
 			endRow(ticketHeaderBuilder);
@@ -483,7 +482,7 @@ public class ReceiptPrintService {
 		endRow(ticketHeaderBuilder);
 
 		//customer info section
-		if (ticket.getType() != OrderType.DINE_IN) {
+		if (orderType.isRequiredCustomerData()) {
 
 			String customerName = ticket.getProperty(Ticket.CUSTOMER_NAME);
 			String customerMobile = ticket.getProperty(Ticket.CUSTOMER_MOBILE);

@@ -28,7 +28,6 @@ import javax.swing.border.EmptyBorder;
 
 import com.floreantpos.Messages;
 import com.floreantpos.POSConstants;
-import com.floreantpos.model.OrderType;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.ui.dialog.POSDialog;
 

@@ -23,16 +23,13 @@ import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
 
-import com.floreantpos.Messages;
 import com.floreantpos.POSConstants;
 import com.floreantpos.actions.SettleTicketAction;
-import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.ActionHistory;
 import com.floreantpos.model.MenuCategory;
 import com.floreantpos.model.MenuGroup;
 import com.floreantpos.model.MenuItem;
-import com.floreantpos.model.OrderType;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.TicketItemModifier;
@@ -50,7 +47,6 @@ import com.floreantpos.ui.views.order.actions.ItemSelectionListener;
 import com.floreantpos.ui.views.order.actions.OrderListener;
 import com.floreantpos.ui.views.order.modifier.ModifierSelectionDialog;
 import com.floreantpos.ui.views.order.modifier.ModifierSelectionModel;
-import com.floreantpos.util.OrderUtil;
 
 public class OrderController implements OrderListener, CategorySelectionListener, GroupSelectionListener, ItemSelectionListener {
 	private OrderView orderView;
@@ -109,19 +105,19 @@ public class OrderController implements OrderListener, CategorySelectionListener
 			return;
 		}
 
-		if (TerminalConfig.isCashierMode()) {
-			String message = Messages.getString("OrderController.0") + ticket.getId() + Messages.getString("OrderController.1"); //$NON-NLS-1$ //$NON-NLS-2$
-			if (ticket.isPaid()) {
-				message = Messages.getString("OrderController.2") + ticket.getId() + Messages.getString("OrderController.3"); //$NON-NLS-1$ //$NON-NLS-2$
-			}
-
-			OrderUtil.createNewTakeOutOrder(OrderType.TAKE_OUT);
-			CashierModeNextActionDialog dialog = new CashierModeNextActionDialog(message);
-			dialog.open();
-		}
-		else {
-			RootView.getInstance().showDefaultView();
-		}
+		//		if (TerminalConfig.isCashierMode()) {
+		//			String message = Messages.getString("OrderController.0") + ticket.getId() + Messages.getString("OrderController.1"); //$NON-NLS-1$ //$NON-NLS-2$
+		//			if (ticket.isPaid()) {
+		//				message = Messages.getString("OrderController.2") + ticket.getId() + Messages.getString("OrderController.3"); //$NON-NLS-1$ //$NON-NLS-2$
+		//			}
+		//
+		//			OrderUtil.createNewTakeOutOrder(ticket.getType()); //fix
+		//			CashierModeNextActionDialog dialog = new CashierModeNextActionDialog(message);
+		//			dialog.open();
+		//		}
+		//		else {
+		RootView.getInstance().showDefaultView();
+		//		}
 	}
 
 	public static void openModifierDialog(TicketItem ticketItem) {
@@ -241,8 +237,10 @@ public class OrderController implements OrderListener, CategorySelectionListener
 	}
 
 	public synchronized static void closeOrder(Ticket ticket) {
-		ticket.setClosed(true);
-		ticket.setClosingDate(new Date());
+		if (ticket.getType().isCloseOnPaid()) {
+			ticket.setClosed(true);
+			ticket.setClosingDate(new Date());
+		}
 
 		TicketDAO ticketDAO = new TicketDAO();
 		ticketDAO.saveOrUpdate(ticket);

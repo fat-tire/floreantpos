@@ -24,6 +24,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.List;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -38,7 +39,7 @@ import net.miginfocom.swing.MigLayout;
 
 import com.floreantpos.Messages;
 import com.floreantpos.model.MenuModifier;
-import com.floreantpos.model.OrderType;
+import com.floreantpos.model.OrderTypeProperties;
 import com.floreantpos.model.Tax;
 import com.floreantpos.model.dao.MenuModifierDAO;
 import com.floreantpos.model.dao.TaxDAO;
@@ -73,14 +74,18 @@ public class ModifierPriceByOrderTypeDialog extends POSDialog {
 
 	private void init() {
 		createView();
-		cbOrderTypes.addItem(OrderType.DINE_IN.toString());
+		List<String> orderTypes = OrderTypeProperties.getVisibleOrderTypes();
+		for (String orderType : orderTypes) {
+			cbOrderTypes.addItem(orderType);
+		}
+		/*cbOrderTypes.addItem(OrderType.DINE_IN.toString());
 		cbOrderTypes.addItem(OrderType.BAR_TAB.toString());
 		cbOrderTypes.addItem(OrderType.DRIVE_THRU.toString());
 		cbOrderTypes.addItem(OrderType.HOME_DELIVERY.toString());
 		cbOrderTypes.addItem(OrderType.PICKUP.toString());
 		cbOrderTypes.addItem(OrderType.TAKE_OUT.toString());
 		cbOrderTypes.addItem(OrderType.FOR_HERE.toString());
-		cbOrderTypes.addItem(OrderType.RETAIL.toString());
+		cbOrderTypes.addItem(OrderType.RETAIL.toString());*/
 
 		setModal(true);
 		getRootPane().setDefaultButton(btnOK);

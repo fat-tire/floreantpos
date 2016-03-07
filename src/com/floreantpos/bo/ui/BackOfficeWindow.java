@@ -55,6 +55,7 @@ import com.floreantpos.bo.actions.MenuUsageReportAction;
 import com.floreantpos.bo.actions.ModifierExplorerAction;
 import com.floreantpos.bo.actions.ModifierGroupExplorerAction;
 import com.floreantpos.bo.actions.OpenTicketSummaryReportAction;
+import com.floreantpos.bo.actions.OrdersTypeExplorerAction;
 import com.floreantpos.bo.actions.PayrollReportAction;
 import com.floreantpos.bo.actions.SalesAnalysisReportAction;
 import com.floreantpos.bo.actions.SalesBalanceReportAction;
@@ -68,6 +69,7 @@ import com.floreantpos.bo.actions.UserExplorerAction;
 import com.floreantpos.bo.actions.UserTypeExplorerAction;
 import com.floreantpos.bo.actions.ViewGratuitiesAction;
 import com.floreantpos.config.AppConfig;
+import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.customPayment.CustomPaymentBrowserAction;
 import com.floreantpos.extension.ExtensionManager;
 import com.floreantpos.extension.FloreantPlugin;
@@ -195,6 +197,9 @@ public class BackOfficeWindow extends javax.swing.JFrame {
 		JMenu explorerMenu = new JMenu(com.floreantpos.POSConstants.EXPLORERS);
 		menuBar.add(explorerMenu);
 
+		if (TerminalConfig.isMultipleOrderSupported()) {
+			explorerMenu.add(new OrdersTypeExplorerAction());
+		}
 		explorerMenu.add(new CategoryExplorerAction());
 		explorerMenu.add(new GroupExplorerAction());
 		explorerMenu.add(new ItemExplorerAction());

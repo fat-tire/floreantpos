@@ -15,13 +15,14 @@
  * * All Rights Reserved.
  * ************************************************************************
  */
-package com.floreantpos.ui.dialog;
+package com.floreantpos.ui.tableselection;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -37,6 +38,7 @@ import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
@@ -45,6 +47,7 @@ import net.miginfocom.swing.MigLayout;
 
 import com.floreantpos.Messages;
 import com.floreantpos.POSConstants;
+import com.floreantpos.extension.OrderServiceFactory;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.ShopTable;
 import com.floreantpos.model.Ticket;
@@ -54,11 +57,15 @@ import com.floreantpos.swing.POSToggleButton;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.swing.ScrollableFlowPanel;
 import com.floreantpos.swing.ShopTableButton;
+import com.floreantpos.ui.dialog.NumberSelectionDialog2;
+import com.floreantpos.ui.dialog.POSDialog;
+import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.views.order.OrderView;
 import com.floreantpos.ui.views.order.RootView;
+import com.floreantpos.util.TicketAlreadyExistsException;
 import com.jidesoft.swing.JideScrollPane;
 
-public class TableSelectionView extends JPanel implements ActionListener {
+public class DefaultTableSelectionView extends TableSelector implements ActionListener {
 
 	private DefaultListModel<ShopTableButton> addedTableListModel = new DefaultListModel<ShopTableButton>();
 	private Map<ShopTable, ShopTableButton> tableButtonMap = new HashMap<ShopTable, ShopTableButton>();
@@ -73,8 +80,8 @@ public class TableSelectionView extends JPanel implements ActionListener {
 	private PosButton btnRefresh;
 
 	private ButtonGroup btnGroups;
-
-	public TableSelectionView() {
+	
+	public DefaultTableSelectionView() {
 		init();
 	}
 
@@ -144,7 +151,7 @@ public class TableSelectionView extends JPanel implements ActionListener {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				redererTable();
+				redererTables();
 				btnGroups.clearSelection();
 			}
 		});
@@ -154,7 +161,9 @@ public class TableSelectionView extends JPanel implements ActionListener {
 
 	}
 
-	public synchronized void redererTable() {
+	public synchronized void redererTables() {
+		clearSelection();
+		
 		addedTableListModel.clear();
 		buttonsPanel.getContentPane().removeAll();
 
@@ -171,6 +180,11 @@ public class TableSelectionView extends JPanel implements ActionListener {
 			tableButton.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
+					Window windowAncestor = SwingUtilities.getWindowAncestor(DefaultTableSelectionView.this);
+					if(windowAncestor instanceof POSDialog) {
+						windowAncestor.dispose();
+					}
+					
 					addTable(e);
 				}
 			});
@@ -266,13 +280,15 @@ public class TableSelectionView extends JPanel implements ActionListener {
 			if (!addedTableListModel.contains(button)) {
 				addedTableListModel.addElement(button);
 			}
-			doCreateNewTicket();
-			clearSelection();
+			
+			if(isCreateNewTicket()) {
+				doCreateNewTicket();
+			}
 		}
 		return true;
 	}
 
-	public List<ShopTable> getTables() {
+	public List<ShopTable> getSelectedTables() {
 		Enumeration<ShopTableButton> elements = addedTableListModel.elements();
 		List<ShopTable> tables = new ArrayList<ShopTable>();
 
@@ -285,7 +301,6 @@ public class TableSelectionView extends JPanel implements ActionListener {
 	}
 
 	private void clearSelection() {
-		redererTable();
 		btnGroups.clearSelection();
 		btnGroup.setVisible(true);
 		btnUnGroup.setVisible(true);
@@ -323,21 +338,20 @@ public class TableSelectionView extends JPanel implements ActionListener {
 		}
 
 	}
-	//FIXME: ORDER TYPE
+
 	private void doCreateNewTicket() {
-//		try {
-//			List<ShopTable> selectedTables = getTables();
-//
-//			if (selectedTables.isEmpty()) {
-//				return;
-//			}
-//
-//			OrderServiceExtension orderService = new CustomOrderServiceExtension(selectedTables);
-//			orderService.createNewTicket(OrderType.DINE_IN);
-//
-//		} catch (TicketAlreadyExistsException e) {
-//
-//		}
+		try {
+			List<ShopTable> selectedTables = getSelectedTables();
+
+			if (selectedTables.isEmpty()) {
+				return;
+			}
+
+			OrderServiceFactory.getOrderService().createNewTicket(getOrderType(), selectedTables);
+
+		} catch (TicketAlreadyExistsException e) {
+
+		}
 	}
 
 	private boolean editTicket(Ticket ticket) {

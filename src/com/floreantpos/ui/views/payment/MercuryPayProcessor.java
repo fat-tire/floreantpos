@@ -24,10 +24,10 @@ import net.authorize.data.creditcard.CardType;
 import com.floreantpos.Messages;
 import com.floreantpos.PosException;
 import com.floreantpos.config.CardConfig;
-import com.floreantpos.model.OrderType;
 import com.floreantpos.model.PosTransaction;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.ui.util.StreamUtils;
+import com.floreantpos.model.OrderType;
 import com.floreantpos.util.NumberUtil;
 import com.mercurypay.ws.sdk.MercuryResponse;
 import com.mercurypay.ws.sdk.MercuryWebRequest;
@@ -51,7 +51,7 @@ public class MercuryPayProcessor implements CardProcessor {
 	public void authorizeAmount(PosTransaction transaction) throws Exception {
 		Ticket ticket = transaction.getTicket();
 		
-		if(ticket.getType() == OrderType.BAR_TAB && ticket.hasProperty("AcqRefData")) { //$NON-NLS-1$
+		if(ticket.getType().name() == OrderType.BAR_TAB && ticket.hasProperty("AcqRefData")) { //$NON-NLS-1$ //fix
 			captureAuthorizedAmount(transaction);
 			return;
 		}

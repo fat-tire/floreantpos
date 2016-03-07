@@ -35,7 +35,7 @@ public class TerminalConfig {
 	private static final String PS_FILTER = "ps_filter"; //$NON-NLS-1$
 
 	private static final String SHOW_TABLE_SELECTION = "show_table_selection"; //$NON-NLS-1$
-	
+
 	private static final String CONSOLIDATE_TICKET_ITEMS = "consolidate_ticket_items"; //$NON-NLS-1$
 
 	private static final String REGULAR_MODE = "regular_mode"; //$NON-NLS-1$
@@ -68,6 +68,8 @@ public class TerminalConfig {
 
 	static final String TERMINAL_ID = "terminal_id"; //$NON-NLS-1$
 	static final String FULLSCREEN_MODE = "fullscreen_mode"; //$NON-NLS-1$
+
+	private static boolean multiple_order_supported = true;
 
 	private static PropertiesConfiguration config = AppConfig.getConfig();
 
@@ -185,6 +187,10 @@ public class TerminalConfig {
 
 	public static boolean isShowBarcodeOnReceipt() {
 		return config.getBoolean(SHOW_BARCODE_ON_RECEIPT, false);
+	}
+
+	public static boolean isMultipleOrderSupported() {
+		return multiple_order_supported;
 	}
 
 	public static void setCustomerDisplay(boolean show) {
@@ -329,7 +335,7 @@ public class TerminalConfig {
 
 		return codes;
 	}
-	
+
 	public static void setConsolidateTicketItems(boolean consolidateTicketItems) {
 		config.setProperty(CONSOLIDATE_TICKET_ITEMS, Boolean.valueOf(consolidateTicketItems));
 	}

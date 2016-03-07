@@ -29,15 +29,16 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 
-import org.apache.commons.logging.LogFactory;
-
 import net.miginfocom.swing.MigLayout;
+
+import org.apache.commons.logging.LogFactory;
 
 import com.floreantpos.IconFactory;
 import com.floreantpos.Messages;
@@ -46,12 +47,10 @@ import com.floreantpos.actions.ClockInOutAction;
 import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.config.ui.DatabaseConfigurationDialog;
 import com.floreantpos.demo.KitchenDisplayView;
-import com.floreantpos.extension.ExtensionManager;
-import com.floreantpos.extension.OrderServiceExtension;
 import com.floreantpos.main.Application;
-import com.floreantpos.model.OrderType;
 import com.floreantpos.model.User;
 import com.floreantpos.swing.MessageDialog;
+import com.floreantpos.swing.OrderTypeLoginButton;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.dialog.PasswordEntryDialog;
@@ -66,14 +65,6 @@ import com.floreantpos.util.UserNotFoundException;
 public class LoginView extends ViewPanel {
 	public final static String VIEW_NAME = "LOGIN_VIEW"; //$NON-NLS-1$
 
-	private com.floreantpos.swing.PosButton btnDineIn;
-	private com.floreantpos.swing.PosButton btnTakeOut;
-	private com.floreantpos.swing.PosButton btnPickUp;
-	private com.floreantpos.swing.PosButton btnHomeDelivery;
-	private com.floreantpos.swing.PosButton btnDriveThru;
-	private com.floreantpos.swing.PosButton btnBarTab;
-	private com.floreantpos.swing.PosButton btnForHere;
-	private com.floreantpos.swing.PosButton btnRetail;
 	private com.floreantpos.swing.PosButton btnSwitchBoard;
 	private com.floreantpos.swing.PosButton btnKitchenDisplay;
 
@@ -85,7 +76,9 @@ public class LoginView extends ViewPanel {
 	private static LoginView instance;
 	private JPanel mainPanel;
 
-	/** Creates new form LoginScreen */
+	private JPanel panel1 = new JPanel(new MigLayout("fill, ins 0, hidemode 3", "sg, fill", ""));
+	private JPanel panel2 = new JPanel(new MigLayout("fill, ins 0, hidemode 3", "sg, fill", ""));
+
 	private LoginView() {
 		setLayout(new BorderLayout(5, 5));
 		JLabel titleLabel = new JLabel(IconFactory.getIcon("/ui_icons/", "title.png")); //$NON-NLS-1$ //$NON-NLS-2$
@@ -110,59 +103,31 @@ public class LoginView extends ViewPanel {
 		mainPanel = new JPanel(new BorderLayout());
 		mainPanel.add(lblTerminalId, BorderLayout.NORTH);
 
-		btnDineIn = new PosButton(POSConstants.DINE_IN_BUTTON_TEXT);
-		btnTakeOut = new PosButton(POSConstants.TAKE_OUT_BUTTON_TEXT);
-		btnPickUp = new PosButton(POSConstants.PICKUP_BUTTON_TEXT);
-		btnHomeDelivery = new PosButton(POSConstants.HOME_DELIVERY_BUTTON_TEXT);
-
-		btnBarTab = new PosButton(POSConstants.BAR_TAB_BUTTON_TEXT);
-		btnBarTab.setEnabled(false);
-		btnDriveThru = new PosButton(POSConstants.DRIVE_THRU_BUTTON_TEXT);
-		btnForHere = new PosButton(POSConstants.FOR_HERE_BUTTON_TEXT);
-		btnRetail = new PosButton(POSConstants.RETAIL_BUTTON_TEXT);
-
 		btnSwitchBoard = new PosButton(POSConstants.SWITCHBOARD);
 		btnKitchenDisplay = new PosButton(POSConstants.KITCHEN_DISPLAY_BUTTON_TEXT);
-
 		btnConfigureDatabase = new PosButton(POSConstants.CONFIGURE_DATABASE);
 		btnShutdown = new PosButton(POSConstants.SHUTDOWN);
 		btnClockOUt = new PosButton(new ClockInOutAction(false, true));
-		
-		JPanel panel1 = new JPanel(new GridLayout(1, 0, 5, 5));
-		JPanel panel2 = new JPanel(new GridLayout(1, 0, 5, 5));
-		JPanel panel3 = new JPanel(new GridLayout(1, 0, 5, 5));
-		JPanel panel4 = new JPanel(new GridLayout(1, 0, 5, 5));
 
-		OrderServiceExtension orderServiceExtension = (OrderServiceExtension) ExtensionManager.getPlugin(OrderServiceExtension.class);
-		
-		panel1.add(btnDineIn);
-		panel1.add(btnTakeOut);
-		panel1.add(btnForHere);
-		
-		centerPanel.add(panel1, "wrap, w 600px, h 100px, grow");
-		
-		if (orderServiceExtension != null) {
-			panel2.add(btnPickUp);
-			panel2.add(btnHomeDelivery);
-			panel2.add(btnDriveThru);
-			
-			centerPanel.add(panel2, "wrap, w 600px, h 100px, grow");
-			
-			//centerPanel.add(btnRetail, "grow");//$NON-NLS-1$
-			//centerPanel.add(btnBarTab, "grow");//$NON-NLS-1$
-			
-		}
-		
+		btnSwitchBoard.setVisible(false);
+		btnKitchenDisplay.setVisible(false);
+		btnClockOUt.setVisible(false);
+
+		JPanel panel3 = new JPanel(new GridLayout(1, 0, 5, 5));
+		JPanel panel4 = new JPanel(new MigLayout("fill, ins 0, hidemode 3", "sg, fill", ""));
+
+		centerPanel.add(panel1, "cell 0 0, wrap, w 600px, h 100px, grow");
+
 		panel3.add(btnSwitchBoard);
 		panel3.add(btnKitchenDisplay);
-		centerPanel.add(panel3, "wrap, w 600px, h 100px, grow");
-		
-		panel4.add(btnClockOUt);
-		panel4.add(btnConfigureDatabase);
-		panel4.add(btnShutdown);
-		
-		centerPanel.add(panel4, "wrap, w 600px, h 100px, grow");
-		
+		centerPanel.add(panel3, "cell 0 2, wrap, w 600px, h 100px, grow");
+
+		panel4.add(btnClockOUt, "grow");
+		panel4.add(btnConfigureDatabase, "grow");
+		panel4.add(btnShutdown, "grow");
+
+		centerPanel.add(panel4, "cell 0 3, wrap, w 600px, h 100px, grow");
+
 		if (TerminalConfig.isFullscreenMode()) {
 			if (btnConfigureDatabase != null) {
 				btnConfigureDatabase.setVisible(false);
@@ -170,97 +135,55 @@ public class LoginView extends ViewPanel {
 			if (btnShutdown != null) {
 				btnShutdown.setVisible(false);
 			}
-			centerPanel.add(btnClockOUt, "grow"); //$NON-NLS-1$
 		}
 		else {
-
 			if (!TerminalConfig.isShowDbConfigureButton()) {
 				btnConfigureDatabase.setVisible(false);
 			}
 		}
-		
+
 		initActionHandlers();
 
 		mainPanel.add(centerPanel, BorderLayout.CENTER);
 		return mainPanel;
 	}
 
+	public void initializeOrderButtonPanel() {
+		panel1.removeAll();
+		panel2.removeAll();
+
+		List<com.floreantpos.model.OrderType> orderTypes = Application.getInstance().getOrderTypes();
+		int buttonCount = 0;
+		
+		for (com.floreantpos.model.OrderType orderType : orderTypes) {
+			if (!orderType.isShowInLoginScreen()) {
+				continue;
+			}
+			if (buttonCount < 3) {
+				panel1.add(new OrderTypeLoginButton(orderType), "grow");
+			}
+			else {
+				panel2.add(new OrderTypeLoginButton(orderType), "grow");
+			}
+			++buttonCount;
+		}
+		
+		if (buttonCount > 3) {
+			centerPanel.add(panel2, "cell 0 1, wrap, w 600px, h 100px, grow");
+		}
+
+		btnSwitchBoard.setVisible(true);
+		btnKitchenDisplay.setVisible(true);
+		btnClockOUt.setVisible(true);
+
+		centerPanel.repaint();
+	}
+
+	public void updateView() {
+		mainPanel.repaint();
+	}
+
 	void initActionHandlers() {
-		btnDineIn.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				TerminalConfig.setDefaultView(OrderType.DINE_IN.toString());
-				doLogin();
-			}
-		});
-
-		btnTakeOut.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				TerminalConfig.setDefaultView(OrderType.TAKE_OUT.toString());
-				doLogin();
-			}
-		});
-
-		btnForHere.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				TerminalConfig.setDefaultView(OrderType.FOR_HERE.toString());
-				doLogin();
-			}
-		});
-
-		btnRetail.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				TerminalConfig.setDefaultView(OrderType.RETAIL.toString());
-				doLogin();
-			}
-		});
-
-		btnPickUp.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				/*TerminalConfig.setDefaultView(OrderType.PICKUP.toString());
-				doLogin();*/
-				POSMessageDialog.showMessage(Messages.getString("LoginView.19")); //$NON-NLS-1$
-			}
-		});
-
-		btnHomeDelivery.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				/*	TerminalConfig.setDefaultView(OrderType.HOME_DELIVERY.toString());
-					doLogin();*/
-				POSMessageDialog.showMessage(Messages.getString("LoginView.20")); //$NON-NLS-1$
-			}
-		});
-
-		btnDriveThru.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				/*TerminalConfig.setDefaultView(OrderType.DRIVE_THRU.toString());
-				doLogin();*/
-				POSMessageDialog.showMessage(Messages.getString("LoginView.18")); //$NON-NLS-1$
-			}
-		});
-
-		btnBarTab.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				TerminalConfig.setDefaultView(OrderType.BAR_TAB.toString());
-				doLogin();
-			}
-		});
-
 		btnConfigureDatabase.addActionListener(new ActionListener() {
 
 			@Override
@@ -335,104 +258,6 @@ public class LoginView extends ViewPanel {
 		return VIEW_NAME;
 	}
 
-	/**
-	 * @return the btnDineIn
-	 */
-	public com.floreantpos.swing.PosButton getBtnDineIn() {
-		return btnDineIn;
-	}
-
-	/**
-	 * @return the btnTakeOut
-	 */
-	public com.floreantpos.swing.PosButton getBtnTakeOut() {
-		return btnTakeOut;
-	}
-
-	/**
-	 * @return the btnPickUp
-	 */
-	public com.floreantpos.swing.PosButton getBtnPickUp() {
-		return btnPickUp;
-	}
-
-	/**
-	 * @return the btnHomeDelivery
-	 */
-	public com.floreantpos.swing.PosButton getBtnHomeDelivery() {
-		return btnHomeDelivery;
-	}
-
-	/**
-	 * @return the btnDriveThru
-	 */
-	public com.floreantpos.swing.PosButton getBtnDriveThru() {
-		return btnDriveThru;
-	}
-
-	/**
-	 * @return the btnBarTab
-	 */
-	public com.floreantpos.swing.PosButton getBtnBarTab() {
-		return btnBarTab;
-	}
-
-	/**
-	 * @return the btnForHere
-	 */
-	public com.floreantpos.swing.PosButton getBtnForHere() {
-		return btnForHere;
-	}
-
-	/**
-	 * @return the btnRetail
-	 */
-	public com.floreantpos.swing.PosButton getBtnRetail() {
-		return btnRetail;
-	}
-
-	/**
-	 * @return the btnSwitchBoard
-	 */
-	public com.floreantpos.swing.PosButton getBtnSwitchBoard() {
-		return btnSwitchBoard;
-	}
-
-	/**
-	 * @return the btnKitchenDisplay
-	 */
-	public com.floreantpos.swing.PosButton getBtnKitchenDisplay() {
-		return btnKitchenDisplay;
-	}
-
-	/**
-	 * @return the btnConfigureDatabase
-	 */
-	public com.floreantpos.swing.PosButton getBtnConfigureDatabase() {
-		return btnConfigureDatabase;
-	}
-
-	/**
-	 * @return the btnShutdown
-	 */
-	public com.floreantpos.swing.PosButton getBtnShutdown() {
-		return btnShutdown;
-	}
-
-	/**
-	 * @return the btnClockOUt
-	 */
-	public com.floreantpos.swing.PosButton getBtnClockOUt() {
-		return btnClockOUt;
-	}
-
-	/**
-	 * @return the lblTerminalId
-	 */
-	public JLabel getLblTerminalId() {
-		return lblTerminalId;
-	}
-
 	public static LoginView getInstance() {
 		if (instance == null) {
 			instance = new LoginView();
@@ -441,16 +266,10 @@ public class LoginView extends ViewPanel {
 		return instance;
 	}
 
-	/**
-	 * @return the centerPanel
-	 */
 	public JPanel getCenterPanel() {
 		return centerPanel;
 	}
 
-	/**
-	 * @return the mainPanel
-	 */
 	public JPanel getMainPanel() {
 		return mainPanel;
 	}

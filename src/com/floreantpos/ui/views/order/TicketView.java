@@ -48,7 +48,6 @@ import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.ITicketItem;
 import com.floreantpos.model.MenuItem;
-import com.floreantpos.model.OrderType;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.TicketItemModifier;
@@ -242,17 +241,19 @@ public class TicketView extends JPanel {
 		btnTotal.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (ticket.getTicketType().equals(OrderType.TAKE_OUT.name()) || ticket.getTicketType().equals(OrderType.FOR_HERE.name())) {
+				List<String> subOrderTypes = ticket.getType().getOrderSubTypes();
+				if (subOrderTypes.size() > 0) {
 					OrderTypeSelectionDialog2 dialog = new OrderTypeSelectionDialog2(ticket);
 					dialog.open();
 
 					if (dialog.isCanceled()) {
 						return;
 					}
-					OrderType orderType = dialog.getSelectedOrderType();
-					if (orderType != null) {
-						ticket.setType(orderType);
-						ticket.updateTicketItemPriceByOrderType();
+					//OrderType orderType = dialog.getSelectedOrderType();
+					String subOrderType = dialog.getSelectedSubOrderType();
+					if (subOrderType != null) {
+						//ticket.setType(orderType);
+						ticket.updateTicketItemPriceByOrderType(subOrderType);
 						updateModel();
 						updateView();
 					}
@@ -486,10 +487,10 @@ public class TicketView extends JPanel {
 		}*/
 
 		if (ticket.getId() == null) {
-			titledBorder.setTitle(" [New Ticket]"); //$NON-NLS-1$
+			titledBorder.setTitle(ticket.getTicketType() + " [New Ticket]"); //$NON-NLS-1$
 		}
 		else {
-			titledBorder.setTitle(Messages.getString("TicketView.37") + ticket.getId() + " Table# " + getTableNumbers(ticket.getTableNumbers())); //$NON-NLS-1$ //$NON-NLS-2$
+			titledBorder.setTitle(ticket.getTicketType() + " " + Messages.getString("TicketView.37") + ticket.getId() + " Table# " + getTableNumbers(ticket.getTableNumbers())); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 
 		ticketViewerTable.updateView();

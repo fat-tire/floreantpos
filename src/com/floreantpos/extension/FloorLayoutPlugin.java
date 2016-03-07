@@ -20,12 +20,11 @@ package com.floreantpos.extension;
 import java.awt.Dimension;
 import java.util.List;
 
-import javax.swing.JPanel;
-
 import com.floreantpos.config.ui.ConfigurationDialog;
 import com.floreantpos.model.ShopTable;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.ui.BeanEditor;
+import com.floreantpos.ui.tableselection.TableSelector;
 
 public interface FloorLayoutPlugin extends FloreantPlugin {
 	
@@ -36,7 +35,7 @@ public interface FloorLayoutPlugin extends FloreantPlugin {
 	void initialize();
 	void openTicketsAndTablesDisplay();
 	void initConfigurationView(ConfigurationDialog dialog);
-	JPanel initFloorView();
+	TableSelector createTableSelector();
 	void updateView();
 	List<ShopTable> captureTableNumbers(Ticket ticket);
 	BeanEditor getBeanEditor();

@@ -24,6 +24,7 @@ import org.apache.commons.lang.StringUtils;
 
 import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.model.base.BaseMenuModifier;
+import com.floreantpos.model.OrderType;
 import com.floreantpos.util.POSUtil;
 
 public class MenuModifier extends BaseMenuModifier {

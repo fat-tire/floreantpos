@@ -29,11 +29,9 @@ import javax.swing.JPanel;
 
 import com.floreantpos.Messages;
 import com.floreantpos.main.Application;
-import com.floreantpos.model.OrderType;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.ui.dialog.OpenTicketsListDialog;
 import com.floreantpos.ui.dialog.POSDialog;
-import com.floreantpos.util.OrderUtil;
 
 public class CashierModeNextActionDialog extends POSDialog implements ActionListener {
 	PosButton btnNew = new PosButton(Messages.getString("CashierModeNextActionDialog.0")); //$NON-NLS-1$
@@ -77,7 +75,8 @@ public class CashierModeNextActionDialog extends POSDialog implements ActionList
 	public void actionPerformed(ActionEvent e) {
 		
 		if(e.getSource() == btnNew) {
-			OrderUtil.createNewTakeOutOrder(OrderType.TAKE_OUT);
+			//FIXME: ORDER TYPE
+			//OrderUtil.createNewTakeOutOrder(new OrderType(1, "TAKE OUT"));
 		}
 		else if(e.getSource() == btnLogout) {
 			Application.getInstance().doLogout();

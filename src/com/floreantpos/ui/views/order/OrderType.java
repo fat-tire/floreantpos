@@ -15,25 +15,40 @@
  * * All Rights Reserved.
  * ************************************************************************
  */
-package com.floreantpos.extension;
+package com.floreantpos.ui.views.order;
 
-import java.util.List;
+import org.apache.commons.lang.StringUtils;
 
-import javax.swing.JMenu;
+import com.floreantpos.Messages;
+import com.floreantpos.model.OrderTypeProperties;
 
-import com.floreantpos.model.OrderType;
-import com.floreantpos.model.ShopTable;
-import com.floreantpos.util.TicketAlreadyExistsException;
+public enum OrderType {
+	DINE_IN, TAKE_OUT, PICKUP, HOME_DELIVERY, DRIVE_THRU, BAR_TAB, RETAIL, FOR_HERE;
 
-public interface OrderServiceExtension extends FloreantPlugin {
-	String getName();
-	String getDescription();
-	
-	void init();
-	void createNewTicket(OrderType ticketType, List<ShopTable> selectedTables) throws TicketAlreadyExistsException;
-	void setCustomerToTicket(int ticketId);
-	void setDeliveryDate(int ticketId);
-	void assignDriver(int ticketId);
-	boolean finishOrder(int ticketId);
-	void createCustomerMenu(JMenu menu);
+	private OrderTypeProperties properties;
+
+	public String toString() {
+		if (properties != null && StringUtils.isNotEmpty(properties.getAlias())) {
+			return properties.getAlias();
+		}
+
+		String string = Messages.getString(name());
+		if (StringUtils.isEmpty(string)) {
+			return name().replaceAll("_", " "); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+
+		return string;
+	}
+
+	public OrderTypeProperties getProperties() {
+		return properties;
+	}
+
+	public void setProperties(OrderTypeProperties properties) {
+		this.properties = properties;
+	};
+
+	public boolean isVisible() {
+		return this.properties.isVisible();
+	}
 }

@@ -456,16 +456,16 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 
 		tabGeneral.add(new JLabel("OrderType"), "cell 2 7,right"); //$NON-NLS-1$
 		orderList = new CheckBoxList();
-		List<String> orderListM = new ArrayList();
-		orderListM.add(OrderType.DINE_IN.toString());
-		orderListM.add(OrderType.BAR_TAB.toString());
-		orderListM.add(OrderType.DRIVE_THRU.toString());
-		orderListM.add(OrderType.HOME_DELIVERY.toString());
-		orderListM.add(OrderType.PICKUP.toString());
-		orderListM.add(OrderType.RETAIL.toString());
-		orderListM.add(OrderType.TAKE_OUT.toString());
+//		List<String> orderListM = new ArrayList();
+//		orderListM.add(OrderType.DINE_IN.toString());
+//		orderListM.add(OrderType.BAR_TAB.toString());
+//		orderListM.add(OrderType.DRIVE_THRU.toString());
+//		orderListM.add(OrderType.HOME_DELIVERY.toString());
+//		orderListM.add(OrderType.PICKUP.toString());
+//		orderListM.add(OrderType.RETAIL.toString());
+//		orderListM.add(OrderType.TAKE_OUT.toString());
 
-		orderList.setModel(orderListM);
+//		orderList.setModel(orderListM);
 
 		JScrollPane orderCheckBoxList = new JScrollPane(orderList);
 		orderCheckBoxList.setPreferredSize(new Dimension(228, 100));
@@ -553,7 +553,6 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 
 		btnNewPrice.setText(Messages.getString("MenuItemForm.9")); //$NON-NLS-1$
 		btnNewPrice.addActionListener(new ActionListener() {
-			//TODO: handle exception
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				addNewPrice();
@@ -729,7 +728,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		}
 
 		//	terminalList.selectItems(menuItem.getTerminals());
-		orderList.selectItems(menuItem.getOrderTypes());
+		//orderList.selectItems(menuItem.getOrderTypes());
 		tfName.setText(menuItem.getName());
 		tfDescription.setText(menuItem.getDescription());
 		tfTranslatedName.setText(menuItem.getTranslatedName());

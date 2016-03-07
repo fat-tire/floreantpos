@@ -47,8 +47,6 @@ import com.floreantpos.Messages;
 import com.floreantpos.POSConstants;
 import com.floreantpos.PosException;
 import com.floreantpos.customer.CustomerSelectionDialog;
-import com.floreantpos.extension.ExtensionManager;
-import com.floreantpos.extension.FloorLayoutPlugin;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.CookingInstruction;
 import com.floreantpos.model.ITicketItem;
@@ -73,8 +71,9 @@ import com.floreantpos.ui.dialog.MiscTicketItemDialog;
 import com.floreantpos.ui.dialog.NumberSelectionDialog2;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.dialog.PasswordEntryDialog;
+import com.floreantpos.ui.tableselection.TableSelectorDialog;
+import com.floreantpos.ui.tableselection.TableSelectorFactory;
 import com.floreantpos.ui.views.CookingInstructionSelectionView;
-import com.floreantpos.util.PosGuiUtil;
 
 /**
  *
@@ -288,7 +287,7 @@ public class OrderView extends ViewPanel {
 		btnOrderType.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				// doViewOrderInfo();
-				doChangeOrderType();
+				//doChangeOrderType(); fix
 			}
 		});
 
@@ -327,7 +326,7 @@ public class OrderView extends ViewPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (currentTicket.getType() != OrderType.DINE_IN && currentTicket.getType() != OrderType.HOME_DELIVERY
+				if (currentTicket.getType().isShowTableSelection() && currentTicket.getType().isRequiredCustomerData()//fix
 						&& !Application.getCurrentUser().hasPermission(UserPermission.HOLD_TICKET)) {
 					//
 
@@ -394,16 +393,12 @@ public class OrderView extends ViewPanel {
 		try {
 
 			Ticket thisTicket = currentTicket;
+			
+			TableSelectorDialog dialog = TableSelectorFactory.createTableSelectorDialog(thisTicket.getType());
+			dialog.setCreateNewTicket(false);
+			dialog.open();
 
-			FloorLayoutPlugin floorLayoutPlugin = (FloorLayoutPlugin) ExtensionManager.getPlugin(FloorLayoutPlugin.class);
-			List<ShopTable> tables = null;
-
-			if (floorLayoutPlugin != null) {
-				tables = floorLayoutPlugin.captureTableNumbers(thisTicket);
-			}
-			else {
-				tables = PosGuiUtil.captureTable(thisTicket);
-			}
+			List<ShopTable> tables = dialog.getSelectedTables();
 
 			if (tables == null) {
 				return;
@@ -487,7 +482,7 @@ public class OrderView extends ViewPanel {
 		}
 	}// GEN-LAST:event_doInsertMisc
 
-	public void setOrderType(OrderType orderType) {
+	/*public void setOrderType(OrderType orderType) {
 		currentTicket.setType(orderType);
 		btnGuestNo.setEnabled(orderType == OrderType.DINE_IN);
 		btnTableNumber.setEnabled(orderType == OrderType.DINE_IN);
@@ -511,8 +506,8 @@ public class OrderView extends ViewPanel {
 			btnOrderType.setText(POSConstants.TAKE_OUT_BUTTON_TEXT);
 		}
 	}
-
-	public void doChangeOrderType() {
+	*/
+	/*public void doChangeOrderType() {
 		OrderTypeSelectionDialog dialog = new OrderTypeSelectionDialog();
 		dialog.open();
 
@@ -522,7 +517,7 @@ public class OrderView extends ViewPanel {
 		OrderType selectedOrderType = dialog.getSelectedOrderType();
 		setOrderType(selectedOrderType);
 	}
-
+	*/
 	protected void doAddEditCustomer() {
 		CustomerSelectionDialog dialog = new CustomerSelectionDialog(currentTicket);
 		dialog.setSize(800, 650);
@@ -617,14 +612,21 @@ public class OrderView extends ViewPanel {
 
 		if (currentTicket != null) {
 			OrderType type = currentTicket.getType();
-			if (type == OrderType.TAKE_OUT || type == OrderType.RETAIL || type == OrderType.FOR_HERE) {
+			if (!type.isShowTableSelection()) {//fix
 				btnDone.setVisible(false);
 			}
 			else {
 				btnDone.setVisible(true);
 			}
 
-			if (type != OrderType.DINE_IN) {
+			if (!type.isShouldPrintToKitchen()) {
+				btnSend.setEnabled(false);
+			}
+			else {
+				btnSend.setEnabled(true);
+			}
+
+			if (!type.isShowTableSelection()) {
 				btnGuestNo.setVisible(false);
 				btnTableNumber.setVisible(false);
 			}

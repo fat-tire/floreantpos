@@ -28,6 +28,8 @@ import org.apache.commons.lang.StringUtils;
 
 import com.floreantpos.model.base.BaseKitchenTicket;
 import com.floreantpos.model.dao.KitchenTicketDAO;
+import com.floreantpos.model.dao.OrderTypeDAO;
+import com.floreantpos.model.OrderType;
 
 public class KitchenTicket extends BaseKitchenTicket {
 	private static final long serialVersionUID = 1L;
@@ -52,11 +54,11 @@ public class KitchenTicket extends BaseKitchenTicket {
 	public OrderType getType() {
 		String type = getTicketType();
 
-		if (StringUtils.isEmpty(type)) {
+		/*if (StringUtils.isEmpty(type)) {
 			return OrderType.DINE_IN;
-		}
+		}*/
 
-		return OrderType.valueOf(type);
+		return OrderTypeDAO.getInstance().findByName(type);
 	}
 
 	public void setType(OrderType type) {

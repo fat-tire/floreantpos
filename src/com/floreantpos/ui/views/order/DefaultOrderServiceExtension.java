@@ -25,16 +25,12 @@ import javax.swing.JOptionPane;
 
 import com.floreantpos.Messages;
 import com.floreantpos.config.TerminalConfig;
-import com.floreantpos.extension.ExtensionManager;
-import com.floreantpos.extension.FloorLayoutPlugin;
 import com.floreantpos.extension.OrderServiceExtension;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.OrderType;
 import com.floreantpos.model.ShopTable;
 import com.floreantpos.model.Ticket;
-import com.floreantpos.model.dao.ShopTableDAO;
 import com.floreantpos.model.dao.TicketDAO;
-import com.floreantpos.ui.dialog.NumberSelectionDialog2;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.util.POSUtil;
 import com.floreantpos.util.PosGuiUtil;
@@ -57,82 +53,11 @@ public class DefaultOrderServiceExtension implements OrderServiceExtension {
 	}
 
 	@Override
-	public void createNewTicket(OrderType ticketType) throws TicketAlreadyExistsException {
-
-		FloorLayoutPlugin floorLayoutPlugin = (FloorLayoutPlugin) ExtensionManager.getPlugin(FloorLayoutPlugin.class);
-
-		List<ShopTable> allTables = ShopTableDAO.getInstance().findAll();
-		
-		if((allTables == null || allTables.isEmpty()) && floorLayoutPlugin == null) {
-
-			int userInput = 0;
-
-			int result = POSMessageDialog.showYesNoQuestionDialog(Application.getPosWindow(),
-					Messages.getString("DefaultOrderServiceExtension.6"), Messages.getString("DefaultOrderServiceExtension.7")); //$NON-NLS-1$ //$NON-NLS-2$
-
-			if(result == JOptionPane.YES_OPTION) {
-
-				userInput = NumberSelectionDialog2.takeIntInput(Messages.getString("DefaultOrderServiceExtension.8")); //$NON-NLS-1$
-
-				if(userInput == 0) {
-					POSMessageDialog.showError(Application.getPosWindow(), Messages.getString("DefaultOrderServiceExtension.9")); //$NON-NLS-1$
-					return;
-				}
-
-				if(userInput != -1) {
-					ShopTableDAO.getInstance().createNewTables(userInput);
-				}
-			}
-
-			if(result != JOptionPane.YES_OPTION || userInput == -1) {
-				int option = POSMessageDialog.showYesNoQuestionDialog(Application.getPosWindow(),
-						Messages.getString("DefaultOrderServiceExtension.10"), Messages.getString("DefaultOrderServiceExtension.11")); //$NON-NLS-1$ //$NON-NLS-2$
-				if(option != 0) {
-					return;
-				}
-			}
-		}
-
-		List<ShopTable> selectedTables = null;
-
-		if(TerminalConfig.isShouldShowTableSelection()) {
-
-			if(floorLayoutPlugin != null) {
-
-				selectedTables = floorLayoutPlugin.captureTableNumbers(null);
-				
-				if(selectedTables == null) {
-					return;
-				}
-				
-				if(selectedTables.isEmpty()) {
-
-					int option = POSMessageDialog.showYesNoQuestionDialog(Application.getPosWindow(),
-							Messages.getString("DefaultOrderServiceExtension.12"), Messages.getString("DefaultOrderServiceExtension.13")); //$NON-NLS-1$ //$NON-NLS-2$
-					if(option != 0) {
-						return;
-					}
-				}
-			}
-
-			List<ShopTable> shopTables = ShopTableDAO.getInstance().findAll();
-
-			if(shopTables != null && !shopTables.isEmpty() && floorLayoutPlugin == null) {
-				
-				selectedTables = PosGuiUtil.captureTable(null);
-				
-				if(selectedTables == null) {
-					return;
-				}
-			}
-		}
-
+	public void createNewTicket(OrderType ticketType, List<ShopTable> selectedTables) throws TicketAlreadyExistsException {
 		int numberOfGuests = 0;
+		
 		if(TerminalConfig.isShouldShowGuestSelection()) {
 			numberOfGuests = PosGuiUtil.captureGuestNumber();
-			if(numberOfGuests == -1) {
-				return;
-			}
 		}
 
 		Application application = Application.getInstance();

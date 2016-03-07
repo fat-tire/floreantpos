@@ -28,6 +28,7 @@ import javax.swing.border.EmptyBorder;
 import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.demo.KitchenDisplayView;
 import com.floreantpos.model.OrderType;
+import com.floreantpos.model.dao.OrderTypeDAO;
 import com.floreantpos.ui.HeaderPanel;
 import com.floreantpos.ui.views.IView;
 import com.floreantpos.ui.views.LoginView;
@@ -35,7 +36,6 @@ import com.floreantpos.ui.views.SwitchboardOtherFunctionsView;
 import com.floreantpos.ui.views.SwitchboardView;
 import com.floreantpos.ui.views.TableMapView;
 import com.floreantpos.ui.views.payment.SettleTicketDialog;
-import com.floreantpos.util.OrderUtil;
 
 public class RootView extends com.floreantpos.swing.TransparentPanel {
 	private CardLayout cards = new CardLayout();
@@ -45,7 +45,7 @@ public class RootView extends com.floreantpos.swing.TransparentPanel {
 	private LoginView loginScreen;
 	private SettleTicketDialog paymentView;
 	private String currentViewName;
-	private IView loginView;
+	private IView homeView;
 
 	private Map<String, IView> views = new HashMap<String, IView>();
 
@@ -144,99 +144,50 @@ public class RootView extends com.floreantpos.swing.TransparentPanel {
 	public void showDefaultView() {
 		String defaultViewName = TerminalConfig.getDefaultView();
 
-		if (defaultViewName.equals(OrderType.DINE_IN.toString())) {
-
-			loginView = TableMapView.getInstance();
-
-			showView(TableMapView.getInstance());
-			TableMapView.getInstance().updateTableView();
-		}
-		else if (defaultViewName.equals(OrderType.TAKE_OUT.toString())) {
-
-			loginView = OrderView.getInstance();
-
-			OrderUtil.createNewTakeOutOrder(OrderType.TAKE_OUT);
-			showView(OrderView.getInstance());
-
-		}
-		else if (defaultViewName.equals(OrderType.RETAIL.toString())) {
-
-			loginView = OrderView.getInstance();
-
-			OrderUtil.createNewTakeOutOrder(OrderType.RETAIL);
-			showView(OrderView.getInstance());
-
-		}
-		else if (defaultViewName.equals(OrderType.FOR_HERE.toString())) {
-
-			loginView = OrderView.getInstance();
-
-			OrderUtil.createNewTakeOutOrder(OrderType.FOR_HERE);
-			showView(OrderView.getInstance());
-
-		}
-		else if (defaultViewName.equals(SwitchboardOtherFunctionsView.VIEW_NAME)) { //$NON-NLS-1$
-
-			loginView = SwitchboardOtherFunctionsView.getInstance();
-
-			showView(SwitchboardOtherFunctionsView.getInstance());
-		}
-		else if (defaultViewName.equals(OrderType.BAR_TAB.toString())) {
-
-			loginView = SwitchboardView.getInstance();
-
-			showView(SwitchboardView.getInstance());
-		}
-		else if (defaultViewName.equals(OrderType.DRIVE_THRU.toString())) {
-			loginView = OrderView.getInstance();
-			showView(OrderView.getInstance());
-			OrderUtil.createNewTakeOutOrder(OrderType.DRIVE_THRU);
-
-		}
-		else if (defaultViewName.equals(OrderType.HOME_DELIVERY)) {
-			loginView = SwitchboardView.getInstance();
-			showView(SwitchboardView.getInstance());
-			SwitchboardView.getInstance().doHomeDelivery(OrderType.HOME_DELIVERY);
-
-		}
-		else if (defaultViewName.equals(OrderType.PICKUP.toString())) {
-			loginView = OrderView.getInstance();
-			showView(OrderView.getInstance());
-			OrderUtil.createNewTakeOutOrder(OrderType.PICKUP);
-
+		if (defaultViewName.equals(SwitchboardOtherFunctionsView.VIEW_NAME)) { //$NON-NLS-1$
+			setAndShowHomeScreen(SwitchboardOtherFunctionsView.getInstance());
 		}
 		else if (defaultViewName.equals(KitchenDisplayView.VIEW_NAME)) {
-
 			if (!hasView(KitchenDisplayView.getInstance())) {
 				addView(KitchenDisplayView.getInstance());
 			}
-			loginView = KitchenDisplayView.getInstance();
-			showView(KitchenDisplayView.VIEW_NAME);
+			
 			headerPanel.setVisible(false);
-
+			setAndShowHomeScreen(KitchenDisplayView.getInstance());
 		}
 		else if (defaultViewName.equals(SwitchboardView.VIEW_NAME)) {
-			loginView = SwitchboardView.getInstance();
-			showView(SwitchboardView.getInstance());
+			setAndShowHomeScreen(SwitchboardView.getInstance());
+		}
+		else {
+			OrderType orderType = OrderTypeDAO.getInstance().findByName(defaultViewName);
+			//TODO: what if order type is not found...
+			
+			if (orderType.isShowTableSelection()) {
+				TableMapView tableMapView = TableMapView.getInstance(orderType);
+				tableMapView.updateView();
+				setAndShowHomeScreen(tableMapView);
+			}
+			else {
+				setAndShowHomeScreen(OrderView.getInstance());
+			}
 
+			//OrderUtil.createNewTakeOutOrder(orderType);
 		}
 	}
 
 	/**
 	 * @return the loginView
 	 */
-	public IView getLoginView() {
-		return loginView;
+	public IView getHomeView() {
+		return homeView;
 	}
-
-	/**
-	 * @param loginView the loginView to set
-	 */
-	public void setLoginView(IView loginView) {
-		this.loginView = loginView;
+	
+	private void setAndShowHomeScreen(IView homeScreen) {
+		homeView = homeScreen;
+		showHomeScreen();
 	}
 
 	public void showHomeScreen() {
-		showView(getLoginView());
+		showView(getHomeView());
 	}
 }

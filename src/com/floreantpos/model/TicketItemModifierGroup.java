@@ -23,6 +23,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.floreantpos.model.base.BaseTicketItemModifierGroup;
+import com.floreantpos.model.OrderType;
 
 public class TicketItemModifierGroup extends BaseTicketItemModifierGroup {
 	private static final long serialVersionUID = 1L;

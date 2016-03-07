@@ -219,6 +219,7 @@ public class ShopTableDAO extends BaseShopTableDAO {
 			for (ShopTable shopTable : tables) {
 				shopTable.setServing(false);
 				shopTable.setBooked(false);
+				shopTable.setFree(true);
 				saveOrUpdate(shopTable, session);
 			}
 

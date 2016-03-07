@@ -355,6 +355,7 @@ public class POSConstants {
 	public static final String COOKING_INSTRUCTIONS = Messages.getString("PosMessage.265"); //$NON-NLS-1$
 	public static final String LAST_NAME = Messages.getString("PosMessage.266"); //$NON-NLS-1$
 	public static final String TYPE_NAME = Messages.getString("PosMessage.267"); //$NON-NLS-1$
+	public static final String ORDER_TYPE = Messages.getString("ORDER_TYPE"); //$NON-NLS-1$
 
 	public static final String CASH_TRANSACTION = Messages.getString("PosMessage.269"); //$NON-NLS-1$
 	public static final String ENTER_VOID_REASON = Messages.getString("PosMessage.270"); //$NON-NLS-1$

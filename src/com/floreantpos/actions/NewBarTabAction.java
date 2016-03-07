@@ -34,12 +34,12 @@ import com.floreantpos.PosException;
 import com.floreantpos.config.CardConfig;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.CardReader;
-import com.floreantpos.model.OrderType;
 import com.floreantpos.model.PaymentType;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.dialog.PaymentTypeSelectionDialog;
+import com.floreantpos.ui.views.order.OrderType;
 import com.floreantpos.ui.views.payment.AuthorizationCodeDialog;
 import com.floreantpos.ui.views.payment.CardInputListener;
 import com.floreantpos.ui.views.payment.CardInputProcessor;
@@ -80,7 +80,7 @@ public class NewBarTabAction extends AbstractAction implements CardInputListener
 		Ticket ticket = new Ticket();
 		
 		ticket.setPriceIncludesTax(application.isPriceIncludesTax());
-		ticket.setType(OrderType.BAR_TAB);
+		//ticket.setType();
 		ticket.setTerminal(application.getTerminal());
 		ticket.setOwner(Application.getCurrentUser());
 		ticket.setShift(application.getCurrentShift());

@@ -26,6 +26,7 @@ import java.io.StringWriter;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Random;
 
 import javax.swing.ImageIcon;
@@ -52,12 +53,14 @@ import com.floreantpos.extension.ExtensionManager;
 import com.floreantpos.extension.FloreantPlugin;
 import com.floreantpos.extension.InginicoPlugin;
 import com.floreantpos.extension.PaymentGatewayPlugin;
+import com.floreantpos.model.OrderType;
 import com.floreantpos.model.PosPrinters;
 import com.floreantpos.model.PrinterConfiguration;
 import com.floreantpos.model.Restaurant;
 import com.floreantpos.model.Shift;
 import com.floreantpos.model.Terminal;
 import com.floreantpos.model.User;
+import com.floreantpos.model.dao.OrderTypeDAO;
 import com.floreantpos.model.dao.OrderTypePropertiesDAO;
 import com.floreantpos.model.dao.PrinterConfigurationDAO;
 import com.floreantpos.model.dao.RestaurantDAO;
@@ -85,6 +88,8 @@ public class Application {
 	private PosWindow posWindow;
 	private User currentUser;
 	private RootView rootView;
+	private List<OrderType> orderTypes;
+	private OrderType selectedOrderType;
 	private Shift currentShift;
 	public PrinterConfiguration printConfiguration;
 	private Restaurant restaurant;
@@ -125,9 +130,6 @@ public class Application {
 
 		initializeSystem();
 
-		for (FloreantPlugin plugin : ExtensionManager.getPlugins()) {
-			plugin.init();
-		}
 	}
 
 	/*private void initializeTouchScroll() {
@@ -161,9 +163,12 @@ public class Application {
 			DatabaseUtil.checkConnection(DatabaseUtil.initialize());
 
 			initTerminal();
+			initOrderTypes();
 			initPrintConfig();
 			refreshRestaurant();
 			loadPrinters();
+			initPlugins();
+			LoginView.getInstance().initializeOrderButtonPanel();
 			//setTicketActiveSetterScheduler();
 			setSystemInitialized(true);
 
@@ -190,6 +195,16 @@ public class Application {
 			logger.error(e);
 		} finally {
 			getPosWindow().setGlassPaneVisible(false);
+		}
+	}
+
+	private void initOrderTypes() {
+		orderTypes = OrderTypeDAO.getInstance().findEnabledOrderTypes(); 
+	}
+
+	private void initPlugins() {
+		for (FloreantPlugin plugin : ExtensionManager.getPlugins()) {
+			plugin.init();
 		}
 	}
 
@@ -289,6 +304,10 @@ public class Application {
 			application.refreshRestaurant();
 		}
 		return application.restaurant.getCurrencySymbol();
+	}
+
+	public List<OrderType> getOrderTypes() {
+		return orderTypes;
 	}
 
 	public synchronized static Application getInstance() {
@@ -447,6 +466,10 @@ public class Application {
 
 	public static PosPrinters getPrinters() {
 		return getInstance().printers;
+	}
+	
+	public OrderType getCurrentOrderType() {
+		return orderTypes.get(0);
 	}
 
 	public static String getTitle() {

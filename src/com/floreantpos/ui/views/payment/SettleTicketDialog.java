@@ -63,7 +63,6 @@ import com.floreantpos.model.CreditCardTransaction;
 import com.floreantpos.model.Discount;
 import com.floreantpos.model.GiftCertificateTransaction;
 import com.floreantpos.model.Gratuity;
-import com.floreantpos.model.OrderType;
 import com.floreantpos.model.PaymentType;
 import com.floreantpos.model.PosTransaction;
 import com.floreantpos.model.Restaurant;
@@ -81,6 +80,7 @@ import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.dialog.TransactionCompletionDialog;
 import com.floreantpos.ui.ticket.TicketViewerTable;
 import com.floreantpos.ui.views.order.OrderController;
+import com.floreantpos.model.OrderType;
 import com.floreantpos.ui.views.order.OrderView;
 import com.floreantpos.util.DrawerUtil;
 import com.floreantpos.util.NumberUtil;
@@ -413,7 +413,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 			this.paymentType = paymentType;
 			tenderAmount = paymentView.getTenderedAmount();
 
-			if (ticket.getType() == OrderType.BAR_TAB) {
+			if (ticket.getType().name() == OrderType.BAR_TAB) { //fix
 				doSettleBarTabTicket(ticket);
 				return;
 			}

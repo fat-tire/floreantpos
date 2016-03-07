@@ -26,6 +26,7 @@ import java.util.List;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.base.BaseTicketItem;
 import com.floreantpos.model.dao.PrinterGroupDAO;
+import com.floreantpos.model.OrderType;
 import com.floreantpos.util.DiscountUtil;
 import com.floreantpos.util.NumberUtil;
 

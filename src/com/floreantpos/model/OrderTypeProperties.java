@@ -17,29 +17,51 @@
  */
 package com.floreantpos.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.floreantpos.extension.ExtensionManager;
+import com.floreantpos.extension.OrderServiceExtension;
 import com.floreantpos.model.base.BaseOrderTypeProperties;
-
-
+import com.floreantpos.model.dao.OrderTypePropertiesDAO;
+import com.floreantpos.ui.views.order.OrderType;
 
 public class OrderTypeProperties extends BaseOrderTypeProperties {
 	private static final long serialVersionUID = 1L;
 
-/*[CONSTRUCTOR MARKER BEGIN]*/
-	public OrderTypeProperties () {
+	/*[CONSTRUCTOR MARKER BEGIN]*/
+	public OrderTypeProperties() {
 		super();
 	}
 
 	/**
 	 * Constructor for primary key
 	 */
-	public OrderTypeProperties (java.lang.Integer id) {
+	public OrderTypeProperties(java.lang.Integer id) {
 		super(id);
 	}
 
-/*[CONSTRUCTOR MARKER END]*/
+	/*[CONSTRUCTOR MARKER END]*/
 
 	@Override
 	public Boolean isVisible() {
 		return visible == null ? Boolean.TRUE : visible;
+	}
+
+	public static List<String> getVisibleOrderTypes() {
+		List<String> orderTypes = new ArrayList<String>();
+		List<OrderTypeProperties> orderTypeProperties = OrderTypePropertiesDAO.getInstance().findVisibleOrderTypeProperties();
+
+		OrderServiceExtension orderServiceExtension = (OrderServiceExtension) ExtensionManager.getPlugin(OrderServiceExtension.class);
+		for (OrderTypeProperties orderType : orderTypeProperties) {
+			if (orderServiceExtension == null) {
+				String oType = orderType.getOrdetType();
+				if (oType.equals(OrderType.HOME_DELIVERY.name()) || oType.equals(OrderType.PICKUP.name()) || oType.equals(OrderType.DRIVE_THRU.name())) {
+					continue;
+				}
+			}
+			orderTypes.add(orderType.ordetType.replaceAll("_", " "));
+		}
+		return orderTypes;
 	}
 }

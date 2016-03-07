@@ -84,6 +84,7 @@ import com.floreantpos.model.UserType;
 import com.floreantpos.model.VirtualPrinter;
 import com.floreantpos.model.VoidReason;
 import com.floreantpos.model.ZipCodeVsDeliveryCharge;
+import com.floreantpos.ui.views.order.OrderType;
 
 public abstract class _RootDAO extends com.floreantpos.model.dao._BaseRootDAO {
 
@@ -158,6 +159,7 @@ public abstract class _RootDAO extends com.floreantpos.model.dao._BaseRootDAO {
 		configuration = configuration.addClass(DataUpdateInfo.class);
 		configuration = configuration.addClass(TableBookingInfo.class);
 		configuration = configuration.addClass(CustomPayment.class);
+		configuration = configuration.addClass(com.floreantpos.model.OrderType.class);
 
 		configuration = configureInventoryClasses(configuration);
 

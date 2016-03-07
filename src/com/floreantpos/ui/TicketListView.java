@@ -43,7 +43,6 @@ import com.floreantpos.Messages;
 import com.floreantpos.POSConstants;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.DataUpdateInfo;
-import com.floreantpos.model.OrderType;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.User;
 import com.floreantpos.model.dao.DataUpdateInfoDAO;
@@ -54,6 +53,7 @@ import com.floreantpos.swing.PosBlinkButton;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.swing.PosScrollPane;
 import com.floreantpos.ui.dialog.POSMessageDialog;
+import com.floreantpos.ui.views.order.OrderType;
 import com.floreantpos.util.PosGuiUtil;
 
 public class TicketListView extends JPanel implements ITicketList {
@@ -349,13 +349,13 @@ public class TicketListView extends JPanel implements ITicketList {
 						status = Messages.getString("TicketListView.9"); //$NON-NLS-1$
 					}
 
-					if (ticket.getType() == OrderType.HOME_DELIVERY) {
+					/*if (ticket.getType().isRequiredCustomerData()) {//fix
 						if (ticket.getAssignedDriver() == null) {
 							status += Messages.getString("TicketListView.10"); //$NON-NLS-1$
 						}
 
 						status += Messages.getString("TicketListView.11"); //$NON-NLS-1$
-					}
+					}*/
 
 					if (ticket.isVoided()) {
 						status = Messages.getString("TicketListView.12"); //$NON-NLS-1$

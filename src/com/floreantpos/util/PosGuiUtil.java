@@ -24,45 +24,21 @@ import java.awt.Transparency;
 import java.awt.Window;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.TableColumn;
 import javax.swing.text.JTextComponent;
 
-import com.floreantpos.Messages;
 import com.floreantpos.POSConstants;
 import com.floreantpos.main.Application;
-import com.floreantpos.model.ShopTable;
-import com.floreantpos.model.Ticket;
 import com.floreantpos.ui.dialog.NumberSelectionDialog2;
 import com.floreantpos.ui.dialog.POSMessageDialog;
-import com.floreantpos.ui.dialog.TableSelectionDialog;
 
 public class PosGuiUtil {
-
-	public static List<ShopTable> captureTable(Ticket ticket) {
-
-		TableSelectionDialog dialog = new TableSelectionDialog();
-		dialog.setTicket(ticket);
-		dialog.open();
-
-		if (dialog.isCanceled()) {
-			return null;
-		}
-		else if (dialog.getTables() == null || dialog.getTables().isEmpty()) {
-			int option = POSMessageDialog.showYesNoQuestionDialog(Application.getPosWindow(), Messages.getString("PosGuiUtil.0"), Messages.getString("PosGuiUtil.1")); //$NON-NLS-1$ //$NON-NLS-2$
-			if (option != JOptionPane.YES_OPTION) {
-				return null;
-			}
-		}
-		return dialog.getTables();
-	}
-
+	
 	public static int captureGuestNumber() {
 		NumberSelectionDialog2 dialog = new NumberSelectionDialog2();
 		dialog.setTitle(POSConstants.ENTER_NUMBER_OF_GUEST);

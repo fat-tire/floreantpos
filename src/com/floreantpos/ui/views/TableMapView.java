@@ -27,13 +27,11 @@ import java.awt.BorderLayout;
 import java.awt.ComponentOrientation;
 import java.util.Locale;
 
-import javax.swing.JPanel;
-
 import com.floreantpos.extension.ExtensionManager;
 import com.floreantpos.extension.FloorLayoutPlugin;
-import com.floreantpos.extension.OrderServiceExtension;
-import com.floreantpos.ui.dialog.TableSelectionView;
-import com.floreantpos.ui.views.order.DefaultOrderServiceExtension;
+import com.floreantpos.model.OrderType;
+import com.floreantpos.ui.tableselection.DefaultTableSelectionView;
+import com.floreantpos.ui.tableselection.TableSelector;
 import com.floreantpos.ui.views.order.ViewPanel;
 
 /**
@@ -43,65 +41,52 @@ import com.floreantpos.ui.views.order.ViewPanel;
 public class TableMapView extends ViewPanel {
 
 	public final static String VIEW_NAME = "TABLE_MAP"; //$NON-NLS-1$
-
-	private JPanel centerPanel;
-	private TableSelectionView tableView;
-
-	private OrderServiceExtension orderServiceExtension;
+	
+	private TableSelector tableSelector = null;
 	private static TableMapView instance;
-
+	
 	private TableMapView() {
 		initComponents();
 
-		orderServiceExtension = (OrderServiceExtension) ExtensionManager.getPlugin(OrderServiceExtension.class);
-
-		if (orderServiceExtension == null) {
-			orderServiceExtension = new DefaultOrderServiceExtension();
-		}
-
 		applyComponentOrientation(ComponentOrientation.getOrientation(Locale.getDefault()));
-
 	}
 
 	private void initComponents() {
 		setLayout(new BorderLayout());
-		centerPanel = new JPanel(new BorderLayout());
+		
 		FloorLayoutPlugin floorLayoutPlugin = (FloorLayoutPlugin) ExtensionManager.getPlugin(FloorLayoutPlugin.class);
 		if (floorLayoutPlugin == null) {
-			tableView = new TableSelectionView();
-			centerPanel.add(tableView, BorderLayout.CENTER);
+			tableSelector = new DefaultTableSelectionView();
+
 		}
 		else {
-			centerPanel.add(floorLayoutPlugin.initFloorView(), BorderLayout.CENTER);
+			tableSelector = floorLayoutPlugin.createTableSelector();
 		}
-		add(centerPanel, BorderLayout.CENTER);
+		tableSelector.setCreateNewTicket(true);
+		add(tableSelector, BorderLayout.CENTER);
+	}
+	
+	public void updateView() {
+		tableSelector.redererTables();
 	}
 
-	public synchronized void updateTableView() {
-		FloorLayoutPlugin floorLayoutPlugin = (FloorLayoutPlugin) ExtensionManager.getPlugin(FloorLayoutPlugin.class);
-		if (floorLayoutPlugin == null) {
-			tableView.redererTable();
-		}
-		else {
-			floorLayoutPlugin.updateView();
-		}
-	}
-
-	public static TableMapView getInstance() {
+	private static TableMapView getInstance() {
 		if (instance == null) {
 			instance = new TableMapView();
 		}
 
 		return instance;
 	}
+	
+	public static TableMapView getInstance(OrderType orderType) {
+		TableMapView instance2 = getInstance();
+		instance2.tableSelector.setOrderType(orderType);
 
-	public JPanel getTableSelectorPanel() {
-		return centerPanel;
+		return instance2;
 	}
 
 	@Override
 	public String getViewName() {
 		return VIEW_NAME;
 	}
-
 }

@@ -39,13 +39,13 @@ import com.floreantpos.main.Application;
 import com.floreantpos.model.MenuItemModifierGroup;
 import com.floreantpos.model.MenuModifier;
 import com.floreantpos.model.MenuModifierGroup;
-import com.floreantpos.model.OrderType;
 import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.TicketItemModifier;
 import com.floreantpos.model.TicketItemModifierGroup;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.ui.dialog.POSDialog;
 import com.floreantpos.ui.dialog.POSMessageDialog;
+import com.floreantpos.model.OrderType;
 
 /**
  *

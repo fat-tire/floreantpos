@@ -25,10 +25,8 @@ import javax.swing.JPanel;
 import net.miginfocom.swing.MigLayout;
 
 import com.floreantpos.POSConstants;
-import com.floreantpos.model.OrderType;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.ui.views.order.ViewPanel;
-import com.floreantpos.util.OrderUtil;
 import com.floreantpos.util.PosGuiUtil;
 
 public class CashierSwitchBoardView extends ViewPanel implements ActionListener {
@@ -65,7 +63,8 @@ public class CashierSwitchBoardView extends ViewPanel implements ActionListener 
 		Object source = e.getSource();
 		
 		if(source == btnNewOrder) {
-			OrderUtil.createNewTakeOutOrder(OrderType.TAKE_OUT);
+			//FIXME: ORDER TYPE
+			//OrderUtil.createNewTakeOutOrder(new OrderType(1, "TAKE OUT"));//fix
 		}
 		else if(source == btnEditOrder) {
 			

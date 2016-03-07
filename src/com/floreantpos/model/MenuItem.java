@@ -32,6 +32,7 @@ import org.apache.commons.lang.StringUtils;
 import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.base.BaseMenuItem;
+import com.floreantpos.model.OrderType;
 import com.floreantpos.util.POSUtil;
 
 @XmlRootElement(name = "menu-item")
@@ -40,31 +41,23 @@ public class MenuItem extends BaseMenuItem {
 	private static final long serialVersionUID = 1L;
 
 	/*[CONSTRUCTOR MARKER BEGIN]*/
-	public MenuItem () {
+	public MenuItem() {
 		super();
 	}
 
 	/**
 	 * Constructor for primary key
 	 */
-	public MenuItem (java.lang.Integer id) {
+	public MenuItem(java.lang.Integer id) {
 		super(id);
 	}
 
 	/**
 	 * Constructor for required fields
 	 */
-	public MenuItem (
-		java.lang.Integer id,
-		java.lang.String name,
-		java.lang.Double buyPrice,
-		java.lang.Double price) {
+	public MenuItem(java.lang.Integer id, java.lang.String name, java.lang.Double buyPrice, java.lang.Double price) {
 
-		super (
-			id,
-			name,
-			buyPrice,
-			price);
+		super(id, name, buyPrice, price);
 	}
 
 	/*[CONSTRUCTOR MARKER END]*/
@@ -350,6 +343,23 @@ public class MenuItem extends BaseMenuItem {
 		}
 	}
 
+	double getPriceByOrderType(String type) {
+		double defaultPrice = this.getPrice(Application.getInstance().getCurrentShift());
+		if (type == null) {
+			return defaultPrice;
+		}
+
+		String priceProp = getProperty(type + "_PRICE"); //$NON-NLS-1$
+		if (priceProp == null)
+			return defaultPrice;
+
+		try {
+			return Double.parseDouble(priceProp);
+		} catch (Exception e) {
+			return defaultPrice;
+		}
+	}
+
 	public double getTaxByOrderType(OrderType type) {
 		if (this.getTax() == null) {
 			return 0;
@@ -360,6 +370,26 @@ public class MenuItem extends BaseMenuItem {
 		}
 
 		String taxProp = getProperty(type.name() + "_TAX"); //$NON-NLS-1$
+		if (taxProp == null)
+			return defaultTax;
+
+		try {
+			return Double.parseDouble(taxProp);
+		} catch (Exception e) {
+			return defaultTax;
+		}
+	}
+
+	public double getTaxByOrderType(String type) {
+		if (this.getTax() == null) {
+			return 0;
+		}
+		double defaultTax = this.getTax().getRate();
+		if (type == null) {
+			return defaultTax;
+		}
+
+		String taxProp = getProperty(type + "_TAX"); //$NON-NLS-1$
 		if (taxProp == null)
 			return defaultTax;
 

@@ -26,7 +26,6 @@ import com.floreantpos.main.Application;
 import com.floreantpos.model.ActionHistory;
 import com.floreantpos.model.CashTransaction;
 import com.floreantpos.model.GiftCertificateTransaction;
-import com.floreantpos.model.OrderType;
 import com.floreantpos.model.PaymentType;
 import com.floreantpos.model.PosTransaction;
 import com.floreantpos.model.RefundTransaction;
@@ -39,6 +38,7 @@ import com.floreantpos.model.dao.ActionHistoryDAO;
 import com.floreantpos.model.dao.GenericDAO;
 import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.report.ReceiptPrintService;
+import com.floreantpos.model.OrderType;
 import com.floreantpos.util.NumberUtil;
 
 public class PosTransactionService {
@@ -84,7 +84,7 @@ public class PosTransactionService {
 
 			ticket.addTotransactions(transaction);
 
-			if (ticket.getType() == OrderType.BAR_TAB) {
+			if (ticket.getType().getName() == OrderType.BAR_TAB) {
 				ticket.removeProperty(Ticket.PROPERTY_PAYMENT_METHOD);
 				ticket.removeProperty(Ticket.PROPERTY_CARD_NAME);
 				ticket.removeProperty(Ticket.PROPERTY_CARD_TRANSACTION_ID);
@@ -159,18 +159,21 @@ public class PosTransactionService {
 	private void closeTicketIfApplicable(Ticket ticket, Date currentDate) {
 		OrderType ticketType = ticket.getType();
 		
-		switch (ticketType) {
+		if (ticketType.isCloseOnPaid()) {//fix
+			ticket.setClosed(true);
+			ticket.setClosingDate(currentDate);
+		}
+		/*else if() {
 			case DINE_IN:
 			case BAR_TAB:
 			case TAKE_OUT:
 			case FOR_HERE:
-				ticket.setClosed(true);
-				ticket.setClosingDate(currentDate);
+				
 				break;
 
 			default:
 				break;
-		}
+		}*/
 		
 	}
 

@@ -30,7 +30,6 @@ import net.miginfocom.swing.MigLayout;
 
 import com.floreantpos.Messages;
 import com.floreantpos.POSConstants;
-import com.floreantpos.model.OrderType;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.ui.dialog.POSDialog;
@@ -38,6 +37,7 @@ import com.floreantpos.ui.dialog.POSDialog;
 public class OrderTypeSelectionDialog2 extends POSDialog {
 	Ticket ticket;
 	private OrderType selectedOrderType;
+	private String subOrderType;
 	private PosButton btnForHere;
 	private PosButton btnToGo;
 
@@ -60,11 +60,12 @@ public class OrderTypeSelectionDialog2 extends POSDialog {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				selectedOrderType = OrderType.FOR_HERE;
+				//subOrderType=
 				setCanceled(false);
 				dispose();
 			}
 		});
-		orderTypePanel.add(btnForHere);
+		//orderTypePanel.add(btnForHere);
 
 		btnToGo = new PosButton("To Go");
 		btnToGo.addActionListener(new ActionListener() {
@@ -75,7 +76,11 @@ public class OrderTypeSelectionDialog2 extends POSDialog {
 				dispose();
 			}
 		});
-		orderTypePanel.add(btnToGo);
+		//orderTypePanel.add(btnToGo);
+		
+		for(String name: ticket.getType().getOrderSubTypes()) {
+			orderTypePanel.add(new OrderSubTypeButton(name)); 
+		}
 
 		PosButton btnCancel = new PosButton(POSConstants.CANCEL_BUTTON_TEXT);
 		btnCancel.addActionListener(new ActionListener() {
@@ -94,8 +99,27 @@ public class OrderTypeSelectionDialog2 extends POSDialog {
 
 		setSize(400, 250);
 	}
+	
+	private class OrderSubTypeButton extends PosButton  implements ActionListener{
+		String name; 
+		public OrderSubTypeButton(String name) {
+			this.name=name; 
+			setText(name); 
+		}
+		
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			subOrderType = name;
+			setCanceled(false);
+			dispose();
+		}
+	}
 
 	public OrderType getSelectedOrderType() {
 		return selectedOrderType;
+	}
+	
+	public String getSelectedSubOrderType() {
+		return subOrderType; 
 	}
 }

@@ -34,7 +34,9 @@ import com.floreantpos.Messages;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.base.BaseTicket;
 import com.floreantpos.model.dao.MenuItemDAO;
+import com.floreantpos.model.dao.OrderTypeDAO;
 import com.floreantpos.model.dao.ShopTableDAO;
+import com.floreantpos.model.OrderType;
 import com.floreantpos.util.DiscountUtil;
 import com.floreantpos.util.NumberUtil;
 import com.floreantpos.util.POSUtil;
@@ -277,8 +279,24 @@ public class Ticket extends BaseTicket {
 			Integer itemId = Integer.parseInt(ticketItem.getItemId().toString());
 			MenuItem menuItem = MenuItemDAO.getInstance().initialize(MenuItemDAO.getInstance().get(itemId));
 			if (menuItem != null) {
-				ticketItem.setUnitPrice(menuItem.getPriceByOrderType(OrderType.valueOf(getTicketType())));
-				ticketItem.setTaxRate(menuItem.getTaxByOrderType(OrderType.valueOf(getTicketType())));
+				ticketItem.setUnitPrice(menuItem.getPriceByOrderType(getType()));
+				ticketItem.setTaxRate(menuItem.getTaxByOrderType(getType()));
+			}
+		}
+	}
+
+	public void updateTicketItemPriceByOrderType(String name) {
+		List<TicketItem> ticketItems = getTicketItems();
+		if (ticketItems == null) {
+			return;
+		}
+
+		for (TicketItem ticketItem : ticketItems) {
+			Integer itemId = Integer.parseInt(ticketItem.getItemId().toString());
+			MenuItem menuItem = MenuItemDAO.getInstance().initialize(MenuItemDAO.getInstance().get(itemId));
+			if (menuItem != null) {
+				ticketItem.setUnitPrice(menuItem.getPriceByOrderType(getType()));
+				ticketItem.setTaxRate(menuItem.getTaxByOrderType(getType()));
 			}
 		}
 	}
@@ -530,9 +548,9 @@ public class Ticket extends BaseTicket {
 	//	}
 
 	public double calculateServiceCharge() {
-		if (getType() != OrderType.DINE_IN) {
+		/*if (getType() != OrderType.DINE_IN) {
 			return 0;
-		}
+		}*/
 
 		Restaurant restaurant = Application.getInstance().getRestaurant();
 		double serviceChargePercentage = restaurant.getServiceChargePercentage();
@@ -549,15 +567,15 @@ public class Ticket extends BaseTicket {
 	public OrderType getType() {
 		String type = getTicketType();
 
-		if (StringUtils.isEmpty(type)) {
+		/*if (StringUtils.isEmpty(type)) {
 			return OrderType.DINE_IN;
-		}
+		}*/
 
-		return OrderType.valueOf(type);
+		return OrderTypeDAO.getInstance().findByName(type);
 	}
 
 	public void setType(OrderType type) {
-		setTicketType(type.name());
+		setTicketType(type.getName());
 	}
 
 	public boolean isPriceIncludesTax() {
@@ -639,9 +657,11 @@ public class Ticket extends BaseTicket {
 	}
 
 	public void setCustomer(Customer customer) {
-		addProperty(Ticket.CUSTOMER_ID, String.valueOf(customer.getAutoId()));
-		addProperty(Ticket.CUSTOMER_NAME, customer.getFirstName());
-		addProperty(Ticket.CUSTOMER_MOBILE, customer.getMobileNo());
+		if (customer != null) {
+			addProperty(Ticket.CUSTOMER_ID, String.valueOf(customer.getAutoId()));
+			addProperty(Ticket.CUSTOMER_NAME, customer.getFirstName());
+			addProperty(Ticket.CUSTOMER_MOBILE, customer.getMobileNo());
+		}
 	}
 
 	public void removeCustomer() {

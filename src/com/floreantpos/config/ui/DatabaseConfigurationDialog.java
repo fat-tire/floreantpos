@@ -75,6 +75,8 @@ public class DatabaseConfigurationDialog extends POSDialog implements ActionList
 	private JLabel lblDbName;
 	private JLabel lblUserName;
 	private JLabel lblDbPassword;
+	
+	private boolean connectionSuccess; 
 
 	public DatabaseConfigurationDialog() throws HeadlessException {
 		super();
@@ -230,7 +232,8 @@ public class DatabaseConfigurationDialog extends POSDialog implements ActionList
 					JOptionPane.showMessageDialog(this, Messages.getString("DatabaseConfigurationDialog.32")); //$NON-NLS-1$
 					return;
 				}
-
+				
+				connectionSuccess=true; 
 				JOptionPane.showMessageDialog(this, Messages.getString("DatabaseConfigurationDialog.31")); //$NON-NLS-1$
 			}
 			else if(UPDATE_DATABASE.equals(command)) {
@@ -245,6 +248,7 @@ public class DatabaseConfigurationDialog extends POSDialog implements ActionList
 				
 				boolean databaseUpdated = DatabaseUtil.updateDatabase(connectionString, hibernateDialect, driverClass, user, pass);
 				if(databaseUpdated) {
+					connectionSuccess=true; 
 					JOptionPane.showMessageDialog(DatabaseConfigurationDialog.this, Messages.getString("DatabaseConfigurationDialog.2")); //$NON-NLS-1$
 				}
 				else {
@@ -275,12 +279,16 @@ public class DatabaseConfigurationDialog extends POSDialog implements ActionList
 							Messages.getString("DatabaseConfigurationDialog.7")); //$NON-NLS-1$
 					
 					Main.restart();
+					connectionSuccess=true; 
 				}
 				else {
 					JOptionPane.showMessageDialog(DatabaseConfigurationDialog.this, Messages.getString("DatabaseConfigurationDialog.36")); //$NON-NLS-1$
 				}
 			}
 			else if (SAVE.equalsIgnoreCase(command)) {
+				if(connectionSuccess) {
+					Application.getInstance().initializeSystem(); 
+				}
 				dispose();
 			}
 		} catch (Exception e2) {

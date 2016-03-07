@@ -19,20 +19,22 @@ package com.floreantpos.model.dao;
 
 import java.util.List;
 
+import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.Restrictions;
 
-import com.floreantpos.model.OrderType;
 import com.floreantpos.model.OrderTypeProperties;
-
+import com.floreantpos.ui.views.order.OrderType;
 
 public class OrderTypePropertiesDAO extends BaseOrderTypePropertiesDAO {
 
 	/**
 	 * Default constructor.  Can be used in place of getInstance()
 	 */
-	public OrderTypePropertiesDAO () {}
-	
+	public OrderTypePropertiesDAO() {
+	}
+
 	public static void populate() {
 		List<OrderTypeProperties> list = OrderTypePropertiesDAO.getInstance().findAll();
 		for (OrderTypeProperties orderTypeProperties : list) {
@@ -44,13 +46,14 @@ public class OrderTypePropertiesDAO extends BaseOrderTypePropertiesDAO {
 	public void saveAll() throws Exception {
 		Session session = null;
 		Transaction tx = null;
-		
+
 		try {
 			session = createNewSession();
 			tx = session.beginTransaction();
 
 			saveOrderType(OrderType.DINE_IN, session);
 			saveOrderType(OrderType.TAKE_OUT, session);
+			saveOrderType(OrderType.FOR_HERE, session);
 			saveOrderType(OrderType.PICKUP, session);
 			saveOrderType(OrderType.HOME_DELIVERY, session);
 			saveOrderType(OrderType.DRIVE_THRU, session);
@@ -67,11 +70,39 @@ public class OrderTypePropertiesDAO extends BaseOrderTypePropertiesDAO {
 
 	public void saveOrderType(OrderType orderType, Session session) {
 		OrderTypeProperties properties = orderType.getProperties();
-		
-		if(properties == null) {
+
+		if (properties == null) {
 			return;
 		}
-		
+
 		saveOrUpdate(properties, session);
+	}
+
+	public OrderTypeProperties findByName(String orderType) {
+		Session session = null;
+		try {
+			session = createNewSession();
+
+			Criteria criteria = session.createCriteria(getReferenceClass());
+			criteria.add(Restrictions.eq(OrderTypeProperties.PROP_ORDET_TYPE, orderType));
+
+			return (OrderTypeProperties) criteria.uniqueResult();
+		} finally {
+			closeSession(session);
+		}
+	}
+
+	public List<OrderTypeProperties> findVisibleOrderTypeProperties() {
+		Session session = null;
+		try {
+			session = createNewSession();
+
+			Criteria criteria = session.createCriteria(getReferenceClass());
+			criteria.add(Restrictions.eq(OrderTypeProperties.PROP_VISIBLE, true));
+
+			return criteria.list();
+		} finally {
+			closeSession(session);
+		}
 	}
 }
