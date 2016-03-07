@@ -7,10 +7,12 @@ import javax.swing.JPanel;
 import com.floreantpos.extension.OrderServiceFactory;
 import com.floreantpos.model.OrderType;
 import com.floreantpos.model.ShopTable;
+import com.floreantpos.model.Ticket;
 import com.floreantpos.util.TicketAlreadyExistsException;
 
 public abstract class TableSelector extends JPanel {
 	protected OrderType orderType;
+	protected Ticket ticket; 
 	
 	private boolean createNewTicket = true;
 
@@ -42,6 +44,14 @@ public abstract class TableSelector extends JPanel {
 
 	public void setCreateNewTicket(boolean createNewTicket) {
 		this.createNewTicket = createNewTicket;
+	}
+
+	public void setTicket(Ticket ticket) {
+		this.ticket=ticket; 
+	}
+	
+	public Ticket getTicket() {
+		return ticket; 
 	}
 
 }
