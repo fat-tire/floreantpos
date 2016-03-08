@@ -23,28 +23,15 @@
 
 package com.floreantpos.ui.model;
 
-import java.awt.BorderLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.List;
-
 import javax.swing.DefaultListModel;
-import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTabbedPane;
 
 import net.miginfocom.swing.MigLayout;
 
 import com.floreantpos.Messages;
 import com.floreantpos.POSConstants;
-import com.floreantpos.bo.ui.BOMessageDialog;
 import com.floreantpos.extension.ExtensionManager;
 import com.floreantpos.extension.OrderServiceExtension;
 import com.floreantpos.model.OrderType;
@@ -61,8 +48,6 @@ import com.floreantpos.util.POSUtil;
  * @author  MShahriar
  */
 public class OrderTypeForm extends BeanEditor {
-
-	private JTabbedPane jTabbedPane1;
 
 	private JLabel jLabel1;
 	private FixedLengthTextField tfName;
@@ -104,8 +89,6 @@ public class OrderTypeForm extends BeanEditor {
 
 	private void initComponents() {
 
-		jTabbedPane1 = new JTabbedPane();
-
 		TransparentPanel generalPanel = new com.floreantpos.swing.TransparentPanel();
 
 		jLabel1 = new JLabel(com.floreantpos.POSConstants.NAME + ":");
@@ -144,86 +127,7 @@ public class OrderTypeForm extends BeanEditor {
 		generalPanel.add(chkConsolidateItemsInReceipt, "cell 1 11,alignx left,aligny top"); //$NON-NLS-1$
 		generalPanel.add(chkHideItemWithEmptyInventory, "cell 1 12,alignx left,aligny top"); //$NON-NLS-1$
 
-		jTabbedPane1.addTab(com.floreantpos.POSConstants.GENERAL, generalPanel);
-		createOrderSubTypePanel();
-
-		add(jTabbedPane1);
-	}
-
-	private void createOrderSubTypePanel() {
-		JPanel orderSubTypePanel = new JPanel(new BorderLayout());
-		listModel = new DefaultListModel<String>();
-
-		JPanel panel = new JPanel();
-
-		JButton btnAdd = new JButton(Messages.getString("MultiPrinterPane.0")); //$NON-NLS-1$
-		btnAdd.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				doAddSubType();
-			}
-		});
-		panel.add(btnAdd);
-
-		JButton btnEdit = new JButton(Messages.getString("MultiPrinterPane.1")); //$NON-NLS-1$
-		btnEdit.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				String subType = list.getSelectedValue();
-				String subOrderTypeName = JOptionPane.showInputDialog(POSUtil.getFocusedWindow(), "ENTER SUB ORDER TYPE", subType);
-				if (subOrderTypeName == null) {
-					BOMessageDialog.showError(POSUtil.getFocusedWindow(), "NAME CANNOT BE EMPTY.");
-					return;
-				}
-				if (subOrderTypeName.length() > 30) {
-					BOMessageDialog.showError(POSUtil.getFocusedWindow(), "Length to long.");
-					return;
-				}
-				listModel.removeElement(subType);
-				listModel.addElement(subOrderTypeName);
-				list.repaint();
-			}
-		});
-		panel.add(btnEdit);
-
-		JButton btnDelete = new JButton(POSConstants.DELETE.toUpperCase()); //$NON-NLS-1$
-		btnDelete.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				String subType = list.getSelectedValue();
-				try {
-					listModel.removeElement(subType);
-				} catch (Exception ex) {
-					POSMessageDialog.showError("Cannot Delete..");
-				}
-			}
-		});
-		panel.add(btnDelete);
-
-		orderSubTypePanel.add(panel, BorderLayout.SOUTH);
-
-		JScrollPane scrollPane = new JScrollPane();
-
-		list = new JList<String>(listModel);
-		scrollPane.setViewportView(list);
-
-		orderSubTypePanel.add(scrollPane, BorderLayout.CENTER);
-
-		jTabbedPane1.addTab("Order Sub Type", orderSubTypePanel);
-	}
-
-	protected void doAddSubType() {
-		String subOrderTypeName = JOptionPane.showInputDialog(POSUtil.getFocusedWindow(), "ENTER SUB ORDER TYPE");
-		if (subOrderTypeName == null) {
-			BOMessageDialog.showError(POSUtil.getFocusedWindow(), "NAME CANNOT BE EMPTY.");
-			return;
-		}
-		if (subOrderTypeName.length() > 30) {
-			BOMessageDialog.showError(POSUtil.getFocusedWindow(), "Length to long.");
-			return;
-		}
-		listModel.addElement(subOrderTypeName);
-		list.repaint();
+		add(generalPanel);
 	}
 
 	protected void updateView() {
@@ -253,11 +157,6 @@ public class OrderTypeForm extends BeanEditor {
 			chkConsolidateItemsInReceipt.setSelected(ordersType.isConsolidateItemsInReceipt());
 			chkHideItemWithEmptyInventory.setSelected(ordersType.isHideItemWithEmptyInventory());
 
-			if (orderType.getOrderSubTypes() != null) {
-				for (String subType : orderType.getOrderSubTypes()) {
-					listModel.addElement(subType);
-				}
-			}
 		}
 	}
 
@@ -286,14 +185,6 @@ public class OrderTypeForm extends BeanEditor {
 		ordersType.setShowInLoginScreen(chkShowInLoginScreen.isSelected());
 		ordersType.setConsolidateItemsInReceipt(chkConsolidateItemsInReceipt.isSelected());
 		ordersType.setHideItemWithEmptyInventory(chkHideItemWithEmptyInventory.isSelected());
-
-		Enumeration<String> elements = listModel.elements();
-		List<String> subTypes = new ArrayList<String>();
-
-		while (elements.hasMoreElements()) {
-			subTypes.add(elements.nextElement());
-		}
-		ordersType.setOrderSubTypes(subTypes);
 
 		return true;
 	}
