@@ -34,6 +34,7 @@ import org.hibernate.tool.hbm2ddl.SchemaUpdate;
 
 import com.floreantpos.bo.actions.DataImportAction;
 import com.floreantpos.model.Discount;
+import com.floreantpos.model.OrderType;
 import com.floreantpos.model.PosTransaction;
 import com.floreantpos.model.Restaurant;
 import com.floreantpos.model.Shift;
@@ -43,6 +44,7 @@ import com.floreantpos.model.User;
 import com.floreantpos.model.UserPermission;
 import com.floreantpos.model.UserType;
 import com.floreantpos.model.dao.DiscountDAO;
+import com.floreantpos.model.dao.OrderTypeDAO;
 import com.floreantpos.model.dao.PosTransactionDAO;
 import com.floreantpos.model.dao.RestaurantDAO;
 import com.floreantpos.model.dao.ShiftDAO;
@@ -215,7 +217,57 @@ public class DatabaseUtil {
 			serverUser.setActive(true);
 
 			dao.saveOrUpdate(serverUser);
-
+			
+			OrderTypeDAO orderTypeDAO = new OrderTypeDAO();
+			OrderType orderType = new OrderType();
+			orderType.setName("DINE IN");
+			orderType.setShowTableSelection(true);
+			orderType.setCloseOnPaid(true);
+			orderType.setEnabled(true);
+			orderType.setShouldPrintToKitchen(true);
+			orderType.setShowInLoginScreen(true);
+			orderTypeDAO.save(orderType);
+			
+			orderType = new OrderType();
+			orderType.setName("TAKE OUT");
+			orderType.setShowTableSelection(false);
+			orderType.setCloseOnPaid(true);
+			orderType.setEnabled(true);
+			orderType.setShouldPrintToKitchen(true);
+			orderType.setShowInLoginScreen(true);
+			orderTypeDAO.save(orderType);
+			
+			orderType = new OrderType();
+			orderType.setName("RETAIL");
+			orderType.setShowTableSelection(false);
+			orderType.setCloseOnPaid(true);
+			orderType.setEnabled(true);
+			orderType.setShouldPrintToKitchen(false);
+			orderType.setShowInLoginScreen(true);
+			orderTypeDAO.save(orderType);
+			
+			orderType = new OrderType();
+			orderType.setName("PICKUP");
+			orderType.setShowTableSelection(false);
+			orderType.setCloseOnPaid(true);
+			orderType.setEnabled(true);
+			orderType.setShouldPrintToKitchen(true);
+			orderType.setShowInLoginScreen(true);
+			orderType.setRequiredCustomerData(true);
+			orderTypeDAO.save(orderType);
+			
+			orderType = new OrderType();
+			orderType.setName("HOME DELIVERY");
+			orderType.setShowTableSelection(false);
+			orderType.setCloseOnPaid(false);
+			orderType.setEnabled(true);
+			orderType.setShouldPrintToKitchen(true);
+			orderType.setShowInLoginScreen(true);
+			orderType.setRequiredCustomerData(true);
+			orderType.setAssignDriver(true);
+			orderType.setRequiredDeliveryData(true);
+			orderTypeDAO.save(orderType);
+			
 			DiscountDAO discountDao = new DiscountDAO();
 
 			Discount discount1 = new Discount();
