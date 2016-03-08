@@ -57,6 +57,7 @@ import com.floreantpos.report.ReceiptPrintService;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.swing.PosScrollPane;
 import com.floreantpos.ui.dialog.ItemNumberSelectionDialog;
+import com.floreantpos.ui.dialog.NumberSelectionDialog2;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.views.CashierSwitchBoardView;
 import com.floreantpos.ui.views.order.actions.OrderListener;
@@ -276,7 +277,13 @@ public class TicketView extends JPanel {
 
 		btnIncreaseAmount.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				doIncreaseAmount();
+
+				if (isFractionalUnit()) {
+					doIncreaseFractionalUnit();
+				}
+				else {
+					doIncreaseAmount();
+				}
 			}
 		});
 
@@ -416,6 +423,19 @@ public class TicketView extends JPanel {
 
 	}// GEN-LAST:event_doIncreaseAmount
 
+	private void doIncreaseFractionalUnit() {
+
+		double selectedQuantity = getSelectedQuantity();
+
+		if (selectedQuantity == -1) {
+			return;
+		}
+
+		if (ticketViewerTable.increaseFractionalUnit(selectedQuantity)) {
+			updateView();
+		}
+	}
+
 	private void doDecreaseAmount() {// GEN-FIRST:event_doDecreaseAmount
 		if (ticketViewerTable.decreaseItemAmount()) {
 			updateView();
@@ -554,6 +574,11 @@ public class TicketView extends JPanel {
 						btnDecreaseAmount.setEnabled(false);
 						btnEdit.setEnabled(true);
 					}
+					else if (ticketItem.isFractionalUnit()) {
+						btnIncreaseAmount.setEnabled(true);
+						btnDecreaseAmount.setEnabled(false);
+						btnDelete.setEnabled(true);
+					}
 					else {
 						btnIncreaseAmount.setEnabled(true);
 						btnDecreaseAmount.setEnabled(true);
@@ -634,5 +659,29 @@ public class TicketView extends JPanel {
 			return tableNumbers;
 		}
 		return tableNumbers;
+	}
+
+	private double getSelectedQuantity() {
+
+		double selectedQuantity = NumberSelectionDialog2.takeDoubleInput("Please enter item quantity", 1);
+		if (selectedQuantity == -1) {
+			return -1;
+		}
+
+		if (selectedQuantity == 0) {
+			POSMessageDialog.showError("Unit can not be zero");
+			return -1;
+		}
+		return selectedQuantity;
+	}
+
+	private boolean isFractionalUnit() {
+		Object object = ticketViewerTable.getSelected();
+
+		if (object instanceof TicketItem) {
+			TicketItem ticketItem = (TicketItem) object;
+			return ticketItem.isFractionalUnit();
+		}
+		return false;
 	}
 }

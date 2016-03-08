@@ -165,6 +165,24 @@ public class TicketViewerTable extends JTable {
 		repaint();
 	}
 
+	public boolean increaseFractionalUnit(double selectedQuantity) {
+		int selectedRow = getSelectedRow();
+		if (selectedRow < 0) {
+			return false;
+		}
+		else if (selectedRow >= model.getItemCount()) {
+			return false;
+		}
+
+		Object object = model.get(selectedRow);
+		if (object instanceof TicketItem) {
+			TicketItem ticketItem = (TicketItem) object;
+			ticketItem.setItemQuantity(selectedQuantity);
+			return true;
+		}
+		return false;
+	}
+
 	public boolean increaseItemAmount() {
 		int selectedRow = getSelectedRow();
 		if (selectedRow < 0) {

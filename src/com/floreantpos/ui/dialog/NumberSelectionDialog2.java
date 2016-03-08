@@ -163,7 +163,7 @@ public class NumberSelectionDialog2 extends POSDialog implements ActionListener 
 		} catch (Exception x) {
 		}
 
-		if (d == 0) {
+		if (d == 0 && !s.contains(".")) {
 			tfNumber.setText(number);
 			return;
 		}

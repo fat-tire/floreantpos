@@ -82,10 +82,14 @@ public class TicketViewerTableModel extends AbstractTableModel {
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		ITicketItem ticketItem = tableRows.get(String.valueOf(rowIndex));
 
-		TicketItem item = (TicketItem) tableRows.get(String.valueOf(rowIndex));
-
 		if (ticketItem == null) {
 			return null;
+		}
+
+		TicketItem tItem = null;
+		
+		if (ticketItem instanceof TicketItem) {
+			tItem = (TicketItem) ticketItem;
 		}
 
 		switch (columnIndex) {
@@ -97,13 +101,13 @@ public class TicketViewerTableModel extends AbstractTableModel {
 
 			case 2:
 
-				if (item.isFractionalUnit()) {
-					double d = item.getItemQuantity();
-
-					if (d % 1 == 0) {
-						return (int) d;
+				if (tItem != null && tItem.isFractionalUnit()) {
+					double itemQuantity = tItem.getItemQuantity();
+					
+					if (itemQuantity % 1 == 0) {
+						return (int) itemQuantity;
 					}
-					return item.getItemQuantity();
+					return tItem.getItemQuantity();
 				}
 				else {
 					return ticketItem.getItemCountDisplay();
