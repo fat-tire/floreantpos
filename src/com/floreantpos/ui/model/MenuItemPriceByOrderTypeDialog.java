@@ -38,8 +38,9 @@ import javax.swing.KeyStroke;
 import net.miginfocom.swing.MigLayout;
 
 import com.floreantpos.Messages;
+import com.floreantpos.main.Application;
 import com.floreantpos.model.MenuItem;
-import com.floreantpos.model.OrderTypeProperties;
+import com.floreantpos.model.OrderType;
 import com.floreantpos.model.Tax;
 import com.floreantpos.model.dao.TaxDAO;
 import com.floreantpos.ui.dialog.POSDialog;
@@ -71,18 +72,12 @@ public class MenuItemPriceByOrderTypeDialog extends POSDialog {
 
 	private void init() {
 		createView();
-		List<String> orderTypes=OrderTypeProperties.getVisibleOrderTypes(); 
-		for(String orderType:orderTypes) {
-			cbOrderTypes.addItem(orderType); 
+		List<OrderType> orderTypes = Application.getInstance().getOrderTypes();
+		if (orderTypes != null) {
+			for (OrderType orderType : orderTypes) {
+				cbOrderTypes.addItem(orderType.getName());
+			}
 		}
-		/*cbOrderTypes.addItem(OrderType.DINE_IN.toString());
-		cbOrderTypes.addItem(OrderType.BAR_TAB.toString());
-		cbOrderTypes.addItem(OrderType.DRIVE_THRU.toString());
-		cbOrderTypes.addItem(OrderType.HOME_DELIVERY.toString());
-		cbOrderTypes.addItem(OrderType.PICKUP.toString());
-		cbOrderTypes.addItem(OrderType.TAKE_OUT.toString());
-		cbOrderTypes.addItem(OrderType.FOR_HERE.toString());
-		cbOrderTypes.addItem(OrderType.RETAIL.toString());*/
 
 		setModal(true);
 		getRootPane().setDefaultButton(btnOK);
@@ -164,6 +159,9 @@ public class MenuItemPriceByOrderTypeDialog extends POSDialog {
 		}
 
 		Tax tax = (Tax) cbTax.getSelectedItem();
+		if(cbOrderTypes.getSelectedItem()==null){
+			return false; 
+		}
 		menuItem.setTaxByOrderType(cbOrderTypes.getSelectedItem().toString(), tax.getRate());
 		menuItem.setPriceByOrderType(cbOrderTypes.getSelectedItem().toString(), price);
 		return true;
