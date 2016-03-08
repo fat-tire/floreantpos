@@ -99,7 +99,7 @@ public class OrderTypeForm extends BeanEditor {
 		chkEnabled = new JCheckBox(POSConstants.ENABLED);
 		chkShowTableSelection = new JCheckBox("Show table selection");
 		chkShowGuestSelection = new JCheckBox("Show guest selection");
-		chkShouldPrintToKitchen = new JCheckBox("Should print to kitchen");
+		chkShouldPrintToKitchen = new JCheckBox("Print to kitchen");
 		chkCloseOnPaid = new JCheckBox("Close on paid");
 		chkPrepaid = new JCheckBox("Prepaid");
 		chkRequiredCustomerData = new JCheckBox("Require customer data");
