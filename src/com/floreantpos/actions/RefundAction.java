@@ -48,14 +48,14 @@ public class RefundAction extends PosAction {
 			
 			ticket = TicketDAO.getInstance().loadFullTicket(ticket.getId());
 			
-			message = Messages.getString("RefundAction.5") + //$NON-NLS-1$
+			message = "<html>" + //$NON-NLS-1$
 					Messages.getString("RefundAction.6") + ticket.getId() + Messages.getString("RefundAction.7") + ticket.getPaidAmount(); //$NON-NLS-1$ //$NON-NLS-2$
 			
 			if(ticket.getGratuity() != null) {
 				message += Messages.getString("RefundAction.8") + ticket.getGratuity().getAmount(); //$NON-NLS-1$
 			}
 			
-			message += Messages.getString("RefundAction.9"); //$NON-NLS-1$
+			message += "</html>"; //$NON-NLS-1$
 			
 			double refundAmount = NumberSelectionDialog2.takeDoubleInput(message, Messages.getString("RefundAction.10"), paidAmount); //$NON-NLS-1$
 			if(Double.isNaN(refundAmount)) {
