@@ -33,12 +33,14 @@ import javax.swing.table.TableColumn;
 import javax.swing.text.JTextComponent;
 
 import com.floreantpos.POSConstants;
+import com.floreantpos.customer.CustomerSelectionDialog;
 import com.floreantpos.main.Application;
+import com.floreantpos.model.Customer;
 import com.floreantpos.ui.dialog.NumberSelectionDialog2;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 
 public class PosGuiUtil {
-	
+
 	public static int captureGuestNumber() {
 		NumberSelectionDialog2 dialog = new NumberSelectionDialog2();
 		dialog.setTitle(POSConstants.ENTER_NUMBER_OF_GUEST);
@@ -56,6 +58,18 @@ public class PosGuiUtil {
 		}
 
 		return numberOfGuests;
+	}
+
+	public static Customer captureCustomer() {
+		CustomerSelectionDialog dialog = new CustomerSelectionDialog();
+		dialog.setSize(800, 600);
+		dialog.open();
+
+		if (dialog.isCanceled()) {
+			return null;
+		}
+
+		return dialog.getSelectedCustomer();
 	}
 
 	public static Double parseDouble(JTextComponent textComponent) {
