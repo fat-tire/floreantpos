@@ -12,6 +12,7 @@
 		<property column="SHOW_TABLE_SELECTION" name="showTableSelection" type="java.lang.Boolean" />
 		<property column="SHOW_GUEST_SELECTION" name="showGuestSelection" type="java.lang.Boolean" />
 		<property column="SHOULD_PRINT_TO_KITCHEN" name="shouldPrintToKitchen" type="java.lang.Boolean" />
+		<property column="PREPAID" name="prepaid" type="java.lang.Boolean" />
 		<property column="CLOSE_ON_PAID" name="closeOnPaid" type="java.lang.Boolean" />
 		<property column="REQUIRED_CUSTOMER_DATA" name="requiredCustomerData" type="java.lang.Boolean" />
 		<property column="REQUIRED_DELIVERY_DATA" name="requiredDeliveryData" type="java.lang.Boolean" />

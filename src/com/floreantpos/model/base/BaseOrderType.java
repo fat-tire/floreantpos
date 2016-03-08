@@ -25,6 +25,7 @@ public abstract class BaseOrderType  implements Comparable, Serializable {
 	public static String PROP_ENABLED = "enabled";
 	public static String PROP_NAME = "name";
 	public static String PROP_SHOW_IN_LOGIN_SCREEN = "showInLoginScreen";
+	public static String PROP_PREPAID = "prepaid";
 	public static String PROP_ASSIGN_DRIVER = "assignDriver";
 	public static String PROP_REQUIRED_CUSTOMER_DATA = "requiredCustomerData";
 	public static String PROP_HIDE_ITEM_WITH_EMPTY_INVENTORY = "hideItemWithEmptyInventory";
@@ -72,6 +73,7 @@ public abstract class BaseOrderType  implements Comparable, Serializable {
 		protected java.lang.Boolean showTableSelection;
 		protected java.lang.Boolean showGuestSelection;
 		protected java.lang.Boolean shouldPrintToKitchen;
+		protected java.lang.Boolean prepaid;
 		protected java.lang.Boolean closeOnPaid;
 		protected java.lang.Boolean requiredCustomerData;
 		protected java.lang.Boolean requiredDeliveryData;
@@ -189,6 +191,23 @@ public abstract class BaseOrderType  implements Comparable, Serializable {
 	 */
 	public void setShouldPrintToKitchen (java.lang.Boolean shouldPrintToKitchen) {
 		this.shouldPrintToKitchen = shouldPrintToKitchen;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: PREPAID
+	 */
+	public java.lang.Boolean isPrepaid () {
+								return prepaid == null ? Boolean.FALSE : prepaid;
+					}
+
+	/**
+	 * Set the value related to the column: PREPAID
+	 * @param prepaid the PREPAID value
+	 */
+	public void setPrepaid (java.lang.Boolean prepaid) {
+		this.prepaid = prepaid;
 	}
 
 

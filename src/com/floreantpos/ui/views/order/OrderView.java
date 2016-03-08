@@ -616,7 +616,7 @@ public class OrderView extends ViewPanel {
 		if (currentTicket != null) {
 			OrderType type = currentTicket.getType();
 
-			if (!type.isShowTableSelection()) {//fix
+			if (type.isPrepaid()) {
 				btnDone.setVisible(false);
 			}
 			else {
