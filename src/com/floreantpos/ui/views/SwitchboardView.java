@@ -82,7 +82,6 @@ import com.floreantpos.ui.views.order.TicketSelectionDialog;
 import com.floreantpos.ui.views.order.ViewPanel;
 import com.floreantpos.ui.views.payment.GroupSettleTicketDialog;
 import com.floreantpos.util.POSUtil;
-import com.floreantpos.util.TicketAlreadyExistsException;
 
 /**
  * 
@@ -191,12 +190,12 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 	public void rendererOrderPanel() {
 		orderPanel.removeAll();
 		List<com.floreantpos.model.OrderType> orderTypes = Application.getInstance().getOrderTypes();
-//		int buttonCount = 0;
+		//		int buttonCount = 0;
 		for (com.floreantpos.model.OrderType orderType : orderTypes) {
-//			++buttonCount;
-//			if (buttonCount >= 6) {
-//				break;
-//			}
+			//			++buttonCount;
+			//			if (buttonCount >= 6) {
+			//				break;
+			//			}
 			orderPanel.add(new OrderTypeButton(orderType), "grow");
 		}
 		orderPanel.repaint();
@@ -298,7 +297,7 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 				return;
 			}
 
-			if (ticket.getType().isRequiredCustomerData()) {//added
+			if (!ticket.getType().isAssignDriver()) {
 				POSMessageDialog.showError(this, Messages.getString("SwitchboardView.8")); //$NON-NLS-1$
 				return;
 			}
@@ -496,41 +495,41 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 		OrderView.getInstance().getTicketView().getTxtSearchItem().requestFocus();
 	}
 
-//	public void doCreateNewTicket(final OrderType ticketType) {
-//		try {
-//			if (ticketType.isShowTableSelection()) {
-//				OrderServiceExtension orderService = new DefaultOrderServiceExtension();
-//				orderService.createNewTicket(ticketType);
-//			}
-//			else {
-//				OrderUtil.createNewTakeOutOrder(ticketType);
-//			}
-//
-//		} catch (TicketAlreadyExistsException e) {
-//
-//			int option = JOptionPane.showOptionDialog(Application.getPosWindow(), POSConstants.EDIT_TICKET_CONFIRMATION, POSConstants.CONFIRM,
-//					JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
-//			if (option == JOptionPane.YES_OPTION) {
-//				editTicket(e.getTicket());
-//				return;
-//			}
-//		}
-//	}
+	//	public void doCreateNewTicket(final OrderType ticketType) {
+	//		try {
+	//			if (ticketType.isShowTableSelection()) {
+	//				OrderServiceExtension orderService = new DefaultOrderServiceExtension();
+	//				orderService.createNewTicket(ticketType);
+	//			}
+	//			else {
+	//				OrderUtil.createNewTakeOutOrder(ticketType);
+	//			}
+	//
+	//		} catch (TicketAlreadyExistsException e) {
+	//
+	//			int option = JOptionPane.showOptionDialog(Application.getPosWindow(), POSConstants.EDIT_TICKET_CONFIRMATION, POSConstants.CONFIRM,
+	//					JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+	//			if (option == JOptionPane.YES_OPTION) {
+	//				editTicket(e.getTicket());
+	//				return;
+	//			}
+	//		}
+	//	}
 
 	public void doHomeDelivery(OrderType ticketType) {
-//		try {
-//
-//			orderServiceExtension.createNewTicket(ticketType);
-//
-//		} catch (TicketAlreadyExistsException e) {
-//
-//			int option = JOptionPane.showOptionDialog(Application.getPosWindow(), POSConstants.EDIT_TICKET_CONFIRMATION, POSConstants.CONFIRM,
-//					JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
-//			if (option == JOptionPane.YES_OPTION) {
-//				editTicket(e.getTicket());
-//				return;
-//			}
-//		}
+		//		try {
+		//
+		//			orderServiceExtension.createNewTicket(ticketType);
+		//
+		//		} catch (TicketAlreadyExistsException e) {
+		//
+		//			int option = JOptionPane.showOptionDialog(Application.getPosWindow(), POSConstants.EDIT_TICKET_CONFIRMATION, POSConstants.CONFIRM,
+		//					JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+		//			if (option == JOptionPane.YES_OPTION) {
+		//				editTicket(e.getTicket());
+		//				return;
+		//			}
+		//		}
 	}
 
 	private void doGroupSettle() {

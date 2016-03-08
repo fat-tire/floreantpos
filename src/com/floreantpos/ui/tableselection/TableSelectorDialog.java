@@ -12,6 +12,7 @@ import com.floreantpos.POSConstants;
 import com.floreantpos.main.Application;
 import com.floreantpos.main.PosWindow;
 import com.floreantpos.model.ShopTable;
+import com.floreantpos.model.Ticket;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.ui.dialog.POSDialog;
 
@@ -49,5 +50,10 @@ public class TableSelectorDialog extends POSDialog {
 	
 	public List<ShopTable> getSelectedTables() {
 		return tableSelector.getSelectedTables();
+	}
+
+	public void setTicket(Ticket thisTicket) {
+		tableSelector.setTicket(thisTicket); 
+		
 	}
 }

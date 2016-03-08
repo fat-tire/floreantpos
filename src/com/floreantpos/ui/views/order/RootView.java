@@ -27,6 +27,7 @@ import javax.swing.border.EmptyBorder;
 
 import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.demo.KitchenDisplayView;
+import com.floreantpos.extension.OrderServiceFactory;
 import com.floreantpos.model.OrderType;
 import com.floreantpos.model.dao.OrderTypeDAO;
 import com.floreantpos.ui.HeaderPanel;
@@ -36,6 +37,7 @@ import com.floreantpos.ui.views.SwitchboardOtherFunctionsView;
 import com.floreantpos.ui.views.SwitchboardView;
 import com.floreantpos.ui.views.TableMapView;
 import com.floreantpos.ui.views.payment.SettleTicketDialog;
+import com.floreantpos.util.TicketAlreadyExistsException;
 
 public class RootView extends com.floreantpos.swing.TransparentPanel {
 	private CardLayout cards = new CardLayout();
@@ -151,7 +153,7 @@ public class RootView extends com.floreantpos.swing.TransparentPanel {
 			if (!hasView(KitchenDisplayView.getInstance())) {
 				addView(KitchenDisplayView.getInstance());
 			}
-			
+
 			headerPanel.setVisible(false);
 			setAndShowHomeScreen(KitchenDisplayView.getInstance());
 		}
@@ -160,18 +162,18 @@ public class RootView extends com.floreantpos.swing.TransparentPanel {
 		}
 		else {
 			OrderType orderType = OrderTypeDAO.getInstance().findByName(defaultViewName);
-			//TODO: what if order type is not found...
-			
+
 			if (orderType.isShowTableSelection()) {
 				TableMapView tableMapView = TableMapView.getInstance(orderType);
 				tableMapView.updateView();
 				setAndShowHomeScreen(tableMapView);
 			}
 			else {
-				setAndShowHomeScreen(OrderView.getInstance());
+				try {
+					OrderServiceFactory.getOrderService().createNewTicket(orderType, null);
+				} catch (TicketAlreadyExistsException e1) {
+				}
 			}
-
-			//OrderUtil.createNewTakeOutOrder(orderType);
 		}
 	}
 
@@ -181,7 +183,7 @@ public class RootView extends com.floreantpos.swing.TransparentPanel {
 	public IView getHomeView() {
 		return homeView;
 	}
-	
+
 	private void setAndShowHomeScreen(IView homeScreen) {
 		homeView = homeScreen;
 		showHomeScreen();

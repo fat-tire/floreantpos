@@ -20,13 +20,15 @@ public abstract class BaseOrderType  implements Comparable, Serializable {
 	public static String PROP_SHOW_TABLE_SELECTION = "showTableSelection";
 	public static String PROP_SHOW_GUEST_SELECTION = "showGuestSelection";
 	public static String PROP_SHOULD_PRINT_TO_KITCHEN = "shouldPrintToKitchen";
+	public static String PROP_REQUIRED_DELIVERY_DATA = "requiredDeliveryData";
 	public static String PROP_SHOW_ITEM_BARCODE = "showItemBarcode";
 	public static String PROP_ENABLED = "enabled";
+	public static String PROP_NAME = "name";
+	public static String PROP_SHOW_IN_LOGIN_SCREEN = "showInLoginScreen";
+	public static String PROP_ASSIGN_DRIVER = "assignDriver";
 	public static String PROP_REQUIRED_CUSTOMER_DATA = "requiredCustomerData";
 	public static String PROP_HIDE_ITEM_WITH_EMPTY_INVENTORY = "hideItemWithEmptyInventory";
 	public static String PROP_ID = "id";
-	public static String PROP_NAME = "name";
-	public static String PROP_SHOW_IN_LOGIN_SCREEN = "showInLoginScreen";
 	public static String PROP_CONSOLIDATE_ITEMS_IN_RECEIPT = "consolidateItemsInReceipt";
 
 
@@ -72,6 +74,8 @@ public abstract class BaseOrderType  implements Comparable, Serializable {
 		protected java.lang.Boolean shouldPrintToKitchen;
 		protected java.lang.Boolean closeOnPaid;
 		protected java.lang.Boolean requiredCustomerData;
+		protected java.lang.Boolean requiredDeliveryData;
+		protected java.lang.Boolean assignDriver;
 		protected java.lang.Boolean showItemBarcode;
 		protected java.lang.Boolean showInLoginScreen;
 		protected java.lang.Boolean consolidateItemsInReceipt;
@@ -207,18 +211,52 @@ public abstract class BaseOrderType  implements Comparable, Serializable {
 
 
 	/**
-	 * Return the value associated with the column: REQURIED_CUSTOMER_DATA
+	 * Return the value associated with the column: REQUIRED_CUSTOMER_DATA
 	 */
 	public java.lang.Boolean isRequiredCustomerData () {
 								return requiredCustomerData == null ? Boolean.FALSE : requiredCustomerData;
 					}
 
 	/**
-	 * Set the value related to the column: REQURIED_CUSTOMER_DATA
-	 * @param requiredCustomerData the REQURIED_CUSTOMER_DATA value
+	 * Set the value related to the column: REQUIRED_CUSTOMER_DATA
+	 * @param requiredCustomerData the REQUIRED_CUSTOMER_DATA value
 	 */
 	public void setRequiredCustomerData (java.lang.Boolean requiredCustomerData) {
 		this.requiredCustomerData = requiredCustomerData;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: REQUIRED_DELIVERY_DATA
+	 */
+	public java.lang.Boolean isRequiredDeliveryData () {
+								return requiredDeliveryData == null ? Boolean.FALSE : requiredDeliveryData;
+					}
+
+	/**
+	 * Set the value related to the column: REQUIRED_DELIVERY_DATA
+	 * @param requiredDeliveryData the REQUIRED_DELIVERY_DATA value
+	 */
+	public void setRequiredDeliveryData (java.lang.Boolean requiredDeliveryData) {
+		this.requiredDeliveryData = requiredDeliveryData;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: ASSIGN_DRIVER
+	 */
+	public java.lang.Boolean isAssignDriver () {
+								return assignDriver == null ? Boolean.FALSE : assignDriver;
+					}
+
+	/**
+	 * Set the value related to the column: ASSIGN_DRIVER
+	 * @param assignDriver the ASSIGN_DRIVER value
+	 */
+	public void setAssignDriver (java.lang.Boolean assignDriver) {
+		this.assignDriver = assignDriver;
 	}
 
 

@@ -323,13 +323,14 @@ public class TicketView extends JPanel {
 
 	public synchronized void sendTicketToKitchen() {// GEN-FIRST:event_doFinishOrder
 		saveTicketIfNeeded();
-		if (ticket.needsKitchenPrint()) {
-			ReceiptPrintService.printToKitchen(ticket);
-			TicketDAO.getInstance().refresh(ticket);
-			setCancelable(false);
-			setAllowToLogOut(false);
+		if (ticket.getType().isShouldPrintToKitchen()) {
+			if (ticket.needsKitchenPrint()) {
+				ReceiptPrintService.printToKitchen(ticket);
+				TicketDAO.getInstance().refresh(ticket);
+				setCancelable(false);
+				setAllowToLogOut(false);
+			}
 		}
-
 		OrderController.saveOrder(ticket);
 	}
 

@@ -28,6 +28,7 @@ public class OrderType extends BaseOrderType {
 		return this;
 	}
 
+	@Override
 	public String toString() {
 		return getName();
 	}

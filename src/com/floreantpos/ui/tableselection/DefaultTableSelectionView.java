@@ -80,7 +80,7 @@ public class DefaultTableSelectionView extends TableSelector implements ActionLi
 	private PosButton btnRefresh;
 
 	private ButtonGroup btnGroups;
-	
+
 	public DefaultTableSelectionView() {
 		init();
 	}
@@ -163,7 +163,7 @@ public class DefaultTableSelectionView extends TableSelector implements ActionLi
 
 	public synchronized void redererTables() {
 		clearSelection();
-		
+
 		addedTableListModel.clear();
 		buttonsPanel.getContentPane().removeAll();
 
@@ -180,11 +180,6 @@ public class DefaultTableSelectionView extends TableSelector implements ActionLi
 			tableButton.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					Window windowAncestor = SwingUtilities.getWindowAncestor(DefaultTableSelectionView.this);
-					if(windowAncestor instanceof POSDialog) {
-						windowAncestor.dispose();
-					}
-					
 					addTable(e);
 				}
 			});
@@ -234,7 +229,7 @@ public class DefaultTableSelectionView extends TableSelector implements ActionLi
 			button.getShopTable().setServing(true);
 			button.setBackground(Color.green);
 			button.setForeground(Color.black);
-			this.addedTableListModel.addElement(button);
+			addedTableListModel.addElement(button);
 			return false;
 		}
 
@@ -272,7 +267,9 @@ public class DefaultTableSelectionView extends TableSelector implements ActionLi
 			if (!button.hasUserAccess()) {
 				return false;
 			}
-			editTicket(button.getTicket());
+			if (isCreateNewTicket()) {
+				editTicket(button.getTicket());
+			}
 			return false;
 		}
 
@@ -280,14 +277,15 @@ public class DefaultTableSelectionView extends TableSelector implements ActionLi
 			if (!addedTableListModel.contains(button)) {
 				addedTableListModel.addElement(button);
 			}
-			
-			if(isCreateNewTicket()) {
+
+			if (isCreateNewTicket()) {
 				doCreateNewTicket();
 			}
 		}
 		return true;
 	}
 
+	@Override
 	public List<ShopTable> getSelectedTables() {
 		Enumeration<ShopTableButton> elements = addedTableListModel.elements();
 		List<ShopTable> tables = new ArrayList<ShopTable>();
@@ -325,8 +323,16 @@ public class DefaultTableSelectionView extends TableSelector implements ActionLi
 		}
 		else if (object == btnDone) {
 			if (btnGroup.isSelected()) {
-				doGroupAction();
-				clearSelection();
+				if (isCreateNewTicket()) {
+					doGroupAction();
+					clearSelection();
+				}
+				else {
+					Window windowAncestor = SwingUtilities.getWindowAncestor(DefaultTableSelectionView.this);
+					if (windowAncestor instanceof POSDialog) {
+						windowAncestor.dispose();
+					}
+				}
 			}
 			else if (btnUnGroup.isSelected()) {
 				doUnGroupAction();
@@ -343,13 +349,22 @@ public class DefaultTableSelectionView extends TableSelector implements ActionLi
 		try {
 			List<ShopTable> selectedTables = getSelectedTables();
 
-			if (selectedTables.isEmpty()) {
-				return;
+			Window windowAncestor = SwingUtilities.getWindowAncestor(DefaultTableSelectionView.this);
+			if (windowAncestor instanceof POSDialog) {
+				windowAncestor.dispose();
+			}
+			else {
+				if (selectedTables.isEmpty()) {
+					clearSelection();
+					return;
+				}
 			}
 
 			OrderServiceFactory.getOrderService().createNewTicket(getOrderType(), selectedTables);
+			clearSelection();
 
 		} catch (TicketAlreadyExistsException e) {
+			e.printStackTrace();
 
 		}
 	}
@@ -358,6 +373,10 @@ public class DefaultTableSelectionView extends TableSelector implements ActionLi
 		if (ticket == null) {
 			return false;
 
+		}
+		Window windowAncestor = SwingUtilities.getWindowAncestor(DefaultTableSelectionView.this);
+		if (windowAncestor instanceof POSDialog) {
+			windowAncestor.dispose();
 		}
 		Ticket ticketToEdit = TicketDAO.getInstance().loadFullTicket(ticket.getId());
 
@@ -368,7 +387,9 @@ public class DefaultTableSelectionView extends TableSelector implements ActionLi
 	}
 
 	private void doGroupAction() {
-		doCreateNewTicket();
+		if (isCreateNewTicket()) {
+			doCreateNewTicket();
+		}
 	}
 
 	private void doUnGroupAction() {
@@ -398,6 +419,25 @@ public class DefaultTableSelectionView extends TableSelector implements ActionLi
 				ShopTableDAO.getInstance().saveOrUpdate(shopTable);
 				TicketDAO.getInstance().saveOrUpdate(ticket);
 			}
+		}
+	}
+
+	public void setTicket(Ticket ticket) {
+		if (ticket == null) {
+			return;
+		}
+		this.ticket = ticket;
+
+		List<ShopTable> tables = ShopTableDAO.getInstance().getTables(ticket);
+		if (tables == null)
+			return;
+
+		for (ShopTable shopTable : tables) {
+			ShopTableButton shopTableButton = tableButtonMap.get(shopTable);
+			if (shopTableButton != null) {
+				shopTableButton.getShopTable().setServing(false);
+			}
+			addedTableListModel.addElement(shopTableButton);
 		}
 	}
 

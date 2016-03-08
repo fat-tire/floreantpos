@@ -393,9 +393,12 @@ public class OrderView extends ViewPanel {
 		try {
 
 			Ticket thisTicket = currentTicket;
-			
+
 			TableSelectorDialog dialog = TableSelectorFactory.createTableSelectorDialog(thisTicket.getType());
 			dialog.setCreateNewTicket(false);
+			if (thisTicket != null) {
+				dialog.setTicket(thisTicket);
+			}
 			dialog.open();
 
 			List<ShopTable> tables = dialog.getSelectedTables();
@@ -612,6 +615,7 @@ public class OrderView extends ViewPanel {
 
 		if (currentTicket != null) {
 			OrderType type = currentTicket.getType();
+
 			if (!type.isShowTableSelection()) {//fix
 				btnDone.setVisible(false);
 			}

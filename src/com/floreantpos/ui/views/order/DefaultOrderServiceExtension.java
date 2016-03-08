@@ -24,9 +24,9 @@ import javax.swing.JMenu;
 import javax.swing.JOptionPane;
 
 import com.floreantpos.Messages;
-import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.extension.OrderServiceExtension;
 import com.floreantpos.main.Application;
+import com.floreantpos.model.Customer;
 import com.floreantpos.model.OrderType;
 import com.floreantpos.model.ShopTable;
 import com.floreantpos.model.Ticket;
@@ -55,9 +55,17 @@ public class DefaultOrderServiceExtension implements OrderServiceExtension {
 	@Override
 	public void createNewTicket(OrderType ticketType, List<ShopTable> selectedTables) throws TicketAlreadyExistsException {
 		int numberOfGuests = 0;
-		
-		if(TerminalConfig.isShouldShowGuestSelection()) {
+
+		if (ticketType.isShowGuestSelection()) {
 			numberOfGuests = PosGuiUtil.captureGuestNumber();
+		}
+
+		Customer customer = null;
+		if (ticketType.isRequiredCustomerData()) {
+			customer = PosGuiUtil.captureCustomer();
+			if(customer==null) {
+				return; 
+			}
 		}
 
 		Application application = Application.getInstance();
@@ -66,11 +74,12 @@ public class DefaultOrderServiceExtension implements OrderServiceExtension {
 		ticket.setPriceIncludesTax(application.isPriceIncludesTax());
 		ticket.setType(ticketType);
 		ticket.setNumberOfGuests(numberOfGuests);
+		ticket.setCustomer(customer);
 		ticket.setTerminal(application.getTerminal());
 		ticket.setOwner(Application.getCurrentUser());
 		ticket.setShift(application.getCurrentShift());
 
-		if(selectedTables != null) {
+		if (selectedTables != null) {
 			for (ShopTable shopTable : selectedTables) {
 				shopTable.setServing(true);
 				ticket.addTable(shopTable.getTableNumber());
@@ -107,7 +116,7 @@ public class DefaultOrderServiceExtension implements OrderServiceExtension {
 		//		}
 
 		int due = (int) POSUtil.getDouble(ticket.getDueAmount());
-		if(due != 0) {
+		if (due != 0) {
 			POSMessageDialog.showError(Application.getPosWindow(), Messages.getString("DefaultOrderServiceExtension.2")); //$NON-NLS-1$
 			return false;
 		}
@@ -118,7 +127,7 @@ public class DefaultOrderServiceExtension implements OrderServiceExtension {
 						Messages.getString("DefaultOrderServiceExtension.3") + ticket.getId() + Messages.getString("DefaultOrderServiceExtension.4"), Messages.getString("DefaultOrderServiceExtension.5"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 						JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, null, null, null);
 
-		if(option != JOptionPane.OK_OPTION) {
+		if (option != JOptionPane.OK_OPTION) {
 			return false;
 		}
 
