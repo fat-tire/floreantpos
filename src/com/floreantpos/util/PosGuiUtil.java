@@ -62,7 +62,7 @@ public class PosGuiUtil {
 
 	public static Customer captureCustomer() {
 		CustomerSelectionDialog dialog = new CustomerSelectionDialog();
-		dialog.setSize(800, 600);
+		dialog.setSize(Application.getPosWindow().getSize());
 		dialog.open();
 
 		if (dialog.isCanceled()) {
