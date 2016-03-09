@@ -36,8 +36,6 @@ public class TerminalConfig {
 
 	private static final String SHOW_TABLE_SELECTION = "show_table_selection"; //$NON-NLS-1$
 
-	private static final String CONSOLIDATE_TICKET_ITEMS = "consolidate_ticket_items"; //$NON-NLS-1$
-
 	private static final String REGULAR_MODE = "regular_mode"; //$NON-NLS-1$
 
 	private static final String KITCHEN_MODE = "kitchen_mode"; //$NON-NLS-1$
@@ -334,13 +332,5 @@ public class TerminalConfig {
 		}
 
 		return codes;
-	}
-
-	public static void setConsolidateTicketItems(boolean consolidateTicketItems) {
-		config.setProperty(CONSOLIDATE_TICKET_ITEMS, Boolean.valueOf(consolidateTicketItems));
-	}
-
-	public static boolean isConsolidateTicketItems() {
-		return config.getBoolean(CONSOLIDATE_TICKET_ITEMS, Boolean.TRUE);
 	}
 }
