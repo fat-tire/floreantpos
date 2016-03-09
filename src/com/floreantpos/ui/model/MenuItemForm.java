@@ -428,7 +428,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		tabGeneral.add(lgroup, "cell 0 6,right"); //$NON-NLS-1$
 		tabGeneral.add(cbGroup, "cell 1 6"); //$NON-NLS-1$
 		tabGeneral.add(btnNewGroup, "cell 1 6"); //$NON-NLS-1$
-		
+
 		tabGeneral.add(lblBarcode, "cell 0 7,right"); //$NON-NLS-1$
 		tabGeneral.add(tfBarcode, "cell 1 7,grow"); //$NON-NLS-1$
 
@@ -454,7 +454,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 
 		tabGeneral.add(new JLabel("OrderType"), "cell 2 6,right"); //$NON-NLS-1$
 		orderList = new CheckBoxList();
-		
+
 		List<String> orderListM = new ArrayList();
 		List<OrderType> orderTypes = Application.getInstance().getOrderTypes();
 
@@ -590,13 +590,13 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		});
 
 		btnDefaultValue.setText(Messages.getString("MenuItemForm.7")); //$NON-NLS-1$
-		btnDefaultValue.addActionListener(new ActionListener() {
+		/*btnDefaultValue.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				setDefaultValue();
 			}
-		});
+		});*/
 		priceTable.setModel(new javax.swing.table.DefaultTableModel(new Object[][] { { null, null, null, null }, { null, null, null, null },
 				{ null, null, null, null }, { null, null, null, null } }, new String[] { "Title 1", "Title 2", "Title 3", "Title 4" })); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 
@@ -1019,7 +1019,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 			fireTableDataChanged();
 		}
 
-		public void setDefaultValue() {
+		/*public void setDefaultValue() {
 			int selectedRow = priceTable.getSelectedRow();
 			if (selectedRow == -1) {
 				POSMessageDialog.showMessage(Messages.getString("MenuItemForm.8")); //$NON-NLS-1$
@@ -1039,7 +1039,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 			MenuItemDAO.getInstance().saveOrUpdate(menuItem);
 			add(menuItem);
 			fireTableDataChanged();
-		}
+		}*/
 
 		public void remove(int index) {
 			if (propertiesKey == null) {
@@ -1087,14 +1087,11 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 			switch (columnIndex) {
 
 				case 0:
-					key = key.replaceAll("_PRICE", ""); //$NON-NLS-1$ //$NON-NLS-2$
-					key = key.replaceAll("_", " "); //$NON-NLS-1$ //$NON-NLS-2$
-					return key;
+					return menuItem.getStringWithOutUnderScore(key, "_PRICE");
 				case 1:
 					return menuItem.getProperty(key);
 				case 2:
-					key = key.replaceAll("_PRICE", "_TAX"); //$NON-NLS-1$ //$NON-NLS-2$
-					return menuItem.getProperty(key);
+					return menuItem.getProperty(menuItem.replaceString(key, "_PRICE", "_TAX"));
 			}
 			return null;
 		}
@@ -1154,9 +1151,9 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		priceTableModel.removeAll();
 	}
 
-	private void setDefaultValue() {
+	/*private void setDefaultValue() {
 		priceTableModel.setDefaultValue();
-	}
+	}*/
 
 	private void updatePrice() {
 		int selectedRow = priceTable.getSelectedRow();

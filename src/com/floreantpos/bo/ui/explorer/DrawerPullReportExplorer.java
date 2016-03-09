@@ -169,14 +169,13 @@ public class DrawerPullReportExplorer extends TransparentPanel {
 	}
 
 	class DrawerPullExplorerTableModel extends ListTableModel {
-		String[] columnNames = {com.floreantpos.POSConstants.ID , com.floreantpos.POSConstants.DRAWER_PULL_AMOUNT, "USER ID", "TERMINAL ID", "BEGIN CASH", "NET SALES", "SALES TAX", "CASH TAX",
-				"TOTAL REVENUE", "GROSS RECEIPTS", "GIFT CERT RETURN COUNT", "GIFT CERT RETURN AMOUNT", "GIFT CERT CHARGE AMOUNT", "CASH RECEIPT NO",
+		String[] columnNames = {com.floreantpos.POSConstants.ID ,com.floreantpos.POSConstants.TIME,"TICKET COUNT",  com.floreantpos.POSConstants.DRAWER_PULL_AMOUNT, "USER ID", "TERMINAL ID", "BEGIN CASH","NET SALES",
+				 "SALES TAX","CASH TAX","TOTAL REVENUE", "GROSS RECEIPTS", "GIFT CERT RETURN COUNT", "GIFT CERT RETURN AMOUNT", "GIFT CERT CHARGE AMOUNT", "CASH RECEIPT NO",
 				"CASH RECEIPT AMOUNT", "CREDIT CARD RECEIPT NO", "CREDIT CARD RECEIPT AMOUNT", "DEBIT CARD RECEIPT NO", "DEBIT CARD RECEIPT AMOUNT",
 				"REFUND RECEIPT COUNT", "REFUND AMOUNT", "RECEIPT DIFFERENTIAL", "CASH BACK", "CASH TIPS", "CHARGED TIPS", "TIPS PAID", "TIPS DIFFERENTIAL",
-				"PAY OUT NO", "PAY OUT AMOUNT", "DRAWER BLEED NO", "DRAWER BLEED AMOUNT", "TICKET COUNT", com.floreantpos.POSConstants.ACTUAL_AMOUNT,
+				"PAY OUT NO", "PAY OUT AMOUNT", "DRAWER BLEED NO", "DRAWER BLEED AMOUNT", com.floreantpos.POSConstants.ACTUAL_AMOUNT,
 				"VARIANCE", "TOTAL VOIDWST", "TOTAL VOID", "TOTAL DISCOUNT COUNT", "TOTAL DISCOUNT AMOUNT", "TOTAL DISCOUNT SALES", "TOTAL DISCOUNT GUEST",
-				"TOTAL DISCOUNT PARTY SIZE", "TOTAL DISCOUNT CHECK SIZE", "TOTAL DISCOUNT PERCENTAGE", "TOTAL DISCOUNT RATIO",
-				com.floreantpos.POSConstants.TIME};
+				"TOTAL DISCOUNT PARTY SIZE", "TOTAL DISCOUNT CHECK SIZE", "TOTAL DISCOUNT PERCENTAGE", "TOTAL DISCOUNT RATIO"};
 
 		DrawerPullExplorerTableModel(List<DrawerPullReport> list) {
 			setRows(list);
@@ -192,135 +191,137 @@ public class DrawerPullReportExplorer extends TransparentPanel {
 					return report.getId().toString();
 				
 				case 1:
-					return report.getDrawerAccountable();
+					return dateTimeFormatter.format(report.getReportTime());
 
 				case 2:
-					return report.getAssignedUser().getUserId();
+					return report.getTicketCount();
+			
 				case 3:
-					return report.getTerminal().getId();
+					return report.getDrawerAccountable();
 
 				case 4:
-					return report.getBeginCash();
-
+					return report.getAssignedUser().getUserId();
+				
 				case 5:
-					return report.getNetSales();
+					return report.getTerminal().getId();
 
 				case 6:
-					return report.getSalesTax();
+					return report.getBeginCash();
 
 				case 7:
-					return report.getCashTax();
+					return report.getNetSales();
 
 				case 8:
-					return report.getTotalRevenue();
+					return report.getSalesTax();
 
 				case 9:
-					return report.getGrossReceipts();
-
+					return report.getCashTax();
+					
 				case 10:
-					return report.getGiftCertReturnCount();
+					return report.getTotalRevenue();
 
 				case 11:
-					return report.getGiftCertReturnAmount();
+					return report.getGrossReceipts();
 
 				case 12:
-					return report.getGiftCertChangeAmount();
+					return report.getGiftCertReturnCount();
 
 				case 13:
-					return report.getCashReceiptNumber();
+					return report.getGiftCertReturnAmount();
 
 				case 14:
-					return report.getCashReceiptAmount();
+					return report.getGiftCertChangeAmount();
 
 				case 15:
-					return report.getCreditCardReceiptNumber();
+					return report.getCashReceiptNumber();
 
 				case 16:
-					return report.getCreditCardReceiptAmount();
+					return report.getCashReceiptAmount();
 
 				case 17:
-					return report.getDebitCardReceiptNumber();
+					return report.getCreditCardReceiptNumber();
 
 				case 18:
-					return report.getDebitCardReceiptAmount();
+					return report.getCreditCardReceiptAmount();
 
 				case 19:
-					return report.getRefundReceiptCount();
+					return report.getDebitCardReceiptNumber();
 
 				case 20:
-					return report.getRefundAmount();
+					return report.getDebitCardReceiptAmount();
 
 				case 21:
-					return report.getReceiptDifferential();
+					return report.getRefundReceiptCount();
 
 				case 22:
-					return report.getCashBack();
+					return report.getRefundAmount();
 
 				case 23:
-					return report.getCashTips();
+					return report.getReceiptDifferential();
 
 				case 24:
-					return report.getChargedTips();
+					return report.getCashBack();
 
 				case 25:
-					return report.getTipsPaid();
+					return report.getCashTips();
 
 				case 26:
-					return report.getTipsDifferential();
+					return report.getChargedTips();
 
 				case 27:
-					return report.getPayOutNumber();
+					return report.getTipsPaid();
 
 				case 28:
-					return report.getPayOutAmount();
+					return report.getTipsDifferential();
 
 				case 29:
-					return report.getDrawerBleedNumber();
+					return report.getPayOutNumber();
 
 				case 30:
-					return report.getDrawerBleedAmount();
+					return report.getPayOutAmount();
 
 				case 31:
-					return report.getTicketCount();
+					return report.getDrawerBleedNumber();
 
 				case 32:
-					return report.getCashToDeposit();
+					return report.getDrawerBleedAmount();
 
 				case 33:
-					return report.getVariance();
+					return report.getCashToDeposit();
 
 				case 34:
-					return report.getTotalVoidWst();
+					return report.getVariance();
 
 				case 35:
-					return report.getTotalVoid();
+					return report.getTotalVoidWst();
 
 				case 36:
-					return report.getTotalDiscountCount();
+					return report.getTotalVoid();
 
 				case 37:
-					return report.getTotalDiscountAmount();
+					return report.getTotalDiscountCount();
 
 				case 38:
-					return report.getTotalDiscountSales();
+					return report.getTotalDiscountAmount();
 
 				case 39:
-					return report.getTotalDiscountGuest();
+					return report.getTotalDiscountSales();
 
 				case 40:
-					return report.getTotalDiscountPartySize();
+					return report.getTotalDiscountGuest();
 
 				case 41:
-					return report.getTotalDiscountCheckSize();
+					return report.getTotalDiscountPartySize();
 
 				case 42:
-					return report.getTotalDiscountPercentage();
+					return report.getTotalDiscountCheckSize();
 
 				case 43:
-					return report.getTotalDiscountRatio();
+					return report.getTotalDiscountPercentage();
 
 				case 44:
-					return dateTimeFormatter.format(report.getReportTime());
+					return report.getTotalDiscountRatio();
+					
 			}
 			return null;
 		}

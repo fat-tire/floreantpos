@@ -133,16 +133,11 @@ public class MenuItemPriceByOrderTypeDialog extends POSDialog {
 		if (menuItem == null)
 			return;
 
-		String modifiedKey = key;
+		if (key != null) {
+			cbOrderTypes.setSelectedItem(menuItem.getStringWithOutUnderScore(key, "_PRICE"));
 
-		if (modifiedKey != null) {
-			modifiedKey = modifiedKey.replaceAll("_PRICE", ""); //$NON-NLS-1$ //$NON-NLS-2$
-			modifiedKey = modifiedKey.replaceAll("_", " "); //$NON-NLS-1$ //$NON-NLS-2$
-			cbOrderTypes.setSelectedItem(modifiedKey);
+			Tax newtax = TaxDAO.getInstance().findByTaxRate(Double.parseDouble(menuItem.getProperty(menuItem.replaceString(key, "_PRICE", "_TAX"))));
 
-			String taxKey = key;
-			taxKey = taxKey.replaceAll("_PRICE", "_TAX"); //$NON-NLS-1$ //$NON-NLS-2$
-			Tax newtax = TaxDAO.getInstance().findByTaxRate(Double.parseDouble(menuItem.getProperty(taxKey)));
 			cbTax.setSelectedItem(newtax);
 
 			tfPrice.setText(String.valueOf(menuItem.getProperties().get(key)));
@@ -159,8 +154,8 @@ public class MenuItemPriceByOrderTypeDialog extends POSDialog {
 		}
 
 		Tax tax = (Tax) cbTax.getSelectedItem();
-		if(cbOrderTypes.getSelectedItem()==null){
-			return false; 
+		if (cbOrderTypes.getSelectedItem() == null) {
+			return false;
 		}
 		menuItem.setTaxByOrderType(cbOrderTypes.getSelectedItem().toString(), tax.getRate());
 		menuItem.setPriceByOrderType(cbOrderTypes.getSelectedItem().toString(), price);

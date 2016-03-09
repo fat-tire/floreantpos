@@ -326,39 +326,20 @@ public class MenuItem extends BaseMenuItem {
 	}
 
 	public void setPriceByOrderType(String type, double price) {
-		type = type.replaceAll(" ", "_"); //$NON-NLS-1$ //$NON-NLS-2$
-		addProperty(type + "_PRICE", String.valueOf(price)); //$NON-NLS-1$
+		addProperty(getStringWithUnderScore(type, "_PRICE"), String.valueOf(price));
 	}
 
 	public void setTaxByOrderType(String type, double price) {
-		type = type.replaceAll(" ", "_"); //$NON-NLS-1$ //$NON-NLS-2$
-		addProperty(type + "_TAX", String.valueOf(price)); //$NON-NLS-1$
+		addProperty(getStringWithUnderScore(type, "_TAX"), String.valueOf(price));
 	}
 
-	double getPriceByOrderType(OrderType type) {
+	public double getPriceByOrderType(OrderType type) {
 		double defaultPrice = this.getPrice(Application.getInstance().getCurrentShift());
 		if (type == null) {
 			return defaultPrice;
 		}
 
-		String priceProp = getProperty(type.name() + "_PRICE"); //$NON-NLS-1$
-		if (priceProp == null)
-			return defaultPrice;
-
-		try {
-			return Double.parseDouble(priceProp);
-		} catch (Exception e) {
-			return defaultPrice;
-		}
-	}
-
-	double getPriceByOrderType(String type) {
-		double defaultPrice = this.getPrice(Application.getInstance().getCurrentShift());
-		if (type == null) {
-			return defaultPrice;
-		}
-
-		String priceProp = getProperty(type + "_PRICE"); //$NON-NLS-1$
+		String priceProp = getProperty(getStringWithUnderScore(type.name(), "_PRICE")); //$NON-NLS-1$
 		if (priceProp == null)
 			return defaultPrice;
 
@@ -378,7 +359,7 @@ public class MenuItem extends BaseMenuItem {
 			return defaultTax;
 		}
 
-		String taxProp = getProperty(type.name() + "_TAX"); //$NON-NLS-1$
+		String taxProp = getProperty(getStringWithUnderScore(type.name(), "_TAX")); //$NON-NLS-1$
 		if (taxProp == null)
 			return defaultTax;
 
@@ -389,23 +370,23 @@ public class MenuItem extends BaseMenuItem {
 		}
 	}
 
-	public double getTaxByOrderType(String type) {
-		if (this.getTax() == null) {
-			return 0;
-		}
-		double defaultTax = this.getTax().getRate();
-		if (type == null) {
-			return defaultTax;
-		}
+	public String getStringWithUnderScore(String orderType, String additionalString) {
 
-		String taxProp = getProperty(type + "_TAX"); //$NON-NLS-1$
-		if (taxProp == null)
-			return defaultTax;
+		orderType = orderType.replaceAll(" ", "_");//$NON-NLS-1$ //$NON-NLS-2$
 
-		try {
-			return Double.parseDouble(taxProp);
-		} catch (Exception e) {
-			return defaultTax;
-		}
+		return orderType + additionalString;
+	}
+
+	public String getStringWithOutUnderScore(String orderType, String regex) {
+
+		orderType = orderType.replaceAll(regex, ""); //$NON-NLS-1$
+		orderType = orderType.replaceAll("_", " "); //$NON-NLS-1$ //$NON-NLS-2$
+
+		return orderType;
+	}
+	
+	public String replaceString(String orderType,String regex,String replacement) {
+		orderType=orderType.replaceAll(regex, replacement);
+		return orderType;
 	}
 }
