@@ -61,7 +61,6 @@ import com.floreantpos.model.Shift;
 import com.floreantpos.model.Terminal;
 import com.floreantpos.model.User;
 import com.floreantpos.model.dao.OrderTypeDAO;
-import com.floreantpos.model.dao.OrderTypePropertiesDAO;
 import com.floreantpos.model.dao.PrinterConfigurationDAO;
 import com.floreantpos.model.dao.RestaurantDAO;
 import com.floreantpos.model.dao.TerminalDAO;
@@ -89,7 +88,6 @@ public class Application {
 	private User currentUser;
 	private RootView rootView;
 	private List<OrderType> orderTypes;
-	private OrderType selectedOrderType;
 	private Shift currentShift;
 	public PrinterConfiguration printConfiguration;
 	private Restaurant restaurant;
@@ -199,7 +197,7 @@ public class Application {
 	}
 
 	private void initOrderTypes() {
-		orderTypes = OrderTypeDAO.getInstance().findEnabledOrderTypes(); 
+		orderTypes = OrderTypeDAO.getInstance().findEnabledOrderTypes();
 	}
 
 	private void initPlugins() {
@@ -260,7 +258,6 @@ public class Application {
 
 		this.terminal = terminal;
 
-		OrderTypePropertiesDAO.populate();
 	}
 
 	public void refreshRestaurant() {
@@ -467,7 +464,7 @@ public class Application {
 	public static PosPrinters getPrinters() {
 		return getInstance().printers;
 	}
-	
+
 	public OrderType getCurrentOrderType() {
 		return orderTypes.get(0);
 	}

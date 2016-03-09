@@ -30,6 +30,7 @@ import net.miginfocom.swing.MigLayout;
 
 import com.floreantpos.Messages;
 import com.floreantpos.POSConstants;
+import com.floreantpos.model.OrderType;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.ui.dialog.POSDialog;
@@ -59,8 +60,7 @@ public class OrderTypeSelectionDialog2 extends POSDialog {
 		btnForHere.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				selectedOrderType = OrderType.FOR_HERE;
-				//subOrderType=
+				//selectedOrderType = OrderType.FOR_HERE;
 				setCanceled(false);
 				dispose();
 			}
@@ -71,17 +71,17 @@ public class OrderTypeSelectionDialog2 extends POSDialog {
 		btnToGo.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				selectedOrderType = OrderType.TAKE_OUT;
+				//selectedOrderType = OrderType.TAKE_OUT;
 				setCanceled(false);
 				dispose();
 			}
 		});
 		//orderTypePanel.add(btnToGo);
 		
-		for(String name: ticket.getType().getOrderSubTypes()) {
+		/*for(String name: ticket.getType().getOrderSubTypes()) {
 			orderTypePanel.add(new OrderSubTypeButton(name)); 
 		}
-
+		 */
 		PosButton btnCancel = new PosButton(POSConstants.CANCEL_BUTTON_TEXT);
 		btnCancel.addActionListener(new ActionListener() {
 			@Override

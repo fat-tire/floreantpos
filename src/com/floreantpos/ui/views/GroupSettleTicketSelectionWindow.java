@@ -33,7 +33,6 @@ import com.floreantpos.Messages;
 import com.floreantpos.POSConstants;
 import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.main.Application;
-import com.floreantpos.model.OrderTypeFilter;
 import com.floreantpos.model.PaymentStatusFilter;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.User;
@@ -106,7 +105,7 @@ public class GroupSettleTicketSelectionWindow extends POSDialog {
 		List<Ticket> tickets = null;
 		
 		PaymentStatusFilter paymentStatusFilter = TerminalConfig.getPaymentStatusFilter();
-		OrderTypeFilter orderTypeFilter = TerminalConfig.getOrderTypeFilter();
+		String orderTypeFilter = TerminalConfig.getOrderTypeFilter();
 
 		if (user.canViewAllOpenTickets()) {
 			tickets = dao.findTickets(paymentStatusFilter, orderTypeFilter);

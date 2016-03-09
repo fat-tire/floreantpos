@@ -7,8 +7,6 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 
 import com.floreantpos.model.OrderType;
-import com.floreantpos.model.OrderTypeProperties;
-import com.floreantpos.model.dao.BaseOrderTypeDAO;
 
 public class OrderTypeDAO extends BaseOrderTypeDAO {
 

@@ -22,6 +22,7 @@ import java.awt.Font;
 import java.awt.GraphicsEnvironment;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
@@ -41,6 +42,7 @@ import com.floreantpos.Messages;
 import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.demo.KitchenDisplayView;
 import com.floreantpos.main.Application;
+import com.floreantpos.model.OrderType;
 import com.floreantpos.model.Terminal;
 import com.floreantpos.model.dao.TerminalDAO;
 import com.floreantpos.swing.DoubleTextField;
@@ -48,7 +50,6 @@ import com.floreantpos.swing.IntegerTextField;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.views.SwitchboardOtherFunctionsView;
 import com.floreantpos.ui.views.SwitchboardView;
-import com.floreantpos.ui.views.order.OrderType;
 
 public class TerminalConfigurationView extends ConfigurationView {
 	private IntegerTextField tfTerminalNumber;
@@ -120,13 +121,14 @@ public class TerminalConfigurationView extends ConfigurationView {
 		add(cbFonts, "span 2, wrap"); //$NON-NLS-1$
 
 		Vector<String> defaultViewList = new Vector<String>();
-		defaultViewList.add(OrderType.DINE_IN.toString());
-		defaultViewList.add(OrderType.TAKE_OUT.toString());
+
+		List<OrderType> orderTypes = Application.getInstance().getOrderTypes();
+		if (orderTypes != null) {
+			for (OrderType orderType : orderTypes) {
+				defaultViewList.add(orderType.getName());
+			}
+		}
 		defaultViewList.add(SwitchboardOtherFunctionsView.VIEW_NAME);
-		//defaultViewList.add(OrderType.BAR_TAB.toString());
-		defaultViewList.add(OrderType.DRIVE_THRU.toString());
-		defaultViewList.add(OrderType.HOME_DELIVERY.toString());
-		defaultViewList.add(OrderType.PICKUP.toString());
 		defaultViewList.add(KitchenDisplayView.VIEW_NAME);
 		defaultViewList.add(SwitchboardView.VIEW_NAME);
 

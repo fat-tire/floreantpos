@@ -22,12 +22,15 @@ import java.awt.GridLayout;
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import com.floreantpos.Messages;
 import com.floreantpos.POSConstants;
+import com.floreantpos.main.Application;
+import com.floreantpos.model.OrderType;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.ui.dialog.POSDialog;
 
@@ -41,11 +44,11 @@ public class OrderTypeSelectionDialog extends POSDialog {
 
 		JPanel orderTypePanel = new JPanel(new GridLayout(1, 0, 10, 10));
 		orderTypePanel.setBorder(new EmptyBorder(10, 10, 10, 10));
-		OrderType[] values = OrderType.values();
+		List<OrderType> values = Application.getInstance().getOrderTypes(); 
 		for (final OrderType orderType : values) {
-			if (orderType == OrderType.BAR_TAB) {
+			/*if (orderType == OrderType.BAR_TAB) {
 				continue;
-			}
+			}*/
 
 			PosButton button = new PosButton(orderType.toString());
 			button.addActionListener(new ActionListener() {

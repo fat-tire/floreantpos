@@ -39,7 +39,6 @@ import com.floreantpos.model.Ticket;
 import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.dialog.PaymentTypeSelectionDialog;
-import com.floreantpos.ui.views.order.OrderType;
 import com.floreantpos.ui.views.payment.AuthorizationCodeDialog;
 import com.floreantpos.ui.views.payment.CardInputListener;
 import com.floreantpos.ui.views.payment.CardInputProcessor;

@@ -28,6 +28,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -45,6 +46,7 @@ import com.floreantpos.POSConstants;
 import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.demo.KitchenDisplayView;
 import com.floreantpos.main.Application;
+import com.floreantpos.model.OrderType;
 import com.floreantpos.model.User;
 import com.floreantpos.model.UserPermission;
 import com.floreantpos.model.dao.UserDAO;
@@ -52,7 +54,6 @@ import com.floreantpos.swing.PosButton;
 import com.floreantpos.ui.TitlePanel;
 import com.floreantpos.ui.views.SwitchboardOtherFunctionsView;
 import com.floreantpos.ui.views.TableMapView;
-import com.floreantpos.ui.views.order.OrderType;
 import com.floreantpos.ui.views.order.OrderView;
 import com.floreantpos.ui.views.order.RootView;
 
@@ -357,12 +358,12 @@ public class PasswordEntryDialog extends POSDialog implements ActionListener {
 					return false;
 				}
 			}/*
-			else if (viewName.equals(SwitchboardView.VIEW_NAME)) {
+				else if (viewName.equals(SwitchboardView.VIEW_NAME)) {
 				if (!user.hasPermission(UserPermission.VIEW_ALL_OPEN_TICKETS)) {
 					statusLabel.setText("user has no permission to access this view");
 					return false;
 				}
-			}*/
+				}*/
 			else if (viewName.equals(SwitchboardOtherFunctionsView.VIEW_NAME)) {
 				if (!user.hasPermission(UserPermission.ALL_FUNCTIONS)) {
 					statusLabel.setText("user has no permission to access this view");
@@ -386,7 +387,18 @@ public class PasswordEntryDialog extends POSDialog implements ActionListener {
 			}
 		}
 		else {// to check login view access 
-			if (TerminalConfig.getDefaultView().equals(OrderType.DINE_IN.toString())) {
+			List<OrderType> orderTypes = Application.getInstance().getOrderTypes();
+			if (orderTypes != null) {
+				for (OrderType orderType : orderTypes) {
+					if (TerminalConfig.getDefaultView().equals(orderType.getName())) {
+						if (!user.hasPermission(UserPermission.CREATE_TICKET)) {
+							statusLabel.setText("user has no permission to access this view");
+							return false;
+						}
+					}
+				}
+			}
+			/*if (TerminalConfig.getDefaultView().equals(OrderType.DINE_IN.toString())) {
 				if (!user.hasPermission(UserPermission.CREATE_TICKET)) {
 					statusLabel.setText("user has no permission to access this view");
 					return false;
@@ -408,7 +420,8 @@ public class PasswordEntryDialog extends POSDialog implements ActionListener {
 					return false;
 				}
 			}
-			else if (TerminalConfig.getDefaultView().equals(KitchenDisplayView.VIEW_NAME)) {
+			else */
+			if (TerminalConfig.getDefaultView().equals(KitchenDisplayView.VIEW_NAME)) {
 				if (!user.hasPermission(UserPermission.KITCHEN_DISPLAY)) {
 					statusLabel.setText("user has no permission to access this view");
 					return false;

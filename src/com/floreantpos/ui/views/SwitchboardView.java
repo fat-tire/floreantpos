@@ -61,7 +61,6 @@ import com.floreantpos.extension.ExtensionManager;
 import com.floreantpos.extension.OrderServiceExtension;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.OrderType;
-import com.floreantpos.model.OrderTypeFilter;
 import com.floreantpos.model.PaymentStatusFilter;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.User;
@@ -710,7 +709,7 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 	@Override
 	public void ticketListUpdated() {
 		PaymentStatusFilter paymentStatusFilter = TerminalConfig.getPaymentStatusFilter();
-		OrderTypeFilter orderTypeFilter = TerminalConfig.getOrderTypeFilter();
+		String orderTypeFilter = TerminalConfig.getOrderTypeFilter();
 		String title = POSConstants.OPEN_TICKETS_AND_ACTIVITY + " [ FILTERS: " + paymentStatusFilter + ", " + orderTypeFilter + " ]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 		ticketsListPanelBorder.setTitle(title);

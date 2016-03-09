@@ -30,7 +30,7 @@ public class OrderType extends BaseOrderType {
 
 	@Override
 	public String toString() {
-		return getName();
+		return getName().replaceAll("_", " ");
 	}
 
 }

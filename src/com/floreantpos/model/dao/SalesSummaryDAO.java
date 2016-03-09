@@ -29,8 +29,10 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 
 import com.floreantpos.Messages;
+import com.floreantpos.main.Application;
 import com.floreantpos.model.AttendenceHistory;
 import com.floreantpos.model.MenuCategory;
+import com.floreantpos.model.OrderType;
 import com.floreantpos.model.Restaurant;
 import com.floreantpos.model.Shift;
 import com.floreantpos.model.Terminal;
@@ -41,7 +43,6 @@ import com.floreantpos.model.UserType;
 import com.floreantpos.report.SalesAnalysisReportModel.SalesAnalysisData;
 import com.floreantpos.report.SalesStatistics;
 import com.floreantpos.report.SalesStatistics.ShiftwiseSalesTableData;
-import com.floreantpos.ui.views.order.OrderType;
 
 public class SalesSummaryDAO extends _RootDAO {
 
@@ -509,7 +510,7 @@ public class SalesSummaryDAO extends _RootDAO {
 				for (Object object : shifts) {
 					Shift shift = (Shift) object;
 
-					OrderType[] values = OrderType.values();
+					List<OrderType> values = Application.getInstance().getOrderTypes(); //change enum
 					for (OrderType ticketType : values) {
 						findRecordByProfitCenter(start, end, userType, terminal, session, salesSummary, shift, ticketType);
 					}

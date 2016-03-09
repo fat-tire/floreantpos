@@ -33,6 +33,7 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 
 import com.floreantpos.Messages;
+import com.floreantpos.POSConstants;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.DataUpdateInfo;
 import com.floreantpos.model.Gratuity;
@@ -40,7 +41,6 @@ import com.floreantpos.model.InventoryItem;
 import com.floreantpos.model.InventoryTransaction;
 import com.floreantpos.model.InventoryTransactionType;
 import com.floreantpos.model.MenuItem;
-import com.floreantpos.model.OrderTypeFilter;
 import com.floreantpos.model.PaymentStatusFilter;
 import com.floreantpos.model.PaymentType;
 import com.floreantpos.model.Recepie;
@@ -398,11 +398,11 @@ public class TicketDAO extends BaseTicketDAO {
 		}
 	}
 
-	public List<Ticket> findTickets(PaymentStatusFilter psFilter, OrderTypeFilter otFilter) {
+	public List<Ticket> findTickets(PaymentStatusFilter psFilter, String otFilter) {
 		return findTicketsForUser(psFilter, otFilter, null);
 	}
 
-	public List<Ticket> findTicketsForUser(PaymentStatusFilter psFilter, OrderTypeFilter otFilter, User user) {
+	public List<Ticket> findTicketsForUser(PaymentStatusFilter psFilter, String otFilter, User user) {
 		Session session = null;
 
 		try {
@@ -427,8 +427,8 @@ public class TicketDAO extends BaseTicketDAO {
 				criteria.add(Restrictions.ge(Ticket.PROP_CLOSING_DATE, currentTime.getTime()));
 			}
 
-			if (otFilter != OrderTypeFilter.ALL) {
-				criteria.add(Restrictions.eq(Ticket.PROP_TICKET_TYPE, otFilter.name()));
+			if (otFilter != POSConstants.ALL) {
+				criteria.add(Restrictions.eq(Ticket.PROP_TICKET_TYPE, otFilter));
 			}
 
 			if (user != null) {
@@ -777,7 +777,7 @@ public class TicketDAO extends BaseTicketDAO {
 	private void updateCriteriaFilters(Criteria criteria) {
 		User user = Application.getCurrentUser();
 		PaymentStatusFilter paymentStatusFilter = com.floreantpos.config.TerminalConfig.getPaymentStatusFilter();
-		OrderTypeFilter orderTypeFilter = com.floreantpos.config.TerminalConfig.getOrderTypeFilter();
+		String orderTypeFilter = com.floreantpos.config.TerminalConfig.getOrderTypeFilter();
 
 		if (paymentStatusFilter == PaymentStatusFilter.OPEN) {
 			criteria.add(Restrictions.eq(Ticket.PROP_PAID, Boolean.FALSE));
@@ -792,8 +792,8 @@ public class TicketDAO extends BaseTicketDAO {
 			criteria.add(Restrictions.eq(Ticket.PROP_CLOSED, Boolean.TRUE));
 		}
 
-		if (orderTypeFilter != OrderTypeFilter.ALL) {
-			criteria.add(Restrictions.eq(Ticket.PROP_TICKET_TYPE, orderTypeFilter.name()));
+		if (!orderTypeFilter.equals(POSConstants.ALL)) {
+			criteria.add(Restrictions.eq(Ticket.PROP_TICKET_TYPE, orderTypeFilter));
 		}
 
 		if (!user.canViewAllOpenTickets() || !user.canViewAllCloseTickets()) {

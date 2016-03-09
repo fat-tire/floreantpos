@@ -19,6 +19,7 @@ package com.floreantpos.ui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JPanel;
@@ -31,9 +32,10 @@ import org.jdesktop.swingx.JXCollapsiblePane;
 
 import com.floreantpos.ITicketList;
 import com.floreantpos.Messages;
+import com.floreantpos.POSConstants;
 import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.main.Application;
-import com.floreantpos.model.OrderTypeFilter;
+import com.floreantpos.model.OrderType;
 import com.floreantpos.model.PaymentStatusFilter;
 import com.floreantpos.model.User;
 import com.floreantpos.model.UserPermission;
@@ -45,12 +47,9 @@ import com.floreantpos.ui.dialog.PasswordEntryDialog;
 public class OrderFilterPanel extends JXCollapsiblePane {
 	private ITicketList ticketList;
 	private TicketListView ticketLists;
-	POSToggleButton btnFilterByOpenStatus;
-	POSToggleButton btnFilterByPaidStatus;
-	POSToggleButton btnFilterByUnPaidStatus;
-
-	//POSToggleButton btnFilterByUnPaidStatus ;
-	//ButtonGroup paymentGroup;
+	private POSToggleButton btnFilterByOpenStatus;
+	private POSToggleButton btnFilterByPaidStatus;
+	private POSToggleButton btnFilterByUnPaidStatus;
 
 	public OrderFilterPanel(ITicketList ticketList) {
 		this.ticketList = ticketList;
@@ -98,7 +97,6 @@ public class OrderFilterPanel extends JXCollapsiblePane {
 
 				if (actionCommand.equals("CLOSED") && !Application.getCurrentUser().hasPermission(UserPermission.VIEW_ALL_CLOSE_TICKETS)) {
 
-					//
 					String password = PasswordEntryDialog.show(Application.getPosWindow(), "Please enter privileged password");
 					if (StringUtils.isEmpty(password)) {
 						updateButton();
@@ -143,86 +141,24 @@ public class OrderFilterPanel extends JXCollapsiblePane {
 	}
 
 	private void createOrderTypeFilterPanel() {
-		POSToggleButton btnFilterByOrderTypeALL = new POSToggleButton(OrderTypeFilter.ALL.toString());
-		POSToggleButton btnFilterByDineIn = new POSToggleButton(OrderTypeFilter.DINE_IN.toString());
-		POSToggleButton btnFilterByTakeOut = new POSToggleButton(OrderTypeFilter.TAKE_OUT.toString());
-		POSToggleButton btnFilterByPickup = new POSToggleButton(OrderTypeFilter.PICKUP.toString());
-		POSToggleButton btnFilterByHomeDeli = new POSToggleButton(OrderTypeFilter.HOME_DELIVERY.toString());
-		POSToggleButton btnFilterByDriveThru = new POSToggleButton(OrderTypeFilter.DRIVE_THRU.toString());
-		POSToggleButton btnFilterByBarTab = new POSToggleButton(OrderTypeFilter.BAR_TAB.toString());
-
-		ButtonGroup orderTypeGroup = new ButtonGroup();
-		orderTypeGroup.add(btnFilterByOrderTypeALL);
-		orderTypeGroup.add(btnFilterByDineIn);
-		orderTypeGroup.add(btnFilterByTakeOut);
-		orderTypeGroup.add(btnFilterByPickup);
-		orderTypeGroup.add(btnFilterByHomeDeli);
-		orderTypeGroup.add(btnFilterByDriveThru);
-		orderTypeGroup.add(btnFilterByBarTab);
-
-		OrderTypeFilter orderTypeFilter = TerminalConfig.getOrderTypeFilter();
-		switch (orderTypeFilter) {
-			case ALL:
-				btnFilterByOrderTypeALL.setSelected(true);
-				break;
-
-			case DINE_IN:
-				btnFilterByDineIn.setSelected(true);
-				break;
-
-			case TAKE_OUT:
-				btnFilterByTakeOut.setSelected(true);
-				break;
-
-			case PICKUP:
-				btnFilterByPickup.setSelected(true);
-				break;
-
-			case HOME_DELIVERY:
-				btnFilterByHomeDeli.setSelected(true);
-				break;
-
-			case DRIVE_THRU:
-				btnFilterByDriveThru.setSelected(true);
-				break;
-
-			case BAR_TAB:
-				btnFilterByBarTab.setSelected(true);
-				break;
-		}
+		OrderTypeFilterButton btnFilterByOrderTypeALL = new OrderTypeFilterButton(POSConstants.ALL);
 
 		JPanel filterByOrderPanel = new JPanel(new MigLayout("", "fill, grow", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		filterByOrderPanel.setBorder(new TitledBorder(Messages.getString("SwitchboardView.4"))); //$NON-NLS-1$
+
+		ButtonGroup orderTypeGroup = new ButtonGroup();
+		orderTypeGroup.add(btnFilterByOrderTypeALL);
+
 		filterByOrderPanel.add(btnFilterByOrderTypeALL);
-		filterByOrderPanel.add(btnFilterByDineIn);
-		filterByOrderPanel.add(btnFilterByTakeOut);
-		filterByOrderPanel.add(btnFilterByPickup);
-		filterByOrderPanel.add(btnFilterByHomeDeli);
-		filterByOrderPanel.add(btnFilterByDriveThru);
-		filterByOrderPanel.add(btnFilterByBarTab);
+
+		List<OrderType> orderTypes = Application.getInstance().getOrderTypes();
+		for (OrderType orderType : orderTypes) {
+			OrderTypeFilterButton orderTypeFilterButton = new OrderTypeFilterButton(orderType.getName());
+			orderTypeGroup.add(orderTypeFilterButton);
+			filterByOrderPanel.add(orderTypeFilterButton);
+		}
 
 		getContentPane().add(filterByOrderPanel);
-
-		ActionListener orderTypeFilterHandler = new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				String actionCommand = e.getActionCommand();
-				String filter = actionCommand.replaceAll("\\s", "_"); //$NON-NLS-1$ //$NON-NLS-2$
-				TerminalConfig.setOrderTypeFilter(filter);
-
-				//ticketLists.setCurrentRowIndexZero();
-				ticketList.updateTicketList();
-				ticketLists.updateButtonStatus();
-			}
-		};
-
-		btnFilterByOrderTypeALL.addActionListener(orderTypeFilterHandler);
-		btnFilterByDineIn.addActionListener(orderTypeFilterHandler);
-		btnFilterByTakeOut.addActionListener(orderTypeFilterHandler);
-		btnFilterByPickup.addActionListener(orderTypeFilterHandler);
-		btnFilterByHomeDeli.addActionListener(orderTypeFilterHandler);
-		btnFilterByDriveThru.addActionListener(orderTypeFilterHandler);
-		btnFilterByBarTab.addActionListener(orderTypeFilterHandler);
 	}
 
 	private void updateButton() {
@@ -235,6 +171,28 @@ public class OrderFilterPanel extends JXCollapsiblePane {
 		}
 		else if (paymentStatusFilter.name().equals("CLOSE")) {
 			btnFilterByUnPaidStatus.setSelected(true);
+		}
+	}
+
+	private class OrderTypeFilterButton extends POSToggleButton implements ActionListener {
+
+		public OrderTypeFilterButton(String name) {
+			String orderTypeFilter = TerminalConfig.getOrderTypeFilter();
+			if (orderTypeFilter.equals(name)) {
+				setSelected(true);
+			}
+			setText(name);
+			addActionListener(this);
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			setSelected(true);
+			String actionCommand = e.getActionCommand();
+			TerminalConfig.setOrderTypeFilter(actionCommand);
+
+			ticketList.updateTicketList();
+			ticketLists.updateButtonStatus();
 		}
 	}
 }

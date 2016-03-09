@@ -53,7 +53,6 @@ import com.floreantpos.swing.PosBlinkButton;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.swing.PosScrollPane;
 import com.floreantpos.ui.dialog.POSMessageDialog;
-import com.floreantpos.ui.views.order.OrderType;
 import com.floreantpos.util.PosGuiUtil;
 
 public class TicketListView extends JPanel implements ITicketList {
