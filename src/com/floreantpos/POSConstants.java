@@ -297,8 +297,10 @@ public class POSConstants {
 	public static final String CATEGORY = Messages.getString("PosMessage.206"); //$NON-NLS-1$
 	public static final String OK = Messages.getString("PosMessage.207"); //$NON-NLS-1$
 	public static final String VOID_TICKET = Messages.getString("PosMessage.208"); //$NON-NLS-1$
+	public static final String CLOSED_TICKETS = Messages.getString("CLOSED_TICKETS"); //$NON-NLS-1$
 	public static final String TICKET = Messages.getString("PosMessage.209"); //$NON-NLS-1$
 	public static final String DELETE = Messages.getString("PosMessage.210"); //$NON-NLS-1$
+	public static final String DELETE_ALL = Messages.getString("DELETE_ALL"); //$NON-NLS-1$
 	public static final String QTY = Messages.getString("PosMessage.211"); //$NON-NLS-1$
 	public static final String CONFIRM_DELETE = Messages.getString("PosMessage.212"); //$NON-NLS-1$
 	public static final String GUEST_NO_BUTTON_TEXT = Messages.getString("GUEST_NO_BUTTON_TEXT"); //$NON-NLS-1$
@@ -339,6 +341,7 @@ public class POSConstants {
 	public static final String SURE_SHUTDOWN_ = Messages.getString("PosMessage.249"); //$NON-NLS-1$
 	public static final String ID = Messages.getString("PosMessage.250"); //$NON-NLS-1$
 	public static final String SELECT_COOKING_INSTRUCTION = Messages.getString("PosMessage.251"); //$NON-NLS-1$
+	public static final String SELECT_CUSTOMER = Messages.getString("SELECT_CUSTOMER"); //$NON-NLS-1$
 	public static final String CURRENCY_SYMBOL_ = Messages.getString("PosMessage.252"); //$NON-NLS-1$
 	public static final String EDIT_ACTUAL_AMOUNT = Messages.getString("PosMessage.253"); //$NON-NLS-1$
 	public static final String MENU_MODIFIER_GROUPS = Messages.getString("PosMessage.254"); //$NON-NLS-1$

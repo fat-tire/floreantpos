@@ -39,6 +39,7 @@ import net.miginfocom.swing.MigLayout;
 import org.apache.commons.lang.StringUtils;
 
 import com.floreantpos.Messages;
+import com.floreantpos.POSConstants;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.Customer;
 import com.floreantpos.model.Ticket;
@@ -83,7 +84,7 @@ public class CustomerSelectionDialog extends POSDialog {
 		getContentPane().setLayout(new MigLayout("", "[549px,grow]", "[grow][][shrink 0,fill][grow][grow]")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 		JPanel contentPanel = new JPanel(new BorderLayout());
-		contentPanel.setBorder(new TitledBorder(null, "SELECT CUSTOMER", TitledBorder.LEADING, TitledBorder.TOP, null, null)); //$NON-NLS-1$
+		contentPanel.setBorder(new TitledBorder(null, POSConstants.SELECT_CUSTOMER.toUpperCase(), TitledBorder.LEADING, TitledBorder.TOP, null, null)); //$NON-NLS-1$
 
 		JPanel searchPanel = new JPanel(new MigLayout());
 

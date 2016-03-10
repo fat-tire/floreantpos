@@ -132,7 +132,7 @@ public class TicketExplorer extends TransparentPanel {
 
 		});
 
-		JButton btnVoidAll = new JButton("Delete All");
+		JButton btnVoidAll = new JButton(POSConstants.DELETE_ALL);
 		btnVoidAll.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -142,7 +142,7 @@ public class TicketExplorer extends TransparentPanel {
 						return;
 					}
 
-					if (POSMessageDialog.showYesNoQuestionDialog(TicketExplorer.this, POSConstants.CONFIRM_DELETE, POSConstants.DELETE) != JOptionPane.YES_OPTION) {
+					if (POSMessageDialog.showYesNoQuestionDialog(TicketExplorer.this, POSConstants.CONFIRM_DELETE, POSConstants.DELETE_ALL) != JOptionPane.YES_OPTION) {
 						return;
 					}
 

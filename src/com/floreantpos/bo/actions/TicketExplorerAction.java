@@ -23,13 +23,14 @@ import javax.swing.AbstractAction;
 import javax.swing.Icon;
 import javax.swing.JTabbedPane;
 
+import com.floreantpos.POSConstants;
 import com.floreantpos.bo.ui.BackOfficeWindow;
 import com.floreantpos.bo.ui.explorer.TicketExplorer;
 
 public class TicketExplorerAction extends AbstractAction {
 
 	public TicketExplorerAction() {
-		super("Closed Tickets");
+		super(POSConstants.CLOSED_TICKETS);
 	}
 
 	public TicketExplorerAction(String name) {
@@ -45,10 +46,10 @@ public class TicketExplorerAction extends AbstractAction {
 
 		TicketExplorer explorer = null;
 		JTabbedPane tabbedPane = backOfficeWindow.getTabbedPane();
-		int index = tabbedPane.indexOfTab("Closed Tickets");
+		int index = tabbedPane.indexOfTab(POSConstants.CLOSED_TICKETS);
 		if (index == -1) {
 			explorer = new TicketExplorer();
-			tabbedPane.addTab("Closed Tickets", explorer);
+			tabbedPane.addTab(POSConstants.CLOSED_TICKETS, explorer);
 		}
 		else {
 			explorer = (TicketExplorer) tabbedPane.getComponentAt(index);
