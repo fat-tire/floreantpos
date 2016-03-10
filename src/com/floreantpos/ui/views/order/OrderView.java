@@ -485,45 +485,9 @@ public class OrderView extends ViewPanel {
 		}
 	}// GEN-LAST:event_doInsertMisc
 
-	/*public void setOrderType(OrderType orderType) {
-		currentTicket.setType(orderType);
-		btnGuestNo.setEnabled(orderType == OrderType.DINE_IN);
-		btnTableNumber.setEnabled(orderType == OrderType.DINE_IN);
-
-		if (currentTicket.getType() == OrderType.DINE_IN) {
-			btnOrderType.setText(POSConstants.DINE_IN_BUTTON_TEXT);
-		}
-		else if (currentTicket.getType() == OrderType.BAR_TAB) {
-			btnOrderType.setText(POSConstants.BAR_TAB_BUTTON_TEXT);
-		}
-		else if (currentTicket.getType() == OrderType.DRIVE_THRU) {
-			btnOrderType.setText(POSConstants.DRIVE_THRU_BUTTON_TEXT);
-		}
-		else if (currentTicket.getType() == OrderType.HOME_DELIVERY) {
-			btnOrderType.setText(POSConstants.HOME_DELIVERY_BUTTON_TEXT);
-		}
-		else if (currentTicket.getType() == OrderType.PICKUP) {
-			btnOrderType.setText(POSConstants.PICKUP_BUTTON_TEXT);
-		}
-		else if (currentTicket.getType() == OrderType.TAKE_OUT) {
-			btnOrderType.setText(POSConstants.TAKE_OUT_BUTTON_TEXT);
-		}
-	}
-	*/
-	/*public void doChangeOrderType() {
-		OrderTypeSelectionDialog dialog = new OrderTypeSelectionDialog();
-		dialog.open();
-
-		if (dialog.isCanceled())
-			return;
-
-		OrderType selectedOrderType = dialog.getSelectedOrderType();
-		setOrderType(selectedOrderType);
-	}
-	*/
 	protected void doAddEditCustomer() {
 		CustomerSelectionDialog dialog = new CustomerSelectionDialog(currentTicket);
-		dialog.setSize(800, 650);
+		dialog.setSize(Application.getPosWindow().getSize());
 		dialog.open();
 	}
 

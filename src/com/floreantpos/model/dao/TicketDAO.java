@@ -23,6 +23,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
@@ -475,6 +476,24 @@ public class TicketDAO extends BaseTicketDAO {
 		}
 	}
 
+	public List<Ticket> findClosedTickets(Date startDate, Date endDate) {
+		Session session = null;
+
+		try {
+			session = getSession();
+			Criteria criteria = session.createCriteria(getReferenceClass());
+			criteria.add(Restrictions.eq(Ticket.PROP_CLOSED, Boolean.TRUE));
+			if (startDate != null && endDate != null) {
+				criteria.add(Restrictions.ge(Ticket.PROP_CREATE_DATE, startDate));
+				criteria.add(Restrictions.le(Ticket.PROP_CREATE_DATE, endDate));
+			}
+			List list = criteria.list();
+			return list;
+		} finally {
+			closeSession(session);
+		}
+	}
+
 	public TicketSummary getOpenTicketSummary() {
 		Session session = null;
 		TicketSummary ticketSummary = new TicketSummary();
@@ -800,4 +819,27 @@ public class TicketDAO extends BaseTicketDAO {
 			criteria.add(Restrictions.eq(Ticket.PROP_OWNER, user));
 		}
 	}
+
+	public void deleteTickets(List<Ticket> tickets) {
+		Session session = null;
+		Transaction tx = null;
+
+		try {
+			session = createNewSession();
+			tx = session.beginTransaction();
+
+			for (Ticket ticket : tickets) {
+				super.delete(ticket, session);
+			}
+
+			tx.commit();
+		} catch (Exception e) {
+			tx.rollback();
+			LogFactory.getLog(TicketDAO.class).error(e);
+			throw new RuntimeException(e);
+		} finally {
+			closeSession(session);
+		}
+	}
+
 }

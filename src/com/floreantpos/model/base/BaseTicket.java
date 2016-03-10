@@ -105,12 +105,12 @@ public abstract class BaseTicket implements Comparable, Serializable {
 	protected java.lang.String ticketType;
 
 	// many to one
-	private com.floreantpos.model.Shift shift;
-	private com.floreantpos.model.User owner;
-	private com.floreantpos.model.User assignedDriver;
+	private com.floreantpos.model.Shift shift; //do not delete
+	private com.floreantpos.model.User owner; //do not delete
+	private com.floreantpos.model.User assignedDriver; //do not delete
 	private com.floreantpos.model.Gratuity gratuity;
-	private com.floreantpos.model.User voidedBy;
-	private com.floreantpos.model.Terminal terminal;
+	private com.floreantpos.model.User voidedBy; //do not delete
+	private com.floreantpos.model.Terminal terminal; //do not delete
 
 	// collections
 	private java.util.Map<String, String> properties;
