@@ -55,6 +55,12 @@ public class TerminalConfig {
 
 	private static final String TOUCH_BUTTON_HEIGHT = "TOUCH_BUTTON_HEIGHT";//$NON-NLS-1$
 
+	private static final String FLOOR_BUTTON_WIDTH = "FLOOR_BUTTON_WIDTH";//$NON-NLS-1$
+
+	private static final String FLOOR_BUTTON_HEIGHT = "FLOOR_BUTTON_HEIGHT";//$NON-NLS-1$
+
+	private static final String FLOOR_BUTTON_FONT_SIZE = "FLOOR_BUTTON_FONT_SIZE";//$NON-NLS-1$
+
 	private static final String ADMIN_PASSWORD = "admin_pass";//$NON-NLS-1$
 
 	private static final String SHOW_BARCODE_ON_RECEIPT = "show_barcode_on_receipt";//$NON-NLS-1$
@@ -104,6 +110,30 @@ public class TerminalConfig {
 
 	public static int getTouchScreenButtonHeight() {
 		return config.getInt(TOUCH_BUTTON_HEIGHT, 80);
+	}
+
+	public static void setFloorButtonWidth(int width) {
+		config.setProperty(FLOOR_BUTTON_WIDTH, width);
+	}
+
+	public static int getFloorButtonWidth() {
+		return config.getInt(FLOOR_BUTTON_WIDTH, 55);
+	}
+
+	public static void setFloorButtonHeight(int height) {
+		config.setProperty(FLOOR_BUTTON_HEIGHT, height);
+	}
+
+	public static int getFloorButtonHeight() {
+		return config.getInt(FLOOR_BUTTON_HEIGHT, 90);
+	}
+
+	public static void setFloorButtonFontSize(int size) {
+		config.setProperty(FLOOR_BUTTON_FONT_SIZE, size);
+	}
+
+	public static int getFloorButtonFontSize() {
+		return config.getInt(FLOOR_BUTTON_FONT_SIZE, 30);
 	}
 
 	public static void setMenuItemButtonHeight(int height) {

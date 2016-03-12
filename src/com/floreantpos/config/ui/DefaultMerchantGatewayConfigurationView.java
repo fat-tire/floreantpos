@@ -17,11 +17,16 @@
  */
 package com.floreantpos.config.ui;
 
+import java.awt.Color;
+import java.awt.Desktop;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.URI;
 import java.util.Vector;
 
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -42,10 +47,10 @@ public class DefaultMerchantGatewayConfigurationView extends ConfigurationView {
 	private JCheckBox chckbxAllowMagneticSwipe;
 	private JCheckBox chckbxAllowCardManual;
 	private JCheckBox chckbxAllowExternalTerminal;
-	
+
 	public DefaultMerchantGatewayConfigurationView() {
 		setLayout(new MigLayout("", "[][grow]", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		
+
 		JLabel lblMagneticCardReader = new JLabel(Messages.getString("CardConfigurationView.9")); //$NON-NLS-1$
 		add(lblMagneticCardReader, "cell 0 3,alignx leading"); //$NON-NLS-1$
 
@@ -56,7 +61,7 @@ public class DefaultMerchantGatewayConfigurationView extends ConfigurationView {
 			}
 		});
 		add(cbCardReader, "cell 1 3,growx"); //$NON-NLS-1$
-		
+
 		JLabel lblMerchantAccount = new JLabel(Messages.getString("CardConfigurationView.19")); //$NON-NLS-1$
 		add(lblMerchantAccount, "cell 0 5,alignx leading"); //$NON-NLS-1$
 
@@ -67,10 +72,10 @@ public class DefaultMerchantGatewayConfigurationView extends ConfigurationView {
 		add(lblSecretCode, "cell 0 6,alignx leading"); //$NON-NLS-1$
 
 		cbCardReader.setModel(new DefaultComboBoxModel<CardReader>(CardReader.values()));
-		
+
 		tfMerchantPass = new JPasswordField();
 		add(tfMerchantPass, "cell 1 6,growx"); //$NON-NLS-1$
-		
+
 		chckbxAllowMagneticSwipe = new JCheckBox(Messages.getString("CardConfigurationView.3")); //$NON-NLS-1$
 		chckbxAllowMagneticSwipe.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -78,7 +83,7 @@ public class DefaultMerchantGatewayConfigurationView extends ConfigurationView {
 			}
 		});
 		add(chckbxAllowMagneticSwipe, "skip 1, newline"); //$NON-NLS-1$
-		
+
 		chckbxAllowCardManual = new JCheckBox(Messages.getString("CardConfigurationView.5")); //$NON-NLS-1$
 		chckbxAllowCardManual.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -86,7 +91,7 @@ public class DefaultMerchantGatewayConfigurationView extends ConfigurationView {
 			}
 		});
 		add(chckbxAllowCardManual, "skip 1, newline"); //$NON-NLS-1$
-		
+
 		chckbxAllowExternalTerminal = new JCheckBox(Messages.getString("CardConfigurationView.7")); //$NON-NLS-1$
 		chckbxAllowExternalTerminal.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -94,17 +99,41 @@ public class DefaultMerchantGatewayConfigurationView extends ConfigurationView {
 			}
 		});
 		add(chckbxAllowExternalTerminal, "skip 1, newline"); //$NON-NLS-1$
-		
+
 		cbSandboxMode = new JCheckBox(Messages.getString("CardConfigurationView.25")); //$NON-NLS-1$
 		add(cbSandboxMode, "skip 1, newline"); //$NON-NLS-1$
+
+		JButton btnCreateNewMerchantAccount = new JButton(Messages.getString("CardConfigurationView.0")); //$NON-NLS-1$
+		btnCreateNewMerchantAccount.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String link = "http://www.google.com/url?q=http%3A%2F%2Freseller.authorize.net%2Fapplication%2F%3FresellerId%3D27144&sa=D&sntz=1&usg=AFQjCNGu-ElScUYZf07KHHaFWPP3S2oAQA"; //$NON-NLS-1$
+				try {
+					openBrowser(link);
+				} catch (Exception e1) {
+				}
+			}
+		});
+		btnCreateNewMerchantAccount.setForeground(Color.RED);
+		btnCreateNewMerchantAccount.setFont(new Font(getFont().getName(), Font.BOLD, 11));
+
+		add(btnCreateNewMerchantAccount, "skip 1, newline"); //$NON-NLS-1$
 	}
-	
+
+	private void openBrowser(String link) throws Exception {
+		URI uri = new URI(link);
+		if (Desktop.isDesktopSupported()) {
+			Desktop.getDesktop().browse(uri);
+		}
+	}
+
 	@Override
 	public void initialize() throws Exception {
 		chckbxAllowMagneticSwipe.setSelected(CardConfig.isSwipeCardSupported());
 		chckbxAllowCardManual.setSelected(CardConfig.isManualEntrySupported());
 		chckbxAllowExternalTerminal.setSelected(CardConfig.isExtTerminalSupported());
-		
+
 		CardReader card = CardConfig.getCardReader();
 		cbCardReader.setSelectedItem(card);
 
@@ -117,30 +146,30 @@ public class DefaultMerchantGatewayConfigurationView extends ConfigurationView {
 		if (merchantPass != null) {
 			tfMerchantPass.setText(merchantPass);
 		}
-		
+
 		cbSandboxMode.setSelected(CardConfig.isSandboxMode());
-		
+
 		updateCardList();
 	}
-	
+
 	public void setMerchantDefaultValue(String accountNo, String pass) {
 		tfMerchantAccount.setText(accountNo); //$NON-NLS-1$
 		tfMerchantPass.setText(pass); //$NON-NLS-1$
 	}
-	
+
 	protected void updateCheckBoxes() {
 		CardReader selectedItem = (CardReader) cbCardReader.getSelectedItem();
-		if(selectedItem == CardReader.SWIPE) {
+		if (selectedItem == CardReader.SWIPE) {
 			chckbxAllowMagneticSwipe.setSelected(true);
 		}
-		else if(selectedItem == CardReader.MANUAL) {
+		else if (selectedItem == CardReader.MANUAL) {
 			chckbxAllowCardManual.setSelected(true);
 		}
-		else if(selectedItem == CardReader.EXTERNAL_TERMINAL) {
+		else if (selectedItem == CardReader.EXTERNAL_TERMINAL) {
 			chckbxAllowExternalTerminal.setSelected(true);
 		}
 	}
-	
+
 	private DefaultComboBoxModel<CardReader> createComboBoxModel(Vector items) {
 		DefaultComboBoxModel model = new DefaultComboBoxModel();
 		for (Object object : items) {
@@ -153,27 +182,27 @@ public class DefaultMerchantGatewayConfigurationView extends ConfigurationView {
 		boolean swipeSupported = chckbxAllowMagneticSwipe.isSelected();
 		boolean manualSupported = chckbxAllowCardManual.isSelected();
 		boolean extSupported = chckbxAllowExternalTerminal.isSelected();
-		
+
 		CardReader currentReader = (CardReader) cbCardReader.getSelectedItem();
 		Vector<CardReader> readers = new Vector<CardReader>(3);
-		
-		if(swipeSupported) {
+
+		if (swipeSupported) {
 			readers.add(CardReader.SWIPE);
 		}
-		
-		if(manualSupported) {
+
+		if (manualSupported) {
 			readers.add(CardReader.MANUAL);
 		}
-		
-		if(extSupported) {
+
+		if (extSupported) {
 			readers.add(CardReader.EXTERNAL_TERMINAL);
 		}
-		
+
 		cbCardReader.setModel(createComboBoxModel(readers));
 		if (readers.contains(currentReader)) {
 			cbCardReader.setSelectedItem(currentReader);
 		}
-		
+
 		if (!swipeSupported && !manualSupported && !extSupported) {
 			cbCardReader.setEnabled(false);
 			//cbGateway.setEnabled(false);
@@ -188,8 +217,8 @@ public class DefaultMerchantGatewayConfigurationView extends ConfigurationView {
 			tfMerchantPass.setEnabled(true);
 			cbSandboxMode.setEnabled(true);
 		}
-		
-		if(swipeSupported || manualSupported) {
+
+		if (swipeSupported || manualSupported) {
 			//cbGateway.setEnabled(true);
 			tfMerchantAccount.setEnabled(true);
 			tfMerchantPass.setEnabled(true);
@@ -208,20 +237,20 @@ public class DefaultMerchantGatewayConfigurationView extends ConfigurationView {
 		CardConfig.setSwipeCardSupported(chckbxAllowMagneticSwipe.isSelected());
 		CardConfig.setManualEntrySupported(chckbxAllowCardManual.isSelected());
 		CardConfig.setExtTerminalSupported(chckbxAllowExternalTerminal.isSelected());
-		
+
 		CardReader cardReader = (CardReader) cbCardReader.getSelectedItem();
 		CardConfig.setCardReader(cardReader);
-		
+
 		CardConfig.setMerchantAccount(tfMerchantAccount.getText());
 		CardConfig.setMerchantPass(new String(tfMerchantPass.getPassword()));
-		
+
 		CardConfig.setSandboxMode(cbSandboxMode.isSelected());
-		
+
 		return true;
 	}
 
 	@Override
 	public String getName() {
-		return "";
+		return ""; //$NON-NLS-1$
 	}
 }
