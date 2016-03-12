@@ -108,7 +108,7 @@ public class DefaultMerchantGatewayConfigurationView extends ConfigurationView {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				String link = "http://www.google.com/url?q=http%3A%2F%2Freseller.authorize.net%2Fapplication%2F%3FresellerId%3D27144&sa=D&sntz=1&usg=AFQjCNGu-ElScUYZf07KHHaFWPP3S2oAQA"; //$NON-NLS-1$
+				String link = "http://reseller.authorize.net/application/?resellerId=27144"; //$NON-NLS-1$
 				try {
 					openBrowser(link);
 				} catch (Exception e1) {
