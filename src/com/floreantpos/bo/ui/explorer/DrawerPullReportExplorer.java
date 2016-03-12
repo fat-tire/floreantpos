@@ -23,7 +23,9 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -33,6 +35,10 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.TableColumnModelEvent;
+import javax.swing.event.TableColumnModelListener;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
@@ -41,9 +47,12 @@ import net.miginfocom.swing.MigLayout;
 
 import org.jdesktop.swingx.JXDatePicker;
 import org.jdesktop.swingx.JXTable;
+import org.jdesktop.swingx.table.TableColumnExt;
+import org.jdesktop.swingx.table.TableColumnModelExt;
 
 import com.floreantpos.POSConstants;
 import com.floreantpos.bo.ui.BOMessageDialog;
+import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.model.DrawerPullReport;
 import com.floreantpos.model.dao.DrawerPullReportDAO;
 import com.floreantpos.model.util.DateUtil;
@@ -58,22 +67,23 @@ public class DrawerPullReportExplorer extends TransparentPanel {
 	private JXDatePicker toDatePicker = UiUtil.getCurrentMonthEnd();
 	private JButton btnGo = new JButton(com.floreantpos.POSConstants.GO);
 	private JButton btnEditActualAmount = new JButton(com.floreantpos.POSConstants.EDIT_ACTUAL_AMOUNT);
-	private JButton btnPrint=new JButton("Print");
-
+	private JButton btnPrint = new JButton("Print");
 	private static SimpleDateFormat dateTimeFormatter = new SimpleDateFormat("dd MMM, yyyy hh:mm a"); //$NON-NLS-1$
-
+	private TableColumnModelExt columnModel;
 	private JXTable table;
 
 	public DrawerPullReportExplorer() {
 		super(new BorderLayout());
-
 		add(new JScrollPane(table = new JXTable(new DrawerPullExplorerTableModel(null))));
 		table.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.setDefaultRenderer(Object.class, new PosTableRenderer());
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		table.setColumnControlVisible(true);
+
 		resizeColumnWidth(table);
 
+		restoreTableColumnsVisibility();
+		addTableColumnListener();
 		JPanel topPanel = new JPanel(new MigLayout());
 
 		topPanel.add(new JLabel(com.floreantpos.POSConstants.FROM), "grow"); //$NON-NLS-1$
@@ -87,9 +97,9 @@ public class DrawerPullReportExplorer extends TransparentPanel {
 		bottomPanel.add(btnEditActualAmount);
 		bottomPanel.add(btnPrint);
 		add(bottomPanel, BorderLayout.SOUTH);
-		
+
 		btnPrint.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				int selectedRow = table.getSelectedRow();
@@ -99,7 +109,7 @@ public class DrawerPullReportExplorer extends TransparentPanel {
 				}
 				DrawerPullExplorerTableModel model = (DrawerPullExplorerTableModel) table.getModel();
 				DrawerPullReport report = (DrawerPullReport) model.getRowData(selectedRow);
-				
+
 				PosPrintService.printDrawerPullReport(report, report.getTerminal());
 			}
 		});
@@ -109,6 +119,7 @@ public class DrawerPullReportExplorer extends TransparentPanel {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					viewReport();
+					resizeColumnWidth(table);
 				} catch (Exception e1) {
 					BOMessageDialog.showError(DrawerPullReportExplorer.this, POSConstants.ERROR_MESSAGE, e1);
 				}
@@ -152,6 +163,20 @@ public class DrawerPullReportExplorer extends TransparentPanel {
 		});
 	}
 
+	private void restoreTableColumnsVisibility() {
+		String recordedSelectedColumns = TerminalConfig.getDrawerPullReportHiddenColumns();
+		TableColumnModelExt columnModel = (TableColumnModelExt) table.getColumnModel();
+
+		if (recordedSelectedColumns.isEmpty()) {
+			return;
+		}
+		String str[] = recordedSelectedColumns.split("\\*");
+		for (int i = 0; i < str.length; i++) {
+			Integer columnIndex = Integer.parseInt(str[i]);
+			columnModel.getColumnExt((columnIndex - i)).setVisible(false);
+		}
+	}
+
 	private void viewReport() {
 		try {
 			Date fromDate = fromDatePicker.getDate();
@@ -161,21 +186,22 @@ public class DrawerPullReportExplorer extends TransparentPanel {
 			toDate = DateUtil.endOfDay(toDate);
 
 			List<DrawerPullReport> list = new DrawerPullReportDAO().findReports(fromDate, toDate);
-			table.setModel(new DrawerPullExplorerTableModel(list));
-			resizeColumnWidth(table);
+			DrawerPullExplorerTableModel model = (DrawerPullExplorerTableModel) table.getModel();
+			model.setRows(list);
 		} catch (Exception e) {
 			BOMessageDialog.showError(this, POSConstants.ERROR_MESSAGE, e);
 		}
 	}
 
 	class DrawerPullExplorerTableModel extends ListTableModel {
-		String[] columnNames = {com.floreantpos.POSConstants.ID ,com.floreantpos.POSConstants.TIME,"TICKET COUNT",  com.floreantpos.POSConstants.DRAWER_PULL_AMOUNT, "USER ID", "TERMINAL ID", "BEGIN CASH","NET SALES",
-				 "SALES TAX","CASH TAX","TOTAL REVENUE", "GROSS RECEIPTS", "GIFT CERT RETURN COUNT", "GIFT CERT RETURN AMOUNT", "GIFT CERT CHARGE AMOUNT", "CASH RECEIPT NO",
-				"CASH RECEIPT AMOUNT", "CREDIT CARD RECEIPT NO", "CREDIT CARD RECEIPT AMOUNT", "DEBIT CARD RECEIPT NO", "DEBIT CARD RECEIPT AMOUNT",
-				"REFUND RECEIPT COUNT", "REFUND AMOUNT", "RECEIPT DIFFERENTIAL", "CASH BACK", "CASH TIPS", "CHARGED TIPS", "TIPS PAID", "TIPS DIFFERENTIAL",
-				"PAY OUT NO", "PAY OUT AMOUNT", "DRAWER BLEED NO", "DRAWER BLEED AMOUNT", com.floreantpos.POSConstants.ACTUAL_AMOUNT,
-				"VARIANCE", "TOTAL VOIDWST", "TOTAL VOID", "TOTAL DISCOUNT COUNT", "TOTAL DISCOUNT AMOUNT", "TOTAL DISCOUNT SALES", "TOTAL DISCOUNT GUEST",
-				"TOTAL DISCOUNT PARTY SIZE", "TOTAL DISCOUNT CHECK SIZE", "TOTAL DISCOUNT PERCENTAGE", "TOTAL DISCOUNT RATIO"};
+		String[] columnNames = { com.floreantpos.POSConstants.ID, com.floreantpos.POSConstants.TIME, "TICKET COUNT",
+				com.floreantpos.POSConstants.DRAWER_PULL_AMOUNT, "USER ID", "TERMINAL ID", "BEGIN CASH", "NET SALES", "SALES TAX", "CASH TAX", "TOTAL REVENUE",
+				"GROSS RECEIPTS", "GIFT CERT RETURN COUNT", "GIFT CERT RETURN AMOUNT", "GIFT CERT CHARGE AMOUNT", "CASH RECEIPT NO", "CASH RECEIPT AMOUNT",
+				"CREDIT CARD RECEIPT NO", "CREDIT CARD RECEIPT AMOUNT", "DEBIT CARD RECEIPT NO", "DEBIT CARD RECEIPT AMOUNT", "REFUND RECEIPT COUNT",
+				"REFUND AMOUNT", "RECEIPT DIFFERENTIAL", "CASH BACK", "CASH TIPS", "CHARGED TIPS", "TIPS PAID", "TIPS DIFFERENTIAL", "PAY OUT NO",
+				"PAY OUT AMOUNT", "DRAWER BLEED NO", "DRAWER BLEED AMOUNT", com.floreantpos.POSConstants.ACTUAL_AMOUNT, "VARIANCE", "TOTAL VOIDWST",
+				"TOTAL VOID", "TOTAL DISCOUNT COUNT", "TOTAL DISCOUNT AMOUNT", "TOTAL DISCOUNT SALES", "TOTAL DISCOUNT GUEST", "TOTAL DISCOUNT PARTY SIZE",
+				"TOTAL DISCOUNT CHECK SIZE", "TOTAL DISCOUNT PERCENTAGE", "TOTAL DISCOUNT RATIO" };
 
 		DrawerPullExplorerTableModel(List<DrawerPullReport> list) {
 			setRows(list);
@@ -189,19 +215,19 @@ public class DrawerPullReportExplorer extends TransparentPanel {
 
 				case 0:
 					return report.getId().toString();
-				
+
 				case 1:
 					return dateTimeFormatter.format(report.getReportTime());
 
 				case 2:
 					return report.getTicketCount();
-			
+
 				case 3:
 					return report.getDrawerAccountable();
 
 				case 4:
 					return report.getAssignedUser().getUserId();
-				
+
 				case 5:
 					return report.getTerminal().getId();
 
@@ -216,7 +242,7 @@ public class DrawerPullReportExplorer extends TransparentPanel {
 
 				case 9:
 					return report.getCashTax();
-					
+
 				case 10:
 					return report.getTotalRevenue();
 
@@ -321,7 +347,7 @@ public class DrawerPullReportExplorer extends TransparentPanel {
 
 				case 44:
 					return report.getTotalDiscountRatio();
-					
+
 			}
 			return null;
 		}
@@ -333,7 +359,6 @@ public class DrawerPullReportExplorer extends TransparentPanel {
 
 			int columnWidthByComponent = getColumnWidthByComponentLenght(table, column);
 			int columnWidthByHeader = getColumnWidthByHeaderLenght(table, column);
-
 			if (columnWidthByComponent > columnWidthByHeader) {
 				columnModel.getColumn(column).setPreferredWidth(columnWidthByComponent);
 			}
@@ -367,5 +392,60 @@ public class DrawerPullReportExplorer extends TransparentPanel {
 			width = Math.max(comp.getPreferredSize().width + 1, width);
 		}
 		return width + 20;
+	}
+
+	private void saveHiddenColumns() {
+		List<TableColumn> columns = columnModel.getColumns(true);
+		List<Integer> indices = new ArrayList<Integer>();
+		for (TableColumn tableColumn : columns) {
+			TableColumnExt c = (TableColumnExt) tableColumn;
+			if (!c.isVisible()) {
+				indices.add(c.getModelIndex());
+			}
+		}
+		saveTableColumnsVisibility(indices);
+	}
+
+	private void saveTableColumnsVisibility(List indices) {
+		String selectedColumns = "";
+		for (Iterator iterator = indices.iterator(); iterator.hasNext();) {
+			String newSelectedColumn = String.valueOf(iterator.next());
+			selectedColumns += newSelectedColumn;
+
+			if (iterator.hasNext()) {
+				selectedColumns += "*";
+			}
+		}
+		TerminalConfig.setDrawerPullReportHiddenColumns(selectedColumns);
+	}
+
+	private void addTableColumnListener() {
+		columnModel = (TableColumnModelExt) table.getColumnModel();
+		columnModel.addColumnModelListener(new TableColumnModelListener() {
+
+			@Override
+			public void columnSelectionChanged(ListSelectionEvent e) {
+			}
+
+			@Override
+			public void columnRemoved(TableColumnModelEvent e) {
+				saveHiddenColumns();
+			}
+
+			@Override
+			public void columnMoved(TableColumnModelEvent e) {
+
+			}
+
+			@Override
+			public void columnMarginChanged(ChangeEvent e) {
+			}
+
+			@Override
+			public void columnAdded(TableColumnModelEvent e) {
+				saveHiddenColumns();
+			}
+		});
+
 	}
 }

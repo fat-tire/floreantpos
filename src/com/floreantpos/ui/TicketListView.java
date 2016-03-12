@@ -24,6 +24,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -31,16 +32,23 @@ import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.Timer;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.TableColumnModelEvent;
+import javax.swing.event.TableColumnModelListener;
+import javax.swing.table.TableColumn;
 
 import net.miginfocom.swing.MigLayout;
 
 import org.jdesktop.swingx.JXTable;
 import org.jdesktop.swingx.table.ColumnControlButton;
+import org.jdesktop.swingx.table.TableColumnExt;
 import org.jdesktop.swingx.table.TableColumnModelExt;
 
 import com.floreantpos.ITicketList;
 import com.floreantpos.Messages;
 import com.floreantpos.POSConstants;
+import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.DataUpdateInfo;
 import com.floreantpos.model.Ticket;
@@ -62,6 +70,7 @@ public class TicketListView extends JPanel implements ITicketList {
 	private PosBlinkButton btnRefresh;
 	private PosButton btnPrevious;
 	private PosButton btnNext;
+	private TableColumnModelExt columnModel;
 
 	private ArrayList<TicketListUpdateListener> ticketUpdateListenerList = new ArrayList();
 
@@ -96,19 +105,71 @@ public class TicketListView extends JPanel implements ITicketList {
 		table.setGridColor(Color.LIGHT_GRAY);
 		table.getTableHeader().setPreferredSize(new Dimension(100, 40));
 
-		TableColumnModelExt columnModel = (TableColumnModelExt) table.getColumnModel();
+		columnModel = (TableColumnModelExt) table.getColumnModel();
 		columnModel.getColumn(0).setPreferredWidth(30);
 		columnModel.getColumn(1).setPreferredWidth(20);
 		columnModel.getColumn(2).setPreferredWidth(100);
 		columnModel.getColumn(3).setPreferredWidth(100);
 
-		//columnModel.getColumnExt(5).setVisible(false);
-		//columnModel.getColumnExt(4).setVisible(false);
-		//columnModel.getColumnExt(3).setVisible(false);
-		//columnModel.getColumnExt(2).setVisible(false);
-		//columnModel.getColumnExt(1).setVisible(false);
-
+		restoreTableColumnsVisibility();
+		addTableColumnListener();
 		createScrollPane();
+	}
+
+	private void addTableColumnListener() {
+
+		columnModel.addColumnModelListener(new TableColumnModelListener() {
+
+			@Override
+			public void columnSelectionChanged(ListSelectionEvent e) {
+			}
+
+			@Override
+			public void columnRemoved(TableColumnModelEvent e) {
+				saveHiddenColumns();
+			}
+
+			@Override
+			public void columnMoved(TableColumnModelEvent e) {
+
+			}
+
+			@Override
+			public void columnMarginChanged(ChangeEvent e) {
+
+			}
+
+			@Override
+			public void columnAdded(TableColumnModelEvent e) {
+				saveHiddenColumns();
+			}
+		});
+	}
+
+	private void restoreTableColumnsVisibility() {
+		String recordedSelectedColumns = TerminalConfig.getTicketListViewHiddenColumns();
+		TableColumnModelExt columnModel = (TableColumnModelExt) table.getColumnModel();
+
+		if (recordedSelectedColumns.isEmpty()) {
+			return;
+		}
+		String str[] = recordedSelectedColumns.split("\\*");
+		for (int i = 0; i < str.length; i++) {
+			Integer columnIndex = Integer.parseInt(str[i]);
+			columnModel.getColumnExt((columnIndex - i)).setVisible(false);
+		}
+	}
+
+	private void saveHiddenColumns() {
+		List<TableColumn> columns = columnModel.getColumns(true);
+		List<Integer> indices = new ArrayList<Integer>();
+		for (TableColumn tableColumn : columns) {
+			TableColumnExt c = (TableColumnExt) tableColumn;
+			if (!c.isVisible()) {
+				indices.add(c.getModelIndex());
+			}
+		}
+		saveTableColumnsVisibility(indices);
 	}
 
 	private void createScrollPane() {
@@ -420,5 +481,19 @@ public class TicketListView extends JPanel implements ITicketList {
 		else {
 			lastUpateCheckTimer.stop();
 		}
+	}
+
+	private void saveTableColumnsVisibility(List indices) {
+
+		String selectedColumns = "";
+		for (Iterator iterator = indices.iterator(); iterator.hasNext();) {
+			String newSelectedColumn = String.valueOf(iterator.next());
+			selectedColumns += newSelectedColumn;
+
+			if (iterator.hasNext()) {
+				selectedColumns += "*";
+			}
+		}
+		TerminalConfig.setTicketListViewHiddenColumns(selectedColumns);
 	}
 }

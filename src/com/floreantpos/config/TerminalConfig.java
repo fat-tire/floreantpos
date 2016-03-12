@@ -314,6 +314,22 @@ public class TerminalConfig {
 		return "27,112,0,25,250"; //$NON-NLS-1$
 	}
 
+	public static String getDrawerPullReportHiddenColumns() {
+		return config.getString("drawerPullReportColumns", "");
+	}
+
+	public static void setDrawerPullReportHiddenColumns(String value) {
+		config.setProperty("drawerPullReportColumns", value);
+	}
+	
+	public static String getTicketListViewHiddenColumns() {
+		return config.getString("listViewColumns", "");
+	}
+
+	public static void setTicketListViewHiddenColumns(String value) {
+		config.setProperty("listViewColumns", value);
+	}
+
 	public static char[] getDrawerControlCodesArray() {
 		String drawerControlCodes = getDefaultDrawerControlCodes();
 		if (StringUtils.isEmpty(drawerControlCodes)) {
@@ -329,7 +345,6 @@ public class TerminalConfig {
 				codes[i] = '0';
 			}
 		}
-
 		return codes;
 	}
 }
