@@ -80,6 +80,8 @@ public class ModifierPriceByOrderTypeDialog extends POSDialog {
 			for (OrderType orderType : orderTypes) {
 				cbOrderTypes.addItem(orderType.getName());
 			}
+			cbOrderTypes.addItem(OrderType.FOR_HERE);
+			cbOrderTypes.addItem(OrderType.TO_GO);
 		}
 
 		setModal(true);
@@ -181,9 +183,9 @@ public class ModifierPriceByOrderTypeDialog extends POSDialog {
 			POSMessageDialog.showError(this, com.floreantpos.POSConstants.PRICE_IS_NOT_VALID_);
 			return false;
 		}
-		
-		if(cbOrderTypes.getSelectedItem()==null){
-			return false; 
+
+		if (cbOrderTypes.getSelectedItem() == null) {
+			return false;
 		}
 
 		Tax tax = (Tax) cbTax.getSelectedItem();

@@ -64,6 +64,7 @@ public class OrderTypeForm extends BeanEditor {
 	private JCheckBox chkShowInLoginScreen;
 	private JCheckBox chkConsolidateItemsInReceipt;
 	private JCheckBox chkHideItemWithEmptyInventory;
+	private JCheckBox chkHasForHereAndToGo;
 
 	OrderType orderType;
 	JList<String> list;
@@ -92,23 +93,24 @@ public class OrderTypeForm extends BeanEditor {
 
 		TransparentPanel generalPanel = new com.floreantpos.swing.TransparentPanel();
 
-		jLabel1 = new JLabel(com.floreantpos.POSConstants.NAME + ":");
+		jLabel1 = new JLabel(com.floreantpos.POSConstants.NAME + ":"); //$NON-NLS-1$
 		tfName = new com.floreantpos.swing.FixedLengthTextField();
 		tfName.setLength(120);
 
 		chkEnabled = new JCheckBox(POSConstants.ENABLED);
-		chkShowTableSelection = new JCheckBox("Show table selection");
-		chkShowGuestSelection = new JCheckBox("Show guest selection");
-		chkShouldPrintToKitchen = new JCheckBox("Print to kitchen");
-		chkCloseOnPaid = new JCheckBox("Close on paid");
-		chkPrepaid = new JCheckBox("Prepaid");
-		chkRequiredCustomerData = new JCheckBox("Require customer data");
-		chkRequiredDeliveryData = new JCheckBox("Require delivery data");
-		chkAssignDriver = new JCheckBox("Assign driver");
-		chkShowItemBarcode = new JCheckBox("Show item barcode");
-		chkShowInLoginScreen = new JCheckBox("Show in login screen");
-		chkConsolidateItemsInReceipt = new JCheckBox("Consolidate items in receipt");
-		chkHideItemWithEmptyInventory = new JCheckBox("Hide item with empty inventory");
+		chkShowTableSelection = new JCheckBox(Messages.getString("OrderTypeForm.1")); //$NON-NLS-1$
+		chkShowGuestSelection = new JCheckBox(Messages.getString("OrderTypeForm.2")); //$NON-NLS-1$
+		chkShouldPrintToKitchen = new JCheckBox(Messages.getString("OrderTypeForm.3")); //$NON-NLS-1$
+		chkCloseOnPaid = new JCheckBox(Messages.getString("OrderTypeForm.4")); //$NON-NLS-1$
+		chkPrepaid = new JCheckBox(Messages.getString("OrderTypeForm.5")); //$NON-NLS-1$
+		chkRequiredCustomerData = new JCheckBox(Messages.getString("OrderTypeForm.6")); //$NON-NLS-1$
+		chkRequiredDeliveryData = new JCheckBox(Messages.getString("OrderTypeForm.7")); //$NON-NLS-1$
+		chkAssignDriver = new JCheckBox(Messages.getString("OrderTypeForm.8")); //$NON-NLS-1$
+		chkShowItemBarcode = new JCheckBox(Messages.getString("OrderTypeForm.9")); //$NON-NLS-1$
+		chkShowInLoginScreen = new JCheckBox(Messages.getString("OrderTypeForm.10")); //$NON-NLS-1$
+		chkConsolidateItemsInReceipt = new JCheckBox(Messages.getString("OrderTypeForm.11")); //$NON-NLS-1$
+		chkHideItemWithEmptyInventory = new JCheckBox(Messages.getString("OrderTypeForm.12")); //$NON-NLS-1$
+		chkHasForHereAndToGo = new JCheckBox(Messages.getString("OrderTypeForm.13")); //$NON-NLS-1$
 
 		generalPanel.setLayout(new MigLayout("", "[87px][327px,grow]", "[19px][][19px][][][21px][15px]")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		generalPanel.add(jLabel1, "cell 0 0,alignx left,aligny center"); //$NON-NLS-1$
@@ -129,6 +131,7 @@ public class OrderTypeForm extends BeanEditor {
 		generalPanel.add(chkShowInLoginScreen, "cell 1 11,alignx left,aligny top"); //$NON-NLS-1$
 		generalPanel.add(chkConsolidateItemsInReceipt, "cell 1 12,alignx left,aligny top"); //$NON-NLS-1$
 		generalPanel.add(chkHideItemWithEmptyInventory, "cell 1 13,alignx left,aligny top"); //$NON-NLS-1$
+		generalPanel.add(chkHasForHereAndToGo, "cell 1 14,alignx left,aligny top"); //$NON-NLS-1$
 
 		add(generalPanel);
 	}
@@ -160,6 +163,7 @@ public class OrderTypeForm extends BeanEditor {
 			chkShowInLoginScreen.setSelected(ordersType.isShowInLoginScreen());
 			chkConsolidateItemsInReceipt.setSelected(ordersType.isConsolidateItemsInReceipt());
 			chkHideItemWithEmptyInventory.setSelected(ordersType.isHideItemWithEmptyInventory());
+			chkHasForHereAndToGo.setSelected(ordersType.isHasForHereAndToGo());
 		}
 	}
 
@@ -189,6 +193,7 @@ public class OrderTypeForm extends BeanEditor {
 		ordersType.setShowInLoginScreen(chkShowInLoginScreen.isSelected());
 		ordersType.setConsolidateItemsInReceipt(chkConsolidateItemsInReceipt.isSelected());
 		ordersType.setHideItemWithEmptyInventory(chkHideItemWithEmptyInventory.isSelected());
+		ordersType.setHasForHereAndToGo(chkHasForHereAndToGo.isSelected());
 
 		return true;
 	}

@@ -37,8 +37,7 @@ import com.floreantpos.ui.dialog.POSDialog;
 
 public class OrderTypeSelectionDialog2 extends POSDialog {
 	Ticket ticket;
-	private OrderType selectedOrderType;
-	private String subOrderType;
+	private String selectedOrderType;
 	private PosButton btnForHere;
 	private PosButton btnToGo;
 
@@ -56,32 +55,28 @@ public class OrderTypeSelectionDialog2 extends POSDialog {
 		JPanel orderTypePanel = new JPanel(new GridLayout(1, 0, 10, 10));
 		orderTypePanel.setBorder(new EmptyBorder(10, 10, 10, 10));
 
-		btnForHere = new PosButton("For Here");
+		btnForHere = new PosButton(OrderType.FOR_HERE);
 		btnForHere.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//selectedOrderType = OrderType.FOR_HERE;
+				selectedOrderType = OrderType.FOR_HERE;
 				setCanceled(false);
 				dispose();
 			}
 		});
-		//orderTypePanel.add(btnForHere);
+		orderTypePanel.add(btnForHere);
 
-		btnToGo = new PosButton("To Go");
+		btnToGo = new PosButton(OrderType.TO_GO);
 		btnToGo.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//selectedOrderType = OrderType.TAKE_OUT;
+				selectedOrderType = OrderType.TO_GO;
 				setCanceled(false);
 				dispose();
 			}
 		});
-		//orderTypePanel.add(btnToGo);
-		
-		/*for(String name: ticket.getType().getOrderSubTypes()) {
-			orderTypePanel.add(new OrderSubTypeButton(name)); 
-		}
-		 */
+		orderTypePanel.add(btnToGo);
+
 		PosButton btnCancel = new PosButton(POSConstants.CANCEL_BUTTON_TEXT);
 		btnCancel.addActionListener(new ActionListener() {
 			@Override
@@ -91,35 +86,16 @@ public class OrderTypeSelectionDialog2 extends POSDialog {
 			}
 		});
 
-		JPanel actionPanel = new JPanel(new MigLayout("fill"));
-		actionPanel.add(btnCancel, "growx, span");
+		JPanel actionPanel = new JPanel(new MigLayout("fill")); //$NON-NLS-1$
+		actionPanel.add(btnCancel, "growx, span"); //$NON-NLS-1$
 
 		add(orderTypePanel);
 		add(actionPanel, BorderLayout.SOUTH);
 
 		setSize(400, 250);
 	}
-	
-	private class OrderSubTypeButton extends PosButton  implements ActionListener{
-		String name; 
-		public OrderSubTypeButton(String name) {
-			this.name=name; 
-			setText(name); 
-		}
-		
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			subOrderType = name;
-			setCanceled(false);
-			dispose();
-		}
-	}
 
-	public OrderType getSelectedOrderType() {
+	public String getSelectedOrderType() {
 		return selectedOrderType;
-	}
-	
-	public String getSelectedSubOrderType() {
-		return subOrderType; 
 	}
 }

@@ -6,6 +6,8 @@ public class OrderType extends BaseOrderType {
 	private static final long serialVersionUID = 1L;
 
 	public static final String BAR_TAB = "BAR_TAB";
+	public static final String FOR_HERE="FOR HERE"; 
+	public static final String TO_GO="TO GO"; 
 
 	public OrderType() {
 		super();

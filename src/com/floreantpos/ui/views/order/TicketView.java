@@ -242,19 +242,16 @@ public class TicketView extends JPanel {
 		btnTotal.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				List<String> subOrderTypes = ticket.getType().getOrderSubTypes();
-				if (subOrderTypes.size() > 0) {
+				if (ticket.getType().isHasForHereAndToGo()) {
 					OrderTypeSelectionDialog2 dialog = new OrderTypeSelectionDialog2(ticket);
 					dialog.open();
 
 					if (dialog.isCanceled()) {
 						return;
 					}
-					//OrderType orderType = dialog.getSelectedOrderType();
-					String subOrderType = dialog.getSelectedSubOrderType();
-					if (subOrderType != null) {
-						//ticket.setType(orderType);
-						ticket.updateTicketItemPriceByOrderType(subOrderType);
+					String orderType = dialog.getSelectedOrderType();
+					if (orderType != null) {
+						ticket.updateTicketItemPriceByOrderType(orderType);
 						updateModel();
 						updateView();
 					}

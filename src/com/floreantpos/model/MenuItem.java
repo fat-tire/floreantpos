@@ -349,6 +349,23 @@ public class MenuItem extends BaseMenuItem {
 			return defaultPrice;
 		}
 	}
+	
+	public double getPriceByOrderType(String typeName) {
+		double defaultPrice = this.getPrice(Application.getInstance().getCurrentShift());
+		if (typeName == null) {
+			return defaultPrice;
+		}
+
+		String priceProp = getProperty(getStringWithUnderScore(typeName, "_PRICE")); //$NON-NLS-1$
+		if (priceProp == null)
+			return defaultPrice;
+
+		try {
+			return Double.parseDouble(priceProp);
+		} catch (Exception e) {
+			return defaultPrice;
+		}
+	}
 
 	public double getTaxByOrderType(OrderType type) {
 		if (this.getTax() == null) {
@@ -360,6 +377,26 @@ public class MenuItem extends BaseMenuItem {
 		}
 
 		String taxProp = getProperty(getStringWithUnderScore(type.name(), "_TAX")); //$NON-NLS-1$
+		if (taxProp == null)
+			return defaultTax;
+
+		try {
+			return Double.parseDouble(taxProp);
+		} catch (Exception e) {
+			return defaultTax;
+		}
+	}
+	
+	public double getTaxByOrderType(String typeName) {
+		if (this.getTax() == null) {
+			return 0;
+		}
+		double defaultTax = this.getTax().getRate();
+		if (typeName == null) {
+			return defaultTax;
+		}
+
+		String taxProp = getProperty(getStringWithUnderScore(typeName, "_TAX")); //$NON-NLS-1$
 		if (taxProp == null)
 			return defaultTax;
 

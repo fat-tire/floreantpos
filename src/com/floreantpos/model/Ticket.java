@@ -295,8 +295,8 @@ public class Ticket extends BaseTicket {
 			Integer itemId = Integer.parseInt(ticketItem.getItemId().toString());
 			MenuItem menuItem = MenuItemDAO.getInstance().initialize(MenuItemDAO.getInstance().get(itemId));
 			if (menuItem != null) {
-				ticketItem.setUnitPrice(menuItem.getPriceByOrderType(getType()));
-				ticketItem.setTaxRate(menuItem.getTaxByOrderType(getType()));
+				ticketItem.setUnitPrice(menuItem.getPriceByOrderType(name));
+				ticketItem.setTaxRate(menuItem.getTaxByOrderType(name));
 			}
 		}
 	}

@@ -77,6 +77,8 @@ public class MenuItemPriceByOrderTypeDialog extends POSDialog {
 			for (OrderType orderType : orderTypes) {
 				cbOrderTypes.addItem(orderType.getName());
 			}
+			cbOrderTypes.addItem(OrderType.FOR_HERE);
+			cbOrderTypes.addItem(OrderType.TO_GO);
 		}
 
 		setModal(true);

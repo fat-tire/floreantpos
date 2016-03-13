@@ -22,6 +22,7 @@ public abstract class BaseOrderType  implements Comparable, Serializable {
 	public static String PROP_SHOULD_PRINT_TO_KITCHEN = "shouldPrintToKitchen";
 	public static String PROP_REQUIRED_DELIVERY_DATA = "requiredDeliveryData";
 	public static String PROP_SHOW_ITEM_BARCODE = "showItemBarcode";
+	public static String PROP_HAS_FOR_HERE_AND_TO_GO = "hasForHereAndToGo";
 	public static String PROP_ENABLED = "enabled";
 	public static String PROP_NAME = "name";
 	public static String PROP_SHOW_IN_LOGIN_SCREEN = "showInLoginScreen";
@@ -82,6 +83,7 @@ public abstract class BaseOrderType  implements Comparable, Serializable {
 		protected java.lang.Boolean showInLoginScreen;
 		protected java.lang.Boolean consolidateItemsInReceipt;
 		protected java.lang.Boolean hideItemWithEmptyInventory;
+		protected java.lang.Boolean hasForHereAndToGo;
 
 	// collections
 	private java.util.List<String> orderSubTypes;
@@ -344,6 +346,23 @@ public abstract class BaseOrderType  implements Comparable, Serializable {
 	 */
 	public void setHideItemWithEmptyInventory (java.lang.Boolean hideItemWithEmptyInventory) {
 		this.hideItemWithEmptyInventory = hideItemWithEmptyInventory;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: HAS_FORHERE_AND_TOGO
+	 */
+	public java.lang.Boolean isHasForHereAndToGo () {
+								return hasForHereAndToGo == null ? Boolean.FALSE : hasForHereAndToGo;
+					}
+
+	/**
+	 * Set the value related to the column: HAS_FORHERE_AND_TOGO
+	 * @param hasForHereAndToGo the HAS_FORHERE_AND_TOGO value
+	 */
+	public void setHasForHereAndToGo (java.lang.Boolean hasForHereAndToGo) {
+		this.hasForHereAndToGo = hasForHereAndToGo;
 	}
 
 
