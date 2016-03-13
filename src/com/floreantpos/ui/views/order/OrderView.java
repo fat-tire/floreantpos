@@ -326,7 +326,7 @@ public class OrderView extends ViewPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (currentTicket.getType().isShowTableSelection() && currentTicket.getType().isRequiredCustomerData()//fix
+				if (currentTicket.getOrderType().isShowTableSelection() && currentTicket.getOrderType().isRequiredCustomerData()//fix
 						&& !Application.getCurrentUser().hasPermission(UserPermission.HOLD_TICKET)) {
 					//
 
@@ -394,7 +394,7 @@ public class OrderView extends ViewPanel {
 
 			Ticket thisTicket = currentTicket;
 
-			TableSelectorDialog dialog = TableSelectorFactory.createTableSelectorDialog(thisTicket.getType());
+			TableSelectorDialog dialog = TableSelectorFactory.createTableSelectorDialog(thisTicket.getOrderType());
 			dialog.setCreateNewTicket(false);
 			if (thisTicket != null) {
 				dialog.setTicket(thisTicket);
@@ -578,7 +578,7 @@ public class OrderView extends ViewPanel {
 	public void actionUpdate() {
 
 		if (currentTicket != null) {
-			OrderType type = currentTicket.getType();
+			OrderType type = currentTicket.getOrderType();
 
 			if (type.isPrepaid()) {
 				btnDone.setVisible(false);

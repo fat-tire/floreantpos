@@ -113,7 +113,7 @@ public class KitchenTicket extends BaseKitchenTicket {
 				continue;
 			}
 
-			List<Printer> printers = ticketItem.getPrinters(ticket.getType());
+			List<Printer> printers = ticketItem.getPrinters(ticket.getOrderType());
 			if (printers == null) {
 				continue;
 			}

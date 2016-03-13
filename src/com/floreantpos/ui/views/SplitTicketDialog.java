@@ -304,7 +304,7 @@ public class SplitTicketDialog extends POSDialog {
 		if (!view.isVisible())
 			return;
 
-		view.getTicket().setType(mainTicketView.getTicket().getType());
+		view.getTicket().setOrderType(mainTicketView.getTicket().getOrderType());
 		view.updateModel();
 
 		Ticket ticket = view.getTicket();

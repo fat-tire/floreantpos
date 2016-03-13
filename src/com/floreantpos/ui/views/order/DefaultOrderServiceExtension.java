@@ -72,7 +72,7 @@ public class DefaultOrderServiceExtension implements OrderServiceExtension {
 
 		Ticket ticket = new Ticket();
 		ticket.setPriceIncludesTax(application.isPriceIncludesTax());
-		ticket.setType(ticketType);
+		ticket.setOrderType(ticketType);
 		ticket.setNumberOfGuests(numberOfGuests);
 		ticket.setCustomer(customer);
 		ticket.setTerminal(application.getTerminal());

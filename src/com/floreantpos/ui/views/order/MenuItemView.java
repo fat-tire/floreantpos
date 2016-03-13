@@ -128,7 +128,7 @@ public class MenuItemView extends SelectionView {
 	}
 	
 	private void filterItemsByOrderType(List<MenuItem> items) {
-		String orderType = OrderView.getInstance().getTicketView().getTicket().getType().toString();
+		String orderType = OrderView.getInstance().getTicketView().getTicket().getOrderType().toString();
 		for (Iterator iterator = items.iterator(); iterator.hasNext();) {
 			MenuItem menuItem = (MenuItem) iterator.next();
 			List<String> orderTypeList = menuItem.getOrderTypes();

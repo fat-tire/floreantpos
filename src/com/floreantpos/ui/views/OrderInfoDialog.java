@@ -182,7 +182,7 @@ public class OrderInfoDialog extends POSDialog {
 	private void createReOrder(Ticket oldticket) {
 		Ticket ticket = new Ticket();
 		ticket.setPriceIncludesTax(oldticket.isPriceIncludesTax());
-		ticket.setType(oldticket.getType());
+		ticket.setOrderType(oldticket.getOrderType());
 		ticket.setTerminal(Application.getInstance().getTerminal());
 		ticket.setOwner(Application.getCurrentUser());
 		ticket.setShift(Application.getInstance().getCurrentShift());

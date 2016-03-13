@@ -398,7 +398,7 @@ public class TicketListView extends JPanel implements ITicketList {
 					return ticket.getDeliveryDate();
 
 				case 6:
-					return ticket.getType();
+					return ticket.getOrderType();
 
 				case 7:
 					String status = ""; //$NON-NLS-1$

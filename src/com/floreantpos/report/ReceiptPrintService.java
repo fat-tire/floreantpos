@@ -447,7 +447,7 @@ public class ReceiptPrintService {
 		ticketHeaderBuilder.append("<html>"); //$NON-NLS-1$
 
 		beginRow(ticketHeaderBuilder);
-		addColumn(ticketHeaderBuilder, "*" + ticket.getType() + "*"); //$NON-NLS-1$ //$NON-NLS-2$
+		addColumn(ticketHeaderBuilder, "*" + ticket.getOrderType() + "*"); //$NON-NLS-1$ //$NON-NLS-2$
 		endRow(ticketHeaderBuilder);
 
 		beginRow(ticketHeaderBuilder);
@@ -458,7 +458,7 @@ public class ReceiptPrintService {
 		addColumn(ticketHeaderBuilder, POSConstants.RECEIPT_REPORT_TICKET_NO_LABEL + ticket.getId());
 		endRow(ticketHeaderBuilder);
 
-		OrderType orderType=ticket.getType(); 
+		OrderType orderType=ticket.getOrderType(); 
 		if (orderType.isShowTableSelection() || orderType.isShowGuestSelection()) {//fix
 			beginRow(ticketHeaderBuilder);
 			addColumn(ticketHeaderBuilder, POSConstants.RECEIPT_REPORT_TABLE_NO_LABEL + ticket.getTableNumbers());

@@ -211,11 +211,11 @@ public class TicketItem extends BaseTicketItem implements ITicketItem {
 		ticketItemModifier.setName(menuModifier.getDisplayName());
 
 		//ticketItemModifier.setUnitPrice(menuModifier.getExtraPrice());
-		ticketItemModifier.setUnitPrice(menuModifier.getExtraPriceByOrderType(this.getTicket().getType()));
+		ticketItemModifier.setUnitPrice(menuModifier.getExtraPriceByOrderType(this.getTicket().getOrderType()));
 
 		ticketItemModifier.setModifierType(TicketItemModifier.EXTRA_MODIFIER);
 		//ticketItemModifier.setTaxRate(menuModifier.getTax() == null ? 0 : menuModifier.getTax().getRate());
-		ticketItemModifier.setTaxRate(menuModifier.getExtraTaxByOrderType(this.getTicket().getType()));
+		ticketItemModifier.setTaxRate(menuModifier.getExtraTaxByOrderType(this.getTicket().getOrderType()));
 		ticketItemModifier.setShouldPrintToKitchen(menuModifier.isShouldPrintToKitchen());
 		ticketItemModifier.setTicketItem(this);
 

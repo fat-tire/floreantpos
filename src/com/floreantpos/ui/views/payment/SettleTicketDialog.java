@@ -123,7 +123,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 		super();
 		this.ticket = ticket;
 
-		if (ticket.getType().isConsolidateItemsInReceipt()) {
+		if (ticket.getOrderType().isConsolidateItemsInReceipt()) {
 			consolidateTicketItems();
 		}
 
@@ -413,7 +413,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 			this.paymentType = paymentType;
 			tenderAmount = paymentView.getTenderedAmount();
 
-			if (ticket.getType().name() == OrderType.BAR_TAB) { //fix
+			if (ticket.getOrderType().name() == OrderType.BAR_TAB) { //fix
 				doSettleBarTabTicket(ticket);
 				return;
 			}
@@ -667,7 +667,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 
 	public static void printTicket(Ticket ticket, PosTransaction transaction) {
 		try {
-			if (ticket.getType().isShouldPrintToKitchen()) {
+			if (ticket.getOrderType().isShouldPrintToKitchen()) {
 				if (ticket.needsKitchenPrint()) {
 					ReceiptPrintService.printToKitchen(ticket);
 				}

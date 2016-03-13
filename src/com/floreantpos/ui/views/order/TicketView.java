@@ -242,7 +242,7 @@ public class TicketView extends JPanel {
 		btnTotal.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (ticket.getType().isHasForHereAndToGo()) {
+				if (ticket.getOrderType().isHasForHereAndToGo()) {
 					OrderTypeSelectionDialog2 dialog = new OrderTypeSelectionDialog2(ticket);
 					dialog.open();
 
@@ -327,7 +327,7 @@ public class TicketView extends JPanel {
 
 	public synchronized void sendTicketToKitchen() {// GEN-FIRST:event_doFinishOrder
 		saveTicketIfNeeded();
-		if (ticket.getType().isShouldPrintToKitchen()) {
+		if (ticket.getOrderType().isShouldPrintToKitchen()) {
 			if (ticket.needsKitchenPrint()) {
 				ReceiptPrintService.printToKitchen(ticket);
 				TicketDAO.getInstance().refresh(ticket);

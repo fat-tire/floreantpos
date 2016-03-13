@@ -84,7 +84,7 @@ public class PosTransactionService {
 
 			ticket.addTotransactions(transaction);
 
-			if (ticket.getType().getName() == OrderType.BAR_TAB) {
+			if (ticket.getOrderType().getName() == OrderType.BAR_TAB) {
 				ticket.removeProperty(Ticket.PROPERTY_PAYMENT_METHOD);
 				ticket.removeProperty(Ticket.PROPERTY_CARD_NAME);
 				ticket.removeProperty(Ticket.PROPERTY_CARD_TRANSACTION_ID);
@@ -157,7 +157,7 @@ public class PosTransactionService {
 	}
 
 	private void closeTicketIfApplicable(Ticket ticket, Date currentDate) {
-		OrderType ticketType = ticket.getType();
+		OrderType ticketType = ticket.getOrderType();
 		
 		if (ticketType.isCloseOnPaid()) {//fix
 			ticket.setClosed(true);

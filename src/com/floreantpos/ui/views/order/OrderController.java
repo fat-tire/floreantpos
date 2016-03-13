@@ -90,7 +90,7 @@ public class OrderController implements OrderListener, CategorySelectionListener
 			}
 		}
 
-		TicketItem ticketItem = menuItem.convertToTicketItem(orderView.getTicketView().getTicket().getType(), itemQuantity);
+		TicketItem ticketItem = menuItem.convertToTicketItem(orderView.getTicketView().getTicket().getOrderType(), itemQuantity);
 		ticketItem.setTicket(orderView.getTicketView().getTicket());
 
 		if (menuItem.hasMandatoryModifiers()) {
@@ -251,7 +251,7 @@ public class OrderController implements OrderListener, CategorySelectionListener
 	}
 
 	public synchronized static void closeOrder(Ticket ticket) {
-		if (ticket.getType().isCloseOnPaid()) {
+		if (ticket.getOrderType().isCloseOnPaid()) {
 			ticket.setClosed(true);
 			ticket.setClosingDate(new Date());
 		}

@@ -51,7 +51,7 @@ public class MercuryPayProcessor implements CardProcessor {
 	public void authorizeAmount(PosTransaction transaction) throws Exception {
 		Ticket ticket = transaction.getTicket();
 		
-		if(ticket.getType().name() == OrderType.BAR_TAB && ticket.hasProperty("AcqRefData")) { //$NON-NLS-1$ //fix
+		if(ticket.getOrderType().name() == OrderType.BAR_TAB && ticket.hasProperty("AcqRefData")) { //$NON-NLS-1$ //fix
 			captureAuthorizedAmount(transaction);
 			return;
 		}
