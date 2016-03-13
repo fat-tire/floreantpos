@@ -170,6 +170,7 @@ public class RootView extends com.floreantpos.swing.TransparentPanel {
 			}
 			else {
 				try {
+					homeView = OrderView.getInstance();
 					OrderServiceFactory.getOrderService().createNewTicket(orderType, null);
 				} catch (TicketAlreadyExistsException e1) {
 				}
