@@ -148,7 +148,7 @@ public class KitchenTicket extends BaseKitchenTicket {
 				KitchenTicketItem item = new KitchenTicketItem();
 				item.setMenuItemCode(ticketItem.getItemCode());
 				item.setMenuItemName(ticketItem.getNameDisplay());
-				item.setQuantity(ticketItem.getItemCountDisplay());
+				item.setQuantity(ticketItem.getItemCount());
 				item.setStatus(KitchenTicketStatus.WAITING.name());
 
 				kitchenTicket.addToticketItems(item);
@@ -177,7 +177,6 @@ public class KitchenTicket extends BaseKitchenTicket {
 				KitchenTicketItem item = new KitchenTicketItem();
 				item.setCookable(false);
 				item.setMenuItemName(ticketItemCookingInstruction.getNameDisplay());
-				item.setQuantity(ticketItemCookingInstruction.getItemCountDisplay());
 				kitchenTicket.addToticketItems(item);
 			}
 		}
@@ -204,7 +203,7 @@ public class KitchenTicket extends BaseKitchenTicket {
 						KitchenTicketItem item = new KitchenTicketItem();
 						item.setMenuItemCode(""); //$NON-NLS-1$
 						item.setMenuItemName(itemModifier.getNameDisplay());
-						item.setQuantity(itemModifier.getItemCountDisplay());
+						item.setQuantity(itemModifier.getItemCount());
 						item.setStatus(KitchenTicketStatus.WAITING.name());
 						kitchenTicket.addToticketItems(item);
 
@@ -227,7 +226,7 @@ public class KitchenTicket extends BaseKitchenTicket {
 				KitchenTicketItem item = new KitchenTicketItem();
 				item.setMenuItemCode(""); //$NON-NLS-1$
 				item.setMenuItemName(ticketItemModifier.getNameDisplay());
-				item.setQuantity(ticketItemModifier.getItemCountDisplay());
+				item.setQuantity(ticketItemModifier.getItemCount());
 				item.setStatus(KitchenTicketStatus.WAITING.name());
 				kitchenTicket.addToticketItems(item);
 

@@ -93,7 +93,7 @@ public class TicketItemDiscount extends BaseTicketItemDiscount implements ITicke
 	}
 
 	@Override
-	public Integer getItemCountDisplay() {
+	public String getItemQuantityDisplay() {
 		return null;
 	}
 

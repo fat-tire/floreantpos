@@ -55,13 +55,7 @@ public class TicketDataSource extends AbstractReportDataSource {
 				return item.getNameDisplay();
 
 			case 1:
-				Integer itemCountDisplay = item.getItemCountDisplay();
-				
-				if(itemCountDisplay == null) {
-					return null;
-				}
-				
-				return String.valueOf(itemCountDisplay);
+				return item.getItemQuantityDisplay();
 
 			case 2:
 				Double total = item.getSubTotalAmountWithoutModifiersDisplay();

@@ -31,7 +31,7 @@ public interface ITicketItem {
 
 	Double getUnitPriceDisplay();
 
-	Integer getItemCountDisplay();
+	String getItemQuantityDisplay();
 
 	Double getTaxAmountWithoutModifiersDisplay();
 

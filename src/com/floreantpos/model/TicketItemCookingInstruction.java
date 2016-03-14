@@ -61,7 +61,7 @@ public class TicketItemCookingInstruction extends BaseTicketItemCookingInstructi
 	}
 
 	@Override
-	public Integer getItemCountDisplay() {
+	public String getItemQuantityDisplay() {
 		return null;
 	}
 

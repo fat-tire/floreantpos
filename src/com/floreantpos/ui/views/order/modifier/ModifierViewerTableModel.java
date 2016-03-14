@@ -82,7 +82,7 @@ public class ModifierViewerTableModel extends AbstractTableModel {
 				return ticketItem.getUnitPriceDisplay();
 
 			case 2:
-				return ticketItem.getItemCountDisplay();
+				return ticketItem.getItemQuantityDisplay();
 
 			case 3:
 				return ticketItem.getSubTotalAmountWithoutModifiersDisplay();

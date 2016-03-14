@@ -110,7 +110,7 @@ public class TicketViewerTableModel extends AbstractTableModel {
 					return tItem.getItemQuantity();
 				}
 				else {
-					return ticketItem.getItemCountDisplay();
+					return ticketItem.getItemQuantityDisplay();
 				}
 
 			case 3:

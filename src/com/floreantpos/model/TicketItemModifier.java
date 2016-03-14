@@ -148,8 +148,8 @@ public class TicketItemModifier extends BaseTicketItemModifier implements ITicke
 	}
 
 	@Override
-	public Integer getItemCountDisplay() {
-		return getItemCount();
+	public String getItemQuantityDisplay() {
+		return String.valueOf(getItemCount());
 	}
 
 	@Override

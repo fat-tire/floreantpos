@@ -516,8 +516,12 @@ public class TicketItem extends BaseTicketItem implements ITicketItem {
 	}
 
 	@Override
-	public Integer getItemCountDisplay() {
-		return getItemCount();
+	public String getItemQuantityDisplay() {
+		if(isFractionalUnit()) {
+			return String.valueOf(getItemQuantity());
+		}
+		
+		return String.valueOf(getItemCount());
 	}
 
 	@Override

@@ -602,7 +602,7 @@ public class TicketView extends JPanel {
 		else {
 			ticketItems = item.getNameDisplay();
 		}
-		int quantity = item.getItemCountDisplay();
+		String quantity = item.getItemQuantityDisplay();
 		double itemPrice = item.getUnitPriceDisplay();
 
 		String line = String.format("%-1s %-12s %4s", quantity, ticketItems, itemPrice);
