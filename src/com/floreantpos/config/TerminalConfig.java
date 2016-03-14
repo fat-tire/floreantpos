@@ -261,7 +261,7 @@ public class TerminalConfig {
 	}
 
 	public static String getOrderTypeFilter() {
-		return config.getString(ORDER_TYPE_FILTER);
+		return config.getString(ORDER_TYPE_FILTER, "ALL");
 	}
 
 	public static void setOrderTypeFilter(String filter) {
