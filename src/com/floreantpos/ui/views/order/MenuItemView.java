@@ -89,7 +89,6 @@ public class MenuItemView extends SelectionView {
 		try {
 			List<MenuItem> items = dao.findByParent(Application.getInstance().getTerminal(), menuGroup, false);
 			filterItemsByOrderType(items);
-
 			setItems(items);
 		} catch (PosException e) {
 			e.printStackTrace();
@@ -103,6 +102,7 @@ public class MenuItemView extends SelectionView {
 		ItemButton itemButton = new ItemButton(menuItem);
 		menuItemButtonMap.put(menuItem.getId(), itemButton);
 
+		filterByStockAmount(menuItem, itemButton);
 		return itemButton;
 	}
 
@@ -126,7 +126,7 @@ public class MenuItemView extends SelectionView {
 			button.requestFocus();
 		}*/
 	}
-	
+
 	private void filterItemsByOrderType(List<MenuItem> items) {
 		String orderType = OrderView.getInstance().getTicketView().getTicket().getOrderType().toString();
 		for (Iterator iterator = items.iterator(); iterator.hasNext();) {
@@ -143,7 +143,13 @@ public class MenuItemView extends SelectionView {
 		}
 	}
 
-	private class ItemButton extends PosButton implements ActionListener, MouseListener {
+	private void filterByStockAmount(MenuItem menuItem, ItemButton itemButton) {
+		if (menuItem.isDisableWhenStockAmountIsZero() && menuItem.getStockAmount() <= 0) {
+			itemButton.setEnabled(false);
+		}
+	}
+
+	public class ItemButton extends PosButton implements ActionListener, MouseListener {
 		private static final int BUTTON_SIZE = 100;
 		MenuItem foodItem;
 

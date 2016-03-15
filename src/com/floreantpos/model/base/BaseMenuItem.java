@@ -18,6 +18,7 @@ public abstract class BaseMenuItem  implements Comparable, Serializable {
 	public static String REF = "MenuItem";
 	public static String PROP_UNIT_NAME = "unitName";
 	public static String PROP_BUY_PRICE = "buyPrice";
+	public static String PROP_STOCK_AMOUNT = "stockAmount";
 	public static String PROP_PARENT = "parent";
 	public static String PROP_BARCODE = "barcode";
 	public static String PROP_DESCRIPTION = "description";
@@ -31,6 +32,7 @@ public abstract class BaseMenuItem  implements Comparable, Serializable {
 	public static String PROP_NAME = "name";
 	public static String PROP_PRINTER_GROUP = "printerGroup";
 	public static String PROP_TEXT_COLOR_CODE = "textColorCode";
+	public static String PROP_DISABLE_WHEN_STOCK_AMOUNT_IS_ZERO = "disableWhenStockAmountIsZero";
 	public static String PROP_RECEPIE = "recepie";
 	public static String PROP_PRICE = "price";
 	public static String PROP_BUTTON_COLOR_CODE = "buttonColorCode";
@@ -83,9 +85,11 @@ public abstract class BaseMenuItem  implements Comparable, Serializable {
 		protected java.lang.String translatedName;
 		protected java.lang.String barcode;
 		protected java.lang.Double buyPrice;
+		protected java.lang.Double stockAmount;
 		protected java.lang.Double price;
 		protected java.lang.Double discountRate;
 		protected java.lang.Boolean visible;
+		protected java.lang.Boolean disableWhenStockAmountIsZero;
 		protected java.lang.Integer sortOrder;
 		protected java.lang.Integer buttonColorCode;
 		protected java.lang.Integer textColorCode;
@@ -234,6 +238,23 @@ public abstract class BaseMenuItem  implements Comparable, Serializable {
 
 
 	/**
+	 * Return the value associated with the column: STOCK_AMOUNT
+	 */
+	public java.lang.Double getStockAmount () {
+									return stockAmount == null ? Double.valueOf(0) : stockAmount;
+					}
+
+	/**
+	 * Set the value related to the column: STOCK_AMOUNT
+	 * @param stockAmount the STOCK_AMOUNT value
+	 */
+	public void setStockAmount (java.lang.Double stockAmount) {
+		this.stockAmount = stockAmount;
+	}
+
+
+
+	/**
 	 * Return the value associated with the column: PRICE
 	 */
 	public java.lang.Double getPrice () {
@@ -288,6 +309,30 @@ public abstract class BaseMenuItem  implements Comparable, Serializable {
 	 */
 	public static String getVisibleDefaultValue () {
 		return "true";
+	}
+
+
+	/**
+	 * Return the value associated with the column: DISABLE_WHEN_STOCK_AMOUNT_IS_ZERO
+	 */
+	public java.lang.Boolean isDisableWhenStockAmountIsZero () {
+									return disableWhenStockAmountIsZero == null ? Boolean.valueOf(false) : disableWhenStockAmountIsZero;
+						}
+
+	/**
+	 * Set the value related to the column: DISABLE_WHEN_STOCK_AMOUNT_IS_ZERO
+	 * @param disableWhenStockAmountIsZero the DISABLE_WHEN_STOCK_AMOUNT_IS_ZERO value
+	 */
+	public void setDisableWhenStockAmountIsZero (java.lang.Boolean disableWhenStockAmountIsZero) {
+		this.disableWhenStockAmountIsZero = disableWhenStockAmountIsZero;
+	}
+
+
+	/**
+	 * Custom property
+	 */
+	public static String getDisableWhenStockAmountIsZeroDefaultValue () {
+		return "false";
 	}
 
 

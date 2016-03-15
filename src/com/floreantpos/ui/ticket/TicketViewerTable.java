@@ -19,6 +19,8 @@ package com.floreantpos.ui.ticket;
 
 import java.awt.Color;
 import java.awt.Rectangle;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.DefaultListSelectionModel;
 import javax.swing.JTable;
@@ -311,5 +313,27 @@ public class TicketViewerTable extends JTable {
 
 	public TicketViewerTableModel getModel() {
 		return model;
+	}
+
+	private List<TicketItem> getRowByValue(TicketViewerTableModel model) {
+
+		List<TicketItem> ticketItems = new ArrayList();
+		for (int i = 0; i <= model.getRowCount(); i++) {
+			Object value = model.get(i);
+			if (value instanceof TicketItem) {
+				TicketItem ticketItem = (TicketItem) value;
+				ticketItems.add(ticketItem);
+			}
+
+		}
+		return ticketItems;
+	}
+
+	public List<TicketItem> getTicketItems() {
+		return getRowByValue(model);
+	}
+
+	public TicketItem getTicketItem() {
+		return (TicketItem) getSelected();
 	}
 }

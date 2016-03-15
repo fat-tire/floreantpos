@@ -26,6 +26,7 @@ public abstract class BaseTicketItem  implements Comparable, Serializable {
 	public static String PROP_TICKET = "ticket";
 	public static String PROP_INVENTORY_HANDLED = "inventoryHandled";
 	public static String PROP_HAS_MODIFIERS = "hasModifiers";
+	public static String PROP_STOCK_AMOUNT_ADJUSTED = "stockAmountAdjusted";
 	public static String PROP_TOTAL_AMOUNT_WITHOUT_MODIFIERS = "totalAmountWithoutModifiers";
 	public static String PROP_ITEM_QUANTITY = "itemQuantity";
 	public static String PROP_ITEM_ID = "itemId";
@@ -36,8 +37,8 @@ public abstract class BaseTicketItem  implements Comparable, Serializable {
 	public static String PROP_TAX_AMOUNT = "taxAmount";
 	public static String PROP_FRACTIONAL_UNIT = "fractionalUnit";
 	public static String PROP_NAME = "name";
-	public static String PROP_PRINTED_TO_KITCHEN = "printedToKitchen";
 	public static String PROP_PRINTER_GROUP = "printerGroup";
+	public static String PROP_PRINTED_TO_KITCHEN = "printedToKitchen";
 	public static String PROP_SUBTOTAL_AMOUNT = "subtotalAmount";
 	public static String PROP_TAX_AMOUNT_WITHOUT_MODIFIERS = "taxAmountWithoutModifiers";
 	public static String PROP_ID = "id";
@@ -102,6 +103,7 @@ public abstract class BaseTicketItem  implements Comparable, Serializable {
 		protected java.lang.Boolean fractionalUnit;
 		protected java.lang.Boolean hasModifiers;
 		protected java.lang.Boolean printedToKitchen;
+		protected java.lang.Boolean stockAmountAdjusted;
 
 	// many to one
 	private com.floreantpos.model.Ticket ticket;
@@ -514,6 +516,23 @@ public abstract class BaseTicketItem  implements Comparable, Serializable {
 	 */
 	public void setPrintedToKitchen (java.lang.Boolean printedToKitchen) {
 		this.printedToKitchen = printedToKitchen;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: STOCK_AMOUNT_ADJUSTED
+	 */
+	public java.lang.Boolean isStockAmountAdjusted () {
+								return stockAmountAdjusted == null ? Boolean.FALSE : stockAmountAdjusted;
+					}
+
+	/**
+	 * Set the value related to the column: STOCK_AMOUNT_ADJUSTED
+	 * @param stockAmountAdjusted the STOCK_AMOUNT_ADJUSTED value
+	 */
+	public void setStockAmountAdjusted (java.lang.Boolean stockAmountAdjusted) {
+		this.stockAmountAdjusted = stockAmountAdjusted;
 	}
 
 

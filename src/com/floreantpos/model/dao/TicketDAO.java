@@ -83,17 +83,7 @@ public class TicketDAO extends BaseTicketDAO {
 			session = createNewSession();
 			tx = session.beginTransaction();
 
-			adjustInventoryItems(session, ticket);
-
-			ticket.setActiveDate(Calendar.getInstance().getTime());
-
-			session.saveOrUpdate(ticket);
-
-			ticket.clearDeletedItems();
-
-			DataUpdateInfo lastUpdateInfo = DataUpdateInfoDAO.getLastUpdateInfo();
-			lastUpdateInfo.setLastUpdateTime(new Date());
-			session.update(lastUpdateInfo);
+			saveOrUpdate(ticket, session);
 
 			tx.commit();
 
@@ -113,16 +103,18 @@ public class TicketDAO extends BaseTicketDAO {
 
 	@Override
 	public void saveOrUpdate(Ticket ticket, Session session) {
-		adjustInventoryItems(session, ticket);
+		//TODO: INVENTORY PLUGIN SUPPORT
+		//adjustInventoryItems(session, ticket);
+
 		ticket.setActiveDate(Calendar.getInstance().getTime());
 
+		adjustStockAmount(ticket, session);
 		session.saveOrUpdate(ticket);
 
 		ticket.clearDeletedItems();
 
 		DataUpdateInfo lastUpdateInfo = DataUpdateInfoDAO.getLastUpdateInfo();
 		lastUpdateInfo.setLastUpdateTime(new Date());
-
 		session.update(lastUpdateInfo);
 	}
 
@@ -840,6 +832,43 @@ public class TicketDAO extends BaseTicketDAO {
 		} finally {
 			closeSession(session);
 		}
+	}
+
+	private void adjustStockAmount(Ticket ticket, Session session) {
+		List<TicketItem> items = ticket.getTicketItems();
+		for (TicketItem item : items) {
+			adjustStockAmount(item, session);
+		}
+	}
+
+	private void adjustStockAmount(TicketItem ticketItem, Session session) {
+		if (ticketItem.isStockAmountAdjusted()) {
+			return;
+		}
+
+		MenuItem menuItem = MenuItemDAO.getInstance().get(ticketItem.getItemId());
+
+		if (menuItem == null) {
+			return;
+		}
+
+		if (menuItem.getStockAmount() <= 0) {
+			return;
+		}
+
+		double availableStockAmount;
+		double stockAmount = menuItem.getStockAmount();
+
+		if (ticketItem.isFractionalUnit()) {
+			availableStockAmount = stockAmount - ticketItem.getItemQuantity();
+		}
+		else {
+			availableStockAmount = stockAmount - ticketItem.getItemCount();
+		}
+		menuItem.setStockAmount(availableStockAmount);
+		session.saveOrUpdate(menuItem);
+
+		ticketItem.setStockAmountAdjusted(true);
 	}
 
 }

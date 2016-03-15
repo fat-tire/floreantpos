@@ -208,7 +208,11 @@ public class TicketView extends JPanel {
 
 		MenuItem menuItem = MenuItemDAO.getInstance().get(itemId);
 
-		if (menuItem == null) {
+		if (menuItem == null || menuItem.getStockAmount() <= 0) {
+			return false;
+		}
+
+		if (!filterByOrderType(menuItem)) {
 			return false;
 		}
 
@@ -222,7 +226,11 @@ public class TicketView extends JPanel {
 
 		MenuItem menuItem = dao.getMenuItemByBarcode(barcode);
 
-		if (menuItem == null) {
+		if (menuItem == null || menuItem.getStockAmount() <= 0) {
+			return false;
+		}
+
+		if (!filterByOrderType(menuItem)) {
 			return false;
 		}
 
@@ -230,10 +238,24 @@ public class TicketView extends JPanel {
 		return true;
 	}
 
+	private boolean filterByOrderType(MenuItem menuItem) {
+
+		List<String> orderTypeList = menuItem.getOrderTypes();
+
+		if (orderTypeList == null || orderTypeList.size() == 0) {
+			return true;
+		}
+
+		if (orderTypeList.contains(ticket.getOrderType().name())) {
+			return true;
+		}
+		return false;
+	}
+
 	private void createPayButton() {
-		btnTotal = new PosButton();
+		btnTotal = new PosButton("Total");
 		//	btnTotal.setText("<html><h2>Total</h2></html>");
-		btnTotal.setText("Total");
+		//btnTotal.setText("Total");
 
 		if (!Application.getInstance().getTerminal().isHasCashDrawer()) {
 			btnTotal.setEnabled(false);
@@ -414,6 +436,12 @@ public class TicketView extends JPanel {
 	}// GEN-LAST:event_doDeleteSelection
 
 	private void doIncreaseAmount() {// GEN-FIRST:event_doIncreaseAmount
+
+		if (!checkStock(-1)) {
+			POSMessageDialog.showError("Items are not available in stock");
+			return;
+		}
+
 		if (ticketViewerTable.increaseItemAmount()) {
 			updateView();
 		}
@@ -422,9 +450,14 @@ public class TicketView extends JPanel {
 
 	private void doIncreaseFractionalUnit() {
 
-		double selectedQuantity = getSelectedQuantity();
+		double selectedQuantity = getNewItemQuantity();
 
 		if (selectedQuantity == -1) {
+			return;
+		}
+
+		if (!checkStock(selectedQuantity)) {
+			POSMessageDialog.showError("Items are not available in stock");
 			return;
 		}
 
@@ -510,7 +543,10 @@ public class TicketView extends JPanel {
 		else {
 			titledBorder.setTitle(ticket.getTicketType()
 					+ " " + Messages.getString("TicketView.37") + ticket.getId() + " Table# " + getTableNumbers(ticket.getTableNumbers())); //$NON-NLS-1$ //$NON-NLS-2$
-		}
+
+			/*	titledBorder.setTitle(ticket.getTicketType()
+						+ " Ticket ["+ ticket.getId()+"]," + "Table [" + getTableNumbers(ticket.getTableNumbers())+"]"); //$NON-NLS-1$ //$NON-NLS-2$	
+			*/}
 
 		ticketViewerTable.updateView();
 	}
@@ -658,10 +694,10 @@ public class TicketView extends JPanel {
 		return tableNumbers;
 	}
 
-	private double getSelectedQuantity() {
+	private double getNewItemQuantity() {
 
 		double selectedQuantity = NumberSelectionDialog2.takeDoubleInput("Please enter item quantity", 1);
-		if (selectedQuantity == -1) {
+		if (selectedQuantity <= -1) {
 			return -1;
 		}
 
@@ -680,5 +716,159 @@ public class TicketView extends JPanel {
 			return ticketItem.isFractionalUnit();
 		}
 		return false;
+	}
+
+	/*	private boolean checkStock(double selectedQuantity) {
+			TicketItem selectedTicketItem = (TicketItem) ticketViewerTable.getSelected();
+
+			MenuItemDAO dao = new MenuItemDAO();
+			MenuItem menuItem = dao.get(selectedTicketItem.getItemId());
+			isFractionalUnit = true;
+				if (menuItem.isFractionalUnit()) {
+					selectedTicketItem.setItemQuantity(selectedQuantity);
+				}
+			return isStockAvailable(menuItem, selectedTicketItem);
+		}
+
+		public boolean isStockAvailable(MenuItem menuItem, TicketItem currentTicketItem) {
+
+			if (!menuItem.isDisableWhenStockAmountIsZero()) {
+				return true;
+			}
+
+			if (menuItem.isFractionalUnit()) {
+
+				List<TicketItem> ticketItems = ticketViewerTable.getTicketItems();
+				if (ticketItems == null || ticketItems.isEmpty()) {
+					if (menuItem.getStockAmount() < currentTicketItem.getItemQuantity()) {
+						return false;
+					}
+					return true;
+				}
+
+				double totalItemQuantity = 0;
+				for (TicketItem tItem : ticketItems) {
+
+					if (menuItem.getName().equals(tItem.getName())) {
+						totalItemQuantity += tItem.getItemQuantity();
+
+						if (menuItem.getStockAmount() < totalItemQuantity) {
+							isFractionalUnit = false;
+							return false;
+						}
+					}
+				}
+
+				if (!isFractionalUnit) {
+					totalItemQuantity += currentTicketItem.getItemQuantity();
+				}
+
+				isFractionalUnit = false;
+				if (menuItem.getStockAmount() < totalItemQuantity) {
+					return false;
+				}
+				return true;
+			}
+
+			List<TicketItem> ticketItems = ticketViewerTable.getTicketItems();
+			if (ticketItems == null || ticketItems.isEmpty()) {
+				if (menuItem.getStockAmount() < currentTicketItem.getItemCount()) {
+					return false;
+				}
+				return true;
+			}
+
+			int totalItemCount = 0;
+			for (TicketItem tItem : ticketItems) {
+
+				if (tItem.getName().equals(menuItem.getName())) {
+					totalItemCount += tItem.getItemCount();
+
+					if (menuItem.getStockAmount() <= totalItemCount) {
+						return false;
+					}
+				}
+			}
+			return true;
+		}*/
+
+	private boolean checkStock(double selectedItemQuantity) {
+
+		TicketItem selectedTicketItem = (TicketItem) ticketViewerTable.getSelected();
+
+		MenuItemDAO dao = new MenuItemDAO();
+		MenuItem menuItem = dao.get(selectedTicketItem.getItemId());
+
+		return isStockAvailable(menuItem, selectedTicketItem, selectedItemQuantity);
+	}
+
+	public boolean isStockAvailable(MenuItem menuItem, TicketItem selectedTicketItem, double selectedItemQuantity) {
+
+		if (!menuItem.isDisableWhenStockAmountIsZero()) {
+			return true;
+		}
+
+		List<TicketItem> ticketItems = ticketViewerTable.getTicketItems();
+
+		if (menuItem.isFractionalUnit()) {// fractional unit start here
+
+			if (ticketItems == null || ticketItems.isEmpty()) {
+				if (menuItem.getStockAmount() < selectedTicketItem.getItemQuantity()) {
+					return false;
+				}
+				return true;
+			}
+
+			double totalItemQuantity = 0;
+
+			for (TicketItem tItem : ticketItems) {
+
+				if (menuItem.getName().equals(tItem.getName())) {
+
+					totalItemQuantity += tItem.getItemQuantity();
+
+					if (menuItem.getStockAmount() < totalItemQuantity) {
+						return false;
+					}
+				}
+			}
+
+			if (selectedItemQuantity != -1) {
+
+				totalItemQuantity -= selectedTicketItem.getItemQuantity();
+
+				totalItemQuantity += selectedItemQuantity;
+			}
+			else {
+				totalItemQuantity += selectedTicketItem.getItemQuantity();
+			}
+
+			if (menuItem.getStockAmount() < totalItemQuantity) {
+				return false;
+			}
+			return true;
+		}//fractional Unit end here
+
+		if (ticketItems == null || ticketItems.isEmpty()) {
+			if (menuItem.getStockAmount() < selectedTicketItem.getItemCount()) {
+				return false;
+			}
+			return true;
+		}
+
+		int totalItemCount = 0;
+
+		for (TicketItem tItem : ticketItems) {
+
+			if (tItem.getName().equals(menuItem.getName())) {
+
+				totalItemCount += tItem.getItemCount();
+
+				if (menuItem.getStockAmount() <= totalItemCount) {
+					return false;
+				}
+			}
+		}
+		return true;
 	}
 }

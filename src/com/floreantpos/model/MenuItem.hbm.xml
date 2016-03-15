@@ -12,10 +12,15 @@
 		<property column="TRANSLATED_NAME" length="120" name="translatedName" not-null="false" type="java.lang.String" />
 		<property column="BARCODE" length="120" name="barcode" unique="false" type="java.lang.String" />
 		<property column="BUY_PRICE" length="52" name="buyPrice" not-null="true" type="java.lang.Double" />
+		<property column="STOCK_AMOUNT" length="52" name="stockAmount" type="java.lang.Double" />
 		<property column="PRICE" length="52" name="price" not-null="true" type="java.lang.Double" />
 		<property column="DISCOUNT_RATE" length="52" name="discountRate" type="java.lang.Double" />
 		<property column="VISIBLE" name="visible" type="java.lang.Boolean">
 			<meta attribute="defaultValue">true</meta>
+		</property>
+		
+		<property column="DISABLE_WHEN_STOCK_AMOUNT_IS_ZERO" name="disableWhenStockAmountIsZero" type="java.lang.Boolean">
+			<meta attribute="defaultValue">false</meta>
 		</property>
 		
 		<property column="SORT_ORDER" name="sortOrder" type="java.lang.Integer" />

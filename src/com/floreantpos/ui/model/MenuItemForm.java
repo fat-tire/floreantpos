@@ -164,6 +164,9 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 	//private CheckBoxList terminalList;
 	private CheckBoxList orderList;
 	private JCheckBox cbFractionalUnit;
+	private DoubleTextField tfStockCount;
+	private JLabel lblStockCount;
+	private JCheckBox cbDisableStockCount;
 
 	/** Creates new form FoodItemEditor */
 	public MenuItemForm() throws Exception {
@@ -242,6 +245,9 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 	 */
 	// <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:initComponents
 	private void initComponents() {
+		lblStockCount=new JLabel("Stock Amount");
+		tfStockCount=new DoubleTextField(1);
+		cbDisableStockCount=new JCheckBox("Disable item on empty stock");
 		lblButtonColor = new JLabel("Button Color");
 		tabbedPane = new javax.swing.JTabbedPane();
 		tabGeneral = new javax.swing.JPanel();
@@ -321,7 +327,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		cbShowTextWithImage.setActionCommand(Messages.getString("MenuItemForm.41")); //$NON-NLS-1$
 		lTax.setText(Messages.getString("LABEL_TAX")); //$NON-NLS-1$
 		btnNewTax.setText("..."); //$NON-NLS-1$
-		cbFractionalUnit = new JCheckBox("Fractional Unit");
+		cbFractionalUnit = new JCheckBox("Fractional unit");
 
 		btnNewGroup.setText("..."); //$NON-NLS-1$
 		btnNewGroup.addActionListener(new java.awt.event.ActionListener() {
@@ -356,7 +362,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		chkVisible.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
 		chkVisible.setMargin(new java.awt.Insets(0, 0, 0, 0));
 		tabbedPane.addTab(com.floreantpos.POSConstants.GENERAL, tabGeneral);
-		tabbedPane.setPreferredSize(new Dimension(750, 430));
+		tabbedPane.setPreferredSize(new Dimension(750, 470));
 
 		btnNewModifierGroup.setText(com.floreantpos.POSConstants.ADD);
 		btnNewModifierGroup.setActionCommand("AddModifierGroup"); //$NON-NLS-1$
@@ -431,10 +437,14 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 
 		tabGeneral.add(lblBarcode, "cell 0 7,right"); //$NON-NLS-1$
 		tabGeneral.add(tfBarcode, "cell 1 7,grow"); //$NON-NLS-1$
+		
+		tabGeneral.add(lblStockCount, "cell 0 8,right"); //$NON-NLS-1$
+		tabGeneral.add(tfStockCount, "cell 1 8,grow"); //$NON-NLS-1$
 
-		tabGeneral.add(cbShowTextWithImage, "cell 1 8"); //$NON-NLS-1$
-		tabGeneral.add(chkVisible, "cell 1 9"); //$NON-NLS-1$
-		tabGeneral.add(cbFractionalUnit, "cell 1 10"); //$NON-NLS-1$
+		tabGeneral.add(cbShowTextWithImage, "cell 1 9"); //$NON-NLS-1$
+		tabGeneral.add(chkVisible, "cell 1 10"); //$NON-NLS-1$
+		tabGeneral.add(cbFractionalUnit, "cell 1 11"); //$NON-NLS-1$
+		tabGeneral.add(cbDisableStockCount, "cell 1 12"); //$NON-NLS-1$
 
 		// right side
 
@@ -742,8 +752,10 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		tfPrice.setText(String.valueOf(menuItem.getPrice()));
 		tfUnitName.setText(menuItem.getUnitName());
 		tfDiscountRate.setText(String.valueOf(menuItem.getDiscountRate()));
+		tfStockCount.setText(String.valueOf(menuItem.getStockAmount()));
 		chkVisible.setSelected(menuItem.isVisible());
 		cbShowTextWithImage.setSelected(menuItem.isShowImageOnly());
+		cbDisableStockCount.setSelected(menuItem.isDisableWhenStockAmountIsZero());
 		ImageIcon menuItemImage = menuItem.getImage();
 		if (menuItemImage != null) {
 			lblImagePreview.setIcon(menuItemImage);
@@ -786,9 +798,11 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		menuItem.setPrice(Double.valueOf(tfPrice.getText()));
 		menuItem.setUnitName(tfUnitName.getText());
 		menuItem.setTax((Tax) cbTax.getSelectedItem());
+		menuItem.setStockAmount(Double.parseDouble(tfStockCount.getText()));
 		menuItem.setVisible(chkVisible.isSelected());
 		menuItem.setShowImageOnly(cbShowTextWithImage.isSelected());
 		menuItem.setFractionalUnit(cbFractionalUnit.isSelected());
+		menuItem.setDisableWhenStockAmountIsZero(cbDisableStockCount.isSelected());
 
 		menuItem.setTranslatedName(tfTranslatedName.getText());
 		menuItem.setSortOrder(tfSortOrder.getInteger());

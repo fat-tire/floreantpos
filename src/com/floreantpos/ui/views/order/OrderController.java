@@ -80,7 +80,7 @@ public class OrderController implements OrderListener, CategorySelectionListener
 		double itemQuantity = 0;
 		if (menuItem.isFractionalUnit()) {
 			itemQuantity = NumberSelectionDialog2.takeDoubleInput("Please Enter Item Quantity", 1);
-			if (itemQuantity == -1) {
+			if (itemQuantity <= -1) {
 				return;
 			}
 
@@ -91,6 +91,12 @@ public class OrderController implements OrderListener, CategorySelectionListener
 		}
 
 		TicketItem ticketItem = menuItem.convertToTicketItem(orderView.getTicketView().getTicket().getOrderType(), itemQuantity);
+
+		if (!orderView.getTicketView().isStockAvailable(menuItem, ticketItem, -1)) {
+			POSMessageDialog.showError("Items are not available in stock");
+			return;
+		}
+
 		ticketItem.setTicket(orderView.getTicketView().getTicket());
 
 		if (menuItem.hasMandatoryModifiers()) {
