@@ -40,6 +40,7 @@ import com.floreantpos.main.Application;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.TicketItemDiscount;
+import com.floreantpos.model.TicketItemModifier;
 import com.floreantpos.model.TicketItemModifierGroup;
 import com.floreantpos.util.NumberUtil;
 
@@ -444,7 +445,7 @@ public class TicketForSplitView extends com.floreantpos.swing.TransparentPanel i
 		newTicketItem.setItemCount(1);
 		newTicketItem.setItemId(ticketItem.getItemId());
 		newTicketItem.setHasModifiers(ticketItem.isHasModifiers());
-		newTicketItem.setTicketItemModifierGroups(new ArrayList<TicketItemModifierGroup>(ticketItem.getTicketItemModifierGroups()));
+		//newTicketItem.setTicketItemModifierGroups(new ArrayList<TicketItemModifierGroup>(ticketItem.getTicketItemModifierGroups()));
 		newTicketItem.setName(ticketItem.getName());
 		newTicketItem.setGroupName(ticketItem.getGroupName());
 		newTicketItem.setCategoryName(ticketItem.getCategoryName());
@@ -461,6 +462,50 @@ public class TicketForSplitView extends com.floreantpos.swing.TransparentPanel i
 			newTicketItem.setDiscounts(newDiscounts);
 		}
 
+		List<TicketItemModifierGroup> ticketItemModifierGroups = ticketItem.getTicketItemModifierGroups();
+		if (ticketItemModifierGroups != null) {
+			for (TicketItemModifierGroup modifierGroup : ticketItemModifierGroups) {
+				TicketItemModifierGroup newGroup = new TicketItemModifierGroup();
+				newGroup.setMaxQuantity(modifierGroup.getMaxQuantity());
+				newGroup.setMenuItemModifierGroup(modifierGroup.getMenuItemModifierGroup());
+				newGroup.setMinQuantity(modifierGroup.getMinQuantity());
+				newGroup.setParent(newTicketItem);
+				for (TicketItemModifier ticketItemModifier : modifierGroup.getTicketItemModifiers()) {
+					TicketItemModifier newModifier = new TicketItemModifier();
+					newModifier.setItemId(ticketItemModifier.getItemId());
+					newModifier.setGroupId(ticketItemModifier.getGroupId());
+					newModifier.setItemCount(ticketItemModifier.getItemCount());
+					newModifier.setName(ticketItemModifier.getName());
+					newModifier.setUnitPrice(ticketItemModifier.getUnitPrice());
+					newModifier.setTaxRate(ticketItemModifier.getTaxRate());
+					newModifier.setModifierType(ticketItemModifier.getModifierType());
+					newModifier.setPrintedToKitchen(ticketItemModifier.isPrintedToKitchen()); 
+					newModifier.setShouldPrintToKitchen(ticketItemModifier.isShouldPrintToKitchen());
+					newModifier.setParent(newGroup);
+					newGroup.addToticketItemModifiers(newModifier);
+				}
+				newTicketItem.addToticketItemModifierGroups(newGroup);
+			}
+		}
+
+		List<TicketItemModifier> addOnsList = ticketItem.getAddOns();
+		if (addOnsList != null) {
+			for (TicketItemModifier addOns : ticketItem.getAddOns()) {
+				TicketItemModifier newAddOns = new TicketItemModifier();
+				newAddOns.setItemId(addOns.getItemId());
+				newAddOns.setGroupId(addOns.getGroupId());
+				newAddOns.setItemCount(addOns.getItemCount());
+				newAddOns.setName(addOns.getName());
+				newAddOns.setUnitPrice(addOns.getUnitPrice());
+				newAddOns.setTaxRate(addOns.getTaxRate());
+				newAddOns.setModifierType(addOns.getModifierType());
+				newAddOns.setPrintedToKitchen(addOns.isPrintedToKitchen()); 
+				newAddOns.setShouldPrintToKitchen(addOns.isShouldPrintToKitchen());
+				newAddOns.setParent(addOns.getParent());
+				newTicketItem.addToaddOns(newAddOns);
+			}
+		}
+
 		newTicketItem.setTaxRate(ticketItem.getTaxRate());
 		newTicketItem.setBeverage(ticketItem.isBeverage());
 		newTicketItem.setShouldPrintToKitchen(ticketItem.isShouldPrintToKitchen());
@@ -470,7 +515,7 @@ public class TicketForSplitView extends com.floreantpos.swing.TransparentPanel i
 		int itemCount = ticketItem.getItemCount();
 
 		toTicketView.ticketViewerTable.addTicketItem(newTicketItem);
-		if (itemCount > 1) {
+		if (itemCount > 1 && !ticketItem.isHasModifiers()) {
 			ticketItem.setItemCount(--itemCount);
 		}
 		else {
