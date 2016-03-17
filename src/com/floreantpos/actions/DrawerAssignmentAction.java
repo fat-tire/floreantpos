@@ -25,6 +25,7 @@ import javax.swing.JOptionPane;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import com.floreantpos.DrawerNotAssignedException;
 import com.floreantpos.Messages;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.DrawerAssignedHistory;
@@ -87,8 +88,9 @@ public class DrawerAssignmentAction extends PosAction {
 			dialog.pack();
 			dialog.open();
 
-			if (dialog.isCanceled())
-				return;
+			if (dialog.isCanceled()) {
+				throw new DrawerNotAssignedException();
+			}
 
 			User user = dialog.getSelectedUser();
 			

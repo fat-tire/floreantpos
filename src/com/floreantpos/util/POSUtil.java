@@ -37,10 +37,10 @@ public class POSUtil {
 				return window;
 			}
 		}
-		
+
 		return null;
 	}
-	
+
 	public static BackOfficeWindow getBackOfficeWindow() {
 		Window[] windows = Window.getWindows();
 		for (Window window : windows) {
@@ -48,10 +48,10 @@ public class POSUtil {
 				return (BackOfficeWindow) window;
 			}
 		}
-		
+
 		return null;
 	}
-	
+
 	public static boolean isBlankOrNull(String str) {
 		if (str == null) {
 			return true;
@@ -150,14 +150,14 @@ public class POSUtil {
 			return s;
 		}
 	}
-	
+
 	public static boolean isValidPassword(char[] password) {
 		for (char c : password) {
-			if(!Character.isDigit(c)) {
+			if (!Character.isDigit(c)) {
 				return false;
 			}
 		}
-		
+
 		return true;
 	}
 
@@ -165,18 +165,22 @@ public class POSUtil {
 		if (!Application.getInstance().getTerminal().isCashDrawerAssigned()) {
 			int option = POSMessageDialog.showYesNoQuestionDialog(Application.getPosWindow(), Messages.getString("SwitchboardView.15") + //$NON-NLS-1$
 					Messages.getString("SwitchboardView.16"), Messages.getString("SwitchboardView.17")); //$NON-NLS-1$ //$NON-NLS-2$
-			
-			if(option == JOptionPane.YES_OPTION) {
-				DrawerAssignmentAction action = new DrawerAssignmentAction();
-				action.execute();
-				return false;
+
+			if (option == JOptionPane.YES_OPTION) {
+				try {
+					DrawerAssignmentAction action = new DrawerAssignmentAction();
+					action.execute();
+					return true;
+				} catch (Exception e) {
+					return false;
+				}
 			}
 			else {
 				POSMessageDialog.showError(Application.getPosWindow(), Messages.getString("SwitchboardView.18")); //$NON-NLS-1$
 				return false;
 			}
 		}
-		
+
 		return true;
 	}
 }
