@@ -47,13 +47,7 @@ public class KitchenTicketDataSource extends AbstractReportDataSource {
 				return item.getMenuItemName();
 
 			case 2:
-				Integer itemCountDisplay = item.getQuantity();
-
-				if (itemCountDisplay == null) {
-					return null;
-				}
-
-				return String.valueOf(itemCountDisplay);
+				return String.valueOf(item.getFractionalQuantity());
 		}
 
 		return null;

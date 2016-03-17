@@ -1,22 +1,6 @@
-/**
- * ************************************************************************
- * * The contents of this file are subject to the MRPL 1.2
- * * (the  "License"),  being   the  Mozilla   Public  License
- * * Version 1.1  with a permitted attribution clause; you may not  use this
- * * file except in compliance with the License. You  may  obtain  a copy of
- * * the License at http://www.floreantpos.org/license.html
- * * Software distributed under the License  is  distributed  on  an "AS IS"
- * * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * * License for the specific  language  governing  rights  and  limitations
- * * under the License.
- * * The Original Code is FLOREANT POS.
- * * The Initial Developer of the Original Code is OROCUBE LLC
- * * All portions are Copyright (C) 2015 OROCUBE LLC
- * * All Rights Reserved.
- * ************************************************************************
- */
 package com.floreantpos.model.base;
 
+import java.lang.Comparable;
 import java.io.Serializable;
 
 
@@ -31,14 +15,15 @@ import java.io.Serializable;
 
 public abstract class BaseKitchenTicketItem  implements Comparable, Serializable {
 
-	public static String REF = "KitchenTicketItem"; //$NON-NLS-1$
-	public static String PROP_STATUS = "status"; //$NON-NLS-1$
-	public static String PROP_QUANTITY = "quantity"; //$NON-NLS-1$
-	public static String PROP_ID = "id"; //$NON-NLS-1$
-	public static String PROP_VOIDED = "voided"; //$NON-NLS-1$
-	public static String PROP_MENU_ITEM_NAME = "menuItemName"; //$NON-NLS-1$
-	public static String PROP_MENU_ITEM_CODE = "menuItemCode"; //$NON-NLS-1$
-	public static String PROP_COOKABLE = "cookable"; //$NON-NLS-1$
+	public static String REF = "KitchenTicketItem";
+	public static String PROP_STATUS = "status";
+	public static String PROP_MENU_ITEM_NAME = "menuItemName";
+	public static String PROP_QUANTITY = "quantity";
+	public static String PROP_ID = "id";
+	public static String PROP_FRACTIONAL_QUANTITY = "fractionalQuantity";
+	public static String PROP_VOIDED = "voided";
+	public static String PROP_COOKABLE = "cookable";
+	public static String PROP_MENU_ITEM_CODE = "menuItemCode";
 
 
 	// constructors
@@ -68,6 +53,7 @@ public abstract class BaseKitchenTicketItem  implements Comparable, Serializable
 		protected java.lang.String menuItemCode;
 		protected java.lang.String menuItemName;
 		protected java.lang.Integer quantity;
+		protected java.lang.Double fractionalQuantity;
 		protected java.lang.Boolean voided;
 		protected java.lang.String status;
 
@@ -150,8 +136,8 @@ public abstract class BaseKitchenTicketItem  implements Comparable, Serializable
 	 * Return the value associated with the column: QUANTITY
 	 */
 	public java.lang.Integer getQuantity () {
-					return quantity == null ? Integer.valueOf(0) : quantity;
-			}
+									return quantity == null ? Integer.valueOf(0) : quantity;
+					}
 
 	/**
 	 * Set the value related to the column: QUANTITY
@@ -159,6 +145,23 @@ public abstract class BaseKitchenTicketItem  implements Comparable, Serializable
 	 */
 	public void setQuantity (java.lang.Integer quantity) {
 		this.quantity = quantity;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: FRACTIONAL_QUANTITY
+	 */
+	public java.lang.Double getFractionalQuantity () {
+									return fractionalQuantity == null ? Double.valueOf(0) : fractionalQuantity;
+					}
+
+	/**
+	 * Set the value related to the column: FRACTIONAL_QUANTITY
+	 * @param fractionalQuantity the FRACTIONAL_QUANTITY value
+	 */
+	public void setFractionalQuantity (java.lang.Double fractionalQuantity) {
+		this.fractionalQuantity = fractionalQuantity;
 	}
 
 
@@ -213,7 +216,7 @@ public abstract class BaseKitchenTicketItem  implements Comparable, Serializable
 		if (Integer.MIN_VALUE == this.hashCode) {
 			if (null == this.getId()) return super.hashCode();
 			else {
-				String hashStr = this.getClass().getName() + ":" + this.getId().hashCode(); //$NON-NLS-1$
+				String hashStr = this.getClass().getName() + ":" + this.getId().hashCode();
 				this.hashCode = hashStr.hashCode();
 			}
 		}

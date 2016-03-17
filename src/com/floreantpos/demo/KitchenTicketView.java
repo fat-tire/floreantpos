@@ -302,7 +302,7 @@ public class KitchenTicketView extends JPanel {
 					return ticketItem.getMenuItemName();
 
 				case 1:
-					return String.valueOf(ticketItem.getQuantity());
+					return String.valueOf(ticketItem.getFractionalQuantity());
 
 				case 2:
 					return "GO";

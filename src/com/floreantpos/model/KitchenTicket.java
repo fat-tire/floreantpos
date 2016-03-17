@@ -148,7 +148,12 @@ public class KitchenTicket extends BaseKitchenTicket {
 				KitchenTicketItem item = new KitchenTicketItem();
 				item.setMenuItemCode(ticketItem.getItemCode());
 				item.setMenuItemName(ticketItem.getNameDisplay());
-				item.setQuantity(ticketItem.getItemCount());
+				if(ticketItem.isFractionalUnit()) {
+					item.setFractionalQuantity(ticketItem.getItemQuantity());
+				}
+				else {
+					item.setFractionalQuantity(ticketItem.getItemCount().doubleValue());
+				}
 				item.setStatus(KitchenTicketStatus.WAITING.name());
 
 				kitchenTicket.addToticketItems(item);
@@ -203,7 +208,7 @@ public class KitchenTicket extends BaseKitchenTicket {
 						KitchenTicketItem item = new KitchenTicketItem();
 						item.setMenuItemCode(""); //$NON-NLS-1$
 						item.setMenuItemName(itemModifier.getNameDisplay());
-						item.setQuantity(itemModifier.getItemCount());
+						item.setFractionalQuantity(itemModifier.getItemCount().doubleValue());
 						item.setStatus(KitchenTicketStatus.WAITING.name());
 						kitchenTicket.addToticketItems(item);
 
@@ -226,7 +231,7 @@ public class KitchenTicket extends BaseKitchenTicket {
 				KitchenTicketItem item = new KitchenTicketItem();
 				item.setMenuItemCode(""); //$NON-NLS-1$
 				item.setMenuItemName(ticketItemModifier.getNameDisplay());
-				item.setQuantity(ticketItemModifier.getItemCount());
+				item.setFractionalQuantity(ticketItemModifier.getItemCount().doubleValue());
 				item.setStatus(KitchenTicketStatus.WAITING.name());
 				kitchenTicket.addToticketItems(item);
 
