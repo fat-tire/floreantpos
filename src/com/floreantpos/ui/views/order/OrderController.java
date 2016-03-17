@@ -27,6 +27,7 @@ import com.floreantpos.POSConstants;
 import com.floreantpos.actions.SettleTicketAction;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.ActionHistory;
+import com.floreantpos.model.ITicketItem;
 import com.floreantpos.model.MenuCategory;
 import com.floreantpos.model.MenuGroup;
 import com.floreantpos.model.MenuItem;
@@ -140,93 +141,63 @@ public class OrderController implements OrderListener, CategorySelectionListener
 		//		}
 	}
 
-	public static void openModifierDialog(TicketItem ticketItem) {
+	public static void openModifierDialog(ITicketItem ticketItemObject) {
 		try {
-			MenuItem menuItem = MenuItemDAO.getInstance().get(ticketItem.getItemId());
-			menuItem = MenuItemDAO.getInstance().initialize(menuItem);
-
-			List<TicketItemModifierGroup> ticketItemModifierGroups = new ArrayList<TicketItemModifierGroup>();
-			List<TicketItemModifier> addOns = new ArrayList<TicketItemModifier>();
-
-			if (ticketItem.getTicketItemModifierGroups() != null) {
-				ticketItemModifierGroups.addAll(ticketItem.getTicketItemModifierGroups());
+			TicketItem ticketItem = null;
+			if (ticketItemObject instanceof TicketItem) {
+				ticketItem = ((TicketItem) ticketItemObject);
+			}
+			else if (ticketItemObject instanceof TicketItemModifier) {
+				TicketItemModifier ticketItemModifier = (TicketItemModifier) ticketItemObject;
+				ticketItem = ticketItemModifier.getTicketItem();
+				if (ticketItem == null) {
+					ticketItem = ticketItemModifier.getParent().getParent();
+				}
 			}
 
-			if (ticketItem.getAddOns() != null) {
-				addOns.addAll(ticketItem.getAddOns());
+			MenuItem menuItem = ticketItem.getMenuItem();
+
+			List<TicketItemModifierGroup> ticketItemModifierGroups = ticketItem.getTicketItemModifierGroups();
+			if (ticketItemModifierGroups == null) {
+				ticketItemModifierGroups = new ArrayList<TicketItemModifierGroup>();
+			}
+			List<TicketItemModifier> addOnsList = ticketItem.getAddOns();
+			if (addOnsList == null) {
+				addOnsList = new ArrayList<TicketItemModifier>();
 			}
 
-			ModifierSelectionDialog dialog = new ModifierSelectionDialog(new ModifierSelectionModel(ticketItem, menuItem));
+			TicketItem cloneTicketItem = ticketItem.clone(ticketItem);
+
+			ModifierSelectionDialog dialog = new ModifierSelectionDialog(new ModifierSelectionModel(cloneTicketItem, menuItem));
 			dialog.open();
 
-			if (dialog.isCanceled()) {
-				List<TicketItemModifierGroup> addedTicketItemModifierGroup = ticketItem.getTicketItemModifierGroups();
+			if (!dialog.isCanceled()) {
+				List<TicketItemModifierGroup> addedTicketItemModifierGroup = cloneTicketItem.getTicketItemModifierGroups();
 				if (addedTicketItemModifierGroup == null) {
 					addedTicketItemModifierGroup = new ArrayList<TicketItemModifierGroup>();
 				}
-				if (!CollectionUtils.isEqualCollection(addedTicketItemModifierGroup, ticketItemModifierGroups)) {
-					ticketItem.getTicketItemModifierGroups().clear();
-					ticketItem.getTicketItemModifierGroups().addAll(ticketItemModifierGroups);
+				ticketItemModifierGroups.clear();
+				for (TicketItemModifierGroup modifierGroup : addedTicketItemModifierGroup) {
+					modifierGroup.setParent(ticketItem);
+					if (modifierGroup.getTicketItemModifiers() != null) {
+						for (TicketItemModifier modifier : modifierGroup.getTicketItemModifiers()) {
+							modifier.setTicketItem(ticketItem);
+						}
+						ticketItem.addToticketItemModifierGroups(modifierGroup);
+					}
 				}
-				List<TicketItemModifier> addedAddOns = ticketItem.getAddOns();
+				List<TicketItemModifier> addedAddOns = cloneTicketItem.getAddOns();
 				if (addedAddOns == null) {
 					addedAddOns = new ArrayList<TicketItemModifier>();
 				}
-				if (!CollectionUtils.isEqualCollection(addedAddOns, addOns)) {
-					ticketItem.getAddOns().clear();
-					ticketItem.getAddOns().addAll(addOns);
+				if (!CollectionUtils.isEqualCollection(addedAddOns, addOnsList)) {
+					addOnsList.clear();
+					for (TicketItemModifier addedModifier : addedAddOns) {
+						addedModifier.setTicketItem(ticketItem);
+						ticketItem.addToaddOns(addedModifier);
+					}
 				}
 			}
-			//OrderView.getInstance().getTicketView().updateView();
-		} catch (Exception e) {
-			POSMessageDialog.showError(Application.getPosWindow(), e.getMessage(), e);
-		}
-	}
-
-	public static void openModifierDialog(TicketItemModifier ticketItemModifier) {
-		try {
-			TicketItem ticketItem = ticketItemModifier.getTicketItem();
-
-			//for backward compatibility
-			if (ticketItem == null) {
-				ticketItem = ticketItemModifier.getParent().getParent();
-			}
-			MenuItem menuItem = MenuItemDAO.getInstance().get(ticketItem.getItemId());
-			menuItem = MenuItemDAO.getInstance().initialize(menuItem);
-
-			List<TicketItemModifierGroup> ticketItemModifierGroups = new ArrayList<TicketItemModifierGroup>();
-			List<TicketItemModifier> addOns = new ArrayList<TicketItemModifier>();
-
-			if (ticketItem.getTicketItemModifierGroups() != null) {
-				ticketItemModifierGroups.addAll(ticketItem.getTicketItemModifierGroups());
-			}
-
-			if (ticketItem.getAddOns() != null) {
-				addOns.addAll(ticketItem.getAddOns());
-			}
-
-			ModifierSelectionDialog dialog = new ModifierSelectionDialog(new ModifierSelectionModel(ticketItem, menuItem));
-			dialog.open();
-
-			if (dialog.isCanceled()) {
-				List<TicketItemModifierGroup> addedTicketItemModifierGroup = ticketItem.getTicketItemModifierGroups();
-				if (addedTicketItemModifierGroup == null) {
-					addedTicketItemModifierGroup = new ArrayList<TicketItemModifierGroup>();
-				}
-				if (!CollectionUtils.isEqualCollection(addedTicketItemModifierGroup, ticketItemModifierGroups)) {
-					ticketItem.getTicketItemModifierGroups().clear();
-					ticketItem.getTicketItemModifierGroups().addAll(ticketItemModifierGroups);
-				}
-				List<TicketItemModifier> addedAddOns = ticketItem.getAddOns();
-				if (addedAddOns == null) {
-					addedAddOns = new ArrayList<TicketItemModifier>();
-				}
-				if (!CollectionUtils.isEqualCollection(addedAddOns, addOns)) {
-					ticketItem.getAddOns().clear();
-					ticketItem.getAddOns().addAll(addOns);
-				}
-			}
-			//OrderView.getInstance().getTicketView().updateView();
 		} catch (Exception e) {
 			POSMessageDialog.showError(Application.getPosWindow(), e.getMessage(), e);
 		}

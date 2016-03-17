@@ -440,13 +440,11 @@ public class TicketView extends JPanel {
 	private void doEditSelection() {// GEN-FIRST:event_doDeleteSelection
 		Object object = ticketViewerTable.getSelected();
 
-		if (object instanceof TicketItem) {
-			OrderController.openModifierDialog((TicketItem) object);
+		if (object == null) {
+			return;
 		}
-		else if (object instanceof TicketItemModifier) {
-			TicketItemModifier ticketItemModifier = (TicketItemModifier) object;
-			OrderController.openModifierDialog(ticketItemModifier);
-		}
+		OrderController.openModifierDialog((ITicketItem) object);
+
 		updateView();
 
 	}// GEN-LAST:event_doDeleteSelection
@@ -632,6 +630,7 @@ public class TicketView extends JPanel {
 						btnIncreaseAmount.setEnabled(true);
 						btnDecreaseAmount.setEnabled(true);
 					}
+					btnDelete.setEnabled(!ticketItem.isPrintedToKitchen());
 				}
 			}
 		}

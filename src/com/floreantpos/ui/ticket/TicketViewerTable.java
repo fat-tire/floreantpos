@@ -261,14 +261,14 @@ public class TicketViewerTable extends JTable {
 		model.delete(index);
 	}
 
-	public Object get(int index) {
-		return model.get(index);
+	public ITicketItem get(int index) {
+		return (ITicketItem) model.get(index);
 	}
 
-	public Object getSelected() {
+	public ITicketItem getSelected() {
 		int index = getSelectedRow();
 
-		return model.get(index);
+		return (ITicketItem) model.get(index);
 	}
 
 	public void addAllTicketItem(TicketItem ticketItem) {

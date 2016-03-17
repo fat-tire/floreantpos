@@ -181,6 +181,7 @@ public class MenuItem extends BaseMenuItem {
 		TicketItem ticketItem = new TicketItem();
 
 		ticketItem.setItemId(this.getId());
+		ticketItem.setMenuItem(this);
 
 		ticketItem.setFractionalUnit(this.isFractionalUnit());
 

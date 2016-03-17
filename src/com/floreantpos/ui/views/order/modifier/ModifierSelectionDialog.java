@@ -173,7 +173,7 @@ public class ModifierSelectionDialog extends POSDialog implements ModifierGroupS
 		//			updateView();
 		//			return;
 		//		}
-		
+
 		TicketItemModifierGroup ticketItemModifierGroup = modifierSelectionModel.getTicketItem().findTicketItemModifierGroup(modifier, false);
 
 		int freeModifiers = ticketItemModifierGroup.countFreeModifiers();
@@ -195,13 +195,12 @@ public class ModifierSelectionDialog extends POSDialog implements ModifierGroupS
 
 		TicketItemModifier ticketItemModifier = ticketItemModifierGroup.findTicketItemModifier(modifier, false);
 		if (ticketItemModifier == null) {
-			OrderType type=modifierSelectionModel.getTicketItem().getTicket().getOrderType();
-			ticketItemModifierGroup.addTicketItemModifier(modifier, TicketItemModifier.NORMAL_MODIFIER,type);
+			OrderType type = modifierSelectionModel.getTicketItem().getTicket().getOrderType();
+			ticketItemModifierGroup.addTicketItemModifier(modifier, TicketItemModifier.NORMAL_MODIFIER, type);
 		}
 		else {
 			ticketItemModifier.setItemCount(ticketItemModifier.getItemCount() + 1);
 		}
-
 		updateView();
 	}
 
@@ -220,8 +219,22 @@ public class ModifierSelectionDialog extends POSDialog implements ModifierGroupS
 
 		for (Iterator iterator = ticketItemModifierGroups.iterator(); iterator.hasNext();) {
 			TicketItemModifierGroup ticketItemModifierGroup = (TicketItemModifierGroup) iterator.next();
-			if (ticketItemModifierGroup.getMenuItemModifierGroup().getModifierGroup().equals(modifierGroup)) {
+			for (Iterator iterator2 = ticketItemModifierGroup.getTicketItemModifiers().iterator(); iterator2.hasNext();) {
+				TicketItemModifier ticketItemModifier = (TicketItemModifier) iterator2.next();
+				if (!ticketItemModifier.isPrintedToKitchen()) {
+					iterator2.remove();
+				}
+			}
+			if (ticketItemModifierGroup.getTicketItemModifiers().size() < 0) {
 				iterator.remove();
+			}
+		}
+
+		List<TicketItemModifier> addOnsList = modifierSelectionModel.getTicketItem().getAddOns();
+		for (Iterator iterator3 = addOnsList.iterator(); iterator3.hasNext();) {
+			TicketItemModifier addOns = (TicketItemModifier) iterator3.next();
+			if (!addOns.isPrintedToKitchen()) {
+				iterator3.remove();
 			}
 		}
 

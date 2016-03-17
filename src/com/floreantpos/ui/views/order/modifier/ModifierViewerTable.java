@@ -31,36 +31,36 @@ import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.TicketItemModifier;
 
 public class ModifierViewerTable extends JTable {
-	
+
 	private ModifierViewerTableModel model;
 	private DefaultListSelectionModel selectionModel;
 	private ModifierViewerTableCellRenderer cellRenderer;
-	
+
 	//private boolean addOnMode;
-	
+
 	public ModifierViewerTable() {
 		this(null);
 	}
 
 	public ModifierViewerTable(TicketItem ticketItem) {
 		//this.addOnMode = addOnMOde;
-		
+
 		model = new ModifierViewerTableModel(ticketItem);
 		setModel(model);
-		
+
 		selectionModel = new DefaultListSelectionModel();
 		selectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
 		cellRenderer = new ModifierViewerTableCellRenderer();
-		
+
 		setGridColor(Color.LIGHT_GRAY);
 		setSelectionModel(selectionModel);
 		setAutoscrolls(true);
 		setShowGrid(true);
 		setBorder(null);
-		
+
 		setFocusable(false);
-		
+
 		setRowHeight(60);
 		resizeTableColumns();
 	}
@@ -79,24 +79,24 @@ public class ModifierViewerTable extends JTable {
 		column.setMaxWidth(width);
 		column.setMinWidth(width);
 	}
-	
+
 	@Override
 	public TableCellRenderer getCellRenderer(int row, int column) {
 		return cellRenderer;
 	}
-	
+
 	public ModifierViewerTableCellRenderer getRenderer() {
 		return cellRenderer;
 	}
 
 	private boolean isTicketNull() {
-//		Ticket ticket = getTicket();
-//		if (ticket == null) {
-//			return true;
-//		}
-//		if (ticket.getTicketItems() == null) {
-//			return true;
-//		}
+		//		Ticket ticket = getTicket();
+		//		if (ticket == null) {
+		//			return true;
+		//		}
+		//		if (ticket.getTicketItems() == null) {
+		//			return true;
+		//		}
 		return false;
 	}
 
@@ -160,15 +160,15 @@ public class ModifierViewerTable extends JTable {
 		}
 		else if (object instanceof TicketItemModifier) {
 			TicketItemModifier modifier = (TicketItemModifier) object;
-			int itemCount=modifier.getItemCount(); 
-			
+			int itemCount = modifier.getItemCount();
+
 			int maxModifier = modifier.getParent().getMaxQuantity();
-			if(modifier.getModifierType()==TicketItemModifier.NORMAL_MODIFIER && maxModifier<=maxModifier){
-				return false; 
+			if (modifier.getModifierType() == TicketItemModifier.NORMAL_MODIFIER && maxModifier <= maxModifier) {
+				return false;
 			}
 			modifier.setItemCount(++itemCount);
 			repaint();
-			
+
 			return true;
 		}
 		return false;
@@ -192,7 +192,7 @@ public class ModifierViewerTable extends JTable {
 
 			ticketItem.setItemCount(--itemCount);
 			repaint();
-			
+
 			return true;
 		}
 		else if (object instanceof TicketItemModifier) {
@@ -203,7 +203,7 @@ public class ModifierViewerTable extends JTable {
 
 			modifier.setItemCount(--itemCount);
 			repaint();
-			
+
 			return true;
 		}
 		return false;
@@ -222,42 +222,45 @@ public class ModifierViewerTable extends JTable {
 	public Object get(int index) {
 		return model.get(index);
 	}
-	
+
 	public Object getSelected() {
 		int index = getSelectedRow();
-		
+
 		return model.get(index);
 	}
 
 	public void removeModifier(TicketItem parent, TicketItemModifier modifier) {
 		model.removeModifier(parent, modifier);
 	}
-	
+
 	public void updateView() {
-		int selectedRow = getSelectedRow();
-		
+
 		model.update();
-		
+
 		try {
-			getSelectionModel().setSelectionInterval(selectedRow, selectedRow);
-		}catch (Exception e) {
+			int actualRowCount = model.getRowCount() - 1;
+			selectionModel.addSelectionInterval(actualRowCount, actualRowCount);
+			Rectangle cellRect = getCellRect(actualRowCount, 0, false);
+			scrollRectToVisible(cellRect);
+
+		} catch (Exception e) {
 			// do nothing
 		}
 	}
-	
+
 	public int getActualRowCount() {
 		return model.getActualRowCount();
 	}
-	
+
 	public void selectLast() {
 		int actualRowCount = getActualRowCount() - 1;
 		selectionModel.addSelectionInterval(actualRowCount, actualRowCount);
 		Rectangle cellRect = getCellRect(actualRowCount, 0, false);
 		scrollRectToVisible(cellRect);
 	}
-	
+
 	public void selectRow(int index) {
-		if(index < 0 || index >= getActualRowCount()) {
+		if (index < 0 || index >= getActualRowCount()) {
 			index = 0;
 		}
 		selectionModel.addSelectionInterval(index, index);
@@ -269,8 +272,8 @@ public class ModifierViewerTable extends JTable {
 		return false;
 	}
 
-//	public void setAddOnMode(boolean addOnMode) {
-//		this.addOnMode = addOnMode;
-//	}
+	//	public void setAddOnMode(boolean addOnMode) {
+	//		this.addOnMode = addOnMode;
+	//	}
 
 }

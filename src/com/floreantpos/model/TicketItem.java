@@ -17,6 +17,10 @@
  */
 package com.floreantpos.model;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -25,8 +29,8 @@ import java.util.List;
 
 import com.floreantpos.main.Application;
 import com.floreantpos.model.base.BaseTicketItem;
+import com.floreantpos.model.dao.MenuItemDAO;
 import com.floreantpos.model.dao.PrinterGroupDAO;
-import com.floreantpos.model.OrderType;
 import com.floreantpos.util.DiscountUtil;
 import com.floreantpos.util.NumberUtil;
 
@@ -34,30 +38,47 @@ public class TicketItem extends BaseTicketItem implements ITicketItem {
 	private static final long serialVersionUID = 1L;
 
 	/*[CONSTRUCTOR MARKER BEGIN]*/
-	public TicketItem () {
+	public TicketItem() {
 		super();
 	}
 
 	/**
 	 * Constructor for primary key
 	 */
-	public TicketItem (java.lang.Integer id) {
+	public TicketItem(java.lang.Integer id) {
 		super(id);
 	}
 
 	/**
 	 * Constructor for required fields
 	 */
-	public TicketItem (
-		java.lang.Integer id,
-		com.floreantpos.model.Ticket ticket) {
+	public TicketItem(java.lang.Integer id, com.floreantpos.model.Ticket ticket) {
 
-		super (
-			id,
-			ticket);
+		super(id, ticket);
 	}
 
 	/*[CONSTRUCTOR MARKER END]*/
+	
+	private MenuItem menuItem;
+
+	public TicketItem clone(TicketItem source) {
+		try {
+			// Write the object out to a byte array
+			ByteArrayOutputStream bos = new ByteArrayOutputStream();
+			ObjectOutputStream out = new ObjectOutputStream(bos);
+			out.writeObject(source);
+			out.flush();
+			out.close();
+
+			// Make an input stream from the byte array and read
+			// a copy of the object back in.
+			ObjectInputStream in = new ObjectInputStream(new ByteArrayInputStream(bos.toByteArray()));
+			return (TicketItem) in.readObject();
+		} catch (Exception cnfe) {
+			//log here
+			return null;
+		}
+	}
 
 	private boolean priceIncludesTax;
 
@@ -375,12 +396,12 @@ public class TicketItem extends BaseTicketItem implements ITicketItem {
 	private double calculateSubtotal(boolean includeModifierPrice) {
 		//TODO: added Fractional Item Unit Quantity
 		double subTotalAmount;
-		if(this.isFractionalUnit()) {
-			subTotalAmount= NumberUtil.roundToTwoDigit(getUnitPrice() * getItemQuantity());
-		}else {
-			subTotalAmount= NumberUtil.roundToTwoDigit(getUnitPrice() * getItemCount());
+		if (this.isFractionalUnit()) {
+			subTotalAmount = NumberUtil.roundToTwoDigit(getUnitPrice() * getItemQuantity());
 		}
-		
+		else {
+			subTotalAmount = NumberUtil.roundToTwoDigit(getUnitPrice() * getItemCount());
+		}
 
 		if (includeModifierPrice) {
 			List<TicketItemModifierGroup> ticketItemModifierGroups = getTicketItemModifierGroups();
@@ -517,10 +538,10 @@ public class TicketItem extends BaseTicketItem implements ITicketItem {
 
 	@Override
 	public String getItemQuantityDisplay() {
-		if(isFractionalUnit()) {
+		if (isFractionalUnit()) {
 			return String.valueOf(getItemQuantity());
 		}
-		
+
 		return String.valueOf(getItemCount());
 	}
 
@@ -598,5 +619,17 @@ public class TicketItem extends BaseTicketItem implements ITicketItem {
 	@Override
 	public boolean canAddAdOn() {
 		return true;
+	}
+
+	public MenuItem getMenuItem() {
+		if(menuItem == null) {
+			menuItem = MenuItemDAO.getInstance().loadInitialized(getItemId());
+		}
+		
+		return menuItem;
+	}
+
+	public void setMenuItem(MenuItem menuItem) {
+		this.menuItem = menuItem;
 	}
 }

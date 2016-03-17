@@ -25,6 +25,7 @@ import net.authorize.util.StringUtils;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.MatchMode;
@@ -45,6 +46,12 @@ public class MenuItemDAO extends BaseMenuItemDAO {
 	 * Default constructor. Can be used in place of getInstance()
 	 */
 	public MenuItemDAO() {
+	}
+	
+	public MenuItem loadInitialized(Integer key) throws HibernateException {
+		MenuItem menuItem = super.get(key);
+		menuItem = initialize(menuItem);
+		return menuItem;
 	}
 
 	public MenuItem initialize(MenuItem menuItem) {
