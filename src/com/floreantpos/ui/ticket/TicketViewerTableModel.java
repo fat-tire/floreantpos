@@ -86,12 +86,6 @@ public class TicketViewerTableModel extends AbstractTableModel {
 			return null;
 		}
 
-		TicketItem tItem = null;
-		
-		if (ticketItem instanceof TicketItem) {
-			tItem = (TicketItem) ticketItem;
-		}
-
 		switch (columnIndex) {
 			case 0:
 				return "<html>" + ticketItem.getNameDisplay() + "</html>"; //$NON-NLS-1$ //$NON-NLS-2$
@@ -100,18 +94,7 @@ public class TicketViewerTableModel extends AbstractTableModel {
 				return ticketItem.getUnitPriceDisplay();
 
 			case 2:
-
-				if (tItem != null && tItem.isFractionalUnit()) {
-					double itemQuantity = tItem.getItemQuantity();
-					
-					if (itemQuantity % 1 == 0) {
-						return (int) itemQuantity;
-					}
-					return tItem.getItemQuantity();
-				}
-				else {
-					return ticketItem.getItemQuantityDisplay();
-				}
+				return ticketItem.getItemQuantityDisplay();
 
 			case 3:
 				return ticketItem.getSubTotalAmountWithoutModifiersDisplay();

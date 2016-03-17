@@ -58,7 +58,7 @@ public class TicketItem extends BaseTicketItem implements ITicketItem {
 	}
 
 	/*[CONSTRUCTOR MARKER END]*/
-	
+
 	private MenuItem menuItem;
 
 	public TicketItem clone(TicketItem source) {
@@ -539,10 +539,14 @@ public class TicketItem extends BaseTicketItem implements ITicketItem {
 	@Override
 	public String getItemQuantityDisplay() {
 		if (isFractionalUnit()) {
-			return String.valueOf(getItemQuantity());
+			double itemQuantity = getItemQuantity();
+			if (itemQuantity % 1 == 0) {
+				return String.valueOf((int) itemQuantity) + getItemUnitName();
+			}
+			return itemQuantity + getItemUnitName();
 		}
 
-		return String.valueOf(getItemCount());
+		return String.valueOf(getItemCount()) + "pc";
 	}
 
 	@Override
@@ -622,10 +626,10 @@ public class TicketItem extends BaseTicketItem implements ITicketItem {
 	}
 
 	public MenuItem getMenuItem() {
-		if(menuItem == null) {
+		if (menuItem == null) {
 			menuItem = MenuItemDAO.getInstance().loadInitialized(getItemId());
 		}
-		
+
 		return menuItem;
 	}
 

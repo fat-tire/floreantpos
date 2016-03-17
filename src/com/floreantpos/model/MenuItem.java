@@ -187,6 +187,7 @@ public class MenuItem extends BaseMenuItem {
 
 		if (this.isFractionalUnit()) {
 			ticketItem.setItemQuantity(itemQuantity);
+			ticketItem.setItemUnitName(this.getUnitName());
 		}
 		else {
 			ticketItem.setItemCount(1);

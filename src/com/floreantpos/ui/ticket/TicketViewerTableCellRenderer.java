@@ -29,7 +29,7 @@ import com.floreantpos.util.NumberUtil;
 
 public class TicketViewerTableCellRenderer extends DefaultTableCellRenderer {
 	private boolean inTicketScreen = false;
-	
+
 	public TicketViewerTableCellRenderer() {
 		super();
 	}
@@ -41,19 +41,33 @@ public class TicketViewerTableCellRenderer extends DefaultTableCellRenderer {
 		TicketViewerTableModel model = (TicketViewerTableModel) table.getModel();
 		Object object = model.get(row);
 
+		String text = value.toString();
+
+		if (column == 0) {
+			setHorizontalAlignment(SwingConstants.LEFT);
+		}
+		else {
+
+			if (value instanceof Double || value instanceof Float) {
+				text = NumberUtil.formatNumber(((java.lang.Number) value).doubleValue());
+				setHorizontalAlignment(SwingConstants.RIGHT);
+			}
+		}
+		setText(text);
+
 		if (!inTicketScreen || isSelected) {
 			return rendererComponent;
 		}
-		
-//		if (object instanceof TicketItemModifier) {
-//			TicketItemModifier modifier = (TicketItemModifier) object;
-//			if (modifier.getModifierType() == TicketItemModifier.EXTRA_MODIFIER) {
-//				rendererComponent.setForeground(Color.red);
-//			}
-//			else {
-//				rendererComponent.setForeground(Color.black);
-//			}
-//		}
+
+		//		if (object instanceof TicketItemModifier) {
+		//			TicketItemModifier modifier = (TicketItemModifier) object;
+		//			if (modifier.getModifierType() == TicketItemModifier.EXTRA_MODIFIER) {
+		//				rendererComponent.setForeground(Color.red);
+		//			}
+		//			else {
+		//				rendererComponent.setForeground(Color.black);
+		//			}
+		//		}
 
 		rendererComponent.setBackground(Color.WHITE);
 
@@ -65,30 +79,6 @@ public class TicketViewerTableCellRenderer extends DefaultTableCellRenderer {
 		}
 
 		return rendererComponent;
-	}
-
-	@Override
-	protected void setValue(Object value) {
-		if (value == null) {
-			setText(""); //$NON-NLS-1$
-			return;
-		}
-
-		String text = value.toString();
-
-		if (value instanceof Double || value instanceof Float) {
-			text = NumberUtil.formatNumber(((java.lang.Number) value).doubleValue());
-			setHorizontalAlignment(SwingConstants.RIGHT);
-		}
-		else if (value instanceof Integer) {
-			setHorizontalAlignment(SwingConstants.RIGHT);
-		}
-		else {
-			setHorizontalAlignment(SwingConstants.LEFT);
-		}
-
-		//setText(" " + text + " ");
-		setText(text);
 	}
 
 	public boolean isInTicketScreen() {
