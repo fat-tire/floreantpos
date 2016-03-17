@@ -131,6 +131,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 	private javax.swing.JPanel tabModifier;
 	private javax.swing.JPanel tabShift;
 	private javax.swing.JPanel tabPrice;
+	private javax.swing.JPanel tabButtonStyle;
 	private javax.swing.JScrollPane jScrollPane1;
 	private javax.swing.JScrollPane jScrollPane2;
 	private javax.swing.JScrollPane jScrollPane3;
@@ -245,10 +246,10 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 	 */
 	// <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:initComponents
 	private void initComponents() {
-		lblStockCount=new JLabel("Stock Amount");
-		tfStockCount=new DoubleTextField(1);
-		cbDisableStockCount=new JCheckBox("Disable item on empty stock");
-		lblButtonColor = new JLabel("Button Color");
+		lblStockCount = new JLabel(Messages.getString("MenuItemForm.17")); //$NON-NLS-1$
+		tfStockCount = new DoubleTextField(1);
+		cbDisableStockCount = new JCheckBox(Messages.getString("MenuItemForm.18")); //$NON-NLS-1$
+		lblButtonColor = new JLabel(Messages.getString("MenuItemForm.19")); //$NON-NLS-1$
 		tabbedPane = new javax.swing.JTabbedPane();
 		tabGeneral = new javax.swing.JPanel();
 		lfname = new javax.swing.JLabel();
@@ -263,8 +264,9 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		lblPrice.setHorizontalAlignment(SwingConstants.TRAILING);
 		tfPrice = new DoubleTextField(20);
 		tfPrice.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-		tfDescription = new JTextArea(3, 20);
-		tfDescription.setDocument(new FixedLengthDocument(120));
+		tfDescription = new JTextArea(new FixedLengthDocument(120));
+
+		//tfDescription.setDocument(;
 		tfUnitName = new FixedLengthTextField(20);
 		lTax = new javax.swing.JLabel();
 		lTax.setHorizontalAlignment(SwingConstants.TRAILING);
@@ -284,6 +286,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		tableTicketItemModifierGroups = new javax.swing.JTable();
 		tabShift = new javax.swing.JPanel();
 		tabPrice = new javax.swing.JPanel();
+		tabButtonStyle = new javax.swing.JPanel();
 		btnDeleteShift = new javax.swing.JButton();
 		btnAddShift = new javax.swing.JButton();
 		btnNewPrice = new javax.swing.JButton();
@@ -302,7 +305,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		tfTranslatedName = new FixedLengthTextField(20);
 		tfTranslatedName.setLength(120);
 
-		lblUnitName = new JLabel("Unit Name");
+		lblUnitName = new JLabel(Messages.getString("MenuItemForm.23")); //$NON-NLS-1$
 		lblKitchenPrinter = new JLabel(Messages.getString("MenuItemForm.27")); //$NON-NLS-1$
 		lgroup.setText(Messages.getString("LABEL_GROUP")); //$NON-NLS-1$
 		lfname.setText(Messages.getString("LABEL_NAME")); //$NON-NLS-1$
@@ -327,7 +330,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		cbShowTextWithImage.setActionCommand(Messages.getString("MenuItemForm.41")); //$NON-NLS-1$
 		lTax.setText(Messages.getString("LABEL_TAX")); //$NON-NLS-1$
 		btnNewTax.setText("..."); //$NON-NLS-1$
-		cbFractionalUnit = new JCheckBox("Fractional unit");
+		cbFractionalUnit = new JCheckBox(Messages.getString("MenuItemForm.24")); //$NON-NLS-1$
 
 		btnNewGroup.setText("..."); //$NON-NLS-1$
 		btnNewGroup.addActionListener(new java.awt.event.ActionListener() {
@@ -389,8 +392,8 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 
 		tfDiscountRate.setDocument(new DoubleDocument());
 
-		tabGeneral.setLayout(new MigLayout("", "[][]20px[][]", "[][][][][][][][][][][][]")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		JLabel lblImage = new JLabel(Messages.getString("MenuItemForm.28")); //$NON-NLS-1$
+		tabGeneral.setLayout(new MigLayout("insets 20", "[][]20px[][]", "[][][][][][][][][][][][]")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		/*JLabel lblImage = new JLabel(Messages.getString("MenuItemForm.28")); //$NON-NLS-1$
 		lblImage.setHorizontalAlignment(SwingConstants.TRAILING);
 		tabGeneral.add(lblImage, "cell 0 0,right"); //$NON-NLS-1$
 
@@ -415,36 +418,36 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 			}
 		});
 		tabGeneral.add(btnClearImage, "cell 1 0"); //$NON-NLS-1$
-		tabGeneral.add(lfname, "cell 0 1 ,right"); //$NON-NLS-1$
+		*/tabGeneral.add(lfname, "cell 0 1 ,right"); //$NON-NLS-1$
 		tabGeneral.add(tfName, "cell 1 1,grow"); //$NON-NLS-1$
 
 		tabGeneral.add(lblTranslatedName, "cell 0 2,right"); //$NON-NLS-1$
 		tabGeneral.add(tfTranslatedName, "cell 1 2,grow"); //$NON-NLS-1$
 
-		tabGeneral.add(new JLabel("Description"), "cell 0 3,right");
+		/*tabGeneral.add(new JLabel("Description"), "cell 0 3,right");
 		JScrollPane scrlDescription = new JScrollPane(tfDescription, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		tabGeneral.add(scrlDescription, "cell 1 3");
+		tabGeneral.add(scrlDescription, "cell 1 3");*/
 
-		tabGeneral.add(lblUnitName, "cell 0 4,right"); //$NON-NLS-1$
-		tabGeneral.add(tfUnitName, "cell 1 4,grow"); //$NON-NLS-1$
+		tabGeneral.add(lblUnitName, "cell 0 3,right"); //$NON-NLS-1$
+		tabGeneral.add(tfUnitName, "cell 1 3,grow"); //$NON-NLS-1$
 
-		tabGeneral.add(lblPrice, "cell 0 5,right"); //$NON-NLS-1$
-		tabGeneral.add(tfPrice, "cell 1 5,grow"); //$NON-NLS-1$
+		tabGeneral.add(lblPrice, "cell 0 4,right"); //$NON-NLS-1$
+		tabGeneral.add(tfPrice, "cell 1 4,grow"); //$NON-NLS-1$
 
-		tabGeneral.add(lgroup, "cell 0 6,right"); //$NON-NLS-1$
-		tabGeneral.add(cbGroup, "cell 1 6"); //$NON-NLS-1$
-		tabGeneral.add(btnNewGroup, "cell 1 6"); //$NON-NLS-1$
+		tabGeneral.add(lgroup, "cell 0 5,right"); //$NON-NLS-1$
+		tabGeneral.add(cbGroup, "cell 1 5"); //$NON-NLS-1$
+		tabGeneral.add(btnNewGroup, "cell 1 5"); //$NON-NLS-1$
 
-		tabGeneral.add(lblBarcode, "cell 0 7,right"); //$NON-NLS-1$
-		tabGeneral.add(tfBarcode, "cell 1 7,grow"); //$NON-NLS-1$
-		
-		tabGeneral.add(lblStockCount, "cell 0 8,right"); //$NON-NLS-1$
-		tabGeneral.add(tfStockCount, "cell 1 8,grow"); //$NON-NLS-1$
+		tabGeneral.add(lblBarcode, "cell 0 6,right"); //$NON-NLS-1$
+		tabGeneral.add(tfBarcode, "cell 1 6,grow"); //$NON-NLS-1$
 
-		tabGeneral.add(cbShowTextWithImage, "cell 1 9"); //$NON-NLS-1$
-		tabGeneral.add(chkVisible, "cell 1 10"); //$NON-NLS-1$
-		tabGeneral.add(cbFractionalUnit, "cell 1 11"); //$NON-NLS-1$
-		tabGeneral.add(cbDisableStockCount, "cell 1 12"); //$NON-NLS-1$
+		tabGeneral.add(lblStockCount, "cell 0 7,right"); //$NON-NLS-1$
+		tabGeneral.add(tfStockCount, "cell 1 7,grow"); //$NON-NLS-1$
+
+		//tabGeneral.add(cbShowTextWithImage, "cell 1 8"); //$NON-NLS-1$
+		tabGeneral.add(chkVisible, "cell 1 8"); //$NON-NLS-1$
+		tabGeneral.add(cbFractionalUnit, "cell 1 9"); //$NON-NLS-1$
+		tabGeneral.add(cbDisableStockCount, "cell 1 10"); //$NON-NLS-1$
 
 		// right side
 
@@ -455,14 +458,14 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		tabGeneral.add(cbTax, "cell 3 2"); //$NON-NLS-1$
 		tabGeneral.add(btnNewTax, "cell 3 2,grow"); //$NON-NLS-1$
 
-		tabGeneral.add(lblButtonColor, "cell 2 3,right"); //$NON-NLS-1$
+		/*tabGeneral.add(lblButtonColor, "cell 2 3,right"); //$NON-NLS-1$
 		tabGeneral.add(btnButtonColor, "cell 3 3,grow"); //$NON-NLS-1$
 
 		tabGeneral.add(lblTextColor, "cell 2 4,right"); //$NON-NLS-1$
 		tabGeneral.add(btnTextColor, "cell 3 4 3 5"); //$NON-NLS-1$
-		btnTextColor.setPreferredSize(new Dimension(228, 50));
+		btnTextColor.setPreferredSize(new Dimension(228, 50));*/
 
-		tabGeneral.add(new JLabel("OrderType"), "cell 2 6,right"); //$NON-NLS-1$
+		tabGeneral.add(new JLabel(Messages.getString("MenuItemForm.25")), "cell 2 3,right"); //$NON-NLS-1$ //$NON-NLS-2$
 		orderList = new CheckBoxList();
 
 		List<String> orderListM = new ArrayList();
@@ -485,13 +488,18 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 
 		JScrollPane orderCheckBoxList = new JScrollPane(orderList);
 		orderCheckBoxList.setPreferredSize(new Dimension(228, 100));
-		tabGeneral.add(orderCheckBoxList, "cell 3 6 3 10"); //$NON-NLS-1$
+		tabGeneral.add(orderCheckBoxList, "cell 3 3 3 7"); //$NON-NLS-1$
+
+		tabGeneral.add(new JLabel(Messages.getString("MenuItemForm.29")), "cell 2 7,right"); //$NON-NLS-1$ //$NON-NLS-2$
+		JScrollPane scrlDescription = new JScrollPane(tfDescription, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		scrlDescription.setPreferredSize(new Dimension(228, 70));
+		tabGeneral.add(scrlDescription, "cell 3 7 3 10"); //$NON-NLS-1$
 
 		add(tabbedPane);
 		//TODO: 
 		addRecepieExtension();
 
-		btnButtonColor.addActionListener(new ActionListener() {
+		/*btnButtonColor.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				Color color = JColorChooser.showDialog(MenuItemForm.this, Messages.getString("MenuItemForm.42"), btnButtonColor.getBackground()); //$NON-NLS-1$
@@ -506,7 +514,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 				Color color = JColorChooser.showDialog(MenuItemForm.this, Messages.getString("MenuItemForm.43"), btnTextColor.getForeground()); //$NON-NLS-1$
 				btnTextColor.setForeground(color);
 			}
-		});
+		});*/
 
 		jScrollPane1.setViewportView(tableTicketItemModifierGroups);
 
@@ -631,6 +639,77 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		//
 
 		tabbedPane.addChangeListener(this);
+		//
+
+		tabButtonStyle.setLayout(new MigLayout("insets 10", "[][]100[][][][]", "[][][center][][][]")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+
+		JLabel lblImage = new JLabel(Messages.getString("MenuItemForm.28")); //$NON-NLS-1$
+		lblImage.setHorizontalAlignment(SwingConstants.TRAILING);
+		tabButtonStyle.add(lblImage, "cell 0 0,right"); //$NON-NLS-1$
+		
+		
+		lblImagePreview = new JLabel(""); //$NON-NLS-1$
+		lblImagePreview.setHorizontalAlignment(JLabel.CENTER);
+		lblImagePreview.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+		lblImagePreview.setPreferredSize(new Dimension(100, 100));
+		tabButtonStyle.add(lblImagePreview, "cell 1 0"); //$NON-NLS-1$
+
+		JButton btnSelectImage = new JButton("..."); //$NON-NLS-1$
+		btnClearImage = new JButton(Messages.getString("MenuItemForm.34")); //$NON-NLS-1$
+		tabButtonStyle.add(btnClearImage, "cell  1 0"); //$NON-NLS-1$
+		tabButtonStyle.add(btnSelectImage, "cell 1 0"); //$NON-NLS-1$
+		
+		
+		tabButtonStyle.add(lblButtonColor, "cell 0 2,right"); //$NON-NLS-1$
+		tabButtonStyle.add(btnButtonColor, "cell 1 2,grow"); //$NON-NLS-1$
+		tabButtonStyle.add(lblTextColor, "cell 0 3,right"); //$NON-NLS-1$
+		tabButtonStyle.add(btnTextColor, "cell 1 3"); //$NON-NLS-1$
+		tabButtonStyle.add(cbShowTextWithImage, "cell 1 4"); //$NON-NLS-1$
+		
+		
+	/*	tabButtonStyle.add(lblImagePreview, "cell 3 0 3 4"); //$NON-NLS-1$
+		tabButtonStyle.add(btnClearImage, "cell 3 0,gaptop 40"); //$NON-NLS-1$
+		tabButtonStyle.add(btnSelectImage, "cell 3 0,gaptop 40"); //$NON-NLS-1$
+		tabButtonStyle.add(lblImage, "cell 2 0,gaptop 40"); //$NON-NLS-1$
+		tabButtonStyle.add(lblButtonColor, "cell 0 0,right"); //$NON-NLS-1$
+		tabButtonStyle.add(btnButtonColor, "cell 1 0,grow"); //$NON-NLS-1$
+		tabButtonStyle.add(lblTextColor, "cell 0 1,right"); //$NON-NLS-1$
+		tabButtonStyle.add(btnTextColor, "cell 1 1"); //$NON-NLS-1$
+*/		
+		btnTextColor.setPreferredSize(new Dimension(228, 50));
+		
+		
+		btnSelectImage.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				doSelectImageFile();
+			}
+		});
+
+		btnClearImage.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				doClearImage();
+			}
+		});
+
+		btnButtonColor.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Color color = JColorChooser.showDialog(MenuItemForm.this, Messages.getString("MenuItemForm.42"), btnButtonColor.getBackground()); //$NON-NLS-1$
+				btnButtonColor.setBackground(color);
+				btnTextColor.setBackground(color);
+			}
+		});
+
+		btnTextColor.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Color color = JColorChooser.showDialog(MenuItemForm.this, Messages.getString("MenuItemForm.43"), btnTextColor.getForeground()); //$NON-NLS-1$
+				btnTextColor.setForeground(color);
+			}
+		});
+
+		tabbedPane.addTab(Messages.getString("MenuItemForm.26"), tabButtonStyle); //$NON-NLS-1$
+
 	}// </editor-fold>//GEN-END:initComponents
 
 	private void btnNewTaxdoCreateNewTax(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewTaxdoCreateNewTax
@@ -1101,11 +1180,11 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 			switch (columnIndex) {
 
 				case 0:
-					return menuItem.getStringWithOutUnderScore(key, "_PRICE");
+					return menuItem.getStringWithOutUnderScore(key, "_PRICE"); //$NON-NLS-1$
 				case 1:
 					return menuItem.getProperty(key);
 				case 2:
-					return menuItem.getProperty(menuItem.replaceString(key, "_PRICE", "_TAX"));
+					return menuItem.getProperty(menuItem.replaceString(key, "_PRICE", "_TAX")); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 			return null;
 		}

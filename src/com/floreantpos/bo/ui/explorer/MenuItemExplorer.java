@@ -69,6 +69,7 @@ public class MenuItemExplorer extends TransparentPanel {
 		tableModel.addColumn(POSConstants.NAME.toUpperCase(), "name"); //$NON-NLS-1$
 		tableModel.addColumn(POSConstants.TRANSLATED_NAME.toUpperCase(), "translatedName"); //$NON-NLS-1$
 		tableModel.addColumn(POSConstants.PRICE.toUpperCase() + " (" + Application.getCurrencySymbol() + ")", "price"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		tableModel.addColumn(POSConstants.STOCK_AMOUNT.toUpperCase(), "stockAmount"); //$NON-NLS-1$
 		tableModel.addColumn(POSConstants.VISIBLE.toUpperCase(), "visible"); //$NON-NLS-1$
 		tableModel.addColumn(POSConstants.FOOD_GROUP.toUpperCase(), "parent"); //$NON-NLS-1$
 		tableModel.addColumn(POSConstants.TAX.toUpperCase(), "tax"); //$NON-NLS-1$
@@ -97,11 +98,11 @@ public class MenuItemExplorer extends TransparentPanel {
 		JPanel panel = new JPanel();
 		panel.setLayout(new MigLayout("", "[][]30[][]30[][]30[]", "[]20[]")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
-		JLabel lblOrderType = new JLabel("Order Type");
+		JLabel lblOrderType = new JLabel(Messages.getString("MenuItemExplorer.4")); //$NON-NLS-1$
 		cbOrderTypes = new JComboBox();
 
-		cbOrderTypes.addItem("Select Order Type");
-		
+		cbOrderTypes.addItem("Select Order Type"); //$NON-NLS-1$
+
 		List<OrderType> orderTypes = Application.getInstance().getOrderTypes();
 		for (OrderType orderType : orderTypes) {
 			cbOrderTypes.addItem(orderType.getName());
@@ -179,6 +180,51 @@ public class MenuItemExplorer extends TransparentPanel {
 		JButton addButton = explorerButton.getAddButton();
 		JButton deleteButton = explorerButton.getDeleteButton();
 
+		JButton updateStockAmount = new JButton(Messages.getString("MenuItemExplorer.6")); //$NON-NLS-1$
+
+		updateStockAmount.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				try {
+
+					int index = table.getSelectedRow();
+
+					if (index < 0) {
+						POSMessageDialog.showMessage(MenuItemExplorer.this, Messages.getString("MenuItemExplorer.7")); //$NON-NLS-1$
+						return;
+					}
+
+					MenuItem menuItem = tableModel.getRow(index);
+
+					String amountString = JOptionPane.showInputDialog(MenuItemExplorer.this, Messages.getString("MenuItemExplorer.8"), menuItem.getStockAmount()); //$NON-NLS-1$
+
+					if (amountString == null || amountString.equals("")) { //$NON-NLS-1$
+						return;
+					}
+
+					double stockAmount = Double.parseDouble(amountString);
+
+					if (stockAmount < 0) {
+						POSMessageDialog.showError(MenuItemExplorer.this, Messages.getString("MenuItemExplorer.10")); //$NON-NLS-1$
+						return;
+					}
+
+					menuItem.setStockAmount(stockAmount);
+					MenuItemDAO.getInstance().saveOrUpdate(menuItem);
+					table.repaint();
+
+				} catch (NumberFormatException e1) {
+					POSMessageDialog.showError(MenuItemExplorer.this, Messages.getString("MenuItemExplorer.11")); //$NON-NLS-1$
+					return;
+				} catch (Exception e2) {
+					BOMessageDialog.showError(MenuItemExplorer.this, POSConstants.ERROR_MESSAGE, e2);
+					return;
+				}
+			}
+		});
+
 		editButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -220,7 +266,7 @@ public class MenuItemExplorer extends TransparentPanel {
 
 					String selectedType = cbOrderTypes.getSelectedItem().toString();
 
-					if (!selectedType.equals("Select Order Type")) {
+					if (!selectedType.equals("Select Order Type")) { //$NON-NLS-1$
 						List types = new ArrayList();
 						types.add(selectedType);
 
@@ -277,6 +323,7 @@ public class MenuItemExplorer extends TransparentPanel {
 		TransparentPanel panel = new TransparentPanel();
 		panel.add(addButton);
 		panel.add(editButton);
+		panel.add(updateStockAmount);
 		panel.add(deleteButton);
 		return panel;
 	}

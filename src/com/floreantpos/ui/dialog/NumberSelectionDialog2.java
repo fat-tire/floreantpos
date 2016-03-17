@@ -45,6 +45,7 @@ public class NumberSelectionDialog2 extends POSDialog implements ActionListener 
 
 	private boolean floatingPoint;
 	private PosButton posButton_1;
+	private boolean clearPreviousNumber = true;
 
 	public NumberSelectionDialog2() {
 		init();
@@ -155,6 +156,12 @@ public class NumberSelectionDialog2 extends POSDialog implements ActionListener 
 	}
 
 	private void doInsertNumber(String number) {
+
+		if (clearPreviousNumber) {
+			tfNumber.setText("0"); //$NON-NLS-1$
+			clearPreviousNumber = false;
+		}
+
 		String s = tfNumber.getText();
 		double d = 0;
 
@@ -208,7 +215,6 @@ public class NumberSelectionDialog2 extends POSDialog implements ActionListener 
 		else {
 			doInsertNumber(actionCommand);
 		}
-
 	}
 
 	private boolean validate(String str) {
@@ -321,7 +327,7 @@ public class NumberSelectionDialog2 extends POSDialog implements ActionListener 
 
 		return dialog.getValue();
 	}
-
+	
 	public static double show(Component parent, String title, double initialAmount) {
 		NumberSelectionDialog2 dialog2 = new NumberSelectionDialog2();
 		dialog2.setFloatingPoint(true);

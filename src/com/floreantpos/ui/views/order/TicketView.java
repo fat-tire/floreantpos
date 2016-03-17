@@ -208,11 +208,15 @@ public class TicketView extends JPanel {
 
 		MenuItem menuItem = MenuItemDAO.getInstance().get(itemId);
 
-		if (menuItem == null || menuItem.getStockAmount() <= 0) {
+		if (menuItem == null) {
 			return false;
 		}
 
 		if (!filterByOrderType(menuItem)) {
+			return false;
+		}
+
+		if (!filterByStockAmount(menuItem)) {
 			return false;
 		}
 
@@ -226,11 +230,15 @@ public class TicketView extends JPanel {
 
 		MenuItem menuItem = dao.getMenuItemByBarcode(barcode);
 
-		if (menuItem == null || menuItem.getStockAmount() <= 0) {
+		if (menuItem == null) {
 			return false;
 		}
 
 		if (!filterByOrderType(menuItem)) {
+			return false;
+		}
+
+		if (!filterByStockAmount(menuItem)) {
 			return false;
 		}
 
@@ -250,6 +258,14 @@ public class TicketView extends JPanel {
 			return true;
 		}
 		return false;
+	}
+
+	private boolean filterByStockAmount(MenuItem menuItem) {
+		if (menuItem.isDisableWhenStockAmountIsZero() && menuItem.getStockAmount() <= 0) {
+			POSMessageDialog.showError("Items are not available in stock");
+			return false;
+		}
+		return true;
 	}
 
 	private void createPayButton() {

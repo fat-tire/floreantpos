@@ -257,7 +257,7 @@ public class POSConstants {
 	public static final String SELECT_SHIFT = Messages.getString("PosMessage.172"); //$NON-NLS-1$
 	public static final String PRINT_RECEIPT_WHEN_TICKET_SETTLED = Messages.getString("PosMessage.173"); //$NON-NLS-1$
 	public static final String CANCEL = Messages.getString("PosMessage.174"); //$NON-NLS-1$
-	public static final String PRINT_TICKET = "PRINT";
+	public static final String PRINT_TICKET = Messages.getString("POSConstants.0"); //$NON-NLS-1$
 	public static final String TICKET_IS_EMPTY_ = Messages.getString("PosMessage.175"); //$NON-NLS-1$
 	public static final String MENU_ITEMS = Messages.getString("PosMessage.176"); //$NON-NLS-1$
 	public static final String DATE_TIME = Messages.getString("PosMessage.177"); //$NON-NLS-1$
@@ -287,6 +287,7 @@ public class POSConstants {
 	public static final String EXPLORERS = Messages.getString("PosMessage.196"); //$NON-NLS-1$
 	public static final String TOTAL_GRATUITY = Messages.getString("PosMessage.197"); //$NON-NLS-1$
 	public static final String PRICE = Messages.getString("PosMessage.198"); //$NON-NLS-1$
+	public static final String STOCK_AMOUNT =Messages.getString("POSConstants.1"); //$NON-NLS-1$
 	public static final String SRV_ = Messages.getString("PosMessage.199"); //$NON-NLS-1$
 	public static final String MISC_ITEM = Messages.getString("PosMessage.200"); //$NON-NLS-1$
 	public static final String TABLE_NUMBER = Messages.getString("PosMessage.201"); //$NON-NLS-1$
