@@ -377,7 +377,12 @@ public class TicketView extends JPanel {
 	}
 
 	public synchronized void doHoldOrder() {// GEN-FIRST:event_doFinishOrder
-		saveTicketIfNeeded();
+		updateModel();
+
+		TicketDAO ticketDAO = TicketDAO.getInstance();
+		OrderController.saveOrder(ticket);
+		ticketDAO.refresh(ticket);
+
 		closeView(false);
 	}// GEN-LAST:event_doFinishOrder
 
