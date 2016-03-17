@@ -230,13 +230,13 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 		lblTicket.setText(Messages.getString("SettleTicketDialog.0")); //$NON-NLS-1$
 
 		JLabel labelTicketNumber = new JLabel();
-		labelTicketNumber.setText(String.valueOf(ticket.getId()));
+		labelTicketNumber.setText("["+String.valueOf(ticket.getId())+"]"); //$NON-NLS-1$ //$NON-NLS-2$
 
 		JLabel lblTable = new javax.swing.JLabel();
-		lblTable.setText(Messages.getString("SettleTicketDialog.1")); //$NON-NLS-1$
+		lblTable.setText(Messages.getString("SettleTicketDialog.3")); //$NON-NLS-1$
 
 		JLabel labelTableNumber = new JLabel();
-		labelTableNumber.setText(getTableNumbers(ticket.getTableNumbers()));
+		labelTableNumber.setText("["+getTableNumbers(ticket.getTableNumbers())+"]"); //$NON-NLS-1$ //$NON-NLS-2$
 
 		if (ticket.getTableNumbers().isEmpty()) {
 			labelTableNumber.setVisible(false);
@@ -244,7 +244,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 		}
 
 		JLabel lblCustomer = new javax.swing.JLabel();
-		lblCustomer.setText(Messages.getString("SettleTicketDialog.2")); //$NON-NLS-1$
+		lblCustomer.setText(Messages.getString("SettleTicketDialog.10")); //$NON-NLS-1$
 
 		JLabel labelCustomer = new JLabel();
 		labelCustomer.setText(ticket.getProperty(Ticket.CUSTOMER_NAME));
@@ -254,14 +254,14 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 			lblCustomer.setVisible(false);
 		}
 
-		JPanel ticketInfoPanel = new com.floreantpos.swing.TransparentPanel(new MigLayout("wrap 2,fill, hidemode 3", "[][grow]", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		JPanel ticketInfoPanel = new com.floreantpos.swing.TransparentPanel(new MigLayout("hidemode 3,insets 0", "[]0[]0[]0[]0[]0[]", "[]")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 		ticketInfoPanel.add(lblTicket);
-		ticketInfoPanel.add(labelTicketNumber, "grow"); //$NON-NLS-1$
+		ticketInfoPanel.add(labelTicketNumber);
 		ticketInfoPanel.add(lblTable);
-		ticketInfoPanel.add(labelTableNumber, "grow"); //$NON-NLS-1$
+		ticketInfoPanel.add(labelTableNumber);
 		ticketInfoPanel.add(lblCustomer);
-		ticketInfoPanel.add(labelCustomer, "grow"); //$NON-NLS-1$
+		ticketInfoPanel.add(labelCustomer);
 
 		return ticketInfoPanel;
 	}
