@@ -65,7 +65,6 @@ import com.floreantpos.bo.actions.SalesReportAction;
 import com.floreantpos.bo.actions.ServerProductivityReportAction;
 import com.floreantpos.bo.actions.ShiftExplorerAction;
 import com.floreantpos.bo.actions.TaxExplorerAction;
-import com.floreantpos.bo.actions.TicketExplorerAction;
 import com.floreantpos.bo.actions.UserExplorerAction;
 import com.floreantpos.bo.actions.UserTypeExplorerAction;
 import com.floreantpos.bo.actions.ViewGratuitiesAction;
@@ -212,7 +211,7 @@ public class BackOfficeWindow extends javax.swing.JFrame {
 		explorerMenu.add(new TaxExplorerAction());
 		explorerMenu.add(new CustomPaymentBrowserAction());
 		explorerMenu.add(new DrawerPullReportExplorerAction());
-		explorerMenu.add(new TicketExplorerAction());
+		//explorerMenu.add(new TicketExplorerAction());
 		
 
 		OrderServiceExtension plugin = (OrderServiceExtension) ExtensionManager.getPlugin(OrderServiceExtension.class);
