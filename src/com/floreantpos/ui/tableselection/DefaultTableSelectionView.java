@@ -68,6 +68,7 @@ import com.jidesoft.swing.JideScrollPane;
 public class DefaultTableSelectionView extends TableSelector implements ActionListener {
 
 	private DefaultListModel<ShopTableButton> addedTableListModel = new DefaultListModel<ShopTableButton>();
+	private DefaultListModel<ShopTableButton> removeTableListModel = new DefaultListModel<ShopTableButton>();
 	private Map<ShopTable, ShopTableButton> tableButtonMap = new HashMap<ShopTable, ShopTableButton>();
 
 	private ScrollableFlowPanel buttonsPanel;
@@ -151,8 +152,8 @@ public class DefaultTableSelectionView extends TableSelector implements ActionLi
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				clearSelection();
 				redererTables();
-				btnGroups.clearSelection();
 			}
 		});
 		rightPanel.add(btnRefresh, BorderLayout.SOUTH);
@@ -163,8 +164,6 @@ public class DefaultTableSelectionView extends TableSelector implements ActionLi
 
 	public synchronized void redererTables() {
 		clearSelection();
-
-		addedTableListModel.clear();
 		buttonsPanel.getContentPane().removeAll();
 
 		checkTables();
@@ -199,6 +198,13 @@ public class DefaultTableSelectionView extends TableSelector implements ActionLi
 				if (ticket.getTableNumbers().contains(shopTableButton.getId())) {
 					shopTableButton.setText("<html><center>" + shopTableButton.getText() + "<br><h4>" + ticket.getOwner().getFirstName() + "<br>Chk#" //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 							+ ticket.getId() + "</h4></center></html>"); //$NON-NLS-1$
+					if (!ticket.getOwner().getUserId().toString().equals(Application.getCurrentUser().getUserId().toString())) {
+						shopTableButton.setBackground(new Color(139, 0, 139));
+					}
+					shopTableButton.setForeground(Color.white);
+					if (addedTableListModel.contains(shopTableButton)) {
+						shopTableButton.setBackground(Color.GREEN);
+					}
 					shopTableButton.setTicket(ticket);
 					shopTableButton.setUser(ticket.getOwner());
 				}
@@ -234,7 +240,7 @@ public class DefaultTableSelectionView extends TableSelector implements ActionLi
 		}
 
 		if (btnUnGroup.isSelected()) {
-			if (addedTableListModel.contains(button)) {
+			if (removeTableListModel.contains(button)) {
 				return true;
 			}
 			Ticket ticket = button.getTicket();
@@ -244,7 +250,7 @@ public class DefaultTableSelectionView extends TableSelector implements ActionLi
 
 			int ticketId = ticket.getId();
 
-			Enumeration<ShopTableButton> elements = addedTableListModel.elements();
+			Enumeration<ShopTableButton> elements = removeTableListModel.elements();
 			while (elements.hasMoreElements()) {
 				ShopTableButton shopTableButton = (ShopTableButton) elements.nextElement();
 				if (shopTableButton.getTicket().getId() != ticketId) {
@@ -252,14 +258,14 @@ public class DefaultTableSelectionView extends TableSelector implements ActionLi
 				}
 			}
 
-			if (addedTableListModel.size() >= ticket.getTableNumbers().size() - 1) {
+			if (removeTableListModel.size() >= ticket.getTableNumbers().size() - 1) {
 				return false;
 			}
 
 			button.getShopTable().setServing(true);
-			button.setBackground(Color.green);
+			button.setBackground(Color.white);
 			button.setForeground(Color.black);
-			this.addedTableListModel.addElement(button);
+			this.removeTableListModel.addElement(button);
 			return false;
 		}
 
@@ -269,11 +275,14 @@ public class DefaultTableSelectionView extends TableSelector implements ActionLi
 			}
 			if (isCreateNewTicket()) {
 				editTicket(button.getTicket());
+				closeDialog();
 			}
+
 			return false;
 		}
 
 		if (!btnGroup.isSelected() && !btnGroup.isSelected()) {
+			addedTableListModel.clear();
 			if (!addedTableListModel.contains(button)) {
 				addedTableListModel.addElement(button);
 			}
@@ -281,8 +290,17 @@ public class DefaultTableSelectionView extends TableSelector implements ActionLi
 			if (isCreateNewTicket()) {
 				doCreateNewTicket();
 			}
+			closeDialog();
 		}
 		return true;
+	}
+
+	private void closeDialog() {
+		Window windowAncestor = SwingUtilities.getWindowAncestor(DefaultTableSelectionView.this);
+		if (windowAncestor instanceof POSDialog) {
+			((POSDialog) windowAncestor).setCanceled(false);
+			windowAncestor.dispose();
+		}
 	}
 
 	@Override
@@ -299,6 +317,10 @@ public class DefaultTableSelectionView extends TableSelector implements ActionLi
 	}
 
 	private void clearSelection() {
+		if (isCreateNewTicket()) {
+			addedTableListModel.clear();
+		}
+		removeTableListModel.clear();
 		btnGroups.clearSelection();
 		btnGroup.setVisible(true);
 		btnUnGroup.setVisible(true);
@@ -310,29 +332,23 @@ public class DefaultTableSelectionView extends TableSelector implements ActionLi
 	public void actionPerformed(ActionEvent e) {
 		Object object = e.getSource();
 		if (object == btnGroup) {
-			addedTableListModel.clear();
+			if (isCreateNewTicket()) {
+				addedTableListModel.clear();
+			}
 			btnUnGroup.setVisible(false);
 			btnDone.setVisible(true);
 			btnCancel.setVisible(true);
 		}
 		else if (object == btnUnGroup) {
-			addedTableListModel.clear();
+			removeTableListModel.clear();
 			btnGroup.setVisible(false);
 			btnDone.setVisible(true);
 			btnCancel.setVisible(true);
 		}
 		else if (object == btnDone) {
 			if (btnGroup.isSelected()) {
-				if (isCreateNewTicket()) {
-					doGroupAction();
-					clearSelection();
-				}
-				else {
-					Window windowAncestor = SwingUtilities.getWindowAncestor(DefaultTableSelectionView.this);
-					if (windowAncestor instanceof POSDialog) {
-						windowAncestor.dispose();
-					}
-				}
+				doGroupAction();
+				clearSelection();
 			}
 			else if (btnUnGroup.isSelected()) {
 				doUnGroupAction();
@@ -341,23 +357,17 @@ public class DefaultTableSelectionView extends TableSelector implements ActionLi
 		}
 		else if (object == btnCancel) {
 			clearSelection();
+			redererTables();
 		}
-
 	}
 
 	private void doCreateNewTicket() {
 		try {
 			List<ShopTable> selectedTables = getSelectedTables();
 
-			Window windowAncestor = SwingUtilities.getWindowAncestor(DefaultTableSelectionView.this);
-			if (windowAncestor instanceof POSDialog) {
-				windowAncestor.dispose();
-			}
-			else {
-				if (selectedTables.isEmpty()) {
-					clearSelection();
-					return;
-				}
+			if (selectedTables.isEmpty()) {
+				clearSelection();
+				return;
 			}
 
 			OrderServiceFactory.getOrderService().createNewTicket(getOrderType(), selectedTables);
@@ -374,10 +384,8 @@ public class DefaultTableSelectionView extends TableSelector implements ActionLi
 			return false;
 
 		}
-		Window windowAncestor = SwingUtilities.getWindowAncestor(DefaultTableSelectionView.this);
-		if (windowAncestor instanceof POSDialog) {
-			windowAncestor.dispose();
-		}
+		closeDialog();
+
 		Ticket ticketToEdit = TicketDAO.getInstance().loadFullTicket(ticket.getId());
 
 		OrderView.getInstance().setCurrentTicket(ticketToEdit);
@@ -390,20 +398,24 @@ public class DefaultTableSelectionView extends TableSelector implements ActionLi
 		if (isCreateNewTicket()) {
 			doCreateNewTicket();
 		}
+		closeDialog();
 	}
 
 	private void doUnGroupAction() {
-		if (addedTableListModel == null || addedTableListModel.isEmpty()) {
+		if (removeTableListModel == null || removeTableListModel.isEmpty()) {
 			return;
 		}
 
-		Enumeration<ShopTableButton> elements = this.addedTableListModel.elements();
+		Enumeration<ShopTableButton> elements = this.removeTableListModel.elements();
 
-		if (!addedTableListModel.elementAt(0).hasUserAccess()) {
+		if (!removeTableListModel.elementAt(0).hasUserAccess()) {
 			return;
 		}
 		while (elements.hasMoreElements()) {
 			ShopTableButton button = (ShopTableButton) elements.nextElement();
+			if (addedTableListModel.contains(button)) {
+				addedTableListModel.removeElement(button);
+			}
 			ShopTable shopTable = button.getShopTable();
 			Ticket ticket = button.getTicket();
 			if (ticket != null) {
@@ -420,6 +432,10 @@ public class DefaultTableSelectionView extends TableSelector implements ActionLi
 				TicketDAO.getInstance().saveOrUpdate(ticket);
 			}
 		}
+		redererTables();
+		if (!isCreateNewTicket()) {
+			closeDialog();
+		}
 	}
 
 	public void setTicket(Ticket ticket) {
@@ -432,6 +448,8 @@ public class DefaultTableSelectionView extends TableSelector implements ActionLi
 		if (tables == null)
 			return;
 
+		addedTableListModel.clear();
+
 		for (ShopTable shopTable : tables) {
 			ShopTableButton shopTableButton = tableButtonMap.get(shopTable);
 			if (shopTableButton != null) {
@@ -439,6 +457,7 @@ public class DefaultTableSelectionView extends TableSelector implements ActionLi
 			}
 			addedTableListModel.addElement(shopTableButton);
 		}
+		redererTables();
 	}
 
 	private void checkTables() {

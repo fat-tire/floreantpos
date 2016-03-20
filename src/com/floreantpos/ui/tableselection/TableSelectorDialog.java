@@ -1,6 +1,7 @@
 package com.floreantpos.ui.tableselection;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -28,6 +29,7 @@ public class TableSelectorDialog extends POSDialog {
 		
 		JPanel buttonPanel = new JPanel();
 		PosButton btnCancel = new PosButton(POSConstants.CANCEL);
+		btnCancel.setPreferredSize(new Dimension(120, 60)); 
 		btnCancel.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {

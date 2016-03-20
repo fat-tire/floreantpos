@@ -401,6 +401,9 @@ public class OrderView extends ViewPanel {
 			}
 			dialog.open();
 
+			if (dialog.isCanceled()) {
+				return;
+			}
 			List<ShopTable> tables = dialog.getSelectedTables();
 
 			if (tables == null) {
