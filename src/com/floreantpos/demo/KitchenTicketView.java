@@ -132,9 +132,9 @@ public class KitchenTicketView extends JPanel {
 		ticketInfo.setFont(font);
 		tableInfo.setFont(font);
 		serverInfo.setFont(font);
-		
+
 		timerWatch = new TimerWatch(ticket.getCreateDate());
-		timerWatch.setPreferredSize(new Dimension(100,30)); 
+		timerWatch.setPreferredSize(new Dimension(100, 30));
 
 		headerPanel = new JPanel(new MigLayout("fill", "sg, fill", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		headerPanel.setBorder(BorderFactory.createLineBorder(Color.gray));
@@ -159,7 +159,7 @@ public class KitchenTicketView extends JPanel {
 				Component rendererComponent = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 
 				KitchenTicketItem ticketItem = tableModel.getRowData(row);
-				
+
 				if (ticketItem != null && ticketItem.getStatus() != null) {
 					if (ticketItem.getStatus().equalsIgnoreCase(KitchenTicketStatus.DONE.name())) {
 						rendererComponent.setBackground(Color.green);
@@ -171,8 +171,8 @@ public class KitchenTicketView extends JPanel {
 						rendererComponent.setBackground(Color.white);
 					}
 				}
-				
-				updateHeaderView(); 
+
+				updateHeaderView();
 				return rendererComponent;
 			}
 		});
@@ -198,7 +198,7 @@ public class KitchenTicketView extends JPanel {
 		scrollPane = new JScrollPane(table);
 		add(scrollPane);
 	}
-	
+
 	private void updateHeaderView() {
 		headerPanel.setBackground(timerWatch.backColor);
 		ticketInfo.setForeground(timerWatch.textColor);
@@ -210,8 +210,8 @@ public class KitchenTicketView extends JPanel {
 		JPanel buttonPanel = new JPanel(new GridLayout(1, 0, 5, 5));
 
 		PosButton btnVoid = new PosButton(Messages.getString("KitchenTicketView.12")); //$NON-NLS-1$
-		btnVoid.setPreferredSize(new Dimension(100,40)); 
-		
+		btnVoid.setPreferredSize(new Dimension(100, 40));
+
 		btnVoid.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -227,8 +227,8 @@ public class KitchenTicketView extends JPanel {
 				closeTicket(KitchenTicketStatus.DONE);
 			}
 		});
-		
-		btnDone.setPreferredSize(new Dimension(100,40)); 
+
+		btnDone.setPreferredSize(new Dimension(100, 40));
 
 		buttonPanel.add(btnDone);
 
@@ -302,12 +302,19 @@ public class KitchenTicketView extends JPanel {
 					return ticketItem.getMenuItemName();
 
 				case 1:
-					return String.valueOf(ticketItem.getFractionalQuantity());
+					if (ticketItem.isFractionalUnit()) {
 
+						double itemQuantity = ticketItem.getFractionalQuantity();
+
+						if (itemQuantity % 1 == 0) {
+							return String.valueOf((int) itemQuantity) + ticketItem.getUnitName();
+						}
+						return String.valueOf(itemQuantity) + ticketItem.getUnitName();
+					}
+					return String.valueOf(ticketItem.getQuantity());
 				case 2:
 					return "GO";
 			}
-
 			return null;
 		}
 

@@ -546,7 +546,7 @@ public class TicketItem extends BaseTicketItem implements ITicketItem {
 			return itemQuantity + getItemUnitName();
 		}
 
-		return String.valueOf(getItemCount()) + "pc";
+		return String.valueOf(getItemCount());
 	}
 
 	@Override

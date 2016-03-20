@@ -16,14 +16,16 @@ import java.io.Serializable;
 public abstract class BaseKitchenTicketItem  implements Comparable, Serializable {
 
 	public static String REF = "KitchenTicketItem";
+	public static String PROP_UNIT_NAME = "unitName";
 	public static String PROP_STATUS = "status";
-	public static String PROP_MENU_ITEM_NAME = "menuItemName";
 	public static String PROP_QUANTITY = "quantity";
-	public static String PROP_ID = "id";
 	public static String PROP_FRACTIONAL_QUANTITY = "fractionalQuantity";
+	public static String PROP_ID = "id";
 	public static String PROP_VOIDED = "voided";
-	public static String PROP_COOKABLE = "cookable";
+	public static String PROP_MENU_ITEM_NAME = "menuItemName";
 	public static String PROP_MENU_ITEM_CODE = "menuItemCode";
+	public static String PROP_COOKABLE = "cookable";
+	public static String PROP_FRACTIONAL_UNIT = "fractionalUnit";
 
 
 	// constructors
@@ -54,6 +56,8 @@ public abstract class BaseKitchenTicketItem  implements Comparable, Serializable
 		protected java.lang.String menuItemName;
 		protected java.lang.Integer quantity;
 		protected java.lang.Double fractionalQuantity;
+		protected java.lang.Boolean fractionalUnit;
+		protected java.lang.String unitName;
 		protected java.lang.Boolean voided;
 		protected java.lang.String status;
 
@@ -162,6 +166,40 @@ public abstract class BaseKitchenTicketItem  implements Comparable, Serializable
 	 */
 	public void setFractionalQuantity (java.lang.Double fractionalQuantity) {
 		this.fractionalQuantity = fractionalQuantity;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: FRACTIONAL_UNIT
+	 */
+	public java.lang.Boolean isFractionalUnit () {
+								return fractionalUnit == null ? Boolean.FALSE : fractionalUnit;
+					}
+
+	/**
+	 * Set the value related to the column: FRACTIONAL_UNIT
+	 * @param fractionalUnit the FRACTIONAL_UNIT value
+	 */
+	public void setFractionalUnit (java.lang.Boolean fractionalUnit) {
+		this.fractionalUnit = fractionalUnit;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: UNIT_NAME
+	 */
+	public java.lang.String getUnitName () {
+					return unitName;
+			}
+
+	/**
+	 * Set the value related to the column: UNIT_NAME
+	 * @param unitName the UNIT_NAME value
+	 */
+	public void setUnitName (java.lang.String unitName) {
+		this.unitName = unitName;
 	}
 
 

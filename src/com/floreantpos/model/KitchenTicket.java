@@ -148,21 +148,24 @@ public class KitchenTicket extends BaseKitchenTicket {
 				KitchenTicketItem item = new KitchenTicketItem();
 				item.setMenuItemCode(ticketItem.getItemCode());
 				item.setMenuItemName(ticketItem.getNameDisplay());
-				if(ticketItem.isFractionalUnit()) {
+				item.setFractionalUnit(ticketItem.isFractionalUnit());
+				item.setUnitName(ticketItem.getItemUnitName());
+				
+				if (ticketItem.isFractionalUnit()) {
 					item.setFractionalQuantity(ticketItem.getItemQuantity());
 				}
 				else {
-					item.setFractionalQuantity(ticketItem.getItemCount().doubleValue());
+					item.setQuantity(ticketItem.getItemCount());
 				}
 				item.setStatus(KitchenTicketStatus.WAITING.name());
 
 				kitchenTicket.addToticketItems(item);
-				
+
 				ticketItem.setPrintedToKitchen(true);
 
 				includeModifiers(ticketItem, kitchenTicket);
 				includeCookintInstructions(ticketItem, kitchenTicket);
-				
+
 			}
 
 		}
@@ -198,17 +201,18 @@ public class KitchenTicket extends BaseKitchenTicket {
 						if (!itemModifier.isShouldPrintToKitchen()) {
 							continue;
 						}
-						
+
 						/*if (itemModifier.isPrintedToKitchen() || !itemModifier.isShouldPrintToKitchen()) {
 							continue;
 						}*/
-						
-						System.out.println(itemModifier.getName()); 
+
+						//System.out.println(itemModifier.getName());
 
 						KitchenTicketItem item = new KitchenTicketItem();
 						item.setMenuItemCode(""); //$NON-NLS-1$
 						item.setMenuItemName(itemModifier.getNameDisplay());
-						item.setFractionalQuantity(itemModifier.getItemCount().doubleValue());
+						//item.setFractionalQuantity(itemModifier.getItemCount().doubleValue());
+						item.setQuantity(itemModifier.getItemCount());
 						item.setStatus(KitchenTicketStatus.WAITING.name());
 						kitchenTicket.addToticketItems(item);
 

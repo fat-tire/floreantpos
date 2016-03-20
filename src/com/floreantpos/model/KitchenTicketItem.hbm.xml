@@ -1,22 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping package="com.floreantpos.model">
-	<class lazy="false" name="com.floreantpos.model.KitchenTicketItem"  table="KITCHEN_TICKET_ITEM">
-		
+	<class lazy="false" name="com.floreantpos.model.KitchenTicketItem" table="KITCHEN_TICKET_ITEM">
+
 		<id column="ID" name="id" type="java.lang.Integer">
 			<generator class="identity" />
 		</id>
-		
+
 		<property column="COOKABLE" name="cookable" type="java.lang.Boolean" />
 		<property column="MENU_ITEM_CODE" name="menuItemCode" type="string" />
-		<property column="MENU_ITEM_NAME" name="menuItemName" type="string" length="120"/>
-		<property column="QUANTITY" name="quantity" type="java.lang.Integer"/>
-		<property column="FRACTIONAL_QUANTITY" name="fractionalQuantity" type="java.lang.Double"/>
-		
+		<property column="MENU_ITEM_NAME" name="menuItemName" type="string" length="120" />
+		<property column="QUANTITY" name="quantity" type="java.lang.Integer" />
+		<property column="FRACTIONAL_QUANTITY" name="fractionalQuantity" type="java.lang.Double" />
+		<property column="FRACTIONAL_UNIT" name="fractionalUnit" type="java.lang.Boolean" />
+		<property column="UNIT_NAME" length="20" name="unitName" type="java.lang.String" />
+
 		<property column="VOIDED" name="voided" type="java.lang.Boolean" />
 		<!-- a ticket is marked as closed it is either paid or voided -->
-		
+
 		<property column="STATUS" name="status" type="string" length="30" />
-		
+
 	</class>
 </hibernate-mapping>
