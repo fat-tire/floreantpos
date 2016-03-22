@@ -41,33 +41,16 @@ public class TicketViewerTableCellRenderer extends DefaultTableCellRenderer {
 		TicketViewerTableModel model = (TicketViewerTableModel) table.getModel();
 		Object object = model.get(row);
 
-		String text = value.toString();
-
 		if (column == 0) {
 			setHorizontalAlignment(SwingConstants.LEFT);
 		}
 		else {
-
-			if (value instanceof Double || value instanceof Float) {
-				text = NumberUtil.formatNumber(((java.lang.Number) value).doubleValue());
-				setHorizontalAlignment(SwingConstants.RIGHT);
-			}
+			setHorizontalAlignment(SwingConstants.RIGHT);
 		}
-		setText(text);
 
 		if (!inTicketScreen || isSelected) {
 			return rendererComponent;
 		}
-
-		//		if (object instanceof TicketItemModifier) {
-		//			TicketItemModifier modifier = (TicketItemModifier) object;
-		//			if (modifier.getModifierType() == TicketItemModifier.EXTRA_MODIFIER) {
-		//				rendererComponent.setForeground(Color.red);
-		//			}
-		//			else {
-		//				rendererComponent.setForeground(Color.black);
-		//			}
-		//		}
 
 		rendererComponent.setBackground(Color.WHITE);
 
@@ -81,6 +64,20 @@ public class TicketViewerTableCellRenderer extends DefaultTableCellRenderer {
 		return rendererComponent;
 	}
 
+	@Override
+	protected void setValue(Object value) {
+		if (value == null) {
+			setText(""); //$NON-NLS-1$
+			return;
+		}
+		String text = value.toString();
+
+		if (value instanceof Double || value instanceof Float) {
+			text = NumberUtil.formatNumber(((java.lang.Number) value).doubleValue());
+		}
+		setText(text);
+	}
+
 	public boolean isInTicketScreen() {
 		return inTicketScreen;
 	}
@@ -88,4 +85,5 @@ public class TicketViewerTableCellRenderer extends DefaultTableCellRenderer {
 	public void setInTicketScreen(boolean inTicketScreen) {
 		this.inTicketScreen = inTicketScreen;
 	}
+
 }
