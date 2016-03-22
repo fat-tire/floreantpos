@@ -63,8 +63,8 @@ public class DefaultOrderServiceExtension implements OrderServiceExtension {
 		Customer customer = null;
 		if (ticketType.isRequiredCustomerData()) {
 			customer = PosGuiUtil.captureCustomer();
-			if(customer==null) {
-				return; 
+			if (customer == null) {
+				return;
 			}
 		}
 
@@ -92,6 +92,7 @@ public class DefaultOrderServiceExtension implements OrderServiceExtension {
 
 		OrderView.getInstance().setCurrentTicket(ticket);
 		RootView.getInstance().showView(OrderView.VIEW_NAME);
+		OrderView.getInstance().getTicketView().getTxtSearchItem().requestFocus();
 	}
 
 	@Override

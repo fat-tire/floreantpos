@@ -85,6 +85,11 @@ public class RootView extends com.floreantpos.swing.TransparentPanel {
 
 		currentViewName = viewName;
 		cards.show(contentPanel, viewName);
+
+		headerPanel.updateHomeView(!homeView.getViewName().equals(currentViewName));
+
+		headerPanel.updateOthersFunctionsView(!currentViewName.equals(SwitchboardOtherFunctionsView.VIEW_NAME));
+		headerPanel.updateSwitchBoardView(!currentViewName.equals(SwitchboardView.VIEW_NAME));
 	}
 
 	public void showView(IView view) {
