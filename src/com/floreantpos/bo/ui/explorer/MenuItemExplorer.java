@@ -79,14 +79,14 @@ public class MenuItemExplorer extends TransparentPanel {
 		tableModel.addColumn(Messages.getString("MenuItemExplorer.23"), "buttonColor"); //$NON-NLS-1$ //$NON-NLS-2$
 		tableModel.addColumn(Messages.getString("MenuItemExplorer.25"), "textColor"); //$NON-NLS-1$ //$NON-NLS-2$
 		tableModel.addColumn(POSConstants.IMAGE.toUpperCase(), "imageData"); //$NON-NLS-1$
-		
+
 		List<MenuItem> findAll = MenuItemDAO.getInstance().findAll();
 		tableModel.addRows(findAll);
 		table = new JXTable(tableModel);
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		table.setDefaultRenderer(Object.class, new CustomCellRenderer());
 		table.setRowHeight(60);
-		
+
 		setLayout(new BorderLayout(5, 5));
 		add(new JScrollPane(table));
 
@@ -102,19 +102,12 @@ public class MenuItemExplorer extends TransparentPanel {
 		JLabel lblOrderType = new JLabel(Messages.getString("MenuItemExplorer.4")); //$NON-NLS-1$
 		cbOrderTypes = new JComboBox();
 
-		cbOrderTypes.addItem("Select Order Type"); //$NON-NLS-1$
+		cbOrderTypes.addItem(Messages.getString("MenuItemExplorer.5")); //$NON-NLS-1$
 
 		List<OrderType> orderTypes = Application.getInstance().getOrderTypes();
 		for (OrderType orderType : orderTypes) {
-			cbOrderTypes.addItem(orderType.getName());
+			cbOrderTypes.addItem(orderType);
 		}
-		/*cbOrderTypes.addItem(OrderType.DINE_IN.toString());
-		cbOrderTypes.addItem(OrderType.BAR_TAB.toString());
-		cbOrderTypes.addItem(OrderType.DRIVE_THRU.toString());
-		cbOrderTypes.addItem(OrderType.HOME_DELIVERY.toString());
-		cbOrderTypes.addItem(OrderType.PICKUP.toString());
-		cbOrderTypes.addItem(OrderType.TAKE_OUT.toString());
-		cbOrderTypes.addItem(OrderType.RETAIL.toString());*/
 
 		JLabel lblName = new JLabel(Messages.getString("MenuItemExplorer.0")); //$NON-NLS-1$
 		JLabel lblGroup = new JLabel(Messages.getString("MenuItemExplorer.1")); //$NON-NLS-1$
@@ -169,7 +162,7 @@ public class MenuItemExplorer extends TransparentPanel {
 	}
 
 	private void searchItem() {
-		String selectedType = cbOrderTypes.getSelectedItem().toString();
+		Object selectedType = cbOrderTypes.getSelectedItem();
 		String txName = tfName.getText();
 		Object selectedGroup = cbGroup.getSelectedItem();
 
@@ -277,11 +270,13 @@ public class MenuItemExplorer extends TransparentPanel {
 						menuItem.setParent((MenuGroup) group);
 					}
 
-					String selectedType = cbOrderTypes.getSelectedItem().toString();
+					Object selectedType = cbOrderTypes.getSelectedItem();
 
-					if (!selectedType.equals("Select Order Type")) { //$NON-NLS-1$
+					if (selectedType instanceof OrderType) {
+
 						List types = new ArrayList();
-						types.add(selectedType);
+
+						types.add(((OrderType) selectedType).getName());
 
 						menuItem.setOrderTypes(types);
 					}

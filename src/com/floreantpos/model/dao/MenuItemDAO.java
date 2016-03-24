@@ -38,6 +38,7 @@ import com.floreantpos.model.Discount;
 import com.floreantpos.model.MenuGroup;
 import com.floreantpos.model.MenuItem;
 import com.floreantpos.model.MenuItemModifierGroup;
+import com.floreantpos.model.OrderType;
 import com.floreantpos.model.Terminal;
 
 public class MenuItemDAO extends BaseMenuItemDAO {
@@ -47,7 +48,7 @@ public class MenuItemDAO extends BaseMenuItemDAO {
 	 */
 	public MenuItemDAO() {
 	}
-	
+
 	public MenuItem loadInitialized(Integer key) throws HibernateException {
 		MenuItem menuItem = super.get(key);
 		menuItem = initialize(menuItem);
@@ -127,7 +128,7 @@ public class MenuItemDAO extends BaseMenuItemDAO {
 		}
 	}
 
-	public List<MenuItem> getMenuItems(String itemName, MenuGroup menuGroup, String selectedType) {
+	public List<MenuItem> getMenuItems(String itemName, MenuGroup menuGroup, Object selectedType) {
 		Session session = null;
 		Criteria criteria = null;
 		try {
@@ -144,7 +145,7 @@ public class MenuItemDAO extends BaseMenuItemDAO {
 
 			List<MenuItem> similarItems = criteria.list();
 
-			if (!selectedType.equals("Select Order Type")) {
+			if (selectedType instanceof OrderType) {
 
 				List<MenuItem> selectedMenuItems = new ArrayList();
 
@@ -154,7 +155,9 @@ public class MenuItemDAO extends BaseMenuItemDAO {
 
 					List<String> types = item.getOrderTypes();
 
-					if (types.contains(selectedType) || types.isEmpty()) {
+					OrderType type = (OrderType) selectedType;
+
+					if (types.contains(type.getName()) || types.isEmpty()) {
 						selectedMenuItems.add(item);
 					}
 				}
