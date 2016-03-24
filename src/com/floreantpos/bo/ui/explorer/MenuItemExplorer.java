@@ -71,13 +71,13 @@ public class MenuItemExplorer extends TransparentPanel {
 		tableModel.addColumn(POSConstants.NAME.toUpperCase(), "name"); //$NON-NLS-1$
 		tableModel.addColumn(POSConstants.TRANSLATED_NAME.toUpperCase(), "translatedName"); //$NON-NLS-1$
 		tableModel.addColumn(POSConstants.PRICE.toUpperCase() + " (" + Application.getCurrencySymbol() + ")", "price"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		tableModel.addColumn("STOCK", "stockAmount"); //$NON-NLS-1$
+		tableModel.addColumn(Messages.getString("MenuItemExplorer.16"), "stockAmount"); //$NON-NLS-1$ //$NON-NLS-2$
 		tableModel.addColumn(POSConstants.VISIBLE.toUpperCase(), "visible"); //$NON-NLS-1$
 		tableModel.addColumn(POSConstants.FOOD_GROUP.toUpperCase(), "parent"); //$NON-NLS-1$
 		tableModel.addColumn(POSConstants.TAX.toUpperCase(), "tax"); //$NON-NLS-1$
-		tableModel.addColumn("S-ORDER", "sortOrder"); //$NON-NLS-1$
-		tableModel.addColumn("B-COLOR", "buttonColor"); //$NON-NLS-1$
-		tableModel.addColumn("T-COLOR", "textColor"); //$NON-NLS-1$
+		tableModel.addColumn(Messages.getString("MenuItemExplorer.21"), "sortOrder"); //$NON-NLS-1$ //$NON-NLS-2$
+		tableModel.addColumn(Messages.getString("MenuItemExplorer.23"), "buttonColor"); //$NON-NLS-1$ //$NON-NLS-2$
+		tableModel.addColumn(Messages.getString("MenuItemExplorer.25"), "textColor"); //$NON-NLS-1$ //$NON-NLS-2$
 		tableModel.addColumn(POSConstants.IMAGE.toUpperCase(), "imageData"); //$NON-NLS-1$
 		
 		List<MenuItem> findAll = MenuItemDAO.getInstance().findAll();
