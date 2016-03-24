@@ -12,8 +12,8 @@ import com.floreantpos.util.TicketAlreadyExistsException;
 
 public abstract class TableSelector extends JPanel {
 	protected OrderType orderType;
-	protected Ticket ticket; 
-	
+	protected Ticket ticket;
+
 	private boolean createNewTicket = true;
 
 	public TableSelector() {
@@ -29,6 +29,7 @@ public abstract class TableSelector extends JPanel {
 
 	public abstract void redererTables();
 	public abstract List<ShopTable> getSelectedTables();
+	public abstract void updateView(boolean update);
 
 	public OrderType getOrderType() {
 		return orderType;
@@ -47,11 +48,11 @@ public abstract class TableSelector extends JPanel {
 	}
 
 	public void setTicket(Ticket ticket) {
-		this.ticket=ticket; 
+		this.ticket = ticket;
 	}
-	
+
 	public Ticket getTicket() {
-		return ticket; 
+		return ticket;
 	}
 
 }

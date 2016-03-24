@@ -41,10 +41,10 @@ import com.floreantpos.ui.views.order.ViewPanel;
 public class TableMapView extends ViewPanel {
 
 	public final static String VIEW_NAME = "TABLE_MAP"; //$NON-NLS-1$
-	
+
 	private TableSelector tableSelector = null;
 	private static TableMapView instance;
-	
+
 	private TableMapView() {
 		initComponents();
 
@@ -53,7 +53,7 @@ public class TableMapView extends ViewPanel {
 
 	private void initComponents() {
 		setLayout(new BorderLayout());
-		
+
 		FloorLayoutPlugin floorLayoutPlugin = (FloorLayoutPlugin) ExtensionManager.getPlugin(FloorLayoutPlugin.class);
 		if (floorLayoutPlugin == null) {
 			tableSelector = new DefaultTableSelectionView();
@@ -63,9 +63,10 @@ public class TableMapView extends ViewPanel {
 			tableSelector = floorLayoutPlugin.createTableSelector();
 		}
 		tableSelector.setCreateNewTicket(true);
+		tableSelector.updateView(false);
 		add(tableSelector, BorderLayout.CENTER);
 	}
-	
+
 	public void updateView() {
 		tableSelector.redererTables();
 	}
@@ -77,7 +78,7 @@ public class TableMapView extends ViewPanel {
 
 		return instance;
 	}
-	
+
 	public static TableMapView getInstance(OrderType orderType) {
 		TableMapView instance2 = getInstance();
 		instance2.tableSelector.setOrderType(orderType);

@@ -22,6 +22,7 @@ import java.awt.event.ActionListener;
 import java.util.Set;
 
 import com.floreantpos.POSConstants;
+import com.floreantpos.actions.NewBarTabAction;
 import com.floreantpos.extension.OrderServiceFactory;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.OrderType;
@@ -59,13 +60,17 @@ public class OrderTypeButton extends PosButton implements ActionListener {
 			return;
 		}
 
-		if (orderType.isShowTableSelection()) {
+		if (orderType.isBarTab()) {
+			new NewBarTabAction(Application.getPosWindow()).actionPerformed(e);
+		}
+		else if (orderType.isShowTableSelection()) {
 			TableSelectorDialog dialog = TableSelectorFactory.createTableSelectorDialog(orderType);
-			dialog.setCreateNewTicket(true); 
+			dialog.setCreateNewTicket(true);
+			dialog.updateView(true);
 			dialog.open();
-			
-			if(!dialog.isCanceled()) {
-				return; 
+
+			if (!dialog.isCanceled()) {
+				return;
 			}
 		}
 		else {

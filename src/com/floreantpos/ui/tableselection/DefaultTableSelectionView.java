@@ -76,6 +76,8 @@ public class DefaultTableSelectionView extends TableSelector implements ActionLi
 	private POSToggleButton btnGroup;
 	private POSToggleButton btnUnGroup;
 
+	private static PosButton btnCancelDialog;
+
 	private PosButton btnDone;
 	private PosButton btnCancel;
 	private PosButton btnRefresh;
@@ -147,6 +149,7 @@ public class DefaultTableSelectionView extends TableSelector implements ActionLi
 
 		rightPanel.add(actionBtnPanel);
 
+		JPanel southbuttonPanel = new JPanel(new MigLayout("ins 2 2 0 2, hidemode 3, flowy", "grow", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		btnRefresh = new PosButton(POSConstants.REFRESH);
 		btnRefresh.addActionListener(new ActionListener() {
 
@@ -156,8 +159,18 @@ public class DefaultTableSelectionView extends TableSelector implements ActionLi
 				redererTables();
 			}
 		});
-		rightPanel.add(btnRefresh, BorderLayout.SOUTH);
+		southbuttonPanel.add(btnRefresh, "grow");
 
+		btnCancelDialog = new PosButton(POSConstants.CANCEL);
+		btnCancelDialog.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				closeDialog(true);
+			}
+		});
+
+		southbuttonPanel.add(btnCancelDialog, "grow");
+		rightPanel.add(southbuttonPanel, BorderLayout.SOUTH);
 		add(rightPanel, java.awt.BorderLayout.EAST);
 
 	}
@@ -201,7 +214,6 @@ public class DefaultTableSelectionView extends TableSelector implements ActionLi
 					if (!ticket.getOwner().getUserId().toString().equals(Application.getCurrentUser().getUserId().toString())) {
 						shopTableButton.setBackground(new Color(139, 0, 139));
 					}
-					shopTableButton.setForeground(Color.white);
 					if (addedTableListModel.contains(shopTableButton)) {
 						shopTableButton.setBackground(Color.GREEN);
 					}
@@ -275,7 +287,7 @@ public class DefaultTableSelectionView extends TableSelector implements ActionLi
 			}
 			if (isCreateNewTicket()) {
 				editTicket(button.getTicket());
-				closeDialog();
+				closeDialog(false);
 			}
 
 			return false;
@@ -290,12 +302,12 @@ public class DefaultTableSelectionView extends TableSelector implements ActionLi
 			if (isCreateNewTicket()) {
 				doCreateNewTicket();
 			}
-			closeDialog();
+			closeDialog(false);
 		}
 		return true;
 	}
 
-	private void closeDialog() {
+	private void closeDialog(boolean canceled) {
 		Window windowAncestor = SwingUtilities.getWindowAncestor(DefaultTableSelectionView.this);
 		if (windowAncestor instanceof POSDialog) {
 			((POSDialog) windowAncestor).setCanceled(false);
@@ -384,7 +396,7 @@ public class DefaultTableSelectionView extends TableSelector implements ActionLi
 			return false;
 
 		}
-		closeDialog();
+		closeDialog(false);
 
 		Ticket ticketToEdit = TicketDAO.getInstance().loadFullTicket(ticket.getId());
 
@@ -398,7 +410,7 @@ public class DefaultTableSelectionView extends TableSelector implements ActionLi
 		if (isCreateNewTicket()) {
 			doCreateNewTicket();
 		}
-		closeDialog();
+		closeDialog(false);
 	}
 
 	private void doUnGroupAction() {
@@ -434,7 +446,7 @@ public class DefaultTableSelectionView extends TableSelector implements ActionLi
 		}
 		redererTables();
 		if (!isCreateNewTicket()) {
-			closeDialog();
+			closeDialog(false);
 		}
 	}
 
@@ -485,5 +497,10 @@ public class DefaultTableSelectionView extends TableSelector implements ActionLi
 				}
 			}
 		}
+	}
+
+	@Override
+	public void updateView(boolean update) {
+		btnCancelDialog.setVisible(update);
 	}
 }

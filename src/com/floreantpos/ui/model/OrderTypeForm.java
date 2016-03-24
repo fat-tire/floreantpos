@@ -65,6 +65,7 @@ public class OrderTypeForm extends BeanEditor {
 	private JCheckBox chkConsolidateItemsInReceipt;
 	private JCheckBox chkHideItemWithEmptyInventory;
 	private JCheckBox chkHasForHereAndToGo;
+	private JCheckBox chkBarTab;
 
 	OrderType orderType;
 	JList<String> list;
@@ -111,6 +112,7 @@ public class OrderTypeForm extends BeanEditor {
 		chkConsolidateItemsInReceipt = new JCheckBox(Messages.getString("OrderTypeForm.11")); //$NON-NLS-1$
 		chkHideItemWithEmptyInventory = new JCheckBox(Messages.getString("OrderTypeForm.12")); //$NON-NLS-1$
 		chkHasForHereAndToGo = new JCheckBox(Messages.getString("OrderTypeForm.13")); //$NON-NLS-1$
+		chkBarTab = new JCheckBox("Bar Tab"); //$NON-NLS-1$
 
 		generalPanel.setLayout(new MigLayout("", "[87px][327px,grow]", "[19px][][19px][][][21px][15px]")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		generalPanel.add(jLabel1, "cell 0 0,alignx left,aligny center"); //$NON-NLS-1$
@@ -132,6 +134,7 @@ public class OrderTypeForm extends BeanEditor {
 		generalPanel.add(chkConsolidateItemsInReceipt, "cell 1 12,alignx left,aligny top"); //$NON-NLS-1$
 		generalPanel.add(chkHideItemWithEmptyInventory, "cell 1 13,alignx left,aligny top"); //$NON-NLS-1$
 		generalPanel.add(chkHasForHereAndToGo, "cell 1 14,alignx left,aligny top"); //$NON-NLS-1$
+		generalPanel.add(chkBarTab, "cell 1 15,alignx left,aligny top"); //$NON-NLS-1$
 
 		add(generalPanel);
 	}
@@ -164,6 +167,7 @@ public class OrderTypeForm extends BeanEditor {
 			chkConsolidateItemsInReceipt.setSelected(ordersType.isConsolidateItemsInReceipt());
 			chkHideItemWithEmptyInventory.setSelected(ordersType.isHideItemWithEmptyInventory());
 			chkHasForHereAndToGo.setSelected(ordersType.isHasForHereAndToGo());
+			chkBarTab.setSelected(ordersType.isBarTab());
 		}
 	}
 
@@ -181,19 +185,22 @@ public class OrderTypeForm extends BeanEditor {
 
 		ordersType.setName(categoryName);
 		ordersType.setEnabled(chkEnabled.isSelected());
-		ordersType.setShowTableSelection(chkShowTableSelection.isSelected());
-		ordersType.setShowGuestSelection(chkShowGuestSelection.isSelected());
-		ordersType.setShouldPrintToKitchen(chkShouldPrintToKitchen.isSelected());
-		ordersType.setPrepaid(chkPrepaid.isSelected());
-		ordersType.setCloseOnPaid(chkCloseOnPaid.isSelected());
-		ordersType.setRequiredCustomerData(chkRequiredCustomerData.isSelected());
-		ordersType.setRequiredDeliveryData(chkRequiredDeliveryData.isSelected());
-		ordersType.setAssignDriver(chkAssignDriver.isSelected());
-		ordersType.setShowItemBarcode(chkShowItemBarcode.isSelected());
-		ordersType.setShowInLoginScreen(chkShowInLoginScreen.isSelected());
-		ordersType.setConsolidateItemsInReceipt(chkConsolidateItemsInReceipt.isSelected());
-		ordersType.setHideItemWithEmptyInventory(chkHideItemWithEmptyInventory.isSelected());
-		ordersType.setHasForHereAndToGo(chkHasForHereAndToGo.isSelected());
+		if (!chkBarTab.isSelected()) {
+			ordersType.setShowTableSelection(chkShowTableSelection.isSelected());
+			ordersType.setShowGuestSelection(chkShowGuestSelection.isSelected());
+			ordersType.setShouldPrintToKitchen(chkShouldPrintToKitchen.isSelected());
+			ordersType.setPrepaid(chkPrepaid.isSelected());
+			ordersType.setCloseOnPaid(chkCloseOnPaid.isSelected());
+			ordersType.setRequiredCustomerData(chkRequiredCustomerData.isSelected());
+			ordersType.setRequiredDeliveryData(chkRequiredDeliveryData.isSelected());
+			ordersType.setAssignDriver(chkAssignDriver.isSelected());
+			ordersType.setShowItemBarcode(chkShowItemBarcode.isSelected());
+			ordersType.setShowInLoginScreen(chkShowInLoginScreen.isSelected());
+			ordersType.setConsolidateItemsInReceipt(chkConsolidateItemsInReceipt.isSelected());
+			ordersType.setHideItemWithEmptyInventory(chkHideItemWithEmptyInventory.isSelected());
+			ordersType.setHasForHereAndToGo(chkHasForHereAndToGo.isSelected());
+		}
+		ordersType.setBarTab(chkBarTab.isSelected());
 
 		return true;
 	}

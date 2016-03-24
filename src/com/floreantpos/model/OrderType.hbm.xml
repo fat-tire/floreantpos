@@ -22,6 +22,7 @@
 		<property column="CONSOLIDATE_TIEMS_IN_RECEIPT" name="consolidateItemsInReceipt" type="java.lang.Boolean" />
 		<property column="HIDE_ITEM_WITH_EMPTY_INVENTORY" name="hideItemWithEmptyInventory" type="java.lang.Boolean" />
 		<property column="HAS_FORHERE_AND_TOGO" name="hasForHereAndToGo" type="java.lang.Boolean" />
+		<property column="BAR_TAB" name="barTab" type="java.lang.Boolean" />
 		
 		<bag name="orderSubTypes" table="ORDER_SUB_TYPE" lazy="false" cascade="all">
 			<key column="ORDER_TYPE_ID" />

@@ -1,6 +1,5 @@
 package com.floreantpos.model.base;
 
-import java.lang.Comparable;
 import java.io.Serializable;
 
 
@@ -24,6 +23,7 @@ public abstract class BaseOrderType  implements Comparable, Serializable {
 	public static String PROP_SHOW_ITEM_BARCODE = "showItemBarcode";
 	public static String PROP_HAS_FOR_HERE_AND_TO_GO = "hasForHereAndToGo";
 	public static String PROP_ENABLED = "enabled";
+	public static String PROP_BAR_TAB = "barTab";
 	public static String PROP_NAME = "name";
 	public static String PROP_SHOW_IN_LOGIN_SCREEN = "showInLoginScreen";
 	public static String PROP_PREPAID = "prepaid";
@@ -84,6 +84,7 @@ public abstract class BaseOrderType  implements Comparable, Serializable {
 		protected java.lang.Boolean consolidateItemsInReceipt;
 		protected java.lang.Boolean hideItemWithEmptyInventory;
 		protected java.lang.Boolean hasForHereAndToGo;
+		protected java.lang.Boolean barTab;
 
 	// collections
 	private java.util.List<String> orderSubTypes;
@@ -363,6 +364,23 @@ public abstract class BaseOrderType  implements Comparable, Serializable {
 	 */
 	public void setHasForHereAndToGo (java.lang.Boolean hasForHereAndToGo) {
 		this.hasForHereAndToGo = hasForHereAndToGo;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: BAR_TAB
+	 */
+	public java.lang.Boolean isBarTab () {
+								return barTab == null ? Boolean.FALSE : barTab;
+					}
+
+	/**
+	 * Set the value related to the column: BAR_TAB
+	 * @param barTab the BAR_TAB value
+	 */
+	public void setBarTab (java.lang.Boolean barTab) {
+		this.barTab = barTab;
 	}
 
 

@@ -216,12 +216,12 @@ public class GroupSettleTicketDialog extends POSDialog implements CardInputListe
 		labelTicketNumber = new JLabel();
 
 		JLabel lblTable = new javax.swing.JLabel();
-		lblTable.setText(Messages.getString("SettleTicketDialog.1")); //$NON-NLS-1$
+		lblTable.setText(POSConstants.TABLES); //$NON-NLS-1$
 
 		labelTableNumber = new JLabel();
 
 		JLabel lblCustomer = new javax.swing.JLabel();
-		lblCustomer.setText(Messages.getString("SettleTicketDialog.2")); //$NON-NLS-1$
+		lblCustomer.setText("Customer:"); //$NON-NLS-1$
 
 		labelCustomer = new JLabel();
 
@@ -753,8 +753,8 @@ public class GroupSettleTicketDialog extends POSDialog implements CardInputListe
 	}
 
 	private void setTransactionAmounts(PosTransaction transaction) {
-		if (tickets.get(tickets.size() - 1).getId() == transaction.getTicket().getId() && totalTenderAmount>totalDueAmount) {
-			transaction.setTenderAmount(totalTenderAmount-totalDueAmount+transaction.getTicket().getDueAmount());
+		if (tickets.get(tickets.size() - 1).getId() == transaction.getTicket().getId() && totalTenderAmount > totalDueAmount) {
+			transaction.setTenderAmount(totalTenderAmount - totalDueAmount + transaction.getTicket().getDueAmount());
 			transaction.setAmount(transaction.getTicket().getDueAmount());
 		}
 		else {
