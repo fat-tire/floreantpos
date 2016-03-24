@@ -155,7 +155,7 @@ public class MenuUsageReport {
 
 		public void calculate() {
 			netSales = grossSales - discount;
-			profit = netSales;
+			//profit = netSales-;
 		}
 	}
 
@@ -192,7 +192,6 @@ public class MenuUsageReport {
 			case 8:
 				return " ";//Application.formatNumber(data.getPercentage()); //$NON-NLS-1$
 			}
-
 			return null;
 		}
 

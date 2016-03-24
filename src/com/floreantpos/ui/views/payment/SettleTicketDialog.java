@@ -233,7 +233,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 		labelTicketNumber.setText("["+String.valueOf(ticket.getId())+"]"); //$NON-NLS-1$ //$NON-NLS-2$
 
 		JLabel lblTable = new javax.swing.JLabel();
-		lblTable.setText(Messages.getString("SettleTicketDialog.3")); //$NON-NLS-1$
+		lblTable.setText(", "+Messages.getString("SettleTicketDialog.3")); //$NON-NLS-1$ //$NON-NLS-2$
 
 		JLabel labelTableNumber = new JLabel();
 		labelTableNumber.setText("["+getTableNumbers(ticket.getTableNumbers())+"]"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -244,7 +244,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 		}
 
 		JLabel lblCustomer = new javax.swing.JLabel();
-		lblCustomer.setText(Messages.getString("SettleTicketDialog.10")); //$NON-NLS-1$
+		lblCustomer.setText(", "+Messages.getString("SettleTicketDialog.10")+": "); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 		JLabel labelCustomer = new JLabel();
 		labelCustomer.setText(ticket.getProperty(Ticket.CUSTOMER_NAME));

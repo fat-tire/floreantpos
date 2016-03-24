@@ -133,7 +133,7 @@ public class MenuItemDAO extends BaseMenuItemDAO {
 		try {
 			session = getSession();
 			criteria = session.createCriteria(MenuItem.class);
-			
+
 			if (menuGroup != null) {
 				criteria.add(Restrictions.eq(MenuItem.PROP_PARENT, menuGroup));
 			}
@@ -143,7 +143,7 @@ public class MenuItemDAO extends BaseMenuItemDAO {
 			}
 
 			List<MenuItem> similarItems = criteria.list();
-			
+
 			if (!selectedType.equals("Select Order Type")) {
 
 				List<MenuItem> selectedMenuItems = new ArrayList();
@@ -154,7 +154,7 @@ public class MenuItemDAO extends BaseMenuItemDAO {
 
 					List<String> types = item.getOrderTypes();
 
-					if (types.contains(selectedType)) {
+					if (types.contains(selectedType) || types.isEmpty()) {
 						selectedMenuItems.add(item);
 					}
 				}

@@ -20,7 +20,9 @@ package com.floreantpos.model.dao;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import org.apache.commons.logging.LogFactory;
@@ -835,40 +837,64 @@ public class TicketDAO extends BaseTicketDAO {
 	}
 
 	private void adjustStockAmount(Ticket ticket, Session session) {
+
 		List<TicketItem> items = ticket.getTicketItems();
-		for (TicketItem item : items) {
-			adjustStockAmount(item, session);
+
+		HashMap<Integer, Double> itemMap = new LinkedHashMap<Integer, Double>();
+
+		if (!getAdjustedMap(items, itemMap)) {
+			return;
+		}
+
+		for (Integer ticketItemId : itemMap.keySet()) {
+
+			MenuItem menuItem = MenuItemDAO.getInstance().get(ticketItemId);
+
+			if (menuItem == null) {
+				continue;
+			}
+
+			if (menuItem.getStockAmount() <= 0) {
+				continue;
+			}
+
+			double availableStockAmount;
+			double stockAmount = menuItem.getStockAmount();
+
+			if (menuItem.isFractionalUnit()) {
+				availableStockAmount = stockAmount - itemMap.get(ticketItemId);
+			}
+			else {
+				availableStockAmount = stockAmount - itemMap.get(ticketItemId);
+			}
+			menuItem.setStockAmount(availableStockAmount);
+
+			session.saveOrUpdate(menuItem);
 		}
 	}
 
-	private void adjustStockAmount(TicketItem ticketItem, Session session) {
-		if (ticketItem.isStockAmountAdjusted()) {
-			return;
+	private boolean getAdjustedMap(List<TicketItem> items, HashMap<Integer, Double> itemMap) {
+
+		for (TicketItem ticketItem : items) {
+
+			if (ticketItem.isStockAmountAdjusted()) {
+				return false;
+			}
+
+			Double previousValue = itemMap.get(ticketItem.getItemId());
+
+			if (previousValue == null) {
+				previousValue = 0.0;
+			}
+
+			if (ticketItem.isFractionalUnit()) {
+				itemMap.put(ticketItem.getItemId(), ticketItem.getItemQuantity() + previousValue);
+			}
+			else {
+				itemMap.put(ticketItem.getItemId(), ticketItem.getItemCount() + previousValue);
+			}
+			ticketItem.setStockAmountAdjusted(true);
 		}
-
-		MenuItem menuItem = MenuItemDAO.getInstance().get(ticketItem.getItemId());
-
-		if (menuItem == null) {
-			return;
-		}
-
-		if (menuItem.getStockAmount() <= 0) {
-			return;
-		}
-
-		double availableStockAmount;
-		double stockAmount = menuItem.getStockAmount();
-
-		if (ticketItem.isFractionalUnit()) {
-			availableStockAmount = stockAmount - ticketItem.getItemQuantity();
-		}
-		else {
-			availableStockAmount = stockAmount - ticketItem.getItemCount();
-		}
-		menuItem.setStockAmount(availableStockAmount);
-		session.saveOrUpdate(menuItem);
-
-		ticketItem.setStockAmountAdjusted(true);
+		return true;
 	}
-
 }

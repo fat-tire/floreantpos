@@ -35,6 +35,7 @@ import javax.swing.JTextField;
 import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
+import javax.swing.table.TableColumnModel;
 
 import net.miginfocom.swing.MigLayout;
 
@@ -62,6 +63,7 @@ public class MenuItemExplorer extends TransparentPanel {
 	private BeanTableModel<MenuItem> tableModel;
 	private JComboBox cbGroup;
 	private JComboBox cbOrderTypes;
+	private JTextField tfName;
 
 	public MenuItemExplorer() {
 		tableModel = new BeanTableModel<MenuItem>(MenuItem.class);
@@ -69,34 +71,33 @@ public class MenuItemExplorer extends TransparentPanel {
 		tableModel.addColumn(POSConstants.NAME.toUpperCase(), "name"); //$NON-NLS-1$
 		tableModel.addColumn(POSConstants.TRANSLATED_NAME.toUpperCase(), "translatedName"); //$NON-NLS-1$
 		tableModel.addColumn(POSConstants.PRICE.toUpperCase() + " (" + Application.getCurrencySymbol() + ")", "price"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		tableModel.addColumn(POSConstants.STOCK_AMOUNT.toUpperCase(), "stockAmount"); //$NON-NLS-1$
+		tableModel.addColumn("STOCK", "stockAmount"); //$NON-NLS-1$
 		tableModel.addColumn(POSConstants.VISIBLE.toUpperCase(), "visible"); //$NON-NLS-1$
 		tableModel.addColumn(POSConstants.FOOD_GROUP.toUpperCase(), "parent"); //$NON-NLS-1$
 		tableModel.addColumn(POSConstants.TAX.toUpperCase(), "tax"); //$NON-NLS-1$
-		tableModel.addColumn(POSConstants.SORT_ORDER.toUpperCase(), "sortOrder"); //$NON-NLS-1$
-		tableModel.addColumn(POSConstants.BUTTON_COLOR.toUpperCase(), "buttonColor"); //$NON-NLS-1$
-		tableModel.addColumn(POSConstants.TEXT_COLOR.toUpperCase(), "textColor"); //$NON-NLS-1$
+		tableModel.addColumn("S-ORDER", "sortOrder"); //$NON-NLS-1$
+		tableModel.addColumn("B-COLOR", "buttonColor"); //$NON-NLS-1$
+		tableModel.addColumn("T-COLOR", "textColor"); //$NON-NLS-1$
 		tableModel.addColumn(POSConstants.IMAGE.toUpperCase(), "imageData"); //$NON-NLS-1$
-
+		
 		List<MenuItem> findAll = MenuItemDAO.getInstance().findAll();
 		tableModel.addRows(findAll);
-
 		table = new JXTable(tableModel);
-		table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
-		table.setRowHeight(30);
-
+		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		table.setDefaultRenderer(Object.class, new CustomCellRenderer());
-
+		table.setRowHeight(60);
+		
 		setLayout(new BorderLayout(5, 5));
 		add(new JScrollPane(table));
 
 		add(createButtonPanel(), BorderLayout.SOUTH);
 		add(buildSearchForm(), BorderLayout.NORTH);
+		resizeColumnWidth(table);
 	}
 
 	private JPanel buildSearchForm() {
 		JPanel panel = new JPanel();
-		panel.setLayout(new MigLayout("", "[][]30[][]30[][]30[]", "[]20[]")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		panel.setLayout(new MigLayout("", "[][]15[][]15[][]15[]", "[]5[]")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 		JLabel lblOrderType = new JLabel(Messages.getString("MenuItemExplorer.4")); //$NON-NLS-1$
 		cbOrderTypes = new JComboBox();
@@ -117,7 +118,7 @@ public class MenuItemExplorer extends TransparentPanel {
 
 		JLabel lblName = new JLabel(Messages.getString("MenuItemExplorer.0")); //$NON-NLS-1$
 		JLabel lblGroup = new JLabel(Messages.getString("MenuItemExplorer.1")); //$NON-NLS-1$
-		final JTextField nameField = new JTextField(15);
+		tfName = new JTextField(15);
 
 		try {
 
@@ -133,7 +134,7 @@ public class MenuItemExplorer extends TransparentPanel {
 			JButton searchBttn = new JButton(Messages.getString("MenuItemExplorer.3")); //$NON-NLS-1$
 
 			panel.add(lblName, "align label"); //$NON-NLS-1$
-			panel.add(nameField);
+			panel.add(tfName);
 			panel.add(lblGroup);
 			panel.add(cbGroup);
 			panel.add(lblOrderType);
@@ -148,22 +149,15 @@ public class MenuItemExplorer extends TransparentPanel {
 			searchBttn.addActionListener(new ActionListener() {
 
 				public void actionPerformed(ActionEvent e) {
-					String selectedType = cbOrderTypes.getSelectedItem().toString();
-					String txName = nameField.getText();
-					Object selectedItem = cbGroup.getSelectedItem();
+					searchItem();
+				}
+			});
 
-					List<MenuItem> similarItem = null;
+			tfName.addActionListener(new ActionListener() {
 
-					if (selectedItem instanceof MenuGroup) {
-						similarItem = MenuItemDAO.getInstance().getMenuItems(txName, (MenuGroup) selectedItem, selectedType);
-					}
-					else {
-						similarItem = MenuItemDAO.getInstance().getMenuItems(txName, null, selectedType);
-					}
-
-					tableModel.removeAll();
-					tableModel.addRows(similarItem);
-
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					searchItem();
 				}
 			});
 
@@ -172,6 +166,24 @@ public class MenuItemExplorer extends TransparentPanel {
 		}
 
 		return panel;
+	}
+
+	private void searchItem() {
+		String selectedType = cbOrderTypes.getSelectedItem().toString();
+		String txName = tfName.getText();
+		Object selectedGroup = cbGroup.getSelectedItem();
+
+		List<MenuItem> similarItem = null;
+
+		if (selectedGroup instanceof MenuGroup) {
+			similarItem = MenuItemDAO.getInstance().getMenuItems(txName, (MenuGroup) selectedGroup, selectedType);
+		}
+		else {
+			similarItem = MenuItemDAO.getInstance().getMenuItems(txName, null, selectedType);
+		}
+
+		tableModel.removeAll();
+		tableModel.addRows(similarItem);
 	}
 
 	private TransparentPanel createButtonPanel() {
@@ -198,7 +210,8 @@ public class MenuItemExplorer extends TransparentPanel {
 
 					MenuItem menuItem = tableModel.getRow(index);
 
-					String amountString = JOptionPane.showInputDialog(MenuItemExplorer.this, Messages.getString("MenuItemExplorer.8"), menuItem.getStockAmount()); //$NON-NLS-1$
+					String amountString = JOptionPane.showInputDialog(MenuItemExplorer.this,
+							Messages.getString("MenuItemExplorer.8"), menuItem.getStockAmount()); //$NON-NLS-1$
 
 					if (amountString == null || amountString.equals("")) { //$NON-NLS-1$
 						return;
@@ -326,5 +339,30 @@ public class MenuItemExplorer extends TransparentPanel {
 		panel.add(updateStockAmount);
 		panel.add(deleteButton);
 		return panel;
+	}
+
+	public void resizeColumnWidth(JTable table) {
+		final TableColumnModel columnModel = table.getColumnModel();
+		for (int column = 0; column < table.getColumnCount(); column++) {
+			columnModel.getColumn(column).setPreferredWidth((Integer) getColumnWidth().get(column));
+		}
+	}
+
+	private List getColumnWidth() {
+		List<Integer> columnWidth = new ArrayList();
+		columnWidth.add(50);
+		columnWidth.add(200);
+		columnWidth.add(200);
+		columnWidth.add(70);
+		columnWidth.add(50);
+		columnWidth.add(50);
+		columnWidth.add(140);
+		columnWidth.add(70);
+		columnWidth.add(70);
+		columnWidth.add(100);
+		columnWidth.add(100);
+		columnWidth.add(200);
+
+		return columnWidth;
 	}
 }

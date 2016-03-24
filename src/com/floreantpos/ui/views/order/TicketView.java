@@ -313,6 +313,12 @@ public class TicketView extends JPanel {
 		btnIncreaseAmount.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 
+				ITicketItem selectedTicketItem = ticketViewerTable.getSelected();
+
+				if (selectedTicketItem == null) {
+					return;
+				}
+
 				if (isFractionalUnit()) {
 					doIncreaseFractionalUnit();
 				}
@@ -737,80 +743,6 @@ public class TicketView extends JPanel {
 		}
 		return false;
 	}
-
-	/*	private boolean checkStock(double selectedQuantity) {
-			TicketItem selectedTicketItem = (TicketItem) ticketViewerTable.getSelected();
-
-			MenuItemDAO dao = new MenuItemDAO();
-			MenuItem menuItem = dao.get(selectedTicketItem.getItemId());
-			isFractionalUnit = true;
-				if (menuItem.isFractionalUnit()) {
-					selectedTicketItem.setItemQuantity(selectedQuantity);
-				}
-			return isStockAvailable(menuItem, selectedTicketItem);
-		}
-
-		public boolean isStockAvailable(MenuItem menuItem, TicketItem currentTicketItem) {
-
-			if (!menuItem.isDisableWhenStockAmountIsZero()) {
-				return true;
-			}
-
-			if (menuItem.isFractionalUnit()) {
-
-				List<TicketItem> ticketItems = ticketViewerTable.getTicketItems();
-				if (ticketItems == null || ticketItems.isEmpty()) {
-					if (menuItem.getStockAmount() < currentTicketItem.getItemQuantity()) {
-						return false;
-					}
-					return true;
-				}
-
-				double totalItemQuantity = 0;
-				for (TicketItem tItem : ticketItems) {
-
-					if (menuItem.getName().equals(tItem.getName())) {
-						totalItemQuantity += tItem.getItemQuantity();
-
-						if (menuItem.getStockAmount() < totalItemQuantity) {
-							isFractionalUnit = false;
-							return false;
-						}
-					}
-				}
-
-				if (!isFractionalUnit) {
-					totalItemQuantity += currentTicketItem.getItemQuantity();
-				}
-
-				isFractionalUnit = false;
-				if (menuItem.getStockAmount() < totalItemQuantity) {
-					return false;
-				}
-				return true;
-			}
-
-			List<TicketItem> ticketItems = ticketViewerTable.getTicketItems();
-			if (ticketItems == null || ticketItems.isEmpty()) {
-				if (menuItem.getStockAmount() < currentTicketItem.getItemCount()) {
-					return false;
-				}
-				return true;
-			}
-
-			int totalItemCount = 0;
-			for (TicketItem tItem : ticketItems) {
-
-				if (tItem.getName().equals(menuItem.getName())) {
-					totalItemCount += tItem.getItemCount();
-
-					if (menuItem.getStockAmount() <= totalItemCount) {
-						return false;
-					}
-				}
-			}
-			return true;
-		}*/
 
 	private boolean checkStock(double selectedItemQuantity) {
 

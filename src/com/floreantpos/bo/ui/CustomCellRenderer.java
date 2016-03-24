@@ -34,7 +34,14 @@ public class CustomCellRenderer extends DefaultTableCellRenderer {
 	private Border unselectedBorder = null;
 	private Border selectedBorder = null;
 
+	public CustomCellRenderer() {
+//		setLineWrap(true);
+//		setWrapStyleWord(true);
+//		setOpaque(true);
+	}
+
 	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+
 		if (selectedBorder == null) {
 			selectedBorder = BorderFactory.createMatteBorder(5, 5, 5, 5, table.getSelectionBackground());
 		}
@@ -81,6 +88,10 @@ public class CustomCellRenderer extends DefaultTableCellRenderer {
 			SimpleDateFormat format = new SimpleDateFormat(pattern);
 			value = format.format((Date) value);
 			return super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+		}
+		
+		if(value instanceof String) {
+			value = "<html>" + value + "</html>";
 		}
 
 		return super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
