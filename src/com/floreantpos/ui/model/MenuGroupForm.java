@@ -73,7 +73,7 @@ public class MenuGroupForm extends BeanEditor {
 	// <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:initComponents
 	private void initComponents() {
 		setLayout(new MigLayout("", "[70px][289px,grow][6px][49px]", "[19px][][25px][][][][15px]")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-
+		setPreferredSize(new Dimension(600,250));
 		jLabel1 = new javax.swing.JLabel();
 		tfName = new com.floreantpos.swing.FixedLengthTextField(120);
 		jLabel2 = new javax.swing.JLabel();
@@ -103,7 +103,7 @@ public class MenuGroupForm extends BeanEditor {
 		add(tfTranslatedName, "cell 1 1,growx"); //$NON-NLS-1$
 		add(jLabel2, "cell 0 2,alignx left,aligny center"); //$NON-NLS-1$
 		add(jLabel1, "cell 0 0,alignx left,aligny center"); //$NON-NLS-1$
-		add(tfName, "cell 1 0 3 1,growx,aligny top"); //$NON-NLS-1$
+		add(tfName, "cell 1 0,growx"); //$NON-NLS-1$
 
 		lblSortOrder = new JLabel(Messages.getString("MenuGroupForm.12")); //$NON-NLS-1$
 		add(lblSortOrder, "cell 0 3,alignx leading"); //$NON-NLS-1$
