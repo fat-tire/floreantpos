@@ -580,9 +580,9 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 				double advanceAmount = Double.parseDouble(ticket.getProperty(Ticket.PROPERTY_ADVANCE_PAYMENT, paymentGateway.getName())); //$NON-NLS-1$
 
 				CardProcessor cardProcessor = paymentGateway.getProcessor();
-				if (tenderAmount > advanceAmount) {
-					cardProcessor.voidAmount(transactionId, advanceAmount);
-				}
+//				if (tenderAmount > advanceAmount) {
+//					cardProcessor.voidAmount(transactionId, advanceAmount);
+//				}
 
 				cardProcessor.authorizeAmount(transaction);
 			}

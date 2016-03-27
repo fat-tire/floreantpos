@@ -494,9 +494,9 @@ public class GroupSettleTicketDialog extends POSDialog implements CardInputListe
 				double advanceAmount = Double.parseDouble(ticket.getProperty(Ticket.PROPERTY_ADVANCE_PAYMENT, paymentGateway.getName())); //$NON-NLS-1$
 
 				CardProcessor cardProcessor = paymentGateway.getProcessor();
-				if (totalTenderAmount > advanceAmount) {
-					cardProcessor.voidAmount(transactionId, advanceAmount);
-				}
+//				if (totalTenderAmount > advanceAmount) {
+//					cardProcessor.voidAmount(transactionId, advanceAmount);
+//				}
 
 				cardProcessor.authorizeAmount(transaction);
 			}
