@@ -88,7 +88,8 @@ import com.floreantpos.util.POSUtil;
  */
 public class SwitchboardView extends ViewPanel implements ActionListener, ITicketList, TicketListUpdateListener {
 
-	public final static String VIEW_NAME = com.floreantpos.POSConstants.SWITCHBOARD;
+	//public final static String VIEW_NAME = com.floreantpos.POSConstants.SWITCHBOARD;
+	public final static String VIEW_NAME = com.floreantpos.POSConstants.ORDERS;
 
 	private OrderServiceExtension orderServiceExtension;
 

@@ -103,7 +103,7 @@ public class LoginView extends ViewPanel {
 		mainPanel = new JPanel(new BorderLayout());
 		mainPanel.add(lblTerminalId, BorderLayout.NORTH);
 
-		btnSwitchBoard = new PosButton(POSConstants.SWITCHBOARD);
+		btnSwitchBoard = new PosButton(POSConstants.ORDERS);
 		btnKitchenDisplay = new PosButton(POSConstants.KITCHEN_DISPLAY_BUTTON_TEXT);
 		btnConfigureDatabase = new PosButton(POSConstants.CONFIGURE_DATABASE);
 		btnShutdown = new PosButton(POSConstants.SHUTDOWN);
