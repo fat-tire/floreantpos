@@ -61,7 +61,7 @@ public class AuthorizeDotNetProcessor implements CardProcessor {
 		}
 	}
 
-	public void authorizeAmount(PosTransaction transaction) throws Exception {
+	public void preAuth(PosTransaction transaction) throws Exception {
 		Environment environment = createEnvironment();
 		Merchant merchant = createMerchant(environment);
 
@@ -113,7 +113,7 @@ public class AuthorizeDotNetProcessor implements CardProcessor {
 		}
 	}
 
-	public void captureAuthorizedAmount(PosTransaction transaction) throws Exception {
+	public void captureAuthAmount(PosTransaction transaction) throws Exception {
 		Environment environment = createEnvironment();
 		Merchant merchant = createMerchant(environment);
 
@@ -212,7 +212,7 @@ public class AuthorizeDotNetProcessor implements CardProcessor {
 
 		}
 		else {
-			return createCard(transaction.getCardNumber(), transaction.getCardExpiryMonth(), transaction.getCardExpiryYear(), transaction.getCardType());
+			return createCard(transaction.getCardNumber(), transaction.getCardExpMonth(), transaction.getCardExpYear(), transaction.getCardType());
 		}
 	}
 

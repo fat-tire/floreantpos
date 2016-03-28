@@ -480,8 +480,8 @@ public class GroupSettleTicketDialog extends POSDialog implements CardInputListe
 				transaction.setCardReader(CardReader.MANUAL.name());
 				transaction.setCardTransactionId(transactionId);
 				transaction.setCardNumber(ticket.getProperty(Ticket.PROPERTY_CARD_NUMBER));
-				transaction.setCardExpiryMonth(ticket.getProperty(Ticket.PROPERTY_CARD_EXP_MONTH));
-				transaction.setCardExpiryYear(ticket.getProperty(Ticket.PROPERTY_CARD_EXP_YEAR));
+				transaction.setCardExpMonth(ticket.getProperty(Ticket.PROPERTY_CARD_EXP_MONTH));
+				transaction.setCardExpYear(ticket.getProperty(Ticket.PROPERTY_CARD_EXP_YEAR));
 			}
 			else {
 				transaction.setCardReader(CardReader.EXTERNAL_TERMINAL.name());
@@ -498,7 +498,7 @@ public class GroupSettleTicketDialog extends POSDialog implements CardInputListe
 //					cardProcessor.voidAmount(transactionId, advanceAmount);
 //				}
 
-				cardProcessor.authorizeAmount(transaction);
+				cardProcessor.preAuth(transaction);
 			}
 
 			settleTicket(transaction);
@@ -627,7 +627,7 @@ public class GroupSettleTicketDialog extends POSDialog implements CardInputListe
 				transaction.setCaptured(false);
 				transaction.setCardMerchantGateway(paymentGateway.getName());
 
-				paymentGateway.getProcessor().authorizeAmount(transaction);
+				paymentGateway.getProcessor().preAuth(transaction);
 
 				settleTicket(transaction);
 
@@ -708,7 +708,7 @@ public class GroupSettleTicketDialog extends POSDialog implements CardInputListe
 					transaction.setAmount(totalTenderAmount);
 				}
 
-				cardProcessor.authorizeAmount(transaction);
+				cardProcessor.preAuth(transaction);
 
 				settleTicket(transaction);
 			}
@@ -720,10 +720,10 @@ public class GroupSettleTicketDialog extends POSDialog implements CardInputListe
 				transaction.setCardMerchantGateway(paymentGateway.getName());
 				transaction.setCardReader(CardReader.MANUAL.name());
 				transaction.setCardNumber(mDialog.getCardNumber());
-				transaction.setCardExpiryMonth(mDialog.getExpMonth());
-				transaction.setCardExpiryYear(mDialog.getExpYear());
+				transaction.setCardExpMonth(mDialog.getExpMonth());
+				transaction.setCardExpYear(mDialog.getExpYear());
 
-				cardProcessor.authorizeAmount(transaction);
+				cardProcessor.preAuth(transaction);
 
 				settleTicket(transaction);
 			}

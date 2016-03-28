@@ -265,8 +265,8 @@ public class PosRequestHandler extends Thread {
 
 			String exp = posRequest.payment.exp;
 			if (exp != null) {
-				transaction.setCardExpiryMonth(exp.substring(0, 2));
-				transaction.setCardExpiryYear(exp.substring(2, 4));
+				transaction.setCardExpMonth(exp.substring(0, 2));
+				transaction.setCardExpYear(exp.substring(2, 4));
 			}
 		}
 

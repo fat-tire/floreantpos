@@ -19,15 +19,13 @@ package com.floreantpos.ui.views.payment;
 
 import java.io.IOException;
 
-import net.authorize.data.creditcard.CardType;
-
 import com.floreantpos.Messages;
 import com.floreantpos.PosException;
 import com.floreantpos.config.CardConfig;
+import com.floreantpos.model.OrderType;
 import com.floreantpos.model.PosTransaction;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.ui.util.StreamUtils;
-import com.floreantpos.model.OrderType;
 import com.floreantpos.util.NumberUtil;
 import com.mercurypay.ws.sdk.MercuryResponse;
 import com.mercurypay.ws.sdk.MercuryWebRequest;
@@ -48,11 +46,11 @@ public class MercuryPayProcessor implements CardProcessor {
 	public final static String $refNo = "$refNo"; //$NON-NLS-1$
 
 	@Override
-	public void authorizeAmount(PosTransaction transaction) throws Exception {
+	public void preAuth(PosTransaction transaction) throws Exception {
 		Ticket ticket = transaction.getTicket();
 		
 		if(ticket.getOrderType().name() == OrderType.BAR_TAB && ticket.hasProperty("AcqRefData")) { //$NON-NLS-1$ //fix
-			captureAuthorizedAmount(transaction);
+			captureAuthAmount(transaction);
 			return;
 		}
 		
@@ -106,29 +104,7 @@ public class MercuryPayProcessor implements CardProcessor {
 	}
 
 	@Override
-	public String authorizeAmount(Ticket ticket, String cardTrack, double amount, String cardType) throws Exception {
-		String mpsResponse = doPreAuth(ticket, cardTrack, amount);
-		
-		System.out.println(mpsResponse);
-		
-		MercuryResponse result = new MercuryResponse(mpsResponse);
-		if(!result.isApproved()) {
-			throw new PosException(Messages.getString("MercuryPayProcessor.23")); //$NON-NLS-1$
-		}
-		
-		ticket.addProperty("AuthCode", result.getAuthCode()); //$NON-NLS-1$
-		ticket.addProperty("AcqRefData", result.getAcqRefData()); //$NON-NLS-1$
-		
-		return result.getTransactionId();
-	}
-
-	@Override
-	public String authorizeAmount(String cardNumber, String expMonth, String expYear, double amount, CardType cardType) throws Exception {
-		throw new PosException(Messages.getString("MercuryPayProcessor.26")); //$NON-NLS-1$
-	}
-
-	@Override
-	public void captureAuthorizedAmount(PosTransaction transaction) throws Exception {
+	public void captureAuthAmount(PosTransaction transaction) throws Exception {
 		String xml = StreamUtils.toString(MercuryPayProcessor.class.getResourceAsStream("/com/mercurypay/ws/sdk/mercuryPreAuthCapture.xml")); //$NON-NLS-1$
 		Ticket ticket = transaction.getTicket();
 
@@ -166,18 +142,4 @@ public class MercuryPayProcessor implements CardProcessor {
 		transaction.setCardTransactionId(result.getTransactionId());
 		transaction.setCardAuthCode(result.getAuthCode());
 	}
-
-	@Override
-	public void captureNewAmount(PosTransaction transaction) throws Exception {
-		captureAuthorizedAmount(transaction);
-	}
-
-	@Override
-	public void voidAmount(PosTransaction transaction) throws Exception {
-	}
-
-	@Override
-	public void voidAmount(String transId, double amount) throws Exception {
-	}
-
 }

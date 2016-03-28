@@ -84,7 +84,7 @@ class AuthorizationDialog extends POSDialog implements Runnable {
 				}
 
 				CardProcessor cardProcessor = CardConfig.getPaymentGateway().getProcessor();
-				cardProcessor.captureAuthorizedAmount(transaction);
+				cardProcessor.captureAuthAmount(transaction);
 				transaction.setCaptured(true);
 
 				PosTransactionDAO.getInstance().saveOrUpdate(transaction);

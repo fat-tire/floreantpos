@@ -545,49 +545,49 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 
 			String transactionId = ticket.getProperty(Ticket.PROPERTY_CARD_TRANSACTION_ID);
 
-			CreditCardTransaction transaction = new CreditCardTransaction();
-			transaction.setPaymentType(ticket.getProperty(Ticket.PROPERTY_PAYMENT_METHOD));
-			transaction.setTransactionType(TransactionType.CREDIT.name());
-			transaction.setTicket(ticket);
-			transaction.setCardType(ticket.getProperty(Ticket.PROPERTY_CARD_NAME));
-			transaction.setCaptured(false);
-			transaction.setCardMerchantGateway(paymentGateway.getName());
-			transaction.setCardAuthCode(ticket.getProperty("AuthCode")); //$NON-NLS-1$
-			transaction.addProperty("AcqRefData", ticket.getProperty("AcqRefData")); //$NON-NLS-1$ //$NON-NLS-2$
-
-			CardReader cardReader = CardReader.valueOf(ticket.getProperty(Ticket.PROPERTY_CARD_READER));
-
-			if (cardReader == CardReader.SWIPE) {
-				transaction.setCardReader(CardReader.SWIPE.name());
-				transaction.setCardTrack(ticket.getProperty(Ticket.PROPERTY_CARD_TRACKS));
-				transaction.setCardTransactionId(transactionId);
-			}
-			else if (cardReader == CardReader.MANUAL) {
-				transaction.setCardReader(CardReader.MANUAL.name());
-				transaction.setCardTransactionId(transactionId);
-				transaction.setCardNumber(ticket.getProperty(Ticket.PROPERTY_CARD_NUMBER));
-				transaction.setCardExpiryMonth(ticket.getProperty(Ticket.PROPERTY_CARD_EXP_MONTH));
-				transaction.setCardExpiryYear(ticket.getProperty(Ticket.PROPERTY_CARD_EXP_YEAR));
-			}
-			else {
-				transaction.setCardReader(CardReader.EXTERNAL_TERMINAL.name());
-				transaction.setCardAuthCode(ticket.getProperty(Ticket.PROPERTY_CARD_AUTH_CODE));
-			}
-
-			setTransactionAmounts(transaction);
-
-			if (cardReader == CardReader.SWIPE || cardReader == CardReader.MANUAL) {
-				double advanceAmount = Double.parseDouble(ticket.getProperty(Ticket.PROPERTY_ADVANCE_PAYMENT, paymentGateway.getName())); //$NON-NLS-1$
-
-				CardProcessor cardProcessor = paymentGateway.getProcessor();
-//				if (tenderAmount > advanceAmount) {
-//					cardProcessor.voidAmount(transactionId, advanceAmount);
-//				}
-
-				cardProcessor.authorizeAmount(transaction);
-			}
-
-			settleTicket(transaction);
+//			CreditCardTransaction transaction = new CreditCardTransaction();
+//			transaction.setPaymentType(ticket.getProperty(Ticket.PROPERTY_PAYMENT_METHOD));
+//			transaction.setTransactionType(TransactionType.CREDIT.name());
+//			transaction.setTicket(ticket);
+//			transaction.setCardType(ticket.getProperty(Ticket.PROPERTY_CARD_NAME));
+//			transaction.setCaptured(false);
+//			transaction.setCardMerchantGateway(paymentGateway.getName());
+//			transaction.setCardAuthCode(ticket.getProperty("AuthCode")); //$NON-NLS-1$
+//			transaction.addProperty("AcqRefData", ticket.getProperty("AcqRefData")); //$NON-NLS-1$ //$NON-NLS-2$
+//
+//			CardReader cardReader = CardReader.valueOf(ticket.getProperty(Ticket.PROPERTY_CARD_READER));
+//
+//			if (cardReader == CardReader.SWIPE) {
+//				transaction.setCardReader(CardReader.SWIPE.name());
+//				transaction.setCardTrack(ticket.getProperty(Ticket.PROPERTY_CARD_TRACKS));
+//				transaction.setCardTransactionId(transactionId);
+//			}
+//			else if (cardReader == CardReader.MANUAL) {
+//				transaction.setCardReader(CardReader.MANUAL.name());
+//				transaction.setCardTransactionId(transactionId);
+//				transaction.setCardNumber(ticket.getProperty(Ticket.PROPERTY_CARD_NUMBER));
+//				transaction.setCardExpiryMonth(ticket.getProperty(Ticket.PROPERTY_CARD_EXP_MONTH));
+//				transaction.setCardExpiryYear(ticket.getProperty(Ticket.PROPERTY_CARD_EXP_YEAR));
+//			}
+//			else {
+//				transaction.setCardReader(CardReader.EXTERNAL_TERMINAL.name());
+//				transaction.setCardAuthCode(ticket.getProperty(Ticket.PROPERTY_CARD_AUTH_CODE));
+//			}
+//
+//			setTransactionAmounts(transaction);
+//
+//			if (cardReader == CardReader.SWIPE || cardReader == CardReader.MANUAL) {
+//				double advanceAmount = Double.parseDouble(ticket.getProperty(Ticket.PROPERTY_ADVANCE_PAYMENT, paymentGateway.getName())); //$NON-NLS-1$
+//
+//				CardProcessor cardProcessor = paymentGateway.getProcessor();
+////				if (tenderAmount > advanceAmount) {
+////					cardProcessor.voidAmount(transactionId, advanceAmount);
+////				}
+//
+//				cardProcessor.authorizeAmount(transaction);
+//			}
+//
+//			settleTicket(transaction);
 
 		} catch (Exception e) {
 			POSMessageDialog.showError(Application.getPosWindow(), e.getMessage(), e);
@@ -714,7 +714,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 
 				setTransactionAmounts(transaction);
 
-				paymentGateway.getProcessor().authorizeAmount(transaction);
+				paymentGateway.getProcessor().preAuth(transaction);
 
 				settleTicket(transaction);
 
@@ -782,13 +782,12 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 					return;
 				}
 				transaction.setCardType(paymentType.getDisplayString());
-				transaction.setCardTrack(cardString);
 				transaction.setCaptured(false);
 				transaction.setCardMerchantGateway(paymentGateway.getName());
 				transaction.setCardReader(CardReader.SWIPE.name());
 				setTransactionAmounts(transaction);
 
-				cardProcessor.authorizeAmount(transaction);
+				cardProcessor.preAuth(transaction);
 
 				settleTicket(transaction);
 			}
@@ -800,11 +799,11 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 				transaction.setCardMerchantGateway(paymentGateway.getName());
 				transaction.setCardReader(CardReader.MANUAL.name());
 				transaction.setCardNumber(mDialog.getCardNumber());
-				transaction.setCardExpiryMonth(mDialog.getExpMonth());
-				transaction.setCardExpiryYear(mDialog.getExpYear());
+				transaction.setCardExpMonth(mDialog.getExpMonth());
+				transaction.setCardExpYear(mDialog.getExpYear());
 				setTransactionAmounts(transaction);
 
-				cardProcessor.authorizeAmount(transaction);
+				cardProcessor.preAuth(transaction);
 
 				settleTicket(transaction);
 			}

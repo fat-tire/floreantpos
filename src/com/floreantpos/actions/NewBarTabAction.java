@@ -24,18 +24,19 @@ import java.util.Calendar;
 import javax.swing.AbstractAction;
 import javax.swing.JOptionPane;
 
-import net.authorize.data.creditcard.CardType;
-
 import org.apache.commons.lang.StringUtils;
 
 import com.floreantpos.ITicketList;
 import com.floreantpos.Messages;
 import com.floreantpos.PosException;
 import com.floreantpos.config.CardConfig;
+import com.floreantpos.extension.PaymentGatewayPlugin;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.CardReader;
+import com.floreantpos.model.CreditCardTransaction;
 import com.floreantpos.model.PaymentType;
 import com.floreantpos.model.Ticket;
+import com.floreantpos.model.TransactionType;
 import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.dialog.PaymentTypeSelectionDialog;
@@ -156,20 +157,36 @@ public class NewBarTabAction extends AbstractAction implements CardInputListener
 		waitDialog.setVisible(true);
 		
 		try {
+			PaymentGatewayPlugin paymentGateway = CardConfig.getPaymentGateway();
 			Ticket ticket = createTicket(application);
 			
-			String transactionId = CardConfig.getPaymentGateway().getProcessor().authorizeAmount(ticket, cardString, CardConfig.getBartabLimit(), selectedPaymentType.getDisplayString());
 			
-			ticket.addProperty(Ticket.PROPERTY_PAYMENT_METHOD, selectedPaymentType.name());
-			ticket.addProperty(Ticket.PROPERTY_CARD_NAME, selectedPaymentType.name());
-			ticket.addProperty(Ticket.PROPERTY_CARD_TRANSACTION_ID, transactionId);
-			ticket.addProperty(Ticket.PROPERTY_CARD_TRACKS, cardString);
-			ticket.addProperty(Ticket.PROPERTY_CARD_READER, CardReader.SWIPE.name());
-			ticket.addProperty(Ticket.PROPERTY_ADVANCE_PAYMENT, String.valueOf(CardConfig.getBartabLimit()));
+			CreditCardTransaction transaction = new CreditCardTransaction();
+			transaction.setPaymentType(selectedPaymentType.name());
+			transaction.setTransactionType(TransactionType.CREDIT.name());
+			transaction.setTicket(ticket);
+			transaction.setCardTrack(cardString);
+			transaction.setCardType(selectedPaymentType.name());
+			transaction.setCaptured(false);
+			transaction.setCardReader(CardReader.SWIPE.name());
+			transaction.setCardMerchantGateway(paymentGateway.getName());
+			
+			paymentGateway.getProcessor().preAuth(transaction);
+			
+			ticket.addProperty(Ticket.PROPERTY_CARD_TRANSACTION_ID, transaction.getCardTransactionId());
+			TicketDAO.getInstance().save(ticket);
+			//String transactionId = paymentGateway.getProcessor().authorizeAmount(ticket, cardString, CardConfig.getBartabLimit(), selectedPaymentType.getDisplayString());
+			
+//			ticket.addProperty(Ticket.PROPERTY_PAYMENT_METHOD, selectedPaymentType.name());
+//			ticket.addProperty(Ticket.PROPERTY_CARD_NAME, selectedPaymentType.name());
+//			ticket.addProperty(Ticket.PROPERTY_CARD_TRANSACTION_ID, transactionId);
+//			ticket.addProperty(Ticket.PROPERTY_CARD_TRACKS, cardString);
+//			ticket.addProperty(Ticket.PROPERTY_CARD_READER, CardReader.SWIPE.name());
+//			ticket.addProperty(Ticket.PROPERTY_ADVANCE_PAYMENT, String.valueOf(CardConfig.getBartabLimit()));
 			
 			//ticket.addToticketItems(createTabOpenItem(ticket));
 			
-			TicketDAO.getInstance().save(ticket);
+			
 
 			waitDialog.setVisible(false);
 
@@ -208,24 +225,42 @@ public class NewBarTabAction extends AbstractAction implements CardInputListener
 		waitDialog.setVisible(true);
 		
 		try {
-			CardType cardType = CardType.findByValue(selectedPaymentType.getDisplayString());
-			
-			String transactionId = CardConfig.getPaymentGateway().getProcessor().authorizeAmount(cardNumber, expMonth, expYear, CardConfig.getBartabLimit(), cardType);
-			
+			PaymentGatewayPlugin paymentGateway = CardConfig.getPaymentGateway();
 			Ticket ticket = createTicket(application);
 			
-			ticket.addProperty(Ticket.PROPERTY_PAYMENT_METHOD, selectedPaymentType.name());
-			ticket.addProperty(Ticket.PROPERTY_CARD_NAME, selectedPaymentType.name());
-			ticket.addProperty(Ticket.PROPERTY_CARD_TRANSACTION_ID, transactionId);
-			ticket.addProperty(Ticket.PROPERTY_CARD_NUMBER, cardNumber);
-			ticket.addProperty(Ticket.PROPERTY_CARD_EXP_YEAR, expYear);
-			ticket.addProperty(Ticket.PROPERTY_CARD_EXP_MONTH, expMonth);
-			ticket.addProperty(Ticket.PROPERTY_CARD_READER, CardReader.MANUAL.name());
-			ticket.addProperty(Ticket.PROPERTY_ADVANCE_PAYMENT, String.valueOf(CardConfig.getBartabLimit()));
+			CreditCardTransaction transaction = new CreditCardTransaction();
+			transaction.setPaymentType(selectedPaymentType.name());
+			transaction.setTransactionType(TransactionType.CREDIT.name());
+			transaction.setTicket(ticket);
+			transaction.setCardNo(cardNumber);
+			transaction.setCardExpYear(expYear);
+			transaction.setCardExpMonth(expMonth);
+			transaction.setCardType(selectedPaymentType.name());
+			transaction.setCaptured(false);
+			transaction.setCardReader(CardReader.SWIPE.name());
+			transaction.setCardMerchantGateway(paymentGateway.getName());
 			
-			//ticket.addToticketItems(createTabOpenItem(ticket));
+			paymentGateway.getProcessor().preAuth(transaction);
 			
+			ticket.addProperty(Ticket.PROPERTY_CARD_TRANSACTION_ID, transaction.getCardTransactionId());
 			TicketDAO.getInstance().save(ticket);
+			
+//			String transactionId = CardConfig.getPaymentGateway().getProcessor().authorizeAmount(cardNumber, expMonth, expYear, CardConfig.getBartabLimit(), cardType);
+//			
+//			Ticket ticket = createTicket(application);
+//			
+//			ticket.addProperty(Ticket.PROPERTY_PAYMENT_METHOD, selectedPaymentType.name());
+//			ticket.addProperty(Ticket.PROPERTY_CARD_NAME, selectedPaymentType.name());
+//			ticket.addProperty(Ticket.PROPERTY_CARD_TRANSACTION_ID, transactionId);
+//			ticket.addProperty(Ticket.PROPERTY_CARD_NUMBER, cardNumber);
+//			ticket.addProperty(Ticket.PROPERTY_CARD_EXP_YEAR, expYear);
+//			ticket.addProperty(Ticket.PROPERTY_CARD_EXP_MONTH, expMonth);
+//			ticket.addProperty(Ticket.PROPERTY_CARD_READER, CardReader.MANUAL.name());
+//			ticket.addProperty(Ticket.PROPERTY_ADVANCE_PAYMENT, String.valueOf(CardConfig.getBartabLimit()));
+//			
+//			//ticket.addToticketItems(createTabOpenItem(ticket));
+//			
+//			TicketDAO.getInstance().save(ticket);
 			
 			waitDialog.setVisible(false);
 			

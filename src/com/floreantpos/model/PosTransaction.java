@@ -54,6 +54,11 @@ public class PosTransaction extends BasePosTransaction {
 	}
 
 	/*[CONSTRUCTOR MARKER END]*/
+	
+	private String cardTrack;
+	private String cardNo;
+	private String cardExpYear;
+	private String cardExpMonth;
 
 	public final static String CASH = "CASH"; //$NON-NLS-1$
 	public final static String GIFT_CERT = "GIFT_CERT"; //$NON-NLS-1$
@@ -137,5 +142,37 @@ public class PosTransaction extends BasePosTransaction {
 
 	public Double calculateAuthorizeAmount() {
 		return getTenderAmount() + getTenderAmount() * 0.2;
+	}
+
+	public String getCardTrack() {
+		return cardTrack;
+	}
+
+	public void setCardTrack(String cardTrack) {
+		this.cardTrack = cardTrack;
+	}
+
+	public String getCardNo() {
+		return cardNo;
+	}
+
+	public void setCardNo(String cardNo) {
+		this.cardNo = cardNo;
+	}
+
+	public String getCardExpYear() {
+		return cardExpYear;
+	}
+
+	public void setCardExpYear(String expYear) {
+		this.cardExpYear = expYear;
+	}
+
+	public String getCardExpMonth() {
+		return cardExpMonth;
+	}
+
+	public void setCardExpMonth(String expMonth) {
+		this.cardExpMonth = expMonth;
 	}
 }
