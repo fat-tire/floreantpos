@@ -137,7 +137,7 @@ public class PosTransaction extends BasePosTransaction {
 
 	public Double calculateAuthorizeAmount() {
 		if (getTicket().getOrderType().isBarTab()) {
-			return CardConfig.getBartabLimit();
+			return CardConfig.getBartabLimit() + CardConfig.getBartabLimit() * 0.2;
 		}
 		return getTenderAmount() + getTenderAmount() * 0.2;
 	}

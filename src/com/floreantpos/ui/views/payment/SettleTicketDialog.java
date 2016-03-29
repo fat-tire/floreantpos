@@ -52,7 +52,6 @@ import org.apache.commons.lang.StringUtils;
 import com.floreantpos.Messages;
 import com.floreantpos.POSConstants;
 import com.floreantpos.PosException;
-import com.floreantpos.actions.NewBarTabAction;
 import com.floreantpos.config.CardConfig;
 import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.extension.InginicoPlugin;
@@ -411,10 +410,10 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 			this.paymentType = paymentType;
 			tenderAmount = paymentView.getTenderedAmount();
 
-			if (ticket.getOrderType().isBarTab()) { //fix
+			/*if (ticket.getOrderType().isBarTab()) { //fix
 				doSettleBarTabTicket(ticket);
 				return;
-			}
+			}*/
 
 			cardName = paymentType.getDisplayString();
 			PosTransaction transaction = null;
@@ -530,72 +529,23 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 		return true;
 	}
 
-	private void doSettleBarTabTicket(Ticket ticket) {
-		if (!confirmPayment()) {
-			return;
-		}
-
-		if (paymentType == PaymentType.CASH) {
-			PosTransaction transaction = paymentType.createTransaction();
-			transaction.setTicket(ticket);
-			transaction.setCaptured(true);
-			setTransactionAmounts(transaction);
-
-			settleTicket(transaction);
-			return;
-		}
-
+	public void doSettleBarTabTicket(Ticket ticket) {
 		try {
-			String msg = "Do you want to add another card payment?"; //$NON-NLS-1$
-
+			String msg = "Do you want to settle ticket?"; //$NON-NLS-1$
 			int option1 = POSMessageDialog.showYesNoQuestionDialog(null, msg, Messages.getString("NewBarTabAction.4")); //$NON-NLS-1$
-			if (option1 == JOptionPane.YES_OPTION) {
-				NewBarTabAction barTabAction = new NewBarTabAction(ticket.getOrderType(), this);
-				barTabAction.setTicket(ticket);
-				barTabAction.actionPerformed(null);
+			if (option1 != JOptionPane.YES_OPTION) {
+				return;
 			}
 			else {
-				if (ticket.getDueAmount() > ticket.getAdvanceAmount()) {
-					POSMessageDialog.showMessage("Payment must complete.");
-					return;
-				}
-				else {
-					double transactionDueAmount = ticket.getDueAmount().doubleValue();
-
-					for (PosTransaction barTabTransaction : ticket.getTransactions()) {
-						double barTabLimit = CardConfig.getBartabLimit();
-						if (barTabLimit < transactionDueAmount) {
-							if (barTabTransaction.isCard()) {
-								barTabTransaction.setAmount(barTabLimit);
-								barTabTransaction.setTenderAmount(barTabLimit);
-								transactionDueAmount -= barTabLimit;
-							}
-							else {
-								transactionDueAmount -= barTabTransaction.getAmount();
-							}
-						}
-						else {
-							barTabTransaction.setAmount(transactionDueAmount);
-							barTabTransaction.setTenderAmount(transactionDueAmount);
-						}
-						barTabTransaction.setAuthorizable(true);
-
-						confirmLoyaltyDiscount(ticket);
-
-						PosTransactionService transactionService = PosTransactionService.getInstance();
-						transactionService.settleBarTabTicket(ticket, barTabTransaction, true);
-
-						printTicket(ticket, barTabTransaction);
-					}
+				for (PosTransaction barTabTransaction : ticket.getTransactions()) {
+					barTabTransaction.setAmount(ticket.getDueAmount());
+					barTabTransaction.setTenderAmount(ticket.getDueAmount());
+					barTabTransaction.setAuthorizable(true);
+					settleTicket(barTabTransaction);
 				}
 			}
-			setCanceled(true);
-			dispose();
-
 		} catch (Exception e) {
 			POSMessageDialog.showError(Application.getPosWindow(), e.getMessage(), e);
-		} finally {
-			waitDialog.setVisible(false);
 		}
 	}
 

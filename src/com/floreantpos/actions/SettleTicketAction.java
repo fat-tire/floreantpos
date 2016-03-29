@@ -51,10 +51,18 @@ public class SettleTicketAction extends AbstractAction {
 		}
 
 		SettleTicketDialog posDialog = new SettleTicketDialog(ticket);
-		posDialog.setSize(Application.getPosWindow().getSize());
-		posDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-		posDialog.open();
-		return !posDialog.isCanceled();
+		
+		if(ticket.getOrderType().isBarTab()) {
+			posDialog.doSettleBarTabTicket(ticket);
+			return true; 
+
+		}
+		else {
+			posDialog.setSize(Application.getPosWindow().getSize());
+			posDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+			posDialog.open();
+			return !posDialog.isCanceled();
+		}
 	}
 
 }
