@@ -61,7 +61,7 @@ public class OrderTypeButton extends PosButton implements ActionListener {
 		}
 
 		if (orderType.isBarTab()) {
-			new NewBarTabAction(Application.getPosWindow()).actionPerformed(e);
+			new NewBarTabAction(orderType, Application.getPosWindow()).actionPerformed(e);
 		}
 		else if (orderType.isShowTableSelection()) {
 			TableSelectorDialog dialog = TableSelectorFactory.createTableSelectorDialog(orderType);

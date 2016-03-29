@@ -34,9 +34,11 @@ import com.floreantpos.extension.PaymentGatewayPlugin;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.CardReader;
 import com.floreantpos.model.CreditCardTransaction;
+import com.floreantpos.model.OrderType;
 import com.floreantpos.model.PaymentType;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TransactionType;
+import com.floreantpos.model.dao.PosTransactionDAO;
 import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.dialog.PaymentTypeSelectionDialog;
@@ -50,8 +52,10 @@ import com.floreantpos.ui.views.payment.SwipeCardDialog;
 public class NewBarTabAction extends AbstractAction implements CardInputListener {
 	private Component parentComponent;
 	private PaymentType selectedPaymentType;
+	private OrderType orderType;
 
-	public NewBarTabAction(Component parentComponent) {
+	public NewBarTabAction(OrderType orderType, Component parentComponent) {
+		this.orderType = orderType;
 		this.parentComponent = parentComponent;
 	}
 
@@ -80,7 +84,7 @@ public class NewBarTabAction extends AbstractAction implements CardInputListener
 		Ticket ticket = new Ticket();
 		
 		ticket.setPriceIncludesTax(application.isPriceIncludesTax());
-		//ticket.setType();
+		ticket.setOrderType(orderType);
 		ticket.setTerminal(application.getTerminal());
 		ticket.setOwner(Application.getCurrentUser());
 		ticket.setShift(application.getCurrentShift());
@@ -169,12 +173,15 @@ public class NewBarTabAction extends AbstractAction implements CardInputListener
 			transaction.setCardType(selectedPaymentType.name());
 			transaction.setCaptured(false);
 			transaction.setCardReader(CardReader.SWIPE.name());
+			transaction.setTenderAmount(CardConfig.getBartabLimit());
+			transaction.setAmount(CardConfig.getBartabLimit());
 			transaction.setCardMerchantGateway(paymentGateway.getName());
 			
 			paymentGateway.getProcessor().preAuth(transaction);
 			
 			ticket.addProperty(Ticket.PROPERTY_CARD_TRANSACTION_ID, transaction.getCardTransactionId());
 			TicketDAO.getInstance().save(ticket);
+			PosTransactionDAO.getInstance().save(transaction);
 			//String transactionId = paymentGateway.getProcessor().authorizeAmount(ticket, cardString, CardConfig.getBartabLimit(), selectedPaymentType.getDisplayString());
 			
 //			ticket.addProperty(Ticket.PROPERTY_PAYMENT_METHOD, selectedPaymentType.name());

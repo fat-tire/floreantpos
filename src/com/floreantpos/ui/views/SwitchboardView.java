@@ -52,7 +52,6 @@ import com.floreantpos.ITicketList;
 import com.floreantpos.Messages;
 import com.floreantpos.POSConstants;
 import com.floreantpos.PosException;
-import com.floreantpos.actions.NewBarTabAction;
 import com.floreantpos.actions.RefundAction;
 import com.floreantpos.actions.SettleTicketAction;
 import com.floreantpos.actions.VoidTicketAction;
@@ -104,7 +103,7 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 
 		ticketList.addTicketListUpateListener(this);
 
-		btnBarTab.addActionListener(this);
+//		btnBarTab.addActionListener(this);
 
 		btnEditTicket.addActionListener(this);
 		btnGroupSettle.addActionListener(this);
@@ -622,7 +621,7 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 
 	// Variables declaration - do not modify//GEN-BEGIN:variables
 
-	private PosButton btnBarTab = new PosButton(POSConstants.BAR_TAB_BUTTON_TEXT);
+//	private PosButton btnBarTab = new PosButton(POSConstants.BAR_TAB_BUTTON_TEXT);
 
 	private PosButton btnEditTicket = new PosButton(POSConstants.EDIT_TICKET_BUTTON_TEXT);
 	private PosButton btnGroupSettle = new PosButton(POSConstants.GROUP_SETTLE_BUTTON_TEXT);
@@ -659,10 +658,7 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 	public void actionPerformed(ActionEvent e) {
 		Object source = e.getSource();
 
-		if (source == btnBarTab) {
-			new NewBarTabAction(this).actionPerformed(e);
-		}
-		else if (source == btnEditTicket) {
+		if (source == btnEditTicket) {
 			doEditTicket();
 		}
 		else if (source == btnGroupSettle) {
