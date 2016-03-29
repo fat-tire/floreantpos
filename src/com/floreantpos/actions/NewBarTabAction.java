@@ -33,18 +33,20 @@ import com.floreantpos.config.CardConfig;
 import com.floreantpos.extension.PaymentGatewayPlugin;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.CardReader;
-import com.floreantpos.model.CreditCardTransaction;
 import com.floreantpos.model.OrderType;
 import com.floreantpos.model.PaymentType;
+import com.floreantpos.model.PosTransaction;
 import com.floreantpos.model.Ticket;
-import com.floreantpos.model.TransactionType;
-import com.floreantpos.model.dao.PosTransactionDAO;
 import com.floreantpos.model.dao.TicketDAO;
+import com.floreantpos.services.PosTransactionService;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.dialog.PaymentTypeSelectionDialog;
+import com.floreantpos.ui.views.order.OrderView;
+import com.floreantpos.ui.views.order.RootView;
 import com.floreantpos.ui.views.payment.AuthorizationCodeDialog;
 import com.floreantpos.ui.views.payment.CardInputListener;
 import com.floreantpos.ui.views.payment.CardInputProcessor;
+import com.floreantpos.ui.views.payment.CardProcessor;
 import com.floreantpos.ui.views.payment.ManualCardEntryDialog;
 import com.floreantpos.ui.views.payment.PaymentProcessWaitDialog;
 import com.floreantpos.ui.views.payment.SwipeCardDialog;
@@ -53,6 +55,7 @@ public class NewBarTabAction extends AbstractAction implements CardInputListener
 	private Component parentComponent;
 	private PaymentType selectedPaymentType;
 	private OrderType orderType;
+	private Ticket ticket;
 
 	public NewBarTabAction(OrderType orderType, Component parentComponent) {
 		this.orderType = orderType;
@@ -66,223 +69,156 @@ public class NewBarTabAction extends AbstractAction implements CardInputListener
 		paymentTypeSelectionDialog.pack();
 		paymentTypeSelectionDialog.setLocationRelativeTo(parentComponent);
 		paymentTypeSelectionDialog.setVisible(true);
-		
-		if(paymentTypeSelectionDialog.isCanceled()) {
+
+		if (paymentTypeSelectionDialog.isCanceled()) {
 			return;
 		}
-		
+
 		selectedPaymentType = paymentTypeSelectionDialog.getSelectedPaymentType();
-		
+
+		String symbol = Application.getCurrencySymbol();
+		String message = symbol + CardConfig.getBartabLimit() + Messages.getString("NewBarTabAction.3"); //$NON-NLS-1$
+
+		int option = POSMessageDialog.showYesNoQuestionDialog(parentComponent, message, Messages.getString("NewBarTabAction.4")); //$NON-NLS-1$
+		if (option != JOptionPane.YES_OPTION) {
+			return;
+		}
+
 		SwipeCardDialog dialog = new SwipeCardDialog(this);
 		dialog.setTitle(Messages.getString("NewBarTabAction.0")); //$NON-NLS-1$
 		dialog.pack();
-		dialog.setLocationRelativeTo(parentComponent);
-		dialog.setVisible(true);
+		dialog.open();
 	}
-	
-	private Ticket createTicket(Application application) {
+
+	private Ticket createTicket() {
 		Ticket ticket = new Ticket();
-		
+
+		Application application = Application.getInstance();
 		ticket.setPriceIncludesTax(application.isPriceIncludesTax());
 		ticket.setOrderType(orderType);
 		ticket.setTerminal(application.getTerminal());
 		ticket.setOwner(Application.getCurrentUser());
 		ticket.setShift(application.getCurrentShift());
-		
+
 		Calendar currentTime = Calendar.getInstance();
 		ticket.setCreateDate(currentTime.getTime());
 		ticket.setCreationHour(currentTime.get(Calendar.HOUR_OF_DAY));
-		
+
 		return ticket;
 	}
 
 	@Override
-	public void cardInputted(CardInputProcessor inputter,PaymentType paymentType ) {
-		if (inputter instanceof SwipeCardDialog) {
-			useSwipeCard(inputter);
-		}
-		else if (inputter instanceof ManualCardEntryDialog) {
-			useManualCard(inputter);
-		}
-		else if (inputter instanceof AuthorizationCodeDialog) {
-			useAuthCode(inputter);
-		}
-	}
-
-	private void useAuthCode(CardInputProcessor inputter) {
-		try {
-			
-			AuthorizationCodeDialog authDialog = (AuthorizationCodeDialog) inputter;
-			String authorizationCode = authDialog.getAuthorizationCode();
-			if (StringUtils.isEmpty(authorizationCode)) {
-				throw new PosException(Messages.getString("NewBarTabAction.1")); //$NON-NLS-1$
-			}
-
-			Ticket ticket = createTicket(Application.getInstance());
-
-			ticket.addProperty(Ticket.PROPERTY_CARD_AUTH_CODE, authorizationCode);
-			ticket.addProperty(Ticket.PROPERTY_PAYMENT_METHOD, selectedPaymentType.name());
-			ticket.addProperty(Ticket.PROPERTY_CARD_NAME, selectedPaymentType.getDisplayString());
-			ticket.addProperty(Ticket.PROPERTY_CARD_READER, CardReader.EXTERNAL_TERMINAL.name());
-			
-			//ticket.addToticketItems(createTabOpenItem(ticket));
-			
-			TicketDAO.getInstance().save(ticket);
-			
-			POSMessageDialog.showMessage(Messages.getString("NewBarTabAction.2") + ticket.getId()); //$NON-NLS-1$
-			if(parentComponent instanceof ITicketList) {
-				((ITicketList) parentComponent).updateTicketList();
-			}
-			
-			//OrderView.getInstance().setCurrentTicket(ticket);
-			//RootView.getInstance().showView(OrderView.VIEW_NAME);
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-			POSMessageDialog.showError(parentComponent, e.getMessage());
-		}
-	}
-
-	private void useSwipeCard(CardInputProcessor inputter) {
-		Application application = Application.getInstance();
-		
-		String symbol = Application.getCurrencySymbol();
-		String message = symbol + CardConfig.getBartabLimit() + Messages.getString("NewBarTabAction.3"); //$NON-NLS-1$
-		
-		int option = POSMessageDialog.showYesNoQuestionDialog(parentComponent, message, Messages.getString("NewBarTabAction.4")); //$NON-NLS-1$
-		if(option != JOptionPane.YES_OPTION) {
-			return;
-		}
-		
-		SwipeCardDialog swipeCardDialog = (SwipeCardDialog) inputter;
-		String cardString = swipeCardDialog.getCardString();
-		
+	public void cardInputted(CardInputProcessor inputter, PaymentType paymentType) {
 		PaymentProcessWaitDialog waitDialog = new PaymentProcessWaitDialog(Application.getPosWindow());
-		waitDialog.setVisible(true);
-		
 		try {
-			PaymentGatewayPlugin paymentGateway = CardConfig.getPaymentGateway();
-			Ticket ticket = createTicket(application);
-			
-			
-			CreditCardTransaction transaction = new CreditCardTransaction();
-			transaction.setPaymentType(selectedPaymentType.name());
-			transaction.setTransactionType(TransactionType.CREDIT.name());
-			transaction.setTicket(ticket);
-			transaction.setCardTrack(cardString);
-			transaction.setCardType(selectedPaymentType.name());
-			transaction.setCaptured(false);
-			transaction.setCardReader(CardReader.SWIPE.name());
-			transaction.setTenderAmount(CardConfig.getBartabLimit());
-			transaction.setAmount(CardConfig.getBartabLimit());
-			transaction.setCardMerchantGateway(paymentGateway.getName());
-			
-			paymentGateway.getProcessor().preAuth(transaction);
-			
-			ticket.addProperty(Ticket.PROPERTY_CARD_TRANSACTION_ID, transaction.getCardTransactionId());
-			TicketDAO.getInstance().save(ticket);
-			PosTransactionDAO.getInstance().save(transaction);
-			//String transactionId = paymentGateway.getProcessor().authorizeAmount(ticket, cardString, CardConfig.getBartabLimit(), selectedPaymentType.getDisplayString());
-			
-//			ticket.addProperty(Ticket.PROPERTY_PAYMENT_METHOD, selectedPaymentType.name());
-//			ticket.addProperty(Ticket.PROPERTY_CARD_NAME, selectedPaymentType.name());
-//			ticket.addProperty(Ticket.PROPERTY_CARD_TRANSACTION_ID, transactionId);
-//			ticket.addProperty(Ticket.PROPERTY_CARD_TRACKS, cardString);
-//			ticket.addProperty(Ticket.PROPERTY_CARD_READER, CardReader.SWIPE.name());
-//			ticket.addProperty(Ticket.PROPERTY_ADVANCE_PAYMENT, String.valueOf(CardConfig.getBartabLimit()));
-			
-			//ticket.addToticketItems(createTabOpenItem(ticket));
-			
-			
 
-			waitDialog.setVisible(false);
+			waitDialog.setVisible(true);
 
-			POSMessageDialog.showMessage(Messages.getString("NewBarTabAction.5") + ticket.getId()); //$NON-NLS-1$
-			if(parentComponent instanceof ITicketList) {
-				((ITicketList) parentComponent).updateTicketList();
+			PosTransaction transaction = selectedPaymentType.createTransaction();
+
+			double advanceTenderAmount = CardConfig.getBartabLimit();
+
+			Ticket ticket = null;
+			if (this.ticket == null) {
+				ticket = createTicket();
+				ticket.setAdvanceAmount(advanceTenderAmount);
 			}
-			
-			//OrderView.getInstance().setCurrentTicket(ticket);
-			//RootView.getInstance().showView(OrderView.VIEW_NAME);
+			else {
+				ticket = this.ticket;
+				ticket.setAdvanceAmount(ticket.getAdvanceAmount()+advanceTenderAmount);
+			}
+			transaction.setTicket(ticket);
+			transaction.setAuthorizable(false);
+
+			PaymentGatewayPlugin paymentGateway = CardConfig.getPaymentGateway();
+			CardProcessor cardProcessor = paymentGateway.getProcessor();
+
+			if (inputter instanceof SwipeCardDialog) {
+
+				SwipeCardDialog swipeCardDialog = (SwipeCardDialog) inputter;
+				String cardString = swipeCardDialog.getCardString();
+
+				if (StringUtils.isEmpty(cardString) || cardString.length() < 16) {
+					throw new RuntimeException(Messages.getString("SettleTicketDialog.16")); //$NON-NLS-1$
+				}
+
+				transaction.setCardType(paymentType.getDisplayString());
+				transaction.setCardTrack(cardString);
+				transaction.setCaptured(false);
+				transaction.setCardMerchantGateway(paymentGateway.getName());
+				transaction.setCardReader(CardReader.SWIPE.name());
+
+				cardProcessor.preAuth(transaction);
+
+				saveTicket(transaction);
+
+			}
+			else if (inputter instanceof ManualCardEntryDialog) {
+
+				ManualCardEntryDialog mDialog = (ManualCardEntryDialog) inputter;
+
+				transaction.setCaptured(false);
+				transaction.setCardMerchantGateway(paymentGateway.getName());
+				transaction.setCardReader(CardReader.MANUAL.name());
+				transaction.setCardNumber(mDialog.getCardNumber());
+				transaction.setCardExpMonth(mDialog.getExpMonth());
+				transaction.setCardExpYear(mDialog.getExpYear());
+
+				cardProcessor.preAuth(transaction);
+
+				saveTicket(transaction);
+			}
+			else if (inputter instanceof AuthorizationCodeDialog) {
+
+				PosTransaction selectedTransaction = selectedPaymentType.createTransaction();
+				selectedTransaction.setTicket(ticket);
+
+				AuthorizationCodeDialog authDialog = (AuthorizationCodeDialog) inputter;
+				String authorizationCode = authDialog.getAuthorizationCode();
+				if (StringUtils.isEmpty(authorizationCode)) {
+					throw new PosException(Messages.getString("SettleTicketDialog.17")); //$NON-NLS-1$
+				}
+
+				selectedTransaction.setCardType(selectedPaymentType.getDisplayString());
+				selectedTransaction.setCaptured(false);
+				selectedTransaction.setCardReader(CardReader.EXTERNAL_TERMINAL.name());
+				selectedTransaction.setCardAuthCode(authorizationCode);
+
+				saveTicket(selectedTransaction);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			POSMessageDialog.showError(parentComponent, e.getMessage());
+			POSMessageDialog.showError(Application.getPosWindow(), e.getMessage());
 		} finally {
 			waitDialog.setVisible(false);
 		}
 	}
-	
-	private void useManualCard(CardInputProcessor inputter) {
-		Application application = Application.getInstance();
-		
-		String symbol = Application.getCurrencySymbol();
-		String message = symbol + CardConfig.getBartabLimit() + Messages.getString("NewBarTabAction.6"); //$NON-NLS-1$
-		
-		int option = POSMessageDialog.showYesNoQuestionDialog(parentComponent, message, Messages.getString("NewBarTabAction.7")); //$NON-NLS-1$
-		if(option != JOptionPane.YES_OPTION) {
-			return;
-		}
-		
-		ManualCardEntryDialog mDialog = (ManualCardEntryDialog) inputter;
-		String cardNumber = mDialog.getCardNumber();
-		String expMonth = mDialog.getExpMonth();
-		String expYear = mDialog.getExpYear();
-		
-		PaymentProcessWaitDialog waitDialog = new PaymentProcessWaitDialog(Application.getPosWindow());
-		waitDialog.setVisible(true);
-		
+
+	private void saveTicket(PosTransaction transaction) {
 		try {
-			PaymentGatewayPlugin paymentGateway = CardConfig.getPaymentGateway();
-			Ticket ticket = createTicket(application);
-			
-			CreditCardTransaction transaction = new CreditCardTransaction();
-			transaction.setPaymentType(selectedPaymentType.name());
-			transaction.setTransactionType(TransactionType.CREDIT.name());
-			transaction.setTicket(ticket);
-			transaction.setCardNo(cardNumber);
-			transaction.setCardExpYear(expYear);
-			transaction.setCardExpMonth(expMonth);
-			transaction.setCardType(selectedPaymentType.name());
-			transaction.setCaptured(false);
-			transaction.setCardReader(CardReader.SWIPE.name());
-			transaction.setCardMerchantGateway(paymentGateway.getName());
-			
-			paymentGateway.getProcessor().preAuth(transaction);
-			
-			ticket.addProperty(Ticket.PROPERTY_CARD_TRANSACTION_ID, transaction.getCardTransactionId());
-			TicketDAO.getInstance().save(ticket);
-			
-//			String transactionId = CardConfig.getPaymentGateway().getProcessor().authorizeAmount(cardNumber, expMonth, expYear, CardConfig.getBartabLimit(), cardType);
-//			
-//			Ticket ticket = createTicket(application);
-//			
-//			ticket.addProperty(Ticket.PROPERTY_PAYMENT_METHOD, selectedPaymentType.name());
-//			ticket.addProperty(Ticket.PROPERTY_CARD_NAME, selectedPaymentType.name());
-//			ticket.addProperty(Ticket.PROPERTY_CARD_TRANSACTION_ID, transactionId);
-//			ticket.addProperty(Ticket.PROPERTY_CARD_NUMBER, cardNumber);
-//			ticket.addProperty(Ticket.PROPERTY_CARD_EXP_YEAR, expYear);
-//			ticket.addProperty(Ticket.PROPERTY_CARD_EXP_MONTH, expMonth);
-//			ticket.addProperty(Ticket.PROPERTY_CARD_READER, CardReader.MANUAL.name());
-//			ticket.addProperty(Ticket.PROPERTY_ADVANCE_PAYMENT, String.valueOf(CardConfig.getBartabLimit()));
-//			
-//			//ticket.addToticketItems(createTabOpenItem(ticket));
-//			
-//			TicketDAO.getInstance().save(ticket);
-			
-			waitDialog.setVisible(false);
-			
-			POSMessageDialog.showMessage(Messages.getString("NewBarTabAction.8") + ticket.getId()); //$NON-NLS-1$
-			if(parentComponent instanceof ITicketList) {
+			PosTransactionService transactionService = PosTransactionService.getInstance();
+			transactionService.settleBarTabTicket(transaction.getTicket(), transaction,false);
+
+			POSMessageDialog.showMessage(Messages.getString("NewBarTabAction.5") + transaction.getTicket().getId()); //$NON-NLS-1$
+			if (parentComponent instanceof ITicketList) {
 				((ITicketList) parentComponent).updateTicketList();
 			}
 
-			//OrderView.getInstance().setCurrentTicket(ticket);
-			//RootView.getInstance().showView(OrderView.VIEW_NAME);
+			doEditTicket(transaction.getTicket());
 		} catch (Exception e) {
 			e.printStackTrace();
-			POSMessageDialog.showError(parentComponent, Messages.getString("NewBarTabAction.9")); //$NON-NLS-1$
-		} finally {
-			waitDialog.setVisible(false);
 		}
+	}
+
+	private void doEditTicket(Ticket ticket) {
+		Ticket ticketToEdit = TicketDAO.getInstance().loadFullTicket(ticket.getId());
+
+		OrderView.getInstance().setCurrentTicket(ticketToEdit);
+		RootView.getInstance().showView(OrderView.VIEW_NAME);
+		OrderView.getInstance().getTicketView().getTxtSearchItem().requestFocus();
+	}
+
+	public void setTicket(Ticket ticket) {
+		this.ticket = ticket;
 	}
 }

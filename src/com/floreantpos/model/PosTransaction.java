@@ -21,6 +21,7 @@ import java.util.HashMap;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.floreantpos.config.CardConfig;
 import com.floreantpos.model.base.BasePosTransaction;
 import com.floreantpos.util.POSUtil;
 
@@ -28,33 +29,27 @@ public class PosTransaction extends BasePosTransaction {
 	private static final long serialVersionUID = 1L;
 
 	/*[CONSTRUCTOR MARKER BEGIN]*/
-	public PosTransaction () {
+	public PosTransaction() {
 		super();
 	}
 
 	/**
 	 * Constructor for primary key
 	 */
-	public PosTransaction (java.lang.Integer id) {
+	public PosTransaction(java.lang.Integer id) {
 		super(id);
 	}
 
 	/**
 	 * Constructor for required fields
 	 */
-	public PosTransaction (
-		java.lang.Integer id,
-		java.lang.String transactionType,
-		java.lang.String paymentType) {
+	public PosTransaction(java.lang.Integer id, java.lang.String transactionType, java.lang.String paymentType) {
 
-		super (
-			id,
-			transactionType,
-			paymentType);
+		super(id, transactionType, paymentType);
 	}
 
 	/*[CONSTRUCTOR MARKER END]*/
-	
+
 	private String cardTrack;
 	private String cardNo;
 	private String cardExpYear;
@@ -141,6 +136,9 @@ public class PosTransaction extends BasePosTransaction {
 	}
 
 	public Double calculateAuthorizeAmount() {
+		if (getTicket().getOrderType().isBarTab()) {
+			return CardConfig.getBartabLimit();
+		}
 		return getTenderAmount() + getTenderAmount() * 0.2;
 	}
 

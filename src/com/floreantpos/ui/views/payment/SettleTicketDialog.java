@@ -52,6 +52,7 @@ import org.apache.commons.lang.StringUtils;
 import com.floreantpos.Messages;
 import com.floreantpos.POSConstants;
 import com.floreantpos.PosException;
+import com.floreantpos.actions.NewBarTabAction;
 import com.floreantpos.config.CardConfig;
 import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.extension.InginicoPlugin;
@@ -59,18 +60,15 @@ import com.floreantpos.extension.PaymentGatewayPlugin;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.CardReader;
 import com.floreantpos.model.CashTransaction;
-import com.floreantpos.model.CreditCardTransaction;
 import com.floreantpos.model.Discount;
 import com.floreantpos.model.GiftCertificateTransaction;
 import com.floreantpos.model.Gratuity;
-import com.floreantpos.model.OrderType;
 import com.floreantpos.model.PaymentType;
 import com.floreantpos.model.PosTransaction;
 import com.floreantpos.model.Restaurant;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketDiscount;
 import com.floreantpos.model.TicketItem;
-import com.floreantpos.model.TransactionType;
 import com.floreantpos.model.UserPermission;
 import com.floreantpos.report.ReceiptPrintService;
 import com.floreantpos.services.PosTransactionService;
@@ -230,13 +228,13 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 		lblTicket.setText(Messages.getString("SettleTicketDialog.0")); //$NON-NLS-1$
 
 		JLabel labelTicketNumber = new JLabel();
-		labelTicketNumber.setText("["+String.valueOf(ticket.getId())+"]"); //$NON-NLS-1$ //$NON-NLS-2$
+		labelTicketNumber.setText("[" + String.valueOf(ticket.getId()) + "]"); //$NON-NLS-1$ //$NON-NLS-2$
 
 		JLabel lblTable = new javax.swing.JLabel();
-		lblTable.setText(", "+Messages.getString("SettleTicketDialog.3")); //$NON-NLS-1$ //$NON-NLS-2$
+		lblTable.setText(", " + Messages.getString("SettleTicketDialog.3")); //$NON-NLS-1$ //$NON-NLS-2$
 
 		JLabel labelTableNumber = new JLabel();
-		labelTableNumber.setText("["+getTableNumbers(ticket.getTableNumbers())+"]"); //$NON-NLS-1$ //$NON-NLS-2$
+		labelTableNumber.setText("[" + getTableNumbers(ticket.getTableNumbers()) + "]"); //$NON-NLS-1$ //$NON-NLS-2$
 
 		if (ticket.getTableNumbers().isEmpty()) {
 			labelTableNumber.setVisible(false);
@@ -244,7 +242,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 		}
 
 		JLabel lblCustomer = new javax.swing.JLabel();
-		lblCustomer.setText(", "+Messages.getString("SettleTicketDialog.10")+": "); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		lblCustomer.setText(", " + Messages.getString("SettleTicketDialog.10") + ": "); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 		JLabel labelCustomer = new JLabel();
 		labelCustomer.setText(ticket.getProperty(Ticket.CUSTOMER_NAME));
@@ -413,7 +411,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 			this.paymentType = paymentType;
 			tenderAmount = paymentView.getTenderedAmount();
 
-			if (ticket.getOrderType().name() == OrderType.BAR_TAB) { //fix
+			if (ticket.getOrderType().isBarTab()) { //fix
 				doSettleBarTabTicket(ticket);
 				return;
 			}
@@ -537,57 +535,62 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 			return;
 		}
 
-		PaymentProcessWaitDialog waitDialog = new PaymentProcessWaitDialog(this);
-		waitDialog.setVisible(true);
+		if (paymentType == PaymentType.CASH) {
+			PosTransaction transaction = paymentType.createTransaction();
+			transaction.setTicket(ticket);
+			transaction.setCaptured(true);
+			setTransactionAmounts(transaction);
+
+			settleTicket(transaction);
+			return;
+		}
 
 		try {
-			PaymentGatewayPlugin paymentGateway = CardConfig.getPaymentGateway();
+			String msg = "Do you want to add another card payment?"; //$NON-NLS-1$
 
-			String transactionId = ticket.getProperty(Ticket.PROPERTY_CARD_TRANSACTION_ID);
+			int option1 = POSMessageDialog.showYesNoQuestionDialog(null, msg, Messages.getString("NewBarTabAction.4")); //$NON-NLS-1$
+			if (option1 == JOptionPane.YES_OPTION) {
+				NewBarTabAction barTabAction = new NewBarTabAction(ticket.getOrderType(), this);
+				barTabAction.setTicket(ticket);
+				barTabAction.actionPerformed(null);
+			}
+			else {
+				if (ticket.getDueAmount() > ticket.getAdvanceAmount()) {
+					POSMessageDialog.showMessage("Payment must complete.");
+					return;
+				}
+				else {
+					double transactionDueAmount = ticket.getDueAmount().doubleValue();
 
-//			CreditCardTransaction transaction = new CreditCardTransaction();
-//			transaction.setPaymentType(ticket.getProperty(Ticket.PROPERTY_PAYMENT_METHOD));
-//			transaction.setTransactionType(TransactionType.CREDIT.name());
-//			transaction.setTicket(ticket);
-//			transaction.setCardType(ticket.getProperty(Ticket.PROPERTY_CARD_NAME));
-//			transaction.setCaptured(false);
-//			transaction.setCardMerchantGateway(paymentGateway.getName());
-//			transaction.setCardAuthCode(ticket.getProperty("AuthCode")); //$NON-NLS-1$
-//			transaction.addProperty("AcqRefData", ticket.getProperty("AcqRefData")); //$NON-NLS-1$ //$NON-NLS-2$
-//
-//			CardReader cardReader = CardReader.valueOf(ticket.getProperty(Ticket.PROPERTY_CARD_READER));
-//
-//			if (cardReader == CardReader.SWIPE) {
-//				transaction.setCardReader(CardReader.SWIPE.name());
-//				transaction.setCardTrack(ticket.getProperty(Ticket.PROPERTY_CARD_TRACKS));
-//				transaction.setCardTransactionId(transactionId);
-//			}
-//			else if (cardReader == CardReader.MANUAL) {
-//				transaction.setCardReader(CardReader.MANUAL.name());
-//				transaction.setCardTransactionId(transactionId);
-//				transaction.setCardNumber(ticket.getProperty(Ticket.PROPERTY_CARD_NUMBER));
-//				transaction.setCardExpiryMonth(ticket.getProperty(Ticket.PROPERTY_CARD_EXP_MONTH));
-//				transaction.setCardExpiryYear(ticket.getProperty(Ticket.PROPERTY_CARD_EXP_YEAR));
-//			}
-//			else {
-//				transaction.setCardReader(CardReader.EXTERNAL_TERMINAL.name());
-//				transaction.setCardAuthCode(ticket.getProperty(Ticket.PROPERTY_CARD_AUTH_CODE));
-//			}
-//
-//			setTransactionAmounts(transaction);
-//
-//			if (cardReader == CardReader.SWIPE || cardReader == CardReader.MANUAL) {
-//				double advanceAmount = Double.parseDouble(ticket.getProperty(Ticket.PROPERTY_ADVANCE_PAYMENT, paymentGateway.getName())); //$NON-NLS-1$
-//
-//				CardProcessor cardProcessor = paymentGateway.getProcessor();
-////				if (tenderAmount > advanceAmount) {
-////					cardProcessor.voidAmount(transactionId, advanceAmount);
-////				}
-//
-//				cardProcessor.authorizeAmount(transaction);
-//			}
-//
-//			settleTicket(transaction);
+					for (PosTransaction barTabTransaction : ticket.getTransactions()) {
+						double barTabLimit = CardConfig.getBartabLimit();
+						if (barTabLimit < transactionDueAmount) {
+							if (barTabTransaction.isCard()) {
+								barTabTransaction.setAmount(barTabLimit);
+								barTabTransaction.setTenderAmount(barTabLimit);
+								transactionDueAmount -= barTabLimit;
+							}
+							else {
+								transactionDueAmount -= barTabTransaction.getAmount();
+							}
+						}
+						else {
+							barTabTransaction.setAmount(transactionDueAmount);
+							barTabTransaction.setTenderAmount(transactionDueAmount);
+						}
+						barTabTransaction.setAuthorizable(true);
+
+						confirmLoyaltyDiscount(ticket);
+
+						PosTransactionService transactionService = PosTransactionService.getInstance();
+						transactionService.settleBarTabTicket(ticket, barTabTransaction, true);
+
+						printTicket(ticket, barTabTransaction);
+					}
+				}
+			}
+			setCanceled(true);
+			dispose();
 
 		} catch (Exception e) {
 			POSMessageDialog.showError(Application.getPosWindow(), e.getMessage(), e);

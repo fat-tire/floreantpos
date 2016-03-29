@@ -32,6 +32,7 @@ import javax.swing.JPanel;
 import com.floreantpos.Messages;
 import com.floreantpos.actions.ActionCommand;
 import com.floreantpos.actions.CloseDialogAction;
+import com.floreantpos.config.CardConfig;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.PosTransaction;
 import com.floreantpos.model.Ticket;
@@ -45,6 +46,7 @@ import com.floreantpos.ui.TransactionListView;
 import com.floreantpos.ui.dialog.NumberSelectionDialog2;
 import com.floreantpos.ui.dialog.POSDialog;
 import com.floreantpos.ui.dialog.POSMessageDialog;
+import com.floreantpos.util.NumberUtil;
 
 public class AuthorizableTicketBrowser extends POSDialog {
 	private TransactionListView listView = new TransactionListView();
@@ -87,7 +89,7 @@ public class AuthorizableTicketBrowser extends POSDialog {
 	public void updateTransactiontList() {
 		User owner = null;
 		User currentUser = Application.getCurrentUser();
-		if(!currentUser.hasPermission(UserPermission.VIEW_ALL_OPEN_TICKETS)) {
+		if (!currentUser.hasPermission(UserPermission.VIEW_ALL_OPEN_TICKETS)) {
 			owner = currentUser;
 		}
 
@@ -97,7 +99,7 @@ public class AuthorizableTicketBrowser extends POSDialog {
 	private boolean confirmAuthorize(String message) {
 		int option = JOptionPane.showConfirmDialog(AuthorizableTicketBrowser.this, message,
 				Messages.getString("TicketAuthorizationDialog.1"), JOptionPane.OK_CANCEL_OPTION); //$NON-NLS-1$
-		if(option == JOptionPane.OK_OPTION) {
+		if (option == JOptionPane.OK_OPTION) {
 			return true;
 		}
 
@@ -107,50 +109,50 @@ public class AuthorizableTicketBrowser extends POSDialog {
 	private void doAuthorize() {
 		List<PosTransaction> transactions = listView.getSelectedTransactions();
 
-		if(transactions == null || transactions.size() == 0) {
+		if (transactions == null || transactions.size() == 0) {
 			POSMessageDialog.showMessage(AuthorizableTicketBrowser.this, Messages.getString("TicketAuthorizationDialog.2")); //$NON-NLS-1$
 			return;
 		}
 
-		if(!confirmAuthorize(Messages.getString("TicketAuthorizationDialog.3"))) { //$NON-NLS-1$
+		if (!confirmAuthorize(Messages.getString("TicketAuthorizationDialog.3"))) { //$NON-NLS-1$
 			return;
 		}
 
 		AuthorizationDialog authorizingDialog = new AuthorizationDialog(AuthorizableTicketBrowser.this, transactions);
 		authorizingDialog.setVisible(true);
-		
+
 		updateTransactiontList();
 	}
 
 	public void doAuthorizeAll() {
 		final List<PosTransaction> transactions = listView.getAllTransactions();
 
-		if(transactions == null || transactions.size() == 0) {
+		if (transactions == null || transactions.size() == 0) {
 			POSMessageDialog.showMessage(AuthorizableTicketBrowser.this, Messages.getString("TicketAuthorizationDialog.5")); //$NON-NLS-1$
 			return;
 		}
 
-		if(!confirmAuthorize(Messages.getString("TicketAuthorizationDialog.6"))) { //$NON-NLS-1$
+		if (!confirmAuthorize(Messages.getString("TicketAuthorizationDialog.6"))) { //$NON-NLS-1$
 			return;
 		}
 
 		AuthorizationDialog authorizingDialog = new AuthorizationDialog(AuthorizableTicketBrowser.this, transactions);
 		authorizingDialog.setVisible(true);
-		
+
 		updateTransactiontList();
 	}
 
 	private void doEditTips() {
 		PosTransaction transaction = listView.getFirstSelectedTransaction();
 
-		if(transaction == null) {
+		if (transaction == null) {
 			return;
 		}
 
 		Ticket ticket = TicketDAO.getInstance().loadFullTicket(transaction.getTicket().getId());
 		Set<PosTransaction> transactions = ticket.getTransactions();
 		for (PosTransaction posTransaction : transactions) {
-			if(transaction.getId().equals(posTransaction.getId())) {
+			if (transaction.getId().equals(posTransaction.getId())) {
 				transaction = posTransaction;
 				break;
 			}
@@ -160,13 +162,26 @@ public class AuthorizableTicketBrowser extends POSDialog {
 		final double newTipsAmount = NumberSelectionDialog2.show(AuthorizableTicketBrowser.this,
 				Messages.getString("TicketAuthorizationDialog.8"), oldTipsAmount); //$NON-NLS-1$
 
-		if(Double.isNaN(newTipsAmount))
+		if (Double.isNaN(newTipsAmount))
 			return;
 
+		double acceptableTipsAmount = 0;
+
+		if (!ticket.getOrderType().isBarTab()) {
+			acceptableTipsAmount = NumberUtil.roundToTwoDigit(transaction.getAmount() * 0.2);
+		}
+		else {
+			acceptableTipsAmount = NumberUtil.roundToTwoDigit(CardConfig.getBartabLimit() - transaction.getAmount());
+		}
+
+		if (newTipsAmount > acceptableTipsAmount) {
+			POSMessageDialog.showMessage("Tips amount will be accepted up to : " + acceptableTipsAmount);
+			return;
+		}
 		transaction.setTipsAmount(newTipsAmount);
 		transaction.setAmount(transaction.getAmount() - oldTipsAmount + newTipsAmount);
 
-		if(ticket.hasGratuity()) {
+		if (ticket.hasGratuity()) {
 			double ticketTipsAmount = ticket.getGratuity().getAmount();
 			double ticketPaidAmount = ticket.getPaidAmount();
 
@@ -195,20 +210,20 @@ public class AuthorizableTicketBrowser extends POSDialog {
 
 			try {
 				switch (command) {
-				case EDIT_TIPS:
+					case EDIT_TIPS:
 
-					doEditTips();
-					break;
+						doEditTips();
+						break;
 
-				case AUTHORIZE:
-					doAuthorize();
-					break;
+					case AUTHORIZE:
+						doAuthorize();
+						break;
 
-				case AUTHORIZE_ALL:
-					doAuthorizeAll();
+					case AUTHORIZE_ALL:
+						doAuthorizeAll();
 
-				default:
-					break;
+					default:
+						break;
 				}
 			} catch (Exception e2) {
 				POSMessageDialog.showError(AuthorizableTicketBrowser.this, e2.getMessage(), e2);
