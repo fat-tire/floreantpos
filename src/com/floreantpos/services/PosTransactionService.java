@@ -219,22 +219,10 @@ public class PosTransactionService {
 	private void closeTicketIfApplicable(Ticket ticket, Date currentDate) {
 		OrderType ticketType = ticket.getOrderType();
 
-		if (ticketType.isCloseOnPaid()) {//fix
+		if (ticketType.isCloseOnPaid() || ticketType.isBarTab()) {//fix
 			ticket.setClosed(true);
 			ticket.setClosingDate(currentDate);
 		}
-		/*else if() {
-			case DINE_IN:
-			case BAR_TAB:
-			case TAKE_OUT:
-			case FOR_HERE:
-				
-				break;
-
-			default:
-				break;
-		}*/
-
 	}
 
 	public void refundTicket(Ticket ticket, final double refundAmount) throws Exception {

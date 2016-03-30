@@ -164,10 +164,10 @@ public class AuthorizableTicketBrowser extends POSDialog {
 		if (Double.isNaN(newTipsAmount))
 			return;
 
-		double acceptableTipsAmount=NumberUtil.roundToTwoDigit(transaction.getAmount() * 0.2); 
+		double acceptableTipsAmount = NumberUtil.roundToTwoDigit(transaction.getTenderAmount() * 0.2);
 
 		if (newTipsAmount > acceptableTipsAmount) {
-			POSMessageDialog.showMessage("Tips amount will be accepted up to : " + acceptableTipsAmount);
+			POSMessageDialog.showMessage(Messages.getString("AuthorizableTicketBrowser.0") + " :" + Application.getCurrencySymbol() + acceptableTipsAmount); //$NON-NLS-1$ //$NON-NLS-2$
 			return;
 		}
 		transaction.setTipsAmount(newTipsAmount);
