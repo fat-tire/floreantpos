@@ -166,9 +166,6 @@ public class PosTransactionService {
 
 			ticket.addTotransactions(transaction);
 
-			adjustTerminalBalance(transaction);
-
-			session.update(terminal);
 			TicketDAO.getInstance().saveOrUpdate(ticket, session);
 
 			tx.commit();
