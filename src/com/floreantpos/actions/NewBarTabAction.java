@@ -55,7 +55,6 @@ public class NewBarTabAction extends AbstractAction implements CardInputListener
 	private Component parentComponent;
 	private PaymentType selectedPaymentType;
 	private OrderType orderType;
-	private Ticket ticket;
 
 	public NewBarTabAction(OrderType orderType, Component parentComponent) {
 		this.orderType = orderType;
@@ -116,19 +115,10 @@ public class NewBarTabAction extends AbstractAction implements CardInputListener
 
 			PosTransaction transaction = selectedPaymentType.createTransaction();
 
-			double advanceTenderAmount = CardConfig.getBartabLimit();
-
-			Ticket ticket = null;
-			if (this.ticket == null) {
-				ticket = createTicket();
-				ticket.setAdvanceAmount(advanceTenderAmount);
-			}
-			else {
-				ticket = this.ticket;
-				ticket.setAdvanceAmount(ticket.getAdvanceAmount()+advanceTenderAmount);
-			}
+			Ticket ticket = createTicket();
 			transaction.setTicket(ticket);
 			transaction.setAuthorizable(false);
+			transaction.setTenderAmount(CardConfig.getBartabLimit());
 
 			PaymentGatewayPlugin paymentGateway = CardConfig.getPaymentGateway();
 			CardProcessor cardProcessor = paymentGateway.getProcessor();
@@ -216,9 +206,5 @@ public class NewBarTabAction extends AbstractAction implements CardInputListener
 		OrderView.getInstance().setCurrentTicket(ticketToEdit);
 		RootView.getInstance().showView(OrderView.VIEW_NAME);
 		OrderView.getInstance().getTicketView().getTxtSearchItem().requestFocus();
-	}
-
-	public void setTicket(Ticket ticket) {
-		this.ticket = ticket;
 	}
 }

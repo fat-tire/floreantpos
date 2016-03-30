@@ -21,7 +21,6 @@ import java.util.HashMap;
 
 import org.apache.commons.lang.StringUtils;
 
-import com.floreantpos.config.CardConfig;
 import com.floreantpos.model.base.BasePosTransaction;
 import com.floreantpos.util.POSUtil;
 
@@ -136,9 +135,6 @@ public class PosTransaction extends BasePosTransaction {
 	}
 
 	public Double calculateAuthorizeAmount() {
-		if (getTicket().getOrderType().isBarTab()) {
-			return CardConfig.getBartabLimit() + CardConfig.getBartabLimit() * 0.2;
-		}
 		return getTenderAmount() + getTenderAmount() * 0.2;
 	}
 
