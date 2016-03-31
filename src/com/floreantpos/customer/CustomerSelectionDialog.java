@@ -50,7 +50,7 @@ import com.floreantpos.swing.PosSmallButton;
 import com.floreantpos.ui.dialog.BeanEditorDialog;
 import com.floreantpos.ui.dialog.POSDialog;
 import com.floreantpos.ui.dialog.POSMessageDialog;
-import com.floreantpos.ui.forms.CustomerForm;
+import com.floreantpos.ui.forms.QuickCustomerForm;
 
 public class CustomerSelectionDialog extends POSDialog {
 
@@ -275,9 +275,14 @@ public class CustomerSelectionDialog extends POSDialog {
 
 	protected void doCreateNewCustomer() {
 		boolean setKeyPad = true;
-		CustomerForm form = new CustomerForm(setKeyPad);
+
+		QuickCustomerForm form = new QuickCustomerForm(setKeyPad);
+
+		//TODO: handle exception
+
 		form.enableCustomerFields(true);
 		BeanEditorDialog dialog = new BeanEditorDialog(form);
+		dialog.setResizable(false);
 		dialog.open();
 
 		if (!dialog.isCanceled()) {
