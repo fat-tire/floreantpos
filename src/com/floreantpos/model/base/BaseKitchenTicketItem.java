@@ -16,16 +16,17 @@ import java.io.Serializable;
 public abstract class BaseKitchenTicketItem  implements Comparable, Serializable {
 
 	public static String REF = "KitchenTicketItem";
-	public static String PROP_UNIT_NAME = "unitName";
 	public static String PROP_STATUS = "status";
-	public static String PROP_QUANTITY = "quantity";
-	public static String PROP_FRACTIONAL_QUANTITY = "fractionalQuantity";
-	public static String PROP_ID = "id";
-	public static String PROP_VOIDED = "voided";
-	public static String PROP_MENU_ITEM_NAME = "menuItemName";
-	public static String PROP_MENU_ITEM_CODE = "menuItemCode";
-	public static String PROP_COOKABLE = "cookable";
 	public static String PROP_FRACTIONAL_UNIT = "fractionalUnit";
+	public static String PROP_MENU_ITEM_GROUP_NAME = "menuItemGroupName";
+	public static String PROP_MENU_ITEM_NAME = "menuItemName";
+	public static String PROP_QUANTITY = "quantity";
+	public static String PROP_UNIT_NAME = "unitName";
+	public static String PROP_ID = "id";
+	public static String PROP_FRACTIONAL_QUANTITY = "fractionalQuantity";
+	public static String PROP_VOIDED = "voided";
+	public static String PROP_COOKABLE = "cookable";
+	public static String PROP_MENU_ITEM_CODE = "menuItemCode";
 
 
 	// constructors
@@ -54,6 +55,7 @@ public abstract class BaseKitchenTicketItem  implements Comparable, Serializable
 		protected java.lang.Boolean cookable;
 		protected java.lang.String menuItemCode;
 		protected java.lang.String menuItemName;
+		protected java.lang.String menuItemGroupName;
 		protected java.lang.Integer quantity;
 		protected java.lang.Double fractionalQuantity;
 		protected java.lang.Boolean fractionalUnit;
@@ -132,6 +134,23 @@ public abstract class BaseKitchenTicketItem  implements Comparable, Serializable
 	 */
 	public void setMenuItemName (java.lang.String menuItemName) {
 		this.menuItemName = menuItemName;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: MENU_ITEM_GROUP_NAME
+	 */
+	public java.lang.String getMenuItemGroupName () {
+					return menuItemGroupName;
+			}
+
+	/**
+	 * Set the value related to the column: MENU_ITEM_GROUP_NAME
+	 * @param menuItemGroupName the MENU_ITEM_GROUP_NAME value
+	 */
+	public void setMenuItemGroupName (java.lang.String menuItemGroupName) {
+		this.menuItemGroupName = menuItemGroupName;
 	}
 
 

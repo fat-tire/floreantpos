@@ -17,22 +17,30 @@
  */
 package com.floreantpos.report;
 
+import java.util.Collections;
+import java.util.Comparator;
+
 import com.floreantpos.model.KitchenTicket;
 import com.floreantpos.model.KitchenTicketItem;
 
 public class KitchenTicketDataSource extends AbstractReportDataSource {
 
 	public KitchenTicketDataSource() {
-		super(new String[] { "itemNo", "itemName", "itemQty" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		super(new String[] { "groupName", "itemNo", "itemName", "itemQty" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	}
 
 	public KitchenTicketDataSource(KitchenTicket ticket) {
-		super(new String[] { "itemNo", "itemName", "itemQty" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		super(new String[] { "groupName", "itemNo", "itemName", "itemQty" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 		setTicket(ticket);
 	}
 
 	private void setTicket(KitchenTicket ticket) {
+		Collections.sort(ticket.getTicketItems(), new Comparator<KitchenTicketItem>() {
+			public int compare(KitchenTicketItem f1, KitchenTicketItem f2) {
+				return f1.getMenuItemGroupName().compareTo(f2.getMenuItemGroupName());
+			}
+		});
 		setRows(ticket.getTicketItems());
 	}
 
@@ -41,12 +49,15 @@ public class KitchenTicketDataSource extends AbstractReportDataSource {
 
 		switch (columnIndex) {
 			case 0:
-				return item.getMenuItemCode();
+				return item.getMenuItemGroupName();
 
 			case 1:
-				return item.getMenuItemName();
+				return item.getMenuItemCode();
 
 			case 2:
+				return item.getMenuItemName();
+
+			case 3:
 				if (item.isFractionalUnit()) {
 
 					double itemQuantity = item.getFractionalQuantity();

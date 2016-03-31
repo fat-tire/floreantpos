@@ -29,7 +29,6 @@ import org.apache.commons.lang.StringUtils;
 import com.floreantpos.model.base.BaseKitchenTicket;
 import com.floreantpos.model.dao.KitchenTicketDAO;
 import com.floreantpos.model.dao.OrderTypeDAO;
-import com.floreantpos.model.OrderType;
 
 public class KitchenTicket extends BaseKitchenTicket {
 	private static final long serialVersionUID = 1L;
@@ -148,9 +147,10 @@ public class KitchenTicket extends BaseKitchenTicket {
 				KitchenTicketItem item = new KitchenTicketItem();
 				item.setMenuItemCode(ticketItem.getItemCode());
 				item.setMenuItemName(ticketItem.getNameDisplay());
+				item.setMenuItemGroupName(ticketItem.getGroupName());
 				item.setFractionalUnit(ticketItem.isFractionalUnit());
 				item.setUnitName(ticketItem.getItemUnitName());
-				
+
 				if (ticketItem.isFractionalUnit()) {
 					item.setFractionalQuantity(ticketItem.getItemQuantity());
 				}
@@ -171,6 +171,7 @@ public class KitchenTicket extends BaseKitchenTicket {
 		}
 
 		Collection<KitchenTicket> values = itemMap.values();
+
 		for (KitchenTicket kitchenTicket : values) {
 			kitchenTickets.add(kitchenTicket);
 		}
@@ -185,6 +186,7 @@ public class KitchenTicket extends BaseKitchenTicket {
 				KitchenTicketItem item = new KitchenTicketItem();
 				item.setCookable(false);
 				item.setMenuItemName(ticketItemCookingInstruction.getNameDisplay());
+				item.setMenuItemGroupName(ticketItem.getGroupName()); 
 				kitchenTicket.addToticketItems(item);
 			}
 		}
@@ -211,6 +213,7 @@ public class KitchenTicket extends BaseKitchenTicket {
 						KitchenTicketItem item = new KitchenTicketItem();
 						item.setMenuItemCode(""); //$NON-NLS-1$
 						item.setMenuItemName(itemModifier.getNameDisplay());
+						item.setMenuItemGroupName(ticketItem.getGroupName());
 						//item.setFractionalQuantity(itemModifier.getItemCount().doubleValue());
 						item.setQuantity(itemModifier.getItemCount());
 						item.setStatus(KitchenTicketStatus.WAITING.name());
@@ -235,6 +238,7 @@ public class KitchenTicket extends BaseKitchenTicket {
 				KitchenTicketItem item = new KitchenTicketItem();
 				item.setMenuItemCode(""); //$NON-NLS-1$
 				item.setMenuItemName(ticketItemModifier.getNameDisplay());
+				item.setMenuItemGroupName(ticketItem.getGroupName());
 				item.setFractionalQuantity(ticketItemModifier.getItemCount().doubleValue());
 				item.setStatus(KitchenTicketStatus.WAITING.name());
 				kitchenTicket.addToticketItems(item);
