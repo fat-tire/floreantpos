@@ -37,8 +37,14 @@ public class KitchenTicketDataSource extends AbstractReportDataSource {
 
 	private void setTicket(KitchenTicket ticket) {
 		Collections.sort(ticket.getTicketItems(), new Comparator<KitchenTicketItem>() {
-			public int compare(KitchenTicketItem f1, KitchenTicketItem f2) {
-				return f1.getMenuItemGroupName().compareTo(f2.getMenuItemGroupName());
+			public int compare(KitchenTicketItem o1, KitchenTicketItem o2) {
+				return (o1.getMenuItemGroupName()).compareTo(o2.getMenuItemGroupName());
+			}
+		});
+
+		Collections.sort(ticket.getTicketItems(), new Comparator<KitchenTicketItem>() {
+			public int compare(KitchenTicketItem o1, KitchenTicketItem o2) {
+				return (o1.getSortOrder() - o2.getSortOrder());
 			}
 		});
 		setRows(ticket.getTicketItems());

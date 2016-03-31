@@ -60,6 +60,7 @@ public class TerminalConfigurationView extends ConfigurationView {
 	private JCheckBox cbUseSettlementPrompt = new JCheckBox(Messages.getString("TerminalConfigurationView.4")); //$NON-NLS-1$
 	private JCheckBox cbShowDbConfiguration = new JCheckBox(Messages.getString("TerminalConfigurationView.5")); //$NON-NLS-1$
 	private JCheckBox cbShowBarCodeOnReceipt = new JCheckBox(Messages.getString("TerminalConfigurationView.21")); //$NON-NLS-1$
+	private JCheckBox cbGroupKitchenReceiptItems = new JCheckBox("Group by Categories in kitchen Receipt"); //$NON-NLS-1$
 
 	private JComboBox<String> cbFonts = new JComboBox<String>();
 	private JComboBox<String> cbDefaultView;
@@ -116,6 +117,7 @@ public class TerminalConfigurationView extends ConfigurationView {
 		add(cbFullscreenMode, "newline, span"); //$NON-NLS-1$
 		add(cbUseSettlementPrompt, "newline, span"); //$NON-NLS-1$
 		add(cbShowBarCodeOnReceipt, "newline,span"); //$NON-NLS-1$
+		add(cbGroupKitchenReceiptItems, "newline,span"); //$NON-NLS-1$
 
 		add(new JLabel(Messages.getString("TerminalConfigurationView.17")), "newline"); //$NON-NLS-1$//$NON-NLS-2$
 		add(cbFonts, "span 2, wrap"); //$NON-NLS-1$
@@ -227,6 +229,7 @@ public class TerminalConfigurationView extends ConfigurationView {
 		TerminalConfig.setAutoLogoffTime(tfLogoffTime.getInteger() <= 0 ? 10 : tfLogoffTime.getInteger());
 		TerminalConfig.setUseSettlementPrompt(cbUseSettlementPrompt.isSelected());
 		TerminalConfig.setShowBarcodeOnReceipt(cbShowBarCodeOnReceipt.isSelected());
+		TerminalConfig.setGroupKitchenReceiptItems(cbGroupKitchenReceiptItems.isSelected()); 
 
 		POSMessageDialog.showMessage(com.floreantpos.util.POSUtil.getFocusedWindow(), Messages.getString("TerminalConfigurationView.40")); //$NON-NLS-1$
 
@@ -267,6 +270,7 @@ public class TerminalConfigurationView extends ConfigurationView {
 		cbShowDbConfiguration.setSelected(TerminalConfig.isShowDbConfigureButton());
 		cbUseSettlementPrompt.setSelected(TerminalConfig.isUseSettlementPrompt());
 		cbShowBarCodeOnReceipt.setSelected(TerminalConfig.isShowBarcodeOnReceipt());
+		cbGroupKitchenReceiptItems.setSelected(TerminalConfig.isGroupKitchenReceiptItems());
 
 		tfButtonHeight.setText("" + TerminalConfig.getTouchScreenButtonHeight()); //$NON-NLS-1$
 		tfMenuButtonHeight.setText("" + TerminalConfig.getMenuItemButtonHeight()); //$NON-NLS-1$

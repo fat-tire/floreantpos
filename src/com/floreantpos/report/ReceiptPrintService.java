@@ -51,6 +51,7 @@ import com.floreantpos.main.Application;
 import com.floreantpos.model.CardReader;
 import com.floreantpos.model.KitchenTicket;
 import com.floreantpos.model.KitchenTicketItem;
+import com.floreantpos.model.OrderType;
 import com.floreantpos.model.PosTransaction;
 import com.floreantpos.model.Printer;
 import com.floreantpos.model.RefundTransaction;
@@ -63,7 +64,6 @@ import com.floreantpos.model.dao.RestaurantDAO;
 import com.floreantpos.model.dao.TerminalPrintersDAO;
 import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.model.util.DateUtil;
-import com.floreantpos.model.OrderType;
 import com.floreantpos.util.NumberUtil;
 import com.floreantpos.util.PrintServiceUtil;
 
@@ -458,7 +458,7 @@ public class ReceiptPrintService {
 		addColumn(ticketHeaderBuilder, POSConstants.RECEIPT_REPORT_TICKET_NO_LABEL + ticket.getId());
 		endRow(ticketHeaderBuilder);
 
-		OrderType orderType=ticket.getOrderType(); 
+		OrderType orderType = ticket.getOrderType();
 		if (orderType.isShowTableSelection() || orderType.isShowGuestSelection()) {//fix
 			beginRow(ticketHeaderBuilder);
 			addColumn(ticketHeaderBuilder, POSConstants.RECEIPT_REPORT_TABLE_NO_LABEL + ticket.getTableNumbers());
@@ -599,7 +599,12 @@ public class ReceiptPrintService {
 			System.out.println(virtualPrinterName + "\t" + ticketItem.getMenuItemName() + "\t" + deviceName);
 		}
 
-		return createJasperPrint(ReportUtil.getReport("kitchen-receipt"), map, new JRTableModelDataSource(dataSource)); //$NON-NLS-1$
+		String reportName = "kitchen-receipt2";
+
+		if (TerminalConfig.isGroupKitchenReceiptItems()) {
+			reportName = "kitchen-receipt";
+		}
+		return createJasperPrint(ReportUtil.getReport(reportName), map, new JRTableModelDataSource(dataSource)); //$NON-NLS-1$
 	}
 
 	public static void printToKitchen(Ticket ticket) {

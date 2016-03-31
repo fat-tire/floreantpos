@@ -148,6 +148,7 @@ public class KitchenTicket extends BaseKitchenTicket {
 				item.setMenuItemCode(ticketItem.getItemCode());
 				item.setMenuItemName(ticketItem.getNameDisplay());
 				item.setMenuItemGroupName(ticketItem.getGroupName());
+				item.setSortOrder(ticketItem.getMenuItem().getParent().getSortOrder());
 				item.setFractionalUnit(ticketItem.isFractionalUnit());
 				item.setUnitName(ticketItem.getItemUnitName());
 
@@ -186,7 +187,8 @@ public class KitchenTicket extends BaseKitchenTicket {
 				KitchenTicketItem item = new KitchenTicketItem();
 				item.setCookable(false);
 				item.setMenuItemName(ticketItemCookingInstruction.getNameDisplay());
-				item.setMenuItemGroupName(ticketItem.getGroupName()); 
+				item.setMenuItemGroupName(ticketItem.getGroupName());
+				item.setSortOrder(ticketItem.getMenuItem().getParent().getSortOrder());
 				kitchenTicket.addToticketItems(item);
 			}
 		}
@@ -214,6 +216,7 @@ public class KitchenTicket extends BaseKitchenTicket {
 						item.setMenuItemCode(""); //$NON-NLS-1$
 						item.setMenuItemName(itemModifier.getNameDisplay());
 						item.setMenuItemGroupName(ticketItem.getGroupName());
+						item.setSortOrder(ticketItem.getMenuItem().getParent().getSortOrder());
 						//item.setFractionalQuantity(itemModifier.getItemCount().doubleValue());
 						item.setQuantity(itemModifier.getItemCount());
 						item.setStatus(KitchenTicketStatus.WAITING.name());
@@ -239,7 +242,9 @@ public class KitchenTicket extends BaseKitchenTicket {
 				item.setMenuItemCode(""); //$NON-NLS-1$
 				item.setMenuItemName(ticketItemModifier.getNameDisplay());
 				item.setMenuItemGroupName(ticketItem.getGroupName());
-				item.setFractionalQuantity(ticketItemModifier.getItemCount().doubleValue());
+				item.setSortOrder(ticketItem.getMenuItem().getParent().getSortOrder());
+				//item.setFractionalQuantity(ticketItemModifier.getItemCount().doubleValue());
+				item.setQuantity(ticketItemModifier.getItemCount());
 				item.setStatus(KitchenTicketStatus.WAITING.name());
 				kitchenTicket.addToticketItems(item);
 

@@ -21,6 +21,7 @@ public abstract class BaseKitchenTicketItem  implements Comparable, Serializable
 	public static String PROP_MENU_ITEM_GROUP_NAME = "menuItemGroupName";
 	public static String PROP_MENU_ITEM_NAME = "menuItemName";
 	public static String PROP_QUANTITY = "quantity";
+	public static String PROP_SORT_ORDER = "sortOrder";
 	public static String PROP_UNIT_NAME = "unitName";
 	public static String PROP_ID = "id";
 	public static String PROP_FRACTIONAL_QUANTITY = "fractionalQuantity";
@@ -60,6 +61,7 @@ public abstract class BaseKitchenTicketItem  implements Comparable, Serializable
 		protected java.lang.Double fractionalQuantity;
 		protected java.lang.Boolean fractionalUnit;
 		protected java.lang.String unitName;
+		protected java.lang.Integer sortOrder;
 		protected java.lang.Boolean voided;
 		protected java.lang.String status;
 
@@ -219,6 +221,23 @@ public abstract class BaseKitchenTicketItem  implements Comparable, Serializable
 	 */
 	public void setUnitName (java.lang.String unitName) {
 		this.unitName = unitName;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: SORT_ORDER
+	 */
+	public java.lang.Integer getSortOrder () {
+									return sortOrder == null ? Integer.valueOf(0) : sortOrder;
+					}
+
+	/**
+	 * Set the value related to the column: SORT_ORDER
+	 * @param sortOrder the SORT_ORDER value
+	 */
+	public void setSortOrder (java.lang.Integer sortOrder) {
+		this.sortOrder = sortOrder;
 	}
 
 

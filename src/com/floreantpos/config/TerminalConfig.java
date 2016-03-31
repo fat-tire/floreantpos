@@ -65,6 +65,8 @@ public class TerminalConfig {
 
 	private static final String SHOW_BARCODE_ON_RECEIPT = "show_barcode_on_receipt";//$NON-NLS-1$
 
+	private static final String GROUP_KITCHEN_ITEMS_ON_RECEIPT = "group_kitchen_items_on_receipt";//$NON-NLS-1$
+
 	private static final String DEFAULT_VIEW = "default_view";//$NON-NLS-1$
 
 	private static final String ACTIVE_CUSTOMER_DISPLAY = "active_customer_display";//$NON-NLS-1$
@@ -216,6 +218,14 @@ public class TerminalConfig {
 		return config.getBoolean(SHOW_BARCODE_ON_RECEIPT, false);
 	}
 
+	public static void setGroupKitchenReceiptItems(boolean group) {
+		config.setProperty(GROUP_KITCHEN_ITEMS_ON_RECEIPT, group);
+	}
+
+	public static boolean isGroupKitchenReceiptItems() {
+		return config.getBoolean(GROUP_KITCHEN_ITEMS_ON_RECEIPT, false);
+	}
+
 	public static boolean isMultipleOrderSupported() {
 		return multiple_order_supported;
 	}
@@ -351,7 +361,7 @@ public class TerminalConfig {
 	public static void setDrawerPullReportHiddenColumns(String value) {
 		config.setProperty("drawerPullReportColumns", value);
 	}
-	
+
 	public static String getTicketListViewHiddenColumns() {
 		return config.getString("listViewColumns", "");
 	}
