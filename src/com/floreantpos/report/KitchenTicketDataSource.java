@@ -30,7 +30,7 @@ public class KitchenTicketDataSource extends AbstractReportDataSource {
 	}
 
 	public KitchenTicketDataSource(KitchenTicket ticket) {
-		super(new String[] { "groupName", "itemNo", "itemName", "itemQty" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		super(new String[] { "groupId", "groupName", "itemNo", "itemName", "itemQty" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 		setTicket(ticket);
 	}
@@ -38,7 +38,7 @@ public class KitchenTicketDataSource extends AbstractReportDataSource {
 	private void setTicket(KitchenTicket ticket) {
 		Collections.sort(ticket.getTicketItems(), new Comparator<KitchenTicketItem>() {
 			public int compare(KitchenTicketItem o1, KitchenTicketItem o2) {
-				return (o1.getMenuItemGroupName()).compareTo(o2.getMenuItemGroupName());
+				return (o1.getMenuItemGroupId() - o2.getMenuItemGroupId());
 			}
 		});
 
@@ -54,16 +54,20 @@ public class KitchenTicketDataSource extends AbstractReportDataSource {
 		KitchenTicketItem item = (KitchenTicketItem) rows.get(rowIndex);
 
 		switch (columnIndex) {
+
 			case 0:
-				return item.getMenuItemGroupName();
+				return String.valueOf(item.getMenuItemGroupId());
 
 			case 1:
-				return item.getMenuItemCode();
+				return item.getMenuItemGroupName();
 
 			case 2:
-				return item.getMenuItemName();
+				return item.getMenuItemCode();
 
 			case 3:
+				return item.getMenuItemName();
+
+			case 4:
 				if (item.isFractionalUnit()) {
 
 					double itemQuantity = item.getFractionalQuantity();

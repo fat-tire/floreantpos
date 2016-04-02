@@ -4,7 +4,7 @@
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="1.7715610000000017"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="39"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -29,8 +29,9 @@
 	<field name="itemName" class="java.lang.String"/>
 	<field name="itemNo" class="java.lang.String"/>
 	<field name="groupName" class="java.lang.String"/>
-	<group name="groupName">
-		<groupExpression><![CDATA[$F{groupName}]]></groupExpression>
+	<field name="groupId" class="java.lang.String"/>
+	<group name="groupId">
+		<groupExpression><![CDATA[$F{groupId}]]></groupExpression>
 		<groupHeader>
 			<band height="21">
 				<textField>
