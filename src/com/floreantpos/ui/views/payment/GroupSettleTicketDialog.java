@@ -48,14 +48,12 @@ import com.floreantpos.extension.PaymentGatewayPlugin;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.CardReader;
 import com.floreantpos.model.CashTransaction;
-import com.floreantpos.model.CreditCardTransaction;
 import com.floreantpos.model.GiftCertificateTransaction;
 import com.floreantpos.model.Gratuity;
 import com.floreantpos.model.PaymentType;
 import com.floreantpos.model.PosTransaction;
 import com.floreantpos.model.Restaurant;
 import com.floreantpos.model.Ticket;
-import com.floreantpos.model.TransactionType;
 import com.floreantpos.report.ReceiptPrintService;
 import com.floreantpos.services.PosTransactionService;
 import com.floreantpos.swing.PosScrollPane;
@@ -328,6 +326,7 @@ public class GroupSettleTicketDialog extends POSDialog implements CardInputListe
 				return;
 			this.paymentType = paymentType;
 			totalTenderAmount = paymentView.getTenderedAmount();
+			totalDueAmount = NumberUtil.roundToTwoDigit(totalDueAmount);
 
 			if (totalTenderAmount < totalDueAmount) {
 				POSMessageDialog.showMessage("Partial payment not allowed."); //$NON-NLS-1$
@@ -445,69 +444,6 @@ public class GroupSettleTicketDialog extends POSDialog implements CardInputListe
 		}
 
 		return true;
-	}
-
-	private void doSettleBarTabTicket(Ticket ticket) {
-		if (!confirmPayment()) {
-			return;
-		}
-
-		PaymentProcessWaitDialog waitDialog = new PaymentProcessWaitDialog(this);
-		waitDialog.setVisible(true);
-
-		try {
-			PaymentGatewayPlugin paymentGateway = CardConfig.getPaymentGateway();
-
-			String transactionId = ticket.getProperty(Ticket.PROPERTY_CARD_TRANSACTION_ID);
-
-			CreditCardTransaction transaction = new CreditCardTransaction();
-			transaction.setPaymentType(ticket.getProperty(Ticket.PROPERTY_PAYMENT_METHOD));
-			transaction.setTransactionType(TransactionType.CREDIT.name());
-			transaction.setCardType(ticket.getProperty(Ticket.PROPERTY_CARD_NAME));
-			transaction.setCaptured(false);
-			transaction.setCardMerchantGateway(paymentGateway.getName());
-			transaction.setCardAuthCode(ticket.getProperty("AuthCode")); //$NON-NLS-1$
-			transaction.addProperty("AcqRefData", ticket.getProperty("AcqRefData")); //$NON-NLS-1$ //$NON-NLS-2$
-
-			CardReader cardReader = CardReader.valueOf(ticket.getProperty(Ticket.PROPERTY_CARD_READER));
-
-			if (cardReader == CardReader.SWIPE) {
-				transaction.setCardReader(CardReader.SWIPE.name());
-				transaction.setCardTrack(ticket.getProperty(Ticket.PROPERTY_CARD_TRACKS));
-				transaction.setCardTransactionId(transactionId);
-			}
-			else if (cardReader == CardReader.MANUAL) {
-				transaction.setCardReader(CardReader.MANUAL.name());
-				transaction.setCardTransactionId(transactionId);
-				transaction.setCardNumber(ticket.getProperty(Ticket.PROPERTY_CARD_NUMBER));
-				transaction.setCardExpMonth(ticket.getProperty(Ticket.PROPERTY_CARD_EXP_MONTH));
-				transaction.setCardExpYear(ticket.getProperty(Ticket.PROPERTY_CARD_EXP_YEAR));
-			}
-			else {
-				transaction.setCardReader(CardReader.EXTERNAL_TERMINAL.name());
-				transaction.setCardAuthCode(ticket.getProperty(Ticket.PROPERTY_CARD_AUTH_CODE));
-			}
-
-			setTransactionAmounts(transaction);
-
-			if (cardReader == CardReader.SWIPE || cardReader == CardReader.MANUAL) {
-				double advanceAmount = Double.parseDouble(ticket.getProperty(Ticket.PROPERTY_ADVANCE_PAYMENT, paymentGateway.getName())); //$NON-NLS-1$
-
-				CardProcessor cardProcessor = paymentGateway.getProcessor();
-//				if (totalTenderAmount > advanceAmount) {
-//					cardProcessor.voidAmount(transactionId, advanceAmount);
-//				}
-
-				cardProcessor.preAuth(transaction);
-			}
-
-			settleTicket(transaction);
-
-		} catch (Exception e) {
-			POSMessageDialog.showError(Application.getPosWindow(), e.getMessage(), e);
-		} finally {
-			waitDialog.setVisible(false);
-		}
 	}
 
 	public void settleTicket(PosTransaction posTransaction) {
@@ -699,18 +635,7 @@ public class GroupSettleTicketDialog extends POSDialog implements CardInputListe
 				transaction.setCardMerchantGateway(paymentGateway.getName());
 				transaction.setCardReader(CardReader.SWIPE.name());
 
-				transaction.setTenderAmount(totalTenderAmount);
-
-				if (totalTenderAmount >= totalDueAmount) {
-					transaction.setAmount(totalDueAmount);
-				}
-				else {
-					transaction.setAmount(totalTenderAmount);
-				}
-
-				cardProcessor.preAuth(transaction);
-
-				settleTicket(transaction);
+				settleTicket(cardProcessor, transaction);
 			}
 			else if (inputter instanceof ManualCardEntryDialog) {
 
@@ -723,9 +648,7 @@ public class GroupSettleTicketDialog extends POSDialog implements CardInputListe
 				transaction.setCardExpMonth(mDialog.getExpMonth());
 				transaction.setCardExpYear(mDialog.getExpYear());
 
-				cardProcessor.preAuth(transaction);
-
-				settleTicket(transaction);
+				settleTicket(cardProcessor, transaction);
 			}
 			else if (inputter instanceof AuthorizationCodeDialog) {
 
@@ -749,6 +672,46 @@ public class GroupSettleTicketDialog extends POSDialog implements CardInputListe
 			POSMessageDialog.showError(Application.getPosWindow(), e.getMessage());
 		} finally {
 			waitDialog.setVisible(false);
+		}
+	}
+
+	private void settleTicket(CardProcessor cardProcessor, PosTransaction transaction) {
+		try {
+			List<PosTransaction> transactionList = new ArrayList<PosTransaction>();
+			totalTenderAmount = paymentView.getTenderedAmount();
+
+			for (Ticket ticket : tickets) {
+				PosTransaction cardTransaction = new PosTransaction();
+				if (totalTenderAmount <= 0) {
+					break;
+				}
+
+				cardTransaction = (PosTransaction) SerializationUtils.clone(transaction);
+				cardTransaction.setId(null);
+
+				cardTransaction.setTicket(ticket);
+				setTransactionAmounts(cardTransaction);
+				
+				cardProcessor.preAuth(cardTransaction);
+
+				confirmLoyaltyDiscount(ticket);
+
+				PosTransactionService transactionService = PosTransactionService.getInstance();
+				transactionService.settleTicket(ticket, cardTransaction);
+
+				transactionList.add(cardTransaction);
+				printTicket(ticket, cardTransaction);
+			}
+
+			//FIXME
+			showTransactionCompleteMsg(totalDueAmount, totalTenderAmount, tickets, transactionList);
+
+			setCanceled(false);
+			dispose();
+		} catch (UnknownHostException e) {
+			POSMessageDialog.showError(Application.getPosWindow(), Messages.getString("SettleTicketDialog.12")); //$NON-NLS-1$
+		} catch (Exception e) {
+			POSMessageDialog.showError(this, POSConstants.ERROR_MESSAGE, e);
 		}
 	}
 

@@ -122,6 +122,9 @@ public class TicketSelectionDialog extends POSDialog {
 		try {
 			List<Ticket> tickets = dao.findOpenTickets();
 			for (Ticket ticket : tickets) {
+				if(ticket.getOrderType().isBarTab()) {
+					continue; 
+				}
 				buttonsPanel.add(new TicketButton(ticket));
 			}
 
