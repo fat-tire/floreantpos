@@ -24,7 +24,11 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
@@ -54,6 +58,7 @@ import com.floreantpos.model.PaymentType;
 import com.floreantpos.model.PosTransaction;
 import com.floreantpos.model.Restaurant;
 import com.floreantpos.model.Ticket;
+import com.floreantpos.model.TicketItem;
 import com.floreantpos.report.ReceiptPrintService;
 import com.floreantpos.services.PosTransactionService;
 import com.floreantpos.swing.PosScrollPane;
@@ -109,6 +114,12 @@ public class GroupSettleTicketDialog extends POSDialog implements CardInputListe
 		super();
 		this.tickets = tickets;
 
+		for (Ticket ticket : tickets) {
+			if (ticket.getOrderType().isConsolidateItemsInReceipt()) {
+				consolidateTicketItems(ticket);
+			}
+		}
+
 		setTitle(Messages.getString("SettleTicketDialog.6")); //$NON-NLS-1$
 
 		getContentPane().setLayout(new BorderLayout(5, 5));
@@ -136,6 +147,49 @@ public class GroupSettleTicketDialog extends POSDialog implements CardInputListe
 		paymentView.updateView();
 		paymentView.setDefaultFocus();
 
+	}
+
+	private void consolidateTicketItems(Ticket ticket) {
+		List<TicketItem> ticketItems = ticket.getTicketItems();
+
+		Map<String, List<TicketItem>> itemMap = new LinkedHashMap<String, List<TicketItem>>();
+
+		for (Iterator iterator = ticketItems.iterator(); iterator.hasNext();) {
+			TicketItem newItem = (TicketItem) iterator.next();
+
+			List<TicketItem> itemListInMap = itemMap.get(newItem.getItemId().toString());
+
+			if (itemListInMap == null) {
+				List<TicketItem> list = new ArrayList<TicketItem>();
+				list.add(newItem);
+
+				itemMap.put(newItem.getItemId().toString(), list);
+			}
+			else {
+				boolean merged = false;
+				for (TicketItem itemInMap : itemListInMap) {
+					if (itemInMap.isMergable(newItem, false)) {
+						itemInMap.merge(newItem);
+						merged = true;
+						break;
+					}
+				}
+
+				if (!merged) {
+					itemListInMap.add(newItem);
+				}
+			}
+		}
+
+		ticket.getTicketItems().clear();
+		Collection<List<TicketItem>> values = itemMap.values();
+		for (List<TicketItem> list : values) {
+			if (list != null) {
+				ticket.getTicketItems().addAll(list);
+			}
+		}
+
+		ticket.calculatePrice();
 	}
 
 	public void updateView() {
@@ -691,7 +745,7 @@ public class GroupSettleTicketDialog extends POSDialog implements CardInputListe
 
 				cardTransaction.setTicket(ticket);
 				setTransactionAmounts(cardTransaction);
-				
+
 				cardProcessor.preAuth(cardTransaction);
 
 				confirmLoyaltyDiscount(ticket);
@@ -752,8 +806,8 @@ public class GroupSettleTicketDialog extends POSDialog implements CardInputListe
 		return transactionURL;
 	}
 
-	public Ticket getTicket() {
-		return ticket;
+	public List<Ticket> getTickets() {
+		return tickets;
 	}
 
 	public double getDueAmount() {

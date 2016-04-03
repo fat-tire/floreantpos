@@ -38,8 +38,9 @@ import com.floreantpos.IconFactory;
 import com.floreantpos.Messages;
 import com.floreantpos.POSConstants;
 import com.floreantpos.main.Application;
-import com.floreantpos.model.Gratuity;
 import com.floreantpos.model.PaymentType;
+import com.floreantpos.model.Ticket;
+import com.floreantpos.report.ReceiptPrintService;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.swing.TransparentPanel;
 import com.floreantpos.ui.dialog.POSMessageDialog;
@@ -321,6 +322,17 @@ public class GroupPaymentView extends JPanel {
 		btnNextAmount.setFocusable(false);
 		calcButtonPanel.add(btnNextAmount, "span 2,grow"); //$NON-NLS-1$
 
+		PosButton btnPrint = new com.floreantpos.swing.PosButton(POSConstants.PRINT_TICKET);
+		btnPrint.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				for (Ticket ticket : groupSettleTicketView.getTickets()) {
+					ReceiptPrintService.printTicket(ticket);
+				}
+			}
+		});
+
+		calcButtonPanel.add(btnPrint, "span 4,grow"); //$NON-NLS-1$
+
 		centerPanel.add(calcButtonPanel, BorderLayout.CENTER);
 
 		actionButtonPanel = new com.floreantpos.swing.TransparentPanel();
@@ -498,21 +510,8 @@ public class GroupPaymentView extends JPanel {
 		this.groupSettleTicketView = groupSettleTicketView;
 	}
 
-	protected double getPaidAmount() {
-		return groupSettleTicketView.getTicket().getPaidAmount();
-	}
-
 	protected double getDueAmount() {
 		return groupSettleTicketView.getDueAmount();
-	}
-
-	protected double getAdvanceAmount() {
-		Gratuity gratuity = groupSettleTicketView.getTicket().getGratuity();
-		return gratuity != null ? gratuity.getAmount() : 0;
-	}
-
-	protected double getTotalGratuity() {
-		return groupSettleTicketView.getTicket().getPaidAmount();
 	}
 
 	public void setDefaultFocus() {
