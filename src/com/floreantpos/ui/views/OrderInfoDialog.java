@@ -155,12 +155,15 @@ public class OrderInfoDialog extends POSDialog {
 		for (TicketItem oldTicketItem : oldticket.getTicketItems()) {
 			TicketItem newTicketItem = new TicketItem();
 			newTicketItem.setItemCount(oldTicketItem.getItemCount());
+			newTicketItem.setItemQuantity(oldTicketItem.getItemQuantity());
 			newTicketItem.setItemId(oldTicketItem.getItemId());
 			newTicketItem.setHasModifiers(oldTicketItem.isHasModifiers());
 			newTicketItem.setName(oldTicketItem.getName());
 			newTicketItem.setGroupName(oldTicketItem.getGroupName());
 			newTicketItem.setCategoryName(oldTicketItem.getCategoryName());
 			newTicketItem.setUnitPrice(oldTicketItem.getUnitPrice());
+			newTicketItem.setFractionalUnit(oldTicketItem.isFractionalUnit());
+			newTicketItem.setItemUnitName(oldTicketItem.getItemUnitName());
 
 			List<TicketItemDiscount> discounts = oldTicketItem.getDiscounts();
 			if (discounts != null) {

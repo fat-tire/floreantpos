@@ -284,6 +284,9 @@ public class TicketItem extends BaseTicketItem implements ITicketItem {
 	}
 
 	public boolean isMergable(TicketItem otherItem, boolean merge) {
+		if (this.isFractionalUnit()) {
+			return false;
+		}
 		if (!this.isHasModifiers() && !otherItem.isHasModifiers()) {
 			if (this.getItemId().equals(otherItem.getItemId())) {
 				return true;
@@ -294,7 +297,9 @@ public class TicketItem extends BaseTicketItem implements ITicketItem {
 
 		List<TicketItemModifierGroup> thisModifierGroups = this.getTicketItemModifierGroups();
 		List<TicketItemModifierGroup> thatModifierGroups = otherItem.getTicketItemModifierGroups();
-
+		if (thatModifierGroups == null) {
+			return true;
+		}
 		if (thisModifierGroups.size() != thatModifierGroups.size()) {
 			return false;
 		}
@@ -339,6 +344,9 @@ public class TicketItem extends BaseTicketItem implements ITicketItem {
 		List<TicketItemModifier> thisModifiers = getAddOns();
 		List<TicketItemModifier> thatModifiers = otherItem.getAddOns();
 
+		if (thatModifiers == null) {
+			return true;
+		}
 		if (thisModifiers.size() != thatModifiers.size()) {
 			return false;
 		}
@@ -543,6 +551,7 @@ public class TicketItem extends BaseTicketItem implements ITicketItem {
 			if (itemQuantity % 1 == 0) {
 				return String.valueOf((int) itemQuantity) + getItemUnitName();
 			}
+			itemQuantity = NumberUtil.roundToTwoDigit(itemQuantity);
 			return itemQuantity + getItemUnitName();
 		}
 
