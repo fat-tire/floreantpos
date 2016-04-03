@@ -103,6 +103,9 @@ public class GroupSettleTicketDialog extends POSDialog implements CardInputListe
 	private String customerName;
 	private double totalDueAmount;
 
+	JLabel lblCustomer;
+	JLabel lblTable;
+
 	private JLabel labelTicketNumber;
 	private JLabel labelTableNumber;
 	private JLabel labelCustomer;
@@ -218,7 +221,7 @@ public class GroupSettleTicketDialog extends POSDialog implements CardInputListe
 
 			totalDueAmount += ticket.getDueAmount();
 
-			ticketNumbers += "[" + ticket.getId().toString() + "] ";
+			ticketNumbers += "[" + ticket.getId().toString() + "], ";
 			for (Integer tableNumber : ticket.getTableNumbers()) {
 				if (!tableNumbers.contains(tableNumber)) {
 					tableNumbers.add(tableNumber);
@@ -226,6 +229,7 @@ public class GroupSettleTicketDialog extends POSDialog implements CardInputListe
 			}
 			customerName = ticket.getProperty(Ticket.CUSTOMER_NAME);
 		}
+
 		tfSubtotal.setText(NumberUtil.formatNumber(subtotalAmount));
 		tfDiscount.setText(NumberUtil.formatNumber(discountAmount));
 
@@ -243,17 +247,19 @@ public class GroupSettleTicketDialog extends POSDialog implements CardInputListe
 		}
 		tfTotal.setText(NumberUtil.formatNumber(totalAmount));
 
-		labelTicketNumber.setText(ticketNumbers);
+		labelTicketNumber.setText(ticketNumbers.substring(0, ticketNumbers.length() - 2));
 		labelTableNumber.setText(tableNumbers.toString());
 
-		if (tableNumbers.toString().isEmpty()) {
+		if (tableNumbers.isEmpty()) {
 			labelTableNumber.setVisible(false);
+			lblTable.setVisible(false);
 		}
 
 		labelCustomer.setText(customerName);
 
 		if (customerName == null) {
 			labelCustomer.setVisible(false);
+			lblCustomer.setVisible(false);
 		}
 
 		ticketDetailView.setTickets(tickets);
@@ -267,12 +273,12 @@ public class GroupSettleTicketDialog extends POSDialog implements CardInputListe
 
 		labelTicketNumber = new JLabel();
 
-		JLabel lblTable = new javax.swing.JLabel();
+		lblTable = new javax.swing.JLabel();
 		lblTable.setText(POSConstants.TABLES); //$NON-NLS-1$
 
 		labelTableNumber = new JLabel();
 
-		JLabel lblCustomer = new javax.swing.JLabel();
+		lblCustomer = new javax.swing.JLabel();
 		lblCustomer.setText("Customer:"); //$NON-NLS-1$
 
 		labelCustomer = new JLabel();
