@@ -101,6 +101,7 @@ public class POSConstants {
 	public static final String PRINT_RECEIPT = Messages.getString("PosMessage.21"); //$NON-NLS-1$
 	public static final String SERVER_PRODUCTIVITY_REPORT = Messages.getString("PosMessage.22"); //$NON-NLS-1$
 	public static final String PAYROLL_REPORT = Messages.getString("PosMessage.23"); //$NON-NLS-1$
+	public static final String TODAYS_REPORT = Messages.getString("TODAYS_REPORT"); //$NON-NLS-1$
 	public static final String CASHDRAWER = Messages.getString("PosMessage.24"); //$NON-NLS-1$
 	public static final String SALES_ANALYSIS = Messages.getString("PosMessage.25"); //$NON-NLS-1$
 	public static final String TYPE = Messages.getString("PosMessage.26"); //$NON-NLS-1$

@@ -186,10 +186,9 @@ public class MiscTicketItemDialog extends POSDialog {
 			POSMessageDialog.showError(Application.getPosWindow(), Messages.getString("MiscTicketItemDialog.1")); //$NON-NLS-1$
 			return;
 		}
-
-		if (amount <= 0 || Double.isNaN(amount)) {
-			POSMessageDialog.showError(Application.getPosWindow(), Messages.getString("MiscTicketItemDialog.22")); //$NON-NLS-1$
-			return;
+		
+		if (Double.isNaN(amount)) {
+			amount=0; 
 		}
 
 		setCanceled(false);
