@@ -284,7 +284,7 @@ public class TicketItem extends BaseTicketItem implements ITicketItem {
 	}
 
 	public boolean isMergable(TicketItem otherItem, boolean merge) {
-		if (this.isFractionalUnit()) {
+		if (this.isFractionalUnit() || this.getItemId()==0) {
 			return false;
 		}
 		if (!this.isHasModifiers() && !otherItem.isHasModifiers()) {

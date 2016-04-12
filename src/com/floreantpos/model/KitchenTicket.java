@@ -234,9 +234,17 @@ public class KitchenTicket extends BaseKitchenTicket {
 				KitchenTicketItem item = new KitchenTicketItem();
 				item.setMenuItemCode(ticketItem.getItemCode());
 				item.setMenuItemName(ticketItem.getNameDisplay());
-				item.setMenuItemGroupName(ticketItem.getGroupName());
-				item.setMenuItemGroupId(ticketItem.getMenuItem().getParent().getId());
-				item.setSortOrder(ticketItem.getMenuItem().getParent().getSortOrder());
+				if (ticketItem.getMenuItem() == null) {
+					item.setMenuItemGroupName("MISC.");
+					item.setMenuItemGroupId(1001);
+					item.setSortOrder(10001);
+				}
+				else {
+					item.setMenuItemGroupName(ticketItem.getGroupName());
+					item.setMenuItemGroupId(ticketItem.getMenuItem().getParent().getId());
+					item.setSortOrder(ticketItem.getMenuItem().getParent().getSortOrder());
+				}
+
 				item.setFractionalUnit(ticketItem.isFractionalUnit());
 				item.setUnitName(ticketItem.getItemUnitName());
 
@@ -275,9 +283,16 @@ public class KitchenTicket extends BaseKitchenTicket {
 				KitchenTicketItem item = new KitchenTicketItem();
 				item.setCookable(false);
 				item.setMenuItemName(ticketItemCookingInstruction.getNameDisplay());
-				item.setMenuItemGroupName(ticketItem.getGroupName());
-				item.setMenuItemGroupId(ticketItem.getMenuItem().getParent().getId());
-				item.setSortOrder(ticketItem.getMenuItem().getParent().getSortOrder());
+				if (ticketItem.getMenuItem() == null) {
+					item.setMenuItemGroupName("MISC.");
+					item.setMenuItemGroupId(1001);
+					item.setSortOrder(10001);
+				}
+				else {
+					item.setMenuItemGroupName(ticketItem.getGroupName());
+					item.setMenuItemGroupId(ticketItem.getMenuItem().getParent().getId());
+					item.setSortOrder(ticketItem.getMenuItem().getParent().getSortOrder());
+				}
 				kitchenTicket.addToticketItems(item);
 			}
 		}
@@ -304,9 +319,16 @@ public class KitchenTicket extends BaseKitchenTicket {
 						KitchenTicketItem item = new KitchenTicketItem();
 						item.setMenuItemCode(""); //$NON-NLS-1$
 						item.setMenuItemName(itemModifier.getNameDisplay());
-						item.setMenuItemGroupName(ticketItem.getGroupName());
-						item.setMenuItemGroupId(ticketItem.getMenuItem().getParent().getId());
-						item.setSortOrder(ticketItem.getMenuItem().getParent().getSortOrder());
+						if (ticketItem.getMenuItem() == null) {
+							item.setMenuItemGroupName("MISC.");
+							item.setMenuItemGroupId(1001);
+							item.setSortOrder(10001);
+						}
+						else {
+							item.setMenuItemGroupName(ticketItem.getGroupName());
+							item.setMenuItemGroupId(ticketItem.getMenuItem().getParent().getId());
+							item.setSortOrder(ticketItem.getMenuItem().getParent().getSortOrder());
+						}
 						//item.setFractionalQuantity(itemModifier.getItemCount().doubleValue());
 						item.setQuantity(itemModifier.getItemCount());
 						item.setStatus(KitchenTicketStatus.WAITING.name());
@@ -331,9 +353,16 @@ public class KitchenTicket extends BaseKitchenTicket {
 				KitchenTicketItem item = new KitchenTicketItem();
 				item.setMenuItemCode(""); //$NON-NLS-1$
 				item.setMenuItemName(ticketItemModifier.getNameDisplay());
-				item.setMenuItemGroupName(ticketItem.getGroupName());
-				item.setMenuItemGroupId(ticketItem.getMenuItem().getParent().getId());
-				item.setSortOrder(ticketItem.getMenuItem().getParent().getSortOrder());
+				if (ticketItem.getMenuItem() == null) {
+					item.setMenuItemGroupName("MISC.");
+					item.setMenuItemGroupId(1001);
+					item.setSortOrder(10001);
+				}
+				else {
+					item.setMenuItemGroupName(ticketItem.getGroupName());
+					item.setMenuItemGroupId(ticketItem.getMenuItem().getParent().getId());
+					item.setSortOrder(ticketItem.getMenuItem().getParent().getSortOrder());
+				}
 				//item.setFractionalQuantity(ticketItemModifier.getItemCount().doubleValue());
 				item.setQuantity(ticketItemModifier.getItemCount());
 				item.setStatus(KitchenTicketStatus.WAITING.name());
