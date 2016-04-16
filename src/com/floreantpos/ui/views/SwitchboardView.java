@@ -79,7 +79,6 @@ import com.floreantpos.ui.views.order.RootView;
 import com.floreantpos.ui.views.order.TicketSelectionDialog;
 import com.floreantpos.ui.views.order.ViewPanel;
 import com.floreantpos.ui.views.payment.GroupSettleTicketDialog;
-import com.floreantpos.util.DrawerUtil;
 import com.floreantpos.util.POSUtil;
 
 /**
@@ -405,10 +404,7 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 	}
 
 	private void doShowOrderInfo() {
-		//doShowOrderInfo(ticketList.getSelectedTickets());
-		
-		//FIXME: TEST CODE
-		DrawerUtil.testWeightInput();
+		doShowOrderInfo(ticketList.getSelectedTickets());
 	}
 
 	private void doShowOrderInfo(List<Ticket> tickets) {
