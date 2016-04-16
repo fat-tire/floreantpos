@@ -43,9 +43,6 @@ import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
-import jssc.SerialPort;
-import jssc.SerialPortException;
-
 import net.miginfocom.swing.MigLayout;
 
 import org.apache.commons.logging.LogFactory;
@@ -84,7 +81,6 @@ import com.floreantpos.ui.views.order.ViewPanel;
 import com.floreantpos.ui.views.payment.GroupSettleTicketDialog;
 import com.floreantpos.util.DrawerUtil;
 import com.floreantpos.util.POSUtil;
-import com.floreantpos.util.WeightInputTest;
 
 /**
  * 
