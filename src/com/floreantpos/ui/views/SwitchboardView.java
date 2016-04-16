@@ -43,6 +43,9 @@ import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
+import jssc.SerialPort;
+import jssc.SerialPortException;
+
 import net.miginfocom.swing.MigLayout;
 
 import org.apache.commons.logging.LogFactory;
@@ -79,7 +82,9 @@ import com.floreantpos.ui.views.order.RootView;
 import com.floreantpos.ui.views.order.TicketSelectionDialog;
 import com.floreantpos.ui.views.order.ViewPanel;
 import com.floreantpos.ui.views.payment.GroupSettleTicketDialog;
+import com.floreantpos.util.DrawerUtil;
 import com.floreantpos.util.POSUtil;
+import com.floreantpos.util.WeightInputTest;
 
 /**
  * 
@@ -404,7 +409,10 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 	}
 
 	private void doShowOrderInfo() {
-		doShowOrderInfo(ticketList.getSelectedTickets());
+		//doShowOrderInfo(ticketList.getSelectedTickets());
+		
+		//FIXME: TEST CODE
+		DrawerUtil.testWeightInput();
 	}
 
 	private void doShowOrderInfo(List<Ticket> tickets) {

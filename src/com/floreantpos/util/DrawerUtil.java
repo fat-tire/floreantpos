@@ -401,4 +401,35 @@ public class DrawerUtil {
 			}
 		}
 	}
+	
+	public static void testWeightInput() {
+		try {
+			SerialPort serialPort = new SerialPort("COM1");
+			serialPort.openPort();//Open serial port
+			serialPort.setParams(SerialPort.BAUDRATE_9600, SerialPort.DATABITS_8, SerialPort.STOPBITS_1, SerialPort.PARITY_NONE);
+			//Set params. Also you can set params by this string: serialPort.setParams(9600, 8, 1, 0);
+			//serialPort.writeBytes( reconstitutedString.getBytes());//
+
+			//reset default settings
+			//print(ESC);
+			//print(AT);
+
+			//select 10-cpi character pitch
+			//select10CPI();
+
+			//select draft quality printing
+			//selectDraftPrinting();
+
+			//set character set
+			setCharacterSet(USA);
+			
+			print((char) 'W'); 
+			print((char) 13); //added line feed
+			
+			byte[] readBytes = serialPort.readBytes();
+			System.out.println("Response: " + new String(readBytes));
+
+		} catch (SerialPortException ex) {
+		}
+	}
 }
