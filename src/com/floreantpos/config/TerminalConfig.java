@@ -53,6 +53,8 @@ public class TerminalConfig {
 
 	private static final String TOUCH_FONT_SIZE = "TOUCH_FONT_SIZE";//$NON-NLS-1$
 
+	private static final String SCREEN_COMPONENT_SIZE_RATIO = "SCREEN_COMPONENT_SIZE_RATIO";//$NON-NLS-1$
+
 	private static final String TOUCH_BUTTON_HEIGHT = "TOUCH_BUTTON_HEIGHT";//$NON-NLS-1$
 
 	private static final String FLOOR_BUTTON_WIDTH = "FLOOR_BUTTON_WIDTH";//$NON-NLS-1$
@@ -70,6 +72,8 @@ public class TerminalConfig {
 	private static final String DEFAULT_VIEW = "default_view";//$NON-NLS-1$
 
 	private static final String ACTIVE_CUSTOMER_DISPLAY = "active_customer_display";//$NON-NLS-1$
+
+	private static final String ACTIVE_SCALE_DISPLAY = "active_scale_display";//$NON-NLS-1$
 
 	static final String TERMINAL_ID = "terminal_id"; //$NON-NLS-1$
 	static final String FULLSCREEN_MODE = "fullscreen_mode"; //$NON-NLS-1$
@@ -162,6 +166,14 @@ public class TerminalConfig {
 		return config.getInt(TOUCH_FONT_SIZE, 12);
 	}
 
+	public static void setScreenScaleFactor(double size) {
+		config.setProperty(SCREEN_COMPONENT_SIZE_RATIO, size);
+	}
+
+	public static double getScreenScaleFactor() {
+		return config.getDouble(SCREEN_COMPONENT_SIZE_RATIO, 1);
+	}
+
 	public static void setDefaultPassLen(int defaultPassLen) {
 		config.setProperty(DEFAULT_PASS_LEN, defaultPassLen);
 	}
@@ -236,6 +248,14 @@ public class TerminalConfig {
 
 	public static boolean isActiveCustomerDisplay() {
 		return config.getBoolean(ACTIVE_CUSTOMER_DISPLAY, false);
+	}
+
+	public static void setScaleDisplay(boolean show) {
+		config.setProperty(ACTIVE_SCALE_DISPLAY, show);
+	}
+
+	public static boolean isActiveScaleDisplay() {
+		return config.getBoolean(ACTIVE_SCALE_DISPLAY, false);
 	}
 
 	public static boolean isCashierMode() {
@@ -340,6 +360,26 @@ public class TerminalConfig {
 
 	public static String getCustomerDisplayMessage() {
 		return config.getString("customerDisplayMessage", "12345678912345678912"); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+	
+	public static String getScaleActivationValue() {
+		return config.getString("wd", ""); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+
+	public static void setScaleDisplayPort(String customerDisplayPort) {
+		config.setProperty("scaleDisplayPort", customerDisplayPort); //$NON-NLS-1$
+	}
+
+	public static String getScaleDisplayPort() {
+		return config.getString("scaleDisplayPort", "COM7"); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+
+	public static void setScaleDisplayMessage(String customerDisplayMessage) {
+		config.setProperty("scaleDisplayMessage", customerDisplayMessage); //$NON-NLS-1$
+	}
+
+	public static String getScaleDisplayMessage() {
+		return config.getString("scaleDisplayMessage", "1234"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	public static void setDrawerControlCodes(String controlCode) {

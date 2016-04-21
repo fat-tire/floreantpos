@@ -59,6 +59,7 @@ import com.floreantpos.swing.PosScrollPane;
 import com.floreantpos.ui.dialog.ItemNumberSelectionDialog;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.dialog.WeightSelectionDialog;
+import com.floreantpos.ui.dialog.WeightSelectionDialog2;
 import com.floreantpos.ui.views.CashierSwitchBoardView;
 import com.floreantpos.ui.views.order.actions.OrderListener;
 import com.floreantpos.util.DrawerUtil;
@@ -721,8 +722,14 @@ public class TicketView extends JPanel {
 	}
 
 	private double getNewItemQuantity() {
-
-		double selectedQuantity = WeightSelectionDialog.takeDoubleInput("Please enter item weight or quantity.", 1);
+		ITicketItem selectedTicketItem = ticketViewerTable.getSelected();
+		double selectedQuantity = 0;
+		if (TerminalConfig.getScaleActivationValue().equals("cas10")) {
+			selectedQuantity = WeightSelectionDialog2.takeDoubleInput(selectedTicketItem.getNameDisplay(), 1);
+		}
+		else {
+			selectedQuantity = WeightSelectionDialog.takeDoubleInput("Please enter item weight or quantity.", 1);
+		}
 		if (selectedQuantity <= -1) {
 			return -1;
 		}
