@@ -13,6 +13,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
 import jssc.SerialPort;
+import jssc.SerialPortEvent;
+import jssc.SerialPortEventListener;
+import jssc.SerialPortException;
 import net.miginfocom.swing.MigLayout;
 
 import org.apache.commons.lang.StringUtils;
@@ -41,6 +44,7 @@ public class PeripheralConfigurationView extends ConfigurationView {
 	private JCheckBox cbScaleActive;
 	private JTextField tfScalePort;
 	private FixedLengthTextField tfScaleDisplayMessage;
+	private SerialPort serialPort;
 
 	public PeripheralConfigurationView() {
 		initComponents();
@@ -121,7 +125,7 @@ public class PeripheralConfigurationView extends ConfigurationView {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				TerminalConfig.setScaleDisplayPort(tfCustomerDisplayPort.getText());
+				TerminalConfig.setCustomerDisplayPort(tfCustomerDisplayPort.getText());
 			}
 		});
 
@@ -156,7 +160,6 @@ public class PeripheralConfigurationView extends ConfigurationView {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				TerminalConfig.setCustomerDisplayPort(tfScalePort.getText());
 				testScaleMachine();
 			}
 		});
@@ -202,7 +205,7 @@ public class PeripheralConfigurationView extends ConfigurationView {
 		TerminalConfig.setCustomerDisplayMessage(tfCustomerDisplayMessage.getText());
 
 		TerminalConfig.setScaleDisplay(cbScaleActive.isSelected());
-		TerminalConfig.setScaleDisplayPort(tfScalePort.getText());
+		TerminalConfig.setScalePort(tfScalePort.getText());
 		TerminalConfig.setScaleDisplayMessage(tfScaleDisplayMessage.getText());
 
 		TerminalDAO terminalDAO = TerminalDAO.getInstance();
@@ -235,7 +238,7 @@ public class PeripheralConfigurationView extends ConfigurationView {
 		tfCustomerDisplayMessage.setText(TerminalConfig.getCustomerDisplayMessage());
 
 		cbScaleActive.setSelected(TerminalConfig.isActiveScaleDisplay());
-		tfScalePort.setText(TerminalConfig.getScaleDisplayPort());
+		tfScalePort.setText(TerminalConfig.getScalePort());
 		tfScaleDisplayMessage.setText(TerminalConfig.getScaleDisplayMessage());
 
 		doEnableDisableDrawerPull();
@@ -245,18 +248,28 @@ public class PeripheralConfigurationView extends ConfigurationView {
 
 	private void testScaleMachine() {
 		try {
-			final SerialPort serialPort = new SerialPort(tfScalePort.getText());
+			serialPort = new SerialPort(tfScalePort.getText());
 			serialPort.openPort();//Open serial port
 			serialPort.setParams(SerialPort.BAUDRATE_9600, SerialPort.DATABITS_7, SerialPort.STOPBITS_2, SerialPort.PARITY_EVEN);
 			serialPort.setFlowControlMode(SerialPort.FLOWCONTROL_RTSCTS_IN | SerialPort.FLOWCONTROL_RTSCTS_OUT | SerialPort.FLOWCONTROL_XONXOFF_IN
 					| SerialPort.FLOWCONTROL_XONXOFF_OUT);
-
 			//setCharacterSet(USA);
-			String value = serialPort.readString();
-			POSMessageDialog.showMessage(value);
-			serialPort.closePort();
+			serialPort.addEventListener(new SerialPortEventListener() {
+				@Override
+				public void serialEvent(SerialPortEvent arg0) {
+					try {
+						System.out.println("Response: " + serialPort.readString());
+						POSMessageDialog.showMessage(serialPort.readString());
+						serialPort.closePort();
+					} catch (SerialPortException e) {
+						e.printStackTrace();
+					}
+				}
+			});
+			byte[] data = new byte[] { 0x57, 0x0D, 0 };
+			serialPort.writeBytes(data);
 		} catch (Exception ex) {
-			POSMessageDialog.showError(this, ex.getMessage()); 
+			POSMessageDialog.showError(this, ex.getMessage());
 			LogFactory.getLog(PeripheralConfigurationView.class).error(ex);
 		}
 	}

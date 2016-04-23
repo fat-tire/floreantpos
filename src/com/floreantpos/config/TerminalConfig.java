@@ -361,21 +361,21 @@ public class TerminalConfig {
 	public static String getCustomerDisplayMessage() {
 		return config.getString("customerDisplayMessage", "12345678912345678912"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
-	
+
 	public static String getScaleActivationValue() {
 		return config.getString("wd", ""); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
-	public static void setScaleDisplayPort(String customerDisplayPort) {
-		config.setProperty("scaleDisplayPort", customerDisplayPort); //$NON-NLS-1$
+	public static void setScalePort(String scalePort) {
+		config.setProperty("scaleDisplayPort", scalePort); //$NON-NLS-1$
 	}
 
-	public static String getScaleDisplayPort() {
-		return config.getString("scaleDisplayPort", "COM7"); //$NON-NLS-1$ //$NON-NLS-2$
+	public static String getScalePort() {
+		return config.getString("scalePort", "COM7"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
-	public static void setScaleDisplayMessage(String customerDisplayMessage) {
-		config.setProperty("scaleDisplayMessage", customerDisplayMessage); //$NON-NLS-1$
+	public static void setScaleDisplayMessage(String scaleDisplayMessage) {
+		config.setProperty("scaleDisplayMessage", scaleDisplayMessage); //$NON-NLS-1$
 	}
 
 	public static String getScaleDisplayMessage() {

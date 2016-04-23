@@ -232,7 +232,7 @@ public class WeightSelectionDialog2 extends POSDialog implements ActionListener 
 
 	public void initSerialPort() {
 		try {
-			serialPort = new SerialPort("COM7");
+			serialPort = new SerialPort(TerminalConfig.getScalePort());
 			if (serialPort.isOpened()) {
 				serialPort.openPort();//Open serial port
 				serialPort.setParams(SerialPort.BAUDRATE_9600, SerialPort.DATABITS_7, SerialPort.STOPBITS_2, SerialPort.PARITY_EVEN);
