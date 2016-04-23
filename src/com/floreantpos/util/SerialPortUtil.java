@@ -24,6 +24,9 @@ public class SerialPortUtil {
 						for (byte b : buffer) {
 							if ((b == '\r' || b == '\n') && messageBuilder.length() > 0) {
 								serialPort.closePort();
+								synchronized (messageBuilder) {
+									messageBuilder.notify();
+								}
 								break;
 							}
 							else {
