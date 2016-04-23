@@ -41,11 +41,10 @@ import jssc.SerialPortEventListener;
 import jssc.SerialPortException;
 import net.miginfocom.swing.MigLayout;
 
-import org.apache.commons.logging.LogFactory;
-
 import com.floreantpos.IconFactory;
 import com.floreantpos.POSConstants;
 import com.floreantpos.config.TerminalConfig;
+import com.floreantpos.main.Application;
 import com.floreantpos.swing.DoubleTextField;
 import com.floreantpos.swing.POSToggleButton;
 import com.floreantpos.swing.PosButton;
@@ -61,8 +60,6 @@ public class WeightSelectionDialog2 extends POSDialog implements ActionListener 
 	private boolean floatingPoint;
 	private PosButton btnCancel;
 	private boolean clearPreviousNumber = true;
-
-	private static SerialPort serialPort;
 
 	private static final String UNIT_KG = "KG";
 	private static final String UNIT_LB = "LB";
@@ -82,7 +79,7 @@ public class WeightSelectionDialog2 extends POSDialog implements ActionListener 
 	public WeightSelectionDialog2() {
 		init();
 		if (TerminalConfig.isActiveScaleDisplay()) {
-			initSerialPort();
+			readWeight();
 		}
 	}
 
@@ -90,7 +87,7 @@ public class WeightSelectionDialog2 extends POSDialog implements ActionListener 
 		super(parent, true);
 		init();
 		if (TerminalConfig.isActiveScaleDisplay()) {
-			initSerialPort();
+			readWeight();
 		}
 	}
 
@@ -190,14 +187,9 @@ public class WeightSelectionDialog2 extends POSDialog implements ActionListener 
 		btnDefault = new PosButton("DEFAULT");
 
 		btnRefresh.addActionListener(new ActionListener() {
-
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				try {
-					updateScaleView();
-				} catch (SerialPortException e1) {
-					LogFactory.getLog(WeightSelectionDialog2.class).error(e1);
-				}
+				readWeight();
 			}
 		});
 		btnLB.addActionListener(this);
@@ -230,38 +222,33 @@ public class WeightSelectionDialog2 extends POSDialog implements ActionListener 
 		getContentPane().add(rightPanel, BorderLayout.EAST);
 	}
 
-	public void initSerialPort() {
+	public void readWeight() {
 		try {
-			serialPort = new SerialPort(TerminalConfig.getScalePort());
-			if (serialPort.isOpened()) {
-				serialPort.openPort();//Open serial port
-				serialPort.setParams(SerialPort.BAUDRATE_9600, SerialPort.DATABITS_7, SerialPort.STOPBITS_2, SerialPort.PARITY_EVEN);
-				serialPort.setFlowControlMode(SerialPort.FLOWCONTROL_RTSCTS_IN | SerialPort.FLOWCONTROL_RTSCTS_OUT | SerialPort.FLOWCONTROL_XONXOFF_IN
-						| SerialPort.FLOWCONTROL_XONXOFF_OUT);
+			final SerialPort serialPort = new SerialPort(TerminalConfig.getScalePort());
+			serialPort.openPort();//Open serial port
+			serialPort.setParams(SerialPort.BAUDRATE_9600, SerialPort.DATABITS_7, SerialPort.STOPBITS_2, SerialPort.PARITY_EVEN);
+			serialPort.setFlowControlMode(SerialPort.FLOWCONTROL_RTSCTS_IN | SerialPort.FLOWCONTROL_RTSCTS_OUT | SerialPort.FLOWCONTROL_XONXOFF_IN
+					| SerialPort.FLOWCONTROL_XONXOFF_OUT);
 
-				//setCharacterSet(USA);
-				serialPort.addEventListener(new SerialPortEventListener() {
-					@Override
-					public void serialEvent(SerialPortEvent arg0) {
-						try {
-							updateScaleView();
-						} catch (SerialPortException e) {
-							LogFactory.getLog(WeightSelectionDialog2.class).error(e);
-						}
+			//setCharacterSet(USA);
+			serialPort.addEventListener(new SerialPortEventListener() {
+				@Override
+				public void serialEvent(SerialPortEvent arg0) {
+					try {
+						String string = serialPort.readString();
+						serialPort.closePort();
+						updateScaleView(string);
+					} catch (SerialPortException e) {
+						POSMessageDialog.showError(Application.getPosWindow(), POSConstants.ERROR_MESSAGE, e);
 					}
-				});
-			}
-
+				}
+			});
 		} catch (Exception ex) {
-			LogFactory.getLog(WeightSelectionDialog2.class).error(ex);
+			POSMessageDialog.showError(Application.getPosWindow(), POSConstants.ERROR_MESSAGE, ex);
 		}
 	}
 
-	protected void updateScaleView() throws SerialPortException {
-		if (!serialPort.isOpened()) {
-			serialPort.openPort();
-		}
-		String value = serialPort.readString();
+	protected void updateScaleView(String value) throws SerialPortException {
 		value = value.replaceAll("\n", "");
 		String patternFormat = "([\\d.]+)\\s+(lb|oz|g|kg)";
 		Pattern pattern = Pattern.compile(patternFormat, Pattern.CASE_INSENSITIVE);
@@ -292,7 +279,6 @@ public class WeightSelectionDialog2 extends POSDialog implements ActionListener 
 			tfNumber.setText(String.valueOf(0));
 			group.clearSelection();
 		}
-		serialPort.closePort();
 	}
 
 	private double convert(String unitTo, double inputValue) {
