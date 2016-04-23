@@ -12,10 +12,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
-import jssc.SerialPort;
-import jssc.SerialPortEvent;
-import jssc.SerialPortEventListener;
-import jssc.SerialPortException;
 import net.miginfocom.swing.MigLayout;
 
 import org.apache.commons.lang.StringUtils;
@@ -30,6 +26,7 @@ import com.floreantpos.swing.DoubleTextField;
 import com.floreantpos.swing.FixedLengthTextField;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.util.DrawerUtil;
+import com.floreantpos.util.SerialPortUtil;
 
 public class PeripheralConfigurationView extends ConfigurationView {
 	public static final String CONFIG_TAB_PERIPHERAL = "Peripherals";
@@ -247,25 +244,10 @@ public class PeripheralConfigurationView extends ConfigurationView {
 
 	private void testScaleMachine() {
 		try {
-			final SerialPort serialPort = new SerialPort(tfScalePort.getText());
-			serialPort.openPort();//Open serial port
-			serialPort.setParams(SerialPort.BAUDRATE_9600, SerialPort.DATABITS_7, SerialPort.STOPBITS_2, SerialPort.PARITY_EVEN);
-			serialPort.setFlowControlMode(SerialPort.FLOWCONTROL_RTSCTS_IN | SerialPort.FLOWCONTROL_RTSCTS_OUT | SerialPort.FLOWCONTROL_XONXOFF_IN
-					| SerialPort.FLOWCONTROL_XONXOFF_OUT);
-
-			serialPort.addEventListener(new SerialPortEventListener() {
-				@Override
-				public void serialEvent(SerialPortEvent arg0) {
-					try {
-						POSMessageDialog.showMessage(serialPort.readString());
-						serialPort.closePort();
-					} catch (SerialPortException e) {
-						POSMessageDialog.showError(e.getMessage());
-					}
-				}
-			});
-			byte[] data = new byte[] { 0x57, 0x0D, 0 };
-			serialPort.writeBytes(data);
+			
+			String string = SerialPortUtil.readWeight(tfScalePort.getText());
+			POSMessageDialog.showError(this, string);
+			
 		} catch (Exception ex) {
 			POSMessageDialog.showError(this, ex.getMessage());
 			LogFactory.getLog(PeripheralConfigurationView.class).error(ex);

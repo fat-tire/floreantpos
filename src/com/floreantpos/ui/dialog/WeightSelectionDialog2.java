@@ -35,9 +35,6 @@ import javax.swing.JSeparator;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
-import jssc.SerialPort;
-import jssc.SerialPortEvent;
-import jssc.SerialPortEventListener;
 import jssc.SerialPortException;
 import net.miginfocom.swing.MigLayout;
 
@@ -50,6 +47,7 @@ import com.floreantpos.swing.POSToggleButton;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.ui.TitlePanel;
 import com.floreantpos.util.NumberUtil;
+import com.floreantpos.util.SerialPortUtil;
 
 public class WeightSelectionDialog2 extends POSDialog implements ActionListener {
 	private double defaultValue;
@@ -224,25 +222,10 @@ public class WeightSelectionDialog2 extends POSDialog implements ActionListener 
 
 	public void readWeight() {
 		try {
-			final SerialPort serialPort = new SerialPort(TerminalConfig.getScalePort());
-			serialPort.openPort();//Open serial port
-			serialPort.setParams(SerialPort.BAUDRATE_9600, SerialPort.DATABITS_7, SerialPort.STOPBITS_2, SerialPort.PARITY_EVEN);
-			serialPort.setFlowControlMode(SerialPort.FLOWCONTROL_RTSCTS_IN | SerialPort.FLOWCONTROL_RTSCTS_OUT | SerialPort.FLOWCONTROL_XONXOFF_IN
-					| SerialPort.FLOWCONTROL_XONXOFF_OUT);
-
-			//setCharacterSet(USA);
-			serialPort.addEventListener(new SerialPortEventListener() {
-				@Override
-				public void serialEvent(SerialPortEvent arg0) {
-					try {
-						String string = serialPort.readString();
-						serialPort.closePort();
-						updateScaleView(string);
-					} catch (SerialPortException e) {
-						POSMessageDialog.showError(Application.getPosWindow(), POSConstants.ERROR_MESSAGE, e);
-					}
-				}
-			});
+			
+			String weightString = SerialPortUtil.readWeight(TerminalConfig.getScalePort());
+			updateScaleView(weightString);
+			
 		} catch (Exception ex) {
 			POSMessageDialog.showError(Application.getPosWindow(), POSConstants.ERROR_MESSAGE, ex);
 		}
