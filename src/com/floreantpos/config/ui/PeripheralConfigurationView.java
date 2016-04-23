@@ -44,7 +44,6 @@ public class PeripheralConfigurationView extends ConfigurationView {
 	private JCheckBox cbScaleActive;
 	private JTextField tfScalePort;
 	private FixedLengthTextField tfScaleDisplayMessage;
-	private SerialPort serialPort;
 
 	public PeripheralConfigurationView() {
 		initComponents();
@@ -248,21 +247,20 @@ public class PeripheralConfigurationView extends ConfigurationView {
 
 	private void testScaleMachine() {
 		try {
-			serialPort = new SerialPort(tfScalePort.getText());
+			final SerialPort serialPort = new SerialPort(tfScalePort.getText());
 			serialPort.openPort();//Open serial port
 			serialPort.setParams(SerialPort.BAUDRATE_9600, SerialPort.DATABITS_7, SerialPort.STOPBITS_2, SerialPort.PARITY_EVEN);
 			serialPort.setFlowControlMode(SerialPort.FLOWCONTROL_RTSCTS_IN | SerialPort.FLOWCONTROL_RTSCTS_OUT | SerialPort.FLOWCONTROL_XONXOFF_IN
 					| SerialPort.FLOWCONTROL_XONXOFF_OUT);
-			//setCharacterSet(USA);
+
 			serialPort.addEventListener(new SerialPortEventListener() {
 				@Override
 				public void serialEvent(SerialPortEvent arg0) {
 					try {
-						System.out.println("Response: " + serialPort.readString());
 						POSMessageDialog.showMessage(serialPort.readString());
 						serialPort.closePort();
 					} catch (SerialPortException e) {
-						e.printStackTrace();
+						POSMessageDialog.showError(e.getMessage());
 					}
 				}
 			});
