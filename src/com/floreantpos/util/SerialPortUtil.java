@@ -23,7 +23,6 @@ public class SerialPortUtil {
 						byte buffer[] = serialPort.readBytes();
 						for (byte b : buffer) {
 							if ((b == '\r' || b == '\n') && messageBuilder.length() > 0) {
-								serialPort.closePort();
 								synchronized (messageBuilder) {
 									messageBuilder.notify();
 								}
@@ -44,12 +43,14 @@ public class SerialPortUtil {
 		
 		synchronized (messageBuilder) {
 			try {
-				messageBuilder.wait();
+				messageBuilder.wait(2000);
 			} catch (InterruptedException e) {
-				e.printStackTrace();
+				serialPort.closePort();
+				return messageBuilder.toString();
 			}
 		}
 		
+		serialPort.closePort();
 		return messageBuilder.toString();
 	}
 }
