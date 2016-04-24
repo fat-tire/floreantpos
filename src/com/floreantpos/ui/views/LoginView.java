@@ -64,11 +64,12 @@ import com.floreantpos.util.UserNotFoundException;
  */
 public class LoginView extends ViewPanel {
 	public final static String VIEW_NAME = "LOGIN_VIEW"; //$NON-NLS-1$
-
+	private boolean backOfficeLogin;
 	private com.floreantpos.swing.PosButton btnSwitchBoard;
 	private com.floreantpos.swing.PosButton btnKitchenDisplay;
 
 	private com.floreantpos.swing.PosButton btnConfigureDatabase;
+	private com.floreantpos.swing.PosButton btnBackOffice;
 	private com.floreantpos.swing.PosButton btnShutdown;
 	private com.floreantpos.swing.PosButton btnClockOUt;
 	private JLabel lblTerminalId;
@@ -106,9 +107,12 @@ public class LoginView extends ViewPanel {
 		btnSwitchBoard = new PosButton(POSConstants.ORDERS);
 		btnKitchenDisplay = new PosButton(POSConstants.KITCHEN_DISPLAY_BUTTON_TEXT);
 		btnConfigureDatabase = new PosButton(POSConstants.CONFIGURE_DATABASE);
+		btnBackOffice = new PosButton(POSConstants.BACK_OFFICE_BUTTON_TEXT);
+
 		btnShutdown = new PosButton(POSConstants.SHUTDOWN);
 		btnClockOUt = new PosButton(new ClockInOutAction(false, true));
 
+		btnBackOffice.setVisible(false);
 		btnSwitchBoard.setVisible(false);
 		btnKitchenDisplay.setVisible(false);
 		btnClockOUt.setVisible(false);
@@ -119,6 +123,7 @@ public class LoginView extends ViewPanel {
 		centerPanel.add(panel1, "cell 0 0, wrap, w 600px, h 100px, grow");
 
 		panel3.add(btnSwitchBoard);
+		panel3.add(btnBackOffice);
 		panel3.add(btnKitchenDisplay);
 		centerPanel.add(panel3, "cell 0 2, wrap, w 600px, h 100px, grow");
 
@@ -154,7 +159,7 @@ public class LoginView extends ViewPanel {
 
 		List<com.floreantpos.model.OrderType> orderTypes = Application.getInstance().getOrderTypes();
 		int buttonCount = 0;
-		
+
 		for (com.floreantpos.model.OrderType orderType : orderTypes) {
 			if (!orderType.isShowInLoginScreen()) {
 				continue;
@@ -167,13 +172,13 @@ public class LoginView extends ViewPanel {
 			}
 			++buttonCount;
 		}
-		
+
 		if (buttonCount > 3) {
 			centerPanel.add(panel2, "cell 0 1, wrap, w 600px, h 100px, grow");
 		}
-
 		btnSwitchBoard.setVisible(true);
 		btnKitchenDisplay.setVisible(true);
+		btnBackOffice.setVisible(true);
 		btnClockOUt.setVisible(true);
 
 		centerPanel.repaint();
@@ -189,6 +194,16 @@ public class LoginView extends ViewPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				DatabaseConfigurationDialog.show(Application.getPosWindow());
+			}
+		});
+
+		btnBackOffice.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				setShowBackOffice(true);
+				TerminalConfig.setDefaultView(SwitchboardView.VIEW_NAME);
+				doLogin();
 			}
 		});
 
@@ -272,5 +287,13 @@ public class LoginView extends ViewPanel {
 
 	public JPanel getMainPanel() {
 		return mainPanel;
+	}
+
+	public boolean isBackOfficeLogin() {
+		return backOfficeLogin;
+	}
+
+	public void setShowBackOffice(boolean showBackOffice) {
+		this.backOfficeLogin = showBackOffice;
 	}
 }

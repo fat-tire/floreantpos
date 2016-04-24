@@ -25,6 +25,7 @@ import java.util.Map;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import com.floreantpos.bo.ui.BackOfficeWindow;
 import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.demo.KitchenDisplayView;
 import com.floreantpos.extension.OrderServiceFactory;
@@ -149,6 +150,7 @@ public class RootView extends com.floreantpos.swing.TransparentPanel {
 	}
 
 	public void showDefaultView() {
+
 		String defaultViewName = TerminalConfig.getDefaultView();
 
 		if (defaultViewName.equals(SwitchboardOtherFunctionsView.VIEW_NAME)) { //$NON-NLS-1$
@@ -163,6 +165,9 @@ public class RootView extends com.floreantpos.swing.TransparentPanel {
 			setAndShowHomeScreen(KitchenDisplayView.getInstance());
 		}
 		else if (defaultViewName.equals(SwitchboardView.VIEW_NAME)) {
+			if (loginScreen.isBackOfficeLogin()) {
+				showBackOffice();
+			}
 			setAndShowHomeScreen(SwitchboardView.getInstance());
 		}
 		else {
@@ -177,10 +182,12 @@ public class RootView extends com.floreantpos.swing.TransparentPanel {
 				try {
 					homeView = OrderView.getInstance();
 					OrderServiceFactory.getOrderService().createNewTicket(orderType, null);
+
 				} catch (TicketAlreadyExistsException e1) {
 				}
 			}
 		}
+
 	}
 
 	/**
@@ -193,9 +200,22 @@ public class RootView extends com.floreantpos.swing.TransparentPanel {
 	private void setAndShowHomeScreen(IView homeScreen) {
 		homeView = homeScreen;
 		showHomeScreen();
+
 	}
 
 	public void showHomeScreen() {
 		showView(getHomeView());
+	}
+
+	public void showBackOffice() {
+
+		BackOfficeWindow window = com.floreantpos.util.POSUtil.getBackOfficeWindow();
+		if (window == null) {
+			window = new BackOfficeWindow();
+		}
+		window.setVisible(true);
+		window.toFront();
+
+		loginScreen.setShowBackOffice(false);
 	}
 }

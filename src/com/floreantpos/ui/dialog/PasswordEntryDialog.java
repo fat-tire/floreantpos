@@ -52,6 +52,7 @@ import com.floreantpos.model.UserPermission;
 import com.floreantpos.model.dao.UserDAO;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.ui.TitlePanel;
+import com.floreantpos.ui.views.LoginView;
 import com.floreantpos.ui.views.SwitchboardOtherFunctionsView;
 import com.floreantpos.ui.views.TableMapView;
 import com.floreantpos.ui.views.order.OrderView;
@@ -348,6 +349,15 @@ public class PasswordEntryDialog extends POSDialog implements ActionListener {
 			statusLabel.setText(Messages.getString("PasswordEntryDialog.30")); //$NON-NLS-1$
 			return false;
 		}
+
+		if (LoginView.getInstance().isBackOfficeLogin()) {
+			if (!user.hasPermission(UserPermission.VIEW_BACK_OFFICE)) {
+				statusLabel.setText("user has no permission to access this view");
+				return false;
+			}
+			return true;
+		}
+
 		if (isAutoLogOffMode()) {
 
 			String viewName = RootView.getInstance().getCurrentViewName();
@@ -428,6 +438,7 @@ public class PasswordEntryDialog extends POSDialog implements ActionListener {
 				}
 			}
 		}
+
 		setAutoLogOffMode(false);
 		return true;
 	}
