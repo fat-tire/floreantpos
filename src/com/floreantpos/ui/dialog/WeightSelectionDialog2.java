@@ -55,7 +55,6 @@ public class WeightSelectionDialog2 extends POSDialog implements ActionListener 
 	private TitlePanel titlePanel;
 	private static DoubleTextField tfNumber;
 
-	private boolean floatingPoint;
 	private PosButton btnCancel;
 	private boolean clearPreviousNumber = true;
 
@@ -76,17 +75,11 @@ public class WeightSelectionDialog2 extends POSDialog implements ActionListener 
 
 	public WeightSelectionDialog2() {
 		init();
-		if (TerminalConfig.isActiveScaleDisplay()) {
-			readWeight();
-		}
 	}
 
 	public WeightSelectionDialog2(Frame parent) {
 		super(parent, true);
 		init();
-		if (TerminalConfig.isActiveScaleDisplay()) {
-			readWeight();
-		}
 	}
 
 	private void init() {
@@ -222,10 +215,10 @@ public class WeightSelectionDialog2 extends POSDialog implements ActionListener 
 
 	public void readWeight() {
 		try {
-			
+
 			String weightString = SerialPortUtil.readWeight(TerminalConfig.getScalePort());
 			updateScaleView(weightString);
-			
+
 		} catch (Exception ex) {
 			POSMessageDialog.showError(Application.getPosWindow(), POSConstants.ERROR_MESSAGE, ex);
 		}
@@ -233,7 +226,7 @@ public class WeightSelectionDialog2 extends POSDialog implements ActionListener 
 
 	protected void updateScaleView(String value) throws SerialPortException {
 		value = value.replaceAll("\n", "");
-		String patternFormat = "([\\d.]+)\\s+(lb|oz|g|kg)";
+		String patternFormat = "(\\d*\\.?\\d*)(lb|oz|g|kg)";
 		Pattern pattern = Pattern.compile(patternFormat, Pattern.CASE_INSENSITIVE);
 		Matcher m = pattern.matcher(value);
 
@@ -408,19 +401,10 @@ public class WeightSelectionDialog2 extends POSDialog implements ActionListener 
 	}
 
 	private boolean validate(String str) {
-		if (isFloatingPoint()) {
-			try {
-				Double.parseDouble(str);
-			} catch (Exception x) {
-				return false;
-			}
-		}
-		else {
-			try {
-				Integer.parseInt(str);
-			} catch (Exception x) {
-				return false;
-			}
+		try {
+			Double.parseDouble(str);
+		} catch (Exception x) {
+			return false;
 		}
 		return true;
 	}
@@ -440,61 +424,18 @@ public class WeightSelectionDialog2 extends POSDialog implements ActionListener 
 	}
 
 	public void setValue(double value) {
-		if (value == 0) {
-			tfNumber.setText("0"); //$NON-NLS-1$
-		}
-		else if (isFloatingPoint()) {
-			tfNumber.setText(String.valueOf(value));
-		}
-		else {
-			tfNumber.setText(String.valueOf((int) value));
-		}
-		defaultValue = value;
-	}
-
-	public boolean isFloatingPoint() {
-		return floatingPoint;
-	}
-
-	public void setFloatingPoint(boolean decimalAllowed) {
-		this.floatingPoint = decimalAllowed;
-	}
-
-	public static void main(String[] args) {
-		WeightSelectionDialog2 dialog2 = new WeightSelectionDialog2();
-		dialog2.pack();
-		dialog2.setVisible(true);
-	}
-
-	public double getDefaultValue() {
-		return defaultValue;
-	}
-
-	public void setDefaultValue(int defaultValue) {
-		this.defaultValue = defaultValue;
-		tfNumber.setText(String.valueOf(defaultValue));
-	}
-
-	public static int takeIntInput(String title) {
-		WeightSelectionDialog2 dialog = new WeightSelectionDialog2();
-		dialog.setTitle(title);
-		dialog.pack();
-		dialog.open();
-
-		if (dialog.isCanceled()) {
-			return -1;
-		}
-
-		return (int) dialog.getValue();
+		tfNumber.setText(String.valueOf(value));
 	}
 
 	public static double takeDoubleInput(String title, String dialogTitle, double initialAmount) {
 		WeightSelectionDialog2 dialog = new WeightSelectionDialog2();
-		dialog.setFloatingPoint(true);
 		dialog.setValue(initialAmount);
 		dialog.setTitle(title);
 		dialog.setDialogTitle(dialogTitle);
 		dialog.pack();
+		if (TerminalConfig.isActiveScaleDisplay()) {
+			dialog.readWeight();
+		}
 		dialog.open();
 
 		if (dialog.isCanceled()) {
@@ -506,10 +447,11 @@ public class WeightSelectionDialog2 extends POSDialog implements ActionListener 
 
 	public static double takeDoubleInput(String title, double initialAmount) {
 		WeightSelectionDialog2 dialog = new WeightSelectionDialog2();
-		dialog.setFloatingPoint(true);
 		dialog.setTitle(title);
-		dialog.setValue(initialAmount);
 		dialog.pack();
+		if (TerminalConfig.isActiveScaleDisplay()) {
+			dialog.readWeight();
+		}
 		dialog.open();
 
 		if (dialog.isCanceled()) {
@@ -521,11 +463,12 @@ public class WeightSelectionDialog2 extends POSDialog implements ActionListener 
 
 	public static double show(Component parent, String title, double initialAmount) {
 		WeightSelectionDialog2 dialog2 = new WeightSelectionDialog2();
-		dialog2.setFloatingPoint(true);
 		dialog2.setTitle(title);
 		dialog2.pack();
 		dialog2.setLocationRelativeTo(parent);
-		dialog2.setValue(initialAmount);
+		if (TerminalConfig.isActiveScaleDisplay()) {
+			dialog2.readWeight();
+		}
 		dialog2.setVisible(true);
 
 		if (dialog2.isCanceled()) {
