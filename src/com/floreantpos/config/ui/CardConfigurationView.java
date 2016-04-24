@@ -44,7 +44,7 @@ public class CardConfigurationView extends ConfigurationView {
 	private JComboBox cbGateway;
 	private DoubleTextField tfBarTabLimit = new DoubleTextField(10);
 	private DoubleTextField tfAdvanceTipsPercentage = new DoubleTextField(10);
-	
+
 	private JPanel pluginConfigPanel = new JPanel(new BorderLayout());
 
 	public CardConfigurationView() {
@@ -53,8 +53,8 @@ public class CardConfigurationView extends ConfigurationView {
 
 	private void createUI() {
 		setLayout(new MigLayout("", "[][grow]", "[][][][][][][][]")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		
-		JLabel lblMerchantGateway = new JLabel(Messages.getString("CardConfigurationView.12")); //$NON-NLS-1$
+
+		JLabel lblMerchantGateway = new JLabel(Messages.getString("CardConfigurationView.2")); //$NON-NLS-1$
 		add(lblMerchantGateway, "cell 0 4,alignx leading"); //$NON-NLS-1$
 
 		cbGateway = new JComboBox();
@@ -70,54 +70,53 @@ public class CardConfigurationView extends ConfigurationView {
 		});
 		add(cbGateway, "cell 1 4,growx"); //$NON-NLS-1$
 		add(pluginConfigPanel, "newline,span,wrap,growx"); //$NON-NLS-1$
-		
-		add(new JLabel(Messages.getString("CardConfigurationView.28")),"cell 0 6"); //$NON-NLS-1$
-		add(tfBarTabLimit,"cell 1 6");
-		
-		add(new JLabel("Advance tips percentage"),"cell 0 7");
-		add(tfAdvanceTipsPercentage,"cell 1 7");
-		add(new JLabel("%"),"cell 1 7");
-		
+
+		add(new JLabel(Messages.getString("CardConfigurationView.1")), "cell 0 6"); //$NON-NLS-1$//$NON-NLS-2$
+		add(tfBarTabLimit, "cell 1 6"); //$NON-NLS-1$
+
+		add(new JLabel(Messages.getString("CardConfigurationView.4")), "cell 0 7"); //$NON-NLS-1$ //$NON-NLS-2$
+		add(tfAdvanceTipsPercentage, "cell 1 7"); //$NON-NLS-1$
+		add(new JLabel(Messages.getString("CardConfigurationView.10")), "cell 1 7"); //$NON-NLS-1$ //$NON-NLS-2$
+
 		JSeparator separator = new JSeparator(JSeparator.HORIZONTAL);
 		add(separator, "newline, growx, span 10, wrap"); //$NON-NLS-1$
-		
+
 	}
 
 	private void initialMerchantGateways() {
 		DefaultComboBoxModel<PaymentGatewayPlugin> model = new DefaultComboBoxModel<PaymentGatewayPlugin>();
 		List<FloreantPlugin> plugins = ExtensionManager.getPlugins(PaymentGatewayPlugin.class);
-		
+
 		for (FloreantPlugin plugin : plugins) {
-			if(!(plugin instanceof MercuryGatewayPlugin)){
+			if (!(plugin instanceof MercuryGatewayPlugin)) {
 				model.addElement((PaymentGatewayPlugin) plugin);
 			}
 		}
-		
+
 		cbGateway.setModel(model);
 		cbGateway.setSelectedItem(CardConfig.getPaymentGateway());
 	}
-
 
 	@Override
 	public boolean save() throws Exception {
 		PaymentGatewayPlugin plugin = (PaymentGatewayPlugin) cbGateway.getSelectedItem();
 		plugin.getConfigurationPane().save();
-		
+
 		CardConfig.setPaymentGateway(plugin);
-		
+
 		CardConfig.setBartabLimit(tfBarTabLimit.getDouble());
 		CardConfig.setAdvanceTipsPercentage(tfAdvanceTipsPercentage.getDouble());
-		
+
 		return true;
 	}
 
 	@Override
 	public void initialize() throws Exception {
 		initialMerchantGateways();
-		
+
 		tfBarTabLimit.setText(String.valueOf(CardConfig.getBartabLimit()));
 		tfAdvanceTipsPercentage.setText(String.valueOf(CardConfig.getAdvanceTipsPercentage()));
-		
+
 		updatePluginConfigUI();
 
 		setInitialized(true);
@@ -135,7 +134,7 @@ public class CardConfigurationView extends ConfigurationView {
 
 	@Override
 	public String getName() {
-		return Messages.getString("CardConfigurationView.29"); //$NON-NLS-1$
+		return Messages.getString("CardConfigurationView.6"); //$NON-NLS-1$
 	}
 
 }

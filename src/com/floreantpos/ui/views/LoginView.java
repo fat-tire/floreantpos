@@ -77,8 +77,8 @@ public class LoginView extends ViewPanel {
 	private static LoginView instance;
 	private JPanel mainPanel;
 
-	private JPanel panel1 = new JPanel(new MigLayout("fill, ins 0, hidemode 3", "sg, fill", ""));
-	private JPanel panel2 = new JPanel(new MigLayout("fill, ins 0, hidemode 3", "sg, fill", ""));
+	private JPanel panel1 = new JPanel(new MigLayout("fill, ins 0, hidemode 3", "sg, fill", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+	private JPanel panel2 = new JPanel(new MigLayout("fill, ins 0, hidemode 3", "sg, fill", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 	private LoginView() {
 		setLayout(new BorderLayout(5, 5));
@@ -98,7 +98,7 @@ public class LoginView extends ViewPanel {
 
 		lblTerminalId = new JLabel(Messages.getString("LoginView.0")); //$NON-NLS-1$
 		lblTerminalId.setForeground(Color.BLACK);
-		lblTerminalId.setFont(new Font(Messages.getString("LoginView.1"), Font.BOLD, 18)); //$NON-NLS-1$
+		lblTerminalId.setFont(new Font("Dialog", Font.BOLD, 18)); //$NON-NLS-1$
 		lblTerminalId.setHorizontalAlignment(SwingConstants.CENTER);
 
 		mainPanel = new JPanel(new BorderLayout());
@@ -118,20 +118,20 @@ public class LoginView extends ViewPanel {
 		btnClockOUt.setVisible(false);
 
 		JPanel panel3 = new JPanel(new GridLayout(1, 0, 5, 5));
-		JPanel panel4 = new JPanel(new MigLayout("fill, ins 0, hidemode 3", "sg, fill", ""));
+		JPanel panel4 = new JPanel(new MigLayout("fill, ins 0, hidemode 3", "sg, fill", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
-		centerPanel.add(panel1, "cell 0 0, wrap, w 600px, h 100px, grow");
+		centerPanel.add(panel1, "cell 0 0, wrap, w 600px, h 100px, grow"); //$NON-NLS-1$
 
 		panel3.add(btnSwitchBoard);
 		panel3.add(btnBackOffice);
 		panel3.add(btnKitchenDisplay);
-		centerPanel.add(panel3, "cell 0 2, wrap, w 600px, h 100px, grow");
+		centerPanel.add(panel3, "cell 0 2, wrap, w 600px, h 100px, grow"); //$NON-NLS-1$
 
-		panel4.add(btnClockOUt, "grow");
-		panel4.add(btnConfigureDatabase, "grow");
-		panel4.add(btnShutdown, "grow");
+		panel4.add(btnClockOUt, "grow"); //$NON-NLS-1$
+		panel4.add(btnConfigureDatabase, "grow"); //$NON-NLS-1$
+		panel4.add(btnShutdown, "grow"); //$NON-NLS-1$
 
-		centerPanel.add(panel4, "cell 0 3, wrap, w 600px, h 100px, grow");
+		centerPanel.add(panel4, "cell 0 3, wrap, w 600px, h 100px, grow"); //$NON-NLS-1$
 
 		if (TerminalConfig.isFullscreenMode()) {
 			if (btnConfigureDatabase != null) {
@@ -165,16 +165,16 @@ public class LoginView extends ViewPanel {
 				continue;
 			}
 			if (buttonCount < 3) {
-				panel1.add(new OrderTypeLoginButton(orderType), "grow");
+				panel1.add(new OrderTypeLoginButton(orderType), "grow"); //$NON-NLS-1$
 			}
 			else {
-				panel2.add(new OrderTypeLoginButton(orderType), "grow");
+				panel2.add(new OrderTypeLoginButton(orderType), "grow"); //$NON-NLS-1$
 			}
 			++buttonCount;
 		}
 
 		if (buttonCount > 3) {
-			centerPanel.add(panel2, "cell 0 1, wrap, w 600px, h 100px, grow");
+			centerPanel.add(panel2, "cell 0 1, wrap, w 600px, h 100px, grow"); //$NON-NLS-1$
 		}
 		btnSwitchBoard.setVisible(true);
 		btnKitchenDisplay.setVisible(true);
@@ -237,7 +237,7 @@ public class LoginView extends ViewPanel {
 	public synchronized void doLogin() {
 		try {
 			final User user = PasswordEntryDialog.getUser(Application.getPosWindow(),
-					Messages.getString("LoginPasswordEntryView.13"), Messages.getString("LoginPasswordEntryView.14")); //$NON-NLS-1$ //$NON-NLS-2$
+					Messages.getString("LoginView.1"), Messages.getString("LoginView.2")); //$NON-NLS-1$ //$NON-NLS-2$
 			if (user == null) {
 				return;
 			}
@@ -246,7 +246,7 @@ public class LoginView extends ViewPanel {
 
 		} catch (UserNotFoundException e) {
 			LogFactory.getLog(Application.class).error(e);
-			POSMessageDialog.showError(Application.getPosWindow(), Messages.getString("LoginPasswordEntryView.15")); //$NON-NLS-1$
+			POSMessageDialog.showError(Application.getPosWindow(), Messages.getString("LoginView.3")); //$NON-NLS-1$
 		} catch (ShiftException e) {
 			LogFactory.getLog(Application.class).error(e);
 			MessageDialog.showError(e.getMessage());
@@ -255,17 +255,17 @@ public class LoginView extends ViewPanel {
 			String message = e1.getMessage();
 
 			if (message != null && message.contains("Cannot open connection")) { //$NON-NLS-1$
-				MessageDialog.showError(Messages.getString("LoginPasswordEntryView.17"), e1); //$NON-NLS-1$
+				MessageDialog.showError(Messages.getString("LoginView.4"), e1); //$NON-NLS-1$
 				DatabaseConfigurationDialog.show(Application.getPosWindow());
 			}
 			else {
-				MessageDialog.showError(Messages.getString("LoginPasswordEntryView.18"), e1); //$NON-NLS-1$
+				MessageDialog.showError(Messages.getString("LoginView.5"), e1); //$NON-NLS-1$
 			}
 		}
 	}
 
 	public void setTerminalId(int terminalId) {
-		lblTerminalId.setText(Messages.getString("LoginView.17") + terminalId); //$NON-NLS-1$
+		lblTerminalId.setText(Messages.getString("LoginView.6") + terminalId); //$NON-NLS-1$
 	}
 
 	@Override
