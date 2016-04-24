@@ -122,6 +122,18 @@ public class CardConfig {
 		AppConfig.put("bartablimit", String.valueOf(limit)); //$NON-NLS-1$
 	}
 	
+	public static double getAdvanceTipsPercentage() {
+		try {
+			return Double.parseDouble(AppConfig.getString("advanceTipsPercentage")); //$NON-NLS-1$
+		} catch (Exception e) {
+			return 20;
+		}
+	}
+	
+	public static void setAdvanceTipsPercentage(double advanceTipsPercentage) {
+		AppConfig.put("advanceTipsPercentage", String.valueOf(advanceTipsPercentage)); //$NON-NLS-1$
+	}
+	
 	public static void setPaymentGateway(PaymentGatewayPlugin paymentGateway) {
 		AppConfig.put("payment-gateway-id", paymentGateway.getId()); //$NON-NLS-1$
 	}

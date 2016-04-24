@@ -32,6 +32,7 @@ import javax.swing.JPanel;
 import com.floreantpos.Messages;
 import com.floreantpos.actions.ActionCommand;
 import com.floreantpos.actions.CloseDialogAction;
+import com.floreantpos.config.CardConfig;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.PosTransaction;
 import com.floreantpos.model.Ticket;
@@ -116,6 +117,8 @@ public class AuthorizableTicketBrowser extends POSDialog {
 		if (!confirmAuthorize(Messages.getString("TicketAuthorizationDialog.3"))) { //$NON-NLS-1$
 			return;
 		}
+		
+		
 
 		AuthorizationDialog authorizingDialog = new AuthorizationDialog(AuthorizableTicketBrowser.this, transactions);
 		authorizingDialog.setVisible(true);
@@ -164,7 +167,9 @@ public class AuthorizableTicketBrowser extends POSDialog {
 		if (Double.isNaN(newTipsAmount))
 			return;
 
-		double acceptableTipsAmount = NumberUtil.roundToTwoDigit(transaction.getTenderAmount() * 0.2);
+		double advanceTipsPercentage = CardConfig.getAdvanceTipsPercentage();
+
+		double acceptableTipsAmount = NumberUtil.roundToTwoDigit(transaction.getTenderAmount() * (advanceTipsPercentage / 100));
 
 		if (newTipsAmount > acceptableTipsAmount) {
 			POSMessageDialog.showMessage(Messages.getString("AuthorizableTicketBrowser.0") + " :" + Application.getCurrencySymbol() + acceptableTipsAmount); //$NON-NLS-1$ //$NON-NLS-2$

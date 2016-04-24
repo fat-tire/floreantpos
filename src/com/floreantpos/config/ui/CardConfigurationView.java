@@ -43,6 +43,7 @@ public class CardConfigurationView extends ConfigurationView {
 
 	private JComboBox cbGateway;
 	private DoubleTextField tfBarTabLimit = new DoubleTextField(10);
+	private DoubleTextField tfAdvanceTipsPercentage = new DoubleTextField(10);
 	
 	private JPanel pluginConfigPanel = new JPanel(new BorderLayout());
 
@@ -69,12 +70,17 @@ public class CardConfigurationView extends ConfigurationView {
 		});
 		add(cbGateway, "cell 1 4,growx"); //$NON-NLS-1$
 		add(pluginConfigPanel, "newline,span,wrap,growx"); //$NON-NLS-1$
-
+		
+		add(new JLabel(Messages.getString("CardConfigurationView.28")),"cell 0 6"); //$NON-NLS-1$
+		add(tfBarTabLimit,"cell 1 6");
+		
+		add(new JLabel("Advance tips percentage"),"cell 0 7");
+		add(tfAdvanceTipsPercentage,"cell 1 7");
+		add(new JLabel("%"),"cell 1 7");
+		
 		JSeparator separator = new JSeparator(JSeparator.HORIZONTAL);
 		add(separator, "newline, growx, span 10, wrap"); //$NON-NLS-1$
 		
-		add(new JLabel(Messages.getString("CardConfigurationView.28"))); //$NON-NLS-1$
-		add(tfBarTabLimit);
 	}
 
 	private void initialMerchantGateways() {
@@ -100,6 +106,7 @@ public class CardConfigurationView extends ConfigurationView {
 		CardConfig.setPaymentGateway(plugin);
 		
 		CardConfig.setBartabLimit(tfBarTabLimit.getDouble());
+		CardConfig.setAdvanceTipsPercentage(tfAdvanceTipsPercentage.getDouble());
 		
 		return true;
 	}
@@ -109,6 +116,7 @@ public class CardConfigurationView extends ConfigurationView {
 		initialMerchantGateways();
 		
 		tfBarTabLimit.setText(String.valueOf(CardConfig.getBartabLimit()));
+		tfAdvanceTipsPercentage.setText(String.valueOf(CardConfig.getAdvanceTipsPercentage()));
 		
 		updatePluginConfigUI();
 

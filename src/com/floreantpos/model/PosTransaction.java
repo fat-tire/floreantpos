@@ -21,7 +21,9 @@ import java.util.HashMap;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.floreantpos.config.CardConfig;
 import com.floreantpos.model.base.BasePosTransaction;
+import com.floreantpos.util.NumberUtil;
 import com.floreantpos.util.POSUtil;
 
 public class PosTransaction extends BasePosTransaction {
@@ -135,7 +137,9 @@ public class PosTransaction extends BasePosTransaction {
 	}
 
 	public Double calculateAuthorizeAmount() {
-		return getTenderAmount() + getTenderAmount() * 0.2;
+		
+		double advanceTipsPercentage = CardConfig.getAdvanceTipsPercentage();
+		return getTenderAmount() + getTenderAmount() * (advanceTipsPercentage / 100);
 	}
 
 	public String getCardTrack() {
