@@ -19,15 +19,13 @@ package com.floreantpos.ui.dialog;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
-import javax.swing.JSeparator;
 import javax.swing.JTextField;
 
 import net.miginfocom.swing.MigLayout;
@@ -35,12 +33,11 @@ import net.miginfocom.swing.MigLayout;
 import com.floreantpos.IconFactory;
 import com.floreantpos.POSConstants;
 import com.floreantpos.swing.PosButton;
-import com.floreantpos.ui.TitlePanel;
+import com.floreantpos.swing.PosUIManager;
 
-public class WeightSelectionDialog extends POSDialog implements ActionListener {
+public class WeightSelectionDialog extends OkCancelOptionDialog implements ActionListener {
 	private int defaultValue;
 
-	private TitlePanel titlePanel;
 	private JTextField tfNumber;
 
 	private boolean floatingPoint;
@@ -48,27 +45,22 @@ public class WeightSelectionDialog extends POSDialog implements ActionListener {
 	private boolean clearPreviousNumber = true;
 
 	public WeightSelectionDialog() {
-		init();
-	}
-
-	public WeightSelectionDialog(Frame parent) {
-		super(parent, true);
+		super();
 		init();
 	}
 
 	private void init() {
-		setResizable(false);
-		Container contentPane = getContentPane();
+		//setResizable(false);
+		JPanel contentPane = getContentPanel();
+
+		Dimension size = PosUIManager.getSize_w100_h70();
 
 		MigLayout layout = new MigLayout("", "sg", ""); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		contentPane.setLayout(layout);
 
-		titlePanel = new TitlePanel();
-		contentPane.add(titlePanel, "spanx ,growy,height 60,wrap"); //$NON-NLS-1$
-
 		tfNumber = new JTextField();
 		tfNumber.setText(String.valueOf(defaultValue));
-		tfNumber.setFont(tfNumber.getFont().deriveFont(Font.BOLD, 24));
+		tfNumber.setFont(tfNumber.getFont().deriveFont(Font.BOLD, PosUIManager.getNumberFieldFontSize()));
 		tfNumber.setFocusable(true);
 		tfNumber.requestFocus();
 		tfNumber.setBackground(Color.WHITE);
@@ -79,6 +71,7 @@ public class WeightSelectionDialog extends POSDialog implements ActionListener {
 		String[][] iconNames = new String[][] { { "7.png", "8.png", "9.png" }, { "4.png", "5.png", "6.png" }, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
 				{ "1.png", "2.png", "3.png" }, { "dot.png", "0.png", "" } }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
 
+		int height = PosUIManager.getSize(55);
 		for (int i = 0; i < numbers.length; i++) {
 			for (int j = 0; j < numbers[i].length; j++) {
 				PosButton posButton = new PosButton();
@@ -98,41 +91,22 @@ public class WeightSelectionDialog extends POSDialog implements ActionListener {
 
 				posButton.setActionCommand(buttonText);
 				posButton.addActionListener(this);
-				String constraints = "grow,height 55"; //$NON-NLS-1$  
+				String constraints = "grow,w " + size.width + "!,h " + size.height + "!"; //$NON-NLS-1$  
 				if (j == numbers[i].length - 1) {
 					constraints += ",wrap"; //$NON-NLS-1$
 				}
 				contentPane.add(posButton, constraints);
 			}
 		}
-		contentPane.add(new JSeparator(), "span,grow,gaptop 5"); //$NON-NLS-1$
-
-		PosButton btnOk = new PosButton(POSConstants.OK);
-		btnOk.setFocusable(false);
-		btnOk.addActionListener(this);
-
-		btnCancel = new PosButton(POSConstants.CANCEL);
-		btnCancel.setFocusable(false);
-		btnCancel.addActionListener(this);
-
-		JPanel buttonPanel = new JPanel(new MigLayout("al center center", "fill,sg", ""));
-		buttonPanel.add(btnOk, "w 100!");
-		buttonPanel.add(btnCancel);
-
-		contentPane.add(buttonPanel, "span,grow"); //$NON-NLS-1$
 	}
 
-	private void doOk() {
+	@Override
+	public void doOk() {
 		if (!validate(tfNumber.getText())) {
 			POSMessageDialog.showError(this, POSConstants.INVALID_NUMBER);
 			return;
 		}
 		setCanceled(false);
-		dispose();
-	}
-
-	private void doCancel() {
-		setCanceled(true);
 		dispose();
 	}
 
@@ -218,9 +192,8 @@ public class WeightSelectionDialog extends POSDialog implements ActionListener {
 	}
 
 	public void setTitle(String title) {
-		titlePanel.setTitle(title);
-
 		super.setTitle(title);
+		super.setTitlePaneText(title);
 	}
 
 	public void setDialogTitle(String title) {

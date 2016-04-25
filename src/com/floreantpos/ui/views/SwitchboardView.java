@@ -69,6 +69,7 @@ import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.services.TicketService;
 import com.floreantpos.swing.OrderTypeButton;
 import com.floreantpos.swing.PosButton;
+import com.floreantpos.swing.PosUIManager;
 import com.floreantpos.ui.TicketListUpdateListener;
 import com.floreantpos.ui.dialog.NumberSelectionDialog2;
 import com.floreantpos.ui.dialog.POSMessageDialog;
@@ -240,7 +241,7 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 		innerActivityPanel.add(secondRowButtonPanel, "newline"); //$NON-NLS-1$
 
 		final PosButton btnMore = new PosButton(POSConstants.MORE_ACTIVITY_BUTTON_TEXT);
-		btnMore.setPreferredSize(new Dimension(78, 0));
+		btnMore.setPreferredSize(new Dimension(PosUIManager.getSize(78), 0));
 
 		btnMore.addActionListener(new ActionListener() {
 			@Override
@@ -355,7 +356,7 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 
 			OrderInfoView view = new OrderInfoView(Arrays.asList(ticket));
 			OrderInfoDialog dialog = new OrderInfoDialog(view);
-			dialog.setSize(400, 600);
+			dialog.setSize(PosUIManager.getSize(400), PosUIManager.getSize(600));
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setLocationRelativeTo(Application.getPosWindow());
 			dialog.setVisible(true);
@@ -430,7 +431,7 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 
 			OrderInfoView view = new OrderInfoView(ticketsToShow);
 			OrderInfoDialog dialog = new OrderInfoDialog(view);
-			dialog.setSize(400, 600);
+			dialog.setSize(PosUIManager.getSize(400), PosUIManager.getSize(600));
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setLocationRelativeTo(Application.getPosWindow());
 			dialog.setVisible(true);

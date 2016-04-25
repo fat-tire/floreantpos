@@ -41,12 +41,12 @@ import javax.swing.ButtonGroup;
 import org.apache.log4j.Logger;
 
 import com.floreantpos.Messages;
-import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.model.MenuCategory;
 import com.floreantpos.model.MenuGroup;
 import com.floreantpos.model.dao.MenuCategoryDAO;
 import com.floreantpos.model.dao.MenuGroupDAO;
 import com.floreantpos.swing.POSToggleButton;
+import com.floreantpos.swing.PosUIManager;
 import com.floreantpos.ui.views.order.actions.CategorySelectionListener;
 
 /**
@@ -66,10 +66,10 @@ public class CategoryView extends SelectionView implements ActionListener {
 	
 	/** Creates new form CategoryView */
 	public CategoryView() {
-		super(com.floreantpos.POSConstants.CATEGORIES, 100, TerminalConfig.getMenuItemButtonHeight());
+		super(com.floreantpos.POSConstants.CATEGORIES, PosUIManager.getSize(100), PosUIManager.getSize(80));
 		
 		categoryButtonGroup = new ButtonGroup();
-		setPreferredSize(new Dimension(120, 100));
+		setPreferredSize(new Dimension(PosUIManager.getSize(120,100)));
 	}
 
 	public void initialize() {

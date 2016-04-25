@@ -28,6 +28,7 @@
 
 package com.floreantpos.config.ui;
 
+import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 
@@ -40,6 +41,7 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
 import net.miginfocom.swing.MigLayout;
@@ -155,7 +157,9 @@ public class PrintConfigurationView extends ConfigurationView {
 	@SuppressWarnings("unchecked")
 	// <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
 	private void initComponents() {
-		setLayout(new MigLayout("", "[][grow,fill]", "[][][][18px,grow][][]")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		setLayout(new BorderLayout());
+		JPanel contentPanel = new JPanel();
+		contentPanel.setLayout(new MigLayout("", "[][grow,fill]", "[][][][18px,grow][][]")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 		JLabel lblReportPrinter = new JLabel(Messages.getString("PrintConfigurationView.4")); //$NON-NLS-1$
 		//add(lblReportPrinter, "cell 0 0,alignx trailing"); //$NON-NLS-1$
@@ -172,11 +176,11 @@ public class PrintConfigurationView extends ConfigurationView {
 		//add(jLabel2, "cell 0 2,alignx right"); //$NON-NLS-1$
 
 		MultiPrinterPane multiPrinterPane = new MultiPrinterPane("Printers", printers.getKitchenPrinters()); //$NON-NLS-1$
-		add(multiPrinterPane, "cell 0 1 2 1,grow"); //$NON-NLS-1$
+		contentPanel.add(multiPrinterPane, "cell 0 1 2 1,growx,h 200!"); //$NON-NLS-1$
 
 		PrinterGroupView printerGroupView = new PrinterGroupView(Messages.getString("PrintConfigurationView.13")); //$NON-NLS-1$
 		printerGroupView.setPreferredSize(new Dimension(0, 400));
-		add(printerGroupView, "cell 0 2 2 2,grow,wrap"); //$NON-NLS-1$
+		contentPanel.add(printerGroupView, "cell 0 2 2 2,growx,,h 200!,wrap"); //$NON-NLS-1$
 
 		JPanel footerPanel = new JPanel(new MigLayout());
 
@@ -198,7 +202,11 @@ public class PrintConfigurationView extends ConfigurationView {
 		footerPanel.add(txtRedTime, "grow");
 		footerPanel.add(new JLabel("sec"), "grow");
 
-		add(footerPanel, "newline, grow, span 2,wrap");
+		contentPanel.add(footerPanel, "newline, grow, span 2,wrap");
+
+		JScrollPane scrollPane = new JScrollPane(contentPanel);
+		scrollPane.setBorder(null); 
+		add(scrollPane);
 
 	}// </editor-fold>//GEN-END:initComponents
 

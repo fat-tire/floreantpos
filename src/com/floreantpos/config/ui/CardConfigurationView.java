@@ -26,6 +26,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 
 import net.miginfocom.swing.MigLayout;
@@ -52,10 +53,13 @@ public class CardConfigurationView extends ConfigurationView {
 	}
 
 	private void createUI() {
-		setLayout(new MigLayout("", "[][grow]", "[][][][][][][][]")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		setLayout(new BorderLayout());
+
+		JPanel contentPanel = new JPanel();
+		contentPanel.setLayout(new MigLayout("", "[][grow]", "[][][][][][][][]")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 		JLabel lblMerchantGateway = new JLabel(Messages.getString("CardConfigurationView.2")); //$NON-NLS-1$
-		add(lblMerchantGateway, "cell 0 4,alignx leading"); //$NON-NLS-1$
+		contentPanel.add(lblMerchantGateway, "cell 0 4,alignx leading"); //$NON-NLS-1$
 
 		cbGateway = new JComboBox();
 		cbGateway.addActionListener(new ActionListener() {
@@ -68,18 +72,22 @@ public class CardConfigurationView extends ConfigurationView {
 				}
 			}
 		});
-		add(cbGateway, "cell 1 4,growx"); //$NON-NLS-1$
-		add(pluginConfigPanel, "newline,span,wrap,growx"); //$NON-NLS-1$
+		contentPanel.add(cbGateway, "cell 1 4,growx"); //$NON-NLS-1$
+		contentPanel.add(pluginConfigPanel, "newline,span,wrap,growx"); //$NON-NLS-1$
 
-		add(new JLabel(Messages.getString("CardConfigurationView.1")), "cell 0 6"); //$NON-NLS-1$//$NON-NLS-2$
-		add(tfBarTabLimit, "cell 1 6"); //$NON-NLS-1$
+		contentPanel.add(new JLabel(Messages.getString("CardConfigurationView.1")), "cell 0 6"); //$NON-NLS-1$//$NON-NLS-2$
+		contentPanel.add(tfBarTabLimit, "cell 1 6"); //$NON-NLS-1$
 
-		add(new JLabel(Messages.getString("CardConfigurationView.4")), "cell 0 7"); //$NON-NLS-1$ //$NON-NLS-2$
-		add(tfAdvanceTipsPercentage, "cell 1 7"); //$NON-NLS-1$
-		add(new JLabel(Messages.getString("CardConfigurationView.10")), "cell 1 7"); //$NON-NLS-1$ //$NON-NLS-2$
+		contentPanel.add(new JLabel(Messages.getString("CardConfigurationView.4")), "cell 0 7"); //$NON-NLS-1$ //$NON-NLS-2$
+		contentPanel.add(tfAdvanceTipsPercentage, "cell 1 7"); //$NON-NLS-1$
+		contentPanel.add(new JLabel(Messages.getString("CardConfigurationView.10")), "cell 1 7"); //$NON-NLS-1$ //$NON-NLS-2$
 
 		JSeparator separator = new JSeparator(JSeparator.HORIZONTAL);
-		add(separator, "newline, growx, span 10, wrap"); //$NON-NLS-1$
+		contentPanel.add(separator, "newline, growx, span 10, wrap"); //$NON-NLS-1$
+
+		JScrollPane scrollPane = new JScrollPane(contentPanel);
+		scrollPane.setBorder(null);
+		add(scrollPane);
 
 	}
 

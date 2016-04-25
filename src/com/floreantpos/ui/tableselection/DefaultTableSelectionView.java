@@ -55,6 +55,7 @@ import com.floreantpos.model.dao.ShopTableDAO;
 import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.swing.POSToggleButton;
 import com.floreantpos.swing.PosButton;
+import com.floreantpos.swing.PosUIManager;
 import com.floreantpos.swing.ScrollableFlowPanel;
 import com.floreantpos.swing.ShopTableButton;
 import com.floreantpos.ui.dialog.NumberSelectionDialog2;
@@ -185,8 +186,8 @@ public class DefaultTableSelectionView extends TableSelector implements ActionLi
 
 		for (ShopTable shopTable : tables) {
 			ShopTableButton tableButton = new ShopTableButton(shopTable);
-			tableButton.setPreferredSize(new Dimension(157, 138));
-			tableButton.setFont(new Font(tableButton.getFont().getName(), tableButton.getFont().getStyle(), 30));
+			tableButton.setPreferredSize(PosUIManager.getSize(157, 138));
+			tableButton.setFont(new Font(tableButton.getFont().getName(), tableButton.getFont().getStyle(), PosUIManager.getTableNumberFontSize()));
 
 			tableButton.setText(tableButton.getText());
 			tableButton.addActionListener(new ActionListener() {

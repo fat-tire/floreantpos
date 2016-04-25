@@ -56,6 +56,7 @@ import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.report.ReceiptPrintService;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.swing.PosScrollPane;
+import com.floreantpos.swing.PosUIManager;
 import com.floreantpos.ui.dialog.ItemNumberSelectionDialog;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.dialog.WeightSelectionDialog;
@@ -75,11 +76,11 @@ public class TicketView extends JPanel {
 	private java.util.Vector<OrderListener> orderListeners = new java.util.Vector<OrderListener>();
 	private Ticket ticket;
 	private com.floreantpos.swing.PosButton btnDecreaseAmount;
-	private com.floreantpos.swing.PosButton btnDelete = new PosButton(IconFactory.getIcon("/ui_icons/", "delete.png")); //$NON-NLS-1$ //$NON-NLS-2$
-	private com.floreantpos.swing.PosButton btnIncreaseAmount = new PosButton(IconFactory.getIcon("/ui_icons/", "add_user.png")); //$NON-NLS-1$ //$NON-NLS-2$
+	private com.floreantpos.swing.PosButton btnDelete = new PosButton();
+	private com.floreantpos.swing.PosButton btnIncreaseAmount = new PosButton();
 	private com.floreantpos.swing.PosButton btnEdit = new PosButton("..."); //$NON-NLS-1$ //$NON-NLS-2$
 	private com.floreantpos.swing.PosButton btnScrollDown;
-	private com.floreantpos.swing.PosButton btnScrollUp = new PosButton(IconFactory.getIcon("/ui_icons/", "up.png")); //$NON-NLS-1$ //$NON-NLS-2$
+	private com.floreantpos.swing.PosButton btnScrollUp = new PosButton();
 	private com.floreantpos.swing.TransparentPanel ticketItemActionPanel;
 	private javax.swing.JScrollPane ticketScrollPane;
 	private PosButton btnTotal;
@@ -117,7 +118,7 @@ public class TicketView extends JPanel {
 		ticketScrollPane = new PosScrollPane(ticketViewerTable);
 		ticketScrollPane.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		ticketScrollPane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
-		ticketScrollPane.setPreferredSize(new java.awt.Dimension(180, 200));
+		ticketScrollPane.setPreferredSize(PosUIManager.getSize(180, 200));
 
 		btnEdit.setEnabled(false);
 
@@ -134,14 +135,13 @@ public class TicketView extends JPanel {
 		add(ticketItemActionPanel, BorderLayout.EAST);
 		ticketViewerTable.getRenderer().setInTicketScreen(true);
 		ticketViewerTable.getSelectionModel().addListSelectionListener(new TicketItemSelectionListener());
-		setPreferredSize(new java.awt.Dimension(360, 463));
+		setPreferredSize(PosUIManager.getSize(360,463));
 	}// </editor-fold>//GEN-END:initComponents
 
 	private void createItemSearchPanel() {
 
-		itemSearchPanel.setLayout(new BorderLayout(5, 5));
+		itemSearchPanel.setLayout(new MigLayout("insets 0", "grow", ""));
 		PosButton btnSearch = new PosButton("...");
-		btnSearch.setPreferredSize(new Dimension(60, 40));
 
 		txtSearchItem = new JTextField();
 
@@ -169,7 +169,7 @@ public class TicketView extends JPanel {
 
 				ItemNumberSelectionDialog dialog = new ItemNumberSelectionDialog(Application.getPosWindow());
 				dialog.setTitle("Search item");
-				dialog.setSize(600, 400);
+				dialog.setSize(PosUIManager.getSize(600), PosUIManager.getSize(400));
 				dialog.open();
 				if (dialog.isCanceled()) {
 					return;
@@ -184,9 +184,8 @@ public class TicketView extends JPanel {
 				}
 			}
 		});
-		itemSearchPanel.add(txtSearchItem);
-		itemSearchPanel.add(btnSearch, BorderLayout.EAST);
-
+		itemSearchPanel.add(txtSearchItem, "split 2, grow,span");
+		itemSearchPanel.add(btnSearch, "grow, span, width " + PosUIManager.getSize(60) + "!, height " + PosUIManager.getSize(40) + "!");
 	}
 
 	private static boolean isParsable(String input) {
@@ -303,14 +302,17 @@ public class TicketView extends JPanel {
 	}
 
 	private void createTicketItemControlPanel() {
-		ticketItemActionPanel.setLayout(new MigLayout("wrap 1, ins 0, fill", "fill", "sg, fill"));
+		ticketItemActionPanel.setLayout(new MigLayout("wrap 1, ins 0", "sg, fill", ""));
 
+		Dimension size = PosUIManager.getSize(40,40);
+		btnScrollUp.setIcon(IconFactory.getIcon("/ui_icons/", "up.png", size)); //$NON-NLS-1$ //$NON-NLS-2$
 		btnScrollUp.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				doScrollUp();
 			}
 		});
 
+		btnIncreaseAmount.setIcon(IconFactory.getIcon("/ui_icons/", "add_user.png", size)); //$NON-NLS-1$ //$NON-NLS-2$
 		btnIncreaseAmount.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 
@@ -329,20 +331,21 @@ public class TicketView extends JPanel {
 			}
 		});
 
-		btnDecreaseAmount.setIcon(IconFactory.getIcon("/ui_icons/", "minus.png")); //$NON-NLS-1$ //$NON-NLS-2$
+		btnDecreaseAmount.setIcon(IconFactory.getIcon("/ui_icons/", "minus.png", size)); //$NON-NLS-1$ //$NON-NLS-2$
 		btnDecreaseAmount.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				doDecreaseAmount();
 			}
 		});
 
-		btnScrollDown.setIcon(IconFactory.getIcon("/ui_icons/", "down.png")); //$NON-NLS-1$ //$NON-NLS-2$
+		btnScrollDown.setIcon(IconFactory.getIcon("/ui_icons/", "down.png", size)); //$NON-NLS-1$ //$NON-NLS-2$
 		btnScrollDown.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				doScrollDown();
 			}
 		});
 
+		btnDelete.setIcon(IconFactory.getIcon("/ui_icons/", "delete.png", size)); //$NON-NLS-1$ //$NON-NLS-2$
 		btnDelete.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				doDeleteSelection();
@@ -362,7 +365,7 @@ public class TicketView extends JPanel {
 		ticketItemActionPanel.add(btnEdit);
 		ticketItemActionPanel.add(btnScrollDown);
 
-		ticketItemActionPanel.setPreferredSize(new Dimension(60, 380));
+		ticketItemActionPanel.setPreferredSize(PosUIManager.getSize(60,270));
 	}
 
 	public synchronized void doFinishOrder() {// GEN-FIRST:event_doFinishOrder

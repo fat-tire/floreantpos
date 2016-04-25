@@ -40,12 +40,12 @@ import javax.swing.AbstractButton;
 import javax.swing.SwingConstants;
 
 import com.floreantpos.PosException;
-import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.MenuGroup;
 import com.floreantpos.model.MenuItem;
 import com.floreantpos.model.dao.MenuItemDAO;
 import com.floreantpos.swing.PosButton;
+import com.floreantpos.swing.PosUIManager;
 import com.floreantpos.ui.views.order.actions.ItemSelectionListener;
 
 /**
@@ -62,7 +62,7 @@ public class MenuItemView extends SelectionView {
 
 	/** Creates new form GroupView */
 	public MenuItemView() {
-		super(com.floreantpos.POSConstants.ITEMS, 120, TerminalConfig.getMenuItemButtonHeight());
+		super(com.floreantpos.POSConstants.ITEMS, PosUIManager.getSize(120), PosUIManager.getSize(80));
 		remove(actionButtonPanel);
 
 		btnPrev.setText("<");
@@ -150,7 +150,7 @@ public class MenuItemView extends SelectionView {
 	}
 
 	public class ItemButton extends PosButton implements ActionListener, MouseListener {
-		private static final int BUTTON_SIZE = 100;
+		private int BUTTON_SIZE = 100;
 		MenuItem foodItem;
 
 		ItemButton(MenuItem menuItem) {
@@ -158,17 +158,18 @@ public class MenuItemView extends SelectionView {
 			setFocusable(false);
 			setVerticalTextPosition(SwingConstants.BOTTOM);
 			setHorizontalTextPosition(SwingConstants.CENTER);
+			BUTTON_SIZE=PosUIManager.getSize(100); 
 
 			if (menuItem.getImage() != null) {
-				int w = BUTTON_SIZE - 10;
-				int h = BUTTON_SIZE - 10;
+				int w = BUTTON_SIZE - PosUIManager.getSize(10);
+				int h = BUTTON_SIZE - PosUIManager.getSize(10);
 
 				if (menuItem.isShowImageOnly()) {
 					setIcon(menuItem.getScaledImage(w, h));
 				}
 				else {
-					w = 80;
-					h = 40;
+					w = PosUIManager.getSize(80);
+					h = PosUIManager.getSize(40);
 
 					setIcon(menuItem.getScaledImage(w, h));
 					setText("<html><body><center>" + menuItem.getDisplayName() + "</center></body></html>"); //$NON-NLS-1$ //$NON-NLS-2$

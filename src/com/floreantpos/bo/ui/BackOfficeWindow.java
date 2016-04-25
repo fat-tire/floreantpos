@@ -25,6 +25,7 @@ package com.floreantpos.bo.ui;
 
 import java.awt.ComponentOrientation;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Insets;
 import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
@@ -78,6 +79,7 @@ import com.floreantpos.main.Application;
 import com.floreantpos.model.User;
 import com.floreantpos.model.UserPermission;
 import com.floreantpos.model.UserType;
+import com.floreantpos.swing.PosUIManager;
 import com.floreantpos.table.ShowTableBrowserAction;
 import com.jidesoft.swing.JideTabbedPane;
 
@@ -253,6 +255,8 @@ public class BackOfficeWindow extends javax.swing.JFrame {
 		tabbedPane.setTabShape(JideTabbedPane.SHAPE_WINDOWS);
 		tabbedPane.setShowCloseButtonOnTab(true);
 		tabbedPane.setTabInsets(new Insets(5, 5, 5, 5));
+		Font font=new Font(tabbedPane.getFont().getName(), Font.PLAIN, PosUIManager.getDefaultFontSize()); 
+		tabbedPane.setFont(font);
 
 		getContentPane().setLayout(new java.awt.BorderLayout(5, 0));
 

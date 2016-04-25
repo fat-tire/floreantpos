@@ -23,6 +23,10 @@
 
 package com.floreantpos.ui.dialog;
 
+import java.awt.Dimension;
+
+import com.floreantpos.swing.PosUIManager;
+
 
 /**
  *
@@ -116,8 +120,9 @@ public class NumberSelectionDialog extends POSDialog {
 
         getContentPane().add(transparentPanel2, java.awt.BorderLayout.CENTER);
 
-        java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        setBounds((screenSize.width-308)/2, (screenSize.height-490)/2, 308, 490);
+        Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
+        Dimension size=PosUIManager.getSize(308,490); 
+        setBounds((screenSize.width-size.width)/2, (screenSize.height-size.height)/2, size.width, size.height);
     }// </editor-fold>//GEN-END:initComponents
 
     private void doCancel(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_doCancel

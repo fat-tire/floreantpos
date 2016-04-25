@@ -18,7 +18,6 @@
 package com.floreantpos.config.ui;
 
 import java.awt.Cursor;
-import java.awt.FlowLayout;
 import java.awt.Frame;
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
@@ -75,8 +74,8 @@ public class DatabaseConfigurationDialog extends POSDialog implements ActionList
 	private JLabel lblDbName;
 	private JLabel lblUserName;
 	private JLabel lblDbPassword;
-	
-	private boolean connectionSuccess; 
+
+	private boolean connectionSuccess;
 
 	public DatabaseConfigurationDialog() throws HeadlessException {
 		super();
@@ -129,14 +128,14 @@ public class DatabaseConfigurationDialog extends POSDialog implements ActionList
 		btnExit = new PosButton(Messages.getString("DatabaseConfigurationDialog.28").toUpperCase()); //$NON-NLS-1$
 		btnExit.setActionCommand(CANCEL);
 
-		JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		
+		JPanel buttonPanel = new JPanel(new MigLayout("inset 0, fill", "grow", ""));
+
 		btnCreateDb = new PosButton(Messages.getString("DatabaseConfigurationDialog.29").toUpperCase()); //$NON-NLS-1$
 		btnCreateDb.setActionCommand(CREATE_DATABASE);
-		
+
 		btnUpdateDb = new PosButton(Messages.getString("UPDATE_DATABASE").toUpperCase()); //$NON-NLS-1$
 		btnUpdateDb.setActionCommand(UPDATE_DATABASE);
-		
+
 		buttonPanel.add(btnUpdateDb);
 		buttonPanel.add(btnCreateDb);
 		buttonPanel.add(btnTestConnection);
@@ -214,17 +213,17 @@ public class DatabaseConfigurationDialog extends POSDialog implements ActionList
 			final String connectionString = selectedDb.getConnectString(databaseURL, databasePort, databaseName);
 			final String hibernateDialect = selectedDb.getHibernateDialect();
 			final String driverClass = selectedDb.getHibernateConnectionDriverClass();
-			
+
 			if (CANCEL.equalsIgnoreCase(command)) {
 				dispose();
 				return;
 			}
-			
+
 			setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-			
+
 			Application.getInstance().setSystemInitialized(false);
 			saveConfig(selectedDb, providerName, databaseURL, databasePort, databaseName, user, pass, connectionString, hibernateDialect);
-			
+
 			if (TEST.equalsIgnoreCase(command)) {
 				try {
 					DatabaseUtil.checkConnection(connectionString, hibernateDialect, driverClass, user, pass);
@@ -232,23 +231,24 @@ public class DatabaseConfigurationDialog extends POSDialog implements ActionList
 					JOptionPane.showMessageDialog(this, Messages.getString("DatabaseConfigurationDialog.32")); //$NON-NLS-1$
 					return;
 				}
-				
-				connectionSuccess=true; 
+
+				connectionSuccess = true;
 				JOptionPane.showMessageDialog(this, Messages.getString("DatabaseConfigurationDialog.31")); //$NON-NLS-1$
 			}
-			else if(UPDATE_DATABASE.equals(command)) {
-				int i = JOptionPane.showConfirmDialog(this, Messages.getString("DatabaseConfigurationDialog.0"), Messages.getString("DatabaseConfigurationDialog.1"), JOptionPane.YES_NO_OPTION); //$NON-NLS-1$ //$NON-NLS-2$
+			else if (UPDATE_DATABASE.equals(command)) {
+				int i = JOptionPane.showConfirmDialog(this,
+						Messages.getString("DatabaseConfigurationDialog.0"), Messages.getString("DatabaseConfigurationDialog.1"), JOptionPane.YES_NO_OPTION); //$NON-NLS-1$ //$NON-NLS-2$
 				if (i != JOptionPane.YES_OPTION) {
 					return;
 				}
-				
+
 				//isAuthorizedToPerformDbChange();
-				
+
 				setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-				
+
 				boolean databaseUpdated = DatabaseUtil.updateDatabase(connectionString, hibernateDialect, driverClass, user, pass);
-				if(databaseUpdated) {
-					connectionSuccess=true; 
+				if (databaseUpdated) {
+					connectionSuccess = true;
 					JOptionPane.showMessageDialog(DatabaseConfigurationDialog.this, Messages.getString("DatabaseConfigurationDialog.2")); //$NON-NLS-1$
 				}
 				else {
@@ -256,38 +256,39 @@ public class DatabaseConfigurationDialog extends POSDialog implements ActionList
 				}
 			}
 			else if (CREATE_DATABASE.equals(command)) {
-				
+
 				int i = JOptionPane.showConfirmDialog(this,
 						Messages.getString("DatabaseConfigurationDialog.33"), Messages.getString("DatabaseConfigurationDialog.34"), JOptionPane.YES_NO_OPTION); //$NON-NLS-1$ //$NON-NLS-2$
 				if (i != JOptionPane.YES_OPTION) {
 					return;
 				}
 
-				i = JOptionPane.showConfirmDialog(this, Messages.getString("DatabaseConfigurationDialog.4"), Messages.getString("DatabaseConfigurationDialog.5"), JOptionPane.YES_NO_OPTION); //$NON-NLS-1$ //$NON-NLS-2$
+				i = JOptionPane.showConfirmDialog(this,
+						Messages.getString("DatabaseConfigurationDialog.4"), Messages.getString("DatabaseConfigurationDialog.5"), JOptionPane.YES_NO_OPTION); //$NON-NLS-1$ //$NON-NLS-2$
 				boolean generateSampleData = false;
 				if (i == JOptionPane.YES_OPTION)
 					generateSampleData = true;
 
 				setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-				
+
 				String createDbConnectString = selectedDb.getCreateDbConnectString(databaseURL, databasePort, databaseName);
-				
+
 				boolean databaseCreated = DatabaseUtil.createDatabase(createDbConnectString, hibernateDialect, driverClass, user, pass, generateSampleData);
 
 				if (databaseCreated) {
 					JOptionPane.showMessageDialog(DatabaseConfigurationDialog.this, Messages.getString("DatabaseConfigurationDialog.6") + //$NON-NLS-1$
 							Messages.getString("DatabaseConfigurationDialog.7")); //$NON-NLS-1$
-					
+
 					Main.restart();
-					connectionSuccess=true; 
+					connectionSuccess = true;
 				}
 				else {
 					JOptionPane.showMessageDialog(DatabaseConfigurationDialog.this, Messages.getString("DatabaseConfigurationDialog.36")); //$NON-NLS-1$
 				}
 			}
 			else if (SAVE.equalsIgnoreCase(command)) {
-				if(connectionSuccess) {
-					Application.getInstance().initializeSystem(); 
+				if (connectionSuccess) {
+					Application.getInstance().initializeSystem();
 				}
 				dispose();
 			}
@@ -301,12 +302,12 @@ public class DatabaseConfigurationDialog extends POSDialog implements ActionList
 
 	private void isAuthorizedToPerformDbChange() {
 		DatabaseUtil.initialize();
-		
+
 		UserDAO.getInstance().findAll();
-		
+
 		String password = JOptionPane.showInputDialog(Messages.getString("DatabaseConfigurationDialog.9")); //$NON-NLS-1$
 		User user2 = UserDAO.getInstance().findUserBySecretKey(password);
-		if(user2 == null || !user2.isAdministrator()) {
+		if (user2 == null || !user2.isAdministrator()) {
 			POSMessageDialog.showError(this, Messages.getString("DatabaseConfigurationDialog.11")); //$NON-NLS-1$
 			return;
 		}

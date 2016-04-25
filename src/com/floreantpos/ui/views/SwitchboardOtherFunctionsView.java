@@ -18,10 +18,12 @@
 package com.floreantpos.ui.views;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 import net.miginfocom.swing.MigLayout;
 
@@ -40,6 +42,7 @@ import com.floreantpos.actions.ShowOnlineTicketManagementAction;
 import com.floreantpos.actions.ShowTransactionsAuthorizationsAction;
 import com.floreantpos.main.Application;
 import com.floreantpos.swing.PosButton;
+import com.floreantpos.swing.PosUIManager;
 import com.floreantpos.ui.views.order.RootView;
 import com.floreantpos.ui.views.order.ViewPanel;
 
@@ -60,12 +63,13 @@ public class SwitchboardOtherFunctionsView extends ViewPanel {
 		});
 		add(btnBack, BorderLayout.SOUTH);
 
-		contentPanel = new JPanel(new MigLayout("align 50% 50%, wrap 6"));
+		contentPanel = new JPanel(new MigLayout("hidemode 3,align 50% 50%, wrap 6", "sg fill", ""));
 
-		PosAction[] actions = {new ShowBackofficeAction(), new DrawerAssignmentAction(), new DrawerPullAction(), new DrawerBleedAction(), new DrawerKickAction(), new PayoutAction(),
-				new ServerTipsAction(), new ShowTransactionsAuthorizationsAction(), new ShowKitchenDisplayAction()/*, new SwithboardViewAction()*/,
-				new ManageTableLayoutAction(), new ShowOnlineTicketManagementAction()};
+		PosAction[] actions = { new ShowBackofficeAction(), new DrawerAssignmentAction(), new DrawerPullAction(), new DrawerBleedAction(),
+				new DrawerKickAction(), new PayoutAction(), new ServerTipsAction(), new ShowTransactionsAuthorizationsAction(),
+				new ShowKitchenDisplayAction()/*, new SwithboardViewAction()*/, new ManageTableLayoutAction(), new ShowOnlineTicketManagementAction() };
 
+		Dimension size = PosUIManager.getSize(150, 150);
 		for (PosAction action : actions) {
 			if (action instanceof DrawerAssignmentAction) {
 				if (!Application.getInstance().getTerminal().isHasCashDrawer()) {
@@ -74,10 +78,12 @@ public class SwitchboardOtherFunctionsView extends ViewPanel {
 			}
 
 			PosButton button = new PosButton(action);
-			contentPanel.add(button, "w 150!, h 150!"); //$NON-NLS-1$
+			contentPanel.add(button, "w " + size.width + "!, h " + size.height + "!");
 		}
 
-		add(contentPanel);
+		JScrollPane scrollPane = new JScrollPane(contentPanel);
+		scrollPane.setBorder(null); 
+		add(scrollPane);
 	}
 
 	public static SwitchboardOtherFunctionsView getInstance() {

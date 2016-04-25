@@ -17,7 +17,11 @@
  */
 package com.floreantpos.config.ui;
 
+import java.awt.BorderLayout;
+
 import javax.swing.JCheckBox;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 import net.miginfocom.swing.MigLayout;
 
@@ -31,12 +35,19 @@ public class TaxConfigurationView extends ConfigurationView {
 	public static final String CONFIG_TAB_TAX = Messages.getString("TaxConfigurationView.0"); //$NON-NLS-1$
 	private Restaurant restaurant;
 	private JCheckBox cbItemSalesPriceIncludesTax;
-	
+
 	public TaxConfigurationView() {
-		setLayout(new MigLayout("", "[]", "[]")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		setLayout(new BorderLayout());
+
+		JPanel contentPanel = new JPanel();
+		contentPanel.setLayout(new MigLayout("", "[]", "[]")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 		cbItemSalesPriceIncludesTax = new JCheckBox(Messages.getString("TaxConfigurationView.4")); //$NON-NLS-1$
-		add(cbItemSalesPriceIncludesTax, "cell 0 0"); //$NON-NLS-1$
+		contentPanel.add(cbItemSalesPriceIncludesTax, "cell 0 0"); //$NON-NLS-1$
+
+		JScrollPane scrollPane = new JScrollPane(contentPanel);
+		scrollPane.setBorder(null);
+		add(scrollPane);
 	}
 
 	@Override

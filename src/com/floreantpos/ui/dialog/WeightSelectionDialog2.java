@@ -19,9 +19,8 @@ package com.floreantpos.ui.dialog;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.regex.Matcher;
@@ -29,9 +28,7 @@ import java.util.regex.Pattern;
 
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JSeparator;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
@@ -41,21 +38,17 @@ import net.miginfocom.swing.MigLayout;
 import com.floreantpos.IconFactory;
 import com.floreantpos.POSConstants;
 import com.floreantpos.config.TerminalConfig;
-import com.floreantpos.main.Application;
 import com.floreantpos.swing.DoubleTextField;
 import com.floreantpos.swing.POSToggleButton;
 import com.floreantpos.swing.PosButton;
-import com.floreantpos.ui.TitlePanel;
+import com.floreantpos.swing.PosUIManager;
 import com.floreantpos.util.NumberUtil;
 import com.floreantpos.util.SerialPortUtil;
 
-public class WeightSelectionDialog2 extends POSDialog implements ActionListener {
+public class WeightSelectionDialog2 extends OkCancelOptionDialog implements ActionListener {
 	private double defaultValue;
 
-	private TitlePanel titlePanel;
 	private static DoubleTextField tfNumber;
-
-	private PosButton btnCancel;
 	private boolean clearPreviousNumber = true;
 
 	private static final String UNIT_KG = "KG";
@@ -67,34 +60,24 @@ public class WeightSelectionDialog2 extends POSDialog implements ActionListener 
 	private POSToggleButton btnOZ;
 	private POSToggleButton btnKG;
 	private POSToggleButton btnG;
-	private PosButton btnDefault;
 	private PosButton btnRefresh;
 	private JTextField tfUnitC;
 
 	private ButtonGroup group;
 
-	public WeightSelectionDialog2() {
-		init();
-	}
-
-	public WeightSelectionDialog2(Frame parent) {
-		super(parent, true);
+	public WeightSelectionDialog2(String title) {
+		super(title);
 		init();
 	}
 
 	private void init() {
-		setResizable(false);
-		JPanel contentPanel = new JPanel();
+		setResizable(false); 
+		JPanel leftPanel = new JPanel();
 
-		JLabel lblProductName = new JLabel();
-		getContentPane().add(lblProductName, BorderLayout.NORTH);
+		MigLayout layout = new MigLayout("fill,inset 0", "sg, fill", ""); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		leftPanel.setLayout(layout);
 
-		MigLayout layout = new MigLayout("", "sg", ""); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		contentPanel.setLayout(layout);
-
-		int height = 60;
-		titlePanel = new TitlePanel();
-		contentPanel.add(titlePanel, "spanx ,growy,height " + height + ",wrap"); //$NON-NLS-1$
+		Dimension size = PosUIManager.getSize_w100_h70();
 
 		tfNumber = new DoubleTextField();
 		tfNumber.setText(String.valueOf(defaultValue));
@@ -112,8 +95,8 @@ public class WeightSelectionDialog2 extends POSDialog implements ActionListener 
 		tfUnitC.setBackground(Color.WHITE);
 		tfUnitC.setForeground(Color.LIGHT_GRAY);
 
-		contentPanel.add(tfNumber, "span 2, grow"); //$NON-NLS-1$
-		contentPanel.add(tfUnitC, "span, grow"); //$NON-NLS-1$
+		leftPanel.add(tfNumber, "span 2, grow"); //$NON-NLS-1$
+		leftPanel.add(tfUnitC, "span, grow"); //$NON-NLS-1$
 
 		String[][] numbers = { { "7", "8", "9" }, { "4", "5", "6" }, { "1", "2", "3" }, { ".", "0", "CLEAR ALL" } }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$ //$NON-NLS-11$ //$NON-NLS-12$
 		String[][] iconNames = new String[][] { { "7.png", "8.png", "9.png" }, { "4.png", "5.png", "6.png" }, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
@@ -138,35 +121,21 @@ public class WeightSelectionDialog2 extends POSDialog implements ActionListener 
 
 				posButton.setActionCommand(buttonText);
 				posButton.addActionListener(this);
-				String constraints = "grow,height " + 55; //$NON-NLS-1$  
+				String constraints = "w " + size.width + "!,h " + size.height + "!,grow"; //$NON-NLS-1$  
 				if (j == numbers[i].length - 1) {
 					constraints += ",wrap"; //$NON-NLS-1$
 				}
-				contentPanel.add(posButton, constraints);
+				leftPanel.add(posButton, constraints);
 			}
 		}
-		contentPanel.add(new JSeparator(), "span,grow,gaptop 5"); //$NON-NLS-1$
-
-		PosButton btnOk = new PosButton(POSConstants.OK);
-		btnOk.setFocusable(false);
-		btnOk.addActionListener(this);
-
-		btnCancel = new PosButton(POSConstants.CANCEL);
-		btnCancel.setFocusable(false);
-		btnCancel.addActionListener(this);
-
-		JPanel buttonPanel = new JPanel(new MigLayout("fill, inset 0", "sg fill", ""));
-		buttonPanel.add(btnOk, "grow");
-		buttonPanel.add(btnCancel, "grow");
-
-		contentPanel.add(buttonPanel, "span,grow"); //$NON-NLS-1$
-		getContentPane().add(contentPanel, BorderLayout.CENTER);
+		getContentPanel().add(leftPanel, BorderLayout.CENTER);
 		createRightPanel();
 	}
 
 	private void createRightPanel() {
-		JPanel rightPanel = new JPanel(new MigLayout("filly", "sg", ""));
-		int size = 60;
+		JPanel rightPanel = new JPanel(new MigLayout("fill, inset 0 10 0 0", "sg, fill", ""));
+
+		Dimension size = PosUIManager.getSize_w100_h70();
 
 		group = new ButtonGroup();
 
@@ -175,7 +144,6 @@ public class WeightSelectionDialog2 extends POSDialog implements ActionListener 
 		btnOZ = new POSToggleButton(UNIT_OZ);
 		btnKG = new POSToggleButton(UNIT_KG);
 		btnG = new POSToggleButton(UNIT_G);
-		btnDefault = new PosButton("DEFAULT");
 
 		btnRefresh.addActionListener(new ActionListener() {
 			@Override
@@ -188,29 +156,18 @@ public class WeightSelectionDialog2 extends POSDialog implements ActionListener 
 		btnKG.addActionListener(this);
 		btnKG.setSelected(true);
 		btnG.addActionListener(this);
-		btnDefault.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				group.clearSelection();
-				tfNumber.setText(String.valueOf(defaultValue));
-			}
-		});
 
 		group.add(btnLB);
 		group.add(btnOZ);
 		group.add(btnKG);
 		group.add(btnG);
-		//group.add(btnDefault);
 
-		rightPanel.add(new JLabel(""), "h " + 55 + "!, grow, wrap");
-		rightPanel.add(btnRefresh, "h " + 40 + "!, grow, wrap");
-		rightPanel.add(btnLB, "h " + size + "!, grow, wrap");
-		rightPanel.add(btnOZ, "h " + size + "!, grow, wrap");
-		rightPanel.add(btnKG, "h " + size + "!, grow, wrap");
-		rightPanel.add(btnG, "h " + size + "!, grow, wrap");
-		rightPanel.add(btnDefault, "h " + size + "!, grow, wrap");
-		getContentPane().add(rightPanel, BorderLayout.EAST);
+		rightPanel.add(btnRefresh, "w " + size.width + "!,h " + 40 + "!,wrap");
+		rightPanel.add(btnLB, "w " + size.width + "!, h " + size.height + "!,wrap");
+		rightPanel.add(btnOZ, "w " + size.width + "!, h " + size.height + "!,wrap");
+		rightPanel.add(btnKG, "w " + size.width + "!, h " + size.height + "!,wrap");
+		rightPanel.add(btnG, "w " + size.width + "!, h " + size.height + "!,wrap");
+		getContentPanel().add(rightPanel, BorderLayout.EAST);
 	}
 
 	public void readWeight() {
@@ -220,7 +177,7 @@ public class WeightSelectionDialog2 extends POSDialog implements ActionListener 
 			updateScaleView(weightString);
 
 		} catch (Exception ex) {
-			POSMessageDialog.showError(Application.getPosWindow(), POSConstants.ERROR_MESSAGE, ex);
+			POSMessageDialog.showError(ex.getMessage());
 		}
 	}
 
@@ -307,20 +264,6 @@ public class WeightSelectionDialog2 extends POSDialog implements ActionListener 
 		return inputValue;
 	}
 
-	private void doOk() {
-		if (!validate(tfNumber.getText())) {
-			POSMessageDialog.showError(this, POSConstants.INVALID_NUMBER);
-			return;
-		}
-		setCanceled(false);
-		dispose();
-	}
-
-	private void doCancel() {
-		setCanceled(true);
-		dispose();
-	}
-
 	private void doClearAll() {
 		tfNumber.setText(String.valueOf(0.0));
 	}
@@ -367,13 +310,7 @@ public class WeightSelectionDialog2 extends POSDialog implements ActionListener 
 
 		double value = tfNumber.getDouble();
 
-		if (POSConstants.CANCEL.equalsIgnoreCase(actionCommand)) {
-			doCancel();
-		}
-		else if (POSConstants.OK.equalsIgnoreCase(actionCommand)) {
-			doOk();
-		}
-		else if (actionCommand.equals(POSConstants.CLEAR_ALL)) {
+		if (actionCommand.equals(POSConstants.CLEAR_ALL)) {
 			doClearAll();
 		}
 		else if (actionCommand.equals(".")) { //$NON-NLS-1$
@@ -409,16 +346,6 @@ public class WeightSelectionDialog2 extends POSDialog implements ActionListener 
 		return true;
 	}
 
-	public void setTitle(String title) {
-		titlePanel.setTitle(title);
-
-		super.setTitle("Please enter item weight or quantity.");
-	}
-
-	public void setDialogTitle(String title) {
-		super.setTitle(title);
-	}
-
 	public double getValue() {
 		return Double.parseDouble(tfNumber.getText());
 	}
@@ -427,31 +354,14 @@ public class WeightSelectionDialog2 extends POSDialog implements ActionListener 
 		tfNumber.setText(String.valueOf(value));
 	}
 
-	public static double takeDoubleInput(String title, String dialogTitle, double initialAmount) {
-		WeightSelectionDialog2 dialog = new WeightSelectionDialog2();
-		dialog.setValue(initialAmount);
-		dialog.setTitle(title);
-		dialog.setDialogTitle(dialogTitle);
-		dialog.pack();
-		if (TerminalConfig.isActiveScaleDisplay()) {
-			dialog.readWeight();
-		}
-		dialog.open();
-
-		if (dialog.isCanceled()) {
-			return Double.NaN;
-		}
-
-		return dialog.getValue();
-	}
-
 	public static double takeDoubleInput(String title, double initialAmount) {
-		WeightSelectionDialog2 dialog = new WeightSelectionDialog2();
-		dialog.setTitle(title);
-		dialog.pack();
+		WeightSelectionDialog2 dialog = new WeightSelectionDialog2("Please enter item weight or quantity");
+		dialog.setTitlePaneText(title);
+		dialog.setValue(initialAmount);
 		if (TerminalConfig.isActiveScaleDisplay()) {
 			dialog.readWeight();
 		}
+		dialog.pack();
 		dialog.open();
 
 		if (dialog.isCanceled()) {
@@ -461,20 +371,13 @@ public class WeightSelectionDialog2 extends POSDialog implements ActionListener 
 		return dialog.getValue();
 	}
 
-	public static double show(Component parent, String title, double initialAmount) {
-		WeightSelectionDialog2 dialog2 = new WeightSelectionDialog2();
-		dialog2.setTitle(title);
-		dialog2.pack();
-		dialog2.setLocationRelativeTo(parent);
-		if (TerminalConfig.isActiveScaleDisplay()) {
-			dialog2.readWeight();
+	@Override
+	public void doOk() {
+		if (!validate(tfNumber.getText())) {
+			POSMessageDialog.showError(this, POSConstants.INVALID_NUMBER);
+			return;
 		}
-		dialog2.setVisible(true);
-
-		if (dialog2.isCanceled()) {
-			return Double.NaN;
-		}
-
-		return dialog2.getValue();
+		setCanceled(false);
+		dispose();
 	}
 }

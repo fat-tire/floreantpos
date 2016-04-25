@@ -18,6 +18,7 @@
 package com.floreantpos.config.ui;
 
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 import net.miginfocom.swing.MigLayout;
 
@@ -34,13 +35,16 @@ public class TicketImportConfigurationView extends ConfigurationView {
 	private IntegerTextField tfPollInterval = new IntegerTextField(6); 
 	
 	public TicketImportConfigurationView() {
-		setLayout(new MigLayout("", "[]", "[]")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		JPanel contentPanel=new JPanel(); 
+		contentPanel.setLayout(new MigLayout("", "[]", "[]")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
-		add(new JLabel(Messages.getString("TicketImportConfigurationView.4"))); //$NON-NLS-1$
-		add(tfURL, "wrap"); //$NON-NLS-1$
+		contentPanel.add(new JLabel(Messages.getString("TicketImportConfigurationView.4"))); //$NON-NLS-1$
+		contentPanel.add(tfURL, "wrap"); //$NON-NLS-1$
 		
-		add(new JLabel(Messages.getString("TicketImportConfigurationView.6"))); //$NON-NLS-1$
-		add(tfPollInterval, "wrap"); //$NON-NLS-1$
+		contentPanel.add(new JLabel(Messages.getString("TicketImportConfigurationView.6"))); //$NON-NLS-1$
+		contentPanel.add(tfPollInterval, "wrap"); //$NON-NLS-1$
+		
+		add(contentPanel); 
 	}
 
 	@Override

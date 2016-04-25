@@ -17,6 +17,7 @@
  */
 package com.floreantpos.config.ui;
 
+import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -51,11 +52,13 @@ public class ConfigurationDialog extends POSDialog implements ChangeListener, Ac
 		super(POSUtil.getBackOfficeWindow(), true);
 		
 		setTitle(Messages.getString("CONFIGURATION_WINDOW_TITLE")); //$NON-NLS-1$
+		setLayout(new BorderLayout());
 		
-		setLayout(new MigLayout("fill", "", "[fill,grow][]")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		JPanel contentPanel=new JPanel(new MigLayout("fill", "", "[fill,grow][]"));  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		
 		
 		tabbedPane.addChangeListener(this);
-		add(tabbedPane, "span, grow" ); //$NON-NLS-1$
+		contentPanel.add(tabbedPane, "span, grow" ); //$NON-NLS-1$
 		
 		addView(new RestaurantConfigurationView());
 		addView(new TerminalConfigurationView());
@@ -72,7 +75,7 @@ public class ConfigurationDialog extends POSDialog implements ChangeListener, Ac
 		
 		
 		
-		JPanel bottomPanel = new JPanel(new MigLayout("fillx")); //$NON-NLS-1$
+		JPanel bottomPanel = new JPanel(new MigLayout("fill")); //$NON-NLS-1$
 		
 		JButton btnOk = new JButton(CANCEL);
 		btnOk.addActionListener(this);
@@ -81,13 +84,14 @@ public class ConfigurationDialog extends POSDialog implements ChangeListener, Ac
 		btnCancel.addActionListener(this);
 		bottomPanel.add(btnCancel, "dock east, gapright 5, gaptop 5"); //$NON-NLS-1$
 		
-		add(bottomPanel, "newline,growx, gaptop 10"); //$NON-NLS-1$
+		add(bottomPanel, BorderLayout.SOUTH); //$NON-NLS-1$
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		
 		FloorLayoutPlugin floorLayoutPlugin = (FloorLayoutPlugin) ExtensionManager.getPlugin(FloorLayoutPlugin.class);
 		if(floorLayoutPlugin != null) {
 			floorLayoutPlugin.initConfigurationView(this);
 		}
+		add(contentPanel, BorderLayout.CENTER); 
 	}
 	
 	public void addView(ConfigurationView view) {

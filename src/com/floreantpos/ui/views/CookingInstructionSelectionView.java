@@ -23,52 +23,51 @@ import java.util.List;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.border.EmptyBorder;
 import javax.swing.table.AbstractTableModel;
 
 import com.floreantpos.Messages;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.CookingInstruction;
 import com.floreantpos.model.TicketItemCookingInstruction;
-import com.floreantpos.model.util.IllegalModelStateException;
-import com.floreantpos.ui.BeanEditor;
+import com.floreantpos.model.dao.CookingInstructionDAO;
+import com.floreantpos.ui.dialog.OkCancelOptionDialog;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 
-public class CookingInstructionSelectionView extends BeanEditor {
+public class CookingInstructionSelectionView extends OkCancelOptionDialog {
 	private JTable table;
-	
+
 	private List<TicketItemCookingInstruction> ticketItemCookingInstructions;
 
 	public CookingInstructionSelectionView() {
+		super(Application.getPosWindow(), true);
 		createUI();
+		updateView();
 	}
 
 	private void createUI() {
-		setLayout(new BorderLayout(0, 0));
+		setTitle(Messages.getString("CookingInstructionSelectionView.1"));
+		setTitlePaneText(Messages.getString("CookingInstructionSelectionView.1")); //$NON-NLS-1$
 
 		JScrollPane scrollPane = new JScrollPane();
-		add(scrollPane, BorderLayout.CENTER);
-
 		table = new JTable();
 		table.setRowHeight(35);
 		scrollPane.setViewportView(table);
-		
-		setBorder(new EmptyBorder(10, 10, 10, 10));
+		getContentPanel().add(scrollPane, BorderLayout.CENTER);
 	}
 
 	@Override
-	public boolean save() {
+	public void doOk() {
 		int[] selectedRows = table.getSelectedRows();
-		
-		if(selectedRows.length == 0) {
+
+		if (selectedRows.length == 0) {
 			POSMessageDialog.showError(Application.getPosWindow(), Messages.getString("CookingInstructionSelectionView.0")); //$NON-NLS-1$
-			return false;
+			return;
 		}
-		
-		if(ticketItemCookingInstructions == null) {
+
+		if (ticketItemCookingInstructions == null) {
 			ticketItemCookingInstructions = new ArrayList<TicketItemCookingInstruction>(selectedRows.length);
 		}
-		
+
 		CookingInstructionTableModel model = (CookingInstructionTableModel) table.getModel();
 		for (int i = 0; i < selectedRows.length; i++) {
 			CookingInstruction ci = model.rowsList.get(selectedRows[i]);
@@ -76,26 +75,15 @@ public class CookingInstructionSelectionView extends BeanEditor {
 			cookingInstruction.setDescription(ci.getDescription());
 			ticketItemCookingInstructions.add(cookingInstruction);
 		}
-		
-		return true;
+		setCanceled(false);
+		dispose();
 	}
 
-	@Override
 	protected void updateView() {
-		List<CookingInstruction> cookingInstructions = (List<CookingInstruction>) getBean();
+		List<CookingInstruction> cookingInstructions = CookingInstructionDAO.getInstance().findAll();
 		table.setModel(new CookingInstructionTableModel(cookingInstructions));
 	}
 
-	@Override
-	protected boolean updateModel() throws IllegalModelStateException {
-		return true;
-	}
-
-	@Override
-	public String getDisplayText() {
-		return Messages.getString("CookingInstructionSelectionView.1"); //$NON-NLS-1$
-	}
-	
 	public List<TicketItemCookingInstruction> getTicketItemCookingInstructions() {
 		return ticketItemCookingInstructions;
 	}

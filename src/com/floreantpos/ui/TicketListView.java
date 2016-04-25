@@ -60,6 +60,7 @@ import com.floreantpos.swing.PaginatedTableModel;
 import com.floreantpos.swing.PosBlinkButton;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.swing.PosScrollPane;
+import com.floreantpos.swing.PosUIManager;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.util.PosGuiUtil;
 
@@ -183,19 +184,21 @@ public class TicketListView extends JPanel implements ITicketList {
 
 		PosScrollPane scrollPane = new PosScrollPane(table, PosScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, PosScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
+		int height = PosUIManager.getSize(40);
+
 		JPanel topButtonPanel = new JPanel(new MigLayout("ins 0", "grow", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		ColumnControlButton controlButton = new ColumnControlButton(table);
-		topButtonPanel.add(controlButton, "h 40!, grow, wrap"); //$NON-NLS-1$
-		topButtonPanel.add(btnRefresh, "h 40!, grow, wrap"); //$NON-NLS-1$
-		topButtonPanel.add(btnPrevious, "h 40!, grow, wrap"); //$NON-NLS-1$
+		topButtonPanel.add(controlButton, "h " + height + "!, grow, wrap"); //$NON-NLS-1$
+		topButtonPanel.add(btnRefresh, "h " + height + "!, grow, wrap"); //$NON-NLS-1$
+		topButtonPanel.add(btnPrevious, "h " + height + "!, grow, wrap"); //$NON-NLS-1$
 
 		JPanel downButtonPanel = new JPanel(new MigLayout("ins 0", "grow", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		downButtonPanel.add(btnNext, "h 40!, grow, wrap"); //$NON-NLS-1$
-		downButtonPanel.add(btnOrderFilters, "h 40!, grow, wrap"); //$NON-NLS-1$
+		downButtonPanel.add(btnNext, "h " + height + "!, grow, wrap"); //$NON-NLS-1$
+		downButtonPanel.add(btnOrderFilters, "h " + height + "!, grow, wrap"); //$NON-NLS-1$
 
 		JPanel tableButtonPanel = new JPanel(new BorderLayout());
 		tableButtonPanel.setBorder(BorderFactory.createEmptyBorder(0, 2, 0, 2));
-		tableButtonPanel.setPreferredSize(new Dimension(80, 0));
+		tableButtonPanel.setPreferredSize(new Dimension(PosUIManager.getSize(80), 0));
 		tableButtonPanel.add(topButtonPanel, BorderLayout.NORTH);
 		tableButtonPanel.add(downButtonPanel, BorderLayout.SOUTH);
 		tableButtonPanel.add(scrollPane.getVerticalScrollBar());

@@ -65,6 +65,7 @@ import com.floreantpos.model.dao.PrinterConfigurationDAO;
 import com.floreantpos.model.dao.RestaurantDAO;
 import com.floreantpos.model.dao.TerminalDAO;
 import com.floreantpos.posserver.PosServer;
+import com.floreantpos.swing.PosUIManager;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.dialog.PasswordEntryDialog;
 import com.floreantpos.ui.views.LoginView;
@@ -140,10 +141,9 @@ public class Application {
 			//UIManager.put("Button.background", UIManager.getColor("Button.background").brighter());
 			//UIManager.put("ToggleButton.background", UIManager.getColor("ToggleButton.background").brighter());
 
-			initializeFont();
-
 			PlasticXPLookAndFeel.setPlasticTheme(new ExperienceBlue());
 			UIManager.setLookAndFeel(new PlasticXPLookAndFeel());
+			initializeFont();
 		} catch (Exception ignored) {
 		}
 	}
@@ -534,16 +534,22 @@ public class Application {
 	}
 
 	private void initializeFont() {
-		String uiDefaultFont = TerminalConfig.getUiDefaultFont();
-		if (StringUtils.isEmpty(uiDefaultFont)) {
-			return;
+		String uiFont = TerminalConfig.getUiDefaultFont();
+		int stylePlain = Font.PLAIN;
+		int styleBold = Font.BOLD;
+		if (StringUtils.isEmpty(uiFont)) {
+			Font sourceFont = UIManager.getFont("Label.font"); //$NON-NLS-1$
+			uiFont = sourceFont.getName();
+			stylePlain = sourceFont.getStyle();
 		}
+		Font fontPlain = new Font(uiFont, stylePlain, PosUIManager.getDefaultFontSize());
+		Font fontBold = new Font(uiFont, styleBold, PosUIManager.getDefaultFontSize());
 
-		Font sourceFont = UIManager.getFont("Label.font"); //$NON-NLS-1$
-		Font font = new Font(uiDefaultFont, sourceFont.getStyle(), sourceFont.getSize());
+		FontUIResource font = new FontUIResource(fontPlain);
+		FontUIResource boldFont = new FontUIResource(fontBold);
 
-		UIManager.put("ArrowButton.size", 40); //$NON-NLS-1$
-		UIManager.put("OptionPane.buttonFont", new FontUIResource(new Font("ARIAL", Font.PLAIN, 35))); //$NON-NLS-1$ //$NON-NLS-2$
+		UIManager.put("ArrowButton.size", font); //$NON-NLS-1$
+		UIManager.put("OptionPane.buttonFont", font); //$NON-NLS-1$ //$NON-NLS-2$
 		UIManager.put("Button.font", font); //$NON-NLS-1$
 		UIManager.put("ToggleButton.font", font); //$NON-NLS-1$
 		UIManager.put("RadioButton.font", font); //$NON-NLS-1$
@@ -571,7 +577,7 @@ public class Application {
 		UIManager.put("TextArea.font", font); //$NON-NLS-1$
 		UIManager.put("TextPane.font", font); //$NON-NLS-1$
 		UIManager.put("EditorPane.font", font); //$NON-NLS-1$
-		UIManager.put("TitledBorder.font", font); //$NON-NLS-1$
+		UIManager.put("TitledBorder.font", boldFont); //$NON-NLS-1$
 		UIManager.put("ToolBar.font", font); //$NON-NLS-1$
 		UIManager.put("ToolTip.font", font); //$NON-NLS-1$
 		UIManager.put("Tree.font", font); //$NON-NLS-1$

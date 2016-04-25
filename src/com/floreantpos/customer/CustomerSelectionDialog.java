@@ -47,6 +47,7 @@ import com.floreantpos.model.dao.CustomerDAO;
 import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.swing.POSTextField;
 import com.floreantpos.swing.PosSmallButton;
+import com.floreantpos.swing.PosUIManager;
 import com.floreantpos.ui.dialog.BeanEditorDialog;
 import com.floreantpos.ui.dialog.POSDialog;
 import com.floreantpos.ui.dialog.POSMessageDialog;
@@ -120,13 +121,15 @@ public class CustomerSelectionDialog extends POSDialog {
 			}
 		});
 
+		int height_30 = PosUIManager.getSize(30);
+		int height_35 = PosUIManager.getSize(35);
 		searchPanel.add(lblByPhone);
-		searchPanel.add(tfMobile, "height 30!"); //$NON-NLS-1$
+		searchPanel.add(tfMobile, "height " + height_30 + "!"); //$NON-NLS-1$
 		searchPanel.add(lblByLoyality);
-		searchPanel.add(tfLoyaltyNo, "height 30!"); //$NON-NLS-1$
+		searchPanel.add(tfLoyaltyNo, "height " + height_30 + "!"); //$NON-NLS-1$
 		searchPanel.add(lblByName);
-		searchPanel.add(tfName, "height 30!"); //$NON-NLS-1$
-		searchPanel.add(btnSearch, "wrap, height 35!"); //$NON-NLS-1$
+		searchPanel.add(tfName, "height " + height_30 + "!"); //$NON-NLS-1$
+		searchPanel.add(btnSearch, "wrap, height " + height_35 + "!"); //$NON-NLS-1$
 
 		contentPanel.add(searchPanel, BorderLayout.NORTH); //$NON-NLS-1$
 
@@ -136,7 +139,7 @@ public class CustomerSelectionDialog extends POSDialog {
 		customerTable = new CustomerTable();
 		customerTable.setModel(new CustomerListTableModel());
 		customerTable.setFocusable(false);
-		customerTable.setRowHeight(35);
+		customerTable.setRowHeight(height_35);
 		customerTable.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		customerTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 
@@ -157,19 +160,19 @@ public class CustomerSelectionDialog extends POSDialog {
 
 		customerListPanel.add(scrollPane, BorderLayout.CENTER);
 
-		JPanel panel = new JPanel();
+		JPanel panel = new JPanel(new MigLayout("al center"));
 		btnInfo = new PosSmallButton(Messages.getString("CustomerSelectionDialog.23")); //$NON-NLS-1$
 		btnInfo.setFocusable(false);
-		panel.add(btnInfo);
+		panel.add(btnInfo, "height " + height_35 + "!");
 		btnInfo.setEnabled(false);
 
 		PosSmallButton btnHistory = new PosSmallButton(Messages.getString("CustomerSelectionDialog.24")); //$NON-NLS-1$
 		btnHistory.setEnabled(false);
-		panel.add(btnHistory);
+		panel.add(btnHistory, "height " + height_35 + "!");
 
 		btnCreateNewCustomer = new PosSmallButton(Messages.getString("CustomerSelectionDialog.25")); //$NON-NLS-1$
 		btnCreateNewCustomer.setFocusable(false);
-		panel.add(btnCreateNewCustomer);
+		panel.add(btnCreateNewCustomer, "height " + height_35 + "!");
 		btnCreateNewCustomer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				doCreateNewCustomer();
@@ -182,7 +185,7 @@ public class CustomerSelectionDialog extends POSDialog {
 				doRemoveCustomerFromTicket();
 			}
 		});
-		panel.add(btnRemoveCustomer);
+		panel.add(btnRemoveCustomer, "height " + height_35 + "!");
 
 		PosSmallButton btnSelect = new PosSmallButton(Messages.getString("CustomerSelectionDialog.28")); //$NON-NLS-1$
 		btnSelect.addActionListener(new ActionListener() {
@@ -202,7 +205,7 @@ public class CustomerSelectionDialog extends POSDialog {
 				dispose();
 			}
 		});
-		panel.add(btnSelect);
+		panel.add(btnSelect, "height " + height_35 + "!");
 
 		PosSmallButton btnCancel = new PosSmallButton(Messages.getString("CustomerSelectionDialog.29")); //$NON-NLS-1$
 		btnCancel.addActionListener(new ActionListener() {
@@ -211,7 +214,7 @@ public class CustomerSelectionDialog extends POSDialog {
 				dispose();
 			}
 		});
-		panel.add(btnCancel);
+		panel.add(btnCancel, "height " + height_35 + "!");
 
 		customerListPanel.add(panel, BorderLayout.SOUTH);
 

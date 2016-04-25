@@ -25,6 +25,8 @@ import javax.swing.JPasswordField;
 import javax.swing.JSeparator;
 import javax.swing.border.EmptyBorder;
 
+import net.miginfocom.swing.MigLayout;
+
 import com.floreantpos.Messages;
 import com.floreantpos.config.CardConfig;
 import com.floreantpos.main.Application;
@@ -54,7 +56,7 @@ public class SwipeCardDialog extends POSDialog implements CardInputProcessor {
 		getContentPane().add(panel, BorderLayout.SOUTH);
 		panel.setLayout(new BorderLayout(0, 0));
 		
-		JPanel panel_2 = new JPanel();
+		JPanel panel_2 = new JPanel(new MigLayout("", "grow", ""));
 		panel.add(panel_2);
 		
 		btnManualEntry = new PosButton();

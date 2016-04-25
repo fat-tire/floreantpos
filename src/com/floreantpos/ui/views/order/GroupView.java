@@ -41,6 +41,7 @@ import com.floreantpos.model.MenuGroup;
 import com.floreantpos.model.dao.MenuGroupDAO;
 import com.floreantpos.swing.MessageDialog;
 import com.floreantpos.swing.POSToggleButton;
+import com.floreantpos.swing.PosUIManager;
 import com.floreantpos.ui.views.order.actions.GroupSelectionListener;
 
 /**
@@ -58,7 +59,7 @@ public class GroupView extends SelectionView {
 
 	/** Creates new form GroupView */
 	public GroupView() {
-		super(com.floreantpos.POSConstants.GROUPS, 100, 60);
+		super(com.floreantpos.POSConstants.GROUPS, PosUIManager.getSize(100), PosUIManager.getSize(60));
 
 		//removeAll();
 		//buttonsPanel.setLayout(new GridLayout(1, 0, 5, 5));

@@ -40,6 +40,7 @@ import com.floreantpos.IconFactory;
 import com.floreantpos.Messages;
 import com.floreantpos.main.Application;
 import com.floreantpos.swing.PosButton;
+import com.floreantpos.swing.PosUIManager;
 import com.floreantpos.swing.TransparentPanel;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 
@@ -63,7 +64,7 @@ public class NumberSelectionView extends TransparentPanel implements ActionListe
 		
 		tfNumber = new JTextField();
 		tfNumber.setText("0"); //$NON-NLS-1$
-		tfNumber.setFont(tfNumber.getFont().deriveFont(Font.BOLD, 24));
+		tfNumber.setFont(tfNumber.getFont().deriveFont(Font.BOLD, PosUIManager.getNumberFieldFontSize()));
 		tfNumber.setEditable(false);
 		tfNumber.setBackground(Color.WHITE);
 		tfNumber.setHorizontalAlignment(JTextField.RIGHT);
@@ -74,7 +75,7 @@ public class NumberSelectionView extends TransparentPanel implements ActionListe
 		PosButton btnClearAll = new PosButton();
 		btnClearAll.setText(com.floreantpos.POSConstants.CLEAR_ALL);
 		btnClearAll.setActionCommand(com.floreantpos.POSConstants.CLEAR_ALL);
-		btnClearAll.setPreferredSize(new Dimension(90, 50));
+		btnClearAll.setPreferredSize(new Dimension(PosUIManager.getSize(90,50)));
 		btnClearAll.addActionListener(this);
 		northPanel.add(btnClearAll, BorderLayout.EAST);
 		

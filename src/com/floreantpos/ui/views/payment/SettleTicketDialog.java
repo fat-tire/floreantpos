@@ -72,6 +72,7 @@ import com.floreantpos.model.UserPermission;
 import com.floreantpos.report.ReceiptPrintService;
 import com.floreantpos.services.PosTransactionService;
 import com.floreantpos.swing.PosScrollPane;
+import com.floreantpos.swing.PosUIManager;
 import com.floreantpos.ui.dialog.DiscountSelectionDialog;
 import com.floreantpos.ui.dialog.POSDialog;
 import com.floreantpos.ui.dialog.POSMessageDialog;
@@ -316,12 +317,12 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 		tfGratuity.setHorizontalAlignment(SwingConstants.TRAILING);
 
 		JLabel lblTotal = new javax.swing.JLabel();
-		lblTotal.setFont(lblTotal.getFont().deriveFont(Font.BOLD, 18));
+		lblTotal.setFont(lblTotal.getFont().deriveFont(Font.BOLD, PosUIManager.getFontSize(18)));
 		lblTotal.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
 		lblTotal.setText(com.floreantpos.POSConstants.TOTAL + ":" + " " + Application.getCurrencySymbol()); //$NON-NLS-1$ //$NON-NLS-2$
 
 		tfTotal = new javax.swing.JTextField(10);
-		tfTotal.setFont(tfTotal.getFont().deriveFont(Font.BOLD, 18));
+		tfTotal.setFont(tfTotal.getFont().deriveFont(Font.BOLD,  PosUIManager.getFontSize(18)));
 		tfTotal.setHorizontalAlignment(SwingConstants.TRAILING);
 		tfTotal.setEditable(false);
 

@@ -26,6 +26,7 @@ import com.floreantpos.swing.DoubleTextField;
 import com.floreantpos.swing.FixedLengthTextField;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.util.DrawerUtil;
+import com.floreantpos.util.POSUtil;
 import com.floreantpos.util.SerialPortUtil;
 
 public class PeripheralConfigurationView extends ConfigurationView {
@@ -244,12 +245,12 @@ public class PeripheralConfigurationView extends ConfigurationView {
 
 	private void testScaleMachine() {
 		try {
-			
+
 			String string = SerialPortUtil.readWeight(tfScalePort.getText());
-			POSMessageDialog.showError(this, string);
-			
+			POSMessageDialog.showError(POSUtil.getFocusedWindow(), string);
+
 		} catch (Exception ex) {
-			POSMessageDialog.showError(this, ex.getMessage());
+			POSMessageDialog.showError(POSUtil.getFocusedWindow(), ex.getMessage());
 			LogFactory.getLog(PeripheralConfigurationView.class).error(ex);
 		}
 	}

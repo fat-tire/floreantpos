@@ -19,7 +19,6 @@ package com.floreantpos.ui.views.payment;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
@@ -48,6 +47,7 @@ import com.floreantpos.model.Ticket;
 import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.report.ReceiptPrintService;
 import com.floreantpos.swing.PosButton;
+import com.floreantpos.swing.PosUIManager;
 import com.floreantpos.swing.TransparentPanel;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.util.NumberUtil;
@@ -124,18 +124,21 @@ public class PaymentView extends JPanel {
 		txtDueAmount = new JTextField();
 		txtTenderedAmount = new JTextField();
 
-		labelTenderedAmount.setFont(new java.awt.Font("Tahoma", 1, 20)); // NOI18N //$NON-NLS-1$
-		labelTenderedAmount.setText(Messages.getString("PaymentView.54")+" "+Application.getCurrencySymbol()); //$NON-NLS-1$ //$NON-NLS-2$
+		Font font1 = new java.awt.Font("Tahoma", 1, PosUIManager.getFontSize(20)); // NOI18N //$NON-NLS-1$
+		Font font2 = new java.awt.Font("Tahoma", 1, PosUIManager.getFontSize(30)); // NOI18N //$NON-NLS-1$
+
+		labelTenderedAmount.setFont(font1);
+		labelTenderedAmount.setText(Messages.getString("PaymentView.54") + " " + Application.getCurrencySymbol()); //$NON-NLS-1$ //$NON-NLS-2$
 		labelTenderedAmount.setForeground(Color.gray);
 
 		txtTenderedAmount.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-		txtTenderedAmount.setFont(new java.awt.Font("Tahoma", 1, 20)); // NOI18N //$NON-NLS-1$
+		txtTenderedAmount.setFont(font1);
 
-		labelDueAmount.setFont(new java.awt.Font("Tahoma", 1, 20)); // NOI18N //$NON-NLS-1$
-		labelDueAmount.setText(Messages.getString("PaymentView.52")+" "+Application.getCurrencySymbol()); //$NON-NLS-1$ //$NON-NLS-2$
+		labelDueAmount.setFont(font1);
+		labelDueAmount.setText(Messages.getString("PaymentView.52") + " " + Application.getCurrencySymbol()); //$NON-NLS-1$ //$NON-NLS-2$
 		labelDueAmount.setForeground(Color.gray);
 
-		txtDueAmount.setFont(new java.awt.Font("Tahoma", 1, 20)); // NOI18N //$NON-NLS-1$
+		txtDueAmount.setFont(font1);
 		txtDueAmount.setEditable(false);
 		txtDueAmount.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
 
@@ -153,25 +156,25 @@ public class PaymentView extends JPanel {
 
 		btnNextAmount = new com.floreantpos.swing.PosButton();
 		btnAmount1 = new com.floreantpos.swing.PosButton();
-		btnAmount1.setFont(new Font("Arial", Font.PLAIN, 30)); //$NON-NLS-1$
+		btnAmount1.setFont(font2);
 
 		btnAmount2 = new com.floreantpos.swing.PosButton();
-		btnAmount2.setFont(new Font("Arial", Font.PLAIN, 30)); //$NON-NLS-1$
+		btnAmount2.setFont(font2);
 
 		btnAmount5 = new com.floreantpos.swing.PosButton();
-		btnAmount5.setFont(new Font("Arial", Font.PLAIN, 30)); //$NON-NLS-1$
+		btnAmount5.setFont(font2);
 
 		btnAmount10 = new com.floreantpos.swing.PosButton();
-		btnAmount10.setFont(new Font("Arial", Font.PLAIN, 30)); //$NON-NLS-1$
+		btnAmount10.setFont(font2);
 
 		btnAmount20 = new com.floreantpos.swing.PosButton();
-		btnAmount20.setFont(new Font("Arial", Font.PLAIN, 30)); //$NON-NLS-1$
+		btnAmount20.setFont(font2);
 
 		btnAmount50 = new com.floreantpos.swing.PosButton();
-		btnAmount50.setFont(new Font("Arial", Font.PLAIN, 30)); //$NON-NLS-1$
+		btnAmount50.setFont(font2);
 
 		btnAmount100 = new com.floreantpos.swing.PosButton();
-		btnAmount100.setFont(new Font("Arial", Font.PLAIN, 30)); //$NON-NLS-1$
+		btnAmount100.setFont(font2);
 
 		btnExactAmount = new com.floreantpos.swing.PosButton();
 
@@ -346,26 +349,26 @@ public class PaymentView extends JPanel {
 			}
 		});
 		//calcButtonPanel.add(btnDiscount, "growx"); //$NON-NLS-1$
-		
+
 		btnPrint = new com.floreantpos.swing.PosButton(POSConstants.PRINT_TICKET);
 		btnPrint.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				ReceiptPrintService.printTicket(settleTicketView.getTicket());
 			}
 		});
-	//	calcButtonPanel.add(btnPrint, "growx"); //$NON-NLS-1$
-		
+		//	calcButtonPanel.add(btnPrint, "growx"); //$NON-NLS-1$
+
 		JPanel panel4 = new JPanel(new GridLayout(1, 0, 5, 5));
 		panel4.add(btnGratuity);
 		panel4.add(btnDiscount);
 		panel4.add(btnPrint);
-		
+
 		calcButtonPanel.add(panel4, "span 4,growx"); //$NON-NLS-1$
 		centerPanel.add(calcButtonPanel, BorderLayout.CENTER);
 
 		actionButtonPanel = new com.floreantpos.swing.TransparentPanel();
 		actionButtonPanel.setLayout(new MigLayout("wrap 1, ins 0, fill", "fill", "sg, fill")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		actionButtonPanel.setPreferredSize(new Dimension(180, 380));
+		actionButtonPanel.setPreferredSize(PosUIManager.getSize(180, 380));
 
 		btnCash = new com.floreantpos.swing.PosButton(Messages.getString("PaymentView.31")); //$NON-NLS-1$
 		actionButtonPanel.add(btnCash); //$NON-NLS-1$
@@ -407,8 +410,7 @@ public class PaymentView extends JPanel {
 				settleTicketView.doSettle(PaymentType.CUSTOM_PAYMENT);
 			}
 		});
-		
-		
+
 		btnCancel = new com.floreantpos.swing.PosButton(POSConstants.CANCEL.toUpperCase());
 		actionButtonPanel.add(btnCancel); //$NON-NLS-1$
 		btnCancel.addActionListener(new java.awt.event.ActionListener() {

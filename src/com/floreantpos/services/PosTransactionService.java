@@ -259,7 +259,7 @@ public class PosTransactionService {
 
 			ticket.addTotransactions(posTransaction);
 
-			session = dao.getSession();
+			session = dao.createNewSession();
 			tx = session.beginTransaction();
 
 			dao.saveOrUpdate(ticket, session);

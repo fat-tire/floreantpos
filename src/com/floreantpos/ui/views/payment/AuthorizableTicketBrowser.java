@@ -29,6 +29,8 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import net.miginfocom.swing.MigLayout;
+
 import com.floreantpos.Messages;
 import com.floreantpos.actions.ActionCommand;
 import com.floreantpos.actions.CloseDialogAction;
@@ -72,7 +74,7 @@ public class AuthorizableTicketBrowser extends POSDialog {
 
 		add(listView);
 
-		JPanel buttonPanel = new JPanel();
+		JPanel buttonPanel = new JPanel(new MigLayout("al center","sg, fill", ""));
 		ActionHandler actionHandler = new ActionHandler();
 
 		buttonPanel.add(new PosButton(ActionCommand.EDIT_TIPS, actionHandler));

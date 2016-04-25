@@ -52,6 +52,7 @@ import com.floreantpos.model.User;
 import com.floreantpos.swing.MessageDialog;
 import com.floreantpos.swing.OrderTypeLoginButton;
 import com.floreantpos.swing.PosButton;
+import com.floreantpos.swing.PosUIManager;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.dialog.PasswordEntryDialog;
 import com.floreantpos.ui.views.order.ViewPanel;
@@ -79,9 +80,16 @@ public class LoginView extends ViewPanel {
 
 	private JPanel panel1 = new JPanel(new MigLayout("fill, ins 0, hidemode 3", "sg, fill", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	private JPanel panel2 = new JPanel(new MigLayout("fill, ins 0, hidemode 3", "sg, fill", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+	
+	private int width;
+	private int height;
 
 	private LoginView() {
 		setLayout(new BorderLayout(5, 5));
+		
+		width = PosUIManager.getSize(600);
+		height = PosUIManager.getSize(100);
+		centerPanel.setLayout(new MigLayout("al center center", "sg fill", String.valueOf(height))); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		JLabel titleLabel = new JLabel(IconFactory.getIcon("/ui_icons/", "title.png")); //$NON-NLS-1$ //$NON-NLS-2$
 		titleLabel.setOpaque(true);
 		titleLabel.setBackground(Color.WHITE);
@@ -98,7 +106,7 @@ public class LoginView extends ViewPanel {
 
 		lblTerminalId = new JLabel(Messages.getString("LoginView.0")); //$NON-NLS-1$
 		lblTerminalId.setForeground(Color.BLACK);
-		lblTerminalId.setFont(new Font("Dialog", Font.BOLD, 18)); //$NON-NLS-1$
+		lblTerminalId.setFont(new Font("Dialog", Font.BOLD, PosUIManager.getFontSize(18))); //$NON-NLS-1$
 		lblTerminalId.setHorizontalAlignment(SwingConstants.CENTER);
 
 		mainPanel = new JPanel(new BorderLayout());
@@ -118,20 +126,20 @@ public class LoginView extends ViewPanel {
 		btnClockOUt.setVisible(false);
 
 		JPanel panel3 = new JPanel(new GridLayout(1, 0, 5, 5));
-		JPanel panel4 = new JPanel(new MigLayout("fill, ins 0, hidemode 3", "sg, fill", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		JPanel panel4 = new JPanel(new MigLayout("fill, ins 0, hidemode 3", "sg, fill", ""));
 
-		centerPanel.add(panel1, "cell 0 0, wrap, w 600px, h 100px, grow"); //$NON-NLS-1$
+		centerPanel.add(panel1, "cell 0 0, wrap, w " + width + "px, h " + height + "px, grow");
 
 		panel3.add(btnSwitchBoard);
 		panel3.add(btnBackOffice);
 		panel3.add(btnKitchenDisplay);
-		centerPanel.add(panel3, "cell 0 2, wrap, w 600px, h 100px, grow"); //$NON-NLS-1$
+		centerPanel.add(panel3, "cell 0 2, wrap, w " + width + "px, h " + height + "px, grow");
 
 		panel4.add(btnClockOUt, "grow"); //$NON-NLS-1$
 		panel4.add(btnConfigureDatabase, "grow"); //$NON-NLS-1$
 		panel4.add(btnShutdown, "grow"); //$NON-NLS-1$
 
-		centerPanel.add(panel4, "cell 0 3, wrap, w 600px, h 100px, grow"); //$NON-NLS-1$
+		centerPanel.add(panel4, "cell 0 3, wrap, w " + width + "px, h " + height + "px, grow");
 
 		if (TerminalConfig.isFullscreenMode()) {
 			if (btnConfigureDatabase != null) {
@@ -174,7 +182,7 @@ public class LoginView extends ViewPanel {
 		}
 
 		if (buttonCount > 3) {
-			centerPanel.add(panel2, "cell 0 1, wrap, w 600px, h 100px, grow"); //$NON-NLS-1$
+			centerPanel.add(panel2, "cell 0 1, wrap,w " + width + "px, h " + height + "px, grow");
 		}
 		btnSwitchBoard.setVisible(true);
 		btnKitchenDisplay.setVisible(true);

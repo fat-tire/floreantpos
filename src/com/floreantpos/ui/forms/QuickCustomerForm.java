@@ -61,6 +61,7 @@ import com.floreantpos.swing.FixedLengthDocument;
 import com.floreantpos.swing.FixedLengthTextField;
 import com.floreantpos.swing.IntegerTextField;
 import com.floreantpos.swing.PosSmallButton;
+import com.floreantpos.swing.PosUIManager;
 import com.floreantpos.swing.QwertyKeyPad;
 import com.floreantpos.ui.BeanEditor;
 import com.floreantpos.ui.dialog.POSMessageDialog;
@@ -117,7 +118,7 @@ public class QuickCustomerForm extends BeanEditor<Customer> {
 		setOpaque(true);
 		setLayout(new MigLayout("insets 10 10 0 10", "[][][][]", "[][][][][]")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
-		setPreferredSize(new Dimension(800, 350));
+		setPreferredSize(PosUIManager.getSize(800, 350));
 
 		picturePanel = new JPanel(new MigLayout());
 
@@ -157,7 +158,7 @@ public class QuickCustomerForm extends BeanEditor<Customer> {
 		JLabel lblAddress = new JLabel(Messages.getString("CustomerForm.18")); //$NON-NLS-1$
 		tfAddress = new JTextArea(new FixedLengthDocument(220));
 		JScrollPane scrlDescription = new JScrollPane(tfAddress);
-		scrlDescription.setPreferredSize(new Dimension(338, 52));
+		scrlDescription.setPreferredSize(PosUIManager.getSize(338, 52));
 
 		JLabel lblZip = new JLabel(Messages.getString("CustomerForm.21")); //$NON-NLS-1$
 		tfZip = new FixedLengthTextField(30);

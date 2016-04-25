@@ -17,6 +17,7 @@
  */
 package com.floreantpos.config.ui;
 
+import java.awt.BorderLayout;
 import java.awt.Cursor;
 import java.awt.FlowLayout;
 import java.awt.HeadlessException;
@@ -28,6 +29,7 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 
 import net.miginfocom.swing.MigLayout;
@@ -73,7 +75,10 @@ public class DatabaseConfigurationView extends ConfigurationView implements Acti
 	}
 
 	protected void initUI() {
-		setLayout(new MigLayout("fill", "[][grow,fill]", "[][][][][][][][grow,fill]")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		setLayout(new BorderLayout()); 
+		
+		JPanel contentPanel=new JPanel(); 
+		contentPanel.setLayout(new MigLayout("fill", "[][grow,fill]", "[][][][][][][][grow,fill]")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		tfServerAddress = new POSTextField();
 		tfServerPort = new POSTextField();
 		tfDatabaseName = new POSTextField();
@@ -86,24 +91,24 @@ public class DatabaseConfigurationView extends ConfigurationView implements Acti
 			databaseCombo.setSelectedItem(Database.getByProviderName(databaseProviderName));
 		}
 
-		add(new JLabel(Messages.getString("DatabaseConfigurationDialog.8"))); //$NON-NLS-1$
-		add(databaseCombo, "grow, wrap"); //$NON-NLS-1$
+		contentPanel.add(new JLabel(Messages.getString("DatabaseConfigurationDialog.8"))); //$NON-NLS-1$
+		contentPanel.add(databaseCombo, "grow, wrap"); //$NON-NLS-1$
 		lblServerAddress = new JLabel(Messages.getString("DatabaseConfigurationDialog.10") + ":"); //$NON-NLS-1$ //$NON-NLS-2$
-		add(lblServerAddress);
-		add(tfServerAddress, "grow, wrap"); //$NON-NLS-1$
+		contentPanel.add(lblServerAddress);
+		contentPanel.add(tfServerAddress, "grow, wrap"); //$NON-NLS-1$
 		lblServerPort = new JLabel(Messages.getString("DatabaseConfigurationDialog.13") + ":"); //$NON-NLS-1$ //$NON-NLS-2$
-		add(lblServerPort);
-		add(tfServerPort, "grow, wrap"); //$NON-NLS-1$
+		contentPanel.add(lblServerPort);
+		contentPanel.add(tfServerPort, "grow, wrap"); //$NON-NLS-1$
 		lblDbName = new JLabel(Messages.getString("DatabaseConfigurationDialog.16") + ":"); //$NON-NLS-1$ //$NON-NLS-2$
-		add(lblDbName);
-		add(tfDatabaseName, "grow, wrap"); //$NON-NLS-1$
+		contentPanel.add(lblDbName);
+		contentPanel.add(tfDatabaseName, "grow, wrap"); //$NON-NLS-1$
 		lblUserName = new JLabel(Messages.getString("DatabaseConfigurationDialog.19") + ":"); //$NON-NLS-1$ //$NON-NLS-2$
-		add(lblUserName);
-		add(tfUserName, "grow, wrap"); //$NON-NLS-1$
+		contentPanel.add(lblUserName);
+		contentPanel.add(tfUserName, "grow, wrap"); //$NON-NLS-1$
 		lblDbPassword = new JLabel(Messages.getString("DatabaseConfigurationDialog.22") + ":"); //$NON-NLS-1$ //$NON-NLS-2$
-		add(lblDbPassword);
-		add(tfPassword, "grow, wrap"); //$NON-NLS-1$
-		add(new JSeparator(), "span, grow, gaptop 10"); //$NON-NLS-1$
+		contentPanel.add(lblDbPassword);
+		contentPanel.add(tfPassword, "grow, wrap"); //$NON-NLS-1$
+		contentPanel.add(new JSeparator(), "span, grow, gaptop 10"); //$NON-NLS-1$
 
 		btnTestConnection = new JButton(Messages.getString("DatabaseConfigurationDialog.26")); //$NON-NLS-1$
 		btnTestConnection.setActionCommand(TEST);
@@ -117,7 +122,11 @@ public class DatabaseConfigurationView extends ConfigurationView implements Acti
 		buttonPanel.add(btnTestConnection);
 		buttonPanel.add(btnSave);
 
-		add(buttonPanel, "span, grow"); //$NON-NLS-1$
+		contentPanel.add(buttonPanel, "span, grow"); //$NON-NLS-1$
+		
+		JScrollPane scrollPane = new JScrollPane(contentPanel);
+		scrollPane.setBorder(null); 
+		add(scrollPane);
 	}
 
 	private void addUIListeners() {

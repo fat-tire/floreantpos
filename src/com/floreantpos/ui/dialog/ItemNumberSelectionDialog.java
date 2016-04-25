@@ -32,6 +32,7 @@ import net.miginfocom.swing.MigLayout;
 import com.floreantpos.POSConstants;
 import com.floreantpos.main.Application;
 import com.floreantpos.swing.PosButton;
+import com.floreantpos.swing.PosUIManager;
 import com.floreantpos.swing.QwertyKeyPad;
 import com.floreantpos.ui.TitlePanel;
 
@@ -54,29 +55,30 @@ public class ItemNumberSelectionDialog extends POSDialog implements ActionListen
 
 	private void init() {
 		setResizable(false);
-		
+
 		Container contentPane = getContentPane();
 
-		MigLayout layout = new MigLayout("fillx", "[60px,fill,grow][60px,fill,grow][60px,fill,grow]", "[][][][][]"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		int size = PosUIManager.getSize(60);
+		MigLayout layout = new MigLayout("fillx", "[" + size + "px,fill,grow][" + size + "px,fill,grow][" + size + "px,fill,grow]", "[][][][][]"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		contentPane.setLayout(layout);
 		titlePanel = new TitlePanel();
 		titlePanel.setTitle("Search item");
-		contentPane.add(titlePanel, "spanx ,grow,height 60,wrap"); //$NON-NLS-1$
+		contentPane.add(titlePanel, "spanx ,grow,height " + size + ",wrap"); //$NON-NLS-1$
 
 		tfNumber = new JTextField();
-		tfNumber.setFont(tfNumber.getFont().deriveFont(Font.BOLD, 24));
+		tfNumber.setFont(tfNumber.getFont().deriveFont(Font.BOLD, PosUIManager.getNumberFieldFontSize()));
 		tfNumber.setFocusable(true);
 		tfNumber.requestFocus();
 		tfNumber.setBackground(Color.WHITE);
-		
+
 		tfNumber.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				doOk();
 			}
 		});
-		
+
 		contentPane.add(tfNumber, "spanx, grow"); //$NON-NLS-1$
 
 		qwertyKeyPad = new QwertyKeyPad();
@@ -97,9 +99,6 @@ public class ItemNumberSelectionDialog extends POSDialog implements ActionListen
 
 		contentPane.add(footerPanel, "spanx ,grow");
 	}
-	
-	
-	
 
 	private void doOk() {
 		String s = tfNumber.getText();

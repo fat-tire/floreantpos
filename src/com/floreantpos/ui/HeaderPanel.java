@@ -46,6 +46,7 @@ import com.floreantpos.actions.SwithboardViewAction;
 import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.main.Application;
 import com.floreantpos.swing.PosButton;
+import com.floreantpos.swing.PosUIManager;
 import com.floreantpos.swing.TransparentPanel;
 import com.floreantpos.util.PosGuiUtil;
 
@@ -68,6 +69,8 @@ public class HeaderPanel extends JPanel {
 	private PosButton btnClockOUt;
 	private PosButton btnShutdown;
 	private JPanel buttonPanel;
+
+	private int btnSize;
 
 	public HeaderPanel() {
 		//	super(new MigLayout("ins 2 2 0 2,hidemode 3", "[][fill, grow][]", "")); //$NON-NLS-1$  //$NON-NLS-2$  //$NON-NLS-3$
@@ -97,26 +100,28 @@ public class HeaderPanel extends JPanel {
 		//add(statusPanel, "grow"); //$NON-NLS-1$
 		add(statusPanel, BorderLayout.CENTER);
 
+		btnSize = PosUIManager.getSize(70);
+
 		btnHomeScreen = new PosButton(new HomeScreenViewAction(false, true));
-		buttonPanel.add(btnHomeScreen, "w 60!, h 60!"); //$NON-NLS-1$
+		buttonPanel.add(btnHomeScreen, "w " + btnSize + "!, h " + btnSize + "!"); //$NON-NLS-1$
 
 		btnSwithboardView = new PosButton(new SwithboardViewAction(false, true));
-		buttonPanel.add(btnSwithboardView, "w 60!, h 60!"); //$NON-NLS-1$
+		buttonPanel.add(btnSwithboardView, "w " + btnSize + "!, h " + btnSize + "!"); //$NON-NLS-1$
 
 		btnOthers = new PosButton(new ShowOtherFunctionsAction(false, true));
-		buttonPanel.add(btnOthers, "w 60!, h 60!"); //$NON-NLS-1$
+		buttonPanel.add(btnOthers, "w " + btnSize + "!, h " + btnSize + "!"); //$NON-NLS-1$
 
 		btnClockOUt = new PosButton(new ClockInOutAction(false, true));
-		buttonPanel.add(btnClockOUt, "w 60!, h 60!"); //$NON-NLS-1$
+		buttonPanel.add(btnClockOUt, "w " + btnSize + "!, h " + btnSize + "!"); //$NON-NLS-1$
 
 		btnLogout = new PosButton(new LogoutAction(false, true));
 		btnLogout.setToolTipText(Messages.getString("Logout")); //$NON-NLS-1$
-		buttonPanel.add(btnLogout, "w 60!, h 60!"); //$NON-NLS-1$
+		buttonPanel.add(btnLogout, "w " + btnSize + "!, h " + btnSize + "!"); //$NON-NLS-1$
 
 		btnShutdown = new PosButton(new ShutDownAction(false, true));
 		btnShutdown.setIcon(IconFactory.getIcon("/ui_icons/", "shutdown.png")); //$NON-NLS-1$ //$NON-NLS-2$
 		btnShutdown.setToolTipText(Messages.getString("Shutdown")); //$NON-NLS-1$
-		buttonPanel.add(btnShutdown, "w 60!, h 60!"); //$NON-NLS-1$
+		buttonPanel.add(btnShutdown, "w " + btnSize + "!, h " + btnSize + "!"); //$NON-NLS-1$
 
 		add(buttonPanel, BorderLayout.EAST);
 
@@ -234,23 +239,23 @@ public class HeaderPanel extends JPanel {
 	public void updateOthersFunctionsView(boolean enable) {
 
 		buttonPanel.removeAll();
-		buttonPanel.add(btnHomeScreen);
-		buttonPanel.add(btnOthers);
-		buttonPanel.add(btnSwithboardView);
-		buttonPanel.add(btnClockOUt);
-		buttonPanel.add(btnLogout);
-		buttonPanel.add(btnShutdown);
+		buttonPanel.add(btnHomeScreen, "w " + btnSize + "!, h " + btnSize + "!");
+		buttonPanel.add(btnOthers, "w " + btnSize + "!, h " + btnSize + "!");
+		buttonPanel.add(btnSwithboardView, "w " + btnSize + "!, h " + btnSize + "!");
+		buttonPanel.add(btnClockOUt, "w " + btnSize + "!, h " + btnSize + "!");
+		buttonPanel.add(btnLogout, "w " + btnSize + "!, h " + btnSize + "!");
+		buttonPanel.add(btnShutdown, "w " + btnSize + "!, h " + btnSize + "!");
 		btnOthers.setVisible(enable);
 	}
 
 	public void updateSwitchBoardView(boolean enable) {
 		buttonPanel.removeAll();
-		buttonPanel.add(btnHomeScreen);
-		buttonPanel.add(btnOthers);
-		buttonPanel.add(btnSwithboardView);
-		buttonPanel.add(btnClockOUt);
-		buttonPanel.add(btnLogout);
-		buttonPanel.add(btnShutdown);
+		buttonPanel.add(btnHomeScreen, "w " + btnSize + "!, h " + btnSize + "!");
+		buttonPanel.add(btnOthers, "w " + btnSize + "!, h " + btnSize + "!");
+		buttonPanel.add(btnSwithboardView, "w " + btnSize + "!, h " + btnSize + "!");
+		buttonPanel.add(btnClockOUt, "w " + btnSize + "!, h " + btnSize + "!");
+		buttonPanel.add(btnLogout, "w " + btnSize + "!, h " + btnSize + "!");
+		buttonPanel.add(btnShutdown, "w " + btnSize + "!, h " + btnSize + "!");
 		btnSwithboardView.setVisible(enable);
 	}
 

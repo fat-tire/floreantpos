@@ -48,7 +48,6 @@ import com.floreantpos.POSConstants;
 import com.floreantpos.PosException;
 import com.floreantpos.customer.CustomerSelectionDialog;
 import com.floreantpos.main.Application;
-import com.floreantpos.model.CookingInstruction;
 import com.floreantpos.model.ITicketItem;
 import com.floreantpos.model.MenuCategory;
 import com.floreantpos.model.MenuGroup;
@@ -60,13 +59,11 @@ import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.TicketItemCookingInstruction;
 import com.floreantpos.model.User;
 import com.floreantpos.model.UserPermission;
-import com.floreantpos.model.dao.CookingInstructionDAO;
 import com.floreantpos.model.dao.MenuItemDAO;
 import com.floreantpos.model.dao.ShopTableDAO;
 import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.model.dao.UserDAO;
 import com.floreantpos.swing.PosButton;
-import com.floreantpos.ui.dialog.BeanEditorDialog;
 import com.floreantpos.ui.dialog.MiscTicketItemDialog;
 import com.floreantpos.ui.dialog.NumberSelectionDialog2;
 import com.floreantpos.ui.dialog.POSMessageDialog;
@@ -531,10 +528,7 @@ public class OrderView extends ViewPanel {
 				return;
 			}
 
-			List<CookingInstruction> list = CookingInstructionDAO.getInstance().findAll();
-			CookingInstructionSelectionView cookingInstructionSelectionView = new CookingInstructionSelectionView();
-			BeanEditorDialog dialog = new BeanEditorDialog(cookingInstructionSelectionView);
-			dialog.setBean(list);
+			CookingInstructionSelectionView dialog = new CookingInstructionSelectionView();
 			dialog.setSize(800, 600);
 			dialog.setLocationRelativeTo(Application.getPosWindow());
 			dialog.setVisible(true);
@@ -543,7 +537,7 @@ public class OrderView extends ViewPanel {
 				return;
 			}
 
-			List<TicketItemCookingInstruction> instructions = cookingInstructionSelectionView.getTicketItemCookingInstructions();
+			List<TicketItemCookingInstruction> instructions = dialog.getTicketItemCookingInstructions();
 			ticketItem.addCookingInstructions(instructions);
 
 			ticketView.getTicketViewerTable().updateView();

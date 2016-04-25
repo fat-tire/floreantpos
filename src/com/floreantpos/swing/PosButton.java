@@ -31,12 +31,11 @@ import javax.swing.border.LineBorder;
 
 import com.floreantpos.actions.ActionCommand;
 import com.floreantpos.actions.PosAction;
-import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.config.UIConfig;
 
 public class PosButton extends JButton {
 	public static Border border = new LineBorder(Color.BLACK, 1);
-	static Insets margin = new Insets(1, 1, 1, 1);
+	static Insets margin = new Insets(1, 5, 1, 5);
 
 	static POSButtonUI ui = new POSButtonUI();
 
@@ -121,7 +120,7 @@ public class PosButton extends JButton {
 		}
 
 		if (size != null) {
-			size.setSize(size.width + 20, TerminalConfig.getTouchScreenButtonHeight());
+			size.setSize(PosUIManager.getSize(90,80));
 		}
 
 		return (size != null) ? size : super.getPreferredSize();

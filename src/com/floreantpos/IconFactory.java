@@ -17,6 +17,7 @@
  */
 package com.floreantpos;
 
+import java.awt.Dimension;
 import java.util.HashMap;
 
 import javax.swing.ImageIcon;
@@ -56,6 +57,20 @@ public class IconFactory {
 		if (icon == null) {
 			try {
 				icon = new ImageIcon(IconFactory.class.getResource(path + iconName)); //$NON-NLS-1$
+				iconCache.put(iconName, icon);
+			} catch (Exception x) {
+				return getIcon(iconName);
+			}
+		}
+		return icon;
+	}
+	public static ImageIcon getIcon(String path, String iconName, Dimension size) {
+		ImageIcon icon = iconCache.get(iconName);
+
+		if (icon == null) {
+			try {
+				icon = new ImageIcon(IconFactory.class.getResource(path + iconName)); //$NON-NLS-1$
+				icon = new ImageIcon(icon.getImage().getScaledInstance(size.width, size.height,  java.awt.Image.SCALE_SMOOTH));
 				iconCache.put(iconName, icon);
 			} catch (Exception x) {
 				return getIcon(iconName);

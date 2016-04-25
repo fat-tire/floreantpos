@@ -36,8 +36,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
-import javax.swing.JSeparator;
-import javax.swing.border.EmptyBorder;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -51,15 +49,14 @@ import com.floreantpos.model.User;
 import com.floreantpos.model.UserPermission;
 import com.floreantpos.model.dao.UserDAO;
 import com.floreantpos.swing.PosButton;
-import com.floreantpos.ui.TitlePanel;
+import com.floreantpos.swing.PosUIManager;
 import com.floreantpos.ui.views.LoginView;
 import com.floreantpos.ui.views.SwitchboardOtherFunctionsView;
 import com.floreantpos.ui.views.TableMapView;
 import com.floreantpos.ui.views.order.OrderView;
 import com.floreantpos.ui.views.order.RootView;
 
-public class PasswordEntryDialog extends POSDialog implements ActionListener {
-	private TitlePanel titlePanel;
+public class PasswordEntryDialog extends OkCancelOptionDialog implements ActionListener {
 	private JPasswordField tfPassword;
 	private JLabel statusLabel;
 
@@ -75,57 +72,32 @@ public class PasswordEntryDialog extends POSDialog implements ActionListener {
 
 	public PasswordEntryDialog(Frame parent) {
 		super(parent, true);
-
 		init();
 	}
 
 	private void init() {
-		setResizable(false);
+		//setResizable(false);
 		btnClear = new PosButton();
 		btnClear.setText(Messages.getString("PasswordEntryDialog.11"));
 
 		btnClearAll = new PosButton();
 		btnClearAll.setText(Messages.getString("PasswordEntryDialog.12"));
 
-		JPanel container = (JPanel) getContentPane();
-		container.setBorder(new EmptyBorder(5, 15, 10, 15));
-		setLayout(new BorderLayout());
-
-		titlePanel = new TitlePanel();
-		add(titlePanel, BorderLayout.NORTH);
-
 		JPanel contentPane = new JPanel(new BorderLayout(10, 10));
-		contentPane.setBorder(new EmptyBorder(10, 0, 0, 0));
-		add(contentPane);
+		getContentPanel().add(contentPane);
 
 		JPanel inputPanel = createInputPanel();
 		contentPane.add(inputPanel, BorderLayout.NORTH);
 
 		JPanel keyboardPanel = createKeyboardPanel();
 		contentPane.add(keyboardPanel);
-
-		JPanel bottomPanel = new JPanel(new BorderLayout(5, 5));
-		contentPane.add(bottomPanel, BorderLayout.SOUTH);
-
-		bottomPanel.add(new JSeparator(JSeparator.HORIZONTAL), BorderLayout.NORTH);
-
-		JPanel bottomButtonPanel = new JPanel(new GridLayout(1, 0, 10, 10));
-		bottomPanel.add(bottomButtonPanel);
-
-		PosButton btnOk = new PosButton(POSConstants.OK.toUpperCase());
-		btnOk.addActionListener(this);
-		bottomButtonPanel.add(btnOk);
-
-		PosButton btnCancel = new PosButton(POSConstants.CANCEL.toUpperCase());
-		btnCancel.addActionListener(this);
-		bottomButtonPanel.add(btnCancel);
 	}
 
 	private JPanel createInputPanel() {
 		JPanel inputPanel = new JPanel(new BorderLayout(5, 5));
 
 		tfPassword = new JPasswordField();
-		tfPassword.setFont(tfPassword.getFont().deriveFont(Font.BOLD, 24));
+		tfPassword.setFont(tfPassword.getFont().deriveFont(Font.BOLD, PosUIManager.getNumberFieldFontSize()));
 		tfPassword.setFocusable(true);
 		tfPassword.requestFocus();
 		tfPassword.setBackground(Color.WHITE);
@@ -168,7 +140,7 @@ public class PasswordEntryDialog extends POSDialog implements ActionListener {
 		String[][] iconNames = new String[][] { { "7.png", "8.png", "9.png" }, { "4.png", "5.png", "6.png" }, { "1.png", "2.png", "3.png" }, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$
 				{ "0.png" } }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
-		Dimension size = new Dimension(120, 80);
+		Dimension size = PosUIManager.getSize_w120_h70();
 
 		for (int i = 0; i < numbers.length; i++) {
 			for (int j = 0; j < numbers[i].length; j++) {
@@ -220,7 +192,8 @@ public class PasswordEntryDialog extends POSDialog implements ActionListener {
 		return buttonPanel;
 	}
 
-	private void doOk() {
+	@Override
+	public void doOk() {
 		//		char[] password = tfPassword.getPassword();
 		//
 		//		if (password == null || password.length == 0) {
@@ -244,7 +217,8 @@ public class PasswordEntryDialog extends POSDialog implements ActionListener {
 		}
 	}
 
-	private void doCancel() {
+	@Override
+	public void doCancel() {
 		user = null;
 		setCanceled(true);
 		dispose();
@@ -281,7 +255,7 @@ public class PasswordEntryDialog extends POSDialog implements ActionListener {
 	}
 
 	public void setTitle(String title) {
-		titlePanel.setTitle(title);
+		super.setTitlePaneText(title);
 
 		super.setTitle(title);
 	}
