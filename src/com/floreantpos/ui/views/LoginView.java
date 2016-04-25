@@ -201,7 +201,7 @@ public class LoginView extends ViewPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				setShowBackOffice(true);
+				setBackOfficeLogin(true);
 				TerminalConfig.setDefaultView(SwitchboardView.VIEW_NAME);
 				doLogin();
 			}
@@ -236,9 +236,9 @@ public class LoginView extends ViewPanel {
 
 	public synchronized void doLogin() {
 		try {
-			final User user = PasswordEntryDialog.getUser(Application.getPosWindow(),
-					Messages.getString("LoginView.1"), Messages.getString("LoginView.2")); //$NON-NLS-1$ //$NON-NLS-2$
+			final User user = PasswordEntryDialog.getUser(Application.getPosWindow(), Messages.getString("LoginView.1"), Messages.getString("LoginView.2")); //$NON-NLS-1$ //$NON-NLS-2$
 			if (user == null) {
+				setBackOfficeLogin(false);
 				return;
 			}
 			Application application = Application.getInstance();
@@ -293,7 +293,7 @@ public class LoginView extends ViewPanel {
 		return backOfficeLogin;
 	}
 
-	public void setShowBackOffice(boolean showBackOffice) {
-		this.backOfficeLogin = showBackOffice;
+	public void setBackOfficeLogin(boolean backOfficeLogin) {
+		this.backOfficeLogin = backOfficeLogin;
 	}
 }

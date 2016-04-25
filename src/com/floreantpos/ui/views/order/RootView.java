@@ -216,6 +216,6 @@ public class RootView extends com.floreantpos.swing.TransparentPanel {
 		window.setVisible(true);
 		window.toFront();
 
-		loginScreen.setShowBackOffice(false);
+		loginScreen.setBackOfficeLogin(false);
 	}
 }
