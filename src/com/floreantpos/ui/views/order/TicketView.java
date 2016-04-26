@@ -57,7 +57,7 @@ import com.floreantpos.report.ReceiptPrintService;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.swing.PosScrollPane;
 import com.floreantpos.swing.PosUIManager;
-import com.floreantpos.ui.dialog.ItemNumberSelectionDialog;
+import com.floreantpos.ui.dialog.ItemSearchDialog;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.dialog.WeightSelectionDialog;
 import com.floreantpos.ui.dialog.WeightSelectionDialog2;
@@ -167,9 +167,9 @@ public class TicketView extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				ItemNumberSelectionDialog dialog = new ItemNumberSelectionDialog(Application.getPosWindow());
+				ItemSearchDialog dialog = new ItemSearchDialog(Application.getPosWindow());
 				dialog.setTitle("Search item");
-				dialog.setSize(PosUIManager.getSize(600), PosUIManager.getSize(400));
+				dialog.pack(); 
 				dialog.open();
 				if (dialog.isCanceled()) {
 					return;

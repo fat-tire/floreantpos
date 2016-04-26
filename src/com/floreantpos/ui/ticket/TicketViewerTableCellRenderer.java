@@ -19,8 +19,11 @@ package com.floreantpos.ui.ticket;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 
+import javax.swing.BorderFactory;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 
@@ -43,6 +46,24 @@ public class TicketViewerTableCellRenderer extends DefaultTableCellRenderer {
 
 		if (column == 0) {
 			setHorizontalAlignment(SwingConstants.LEFT);
+
+			JTextArea txtArea = new JTextArea(String.valueOf(value));
+			txtArea.setLineWrap(true);
+			txtArea.setWrapStyleWord(true);
+			int colWidth = table.getTableHeader().getColumnModel().getColumn(column).getWidth();
+			txtArea.setSize(new Dimension(colWidth, 240));
+			int txtAreaActualHeight = txtArea.getPreferredSize().height;
+			if (txtAreaActualHeight < 37) {
+				table.setRowHeight(row, 50);
+			}
+			else {
+				table.setRowHeight(row, txtAreaActualHeight + 10);
+				txtArea.setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 0));
+				rendererComponent = txtArea;
+				if (isSelected) {
+					rendererComponent.setBackground(table.getSelectionBackground());
+				}
+			}
 		}
 		else {
 			setHorizontalAlignment(SwingConstants.RIGHT);

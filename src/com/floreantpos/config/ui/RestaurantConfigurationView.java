@@ -59,25 +59,28 @@ public class RestaurantConfigurationView extends ConfigurationView {
 		contentPanel.add(lblNewLabel, "cell 0 1,alignx trailing"); //$NON-NLS-1$
 
 		tfRestaurantName = new FixedLengthTextField();
-		tfRestaurantName.setLength(120); 
+		tfRestaurantName.setLength(120);
 		contentPanel.add(tfRestaurantName, "cell 1 1 3 1,growx"); //$NON-NLS-1$
 
 		JLabel lblAddressLine = new JLabel(Messages.getString("RestaurantConfigurationView.7") + ":"); //$NON-NLS-1$ //$NON-NLS-2$
 		contentPanel.add(lblAddressLine, "cell 0 2,alignx trailing"); //$NON-NLS-1$
 
-		tfAddressLine1 = new FixedLengthTextField(60);
+		tfAddressLine1 = new FixedLengthTextField();
+		tfAddressLine1.setLength(60);
 		contentPanel.add(tfAddressLine1, "cell 1 2 3 1,growx"); //$NON-NLS-1$
 
 		JLabel lblAddressLine_1 = new JLabel(Messages.getString("RestaurantConfigurationView.11") + ":"); //$NON-NLS-1$ //$NON-NLS-2$
 		contentPanel.add(lblAddressLine_1, "cell 0 3,alignx trailing"); //$NON-NLS-1$
 
-		tfAddressLine2 = new FixedLengthTextField(60);
+		tfAddressLine2 = new FixedLengthTextField();
+		tfAddressLine2.setLength(60);
 		contentPanel.add(tfAddressLine2, "cell 1 3 3 1,growx"); //$NON-NLS-1$
 
 		JLabel lblAddressLine_2 = new JLabel(Messages.getString("RestaurantConfigurationView.15") + ":"); //$NON-NLS-1$ //$NON-NLS-2$
 		contentPanel.add(lblAddressLine_2, "cell 0 4,alignx trailing"); //$NON-NLS-1$
 
-		tfAddressLine3 = new FixedLengthTextField(60);
+		tfAddressLine3 = new FixedLengthTextField();
+		tfAddressLine3.setLength(60);
 		contentPanel.add(tfAddressLine3, "cell 1 4 3 1,growx"); //$NON-NLS-1$
 
 		JLabel lblZipCode = new JLabel(Messages.getString("RestaurantConfigurationView.19")); //$NON-NLS-1$
@@ -136,7 +139,7 @@ public class RestaurantConfigurationView extends ConfigurationView {
 		contentPanel.add(tfTicketFooter, "cell 1 14 3 1,growx"); //$NON-NLS-1$
 
 		JScrollPane scrollPane = new JScrollPane(contentPanel);
-		scrollPane.setBorder(null); 
+		scrollPane.setBorder(null);
 		add(scrollPane);
 	}
 

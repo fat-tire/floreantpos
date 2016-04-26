@@ -294,6 +294,7 @@ public class POSConstants {
 	public static final String TABLE_NUMBER = Messages.getString("PosMessage.201"); //$NON-NLS-1$
 	public static final String ACTIVE_TICKETS_BEFORE_DRAWER_RESET = Messages.getString("PosMessage.202"); //$NON-NLS-1$
 	public static final String DUE = Messages.getString("PosMessage.203"); //$NON-NLS-1$
+	public static final String SELECT_ITEMS = Messages.getString("SELECT_ITEMS"); //$NON-NLS-1$
 
 	public static final String MODIFIER_GROUPS = Messages.getString("PosMessage.205"); //$NON-NLS-1$
 	public static final String CATEGORY = Messages.getString("PosMessage.206"); //$NON-NLS-1$

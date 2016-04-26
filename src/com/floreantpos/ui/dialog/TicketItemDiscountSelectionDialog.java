@@ -32,32 +32,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.BorderFactory;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JSeparator;
-import javax.swing.SwingConstants;
-
-import net.miginfocom.swing.MigLayout;
 
 import com.floreantpos.POSConstants;
 import com.floreantpos.PosException;
-import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.model.Discount;
 import com.floreantpos.model.MenuItem;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.dao.MenuItemDAO;
 import com.floreantpos.swing.POSToggleButton;
-import com.floreantpos.swing.PosButton;
 import com.floreantpos.swing.PosScrollPane;
+import com.floreantpos.swing.PosUIManager;
 import com.floreantpos.swing.ScrollableFlowPanel;
-import com.floreantpos.ui.TitlePanel;
+import com.floreantpos.util.POSUtil;
 
 /**
  * 
  * @author MShahriar
  */
-public class TicketItemDiscountSelectionDialog extends POSDialog {
+public class TicketItemDiscountSelectionDialog extends OkCancelOptionDialog {
 
 	private ScrollableFlowPanel buttonsPanel;
 	private Ticket ticket;
@@ -66,57 +59,22 @@ public class TicketItemDiscountSelectionDialog extends POSDialog {
 	private List<TicketItem> addedTicketItems = new ArrayList<TicketItem>();
 
 	public TicketItemDiscountSelectionDialog(Ticket ticket, Discount discount) {
+		super(POSUtil.getFocusedWindow(), POSConstants.SELECT_ITEMS);
 		this.ticket = ticket;
 		this.discount = discount;
-		initializeComponent();
+		initComponent();
 		rendererTicketItems();
-
-		setResizable(true);
 	}
 
-	private void initializeComponent() {
-		setTitle("SELECT ITEMS"); //$NON-NLS-1$
-		setLayout(new BorderLayout());
-
-		TitlePanel titlePanel = new TitlePanel();
-		titlePanel.setTitle("SELECT ITEMS");//$NON-NLS-1$
-		add(titlePanel, BorderLayout.NORTH);
-
-		JPanel buttonActionPanel = new JPanel(new MigLayout("fill")); //$NON-NLS-1$
-
-		PosButton btnOk = new PosButton("DONE"); //$NON-NLS-1$
-		btnOk.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				doApplyDiscount();
-			}
-		});
-
-		PosButton btnCancel = new PosButton(POSConstants.CANCEL.toUpperCase());
-		btnCancel.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				addedTicketItems.clear();
-				setCanceled(true);
-				dispose();
-			}
-		});
-
-		buttonActionPanel.add(btnOk, "w 120!,split 2,align center"); //$NON-NLS-1$
-		buttonActionPanel.add(btnCancel, "w 120!"); //$NON-NLS-1$
-
-		JPanel footerPanel = new JPanel(new BorderLayout());
-		footerPanel.setBorder(BorderFactory.createEmptyBorder(2, 0, 0, 0));
-		footerPanel.add(new JSeparator(), BorderLayout.NORTH);
-		footerPanel.add(buttonActionPanel);
-
-		add(footerPanel, BorderLayout.SOUTH);
+	private void initComponent() {
+		setOkButtonText(POSConstants.SAVE_BUTTON_TEXT);
 
 		buttonsPanel = new ScrollableFlowPanel(FlowLayout.LEADING);
 
-		JScrollPane scrollPane = new PosScrollPane(buttonsPanel, PosScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, PosScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		scrollPane.getVerticalScrollBar().setPreferredSize(new Dimension(80, 0));
+		PosScrollPane scrollPane = new PosScrollPane(buttonsPanel, PosScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, PosScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		scrollPane.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5), scrollPane.getBorder()));
 
-		add(scrollPane, BorderLayout.CENTER);
+		getContentPanel().add(scrollPane, BorderLayout.CENTER);
 
 		setSize(600, 500);
 	}
@@ -126,6 +84,7 @@ public class TicketItemDiscountSelectionDialog extends POSDialog {
 
 		List<TicketItem> ticketItems = ticket.getTicketItems();
 		try {
+			Dimension size = PosUIManager.getSize(115, 80);
 			for (TicketItem ticketItem : ticketItems) {
 				Integer itemId = Integer.parseInt(ticketItem.getItemId().toString());
 				MenuItem menuItem = MenuItemDAO.getInstance().get(itemId);
@@ -134,6 +93,7 @@ public class TicketItemDiscountSelectionDialog extends POSDialog {
 				if (menuItem != null) {
 					if (discount.isApplyToAll() || menuItems.contains(menuItem)) {
 						TicketItemButton ticketItemButton = new TicketItemButton(ticketItem);
+						ticketItemButton.setPreferredSize(size);
 						buttonsPanel.add(ticketItemButton);
 					}
 				}
@@ -146,7 +106,8 @@ public class TicketItemDiscountSelectionDialog extends POSDialog {
 		}
 	}
 
-	protected void doApplyDiscount() {
+	@Override
+	public void doOk() {
 		if (addedTicketItems.isEmpty()) {
 			POSMessageDialog.showMessage("Please select one or more item.");
 			return;
@@ -155,23 +116,22 @@ public class TicketItemDiscountSelectionDialog extends POSDialog {
 		dispose();
 	}
 
+	public void doCancel() {
+		addedTicketItems.clear();
+		setCanceled(true);
+		dispose();
+	}
+
 	public List<TicketItem> getSelectedTicketItems() {
 		return addedTicketItems;
 	}
 
 	private class TicketItemButton extends POSToggleButton implements ActionListener {
-		private static final int BUTTON_SIZE = 119;
 		TicketItem ticketItem;
 
 		TicketItemButton(TicketItem ticketItem) {
 			this.ticketItem = ticketItem;
-			setFocusable(true);
-			setFocusPainted(true);
-			setVerticalTextPosition(SwingConstants.BOTTOM);
-			setHorizontalTextPosition(SwingConstants.CENTER);
 			setText("<html><body><center>" + ticketItem.getName() + "</center></body></html>"); //$NON-NLS-1$ //$NON-NLS-2$ 
-
-			setPreferredSize(new Dimension(BUTTON_SIZE, TerminalConfig.getMenuItemButtonHeight()));
 			addActionListener(this);
 		}
 

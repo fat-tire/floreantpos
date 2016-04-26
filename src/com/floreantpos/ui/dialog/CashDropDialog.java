@@ -268,9 +268,10 @@ public class CashDropDialog extends POSDialog {
 
 	private void btnNewCashDropActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewCashDropActionPerformed
 		try {
-			NumberSelectionDialog dialog = new NumberSelectionDialog();
+			NumberSelectionDialog2 dialog = new NumberSelectionDialog2();
 			dialog.setTitle(Messages.getString("CashDropDialog.17")); //$NON-NLS-1$
-			dialog.setDecimalAllowed(true);
+			dialog.setFloatingPoint(true);
+			dialog.pack(); 
 			dialog.open();
 
 			if (!dialog.isCanceled()) {

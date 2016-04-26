@@ -129,6 +129,10 @@ public abstract class OkCancelOptionDialog extends POSDialog {
 	public void setTitlePaneText(String title) {
 		titlePanel.setTitle(title);
 	}
+	
+	public void setOkButtonText(String text){
+		btnOk.setText(text); 
+	}
 
 	public JPanel getContentPanel() {
 		return contentPanel;

@@ -88,7 +88,7 @@ public class TicketViewerTableModel extends AbstractTableModel {
 
 		switch (columnIndex) {
 			case 0:
-				return "<html>" + ticketItem.getNameDisplay() + "</html>"; //$NON-NLS-1$ //$NON-NLS-2$
+				return ticketItem.getNameDisplay(); 
 
 			case 1:
 				return ticketItem.getUnitPriceDisplay();

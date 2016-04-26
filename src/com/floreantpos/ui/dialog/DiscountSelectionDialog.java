@@ -27,6 +27,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
@@ -40,17 +41,12 @@ import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JSeparator;
 import javax.swing.JTextField;
-import javax.swing.SwingConstants;
-
-import net.miginfocom.swing.MigLayout;
 
 import org.apache.commons.collections.CollectionUtils;
 
 import com.floreantpos.Messages;
 import com.floreantpos.POSConstants;
-import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.Discount;
 import com.floreantpos.model.MenuItem;
@@ -62,14 +58,15 @@ import com.floreantpos.model.dao.DiscountDAO;
 import com.floreantpos.swing.POSToggleButton;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.swing.PosScrollPane;
+import com.floreantpos.swing.PosUIManager;
 import com.floreantpos.swing.ScrollableFlowPanel;
-import com.floreantpos.ui.TitlePanel;
+import com.floreantpos.util.POSUtil;
 
 /**
  * 
  * @author MShahriar
  */
-public class DiscountSelectionDialog extends POSDialog implements ActionListener {
+public class DiscountSelectionDialog extends OkCancelOptionDialog implements ActionListener {
 
 	private ScrollableFlowPanel buttonsPanel;
 
@@ -83,9 +80,9 @@ public class DiscountSelectionDialog extends POSDialog implements ActionListener
 	private JTextField txtSearchItem;
 
 	public DiscountSelectionDialog(Ticket ticket) {
+		super(POSUtil.getFocusedWindow(), Messages.getString("DiscountSelectionDialog.0"));
 		this.ticket = ticket;
-
-		initializeComponent();
+		initComponent();
 
 		if (ticket.getDiscounts() != null) {
 			for (TicketDiscount ticketDiscount : ticket.getDiscounts()) {
@@ -94,56 +91,10 @@ public class DiscountSelectionDialog extends POSDialog implements ActionListener
 		}
 	}
 
-	private void initializeComponent() {
-		setTitle(Messages.getString("DiscountSelectionDialog.0")); //$NON-NLS-1$
-		setLayout(new BorderLayout());
-
-		JPanel headerPanel = new JPanel(new BorderLayout());
-
-		TitlePanel titlePanel = new TitlePanel();
-		titlePanel.setTitle(Messages.getString("DiscountSelectionDialog.0")); //$NON-NLS-1$
-
-		JPanel searchPanel = new JPanel(new FlowLayout(FlowLayout.LEADING));
-
-		itemSearchPanel = new JPanel();
-
+	private void initComponent() {
+		setOkButtonText(POSConstants.SAVE_BUTTON_TEXT);
 		createCouponSearchPanel();
-
-		searchPanel.add(itemSearchPanel);
-
-		headerPanel.add(titlePanel, BorderLayout.NORTH);
-		headerPanel.add(searchPanel, BorderLayout.SOUTH);
-
-		add(headerPanel, BorderLayout.NORTH);
-
-		JPanel buttonActionPanel = new JPanel(new MigLayout("fill")); //$NON-NLS-1$
-
-		PosButton btnOk = new PosButton(Messages.getString("TicketSelectionDialog.3")); //$NON-NLS-1$
-		btnOk.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				doFinishDiscountSelection();
-			}
-		});
-
-		PosButton btnCancel = new PosButton(POSConstants.CANCEL.toUpperCase());
-		btnCancel.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				addedTicketDiscounts.clear();
-				buttonMap.clear();
-				setCanceled(true);
-				dispose();
-			}
-		});
-
-		buttonActionPanel.add(btnOk, "w 80!,split 2,align center"); //$NON-NLS-1$
-		buttonActionPanel.add(btnCancel, "w 80!"); //$NON-NLS-1$
-
-		JPanel footerPanel = new JPanel(new BorderLayout());
-		footerPanel.setBorder(BorderFactory.createEmptyBorder(2, 0, 0, 0));
-		footerPanel.add(new JSeparator(), BorderLayout.NORTH);
-		footerPanel.add(buttonActionPanel);
-
-		add(footerPanel, BorderLayout.SOUTH);
+		getContentPanel().add(itemSearchPanel, BorderLayout.NORTH);
 
 		buttonsPanel = new ScrollableFlowPanel(FlowLayout.LEADING);
 
@@ -151,17 +102,15 @@ public class DiscountSelectionDialog extends POSDialog implements ActionListener
 		scrollPane.getVerticalScrollBar().setPreferredSize(new Dimension(80, 0));
 		scrollPane.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5), scrollPane.getBorder()));
 
-		add(scrollPane, BorderLayout.CENTER);
+		getContentPanel().add(scrollPane, BorderLayout.CENTER);
 
 		rendererDiscounts();
 
 		setSize(1024, 720);
-		setResizable(true);
 	}
 
 	private void createCouponSearchPanel() {
-		itemSearchPanel.setLayout(new BorderLayout(5, 5));
-		itemSearchPanel.setPreferredSize(new Dimension(400, 40));
+		itemSearchPanel = new JPanel(new BorderLayout(5, 5));
 		PosButton btnSearch = new PosButton("...");
 		btnSearch.setPreferredSize(new Dimension(60, 40));
 
@@ -199,9 +148,9 @@ public class DiscountSelectionDialog extends POSDialog implements ActionListener
 		btnSearch.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				ItemNumberSelectionDialog dialog = new ItemNumberSelectionDialog(Application.getPosWindow());
+				ItemSearchDialog dialog = new ItemSearchDialog(Application.getPosWindow());
 				dialog.setTitle("Search Coupon");
-				dialog.setSize(600, 400);
+				dialog.pack();
 				dialog.open();
 				if (dialog.isCanceled()) {
 					return;
@@ -307,9 +256,11 @@ public class DiscountSelectionDialog extends POSDialog implements ActionListener
 
 		List<Discount> discounts = DiscountDAO.getInstance().findAllValidCoupons();
 
+		Dimension size = PosUIManager.getSize(115, 80);
 		for (Discount discount : discounts) {
 			DiscountButton btnDiscount = new DiscountButton(discount);
 			btnDiscount.setSelected(false);
+			btnDiscount.setPreferredSize(size);
 			buttonsPanel.add(btnDiscount);
 			buttonMap.put(discount.getId(), btnDiscount);
 		}
@@ -337,7 +288,8 @@ public class DiscountSelectionDialog extends POSDialog implements ActionListener
 		buttonsPanel.revalidate();
 	}
 
-	protected void doFinishDiscountSelection() {
+	@Override
+	public void doOk() {
 		List<TicketDiscount> couponAndDiscounts = ticket.getDiscounts();
 		if (couponAndDiscounts == null)
 			couponAndDiscounts = new ArrayList<TicketDiscount>();
@@ -372,6 +324,13 @@ public class DiscountSelectionDialog extends POSDialog implements ActionListener
 		dispose();
 	}
 
+	public void doCancel() {
+		addedTicketDiscounts.clear();
+		buttonMap.clear();
+		setCanceled(true);
+		dispose();
+	}
+
 	private double getModifiedValue(Discount discount) {
 		Double newValue = NumberSelectionDialog2.takeDoubleInput("Enter Amount", "Enter Amount", discount.getValue()); //$NON-NLS-1$ //$NON-NLS-2$
 		if (newValue > 0) {
@@ -381,20 +340,14 @@ public class DiscountSelectionDialog extends POSDialog implements ActionListener
 	}
 
 	private class DiscountButton extends POSToggleButton implements ActionListener {
-		private static final int BUTTON_SIZE = 119;
 		Discount discount;
 		List<TicketItem> ticketItems;
 
 		DiscountButton(Discount discount) {
 			this.discount = discount;
-			setFocusable(false);
-			setFocusPainted(false);
-			setVerticalTextPosition(SwingConstants.BOTTOM);
-			setHorizontalTextPosition(SwingConstants.CENTER);
-			setFont(getFont().deriveFont(18.0f));
-
 			ticketItems = new ArrayList<TicketItem>();
 
+			setFont(getFont().deriveFont(Font.BOLD, PosUIManager.getFontSize(18)));
 			setText("<html><body><center>" + discount.getName() + "<br></center></body></html>"); //$NON-NLS-1$ //$NON-NLS-2$ 
 
 			if (discount.getQualificationType() == Discount.QUALIFICATION_TYPE_ITEM) {
@@ -403,8 +356,6 @@ public class DiscountSelectionDialog extends POSDialog implements ActionListener
 			else {
 				setBackground(Color.MAGENTA);
 			}
-
-			setPreferredSize(new Dimension(BUTTON_SIZE, TerminalConfig.getMenuItemButtonHeight()));
 			addActionListener(this);
 		}
 

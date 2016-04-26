@@ -18,7 +18,6 @@
 package com.floreantpos.ui.dialog;
 
 import java.awt.Color;
-import java.awt.Container;
 import java.awt.Font;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
@@ -31,39 +30,32 @@ import net.miginfocom.swing.MigLayout;
 
 import com.floreantpos.POSConstants;
 import com.floreantpos.main.Application;
-import com.floreantpos.swing.PosButton;
 import com.floreantpos.swing.PosUIManager;
 import com.floreantpos.swing.QwertyKeyPad;
-import com.floreantpos.ui.TitlePanel;
+import com.floreantpos.util.POSUtil;
 
-public class ItemNumberSelectionDialog extends POSDialog implements ActionListener {
-	private TitlePanel titlePanel;
+public class ItemSearchDialog extends OkCancelOptionDialog {
 	private JTextField tfNumber;
 	private String value;
-	private PosButton btnCancel;
-	private PosButton btnOk;
 	private QwertyKeyPad qwertyKeyPad;
 
-	public ItemNumberSelectionDialog() {
+	public ItemSearchDialog() {
+		super(POSUtil.getFocusedWindow(), POSConstants.SEARCH_ITEM_BUTTON_TEXT);
 		init();
 	}
 
-	public ItemNumberSelectionDialog(Frame parent) {
-		super(parent, true);
+	public ItemSearchDialog(Frame parent) {
+		super(parent, POSConstants.SEARCH_ITEM_BUTTON_TEXT);
 		init();
 	}
 
 	private void init() {
 		setResizable(false);
 
-		Container contentPane = getContentPane();
+		JPanel contentPane = getContentPanel();
 
-		int size = PosUIManager.getSize(60);
-		MigLayout layout = new MigLayout("fillx", "[" + size + "px,fill,grow][" + size + "px,fill,grow][" + size + "px,fill,grow]", "[][][][][]"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		MigLayout layout = new MigLayout("inset 0"); //$NON-NLS-1$ 
 		contentPane.setLayout(layout);
-		titlePanel = new TitlePanel();
-		titlePanel.setTitle("Search item");
-		contentPane.add(titlePanel, "spanx ,grow,height " + size + ",wrap"); //$NON-NLS-1$
 
 		tfNumber = new JTextField();
 		tfNumber.setFont(tfNumber.getFont().deriveFont(Font.BOLD, PosUIManager.getNumberFieldFontSize()));
@@ -79,28 +71,14 @@ public class ItemNumberSelectionDialog extends POSDialog implements ActionListen
 			}
 		});
 
-		contentPane.add(tfNumber, "spanx, grow"); //$NON-NLS-1$
-
 		qwertyKeyPad = new QwertyKeyPad();
 
-		contentPane.add(qwertyKeyPad, "spanx ,grow");
-
-		btnOk = new PosButton(POSConstants.OK);
-		btnOk.setFocusable(false);
-		btnOk.addActionListener(this);
-
-		btnCancel = new PosButton(POSConstants.CANCEL);
-		btnCancel.setFocusable(false);
-		btnCancel.addActionListener(this);
-
-		JPanel footerPanel = new JPanel(new MigLayout("fill, ins 2", "sg, fill", ""));
-		footerPanel.add(btnOk);
-		footerPanel.add(btnCancel);
-
-		contentPane.add(footerPanel, "spanx ,grow");
+		contentPane.add(tfNumber, "spanx, grow"); //$NON-NLS-1$
+		contentPane.add(qwertyKeyPad, "spanx ,grow"); //$NON-NLS-1$
 	}
 
-	private void doOk() {
+	@Override
+	public void doOk() {
 		String s = tfNumber.getText();
 		if (s.equals("0") || s.equals("")) {
 			POSMessageDialog.showError(Application.getPosWindow(), "Please enter barcode or item no.");
@@ -109,22 +87,6 @@ public class ItemNumberSelectionDialog extends POSDialog implements ActionListen
 		setValue(tfNumber.getText());
 		setCanceled(false);
 		dispose();
-	}
-
-	private void doCancel() {
-		setCanceled(true);
-		dispose();
-	}
-
-	public void actionPerformed(ActionEvent e) {
-		String actionCommand = e.getActionCommand();
-
-		if (POSConstants.CANCEL.equalsIgnoreCase(actionCommand)) {
-			doCancel();
-		}
-		else if (POSConstants.OK.equalsIgnoreCase(actionCommand)) {
-			doOk();
-		}
 	}
 
 	public String getValue() {
