@@ -410,6 +410,7 @@ public class TicketView extends JPanel {
 	}
 
 	private void closeView(boolean orderCanceled) {
+		ticketViewerTable.setRowHeight(PosUIManager.getSize(60));
 		if (TerminalConfig.isCashierMode()) {
 			RootView.getInstance().showView(CashierSwitchBoardView.VIEW_NAME);
 		}

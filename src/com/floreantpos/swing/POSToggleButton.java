@@ -23,7 +23,6 @@ import javax.swing.JToggleButton;
 import javax.swing.UIManager;
 
 import com.floreantpos.config.TerminalConfig;
-import com.floreantpos.config.UIConfig;
 
 public class POSToggleButton extends JToggleButton {
 	//public static Border border = new LineBorder(Color.BLACK, 1);
@@ -40,7 +39,7 @@ public class POSToggleButton extends JToggleButton {
 	public POSToggleButton(String text) {
 		super(text);
 
-		setFont(UIConfig.getButtonFont());
+//		setFont(UIConfig.getButtonFont());
 		setFocusPainted(false);
 		setFocusable(false);
 		//setMargin(margin);

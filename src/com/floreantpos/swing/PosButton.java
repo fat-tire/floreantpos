@@ -31,7 +31,6 @@ import javax.swing.border.LineBorder;
 
 import com.floreantpos.actions.ActionCommand;
 import com.floreantpos.actions.PosAction;
-import com.floreantpos.config.UIConfig;
 
 public class PosButton extends JButton {
 	public static Border border = new LineBorder(Color.BLACK, 1);
@@ -49,7 +48,7 @@ public class PosButton extends JButton {
 
 	public PosButton(String text) {
 		super(text);
-		setFont(UIConfig.getButtonFont());
+		//setFont(UIConfig.getButtonFont());
 
 		setFocusable(false);
 		setFocusPainted(false);
@@ -60,7 +59,7 @@ public class PosButton extends JButton {
 		super(action);
 		setText(text);
 
-		setFont(UIConfig.getButtonFont());
+		//setFont(UIConfig.getButtonFont());
 
 		setFocusable(false);
 		setFocusPainted(false);
@@ -70,7 +69,7 @@ public class PosButton extends JButton {
 	public PosButton(Action a) {
 		super(a);
 
-		setFont(UIConfig.getButtonFont());
+		//setFont(UIConfig.getButtonFont());
 
 		setFocusable(false);
 		setFocusPainted(false);

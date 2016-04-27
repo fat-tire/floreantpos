@@ -32,6 +32,7 @@ import com.floreantpos.model.ITicketItem;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.TicketItemModifier;
+import com.floreantpos.swing.PosUIManager;
 
 public class TicketViewerTable extends JTable {
 
@@ -69,9 +70,9 @@ public class TicketViewerTable extends JTable {
 
 	private void resizeTableColumns() {
 		setAutoResizeMode(AUTO_RESIZE_ALL_COLUMNS);
-		setColumnWidth(1, 50);
-		setColumnWidth(2, 50);
-		setColumnWidth(3, 60);
+		setColumnWidth(1, PosUIManager.getSize(50));
+		setColumnWidth(2, PosUIManager.getSize(50));
+		setColumnWidth(3, PosUIManager.getSize(60));
 	}
 
 	private void setColumnWidth(int columnNumber, int width) {

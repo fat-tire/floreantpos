@@ -18,6 +18,8 @@ import javax.swing.text.StyledEditorKit;
 import javax.swing.text.View;
 import javax.swing.text.ViewFactory;
 
+import com.floreantpos.swing.PosUIManager;
+
 public class MultiLineTableCellRenderer extends JTextPane implements TableCellRenderer {
 
 	public MultiLineTableCellRenderer() {
@@ -30,16 +32,17 @@ public class MultiLineTableCellRenderer extends JTextPane implements TableCellRe
 		setSize(new Dimension(colWidth, 240));
 
 		int height = getPreferredSize().height + 20;
+		height = height < 60 ? 60 : height;
+		height = PosUIManager.getSize(height);
+		
 		if (table.getRowHeight() < height) {
 			table.setRowHeight(height);
 		}
 
 		if (isSelected) {
-			//setForeground(Color.WHITE);
 			setBackground(table.getSelectionBackground());
 		}
 		else {
-			//setForeground(table.getForeground());
 			setBackground(table.getBackground());
 		}
 
