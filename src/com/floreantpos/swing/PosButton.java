@@ -120,7 +120,7 @@ public class PosButton extends JButton {
 		}
 
 		if (size != null) {
-			size.setSize(PosUIManager.getSize(90,80));
+			size.setSize(PosUIManager.getSize(60,60));
 		}
 
 		return (size != null) ? size : super.getPreferredSize();

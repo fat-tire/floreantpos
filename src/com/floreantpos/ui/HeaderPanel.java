@@ -100,7 +100,7 @@ public class HeaderPanel extends JPanel {
 		//add(statusPanel, "grow"); //$NON-NLS-1$
 		add(statusPanel, BorderLayout.CENTER);
 
-		btnSize = PosUIManager.getSize(70);
+		btnSize = PosUIManager.getSize(60);
 
 		btnHomeScreen = new PosButton(new HomeScreenViewAction(false, true));
 		buttonPanel.add(btnHomeScreen, "w " + btnSize + "!, h " + btnSize + "!"); //$NON-NLS-1$
