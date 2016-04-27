@@ -17,6 +17,7 @@
  */
 package com.floreantpos.config.ui;
 
+import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GraphicsEnvironment;
@@ -32,7 +33,11 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSlider;
 import javax.swing.JTextField;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import net.miginfocom.swing.MigLayout;
 
@@ -66,7 +71,7 @@ public class TerminalConfigurationView extends ConfigurationView {
 	private JComboBox<String> cbDefaultView;
 
 	private IntegerTextField tfButtonHeight;
-	private IntegerTextField tfMenuButtonHeight;
+	private DoubleTextField tfScaleFactor;
 
 	private IntegerTextField tfFontSize;
 	private JCheckBox cbAutoLogoff = new JCheckBox(Messages.getString("TerminalConfigurationView.7")); //$NON-NLS-1$
@@ -75,6 +80,7 @@ public class TerminalConfigurationView extends ConfigurationView {
 	private JTextField tfDrawerName = new JTextField(10);
 	private JTextField tfDrawerCodes = new JTextField(15);
 	DoubleTextField tfDrawerInitialBalance = new DoubleTextField(6);
+	private JSlider jsResize;
 
 	public TerminalConfigurationView() {
 		super();
@@ -83,20 +89,22 @@ public class TerminalConfigurationView extends ConfigurationView {
 	}
 
 	private void initComponents() {
-		setLayout(new MigLayout("gap 5px 10px", "[][][grow]", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		setLayout(new BorderLayout()); 
+
+		JPanel contentPanel = new JPanel(new MigLayout("gap 5px 10px", "[][][grow]", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 		JLabel lblTerminalNumber = new JLabel(Messages.getString("TerminalConfigurationView.TERMINAL_NUMBER")); //$NON-NLS-1$
-		add(lblTerminalNumber, "alignx left,aligny center"); //$NON-NLS-1$
+		contentPanel.add(lblTerminalNumber, "alignx left,aligny center"); //$NON-NLS-1$
 
 		tfTerminalNumber = new IntegerTextField();
 		tfTerminalNumber.setColumns(10);
-		add(tfTerminalNumber, "aligny top, wrap"); //$NON-NLS-1$
+		contentPanel.add(tfTerminalNumber, "aligny top, wrap"); //$NON-NLS-1$
 
-		add(new JLabel(Messages.getString("TerminalConfigurationView.9"))); //$NON-NLS-1$
+		contentPanel.add(new JLabel(Messages.getString("TerminalConfigurationView.9"))); //$NON-NLS-1$
 		tfSecretKeyLength = new IntegerTextField(3);
-		add(tfSecretKeyLength, "wrap"); //$NON-NLS-1$
+		contentPanel.add(tfSecretKeyLength, "wrap"); //$NON-NLS-1$
 
-		add(cbShowDbConfiguration, "spanx 3"); //$NON-NLS-1$
+		contentPanel.add(cbShowDbConfiguration, "spanx 3"); //$NON-NLS-1$
 
 		cbAutoLogoff.addActionListener(new ActionListener() {
 			@Override
@@ -109,18 +117,18 @@ public class TerminalConfigurationView extends ConfigurationView {
 				}
 			}
 		});
-		add(cbAutoLogoff, "newline"); //$NON-NLS-1$
-		add(new JLabel(Messages.getString("TerminalConfigurationView.16"))); //$NON-NLS-1$
-		add(tfLogoffTime, "wrap"); //$NON-NLS-1$
+		contentPanel.add(cbAutoLogoff, "newline"); //$NON-NLS-1$
+		contentPanel.add(new JLabel(Messages.getString("TerminalConfigurationView.16"))); //$NON-NLS-1$
+		contentPanel.add(tfLogoffTime, "wrap"); //$NON-NLS-1$
 
-		add(cbTranslatedName, "span 2"); //$NON-NLS-1$
-		add(cbFullscreenMode, "newline, span"); //$NON-NLS-1$
-		add(cbUseSettlementPrompt, "newline, span"); //$NON-NLS-1$
-		add(cbShowBarCodeOnReceipt, "newline,span"); //$NON-NLS-1$
-		add(cbGroupKitchenReceiptItems, "newline,span"); //$NON-NLS-1$
+		contentPanel.add(cbTranslatedName, "span 2"); //$NON-NLS-1$
+		contentPanel.add(cbFullscreenMode, "newline, span"); //$NON-NLS-1$
+		contentPanel.add(cbUseSettlementPrompt, "newline, span"); //$NON-NLS-1$
+		contentPanel.add(cbShowBarCodeOnReceipt, "newline,span"); //$NON-NLS-1$
+		contentPanel.add(cbGroupKitchenReceiptItems, "newline,span"); //$NON-NLS-1$
 
-		add(new JLabel(Messages.getString("TerminalConfigurationView.17")), "newline"); //$NON-NLS-1$//$NON-NLS-2$
-		add(cbFonts, "span 2, wrap"); //$NON-NLS-1$
+		contentPanel.add(new JLabel(Messages.getString("TerminalConfigurationView.17")), "newline"); //$NON-NLS-1$//$NON-NLS-2$
+		contentPanel.add(cbFonts, "span 2, wrap"); //$NON-NLS-1$
 
 		Vector<String> defaultViewList = new Vector<String>();
 
@@ -136,26 +144,47 @@ public class TerminalConfigurationView extends ConfigurationView {
 
 		cbDefaultView = new JComboBox<String>(defaultViewList);
 
-		add(new JLabel("Default View"), "newline"); //$NON-NLS-1$//$NON-NLS-2$
-		add(cbDefaultView, "span 2, wrap"); //$NON-NLS-1$
+		contentPanel.add(new JLabel("Default View"), "newline"); //$NON-NLS-1$//$NON-NLS-2$
+		contentPanel.add(cbDefaultView, "span 2, wrap"); //$NON-NLS-1$
 
 		JPanel touchConfigPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 20, 10));
-		touchConfigPanel.setBorder(BorderFactory.createTitledBorder(Messages.getString("TerminalConfigurationView.18"))); //$NON-NLS-1$
-		touchConfigPanel.add(new JLabel(Messages.getString("TerminalConfigurationView.19"))); //$NON-NLS-1$
+		touchConfigPanel.setBorder(BorderFactory.createTitledBorder("-")); //$NON-NLS-1$
+		touchConfigPanel.add(new JLabel(Messages.getString("TerminalConfigurationView.18"))); //$NON-NLS-1$
 		tfButtonHeight = new IntegerTextField(5);
-		touchConfigPanel.add(tfButtonHeight);
+		//touchConfigPanel.add(tfButtonHeight);
 
-		touchConfigPanel.add(new JLabel("Menu item button height"));
-		tfMenuButtonHeight = new IntegerTextField(5);
-		touchConfigPanel.add(tfMenuButtonHeight);
+		int FPS_MIN = 10;
+		int FPS_MAX = 50;
+		int FPS_INIT = 10;
+		jsResize = new JSlider(JSlider.HORIZONTAL, FPS_MIN, FPS_MAX, FPS_INIT);
+		jsResize.addChangeListener(new ChangeListener() {
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				JSlider source = (JSlider) e.getSource();
+				if (!source.getValueIsAdjusting()) {
+					double fps = (int) source.getValue();
+					fps = fps / 10;
+					tfScaleFactor.setText(String.valueOf(fps));
+				}
+			}
+		});
+		touchConfigPanel.add(jsResize);
 
-		touchConfigPanel.add(new JLabel(Messages.getString("TerminalConfigurationView.20"))); //$NON-NLS-1$
+		//touchConfigPanel.add(new JLabel("Menu item button height"));
+		tfScaleFactor = new DoubleTextField(5);
+		touchConfigPanel.add(tfScaleFactor);
+
+		//touchConfigPanel.add(new JLabel(Messages.getString("TerminalConfigurationView.20"))); //$NON-NLS-1$
 		tfFontSize = new IntegerTextField(5);
-		touchConfigPanel.add(tfFontSize);
+		//touchConfigPanel.add(tfFontSize);
 
-		add(touchConfigPanel, "span 3, grow, wrap"); //$NON-NLS-1$
+		contentPanel.add(touchConfigPanel, "span 3, wrap"); //$NON-NLS-1$
 
 		addCashDrawerConfig();
+
+		JScrollPane scrollPane = new JScrollPane(contentPanel);
+		scrollPane.setBorder(null);
+		add(scrollPane);
 	}
 
 	private void addCashDrawerConfig() {
@@ -185,11 +214,14 @@ public class TerminalConfigurationView extends ConfigurationView {
 	@Override
 	public boolean save() {
 		int terminalNumber = 0;
-		int buttonHeight = tfButtonHeight.getInteger();
-		int menuItemButtonHeight = tfMenuButtonHeight.getInteger();
-		int fontSize = tfFontSize.getInteger();
+		double scaleFactor = tfScaleFactor.getDouble();
+		int fontSize = (int) (scaleFactor * 12);
+		int menuItemButtonWidth = (int) (scaleFactor * 80);
+		int buttonHeight = (int) (scaleFactor * 80);
 
-		if (buttonHeight < 20) {
+		//int menuItemButtonHeight = (int) (80*fontSize)/12;
+
+		/*if (buttonHeight < 20) {
 			POSMessageDialog.showError(com.floreantpos.util.POSUtil.getFocusedWindow(), Messages.getString("TerminalConfigurationView.38")); //$NON-NLS-1$
 			return false;
 		}
@@ -201,6 +233,11 @@ public class TerminalConfigurationView extends ConfigurationView {
 
 		if (fontSize < 8) {
 			POSMessageDialog.showError(com.floreantpos.util.POSUtil.getFocusedWindow(), Messages.getString("TerminalConfigurationView.39")); //$NON-NLS-1$
+			return false;
+		}*/
+
+		if (scaleFactor > 5) {
+			POSMessageDialog.showError(com.floreantpos.util.POSUtil.getFocusedWindow(), Messages.getString("TerminalConfigurationView.23")); //$NON-NLS-1$
 			return false;
 		}
 
@@ -222,14 +259,16 @@ public class TerminalConfigurationView extends ConfigurationView {
 		TerminalConfig.setUseTranslatedName(cbTranslatedName.isSelected());
 
 		TerminalConfig.setTouchScreenButtonHeight(buttonHeight);
-		TerminalConfig.setMenuItemButtonHeight(menuItemButtonHeight);
+		TerminalConfig.setMenuItemButtonWidth(menuItemButtonWidth);
+		TerminalConfig.setMenuItemButtonHeight(buttonHeight);
 		TerminalConfig.setTouchScreenFontSize(fontSize);
+		TerminalConfig.setScreenScaleFactor(scaleFactor);
 
 		TerminalConfig.setAutoLogoffEnable(cbAutoLogoff.isSelected());
 		TerminalConfig.setAutoLogoffTime(tfLogoffTime.getInteger() <= 0 ? 10 : tfLogoffTime.getInteger());
 		TerminalConfig.setUseSettlementPrompt(cbUseSettlementPrompt.isSelected());
 		TerminalConfig.setShowBarcodeOnReceipt(cbShowBarCodeOnReceipt.isSelected());
-		TerminalConfig.setGroupKitchenReceiptItems(cbGroupKitchenReceiptItems.isSelected()); 
+		TerminalConfig.setGroupKitchenReceiptItems(cbGroupKitchenReceiptItems.isSelected());
 
 		POSMessageDialog.showMessage(com.floreantpos.util.POSUtil.getFocusedWindow(), Messages.getString("TerminalConfigurationView.40")); //$NON-NLS-1$
 
@@ -273,8 +312,9 @@ public class TerminalConfigurationView extends ConfigurationView {
 		cbGroupKitchenReceiptItems.setSelected(TerminalConfig.isGroupKitchenReceiptItems());
 
 		tfButtonHeight.setText("" + TerminalConfig.getTouchScreenButtonHeight()); //$NON-NLS-1$
-		tfMenuButtonHeight.setText("" + TerminalConfig.getMenuItemButtonHeight()); //$NON-NLS-1$
+		tfScaleFactor.setText("" + TerminalConfig.getScreenScaleFactor()); //$NON-NLS-1$
 		tfFontSize.setText("" + TerminalConfig.getTouchScreenFontSize()); //$NON-NLS-1$
+		jsResize.setValue((int) (TerminalConfig.getScreenScaleFactor() * 10));
 
 		cbTranslatedName.setSelected(TerminalConfig.isUseTranslatedName());
 		cbAutoLogoff.setSelected(TerminalConfig.isAutoLogoffEnable());
