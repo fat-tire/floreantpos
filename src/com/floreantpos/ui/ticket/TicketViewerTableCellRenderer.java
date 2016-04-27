@@ -21,10 +21,10 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 
-import javax.swing.BorderFactory;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 
 import com.floreantpos.model.ITicketItem;
@@ -32,40 +32,47 @@ import com.floreantpos.util.NumberUtil;
 
 public class TicketViewerTableCellRenderer extends DefaultTableCellRenderer {
 	private boolean inTicketScreen = false;
-
+	private JTextArea textArea = new JTextArea() ;
+	
 	public TicketViewerTableCellRenderer() {
 		super();
+
+		textArea.setLineWrap(true);
+		textArea.setWrapStyleWord(true);
+		textArea.setOpaque(true);
+		
+		setBorder(new EmptyBorder(15, 2, 15, 2));
 	}
 
 	@Override
 	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-		Component rendererComponent = super.getTableCellRendererComponent(table, value, isSelected, false, row, column);
+		Component rendererComponent = null;
 
 		TicketViewerTableModel model = (TicketViewerTableModel) table.getModel();
 		Object object = model.get(row);
 
 		if (column == 0) {
-			setHorizontalAlignment(SwingConstants.LEFT);
-
-			JTextArea txtArea = new JTextArea(String.valueOf(value));
-			txtArea.setLineWrap(true);
-			txtArea.setWrapStyleWord(true);
-			int colWidth = table.getTableHeader().getColumnModel().getColumn(column).getWidth();
-			txtArea.setSize(new Dimension(colWidth, 240));
-			int txtAreaActualHeight = txtArea.getPreferredSize().height;
-			if (txtAreaActualHeight < 37) {
-				table.setRowHeight(row, 50);
+			textArea.setText(value.toString());
+			
+			if (isSelected) {
+				textArea.setForeground(table.getSelectionForeground());
+				textArea.setBackground(table.getSelectionBackground());
 			}
 			else {
-				table.setRowHeight(row, txtAreaActualHeight + 10);
-				txtArea.setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 0));
-				rendererComponent = txtArea;
-				if (isSelected) {
-					rendererComponent.setBackground(table.getSelectionBackground());
-				}
+				textArea.setForeground(table.getForeground());
+				textArea.setBackground(table.getBackground());
 			}
+			textArea.setFont(table.getFont());
+
+			int colWidth = table.getTableHeader().getColumnModel().getColumn(column).getWidth();
+			textArea.setSize(new Dimension(colWidth, 240));
+			int txtAreaActualHeight = textArea.getPreferredSize().height;
+
+			table.setRowHeight(row, txtAreaActualHeight);
+			rendererComponent = textArea;
 		}
 		else {
+			rendererComponent = super.getTableCellRendererComponent(table, value, isSelected, false, row, column);
 			setHorizontalAlignment(SwingConstants.RIGHT);
 		}
 
