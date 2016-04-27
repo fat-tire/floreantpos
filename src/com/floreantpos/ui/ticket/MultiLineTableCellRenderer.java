@@ -1,6 +1,5 @@
 package com.floreantpos.ui.ticket;
 
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 
@@ -24,39 +23,37 @@ public class MultiLineTableCellRenderer extends JTextPane implements TableCellRe
 	public MultiLineTableCellRenderer() {
 		setOpaque(true);
 		setEditorKit(new MyEditorKit());
-
-		//setBorder(new EmptyBorder(15, 2, 15, 2));
 	}
 
 	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+		int colWidth = table.getTableHeader().getColumnModel().getColumn(column).getWidth();
+		setSize(new Dimension(colWidth, 240));
+
+		int height = getPreferredSize().height + 20;
+		if (table.getRowHeight() < height) {
+			table.setRowHeight(height);
+		}
+
+		if (isSelected) {
+			//setForeground(Color.WHITE);
+			setBackground(table.getSelectionBackground());
+		}
+		else {
+			//setForeground(table.getForeground());
+			setBackground(table.getBackground());
+		}
+
 		if (value != null) {
 			setText(value.toString());
 		}
 		else {
 			setText("");
 		}
-		
-		if (isSelected) {
-			setForeground(table.getSelectionForeground());
-			setBackground(Color.red);
-		}
-		else {
-			setForeground(table.getForeground());
-			setBackground(table.getBackground());
-		}
-		
-		int colWidth = table.getTableHeader().getColumnModel().getColumn(column).getWidth();
-		setSize(new Dimension(colWidth, 240));
-		
-		int height = getPreferredSize().height;
-		if (table.getRowHeight() < height) {
-			table.setRowHeight(height);
-		}
-		
+
 		return this;
 	}
 
-	static class MyEditorKit extends StyledEditorKit {
+	public static class MyEditorKit extends StyledEditorKit {
 		public ViewFactory getViewFactory() {
 			return new StyledViewFactory();
 		}
@@ -101,7 +98,7 @@ public class MultiLineTableCellRenderer extends JTextPane implements TableCellRe
 			for (int i = 0; i < spans.length; i++) {
 				textBlockHeight = spans[i];
 			}
-			
+
 			offset = (targetSpan - textBlockHeight) / 2;
 			for (int i = 0; i < offsets.length; i++) {
 				offsets[i] += offset;

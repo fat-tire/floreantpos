@@ -19,12 +19,9 @@ package com.floreantpos.ui.ticket;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Dimension;
 
 import javax.swing.JTable;
-import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
-import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 
 import com.floreantpos.model.ITicketItem;
@@ -32,18 +29,13 @@ import com.floreantpos.util.NumberUtil;
 
 public class TicketViewerTableCellRenderer extends DefaultTableCellRenderer {
 	private boolean inTicketScreen = false;
-	private JTextArea textArea = new JTextArea() ;
+	MultiLineTableCellRenderer multiLineTableCellRenderer = new MultiLineTableCellRenderer();
 	
 	public TicketViewerTableCellRenderer() {
 		super();
-
-		textArea.setLineWrap(true);
-		textArea.setWrapStyleWord(true);
-		textArea.setOpaque(true);
-		
-		setBorder(new EmptyBorder(15, 2, 15, 2));
 	}
 
+	
 	@Override
 	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 		Component rendererComponent = null;
@@ -52,24 +44,7 @@ public class TicketViewerTableCellRenderer extends DefaultTableCellRenderer {
 		Object object = model.get(row);
 
 		if (column == 0) {
-			textArea.setText(value.toString());
-			
-			if (isSelected) {
-				textArea.setForeground(table.getSelectionForeground());
-				textArea.setBackground(table.getSelectionBackground());
-			}
-			else {
-				textArea.setForeground(table.getForeground());
-				textArea.setBackground(table.getBackground());
-			}
-			textArea.setFont(table.getFont());
-
-			int colWidth = table.getTableHeader().getColumnModel().getColumn(column).getWidth();
-			textArea.setSize(new Dimension(colWidth, 240));
-			int txtAreaActualHeight = textArea.getPreferredSize().height;
-
-			table.setRowHeight(row, txtAreaActualHeight);
-			rendererComponent = textArea;
+			rendererComponent = multiLineTableCellRenderer.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 		}
 		else {
 			rendererComponent = super.getTableCellRendererComponent(table, value, isSelected, false, row, column);
@@ -80,7 +55,7 @@ public class TicketViewerTableCellRenderer extends DefaultTableCellRenderer {
 			return rendererComponent;
 		}
 
-		rendererComponent.setBackground(Color.WHITE);
+		rendererComponent.setBackground(table.getBackground());
 
 		if (object instanceof ITicketItem) {
 			ITicketItem ticketItem = (ITicketItem) object;
