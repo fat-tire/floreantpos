@@ -25,6 +25,7 @@ package com.floreantpos.ui.views.order;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Iterator;
@@ -146,7 +147,6 @@ public class TicketView extends JPanel {
 		txtSearchItem = new JTextField();
 
 		txtSearchItem.addActionListener(new ActionListener() {
-
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
@@ -163,10 +163,8 @@ public class TicketView extends JPanel {
 		});
 
 		btnSearch.addActionListener(new ActionListener() {
-
 			@Override
 			public void actionPerformed(ActionEvent e) {
-
 				ItemSearchDialog dialog = new ItemSearchDialog(Application.getPosWindow());
 				dialog.setTitle("Search item");
 				dialog.pack(); 
@@ -302,8 +300,7 @@ public class TicketView extends JPanel {
 	}
 
 	private void createTicketItemControlPanel() {
-		ticketItemActionPanel.setLayout(new MigLayout("wrap 1, ins 0", "sg, fill", ""));
-
+		ticketItemActionPanel.setLayout(new GridLayout(0, 1, 1, 1));
 		Dimension size = PosUIManager.getSize(40,40);
 		btnScrollUp.setIcon(IconFactory.getIcon("/ui_icons/", "up.png", size)); //$NON-NLS-1$ //$NON-NLS-2$
 		btnScrollUp.addActionListener(new java.awt.event.ActionListener() {
