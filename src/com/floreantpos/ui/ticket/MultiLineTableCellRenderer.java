@@ -5,6 +5,7 @@ import java.awt.Dimension;
 
 import javax.swing.JTable;
 import javax.swing.JTextPane;
+import javax.swing.border.EmptyBorder;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.text.AbstractDocument;
 import javax.swing.text.BoxView;
@@ -25,13 +26,15 @@ public class MultiLineTableCellRenderer extends JTextPane implements TableCellRe
 	public MultiLineTableCellRenderer() {
 		setOpaque(true);
 		setEditorKit(new MyEditorKit());
+		
+		setBorder(new EmptyBorder(10, 2, 10, 2));
 	}
 
 	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 		int colWidth = table.getTableHeader().getColumnModel().getColumn(column).getWidth();
 		setSize(new Dimension(colWidth, 240));
 
-		int height = getPreferredSize().height + 20;
+		int height = getPreferredSize().height;
 		height = height < 60 ? 60 : height;
 		height = PosUIManager.getSize(height);
 		
@@ -52,7 +55,7 @@ public class MultiLineTableCellRenderer extends JTextPane implements TableCellRe
 		else {
 			setText("");
 		}
-
+		
 		return this;
 	}
 
