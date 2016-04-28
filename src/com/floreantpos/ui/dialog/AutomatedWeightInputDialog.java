@@ -45,7 +45,7 @@ import com.floreantpos.swing.PosUIManager;
 import com.floreantpos.util.NumberUtil;
 import com.floreantpos.util.SerialPortUtil;
 
-public class WeightSelectionDialog2 extends OkCancelOptionDialog implements ActionListener {
+public class AutomatedWeightInputDialog extends OkCancelOptionDialog implements ActionListener {
 	private double defaultValue;
 
 	private static DoubleTextField tfNumber;
@@ -65,7 +65,7 @@ public class WeightSelectionDialog2 extends OkCancelOptionDialog implements Acti
 
 	private ButtonGroup group;
 
-	public WeightSelectionDialog2(String title) {
+	public AutomatedWeightInputDialog(String title) {
 		super(title);
 		init();
 	}
@@ -355,7 +355,7 @@ public class WeightSelectionDialog2 extends OkCancelOptionDialog implements Acti
 	}
 
 	public static double takeDoubleInput(String title, double initialAmount) {
-		WeightSelectionDialog2 dialog = new WeightSelectionDialog2("Please enter item weight or quantity");
+		AutomatedWeightInputDialog dialog = new AutomatedWeightInputDialog("Please enter item weight or quantity");
 		dialog.setTitlePaneText(title);
 		dialog.setValue(initialAmount);
 		if (TerminalConfig.isActiveScaleDisplay()) {

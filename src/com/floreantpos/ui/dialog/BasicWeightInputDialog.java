@@ -35,7 +35,7 @@ import com.floreantpos.POSConstants;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.swing.PosUIManager;
 
-public class WeightSelectionDialog extends OkCancelOptionDialog implements ActionListener {
+public class BasicWeightInputDialog extends OkCancelOptionDialog implements ActionListener {
 	private int defaultValue;
 
 	private JTextField tfNumber;
@@ -44,7 +44,7 @@ public class WeightSelectionDialog extends OkCancelOptionDialog implements Actio
 	private PosButton btnCancel;
 	private boolean clearPreviousNumber = true;
 
-	public WeightSelectionDialog() {
+	public BasicWeightInputDialog() {
 		super();
 		init();
 	}
@@ -225,7 +225,7 @@ public class WeightSelectionDialog extends OkCancelOptionDialog implements Actio
 	}
 
 	public static void main(String[] args) {
-		WeightSelectionDialog dialog2 = new WeightSelectionDialog();
+		BasicWeightInputDialog dialog2 = new BasicWeightInputDialog();
 		dialog2.pack();
 		dialog2.setVisible(true);
 	}
@@ -240,7 +240,7 @@ public class WeightSelectionDialog extends OkCancelOptionDialog implements Actio
 	}
 
 	public static int takeIntInput(String title) {
-		WeightSelectionDialog dialog = new WeightSelectionDialog();
+		BasicWeightInputDialog dialog = new BasicWeightInputDialog();
 		dialog.setTitle(title);
 		dialog.pack();
 		dialog.open();
@@ -253,7 +253,7 @@ public class WeightSelectionDialog extends OkCancelOptionDialog implements Actio
 	}
 
 	public static double takeDoubleInput(String title, String dialogTitle, double initialAmount) {
-		WeightSelectionDialog dialog = new WeightSelectionDialog();
+		BasicWeightInputDialog dialog = new BasicWeightInputDialog();
 		dialog.setFloatingPoint(true);
 		dialog.setValue(initialAmount);
 		dialog.setTitle(title);
@@ -269,7 +269,7 @@ public class WeightSelectionDialog extends OkCancelOptionDialog implements Actio
 	}
 
 	public static double takeDoubleInput(String title, double initialAmount) {
-		WeightSelectionDialog dialog = new WeightSelectionDialog();
+		BasicWeightInputDialog dialog = new BasicWeightInputDialog();
 		dialog.setFloatingPoint(true);
 		dialog.setTitle(title);
 		dialog.setValue(initialAmount);
@@ -284,7 +284,7 @@ public class WeightSelectionDialog extends OkCancelOptionDialog implements Actio
 	}
 
 	public static double show(Component parent, String title, double initialAmount) {
-		WeightSelectionDialog dialog2 = new WeightSelectionDialog();
+		BasicWeightInputDialog dialog2 = new BasicWeightInputDialog();
 		dialog2.setFloatingPoint(true);
 		dialog2.setTitle(title);
 		dialog2.pack();

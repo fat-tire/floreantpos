@@ -18,7 +18,9 @@
 package com.floreantpos.util;
 
 import java.awt.Dialog;
+import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.GraphicsEnvironment;
 import java.awt.RenderingHints;
 import java.awt.Transparency;
 import java.awt.Window;
@@ -62,7 +64,8 @@ public class PosGuiUtil {
 
 	public static Customer captureCustomer() {
 		CustomerSelectionDialog dialog = new CustomerSelectionDialog();
-		dialog.setSize(Application.getPosWindow().getSize());
+		Dimension size = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().getSize();
+		dialog.setSize(size);
 		dialog.open();
 
 		if (dialog.isCanceled()) {

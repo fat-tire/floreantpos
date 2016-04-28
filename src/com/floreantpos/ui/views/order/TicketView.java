@@ -58,10 +58,10 @@ import com.floreantpos.report.ReceiptPrintService;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.swing.PosScrollPane;
 import com.floreantpos.swing.PosUIManager;
+import com.floreantpos.ui.dialog.AutomatedWeightInputDialog;
+import com.floreantpos.ui.dialog.BasicWeightInputDialog;
 import com.floreantpos.ui.dialog.ItemSearchDialog;
 import com.floreantpos.ui.dialog.POSMessageDialog;
-import com.floreantpos.ui.dialog.WeightSelectionDialog;
-import com.floreantpos.ui.dialog.WeightSelectionDialog2;
 import com.floreantpos.ui.views.CashierSwitchBoardView;
 import com.floreantpos.ui.views.order.actions.OrderListener;
 import com.floreantpos.util.DrawerUtil;
@@ -136,7 +136,7 @@ public class TicketView extends JPanel {
 		add(ticketItemActionPanel, BorderLayout.EAST);
 		ticketViewerTable.getRenderer().setInTicketScreen(true);
 		ticketViewerTable.getSelectionModel().addListSelectionListener(new TicketItemSelectionListener());
-		setPreferredSize(PosUIManager.getSize(360,463));
+		setPreferredSize(PosUIManager.getSize(360, 463));
 	}// </editor-fold>//GEN-END:initComponents
 
 	private void createItemSearchPanel() {
@@ -167,7 +167,7 @@ public class TicketView extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				ItemSearchDialog dialog = new ItemSearchDialog(Application.getPosWindow());
 				dialog.setTitle("Search item");
-				dialog.pack(); 
+				dialog.pack();
 				dialog.open();
 				if (dialog.isCanceled()) {
 					return;
@@ -301,7 +301,7 @@ public class TicketView extends JPanel {
 
 	private void createTicketItemControlPanel() {
 		ticketItemActionPanel.setLayout(new GridLayout(0, 1, 1, 1));
-		Dimension size = PosUIManager.getSize(40,40);
+		Dimension size = PosUIManager.getSize(40, 40);
 		btnScrollUp.setIcon(IconFactory.getIcon("/ui_icons/", "up.png", size)); //$NON-NLS-1$ //$NON-NLS-2$
 		btnScrollUp.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -362,7 +362,7 @@ public class TicketView extends JPanel {
 		ticketItemActionPanel.add(btnEdit);
 		ticketItemActionPanel.add(btnScrollDown);
 
-		ticketItemActionPanel.setPreferredSize(PosUIManager.getSize(60,270));
+		ticketItemActionPanel.setPreferredSize(PosUIManager.getSize(60, 270));
 	}
 
 	public synchronized void doFinishOrder() {// GEN-FIRST:event_doFinishOrder
@@ -726,10 +726,10 @@ public class TicketView extends JPanel {
 		ITicketItem selectedTicketItem = ticketViewerTable.getSelected();
 		double selectedQuantity = 0;
 		if (TerminalConfig.getScaleActivationValue().equals("cas10")) {
-			selectedQuantity = WeightSelectionDialog2.takeDoubleInput(selectedTicketItem.getNameDisplay(), 1);
+			selectedQuantity = AutomatedWeightInputDialog.takeDoubleInput(selectedTicketItem.getNameDisplay(), 1);
 		}
 		else {
-			selectedQuantity = WeightSelectionDialog.takeDoubleInput("Please enter item weight or quantity.", 1);
+			selectedQuantity = BasicWeightInputDialog.takeDoubleInput("Please enter item weight or quantity.", 1);
 		}
 		if (selectedQuantity <= -1) {
 			return -1;

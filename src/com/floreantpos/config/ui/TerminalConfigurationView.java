@@ -178,7 +178,7 @@ public class TerminalConfigurationView extends ConfigurationView {
 		tfFontSize = new IntegerTextField(5);
 		//touchConfigPanel.add(tfFontSize);
 
-		contentPanel.add(touchConfigPanel, "span 3, wrap"); //$NON-NLS-1$
+		//contentPanel.add(touchConfigPanel, "span 3, wrap"); //$NON-NLS-1$
 
 		addCashDrawerConfig();
 

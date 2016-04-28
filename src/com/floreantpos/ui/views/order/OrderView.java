@@ -24,6 +24,8 @@
 package com.floreantpos.ui.views.order;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.GraphicsEnvironment;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
@@ -487,7 +489,9 @@ public class OrderView extends ViewPanel {
 
 	protected void doAddEditCustomer() {
 		CustomerSelectionDialog dialog = new CustomerSelectionDialog(currentTicket);
-		dialog.setSize(Application.getPosWindow().getSize());
+		Dimension size=GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().getSize();
+		dialog.setSize(size);
+		dialog.setResizable(true); 
 		dialog.open();
 	}
 

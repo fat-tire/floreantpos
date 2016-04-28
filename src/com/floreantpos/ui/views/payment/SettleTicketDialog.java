@@ -127,7 +127,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 
 		setTitle(Messages.getString("SettleTicketDialog.6")); //$NON-NLS-1$
 
-		getContentPane().setLayout(new BorderLayout(5, 5));
+		getContentPane().setLayout(new MigLayout("inset 0,fill", "[grow][grow]", ""));
 
 		paymentView = new PaymentView(this);
 		ticketViewerTable = new TicketViewerTable(ticket);
@@ -144,8 +144,8 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 
 		rightPanel.add(paymentView);
 
-		getContentPane().add(leftPanel, BorderLayout.CENTER);
-		getContentPane().add(rightPanel, BorderLayout.EAST);
+		getContentPane().add(leftPanel, "cell 0 0,grow");
+		getContentPane().add(rightPanel,"cell 1 0,grow");
 		paymentView.updateView();
 		paymentView.setDefaultFocus();
 		updateView();

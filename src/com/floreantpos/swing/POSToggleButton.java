@@ -22,7 +22,6 @@ import java.awt.Dimension;
 import javax.swing.JToggleButton;
 import javax.swing.UIManager;
 
-import com.floreantpos.config.TerminalConfig;
 
 public class POSToggleButton extends JToggleButton {
 	//public static Border border = new LineBorder(Color.BLACK, 1);
@@ -63,7 +62,7 @@ public class POSToggleButton extends JToggleButton {
 		}
 
 		if (size != null) {
-			size.setSize(size.width + 20, TerminalConfig.getTouchScreenButtonHeight());
+			size.setSize(PosUIManager.getSize(60, 60));
 		}
 
 		return (size != null) ? size : super.getPreferredSize();

@@ -90,11 +90,11 @@ public class ManualCardEntryDialog extends POSDialog implements CardInputProcess
 		getContentPane().add(panel_1, BorderLayout.SOUTH);
 		panel_1.setLayout(new BorderLayout(0, 0));
 
-		JPanel panel_2 = new JPanel();
+		JPanel panel_2 = new JPanel(new MigLayout("al center")); //$NON-NLS-1$
 		panel_1.add(panel_2);
 
 		PosButton btnSwipeCard = new PosButton();
-		panel_2.add(btnSwipeCard);
+		panel_2.add(btnSwipeCard,"grow");
 		btnSwipeCard.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				openSwipeCardDialog();
@@ -103,7 +103,7 @@ public class ManualCardEntryDialog extends POSDialog implements CardInputProcess
 		btnSwipeCard.setText(Messages.getString("ManualCardEntryDialog.13")); //$NON-NLS-1$
 
 		PosButton btnEnterAuthorizationCode = new PosButton();
-		panel_2.add(btnEnterAuthorizationCode);
+		panel_2.add(btnEnterAuthorizationCode,"grow");
 		btnEnterAuthorizationCode.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				openAuthorizationCodeEntryDialog();
@@ -112,7 +112,7 @@ public class ManualCardEntryDialog extends POSDialog implements CardInputProcess
 		btnEnterAuthorizationCode.setText(Messages.getString("ManualCardEntryDialog.14")); //$NON-NLS-1$
 
 		PosButton btnSubmit = new PosButton();
-		panel_2.add(btnSubmit);
+		panel_2.add(btnSubmit,"grow");
 		btnSubmit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				submitCard();
@@ -121,7 +121,7 @@ public class ManualCardEntryDialog extends POSDialog implements CardInputProcess
 		btnSubmit.setText(Messages.getString("ManualCardEntryDialog.15")); //$NON-NLS-1$
 
 		PosButton btnCancel = new PosButton();
-		panel_2.add(btnCancel);
+		panel_2.add(btnCancel,"grow");
 		btnCancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				setCanceled(true);

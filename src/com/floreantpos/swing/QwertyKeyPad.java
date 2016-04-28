@@ -47,13 +47,13 @@ public class QwertyKeyPad extends JPanel implements ActionListener, ChangeListen
 	String[] s4 = { "z", "x", "c", "v", "b", "n", "m", "-", ",", "." }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$
 
 	private ArrayList<PosButton> buttons = new ArrayList<PosButton>();
-	Dimension pSize = PosUIManager.getSize(70, 70);
+	Dimension size = PosUIManager.getSize(60, 60);
 
 	public QwertyKeyPad() {
 		createUI();
 
-		Dimension size = PosUIManager.getSize(500, 200);
-		setMinimumSize(size);
+		//Dimension size = PosUIManager.getSize(500, 200);
+		//setMinimumSize(size);
 		//setPreferredSize(size);
 	}
 
@@ -92,7 +92,7 @@ public class QwertyKeyPad extends JPanel implements ActionListener, ChangeListen
 		button.addActionListener(this);
 		eastPanel.add(button);
 
-		//eastPanel.setPreferredSize(PosUIManager.getSize(90, 50));
+		eastPanel.setPreferredSize(PosUIManager.getSize(90, 0));
 		add(eastPanel, BorderLayout.EAST);
 	}
 
@@ -102,7 +102,7 @@ public class QwertyKeyPad extends JPanel implements ActionListener, ChangeListen
 			String s = buttonText[i];
 			PosButton button = new PosButton();
 			button.setText(s);
-			button.setPreferredSize(pSize);
+			button.setMinimumSize(size);
 			button.addActionListener(this);
 			button.setFont(buttonFont);
 			button.setFocusable(false);

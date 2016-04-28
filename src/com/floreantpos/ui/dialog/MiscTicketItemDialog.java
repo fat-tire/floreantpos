@@ -101,7 +101,7 @@ public class MiscTicketItemDialog extends OkCancelOptionDialog {
 		contentPane.add(cbPrinterGroup, "w 200!, h 40"); //$NON-NLS-1$
 
 		QwertyKeyPad keyPad = new QwertyKeyPad();
-		contentPane.add(keyPad, "newline, grow, span, h 300!, gaptop 10"); //$NON-NLS-1$
+		contentPane.add(keyPad, "newline, grow, span, gaptop 10"); //$NON-NLS-1$
 
 		getContentPanel().add(contentPane);
 

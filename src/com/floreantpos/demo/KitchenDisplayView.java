@@ -44,6 +44,7 @@ import com.floreantpos.model.Printer;
 import com.floreantpos.model.dao.KitchenTicketDAO;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.swing.PosComboRenderer;
+import com.floreantpos.swing.PosUIManager;
 import com.floreantpos.ui.HeaderPanel;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.model.OrderType;
@@ -127,18 +128,21 @@ public class KitchenDisplayView extends ViewPanel implements ActionListener {
 			}
 		});
 
-		JPanel topPanel = new JPanel(new MigLayout("ins 2 2 0 2", "[][fill, grow][]", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		JPanel topPanel = new JPanel(new MigLayout("fill, ins 2 2 0 2", "[][fill, grow][]", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		//topPanel.setBorder(BorderFactory.createTitledBorder("Filter: All Printers- All Orders")); //$NON-NLS-1$
 
 		//topPanel.add(label);
 		//topPanel.add(cbPrinters);
+		
+		Dimension size=PosUIManager.getSize(60, 40); 
+		
 		Font filterFont = getFont().deriveFont(Font.BOLD, 12f);
 		lblFilter = new JLabel("Filter: All Printers- All Orders"); //$NON-NLS-1$
 		lblFilter.setForeground(new Color(49, 106, 196));
 		lblFilter.setFont(filterFont);
 		topPanel.add(lblFilter);
-		topPanel.add(btnFilter, "w 60!, h 40!");
-		topPanel.add(btnBack, "w 60!, h 40!");
+		topPanel.add(btnFilter,"w "+ size.width+"!,h "+size.height+"!");
+		topPanel.add(btnBack, "w "+ size.width+"!, h "+size.height+"!");
 		topPanel.setBackground(Color.white);
 
 		cbTicketTypes.setFont(font);
@@ -157,11 +161,11 @@ public class KitchenDisplayView extends ViewPanel implements ActionListener {
 
 		btnLogout = new PosButton(new LogoutAction(true, false)); //$NON-NLS-1$
 		//btnLogout.addActionListener(this);
-		topPanel.add(btnLogout, "w 60!, h 40!, wrap");
+		topPanel.add(btnLogout, "w "+ size.width+"!, h "+size.height+"!, wrap");
 
 		topPanel.add(new JSeparator(), "grow,span");
 
-		firstTopPanel.setPreferredSize(new Dimension(0, 50));
+		firstTopPanel.setPreferredSize(new Dimension(0, PosUIManager.getSize(50)));
 		firstTopPanel.add(topPanel);
 		add(firstTopPanel, BorderLayout.NORTH);
 

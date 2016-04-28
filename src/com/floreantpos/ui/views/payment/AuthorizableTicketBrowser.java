@@ -77,9 +77,9 @@ public class AuthorizableTicketBrowser extends POSDialog {
 		JPanel buttonPanel = new JPanel(new MigLayout("al center","sg, fill", ""));
 		ActionHandler actionHandler = new ActionHandler();
 
-		buttonPanel.add(new PosButton(ActionCommand.EDIT_TIPS, actionHandler));
-		buttonPanel.add(new PosButton(ActionCommand.AUTHORIZE, actionHandler));
-		buttonPanel.add(new PosButton(ActionCommand.AUTHORIZE_ALL, actionHandler));
+		buttonPanel.add(new PosButton(ActionCommand.EDIT_TIPS, actionHandler),"grow");
+		buttonPanel.add(new PosButton(ActionCommand.AUTHORIZE, actionHandler),"grow");
+		buttonPanel.add(new PosButton(ActionCommand.AUTHORIZE_ALL, actionHandler),"grow");
 
 		buttonPanel.add(new PosButton(new CloseDialogAction(this)));
 

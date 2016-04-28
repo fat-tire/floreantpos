@@ -100,11 +100,11 @@ public class TicketListView extends JPanel implements ITicketList {
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.setColumnControlVisible(true);
 		table.setModel(tableModel = new TicketListTableModel());
-		table.setRowHeight(60);
+		table.setRowHeight(PosUIManager.getSize(60));
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
 		table.setDefaultRenderer(Object.class, new PosTableRenderer());
 		table.setGridColor(Color.LIGHT_GRAY);
-		table.getTableHeader().setPreferredSize(new Dimension(100, 40));
+		table.getTableHeader().setPreferredSize(new Dimension(100, PosUIManager.getSize(40)));
 
 		columnModel = (TableColumnModelExt) table.getColumnModel();
 		columnModel.getColumn(0).setPreferredWidth(30);

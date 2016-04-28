@@ -30,15 +30,19 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import javax.swing.BorderFactory;
 import javax.swing.DefaultListSelectionModel;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
+
+import net.miginfocom.swing.MigLayout;
 
 import com.floreantpos.IconFactory;
 import com.floreantpos.Messages;
@@ -46,6 +50,7 @@ import com.floreantpos.main.Application;
 import com.floreantpos.model.CashDropTransaction;
 import com.floreantpos.model.Terminal;
 import com.floreantpos.model.dao.CashDropTransactionDAO;
+import com.floreantpos.swing.PosUIManager;
 import com.floreantpos.util.NumberUtil;
 
 /**
@@ -101,7 +106,7 @@ public class CashDropDialog extends POSDialog {
         titlePanel1 = new com.floreantpos.ui.TitlePanel();
         transparentPanel1 = new com.floreantpos.swing.TransparentPanel();
         jSeparator1 = new javax.swing.JSeparator();
-        transparentPanel3 = new com.floreantpos.swing.TransparentPanel();
+        transparentPanel3 = new com.floreantpos.swing.TransparentPanel(new MigLayout("al center", "sg, fill",""));
         btnNewCashDrop = new com.floreantpos.swing.PosButton();
         btnDeleteSelected = new com.floreantpos.swing.PosButton();
         btnClose = new com.floreantpos.swing.PosButton();
@@ -112,6 +117,7 @@ public class CashDropDialog extends POSDialog {
         lblActiveCashDrop = new com.floreantpos.swing.POSLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tableCashDrops = new javax.swing.JTable();
+        tableCashDrops.setRowHeight(PosUIManager.getSize(40));
 
         getContentPane().setLayout(new java.awt.BorderLayout(5, 5));
 
@@ -119,11 +125,9 @@ public class CashDropDialog extends POSDialog {
         getContentPane().add(titlePanel1, java.awt.BorderLayout.NORTH);
 
         transparentPanel1.setLayout(new java.awt.BorderLayout(5, 5));
-
         transparentPanel1.add(jSeparator1, java.awt.BorderLayout.NORTH);
 
         btnNewCashDrop.setText(Messages.getString("CashDropDialog.4")); //$NON-NLS-1$
-        btnNewCashDrop.setPreferredSize(new java.awt.Dimension(160, 50));
         btnNewCashDrop.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnNewCashDropActionPerformed(evt);
@@ -133,7 +137,6 @@ public class CashDropDialog extends POSDialog {
         transparentPanel3.add(btnNewCashDrop);
 
         btnDeleteSelected.setText(Messages.getString("CashDropDialog.5")); //$NON-NLS-1$
-        btnDeleteSelected.setPreferredSize(new java.awt.Dimension(140, 50));
         btnDeleteSelected.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnDeleteSelectedActionPerformed(evt);
@@ -143,7 +146,6 @@ public class CashDropDialog extends POSDialog {
         transparentPanel3.add(btnDeleteSelected);
 
         btnClose.setText(Messages.getString("CashDropDialog.6")); //$NON-NLS-1$
-        btnClose.setPreferredSize(new java.awt.Dimension(140, 50));
         btnClose.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCloseActionPerformed(evt);
@@ -160,9 +162,8 @@ public class CashDropDialog extends POSDialog {
 
         transparentPanel2.setLayout(new java.awt.GridLayout(0, 1, 2, 2));
 
-        transparentPanel2.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 5));
+        transparentPanel2.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 1, 10, 5));
         btnUp.setIcon(IconFactory.getIcon("/ui_icons/", "up.png")); //$NON-NLS-1$ //$NON-NLS-2$
-        btnUp.setPreferredSize(new java.awt.Dimension(80, 0));
         btnUp.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 doScrollUp(evt);
@@ -172,7 +173,6 @@ public class CashDropDialog extends POSDialog {
         transparentPanel2.add(btnUp);
 
         btnDown.setIcon(IconFactory.getIcon("/ui_icons/", "down.png")); //$NON-NLS-1$ //$NON-NLS-2$
-        btnDown.setPreferredSize(new java.awt.Dimension(80, 0));
         btnDown.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 doScrollDown(evt);
@@ -198,6 +198,7 @@ public class CashDropDialog extends POSDialog {
                 "Title 1", "Title 2", "Title 3", "Title 4" //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
             }
         ));
+        jScrollPane1.setBorder(BorderFactory.createCompoundBorder(new EmptyBorder(5, 10, 10, 10),jScrollPane1.getBorder())); 
         jScrollPane1.setViewportView(tableCashDrops);
 
         midPanel.add(jScrollPane1, java.awt.BorderLayout.CENTER);
@@ -205,8 +206,10 @@ public class CashDropDialog extends POSDialog {
         getContentPane().add(midPanel, java.awt.BorderLayout.CENTER);
 
         java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        setBounds((screenSize.width-606)/2, (screenSize.height-372)/2, 606, 372);
-    }// </editor-fold>//GEN-END:initComponents
+        int width=PosUIManager.getSize(606); 
+        int height=PosUIManager.getSize(472); 
+        setBounds((screenSize.width-width)/2, (screenSize.height-height)/2, width, height);
+    }
 
 	private void doScrollDown(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_doScrollDown
 		if (cashDropList == null)
@@ -226,7 +229,7 @@ public class CashDropDialog extends POSDialog {
 		selectionModel.setLeadSelectionIndex(selectedRow);
 		Rectangle cellRect = tableCashDrops.getCellRect(selectedRow, 0, false);
 		tableCashDrops.scrollRectToVisible(cellRect);
-	}//GEN-LAST:event_doScrollDown
+	}
 
 	private void doScrollUp(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_doScrollUp
 		if (cashDropList == null)

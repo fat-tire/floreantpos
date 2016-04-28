@@ -38,6 +38,7 @@ import com.floreantpos.model.User;
 import com.floreantpos.model.UserPermission;
 import com.floreantpos.model.UserType;
 import com.floreantpos.swing.PosButton;
+import com.floreantpos.swing.PosUIManager;
 import com.floreantpos.ui.dialog.ManagerDialog;
 import com.floreantpos.ui.dialog.POSDialog;
 import com.floreantpos.ui.dialog.PayoutDialog;
@@ -135,7 +136,7 @@ public class SwitchboardOtherFunctionsDialog extends POSDialog implements Action
 	private void doShowAuthorizeTicketDialog() {
 		AuthorizableTicketBrowser dialog = new AuthorizableTicketBrowser(Application.getPosWindow());
     	dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-    	dialog.setSize(800, 600);
+    	dialog.setSize(PosUIManager.getSize(800, 600));
     	dialog.setLocationRelativeTo(Application.getPosWindow());
     	dialog.setVisible(true);
 	}

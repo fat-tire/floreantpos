@@ -43,8 +43,8 @@ import com.floreantpos.model.dao.ShopTableDAO;
 import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.model.dao.UserDAO;
 import com.floreantpos.ui.dialog.POSMessageDialog;
-import com.floreantpos.ui.dialog.WeightSelectionDialog;
-import com.floreantpos.ui.dialog.WeightSelectionDialog2;
+import com.floreantpos.ui.dialog.BasicWeightInputDialog;
+import com.floreantpos.ui.dialog.AutomatedWeightInputDialog;
 import com.floreantpos.ui.views.order.actions.CategorySelectionListener;
 import com.floreantpos.ui.views.order.actions.GroupSelectionListener;
 import com.floreantpos.ui.views.order.actions.ItemSelectionListener;
@@ -83,10 +83,10 @@ public class OrderController implements OrderListener, CategorySelectionListener
 		double itemQuantity = 0;
 		if (menuItem.isFractionalUnit()) {
 			if (TerminalConfig.getScaleActivationValue().equals("cas10")) {
-				itemQuantity = WeightSelectionDialog2.takeDoubleInput(menuItem.getName(), 1);
+				itemQuantity = AutomatedWeightInputDialog.takeDoubleInput(menuItem.getName(), 1);
 			}
 			else {
-				itemQuantity = WeightSelectionDialog.takeDoubleInput("Please enter item weight or quantity.", 1);
+				itemQuantity = BasicWeightInputDialog.takeDoubleInput("Please enter item weight or quantity.", 1);
 			}
 			if (itemQuantity <= -1) {
 				return;

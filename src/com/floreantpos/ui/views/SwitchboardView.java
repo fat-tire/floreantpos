@@ -181,6 +181,7 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 		rendererOrderPanel();
 
 		rightPanel.add(orderPanel);
+		rightPanel.setMinimumSize(PosUIManager.getSize(120, 0)); 
 
 		centerPanel.add(rightPanel, java.awt.BorderLayout.EAST);
 

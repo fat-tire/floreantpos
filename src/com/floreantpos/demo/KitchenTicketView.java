@@ -21,7 +21,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Frame;
 import java.awt.GridLayout;
@@ -52,6 +51,7 @@ import com.floreantpos.model.dao.KitchenTicketDAO;
 import com.floreantpos.swing.ButtonColumn;
 import com.floreantpos.swing.ListTableModel;
 import com.floreantpos.swing.PosButton;
+import com.floreantpos.swing.PosUIManager;
 import com.floreantpos.swing.TimerWatch;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 
@@ -87,7 +87,7 @@ public class KitchenTicketView extends JPanel {
 		statusSelector = new KitchenTicketStatusSelector((Frame) SwingUtilities.getWindowAncestor(this));
 		statusSelector.pack();
 
-		setPreferredSize(new Dimension(350, 240));
+		setPreferredSize(PosUIManager.getSize(350, 240));
 
 		timerWatch.start();
 
@@ -134,7 +134,7 @@ public class KitchenTicketView extends JPanel {
 		serverInfo.setFont(font);
 
 		timerWatch = new TimerWatch(ticket.getCreateDate());
-		timerWatch.setPreferredSize(new Dimension(100, 30));
+		//timerWatch.setPreferredSize(new Dimension(100, 30));
 
 		headerPanel = new JPanel(new MigLayout("fill", "sg, fill", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		headerPanel.setBorder(BorderFactory.createLineBorder(Color.gray));
@@ -210,7 +210,7 @@ public class KitchenTicketView extends JPanel {
 		JPanel buttonPanel = new JPanel(new GridLayout(1, 0, 5, 5));
 
 		PosButton btnVoid = new PosButton(Messages.getString("KitchenTicketView.12")); //$NON-NLS-1$
-		btnVoid.setPreferredSize(new Dimension(100, 40));
+		btnVoid.setPreferredSize(PosUIManager.getSize(100, 40));
 
 		btnVoid.addActionListener(new ActionListener() {
 			@Override
@@ -228,7 +228,7 @@ public class KitchenTicketView extends JPanel {
 			}
 		});
 
-		btnDone.setPreferredSize(new Dimension(100, 40));
+		btnDone.setPreferredSize(PosUIManager.getSize(100, 40));
 
 		buttonPanel.add(btnDone);
 
@@ -266,8 +266,8 @@ public class KitchenTicketView extends JPanel {
 
 	private void resizeTableColumns() {
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
-		setColumnWidth(1, 40);
-		setColumnWidth(2, 50);
+		setColumnWidth(1, PosUIManager.getSize(40));
+		setColumnWidth(2, PosUIManager.getSize(50));
 	}
 
 	private void setColumnWidth(int columnNumber, int width) {

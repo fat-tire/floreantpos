@@ -35,6 +35,7 @@ import com.floreantpos.POSConstants;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.KitchenTicket;
 import com.floreantpos.swing.PosButton;
+import com.floreantpos.swing.PosUIManager;
 
 public class KitchenTicketListPanel extends JPanel {
 	private static int previousBlockIndex = -1;
@@ -102,10 +103,10 @@ public class KitchenTicketListPanel extends JPanel {
 		southPanel.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
 
 		btnPrev.setText(POSConstants.CAPITAL_PREV);
-		btnPrev.setPreferredSize(new Dimension(100, 30));
+		btnPrev.setPreferredSize(PosUIManager.getSize(80, 30));
 		southPanel.add(btnPrev, BorderLayout.WEST);
 
-		btnNext.setPreferredSize(new Dimension(100, 30));
+		btnNext.setPreferredSize(PosUIManager.getSize(80, 30));
 		btnNext.setText(POSConstants.CAPITAL_NEXT);
 		southPanel.add(btnNext, BorderLayout.EAST);
 
