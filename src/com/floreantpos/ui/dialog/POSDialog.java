@@ -18,6 +18,7 @@
 package com.floreantpos.ui.dialog;
 
 import java.awt.Frame;
+import java.awt.GraphicsEnvironment;
 import java.awt.HeadlessException;
 import java.awt.Window;
 
@@ -75,6 +76,19 @@ public class POSDialog extends JDialog {
 		else {
 			setLocationRelativeTo(getOwner());
 		}
+		setVisible(true);
+	}
+	
+	public void openFullScreen() {
+		canceled = true;
+		setBounds(GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds());
+		setVisible(true);
+	}
+	
+	public void openUndecoratedFullScreen() {
+		canceled = true;
+		setBounds(GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds());
+		setUndecorated(true);
 		setVisible(true);
 	}
 
