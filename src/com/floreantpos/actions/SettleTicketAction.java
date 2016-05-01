@@ -60,7 +60,7 @@ public class SettleTicketAction extends AbstractAction {
 		else {
 			posDialog.setSize(Application.getPosWindow().getSize());
 			posDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			posDialog.open();
+			posDialog.openUndecoratedFullScreen();
 			return !posDialog.isCanceled();
 		}
 	}
