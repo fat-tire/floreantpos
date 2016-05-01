@@ -50,7 +50,7 @@ public class UserListDialog extends OkCancelOptionDialog {
 		tableModel.addColumn("Name", "fullName"); //$NON-NLS-1$ //$NON-NLS-2$
 
 		userListTable = new JTable(tableModel);
-		userListTable.setRowHeight(60);
+		userListTable.setRowHeight(PosUIManager.getSize(60));
 		userListTable.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		contentPane.add(new JScrollPane(userListTable));
 
