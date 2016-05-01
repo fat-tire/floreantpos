@@ -100,7 +100,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 	private PaymentView paymentView;
 	private TicketViewerTable ticketViewerTable;
 	private javax.swing.JScrollPane ticketScrollPane;
-	private static Ticket ticket;
+	private Ticket ticket;
 	private double tenderAmount;
 	private PaymentType paymentType;
 	private String cardName;
@@ -110,8 +110,8 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 	JTextField tfTotal;
 	JTextField tfGratuity;
 
+	//FIXME: change static modifier
 	public static PosPaymentWaitDialog waitDialog = new PosPaymentWaitDialog();
-	private static SettleTicketDialog instance;
 
 	public SettleTicketDialog() {
 
@@ -887,12 +887,4 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 		this.ticket = ticket;
 		paymentView.updateView();
 	}
-
-	public synchronized static SettleTicketDialog getInstance() {
-		if (instance == null) {
-			instance = new SettleTicketDialog(ticket);
-		}
-		return instance;
-	}
-
 }
