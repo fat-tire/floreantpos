@@ -538,8 +538,7 @@ public class TicketView extends JPanel {
 
 	public void updateView() {
 		if (ticket == null) {
-			//	btnTotal.setText("<html><h2>Total</h2></html>");
-			btnTotal.setText("Total");
+			btnTotal.setText(POSConstants.TOTAL.toUpperCase() + " " + Application.getCurrencySymbol() + "0.00");
 			titledBorder.setTitle(ticket.getTicketType().toString() + "[New Ticket]"); //$NON-NLS-1$
 			return;
 		}
@@ -554,7 +553,7 @@ public class TicketView extends JPanel {
 			}
 		}
 
-		btnTotal.setText("Total " + Application.getCurrencySymbol() + NumberUtil.formatNumber(ticket.getTotalAmount()));
+		btnTotal.setText(POSConstants.TOTAL.toUpperCase() + " " + Application.getCurrencySymbol() + NumberUtil.formatNumber(ticket.getTotalAmount()));
 
 		/*if (ticket.getTotalAmount() > 0) {
 			//btnTotal.setText("<html><h2>Total " + Application.getCurrencySymbol() + NumberUtil.formatNumber(ticket.getTotalAmount()) + "</h2></html>");
