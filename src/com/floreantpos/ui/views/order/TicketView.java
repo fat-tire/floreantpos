@@ -25,6 +25,7 @@ package com.floreantpos.ui.views.order;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -44,6 +45,7 @@ import net.miginfocom.swing.MigLayout;
 
 import com.floreantpos.IconFactory;
 import com.floreantpos.Messages;
+import com.floreantpos.POSConstants;
 import com.floreantpos.PosException;
 import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.main.Application;
@@ -267,9 +269,8 @@ public class TicketView extends JPanel {
 	}
 
 	private void createPayButton() {
-		btnTotal = new PosButton("Total");
-		//	btnTotal.setText("<html><h2>Total</h2></html>");
-		//btnTotal.setText("Total");
+		btnTotal = new PosButton(POSConstants.TOTAL.toUpperCase());
+		btnTotal.setFont(btnTotal.getFont().deriveFont(Font.BOLD));
 
 		if (!Application.getInstance().getTerminal().isHasCashDrawer()) {
 			btnTotal.setEnabled(false);
