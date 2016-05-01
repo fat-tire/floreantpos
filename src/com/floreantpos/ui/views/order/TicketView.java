@@ -301,7 +301,9 @@ public class TicketView extends JPanel {
 	}
 
 	private void createTicketItemControlPanel() {
-		ticketItemActionPanel.setLayout(new GridLayout(0, 1, 1, 1));
+		GridLayout gridLayout = new GridLayout(0, 1, 1, 3);
+		ticketItemActionPanel.setLayout(gridLayout);
+//		ticketItemActionPanel.setLayout(new MigLayout("fill, wrap 1, ins 0", "[fill, grow 100, shrink 100]", ""));
 		Dimension size = PosUIManager.getSize(40, 40);
 		btnScrollUp.setIcon(IconFactory.getIcon("/ui_icons/", "up.png", size)); //$NON-NLS-1$ //$NON-NLS-2$
 		btnScrollUp.addActionListener(new java.awt.event.ActionListener() {
