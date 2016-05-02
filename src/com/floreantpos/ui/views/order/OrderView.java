@@ -24,8 +24,6 @@
 package com.floreantpos.ui.views.order;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.GraphicsEnvironment;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
@@ -33,6 +31,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.JComponent;
+import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.event.ListSelectionEvent;
@@ -398,7 +397,7 @@ public class OrderView extends ViewPanel {
 			if (thisTicket != null) {
 				dialog.setTicket(thisTicket);
 			}
-			dialog.open();
+			dialog.openUndecoratedFullScreen();
 
 			if (dialog.isCanceled()) {
 				return;
@@ -489,10 +488,9 @@ public class OrderView extends ViewPanel {
 
 	protected void doAddEditCustomer() {
 		CustomerSelectionDialog dialog = new CustomerSelectionDialog(currentTicket);
-		Dimension size=GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().getSize();
-		dialog.setSize(size);
-		dialog.setResizable(true); 
-		dialog.open();
+		dialog.setSize(Application.getPosWindow().getSize());
+		dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+		dialog.openUndecoratedFullScreen();
 	}
 
 	protected void addDiscount() {

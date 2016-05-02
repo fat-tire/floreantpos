@@ -565,8 +565,9 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 		}
 
 		GroupSettleTicketDialog posDialog = new GroupSettleTicketDialog(tickets);
+		posDialog.setSize(Application.getPosWindow().getSize());
 		posDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-		posDialog.open();
+		posDialog.openUndecoratedFullScreen();
 
 		//tickteListViewObj.updateTicketList();
 		updateTicketList();

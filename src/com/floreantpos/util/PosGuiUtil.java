@@ -18,9 +18,7 @@
 package com.floreantpos.util;
 
 import java.awt.Dialog;
-import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.GraphicsEnvironment;
 import java.awt.RenderingHints;
 import java.awt.Transparency;
 import java.awt.Window;
@@ -28,6 +26,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 
 import javax.imageio.ImageIO;
+import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JTable;
 import javax.swing.border.TitledBorder;
@@ -64,9 +63,9 @@ public class PosGuiUtil {
 
 	public static Customer captureCustomer() {
 		CustomerSelectionDialog dialog = new CustomerSelectionDialog();
-		Dimension size = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().getSize();
-		dialog.setSize(size);
-		dialog.open();
+		dialog.setSize(Application.getPosWindow().getSize());
+		dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+		dialog.openUndecoratedFullScreen();
 
 		if (dialog.isCanceled()) {
 			return null;

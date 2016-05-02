@@ -67,7 +67,7 @@ public class OrderTypeButton extends PosButton implements ActionListener {
 			TableSelectorDialog dialog = TableSelectorFactory.createTableSelectorDialog(orderType);
 			dialog.setCreateNewTicket(true);
 			dialog.updateView(true);
-			dialog.open();
+			dialog.openUndecoratedFullScreen();
 
 			if (!dialog.isCanceled()) {
 				return;

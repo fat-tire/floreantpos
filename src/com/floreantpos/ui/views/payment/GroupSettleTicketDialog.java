@@ -81,9 +81,6 @@ public class GroupSettleTicketDialog extends POSDialog implements CardInputListe
 
 	public final static String VIEW_NAME = "PAYMENT_VIEW"; //$NON-NLS-1$
 
-	private com.floreantpos.swing.TransparentPanel leftPanel = new com.floreantpos.swing.TransparentPanel(new BorderLayout());
-	private com.floreantpos.swing.TransparentPanel rightPanel = new com.floreantpos.swing.TransparentPanel(new BorderLayout());
-
 	private GroupPaymentView paymentView;
 	private static List<Ticket> tickets;
 	private TicketDetailView ticketDetailView;
@@ -103,8 +100,8 @@ public class GroupSettleTicketDialog extends POSDialog implements CardInputListe
 	private String customerName;
 	private double totalDueAmount;
 
-	JLabel lblCustomer;
-	JLabel lblTable;
+	private JLabel lblCustomer;
+	private JLabel lblTable;
 
 	private JLabel labelTicketNumber;
 	private JLabel labelTableNumber;
@@ -124,26 +121,23 @@ public class GroupSettleTicketDialog extends POSDialog implements CardInputListe
 		}
 
 		setTitle(Messages.getString("SettleTicketDialog.6")); //$NON-NLS-1$
-
-		getContentPane().setLayout(new MigLayout("inset 0,fill", "[grow][grow]", ""));
+		getContentPane().setLayout(new BorderLayout());
 
 		ticketDetailView = new TicketDetailView();
-		paymentView = new GroupPaymentView(this);
 		ticketScrollPane = new PosScrollPane(ticketDetailView);
 
 		JPanel centerPanel = new JPanel(new BorderLayout(5, 5));
-		centerPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 5));
+		centerPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 0));
 
 		centerPanel.add(createTicketInfoPanel(), BorderLayout.NORTH);
 		centerPanel.add(ticketScrollPane, BorderLayout.CENTER);
 		centerPanel.add(createTotalViewerPanel(), BorderLayout.SOUTH);
 
-		leftPanel.add(centerPanel, BorderLayout.CENTER);
+		paymentView = new GroupPaymentView(this);
+		paymentView.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
-		rightPanel.add(paymentView);
-
-		getContentPane().add(leftPanel, "cell 0 0,grow");
-		getContentPane().add(rightPanel, "cell 1 0,grow");
+		getContentPane().add(centerPanel, BorderLayout.CENTER);
+		getContentPane().add(paymentView, BorderLayout.EAST);
 
 		setSize(Application.getPosWindow().getSize());
 		updateView();

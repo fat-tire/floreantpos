@@ -92,11 +92,6 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 	public static final String LOYALTY_DISCOUNT = "loyalty_discount"; //$NON-NLS-1$
 	public static final String LOYALTY_ID = "loyalty_id"; //$NON-NLS-1$
 
-	public final static String VIEW_NAME = "PAYMENT_VIEW"; //$NON-NLS-1$
-
-	private com.floreantpos.swing.TransparentPanel leftPanel = new com.floreantpos.swing.TransparentPanel(new BorderLayout());
-	private com.floreantpos.swing.TransparentPanel rightPanel = new com.floreantpos.swing.TransparentPanel(new BorderLayout());
-
 	private PaymentView paymentView;
 	private TicketViewerTable ticketViewerTable;
 	private javax.swing.JScrollPane ticketScrollPane;
@@ -104,11 +99,11 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 	private double tenderAmount;
 	private PaymentType paymentType;
 	private String cardName;
-	JTextField tfSubtotal;
-	JTextField tfDiscount;
-	JTextField tfTax;
-	JTextField tfTotal;
-	JTextField tfGratuity;
+	private JTextField tfSubtotal;
+	private JTextField tfDiscount;
+	private JTextField tfTax;
+	private JTextField tfTotal;
+	private JTextField tfGratuity;
 
 	//FIXME: change static modifier
 	public static PosPaymentWaitDialog waitDialog = new PosPaymentWaitDialog();
@@ -126,30 +121,27 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 		}
 
 		setTitle(Messages.getString("SettleTicketDialog.6")); //$NON-NLS-1$
-
-		getContentPane().setLayout(new MigLayout("inset 0,fill", "[grow][grow]", ""));
-
-		paymentView = new PaymentView(this);
-		ticketViewerTable = new TicketViewerTable(ticket);
-		ticketScrollPane = new PosScrollPane(ticketViewerTable);
+		getContentPane().setLayout(new BorderLayout());
 
 		JPanel centerPanel = new JPanel(new BorderLayout(5, 5));
-		centerPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 5));
+		centerPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 0));
+
+		ticketViewerTable = new TicketViewerTable(ticket);
+		ticketScrollPane = new PosScrollPane(ticketViewerTable);
 
 		centerPanel.add(createTicketInfoPanel(), BorderLayout.NORTH);
 		centerPanel.add(ticketScrollPane, BorderLayout.CENTER);
 		centerPanel.add(createTotalViewerPanel(), BorderLayout.SOUTH);
 
-		leftPanel.add(centerPanel, BorderLayout.CENTER);
+		paymentView = new PaymentView(this);
+		paymentView.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
-		rightPanel.add(paymentView);
+		getContentPane().add(centerPanel, BorderLayout.CENTER);
+		getContentPane().add(paymentView, BorderLayout.EAST);
 
-		getContentPane().add(leftPanel, "cell 0 0,grow");
-		getContentPane().add(rightPanel,"cell 1 0,grow");
 		paymentView.updateView();
 		paymentView.setDefaultFocus();
 		updateView();
-
 	}
 
 	private void consolidateTicketItems() {
@@ -322,7 +314,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 		lblTotal.setText(com.floreantpos.POSConstants.TOTAL + ":" + " " + Application.getCurrencySymbol()); //$NON-NLS-1$ //$NON-NLS-2$
 
 		tfTotal = new javax.swing.JTextField(10);
-		tfTotal.setFont(tfTotal.getFont().deriveFont(Font.BOLD,  PosUIManager.getFontSize(18)));
+		tfTotal.setFont(tfTotal.getFont().deriveFont(Font.BOLD, PosUIManager.getFontSize(18)));
 		tfTotal.setHorizontalAlignment(SwingConstants.TRAILING);
 		tfTotal.setEditable(false);
 

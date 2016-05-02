@@ -36,10 +36,11 @@ import com.floreantpos.Messages;
 import com.floreantpos.swing.FixedLengthDocument;
 import com.floreantpos.swing.POSToggleButton;
 import com.floreantpos.swing.PosButton;
+import com.floreantpos.swing.PosUIManager;
 import com.floreantpos.swing.TransparentPanel;
 
 public class NoteView extends JPanel implements ActionListener, ChangeListener {
-	Font buttonFont = getFont().deriveFont(Font.BOLD, 24);
+	Font buttonFont = getFont().deriveFont(Font.BOLD, PosUIManager.getFontSize(24));
 
 	String[] s1 = { "1", "2", "3", "4", "5", "6", "7", "8", "9", "0" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$
 	String[] s2 = { "q", "w", "e", "r", "t", "y", "u", "i", "o", "p" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$
@@ -49,23 +50,22 @@ public class NoteView extends JPanel implements ActionListener, ChangeListener {
 	JTextArea note = new JTextArea();
 
 	private ArrayList<PosButton> buttons = new ArrayList<PosButton>();
-	Dimension pSize = new Dimension(50, 50);
+	Dimension size = PosUIManager.getSize(60, 60);
 
 	public NoteView() {
 		setLayout(new BorderLayout(5, 5));
 
-		//note.setFont(note.getFont().deriveFont(Font.BOLD, 18));
 		note.setWrapStyleWord(true);
 		note.setLineWrap(true);
 		note.setDocument(new FixedLengthDocument(255));
 
 		TransparentPanel northPanel = new TransparentPanel(new BorderLayout());
 		JScrollPane scrollPane = new JScrollPane(note);
-		northPanel.setPreferredSize(new Dimension(100,60));
+		northPanel.setPreferredSize(new Dimension(100, 60));
 		northPanel.add(scrollPane);
 		add(northPanel, BorderLayout.NORTH);
 
-		TransparentPanel centerPanel = new TransparentPanel(new GridLayout(0,1,2,2));
+		TransparentPanel centerPanel = new TransparentPanel(new GridLayout(0, 1, 2, 2));
 		centerPanel.add(addButtonsToPanel(s1));
 		centerPanel.add(addButtonsToPanel(s2));
 		centerPanel.add(addButtonsToPanel(s3));
@@ -77,7 +77,7 @@ public class NoteView extends JPanel implements ActionListener, ChangeListener {
 		button.setText(Messages.getString("NoteView.40")); //$NON-NLS-1$
 		button.addActionListener(this);
 		eastPanel.add(button);
-		
+
 		POSToggleButton toggleButton = new POSToggleButton();
 		toggleButton.setText(Messages.getString("NoteView.41")); //$NON-NLS-1$
 		toggleButton.addChangeListener(this);
@@ -93,17 +93,17 @@ public class NoteView extends JPanel implements ActionListener, ChangeListener {
 		button.addActionListener(this);
 		eastPanel.add(button);
 
-		eastPanel.setPreferredSize(new Dimension(90, 50));
+		eastPanel.setPreferredSize(PosUIManager.getSize(90, 70));
 		add(eastPanel, BorderLayout.EAST);
 	}
 
 	private TransparentPanel addButtonsToPanel(String[] buttonText) {
-		TransparentPanel panel = new TransparentPanel(new GridLayout(0,s1.length,2,2));
+		TransparentPanel panel = new TransparentPanel(new GridLayout(0, s1.length, 2, 2));
 		for (int i = 0; i < buttonText.length; i++) {
 			String s = buttonText[i];
 			PosButton button = new PosButton();
 			button.setText(s);
-			button.setPreferredSize(pSize);
+			button.setPreferredSize(size);
 			button.addActionListener(this);
 			button.setFont(buttonFont);
 			buttons.add(button);
@@ -114,17 +114,10 @@ public class NoteView extends JPanel implements ActionListener, ChangeListener {
 
 	public void actionPerformed(ActionEvent e) {
 		note.requestFocus();
-		
+
 		String s = e.getActionCommand();
-		if (s.equals(com.floreantpos.POSConstants.OK)) {
-			//canceled = false;
-			//dispose();
-		}
-		else if (s.equals(com.floreantpos.POSConstants.CANCEL)) {
-			//canceled = true;
-			//dispose();
-		}
-		else if (s.equals(com.floreantpos.POSConstants.CLEAR)) {
+
+		if (s.equals(com.floreantpos.POSConstants.CLEAR)) {
 			String str = note.getText();
 			if (str.length() > 0) {
 				str = str.substring(0, str.length() - 1);
@@ -168,7 +161,7 @@ public class NoteView extends JPanel implements ActionListener, ChangeListener {
 	public String getNote() {
 		return note.getText();
 	}
-	
+
 	public void setNoteLength(int length) {
 		note.setDocument(new FixedLengthDocument(length));
 	}

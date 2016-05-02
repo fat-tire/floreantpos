@@ -19,7 +19,6 @@ package com.floreantpos.ui.tableselection;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Window;
@@ -104,7 +103,7 @@ public class DefaultTableSelectionView extends TableSelector implements ActionLi
 		//redererTable();
 
 		JideScrollPane scrollPane = new JideScrollPane(buttonsPanel, JideScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JideScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		scrollPane.getVerticalScrollBar().setPreferredSize(new Dimension(60, 0));
+		scrollPane.getVerticalScrollBar().setPreferredSize(PosUIManager.getSize(60, 0));
 
 		leftPanel.add(scrollPane, java.awt.BorderLayout.CENTER);
 
@@ -117,10 +116,10 @@ public class DefaultTableSelectionView extends TableSelector implements ActionLi
 		TitledBorder titledBorder2 = BorderFactory.createTitledBorder(null, "-", TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION); //$NON-NLS-1$
 
 		JPanel rightPanel = new JPanel(new BorderLayout(20, 20));
-		rightPanel.setPreferredSize(new Dimension(120, 0));
+		rightPanel.setPreferredSize(PosUIManager.getSize(120, 0));
 		rightPanel.setBorder(new CompoundBorder(titledBorder2, new EmptyBorder(2, 2, 6, 2)));
 
-		JPanel actionBtnPanel = new JPanel(new MigLayout("ins 2 2 0 2, hidemode 3, flowy", "grow", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		JPanel actionBtnPanel = new JPanel(new MigLayout("ins 2 2 0 2, hidemode 3, flowy", "sg fill, grow", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 		btnGroups = new ButtonGroup();
 
@@ -187,7 +186,7 @@ public class DefaultTableSelectionView extends TableSelector implements ActionLi
 		for (ShopTable shopTable : tables) {
 			ShopTableButton tableButton = new ShopTableButton(shopTable);
 			tableButton.setPreferredSize(PosUIManager.getSize(157, 138));
-			tableButton.setFont(new Font(tableButton.getFont().getName(), tableButton.getFont().getStyle(), PosUIManager.getTableNumberFontSize()));
+			tableButton.setFont(new Font(tableButton.getFont().getName(), Font.BOLD, PosUIManager.getTableNumberFontSize()));
 
 			tableButton.setText(tableButton.getText());
 			tableButton.addActionListener(new ActionListener() {
