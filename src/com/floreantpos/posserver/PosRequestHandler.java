@@ -92,40 +92,42 @@ public class PosRequestHandler extends Thread {
 	private POSResponse createResponse(POSRequest posRequest) {
 		POSResponse posResponse = new POSResponse();
 
-		String ttype = posRequest.ident.ttype;
+		//TODO: implement this method.
+		
+//		String ttype = posRequest.ident.ttype;
 
-		if (SettleTicketDialog.waitDialog.isVisible()) {
-			Ticket ticket = SettleTicketDialog.getInstance().getTicket();
-			posRequest.posDefaultInfo.check = ticket.getId().toString();
-			posRequest.posDefaultInfo.table = ticket.getTableNumbers().get(0).toString();
-		}
-
-		if (ttype.equals(Ident.GET_TABLES)) {
-			if (posRequest.posDefaultInfo.table.equals("0")) {
-				posResponse = addAllTables(posRequest);
-			}
-			else {
-				posResponse = addTable(posRequest);
-			}
-		}
-		else if (ttype.equals(Ident.APPLY_PAYMENT)) {
-			posResponse = applyPayment(posRequest);
-
-			if (posRequest.payment.edc.equals("1")) {
-				int checkId = Integer.parseInt(posRequest.posDefaultInfo.check);
-				posResponse.setPrintChecks(getPrintText(checkId));
-			}
-		}
-		else if (ttype.equals(Ident.PRINT_CHECK)) {
-			posResponse = printCheck(posRequest);
-		}
-
-		Ident ident = new Ident();
-		ident.setId(posRequest.ident.id);
-		ident.setTermserialno(posRequest.ident.termserialno);
-		ident.setTtype(posRequest.ident.ttype);
-
-		posResponse.setIdent(ident);
+//		if (SettleTicketDialog.waitDialog.isVisible()) {
+//			Ticket ticket = SettleTicketDialog.getInstance().getTicket();
+//			posRequest.posDefaultInfo.check = ticket.getId().toString();
+//			posRequest.posDefaultInfo.table = ticket.getTableNumbers().get(0).toString();
+//		}
+//
+//		if (ttype.equals(Ident.GET_TABLES)) {
+//			if (posRequest.posDefaultInfo.table.equals("0")) {
+//				posResponse = addAllTables(posRequest);
+//			}
+//			else {
+//				posResponse = addTable(posRequest);
+//			}
+//		}
+//		else if (ttype.equals(Ident.APPLY_PAYMENT)) {
+//			posResponse = applyPayment(posRequest);
+//
+//			if (posRequest.payment.edc.equals("1")) {
+//				int checkId = Integer.parseInt(posRequest.posDefaultInfo.check);
+//				posResponse.setPrintChecks(getPrintText(checkId));
+//			}
+//		}
+//		else if (ttype.equals(Ident.PRINT_CHECK)) {
+//			posResponse = printCheck(posRequest);
+//		}
+//
+//		Ident ident = new Ident();
+//		ident.setId(posRequest.ident.id);
+//		ident.setTermserialno(posRequest.ident.termserialno);
+//		ident.setTtype(posRequest.ident.ttype);
+//
+//		posResponse.setIdent(ident);
 
 		return posResponse;
 	}
