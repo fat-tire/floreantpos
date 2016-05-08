@@ -52,6 +52,7 @@ public class OrderTypeExplorer extends TransparentPanel {
 		tableModel.addColumn("Show Guest Selection", "showGuestSelection"); //$NON-NLS-1$
 		tableModel.addColumn(POSConstants.PRINT_TO_KITCHEN, "shouldPrintToKitchen"); //$NON-NLS-1$
 		tableModel.addColumn(POSConstants.ENABLED.toUpperCase(), "enabled"); //$NON-NLS-1$
+		tableModel.addColumn("PRE AUTH CREDIT CARD", "preAuthCreditCard"); //$NON-NLS-1$
 
 		tableModel.addRows(OrderTypeDAO.getInstance().findAll());
 

@@ -1,5 +1,6 @@
 package com.floreantpos.model.base;
 
+import java.lang.Comparable;
 import java.io.Serializable;
 
 
@@ -15,23 +16,24 @@ import java.io.Serializable;
 public abstract class BaseOrderType  implements Comparable, Serializable {
 
 	public static String REF = "OrderType";
-	public static String PROP_CLOSE_ON_PAID = "closeOnPaid";
-	public static String PROP_SHOW_TABLE_SELECTION = "showTableSelection";
-	public static String PROP_SHOW_GUEST_SELECTION = "showGuestSelection";
-	public static String PROP_SHOULD_PRINT_TO_KITCHEN = "shouldPrintToKitchen";
-	public static String PROP_REQUIRED_DELIVERY_DATA = "requiredDeliveryData";
-	public static String PROP_SHOW_ITEM_BARCODE = "showItemBarcode";
-	public static String PROP_HAS_FOR_HERE_AND_TO_GO = "hasForHereAndToGo";
+	public static String PROP_PRE_AUTH_CREDIT_CARD = "preAuthCreditCard";
 	public static String PROP_ENABLED = "enabled";
-	public static String PROP_BAR_TAB = "barTab";
-	public static String PROP_NAME = "name";
-	public static String PROP_SHOW_IN_LOGIN_SCREEN = "showInLoginScreen";
-	public static String PROP_PREPAID = "prepaid";
-	public static String PROP_ASSIGN_DRIVER = "assignDriver";
-	public static String PROP_REQUIRED_CUSTOMER_DATA = "requiredCustomerData";
-	public static String PROP_HIDE_ITEM_WITH_EMPTY_INVENTORY = "hideItemWithEmptyInventory";
-	public static String PROP_ID = "id";
+	public static String PROP_REQUIRED_DELIVERY_DATA = "requiredDeliveryData";
 	public static String PROP_CONSOLIDATE_ITEMS_IN_RECEIPT = "consolidateItemsInReceipt";
+	public static String PROP_REQUIRED_CUSTOMER_DATA = "requiredCustomerData";
+	public static String PROP_SHOW_IN_LOGIN_SCREEN = "showInLoginScreen";
+	public static String PROP_NAME = "name";
+	public static String PROP_SHOW_TABLE_SELECTION = "showTableSelection";
+	public static String PROP_SHOULD_PRINT_TO_KITCHEN = "shouldPrintToKitchen";
+	public static String PROP_CLOSE_ON_PAID = "closeOnPaid";
+	public static String PROP_BAR_TAB = "barTab";
+	public static String PROP_SHOW_ITEM_BARCODE = "showItemBarcode";
+	public static String PROP_SHOW_GUEST_SELECTION = "showGuestSelection";
+	public static String PROP_ID = "id";
+	public static String PROP_HIDE_ITEM_WITH_EMPTY_INVENTORY = "hideItemWithEmptyInventory";
+	public static String PROP_HAS_FOR_HERE_AND_TO_GO = "hasForHereAndToGo";
+	public static String PROP_ASSIGN_DRIVER = "assignDriver";
+	public static String PROP_PREPAID = "prepaid";
 
 
 	// constructors
@@ -84,6 +86,7 @@ public abstract class BaseOrderType  implements Comparable, Serializable {
 		protected java.lang.Boolean consolidateItemsInReceipt;
 		protected java.lang.Boolean hideItemWithEmptyInventory;
 		protected java.lang.Boolean hasForHereAndToGo;
+		protected java.lang.Boolean preAuthCreditCard;
 		protected java.lang.Boolean barTab;
 
 	// collections
@@ -364,6 +367,23 @@ public abstract class BaseOrderType  implements Comparable, Serializable {
 	 */
 	public void setHasForHereAndToGo (java.lang.Boolean hasForHereAndToGo) {
 		this.hasForHereAndToGo = hasForHereAndToGo;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: PRE_AUTH_CREDIT_CARD
+	 */
+	public java.lang.Boolean isPreAuthCreditCard () {
+								return preAuthCreditCard == null ? Boolean.FALSE : preAuthCreditCard;
+					}
+
+	/**
+	 * Set the value related to the column: PRE_AUTH_CREDIT_CARD
+	 * @param preAuthCreditCard the PRE_AUTH_CREDIT_CARD value
+	 */
+	public void setPreAuthCreditCard (java.lang.Boolean preAuthCreditCard) {
+		this.preAuthCreditCard = preAuthCreditCard;
 	}
 
 

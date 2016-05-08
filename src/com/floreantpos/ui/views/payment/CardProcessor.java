@@ -22,4 +22,5 @@ import com.floreantpos.model.PosTransaction;
 public interface CardProcessor {
 	public void preAuth(PosTransaction transaction) throws Exception;
 	public void captureAuthAmount(PosTransaction transaction) throws Exception;
+	public void chargeAmount(PosTransaction transaction) throws Exception;
 }

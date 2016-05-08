@@ -660,8 +660,14 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 
 				setTransactionAmounts(transaction);
 
-				paymentGateway.getProcessor().preAuth(transaction);
-
+				if (ticket.getOrderType().isPreAuthCreditCard()) {
+					paymentGateway.getProcessor().preAuth(transaction);
+				}
+				else {
+					paymentGateway.getProcessor().chargeAmount(transaction);
+				}
+				
+				
 				settleTicket(transaction);
 
 				return;
@@ -734,7 +740,12 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 				transaction.setCardReader(CardReader.SWIPE.name());
 				setTransactionAmounts(transaction);
 
-				cardProcessor.preAuth(transaction);
+				if (ticket.getOrderType().isPreAuthCreditCard()) {//OK
+					cardProcessor.preAuth(transaction);
+				}
+				else {
+					cardProcessor.chargeAmount(transaction);
+				}
 
 				settleTicket(transaction);
 			}

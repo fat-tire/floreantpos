@@ -138,7 +138,13 @@ public class NewBarTabAction extends AbstractAction implements CardInputListener
 				transaction.setCardMerchantGateway(paymentGateway.getName());
 				transaction.setCardReader(CardReader.SWIPE.name());
 
-				cardProcessor.preAuth(transaction);
+
+				if (ticket.getOrderType().isPreAuthCreditCard()) {
+					cardProcessor.preAuth(transaction);
+				}
+				else {
+					cardProcessor.chargeAmount(transaction);
+				}
 
 				saveTicket(transaction);
 
@@ -187,7 +193,7 @@ public class NewBarTabAction extends AbstractAction implements CardInputListener
 	private void saveTicket(PosTransaction transaction) {
 		try {
 			PosTransactionService transactionService = PosTransactionService.getInstance();
-			transactionService.settleBarTabTicket(transaction.getTicket(), transaction,false);
+			transactionService.settleBarTabTicket(transaction.getTicket(), transaction, false);
 
 			POSMessageDialog.showMessage(Messages.getString("NewBarTabAction.5") + transaction.getTicket().getId()); //$NON-NLS-1$
 			if (parentComponent instanceof ITicketList) {

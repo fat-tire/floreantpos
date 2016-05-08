@@ -62,6 +62,7 @@ public class AuthorizeDotNetProcessor implements CardProcessor {
 	}
 
 	public void preAuth(PosTransaction transaction) throws Exception {
+
 		Environment environment = createEnvironment();
 		Merchant merchant = createMerchant(environment);
 
@@ -74,6 +75,35 @@ public class AuthorizeDotNetProcessor implements CardProcessor {
 		Result<Transaction> result = (Result<Transaction>) merchant.postTransaction(authCaptureTransaction);
 
 		if (result.isApproved()) {
+			transaction.setCardTransactionId(result.getTransId());
+			transaction.setCardAuthCode(result.getAuthCode());
+			transaction.setCardType(result.getTarget().getCreditCard().getCardType().name());
+		}
+		else if (result.isDeclined()) {
+			throw new Exception(Messages.getString("AuthorizeDotNetProcessor.2") + result.getResponseReasonCodes().get(0).getReasonText()); //$NON-NLS-1$
+		}
+		else {
+			throw new Exception(Messages.getString("AuthorizeDotNetProcessor.3") + result.getResponseReasonCodes().get(0).getReasonText()); //$NON-NLS-1$
+		}
+	}
+	
+	@Override
+	public void chargeAmount(PosTransaction transaction) throws Exception {
+
+		Environment environment = createEnvironment();
+		Merchant merchant = createMerchant(environment);
+
+		CreditCard creditCard = createCard(transaction);
+
+		// Create transaction
+		Transaction authCaptureTransaction = merchant.createAIMTransaction(TransactionType.AUTH_CAPTURE, new BigDecimal(transaction.calculateAuthorizeAmount()));
+		authCaptureTransaction.setCreditCard(creditCard);
+
+		Result<Transaction> result = (Result<Transaction>) merchant.postTransaction(authCaptureTransaction);
+
+		if (result.isApproved()) {
+			transaction.setCaptured(true);
+			transaction.setAuthorizable(false);
 			transaction.setCardTransactionId(result.getTransId());
 			transaction.setCardAuthCode(result.getAuthCode());
 			transaction.setCardType(result.getTarget().getCreditCard().getCardType().name());

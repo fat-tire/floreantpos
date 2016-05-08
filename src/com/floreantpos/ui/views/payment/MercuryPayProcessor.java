@@ -142,4 +142,10 @@ public class MercuryPayProcessor implements CardProcessor {
 		transaction.setCardTransactionId(result.getTransactionId());
 		transaction.setCardAuthCode(result.getAuthCode());
 	}
+
+	@Override
+	public void chargeAmount(PosTransaction transaction) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
 }

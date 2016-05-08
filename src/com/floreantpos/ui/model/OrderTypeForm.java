@@ -66,6 +66,7 @@ public class OrderTypeForm extends BeanEditor {
 	private JCheckBox chkHideItemWithEmptyInventory;
 	private JCheckBox chkHasForHereAndToGo;
 	private JCheckBox chkBarTab;
+	private JCheckBox chkPreAuthCreditCard;
 
 	OrderType orderType;
 	JList<String> list;
@@ -113,6 +114,7 @@ public class OrderTypeForm extends BeanEditor {
 		chkHideItemWithEmptyInventory = new JCheckBox(Messages.getString("OrderTypeForm.12")); //$NON-NLS-1$
 		chkHasForHereAndToGo = new JCheckBox(Messages.getString("OrderTypeForm.13")); //$NON-NLS-1$
 		chkBarTab = new JCheckBox("Bar Tab"); //$NON-NLS-1$
+		chkPreAuthCreditCard = new JCheckBox("Pre authorize credit card"); //$NON-NLS-1$
 
 		generalPanel.setLayout(new MigLayout("", "[87px][327px,grow]", "[19px][][19px][][][21px][15px]")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		generalPanel.add(jLabel1, "cell 0 0,alignx left,aligny center"); //$NON-NLS-1$
@@ -135,6 +137,7 @@ public class OrderTypeForm extends BeanEditor {
 		generalPanel.add(chkHideItemWithEmptyInventory, "cell 1 13,alignx left,aligny top"); //$NON-NLS-1$
 		generalPanel.add(chkHasForHereAndToGo, "cell 1 14,alignx left,aligny top"); //$NON-NLS-1$
 		generalPanel.add(chkBarTab, "cell 1 15,alignx left,aligny top"); //$NON-NLS-1$
+		generalPanel.add(chkPreAuthCreditCard, "cell 1 16,alignx left,aligny top"); //$NON-NLS-1$
 
 		add(generalPanel);
 	}
@@ -168,6 +171,7 @@ public class OrderTypeForm extends BeanEditor {
 			chkHideItemWithEmptyInventory.setSelected(ordersType.isHideItemWithEmptyInventory());
 			chkHasForHereAndToGo.setSelected(ordersType.isHasForHereAndToGo());
 			chkBarTab.setSelected(ordersType.isBarTab());
+			chkPreAuthCreditCard.setSelected(ordersType.isPreAuthCreditCard());
 		}
 	}
 
@@ -199,6 +203,7 @@ public class OrderTypeForm extends BeanEditor {
 			ordersType.setConsolidateItemsInReceipt(chkConsolidateItemsInReceipt.isSelected());
 			ordersType.setHideItemWithEmptyInventory(chkHideItemWithEmptyInventory.isSelected());
 			ordersType.setHasForHereAndToGo(chkHasForHereAndToGo.isSelected());
+			ordersType.setPreAuthCreditCard(chkPreAuthCreditCard.isSelected());
 		}
 		ordersType.setBarTab(chkBarTab.isSelected());
 
