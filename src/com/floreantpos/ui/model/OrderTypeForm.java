@@ -113,8 +113,8 @@ public class OrderTypeForm extends BeanEditor {
 		chkConsolidateItemsInReceipt = new JCheckBox(Messages.getString("OrderTypeForm.11")); //$NON-NLS-1$
 		chkHideItemWithEmptyInventory = new JCheckBox(Messages.getString("OrderTypeForm.12")); //$NON-NLS-1$
 		chkHasForHereAndToGo = new JCheckBox(Messages.getString("OrderTypeForm.13")); //$NON-NLS-1$
-		chkBarTab = new JCheckBox("Bar Tab"); //$NON-NLS-1$
-		chkPreAuthCreditCard = new JCheckBox("Pre authorize credit card"); //$NON-NLS-1$
+		chkBarTab = new JCheckBox(Messages.getString("OrderTypeForm.14")); //$NON-NLS-1$
+		chkPreAuthCreditCard = new JCheckBox(Messages.getString("OrderTypeForm.0")); //$NON-NLS-1$
 
 		generalPanel.setLayout(new MigLayout("", "[87px][327px,grow]", "[19px][][19px][][][21px][15px]")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		generalPanel.add(jLabel1, "cell 0 0,alignx left,aligny center"); //$NON-NLS-1$

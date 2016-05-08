@@ -48,11 +48,11 @@ public class OrderTypeExplorer extends TransparentPanel {
 		tableModel = new BeanTableModel<OrderType>(OrderType.class);
 		tableModel.addColumn(POSConstants.ID.toUpperCase(), "id"); //$NON-NLS-1$
 		tableModel.addColumn(POSConstants.NAME.toUpperCase(), "name"); //$NON-NLS-1$
-		tableModel.addColumn("Show Table Selection", "showTableSelection"); //$NON-NLS-1$
-		tableModel.addColumn("Show Guest Selection", "showGuestSelection"); //$NON-NLS-1$
+		tableModel.addColumn(Messages.getString("OrderTypeExplorer.0"), "showTableSelection"); //$NON-NLS-1$ //$NON-NLS-2$
+		tableModel.addColumn(Messages.getString("OrderTypeExplorer.2"), "showGuestSelection"); //$NON-NLS-1$ //$NON-NLS-2$
 		tableModel.addColumn(POSConstants.PRINT_TO_KITCHEN, "shouldPrintToKitchen"); //$NON-NLS-1$
 		tableModel.addColumn(POSConstants.ENABLED.toUpperCase(), "enabled"); //$NON-NLS-1$
-		tableModel.addColumn("PRE AUTH CREDIT CARD", "preAuthCreditCard"); //$NON-NLS-1$
+		tableModel.addColumn(Messages.getString("OrderTypeExplorer.4"), "preAuthCreditCard"); //$NON-NLS-1$ //$NON-NLS-2$
 
 		tableModel.addRows(OrderTypeDAO.getInstance().findAll());
 

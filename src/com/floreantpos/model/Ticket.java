@@ -65,6 +65,8 @@ public class Ticket extends BaseTicket {
 	public static final String PROPERTY_ADVANCE_PAYMENT = "advance_payment"; //$NON-NLS-1$
 	public static final String PROPERTY_CARD_AUTH_CODE = "card_auth_code"; //$NON-NLS-1$
 
+	private OrderType orderType;
+
 	/* [CONSTRUCTOR MARKER BEGIN] */
 	public Ticket() {
 		super();
@@ -565,16 +567,20 @@ public class Ticket extends BaseTicket {
 	}
 
 	public OrderType getOrderType() {
-		String type = getTicketType();
 
 		/*if (StringUtils.isEmpty(type)) {
 			return OrderType.DINE_IN;
 		}*/
 
-		return OrderTypeDAO.getInstance().findByName(type);
+		if (orderType == null) {
+			String type = getTicketType();
+			orderType = OrderTypeDAO.getInstance().findByName(type);
+		}
+		return orderType;
 	}
 
 	public void setOrderType(OrderType type) {
+		orderType = type;
 		setTicketType(type.getName());
 	}
 
