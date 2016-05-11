@@ -123,7 +123,7 @@ public class CustomerSelectionDialog extends POSDialog {
 		searchPanel.add(tfLoyaltyNo, "growy"); //$NON-NLS-1$
 		searchPanel.add(lblByName, "growy");
 		searchPanel.add(tfName, "growy"); //$NON-NLS-1$
-		searchPanel.add(btnSearch, ",growy,h "+PosUIManager.getSize(35)+"!"); //$NON-NLS-1$
+		searchPanel.add(btnSearch, ",growy,h " + PosUIManager.getSize(35) + "!"); //$NON-NLS-1$
 
 		add(searchPanel, "cell 0 1"); //$NON-NLS-1$
 
@@ -158,19 +158,19 @@ public class CustomerSelectionDialog extends POSDialog {
 
 		customerListPanel.add(scrollPane, BorderLayout.CENTER);
 
-		JPanel panel = new JPanel(new MigLayout("al center"));
+		JPanel panel = new JPanel(new MigLayout("al center", "sg", ""));
 		btnInfo = new PosButton(Messages.getString("CustomerSelectionDialog.23")); //$NON-NLS-1$
 		btnInfo.setFocusable(false);
-		panel.add(btnInfo);
+		panel.add(btnInfo, "grow");
 		btnInfo.setEnabled(false);
 
 		PosButton btnHistory = new PosButton(Messages.getString("CustomerSelectionDialog.24")); //$NON-NLS-1$
 		btnHistory.setEnabled(false);
-		panel.add(btnHistory);
+		panel.add(btnHistory, "grow");
 
 		btnCreateNewCustomer = new PosButton(Messages.getString("CustomerSelectionDialog.25")); //$NON-NLS-1$
 		btnCreateNewCustomer.setFocusable(false);
-		panel.add(btnCreateNewCustomer);
+		panel.add(btnCreateNewCustomer, "grow");
 		btnCreateNewCustomer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				doCreateNewCustomer();
@@ -183,7 +183,7 @@ public class CustomerSelectionDialog extends POSDialog {
 				doRemoveCustomerFromTicket();
 			}
 		});
-		panel.add(btnRemoveCustomer);
+		panel.add(btnRemoveCustomer, "grow");
 
 		PosButton btnSelect = new PosButton(Messages.getString("CustomerSelectionDialog.28")); //$NON-NLS-1$
 		btnSelect.addActionListener(new ActionListener() {
@@ -200,7 +200,7 @@ public class CustomerSelectionDialog extends POSDialog {
 				dispose();
 			}
 		});
-		panel.add(btnSelect);
+		panel.add(btnSelect, "grow");
 
 		PosButton btnCancel = new PosButton(Messages.getString("CustomerSelectionDialog.29")); //$NON-NLS-1$
 		btnCancel.addActionListener(new ActionListener() {
@@ -209,7 +209,7 @@ public class CustomerSelectionDialog extends POSDialog {
 				dispose();
 			}
 		});
-		panel.add(btnCancel);
+		panel.add(btnCancel, "grow");
 
 		customerListPanel.add(panel, BorderLayout.SOUTH);
 		centerPanel.add(customerListPanel, BorderLayout.CENTER); //$NON-NLS-1$
