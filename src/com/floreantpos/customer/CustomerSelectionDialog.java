@@ -136,7 +136,7 @@ public class CustomerSelectionDialog extends POSDialog {
 		customerTable = new CustomerTable();
 		customerTable.setModel(new CustomerListTableModel());
 		customerTable.setFocusable(false);
-		customerTable.setRowHeight(35);
+		customerTable.setRowHeight(60);
 		customerTable.getTableHeader().setPreferredSize(new Dimension(100, 35));
 		customerTable.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		customerTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
