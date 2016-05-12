@@ -274,6 +274,24 @@ public class TicketDAO extends BaseTicketDAO {
 		}
 	}
 
+	public List<Ticket> findOpenTickets(Integer customerId) {
+		Session session = null;
+
+		try {
+			session = getSession();
+			Criteria criteria = session.createCriteria(getReferenceClass());
+			criteria.add(Restrictions.eq(Ticket.PROP_CLOSED, Boolean.FALSE));
+			criteria.add(Restrictions.eq(Ticket.PROP_PAID, Boolean.FALSE));
+			criteria.add(Restrictions.eq(Ticket.PROP_CUSTOMER_ID, customerId));
+			criteria.addOrder(getDefaultOrder());
+
+			List list = criteria.list();
+			return list;
+		} finally {
+			closeSession(session);
+		}
+	}
+
 	public List<Ticket> findOpenTickets(Terminal terminal, UserType userType) {
 		Session session = null;
 
@@ -371,6 +389,115 @@ public class TicketDAO extends BaseTicketDAO {
 			session = createNewSession();
 			criteria = session.createCriteria(getReferenceClass());
 			updateCriteriaFilters(criteria);
+
+			criteria.setFirstResult(previousIndex);
+			criteria.setMaxResults(tableModel.getPageSize());
+
+			List ticketList = criteria.list();
+
+			criteria.setProjection(Projections.rowCount());
+			Integer rowCount = (Integer) criteria.uniqueResult();
+			if (rowCount != null) {
+				tableModel.setNumRows(rowCount);
+
+			}
+
+			tableModel.setCurrentRowIndex(previousIndex);
+
+			return ticketList;
+
+		} finally {
+			closeSession(session);
+		}
+	}
+
+	public List<Ticket> findCustomerTickets(Integer customerId, PaginatedTableModel tableModel, String filter) {
+		Session session = null;
+		Criteria criteria = null;
+
+		try {
+			session = createNewSession();
+			criteria = session.createCriteria(getReferenceClass());
+			criteria.add(Restrictions.eq(Ticket.PROP_CUSTOMER_ID, customerId));
+
+			if (filter.equals(PaymentStatusFilter.OPEN.toString())) {
+				criteria.add(Restrictions.eq(Ticket.PROP_PAID, Boolean.FALSE));
+				criteria.add(Restrictions.eq(Ticket.PROP_CLOSED, Boolean.FALSE));
+			}
+
+			criteria.setFirstResult(0);
+			criteria.setMaxResults(tableModel.getPageSize());
+
+			List ticketList = criteria.list();
+
+			criteria.setProjection(Projections.rowCount());
+			Integer rowCount = (Integer) criteria.uniqueResult();
+			if (rowCount != null) {
+				tableModel.setNumRows(rowCount);
+
+			}
+
+			tableModel.setCurrentRowIndex(0);
+
+			return ticketList;
+
+		} finally {
+			closeSession(session);
+		}
+	}
+
+	public List<Ticket> findNextCustomerTickets(Integer customerId, PaginatedTableModel tableModel, String filter) {
+		Session session = null;
+		Criteria criteria = null;
+
+		try {
+			int nextIndex = tableModel.getNextRowIndex();
+
+			session = createNewSession();
+			criteria = session.createCriteria(getReferenceClass());
+			criteria.add(Restrictions.eq(Ticket.PROP_CUSTOMER_ID, customerId));
+
+			if (filter.equals(PaymentStatusFilter.OPEN)) {
+				criteria.add(Restrictions.eq(Ticket.PROP_PAID, Boolean.FALSE));
+				criteria.add(Restrictions.eq(Ticket.PROP_CLOSED, Boolean.FALSE));
+			}
+
+			criteria.setFirstResult(nextIndex);
+			criteria.setMaxResults(tableModel.getPageSize());
+
+			List ticketList = criteria.list();
+
+			criteria.setProjection(Projections.rowCount());
+			Integer rowCount = (Integer) criteria.uniqueResult();
+			if (rowCount != null) {
+				tableModel.setNumRows(rowCount);
+
+			}
+
+			tableModel.setCurrentRowIndex(nextIndex);
+
+			return ticketList;
+
+		} finally {
+			closeSession(session);
+		}
+	}
+
+	public List<Ticket> findPreviousCustomerTickets(Integer customerId, PaginatedTableModel tableModel, String filter) {
+		Session session = null;
+		Criteria criteria = null;
+		try {
+
+			int previousIndex = tableModel.getPreviousRowIndex();
+
+			session = createNewSession();
+			criteria = session.createCriteria(getReferenceClass());
+			criteria.add(Restrictions.eq(Ticket.PROP_CUSTOMER_ID, customerId));
+
+			if (filter.equals(PaymentStatusFilter.OPEN)) {
+				criteria.add(Restrictions.eq(Ticket.PROP_PAID, Boolean.FALSE));
+				criteria.add(Restrictions.eq(Ticket.PROP_CLOSED, Boolean.FALSE));
+			}
 
 			criteria.setFirstResult(previousIndex);
 			criteria.setMaxResults(tableModel.getPageSize());

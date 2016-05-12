@@ -22,4 +22,5 @@ import com.floreantpos.model.Ticket;
 public interface ITicketList {
 	Ticket getSelectedTicket();
 	void updateTicketList();
+	void updateCustomerTicketList(Integer customerId,String filter);
 }

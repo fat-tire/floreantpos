@@ -78,6 +78,8 @@ public class TicketListView extends JPanel implements ITicketList {
 	private Date lastUpdateTime;
 	private Timer lastUpateCheckTimer = new Timer(5 * 1000, new TaskLastUpdateCheck());
 
+	private Integer customerId;
+	private String filter;
 	private POSToggleButton btnOrderFilters;
 
 	public TicketListView() {
@@ -92,6 +94,16 @@ public class TicketListView extends JPanel implements ITicketList {
 
 		updateButtonStatus();
 
+	}
+
+	public TicketListView(Integer customerId) {
+		setLayout(new BorderLayout());
+		orderFiltersPanel = new OrderFilterPanel(this, customerId);
+		add(orderFiltersPanel, BorderLayout.NORTH);
+		
+		createTicketTable();
+		updateTicketList();
+		updateButtonStatus();
 	}
 
 	private void createTicketTable() {
@@ -238,7 +250,12 @@ public class TicketListView extends JPanel implements ITicketList {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				getTableModel().setCurrentRowIndex(0);
-				updateTicketList();
+				if (customerId != null) {
+					updateCustomerTicketList(customerId, filter);
+				}
+				else {
+					updateTicketList();
+				}
 				updateButtonStatus();
 
 			}
@@ -267,6 +284,48 @@ public class TicketListView extends JPanel implements ITicketList {
 			TicketListTableModel ticketListTableModel = getTableModel();
 
 			List<Ticket> tickets = TicketDAO.getInstance().findTickets(ticketListTableModel);
+
+			setTickets(tickets);
+
+			btnRefresh.setBlinking(false);
+
+			for (int i = 0; i < ticketUpdateListenerList.size(); i++) {
+				TicketListUpdateListener listener = ticketUpdateListenerList.get(i);
+				listener.ticketListUpdated();
+			}
+
+		} catch (Exception e) {
+			POSMessageDialog.showError(this, Messages.getString("SwitchboardView.19"), e); //$NON-NLS-1$
+		} finally {
+			Application.getPosWindow().setGlassPaneVisible(false);
+		}
+
+		try {
+
+			DataUpdateInfo lastUpdateInfo = DataUpdateInfoDAO.getLastUpdateInfo();
+
+			if (lastUpdateInfo != null) {
+				this.lastUpdateTime = new Date(lastUpdateInfo.getLastUpdateTime().getTime());
+			}
+
+		} catch (Exception e) {
+			POSMessageDialog.showError(this, Messages.getString("SwitchboardView.20"), e); //$NON-NLS-1$
+		}
+
+		lastUpateCheckTimer.restart();
+	}
+
+	public synchronized void updateCustomerTicketList(Integer memberId, String filter) {
+		lastUpateCheckTimer.stop();
+		this.customerId = memberId;
+		this.filter = filter;
+
+		try {
+			Application.getPosWindow().setGlassPaneVisible(true);
+
+			TicketListTableModel ticketListTableModel = getTableModel();
+
+			List<Ticket> tickets = TicketDAO.getInstance().findCustomerTickets(memberId, ticketListTableModel, filter);
 
 			setTickets(tickets);
 

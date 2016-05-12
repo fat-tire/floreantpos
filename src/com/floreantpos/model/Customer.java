@@ -65,4 +65,9 @@ public class Customer extends BaseCustomer {
 		String fName = getFirstName();
 		return fName;
 	}
+	
+	public String getName(){
+		String name=super.getFirstName()+" "+ super.getLastName();  //$NON-NLS-1$ 
+		return name; 
+	}
 }

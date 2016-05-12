@@ -63,6 +63,12 @@ public class TicketSelectionDialog extends OkCancelOptionDialog {
 		initData();
 	}
 
+	public TicketSelectionDialog(List<Ticket> tickets) {
+		initComponent();
+		rendererTickets(tickets);
+		setResizable(true);
+	}
+
 	private void initComponent() {
 		setOkButtonText(Messages.getString("TicketSelectionDialog.3"));//$NON-NLS-1$
 		buttonsPanel = new ScrollableFlowPanel(FlowLayout.LEADING);
@@ -88,6 +94,20 @@ public class TicketSelectionDialog extends OkCancelOptionDialog {
 				buttonsPanel.add(btnTicket);
 				btnTicket.setPreferredSize(size);
 			}
+		} catch (PosException e) {
+			POSMessageDialog.showError(TicketSelectionDialog.this, e.getLocalizedMessage(), e);
+		}
+	}
+
+	private void rendererTickets(List<Ticket> tickets) {
+		try {
+			for (Ticket ticket : tickets) {
+				if (ticket.getDueAmount() < 0) {
+					continue;
+				}
+				buttonsPanel.add(new TicketButton(ticket));
+			}
+
 		} catch (PosException e) {
 			POSMessageDialog.showError(TicketSelectionDialog.this, e.getLocalizedMessage(), e);
 		}

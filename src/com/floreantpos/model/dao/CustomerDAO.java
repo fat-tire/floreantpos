@@ -68,6 +68,28 @@ public class CustomerDAO extends BaseCustomerDAO {
 				closeSession(session);
 			}
 		}
+	}
+
+	public List<Customer> findBy(String searchString) {
+		Session session = null;
+
+		try {
+			session = getSession();
+			Criteria criteria = session.createCriteria(getReferenceClass());
+			Disjunction disjunction = Restrictions.disjunction();
+
+			if (StringUtils.isNotEmpty(searchString))
+				disjunction.add(Restrictions.like(Customer.PROP_MOBILE_NO, "%" + searchString + "%"));
+			disjunction.add(Restrictions.like(Customer.PROP_LOYALTY_NO, "%" + searchString + "%"));
+			disjunction.add(Restrictions.like(Customer.PROP_FIRST_NAME, "%" + searchString + "%"));
+
+			criteria.add(disjunction);
+			return criteria.list();
+		} finally {
+			if (session != null) {
+				closeSession(session);
+			}
+		}
 
 	}
 
@@ -77,10 +99,9 @@ public class CustomerDAO extends BaseCustomerDAO {
 		try {
 			session = getSession();
 			Criteria criteria = session.createCriteria(getReferenceClass());
-			
-			
+
 			if (StringUtils.isNotEmpty(name))
-				criteria.add(Restrictions.ilike(Customer.PROP_FIRST_NAME, name+"%".trim(),MatchMode.ANYWHERE)); //$NON-NLS-1$ //$NON-NLS-2$
+				criteria.add(Restrictions.ilike(Customer.PROP_FIRST_NAME, name + "%".trim(), MatchMode.ANYWHERE)); //$NON-NLS-1$ //$NON-NLS-2$
 
 			return criteria.list();
 

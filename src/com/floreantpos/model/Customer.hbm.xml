@@ -30,6 +30,20 @@
 		<property name="creditSpent" column="CREDIT_SPENT" type="java.lang.Double" />
 		<property name="creditCardNo" column="CREDIT_CARD_NO" length="30" type="string" />
 		<property name="note" column="NOTE" length="255" type="string" />
+		
+		<bag cascade="all,delete-orphan" inverse="true" lazy="false" name="deliveryAddresses" table="DELIVERY_ADDRESS">
+			<key>
+				<column name="CUSTOMER_ID" />
+			</key>
+			<one-to-many class="com.floreantpos.model.DeliveryAddress" />
+		</bag>
+		
+		<bag cascade="all,delete-orphan" inverse="true" lazy="false" name="deliveryInstructions" table="DELIVERY_INSTRUCTION">
+			<key>
+				<column name="CUSTOMER_NO" />
+			</key>
+			<one-to-many class="com.floreantpos.model.DeliveryInstruction" />
+		</bag>
 
 		<map name="properties" cascade="all" lazy="false" table="CUSTOMER_PROPERTIES">
 			<key column="id"/>

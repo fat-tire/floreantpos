@@ -15,31 +15,31 @@ import java.io.Serializable;
 
 public abstract class BaseCustomer  implements Comparable, Serializable {
 
-	public static String REF = "Customer"; //$NON-NLS-1$
-	public static String PROP_PICTURE = "picture"; //$NON-NLS-1$
-	public static String PROP_SOCIAL_SECURITY_NUMBER = "socialSecurityNumber"; //$NON-NLS-1$
-	public static String PROP_WORK_PHONE_NO = "workPhoneNo"; //$NON-NLS-1$
-	public static String PROP_VIP = "vip"; //$NON-NLS-1$
-	public static String PROP_LOYALTY_POINT = "loyaltyPoint"; //$NON-NLS-1$
-	public static String PROP_SALUTATION = "salutation"; //$NON-NLS-1$
-	public static String PROP_NOTE = "note"; //$NON-NLS-1$
-	public static String PROP_HOME_PHONE_NO = "homePhoneNo"; //$NON-NLS-1$
-	public static String PROP_COUNTRY = "country"; //$NON-NLS-1$
-	public static String PROP_LAST_NAME = "lastName"; //$NON-NLS-1$
-	public static String PROP_ZIP_CODE = "zipCode"; //$NON-NLS-1$
-	public static String PROP_DOB = "dob"; //$NON-NLS-1$
-	public static String PROP_CITY = "city"; //$NON-NLS-1$
-	public static String PROP_SSN = "ssn"; //$NON-NLS-1$
-	public static String PROP_MOBILE_NO = "mobileNo"; //$NON-NLS-1$
-	public static String PROP_STATE = "state"; //$NON-NLS-1$
-	public static String PROP_EMAIL = "email"; //$NON-NLS-1$
-	public static String PROP_CREDIT_SPENT = "creditSpent"; //$NON-NLS-1$
-	public static String PROP_ADDRESS = "address"; //$NON-NLS-1$
-	public static String PROP_AUTO_ID = "autoId"; //$NON-NLS-1$
-	public static String PROP_FIRST_NAME = "firstName"; //$NON-NLS-1$
-	public static String PROP_CREDIT_CARD_NO = "creditCardNo"; //$NON-NLS-1$
-	public static String PROP_CREDIT_LIMIT = "creditLimit"; //$NON-NLS-1$
-	public static String PROP_LOYALTY_NO = "loyaltyNo"; //$NON-NLS-1$
+	public static String REF = "Customer";
+	public static String PROP_PICTURE = "picture";
+	public static String PROP_SOCIAL_SECURITY_NUMBER = "socialSecurityNumber";
+	public static String PROP_WORK_PHONE_NO = "workPhoneNo";
+	public static String PROP_VIP = "vip";
+	public static String PROP_LOYALTY_POINT = "loyaltyPoint";
+	public static String PROP_SALUTATION = "salutation";
+	public static String PROP_NOTE = "note";
+	public static String PROP_HOME_PHONE_NO = "homePhoneNo";
+	public static String PROP_COUNTRY = "country";
+	public static String PROP_LAST_NAME = "lastName";
+	public static String PROP_ZIP_CODE = "zipCode";
+	public static String PROP_DOB = "dob";
+	public static String PROP_CITY = "city";
+	public static String PROP_SSN = "ssn";
+	public static String PROP_MOBILE_NO = "mobileNo";
+	public static String PROP_STATE = "state";
+	public static String PROP_EMAIL = "email";
+	public static String PROP_CREDIT_SPENT = "creditSpent";
+	public static String PROP_ADDRESS = "address";
+	public static String PROP_AUTO_ID = "autoId";
+	public static String PROP_FIRST_NAME = "firstName";
+	public static String PROP_CREDIT_CARD_NO = "creditCardNo";
+	public static String PROP_CREDIT_LIMIT = "creditLimit";
+	public static String PROP_LOYALTY_NO = "loyaltyNo";
 
 
 	// constructors
@@ -90,7 +90,9 @@ public abstract class BaseCustomer  implements Comparable, Serializable {
 		protected java.lang.String note;
 
 	// collections
-	private java.util.Map<String,String> properties;
+	private java.util.List<com.floreantpos.model.DeliveryAddress> deliveryAddresses;
+	private java.util.List<com.floreantpos.model.DeliveryInstruction> deliveryInstructions;
+	private java.util.Map<String, String> properties;
 
 
 
@@ -508,9 +510,53 @@ public abstract class BaseCustomer  implements Comparable, Serializable {
 
 
 	/**
+	 * Return the value associated with the column: deliveryAddresses
+	 */
+	public java.util.List<com.floreantpos.model.DeliveryAddress> getDeliveryAddresses () {
+					return deliveryAddresses;
+			}
+
+	/**
+	 * Set the value related to the column: deliveryAddresses
+	 * @param deliveryAddresses the deliveryAddresses value
+	 */
+	public void setDeliveryAddresses (java.util.List<com.floreantpos.model.DeliveryAddress> deliveryAddresses) {
+		this.deliveryAddresses = deliveryAddresses;
+	}
+
+	public void addTodeliveryAddresses (com.floreantpos.model.DeliveryAddress deliveryAddress) {
+		if (null == getDeliveryAddresses()) setDeliveryAddresses(new java.util.ArrayList<com.floreantpos.model.DeliveryAddress>());
+		getDeliveryAddresses().add(deliveryAddress);
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: deliveryInstructions
+	 */
+	public java.util.List<com.floreantpos.model.DeliveryInstruction> getDeliveryInstructions () {
+					return deliveryInstructions;
+			}
+
+	/**
+	 * Set the value related to the column: deliveryInstructions
+	 * @param deliveryInstructions the deliveryInstructions value
+	 */
+	public void setDeliveryInstructions (java.util.List<com.floreantpos.model.DeliveryInstruction> deliveryInstructions) {
+		this.deliveryInstructions = deliveryInstructions;
+	}
+
+	public void addTodeliveryInstructions (com.floreantpos.model.DeliveryInstruction deliveryInstruction) {
+		if (null == getDeliveryInstructions()) setDeliveryInstructions(new java.util.ArrayList<com.floreantpos.model.DeliveryInstruction>());
+		getDeliveryInstructions().add(deliveryInstruction);
+	}
+
+
+
+	/**
 	 * Return the value associated with the column: properties
 	 */
-	public java.util.Map<String,String> getProperties () {
+	public java.util.Map<String, String> getProperties () {
 					return properties;
 			}
 
@@ -518,7 +564,7 @@ public abstract class BaseCustomer  implements Comparable, Serializable {
 	 * Set the value related to the column: properties
 	 * @param properties the properties value
 	 */
-	public void setProperties (java.util.Map<String,String> properties) {
+	public void setProperties (java.util.Map<String, String> properties) {
 		this.properties = properties;
 	}
 
@@ -540,7 +586,7 @@ public abstract class BaseCustomer  implements Comparable, Serializable {
 		if (Integer.MIN_VALUE == this.hashCode) {
 			if (null == this.getAutoId()) return super.hashCode();
 			else {
-				String hashStr = this.getClass().getName() + ":" + this.getAutoId().hashCode(); //$NON-NLS-1$
+				String hashStr = this.getClass().getName() + ":" + this.getAutoId().hashCode();
 				this.hashCode = hashStr.hashCode();
 			}
 		}

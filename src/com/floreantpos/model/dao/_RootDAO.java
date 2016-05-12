@@ -32,6 +32,8 @@ import com.floreantpos.model.CookingInstruction;
 import com.floreantpos.model.CustomPayment;
 import com.floreantpos.model.Customer;
 import com.floreantpos.model.DataUpdateInfo;
+import com.floreantpos.model.DeliveryAddress;
+import com.floreantpos.model.DeliveryInstruction;
 import com.floreantpos.model.Discount;
 import com.floreantpos.model.DrawerAssignedHistory;
 import com.floreantpos.model.DrawerPullReport;
@@ -157,6 +159,8 @@ public abstract class _RootDAO extends com.floreantpos.model.dao._BaseRootDAO {
 		configuration = configuration.addClass(TableBookingInfo.class);
 		configuration = configuration.addClass(CustomPayment.class);
 		configuration = configuration.addClass(com.floreantpos.model.OrderType.class);
+		configuration = configuration.addClass(DeliveryAddress.class);
+		configuration = configuration.addClass(DeliveryInstruction.class);
 
 		configuration = configureInventoryClasses(configuration);
 

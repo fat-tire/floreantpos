@@ -51,6 +51,8 @@ public class OrderFilterPanel extends JXCollapsiblePane {
 	private POSToggleButton btnFilterByPaidStatus;
 	private POSToggleButton btnFilterByUnPaidStatus;
 
+	private POSToggleButton btnAllStatus;
+
 	public OrderFilterPanel(ITicketList ticketList) {
 		this.ticketList = ticketList;
 		this.ticketLists = (TicketListView) ticketList;
@@ -60,6 +62,40 @@ public class OrderFilterPanel extends JXCollapsiblePane {
 
 		createPaymentStatusFilterPanel();
 		createOrderTypeFilterPanel();
+	}
+
+	public OrderFilterPanel(final ITicketList ticketList, final Integer memberId) {
+		this.ticketList = ticketList;
+		setCollapsed(true);
+		getContentPane().setLayout(new MigLayout("fill", "fill, grow", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+
+		btnFilterByOpenStatus = new POSToggleButton(PaymentStatusFilter.OPEN.toString());
+		btnAllStatus = new POSToggleButton(POSConstants.ALL);
+
+		btnFilterByOpenStatus.setSelected(true);
+
+		final ButtonGroup paymentGroup = new ButtonGroup();
+		paymentGroup.add(btnFilterByOpenStatus);
+		paymentGroup.add(btnAllStatus);
+
+		ActionListener psFilterHandler = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String actionCommand = e.getActionCommand();
+				String filter = actionCommand.replaceAll("\\s", "_"); //$NON-NLS-1$ //$NON-NLS-2$
+				ticketList.updateCustomerTicketList(memberId, filter);
+			}
+		};
+
+		btnFilterByOpenStatus.addActionListener(psFilterHandler);
+		btnAllStatus.addActionListener(psFilterHandler);
+
+		JPanel filterByPaymentStatusPanel = new JPanel(new MigLayout("", "", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		filterByPaymentStatusPanel.setBorder(new TitledBorder(Messages.getString("SwitchboardView.3"))); //$NON-NLS-1$
+		filterByPaymentStatusPanel.add(btnFilterByOpenStatus, "w 100!");
+		filterByPaymentStatusPanel.add(btnAllStatus, "w 100!");
+
+		getContentPane().add(filterByPaymentStatusPanel);
 	}
 
 	private void createPaymentStatusFilterPanel() {

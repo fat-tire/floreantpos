@@ -36,9 +36,11 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.text.JTextComponent;
 
+import org.jdesktop.swingx.JXCollapsiblePane;
+
 import com.floreantpos.Messages;
 
-public class QwertyKeyPad extends JPanel implements ActionListener, ChangeListener {
+public class QwertyKeyPad extends JXCollapsiblePane implements ActionListener, ChangeListener {
 	Font buttonFont = getFont().deriveFont(Font.BOLD, PosUIManager.getFontSize(24));
 
 	String[] s1 = { "1", "2", "3", "4", "5", "6", "7", "8", "9", "0" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$

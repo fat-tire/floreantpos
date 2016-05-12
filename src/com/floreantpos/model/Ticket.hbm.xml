@@ -35,6 +35,7 @@
 		<property column="IS_RE_OPENED" name="reOpened" type="java.lang.Boolean" />
 		<property column="SERVICE_CHARGE" name="serviceCharge" type="java.lang.Double" />
 		<property column="DELIVERY_CHARGE" name="deliveryCharge" type="java.lang.Double" />
+		<property column="CUSTOMER_ID" name="customerId" type="java.lang.Integer" />
 		<property column="DELIVERY_ADDRESS" name="deliveryAddress" length="120" type="string" />
 		<property column="CUSTOMER_PICKEUP" name="customerWillPickup" type="java.lang.Boolean" />
 		<property column="DELIVERY_EXTRA_INFO" name="extraDeliveryInfo" type="string" />

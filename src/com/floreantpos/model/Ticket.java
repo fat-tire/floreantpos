@@ -36,7 +36,6 @@ import com.floreantpos.model.base.BaseTicket;
 import com.floreantpos.model.dao.MenuItemDAO;
 import com.floreantpos.model.dao.OrderTypeDAO;
 import com.floreantpos.model.dao.ShopTableDAO;
-import com.floreantpos.model.OrderType;
 import com.floreantpos.util.DiscountUtil;
 import com.floreantpos.util.NumberUtil;
 import com.floreantpos.util.POSUtil;
@@ -668,6 +667,7 @@ public class Ticket extends BaseTicket {
 			addProperty(Ticket.CUSTOMER_NAME, customer.getFirstName());
 			addProperty(Ticket.CUSTOMER_MOBILE, customer.getMobileNo());
 		}
+		setCustomerId(customer.getAutoId());
 	}
 
 	public void removeCustomer() {

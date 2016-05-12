@@ -45,6 +45,7 @@ import com.floreantpos.ui.views.order.RootView;
 
 public class OrderInfoDialog extends POSDialog {
 	OrderInfoView view;
+	private boolean reorder = false;
 
 	public OrderInfoDialog(OrderInfoView view) {
 		this.view = view;
@@ -233,5 +234,11 @@ public class OrderInfoDialog extends POSDialog {
 
 		OrderView.getInstance().setCurrentTicket(ticket);
 		RootView.getInstance().showView(OrderView.VIEW_NAME);
+		
+		reorder = true;
+	}
+	
+	public boolean isReorder() {
+		return reorder;
 	}
 }

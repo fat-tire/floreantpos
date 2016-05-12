@@ -83,7 +83,7 @@ public class QuickCustomerForm extends BeanEditor<Customer> {
 		setOpaque(true);
 		JPanel inputPanel=new JPanel(); 
 		inputPanel.setLayout(new MigLayout("insets 10 10 10 10", "[][][][]", "[][][][][]")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-
+		inputPanel.setBorder(BorderFactory.createTitledBorder("Enter Customer Information")); 
 		//setPreferredSize(PosUIManager.getSize(800, 350));
 
 		JLabel lblFirstName = new JLabel(Messages.getString("CustomerForm.3")); //$NON-NLS-1$
@@ -118,17 +118,17 @@ public class QuickCustomerForm extends BeanEditor<Customer> {
 		inputPanel.add(lblCellPhone, "cell 0 3 ,right"); //$NON-NLS-1$
 		inputPanel.add(tfCellPhone, "cell 1 3"); //$NON-NLS-1$
 
-		inputPanel.add(lblAddress, "cell 0 4,right"); //$NON-NLS-1$
-		inputPanel.add(scrlDescription, "cell 1 4"); //$NON-NLS-1$
+		inputPanel.add(lblZip, "cell 0 4,right"); //$NON-NLS-1$
+		inputPanel.add(tfZip, "cell 1 4"); //$NON-NLS-1$
 
-		inputPanel.add(lblZip, "cell 2 1,right"); //$NON-NLS-1$
-		inputPanel.add(tfZip, "cell 3 1"); //$NON-NLS-1$
+		inputPanel.add(lblCitytown, "cell 0 5,right"); //$NON-NLS-1$
+		inputPanel.add(tfCity, "cell 1 5"); //$NON-NLS-1$
 
-		inputPanel.add(lblCitytown, "cell 2 2,right"); //$NON-NLS-1$
-		inputPanel.add(tfCity, "cell 3 2"); //$NON-NLS-1$
-
-		inputPanel.add(lblState, "cell 2 3,right"); //$NON-NLS-1$
-		inputPanel.add(tfState, "cell 3 3"); //$NON-NLS-1$
+		inputPanel.add(lblState, "cell 0 6,right"); //$NON-NLS-1$
+		inputPanel.add(tfState, "cell 1 6"); //$NON-NLS-1$
+		
+		inputPanel.add(lblAddress, "cell 2 1 1 6,right"); //$NON-NLS-1$
+		inputPanel.add(scrlDescription, "grow, cell 3 1 1 6"); //$NON-NLS-1$
 
 		qwertyKeyPad = new QwertyKeyPad();
 		
