@@ -21,7 +21,6 @@ import java.util.Calendar;
 import java.util.Vector;
 
 import javax.swing.ButtonGroup;
-import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
@@ -33,8 +32,8 @@ import com.floreantpos.Messages;
 public class TimeSelector extends JPanel {
 	private JToggleButton tbAM;
 	private JToggleButton tbPM;
-	private JComboBox cbHour;
-	private JComboBox cbMin;
+	private POSComboBox cbHour;
+	private POSComboBox cbMin;
 
 	public TimeSelector() {
 		setLayout(new MigLayout("", "[][grow][][grow][][]", "[]")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
@@ -46,7 +45,7 @@ public class TimeSelector extends JPanel {
 		for (int i = 1; i <= 12; i++) {
 			hours.add(i);
 		}
-		cbHour = new JComboBox(hours);
+		cbHour = new POSComboBox(hours);
 		add(cbHour, "cell 1 0,growy"); //$NON-NLS-1$
 
 		JLabel lblMin = new JLabel(Messages.getString("TimeSelector.1")); //$NON-NLS-1$
@@ -57,7 +56,7 @@ public class TimeSelector extends JPanel {
 			minutes.add(i);
 		}
 
-		cbMin = new JComboBox(minutes);
+		cbMin = new POSComboBox(minutes);
 		add(cbMin, "cell 3 0,growy"); //$NON-NLS-1$
 
 		ButtonGroup group = new ButtonGroup();
@@ -65,10 +64,10 @@ public class TimeSelector extends JPanel {
 		group.add(tbPM);
 
 		tbAM = new JToggleButton(Messages.getString("TimeSelector.9")); //$NON-NLS-1$
-		add(tbAM, "cell 4 0"); //$NON-NLS-1$
+		add(tbAM, "cell 4 0,w 70!,grow"); //$NON-NLS-1$
 
 		tbPM = new JToggleButton(Messages.getString("TimeSelector.11")); //$NON-NLS-1$
-		add(tbPM, "cell 5 0"); //$NON-NLS-1$
+		add(tbPM, "cell 5 0,w 70!,grow"); //$NON-NLS-1$
 
 		ButtonGroup buttonGroup = new ButtonGroup();
 		buttonGroup.add(tbAM);

@@ -26,7 +26,6 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 
 import javax.imageio.ImageIO;
-import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JTable;
 import javax.swing.border.TitledBorder;
@@ -34,9 +33,11 @@ import javax.swing.table.TableColumn;
 import javax.swing.text.JTextComponent;
 
 import com.floreantpos.POSConstants;
-import com.floreantpos.customer.CustomerSelectionDialog;
+import com.floreantpos.customer.CustomerSelectorDialog;
+import com.floreantpos.customer.CustomerSelectorFactory;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.Customer;
+import com.floreantpos.model.OrderType;
 import com.floreantpos.ui.dialog.NumberSelectionDialog2;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 
@@ -61,10 +62,10 @@ public class PosGuiUtil {
 		return numberOfGuests;
 	}
 
-	public static Customer captureCustomer() {
-		CustomerSelectionDialog dialog = new CustomerSelectionDialog();
-		dialog.setSize(Application.getPosWindow().getSize());
-		dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+	public static Customer captureCustomer(OrderType orderType) {
+		CustomerSelectorDialog dialog = CustomerSelectorFactory.createCustomerSelectorDialog(orderType);
+		dialog.setCreateNewTicket(true);
+		dialog.updateView(true);
 		dialog.openUndecoratedFullScreen();
 
 		if (dialog.isCanceled()) {

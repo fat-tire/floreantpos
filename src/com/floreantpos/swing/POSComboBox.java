@@ -15,28 +15,43 @@
  * * All Rights Reserved.
  * ************************************************************************
  */
-package com.floreantpos.extension;
+package com.floreantpos.swing;
 
-import java.util.List;
+import java.awt.Font;
+import java.util.Vector;
 
-import javax.swing.JMenu;
+import javax.swing.JComboBox;
+import javax.swing.JList;
+import javax.swing.plaf.basic.ComboPopup;
 
-import com.floreantpos.customer.CustomerSelector;
-import com.floreantpos.model.Customer;
-import com.floreantpos.model.OrderType;
-import com.floreantpos.model.ShopTable;
-import com.floreantpos.util.TicketAlreadyExistsException;
+public class POSComboBox extends JComboBox {
+	Font font = new Font("Tahoma", Font.PLAIN, PosUIManager.getFontSize(18));
 
-public interface OrderServiceExtension extends FloreantPlugin {
-	String getName();
-	String getDescription();
-	
-	void init();
-	void createNewTicket(OrderType ticketType, List<ShopTable> selectedTables, Customer selectedCustomer) throws TicketAlreadyExistsException;
-	void setCustomerToTicket(int ticketId);
-	void setDeliveryDate(int ticketId);
-	void assignDriver(int ticketId);
-	boolean finishOrder(int ticketId);
-	void createCustomerMenu(JMenu menu);
-	CustomerSelector createCustomerSelector();
+	public POSComboBox() {
+		super();
+		setHeight(40);
+		setFont(font);
+	}
+
+	public POSComboBox(Object[] items) {
+		super(items);
+		setHeight(40);
+		setFont(font);
+	}
+
+	public void setHeight(int height) {
+		setMinimumSize(PosUIManager.getSize(60, 40));
+		setPreferredSize(PosUIManager.getSize(0, height));
+		Object popup = getUI().getAccessibleChild(this, 0);
+		if (popup instanceof ComboPopup) {
+			JList jlist = ((ComboPopup) popup).getList();
+			jlist.setFixedCellHeight(PosUIManager.getSize(height));
+		}
+	}
+
+	public POSComboBox(Vector items) {
+		super(items);
+		setHeight(40);
+		setFont(font);
+	}
 }

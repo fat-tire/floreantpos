@@ -24,6 +24,7 @@ import javax.swing.JMenu;
 import javax.swing.JOptionPane;
 
 import com.floreantpos.Messages;
+import com.floreantpos.customer.CustomerSelector;
 import com.floreantpos.extension.OrderServiceExtension;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.Customer;
@@ -53,16 +54,15 @@ public class DefaultOrderServiceExtension implements OrderServiceExtension {
 	}
 
 	@Override
-	public void createNewTicket(OrderType ticketType, List<ShopTable> selectedTables) throws TicketAlreadyExistsException {
+	public void createNewTicket(OrderType ticketType, List<ShopTable> selectedTables, Customer customer) throws TicketAlreadyExistsException {
 		int numberOfGuests = 0;
 
 		if (ticketType.isShowGuestSelection()) {
 			numberOfGuests = PosGuiUtil.captureGuestNumber();
 		}
 
-		Customer customer = null;
-		if (ticketType.isRequiredCustomerData()) {
-			customer = PosGuiUtil.captureCustomer();
+		if (ticketType.isRequiredCustomerData() && customer == null) {
+			customer = PosGuiUtil.captureCustomer(ticketType);
 			if (customer == null) {
 				return;
 			}
@@ -149,5 +149,10 @@ public class DefaultOrderServiceExtension implements OrderServiceExtension {
 	@Override
 	public String getId() {
 		return String.valueOf("DefaultOrderServiceExtension".hashCode()); //$NON-NLS-1$
+	}
+
+	@Override
+	public CustomerSelector createCustomerSelector() {
+		return null;
 	}
 }

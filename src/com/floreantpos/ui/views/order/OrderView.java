@@ -31,7 +31,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.JComponent;
-import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.event.ListSelectionEvent;
@@ -47,7 +46,8 @@ import com.floreantpos.IconFactory;
 import com.floreantpos.Messages;
 import com.floreantpos.POSConstants;
 import com.floreantpos.PosException;
-import com.floreantpos.customer.CustomerSelectionDialog;
+import com.floreantpos.customer.CustomerSelectorDialog;
+import com.floreantpos.customer.CustomerSelectorFactory;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.ITicketItem;
 import com.floreantpos.model.MenuCategory;
@@ -487,10 +487,16 @@ public class OrderView extends ViewPanel {
 	}// GEN-LAST:event_doInsertMisc
 
 	protected void doAddEditCustomer() {
-		CustomerSelectionDialog dialog = new CustomerSelectionDialog(currentTicket);
-		dialog.setSize(Application.getPosWindow().getSize());
-		dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+		CustomerSelectorDialog dialog = CustomerSelectorFactory.createCustomerSelectorDialog(currentTicket.getOrderType());
+		dialog.setCreateNewTicket(false);
+		if (currentTicket != null) {
+			dialog.setTicket(currentTicket);
+		}
 		dialog.openUndecoratedFullScreen();
+
+		if (!dialog.isCanceled()) {
+			currentTicket.setCustomer(dialog.getSelectedCustomer());
+		}
 	}
 
 	protected void addDiscount() {

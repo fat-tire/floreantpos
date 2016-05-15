@@ -16,12 +16,13 @@ import java.io.Serializable;
 public abstract class BaseTerminal  implements Comparable, Serializable {
 
 	public static String REF = "Terminal";
+	public static String PROP_NAME = "name";
 	public static String PROP_OPENING_BALANCE = "openingBalance";
+	public static String PROP_ASSIGNED_USER = "assignedUser";
 	public static String PROP_HAS_CASH_DRAWER = "hasCashDrawer";
 	public static String PROP_CURRENT_BALANCE = "currentBalance";
-	public static String PROP_ASSIGNED_USER = "assignedUser";
+	public static String PROP_LOCATION = "location";
 	public static String PROP_ID = "id";
-	public static String PROP_NAME = "name";
 
 
 	// constructors
@@ -51,6 +52,7 @@ public abstract class BaseTerminal  implements Comparable, Serializable {
 		protected java.lang.Double openingBalance;
 		protected java.lang.Double currentBalance;
 		protected java.lang.Boolean hasCashDrawer;
+		protected java.lang.String location;
 
 	// many to one
 	private com.floreantpos.model.User assignedUser;
@@ -143,6 +145,23 @@ public abstract class BaseTerminal  implements Comparable, Serializable {
 	 */
 	public void setHasCashDrawer (java.lang.Boolean hasCashDrawer) {
 		this.hasCashDrawer = hasCashDrawer;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: LOCATION
+	 */
+	public java.lang.String getLocation () {
+					return location;
+			}
+
+	/**
+	 * Set the value related to the column: LOCATION
+	 * @param location the LOCATION value
+	 */
+	public void setLocation (java.lang.String location) {
+		this.location = location;
 	}
 
 

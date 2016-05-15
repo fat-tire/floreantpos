@@ -382,7 +382,7 @@ public class DefaultTableSelectionView extends TableSelector implements ActionLi
 				return;
 			}
 
-			OrderServiceFactory.getOrderService().createNewTicket(getOrderType(), selectedTables);
+			OrderServiceFactory.getOrderService().createNewTicket(getOrderType(), selectedTables,null);
 			clearSelection();
 
 		} catch (TicketAlreadyExistsException e) {

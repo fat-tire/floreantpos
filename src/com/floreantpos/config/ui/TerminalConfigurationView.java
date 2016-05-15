@@ -35,6 +35,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSlider;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -52,6 +53,7 @@ import com.floreantpos.model.Terminal;
 import com.floreantpos.model.dao.TerminalDAO;
 import com.floreantpos.swing.DoubleTextField;
 import com.floreantpos.swing.IntegerTextField;
+import com.floreantpos.swing.PosUIManager;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.views.SwitchboardOtherFunctionsView;
 import com.floreantpos.ui.views.SwitchboardView;
@@ -59,6 +61,8 @@ import com.floreantpos.ui.views.SwitchboardView;
 public class TerminalConfigurationView extends ConfigurationView {
 	private IntegerTextField tfTerminalNumber;
 	private IntegerTextField tfSecretKeyLength;
+
+	private JTextArea taTerminalLocation;
 
 	private JCheckBox cbTranslatedName = new JCheckBox(Messages.getString("TerminalConfigurationView.2")); //$NON-NLS-1$
 	private JCheckBox cbFullscreenMode = new JCheckBox(Messages.getString("TerminalConfigurationView.3")); //$NON-NLS-1$
@@ -89,7 +93,7 @@ public class TerminalConfigurationView extends ConfigurationView {
 	}
 
 	private void initComponents() {
-		setLayout(new BorderLayout()); 
+		setLayout(new BorderLayout());
 
 		JPanel contentPanel = new JPanel(new MigLayout("gap 5px 10px", "[][][grow]", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
@@ -98,7 +102,14 @@ public class TerminalConfigurationView extends ConfigurationView {
 
 		tfTerminalNumber = new IntegerTextField();
 		tfTerminalNumber.setColumns(10);
-		contentPanel.add(tfTerminalNumber, "aligny top, wrap"); //$NON-NLS-1$
+		contentPanel.add(tfTerminalNumber, "aligny top,wrap"); //$NON-NLS-1$
+
+		JLabel lblTerminalLocation = new JLabel("Terminal Location");
+		taTerminalLocation = new JTextArea();
+		taTerminalLocation.setLineWrap(true);
+		taTerminalLocation.setPreferredSize(PosUIManager.getSize(350, 40));
+
+		JScrollPane taScrollPane = new JScrollPane(taTerminalLocation);
 
 		contentPanel.add(new JLabel(Messages.getString("TerminalConfigurationView.9"))); //$NON-NLS-1$
 		tfSecretKeyLength = new IntegerTextField(3);
@@ -146,6 +157,9 @@ public class TerminalConfigurationView extends ConfigurationView {
 
 		contentPanel.add(new JLabel("Default View"), "newline"); //$NON-NLS-1$//$NON-NLS-2$
 		contentPanel.add(cbDefaultView, "span 2, wrap"); //$NON-NLS-1$
+
+		contentPanel.add(lblTerminalLocation, "alignx left,aligny top"); //$NON-NLS-1$
+		contentPanel.add(taScrollPane, "aligny top, spanx 2,wrap"); //$NON-NLS-1$
 
 		JPanel touchConfigurationPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 20, 10));
 		touchConfigurationPanel.setBorder(BorderFactory.createTitledBorder("-")); //$NON-NLS-1$
@@ -293,6 +307,7 @@ public class TerminalConfigurationView extends ConfigurationView {
 			terminal.setName(String.valueOf(terminalNumber));
 		}
 
+		terminal.setLocation(taTerminalLocation.getText());
 		terminal.setOpeningBalance(tfDrawerInitialBalance.getDouble());
 
 		terminalDAO.saveOrUpdate(terminal);
@@ -330,6 +345,7 @@ public class TerminalConfigurationView extends ConfigurationView {
 		tfDrawerCodes.setText(TerminalConfig.getDrawerControlCodes());
 		tfDrawerInitialBalance.setText("" + terminal.getOpeningBalance()); //$NON-NLS-1$
 
+		taTerminalLocation.setText(terminal.getLocation());
 		setInitialized(true);
 	}
 

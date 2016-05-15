@@ -1,34 +1,37 @@
-package com.floreantpos.ui.tableselection;
+package com.floreantpos.customer;
 
 import java.util.List;
 
 import javax.swing.JPanel;
 
 import com.floreantpos.extension.OrderServiceFactory;
+import com.floreantpos.model.Customer;
 import com.floreantpos.model.OrderType;
 import com.floreantpos.model.ShopTable;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.util.TicketAlreadyExistsException;
 
-public abstract class TableSelector extends JPanel {
+public abstract class CustomerSelector extends JPanel {
 	protected OrderType orderType;
 	protected Ticket ticket;
 
 	private boolean createNewTicket = true;
 
-	public TableSelector() {
+	public CustomerSelector() {
 	}
 
-	public void tablesSelected(OrderType orderType, List<ShopTable> selectedTables) {
+	public void customerSelected(OrderType orderType, List<ShopTable> selectedTables) {
 		try {
-			OrderServiceFactory.getOrderService().createNewTicket(orderType, selectedTables,null);
+			OrderServiceFactory.getOrderService().createNewTicket(orderType, selectedTables, null);
 		} catch (TicketAlreadyExistsException e) {
 			e.printStackTrace();
 		}
 	}
 
-	public abstract void redererTables();
-	public abstract List<ShopTable> getSelectedTables();
+	public abstract void redererCustomers();
+
+	public abstract Customer getSelectedCustomer();
+
 	public abstract void updateView(boolean update);
 
 	public OrderType getOrderType() {

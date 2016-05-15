@@ -10,8 +10,8 @@
 		<property column="OPENING_BALANCE" length="52" name="openingBalance" type="java.lang.Double" />
 		<property column="CURRENT_BALANCE" length="52" name="currentBalance" type="java.lang.Double" />
 		<property column="HAS_CASH_DRAWER" name="hasCashDrawer" type="java.lang.Boolean" />
+		<property column="LOCATION" name="location" length="320" type="java.lang.String" />
 		<!-- Associations -->
-
 		<many-to-one class="com.floreantpos.model.User" lazy="false" name="assignedUser">
 			<column name="ASSIGNED_USER" />
 		</many-to-one>

@@ -32,6 +32,7 @@ import com.floreantpos.extension.OrderServiceFactory;
 import com.floreantpos.model.OrderType;
 import com.floreantpos.model.dao.OrderTypeDAO;
 import com.floreantpos.ui.HeaderPanel;
+import com.floreantpos.ui.views.CustomerView;
 import com.floreantpos.ui.views.IView;
 import com.floreantpos.ui.views.LoginView;
 import com.floreantpos.ui.views.SwitchboardOtherFunctionsView;
@@ -178,10 +179,15 @@ public class RootView extends com.floreantpos.swing.TransparentPanel {
 				tableMapView.updateView();
 				setAndShowHomeScreen(tableMapView);
 			}
+			else if (orderType.isRequiredCustomerData()) {
+				CustomerView customerView = CustomerView.getInstance(orderType);
+				customerView.updateView();
+				setAndShowHomeScreen(customerView);
+			}
 			else {
 				try {
 					homeView = OrderView.getInstance();
-					OrderServiceFactory.getOrderService().createNewTicket(orderType, null);
+					OrderServiceFactory.getOrderService().createNewTicket(orderType, null, null);
 
 				} catch (TicketAlreadyExistsException e1) {
 				}

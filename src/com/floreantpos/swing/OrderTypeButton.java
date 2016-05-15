@@ -23,6 +23,8 @@ import java.util.Set;
 
 import com.floreantpos.POSConstants;
 import com.floreantpos.actions.NewBarTabAction;
+import com.floreantpos.customer.CustomerSelectorDialog;
+import com.floreantpos.customer.CustomerSelectorFactory;
 import com.floreantpos.extension.OrderServiceFactory;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.OrderType;
@@ -73,9 +75,19 @@ public class OrderTypeButton extends PosButton implements ActionListener {
 				return;
 			}
 		}
+		else if (orderType.isRequiredCustomerData()) {
+			CustomerSelectorDialog dialog = CustomerSelectorFactory.createCustomerSelectorDialog(orderType);
+			dialog.setCreateNewTicket(true);
+			dialog.updateView(true);
+			dialog.openUndecoratedFullScreen();
+
+			if (!dialog.isCanceled()) {
+				return;
+			}
+		}
 		else {
 			try {
-				OrderServiceFactory.getOrderService().createNewTicket(orderType, null);
+				OrderServiceFactory.getOrderService().createNewTicket(orderType, null,null);
 			} catch (TicketAlreadyExistsException e1) {
 				e1.printStackTrace();
 			}
