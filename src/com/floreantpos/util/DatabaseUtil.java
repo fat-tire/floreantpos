@@ -28,6 +28,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.hibernate.tool.hbm2ddl.SchemaUpdate;
@@ -44,6 +45,7 @@ import com.floreantpos.model.User;
 import com.floreantpos.model.UserPermission;
 import com.floreantpos.model.UserType;
 import com.floreantpos.model.dao.DiscountDAO;
+import com.floreantpos.model.dao.GenericDAO;
 import com.floreantpos.model.dao.OrderTypeDAO;
 import com.floreantpos.model.dao.PosTransactionDAO;
 import com.floreantpos.model.dao.RestaurantDAO;
@@ -80,32 +82,47 @@ public class DatabaseUtil {
 		try {
 			SessionFactory sessionFactory = configuration.buildSessionFactory();
 			Session session = sessionFactory.openSession();
-
-			dropModifiedTimeColumn(session);
-
-			session.beginTransaction();
+			Transaction transaction = session.beginTransaction();
+			transaction.rollback();
 			session.close();
 		} catch (Exception e) {
 			throw new DatabaseConnectionException(e);
 		}
 	}
-
-	private static void dropModifiedTimeColumn(Session session) throws SQLException {
-		Connection connection = session.connection();
-		String[] tables = { "CUSTOMER", "GRATUITY", "INVENTORY_GROUP", "INVENTORY_ITEM", "INVENTORY_LOCATION", "INVENTORY_META_CODE", "INVENTORY_TRANSACTION",
-				"INVENTORY_TRANSACTION_TYPE", "INVENTORY_UNIT", "INVENTORY_VENDOR", "INVENTORY_WAREHOUSE", "KITCHEN_TICKET", "KITCHEN_TICKET_ITEM",
-				"MENUITEM_MODIFIERGROUP", "MENU_CATEGORY", "MENU_GROUP", "MENU_ITEM", "MENU_MODIFIER", "MENU_MODIFIER_GROUP", "PURCHASE_ORDER", "TAX",
-				"TERMINAL", "TICKET", "TICKETITEM_MODIFIERGROUP", "TICKET_ITEM", "TICKETITEM_DISCOUNT", "TRANSACTIONS", "USERS", "ZIP_CODE_VS_DELIVERY_CHARGE" };
-
-		for (String table : tables) {
-			try {
-				Statement statement = connection.createStatement();
-				statement.execute("ALTER TABLE " + table + " DROP COLUMN MODIFIED_TIME");
-			} catch (Exception e) {
-				//logger.error(e);
-			}
+	
+	public static void updateLegacyDatabase() {
+		try {
+			dropModifiedTimeColumn();
+		} catch (SQLException e) {
+			logger.error(e);
 		}
-		connection.commit();
+	}
+
+	private static void dropModifiedTimeColumn() throws SQLException {
+		GenericDAO dao = new GenericDAO();
+		Session session = null;
+		
+		try {
+			session = dao.createNewSession();
+			Connection connection = session.connection();
+			String[] tables = { "CUSTOMER", "GRATUITY", "INVENTORY_GROUP", "INVENTORY_ITEM", "INVENTORY_LOCATION", "INVENTORY_META_CODE",
+					"INVENTORY_TRANSACTION", "INVENTORY_TRANSACTION_TYPE", "INVENTORY_UNIT", "INVENTORY_VENDOR", "INVENTORY_WAREHOUSE", "KITCHEN_TICKET",
+					"KITCHEN_TICKET_ITEM", "MENUITEM_MODIFIERGROUP", "MENU_CATEGORY", "MENU_GROUP", "MENU_ITEM", "MENU_MODIFIER", "MENU_MODIFIER_GROUP",
+					"PURCHASE_ORDER", "TAX", "TERMINAL", "TICKET", "TICKETITEM_MODIFIERGROUP", "TICKET_ITEM", "TICKETITEM_DISCOUNT", "TRANSACTIONS", "USERS",
+					"ZIP_CODE_VS_DELIVERY_CHARGE" };
+
+			for (String table : tables) {
+				try {
+					Statement statement = connection.createStatement();
+					statement.execute("ALTER TABLE " + table + " DROP COLUMN MODIFIED_TIME");
+				} catch (Exception e) {
+					//logger.error(e);
+				}
+			}
+			connection.commit();
+		} finally {
+			dao.closeSession(session);
+		}
 	}
 
 	public static boolean createDatabase(String connectionString, String hibernateDialect, String hibernateConnectionDriverClass, String user, String password,

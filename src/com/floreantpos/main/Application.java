@@ -159,7 +159,8 @@ public class Application {
 			//posWindow.setGlassPaneMessage(com.floreantpos.POSConstants.LOADING);
 
 			DatabaseUtil.checkConnection(DatabaseUtil.initialize());
-
+			DatabaseUtil.updateLegacyDatabase();
+			
 			initTerminal();
 			initOrderTypes();
 			initPrintConfig();
