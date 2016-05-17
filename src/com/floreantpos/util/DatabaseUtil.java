@@ -137,6 +137,7 @@ public class DatabaseUtil {
 			configuration = configuration.setProperty("hibernate.connection.username", user);
 			configuration = configuration.setProperty("hibernate.connection.password", password);
 			configuration = configuration.setProperty("hibernate.hbm2ddl.auto", "create");
+			configuration = configuration.setProperty("hibernate.c3p0.checkoutTimeout", "0"); //$NON-NLS-1$ //$NON-NLS-2$
 
 			SchemaExport schemaExport = new SchemaExport(configuration);
 			schemaExport.create(true, true);
