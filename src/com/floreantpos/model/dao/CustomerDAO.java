@@ -36,7 +36,7 @@ public class CustomerDAO extends BaseCustomerDAO {
 	 */
 	public CustomerDAO() {
 	}
-	
+
 	@Override
 	public Order getDefaultOrder() {
 		return Order.asc(Customer.PROP_AUTO_ID);
@@ -91,6 +91,23 @@ public class CustomerDAO extends BaseCustomerDAO {
 			}
 		}
 
+	}
+
+	public List<Customer> findByMobileNumber(String mobileNo) {
+		Session session = null;
+
+		try {
+			session = getSession();
+			Criteria criteria = session.createCriteria(getReferenceClass());
+
+			if (StringUtils.isNotEmpty(mobileNo))
+				criteria.add(Restrictions.eq(Customer.PROP_MOBILE_NO, mobileNo));
+			return criteria.list();
+		} finally {
+			if (session != null) {
+				closeSession(session);
+			}
+		}
 	}
 
 	public List<Customer> findByName(String name) {

@@ -89,6 +89,7 @@ public class Ticket extends BaseTicket {
 	public static final String CUSTOMER_NAME = "CUSTOMER_NAME"; //$NON-NLS-1$
 	public static final String CUSTOMER_ID = "CUSTOMER_ID"; //$NON-NLS-1$
 
+	private String sortOrder; 
 	//	public String getTableNumbers() {
 	//		Set<ShopTable> tables = getTables();
 	//		if(tables == null) return "";
@@ -676,5 +677,13 @@ public class Ticket extends BaseTicket {
 		removeProperty(CUSTOMER_ID);
 		removeProperty(CUSTOMER_NAME);
 		removeProperty(CUSTOMER_MOBILE);
+	}
+
+	public String getSortOrder() {
+		return sortOrder;
+	}
+
+	public void setSortOrder(String sortOrder) {
+		this.sortOrder = sortOrder;
 	}
 }
