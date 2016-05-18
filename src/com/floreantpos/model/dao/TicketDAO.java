@@ -980,7 +980,6 @@ public class TicketDAO extends BaseTicketDAO {
 
 			for (Ticket ticket : tickets) {
 				super.delete(ticket, session);
-				KitchenTicketDAO.getInstance().deleteKitchenTicket(ticket.getId());
 			}
 
 			tx.commit();
