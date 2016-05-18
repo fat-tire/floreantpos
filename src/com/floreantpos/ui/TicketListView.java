@@ -74,6 +74,7 @@ public class TicketListView extends JPanel implements ITicketList {
 	private TableColumnModelExt columnModel;
 
 	private ArrayList<TicketListUpdateListener> ticketUpdateListenerList = new ArrayList();
+	private boolean isCustomerHistoryOpen;
 
 	private Date lastUpdateTime;
 	private Timer lastUpateCheckTimer = new Timer(5 * 1000, new TaskLastUpdateCheck());
@@ -89,18 +90,15 @@ public class TicketListView extends JPanel implements ITicketList {
 		add(orderFiltersPanel, BorderLayout.NORTH);
 
 		createTicketTable();
-
 		updateTicketList();
-
 		updateButtonStatus();
 
 	}
 
-	public TicketListView(Integer customerId) {
+	public TicketListView(Integer customerId, boolean customerHistory) {
+		isCustomerHistoryOpen = customerHistory;
 		setLayout(new BorderLayout());
-		orderFiltersPanel = new OrderFilterPanel(this, customerId);
-		add(orderFiltersPanel, BorderLayout.NORTH);
-		
+
 		createTicketTable();
 		updateTicketList();
 		updateButtonStatus();
@@ -123,6 +121,15 @@ public class TicketListView extends JPanel implements ITicketList {
 		columnModel.getColumn(1).setPreferredWidth(20);
 		columnModel.getColumn(2).setPreferredWidth(100);
 		columnModel.getColumn(3).setPreferredWidth(100);
+
+		if (isCustomerHistoryOpen) {
+			columnModel.getColumnExt((1)).setVisible(false);
+			columnModel.getColumnExt((1)).setVisible(false);
+			columnModel.getColumnExt((5)).setVisible(false);
+			columnModel.getColumnExt((7)).setVisible(false);
+			createScrollPane();
+			return;
+		}
 
 		restoreTableColumnsVisibility();
 		addTableColumnListener();
@@ -186,8 +193,12 @@ public class TicketListView extends JPanel implements ITicketList {
 	}
 
 	private void createScrollPane() {
-		btnOrderFilters = new POSToggleButton();
-		btnOrderFilters.setText("<html>" + Messages.getString("SwitchboardView.2") + "</html>"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+
+		if (!isCustomerHistoryOpen) {
+			btnOrderFilters = new POSToggleButton();
+			btnOrderFilters.setText("<html>" + Messages.getString("SwitchboardView.2") + "</html>"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		}
+
 		btnRefresh = new PosBlinkButton(Messages.getString("TicketListView.3")); //$NON-NLS-1$
 		btnPrevious = new PosButton(Messages.getString("TicketListView.4")); //$NON-NLS-1$
 		btnNext = new PosButton(Messages.getString("TicketListView.5")); //$NON-NLS-1$
@@ -200,13 +211,18 @@ public class TicketListView extends JPanel implements ITicketList {
 
 		JPanel topButtonPanel = new JPanel(new MigLayout("ins 0", "grow", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		ColumnControlButton controlButton = new ColumnControlButton(table);
-		topButtonPanel.add(controlButton, "h " + height + "!, grow, wrap"); //$NON-NLS-1$
+		if (!isCustomerHistoryOpen) {
+			topButtonPanel.add(controlButton, "h " + height + "!, grow, wrap"); //$NON-NLS-1$
+		}
 		topButtonPanel.add(btnRefresh, "h " + height + "!, grow, wrap"); //$NON-NLS-1$
 		topButtonPanel.add(btnPrevious, "h " + height + "!, grow, wrap"); //$NON-NLS-1$
 
 		JPanel downButtonPanel = new JPanel(new MigLayout("ins 0", "grow", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		downButtonPanel.add(btnNext, "h " + height + "!, grow, wrap"); //$NON-NLS-1$
-		downButtonPanel.add(btnOrderFilters, "h " + height + "!, grow, wrap"); //$NON-NLS-1$
+
+		if (!isCustomerHistoryOpen) {
+			downButtonPanel.add(btnOrderFilters, "h " + height + "!, grow, wrap"); //$NON-NLS-1$
+		}
 
 		JPanel tableButtonPanel = new JPanel(new BorderLayout());
 		tableButtonPanel.setBorder(BorderFactory.createEmptyBorder(0, 2, 0, 2));
@@ -261,13 +277,14 @@ public class TicketListView extends JPanel implements ITicketList {
 			}
 		});
 
-		btnOrderFilters.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				orderFiltersPanel.setCollapsed(!orderFiltersPanel.isCollapsed());
-			}
-		});
-
+		if (!isCustomerHistoryOpen) {
+			btnOrderFilters.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					orderFiltersPanel.setCollapsed(!orderFiltersPanel.isCollapsed());
+				}
+			});
+		}
 	}
 
 	public void updateButtonStatus() {
@@ -418,9 +435,9 @@ public class TicketListView extends JPanel implements ITicketList {
 	private class TicketListTableModel extends PaginatedTableModel {
 		public TicketListTableModel() {
 			super(new String[] { POSConstants.TICKET_LIST_COLUMN_ID, POSConstants.TICKET_LIST_COLUMN_TABLE, POSConstants.TICKET_LIST_COLUMN_SERVER,
-					POSConstants.TICKET_LIST_COLUMN_CREATE_DATE, POSConstants.TICKET_LIST_COLUMN_CUSTOMER, POSConstants.TICKET_LIST_COLUMN_DELIVERY_DATE,
-					POSConstants.TICKET_LIST_COLUMN_TICKET_TYPE, POSConstants.TICKET_LIST_COLUMN_STATUS, POSConstants.TICKET_LIST_COLUMN_TOTAL,
-					POSConstants.TICKET_LIST_COLUMN_DUE });
+					POSConstants.TICKET_LIST_COLUMN_CREATE_DATE, POSConstants.TICKET_LIST_COLUMN_CUSTOMER, POSConstants.TICKET_LIST_COLUMN_DELIVERY_ADDRESS,
+					POSConstants.TICKET_LIST_COLUMN_DELIVERY_DATE, POSConstants.TICKET_LIST_COLUMN_TICKET_TYPE, POSConstants.TICKET_LIST_COLUMN_STATUS,
+					POSConstants.TICKET_LIST_COLUMN_TOTAL, POSConstants.TICKET_LIST_COLUMN_DUE });
 
 		}
 
@@ -457,12 +474,17 @@ public class TicketListView extends JPanel implements ITicketList {
 					return Messages.getString("TicketListView.6"); //$NON-NLS-1$
 
 				case 5:
-					return ticket.getDeliveryDate();
+
+					return ticket.getDeliveryAddress();
 
 				case 6:
-					return ticket.getOrderType();
+
+					return ticket.getDeliveryDate();
 
 				case 7:
+					return ticket.getOrderType();
+
+				case 8:
 					String status = ""; //$NON-NLS-1$
 					if (ticket.isPaid()) {
 						status = Messages.getString("TicketListView.8"); //$NON-NLS-1$
@@ -488,10 +510,10 @@ public class TicketListView extends JPanel implements ITicketList {
 
 					return status;
 
-				case 8:
+				case 9:
 					return ticket.getTotalAmount();
 
-				case 9:
+				case 10:
 					return ticket.getDueAmount();
 
 			}

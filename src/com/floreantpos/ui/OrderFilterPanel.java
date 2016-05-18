@@ -51,7 +51,9 @@ public class OrderFilterPanel extends JXCollapsiblePane {
 	private POSToggleButton btnFilterByPaidStatus;
 	private POSToggleButton btnFilterByUnPaidStatus;
 
-	private POSToggleButton btnAllStatus;
+
+	/*private POSToggleButton btnCustomerFilterByOpenStatus;
+	private POSToggleButton btnCustomerAllStatus;*/
 
 	public OrderFilterPanel(ITicketList ticketList) {
 		this.ticketList = ticketList;
@@ -64,39 +66,53 @@ public class OrderFilterPanel extends JXCollapsiblePane {
 		createOrderTypeFilterPanel();
 	}
 
-	public OrderFilterPanel(final ITicketList ticketList, final Integer memberId) {
+	/*public OrderFilterPanel(final ITicketList ticketList, final Integer memberId) {
 		this.ticketList = ticketList;
 		setCollapsed(true);
 		getContentPane().setLayout(new MigLayout("fill", "fill, grow", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
-		btnFilterByOpenStatus = new POSToggleButton(PaymentStatusFilter.OPEN.toString());
-		btnAllStatus = new POSToggleButton(POSConstants.ALL);
-
-		btnFilterByOpenStatus.setSelected(true);
+		btnCustomerFilterByOpenStatus = new POSToggleButton(PaymentStatusFilter.OPEN.toString());
+		btnCustomerAllStatus = new POSToggleButton(POSConstants.ALL);
 
 		final ButtonGroup paymentGroup = new ButtonGroup();
-		paymentGroup.add(btnFilterByOpenStatus);
-		paymentGroup.add(btnAllStatus);
+		paymentGroup.add(btnCustomerFilterByOpenStatus);
+		paymentGroup.add(btnCustomerAllStatus);
+
+		String paymentStatusFilter = TerminalConfig.getCustomerPaymentStatusFilter();
+
+		switch (paymentStatusFilter) {
+			case "OPEN":
+				btnCustomerFilterByOpenStatus.setSelected(true);
+				break;
+
+			default:
+				btnCustomerAllStatus.setSelected(true);
+				break;
+		}
 
 		ActionListener psFilterHandler = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+
 				String actionCommand = e.getActionCommand();
+
 				String filter = actionCommand.replaceAll("\\s", "_"); //$NON-NLS-1$ //$NON-NLS-2$
+				TerminalConfig.setCustomerPaymentStatusFilter(filter);
+
 				ticketList.updateCustomerTicketList(memberId, filter);
 			}
 		};
 
-		btnFilterByOpenStatus.addActionListener(psFilterHandler);
-		btnAllStatus.addActionListener(psFilterHandler);
+		btnCustomerFilterByOpenStatus.addActionListener(psFilterHandler);
+		btnCustomerAllStatus.addActionListener(psFilterHandler);
 
 		JPanel filterByPaymentStatusPanel = new JPanel(new MigLayout("", "", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		filterByPaymentStatusPanel.setBorder(new TitledBorder(Messages.getString("SwitchboardView.3"))); //$NON-NLS-1$
-		filterByPaymentStatusPanel.add(btnFilterByOpenStatus, "w 100!");
-		filterByPaymentStatusPanel.add(btnAllStatus, "w 100!");
+		filterByPaymentStatusPanel.add(btnCustomerFilterByOpenStatus, "w 100!");
+		filterByPaymentStatusPanel.add(btnCustomerAllStatus, "w 100!");
 
 		getContentPane().add(filterByPaymentStatusPanel);
-	}
+	}*/
 
 	private void createPaymentStatusFilterPanel() {
 		btnFilterByOpenStatus = new POSToggleButton(PaymentStatusFilter.OPEN.toString());

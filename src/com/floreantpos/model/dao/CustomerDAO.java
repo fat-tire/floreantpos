@@ -130,4 +130,21 @@ public class CustomerDAO extends BaseCustomerDAO {
 
 	}
 
+	public Customer findById(int customerId) {
+		Session session = null;
+
+		try {
+			session = getSession();
+			Criteria criteria = session.createCriteria(getReferenceClass());
+
+			criteria.add(Restrictions.eq(Customer.PROP_AUTO_ID, customerId));
+
+			return (Customer) criteria.uniqueResult();
+
+		} finally {
+			if (session != null) {
+				closeSession(session);
+			}
+		}
+	}
 }

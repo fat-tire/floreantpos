@@ -420,10 +420,10 @@ public class TicketDAO extends BaseTicketDAO {
 			criteria = session.createCriteria(getReferenceClass());
 			criteria.add(Restrictions.eq(Ticket.PROP_CUSTOMER_ID, customerId));
 
-			if (filter.equals(PaymentStatusFilter.OPEN.toString())) {
+			/*if (filter.equals(PaymentStatusFilter.OPEN.toString())) {
 				criteria.add(Restrictions.eq(Ticket.PROP_PAID, Boolean.FALSE));
 				criteria.add(Restrictions.eq(Ticket.PROP_CLOSED, Boolean.FALSE));
-			}
+			}*/
 
 			criteria.setFirstResult(0);
 			criteria.setMaxResults(tableModel.getPageSize());
@@ -601,7 +601,7 @@ public class TicketDAO extends BaseTicketDAO {
 		Session session = null;
 
 		try {
-			session = getSession();
+			session = createNewSession();
 			Criteria criteria = session.createCriteria(getReferenceClass());
 			criteria.add(Restrictions.eq(Ticket.PROP_CLOSED, Boolean.TRUE));
 			if (startDate != null && endDate != null) {
@@ -610,6 +610,35 @@ public class TicketDAO extends BaseTicketDAO {
 			}
 			List list = criteria.list();
 			return list;
+		} finally {
+			closeSession(session);
+		}
+	}
+
+	public void closeOrder(Ticket ticket) {
+
+		Session session = null;
+		Transaction tx = null;
+
+		try {
+			session = createNewSession();
+			tx = session.beginTransaction();
+
+			saveOrUpdate(ticket);
+
+			User driver = ticket.getAssignedDriver();
+			if (driver != null) {
+				driver.setAvailableForDelivery(true);
+				UserDAO.getInstance().saveOrUpdate(driver);
+			}
+
+			ShopTableDAO.getInstance().releaseTables(ticket);
+
+			tx.commit();
+		} catch (Exception e) {
+			tx.rollback();
+			LogFactory.getLog(TicketDAO.class).error(e);
+			throw new RuntimeException(e);
 		} finally {
 			closeSession(session);
 		}
@@ -951,6 +980,7 @@ public class TicketDAO extends BaseTicketDAO {
 
 			for (Ticket ticket : tickets) {
 				super.delete(ticket, session);
+				KitchenTicketDAO.getInstance().deleteKitchenTicket(ticket.getId());
 			}
 
 			tx.commit();
