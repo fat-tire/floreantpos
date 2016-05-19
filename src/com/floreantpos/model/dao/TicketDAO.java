@@ -316,17 +316,14 @@ public class TicketDAO extends BaseTicketDAO {
 		}
 	}
 
-	public List<Ticket> findTickets(PaginatedTableModel tableModel, boolean filter) {
+	public List<Ticket> findTickets(PaginatedTableModel tableModel) {
 		Session session = null;
 		Criteria criteria = null;
 
 		try {
 			session = createNewSession();
 			criteria = session.createCriteria(getReferenceClass());
-
-			if (filter) {
-				updateCriteriaFilters(criteria);
-			}
+			updateCriteriaFilters(criteria);
 
 			criteria.setFirstResult(0);
 			criteria.setMaxResults(tableModel.getPageSize());
@@ -349,7 +346,7 @@ public class TicketDAO extends BaseTicketDAO {
 		}
 	}
 
-	public List<Ticket> findNextTickets(PaginatedTableModel tableModel, boolean filter) {
+	public List<Ticket> findNextTickets(PaginatedTableModel tableModel) {
 		Session session = null;
 		Criteria criteria = null;
 
@@ -358,10 +355,7 @@ public class TicketDAO extends BaseTicketDAO {
 
 			session = createNewSession();
 			criteria = session.createCriteria(getReferenceClass());
-
-			if (filter) {
-				updateCriteriaFilters(criteria);
-			}
+			updateCriteriaFilters(criteria);
 
 			criteria.setFirstResult(nextIndex);
 			criteria.setMaxResults(tableModel.getPageSize());
@@ -384,7 +378,7 @@ public class TicketDAO extends BaseTicketDAO {
 		}
 	}
 
-	public List<Ticket> findPreviousTickets(PaginatedTableModel tableModel, boolean filter) {
+	public List<Ticket> findPreviousTickets(PaginatedTableModel tableModel) {
 		Session session = null;
 		Criteria criteria = null;
 		try {
@@ -393,10 +387,7 @@ public class TicketDAO extends BaseTicketDAO {
 
 			session = createNewSession();
 			criteria = session.createCriteria(getReferenceClass());
-
-			if (filter) {
-				updateCriteriaFilters(criteria);
-			}
+			updateCriteriaFilters(criteria);
 
 			criteria.setFirstResult(previousIndex);
 			criteria.setMaxResults(tableModel.getPageSize());
@@ -1062,4 +1053,108 @@ public class TicketDAO extends BaseTicketDAO {
 		}
 		return true;
 	}
+
+	public List<Ticket> findTickets(PaginatedTableModel tableModel, boolean filter) {
+		Session session = null;
+		Criteria criteria = null;
+
+		try {
+			session = createNewSession();
+			criteria = session.createCriteria(getReferenceClass());
+
+			if (filter) {
+				updateCriteriaFilters(criteria);
+			}
+
+			criteria.setFirstResult(0);
+			criteria.setMaxResults(tableModel.getPageSize());
+
+			List ticketList = criteria.list();
+
+			criteria.setProjection(Projections.rowCount());
+			Integer rowCount = (Integer) criteria.uniqueResult();
+			if (rowCount != null) {
+				tableModel.setNumRows(rowCount);
+
+			}
+
+			tableModel.setCurrentRowIndex(0);
+
+			return ticketList;
+
+		} finally {
+			closeSession(session);
+		}
+	}
+
+	public List<Ticket> findNextTickets(PaginatedTableModel tableModel, boolean filter) {
+		Session session = null;
+		Criteria criteria = null;
+
+		try {
+			int nextIndex = tableModel.getNextRowIndex();
+
+			session = createNewSession();
+			criteria = session.createCriteria(getReferenceClass());
+
+			if (filter) {
+				updateCriteriaFilters(criteria);
+			}
+
+			criteria.setFirstResult(nextIndex);
+			criteria.setMaxResults(tableModel.getPageSize());
+
+			List ticketList = criteria.list();
+
+			criteria.setProjection(Projections.rowCount());
+			Integer rowCount = (Integer) criteria.uniqueResult();
+			if (rowCount != null) {
+				tableModel.setNumRows(rowCount);
+
+			}
+
+			tableModel.setCurrentRowIndex(nextIndex);
+
+			return ticketList;
+
+		} finally {
+			closeSession(session);
+		}
+	}
+
+	public List<Ticket> findPreviousTickets(PaginatedTableModel tableModel, boolean filter) {
+		Session session = null;
+		Criteria criteria = null;
+		try {
+
+			int previousIndex = tableModel.getPreviousRowIndex();
+
+			session = createNewSession();
+			criteria = session.createCriteria(getReferenceClass());
+
+			if (filter) {
+				updateCriteriaFilters(criteria);
+			}
+
+			criteria.setFirstResult(previousIndex);
+			criteria.setMaxResults(tableModel.getPageSize());
+
+			List ticketList = criteria.list();
+
+			criteria.setProjection(Projections.rowCount());
+			Integer rowCount = (Integer) criteria.uniqueResult();
+			if (rowCount != null) {
+				tableModel.setNumRows(rowCount);
+
+			}
+
+			tableModel.setCurrentRowIndex(previousIndex);
+
+			return ticketList;
+
+		} finally {
+			closeSession(session);
+		}
+	}
+
 }

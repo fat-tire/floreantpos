@@ -241,7 +241,7 @@ public class TicketListView extends JPanel implements ITicketList {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (tableModel.hasPrevious()) {
-					List<Ticket> tickets = TicketDAO.getInstance().findPreviousTickets(tableModel, true);
+					List<Ticket> tickets = TicketDAO.getInstance().findPreviousTickets(tableModel);
 					tableModel.setRows(tickets);
 				}
 				updateButtonStatus();
@@ -253,7 +253,7 @@ public class TicketListView extends JPanel implements ITicketList {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (tableModel.hasNext()) {
-					List<Ticket> tickets = TicketDAO.getInstance().findNextTickets(tableModel, true);
+					List<Ticket> tickets = TicketDAO.getInstance().findNextTickets(tableModel);
 					tableModel.setRows(tickets);
 				}
 				updateButtonStatus();
@@ -299,7 +299,7 @@ public class TicketListView extends JPanel implements ITicketList {
 
 			TicketListTableModel ticketListTableModel = getTableModel();
 
-			List<Ticket> tickets = TicketDAO.getInstance().findTickets(ticketListTableModel, true);
+			List<Ticket> tickets = TicketDAO.getInstance().findTickets(ticketListTableModel);
 
 			setTickets(tickets);
 
