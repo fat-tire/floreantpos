@@ -105,4 +105,8 @@ public class TitlePanel extends com.floreantpos.swing.TransparentPanel {
 	public void setTitle(String title) {
 		lblTitle.setText(title);
 	}
+
+	public void setTextAlignment(int alignment) {
+		lblTitle.setHorizontalAlignment(alignment);
+	}
 }

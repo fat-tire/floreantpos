@@ -241,7 +241,7 @@ public class TicketListView extends JPanel implements ITicketList {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (tableModel.hasPrevious()) {
-					List<Ticket> tickets = TicketDAO.getInstance().findPreviousTickets(tableModel);
+					List<Ticket> tickets = TicketDAO.getInstance().findPreviousTickets(tableModel, true);
 					tableModel.setRows(tickets);
 				}
 				updateButtonStatus();
@@ -253,7 +253,7 @@ public class TicketListView extends JPanel implements ITicketList {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (tableModel.hasNext()) {
-					List<Ticket> tickets = TicketDAO.getInstance().findNextTickets(tableModel);
+					List<Ticket> tickets = TicketDAO.getInstance().findNextTickets(tableModel, true);
 					tableModel.setRows(tickets);
 				}
 				updateButtonStatus();
@@ -299,7 +299,7 @@ public class TicketListView extends JPanel implements ITicketList {
 
 			TicketListTableModel ticketListTableModel = getTableModel();
 
-			List<Ticket> tickets = TicketDAO.getInstance().findTickets(ticketListTableModel);
+			List<Ticket> tickets = TicketDAO.getInstance().findTickets(ticketListTableModel, true);
 
 			setTickets(tickets);
 
@@ -433,7 +433,7 @@ public class TicketListView extends JPanel implements ITicketList {
 	private class TicketListTableModel extends PaginatedTableModel {
 		public TicketListTableModel() {
 			super(new String[] { POSConstants.TICKET_LIST_COLUMN_ID, POSConstants.TICKET_LIST_COLUMN_TABLE, POSConstants.TICKET_LIST_COLUMN_SERVER,
-					POSConstants.TICKET_LIST_COLUMN_CREATE_DATE, POSConstants.TICKET_LIST_COLUMN_CUSTOMER,POSConstants.TICKET_LIST_COLUMN_DELIVERY_ADDRESS,
+					POSConstants.TICKET_LIST_COLUMN_CREATE_DATE, POSConstants.TICKET_LIST_COLUMN_CUSTOMER, POSConstants.TICKET_LIST_COLUMN_DELIVERY_ADDRESS,
 					POSConstants.TICKET_LIST_COLUMN_DELIVERY_DATE, POSConstants.TICKET_LIST_COLUMN_TICKET_TYPE, POSConstants.TICKET_LIST_COLUMN_STATUS,
 					POSConstants.TICKET_LIST_COLUMN_TOTAL, POSConstants.TICKET_LIST_COLUMN_DUE });
 

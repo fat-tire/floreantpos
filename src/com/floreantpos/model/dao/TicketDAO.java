@@ -316,14 +316,17 @@ public class TicketDAO extends BaseTicketDAO {
 		}
 	}
 
-	public List<Ticket> findTickets(PaginatedTableModel tableModel) {
+	public List<Ticket> findTickets(PaginatedTableModel tableModel, boolean filter) {
 		Session session = null;
 		Criteria criteria = null;
 
 		try {
 			session = createNewSession();
 			criteria = session.createCriteria(getReferenceClass());
-			updateCriteriaFilters(criteria);
+
+			if (filter) {
+				updateCriteriaFilters(criteria);
+			}
 
 			criteria.setFirstResult(0);
 			criteria.setMaxResults(tableModel.getPageSize());
@@ -346,7 +349,7 @@ public class TicketDAO extends BaseTicketDAO {
 		}
 	}
 
-	public List<Ticket> findNextTickets(PaginatedTableModel tableModel) {
+	public List<Ticket> findNextTickets(PaginatedTableModel tableModel, boolean filter) {
 		Session session = null;
 		Criteria criteria = null;
 
@@ -356,7 +359,9 @@ public class TicketDAO extends BaseTicketDAO {
 			session = createNewSession();
 			criteria = session.createCriteria(getReferenceClass());
 
-			updateCriteriaFilters(criteria);
+			if (filter) {
+				updateCriteriaFilters(criteria);
+			}
 
 			criteria.setFirstResult(nextIndex);
 			criteria.setMaxResults(tableModel.getPageSize());
@@ -379,7 +384,7 @@ public class TicketDAO extends BaseTicketDAO {
 		}
 	}
 
-	public List<Ticket> findPreviousTickets(PaginatedTableModel tableModel) {
+	public List<Ticket> findPreviousTickets(PaginatedTableModel tableModel, boolean filter) {
 		Session session = null;
 		Criteria criteria = null;
 		try {
@@ -388,7 +393,10 @@ public class TicketDAO extends BaseTicketDAO {
 
 			session = createNewSession();
 			criteria = session.createCriteria(getReferenceClass());
-			updateCriteriaFilters(criteria);
+
+			if (filter) {
+				updateCriteriaFilters(criteria);
+			}
 
 			criteria.setFirstResult(previousIndex);
 			criteria.setMaxResults(tableModel.getPageSize());
