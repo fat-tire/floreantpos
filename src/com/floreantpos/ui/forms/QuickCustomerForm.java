@@ -84,16 +84,6 @@ public class QuickCustomerForm extends BeanEditor<Customer> {
 		JPanel inputPanel=new JPanel(); 
 		inputPanel.setLayout(new MigLayout("insets 10 10 10 10", "[][][][]", "[][][][][]")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		inputPanel.setBorder(BorderFactory.createTitledBorder("Enter Customer Information")); 
-		//setPreferredSize(PosUIManager.getSize(800, 350));
-
-		JLabel lblFirstName = new JLabel(Messages.getString("CustomerForm.3")); //$NON-NLS-1$
-		tfFirstName = new FixedLengthTextField();
-
-		JLabel lblLastName = new JLabel(Messages.getString("CustomerForm.11")); //$NON-NLS-1$
-		tfLastName = new FixedLengthTextField();
-
-		JLabel lblCellPhone = new JLabel(Messages.getString("CustomerForm.32")); //$NON-NLS-1$
-		tfCellPhone = new JTextField(30);
 
 		JLabel lblAddress = new JLabel(Messages.getString("CustomerForm.18")); //$NON-NLS-1$
 		tfAddress = new JTextArea(new FixedLengthDocument(220));
@@ -108,15 +98,25 @@ public class QuickCustomerForm extends BeanEditor<Customer> {
 
 		JLabel lblState = new JLabel(Messages.getString("QuickCustomerForm.0")); //$NON-NLS-1$
 		tfState = new JTextField(30);
+		
+				JLabel lblCellPhone = new JLabel(Messages.getString("CustomerForm.32")); //$NON-NLS-1$
+				
+						inputPanel.add(lblCellPhone, "cell 0 1,alignx right"); //$NON-NLS-1$
+		tfCellPhone = new JTextField(30);
+		inputPanel.add(tfCellPhone, "cell 1 1"); //$NON-NLS-1$
+		//setPreferredSize(PosUIManager.getSize(800, 350));
 
-		inputPanel.add(lblFirstName, "cell 0 1,right "); //$NON-NLS-1$
-		inputPanel.add(tfFirstName, "cell 1 1"); //$NON-NLS-1$
-
-		inputPanel.add(lblLastName, "cell 0 2,right"); //$NON-NLS-1$
-		inputPanel.add(tfLastName, "cell 1 2"); //$NON-NLS-1$
-
-		inputPanel.add(lblCellPhone, "cell 0 3 ,right"); //$NON-NLS-1$
-		inputPanel.add(tfCellPhone, "cell 1 3"); //$NON-NLS-1$
+		JLabel lblFirstName = new JLabel(Messages.getString("CustomerForm.3")); //$NON-NLS-1$
+		
+				inputPanel.add(lblFirstName, "cell 0 2,alignx right"); //$NON-NLS-1$
+				tfFirstName = new FixedLengthTextField();
+				inputPanel.add(tfFirstName, "cell 1 2"); //$NON-NLS-1$
+		
+				JLabel lblLastName = new JLabel(Messages.getString("CustomerForm.11")); //$NON-NLS-1$
+				
+						inputPanel.add(lblLastName, "cell 0 3,alignx right"); //$NON-NLS-1$
+		tfLastName = new FixedLengthTextField();
+		inputPanel.add(tfLastName, "cell 1 3"); //$NON-NLS-1$
 
 		inputPanel.add(lblZip, "cell 0 4,right"); //$NON-NLS-1$
 		inputPanel.add(tfZip, "cell 1 4"); //$NON-NLS-1$
@@ -354,5 +354,9 @@ public class QuickCustomerForm extends BeanEditor<Customer> {
 
 		tfState.setText(state);
 		tfCity.setText(city);
+	}
+	
+	public void setPhoneNo(String phoneNo) {
+		tfCellPhone.setText(phoneNo);
 	}
 }
