@@ -411,7 +411,7 @@ public class TicketDAO extends BaseTicketDAO {
 		}
 	}
 
-	public List<Ticket> findCustomerTickets(Integer customerId, PaginatedTableModel tableModel, String filter) {
+	public List<Ticket> findCustomerTickets(Integer customerId, PaginatedTableModel tableModel) {
 		Session session = null;
 		Criteria criteria = null;
 
@@ -980,6 +980,7 @@ public class TicketDAO extends BaseTicketDAO {
 
 			for (Ticket ticket : tickets) {
 				super.delete(ticket, session);
+				//KitchenTicketDAO.getInstance().deleteKitchenTicket(ticket.getId());
 			}
 
 			tx.commit();

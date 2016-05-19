@@ -722,7 +722,7 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 	}
 
 	@Override
-	public void updateCustomerTicketList(Integer customerId, String filter) {
+	public void updateCustomerTicketList(Integer customerId) {
 	}
 
 }

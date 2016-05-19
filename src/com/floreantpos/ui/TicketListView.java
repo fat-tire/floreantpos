@@ -80,7 +80,6 @@ public class TicketListView extends JPanel implements ITicketList {
 	private Timer lastUpateCheckTimer = new Timer(5 * 1000, new TaskLastUpdateCheck());
 
 	private Integer customerId;
-	private String filter;
 	private POSToggleButton btnOrderFilters;
 
 	public TicketListView() {
@@ -267,7 +266,7 @@ public class TicketListView extends JPanel implements ITicketList {
 			public void actionPerformed(ActionEvent e) {
 				getTableModel().setCurrentRowIndex(0);
 				if (customerId != null) {
-					updateCustomerTicketList(customerId, filter);
+					updateCustomerTicketList(customerId);
 				}
 				else {
 					updateTicketList();
@@ -332,17 +331,16 @@ public class TicketListView extends JPanel implements ITicketList {
 		lastUpateCheckTimer.restart();
 	}
 
-	public synchronized void updateCustomerTicketList(Integer memberId, String filter) {
+	public synchronized void updateCustomerTicketList(Integer memberId) {
 		lastUpateCheckTimer.stop();
 		this.customerId = memberId;
-		this.filter = filter;
 
 		try {
 			Application.getPosWindow().setGlassPaneVisible(true);
 
 			TicketListTableModel ticketListTableModel = getTableModel();
 
-			List<Ticket> tickets = TicketDAO.getInstance().findCustomerTickets(memberId, ticketListTableModel, filter);
+			List<Ticket> tickets = TicketDAO.getInstance().findCustomerTickets(memberId, ticketListTableModel);
 
 			setTickets(tickets);
 
@@ -435,7 +433,7 @@ public class TicketListView extends JPanel implements ITicketList {
 	private class TicketListTableModel extends PaginatedTableModel {
 		public TicketListTableModel() {
 			super(new String[] { POSConstants.TICKET_LIST_COLUMN_ID, POSConstants.TICKET_LIST_COLUMN_TABLE, POSConstants.TICKET_LIST_COLUMN_SERVER,
-					POSConstants.TICKET_LIST_COLUMN_CREATE_DATE, POSConstants.TICKET_LIST_COLUMN_CUSTOMER, "DELIVERY ADDRESS",
+					POSConstants.TICKET_LIST_COLUMN_CREATE_DATE, POSConstants.TICKET_LIST_COLUMN_CUSTOMER,POSConstants.TICKET_LIST_COLUMN_DELIVERY_ADDRESS,
 					POSConstants.TICKET_LIST_COLUMN_DELIVERY_DATE, POSConstants.TICKET_LIST_COLUMN_TICKET_TYPE, POSConstants.TICKET_LIST_COLUMN_STATUS,
 					POSConstants.TICKET_LIST_COLUMN_TOTAL, POSConstants.TICKET_LIST_COLUMN_DUE });
 

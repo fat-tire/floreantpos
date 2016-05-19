@@ -45,6 +45,7 @@ public class POSConstants {
 	public static final String PAYOUT_BUTTON_TEXT = Messages.getString("PAYOUT_BUTTON_TEXT"); //$NON-NLS-1$
 	public static final String ORDER_INFO_BUTTON_TEXT = Messages.getString("ORDER_INFO_BUTTON_TEXT"); //$NON-NLS-1$
 	public static final String REOPEN_TICKET_BUTTON_TEXT = Messages.getString("REOPEN_TICKET_BUTTON_TEXT"); //$NON-NLS-1$
+	public static final String REORDER_TICKET_BUTTON_TEXT = Messages.getString("REORDER_TICKET_BUTTON_TEXT"); //$NON-NLS-1$
 	public static final String SETTLE_TICKET_BUTTON_TEXT = Messages.getString("SETTLE_TICKET_BUTTON_TEXT"); //$NON-NLS-1$
 	public static final String SPLIT_TICKET_BUTTON_TEXT = Messages.getString("SPLIT_TICKET_BUTTON_TEXT"); //$NON-NLS-1$
 	public static final String VOID_TICKET_BUTTON_TEXT = Messages.getString("VOID_TICKET_BUTTON_TEXT"); //$NON-NLS-1$
@@ -76,6 +77,7 @@ public class POSConstants {
 	public static final String TICKET_LIST_COLUMN_STATUS = Messages.getString("TICKET_LIST_COLUMN_STATUS"); //$NON-NLS-1$
 	public static final String TICKET_LIST_COLUMN_TOTAL = Messages.getString("TICKET_LIST_COLUMN_TOTAL"); //$NON-NLS-1$
 	public static final String TICKET_LIST_COLUMN_DUE = Messages.getString("TICKET_LIST_COLUMN_DUE"); //$NON-NLS-1$
+	public static final String TICKET_LIST_COLUMN_DELIVERY_ADDRESS = Messages.getString("TICKET_LIST_COLUMN_DELIVERY_ADDRESS"); //$NON-NLS-1$
 
 	public static final String EDIT_TAX_RATE = Messages.getString("PosMessage.0"); //$NON-NLS-1$
 	public static final String ENTER_PAYOUT_NOTE = Messages.getString("PosMessage.1"); //$NON-NLS-1$
