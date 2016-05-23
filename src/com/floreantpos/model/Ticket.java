@@ -89,7 +89,8 @@ public class Ticket extends BaseTicket {
 	public static final String CUSTOMER_NAME = "CUSTOMER_NAME"; //$NON-NLS-1$
 	public static final String CUSTOMER_ID = "CUSTOMER_ID"; //$NON-NLS-1$
 
-	private String sortOrder; 
+	private String sortOrder;
+
 	//	public String getTableNumbers() {
 	//		Set<ShopTable> tables = getTables();
 	//		if(tables == null) return "";
@@ -248,14 +249,16 @@ public class Ticket extends BaseTicket {
 		double taxAmount = calculateTax();
 		setTaxAmount(taxAmount);
 
+		Double deliveryChargeAmount = NumberUtil.roundToTwoDigit(getDeliveryCharge());
+
 		double serviceChargeAmount = calculateServiceCharge();
 		double totalAmount = 0;
 
 		if (priceIncludesTax) {
-			totalAmount = subtotalAmount - discountAmount + serviceChargeAmount;
+			totalAmount = subtotalAmount - discountAmount + deliveryChargeAmount + serviceChargeAmount;
 		}
 		else {
-			totalAmount = subtotalAmount - discountAmount + taxAmount + serviceChargeAmount;
+			totalAmount = subtotalAmount - discountAmount + deliveryChargeAmount + taxAmount + serviceChargeAmount;
 		}
 
 		if (getGratuity() != null) {
@@ -342,6 +345,14 @@ public class Ticket extends BaseTicket {
 		ticketItemDiscounts = fixInvalidAmount(discount);
 
 		return NumberUtil.roundToTwoDigit(discount);
+	}
+
+	public Double getDeliveryCharge() {
+		Double deliveryCharge = super.getDeliveryCharge();
+		if (deliveryCharge == null) {
+			return 0.0;
+		}
+		return deliveryCharge;
 	}
 
 	public double getAmountByType(TicketDiscount discount) {

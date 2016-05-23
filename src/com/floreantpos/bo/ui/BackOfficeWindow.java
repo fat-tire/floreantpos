@@ -46,6 +46,7 @@ import com.floreantpos.bo.actions.CouponExplorerAction;
 import com.floreantpos.bo.actions.CreditCardReportAction;
 import com.floreantpos.bo.actions.DataExportAction;
 import com.floreantpos.bo.actions.DataImportAction;
+import com.floreantpos.bo.actions.DeliveryChargeExplorerAction;
 import com.floreantpos.bo.actions.DrawerPullReportExplorerAction;
 import com.floreantpos.bo.actions.GroupExplorerAction;
 import com.floreantpos.bo.actions.HourlyLaborReportAction;
@@ -208,13 +209,13 @@ public class BackOfficeWindow extends javax.swing.JFrame {
 		explorerMenu.add(new ModifierGroupExplorerAction());
 		explorerMenu.add(new ModifierExplorerAction());
 		explorerMenu.add(new ShiftExplorerAction());
+		explorerMenu.add(new DeliveryChargeExplorerAction());
 		explorerMenu.add(new CouponExplorerAction());
 		explorerMenu.add(new CookingInstructionExplorerAction());
 		explorerMenu.add(new TaxExplorerAction());
 		explorerMenu.add(new CustomPaymentBrowserAction());
 		explorerMenu.add(new DrawerPullReportExplorerAction());
 		//explorerMenu.add(new TicketExplorerAction());
-		
 
 		OrderServiceExtension plugin = (OrderServiceExtension) ExtensionManager.getPlugin(OrderServiceExtension.class);
 		if (plugin == null) {
@@ -255,7 +256,7 @@ public class BackOfficeWindow extends javax.swing.JFrame {
 		tabbedPane.setTabShape(JideTabbedPane.SHAPE_WINDOWS);
 		tabbedPane.setShowCloseButtonOnTab(true);
 		tabbedPane.setTabInsets(new Insets(5, 5, 5, 5));
-		Font font=new Font(tabbedPane.getFont().getName(), Font.PLAIN, PosUIManager.getDefaultFontSize()); 
+		Font font = new Font(tabbedPane.getFont().getName(), Font.PLAIN, PosUIManager.getDefaultFontSize());
 		tabbedPane.setFont(font);
 
 		getContentPane().setLayout(new java.awt.BorderLayout(5, 0));

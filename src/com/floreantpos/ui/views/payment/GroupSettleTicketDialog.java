@@ -91,6 +91,7 @@ public class GroupSettleTicketDialog extends POSDialog implements CardInputListe
 	private String cardName;
 	private JTextField tfSubtotal;
 	private JTextField tfDiscount;
+	private JTextField tfDeliveryCharge;
 	private JTextField tfTax;
 	private JTextField tfTotal;
 	private JTextField tfGratuity;
@@ -193,6 +194,7 @@ public class GroupSettleTicketDialog extends POSDialog implements CardInputListe
 		if (tickets == null && !tickets.isEmpty()) {
 			tfSubtotal.setText(""); //$NON-NLS-1$
 			tfDiscount.setText(""); //$NON-NLS-1$
+			tfDeliveryCharge.setText(""); //$NON-NLS-1$
 			tfTax.setText(""); //$NON-NLS-1$
 			tfTotal.setText(""); //$NON-NLS-1$
 			tfGratuity.setText(""); //$NON-NLS-1$
@@ -200,6 +202,7 @@ public class GroupSettleTicketDialog extends POSDialog implements CardInputListe
 		}
 		double subtotalAmount = 0;
 		double discountAmount = 0;
+		double deliveryCharge = 0;
 		double taxAmount = 0;
 		double gratuityAmount = 0;
 		double totalAmount = 0;
@@ -207,6 +210,7 @@ public class GroupSettleTicketDialog extends POSDialog implements CardInputListe
 		for (Ticket ticket : tickets) {
 			subtotalAmount += ticket.getSubtotalAmount();
 			discountAmount += ticket.getDiscountAmount();
+			deliveryCharge += ticket.getDeliveryCharge();
 			taxAmount += ticket.getTaxAmount();
 			if (ticket.getGratuity() != null) {
 				gratuityAmount = +ticket.getGratuity().getAmount();
@@ -226,6 +230,8 @@ public class GroupSettleTicketDialog extends POSDialog implements CardInputListe
 
 		tfSubtotal.setText(NumberUtil.formatNumber(subtotalAmount));
 		tfDiscount.setText(NumberUtil.formatNumber(discountAmount));
+
+		tfDeliveryCharge.setText(NumberUtil.formatNumber(deliveryCharge));
 
 		if (Application.getInstance().isPriceIncludesTax()) {
 			tfTax.setText(Messages.getString("TicketView.35")); //$NON-NLS-1$
@@ -307,6 +313,14 @@ public class GroupSettleTicketDialog extends POSDialog implements CardInputListe
 		tfDiscount.setHorizontalAlignment(SwingConstants.TRAILING);
 		tfDiscount.setEditable(false);
 
+		JLabel lblDeliveryCharge = new javax.swing.JLabel();
+		lblDeliveryCharge.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+		lblDeliveryCharge.setText("Delivery Charge:" + " " + Application.getCurrencySymbol()); //$NON-NLS-1$ //$NON-NLS-2$
+
+		tfDeliveryCharge = new JTextField(10);
+		tfDeliveryCharge.setHorizontalAlignment(SwingConstants.TRAILING);
+		tfDeliveryCharge.setEditable(false);
+
 		JLabel lblTax = new javax.swing.JLabel();
 		lblTax.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
 		lblTax.setText(com.floreantpos.POSConstants.TAX + ":" + " " + Application.getCurrencySymbol()); //$NON-NLS-1$ //$NON-NLS-2$
@@ -333,12 +347,14 @@ public class GroupSettleTicketDialog extends POSDialog implements CardInputListe
 		tfTotal.setHorizontalAlignment(SwingConstants.TRAILING);
 		tfTotal.setEditable(false);
 
-		JPanel ticketAmountPanel = new com.floreantpos.swing.TransparentPanel(new MigLayout("ins 2 2 3 2,alignx trailing,fill", "[grow][]", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		JPanel ticketAmountPanel = new com.floreantpos.swing.TransparentPanel(new MigLayout("hidemode 3,ins 2 2 3 2,alignx trailing,fill", "[grow][]", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 		ticketAmountPanel.add(lblSubtotal, "growx,aligny center"); //$NON-NLS-1$
 		ticketAmountPanel.add(tfSubtotal, "growx,aligny center"); //$NON-NLS-1$
 		ticketAmountPanel.add(lblDiscount, "newline,growx,aligny center"); //$NON-NLS-1$ //$NON-NLS-2$
 		ticketAmountPanel.add(tfDiscount, "growx,aligny center"); //$NON-NLS-1$
+		ticketAmountPanel.add(lblDeliveryCharge, "newline,growx,aligny center"); //$NON-NLS-1$
+		ticketAmountPanel.add(tfDeliveryCharge, "growx,aligny center"); //$NON-NLS-1$
 		ticketAmountPanel.add(lblTax, "newline,growx,aligny center"); //$NON-NLS-1$
 		ticketAmountPanel.add(tfTax, "growx,aligny center"); //$NON-NLS-1$
 		ticketAmountPanel.add(lblGratuity, "newline,growx,aligny center"); //$NON-NLS-1$
@@ -617,7 +633,6 @@ public class GroupSettleTicketDialog extends POSDialog implements CardInputListe
 				transaction.setCaptured(false);
 				transaction.setCardMerchantGateway(paymentGateway.getName());
 
-
 				if (ticket.getOrderType().isPreAuthCreditCard()) {
 					paymentGateway.getProcessor().preAuth(transaction);
 				}
@@ -751,7 +766,6 @@ public class GroupSettleTicketDialog extends POSDialog implements CardInputListe
 
 				cardTransaction.setTicket(ticket);
 				setTransactionAmounts(cardTransaction);
-
 
 				if (ticket.getOrderType().isPreAuthCreditCard()) {// authorize onlly do not capture
 					cardProcessor.preAuth(transaction);

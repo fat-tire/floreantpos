@@ -101,6 +101,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 	private String cardName;
 	private JTextField tfSubtotal;
 	private JTextField tfDiscount;
+	private JTextField tfDeliveryCharge;
 	private JTextField tfTax;
 	private JTextField tfTotal;
 	private JTextField tfGratuity;
@@ -191,6 +192,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 		if (ticket == null) {
 			tfSubtotal.setText(""); //$NON-NLS-1$
 			tfDiscount.setText(""); //$NON-NLS-1$
+			tfDeliveryCharge.setText(""); //$NON-NLS-1$
 			tfTax.setText(""); //$NON-NLS-1$
 			tfTotal.setText(""); //$NON-NLS-1$
 			tfGratuity.setText(""); //$NON-NLS-1$
@@ -198,6 +200,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 		}
 		tfSubtotal.setText(NumberUtil.formatNumber(ticket.getSubtotalAmount()));
 		tfDiscount.setText(NumberUtil.formatNumber(ticket.getDiscountAmount()));
+		tfDeliveryCharge.setText(NumberUtil.formatNumber(ticket.getDeliveryCharge()));
 
 		if (Application.getInstance().isPriceIncludesTax()) {
 			tfTax.setText(Messages.getString("TicketView.35")); //$NON-NLS-1$
@@ -291,6 +294,14 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 		tfDiscount.setEditable(false);
 		tfDiscount.setText(ticket.getDiscountAmount().toString());
 
+		JLabel lblDeliveryCharge = new javax.swing.JLabel();
+		lblDeliveryCharge.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+		lblDeliveryCharge.setText("Delivery Charge:" + " " + Application.getCurrencySymbol()); //$NON-NLS-1$ //$NON-NLS-2$
+
+		tfDeliveryCharge = new javax.swing.JTextField(10);
+		tfDeliveryCharge.setHorizontalAlignment(SwingConstants.TRAILING);
+		tfDeliveryCharge.setEditable(false);
+
 		JLabel lblTax = new javax.swing.JLabel();
 		lblTax.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
 		lblTax.setText(com.floreantpos.POSConstants.TAX + ":" + " " + Application.getCurrencySymbol()); //$NON-NLS-1$ //$NON-NLS-2$
@@ -318,12 +329,16 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 		tfTotal.setHorizontalAlignment(SwingConstants.TRAILING);
 		tfTotal.setEditable(false);
 
-		JPanel ticketAmountPanel = new com.floreantpos.swing.TransparentPanel(new MigLayout("ins 2 2 3 2,alignx trailing,fill", "[grow]2[]", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		JPanel ticketAmountPanel = new com.floreantpos.swing.TransparentPanel(new MigLayout("hidemode 3,ins 2 2 3 2,alignx trailing,fill", "[grow]2[]", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 		ticketAmountPanel.add(lblSubtotal, "growx,aligny center"); //$NON-NLS-1$
 		ticketAmountPanel.add(tfSubtotal, "growx,aligny center"); //$NON-NLS-1$
 		ticketAmountPanel.add(lblDiscount, "newline,growx,aligny center"); //$NON-NLS-1$ //$NON-NLS-2$
 		ticketAmountPanel.add(tfDiscount, "growx,aligny center"); //$NON-NLS-1$
+		if (ticket.getOrderType().isRequiredDeliveryData()) {
+			ticketAmountPanel.add(lblDeliveryCharge, "newline,growx,aligny center"); //$NON-NLS-1$
+			ticketAmountPanel.add(tfDeliveryCharge, "growx,aligny center"); //$NON-NLS-1$
+		}
 		ticketAmountPanel.add(lblTax, "newline,growx,aligny center"); //$NON-NLS-1$
 		ticketAmountPanel.add(tfTax, "growx,aligny center"); //$NON-NLS-1$
 		ticketAmountPanel.add(lblGratuity, "newline,growx,aligny center"); //$NON-NLS-1$
@@ -666,8 +681,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 				else {
 					paymentGateway.getProcessor().chargeAmount(transaction);
 				}
-				
-				
+
 				settleTicket(transaction);
 
 				return;
