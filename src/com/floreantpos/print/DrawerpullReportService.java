@@ -220,6 +220,7 @@ public class DrawerpullReportService {
 		double subtotal = 0;
 		double discount = 0;
 		double salesTax = 0;
+		double salesDeliveryCharge = 0;
 		double tips = 0;
 
 		for (Ticket ticket : list) {
@@ -227,6 +228,7 @@ public class DrawerpullReportService {
 			subtotal += ticket.getSubtotalAmount();
 			discount += ticket.getDiscountAmount();
 			salesTax += ticket.getTaxAmount();
+			salesDeliveryCharge += ticket.getDeliveryCharge();
 			if (ticket.getGratuity() != null) {
 				tips += ticket.getGratuity().getAmount();
 			}
@@ -235,6 +237,7 @@ public class DrawerpullReportService {
 		report.setTicketCount(ticketCount);
 		report.setNetSales(subtotal - discount);
 		report.setSalesTax(salesTax);
+		report.setSalesDeliveryCharge(salesDeliveryCharge);
 		report.setChargedTips(tips);
 	}
 

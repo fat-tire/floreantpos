@@ -17,6 +17,7 @@ public abstract class BaseDeliveryCharge  implements Comparable, Serializable {
 
 	public static String REF = "DeliveryCharge";
 	public static String PROP_CHARGE_AMOUNT = "chargeAmount";
+	public static String PROP_NAME = "name";
 	public static String PROP_START_RANGE = "startRange";
 	public static String PROP_ID = "id";
 	public static String PROP_END_RANGE = "endRange";
@@ -45,6 +46,7 @@ public abstract class BaseDeliveryCharge  implements Comparable, Serializable {
 	private java.lang.Integer id;
 
 	// fields
+		protected java.lang.String name;
 		protected java.lang.Double startRange;
 		protected java.lang.Double endRange;
 		protected java.lang.Double chargeAmount;
@@ -70,6 +72,23 @@ public abstract class BaseDeliveryCharge  implements Comparable, Serializable {
 		this.hashCode = Integer.MIN_VALUE;
 	}
 
+
+
+
+	/**
+	 * Return the value associated with the column: NAME
+	 */
+	public java.lang.String getName () {
+					return name;
+			}
+
+	/**
+	 * Set the value related to the column: NAME
+	 * @param name the NAME value
+	 */
+	public void setName (java.lang.String name) {
+		this.name = name;
+	}
 
 
 

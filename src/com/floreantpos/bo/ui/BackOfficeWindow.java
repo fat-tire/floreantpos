@@ -46,7 +46,6 @@ import com.floreantpos.bo.actions.CouponExplorerAction;
 import com.floreantpos.bo.actions.CreditCardReportAction;
 import com.floreantpos.bo.actions.DataExportAction;
 import com.floreantpos.bo.actions.DataImportAction;
-import com.floreantpos.bo.actions.DeliveryChargeExplorerAction;
 import com.floreantpos.bo.actions.DrawerPullReportExplorerAction;
 import com.floreantpos.bo.actions.GroupExplorerAction;
 import com.floreantpos.bo.actions.HourlyLaborReportAction;
@@ -209,7 +208,6 @@ public class BackOfficeWindow extends javax.swing.JFrame {
 		explorerMenu.add(new ModifierGroupExplorerAction());
 		explorerMenu.add(new ModifierExplorerAction());
 		explorerMenu.add(new ShiftExplorerAction());
-		explorerMenu.add(new DeliveryChargeExplorerAction());
 		explorerMenu.add(new CouponExplorerAction());
 		explorerMenu.add(new CookingInstructionExplorerAction());
 		explorerMenu.add(new TaxExplorerAction());

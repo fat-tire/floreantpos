@@ -34,6 +34,7 @@ import com.floreantpos.model.Customer;
 import com.floreantpos.model.DataUpdateInfo;
 import com.floreantpos.model.DeliveryAddress;
 import com.floreantpos.model.DeliveryCharge;
+import com.floreantpos.model.DeliveryConfiguration;
 import com.floreantpos.model.DeliveryInstruction;
 import com.floreantpos.model.Discount;
 import com.floreantpos.model.DrawerAssignedHistory;
@@ -163,6 +164,7 @@ public abstract class _RootDAO extends com.floreantpos.model.dao._BaseRootDAO {
 		configuration = configuration.addClass(DeliveryAddress.class);
 		configuration = configuration.addClass(DeliveryInstruction.class);
 		configuration = configuration.addClass(DeliveryCharge.class);
+		configuration = configuration.addClass(DeliveryConfiguration.class);
 
 		configuration = configureInventoryClasses(configuration);
 
@@ -181,18 +183,18 @@ public abstract class _RootDAO extends com.floreantpos.model.dao._BaseRootDAO {
 		configuration = configuration.setProperty("hibernate.connection.isolation", String.valueOf(Connection.TRANSACTION_READ_COMMITTED)); //$NON-NLS-1$
 
 		configuration = configuration.setProperty("hibernate.c3p0.min_size", "5"); //$NON-NLS-1$ //$NON-NLS-2$
-        configuration = configuration.setProperty("hibernate.c3p0.max_size", "10"); //$NON-NLS-1$ //$NON-NLS-2$
-        configuration = configuration.setProperty("hibernate.c3p0.timeout", "60"); //$NON-NLS-1$ //$NON-NLS-2$
-       
-        configuration = configuration.setProperty("hibernate.c3p0.max_statements", "50"); //$NON-NLS-1$ //$NON-NLS-2$
-       
-        configuration = configuration.setProperty("hibernate.c3p0.checkoutTimeout", "15000"); //$NON-NLS-1$ //$NON-NLS-2$
-        configuration = configuration.setProperty("hibernate.c3p0.acquireRetryAttempts", "1"); //$NON-NLS-1$ //$NON-NLS-2$
-        //configuration = configuration.setProperty("hibernate.c3p0.acquireRetryDelay", "100"); //$NON-NLS-1$ //$NON-NLS-2$
-       
-//        configuration = configuration.setProperty("hibernate.c3p0.idle_test_period", "3000");
-//        configuration = configuration.setProperty("hibernate.c3p0.validate", "true"); //$NON-NLS-1$ //$NON-NLS-2$
-        configuration = configuration.setProperty("hibernate.c3p0.breakAfterAcquireFailure", "false"); //$NON-NLS-1$ //$NON-NLS-2$
+		configuration = configuration.setProperty("hibernate.c3p0.max_size", "10"); //$NON-NLS-1$ //$NON-NLS-2$
+		configuration = configuration.setProperty("hibernate.c3p0.timeout", "60"); //$NON-NLS-1$ //$NON-NLS-2$
+
+		configuration = configuration.setProperty("hibernate.c3p0.max_statements", "50"); //$NON-NLS-1$ //$NON-NLS-2$
+
+		configuration = configuration.setProperty("hibernate.c3p0.checkoutTimeout", "15000"); //$NON-NLS-1$ //$NON-NLS-2$
+		configuration = configuration.setProperty("hibernate.c3p0.acquireRetryAttempts", "1"); //$NON-NLS-1$ //$NON-NLS-2$
+		//configuration = configuration.setProperty("hibernate.c3p0.acquireRetryDelay", "100"); //$NON-NLS-1$ //$NON-NLS-2$
+
+		//        configuration = configuration.setProperty("hibernate.c3p0.idle_test_period", "3000");
+		//        configuration = configuration.setProperty("hibernate.c3p0.validate", "true"); //$NON-NLS-1$ //$NON-NLS-2$
+		configuration = configuration.setProperty("hibernate.c3p0.breakAfterAcquireFailure", "false"); //$NON-NLS-1$ //$NON-NLS-2$
 
 		return configuration;
 	}

@@ -37,7 +37,6 @@ import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.plaf.FontUIResource;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.RandomUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -53,6 +52,7 @@ import com.floreantpos.extension.ExtensionManager;
 import com.floreantpos.extension.FloreantPlugin;
 import com.floreantpos.extension.InginicoPlugin;
 import com.floreantpos.extension.PaymentGatewayPlugin;
+import com.floreantpos.model.DeliveryConfiguration;
 import com.floreantpos.model.OrderType;
 import com.floreantpos.model.PosPrinters;
 import com.floreantpos.model.PrinterConfiguration;
@@ -60,6 +60,7 @@ import com.floreantpos.model.Restaurant;
 import com.floreantpos.model.Shift;
 import com.floreantpos.model.Terminal;
 import com.floreantpos.model.User;
+import com.floreantpos.model.dao.DeliveryConfigurationDAO;
 import com.floreantpos.model.dao.OrderTypeDAO;
 import com.floreantpos.model.dao.PrinterConfigurationDAO;
 import com.floreantpos.model.dao.RestaurantDAO;
@@ -93,6 +94,7 @@ public class Application {
 	public PrinterConfiguration printConfiguration;
 	private Restaurant restaurant;
 	private PosPrinters printers;
+	private static String lengthUnit;
 
 	private static Application instance;
 
@@ -160,7 +162,7 @@ public class Application {
 
 			DatabaseUtil.checkConnection(DatabaseUtil.initialize());
 			DatabaseUtil.updateLegacyDatabase();
-			
+
 			initTerminal();
 			initOrderTypes();
 			initPrintConfig();
@@ -259,6 +261,7 @@ public class Application {
 
 		this.terminal = terminal;
 
+		initLengthUnit();
 	}
 
 	public void refreshRestaurant() {
@@ -609,7 +612,7 @@ public class Application {
 				javax.swing.plaf.FontUIResource f = (FontUIResource) value;
 				Font font = new Font(f.getFontName(), f.getStyle(), PosUIManager.getDefaultFontSize());
 				UIManager.put(key, new javax.swing.plaf.FontUIResource(font));
-				
+
 				/*	Font fontBold = new Font(f.getFontName(), Font.BOLD, PosUIManager.getDefaultFontSize());
 
 				if (key.equals("TitledBorder.font")) {
@@ -620,5 +623,19 @@ public class Application {
 				}*/
 			}
 		}
+	}
+
+	private void initLengthUnit() {
+		DeliveryConfiguration deliveryConfig = DeliveryConfigurationDAO.getInstance().get(1);
+		if (deliveryConfig == null) {
+			deliveryConfig = new DeliveryConfiguration();
+			deliveryConfig.setUnitName(DeliveryConfiguration.UNIT_MILE);
+			DeliveryConfigurationDAO.getInstance().saveOrUpdate(deliveryConfig);
+		}
+		lengthUnit = deliveryConfig.getUnitName();
+	}
+
+	public static String getLengthUnit() {
+		return lengthUnit;
 	}
 }

@@ -33,6 +33,8 @@ import net.miginfocom.swing.MigLayout;
 
 import com.floreantpos.IconFactory;
 import com.floreantpos.POSConstants;
+import com.floreantpos.model.DeliveryConfiguration;
+import com.floreantpos.model.dao.DeliveryConfigurationDAO;
 import com.floreantpos.swing.DoubleTextField;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.swing.PosUIManager;
@@ -52,6 +54,10 @@ public class LengthInputDialog extends OkCancelOptionDialog implements ActionLis
 	public LengthInputDialog(String title) {
 		super(title);
 		init();
+		DeliveryConfiguration deliveryConfig = DeliveryConfigurationDAO.getInstance().get(1);
+		if (deliveryConfig != null) {
+			tfUnitC.setSelectedItem(deliveryConfig.getUnitName());
+		}
 	}
 
 	private void init() {
@@ -76,8 +82,7 @@ public class LengthInputDialog extends OkCancelOptionDialog implements ActionLis
 
 		tfUnitC = new JComboBox(units);
 		tfUnitC.setFont(tfNumber.getFont().deriveFont(Font.BOLD, 24));
-		tfUnitC.setBackground(Color.WHITE);
-		tfUnitC.setForeground(Color.LIGHT_GRAY);
+		tfUnitC.setEnabled(false);
 
 		leftPanel.add(tfNumber, "span 2, grow"); //$NON-NLS-1$
 		leftPanel.add(tfUnitC, "span, grow"); //$NON-NLS-1$

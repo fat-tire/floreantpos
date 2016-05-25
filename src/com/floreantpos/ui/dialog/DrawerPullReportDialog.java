@@ -286,6 +286,7 @@ public class DrawerPullReportDialog extends POSDialog {
 		table.addAttribute("width", "100%"); //$NON-NLS-1$ //$NON-NLS-2$
 		addTableRow(table, "&nbsp;" + Messages.getString("DrawerPullReportDialog.3"), decimalFormat.format(drawerPullReport.getNetSales())); //$NON-NLS-1$ //$NON-NLS-2$
 		addTableRow(table, "+" + Messages.getString("DrawerPullReportDialog.5"), decimalFormat.format(drawerPullReport.getSalesTax())); //$NON-NLS-1$ //$NON-NLS-2$
+		addTableRow(table, "+" + Messages.getString("SALES_DELIVERY_CHARGE"), decimalFormat.format(drawerPullReport.getSalesDeliveryCharge())); //$NON-NLS-1$ //$NON-NLS-2$
 		addTableRow(table, "=" + Messages.getString("DrawerPullReportDialog.7"), decimalFormat.format(drawerPullReport.getTotalRevenue())); //$NON-NLS-1$ //$NON-NLS-2$
 		addTableRow(table, "+" + Messages.getString("DrawerPullReportDialog.10"), decimalFormat.format(drawerPullReport.getChargedTips())); //$NON-NLS-1$ //$NON-NLS-2$
 		addTableSeparator(table);

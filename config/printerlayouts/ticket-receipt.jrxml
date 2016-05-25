@@ -4,7 +4,7 @@
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="427"/>
+	<property name="ireport.y" value="146"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -592,7 +592,7 @@
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement key="staticText-8" x="32" y="71" width="114" height="13" isRemoveLineWhenBlank="true">
-					<printWhenExpression><![CDATA[$P{tipAmount}!=null]]></printWhenExpression>
+					<printWhenExpression><![CDATA[$P{deliveryCharge}!=null]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Right" verticalAlignment="Middle" markup="none">
 					<font fontName="Monospaced" size="9"/>

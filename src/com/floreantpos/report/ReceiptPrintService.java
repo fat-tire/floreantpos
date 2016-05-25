@@ -74,6 +74,7 @@ public class ReceiptPrintService {
 	public static final String PROP_PRINTER_NAME = "printerName"; //$NON-NLS-1$
 	private static final String TIP_AMOUNT = "tipAmount"; //$NON-NLS-1$
 	private static final String SERVICE_CHARGE = "serviceCharge"; //$NON-NLS-1$
+	private static final String DELIVERY_CHARGE = "deliveryCharge"; //$NON-NLS-1$
 	private static final String TAX_AMOUNT = "taxAmount"; //$NON-NLS-1$
 	private static final String DISCOUNT_AMOUNT = "discountAmount"; //$NON-NLS-1$
 	private static final String HEADER_LINE5 = "headerLine5"; //$NON-NLS-1$
@@ -366,6 +367,10 @@ public class ReceiptPrintService {
 				map.put(SERVICE_CHARGE, NumberUtil.formatNumber(ticket.getServiceCharge()));
 			}
 
+			if (ticket.getDeliveryCharge() > 0.0) {
+				map.put(DELIVERY_CHARGE, NumberUtil.formatNumber(ticket.getDeliveryCharge()));
+			}
+
 			if (ticket.getGratuity() != null) {
 				tipAmount = ticket.getGratuity().getAmount();
 				map.put(TIP_AMOUNT, NumberUtil.formatNumber(tipAmount));
@@ -375,6 +380,7 @@ public class ReceiptPrintService {
 			map.put("discountText", POSConstants.RECEIPT_REPORT_DISCOUNT_LABEL + currencySymbol); //$NON-NLS-1$
 			map.put("taxText", POSConstants.RECEIPT_REPORT_TAX_LABEL + currencySymbol); //$NON-NLS-1$
 			map.put("serviceChargeText", POSConstants.RECEIPT_REPORT_SERVICE_CHARGE_LABEL + currencySymbol); //$NON-NLS-1$
+			map.put("deliveryChargeText", POSConstants.RECEIPT_REPORT_DELIVERY_CHARGE_LABEL + currencySymbol); //$NON-NLS-1$
 			map.put("tipsText", POSConstants.RECEIPT_REPORT_TIPS_LABEL + currencySymbol); //$NON-NLS-1$
 			map.put("netAmountText", POSConstants.RECEIPT_REPORT_NETAMOUNT_LABEL + currencySymbol); //$NON-NLS-1$
 			map.put("paidAmountText", POSConstants.RECEIPT_REPORT_PAIDAMOUNT_LABEL + currencySymbol); //$NON-NLS-1$

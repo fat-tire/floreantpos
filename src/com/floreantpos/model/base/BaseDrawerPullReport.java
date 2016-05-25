@@ -40,6 +40,7 @@ public abstract class BaseDrawerPullReport  implements Comparable, Serializable 
 	public static String PROP_PAY_OUT_AMOUNT = "payOutAmount"; //$NON-NLS-1$
 	public static String PROP_DEBIT_CARD_RECEIPT_AMOUNT = "debitCardReceiptAmount"; //$NON-NLS-1$
 	public static String PROP_SALES_TAX = "salesTax"; //$NON-NLS-1$
+	public static String PROP_SALES_DELIVERY_CHARGE = "salesDeliveryCharge"; //$NON-NLS-1$
 	public static String PROP_TOTAL_VOID = "totalVoid"; //$NON-NLS-1$
 	public static String PROP_CASH_RECEIPT_COUNT = "cashReceiptCount"; //$NON-NLS-1$
 	public static String PROP_PAY_OUT_COUNT = "payOutCount"; //$NON-NLS-1$
@@ -111,6 +112,7 @@ public abstract class BaseDrawerPullReport  implements Comparable, Serializable 
 		protected java.lang.Double beginCash;
 		protected java.lang.Double netSales;
 		protected java.lang.Double salesTax;
+		protected java.lang.Double salesDeliveryCharge;
 		protected java.lang.Double cashTax;
 		protected java.lang.Double totalRevenue;
 		protected java.lang.Double grossReceipts;
@@ -993,6 +995,14 @@ public abstract class BaseDrawerPullReport  implements Comparable, Serializable 
 
 	public String toString () {
 		return super.toString();
+	}
+
+	public java.lang.Double getSalesDeliveryCharge() {
+		return salesDeliveryCharge == null ? Double.valueOf(0) : salesDeliveryCharge;
+	}
+
+	public void setSalesDeliveryCharge(java.lang.Double salesDeliveryCharge) {
+		this.salesDeliveryCharge = salesDeliveryCharge;
 	}
 
 

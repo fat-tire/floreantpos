@@ -335,12 +335,12 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 		ticketAmountPanel.add(tfSubtotal, "growx,aligny center"); //$NON-NLS-1$
 		ticketAmountPanel.add(lblDiscount, "newline,growx,aligny center"); //$NON-NLS-1$ //$NON-NLS-2$
 		ticketAmountPanel.add(tfDiscount, "growx,aligny center"); //$NON-NLS-1$
+		ticketAmountPanel.add(lblTax, "newline,growx,aligny center"); //$NON-NLS-1$
+		ticketAmountPanel.add(tfTax, "growx,aligny center"); //$NON-NLS-1$
 		if (ticket.getOrderType().isRequiredDeliveryData()) {
 			ticketAmountPanel.add(lblDeliveryCharge, "newline,growx,aligny center"); //$NON-NLS-1$
 			ticketAmountPanel.add(tfDeliveryCharge, "growx,aligny center"); //$NON-NLS-1$
 		}
-		ticketAmountPanel.add(lblTax, "newline,growx,aligny center"); //$NON-NLS-1$
-		ticketAmountPanel.add(tfTax, "growx,aligny center"); //$NON-NLS-1$
 		ticketAmountPanel.add(lblGratuity, "newline,growx,aligny center"); //$NON-NLS-1$
 		ticketAmountPanel.add(tfGratuity, "growx,aligny center"); //$NON-NLS-1$
 		ticketAmountPanel.add(lblTotal, "newline,growx,aligny center"); //$NON-NLS-1$
@@ -408,7 +408,6 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 		OrderController.saveOrder(ticket);
 		paymentView.updateView();
 		updateView();
-
 	}
 
 	public void doSettle(PaymentType paymentType) {

@@ -11,19 +11,27 @@ import com.floreantpos.model.DeliveryCharge;
 
 public class DeliveryChargeDAO extends BaseDeliveryChargeDAO {
 
-	/**
-	 * Default constructor.  Can be used in place of getInstance()
-	 */
-	public DeliveryChargeDAO() {
-	}
-
-	public double findMinCharge() {
+	public List<DeliveryCharge> findByDistance(double distance) {
 		Session session = null;
 
 		try {
 			session = getSession();
 			Criteria criteria = session.createCriteria(getReferenceClass());
-			criteria.setProjection(Projections.min(DeliveryCharge.PROP_CHARGE_AMOUNT));
+			criteria.add(Restrictions.and(Restrictions.le(DeliveryCharge.PROP_START_RANGE, distance), Restrictions.ge(DeliveryCharge.PROP_END_RANGE, distance)));
+
+			return criteria.list();
+		} finally {
+			closeSession(session);
+		}
+	}
+	
+	public double findMinRange() {
+		Session session = null;
+
+		try {
+			session = getSession();
+			Criteria criteria = session.createCriteria(getReferenceClass());
+			criteria.setProjection(Projections.min(DeliveryCharge.PROP_START_RANGE));
 
 			return (Double) criteria.uniqueResult();
 		} finally {
@@ -31,13 +39,13 @@ public class DeliveryChargeDAO extends BaseDeliveryChargeDAO {
 		}
 	}
 
-	public double findMaxCharge() {
+	public double findMaxRange() {
 		Session session = null;
 
 		try {
 			session = getSession();
 			Criteria criteria = session.createCriteria(getReferenceClass());
-			criteria.setProjection(Projections.max(DeliveryCharge.PROP_CHARGE_AMOUNT));
+			criteria.setProjection(Projections.max(DeliveryCharge.PROP_END_RANGE));
 
 			return (Double) criteria.uniqueResult();
 		} finally {
