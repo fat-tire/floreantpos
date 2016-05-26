@@ -3,10 +3,12 @@ package com.floreantpos.config.ui;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -19,6 +21,8 @@ import org.apache.commons.logging.LogFactory;
 
 import com.floreantpos.Messages;
 import com.floreantpos.config.TerminalConfig;
+import com.floreantpos.extension.ExtensionManager;
+import com.floreantpos.extension.OrderServiceExtension;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.Terminal;
 import com.floreantpos.model.dao.TerminalDAO;
@@ -42,6 +46,8 @@ public class PeripheralConfigurationView extends ConfigurationView {
 	private JCheckBox cbScaleActive;
 	private JTextField tfScalePort;
 	private FixedLengthTextField tfScaleDisplayMessage;
+
+	private JComboBox cbCallerIds;
 
 	public PeripheralConfigurationView() {
 		initComponents();
@@ -176,7 +182,23 @@ public class PeripheralConfigurationView extends ConfigurationView {
 		scaleDisplayPanel.add(btnRestoreScaleDefault);
 
 		if (TerminalConfig.getScaleActivationValue().equals("cas10")) {
-			contentPanel.add(scaleDisplayPanel, "grow");
+			contentPanel.add(scaleDisplayPanel, "grow,wrap");
+		}
+
+		JPanel callerIdPanel = new JPanel(new MigLayout());
+		callerIdPanel.setBorder(BorderFactory.createTitledBorder("CALLER ID DEVICE"));
+
+		Vector callerIds = new Vector();
+		callerIds.add("NONE"); //$NON-NLS-1$
+		callerIds.add("AD101"); //$NON-NLS-1$
+		cbCallerIds = new JComboBox(callerIds);
+
+		callerIdPanel.add(new JLabel("Caller Id device:")); //$NON-NLS-1$
+		callerIdPanel.add(cbCallerIds);
+
+		OrderServiceExtension orderServicePlugin = (OrderServiceExtension) ExtensionManager.getPlugin(OrderServiceExtension.class);
+		if (orderServicePlugin != null) {
+			contentPanel.add(callerIdPanel, "grow,wrap"); //$NON-NLS-1$
 		}
 
 		JScrollPane scrollPane = new JScrollPane(contentPanel);
@@ -204,6 +226,8 @@ public class PeripheralConfigurationView extends ConfigurationView {
 		TerminalConfig.setScaleDisplay(cbScaleActive.isSelected());
 		TerminalConfig.setScalePort(tfScalePort.getText());
 		TerminalConfig.setScaleDisplayMessage(tfScaleDisplayMessage.getText());
+
+		TerminalConfig.setCallerIdDevice(cbCallerIds.getSelectedItem().toString());
 
 		TerminalDAO terminalDAO = TerminalDAO.getInstance();
 		Terminal terminal = terminalDAO.get(TerminalConfig.getTerminalId());
@@ -237,6 +261,8 @@ public class PeripheralConfigurationView extends ConfigurationView {
 		cbScaleActive.setSelected(TerminalConfig.isActiveScaleDisplay());
 		tfScalePort.setText(TerminalConfig.getScalePort());
 		tfScaleDisplayMessage.setText(TerminalConfig.getScaleDisplayMessage());
+
+		cbCallerIds.setSelectedItem(TerminalConfig.getCallerIdDevice());
 
 		doEnableDisableDrawerPull();
 

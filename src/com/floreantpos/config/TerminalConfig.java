@@ -75,6 +75,8 @@ public class TerminalConfig {
 
 	private static final String ACTIVE_SCALE_DISPLAY = "active_scale_display";//$NON-NLS-1$
 
+	private static final String CALLER_ID_DEVICE = "caller_id_device";//$NON-NLS-1$
+
 	static final String TERMINAL_ID = "terminal_id"; //$NON-NLS-1$
 	static final String FULLSCREEN_MODE = "fullscreen_mode"; //$NON-NLS-1$
 
@@ -296,6 +298,14 @@ public class TerminalConfig {
 
 	public static void setOrderTypeFilter(String filter) {
 		config.setProperty(ORDER_TYPE_FILTER, filter);
+	}
+
+	public static String getCallerIdDevice() {
+		return config.getString(CALLER_ID_DEVICE, "NONE");
+	}
+
+	public static void setCallerIdDevice(String device) {
+		config.setProperty(CALLER_ID_DEVICE, device);
 	}
 
 	public static PaymentStatusFilter getPaymentStatusFilter() {
