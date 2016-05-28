@@ -31,6 +31,7 @@ public abstract class BaseCustomer  implements Comparable, Serializable {
 	public static String PROP_CITY = "city";
 	public static String PROP_SSN = "ssn";
 	public static String PROP_MOBILE_NO = "mobileNo";
+	public static String PROP_NAME = "name";
 	public static String PROP_STATE = "state";
 	public static String PROP_EMAIL = "email";
 	public static String PROP_CREDIT_SPENT = "creditSpent";
@@ -76,6 +77,7 @@ public abstract class BaseCustomer  implements Comparable, Serializable {
 		protected java.lang.String salutation;
 		protected java.lang.String firstName;
 		protected java.lang.String lastName;
+		protected java.lang.String name;
 		protected java.lang.String dob;
 		protected java.lang.String ssn;
 		protected java.lang.String address;
@@ -92,7 +94,7 @@ public abstract class BaseCustomer  implements Comparable, Serializable {
 	// collections
 	private java.util.List<com.floreantpos.model.DeliveryAddress> deliveryAddresses;
 	private java.util.List<com.floreantpos.model.DeliveryInstruction> deliveryInstructions;
-	private java.util.Map<String, String> properties;
+	private java.util.Map<String,String> properties;
 
 
 
@@ -301,6 +303,23 @@ public abstract class BaseCustomer  implements Comparable, Serializable {
 	 */
 	public void setLastName (java.lang.String lastName) {
 		this.lastName = lastName;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: name
+	 */
+	public java.lang.String getName () {
+					return name;
+			}
+
+	/**
+	 * Set the value related to the column: name
+	 * @param name the name value
+	 */
+	public void setName (java.lang.String name) {
+		this.name = name;
 	}
 
 
@@ -556,7 +575,7 @@ public abstract class BaseCustomer  implements Comparable, Serializable {
 	/**
 	 * Return the value associated with the column: properties
 	 */
-	public java.util.Map<String, String> getProperties () {
+	public java.util.Map<String,String> getProperties () {
 					return properties;
 			}
 
@@ -564,7 +583,7 @@ public abstract class BaseCustomer  implements Comparable, Serializable {
 	 * Set the value related to the column: properties
 	 * @param properties the properties value
 	 */
-	public void setProperties (java.util.Map<String, String> properties) {
+	public void setProperties (java.util.Map<String,String> properties) {
 		this.properties = properties;
 	}
 

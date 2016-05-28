@@ -14,7 +14,7 @@ public class CustomerSelectorFactory {
 				customerSelector = new DefaultCustomerListView();
 			}
 			else {
-				customerSelector = orderServicePlugin.createCustomerSelector();
+				customerSelector = orderServicePlugin.createNewCustomerSelector();
 			}
 		}
 		customerSelector.setOrderType(orderType);

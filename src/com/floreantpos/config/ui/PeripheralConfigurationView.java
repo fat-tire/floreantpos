@@ -47,6 +47,7 @@ public class PeripheralConfigurationView extends ConfigurationView {
 	private JTextField tfScalePort;
 	private FixedLengthTextField tfScaleDisplayMessage;
 
+	private JCheckBox chkCallerIdEnable;
 	private JComboBox cbCallerIds;
 
 	public PeripheralConfigurationView() {
@@ -188,11 +189,14 @@ public class PeripheralConfigurationView extends ConfigurationView {
 		JPanel callerIdPanel = new JPanel(new MigLayout());
 		callerIdPanel.setBorder(BorderFactory.createTitledBorder("CALLER ID DEVICE"));
 
+		chkCallerIdEnable = new JCheckBox("Enable caller id device");
+
 		Vector callerIds = new Vector();
 		callerIds.add("NONE"); //$NON-NLS-1$
 		callerIds.add("AD101"); //$NON-NLS-1$
 		cbCallerIds = new JComboBox(callerIds);
 
+		callerIdPanel.add(chkCallerIdEnable, "span 2,wrap");//$NON-NLS-1$
 		callerIdPanel.add(new JLabel("Caller Id device:")); //$NON-NLS-1$
 		callerIdPanel.add(cbCallerIds);
 
@@ -228,6 +232,7 @@ public class PeripheralConfigurationView extends ConfigurationView {
 		TerminalConfig.setScaleDisplayMessage(tfScaleDisplayMessage.getText());
 
 		TerminalConfig.setCallerIdDevice(cbCallerIds.getSelectedItem().toString());
+		TerminalConfig.setEnabledCallerIdDevice(chkCallerIdEnable.isSelected());
 
 		TerminalDAO terminalDAO = TerminalDAO.getInstance();
 		Terminal terminal = terminalDAO.get(TerminalConfig.getTerminalId());
@@ -263,6 +268,7 @@ public class PeripheralConfigurationView extends ConfigurationView {
 		tfScaleDisplayMessage.setText(TerminalConfig.getScaleDisplayMessage());
 
 		cbCallerIds.setSelectedItem(TerminalConfig.getCallerIdDevice());
+		chkCallerIdEnable.setSelected(TerminalConfig.isEanbledCallerIdDevice());
 
 		doEnableDisableDrawerPull();
 

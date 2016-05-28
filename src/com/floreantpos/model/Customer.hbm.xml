@@ -18,6 +18,7 @@
 		<property name="salutation" column="SALUTATION" length="60" type="string" />
 		<property name="firstName" column="FIRST_NAME" length="60" type="string" />
 		<property name="lastName" column="LAST_NAME" length="60" type="string" />
+		<property name="name" column="name" length="120" type="string" />
 		<property name="dob" column="DOB" length="16" type="string" />
 		<property name="ssn" column="SSN" length="30" type="string" />
 		<property name="address" column="ADDRESS" length="220" type="string" />

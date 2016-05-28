@@ -61,6 +61,7 @@ public class QuickCustomerForm extends BeanEditor<Customer> {
 	private FixedLengthTextField tfZip;
 	private FixedLengthTextField tfFirstName;
 	private FixedLengthTextField tfLastName;
+	private FixedLengthTextField tfName;
 	private JTextField tfState;
 	private JTextField tfCellPhone;
 	private QwertyKeyPad qwertyKeyPad;
@@ -74,16 +75,15 @@ public class QuickCustomerForm extends BeanEditor<Customer> {
 	public QuickCustomerForm(boolean enable) {
 		isKeypad = enable;
 		createCustomerForm();
-
 	}
 
 	private void createCustomerForm() {
-		setLayout(new BorderLayout(10,10)); 
-		setBorder(BorderFactory.createEmptyBorder(10,10,10,10)); 
+		setLayout(new BorderLayout(10, 10));
+		setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		setOpaque(true);
-		JPanel inputPanel=new JPanel(); 
+		JPanel inputPanel = new JPanel();
 		inputPanel.setLayout(new MigLayout("insets 10 10 10 10", "[][][][]", "[][][][][]")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		inputPanel.setBorder(BorderFactory.createTitledBorder("Enter Customer Information")); 
+		inputPanel.setBorder(BorderFactory.createTitledBorder("Enter Customer Information"));
 
 		JLabel lblAddress = new JLabel(Messages.getString("CustomerForm.18")); //$NON-NLS-1$
 		tfAddress = new JTextArea(new FixedLengthDocument(220));
@@ -98,25 +98,32 @@ public class QuickCustomerForm extends BeanEditor<Customer> {
 
 		JLabel lblState = new JLabel(Messages.getString("QuickCustomerForm.0")); //$NON-NLS-1$
 		tfState = new JTextField(30);
-		
-				JLabel lblCellPhone = new JLabel(Messages.getString("CustomerForm.32")); //$NON-NLS-1$
-				
-						inputPanel.add(lblCellPhone, "cell 0 1,alignx right"); //$NON-NLS-1$
+
+		JLabel lblCellPhone = new JLabel(Messages.getString("CustomerForm.32")); //$NON-NLS-1$
+
+		inputPanel.add(lblCellPhone, "cell 0 1,alignx right"); //$NON-NLS-1$
 		tfCellPhone = new JTextField(30);
 		inputPanel.add(tfCellPhone, "cell 1 1"); //$NON-NLS-1$
 		//setPreferredSize(PosUIManager.getSize(800, 350));
 
 		JLabel lblFirstName = new JLabel(Messages.getString("CustomerForm.3")); //$NON-NLS-1$
-		
-				inputPanel.add(lblFirstName, "cell 0 2,alignx right"); //$NON-NLS-1$
-				tfFirstName = new FixedLengthTextField();
-				inputPanel.add(tfFirstName, "cell 1 2"); //$NON-NLS-1$
-		
-				JLabel lblLastName = new JLabel(Messages.getString("CustomerForm.11")); //$NON-NLS-1$
-				
-						inputPanel.add(lblLastName, "cell 0 3,alignx right"); //$NON-NLS-1$
+
+		//inputPanel.add(lblFirstName, "cell 0 2,alignx right"); //$NON-NLS-1$
+		tfFirstName = new FixedLengthTextField();
+		//inputPanel.add(tfFirstName, "cell 1 2"); //$NON-NLS-1$
+
+		JLabel lblLastName = new JLabel(Messages.getString("CustomerForm.11")); //$NON-NLS-1$
+
+		//inputPanel.add(lblLastName, "cell 0 3,alignx right"); //$NON-NLS-1$
 		tfLastName = new FixedLengthTextField();
-		inputPanel.add(tfLastName, "cell 1 3"); //$NON-NLS-1$
+		//inputPanel.add(tfLastName, "cell 1 3"); //$NON-NLS-1$
+
+		JLabel lblName = new JLabel("Name"); //$NON-NLS-1$
+
+		inputPanel.add(lblName, "cell 0 3,alignx right"); //$NON-NLS-1$
+		tfName = new FixedLengthTextField();
+		tfName.setLength(120);
+		inputPanel.add(tfName, "cell 1 3"); //$NON-NLS-1$
 
 		inputPanel.add(lblZip, "cell 0 4,right"); //$NON-NLS-1$
 		inputPanel.add(tfZip, "cell 1 4"); //$NON-NLS-1$
@@ -126,13 +133,13 @@ public class QuickCustomerForm extends BeanEditor<Customer> {
 
 		inputPanel.add(lblState, "cell 0 6,right"); //$NON-NLS-1$
 		inputPanel.add(tfState, "cell 1 6"); //$NON-NLS-1$
-		
+
 		inputPanel.add(lblAddress, "cell 2 1 1 6,right"); //$NON-NLS-1$
 		inputPanel.add(scrlDescription, "grow, cell 3 1 1 6"); //$NON-NLS-1$
 
 		qwertyKeyPad = new QwertyKeyPad();
-		
-		add(inputPanel, BorderLayout.CENTER); 
+
+		add(inputPanel, BorderLayout.CENTER);
 
 		if (isKeypad) {
 			add(qwertyKeyPad, BorderLayout.SOUTH); //$NON-NLS-1$
@@ -166,6 +173,7 @@ public class QuickCustomerForm extends BeanEditor<Customer> {
 	public void callOrderController() {
 		Vector<Component> order = new Vector<Component>();
 
+		order.add(tfName);
 		order.add(tfFirstName);
 		order.add(tfLastName);
 		order.add(tfCellPhone);
@@ -181,6 +189,7 @@ public class QuickCustomerForm extends BeanEditor<Customer> {
 	}
 
 	public void enableCustomerFields(boolean enable) {
+		tfName.setEnabled(enable);
 		tfLastName.setEnabled(enable);
 		tfFirstName.setEnabled(enable);
 		tfAddress.setEnabled(enable);
@@ -191,6 +200,7 @@ public class QuickCustomerForm extends BeanEditor<Customer> {
 
 	@Override
 	public void setFieldsEnable(boolean enable) {
+		tfName.setEnabled(enable);
 		tfFirstName.setEnabled(enable);
 		tfLastName.setEnabled(enable);
 		tfAddress.setEnabled(enable);
@@ -200,6 +210,7 @@ public class QuickCustomerForm extends BeanEditor<Customer> {
 	}
 
 	public void setFieldsEditable(boolean editable) {
+		tfName.setEditable(editable);
 		tfFirstName.setEditable(editable);
 		tfLastName.setEditable(editable);
 		tfAddress.setEditable(editable);
@@ -211,6 +222,7 @@ public class QuickCustomerForm extends BeanEditor<Customer> {
 	@Override
 	public void createNew() {
 		setBean(new Customer());
+		tfName.setText("");//$NON-NLS-1$
 		tfFirstName.setText("");//$NON-NLS-1$
 		tfLastName.setText("");//$NON-NLS-1$
 		tfAddress.setText(""); //$NON-NLS-1$
@@ -241,24 +253,27 @@ public class QuickCustomerForm extends BeanEditor<Customer> {
 		if (customer == null) {
 			return;
 		}
+		tfName.setText(customer.getName());
 		tfFirstName.setText(customer.getFirstName());
 		tfLastName.setText(customer.getLastName());
-		tfAddress.setText(customer.getAddress());
 		tfCity.setText(customer.getCity());
 		//tfZip.setText(customer.getState());
 		//TODO: 
 		tfState.setText(customer.getState());
 		tfZip.setText(customer.getZipCode());
-		tfCellPhone.setText(customer.getMobileNo());
+		//tfCellPhone.setText(customer.getMobileNo());
+		tfAddress.setText(customer.getAddress());
 	}
 
 	@Override
 	protected boolean updateModel() throws IllegalModelStateException {
 		String mobile = tfCellPhone.getText();
-		String fname = tfFirstName.getText();
-		String lastName = tfLastName.getText();
+		String name = tfName.getText();
+		String fullName[] = name.split(" ");
+		String fname = fullName[0];
+		String lastName = name.substring(fname.length(), name.length());
 
-		if (StringUtils.isEmpty(mobile) && StringUtils.isEmpty(fname) && StringUtils.isEmpty(lastName)) {
+		if (StringUtils.isEmpty(mobile) && StringUtils.isEmpty(name)) {
 			POSMessageDialog.showError(null, Messages.getString("QuickCustomerForm.1")); //$NON-NLS-1$
 			return false;
 		}
@@ -268,8 +283,9 @@ public class QuickCustomerForm extends BeanEditor<Customer> {
 			customer = new Customer();
 			setBean(customer, false);
 		}
-		customer.setFirstName(tfFirstName.getText());
-		customer.setLastName(tfLastName.getText());
+		customer.setName(name);
+		customer.setFirstName(fname);
+		customer.setLastName(lastName);
 		customer.setAddress(tfAddress.getText());
 		customer.setCity(tfCity.getText());
 		customer.setState(tfState.getText());
@@ -355,7 +371,7 @@ public class QuickCustomerForm extends BeanEditor<Customer> {
 		tfState.setText(state);
 		tfCity.setText(city);
 	}
-	
+
 	public void setPhoneNo(String phoneNo) {
 		tfCellPhone.setText(phoneNo);
 	}

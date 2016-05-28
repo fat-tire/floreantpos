@@ -24,7 +24,7 @@ public class DeliveryChargeDAO extends BaseDeliveryChargeDAO {
 			closeSession(session);
 		}
 	}
-	
+
 	public double findMinRange() {
 		Session session = null;
 
@@ -39,7 +39,7 @@ public class DeliveryChargeDAO extends BaseDeliveryChargeDAO {
 		}
 	}
 
-	public double findMaxRange() {
+	public Double findMaxRange() {
 		Session session = null;
 
 		try {

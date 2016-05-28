@@ -28,7 +28,7 @@ public abstract class BaseCustomerDAO extends com.floreantpos.model.dao._RootDAO
 	}
 
     public Order getDefaultOrder () {
-		return Order.asc("lastName");
+		return Order.asc("name");
     }
 
 	/**

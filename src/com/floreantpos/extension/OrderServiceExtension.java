@@ -39,4 +39,5 @@ public interface OrderServiceExtension extends FloreantPlugin {
 	boolean finishOrder(int ticketId);
 	void createCustomerMenu(JMenu menu);
 	CustomerSelector createCustomerSelector();
+	CustomerSelector createNewCustomerSelector();
 }

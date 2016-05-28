@@ -155,4 +155,9 @@ public class DefaultOrderServiceExtension implements OrderServiceExtension {
 	public CustomerSelector createCustomerSelector() {
 		return null;
 	}
+
+	@Override
+	public CustomerSelector createNewCustomerSelector() {
+		return null;
+	}
 }
