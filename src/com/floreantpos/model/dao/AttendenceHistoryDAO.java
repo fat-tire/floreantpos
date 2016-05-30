@@ -35,6 +35,7 @@ import com.floreantpos.model.Terminal;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.User;
 import com.floreantpos.model.UserType;
+import com.floreantpos.report.AttendanceReportData;
 import com.floreantpos.report.PayrollReportData;
 
 public class AttendenceHistoryDAO extends BaseAttendenceHistoryDAO {
@@ -85,18 +86,19 @@ public class AttendenceHistoryDAO extends BaseAttendenceHistoryDAO {
 			}
 		}
 	}
+
 	public List<User> findNumberOfClockedInUserAtShift(Date fromDay, Date toDay, Shift shift, UserType userType, Terminal terminal) {
 		Session session = null;
-		
+
 		ArrayList<User> users = new ArrayList<User>();
-		
+
 		try {
 			session = getSession();
 			Criteria criteria = session.createCriteria(getReferenceClass());
 			criteria.add(Restrictions.ge(AttendenceHistory.PROP_CLOCK_IN_TIME, fromDay));
 			criteria.add(Restrictions.le(AttendenceHistory.PROP_CLOCK_IN_TIME, toDay));
 			criteria.add(Restrictions.le(AttendenceHistory.PROP_SHIFT, shift));
-			
+
 			if (userType != null) {
 				criteria.createAlias(AttendenceHistory.PROP_USER, "u"); //$NON-NLS-1$
 				criteria.add(Restrictions.eq("u.type", userType)); //$NON-NLS-1$
@@ -104,17 +106,17 @@ public class AttendenceHistoryDAO extends BaseAttendenceHistoryDAO {
 			if (terminal != null) {
 				criteria.add(Restrictions.eq(Ticket.PROP_TERMINAL, terminal));
 			}
-			
+
 			List list = criteria.list();
 			for (Object object : list) {
 				AttendenceHistory history = (AttendenceHistory) object;
-				
-//				if (!history.isClockedOut()) {
-//					users.add(history.getUser());
-//				}
-//				else if (history.getClockOutHour() >= hour) {
-//					users.add(history.getUser());
-//				}
+
+				//				if (!history.isClockedOut()) {
+				//					users.add(history.getUser());
+				//				}
+				//				else if (history.getClockOutHour() >= hour) {
+				//					users.add(history.getUser());
+				//				}
 				users.add(history.getUser());
 			}
 			return users;
@@ -143,12 +145,12 @@ public class AttendenceHistoryDAO extends BaseAttendenceHistoryDAO {
 			}
 		}
 	}
-	
+
 	public List<PayrollReportData> findPayroll(Date from, Date to) {
 		Session session = null;
-		
+
 		ArrayList<PayrollReportData> list = new ArrayList<PayrollReportData>();
-		
+
 		try {
 			session = getSession();
 			Criteria criteria = session.createCriteria(AttendenceHistory.class);
@@ -156,7 +158,7 @@ public class AttendenceHistoryDAO extends BaseAttendenceHistoryDAO {
 			criteria.add(Restrictions.le(AttendenceHistory.PROP_CLOCK_OUT_TIME, to));
 			criteria.addOrder(Order.asc(AttendenceHistory.PROP_USER));
 			List list2 = criteria.list();
-			
+
 			for (Iterator iterator = list2.iterator(); iterator.hasNext();) {
 				AttendenceHistory history = (AttendenceHistory) iterator.next();
 				PayrollReportData data = new PayrollReportData();
@@ -165,13 +167,53 @@ public class AttendenceHistoryDAO extends BaseAttendenceHistoryDAO {
 				data.setDate(history.getClockInTime());
 				data.setUser(history.getUser());
 				data.calculate();
-				
+
 				list.add(data);
 			}
-			
+
 			return list;
 		} catch (Exception e) {
 			throw new PosException(Messages.getString("AttendenceHistoryDAO.6"), e); //$NON-NLS-1$
+		} finally {
+			if (session != null) {
+				session.close();
+			}
+		}
+	}
+
+	public List<AttendanceReportData> findAttendance(Date from, Date to, User user) {
+		Session session = null;
+
+		ArrayList<AttendanceReportData> list = new ArrayList<AttendanceReportData>();
+
+		try {
+			session = getSession();
+			Criteria criteria = session.createCriteria(AttendenceHistory.class);
+			criteria.add(Restrictions.ge(AttendenceHistory.PROP_CLOCK_IN_TIME, from));
+			criteria.add(Restrictions.le(AttendenceHistory.PROP_CLOCK_OUT_TIME, to));
+			criteria.addOrder(Order.asc(AttendenceHistory.PROP_USER));
+			
+			if (user != null) {
+				criteria.add(Restrictions.eq(AttendenceHistory.PROP_USER, user));
+			}
+
+			List list2 = criteria.list();
+
+			for (Iterator iterator = list2.iterator(); iterator.hasNext();) {
+				AttendenceHistory history = (AttendenceHistory) iterator.next();
+				AttendanceReportData data = new AttendanceReportData();
+				data.setClockIn(history.getClockInTime());
+				data.setClockOut(history.getClockOutTime());
+				data.setUser(history.getUser());
+				data.setName(history.getUser().getFirstName());
+				data.calculate();
+
+				list.add(data);
+			}
+
+			return list;
+		} catch (Exception e) {
+			throw new PosException("Unable to find Attendance", e); //$NON-NLS-1$
 		} finally {
 			if (session != null) {
 				session.close();

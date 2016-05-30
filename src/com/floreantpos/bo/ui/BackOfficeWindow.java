@@ -47,6 +47,7 @@ import com.floreantpos.bo.actions.CreditCardReportAction;
 import com.floreantpos.bo.actions.DataExportAction;
 import com.floreantpos.bo.actions.DataImportAction;
 import com.floreantpos.bo.actions.DrawerPullReportExplorerAction;
+import com.floreantpos.bo.actions.EmployeeAttendanceAction;
 import com.floreantpos.bo.actions.GroupExplorerAction;
 import com.floreantpos.bo.actions.HourlyLaborReportAction;
 import com.floreantpos.bo.actions.ItemExplorerAction;
@@ -66,6 +67,7 @@ import com.floreantpos.bo.actions.SalesReportAction;
 import com.floreantpos.bo.actions.ServerProductivityReportAction;
 import com.floreantpos.bo.actions.ShiftExplorerAction;
 import com.floreantpos.bo.actions.TaxExplorerAction;
+import com.floreantpos.bo.actions.TicketExplorerAction;
 import com.floreantpos.bo.actions.UserExplorerAction;
 import com.floreantpos.bo.actions.UserTypeExplorerAction;
 import com.floreantpos.bo.actions.ViewGratuitiesAction;
@@ -183,6 +185,7 @@ public class BackOfficeWindow extends javax.swing.JFrame {
 		reportMenu.add(new OpenTicketSummaryReportAction());
 		reportMenu.add(new HourlyLaborReportAction());
 		reportMenu.add(new PayrollReportAction());
+		reportMenu.add(new EmployeeAttendanceAction());
 		reportMenu.add(new KeyStatisticsSalesReportAction());
 		reportMenu.add(new SalesAnalysisReportAction());
 		reportMenu.add(new CreditCardReportAction());
@@ -213,7 +216,7 @@ public class BackOfficeWindow extends javax.swing.JFrame {
 		explorerMenu.add(new TaxExplorerAction());
 		explorerMenu.add(new CustomPaymentBrowserAction());
 		explorerMenu.add(new DrawerPullReportExplorerAction());
-		//explorerMenu.add(new TicketExplorerAction());
+		explorerMenu.add(new TicketExplorerAction());
 
 		OrderServiceExtension plugin = (OrderServiceExtension) ExtensionManager.getPlugin(OrderServiceExtension.class);
 		if (plugin == null) {
