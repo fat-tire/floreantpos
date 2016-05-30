@@ -519,6 +519,23 @@ public class TicketDAO extends BaseTicketDAO {
 		}
 	}
 
+	public List<Ticket> findTicketByCustomer(Integer customerId) {
+		Session session = null;
+		Criteria criteria = null;
+
+		try {
+			session = createNewSession();
+			criteria = session.createCriteria(getReferenceClass());
+			criteria.add(Restrictions.eq(Ticket.PROP_CUSTOMER_ID, customerId));
+
+			List ticketList = criteria.list();
+			return ticketList;
+
+		} finally {
+			closeSession(session);
+		}
+	}
+
 	public List<Ticket> findTickets(PaymentStatusFilter psFilter, String otFilter) {
 		return findTicketsForUser(psFilter, otFilter, null);
 	}

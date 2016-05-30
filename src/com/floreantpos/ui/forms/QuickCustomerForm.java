@@ -174,13 +174,13 @@ public class QuickCustomerForm extends BeanEditor<Customer> {
 		Vector<Component> order = new Vector<Component>();
 
 		order.add(tfName);
-		order.add(tfFirstName);
-		order.add(tfLastName);
+		//order.add(tfFirstName);
+		//order.add(tfLastName);
 		order.add(tfCellPhone);
-		order.add(tfAddress);
 		order.add(tfZip);
 		order.add(tfCity);
 		order.add(tfState);
+		order.add(tfAddress);
 
 		newPolicy = new MyOwnFocusTraversalPolicy(order);
 
