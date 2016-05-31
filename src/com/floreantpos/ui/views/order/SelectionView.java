@@ -174,6 +174,8 @@ public abstract class SelectionView extends JPanel implements ComponentListener 
 		reset();
 
 		if (this.items == null || items.size() == 0) {
+			revalidate();
+			repaint();
 			return;
 		}
 
