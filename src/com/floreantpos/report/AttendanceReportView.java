@@ -20,6 +20,7 @@ package com.floreantpos.report;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -60,6 +61,7 @@ import com.floreantpos.ui.util.UiUtil;
  * To change this template use File | Settings | File Templates.
  */
 public class AttendanceReportView extends TransparentPanel {
+	SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd,yyy"); //$NON-NLS-1$
 	private JButton btnGo;
 	private JXDatePicker fromDatePicker;
 	private JXDatePicker toDatePicker;
@@ -162,13 +164,14 @@ public class AttendanceReportView extends TransparentPanel {
 		List<AttendanceReportData> attendanceList = dao.findAttendance(fromDate, toDate, user);
 
 		try {
+			
 			JasperReport report = ReportUtil.getReport("EmployeeAttendanceReport"); //$NON-NLS-1$
 
 			HashMap properties = new HashMap();
 			ReportUtil.populateRestaurantProperties(properties);
-			properties.put("fromDate", fromDate); //$NON-NLS-1$
-			properties.put("toDate", toDate); //$NON-NLS-1$
-			properties.put("reportDate", new Date()); //$NON-NLS-1$
+			properties.put("fromDate", dateFormat.format(fromDate)); //$NON-NLS-1$
+			properties.put("toDate", dateFormat.format(toDate)); //$NON-NLS-1$
+			properties.put("reportDate", dateFormat.format(new Date())); //$NON-NLS-1$
 
 			AttendanceReportModel reportModel = new AttendanceReportModel();
 			reportModel.setRows(attendanceList);
