@@ -24,6 +24,7 @@ import javax.swing.JMenu;
 import javax.swing.JOptionPane;
 
 import com.floreantpos.Messages;
+import com.floreantpos.config.ui.ConfigurationDialog;
 import com.floreantpos.customer.CustomerSelector;
 import com.floreantpos.extension.OrderServiceExtension;
 import com.floreantpos.main.Application;
@@ -145,6 +146,11 @@ public class DefaultOrderServiceExtension implements OrderServiceExtension {
 	public void initBackoffice() {
 
 	}
+	
+	@Override
+	public void initConfigurationView(ConfigurationDialog dialog) {
+		
+	}
 
 	@Override
 	public String getId() {
@@ -160,4 +166,5 @@ public class DefaultOrderServiceExtension implements OrderServiceExtension {
 	public CustomerSelector createNewCustomerSelector() {
 		return null;
 	}
+
 }

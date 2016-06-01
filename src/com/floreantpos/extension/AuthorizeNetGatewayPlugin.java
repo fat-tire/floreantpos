@@ -19,6 +19,7 @@ package com.floreantpos.extension;
 
 import net.xeoh.plugins.base.annotations.PluginImplementation;
 
+import com.floreantpos.config.ui.ConfigurationDialog;
 import com.floreantpos.config.ui.ConfigurationView;
 import com.floreantpos.config.ui.DefaultMerchantGatewayConfigurationView;
 import com.floreantpos.ui.views.payment.AuthorizeDotNetProcessor;
@@ -54,6 +55,11 @@ public class AuthorizeNetGatewayPlugin implements PaymentGatewayPlugin {
 	@Override
 	public void initBackoffice() {
 
+	}
+	
+	@Override
+	public void initConfigurationView(ConfigurationDialog dialog) {
+		
 	}
 
 	@Override

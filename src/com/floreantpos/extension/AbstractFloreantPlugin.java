@@ -17,6 +17,8 @@
  */
 package com.floreantpos.extension;
 
+import com.floreantpos.config.ui.ConfigurationDialog;
+
 
 
 public class AbstractFloreantPlugin implements FloreantPlugin {
@@ -41,6 +43,12 @@ public class AbstractFloreantPlugin implements FloreantPlugin {
 	@Override
 	public String getId() {
 		return null;
+	}
+
+
+	@Override
+	public void initConfigurationView(ConfigurationDialog dialog) {
+		
 	}
 
 }

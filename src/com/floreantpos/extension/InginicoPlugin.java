@@ -2,6 +2,7 @@ package com.floreantpos.extension;
 
 import net.xeoh.plugins.base.annotations.PluginImplementation;
 
+import com.floreantpos.config.ui.ConfigurationDialog;
 import com.floreantpos.config.ui.ConfigurationView;
 import com.floreantpos.config.ui.InginicoConfigurationView;
 import com.floreantpos.ui.views.payment.CardProcessor;
@@ -23,6 +24,11 @@ public class InginicoPlugin implements PaymentGatewayPlugin {
 	public void initBackoffice() {
 	}
 
+	@Override
+	public void initConfigurationView(ConfigurationDialog dialog) {
+		
+	}
+	
 	@Override
 	public String getId() {
 		return String.valueOf("Inginico".hashCode()); //
@@ -52,5 +58,4 @@ public class InginicoPlugin implements PaymentGatewayPlugin {
 	public boolean shouldShowCardInputProcessor() {
 		return true;
 	}
-
 }
