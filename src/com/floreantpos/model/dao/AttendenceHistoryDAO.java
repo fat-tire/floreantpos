@@ -192,7 +192,7 @@ public class AttendenceHistoryDAO extends BaseAttendenceHistoryDAO {
 			criteria.add(Restrictions.ge(AttendenceHistory.PROP_CLOCK_IN_TIME, from));
 			criteria.add(Restrictions.le(AttendenceHistory.PROP_CLOCK_OUT_TIME, to));
 			criteria.addOrder(Order.asc(AttendenceHistory.PROP_USER));
-			
+
 			if (user != null) {
 				criteria.add(Restrictions.eq(AttendenceHistory.PROP_USER, user));
 			}
@@ -214,6 +214,31 @@ public class AttendenceHistoryDAO extends BaseAttendenceHistoryDAO {
 			return list;
 		} catch (Exception e) {
 			throw new PosException("Unable to find Attendance", e); //$NON-NLS-1$
+		} finally {
+			if (session != null) {
+				session.close();
+			}
+		}
+	}
+
+	public List<AttendenceHistory> findHistory(Date from, Date to, User user) {
+		Session session = null;
+
+		try {
+			session = getSession();
+			Criteria criteria = session.createCriteria(AttendenceHistory.class);
+			criteria.add(Restrictions.ge(AttendenceHistory.PROP_CLOCK_IN_TIME, from));
+			criteria.add(Restrictions.le(AttendenceHistory.PROP_CLOCK_OUT_TIME, to));
+			criteria.addOrder(Order.asc(AttendenceHistory.PROP_ID));
+			if (user != null) {
+				criteria.add(Restrictions.eq(AttendenceHistory.PROP_USER, user));
+			}
+
+			List list2 = criteria.list();
+
+			return list2;
+		} catch (Exception e) {
+			throw new PosException("Unable to find History", e); //$NON-NLS-1$
 		} finally {
 			if (session != null) {
 				session.close();

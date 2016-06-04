@@ -39,6 +39,7 @@ import javax.swing.JMenuBar;
 
 import com.floreantpos.Messages;
 import com.floreantpos.actions.AboutAction;
+import com.floreantpos.bo.actions.AttendanceHistoryAction;
 import com.floreantpos.bo.actions.CategoryExplorerAction;
 import com.floreantpos.bo.actions.ConfigureRestaurantAction;
 import com.floreantpos.bo.actions.CookingInstructionExplorerAction;
@@ -217,6 +218,7 @@ public class BackOfficeWindow extends javax.swing.JFrame {
 		explorerMenu.add(new CustomPaymentBrowserAction());
 		explorerMenu.add(new DrawerPullReportExplorerAction());
 		explorerMenu.add(new TicketExplorerAction());
+		explorerMenu.add(new AttendanceHistoryAction());
 
 		OrderServiceExtension plugin = (OrderServiceExtension) ExtensionManager.getPlugin(OrderServiceExtension.class);
 		if (plugin == null) {
