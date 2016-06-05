@@ -34,6 +34,7 @@ import com.floreantpos.model.ShopTable;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.ui.dialog.POSMessageDialog;
+import com.floreantpos.ui.views.IView;
 import com.floreantpos.util.POSUtil;
 import com.floreantpos.util.PosGuiUtil;
 import com.floreantpos.util.TicketAlreadyExistsException;
@@ -146,10 +147,10 @@ public class DefaultOrderServiceExtension implements OrderServiceExtension {
 	public void initBackoffice() {
 
 	}
-	
+
 	@Override
 	public void initConfigurationView(ConfigurationDialog dialog) {
-		
+
 	}
 
 	@Override
@@ -158,12 +159,22 @@ public class DefaultOrderServiceExtension implements OrderServiceExtension {
 	}
 
 	@Override
-	public CustomerSelector createCustomerSelector() {
-		return null;
+	public IView getDeliveryDispatchView(OrderType orderType) {
+		return null; 
 	}
 
 	@Override
 	public CustomerSelector createNewCustomerSelector() {
+		return null;
+	}
+
+	@Override
+	public IView getPickUpDispatchView(OrderType orderType) {
+		return null; 
+	}
+
+	@Override
+	public CustomerSelector createCustomerSelectorView() {
 		return null;
 	}
 

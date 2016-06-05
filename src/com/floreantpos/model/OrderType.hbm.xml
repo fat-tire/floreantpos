@@ -15,7 +15,8 @@
 		<property column="PREPAID" name="prepaid" type="java.lang.Boolean" />
 		<property column="CLOSE_ON_PAID" name="closeOnPaid" type="java.lang.Boolean" />
 		<property column="REQUIRED_CUSTOMER_DATA" name="requiredCustomerData" type="java.lang.Boolean" />
-		<property column="REQUIRED_DELIVERY_DATA" name="requiredDeliveryData" type="java.lang.Boolean" />
+		<property column="HOME_DELIVERY" name="homeDelivery" type="java.lang.Boolean" />
+		<property column="PICK_UP" name="pickUp" type="java.lang.Boolean" />
 		<property column="ASSIGN_DRIVER" name="assignDriver" type="java.lang.Boolean" />
 		<property column="SHOW_ITEM_BARCODE" name="showItemBarcode" type="java.lang.Boolean" />
 		<property column="SHOW_IN_LOGIN_SCREEN" name="showInLoginScreen" type="java.lang.Boolean" />
@@ -24,10 +25,5 @@
 		<property column="HAS_FORHERE_AND_TOGO" name="hasForHereAndToGo" type="java.lang.Boolean" />
 		<property column="PRE_AUTH_CREDIT_CARD" name="preAuthCreditCard" type="java.lang.Boolean" />
 		<property column="BAR_TAB" name="barTab" type="java.lang.Boolean" />
-		
-		<bag name="orderSubTypes" table="ORDER_SUB_TYPE" lazy="false" cascade="all">
-			<key column="ORDER_TYPE_ID" />
-			<element column="NAME" type="java.lang.String" />
-		</bag>
 	</class>
 </hibernate-mapping>

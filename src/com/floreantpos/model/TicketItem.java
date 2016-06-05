@@ -38,23 +38,27 @@ public class TicketItem extends BaseTicketItem implements ITicketItem {
 	private static final long serialVersionUID = 1L;
 
 	/*[CONSTRUCTOR MARKER BEGIN]*/
-	public TicketItem() {
+	public TicketItem () {
 		super();
 	}
 
 	/**
 	 * Constructor for primary key
 	 */
-	public TicketItem(java.lang.Integer id) {
+	public TicketItem (java.lang.Integer id) {
 		super(id);
 	}
 
 	/**
 	 * Constructor for required fields
 	 */
-	public TicketItem(java.lang.Integer id, com.floreantpos.model.Ticket ticket) {
+	public TicketItem (
+		java.lang.Integer id,
+		com.floreantpos.model.Ticket ticket) {
 
-		super(id, ticket);
+		super (
+			id,
+			ticket);
 	}
 
 	/*[CONSTRUCTOR MARKER END]*/
@@ -644,5 +648,12 @@ public class TicketItem extends BaseTicketItem implements ITicketItem {
 
 	public void setMenuItem(MenuItem menuItem) {
 		this.menuItem = menuItem;
+	}
+	
+	public String getStatus(){
+		if(super.getStatus()==null){
+			return ""; 
+		}
+		return super.getStatus(); 
 	}
 }

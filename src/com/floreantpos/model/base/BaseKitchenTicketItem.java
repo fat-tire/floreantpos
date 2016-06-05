@@ -16,18 +16,19 @@ import java.io.Serializable;
 public abstract class BaseKitchenTicketItem  implements Comparable, Serializable {
 
 	public static String REF = "KitchenTicketItem";
-	public static String PROP_STATUS = "status";
+	public static String PROP_UNIT_NAME = "unitName";
+	public static String PROP_TICKET_ITEM_ID = "ticketItemId";
 	public static String PROP_QUANTITY = "quantity";
 	public static String PROP_SORT_ORDER = "sortOrder";
-	public static String PROP_UNIT_NAME = "unitName";
-	public static String PROP_FRACTIONAL_UNIT = "fractionalUnit";
 	public static String PROP_MENU_ITEM_GROUP_NAME = "menuItemGroupName";
-	public static String PROP_MENU_ITEM_NAME = "menuItemName";
-	public static String PROP_MENU_ITEM_GROUP_ID = "menuItemGroupId";
-	public static String PROP_ID = "id";
-	public static String PROP_FRACTIONAL_QUANTITY = "fractionalQuantity";
-	public static String PROP_VOIDED = "voided";
 	public static String PROP_COOKABLE = "cookable";
+	public static String PROP_FRACTIONAL_UNIT = "fractionalUnit";
+	public static String PROP_STATUS = "status";
+	public static String PROP_MENU_ITEM_GROUP_ID = "menuItemGroupId";
+	public static String PROP_FRACTIONAL_QUANTITY = "fractionalQuantity";
+	public static String PROP_ID = "id";
+	public static String PROP_VOIDED = "voided";
+	public static String PROP_MENU_ITEM_NAME = "menuItemName";
 	public static String PROP_MENU_ITEM_CODE = "menuItemCode";
 
 
@@ -55,6 +56,7 @@ public abstract class BaseKitchenTicketItem  implements Comparable, Serializable
 
 	// fields
 		protected java.lang.Boolean cookable;
+		protected java.lang.Integer ticketItemId;
 		protected java.lang.String menuItemCode;
 		protected java.lang.String menuItemName;
 		protected java.lang.Integer menuItemGroupId;
@@ -104,6 +106,23 @@ public abstract class BaseKitchenTicketItem  implements Comparable, Serializable
 	 */
 	public void setCookable (java.lang.Boolean cookable) {
 		this.cookable = cookable;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: TICKET_ITEM_ID
+	 */
+	public java.lang.Integer getTicketItemId () {
+									return ticketItemId == null ? Integer.valueOf(0) : ticketItemId;
+					}
+
+	/**
+	 * Set the value related to the column: TICKET_ITEM_ID
+	 * @param ticketItemId the TICKET_ITEM_ID value
+	 */
+	public void setTicketItemId (java.lang.Integer ticketItemId) {
+		this.ticketItemId = ticketItemId;
 	}
 
 

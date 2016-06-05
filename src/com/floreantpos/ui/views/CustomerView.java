@@ -45,12 +45,7 @@ public class CustomerView extends ViewPanel {
 	private CustomerSelector customerSelector = null;
 	private static CustomerView instance;
 
-	private CustomerView() {
-		initComponents();
-		applyComponentOrientation(ComponentOrientation.getOrientation(Locale.getDefault()));
-	}
-
-	private void initComponents() {
+	private CustomerView(OrderType orderType) {
 		setLayout(new BorderLayout());
 
 		OrderServiceExtension orderServicePlugin = (OrderServiceExtension) ExtensionManager.getPlugin(OrderServiceExtension.class);
@@ -59,30 +54,26 @@ public class CustomerView extends ViewPanel {
 
 		}
 		else {
-			customerSelector = orderServicePlugin.createCustomerSelector();
+			customerSelector = orderServicePlugin.createCustomerSelectorView();
 		}
 		customerSelector.setCreateNewTicket(true);
 		customerSelector.updateView(false);
 		add(customerSelector, BorderLayout.CENTER);
+
+		applyComponentOrientation(ComponentOrientation.getOrientation(Locale.getDefault()));
 	}
 
 	public void updateView() {
 		customerSelector.redererCustomers();
 	}
 
-	private static CustomerView getInstance() {
+	public static CustomerView getInstance(OrderType orderType) {
 		if (instance == null) {
-			instance = new CustomerView();
+			instance = new CustomerView(orderType);
 		}
+		instance.customerSelector.setOrderType(orderType);
 
 		return instance;
-	}
-
-	public static CustomerView getInstance(OrderType orderType) {
-		CustomerView instance2 = getInstance();
-		instance2.customerSelector.setOrderType(orderType);
-
-		return instance2;
 	}
 
 	@Override

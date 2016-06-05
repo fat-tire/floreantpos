@@ -37,6 +37,7 @@ import com.floreantpos.model.TicketItemModifier;
 import com.floreantpos.model.TicketItemModifierGroup;
 import com.floreantpos.model.User;
 import com.floreantpos.model.UserPermission;
+import com.floreantpos.report.ReceiptPrintService;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.ui.dialog.POSDialog;
 import com.floreantpos.ui.dialog.POSMessageDialog;
@@ -46,6 +47,10 @@ import com.floreantpos.ui.views.order.RootView;
 public class OrderInfoDialog extends POSDialog {
 	OrderInfoView view;
 	private boolean reorder = false;
+	private PosButton btnReOrder;
+	private PosButton btnTransferUser;
+	private PosButton btnPrint;
+	private PosButton btnPrintDriverCopy;
 
 	public OrderInfoDialog(OrderInfoView view) {
 		this.view = view;
@@ -60,7 +65,7 @@ public class OrderInfoDialog extends POSDialog {
 		JPanel panel = new JPanel();
 		getContentPane().add(panel, BorderLayout.SOUTH);
 
-		PosButton btnReOrder = new PosButton("Reorder");
+		btnReOrder = new PosButton("Reorder");
 
 		btnReOrder.addActionListener(new ActionListener() {
 
@@ -71,8 +76,8 @@ public class OrderInfoDialog extends POSDialog {
 					Ticket ticket = (Ticket) iter.next();
 
 					createReOrder(ticket);
-					setCanceled(true); 
-					dispose(); 
+					setCanceled(true);
+					dispose();
 
 				}
 			}
@@ -80,7 +85,7 @@ public class OrderInfoDialog extends POSDialog {
 
 		panel.add(btnReOrder);
 
-		PosButton btnTransferUser = new PosButton();
+		btnTransferUser = new PosButton();
 		btnTransferUser.setText(Messages.getString("OrderInfoDialog.3")); //$NON-NLS-1$
 		btnTransferUser.addActionListener(new ActionListener() {
 			@Override
@@ -111,7 +116,7 @@ public class OrderInfoDialog extends POSDialog {
 
 		panel.add(btnTransferUser);
 
-		PosButton btnPrint = new PosButton();
+		btnPrint = new PosButton();
 		btnPrint.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				doPrint();
@@ -119,6 +124,16 @@ public class OrderInfoDialog extends POSDialog {
 		});
 		btnPrint.setText(Messages.getString("OrderInfoDialog.1")); //$NON-NLS-1$
 		panel.add(btnPrint);
+
+		btnPrintDriverCopy = new PosButton();
+		btnPrintDriverCopy.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				doPrintDriverCopy();
+			}
+		});
+		btnPrintDriverCopy.setText("Print (Driver Copy)"); //$NON-NLS-1$
+		btnPrintDriverCopy.setVisible(false);
+		panel.add(btnPrintDriverCopy);
 
 		PosButton btnClose = new PosButton();
 		btnClose.addActionListener(new ActionListener() {
@@ -130,9 +145,24 @@ public class OrderInfoDialog extends POSDialog {
 		panel.add(btnClose);
 	}
 
+	private void doPrintDriverCopy() {
+		try {
+			view.printCopy(ReceiptPrintService.DRIVER_COPY);
+		} catch (Exception e) {
+			POSMessageDialog.showError(Application.getPosWindow(), e.getMessage());
+		}
+	}
+
+	public void updateView() {
+		btnTransferUser.setVisible(false);
+		btnReOrder.setVisible(false);
+		btnPrintDriverCopy.setVisible(true);
+		btnPrint.setText("Print (Customer Copy)");
+	}
+
 	protected void doPrint() {
 		try {
-			view.print();
+			view.printCopy(ReceiptPrintService.CUSTOMER_COPY);
 		} catch (Exception e) {
 			POSMessageDialog.showError(Application.getPosWindow(), e.getMessage());
 		}
@@ -142,7 +172,7 @@ public class OrderInfoDialog extends POSDialog {
 		Ticket ticket = new Ticket();
 		ticket.setPriceIncludesTax(oldticket.isPriceIncludesTax());
 		ticket.setOrderType(oldticket.getOrderType());
-		ticket.setProperties(oldticket.getProperties()); 
+		ticket.setProperties(oldticket.getProperties());
 		ticket.setTerminal(Application.getInstance().getTerminal());
 		ticket.setOwner(Application.getCurrentUser());
 		ticket.setShift(Application.getInstance().getCurrentShift());
@@ -234,10 +264,10 @@ public class OrderInfoDialog extends POSDialog {
 
 		OrderView.getInstance().setCurrentTicket(ticket);
 		RootView.getInstance().showView(OrderView.VIEW_NAME);
-		
+
 		reorder = true;
 	}
-	
+
 	public boolean isReorder() {
 		return reorder;
 	}

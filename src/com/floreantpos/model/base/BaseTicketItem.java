@@ -39,6 +39,7 @@ public abstract class BaseTicketItem  implements Comparable, Serializable {
 	public static String PROP_NAME = "name";
 	public static String PROP_PRINTER_GROUP = "printerGroup";
 	public static String PROP_PRINTED_TO_KITCHEN = "printedToKitchen";
+	public static String PROP_STATUS = "status";
 	public static String PROP_SUBTOTAL_AMOUNT = "subtotalAmount";
 	public static String PROP_TAX_AMOUNT_WITHOUT_MODIFIERS = "taxAmountWithoutModifiers";
 	public static String PROP_ID = "id";
@@ -103,6 +104,7 @@ public abstract class BaseTicketItem  implements Comparable, Serializable {
 		protected java.lang.Boolean fractionalUnit;
 		protected java.lang.Boolean hasModifiers;
 		protected java.lang.Boolean printedToKitchen;
+		protected java.lang.String status;
 		protected java.lang.Boolean stockAmountAdjusted;
 
 	// many to one
@@ -516,6 +518,23 @@ public abstract class BaseTicketItem  implements Comparable, Serializable {
 	 */
 	public void setPrintedToKitchen (java.lang.Boolean printedToKitchen) {
 		this.printedToKitchen = printedToKitchen;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: STATUS
+	 */
+	public java.lang.String getStatus () {
+					return status;
+			}
+
+	/**
+	 * Set the value related to the column: STATUS
+	 * @param status the STATUS value
+	 */
+	public void setStatus (java.lang.String status) {
+		this.status = status;
 	}
 
 

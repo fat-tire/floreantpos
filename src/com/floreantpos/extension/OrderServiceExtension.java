@@ -25,6 +25,7 @@ import com.floreantpos.customer.CustomerSelector;
 import com.floreantpos.model.Customer;
 import com.floreantpos.model.OrderType;
 import com.floreantpos.model.ShopTable;
+import com.floreantpos.ui.views.IView;
 import com.floreantpos.util.TicketAlreadyExistsException;
 
 public interface OrderServiceExtension extends FloreantPlugin {
@@ -38,6 +39,9 @@ public interface OrderServiceExtension extends FloreantPlugin {
 	void assignDriver(int ticketId);
 	boolean finishOrder(int ticketId);
 	void createCustomerMenu(JMenu menu);
-	CustomerSelector createCustomerSelector();
 	CustomerSelector createNewCustomerSelector();
+	IView getDeliveryDispatchView(OrderType orderType);
+	IView getPickUpDispatchView(OrderType orderType);
+	CustomerSelector createCustomerSelectorView();
+	
 }

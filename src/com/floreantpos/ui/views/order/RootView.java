@@ -28,6 +28,8 @@ import javax.swing.border.EmptyBorder;
 import com.floreantpos.bo.ui.BackOfficeWindow;
 import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.demo.KitchenDisplayView;
+import com.floreantpos.extension.ExtensionManager;
+import com.floreantpos.extension.OrderServiceExtension;
 import com.floreantpos.extension.OrderServiceFactory;
 import com.floreantpos.model.OrderType;
 import com.floreantpos.model.dao.OrderTypeDAO;
@@ -180,9 +182,25 @@ public class RootView extends com.floreantpos.swing.TransparentPanel {
 				setAndShowHomeScreen(tableMapView);
 			}
 			else if (orderType.isRequiredCustomerData()) {
-				CustomerView customerView = CustomerView.getInstance(orderType);
-				customerView.updateView();
-				setAndShowHomeScreen(customerView);
+				OrderServiceExtension orderServicePlugin = (OrderServiceExtension) ExtensionManager.getPlugin(OrderServiceExtension.class);
+				if (orderServicePlugin != null) {
+					if (orderType.isPickUp()) {
+						setAndShowHomeScreen(orderServicePlugin.getPickUpDispatchView(orderType));
+					}
+					else if (orderType.isHomeDelivery()) {
+						setAndShowHomeScreen(orderServicePlugin.getDeliveryDispatchView(orderType));
+					}
+					else {
+						CustomerView customerView = CustomerView.getInstance(orderType);
+						customerView.updateView();
+						setAndShowHomeScreen(customerView);
+					}
+				}
+				else {
+					CustomerView customerView = CustomerView.getInstance(orderType);
+					customerView.updateView();
+					setAndShowHomeScreen(customerView);
+				}
 			}
 			else {
 				try {

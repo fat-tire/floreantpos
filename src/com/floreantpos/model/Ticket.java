@@ -85,9 +85,18 @@ public class Ticket extends BaseTicket {
 	private List deletedItems;
 	private boolean priceIncludesTax;
 
+	public static final String STATUS_WAITING = "Waiting (Kitchen)";
+	public static final String STATUS_READY = "Ready";
+	public static final String STATUS_NOT_SENT = "Not Sent";
+	public static final String STATUS_DRIVING = "Driving";
+	public static final String STATUS_VOID = "Void";
+
 	public static final String CUSTOMER_MOBILE = "CUSTOMER_MOBILE"; //$NON-NLS-1$
 	public static final String CUSTOMER_NAME = "CUSTOMER_NAME"; //$NON-NLS-1$
 	public static final String CUSTOMER_ID = "CUSTOMER_ID"; //$NON-NLS-1$
+	public static final String CUSTOMER_ZIP_CODE = "CUSTOMER_ZIP_CODE"; //$NON-NLS-1$
+
+	public static final String DRIVER_OUT_TIME = "OUT_AT";
 
 	private String sortOrder;
 
@@ -678,6 +687,7 @@ public class Ticket extends BaseTicket {
 			addProperty(Ticket.CUSTOMER_ID, String.valueOf(customer.getAutoId()));
 			addProperty(Ticket.CUSTOMER_NAME, customer.getFirstName());
 			addProperty(Ticket.CUSTOMER_MOBILE, customer.getMobileNo());
+			addProperty(Ticket.CUSTOMER_ZIP_CODE, customer.getZipCode());
 		}
 		if (customer != null) {
 			setCustomerId(customer.getAutoId());
@@ -688,13 +698,24 @@ public class Ticket extends BaseTicket {
 		removeProperty(CUSTOMER_ID);
 		removeProperty(CUSTOMER_NAME);
 		removeProperty(CUSTOMER_MOBILE);
+		removeProperty(CUSTOMER_ZIP_CODE);
 	}
 
 	public String getSortOrder() {
+		if (sortOrder == null) {
+			return "";
+		}
 		return sortOrder;
 	}
 
 	public void setSortOrder(String sortOrder) {
 		this.sortOrder = sortOrder;
+	}
+
+	public String getStatus() {
+		if (super.getStatus() == null) {
+			return "";
+		}
+		return super.getStatus();
 	}
 }

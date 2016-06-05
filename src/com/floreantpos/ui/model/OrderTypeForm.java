@@ -23,6 +23,9 @@
 
 package com.floreantpos.ui.model;
 
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+
 import javax.swing.DefaultListModel;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
@@ -47,7 +50,7 @@ import com.floreantpos.util.POSUtil;
  *
  * @author  MShahriar
  */
-public class OrderTypeForm extends BeanEditor {
+public class OrderTypeForm extends BeanEditor implements ItemListener {
 
 	private JLabel jLabel1;
 	private FixedLengthTextField tfName;
@@ -58,7 +61,8 @@ public class OrderTypeForm extends BeanEditor {
 	private JCheckBox chkCloseOnPaid;
 	private JCheckBox chkPrepaid;
 	private JCheckBox chkRequiredCustomerData;
-	private JCheckBox chkRequiredDeliveryData;
+	private JCheckBox chkHomeDelivery;
+	private JCheckBox chkPickUp;
 	private JCheckBox chkAssignDriver;
 	private JCheckBox chkShowItemBarcode;
 	private JCheckBox chkShowInLoginScreen;
@@ -74,6 +78,7 @@ public class OrderTypeForm extends BeanEditor {
 
 	public OrderTypeForm() throws Exception {
 		this(new OrderType());
+		initHandler();
 	}
 
 	public OrderTypeForm(OrderType orderType) throws Exception {
@@ -81,6 +86,7 @@ public class OrderTypeForm extends BeanEditor {
 		initComponents();
 
 		setBean(orderType);
+		initHandler();
 	}
 
 	public String getDisplayText() {
@@ -89,6 +95,15 @@ public class OrderTypeForm extends BeanEditor {
 			return POSConstants.ORDER_TYPE;
 		}
 		return POSConstants.ORDER_TYPE;
+	}
+
+	private void initHandler() {
+		chkHomeDelivery.addItemListener(this);
+		chkPickUp.addItemListener(this);
+		chkRequiredCustomerData.addItemListener(this);
+
+		chkHomeDelivery.setEnabled(chkRequiredCustomerData.isSelected());
+		chkPickUp.setEnabled(chkRequiredCustomerData.isSelected());
 	}
 
 	private void initComponents() {
@@ -106,7 +121,8 @@ public class OrderTypeForm extends BeanEditor {
 		chkCloseOnPaid = new JCheckBox(Messages.getString("OrderTypeForm.4")); //$NON-NLS-1$
 		chkPrepaid = new JCheckBox(Messages.getString("OrderTypeForm.5")); //$NON-NLS-1$
 		chkRequiredCustomerData = new JCheckBox(Messages.getString("OrderTypeForm.6")); //$NON-NLS-1$
-		chkRequiredDeliveryData = new JCheckBox(Messages.getString("OrderTypeForm.7")); //$NON-NLS-1$
+		chkHomeDelivery = new JCheckBox("Home delivery"); //$NON-NLS-1$
+		chkPickUp = new JCheckBox("Pick up"); //$NON-NLS-1$
 		chkAssignDriver = new JCheckBox(Messages.getString("OrderTypeForm.8")); //$NON-NLS-1$
 		chkShowItemBarcode = new JCheckBox(Messages.getString("OrderTypeForm.9")); //$NON-NLS-1$
 		chkShowInLoginScreen = new JCheckBox(Messages.getString("OrderTypeForm.10")); //$NON-NLS-1$
@@ -128,16 +144,17 @@ public class OrderTypeForm extends BeanEditor {
 		OrderServiceExtension orderServiceExtension = (OrderServiceExtension) ExtensionManager.getPlugin(OrderServiceExtension.class);
 		generalPanel.add(chkRequiredCustomerData, "cell 1 7,alignx left,aligny top"); //$NON-NLS-1$
 		if (orderServiceExtension != null) {
-			generalPanel.add(chkRequiredDeliveryData, "cell 1 8,alignx left,aligny top"); //$NON-NLS-1$
-			generalPanel.add(chkAssignDriver, "cell 1 9,alignx left,aligny top"); //$NON-NLS-1$
+			generalPanel.add(chkHomeDelivery, "cell 1 8,alignx left,aligny top"); //$NON-NLS-1$
+			generalPanel.add(chkPickUp, "cell 1 9,alignx left,aligny top"); //$NON-NLS-1$
+			generalPanel.add(chkAssignDriver, "cell 1 10,alignx left,aligny top"); //$NON-NLS-1$
 		}
-		generalPanel.add(chkShowItemBarcode, "cell 1 10,alignx left,aligny top"); //$NON-NLS-1$
-		generalPanel.add(chkShowInLoginScreen, "cell 1 11,alignx left,aligny top"); //$NON-NLS-1$
-		generalPanel.add(chkConsolidateItemsInReceipt, "cell 1 12,alignx left,aligny top"); //$NON-NLS-1$
-		generalPanel.add(chkHideItemWithEmptyInventory, "cell 1 13,alignx left,aligny top"); //$NON-NLS-1$
-		generalPanel.add(chkHasForHereAndToGo, "cell 1 14,alignx left,aligny top"); //$NON-NLS-1$
-		generalPanel.add(chkBarTab, "cell 1 15,alignx left,aligny top"); //$NON-NLS-1$
-		generalPanel.add(chkPreAuthCreditCard, "cell 1 16,alignx left,aligny top"); //$NON-NLS-1$
+		generalPanel.add(chkShowItemBarcode, "cell 1 11,alignx left,aligny top"); //$NON-NLS-1$
+		generalPanel.add(chkShowInLoginScreen, "cell 1 12,alignx left,aligny top"); //$NON-NLS-1$
+		generalPanel.add(chkConsolidateItemsInReceipt, "cell 1 13,alignx left,aligny top"); //$NON-NLS-1$
+		generalPanel.add(chkHideItemWithEmptyInventory, "cell 1 14,alignx left,aligny top"); //$NON-NLS-1$
+		generalPanel.add(chkHasForHereAndToGo, "cell 1 15,alignx left,aligny top"); //$NON-NLS-1$
+		generalPanel.add(chkBarTab, "cell 1 16,alignx left,aligny top"); //$NON-NLS-1$
+		generalPanel.add(chkPreAuthCreditCard, "cell 1 17,alignx left,aligny top"); //$NON-NLS-1$
 
 		add(generalPanel);
 	}
@@ -163,7 +180,8 @@ public class OrderTypeForm extends BeanEditor {
 			chkPrepaid.setSelected(ordersType.isPrepaid());
 			chkCloseOnPaid.setSelected(ordersType.isCloseOnPaid());
 			chkRequiredCustomerData.setSelected(ordersType.isRequiredCustomerData());
-			chkRequiredDeliveryData.setSelected(ordersType.isRequiredDeliveryData());
+			chkHomeDelivery.setSelected(ordersType.isHomeDelivery());
+			chkPickUp.setSelected(ordersType.isPickUp());
 			chkAssignDriver.setSelected(ordersType.isAssignDriver());
 			chkShowItemBarcode.setSelected(ordersType.isShowItemBarcode());
 			chkShowInLoginScreen.setSelected(ordersType.isShowInLoginScreen());
@@ -196,7 +214,8 @@ public class OrderTypeForm extends BeanEditor {
 			ordersType.setPrepaid(chkPrepaid.isSelected());
 			ordersType.setCloseOnPaid(chkCloseOnPaid.isSelected());
 			ordersType.setRequiredCustomerData(chkRequiredCustomerData.isSelected());
-			ordersType.setRequiredDeliveryData(chkRequiredDeliveryData.isSelected());
+			ordersType.setHomeDelivery(chkHomeDelivery.isSelected());
+			ordersType.setPickUp(chkPickUp.isSelected());
 			ordersType.setAssignDriver(chkAssignDriver.isSelected());
 			ordersType.setShowItemBarcode(chkShowItemBarcode.isSelected());
 			ordersType.setShowInLoginScreen(chkShowInLoginScreen.isSelected());
@@ -227,6 +246,41 @@ public class OrderTypeForm extends BeanEditor {
 		} catch (Exception x) {
 			MessageDialog.showError(x);
 			return false;
+		}
+	}
+
+	@Override
+	public void itemStateChanged(ItemEvent e) {
+		JCheckBox chkBox = (JCheckBox) e.getItem();
+		if (chkBox == chkRequiredCustomerData) {
+			if (chkRequiredCustomerData.isSelected()) {
+				chkHomeDelivery.setEnabled(true);
+				chkPickUp.setEnabled(true);
+			}
+			else {
+				chkHomeDelivery.setEnabled(false);
+				chkPickUp.setEnabled(false);
+			}
+		}
+		else if (chkBox == chkPickUp) {
+			if (chkPickUp.isSelected()) {
+				chkHomeDelivery.setSelected(false);
+				chkHomeDelivery.setEnabled(false);
+				chkAssignDriver.setEnabled(false);
+			}
+			else {
+				chkHomeDelivery.setEnabled(true);
+				chkAssignDriver.setEnabled(true);
+			}
+		}
+		else if (chkBox == chkHomeDelivery) {
+			if (chkHomeDelivery.isSelected()) {
+				chkPickUp.setSelected(false);
+				chkPickUp.setEnabled(false);
+			}
+			else {
+				chkPickUp.setEnabled(true);
+			}
 		}
 	}
 }

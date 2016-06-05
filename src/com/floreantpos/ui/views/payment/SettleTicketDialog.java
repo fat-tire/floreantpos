@@ -337,7 +337,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 		ticketAmountPanel.add(tfDiscount, "growx,aligny center"); //$NON-NLS-1$
 		ticketAmountPanel.add(lblTax, "newline,growx,aligny center"); //$NON-NLS-1$
 		ticketAmountPanel.add(tfTax, "growx,aligny center"); //$NON-NLS-1$
-		if (ticket.getOrderType().isRequiredDeliveryData()) {
+		if (ticket.getOrderType().isHomeDelivery()) {
 			ticketAmountPanel.add(lblDeliveryCharge, "newline,growx,aligny center"); //$NON-NLS-1$
 			ticketAmountPanel.add(tfDeliveryCharge, "growx,aligny center"); //$NON-NLS-1$
 		}

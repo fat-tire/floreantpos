@@ -17,12 +17,14 @@
  */
 package com.floreantpos.customer;
 
+import java.awt.BorderLayout;
 import java.awt.HeadlessException;
 
 import com.floreantpos.main.Application;
 import com.floreantpos.main.PosWindow;
 import com.floreantpos.model.Customer;
 import com.floreantpos.model.Ticket;
+import com.floreantpos.ui.TitlePanel;
 import com.floreantpos.ui.dialog.POSDialog;
 
 public class CustomerSelectorDialog extends POSDialog {
@@ -33,6 +35,10 @@ public class CustomerSelectorDialog extends POSDialog {
 		super(Application.getPosWindow(), true);
 		this.customerSelector = customerSelector;
 
+		TitlePanel titlePane = new TitlePanel();
+		titlePane.setTitle("SELECT CUSTOMER");
+
+		getContentPane().add(titlePane, BorderLayout.NORTH);
 		getContentPane().add(customerSelector);
 
 		PosWindow window = Application.getPosWindow();
@@ -54,5 +60,13 @@ public class CustomerSelectorDialog extends POSDialog {
 
 	public void setTicket(Ticket thisTicket) {
 		customerSelector.setTicket(thisTicket);
+	}
+
+	public void setCustomer(Customer customer) {
+		customerSelector.setCustomer(customer); 
+	}
+
+	public void setCallerId(String callerId) {
+		customerSelector.setCallerId(callerId); 
 	}
 }

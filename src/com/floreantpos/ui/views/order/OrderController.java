@@ -22,6 +22,8 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 import com.floreantpos.POSConstants;
 import com.floreantpos.actions.SettleTicketAction;
@@ -42,9 +44,9 @@ import com.floreantpos.model.dao.MenuItemDAO;
 import com.floreantpos.model.dao.ShopTableDAO;
 import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.model.dao.UserDAO;
-import com.floreantpos.ui.dialog.POSMessageDialog;
-import com.floreantpos.ui.dialog.BasicWeightInputDialog;
 import com.floreantpos.ui.dialog.AutomatedWeightInputDialog;
+import com.floreantpos.ui.dialog.BasicWeightInputDialog;
+import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.views.order.actions.CategorySelectionListener;
 import com.floreantpos.ui.views.order.actions.GroupSelectionListener;
 import com.floreantpos.ui.views.order.actions.ItemSelectionListener;
@@ -247,6 +249,32 @@ public class OrderController implements OrderListener, CategorySelectionListener
 		if (driver != null) {
 			driver.setAvailableForDelivery(true);
 			UserDAO.getInstance().saveOrUpdate(driver);
+		}
+	}
+
+	public synchronized static void closeDeliveryOrders(List<Ticket> tickets) {
+		Session session = TicketDAO.getInstance().createNewSession();
+		Transaction transaction = null;
+
+		try {
+
+			transaction = session.beginTransaction();
+
+			for (Ticket ticket : tickets) {
+				ticket.setClosed(true);
+				ticket.setClosingDate(new Date());
+
+				session.saveOrUpdate(ticket);
+			}
+			transaction.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+			POSMessageDialog.showError(e.getMessage());
+
+			if (transaction != null)
+				transaction.rollback();
+		} finally {
+			session.close();
 		}
 	}
 }

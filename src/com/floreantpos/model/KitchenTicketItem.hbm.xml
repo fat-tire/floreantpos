@@ -8,6 +8,7 @@
 		</id>
 
 		<property column="COOKABLE" name="cookable" type="java.lang.Boolean" />
+		<property column="TICKET_ITEM_ID" name="ticketItemId" type="java.lang.Integer" />
 		<property column="MENU_ITEM_CODE" name="menuItemCode" type="string" />
 		<property column="MENU_ITEM_NAME" name="menuItemName" type="string" length="120" />
 		<property column="MENU_ITEM_GROUP_ID" name="menuItemGroupId" type="java.lang.Integer" />

@@ -77,6 +77,13 @@ public class OrderInfoView extends JPanel {
 			ReceiptPrintService.printTicket(ticket);
 		}
 	}
+	
+	public void printCopy(String copyType) throws Exception {
+		for (Iterator iter = tickets.iterator(); iter.hasNext();) {
+			Ticket ticket = (Ticket) iter.next();
+			ReceiptPrintService.printTicket(ticket, copyType);
+		}
+	}
 
 	public List<Ticket> getTickets() {
 		return tickets;

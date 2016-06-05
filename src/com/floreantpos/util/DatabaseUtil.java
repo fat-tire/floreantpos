@@ -273,6 +273,7 @@ public class DatabaseUtil {
 			orderType.setShouldPrintToKitchen(true);
 			orderType.setShowInLoginScreen(true);
 			orderType.setRequiredCustomerData(true);
+			orderType.setPickUp(true);
 			orderTypeDAO.save(orderType);
 			
 			orderType = new OrderType();
@@ -284,7 +285,7 @@ public class DatabaseUtil {
 			orderType.setShowInLoginScreen(true);
 			orderType.setRequiredCustomerData(true);
 			orderType.setAssignDriver(true);
-			orderType.setRequiredDeliveryData(true);
+			orderType.setHomeDelivery(true);
 			orderTypeDAO.save(orderType);
 			
 			DiscountDAO discountDao = new DiscountDAO();

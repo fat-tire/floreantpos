@@ -32,6 +32,7 @@
 		<property column="HAS_MODIIERS" name="hasModifiers" type="java.lang.Boolean" />
 		<!--to keep track whether this item is printed -->
 		<property column="PRINTED_TO_KITCHEN" name="printedToKitchen" type="java.lang.Boolean" />
+		<property column="STATUS" name="status" type="java.lang.String" />
 		<property column="STOCK_AMOUNT_ADJUSTED" name="stockAmountAdjusted" type="java.lang.Boolean" />
 		
 		<list cascade="all" inverse="false" lazy="true" name="ticketItemModifierGroups">

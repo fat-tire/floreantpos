@@ -16,6 +16,8 @@ public abstract class CustomerSelector extends JPanel {
 	protected Ticket ticket;
 
 	private boolean createNewTicket = true;
+	private Customer customer;
+	private String callerId;
 
 	public CustomerSelector() {
 	}
@@ -58,4 +60,19 @@ public abstract class CustomerSelector extends JPanel {
 		return ticket;
 	}
 
+	public void setCustomer(Customer customer) {
+		this.customer = customer;
+	}
+
+	public Customer getCustomer() {
+		return customer;
+	}
+
+	public void setCallerId(String callerId) {
+		this.callerId=callerId; 
+	}
+	
+	public String getCallerId() {
+		return callerId;
+	}
 }
