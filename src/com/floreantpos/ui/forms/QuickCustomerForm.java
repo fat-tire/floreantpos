@@ -173,10 +173,10 @@ public class QuickCustomerForm extends BeanEditor<Customer> {
 	public void callOrderController() {
 		Vector<Component> order = new Vector<Component>();
 
+		order.add(tfCellPhone);
 		order.add(tfName);
 		//order.add(tfFirstName);
 		//order.add(tfLastName);
-		order.add(tfCellPhone);
 		order.add(tfZip);
 		order.add(tfCity);
 		order.add(tfState);
