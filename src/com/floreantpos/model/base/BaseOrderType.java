@@ -18,9 +18,9 @@ public abstract class BaseOrderType  implements Comparable, Serializable {
 	public static String REF = "OrderType";
 	public static String PROP_PRE_AUTH_CREDIT_CARD = "preAuthCreditCard";
 	public static String PROP_ENABLED = "enabled";
-	public static String PROP_HOME_DELIVERY = "homeDelivery";
-	public static String PROP_CONSOLIDATE_ITEMS_IN_RECEIPT = "consolidateItemsInReceipt";
+	public static String PROP_DELIVERY = "delivery";
 	public static String PROP_REQUIRED_CUSTOMER_DATA = "requiredCustomerData";
+	public static String PROP_CONSOLIDATE_ITEMS_IN_RECEIPT = "consolidateItemsInReceipt";
 	public static String PROP_SHOW_IN_LOGIN_SCREEN = "showInLoginScreen";
 	public static String PROP_NAME = "name";
 	public static String PROP_SHOW_TABLE_SELECTION = "showTableSelection";
@@ -32,7 +32,6 @@ public abstract class BaseOrderType  implements Comparable, Serializable {
 	public static String PROP_ID = "id";
 	public static String PROP_HIDE_ITEM_WITH_EMPTY_INVENTORY = "hideItemWithEmptyInventory";
 	public static String PROP_HAS_FOR_HERE_AND_TO_GO = "hasForHereAndToGo";
-	public static String PROP_ASSIGN_DRIVER = "assignDriver";
 	public static String PROP_PREPAID = "prepaid";
 
 
@@ -79,8 +78,7 @@ public abstract class BaseOrderType  implements Comparable, Serializable {
 		protected java.lang.Boolean prepaid;
 		protected java.lang.Boolean closeOnPaid;
 		protected java.lang.Boolean requiredCustomerData;
-		protected java.lang.Boolean homeDelivery;
-		protected java.lang.Boolean assignDriver;
+		protected java.lang.Boolean delivery;
 		protected java.lang.Boolean showItemBarcode;
 		protected java.lang.Boolean showInLoginScreen;
 		protected java.lang.Boolean consolidateItemsInReceipt;
@@ -250,35 +248,18 @@ public abstract class BaseOrderType  implements Comparable, Serializable {
 
 
 	/**
-	 * Return the value associated with the column: HOME_DELIVERY
+	 * Return the value associated with the column: DELIVERY
 	 */
-	public java.lang.Boolean isHomeDelivery () {
-								return homeDelivery == null ? Boolean.FALSE : homeDelivery;
+	public java.lang.Boolean isDelivery () {
+								return delivery == null ? Boolean.FALSE : delivery;
 					}
 
 	/**
-	 * Set the value related to the column: HOME_DELIVERY
-	 * @param homeDelivery the HOME_DELIVERY value
+	 * Set the value related to the column: DELIVERY
+	 * @param delivery the DELIVERY value
 	 */
-	public void setHomeDelivery (java.lang.Boolean homeDelivery) {
-		this.homeDelivery = homeDelivery;
-	}
-
-
-
-	/**
-	 * Return the value associated with the column: ASSIGN_DRIVER
-	 */
-	public java.lang.Boolean isAssignDriver () {
-								return assignDriver == null ? Boolean.FALSE : assignDriver;
-					}
-
-	/**
-	 * Set the value related to the column: ASSIGN_DRIVER
-	 * @param assignDriver the ASSIGN_DRIVER value
-	 */
-	public void setAssignDriver (java.lang.Boolean assignDriver) {
-		this.assignDriver = assignDriver;
+	public void setDelivery (java.lang.Boolean delivery) {
+		this.delivery = delivery;
 	}
 
 

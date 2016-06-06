@@ -15,8 +15,7 @@
 		<property column="PREPAID" name="prepaid" type="java.lang.Boolean" />
 		<property column="CLOSE_ON_PAID" name="closeOnPaid" type="java.lang.Boolean" />
 		<property column="REQUIRED_CUSTOMER_DATA" name="requiredCustomerData" type="java.lang.Boolean" />
-		<property column="HOME_DELIVERY" name="homeDelivery" type="java.lang.Boolean" />
-		<property column="ASSIGN_DRIVER" name="assignDriver" type="java.lang.Boolean" />
+		<property column="DELIVERY" name="delivery" type="java.lang.Boolean" />
 		<property column="SHOW_ITEM_BARCODE" name="showItemBarcode" type="java.lang.Boolean" />
 		<property column="SHOW_IN_LOGIN_SCREEN" name="showInLoginScreen" type="java.lang.Boolean" />
 		<property column="CONSOLIDATE_TIEMS_IN_RECEIPT" name="consolidateItemsInReceipt" type="java.lang.Boolean" />

@@ -60,9 +60,8 @@ public class OrderTypeForm extends BeanEditor implements ItemListener {
 	private JCheckBox chkShouldPrintToKitchen;
 	private JCheckBox chkCloseOnPaid;
 	private JCheckBox chkPrepaid;
+	private JCheckBox chkDelivery;
 	private JCheckBox chkRequiredCustomerData;
-	private JCheckBox chkHomeDelivery;
-	private JCheckBox chkAssignDriver;
 	private JCheckBox chkShowItemBarcode;
 	private JCheckBox chkShowInLoginScreen;
 	private JCheckBox chkConsolidateItemsInReceipt;
@@ -97,10 +96,8 @@ public class OrderTypeForm extends BeanEditor implements ItemListener {
 	}
 
 	private void initHandler() {
-		chkHomeDelivery.addItemListener(this);
 		chkRequiredCustomerData.addItemListener(this);
-
-		chkHomeDelivery.setEnabled(chkRequiredCustomerData.isSelected());
+		chkDelivery.addItemListener(this);
 	}
 
 	private void initComponents() {
@@ -117,9 +114,8 @@ public class OrderTypeForm extends BeanEditor implements ItemListener {
 		chkShouldPrintToKitchen = new JCheckBox(Messages.getString("OrderTypeForm.3")); //$NON-NLS-1$
 		chkCloseOnPaid = new JCheckBox(Messages.getString("OrderTypeForm.4")); //$NON-NLS-1$
 		chkPrepaid = new JCheckBox(Messages.getString("OrderTypeForm.5")); //$NON-NLS-1$
+		chkDelivery = new JCheckBox("Delivery"); //$NON-NLS-1$
 		chkRequiredCustomerData = new JCheckBox(Messages.getString("OrderTypeForm.6")); //$NON-NLS-1$
-		chkHomeDelivery = new JCheckBox(Messages.getString("OrderTypeForm.7")); //$NON-NLS-1$
-		chkAssignDriver = new JCheckBox(Messages.getString("OrderTypeForm.8")); //$NON-NLS-1$
 		chkShowItemBarcode = new JCheckBox(Messages.getString("OrderTypeForm.9")); //$NON-NLS-1$
 		chkShowInLoginScreen = new JCheckBox(Messages.getString("OrderTypeForm.10")); //$NON-NLS-1$
 		chkConsolidateItemsInReceipt = new JCheckBox(Messages.getString("OrderTypeForm.11")); //$NON-NLS-1$
@@ -140,8 +136,7 @@ public class OrderTypeForm extends BeanEditor implements ItemListener {
 		OrderServiceExtension orderServiceExtension = (OrderServiceExtension) ExtensionManager.getPlugin(OrderServiceExtension.class);
 		generalPanel.add(chkRequiredCustomerData, "cell 1 7,alignx left,aligny top"); //$NON-NLS-1$
 		if (orderServiceExtension != null) {
-			generalPanel.add(chkHomeDelivery, "cell 1 8,alignx left,aligny top"); //$NON-NLS-1$
-			generalPanel.add(chkAssignDriver, "cell 1 10,alignx left,aligny top"); //$NON-NLS-1$
+			generalPanel.add(chkDelivery, "cell 1 8,alignx left,aligny top"); //$NON-NLS-1$
 		}
 		generalPanel.add(chkShowItemBarcode, "cell 1 11,alignx left,aligny top"); //$NON-NLS-1$
 		generalPanel.add(chkShowInLoginScreen, "cell 1 12,alignx left,aligny top"); //$NON-NLS-1$
@@ -174,9 +169,8 @@ public class OrderTypeForm extends BeanEditor implements ItemListener {
 			chkShouldPrintToKitchen.setSelected(ordersType.isShouldPrintToKitchen());
 			chkPrepaid.setSelected(ordersType.isPrepaid());
 			chkCloseOnPaid.setSelected(ordersType.isCloseOnPaid());
+			chkDelivery.setSelected(ordersType.isDelivery());
 			chkRequiredCustomerData.setSelected(ordersType.isRequiredCustomerData());
-			chkHomeDelivery.setSelected(ordersType.isHomeDelivery());
-			chkAssignDriver.setSelected(ordersType.isAssignDriver());
 			chkShowItemBarcode.setSelected(ordersType.isShowItemBarcode());
 			chkShowInLoginScreen.setSelected(ordersType.isShowInLoginScreen());
 			chkConsolidateItemsInReceipt.setSelected(ordersType.isConsolidateItemsInReceipt());
@@ -207,9 +201,8 @@ public class OrderTypeForm extends BeanEditor implements ItemListener {
 			ordersType.setShouldPrintToKitchen(chkShouldPrintToKitchen.isSelected());
 			ordersType.setPrepaid(chkPrepaid.isSelected());
 			ordersType.setCloseOnPaid(chkCloseOnPaid.isSelected());
+			ordersType.setDelivery(chkDelivery.isSelected());
 			ordersType.setRequiredCustomerData(chkRequiredCustomerData.isSelected());
-			ordersType.setHomeDelivery(chkHomeDelivery.isSelected());
-			ordersType.setAssignDriver(chkAssignDriver.isSelected());
 			ordersType.setShowItemBarcode(chkShowItemBarcode.isSelected());
 			ordersType.setShowInLoginScreen(chkShowInLoginScreen.isSelected());
 			ordersType.setConsolidateItemsInReceipt(chkConsolidateItemsInReceipt.isSelected());
@@ -245,12 +238,13 @@ public class OrderTypeForm extends BeanEditor implements ItemListener {
 	@Override
 	public void itemStateChanged(ItemEvent e) {
 		JCheckBox chkBox = (JCheckBox) e.getItem();
-		if (chkBox == chkRequiredCustomerData) {
-			if (chkRequiredCustomerData.isSelected()) {
-				chkHomeDelivery.setEnabled(true);
+		if (chkBox == chkDelivery) {
+			if (chkDelivery.isSelected()) {
+				chkRequiredCustomerData.setSelected(true);
+				chkRequiredCustomerData.setEnabled(false);
 			}
 			else {
-				chkHomeDelivery.setEnabled(false);
+				chkRequiredCustomerData.setEnabled(true);
 			}
 		}
 	}

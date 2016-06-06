@@ -283,8 +283,7 @@ public class DatabaseUtil {
 			orderType.setShouldPrintToKitchen(true);
 			orderType.setShowInLoginScreen(true);
 			orderType.setRequiredCustomerData(true);
-			orderType.setAssignDriver(true);
-			orderType.setHomeDelivery(true);
+			orderType.setDelivery(true);
 			orderTypeDAO.save(orderType);
 			
 			DiscountDAO discountDao = new DiscountDAO();

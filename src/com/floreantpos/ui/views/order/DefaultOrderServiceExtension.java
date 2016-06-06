@@ -173,4 +173,9 @@ public class DefaultOrderServiceExtension implements OrderServiceExtension {
 		return null;
 	}
 
+	@Override
+	public void openDeliveryDispatchDialog(OrderType orderType) {
+		
+	}
+
 }

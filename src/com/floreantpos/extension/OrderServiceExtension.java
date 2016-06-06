@@ -40,7 +40,8 @@ public interface OrderServiceExtension extends FloreantPlugin {
 	boolean finishOrder(int ticketId);
 	void createCustomerMenu(JMenu menu);
 	CustomerSelector createNewCustomerSelector();
-	IView getDeliveryDispatchView(OrderType orderType);
 	CustomerSelector createCustomerSelectorView();
+	IView getDeliveryDispatchView(OrderType orderType);
+	void openDeliveryDispatchDialog(OrderType orderType);
 	
 }

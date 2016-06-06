@@ -87,7 +87,7 @@ public class OrderTypeButton extends PosButton implements ActionListener {
 		}
 		else {
 			try {
-				OrderServiceFactory.getOrderService().createNewTicket(orderType, null,null);
+				OrderServiceFactory.getOrderService().createNewTicket(orderType, null, null);
 			} catch (TicketAlreadyExistsException e1) {
 				e1.printStackTrace();
 			}

@@ -303,7 +303,7 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 				return;
 			}
 
-			if (!ticket.getOrderType().isAssignDriver()) {
+			if (!ticket.getOrderType().isDelivery()) {
 				POSMessageDialog.showError(this, Messages.getString("SwitchboardView.8")); //$NON-NLS-1$
 				return;
 			}
