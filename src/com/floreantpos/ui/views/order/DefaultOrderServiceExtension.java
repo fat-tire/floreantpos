@@ -169,11 +169,6 @@ public class DefaultOrderServiceExtension implements OrderServiceExtension {
 	}
 
 	@Override
-	public IView getPickUpDispatchView(OrderType orderType) {
-		return null; 
-	}
-
-	@Override
 	public CustomerSelector createCustomerSelectorView() {
 		return null;
 	}

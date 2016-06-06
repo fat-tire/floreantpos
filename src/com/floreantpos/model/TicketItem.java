@@ -650,7 +650,8 @@ public class TicketItem extends BaseTicketItem implements ITicketItem {
 		this.menuItem = menuItem;
 	}
 	
-	public String getStatus(){
+	@Override
+	public String getKitchenStatus() {
 		if(super.getStatus()==null){
 			return ""; 
 		}

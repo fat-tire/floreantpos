@@ -30,14 +30,14 @@ public class TicketItemModifier extends BaseTicketItemModifier implements ITicke
 	public final static int EXTRA_MODIFIER = 3;
 
 	/*[CONSTRUCTOR MARKER BEGIN]*/
-	public TicketItemModifier() {
+	public TicketItemModifier () {
 		super();
 	}
 
 	/**
 	 * Constructor for primary key
 	 */
-	public TicketItemModifier(java.lang.Integer id) {
+	public TicketItemModifier (java.lang.Integer id) {
 		super(id);
 	}
 
@@ -87,7 +87,7 @@ public class TicketItemModifier extends BaseTicketItemModifier implements ITicke
 		calculateTax();
 		setTotalAmount(NumberUtil.roundToTwoDigit(calculateTotal()));
 	}
-	
+
 	public void merge(TicketItemModifier otherItem) {
 		setItemCount(getItemCount() + otherItem.getItemCount());
 		return;
@@ -217,5 +217,13 @@ public class TicketItemModifier extends BaseTicketItemModifier implements ITicke
 	@Override
 	public Double getDiscountAmount() {
 		return null;
+	}
+
+	@Override
+	public String getKitchenStatus() {
+		if(super.getStatus()==null){
+			return ""; 
+		}
+		return super.getStatus();
 	}
 }

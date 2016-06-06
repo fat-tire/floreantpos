@@ -26,37 +26,55 @@ import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+
 import com.floreantpos.Messages;
+import com.floreantpos.model.KitchenTicket;
 import com.floreantpos.model.KitchenTicket.KitchenTicketStatus;
 import com.floreantpos.model.KitchenTicketItem;
+import com.floreantpos.model.Ticket;
+import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.dao.KitchenTicketItemDAO;
+import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.ui.TitlePanel;
 import com.floreantpos.ui.dialog.POSDialog;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 
 public class KitchenTicketStatusSelector extends POSDialog implements ActionListener {
-	private PosButton btnVoid= new PosButton(KitchenTicketStatus.VOID.name());
+	private PosButton btnVoid = new PosButton(KitchenTicketStatus.VOID.name());
 	private PosButton btnReady = new PosButton(Messages.getString("KitchenTicketView.11"));
-	
+
+	private KitchenTicket kitchenTicket;
 	private KitchenTicketItem ticketItem;
-	
+
 	public KitchenTicketStatusSelector(Frame parent) {
 		super(parent, true);
+		initComponent();
+	}
+
+	public KitchenTicketStatusSelector(Frame parent, KitchenTicket kitchenTicket) {
+		super(parent, true);
+		this.kitchenTicket = kitchenTicket;
+		initComponent();
+	}
+
+	private void initComponent() {
 		setTitle(Messages.getString("KitchenTicketStatusSelector.0")); //$NON-NLS-1$
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		
+
 		TitlePanel titlePanel = new TitlePanel();
 		titlePanel.setTitle(Messages.getString("KitchenTicketStatusSelector.1")); //$NON-NLS-1$
 		add(titlePanel, BorderLayout.NORTH);
-		
+
 		JPanel panel = new JPanel(new GridLayout(1, 0, 10, 10));
 		panel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 		panel.add(btnVoid);
 		panel.add(btnReady);
-		
+
 		add(panel);
-		
+
 		btnReady.setActionCommand(KitchenTicketStatus.DONE.name());
 		btnVoid.addActionListener(this);
 		btnReady.addActionListener(this);
@@ -68,8 +86,42 @@ public class KitchenTicketStatusSelector extends POSDialog implements ActionList
 			KitchenTicketStatus status = KitchenTicketStatus.valueOf(e.getActionCommand());
 			ticketItem.setStatus(status.name());
 
-			KitchenTicketItemDAO.getInstance().saveOrUpdate(ticketItem);
+			int itemCount = ticketItem.getQuantity();
 
+			Ticket ticket = TicketDAO.getInstance().load(kitchenTicket.getTicketId());
+
+			for (TicketItem item : ticket.getTicketItems()) {
+				if (ticketItem.getMenuItemCode() != null && ticketItem.getMenuItemCode().equals(item.getItemCode())) {
+					if (item.getStatus()!=null && item.getStatus().equals(Ticket.STATUS_READY)) {
+						continue;
+					}
+					if (itemCount == 0) {
+						break;
+					}
+					if (status.equals(KitchenTicketStatus.DONE)) {
+						item.setStatus(Ticket.STATUS_READY);
+					}
+					else {
+						item.setStatus(Ticket.STATUS_VOID);
+					}
+					itemCount -= item.getItemCount();
+				}
+			}
+			Transaction tx = null;
+			Session session = null;
+
+			try {
+				session = KitchenTicketItemDAO.getInstance().createNewSession();
+				tx = session.beginTransaction();
+				session.saveOrUpdate(ticket);
+				session.saveOrUpdate(ticketItem);
+				tx.commit();
+
+			} catch (Exception ex) {
+				tx.rollback();
+			} finally {
+				session.close();
+			}
 			dispose();
 		} catch (Exception e2) {
 			POSMessageDialog.showError(this, e2.getMessage(), e2);

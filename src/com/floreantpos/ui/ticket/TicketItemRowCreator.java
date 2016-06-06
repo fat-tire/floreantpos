@@ -35,7 +35,13 @@ public class TicketItemRowCreator {
 		calculateTicketRows(ticket, tableRows, true, true, true);
 	}
 
-	public static void calculateTicketRows(Ticket ticket, Map<String, ITicketItem> tableRows, boolean includeModifiers, boolean includeAddOns, boolean includeCookingInstructions) {
+	public static void calculateTicketRows(Ticket ticket, Map<String, ITicketItem> tableRows, boolean includeModifiers, boolean includeAddOns,
+			boolean includeCookingInstructions) {
+		calculateTicketRows(ticket, tableRows, true, true, true, true);
+	}
+
+	public static void calculateTicketRows(Ticket ticket, Map<String, ITicketItem> tableRows, boolean includeModifiers, boolean includeAddOns,
+			boolean includeCookingInstructions, boolean includeDiscounts) {
 		tableRows.clear();
 
 		int rowNum = 0;
@@ -49,13 +55,15 @@ public class TicketItemRowCreator {
 			ticketItem.setTableRowNum(rowNum);
 			tableRows.put(String.valueOf(rowNum), ticketItem);
 			rowNum++;
-			
-			rowNum = includeDiscounts(ticketItem, tableRows, rowNum);
+
+			if (includeDiscounts) {
+				rowNum = includeDiscounts(ticketItem, tableRows, rowNum);
+			}
 
 			if (includeModifiers) {
 				rowNum = includeModifiers(ticketItem, tableRows, rowNum, false);
 			}
-			
+
 			if (includeAddOns) {
 				rowNum = includeAddOns(ticketItem, tableRows, rowNum);
 			}
@@ -66,25 +74,25 @@ public class TicketItemRowCreator {
 		}
 	}
 
-//	public static void calculateKitchenTicketRows(KitchenTicket ticket, Map<String, ITicketItem> tableRows) {
-//		tableRows.clear();
-//
-//		int rowNum = 0;
-//
-//		if (ticket == null || ticket.getTicketItems() == null)
-//			return;
-//
-//		List<TicketItem> ticketItems = ticket.getTicketItems();
-//		for (TicketItem ticketItem : ticketItems) {
-//
-//			ticketItem.setTableRowNum(rowNum);
-//			tableRows.put(String.valueOf(rowNum), ticketItem);
-//			rowNum++;
-//
-//			rowNum = includeModifiers(ticketItem, tableRows, rowNum, true);
-//			rowNum = includeCookintInstructions(ticketItem, tableRows, rowNum);
-//		}
-//	}
+	//	public static void calculateKitchenTicketRows(KitchenTicket ticket, Map<String, ITicketItem> tableRows) {
+	//		tableRows.clear();
+	//
+	//		int rowNum = 0;
+	//
+	//		if (ticket == null || ticket.getTicketItems() == null)
+	//			return;
+	//
+	//		List<TicketItem> ticketItems = ticket.getTicketItems();
+	//		for (TicketItem ticketItem : ticketItems) {
+	//
+	//			ticketItem.setTableRowNum(rowNum);
+	//			tableRows.put(String.valueOf(rowNum), ticketItem);
+	//			rowNum++;
+	//
+	//			rowNum = includeModifiers(ticketItem, tableRows, rowNum, true);
+	//			rowNum = includeCookintInstructions(ticketItem, tableRows, rowNum);
+	//		}
+	//	}
 
 	private static int includeCookintInstructions(TicketItem ticketItem, Map<String, ITicketItem> tableRows, int rowNum) {
 		List<TicketItemCookingInstruction> cookingInstructions = ticketItem.getCookingInstructions();
@@ -97,7 +105,7 @@ public class TicketItemRowCreator {
 		}
 		return rowNum;
 	}
-	
+
 	private static int includeDiscounts(TicketItem ticketItem, Map<String, ITicketItem> tableRows, int rowNum) {
 		TicketItemDiscount maxDiscount = DiscountUtil.getMaxDiscount(ticketItem.getDiscounts());
 		if (maxDiscount != null) {
@@ -128,7 +136,7 @@ public class TicketItemRowCreator {
 		}
 		return rowNum;
 	}
-	
+
 	private static int includeAddOns(TicketItem ticketItem, Map<String, ITicketItem> tableRows, int rowNum) {
 		List<TicketItemModifier> ticketItemAddOns = ticketItem.getAddOns();
 		if (ticketItemAddOns != null) {

@@ -62,7 +62,6 @@ public class OrderTypeForm extends BeanEditor implements ItemListener {
 	private JCheckBox chkPrepaid;
 	private JCheckBox chkRequiredCustomerData;
 	private JCheckBox chkHomeDelivery;
-	private JCheckBox chkPickUp;
 	private JCheckBox chkAssignDriver;
 	private JCheckBox chkShowItemBarcode;
 	private JCheckBox chkShowInLoginScreen;
@@ -99,11 +98,9 @@ public class OrderTypeForm extends BeanEditor implements ItemListener {
 
 	private void initHandler() {
 		chkHomeDelivery.addItemListener(this);
-		chkPickUp.addItemListener(this);
 		chkRequiredCustomerData.addItemListener(this);
 
 		chkHomeDelivery.setEnabled(chkRequiredCustomerData.isSelected());
-		chkPickUp.setEnabled(chkRequiredCustomerData.isSelected());
 	}
 
 	private void initComponents() {
@@ -121,8 +118,7 @@ public class OrderTypeForm extends BeanEditor implements ItemListener {
 		chkCloseOnPaid = new JCheckBox(Messages.getString("OrderTypeForm.4")); //$NON-NLS-1$
 		chkPrepaid = new JCheckBox(Messages.getString("OrderTypeForm.5")); //$NON-NLS-1$
 		chkRequiredCustomerData = new JCheckBox(Messages.getString("OrderTypeForm.6")); //$NON-NLS-1$
-		chkHomeDelivery = new JCheckBox("Home delivery"); //$NON-NLS-1$
-		chkPickUp = new JCheckBox("Pick up"); //$NON-NLS-1$
+		chkHomeDelivery = new JCheckBox(Messages.getString("OrderTypeForm.7")); //$NON-NLS-1$
 		chkAssignDriver = new JCheckBox(Messages.getString("OrderTypeForm.8")); //$NON-NLS-1$
 		chkShowItemBarcode = new JCheckBox(Messages.getString("OrderTypeForm.9")); //$NON-NLS-1$
 		chkShowInLoginScreen = new JCheckBox(Messages.getString("OrderTypeForm.10")); //$NON-NLS-1$
@@ -145,7 +141,6 @@ public class OrderTypeForm extends BeanEditor implements ItemListener {
 		generalPanel.add(chkRequiredCustomerData, "cell 1 7,alignx left,aligny top"); //$NON-NLS-1$
 		if (orderServiceExtension != null) {
 			generalPanel.add(chkHomeDelivery, "cell 1 8,alignx left,aligny top"); //$NON-NLS-1$
-			generalPanel.add(chkPickUp, "cell 1 9,alignx left,aligny top"); //$NON-NLS-1$
 			generalPanel.add(chkAssignDriver, "cell 1 10,alignx left,aligny top"); //$NON-NLS-1$
 		}
 		generalPanel.add(chkShowItemBarcode, "cell 1 11,alignx left,aligny top"); //$NON-NLS-1$
@@ -181,7 +176,6 @@ public class OrderTypeForm extends BeanEditor implements ItemListener {
 			chkCloseOnPaid.setSelected(ordersType.isCloseOnPaid());
 			chkRequiredCustomerData.setSelected(ordersType.isRequiredCustomerData());
 			chkHomeDelivery.setSelected(ordersType.isHomeDelivery());
-			chkPickUp.setSelected(ordersType.isPickUp());
 			chkAssignDriver.setSelected(ordersType.isAssignDriver());
 			chkShowItemBarcode.setSelected(ordersType.isShowItemBarcode());
 			chkShowInLoginScreen.setSelected(ordersType.isShowInLoginScreen());
@@ -215,7 +209,6 @@ public class OrderTypeForm extends BeanEditor implements ItemListener {
 			ordersType.setCloseOnPaid(chkCloseOnPaid.isSelected());
 			ordersType.setRequiredCustomerData(chkRequiredCustomerData.isSelected());
 			ordersType.setHomeDelivery(chkHomeDelivery.isSelected());
-			ordersType.setPickUp(chkPickUp.isSelected());
 			ordersType.setAssignDriver(chkAssignDriver.isSelected());
 			ordersType.setShowItemBarcode(chkShowItemBarcode.isSelected());
 			ordersType.setShowInLoginScreen(chkShowInLoginScreen.isSelected());
@@ -255,31 +248,9 @@ public class OrderTypeForm extends BeanEditor implements ItemListener {
 		if (chkBox == chkRequiredCustomerData) {
 			if (chkRequiredCustomerData.isSelected()) {
 				chkHomeDelivery.setEnabled(true);
-				chkPickUp.setEnabled(true);
 			}
 			else {
 				chkHomeDelivery.setEnabled(false);
-				chkPickUp.setEnabled(false);
-			}
-		}
-		else if (chkBox == chkPickUp) {
-			if (chkPickUp.isSelected()) {
-				chkHomeDelivery.setSelected(false);
-				chkHomeDelivery.setEnabled(false);
-				chkAssignDriver.setEnabled(false);
-			}
-			else {
-				chkHomeDelivery.setEnabled(true);
-				chkAssignDriver.setEnabled(true);
-			}
-		}
-		else if (chkBox == chkHomeDelivery) {
-			if (chkHomeDelivery.isSelected()) {
-				chkPickUp.setSelected(false);
-				chkPickUp.setEnabled(false);
-			}
-			else {
-				chkPickUp.setEnabled(true);
 			}
 		}
 	}

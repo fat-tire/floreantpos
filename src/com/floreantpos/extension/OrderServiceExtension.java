@@ -41,7 +41,6 @@ public interface OrderServiceExtension extends FloreantPlugin {
 	void createCustomerMenu(JMenu menu);
 	CustomerSelector createNewCustomerSelector();
 	IView getDeliveryDispatchView(OrderType orderType);
-	IView getPickUpDispatchView(OrderType orderType);
 	CustomerSelector createCustomerSelectorView();
 	
 }

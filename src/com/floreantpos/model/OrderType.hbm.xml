@@ -16,7 +16,6 @@
 		<property column="CLOSE_ON_PAID" name="closeOnPaid" type="java.lang.Boolean" />
 		<property column="REQUIRED_CUSTOMER_DATA" name="requiredCustomerData" type="java.lang.Boolean" />
 		<property column="HOME_DELIVERY" name="homeDelivery" type="java.lang.Boolean" />
-		<property column="PICK_UP" name="pickUp" type="java.lang.Boolean" />
 		<property column="ASSIGN_DRIVER" name="assignDriver" type="java.lang.Boolean" />
 		<property column="SHOW_ITEM_BARCODE" name="showItemBarcode" type="java.lang.Boolean" />
 		<property column="SHOW_IN_LOGIN_SCREEN" name="showInLoginScreen" type="java.lang.Boolean" />

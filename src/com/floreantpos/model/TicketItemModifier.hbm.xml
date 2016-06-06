@@ -20,6 +20,7 @@
 		<property column="PRINT_TO_KITCHEN" name="shouldPrintToKitchen" type="java.lang.Boolean">
 			<meta attribute="defaultValue">true</meta>
 		</property>
+		<property column="STATUS" length="10" name="status" type="string" />
 		
 		<!--to keep track whether this item is printed -->
 		<property column="PRINTED_TO_KITCHEN" name="printedToKitchen" type="java.lang.Boolean" />

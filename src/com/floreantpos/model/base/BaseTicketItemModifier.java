@@ -15,22 +15,23 @@ import java.io.Serializable;
 
 public abstract class BaseTicketItemModifier  implements Comparable, Serializable {
 
-	public static String REF = "TicketItemModifier"; //$NON-NLS-1$
-	public static String PROP_SUB_TOTAL_AMOUNT = "subTotalAmount"; //$NON-NLS-1$
-	public static String PROP_PARENT = "parent"; //$NON-NLS-1$
-	public static String PROP_ITEM_ID = "itemId"; //$NON-NLS-1$
-	public static String PROP_ITEM_COUNT = "itemCount"; //$NON-NLS-1$
-	public static String PROP_TAX_RATE = "taxRate"; //$NON-NLS-1$
-	public static String PROP_UNIT_PRICE = "unitPrice"; //$NON-NLS-1$
-	public static String PROP_TAX_AMOUNT = "taxAmount"; //$NON-NLS-1$
-	public static String PROP_GROUP_ID = "groupId"; //$NON-NLS-1$
-	public static String PROP_NAME = "name"; //$NON-NLS-1$
-	public static String PROP_SHOULD_PRINT_TO_KITCHEN = "shouldPrintToKitchen"; //$NON-NLS-1$
-	public static String PROP_PRINTED_TO_KITCHEN = "printedToKitchen"; //$NON-NLS-1$
-	public static String PROP_ID = "id"; //$NON-NLS-1$
-	public static String PROP_TOTAL_AMOUNT = "totalAmount"; //$NON-NLS-1$
-	public static String PROP_TICKET_ITEM = "ticketItem"; //$NON-NLS-1$
-	public static String PROP_MODIFIER_TYPE = "modifierType"; //$NON-NLS-1$
+	public static String REF = "TicketItemModifier";
+	public static String PROP_SUB_TOTAL_AMOUNT = "subTotalAmount";
+	public static String PROP_PARENT = "parent";
+	public static String PROP_ITEM_ID = "itemId";
+	public static String PROP_ITEM_COUNT = "itemCount";
+	public static String PROP_TAX_RATE = "taxRate";
+	public static String PROP_UNIT_PRICE = "unitPrice";
+	public static String PROP_TAX_AMOUNT = "taxAmount";
+	public static String PROP_GROUP_ID = "groupId";
+	public static String PROP_NAME = "name";
+	public static String PROP_PRINTED_TO_KITCHEN = "printedToKitchen";
+	public static String PROP_SHOULD_PRINT_TO_KITCHEN = "shouldPrintToKitchen";
+	public static String PROP_STATUS = "status";
+	public static String PROP_ID = "id";
+	public static String PROP_TOTAL_AMOUNT = "totalAmount";
+	public static String PROP_TICKET_ITEM = "ticketItem";
+	public static String PROP_MODIFIER_TYPE = "modifierType";
 
 
 	// constructors
@@ -67,6 +68,7 @@ public abstract class BaseTicketItemModifier  implements Comparable, Serializabl
 		protected java.lang.Double totalAmount;
 		protected java.lang.Double taxAmount;
 		protected java.lang.Boolean shouldPrintToKitchen;
+		protected java.lang.String status;
 		protected java.lang.Boolean printedToKitchen;
 
 	// many to one
@@ -289,6 +291,23 @@ public abstract class BaseTicketItemModifier  implements Comparable, Serializabl
 	public static String getShouldPrintToKitchenDefaultValue () {
 		return "true";
 	}
+
+
+	/**
+	 * Return the value associated with the column: STATUS
+	 */
+	public java.lang.String getStatus () {
+					return status;
+			}
+
+	/**
+	 * Set the value related to the column: STATUS
+	 * @param status the STATUS value
+	 */
+	public void setStatus (java.lang.String status) {
+		this.status = status;
+	}
+
 
 
 	/**

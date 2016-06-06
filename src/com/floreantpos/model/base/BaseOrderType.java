@@ -18,7 +18,6 @@ public abstract class BaseOrderType  implements Comparable, Serializable {
 	public static String REF = "OrderType";
 	public static String PROP_PRE_AUTH_CREDIT_CARD = "preAuthCreditCard";
 	public static String PROP_ENABLED = "enabled";
-	public static String PROP_PICK_UP = "pickUp";
 	public static String PROP_HOME_DELIVERY = "homeDelivery";
 	public static String PROP_CONSOLIDATE_ITEMS_IN_RECEIPT = "consolidateItemsInReceipt";
 	public static String PROP_REQUIRED_CUSTOMER_DATA = "requiredCustomerData";
@@ -81,7 +80,6 @@ public abstract class BaseOrderType  implements Comparable, Serializable {
 		protected java.lang.Boolean closeOnPaid;
 		protected java.lang.Boolean requiredCustomerData;
 		protected java.lang.Boolean homeDelivery;
-		protected java.lang.Boolean pickUp;
 		protected java.lang.Boolean assignDriver;
 		protected java.lang.Boolean showItemBarcode;
 		protected java.lang.Boolean showInLoginScreen;
@@ -264,23 +262,6 @@ public abstract class BaseOrderType  implements Comparable, Serializable {
 	 */
 	public void setHomeDelivery (java.lang.Boolean homeDelivery) {
 		this.homeDelivery = homeDelivery;
-	}
-
-
-
-	/**
-	 * Return the value associated with the column: PICK_UP
-	 */
-	public java.lang.Boolean isPickUp () {
-								return pickUp == null ? Boolean.FALSE : pickUp;
-					}
-
-	/**
-	 * Set the value related to the column: PICK_UP
-	 * @param pickUp the PICK_UP value
-	 */
-	public void setPickUp (java.lang.Boolean pickUp) {
-		this.pickUp = pickUp;
 	}
 
 

@@ -273,7 +273,6 @@ public class DatabaseUtil {
 			orderType.setShouldPrintToKitchen(true);
 			orderType.setShowInLoginScreen(true);
 			orderType.setRequiredCustomerData(true);
-			orderType.setPickUp(true);
 			orderTypeDAO.save(orderType);
 			
 			orderType = new OrderType();

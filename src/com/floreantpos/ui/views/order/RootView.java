@@ -184,10 +184,7 @@ public class RootView extends com.floreantpos.swing.TransparentPanel {
 			else if (orderType.isRequiredCustomerData()) {
 				OrderServiceExtension orderServicePlugin = (OrderServiceExtension) ExtensionManager.getPlugin(OrderServiceExtension.class);
 				if (orderServicePlugin != null) {
-					if (orderType.isPickUp()) {
-						setAndShowHomeScreen(orderServicePlugin.getPickUpDispatchView(orderType));
-					}
-					else if (orderType.isHomeDelivery()) {
+					if (orderType.isHomeDelivery()) {
 						setAndShowHomeScreen(orderServicePlugin.getDeliveryDispatchView(orderType));
 					}
 					else {

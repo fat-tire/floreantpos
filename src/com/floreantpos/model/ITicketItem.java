@@ -41,4 +41,6 @@ public interface ITicketItem {
 	
 	void setDiscountAmount(Double amount);
 	Double getDiscountAmount();
+	
+	String getKitchenStatus();
 }

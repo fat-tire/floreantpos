@@ -43,11 +43,18 @@ import javax.swing.table.TableColumn;
 
 import net.miginfocom.swing.MigLayout;
 
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+
 import com.floreantpos.Messages;
 import com.floreantpos.model.KitchenTicket;
 import com.floreantpos.model.KitchenTicket.KitchenTicketStatus;
 import com.floreantpos.model.KitchenTicketItem;
+import com.floreantpos.model.Ticket;
+import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.dao.KitchenTicketDAO;
+import com.floreantpos.model.dao.KitchenTicketItemDAO;
+import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.swing.ButtonColumn;
 import com.floreantpos.swing.ListTableModel;
 import com.floreantpos.swing.PosButton;
@@ -84,7 +91,7 @@ public class KitchenTicketView extends JPanel {
 
 		createButtonPanel();
 
-		statusSelector = new KitchenTicketStatusSelector((Frame) SwingUtilities.getWindowAncestor(this));
+		statusSelector = new KitchenTicketStatusSelector((Frame) SwingUtilities.getWindowAncestor(this), ticket);
 		statusSelector.pack();
 
 		setPreferredSize(PosUIManager.getSize(350, 240));
@@ -334,6 +341,48 @@ public class KitchenTicketView extends JPanel {
 
 			ticket.setStatus(status.name());
 			ticket.setClosingDate(new Date());
+
+			Ticket parentTicket = TicketDAO.getInstance().load(ticket.getTicketId());
+
+			Transaction tx = null;
+			Session session = null;
+
+			try {
+				session = KitchenTicketItemDAO.getInstance().createNewSession();
+				tx = session.beginTransaction();
+				for (KitchenTicketItem kitchenTicketItem : ticket.getTicketItems()) {
+					kitchenTicketItem.setStatus(status.name());
+
+					int itemCount = kitchenTicketItem.getQuantity();
+
+					for (TicketItem item : parentTicket.getTicketItems()) {
+						if (kitchenTicketItem.getMenuItemCode() != null && kitchenTicketItem.getMenuItemCode().equals(item.getItemCode())) {
+							if (item.getStatus() != null && item.getStatus().equals(Ticket.STATUS_READY)) {
+								continue;
+							}
+							if (itemCount == 0) {
+								break;
+							}
+							if (status.equals(KitchenTicketStatus.DONE)) {
+								item.setStatus(Ticket.STATUS_READY);
+							}
+							else {
+								item.setStatus(Ticket.STATUS_VOID);
+							}
+							itemCount -= item.getItemCount();
+						}
+					}
+					session.saveOrUpdate(parentTicket);
+					session.saveOrUpdate(kitchenTicketItem);
+				}
+				tx.commit();
+
+			} catch (Exception ex) {
+				ex.printStackTrace();
+				tx.rollback();
+			} finally {
+				session.close();
+			}
 
 			KitchenTicketDAO.getInstance().saveOrUpdate(ticket);
 			Container parent = this.getParent();

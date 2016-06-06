@@ -194,6 +194,7 @@ public class PeripheralConfigurationView extends ConfigurationView {
 		Vector callerIds = new Vector();
 		callerIds.add("NONE"); //$NON-NLS-1$
 		callerIds.add("AD101"); //$NON-NLS-1$
+		callerIds.add("Whozz calling"); //$NON-NLS-1$
 		cbCallerIds = new JComboBox(callerIds);
 
 		callerIdPanel.add(chkCallerIdEnable, "span 2,wrap");//$NON-NLS-1$

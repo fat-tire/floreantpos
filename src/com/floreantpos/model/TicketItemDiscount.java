@@ -122,4 +122,9 @@ public class TicketItemDiscount extends BaseTicketItemDiscount implements ITicke
 		return null;
 	}
 
+	@Override
+	public String getKitchenStatus() {
+		return "";
+	}
+
 }
