@@ -1072,6 +1072,10 @@ public class TicketDAO extends BaseTicketDAO {
 	}
 
 	public List<Ticket> findTickets(PaginatedTableModel tableModel, boolean filter) {
+		return findTickets(tableModel, null, null, filter);
+	}
+
+	public List<Ticket> findTickets(PaginatedTableModel tableModel, Date start, Date end, boolean filter) {
 		Session session = null;
 		Criteria criteria = null;
 
@@ -1085,6 +1089,11 @@ public class TicketDAO extends BaseTicketDAO {
 
 			criteria.setFirstResult(0);
 			criteria.setMaxResults(tableModel.getPageSize());
+			if (start != null)
+				criteria.add(Restrictions.ge(Ticket.PROP_DELIVERY_DATE, start));
+
+			if (end != null)
+				criteria.add(Restrictions.le(Ticket.PROP_DELIVERY_DATE, end));
 
 			List ticketList = criteria.list();
 
@@ -1105,6 +1114,10 @@ public class TicketDAO extends BaseTicketDAO {
 	}
 
 	public List<Ticket> findNextTickets(PaginatedTableModel tableModel, boolean filter) {
+		return findNextTickets(tableModel, null, null, filter);
+	}
+
+	public List<Ticket> findNextTickets(PaginatedTableModel tableModel, Date start, Date end, boolean filter) {
 		Session session = null;
 		Criteria criteria = null;
 
@@ -1120,6 +1133,12 @@ public class TicketDAO extends BaseTicketDAO {
 
 			criteria.setFirstResult(nextIndex);
 			criteria.setMaxResults(tableModel.getPageSize());
+
+			if (start != null)
+				criteria.add(Restrictions.ge(Ticket.PROP_DELIVERY_DATE, start));
+
+			if (end != null)
+				criteria.add(Restrictions.le(Ticket.PROP_DELIVERY_DATE, end));
 
 			List ticketList = criteria.list();
 
@@ -1140,6 +1159,10 @@ public class TicketDAO extends BaseTicketDAO {
 	}
 
 	public List<Ticket> findPreviousTickets(PaginatedTableModel tableModel, boolean filter) {
+		return findPreviousTickets(tableModel, null, null, filter);
+	}
+
+	public List<Ticket> findPreviousTickets(PaginatedTableModel tableModel, Date start, Date end, boolean filter) {
 		Session session = null;
 		Criteria criteria = null;
 		try {
@@ -1155,6 +1178,12 @@ public class TicketDAO extends BaseTicketDAO {
 
 			criteria.setFirstResult(previousIndex);
 			criteria.setMaxResults(tableModel.getPageSize());
+
+			if (start != null)
+				criteria.add(Restrictions.ge(Ticket.PROP_DELIVERY_DATE, start));
+
+			if (end != null)
+				criteria.add(Restrictions.le(Ticket.PROP_DELIVERY_DATE, end));
 
 			List ticketList = criteria.list();
 

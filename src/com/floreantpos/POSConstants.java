@@ -360,8 +360,11 @@ public class POSConstants {
 	public static final String ITEM_EXPLORER = Messages.getString("PosMessage.261"); //$NON-NLS-1$
 	public static final String COPY = Messages.getString("PosMessage.262"); //$NON-NLS-1$
 	public static final String ALL = Messages.getString("PosMessage.263"); //$NON-NLS-1$
+	public static final String TODAY = Messages.getString("TODAY"); //$NON-NLS-1$
+	public static final String TOMORROW = Messages.getString("TOMORROW"); //$NON-NLS-1$
 	public static final String PAY_TIPS = Messages.getString("PosMessage.264"); //$NON-NLS-1$
 	public static final String COOKING_INSTRUCTIONS = Messages.getString("PosMessage.265"); //$NON-NLS-1$
+	public static final String BUMP = Messages.getString("BUMP"); //$NON-NLS-1$
 	public static final String LAST_NAME = Messages.getString("PosMessage.266"); //$NON-NLS-1$
 	public static final String TYPE_NAME = Messages.getString("PosMessage.267"); //$NON-NLS-1$
 	public static final String ORDER_TYPE = Messages.getString("ORDER_TYPE"); //$NON-NLS-1$

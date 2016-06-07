@@ -47,6 +47,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import com.floreantpos.Messages;
+import com.floreantpos.POSConstants;
 import com.floreantpos.model.KitchenTicket;
 import com.floreantpos.model.KitchenTicket.KitchenTicketStatus;
 import com.floreantpos.model.KitchenTicketItem;
@@ -225,7 +226,7 @@ public class KitchenTicketView extends JPanel {
 				closeTicket(KitchenTicketStatus.VOID);
 			}
 		});
-		buttonPanel.add(btnVoid);
+		//buttonPanel.add(btnVoid);
 
 		PosButton btnDone = new PosButton(Messages.getString("KitchenTicketView.11")); //$NON-NLS-1$
 		btnDone.addActionListener(new ActionListener() {
@@ -320,7 +321,7 @@ public class KitchenTicketView extends JPanel {
 					}
 					return String.valueOf(ticketItem.getQuantity());
 				case 2:
-					return "GO";
+					return POSConstants.BUMP;
 			}
 			return null;
 		}

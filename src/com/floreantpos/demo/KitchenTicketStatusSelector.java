@@ -30,6 +30,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import com.floreantpos.Messages;
+import com.floreantpos.main.Application;
 import com.floreantpos.model.KitchenTicket;
 import com.floreantpos.model.KitchenTicket.KitchenTicketStatus;
 import com.floreantpos.model.KitchenTicketItem;
@@ -62,6 +63,7 @@ public class KitchenTicketStatusSelector extends POSDialog implements ActionList
 
 	private void initComponent() {
 		setTitle(Messages.getString("KitchenTicketStatusSelector.0")); //$NON-NLS-1$
+		setIconImage(Application.getApplicationIcon().getImage());
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
 		TitlePanel titlePanel = new TitlePanel();
@@ -70,7 +72,7 @@ public class KitchenTicketStatusSelector extends POSDialog implements ActionList
 
 		JPanel panel = new JPanel(new GridLayout(1, 0, 10, 10));
 		panel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-		panel.add(btnVoid);
+		//panel.add(btnVoid);
 		panel.add(btnReady);
 
 		add(panel);
@@ -92,7 +94,7 @@ public class KitchenTicketStatusSelector extends POSDialog implements ActionList
 
 			for (TicketItem item : ticket.getTicketItems()) {
 				if (ticketItem.getMenuItemCode() != null && ticketItem.getMenuItemCode().equals(item.getItemCode())) {
-					if (item.getStatus()!=null && item.getStatus().equals(Ticket.STATUS_READY)) {
+					if (item.getStatus() != null && item.getStatus().equals(Ticket.STATUS_READY)) {
 						continue;
 					}
 					if (itemCount == 0) {
