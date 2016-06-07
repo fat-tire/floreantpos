@@ -236,6 +236,18 @@ public class DatabaseUtil {
 
 			dao.saveOrUpdate(serverUser);
 			
+			User driverUser = new User();
+			driverUser.setUserId(127);
+			driverUser.setSsn("127");
+			driverUser.setPassword("8888");
+			driverUser.setFirstName("Abul");
+			driverUser.setLastName("Munshi");
+			driverUser.setType(server);
+			driverUser.setDriver(true);
+			driverUser.setActive(true);
+
+			dao.saveOrUpdate(driverUser);
+
 			OrderTypeDAO orderTypeDAO = new OrderTypeDAO();
 			OrderType orderType = new OrderType();
 			orderType.setName("DINE IN");
@@ -263,16 +275,6 @@ public class DatabaseUtil {
 			orderType.setEnabled(true);
 			orderType.setShouldPrintToKitchen(false);
 			orderType.setShowInLoginScreen(true);
-			orderTypeDAO.save(orderType);
-			
-			orderType = new OrderType();
-			orderType.setName("PICKUP");
-			orderType.setShowTableSelection(false);
-			orderType.setCloseOnPaid(true);
-			orderType.setEnabled(true);
-			orderType.setShouldPrintToKitchen(true);
-			orderType.setShowInLoginScreen(true);
-			orderType.setRequiredCustomerData(true);
 			orderTypeDAO.save(orderType);
 			
 			orderType = new OrderType();
