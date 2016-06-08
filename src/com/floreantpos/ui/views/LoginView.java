@@ -47,6 +47,9 @@ import com.floreantpos.actions.ClockInOutAction;
 import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.config.ui.DatabaseConfigurationDialog;
 import com.floreantpos.demo.KitchenDisplayView;
+import com.floreantpos.extension.ExtensionManager;
+import com.floreantpos.extension.OrderServiceExtension;
+import com.floreantpos.extension.OrderServiceFactory;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.User;
 import com.floreantpos.swing.MessageDialog;
@@ -55,6 +58,7 @@ import com.floreantpos.swing.PosButton;
 import com.floreantpos.swing.PosUIManager;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.dialog.PasswordEntryDialog;
+import com.floreantpos.ui.views.order.RootView;
 import com.floreantpos.ui.views.order.ViewPanel;
 import com.floreantpos.util.ShiftException;
 import com.floreantpos.util.UserNotFoundException;
@@ -68,6 +72,7 @@ public class LoginView extends ViewPanel {
 	private boolean backOfficeLogin;
 	private com.floreantpos.swing.PosButton btnSwitchBoard;
 	private com.floreantpos.swing.PosButton btnKitchenDisplay;
+	private com.floreantpos.swing.PosButton btnDriverView;
 
 	private com.floreantpos.swing.PosButton btnConfigureDatabase;
 	private com.floreantpos.swing.PosButton btnBackOffice;
@@ -80,13 +85,13 @@ public class LoginView extends ViewPanel {
 
 	private JPanel panel1 = new JPanel(new MigLayout("fill, ins 0, hidemode 3", "sg, fill", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	private JPanel panel2 = new JPanel(new MigLayout("fill, ins 0, hidemode 3", "sg, fill", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-	
+
 	private int width;
 	private int height;
 
 	private LoginView() {
 		setLayout(new BorderLayout(5, 5));
-		
+
 		width = PosUIManager.getSize(600);
 		height = PosUIManager.getSize(100);
 		centerPanel.setLayout(new MigLayout("al center center", "sg fill", String.valueOf(height))); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
@@ -114,6 +119,7 @@ public class LoginView extends ViewPanel {
 
 		btnSwitchBoard = new PosButton(POSConstants.ORDERS);
 		btnKitchenDisplay = new PosButton(POSConstants.KITCHEN_DISPLAY_BUTTON_TEXT);
+		btnDriverView = new PosButton("DRIVER VIEW");
 		btnConfigureDatabase = new PosButton(POSConstants.CONFIGURE_DATABASE);
 		btnBackOffice = new PosButton(POSConstants.BACK_OFFICE_BUTTON_TEXT);
 
@@ -133,6 +139,11 @@ public class LoginView extends ViewPanel {
 		panel3.add(btnSwitchBoard);
 		panel3.add(btnBackOffice);
 		panel3.add(btnKitchenDisplay);
+		OrderServiceExtension orderService = (OrderServiceExtension) ExtensionManager.getPlugin(OrderServiceExtension.class);
+		if (orderService != null) {
+			panel3.add(btnDriverView);
+			btnDriverView.setVisible(false); 
+		}
 		centerPanel.add(panel3, "cell 0 2, wrap, w " + width + "px, h " + height + "px, grow");
 
 		panel4.add(btnClockOUt, "grow"); //$NON-NLS-1$
@@ -188,6 +199,7 @@ public class LoginView extends ViewPanel {
 		btnKitchenDisplay.setVisible(true);
 		btnBackOffice.setVisible(true);
 		btnClockOUt.setVisible(true);
+		btnDriverView.setVisible(true);
 
 		centerPanel.repaint();
 	}
@@ -221,6 +233,18 @@ public class LoginView extends ViewPanel {
 			public void actionPerformed(ActionEvent e) {
 				TerminalConfig.setDefaultView(KitchenDisplayView.VIEW_NAME);
 				doLogin();
+			}
+		});
+
+		btnDriverView.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				IView view = OrderServiceFactory.getOrderService().getDriverView();
+				if (view == null) {
+					return;
+				}
+				RootView.getInstance().setAndShowHomeScreen(view);
 			}
 		});
 

@@ -359,7 +359,18 @@ public class Application {
 		if (user == null) {
 			return;
 		}
+		initCurrentUser(user);
 
+		RootView rootView = getRootView();
+
+		if (!rootView.hasView(OrderView.VIEW_NAME)) {
+			rootView.addView(OrderView.getInstance());
+		}
+
+		rootView.showDefaultView();
+	}
+
+	public void initCurrentUser(User user) {
 		Shift currentShift = ShiftUtil.getCurrentShift();
 		setCurrentShift(currentShift);
 
@@ -379,14 +390,6 @@ public class Application {
 		}
 
 		setCurrentUser(user);
-
-		RootView rootView = getRootView();
-
-		if (!rootView.hasView(OrderView.VIEW_NAME)) {
-			rootView.addView(OrderView.getInstance());
-		}
-
-		rootView.showDefaultView();
 	}
 
 	public void doLogout() {

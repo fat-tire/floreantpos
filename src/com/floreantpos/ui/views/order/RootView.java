@@ -218,7 +218,7 @@ public class RootView extends com.floreantpos.swing.TransparentPanel {
 		return homeView;
 	}
 
-	private void setAndShowHomeScreen(IView homeScreen) {
+	public void setAndShowHomeScreen(IView homeScreen) {
 		homeView = homeScreen;
 		showHomeScreen();
 

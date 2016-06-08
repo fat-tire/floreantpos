@@ -32,6 +32,7 @@ import com.floreantpos.model.Customer;
 import com.floreantpos.model.OrderType;
 import com.floreantpos.model.ShopTable;
 import com.floreantpos.model.Ticket;
+import com.floreantpos.model.User;
 import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.views.IView;
@@ -176,6 +177,11 @@ public class DefaultOrderServiceExtension implements OrderServiceExtension {
 	@Override
 	public void openDeliveryDispatchDialog(OrderType orderType) {
 		
+	}
+
+	@Override
+	public IView getDriverView() {
+		return null;
 	}
 
 }
