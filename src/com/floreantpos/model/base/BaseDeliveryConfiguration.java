@@ -18,6 +18,7 @@ public abstract class BaseDeliveryConfiguration  implements Comparable, Serializ
 	public static String REF = "DeliveryConfiguration";
 	public static String PROP_UNIT_NAME = "unitName";
 	public static String PROP_ID = "id";
+	public static String PROP_CHARGE_BY_ZIP_CODE = "chargeByZipCode";
 	public static String PROP_UNIT_SYMBOL = "unitSymbol";
 
 
@@ -46,6 +47,7 @@ public abstract class BaseDeliveryConfiguration  implements Comparable, Serializ
 	// fields
 		protected java.lang.String unitName;
 		protected java.lang.String unitSymbol;
+		protected java.lang.Boolean chargeByZipCode;
 
 
 
@@ -101,6 +103,23 @@ public abstract class BaseDeliveryConfiguration  implements Comparable, Serializ
 	 */
 	public void setUnitSymbol (java.lang.String unitSymbol) {
 		this.unitSymbol = unitSymbol;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: CHARGE_BY_ZIP_CODE
+	 */
+	public java.lang.Boolean isChargeByZipCode () {
+								return chargeByZipCode == null ? Boolean.FALSE : chargeByZipCode;
+					}
+
+	/**
+	 * Set the value related to the column: CHARGE_BY_ZIP_CODE
+	 * @param chargeByZipCode the CHARGE_BY_ZIP_CODE value
+	 */
+	public void setChargeByZipCode (java.lang.Boolean chargeByZipCode) {
+		this.chargeByZipCode = chargeByZipCode;
 	}
 
 

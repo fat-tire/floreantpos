@@ -25,6 +25,20 @@ public class DeliveryChargeDAO extends BaseDeliveryChargeDAO {
 		}
 	}
 
+	public List<DeliveryCharge> findByZipCode(String zipCode) {
+		Session session = null;
+
+		try {
+			session = getSession();
+			Criteria criteria = session.createCriteria(getReferenceClass());
+			criteria.add(Restrictions.eq(DeliveryCharge.PROP_ZIP_CODE, zipCode));
+
+			return criteria.list();
+		} finally {
+			closeSession(session);
+		}
+	}
+
 	public double findMinRange() {
 		Session session = null;
 

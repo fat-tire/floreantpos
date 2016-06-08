@@ -6,6 +6,7 @@
 			<generator class="identity" />
 		</id>
 		<property column="NAME" name="name" length="220" type="java.lang.String" />
+		<property column="ZIP_CODE" name="zipCode" length="20" type="java.lang.String" />
 		<property column="START_RANGE" name="startRange" type="java.lang.Double" />
 		<property column="END_RANGE" name="endRange" type="java.lang.Double" />
 		<property column="CHARGE_AMOUNT" name="chargeAmount" type="java.lang.Double" />

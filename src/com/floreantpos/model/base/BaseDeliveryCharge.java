@@ -21,6 +21,7 @@ public abstract class BaseDeliveryCharge  implements Comparable, Serializable {
 	public static String PROP_START_RANGE = "startRange";
 	public static String PROP_ID = "id";
 	public static String PROP_END_RANGE = "endRange";
+	public static String PROP_ZIP_CODE = "zipCode";
 
 
 	// constructors
@@ -47,6 +48,7 @@ public abstract class BaseDeliveryCharge  implements Comparable, Serializable {
 
 	// fields
 		protected java.lang.String name;
+		protected java.lang.String zipCode;
 		protected java.lang.Double startRange;
 		protected java.lang.Double endRange;
 		protected java.lang.Double chargeAmount;
@@ -88,6 +90,23 @@ public abstract class BaseDeliveryCharge  implements Comparable, Serializable {
 	 */
 	public void setName (java.lang.String name) {
 		this.name = name;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: ZIP_CODE
+	 */
+	public java.lang.String getZipCode () {
+					return zipCode;
+			}
+
+	/**
+	 * Set the value related to the column: ZIP_CODE
+	 * @param zipCode the ZIP_CODE value
+	 */
+	public void setZipCode (java.lang.String zipCode) {
+		this.zipCode = zipCode;
 	}
 
 
