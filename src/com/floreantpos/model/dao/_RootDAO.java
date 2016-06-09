@@ -39,6 +39,7 @@ import com.floreantpos.model.DeliveryInstruction;
 import com.floreantpos.model.Discount;
 import com.floreantpos.model.DrawerAssignedHistory;
 import com.floreantpos.model.DrawerPullReport;
+import com.floreantpos.model.EmployeeInOutHistory;
 import com.floreantpos.model.Gratuity;
 import com.floreantpos.model.InventoryGroup;
 import com.floreantpos.model.InventoryItem;
@@ -165,6 +166,7 @@ public abstract class _RootDAO extends com.floreantpos.model.dao._BaseRootDAO {
 		configuration = configuration.addClass(DeliveryInstruction.class);
 		configuration = configuration.addClass(DeliveryCharge.class);
 		configuration = configuration.addClass(DeliveryConfiguration.class);
+		configuration = configuration.addClass(EmployeeInOutHistory.class);
 
 		configuration = configureInventoryClasses(configuration);
 

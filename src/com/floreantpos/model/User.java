@@ -33,23 +33,27 @@ public class User extends BaseUser {
 	private static final long serialVersionUID = 1L;
 
 	/*[CONSTRUCTOR MARKER BEGIN]*/
-	public User() {
+	public User () {
 		super();
 	}
 
 	/**
 	 * Constructor for primary key
 	 */
-	public User(java.lang.Integer autoId) {
+	public User (java.lang.Integer autoId) {
 		super(autoId);
 	}
 
 	/**
 	 * Constructor for required fields
 	 */
-	public User(java.lang.Integer autoId, java.lang.String password) {
+	public User (
+		java.lang.Integer autoId,
+		java.lang.String password) {
 
-		super(autoId, password);
+		super (
+			autoId,
+			password);
 	}
 
 	/*[CONSTRUCTOR MARKER END]*/
@@ -74,6 +78,9 @@ public class User extends BaseUser {
 		setCurrentShift(shift);
 		setCurrentTerminal(terminal);
 		setLastClockInTime(currentTime.getTime());
+		if (isDriver()) {
+			setAvailableForDelivery(true);
+		}
 
 		LogFactory.getLog(Application.class).info("terminal id befor saving clockIn=" + terminal.getId()); //$NON-NLS-1$
 
@@ -92,6 +99,10 @@ public class User extends BaseUser {
 		setCurrentShift(null);
 		setCurrentTerminal(null);
 		setLastClockInTime(null);
+		setLastClockOutTime(null);
+		if (isDriver()) {
+			setAvailableForDelivery(false);
+		}
 
 		attendenceHistory.setClockedOut(true);
 		attendenceHistory.setClockOutTime(currentTime.getTime());
@@ -115,7 +126,6 @@ public class User extends BaseUser {
 				return true;
 			}
 		}
-
 		return false;
 	}
 
@@ -139,6 +149,20 @@ public class User extends BaseUser {
 	}
 
 	public void setFullName(String str) {
+	}
+
+	public String getStatus() {
+		if (isClockedIn()) {
+			if (isAvailableForDelivery()) {
+				return "Available";
+			}
+			else {
+				return "Driving";
+			}
+		}
+		else {
+			return "Not available";
+		}
 	}
 
 	public String getFullName() {

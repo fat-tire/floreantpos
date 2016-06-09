@@ -17,6 +17,7 @@
     <property column="CLOCKED_IN" name="clockedIn" type="java.lang.Boolean"/>
     
     <property column="LAST_CLOCK_IN_TIME" name="lastClockInTime" type="java.util.Date"/>
+    <property column="LAST_CLOCK_OUT_TIME" name="lastClockOutTime" type="java.util.Date"/>
     <property column="PHONE_NO" name="phoneNo" length="20" type="string"/>
     <property column="IS_DRIVER" name="driver" type="java.lang.Boolean"/>
     <property column="AVAILABLE_FOR_DELIVERY" name="availableForDelivery" type="java.lang.Boolean"/>

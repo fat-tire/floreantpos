@@ -1,22 +1,6 @@
-/**
- * ************************************************************************
- * * The contents of this file are subject to the MRPL 1.2
- * * (the  "License"),  being   the  Mozilla   Public  License
- * * Version 1.1  with a permitted attribution clause; you may not  use this
- * * file except in compliance with the License. You  may  obtain  a copy of
- * * the License at http://www.floreantpos.org/license.html
- * * Software distributed under the License  is  distributed  on  an "AS IS"
- * * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * * License for the specific  language  governing  rights  and  limitations
- * * under the License.
- * * The Original Code is FLOREANT POS.
- * * The Initial Developer of the Original Code is OROCUBE LLC
- * * All portions are Copyright (C) 2015 OROCUBE LLC
- * * All Rights Reserved.
- * ************************************************************************
- */
 package com.floreantpos.model.base;
 
+import java.lang.Comparable;
 import java.io.Serializable;
 
 
@@ -31,23 +15,24 @@ import java.io.Serializable;
 
 public abstract class BaseUser  implements Comparable, Serializable {
 
-	public static String REF = "User"; //$NON-NLS-1$
-	public static String PROP_LAST_CLOCK_IN_TIME = "lastClockInTime"; //$NON-NLS-1$
-	public static String PROP_TYPE = "type"; //$NON-NLS-1$
-	public static String PROP_PASSWORD = "password"; //$NON-NLS-1$
-	public static String PROP_USER_ID = "userId"; //$NON-NLS-1$
-	public static String PROP_LAST_NAME = "lastName"; //$NON-NLS-1$
-	public static String PROP_SSN = "ssn"; //$NON-NLS-1$
-	public static String PROP_PHONE_NO = "phoneNo"; //$NON-NLS-1$
-	public static String PROP_DRIVER = "driver"; //$NON-NLS-1$
-	public static String PROP_ACTIVE = "active"; //$NON-NLS-1$
-	public static String PROP_CURRENT_TERMINAL = "currentTerminal"; //$NON-NLS-1$
-	public static String PROP_AVAILABLE_FOR_DELIVERY = "availableForDelivery"; //$NON-NLS-1$
-	public static String PROP_AUTO_ID = "autoId"; //$NON-NLS-1$
-	public static String PROP_FIRST_NAME = "firstName"; //$NON-NLS-1$
-	public static String PROP_COST_PER_HOUR = "costPerHour"; //$NON-NLS-1$
-	public static String PROP_CLOCKED_IN = "clockedIn"; //$NON-NLS-1$
-	public static String PROP_CURRENT_SHIFT = "currentShift"; //$NON-NLS-1$
+	public static String REF = "User";
+	public static String PROP_LAST_CLOCK_IN_TIME = "lastClockInTime";
+	public static String PROP_TYPE = "type";
+	public static String PROP_PASSWORD = "password";
+	public static String PROP_USER_ID = "userId";
+	public static String PROP_LAST_NAME = "lastName";
+	public static String PROP_SSN = "ssn";
+	public static String PROP_PHONE_NO = "phoneNo";
+	public static String PROP_DRIVER = "driver";
+	public static String PROP_ACTIVE = "active";
+	public static String PROP_CURRENT_TERMINAL = "currentTerminal";
+	public static String PROP_AVAILABLE_FOR_DELIVERY = "availableForDelivery";
+	public static String PROP_AUTO_ID = "autoId";
+	public static String PROP_FIRST_NAME = "firstName";
+	public static String PROP_COST_PER_HOUR = "costPerHour";
+	public static String PROP_CLOCKED_IN = "clockedIn";
+	public static String PROP_CURRENT_SHIFT = "currentShift";
+	public static String PROP_LAST_CLOCK_OUT_TIME = "lastClockOutTime";
 
 
 	// constructors
@@ -85,18 +70,19 @@ public abstract class BaseUser  implements Comparable, Serializable {
 	private java.lang.Integer autoId;
 
 	// fields
-		protected java.lang.Boolean active;
-		protected java.lang.Boolean availableForDelivery;
-		protected java.lang.Boolean clockedIn;
-		protected java.lang.Double costPerHour;
-		protected java.lang.Boolean driver;
-		protected java.lang.String firstName;
-		protected java.util.Date lastClockInTime;
-		protected java.lang.String lastName;
-		protected java.lang.String password;
-		protected java.lang.String phoneNo;
-		protected java.lang.String ssn;
 		protected java.lang.Integer userId;
+		protected java.lang.String password;
+		protected java.lang.String firstName;
+		protected java.lang.String lastName;
+		protected java.lang.String ssn;
+		protected java.lang.Double costPerHour;
+		protected java.lang.Boolean clockedIn;
+		protected java.util.Date lastClockInTime;
+		protected java.util.Date lastClockOutTime;
+		protected java.lang.String phoneNo;
+		protected java.lang.Boolean driver;
+		protected java.lang.Boolean availableForDelivery;
+		protected java.lang.Boolean active;
 
 	// many to one
 	private com.floreantpos.model.Shift currentShift;
@@ -128,137 +114,18 @@ public abstract class BaseUser  implements Comparable, Serializable {
 
 
 	/**
-	 * Return the value associated with the column: ACTIVE
+	 * Return the value associated with the column: USER_ID
 	 */
-	public java.lang.Boolean isActive () {
-								return active == null ? Boolean.FALSE : active;
+	public java.lang.Integer getUserId () {
+									return userId == null ? Integer.valueOf(0) : userId;
 					}
 
 	/**
-	 * Set the value related to the column: ACTIVE
-	 * @param active the ACTIVE value
+	 * Set the value related to the column: USER_ID
+	 * @param userId the USER_ID value
 	 */
-	public void setActive (java.lang.Boolean active) {
-		this.active = active;
-	}
-
-
-
-	/**
-	 * Return the value associated with the column: AVAILABLE_FOR_DELIVERY
-	 */
-	public java.lang.Boolean isAvailableForDelivery () {
-								return availableForDelivery == null ? Boolean.FALSE : availableForDelivery;
-					}
-
-	/**
-	 * Set the value related to the column: AVAILABLE_FOR_DELIVERY
-	 * @param availableForDelivery the AVAILABLE_FOR_DELIVERY value
-	 */
-	public void setAvailableForDelivery (java.lang.Boolean availableForDelivery) {
-		this.availableForDelivery = availableForDelivery;
-	}
-
-
-
-	/**
-	 * Return the value associated with the column: CLOCKED_IN
-	 */
-	public java.lang.Boolean isClockedIn () {
-								return clockedIn == null ? Boolean.FALSE : clockedIn;
-					}
-
-	/**
-	 * Set the value related to the column: CLOCKED_IN
-	 * @param clockedIn the CLOCKED_IN value
-	 */
-	public void setClockedIn (java.lang.Boolean clockedIn) {
-		this.clockedIn = clockedIn;
-	}
-
-
-
-	/**
-	 * Return the value associated with the column: COST_PER_HOUR
-	 */
-	public java.lang.Double getCostPerHour () {
-									return costPerHour == null ? Double.valueOf(0) : costPerHour;
-					}
-
-	/**
-	 * Set the value related to the column: COST_PER_HOUR
-	 * @param costPerHour the COST_PER_HOUR value
-	 */
-	public void setCostPerHour (java.lang.Double costPerHour) {
-		this.costPerHour = costPerHour;
-	}
-
-
-
-	/**
-	 * Return the value associated with the column: IS_DRIVER
-	 */
-	public java.lang.Boolean isDriver () {
-								return driver == null ? Boolean.FALSE : driver;
-					}
-
-	/**
-	 * Set the value related to the column: IS_DRIVER
-	 * @param driver the IS_DRIVER value
-	 */
-	public void setDriver (java.lang.Boolean driver) {
-		this.driver = driver;
-	}
-
-
-
-	/**
-	 * Return the value associated with the column: FIRST_NAME
-	 */
-	public java.lang.String getFirstName () {
-					return firstName;
-			}
-
-	/**
-	 * Set the value related to the column: FIRST_NAME
-	 * @param firstName the FIRST_NAME value
-	 */
-	public void setFirstName (java.lang.String firstName) {
-		this.firstName = firstName;
-	}
-
-
-
-	/**
-	 * Return the value associated with the column: LAST_CLOCK_IN_TIME
-	 */
-	public java.util.Date getLastClockInTime () {
-					return lastClockInTime;
-			}
-
-	/**
-	 * Set the value related to the column: LAST_CLOCK_IN_TIME
-	 * @param lastClockInTime the LAST_CLOCK_IN_TIME value
-	 */
-	public void setLastClockInTime (java.util.Date lastClockInTime) {
-		this.lastClockInTime = lastClockInTime;
-	}
-
-
-
-	/**
-	 * Return the value associated with the column: LAST_NAME
-	 */
-	public java.lang.String getLastName () {
-					return lastName;
-			}
-
-	/**
-	 * Set the value related to the column: LAST_NAME
-	 * @param lastName the LAST_NAME value
-	 */
-	public void setLastName (java.lang.String lastName) {
-		this.lastName = lastName;
+	public void setUserId (java.lang.Integer userId) {
+		this.userId = userId;
 	}
 
 
@@ -281,18 +148,35 @@ public abstract class BaseUser  implements Comparable, Serializable {
 
 
 	/**
-	 * Return the value associated with the column: PHONE_NO
+	 * Return the value associated with the column: FIRST_NAME
 	 */
-	public java.lang.String getPhoneNo () {
-					return phoneNo;
+	public java.lang.String getFirstName () {
+					return firstName;
 			}
 
 	/**
-	 * Set the value related to the column: PHONE_NO
-	 * @param phoneNo the PHONE_NO value
+	 * Set the value related to the column: FIRST_NAME
+	 * @param firstName the FIRST_NAME value
 	 */
-	public void setPhoneNo (java.lang.String phoneNo) {
-		this.phoneNo = phoneNo;
+	public void setFirstName (java.lang.String firstName) {
+		this.firstName = firstName;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: LAST_NAME
+	 */
+	public java.lang.String getLastName () {
+					return lastName;
+			}
+
+	/**
+	 * Set the value related to the column: LAST_NAME
+	 * @param lastName the LAST_NAME value
+	 */
+	public void setLastName (java.lang.String lastName) {
+		this.lastName = lastName;
 	}
 
 
@@ -315,18 +199,137 @@ public abstract class BaseUser  implements Comparable, Serializable {
 
 
 	/**
-	 * Return the value associated with the column: USER_ID
+	 * Return the value associated with the column: COST_PER_HOUR
 	 */
-	public java.lang.Integer getUserId () {
-					return userId == null ? Integer.valueOf(0) : userId;
+	public java.lang.Double getCostPerHour () {
+									return costPerHour == null ? Double.valueOf(0) : costPerHour;
+					}
+
+	/**
+	 * Set the value related to the column: COST_PER_HOUR
+	 * @param costPerHour the COST_PER_HOUR value
+	 */
+	public void setCostPerHour (java.lang.Double costPerHour) {
+		this.costPerHour = costPerHour;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: CLOCKED_IN
+	 */
+	public java.lang.Boolean isClockedIn () {
+								return clockedIn == null ? Boolean.FALSE : clockedIn;
+					}
+
+	/**
+	 * Set the value related to the column: CLOCKED_IN
+	 * @param clockedIn the CLOCKED_IN value
+	 */
+	public void setClockedIn (java.lang.Boolean clockedIn) {
+		this.clockedIn = clockedIn;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: LAST_CLOCK_IN_TIME
+	 */
+	public java.util.Date getLastClockInTime () {
+					return lastClockInTime;
 			}
 
 	/**
-	 * Set the value related to the column: USER_ID
-	 * @param userId the USER_ID value
+	 * Set the value related to the column: LAST_CLOCK_IN_TIME
+	 * @param lastClockInTime the LAST_CLOCK_IN_TIME value
 	 */
-	public void setUserId (java.lang.Integer userId) {
-		this.userId = userId;
+	public void setLastClockInTime (java.util.Date lastClockInTime) {
+		this.lastClockInTime = lastClockInTime;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: LAST_CLOCK_OUT_TIME
+	 */
+	public java.util.Date getLastClockOutTime () {
+					return lastClockOutTime;
+			}
+
+	/**
+	 * Set the value related to the column: LAST_CLOCK_OUT_TIME
+	 * @param lastClockOutTime the LAST_CLOCK_OUT_TIME value
+	 */
+	public void setLastClockOutTime (java.util.Date lastClockOutTime) {
+		this.lastClockOutTime = lastClockOutTime;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: PHONE_NO
+	 */
+	public java.lang.String getPhoneNo () {
+					return phoneNo;
+			}
+
+	/**
+	 * Set the value related to the column: PHONE_NO
+	 * @param phoneNo the PHONE_NO value
+	 */
+	public void setPhoneNo (java.lang.String phoneNo) {
+		this.phoneNo = phoneNo;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: IS_DRIVER
+	 */
+	public java.lang.Boolean isDriver () {
+								return driver == null ? Boolean.FALSE : driver;
+					}
+
+	/**
+	 * Set the value related to the column: IS_DRIVER
+	 * @param driver the IS_DRIVER value
+	 */
+	public void setDriver (java.lang.Boolean driver) {
+		this.driver = driver;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: AVAILABLE_FOR_DELIVERY
+	 */
+	public java.lang.Boolean isAvailableForDelivery () {
+								return availableForDelivery == null ? Boolean.FALSE : availableForDelivery;
+					}
+
+	/**
+	 * Set the value related to the column: AVAILABLE_FOR_DELIVERY
+	 * @param availableForDelivery the AVAILABLE_FOR_DELIVERY value
+	 */
+	public void setAvailableForDelivery (java.lang.Boolean availableForDelivery) {
+		this.availableForDelivery = availableForDelivery;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: ACTIVE
+	 */
+	public java.lang.Boolean isActive () {
+								return active == null ? Boolean.FALSE : active;
+					}
+
+	/**
+	 * Set the value related to the column: ACTIVE
+	 * @param active the ACTIVE value
+	 */
+	public void setActive (java.lang.Boolean active) {
+		this.active = active;
 	}
 
 
@@ -398,7 +401,7 @@ public abstract class BaseUser  implements Comparable, Serializable {
 		if (Integer.MIN_VALUE == this.hashCode) {
 			if (null == this.getAutoId()) return super.hashCode();
 			else {
-				String hashStr = this.getClass().getName() + ":" + this.getAutoId().hashCode(); //$NON-NLS-1$
+				String hashStr = this.getClass().getName() + ":" + this.getAutoId().hashCode();
 				this.hashCode = hashStr.hashCode();
 			}
 		}
