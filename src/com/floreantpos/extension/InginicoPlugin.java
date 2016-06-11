@@ -1,7 +1,10 @@
 package com.floreantpos.extension;
 
+import java.util.List;
+
 import net.xeoh.plugins.base.annotations.PluginImplementation;
 
+import com.floreantpos.actions.PosAction;
 import com.floreantpos.config.ui.ConfigurationDialog;
 import com.floreantpos.config.ui.ConfigurationView;
 import com.floreantpos.config.ui.InginicoConfigurationView;
@@ -57,5 +60,10 @@ public class InginicoPlugin implements PaymentGatewayPlugin {
 	@Override
 	public boolean shouldShowCardInputProcessor() {
 		return true;
+	}
+
+	@Override
+	public List<PosAction> getPosActions() {
+		return null;
 	}
 }

@@ -44,8 +44,8 @@ public class RestaurantConfigurationView extends ConfigurationView {
 	private FixedLengthTextField tfAddressLine2;
 	private FixedLengthTextField tfAddressLine3;
 	private POSTextField tfTelephone;
-	private POSTextField tfCurrencyName;
-	private POSTextField tfCurrencySymbol;
+	//private POSTextField tfCurrencyName;
+	//private POSTextField tfCurrencySymbol;
 	private POSTextField tfServiceCharge;
 	private POSTextField tfDefaultGratuity;
 	private POSTextField tfTicketFooter;
@@ -96,23 +96,23 @@ public class RestaurantConfigurationView extends ConfigurationView {
 		tfTelephone = new POSTextField();
 		contentPanel.add(tfTelephone, "cell 1 6,growx"); //$NON-NLS-1$
 
-		JSeparator separator = new JSeparator();
-		contentPanel.add(separator, "cell 0 8 4 1,growx"); //$NON-NLS-1$
+		//JSeparator separator = new JSeparator();
+		//contentPanel.add(separator, "cell 0 8 4 1,growx"); //$NON-NLS-1$
 
-		JLabel lblCurrencyName = new JLabel(Messages.getString("RestaurantConfigurationView.30") + ":"); //$NON-NLS-1$ //$NON-NLS-2$
-		contentPanel.add(lblCurrencyName, "cell 0 10,alignx trailing"); //$NON-NLS-1$
+		//JLabel lblCurrencyName = new JLabel(Messages.getString("RestaurantConfigurationView.30") + ":"); //$NON-NLS-1$ //$NON-NLS-2$
+		//contentPanel.add(lblCurrencyName, "cell 0 10,alignx trailing"); //$NON-NLS-1$
 
-		tfCurrencyName = new POSTextField();
-		contentPanel.add(tfCurrencyName, "growx,cell 1 10"); //$NON-NLS-1$
+		//tfCurrencyName = new POSTextField();
+		//contentPanel.add(tfCurrencyName, "growx,cell 1 10"); //$NON-NLS-1$
 
-		JLabel lblCurrencySymbol = new JLabel(Messages.getString("RestaurantConfigurationView.37") + ":"); //$NON-NLS-1$ //$NON-NLS-2$
-		contentPanel.add(lblCurrencySymbol, "cell 2 10,alignx trailing"); //$NON-NLS-1$
+		//JLabel lblCurrencySymbol = new JLabel(Messages.getString("RestaurantConfigurationView.37") + ":"); //$NON-NLS-1$ //$NON-NLS-2$
+		//contentPanel.add(lblCurrencySymbol, "cell 2 10,alignx trailing"); //$NON-NLS-1$
 
-		tfCurrencySymbol = new POSTextField();
-		contentPanel.add(tfCurrencySymbol, "cell 3 10,growx"); //$NON-NLS-1$
+		//tfCurrencySymbol = new POSTextField();
+		//contentPanel.add(tfCurrencySymbol, "cell 3 10,growx"); //$NON-NLS-1$
 
-		JSeparator separator_1 = new JSeparator();
-		contentPanel.add(separator_1, "cell 0 11 4 1,growx"); //$NON-NLS-1$
+		//JSeparator separator_1 = new JSeparator();
+		//contentPanel.add(separator_1, "cell 0 11 4 1,growx"); //$NON-NLS-1$
 
 		JLabel lblServiceCharge = new JLabel(Messages.getString("RestaurantConfigurationView.42") + ":"); //$NON-NLS-1$ //$NON-NLS-2$
 		contentPanel.add(lblServiceCharge, "cell 0 12,alignx trailing"); //$NON-NLS-1$
@@ -167,8 +167,8 @@ public class RestaurantConfigurationView extends ConfigurationView {
 		addr2 = tfAddressLine2.getText();
 		addr3 = tfAddressLine3.getText();
 		telephone = tfTelephone.getText();
-		currencyName = tfCurrencyName.getText();
-		currencySymbol = tfCurrencySymbol.getText();
+		//currencyName = tfCurrencyName.getText();
+		//currencySymbol = tfCurrencySymbol.getText();
 
 		if (StringUtils.isEmpty(currencyName)) {
 			currencyName = com.floreantpos.POSConstants.DOLLAR;
@@ -221,8 +221,8 @@ public class RestaurantConfigurationView extends ConfigurationView {
 		tfAddressLine3.setText(restaurant.getAddressLine3());
 		tfZipCode.setText(restaurant.getZipCode());
 		tfTelephone.setText(restaurant.getTelephone());
-		tfCurrencyName.setText(restaurant.getCurrencyName());
-		tfCurrencySymbol.setText(restaurant.getCurrencySymbol());
+		//tfCurrencyName.setText(restaurant.getCurrencyName());
+		//tfCurrencySymbol.setText(restaurant.getCurrencySymbol());
 		tfServiceCharge.setText(String.valueOf(restaurant.getServiceChargePercentage()));
 		tfDefaultGratuity.setText(String.valueOf(restaurant.getDefaultGratuityPercentage()));
 		tfTicketFooter.setText(restaurant.getTicketFooterMessage());

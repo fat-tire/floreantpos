@@ -21,6 +21,8 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -40,6 +42,8 @@ import com.floreantpos.actions.ShowBackofficeAction;
 import com.floreantpos.actions.ShowKitchenDisplayAction;
 import com.floreantpos.actions.ShowOnlineTicketManagementAction;
 import com.floreantpos.actions.ShowTransactionsAuthorizationsAction;
+import com.floreantpos.extension.ExtensionManager;
+import com.floreantpos.extension.FloreantPlugin;
 import com.floreantpos.main.Application;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.swing.PosUIManager;
@@ -65,9 +69,29 @@ public class SwitchboardOtherFunctionsView extends ViewPanel {
 
 		contentPanel = new JPanel(new MigLayout("hidemode 3,align 50% 50%, wrap 6", "sg fill", ""));
 
-		PosAction[] actions = { new ShowBackofficeAction(), new DrawerAssignmentAction(), new DrawerPullAction(), new DrawerBleedAction(),
-				new DrawerKickAction(), new PayoutAction(), new ServerTipsAction(), new ShowTransactionsAuthorizationsAction(),
-				new ShowKitchenDisplayAction()/*, new SwithboardViewAction()*/, new ManageTableLayoutAction(), new ShowOnlineTicketManagementAction() };
+		List<PosAction> actions = new ArrayList();
+		actions.add(new ShowBackofficeAction());
+		actions.add(new DrawerAssignmentAction());
+		actions.add(new DrawerPullAction());
+		actions.add(new DrawerBleedAction());
+		actions.add(new DrawerKickAction());
+		actions.add(new PayoutAction());
+		actions.add(new ServerTipsAction());
+		actions.add(new ShowTransactionsAuthorizationsAction());
+		actions.add(new ShowKitchenDisplayAction()
+		/*); actions.add(new SwithboardViewAction()*/);
+		actions.add(new ManageTableLayoutAction());
+		actions.add(new ShowOnlineTicketManagementAction());
+
+		List<FloreantPlugin> plugins = ExtensionManager.getPlugins();
+		if (plugins != null) {
+			for (FloreantPlugin plugin : plugins) {
+				List<PosAction> posActions = plugin.getPosActions();
+				if (posActions != null) {
+					actions.addAll(plugin.getPosActions());
+				}
+			}
+		}
 
 		Dimension size = PosUIManager.getSize(150, 150);
 		for (PosAction action : actions) {
@@ -82,7 +106,7 @@ public class SwitchboardOtherFunctionsView extends ViewPanel {
 		}
 
 		JScrollPane scrollPane = new JScrollPane(contentPanel);
-		scrollPane.setBorder(null); 
+		scrollPane.setBorder(null);
 		add(scrollPane);
 	}
 

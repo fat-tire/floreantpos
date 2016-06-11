@@ -24,6 +24,7 @@ import javax.swing.JMenu;
 import javax.swing.JOptionPane;
 
 import com.floreantpos.Messages;
+import com.floreantpos.actions.PosAction;
 import com.floreantpos.config.ui.ConfigurationDialog;
 import com.floreantpos.customer.CustomerSelector;
 import com.floreantpos.extension.OrderServiceExtension;
@@ -181,6 +182,11 @@ public class DefaultOrderServiceExtension implements OrderServiceExtension {
 
 	@Override
 	public IView getDriverView() {
+		return null;
+	}
+
+	@Override
+	public List<PosAction> getPosActions() {
 		return null;
 	}
 

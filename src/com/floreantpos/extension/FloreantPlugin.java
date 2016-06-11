@@ -17,9 +17,12 @@
  */
 package com.floreantpos.extension;
 
-import com.floreantpos.config.ui.ConfigurationDialog;
+import java.util.List;
 
 import net.xeoh.plugins.base.Plugin;
+
+import com.floreantpos.actions.PosAction;
+import com.floreantpos.config.ui.ConfigurationDialog;
 
 public interface FloreantPlugin extends Plugin {
 	String getId();
@@ -27,4 +30,5 @@ public interface FloreantPlugin extends Plugin {
 	void init();
 	void initBackoffice();
 	void initConfigurationView(ConfigurationDialog dialog);
+	List<PosAction> getPosActions(); 
 }

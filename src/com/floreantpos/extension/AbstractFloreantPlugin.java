@@ -17,6 +17,9 @@
  */
 package com.floreantpos.extension;
 
+import java.util.List;
+
+import com.floreantpos.actions.PosAction;
 import com.floreantpos.config.ui.ConfigurationDialog;
 
 
@@ -49,6 +52,12 @@ public class AbstractFloreantPlugin implements FloreantPlugin {
 	@Override
 	public void initConfigurationView(ConfigurationDialog dialog) {
 		
+	}
+
+
+	@Override
+	public List<PosAction> getPosActions() {
+		return null;
 	}
 
 }
