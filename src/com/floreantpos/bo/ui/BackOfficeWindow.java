@@ -45,6 +45,7 @@ import com.floreantpos.bo.actions.ConfigureRestaurantAction;
 import com.floreantpos.bo.actions.CookingInstructionExplorerAction;
 import com.floreantpos.bo.actions.CouponExplorerAction;
 import com.floreantpos.bo.actions.CreditCardReportAction;
+import com.floreantpos.bo.actions.CurrencyExplorerAction;
 import com.floreantpos.bo.actions.DataExportAction;
 import com.floreantpos.bo.actions.DataImportAction;
 import com.floreantpos.bo.actions.DrawerPullReportExplorerAction;
@@ -231,6 +232,7 @@ public class BackOfficeWindow extends javax.swing.JFrame {
 	private void createAdminMenu(JMenuBar menuBar) {
 		JMenu adminMenu = new JMenu(com.floreantpos.POSConstants.ADMIN);
 		adminMenu.add(new ConfigureRestaurantAction());
+		adminMenu.add(new CurrencyExplorerAction());
 		adminMenu.add(new UserExplorerAction());
 		adminMenu.add(new UserTypeExplorerAction());
 		adminMenu.add(new ViewGratuitiesAction());

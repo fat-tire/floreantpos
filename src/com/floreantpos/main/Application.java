@@ -52,6 +52,7 @@ import com.floreantpos.extension.ExtensionManager;
 import com.floreantpos.extension.FloreantPlugin;
 import com.floreantpos.extension.InginicoPlugin;
 import com.floreantpos.extension.PaymentGatewayPlugin;
+import com.floreantpos.model.Currency;
 import com.floreantpos.model.DeliveryConfiguration;
 import com.floreantpos.model.OrderType;
 import com.floreantpos.model.PosPrinters;
@@ -60,6 +61,7 @@ import com.floreantpos.model.Restaurant;
 import com.floreantpos.model.Shift;
 import com.floreantpos.model.Terminal;
 import com.floreantpos.model.User;
+import com.floreantpos.model.dao.CurrencyDAO;
 import com.floreantpos.model.dao.DeliveryConfigurationDAO;
 import com.floreantpos.model.dao.OrderTypeDAO;
 import com.floreantpos.model.dao.PrinterConfigurationDAO;
@@ -95,6 +97,8 @@ public class Application {
 	private Restaurant restaurant;
 	private PosPrinters printers;
 	private static String lengthUnit;
+	private static Currency mainCurrency;
+	private static List<Currency> auxiliaryCurrencyList;
 
 	private static Application instance;
 
@@ -167,6 +171,7 @@ public class Application {
 			initOrderTypes();
 			initPrintConfig();
 			refreshRestaurant();
+			loadCurrency(); 
 			loadPrinters();
 			initPlugins();
 			LoginView.getInstance().initializeOrderButtonPanel();
@@ -291,20 +296,46 @@ public class Application {
 		}
 	}
 
-	public static String getCurrencyName() {
-		Application application = getInstance();
-		if (application.restaurant == null) {
-			application.refreshRestaurant();
+	public static Currency getMainCurrency() {
+		return mainCurrency;
+	}
+
+	public static List<Currency> getAuxiliaryCurrencyList() {
+		return auxiliaryCurrencyList;
+	}
+
+	private void loadCurrency() {
+		List<Currency> currencyList = CurrencyDAO.getInstance().findAll();
+		if (currencyList != null) {
+			for (Currency currency : currencyList) {
+				if (currency.isMain()) {
+					mainCurrency = currency;
+				}
+			}
+			auxiliaryCurrencyList = currencyList;
 		}
-		return application.restaurant.getCurrencyName();
+	}
+
+	public static String getCurrencyName() {
+		String currencyName = null;
+		if (mainCurrency != null) {
+			currencyName = mainCurrency.getName();
+		}
+		else {
+			currencyName = "Sample Currency"; //$NON-NLS-1$
+		}
+		return currencyName;
 	}
 
 	public static String getCurrencySymbol() {
-		Application application = getInstance();
-		if (application.restaurant == null) {
-			application.refreshRestaurant();
+		String currencySymbol = null;
+		if (mainCurrency != null) {
+			currencySymbol = mainCurrency.getSymbol();
 		}
-		return application.restaurant.getCurrencySymbol();
+		else {
+			currencySymbol = "$"; //$NON-NLS-1$
+		}
+		return currencySymbol;
 	}
 
 	public List<OrderType> getOrderTypes() {
