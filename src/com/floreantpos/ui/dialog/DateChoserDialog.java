@@ -6,71 +6,96 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 import java.util.Vector;
 
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
-
-import com.floreantpos.model.AttendenceHistory;
-import com.floreantpos.swing.PosButton;
-import com.floreantpos.ui.util.UiUtil;
+import javax.swing.border.TitledBorder;
 
 import net.miginfocom.swing.MigLayout;
+
+import com.floreantpos.main.Application;
+import com.floreantpos.model.AttendenceHistory;
+import com.floreantpos.model.Shift;
+import com.floreantpos.model.User;
+import com.floreantpos.model.dao.UserDAO;
+import com.floreantpos.swing.ComboBoxModel;
+import com.floreantpos.swing.IntegerTextField;
+import com.floreantpos.swing.PosButton;
+import com.floreantpos.ui.util.UiUtil;
+import com.floreantpos.util.POSUtil;
+import com.floreantpos.util.ShiftUtil;
 
 public class DateChoserDialog extends POSDialog {
 	private org.jdesktop.swingx.JXDatePicker tbStartDate;
 	private org.jdesktop.swingx.JXDatePicker tbEndDate;
-	private JComboBox cStartHour;
-	private JComboBox cStartMin;
-	private JRadioButton cbStartAm;
-	private JRadioButton cbStartPm;
-	private JComboBox cEndHour;
-	private JComboBox cEndMin;
-	private JRadioButton cEndAm;
-	private JRadioButton cbEndPm;
+	private IntegerTextField tfStartHour;
+	private IntegerTextField tfStartMin;
+	private JRadioButton rbStartAm;
+	private JRadioButton rbStartPm;
+	private IntegerTextField tfEndHour;
+	private IntegerTextField tfEndMin;
+	private JRadioButton rbEndAm;
+	private JRadioButton rbEndPm;
 	private ButtonGroup btnGroupStartAmPm;
 	private ButtonGroup btnGroupEndAmPm;
 	private PosButton btnOk;
 	private PosButton btnCancel;
 	private AttendenceHistory attendenceHistory;
-	
-	private Calendar clockInCalendar;
-	
-	private Calendar clockOutCalendar;
+	private JComboBox cbEmployees;
+
+	private JCheckBox chkClockOut;
+
+	public DateChoserDialog(String title) {
+		super(POSUtil.getBackOfficeWindow(), title);
+		attendenceHistory = new AttendenceHistory();
+		initUi();
+	}
 
 	public DateChoserDialog(AttendenceHistory history, String title) {
-		super(null, title);
+		super(POSUtil.getBackOfficeWindow(), title);
 		this.attendenceHistory = history;
 		initUi();
-
 	}
 
 	private void initUi() {
+		setIconImage(Application.getApplicationIcon().getImage());
 		setResizable(false);
 		JPanel mainPanel = new JPanel(new BorderLayout());
 
 		mainPanel.setBackground(Color.red);
 
+		List<User> employees = UserDAO.getInstance().findAll();
+		cbEmployees = new JComboBox<User>(new ComboBoxModel(employees));
+
+		JPanel topPanel = new JPanel(new MigLayout());
+		topPanel.add(new JLabel("Select employee:"));
+		topPanel.add(cbEmployees);
+		mainPanel.add(topPanel, BorderLayout.NORTH);
+
 		JPanel panel = new JPanel(new MigLayout("wrap 2", " [][][][][][][][][]", "[][]"));
-		//panel.setPreferredSize(new Dimension(0,100));
+		panel.setBorder(new TitledBorder("-"));
 
 		btnGroupStartAmPm = new ButtonGroup();
-		cbStartAm = new JRadioButton("AM"); //$NON-NLS-1$
-		cbStartPm = new JRadioButton("PM"); //$NON-NLS-1$
-		btnGroupStartAmPm.add(cbStartAm);
-		btnGroupStartAmPm.add(cbStartPm);
-		cbStartPm.setSelected(true);
+		rbStartAm = new JRadioButton("AM"); //$NON-NLS-1$
+		rbStartPm = new JRadioButton("PM"); //$NON-NLS-1$
+		btnGroupStartAmPm.add(rbStartAm);
+		btnGroupStartAmPm.add(rbStartPm);
+		rbStartPm.setSelected(true);
 
 		btnGroupEndAmPm = new ButtonGroup();
-		cEndAm = new JRadioButton("AM"); //$NON-NLS-1$
-		cbEndPm = new JRadioButton("PM"); //$NON-NLS-1$
-		btnGroupEndAmPm.add(cEndAm);
-		btnGroupEndAmPm.add(cbEndPm);
-		cbEndPm.setSelected(true);
+		rbEndAm = new JRadioButton("AM"); //$NON-NLS-1$
+		rbEndPm = new JRadioButton("PM"); //$NON-NLS-1$
+		btnGroupEndAmPm.add(rbEndAm);
+		btnGroupEndAmPm.add(rbEndPm);
+		rbEndPm.setSelected(true);
 
 		tbStartDate = UiUtil.getCurrentMonthStart();
 
@@ -95,47 +120,56 @@ public class DateChoserDialog extends POSDialog {
 		etMinModel.addElement(30);
 		etMinModel.addElement(45);
 
-		cStartHour = new JComboBox(new DefaultComboBoxModel(hours));
-		cStartMin = new JComboBox(stMinModel);
-		cEndHour = new JComboBox(new DefaultComboBoxModel(hours));
-		cEndHour.setSelectedIndex(1);
-		cEndMin = new JComboBox(etMinModel);
+		tfStartHour = new IntegerTextField();
+		tfStartMin = new IntegerTextField();
+		tfEndHour = new IntegerTextField();
+		tfEndMin = new IntegerTextField();
 
-		cStartHour.addActionListener(new ActionListener() {
+		tfStartHour.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				Integer selectedItem = (Integer) cStartHour.getSelectedItem();
+				Integer selectedItem = (Integer) tfStartHour.getInteger();
 				if (selectedItem == 12) {
 					selectedItem = 1;
 				}
 				else {
 					selectedItem = selectedItem + 1;
 				}
-				cEndHour.setSelectedItem(selectedItem);
+				tfEndHour.setText(String.valueOf(selectedItem));
 			}
 		});
 
-		panel.add(new JLabel("Clock In: "), "cell 0 0"); //$NON-NLS-1$
+		chkClockOut = new JCheckBox("Clock Out: ");
+		chkClockOut.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				enabledItemsForClockOut();
+			}
+		});
+
+		JLabel lblClockIn = new JLabel("Clock In: ");
+		panel.add(lblClockIn, "cell 0 0,right"); //$NON-NLS-1$
 		panel.add(new JLabel("Date"), "cell 1 0"); //$NON-NLS-1$
 		panel.add(tbStartDate, "cell 2 0");
 		panel.add(new JLabel("Hour"), "cell 3 0"); //$NON-NLS-1$
-		panel.add(cStartHour, "cell 4 0");
+		panel.add(tfStartHour, "w 40!,cell 4 0");
 		panel.add(new JLabel("Min"), "cell 5 0");
-		panel.add(cStartMin, "cell 6 0");
-		panel.add(cbStartAm, "cell 7 0");
-		panel.add(cbStartPm, "cell 8 0");
+		panel.add(tfStartMin, "w 40!,cell 6 0");
+		panel.add(rbStartAm, "cell 7 0");
+		panel.add(rbStartPm, "cell 8 0");
 
-		panel.add(new JLabel("Clock Out: "), "cell 0 1"); //$NON-NLS-1$
+		panel.add(chkClockOut, "cell 0 1"); //$NON-NLS-1$
 		panel.add(new JLabel("Date"), "cell 1 1"); //$NON-NLS-1$
 		panel.add(tbEndDate, "cell 2 1");
 		panel.add(new JLabel("Hour"), "cell 3 1"); //$NON-NLS-1$
-		panel.add(cEndHour, "cell 4 1");
+		panel.add(tfEndHour, "w 40!,cell 4 1");
 		panel.add(new JLabel("Min"), "cell 5 1");
-		panel.add(cEndMin, "cell 6 1");
-		panel.add(cEndAm, "cell 7 1");
-		panel.add(cbEndPm, "cell 8 1");
+		panel.add(tfEndMin, "w 40!,cell 6 1");
+		panel.add(rbEndAm, "cell 7 1");
+		panel.add(rbEndPm, "cell 8 1");
 
 		JPanel footerPanel = new JPanel(new MigLayout("al center center", "sg", ""));
 		btnOk = new PosButton("OK");
@@ -170,52 +204,71 @@ public class DateChoserDialog extends POSDialog {
 		mainPanel.add(panel, BorderLayout.CENTER);
 		mainPanel.add(footerPanel, BorderLayout.SOUTH);
 		getContentPane().add(mainPanel, BorderLayout.CENTER);
+
 		updateView();
+		enabledItemsForClockOut();
+	}
+
+	private void enabledItemsForClockOut() {
+		boolean selected = chkClockOut.isSelected();
+		tbEndDate.setEnabled(selected);
+		tfEndHour.setEnabled(selected);
+		tfEndMin.setEnabled(selected);
 	}
 
 	private void updateView() {
 
-		if (attendenceHistory.getClockInTime() != null) {
-			Calendar startCalendar = Calendar.getInstance();
-			startCalendar.setTime(attendenceHistory.getClockInTime());
+		Calendar startCalendar = Calendar.getInstance();
+		Calendar endCalendar = Calendar.getInstance();
 
-			tbStartDate.setDate(startCalendar.getTime());
+		if (attendenceHistory.getId() == null) {
+			startCalendar.setTime(new Date());
+			endCalendar.setTime(new Date());
+		}
+		else {
+			if (attendenceHistory.getClockInTime() != null) {
+				startCalendar.setTime(attendenceHistory.getClockInTime());
 
-			Integer hour = (Integer) startCalendar.get(Calendar.HOUR);
-			if (hour.equals(0)) {
-				hour = 12;
-
+				if (attendenceHistory.getClockOutTime() != null) {
+					endCalendar.setTime(attendenceHistory.getClockOutTime());
+				}
 			}
-			cStartHour.setSelectedItem(hour);
-			cStartMin.setSelectedItem(startCalendar.get(Calendar.MINUTE));
+			cbEmployees.setSelectedItem(attendenceHistory.getUser());
+			chkClockOut.setSelected(attendenceHistory.isClockedOut());
+		}
 
-			if (startCalendar.get(Calendar.AM_PM) == 0) {
-				cbStartAm.setSelected(true);
-			}
-			else {
-				cbStartPm.setSelected(true);
-			}
+		tbStartDate.setDate(startCalendar.getTime());
+
+		Integer hour = (Integer) startCalendar.get(Calendar.HOUR);
+		if (hour.equals(0)) {
+			hour = 12;
 
 		}
-		if (attendenceHistory.getClockOutTime() != null) {
-			Calendar endCalendar = Calendar.getInstance();
-			endCalendar.setTime(attendenceHistory.getClockOutTime());
-			tbEndDate.setDate(endCalendar.getTime());
+		tfStartHour.setText(String.valueOf(hour));
+		tfStartMin.setText(String.valueOf(startCalendar.get(Calendar.MINUTE)));
 
-			Integer hour = (Integer) endCalendar.get(Calendar.HOUR);
-			if (hour.equals(0)) {
-				hour = 12;
+		if (startCalendar.get(Calendar.AM_PM) == 0) {
+			rbStartAm.setSelected(true);
+		}
+		else {
+			rbStartPm.setSelected(true);
+		}
 
-			}
-			cEndHour.setSelectedItem(hour);
-			cEndMin.setSelectedItem(endCalendar.get(Calendar.MINUTE));
+		tbEndDate.setDate(endCalendar.getTime());
 
-			if (endCalendar.get(Calendar.AM_PM) == 0) {
-				cEndAm.setSelected(true);
-			}
-			else {
-				cbEndPm.setSelected(true);
-			}
+		Integer endHour = (Integer) endCalendar.get(Calendar.HOUR);
+		if (endHour.equals(0)) {
+			endHour = 12;
+
+		}
+		tfEndHour.setText(String.valueOf(endHour));
+		tfEndMin.setText(String.valueOf(endCalendar.get(Calendar.MINUTE)));
+
+		if (endCalendar.get(Calendar.AM_PM) == 0) {
+			rbEndAm.setSelected(true);
+		}
+		else {
+			rbEndPm.setSelected(true);
 		}
 
 	}
@@ -229,13 +282,29 @@ public class DateChoserDialog extends POSDialog {
 		System.out.println(clockOutTime.getTime().getTime());
 
 		if (clockInTime.getTime().getTime() > clockOutTime.getTime().getTime()) {
-			POSMessageDialog.showMessage("Clock in can not be greater than clock out");
+			POSMessageDialog.showMessage(POSUtil.getBackOfficeWindow(), "Clock in can not be greater than clock out");
 			return false;
 		}
 
-		setClockInCalendar(clockInTime);
-		setClockOutCalendar(clockOutTime);
-		
+		attendenceHistory.setClockInTime(clockInTime.getTime());
+		attendenceHistory.setClockInHour(Short.valueOf((short) clockInTime.get(Calendar.HOUR_OF_DAY)));
+
+		if (!chkClockOut.isSelected()) {
+			attendenceHistory.setClockOutTime(null);
+			attendenceHistory.setClockOutHour(null);
+		}
+		else {
+			attendenceHistory.setClockOutTime(clockOutTime.getTime());
+			attendenceHistory.setClockOutHour(Short.valueOf((short) clockOutTime.get(Calendar.HOUR_OF_DAY)));
+		}
+		User employee = (User) cbEmployees.getSelectedItem();
+		Shift currentShift = ShiftUtil.getCurrentShift();
+
+		attendenceHistory.setClockedOut(chkClockOut.isSelected());
+		attendenceHistory.setUser(employee);
+		attendenceHistory.setTerminal(Application.getInstance().getTerminal());
+		attendenceHistory.setShift(currentShift);
+
 		return true;
 	}
 
@@ -247,18 +316,18 @@ public class DateChoserDialog extends POSDialog {
 		Calendar clStartDate = Calendar.getInstance();
 		clStartDate.setTime(tbStartDate.getDate());
 
-		Integer hour = (Integer) cStartHour.getSelectedItem();
+		Integer hour = (Integer) tfStartHour.getInteger();
 		if (hour == 12) {
 			hour = 0;
 		}
 
 		clStartDate.set(Calendar.HOUR, hour);
-		clStartDate.set(Calendar.MINUTE, (Integer) cStartMin.getSelectedItem());
+		clStartDate.set(Calendar.MINUTE, (Integer) tfStartMin.getInteger());
 
-		if (cbStartAm.isSelected()) {
+		if (rbStartAm.isSelected()) {
 			clStartDate.set(Calendar.AM_PM, Calendar.AM);
 		}
-		else if (cbStartPm.isSelected()) {
+		else if (rbStartPm.isSelected()) {
 			clStartDate.set(Calendar.AM_PM, Calendar.PM);
 		}
 
@@ -273,18 +342,18 @@ public class DateChoserDialog extends POSDialog {
 		Calendar clEndDate = Calendar.getInstance();
 		clEndDate.setTime(tbEndDate.getDate());
 
-		Integer hour = (Integer) cEndHour.getSelectedItem();
+		Integer hour = (Integer) tfEndHour.getInteger();
 		if (hour == 12) {
 			hour = 0;
 		}
 
 		clEndDate.set(Calendar.HOUR, hour);
-		clEndDate.set(Calendar.MINUTE, (Integer) cEndMin.getSelectedItem());
+		clEndDate.set(Calendar.MINUTE, (Integer) tfEndMin.getInteger());
 
-		if (cEndAm.isSelected()) {
+		if (rbEndAm.isSelected()) {
 			clEndDate.set(Calendar.AM_PM, Calendar.AM);
 		}
-		else if (cbEndPm.isSelected()) {
+		else if (rbEndPm.isSelected()) {
 			clEndDate.set(Calendar.AM_PM, Calendar.PM);
 		}
 
@@ -293,33 +362,5 @@ public class DateChoserDialog extends POSDialog {
 
 	public AttendenceHistory getAttendenceHistory() {
 		return attendenceHistory;
-	}
-
-	/**
-	 * @return the clockInCalendar
-	 */
-	public Calendar getClockInCalendar() {
-		return clockInCalendar;
-	}
-
-	/**
-	 * @param clockInCalendar the clockInCalendar to set
-	 */
-	public void setClockInCalendar(Calendar clockInCalendar) {
-		this.clockInCalendar = clockInCalendar;
-	}
-
-	/**
-	 * @return the clockOutCalendar
-	 */
-	public Calendar getClockOutCalendar() {
-		return clockOutCalendar;
-	}
-
-	/**
-	 * @param clockOutCalendar the clockOutCalendar to set
-	 */
-	public void setClockOutCalendar(Calendar clockOutCalendar) {
-		this.clockOutCalendar = clockOutCalendar;
 	}
 }

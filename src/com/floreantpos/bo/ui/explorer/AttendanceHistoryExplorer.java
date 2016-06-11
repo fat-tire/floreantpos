@@ -31,6 +31,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
@@ -54,11 +55,13 @@ import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.util.UiUtil;
 
 public class AttendanceHistoryExplorer extends TransparentPanel {
-	private SimpleDateFormat dateFormat = new SimpleDateFormat("MMMdd  HH:mm"); //$NON-NLS-1$
+	private SimpleDateFormat dateFormat = new SimpleDateFormat("MMM,dd  hh:mm a"); //$NON-NLS-1$
 	private JXDatePicker fromDatePicker = UiUtil.getCurrentMonthStart();
 	private JXDatePicker toDatePicker = UiUtil.getCurrentMonthEnd();
 	private JButton btnGo = new JButton(com.floreantpos.POSConstants.GO);
+	private JButton btnAdd = new JButton("Add");
 	private JButton btnEdit = new JButton("Edit");
+	private JButton btnDelete = new JButton("Delete");
 	private JButton btnPrint = new JButton("Print");
 	private JXTable table;
 	private JComboBox cbUserType;
@@ -91,7 +94,9 @@ public class AttendanceHistoryExplorer extends TransparentPanel {
 		add(topPanel, BorderLayout.NORTH);
 
 		JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+		bottomPanel.add(btnAdd);
 		bottomPanel.add(btnEdit);
+		bottomPanel.add(btnDelete);
 		//bottomPanel.add(btnPrint);
 		add(bottomPanel, BorderLayout.SOUTH);
 
@@ -148,19 +153,61 @@ public class AttendanceHistoryExplorer extends TransparentPanel {
 					history = dialog.getAttendenceHistory();
 				}
 
-				Calendar clockInTime = dialog.getClockInCalendar();
-				Calendar clockOutTime = dialog.getClockOutCalendar();
-
-				history.setClockInTime(clockInTime.getTime());
-				history.setClockInHour(Short.valueOf((short) clockInTime.get(Calendar.HOUR_OF_DAY)));
-
-				history.setClockOutTime(clockOutTime.getTime());
-				history.setClockOutHour(Short.valueOf((short) clockOutTime.get(Calendar.HOUR_OF_DAY)));
-
 				AttendenceHistoryDAO dao = new AttendenceHistoryDAO();
 				dao.saveOrUpdate(history);
 				model.updateItem(selectedRow);
 			}
+		});
+
+		btnAdd.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				DateChoserDialog dialog = new DateChoserDialog("Add clock in/out time");
+				dialog.pack();
+				dialog.open();
+
+				if (dialog.isCanceled()) {
+					return;
+				}
+
+				AttendenceHistory history = null;
+				if (dialog.getAttendenceHistory() != null) {
+					history = dialog.getAttendenceHistory();
+				}
+
+				AttendenceHistoryDAO dao = new AttendenceHistoryDAO();
+				dao.saveOrUpdate(history);
+				AttendenceHistoryTableModel model = (AttendenceHistoryTableModel) table.getModel();
+				model.addItem(history);
+			}
+		});
+
+		btnDelete.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					int index = table.getSelectedRow();
+					if (index < 0)
+						return;
+
+					index = table.convertRowIndexToModel(index);
+
+					AttendenceHistoryTableModel model = (AttendenceHistoryTableModel) table.getModel();
+					AttendenceHistory history = (AttendenceHistory) model.getRowData(index);
+
+					if (POSMessageDialog.showYesNoQuestionDialog(AttendanceHistoryExplorer.this, POSConstants.CONFIRM_DELETE, POSConstants.DELETE) != JOptionPane.YES_OPTION) {
+						return;
+					}
+
+					AttendenceHistoryDAO dao = new AttendenceHistoryDAO();
+					dao.delete(history);
+
+					model.deleteItem(index);
+				} catch (Exception x) {
+					BOMessageDialog.showError(POSConstants.ERROR_MESSAGE, x);
+				}
+			}
+
 		});
 	}
 
@@ -214,7 +261,7 @@ public class AttendanceHistoryExplorer extends TransparentPanel {
 	}
 
 	class AttendenceHistoryTableModel extends ListTableModel {
-		String[] columnNames = { "CLOCK IN TIME", "CLOCK OUT TIME", "CLOCKED OUT", "EMP ID", "EMP NAME", "SHIFT ID", "TERMINAL ID" };/* "CLOCK IN HOUR", "CLOCK OUT HOUR", */
+		String[] columnNames = { "EMP ID", "EMP NAME", "CLOCK IN TIME", "CLOCK OUT TIME", "CLOCKED OUT", "SHIFT ID", "TERMINAL ID" };/* "CLOCK IN HOUR", "CLOCK OUT HOUR", */
 
 		AttendenceHistoryTableModel(List<AttendenceHistory> list) {
 			setRows(list);
@@ -226,10 +273,13 @@ public class AttendanceHistoryExplorer extends TransparentPanel {
 
 			switch (columnIndex) {
 
-			/*	case 0:
-				//	return history.getId().toString();
-			*/
 				case 0:
+					return history.getUser().getUserId();
+
+				case 1:
+					return history.getUser().getFirstName() + " " + history.getUser().getLastName();
+
+				case 2:
 
 					Date date = history.getClockInTime();
 					if (date != null) {
@@ -237,7 +287,7 @@ public class AttendanceHistoryExplorer extends TransparentPanel {
 					}
 					return "";
 
-				case 1:
+				case 3:
 
 					Date date2 = history.getClockOutTime();
 					if (date2 != null) {
@@ -245,24 +295,15 @@ public class AttendanceHistoryExplorer extends TransparentPanel {
 					}
 					return "";
 
-					/*	case 3:
-						//	return history.getClockInHour();
-
-						case 4:
-						//	return history.getClockOutHour();
-					*/
-				case 2:
+				case 4:
 					return history.isClockedOut();
 
-				case 3:
-					return history.getUser().getAutoId();
-					
-				case 4:
-					return history.getUser().getFirstName() + " " + history.getUser().getLastName();
-					
 				case 5:
+					if (history.getShift() == null) {
+						return "";
+					}
 					return history.getShift().getId();
-					
+
 				case 6:
 					return history.getTerminal().getId();
 			}
