@@ -237,7 +237,7 @@ public class OrderController implements OrderListener, CategorySelectionListener
 	}
 
 	public synchronized static void closeOrder(Ticket ticket) {
-		if (ticket.getOrderType().isCloseOnPaid()) {
+		if (ticket.getOrderType().isCloseOnPaid() || ticket.isPaid()) {
 			ticket.setClosed(true);
 			ticket.setClosingDate(new Date());
 		}

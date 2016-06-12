@@ -51,6 +51,7 @@ import com.floreantpos.model.CashDropTransaction;
 import com.floreantpos.model.Terminal;
 import com.floreantpos.model.dao.CashDropTransactionDAO;
 import com.floreantpos.swing.PosUIManager;
+import com.floreantpos.util.CurrencyUtil;
 import com.floreantpos.util.NumberUtil;
 
 /**
@@ -70,7 +71,7 @@ public class CashDropDialog extends POSDialog {
 		initComponents();
 
 		terminal = Application.getInstance().getTerminal();
-		currencySymbol = Application.getCurrencySymbol();
+		currencySymbol = CurrencyUtil.getCurrencySymbol();
 
 		lblActiveCashDrop.setText(""); //$NON-NLS-1$
 		TitledBorder titledBorder = new TitledBorder(Messages.getString("CashDropDialog.1") + terminal.getName()); //$NON-NLS-1$

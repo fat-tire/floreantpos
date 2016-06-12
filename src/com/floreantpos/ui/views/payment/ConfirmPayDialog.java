@@ -28,10 +28,10 @@ import javax.swing.JSeparator;
 import javax.swing.border.EmptyBorder;
 
 import com.floreantpos.Messages;
-import com.floreantpos.main.Application;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.ui.TitlePanel;
 import com.floreantpos.ui.dialog.POSDialog;
+import com.floreantpos.util.CurrencyUtil;
 
 public class ConfirmPayDialog extends POSDialog {
 	private JLabel lblInfo;
@@ -88,7 +88,7 @@ public class ConfirmPayDialog extends POSDialog {
 	}
 	
 	public void setAmount(double amount) {
-		lblInfo.setText("<html>You are going to process <b>" + Application.getCurrencySymbol() + amount
+		lblInfo.setText("<html>You are going to process <b>" + CurrencyUtil.getCurrencySymbol() + amount
 							+ "</b>.<br/><br/>If you are sure press <b>CONFIRM</b>, otherwise press <b>CANCEL</b>.<br/><br/></html>");
 	}
 }

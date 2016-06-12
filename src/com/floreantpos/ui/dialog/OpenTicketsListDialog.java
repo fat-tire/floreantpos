@@ -50,6 +50,7 @@ import com.floreantpos.model.User;
 import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.ui.views.order.CashierModeNextActionDialog;
 import com.floreantpos.ui.views.order.OrderView;
+import com.floreantpos.util.CurrencyUtil;
 import com.floreantpos.util.NumberUtil;
 
 /**
@@ -389,7 +390,7 @@ public class OpenTicketsListDialog extends POSDialog {
 	class TicketTableCellRenderer extends DefaultTableCellRenderer {
 		Font font = getFont().deriveFont(Font.BOLD, 12);
 		SimpleDateFormat dateFormat = new SimpleDateFormat("MMM-dd-yy hh:mm a"); //$NON-NLS-1$
-		String currencySymbol = Application.getCurrencySymbol();
+		String currencySymbol = CurrencyUtil.getCurrencySymbol();
 
 		@Override
 		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {

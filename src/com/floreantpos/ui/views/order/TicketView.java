@@ -66,6 +66,7 @@ import com.floreantpos.ui.dialog.ItemSearchDialog;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.views.CashierSwitchBoardView;
 import com.floreantpos.ui.views.order.actions.OrderListener;
+import com.floreantpos.util.CurrencyUtil;
 import com.floreantpos.util.DrawerUtil;
 import com.floreantpos.util.NumberUtil;
 import com.floreantpos.util.POSUtil;
@@ -540,7 +541,7 @@ public class TicketView extends JPanel {
 
 	public void updateView() {
 		if (ticket == null) {
-			btnTotal.setText(POSConstants.TOTAL.toUpperCase() + " " + Application.getCurrencySymbol() + "0.00");
+			btnTotal.setText(POSConstants.TOTAL.toUpperCase() + " " + CurrencyUtil.getCurrencySymbol() + "0.00");
 			titledBorder.setTitle(ticket.getTicketType().toString() + "[New Ticket]"); //$NON-NLS-1$
 			return;
 		}
@@ -555,7 +556,7 @@ public class TicketView extends JPanel {
 			}
 		}
 
-		btnTotal.setText(POSConstants.TOTAL.toUpperCase() + " " + Application.getCurrencySymbol() + NumberUtil.formatNumber(ticket.getTotalAmount()));
+		btnTotal.setText(POSConstants.TOTAL.toUpperCase() + " " + CurrencyUtil.getCurrencySymbol() + NumberUtil.formatNumber(ticket.getTotalAmount()));
 
 		/*if (ticket.getTotalAmount() > 0) {
 			//btnTotal.setText("<html><h2>Total " + Application.getCurrencySymbol() + NumberUtil.formatNumber(ticket.getTotalAmount()) + "</h2></html>");
@@ -673,7 +674,7 @@ public class TicketView extends JPanel {
 
 		String line = String.format("%-1s %-12s %4s", quantity, ticketItems, itemPrice);
 
-		String total = "TOTAL" + Application.getCurrencySymbol();
+		String total = "TOTAL" + CurrencyUtil.getCurrencySymbol();
 		String line2 = String.format("%-6s %13s", total, totalPrice);
 
 		return line + line2;

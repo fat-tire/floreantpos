@@ -52,7 +52,6 @@ import com.floreantpos.extension.ExtensionManager;
 import com.floreantpos.extension.FloreantPlugin;
 import com.floreantpos.extension.InginicoPlugin;
 import com.floreantpos.extension.PaymentGatewayPlugin;
-import com.floreantpos.model.Currency;
 import com.floreantpos.model.DeliveryConfiguration;
 import com.floreantpos.model.OrderType;
 import com.floreantpos.model.PosPrinters;
@@ -61,7 +60,6 @@ import com.floreantpos.model.Restaurant;
 import com.floreantpos.model.Shift;
 import com.floreantpos.model.Terminal;
 import com.floreantpos.model.User;
-import com.floreantpos.model.dao.CurrencyDAO;
 import com.floreantpos.model.dao.DeliveryConfigurationDAO;
 import com.floreantpos.model.dao.OrderTypeDAO;
 import com.floreantpos.model.dao.PrinterConfigurationDAO;
@@ -74,6 +72,7 @@ import com.floreantpos.ui.dialog.PasswordEntryDialog;
 import com.floreantpos.ui.views.LoginView;
 import com.floreantpos.ui.views.order.OrderView;
 import com.floreantpos.ui.views.order.RootView;
+import com.floreantpos.util.CurrencyUtil;
 import com.floreantpos.util.DatabaseConnectionException;
 import com.floreantpos.util.DatabaseUtil;
 import com.floreantpos.util.POSUtil;
@@ -97,8 +96,6 @@ public class Application {
 	private Restaurant restaurant;
 	private PosPrinters printers;
 	private static String lengthUnit;
-	private static Currency mainCurrency;
-	private static List<Currency> auxiliaryCurrencyList;
 
 	private static Application instance;
 
@@ -171,7 +168,7 @@ public class Application {
 			initOrderTypes();
 			initPrintConfig();
 			refreshRestaurant();
-			loadCurrency(); 
+			loadCurrency();
 			loadPrinters();
 			initPlugins();
 			LoginView.getInstance().initializeOrderButtonPanel();
@@ -296,46 +293,8 @@ public class Application {
 		}
 	}
 
-	public static Currency getMainCurrency() {
-		return mainCurrency;
-	}
-
-	public static List<Currency> getAuxiliaryCurrencyList() {
-		return auxiliaryCurrencyList;
-	}
-
 	private void loadCurrency() {
-		List<Currency> currencyList = CurrencyDAO.getInstance().findAll();
-		if (currencyList != null) {
-			for (Currency currency : currencyList) {
-				if (currency.isMain()) {
-					mainCurrency = currency;
-				}
-			}
-			auxiliaryCurrencyList = currencyList;
-		}
-	}
-
-	public static String getCurrencyName() {
-		String currencyName = null;
-		if (mainCurrency != null) {
-			currencyName = mainCurrency.getName();
-		}
-		else {
-			currencyName = "Sample Currency"; //$NON-NLS-1$
-		}
-		return currencyName;
-	}
-
-	public static String getCurrencySymbol() {
-		String currencySymbol = null;
-		if (mainCurrency != null) {
-			currencySymbol = mainCurrency.getSymbol();
-		}
-		else {
-			currencySymbol = "$"; //$NON-NLS-1$
-		}
-		return currencySymbol;
+		CurrencyUtil.populateCurrency();
 	}
 
 	public List<OrderType> getOrderTypes() {

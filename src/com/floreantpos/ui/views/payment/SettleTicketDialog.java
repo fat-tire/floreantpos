@@ -80,6 +80,7 @@ import com.floreantpos.ui.dialog.TransactionCompletionDialog;
 import com.floreantpos.ui.ticket.TicketViewerTable;
 import com.floreantpos.ui.views.order.OrderController;
 import com.floreantpos.ui.views.order.OrderView;
+import com.floreantpos.util.CurrencyUtil;
 import com.floreantpos.util.DrawerUtil;
 import com.floreantpos.util.NumberUtil;
 import com.floreantpos.util.POSUtil;
@@ -278,7 +279,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 
 		JLabel lblSubtotal = new javax.swing.JLabel();
 		lblSubtotal.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-		lblSubtotal.setText(com.floreantpos.POSConstants.SUBTOTAL + ":" + " " + Application.getCurrencySymbol()); //$NON-NLS-1$ //$NON-NLS-2$
+		lblSubtotal.setText(com.floreantpos.POSConstants.SUBTOTAL + ":" + " " + CurrencyUtil.getCurrencySymbol()); //$NON-NLS-1$ //$NON-NLS-2$
 
 		tfSubtotal = new javax.swing.JTextField(10);
 		tfSubtotal.setHorizontalAlignment(SwingConstants.TRAILING);
@@ -286,7 +287,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 
 		JLabel lblDiscount = new javax.swing.JLabel();
 		lblDiscount.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-		lblDiscount.setText(Messages.getString("TicketView.9") + " " + Application.getCurrencySymbol()); //$NON-NLS-1$ //$NON-NLS-2$
+		lblDiscount.setText(Messages.getString("TicketView.9") + " " + CurrencyUtil.getCurrencySymbol()); //$NON-NLS-1$ //$NON-NLS-2$
 
 		tfDiscount = new javax.swing.JTextField(10);
 		//	tfDiscount.setFont(tfDiscount.getFont().deriveFont(Font.PLAIN, 16));
@@ -296,7 +297,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 
 		JLabel lblDeliveryCharge = new javax.swing.JLabel();
 		lblDeliveryCharge.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-		lblDeliveryCharge.setText("Delivery Charge:" + " " + Application.getCurrencySymbol()); //$NON-NLS-1$ //$NON-NLS-2$
+		lblDeliveryCharge.setText("Delivery Charge:" + " " + CurrencyUtil.getCurrencySymbol()); //$NON-NLS-1$ //$NON-NLS-2$
 
 		tfDeliveryCharge = new javax.swing.JTextField(10);
 		tfDeliveryCharge.setHorizontalAlignment(SwingConstants.TRAILING);
@@ -304,7 +305,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 
 		JLabel lblTax = new javax.swing.JLabel();
 		lblTax.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-		lblTax.setText(com.floreantpos.POSConstants.TAX + ":" + " " + Application.getCurrencySymbol()); //$NON-NLS-1$ //$NON-NLS-2$
+		lblTax.setText(com.floreantpos.POSConstants.TAX + ":" + " " + CurrencyUtil.getCurrencySymbol()); //$NON-NLS-1$ //$NON-NLS-2$
 
 		tfTax = new javax.swing.JTextField(10);
 		//	tfTax.setFont(tfTax.getFont().deriveFont(Font.PLAIN, 16));
@@ -313,7 +314,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 
 		JLabel lblGratuity = new javax.swing.JLabel();
 		lblGratuity.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-		lblGratuity.setText(Messages.getString("SettleTicketDialog.5") + ":" + " " + Application.getCurrencySymbol()); //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
+		lblGratuity.setText(Messages.getString("SettleTicketDialog.5") + ":" + " " + CurrencyUtil.getCurrencySymbol()); //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
 
 		tfGratuity = new javax.swing.JTextField(10);
 		tfGratuity.setEditable(false);
@@ -322,7 +323,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 		JLabel lblTotal = new javax.swing.JLabel();
 		lblTotal.setFont(lblTotal.getFont().deriveFont(Font.BOLD, PosUIManager.getFontSize(18)));
 		lblTotal.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-		lblTotal.setText(com.floreantpos.POSConstants.TOTAL + ":" + " " + Application.getCurrencySymbol()); //$NON-NLS-1$ //$NON-NLS-2$
+		lblTotal.setText(com.floreantpos.POSConstants.TOTAL + ":" + " " + CurrencyUtil.getCurrencySymbol()); //$NON-NLS-1$ //$NON-NLS-2$
 
 		tfTotal = new javax.swing.JTextField(10);
 		tfTotal.setFont(tfTotal.getFont().deriveFont(Font.BOLD, PosUIManager.getFontSize(18)));

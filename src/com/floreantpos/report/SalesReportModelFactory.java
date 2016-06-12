@@ -32,10 +32,10 @@ import net.sf.jasperreports.view.JasperViewer;
 
 import org.jdesktop.swingx.calendar.DateUtils;
 
-import com.floreantpos.main.Application;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.dao.TicketDAO;
+import com.floreantpos.util.CurrencyUtil;
 
 public class SalesReportModelFactory {
 	private Date startDate;
@@ -143,7 +143,7 @@ public class SalesReportModelFactory {
 		HashMap map = new HashMap();
 		map.put("itemDataSource", new  JRTableModelDataSource(itemReportModel)); //$NON-NLS-1$
 		map.put("modifierDataSource", new  JRTableModelDataSource(modifierReportModel)); //$NON-NLS-1$
-		map.put("currencySymbol", Application.getCurrencySymbol()); //$NON-NLS-1$
+		map.put("currencySymbol", CurrencyUtil.getCurrencySymbol()); //$NON-NLS-1$
 		map.put("itemGrandTotal", itemReportModel.getGrandTotalAsString()); //$NON-NLS-1$
 		map.put("modifierGrandTotal", modifierReportModel.getGrandTotalAsString()); //$NON-NLS-1$
 		map.put("itemReport", itemReport); //$NON-NLS-1$

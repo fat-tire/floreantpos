@@ -10,6 +10,7 @@ import com.floreantpos.services.PosTransactionService;
 import com.floreantpos.services.TicketService;
 import com.floreantpos.ui.dialog.NumberSelectionDialog2;
 import com.floreantpos.ui.dialog.POSMessageDialog;
+import com.floreantpos.util.CurrencyUtil;
 
 public class RefundAction extends PosAction {
 	private ITicketList ticketList;
@@ -44,7 +45,7 @@ public class RefundAction extends PosAction {
 			
 			Double paidAmount = ticket.getPaidAmount();
 			
-			String message = Application.getCurrencySymbol() + paidAmount + Messages.getString("RefundAction.4"); //$NON-NLS-1$
+			String message = CurrencyUtil.getCurrencySymbol() + paidAmount + Messages.getString("RefundAction.4"); //$NON-NLS-1$
 			
 			ticket = TicketDAO.getInstance().loadFullTicket(ticket.getId());
 			
@@ -69,7 +70,7 @@ public class RefundAction extends PosAction {
 
 			PosTransactionService.getInstance().refundTicket(ticket, refundAmount);
 			
-			POSMessageDialog.showMessage(Messages.getString("RefundAction.12") + Application.getCurrencySymbol() + refundAmount); //$NON-NLS-1$
+			POSMessageDialog.showMessage(Messages.getString("RefundAction.12") + CurrencyUtil.getCurrencySymbol() + refundAmount); //$NON-NLS-1$
 			
 			ticketList.updateTicketList();
 			

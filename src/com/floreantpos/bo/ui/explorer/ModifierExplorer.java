@@ -40,7 +40,6 @@ import net.miginfocom.swing.MigLayout;
 import com.floreantpos.Messages;
 import com.floreantpos.POSConstants;
 import com.floreantpos.bo.ui.BOMessageDialog;
-import com.floreantpos.main.Application;
 import com.floreantpos.model.MenuModifier;
 import com.floreantpos.model.MenuModifierGroup;
 import com.floreantpos.model.dao.MenuModifierGroupDAO;
@@ -50,6 +49,7 @@ import com.floreantpos.swing.TransparentPanel;
 import com.floreantpos.ui.dialog.BeanEditorDialog;
 import com.floreantpos.ui.dialog.ConfirmDeleteDialog;
 import com.floreantpos.ui.model.MenuModifierForm;
+import com.floreantpos.util.CurrencyUtil;
 
 public class ModifierExplorer extends TransparentPanel {
 
@@ -60,7 +60,7 @@ public class ModifierExplorer extends TransparentPanel {
 	public ModifierExplorer() {
 		setLayout(new BorderLayout(5, 5));
 		
-		currencySymbol = Application.getCurrencySymbol();
+		currencySymbol = CurrencyUtil.getCurrencySymbol();
 		tableModel = new ModifierExplorerModel();
 		table = new JTable(tableModel);
 

@@ -35,13 +35,13 @@ import net.sf.jasperreports.view.JRViewer;
 import org.jdesktop.swingx.calendar.DateUtils;
 
 import com.floreantpos.Messages;
-import com.floreantpos.main.Application;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.TicketItemModifier;
 import com.floreantpos.model.TicketItemModifierGroup;
 import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.report.service.ReportService;
+import com.floreantpos.util.CurrencyUtil;
 
 public class SalesReport extends Report {
 	private SalesReportModel itemReportModel;
@@ -66,7 +66,7 @@ public class SalesReport extends Report {
 		map.put("terminalName", getTerminal() == null ? com.floreantpos.POSConstants.ALL : getTerminal().getName()); //$NON-NLS-1$
 		map.put("itemDataSource", new JRTableModelDataSource(itemReportModel)); //$NON-NLS-1$
 		map.put("modifierDataSource", new JRTableModelDataSource(modifierReportModel)); //$NON-NLS-1$
-		map.put("currency", Messages.getString("SalesReport.8") + Application.getCurrencyName() + " (" + Application.getCurrencySymbol() + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ 
+		map.put("currency", Messages.getString("SalesReport.8") + CurrencyUtil.getCurrencyName() + " (" + CurrencyUtil.getCurrencySymbol() + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ 
 		map.put("itemTotalQuantity", itemReportModel.getTotalQuantityAsString()); //$NON-NLS-1$
 		map.put("itemNetTotal", itemReportModel.getNetTotalAsString()); //$NON-NLS-1$
 		map.put("itemDiscountTotal", itemReportModel.getDiscountTotalAsString()); //$NON-NLS-1$

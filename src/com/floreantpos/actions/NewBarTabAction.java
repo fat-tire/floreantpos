@@ -50,6 +50,7 @@ import com.floreantpos.ui.views.payment.CardProcessor;
 import com.floreantpos.ui.views.payment.ManualCardEntryDialog;
 import com.floreantpos.ui.views.payment.PaymentProcessWaitDialog;
 import com.floreantpos.ui.views.payment.SwipeCardDialog;
+import com.floreantpos.util.CurrencyUtil;
 
 public class NewBarTabAction extends AbstractAction implements CardInputListener {
 	private Component parentComponent;
@@ -75,7 +76,7 @@ public class NewBarTabAction extends AbstractAction implements CardInputListener
 
 		selectedPaymentType = paymentTypeSelectionDialog.getSelectedPaymentType();
 
-		String symbol = Application.getCurrencySymbol();
+		String symbol = CurrencyUtil.getCurrencySymbol();
 		String message = symbol + CardConfig.getBartabLimit() + Messages.getString("NewBarTabAction.3"); //$NON-NLS-1$
 
 		int option = POSMessageDialog.showYesNoQuestionDialog(parentComponent, message, Messages.getString("NewBarTabAction.4")); //$NON-NLS-1$

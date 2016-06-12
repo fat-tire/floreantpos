@@ -40,7 +40,6 @@ import org.apache.commons.lang.StringUtils;
 import com.floreantpos.IconFactory;
 import com.floreantpos.Messages;
 import com.floreantpos.POSConstants;
-import com.floreantpos.main.Application;
 import com.floreantpos.model.Gratuity;
 import com.floreantpos.model.PaymentType;
 import com.floreantpos.model.Ticket;
@@ -50,6 +49,7 @@ import com.floreantpos.swing.PosButton;
 import com.floreantpos.swing.PosUIManager;
 import com.floreantpos.swing.TransparentPanel;
 import com.floreantpos.ui.dialog.POSMessageDialog;
+import com.floreantpos.util.CurrencyUtil;
 import com.floreantpos.util.NumberUtil;
 
 public class PaymentView extends JPanel {
@@ -124,14 +124,14 @@ public class PaymentView extends JPanel {
 		Font font2 = new java.awt.Font("Arial", Font.PLAIN, PosUIManager.getFontSize(34)); // NOI18N //$NON-NLS-1$
 
 		labelTenderedAmount.setFont(font1);
-		labelTenderedAmount.setText(Messages.getString("PaymentView.54") + " " + Application.getCurrencySymbol()); //$NON-NLS-1$ //$NON-NLS-2$
+		labelTenderedAmount.setText(Messages.getString("PaymentView.54") + " " + CurrencyUtil.getCurrencySymbol()); //$NON-NLS-1$ //$NON-NLS-2$
 		labelTenderedAmount.setForeground(Color.gray);
 
 		txtTenderedAmount.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
 		txtTenderedAmount.setFont(font1);
 
 		labelDueAmount.setFont(font1);
-		labelDueAmount.setText(Messages.getString("PaymentView.52") + " " + Application.getCurrencySymbol()); //$NON-NLS-1$ //$NON-NLS-2$
+		labelDueAmount.setText(Messages.getString("PaymentView.52") + " " + CurrencyUtil.getCurrencySymbol()); //$NON-NLS-1$ //$NON-NLS-2$
 		labelDueAmount.setForeground(Color.gray);
 
 		txtDueAmount.setFont(font1);

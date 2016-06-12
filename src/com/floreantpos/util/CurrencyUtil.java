@@ -1,0 +1,70 @@
+/**
+ * ************************************************************************
+ * * The contents of this file are subject to the MRPL 1.2
+ * * (the  "License"),  being   the  Mozilla   Public  License
+ * * Version 1.1  with a permitted attribution clause; you may not  use this
+ * * file except in compliance with the License. You  may  obtain  a copy of
+ * * the License at http://www.floreantpos.org/license.html
+ * * Software distributed under the License  is  distributed  on  an "AS IS"
+ * * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+ * * License for the specific  language  governing  rights  and  limitations
+ * * under the License.
+ * * The Original Code is FLOREANT POS.
+ * * The Initial Developer of the Original Code is OROCUBE LLC
+ * * All portions are Copyright (C) 2015 OROCUBE LLC
+ * * All Rights Reserved.
+ * ************************************************************************
+ */
+package com.floreantpos.util;
+
+import java.util.List;
+
+import com.floreantpos.model.Currency;
+import com.floreantpos.model.dao.CurrencyDAO;
+
+public class CurrencyUtil {
+	private static Currency mainCurrency;
+	private static List<Currency> auxiliaryCurrencyList;
+
+	public static void populateCurrency() {
+		List<Currency> currencyList = CurrencyDAO.getInstance().findAll();
+		if (currencyList != null) {
+			for (Currency currency : currencyList) {
+				if (currency.isMain()) {
+					mainCurrency = currency;
+				}
+			}
+			auxiliaryCurrencyList = currencyList;
+		}
+	}
+
+	public static Currency getMainCurrency() {
+		return mainCurrency;
+	}
+
+	public static List<Currency> getAuxiliaryCurrencyList() {
+		return auxiliaryCurrencyList;
+	}
+
+	public static String getCurrencyName() {
+		String currencyName = null;
+		if (mainCurrency != null) {
+			currencyName = mainCurrency.getName();
+		}
+		else {
+			currencyName = "Sample Currency"; //$NON-NLS-1$
+		}
+		return currencyName;
+	}
+
+	public static String getCurrencySymbol() {
+		String currencySymbol = null;
+		if (mainCurrency != null) {
+			currencySymbol = mainCurrency.getSymbol();
+		}
+		else {
+			currencySymbol = "$"; //$NON-NLS-1$
+		}
+		return currencySymbol;
+	}
+}

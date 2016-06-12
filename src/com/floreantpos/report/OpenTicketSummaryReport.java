@@ -28,10 +28,10 @@ import net.sf.jasperreports.engine.data.JRTableModelDataSource;
 import net.sf.jasperreports.view.JRViewer;
 
 import com.floreantpos.Messages;
-import com.floreantpos.main.Application;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.report.service.ReportService;
+import com.floreantpos.util.CurrencyUtil;
 
 public class OpenTicketSummaryReport extends Report {
 
@@ -57,7 +57,7 @@ public class OpenTicketSummaryReport extends Report {
 		//map.put("dateRange", Application.formatDate(date1) + " to " + Application.formatDate(date2));
 		map.put("userType", getUserType() == null ? com.floreantpos.POSConstants.ALL : getUserType().getName()); //$NON-NLS-1$
 		map.put("terminalName", getTerminal() == null ? com.floreantpos.POSConstants.ALL : getTerminal().getName()); //$NON-NLS-1$
-		map.put("currency", Messages.getString("SalesReport.8") + Application.getCurrencyName() + " (" + Application.getCurrencySymbol() + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+		map.put("currency", Messages.getString("SalesReport.8") + CurrencyUtil.getCurrencyName() + " (" + CurrencyUtil.getCurrencySymbol() + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 		map.put("grandTotal", reportModel.getGrandTotalAsString()); //$NON-NLS-1$
 		
 		JasperReport masterReport = ReportUtil.getReport("open_ticket_summary_report"); //$NON-NLS-1$

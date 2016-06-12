@@ -65,6 +65,7 @@ import com.floreantpos.model.dao.RestaurantDAO;
 import com.floreantpos.model.dao.TerminalPrintersDAO;
 import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.model.util.DateUtil;
+import com.floreantpos.util.CurrencyUtil;
 import com.floreantpos.util.NumberUtil;
 import com.floreantpos.util.PrintServiceUtil;
 
@@ -372,7 +373,7 @@ public class ReceiptPrintService {
 
 		map.put(JRParameter.IS_IGNORE_PAGINATION, false);
 
-		String currencySymbol = Application.getCurrencySymbol();
+		String currencySymbol = CurrencyUtil.getCurrencySymbol();
 		map.put(CURRENCY_SYMBOL, currencySymbol);
 		map.put(ITEM_TEXT, POSConstants.RECEIPT_REPORT_ITEM_LABEL);
 		map.put(QUANTITY_TEXT, POSConstants.RECEIPT_REPORT_QUANTITY_LABEL);

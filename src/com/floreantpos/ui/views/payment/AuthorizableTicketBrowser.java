@@ -48,6 +48,7 @@ import com.floreantpos.ui.TransactionListView;
 import com.floreantpos.ui.dialog.NumberSelectionDialog2;
 import com.floreantpos.ui.dialog.POSDialog;
 import com.floreantpos.ui.dialog.POSMessageDialog;
+import com.floreantpos.util.CurrencyUtil;
 import com.floreantpos.util.NumberUtil;
 
 public class AuthorizableTicketBrowser extends POSDialog {
@@ -174,7 +175,7 @@ public class AuthorizableTicketBrowser extends POSDialog {
 		double acceptableTipsAmount = NumberUtil.roundToTwoDigit(transaction.getTenderAmount() * (advanceTipsPercentage / 100));
 
 		if (newTipsAmount > acceptableTipsAmount) {
-			POSMessageDialog.showMessage(Messages.getString("AuthorizableTicketBrowser.0") + " :" + Application.getCurrencySymbol() + acceptableTipsAmount); //$NON-NLS-1$ //$NON-NLS-2$
+			POSMessageDialog.showMessage(Messages.getString("AuthorizableTicketBrowser.0") + " :" + CurrencyUtil.getCurrencySymbol() + acceptableTipsAmount); //$NON-NLS-1$ //$NON-NLS-2$
 			return;
 		}
 		transaction.setTipsAmount(newTipsAmount);
