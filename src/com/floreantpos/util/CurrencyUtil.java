@@ -17,6 +17,7 @@
  */
 package com.floreantpos.util;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.floreantpos.model.Currency;
@@ -27,14 +28,19 @@ public class CurrencyUtil {
 	private static List<Currency> auxiliaryCurrencyList;
 
 	public static void populateCurrency() {
+		auxiliaryCurrencyList = new ArrayList<Currency>();
+
 		List<Currency> currencyList = CurrencyDAO.getInstance().findAll();
+
 		if (currencyList != null) {
 			for (Currency currency : currencyList) {
 				if (currency.isMain()) {
 					mainCurrency = currency;
 				}
+				else {
+					auxiliaryCurrencyList.add(currency);
+				}
 			}
-			auxiliaryCurrencyList = currencyList;
 		}
 	}
 
@@ -52,7 +58,7 @@ public class CurrencyUtil {
 			currencyName = mainCurrency.getName();
 		}
 		else {
-			currencyName = "Sample Currency"; //$NON-NLS-1$
+			currencyName = "USD"; //$NON-NLS-1$
 		}
 		return currencyName;
 	}
