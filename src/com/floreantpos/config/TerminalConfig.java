@@ -69,12 +69,14 @@ public class TerminalConfig {
 
 	private static final String GROUP_KITCHEN_ITEMS_ON_RECEIPT = "group_kitchen_items_on_receipt";//$NON-NLS-1$
 
+	private static final String ENABLE_MULTI_CURRENCY = "enable_multi_currency";//$NON-NLS-1$
+
 	private static final String DEFAULT_VIEW = "default_view";//$NON-NLS-1$
 
 	private static final String ACTIVE_CUSTOMER_DISPLAY = "active_customer_display";//$NON-NLS-1$
 
 	private static final String ACTIVE_SCALE_DISPLAY = "active_scale_display";//$NON-NLS-1$
-	
+
 	private static final String ACTIVE_CALLER_ID_DEVICE = "active_caller_id_device";//$NON-NLS-1$
 
 	private static final String CALLER_ID_DEVICE = "caller_id_device";//$NON-NLS-1$
@@ -233,7 +235,7 @@ public class TerminalConfig {
 	public static boolean isShowBarcodeOnReceipt() {
 		return config.getBoolean(SHOW_BARCODE_ON_RECEIPT, false);
 	}
-	
+
 	public static void setEnabledCallerIdDevice(boolean show) {
 		config.setProperty(ACTIVE_CALLER_ID_DEVICE, show);
 	}
@@ -248,6 +250,14 @@ public class TerminalConfig {
 
 	public static boolean isGroupKitchenReceiptItems() {
 		return config.getBoolean(GROUP_KITCHEN_ITEMS_ON_RECEIPT, false);
+	}
+
+	public static boolean isEnabledMultiCurrency() {
+		return config.getBoolean(ENABLE_MULTI_CURRENCY, false);
+	}
+
+	public static void setEnabledMultiCurrency(boolean enable) {
+		config.setProperty(ENABLE_MULTI_CURRENCY, enable);
 	}
 
 	public static boolean isMultipleOrderSupported() {

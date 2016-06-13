@@ -23,7 +23,6 @@ import javax.swing.AbstractAction;
 import javax.swing.Icon;
 import javax.swing.JTabbedPane;
 
-import com.floreantpos.POSConstants;
 import com.floreantpos.bo.ui.BackOfficeWindow;
 import com.floreantpos.bo.ui.explorer.CurrencyExplorer;
 
@@ -46,10 +45,10 @@ public class CurrencyExplorerAction extends AbstractAction {
 
 		CurrencyExplorer explorer = null;
 		JTabbedPane tabbedPane = backOfficeWindow.getTabbedPane();
-		int index = tabbedPane.indexOfTab(POSConstants.TAX_EXPLORER);
+		int index = tabbedPane.indexOfTab("Currency Explorer");
 		if (index == -1) {
 			explorer = new CurrencyExplorer();
-			tabbedPane.addTab(POSConstants.TAX_EXPLORER, explorer);
+			tabbedPane.addTab("Currency Explorer", explorer);
 		}
 		else {
 			explorer = (CurrencyExplorer) tabbedPane.getComponentAt(index);

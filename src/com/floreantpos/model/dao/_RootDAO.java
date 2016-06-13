@@ -27,6 +27,7 @@ import com.floreantpos.Database;
 import com.floreantpos.config.AppConfig;
 import com.floreantpos.model.ActionHistory;
 import com.floreantpos.model.AttendenceHistory;
+import com.floreantpos.model.CashDrawer;
 import com.floreantpos.model.CashDrawerResetHistory;
 import com.floreantpos.model.CookingInstruction;
 import com.floreantpos.model.Currency;
@@ -169,6 +170,7 @@ public abstract class _RootDAO extends com.floreantpos.model.dao._BaseRootDAO {
 		configuration = configuration.addClass(DeliveryConfiguration.class);
 		configuration = configuration.addClass(EmployeeInOutHistory.class);
 		configuration = configuration.addClass(Currency.class);
+		configuration = configuration.addClass(CashDrawer.class);
 
 		configuration = configureInventoryClasses(configuration);
 

@@ -70,6 +70,7 @@ public class TerminalConfigurationView extends ConfigurationView {
 	private JCheckBox cbShowDbConfiguration = new JCheckBox(Messages.getString("TerminalConfigurationView.5")); //$NON-NLS-1$
 	private JCheckBox cbShowBarCodeOnReceipt = new JCheckBox(Messages.getString("TerminalConfigurationView.21")); //$NON-NLS-1$
 	private JCheckBox cbGroupKitchenReceiptItems = new JCheckBox("Group by Categories in kitchen Receipt"); //$NON-NLS-1$
+	private JCheckBox chkEnabledMultiCurrency = new JCheckBox("Enable multi currency"); //$NON-NLS-1$
 
 	private JComboBox<String> cbFonts = new JComboBox<String>();
 	private JComboBox<String> cbDefaultView;
@@ -137,6 +138,7 @@ public class TerminalConfigurationView extends ConfigurationView {
 		contentPanel.add(cbUseSettlementPrompt, "newline, span"); //$NON-NLS-1$
 		contentPanel.add(cbShowBarCodeOnReceipt, "newline,span"); //$NON-NLS-1$
 		contentPanel.add(cbGroupKitchenReceiptItems, "newline,span"); //$NON-NLS-1$
+		contentPanel.add(chkEnabledMultiCurrency, "newline,span"); //$NON-NLS-1$
 
 		contentPanel.add(new JLabel(Messages.getString("TerminalConfigurationView.17")), "newline"); //$NON-NLS-1$//$NON-NLS-2$
 		contentPanel.add(cbFonts, "span 2, wrap"); //$NON-NLS-1$
@@ -283,6 +285,7 @@ public class TerminalConfigurationView extends ConfigurationView {
 		TerminalConfig.setUseSettlementPrompt(cbUseSettlementPrompt.isSelected());
 		TerminalConfig.setShowBarcodeOnReceipt(cbShowBarCodeOnReceipt.isSelected());
 		TerminalConfig.setGroupKitchenReceiptItems(cbGroupKitchenReceiptItems.isSelected());
+		TerminalConfig.setEnabledMultiCurrency(chkEnabledMultiCurrency.isSelected());
 
 		POSMessageDialog.showMessage(com.floreantpos.util.POSUtil.getFocusedWindow(), Messages.getString("TerminalConfigurationView.40")); //$NON-NLS-1$
 
@@ -325,6 +328,7 @@ public class TerminalConfigurationView extends ConfigurationView {
 		cbUseSettlementPrompt.setSelected(TerminalConfig.isUseSettlementPrompt());
 		cbShowBarCodeOnReceipt.setSelected(TerminalConfig.isShowBarcodeOnReceipt());
 		cbGroupKitchenReceiptItems.setSelected(TerminalConfig.isGroupKitchenReceiptItems());
+		chkEnabledMultiCurrency.setSelected(TerminalConfig.isEnabledMultiCurrency());
 
 		tfButtonHeight.setText("" + TerminalConfig.getTouchScreenButtonHeight()); //$NON-NLS-1$
 		tfScaleFactor.setText("" + TerminalConfig.getScreenScaleFactor()); //$NON-NLS-1$

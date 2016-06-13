@@ -24,8 +24,9 @@ import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
+
+import org.jdesktop.swingx.JXTable;
 
 import com.floreantpos.POSConstants;
 import com.floreantpos.bo.ui.BOMessageDialog;
@@ -40,14 +41,14 @@ import com.floreantpos.ui.model.CurrencyForm;
 public class CurrencyExplorer extends TransparentPanel {
 	private List<Currency> currencyList;
 
-	private JTable table;
+	private JXTable table;
 	private CurrencyExplorerTableModel tableModel;
 
 	public CurrencyExplorer() {
 		currencyList = CurrencyDAO.getInstance().findAll();
 
 		tableModel = new CurrencyExplorerTableModel();
-		table = new JTable(tableModel);
+		table = new JXTable(tableModel);
 		table.setDefaultRenderer(Object.class, new PosTableRenderer());
 
 		setLayout(new BorderLayout(5, 5));
@@ -123,7 +124,7 @@ public class CurrencyExplorer extends TransparentPanel {
 	}
 
 	class CurrencyExplorerTableModel extends AbstractTableModel {
-		String[] columnNames = { POSConstants.ID, POSConstants.NAME, "SYMBOL", POSConstants.RATE ,"MAIN"};
+		String[] columnNames = { POSConstants.ID, POSConstants.NAME, "SYMBOL", POSConstants.RATE, "MAIN" };
 
 		public int getRowCount() {
 			if (currencyList == null) {
@@ -164,7 +165,7 @@ public class CurrencyExplorer extends TransparentPanel {
 
 				case 3:
 					return currency.getExchangeRate();
-					
+
 				case 4:
 					return currency.isMain();
 			}

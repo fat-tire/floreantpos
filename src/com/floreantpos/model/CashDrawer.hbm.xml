@@ -6,8 +6,15 @@
 			<generator class="identity" />
 		</id>
 
-		<property column="NAME" length="60" name="name" type="java.lang.String" />
-		
+		<property column="BALANCE" name="balance" type="java.lang.Double" />
+
 		<!-- Associations -->
+		<many-to-one class="com.floreantpos.model.Terminal" cascade="none" lazy="false" name="terminal">
+			<column name="TERMINAL_ID" />
+		</many-to-one>
+		<many-to-one class="com.floreantpos.model.Currency" cascade="none" lazy="false" name="currency">
+			<column name="CURRENCY_ID" />
+		</many-to-one>
+		
 	</class>
 </hibernate-mapping>
