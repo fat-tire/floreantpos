@@ -26,6 +26,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -36,18 +38,26 @@ import javax.swing.JTextField;
 import net.miginfocom.swing.MigLayout;
 
 import org.apache.commons.lang.StringUtils;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 import com.floreantpos.IconFactory;
 import com.floreantpos.Messages;
 import com.floreantpos.POSConstants;
+import com.floreantpos.config.TerminalConfig;
+import com.floreantpos.model.CashDrawer;
+import com.floreantpos.model.Currency;
 import com.floreantpos.model.Gratuity;
 import com.floreantpos.model.PaymentType;
 import com.floreantpos.model.Ticket;
+import com.floreantpos.model.dao.CashDrawerDAO;
 import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.report.ReceiptPrintService;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.swing.PosUIManager;
 import com.floreantpos.swing.TransparentPanel;
+import com.floreantpos.ui.dialog.CashBackDialog;
+import com.floreantpos.ui.dialog.MultiCurrencyTenderDialog;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.util.CurrencyUtil;
 import com.floreantpos.util.NumberUtil;
@@ -394,7 +404,19 @@ public class PaymentView extends JPanel {
 		btnCash.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				try {
+					if (TerminalConfig.isEnabledMultiCurrency()) {
+						List<Currency> currencyList = new ArrayList();
+						currencyList.add(CurrencyUtil.getMainCurrency());
+						currencyList.addAll(CurrencyUtil.getAuxiliaryCurrencyList());
+
+						if (currencyList.size() > 1) {
+							if (!adjustCashDrawerBalance(currencyList)) {
+								return;
+							}
+						}
+					}
 					double x = NumberUtil.parse(txtTenderedAmount.getText()).doubleValue();
+
 					if (x <= 0) {
 						POSMessageDialog.showError(Messages.getString("PaymentView.32")); //$NON-NLS-1$
 						return;
@@ -444,6 +466,44 @@ public class PaymentView extends JPanel {
 		add(actionButtonPanel, "cell 1 0,grow");
 
 	}// </editor-fold>//GEN-END:initComponents
+
+	protected boolean adjustCashDrawerBalance(List<Currency> currencyList) {
+		MultiCurrencyTenderDialog dialog = new MultiCurrencyTenderDialog(getDueAmount(), currencyList);
+		dialog.pack();
+		dialog.open();
+
+		if (dialog.isCanceled()) {
+			return false;
+		}
+		txtTenderedAmount.setText(NumberUtil.formatNumber(dialog.getTenderedAmount()));
+
+		if (dialog.hasCashBack()) {
+			CashBackDialog cashBackDialog = new CashBackDialog(dialog.getChangeDueAmount(), dialog.getCashDrawers());
+			cashBackDialog.pack();
+			cashBackDialog.open();
+
+			if (cashBackDialog.isCanceled()) {
+				return false;
+			}
+		}
+		Session session = null;
+		Transaction tx = null;
+		try {
+			session = CashDrawerDAO.getInstance().createNewSession();
+			tx = session.beginTransaction();
+
+			for (CashDrawer drawer : dialog.getCashDrawers().values()) {
+				session.saveOrUpdate(drawer);
+			}
+			tx.commit();
+		} catch (Exception ex) {
+			tx.rollback();
+			return false;
+		} finally {
+			session.close();
+		}
+		return true;
+	}
 
 	protected void removeKalaId() {
 		Ticket ticket = settleTicketView.getTicket();
