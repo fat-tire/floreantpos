@@ -44,6 +44,7 @@ import com.floreantpos.swing.DoubleTextField;
 import com.floreantpos.swing.NumericKeypad;
 import com.floreantpos.swing.PosUIManager;
 import com.floreantpos.util.NumberUtil;
+import com.floreantpos.util.POSUtil;
 
 public class MultiCurrencyTenderDialog extends OkCancelOptionDialog implements FocusListener {
 	private List<Currency> currencyList;
@@ -64,11 +65,15 @@ public class MultiCurrencyTenderDialog extends OkCancelOptionDialog implements F
 		JPanel contentPane = getContentPanel();
 		setOkButtonText(POSConstants.SAVE_BUTTON_TEXT);
 		setTitle("Enter tendered amount");
-		setTitlePaneText("<html>Enter tendered amount <br> Due Amount: " + dueAmount + "</html>");//$NON-NLS-1$ //$NON-NLS-2$ 
+		setTitlePaneText("Enter tendered amount");
 		setResizable(false);
 
 		MigLayout layout = new MigLayout("inset 0", "[grow,fill]", "[grow,fill]"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		contentPane.setLayout(layout);
+
+		JLabel lblDueAmount = getJLabel("Due Amount: " + dueAmount, Font.BOLD, 16, JLabel.LEFT);
+		contentPane.add(lblDueAmount, "cell 0 0,alignx left,aligny top"); //$NON-NLS-1$
+		contentPane.add(new JSeparator(), "gapbottom 5,gaptop 10,cell 0 1");//$NON-NLS-1$
 
 		JPanel inputPanel = new JPanel();
 		GridLayout gridLayout = new GridLayout(0, 3, 10, 10);
@@ -97,11 +102,11 @@ public class MultiCurrencyTenderDialog extends OkCancelOptionDialog implements F
 			CurrencyRow item = new CurrencyRow(currency, lblRemainingBalance, tfTenderedAmount);
 			currencyRows.add(item);
 		}
-		contentPane.add(inputPanel, "cell 0 0,alignx left,aligny top"); //$NON-NLS-1$
+		contentPane.add(inputPanel, "cell 0 2,alignx left,aligny top"); //$NON-NLS-1$
 
 		NumericKeypad numericKeypad = new NumericKeypad();
-		contentPane.add(new JSeparator(), "gapbottom 5,gaptop 10,cell 0 1");
-		contentPane.add(numericKeypad, "cell 0 2"); //$NON-NLS-1$
+		contentPane.add(new JSeparator(), "gapbottom 5,gaptop 10,cell 0 3");//$NON-NLS-1$
+		contentPane.add(numericKeypad, "cell 0 4"); //$NON-NLS-1$
 	}
 
 	private JLabel getJLabel(String text, int bold, int fontSize, int align) {
@@ -149,6 +154,13 @@ public class MultiCurrencyTenderDialog extends OkCancelOptionDialog implements F
 
 	@Override
 	public void doOk() {
+		updateView();
+
+		if (totalTenderedAmount <= 0) {
+			POSMessageDialog.showMessage(POSUtil.getFocusedWindow(), "Invalid Amount");//$NON-NLS-1$
+			return;
+		}
+
 		Terminal terminal = Application.getInstance().getTerminal();
 
 		cashDrawer = CashDrawerDAO.getInstance().findByTerminal(terminal);
@@ -189,6 +201,10 @@ public class MultiCurrencyTenderDialog extends OkCancelOptionDialog implements F
 
 	@Override
 	public void focusLost(FocusEvent e) {
+		updateView();
+	}
+
+	private void updateView() {
 		totalTenderedAmount = 0;
 		for (CurrencyRow rowItem : currencyRows) {
 			double value = rowItem.tfTenderdAmount.getDouble();

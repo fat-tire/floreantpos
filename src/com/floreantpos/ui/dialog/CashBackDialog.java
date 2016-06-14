@@ -40,6 +40,7 @@ import com.floreantpos.swing.DoubleTextField;
 import com.floreantpos.swing.NumericKeypad;
 import com.floreantpos.swing.PosUIManager;
 import com.floreantpos.util.NumberUtil;
+import com.floreantpos.util.POSUtil;
 
 public class CashBackDialog extends OkCancelOptionDialog implements FocusListener {
 	private double dueAmount;
@@ -64,6 +65,10 @@ public class CashBackDialog extends OkCancelOptionDialog implements FocusListene
 
 		MigLayout layout = new MigLayout("inset 0", "[grow,fill]", "[grow,fill]"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		contentPane.setLayout(layout);
+
+		JLabel lblDueAmount = getJLabel("Change Due Amount: " + NumberUtil.roundToTwoDigit(dueAmount), Font.BOLD, 16, JLabel.LEFT);
+		contentPane.add(lblDueAmount, "cell 0 0,alignx left,aligny top"); //$NON-NLS-1$
+		contentPane.add(new JSeparator(), "gapbottom 5,gaptop 10,cell 0 1");//$NON-NLS-1$
 
 		JPanel inputPanel = new JPanel();
 		GridLayout gridLayout = new GridLayout(0, 3, 10, 10);
@@ -92,11 +97,11 @@ public class CashBackDialog extends OkCancelOptionDialog implements FocusListene
 			CurrencyRow item = new CurrencyRow(currencyBalance.getCurrency(), lblRemainingBalance, tfCashBackAmount);
 			currencyRows.add(item);
 		}
-		contentPane.add(inputPanel, "cell 0 0,alignx left,aligny top"); //$NON-NLS-1$
+		contentPane.add(inputPanel, "cell 0 2,alignx left,aligny top"); //$NON-NLS-1$
 
 		NumericKeypad numericKeypad = new NumericKeypad();
-		contentPane.add(new JSeparator(), "gapbottom 5,gaptop 10,cell 0 1");
-		contentPane.add(numericKeypad, "cell 0 2"); //$NON-NLS-1$
+		contentPane.add(new JSeparator(), "gapbottom 5,gaptop 10,cell 0 3");//$NON-NLS-1$
+		contentPane.add(numericKeypad, "cell 0 4"); //$NON-NLS-1$
 	}
 
 	private JLabel getJLabel(String text, int bold, int fontSize, int align) {
@@ -134,15 +139,17 @@ public class CashBackDialog extends OkCancelOptionDialog implements FocusListene
 
 	@Override
 	public void doOk() {
-		if (isOver()) {
-			POSMessageDialog.showMessage("Cash back amount is over");
+		updateView();
+
+		if (isCashBackNotEqual()) {
+			POSMessageDialog.showMessage(POSUtil.getFocusedWindow(), "Invalid cash back amount.");//$NON-NLS-1$
 			return;
 		}
 		for (CurrencyRow rowItem : currencyRows) {
 			CurrencyBalance item = cashDrawer.getCurrencyBalance(rowItem.currency);
 			double cashBackAmount = rowItem.cashBackAmount;
 			item.setCashBackAmount(cashBackAmount);
-			item.setBalance(NumberUtil.roundToTwoDigit(item.getBalance()- item.getCashBackAmount()));
+			item.setBalance(NumberUtil.roundToTwoDigit(item.getBalance() - item.getCashBackAmount()));
 		}
 		setCanceled(false);
 		dispose();
@@ -154,6 +161,10 @@ public class CashBackDialog extends OkCancelOptionDialog implements FocusListene
 
 	@Override
 	public void focusLost(FocusEvent e) {
+		updateView();
+	}
+
+	private void updateView() {
 		totalCashBackAmount = 0;
 		for (CurrencyRow rowItem : currencyRows) {
 			double value = rowItem.tfCashBackAmount.getDouble();
@@ -169,10 +180,10 @@ public class CashBackDialog extends OkCancelOptionDialog implements FocusListene
 		}
 	}
 
-	private boolean isOver() {
+	private boolean isCashBackNotEqual() {
 		totalCashBackAmount = NumberUtil.roundToTwoDigit(totalCashBackAmount);
 		dueAmount = NumberUtil.roundToTwoDigit(dueAmount);
-		if (totalCashBackAmount > dueAmount) {
+		if (totalCashBackAmount != dueAmount) {
 			return true;
 		}
 		return false;
