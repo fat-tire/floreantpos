@@ -28,6 +28,7 @@ import java.util.List;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JSeparator;
 import javax.swing.JTextField;
 
 import net.miginfocom.swing.MigLayout;
@@ -63,31 +64,32 @@ public class MultiCurrencyTenderDialog extends OkCancelOptionDialog implements F
 		JPanel contentPane = getContentPanel();
 		setOkButtonText(POSConstants.SAVE_BUTTON_TEXT);
 		setTitle("Enter tendered amount");
-		setTitlePaneText("Enter tendered amount");
+		setTitlePaneText("<html>Enter tendered amount <br> Due Amount: " + dueAmount + "</html>");//$NON-NLS-1$ //$NON-NLS-2$ 
+		setResizable(false);
 
 		MigLayout layout = new MigLayout("inset 0", "[grow,fill]", "[grow,fill]"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		contentPane.setLayout(layout);
 
 		JPanel inputPanel = new JPanel();
-		GridLayout gridLayout = new GridLayout(0, 3, 5, 5);
+		GridLayout gridLayout = new GridLayout(0, 3, 10, 10);
 		inputPanel.setLayout(gridLayout);
 
-		JLabel lblRemainingAmount = getJLabel("Remaining Amount", Font.BOLD, 16, JLabel.CENTER);
 		JLabel lblCurrency = getJLabel("Currency", Font.BOLD, 16, JLabel.CENTER);
-		JLabel lblTendered = getJLabel("Tendered", Font.BOLD, 16, JLabel.CENTER);
+		JLabel lblRemainingAmount = getJLabel("Remaining Amount", Font.BOLD, 16, JLabel.CENTER);
+		JLabel lblTendered = getJLabel("Tender", Font.BOLD, 16, JLabel.CENTER);
 
-		inputPanel.add(lblRemainingAmount);
 		inputPanel.add(lblCurrency);
+		inputPanel.add(lblRemainingAmount);
 		inputPanel.add(lblTendered);
 
 		for (Currency currency : currencyList) {
 			String dueAmountByCurrency = NumberUtil.formatNumber(currency.getExchangeRate() * dueAmount);
-			JLabel lblRemainingBalance = getJLabel(dueAmountByCurrency, Font.PLAIN, 16, JLabel.LEFT);
-			JLabel currencyName = getJLabel(currency.getName(), Font.PLAIN, 16, JLabel.LEFT);
+			JLabel lblRemainingBalance = getJLabel(dueAmountByCurrency, Font.PLAIN, 16, JLabel.RIGHT);
+			JLabel currencyName = getJLabel(currency.getName(), Font.PLAIN, 16, JLabel.CENTER);
 			DoubleTextField tfTenderedAmount = getDoubleTextField("", Font.PLAIN, 16, JTextField.RIGHT);
 
-			inputPanel.add(lblRemainingBalance);
 			inputPanel.add(currencyName);
+			inputPanel.add(lblRemainingBalance);
 			inputPanel.add(tfTenderedAmount);
 
 			tfTenderedAmount.addFocusListener(this);
@@ -98,7 +100,8 @@ public class MultiCurrencyTenderDialog extends OkCancelOptionDialog implements F
 		contentPane.add(inputPanel, "cell 0 0,alignx left,aligny top"); //$NON-NLS-1$
 
 		NumericKeypad numericKeypad = new NumericKeypad();
-		contentPane.add(numericKeypad, "cell 0 1"); //$NON-NLS-1$
+		contentPane.add(new JSeparator(), "gapbottom 5,gaptop 10,cell 0 1");
+		contentPane.add(numericKeypad, "cell 0 2"); //$NON-NLS-1$
 	}
 
 	private JLabel getJLabel(String text, int bold, int fontSize, int align) {
