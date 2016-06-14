@@ -1,7 +1,5 @@
 package com.floreantpos.model.dao;
 
-import java.util.List;
-
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
@@ -17,7 +15,7 @@ public class CashDrawerDAO extends BaseCashDrawerDAO {
 	public CashDrawerDAO() {
 	}
 
-	public List<CashDrawer> findByTerminal(Terminal terminal) {
+	public CashDrawer findByTerminal(Terminal terminal) {
 		Session session = null;
 
 		try {
@@ -25,7 +23,7 @@ public class CashDrawerDAO extends BaseCashDrawerDAO {
 			Criteria criteria = session.createCriteria(getReferenceClass());
 			criteria.add(Restrictions.eq(CashDrawer.PROP_TERMINAL, terminal));
 
-			return criteria.list();
+			return (CashDrawer) criteria.uniqueResult();
 		} finally {
 			closeSession(session);
 		}

@@ -18,8 +18,6 @@ public abstract class BaseCashDrawer  implements Comparable, Serializable {
 	public static String REF = "CashDrawer";
 	public static String PROP_TERMINAL = "terminal";
 	public static String PROP_ID = "id";
-	public static String PROP_CURRENCY = "currency";
-	public static String PROP_BALANCE = "balance";
 
 
 	// constructors
@@ -44,12 +42,11 @@ public abstract class BaseCashDrawer  implements Comparable, Serializable {
 	// primary key
 	private java.lang.Integer id;
 
-	// fields
-		protected java.lang.Double balance;
-
 	// many to one
 	private com.floreantpos.model.Terminal terminal;
-	private com.floreantpos.model.Currency currency;
+
+	// collections
+	private java.util.Set<com.floreantpos.model.CurrencyBalance> currencyBalanceList;
 
 
 
@@ -76,23 +73,6 @@ public abstract class BaseCashDrawer  implements Comparable, Serializable {
 
 
 	/**
-	 * Return the value associated with the column: BALANCE
-	 */
-	public java.lang.Double getBalance () {
-									return balance == null ? Double.valueOf(0) : balance;
-					}
-
-	/**
-	 * Set the value related to the column: BALANCE
-	 * @param balance the BALANCE value
-	 */
-	public void setBalance (java.lang.Double balance) {
-		this.balance = balance;
-	}
-
-
-
-	/**
 	 * Return the value associated with the column: TERMINAL_ID
 	 */
 	public com.floreantpos.model.Terminal getTerminal () {
@@ -110,18 +90,23 @@ public abstract class BaseCashDrawer  implements Comparable, Serializable {
 
 
 	/**
-	 * Return the value associated with the column: CURRENCY_ID
+	 * Return the value associated with the column: currencyBalanceList
 	 */
-	public com.floreantpos.model.Currency getCurrency () {
-					return currency;
+	public java.util.Set<com.floreantpos.model.CurrencyBalance> getCurrencyBalanceList () {
+					return currencyBalanceList;
 			}
 
 	/**
-	 * Set the value related to the column: CURRENCY_ID
-	 * @param currency the CURRENCY_ID value
+	 * Set the value related to the column: currencyBalanceList
+	 * @param currencyBalanceList the currencyBalanceList value
 	 */
-	public void setCurrency (com.floreantpos.model.Currency currency) {
-		this.currency = currency;
+	public void setCurrencyBalanceList (java.util.Set<com.floreantpos.model.CurrencyBalance> currencyBalanceList) {
+		this.currencyBalanceList = currencyBalanceList;
+	}
+
+	public void addTocurrencyBalanceList (com.floreantpos.model.CurrencyBalance currencyBalance) {
+		if (null == getCurrencyBalanceList()) setCurrencyBalanceList(new java.util.TreeSet<com.floreantpos.model.CurrencyBalance>());
+		getCurrencyBalanceList().add(currencyBalance);
 	}
 
 

@@ -6,14 +6,16 @@
 			<generator class="identity" />
 		</id>
 
-		<property column="BALANCE" name="balance" type="java.lang.Double" />
+		<set cascade="all" inverse="true" lazy="false" name="currencyBalanceList">
+			<key>
+				<column name="CASH_DRAWER_ID" />
+			</key>
+			<one-to-many class="com.floreantpos.model.CurrencyBalance" />
+		</set>
 
 		<!-- Associations -->
 		<many-to-one class="com.floreantpos.model.Terminal" cascade="none" lazy="false" name="terminal">
 			<column name="TERMINAL_ID" />
-		</many-to-one>
-		<many-to-one class="com.floreantpos.model.Currency" cascade="none" lazy="false" name="currency">
-			<column name="CURRENCY_ID" />
 		</many-to-one>
 		
 	</class>

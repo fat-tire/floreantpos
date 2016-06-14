@@ -476,9 +476,12 @@ public class PaymentView extends JPanel {
 			return false;
 		}
 		txtTenderedAmount.setText(NumberUtil.formatNumber(dialog.getTenderedAmount()));
+		double totalDueAmount = getDueAmount();
+		CashDrawer cashDrawer = dialog.getCashDrawer();
 
 		if (dialog.hasCashBack()) {
-			CashBackDialog cashBackDialog = new CashBackDialog(dialog.getChangeDueAmount(), dialog.getCashDrawers());
+			CashBackDialog cashBackDialog = new CashBackDialog(dialog.getChangeDueAmount(), dialog.getCurrencyBalanceMap());
+			cashBackDialog.setTotalDueAmount(totalDueAmount);
 			cashBackDialog.pack();
 			cashBackDialog.open();
 
@@ -492,9 +495,7 @@ public class PaymentView extends JPanel {
 			session = CashDrawerDAO.getInstance().createNewSession();
 			tx = session.beginTransaction();
 
-			for (CashDrawer drawer : dialog.getCashDrawers().values()) {
-				session.saveOrUpdate(drawer);
-			}
+			session.saveOrUpdate(cashDrawer);
 			tx.commit();
 		} catch (Exception ex) {
 			tx.rollback();

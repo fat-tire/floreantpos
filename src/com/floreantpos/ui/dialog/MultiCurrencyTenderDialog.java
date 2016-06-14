@@ -24,6 +24,7 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -37,6 +38,7 @@ import com.floreantpos.POSConstants;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.CashDrawer;
 import com.floreantpos.model.Currency;
+import com.floreantpos.model.CurrencyBalance;
 import com.floreantpos.model.Terminal;
 import com.floreantpos.model.dao.CashDrawerDAO;
 import com.floreantpos.swing.DoubleTextField;
@@ -50,7 +52,8 @@ public class MultiCurrencyTenderDialog extends OkCancelOptionDialog implements F
 	private double totalTenderedAmount;
 
 	private List<CurrencyRow> currencyRows = new ArrayList();
-	private Map<Currency, CashDrawer> cashDrawerMap = new HashMap<Currency, CashDrawer>();
+	private Map<Integer, CurrencyBalance> currencyBalanceMap = new HashMap<Integer, CurrencyBalance>();
+	private CashDrawer cashDrawer;
 
 	public MultiCurrencyTenderDialog(double dueAmount, List<Currency> currencyList) {
 		super();
@@ -121,6 +124,7 @@ public class MultiCurrencyTenderDialog extends OkCancelOptionDialog implements F
 		Currency currency;
 		JLabel lblRemainingBalance;
 		DoubleTextField tfTenderdAmount;
+		double creditAmount = 0;
 		double cashBackAmount = 0;
 		double tenderAmount = 0;
 
@@ -137,37 +141,54 @@ public class MultiCurrencyTenderDialog extends OkCancelOptionDialog implements F
 		void setTenderAmount(double tenderAmount) {
 			this.tenderAmount = tenderAmount;
 		}
+
+		void setCreditAmount(double creditAmount) {
+			this.creditAmount = creditAmount;
+		}
 	}
 
 	@Override
 	public void doOk() {
 		Terminal terminal = Application.getInstance().getTerminal();
 
-		List<CashDrawer> cashDrawers = CashDrawerDAO.getInstance().findByTerminal(terminal);
-		for (CashDrawer cashDrawer : cashDrawers) {
-			cashDrawerMap.put(cashDrawer.getCurrency(), cashDrawer);
+		cashDrawer = CashDrawerDAO.getInstance().findByTerminal(terminal);
+		if (cashDrawer == null) {
+			cashDrawer = new CashDrawer();
+			cashDrawer.setTerminal(terminal);
+
+			if (cashDrawer.getCurrencyBalanceList() == null) {
+				cashDrawer.setCurrencyBalanceList(new HashSet());
+			}
+		}
+		for (CurrencyBalance currencyBalance : cashDrawer.getCurrencyBalanceList()) {
+			currencyBalanceMap.put(currencyBalance.getCurrency().getId(), currencyBalance);
 		}
 
 		for (CurrencyRow rowItem : currencyRows) {
-			CashDrawer item = cashDrawerMap.get(rowItem.currency);
+			CurrencyBalance item = currencyBalanceMap.get(rowItem.currency.getId());
 			if (item == null) {
-				item = new CashDrawer();
+				item = new CurrencyBalance();
 				item.setCurrency(rowItem.currency);
-				item.setTerminal(terminal);
-				cashDrawerMap.put(rowItem.currency, item);
+				item.setCashDrawer(cashDrawer);
+				currencyBalanceMap.put(rowItem.currency.getId(), item);
+				cashDrawer.addTocurrencyBalanceList(item);
 			}
-			double tenderAmount = rowItem.tenderAmount * rowItem.currency.getExchangeRate();
+			double tenderAmount = rowItem.tenderAmount;
 			double cashBackAmount = rowItem.cashBackAmount;
-			item.setCashCreditAmount(tenderAmount);
+			item.setCashCreditAmount(rowItem.creditAmount);
 			item.setCashBackAmount(cashBackAmount);
-			item.setBalance(NumberUtil.roundToTwoDigit(item.getBalance() + tenderAmount - cashBackAmount));
+			item.setBalance(item.getBalance() + item.getCashCreditAmount());
 		}
 		setCanceled(false);
 		dispose();
 	}
 
-	public Map<Currency, CashDrawer> getCashDrawers() {
-		return cashDrawerMap;
+	public Map<Integer, CurrencyBalance> getCurrencyBalanceMap() {
+		return currencyBalanceMap;
+	}
+
+	public CashDrawer getCashDrawer() {
+		return cashDrawer;
 	}
 
 	@Override
@@ -178,19 +199,26 @@ public class MultiCurrencyTenderDialog extends OkCancelOptionDialog implements F
 	public void focusLost(FocusEvent e) {
 		totalTenderedAmount = 0;
 		for (CurrencyRow rowItem : currencyRows) {
-			double value = rowItem.tfTenderdAmount.getDouble() / rowItem.currency.getExchangeRate();
+			double value = rowItem.tfTenderdAmount.getDouble();
 			if (Double.isNaN(value)) {
 				value = 0.0;
 			}
 			rowItem.setTenderAmount(value);
-			totalTenderedAmount += value;
+			totalTenderedAmount += (value / rowItem.currency.getExchangeRate());
+			if (totalTenderedAmount <= dueAmount) {
+				rowItem.setCreditAmount(value);
+			}
+			else {
+				double remainingBalance = (dueAmount - totalTenderedAmount) * rowItem.currency.getExchangeRate();
+				remainingBalance = Math.abs(remainingBalance);
+				rowItem.setCreditAmount(value - remainingBalance);
+				rowItem.setCashBackAmount(remainingBalance);
+				break;
+			}
 		}
 		for (CurrencyRow currInput : currencyRows) {
 			double remainingBalance = (dueAmount - totalTenderedAmount) * currInput.currency.getExchangeRate();
 			currInput.lblRemainingBalance.setText(NumberUtil.formatNumber(remainingBalance));
-			if (remainingBalance < 0) {
-				currInput.setCashBackAmount(Math.abs(remainingBalance));
-			}
 		}
 	}
 

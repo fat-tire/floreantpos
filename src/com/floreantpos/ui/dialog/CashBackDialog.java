@@ -33,11 +33,8 @@ import javax.swing.JTextField;
 import net.miginfocom.swing.MigLayout;
 
 import com.floreantpos.POSConstants;
-import com.floreantpos.main.Application;
-import com.floreantpos.model.CashDrawer;
 import com.floreantpos.model.Currency;
-import com.floreantpos.model.Terminal;
-import com.floreantpos.model.dao.CashDrawerDAO;
+import com.floreantpos.model.CurrencyBalance;
 import com.floreantpos.swing.DoubleTextField;
 import com.floreantpos.swing.NumericKeypad;
 import com.floreantpos.swing.PosUIManager;
@@ -48,9 +45,10 @@ public class CashBackDialog extends OkCancelOptionDialog implements FocusListene
 	private double totalCashBackAmount;
 
 	private List<CurrencyRow> currencyRows = new ArrayList();
-	private Map<Currency, CashDrawer> cashDrawerMap;
+	private Map<Integer, CurrencyBalance> cashDrawerMap;
+	private double ticketDueAmount;
 
-	public CashBackDialog(double dueAmount, Map<Currency, CashDrawer> cashDrawers) {
+	public CashBackDialog(double dueAmount, Map<Integer, CurrencyBalance> cashDrawers) {
 		super();
 		this.dueAmount = dueAmount;
 		this.cashDrawerMap = cashDrawers;
@@ -78,7 +76,7 @@ public class CashBackDialog extends OkCancelOptionDialog implements FocusListene
 		inputPanel.add(lblCurrency);
 		inputPanel.add(lblTendered);
 
-		for (CashDrawer drawer : cashDrawerMap.values()) {
+		for (CurrencyBalance drawer : cashDrawerMap.values()) {
 			String dueAmountByCurrency = NumberUtil.formatNumber(drawer.getCurrency().getExchangeRate() * dueAmount);
 			JLabel lblRemainingBalance = getJLabel(dueAmountByCurrency, Font.PLAIN, 16, JLabel.LEFT);
 			JLabel currencyName = getJLabel(drawer.getCurrency().getName(), Font.PLAIN, 16, JLabel.LEFT);
@@ -118,22 +116,17 @@ public class CashBackDialog extends OkCancelOptionDialog implements FocusListene
 	private class CurrencyRow {
 		Currency currency;
 		JLabel lblRemainingBalance;
-		DoubleTextField tfTenderdAmount;
+		DoubleTextField tfCashBackAmount;
 		double cashBackAmount = 0;
-		double tenderAmount = 0;
 
-		public CurrencyRow(Currency currency, JLabel lblRemainingBalance, DoubleTextField tfTenderedAmount) {
+		public CurrencyRow(Currency currency, JLabel lblRemainingBalance, DoubleTextField tfCashBackAmount) {
 			this.currency = currency;
 			this.lblRemainingBalance = lblRemainingBalance;
-			this.tfTenderdAmount = tfTenderedAmount;
+			this.tfCashBackAmount = tfCashBackAmount;
 		}
 
 		void setCashBackAmount(double cashBackAmount) {
 			this.cashBackAmount = cashBackAmount;
-		}
-
-		void setTenderAmount(double tenderAmount) {
-			this.tenderAmount = tenderAmount;
 		}
 	}
 
@@ -143,32 +136,17 @@ public class CashBackDialog extends OkCancelOptionDialog implements FocusListene
 			POSMessageDialog.showMessage("Cash back amount is over");
 			return;
 		}
-		Terminal terminal = Application.getInstance().getTerminal();
-
-		List<CashDrawer> cashDrawers = CashDrawerDAO.getInstance().findByTerminal(terminal);
-		for (CashDrawer cashDrawer : cashDrawers) {
-			cashDrawerMap.put(cashDrawer.getCurrency(), cashDrawer);
-		}
-
 		for (CurrencyRow rowItem : currencyRows) {
-			CashDrawer item = cashDrawerMap.get(rowItem.currency);
-			if (item == null) {
-				item = new CashDrawer();
-				item.setCurrency(rowItem.currency);
-				item.setTerminal(terminal);
-				cashDrawerMap.put(rowItem.currency, item);
-			}
-			double tenderAmount = rowItem.tenderAmount * rowItem.currency.getExchangeRate();
+			CurrencyBalance item = cashDrawerMap.get(rowItem.currency.getId());
 			double cashBackAmount = rowItem.cashBackAmount;
-			item.setCashCreditAmount(tenderAmount);
 			item.setCashBackAmount(cashBackAmount);
-			item.setBalance(NumberUtil.roundToTwoDigit(item.getBalance() + tenderAmount - cashBackAmount));
+			item.setBalance(NumberUtil.roundToTwoDigit(item.getBalance() - item.getCashBackAmount()));
 		}
 		setCanceled(false);
 		dispose();
 	}
 
-	public Map<Currency, CashDrawer> getCashDrawers() {
+	public Map<Integer, CurrencyBalance> getCashDrawers() {
 		return cashDrawerMap;
 	}
 
@@ -180,19 +158,16 @@ public class CashBackDialog extends OkCancelOptionDialog implements FocusListene
 	public void focusLost(FocusEvent e) {
 		totalCashBackAmount = 0;
 		for (CurrencyRow rowItem : currencyRows) {
-			double value = rowItem.tfTenderdAmount.getDouble() / rowItem.currency.getExchangeRate();
+			double value = rowItem.tfCashBackAmount.getDouble();
 			if (Double.isNaN(value)) {
 				value = 0.0;
 			}
-			rowItem.setTenderAmount(value);
-			totalCashBackAmount += value;
+			rowItem.setCashBackAmount(value);
+			totalCashBackAmount += (value / rowItem.currency.getExchangeRate());
 		}
-		for (CurrencyRow currInput : currencyRows) {
-			double remainingBalance = (dueAmount - totalCashBackAmount) * currInput.currency.getExchangeRate();
-			currInput.lblRemainingBalance.setText(NumberUtil.formatNumber(remainingBalance));
-			if (remainingBalance < 0) {
-				currInput.setCashBackAmount(currInput.tenderAmount);
-			}
+		for (CurrencyRow rowItem : currencyRows) {
+			double remainingBalance = (dueAmount - totalCashBackAmount) * rowItem.currency.getExchangeRate();
+			rowItem.lblRemainingBalance.setText(NumberUtil.formatNumber(remainingBalance));
 		}
 	}
 
@@ -205,5 +180,9 @@ public class CashBackDialog extends OkCancelOptionDialog implements FocusListene
 
 	public double getTenderedAmount() {
 		return totalCashBackAmount;
+	}
+
+	public void setTotalDueAmount(double totalDueAmount) {
+		this.ticketDueAmount = totalDueAmount;
 	}
 }

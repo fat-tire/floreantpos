@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.floreantpos.model">
+	<class lazy="false" name="com.floreantpos.model.CurrencyBalance" table="CURRENCY_BALANCE">
+		<id column="ID" name="id" type="java.lang.Integer">
+			<generator class="identity" />
+		</id>
+
+		<property column="BALANCE" name="balance" type="java.lang.Double" />
+
+		<many-to-one class="com.floreantpos.model.Currency" cascade="none" lazy="false" name="currency">
+			<column name="CURRENCY_ID" />
+		</many-to-one>
+		
+		<many-to-one class="com.floreantpos.model.CashDrawer" cascade="none" lazy="false" name="cashDrawer">
+			<column name="CASH_DRAWER_ID" />
+		</many-to-one>
+		
+		
+	</class>
+</hibernate-mapping>
