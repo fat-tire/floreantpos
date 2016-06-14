@@ -166,9 +166,9 @@ public class MultiCurrencyTenderDialog extends OkCancelOptionDialog implements F
 				item.setCashDrawer(cashDrawer);
 				cashDrawer.addTocurrencyBalanceList(item);
 			}
-			double tenderAmount = rowItem.tenderAmount;
+			//double tenderAmount = rowItem.tenderAmount;
 			double cashBackAmount = rowItem.cashBackAmount;
-			item.setCashCreditAmount(rowItem.creditAmount);
+			item.setCashCreditAmount(rowItem.tenderAmount);
 			item.setCashBackAmount(cashBackAmount);
 			item.setBalance(item.getBalance() + item.getCashCreditAmount());
 		}

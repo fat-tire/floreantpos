@@ -76,10 +76,10 @@ public class CashBackDialog extends OkCancelOptionDialog implements FocusListene
 		inputPanel.add(lblCurrency);
 		inputPanel.add(lblTendered);
 
-		for (CurrencyBalance drawer : cashDrawer.getCurrencyBalanceList()) {
-			String dueAmountByCurrency = NumberUtil.formatNumber(drawer.getCurrency().getExchangeRate() * dueAmount);
+		for (CurrencyBalance currencyBalance : cashDrawer.getCurrencyBalanceList()) {
+			String dueAmountByCurrency = NumberUtil.formatNumber(currencyBalance.getCurrency().getExchangeRate() * dueAmount);
 			JLabel lblRemainingBalance = getJLabel(dueAmountByCurrency, Font.PLAIN, 16, JLabel.LEFT);
-			JLabel currencyName = getJLabel(drawer.getCurrency().getName(), Font.PLAIN, 16, JLabel.LEFT);
+			JLabel currencyName = getJLabel(currencyBalance.getCurrency().getName(), Font.PLAIN, 16, JLabel.LEFT);
 			DoubleTextField tfCashBackAmount = getDoubleTextField("", Font.PLAIN, 16, JTextField.RIGHT);
 
 			inputPanel.add(lblRemainingBalance);
@@ -88,7 +88,7 @@ public class CashBackDialog extends OkCancelOptionDialog implements FocusListene
 
 			tfCashBackAmount.addFocusListener(this);
 
-			CurrencyRow item = new CurrencyRow(drawer.getCurrency(), lblRemainingBalance, tfCashBackAmount);
+			CurrencyRow item = new CurrencyRow(currencyBalance.getCurrency(), lblRemainingBalance, tfCashBackAmount);
 			currencyRows.add(item);
 		}
 		contentPane.add(inputPanel, "cell 0 0,alignx left,aligny top"); //$NON-NLS-1$
@@ -140,7 +140,7 @@ public class CashBackDialog extends OkCancelOptionDialog implements FocusListene
 			CurrencyBalance item = cashDrawer.getCurrencyBalance(rowItem.currency);
 			double cashBackAmount = rowItem.cashBackAmount;
 			item.setCashBackAmount(cashBackAmount);
-			item.setBalance(NumberUtil.roundToTwoDigit(item.getBalance() - item.getCashBackAmount()));
+			item.setBalance(NumberUtil.roundToTwoDigit(item.getBalance()- item.getCashBackAmount()));
 		}
 		setCanceled(false);
 		dispose();
@@ -168,6 +168,8 @@ public class CashBackDialog extends OkCancelOptionDialog implements FocusListene
 	}
 
 	private boolean isOver() {
+		totalCashBackAmount = NumberUtil.roundToTwoDigit(totalCashBackAmount);
+		dueAmount = NumberUtil.roundToTwoDigit(dueAmount);
 		if (totalCashBackAmount > dueAmount) {
 			return true;
 		}
