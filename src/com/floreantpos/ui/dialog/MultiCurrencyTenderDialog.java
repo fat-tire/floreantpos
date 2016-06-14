@@ -23,10 +23,8 @@ import java.awt.GridLayout;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -52,7 +50,6 @@ public class MultiCurrencyTenderDialog extends OkCancelOptionDialog implements F
 	private double totalTenderedAmount;
 
 	private List<CurrencyRow> currencyRows = new ArrayList();
-	private Map<Integer, CurrencyBalance> currencyBalanceMap = new HashMap<Integer, CurrencyBalance>();
 	private CashDrawer cashDrawer;
 
 	public MultiCurrencyTenderDialog(double dueAmount, List<Currency> currencyList) {
@@ -160,17 +157,13 @@ public class MultiCurrencyTenderDialog extends OkCancelOptionDialog implements F
 				cashDrawer.setCurrencyBalanceList(new HashSet());
 			}
 		}
-		for (CurrencyBalance currencyBalance : cashDrawer.getCurrencyBalanceList()) {
-			currencyBalanceMap.put(currencyBalance.getCurrency().getId(), currencyBalance);
-		}
 
 		for (CurrencyRow rowItem : currencyRows) {
-			CurrencyBalance item = currencyBalanceMap.get(rowItem.currency.getId());
+			CurrencyBalance item = cashDrawer.getCurrencyBalance(rowItem.currency);
 			if (item == null) {
 				item = new CurrencyBalance();
 				item.setCurrency(rowItem.currency);
 				item.setCashDrawer(cashDrawer);
-				currencyBalanceMap.put(rowItem.currency.getId(), item);
 				cashDrawer.addTocurrencyBalanceList(item);
 			}
 			double tenderAmount = rowItem.tenderAmount;
@@ -181,10 +174,6 @@ public class MultiCurrencyTenderDialog extends OkCancelOptionDialog implements F
 		}
 		setCanceled(false);
 		dispose();
-	}
-
-	public Map<Integer, CurrencyBalance> getCurrencyBalanceMap() {
-		return currencyBalanceMap;
 	}
 
 	public CashDrawer getCashDrawer() {

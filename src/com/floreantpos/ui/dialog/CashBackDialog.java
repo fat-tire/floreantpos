@@ -24,7 +24,6 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -33,6 +32,7 @@ import javax.swing.JTextField;
 import net.miginfocom.swing.MigLayout;
 
 import com.floreantpos.POSConstants;
+import com.floreantpos.model.CashDrawer;
 import com.floreantpos.model.Currency;
 import com.floreantpos.model.CurrencyBalance;
 import com.floreantpos.swing.DoubleTextField;
@@ -45,13 +45,13 @@ public class CashBackDialog extends OkCancelOptionDialog implements FocusListene
 	private double totalCashBackAmount;
 
 	private List<CurrencyRow> currencyRows = new ArrayList();
-	private Map<Integer, CurrencyBalance> cashDrawerMap;
+	private CashDrawer cashDrawer;
 	private double ticketDueAmount;
 
-	public CashBackDialog(double dueAmount, Map<Integer, CurrencyBalance> cashDrawers) {
+	public CashBackDialog(double dueAmount, CashDrawer cashDrawer) {
 		super();
 		this.dueAmount = dueAmount;
-		this.cashDrawerMap = cashDrawers;
+		this.cashDrawer = cashDrawer;
 		init();
 	}
 
@@ -76,7 +76,7 @@ public class CashBackDialog extends OkCancelOptionDialog implements FocusListene
 		inputPanel.add(lblCurrency);
 		inputPanel.add(lblTendered);
 
-		for (CurrencyBalance drawer : cashDrawerMap.values()) {
+		for (CurrencyBalance drawer : cashDrawer.getCurrencyBalanceList()) {
 			String dueAmountByCurrency = NumberUtil.formatNumber(drawer.getCurrency().getExchangeRate() * dueAmount);
 			JLabel lblRemainingBalance = getJLabel(dueAmountByCurrency, Font.PLAIN, 16, JLabel.LEFT);
 			JLabel currencyName = getJLabel(drawer.getCurrency().getName(), Font.PLAIN, 16, JLabel.LEFT);
@@ -137,17 +137,13 @@ public class CashBackDialog extends OkCancelOptionDialog implements FocusListene
 			return;
 		}
 		for (CurrencyRow rowItem : currencyRows) {
-			CurrencyBalance item = cashDrawerMap.get(rowItem.currency.getId());
+			CurrencyBalance item = cashDrawer.getCurrencyBalance(rowItem.currency);
 			double cashBackAmount = rowItem.cashBackAmount;
 			item.setCashBackAmount(cashBackAmount);
 			item.setBalance(NumberUtil.roundToTwoDigit(item.getBalance() - item.getCashBackAmount()));
 		}
 		setCanceled(false);
 		dispose();
-	}
-
-	public Map<Integer, CurrencyBalance> getCashDrawers() {
-		return cashDrawerMap;
 	}
 
 	@Override

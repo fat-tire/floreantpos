@@ -480,7 +480,7 @@ public class PaymentView extends JPanel {
 		CashDrawer cashDrawer = dialog.getCashDrawer();
 
 		if (dialog.hasCashBack()) {
-			CashBackDialog cashBackDialog = new CashBackDialog(dialog.getChangeDueAmount(), dialog.getCurrencyBalanceMap());
+			CashBackDialog cashBackDialog = new CashBackDialog(dialog.getChangeDueAmount(), dialog.getCashDrawer());
 			cashBackDialog.setTotalDueAmount(totalDueAmount);
 			cashBackDialog.pack();
 			cashBackDialog.open();
