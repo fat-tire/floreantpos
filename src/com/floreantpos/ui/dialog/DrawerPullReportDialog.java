@@ -35,8 +35,6 @@ import java.util.Set;
 import javax.swing.JDialog;
 import javax.swing.JEditorPane;
 import javax.swing.JPanel;
-import javax.swing.JScrollBar;
-import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 
 import net.miginfocom.swing.MigLayout;
@@ -51,9 +49,12 @@ import org.apache.ecs.html.Table;
 
 import com.floreantpos.Messages;
 import com.floreantpos.main.Application;
+import com.floreantpos.model.CashDrawer;
+import com.floreantpos.model.CurrencyBalance;
 import com.floreantpos.model.DrawerPullReport;
 import com.floreantpos.model.DrawerPullVoidTicketEntry;
 import com.floreantpos.model.Terminal;
+import com.floreantpos.model.dao.CashDrawerDAO;
 import com.floreantpos.print.DrawerpullReportService;
 import com.floreantpos.print.PosPrintService;
 import com.floreantpos.swing.PosButton;
@@ -341,6 +342,15 @@ public class DrawerPullReportDialog extends POSDialog {
 		addTableSeparator(table);
 		addTableRow(table, "=" + Messages.getString("DrawerPullReportDialog.51"), decimalFormat.format(drawerPullReport.getDrawerAccountable())); //$NON-NLS-1$ //$NON-NLS-2$
 		addTableRow(table, ">" + Messages.getString("DrawerPullReportDialog.53"), decimalFormat.format(drawerPullReport.getCashToDeposit())); //$NON-NLS-1$ //$NON-NLS-2$
+		addTableSeparator(table);
+		CashDrawer cashDrawer = CashDrawerDAO.getInstance().findByTerminal(Application.getInstance().getTerminal());
+		if (cashDrawer != null) {
+			if (cashDrawer.getCurrencyBalanceList() != null) {
+				for (CurrencyBalance balance : cashDrawer.getCurrencyBalanceList()) {
+					addTableRow(table, balance.getCurrency().getName() + "", "" + decimalFormat.format(balance.getBalance())); //$NON-NLS-1$ //$NON-NLS-2$
+				}
+			}
+		}
 		document.appendBody(table);
 
 		createSectionHeader(document, Messages.getString("DrawerPullReportDialog.54")); //$NON-NLS-1$
