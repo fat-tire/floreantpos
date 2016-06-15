@@ -20,8 +20,6 @@ package com.floreantpos.ui.dialog;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -30,6 +28,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 import net.miginfocom.swing.MigLayout;
 
@@ -46,7 +46,7 @@ import com.floreantpos.swing.PosUIManager;
 import com.floreantpos.util.NumberUtil;
 import com.floreantpos.util.POSUtil;
 
-public class MultiCurrencyTenderDialog extends OkCancelOptionDialog implements FocusListener {
+public class MultiCurrencyTenderDialog extends OkCancelOptionDialog implements DocumentListener {
 	private List<Currency> currencyList;
 	private double dueAmount;
 	private double totalTenderedAmount;
@@ -97,7 +97,7 @@ public class MultiCurrencyTenderDialog extends OkCancelOptionDialog implements F
 			inputPanel.add(lblRemainingBalance);
 			inputPanel.add(tfTenderedAmount);
 
-			tfTenderedAmount.addFocusListener(this);
+			tfTenderedAmount.getDocument().addDocumentListener(this); 
 
 			CurrencyRow item = new CurrencyRow(currency, lblRemainingBalance, tfTenderedAmount);
 			currencyRows.add(item);
@@ -154,8 +154,6 @@ public class MultiCurrencyTenderDialog extends OkCancelOptionDialog implements F
 
 	@Override
 	public void doOk() {
-		updateView();
-
 		if (totalTenderedAmount <= 0) {
 			POSMessageDialog.showMessage(POSUtil.getFocusedWindow(), "Invalid Amount");//$NON-NLS-1$
 			return;
@@ -193,15 +191,6 @@ public class MultiCurrencyTenderDialog extends OkCancelOptionDialog implements F
 
 	public CashDrawer getCashDrawer() {
 		return cashDrawer;
-	}
-
-	@Override
-	public void focusGained(FocusEvent e) {
-	}
-
-	@Override
-	public void focusLost(FocusEvent e) {
-		updateView();
 	}
 
 	private void updateView() {
@@ -243,5 +232,20 @@ public class MultiCurrencyTenderDialog extends OkCancelOptionDialog implements F
 
 	public double getChangeDueAmount() {
 		return totalTenderedAmount - dueAmount;
+	}
+
+	@Override
+	public void insertUpdate(DocumentEvent e) {
+		updateView();
+	}
+
+	@Override
+	public void removeUpdate(DocumentEvent e) {
+		updateView();
+	}
+
+	@Override
+	public void changedUpdate(DocumentEvent e) {
+		updateView();
 	}
 }
