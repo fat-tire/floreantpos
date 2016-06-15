@@ -26,7 +26,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.AbstractAction;
@@ -405,9 +404,7 @@ public class PaymentView extends JPanel {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				try {
 					if (TerminalConfig.isEnabledMultiCurrency()) {
-						List<Currency> currencyList = new ArrayList();
-						currencyList.add(CurrencyUtil.getMainCurrency());
-						currencyList.addAll(CurrencyUtil.getAuxiliaryCurrencyList());
+						List<Currency> currencyList = CurrencyUtil.getAllCurrency();
 
 						if (currencyList.size() > 1) {
 							if (!adjustCashDrawerBalance(currencyList)) {
@@ -475,7 +472,7 @@ public class PaymentView extends JPanel {
 		if (dialog.isCanceled()) {
 			return false;
 		}
-		txtTenderedAmount.setText(NumberUtil.formatNumber(dialog.getTenderedAmount()));
+		txtTenderedAmount.setText(NumberUtil.format3DigitNumber(dialog.getTenderedAmount()));
 		double totalDueAmount = getDueAmount();
 		CashDrawer cashDrawer = dialog.getCashDrawer();
 

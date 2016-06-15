@@ -48,6 +48,7 @@ import org.apache.ecs.html.TR;
 import org.apache.ecs.html.Table;
 
 import com.floreantpos.Messages;
+import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.CashDrawer;
 import com.floreantpos.model.CurrencyBalance;
@@ -343,11 +344,13 @@ public class DrawerPullReportDialog extends POSDialog {
 		addTableRow(table, "=" + Messages.getString("DrawerPullReportDialog.51"), decimalFormat.format(drawerPullReport.getDrawerAccountable())); //$NON-NLS-1$ //$NON-NLS-2$
 		addTableRow(table, ">" + Messages.getString("DrawerPullReportDialog.53"), decimalFormat.format(drawerPullReport.getCashToDeposit())); //$NON-NLS-1$ //$NON-NLS-2$
 		addTableSeparator(table);
-		CashDrawer cashDrawer = CashDrawerDAO.getInstance().findByTerminal(Application.getInstance().getTerminal());
-		if (cashDrawer != null) {
-			if (cashDrawer.getCurrencyBalanceList() != null) {
-				for (CurrencyBalance balance : cashDrawer.getCurrencyBalanceList()) {
-					addTableRow(table, balance.getCurrency().getName() + "", "" + decimalFormat.format(balance.getBalance())); //$NON-NLS-1$ //$NON-NLS-2$
+		if (TerminalConfig.isEnabledMultiCurrency()) {
+			CashDrawer cashDrawer = CashDrawerDAO.getInstance().findByTerminal(Application.getInstance().getTerminal());
+			if (cashDrawer != null) {
+				if (cashDrawer.getCurrencyBalanceList() != null) {
+					for (CurrencyBalance currencyBalance : cashDrawer.getCurrencyBalanceList()) {
+						addTableRow(table, currencyBalance.getCurrency().getName() + "", "" + decimalFormat.format(currencyBalance.getBalance())); //$NON-NLS-1$ //$NON-NLS-2$
+					}
 				}
 			}
 		}

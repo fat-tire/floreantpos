@@ -108,9 +108,7 @@ public class DrawerAssignmentAction extends PosAction {
 			double drawerBalance = 0;
 			CashDrawer cashDrawer = null;
 			if (TerminalConfig.isEnabledMultiCurrency()) {
-				List<Currency> currencyList = new ArrayList();
-				currencyList.add(CurrencyUtil.getMainCurrency());
-				currencyList.addAll(CurrencyUtil.getAuxiliaryCurrencyList());
+				List<Currency> currencyList = CurrencyUtil.getAllCurrency();
 
 				if (currencyList.size() > 1) {
 					MultiCurrencyAssignDrawerDialog multiCurrencyDialog = new MultiCurrencyAssignDrawerDialog(0, currencyList);

@@ -19,7 +19,8 @@ package com.floreantpos.ui.dialog;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -42,6 +43,7 @@ import com.floreantpos.model.Terminal;
 import com.floreantpos.model.dao.CashDrawerDAO;
 import com.floreantpos.swing.DoubleTextField;
 import com.floreantpos.swing.NumericKeypad;
+import com.floreantpos.swing.PosButton;
 import com.floreantpos.swing.PosUIManager;
 import com.floreantpos.util.NumberUtil;
 import com.floreantpos.util.POSUtil;
@@ -75,31 +77,35 @@ public class MultiCurrencyTenderDialog extends OkCancelOptionDialog implements D
 		contentPane.add(lblDueAmount, "cell 0 0,alignx left,aligny top"); //$NON-NLS-1$
 		contentPane.add(new JSeparator(), "gapbottom 5,gaptop 10,cell 0 1");//$NON-NLS-1$
 
-		JPanel inputPanel = new JPanel();
-		GridLayout gridLayout = new GridLayout(0, 3, 10, 10);
-		inputPanel.setLayout(gridLayout);
+		JPanel inputPanel = new JPanel(new MigLayout("fill,inset 0,wrap 5", "[center][right][100px,right][][]", ""));
 
 		JLabel lblCurrency = getJLabel("Currency", Font.BOLD, 16, JLabel.CENTER);
 		JLabel lblRemainingAmount = getJLabel("Remaining Amount", Font.BOLD, 16, JLabel.CENTER);
 		JLabel lblTendered = getJLabel("Tender", Font.BOLD, 16, JLabel.CENTER);
 
 		inputPanel.add(lblCurrency);
-		inputPanel.add(lblRemainingAmount);
-		inputPanel.add(lblTendered);
+		inputPanel.add(lblRemainingAmount, "gapleft 20");
+		inputPanel.add(lblTendered, "center");
+		inputPanel.add(new JLabel(""));
+		inputPanel.add(new JLabel(""));
 
 		for (Currency currency : currencyList) {
-			String dueAmountByCurrency = NumberUtil.formatNumber(currency.getExchangeRate() * dueAmount);
+			String dueAmountByCurrency = NumberUtil.format3DigitNumber(currency.getExchangeRate() * dueAmount);
 			JLabel lblRemainingBalance = getJLabel(dueAmountByCurrency, Font.PLAIN, 16, JLabel.RIGHT);
 			JLabel currencyName = getJLabel(currency.getName(), Font.PLAIN, 16, JLabel.CENTER);
 			DoubleTextField tfTenderedAmount = getDoubleTextField("", Font.PLAIN, 16, JTextField.RIGHT);
+			PosButton btnExact = new PosButton("EXACT");
+			PosButton btnRound = new PosButton("ROUND");
 
 			inputPanel.add(currencyName);
 			inputPanel.add(lblRemainingBalance);
-			inputPanel.add(tfTenderedAmount);
+			inputPanel.add(tfTenderedAmount, "grow");
+			inputPanel.add(btnExact, "h 30!");
+			inputPanel.add(btnRound, "h 30!");
 
-			tfTenderedAmount.getDocument().addDocumentListener(this); 
+			tfTenderedAmount.getDocument().addDocumentListener(this);
 
-			CurrencyRow item = new CurrencyRow(currency, lblRemainingBalance, tfTenderedAmount);
+			CurrencyRow item = new CurrencyRow(currency, lblRemainingBalance, tfTenderedAmount, btnExact, btnRound);
 			currencyRows.add(item);
 		}
 		contentPane.add(inputPanel, "cell 0 2,alignx left,aligny top"); //$NON-NLS-1$
@@ -125,18 +131,25 @@ public class MultiCurrencyTenderDialog extends OkCancelOptionDialog implements D
 		return tf;
 	}
 
-	private class CurrencyRow {
+	private class CurrencyRow implements ActionListener {
 		Currency currency;
 		JLabel lblRemainingBalance;
 		DoubleTextField tfTenderdAmount;
+		PosButton btnExact;
+		PosButton btnRound;
 		double creditAmount = 0;
 		double cashBackAmount = 0;
 		double tenderAmount = 0;
 
-		public CurrencyRow(Currency currency, JLabel lblRemainingBalance, DoubleTextField tfTenderedAmount) {
+		public CurrencyRow(Currency currency, JLabel lblRemainingBalance, DoubleTextField tfTenderedAmount, PosButton btnExact, PosButton btnRound) {
 			this.currency = currency;
 			this.lblRemainingBalance = lblRemainingBalance;
 			this.tfTenderdAmount = tfTenderedAmount;
+			this.btnExact = btnExact;
+			this.btnRound = btnRound;
+
+			btnExact.addActionListener(this);
+			btnRound.addActionListener(this);
 		}
 
 		void setCashBackAmount(double cashBackAmount) {
@@ -149,6 +162,17 @@ public class MultiCurrencyTenderDialog extends OkCancelOptionDialog implements D
 
 		void setCreditAmount(double creditAmount) {
 			this.creditAmount = creditAmount;
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			Object source = e.getSource();
+			if (source == btnExact) {
+				tfTenderdAmount.setText(NumberUtil.format3DigitNumber(dueAmount * currency.getExchangeRate()));
+			}
+			else {
+				tfTenderdAmount.setText(NumberUtil.format3DigitNumber(Math.ceil(dueAmount * currency.getExchangeRate())));
+			}
 		}
 	}
 
@@ -215,7 +239,7 @@ public class MultiCurrencyTenderDialog extends OkCancelOptionDialog implements D
 		}
 		for (CurrencyRow currInput : currencyRows) {
 			double remainingBalance = (dueAmount - totalTenderedAmount) * currInput.currency.getExchangeRate();
-			currInput.lblRemainingBalance.setText(NumberUtil.formatNumber(remainingBalance));
+			currInput.lblRemainingBalance.setText(NumberUtil.format3DigitNumber(remainingBalance));
 		}
 	}
 

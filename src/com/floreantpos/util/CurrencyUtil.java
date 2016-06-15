@@ -18,6 +18,8 @@
 package com.floreantpos.util;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import com.floreantpos.model.Currency;
@@ -50,6 +52,19 @@ public class CurrencyUtil {
 
 	public static List<Currency> getAuxiliaryCurrencyList() {
 		return auxiliaryCurrencyList;
+	}
+
+	public static List<Currency> getAllCurrency() {
+		List<Currency> currencyList = new ArrayList<Currency>();
+		currencyList.add(mainCurrency);
+		Collections.sort(auxiliaryCurrencyList, new Comparator<Currency>() {
+			@Override
+			public int compare(Currency curr1, Currency curr2) {
+				return curr1.getName().compareTo(curr2.getName());
+			}
+		});
+		currencyList.addAll(auxiliaryCurrencyList);
+		return currencyList;
 	}
 
 	public static String getCurrencyName() {
