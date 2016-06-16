@@ -23,6 +23,7 @@ import java.sql.Statement;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Random;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -34,16 +35,21 @@ import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.hibernate.tool.hbm2ddl.SchemaUpdate;
 
 import com.floreantpos.bo.actions.DataImportAction;
+import com.floreantpos.config.TerminalConfig;
+import com.floreantpos.model.CashDrawer;
+import com.floreantpos.model.Currency;
 import com.floreantpos.model.Discount;
 import com.floreantpos.model.OrderType;
 import com.floreantpos.model.PosTransaction;
 import com.floreantpos.model.Restaurant;
 import com.floreantpos.model.Shift;
 import com.floreantpos.model.Tax;
+import com.floreantpos.model.Terminal;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.User;
 import com.floreantpos.model.UserPermission;
 import com.floreantpos.model.UserType;
+import com.floreantpos.model.dao.CurrencyDAO;
 import com.floreantpos.model.dao.DiscountDAO;
 import com.floreantpos.model.dao.GenericDAO;
 import com.floreantpos.model.dao.OrderTypeDAO;
@@ -51,6 +57,7 @@ import com.floreantpos.model.dao.PosTransactionDAO;
 import com.floreantpos.model.dao.RestaurantDAO;
 import com.floreantpos.model.dao.ShiftDAO;
 import com.floreantpos.model.dao.TaxDAO;
+import com.floreantpos.model.dao.TerminalDAO;
 import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.model.dao.UserDAO;
 import com.floreantpos.model.dao.UserTypeDAO;
@@ -89,7 +96,7 @@ public class DatabaseUtil {
 			throw new DatabaseConnectionException(e);
 		}
 	}
-	
+
 	public static void updateLegacyDatabase() {
 		try {
 			dropModifiedTimeColumn();
@@ -101,7 +108,7 @@ public class DatabaseUtil {
 	private static void dropModifiedTimeColumn() throws SQLException {
 		GenericDAO dao = new GenericDAO();
 		Session session = null;
-		
+
 		try {
 			session = dao.createNewSession();
 			Connection connection = session.connection();
@@ -180,14 +187,14 @@ public class DatabaseUtil {
 
 			UserType cashier = new UserType();
 			cashier.setName(com.floreantpos.POSConstants.CASHIER);
-			cashier.setPermissions(new HashSet<UserPermission>(Arrays.asList(UserPermission.CREATE_TICKET,
-					UserPermission.SETTLE_TICKET, UserPermission.SPLIT_TICKET, UserPermission.VIEW_ALL_OPEN_TICKETS)));
+			cashier.setPermissions(new HashSet<UserPermission>(Arrays.asList(UserPermission.CREATE_TICKET, UserPermission.SETTLE_TICKET,
+					UserPermission.SPLIT_TICKET, UserPermission.VIEW_ALL_OPEN_TICKETS)));
 			UserTypeDAO.getInstance().saveOrUpdate(cashier);
 
 			UserType server = new UserType();
 			server.setName("SR. CASHIER");
-			server.setPermissions(new HashSet<UserPermission>(Arrays.asList(UserPermission.CREATE_TICKET,
-					UserPermission.SETTLE_TICKET, UserPermission.SPLIT_TICKET)));
+			server.setPermissions(new HashSet<UserPermission>(Arrays.asList(UserPermission.CREATE_TICKET, UserPermission.SETTLE_TICKET,
+					UserPermission.SPLIT_TICKET)));
 			//server.setTest(Arrays.asList(OrderType.BAR_TAB));
 			UserTypeDAO.getInstance().saveOrUpdate(server);
 
@@ -235,7 +242,7 @@ public class DatabaseUtil {
 			serverUser.setActive(true);
 
 			dao.saveOrUpdate(serverUser);
-			
+
 			User driverUser = new User();
 			driverUser.setUserId(127);
 			driverUser.setSsn("127");
@@ -257,7 +264,7 @@ public class DatabaseUtil {
 			orderType.setShouldPrintToKitchen(true);
 			orderType.setShowInLoginScreen(true);
 			orderTypeDAO.save(orderType);
-			
+
 			orderType = new OrderType();
 			orderType.setName("TAKE OUT");
 			orderType.setShowTableSelection(false);
@@ -267,7 +274,7 @@ public class DatabaseUtil {
 			orderType.setShouldPrintToKitchen(true);
 			orderType.setShowInLoginScreen(true);
 			orderTypeDAO.save(orderType);
-			
+
 			orderType = new OrderType();
 			orderType.setName("RETAIL");
 			orderType.setShowTableSelection(false);
@@ -276,7 +283,7 @@ public class DatabaseUtil {
 			orderType.setShouldPrintToKitchen(false);
 			orderType.setShowInLoginScreen(true);
 			orderTypeDAO.save(orderType);
-			
+
 			orderType = new OrderType();
 			orderType.setName("HOME DELIVERY");
 			orderType.setShowTableSelection(false);
@@ -287,7 +294,7 @@ public class DatabaseUtil {
 			orderType.setRequiredCustomerData(true);
 			orderType.setDelivery(true);
 			orderTypeDAO.save(orderType);
-			
+
 			DiscountDAO discountDao = new DiscountDAO();
 
 			Discount discount1 = new Discount();
@@ -326,8 +333,53 @@ public class DatabaseUtil {
 			discount3.setApplyToAll(true);
 			discount3.setNeverExpire(true);
 			discount3.setEnabled(true);
-
 			discountDao.saveOrUpdate(discount3);
+
+			int terminalId = TerminalConfig.getTerminalId();
+
+			if (terminalId == -1) {
+				Random random = new Random();
+				terminalId = random.nextInt(10000) + 1;
+			}
+			Terminal terminal = new Terminal();
+			terminal.setId(terminalId);
+			terminal.setName(String.valueOf(terminalId)); //$NON-NLS-1$
+
+			TerminalDAO.getInstance().saveOrUpdate(terminal);
+
+			CashDrawer cashDrawer = new CashDrawer();
+			cashDrawer.setTerminal(terminal);
+
+			Currency currency = new Currency();
+			currency.setName("USD");
+			currency.setSymbol("$");
+			currency.setExchangeRate(1.0);
+			currency.setMain(true);
+			CurrencyDAO.getInstance().save(currency);
+
+			currency = new Currency();
+			currency.setName("EUR");
+			currency.setSymbol("E");
+			currency.setExchangeRate(0.8);
+			CurrencyDAO.getInstance().save(currency);
+
+			currency = new Currency();
+			currency.setName("BRL");
+			currency.setSymbol("B");
+			currency.setExchangeRate(3.47);
+			CurrencyDAO.getInstance().save(currency);
+
+			currency = new Currency();
+			currency.setName("ARS");
+			currency.setSymbol("P");
+			currency.setExchangeRate(13.89);
+			CurrencyDAO.getInstance().save(currency);
+
+			currency = new Currency();
+			currency.setName("PYG");
+			currency.setSymbol("P");
+			currency.setExchangeRate(5639.78);
+			CurrencyDAO.getInstance().save(currency);
 
 			if (!exportSampleData) {
 				return true;
