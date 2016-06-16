@@ -17,6 +17,7 @@
  */
 package com.floreantpos.report;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -49,6 +50,7 @@ import com.floreantpos.POSConstants;
 import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.CardReader;
+import com.floreantpos.model.Currency;
 import com.floreantpos.model.KitchenTicket;
 import com.floreantpos.model.KitchenTicketItem;
 import com.floreantpos.model.OrderType;
@@ -104,6 +106,10 @@ public class ReceiptPrintService {
 
 	public static final String CUSTOMER_COPY = "Customer Copy";
 	public static final String DRIVER_COPY = "Driver Copy";
+
+	public static final String CENTER = "center";
+	public static final String LEFT = "left";
+	public static final String RIGHT = "right";
 
 	public static void printGenericReport(String title, String data) throws Exception {
 		HashMap<String, String> map = new HashMap<String, String>(2);
@@ -493,7 +499,13 @@ public class ReceiptPrintService {
 				messageString += "<br/>My Kala discount: " + ticket.getDiscountAmount(); //$NON-NLS-1$
 			}
 			messageString += "</html>"; //$NON-NLS-1$
-			map.put("additionalProperties", messageString); //$NON-NLS-1$
+			//map.put("additionalProperties", messageString); //$NON-NLS-1$
+			if (TerminalConfig.isEnabledMultiCurrency()) {
+				StringBuilder ticketMultiCurrencyBuilder = buildMultiCurrency(ticket, printProperties);
+				if (ticketMultiCurrencyBuilder != null) {
+					map.put("additionalProperties", ticketMultiCurrencyBuilder.toString()); //$NON-NLS-1$
+				}
+			}
 		}
 
 		return map;
@@ -600,6 +612,98 @@ public class ReceiptPrintService {
 
 		ticketHeaderBuilder.append("</html>"); //$NON-NLS-1$
 		return ticketHeaderBuilder;
+	}
+
+	private static StringBuilder buildMultiCurrency(Ticket ticket, TicketPrintProperties printProperties) {
+
+		DecimalFormat decimalFormat = new DecimalFormat("0.000"); //$NON-NLS-1$
+
+		StringBuilder currencyAmountBuilder = new StringBuilder();
+		currencyAmountBuilder.append("<html><table>"); //$NON-NLS-1$
+
+		String sep = "------------------------------------";//$NON-NLS-1$
+
+		beginRow(currencyAmountBuilder);
+		addColumn(currencyAmountBuilder, "&nbsp;");//$NON-NLS-1$
+		addColumn(currencyAmountBuilder, "&nbsp;");//$NON-NLS-1$
+		addColumn(currencyAmountBuilder, "&nbsp;");//$NON-NLS-1$
+		endRow(currencyAmountBuilder);
+
+		beginRow(currencyAmountBuilder);
+		addColumn(currencyAmountBuilder, "<b>Currency breakdown</b>");
+		endRow(currencyAmountBuilder);
+
+		beginRow(currencyAmountBuilder);
+		addColumn(currencyAmountBuilder, sep);
+		endRow(currencyAmountBuilder);
+
+		beginRow(currencyAmountBuilder);
+		addColumn(currencyAmountBuilder, getHtmlText("", 10, CENTER));//$NON-NLS-1$
+		addColumn(currencyAmountBuilder, getHtmlText("Paid", 10, CENTER));//$NON-NLS-1$
+		addColumn(currencyAmountBuilder, getHtmlText("Cashback", 10, CENTER));//$NON-NLS-1$
+		endRow(currencyAmountBuilder);
+
+		beginRow(currencyAmountBuilder);
+		addColumn(currencyAmountBuilder, sep);
+		endRow(currencyAmountBuilder);
+
+		int rowCount = 0;
+		for (Currency currency : CurrencyUtil.getAllCurrency()) {
+			String key = currency.getName();
+
+			String paidAmount = ticket.getProperty(key);
+			String cashBackAmount = ticket.getProperty(key + "_CASH_BACK");//$NON-NLS-1$
+
+			if (paidAmount == null) {
+				paidAmount = "0";//$NON-NLS-1$
+			}
+			if (cashBackAmount == null) {
+				cashBackAmount = "0";//$NON-NLS-1$
+			}
+			Double paid = Double.valueOf(paidAmount);
+			Double changeDue = Double.valueOf(cashBackAmount);
+			if (paid == 0 && changeDue == 0) {
+				continue;
+			}
+			beginRow(currencyAmountBuilder);
+			addColumn(currencyAmountBuilder, getHtmlText(key, 10, LEFT));
+			addColumn(currencyAmountBuilder, getHtmlText(decimalFormat.format(paid), 10, RIGHT));
+			addColumn(currencyAmountBuilder, getHtmlText(decimalFormat.format(changeDue), 10, RIGHT));
+			endRow(currencyAmountBuilder);
+			rowCount++;
+		}
+
+		if (rowCount == 0) {
+			return null;
+		}
+		currencyAmountBuilder.append("</table></html>"); //$NON-NLS-1$
+		return currencyAmountBuilder;
+	}
+
+	public static String getHtmlText(String txt, int length, String align) {
+		if (txt.length() > 30) {
+			txt = txt.substring(0, 30);
+		}
+
+		if (align.equals(CENTER)) {
+			int space = (length - txt.length()) / 2;
+			for (int i = 1; i < space; i++) {
+				txt = "&nbsp;" + txt + "&nbsp;";//$NON-NLS-1$//$NON-NLS-2$
+			}
+		}
+		else if (align.equals(RIGHT)) {
+			int space = (length - txt.length());
+			for (int i = 1; i < space; i++) {
+				txt = "&nbsp;" + txt;//$NON-NLS-1$
+			}
+		}
+		else if (align.equals(LEFT)) {
+			int space = (length - txt.length());
+			for (int i = 1; i < space; i++) {
+				txt = txt + "&nbsp;";//$NON-NLS-1$
+			}
+		}
+		return txt;
 	}
 
 	public static JasperPrint createKitchenPrint(KitchenTicket ticket) throws Exception {

@@ -393,7 +393,7 @@ public class PaymentView extends JPanel {
 
 		actionButtonPanel = new com.floreantpos.swing.TransparentPanel();
 		actionButtonPanel.setOpaque(true);
-		actionButtonPanel.setLayout(new MigLayout("wrap 1, ins 0 20 0 0, fill", "sg, fill", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		actionButtonPanel.setLayout(new MigLayout("hidemode 3,wrap 1, ins 0 20 0 0, fill", "sg, fill", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		//actionButtonPanel.setPreferredSize(PosUIManager.getSize(120, 0));
 
 		int width = PosUIManager.getSize(160);
@@ -403,13 +403,30 @@ public class PaymentView extends JPanel {
 		btnCash.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				try {
-					if (TerminalConfig.isEnabledMultiCurrency()) {
-						List<Currency> currencyList = CurrencyUtil.getAllCurrency();
+					double x = NumberUtil.parse(txtTenderedAmount.getText()).doubleValue();
 
-						if (currencyList.size() > 1) {
-							if (!adjustCashDrawerBalance(currencyList)) {
-								return;
-							}
+					if (x <= 0) {
+						POSMessageDialog.showError(Messages.getString("PaymentView.32")); //$NON-NLS-1$
+						return;
+					}
+					settleTicketView.doSettle(PaymentType.CASH);
+				} catch (Exception e) {
+					org.apache.commons.logging.LogFactory.getLog(getClass()).error(e);
+				}
+			}
+		});
+
+		PosButton btnMultiCurrencyCash = new com.floreantpos.swing.PosButton("MULTI CURRENCY CASH"); //$NON-NLS-1$
+		actionButtonPanel.add(btnMultiCurrencyCash, "grow,w " + width + "!"); //$NON-NLS-1$ //$NON-NLS-2$
+		btnMultiCurrencyCash.setVisible(TerminalConfig.isEnabledMultiCurrency());
+		btnMultiCurrencyCash.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				try {
+					List<Currency> currencyList = CurrencyUtil.getAllCurrency();
+
+					if (currencyList.size() > 1) {
+						if (!adjustCashDrawerBalance(currencyList)) {
+							return;
 						}
 					}
 					double x = NumberUtil.parse(txtTenderedAmount.getText()).doubleValue();
@@ -465,7 +482,7 @@ public class PaymentView extends JPanel {
 	}// </editor-fold>//GEN-END:initComponents
 
 	protected boolean adjustCashDrawerBalance(List<Currency> currencyList) {
-		MultiCurrencyTenderDialog dialog = new MultiCurrencyTenderDialog(getDueAmount(), currencyList);
+		MultiCurrencyTenderDialog dialog = new MultiCurrencyTenderDialog(settleTicketView.getTicket(), currencyList);
 		dialog.pack();
 		dialog.open();
 
@@ -477,8 +494,7 @@ public class PaymentView extends JPanel {
 		CashDrawer cashDrawer = dialog.getCashDrawer();
 
 		if (dialog.hasCashBack()) {
-			CashBackDialog cashBackDialog = new CashBackDialog(dialog.getChangeDueAmount(), dialog.getCashDrawer());
-			cashBackDialog.setTotalDueAmount(totalDueAmount);
+			CashBackDialog cashBackDialog = new CashBackDialog(settleTicketView.getTicket(),dialog.getChangeDueAmount(), dialog.getCashDrawer());
 			cashBackDialog.pack();
 			cashBackDialog.open();
 

@@ -26,10 +26,13 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 
+import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.main.Application;
+import com.floreantpos.model.CashDrawer;
 import com.floreantpos.model.CashDropTransaction;
 import com.floreantpos.model.CashTransaction;
 import com.floreantpos.model.CreditCardTransaction;
+import com.floreantpos.model.CurrencyBalance;
 import com.floreantpos.model.DebitCardTransaction;
 import com.floreantpos.model.DrawerPullReport;
 import com.floreantpos.model.DrawerPullVoidTicketEntry;
@@ -91,6 +94,9 @@ public class DrawerpullReportService {
 			report.setBeginCash(terminal.getOpeningBalance());
 			report.setCashToDeposit(terminal.getCurrentBalance());
 
+			if (TerminalConfig.isEnabledMultiCurrency()) {
+				populateCurrencyBalanceSection(session, terminal, report);
+			}
 			populateVoidSection(session, terminal, report);
 			//
 			//			//gift cert
@@ -162,6 +168,16 @@ public class DrawerpullReportService {
 		} finally {
 			if (session != null)
 				session.close();
+		}
+	}
+
+	private static void populateCurrencyBalanceSection(Session session, Terminal terminal, DrawerPullReport report) {
+		Criteria criteria = session.createCriteria(CashDrawer.class);
+		criteria.add(Restrictions.eq(CashDrawer.PROP_TERMINAL, terminal));
+		CashDrawer cashDrawer = (CashDrawer) criteria.uniqueResult();
+		if (cashDrawer != null) {
+			Set<CurrencyBalance> currencyBalance = cashDrawer.getCurrencyBalanceList();
+			report.addCurrencyBalances(currencyBalance);
 		}
 	}
 

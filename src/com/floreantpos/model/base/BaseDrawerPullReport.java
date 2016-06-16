@@ -18,7 +18,9 @@
 package com.floreantpos.model.base;
 
 import java.io.Serializable;
+import java.util.HashSet;
 
+import com.floreantpos.model.CurrencyBalance;
 import com.floreantpos.model.DrawerPullVoidTicketEntry;
 
 
@@ -156,6 +158,7 @@ public abstract class BaseDrawerPullReport  implements Comparable, Serializable 
 	private com.floreantpos.model.Terminal terminal;
 
 	// collections
+	private java.util.Set<CurrencyBalance> currencyBalances;
 	private java.util.Set<DrawerPullVoidTicketEntry> voidTickets;
 
 
@@ -962,9 +965,16 @@ public abstract class BaseDrawerPullReport  implements Comparable, Serializable 
 		this.voidTickets = voidTickets;
 	}
 
+	public java.util.Set<CurrencyBalance> getCurrencyBalances() {
+		if(currencyBalances==null){
+			return currencyBalances=new HashSet<CurrencyBalance>(); 
+		}
+		return currencyBalances;
+	}
 
-
-
+	public void setCurrencyBalances(java.util.Set<CurrencyBalance> currencyBalances) {
+		this.currencyBalances = currencyBalances;
+	}
 
 	public boolean equals (Object obj) {
 		if (null == obj) return false;

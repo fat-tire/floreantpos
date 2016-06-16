@@ -86,6 +86,10 @@ public class DrawerPullReport extends BaseDrawerPullReport {
 		getVoidTickets().add(entry);
 	}
 
+	public void addCurrencyBalances(Set<CurrencyBalance> currencyBalance) {
+		getCurrencyBalances().addAll(currencyBalance);
+	}
+
 	public void calculate() {
 		setTotalRevenue(getNetSales() + getSalesTax() + getSalesDeliveryCharge());
 		setGrossReceipts(getTotalRevenue() + getChargedTips());

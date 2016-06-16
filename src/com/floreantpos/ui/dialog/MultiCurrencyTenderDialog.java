@@ -40,6 +40,7 @@ import com.floreantpos.model.CashDrawer;
 import com.floreantpos.model.Currency;
 import com.floreantpos.model.CurrencyBalance;
 import com.floreantpos.model.Terminal;
+import com.floreantpos.model.Ticket;
 import com.floreantpos.model.dao.CashDrawerDAO;
 import com.floreantpos.swing.DoubleTextField;
 import com.floreantpos.swing.NumericKeypad;
@@ -55,11 +56,13 @@ public class MultiCurrencyTenderDialog extends OkCancelOptionDialog implements D
 
 	private List<CurrencyRow> currencyRows = new ArrayList();
 	private CashDrawer cashDrawer;
+	private Ticket ticket;
 
-	public MultiCurrencyTenderDialog(double dueAmount, List<Currency> currencyList) {
+	public MultiCurrencyTenderDialog(Ticket ticket, List<Currency> currencyList) {
 		super();
+		this.ticket = ticket;
 		this.currencyList = currencyList;
-		this.dueAmount = dueAmount;
+		this.dueAmount = ticket.getDueAmount();
 		init();
 	}
 
@@ -77,7 +80,7 @@ public class MultiCurrencyTenderDialog extends OkCancelOptionDialog implements D
 		contentPane.add(lblDueAmount, "cell 0 0,alignx left,aligny top"); //$NON-NLS-1$
 		contentPane.add(new JSeparator(), "gapbottom 5,gaptop 10,cell 0 1");//$NON-NLS-1$
 
-		JPanel inputPanel = new JPanel(new MigLayout("fill,inset 0,wrap 5", "[center][right][100px,right][][]", ""));
+		JPanel inputPanel = new JPanel(new MigLayout("fill,inset 0,wrap 3", "[center][right][100px,right][][]", ""));
 
 		JLabel lblCurrency = getJLabel("Currency", Font.BOLD, 16, JLabel.CENTER);
 		JLabel lblRemainingAmount = getJLabel("Remaining Amount", Font.BOLD, 16, JLabel.CENTER);
@@ -86,8 +89,8 @@ public class MultiCurrencyTenderDialog extends OkCancelOptionDialog implements D
 		inputPanel.add(lblCurrency);
 		inputPanel.add(lblRemainingAmount, "gapleft 20");
 		inputPanel.add(lblTendered, "center");
-		inputPanel.add(new JLabel(""));
-		inputPanel.add(new JLabel(""));
+		//inputPanel.add(new JLabel(""));
+		//inputPanel.add(new JLabel(""));
 
 		for (Currency currency : currencyList) {
 			String dueAmountByCurrency = NumberUtil.format3DigitNumber(currency.getExchangeRate() * dueAmount);
@@ -100,8 +103,8 @@ public class MultiCurrencyTenderDialog extends OkCancelOptionDialog implements D
 			inputPanel.add(currencyName);
 			inputPanel.add(lblRemainingBalance);
 			inputPanel.add(tfTenderedAmount, "grow");
-			inputPanel.add(btnExact, "h 30!");
-			inputPanel.add(btnRound, "h 30!");
+			//inputPanel.add(btnExact, "h 30!");
+			//inputPanel.add(btnRound, "h 30!");
 
 			tfTenderedAmount.getDocument().addDocumentListener(this);
 
@@ -203,9 +206,12 @@ public class MultiCurrencyTenderDialog extends OkCancelOptionDialog implements D
 				item.setCashDrawer(cashDrawer);
 				cashDrawer.addTocurrencyBalanceList(item);
 			}
-			//double tenderAmount = rowItem.tenderAmount;
+			double tenderAmount = rowItem.tenderAmount;
 			double cashBackAmount = rowItem.cashBackAmount;
-			item.setCashCreditAmount(rowItem.tenderAmount);
+			item.setCashCreditAmount(tenderAmount);
+			if (tenderAmount > 0) {
+				ticket.addProperty(rowItem.currency.getName(), String.valueOf(tenderAmount));
+			}
 			item.setCashBackAmount(cashBackAmount);
 			item.setBalance(item.getBalance() + item.getCashCreditAmount());
 		}

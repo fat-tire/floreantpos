@@ -5,6 +5,7 @@ import com.floreantpos.model.base.BaseCurrencyBalance;
 public class CurrencyBalance extends BaseCurrencyBalance {
 	private static final long serialVersionUID = 1L;
 
+	private String currencyName;
 	private double cashCreditAmount;
 	private double cashBackAmount;
 
@@ -31,5 +32,14 @@ public class CurrencyBalance extends BaseCurrencyBalance {
 	public void setCashCreditAmount(double cashCredit) {
 		this.cashCreditAmount = cashCredit;
 	}
+
+	public String getCurrencyName() {
+		return super.getCurrency().getName();
+	}
+
+	public void setCurrencyName(String currencyName) {
+		this.currencyName = currencyName;
+	}
+	
 
 }
