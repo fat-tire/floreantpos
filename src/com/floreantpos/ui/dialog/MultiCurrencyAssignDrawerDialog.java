@@ -60,7 +60,7 @@ public class MultiCurrencyAssignDrawerDialog extends OkCancelOptionDialog {
 	private void init() {
 		JPanel contentPane = getContentPanel();
 		setOkButtonText(POSConstants.SAVE_BUTTON_TEXT);
-		setTitle("Enter drawer amount");
+		setTitle("Floreant POS");
 		setTitlePaneText("Enter drawer amount");
 		setResizable(false);
 
@@ -80,7 +80,6 @@ public class MultiCurrencyAssignDrawerDialog extends OkCancelOptionDialog {
 		for (Currency currency : currencyList) {
 			JLabel currencyName = getJLabel(currency.getName(), Font.PLAIN, 16, JLabel.CENTER);
 			DoubleTextField tfTenderedAmount = getDoubleTextField("", Font.PLAIN, 16, JTextField.RIGHT);
-			tfTenderedAmount.setText(String.valueOf(initialAmount));
 
 			inputPanel.add(currencyName);
 			inputPanel.add(tfTenderedAmount);

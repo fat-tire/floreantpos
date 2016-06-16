@@ -17,7 +17,6 @@
  */
 package com.floreantpos.actions;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -187,8 +186,9 @@ public class DrawerAssignmentAction extends PosAction {
 							currencyBalance.setBalance(0.0);
 						}
 					}
+
+					CashDrawerDAO.getInstance().saveOrUpdate(cashDrawer);
 				}
-				CashDrawerDAO.getInstance().saveOrUpdate(cashDrawer);
 			}
 
 			PosPrintService.printDrawerPullReport(report, terminal);
