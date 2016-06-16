@@ -60,7 +60,7 @@ public class MultiCurrencyAssignDrawerDialog extends OkCancelOptionDialog {
 	private void init() {
 		JPanel contentPane = getContentPanel();
 		setOkButtonText(POSConstants.SAVE_BUTTON_TEXT);
-		setTitle("Floreant POS");
+		setTitle("Enter drawer amount");
 		setTitlePaneText("Enter drawer amount");
 		setResizable(false);
 
@@ -149,6 +149,9 @@ public class MultiCurrencyAssignDrawerDialog extends OkCancelOptionDialog {
 				cashDrawer.addTocurrencyBalanceList(item);
 			}
 			double amount = rowItem.tfAmount.getDouble();
+			if (Double.isNaN(amount)) {
+				amount = 0;
+			}
 			item.setBalance(amount);
 			totalAmount += (amount / rowItem.currency.getExchangeRate());
 		}

@@ -66,20 +66,16 @@ public class CashBackDialog extends OkCancelOptionDialog implements FocusListene
 	private void init() {
 		JPanel contentPane = getContentPanel();
 		setOkButtonText(POSConstants.SAVE_BUTTON_TEXT);
-		setTitle("Enter cash back amount");
-		setTitlePaneText("Enter cash back amount");
+		setTitle("Floreant POS: Enter cash back amount");
+		setTitlePaneText("Cashback amount: " + CurrencyUtil.getCurrencySymbol() + NumberUtil.format3DigitNumber(dueAmount));
 
 		MigLayout layout = new MigLayout("inset 0", "[grow,fill]", "[grow,fill]"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		contentPane.setLayout(layout);
 
-		JLabel lblDueAmount = getJLabel("Change Due Amount: " + NumberUtil.roundToTwoDigit(dueAmount), Font.BOLD, 16, JLabel.LEFT);
-		contentPane.add(lblDueAmount, "cell 0 0,alignx left,aligny top"); //$NON-NLS-1$
-		contentPane.add(new JSeparator(), "gapbottom 5,gaptop 10,cell 0 1");//$NON-NLS-1$
-
-		JPanel inputPanel = new JPanel(new MigLayout("fill,inset 0,wrap 3", "[center][right][100px,right][][]", ""));
+		JPanel inputPanel = new JPanel(new MigLayout("fill,inset 0,wrap 3", "[center][right]30px[200px, grow,right][][]", ""));
 
 		JLabel lblCurrency = getJLabel("Currency", Font.BOLD, 16, JLabel.CENTER);
-		JLabel lblRemainingAmount = getJLabel("Remaining Amount", Font.BOLD, 16, JLabel.CENTER);
+		JLabel lblRemainingAmount = getJLabel("Remaining", Font.BOLD, 16, JLabel.CENTER);
 		JLabel lblTendered = getJLabel("Cash Back", Font.BOLD, 16, JLabel.CENTER);
 
 		inputPanel.add(lblCurrency);
@@ -171,7 +167,8 @@ public class CashBackDialog extends OkCancelOptionDialog implements FocusListene
 		updateView();
 
 		if (isCashBackNotEqual()) {
-			POSMessageDialog.showMessage(POSUtil.getFocusedWindow(), "Invalid cash back amount.");//$NON-NLS-1$
+			POSMessageDialog.showMessage(POSUtil.getFocusedWindow(),
+					"Cashback amount cannot be greater than " + CurrencyUtil.getCurrencySymbol() + NumberUtil.format3DigitNumber(dueAmount));//$NON-NLS-1$
 			return;
 		}
 		for (CurrencyRow rowItem : currencyRows) {
