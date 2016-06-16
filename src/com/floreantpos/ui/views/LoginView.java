@@ -178,29 +178,15 @@ public class LoginView extends ViewPanel {
 
 		List<com.floreantpos.model.OrderType> orderTypes = Application.getInstance().getOrderTypes();
 		int buttonCount = 0;
-		
 
-		int orderTypeSize=orderTypes.size();
-		int buttonCountLine=0;
-		if(orderTypeSize<=4)
-		{
-			buttonCountLine=2;
-		}
-		else
-		{
-			buttonCountLine=3;
-		}
-	
-		
 		for (com.floreantpos.model.OrderType orderType : orderTypes) {
 			if (!orderType.isShowInLoginScreen()) {
 				continue;
 			}
-			
-			if (buttonCount < buttonCountLine) {
+			if (buttonCount < 3) {
 				panel1.add(new OrderTypeLoginButton(orderType), "grow"); //$NON-NLS-1$
 			}
-			else { 
+			else {
 				panel2.add(new OrderTypeLoginButton(orderType), "grow"); //$NON-NLS-1$
 			}
 			++buttonCount;
@@ -341,9 +327,5 @@ public class LoginView extends ViewPanel {
 
 	public void setBackOfficeLogin(boolean backOfficeLogin) {
 		this.backOfficeLogin = backOfficeLogin;
-	}
-	public static void main(String ar[])
-	{
-		LoginView log=new LoginView();
 	}
 }
