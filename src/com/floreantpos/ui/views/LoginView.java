@@ -179,7 +179,7 @@ public class LoginView extends ViewPanel {
 		List<com.floreantpos.model.OrderType> orderTypes = Application.getInstance().getOrderTypes();
 		int buttonCount = 0;
 		
-//Code Added MFH Begin
+
 		int orderTypeSize=orderTypes.size();
 		int buttonCountLine=0;
 		if(orderTypeSize<=4)
@@ -190,7 +190,7 @@ public class LoginView extends ViewPanel {
 		{
 			buttonCountLine=3;
 		}
-//Code Added MFH End	
+	
 		
 		for (com.floreantpos.model.OrderType orderType : orderTypes) {
 			if (!orderType.isShowInLoginScreen()) {
