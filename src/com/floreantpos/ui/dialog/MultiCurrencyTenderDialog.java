@@ -21,6 +21,8 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -29,8 +31,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 
 import net.miginfocom.swing.MigLayout;
 
@@ -46,10 +46,11 @@ import com.floreantpos.swing.DoubleTextField;
 import com.floreantpos.swing.NumericKeypad;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.swing.PosUIManager;
+import com.floreantpos.util.CurrencyUtil;
 import com.floreantpos.util.NumberUtil;
 import com.floreantpos.util.POSUtil;
 
-public class MultiCurrencyTenderDialog extends OkCancelOptionDialog implements DocumentListener {
+public class MultiCurrencyTenderDialog extends OkCancelOptionDialog implements FocusListener {
 	private List<Currency> currencyList;
 	private double dueAmount;
 	private double totalTenderedAmount;
@@ -69,22 +70,18 @@ public class MultiCurrencyTenderDialog extends OkCancelOptionDialog implements D
 	private void init() {
 		JPanel contentPane = getContentPanel();
 		setOkButtonText(POSConstants.SAVE_BUTTON_TEXT);
-		setTitle("Enter tendered amount");
-		setTitlePaneText("Enter tendered amount");
-		setResizable(false);
+		setTitle("Enter tender amount");
+		setTitlePaneText("Due amount: " + CurrencyUtil.getCurrencySymbol() + dueAmount);
+		setResizable(true);
 
 		MigLayout layout = new MigLayout("inset 0", "[grow,fill]", "[grow,fill]"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		contentPane.setLayout(layout);
 
-		JLabel lblDueAmount = getJLabel("Due Amount: " + dueAmount, Font.BOLD, 16, JLabel.LEFT);
-		contentPane.add(lblDueAmount, "cell 0 0,alignx left,aligny top"); //$NON-NLS-1$
-		contentPane.add(new JSeparator(), "gapbottom 5,gaptop 10,cell 0 1");//$NON-NLS-1$
+		JPanel inputPanel = new JPanel(new MigLayout("fill,ins 0,wrap 3", "[fill][right]30px[250px,grow,fill,right]", ""));
 
-		JPanel inputPanel = new JPanel(new MigLayout("fill,inset 0,wrap 3", "[center][right][100px,right][][]", ""));
-
-		JLabel lblCurrency = getJLabel("Currency", Font.BOLD, 16, JLabel.CENTER);
-		JLabel lblRemainingAmount = getJLabel("Remaining Amount", Font.BOLD, 16, JLabel.CENTER);
-		JLabel lblTendered = getJLabel("Tender", Font.BOLD, 16, JLabel.CENTER);
+		JLabel lblCurrency = getJLabel("Currency", Font.BOLD, 16, JLabel.LEADING);
+		JLabel lblRemainingAmount = getJLabel("Remaining", Font.BOLD, 16, JLabel.CENTER);
+		JLabel lblTendered = getJLabel("Tender", Font.BOLD, 16, JLabel.TRAILING);
 
 		inputPanel.add(lblCurrency);
 		inputPanel.add(lblRemainingAmount, "gapleft 20");
@@ -95,7 +92,7 @@ public class MultiCurrencyTenderDialog extends OkCancelOptionDialog implements D
 		for (Currency currency : currencyList) {
 			String dueAmountByCurrency = NumberUtil.format3DigitNumber(currency.getExchangeRate() * dueAmount);
 			JLabel lblRemainingBalance = getJLabel(dueAmountByCurrency, Font.PLAIN, 16, JLabel.RIGHT);
-			JLabel currencyName = getJLabel(currency.getName(), Font.PLAIN, 16, JLabel.CENTER);
+			JLabel currencyName = getJLabel(currency.getName(), Font.PLAIN, 16, JLabel.LEADING);
 			DoubleTextField tfTenderedAmount = getDoubleTextField("", Font.PLAIN, 16, JTextField.RIGHT);
 			PosButton btnExact = new PosButton("EXACT");
 			PosButton btnRound = new PosButton("ROUND");
@@ -106,7 +103,7 @@ public class MultiCurrencyTenderDialog extends OkCancelOptionDialog implements D
 			//inputPanel.add(btnExact, "h 30!");
 			//inputPanel.add(btnRound, "h 30!");
 
-			tfTenderedAmount.getDocument().addDocumentListener(this);
+			tfTenderedAmount.addFocusListener(this);
 
 			CurrencyRow item = new CurrencyRow(currency, lblRemainingBalance, tfTenderedAmount, btnExact, btnRound);
 			currencyRows.add(item);
@@ -181,6 +178,8 @@ public class MultiCurrencyTenderDialog extends OkCancelOptionDialog implements D
 
 	@Override
 	public void doOk() {
+		updateView();
+
 		if (totalTenderedAmount <= 0) {
 			POSMessageDialog.showMessage(POSUtil.getFocusedWindow(), "Invalid Amount");//$NON-NLS-1$
 			return;
@@ -265,17 +264,11 @@ public class MultiCurrencyTenderDialog extends OkCancelOptionDialog implements D
 	}
 
 	@Override
-	public void insertUpdate(DocumentEvent e) {
-		updateView();
+	public void focusGained(FocusEvent e) {
 	}
 
 	@Override
-	public void removeUpdate(DocumentEvent e) {
-		updateView();
-	}
-
-	@Override
-	public void changedUpdate(DocumentEvent e) {
+	public void focusLost(FocusEvent e) {
 		updateView();
 	}
 }

@@ -24,7 +24,7 @@ import com.floreantpos.config.TerminalConfig;
 public class PosUIManager {
 
 	private static final int DEFAULT_FONT_SIZE = 12;
-	private static final int TITLE_FONT_SIZE = 14;
+	private static final int TITLE_FONT_SIZE = 18;
 	private static final int LARGE_FONT_SIZE = 16;
 	private static final int NUMBER_FIELD_FONT_SIZE = 24;
 	private static final int TABLE_NUMBER_FONT_SIZE = 30;

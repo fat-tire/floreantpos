@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry including="**/*.java" kind="src" output="target/classes" path="src">
+	<classpathentry kind="src" output="target/classes" path="src">
 		<attributes>
 			<attribute name="optional" value="true"/>
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry including="**/*.java" kind="src" output="target/classes" path="resources"/>
+	<classpathentry kind="src" output="target/classes" path="resources"/>
 	<classpathentry kind="src" path="i18n"/>
 	<classpathentry kind="src" path="config"/>
 	<classpathentry kind="con" path="org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER">
@@ -14,7 +14,7 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry excluding="**" kind="src" output="target/classes" path="filters">
+	<classpathentry kind="src" output="target/classes" path="filters">
 		<attributes>
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>

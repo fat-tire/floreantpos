@@ -77,13 +77,11 @@ public abstract class OkCancelOptionDialog extends POSDialog {
 		setIconImage(Application.getApplicationIcon().getImage());
 		setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
 
-		JPanel container = (JPanel) getContentPane();
-		container.setBorder(new EmptyBorder(5, 15, 5, 15));
-
 		titlePanel = new TitlePanel();
 		add(titlePanel, BorderLayout.NORTH);
 
 		contentPanel = new TransparentPanel();
+		contentPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
 		add(contentPanel, BorderLayout.CENTER);
 
 		JSeparator jSeparator1 = new JSeparator();
