@@ -1,25 +1,7 @@
-/**
- * ************************************************************************
- * * The contents of this file are subject to the MRPL 1.2
- * * (the  "License"),  being   the  Mozilla   Public  License
- * * Version 1.1  with a permitted attribution clause; you may not  use this
- * * file except in compliance with the License. You  may  obtain  a copy of
- * * the License at http://www.floreantpos.org/license.html
- * * Software distributed under the License  is  distributed  on  an "AS IS"
- * * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * * License for the specific  language  governing  rights  and  limitations
- * * under the License.
- * * The Original Code is FLOREANT POS.
- * * The Initial Developer of the Original Code is OROCUBE LLC
- * * All portions are Copyright (C) 2015 OROCUBE LLC
- * * All Rights Reserved.
- * ************************************************************************
- */
 package com.floreantpos.model.base;
 
+import java.lang.Comparable;
 import java.io.Serializable;
-
-import com.floreantpos.Messages;
 
 
 /**
@@ -33,11 +15,11 @@ import com.floreantpos.Messages;
 
 public abstract class BaseCashDrawerResetHistory  implements Comparable, Serializable {
 
-	public static String REF = Messages.getString("BaseCashDrawerResetHistory.0"); //$NON-NLS-1$
-	public static String PROP_DRAWER_PULL_REPORT = Messages.getString("BaseCashDrawerResetHistory.1"); //$NON-NLS-1$
-	public static String PROP_RESETED_BY = Messages.getString("BaseCashDrawerResetHistory.2"); //$NON-NLS-1$
-	public static String PROP_RESET_TIME = Messages.getString("BaseCashDrawerResetHistory.3"); //$NON-NLS-1$
-	public static String PROP_ID = Messages.getString("BaseCashDrawerResetHistory.4"); //$NON-NLS-1$
+	public static String REF = "CashDrawerResetHistory"; //$NON-NLS-1$
+	public static String PROP_DRAWER_PULL_REPORT = "drawerPullReport"; //$NON-NLS-1$
+	public static String PROP_ID = "id"; //$NON-NLS-1$
+	public static String PROP_RESET_TIME = "resetTime"; //$NON-NLS-1$
+	public static String PROP_RESETED_BY = "resetedBy"; //$NON-NLS-1$
 
 
 	// constructors
@@ -63,7 +45,7 @@ public abstract class BaseCashDrawerResetHistory  implements Comparable, Seriali
 	private java.lang.Integer id;
 
 	// fields
-	private java.util.Date resetTime;
+	protected java.util.Date resetTime;
 
 	// one to one
 	private com.floreantpos.model.DrawerPullReport drawerPullReport;
@@ -99,7 +81,7 @@ public abstract class BaseCashDrawerResetHistory  implements Comparable, Seriali
 	 * Return the value associated with the column: RESET_TIME
 	 */
 	public java.util.Date getResetTime () {
-			return resetTime;
+		return resetTime;
 	}
 
 	/**
@@ -116,7 +98,7 @@ public abstract class BaseCashDrawerResetHistory  implements Comparable, Seriali
 	 * Return the value associated with the column: drawerPullReport
 	 */
 	public com.floreantpos.model.DrawerPullReport getDrawerPullReport () {
-			return drawerPullReport;
+		return drawerPullReport;
 	}
 
 	/**
@@ -133,7 +115,7 @@ public abstract class BaseCashDrawerResetHistory  implements Comparable, Seriali
 	 * Return the value associated with the column: USER_ID
 	 */
 	public com.floreantpos.model.User getResetedBy () {
-			return resetedBy;
+		return resetedBy;
 	}
 
 	/**
@@ -162,7 +144,7 @@ public abstract class BaseCashDrawerResetHistory  implements Comparable, Seriali
 		if (Integer.MIN_VALUE == this.hashCode) {
 			if (null == this.getId()) return super.hashCode();
 			else {
-				String hashStr = this.getClass().getName() + Messages.getString("BaseCashDrawerResetHistory.5") + this.getId().hashCode(); //$NON-NLS-1$
+				String hashStr = this.getClass().getName() + ":" + this.getId().hashCode();
 				this.hashCode = hashStr.hashCode();
 			}
 		}

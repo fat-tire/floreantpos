@@ -1,0 +1,7 @@
+:Modified=true
+:Description=
+-
+	public static String REF = "$!{class.ValueObjectClassName}"; //$NON-NLS-1$
+#foreach ($prop in $class.AllProperties)
+	public static String PROP_${prop.StaticName} = "$!{prop.Name}"; //$NON-NLS-1$
+#end

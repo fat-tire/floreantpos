@@ -1,24 +1,8 @@
-/**
- * ************************************************************************
- * * The contents of this file are subject to the MRPL 1.2
- * * (the  "License"),  being   the  Mozilla   Public  License
- * * Version 1.1  with a permitted attribution clause; you may not  use this
- * * file except in compliance with the License. You  may  obtain  a copy of
- * * the License at http://www.floreantpos.org/license.html
- * * Software distributed under the License  is  distributed  on  an "AS IS"
- * * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * * License for the specific  language  governing  rights  and  limitations
- * * under the License.
- * * The Original Code is FLOREANT POS.
- * * The Initial Developer of the Original Code is OROCUBE LLC
- * * All portions are Copyright (C) 2015 OROCUBE LLC
- * * All Rights Reserved.
- * ************************************************************************
- */
 package com.floreantpos.model.dao;
 
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
+import com.floreantpos.model.dao.CashDrawerResetHistoryDAO;
 import org.hibernate.criterion.Order;
 
 /**
@@ -55,27 +39,27 @@ public abstract class BaseCashDrawerResetHistoryDAO extends com.floreantpos.mode
 	}
 
 	public com.floreantpos.model.CashDrawerResetHistory get(java.lang.Integer key)
-	{
+		throws org.hibernate.HibernateException {
 		return (com.floreantpos.model.CashDrawerResetHistory) get(getReferenceClass(), key);
 	}
 
 	public com.floreantpos.model.CashDrawerResetHistory get(java.lang.Integer key, Session s)
-	{
+		throws org.hibernate.HibernateException {
 		return (com.floreantpos.model.CashDrawerResetHistory) get(getReferenceClass(), key, s);
 	}
 
 	public com.floreantpos.model.CashDrawerResetHistory load(java.lang.Integer key)
-	{
+		throws org.hibernate.HibernateException {
 		return (com.floreantpos.model.CashDrawerResetHistory) load(getReferenceClass(), key);
 	}
 
 	public com.floreantpos.model.CashDrawerResetHistory load(java.lang.Integer key, Session s)
-	{
+		throws org.hibernate.HibernateException {
 		return (com.floreantpos.model.CashDrawerResetHistory) load(getReferenceClass(), key, s);
 	}
 
 	public com.floreantpos.model.CashDrawerResetHistory loadInitialize(java.lang.Integer key, Session s) 
-	{ 
+			throws org.hibernate.HibernateException { 
 		com.floreantpos.model.CashDrawerResetHistory obj = load(key, s); 
 		if (!Hibernate.isInitialized(obj)) {
 			Hibernate.initialize(obj);
@@ -115,7 +99,7 @@ public abstract class BaseCashDrawerResetHistoryDAO extends com.floreantpos.mode
 	 * @return the class identifier
 	 */
 	public java.lang.Integer save(com.floreantpos.model.CashDrawerResetHistory cashDrawerResetHistory)
-	{
+		throws org.hibernate.HibernateException {
 		return (java.lang.Integer) super.save(cashDrawerResetHistory);
 	}
 
@@ -128,7 +112,7 @@ public abstract class BaseCashDrawerResetHistoryDAO extends com.floreantpos.mode
 	 * @return the class identifier
 	 */
 	public java.lang.Integer save(com.floreantpos.model.CashDrawerResetHistory cashDrawerResetHistory, Session s)
-	{
+		throws org.hibernate.HibernateException {
 		return (java.lang.Integer) save((Object) cashDrawerResetHistory, s);
 	}
 
@@ -139,7 +123,7 @@ public abstract class BaseCashDrawerResetHistoryDAO extends com.floreantpos.mode
 	 * @param cashDrawerResetHistory a transient instance containing new or updated state 
 	 */
 	public void saveOrUpdate(com.floreantpos.model.CashDrawerResetHistory cashDrawerResetHistory)
-	{
+		throws org.hibernate.HibernateException {
 		saveOrUpdate((Object) cashDrawerResetHistory);
 	}
 
@@ -152,7 +136,7 @@ public abstract class BaseCashDrawerResetHistoryDAO extends com.floreantpos.mode
 	 * @param s the Session.
 	 */
 	public void saveOrUpdate(com.floreantpos.model.CashDrawerResetHistory cashDrawerResetHistory, Session s)
-	{
+		throws org.hibernate.HibernateException {
 		saveOrUpdate((Object) cashDrawerResetHistory, s);
 	}
 
@@ -162,7 +146,7 @@ public abstract class BaseCashDrawerResetHistoryDAO extends com.floreantpos.mode
 	 * @param cashDrawerResetHistory a transient instance containing updated state
 	 */
 	public void update(com.floreantpos.model.CashDrawerResetHistory cashDrawerResetHistory) 
-	{
+		throws org.hibernate.HibernateException {
 		update((Object) cashDrawerResetHistory);
 	}
 
@@ -174,7 +158,7 @@ public abstract class BaseCashDrawerResetHistoryDAO extends com.floreantpos.mode
 	 * @param the Session
 	 */
 	public void update(com.floreantpos.model.CashDrawerResetHistory cashDrawerResetHistory, Session s)
-	{
+		throws org.hibernate.HibernateException {
 		update((Object) cashDrawerResetHistory, s);
 	}
 
@@ -184,7 +168,7 @@ public abstract class BaseCashDrawerResetHistoryDAO extends com.floreantpos.mode
 	 * @param id the instance ID to be removed
 	 */
 	public void delete(java.lang.Integer id)
-	{
+		throws org.hibernate.HibernateException {
 		delete((Object) load(id));
 	}
 
@@ -196,7 +180,7 @@ public abstract class BaseCashDrawerResetHistoryDAO extends com.floreantpos.mode
 	 * @param s the Session
 	 */
 	public void delete(java.lang.Integer id, Session s)
-	{
+		throws org.hibernate.HibernateException {
 		delete((Object) load(id, s), s);
 	}
 
@@ -206,7 +190,7 @@ public abstract class BaseCashDrawerResetHistoryDAO extends com.floreantpos.mode
 	 * @param cashDrawerResetHistory the instance to be removed
 	 */
 	public void delete(com.floreantpos.model.CashDrawerResetHistory cashDrawerResetHistory)
-	{
+		throws org.hibernate.HibernateException {
 		delete((Object) cashDrawerResetHistory);
 	}
 
@@ -218,7 +202,7 @@ public abstract class BaseCashDrawerResetHistoryDAO extends com.floreantpos.mode
 	 * @param s the Session
 	 */
 	public void delete(com.floreantpos.model.CashDrawerResetHistory cashDrawerResetHistory, Session s)
-	{
+		throws org.hibernate.HibernateException {
 		delete((Object) cashDrawerResetHistory, s);
 	}
 	
@@ -233,7 +217,7 @@ public abstract class BaseCashDrawerResetHistoryDAO extends com.floreantpos.mode
 	 * </ul>
 	 */
 	public void refresh (com.floreantpos.model.CashDrawerResetHistory cashDrawerResetHistory, Session s)
-	{
+		throws org.hibernate.HibernateException {
 		refresh((Object) cashDrawerResetHistory, s);
 	}
 
