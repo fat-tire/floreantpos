@@ -24,7 +24,6 @@ import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
-import javax.swing.table.AbstractTableModel;
 
 import org.jdesktop.swingx.JXTable;
 
@@ -32,6 +31,7 @@ import com.floreantpos.POSConstants;
 import com.floreantpos.bo.ui.BOMessageDialog;
 import com.floreantpos.model.Currency;
 import com.floreantpos.model.dao.CurrencyDAO;
+import com.floreantpos.swing.BeanTableModel;
 import com.floreantpos.swing.TransparentPanel;
 import com.floreantpos.ui.PosTableRenderer;
 import com.floreantpos.ui.dialog.BeanEditorDialog;
@@ -39,15 +39,21 @@ import com.floreantpos.ui.dialog.ConfirmDeleteDialog;
 import com.floreantpos.ui.model.CurrencyForm;
 
 public class CurrencyExplorer extends TransparentPanel {
-	private List<Currency> currencyList;
-
 	private JXTable table;
-	private CurrencyExplorerTableModel tableModel;
+	private BeanTableModel<Currency> tableModel;
 
 	public CurrencyExplorer() {
-		currencyList = CurrencyDAO.getInstance().findAll();
+		tableModel = new BeanTableModel<Currency>(Currency.class);
 
-		tableModel = new CurrencyExplorerTableModel();
+		tableModel.addColumn(POSConstants.ID.toUpperCase(), "id"); //$NON-NLS-1$
+		tableModel.addColumn(POSConstants.NAME.toUpperCase(), "name"); //$NON-NLS-1$
+		tableModel.addColumn("CODE", "code"); //$NON-NLS-1$
+		tableModel.addColumn("SYMBOL", "symbol"); //$NON-NLS-1$
+		tableModel.addColumn("RATE", "exchangeRate"); //$NON-NLS-1$
+		tableModel.addColumn("MAIN", "main"); //$NON-NLS-1$
+		tableModel.addColumn("TOLERANCE", "tolerance"); //$NON-NLS-1$
+
+		tableModel.addRows(CurrencyDAO.getInstance().findAll());
 		table = new JXTable(tableModel);
 		table.setDefaultRenderer(Object.class, new PosTableRenderer());
 
@@ -64,7 +70,8 @@ public class CurrencyExplorer extends TransparentPanel {
 					if (dialog.isCanceled())
 						return;
 
-					tableModel.addCurrency((Currency) editor.getBean());
+					tableModel.addRow((Currency) editor.getBean());
+					refresh();
 				} catch (Exception x) {
 					BOMessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
 				}
@@ -80,15 +87,15 @@ public class CurrencyExplorer extends TransparentPanel {
 					if (index < 0)
 						return;
 
-					Currency currency = currencyList.get(index);
+					index = table.convertColumnIndexToModel(index);
+					Currency currency = tableModel.getRow(index);
 
 					CurrencyForm currencyForm = new CurrencyForm(currency);
 					BeanEditorDialog dialog = new BeanEditorDialog(currencyForm);
 					dialog.open();
 					if (dialog.isCanceled())
 						return;
-
-					table.repaint();
+					refresh();
 				} catch (Throwable x) {
 					BOMessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
 				}
@@ -103,11 +110,13 @@ public class CurrencyExplorer extends TransparentPanel {
 					if (index < 0)
 						return;
 
+					index = table.convertColumnIndexToModel(index);
+
 					if (ConfirmDeleteDialog
 							.showMessage(CurrencyExplorer.this, com.floreantpos.POSConstants.CONFIRM_DELETE, com.floreantpos.POSConstants.DELETE) == ConfirmDeleteDialog.YES) {
-						Currency currency = currencyList.get(index);
+						Currency currency = tableModel.getRow(index);
 						CurrencyDAO.getInstance().delete(currency);
-						tableModel.deleteCurrency(currency, index);
+						tableModel.removeRow(currency);
 					}
 				} catch (Exception x) {
 					BOMessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
@@ -117,71 +126,21 @@ public class CurrencyExplorer extends TransparentPanel {
 		});
 
 		TransparentPanel panel = new TransparentPanel();
+
 		panel.add(addButton);
 		panel.add(editButton);
 		panel.add(deleteButton);
 		add(panel, BorderLayout.SOUTH);
 	}
 
-	class CurrencyExplorerTableModel extends AbstractTableModel {
-		String[] columnNames = { POSConstants.ID, POSConstants.NAME, "SYMBOL", POSConstants.RATE, "MAIN" };
+	protected BeanTableModel<Currency> getModel() {
+		return tableModel;
+	}
 
-		public int getRowCount() {
-			if (currencyList == null) {
-				return 0;
-			}
-			return currencyList.size();
-		}
-
-		public int getColumnCount() {
-			return columnNames.length;
-		}
-
-		@Override
-		public String getColumnName(int column) {
-			return columnNames[column];
-		}
-
-		@Override
-		public boolean isCellEditable(int rowIndex, int columnIndex) {
-			return false;
-		}
-
-		public Object getValueAt(int rowIndex, int columnIndex) {
-			if (currencyList == null)
-				return ""; //$NON-NLS-1$
-
-			Currency currency = currencyList.get(rowIndex);
-
-			switch (columnIndex) {
-				case 0:
-					return String.valueOf(currency.getId());
-
-				case 1:
-					return currency.getName();
-
-				case 2:
-					return currency.getSymbol();
-
-				case 3:
-					return currency.getExchangeRate();
-
-				case 4:
-					return currency.isMain();
-			}
-
-			return null;
-		}
-
-		public void addCurrency(Currency currency) {
-			int size = currencyList.size();
-			currencyList.add(currency);
-			fireTableRowsInserted(size, size);
-		}
-
-		public void deleteCurrency(Currency currency, int index) {
-			currencyList.remove(currency);
-			fireTableRowsDeleted(index, index);
-		}
+	private void refresh() {
+		List<Currency> currencyList = CurrencyDAO.getInstance().findAll();
+		tableModel.getRows().clear();
+		tableModel.addRows(currencyList);
+		table.repaint();
 	}
 }

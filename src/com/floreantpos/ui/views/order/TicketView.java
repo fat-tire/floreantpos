@@ -467,7 +467,6 @@ public class TicketView extends JPanel {
 	}// GEN-LAST:event_doDeleteSelection
 
 	private void doIncreaseAmount() {// GEN-FIRST:event_doIncreaseAmount
-
 		if (!checkStock(-1)) {
 			POSMessageDialog.showError("Items are not available in stock");
 			return;
@@ -620,6 +619,14 @@ public class TicketView extends JPanel {
 			if (!(selected instanceof ITicketItem)) {
 				return;
 			}
+
+			ITicketItem iTicketItem = (ITicketItem) selected;
+			if (iTicketItem.isPrintedToKitchen()) {
+				btnIncreaseAmount.setEnabled(false);
+				btnDecreaseAmount.setEnabled(false);
+				btnDelete.setEnabled(false);
+			}
+
 			if (selected instanceof TicketItemModifier) {
 				btnIncreaseAmount.setEnabled(false);
 				btnDecreaseAmount.setEnabled(false);
@@ -627,12 +634,19 @@ public class TicketView extends JPanel {
 				btnDelete.setEnabled(false);
 			}
 			else {
-				btnEdit.setEnabled(false);
+				btnIncreaseAmount.setEnabled(true);
+				btnDecreaseAmount.setEnabled(true);
 				btnDelete.setEnabled(true);
+				btnEdit.setEnabled(false);
 
 				if (selected instanceof TicketItem) {
 					TicketItem ticketItem = (TicketItem) selected;
-					if (ticketItem.isHasModifiers()) {
+					if (ticketItem.isPrintedToKitchen()) {
+						btnIncreaseAmount.setEnabled(false);
+						btnDecreaseAmount.setEnabled(false);
+						btnDelete.setEnabled(false);
+					}
+					else if (ticketItem.isHasModifiers()) {
 						btnIncreaseAmount.setEnabled(false);
 						btnDecreaseAmount.setEnabled(false);
 						btnEdit.setEnabled(true);
@@ -642,11 +656,6 @@ public class TicketView extends JPanel {
 						btnDecreaseAmount.setEnabled(false);
 						btnDelete.setEnabled(true);
 					}
-					else {
-						btnIncreaseAmount.setEnabled(true);
-						btnDecreaseAmount.setEnabled(true);
-					}
-					btnDelete.setEnabled(!ticketItem.isPrintedToKitchen());
 				}
 			}
 		}

@@ -6,13 +6,15 @@
 			<generator class="identity" />
 		</id>
 
-		<property column="NAME" length="20" name="name" not-null="true" type="java.lang.String" />
+		<property column="CODE" length="20" name="code" type="java.lang.String" />
+		<property column="NAME" length="30" name="name" type="java.lang.String" />
 		<property column="SYMBOL" length="10" name="symbol" type="java.lang.String" />
-		<property column="MAIN" length="10" name="main" type="java.lang.Boolean" />
-
 		<property column="EXCHANGE_RATE" name="exchangeRate" type="java.lang.Double">
 			<meta attribute="defaultValue">1</meta>
 		</property>
-		<!-- Associations -->
+		<property column="TOLERANCE" name="tolerance" type="java.lang.Double" />
+		<property column="BUY_PRICE" name="buyPrice" type="java.lang.Double" />
+		<property column="SALES_PRICE" name="salesPrice" type="java.lang.Double" />
+		<property column="MAIN" name="main" type="java.lang.Boolean" />
 	</class>
 </hibernate-mapping>

@@ -42,6 +42,7 @@ import com.floreantpos.swing.DoubleTextField;
 import com.floreantpos.swing.FixedLengthTextField;
 import com.floreantpos.swing.MessageDialog;
 import com.floreantpos.ui.BeanEditor;
+import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.util.POSUtil;
 
 /**
@@ -50,12 +51,11 @@ import com.floreantpos.util.POSUtil;
  */
 public class CurrencyForm extends BeanEditor {
 
-	private JLabel lblName;
-	private JLabel lblExchangeRate;
-	private JLabel lblSymbol;
+	private FixedLengthTextField tfCode;
 	private FixedLengthTextField tfName;
 	private JTextField tfSymbol;
 	private DoubleTextField tfExchangeRate;
+	private DoubleTextField tfTolerance;
 	private JCheckBox chkMain;
 
 	public CurrencyForm() {
@@ -70,24 +70,35 @@ public class CurrencyForm extends BeanEditor {
 
 	private void initComponents() {
 		JPanel contentPanel = new JPanel(new MigLayout("fill"));
-		lblName = new JLabel(com.floreantpos.POSConstants.NAME + ":");
+
+		JLabel lblCode = new JLabel("Code:");
+		tfCode = new FixedLengthTextField();
+
+		JLabel lblName = new JLabel(com.floreantpos.POSConstants.NAME + ":");
 		tfName = new FixedLengthTextField();
 
-		lblExchangeRate = new JLabel("Exchange Rate:");
+		JLabel lblExchangeRate = new JLabel("Exchange Rate:");
 		tfExchangeRate = new DoubleTextField();
 
-		lblSymbol = new JLabel("Symbol");
+		JLabel lblTolerance = new JLabel("Tolerance:");
+		tfTolerance = new DoubleTextField();
+
+		JLabel lblSymbol = new JLabel("Symbol");
 		tfSymbol = new JTextField();
 
 		chkMain = new JCheckBox("Main");
 
 		contentPanel.add(lblName, "cell 0 0");
 		contentPanel.add(tfName, "cell 1 0");
-		contentPanel.add(lblSymbol, "cell 0 1");
-		contentPanel.add(tfSymbol, "grow,cell 1 1");
-		contentPanel.add(lblExchangeRate, "cell 0 2");
-		contentPanel.add(tfExchangeRate, "grow,cell 1 2");
-		contentPanel.add(chkMain, "cell 1 3");
+		contentPanel.add(lblCode, "cell 0 1");
+		contentPanel.add(tfCode, "cell 1 1");
+		contentPanel.add(lblSymbol, "cell 0 2");
+		contentPanel.add(tfSymbol, "grow,cell 1 2");
+		contentPanel.add(lblExchangeRate, "cell 0 3");
+		contentPanel.add(tfExchangeRate, "grow,cell 1 3");
+		contentPanel.add(lblTolerance, "cell 0 4");
+		contentPanel.add(tfTolerance, "grow,cell 1 4");
+		contentPanel.add(chkMain, "cell 1 5");
 
 		add(contentPanel);
 	}
@@ -116,9 +127,11 @@ public class CurrencyForm extends BeanEditor {
 		if (currency == null) {
 			return;
 		}
+		tfCode.setText(currency.getCode());
 		tfName.setText(currency.getName());
 		tfSymbol.setText(currency.getSymbol());
 		tfExchangeRate.setText("" + currency.getExchangeRate()); //$NON-NLS-1$
+		tfTolerance.setText("" + currency.getTolerance()); //$NON-NLS-1$
 		chkMain.setSelected(currency.isMain());
 	}
 
@@ -126,15 +139,27 @@ public class CurrencyForm extends BeanEditor {
 	protected boolean updateModel() {
 		Currency currency = (Currency) getBean();
 
+		String code = tfCode.getText();
 		String name = tfName.getText();
-		if (POSUtil.isBlankOrNull(name)) {
-			MessageDialog.showError(com.floreantpos.POSConstants.NAME_REQUIRED);
+		if (POSUtil.isBlankOrNull(code)) {
+			MessageDialog.showError("Code is required");
 			return false;
 		}
+		
+		double exchangeRate = tfExchangeRate.getDouble();
+		if(chkMain.isSelected()) {
+			if(exchangeRate != 1.0) {
+				POSMessageDialog.showMessage(POSUtil.getFocusedWindow(), "Exchange rate must be 1.0 for main currency");
+				return false;
+			}
+		}
+		
+		currency.setCode(code);
 		currency.setName(name);
 		currency.setSymbol(tfSymbol.getText());
-		currency.setExchangeRate(tfExchangeRate.getDouble());
 		currency.setMain(chkMain.isSelected());
+		currency.setExchangeRate(exchangeRate);
+		currency.setTolerance(tfTolerance.getDouble());
 
 		if (chkMain.isSelected()) {
 			CurrencyDAO dao = new CurrencyDAO();
@@ -157,8 +182,8 @@ public class CurrencyForm extends BeanEditor {
 			} finally {
 				session.close();
 			}
-		}
 
+		}
 		return true;
 	}
 

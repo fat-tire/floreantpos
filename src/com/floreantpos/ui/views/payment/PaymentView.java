@@ -55,7 +55,6 @@ import com.floreantpos.report.ReceiptPrintService;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.swing.PosUIManager;
 import com.floreantpos.swing.TransparentPanel;
-import com.floreantpos.ui.dialog.CashBackDialog;
 import com.floreantpos.ui.dialog.MultiCurrencyTenderDialog;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.util.CurrencyUtil;
@@ -423,7 +422,6 @@ public class PaymentView extends JPanel {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				try {
 					List<Currency> currencyList = CurrencyUtil.getAllCurrency();
-
 					if (currencyList.size() > 1) {
 						if (!adjustCashDrawerBalance(currencyList)) {
 							return;
@@ -490,18 +488,8 @@ public class PaymentView extends JPanel {
 			return false;
 		}
 		txtTenderedAmount.setText(NumberUtil.format3DigitNumber(dialog.getTenderedAmount()));
-		double totalDueAmount = getDueAmount();
 		CashDrawer cashDrawer = dialog.getCashDrawer();
 
-		if (dialog.hasCashBack()) {
-			CashBackDialog cashBackDialog = new CashBackDialog(settleTicketView.getTicket(),dialog.getChangeDueAmount(), dialog.getCashDrawer());
-			cashBackDialog.pack();
-			cashBackDialog.open();
-
-			if (cashBackDialog.isCanceled()) {
-				return false;
-			}
-		}
 		Session session = null;
 		Transaction tx = null;
 		try {

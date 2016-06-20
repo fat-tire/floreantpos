@@ -34,18 +34,6 @@ public class Currency extends BaseCurrency {
 		super(id);
 	}
 
-	/**
-	 * Constructor for required fields
-	 */
-	public Currency (
-		java.lang.Integer id,
-		java.lang.String name) {
-
-		super (
-			id,
-			name);
-	}
-
 	/*[CONSTRUCTOR MARKER END]*/
 	
 	@Override

@@ -195,9 +195,13 @@ public class TicketViewerTable extends JTable {
 			return false;
 		}
 
-		Object object = model.get(selectedRow);
-		if (object instanceof TicketItem) {
-			TicketItem ticketItem = (TicketItem) object;
+		ITicketItem iTicketItem = (ITicketItem) model.get(selectedRow);
+		if (iTicketItem.isPrintedToKitchen()) {
+			return false;
+		}
+
+		if (iTicketItem instanceof TicketItem) {
+			TicketItem ticketItem = (TicketItem) iTicketItem;
 			int itemCount = ticketItem.getItemCount();
 			ticketItem.setItemCount(++itemCount);
 			return true;
@@ -214,9 +218,12 @@ public class TicketViewerTable extends JTable {
 			return false;
 		}
 
-		Object object = model.get(selectedRow);
-		if (object instanceof TicketItem) {
-			TicketItem ticketItem = (TicketItem) object;
+		ITicketItem iTicketItem = (ITicketItem) model.get(selectedRow);
+		if (iTicketItem.isPrintedToKitchen()) {
+			return false;
+		}
+		if (iTicketItem instanceof TicketItem) {
+			TicketItem ticketItem = (TicketItem) iTicketItem;
 			int itemCount = ticketItem.getItemCount();
 			if (itemCount == 1) {
 				model.delete(selectedRow);

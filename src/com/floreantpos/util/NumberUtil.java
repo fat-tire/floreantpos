@@ -54,9 +54,9 @@ public class NumberUtil {
 		}
 		String value = numberFormat2.format(number);
 
-		if (value.startsWith("-")) { //$NON-NLS-1$
+		/*if (value.startsWith("-")) { //$NON-NLS-1$
 			return numberFormat2.format(0);
-		}
+		}*/
 		return value;
 	}
 

@@ -22,9 +22,12 @@ import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 import javax.swing.Icon;
 import javax.swing.JTabbedPane;
+import javax.swing.border.EmptyBorder;
 
 import com.floreantpos.bo.ui.BackOfficeWindow;
+import com.floreantpos.bo.ui.explorer.CurrencyDialog;
 import com.floreantpos.bo.ui.explorer.CurrencyExplorer;
+import com.floreantpos.ui.dialog.OkCancelOptionDialog;
 
 public class CurrencyExplorerAction extends AbstractAction {
 
@@ -41,19 +44,14 @@ public class CurrencyExplorerAction extends AbstractAction {
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		BackOfficeWindow backOfficeWindow = com.floreantpos.util.POSUtil.getBackOfficeWindow();
+		//CurrencyExplorer explorer = new CurrencyExplorer();
 
-		CurrencyExplorer explorer = null;
-		JTabbedPane tabbedPane = backOfficeWindow.getTabbedPane();
-		int index = tabbedPane.indexOfTab("Currency Explorer");
-		if (index == -1) {
-			explorer = new CurrencyExplorer();
-			tabbedPane.addTab("Currency Explorer", explorer);
-		}
-		else {
-			explorer = (CurrencyExplorer) tabbedPane.getComponentAt(index);
-		}
-		tabbedPane.setSelectedComponent(explorer);
+		//explorer.setBorder(new EmptyBorder(20, 10, 20, 10));
+		CurrencyDialog dialog = new CurrencyDialog();
+		dialog.setTitle("Floreant POS");
+		//dialog.add(explorer);
+		dialog.setSize(800, 600);
+		dialog.open();
 	}
 
 }
