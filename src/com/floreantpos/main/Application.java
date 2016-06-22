@@ -103,21 +103,21 @@ public class Application {
 	private static ImageIcon applicationIcon;
 
 	private boolean systemInitialized;
+	private boolean headLess = false;
 
 	public final static String VERSION = AppProperties.getVersion();
 
 	private Application() {
-		//Locale.setDefault(Locale.forLanguageTag("ar-EG"));
 
+	}
+
+	public void start() {
 		applicationIcon = new ImageIcon(getClass().getResource("/icons/icon.png")); //$NON-NLS-1$
 		posWindow = new PosWindow();
 		posWindow.setTitle(getTitle());
 		posWindow.setIconImage(applicationIcon.getImage());
-	}
 
-	public void start() {
 		setApplicationLook();
-		//initializeTouchScroll();
 
 		rootView = RootView.getInstance();
 
@@ -159,7 +159,6 @@ public class Application {
 		try {
 
 			posWindow.setGlassPaneVisible(true);
-			//posWindow.setGlassPaneMessage(com.floreantpos.POSConstants.LOADING);
 
 			DatabaseUtil.checkConnection(DatabaseUtil.initialize());
 			DatabaseUtil.updateLegacyDatabase();
@@ -170,9 +169,11 @@ public class Application {
 			refreshRestaurant();
 			loadCurrency();
 			loadPrinters();
+			initLengthUnit();
 			initPlugins();
+
 			LoginView.getInstance().initializeOrderButtonPanel();
-			//setTicketActiveSetterScheduler();
+
 			setSystemInitialized(true);
 
 		} catch (DatabaseConnectionException e) {
@@ -199,6 +200,26 @@ public class Application {
 		} finally {
 			getPosWindow().setGlassPaneVisible(false);
 		}
+	}
+
+	public void initializeSystemHeadless() {
+		if (isSystemInitialized()) {
+			return;
+		}
+
+		this.headLess = true;
+
+		DatabaseUtil.initialize();
+
+		initTerminal();
+		initOrderTypes();
+		initPrintConfig();
+		refreshRestaurant();
+		loadCurrency();
+		loadPrinters();
+		initLengthUnit();
+
+		setSystemInitialized(true);
 	}
 
 	private void initOrderTypes() {
@@ -259,11 +280,12 @@ public class Application {
 		}
 
 		TerminalConfig.setTerminalId(terminalId);
-		LoginView.getInstance().setTerminalId(terminalId);
+
+		if (!headLess) {
+			LoginView.getInstance().setTerminalId(terminalId);
+		}
 
 		this.terminal = terminal;
-
-		initLengthUnit();
 	}
 
 	public void refreshRestaurant() {
@@ -275,13 +297,14 @@ public class Application {
 				RestaurantDAO.getInstance().saveOrUpdate(restaurant);
 			}
 
-			if (restaurant.isItemPriceIncludesTax()) {
-				posWindow.setStatus(Messages.getString("Application.41")); //$NON-NLS-1$
+			if (!headLess) {
+				if (restaurant.isItemPriceIncludesTax()) {
+					posWindow.setStatus(Messages.getString("Application.41")); //$NON-NLS-1$
+				}
+				else {
+					posWindow.setStatus(Messages.getString("Application.42")); //$NON-NLS-1$
+				}
 			}
-			else {
-				posWindow.setStatus(Messages.getString("Application.42")); //$NON-NLS-1$
-			}
-
 			PaymentGatewayPlugin paymentGateway = CardConfig.getPaymentGateway();
 
 			if (paymentGateway instanceof InginicoPlugin) {
