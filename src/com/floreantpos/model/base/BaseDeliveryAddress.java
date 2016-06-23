@@ -17,6 +17,9 @@ public abstract class BaseDeliveryAddress  implements Comparable, Serializable {
 
 	public static String REF = "DeliveryAddress";
 	public static String PROP_CUSTOMER = "customer";
+	public static String PROP_DISTANCE = "distance";
+	public static String PROP_ROOM_NO = "roomNo";
+	public static String PROP_PHONE_EXTENSION = "phoneExtension";
 	public static String PROP_ADDRESS = "address";
 	public static String PROP_ID = "id";
 
@@ -45,6 +48,9 @@ public abstract class BaseDeliveryAddress  implements Comparable, Serializable {
 
 	// fields
 		protected java.lang.String address;
+		protected java.lang.String phoneExtension;
+		protected java.lang.String roomNo;
+		protected java.lang.Double distance;
 
 	// many to one
 	private com.floreantpos.model.Customer customer;
@@ -86,6 +92,57 @@ public abstract class BaseDeliveryAddress  implements Comparable, Serializable {
 	 */
 	public void setAddress (java.lang.String address) {
 		this.address = address;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: PHONE_EXTENSION
+	 */
+	public java.lang.String getPhoneExtension () {
+					return phoneExtension;
+			}
+
+	/**
+	 * Set the value related to the column: PHONE_EXTENSION
+	 * @param phoneExtension the PHONE_EXTENSION value
+	 */
+	public void setPhoneExtension (java.lang.String phoneExtension) {
+		this.phoneExtension = phoneExtension;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: ROOM_NO
+	 */
+	public java.lang.String getRoomNo () {
+					return roomNo;
+			}
+
+	/**
+	 * Set the value related to the column: ROOM_NO
+	 * @param roomNo the ROOM_NO value
+	 */
+	public void setRoomNo (java.lang.String roomNo) {
+		this.roomNo = roomNo;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: DISTANCE
+	 */
+	public java.lang.Double getDistance () {
+									return distance == null ? Double.valueOf(0) : distance;
+					}
+
+	/**
+	 * Set the value related to the column: DISTANCE
+	 * @param distance the DISTANCE value
+	 */
+	public void setDistance (java.lang.Double distance) {
+		this.distance = distance;
 	}
 
 

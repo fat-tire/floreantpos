@@ -86,6 +86,8 @@ public class ConfigurationDialog extends POSDialog implements ChangeListener, Ac
 		for (FloreantPlugin plugin : ExtensionManager.getPlugins()) {
 			plugin.initConfigurationView(this);
 		}
+		//addView(new OtherConfigurationView());
+
 		add(contentPanel, BorderLayout.CENTER);
 	}
 

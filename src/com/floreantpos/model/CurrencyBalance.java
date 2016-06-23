@@ -6,8 +6,6 @@ public class CurrencyBalance extends BaseCurrencyBalance {
 	private static final long serialVersionUID = 1L;
 
 	private String currencyName;
-	private double cashCreditAmount;
-	private double cashBackAmount;
 
 	public CurrencyBalance() {
 		super();
@@ -17,22 +15,6 @@ public class CurrencyBalance extends BaseCurrencyBalance {
 		super(id);
 	}
 
-	public double getCashBackAmount() {
-		return cashBackAmount;
-	}
-
-	public void setCashBackAmount(double cashBack) {
-		this.cashBackAmount = cashBack;
-	}
-
-	public double getCashCreditAmount() {
-		return cashCreditAmount;
-	}
-
-	public void setCashCreditAmount(double cashCredit) {
-		this.cashCreditAmount = cashCredit;
-	}
-
 	public String getCurrencyName() {
 		return super.getCurrency().getName();
 	}
@@ -40,6 +22,5 @@ public class CurrencyBalance extends BaseCurrencyBalance {
 	public void setCurrencyName(String currencyName) {
 		this.currencyName = currencyName;
 	}
-	
 
 }

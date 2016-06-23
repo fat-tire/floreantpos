@@ -206,7 +206,7 @@ public class ClockInOutAction extends PosAction {
 		}
 	}
 
-	private void performDriverOut(User user) {
+	public void performDriverOut(User user) {
 		try {
 			if (user == null) {
 				return;
@@ -237,7 +237,7 @@ public class ClockInOutAction extends PosAction {
 		}
 	}
 
-	private void performDriverIn(User user) {
+	public void performDriverIn(User user) {
 		try {
 			if (user == null) {
 				return;

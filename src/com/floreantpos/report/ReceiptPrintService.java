@@ -589,6 +589,12 @@ public class ReceiptPrintService {
 					beginRow(ticketHeaderBuilder);
 					addColumn(ticketHeaderBuilder, ticket.getDeliveryAddress());
 					endRow(ticketHeaderBuilder);
+
+					if (StringUtils.isNotEmpty(ticket.getExtraDeliveryInfo())) {
+						beginRow(ticketHeaderBuilder);
+						addColumn(ticketHeaderBuilder, ticket.getExtraDeliveryInfo());
+						endRow(ticketHeaderBuilder);
+					}
 				}
 				else {
 					beginRow(ticketHeaderBuilder);

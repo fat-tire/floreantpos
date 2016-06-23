@@ -75,6 +75,7 @@ import com.floreantpos.ui.views.order.RootView;
 import com.floreantpos.util.CurrencyUtil;
 import com.floreantpos.util.DatabaseConnectionException;
 import com.floreantpos.util.DatabaseUtil;
+import com.floreantpos.util.GlobalConfigUtil;
 import com.floreantpos.util.POSUtil;
 import com.floreantpos.util.ShiftUtil;
 import com.floreantpos.util.UserNotFoundException;
@@ -168,6 +169,7 @@ public class Application {
 			initPrintConfig();
 			refreshRestaurant();
 			loadCurrency();
+			loadGlobalConfig();
 			loadPrinters();
 			initLengthUnit();
 			initPlugins();
@@ -318,6 +320,10 @@ public class Application {
 
 	private void loadCurrency() {
 		CurrencyUtil.populateCurrency();
+	}
+
+	private void loadGlobalConfig() {
+		GlobalConfigUtil.populateGlobalConfig();
 	}
 
 	public List<OrderType> getOrderTypes() {

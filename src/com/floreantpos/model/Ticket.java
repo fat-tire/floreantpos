@@ -95,6 +95,7 @@ public class Ticket extends BaseTicket {
 	public static final String CUSTOMER_NAME = "CUSTOMER_NAME"; //$NON-NLS-1$
 	public static final String CUSTOMER_ID = "CUSTOMER_ID"; //$NON-NLS-1$
 	public static final String CUSTOMER_ZIP_CODE = "CUSTOMER_ZIP_CODE"; //$NON-NLS-1$
+	public static final String MANAGER_INSTRUCTION = "MANAGER_INSTRUCTION";
 
 	public static final String DRIVER_OUT_TIME = "OUT_AT";
 
