@@ -21,8 +21,6 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.io.File;
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -141,10 +139,6 @@ public class Application {
 
 	private void setApplicationLook() {
 		try {
-			//UIManager.put("control", UIManager.getColor("control").brighter());
-			//UIManager.put("Button.background", UIManager.getColor("Button.background").brighter());
-			//UIManager.put("ToggleButton.background", UIManager.getColor("ToggleButton.background").brighter());
-
 			PlasticXPLookAndFeel.setPlasticTheme(new ExperienceBlue());
 			UIManager.setLookAndFeel(new PlasticXPLookAndFeel());
 			initializeFont();
@@ -158,7 +152,6 @@ public class Application {
 		}
 
 		try {
-
 			posWindow.setGlassPaneVisible(true);
 
 			DatabaseUtil.checkConnection(DatabaseUtil.initialize());
@@ -180,24 +173,14 @@ public class Application {
 
 		} catch (DatabaseConnectionException e) {
 			e.printStackTrace();
-			StringWriter writer = new StringWriter();
-			e.printStackTrace(new PrintWriter(writer));
 
-			if (writer.toString().contains(Messages.getString("Application.3"))) { //$NON-NLS-1$
-				POSMessageDialog.showError(Application.getPosWindow(), Messages.getString("Application.4") + Messages.getString("Application.40")); //$NON-NLS-1$ //$NON-NLS-2$
-
-				return;
-			}
-			else {
-				int option = JOptionPane.showConfirmDialog(getPosWindow(),
-						Messages.getString("Application.0"), Messages.getString(POSConstants.POS_MESSAGE_ERROR), JOptionPane.YES_NO_OPTION); //$NON-NLS-1$ //$NON-NLS-2$
-				if (option == JOptionPane.YES_OPTION) {
-					DatabaseConfigurationDialog.show(Application.getPosWindow());
-				}
+			int option = JOptionPane.showConfirmDialog(getPosWindow(),
+					Messages.getString("Application.0"), Messages.getString(POSConstants.POS_MESSAGE_ERROR), JOptionPane.YES_NO_OPTION); //$NON-NLS-1$ //$NON-NLS-2$
+			if (option == JOptionPane.YES_OPTION) {
+				DatabaseConfigurationDialog.show(Application.getPosWindow());
 			}
 		} catch (Exception e) {
 			POSMessageDialog.showError(getPosWindow(), e.getMessage(), e);
-			e.printStackTrace();
 			logger.error(e);
 		} finally {
 			getPosWindow().setGlassPaneVisible(false);
@@ -240,15 +223,6 @@ public class Application {
 			printers = new PosPrinters();
 		}
 	}
-
-	//	private void setTicketActiveSetterScheduler() {
-	//		Calendar calendar = Calendar.getInstance();
-	//		calendar.set(Calendar.DAY_OF_MONTH, calendar.get(Calendar.DAY_OF_MONTH) + 1);
-	//		calendar.set(Calendar.HOUR_OF_DAY, 0);
-	//		calendar.set(Calendar.MINUTE, 0);
-	//		calendar.set(Calendar.SECOND, 0);
-	//
-	//	}
 
 	private void initPrintConfig() {
 		printConfiguration = PrinterConfigurationDAO.getInstance().get(PrinterConfiguration.ID);
@@ -356,9 +330,6 @@ public class Application {
 		JDialog dialog = optionPane.createDialog(POSUtil.getFocusedWindow(), com.floreantpos.POSConstants.MDS_POS);
 		dialog.setVisible(true);
 
-		//		int option = JOptionPane.showOptionDialog(getPosWindow(), com.floreantpos.POSConstants.SURE_SHUTDOWN_, com.floreantpos.POSConstants.CONFIRM_SHUTDOWN,
-		//				JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
-
 		Object selectedValue = optionPane.getValue();
 
 		if (selectedValue == null)
@@ -397,10 +368,6 @@ public class Application {
 
 			int option = POSMessageDialog.showYesNoQuestionDialog(posWindow, Messages.getString("Application.43"), Messages.getString("Application.44")); //$NON-NLS-1$ //$NON-NLS-2$
 			if (option == JOptionPane.YES_OPTION) {
-
-				//			if (currentShift == null) {
-				//				throw new ShiftException(POSConstants.NO_SHIFT_CONFIGURED);
-				//			}
 
 				Calendar currentTime = Calendar.getInstance();
 				user.doClockIn(getTerminal(), currentShift, currentTime);
@@ -482,10 +449,6 @@ public class Application {
 
 		return terminal;
 	}
-
-	//	public static PrinterConfiguration getPrinterConfiguration() {
-	//		return getInstance().printConfiguration;
-	//	}
 
 	public static PosPrinters getPrinters() {
 		return getInstance().printers;
