@@ -316,9 +316,6 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		//lblSortOrder = new JLabel(Messages.getString("MenuItemForm.lblSortOrder.text")); //$NON-NLS-1$
 		tfSortOrder.setText(""); //$NON-NLS-1$
 		lblBarcode = new JLabel(Messages.getString("MenuItemForm.lblBarcode.text")); //$NON-NLS-1$
-		//	lblBuyPrice = new JLabel(Messages.getString("LABEL_BUY_PRICE")); //$NON-NLS-1$
-		tfBuyPrice = new DoubleTextField(20);
-		tfBuyPrice.setHorizontalAlignment(SwingConstants.TRAILING);
 		cbTax.setPreferredSize(new Dimension(198, 0));
 		///lblButtonColor = new JLabel(Messages.getString("MenuItemForm.lblButtonColor.text")); //$NON-NLS-1$
 		btnButtonColor = new JButton(); //$NON-NLS-1$
@@ -392,7 +389,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 
 		tfDiscountRate.setDocument(new DoubleDocument());
 
-		tabGeneral.setLayout(new MigLayout("insets 20", "[][]20px[][]", "[][][][][][][][][][][][]")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		tabGeneral.setLayout(new MigLayout("insets 20", "[][]20px[][]", "[][][][][][][][][][][][][]")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		/*JLabel lblImage = new JLabel(Messages.getString("MenuItemForm.28")); //$NON-NLS-1$
 		lblImage.setHorizontalAlignment(SwingConstants.TRAILING);
 		tabGeneral.add(lblImage, "cell 0 0,right"); //$NON-NLS-1$
@@ -418,7 +415,9 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 			}
 		});
 		tabGeneral.add(btnClearImage, "cell 1 0"); //$NON-NLS-1$
-		*/tabGeneral.add(lfname, "cell 0 1 ,right"); //$NON-NLS-1$
+		*/
+		
+		tabGeneral.add(lfname, "cell 0 1 ,right"); //$NON-NLS-1$
 		tabGeneral.add(tfName, "cell 1 1,grow"); //$NON-NLS-1$
 
 		tabGeneral.add(lblTranslatedName, "cell 0 2,right"); //$NON-NLS-1$
@@ -430,24 +429,30 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 
 		tabGeneral.add(lblUnitName, "cell 0 3,right"); //$NON-NLS-1$
 		tabGeneral.add(tfUnitName, "cell 1 3,grow"); //$NON-NLS-1$
+		JLabel lblBuyPrice = new JLabel(Messages.getString("LABEL_BUY_PRICE")); //$NON-NLS-1$
+		
+		tabGeneral.add(lblBuyPrice, "cell 0 4,alignx right"); //$NON-NLS-1$
+		tfBuyPrice = new DoubleTextField(20);
+		tfBuyPrice.setHorizontalAlignment(SwingConstants.TRAILING);
+		tabGeneral.add(tfBuyPrice, "cell 1 4,grow"); //$NON-NLS-1$
 
-		tabGeneral.add(lblPrice, "cell 0 4,right"); //$NON-NLS-1$
-		tabGeneral.add(tfPrice, "cell 1 4,grow"); //$NON-NLS-1$
+		tabGeneral.add(lblPrice, "cell 0 5,alignx right"); //$NON-NLS-1$
+		tabGeneral.add(tfPrice, "cell 1 5,grow"); //$NON-NLS-1$
 
-		tabGeneral.add(lgroup, "cell 0 5,right"); //$NON-NLS-1$
-		tabGeneral.add(cbGroup, "cell 1 5"); //$NON-NLS-1$
-		tabGeneral.add(btnNewGroup, "cell 1 5"); //$NON-NLS-1$
+		tabGeneral.add(lgroup, "cell 0 6,alignx right"); //$NON-NLS-1$
+		tabGeneral.add(cbGroup, "cell 1 6"); //$NON-NLS-1$
+		tabGeneral.add(btnNewGroup, "cell 1 6"); //$NON-NLS-1$
 
-		tabGeneral.add(lblBarcode, "cell 0 6,right"); //$NON-NLS-1$
-		tabGeneral.add(tfBarcode, "cell 1 6,grow"); //$NON-NLS-1$
+		tabGeneral.add(lblBarcode, "cell 0 7,alignx right"); //$NON-NLS-1$
+		tabGeneral.add(tfBarcode, "cell 1 7,grow"); //$NON-NLS-1$
 
-		tabGeneral.add(lblStockCount, "cell 0 7,right"); //$NON-NLS-1$
-		tabGeneral.add(tfStockCount, "cell 1 7,grow"); //$NON-NLS-1$
+		tabGeneral.add(lblStockCount, "cell 0 8,alignx right"); //$NON-NLS-1$
+		tabGeneral.add(tfStockCount, "cell 1 8,grow"); //$NON-NLS-1$
 
 		//tabGeneral.add(cbShowTextWithImage, "cell 1 8"); //$NON-NLS-1$
-		tabGeneral.add(chkVisible, "cell 1 8"); //$NON-NLS-1$
-		tabGeneral.add(cbFractionalUnit, "cell 1 9"); //$NON-NLS-1$
-		tabGeneral.add(cbDisableStockCount, "cell 1 10"); //$NON-NLS-1$
+		tabGeneral.add(chkVisible, "cell 1 9"); //$NON-NLS-1$
+		tabGeneral.add(cbFractionalUnit, "cell 1 10"); //$NON-NLS-1$
+		tabGeneral.add(cbDisableStockCount, "cell 1 11"); //$NON-NLS-1$
 
 		// right side
 
@@ -488,12 +493,12 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 
 		JScrollPane orderCheckBoxList = new JScrollPane(orderList);
 		orderCheckBoxList.setPreferredSize(new Dimension(228, 100));
-		tabGeneral.add(orderCheckBoxList, "cell 3 3 3 7"); //$NON-NLS-1$
+		tabGeneral.add(orderCheckBoxList, "cell 3 3 3 8"); //$NON-NLS-1$
 
-		tabGeneral.add(new JLabel(Messages.getString("MenuItemForm.29")), "cell 2 7,right"); //$NON-NLS-1$ //$NON-NLS-2$
+		tabGeneral.add(new JLabel(Messages.getString("MenuItemForm.29")), "cell 2 8,alignx right"); //$NON-NLS-1$ //$NON-NLS-2$
 		JScrollPane scrlDescription = new JScrollPane(tfDescription, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		scrlDescription.setPreferredSize(new Dimension(228, 70));
-		tabGeneral.add(scrlDescription, "cell 3 7 3 10"); //$NON-NLS-1$
+		tabGeneral.add(scrlDescription, "cell 3 8 3 10"); //$NON-NLS-1$
 
 		add(tabbedPane);
 		//TODO: 
@@ -828,6 +833,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		tfDescription.setText(menuItem.getDescription());
 		tfTranslatedName.setText(menuItem.getTranslatedName());
 		tfBarcode.setText(menuItem.getBarcode());
+		tfBuyPrice.setText(String.valueOf(menuItem.getBuyPrice()));
 		tfPrice.setText(String.valueOf(menuItem.getPrice()));
 		tfUnitName.setText(menuItem.getUnitName());
 		tfDiscountRate.setText(String.valueOf(menuItem.getDiscountRate()));
@@ -874,6 +880,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		menuItem.setDescription(tfDescription.getText());
 		menuItem.setBarcode(tfBarcode.getText());
 		menuItem.setParent((MenuGroup) cbGroup.getSelectedItem());
+		menuItem.setBuyPrice(tfBuyPrice.getDouble());
 		menuItem.setPrice(Double.valueOf(tfPrice.getText()));
 		menuItem.setUnitName(tfUnitName.getText());
 		menuItem.setTax((Tax) cbTax.getSelectedItem());
