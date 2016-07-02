@@ -170,9 +170,16 @@ public class MultiCurrencyTenderDialog extends OkCancelOptionDialog {
 		if (totalTenderedAmount <= 0 || remainingBalance < 0) {
 			return false;
 		}
+		
+		double toleranceAmount = CurrencyUtil.getMainCurrency().getTolerance();
+		if (remainingBalance > toleranceAmount) {
+			return true;
+		}
+		
 		if (!isTolerable()) {
 			return false;
 		}
+		
 		return true;
 	}
 
