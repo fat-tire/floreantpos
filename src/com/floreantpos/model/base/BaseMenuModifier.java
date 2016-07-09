@@ -16,18 +16,19 @@ import java.io.Serializable;
 public abstract class BaseMenuModifier  implements Comparable, Serializable {
 
 	public static String REF = "MenuModifier"; //$NON-NLS-1$
-	public static String PROP_NAME = "name"; //$NON-NLS-1$
 	public static String PROP_SHOULD_PRINT_TO_KITCHEN = "shouldPrintToKitchen"; //$NON-NLS-1$
 	public static String PROP_EXTRA_PRICE = "extraPrice"; //$NON-NLS-1$
-	public static String PROP_BUTTON_COLOR = "buttonColor"; //$NON-NLS-1$
-	public static String PROP_ENABLE = "enable"; //$NON-NLS-1$
-	public static String PROP_SORT_ORDER = "sortOrder"; //$NON-NLS-1$
-	public static String PROP_PRICE = "price"; //$NON-NLS-1$
-	public static String PROP_TAX = "tax"; //$NON-NLS-1$
-	public static String PROP_ID = "id"; //$NON-NLS-1$
 	public static String PROP_MODIFIER_GROUP = "modifierGroup"; //$NON-NLS-1$
+	public static String PROP_SORT_ORDER = "sortOrder"; //$NON-NLS-1$
+	public static String PROP_TAX = "tax"; //$NON-NLS-1$
+	public static String PROP_NAME = "name"; //$NON-NLS-1$
+	public static String PROP_BUTTON_COLOR = "buttonColor"; //$NON-NLS-1$
 	public static String PROP_TRANSLATED_NAME = "translatedName"; //$NON-NLS-1$
+	public static String PROP_PRICE = "price"; //$NON-NLS-1$
+	public static String PROP_ENABLE = "enable"; //$NON-NLS-1$
 	public static String PROP_TEXT_COLOR = "textColor"; //$NON-NLS-1$
+	public static String PROP_PIZZA_MODIFIER = "pizzaModifier"; //$NON-NLS-1$
+	public static String PROP_ID = "id"; //$NON-NLS-1$
 
 
 	// constructors
@@ -62,13 +63,15 @@ public abstract class BaseMenuModifier  implements Comparable, Serializable {
 		protected java.lang.Integer textColor;
 		protected java.lang.Boolean enable;
 		protected java.lang.Boolean shouldPrintToKitchen;
+		protected java.lang.Boolean pizzaModifier;
 
 	// many to one
 	private com.floreantpos.model.MenuModifierGroup modifierGroup;
 	private com.floreantpos.model.Tax tax;
 
 	// collections
-	private java.util.Map<String,String> properties;
+	private java.util.List<com.floreantpos.model.PizzaModifierPrice> pizzaModifierPriceList;
+	private java.util.Map<String, String> properties;
 
 
 
@@ -250,8 +253,25 @@ public abstract class BaseMenuModifier  implements Comparable, Serializable {
 	 * Custom property
 	 */
 	public static String getShouldPrintToKitchenDefaultValue () {
-		return "true"; //$NON-NLS-1$
+		return "true";
 	}
+
+
+	/**
+	 * Return the value associated with the column: PIZZA_MODIFIER
+	 */
+	public java.lang.Boolean isPizzaModifier () {
+								return pizzaModifier == null ? Boolean.FALSE : pizzaModifier;
+					}
+
+	/**
+	 * Set the value related to the column: PIZZA_MODIFIER
+	 * @param pizzaModifier the PIZZA_MODIFIER value
+	 */
+	public void setPizzaModifier (java.lang.Boolean pizzaModifier) {
+		this.pizzaModifier = pizzaModifier;
+	}
+
 
 
 	/**
@@ -289,9 +309,31 @@ public abstract class BaseMenuModifier  implements Comparable, Serializable {
 
 
 	/**
+	 * Return the value associated with the column: pizzaModifierPriceList
+	 */
+	public java.util.List<com.floreantpos.model.PizzaModifierPrice> getPizzaModifierPriceList () {
+					return pizzaModifierPriceList;
+			}
+
+	/**
+	 * Set the value related to the column: pizzaModifierPriceList
+	 * @param pizzaModifierPriceList the pizzaModifierPriceList value
+	 */
+	public void setPizzaModifierPriceList (java.util.List<com.floreantpos.model.PizzaModifierPrice> pizzaModifierPriceList) {
+		this.pizzaModifierPriceList = pizzaModifierPriceList;
+	}
+
+	public void addTopizzaModifierPriceList (com.floreantpos.model.PizzaModifierPrice pizzaModifierPrice) {
+		if (null == getPizzaModifierPriceList()) setPizzaModifierPriceList(new java.util.ArrayList<com.floreantpos.model.PizzaModifierPrice>());
+		getPizzaModifierPriceList().add(pizzaModifierPrice);
+	}
+
+
+
+	/**
 	 * Return the value associated with the column: properties
 	 */
-	public java.util.Map<String,String> getProperties () {
+	public java.util.Map<String, String> getProperties() {
 					return properties;
 			}
 
@@ -299,7 +341,7 @@ public abstract class BaseMenuModifier  implements Comparable, Serializable {
 	 * Set the value related to the column: properties
 	 * @param properties the properties value
 	 */
-	public void setProperties (java.util.Map<String,String> properties) {
+	public void setProperties(java.util.Map<String, String> properties) {
 		this.properties = properties;
 	}
 
@@ -321,7 +363,7 @@ public abstract class BaseMenuModifier  implements Comparable, Serializable {
 		if (Integer.MIN_VALUE == this.hashCode) {
 			if (null == this.getId()) return super.hashCode();
 			else {
-				String hashStr = this.getClass().getName() + ":" + this.getId().hashCode(); //$NON-NLS-1$
+				String hashStr = this.getClass().getName() + ":" + this.getId().hashCode();
 				this.hashCode = hashStr.hashCode();
 			}
 		}

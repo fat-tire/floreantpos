@@ -17,6 +17,7 @@
 		<property column="PRINT_TO_KITCHEN" name="shouldPrintToKitchen" type="java.lang.Boolean">
 			<meta attribute="defaultValue">true</meta>
 		</property>
+		<property name="pizzaModifier" column="PIZZA_MODIFIER" type="java.lang.Boolean" />
 		<!-- Associations -->
 		<many-to-one class="MenuModifierGroup" lazy="false" name="modifierGroup">
 			<column name="GROUP_ID" />
@@ -24,6 +25,10 @@
 		<many-to-one class="Tax" lazy="false" name="tax">
 			<column name="TAX_ID" />
 		</many-to-one>
+		<bag cascade="all" inverse="false" lazy="false" name="pizzaModifierPriceList" table="MENUMODIFIER_PIZZAMODIFIERPRICE">
+			<key column="MENUMODIFIER_ID" />
+			<many-to-many class="PizzaModifierPrice" column="PIZZAMODIFIERPRICE_ID"/>
+		</bag>
 		
 		<map name="properties" cascade="all" lazy="false" table="MENU_MODIFIER_PROPERTIES">
 			<key column="MENU_MODIFIER_ID" />

@@ -29,22 +29,22 @@ import com.floreantpos.model.MenuModifier;
 import com.floreantpos.model.MenuModifierGroup;
 
 public class ModifierDAO extends BaseModifierDAO {
-	Session session = null;
-	Criteria criteria = null;
 
 	/**
-	 * Default constructor.  Can be used in place of getInstance()
+	 * Default constructor. Can be used in place of getInstance()
 	 */
 	public ModifierDAO() {
 	}
 
 	public List<MenuModifier> findModifier(String name, MenuModifierGroup menuModifierGroup) {
+		Session session = null;
+		Criteria criteria = null;
 
 		try {
 			session = getSession();
 			criteria = session.createCriteria(MenuModifier.class);
 			if (StringUtils.isNotEmpty(name)) {
-				criteria.add(Restrictions.ilike(MenuModifier.PROP_NAME, name+"%".trim(),MatchMode.ANYWHERE)); //$NON-NLS-1$
+				criteria.add(Restrictions.ilike(MenuModifier.PROP_NAME, name + "%".trim(), MatchMode.ANYWHERE)); //$NON-NLS-1$
 			}
 
 			if (menuModifierGroup != null) {
@@ -59,13 +59,28 @@ public class ModifierDAO extends BaseModifierDAO {
 		}
 	}
 
-/*	public List<MenuModifier> findTest() {
+	public List<MenuModifier> getPizzaModifiers() {
+		Session session = null;
+		Criteria criteria = null;
 
-		session = getSession();
-		criteria = session.createCriteria(MenuModifier.class);
-		criteria.setFirstResult(2);
-		criteria.setMaxResults(5);
-		return criteria.list();
-	}*/
+		try {
+			session = createNewSession();
+			criteria = session.createCriteria(MenuModifier.class);
+			criteria.add(Restrictions.eq(MenuModifier.PROP_PIZZA_MODIFIER, true)); //$NON-NLS-1$
+
+			return criteria.list();
+		} finally {
+
+			session.close();
+		}
+	}
+
+	/*
+	 * public List<MenuModifier> findTest() {
+	 * 
+	 * session = getSession(); criteria =
+	 * session.createCriteria(MenuModifier.class); criteria.setFirstResult(2);
+	 * criteria.setMaxResults(5); return criteria.list(); }
+	 */
 
 }

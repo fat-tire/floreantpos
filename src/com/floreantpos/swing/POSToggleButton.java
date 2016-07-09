@@ -22,6 +22,8 @@ import java.awt.Dimension;
 import javax.swing.JToggleButton;
 import javax.swing.UIManager;
 
+import com.floreantpos.POSConstants;
+
 
 public class POSToggleButton extends JToggleButton {
 	//public static Border border = new LineBorder(Color.BLACK, 1);
@@ -51,20 +53,24 @@ public class POSToggleButton extends JToggleButton {
 
 	@Override
 	public Dimension getPreferredSize() {
-		Dimension size = super.getPreferredSize();
+		Dimension size = null;
 
 		if (isPreferredSizeSet()) {
-			return size;
+			return super.getPreferredSize();
 		}
-
-		if (ui != null) {
+		else if (ui != null) {
 			size = ui.getPreferredSize(this);
 		}
 
-		if (size != null) {
-			size.setSize(PosUIManager.getSize(60, 60));
+		if (size == null) {
+			size = new Dimension(PosUIManager.getSize(POSConstants.BUTTON_DEFAULT_WIDTH, POSConstants.BUTTON_DEFAULT_HEIGHT));
+		}
+		else {
+			int width = size.width < POSConstants.BUTTON_DEFAULT_WIDTH ? POSConstants.BUTTON_DEFAULT_WIDTH : size.width;
+			int height = size.height < POSConstants.BUTTON_DEFAULT_HEIGHT ? POSConstants.BUTTON_DEFAULT_HEIGHT : size.height;
+			size.setSize(PosUIManager.getSize(width, height));
 		}
 
-		return (size != null) ? size : super.getPreferredSize();
+		return size;
 	}
 }

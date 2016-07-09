@@ -6,8 +6,13 @@
 			<generator class="identity" />
 		</id>
 
+		<property column="SECTION_NAME" name="sectionName" type="java.lang.String" length="120"/>
 		<property column="MIN_QUANTITY" name="minQuantity" type="java.lang.Integer" />
 		<property column="MAX_QUANTITY" name="maxQuantity" type="java.lang.Integer" />
+		<property column="SHOW_SECTION_NAME" name="showSectionName" type="java.lang.Boolean" />
+		<property column="MAIN_SECTION" name="mainSection" type="java.lang.Boolean" />
+		<property column="SORT_ORDER" name="sortOrder" type="java.lang.Integer" />
+		
 		<many-to-one class="TicketItem" name="parent" />
 
 		<many-to-one class="com.floreantpos.model.MenuItemModifierGroup" lazy="false" name="menuItemModifierGroup">

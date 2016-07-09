@@ -29,6 +29,7 @@ import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 
+import com.floreantpos.POSConstants;
 import com.floreantpos.actions.ActionCommand;
 import com.floreantpos.actions.PosAction;
 
@@ -108,21 +109,25 @@ public class PosButton extends JButton {
 
 	@Override
 	public Dimension getPreferredSize() {
-		Dimension size = super.getPreferredSize();
+		Dimension size = null;
 
 		if (isPreferredSizeSet()) {
-			return size;
+			return super.getPreferredSize();
 		}
-
-		if (ui != null) {
+		else if (ui != null) {
 			size = ui.getPreferredSize(this);
 		}
 
-		if (size != null) {
-			size.setSize(PosUIManager.getSize(size.width < 60 ? 60 : size.width, 60));
+		if (size == null) {
+			size = new Dimension(PosUIManager.getSize(POSConstants.BUTTON_DEFAULT_WIDTH, POSConstants.BUTTON_DEFAULT_HEIGHT));
+		}
+		else {
+			int width = size.width < POSConstants.BUTTON_DEFAULT_WIDTH ? POSConstants.BUTTON_DEFAULT_WIDTH : size.width;
+			int height = size.height < POSConstants.BUTTON_DEFAULT_HEIGHT ? POSConstants.BUTTON_DEFAULT_HEIGHT : size.height;
+			size.setSize(PosUIManager.getSize(width, height));
 		}
 
-		return (size != null) ? size : super.getPreferredSize();
+		return size;
 	}
 
 	@Override

@@ -81,7 +81,7 @@ public class MenuItemExplorer extends TransparentPanel {
 		tableModel.addColumn(Messages.getString("MenuItemExplorer.25"), "textColor"); //$NON-NLS-1$ //$NON-NLS-2$
 		tableModel.addColumn(POSConstants.IMAGE.toUpperCase(), "imageData"); //$NON-NLS-1$
 
-		List<MenuItem> findAll = MenuItemDAO.getInstance().findAll();
+		List<MenuItem> findAll = MenuItemDAO.getInstance().getMenuItems();
 		tableModel.addRows(findAll);
 		table = new JXTable(tableModel);
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);

@@ -28,6 +28,7 @@ public class TicketItemModifier extends BaseTicketItemModifier implements ITicke
 	public final static int NORMAL_MODIFIER = 1;
 	//public final static int		NO_MODIFIER					= 2;
 	public final static int EXTRA_MODIFIER = 3;
+	public final static int CRUST = 5;
 
 	/*[CONSTRUCTOR MARKER BEGIN]*/
 	public TicketItemModifier () {
@@ -81,6 +82,10 @@ public class TicketItemModifier extends BaseTicketItemModifier implements ITicke
 	//	}
 
 	public void calculatePrice() {
+		if(isInfoOnly()) {
+			return;
+		}
+		
 		priceIncludesTax = Application.getInstance().isPriceIncludesTax();
 
 		calculateSubTotal();
@@ -134,43 +139,55 @@ public class TicketItemModifier extends BaseTicketItemModifier implements ITicke
 
 	@Override
 	public String getNameDisplay() {
-		String display = " - " + getName();
+		String display = " -- " + getName();
 		if (getModifierType() == NORMAL_MODIFIER) {
 			display += "*";
 		}
 
-		return " - " + display; //$NON-NLS-1$
+		return display; //$NON-NLS-1$
 	}
 
 	@Override
 	public Double getUnitPriceDisplay() {
+		if(isInfoOnly()) {
+			return null;
+		}
 		return getUnitPrice();
 	}
 
 	@Override
 	public String getItemQuantityDisplay() {
+		if(isInfoOnly()) {
+			return null;
+		}
+		
 		return String.valueOf(getItemCount());
 	}
 
 	@Override
 	public Double getTaxAmountWithoutModifiersDisplay() {
+		if(isInfoOnly()) {
+			return null;
+		}
+		
 		return getTaxAmount();
 	}
 
 	@Override
 	public Double getTotalAmountWithoutModifiersDisplay() {
-		//		if (getModifierType() == TicketItemModifier.NO_MODIFIER) {
-		//			return null;
-		//		}
-
+		if(isInfoOnly()) {
+			return null;
+		}
+		
 		return getTotalAmount();
 	}
 
 	@Override
 	public Double getSubTotalAmountWithoutModifiersDisplay() {
-		//		if (getModifierType() == TicketItemModifier.NO_MODIFIER) {
-		//			return null;
-		//		}
+		if(isInfoOnly()) {
+			return null;
+		}
+		
 		return getSubTotalAmount();
 	}
 

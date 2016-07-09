@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.floreantpos.model">
+	<class lazy="false" name="TicketItemSection" table="TICKET_ITEM_SECTION">
+		<id column="ID" name="id" type="java.lang.Integer">
+			<generator class="identity" />
+		</id>
+
+		<property name="name" column="NAME" type="java.lang.String" length="60" />
+		<property name="sortOrder" column="SORT_ORDER" type="java.lang.Integer" />
+		<property name="main" column="MAIN" type="java.lang.Boolean" />
+		<property name="showName" column="SHOW_NAME" type="java.lang.Boolean" />
+		
+		<list cascade="all,delete-orphan" inverse="false" lazy="false" name="toppings" table="TICKET_ITEM_TOPINGS">
+			<key>
+				<column name="TOPINGS_TICKET_ITEM_ID" />
+			</key>
+			<list-index column="TOPINGS_ORDER" />
+			<one-to-many class="com.floreantpos.model.TicketItemModifier" />
+		</list>
+	</class>
+</hibernate-mapping>

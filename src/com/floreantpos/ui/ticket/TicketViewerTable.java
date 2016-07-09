@@ -118,12 +118,12 @@ public class TicketViewerTable extends JTable {
 		if (selectedRow < 0) {
 			selectedRow = 0;
 		}
-		while (isModifierOrOther(selectedRow)) {
-			--selectedRow;
-			if (selectedRow > (rowCount - 1)) {
-				return;
-			}
-		}
+//		while (isModifierOrOther(selectedRow)) {
+//			--selectedRow;
+//			if (selectedRow > (rowCount - 1)) {
+//				return;
+//			}
+//		}
 
 		selectionModel.addSelectionInterval(selectedRow, selectedRow);
 		Rectangle cellRect = getCellRect(selectedRow, 0, false);
@@ -140,12 +140,12 @@ public class TicketViewerTable extends JTable {
 		}
 
 		++selectedRow;
-		while (isModifierOrOther(selectedRow)) {
-			++selectedRow;
-			if (selectedRow >= model.getItemCount() - 1) {
-				return;
-			}
-		}
+//		while (isModifierOrOther(selectedRow)) {
+//			++selectedRow;
+//			if (selectedRow >= model.getItemCount() - 1) {
+//				return;
+//			}
+//		}
 
 		selectionModel.addSelectionInterval(selectedRow, selectedRow);
 		Rectangle cellRect = getCellRect(selectedRow, 0, false);

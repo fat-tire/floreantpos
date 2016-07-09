@@ -120,7 +120,11 @@ public class TicketItemRowCreator {
 		if (ticketItemModifierGroups != null) {
 			for (TicketItemModifierGroup ticketItemModifierGroup : ticketItemModifierGroups) {
 				List<TicketItemModifier> ticketItemModifiers = ticketItemModifierGroup.getTicketItemModifiers();
-				if (ticketItemModifiers != null) {
+				if (ticketItemModifiers != null && ticketItemModifiers.size() > 0) {
+					if(ticketItemModifierGroup.isShowSectionName()) {
+						//itemModifier.setTableRowNum(rowNum);
+						tableRows.put(String.valueOf(rowNum++), ticketItemModifierGroup);
+					}
 					for (TicketItemModifier itemModifier : ticketItemModifiers) {
 
 						if (kitchenPrint && (itemModifier.isPrintedToKitchen() || !itemModifier.isShouldPrintToKitchen())) {

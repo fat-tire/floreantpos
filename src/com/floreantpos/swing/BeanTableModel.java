@@ -75,6 +75,9 @@ public class BeanTableModel<M> extends AbstractTableModel {
 	}
 
 	public void addRows(List<M> rows) {
+		if (rows == null) {
+			return;
+		}
 		for (M row : rows) {
 			addRow(row);
 		}

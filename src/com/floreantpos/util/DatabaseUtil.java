@@ -39,7 +39,9 @@ import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.model.CashDrawer;
 import com.floreantpos.model.Currency;
 import com.floreantpos.model.Discount;
+import com.floreantpos.model.MenuItemSize;
 import com.floreantpos.model.OrderType;
+import com.floreantpos.model.PizzaCrust;
 import com.floreantpos.model.PosTransaction;
 import com.floreantpos.model.Restaurant;
 import com.floreantpos.model.Shift;
@@ -52,7 +54,9 @@ import com.floreantpos.model.UserType;
 import com.floreantpos.model.dao.CurrencyDAO;
 import com.floreantpos.model.dao.DiscountDAO;
 import com.floreantpos.model.dao.GenericDAO;
+import com.floreantpos.model.dao.MenuItemSizeDAO;
 import com.floreantpos.model.dao.OrderTypeDAO;
+import com.floreantpos.model.dao.PizzaCrustDAO;
 import com.floreantpos.model.dao.PosTransactionDAO;
 import com.floreantpos.model.dao.RestaurantDAO;
 import com.floreantpos.model.dao.ShiftDAO;
@@ -380,6 +384,31 @@ public class DatabaseUtil {
 			currency.setSymbol("P");
 			currency.setExchangeRate(5639.78);
 			CurrencyDAO.getInstance().save(currency);
+			
+			MenuItemSize menuItemSize = new MenuItemSize();
+			menuItemSize.setName("SMALL");
+			menuItemSize.setSortOrder(0);
+			MenuItemSizeDAO.getInstance().save(menuItemSize);
+			
+			menuItemSize = new MenuItemSize();
+			menuItemSize.setName("MEDIUM");
+			menuItemSize.setSortOrder(1);
+			MenuItemSizeDAO.getInstance().save(menuItemSize);
+			
+			menuItemSize = new MenuItemSize();
+			menuItemSize.setName("LARGE");
+			menuItemSize.setSortOrder(2);
+			MenuItemSizeDAO.getInstance().save(menuItemSize);
+			
+			PizzaCrust crust = new PizzaCrust();
+			crust.setName("PAN");
+			crust.setSortOrder(0);
+			PizzaCrustDAO.getInstance().save(crust);
+			
+			crust = new PizzaCrust();
+			crust.setName("HAND TOAST");
+			crust.setSortOrder(1);
+			PizzaCrustDAO.getInstance().save(crust);
 
 			if (!exportSampleData) {
 				return true;

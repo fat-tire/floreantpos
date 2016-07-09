@@ -16,11 +16,15 @@ import java.io.Serializable;
 public abstract class BaseTicketItemModifierGroup  implements Comparable, Serializable {
 
 	public static String REF = "TicketItemModifierGroup"; //$NON-NLS-1$
-	public static String PROP_MIN_QUANTITY = "minQuantity"; //$NON-NLS-1$
-	public static String PROP_PARENT = "parent"; //$NON-NLS-1$
-	public static String PROP_ID = "id"; //$NON-NLS-1$
 	public static String PROP_MENU_ITEM_MODIFIER_GROUP = "menuItemModifierGroup"; //$NON-NLS-1$
+	public static String PROP_MAIN_SECTION = "mainSection"; //$NON-NLS-1$
+	public static String PROP_PARENT = "parent"; //$NON-NLS-1$
+	public static String PROP_SHOW_SECTION_NAME = "showSectionName"; //$NON-NLS-1$
+	public static String PROP_SORT_ORDER = "sortOrder"; //$NON-NLS-1$
+	public static String PROP_SECTION_NAME = "sectionName"; //$NON-NLS-1$
 	public static String PROP_MAX_QUANTITY = "maxQuantity"; //$NON-NLS-1$
+	public static String PROP_ID = "id"; //$NON-NLS-1$
+	public static String PROP_MIN_QUANTITY = "minQuantity"; //$NON-NLS-1$
 
 
 	// constructors
@@ -46,8 +50,12 @@ public abstract class BaseTicketItemModifierGroup  implements Comparable, Serial
 	private java.lang.Integer id;
 
 	// fields
+		protected java.lang.String sectionName;
 		protected java.lang.Integer minQuantity;
 		protected java.lang.Integer maxQuantity;
+		protected java.lang.Boolean showSectionName;
+		protected java.lang.Boolean mainSection;
+		protected java.lang.Integer sortOrder;
 
 	// many to one
 	private com.floreantpos.model.TicketItem parent;
@@ -81,6 +89,23 @@ public abstract class BaseTicketItemModifierGroup  implements Comparable, Serial
 
 
 	/**
+	 * Return the value associated with the column: SECTION_NAME
+	 */
+	public java.lang.String getSectionName () {
+					return sectionName;
+			}
+
+	/**
+	 * Set the value related to the column: SECTION_NAME
+	 * @param sectionName the SECTION_NAME value
+	 */
+	public void setSectionName (java.lang.String sectionName) {
+		this.sectionName = sectionName;
+	}
+
+
+
+	/**
 	 * Return the value associated with the column: MIN_QUANTITY
 	 */
 	public java.lang.Integer getMinQuantity () {
@@ -110,6 +135,57 @@ public abstract class BaseTicketItemModifierGroup  implements Comparable, Serial
 	 */
 	public void setMaxQuantity (java.lang.Integer maxQuantity) {
 		this.maxQuantity = maxQuantity;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: SHOW_SECTION_NAME
+	 */
+	public java.lang.Boolean isShowSectionName () {
+								return showSectionName == null ? Boolean.FALSE : showSectionName;
+					}
+
+	/**
+	 * Set the value related to the column: SHOW_SECTION_NAME
+	 * @param showSectionName the SHOW_SECTION_NAME value
+	 */
+	public void setShowSectionName (java.lang.Boolean showSectionName) {
+		this.showSectionName = showSectionName;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: MAIN_SECTION
+	 */
+	public java.lang.Boolean isMainSection () {
+								return mainSection == null ? Boolean.FALSE : mainSection;
+					}
+
+	/**
+	 * Set the value related to the column: MAIN_SECTION
+	 * @param mainSection the MAIN_SECTION value
+	 */
+	public void setMainSection (java.lang.Boolean mainSection) {
+		this.mainSection = mainSection;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: SORT_ORDER
+	 */
+	public java.lang.Integer getSortOrder () {
+									return sortOrder == null ? Integer.valueOf(0) : sortOrder;
+					}
+
+	/**
+	 * Set the value related to the column: SORT_ORDER
+	 * @param sortOrder the SORT_ORDER value
+	 */
+	public void setSortOrder (java.lang.Integer sortOrder) {
+		this.sortOrder = sortOrder;
 	}
 
 

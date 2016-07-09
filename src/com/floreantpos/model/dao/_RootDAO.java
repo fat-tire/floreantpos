@@ -60,11 +60,15 @@ import com.floreantpos.model.MenuGroup;
 import com.floreantpos.model.MenuItem;
 import com.floreantpos.model.MenuItemModifierGroup;
 import com.floreantpos.model.MenuItemShift;
+import com.floreantpos.model.MenuItemSize;
 import com.floreantpos.model.MenuModifier;
 import com.floreantpos.model.MenuModifierGroup;
 import com.floreantpos.model.PackagingUnit;
 import com.floreantpos.model.PayoutReason;
 import com.floreantpos.model.PayoutRecepient;
+import com.floreantpos.model.PizzaCrust;
+import com.floreantpos.model.PizzaModifierPrice;
+import com.floreantpos.model.PizzaPrice;
 import com.floreantpos.model.PosTransaction;
 import com.floreantpos.model.PrinterConfiguration;
 import com.floreantpos.model.PrinterGroup;
@@ -175,6 +179,10 @@ public abstract class _RootDAO extends com.floreantpos.model.dao._BaseRootDAO {
 		configuration = configuration.addClass(CashDrawer.class);
 		configuration = configuration.addClass(CurrencyBalance.class);
 		configuration = configuration.addClass(GlobalConfig.class);
+		configuration = configuration.addClass(MenuItemSize.class);
+		configuration = configuration.addClass(PizzaCrust.class);
+		configuration = configuration.addClass(PizzaPrice.class);
+		configuration = configuration.addClass(PizzaModifierPrice.class);
 
 		configuration = configureInventoryClasses(configuration);
 

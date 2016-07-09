@@ -251,4 +251,36 @@ public class MenuItemDAO extends BaseMenuItemDAO {
 		}
 	}
 
+	public List<MenuItem> getPizzaItems() {
+		Session session = null;
+		Criteria criteria = null;
+		try {
+			session = createNewSession();
+			criteria = session.createCriteria(MenuItem.class);
+			criteria.add(Restrictions.eq(MenuItem.PROP_PIZZA_TYPE, true));
+
+			List<MenuItem> result = criteria.list();
+
+			return result;
+		} finally {
+			closeSession(session);
+		}
+	}
+
+	public List<MenuItem> getMenuItems() {
+		Session session = null;
+		Criteria criteria = null;
+		try {
+			session = createNewSession();
+			criteria = session.createCriteria(MenuItem.class);
+			criteria.add(Restrictions.or(Restrictions.eq(MenuItem.PROP_PIZZA_TYPE, false), Restrictions.isNull(MenuItem.PROP_PIZZA_TYPE)));
+
+			List<MenuItem> result = criteria.list();
+
+			return result;
+		} finally {
+			closeSession(session);
+		}
+	}
+
 }

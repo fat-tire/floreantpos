@@ -34,11 +34,17 @@
 		<property name="imageData" column="IMAGE" not-null="false" type="binary" length="20480" />
 		<property name="showImageOnly" column="SHOW_IMAGE_ONLY" type="java.lang.Boolean" />
 		<property name="fractionalUnit" column="FRACTIONAL_UNIT" type="java.lang.Boolean" />
+		<property name="pizzaType" column="PIZZA_TYPE" type="java.lang.Boolean" />
 
 		<!-- uni-directional many-to-one association to FoodGroup -->
 		<many-to-one class="com.floreantpos.model.MenuGroup" name="parent">
 			<column name="GROUP_ID" />
 		</many-to-one>
+		
+		<bag cascade="all" inverse="false" lazy="false" name="pizzaPriceList" table="MENUITEM_PIZZAPIRCE">
+			<key column="MENU_ITEM_ID" />
+			<many-to-many class="PizzaPrice" column="PIZZA_PRICE_ID" />
+		</bag>
 
 		<bag cascade="all" inverse="false" lazy="true" name="shifts" table="MENUITEM_SHIFT">
 			<key column="MENUITEM_ID" />

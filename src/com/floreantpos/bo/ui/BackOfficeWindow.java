@@ -36,6 +36,7 @@ import java.util.Set;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 
 import com.floreantpos.Messages;
 import com.floreantpos.actions.AboutAction;
@@ -55,12 +56,16 @@ import com.floreantpos.bo.actions.HourlyLaborReportAction;
 import com.floreantpos.bo.actions.ItemExplorerAction;
 import com.floreantpos.bo.actions.JournalReportAction;
 import com.floreantpos.bo.actions.KeyStatisticsSalesReportAction;
+import com.floreantpos.bo.actions.MenuItemSizeExplorerAction;
 import com.floreantpos.bo.actions.MenuUsageReportAction;
 import com.floreantpos.bo.actions.ModifierExplorerAction;
 import com.floreantpos.bo.actions.ModifierGroupExplorerAction;
 import com.floreantpos.bo.actions.OpenTicketSummaryReportAction;
 import com.floreantpos.bo.actions.OrdersTypeExplorerAction;
 import com.floreantpos.bo.actions.PayrollReportAction;
+import com.floreantpos.bo.actions.PizzaCrustExplorerAction;
+import com.floreantpos.bo.actions.PizzaItemExplorerAction;
+import com.floreantpos.bo.actions.PizzaModifierExplorerAction;
 import com.floreantpos.bo.actions.SalesAnalysisReportAction;
 import com.floreantpos.bo.actions.SalesBalanceReportAction;
 import com.floreantpos.bo.actions.SalesDetailReportAction;
@@ -203,6 +208,13 @@ public class BackOfficeWindow extends javax.swing.JFrame {
 	private void createExplorerMenu(JMenuBar menuBar) {
 		JMenu explorerMenu = new JMenu(com.floreantpos.POSConstants.EXPLORERS);
 		menuBar.add(explorerMenu);
+		JMenu subMenuPizza = new JMenu("Pizza");
+		JMenuItem sizeMenuItem, crustMenuItem, menuMenuItem;
+		sizeMenuItem = new JMenuItem("Size");
+		crustMenuItem = new JMenuItem("Crust");
+		menuMenuItem = new JMenuItem("Menu");
+
+
 
 		if (TerminalConfig.isMultipleOrderSupported()) {
 			explorerMenu.add(new OrdersTypeExplorerAction());
@@ -220,6 +232,12 @@ public class BackOfficeWindow extends javax.swing.JFrame {
 		explorerMenu.add(new DrawerPullReportExplorerAction());
 		explorerMenu.add(new TicketExplorerAction());
 		explorerMenu.add(new AttendanceHistoryAction());
+		explorerMenu.add(subMenuPizza);
+
+		subMenuPizza.add(new MenuItemSizeExplorerAction());
+		subMenuPizza.add(new PizzaCrustExplorerAction());
+		subMenuPizza.add(new PizzaItemExplorerAction());
+		subMenuPizza.add(new PizzaModifierExplorerAction());
 
 		OrderServiceExtension plugin = (OrderServiceExtension) ExtensionManager.getPlugin(OrderServiceExtension.class);
 		if (plugin == null) {

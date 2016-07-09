@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.floreantpos.model">
+	<class lazy="false" name="PizzaCrust" table="PIZZA_CRUST">
+		<id column="ID" name="id" type="java.lang.Integer">
+			<generator class="identity" />
+		</id>
+
+		<property name="name" column="NAME" type="java.lang.String" length="60" />
+		<property name="translatedName" column="TRANSLATED_NAME" type="java.lang.String" length="60" />
+		<property name="description" column="DESCRIPTION" type="java.lang.String" length="120" />
+		<property name="sortOrder" column="SORT_ORDER" type="java.lang.Integer" />
+	</class>
+</hibernate-mapping>

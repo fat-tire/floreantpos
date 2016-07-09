@@ -19,9 +19,12 @@ package com.floreantpos.model;
 
 import java.awt.Color;
 import java.awt.Image;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.swing.ImageIcon;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -41,23 +44,31 @@ public class MenuItem extends BaseMenuItem {
 	private static final long serialVersionUID = 1L;
 
 	/*[CONSTRUCTOR MARKER BEGIN]*/
-	public MenuItem() {
+	public MenuItem () {
 		super();
 	}
 
 	/**
 	 * Constructor for primary key
 	 */
-	public MenuItem(java.lang.Integer id) {
+	public MenuItem (java.lang.Integer id) {
 		super(id);
 	}
 
 	/**
 	 * Constructor for required fields
 	 */
-	public MenuItem(java.lang.Integer id, java.lang.String name, java.lang.Double buyPrice, java.lang.Double price) {
+	public MenuItem (
+		java.lang.Integer id,
+		java.lang.String name,
+		java.lang.Double buyPrice,
+		java.lang.Double price) {
 
-		super(id, name, buyPrice, price);
+		super (
+			id,
+			name,
+			buyPrice,
+			price);
 	}
 
 	/*[CONSTRUCTOR MARKER END]*/
@@ -183,6 +194,7 @@ public class MenuItem extends BaseMenuItem {
 		ticketItem.setItemId(this.getId());
 		ticketItem.setMenuItem(this);
 
+		ticketItem.setPizzaType(isPizzaType());
 		ticketItem.setFractionalUnit(this.isFractionalUnit());
 
 		if (this.isFractionalUnit()) {
@@ -427,5 +439,48 @@ public class MenuItem extends BaseMenuItem {
 	public String replaceString(String orderType,String regex,String replacement) {
 		orderType=orderType.replaceAll(regex, replacement);
 		return orderType;
+	}
+	
+	public Set<MenuItemSize> getSizes() {
+		Set<MenuItemSize> sizes = new HashSet<MenuItemSize>();
+		
+		List<PizzaPrice> priceList = getPizzaPriceList();
+		if (priceList != null) {
+			for (PizzaPrice pizzaPrice : priceList) {
+				sizes.add(pizzaPrice.getSize());
+			}
+		}
+		
+		return sizes;
+	}
+	
+	public Set<PizzaCrust> getCrustsForSize(MenuItemSize size) {
+		Set<PizzaCrust> crusts = new HashSet<PizzaCrust>();
+
+		List<PizzaPrice> priceList = getPizzaPriceList();
+		if (priceList != null) {
+			for (PizzaPrice pizzaPrice : priceList) {
+				if (size.equals(pizzaPrice.getSize())) {
+					crusts.add(pizzaPrice.getCrust());
+				}
+			}
+		}
+
+		return crusts;
+	}
+	
+	public Set<PizzaPrice> getAvailablePrices(MenuItemSize size) {
+		Set<PizzaPrice> prices = new HashSet<PizzaPrice>();
+
+		List<PizzaPrice> priceList = getPizzaPriceList();
+		if (priceList != null) {
+			for (PizzaPrice pizzaPrice : priceList) {
+				if (size.equals(pizzaPrice.getSize())) {
+					prices.add(pizzaPrice);
+				}
+			}
+		}
+
+		return prices;
 	}
 }

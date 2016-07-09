@@ -53,6 +53,7 @@ import com.floreantpos.ui.views.order.actions.ItemSelectionListener;
 import com.floreantpos.ui.views.order.actions.OrderListener;
 import com.floreantpos.ui.views.order.modifier.ModifierSelectionDialog;
 import com.floreantpos.ui.views.order.modifier.ModifierSelectionModel;
+import com.floreantpos.ui.views.order.multipart.PizzaModifierSelectionDialog;
 
 public class OrderController implements OrderListener, CategorySelectionListener, GroupSelectionListener, ItemSelectionListener {
 	private OrderView orderView;
@@ -108,8 +109,17 @@ public class OrderController implements OrderListener, CategorySelectionListener
 		}
 
 		ticketItem.setTicket(orderView.getTicketView().getTicket());
-
-		if (menuItem.hasMandatoryModifiers()) {
+		
+		if (menuItem.isPizzaType()) {
+			PizzaModifierSelectionDialog dialog = new PizzaModifierSelectionDialog(new ModifierSelectionModel(ticketItem, menuItem));
+			dialog.openFullScreen();
+			
+			if(dialog.isCanceled()) {
+				return;
+			}
+			orderView.getTicketView().addTicketItem(ticketItem);
+		}
+		else if (menuItem.hasMandatoryModifiers()) {
 			ModifierSelectionDialog dialog = new ModifierSelectionDialog(new ModifierSelectionModel(ticketItem, menuItem));
 			dialog.open();
 			if (!dialog.isCanceled()) {
@@ -162,6 +172,17 @@ public class OrderController implements OrderListener, CategorySelectionListener
 				if (ticketItem == null) {
 					ticketItem = ticketItemModifier.getParent().getParent();
 				}
+			}
+			
+			if(ticketItem.isPizzaType()) {
+				PizzaModifierSelectionDialog dialog = new PizzaModifierSelectionDialog(new ModifierSelectionModel(ticketItem, ticketItem.getMenuItem()));
+				dialog.openFullScreen();
+				
+				if(dialog.isCanceled()) {
+					return;
+				}
+				//orderView.getTicketView().addTicketItem(ticketItem);
+				return;
 			}
 
 			MenuItem menuItem = ticketItem.getMenuItem();

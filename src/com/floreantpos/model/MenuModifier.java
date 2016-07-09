@@ -18,6 +18,7 @@
 package com.floreantpos.model;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
@@ -30,7 +31,7 @@ import com.floreantpos.util.POSUtil;
 public class MenuModifier extends BaseMenuModifier {
 	private static final long serialVersionUID = 1L;
 
-	/*[CONSTRUCTOR MARKER BEGIN]*/
+	/* [CONSTRUCTOR MARKER BEGIN] */
 	public MenuModifier() {
 		super();
 	}
@@ -42,7 +43,7 @@ public class MenuModifier extends BaseMenuModifier {
 		super(id);
 	}
 
-	/*[CONSTRUCTOR MARKER END]*/
+	/* [CONSTRUCTOR MARKER END] */
 
 	private transient MenuItemModifierGroup menuItemModifierGroup;
 
@@ -127,6 +128,29 @@ public class MenuModifier extends BaseMenuModifier {
 		}
 		properties.remove(typeProperty);
 		properties.remove(taxProperty);
+	}
+
+	public double getPriceForSize(MenuItemSize size, boolean extra) {
+		double defaultPrice = this.getPrice();
+		if (size == null) {
+			return defaultPrice;
+		}
+
+		List<PizzaModifierPrice> priceList = getPizzaModifierPriceList();
+		if (priceList == null) {
+			return defaultPrice;
+		}
+		
+		for (PizzaModifierPrice pizzaModifierPrice : priceList) {
+			if(size.equals(pizzaModifierPrice.getSize())) {
+				if(extra) {
+					return pizzaModifierPrice.getExtraPrice();
+				}
+				return pizzaModifierPrice.getPrice();
+			}
+		}
+
+		return defaultPrice;
 	}
 
 	public double getPriceByOrderType(OrderType type) {

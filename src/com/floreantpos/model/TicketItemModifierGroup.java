@@ -25,18 +25,18 @@ import java.util.List;
 import com.floreantpos.model.base.BaseTicketItemModifierGroup;
 import com.floreantpos.model.OrderType;
 
-public class TicketItemModifierGroup extends BaseTicketItemModifierGroup {
+public class TicketItemModifierGroup extends BaseTicketItemModifierGroup implements ITicketItem {
 	private static final long serialVersionUID = 1L;
 
 	/* [CONSTRUCTOR MARKER BEGIN] */
-	public TicketItemModifierGroup() {
+	public TicketItemModifierGroup () {
 		super();
 	}
 
 	/**
 	 * Constructor for primary key
 	 */
-	public TicketItemModifierGroup(java.lang.Integer id) {
+	public TicketItemModifierGroup (java.lang.Integer id) {
 		super(id);
 	}
 
@@ -268,5 +268,80 @@ public class TicketItemModifierGroup extends BaseTicketItemModifierGroup {
 				}
 			}
 		}
+	}
+
+	@Override
+	public String getItemCode() {
+		return "";
+	}
+
+	@Override
+	public boolean canAddCookingInstruction() {
+		return false;
+	}
+
+	@Override
+	public boolean canAddDiscount() {
+		return false;
+	}
+
+	@Override
+	public boolean canVoid() {
+		return false;
+	}
+
+	@Override
+	public boolean canAddAdOn() {
+		return false;
+	}
+
+	@Override
+	public Boolean isPrintedToKitchen() {
+		return false;
+	}
+
+	@Override
+	public String getNameDisplay() {
+		return getSectionName();
+	}
+
+	@Override
+	public Double getUnitPriceDisplay() {
+		return null;
+	}
+
+	@Override
+	public String getItemQuantityDisplay() {
+		return "";
+	}
+
+	@Override
+	public Double getTaxAmountWithoutModifiersDisplay() {
+		return 0.0;
+	}
+
+	@Override
+	public Double getTotalAmountWithoutModifiersDisplay() {
+		return 0.0;
+	}
+
+	@Override
+	public Double getSubTotalAmountWithoutModifiersDisplay() {
+		return null;
+	}
+
+	@Override
+	public void setDiscountAmount(Double amount) {
+		
+	}
+
+	@Override
+	public Double getDiscountAmount() {
+		return 0.0;
+	}
+
+	@Override
+	public String getKitchenStatus() {
+		return "";
 	}
 }

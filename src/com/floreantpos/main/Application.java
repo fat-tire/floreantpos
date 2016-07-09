@@ -595,7 +595,10 @@ public class Application {
 
 			if (value != null && value instanceof javax.swing.plaf.FontUIResource) {
 				javax.swing.plaf.FontUIResource f = (FontUIResource) value;
-				Font font = new Font(f.getFontName(), f.getStyle(), PosUIManager.getDefaultFontSize());
+				String fontName = f.getFontName();
+				//fontName = "Noto Sans";
+				
+				Font font = new Font(fontName, f.getStyle(), PosUIManager.getDefaultFontSize());
 				UIManager.put(key, new javax.swing.plaf.FontUIResource(font));
 
 				/*	Font fontBold = new Font(f.getFontName(), Font.BOLD, PosUIManager.getDefaultFontSize());
