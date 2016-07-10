@@ -1,4 +1,3 @@
-
 package com.floreantpos.ui.model;
 
 import java.awt.BorderLayout;
@@ -37,17 +36,18 @@ public class PizzaItemPriceDialog extends POSDialog {
 	private JPanel contentPane;
 	private JButton btnOK;
 	private JButton btnCancel;
-	//private JComboBox cbOrderTypes;
+	// private JComboBox cbOrderTypes;
 	private JComboBox cbCrust;
 	private JComboBox cbSize;
 	private JTextField tfPrice;
 
-
 	private PizzaPrice pizzaPrice;
+	List<PizzaPrice> pizzaPriceList;
 
-	public PizzaItemPriceDialog(Frame owner, PizzaPrice pizzaPrice) {
+	public PizzaItemPriceDialog(Frame owner, PizzaPrice pizzaPrice, List<PizzaPrice> pizzaPriceList) {
 		super(owner, true);
 		this.pizzaPrice = pizzaPrice;
+		this.pizzaPriceList = pizzaPriceList;
 		init();
 		updateView();
 	}
@@ -70,7 +70,7 @@ public class PizzaItemPriceDialog extends POSDialog {
 			}
 		});
 
-		//call onCancel() when cross is clicked
+		// call onCancel() when cross is clicked
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
@@ -78,7 +78,7 @@ public class PizzaItemPriceDialog extends POSDialog {
 			}
 		});
 
-		//call onCancel() on ESCAPE
+		// call onCancel() on ESCAPE
 		contentPane.registerKeyboardAction(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				onCancel();
@@ -111,7 +111,7 @@ public class PizzaItemPriceDialog extends POSDialog {
 
 		cbSize.setSelectedItem(pizzaPrice.getSize());
 		cbCrust.setSelectedItem(pizzaPrice.getCrust());
-//		cbOrderTypes.setSelectedItem(pizzaPrice.getOrderType());
+		// cbOrderTypes.setSelectedItem(pizzaPrice.getOrderType());
 		tfPrice.setText(String.valueOf(pizzaPrice.getPrice()));
 	}
 
@@ -141,9 +141,20 @@ public class PizzaItemPriceDialog extends POSDialog {
 			return false;
 		}
 
+		if (pizzaPriceList != null) {
+			for (PizzaPrice pc : pizzaPriceList) {
+				if (pc.getSize().equals(cbSize.getSelectedItem()) && pc.getCrust().equals(cbCrust.getSelectedItem())) {
+					if (pc != this.pizzaPrice) {
+						POSMessageDialog.showMessage(this, "Duplicate item cannot be entered");
+						return false;
+					}
+				}
+			}
+		}
+
 		pizzaPrice.setSize((MenuItemSize) cbSize.getSelectedItem());
 		pizzaPrice.setCrust((PizzaCrust) cbCrust.getSelectedItem());
-//		pizzaPrice.setOrderType((OrderType) cbOrderTypes.getSelectedItem());
+		// pizzaPrice.setOrderType((OrderType) cbOrderTypes.getSelectedItem());
 		pizzaPrice.setPrice(Double.valueOf(price));
 		return true;
 	}
@@ -163,16 +174,16 @@ public class PizzaItemPriceDialog extends POSDialog {
 		final JLabel crustLabel = new JLabel();
 		crustLabel.setText("Crust");
 		cbCrust = new JComboBox(new ListComboBoxModel<PizzaCrust>(crustList));
-		//new DefaultComboBoxModel(TaxDAO.getInstance().findAll().toArray())
+		// new DefaultComboBoxModel(TaxDAO.getInstance().findAll().toArray())
 
-//		final JLabel orderTypeLabel = new JLabel();
-//		orderTypeLabel.setText("OrderType");
-//		cbOrderTypes = new JComboBox(new ListComboBoxModel<OrderType>(orderTypeList));
+		// final JLabel orderTypeLabel = new JLabel();
+		// orderTypeLabel.setText("OrderType");
+		// cbOrderTypes = new JComboBox(new
+		// ListComboBoxModel<OrderType>(orderTypeList));
 
 		final JLabel priceLabel = new JLabel();
 		priceLabel.setText(com.floreantpos.POSConstants.PRICE + ":"); //$NON-NLS-1$
 		tfPrice = new JTextField();
-
 
 		JPanel panel = new JPanel(new MigLayout("", "grow", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
@@ -180,8 +191,8 @@ public class PizzaItemPriceDialog extends POSDialog {
 		panel.add(cbSize, "grow,wrap"); //$NON-NLS-1$
 		panel.add(crustLabel, "right"); //$NON-NLS-1$
 		panel.add(cbCrust, "grow,wrap"); //$NON-NLS-1$
-//		panel.add(orderTypeLabel, "right"); //$NON-NLS-1$
-//		panel.add(cbOrderTypes, "grow,wrap"); //$NON-NLS-1$
+		//		panel.add(orderTypeLabel, "right"); //$NON-NLS-1$
+		//		panel.add(cbOrderTypes, "grow,wrap"); //$NON-NLS-1$
 		panel.add(priceLabel, "right"); //$NON-NLS-1$
 		panel.add(tfPrice, "grow"); //$NON-NLS-1$
 

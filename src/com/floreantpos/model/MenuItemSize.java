@@ -1,5 +1,7 @@
 package com.floreantpos.model;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.floreantpos.model.base.BaseMenuItemSize;
 
 
@@ -20,6 +22,16 @@ public class MenuItemSize extends BaseMenuItemSize {
 	}
 
 /*[CONSTRUCTOR MARKER END]*/
+	
+	@Override
+	public String getTranslatedName() {
+		String translatedName = super.getTranslatedName();
+		if(StringUtils.isEmpty(translatedName)) {
+			return getName();
+		}
+		
+		return translatedName;
+	}
 
 	@Override
 	public String toString() {

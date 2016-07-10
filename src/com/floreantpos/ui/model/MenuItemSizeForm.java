@@ -9,7 +9,9 @@ import net.miginfocom.swing.MigLayout;
 
 import com.floreantpos.model.MenuItemSize;
 import com.floreantpos.model.dao.MenuItemSizeDAO;
+import com.floreantpos.swing.DoubleTextField;
 import com.floreantpos.swing.FixedLengthTextField;
+import com.floreantpos.swing.IntegerTextField;
 import com.floreantpos.swing.MessageDialog;
 import com.floreantpos.ui.BeanEditor;
 import com.floreantpos.util.POSUtil;
@@ -23,7 +25,8 @@ public class MenuItemSizeForm extends BeanEditor {
 	private FixedLengthTextField tfName;
 	private FixedLengthTextField tfDescription;
 	private FixedLengthTextField tfTranslatedName;
-	private FixedLengthTextField tfSortOrder;
+	private IntegerTextField tfSortOrder;
+	private DoubleTextField tfSizeInInch;
 
 	public MenuItemSizeForm() {
 		this(new MenuItemSize());
@@ -37,26 +40,35 @@ public class MenuItemSizeForm extends BeanEditor {
 	}
 
 	private void initComponents() {
-		JPanel contentPanel = new JPanel(new MigLayout("fill"));
+		JPanel contentPanel = new JPanel(new MigLayout("", "[][]", ""));
 
 		JLabel lblName = new JLabel(com.floreantpos.POSConstants.NAME + ":");
 		JLabel lblDescription = new JLabel("Description");
 		JLabel lblTranslatedName = new JLabel("Translated Name");
 		JLabel lblSortOrder = new JLabel("Sort Order");
+		JLabel lblSize = new JLabel("Size in Inch");
 
-		tfName = new FixedLengthTextField();
-		tfDescription = new FixedLengthTextField();
-		tfTranslatedName = new FixedLengthTextField();
-		tfSortOrder = new FixedLengthTextField();
+		tfName = new FixedLengthTextField(60);
+		tfName.setColumns(30);
+		tfDescription = new FixedLengthTextField(120);
+		tfDescription.setColumns(30);
+		tfTranslatedName = new FixedLengthTextField(60);
+		tfTranslatedName.setColumns(30);
+		tfSortOrder = new IntegerTextField();
+		tfSortOrder.setColumns(10);
+		tfSizeInInch = new DoubleTextField();
+		tfSizeInInch.setColumns(10);
 
-		contentPanel.add(lblName, "cell 0 0");
-		contentPanel.add(tfName, "cell 1 0");
-		contentPanel.add(lblTranslatedName, "cell 0 1");
-		contentPanel.add(tfTranslatedName, "cell 1 1");
-		contentPanel.add(lblDescription, "cell 0 2");
-		contentPanel.add(tfDescription, "cell 1 2");
-		contentPanel.add(lblSortOrder, "cell 0 3");
-		contentPanel.add(tfSortOrder, "cell 1 3");
+		contentPanel.add(lblName, "");
+		contentPanel.add(tfName, "");
+		contentPanel.add(lblTranslatedName, "newline");
+		contentPanel.add(tfTranslatedName, "");
+		contentPanel.add(lblDescription, "newline");
+		contentPanel.add(tfDescription, "");
+		contentPanel.add(lblSize, "newline");
+		contentPanel.add(tfSizeInInch, "");
+		contentPanel.add(lblSortOrder, "newline");
+		contentPanel.add(tfSortOrder, "");
 
 		add(contentPanel);
 	}
@@ -89,6 +101,7 @@ public class MenuItemSizeForm extends BeanEditor {
 		tfDescription.setText(menuItemSize.getDescription());
 		tfTranslatedName.setText(menuItemSize.getTranslatedName());
 		tfSortOrder.setText(String.valueOf(menuItemSize.getSortOrder()));
+		tfSizeInInch.setText(String.valueOf(menuItemSize.getSizeInInch()));
 
 	}
 
@@ -99,7 +112,8 @@ public class MenuItemSizeForm extends BeanEditor {
 		String name = tfName.getText();
 		String description = tfDescription.getText();
 		String translatedName = tfTranslatedName.getText();
-		String sortOrder = tfSortOrder.getText();
+		int sortOrder = tfSortOrder.getInteger();
+		double size = tfSizeInInch.getDouble();
 		if (POSUtil.isBlankOrNull(name)) {
 			MessageDialog.showError("Name is required");
 			return false;
@@ -117,7 +131,8 @@ public class MenuItemSizeForm extends BeanEditor {
 		menuItemSize.setName(name);
 		menuItemSize.setDescription(description);
 		menuItemSize.setTranslatedName(translatedName);
-		menuItemSize.setSortOrder(Integer.valueOf(sortOrder));
+		menuItemSize.setSortOrder(sortOrder);
+		menuItemSize.setSizeInInch(size);
 
 		MenuItemSizeDAO dao = new MenuItemSizeDAO();
 		dao.saveOrUpdate(menuItemSize);
@@ -128,8 +143,8 @@ public class MenuItemSizeForm extends BeanEditor {
 	public String getDisplayText() {
 		MenuItemSize menuItemSize = (MenuItemSize) getBean();
 		if (menuItemSize.getId() == null) {
-			return "New Menu Item Size";
+			return "New Size";
 		}
-		return "Edit Menu Item Size";
+		return "Edit Size";
 	}
 }

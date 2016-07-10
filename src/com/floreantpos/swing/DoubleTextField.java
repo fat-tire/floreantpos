@@ -35,4 +35,12 @@ public class DoubleTextField extends FocusedTextField {
 			return Double.NaN;
 		}
 	}
+	
+	public double getDoubleOrZero() {
+		try {
+			return Double.parseDouble(getText());
+		} catch (Exception e) {
+			return 0;
+		}
+	}
 }

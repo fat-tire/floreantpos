@@ -13,7 +13,7 @@ import com.floreantpos.bo.ui.explorer.PizzaCrustExplorer;
 public class MenuItemSizeExplorerAction extends AbstractAction {
 
 	public MenuItemSizeExplorerAction() {
-		super("Menu Item Size");
+		super("Size");
 	}
 
 	public MenuItemSizeExplorerAction(String name) {
@@ -29,10 +29,10 @@ public class MenuItemSizeExplorerAction extends AbstractAction {
 
 		MenuItemSizeExplorer explorer = null;
 		JTabbedPane tabbedPane = backOfficeWindow.getTabbedPane();
-		int index = tabbedPane.indexOfTab("Menu Item Size");
+		int index = tabbedPane.indexOfTab("Size");
 		if (index == -1) {
 			explorer = new MenuItemSizeExplorer();
-			tabbedPane.addTab("Menu Item Size", explorer);
+			tabbedPane.addTab("Size", explorer);
 		}
 		else {
 			explorer = (MenuItemSizeExplorer) tabbedPane.getComponentAt(index);

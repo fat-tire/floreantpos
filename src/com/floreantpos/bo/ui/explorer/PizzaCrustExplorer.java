@@ -47,8 +47,8 @@ public class PizzaCrustExplorer extends TransparentPanel {
 		tableModel = new BeanTableModel<PizzaCrust>(PizzaCrust.class);
 		tableModel.addColumn(POSConstants.ID.toUpperCase(), "id"); //$NON-NLS-1$
 		tableModel.addColumn(POSConstants.NAME.toUpperCase(), "name"); //$NON-NLS-1$
-		tableModel.addColumn("DESCRIPTION", "description"); //$NON-NLS-1$
 		tableModel.addColumn("TRANSLATED NAME", "translatedName"); //$NON-NLS-1$
+		tableModel.addColumn("DESCRIPTION", "description"); //$NON-NLS-1$
 		tableModel.addColumn("SORT", "sortOrder"); //$NON-NLS-1$
 
 		tableModel.addRows(PizzaCrustDAO.getInstance().findAll());

@@ -34,8 +34,10 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.GroupLayout;
@@ -74,6 +76,7 @@ import com.floreantpos.model.MenuItem;
 import com.floreantpos.model.MenuItemModifierGroup;
 import com.floreantpos.model.MenuItemShift;
 import com.floreantpos.model.OrderType;
+import com.floreantpos.model.PizzaCrust;
 import com.floreantpos.model.PizzaPrice;
 import com.floreantpos.model.PrinterGroup;
 import com.floreantpos.model.Tax;
@@ -95,6 +98,7 @@ import com.floreantpos.swing.PosUIManager;
 import com.floreantpos.ui.BeanEditor;
 import com.floreantpos.ui.dialog.BeanEditorDialog;
 import com.floreantpos.ui.dialog.ConfirmDeleteDialog;
+import com.floreantpos.ui.dialog.POSDialog;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.util.POSUtil;
 import com.floreantpos.util.ShiftUtil;
@@ -202,7 +206,7 @@ public class PizzaItemForm extends BeanEditor<MenuItem> implements ActionListene
 		priceTableModel = new BeanTableModel<PizzaPrice>(PizzaPrice.class);
 		priceTableModel.addColumn("SIZE", "size");
 		priceTableModel.addColumn("CRUST", "crust");
-//		priceTableModel.addColumn("ORDER", "orderType");
+		priceTableModel.addColumn("ORDER", "orderType");
 		priceTableModel.addColumn("PRICE", "price");
 
 		if (menuItem != null) {
@@ -821,6 +825,7 @@ public class PizzaItemForm extends BeanEditor<MenuItem> implements ActionListene
 		if (menuItem.getTextColor() != null) {
 			btnTextColor.setForeground(menuItem.getTextColor());
 		}
+
 	}
 
 	@Override
@@ -865,6 +870,29 @@ public class PizzaItemForm extends BeanEditor<MenuItem> implements ActionListene
 		if (menuItem.getPizzaPriceList() != null) {
 			menuItem.getPizzaPriceList().clear();
 		}
+		/*List<PizzaPrice> duplicateList = new ArrayList<PizzaPrice>();
+		int count = 0;
+		for (int i = 0; i < pizzaPriceList.size(); i++) {
+			for (int j = 0; j < pizzaPriceList.size(); j++) {
+				if ((pizzaPriceList.get(i).getSize() == pizzaPriceList.get(j).getSize())
+						&& (pizzaPriceList.get(i).getCrust() == pizzaPriceList.get(j).getCrust())) {
+					System.out.println(pizzaPriceList.get(i).getSize() + " " + pizzaPriceList.get(i).getCrust() + " " + pizzaPriceList.get(j).getSize() + " "
+							+ pizzaPriceList.get(j).getCrust());
+					duplicateList.add(pizzaPriceList.get(i));
+					System.out.println(count);
+					++count;
+				}
+			}
+		}
+		System.out.println(count);
+
+
+		System.out.println(findDuplicates(duplicateList));
+
+		if (findDuplicates(duplicateList)) {
+			JOptionPane.showMessageDialog(this, "Duplicate Value Entered");
+			return false;
+		}*/
 
 		for (PizzaPrice pizzaPrice : pizzaPriceList) {
 			menuItem.addTopizzaPriceList(pizzaPrice);
@@ -886,6 +914,22 @@ public class PizzaItemForm extends BeanEditor<MenuItem> implements ActionListene
 
 		return true;
 	}
+
+	/*public static boolean findDuplicates(List<PizzaPrice> listContainingDuplicates) {
+
+		final Set<PizzaPrice> setToReturn = new HashSet<PizzaPrice>();
+		final Set<PizzaPrice> set1 = new HashSet<PizzaPrice>();
+
+		boolean isDuplicateContain = false;
+
+		for (PizzaPrice yourInt : listContainingDuplicates) {
+			if (!set1.add(yourInt)) {
+				setToReturn.add(yourInt);
+				isDuplicateContain = true;
+			}
+		}
+		return isDuplicateContain;
+	}*/
 
 	public String getDisplayText() {
 		MenuItem foodItem = (MenuItem) getBean();
@@ -1168,8 +1212,10 @@ public class PizzaItemForm extends BeanEditor<MenuItem> implements ActionListene
 	}
 
 	private void addNewPrice() {
-		PizzaItemPriceDialog dialog = new PizzaItemPriceDialog(this.getParentFrame(), null);
-		dialog.setSize(400, 300);
+		List<PizzaPrice> pizzaPriceList = priceTableModel.getRows();
+		PizzaItemPriceDialog dialog = new PizzaItemPriceDialog(this.getParentFrame(), null, pizzaPriceList);
+		dialog.setTitle("Add New Price");
+		dialog.setSize(PosUIManager.getSize(350, 220));
 		dialog.open();
 		if (dialog.isCanceled()) {
 			return;
@@ -1197,7 +1243,7 @@ public class PizzaItemForm extends BeanEditor<MenuItem> implements ActionListene
 			return;
 		}
 
-		//priceTableModel.remove(selectedRow);
+		priceTableModel.removeRow(selectedRow);
 	}
 
 	private void deleteAll() {
@@ -1215,14 +1261,16 @@ public class PizzaItemForm extends BeanEditor<MenuItem> implements ActionListene
 	}*/
 
 	private void updatePrice() {
+		List<PizzaPrice> pizzaPriceList = priceTableModel.getRows();
 		int selectedRow = priceTable.getSelectedRow();
 		if (selectedRow == -1) {
 			POSMessageDialog.showMessage(this.getParentFrame(), Messages.getString("MenuItemForm.38")); //$NON-NLS-1$
 			return;
 		}
 		PizzaPrice pizzaPrice = priceTableModel.getRow(selectedRow);
-		PizzaItemPriceDialog pizzaItemPriceDialog = new PizzaItemPriceDialog(this.getParentFrame(), pizzaPrice);
-		pizzaItemPriceDialog.setSize(350, 250);
+		PizzaItemPriceDialog pizzaItemPriceDialog = new PizzaItemPriceDialog(this.getParentFrame(), pizzaPrice, pizzaPriceList);
+		pizzaItemPriceDialog.setTitle("Edit Pizza Price");
+		pizzaItemPriceDialog.setSize(PosUIManager.getSize(350, 220));
 		pizzaItemPriceDialog.open();
 
 		if (pizzaItemPriceDialog.isCanceled()) {

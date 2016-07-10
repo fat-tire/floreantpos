@@ -18,6 +18,7 @@ public abstract class BaseMenuItemSize  implements Comparable, Serializable {
 	public static String REF = "MenuItemSize"; //$NON-NLS-1$
 	public static String PROP_DESCRIPTION = "description"; //$NON-NLS-1$
 	public static String PROP_TRANSLATED_NAME = "translatedName"; //$NON-NLS-1$
+	public static String PROP_SIZE_IN_INCH = "sizeInInch"; //$NON-NLS-1$
 	public static String PROP_SORT_ORDER = "sortOrder"; //$NON-NLS-1$
 	public static String PROP_ID = "id"; //$NON-NLS-1$
 	public static String PROP_NAME = "name"; //$NON-NLS-1$
@@ -50,6 +51,7 @@ public abstract class BaseMenuItemSize  implements Comparable, Serializable {
 		protected java.lang.String translatedName;
 		protected java.lang.String description;
 		protected java.lang.Integer sortOrder;
+		protected java.lang.Double sizeInInch;
 
 
 
@@ -139,6 +141,23 @@ public abstract class BaseMenuItemSize  implements Comparable, Serializable {
 	 */
 	public void setSortOrder (java.lang.Integer sortOrder) {
 		this.sortOrder = sortOrder;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: SIZE_IN_INCH
+	 */
+	public java.lang.Double getSizeInInch () {
+									return sizeInInch == null ? Double.valueOf(0) : sizeInInch;
+					}
+
+	/**
+	 * Set the value related to the column: SIZE_IN_INCH
+	 * @param sizeInInch the SIZE_IN_INCH value
+	 */
+	public void setSizeInInch (java.lang.Double sizeInInch) {
+		this.sizeInInch = sizeInInch;
 	}
 
 

@@ -188,7 +188,7 @@ public class PizzaModifierExplorer extends TransparentPanel {
 		public PizzaModifierExplorerModel() {
 
 			super(new String[] { com.floreantpos.POSConstants.ID, com.floreantpos.POSConstants.NAME, POSConstants.TRANSLATED_NAME,
-					com.floreantpos.POSConstants.PRICE + " (" + currencySymbol + ")", com.floreantpos.POSConstants.EXTRA_PRICE, //$NON-NLS-1$ //$NON-NLS-2$
+					//com.floreantpos.POSConstants.PRICE + " (" + currencySymbol + ")", com.floreantpos.POSConstants.EXTRA_PRICE, //$NON-NLS-1$ //$NON-NLS-2$
 					com.floreantpos.POSConstants.TAX + "(%)", com.floreantpos.POSConstants.MODIFIER_GROUP, POSConstants.BUTTON_COLOR, POSConstants.SORT_ORDER }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 		}
@@ -208,32 +208,32 @@ public class PizzaModifierExplorer extends TransparentPanel {
 				case 2:
 					return modifier.getTranslatedName();
 
+					/*	case 3:
+							return Double.valueOf(modifier.getPrice());
+
+						case 4:
+							return Double.valueOf(modifier.getExtraPrice());*/
+
 				case 3:
-					return Double.valueOf(modifier.getPrice());
-
-				case 4:
-					return Double.valueOf(modifier.getExtraPrice());
-
-				case 5:
 					if (modifier.getTax() == null) {
 						return ""; //$NON-NLS-1$
 					}
 					return Double.valueOf(modifier.getTax().getRate());
 
-				case 6:
+				case 4:
 					if (modifier.getModifierGroup() == null) {
 						return ""; //$NON-NLS-1$
 					}
 					return modifier.getModifierGroup().getName();
 
-				case 7:
+				case 5:
 					if (modifier.getButtonColor() != null) {
 						return new Color(modifier.getButtonColor());
 					}
 
 					return null;
 
-				case 8:
+				case 6:
 					return modifier.getSortOrder();
 			}
 			return null;

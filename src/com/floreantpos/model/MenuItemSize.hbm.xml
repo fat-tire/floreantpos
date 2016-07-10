@@ -10,5 +10,6 @@
 		<property name="translatedName" column="TRANSLATED_NAME" type="java.lang.String" length="60" />
 		<property name="description" column="DESCRIPTION" type="java.lang.String" length="120" />
 		<property name="sortOrder" column="SORT_ORDER" type="java.lang.Integer" />
+		<property name="sizeInInch" column="SIZE_IN_INCH" type="java.lang.Double" />
 	</class>
 </hibernate-mapping>

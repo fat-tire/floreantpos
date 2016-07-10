@@ -33,8 +33,9 @@ public class MenuItemSizeExplorer extends TransparentPanel {
 		tableModel = new BeanTableModel<MenuItemSize>(MenuItemSize.class);
 		tableModel.addColumn(POSConstants.ID.toUpperCase(), "id"); //$NON-NLS-1$
 		tableModel.addColumn(POSConstants.NAME.toUpperCase(), "name"); //$NON-NLS-1$
-		tableModel.addColumn("DESCRIPTION", "description"); //$NON-NLS-1$
 		tableModel.addColumn("TRANSLATED NAME", "translatedName"); //$NON-NLS-1$
+		tableModel.addColumn("DESCRIPTION", "description"); //$NON-NLS-1$
+		tableModel.addColumn("SIZE (in Inch)", "sizeInInch"); //$NON-NLS-1$
 		tableModel.addColumn("SORT", "sortOrder"); //$NON-NLS-1$
 
 		tableModel.addRows(MenuItemSizeDAO.getInstance().findAll());

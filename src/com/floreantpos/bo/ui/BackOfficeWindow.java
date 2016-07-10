@@ -209,12 +209,6 @@ public class BackOfficeWindow extends javax.swing.JFrame {
 		JMenu explorerMenu = new JMenu(com.floreantpos.POSConstants.EXPLORERS);
 		menuBar.add(explorerMenu);
 		JMenu subMenuPizza = new JMenu("Pizza");
-		JMenuItem sizeMenuItem, crustMenuItem, menuMenuItem;
-		sizeMenuItem = new JMenuItem("Size");
-		crustMenuItem = new JMenuItem("Crust");
-		menuMenuItem = new JMenuItem("Menu");
-
-
 
 		if (TerminalConfig.isMultipleOrderSupported()) {
 			explorerMenu.add(new OrdersTypeExplorerAction());

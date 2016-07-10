@@ -9,29 +9,22 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.List;
 
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 import javax.swing.KeyStroke;
-
-import org.jdesktop.swingx.combobox.ListComboBoxModel;
 
 import net.miginfocom.swing.MigLayout;
 
+import org.jdesktop.swingx.combobox.ListComboBoxModel;
+
 import com.floreantpos.Messages;
-import com.floreantpos.main.Application;
 import com.floreantpos.model.MenuItemSize;
-import com.floreantpos.model.MenuModifier;
-import com.floreantpos.model.OrderType;
 import com.floreantpos.model.PizzaModifierPrice;
-import com.floreantpos.model.Tax;
 import com.floreantpos.model.dao.MenuItemSizeDAO;
-import com.floreantpos.model.dao.MenuModifierDAO;
-import com.floreantpos.model.dao.TaxDAO;
+import com.floreantpos.swing.DoubleTextField;
 import com.floreantpos.ui.dialog.POSDialog;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 
@@ -40,14 +33,17 @@ public class PizzaModifierPriceDialog extends POSDialog {
 	private JButton btnOK;
 	private JButton btnCancel;
 	private JComboBox cbSize;
-	private JTextField tfPrice;
-	private JTextField tfExtraPrice;
+	private DoubleTextField tfPrice;
+	private DoubleTextField tfExtraPrice;
 
 	private PizzaModifierPrice modifierPrice;
+	private final List<PizzaModifierPrice> existingPriceList;
 
-	public PizzaModifierPriceDialog(Frame owner, PizzaModifierPrice modifierPrice) {
+	public PizzaModifierPriceDialog(Frame owner, PizzaModifierPrice modifierPrice, List<PizzaModifierPrice> existingPriceList) {
 		super(owner, true);
 		this.modifierPrice = modifierPrice;
+		this.existingPriceList = existingPriceList;
+		
 		init();
 		updateView();
 	}
@@ -111,31 +107,31 @@ public class PizzaModifierPriceDialog extends POSDialog {
 	}
 
 	public boolean updateModel() {
-		double price = 0;
-		double extraPrice = 0;
-		try {
-			price = Double.parseDouble(tfPrice.getText());
+		double price = tfPrice.getDoubleOrZero();
+		double extraPrice = tfExtraPrice.getDoubleOrZero();
 
-		} catch (Exception x) {
-			POSMessageDialog.showError(this, com.floreantpos.POSConstants.PRICE_IS_NOT_VALID_);
-			return false;
-		}
-
-		if (cbSize.getSelectedItem() == null) {
+		MenuItemSize selectedSize = (MenuItemSize) cbSize.getSelectedItem();
+		
+		if (selectedSize == null) {
 			POSMessageDialog.showError(this, "Please Select Size");
 			return false;
 		}
-
-		String extraPriceText = tfExtraPrice.getText();
-
-		if (extraPriceText == null) {
-			extraPrice = 0;
+		
+		if(existingPriceList != null) {
+			for (PizzaModifierPrice mp : existingPriceList) {
+				if(selectedSize.equals(mp.getSize()) && (mp != this.modifierPrice)) {
+					POSMessageDialog.showError(this, "Duplicate size!");
+					return false;
+				}
+			}
 		}
+
 
 		if (modifierPrice == null) {
 			modifierPrice = new PizzaModifierPrice();
 		}
-		modifierPrice.setSize((MenuItemSize) cbSize.getSelectedItem());
+
+		modifierPrice.setSize((MenuItemSize) selectedSize);
 		modifierPrice.setPrice(price);
 		modifierPrice.setExtraPrice(extraPrice);
 
@@ -157,11 +153,11 @@ public class PizzaModifierPriceDialog extends POSDialog {
 
 		final JLabel label2 = new JLabel();
 		label2.setText(com.floreantpos.POSConstants.PRICE + ":"); //$NON-NLS-1$
-		tfPrice = new JTextField();
+		tfPrice = new DoubleTextField();
 
 		final JLabel lblExtraPrice = new JLabel();
 		lblExtraPrice.setText("Extra Price:");
-		tfExtraPrice = new JTextField();
+		tfExtraPrice = new DoubleTextField();
 
 		JPanel panel = new JPanel(new MigLayout("", "[][fill, grow]", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
@@ -171,7 +167,6 @@ public class PizzaModifierPriceDialog extends POSDialog {
 		panel.add(tfPrice, "wrap"); //$NON-NLS-1$
 		panel.add(lblExtraPrice, "left"); //$NON-NLS-1$
 		panel.add(tfExtraPrice, "grow,wrap"); //$NON-NLS-1$
-
 
 		contentPane.add(panel, BorderLayout.CENTER);
 

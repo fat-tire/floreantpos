@@ -19,9 +19,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.table.AbstractTableModel;
-
 import net.miginfocom.swing.MigLayout;
-
 import com.floreantpos.Messages;
 import com.floreantpos.model.MenuModifier;
 import com.floreantpos.model.MenuModifierGroup;
@@ -76,9 +74,9 @@ public class PizzaModifierForm extends BeanEditor {
 	private BeanTableModel<PizzaModifierPrice> pizzaModifierPriceTableModel;
 	private javax.swing.JScrollPane pizzaModifierPriceTabScrollPane;
 
-	private javax.swing.JButton btnNewPrice1;
-	private javax.swing.JButton btnUpdatePrice1;
-	private javax.swing.JButton btnDeletePrice1;
+	private javax.swing.JButton btnNewPrice;
+	private javax.swing.JButton btnUpdatePrice;
+	private javax.swing.JButton btnDeletePrice;
 
 	JLabel sizeLabel;
 	JLabel priceLabel;
@@ -139,9 +137,9 @@ public class PizzaModifierForm extends BeanEditor {
 
 		priceTable = new javax.swing.JTable();
 
-		btnNewPrice1 = new javax.swing.JButton();
-		btnUpdatePrice1 = new javax.swing.JButton();
-		btnDeletePrice1 = new javax.swing.JButton();
+		btnNewPrice = new javax.swing.JButton();
+		btnUpdatePrice = new javax.swing.JButton();
+		btnDeletePrice = new javax.swing.JButton();
 
 		jLabel1.setText(com.floreantpos.POSConstants.NAME + ":");
 
@@ -217,88 +215,6 @@ public class PizzaModifierForm extends BeanEditor {
 		jPanel1.add(tfName, "cell 1 0 6 1,growx,aligny top"); //$NON-NLS-1$
 		jPanel1.add(cbModifierGroup, "cell 1 2 6 1,growx,aligny top"); //$NON-NLS-1$
 
-		/*btnNewPrice.setText(Messages.getString("MenuModifierForm.2")); //$NON-NLS-1$
-		btnNewPrice.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				addNewPrice();
-			}
-		});
-		btnUpdatePrice.setText(Messages.getString("MenuModifierForm.3")); //$NON-NLS-1$
-		btnUpdatePrice.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				updatePrice();
-			}
-		});
-		btnDeletePrice.setText(Messages.getString("MenuModifierForm.4")); //$NON-NLS-1$
-		btnDeletePrice.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				deletePrice();
-			}
-		});
-		btnDeleteAll.setText(Messages.getString("MenuModifierForm.5")); //$NON-NLS-1$
-		btnDeleteAll.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				deleteAll();
-			}
-		});
-
-		btnDefaultValue.setText(Messages.getString("MenuModifierForm.8")); //$NON-NLS-1$
-		btnDefaultValue.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				setDefaultValue();
-			}
-		});
-		priceTable.setModel(new javax.swing.table.DefaultTableModel(new Object[][] { { null, null, null, null }, { null, null, null, null },
-				{ null, null, null, null }, { null, null, null, null } }, new String[] { "Title 1", "Title 2", "Title 3", "Title 4" })); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-
-		jScrollPane3.setViewportView(priceTable);
-
-		tabPrice.setLayout(new BorderLayout());
-		tabPrice.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-		tabPrice.add(jScrollPane3, BorderLayout.CENTER);*/
-
-		/*JPanel buttonPanel = new JPanel();
-
-		buttonPanel.add(btnNewPrice);
-		buttonPanel.add(btnUpdatePrice);
-		//buttonPanel.add(btnDefaultValue);
-		buttonPanel.add(btnDeletePrice);
-
-		//buttonPanel.add(btnDeleteAll);
-
-		tabPrice.add(buttonPanel, BorderLayout.SOUTH);
-		if (TerminalConfig.isMultipleOrderSupported()) {
-			jTabbedPane1.addTab(Messages.getString("MenuModifierForm.6"), tabPrice); //$NON-NLS-1$
-		}*/
-
-		//..........
-
-		/*List<MenuItemSize> menuItemSizeList = MenuItemSizeDAO.getInstance().findAll();
-		sizeLabel = new JLabel("Size:");
-		priceLabel = new JLabel("Price:");
-		extraPriceLabel = new JLabel("Extra Price:");
-		sizeCombo = new javax.swing.JComboBox(new ListComboBoxModel<MenuItemSize>(menuItemSizeList));
-		tfPrice = new DoubleTextField(20);
-		tfExtraPrice = new DoubleTextField(20);
-
-		pricePanel.setLayout(new MigLayout("insets 20", "[][]20px[][]", "[][][][][][][][][][][][][]"));
-
-		pricePanel.add(sizeLabel, "cell 0 1 ,right");
-		pricePanel.add(sizeCombo, "cell 1 1,grow");
-		pricePanel.add(priceLabel, "cell 0 2,right");
-		pricePanel.add(tfPrice, "cell 1 2,grow");
-		pricePanel.add(extraPriceLabel, "cell 0 3,right");
-		pricePanel.add(tfExtraPrice, "cell 1 3,grow");*/
-
 		pizzaModifierPriceTable = new javax.swing.JTable();
 		pizzaModifierPriceTable.setRowHeight(PosUIManager.getSize(pizzaModifierPriceTable.getRowHeight()));
 
@@ -320,36 +236,36 @@ public class PizzaModifierForm extends BeanEditor {
 		pricePanel.add(pizzaModifierPriceTabScrollPane, BorderLayout.CENTER);
 
 
-		JPanel buttonPanel2 = new JPanel();
+		JPanel buttonPanel = new JPanel();
 
-		buttonPanel2.add(btnNewPrice1);
-		btnNewPrice1.setText(Messages.getString("MenuModifierForm.2")); //$NON-NLS-1$
-		btnNewPrice1.addActionListener(new ActionListener() {
+		buttonPanel.add(btnNewPrice);
+		btnNewPrice.setText(Messages.getString("MenuModifierForm.2")); //$NON-NLS-1$
+		btnNewPrice.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				setNewPrice();
 			}
 
 		});
-		buttonPanel2.add(btnUpdatePrice1);
-		btnUpdatePrice1.setText("Edit"); //$NON-NLS-1$
-		btnUpdatePrice1.addActionListener(new ActionListener() {
+		buttonPanel.add(btnUpdatePrice);
+		btnUpdatePrice.setText("Edit"); //$NON-NLS-1$
+		btnUpdatePrice.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				updatePrice();
 			}
 
 		});
-		buttonPanel2.add(btnDeletePrice1);
-		btnDeletePrice1.setText("Delete"); //$NON-NLS-1$
-		btnDeletePrice1.addActionListener(new ActionListener() {
+		buttonPanel.add(btnDeletePrice);
+		btnDeletePrice.setText("Delete"); //$NON-NLS-1$
+		btnDeletePrice.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				deletePrice();
 			}
 
 		});
-		pricePanel.add(buttonPanel2, BorderLayout.SOUTH);
+		pricePanel.add(buttonPanel, BorderLayout.SOUTH);
 
 		jTabbedPane1.addTab("Pizza Modifier Price ", pricePanel);
 
@@ -432,31 +348,8 @@ public class PizzaModifierForm extends BeanEditor {
 			MessageDialog.showError(Messages.getString("MenuModifierForm.44")); //$NON-NLS-1$
 			return false;
 		}
-		/*
-		MenuItemSize size = (MenuItemSize) sizeCombo.getSelectedItem();
-		if (size == null) {
-			MessageDialog.showError(Messages.getString("Please Select Size")); //$NON-NLS-1$
-			return false;
-		}
 		
-		double price= tfPrice.getDouble();
-		if (price==0) {
-			MessageDialog.showError(Messages.getString("Please Enter Price")); //$NON-NLS-1$
-			return false;
-		}
-		double extraPrice= tfExtraPrice.getDouble();
-		if (extraPrice==0 ) {
-			MessageDialog.showError(Messages.getString("Please Enter Extra Price")); //$NON-NLS-1$
-			return false;
-		}*/
-
 		modifier.setName(name);
-
-		/*	PizzaModifierPrice pizzaModifierPrice = new PizzaModifierPrice();
-			pizzaModifierPrice.setPrice(tfPrice.getDouble());
-			pizzaModifierPrice.setExtraPrice(tfExtraPrice.getDouble());
-			//	pizzaModifierPrice.setSize(cb);
-			modifier.addTopizzaModifierPriceList(pizzaModifierPrice);*/
 
 		List<PizzaModifierPrice> rows = pizzaModifierPriceTableModel.getRows();
 		List<PizzaModifierPrice> pizzaModifierPriceList = modifier.getPizzaModifierPriceList();
@@ -477,10 +370,6 @@ public class PizzaModifierForm extends BeanEditor {
 		modifier.setSortOrder(tfSortOrder.getInteger());
 		modifier.setPizzaModifier(true);
 		
-
-		//	modifier.addTopizzaModifierPriceList(pizzaModifierPrice);
-
-
 		return true;
 	}
 
@@ -634,7 +523,7 @@ public class PizzaModifierForm extends BeanEditor {
 		}
 
 		PizzaModifierPrice pizzaModifierPrice = pizzaModifierPriceTableModel.getRow(selectedRow);
-		PizzaModifierPriceDialog dialog = new PizzaModifierPriceDialog(this.getParentFrame(), pizzaModifierPrice);
+		PizzaModifierPriceDialog dialog = new PizzaModifierPriceDialog(this.getParentFrame(), pizzaModifierPrice, pizzaModifierPriceTableModel.getRows());
 		dialog.setTitle("Modifier Price ");
 		dialog.setSize(PosUIManager.getSize(300, 200));
 		dialog.open();
@@ -644,15 +533,13 @@ public class PizzaModifierForm extends BeanEditor {
 	}
 
 	private void setNewPrice() {
-
-		PizzaModifierPriceDialog dialog = new PizzaModifierPriceDialog(this.getParentFrame(), null);
+		PizzaModifierPriceDialog dialog = new PizzaModifierPriceDialog(this.getParentFrame(), null, pizzaModifierPriceTableModel.getRows());
 		dialog.setTitle("Modifier Price ");
 		dialog.setSize(PosUIManager.getSize(300, 200));
 		dialog.open();
 		if (dialog.isCanceled()) {return;}
 		PizzaModifierPrice pizzaPrice = dialog.getModifierPrice();
 		pizzaModifierPriceTableModel.addRow(pizzaPrice);
-
 	}
 
 }
