@@ -515,7 +515,9 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 		}
 
 		@Override
-		public void paint(Graphics g) {
+		public void paintComponent(Graphics g) {
+			super.paintComponent(g);
+			
 			int width = getWidth();
 			int height = getHeight();
 			g.setColor(Color.WHITE);
