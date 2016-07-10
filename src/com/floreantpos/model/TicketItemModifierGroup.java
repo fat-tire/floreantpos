@@ -302,7 +302,7 @@ public class TicketItemModifierGroup extends BaseTicketItemModifierGroup impleme
 
 	@Override
 	public String getNameDisplay() {
-		return getSectionName();
+		return " == " + getSectionName();
 	}
 
 	@Override

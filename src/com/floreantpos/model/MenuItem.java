@@ -19,7 +19,6 @@ package com.floreantpos.model;
 
 import java.awt.Color;
 import java.awt.Image;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -35,7 +34,6 @@ import org.apache.commons.lang.StringUtils;
 import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.base.BaseMenuItem;
-import com.floreantpos.model.OrderType;
 import com.floreantpos.util.POSUtil;
 
 @XmlRootElement(name = "menu-item")
@@ -96,6 +94,16 @@ public class MenuItem extends BaseMenuItem {
 
 	public void setImage(ImageIcon icon) {
 
+	}
+	
+	@Override
+	public String getTranslatedName() {
+		String translatedName = super.getTranslatedName();
+		if(StringUtils.isEmpty(translatedName)) {
+			return getName();
+		}
+		
+		return translatedName;
 	}
 
 	@Override
