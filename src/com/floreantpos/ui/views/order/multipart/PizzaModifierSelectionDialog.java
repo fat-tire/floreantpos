@@ -506,7 +506,7 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 		int size;
 
 		public Pizza(String name) {
-			setBackground(Color.white);
+			setOpaque(false);
 			setPreferredSize(PosUIManager.getSize(250, 250));
 		}
 
