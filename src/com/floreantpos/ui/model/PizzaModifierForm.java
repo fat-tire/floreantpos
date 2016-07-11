@@ -5,7 +5,10 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
@@ -19,12 +22,16 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.table.AbstractTableModel;
+
 import net.miginfocom.swing.MigLayout;
+
 import com.floreantpos.Messages;
+import com.floreantpos.model.MenuItemSize;
 import com.floreantpos.model.MenuModifier;
 import com.floreantpos.model.MenuModifierGroup;
 import com.floreantpos.model.PizzaModifierPrice;
 import com.floreantpos.model.Tax;
+import com.floreantpos.model.dao.MenuItemSizeDAO;
 import com.floreantpos.model.dao.MenuModifierDAO;
 import com.floreantpos.model.dao.ModifierDAO;
 import com.floreantpos.model.dao.ModifierGroupDAO;
@@ -68,7 +75,6 @@ public class PizzaModifierForm extends BeanEditor {
 	private IntegerTextField tfSortOrder;
 	private JLabel lblSortOrder;
 
-
 	private javax.swing.JTable priceTable;
 	private javax.swing.JTable pizzaModifierPriceTable;
 	private BeanTableModel<PizzaModifierPrice> pizzaModifierPriceTableModel;
@@ -84,6 +90,8 @@ public class PizzaModifierForm extends BeanEditor {
 	JComboBox cbSize;
 	DoubleTextField tfPrice;
 	DoubleTextField tfExtraPrice;
+
+	private JButton btnAutoGenerate;
 
 	// End of variables declaration//GEN-END:variables
 
@@ -134,12 +142,12 @@ public class PizzaModifierForm extends BeanEditor {
 		jLabel4 = new javax.swing.JLabel();
 		cbModifierGroup = new javax.swing.JComboBox();
 
-
 		priceTable = new javax.swing.JTable();
 
 		btnNewPrice = new javax.swing.JButton();
 		btnUpdatePrice = new javax.swing.JButton();
 		btnDeletePrice = new javax.swing.JButton();
+		btnAutoGenerate = new javax.swing.JButton();
 
 		jLabel1.setText(com.floreantpos.POSConstants.NAME + ":");
 
@@ -235,7 +243,6 @@ public class PizzaModifierForm extends BeanEditor {
 		pricePanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 		pricePanel.add(pizzaModifierPriceTabScrollPane, BorderLayout.CENTER);
 
-
 		JPanel buttonPanel = new JPanel();
 
 		buttonPanel.add(btnNewPrice);
@@ -243,7 +250,7 @@ public class PizzaModifierForm extends BeanEditor {
 		btnNewPrice.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				setNewPrice();
+				addModifierPrice();
 			}
 
 		});
@@ -252,7 +259,7 @@ public class PizzaModifierForm extends BeanEditor {
 		btnUpdatePrice.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				updatePrice();
+				editSelectedRow();
 			}
 
 		});
@@ -265,10 +272,29 @@ public class PizzaModifierForm extends BeanEditor {
 			}
 
 		});
+
+		buttonPanel.add(btnAutoGenerate);
+		btnAutoGenerate.setText("Auto Generate"); //$NON-NLS-1$
+		btnAutoGenerate.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				autoGenerateModifierPriceList();
+			}
+
+		});
+
 		pricePanel.add(buttonPanel, BorderLayout.SOUTH);
 
 		jTabbedPane1.addTab("Pizza Modifier Price ", pricePanel);
 
+		pizzaModifierPriceTable.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent me) {
+				if (me.getClickCount() == 2) {
+					editSelectedRow();
+				}
+			}
+		});
 
 	}// </editor-fold>//GEN-END:initComponents
 
@@ -348,7 +374,7 @@ public class PizzaModifierForm extends BeanEditor {
 			MessageDialog.showError(Messages.getString("MenuModifierForm.44")); //$NON-NLS-1$
 			return false;
 		}
-		
+
 		modifier.setName(name);
 
 		List<PizzaModifierPrice> rows = pizzaModifierPriceTableModel.getRows();
@@ -369,7 +395,7 @@ public class PizzaModifierForm extends BeanEditor {
 		modifier.setTextColor(btnTextColor.getForeground().getRGB());
 		modifier.setSortOrder(tfSortOrder.getInteger());
 		modifier.setPizzaModifier(true);
-		
+
 		return true;
 	}
 
@@ -515,7 +541,7 @@ public class PizzaModifierForm extends BeanEditor {
 		pizzaModifierPriceTableModel.removeRow(selectedRow);
 	}
 
-	private void updatePrice() {
+	private void editSelectedRow() {
 		int selectedRow = pizzaModifierPriceTable.getSelectedRow();
 		if (selectedRow == -1) {
 			POSMessageDialog.showMessage(this.getParentFrame(), Messages.getString("MenuModifierForm.25")); //$NON-NLS-1$
@@ -532,14 +558,57 @@ public class PizzaModifierForm extends BeanEditor {
 		}
 	}
 
-	private void setNewPrice() {
+	private void addModifierPrice() {
 		PizzaModifierPriceDialog dialog = new PizzaModifierPriceDialog(this.getParentFrame(), null, pizzaModifierPriceTableModel.getRows());
 		dialog.setTitle("Modifier Price ");
 		dialog.setSize(PosUIManager.getSize(300, 200));
 		dialog.open();
-		if (dialog.isCanceled()) {return;}
+		if (dialog.isCanceled()) {
+			return;
+		}
 		PizzaModifierPrice pizzaPrice = dialog.getModifierPrice();
 		pizzaModifierPriceTableModel.addRow(pizzaPrice);
 	}
 
+	private void autoGenerateModifierPriceList() {
+		List<PizzaModifierPrice> pizzaModifierPriceList = generatePossibleModifierPriceList();
+
+		filterDuplicateModifierPrices(pizzaModifierPriceList);
+
+		pizzaModifierPriceTableModel.addRows(pizzaModifierPriceList);
+		pizzaModifierPriceTable.repaint();
+
+	}
+
+	private List<PizzaModifierPrice> generatePossibleModifierPriceList() {
+		List<MenuItemSize> menuItemSizeList = MenuItemSizeDAO.getInstance().findAll();
+		List<PizzaModifierPrice> pizzaModifierPriceList = new ArrayList<PizzaModifierPrice>();
+
+		for (int i = 0; i < menuItemSizeList.size(); ++i) {
+			PizzaModifierPrice pizzaModifierPrice = new PizzaModifierPrice();
+			pizzaModifierPrice.setSize(menuItemSizeList.get(i));
+			pizzaModifierPrice.setPrice(0.0);
+			pizzaModifierPrice.setExtraPrice(0.0);
+
+			pizzaModifierPriceList.add(pizzaModifierPrice);
+		}
+		return pizzaModifierPriceList;
+	}
+
+	private void filterDuplicateModifierPrices(List<PizzaModifierPrice> pizzaModifierPriceList) {
+		List<PizzaModifierPrice> existedPizzaModifierPriceValueList = pizzaModifierPriceTableModel.getRows();
+		if (existedPizzaModifierPriceValueList != null) {
+
+			for (Iterator iterator = existedPizzaModifierPriceValueList.iterator(); iterator.hasNext();) {
+				PizzaModifierPrice existingPizzaModifierPrice = (PizzaModifierPrice) iterator.next();
+
+				for (Iterator iterator2 = pizzaModifierPriceList.iterator(); iterator2.hasNext();) {
+					PizzaModifierPrice pizzaModifierPrice = (PizzaModifierPrice) iterator2.next();
+					if ((existingPizzaModifierPrice.getSize().equals(pizzaModifierPrice.getSize()))) {
+						iterator2.remove();
+					}
+				}
+			}
+		}
+	}
 }

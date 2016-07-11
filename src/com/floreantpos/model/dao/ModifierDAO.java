@@ -59,6 +59,30 @@ public class ModifierDAO extends BaseModifierDAO {
 		}
 	}
 
+	public List<MenuModifier> findPizzaModifier(String name, MenuModifierGroup menuModifierGroup) {
+		Session session = null;
+		Criteria criteria = null;
+
+		try {
+			session = getSession();
+			criteria = session.createCriteria(MenuModifier.class);
+			criteria.add(Restrictions.eq(MenuModifier.PROP_PIZZA_MODIFIER, true)); //$NON-NLS-1$
+			if (StringUtils.isNotEmpty(name)) {
+				criteria.add(Restrictions.ilike(MenuModifier.PROP_NAME, name + "%".trim(), MatchMode.ANYWHERE)); //$NON-NLS-1$
+			}
+
+			if (menuModifierGroup != null) {
+
+				criteria.add(Restrictions.eq(MenuModifier.PROP_MODIFIER_GROUP, menuModifierGroup));
+			}
+
+			return criteria.list();
+		} finally {
+
+			session.close();
+		}
+	}
+
 	public List<MenuModifier> getPizzaModifiers() {
 		Session session = null;
 		Criteria criteria = null;

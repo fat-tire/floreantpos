@@ -1,9 +1,10 @@
-
 package com.floreantpos.bo.ui.explorer;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -78,6 +79,40 @@ public class PizzaItemExplorer extends TransparentPanel {
 		add(createButtonPanel(), BorderLayout.SOUTH);
 		add(buildSearchForm(), BorderLayout.NORTH);
 		resizeColumnWidth(table);
+
+		table.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent me) {
+				if (me.getClickCount() == 2) {
+					editSelectedRow();
+				}
+			}
+		});
+	}
+
+	private void editSelectedRow() {
+		try {
+			int index = table.getSelectedRow();
+			if (index < 0)
+				return;
+
+			index = table.convertRowIndexToModel(index);
+
+			MenuItem menuItem = tableModel.getRow(index);
+			menuItem = MenuItemDAO.getInstance().initialize(menuItem);
+
+			tableModel.setRow(index, menuItem);
+
+			PizzaItemForm editor = new PizzaItemForm(menuItem);
+			BeanEditorDialog dialog = new BeanEditorDialog(editor);
+			dialog.open();
+			if (dialog.isCanceled())
+				return;
+
+			table.repaint();
+		} catch (Throwable x) {
+			BOMessageDialog.showError(POSConstants.ERROR_MESSAGE, x);
+		}
 	}
 
 	private JPanel buildSearchForm() {
@@ -154,10 +189,10 @@ public class PizzaItemExplorer extends TransparentPanel {
 		List<MenuItem> similarItem = null;
 
 		if (selectedGroup instanceof MenuGroup) {
-			similarItem = MenuItemDAO.getInstance().getMenuItems(txName, (MenuGroup) selectedGroup, selectedType);
+			similarItem = MenuItemDAO.getInstance().getPizzaItems(txName, (MenuGroup) selectedGroup, selectedType);
 		}
 		else {
-			similarItem = MenuItemDAO.getInstance().getMenuItems(txName, null, selectedType);
+			similarItem = MenuItemDAO.getInstance().getPizzaItems(txName, null, selectedType);
 		}
 
 		tableModel.removeAll();
@@ -218,28 +253,7 @@ public class PizzaItemExplorer extends TransparentPanel {
 
 		editButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				try {
-					int index = table.getSelectedRow();
-					if (index < 0)
-						return;
-
-					index = table.convertRowIndexToModel(index);
-
-					MenuItem menuItem = tableModel.getRow(index);
-					menuItem = MenuItemDAO.getInstance().initialize(menuItem);
-
-					tableModel.setRow(index, menuItem);
-
-					PizzaItemForm editor = new PizzaItemForm(menuItem);
-					BeanEditorDialog dialog = new BeanEditorDialog(editor);
-					dialog.open();
-					if (dialog.isCanceled())
-						return;
-
-					table.repaint();
-				} catch (Throwable x) {
-					BOMessageDialog.showError(POSConstants.ERROR_MESSAGE, x);
-				}
+				editSelectedRow();
 			}
 
 		});

@@ -2,8 +2,11 @@ package com.floreantpos.bo.ui.explorer;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -56,6 +59,37 @@ public class PizzaModifierExplorer extends TransparentPanel {
 		add(buildSearchForm(), BorderLayout.NORTH);
 
 		updateModifierList();
+
+		table.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent me) {
+				if (me.getClickCount() == 2) {
+					editSelectedRow();
+				}
+			}
+		});
+	}
+
+	private void editSelectedRow() {
+		try {
+			int index = table.getSelectedRow();
+			if (index < 0)
+				return;
+
+			index = table.convertRowIndexToModel(index);
+			MenuModifier modifier = (MenuModifier) tableModel.getRowData(index);
+
+			PizzaModifierForm editor = new PizzaModifierForm(modifier);
+			BeanEditorDialog dialog = new BeanEditorDialog(editor);
+			dialog.open();
+			if (dialog.isCanceled())
+				return;
+
+			table.repaint();
+		} catch (Throwable x) {
+			BOMessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
+		}
+
 	}
 
 	private void createActionButtons() {
@@ -78,26 +112,10 @@ public class PizzaModifierExplorer extends TransparentPanel {
 		});
 		explorerButtonPanel.getEditButton().addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				try {
-					int index = table.getSelectedRow();
-					if (index < 0)
-						return;
-
-					index = table.convertRowIndexToModel(index);
-					MenuModifier modifier = (MenuModifier) tableModel.getRowData(index);
-
-					PizzaModifierForm editor = new PizzaModifierForm(modifier);
-					BeanEditorDialog dialog = new BeanEditorDialog(editor);
-					dialog.open();
-					if (dialog.isCanceled())
-						return;
-
-					table.repaint();
-				} catch (Throwable x) {
-					BOMessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
-				}
+				editSelectedRow();
 			}
 		});
+
 
 		explorerButtonPanel.getDeleteButton().addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -161,10 +179,10 @@ public class PizzaModifierExplorer extends TransparentPanel {
 				String txName = nameField.getText();
 				Object selectedItem = cbGroup.getSelectedItem();
 				if (selectedItem instanceof MenuModifierGroup) {
-					modifierList = ModifierDAO.getInstance().findModifier(txName, (MenuModifierGroup) selectedItem);
+					modifierList = ModifierDAO.getInstance().findPizzaModifier(txName, (MenuModifierGroup) selectedItem);
 				}
 				else {
-					modifierList = ModifierDAO.getInstance().findModifier(txName, null);
+					modifierList = ModifierDAO.getInstance().findPizzaModifier(txName, null);
 				}
 
 				setModifierList(modifierList);

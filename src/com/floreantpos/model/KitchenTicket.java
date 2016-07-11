@@ -305,8 +305,18 @@ public class KitchenTicket extends BaseKitchenTicket {
 			for (TicketItemModifierGroup ticketItemModifierGroup : ticketItemModifierGroups) {
 				List<TicketItemModifier> ticketItemModifiers = ticketItemModifierGroup.getTicketItemModifiers();
 				if (ticketItemModifiers != null) {
+					if (ticketItemModifierGroup.isShowSectionName()) {
+						if (!ticketItemModifiers.isEmpty()) {
+							KitchenTicketItem item = new KitchenTicketItem();
+							item.setMenuItemCode(""); //$NON-NLS-1$
+							item.setMenuItemName(ticketItemModifierGroup.getSectionName());
+							item.setMenuItemGroupName(ticketItem.getGroupName());
+							item.setMenuItemGroupId(ticketItem.getMenuItem().getParent().getId());
+							item.setSortOrder(ticketItem.getMenuItem().getParent().getSortOrder());
+							kitchenTicket.addToticketItems(item);
+						}
+					}
 					for (TicketItemModifier itemModifier : ticketItemModifiers) {
-
 						if (!itemModifier.isShouldPrintToKitchen()) {
 							continue;
 						}

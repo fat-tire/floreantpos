@@ -171,6 +171,50 @@ public class MenuItemDAO extends BaseMenuItemDAO {
 		return criteria.list();
 	}
 
+	public List<MenuItem> getPizzaItems(String itemName, MenuGroup menuGroup, Object selectedType) {
+		Session session = null;
+		Criteria criteria = null;
+		try {
+			session = getSession();
+			criteria = session.createCriteria(MenuItem.class);
+			criteria.add(Restrictions.eq(MenuItem.PROP_PIZZA_TYPE, true));
+
+			if (menuGroup != null) {
+				criteria.add(Restrictions.eq(MenuItem.PROP_PARENT, menuGroup));
+			}
+
+			if (StringUtils.isNotEmpty(itemName)) {
+				criteria.add(Restrictions.ilike(MenuItem.PROP_NAME, itemName.trim(), MatchMode.ANYWHERE));
+			}
+
+			List<MenuItem> similarItems = criteria.list();
+
+			if (selectedType instanceof OrderType) {
+
+				List<MenuItem> selectedMenuItems = new ArrayList();
+
+				List<MenuItem> items = findAll();
+
+				for (MenuItem item : items) {
+
+					List<String> types = item.getOrderTypes();
+
+					OrderType type = (OrderType) selectedType;
+
+					if (types.contains(type.getName()) || types.isEmpty()) {
+						selectedMenuItems.add(item);
+					}
+				}
+				similarItems.retainAll(selectedMenuItems);
+			}
+
+			return similarItems;
+
+		} catch (Exception e) {
+		}
+		return criteria.list();
+	}
+
 	public void releaseParent(List<MenuItem> menuItemList) {
 		if (menuItemList == null) {
 			return;

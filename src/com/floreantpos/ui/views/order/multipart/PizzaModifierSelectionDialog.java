@@ -507,6 +507,7 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 
 		public Pizza(String name) {
 			setOpaque(false);
+			setBackground(Color.white);
 			setPreferredSize(PosUIManager.getSize(250, 250));
 		}
 
@@ -515,9 +516,7 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 		}
 
 		@Override
-		public void paintComponent(Graphics g) {
-			super.paintComponent(g);
-			
+		public void paint(Graphics g) {
 			int width = getWidth();
 			int height = getHeight();
 			g.setColor(Color.WHITE);

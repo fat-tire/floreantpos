@@ -30,11 +30,14 @@ import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -75,6 +78,7 @@ import com.floreantpos.model.MenuGroup;
 import com.floreantpos.model.MenuItem;
 import com.floreantpos.model.MenuItemModifierGroup;
 import com.floreantpos.model.MenuItemShift;
+import com.floreantpos.model.MenuItemSize;
 import com.floreantpos.model.OrderType;
 import com.floreantpos.model.PizzaCrust;
 import com.floreantpos.model.PizzaPrice;
@@ -82,6 +86,8 @@ import com.floreantpos.model.PrinterGroup;
 import com.floreantpos.model.Tax;
 import com.floreantpos.model.dao.MenuGroupDAO;
 import com.floreantpos.model.dao.MenuItemDAO;
+import com.floreantpos.model.dao.MenuItemSizeDAO;
+import com.floreantpos.model.dao.PizzaCrustDAO;
 import com.floreantpos.model.dao.PrinterGroupDAO;
 import com.floreantpos.model.dao.TaxDAO;
 import com.floreantpos.swing.BeanTableModel;
@@ -169,6 +175,7 @@ public class PizzaItemForm extends BeanEditor<MenuItem> implements ActionListene
 	private DoubleTextField tfStockCount;
 	private JLabel lblStockCount;
 	private JCheckBox cbDisableStockCount;
+	private JButton btnAutoGenerate;
 
 	/** Creates new form FoodItemEditor */
 	public PizzaItemForm() throws Exception {
@@ -206,7 +213,7 @@ public class PizzaItemForm extends BeanEditor<MenuItem> implements ActionListene
 		priceTableModel = new BeanTableModel<PizzaPrice>(PizzaPrice.class);
 		priceTableModel.addColumn("SIZE", "size");
 		priceTableModel.addColumn("CRUST", "crust");
-		priceTableModel.addColumn("ORDER", "orderType");
+		//	priceTableModel.addColumn("ORDER", "orderType");
 		priceTableModel.addColumn("PRICE", "price");
 
 		if (menuItem != null) {
@@ -216,6 +223,15 @@ public class PizzaItemForm extends BeanEditor<MenuItem> implements ActionListene
 
 		priceTable.setModel(priceTableModel);
 		setBean(menuItem);
+
+		priceTable.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent me) {
+				if (me.getClickCount() == 2) {
+					editEvent();
+				}
+			}
+		});
 	}
 
 	protected void doSelectImageFile() {
@@ -303,6 +319,7 @@ public class PizzaItemForm extends BeanEditor<MenuItem> implements ActionListene
 		btnDeletePrice = new javax.swing.JButton();
 		btnDeleteAll = new javax.swing.JButton();
 		btnDefaultValue = new javax.swing.JButton();
+		btnAutoGenerate = new javax.swing.JButton();
 		jScrollPane2 = new javax.swing.JScrollPane();
 		priceTabScrollPane = new javax.swing.JScrollPane();
 		shiftTable = new javax.swing.JTable();
@@ -581,6 +598,24 @@ public class PizzaItemForm extends BeanEditor<MenuItem> implements ActionListene
 				deletePrice();
 			}
 		});
+
+		btnAutoGenerate.setText("Auto Generate"); //$NON-NLS-1$
+		btnAutoGenerate.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				autoGeneratePizzaItemSizeAndPrice();
+			}
+
+			private void autoGeneratePizzaItemSizeAndPrice() {
+				List<PizzaPrice> pizzaPriceList = generatedPossiblePizzaItemSizeAndPriceList();
+				filterDuplicateItemSizesAndPrices(pizzaPriceList);
+				priceTableModel.addRows(pizzaPriceList);
+				priceTable.repaint();
+			}
+
+
+		});
+
 		btnDeleteAll.setText(Messages.getString("MenuItemForm.15")); //$NON-NLS-1$
 		btnDeleteAll.addActionListener(new ActionListener() {
 
@@ -603,6 +638,7 @@ public class PizzaItemForm extends BeanEditor<MenuItem> implements ActionListene
 		buttonPanel.add(btnUpdatePrice);
 		//buttonPanel.add(btnDefaultValue);
 		buttonPanel.add(btnDeletePrice);
+		buttonPanel.add(btnAutoGenerate);
 
 		//	buttonPanel.add(btnDeleteAll);
 
@@ -1261,6 +1297,11 @@ public class PizzaItemForm extends BeanEditor<MenuItem> implements ActionListene
 	}*/
 
 	private void updatePrice() {
+		editEvent();
+
+	}
+
+	private void editEvent() {
 		List<PizzaPrice> pizzaPriceList = priceTableModel.getRows();
 		int selectedRow = priceTable.getSelectedRow();
 		if (selectedRow == -1) {
@@ -1277,7 +1318,6 @@ public class PizzaItemForm extends BeanEditor<MenuItem> implements ActionListene
 			return;
 		}
 		priceTableModel.fireTableRowsUpdated(selectedRow, selectedRow);
-
 	}
 
 	public void actionPerformed(ActionEvent e) {
@@ -1310,5 +1350,40 @@ public class PizzaItemForm extends BeanEditor<MenuItem> implements ActionListene
 
 		MenuItem menuItem = (MenuItem) getBean();
 		view.initView(menuItem);
+	}
+
+	private void filterDuplicateItemSizesAndPrices(List<PizzaPrice> pizzaPriceList) {
+		List<PizzaPrice> existedPizzaPriceValueList = priceTableModel.getRows();
+
+		if (existedPizzaPriceValueList != null) {
+			for (Iterator iterator = existedPizzaPriceValueList.iterator(); iterator.hasNext();) {
+				PizzaPrice existingPizzaPrice = (PizzaPrice) iterator.next();
+
+				for (Iterator iterator2 = pizzaPriceList.iterator(); iterator2.hasNext();) {
+					PizzaPrice pizzaPrice = (PizzaPrice) iterator2.next();
+					if ((existingPizzaPrice.getSize().equals(pizzaPrice.getSize()) && existingPizzaPrice.getCrust().equals(pizzaPrice.getCrust()))) {
+						iterator2.remove();
+					}
+				}
+			}
+		}
+	}
+
+	private List<PizzaPrice> generatedPossiblePizzaItemSizeAndPriceList() {
+		List<MenuItemSize> menuItemSizeList = MenuItemSizeDAO.getInstance().findAll();
+		List<PizzaCrust> crustList = PizzaCrustDAO.getInstance().findAll();
+		List<PizzaPrice> pizzaPriceList = new ArrayList<PizzaPrice>();
+
+		for (int i = 0; i < menuItemSizeList.size(); ++i) {
+			for (int j = 0; j < crustList.size(); ++j) {
+				PizzaPrice pizzaPrice = new PizzaPrice();
+				pizzaPrice.setSize(menuItemSizeList.get(i));
+				pizzaPrice.setCrust(crustList.get(j));
+				pizzaPrice.setPrice(0.0);
+
+				pizzaPriceList.add(pizzaPrice);
+			}
+		}
+		return pizzaPriceList;
 	}
 }
