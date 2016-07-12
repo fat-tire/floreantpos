@@ -406,7 +406,7 @@ public class DatabaseUtil {
 			PizzaCrustDAO.getInstance().save(crust);
 			
 			crust = new PizzaCrust();
-			crust.setName("HAND TOAST");
+			crust.setName("HAND TOSSED");
 			crust.setSortOrder(1);
 			PizzaCrustDAO.getInstance().save(crust);
 
