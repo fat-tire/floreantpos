@@ -1,22 +1,6 @@
-/**
- * ************************************************************************
- * * The contents of this file are subject to the MRPL 1.2
- * * (the  "License"),  being   the  Mozilla   Public  License
- * * Version 1.1  with a permitted attribution clause; you may not  use this
- * * file except in compliance with the License. You  may  obtain  a copy of
- * * the License at http://www.floreantpos.org/license.html
- * * Software distributed under the License  is  distributed  on  an "AS IS"
- * * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * * License for the specific  language  governing  rights  and  limitations
- * * under the License.
- * * The Original Code is FLOREANT POS.
- * * The Initial Developer of the Original Code is OROCUBE LLC
- * * All portions are Copyright (C) 2015 OROCUBE LLC
- * * All Rights Reserved.
- * ************************************************************************
- */
 package com.floreantpos.model.base;
 
+import java.lang.Comparable;
 import java.io.Serializable;
 
 
@@ -32,9 +16,17 @@ import java.io.Serializable;
 public abstract class BaseInventoryVendor  implements Comparable, Serializable {
 
 	public static String REF = "InventoryVendor"; //$NON-NLS-1$
-	public static String PROP_NAME = "name"; //$NON-NLS-1$
+	public static String PROP_ZIP = "zip"; //$NON-NLS-1$
+	public static String PROP_EMAIL = "email"; //$NON-NLS-1$
+	public static String PROP_ADDRESS = "address"; //$NON-NLS-1$
+	public static String PROP_STATE = "state"; //$NON-NLS-1$
+	public static String PROP_PHONE = "phone"; //$NON-NLS-1$
 	public static String PROP_VISIBLE = "visible"; //$NON-NLS-1$
+	public static String PROP_COUNTRY = "country"; //$NON-NLS-1$
+	public static String PROP_CITY = "city"; //$NON-NLS-1$
 	public static String PROP_ID = "id"; //$NON-NLS-1$
+	public static String PROP_FAX = "fax"; //$NON-NLS-1$
+	public static String PROP_NAME = "name"; //$NON-NLS-1$
 
 
 	// constructors
@@ -55,10 +47,18 @@ public abstract class BaseInventoryVendor  implements Comparable, Serializable {
 	 */
 	public BaseInventoryVendor (
 		java.lang.Integer id,
-		java.lang.String name) {
+ java.lang.String name, java.lang.String address, java.lang.String city, java.lang.String state,
+			java.lang.String zip, java.lang.String country, java.lang.String email, java.lang.String phone) {
 
 		this.setId(id);
 		this.setName(name);
+		this.setAddress(address);
+		this.setCity(city);
+		this.setState(state);
+		this.setZip(zip);
+		this.setCountry(country);
+		this.setEmail(email);
+		this.setPhone(phone);
 		initialize();
 	}
 
@@ -74,6 +74,14 @@ public abstract class BaseInventoryVendor  implements Comparable, Serializable {
 	// fields
 		protected java.lang.String name;
 		protected java.lang.Boolean visible;
+	protected java.lang.String address;
+	protected java.lang.String city;
+	protected java.lang.String state;
+	protected java.lang.String zip;
+	protected java.lang.String country;
+	protected java.lang.String email;
+	protected java.lang.String phone;
+	protected java.lang.String fax;
 
 
 
@@ -133,7 +141,125 @@ public abstract class BaseInventoryVendor  implements Comparable, Serializable {
 
 
 
+	/**
+	 * Return the value associated with the column: ADDRESS
+	 */
+	public java.lang.String getAddress() {
+		return address;
+	}
 
+	/**
+	 * Set the value related to the column: ADDRESS
+	 * @param address the ADDRESS value
+	 */
+	public void setAddress(java.lang.String address) {
+		this.address = address;
+	}
+
+	/**
+	 * Return the value associated with the column: CITY
+	 */
+	public java.lang.String getCity() {
+		return city;
+	}
+
+	/**
+	 * Set the value related to the column: CITY
+	 * @param city the CITY value
+	 */
+	public void setCity(java.lang.String city) {
+		this.city = city;
+	}
+
+	/**
+	 * Return the value associated with the column: STATE
+	 */
+	public java.lang.String getState() {
+		return state;
+	}
+
+	/**
+	 * Set the value related to the column: STATE
+	 * @param state the STATE value
+	 */
+	public void setState(java.lang.String state) {
+		this.state = state;
+	}
+
+	/**
+	 * Return the value associated with the column: ZIP
+	 */
+	public java.lang.String getZip() {
+		return zip;
+	}
+
+	/**
+	 * Set the value related to the column: ZIP
+	 * @param zip the ZIP value
+	 */
+	public void setZip(java.lang.String zip) {
+		this.zip = zip;
+	}
+
+	/**
+	 * Return the value associated with the column: COUNTRY
+	 */
+	public java.lang.String getCountry() {
+		return country;
+	}
+
+	/**
+	 * Set the value related to the column: COUNTRY
+	 * @param country the COUNTRY value
+	 */
+	public void setCountry(java.lang.String country) {
+		this.country = country;
+	}
+
+	/**
+	 * Return the value associated with the column: EMAIL
+	 */
+	public java.lang.String getEmail() {
+		return email;
+	}
+
+	/**
+	 * Set the value related to the column: EMAIL
+	 * @param email the EMAIL value
+	 */
+	public void setEmail(java.lang.String email) {
+		this.email = email;
+	}
+
+	/**
+	 * Return the value associated with the column: PHONE
+	 */
+	public java.lang.String getPhone() {
+		return phone;
+	}
+
+	/**
+	 * Set the value related to the column: PHONE
+	 * @param phone the PHONE value
+	 */
+	public void setPhone(java.lang.String phone) {
+		this.phone = phone;
+	}
+
+	/**
+	 * Return the value associated with the column: FAX
+	 */
+	public java.lang.String getFax() {
+		return fax;
+	}
+
+	/**
+	 * Set the value related to the column: FAX
+	 * @param fax the FAX value
+	 */
+	public void setFax(java.lang.String fax) {
+		this.fax = fax;
+	}
 
 	public boolean equals (Object obj) {
 		if (null == obj) return false;
@@ -149,7 +275,7 @@ public abstract class BaseInventoryVendor  implements Comparable, Serializable {
 		if (Integer.MIN_VALUE == this.hashCode) {
 			if (null == this.getId()) return super.hashCode();
 			else {
-				String hashStr = this.getClass().getName() + ":" + this.getId().hashCode(); //$NON-NLS-1$
+				String hashStr = this.getClass().getName() + ":" + this.getId().hashCode();
 				this.hashCode = hashStr.hashCode();
 			}
 		}

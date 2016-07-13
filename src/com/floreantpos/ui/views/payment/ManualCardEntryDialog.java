@@ -33,6 +33,7 @@ import com.floreantpos.Messages;
 import com.floreantpos.config.CardConfig;
 import com.floreantpos.swing.POSTextField;
 import com.floreantpos.swing.PosButton;
+import com.floreantpos.swing.PosUIManager;
 import com.floreantpos.swing.QwertyKeyPad;
 import com.floreantpos.ui.TitlePanel;
 import com.floreantpos.ui.dialog.POSDialog;
@@ -48,12 +49,12 @@ public class ManualCardEntryDialog extends POSDialog implements CardInputProcess
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setResizable(false);
 
-		createUI();
+			createUI();
 
 	}
 
 	private void createUI() {
-		setPreferredSize(new Dimension(900, 500));
+		setPreferredSize(new Dimension(PosUIManager.getSize(900), PosUIManager.getSize(500)));
 		JPanel panel = new JPanel();
 		panel.setLayout(new MigLayout("", "[][grow]", "[][][][][][][][grow]")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 

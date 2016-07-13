@@ -9,6 +9,13 @@
     
     <property column="NAME" length="60" name="name" not-null="true" type="java.lang.String"/>
     <property column="VISIBLE" name="visible" type="java.lang.Boolean"/>
-    
+    <property column="ADDRESS" length="120" name="address" not-null="true" type="java.lang.String"/>
+    <property column="CITY" length="60" name="city" not-null="true" type="java.lang.String"/>
+    <property column="STATE" length="60" name="state" not-null="true" type="java.lang.String"/>
+    <property column="ZIP" length="60" name="zip" not-null="true" type="java.lang.String"/>
+    <property column="COUNTRY" length="60" name="country" not-null="true" type="java.lang.String"/>
+    <property column="EMAIL" length="60" name="email" not-null="true" type="java.lang.String"/>
+    <property column="PHONE" length="60" name="phone" not-null="true" type="java.lang.String"/>
+    <property column="FAX" length="60" name="fax" type="java.lang.String"/>
   </class>
 </hibernate-mapping>

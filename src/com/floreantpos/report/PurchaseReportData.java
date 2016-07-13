@@ -15,49 +15,57 @@
  * * All Rights Reserved.
  * ************************************************************************
  */
-package com.floreantpos.model;
+package com.floreantpos.report;
 
-import com.floreantpos.model.base.BaseInventoryVendor;
+import java.util.Date;
 
+import com.floreantpos.model.User;
 
+public class PurchaseReportData {
 
-public class InventoryVendor extends BaseInventoryVendor {
-	private static final long serialVersionUID = 1L;
+	private String item;
+	private String description;
+	private int quantity;
+	private double price;
+	private double total;
 
-/*[CONSTRUCTOR MARKER BEGIN]*/
-	public InventoryVendor () {
-		super();
+	public String getItem() {
+		return item;
 	}
 
-	/**
-	 * Constructor for primary key
-	 */
-	public InventoryVendor (java.lang.Integer id) {
-		super(id);
+	public void setItem(String item) {
+		this.item = item;
 	}
 
-	/**
-	 * Constructor for required fields
-	 */
-	public InventoryVendor (
-		java.lang.Integer id,
- java.lang.String name, java.lang.String address, java.lang.String city, java.lang.String state,
-			java.lang.String zip, java.lang.String country, java.lang.String email, java.lang.String phone) {
-
-		super (
-			id,
- name, address, city, state, zip, country, email, phone);
+	public String getDescription() {
+		return description;
 	}
 
-/*[CONSTRUCTOR MARKER END]*/
-
-	@Override
-	public Boolean isVisible() {
-		return visible == null ? true : visible;
+	public void setDescription(String description) {
+		this.description = description;
 	}
-	
-	@Override
-	public String toString() {
-		return getName();
+
+	public int getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
+	}
+
+	public double getPrice() {
+		return price;
+	}
+
+	public void setPrice(double price) {
+		this.price = price;
+	}
+
+	public double getTotal() {
+		return total;
+	}
+
+	public void setTotal(double total) {
+		this.total = total;
 	}
 }

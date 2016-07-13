@@ -22,8 +22,8 @@ import com.floreantpos.config.CardConfig;
 public enum PaymentType {
 	CUSTOM_PAYMENT("CUSTOM PAYMENT"), CASH("CASH"), //$NON-NLS-1$ //$NON-NLS-2$
 	//CASH("CASH"),
-	CREDIT_CARD("CREDIT CARD"), DEBIT_CARD("DEBIT CARD"), DEBIT_VISA("VISA", "visa_card.png"), DEBIT_MASTER_CARD("MASTERCARD", "master_card.png"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ 
-	CREDIT_VISA("VISA", "visa_card.png"), CREDIT_MASTER_CARD("MASTERCARD", "master_card.png"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+	CREDIT_CARD("CREDIT CARD"), DEBIT_CARD("DEBIT CARD"), DEBIT_VISA("VISA", "visa_card.png"), DEBIT_MASTER_CARD("MASTER CARD", "master_card.png"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ 
+	CREDIT_VISA("VISA", "visa_card.png"), CREDIT_MASTER_CARD("MASTER CARD", "master_card.png"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 	CREDIT_AMEX("AMEX", "am_ex_card.png"), CREDIT_DISCOVERY("DISCOVER", "discover_card.png"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 	GIFT_CERTIFICATE("GIFT CERTIFICATE"); //$NON-NLS-1$
 

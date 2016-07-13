@@ -57,7 +57,7 @@ public class PayrollReportModel extends ListTableModel {
 			return data.getPayment();
 			
 		case 7:
-			return data.getUser().getSsn();
+				return String.valueOf(data.getUser().getUserId());
 		}
 		return null;
 	}

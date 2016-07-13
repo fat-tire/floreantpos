@@ -2,9 +2,9 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="PayrollReport" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.zoom" value="1.5394743546921197"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="44"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -25,14 +25,14 @@
 	<field name="userID" class="java.lang.String"/>
 	<field name="userName" class="java.lang.String"/>
 	<field name="userSSN" class="java.lang.String"/>
-	<variable name="totalHour" class="java.lang.Double" resetType="Group" resetGroup="userSSN" calculation="Sum">
+	<variable name="totalHour" class="java.lang.Double" resetType="Group" resetGroup="userID" calculation="Sum">
 		<variableExpression><![CDATA[$F{total}]]></variableExpression>
 	</variable>
-	<variable name="totalPayment" class="java.lang.Double" resetType="Group" resetGroup="userSSN" calculation="Sum">
+	<variable name="totalPayment" class="java.lang.Double" resetType="Group" resetGroup="userID" calculation="Sum">
 		<variableExpression><![CDATA[$F{payment}]]></variableExpression>
 	</variable>
-	<group name="userSSN">
-		<groupExpression><![CDATA[$F{userSSN}]]></groupExpression>
+	<group name="userID">
+		<groupExpression><![CDATA[$F{userID}]]></groupExpression>
 		<groupHeader>
 			<band height="44" splitType="Stretch">
 				<staticText>
@@ -49,7 +49,7 @@
 					<text><![CDATA[User ID:]]></text>
 				</staticText>
 				<staticText>
-					<reportElement key="staticText-3" mode="Opaque" x="165" y="5" width="75" height="15" backcolor="#CCCCCC"/>
+					<reportElement key="staticText-3" mode="Opaque" x="165" y="5" width="63" height="15" backcolor="#CCCCCC"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -127,7 +127,7 @@
 					<text><![CDATA[Payment]]></text>
 				</staticText>
 				<textField isBlankWhenNull="false">
-					<reportElement key="textField" isPrintRepeatedValues="false" mode="Opaque" x="50" y="5" width="115" height="15" printWhenGroupChanges="userSSN" backcolor="#CCCCCC"/>
+					<reportElement key="textField" isPrintRepeatedValues="false" mode="Opaque" x="50" y="5" width="115" height="15" printWhenGroupChanges="userID" backcolor="#CCCCCC"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -138,7 +138,7 @@
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{userID}]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="false">
-					<reportElement key="textField" isPrintRepeatedValues="false" mode="Opaque" x="240" y="5" width="294" height="15" printWhenGroupChanges="userSSN" backcolor="#CCCCCC"/>
+					<reportElement key="textField" isPrintRepeatedValues="false" mode="Opaque" x="228" y="5" width="306" height="15" printWhenGroupChanges="userID" backcolor="#CCCCCC"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -152,7 +152,7 @@
 					<reportElement key="line-1" x="0" y="41" width="535" height="1" forecolor="#CCCCCC"/>
 				</line>
 				<textField isBlankWhenNull="false">
-					<reportElement key="textField" x="450" y="5" width="0" height="0" forecolor="#000000"/>
+					<reportElement key="textField" x="250" y="5" width="0" height="0" forecolor="#000000"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -160,14 +160,14 @@
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement/>
-					<textFieldExpression class="java.lang.String"><![CDATA[$F{userSSN}]]></textFieldExpression>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{userID}]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupHeader>
 		<groupFooter>
 			<band height="26" splitType="Stretch">
 				<textField pattern="0.00" isBlankWhenNull="false">
-					<reportElement key="textField" x="285" y="4" width="70" height="15" isRemoveLineWhenBlank="true" printWhenGroupChanges="userSSN"/>
+					<reportElement key="textField" x="285" y="5" width="70" height="15" isRemoveLineWhenBlank="true" printWhenGroupChanges="userID"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -178,7 +178,7 @@
 					<textFieldExpression class="java.lang.Double"><![CDATA[$V{totalHour}]]></textFieldExpression>
 				</textField>
 				<textField pattern="0.00" isBlankWhenNull="true">
-					<reportElement key="textField" x="445" y="4" width="90" height="15" isRemoveLineWhenBlank="true" printWhenGroupChanges="userSSN"/>
+					<reportElement key="textField" x="445" y="5" width="90" height="15" isRemoveLineWhenBlank="true" printWhenGroupChanges="userID"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -189,7 +189,7 @@
 					<textFieldExpression class="java.lang.Double"><![CDATA[$V{totalPayment}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement key="staticText-13" x="245" y="4" width="35" height="15" printWhenGroupChanges="userSSN"/>
+					<reportElement key="staticText-13" x="245" y="5" width="35" height="15" printWhenGroupChanges="userID"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -202,7 +202,7 @@
 					<text><![CDATA[Total:]]></text>
 				</staticText>
 				<line>
-					<reportElement key="line-2" x="282" y="0" width="250" height="1" forecolor="#666666"/>
+					<reportElement key="line-2" x="250" y="2" width="285" height="1" forecolor="#666666"/>
 				</line>
 			</band>
 		</groupFooter>
@@ -211,7 +211,7 @@
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="115" splitType="Stretch">
+		<band height="103" splitType="Stretch">
 			<subreport isUsingCache="true">
 				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="0" y="0" width="535" height="28"/>
 				<subreportParameter name="restaurantName">
@@ -245,25 +245,29 @@
 				<text><![CDATA[Payroll Report]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-10" positionType="Float" x="0" y="89" width="85" height="15"/>
+				<reportElement key="staticText-10" positionType="Float" x="0" y="80" width="85" height="15"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement/>
+				<textElement>
+					<font isBold="true" isItalic="true"/>
+				</textElement>
 				<text><![CDATA[From:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-11" positionType="Float" x="0" y="74" width="85" height="15"/>
+				<reportElement key="staticText-11" positionType="Float" x="195" y="80" width="85" height="15"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement/>
+				<textElement>
+					<font isBold="true" isItalic="true"/>
+				</textElement>
 				<text><![CDATA[To:]]></text>
 			</staticText>
 			<staticText>
@@ -274,7 +278,9 @@
 					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
 				<text><![CDATA[Report date:]]></text>
 			</staticText>
 			<textField pattern="yyyy-MMM-dd" isBlankWhenNull="true">
@@ -289,25 +295,29 @@
 				<textFieldExpression class="java.util.Date"><![CDATA[$P{reportDate}]]></textFieldExpression>
 			</textField>
 			<textField pattern="yyyy-MMM-dd" isBlankWhenNull="true">
-				<reportElement key="textField" positionType="Float" x="85" y="89" width="110" height="15"/>
+				<reportElement key="textField" positionType="Float" x="85" y="80" width="110" height="15"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement/>
+				<textElement>
+					<font isItalic="false"/>
+				</textElement>
 				<textFieldExpression class="java.util.Date"><![CDATA[$P{fromDate}]]></textFieldExpression>
 			</textField>
 			<textField pattern="yyyy-MMM-dd" isBlankWhenNull="true">
-				<reportElement key="textField" positionType="Float" x="85" y="74" width="110" height="15"/>
+				<reportElement key="textField" positionType="Float" x="280" y="80" width="110" height="15"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement/>
+				<textElement>
+					<font isItalic="false"/>
+				</textElement>
 				<textFieldExpression class="java.util.Date"><![CDATA[$P{toDate}]]></textFieldExpression>
 			</textField>
 		</band>

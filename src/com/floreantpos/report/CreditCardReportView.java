@@ -62,9 +62,9 @@ public class CreditCardReportView extends JPanel {
 		JPanel topPanel = new JPanel(new MigLayout());
 		
 		topPanel.add(new JLabel(com.floreantpos.POSConstants.FROM + ":"), "grow"); //$NON-NLS-1$ //$NON-NLS-2$
-		topPanel.add(fromDatePicker,"wrap"); //$NON-NLS-1$
+		topPanel.add(fromDatePicker); //$NON-NLS-1$
 		topPanel.add(new JLabel(com.floreantpos.POSConstants.TO + ":"), "grow"); //$NON-NLS-1$ //$NON-NLS-2$
-		topPanel.add(toDatePicker,"wrap"); //$NON-NLS-1$
+		topPanel.add(toDatePicker); //$NON-NLS-1$
 		topPanel.add(btnGo, "skip 1, al right"); //$NON-NLS-1$
 		add(topPanel, BorderLayout.NORTH);
 		

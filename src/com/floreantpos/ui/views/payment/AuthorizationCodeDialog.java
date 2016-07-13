@@ -40,6 +40,7 @@ import com.floreantpos.model.PaymentType;
 import com.floreantpos.swing.FocusedTextField;
 import com.floreantpos.swing.POSToggleButton;
 import com.floreantpos.swing.PosButton;
+import com.floreantpos.swing.PosUIManager;
 import com.floreantpos.swing.QwertyKeyPad;
 import com.floreantpos.ui.TitlePanel;
 import com.floreantpos.ui.dialog.POSDialog;
@@ -68,7 +69,7 @@ public class AuthorizationCodeDialog extends POSDialog implements CardInputProce
 
 	private void createUI() {
 
-		setPreferredSize(new Dimension(1000, 600));
+		setPreferredSize(new Dimension(PosUIManager.getSize(1000), PosUIManager.getSize(600)));
 		btnVisaCard = new POSToggleButton();
 		btnVisaCard.setIcon(IconFactory.getIcon("/ui_icons/", "" + "visa_card.png")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 

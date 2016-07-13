@@ -75,6 +75,9 @@ public class ModelBrowser<E> extends JPanel implements ActionListener, ListSelec
 		this.beanEditor = beanEditor;
 		this.searchPanel = searchPanel;
 	}
+	
+	
+
 
 	public void init(TableModel tableModel) {
 		browserTable = new JXTable();

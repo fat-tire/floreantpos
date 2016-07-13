@@ -54,5 +54,4 @@ public class InventoryItemDAO extends BaseInventoryItemDAO {
 		}
 
 	}
-
 }

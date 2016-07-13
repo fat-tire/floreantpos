@@ -182,7 +182,6 @@ public class CurrencyForm extends BeanEditor {
 			} finally {
 				session.close();
 			}
-
 		}
 		return true;
 	}

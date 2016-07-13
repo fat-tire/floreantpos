@@ -26,12 +26,6 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{addressLine2}]]></textFieldExpression>
 			</textField>
-			<line>
-				<reportElement key="header_line_1" x="0" y="97" width="535" height="1"/>
-				<graphicElement>
-					<pen lineStyle="Dashed"/>
-				</graphicElement>
-			</line>
 			<textField isBlankWhenNull="true">
 				<reportElement key="textField-6" x="2" y="23" width="535" height="17" isRemoveLineWhenBlank="true"/>
 				<box>
