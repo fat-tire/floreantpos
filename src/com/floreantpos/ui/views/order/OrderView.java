@@ -100,6 +100,7 @@ public class OrderView extends ViewPanel {
 	private com.floreantpos.swing.PosButton btnSend = new com.floreantpos.swing.PosButton(com.floreantpos.POSConstants.SEND_TO_KITCHEN);
 	private com.floreantpos.swing.PosButton btnCancel = new com.floreantpos.swing.PosButton(POSConstants.CANCEL_BUTTON_TEXT);
 	private com.floreantpos.swing.PosButton btnGuestNo = new com.floreantpos.swing.PosButton(POSConstants.GUEST_NO_BUTTON_TEXT);
+	private com.floreantpos.swing.PosButton btnSeatNo = new com.floreantpos.swing.PosButton("SEAT NO:");
 	private com.floreantpos.swing.PosButton btnMisc = new com.floreantpos.swing.PosButton(POSConstants.MISC_BUTTON_TEXT);
 	private com.floreantpos.swing.PosButton btnOrderType = new com.floreantpos.swing.PosButton(POSConstants.ORDER_TYPE_BUTTON_TEXT);
 	private com.floreantpos.swing.PosButton btnTableNumber = new com.floreantpos.swing.PosButton(POSConstants.TABLE_NO_BUTTON_TEXT);
@@ -308,6 +309,12 @@ public class OrderView extends ViewPanel {
 			}
 		});
 
+		btnSeatNo.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				doAddSeatNumber();
+			}
+		});
+
 		btnTableNumber.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				updateTableNumber();
@@ -372,6 +379,7 @@ public class OrderView extends ViewPanel {
 		actionButtonPanel.add(btnCustomer);
 		actionButtonPanel.add(btnTableNumber);
 		actionButtonPanel.add(btnGuestNo);
+		actionButtonPanel.add(btnSeatNo);
 		actionButtonPanel.add(btnCookingInstruction);
 		//		actionButtonPanel.add(btnAddOn);
 		actionButtonPanel.add(btnMisc);
@@ -471,6 +479,58 @@ public class OrderView extends ViewPanel {
 		thisTicket.setNumberOfGuests(guestNumber);
 		actionUpdate();
 	}// GEN-LAST:event_btnCustomerNumberActionPerformed
+
+	protected void doAddSeatNumber() {// GEN-FIRST:event_btnCustomerNumberActionPerformed
+		NumberSelectionDialog2 dialog = new NumberSelectionDialog2();
+		dialog.setTitle("Enter seat number");
+		dialog.pack();
+		dialog.open();
+
+		if (dialog.isCanceled()) {
+			return;
+		}
+
+		int seatNumber = (int) dialog.getValue();
+		btnSeatNo.setText("SEAT NO: " + seatNumber);
+		btnSeatNo.putClientProperty("SEAT_NO", seatNumber);
+		TicketItem ticketItem = null;
+
+		Object object = ticketView.getTicketViewerTable().getSelected();
+		if (object instanceof TicketItem)
+			ticketItem = (TicketItem) object;
+
+		if (ticketItem == null || !ticketItem.isTreatAsSeat()) {
+			ticketItem = new TicketItem();
+			ticketItem.setName("Seat No** " + seatNumber);
+			ticketItem.setShouldPrintToKitchen(true);
+			ticketItem.setTreatAsSeat(true);
+			ticketItem.setSeatNumber(seatNumber);
+			ticketItem.setTicket(currentTicket);
+			ticketView.addTicketItem(ticketItem);
+		}
+		else {
+			ticketItem.setName("Seat No** " + seatNumber);
+			ticketItem.setSeatNumber(seatNumber);
+			ticketView.updateView();
+		}
+	}
+
+	private boolean existsSeatNumber(Integer seatNumber) {
+		for (TicketItem ticketItem : currentTicket.getTicketItems()) {
+			if (ticketItem.getSeatNumber() == seatNumber) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	protected Integer getSelectedSeatNumber() {
+		Object seatNumber = btnSeatNo.getClientProperty("SEAT_NO");
+		if (seatNumber == null)
+			return 0;
+
+		return (Integer) seatNumber;
+	}
 
 	protected void doInsertMisc(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_doInsertMisc
 		MiscTicketItemDialog dialog = new MiscTicketItemDialog();
@@ -597,6 +657,14 @@ public class OrderView extends ViewPanel {
 			}
 			else {
 				btnSend.setEnabled(true);
+			}
+
+			if (!type.isAllowSeatBasedOrder()) {
+				btnSeatNo.setVisible(false);
+			}
+			else {
+				btnSeatNo.setVisible(true);
+				btnSeatNo.setText("SEAT NO:");
 			}
 
 			if (!type.isShowTableSelection()) {

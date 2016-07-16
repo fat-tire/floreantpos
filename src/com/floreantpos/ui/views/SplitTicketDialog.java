@@ -27,7 +27,9 @@ package com.floreantpos.ui.views;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JLabel;
@@ -61,6 +63,7 @@ import com.floreantpos.ui.views.order.TicketForSplitView;
 public class SplitTicketDialog extends POSDialog {
 	private Ticket ticket;
 
+	private com.floreantpos.swing.POSToggleButton btnSplitBySeat;
 	/** Creates new form SplitTicketView */
 	public SplitTicketDialog() {
 		super();
@@ -119,16 +122,17 @@ public class SplitTicketDialog extends POSDialog {
 		toolbarPanel = new TransparentPanel();
 		
 		ButtonGroup buttonGroup = new javax.swing.ButtonGroup();
-        
-        btnNumSplit2 = new com.floreantpos.swing.POSToggleButton();
-        btnNumSplit3 = new com.floreantpos.swing.POSToggleButton();
-        btnNumSplit4 = new com.floreantpos.swing.POSToggleButton();
-        lblTicketId = new com.floreantpos.swing.POSTitleLabel();
-        
-        lblTicketId.setText(Messages.getString("SplitTicketDialog.0")); //$NON-NLS-1$
-        toolbarPanel.add(lblTicketId);
-        JSeparator separator = new JSeparator(JSeparator.VERTICAL);
-        separator.setPreferredSize(new Dimension(5, 20));
+
+		btnNumSplit2 = new com.floreantpos.swing.POSToggleButton();
+		btnNumSplit3 = new com.floreantpos.swing.POSToggleButton();
+		btnNumSplit4 = new com.floreantpos.swing.POSToggleButton();
+		btnSplitBySeat = new com.floreantpos.swing.POSToggleButton();
+		lblTicketId = new com.floreantpos.swing.POSTitleLabel();
+
+		lblTicketId.setText(Messages.getString("SplitTicketDialog.0")); //$NON-NLS-1$
+		toolbarPanel.add(lblTicketId);
+		JSeparator separator = new JSeparator(JSeparator.VERTICAL);
+		separator.setPreferredSize(new Dimension(5, 20));
 		toolbarPanel.add(separator);
         toolbarPanel.add(new JLabel(com.floreantpos.POSConstants.NUMBER_OF_SPLITS));
 
@@ -165,6 +169,17 @@ public class SplitTicketDialog extends POSDialog {
         });
 
         toolbarPanel.add(btnNumSplit4);
+        
+        buttonGroup.add(btnSplitBySeat);
+		btnSplitBySeat.setText("Split by seat number"); //$NON-NLS-1$
+		btnSplitBySeat.setPreferredSize(new java.awt.Dimension(120, 40));
+		btnSplitBySeat.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				doSplitBySeatNumber(evt);
+			}
+		});
+
+		toolbarPanel.add(btnSplitBySeat);
 	}
 
 	private void createTicketViewPanel() {
@@ -258,6 +273,50 @@ public class SplitTicketDialog extends POSDialog {
 		}
 	}//GEN-LAST:event_btnFinishActionPerformed
 
+	private void doSplitBySeatNumber(java.awt.event.ActionEvent evt) {
+		List<TicketItem> ticketItems = ticket.getTicketItems();
+		Map<Integer, List<TicketItem>> itemMap = new HashMap<Integer, List<TicketItem>>();
+		for (TicketItem ticketItem : ticketItems) {
+			List<TicketItem> ticketItemList = itemMap.get(ticketItem.getSeatNumber());
+			if (ticketItemList == null) {
+				ticketItemList = new ArrayList<>();
+				ticketItemList.add(ticketItem);
+				itemMap.put(ticketItem.getSeatNumber(), ticketItemList);
+			}
+			else {
+				ticketItemList.add(ticketItem);
+			}
+		}
+
+		int splitViewNumber = 1;
+
+		for (Integer seatNumber : itemMap.keySet()) {
+			List<TicketItem> splitTicketItems = itemMap.get(seatNumber);
+			transferTicketItemsToSplitView(splitTicketItems, splitViewNumber);
+			splitViewNumber++;
+		}
+	}
+
+	private void transferTicketItemsToSplitView(List<TicketItem> splitTicketItems, int splitViewNumber) {
+		if (splitViewNumber == 2) {
+			for (TicketItem ticketItem : splitTicketItems) {
+				mainTicketView.transferTicketItem(ticketItem, ticketView2, true);
+			}
+		}
+		else if (splitViewNumber == 3) {
+			ticketView3.setVisible(true);
+			for (TicketItem ticketItem : splitTicketItems) {
+				mainTicketView.transferTicketItem(ticketItem, ticketView3, true);
+			}
+		}
+		else if (splitViewNumber == 4) {
+			ticketView4.setVisible(true);
+			for (TicketItem ticketItem : splitTicketItems) {
+				mainTicketView.transferTicketItem(ticketItem, ticketView4, true);
+			}
+		}
+	}
+
 	private void btnNumSplit4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNumSplit4ActionPerformed
 		//if(ticketView3.remove)
 		ticketView3.setVisible(true);
@@ -345,8 +404,10 @@ public class SplitTicketDialog extends POSDialog {
 
 	public void setTicket(Ticket ticket) {
 		this.ticket = ticket;
-		if (ticket != null)
+		if (ticket != null) {
 			lblTicketId.setText(com.floreantpos.POSConstants.ORIGINAL_TICKET_ID + ": " + ticket.getId()); //$NON-NLS-1$
-		mainTicketView.setTicket(ticket);
+			mainTicketView.setTicket(ticket);
+			btnSplitBySeat.setVisible(ticket.getOrderType().isAllowSeatBasedOrder());
+		}
 	}
 }

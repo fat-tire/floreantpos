@@ -109,6 +109,7 @@ public class OrderController implements OrderListener, CategorySelectionListener
 		}
 
 		ticketItem.setTicket(orderView.getTicketView().getTicket());
+		ticketItem.setSeatNumber(orderView.getSelectedSeatNumber());
 		
 		if (menuItem.isPizzaType()) {
 			PizzaModifierSelectionDialog dialog = new PizzaModifierSelectionDialog(new ModifierSelectionModel(ticketItem, menuItem));

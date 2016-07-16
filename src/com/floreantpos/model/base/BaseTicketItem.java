@@ -5,7 +5,6 @@ import java.io.Serializable;
 
 import com.floreantpos.model.TicketItemCookingInstruction;
 
-
 /**
  * This is an object that contains data related to the TICKET_ITEM table.
  * Do not modify this class because it will be overwritten if the configuration file
@@ -18,34 +17,36 @@ import com.floreantpos.model.TicketItemCookingInstruction;
 public abstract class BaseTicketItem  implements Comparable, Serializable {
 
 	public static String REF = "TicketItem"; //$NON-NLS-1$
-	public static String PROP_GROUP_NAME = "groupName"; //$NON-NLS-1$
-	public static String PROP_PRINTER_GROUP = "printerGroup"; //$NON-NLS-1$
-	public static String PROP_SHOULD_PRINT_TO_KITCHEN = "shouldPrintToKitchen"; //$NON-NLS-1$
-	public static String PROP_STOCK_AMOUNT_ADJUSTED = "stockAmountAdjusted"; //$NON-NLS-1$
-	public static String PROP_SUBTOTAL_AMOUNT = "subtotalAmount"; //$NON-NLS-1$
-	public static String PROP_ITEM_UNIT_NAME = "itemUnitName"; //$NON-NLS-1$
-	public static String PROP_ITEM_ID = "itemId"; //$NON-NLS-1$
-	public static String PROP_NAME = "name"; //$NON-NLS-1$
-	public static String PROP_TAX_AMOUNT_WITHOUT_MODIFIERS = "taxAmountWithoutModifiers"; //$NON-NLS-1$
-	public static String PROP_TAX_AMOUNT = "taxAmount"; //$NON-NLS-1$
-	public static String PROP_TOTAL_AMOUNT_WITHOUT_MODIFIERS = "totalAmountWithoutModifiers"; //$NON-NLS-1$
-	public static String PROP_TAX_RATE = "taxRate"; //$NON-NLS-1$
-	public static String PROP_ITEM_COUNT = "itemCount"; //$NON-NLS-1$
 	public static String PROP_BEVERAGE = "beverage"; //$NON-NLS-1$
-	public static String PROP_HAS_MODIFIERS = "hasModifiers"; //$NON-NLS-1$
-	public static String PROP_PRINTED_TO_KITCHEN = "printedToKitchen"; //$NON-NLS-1$
-	public static String PROP_STATUS = "status"; //$NON-NLS-1$
+	public static String PROP_TAX_RATE = "taxRate"; //$NON-NLS-1$
+	public static String PROP_ITEM_UNIT_NAME = "itemUnitName"; //$NON-NLS-1$
+	public static String PROP_DISCOUNT_AMOUNT = "discountAmount"; //$NON-NLS-1$
+	public static String PROP_PIZZA_TYPE = "pizzaType"; //$NON-NLS-1$
+	public static String PROP_SHOULD_PRINT_TO_KITCHEN = "shouldPrintToKitchen"; //$NON-NLS-1$
 	public static String PROP_TICKET = "ticket"; //$NON-NLS-1$
 	public static String PROP_INVENTORY_HANDLED = "inventoryHandled"; //$NON-NLS-1$
-	public static String PROP_PIZZA_TYPE = "pizzaType"; //$NON-NLS-1$
-	public static String PROP_TOTAL_AMOUNT = "totalAmount"; //$NON-NLS-1$
-	public static String PROP_DISCOUNT_AMOUNT = "discountAmount"; //$NON-NLS-1$
-	public static String PROP_UNIT_PRICE = "unitPrice"; //$NON-NLS-1$
+	public static String PROP_STOCK_AMOUNT_ADJUSTED = "stockAmountAdjusted"; //$NON-NLS-1$
+	public static String PROP_HAS_MODIFIERS = "hasModifiers"; //$NON-NLS-1$
+	public static String PROP_TOTAL_AMOUNT_WITHOUT_MODIFIERS = "totalAmountWithoutModifiers"; //$NON-NLS-1$
+	public static String PROP_TREAT_AS_SEAT = "treatAsSeat"; //$NON-NLS-1$
 	public static String PROP_ITEM_QUANTITY = "itemQuantity"; //$NON-NLS-1$
-	public static String PROP_FRACTIONAL_UNIT = "fractionalUnit"; //$NON-NLS-1$
+	public static String PROP_ITEM_ID = "itemId"; //$NON-NLS-1$
 	public static String PROP_CATEGORY_NAME = "categoryName"; //$NON-NLS-1$
-	public static String PROP_SUBTOTAL_AMOUNT_WITHOUT_MODIFIERS = "subtotalAmountWithoutModifiers"; //$NON-NLS-1$
+	public static String PROP_GROUP_NAME = "groupName"; //$NON-NLS-1$
+	public static String PROP_SEAT_NUMBER = "seatNumber"; //$NON-NLS-1$
+	public static String PROP_ITEM_COUNT = "itemCount"; //$NON-NLS-1$
+	public static String PROP_UNIT_PRICE = "unitPrice"; //$NON-NLS-1$
+	public static String PROP_TAX_AMOUNT = "taxAmount"; //$NON-NLS-1$
+	public static String PROP_FRACTIONAL_UNIT = "fractionalUnit"; //$NON-NLS-1$
+	public static String PROP_NAME = "name"; //$NON-NLS-1$
+	public static String PROP_PRINTER_GROUP = "printerGroup"; //$NON-NLS-1$
+	public static String PROP_STATUS = "status"; //$NON-NLS-1$
+	public static String PROP_PRINTED_TO_KITCHEN = "printedToKitchen"; //$NON-NLS-1$
+	public static String PROP_SUBTOTAL_AMOUNT = "subtotalAmount"; //$NON-NLS-1$
+	public static String PROP_TAX_AMOUNT_WITHOUT_MODIFIERS = "taxAmountWithoutModifiers"; //$NON-NLS-1$
 	public static String PROP_ID = "id"; //$NON-NLS-1$
+	public static String PROP_SUBTOTAL_AMOUNT_WITHOUT_MODIFIERS = "subtotalAmountWithoutModifiers"; //$NON-NLS-1$
+	public static String PROP_TOTAL_AMOUNT = "totalAmount"; //$NON-NLS-1$
 
 
 	// constructors
@@ -102,6 +103,8 @@ public abstract class BaseTicketItem  implements Comparable, Serializable {
 		protected java.lang.Boolean beverage;
 		protected java.lang.Boolean inventoryHandled;
 		protected java.lang.Boolean shouldPrintToKitchen;
+		protected java.lang.Boolean treatAsSeat;
+		protected java.lang.Integer seatNumber;
 		protected java.lang.Boolean fractionalUnit;
 		protected java.lang.Boolean hasModifiers;
 		protected java.lang.Boolean printedToKitchen;
@@ -474,6 +477,40 @@ public abstract class BaseTicketItem  implements Comparable, Serializable {
 
 
 	/**
+	 * Return the value associated with the column: TREAT_AS_SEAT
+	 */
+	public java.lang.Boolean isTreatAsSeat () {
+								return treatAsSeat == null ? Boolean.FALSE : treatAsSeat;
+					}
+
+	/**
+	 * Set the value related to the column: TREAT_AS_SEAT
+	 * @param treatAsSeat the TREAT_AS_SEAT value
+	 */
+	public void setTreatAsSeat (java.lang.Boolean treatAsSeat) {
+		this.treatAsSeat = treatAsSeat;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: SEAT_NUMBER
+	 */
+	public java.lang.Integer getSeatNumber () {
+									return seatNumber == null ? Integer.valueOf(0) : seatNumber;
+					}
+
+	/**
+	 * Set the value related to the column: SEAT_NUMBER
+	 * @param seatNumber the SEAT_NUMBER value
+	 */
+	public void setSeatNumber (java.lang.Integer seatNumber) {
+		this.seatNumber = seatNumber;
+	}
+
+
+
+	/**
 	 * Return the value associated with the column: FRACTIONAL_UNIT
 	 */
 	public java.lang.Boolean isFractionalUnit () {
@@ -678,7 +715,7 @@ public abstract class BaseTicketItem  implements Comparable, Serializable {
 	/**
 	 * Return the value associated with the column: cookingInstructions
 	 */
-	public java.util.List<TicketItemCookingInstruction> getCookingInstructions () {
+	public java.util.List<TicketItemCookingInstruction> getCookingInstructions() {
 					return cookingInstructions;
 			}
 
@@ -686,7 +723,7 @@ public abstract class BaseTicketItem  implements Comparable, Serializable {
 	 * Set the value related to the column: cookingInstructions
 	 * @param cookingInstructions the cookingInstructions value
 	 */
-	public void setCookingInstructions (java.util.List<TicketItemCookingInstruction> cookingInstructions) {
+	public void setCookingInstructions(java.util.List<TicketItemCookingInstruction> cookingInstructions) {
 		this.cookingInstructions = cookingInstructions;
 	}
 

@@ -15,24 +15,25 @@ import java.io.Serializable;
 
 public abstract class BaseOrderType  implements Comparable, Serializable {
 
-	public static String REF = "OrderType";
-	public static String PROP_PRE_AUTH_CREDIT_CARD = "preAuthCreditCard";
-	public static String PROP_ENABLED = "enabled";
-	public static String PROP_DELIVERY = "delivery";
-	public static String PROP_REQUIRED_CUSTOMER_DATA = "requiredCustomerData";
-	public static String PROP_CONSOLIDATE_ITEMS_IN_RECEIPT = "consolidateItemsInReceipt";
-	public static String PROP_SHOW_IN_LOGIN_SCREEN = "showInLoginScreen";
-	public static String PROP_NAME = "name";
-	public static String PROP_SHOW_TABLE_SELECTION = "showTableSelection";
-	public static String PROP_SHOULD_PRINT_TO_KITCHEN = "shouldPrintToKitchen";
-	public static String PROP_CLOSE_ON_PAID = "closeOnPaid";
-	public static String PROP_BAR_TAB = "barTab";
-	public static String PROP_SHOW_ITEM_BARCODE = "showItemBarcode";
-	public static String PROP_SHOW_GUEST_SELECTION = "showGuestSelection";
-	public static String PROP_ID = "id";
-	public static String PROP_HIDE_ITEM_WITH_EMPTY_INVENTORY = "hideItemWithEmptyInventory";
-	public static String PROP_HAS_FOR_HERE_AND_TO_GO = "hasForHereAndToGo";
-	public static String PROP_PREPAID = "prepaid";
+	public static String REF = "OrderType"; //$NON-NLS-1$
+	public static String PROP_PRE_AUTH_CREDIT_CARD = "preAuthCreditCard"; //$NON-NLS-1$
+	public static String PROP_ENABLED = "enabled"; //$NON-NLS-1$
+	public static String PROP_DELIVERY = "delivery"; //$NON-NLS-1$
+	public static String PROP_REQUIRED_CUSTOMER_DATA = "requiredCustomerData"; //$NON-NLS-1$
+	public static String PROP_CONSOLIDATE_ITEMS_IN_RECEIPT = "consolidateItemsInReceipt"; //$NON-NLS-1$
+	public static String PROP_SHOW_IN_LOGIN_SCREEN = "showInLoginScreen"; //$NON-NLS-1$
+	public static String PROP_NAME = "name"; //$NON-NLS-1$
+	public static String PROP_SHOW_TABLE_SELECTION = "showTableSelection"; //$NON-NLS-1$
+	public static String PROP_SHOULD_PRINT_TO_KITCHEN = "shouldPrintToKitchen"; //$NON-NLS-1$
+	public static String PROP_CLOSE_ON_PAID = "closeOnPaid"; //$NON-NLS-1$
+	public static String PROP_BAR_TAB = "barTab"; //$NON-NLS-1$
+	public static String PROP_SHOW_ITEM_BARCODE = "showItemBarcode"; //$NON-NLS-1$
+	public static String PROP_SHOW_GUEST_SELECTION = "showGuestSelection"; //$NON-NLS-1$
+	public static String PROP_ID = "id"; //$NON-NLS-1$
+	public static String PROP_HIDE_ITEM_WITH_EMPTY_INVENTORY = "hideItemWithEmptyInventory"; //$NON-NLS-1$
+	public static String PROP_ALLOW_SEAT_BASED_ORDER = "allowSeatBasedOrder"; //$NON-NLS-1$
+	public static String PROP_HAS_FOR_HERE_AND_TO_GO = "hasForHereAndToGo"; //$NON-NLS-1$
+	public static String PROP_PREPAID = "prepaid"; //$NON-NLS-1$
 
 
 	// constructors
@@ -82,6 +83,7 @@ public abstract class BaseOrderType  implements Comparable, Serializable {
 		protected java.lang.Boolean showItemBarcode;
 		protected java.lang.Boolean showInLoginScreen;
 		protected java.lang.Boolean consolidateItemsInReceipt;
+		protected java.lang.Boolean allowSeatBasedOrder;
 		protected java.lang.Boolean hideItemWithEmptyInventory;
 		protected java.lang.Boolean hasForHereAndToGo;
 		protected java.lang.Boolean preAuthCreditCard;
@@ -311,6 +313,23 @@ public abstract class BaseOrderType  implements Comparable, Serializable {
 	 */
 	public void setConsolidateItemsInReceipt (java.lang.Boolean consolidateItemsInReceipt) {
 		this.consolidateItemsInReceipt = consolidateItemsInReceipt;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: ALLOW_SEAT_BASED_ORDER
+	 */
+	public java.lang.Boolean isAllowSeatBasedOrder () {
+								return allowSeatBasedOrder == null ? Boolean.FALSE : allowSeatBasedOrder;
+					}
+
+	/**
+	 * Set the value related to the column: ALLOW_SEAT_BASED_ORDER
+	 * @param allowSeatBasedOrder the ALLOW_SEAT_BASED_ORDER value
+	 */
+	public void setAllowSeatBasedOrder (java.lang.Boolean allowSeatBasedOrder) {
+		this.allowSeatBasedOrder = allowSeatBasedOrder;
 	}
 
 

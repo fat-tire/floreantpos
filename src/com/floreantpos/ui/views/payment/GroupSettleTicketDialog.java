@@ -25,6 +25,8 @@ import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -187,7 +189,24 @@ public class GroupSettleTicketDialog extends POSDialog implements CardInputListe
 				ticket.getTicketItems().addAll(list);
 			}
 		}
+		List<TicketItem> ticketItemList = ticket.getTicketItems();
+		if (ticket.getOrderType().isAllowSeatBasedOrder()) {
+			Collections.sort(ticketItemList, new Comparator<TicketItem>() {
 
+				@Override
+				public int compare(TicketItem o1, TicketItem o2) {
+					return o1.getId() - o2.getId();
+				}
+			});
+			Collections.sort(ticketItemList, new Comparator<TicketItem>() {
+
+				@Override
+				public int compare(TicketItem o1, TicketItem o2) {
+					return o1.getSeatNumber() - o2.getSeatNumber();
+				}
+
+			});
+		}
 		ticket.calculatePrice();
 	}
 
@@ -797,9 +816,16 @@ public class GroupSettleTicketDialog extends POSDialog implements CardInputListe
 	}
 
 	private void setTransactionAmounts(PosTransaction transaction) {
-		if (tickets.get(tickets.size() - 1).getId() == transaction.getTicket().getId() && totalTenderAmount > totalDueAmount) {
-			transaction.setTenderAmount(totalTenderAmount - totalDueAmount + transaction.getTicket().getDueAmount());
-			transaction.setAmount(transaction.getTicket().getDueAmount());
+		if (tickets.get(tickets.size() - 1).getId() == transaction.getTicket().getId()) {
+			if (totalTenderAmount > totalDueAmount) {
+				transaction.setTenderAmount(totalTenderAmount - totalDueAmount + transaction.getTicket().getDueAmount());
+				transaction.setAmount(transaction.getTicket().getDueAmount());
+			}
+			String ticketNumbers = "";
+			for (Ticket ticket : tickets) {
+				ticketNumbers += "[" + ticket.getId() + "]";
+			}
+			transaction.getTicket().addProperty("GROUP_SETTLE_TICKETS", "#CHK " + ticketNumbers);
 		}
 		else {
 			transaction.setTenderAmount(transaction.getTicket().getDueAmount());

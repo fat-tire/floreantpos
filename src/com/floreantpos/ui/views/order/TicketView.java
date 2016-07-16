@@ -402,12 +402,12 @@ public class TicketView extends JPanel {
 
 		TicketDAO ticketDAO = TicketDAO.getInstance();
 
-		if (ticket.getId() == null) {
+		//if (ticket.getId() == null) {
 			// save ticket first. ticket needs to save so that it
 			// contains an id.
 			OrderController.saveOrder(ticket);
 			ticketDAO.refresh(ticket);
-		}
+		//}
 	}
 
 	private void closeView(boolean orderCanceled) {

@@ -42,4 +42,11 @@ public class KitchenTicketItem extends BaseKitchenTicketItem {
 	public java.lang.Boolean isCookable() {
 		return cookable == null ? Boolean.TRUE : cookable;
 	}
+
+	public java.lang.String getMenuItemGroupName() {
+		if (super.getMenuItemGroupName() == null) {
+			return "";
+		}
+		return super.getMenuItemGroupName();
+	}
 }

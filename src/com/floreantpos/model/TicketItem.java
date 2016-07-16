@@ -292,7 +292,10 @@ public class TicketItem extends BaseTicketItem implements ITicketItem {
 			return false;
 		}
 		if (!this.isHasModifiers() && !otherItem.isHasModifiers()) {
-			if (this.getItemId().equals(otherItem.getItemId())) {
+			if (this.isTreatAsSeat() == otherItem.isTreatAsSeat() && this.getSeatNumber().intValue() == otherItem.getSeatNumber().intValue()) {
+				return true;
+			}
+			if (this.getItemId().equals(otherItem.getItemId())&& this.getSeatNumber() == otherItem.getSeatNumber()) {
 				return true;
 			}
 
@@ -545,11 +548,17 @@ public class TicketItem extends BaseTicketItem implements ITicketItem {
 
 	@Override
 	public Double getUnitPriceDisplay() {
+		if (isTreatAsSeat())
+			return null;
+		
 		return getUnitPrice();
 	}
 
 	@Override
 	public String getItemQuantityDisplay() {
+		if (isTreatAsSeat())
+			return "";
+		
 		if (isFractionalUnit()) {
 			double itemQuantity = getItemQuantity();
 			if (itemQuantity % 1 == 0) {
@@ -574,6 +583,9 @@ public class TicketItem extends BaseTicketItem implements ITicketItem {
 
 	@Override
 	public Double getSubTotalAmountWithoutModifiersDisplay() {
+		if (isTreatAsSeat())
+			return null;
+		
 		return getSubtotalAmountWithoutModifiers();
 	}
 

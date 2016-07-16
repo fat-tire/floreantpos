@@ -19,6 +19,8 @@ package com.floreantpos.model;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -192,6 +194,24 @@ public class KitchenTicket extends BaseKitchenTicket {
 		List<TicketItem> ticketItems = consolidateTicketItems(ticket);
 		if (ticketItems == null) {
 			return kitchenTickets;
+		}
+
+		if (ticket.getOrderType().isAllowSeatBasedOrder()) {
+			Collections.sort(ticketItems, new Comparator<TicketItem>() {
+
+				@Override
+				public int compare(TicketItem o1, TicketItem o2) {
+					return o1.getId() - o2.getId();
+				}
+			});
+			Collections.sort(ticketItems, new Comparator<TicketItem>() {
+
+				@Override
+				public int compare(TicketItem o1, TicketItem o2) {
+					return o1.getSeatNumber() - o2.getSeatNumber();
+				}
+
+			});
 		}
 
 		for (TicketItem ticketItem : ticketItems) {

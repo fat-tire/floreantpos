@@ -439,10 +439,17 @@ public class TicketForSplitView extends com.floreantpos.swing.TransparentPanel i
 
 		updateView();
 	}
-
 	public void transferTicketItem(TicketItem ticketItem, TicketForSplitView toTicketView) {
+		transferTicketItem(ticketItem, toTicketView, false);
+	}
+	public void transferTicketItem(TicketItem ticketItem, TicketForSplitView toTicketView,boolean fullTicketItem) {
 		TicketItem newTicketItem = new TicketItem();
-		newTicketItem.setItemCount(1);
+		
+		if (!fullTicketItem)
+			newTicketItem.setItemCount(1);
+		else
+			newTicketItem.setItemCount(ticketItem.getItemCount());
+
 		newTicketItem.setItemId(ticketItem.getItemId());
 		newTicketItem.setHasModifiers(ticketItem.isHasModifiers());
 		//newTicketItem.setTicketItemModifierGroups(new ArrayList<TicketItemModifierGroup>(ticketItem.getTicketItemModifierGroups()));
@@ -450,6 +457,8 @@ public class TicketForSplitView extends com.floreantpos.swing.TransparentPanel i
 		newTicketItem.setGroupName(ticketItem.getGroupName());
 		newTicketItem.setCategoryName(ticketItem.getCategoryName());
 		newTicketItem.setUnitPrice(ticketItem.getUnitPrice());
+		newTicketItem.setTreatAsSeat(ticketItem.isTreatAsSeat());
+		newTicketItem.setSeatNumber(ticketItem.getSeatNumber());
 
 		List<TicketItemDiscount> discounts = ticketItem.getDiscounts();
 		if (discounts != null) {
@@ -515,7 +524,7 @@ public class TicketForSplitView extends com.floreantpos.swing.TransparentPanel i
 		int itemCount = ticketItem.getItemCount();
 
 		toTicketView.ticketViewerTable.addTicketItem(newTicketItem);
-		if (itemCount > 1 && !ticketItem.isHasModifiers()) {
+		if (itemCount > 1 && !fullTicketItem && !ticketItem.isHasModifiers()) {
 			ticketItem.setItemCount(--itemCount);
 		}
 		else {

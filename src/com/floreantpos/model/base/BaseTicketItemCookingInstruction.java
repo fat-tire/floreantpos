@@ -16,8 +16,8 @@ import java.io.Serializable;
 public abstract class BaseTicketItemCookingInstruction  implements Comparable, Serializable {
 
 	public static String REF = "TicketItemCookingInstruction"; //$NON-NLS-1$
-	public static String PROP_DESCRIPTION = "description"; //$NON-NLS-1$
 	public static String PROP_PRINTED_TO_KITCHEN = "printedToKitchen"; //$NON-NLS-1$
+	public static String PROP_DESCRIPTION = "description"; //$NON-NLS-1$
 
 
 	// constructors

@@ -25,23 +25,32 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
 import java.text.ParseException;
+import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+
 import net.miginfocom.swing.MigLayout;
 
 import com.floreantpos.IconFactory;
 import com.floreantpos.Messages;
 import com.floreantpos.POSConstants;
+import com.floreantpos.config.TerminalConfig;
+import com.floreantpos.model.CashDrawer;
+import com.floreantpos.model.Currency;
 import com.floreantpos.model.PaymentType;
 import com.floreantpos.model.Ticket;
+import com.floreantpos.model.dao.CashDrawerDAO;
 import com.floreantpos.report.ReceiptPrintService;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.swing.PosUIManager;
 import com.floreantpos.swing.TransparentPanel;
+import com.floreantpos.ui.dialog.MultiCurrencyTenderDialog;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.util.CurrencyUtil;
 import com.floreantpos.util.NumberUtil;
@@ -376,6 +385,31 @@ public class GroupPaymentView extends JPanel {
 			}
 		});
 
+		PosButton btnMultiCurrencyCash = new com.floreantpos.swing.PosButton("MULTI CURRENCY CASH"); //$NON-NLS-1$
+		actionButtonPanel.add(btnMultiCurrencyCash, "grow,w " + width + "!"); //$NON-NLS-1$ //$NON-NLS-2$
+		btnMultiCurrencyCash.setVisible(TerminalConfig.isEnabledMultiCurrency());
+		btnMultiCurrencyCash.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				try {
+					List<Currency> currencyList = CurrencyUtil.getAllCurrency();
+					if (currencyList.size() > 1) {
+						if (!adjustCashDrawerBalance(currencyList)) {
+							return;
+						}
+					}
+					double x = NumberUtil.parse(txtTenderedAmount.getText()).doubleValue();
+
+					if (x <= 0) {
+						POSMessageDialog.showError(Messages.getString("PaymentView.32")); //$NON-NLS-1$
+						return;
+					}
+					groupSettleTicketView.doGroupSettle(PaymentType.CASH);
+				} catch (Exception e) {
+					org.apache.commons.logging.LogFactory.getLog(getClass()).error(e);
+				}
+			}
+		});
+
 		btnCreditCard = new PosButton(Messages.getString("PaymentView.33")); //$NON-NLS-1$
 		actionButtonPanel.add(btnCreditCard, "grow,w " + width + "!"); //$NON-NLS-1$ //$NON-NLS-2$ 
 		btnCreditCard.addActionListener(new ActionListener() {
@@ -413,6 +447,34 @@ public class GroupPaymentView extends JPanel {
 		add(centerPanel, "cell 0 0,grow");
 		add(actionButtonPanel, "cell 1 0,grow");
 	}// </editor-fold>//GEN-END:initComponents
+
+	protected boolean adjustCashDrawerBalance(List<Currency> currencyList) {
+		MultiCurrencyTenderDialog dialog = new MultiCurrencyTenderDialog(groupSettleTicketView.getTickets(), currencyList);
+		dialog.pack();
+		dialog.open();
+
+		if (dialog.isCanceled()) {
+			return false;
+		}
+		txtTenderedAmount.setText(NumberUtil.format3DigitNumber(dialog.getTenderedAmount()));
+		CashDrawer cashDrawer = dialog.getCashDrawer();
+
+		Session session = null;
+		Transaction tx = null;
+		try {
+			session = CashDrawerDAO.getInstance().createNewSession();
+			tx = session.beginTransaction();
+
+			session.saveOrUpdate(cashDrawer);
+			tx.commit();
+		} catch (Exception ex) {
+			tx.rollback();
+			return false;
+		} finally {
+			session.close();
+		}
+		return true;
+	}
 
 	protected void doSetGratuity() {
 		groupSettleTicketView.doSetGratuity();

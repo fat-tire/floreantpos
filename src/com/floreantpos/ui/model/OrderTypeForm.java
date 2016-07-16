@@ -65,6 +65,7 @@ public class OrderTypeForm extends BeanEditor implements ItemListener {
 	private JCheckBox chkShowItemBarcode;
 	private JCheckBox chkShowInLoginScreen;
 	private JCheckBox chkConsolidateItemsInReceipt;
+	private JCheckBox chkAllowSeatBasedOrder;
 	private JCheckBox chkHideItemWithEmptyInventory;
 	private JCheckBox chkHasForHereAndToGo;
 	private JCheckBox chkBarTab;
@@ -119,6 +120,7 @@ public class OrderTypeForm extends BeanEditor implements ItemListener {
 		chkShowItemBarcode = new JCheckBox(Messages.getString("OrderTypeForm.9")); //$NON-NLS-1$
 		chkShowInLoginScreen = new JCheckBox(Messages.getString("OrderTypeForm.10")); //$NON-NLS-1$
 		chkConsolidateItemsInReceipt = new JCheckBox(Messages.getString("OrderTypeForm.11")); //$NON-NLS-1$
+		chkAllowSeatBasedOrder = new JCheckBox("Allow seat based order"); //$NON-NLS-1$
 		chkHideItemWithEmptyInventory = new JCheckBox(Messages.getString("OrderTypeForm.12")); //$NON-NLS-1$
 		chkHasForHereAndToGo = new JCheckBox(Messages.getString("OrderTypeForm.13")); //$NON-NLS-1$
 		chkBarTab = new JCheckBox(Messages.getString("OrderTypeForm.14")); //$NON-NLS-1$
@@ -138,9 +140,10 @@ public class OrderTypeForm extends BeanEditor implements ItemListener {
 		if (orderServiceExtension != null) {
 			generalPanel.add(chkDelivery, "cell 1 8,alignx left,aligny top"); //$NON-NLS-1$
 		}
-		generalPanel.add(chkShowItemBarcode, "cell 1 11,alignx left,aligny top"); //$NON-NLS-1$
-		generalPanel.add(chkShowInLoginScreen, "cell 1 12,alignx left,aligny top"); //$NON-NLS-1$
-		generalPanel.add(chkConsolidateItemsInReceipt, "cell 1 13,alignx left,aligny top"); //$NON-NLS-1$
+		generalPanel.add(chkShowItemBarcode, "cell 1 10,alignx left,aligny top"); //$NON-NLS-1$
+		generalPanel.add(chkShowInLoginScreen, "cell 1 11,alignx left,aligny top"); //$NON-NLS-1$
+		generalPanel.add(chkConsolidateItemsInReceipt, "cell 1 12,alignx left,aligny top"); //$NON-NLS-1$
+		generalPanel.add(chkAllowSeatBasedOrder, "cell 1 13,alignx left,aligny top"); //$NON-NLS-1$
 		generalPanel.add(chkHideItemWithEmptyInventory, "cell 1 14,alignx left,aligny top"); //$NON-NLS-1$
 		generalPanel.add(chkHasForHereAndToGo, "cell 1 15,alignx left,aligny top"); //$NON-NLS-1$
 		generalPanel.add(chkBarTab, "cell 1 16,alignx left,aligny top"); //$NON-NLS-1$
@@ -174,6 +177,7 @@ public class OrderTypeForm extends BeanEditor implements ItemListener {
 			chkShowItemBarcode.setSelected(ordersType.isShowItemBarcode());
 			chkShowInLoginScreen.setSelected(ordersType.isShowInLoginScreen());
 			chkConsolidateItemsInReceipt.setSelected(ordersType.isConsolidateItemsInReceipt());
+			chkAllowSeatBasedOrder.setSelected(ordersType.isAllowSeatBasedOrder());
 			chkHideItemWithEmptyInventory.setSelected(ordersType.isHideItemWithEmptyInventory());
 			chkHasForHereAndToGo.setSelected(ordersType.isHasForHereAndToGo());
 			chkBarTab.setSelected(ordersType.isBarTab());
@@ -206,6 +210,7 @@ public class OrderTypeForm extends BeanEditor implements ItemListener {
 			ordersType.setShowItemBarcode(chkShowItemBarcode.isSelected());
 			ordersType.setShowInLoginScreen(chkShowInLoginScreen.isSelected());
 			ordersType.setConsolidateItemsInReceipt(chkConsolidateItemsInReceipt.isSelected());
+			ordersType.setAllowSeatBasedOrder(chkAllowSeatBasedOrder.isSelected());
 			ordersType.setHideItemWithEmptyInventory(chkHideItemWithEmptyInventory.isSelected());
 			ordersType.setHasForHereAndToGo(chkHasForHereAndToGo.isSelected());
 			ordersType.setPreAuthCreditCard(chkPreAuthCreditCard.isSelected());

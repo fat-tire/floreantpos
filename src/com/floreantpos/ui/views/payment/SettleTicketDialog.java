@@ -26,6 +26,8 @@ import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -185,7 +187,24 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 				ticket.getTicketItems().addAll(list);
 			}
 		}
+		List<TicketItem> ticketItemList = ticket.getTicketItems();
+		if (ticket.getOrderType().isAllowSeatBasedOrder()) {
+			Collections.sort(ticketItemList, new Comparator<TicketItem>() {
 
+				@Override
+				public int compare(TicketItem o1, TicketItem o2) {
+					return o1.getId() - o2.getId();
+				}
+			});
+			Collections.sort(ticketItemList, new Comparator<TicketItem>() {
+
+				@Override
+				public int compare(TicketItem o1, TicketItem o2) {
+					return o1.getSeatNumber() - o2.getSeatNumber();
+				}
+
+			});
+		}
 		ticket.calculatePrice();
 	}
 

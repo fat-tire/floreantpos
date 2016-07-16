@@ -69,6 +69,17 @@ public class MultiCurrencyTenderDialog extends OkCancelOptionDialog {
 		init();
 	}
 
+	public MultiCurrencyTenderDialog(List<Ticket> tickets, List<Currency> currencyList) {
+		super();
+		this.currencyList = currencyList;
+		this.ticket = tickets.get(tickets.size() - 1);
+		dueAmount = 0;
+		for (Ticket ticket : tickets) {
+			dueAmount += ticket.getDueAmount();
+		}
+		init();
+	}
+
 	private void init() {
 		JPanel contentPane = getContentPanel();
 		setOkButtonText(POSConstants.SAVE_BUTTON_TEXT);
@@ -170,16 +181,16 @@ public class MultiCurrencyTenderDialog extends OkCancelOptionDialog {
 		if (totalTenderedAmount <= 0 || remainingBalance < 0) {
 			return false;
 		}
-		
+
 		double toleranceAmount = CurrencyUtil.getMainCurrency().getTolerance();
 		if (remainingBalance > toleranceAmount) {
 			return true;
 		}
-		
+
 		if (!isTolerable()) {
 			return false;
 		}
-		
+
 		return true;
 	}
 

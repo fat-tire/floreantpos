@@ -635,8 +635,13 @@ public class ReceiptPrintService {
 		addColumn(currencyAmountBuilder, "&nbsp;");//$NON-NLS-1$
 		endRow(currencyAmountBuilder);
 
+		String groupSettleTickets = ticket.getProperty("GROUP_SETTLE_TICKETS");
+		if (groupSettleTickets == null) {
+			groupSettleTickets = "";
+		}
+
 		beginRow(currencyAmountBuilder);
-		addColumn(currencyAmountBuilder, "<b>Currency breakdown</b>");
+		addColumn(currencyAmountBuilder, groupSettleTickets + "<b>Currency breakdown</b>");
 		endRow(currencyAmountBuilder);
 
 		beginRow(currencyAmountBuilder);
