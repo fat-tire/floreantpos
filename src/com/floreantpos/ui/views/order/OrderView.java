@@ -26,6 +26,7 @@ package com.floreantpos.ui.views.order;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -69,6 +70,7 @@ import com.floreantpos.ui.dialog.MiscTicketItemDialog;
 import com.floreantpos.ui.dialog.NumberSelectionDialog2;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.dialog.PasswordEntryDialog;
+import com.floreantpos.ui.dialog.SeatSelectionDialog;
 import com.floreantpos.ui.tableselection.TableSelectorDialog;
 import com.floreantpos.ui.tableselection.TableSelectorFactory;
 import com.floreantpos.ui.views.CookingInstructionSelectionView;
@@ -100,7 +102,7 @@ public class OrderView extends ViewPanel {
 	private com.floreantpos.swing.PosButton btnSend = new com.floreantpos.swing.PosButton(com.floreantpos.POSConstants.SEND_TO_KITCHEN);
 	private com.floreantpos.swing.PosButton btnCancel = new com.floreantpos.swing.PosButton(POSConstants.CANCEL_BUTTON_TEXT);
 	private com.floreantpos.swing.PosButton btnGuestNo = new com.floreantpos.swing.PosButton(POSConstants.GUEST_NO_BUTTON_TEXT);
-	private com.floreantpos.swing.PosButton btnSeatNo = new com.floreantpos.swing.PosButton("SEAT NO:");
+	private com.floreantpos.swing.PosButton btnSeatNo = new com.floreantpos.swing.PosButton("SEAT:");
 	private com.floreantpos.swing.PosButton btnMisc = new com.floreantpos.swing.PosButton(POSConstants.MISC_BUTTON_TEXT);
 	private com.floreantpos.swing.PosButton btnOrderType = new com.floreantpos.swing.PosButton(POSConstants.ORDER_TYPE_BUTTON_TEXT);
 	private com.floreantpos.swing.PosButton btnTableNumber = new com.floreantpos.swing.PosButton(POSConstants.TABLE_NO_BUTTON_TEXT);
@@ -481,47 +483,54 @@ public class OrderView extends ViewPanel {
 	}// GEN-LAST:event_btnCustomerNumberActionPerformed
 
 	protected void doAddSeatNumber() {// GEN-FIRST:event_btnCustomerNumberActionPerformed
-		NumberSelectionDialog2 dialog = new NumberSelectionDialog2();
-		dialog.setTitle("Enter seat number");
-		dialog.pack();
-		dialog.open();
+		SeatSelectionDialog seatDialog = new SeatSelectionDialog(currentTicket.getTableNumbers(), getSeatNumbers());
+		seatDialog.setTitle("Select Seat");
+		seatDialog.pack();
+		seatDialog.open();
 
-		if (dialog.isCanceled()) {
+		if (seatDialog.isCanceled()) {
 			return;
 		}
+		int seatNumber = seatDialog.getSeatNumber();
+		if (seatNumber == -1) {
+			NumberSelectionDialog2 dialog = new NumberSelectionDialog2();
+			dialog.setTitle("Enter seat number");
+			dialog.pack();
+			dialog.open();
 
-		int seatNumber = (int) dialog.getValue();
-		btnSeatNo.setText("SEAT NO: " + seatNumber);
+			if (dialog.isCanceled()) {
+				return;
+			}
+			seatNumber = (int) dialog.getValue();
+		}
+
+		btnSeatNo.setText("SEAT: " + seatNumber);
 		btnSeatNo.putClientProperty("SEAT_NO", seatNumber);
-		TicketItem ticketItem = null;
-
-		Object object = ticketView.getTicketViewerTable().getSelected();
-		if (object instanceof TicketItem)
-			ticketItem = (TicketItem) object;
-
-		if (ticketItem == null || !ticketItem.isTreatAsSeat()) {
-			ticketItem = new TicketItem();
-			ticketItem.setName("Seat No** " + seatNumber);
-			ticketItem.setShouldPrintToKitchen(true);
-			ticketItem.setTreatAsSeat(true);
-			ticketItem.setSeatNumber(seatNumber);
-			ticketItem.setTicket(currentTicket);
-			ticketView.addTicketItem(ticketItem);
-		}
-		else {
-			ticketItem.setName("Seat No** " + seatNumber);
-			ticketItem.setSeatNumber(seatNumber);
-			ticketView.updateView();
-		}
+		doAddSeatTreatTicketItem(seatNumber);
 	}
 
-	private boolean existsSeatNumber(Integer seatNumber) {
-		for (TicketItem ticketItem : currentTicket.getTicketItems()) {
-			if (ticketItem.getSeatNumber() == seatNumber) {
-				return true;
-			}
+	private void doAddSeatTreatTicketItem(Integer seatNumber) {
+		TicketItem ticketItem = new TicketItem();
+		if (seatNumber == 0)
+			ticketItem.setName("Seat** Shared");
+		else
+			ticketItem.setName("Seat** " + seatNumber);
+
+		ticketItem.setShouldPrintToKitchen(true);
+		ticketItem.setTreatAsSeat(true);
+		ticketItem.setSeatNumber(seatNumber);
+		ticketItem.setTicket(currentTicket);
+		ticketView.addTicketItem(ticketItem);
+	}
+
+	private int getLastSeatNumber() {
+		int lastSeatNumber = 0;
+		List<TicketItem> ticketItems = currentTicket.getTicketItems();
+		if (ticketItems != null && !ticketItems.isEmpty()) {
+			TicketItem lastTicketItem = ticketItems.get(ticketItems.size() - 1);
+			lastSeatNumber = lastTicketItem.getSeatNumber();
 		}
-		return false;
+		return lastSeatNumber;
 	}
 
 	protected Integer getSelectedSeatNumber() {
@@ -529,7 +538,33 @@ public class OrderView extends ViewPanel {
 		if (seatNumber == null)
 			return 0;
 
-		return (Integer) seatNumber;
+		Integer seatNo = (Integer) seatNumber;
+
+		boolean sendToKitchen = false;
+		for (TicketItem ticketItem : currentTicket.getTicketItems()) {
+			if (!ticketItem.isTreatAsSeat())
+				continue;
+			int existingSeatNumber = ticketItem.getSeatNumber();
+			if (existingSeatNumber == seatNo) {
+				sendToKitchen = ticketItem.isPrintedToKitchen();
+			}
+		}
+		if (sendToKitchen) {
+			doAddSeatTreatTicketItem(seatNo);
+		}
+
+		return seatNo;
+	}
+
+	protected List<Integer> getSeatNumbers() {
+		List<Integer> seatNumbers = new ArrayList<>();
+
+		for (TicketItem ticketItem : currentTicket.getTicketItems()) {
+			if (ticketItem.isTreatAsSeat() && !seatNumbers.contains(ticketItem.getSeatNumber())) {
+				seatNumbers.add(ticketItem.getSeatNumber());
+			}
+		}
+		return seatNumbers;
 	}
 
 	protected void doInsertMisc(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_doInsertMisc
@@ -664,7 +699,12 @@ public class OrderView extends ViewPanel {
 			}
 			else {
 				btnSeatNo.setVisible(true);
-				btnSeatNo.setText("SEAT NO:");
+				int lastSeatNumber = getLastSeatNumber();
+				btnSeatNo.putClientProperty("SEAT_NO", lastSeatNumber);
+				if (lastSeatNumber > 0)
+					btnSeatNo.setText("SEAT:" + lastSeatNumber);
+				else
+					btnSeatNo.setText("SEAT:");
 			}
 
 			if (!type.isShowTableSelection()) {

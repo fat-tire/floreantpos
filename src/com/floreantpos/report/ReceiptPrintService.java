@@ -761,7 +761,7 @@ public class ReceiptPrintService {
 		map.put("cardPayment", true); //$NON-NLS-1$
 		map.put(SHOW_HEADER_SEPARATOR, Boolean.TRUE);
 		map.put(SHOW_HEADER_SEPARATOR, Boolean.TRUE);
-		map.put(CHECK_NO, POSConstants.RECEIPT_REPORT_TICKET_NO_LABEL + ticket.getTicketId() + "-" + ticket.getId());
+		map.put(CHECK_NO, POSConstants.RECEIPT_REPORT_TICKET_NO_LABEL + ticket.getTicketId() + "-" + ticket.getSequenceNumber());
 		if (ticket.getTableNumbers() != null && ticket.getTableNumbers().size() > 0) {
 			map.put(TABLE_NO, POSConstants.RECEIPT_REPORT_TABLE_NO_LABEL + ticket.getTableNumbers());
 		}
@@ -812,7 +812,7 @@ public class ReceiptPrintService {
 
 				JasperPrint jasperPrint = createKitchenPrint(printer.getVirtualPrinter().getName(), kitchenTicket, deviceName);
 
-				jasperPrint.setName("FP_KitchenReceipt_" + ticket.getId() + "_" + kitchenTicket.getId()); //$NON-NLS-1$ //$NON-NLS-2$ 
+				jasperPrint.setName("FP_KitchenReceipt_" + ticket.getId() + "_" + kitchenTicket.getSequenceNumber()); //$NON-NLS-1$ //$NON-NLS-2$ 
 				jasperPrint.setProperty(PROP_PRINTER_NAME, deviceName);
 
 				printQuitely(jasperPrint);

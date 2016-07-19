@@ -122,7 +122,7 @@ public class KitchenTicketView extends JPanel {
 	private void createHeader(KitchenTicket ticket) {
 		String printerName = ticket.getPrinters().toString();
 
-		ticketInfo = new JLabel("Ticket# " + ticket.getTicketId() + "-" + ticket.getId() + " " + printerName + ""); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+		ticketInfo = new JLabel("Ticket# " + ticket.getTicketId() + "-" + ticket.getSequenceNumber() + " " + printerName + ""); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 
 		tableInfo = new JLabel();
 		if (ticket.getTableNumbers() != null && ticket.getTableNumbers().size() > 0) {
@@ -180,6 +180,12 @@ public class KitchenTicketView extends JPanel {
 					}
 				}
 
+				if (column == 1) {
+					if (ticketItem.getQuantity() <= 0) {
+						return new JLabel();
+					}
+				}
+
 				updateHeaderView();
 				return rendererComponent;
 			}
@@ -202,7 +208,27 @@ public class KitchenTicketView extends JPanel {
 			}
 		};
 
-		new ButtonColumn(table, action, 2);
+		new ButtonColumn(table, action, 2) {
+
+			@Override
+			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+				KitchenTicketItem ticketItem = tableModel.getRowData(row);
+				if (ticketItem.getQuantity() <= 0) {
+					return new JLabel();
+				}
+				return super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+			}
+
+			@Override
+			public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
+				KitchenTicketItem ticketItem = tableModel.getRowData(row);
+				if (ticketItem.getQuantity() <= 0) {
+					return new JLabel();
+				}
+				return super.getTableCellEditorComponent(table, value, isSelected, row, column);
+			}
+
+		};
 		scrollPane = new JScrollPane(table);
 		add(scrollPane);
 	}

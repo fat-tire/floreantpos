@@ -292,6 +292,15 @@ public class KitchenTicket extends BaseKitchenTicket {
 
 		for (KitchenTicket kitchenTicket : values) {
 			kitchenTickets.add(kitchenTicket);
+			String kitchenTicketNumber = ticket.getProperty("KITCHEN_TICKET_NUMBER");
+			if (kitchenTicketNumber == null) {
+				kitchenTicketNumber = "1";
+			}
+			else {
+				kitchenTicketNumber = String.valueOf(Integer.valueOf(kitchenTicketNumber) + 1);
+			}
+			ticket.addProperty("KITCHEN_TICKET_NUMBER", kitchenTicketNumber);
+			kitchenTicket.setSequenceNumber(Integer.valueOf(kitchenTicketNumber));
 		}
 
 		return kitchenTickets;

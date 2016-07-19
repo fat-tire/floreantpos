@@ -1,22 +1,6 @@
-/**
- * ************************************************************************
- * * The contents of this file are subject to the MRPL 1.2
- * * (the  "License"),  being   the  Mozilla   Public  License
- * * Version 1.1  with a permitted attribution clause; you may not  use this
- * * file except in compliance with the License. You  may  obtain  a copy of
- * * the License at http://www.floreantpos.org/license.html
- * * Software distributed under the License  is  distributed  on  an "AS IS"
- * * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * * License for the specific  language  governing  rights  and  limitations
- * * under the License.
- * * The Original Code is FLOREANT POS.
- * * The Initial Developer of the Original Code is OROCUBE LLC
- * * All portions are Copyright (C) 2015 OROCUBE LLC
- * * All Rights Reserved.
- * ************************************************************************
- */
 package com.floreantpos.model.base;
 
+import java.lang.Comparable;
 import java.io.Serializable;
 
 
@@ -39,6 +23,7 @@ public abstract class BaseKitchenTicket  implements Comparable, Serializable {
 	public static String PROP_ID = "id"; //$NON-NLS-1$
 	public static String PROP_VOIDED = "voided"; //$NON-NLS-1$
 	public static String PROP_SERVER_NAME = "serverName"; //$NON-NLS-1$
+	public static String PROP_SEQUENCE_NUMBER = "sequenceNumber"; //$NON-NLS-1$
 	public static String PROP_CREATE_DATE = "createDate"; //$NON-NLS-1$
 	public static String PROP_TICKET_ID = "ticketId"; //$NON-NLS-1$
 
@@ -70,6 +55,7 @@ public abstract class BaseKitchenTicket  implements Comparable, Serializable {
 		protected java.util.Date createDate;
 		protected java.util.Date closingDate;
 		protected java.lang.Boolean voided;
+		protected java.lang.Integer sequenceNumber;
 		protected java.lang.String status;
 		protected java.lang.String serverName;
 		protected java.lang.String ticketType;
@@ -109,8 +95,8 @@ public abstract class BaseKitchenTicket  implements Comparable, Serializable {
 	 * Return the value associated with the column: TICKET_ID
 	 */
 	public java.lang.Integer getTicketId () {
-					return ticketId == null ? Integer.valueOf(0) : ticketId;
-			}
+									return ticketId == null ? Integer.valueOf(0) : ticketId;
+					}
 
 	/**
 	 * Set the value related to the column: TICKET_ID
@@ -169,6 +155,23 @@ public abstract class BaseKitchenTicket  implements Comparable, Serializable {
 	 */
 	public void setVoided (java.lang.Boolean voided) {
 		this.voided = voided;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: SEQUENCE_NUMBER
+	 */
+	public java.lang.Integer getSequenceNumber () {
+									return sequenceNumber == null ? Integer.valueOf(0) : sequenceNumber;
+					}
+
+	/**
+	 * Set the value related to the column: SEQUENCE_NUMBER
+	 * @param sequenceNumber the SEQUENCE_NUMBER value
+	 */
+	public void setSequenceNumber (java.lang.Integer sequenceNumber) {
+		this.sequenceNumber = sequenceNumber;
 	}
 
 
@@ -244,7 +247,7 @@ public abstract class BaseKitchenTicket  implements Comparable, Serializable {
 	/**
 	 * Return the value associated with the column: tableNumbers
 	 */
-	public java.util.List<Integer> getTableNumbers () {
+	public java.util.List<Integer> getTableNumbers() {
 					return tableNumbers;
 			}
 
@@ -252,7 +255,7 @@ public abstract class BaseKitchenTicket  implements Comparable, Serializable {
 	 * Set the value related to the column: tableNumbers
 	 * @param tableNumbers the tableNumbers value
 	 */
-	public void setTableNumbers (java.util.List<Integer> tableNumbers) {
+	public void setTableNumbers(java.util.List<Integer> tableNumbers) {
 		this.tableNumbers = tableNumbers;
 	}
 
@@ -296,7 +299,7 @@ public abstract class BaseKitchenTicket  implements Comparable, Serializable {
 		if (Integer.MIN_VALUE == this.hashCode) {
 			if (null == this.getId()) return super.hashCode();
 			else {
-				String hashStr = this.getClass().getName() + ":" + this.getId().hashCode(); //$NON-NLS-1$
+				String hashStr = this.getClass().getName() + ":" + this.getId().hashCode();
 				this.hashCode = hashStr.hashCode();
 			}
 		}

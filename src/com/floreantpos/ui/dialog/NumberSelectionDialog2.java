@@ -20,8 +20,6 @@ package com.floreantpos.ui.dialog;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -30,17 +28,13 @@ import net.miginfocom.swing.MigLayout;
 
 import com.floreantpos.POSConstants;
 import com.floreantpos.swing.NumericKeypad;
-import com.floreantpos.swing.PosButton;
 import com.floreantpos.swing.PosUIManager;
 
-public class NumberSelectionDialog2 extends OkCancelOptionDialog implements ActionListener {
+public class NumberSelectionDialog2 extends OkCancelOptionDialog {
+
 	private int defaultValue;
-
 	private JTextField tfNumber;
-
 	private boolean floatingPoint;
-	private PosButton posButton_1;
-	private boolean clearPreviousNumber = true;
 
 	public NumberSelectionDialog2() {
 		super();
@@ -48,21 +42,14 @@ public class NumberSelectionDialog2 extends OkCancelOptionDialog implements Acti
 	}
 
 	private void init() {
-		//setResizable(false);
-
 		JPanel contentPane = getContentPanel();
-
-		MigLayout layout = new MigLayout("inset 0", "[grow,fill]", "[grow,fill]"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		contentPane.setLayout(layout);
+		contentPane.setLayout(new MigLayout("inset 0", "[grow,fill]", "[grow,fill]"));//$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 		tfNumber = new JTextField();
-		tfNumber.setText(String.valueOf(defaultValue));
 		tfNumber.setFont(tfNumber.getFont().deriveFont(Font.BOLD, PosUIManager.getNumberFieldFontSize()));
-		//tfNumber.setEditable(false);
 		tfNumber.setFocusable(true);
 		tfNumber.requestFocus();
 		tfNumber.setBackground(Color.WHITE);
-		//tfNumber.setHorizontalAlignment(JTextField.RIGHT);
 		contentPane.add(tfNumber, "cell 0 0,alignx left,height 40px,aligny top"); //$NON-NLS-1$
 
 		NumericKeypad numericKeypad = new NumericKeypad();
@@ -77,77 +64,6 @@ public class NumberSelectionDialog2 extends OkCancelOptionDialog implements Acti
 		}
 		setCanceled(false);
 		dispose();
-	}
-
-	private void doClearAll() {
-		tfNumber.setText(String.valueOf(defaultValue));
-	}
-
-	private void doClear() {
-		String s = tfNumber.getText();
-		if (s.length() > 1) {
-			s = s.substring(0, s.length() - 1);
-		}
-		else {
-			s = String.valueOf(defaultValue);
-		}
-		tfNumber.setText(s);
-	}
-
-	private void doInsertNumber(String number) {
-
-		if (clearPreviousNumber) {
-			tfNumber.setText("0"); //$NON-NLS-1$
-			clearPreviousNumber = false;
-		}
-
-		String s = tfNumber.getText();
-		double d = 0;
-
-		try {
-			d = Double.parseDouble(s);
-		} catch (Exception x) {
-		}
-
-		if (d == 0 && !s.contains(".")) {
-			tfNumber.setText(number);
-			return;
-		}
-
-		s = s + number;
-		if (!validate(s)) {
-			POSMessageDialog.showError(this, POSConstants.INVALID_NUMBER);
-			return;
-		}
-		tfNumber.setText(s);
-	}
-
-	private void doInsertDot() {
-		//if (isFloatingPoint() && tfNumber.getText().indexOf('.') < 0) {
-		String string = tfNumber.getText() + "."; //$NON-NLS-1$
-		if (!validate(string)) {
-			POSMessageDialog.showError(this, POSConstants.INVALID_NUMBER);
-			return;
-		}
-		tfNumber.setText(string);
-		//}
-	}
-
-	public void actionPerformed(ActionEvent e) {
-		String actionCommand = e.getActionCommand();
-
-		if (actionCommand.equals(POSConstants.CLEAR_ALL)) {
-			doClearAll();
-		}
-		else if (actionCommand.equals(POSConstants.CLEAR)) {
-			doClear();
-		}
-		else if (actionCommand.equals(".")) { //$NON-NLS-1$
-			doInsertDot();
-		}
-		else {
-			doInsertNumber(actionCommand);
-		}
 	}
 
 	private boolean validate(String str) {
@@ -183,7 +99,7 @@ public class NumberSelectionDialog2 extends OkCancelOptionDialog implements Acti
 
 	public void setValue(double value) {
 		if (value == 0) {
-			tfNumber.setText("0"); //$NON-NLS-1$
+			tfNumber.setText(""); //$NON-NLS-1$
 		}
 		else if (isFloatingPoint()) {
 			tfNumber.setText(String.valueOf(value));

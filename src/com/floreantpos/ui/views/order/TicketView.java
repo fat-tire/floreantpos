@@ -29,6 +29,7 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -63,7 +64,9 @@ import com.floreantpos.swing.PosUIManager;
 import com.floreantpos.ui.dialog.AutomatedWeightInputDialog;
 import com.floreantpos.ui.dialog.BasicWeightInputDialog;
 import com.floreantpos.ui.dialog.ItemSearchDialog;
+import com.floreantpos.ui.dialog.NumberSelectionDialog2;
 import com.floreantpos.ui.dialog.POSMessageDialog;
+import com.floreantpos.ui.dialog.SeatSelectionDialog;
 import com.floreantpos.ui.views.CashierSwitchBoardView;
 import com.floreantpos.ui.views.order.actions.OrderListener;
 import com.floreantpos.util.CurrencyUtil;
@@ -304,7 +307,7 @@ public class TicketView extends JPanel {
 	private void createTicketItemControlPanel() {
 		GridLayout gridLayout = new GridLayout(0, 1, 1, 3);
 		ticketItemActionPanel.setLayout(gridLayout);
-//		ticketItemActionPanel.setLayout(new MigLayout("fill, wrap 1, ins 0", "[fill, grow 100, shrink 100]", ""));
+		//		ticketItemActionPanel.setLayout(new MigLayout("fill, wrap 1, ins 0", "[fill, grow 100, shrink 100]", ""));
 		Dimension size = PosUIManager.getSize(40, 40);
 		btnScrollUp.setIcon(IconFactory.getIcon("/ui_icons/", "up.png", size)); //$NON-NLS-1$ //$NON-NLS-2$
 		btnScrollUp.addActionListener(new java.awt.event.ActionListener() {
@@ -403,10 +406,10 @@ public class TicketView extends JPanel {
 		TicketDAO ticketDAO = TicketDAO.getInstance();
 
 		//if (ticket.getId() == null) {
-			// save ticket first. ticket needs to save so that it
-			// contains an id.
-			OrderController.saveOrder(ticket);
-			ticketDAO.refresh(ticket);
+		// save ticket first. ticket needs to save so that it
+		// contains an id.
+		OrderController.saveOrder(ticket);
+		ticketDAO.refresh(ticket);
 		//}
 	}
 
@@ -460,11 +463,68 @@ public class TicketView extends JPanel {
 		if (object == null) {
 			return;
 		}
-		OrderController.openModifierDialog((ITicketItem) object);
+		if (object instanceof TicketItem && ((TicketItem) object).isTreatAsSeat()) {
+			TicketItem ticketItem = (TicketItem) object;
+
+			SeatSelectionDialog seatDialog = new SeatSelectionDialog(ticket.getTableNumbers(), getSeatNumbers());
+			seatDialog.setTitle("Select Seat");
+			seatDialog.pack();
+			seatDialog.open();
+
+			if (seatDialog.isCanceled()) {
+				return;
+			}
+			int seatNumber = seatDialog.getSeatNumber();
+			if (seatNumber == -1) {
+				NumberSelectionDialog2 dialog = new NumberSelectionDialog2();
+				dialog.setTitle("Enter seat number");
+				dialog.setValue(ticketItem.getSeatNumber());
+				dialog.pack();
+				dialog.open();
+
+				if (dialog.isCanceled()) {
+					return;
+				}
+				seatNumber = (int) dialog.getValue();
+			}
+
+			ticketItem.setName("Seat** " + seatNumber);
+			ticketItem.setSeatNumber(seatNumber);
+			updateTicketItemsSeatNumber(ticketItem);
+		}
+		else
+			OrderController.openModifierDialog((ITicketItem) object);
 
 		updateView();
 
 	}// GEN-LAST:event_doDeleteSelection
+
+	protected List<Integer> getSeatNumbers() {
+		List<Integer> seatNumbers = new ArrayList<>();
+
+		for (TicketItem ticketItem : ticket.getTicketItems()) {
+			if (ticketItem.isTreatAsSeat() && !seatNumbers.contains(ticketItem.getSeatNumber())) {
+				seatNumbers.add(ticketItem.getSeatNumber());
+			}
+		}
+		return seatNumbers;
+	}
+
+	private void updateTicketItemsSeatNumber(TicketItem ticketItem) {
+		boolean updateSeatNumber = false;
+		for (TicketItem item : ticket.getTicketItems()) {
+			if (item == ticketItem) {
+				updateSeatNumber = true;
+				continue;
+			}
+			if (updateSeatNumber) {
+				if (!item.isTreatAsSeat())
+					item.setSeatNumber(ticketItem.getSeatNumber());
+				else
+					break;
+			}
+		}
+	}
 
 	private void doIncreaseAmount() {// GEN-FIRST:event_doIncreaseAmount
 		if (!checkStock(-1)) {
@@ -645,6 +705,9 @@ public class TicketView extends JPanel {
 						btnIncreaseAmount.setEnabled(false);
 						btnDecreaseAmount.setEnabled(false);
 						btnDelete.setEnabled(false);
+					}
+					if (ticketItem.isTreatAsSeat()) {
+						btnEdit.setEnabled(!ticketItem.isPrintedToKitchen());
 					}
 					else if (ticketItem.isHasModifiers()) {
 						btnIncreaseAmount.setEnabled(false);
