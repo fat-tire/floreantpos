@@ -106,7 +106,7 @@ public class TicketDAO extends BaseTicketDAO {
 	@Override
 	public void saveOrUpdate(Ticket ticket, Session session) {
 		//TODO: INVENTORY PLUGIN SUPPORT
-		//adjustInventoryItems(session, ticket);
+		adjustInventoryItems(session, ticket);
 
 		ticket.setActiveDate(Calendar.getInstance().getTime());
 
