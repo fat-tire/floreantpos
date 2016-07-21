@@ -885,11 +885,13 @@ public class TicketDAO extends BaseTicketDAO {
 				if (!recepieItem.isInventoryDeductable()) {
 					continue;
 				}
+				
+				Double percentage = recepieItem.getPercentage() / 100.0;
 
 				InventoryItem inventoryItem = recepieItem.getInventoryItem();
 				inventoryItem.setTotalPackages(inventoryItem.getTotalPackages() - ticketItem.getItemCount());
 				Double totalRecepieUnits = inventoryItem.getTotalRecepieUnits();
-				inventoryItem.setTotalRecepieUnits(totalRecepieUnits - ticketItem.getItemCount());
+				inventoryItem.setTotalRecepieUnits(totalRecepieUnits - (ticketItem.getItemCount() * percentage));
 
 				session.saveOrUpdate(inventoryItem);
 
