@@ -501,9 +501,14 @@ public class ReceiptPrintService {
 			messageString += "</html>"; //$NON-NLS-1$
 			//map.put("additionalProperties", messageString); //$NON-NLS-1$
 			if (TerminalConfig.isEnabledMultiCurrency()) {
-				StringBuilder ticketMultiCurrencyBuilder = buildMultiCurrency(ticket, printProperties);
-				if (ticketMultiCurrencyBuilder != null) {
-					map.put("additionalProperties", ticketMultiCurrencyBuilder.toString()); //$NON-NLS-1$
+				StringBuilder multiCurrencyBreakdownCashBack = buildMultiCurrency(ticket, printProperties);
+				if (multiCurrencyBreakdownCashBack != null) {
+					map.put("additionalProperties", multiCurrencyBreakdownCashBack.toString()); //$NON-NLS-1$
+				}
+				else {
+					StringBuilder multiCurrencyTotalAmount = buildMultiCurrencyTotalAmount(ticket, printProperties);
+					if (multiCurrencyTotalAmount != null)
+						map.put("additionalProperties", multiCurrencyTotalAmount.toString()); //$NON-NLS-1$
 				}
 			}
 		}
@@ -618,6 +623,59 @@ public class ReceiptPrintService {
 
 		ticketHeaderBuilder.append("</html>"); //$NON-NLS-1$
 		return ticketHeaderBuilder;
+	}
+
+	private static StringBuilder buildMultiCurrencyTotalAmount(Ticket ticket, TicketPrintProperties printProperties) {
+		DecimalFormat decimalFormat = new DecimalFormat("0.00"); //$NON-NLS-1$
+
+		StringBuilder currencyAmountBuilder = new StringBuilder();
+		currencyAmountBuilder.append("<html><table>"); //$NON-NLS-1$
+
+		String sep = "------------------------------------";//$NON-NLS-1$
+
+		beginRow(currencyAmountBuilder);
+		addColumn(currencyAmountBuilder, "&nbsp;");//$NON-NLS-1$
+		addColumn(currencyAmountBuilder, "&nbsp;");//$NON-NLS-1$
+		addColumn(currencyAmountBuilder, "&nbsp;");//$NON-NLS-1$
+		endRow(currencyAmountBuilder);
+
+		beginRow(currencyAmountBuilder);
+		addColumn(currencyAmountBuilder, "<b>Currency breakdown</b>");
+		endRow(currencyAmountBuilder);
+
+		beginRow(currencyAmountBuilder);
+		addColumn(currencyAmountBuilder, sep);
+		endRow(currencyAmountBuilder);
+
+		beginRow(currencyAmountBuilder);
+		addColumn(currencyAmountBuilder, getHtmlText("", 10, CENTER));//$NON-NLS-1$
+		addColumn(currencyAmountBuilder, getHtmlText("Net Amount", 10, CENTER));//$NON-NLS-1$
+		//addColumn(currencyAmountBuilder, getHtmlText("Paid", 10, CENTER));//$NON-NLS-1$
+		addColumn(currencyAmountBuilder, getHtmlText("Due", 10, CENTER));//$NON-NLS-1$
+		endRow(currencyAmountBuilder);
+
+		beginRow(currencyAmountBuilder);
+		addColumn(currencyAmountBuilder, sep);
+		endRow(currencyAmountBuilder);
+
+		int rowCount = 0;
+		for (Currency currency : CurrencyUtil.getAllCurrency()) {
+			String key = currency.getName();
+			double rate = currency.getExchangeRate();
+			beginRow(currencyAmountBuilder);
+			addColumn(currencyAmountBuilder, getHtmlText(key, 10, LEFT));
+			addColumn(currencyAmountBuilder, getHtmlText(decimalFormat.format(ticket.getTotalAmount() * rate), 10, RIGHT));
+			//addColumn(currencyAmountBuilder, getHtmlText(decimalFormat.format(ticket.getPaidAmount() * rate), 10, RIGHT));
+			addColumn(currencyAmountBuilder, getHtmlText(decimalFormat.format(ticket.getDueAmount() * rate), 10, RIGHT));
+			endRow(currencyAmountBuilder);
+			rowCount++;
+		}
+
+		if (rowCount == 0) {
+			return null;
+		}
+		currencyAmountBuilder.append("</table></html>"); //$NON-NLS-1$
+		return currencyAmountBuilder;
 	}
 
 	private static StringBuilder buildMultiCurrency(Ticket ticket, TicketPrintProperties printProperties) {
