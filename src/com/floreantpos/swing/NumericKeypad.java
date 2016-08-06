@@ -39,6 +39,7 @@ import com.floreantpos.swing.event.KeypadEventListener;
  */
 public class NumericKeypad extends javax.swing.JComponent {
 
+	private static final String CLEAR = "CLEAR";
 	private EventListenerList eventListeners = new EventListenerList();
 	private String text = ""; //$NON-NLS-1$
 	private KeypadEvent keypadEvent = null;
@@ -156,20 +157,21 @@ public class NumericKeypad extends javax.swing.JComponent {
 		posButton0.setActionCommand("0"); //$NON-NLS-1$
 		keypadPanel.add(posButton0);
 		setLayout(new BorderLayout(0, 0));
-		posButton10 = new com.floreantpos.swing.PosButton();
-		posButton10.setFocusable(false);
-		keypadPanel.add(posButton10);
+		btnClear = new com.floreantpos.swing.PosButton();
+		btnClear.setFocusable(false);
+		keypadPanel.add(btnClear);
 
-		posButton10.setAction(goAction);
-		posButton10.setIcon(com.floreantpos.IconFactory.getIcon("clear.png")); //$NON-NLS-1$
-		posButton10.setText(Messages.getString("NumericKeypad.0")); //$NON-NLS-1$
+		btnClear.setAction(goAction);
+		btnClear.setIcon(com.floreantpos.IconFactory.getIcon("clear.png")); //$NON-NLS-1$
+		btnClear.setText(Messages.getString("NumericKeypad.0")); //$NON-NLS-1$
+		btnClear.setActionCommand(CLEAR);
 		add(keypadPanel, BorderLayout.CENTER);
 	}// </editor-fold>
 
 	private javax.swing.JPanel keypadPanel;
 	private com.floreantpos.swing.PosButton posButton0;
 	private com.floreantpos.swing.PosButton posButton1;
-	private com.floreantpos.swing.PosButton posButton10;
+	private com.floreantpos.swing.PosButton btnClear;
 	private com.floreantpos.swing.PosButton posButton2;
 	private com.floreantpos.swing.PosButton posButton3;
 	private com.floreantpos.swing.PosButton posButton4;
@@ -193,7 +195,7 @@ public class NumericKeypad extends javax.swing.JComponent {
 
 			String command = e.getActionCommand();
 
-			if (com.floreantpos.POSConstants.CLEAR.equals(command)) {
+			if (CLEAR.equals(command)) {
 				focusedTextComponent.setText(""); //$NON-NLS-1$
 			}
 			else {
