@@ -251,13 +251,20 @@ public class Ticket extends BaseTicket {
 		}
 
 		double subtotalAmount = calculateSubtotalAmount();
-		double discountAmount = calculateDiscountAmount();
+		double discountAmount = calculateItemsDiscountAmount();
+		double ticketDiscountAmount = calculateTicketDiscountAmount(discountAmount);
+		if (ticketDiscountAmount > 0) {
+			discountAmount = ticketDiscountAmount;
+		}
 
 		setSubtotalAmount(subtotalAmount);
 
 		setDiscountAmount(discountAmount);
 
 		double taxAmount = calculateTax();
+		if (ticketDiscountAmount > 0) {
+			taxAmount = taxAmount - (taxAmount * ticketDiscountAmount / subtotalAmount);
+		}
 		setTaxAmount(taxAmount);
 
 		Double deliveryChargeAmount = NumberUtil.roundToTwoDigit(getDeliveryCharge());
@@ -338,7 +345,7 @@ public class Ticket extends BaseTicket {
 		return NumberUtil.roundToTwoDigit(subtotalAmount);
 	}
 
-	private double calculateDiscountAmount() {
+	private double calculateItemsDiscountAmount() {
 		double ticketItemDiscounts = 0;
 
 		List<TicketItem> ticketItems = getTicketItems();
@@ -347,14 +354,17 @@ public class Ticket extends BaseTicket {
 				ticketItemDiscounts += ticketItem.getDiscountAmount();
 			}
 		}
-		double discount = ticketItemDiscounts;
-		TicketDiscount ticketCouponAndDiscount = DiscountUtil.getMaxDiscount(getDiscounts(), ticketItemDiscounts);
+		ticketItemDiscounts = fixInvalidAmount(ticketItemDiscounts);
+		return NumberUtil.roundToTwoDigit(ticketItemDiscounts);
+	}
+
+	private double calculateTicketDiscountAmount(double itemsDiscount) {
+		double discount = 0;
+		TicketDiscount ticketCouponAndDiscount = DiscountUtil.getMaxDiscount(getDiscounts(), itemsDiscount);
 		if (ticketCouponAndDiscount != null) {
 			discount = DiscountUtil.calculateDiscountAmount(getSubtotalAmount() - discount, ticketCouponAndDiscount);
 		}
-
-		ticketItemDiscounts = fixInvalidAmount(discount);
-
+		discount = fixInvalidAmount(discount);
 		return NumberUtil.roundToTwoDigit(discount);
 	}
 
