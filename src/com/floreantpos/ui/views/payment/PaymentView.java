@@ -404,7 +404,7 @@ public class PaymentView extends JPanel {
 				try {
 					double x = NumberUtil.parse(txtTenderedAmount.getText()).doubleValue();
 
-					if (x <= 0) {
+					if (x < 0) {
 						POSMessageDialog.showError(Messages.getString("PaymentView.32")); //$NON-NLS-1$
 						return;
 					}
