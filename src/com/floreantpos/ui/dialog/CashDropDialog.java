@@ -48,6 +48,7 @@ import com.floreantpos.IconFactory;
 import com.floreantpos.Messages;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.CashDropTransaction;
+import com.floreantpos.model.PaymentType;
 import com.floreantpos.model.Terminal;
 import com.floreantpos.model.dao.CashDropTransactionDAO;
 import com.floreantpos.swing.PosUIManager;
@@ -286,6 +287,7 @@ public class CashDropDialog extends POSDialog {
 				transaction.setUser(Application.getCurrentUser());
 				transaction.setTransactionTime(new Date());
 				transaction.setAmount(amount);
+				transaction.setPaymentType(PaymentType.CASH.toString());
 
 				CashDropTransactionDAO dao = new CashDropTransactionDAO();
 				dao.saveNewCashDrop(transaction, Application.getInstance().getTerminal());
