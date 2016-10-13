@@ -22,20 +22,44 @@ import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 
 import com.floreantpos.Messages;
+import com.floreantpos.main.Application;
+import com.floreantpos.services.PosWebService;
 import com.floreantpos.ui.dialog.AboutDialog;
+import com.oro.licensor.TerminalUtil;
 
 public class AboutAction extends AbstractAction {
-	
+
 	public AboutAction() {
 		super(Messages.getString("AboutAction.0")); //$NON-NLS-1$
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		
-		AboutDialog dialog = new AboutDialog();
+		openAboutDialog();
+		/*AboutDialog dialog = new AboutDialog();
 		dialog.pack();
-		dialog.open();
+		dialog.open();*/
 	}
 
+	private void openAboutDialog() {
+		PosWebService service = new PosWebService();
+		try {
+			boolean up_to_date = false;
+			String versionInfo = service.getAvailableNewVersions(TerminalUtil.getSystemUID(), Application.VERSION.substring(0, 3));
+			String[] availableNewVersions = null;
+			if (versionInfo != null) {
+				if (versionInfo.equals("UP_TO_DATE")) {
+					up_to_date = true;
+				}
+				else
+					availableNewVersions = versionInfo.split("\n");
+			}
+			AboutDialog dialog = new AboutDialog(availableNewVersions, up_to_date, true);
+			dialog.setTitle("About");
+			dialog.pack();
+			dialog.open();
+		} catch (Exception ex) {
+
+		}
+	}
 }

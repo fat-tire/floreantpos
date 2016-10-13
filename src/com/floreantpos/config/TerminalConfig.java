@@ -457,4 +457,20 @@ public class TerminalConfig {
 		}
 		return codes;
 	}
+
+	public static void setCheckUpdateStatus(String status) {
+		config.setProperty("update_check", status);
+	}
+
+	public static String getCheckUpdateStatus() {
+		return config.getString("update_check", "Daily");
+	}
+
+	public static String getWebServiceUrl() {
+		return config.getString("web_service_url", "http://team.orocube.net:8080");
+	}
+
+	public static String getPosDownloadUrl() {
+		return config.getString("pos_url", "http://floreant.org/");
+	}
 }

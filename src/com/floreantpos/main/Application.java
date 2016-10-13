@@ -63,8 +63,11 @@ import com.floreantpos.model.dao.OrderTypeDAO;
 import com.floreantpos.model.dao.PrinterConfigurationDAO;
 import com.floreantpos.model.dao.RestaurantDAO;
 import com.floreantpos.model.dao.TerminalDAO;
+import com.floreantpos.model.util.DateUtil;
 import com.floreantpos.posserver.PosServer;
+import com.floreantpos.services.PosWebService;
 import com.floreantpos.swing.PosUIManager;
+import com.floreantpos.ui.dialog.AboutDialog;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.dialog.PasswordEntryDialog;
 import com.floreantpos.ui.views.LoginView;
@@ -79,6 +82,7 @@ import com.floreantpos.util.ShiftUtil;
 import com.floreantpos.util.UserNotFoundException;
 import com.jgoodies.looks.plastic.PlasticXPLookAndFeel;
 import com.jgoodies.looks.plastic.theme.ExperienceBlue;
+import com.oro.licensor.TerminalUtil;
 
 public class Application {
 	private static Log logger = LogFactory.getLog(Application.class);
@@ -168,7 +172,8 @@ public class Application {
 			initPlugins();
 
 			LoginView.getInstance().initializeOrderButtonPanel();
-
+			if (hasUpdateScheduleToday())
+				checkAvailableUpdates();
 			setSystemInitialized(true);
 
 		} catch (DatabaseConnectionException e) {
@@ -185,6 +190,37 @@ public class Application {
 		} finally {
 			getPosWindow().setGlassPaneVisible(false);
 		}
+	}
+
+	private void checkAvailableUpdates() {
+		PosWebService service = new PosWebService();
+		try {
+			String versionInfo = service.getAvailableNewVersions(TerminalUtil.getSystemUID(), Application.VERSION);
+			if (versionInfo == null || versionInfo.equals("UP_TO_DATE")) {
+				return;
+			}
+			String[] availableNewVersions = versionInfo.split("\n");
+			if (availableNewVersions.length > 0) {
+				AboutDialog dialog = new AboutDialog(availableNewVersions, false, false);
+				dialog.pack();
+				dialog.open();
+			}
+		} catch (Exception ex) {
+		}
+	}
+
+	private boolean hasUpdateScheduleToday() {
+		String status = TerminalConfig.getCheckUpdateStatus();
+		if (status.equals("Never")) {
+			return false;
+		}
+		else if (status.equals("Weekly")) {
+			return DateUtil.isStartOfWeek(new Date());
+		}
+		else if (status.equals("Monthly")) {
+			return DateUtil.isStartOfMonth(new Date());
+		}
+		return true;
 	}
 
 	public void initializeSystemHeadless() {
@@ -597,7 +633,7 @@ public class Application {
 				javax.swing.plaf.FontUIResource f = (FontUIResource) value;
 				String fontName = f.getFontName();
 				//fontName = "Noto Sans";
-				
+
 				Font font = new Font(fontName, f.getStyle(), PosUIManager.getDefaultFontSize());
 				UIManager.put(key, new javax.swing.plaf.FontUIResource(font));
 

@@ -42,6 +42,26 @@ public class DateUtil {
 		return new Date(cal.getTimeInMillis());
 	}
 
+	public static boolean isStartOfWeek(Date date) {
+		Calendar c1 = Calendar.getInstance();
+		c1.setTime(date);
+		c1.set(Calendar.HOUR_OF_DAY, 0);
+		c1.set(Calendar.MINUTE, 0);
+		c1.set(Calendar.SECOND, 0);
+
+		return c1.get(Calendar.DAY_OF_WEEK) == 1;
+	}
+
+	public static boolean isStartOfMonth(Date date) {
+		Calendar c1 = Calendar.getInstance();
+		c1.setTime(date);
+		c1.set(Calendar.HOUR_OF_DAY, 0);
+		c1.set(Calendar.MINUTE, 0);
+		c1.set(Calendar.SECOND, 0);
+
+		return c1.get(Calendar.DAY_OF_MONTH) == 1;
+	}
+
 	public static boolean between(Date startDate, Date endDate, Date guniping) {
 		if (startDate == null || endDate == null) {
 			return false;
