@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.floreantpos.model">
+
+	<class lazy="false" name="com.floreantpos.model.ShopFloorTemplate" table="SHOP_FLOOR_TEMPLATE">
+		<id column="ID" name="id" type="java.lang.Integer">
+			<generator class="identity" />
+		</id>
+		<property column="NAME" length="60" name="name" type="java.lang.String" />
+		<property column="DEFAULT_FLOOR" name="defaultFloor" type="java.lang.Boolean" />
+		<property column="MAIN" name="main" type="java.lang.Boolean" />
+		<many-to-one class="ShopFloor" name="floor" column="FLOOR_ID" />
+		
+		<map name="properties" cascade="all" lazy="false" table="SHOP_FLOOR_TEMPLATE_PROPERTIES">
+			<key column="id" />
+			<index column="property_name" type="string" />
+			<element column="property_value" type="string" length="60"/>
+		</map>
+
+	</class>
+</hibernate-mapping>

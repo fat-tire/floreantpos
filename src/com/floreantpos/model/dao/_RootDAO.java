@@ -78,6 +78,7 @@ import com.floreantpos.model.RecepieItem;
 import com.floreantpos.model.Restaurant;
 import com.floreantpos.model.Shift;
 import com.floreantpos.model.ShopFloor;
+import com.floreantpos.model.ShopFloorTemplate;
 import com.floreantpos.model.ShopTable;
 import com.floreantpos.model.ShopTableType;
 import com.floreantpos.model.TableBookingInfo;
@@ -162,6 +163,7 @@ public abstract class _RootDAO extends com.floreantpos.model.dao._BaseRootDAO {
 		configuration = configuration.addClass(PurchaseOrder.class);
 		configuration = configuration.addClass(ZipCodeVsDeliveryCharge.class);
 		configuration = configuration.addClass(ShopFloor.class);
+		configuration = configuration.addClass(ShopFloorTemplate.class);
 		configuration = configuration.addClass(ShopTable.class);
 		configuration = configuration.addClass(ShopTableType.class);
 		configuration = configuration.addClass(PrinterGroup.class);
@@ -183,6 +185,7 @@ public abstract class _RootDAO extends com.floreantpos.model.dao._BaseRootDAO {
 		configuration = configuration.addClass(PizzaCrust.class);
 		configuration = configuration.addClass(PizzaPrice.class);
 		configuration = configuration.addClass(PizzaModifierPrice.class);
+
 
 		configuration = configureInventoryClasses(configuration);
 

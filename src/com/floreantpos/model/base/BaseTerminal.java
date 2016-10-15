@@ -15,14 +15,15 @@ import java.io.Serializable;
 
 public abstract class BaseTerminal  implements Comparable, Serializable {
 
-	public static String REF = "Terminal";
-	public static String PROP_NAME = "name";
-	public static String PROP_OPENING_BALANCE = "openingBalance";
-	public static String PROP_ASSIGNED_USER = "assignedUser";
-	public static String PROP_HAS_CASH_DRAWER = "hasCashDrawer";
-	public static String PROP_CURRENT_BALANCE = "currentBalance";
-	public static String PROP_LOCATION = "location";
-	public static String PROP_ID = "id";
+	public static String REF = "Terminal"; //$NON-NLS-1$
+	public static String PROP_NAME = "name"; //$NON-NLS-1$
+	public static String PROP_OPENING_BALANCE = "openingBalance"; //$NON-NLS-1$
+	public static String PROP_ASSIGNED_USER = "assignedUser"; //$NON-NLS-1$
+	public static String PROP_HAS_CASH_DRAWER = "hasCashDrawer"; //$NON-NLS-1$
+	public static String PROP_CURRENT_BALANCE = "currentBalance"; //$NON-NLS-1$
+	public static String PROP_LOCATION = "location"; //$NON-NLS-1$
+	public static String PROP_ID = "id"; //$NON-NLS-1$
+	public static String PROP_FLOOR_ID = "floorId"; //$NON-NLS-1$
 
 
 	// constructors
@@ -53,6 +54,7 @@ public abstract class BaseTerminal  implements Comparable, Serializable {
 		protected java.lang.Double currentBalance;
 		protected java.lang.Boolean hasCashDrawer;
 		protected java.lang.String location;
+		protected java.lang.Integer floorId;
 
 	// many to one
 	private com.floreantpos.model.User assignedUser;
@@ -167,6 +169,23 @@ public abstract class BaseTerminal  implements Comparable, Serializable {
 
 
 	/**
+	 * Return the value associated with the column: FLOOR_ID
+	 */
+	public java.lang.Integer getFloorId () {
+									return floorId == null ? Integer.valueOf(0) : floorId;
+					}
+
+	/**
+	 * Set the value related to the column: FLOOR_ID
+	 * @param floorId the FLOOR_ID value
+	 */
+	public void setFloorId (java.lang.Integer floorId) {
+		this.floorId = floorId;
+	}
+
+
+
+	/**
 	 * Return the value associated with the column: ASSIGNED_USER
 	 */
 	public com.floreantpos.model.User getAssignedUser () {
@@ -190,7 +209,7 @@ public abstract class BaseTerminal  implements Comparable, Serializable {
 		if (!(obj instanceof com.floreantpos.model.Terminal)) return false;
 		else {
 			com.floreantpos.model.Terminal terminal = (com.floreantpos.model.Terminal) obj;
-			if (null == this.getId() || null == terminal.getId()) return false;
+			if (null == this.getId() || null == terminal.getId()) return this == obj;
 			else return (this.getId().equals(terminal.getId()));
 		}
 	}

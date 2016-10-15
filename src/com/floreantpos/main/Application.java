@@ -70,6 +70,7 @@ import com.floreantpos.swing.PosUIManager;
 import com.floreantpos.ui.dialog.AboutDialog;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.dialog.PasswordEntryDialog;
+import com.floreantpos.ui.dialog.UpdateDialog;
 import com.floreantpos.ui.views.LoginView;
 import com.floreantpos.ui.views.order.OrderView;
 import com.floreantpos.ui.views.order.RootView;
@@ -199,9 +200,9 @@ public class Application {
 			if (versionInfo == null || versionInfo.equals("UP_TO_DATE")) {
 				return;
 			}
-			String[] availableNewVersions = versionInfo.split("\n");
+			String[] availableNewVersions = versionInfo.split("\n\\");
 			if (availableNewVersions.length > 0) {
-				AboutDialog dialog = new AboutDialog(availableNewVersions, false, false);
+				UpdateDialog dialog = new UpdateDialog(availableNewVersions, false, false);
 				dialog.pack();
 				dialog.open();
 			}
