@@ -51,7 +51,7 @@ public class UpdateAction extends AbstractAction {
 					availableNewVersions = versionInfo.split("\n\\");
 			}
 			UpdateDialog dialog = new UpdateDialog(availableNewVersions, up_to_date, true);
-			dialog.setTitle("About");
+			dialog.setTitle("Update");
 			dialog.pack();
 			dialog.open();
 		} catch (Exception ex) {
