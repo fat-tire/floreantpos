@@ -34,10 +34,10 @@ public class UpdateAction extends AbstractAction {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		openAboutDialog();
+		openUpdateDialog();
 	}
 
-	private void openAboutDialog() {
+	private void openUpdateDialog() {
 		PosWebService service = new PosWebService();
 		try {
 			boolean up_to_date = false;
@@ -47,15 +47,17 @@ public class UpdateAction extends AbstractAction {
 				if (versionInfo.equals("UP_TO_DATE")) {
 					up_to_date = true;
 				}
-				else
-					availableNewVersions = versionInfo.split("\n\\");
+				else if (versionInfo.startsWith("[")) {
+					versionInfo = versionInfo.replace("[", "").replace(",]", "");
+					availableNewVersions = versionInfo.split(",");
+				}
 			}
 			UpdateDialog dialog = new UpdateDialog(availableNewVersions, up_to_date, true);
 			dialog.setTitle("Update");
 			dialog.pack();
 			dialog.open();
 		} catch (Exception ex) {
-
+			ex.printStackTrace();
 		}
 	}
 }

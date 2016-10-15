@@ -67,7 +67,6 @@ import com.floreantpos.model.util.DateUtil;
 import com.floreantpos.posserver.PosServer;
 import com.floreantpos.services.PosWebService;
 import com.floreantpos.swing.PosUIManager;
-import com.floreantpos.ui.dialog.AboutDialog;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.dialog.PasswordEntryDialog;
 import com.floreantpos.ui.dialog.UpdateDialog;
@@ -200,13 +199,17 @@ public class Application {
 			if (versionInfo == null || versionInfo.equals("UP_TO_DATE")) {
 				return;
 			}
-			String[] availableNewVersions = versionInfo.split("\n\\");
-			if (availableNewVersions.length > 0) {
-				UpdateDialog dialog = new UpdateDialog(availableNewVersions, false, false);
-				dialog.pack();
-				dialog.open();
+			if (versionInfo.startsWith("[")) {
+				versionInfo = versionInfo.replace("[", "").replace(",]", "");
+				String[] availableNewVersions = versionInfo.split(",");
+				if (availableNewVersions.length > 0) {
+					UpdateDialog dialog = new UpdateDialog(availableNewVersions, false, false);
+					dialog.pack();
+					dialog.open();
+				}
 			}
 		} catch (Exception ex) {
+			ex.printStackTrace();
 		}
 	}
 
