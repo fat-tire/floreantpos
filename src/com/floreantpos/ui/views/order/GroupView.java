@@ -90,13 +90,13 @@ public class GroupView extends SelectionView {
 			List<MenuGroup> groups = dao.findEnabledByParent(menuCategory);
 			for (Iterator iterator = groups.iterator(); iterator.hasNext();) {
 				MenuGroup menuGroup = (MenuGroup) iterator.next();
-				if(!dao.hasChildren(null, menuGroup)) {
+				if (!dao.hasChildren(null, menuGroup)) {
 					iterator.remove();
 				}
 			}
 			setItems(groups);
-			
-			if(groups.size() <= 1) {
+
+			if (groups.size() <= 1) {
 				setVisible(false);
 			}
 			else {
@@ -132,7 +132,7 @@ public class GroupView extends SelectionView {
 
 		return horizontalButtonCount;
 	}
-	
+
 	@Override
 	protected LayoutManager createButtonPanelLayout() {
 		return new GridLayout(1, 0, 5, 0);

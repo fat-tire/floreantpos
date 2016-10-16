@@ -23,6 +23,7 @@ import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 
@@ -50,6 +51,7 @@ public class MenuGroupDAO extends BaseMenuGroupDAO {
 			Criteria criteria = session.createCriteria(getReferenceClass());
 			criteria.add(Restrictions.eq(MenuGroup.PROP_VISIBLE, Boolean.TRUE));
 			criteria.add(Restrictions.eq(MenuGroup.PROP_PARENT, category));
+			criteria.addOrder(Order.asc(MenuGroup.PROP_SORT_ORDER));
 
 			List<MenuGroup> list = criteria.list();
 			for (MenuGroup menuGroup : list) {
@@ -85,14 +87,14 @@ public class MenuGroupDAO extends BaseMenuGroupDAO {
 			Criteria criteria = session.createCriteria(MenuItem.class);
 			criteria.add(Restrictions.eq(MenuItem.PROP_PARENT, group));
 			criteria.add(Restrictions.eq(MenuItem.PROP_VISIBLE, Boolean.TRUE));
-			
-//			if(terminal!=null) {
-//				criteria.add(Restrictions.eq(MenuItem., criteria))
-//			}
+
+			//			if(terminal!=null) {
+			//				criteria.add(Restrictions.eq(MenuItem., criteria))
+			//			}
 			criteria.setProjection(Projections.rowCount());
 
 			int uniqueResult = (Integer) criteria.uniqueResult();
-			
+
 			return uniqueResult > 0;
 		} catch (Exception e) {
 			e.printStackTrace();
