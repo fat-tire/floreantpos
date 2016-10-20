@@ -24,36 +24,30 @@
 package com.floreantpos.ui.views.order.multipart;
 
 import java.awt.Color;
-import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
-import java.util.Vector;
 
 import javax.swing.AbstractButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JSeparator;
+import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 import javax.swing.border.TitledBorder;
 
 import net.miginfocom.swing.MigLayout;
 
 import com.floreantpos.POSConstants;
-import com.floreantpos.PosException;
 import com.floreantpos.model.MenuItem;
 import com.floreantpos.model.MenuItemModifierGroup;
 import com.floreantpos.model.MenuModifier;
-import com.floreantpos.model.MenuModifierGroup;
-import com.floreantpos.model.TicketItem;
-import com.floreantpos.model.TicketItemModifier;
-import com.floreantpos.model.TicketItemModifierGroup;
 import com.floreantpos.swing.PosButton;
-import com.floreantpos.ui.dialog.POSMessageDialog;
-import com.floreantpos.ui.views.order.SelectionView;
+import com.floreantpos.swing.PosUIManager;
+import com.floreantpos.swing.ScrollableFlowPanel;
 import com.floreantpos.ui.views.order.modifier.ModifierSelectionListener;
 import com.floreantpos.ui.views.order.modifier.ModifierSelectionModel;
 import com.jidesoft.swing.TitledSeparator;
@@ -91,28 +85,28 @@ public class PizzaModifierView extends JPanel {
 		});
 	}
 
-//	public void setModifiers(Collection<MenuModifier> modifiers) {
-//		buttonMap.clear();
-//
-//		try {
-//
-//			List itemList = new ArrayList();
-//
-//			for (MenuModifier modifier : modifiers) {
-//				itemList.add(modifier);
-//			}
-//
-//			setItems(itemList);
-//		} catch (PosException e) {
-//			POSMessageDialog.showError(this, com.floreantpos.POSConstants.ERROR_MESSAGE, e);
-//		}
-//	}
-//
-//	@Override
-//	protected void renderItems() {
-//		super.renderItems();
-//		updateView();
-//	}
+	//	public void setModifiers(Collection<MenuModifier> modifiers) {
+	//		buttonMap.clear();
+	//
+	//		try {
+	//
+	//			List itemList = new ArrayList();
+	//
+	//			for (MenuModifier modifier : modifiers) {
+	//				itemList.add(modifier);
+	//			}
+	//
+	//			setItems(itemList);
+	//		} catch (PosException e) {
+	//			POSMessageDialog.showError(this, com.floreantpos.POSConstants.ERROR_MESSAGE, e);
+	//		}
+	//	}
+	//
+	//	@Override
+	//	protected void renderItems() {
+	//		super.renderItems();
+	//		updateView();
+	//	}
 
 	protected AbstractButton createItemButton(Object item) {
 		MenuModifier modifier = (MenuModifier) item;
@@ -134,9 +128,9 @@ public class PizzaModifierView extends JPanel {
 	public void updateView() {
 		MenuItem menuItem = modifierSelectionModel.getMenuItem();
 		List<MenuItemModifierGroup> modiferGroups = menuItem.getMenuItemModiferGroups();
-		
+
 		for (MenuItemModifierGroup menuItemModifierGroup : modiferGroups) {
-			MenuModifierGroup modifierGroup = menuItemModifierGroup.getModifierGroup();
+			/*MenuModifierGroup modifierGroup = menuItemModifierGroup.getModifierGroup();
 			TitledSeparator separator = new TitledSeparator(modifierGroup.getDisplayName(), SwingConstants.CENTER);
 			add(separator, "newline, grow");
 			JPanel groupPanel = new JPanel();
@@ -145,34 +139,52 @@ public class PizzaModifierView extends JPanel {
 			for (MenuModifier menuModifier : modifiers) {
 				groupPanel.add(new ModifierButton(menuModifier));
 			}
-			add(groupPanel, "newline, grow");
+			add(groupPanel, "newline, grow");*/
+			Font myFont = new Font("Serif", Font.BOLD, PosUIManager.getFontSize(16));
+			JLabel groupName = new JLabel(menuItemModifierGroup.getModifierGroup().getName());
+			groupName.setFont(myFont);
+			TitledSeparator separator = new TitledSeparator(groupName, SwingConstants.CENTER);
+			add(separator, "newline, grow");
+			// JPanel mainPanel=new JPanel();
+			ScrollableFlowPanel groupPanel = new ScrollableFlowPanel();
+			groupPanel.setPreferredSize(new Dimension(PosUIManager.getSize(630, 0)));
+			JScrollPane js = new JScrollPane(groupPanel);
+			js.setBorder(null);
+
+			// groupPanel.getContentPane().setSize(new Dimension(100, 0));
+
+			Set<MenuModifier> modifiers = menuItemModifierGroup.getModifierGroup().getModifiers();
+			for (MenuModifier menuModifier : modifiers) {
+				groupPanel.getContentPane().add(new ModifierButton(menuModifier));
+			}
+			// mainPanel.add(groupPanel,BorderLayout.NORTH);
+			add(js, "newline");
 		}
-		
-		
-//		JPanel activePanel = getActivePanel();
-//		if (activePanel == null) {
-//			return;
-//		}
-//		Component[] components = activePanel.getComponents();
-//		if (components == null || components.length == 0)
-//			return;
-//
-//		TicketItem ticketItem = modifierSelectionModel.getTicketItem();
-//
-//		for (Component component : components) {
-//			ModifierButton modifierButton = (ModifierButton) component;
-//			MenuModifier modifier = modifierButton.menuModifier;
-//
-//			/*TicketItemModifierGroup ticketItemModifierGroup = ticketItem.findTicketItemModifierGroup(modifier, false);
-//			TicketItemModifier ticketItemModifier = ticketItemModifierGroup.findTicketItemModifier(modifier, false);
-//			if (ticketItemModifier != null) {
-//				modifierButton.setText("<html><center>" + modifier.getDisplayName() + "<br/><span style='color:green;"
-//						+ "'>(" + ticketItemModifier.getItemCount() + ")</span></center></html>"); //$NON-NLS-1$ //$NON-NLS-2$
-//			}
-//			else {
-//				modifierButton.setText("<html><center>" + modifier.getDisplayName() + "</center></html>"); //$NON-NLS-1$ //$NON-NLS-2$
-//			}*/
-//		}
+
+		//		JPanel activePanel = getActivePanel();
+		//		if (activePanel == null) {
+		//			return;
+		//		}
+		//		Component[] components = activePanel.getComponents();
+		//		if (components == null || components.length == 0)
+		//			return;
+		//
+		//		TicketItem ticketItem = modifierSelectionModel.getTicketItem();
+		//
+		//		for (Component component : components) {
+		//			ModifierButton modifierButton = (ModifierButton) component;
+		//			MenuModifier modifier = modifierButton.menuModifier;
+		//
+		//			/*TicketItemModifierGroup ticketItemModifierGroup = ticketItem.findTicketItemModifierGroup(modifier, false);
+		//			TicketItemModifier ticketItemModifier = ticketItemModifierGroup.findTicketItemModifier(modifier, false);
+		//			if (ticketItemModifier != null) {
+		//				modifierButton.setText("<html><center>" + modifier.getDisplayName() + "<br/><span style='color:green;"
+		//						+ "'>(" + ticketItemModifier.getItemCount() + ")</span></center></html>"); //$NON-NLS-1$ //$NON-NLS-2$
+		//			}
+		//			else {
+		//				modifierButton.setText("<html><center>" + modifier.getDisplayName() + "</center></html>"); //$NON-NLS-1$ //$NON-NLS-2$
+		//			}*/
+		//		}
 
 	}
 
