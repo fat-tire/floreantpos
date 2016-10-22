@@ -20,11 +20,14 @@ package com.floreantpos.actions;
 import java.awt.event.ActionEvent;
 
 import javax.swing.Icon;
+import javax.swing.JOptionPane;
 
 import org.apache.commons.lang.StringUtils;
 
 import com.floreantpos.Messages;
 import com.floreantpos.main.Application;
+import com.floreantpos.model.Ticket;
+import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.User;
 import com.floreantpos.model.UserPermission;
 import com.floreantpos.model.dao.UserDAO;
@@ -32,6 +35,7 @@ import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.dialog.PasswordEntryDialog;
 import com.floreantpos.ui.views.order.OrderView;
 import com.floreantpos.ui.views.order.RootView;
+import com.floreantpos.util.POSUtil;
 
 public abstract class ViewChangeAction extends PosAction {
 	private boolean visible = true;
@@ -79,7 +83,7 @@ public abstract class ViewChangeAction extends PosAction {
 			POSMessageDialog.showError("Unpaid orders must be paid or void before you leave");
 			return;
 		}
-
+		saveTicketIfNeeded();
 		if (requiredPermission == null) {
 			execute();
 			return;
@@ -108,6 +112,30 @@ public abstract class ViewChangeAction extends PosAction {
 			return;
 		}
 		execute();
+	}
+
+	private void saveTicketIfNeeded() {
+		Ticket currentTicket = OrderView.getInstance().getCurrentTicket();
+		if (currentTicket == null)
+			return;
+		if (!currentTicket.getTicketItems().isEmpty()) {
+			if (hasNewItem(currentTicket)) {
+				if (POSMessageDialog.showYesNoQuestionDialog(POSUtil.getFocusedWindow(), "Do you to save the changes?", "Save Ticket") == JOptionPane.YES_OPTION) {
+					OrderView.getInstance().getTicketView().saveTicketIfNeeded();
+				}
+			}
+			else
+				OrderView.getInstance().getTicketView().saveTicketIfNeeded();
+		}
+	}
+
+	private boolean hasNewItem(Ticket currentTicket) {
+		for (TicketItem item : currentTicket.getTicketItems()) {
+			if (item.getId() == null) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public abstract void execute();
