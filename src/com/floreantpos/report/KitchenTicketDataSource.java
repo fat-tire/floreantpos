@@ -20,6 +20,7 @@ package com.floreantpos.report;
 import java.util.Collections;
 import java.util.Comparator;
 
+import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.model.KitchenTicket;
 import com.floreantpos.model.KitchenTicketItem;
 
@@ -37,17 +38,19 @@ public class KitchenTicketDataSource extends AbstractReportDataSource {
 
 	private void setTicket(KitchenTicket ticket) {
 		if (!ticket.getType().isAllowSeatBasedOrder()) {
-			Collections.sort(ticket.getTicketItems(), new Comparator<KitchenTicketItem>() {
-				public int compare(KitchenTicketItem o1, KitchenTicketItem o2) {
-					return (o1.getMenuItemGroupId() - o2.getMenuItemGroupId());
-				}
-			});
+			if (TerminalConfig.isGroupKitchenReceiptItems()) {
+				Collections.sort(ticket.getTicketItems(), new Comparator<KitchenTicketItem>() {
+					public int compare(KitchenTicketItem o1, KitchenTicketItem o2) {
+						return (o1.getMenuItemGroupId() - o2.getMenuItemGroupId());
+					}
+				});
 
-			Collections.sort(ticket.getTicketItems(), new Comparator<KitchenTicketItem>() {
-				public int compare(KitchenTicketItem o1, KitchenTicketItem o2) {
-					return (o1.getSortOrder() - o2.getSortOrder());
-				}
-			});
+				Collections.sort(ticket.getTicketItems(), new Comparator<KitchenTicketItem>() {
+					public int compare(KitchenTicketItem o1, KitchenTicketItem o2) {
+						return (o1.getSortOrder() - o2.getSortOrder());
+					}
+				});
+			}
 		}
 		setRows(ticket.getTicketItems());
 	}
