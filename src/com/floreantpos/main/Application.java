@@ -388,8 +388,8 @@ public class Application {
 
 	public void restartShutdownCancelPOS() {
 		Font font = new Font(Font.SANS_SERIF, Font.TRUETYPE_FONT, 100);
-		JOptionPane optionPane = new JOptionPane("What do you want to do?", JOptionPane.QUESTION_MESSAGE, JOptionPane.YES_NO_CANCEL_OPTION, null, new String[] {
-				"RESTART", "SHUTDOWN", "CANCEL" });
+		JOptionPane optionPane = new JOptionPane("What do you want to do?", JOptionPane.QUESTION_MESSAGE, JOptionPane.YES_NO_CANCEL_OPTION,
+				Application.getApplicationIcon(), new String[] { "RESTART", "SHUTDOWN", "CANCEL" });
 
 		Object[] optionValues = optionPane.getComponents();
 		for (Object object : optionValues) {
