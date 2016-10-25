@@ -41,7 +41,6 @@ import com.floreantpos.actions.ClockInOutAction;
 import com.floreantpos.actions.HomeScreenViewAction;
 import com.floreantpos.actions.LogoutAction;
 import com.floreantpos.actions.ShowOtherFunctionsAction;
-import com.floreantpos.actions.ShutDownAction;
 import com.floreantpos.actions.SwithboardViewAction;
 import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.main.Application;
@@ -118,7 +117,15 @@ public class HeaderPanel extends JPanel {
 		btnLogout.setToolTipText(Messages.getString("Logout")); //$NON-NLS-1$
 		buttonPanel.add(btnLogout, "w " + btnSize + "!, h " + btnSize + "!"); //$NON-NLS-1$
 
-		btnShutdown = new PosButton(new ShutDownAction(false, true));
+		//		btnShutdown = new PosButton(new ShutDownAction(false, true));
+		btnShutdown = new PosButton();
+		btnShutdown.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Application.getInstance().restartShutdownCancelPOS();
+			}
+		});
 		btnShutdown.setIcon(IconFactory.getIcon("/ui_icons/", "shutdown.png")); //$NON-NLS-1$ //$NON-NLS-2$
 		btnShutdown.setToolTipText(Messages.getString("Shutdown")); //$NON-NLS-1$
 		buttonPanel.add(btnShutdown, "w " + btnSize + "!, h " + btnSize + "!"); //$NON-NLS-1$

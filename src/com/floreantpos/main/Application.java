@@ -21,6 +21,8 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.io.File;
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -353,6 +355,7 @@ public class Application {
 	}
 
 	public void shutdownPOS() {
+
 		JOptionPane optionPane = new JOptionPane(com.floreantpos.POSConstants.SURE_SHUTDOWN_, JOptionPane.QUESTION_MESSAGE, JOptionPane.YES_NO_OPTION);
 		Object[] options = optionPane.getComponents();
 		for (Object object : options) {
@@ -380,6 +383,46 @@ public class Application {
 				posWindow.saveSizeAndLocation();
 				System.exit(0);
 			}
+		}
+	}
+
+	public void restartShutdownCancelPOS() {
+		Font font = new Font(Font.SANS_SERIF, Font.TRUETYPE_FONT, 100);
+		JOptionPane optionPane = new JOptionPane("What do you want to do?", JOptionPane.QUESTION_MESSAGE, JOptionPane.YES_NO_CANCEL_OPTION, null, new String[] {
+				"RESTART", "SHUTDOWN", "CANCEL" });
+
+		Object[] optionValues = optionPane.getComponents();
+		for (Object object : optionValues) {
+			if (object instanceof JPanel) {
+				JPanel panel = (JPanel) object;
+				Component[] components = panel.getComponents();
+
+				for (Component component : components) {
+					if (component instanceof JButton) {
+						component.setPreferredSize(new Dimension(100, 80));
+						JButton button = (JButton) component;
+						button.setPreferredSize(new Dimension(component.getPreferredSize().width, 50));
+					}
+				}
+			}
+		}
+		JDialog dialog = optionPane.createDialog("");
+		int y = dialog.getLocation().y;
+		//System.out.println(y);
+		dialog.setLocation(dialog.getLocation().x, y + 60);
+		dialog.setVisible(true);
+		Object selectedValue = (String) optionPane.getValue();
+		if (selectedValue.equals("RESTART")) {
+			try {
+				Main.restart();
+			} catch (IOException | InterruptedException | URISyntaxException e) {
+			}
+		}
+		else if (selectedValue.equals("SHUTDOWN")) {
+			posWindow.saveSizeAndLocation();
+			System.exit(0);
+		}
+		else {
 		}
 	}
 

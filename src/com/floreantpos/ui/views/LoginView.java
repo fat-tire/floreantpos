@@ -134,7 +134,7 @@ public class LoginView extends ViewPanel {
 		JPanel panel3 = new JPanel(new GridLayout(1, 0, 5, 5));
 		JPanel panel4 = new JPanel(new MigLayout("fill, ins 0, hidemode 3", "sg, fill", ""));
 
-		centerPanel.add(panel1, "cell 0 0, wrap, w " + width + "px, h " + height + "px, grow");
+		centerPanel.add(panel1, "cell 0 1, wrap, w " + width + "px, h " + height + "px, grow");
 
 		panel3.add(btnSwitchBoard);
 		panel3.add(btnBackOffice);
@@ -142,7 +142,7 @@ public class LoginView extends ViewPanel {
 		OrderServiceExtension orderService = (OrderServiceExtension) ExtensionManager.getPlugin(OrderServiceExtension.class);
 		if (orderService != null) {
 			panel3.add(btnDriverView);
-			btnDriverView.setVisible(false); 
+			btnDriverView.setVisible(false);
 		}
 		centerPanel.add(panel3, "cell 0 2, wrap, w " + width + "px, h " + height + "px, grow");
 
@@ -175,7 +175,7 @@ public class LoginView extends ViewPanel {
 	public void initializeOrderButtonPanel() {
 		panel1.removeAll();
 		panel2.removeAll();
-		
+
 		List<com.floreantpos.model.OrderType> orderTypes = Application.getInstance().getOrderTypes();
 		int buttonCount = 0;
 
@@ -252,7 +252,7 @@ public class LoginView extends ViewPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Application.getInstance().shutdownPOS();
+				Application.getInstance().restartShutdownCancelPOS();
 			}
 		});
 
