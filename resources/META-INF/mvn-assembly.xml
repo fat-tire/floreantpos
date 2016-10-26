@@ -39,6 +39,7 @@
 			<filtered>true</filtered>
 			<includes>
 				<include>floreantpos.bat</include>
+				<include>FloreantPOS-Setup.bat</include>
 			</includes>
 		</fileSet>
 		<fileSet>
@@ -79,7 +80,6 @@
 				<include>*.jar</include>
 			</includes>
 		</fileSet>
-		
 		<fileSet>
 			<directory>i18n</directory>
 			<outputDirectory>i18n</outputDirectory>
@@ -87,7 +87,6 @@
 				<include>*.properties</include>
 			</includes>
 		</fileSet>
-		
 		<fileSet>
 			<directory>config</directory>
 			<outputDirectory>config</outputDirectory>
