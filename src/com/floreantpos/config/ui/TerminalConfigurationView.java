@@ -287,7 +287,8 @@ public class TerminalConfigurationView extends ConfigurationView {
 		TerminalConfig.setGroupKitchenReceiptItems(cbGroupKitchenReceiptItems.isSelected());
 		TerminalConfig.setEnabledMultiCurrency(chkEnabledMultiCurrency.isSelected());
 
-		POSMessageDialog.showMessage(com.floreantpos.util.POSUtil.getFocusedWindow(), Messages.getString("TerminalConfigurationView.40")); //$NON-NLS-1$
+		//		POSMessageDialog.showMessage(com.floreantpos.util.POSUtil.getFocusedWindow(), Messages.getString("TerminalConfigurationView.40")); //$NON-NLS-1$
+		Application.getInstance().restartPOS();
 
 		String selectedFont = (String) cbFonts.getSelectedItem();
 		if ("<select>".equals(selectedFont)) { //$NON-NLS-1$

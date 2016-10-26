@@ -386,6 +386,44 @@ public class Application {
 		}
 	}
 
+	public void restartPOS() {
+		Font font = new Font(Font.SANS_SERIF, Font.TRUETYPE_FONT, 100);
+		JOptionPane optionPane = new JOptionPane("Please restart system for the configuration to take effect.", JOptionPane.QUESTION_MESSAGE,
+				JOptionPane.OK_CANCEL_OPTION, Application.getApplicationIcon(), new String[] { "RESTART", "OK" });
+
+		Object[] optionValues = optionPane.getComponents();
+		for (Object object : optionValues) {
+			if (object instanceof JPanel) {
+				JPanel panel = (JPanel) object;
+				Component[] components = panel.getComponents();
+
+				for (Component component : components) {
+					if (component instanceof JButton) {
+						component.setPreferredSize(new Dimension(100, 80));
+						JButton button = (JButton) component;
+						button.setPreferredSize(new Dimension(component.getPreferredSize().width, 50));
+					}
+				}
+			}
+		}
+		JDialog dialog = optionPane.createDialog("");
+		//dialog.setLocation(dialog.getLocation().x, y);
+		dialog.setVisible(true);
+		Object selectedValue = (String) optionPane.getValue();
+		if (selectedValue != null) {
+
+			if (selectedValue.equals("RESTART")) {
+				try {
+					Main.restart();
+				} catch (IOException | InterruptedException | URISyntaxException e) {
+				}
+			}
+			else {
+			}
+		}
+
+	}
+
 	public void restartShutdownCancelPOS() {
 		Font font = new Font(Font.SANS_SERIF, Font.TRUETYPE_FONT, 100);
 		JOptionPane optionPane = new JOptionPane("What do you want to do?", JOptionPane.QUESTION_MESSAGE, JOptionPane.YES_NO_CANCEL_OPTION,
