@@ -403,8 +403,6 @@ public class SetUpWindow extends JFrame implements ActionListener {
 				if (databaseCreated) {
 					JOptionPane.showMessageDialog(SetUpWindow.this, Messages.getString("DatabaseConfigurationDialog.6") + //$NON-NLS-1$
 							Messages.getString("DatabaseConfigurationDialog.7")); //$NON-NLS-1$
-
-					Main.restart();
 					connectionSuccess = true;
 				}
 				else {
