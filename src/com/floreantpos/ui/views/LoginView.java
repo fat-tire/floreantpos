@@ -252,7 +252,7 @@ public class LoginView extends ViewPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Application.getInstance().restartShutdownCancelPOS();
+				Application.getInstance().shutdownPOS();
 			}
 		});
 

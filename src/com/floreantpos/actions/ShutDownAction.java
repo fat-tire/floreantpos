@@ -44,7 +44,7 @@ public class ShutDownAction extends ViewChangeAction {
 
 	@Override
 	public void execute() {
-		Application.getInstance().restartShutdownCancelPOS();
+		Application.getInstance().shutdownPOS();
 	}
 
 }

@@ -354,37 +354,37 @@ public class Application {
 		return instance;
 	}
 
-	public void shutdownPOS() {
-
-		JOptionPane optionPane = new JOptionPane(com.floreantpos.POSConstants.SURE_SHUTDOWN_, JOptionPane.QUESTION_MESSAGE, JOptionPane.YES_NO_OPTION);
-		Object[] options = optionPane.getComponents();
-		for (Object object : options) {
-			if (object instanceof JPanel) {
-				JPanel panel = (JPanel) object;
-				Component[] components = panel.getComponents();
-				for (Component component : components) {
-					if (component instanceof JButton) {
-						component.setPreferredSize(new Dimension(component.getPreferredSize().width, 60));
-					}
-				}
-			}
-		}
-
-		JDialog dialog = optionPane.createDialog(POSUtil.getFocusedWindow(), com.floreantpos.POSConstants.MDS_POS);
-		dialog.setVisible(true);
-
-		Object selectedValue = optionPane.getValue();
-
-		if (selectedValue == null)
-			return;
-
-		if (selectedValue instanceof Integer) {
-			if (((Integer) selectedValue).intValue() == JOptionPane.YES_OPTION) {
-				posWindow.saveSizeAndLocation();
-				System.exit(0);
-			}
-		}
-	}
+	//	public void shutdownPOS() {
+	//
+	//		JOptionPane optionPane = new JOptionPane(com.floreantpos.POSConstants.SURE_SHUTDOWN_, JOptionPane.QUESTION_MESSAGE, JOptionPane.YES_NO_OPTION);
+	//		Object[] options = optionPane.getComponents();
+	//		for (Object object : options) {
+	//			if (object instanceof JPanel) {
+	//				JPanel panel = (JPanel) object;
+	//				Component[] components = panel.getComponents();
+	//				for (Component component : components) {
+	//					if (component instanceof JButton) {
+	//						component.setPreferredSize(new Dimension(component.getPreferredSize().width, 60));
+	//					}
+	//				}
+	//			}
+	//		}
+	//
+	//		JDialog dialog = optionPane.createDialog(POSUtil.getFocusedWindow(), com.floreantpos.POSConstants.MDS_POS);
+	//		dialog.setVisible(true);
+	//
+	//		Object selectedValue = optionPane.getValue();
+	//
+	//		if (selectedValue == null)
+	//			return;
+	//
+	//		if (selectedValue instanceof Integer) {
+	//			if (((Integer) selectedValue).intValue() == JOptionPane.YES_OPTION) {
+	//				posWindow.saveSizeAndLocation();
+	//				System.exit(0);
+	//			}
+	//		}
+	//	}
 
 	public void restartPOS() {
 		Font font = new Font(Font.SANS_SERIF, Font.TRUETYPE_FONT, 100);
@@ -424,7 +424,7 @@ public class Application {
 
 	}
 
-	public void restartShutdownCancelPOS() {
+	public void shutdownPOS() {
 		Font font = new Font(Font.SANS_SERIF, Font.TRUETYPE_FONT, 100);
 		JOptionPane optionPane = new JOptionPane("What do you want to do?", JOptionPane.QUESTION_MESSAGE, JOptionPane.YES_NO_CANCEL_OPTION,
 				Application.getApplicationIcon(), new String[] { "RESTART", "SHUTDOWN", "CANCEL" });
