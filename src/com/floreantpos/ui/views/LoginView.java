@@ -134,7 +134,7 @@ public class LoginView extends ViewPanel {
 		JPanel panel3 = new JPanel(new GridLayout(1, 0, 5, 5));
 		JPanel panel4 = new JPanel(new MigLayout("fill, ins 0, hidemode 3", "sg, fill", ""));
 
-		centerPanel.add(panel1, "cell 0 1, wrap, w " + width + "px, h " + height + "px, grow");
+		centerPanel.add(panel1, "cell 0 0, wrap, w " + width + "px, h " + height + "px, grow");
 
 		panel3.add(btnSwitchBoard);
 		panel3.add(btnBackOffice);
