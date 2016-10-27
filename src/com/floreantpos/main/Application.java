@@ -401,13 +401,14 @@ public class Application {
 					if (component instanceof JButton) {
 						component.setPreferredSize(new Dimension(100, 80));
 						JButton button = (JButton) component;
-						button.setPreferredSize(new Dimension(component.getPreferredSize().width, 50));
+						button.setPreferredSize(PosUIManager.getSize(100, 50));
 					}
 				}
 			}
 		}
 		JDialog dialog = optionPane.createDialog("");
-		//dialog.setLocation(dialog.getLocation().x, y);
+		dialog.setIconImage(Application.getApplicationIcon().getImage());
+		dialog.setLocationRelativeTo(Application.getPosWindow());
 		dialog.setVisible(true);
 		Object selectedValue = (String) optionPane.getValue();
 		if (selectedValue != null) {
@@ -439,12 +440,14 @@ public class Application {
 					if (component instanceof JButton) {
 						component.setPreferredSize(new Dimension(100, 80));
 						JButton button = (JButton) component;
-						button.setPreferredSize(new Dimension(component.getPreferredSize().width, 50));
+						button.setPreferredSize(PosUIManager.getSize(100, 50));
 					}
 				}
 			}
 		}
 		JDialog dialog = optionPane.createDialog("");
+		dialog.setIconImage(Application.getApplicationIcon().getImage());
+		dialog.setLocationRelativeTo(Application.getPosWindow());
 		int y = dialog.getLocation().y;
 		//System.out.println(y);
 		dialog.setLocation(dialog.getLocation().x, y + 60);
