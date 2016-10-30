@@ -18,20 +18,27 @@
 package com.floreantpos.config.ui;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GraphicsEnvironment;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSlider;
@@ -48,6 +55,7 @@ import com.floreantpos.Messages;
 import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.demo.KitchenDisplayView;
 import com.floreantpos.main.Application;
+import com.floreantpos.main.Main;
 import com.floreantpos.model.OrderType;
 import com.floreantpos.model.Terminal;
 import com.floreantpos.model.dao.TerminalDAO;
@@ -287,9 +295,7 @@ public class TerminalConfigurationView extends ConfigurationView {
 		TerminalConfig.setGroupKitchenReceiptItems(cbGroupKitchenReceiptItems.isSelected());
 		TerminalConfig.setEnabledMultiCurrency(chkEnabledMultiCurrency.isSelected());
 
-		//		POSMessageDialog.showMessage(com.floreantpos.util.POSUtil.getFocusedWindow(), Messages.getString("TerminalConfigurationView.40")); //$NON-NLS-1$
-		Application.getInstance().restartPOS();
-
+		//POSMessageDialog.showMessage(com.floreantpos.util.POSUtil.getFocusedWindow(), Messages.getString("TerminalConfigurationView.40")); //$NON-NLS-1$
 		String selectedFont = (String) cbFonts.getSelectedItem();
 		if ("<select>".equals(selectedFont)) { //$NON-NLS-1$
 			selectedFont = null;
@@ -315,6 +321,7 @@ public class TerminalConfigurationView extends ConfigurationView {
 		terminal.setOpeningBalance(tfDrawerInitialBalance.getDouble());
 
 		terminalDAO.saveOrUpdate(terminal);
+		restartPOS();
 
 		return true;
 	}
@@ -373,5 +380,43 @@ public class TerminalConfigurationView extends ConfigurationView {
 	@Override
 	public String getName() {
 		return Messages.getString("TerminalConfigurationView.47"); //$NON-NLS-1$
+	}
+
+	public void restartPOS() {
+		JOptionPane optionPane = new JOptionPane("Please restart system for the configuration to take effect.", JOptionPane.QUESTION_MESSAGE,
+				JOptionPane.OK_CANCEL_OPTION, Application.getApplicationIcon(), new String[] { "RESTART", "OK" });
+
+		Object[] optionValues = optionPane.getComponents();
+		for (Object object : optionValues) {
+			if (object instanceof JPanel) {
+				JPanel panel = (JPanel) object;
+				Component[] components = panel.getComponents();
+
+				for (Component component : components) {
+					if (component instanceof JButton) {
+						component.setPreferredSize(new Dimension(100, 80));
+						JButton button = (JButton) component;
+						button.setPreferredSize(PosUIManager.getSize(100, 50));
+					}
+				}
+			}
+		}
+		JDialog dialog = optionPane.createDialog(Application.getPosWindow(), "Confirm");
+		dialog.setIconImage(Application.getApplicationIcon().getImage());
+		dialog.setLocationRelativeTo(Application.getPosWindow());
+		dialog.setVisible(true);
+		Object selectedValue = (String) optionPane.getValue();
+		if (selectedValue != null) {
+
+			if (selectedValue.equals("RESTART")) {
+				try {
+					Main.restart();
+				} catch (IOException | InterruptedException | URISyntaxException e) {
+				}
+			}
+			else {
+			}
+		}
+
 	}
 }

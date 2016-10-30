@@ -21,8 +21,6 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.io.File;
-import java.io.IOException;
-import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -386,47 +384,7 @@ public class Application {
 	//		}
 	//	}
 
-	public void restartPOS() {
-		Font font = new Font(Font.SANS_SERIF, Font.TRUETYPE_FONT, 100);
-		JOptionPane optionPane = new JOptionPane("Please restart system for the configuration to take effect.", JOptionPane.QUESTION_MESSAGE,
-				JOptionPane.OK_CANCEL_OPTION, Application.getApplicationIcon(), new String[] { "RESTART", "OK" });
-
-		Object[] optionValues = optionPane.getComponents();
-		for (Object object : optionValues) {
-			if (object instanceof JPanel) {
-				JPanel panel = (JPanel) object;
-				Component[] components = panel.getComponents();
-
-				for (Component component : components) {
-					if (component instanceof JButton) {
-						component.setPreferredSize(new Dimension(100, 80));
-						JButton button = (JButton) component;
-						button.setPreferredSize(PosUIManager.getSize(100, 50));
-					}
-				}
-			}
-		}
-		JDialog dialog = optionPane.createDialog("");
-		dialog.setIconImage(Application.getApplicationIcon().getImage());
-		dialog.setLocationRelativeTo(Application.getPosWindow());
-		dialog.setVisible(true);
-		Object selectedValue = (String) optionPane.getValue();
-		if (selectedValue != null) {
-
-			if (selectedValue.equals("RESTART")) {
-				try {
-					Main.restart();
-				} catch (IOException | InterruptedException | URISyntaxException e) {
-				}
-			}
-			else {
-			}
-		}
-
-	}
-
 	public void shutdownPOS() {
-		Font font = new Font(Font.SANS_SERIF, Font.TRUETYPE_FONT, 100);
 		JOptionPane optionPane = new JOptionPane("What do you want to do?", JOptionPane.QUESTION_MESSAGE, JOptionPane.YES_NO_CANCEL_OPTION,
 				Application.getApplicationIcon(), new String[] { "RESTART", "SHUTDOWN", "CANCEL" });
 
@@ -445,9 +403,8 @@ public class Application {
 				}
 			}
 		}
-		JDialog dialog = optionPane.createDialog("");
+		JDialog dialog = optionPane.createDialog(Application.getPosWindow(), "Confirm");
 		dialog.setIconImage(Application.getApplicationIcon().getImage());
-		dialog.setLocationRelativeTo(Application.getPosWindow());
 		int y = dialog.getLocation().y;
 		//System.out.println(y);
 		dialog.setLocation(dialog.getLocation().x, y + 60);
@@ -456,7 +413,7 @@ public class Application {
 		if (selectedValue.equals("RESTART")) {
 			try {
 				Main.restart();
-			} catch (IOException | InterruptedException | URISyntaxException e) {
+			} catch (Exception e) {
 			}
 		}
 		else if (selectedValue.equals("SHUTDOWN")) {
