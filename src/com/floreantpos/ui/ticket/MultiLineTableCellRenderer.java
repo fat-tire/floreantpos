@@ -1,5 +1,6 @@
 package com.floreantpos.ui.ticket;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 
@@ -13,8 +14,10 @@ import javax.swing.text.ComponentView;
 import javax.swing.text.Element;
 import javax.swing.text.IconView;
 import javax.swing.text.LabelView;
+import javax.swing.text.MutableAttributeSet;
 import javax.swing.text.ParagraphView;
 import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
 import javax.swing.text.StyledEditorKit;
 import javax.swing.text.View;
 import javax.swing.text.ViewFactory;
@@ -26,7 +29,7 @@ public class MultiLineTableCellRenderer extends JTextPane implements TableCellRe
 	public MultiLineTableCellRenderer() {
 		setOpaque(true);
 		setEditorKit(new MyEditorKit());
-		
+
 		setBorder(new EmptyBorder(10, 2, 10, 2));
 	}
 
@@ -37,16 +40,18 @@ public class MultiLineTableCellRenderer extends JTextPane implements TableCellRe
 		int height = getPreferredSize().height;
 		height = height < 60 ? 60 : height;
 		height = PosUIManager.getSize(height);
-		
+
 		if (table.getRowHeight() < height) {
 			table.setRowHeight(height);
 		}
 
 		if (isSelected) {
 			setBackground(table.getSelectionBackground());
+			setForeground(this, table.getSelectionForeground());
 		}
 		else {
 			setBackground(table.getBackground());
+			setForeground(this, table.getForeground());
 		}
 
 		if (value != null) {
@@ -55,8 +60,15 @@ public class MultiLineTableCellRenderer extends JTextPane implements TableCellRe
 		else {
 			setText("");
 		}
-		
+
 		return this;
+	}
+
+	public static void setForeground(JTextPane jtp, Color c) {
+		MutableAttributeSet attrs = jtp.getInputAttributes();
+		StyleConstants.setForeground(attrs, c);
+		StyledDocument doc = jtp.getStyledDocument();
+		doc.setCharacterAttributes(0, doc.getLength() + 1, attrs, false);
 	}
 
 	public static class MyEditorKit extends StyledEditorKit {
