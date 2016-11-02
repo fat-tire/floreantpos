@@ -55,6 +55,7 @@ public class SwitchboardOtherFunctionsView extends ViewPanel {
 	private static SwitchboardOtherFunctionsView instance;
 
 	private JPanel contentPanel;
+	private DrawerAssignmentAction drawerAction;
 
 	public SwitchboardOtherFunctionsView() {
 		setLayout(new BorderLayout(5, 5));
@@ -71,7 +72,8 @@ public class SwitchboardOtherFunctionsView extends ViewPanel {
 
 		List<PosAction> actions = new ArrayList();
 		actions.add(new ShowBackofficeAction());
-		actions.add(new DrawerAssignmentAction());
+		drawerAction = new DrawerAssignmentAction();
+		actions.add(drawerAction);
 		actions.add(new DrawerPullAction());
 		actions.add(new DrawerBleedAction());
 		actions.add(new DrawerKickAction());
@@ -114,8 +116,12 @@ public class SwitchboardOtherFunctionsView extends ViewPanel {
 		if (instance == null) {
 			instance = new SwitchboardOtherFunctionsView();
 		}
-
+		instance.updateView();
 		return instance;
+	}
+
+	private void updateView() {
+		drawerAction.updateActionText();
 	}
 
 	@Override

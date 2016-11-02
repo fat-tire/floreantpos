@@ -18,9 +18,11 @@
 package com.floreantpos.swing;
 
 import java.awt.BorderLayout;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.swing.BorderFactory;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -28,10 +30,12 @@ import javax.swing.ListSelectionModel;
 
 import com.floreantpos.Messages;
 import com.floreantpos.main.Application;
+import com.floreantpos.model.Shift;
 import com.floreantpos.model.User;
 import com.floreantpos.model.dao.UserDAO;
 import com.floreantpos.ui.dialog.OkCancelOptionDialog;
 import com.floreantpos.ui.dialog.POSMessageDialog;
+import com.floreantpos.util.ShiftUtil;
 
 public class UserListDialog extends OkCancelOptionDialog {
 	BeanTableModel<User> tableModel;
@@ -54,9 +58,9 @@ public class UserListDialog extends OkCancelOptionDialog {
 		userListTable.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		contentPane.add(new JScrollPane(userListTable));
 
-		List<User> users = UserDAO.getInstance().findAllActive();
-		tableModel.addRows(users);
-		if (users != null && !users.isEmpty()) {
+		List<User> userList = UserDAO.getInstance().findAll();
+		tableModel.addRows(userList);
+		if (userList != null && !userList.isEmpty()) {
 			userListTable.getSelectionModel().setSelectionInterval(0, 0);
 		}
 	}
@@ -67,12 +71,27 @@ public class UserListDialog extends OkCancelOptionDialog {
 
 	@Override
 	public void doOk() {
-		int selectedRow = userListTable.getSelectedRow();
-		if (selectedRow == -1) {
+		User user = tableModel.getRows().get(userListTable.getSelectedRow());
+		if (user == null) {
 			POSMessageDialog.showError(Application.getPosWindow(), Messages.getString("UserListDialog.4")); //$NON-NLS-1$
 			return;
 		}
-
+		if (!user.isClockedIn()) {
+			User loginUser = Application.getCurrentUser();
+			String userString = user.getFullName() + " is";
+			if (loginUser.getUserId().intValue() == user.getUserId().intValue()) {
+				userString = "You are";
+			}
+			int option = POSMessageDialog.showYesNoQuestionDialog(Application.getPosWindow(), userString
+					+ " currently clocked out. Do you want to be clocked in too?", Messages.getString("Application.44")); //$NON-NLS-1$ //$NON-NLS-2$
+			if (option == JOptionPane.YES_OPTION) {
+				Shift currentShift = ShiftUtil.getCurrentShift();
+				Calendar currentTime = Calendar.getInstance();
+				user.doClockIn(Application.getInstance().getTerminal(), currentShift, currentTime);
+			}
+			else
+				return;
+		}
 		setCanceled(false);
 		dispose();
 	}

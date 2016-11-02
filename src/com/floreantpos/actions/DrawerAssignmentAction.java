@@ -27,7 +27,6 @@ import javax.swing.JOptionPane;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-import com.floreantpos.DrawerNotAssignedException;
 import com.floreantpos.Messages;
 import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.main.Application;
@@ -53,6 +52,10 @@ public class DrawerAssignmentAction extends PosAction {
 
 	public DrawerAssignmentAction() {
 		super(Messages.getString("DrawerAssignmentAction.0"), UserPermission.DRAWER_ASSIGNMENT); //$NON-NLS-1$
+		updateActionText();
+	}
+
+	public void updateActionText() {
 		Terminal terminal = Application.getInstance().getTerminal();
 		User assignedUser = terminal.getAssignedUser();
 
@@ -99,7 +102,7 @@ public class DrawerAssignmentAction extends PosAction {
 			dialog.open();
 
 			if (dialog.isCanceled()) {
-				throw new DrawerNotAssignedException();
+				return;
 			}
 
 			User user = dialog.getSelectedUser();

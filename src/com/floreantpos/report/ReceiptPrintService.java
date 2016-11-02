@@ -79,6 +79,7 @@ public class ReceiptPrintService {
 	private static final String TIP_AMOUNT = "tipAmount"; //$NON-NLS-1$
 	private static final String SERVICE_CHARGE = "serviceCharge"; //$NON-NLS-1$
 	private static final String DELIVERY_CHARGE = "deliveryCharge"; //$NON-NLS-1$
+	private static final String ADJUST_AMOUNT = "adjustAmount";
 	private static final String TAX_AMOUNT = "taxAmount"; //$NON-NLS-1$
 	private static final String DISCOUNT_AMOUNT = "discountAmount"; //$NON-NLS-1$
 	private static final String HEADER_LINE5 = "headerLine5"; //$NON-NLS-1$
@@ -413,8 +414,12 @@ public class ReceiptPrintService {
 		}
 
 		if (printProperties.isShowFooter()) {
+			double toleranceAmount = ticket.calculateToleranceAmount();
+			if (toleranceAmount > 0.0) {
+				map.put(ADJUST_AMOUNT, NumberUtil.formatNumber(toleranceAmount));
+			}
 			if (ticket.getDiscountAmount() > 0.0) {
-				map.put(DISCOUNT_AMOUNT, NumberUtil.formatNumber(ticket.getDiscountAmount()));
+				map.put(DISCOUNT_AMOUNT, NumberUtil.formatNumber(ticket.getDiscountAmount() - toleranceAmount));
 			}
 
 			if (ticket.getTaxAmount() > 0.0) {
@@ -442,10 +447,11 @@ public class ReceiptPrintService {
 			map.put("tipsText", POSConstants.RECEIPT_REPORT_TIPS_LABEL + currencySymbol); //$NON-NLS-1$
 			map.put("netAmountText", POSConstants.RECEIPT_REPORT_NETAMOUNT_LABEL + currencySymbol); //$NON-NLS-1$
 			map.put("paidAmountText", POSConstants.RECEIPT_REPORT_PAIDAMOUNT_LABEL + currencySymbol); //$NON-NLS-1$
+			map.put("adjustAmountText", "+/- " + currencySymbol); //$NON-NLS-1$
 			map.put("dueAmountText", POSConstants.RECEIPT_REPORT_DUEAMOUNT_LABEL + currencySymbol); //$NON-NLS-1$
 			map.put("changeAmountText", POSConstants.RECEIPT_REPORT_CHANGEAMOUNT_LABEL + currencySymbol); //$NON-NLS-1$
 
-			map.put("netAmount", NumberUtil.formatNumber(totalAmount)); //$NON-NLS-1$
+			map.put("netAmount", NumberUtil.formatNumber(totalAmount + toleranceAmount)); //$NON-NLS-1$
 			map.put("paidAmount", NumberUtil.formatNumber(ticket.getPaidAmount())); //$NON-NLS-1$
 			map.put("dueAmount", NumberUtil.formatNumber(ticket.getDueAmount())); //$NON-NLS-1$
 			map.put("grandSubtotal", NumberUtil.formatNumber(ticket.getSubtotalAmount())); //$NON-NLS-1$

@@ -252,19 +252,21 @@ public class Ticket extends BaseTicket {
 
 		double subtotalAmount = calculateSubtotalAmount();
 		double discountAmount = calculateItemsDiscountAmount();
+		double toleranceAmount = calculateToleranceAmount();
 		double ticketDiscountAmount = calculateTicketDiscountAmount(discountAmount);
 		if (ticketDiscountAmount > 0) {
 			discountAmount = ticketDiscountAmount;
 		}
 
 		setSubtotalAmount(subtotalAmount);
-
-		setDiscountAmount(discountAmount);
+		discountAmount += toleranceAmount;
 
 		double taxAmount = calculateTax();
 		if (ticketDiscountAmount > 0) {
-			taxAmount = taxAmount - (taxAmount * ticketDiscountAmount / subtotalAmount);
+			double discountTax = taxAmount * ticketDiscountAmount / subtotalAmount;
+			taxAmount = taxAmount - discountTax;
 		}
+		setDiscountAmount(discountAmount);
 		setTaxAmount(taxAmount);
 
 		Double deliveryChargeAmount = NumberUtil.roundToTwoDigit(getDeliveryCharge());
@@ -358,9 +360,36 @@ public class Ticket extends BaseTicket {
 		return NumberUtil.roundToTwoDigit(ticketItemDiscounts);
 	}
 
+	public double calculateToleranceAmount() {
+		double discount = 0;
+		TicketDiscount tolerance = null;
+		if (getDiscounts() != null) {
+			for (TicketDiscount tDiscount : getDiscounts()) {
+				if (tDiscount.getName().equals("Tolerance")) {
+					tolerance = tDiscount;
+					continue;
+				}
+			}
+		}
+		if (tolerance != null) {
+			discount += tolerance.getValue();
+		}
+		discount = fixInvalidAmount(discount);
+		return NumberUtil.roundToTwoDigit(discount);
+	}
+
 	private double calculateTicketDiscountAmount(double itemsDiscount) {
 		double discount = 0;
-		TicketDiscount ticketCouponAndDiscount = DiscountUtil.getMaxDiscount(getDiscounts(), itemsDiscount);
+		List<TicketDiscount> discounts = new ArrayList<>();
+		if (getDiscounts() != null) {
+			for (TicketDiscount tDiscount : getDiscounts()) {
+				if (tDiscount.getName().equals("Tolerance")) {
+					continue;
+				}
+				discounts.add(tDiscount);
+			}
+		}
+		TicketDiscount ticketCouponAndDiscount = DiscountUtil.getMaxDiscount(discounts, itemsDiscount);
 		if (ticketCouponAndDiscount != null) {
 			discount = DiscountUtil.calculateDiscountAmount(getSubtotalAmount() - discount, ticketCouponAndDiscount);
 		}
