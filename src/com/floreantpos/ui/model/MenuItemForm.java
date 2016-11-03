@@ -37,10 +37,10 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
-import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -198,7 +198,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		fileChooser.setMultiSelectionEnabled(false);
 		fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 
-		int option = fileChooser.showOpenDialog(null);
+		int option = fileChooser.showOpenDialog(POSUtil.getBackOfficeWindow());
 
 		if (option == JFileChooser.APPROVE_OPTION) {
 			File imageFile = fileChooser.getSelectedFile();
@@ -416,7 +416,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		});
 		tabGeneral.add(btnClearImage, "cell 1 0"); //$NON-NLS-1$
 		*/
-		
+
 		tabGeneral.add(lfname, "cell 0 1 ,right"); //$NON-NLS-1$
 		tabGeneral.add(tfName, "cell 1 1,grow"); //$NON-NLS-1$
 
@@ -430,7 +430,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		tabGeneral.add(lblUnitName, "cell 0 3,right"); //$NON-NLS-1$
 		tabGeneral.add(tfUnitName, "cell 1 3,grow"); //$NON-NLS-1$
 		JLabel lblBuyPrice = new JLabel(Messages.getString("LABEL_BUY_PRICE")); //$NON-NLS-1$
-		
+
 		tabGeneral.add(lblBuyPrice, "cell 0 4,alignx right"); //$NON-NLS-1$
 		tfBuyPrice = new DoubleTextField(20);
 		tfBuyPrice.setHorizontalAlignment(SwingConstants.TRAILING);
@@ -651,8 +651,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		JLabel lblImage = new JLabel(Messages.getString("MenuItemForm.28")); //$NON-NLS-1$
 		lblImage.setHorizontalAlignment(SwingConstants.TRAILING);
 		tabButtonStyle.add(lblImage, "cell 0 0,right"); //$NON-NLS-1$
-		
-		
+
 		lblImagePreview = new JLabel(""); //$NON-NLS-1$
 		lblImagePreview.setHorizontalAlignment(JLabel.CENTER);
 		lblImagePreview.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
@@ -663,27 +662,24 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		btnClearImage = new JButton(Messages.getString("MenuItemForm.34")); //$NON-NLS-1$
 		tabButtonStyle.add(btnClearImage, "cell  1 0"); //$NON-NLS-1$
 		tabButtonStyle.add(btnSelectImage, "cell 1 0"); //$NON-NLS-1$
-		
-		
+
 		tabButtonStyle.add(lblButtonColor, "cell 0 2,right"); //$NON-NLS-1$
 		tabButtonStyle.add(btnButtonColor, "cell 1 2,grow"); //$NON-NLS-1$
 		tabButtonStyle.add(lblTextColor, "cell 0 3,right"); //$NON-NLS-1$
 		tabButtonStyle.add(btnTextColor, "cell 1 3"); //$NON-NLS-1$
 		tabButtonStyle.add(cbShowTextWithImage, "cell 1 4"); //$NON-NLS-1$
-		
-		
-	/*	tabButtonStyle.add(lblImagePreview, "cell 3 0 3 4"); //$NON-NLS-1$
-		tabButtonStyle.add(btnClearImage, "cell 3 0,gaptop 40"); //$NON-NLS-1$
-		tabButtonStyle.add(btnSelectImage, "cell 3 0,gaptop 40"); //$NON-NLS-1$
-		tabButtonStyle.add(lblImage, "cell 2 0,gaptop 40"); //$NON-NLS-1$
-		tabButtonStyle.add(lblButtonColor, "cell 0 0,right"); //$NON-NLS-1$
-		tabButtonStyle.add(btnButtonColor, "cell 1 0,grow"); //$NON-NLS-1$
-		tabButtonStyle.add(lblTextColor, "cell 0 1,right"); //$NON-NLS-1$
-		tabButtonStyle.add(btnTextColor, "cell 1 1"); //$NON-NLS-1$
-*/		
+
+		/*	tabButtonStyle.add(lblImagePreview, "cell 3 0 3 4"); //$NON-NLS-1$
+			tabButtonStyle.add(btnClearImage, "cell 3 0,gaptop 40"); //$NON-NLS-1$
+			tabButtonStyle.add(btnSelectImage, "cell 3 0,gaptop 40"); //$NON-NLS-1$
+			tabButtonStyle.add(lblImage, "cell 2 0,gaptop 40"); //$NON-NLS-1$
+			tabButtonStyle.add(lblButtonColor, "cell 0 0,right"); //$NON-NLS-1$
+			tabButtonStyle.add(btnButtonColor, "cell 1 0,grow"); //$NON-NLS-1$
+			tabButtonStyle.add(lblTextColor, "cell 0 1,right"); //$NON-NLS-1$
+			tabButtonStyle.add(btnTextColor, "cell 1 1"); //$NON-NLS-1$
+		*/
 		btnTextColor.setPreferredSize(new Dimension(228, 50));
-		
-		
+
 		btnSelectImage.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				doSelectImageFile();
@@ -718,7 +714,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 	}// </editor-fold>//GEN-END:initComponents
 
 	private void btnNewTaxdoCreateNewTax(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewTaxdoCreateNewTax
-		BeanEditorDialog dialog = new BeanEditorDialog(new TaxForm());
+		BeanEditorDialog dialog = new BeanEditorDialog(POSUtil.getBackOfficeWindow(), new TaxForm());
 		dialog.open();
 	}//GEN-LAST:event_btnNewTaxdoCreateNewTax
 
@@ -728,7 +724,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 
 	private void doCreateNewGroup(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_doCreateNewGroup
 		MenuGroupForm editor = new MenuGroupForm();
-		BeanEditorDialog dialog = new BeanEditorDialog(editor);
+		BeanEditorDialog dialog = new BeanEditorDialog(POSUtil.getBackOfficeWindow(), editor);
 		dialog.open();
 
 		if (!dialog.isCanceled()) {
@@ -742,7 +738,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 	private void addMenuItemModifierGroup() {
 		try {
 			MenuItemModifierGroupForm form = new MenuItemModifierGroupForm();
-			BeanEditorDialog dialog = new BeanEditorDialog(form);
+			BeanEditorDialog dialog = new BeanEditorDialog(POSUtil.getBackOfficeWindow(), form);
 			dialog.open();
 			if (!dialog.isCanceled()) {
 				MenuItemModifierGroup modifier = (MenuItemModifierGroup) form.getBean();
@@ -773,7 +769,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 			MenuItemModifierGroup menuItemModifierGroup = menuItemMGListModel.get(index);
 
 			MenuItemModifierGroupForm form = new MenuItemModifierGroupForm(menuItemModifierGroup);
-			BeanEditorDialog dialog = new BeanEditorDialog(form);
+			BeanEditorDialog dialog = new BeanEditorDialog(POSUtil.getBackOfficeWindow(), form);
 			dialog.open();
 			if (!dialog.isCanceled()) {
 				//menuItemModifierGroup.setParentMenuItem((MenuItem) this.getBean());

@@ -35,43 +35,44 @@ import com.floreantpos.ui.PosTableRenderer;
 import com.floreantpos.ui.dialog.BeanEditorDialog;
 import com.floreantpos.ui.dialog.ConfirmDeleteDialog;
 import com.floreantpos.ui.forms.UserTypeForm;
+import com.floreantpos.util.POSUtil;
 
 public class UserTypeExplorer extends TransparentPanel {
 	private List<UserType> typeList;
-	
+
 	private JTable table;
 
 	private UserTypeExplorerTableModel tableModel;
-	
+
 	public UserTypeExplorer() {
 		UserTypeDAO dao = new UserTypeDAO();
 		typeList = dao.findAll();
-		
+
 		tableModel = new UserTypeExplorerTableModel();
 		table = new JTable(tableModel);
 		table.setDefaultRenderer(Object.class, new PosTableRenderer());
-		
-		setLayout(new BorderLayout(5,5));
+
+		setLayout(new BorderLayout(5, 5));
 		add(new JScrollPane(table));
-		
+
 		JButton addButton = new JButton(com.floreantpos.POSConstants.ADD);
 		addButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					UserTypeForm editor = new UserTypeForm();
-					BeanEditorDialog dialog = new BeanEditorDialog(editor);
+					BeanEditorDialog dialog = new BeanEditorDialog(POSUtil.getBackOfficeWindow(), editor);
 					dialog.open();
 					if (dialog.isCanceled())
 						return;
 					UserType type = (UserType) editor.getBean();
 					tableModel.addType(type);
 				} catch (Exception x) {
-				BOMessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
+					BOMessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
 				}
 			}
-			
+
 		});
-		
+
 		JButton editButton = new JButton(com.floreantpos.POSConstants.EDIT);
 		editButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -84,17 +85,17 @@ public class UserTypeExplorer extends TransparentPanel {
 
 					UserTypeForm editor = new UserTypeForm();
 					editor.setUserType(type);
-					BeanEditorDialog dialog = new BeanEditorDialog(editor);
+					BeanEditorDialog dialog = new BeanEditorDialog(POSUtil.getBackOfficeWindow(), editor);
 					dialog.open();
 					if (dialog.isCanceled())
 						return;
 
 					table.repaint();
 				} catch (Throwable x) {
-				BOMessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
+					BOMessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
 				}
 			}
-			
+
 		});
 		JButton deleteButton = new JButton(com.floreantpos.POSConstants.DELETE);
 		deleteButton.addActionListener(new ActionListener() {
@@ -104,17 +105,18 @@ public class UserTypeExplorer extends TransparentPanel {
 					if (index < 0)
 						return;
 
-					if (ConfirmDeleteDialog.showMessage(UserTypeExplorer.this, com.floreantpos.POSConstants.CONFIRM_DELETE, com.floreantpos.POSConstants.DELETE) == ConfirmDeleteDialog.YES) {
+					if (ConfirmDeleteDialog
+							.showMessage(UserTypeExplorer.this, com.floreantpos.POSConstants.CONFIRM_DELETE, com.floreantpos.POSConstants.DELETE) == ConfirmDeleteDialog.YES) {
 						UserType category = typeList.get(index);
 						UserTypeDAO dao = new UserTypeDAO();
 						dao.delete(category);
 						tableModel.deleteCategory(category, index);
 					}
 				} catch (Exception x) {
-				BOMessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
+					BOMessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
 				}
 			}
-			
+
 		});
 
 		TransparentPanel panel = new TransparentPanel();
@@ -123,12 +125,12 @@ public class UserTypeExplorer extends TransparentPanel {
 		panel.add(deleteButton);
 		add(panel, BorderLayout.SOUTH);
 	}
-	
+
 	class UserTypeExplorerTableModel extends AbstractTableModel {
-		String[] columnNames = {com.floreantpos.POSConstants.TYPE_NAME, com.floreantpos.POSConstants.PERMISSIONS};
-		
+		String[] columnNames = { com.floreantpos.POSConstants.TYPE_NAME, com.floreantpos.POSConstants.PERMISSIONS };
+
 		public int getRowCount() {
-			if(typeList == null) {
+			if (typeList == null) {
 				return 0;
 			}
 			return typeList.size();
@@ -137,27 +139,27 @@ public class UserTypeExplorer extends TransparentPanel {
 		public int getColumnCount() {
 			return columnNames.length;
 		}
-		
+
 		@Override
 		public String getColumnName(int column) {
 			return columnNames[column];
 		}
-		
+
 		@Override
 		public boolean isCellEditable(int rowIndex, int columnIndex) {
 			return false;
 		}
 
 		public Object getValueAt(int rowIndex, int columnIndex) {
-			if(typeList == null)
+			if (typeList == null)
 				return ""; //$NON-NLS-1$
-			
+
 			UserType userType = typeList.get(rowIndex);
-			
-			switch(columnIndex) {
+
+			switch (columnIndex) {
 				case 0:
 					return userType.getName();
-					
+
 				case 1:
 					return userType.getPermissions();
 			}
@@ -169,7 +171,7 @@ public class UserTypeExplorer extends TransparentPanel {
 			typeList.add(type);
 			fireTableRowsInserted(size, size);
 		}
-		
+
 		public void deleteCategory(UserType type, int index) {
 			typeList.remove(type);
 			fireTableRowsDeleted(index, index);

@@ -62,14 +62,15 @@ public class DataExportAction extends AbstractAction {
 
 		try {
 			JFileChooser fileChooser = getFileChooser();
-			int option = fileChooser.showSaveDialog(com.floreantpos.util.POSUtil.getFocusedWindow());
+			int option = fileChooser.showSaveDialog(com.floreantpos.util.POSUtil.getBackOfficeWindow());
 			if (option != JFileChooser.APPROVE_OPTION) {
 				return;
 			}
 
 			File file = fileChooser.getSelectedFile();
 			if (file.exists()) {
-				option = JOptionPane.showConfirmDialog(com.floreantpos.util.POSUtil.getFocusedWindow(), Messages.getString("DataExportAction.1") + file.getName() + "?", Messages.getString("DataExportAction.3"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				option = JOptionPane.showConfirmDialog(com.floreantpos.util.POSUtil.getFocusedWindow(),
+						Messages.getString("DataExportAction.1") + file.getName() + "?", Messages.getString("DataExportAction.3"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 						JOptionPane.YES_NO_OPTION);
 				if (option != JOptionPane.YES_OPTION) {
 					return;
@@ -181,9 +182,10 @@ public class DataExportAction extends AbstractAction {
 			}
 
 			transaction.commit();
-		} catch(Exception x) {
-			if(transaction != null) transaction.rollback();
-			
+		} catch (Exception x) {
+			if (transaction != null)
+				transaction.rollback();
+
 		} finally {
 			menuItemModifierGroupDAO.closeSession(session);
 		}

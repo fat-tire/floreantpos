@@ -57,6 +57,7 @@ import com.floreantpos.ui.dialog.BeanEditorDialog;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.model.MenuItemForm;
 import com.floreantpos.util.CurrencyUtil;
+import com.floreantpos.util.POSUtil;
 
 public class MenuItemExplorer extends TransparentPanel {
 
@@ -247,7 +248,7 @@ public class MenuItemExplorer extends TransparentPanel {
 					tableModel.setRow(index, menuItem);
 
 					MenuItemForm editor = new MenuItemForm(menuItem);
-					BeanEditorDialog dialog = new BeanEditorDialog(editor);
+					BeanEditorDialog dialog = new BeanEditorDialog(POSUtil.getBackOfficeWindow(), editor);
 					dialog.open();
 					if (dialog.isCanceled())
 						return;
@@ -283,7 +284,7 @@ public class MenuItemExplorer extends TransparentPanel {
 					}
 					MenuItemForm editor = new MenuItemForm(menuItem);
 
-					BeanEditorDialog dialog = new BeanEditorDialog(editor);
+					BeanEditorDialog dialog = new BeanEditorDialog(POSUtil.getBackOfficeWindow(), editor);
 					dialog.open();
 
 					if (dialog.isCanceled())

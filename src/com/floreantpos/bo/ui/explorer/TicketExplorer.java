@@ -108,7 +108,7 @@ public class TicketExplorer extends TransparentPanel {
 				try {
 					int index = table.getSelectedRow();
 					if (index < 0) {
-						POSMessageDialog.showMessage(POSUtil.getFocusedWindow(), POSConstants.SELECT_ONE_TICKET_TO_VOID);
+						POSMessageDialog.showMessage(POSUtil.getBackOfficeWindow(), POSConstants.SELECT_ONE_TICKET_TO_VOID);
 						return;
 					}
 

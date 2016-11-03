@@ -38,6 +38,7 @@ import com.floreantpos.swing.TransparentPanel;
 import com.floreantpos.ui.dialog.BeanEditorDialog;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.model.OrderTypeForm;
+import com.floreantpos.util.POSUtil;
 
 public class OrderTypeExplorer extends TransparentPanel {
 
@@ -72,7 +73,7 @@ public class OrderTypeExplorer extends TransparentPanel {
 				try {
 
 					OrderTypeForm editor = new OrderTypeForm();
-					BeanEditorDialog dialog = new BeanEditorDialog(editor);
+					BeanEditorDialog dialog = new BeanEditorDialog(POSUtil.getBackOfficeWindow(), editor);
 					dialog.open();
 
 					if (dialog.isCanceled())
@@ -100,7 +101,7 @@ public class OrderTypeExplorer extends TransparentPanel {
 					OrderType ordersType = tableModel.getRow(index);
 
 					OrderTypeForm editor = new OrderTypeForm(ordersType);
-					BeanEditorDialog dialog = new BeanEditorDialog(editor);
+					BeanEditorDialog dialog = new BeanEditorDialog(POSUtil.getBackOfficeWindow(), editor);
 					dialog.open();
 					if (dialog.isCanceled())
 						return;

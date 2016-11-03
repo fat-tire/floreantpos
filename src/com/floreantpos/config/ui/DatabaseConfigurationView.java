@@ -46,6 +46,7 @@ import com.floreantpos.swing.POSTextField;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.util.DatabaseConnectionException;
 import com.floreantpos.util.DatabaseUtil;
+import com.floreantpos.util.POSUtil;
 
 public class DatabaseConfigurationView extends ConfigurationView implements ActionListener {
 
@@ -75,9 +76,9 @@ public class DatabaseConfigurationView extends ConfigurationView implements Acti
 	}
 
 	protected void initUI() {
-		setLayout(new BorderLayout()); 
-		
-		JPanel contentPanel=new JPanel(); 
+		setLayout(new BorderLayout());
+
+		JPanel contentPanel = new JPanel();
 		contentPanel.setLayout(new MigLayout("fill", "[][grow,fill]", "[][][][][][][][grow,fill]")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		tfServerAddress = new POSTextField();
 		tfServerPort = new POSTextField();
@@ -123,9 +124,9 @@ public class DatabaseConfigurationView extends ConfigurationView implements Acti
 		buttonPanel.add(btnSave);
 
 		contentPanel.add(buttonPanel, "span, grow"); //$NON-NLS-1$
-		
+
 		JScrollPane scrollPane = new JScrollPane(contentPanel);
-		scrollPane.setBorder(null); 
+		scrollPane.setBorder(null);
 		add(scrollPane);
 	}
 
@@ -155,7 +156,6 @@ public class DatabaseConfigurationView extends ConfigurationView implements Acti
 		});
 	}
 
-
 	public void actionPerformed(ActionEvent e) {
 		try {
 			String command = e.getActionCommand();
@@ -184,18 +184,19 @@ public class DatabaseConfigurationView extends ConfigurationView implements Acti
 					return;
 				}
 
-				JOptionPane.showMessageDialog(this, Messages.getString("DatabaseConfigurationDialog.31")); //$NON-NLS-1$
+				JOptionPane.showMessageDialog(POSUtil.getBackOfficeWindow(), Messages.getString("DatabaseConfigurationDialog.31")); //$NON-NLS-1$
 			}
 			else if (CONFIGURE_DB.equals(command)) {
 				Application.getInstance().setSystemInitialized(false);
 
-				int i = JOptionPane.showConfirmDialog(this,
+				int i = JOptionPane.showConfirmDialog(POSUtil.getBackOfficeWindow(),
 						Messages.getString("DatabaseConfigurationDialog.33"), Messages.getString("DatabaseConfigurationDialog.34"), JOptionPane.YES_NO_OPTION); //$NON-NLS-1$ //$NON-NLS-2$
 				if (i != JOptionPane.YES_OPTION) {
 					return;
 				}
 
-				i = JOptionPane.showConfirmDialog(this, Messages.getString("DatabaseConfigurationView.3"), Messages.getString("DatabaseConfigurationView.4"), JOptionPane.YES_NO_OPTION); //$NON-NLS-1$ //$NON-NLS-2$
+				i = JOptionPane.showConfirmDialog(POSUtil.getBackOfficeWindow(),
+						Messages.getString("DatabaseConfigurationView.3"), Messages.getString("DatabaseConfigurationView.4"), JOptionPane.YES_NO_OPTION); //$NON-NLS-1$ //$NON-NLS-2$
 				boolean generateSampleData = false;
 				if (i == JOptionPane.YES_OPTION)
 					generateSampleData = true;
@@ -210,12 +211,12 @@ public class DatabaseConfigurationView extends ConfigurationView implements Acti
 
 				if (createDatabase) {
 					//JOptionPane.showMessageDialog(DatabaseConfigurationView.this, Messages.getString("DatabaseConfigurationDialog.35")); //$NON-NLS-1$
-					JOptionPane.showMessageDialog(DatabaseConfigurationView.this, "Database created. Default password is 1111.\n\nThe system will now restart."); //$NON-NLS-1$
-					
+					JOptionPane.showMessageDialog(POSUtil.getBackOfficeWindow(), "Database created. Default password is 1111.\n\nThe system will now restart."); //$NON-NLS-1$
+
 					Main.restart();
 				}
 				else {
-					JOptionPane.showMessageDialog(DatabaseConfigurationView.this, Messages.getString("DatabaseConfigurationDialog.36")); //$NON-NLS-1$
+					JOptionPane.showMessageDialog(POSUtil.getBackOfficeWindow(), Messages.getString("DatabaseConfigurationDialog.36")); //$NON-NLS-1$
 				}
 			}
 			else if (SAVE.equalsIgnoreCase(command)) {
@@ -225,7 +226,7 @@ public class DatabaseConfigurationView extends ConfigurationView implements Acti
 			else if (CANCEL.equalsIgnoreCase(command)) {
 			}
 		} catch (Exception e2) {
-			POSMessageDialog.showMessage(com.floreantpos.util.POSUtil.getFocusedWindow(), e2.getMessage());
+			POSMessageDialog.showMessage(com.floreantpos.util.POSUtil.getBackOfficeWindow(), e2.getMessage());
 		}
 	}
 
@@ -285,7 +286,7 @@ public class DatabaseConfigurationView extends ConfigurationView implements Acti
 		else {
 			setFieldsVisible(true);
 		}
-		
+
 		setInitialized(true);
 	}
 

@@ -56,6 +56,7 @@ import com.floreantpos.ui.dialog.BeanEditorDialog;
 import com.floreantpos.ui.dialog.POSDialog;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.forms.QuickCustomerForm;
+import com.floreantpos.util.POSUtil;
 import com.floreantpos.util.TicketAlreadyExistsException;
 
 public class DefaultCustomerListView extends CustomerSelector {
@@ -71,7 +72,7 @@ public class DefaultCustomerListView extends CustomerSelector {
 
 	private Ticket ticket;
 	private PosButton btnCancel;
-	private QwertyKeyPad qwertyKeyPad; 
+	private QwertyKeyPad qwertyKeyPad;
 
 	public DefaultCustomerListView() {
 		initUI();
@@ -119,7 +120,7 @@ public class DefaultCustomerListView extends CustomerSelector {
 				doSearchCustomer();
 			}
 		});
-		
+
 		PosButton btnKeyboard = new PosButton(IconFactory.getIcon("/images/", "keyboard.png"));
 		btnKeyboard.addActionListener(new ActionListener() {
 
@@ -128,7 +129,7 @@ public class DefaultCustomerListView extends CustomerSelector {
 				qwertyKeyPad.setCollapsed(!qwertyKeyPad.isCollapsed());
 			}
 		});
-		
+
 		searchPanel.add(lblByPhone, "growy");
 		searchPanel.add(tfMobile, "growy"); //$NON-NLS-1$
 		searchPanel.add(lblByLoyality, "growy");
@@ -172,12 +173,12 @@ public class DefaultCustomerListView extends CustomerSelector {
 		customerListPanel.add(scrollPane, BorderLayout.CENTER);
 
 		JPanel panel = new JPanel(new MigLayout("hidemode 3,al center", "sg", ""));
-		
+
 		btnInfo = new PosButton(Messages.getString("CustomerSelectionDialog.23")); //$NON-NLS-1$
 		btnInfo.setFocusable(false);
 		panel.add(btnInfo, "grow");
 		btnInfo.setEnabled(false);
-		
+
 		PosButton btnHistory = new PosButton(Messages.getString("CustomerSelectionDialog.24")); //$NON-NLS-1$
 		btnHistory.setEnabled(false);
 		panel.add(btnHistory, "grow");
@@ -308,7 +309,7 @@ public class DefaultCustomerListView extends CustomerSelector {
 		//TODO: handle exception
 
 		form.enableCustomerFields(true);
-		BeanEditorDialog dialog = new BeanEditorDialog(form);
+		BeanEditorDialog dialog = new BeanEditorDialog(POSUtil.getBackOfficeWindow(), form);
 		dialog.setResizable(false);
 		dialog.open();
 

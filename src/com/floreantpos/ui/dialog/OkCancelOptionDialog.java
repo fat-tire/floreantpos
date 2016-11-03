@@ -45,7 +45,7 @@ public abstract class OkCancelOptionDialog extends POSDialog {
 	private TransparentPanel contentPanel;
 
 	public OkCancelOptionDialog() {
-		super(POSUtil.getFocusedWindow(), "");
+		super(POSUtil.getBackOfficeWindow(), "");
 		init();
 		titlePanel.setTitle("");
 	}
@@ -127,9 +127,9 @@ public abstract class OkCancelOptionDialog extends POSDialog {
 	public void setTitlePaneText(String title) {
 		titlePanel.setTitle(title);
 	}
-	
-	public void setOkButtonText(String text){
-		btnOk.setText(text); 
+
+	public void setOkButtonText(String text) {
+		btnOk.setText(text);
 	}
 
 	public JPanel getContentPanel() {

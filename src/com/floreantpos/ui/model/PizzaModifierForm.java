@@ -200,7 +200,7 @@ public class PizzaModifierForm extends BeanEditor {
 		btnButtonColor.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Color color = JColorChooser.showDialog(PizzaModifierForm.this, Messages.getString("MenuModifierForm.39"), btnButtonColor.getBackground()); //$NON-NLS-1$
+				Color color = JColorChooser.showDialog(POSUtil.getBackOfficeWindow(), Messages.getString("MenuModifierForm.39"), btnButtonColor.getBackground()); //$NON-NLS-1$
 				btnButtonColor.setBackground(color);
 				btnTextColor.setBackground(color);
 			}
@@ -216,7 +216,7 @@ public class PizzaModifierForm extends BeanEditor {
 		btnTextColor.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Color color = JColorChooser.showDialog(PizzaModifierForm.this, Messages.getString("MenuModifierForm.40"), btnTextColor.getForeground()); //$NON-NLS-1$
+				Color color = JColorChooser.showDialog(POSUtil.getBackOfficeWindow(), Messages.getString("MenuModifierForm.40"), btnTextColor.getForeground()); //$NON-NLS-1$
 				btnTextColor.setForeground(color);
 			}
 		});
@@ -301,7 +301,7 @@ public class PizzaModifierForm extends BeanEditor {
 	private void btnNewTaxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewTaxActionPerformed
 		try {
 			TaxForm editor = new TaxForm();
-			BeanEditorDialog dialog = new BeanEditorDialog(editor);
+			BeanEditorDialog dialog = new BeanEditorDialog(POSUtil.getBackOfficeWindow(), editor);
 			dialog.open();
 			if (!dialog.isCanceled()) {
 				Tax tax = (Tax) editor.getBean();

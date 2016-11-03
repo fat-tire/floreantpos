@@ -40,7 +40,7 @@ import com.floreantpos.util.TerminalUtil;
 public class AboutDialog extends POSDialog {
 
 	public AboutDialog() {
-		super(POSUtil.getFocusedWindow(), Messages.getString("AboutDialog.0")); //$NON-NLS-1$
+		super(POSUtil.getBackOfficeWindow(), Messages.getString("AboutDialog.0")); //$NON-NLS-1$
 		setIconImage(Application.getApplicationIcon().getImage());
 	}
 

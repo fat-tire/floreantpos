@@ -25,6 +25,7 @@ import javax.swing.Icon;
 import com.floreantpos.bo.ui.BOMessageDialog;
 import com.floreantpos.ui.dialog.BeanEditorDialog;
 import com.floreantpos.ui.model.MenuCategoryForm;
+import com.floreantpos.util.POSUtil;
 
 public class NewMenuCategoryAction extends AbstractAction {
 
@@ -43,7 +44,7 @@ public class NewMenuCategoryAction extends AbstractAction {
 	public void actionPerformed(ActionEvent e) {
 		try {
 			MenuCategoryForm editor = new MenuCategoryForm();
-			BeanEditorDialog dialog = new BeanEditorDialog(editor);
+			BeanEditorDialog dialog = new BeanEditorDialog(POSUtil.getBackOfficeWindow(), editor);
 			dialog.open();
 		} catch (Exception x) {
 			BOMessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);

@@ -46,6 +46,7 @@ import com.floreantpos.swing.TransparentPanel;
 import com.floreantpos.ui.dialog.BeanEditorDialog;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.model.MenuCategoryForm;
+import com.floreantpos.util.POSUtil;
 
 public class MenuCategoryExplorer extends TransparentPanel {
 
@@ -92,7 +93,7 @@ public class MenuCategoryExplorer extends TransparentPanel {
 				try {
 
 					MenuCategoryForm editor = new MenuCategoryForm();
-					BeanEditorDialog dialog = new BeanEditorDialog(editor);
+					BeanEditorDialog dialog = new BeanEditorDialog(POSUtil.getBackOfficeWindow(), editor);
 					dialog.open();
 
 					if (dialog.isCanceled())
@@ -120,7 +121,7 @@ public class MenuCategoryExplorer extends TransparentPanel {
 					MenuCategory category = tableModel.getRow(index);
 
 					MenuCategoryForm editor = new MenuCategoryForm(category);
-					BeanEditorDialog dialog = new BeanEditorDialog(editor);
+					BeanEditorDialog dialog = new BeanEditorDialog(POSUtil.getBackOfficeWindow(), editor);
 					dialog.open();
 					if (dialog.isCanceled())
 						return;

@@ -32,32 +32,33 @@ import com.floreantpos.main.Application;
 import com.floreantpos.swing.ItemCheckBoxList;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.ui.TitlePanel;
+import com.floreantpos.util.POSUtil;
 
 public class ItemSelectionDialog extends POSDialog implements ActionListener {
 	private TitlePanel titlePanel;
 	private PosButton btnCancel;
 	private PosButton btnOk;
-	
+
 	private ItemCheckBoxList cbListItems;
 
 	public ItemSelectionDialog() {
-		super(null, true); 
+		super(POSUtil.getBackOfficeWindow(), true);
 		init();
 	}
 
 	private void init() {
-		setLayout(new BorderLayout(10,10)); 
-		setIconImage(Application.getPosWindow().getIconImage()); 
-		
-		JPanel contentPane=new JPanel(new BorderLayout(10,10)); 
-		
+		setLayout(new BorderLayout(10, 10));
+		setIconImage(Application.getPosWindow().getIconImage());
+
+		JPanel contentPane = new JPanel(new BorderLayout(10, 10));
+
 		titlePanel = new TitlePanel();
 		titlePanel.setTitle("Select item");
-		contentPane.add(titlePanel, BorderLayout.NORTH); 
-		
+		contentPane.add(titlePanel, BorderLayout.NORTH);
+
 		cbListItems = new ItemCheckBoxList();
-		
-		contentPane.add(new JScrollPane(cbListItems), BorderLayout.CENTER); 
+
+		contentPane.add(new JScrollPane(cbListItems), BorderLayout.CENTER);
 
 		btnOk = new PosButton(POSConstants.OK);
 		btnOk.setFocusable(false);
@@ -72,19 +73,19 @@ public class ItemSelectionDialog extends POSDialog implements ActionListener {
 		footerPanel.add(btnCancel);
 
 		contentPane.add(footerPanel, BorderLayout.SOUTH);
-		
-		add(contentPane); 
-		setSize(500,400); 
+
+		add(contentPane);
+		setSize(500, 400);
 	}
-	
-	public void setModel(TableModel items){
+
+	public void setModel(TableModel items) {
 		cbListItems.setModel(items);
 	}
-	
-	public  TableModel getModel(){
-		return cbListItems.getModel(); 
+
+	public TableModel getModel() {
+		return cbListItems.getModel();
 	}
-	
+
 	private void doOk() {
 		setCanceled(false);
 		dispose();

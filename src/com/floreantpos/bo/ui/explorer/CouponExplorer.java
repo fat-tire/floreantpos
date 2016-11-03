@@ -35,6 +35,7 @@ import com.floreantpos.ui.PosTableRenderer;
 import com.floreantpos.ui.dialog.BeanEditorDialog;
 import com.floreantpos.ui.dialog.ConfirmDeleteDialog;
 import com.floreantpos.ui.model.CouponForm;
+import com.floreantpos.util.POSUtil;
 
 public class CouponExplorer extends TransparentPanel implements ActionListener {
 	private JTable explorerView;
@@ -77,7 +78,7 @@ public class CouponExplorer extends TransparentPanel implements ActionListener {
 	private void addNewCoupon() {
 		try {
 			CouponForm editor = new CouponForm();
-			BeanEditorDialog dialog = new BeanEditorDialog(editor);
+			BeanEditorDialog dialog = new BeanEditorDialog(POSUtil.getBackOfficeWindow(), editor);
 			dialog.open();
 
 			if (dialog.isCanceled())
@@ -92,7 +93,7 @@ public class CouponExplorer extends TransparentPanel implements ActionListener {
 	private void editCoupon(Discount coupon) {
 		try {
 			CouponForm editor = new CouponForm(coupon);
-			BeanEditorDialog dialog = new BeanEditorDialog(editor);
+			BeanEditorDialog dialog = new BeanEditorDialog(POSUtil.getBackOfficeWindow(), editor);
 			dialog.open();
 			if (dialog.isCanceled())
 				return;

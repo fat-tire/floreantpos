@@ -21,13 +21,8 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.Icon;
-import javax.swing.JTabbedPane;
-import javax.swing.border.EmptyBorder;
 
-import com.floreantpos.bo.ui.BackOfficeWindow;
 import com.floreantpos.bo.ui.explorer.CurrencyDialog;
-import com.floreantpos.bo.ui.explorer.CurrencyExplorer;
-import com.floreantpos.ui.dialog.OkCancelOptionDialog;
 
 public class CurrencyExplorerAction extends AbstractAction {
 

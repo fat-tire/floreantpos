@@ -1,10 +1,8 @@
-
 package com.floreantpos.bo.ui.explorer;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
@@ -14,15 +12,14 @@ import org.jdesktop.swingx.JXTable;
 import com.floreantpos.POSConstants;
 import com.floreantpos.bo.ui.BOMessageDialog;
 import com.floreantpos.model.MenuItemSize;
-import com.floreantpos.model.PizzaCrust;
 import com.floreantpos.model.dao.MenuItemSizeDAO;
-import com.floreantpos.model.dao.PizzaCrustDAO;
 import com.floreantpos.swing.BeanTableModel;
 import com.floreantpos.swing.TransparentPanel;
 import com.floreantpos.ui.PosTableRenderer;
 import com.floreantpos.ui.dialog.BeanEditorDialog;
 import com.floreantpos.ui.dialog.ConfirmDeleteDialog;
 import com.floreantpos.ui.model.MenuItemSizeForm;
+import com.floreantpos.util.POSUtil;
 
 public class MenuItemSizeExplorer extends TransparentPanel {
 	private JXTable table;
@@ -50,7 +47,7 @@ public class MenuItemSizeExplorer extends TransparentPanel {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					MenuItemSizeForm editor = new MenuItemSizeForm();
-					BeanEditorDialog dialog = new BeanEditorDialog(editor);
+					BeanEditorDialog dialog = new BeanEditorDialog(POSUtil.getBackOfficeWindow(), editor);
 					dialog.open();
 
 					if (dialog.isCanceled())
@@ -77,7 +74,7 @@ public class MenuItemSizeExplorer extends TransparentPanel {
 					MenuItemSize menuItemSize = tableModel.getRow(index);
 
 					MenuItemSizeForm editor = new MenuItemSizeForm(menuItemSize);
-					BeanEditorDialog dialog = new BeanEditorDialog(editor);
+					BeanEditorDialog dialog = new BeanEditorDialog(POSUtil.getBackOfficeWindow(), editor);
 					dialog.open();
 					if (dialog.isCanceled())
 						return;

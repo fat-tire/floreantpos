@@ -73,7 +73,7 @@ public class MenuGroupForm extends BeanEditor {
 	// <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:initComponents
 	private void initComponents() {
 		setLayout(new MigLayout("", "[70px][289px,grow][6px][49px]", "[19px][][25px][][][][15px]")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		setPreferredSize(new Dimension(600,250));
+		setPreferredSize(new Dimension(600, 250));
 		jLabel1 = new javax.swing.JLabel();
 		tfName = new com.floreantpos.swing.FixedLengthTextField(120);
 		jLabel2 = new javax.swing.JLabel();
@@ -155,7 +155,7 @@ public class MenuGroupForm extends BeanEditor {
 	private void doNewCategory(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_doNewCategory
 		try {
 			MenuCategoryForm editor = new MenuCategoryForm();
-			BeanEditorDialog dialog = new BeanEditorDialog(editor);
+			BeanEditorDialog dialog = new BeanEditorDialog(POSUtil.getBackOfficeWindow(), editor);
 			dialog.open();
 			if (!dialog.isCanceled()) {
 				MenuCategory foodCategory = (MenuCategory) editor.getBean();

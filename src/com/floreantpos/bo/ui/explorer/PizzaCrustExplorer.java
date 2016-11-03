@@ -20,7 +20,6 @@ package com.floreantpos.bo.ui.explorer;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
@@ -37,6 +36,7 @@ import com.floreantpos.ui.PosTableRenderer;
 import com.floreantpos.ui.dialog.BeanEditorDialog;
 import com.floreantpos.ui.dialog.ConfirmDeleteDialog;
 import com.floreantpos.ui.model.PizzaCrustForm;
+import com.floreantpos.util.POSUtil;
 
 public class PizzaCrustExplorer extends TransparentPanel {
 	private JXTable table;
@@ -63,7 +63,7 @@ public class PizzaCrustExplorer extends TransparentPanel {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					PizzaCrustForm editor = new PizzaCrustForm();
-					BeanEditorDialog dialog = new BeanEditorDialog(editor);
+					BeanEditorDialog dialog = new BeanEditorDialog(POSUtil.getBackOfficeWindow(), editor);
 					dialog.open();
 
 					if (dialog.isCanceled())
@@ -90,7 +90,7 @@ public class PizzaCrustExplorer extends TransparentPanel {
 					PizzaCrust pizzaCrust = tableModel.getRow(index);
 
 					PizzaCrustForm editor = new PizzaCrustForm(pizzaCrust);
-					BeanEditorDialog dialog = new BeanEditorDialog(editor);
+					BeanEditorDialog dialog = new BeanEditorDialog(POSUtil.getBackOfficeWindow(), editor);
 					dialog.open();
 					if (dialog.isCanceled())
 						return;

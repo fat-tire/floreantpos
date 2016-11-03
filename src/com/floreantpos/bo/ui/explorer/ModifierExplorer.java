@@ -50,6 +50,7 @@ import com.floreantpos.ui.dialog.BeanEditorDialog;
 import com.floreantpos.ui.dialog.ConfirmDeleteDialog;
 import com.floreantpos.ui.model.MenuModifierForm;
 import com.floreantpos.util.CurrencyUtil;
+import com.floreantpos.util.POSUtil;
 
 public class ModifierExplorer extends TransparentPanel {
 
@@ -59,16 +60,16 @@ public class ModifierExplorer extends TransparentPanel {
 
 	public ModifierExplorer() {
 		setLayout(new BorderLayout(5, 5));
-		
+
 		currencySymbol = CurrencyUtil.getCurrencySymbol();
 		tableModel = new ModifierExplorerModel();
 		table = new JTable(tableModel);
 
 		add(new JScrollPane(table));
-		
+
 		createActionButtons();
 		add(buildSearchForm(), BorderLayout.NORTH);
-		
+
 		updateModifierList();
 	}
 
@@ -78,14 +79,14 @@ public class ModifierExplorer extends TransparentPanel {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					MenuModifierForm editor = new MenuModifierForm();
-					BeanEditorDialog dialog = new BeanEditorDialog(editor);
+					BeanEditorDialog dialog = new BeanEditorDialog(POSUtil.getBackOfficeWindow(), editor);
 					dialog.open();
 					if (dialog.isCanceled())
 						return;
 					MenuModifier modifier = (MenuModifier) editor.getBean();
 					tableModel.addModifier(modifier);
 				} catch (Throwable x) {
-				BOMessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
+					BOMessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
 				}
 			}
 
@@ -96,19 +97,19 @@ public class ModifierExplorer extends TransparentPanel {
 					int index = table.getSelectedRow();
 					if (index < 0)
 						return;
-					
+
 					index = table.convertRowIndexToModel(index);
 					MenuModifier modifier = (MenuModifier) tableModel.getRowData(index);
 
 					MenuModifierForm editor = new MenuModifierForm(modifier);
-					BeanEditorDialog dialog = new BeanEditorDialog(editor);
+					BeanEditorDialog dialog = new BeanEditorDialog(POSUtil.getBackOfficeWindow(), editor);
 					dialog.open();
 					if (dialog.isCanceled())
 						return;
 
 					table.repaint();
 				} catch (Throwable x) {
-				BOMessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
+					BOMessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
 				}
 			}
 		});
@@ -119,23 +120,24 @@ public class ModifierExplorer extends TransparentPanel {
 					int index = table.getSelectedRow();
 					if (index < 0)
 						return;
-					
+
 					index = table.convertRowIndexToModel(index);
-					
-					if (ConfirmDeleteDialog.showMessage(ModifierExplorer.this, com.floreantpos.POSConstants.CONFIRM_DELETE, com.floreantpos.POSConstants.DELETE) != ConfirmDeleteDialog.NO) {
+
+					if (ConfirmDeleteDialog
+							.showMessage(ModifierExplorer.this, com.floreantpos.POSConstants.CONFIRM_DELETE, com.floreantpos.POSConstants.DELETE) != ConfirmDeleteDialog.NO) {
 						MenuModifier category = (MenuModifier) tableModel.getRowData(index);
 						ModifierDAO modifierDAO = new ModifierDAO();
 						modifierDAO.delete(category);
 						tableModel.deleteModifier(category, index);
 					}
 				} catch (Throwable x) {
-				BOMessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
+					BOMessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
 				}
 
 			}
 
 		});
-		
+
 		add(explorerButtonPanel, BorderLayout.SOUTH);
 	}
 
@@ -251,7 +253,7 @@ public class ModifierExplorer extends TransparentPanel {
 			}
 			return null;
 		}
-		
+
 		public void addModifier(MenuModifier category) {
 			int size = getRows().size();
 			getRows().add(category);

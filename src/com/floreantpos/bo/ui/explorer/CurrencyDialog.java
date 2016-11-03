@@ -19,6 +19,7 @@ public class CurrencyDialog extends OkCancelOptionDialog {
 
 	public CurrencyDialog() {
 		JPanel contentPanel = getContentPanel();
+		this.getContentPane();
 		setTitle("Edit Currency");
 		setTitlePaneText("Edit Currency");
 		currencyExplorer = new CurrencyExplorer();

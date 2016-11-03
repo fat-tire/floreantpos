@@ -36,16 +36,14 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
+import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
-import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -104,7 +102,6 @@ import com.floreantpos.swing.PosUIManager;
 import com.floreantpos.ui.BeanEditor;
 import com.floreantpos.ui.dialog.BeanEditorDialog;
 import com.floreantpos.ui.dialog.ConfirmDeleteDialog;
-import com.floreantpos.ui.dialog.POSDialog;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.util.POSUtil;
 import com.floreantpos.util.ShiftUtil;
@@ -239,7 +236,7 @@ public class PizzaItemForm extends BeanEditor<MenuItem> implements ActionListene
 		fileChooser.setMultiSelectionEnabled(false);
 		fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 
-		int option = fileChooser.showOpenDialog(null);
+		int option = fileChooser.showOpenDialog(POSUtil.getBackOfficeWindow());
 
 		if (option == JFileChooser.APPROVE_OPTION) {
 			File imageFile = fileChooser.getSelectedFile();
@@ -613,7 +610,6 @@ public class PizzaItemForm extends BeanEditor<MenuItem> implements ActionListene
 				priceTable.repaint();
 			}
 
-
 		});
 
 		btnDeleteAll.setText(Messages.getString("MenuItemForm.15")); //$NON-NLS-1$
@@ -699,7 +695,7 @@ public class PizzaItemForm extends BeanEditor<MenuItem> implements ActionListene
 		btnButtonColor.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Color color = JColorChooser.showDialog(PizzaItemForm.this, Messages.getString("MenuItemForm.42"), btnButtonColor.getBackground()); //$NON-NLS-1$
+				Color color = JColorChooser.showDialog(POSUtil.getBackOfficeWindow(), Messages.getString("MenuItemForm.42"), btnButtonColor.getBackground()); //$NON-NLS-1$
 				btnButtonColor.setBackground(color);
 				btnTextColor.setBackground(color);
 			}
@@ -708,7 +704,7 @@ public class PizzaItemForm extends BeanEditor<MenuItem> implements ActionListene
 		btnTextColor.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Color color = JColorChooser.showDialog(PizzaItemForm.this, Messages.getString("MenuItemForm.43"), btnTextColor.getForeground()); //$NON-NLS-1$
+				Color color = JColorChooser.showDialog(POSUtil.getBackOfficeWindow(), Messages.getString("MenuItemForm.43"), btnTextColor.getForeground()); //$NON-NLS-1$
 				btnTextColor.setForeground(color);
 			}
 		});
@@ -718,7 +714,7 @@ public class PizzaItemForm extends BeanEditor<MenuItem> implements ActionListene
 	}// </editor-fold>//GEN-END:initComponents
 
 	private void btnNewTaxdoCreateNewTax(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewTaxdoCreateNewTax
-		BeanEditorDialog dialog = new BeanEditorDialog(new TaxForm());
+		BeanEditorDialog dialog = new BeanEditorDialog(POSUtil.getBackOfficeWindow(), new TaxForm());
 		dialog.open();
 	}//GEN-LAST:event_btnNewTaxdoCreateNewTax
 
@@ -728,7 +724,7 @@ public class PizzaItemForm extends BeanEditor<MenuItem> implements ActionListene
 
 	private void doCreateNewGroup(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_doCreateNewGroup
 		MenuGroupForm editor = new MenuGroupForm();
-		BeanEditorDialog dialog = new BeanEditorDialog(editor);
+		BeanEditorDialog dialog = new BeanEditorDialog(POSUtil.getBackOfficeWindow(), editor);
 		dialog.open();
 
 		if (!dialog.isCanceled()) {
@@ -742,7 +738,7 @@ public class PizzaItemForm extends BeanEditor<MenuItem> implements ActionListene
 	private void addMenuItemModifierGroup() {
 		try {
 			MenuItemModifierGroupForm form = new MenuItemModifierGroupForm();
-			BeanEditorDialog dialog = new BeanEditorDialog(form);
+			BeanEditorDialog dialog = new BeanEditorDialog(POSUtil.getBackOfficeWindow(), form);
 			dialog.open();
 			if (!dialog.isCanceled()) {
 				MenuItemModifierGroup modifier = (MenuItemModifierGroup) form.getBean();
@@ -773,7 +769,7 @@ public class PizzaItemForm extends BeanEditor<MenuItem> implements ActionListene
 			MenuItemModifierGroup menuItemModifierGroup = menuItemMGListModel.get(index);
 
 			MenuItemModifierGroupForm form = new MenuItemModifierGroupForm(menuItemModifierGroup);
-			BeanEditorDialog dialog = new BeanEditorDialog(form);
+			BeanEditorDialog dialog = new BeanEditorDialog(POSUtil.getBackOfficeWindow(), form);
 			dialog.open();
 			if (!dialog.isCanceled()) {
 				//menuItemModifierGroup.setParentMenuItem((MenuItem) this.getBean());

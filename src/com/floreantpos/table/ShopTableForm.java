@@ -24,7 +24,6 @@ import com.floreantpos.Messages;
 import com.floreantpos.bo.ui.BOMessageDialog;
 import com.floreantpos.extension.ExtensionManager;
 import com.floreantpos.extension.FloorLayoutPlugin;
-
 import com.floreantpos.model.ShopTable;
 import com.floreantpos.model.ShopTableType;
 import com.floreantpos.model.TableBookingInfo;
@@ -180,7 +179,7 @@ public class ShopTableForm extends BeanEditor<ShopTable> {
 
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					BeanEditorDialog dialog = new BeanEditorDialog(floorLayoutPlugin.getBeanEditor());
+					BeanEditorDialog dialog = new BeanEditorDialog(POSUtil.getBackOfficeWindow(), floorLayoutPlugin.getBeanEditor());
 					dialog.open();
 					tableTypeCBoxList.setModel(ShopTableTypeDAO.getInstance().findAll());
 				}

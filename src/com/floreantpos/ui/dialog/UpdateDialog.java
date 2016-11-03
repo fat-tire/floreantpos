@@ -48,7 +48,7 @@ public class UpdateDialog extends POSDialog {
 	private JComboBox cbCheckUpdateStatus;
 
 	public UpdateDialog(String[] versions, boolean up_to_date, boolean showTerminalKey) {
-		super(POSUtil.getFocusedWindow(), "Update"); //$NON-NLS-1$
+		super(POSUtil.getBackOfficeWindow(), "Update"); //$NON-NLS-1$
 		setIconImage(Application.getApplicationIcon().getImage());
 		setResizable(false);
 		this.versions = versions;

@@ -46,6 +46,7 @@ import com.floreantpos.swing.TransparentPanel;
 import com.floreantpos.ui.dialog.BeanEditorDialog;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.model.MenuGroupForm;
+import com.floreantpos.util.POSUtil;
 
 public class MenuGroupExplorer extends TransparentPanel {
 
@@ -103,7 +104,7 @@ public class MenuGroupExplorer extends TransparentPanel {
 					MenuGroup menuGroup = tableModel.getRow(index);
 
 					MenuGroupForm editor = new MenuGroupForm(menuGroup);
-					BeanEditorDialog dialog = new BeanEditorDialog(editor);
+					BeanEditorDialog dialog = new BeanEditorDialog(POSUtil.getBackOfficeWindow(), editor);
 					dialog.open();
 					if (dialog.isCanceled())
 						return;
@@ -119,7 +120,7 @@ public class MenuGroupExplorer extends TransparentPanel {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					MenuGroupForm editor = new MenuGroupForm();
-					BeanEditorDialog dialog = new BeanEditorDialog(editor);
+					BeanEditorDialog dialog = new BeanEditorDialog(POSUtil.getBackOfficeWindow(), editor);
 					dialog.open();
 					if (dialog.isCanceled())
 						return;

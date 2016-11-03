@@ -37,6 +37,7 @@ import com.floreantpos.ui.PosTableRenderer;
 import com.floreantpos.ui.dialog.BeanEditorDialog;
 import com.floreantpos.ui.dialog.ConfirmDeleteDialog;
 import com.floreantpos.ui.model.CurrencyForm;
+import com.floreantpos.util.POSUtil;
 
 public class CurrencyExplorer extends TransparentPanel {
 	private JXTable table;
@@ -65,7 +66,7 @@ public class CurrencyExplorer extends TransparentPanel {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					CurrencyForm editor = new CurrencyForm();
-					BeanEditorDialog dialog = new BeanEditorDialog(editor);
+					BeanEditorDialog dialog = new BeanEditorDialog(POSUtil.getBackOfficeWindow(), editor);
 					dialog.open();
 					if (dialog.isCanceled())
 						return;
@@ -91,7 +92,7 @@ public class CurrencyExplorer extends TransparentPanel {
 					Currency currency = tableModel.getRow(index);
 
 					CurrencyForm currencyForm = new CurrencyForm(currency);
-					BeanEditorDialog dialog = new BeanEditorDialog(currencyForm);
+					BeanEditorDialog dialog = new BeanEditorDialog(POSUtil.getBackOfficeWindow(), currencyForm);
 					dialog.open();
 					if (dialog.isCanceled())
 						return;
@@ -112,8 +113,8 @@ public class CurrencyExplorer extends TransparentPanel {
 
 					index = table.convertColumnIndexToModel(index);
 
-					if (ConfirmDeleteDialog
-							.showMessage(CurrencyExplorer.this, com.floreantpos.POSConstants.CONFIRM_DELETE, com.floreantpos.POSConstants.DELETE) == ConfirmDeleteDialog.YES) {
+					if (ConfirmDeleteDialog.showMessage(POSUtil.getBackOfficeWindow(), com.floreantpos.POSConstants.CONFIRM_DELETE,
+							com.floreantpos.POSConstants.DELETE) == ConfirmDeleteDialog.YES) {
 						Currency currency = tableModel.getRow(index);
 						CurrencyDAO.getInstance().delete(currency);
 						tableModel.removeRow(currency);

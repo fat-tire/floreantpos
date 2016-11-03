@@ -69,20 +69,20 @@ public class ModifierGroupExplorer extends TransparentPanel {
 					int index = table.getSelectedRow();
 					if (index < 0)
 						return;
-					
+
 					index = table.convertRowIndexToModel(index);
-					
+
 					MenuModifierGroup category = mGroupList.get(index);
 
 					MenuModifierGroupForm editor = new MenuModifierGroupForm(category);
-					BeanEditorDialog dialog = new BeanEditorDialog(POSUtil.getBackOfficeWindow(),editor);
+					BeanEditorDialog dialog = new BeanEditorDialog(POSUtil.getBackOfficeWindow(), editor);
 					dialog.open();
 					if (dialog.isCanceled())
 						return;
 
 					table.repaint();
 				} catch (Throwable x) {
-				BOMessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
+					BOMessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
 				}
 			}
 
@@ -94,14 +94,14 @@ public class ModifierGroupExplorer extends TransparentPanel {
 
 				try {
 					MenuModifierGroupForm editor = new MenuModifierGroupForm();
-					BeanEditorDialog dialog = new BeanEditorDialog(editor);
+					BeanEditorDialog dialog = new BeanEditorDialog(POSUtil.getBackOfficeWindow(), editor);
 					dialog.open();
 					if (dialog.isCanceled())
 						return;
 					MenuModifierGroup modifierGroup = (MenuModifierGroup) editor.getBean();
 					tableModel.addModifierGroup(modifierGroup);
 				} catch (Throwable x) {
-				BOMessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
+					BOMessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
 				}
 
 			}
@@ -115,17 +115,18 @@ public class ModifierGroupExplorer extends TransparentPanel {
 					int index = table.getSelectedRow();
 					if (index < 0)
 						return;
-					
+
 					index = table.convertRowIndexToModel(index);
-					
-					if (ConfirmDeleteDialog.showMessage(ModifierGroupExplorer.this, com.floreantpos.POSConstants.CONFIRM_DELETE, com.floreantpos.POSConstants.DELETE) != ConfirmDeleteDialog.NO) {
+
+					if (ConfirmDeleteDialog.showMessage(ModifierGroupExplorer.this, com.floreantpos.POSConstants.CONFIRM_DELETE,
+							com.floreantpos.POSConstants.DELETE) != ConfirmDeleteDialog.NO) {
 						MenuModifierGroup category = mGroupList.get(index);
 						ModifierGroupDAO modifierCategoryDAO = new ModifierGroupDAO();
 						modifierCategoryDAO.delete(category);
 						tableModel.deleteModifierGroup(category, index);
 					}
 				} catch (Throwable x) {
-				BOMessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
+					BOMessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
 				}
 
 			}
@@ -137,7 +138,7 @@ public class ModifierGroupExplorer extends TransparentPanel {
 		panel.add(deleteButton);
 		add(panel, BorderLayout.SOUTH);
 	}
-	
+
 	class ModifierGroupExplorerTableModel extends AbstractTableModel {
 		String[] columnNames = { com.floreantpos.POSConstants.ID, com.floreantpos.POSConstants.NAME, POSConstants.TRANSLATED_NAME };
 
@@ -174,7 +175,7 @@ public class ModifierGroupExplorer extends TransparentPanel {
 
 				case 1:
 					return mgroup.getName();
-					
+
 				case 2:
 					return mgroup.getTranslatedName();
 

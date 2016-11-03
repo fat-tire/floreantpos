@@ -36,42 +36,43 @@ import com.floreantpos.ui.PosTableRenderer;
 import com.floreantpos.ui.dialog.BeanEditorDialog;
 import com.floreantpos.ui.dialog.ConfirmDeleteDialog;
 import com.floreantpos.ui.model.TaxForm;
+import com.floreantpos.util.POSUtil;
 
 public class TaxExplorer extends TransparentPanel {
 	private List<Tax> taxList;
-	
+
 	private JTable table;
 
 	private TaxExplorerTableModel tableModel;
-	
+
 	public TaxExplorer() {
 		taxList = TaxDAO.getInstance().findAll();
-		
+
 		tableModel = new TaxExplorerTableModel();
 		table = new JTable(tableModel);
 		table.setDefaultRenderer(Object.class, new PosTableRenderer());
-		
-		setLayout(new BorderLayout(5,5));
+
+		setLayout(new BorderLayout(5, 5));
 		add(new JScrollPane(table));
-		
+
 		JButton addButton = new JButton(com.floreantpos.POSConstants.ADD);
 		addButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					TaxForm editor = new TaxForm();
-					BeanEditorDialog dialog = new BeanEditorDialog(editor);
+					BeanEditorDialog dialog = new BeanEditorDialog(POSUtil.getBackOfficeWindow(), editor);
 					dialog.open();
 					if (dialog.isCanceled())
 						return;
 
 					tableModel.addTax((Tax) editor.getBean());
 				} catch (Exception x) {
-				BOMessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
+					BOMessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
 				}
 			}
-			
+
 		});
-		
+
 		JButton editButton = new JButton(com.floreantpos.POSConstants.EDIT);
 		editButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -83,17 +84,17 @@ public class TaxExplorer extends TransparentPanel {
 					Tax tax = taxList.get(index);
 
 					TaxForm taxForm = new TaxForm(tax);
-					BeanEditorDialog dialog = new BeanEditorDialog(taxForm);
+					BeanEditorDialog dialog = new BeanEditorDialog(POSUtil.getBackOfficeWindow(), taxForm);
 					dialog.open();
 					if (dialog.isCanceled())
 						return;
 
 					table.repaint();
 				} catch (Throwable x) {
-				BOMessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
+					BOMessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
 				}
 			}
-			
+
 		});
 		JButton deleteButton = new JButton(com.floreantpos.POSConstants.DELETE);
 		deleteButton.addActionListener(new ActionListener() {
@@ -109,10 +110,10 @@ public class TaxExplorer extends TransparentPanel {
 						tableModel.deleteTax(tax, index);
 					}
 				} catch (Exception x) {
-				BOMessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
+					BOMessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
 				}
 			}
-			
+
 		});
 
 		TransparentPanel panel = new TransparentPanel();
@@ -121,12 +122,12 @@ public class TaxExplorer extends TransparentPanel {
 		panel.add(deleteButton);
 		add(panel, BorderLayout.SOUTH);
 	}
-	
+
 	class TaxExplorerTableModel extends AbstractTableModel {
-		String[] columnNames = {POSConstants.ID, POSConstants.NAME, POSConstants.RATE};
-		
+		String[] columnNames = { POSConstants.ID, POSConstants.NAME, POSConstants.RATE };
+
 		public int getRowCount() {
-			if(taxList == null) {
+			if (taxList == null) {
 				return 0;
 			}
 			return taxList.size();
@@ -135,33 +136,33 @@ public class TaxExplorer extends TransparentPanel {
 		public int getColumnCount() {
 			return columnNames.length;
 		}
-		
+
 		@Override
 		public String getColumnName(int column) {
 			return columnNames[column];
 		}
-		
+
 		@Override
 		public boolean isCellEditable(int rowIndex, int columnIndex) {
 			return false;
 		}
 
 		public Object getValueAt(int rowIndex, int columnIndex) {
-			if(taxList == null)
+			if (taxList == null)
 				return ""; //$NON-NLS-1$
-			
+
 			Tax tax = taxList.get(rowIndex);
-			
-			switch(columnIndex) {
+
+			switch (columnIndex) {
 				case 0:
 					return String.valueOf(tax.getId());
-					
+
 				case 1:
 					return tax.getName();
-					
+
 				case 2:
 					return tax.getRate();
-					
+
 			}
 
 			return null;
@@ -172,7 +173,7 @@ public class TaxExplorer extends TransparentPanel {
 			taxList.add(tax);
 			fireTableRowsInserted(size, size);
 		}
-		
+
 		public void deleteTax(Tax tax, int index) {
 			taxList.remove(tax);
 			fireTableRowsDeleted(index, index);

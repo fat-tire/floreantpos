@@ -318,7 +318,7 @@ public class MenuModifierForm extends BeanEditor {
 	private void btnNewTaxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewTaxActionPerformed
 		try {
 			TaxForm editor = new TaxForm();
-			BeanEditorDialog dialog = new BeanEditorDialog(editor);
+			BeanEditorDialog dialog = new BeanEditorDialog(POSUtil.getBackOfficeWindow(), editor);
 			dialog.open();
 			if (!dialog.isCanceled()) {
 				Tax tax = (Tax) editor.getBean();

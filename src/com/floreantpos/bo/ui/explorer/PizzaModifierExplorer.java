@@ -2,7 +2,6 @@ package com.floreantpos.bo.ui.explorer;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -35,9 +34,9 @@ import com.floreantpos.swing.PosUIManager;
 import com.floreantpos.swing.TransparentPanel;
 import com.floreantpos.ui.dialog.BeanEditorDialog;
 import com.floreantpos.ui.dialog.ConfirmDeleteDialog;
-import com.floreantpos.ui.model.MenuModifierForm;
 import com.floreantpos.ui.model.PizzaModifierForm;
 import com.floreantpos.util.CurrencyUtil;
+import com.floreantpos.util.POSUtil;
 
 public class PizzaModifierExplorer extends TransparentPanel {
 
@@ -80,7 +79,7 @@ public class PizzaModifierExplorer extends TransparentPanel {
 			MenuModifier modifier = (MenuModifier) tableModel.getRowData(index);
 
 			PizzaModifierForm editor = new PizzaModifierForm(modifier);
-			BeanEditorDialog dialog = new BeanEditorDialog(editor);
+			BeanEditorDialog dialog = new BeanEditorDialog(POSUtil.getBackOfficeWindow(), editor);
 			dialog.open();
 			if (dialog.isCanceled())
 				return;
@@ -98,7 +97,7 @@ public class PizzaModifierExplorer extends TransparentPanel {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					PizzaModifierForm editor = new PizzaModifierForm();
-					BeanEditorDialog dialog = new BeanEditorDialog(editor);
+					BeanEditorDialog dialog = new BeanEditorDialog(POSUtil.getBackOfficeWindow(), editor);
 					dialog.open();
 					if (dialog.isCanceled())
 						return;
@@ -115,7 +114,6 @@ public class PizzaModifierExplorer extends TransparentPanel {
 				editSelectedRow();
 			}
 		});
-
 
 		explorerButtonPanel.getDeleteButton().addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
