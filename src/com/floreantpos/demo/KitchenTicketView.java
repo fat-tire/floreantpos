@@ -64,7 +64,7 @@ import com.floreantpos.swing.TimerWatch;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 
 public class KitchenTicketView extends JPanel {
-	KitchenTicket ticket;
+	KitchenTicket kitchenTicket;
 	JLabel ticketId = new JLabel();
 	KitchenTicketTableModel tableModel;
 	JTable table;
@@ -79,7 +79,7 @@ public class KitchenTicketView extends JPanel {
 	private JLabel serverInfo;
 
 	public KitchenTicketView(KitchenTicket ticket) {
-		this.ticket = ticket;
+		this.kitchenTicket = ticket;
 
 		//		Border emptyBorder = BorderFactory.createEmptyBorder(5, 5, 5, 5);
 		//		setBorder(BorderFactory.createCompoundBorder(emptyBorder,
@@ -355,21 +355,21 @@ public class KitchenTicketView extends JPanel {
 	}
 
 	public KitchenTicket getTicket() {
-		return ticket;
+		return kitchenTicket;
 	}
 
 	public void setTicket(KitchenTicket ticket) {
-		this.ticket = ticket;
+		this.kitchenTicket = ticket;
 	}
 
 	private void closeTicket(KitchenTicketStatus status) {
 		try {
 			stopTimer();
 
-			ticket.setStatus(status.name());
-			ticket.setClosingDate(new Date());
+			kitchenTicket.setStatus(status.name());
+			kitchenTicket.setClosingDate(new Date());
 
-			Ticket parentTicket = TicketDAO.getInstance().load(ticket.getTicketId());
+			Ticket parentTicket = TicketDAO.getInstance().load(kitchenTicket.getTicketId());
 
 			Transaction tx = null;
 			Session session = null;
@@ -377,9 +377,9 @@ public class KitchenTicketView extends JPanel {
 			try {
 				session = KitchenTicketItemDAO.getInstance().createNewSession();
 				tx = session.beginTransaction();
-				for (KitchenTicketItem kitchenTicketItem : ticket.getTicketItems()) {
+				for (KitchenTicketItem kitchenTicketItem : kitchenTicket.getTicketItems()) {
 					kitchenTicketItem.setStatus(status.name());
-
+//Question: Do we actually need status in original ticket item?
 					int itemCount = kitchenTicketItem.getQuantity();
 
 					for (TicketItem item : parentTicket.getTicketItems()) {
@@ -411,7 +411,7 @@ public class KitchenTicketView extends JPanel {
 				session.close();
 			}
 
-			KitchenTicketDAO.getInstance().saveOrUpdate(ticket);
+			KitchenTicketDAO.getInstance().saveOrUpdate(kitchenTicket);
 			Container parent = this.getParent();
 			parent.remove(this);
 			parent.revalidate();

@@ -115,17 +115,21 @@ public abstract class ViewChangeAction extends PosAction {
 	}
 
 	private void saveTicketIfNeeded() {
-		Ticket currentTicket = OrderView.getInstance().getCurrentTicket();
+		OrderView orderView = OrderView.getInstance();
+		if(!orderView.isVisible()) {
+			return;
+		}
+		Ticket currentTicket = orderView.getCurrentTicket();
 		if (currentTicket == null)
 			return;
 		if (!currentTicket.getTicketItems().isEmpty()) {
 			if (hasNewItem(currentTicket)) {
 				if (POSMessageDialog.showYesNoQuestionDialog(POSUtil.getFocusedWindow(), "Do you to save the changes?", "Save Ticket") == JOptionPane.YES_OPTION) {
-					OrderView.getInstance().getTicketView().saveTicketIfNeeded();
+					orderView.getTicketView().saveTicketIfNeeded();
 				}
 			}
 			else
-				OrderView.getInstance().getTicketView().saveTicketIfNeeded();
+				orderView.getTicketView().saveTicketIfNeeded();
 		}
 	}
 
