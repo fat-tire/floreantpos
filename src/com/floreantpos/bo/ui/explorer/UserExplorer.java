@@ -149,7 +149,8 @@ public class UserExplorer extends TransparentPanel {
 				}
 
 				try {
-					if (ConfirmDeleteDialog.showMessage(UserExplorer.this, com.floreantpos.POSConstants.CONFIRM_DELETE, com.floreantpos.POSConstants.DELETE) == ConfirmDeleteDialog.YES) {
+					if (ConfirmDeleteDialog.showMessage(POSUtil.getBackOfficeWindow(), com.floreantpos.POSConstants.CONFIRM_DELETE,
+							com.floreantpos.POSConstants.DELETE) == ConfirmDeleteDialog.YES) {
 						UserDAO.getInstance().delete(user);
 						tableModel.deleteItem(index);
 					}

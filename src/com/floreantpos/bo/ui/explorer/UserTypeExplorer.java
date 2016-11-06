@@ -30,6 +30,7 @@ import javax.swing.table.AbstractTableModel;
 import com.floreantpos.bo.ui.BOMessageDialog;
 import com.floreantpos.model.UserType;
 import com.floreantpos.model.dao.UserTypeDAO;
+import com.floreantpos.swing.PosUIManager;
 import com.floreantpos.swing.TransparentPanel;
 import com.floreantpos.ui.PosTableRenderer;
 import com.floreantpos.ui.dialog.BeanEditorDialog;
@@ -50,6 +51,7 @@ public class UserTypeExplorer extends TransparentPanel {
 
 		tableModel = new UserTypeExplorerTableModel();
 		table = new JTable(tableModel);
+		table.setRowHeight(PosUIManager.getSize(20));
 		table.setDefaultRenderer(Object.class, new PosTableRenderer());
 
 		setLayout(new BorderLayout(5, 5));
@@ -61,6 +63,7 @@ public class UserTypeExplorer extends TransparentPanel {
 				try {
 					UserTypeForm editor = new UserTypeForm();
 					BeanEditorDialog dialog = new BeanEditorDialog(POSUtil.getBackOfficeWindow(), editor);
+					dialog.setPreferredSize(PosUIManager.getSize(500, 450));
 					dialog.open();
 					if (dialog.isCanceled())
 						return;
@@ -86,6 +89,7 @@ public class UserTypeExplorer extends TransparentPanel {
 					UserTypeForm editor = new UserTypeForm();
 					editor.setUserType(type);
 					BeanEditorDialog dialog = new BeanEditorDialog(POSUtil.getBackOfficeWindow(), editor);
+					dialog.setPreferredSize(PosUIManager.getSize(500, 450));
 					dialog.open();
 					if (dialog.isCanceled())
 						return;
