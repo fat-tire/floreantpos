@@ -18,15 +18,17 @@
 package com.floreantpos.report;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.LinkedHashMap;
 
 import com.floreantpos.model.ITicketItem;
 import com.floreantpos.model.Ticket;
+import com.floreantpos.model.TicketItem;
 import com.floreantpos.ui.ticket.TicketItemRowCreator;
 import com.floreantpos.util.NumberUtil;
 
 public class TicketDataSource extends AbstractReportDataSource {
-	
+
 	public TicketDataSource() {
 		super(new String[] { "itemName", "itemQty", "itemSubtotal" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	}
@@ -36,14 +38,19 @@ public class TicketDataSource extends AbstractReportDataSource {
 
 		setTicket(ticket);
 	}
-	
+
 	private void setTicket(Ticket ticket) {
 		ArrayList<ITicketItem> rows = new ArrayList<ITicketItem>();
 
 		LinkedHashMap<String, ITicketItem> tableRows = new LinkedHashMap<String, ITicketItem>();
 		TicketItemRowCreator.calculateTicketRows(ticket, tableRows);
 
-		rows.addAll(tableRows.values());
+		Collection<ITicketItem> items = tableRows.values();
+		for (ITicketItem item : items) {
+			if (item instanceof TicketItem && ((TicketItem) item).isTreatAsSeat())
+				continue;
+			rows.add(item);
+		}
 		setRows(rows);
 	}
 
@@ -59,10 +66,10 @@ public class TicketDataSource extends AbstractReportDataSource {
 
 			case 2:
 				Double total = item.getSubTotalAmountWithoutModifiersDisplay();
-				if(total == null) {
+				if (total == null) {
 					return null;
 				}
-				
+
 				return NumberUtil.formatNumber(total);
 		}
 

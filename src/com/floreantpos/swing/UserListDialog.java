@@ -35,6 +35,8 @@ import com.floreantpos.model.User;
 import com.floreantpos.model.dao.UserDAO;
 import com.floreantpos.ui.dialog.OkCancelOptionDialog;
 import com.floreantpos.ui.dialog.POSMessageDialog;
+import com.floreantpos.ui.dialog.PasswordEntryDialog;
+import com.floreantpos.util.POSUtil;
 import com.floreantpos.util.ShiftUtil;
 
 public class UserListDialog extends OkCancelOptionDialog {
@@ -76,6 +78,7 @@ public class UserListDialog extends OkCancelOptionDialog {
 			POSMessageDialog.showError(Application.getPosWindow(), Messages.getString("UserListDialog.4")); //$NON-NLS-1$
 			return;
 		}
+		boolean canceled = false;
 		if (!user.isClockedIn()) {
 			User loginUser = Application.getCurrentUser();
 			String userString = user.getFullName() + " is";
@@ -83,16 +86,25 @@ public class UserListDialog extends OkCancelOptionDialog {
 				userString = "You are";
 			}
 			int option = POSMessageDialog.showYesNoQuestionDialog(Application.getPosWindow(), userString
-					+ " currently clocked out. Do you want to be clocked in too?", Messages.getString("Application.44")); //$NON-NLS-1$ //$NON-NLS-2$
+					+ " not clocked in. User needs to be clocked in for drawer assignment.", Messages.getString("Application.44"), "CLOCK IN", "CANCEL"); //$NON-NLS-1$ //$NON-NLS-2$
 			if (option == JOptionPane.YES_OPTION) {
+				User inputUser = PasswordEntryDialog.getUser(Application.getPosWindow(), Messages.getString("LoginView.1"), Messages.getString("LoginView.2")); //$NON-NLS-1$ //$NON-NLS-2$
+				if (inputUser == null)
+					return;
+
+				if (user.getUserId().intValue() != inputUser.getUserId().intValue()) {
+					POSMessageDialog.showMessage(POSUtil.getFocusedWindow(), "Wrong password.");
+					return;
+				}
 				Shift currentShift = ShiftUtil.getCurrentShift();
 				Calendar currentTime = Calendar.getInstance();
 				user.doClockIn(Application.getInstance().getTerminal(), currentShift, currentTime);
 			}
 			else
-				return;
+				canceled = true;
+
 		}
-		setCanceled(false);
+		setCanceled(canceled);
 		dispose();
 	}
 }
