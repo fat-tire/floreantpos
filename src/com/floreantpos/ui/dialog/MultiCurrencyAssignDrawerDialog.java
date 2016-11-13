@@ -51,7 +51,7 @@ public class MultiCurrencyAssignDrawerDialog extends OkCancelOptionDialog {
 	private CashDrawer cashDrawer;
 
 	public MultiCurrencyAssignDrawerDialog(double initialAmount, List<Currency> currencyList) {
-		super();
+		super(Application.getPosWindow());
 		this.initialAmount = initialAmount;
 		this.currencyList = currencyList;
 		init();

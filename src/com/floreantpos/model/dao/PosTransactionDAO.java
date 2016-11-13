@@ -32,53 +32,53 @@ import com.floreantpos.model.TransactionType;
 import com.floreantpos.model.User;
 import com.floreantpos.model.util.TransactionSummary;
 
-
 public class PosTransactionDAO extends BasePosTransactionDAO {
 
 	/**
 	 * Default constructor.  Can be used in place of getInstance()
 	 */
-	public PosTransactionDAO () {}
+	public PosTransactionDAO() {
+	}
 
 	public List<PosTransaction> findUnauthorizedTransactions() {
 		return findUnauthorizedTransactions(null);
 	}
-	
+
 	public List<PosTransaction> findUnauthorizedTransactions(User owner) {
 		Session session = null;
-		
+
 		try {
 			session = getSession();
-			
+
 			Criteria criteria = session.createCriteria(getReferenceClass());
 			criteria.add(Restrictions.eq(PosTransaction.PROP_CAPTURED, Boolean.FALSE));
 			criteria.add(Restrictions.eq(PosTransaction.PROP_AUTHORIZABLE, Boolean.TRUE));
 			criteria.add(Restrictions.eq(PosTransaction.PROP_TRANSACTION_TYPE, TransactionType.CREDIT.name()));
 			criteria.add(Restrictions.isNotNull(PosTransaction.PROP_TICKET));
-			
-			if(owner != null) {
+
+			if (owner != null) {
 				criteria.add(Restrictions.eq(PosTransaction.PROP_USER, owner));
 			}
-			
+
 			return criteria.list();
 		} finally {
 			closeSession(session);
 		}
 	}
-	
-	public List<? extends PosTransaction> findTransactions(Terminal terminal, Class transactionClass, Date from, Date to ) {
+
+	public List<? extends PosTransaction> findTransactions(Terminal terminal, Class transactionClass, Date from, Date to) {
 		Session session = null;
 
 		try {
 			session = getSession();
-			
+
 			Criteria criteria = session.createCriteria(transactionClass);
 			criteria.add(Restrictions.isNotNull(PosTransaction.PROP_TICKET));
-			if(terminal != null) {
+			if (terminal != null) {
 				criteria.add(Restrictions.eq(PosTransaction.PROP_TERMINAL, terminal));
 			}
-			
-			if(from != null && to != null) {
+
+			if (from != null && to != null) {
 				//criteria.add(Restrictions.ge(PosTransaction.PROP_TRANSACTION_TIME, from));
 				//criteria.add(Restrictions.le(PosTransaction.PROP_TRANSACTION_TIME, to));
 			}
@@ -88,7 +88,24 @@ public class PosTransactionDAO extends BasePosTransactionDAO {
 			closeSession(session);
 		}
 	}
-	
+
+	public List<? extends PosTransaction> findTransactions(Class transactionClass, Date from, Date to) {
+		Session session = null;
+
+		try {
+			session = getSession();
+			Criteria criteria = session.createCriteria(transactionClass);
+			criteria.add(Restrictions.isNotNull(PosTransaction.PROP_TICKET));
+			if (from != null && to != null) {
+				criteria.add(Restrictions.ge(PosTransaction.PROP_TRANSACTION_TIME, from));
+				criteria.add(Restrictions.le(PosTransaction.PROP_TRANSACTION_TIME, to));
+			}
+			return criteria.list();
+		} finally {
+			closeSession(session);
+		}
+	}
+
 	public TransactionSummary getTransactionSummary(Terminal terminal, Class transactionClass, Date from, Date to) {
 		Session session = null;
 		TransactionSummary summary = new TransactionSummary();
@@ -97,12 +114,12 @@ public class PosTransactionDAO extends BasePosTransactionDAO {
 
 			Criteria criteria = session.createCriteria(transactionClass);
 			criteria.add(Restrictions.eq(PosTransaction.PROP_DRAWER_RESETTED, Boolean.FALSE));
-			
-			if(terminal != null) {
+
+			if (terminal != null) {
 				criteria.add(Restrictions.eq(PosTransaction.PROP_TERMINAL, terminal));
 			}
-			
-			if(from != null && to != null) {
+
+			if (from != null && to != null) {
 				criteria.add(Restrictions.ge(PosTransaction.PROP_TRANSACTION_TIME, from));
 				criteria.add(Restrictions.le(PosTransaction.PROP_TRANSACTION_TIME, to));
 			}
@@ -121,11 +138,11 @@ public class PosTransactionDAO extends BasePosTransactionDAO {
 
 			Object[] o = (Object[]) list.get(0);
 			int index = 0;
-			
+
 			summary.setCount(HibernateProjectionsUtil.getInt(o, index++));
 			summary.setAmount(HibernateProjectionsUtil.getDouble(o, index++));
 			summary.setTipsAmount(HibernateProjectionsUtil.getDouble(o, index++));
-			
+
 			return summary;
 		} finally {
 			closeSession(session);

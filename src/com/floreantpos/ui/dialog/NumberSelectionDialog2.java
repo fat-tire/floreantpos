@@ -27,6 +27,7 @@ import javax.swing.JTextField;
 import net.miginfocom.swing.MigLayout;
 
 import com.floreantpos.POSConstants;
+import com.floreantpos.main.Application;
 import com.floreantpos.swing.NumericKeypad;
 import com.floreantpos.swing.PosUIManager;
 
@@ -37,7 +38,7 @@ public class NumberSelectionDialog2 extends OkCancelOptionDialog {
 	private boolean floatingPoint;
 
 	public NumberSelectionDialog2() {
-		super();
+		super(Application.getPosWindow());
 		init();
 	}
 

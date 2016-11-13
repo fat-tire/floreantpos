@@ -20,33 +20,31 @@ package com.floreantpos.report;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
-import com.floreantpos.model.CreditCardTransaction;
+import com.floreantpos.model.CustomPaymentTransaction;
 import com.floreantpos.swing.ListTableModel;
 import com.floreantpos.util.NumberUtil;
 
-public class CardReportModel extends ListTableModel<CreditCardTransaction> {
+public class CustomPaymentReportModel extends ListTableModel<CustomPaymentTransaction> {
+	private SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
 
-	final String DATE_FORMAT = "dd-MM-yyyy";
-
-	public CardReportModel(List<CreditCardTransaction> datas) {
-		super(new String[] { "ticketId", "cardType", "date", "server", "authCode", "tips", "total" }, datas); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
+	public CustomPaymentReportModel(List<CustomPaymentTransaction> data) {
+		super(new String[] { "ticketId", "paymentType", "date", "server", "authCode", "tips", "total" }, data); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
 	}
 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		CreditCardTransaction transaction = getRowData(rowIndex);
+		CustomPaymentTransaction transaction = getRowData(rowIndex);
 
 		switch (columnIndex) {
 			case 0:
 				return String.valueOf(transaction.getTicket().getId());
 
 			case 1:
-				return transaction.getCardType();
-				
+				return transaction.getPaymentType();
+
 			case 2:
-				SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
-				return String.valueOf(sdf.format(transaction.getTransactionTime()));
-				
+				return String.valueOf(formatter.format(transaction.getTransactionTime()));
+
 			case 3:
 				return transaction.getTicket().getOwner().getFullName();
 
@@ -62,5 +60,4 @@ public class CardReportModel extends ListTableModel<CreditCardTransaction> {
 
 		return null;
 	}
-
 }
