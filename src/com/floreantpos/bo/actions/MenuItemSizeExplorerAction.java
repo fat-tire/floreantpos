@@ -6,14 +6,14 @@ import javax.swing.AbstractAction;
 import javax.swing.Icon;
 import javax.swing.JTabbedPane;
 
+import com.floreantpos.Messages;
 import com.floreantpos.bo.ui.BackOfficeWindow;
 import com.floreantpos.bo.ui.explorer.MenuItemSizeExplorer;
-import com.floreantpos.bo.ui.explorer.PizzaCrustExplorer;
 
 public class MenuItemSizeExplorerAction extends AbstractAction {
 
 	public MenuItemSizeExplorerAction() {
-		super("Size");
+		super(Messages.getString("MenuItemSizeExplorerAction.0")); //$NON-NLS-1$
 	}
 
 	public MenuItemSizeExplorerAction(String name) {
@@ -29,10 +29,10 @@ public class MenuItemSizeExplorerAction extends AbstractAction {
 
 		MenuItemSizeExplorer explorer = null;
 		JTabbedPane tabbedPane = backOfficeWindow.getTabbedPane();
-		int index = tabbedPane.indexOfTab("Size");
+		int index = tabbedPane.indexOfTab(Messages.getString("MenuItemSizeExplorerAction.0")); //$NON-NLS-1$
 		if (index == -1) {
 			explorer = new MenuItemSizeExplorer();
-			tabbedPane.addTab("Size", explorer);
+			tabbedPane.addTab(Messages.getString("MenuItemSizeExplorerAction.0"), explorer); //$NON-NLS-1$
 		}
 		else {
 			explorer = (MenuItemSizeExplorer) tabbedPane.getComponentAt(index);

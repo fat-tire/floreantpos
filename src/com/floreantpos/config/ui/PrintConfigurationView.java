@@ -141,8 +141,8 @@ public class PrintConfigurationView extends ConfigurationView {
 		//printService = (PrintService) cbKitchenPrinterName.getSelectedItem();
 		//AppConfig.put(PrintConfig.KITCHEN_PRINTER_NAME, printService == null ? null : printService.getName());
 
-		AppConfig.put("YellowTimeOut", txtYellowTime.getText());
-		AppConfig.put("RedTimeOut", txtRedTime.getText());
+		AppConfig.put("YellowTimeOut", txtYellowTime.getText()); //$NON-NLS-1$
+		AppConfig.put("RedTimeOut", txtRedTime.getText()); //$NON-NLS-1$
 
 		//Application.getPrinters().save();
 
@@ -187,22 +187,22 @@ public class PrintConfigurationView extends ConfigurationView {
 		txtYellowTime = new JTextField(5);
 		txtRedTime = new JTextField(5);
 
-		txtYellowTime.setText("90");
-		txtRedTime.setText("120");
+		txtYellowTime.setText("90"); //$NON-NLS-1$
+		txtRedTime.setText("120"); //$NON-NLS-1$
 
-		footerPanel.setBorder(BorderFactory.createTitledBorder("Kitchen Display"));
+		footerPanel.setBorder(BorderFactory.createTitledBorder(Messages.getString("PrintConfigurationView.6"))); //$NON-NLS-1$
 
-		JLabel lblYellowTime = new JLabel("Yellow Time Out: ");
-		JLabel lblRedTime = new JLabel("Red Time Out: ");
+		JLabel lblYellowTime = new JLabel(Messages.getString("PrintConfigurationView.7")); //$NON-NLS-1$
+		JLabel lblRedTime = new JLabel(Messages.getString("PrintConfigurationView.9")); //$NON-NLS-1$
 
-		footerPanel.add(lblYellowTime, "grow");
-		footerPanel.add(txtYellowTime, "grow");
-		footerPanel.add(new JLabel("sec"), "grow, wrap");
-		footerPanel.add(lblRedTime, "grow");
-		footerPanel.add(txtRedTime, "grow");
-		footerPanel.add(new JLabel("sec"), "grow");
+		footerPanel.add(lblYellowTime, "grow"); //$NON-NLS-1$
+		footerPanel.add(txtYellowTime, "grow"); //$NON-NLS-1$
+		footerPanel.add(new JLabel(Messages.getString("PrintConfigurationView.1")), "grow, wrap"); //$NON-NLS-1$ //$NON-NLS-2$
+		footerPanel.add(lblRedTime, "grow"); //$NON-NLS-1$
+		footerPanel.add(txtRedTime, "grow"); //$NON-NLS-1$
+		footerPanel.add(new JLabel("sec"), "grow"); //$NON-NLS-1$ //$NON-NLS-2$
 
-		contentPanel.add(footerPanel, "newline, grow, span 2,wrap");
+		contentPanel.add(footerPanel, "newline, grow, span 2,wrap"); //$NON-NLS-1$
 
 		JScrollPane scrollPane = new JScrollPane(contentPanel);
 		scrollPane.setBorder(null); 

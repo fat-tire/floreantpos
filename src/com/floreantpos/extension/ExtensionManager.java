@@ -46,7 +46,7 @@ public class ExtensionManager {
 		URI uri = new File(jarLocation).toURI();
 		pluginManager.addPluginsFrom(uri);
 
-		String pluginsPath = System.getProperty("pluginsPath");
+		String pluginsPath = System.getProperty("pluginsPath"); //$NON-NLS-1$
 
 		if (StringUtils.isNotEmpty(pluginsPath)) {
 			pluginManager.addPluginsFrom(new File(pluginsPath).toURI());

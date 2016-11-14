@@ -23,14 +23,14 @@ import javax.swing.AbstractAction;
 import javax.swing.Icon;
 import javax.swing.JTabbedPane;
 
+import com.floreantpos.Messages;
 import com.floreantpos.bo.ui.BackOfficeWindow;
-import com.floreantpos.bo.ui.explorer.ModifierExplorer;
 import com.floreantpos.bo.ui.explorer.PizzaModifierExplorer;
 
 public class PizzaModifierExplorerAction extends AbstractAction {
 
 	public PizzaModifierExplorerAction() {
-		super("Pizza Modifier");
+		super(Messages.getString("PizzaModifierExplorerAction.0")); //$NON-NLS-1$
 	}
 
 	public PizzaModifierExplorerAction(String name) {
@@ -46,10 +46,10 @@ public class PizzaModifierExplorerAction extends AbstractAction {
 		JTabbedPane tabbedPane;
 		PizzaModifierExplorer modifier;
 		tabbedPane = backOfficeWindow.getTabbedPane();
-		int index = tabbedPane.indexOfTab("Pizza Modifier Explorer");
+		int index = tabbedPane.indexOfTab(Messages.getString("PizzaModifierExplorerAction.1")); //$NON-NLS-1$
 		if (index == -1) {
 			modifier = new PizzaModifierExplorer();
-			tabbedPane.addTab("Pizza Modifier Explorer", modifier);
+			tabbedPane.addTab(Messages.getString("PizzaModifierExplorerAction.1"), modifier); //$NON-NLS-1$
 		}
 		else {
 			modifier = (PizzaModifierExplorer) tabbedPane.getComponentAt(index);

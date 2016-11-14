@@ -121,7 +121,7 @@ public class DefaultCustomerListView extends CustomerSelector {
 			}
 		});
 
-		PosButton btnKeyboard = new PosButton(IconFactory.getIcon("/images/", "keyboard.png"));
+		PosButton btnKeyboard = new PosButton(IconFactory.getIcon("/images/", "keyboard.png")); //$NON-NLS-1$ //$NON-NLS-2$
 		btnKeyboard.addActionListener(new ActionListener() {
 
 			@Override
@@ -130,14 +130,14 @@ public class DefaultCustomerListView extends CustomerSelector {
 			}
 		});
 
-		searchPanel.add(lblByPhone, "growy");
+		searchPanel.add(lblByPhone, "growy"); //$NON-NLS-1$
 		searchPanel.add(tfMobile, "growy"); //$NON-NLS-1$
-		searchPanel.add(lblByLoyality, "growy");
+		searchPanel.add(lblByLoyality, "growy"); //$NON-NLS-1$
 		searchPanel.add(tfLoyaltyNo, "growy"); //$NON-NLS-1$
-		searchPanel.add(lblByName, "growy");
+		searchPanel.add(lblByName, "growy"); //$NON-NLS-1$
 		searchPanel.add(tfName, "growy"); //$NON-NLS-1$
-		searchPanel.add(btnKeyboard, "growy,w " + PosUIManager.getSize(80) + "!,h " + PosUIManager.getSize(35) + "!"); //$NON-NLS-1$
-		searchPanel.add(btnSearch, ",growy,h " + PosUIManager.getSize(35) + "!"); //$NON-NLS-1$
+		searchPanel.add(btnKeyboard, "growy,w " + PosUIManager.getSize(80) + "!,h " + PosUIManager.getSize(35) + "!"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		searchPanel.add(btnSearch, ",growy,h " + PosUIManager.getSize(35) + "!"); //$NON-NLS-1$ //$NON-NLS-2$
 
 		add(searchPanel, "cell 0 1"); //$NON-NLS-1$
 
@@ -172,20 +172,20 @@ public class DefaultCustomerListView extends CustomerSelector {
 
 		customerListPanel.add(scrollPane, BorderLayout.CENTER);
 
-		JPanel panel = new JPanel(new MigLayout("hidemode 3,al center", "sg", ""));
+		JPanel panel = new JPanel(new MigLayout("hidemode 3,al center", "sg", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 		btnInfo = new PosButton(Messages.getString("CustomerSelectionDialog.23")); //$NON-NLS-1$
 		btnInfo.setFocusable(false);
-		panel.add(btnInfo, "grow");
+		panel.add(btnInfo, "grow"); //$NON-NLS-1$
 		btnInfo.setEnabled(false);
 
 		PosButton btnHistory = new PosButton(Messages.getString("CustomerSelectionDialog.24")); //$NON-NLS-1$
 		btnHistory.setEnabled(false);
-		panel.add(btnHistory, "grow");
+		panel.add(btnHistory, "grow"); //$NON-NLS-1$
 
 		btnCreateNewCustomer = new PosButton(Messages.getString("CustomerSelectionDialog.25")); //$NON-NLS-1$
 		btnCreateNewCustomer.setFocusable(false);
-		panel.add(btnCreateNewCustomer, "grow");
+		panel.add(btnCreateNewCustomer, "grow"); //$NON-NLS-1$
 		btnCreateNewCustomer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				doCreateNewCustomer();
@@ -198,7 +198,7 @@ public class DefaultCustomerListView extends CustomerSelector {
 				doRemoveCustomerFromTicket();
 			}
 		});
-		panel.add(btnRemoveCustomer, "grow");
+		panel.add(btnRemoveCustomer, "grow"); //$NON-NLS-1$
 
 		PosButton btnSelect = new PosButton(Messages.getString("CustomerSelectionDialog.28")); //$NON-NLS-1$
 		btnSelect.addActionListener(new ActionListener() {
@@ -211,15 +211,15 @@ public class DefaultCustomerListView extends CustomerSelector {
 				}
 			}
 		});
-		panel.add(btnSelect, "grow");
+		panel.add(btnSelect, "grow"); //$NON-NLS-1$
 
-		btnCancel = new PosButton(Messages.getString("CustomerSelectionDialog.29"));
+		btnCancel = new PosButton(Messages.getString("CustomerSelectionDialog.29")); //$NON-NLS-1$
 		btnCancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				closeDialog(true);
 			}
 		});
-		panel.add(btnCancel, "grow");
+		panel.add(btnCancel, "grow"); //$NON-NLS-1$
 
 		customerListPanel.add(panel, BorderLayout.SOUTH);
 		centerPanel.add(customerListPanel, BorderLayout.CENTER); //$NON-NLS-1$

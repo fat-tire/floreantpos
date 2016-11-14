@@ -84,11 +84,11 @@ public class UserPermission extends BaseUserPermission {
 	public final static UserPermission MANAGE_TABLE_LAYOUT = new UserPermission(Messages.getString("UserPermission.20")); //$NON-NLS-1$
 	public final static UserPermission TABLE_BOOKING = new UserPermission(Messages.getString("UserPermission.22")); //$NON-NLS-1$
 	public final static UserPermission MODIFY_PRINTED_TICKET = new UserPermission(Messages.getString("UserPermission.21")); //$NON-NLS-1$
-	public final static UserPermission TRANSFER_TICKET = new UserPermission("Transfer Ticket");
-	public final static UserPermission KITCHEN_DISPLAY = new UserPermission("Kitchen Display");
-	public final static UserPermission ALL_FUNCTIONS = new UserPermission("All Functions");
-	public final static UserPermission HOLD_TICKET = new UserPermission("Hold Ticket");
-	public final static UserPermission VIEW_ALL_CLOSE_TICKETS = new UserPermission("View All Close Tickets");
+	public final static UserPermission TRANSFER_TICKET = new UserPermission("Transfer Ticket"); //$NON-NLS-1$
+	public final static UserPermission KITCHEN_DISPLAY = new UserPermission("Kitchen Display"); //$NON-NLS-1$
+	public final static UserPermission ALL_FUNCTIONS = new UserPermission("All Functions"); //$NON-NLS-1$
+	public final static UserPermission HOLD_TICKET = new UserPermission("Hold Ticket"); //$NON-NLS-1$
+	public final static UserPermission VIEW_ALL_CLOSE_TICKETS = new UserPermission("View All Close Tickets"); //$NON-NLS-1$
 	
 	//public final static UserPermission VIEW_USER_LIST = new UserPermission("View User List");
 	//public final static UserPermission GRATUITY_ADMINISTRATION = new UserPermission("Gratuity Administration");

@@ -128,7 +128,7 @@ public class DatabaseConfigurationDialog extends POSDialog implements ActionList
 		btnExit = new PosButton(Messages.getString("DatabaseConfigurationDialog.28").toUpperCase()); //$NON-NLS-1$
 		btnExit.setActionCommand(CANCEL);
 
-		JPanel buttonPanel = new JPanel(new MigLayout("inset 0, fill", "grow", ""));
+		JPanel buttonPanel = new JPanel(new MigLayout("inset 0, fill", "grow", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 		btnCreateDb = new PosButton(Messages.getString("DatabaseConfigurationDialog.29").toUpperCase()); //$NON-NLS-1$
 		btnCreateDb.setActionCommand(CREATE_DATABASE);

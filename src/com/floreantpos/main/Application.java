@@ -196,12 +196,12 @@ public class Application {
 		PosWebService service = new PosWebService();
 		try {
 			String versionInfo = service.getAvailableNewVersions(TerminalUtil.getSystemUID(), Application.VERSION);
-			if (versionInfo == null || versionInfo.equals("UP_TO_DATE")) {
+			if (versionInfo == null || versionInfo.equals("UP_TO_DATE")) { //$NON-NLS-1$
 				return;
 			}
-			if (versionInfo.startsWith("[")) {
-				versionInfo = versionInfo.replace("[", "").replace(",]", "");
-				String[] availableNewVersions = versionInfo.split(",");
+			if (versionInfo.startsWith("[")) { //$NON-NLS-1$
+				versionInfo = versionInfo.replace("[", "").replace(",]", ""); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+				String[] availableNewVersions = versionInfo.split(","); //$NON-NLS-1$
 				if (availableNewVersions.length > 0) {
 					UpdateDialog dialog = new UpdateDialog(availableNewVersions, false, false);
 					dialog.pack();
@@ -215,13 +215,13 @@ public class Application {
 
 	private boolean hasUpdateScheduleToday() {
 		String status = TerminalConfig.getCheckUpdateStatus();
-		if (status.equals("Never")) {
+		if (status.equals("Never")) { //$NON-NLS-1$
 			return false;
 		}
-		else if (status.equals("Weekly")) {
+		else if (status.equals("Weekly")) { //$NON-NLS-1$
 			return DateUtil.isStartOfWeek(new Date());
 		}
-		else if (status.equals("Monthly")) {
+		else if (status.equals("Monthly")) { //$NON-NLS-1$
 			return DateUtil.isStartOfMonth(new Date());
 		}
 		return true;
@@ -385,8 +385,9 @@ public class Application {
 	//	}
 
 	public void shutdownPOS() {
-		JOptionPane optionPane = new JOptionPane("What do you want to do?", JOptionPane.QUESTION_MESSAGE, JOptionPane.YES_NO_CANCEL_OPTION,
-				Application.getApplicationIcon(), new String[] { "RESTART", "SHUTDOWN", "CANCEL" });
+		JOptionPane optionPane = new JOptionPane(Messages.getString("Application.1"), JOptionPane.QUESTION_MESSAGE, JOptionPane.YES_NO_CANCEL_OPTION, //$NON-NLS-1$
+				Application.getApplicationIcon(), new String[] {
+						Messages.getString("Application.3"), Messages.getString("Application.5"), Messages.getString("Application.6") }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 		Object[] optionValues = optionPane.getComponents();
 		for (Object object : optionValues) {
@@ -403,20 +404,20 @@ public class Application {
 				}
 			}
 		}
-		JDialog dialog = optionPane.createDialog(Application.getPosWindow(), "Confirm");
+		JDialog dialog = optionPane.createDialog(Application.getPosWindow(), Messages.getString("Application.2")); //$NON-NLS-1$
 		dialog.setIconImage(Application.getApplicationIcon().getImage());
 		int y = dialog.getLocation().y;
 		//System.out.println(y);
 		dialog.setLocation(dialog.getLocation().x, y + 60);
 		dialog.setVisible(true);
 		Object selectedValue = (String) optionPane.getValue();
-		if (selectedValue.equals("RESTART")) {
+		if (selectedValue.equals(Messages.getString("Application.3"))) { //$NON-NLS-1$
 			try {
 				Main.restart();
 			} catch (Exception e) {
 			}
 		}
-		else if (selectedValue.equals("SHUTDOWN")) {
+		else if (selectedValue.equals(Messages.getString("Application.5"))) { //$NON-NLS-1$
 			posWindow.saveSizeAndLocation();
 			System.exit(0);
 		}
@@ -474,8 +475,8 @@ public class Application {
 		try {
 			posWindow.setGlassPaneVisible(true);
 			PasswordEntryDialog dialog2 = new PasswordEntryDialog();
-			dialog2.setTitle("ENTER SECRET KEY");
-			dialog2.setDialogTitle("LOGIN");
+			dialog2.setTitle(Messages.getString("Application.19")); //$NON-NLS-1$
+			dialog2.setDialogTitle(Messages.getString("Application.20")); //$NON-NLS-1$
 			dialog2.pack();
 			dialog2.setLocationRelativeTo(Application.getPosWindow());
 			dialog2.setAutoLogOffMode(true);

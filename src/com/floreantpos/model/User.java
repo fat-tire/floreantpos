@@ -154,14 +154,14 @@ public class User extends BaseUser {
 	public String getStatus() {
 		if (isClockedIn()) {
 			if (isAvailableForDelivery()) {
-				return "Available";
+				return "Available"; //$NON-NLS-1$
 			}
 			else {
-				return "Driving";
+				return "Driving"; //$NON-NLS-1$
 			}
 		}
 		else {
-			return "Not available";
+			return "Not available"; //$NON-NLS-1$
 		}
 	}
 

@@ -50,6 +50,7 @@ import org.jdesktop.swingx.JXTable;
 import org.jdesktop.swingx.table.TableColumnExt;
 import org.jdesktop.swingx.table.TableColumnModelExt;
 
+import com.floreantpos.Messages;
 import com.floreantpos.POSConstants;
 import com.floreantpos.bo.ui.BOMessageDialog;
 import com.floreantpos.config.TerminalConfig;
@@ -67,7 +68,7 @@ public class DrawerPullReportExplorer extends TransparentPanel {
 	private JXDatePicker toDatePicker = UiUtil.getCurrentMonthEnd();
 	private JButton btnGo = new JButton(com.floreantpos.POSConstants.GO);
 	private JButton btnEditActualAmount = new JButton(com.floreantpos.POSConstants.EDIT_ACTUAL_AMOUNT);
-	private JButton btnPrint = new JButton("Print");
+	private JButton btnPrint = new JButton(Messages.getString("DrawerPullReportExplorer.0")); //$NON-NLS-1$
 	private static SimpleDateFormat dateTimeFormatter = new SimpleDateFormat("dd MMM, yyyy hh:mm a"); //$NON-NLS-1$
 	private TableColumnModelExt columnModel;
 	private JXTable table;
@@ -104,7 +105,7 @@ public class DrawerPullReportExplorer extends TransparentPanel {
 			public void actionPerformed(ActionEvent e) {
 				int selectedRow = table.getSelectedRow();
 				if (selectedRow < 0) {
-					BOMessageDialog.showError(DrawerPullReportExplorer.this, "Please select a row to print");
+					BOMessageDialog.showError(DrawerPullReportExplorer.this, Messages.getString("DrawerPullReportExplorer.1")); //$NON-NLS-1$
 					return;
 				}
 				DrawerPullExplorerTableModel model = (DrawerPullExplorerTableModel) table.getModel();
@@ -170,7 +171,7 @@ public class DrawerPullReportExplorer extends TransparentPanel {
 		if (recordedSelectedColumns.isEmpty()) {
 			return;
 		}
-		String str[] = recordedSelectedColumns.split("\\*");
+		String str[] = recordedSelectedColumns.split("\\*"); //$NON-NLS-1$
 		for (int i = 0; i < str.length; i++) {
 			Integer columnIndex = Integer.parseInt(str[i]);
 			columnModel.getColumnExt((columnIndex - i)).setVisible(false);
@@ -194,14 +195,14 @@ public class DrawerPullReportExplorer extends TransparentPanel {
 	}
 
 	class DrawerPullExplorerTableModel extends ListTableModel {
-		String[] columnNames = { com.floreantpos.POSConstants.ID, com.floreantpos.POSConstants.TIME, "TICKET COUNT",
-				com.floreantpos.POSConstants.DRAWER_PULL_AMOUNT, "USER ID", "TERMINAL ID", "BEGIN CASH", "NET SALES", "SALES TAX", "CASH TAX", "TOTAL REVENUE",
-				"GROSS RECEIPTS", "GIFT CERT RETURN COUNT", "GIFT CERT RETURN AMOUNT", "GIFT CERT CHARGE AMOUNT", "CASH RECEIPT NO", "CASH RECEIPT AMOUNT",
-				"CREDIT CARD RECEIPT NO", "CREDIT CARD RECEIPT AMOUNT", "DEBIT CARD RECEIPT NO", "DEBIT CARD RECEIPT AMOUNT", "REFUND RECEIPT COUNT",
-				"REFUND AMOUNT", "RECEIPT DIFFERENTIAL", "CASH BACK", "CASH TIPS", "CHARGED TIPS", "TIPS PAID", "TIPS DIFFERENTIAL", "PAY OUT NO",
-				"PAY OUT AMOUNT", "DRAWER BLEED NO", "DRAWER BLEED AMOUNT", com.floreantpos.POSConstants.ACTUAL_AMOUNT, "VARIANCE", "TOTAL VOIDWST",
-				"TOTAL VOID", "TOTAL DISCOUNT COUNT", "TOTAL DISCOUNT AMOUNT", "TOTAL DISCOUNT SALES", "TOTAL DISCOUNT GUEST", "TOTAL DISCOUNT PARTY SIZE",
-				"TOTAL DISCOUNT CHECK SIZE", "TOTAL DISCOUNT PERCENTAGE", "TOTAL DISCOUNT RATIO" };
+		String[] columnNames = { com.floreantpos.POSConstants.ID, com.floreantpos.POSConstants.TIME, "TICKET COUNT", //$NON-NLS-1$
+				com.floreantpos.POSConstants.DRAWER_PULL_AMOUNT, "USER ID", "TERMINAL ID", "BEGIN CASH", "NET SALES", "SALES TAX", "CASH TAX", "TOTAL REVENUE", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
+				"GROSS RECEIPTS", "GIFT CERT RETURN COUNT", "GIFT CERT RETURN AMOUNT", "GIFT CERT CHARGE AMOUNT", "CASH RECEIPT NO", "CASH RECEIPT AMOUNT", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
+				"CREDIT CARD RECEIPT NO", "CREDIT CARD RECEIPT AMOUNT", "DEBIT CARD RECEIPT NO", "DEBIT CARD RECEIPT AMOUNT", "REFUND RECEIPT COUNT", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+				"REFUND AMOUNT", "RECEIPT DIFFERENTIAL", "CASH BACK", "CASH TIPS", "CHARGED TIPS", "TIPS PAID", "TIPS DIFFERENTIAL", "PAY OUT NO", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
+				"PAY OUT AMOUNT", "DRAWER BLEED NO", "DRAWER BLEED AMOUNT", com.floreantpos.POSConstants.ACTUAL_AMOUNT, "VARIANCE", "TOTAL VOIDWST", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+				"TOTAL VOID", "TOTAL DISCOUNT COUNT", "TOTAL DISCOUNT AMOUNT", "TOTAL DISCOUNT SALES", "TOTAL DISCOUNT GUEST", "TOTAL DISCOUNT PARTY SIZE", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
+				"TOTAL DISCOUNT CHECK SIZE", "TOTAL DISCOUNT PERCENTAGE", "TOTAL DISCOUNT RATIO" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 		DrawerPullExplorerTableModel(List<DrawerPullReport> list) {
 			setRows(list);
@@ -407,13 +408,13 @@ public class DrawerPullReportExplorer extends TransparentPanel {
 	}
 
 	private void saveTableColumnsVisibility(List indices) {
-		String selectedColumns = "";
+		String selectedColumns = ""; //$NON-NLS-1$
 		for (Iterator iterator = indices.iterator(); iterator.hasNext();) {
 			String newSelectedColumn = String.valueOf(iterator.next());
 			selectedColumns += newSelectedColumn;
 
 			if (iterator.hasNext()) {
-				selectedColumns += "*";
+				selectedColumns += "*"; //$NON-NLS-1$
 			}
 		}
 		TerminalConfig.setDrawerPullReportHiddenColumns(selectedColumns);

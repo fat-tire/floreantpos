@@ -147,8 +147,8 @@ public class SetUpWindow extends JFrame implements ActionListener {
 	protected void initUI() {
 		getContentPane().setLayout(new BorderLayout()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
-		JPanel databaseConfigPanel = new JPanel(new MigLayout("fill,hidemode 3", "[150px][fill, grow]", ""));
-		databaseConfigPanel.setBorder(new TitledBorder("Database Configuration"));
+		JPanel databaseConfigPanel = new JPanel(new MigLayout("fill,hidemode 3", "[150px][fill, grow]", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		databaseConfigPanel.setBorder(new TitledBorder(Messages.getString("SetUpWindow.3"))); //$NON-NLS-1$
 		tfServerAddress = new POSTextField();
 		tfServerPort = new POSTextField();
 		tfDatabaseName = new POSTextField();
@@ -172,9 +172,9 @@ public class SetUpWindow extends JFrame implements ActionListener {
 		databaseConfigPanel.add(new JLabel(Messages.getString("DatabaseConfigurationDialog.8"))); //$NON-NLS-1$
 		databaseConfigPanel.add(databaseCombo, "w 200!,grow, split 4"); //$NON-NLS-1$
 
-		databaseConfigPanel.add(btnTestConnection, "w 50!,h 30!");
-		databaseConfigPanel.add(btnCreateDb, "w 100!,h 30!");
-		databaseConfigPanel.add(btnCreateSampleData, "h 30!,wrap");
+		databaseConfigPanel.add(btnTestConnection, "w 50!,h 30!"); //$NON-NLS-1$
+		databaseConfigPanel.add(btnCreateDb, "w 100!,h 30!"); //$NON-NLS-1$
+		databaseConfigPanel.add(btnCreateSampleData, "h 30!,wrap"); //$NON-NLS-1$
 
 		lblServerAddress = new JLabel(Messages.getString("DatabaseConfigurationDialog.10") + ":"); //$NON-NLS-1$ //$NON-NLS-2$
 		databaseConfigPanel.add(lblServerAddress);
@@ -198,15 +198,15 @@ public class SetUpWindow extends JFrame implements ActionListener {
 		btnExit = new PosButton(Messages.getString("DatabaseConfigurationDialog.28").toUpperCase()); //$NON-NLS-1$
 		btnExit.setActionCommand(CANCEL);
 
-		JPanel buttonPanel = new JPanel(new MigLayout("fillx,right"));
+		JPanel buttonPanel = new JPanel(new MigLayout("fillx,right")); //$NON-NLS-1$
 
-		buttonPanel.add(btnSave, "h 40!,split 2,right");
-		buttonPanel.add(btnExit, "h 40!");
+		buttonPanel.add(btnSave, "h 40!,split 2,right"); //$NON-NLS-1$
+		buttonPanel.add(btnExit, "h 40!"); //$NON-NLS-1$
 
-		JPanel contentPanel = new JPanel(new MigLayout("fillx"));
-		contentPanel.add(databaseConfigPanel, "grow,wrap");
+		JPanel contentPanel = new JPanel(new MigLayout("fillx")); //$NON-NLS-1$
+		contentPanel.add(databaseConfigPanel, "grow,wrap"); //$NON-NLS-1$
 		//contentPanel.add(createUserPanel(), "grow,wrap");
-		contentPanel.add(createTerminalConfigPanel(), "grow,wrap");
+		contentPanel.add(createTerminalConfigPanel(), "grow,wrap"); //$NON-NLS-1$
 		getContentPane().add(new JideScrollPane(contentPanel), BorderLayout.CENTER); //$NON-NLS-1$
 		getContentPane().add(buttonPanel, BorderLayout.SOUTH); //$NON-NLS-1$
 
@@ -214,9 +214,9 @@ public class SetUpWindow extends JFrame implements ActionListener {
 	}
 
 	private JPanel createUserPanel() {
-		JPanel userPanel = new JPanel(new MigLayout("fill,hidemode 3", "[150px][fill, grow]", ""));
+		JPanel userPanel = new JPanel(new MigLayout("fill,hidemode 3", "[150px][fill, grow]", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		userPanel.setVisible(false);
-		userPanel.setBorder(new TitledBorder("Admin User"));
+		userPanel.setBorder(new TitledBorder(Messages.getString("SetUpWindow.16"))); //$NON-NLS-1$
 
 		lblId = new JLabel();
 		lblFirstName = new JLabel();
@@ -257,19 +257,19 @@ public class SetUpWindow extends JFrame implements ActionListener {
 	}
 
 	private JPanel createTerminalConfigPanel() {
-		JPanel contentPanel = new JPanel(new MigLayout("fill,hidemode 3", "[150px][fill, grow]", ""));
-		contentPanel.setBorder(new TitledBorder("Terminal"));
+		JPanel contentPanel = new JPanel(new MigLayout("fill,hidemode 3", "[150px][fill, grow]", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		contentPanel.setBorder(new TitledBorder(Messages.getString("SetUpWindow.20"))); //$NON-NLS-1$
 
 		tfTerminalNumber = new IntegerTextField();
 		tfTerminalNumber.setColumns(10);
-		contentPanel.add(new JLabel("Terminal Id"));
+		contentPanel.add(new JLabel(Messages.getString("SetUpWindow.21"))); //$NON-NLS-1$
 		contentPanel.add(tfTerminalNumber, "aligny top,wrap"); //$NON-NLS-1$
 
 		tfSecretKeyLength = new IntegerTextField(3);
 		contentPanel.add(new JLabel("Default password length")); //$NON-NLS-1$
 		contentPanel.add(tfSecretKeyLength, "wrap"); //$NON-NLS-1$
 
-		chkAutoLogoff = new JCheckBox(Messages.getString("TerminalConfigurationView.7"));
+		chkAutoLogoff = new JCheckBox(Messages.getString("SetUpWindow.22")); //$NON-NLS-1$
 		tfLogoffTime.setEnabled(false);
 		chkAutoLogoff.addActionListener(new ActionListener() {
 			@Override
@@ -283,7 +283,7 @@ public class SetUpWindow extends JFrame implements ActionListener {
 			}
 		});
 		contentPanel.add(chkAutoLogoff, "newline"); //$NON-NLS-1$
-		contentPanel.add(new JLabel(Messages.getString("TerminalConfigurationView.16")), "split 2"); //$NON-NLS-1$
+		contentPanel.add(new JLabel(Messages.getString("TerminalConfigurationView.16")), "split 2"); //$NON-NLS-1$ //$NON-NLS-2$
 		contentPanel.add(tfLogoffTime, "alignx left,grow,wrap"); //$NON-NLS-1$
 
 		contentPanel.add(new JLabel("Screen scaling")); //$NON-NLS-1$
@@ -381,7 +381,7 @@ public class SetUpWindow extends JFrame implements ActionListener {
 			}
 			saveConfig(selectedDb, providerName, databaseURL, databasePort, databaseName, user, pass, connectionString, hibernateDialect);
 			if (CREATE_SAMPLE_DATA.equals(command)) {
-				DataImportAction.importMenuItems(DatabaseUtil.class.getResourceAsStream("/floreantpos-menu-items.xml"));
+				DataImportAction.importMenuItems(DatabaseUtil.class.getResourceAsStream("/floreantpos-menu-items.xml")); //$NON-NLS-1$
 			}
 			else if (CREATE_DATABASE.equals(command)) {
 				int i = JOptionPane.showConfirmDialog(this,
@@ -467,7 +467,7 @@ public class SetUpWindow extends JFrame implements ActionListener {
 		user.setType(administrator);
 		UserDAO.getInstance().saveOrUpdate(user);*/
 		TerminalDAO.getInstance().saveOrUpdate(terminal);
-		POSMessageDialog.showMessage("Sucessfully saved.");
+		POSMessageDialog.showMessage(Messages.getString("SetUpWindow.0")); //$NON-NLS-1$
 
 		int i = JOptionPane.showConfirmDialog(this, "Do you want to start application?", "Message", JOptionPane.YES_NO_OPTION); //$NON-NLS-1$ //$NON-NLS-2$
 		if (i != JOptionPane.YES_OPTION) {
@@ -497,10 +497,10 @@ public class SetUpWindow extends JFrame implements ActionListener {
 		/*tfUserId.setText("122");
 		tfFirstName.setText("Admin");
 		tfLastName.setText("System");*/
-		tfScaleFactor.setText("1");
+		tfScaleFactor.setText("1"); //$NON-NLS-1$
 		chkAutoLogoff.setSelected(false);
-		tfSecretKeyLength.setText("4");
-		tfLogoffTime.setText("10");
+		tfSecretKeyLength.setText("4"); //$NON-NLS-1$
+		tfLogoffTime.setText("10"); //$NON-NLS-1$
 	}
 
 	private boolean updateModel(User user, Terminal terminal) {

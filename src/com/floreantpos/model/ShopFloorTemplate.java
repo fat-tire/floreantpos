@@ -28,7 +28,7 @@ public class ShopFloorTemplate extends BaseShopFloorTemplate {
 	public String toString() {
 		String displayName = super.getName();
 		if (isDefaultFloor()) {
-			displayName += " -Default";
+			displayName += " -Default"; //$NON-NLS-1$
 		}
 		return displayName;
 	}

@@ -29,14 +29,14 @@ public class MercuryGatewayPlugin extends AuthorizeNetGatewayPlugin {
 
 	@Override
 	public String getName() {
-		return "Mercury Pay";
+		return "Mercury Pay"; //$NON-NLS-1$
 	}
 	
 	@Override
 	public ConfigurationView getConfigurationPane() {
 		if(view == null) {
 			view = new DefaultMerchantGatewayConfigurationView();
-			view.setMerchantDefaultValue("118725340908147", "XYZ");
+			view.setMerchantDefaultValue("118725340908147", "XYZ"); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		
 		return view;
@@ -59,7 +59,7 @@ public class MercuryGatewayPlugin extends AuthorizeNetGatewayPlugin {
 	
 	@Override
 	public String getId() {
-		return String.valueOf("Mercury Pay".hashCode());
+		return String.valueOf("Mercury Pay".hashCode()); //$NON-NLS-1$
 	}
 	
 	@Override

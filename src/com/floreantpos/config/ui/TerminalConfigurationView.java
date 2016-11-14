@@ -113,7 +113,7 @@ public class TerminalConfigurationView extends ConfigurationView {
 		tfTerminalNumber.setColumns(10);
 		contentPanel.add(tfTerminalNumber, "aligny top,wrap"); //$NON-NLS-1$
 
-		JLabel lblTerminalLocation = new JLabel("Terminal Location");
+		JLabel lblTerminalLocation = new JLabel(Messages.getString("TerminalConfigurationView.24")); //$NON-NLS-1$
 		taTerminalLocation = new JTextArea();
 		taTerminalLocation.setLineWrap(true);
 		taTerminalLocation.setPreferredSize(PosUIManager.getSize(350, 40));
@@ -383,8 +383,8 @@ public class TerminalConfigurationView extends ConfigurationView {
 	}
 
 	public void restartPOS() {
-		JOptionPane optionPane = new JOptionPane("Please restart system for the configuration to take effect.", JOptionPane.QUESTION_MESSAGE,
-				JOptionPane.OK_CANCEL_OPTION, Application.getApplicationIcon(), new String[] { "RESTART", "OK" });
+		JOptionPane optionPane = new JOptionPane(Messages.getString("TerminalConfigurationView.26"), JOptionPane.QUESTION_MESSAGE, //$NON-NLS-1$
+				JOptionPane.OK_CANCEL_OPTION, Application.getApplicationIcon(), new String[] { Messages.getString("TerminalConfigurationView.28"), Messages.getString("TerminalConfigurationView.30") }); //$NON-NLS-1$ //$NON-NLS-2$
 
 		Object[] optionValues = optionPane.getComponents();
 		for (Object object : optionValues) {
@@ -401,14 +401,14 @@ public class TerminalConfigurationView extends ConfigurationView {
 				}
 			}
 		}
-		JDialog dialog = optionPane.createDialog(Application.getPosWindow(), "Confirm");
+		JDialog dialog = optionPane.createDialog(Application.getPosWindow(), Messages.getString("TerminalConfigurationView.31")); //$NON-NLS-1$
 		dialog.setIconImage(Application.getApplicationIcon().getImage());
 		dialog.setLocationRelativeTo(Application.getPosWindow());
 		dialog.setVisible(true);
 		Object selectedValue = (String) optionPane.getValue();
 		if (selectedValue != null) {
 
-			if (selectedValue.equals("RESTART")) {
+			if (selectedValue.equals(Messages.getString("TerminalConfigurationView.28"))) { //$NON-NLS-1$
 				try {
 					Main.restart();
 				} catch (IOException | InterruptedException | URISyntaxException e) {

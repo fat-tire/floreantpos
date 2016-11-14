@@ -1,10 +1,10 @@
 package com.floreantpos.model;
 
 public enum DiscountType {
-	AMOUNT("AMOUNT"),
-	PERCENTAGE("PERCENTAGE"),
-	RE_PRICE("RE-PRICE"),
-	ALT_PRICE("ALT-PRICE");
+	AMOUNT("AMOUNT"), //$NON-NLS-1$
+	PERCENTAGE("PERCENTAGE"), //$NON-NLS-1$
+	RE_PRICE("RE-PRICE"), //$NON-NLS-1$
+	ALT_PRICE("ALT-PRICE"); //$NON-NLS-1$
 	
 	private String displayText;
 	

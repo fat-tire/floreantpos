@@ -29,6 +29,7 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import com.floreantpos.Messages;
 import com.floreantpos.POSConstants;
 import com.floreantpos.config.AppConfig;
 import com.floreantpos.main.Application;
@@ -118,7 +119,7 @@ public class PrinterGroupView extends JPanel {
 			PrinterGroupDAO.getInstance().delete(pGroup.getId());
 			listModel.removeElement(pGroup);
 		} catch (Exception e) {
-			POSMessageDialog.showError("Cannot Delete..");
+			POSMessageDialog.showError(Messages.getString("PrinterGroupView.0")); //$NON-NLS-1$
 		}
 		refresh();
 	}

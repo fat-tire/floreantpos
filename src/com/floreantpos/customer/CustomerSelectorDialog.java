@@ -20,6 +20,7 @@ package com.floreantpos.customer;
 import java.awt.BorderLayout;
 import java.awt.HeadlessException;
 
+import com.floreantpos.Messages;
 import com.floreantpos.main.Application;
 import com.floreantpos.main.PosWindow;
 import com.floreantpos.model.Customer;
@@ -36,7 +37,7 @@ public class CustomerSelectorDialog extends POSDialog {
 		this.customerSelector = customerSelector;
 
 		TitlePanel titlePane = new TitlePanel();
-		titlePane.setTitle("SELECT CUSTOMER");
+		titlePane.setTitle(Messages.getString("CustomerSelectorDialog.0")); //$NON-NLS-1$
 
 		getContentPane().add(titlePane, BorderLayout.NORTH);
 		getContentPane().add(customerSelector);

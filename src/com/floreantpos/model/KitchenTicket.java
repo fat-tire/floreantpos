@@ -256,7 +256,7 @@ public class KitchenTicket extends BaseKitchenTicket {
 				item.setMenuItemCode(ticketItem.getItemCode());
 				item.setMenuItemName(ticketItem.getNameDisplay());
 				if (ticketItem.getMenuItem() == null) {
-					item.setMenuItemGroupName("MISC.");
+					item.setMenuItemGroupName("MISC."); //$NON-NLS-1$
 					item.setMenuItemGroupId(1001);
 					item.setSortOrder(10001);
 				}
@@ -292,14 +292,14 @@ public class KitchenTicket extends BaseKitchenTicket {
 
 		for (KitchenTicket kitchenTicket : values) {
 			kitchenTickets.add(kitchenTicket);
-			String kitchenTicketNumber = ticket.getProperty("KITCHEN_TICKET_NUMBER");
+			String kitchenTicketNumber = ticket.getProperty("KITCHEN_TICKET_NUMBER"); //$NON-NLS-1$
 			if (kitchenTicketNumber == null) {
-				kitchenTicketNumber = "1";
+				kitchenTicketNumber = "1"; //$NON-NLS-1$
 			}
 			else {
 				kitchenTicketNumber = String.valueOf(Integer.valueOf(kitchenTicketNumber) + 1);
 			}
-			ticket.addProperty("KITCHEN_TICKET_NUMBER", kitchenTicketNumber);
+			ticket.addProperty("KITCHEN_TICKET_NUMBER", kitchenTicketNumber); //$NON-NLS-1$
 			kitchenTicket.setSequenceNumber(Integer.valueOf(kitchenTicketNumber));
 		}
 
@@ -314,7 +314,7 @@ public class KitchenTicket extends BaseKitchenTicket {
 				item.setCookable(false);
 				item.setMenuItemName(ticketItemCookingInstruction.getNameDisplay());
 				if (ticketItem.getMenuItem() == null) {
-					item.setMenuItemGroupName("MISC.");
+					item.setMenuItemGroupName("MISC."); //$NON-NLS-1$
 					item.setMenuItemGroupId(1001);
 					item.setSortOrder(10001);
 				}
@@ -361,7 +361,7 @@ public class KitchenTicket extends BaseKitchenTicket {
 						item.setTicketItemModifierId(itemModifier.getId());
 						item.setMenuItemName(itemModifier.getNameDisplay());
 						if (ticketItem.getMenuItem() == null) {
-							item.setMenuItemGroupName("MISC.");
+							item.setMenuItemGroupName("MISC."); //$NON-NLS-1$
 							item.setMenuItemGroupId(1001);
 							item.setSortOrder(10001);
 						}
@@ -396,7 +396,7 @@ public class KitchenTicket extends BaseKitchenTicket {
 				item.setTicketItemModifierId(ticketItem.getId());
 				item.setMenuItemName(ticketItemModifier.getNameDisplay());
 				if (ticketItem.getMenuItem() == null) {
-					item.setMenuItemGroupName("MISC.");
+					item.setMenuItemGroupName("MISC."); //$NON-NLS-1$
 					item.setMenuItemGroupId(1001);
 					item.setSortOrder(10001);
 				}

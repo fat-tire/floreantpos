@@ -111,6 +111,6 @@ public class TicketItemCookingInstruction extends BaseTicketItemCookingInstructi
 
 	@Override
 	public String getKitchenStatus() {
-		return "";
+		return ""; //$NON-NLS-1$
 	}
 }

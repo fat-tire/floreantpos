@@ -22,12 +22,13 @@ import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 import javax.swing.Icon;
 
+import com.floreantpos.Messages;
 import com.floreantpos.bo.ui.explorer.CurrencyDialog;
 
 public class CurrencyExplorerAction extends AbstractAction {
 
 	public CurrencyExplorerAction() {
-		super("Currency");
+		super(Messages.getString("CurrencyExplorerAction.0")); //$NON-NLS-1$
 	}
 
 	public CurrencyExplorerAction(String name) {
@@ -43,7 +44,7 @@ public class CurrencyExplorerAction extends AbstractAction {
 
 		//explorer.setBorder(new EmptyBorder(20, 10, 20, 10));
 		CurrencyDialog dialog = new CurrencyDialog();
-		dialog.setTitle("Floreant POS");
+		dialog.setTitle(Messages.getString("CurrencyExplorerAction.1")); //$NON-NLS-1$
 		//dialog.add(explorer);
 		dialog.setSize(800, 600);
 		dialog.open();

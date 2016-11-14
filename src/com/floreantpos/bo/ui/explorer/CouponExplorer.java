@@ -151,7 +151,7 @@ public class CouponExplorer extends TransparentPanel implements ActionListener {
 					return coupon.getName();
 
 				case 1:
-					return "";//CouponAndDiscount.COUPON_TYPE_NAMES[coupon.getType()];
+					return "";//CouponAndDiscount.COUPON_TYPE_NAMES[coupon.getType()]; //$NON-NLS-1$
 
 				case 2:
 					return Double.valueOf(coupon.getValue());

@@ -149,19 +149,19 @@ public class TerminalConfig {
 	}
 
 	public static void setMenuItemButtonHeight(int height) {
-		config.setProperty("menu_button_height", height);
+		config.setProperty("menu_button_height", height); //$NON-NLS-1$
 	}
 
 	public static int getMenuItemButtonHeight() {
-		return config.getInt("menu_button_height", 80);
+		return config.getInt("menu_button_height", 80); //$NON-NLS-1$
 	}
 
 	public static void setMenuItemButtonWidth(int width) {
-		config.setProperty("menu_button_width", width);
+		config.setProperty("menu_button_width", width); //$NON-NLS-1$
 	}
 
 	public static int getMenuItemButtonWidth() {
-		return config.getInt("menu_button_width", 80);
+		return config.getInt("menu_button_width", 80); //$NON-NLS-1$
 	}
 
 	public static void setTouchScreenFontSize(int size) {
@@ -313,7 +313,7 @@ public class TerminalConfig {
 	}
 
 	public static String getOrderTypeFilter() {
-		return config.getString(ORDER_TYPE_FILTER, "ALL");
+		return config.getString(ORDER_TYPE_FILTER, "ALL"); //$NON-NLS-1$
 	}
 
 	public static void setOrderTypeFilter(String filter) {
@@ -321,7 +321,7 @@ public class TerminalConfig {
 	}
 
 	public static String getCallerIdDevice() {
-		return config.getString(CALLER_ID_DEVICE, "NONE");
+		return config.getString(CALLER_ID_DEVICE, "NONE"); //$NON-NLS-1$
 	}
 
 	public static void setCallerIdDevice(String device) {
@@ -425,19 +425,19 @@ public class TerminalConfig {
 	}
 
 	public static String getDrawerPullReportHiddenColumns() {
-		return config.getString("drawerPullReportColumns", "");
+		return config.getString("drawerPullReportColumns", ""); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	public static void setDrawerPullReportHiddenColumns(String value) {
-		config.setProperty("drawerPullReportColumns", value);
+		config.setProperty("drawerPullReportColumns", value); //$NON-NLS-1$
 	}
 
 	public static String getTicketListViewHiddenColumns() {
-		return config.getString("listViewColumns", "");
+		return config.getString("listViewColumns", ""); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	public static void setTicketListViewHiddenColumns(String value) {
-		config.setProperty("listViewColumns", value);
+		config.setProperty("listViewColumns", value); //$NON-NLS-1$
 	}
 
 	public static char[] getDrawerControlCodesArray() {
@@ -459,18 +459,18 @@ public class TerminalConfig {
 	}
 
 	public static void setCheckUpdateStatus(String status) {
-		config.setProperty("update_check", status);
+		config.setProperty("update_check", status); //$NON-NLS-1$
 	}
 
 	public static String getCheckUpdateStatus() {
-		return config.getString("update_check", "Daily");
+		return config.getString("update_check", "Daily"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	public static String getWebServiceUrl() {
-		return config.getString("web_service_url", "http://team.orocube.net:8080");
+		return config.getString("web_service_url", "http://team.orocube.net:8080"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	public static String getPosDownloadUrl() {
-		return config.getString("pos_url", "http://floreant.org/");
+		return config.getString("pos_url", "http://floreant.org/"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 }

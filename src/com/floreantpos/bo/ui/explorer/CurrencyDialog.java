@@ -8,6 +8,7 @@ import javax.swing.JPanel;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import com.floreantpos.Messages;
 import com.floreantpos.model.Currency;
 import com.floreantpos.model.dao.CurrencyDAO;
 import com.floreantpos.ui.dialog.OkCancelOptionDialog;
@@ -20,8 +21,8 @@ public class CurrencyDialog extends OkCancelOptionDialog {
 	public CurrencyDialog() {
 		JPanel contentPanel = getContentPanel();
 		this.getContentPane();
-		setTitle("Edit Currency");
-		setTitlePaneText("Edit Currency");
+		setTitle(Messages.getString("CurrencyDialog.0")); //$NON-NLS-1$
+		setTitlePaneText(Messages.getString("CurrencyDialog.0")); //$NON-NLS-1$
 		currencyExplorer = new CurrencyExplorer();
 		contentPanel.add(currencyExplorer);
 	}
@@ -40,12 +41,12 @@ public class CurrencyDialog extends OkCancelOptionDialog {
 		}
 
 		if (!isMainSelected) {
-			POSMessageDialog.showMessage(POSUtil.getFocusedWindow(), "Please select main currency.");
+			POSMessageDialog.showMessage(POSUtil.getFocusedWindow(), Messages.getString("CurrencyDialog.2")); //$NON-NLS-1$
 			return;
 		}
 		else {
 			if (mainCurrency.getExchangeRate() != 1) {
-				if (POSMessageDialog.showYesNoQuestionDialog(this, "Main currency exchange rate must be 1. Do you want to change it to 1?", "Confirm") == JOptionPane.OK_OPTION) {
+				if (POSMessageDialog.showYesNoQuestionDialog(this, Messages.getString("CurrencyDialog.3"), Messages.getString("CurrencyDialog.4")) == JOptionPane.OK_OPTION) { //$NON-NLS-1$ //$NON-NLS-2$
 					mainCurrency.setExchangeRate(1.0);
 				}
 				else {

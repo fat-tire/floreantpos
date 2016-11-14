@@ -60,8 +60,8 @@ public class Main {
 //			System.out.println(object + ":"+properties.getProperty((String) object));
 //		}
 		
-		String classPath = System.getProperty("java.class.path");
-		String mainClass = System.getProperty("sun.java.command");
+		String classPath = System.getProperty("java.class.path"); //$NON-NLS-1$
+		String mainClass = System.getProperty("sun.java.command"); //$NON-NLS-1$
 		
 		/* Build command: java -jar application.jar */
 		final ArrayList<String> command = new ArrayList<String>();

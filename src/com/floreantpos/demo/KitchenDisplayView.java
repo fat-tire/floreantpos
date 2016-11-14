@@ -95,7 +95,7 @@ public class KitchenDisplayView extends ViewPanel implements ActionListener {
 
 		filterPanel = new JPanel();
 
-		PosButton btnBack = new PosButton("Back");
+		PosButton btnBack = new PosButton(Messages.getString("KitchenDisplayView.1")); //$NON-NLS-1$
 		btnBack.addActionListener(new ActionListener() {
 
 			@Override
@@ -110,14 +110,14 @@ public class KitchenDisplayView extends ViewPanel implements ActionListener {
 		JLabel label2 = new JLabel(Messages.getString("KitchenDisplayView.6")); //$NON-NLS-1$
 		label2.setFont(font);
 
-		filterPanel.setLayout(new MigLayout("", "[][][][][fill,grow][]", ""));
+		filterPanel.setLayout(new MigLayout("", "[][][][][fill,grow][]", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		filterPanel.add(label);
 		filterPanel.add(cbPrinters);
 
 		filterPanel.add(label2);
 		filterPanel.add(cbTicketTypes);
 
-		btnFilter = new PosButton("Filter");
+		btnFilter = new PosButton(Messages.getString("KitchenDisplayView.2")); //$NON-NLS-1$
 		btnFilter.addActionListener(new ActionListener() {
 
 			@Override
@@ -141,8 +141,8 @@ public class KitchenDisplayView extends ViewPanel implements ActionListener {
 		lblFilter.setForeground(new Color(49, 106, 196));
 		lblFilter.setFont(filterFont);
 		topPanel.add(lblFilter);
-		topPanel.add(btnFilter,"w "+ size.width+"!,h "+size.height+"!");
-		topPanel.add(btnBack, "w "+ size.width+"!, h "+size.height+"!");
+		topPanel.add(btnFilter,"w "+ size.width+"!,h "+size.height+"!"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		topPanel.add(btnBack, "w "+ size.width+"!, h "+size.height+"!"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		topPanel.setBackground(Color.white);
 
 		cbTicketTypes.setFont(font);
@@ -161,9 +161,9 @@ public class KitchenDisplayView extends ViewPanel implements ActionListener {
 
 		btnLogout = new PosButton(new LogoutAction(true, false)); //$NON-NLS-1$
 		//btnLogout.addActionListener(this);
-		topPanel.add(btnLogout, "w "+ size.width+"!, h "+size.height+"!, wrap");
+		topPanel.add(btnLogout, "w "+ size.width+"!, h "+size.height+"!, wrap"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
-		topPanel.add(new JSeparator(), "grow,span");
+		topPanel.add(new JSeparator(), "grow,span"); //$NON-NLS-1$
 
 		firstTopPanel.setPreferredSize(new Dimension(0, PosUIManager.getSize(50)));
 		firstTopPanel.add(topPanel);

@@ -45,7 +45,7 @@ import com.floreantpos.ui.dialog.POSMessageDialog;
 
 public class KitchenTicketStatusSelector extends POSDialog implements ActionListener {
 	private PosButton btnVoid = new PosButton(KitchenTicketStatus.VOID.name());
-	private PosButton btnReady = new PosButton(Messages.getString("KitchenTicketView.11"));
+	private PosButton btnReady = new PosButton(Messages.getString("KitchenTicketStatusSelector.2")); //$NON-NLS-1$
 
 	private KitchenTicket kitchenTicket;
 	private KitchenTicketItem ticketItem;

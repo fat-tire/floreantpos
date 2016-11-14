@@ -5,9 +5,9 @@ import com.floreantpos.model.base.BaseOrderType;
 public class OrderType extends BaseOrderType {
 	private static final long serialVersionUID = 1L;
 
-	public static final String BAR_TAB = "BAR_TAB";
-	public static final String FOR_HERE="FOR HERE"; 
-	public static final String TO_GO="TO GO"; 
+	public static final String BAR_TAB = "BAR_TAB"; //$NON-NLS-1$
+	public static final String FOR_HERE="FOR HERE";  //$NON-NLS-1$
+	public static final String TO_GO="TO GO";  //$NON-NLS-1$
 
 	public OrderType() {
 		super();
@@ -32,7 +32,7 @@ public class OrderType extends BaseOrderType {
 
 	@Override
 	public String toString() {
-		return getName().replaceAll("_", " ");
+		return getName().replaceAll("_", " "); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 }

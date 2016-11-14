@@ -16,7 +16,7 @@ public class InginicoPlugin implements PaymentGatewayPlugin {
 	
 	@Override
 	public String getName() {
-		return "Ingenico IWL220 TGI";
+		return "Ingenico IWL220 TGI"; //$NON-NLS-1$
 	}
 
 	@Override
@@ -34,7 +34,7 @@ public class InginicoPlugin implements PaymentGatewayPlugin {
 	
 	@Override
 	public String getId() {
-		return String.valueOf("Inginico".hashCode()); //
+		return String.valueOf("Inginico".hashCode()); // //$NON-NLS-1$
 	}
 	
 	@Override

@@ -72,10 +72,10 @@ public class AddPrinterGroupDialog extends POSDialog {
 		add(new JLabel(Messages.getString("AddPrinterGroupDialog.4"))); //$NON-NLS-1$
 		add(tfName, "grow, wrap"); //$NON-NLS-1$
 
-		chkDefault = new JCheckBox("Default");
+		chkDefault = new JCheckBox(Messages.getString("AddPrinterGroupDialog.1")); //$NON-NLS-1$
 
-		add(new JLabel(), "grow");
-		add(chkDefault, "wrap");
+		add(new JLabel(), "grow"); //$NON-NLS-1$
+		add(chkDefault, "wrap"); //$NON-NLS-1$
 
 		PosPrinters printersKitchen = PosPrinters.load();
 		printers = printersKitchen.getKitchenPrinters();

@@ -25,12 +25,12 @@ import com.floreantpos.model.base.BaseTableBookingInfo;
 public class TableBookingInfo extends BaseTableBookingInfo {
 	private static final long serialVersionUID = 1L;
 	
-	public static final String STATUS_CANCEL="cancel";
-	public static final String STATUS_CLOSE="close";
-	public static final String STATUS_NO_APR="no appear";
-	public static final String STATUS_SEAT="seat";
-	public static final String STATUS_DELAY="delay";
-	public static final String STATUS_OPEN="open";
+	public static final String STATUS_CANCEL="cancel"; //$NON-NLS-1$
+	public static final String STATUS_CLOSE="close"; //$NON-NLS-1$
+	public static final String STATUS_NO_APR="no appear"; //$NON-NLS-1$
+	public static final String STATUS_SEAT="seat"; //$NON-NLS-1$
+	public static final String STATUS_DELAY="delay"; //$NON-NLS-1$
+	public static final String STATUS_OPEN="open"; //$NON-NLS-1$
 	
 
 	/*[CONSTRUCTOR MARKER BEGIN]*/
@@ -63,15 +63,15 @@ public class TableBookingInfo extends BaseTableBookingInfo {
 			return customerInfo;
 		}
 
-		if(!customer.getFirstName().equals("")) {
+		if(!customer.getFirstName().equals("")) { //$NON-NLS-1$
 			return customerInfo = customer.getFirstName();
 		}
 
-		if(!customer.getMobileNo().equals("")) {
+		if(!customer.getMobileNo().equals("")) { //$NON-NLS-1$
 			return customerInfo = customer.getMobileNo();
 		}
 		
-		if(!customer.getLoyaltyNo().equals("")) {
+		if(!customer.getLoyaltyNo().equals("")) { //$NON-NLS-1$
 			return customerInfo = customer.getLoyaltyNo();
 		}
 		
@@ -97,14 +97,14 @@ public class TableBookingInfo extends BaseTableBookingInfo {
 		if(shopTables == null || shopTables.isEmpty()) {
 			return null;
 		}
-		String tableNumbers = "";
+		String tableNumbers = ""; //$NON-NLS-1$
 
 		for (Iterator iterator = shopTables.iterator(); iterator.hasNext();) {
 			ShopTable shopTable = (ShopTable) iterator.next();
 			tableNumbers += shopTable.getTableNumber();
 
 			if(iterator.hasNext()) {
-				tableNumbers += ", ";
+				tableNumbers += ", "; //$NON-NLS-1$
 			}
 		}
 

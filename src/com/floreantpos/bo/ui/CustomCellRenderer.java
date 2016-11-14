@@ -84,14 +84,14 @@ public class CustomCellRenderer extends DefaultTableCellRenderer {
 		}
 
 		if (value instanceof Date) {
-			String pattern = "MM/dd hh:mm a";
+			String pattern = "MM/dd hh:mm a"; //$NON-NLS-1$
 			SimpleDateFormat format = new SimpleDateFormat(pattern);
 			value = format.format((Date) value);
 			return super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 		}
 		
 		if(value instanceof String) {
-			value = "<html>" + value + "</html>";
+			value = "<html>" + value + "</html>"; //$NON-NLS-1$ //$NON-NLS-2$
 		}
 
 		return super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);

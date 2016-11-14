@@ -94,7 +94,7 @@ public class PrinterTypeSelectionDialog extends POSDialog implements ActionListe
 
 		add(footerPanel, BorderLayout.SOUTH);
 
-		buttonsPanel = new JPanel(new MigLayout("fill", "sg, fill", ""));
+		buttonsPanel = new JPanel(new MigLayout("fill", "sg, fill", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 		add(buttonsPanel, BorderLayout.CENTER);
 
@@ -116,11 +116,11 @@ public class PrinterTypeSelectionDialog extends POSDialog implements ActionListe
 			btnPackingPrinter.addActionListener(this);
 			btnKitchenDisplayPrinter.addActionListener(this);
 
-			buttonsPanel.add(btnReportPrinter, "growy");
-			buttonsPanel.add(btnReceiptPrinter, "growy");
-			buttonsPanel.add(btnKitchenPrinter, "growy");
-			buttonsPanel.add(btnPackingPrinter, "growy");
-			buttonsPanel.add(btnKitchenDisplayPrinter, "growy");
+			buttonsPanel.add(btnReportPrinter, "growy"); //$NON-NLS-1$
+			buttonsPanel.add(btnReceiptPrinter, "growy"); //$NON-NLS-1$
+			buttonsPanel.add(btnKitchenPrinter, "growy"); //$NON-NLS-1$
+			buttonsPanel.add(btnPackingPrinter, "growy"); //$NON-NLS-1$
+			buttonsPanel.add(btnKitchenDisplayPrinter, "growy"); //$NON-NLS-1$
 
 			group.add(btnReportPrinter);
 			group.add(btnReceiptPrinter);

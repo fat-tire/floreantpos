@@ -85,20 +85,20 @@ public class Ticket extends BaseTicket {
 	private List deletedItems;
 	private boolean priceIncludesTax;
 
-	public static final String STATUS_WAITING = "Waiting (Kitchen)";
-	public static final String STATUS_READY = "Ready";
-	public static final String STATUS_NOT_SENT = "Not Sent";
-	public static final String STATUS_DRIVING = "Driving";
-	public static final String STATUS_VOID = "Void";
+	public static final String STATUS_WAITING = "Waiting (Kitchen)"; //$NON-NLS-1$
+	public static final String STATUS_READY = "Ready"; //$NON-NLS-1$
+	public static final String STATUS_NOT_SENT = "Not Sent"; //$NON-NLS-1$
+	public static final String STATUS_DRIVING = "Driving"; //$NON-NLS-1$
+	public static final String STATUS_VOID = "Void"; //$NON-NLS-1$
 
 	public static final String CUSTOMER_MOBILE = "CUSTOMER_MOBILE"; //$NON-NLS-1$
 	public static final String CUSTOMER_NAME = "CUSTOMER_NAME"; //$NON-NLS-1$
 	public static final String CUSTOMER_ID = "CUSTOMER_ID"; //$NON-NLS-1$
 	public static final String CUSTOMER_ZIP_CODE = "CUSTOMER_ZIP_CODE"; //$NON-NLS-1$
-	public static final String MANAGER_INSTRUCTION = "MANAGER_INSTRUCTION";
+	public static final String MANAGER_INSTRUCTION = "MANAGER_INSTRUCTION"; //$NON-NLS-1$
 	public static final String PHONE_EXTENSION = "PHONE_EXTENSION";
 
-	public static final String DRIVER_OUT_TIME = "OUT_AT";
+	public static final String DRIVER_OUT_TIME = "OUT_AT"; //$NON-NLS-1$
 
 	private String sortOrder;
 
@@ -365,7 +365,7 @@ public class Ticket extends BaseTicket {
 		TicketDiscount tolerance = null;
 		if (getDiscounts() != null) {
 			for (TicketDiscount tDiscount : getDiscounts()) {
-				if (tDiscount.getName().equals("Tolerance")) {
+				if (tDiscount.getName().equals("Tolerance")) { //$NON-NLS-1$
 					tolerance = tDiscount;
 					continue;
 				}
@@ -383,7 +383,7 @@ public class Ticket extends BaseTicket {
 		List<TicketDiscount> discounts = new ArrayList<>();
 		if (getDiscounts() != null) {
 			for (TicketDiscount tDiscount : getDiscounts()) {
-				if (tDiscount.getName().equals("Tolerance")) {
+				if (tDiscount.getName().equals("Tolerance")) { //$NON-NLS-1$
 					continue;
 				}
 				discounts.add(tDiscount);
@@ -744,7 +744,7 @@ public class Ticket extends BaseTicket {
 
 	public String getSortOrder() {
 		if (sortOrder == null) {
-			return "";
+			return ""; //$NON-NLS-1$
 		}
 		return sortOrder;
 	}
@@ -755,7 +755,7 @@ public class Ticket extends BaseTicket {
 
 	public String getStatus() {
 		if (super.getStatus() == null) {
-			return "";
+			return ""; //$NON-NLS-1$
 		}
 		return super.getStatus();
 	}

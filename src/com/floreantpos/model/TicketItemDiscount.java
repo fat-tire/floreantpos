@@ -124,7 +124,7 @@ public class TicketItemDiscount extends BaseTicketItemDiscount implements ITicke
 
 	@Override
 	public String getKitchenStatus() {
-		return "";
+		return ""; //$NON-NLS-1$
 	}
 
 }

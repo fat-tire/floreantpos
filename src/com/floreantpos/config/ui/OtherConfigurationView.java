@@ -27,6 +27,7 @@ import net.miginfocom.swing.MigLayout;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.floreantpos.Messages;
 import com.floreantpos.model.GlobalConfig;
 import com.floreantpos.model.dao.GlobalConfigDAO;
 import com.floreantpos.swing.FixedLengthTextField;
@@ -44,7 +45,7 @@ public class OtherConfigurationView extends ConfigurationView {
 
 		tfMapApiKey = new FixedLengthTextField(); //$NON-NLS-1$
 		tfMapApiKey.setLength(220);
-		contentPanel.add(new JLabel("Map API Key: "));
+		contentPanel.add(new JLabel(Messages.getString("OtherConfigurationView.0"))); //$NON-NLS-1$
 		contentPanel.add(tfMapApiKey); //$NON-NLS-1$
 
 		JScrollPane scrollPane = new JScrollPane(contentPanel);
@@ -75,7 +76,7 @@ public class OtherConfigurationView extends ConfigurationView {
 	public void initialize() throws Exception {
 		String map_api_key = GlobalConfigUtil.getValue(GlobalConfig.MAP_API_KEY);
 		if (StringUtils.isEmpty(map_api_key)) {
-			map_api_key = "AIzaSyDc-5LFTSC-bB9kQcZkM74LHUxwndRy_XM";
+			map_api_key = "AIzaSyDc-5LFTSC-bB9kQcZkM74LHUxwndRy_XM"; //$NON-NLS-1$
 		}
 		tfMapApiKey.setText(map_api_key);
 		setInitialized(true);

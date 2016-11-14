@@ -72,7 +72,7 @@ public class MenuGroupExplorer extends TransparentPanel {
 			@Override
 			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 				if (value instanceof Color) {
-					JLabel lblColor = new JLabel("TEXT COLOR", JLabel.CENTER);
+					JLabel lblColor = new JLabel(Messages.getString("MenuGroupExplorer.1"), JLabel.CENTER); //$NON-NLS-1$
 					lblColor.setForeground((Color) value);
 					return lblColor;
 				}

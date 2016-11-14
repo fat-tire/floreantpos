@@ -557,7 +557,7 @@ public class TicketItem extends BaseTicketItem implements ITicketItem {
 	@Override
 	public String getItemQuantityDisplay() {
 		if (isTreatAsSeat())
-			return "";
+			return ""; //$NON-NLS-1$
 		
 		if (isFractionalUnit()) {
 			double itemQuantity = getItemQuantity();
@@ -665,7 +665,7 @@ public class TicketItem extends BaseTicketItem implements ITicketItem {
 	@Override
 	public String getKitchenStatus() {
 		if(super.getStatus()==null){
-			return ""; 
+			return "";  //$NON-NLS-1$
 		}
 		return super.getStatus(); 
 	}

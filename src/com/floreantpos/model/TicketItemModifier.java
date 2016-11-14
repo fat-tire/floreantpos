@@ -139,9 +139,9 @@ public class TicketItemModifier extends BaseTicketItemModifier implements ITicke
 
 	@Override
 	public String getNameDisplay() {
-		String display = " -- " + getName();
+		String display = " -- " + getName(); //$NON-NLS-1$
 		if (getModifierType() == NORMAL_MODIFIER) {
-			display += "*";
+			display += "*"; //$NON-NLS-1$
 		}
 
 		return display; //$NON-NLS-1$
@@ -239,7 +239,7 @@ public class TicketItemModifier extends BaseTicketItemModifier implements ITicke
 	@Override
 	public String getKitchenStatus() {
 		if(super.getStatus()==null){
-			return ""; 
+			return "";  //$NON-NLS-1$
 		}
 		return super.getStatus();
 	}

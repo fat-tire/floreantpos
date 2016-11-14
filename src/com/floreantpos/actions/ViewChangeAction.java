@@ -80,7 +80,7 @@ public abstract class ViewChangeAction extends PosAction {
 		User user = Application.getCurrentUser();
 
 		if (RootView.getInstance().getCurrentView().getViewName().equals(OrderView.VIEW_NAME) && !OrderView.getInstance().getTicketView().isAllowToLogOut()) {
-			POSMessageDialog.showError("Unpaid orders must be paid or void before you leave");
+			POSMessageDialog.showError(Messages.getString("ViewChangeAction.0")); //$NON-NLS-1$
 			return;
 		}
 		saveTicketIfNeeded();
@@ -124,7 +124,7 @@ public abstract class ViewChangeAction extends PosAction {
 			return;
 		if (!currentTicket.getTicketItems().isEmpty()) {
 			if (hasNewItem(currentTicket)) {
-				if (POSMessageDialog.showYesNoQuestionDialog(POSUtil.getFocusedWindow(), "Do you to save the changes?", "Save Ticket") == JOptionPane.YES_OPTION) {
+				if (POSMessageDialog.showYesNoQuestionDialog(POSUtil.getFocusedWindow(), Messages.getString("ViewChangeAction.1"), Messages.getString("ViewChangeAction.2")) == JOptionPane.YES_OPTION) { //$NON-NLS-1$ //$NON-NLS-2$
 					orderView.getTicketView().saveTicketIfNeeded();
 				}
 			}

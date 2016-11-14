@@ -272,7 +272,7 @@ public class TicketItemModifierGroup extends BaseTicketItemModifierGroup impleme
 
 	@Override
 	public String getItemCode() {
-		return "";
+		return ""; //$NON-NLS-1$
 	}
 
 	@Override
@@ -302,7 +302,7 @@ public class TicketItemModifierGroup extends BaseTicketItemModifierGroup impleme
 
 	@Override
 	public String getNameDisplay() {
-		return " == " + getSectionName();
+		return " == " + getSectionName(); //$NON-NLS-1$
 	}
 
 	@Override
@@ -312,7 +312,7 @@ public class TicketItemModifierGroup extends BaseTicketItemModifierGroup impleme
 
 	@Override
 	public String getItemQuantityDisplay() {
-		return "";
+		return ""; //$NON-NLS-1$
 	}
 
 	@Override
@@ -342,6 +342,6 @@ public class TicketItemModifierGroup extends BaseTicketItemModifierGroup impleme
 
 	@Override
 	public String getKitchenStatus() {
-		return "";
+		return ""; //$NON-NLS-1$
 	}
 }

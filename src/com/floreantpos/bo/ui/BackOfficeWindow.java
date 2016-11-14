@@ -215,7 +215,7 @@ public class BackOfficeWindow extends javax.swing.JFrame {
 	private void createExplorerMenu(JMenuBar menuBar) {
 		JMenu explorerMenu = new JMenu(com.floreantpos.POSConstants.EXPLORERS);
 		menuBar.add(explorerMenu);
-		JMenu subMenuPizza = new JMenu("Pizza");
+		JMenu subMenuPizza = new JMenu(Messages.getString("BackOfficeWindow.1")); //$NON-NLS-1$
 
 		if (TerminalConfig.isMultipleOrderSupported()) {
 			explorerMenu.add(new OrdersTypeExplorerAction());
@@ -262,7 +262,7 @@ public class BackOfficeWindow extends javax.swing.JFrame {
 
 	private void createFloorMenu(JMenuBar menuBar) {
 
-		floorPlanMenu = new JMenu("Floor Plan");
+		floorPlanMenu = new JMenu(Messages.getString("BackOfficeWindow.2")); //$NON-NLS-1$
 		floorPlanMenu.add(new ShowTableBrowserAction());
 
 		menuBar.add(floorPlanMenu);

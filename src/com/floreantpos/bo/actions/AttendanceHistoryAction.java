@@ -23,13 +23,14 @@ import javax.swing.AbstractAction;
 import javax.swing.Icon;
 import javax.swing.JTabbedPane;
 
+import com.floreantpos.Messages;
 import com.floreantpos.bo.ui.BackOfficeWindow;
 import com.floreantpos.bo.ui.explorer.AttendanceHistoryExplorer;
 
 public class AttendanceHistoryAction extends AbstractAction {
 
 	public AttendanceHistoryAction() {
-		super("Attendance History");
+		super(Messages.getString("AttendanceHistoryAction.0")); //$NON-NLS-1$
 	}
 
 	public AttendanceHistoryAction(String name) {
@@ -45,10 +46,10 @@ public class AttendanceHistoryAction extends AbstractAction {
 		JTabbedPane tabbedPane = window.getTabbedPane();
 		
 		AttendanceHistoryExplorer explorer = null;
-		int index = tabbedPane.indexOfTab("Attendance History");
+		int index = tabbedPane.indexOfTab(Messages.getString("AttendanceHistoryAction.1")); //$NON-NLS-1$
 		if (index == -1) {
 			explorer = new AttendanceHistoryExplorer();
-			tabbedPane.addTab("Attendance History", explorer);
+			tabbedPane.addTab(Messages.getString("AttendanceHistoryAction.2"), explorer); //$NON-NLS-1$
 		}
 		else {
 			explorer = (AttendanceHistoryExplorer) tabbedPane.getComponentAt(index);

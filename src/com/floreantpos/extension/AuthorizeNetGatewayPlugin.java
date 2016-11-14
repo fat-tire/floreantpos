@@ -30,20 +30,20 @@ import com.floreantpos.ui.views.payment.CardProcessor;
 
 @PluginImplementation
 public class AuthorizeNetGatewayPlugin implements PaymentGatewayPlugin {
-	public static final String ID = String.valueOf("Authorize.Net".hashCode());
+	public static final String ID = String.valueOf("Authorize.Net".hashCode()); //$NON-NLS-1$
 	
 	protected DefaultMerchantGatewayConfigurationView view;
 	
 	@Override
 	public String getName() {
-		return "Authorize.Net";
+		return "Authorize.Net"; //$NON-NLS-1$
 	}
 	
 	@Override
 	public ConfigurationView getConfigurationPane() throws Exception {
 		if(view == null) {
 			view = new DefaultMerchantGatewayConfigurationView();
-			view.setMerchantDefaultValue("6tuU4N3H", "4k6955x3T8bCVPVm");
+			view.setMerchantDefaultValue("6tuU4N3H", "4k6955x3T8bCVPVm"); //$NON-NLS-1$ //$NON-NLS-2$
 			view.initialize();
 		}
 		

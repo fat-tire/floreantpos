@@ -179,7 +179,7 @@ public class PosPrinters {
 				reportPrinter = getDefaultPrinterName();
 			}
 			if (kitchenPrinters == null || kitchenPrinters.isEmpty()) {
-				Printer printer = new Printer(new VirtualPrinter(1, "kitchen"), getDefaultPrinterName());
+				Printer printer = new Printer(new VirtualPrinter(1, "kitchen"), getDefaultPrinterName()); //$NON-NLS-1$
 				kitchenPrinters.add(printer);
 			}
 			printers.populatePrinterMaps();

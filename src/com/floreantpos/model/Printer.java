@@ -86,7 +86,7 @@ public class Printer {
 	}
 
 	public String getDisplayName() {
-		return virtualPrinter.toString() + " -    " + getDeviceName();
+		return virtualPrinter.toString() + " -    " + getDeviceName(); //$NON-NLS-1$
 	}
 
 	public String getType() {

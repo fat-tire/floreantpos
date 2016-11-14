@@ -48,7 +48,7 @@ public class DefaultMerchantGatewayConfigurationView extends ConfigurationView {
 	private JCheckBox chckbxAllowCardManual;
 	private JCheckBox chckbxAllowExternalTerminal;
 	private JButton btnCreateNewMerchantAccount;
-	private String link = "http://reseller.authorize.net/application/?resellerId=27144";
+	private String link = "http://reseller.authorize.net/application/?resellerId=27144"; //$NON-NLS-1$
 
 	public DefaultMerchantGatewayConfigurationView() {
 		setLayout(new MigLayout("", "[][grow]", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
@@ -105,7 +105,7 @@ public class DefaultMerchantGatewayConfigurationView extends ConfigurationView {
 		cbSandboxMode = new JCheckBox(Messages.getString("CardConfigurationView.25")); //$NON-NLS-1$
 		add(cbSandboxMode, "skip 1, newline"); //$NON-NLS-1$
 
-		btnCreateNewMerchantAccount = new JButton(Messages.getString("CardConfigurationView.0"));
+		btnCreateNewMerchantAccount = new JButton(Messages.getString(Messages.getString("DefaultMerchantGatewayConfigurationView.1"))); //$NON-NLS-1$
 		btnCreateNewMerchantAccount.addActionListener(new ActionListener() {
 
 			@Override

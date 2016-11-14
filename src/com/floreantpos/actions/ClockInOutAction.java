@@ -243,7 +243,7 @@ public class ClockInOutAction extends PosAction {
 				return;
 			}
 			if (!user.isClockedIn()) {
-				POSMessageDialog.showMessage(POSUtil.getFocusedWindow(), "Please first clock in.");
+				POSMessageDialog.showMessage(POSUtil.getFocusedWindow(), Messages.getString("ClockInOutAction.2")); //$NON-NLS-1$
 				return;
 			}
 

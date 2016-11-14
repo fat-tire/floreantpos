@@ -348,11 +348,11 @@ public class MenuItem extends BaseMenuItem {
 	}
 
 	public void setPriceByOrderType(String type, double price) {
-		addProperty(getStringWithUnderScore(type, "_PRICE"), String.valueOf(price));
+		addProperty(getStringWithUnderScore(type, "_PRICE"), String.valueOf(price)); //$NON-NLS-1$
 	}
 
 	public void setTaxByOrderType(String type, double price) {
-		addProperty(getStringWithUnderScore(type, "_TAX"), String.valueOf(price));
+		addProperty(getStringWithUnderScore(type, "_TAX"), String.valueOf(price)); //$NON-NLS-1$
 	}
 
 	public double getPriceByOrderType(OrderType type) {

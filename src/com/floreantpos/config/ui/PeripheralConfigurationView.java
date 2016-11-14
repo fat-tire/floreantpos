@@ -34,7 +34,7 @@ import com.floreantpos.util.POSUtil;
 import com.floreantpos.util.SerialPortUtil;
 
 public class PeripheralConfigurationView extends ConfigurationView {
-	public static final String CONFIG_TAB_PERIPHERAL = "Peripherals";
+	public static final String CONFIG_TAB_PERIPHERAL = "Peripherals"; //$NON-NLS-1$
 	private JCheckBox chkHasCashDrawer;
 	private JTextField tfDrawerName = new JTextField(10);
 	private JTextField tfDrawerCodes = new JTextField(15);
@@ -58,9 +58,9 @@ public class PeripheralConfigurationView extends ConfigurationView {
 		setLayout(new BorderLayout());
 
 		JPanel contentPanel = new JPanel();
-		contentPanel.setLayout(new MigLayout("", "[grow]", "[][]"));
+		contentPanel.setLayout(new MigLayout("", "[grow]", "[][]")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		JPanel drawerConfigPanel = new JPanel(new MigLayout());
-		drawerConfigPanel.setBorder(BorderFactory.createTitledBorder("CASH DRAWER"));
+		drawerConfigPanel.setBorder(BorderFactory.createTitledBorder(Messages.getString("PeripheralConfigurationView.4"))); //$NON-NLS-1$
 
 		chkHasCashDrawer = new JCheckBox(Messages.getString("TerminalConfigurationView.15")); //$NON-NLS-1$
 		drawerConfigPanel.add(chkHasCashDrawer, "span 5, wrap"); //$NON-NLS-1$
@@ -118,13 +118,13 @@ public class PeripheralConfigurationView extends ConfigurationView {
 		});
 
 		JPanel customerDisplayPanel = new JPanel(new MigLayout());
-		customerDisplayPanel.setBorder(BorderFactory.createTitledBorder("CUSTOMER DISPLAY"));
+		customerDisplayPanel.setBorder(BorderFactory.createTitledBorder(Messages.getString("PeripheralConfigurationView.5"))); //$NON-NLS-1$
 
-		cbCustomerDisplay = new JCheckBox("Active customer display");
+		cbCustomerDisplay = new JCheckBox(Messages.getString("PeripheralConfigurationView.6")); //$NON-NLS-1$
 		tfCustomerDisplayPort = new JTextField(20);
 		tfCustomerDisplayMessage = new FixedLengthTextField(20);
 
-		JButton btnTest = new JButton("Test");
+		JButton btnTest = new JButton(Messages.getString("PeripheralConfigurationView.7")); //$NON-NLS-1$
 		btnTest.addActionListener(new ActionListener() {
 
 			@Override
@@ -137,29 +137,29 @@ public class PeripheralConfigurationView extends ConfigurationView {
 		btnRestoreCustomerDefault.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				tfCustomerDisplayPort.setText("COM 1");
-				tfCustomerDisplayMessage.setText("1234567891234567891");
+				tfCustomerDisplayPort.setText("COM 1"); //$NON-NLS-1$
+				tfCustomerDisplayMessage.setText("1234567891234567891"); //$NON-NLS-1$
 			}
 		});
 
-		customerDisplayPanel.add(cbCustomerDisplay, "wrap");
-		customerDisplayPanel.add(new JLabel("Customer Display Port"));
-		customerDisplayPanel.add(tfCustomerDisplayPort, "wrap");
-		customerDisplayPanel.add(new JLabel("Text Message"));
+		customerDisplayPanel.add(cbCustomerDisplay, "wrap"); //$NON-NLS-1$
+		customerDisplayPanel.add(new JLabel(Messages.getString("PeripheralConfigurationView.0"))); //$NON-NLS-1$
+		customerDisplayPanel.add(tfCustomerDisplayPort, "wrap"); //$NON-NLS-1$
+		customerDisplayPanel.add(new JLabel(Messages.getString("PeripheralConfigurationView.1"))); //$NON-NLS-1$
 		customerDisplayPanel.add(tfCustomerDisplayMessage);
 		customerDisplayPanel.add(btnTest);
 		customerDisplayPanel.add(btnRestoreCustomerDefault);
 
-		contentPanel.add(customerDisplayPanel, "grow,wrap");
+		contentPanel.add(customerDisplayPanel, "grow,wrap"); //$NON-NLS-1$
 
 		JPanel scaleDisplayPanel = new JPanel(new MigLayout());
-		scaleDisplayPanel.setBorder(BorderFactory.createTitledBorder("SCALE DISPLAY"));
+		scaleDisplayPanel.setBorder(BorderFactory.createTitledBorder(Messages.getString("PeripheralConfigurationView.15"))); //$NON-NLS-1$
 
-		cbScaleActive = new JCheckBox("Active scale Input");
+		cbScaleActive = new JCheckBox(Messages.getString("PeripheralConfigurationView.16")); //$NON-NLS-1$
 		tfScalePort = new JTextField(20);
 		tfScaleDisplayMessage = new FixedLengthTextField(20);
 
-		JButton btnTestScale = new JButton("Test");
+		JButton btnTestScale = new JButton(Messages.getString("PeripheralConfigurationView.17")); //$NON-NLS-1$
 		btnTestScale.addActionListener(new ActionListener() {
 
 			@Override
@@ -172,24 +172,24 @@ public class PeripheralConfigurationView extends ConfigurationView {
 		btnRestoreScaleDefault.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				tfScalePort.setText("COM7");
+				tfScalePort.setText(Messages.getString("PeripheralConfigurationView.18")); //$NON-NLS-1$
 			}
 		});
 
-		scaleDisplayPanel.add(cbScaleActive, "wrap");
-		scaleDisplayPanel.add(new JLabel("Scale Port"));
+		scaleDisplayPanel.add(cbScaleActive, "wrap"); //$NON-NLS-1$
+		scaleDisplayPanel.add(new JLabel(Messages.getString("PeripheralConfigurationView.20"))); //$NON-NLS-1$
 		scaleDisplayPanel.add(tfScalePort);
 		scaleDisplayPanel.add(btnTestScale);
 		scaleDisplayPanel.add(btnRestoreScaleDefault);
 
-		if (TerminalConfig.getScaleActivationValue().equals("cas10")) {
-			contentPanel.add(scaleDisplayPanel, "grow,wrap");
+		if (TerminalConfig.getScaleActivationValue().equals("cas10")) { //$NON-NLS-1$
+			contentPanel.add(scaleDisplayPanel, "grow,wrap"); //$NON-NLS-1$
 		}
 
 		JPanel callerIdPanel = new JPanel(new MigLayout());
-		callerIdPanel.setBorder(BorderFactory.createTitledBorder("CALLER ID DEVICE"));
+		callerIdPanel.setBorder(BorderFactory.createTitledBorder(Messages.getString("PeripheralConfigurationView.23"))); //$NON-NLS-1$
 
-		chkCallerIdEnable = new JCheckBox("Enable caller id device");
+		chkCallerIdEnable = new JCheckBox(Messages.getString("PeripheralConfigurationView.24")); //$NON-NLS-1$
 
 		Vector callerIds = new Vector();
 		callerIds.add("NONE"); //$NON-NLS-1$

@@ -21,6 +21,7 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 
+import com.floreantpos.Messages;
 import com.floreantpos.main.Application;
 import com.floreantpos.services.PosWebService;
 import com.floreantpos.ui.dialog.UpdateDialog;
@@ -44,16 +45,16 @@ public class UpdateAction extends AbstractAction {
 			String versionInfo = service.getAvailableNewVersions(TerminalUtil.getSystemUID(), Application.VERSION.substring(0, 3));
 			String[] availableNewVersions = null;
 			if (versionInfo != null) {
-				if (versionInfo.equals("UP_TO_DATE")) {
+				if (versionInfo.equals("UP_TO_DATE")) { //$NON-NLS-1$
 					up_to_date = true;
 				}
-				else if (versionInfo.startsWith("[")) {
-					versionInfo = versionInfo.replace("[", "").replace(",]", "");
-					availableNewVersions = versionInfo.split(",");
+				else if (versionInfo.startsWith("[")) { //$NON-NLS-1$
+					versionInfo = versionInfo.replace("[", "").replace(",]", ""); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+					availableNewVersions = versionInfo.split(","); //$NON-NLS-1$
 				}
 			}
 			UpdateDialog dialog = new UpdateDialog(availableNewVersions, up_to_date, true);
-			dialog.setTitle("Update");
+			dialog.setTitle(Messages.getString("UpdateAction.7")); //$NON-NLS-1$
 			dialog.pack();
 			dialog.open();
 		} catch (Exception ex) {

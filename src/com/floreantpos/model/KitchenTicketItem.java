@@ -45,7 +45,7 @@ public class KitchenTicketItem extends BaseKitchenTicketItem {
 
 	public java.lang.String getMenuItemGroupName() {
 		if (super.getMenuItemGroupName() == null) {
-			return "";
+			return ""; //$NON-NLS-1$
 		}
 		return super.getMenuItemGroupName();
 	}

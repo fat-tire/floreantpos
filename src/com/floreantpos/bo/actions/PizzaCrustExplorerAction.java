@@ -23,13 +23,14 @@ import javax.swing.AbstractAction;
 import javax.swing.Icon;
 import javax.swing.JTabbedPane;
 
+import com.floreantpos.Messages;
 import com.floreantpos.bo.ui.BackOfficeWindow;
 import com.floreantpos.bo.ui.explorer.PizzaCrustExplorer;
 
 public class PizzaCrustExplorerAction extends AbstractAction {
 
 	public PizzaCrustExplorerAction() {
-		super("Pizza Crust");
+		super(Messages.getString("PizzaCrustExplorerAction.0")); //$NON-NLS-1$
 	}
 
 	public PizzaCrustExplorerAction(String name) {
@@ -45,10 +46,10 @@ public class PizzaCrustExplorerAction extends AbstractAction {
 
 		PizzaCrustExplorer explorer = null;
 		JTabbedPane tabbedPane = backOfficeWindow.getTabbedPane();
-		int index = tabbedPane.indexOfTab("Pizza Crust");
+		int index = tabbedPane.indexOfTab(Messages.getString("PizzaCrustExplorerAction.0")); //$NON-NLS-1$
 		if (index == -1) {
 			explorer = new PizzaCrustExplorer();
-			tabbedPane.addTab("Pizza Crust", explorer);
+			tabbedPane.addTab(Messages.getString("PizzaCrustExplorerAction.0"), explorer); //$NON-NLS-1$
 		}
 		else {
 			explorer = (PizzaCrustExplorer) tabbedPane.getComponentAt(index);

@@ -41,6 +41,7 @@ import net.miginfocom.swing.MigLayout;
 import org.jdesktop.swingx.JXDatePicker;
 import org.jdesktop.swingx.JXTable;
 
+import com.floreantpos.Messages;
 import com.floreantpos.POSConstants;
 import com.floreantpos.bo.ui.BOMessageDialog;
 import com.floreantpos.model.AttendenceHistory;
@@ -59,10 +60,10 @@ public class AttendanceHistoryExplorer extends TransparentPanel {
 	private JXDatePicker fromDatePicker = UiUtil.getCurrentMonthStart();
 	private JXDatePicker toDatePicker = UiUtil.getCurrentMonthEnd();
 	private JButton btnGo = new JButton(com.floreantpos.POSConstants.GO);
-	private JButton btnAdd = new JButton("Add");
-	private JButton btnEdit = new JButton("Edit");
-	private JButton btnDelete = new JButton("Delete");
-	private JButton btnPrint = new JButton("Print");
+	private JButton btnAdd = new JButton(Messages.getString("AttendanceHistoryExplorer.0")); //$NON-NLS-1$
+	private JButton btnEdit = new JButton(Messages.getString("AttendanceHistoryExplorer.1")); //$NON-NLS-1$
+	private JButton btnDelete = new JButton(Messages.getString("AttendanceHistoryExplorer.2")); //$NON-NLS-1$
+	private JButton btnPrint = new JButton(Messages.getString("AttendanceHistoryExplorer.3")); //$NON-NLS-1$
 	private JXTable table;
 	private JComboBox cbUserType;
 
@@ -135,13 +136,13 @@ public class AttendanceHistoryExplorer extends TransparentPanel {
 			public void actionPerformed(ActionEvent e) {
 				int selectedRow = table.getSelectedRow();
 				if (selectedRow < 0) {
-					BOMessageDialog.showError(AttendanceHistoryExplorer.this, "Select a row to edit");
+					BOMessageDialog.showError(AttendanceHistoryExplorer.this, Messages.getString("AttendanceHistoryExplorer.4")); //$NON-NLS-1$
 					return;
 				}
 				AttendenceHistoryTableModel model = (AttendenceHistoryTableModel) table.getModel();
 				AttendenceHistory history = (AttendenceHistory) model.getRowData(selectedRow);
 
-				DateChoserDialog dialog = new DateChoserDialog(history, "Edit clock in/out time");
+				DateChoserDialog dialog = new DateChoserDialog(history, Messages.getString("AttendanceHistoryExplorer.5")); //$NON-NLS-1$
 				dialog.pack();
 				dialog.open();
 
@@ -163,7 +164,7 @@ public class AttendanceHistoryExplorer extends TransparentPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				DateChoserDialog dialog = new DateChoserDialog("Add clock in/out time");
+				DateChoserDialog dialog = new DateChoserDialog(Messages.getString("AttendanceHistoryExplorer.6")); //$NON-NLS-1$
 				dialog.pack();
 				dialog.open();
 
@@ -261,7 +262,7 @@ public class AttendanceHistoryExplorer extends TransparentPanel {
 	}
 
 	class AttendenceHistoryTableModel extends ListTableModel {
-		String[] columnNames = { "EMP ID", "EMP NAME", "CLOCK IN TIME", "CLOCK OUT TIME", "CLOCKED OUT", "SHIFT ID", "TERMINAL ID" };/* "CLOCK IN HOUR", "CLOCK OUT HOUR", */
+		String[] columnNames = { "EMP ID", "EMP NAME", "CLOCK IN TIME", "CLOCK OUT TIME", "CLOCKED OUT", "SHIFT ID", "TERMINAL ID" };/* "CLOCK IN HOUR", "CLOCK OUT HOUR", */ //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
 
 		AttendenceHistoryTableModel(List<AttendenceHistory> list) {
 			setRows(list);
@@ -277,7 +278,7 @@ public class AttendanceHistoryExplorer extends TransparentPanel {
 					return history.getUser().getUserId();
 
 				case 1:
-					return history.getUser().getFirstName() + " " + history.getUser().getLastName();
+					return history.getUser().getFirstName() + " " + history.getUser().getLastName(); //$NON-NLS-1$
 
 				case 2:
 
@@ -285,7 +286,7 @@ public class AttendanceHistoryExplorer extends TransparentPanel {
 					if (date != null) {
 						return dateFormat.format(date);
 					}
-					return "";
+					return ""; //$NON-NLS-1$
 
 				case 3:
 
@@ -293,14 +294,14 @@ public class AttendanceHistoryExplorer extends TransparentPanel {
 					if (date2 != null) {
 						return dateFormat.format(date2);
 					}
-					return "";
+					return ""; //$NON-NLS-1$
 
 				case 4:
 					return history.isClockedOut();
 
 				case 5:
 					if (history.getShift() == null) {
-						return "";
+						return ""; //$NON-NLS-1$
 					}
 					return history.getShift().getId();
 
