@@ -38,16 +38,23 @@
 		<property column="DRAWER_ACCOUNTABLE" name="drawerAccountable" type="java.lang.Double" />
 		<property column="CASH_TO_DEPOSIT" name="cashToDeposit" type="java.lang.Double" />
 		<property column="VARIANCE" name="variance" type="java.lang.Double" />
+		<property column="DELIVERY_CHARGE" name="salesDeliveryCharge" type="java.lang.Double" />
 
 		<set cascade="all" inverse="false" lazy="false" name="voidTickets" table="DRAWER_PULL_REPORT_VOIDTICKETS">
 			<key column="DPREPORT_ID" />
-			<composite-element class="DrawerPullVoidTicketEntry">
+			<composite-element class="com.floreantpos.model.DrawerPullVoidTicketEntry">
 				<property name="code" type="java.lang.Integer" />
 				<property name="reason" type="java.lang.String" />
 				<property name="hast" type="java.lang.String" />
 				<property name="quantity" type="java.lang.Integer" />
 				<property name="amount" type="java.lang.Double" />
 			</composite-element>
+		</set>
+		<set cascade="all" inverse="false" lazy="false" name="currencyBalances">
+			<key>
+				<column name="DPR_ID" />
+			</key>
+			<one-to-many class="CurrencyBalance" />
 		</set>
 		<property name="totalVoidWst" type="java.lang.Double" />
 		<property name="totalVoid" type="java.lang.Double" />

@@ -17,6 +17,7 @@
  */
 package com.floreantpos.model.base;
 
+import java.lang.Comparable;
 import java.io.Serializable;
 
 
@@ -33,8 +34,8 @@ public abstract class BaseDrawerPullVoidTicketEntry  implements Comparable, Seri
 
 	public static String REF = "DrawerPullVoidTicketEntry"; //$NON-NLS-1$
 	public static String PROP_AMOUNT = "amount"; //$NON-NLS-1$
-	public static String PROP_QUANTITY = "quantity"; //$NON-NLS-1$
 	public static String PROP_HAST = "hast"; //$NON-NLS-1$
+	public static String PROP_QUANTITY = "quantity"; //$NON-NLS-1$
 	public static String PROP_CODE = "code"; //$NON-NLS-1$
 	public static String PROP_REASON = "reason"; //$NON-NLS-1$
 
@@ -64,8 +65,8 @@ public abstract class BaseDrawerPullVoidTicketEntry  implements Comparable, Seri
 	 * Return the value associated with the column: code
 	 */
 	public java.lang.Integer getCode () {
-					return code == null ? Integer.valueOf(0) : code;
-			}
+									return code == null ? Integer.valueOf(0) : code;
+					}
 
 	/**
 	 * Set the value related to the column: code
@@ -115,8 +116,8 @@ public abstract class BaseDrawerPullVoidTicketEntry  implements Comparable, Seri
 	 * Return the value associated with the column: quantity
 	 */
 	public java.lang.Integer getQuantity () {
-					return quantity == null ? Integer.valueOf(0) : quantity;
-			}
+									return quantity == null ? Integer.valueOf(0) : quantity;
+					}
 
 	/**
 	 * Set the value related to the column: quantity
