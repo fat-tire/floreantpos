@@ -25,23 +25,23 @@ import com.floreantpos.model.base.BaseUserPermission;
 @XmlRootElement(name = "user-permission")
 public class UserPermission extends BaseUserPermission {
 	private static final long serialVersionUID = 1L;
-
+	private String resourceBundlePropertyName;
+	
 	/*[CONSTRUCTOR MARKER BEGIN]*/
 	public UserPermission() {
 		super();
 	}
 
-	/**
-	 * Constructor for primary key
-	 */
-	public UserPermission(java.lang.String name) {
+	public UserPermission(java.lang.String name, String resourceBundlePropertyName) {
 		super(name);
+		this.resourceBundlePropertyName = resourceBundlePropertyName;
 	}
 
 	/*[CONSTRUCTOR MARKER END]*/
 
-	public UserPermission(java.lang.String name, boolean visibleWithoutPermission) {
+	public UserPermission(java.lang.String name, String resourceBundlePropertyName, boolean visibleWithoutPermission) {
 		super(name);
+		this.resourceBundlePropertyName = resourceBundlePropertyName;
 		this.visibleWithoutPermission = visibleWithoutPermission;
 	}
 
@@ -60,36 +60,36 @@ public class UserPermission extends BaseUserPermission {
 
 	@Override
 	public String toString() {
-		return getName();
+		return Messages.getString(resourceBundlePropertyName);
 	}
 
-	public final static UserPermission CREATE_TICKET = new UserPermission(Messages.getString("UserPermission.0")); //$NON-NLS-1$
-	public final static UserPermission VIEW_ALL_OPEN_TICKETS = new UserPermission(Messages.getString("UserPermission.1")); //$NON-NLS-1$
-	public final static UserPermission VOID_TICKET = new UserPermission(Messages.getString("UserPermission.3")); //$NON-NLS-1$
-	public final static UserPermission PERFORM_ADMINISTRATIVE_TASK = new UserPermission(Messages.getString("UserPermission.4")); //$NON-NLS-1$
-	public final static UserPermission PERFORM_MANAGER_TASK = new UserPermission(Messages.getString("UserPermission.5")); //$NON-NLS-1$
-	public final static UserPermission VIEW_BACK_OFFICE = new UserPermission(Messages.getString("UserPermission.6"), false); //$NON-NLS-1$
-	public final static UserPermission AUTHORIZE_TICKETS = new UserPermission(Messages.getString("UserPermission.7")); //$NON-NLS-1$
-	public final static UserPermission DRAWER_ASSIGNMENT = new UserPermission(Messages.getString("UserPermission.8")); //$NON-NLS-1$
-	public final static UserPermission DRAWER_PULL = new UserPermission(Messages.getString("UserPermission.9")); //$NON-NLS-1$
-	public final static UserPermission SPLIT_TICKET = new UserPermission(Messages.getString("UserPermission.10")); //$NON-NLS-1$
-	public final static UserPermission SETTLE_TICKET = new UserPermission(Messages.getString("UserPermission.11")); //$NON-NLS-1$
-	public final static UserPermission REOPEN_TICKET = new UserPermission(Messages.getString("UserPermission.12")); //$NON-NLS-1$
-	public final static UserPermission PAY_OUT = new UserPermission(Messages.getString("UserPermission.13")); //$NON-NLS-1$
-	public final static UserPermission SHUT_DOWN = new UserPermission(Messages.getString("UserPermission.15")); //$NON-NLS-1$
-	public final static UserPermission ADD_DISCOUNT = new UserPermission(Messages.getString("UserPermission.16")); //$NON-NLS-1$
-	public final static UserPermission REFUND = new UserPermission(Messages.getString("UserPermission.17")); //$NON-NLS-1$
-	public final static UserPermission VIEW_EXPLORERS = new UserPermission(Messages.getString("UserPermission.18")); //$NON-NLS-1$
-	public final static UserPermission VIEW_REPORTS = new UserPermission(Messages.getString("UserPermission.19")); //$NON-NLS-1$
-	public final static UserPermission MANAGE_TABLE_LAYOUT = new UserPermission(Messages.getString("UserPermission.20")); //$NON-NLS-1$
-	public final static UserPermission TABLE_BOOKING = new UserPermission(Messages.getString("UserPermission.22")); //$NON-NLS-1$
-	public final static UserPermission MODIFY_PRINTED_TICKET = new UserPermission(Messages.getString("UserPermission.21")); //$NON-NLS-1$
-	public final static UserPermission TRANSFER_TICKET = new UserPermission("Transfer Ticket"); //$NON-NLS-1$
-	public final static UserPermission KITCHEN_DISPLAY = new UserPermission("Kitchen Display"); //$NON-NLS-1$
-	public final static UserPermission ALL_FUNCTIONS = new UserPermission("All Functions"); //$NON-NLS-1$
-	public final static UserPermission HOLD_TICKET = new UserPermission("Hold Ticket"); //$NON-NLS-1$
-	public final static UserPermission VIEW_ALL_CLOSE_TICKETS = new UserPermission("View All Close Tickets"); //$NON-NLS-1$
-	
+	public final static UserPermission CREATE_TICKET = new UserPermission("Create New Ticket", "UserPermission.0"); //$NON-NLS-1$ //$NON-NLS-2$
+	public final static UserPermission VIEW_ALL_OPEN_TICKETS = new UserPermission("View All Open Ticket", "UserPermission.1"); //$NON-NLS-1$ //$NON-NLS-2$
+	public final static UserPermission VOID_TICKET = new UserPermission("Void Ticket", "UserPermission.3"); //$NON-NLS-1$ //$NON-NLS-2$
+	public final static UserPermission PERFORM_ADMINISTRATIVE_TASK = new UserPermission("Perform Administrative Task", "UserPermission.4"); //$NON-NLS-1$ //$NON-NLS-2$
+	public final static UserPermission PERFORM_MANAGER_TASK = new UserPermission("Perform Manager Task", "UserPermission.5"); //$NON-NLS-1$ //$NON-NLS-2$
+	public final static UserPermission VIEW_BACK_OFFICE = new UserPermission("View Back Office", "UserPermission.6", false); //$NON-NLS-1$ //$NON-NLS-2$
+	public final static UserPermission AUTHORIZE_TICKETS = new UserPermission("Authorize Tickets", "UserPermission.7"); //$NON-NLS-1$ //$NON-NLS-2$
+	public final static UserPermission DRAWER_ASSIGNMENT = new UserPermission("Drawer Assignment", "UserPermission.8"); //$NON-NLS-1$ //$NON-NLS-2$
+	public final static UserPermission DRAWER_PULL = new UserPermission("Drawer Pull", "UserPermission.9"); //$NON-NLS-1$ //$NON-NLS-2$
+	public final static UserPermission SPLIT_TICKET = new UserPermission("Split Ticket", "UserPermission.10"); //$NON-NLS-1$ //$NON-NLS-2$
+	public final static UserPermission SETTLE_TICKET = new UserPermission("Settle Ticket", "UserPermission.11"); //$NON-NLS-1$ //$NON-NLS-2$
+	public final static UserPermission REOPEN_TICKET = new UserPermission("Reopen Ticket", "UserPermission.12"); //$NON-NLS-1$ //$NON-NLS-2$
+	public final static UserPermission PAY_OUT = new UserPermission("Pay Out", "UserPermission.13"); //$NON-NLS-1$ //$NON-NLS-2$
+	public final static UserPermission SHUT_DOWN = new UserPermission("Shut Down", "UserPermission.15"); //$NON-NLS-1$ //$NON-NLS-2$
+	public final static UserPermission ADD_DISCOUNT = new UserPermission("Add Discount", "UserPermission.16"); //$NON-NLS-1$ //$NON-NLS-2$
+	public final static UserPermission REFUND = new UserPermission("Refund", "UserPermission.17"); //$NON-NLS-1$ //$NON-NLS-2$
+	public final static UserPermission VIEW_EXPLORERS = new UserPermission("View Explorers", "UserPermission.18"); //$NON-NLS-1$ //$NON-NLS-2$
+	public final static UserPermission VIEW_REPORTS = new UserPermission("View Reports", "UserPermission.19"); //$NON-NLS-1$ //$NON-NLS-2$
+	public final static UserPermission MANAGE_TABLE_LAYOUT = new UserPermission("Manage Table Layout", "UserPermission.20"); //$NON-NLS-1$ //$NON-NLS-2$
+	public final static UserPermission TABLE_BOOKING = new UserPermission("Booking", "UserPermission.22"); //$NON-NLS-1$ //$NON-NLS-2$
+	public final static UserPermission MODIFY_PRINTED_TICKET = new UserPermission("Modify Printed Ticket", "UserPermission.21"); //$NON-NLS-1$ //$NON-NLS-2$
+	public final static UserPermission TRANSFER_TICKET = new UserPermission("Transfer Ticket", "UserPermission.Transfer_Ticket"); //$NON-NLS-1$ //$NON-NLS-2$
+	public final static UserPermission KITCHEN_DISPLAY = new UserPermission("Kitchen Display", "UserPermission.Kitchen_Display"); //$NON-NLS-1$ //$NON-NLS-2$
+	public final static UserPermission ALL_FUNCTIONS = new UserPermission("All Functions", "UserPermission.Special_Functions"); //$NON-NLS-1$ //$NON-NLS-2$
+	public final static UserPermission HOLD_TICKET = new UserPermission("Hold Ticket", "UserPermission.Hold_Ticket"); //$NON-NLS-1$ //$NON-NLS-2$
+	public final static UserPermission VIEW_ALL_CLOSE_TICKETS = new UserPermission("View All Close Tickets", "UserPermission.View_All_Close_Tickets"); //$NON-NLS-1$ //$NON-NLS-2$
+
 	//public final static UserPermission VIEW_USER_LIST = new UserPermission("View User List");
 	//public final static UserPermission GRATUITY_ADMINISTRATION = new UserPermission("Gratuity Administration");
 	//public final static UserPermission VIEW_DRAWER_PULL_REPORT = new UserPermission("View Drawer Pull Report");
