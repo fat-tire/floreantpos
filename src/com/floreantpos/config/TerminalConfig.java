@@ -84,6 +84,8 @@ public class TerminalConfig {
 	static final String TERMINAL_ID = "terminal_id"; //$NON-NLS-1$
 	static final String FULLSCREEN_MODE = "fullscreen_mode"; //$NON-NLS-1$
 
+	private static final String DEFAULT_LOCALE = "defaultLocal";//$NON-NLS-1$
+
 	private static boolean multiple_order_supported = true;
 
 	private static PropertiesConfiguration config = AppConfig.getConfig();
@@ -472,5 +474,13 @@ public class TerminalConfig {
 
 	public static String getPosDownloadUrl() {
 		return config.getString("pos_url", "http://floreant.org/"); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+
+	public static void setDefaultLocale(String defaultLocal) {
+		config.setProperty(DEFAULT_LOCALE, defaultLocal);
+	}
+
+	public static String getDefaultLocale() {
+		return config.getString(DEFAULT_LOCALE,"");
 	}
 }

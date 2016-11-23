@@ -58,6 +58,7 @@ import com.floreantpos.bo.actions.InventoryOnHandReportAction;
 import com.floreantpos.bo.actions.ItemExplorerAction;
 import com.floreantpos.bo.actions.JournalReportAction;
 import com.floreantpos.bo.actions.KeyStatisticsSalesReportAction;
+import com.floreantpos.bo.actions.LanguageSelectionAction;
 import com.floreantpos.bo.actions.MenuItemSizeExplorerAction;
 import com.floreantpos.bo.actions.MenuUsageReportAction;
 import com.floreantpos.bo.actions.ModifierExplorerAction;
@@ -257,6 +258,7 @@ public class BackOfficeWindow extends javax.swing.JFrame {
 		adminMenu.add(new ViewGratuitiesAction());
 		adminMenu.add(new DataExportAction());
 		adminMenu.add(new DataImportAction());
+		adminMenu.add(new LanguageSelectionAction());
 		menuBar.add(adminMenu);
 	}
 
