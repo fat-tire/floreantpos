@@ -81,7 +81,7 @@
 			</includes>
 		</fileSet>
 		<fileSet>
-			<directory>resources/i18n</directory>
+			<directory>i18n</directory>
 			<outputDirectory>i18n</outputDirectory>
 			<includes>
 				<include>*.properties</include>
