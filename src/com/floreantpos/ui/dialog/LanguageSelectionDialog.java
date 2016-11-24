@@ -4,13 +4,9 @@ import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
 import java.util.StringTokenizer;
 
 import javax.swing.JComboBox;
@@ -20,18 +16,12 @@ import javax.swing.JPanel;
 
 import net.miginfocom.swing.MigLayout;
 
-import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.lang.StringUtils;
 
 import com.floreantpos.config.TerminalConfig;
-import com.floreantpos.main.Main;
-import com.floreantpos.model.Terminal;
-import com.floreantpos.swing.ComboBoxModel;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.ui.TitlePanel;
-import com.floreantpos.util.JarUtil;
 import com.floreantpos.util.POSUtil;
-import com.floreantpos.util.PosLocale;
 
 public class LanguageSelectionDialog extends POSDialog {
 
