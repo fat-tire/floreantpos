@@ -17,6 +17,9 @@
  */
 package com.floreantpos.config;
 
+import java.util.Locale;
+import java.util.StringTokenizer;
+
 import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.commons.lang.StringUtils;
 
@@ -82,6 +85,7 @@ public class TerminalConfig {
 	private static final String CALLER_ID_DEVICE = "caller_id_device";//$NON-NLS-1$
 
 	static final String TERMINAL_ID = "terminal_id"; //$NON-NLS-1$
+	
 	static final String FULLSCREEN_MODE = "fullscreen_mode"; //$NON-NLS-1$
 
 	private static final String DEFAULT_LOCALE = "defaultLocal";//$NON-NLS-1$
@@ -480,7 +484,20 @@ public class TerminalConfig {
 		config.setProperty(DEFAULT_LOCALE, defaultLocal);
 	}
 
-	public static String getDefaultLocale() {
-		return config.getString(DEFAULT_LOCALE,"");
+	public static Locale getDefaultLocale() {
+		 String defaultLocaleString = config.getString(DEFAULT_LOCALE,"");
+		 String language = "";
+			String country = "";
+			String variant = "";
+			StringTokenizer st = new StringTokenizer(defaultLocaleString, "_");
+			if (st.hasMoreTokens())
+				language = st.nextToken();
+			if (st.hasMoreTokens())
+				country = st.nextToken();
+			if (st.hasMoreTokens())
+				variant = st.nextToken();
+			Locale disName = new Locale(language, country, variant);
+			
+			return disName;
 	}
 }

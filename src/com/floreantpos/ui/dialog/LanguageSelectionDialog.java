@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -19,6 +21,8 @@ import net.miginfocom.swing.MigLayout;
 import org.apache.commons.lang.StringUtils;
 
 import com.floreantpos.config.TerminalConfig;
+import com.floreantpos.main.Application;
+import com.floreantpos.main.Main;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.ui.TitlePanel;
 import com.floreantpos.util.POSUtil;
@@ -97,8 +101,8 @@ public class LanguageSelectionDialog extends POSDialog {
 
 	private void updateModel() {
 		if (TerminalConfig.getDefaultLocale() != null) {
-			String getLocale = TerminalConfig.getDefaultLocale();
-			String language = "";
+			Locale getLocale = TerminalConfig.getDefaultLocale();
+			/*String language = "";
 			String country = "";
 			String variant = "";
 			StringTokenizer st = new StringTokenizer(getLocale, "_");
@@ -108,8 +112,8 @@ public class LanguageSelectionDialog extends POSDialog {
 				country = st.nextToken();
 			if (st.hasMoreTokens())
 				variant = st.nextToken();
-			Locale disName = new Locale(language, country, variant);
-			cbLang.setSelectedItem(disName.getDisplayName());
+			Locale disName = new Locale(language, country, variant);*/
+			cbLang.setSelectedItem(getLocale.getDisplayName());
 		}
 		//Locale.setDefault(TerminalConfig.getDefaultLocale());
 	}
@@ -126,8 +130,13 @@ public class LanguageSelectionDialog extends POSDialog {
 			}
 			TerminalConfig.setDefaultLocale(savedLocal);
 
-			POSMessageDialog.showMessage(this, "Language Set As Default Language.");
+			POSMessageDialog.showMessage(this, "Language set as default language. Application will restart.");
 			dispose();
+			try {
+				Main.restart();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -172,7 +181,7 @@ public class LanguageSelectionDialog extends POSDialog {
 					posLocaleList.add(new Locale(languageName));
 				}
 				else if (StringUtils.isEmpty(languageName)) {
-					posLocaleList.add(Locale.getDefault());
+					posLocaleList.add(new Locale("en"));
 				}
 				else if (StringUtils.isEmpty(countryName)) {
 					posLocaleList.add(new Locale(languageName));

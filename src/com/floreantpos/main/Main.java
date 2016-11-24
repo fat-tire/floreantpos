@@ -21,11 +21,14 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Locale;
 
 import org.apache.commons.cli.BasicParser;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.Options;
+
+import com.floreantpos.config.TerminalConfig;
 
 public class Main {
 
@@ -41,6 +44,10 @@ public class Main {
 		CommandLineParser parser = new BasicParser();
 		CommandLine commandLine = parser.parse(options, args);
 		String optionValue = commandLine.getOptionValue(DEVELOPMENT_MODE);
+		Locale defaultLocale = TerminalConfig.getDefaultLocale();
+		if (defaultLocale != null) {
+			Locale.setDefault(defaultLocale);
+		}
 
 		Application application = Application.getInstance();
 
@@ -53,16 +60,16 @@ public class Main {
 
 	public static void restart() throws IOException, InterruptedException, URISyntaxException {
 		final String javaBin = System.getProperty("java.home") + File.separator + "bin" + File.separator + "java"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		
-//		Properties properties = System.getProperties();
-//		Set<Object> keySet = properties.keySet();
-//		for (Object object : keySet) {
-//			System.out.println(object + ":"+properties.getProperty((String) object));
-//		}
-		
+
+		//		Properties properties = System.getProperties();
+		//		Set<Object> keySet = properties.keySet();
+		//		for (Object object : keySet) {
+		//			System.out.println(object + ":"+properties.getProperty((String) object));
+		//		}
+
 		String classPath = System.getProperty("java.class.path"); //$NON-NLS-1$
 		String mainClass = System.getProperty("sun.java.command"); //$NON-NLS-1$
-		
+
 		/* Build command: java -jar application.jar */
 		final ArrayList<String> command = new ArrayList<String>();
 		command.add(javaBin);
