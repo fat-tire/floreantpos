@@ -19,6 +19,8 @@ package com.floreantpos.model;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.floreantpos.Messages;
 import com.floreantpos.model.base.BaseUserPermission;
 
@@ -60,6 +62,9 @@ public class UserPermission extends BaseUserPermission {
 
 	@Override
 	public String toString() {
+		if (StringUtils.isEmpty(resourceBundlePropertyName)) {
+			return getName();
+		}
 		return Messages.getString(resourceBundlePropertyName);
 	}
 
