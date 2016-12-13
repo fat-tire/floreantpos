@@ -85,7 +85,7 @@ public class TerminalConfig {
 	private static final String CALLER_ID_DEVICE = "caller_id_device";//$NON-NLS-1$
 
 	static final String TERMINAL_ID = "terminal_id"; //$NON-NLS-1$
-	
+
 	static final String FULLSCREEN_MODE = "fullscreen_mode"; //$NON-NLS-1$
 
 	private static final String DEFAULT_LOCALE = "defaultLocal";//$NON-NLS-1$
@@ -485,19 +485,22 @@ public class TerminalConfig {
 	}
 
 	public static Locale getDefaultLocale() {
-		 String defaultLocaleString = config.getString(DEFAULT_LOCALE,"");
-		 String language = "";
-			String country = "";
-			String variant = "";
-			StringTokenizer st = new StringTokenizer(defaultLocaleString, "_");
-			if (st.hasMoreTokens())
-				language = st.nextToken();
-			if (st.hasMoreTokens())
-				country = st.nextToken();
-			if (st.hasMoreTokens())
-				variant = st.nextToken();
-			Locale disName = new Locale(language, country, variant);
-			
-			return disName;
+		String defaultLocaleString = config.getString(DEFAULT_LOCALE, null);
+		if (StringUtils.isEmpty(defaultLocaleString)) {
+			return null;
+		}
+		String language = "";
+		String country = "";
+		String variant = "";
+		StringTokenizer st = new StringTokenizer(defaultLocaleString, "_");
+		if (st.hasMoreTokens())
+			language = st.nextToken();
+		if (st.hasMoreTokens())
+			country = st.nextToken();
+		if (st.hasMoreTokens())
+			variant = st.nextToken();
+		Locale disName = new Locale(language, country, variant);
+
+		return disName;
 	}
 }
