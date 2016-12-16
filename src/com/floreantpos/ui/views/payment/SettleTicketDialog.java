@@ -794,7 +794,13 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 				transaction.setCardExpYear(mDialog.getExpYear());
 				setTransactionAmounts(transaction);
 
-				cardProcessor.preAuth(transaction);
+				//cardProcessor.preAuth(transaction);
+				if (ticket.getOrderType().isPreAuthCreditCard()) {//OK
+					cardProcessor.preAuth(transaction);
+				}
+				else {
+					cardProcessor.chargeAmount(transaction);
+				}
 
 				settleTicket(transaction);
 			}
