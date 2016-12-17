@@ -66,6 +66,29 @@ public class PosTransactionDAO extends BasePosTransactionDAO {
 		}
 	}
 
+	public List<PosTransaction> findAuthorizedTransactions(User owner) {
+		Session session = null;
+
+		try {
+			session = getSession();
+
+			Criteria criteria = session.createCriteria(getReferenceClass());
+			criteria.add(Restrictions.eq(PosTransaction.PROP_CAPTURED, Boolean.TRUE));
+			criteria.add(Restrictions.eq(PosTransaction.PROP_AUTHORIZABLE, Boolean.TRUE));
+			criteria.add(Restrictions.eq(PosTransaction.PROP_TRANSACTION_TYPE, TransactionType.CREDIT.name()));
+			criteria.add(Restrictions.isNotNull(PosTransaction.PROP_TICKET));
+			criteria.add(Restrictions.eq(PosTransaction.PROP_DRAWER_RESETTED, Boolean.FALSE));
+
+			/*	if (owner != null) {
+					criteria.add(Restrictions.eq(PosTransaction.PROP_USER, owner));
+				}
+			*/
+			return criteria.list();
+		} finally {
+			closeSession(session);
+		}
+	}
+
 	public List<? extends PosTransaction> findTransactions(Terminal terminal, Class transactionClass, Date from, Date to) {
 		Session session = null;
 

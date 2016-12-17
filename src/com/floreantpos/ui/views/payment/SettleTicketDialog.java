@@ -816,7 +816,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 				}
 
 				selectedTransaction.setCardType(selectedPaymentType.getDisplayString());
-				selectedTransaction.setCaptured(false);
+				selectedTransaction.setCaptured(true);
 				selectedTransaction.setCardReader(CardReader.EXTERNAL_TERMINAL.name());
 				selectedTransaction.setCardAuthCode(authorizationCode);
 				setTransactionAmounts(selectedTransaction);

@@ -28,6 +28,7 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
 
 import net.miginfocom.swing.MigLayout;
 
@@ -52,7 +53,9 @@ import com.floreantpos.util.CurrencyUtil;
 import com.floreantpos.util.NumberUtil;
 
 public class AuthorizableTicketBrowser extends POSDialog {
-	private TransactionListView listView = new TransactionListView();
+	private TransactionListView authClosedListView = new TransactionListView();
+	private TransactionListView authWaitingListView = new TransactionListView();
+	private JTabbedPane tabbedPane;
 
 	public AuthorizableTicketBrowser(JDialog parent) {
 		super();
@@ -71,20 +74,35 @@ public class AuthorizableTicketBrowser extends POSDialog {
 		titlePanel.setTitle(Messages.getString("TicketAuthorizationDialog.0")); //$NON-NLS-1$
 		add(titlePanel, BorderLayout.NORTH);
 
-		listView.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+		tabbedPane = new JTabbedPane();
 
-		add(listView);
+		tabbedPane = new JTabbedPane();
+		JPanel authWaitingTab = new JPanel(new BorderLayout());
 
-		JPanel buttonPanel = new JPanel(new MigLayout("al center","sg, fill", ""));
+		authWaitingListView.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+		authClosedListView.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+
+		authWaitingTab.add(authWaitingListView);
+
+		JPanel buttonPanel = new JPanel(new MigLayout("al center", "sg, fill", ""));
 		ActionHandler actionHandler = new ActionHandler();
 
-		buttonPanel.add(new PosButton(ActionCommand.EDIT_TIPS, actionHandler),"grow");
-		buttonPanel.add(new PosButton(ActionCommand.AUTHORIZE, actionHandler),"grow");
-		buttonPanel.add(new PosButton(ActionCommand.AUTHORIZE_ALL, actionHandler),"grow");
+		buttonPanel.add(new PosButton(ActionCommand.EDIT_TIPS, actionHandler), "grow");
+		buttonPanel.add(new PosButton(ActionCommand.AUTHORIZE, actionHandler), "grow");
+		buttonPanel.add(new PosButton(ActionCommand.AUTHORIZE_ALL, actionHandler), "grow");
 
 		buttonPanel.add(new PosButton(new CloseDialogAction(this)));
 
-		add(buttonPanel, BorderLayout.SOUTH);
+		authWaitingTab.add(buttonPanel, BorderLayout.SOUTH);
+
+		JPanel authClosedTab = new JPanel(new BorderLayout());
+		authClosedTab.add(authClosedListView);
+		authClosedTab.add(new PosButton(new CloseDialogAction(this)), BorderLayout.SOUTH);
+
+		tabbedPane.addTab("Auth Waiting", authWaitingTab);
+		tabbedPane.addTab("Auth Closed", authClosedTab);
+
+		add(tabbedPane);
 
 		updateTransactiontList();
 	}
@@ -96,7 +114,8 @@ public class AuthorizableTicketBrowser extends POSDialog {
 			owner = currentUser;
 		}
 
-		listView.setTransactions(PosTransactionDAO.getInstance().findUnauthorizedTransactions(owner));
+		authWaitingListView.setTransactions(PosTransactionDAO.getInstance().findUnauthorizedTransactions(owner));
+		authClosedListView.setTransactions(PosTransactionDAO.getInstance().findAuthorizedTransactions(owner));
 	}
 
 	private boolean confirmAuthorize(String message) {
@@ -110,7 +129,7 @@ public class AuthorizableTicketBrowser extends POSDialog {
 	}
 
 	private void doAuthorize() {
-		List<PosTransaction> transactions = listView.getSelectedTransactions();
+		List<PosTransaction> transactions = authWaitingListView.getSelectedTransactions();
 
 		if (transactions == null || transactions.size() == 0) {
 			POSMessageDialog.showMessage(AuthorizableTicketBrowser.this, Messages.getString("TicketAuthorizationDialog.2")); //$NON-NLS-1$
@@ -120,8 +139,6 @@ public class AuthorizableTicketBrowser extends POSDialog {
 		if (!confirmAuthorize(Messages.getString("TicketAuthorizationDialog.3"))) { //$NON-NLS-1$
 			return;
 		}
-		
-		
 
 		AuthorizationDialog authorizingDialog = new AuthorizationDialog(AuthorizableTicketBrowser.this, transactions);
 		authorizingDialog.setVisible(true);
@@ -130,7 +147,7 @@ public class AuthorizableTicketBrowser extends POSDialog {
 	}
 
 	public void doAuthorizeAll() {
-		final List<PosTransaction> transactions = listView.getAllTransactions();
+		final List<PosTransaction> transactions = authWaitingListView.getAllTransactions();
 
 		if (transactions == null || transactions.size() == 0) {
 			POSMessageDialog.showMessage(AuthorizableTicketBrowser.this, Messages.getString("TicketAuthorizationDialog.5")); //$NON-NLS-1$
@@ -148,7 +165,7 @@ public class AuthorizableTicketBrowser extends POSDialog {
 	}
 
 	private void doEditTips() {
-		PosTransaction transaction = listView.getFirstSelectedTransaction();
+		PosTransaction transaction = authWaitingListView.getFirstSelectedTransaction();
 
 		if (transaction == null) {
 			return;

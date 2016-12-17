@@ -32,6 +32,7 @@ import java.awt.event.WindowListener;
 import com.floreantpos.main.Application;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.ui.BeanEditor;
+import com.floreantpos.util.POSUtil;
 
 /**
  *
@@ -41,18 +42,17 @@ public class BeanEditorDialog extends javax.swing.JDialog implements WindowListe
 	protected BeanEditor beanEditor;
 	private boolean canceled = false;
 
-	//	public BeanEditorDialog() {
-	//		this(null);
-	//	}
-	//
-	//	public BeanEditorDialog(BeanEditor beanEditor) {
-	//		super(POSUtil.getFocusedWindow(), ModalityType.APPLICATION_MODAL);
-	//		initComponents();
-	//
-	//		setBeanEditor(beanEditor);
-	//
-	//		addWindowListener(this);
-	//	}
+	public BeanEditorDialog() {
+		this(null);
+	}
+
+	public BeanEditorDialog(BeanEditor beanEditor) {
+		super(POSUtil.getFocusedWindow(), ModalityType.APPLICATION_MODAL);
+		initComponents();
+
+		setBeanEditor(beanEditor);
+		addWindowListener(this);
+	}
 
 	public BeanEditorDialog(Frame owner, BeanEditor beanEditor) {
 		super(owner, true);
