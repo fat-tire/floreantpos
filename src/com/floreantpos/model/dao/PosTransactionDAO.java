@@ -26,6 +26,7 @@ import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 
+import com.floreantpos.model.CreditCardTransaction;
 import com.floreantpos.model.PosTransaction;
 import com.floreantpos.model.Terminal;
 import com.floreantpos.model.TransactionType;
@@ -72,17 +73,11 @@ public class PosTransactionDAO extends BasePosTransactionDAO {
 		try {
 			session = getSession();
 
-			Criteria criteria = session.createCriteria(getReferenceClass());
+			Criteria criteria = session.createCriteria(CreditCardTransaction.class);
 			criteria.add(Restrictions.eq(PosTransaction.PROP_CAPTURED, Boolean.TRUE));
-			criteria.add(Restrictions.eq(PosTransaction.PROP_AUTHORIZABLE, Boolean.TRUE));
-			criteria.add(Restrictions.eq(PosTransaction.PROP_TRANSACTION_TYPE, TransactionType.CREDIT.name()));
 			criteria.add(Restrictions.isNotNull(PosTransaction.PROP_TICKET));
 			criteria.add(Restrictions.eq(PosTransaction.PROP_DRAWER_RESETTED, Boolean.FALSE));
 
-			/*	if (owner != null) {
-					criteria.add(Restrictions.eq(PosTransaction.PROP_USER, owner));
-				}
-			*/
 			return criteria.list();
 		} finally {
 			closeSession(session);
