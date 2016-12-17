@@ -26,14 +26,14 @@ public class DrawerPullReport extends BaseDrawerPullReport {
 	private static final long serialVersionUID = 1L;
 
 	/*[CONSTRUCTOR MARKER BEGIN]*/
-	public DrawerPullReport () {
+	public DrawerPullReport() {
 		super();
 	}
 
 	/**
 	 * Constructor for primary key
 	 */
-	public DrawerPullReport (java.lang.Integer id) {
+	public DrawerPullReport(java.lang.Integer id) {
 		super(id);
 	}
 
@@ -88,6 +88,17 @@ public class DrawerPullReport extends BaseDrawerPullReport {
 
 	public void addCurrencyBalances(Set<CurrencyBalance> currencyBalance) {
 		getCurrencyBalances().addAll(currencyBalance);
+	}
+
+	@Override
+	public Set<CurrencyBalance> getCurrencyBalances() {
+		Set<CurrencyBalance> curBalanceList = super.getCurrencyBalances();
+
+		if (curBalanceList == null) {
+			curBalanceList = new HashSet<CurrencyBalance>();
+			super.setCurrencyBalances(curBalanceList);
+		}
+		return curBalanceList;
 	}
 
 	public void calculate() {
