@@ -102,7 +102,7 @@ public class ReceiptPrintService {
 	private static final String CURRENCY_SYMBOL = "currencySymbol"; //$NON-NLS-1$
 	private static Log logger = LogFactory.getLog(ReceiptPrintService.class);
 
-	private static final SimpleDateFormat reportDateFormat = new SimpleDateFormat("M/d/yy, h:m a"); //$NON-NLS-1$
+	private static final SimpleDateFormat reportDateFormat = new SimpleDateFormat("M/d/yy, h:mm a"); //$NON-NLS-1$
 
 	public static final String CUSTOMER_COPY = "Customer Copy";
 	public static final String DRIVER_COPY = "Driver Copy";
