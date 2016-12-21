@@ -52,7 +52,6 @@ import com.floreantpos.main.Application;
 import com.floreantpos.model.CardReader;
 import com.floreantpos.model.Currency;
 import com.floreantpos.model.KitchenTicket;
-import com.floreantpos.model.KitchenTicketItem;
 import com.floreantpos.model.OrderType;
 import com.floreantpos.model.PosTransaction;
 import com.floreantpos.model.Printer;
@@ -666,6 +665,9 @@ public class ReceiptPrintService {
 
 		int rowCount = 0;
 		for (Currency currency : CurrencyUtil.getAllCurrency()) {
+			if (currency == null) {
+				continue;
+			}
 			String key = currency.getName();
 			double rate = currency.getExchangeRate();
 			beginRow(currencyAmountBuilder);
@@ -816,10 +818,6 @@ public class ReceiptPrintService {
 
 		KitchenTicketDataSource dataSource = new KitchenTicketDataSource(ticket);
 
-		for (KitchenTicketItem ticketItem : ticket.getTicketItems()) {
-			System.out.println(ticketItem.getMenuItemName());
-		}
-
 		return createJasperPrint(ReportUtil.getReport("kitchen-receipt"), map, new JRTableModelDataSource(dataSource)); //$NON-NLS-1$
 	}
 
@@ -854,10 +852,6 @@ public class ReceiptPrintService {
 		map.put("printerName", "Printer Name : " + virtualPrinterName); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 		KitchenTicketDataSource dataSource = new KitchenTicketDataSource(ticket);
-
-		for (KitchenTicketItem ticketItem : ticket.getTicketItems()) {
-			System.out.println(virtualPrinterName + "\t" + ticketItem.getMenuItemName() + "\t" + deviceName);
-		}
 
 		String reportName = "kitchen-receipt2";
 
