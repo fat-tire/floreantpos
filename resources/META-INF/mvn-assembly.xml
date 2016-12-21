@@ -94,5 +94,13 @@
 				<include>**/*</include>
 			</includes>
 		</fileSet>
+		<fileSet>
+			<directory>src/com/floreantpos/report/template</directory>
+			<outputDirectory>config/printerlayouts</outputDirectory>
+			<includes>
+				<include>**/*.jrxml</include>
+				<include>**/*.jasper</include>
+			</includes>
+		</fileSet>
 	</fileSets>
 </assembly>
