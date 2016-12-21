@@ -726,6 +726,9 @@ public class ReceiptPrintService {
 		List<Currency> allCurrency = CurrencyUtil.getAllCurrency();
 		if (allCurrency != null) {
 			for (Currency currency : allCurrency) {
+				if (currency == null) {
+					continue;
+				}
 				String key = currency.getName();
 
 				String paidAmount = ticket.getProperty(key);
@@ -906,7 +909,13 @@ public class ReceiptPrintService {
 					PrintServiceUtil.getPrintServiceForPrinter(jasperPrint.getProperty(PROP_PRINTER_NAME)));
 			exporter.exportReport();
 		} catch (Exception x) {
-			x.printStackTrace();
+			String message = x.getMessage();
+			if (message != null && message.contains("PrinterAbortException")) {//$NON-NLS-1$
+				//do nothing
+			}
+			else {
+				logger.error(x);
+			}
 		}
 	}
 
