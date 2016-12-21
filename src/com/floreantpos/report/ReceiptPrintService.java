@@ -723,29 +723,32 @@ public class ReceiptPrintService {
 		endRow(currencyAmountBuilder);
 
 		int rowCount = 0;
-		for (Currency currency : CurrencyUtil.getAllCurrency()) {
-			String key = currency.getName();
+		List<Currency> allCurrency = CurrencyUtil.getAllCurrency();
+		if (allCurrency != null) {
+			for (Currency currency : allCurrency) {
+				String key = currency.getName();
 
-			String paidAmount = ticket.getProperty(key);
-			String cashBackAmount = ticket.getProperty(key + "_CASH_BACK");//$NON-NLS-1$
+				String paidAmount = ticket.getProperty(key);
+				String cashBackAmount = ticket.getProperty(key + "_CASH_BACK");//$NON-NLS-1$
 
-			if (paidAmount == null) {
-				paidAmount = "0";//$NON-NLS-1$
+				if (paidAmount == null) {
+					paidAmount = "0";//$NON-NLS-1$
+				}
+				if (cashBackAmount == null) {
+					cashBackAmount = "0";//$NON-NLS-1$
+				}
+				Double paid = Double.valueOf(paidAmount);
+				Double changeDue = Double.valueOf(cashBackAmount);
+				if (paid == 0 && changeDue == 0) {
+					continue;
+				}
+				beginRow(currencyAmountBuilder);
+				addColumn(currencyAmountBuilder, getHtmlText(key, 10, LEFT));
+				addColumn(currencyAmountBuilder, getHtmlText(decimalFormat.format(paid), 10, RIGHT));
+				addColumn(currencyAmountBuilder, getHtmlText(decimalFormat.format(changeDue), 10, RIGHT));
+				endRow(currencyAmountBuilder);
+				rowCount++;
 			}
-			if (cashBackAmount == null) {
-				cashBackAmount = "0";//$NON-NLS-1$
-			}
-			Double paid = Double.valueOf(paidAmount);
-			Double changeDue = Double.valueOf(cashBackAmount);
-			if (paid == 0 && changeDue == 0) {
-				continue;
-			}
-			beginRow(currencyAmountBuilder);
-			addColumn(currencyAmountBuilder, getHtmlText(key, 10, LEFT));
-			addColumn(currencyAmountBuilder, getHtmlText(decimalFormat.format(paid), 10, RIGHT));
-			addColumn(currencyAmountBuilder, getHtmlText(decimalFormat.format(changeDue), 10, RIGHT));
-			endRow(currencyAmountBuilder);
-			rowCount++;
 		}
 
 		if (rowCount == 0) {
