@@ -77,8 +77,9 @@ public class TerminalConfigurationView extends ConfigurationView {
 	private JCheckBox cbUseSettlementPrompt = new JCheckBox(Messages.getString("TerminalConfigurationView.4")); //$NON-NLS-1$
 	private JCheckBox cbShowDbConfiguration = new JCheckBox(Messages.getString("TerminalConfigurationView.5")); //$NON-NLS-1$
 	private JCheckBox cbShowBarCodeOnReceipt = new JCheckBox(Messages.getString("TerminalConfigurationView.21")); //$NON-NLS-1$
-	private JCheckBox cbGroupKitchenReceiptItems = new JCheckBox("Group by Categories in kitchen Receipt"); //$NON-NLS-1$
-	private JCheckBox chkEnabledMultiCurrency = new JCheckBox("Enable multi currency"); //$NON-NLS-1$
+	private JCheckBox cbGroupKitchenReceiptItems = new JCheckBox("Group by Categories in kitchen Receipt");
+	private JCheckBox chkEnabledMultiCurrency = new JCheckBox("Enable multi currency");
+	private JCheckBox chkAllowToDelPrintedItem = new JCheckBox("Allow to delete printed ticket item");
 
 	private JComboBox<String> cbFonts = new JComboBox<String>();
 	private JComboBox<String> cbDefaultView;
@@ -87,7 +88,7 @@ public class TerminalConfigurationView extends ConfigurationView {
 	private DoubleTextField tfScaleFactor;
 
 	private IntegerTextField tfFontSize;
-	private JCheckBox cbAutoLogoff = new JCheckBox(Messages.getString("TerminalConfigurationView.7")); //$NON-NLS-1$
+	private JCheckBox cbAutoLogoff = new JCheckBox(Messages.getString("TerminalConfigurationView.16")); //$NON-NLS-1$
 	private IntegerTextField tfLogoffTime = new IntegerTextField(4);
 
 	private JTextField tfDrawerName = new JTextField(10);
@@ -138,7 +139,6 @@ public class TerminalConfigurationView extends ConfigurationView {
 			}
 		});
 		contentPanel.add(cbAutoLogoff, "newline"); //$NON-NLS-1$
-		contentPanel.add(new JLabel(Messages.getString("TerminalConfigurationView.16"))); //$NON-NLS-1$
 		contentPanel.add(tfLogoffTime, "wrap"); //$NON-NLS-1$
 
 		contentPanel.add(cbTranslatedName, "span 2"); //$NON-NLS-1$
@@ -147,6 +147,7 @@ public class TerminalConfigurationView extends ConfigurationView {
 		contentPanel.add(cbShowBarCodeOnReceipt, "newline,span"); //$NON-NLS-1$
 		contentPanel.add(cbGroupKitchenReceiptItems, "newline,span"); //$NON-NLS-1$
 		contentPanel.add(chkEnabledMultiCurrency, "newline,span"); //$NON-NLS-1$
+		contentPanel.add(chkAllowToDelPrintedItem, "newline,span"); //$NON-NLS-1$
 
 		contentPanel.add(new JLabel(Messages.getString("TerminalConfigurationView.17")), "newline"); //$NON-NLS-1$//$NON-NLS-2$
 		contentPanel.add(cbFonts, "span 2, wrap"); //$NON-NLS-1$
@@ -243,23 +244,6 @@ public class TerminalConfigurationView extends ConfigurationView {
 		int menuItemButtonWidth = (int) (scaleFactor * 80);
 		int buttonHeight = (int) (scaleFactor * 80);
 
-		//int menuItemButtonHeight = (int) (80*fontSize)/12;
-
-		/*if (buttonHeight < 20) {
-			POSMessageDialog.showError(com.floreantpos.util.POSUtil.getFocusedWindow(), Messages.getString("TerminalConfigurationView.38")); //$NON-NLS-1$
-			return false;
-		}
-
-		if (menuItemButtonHeight < 20) {
-			POSMessageDialog.showError(com.floreantpos.util.POSUtil.getFocusedWindow(), Messages.getString("TerminalConfigurationView.38")); //$NON-NLS-1$
-			return false;
-		}
-
-		if (fontSize < 8) {
-			POSMessageDialog.showError(com.floreantpos.util.POSUtil.getFocusedWindow(), Messages.getString("TerminalConfigurationView.39")); //$NON-NLS-1$
-			return false;
-		}*/
-
 		if (scaleFactor > 5) {
 			POSMessageDialog.showError(com.floreantpos.util.POSUtil.getFocusedWindow(), Messages.getString("TerminalConfigurationView.23")); //$NON-NLS-1$
 			return false;
@@ -294,6 +278,7 @@ public class TerminalConfigurationView extends ConfigurationView {
 		TerminalConfig.setShowBarcodeOnReceipt(cbShowBarCodeOnReceipt.isSelected());
 		TerminalConfig.setGroupKitchenReceiptItems(cbGroupKitchenReceiptItems.isSelected());
 		TerminalConfig.setEnabledMultiCurrency(chkEnabledMultiCurrency.isSelected());
+		TerminalConfig.setAllowToDeletePrintedTicketItem(chkAllowToDelPrintedItem.isSelected());
 
 		//POSMessageDialog.showMessage(com.floreantpos.util.POSUtil.getFocusedWindow(), Messages.getString("TerminalConfigurationView.40")); //$NON-NLS-1$
 		String selectedFont = (String) cbFonts.getSelectedItem();
@@ -337,6 +322,7 @@ public class TerminalConfigurationView extends ConfigurationView {
 		cbShowBarCodeOnReceipt.setSelected(TerminalConfig.isShowBarcodeOnReceipt());
 		cbGroupKitchenReceiptItems.setSelected(TerminalConfig.isGroupKitchenReceiptItems());
 		chkEnabledMultiCurrency.setSelected(TerminalConfig.isEnabledMultiCurrency());
+		chkAllowToDelPrintedItem.setSelected(TerminalConfig.isAllowedToDeletePrintedTicketItem());
 
 		tfButtonHeight.setText("" + TerminalConfig.getTouchScreenButtonHeight()); //$NON-NLS-1$
 		tfScaleFactor.setText("" + TerminalConfig.getScreenScaleFactor()); //$NON-NLS-1$

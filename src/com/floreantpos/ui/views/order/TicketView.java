@@ -684,7 +684,6 @@ public class TicketView extends JPanel {
 			if (iTicketItem.isPrintedToKitchen()) {
 				btnIncreaseAmount.setEnabled(false);
 				btnDecreaseAmount.setEnabled(false);
-				btnDelete.setEnabled(false);
 			}
 
 			if (selected instanceof TicketItemModifier) {
@@ -704,7 +703,11 @@ public class TicketView extends JPanel {
 					if (ticketItem.isPrintedToKitchen()) {
 						btnIncreaseAmount.setEnabled(false);
 						btnDecreaseAmount.setEnabled(false);
-						btnDelete.setEnabled(false);
+						if (TerminalConfig.isAllowedToDeletePrintedTicketItem()) {
+							btnDelete.setEnabled(true);
+						} else {
+							btnDelete.setEnabled(false);
+						}
 					}
 					if (ticketItem.isTreatAsSeat()) {
 						btnEdit.setEnabled(!ticketItem.isPrintedToKitchen());

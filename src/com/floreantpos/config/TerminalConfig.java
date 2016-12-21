@@ -28,6 +28,8 @@ import com.floreantpos.ui.views.SwitchboardView;
 import com.floreantpos.util.PasswordHasher;
 
 public class TerminalConfig {
+	private static final String ALLOW_TO_DELETE_PRINTED_TICKET_ITEM = "AllowToDeletePrintedTicketItem"; //$NON-NLS-1$
+
 	private static final String USE_SETTLEMENT_PROMPT = "UseSettlementPrompt"; //$NON-NLS-1$
 
 	private static final String SHOW_GUEST_SELECTION = "show_guest_selection"; //$NON-NLS-1$
@@ -502,5 +504,13 @@ public class TerminalConfig {
 		Locale disName = new Locale(language, country, variant);
 
 		return disName;
+	}
+	
+	public static void setAllowToDeletePrintedTicketItem(boolean allow) {
+		config.setProperty(ALLOW_TO_DELETE_PRINTED_TICKET_ITEM, allow);
+	}
+
+	public static boolean isAllowedToDeletePrintedTicketItem() {
+		return config.getBoolean(ALLOW_TO_DELETE_PRINTED_TICKET_ITEM, true);
 	}
 }

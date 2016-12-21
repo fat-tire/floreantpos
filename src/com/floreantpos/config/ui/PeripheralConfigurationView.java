@@ -69,7 +69,7 @@ public class PeripheralConfigurationView extends ConfigurationView {
 		drawerConfigPanel.add(tfDrawerName, ""); //$NON-NLS-1$
 
 		drawerConfigPanel.add(new JLabel(Messages.getString("TerminalConfigurationView.27")), "newline"); //$NON-NLS-1$ //$NON-NLS-2$
-		drawerConfigPanel.add(tfDrawerCodes, Messages.getString("TerminalConfigurationView.29")); //$NON-NLS-1$
+		drawerConfigPanel.add(tfDrawerCodes, ""); //$NON-NLS-1$
 
 		JButton btnDrawerTest = new JButton(Messages.getString("TerminalConfigurationView.11")); //$NON-NLS-1$
 		btnDrawerTest.addActionListener(new ActionListener() {
