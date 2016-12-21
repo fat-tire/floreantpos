@@ -254,7 +254,7 @@ public class KitchenTicketView extends JPanel {
 		});
 		//buttonPanel.add(btnVoid);
 
-		PosButton btnDone = new PosButton(Messages.getString("KitchenTicketView.11")); //$NON-NLS-1$
+		PosButton btnDone = new PosButton(POSConstants.BUMP); //$NON-NLS-1$
 		btnDone.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
