@@ -853,10 +853,10 @@ public class ReceiptPrintService {
 
 		KitchenTicketDataSource dataSource = new KitchenTicketDataSource(ticket);
 
-		String reportName = "kitchen-receipt2";
+		String reportName = "kitchen-receipt";
 
 		if (TerminalConfig.isGroupKitchenReceiptItems()) {
-			reportName = "kitchen-receipt";
+			reportName = "kitchen-receipt-grouped-by-categories";
 		}
 		return createJasperPrint(ReportUtil.getReport(reportName), map, new JRTableModelDataSource(dataSource)); //$NON-NLS-1$
 	}
