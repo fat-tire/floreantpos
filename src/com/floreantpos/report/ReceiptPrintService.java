@@ -265,9 +265,9 @@ public class ReceiptPrintService {
 			printProperties.setPrintCookingInstructions(false);
 			HashMap map = populateTicketProperties(ticket, printProperties, posTransaction);
 			map.put("refundAmountText", Messages.getString("ReceiptPrintService.1")); //$NON-NLS-1$ //$NON-NLS-2$
-			map.put("refundAmount", String.valueOf(posTransaction.getAmount())); //$NON-NLS-1$
+			map.put("refundAmount", NumberUtil.formatNumber(posTransaction.getAmount())); //$NON-NLS-1$
 			map.put("cashRefundText", Messages.getString("ReceiptPrintService.2")); //$NON-NLS-1$ //$NON-NLS-2$
-			map.put("cashRefund", String.valueOf(posTransaction.getAmount())); //$NON-NLS-1$
+			map.put("cashRefund", NumberUtil.formatNumber(posTransaction.getAmount())); //$NON-NLS-1$
 
 			JasperPrint jasperPrint = createRefundPrint(ticket, map);
 			jasperPrint.setName("REFUND_" + ticket.getId()); //$NON-NLS-1$
