@@ -168,6 +168,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 	private DoubleTextField tfStockCount;
 	private JLabel lblStockCount;
 	private JCheckBox cbDisableStockCount;
+	private JLabel lblSortOrder;
 
 	/** Creates new form FoodItemEditor */
 	public MenuItemForm() throws Exception {
@@ -313,7 +314,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		lblTranslatedName = new JLabel(Messages.getString("MenuItemForm.lblTranslatedName.text")); //$NON-NLS-1$
 		tfBarcode = new FixedLengthTextField(20);
 		tfSortOrder = new IntegerTextField(20);
-		//lblSortOrder = new JLabel(Messages.getString("MenuItemForm.lblSortOrder.text")); //$NON-NLS-1$
+		lblSortOrder = new JLabel(Messages.getString("MenuItemForm.lblSortOrder.text")); //$NON-NLS-1$
 		tfSortOrder.setText(""); //$NON-NLS-1$
 		lblBarcode = new JLabel(Messages.getString("MenuItemForm.lblBarcode.text")); //$NON-NLS-1$
 		cbTax.setPreferredSize(new Dimension(198, 0));
@@ -446,13 +447,16 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		tabGeneral.add(lblBarcode, "cell 0 7,alignx right"); //$NON-NLS-1$
 		tabGeneral.add(tfBarcode, "cell 1 7,grow"); //$NON-NLS-1$
 
-		tabGeneral.add(lblStockCount, "cell 0 8,alignx right"); //$NON-NLS-1$
-		tabGeneral.add(tfStockCount, "cell 1 8,grow"); //$NON-NLS-1$
+		tabGeneral.add(lblSortOrder, "cell 0 8,alignx right"); //$NON-NLS-1$
+		tabGeneral.add(tfSortOrder, "cell 1 8,grow"); //$NON-NLS-1$
+
+		tabGeneral.add(lblStockCount, "cell 0 9,alignx right"); //$NON-NLS-1$
+		tabGeneral.add(tfStockCount, "cell 1 9,grow"); //$NON-NLS-1$
 
 		//tabGeneral.add(cbShowTextWithImage, "cell 1 8"); //$NON-NLS-1$
-		tabGeneral.add(chkVisible, "cell 1 9"); //$NON-NLS-1$
-		tabGeneral.add(cbFractionalUnit, "cell 1 10"); //$NON-NLS-1$
-		tabGeneral.add(cbDisableStockCount, "cell 1 11"); //$NON-NLS-1$
+		tabGeneral.add(chkVisible, "cell 1 10"); //$NON-NLS-1$
+		tabGeneral.add(cbFractionalUnit, "cell 1 11"); //$NON-NLS-1$
+		tabGeneral.add(cbDisableStockCount, "cell 1 12"); //$NON-NLS-1$
 
 		// right side
 
