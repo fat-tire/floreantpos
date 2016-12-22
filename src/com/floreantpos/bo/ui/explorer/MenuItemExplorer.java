@@ -316,6 +316,9 @@ public class MenuItemExplorer extends TransparentPanel {
 					MenuItem newMenuItem = new MenuItem();
 					PropertyUtils.copyProperties(newMenuItem, existingItem);
 					newMenuItem.setId(null);
+					newMenuItem.setFractionalUnit(existingItem.isFractionalUnit());
+					newMenuItem.setDisableWhenStockAmountIsZero(existingItem.isDisableWhenStockAmountIsZero());
+					newMenuItem.setShowImageOnly(existingItem.isShowImageOnly());
 
 					MenuItemForm editor = new MenuItemForm(newMenuItem);
 					BeanEditorDialog dialog = new BeanEditorDialog(POSUtil.getBackOfficeWindow(), editor);

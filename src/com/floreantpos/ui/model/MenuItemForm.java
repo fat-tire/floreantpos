@@ -499,10 +499,10 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		orderCheckBoxList.setPreferredSize(new Dimension(228, 100));
 		tabGeneral.add(orderCheckBoxList, "cell 3 3 3 8"); //$NON-NLS-1$
 
-		tabGeneral.add(new JLabel(Messages.getString("MenuItemForm.29")), "cell 2 8,alignx right"); //$NON-NLS-1$ //$NON-NLS-2$
+		tabGeneral.add(new JLabel(Messages.getString("MenuItemForm.29")), "cell 2 7,alignx right"); //$NON-NLS-1$ //$NON-NLS-2$
 		JScrollPane scrlDescription = new JScrollPane(tfDescription, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		scrlDescription.setPreferredSize(new Dimension(228, 70));
-		tabGeneral.add(scrlDescription, "cell 3 8 3 10"); //$NON-NLS-1$
+		tabGeneral.add(scrlDescription, "cell 3 7 3 10"); //$NON-NLS-1$
 
 		add(tabbedPane);
 		//TODO: 
