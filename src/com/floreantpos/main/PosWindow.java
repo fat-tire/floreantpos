@@ -33,6 +33,7 @@ import javax.swing.JSeparator;
 
 import org.jdesktop.swingx.JXStatusBar;
 
+import com.floreantpos.actions.ShutDownAction;
 import com.floreantpos.config.AppConfig;
 import com.floreantpos.swing.GlassPane;
 
@@ -42,45 +43,45 @@ public class PosWindow extends JFrame implements WindowListener {
 	private static final String WLOCX = "wlocx"; //$NON-NLS-1$
 	private static final String WHEIGHT = "wheight"; //$NON-NLS-1$
 	private static final String WWIDTH = "wwidth"; //$NON-NLS-1$
-	
+
 	private GlassPane glassPane;
 	private JXStatusBar statusBar;
 	private JLabel statusLabel;
-	
+
 	public PosWindow() {
 		setIconImage(Application.getApplicationIcon().getImage());
-		
+
 		addWindowListener(this);
-		
+
 		glassPane = new GlassPane();
 		glassPane.setOpacity(0.6f);
 		setGlassPane(glassPane);
-		
+
 		statusBar = new JXStatusBar();
 		statusLabel = new JLabel(""); //$NON-NLS-1$
 		statusBar.add(statusLabel, JXStatusBar.Constraint.ResizeBehavior.FILL);
-		
+
 		JPanel statusBarContainer = new JPanel(new BorderLayout());
 		statusBarContainer.add(new JSeparator(JSeparator.HORIZONTAL), BorderLayout.NORTH);
-		
+
 		statusBarContainer.add(statusBar);
 		getContentPane().add(statusBarContainer, BorderLayout.SOUTH);
 	}
-	
+
 	public void setStatus(String status) {
 		statusLabel.setText(status);
 	}
-	
+
 	public void setupSizeAndLocation() {
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		setSize(AppConfig.getInt(WWIDTH, (int) screenSize.getWidth()), AppConfig.getInt(WHEIGHT, (int) screenSize.getHeight()));
-		
+
 		setLocation(AppConfig.getInt(WLOCX, ((screenSize.width - getWidth()) >> 1)), AppConfig.getInt(WLOCY, ((screenSize.height - getHeight()) >> 1)));
 		setMinimumSize(new Dimension(1024, 724));
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		
+
 		int extendedState = AppConfig.getInt(EXTENDEDSTATE, -1);
-		if(extendedState != -1) {
+		if (extendedState != -1) {
 			setExtendedState(extendedState);
 		}
 	}
@@ -94,13 +95,13 @@ public class PosWindow extends JFrame implements WindowListener {
 		//GraphicsDevice window = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[0];
 		//window.setFullScreenWindow(this);
 	}
-	
+
 	public void leaveFullScreenMode() {
 		GraphicsDevice window = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[0];
 		setUndecorated(false);
 		window.setFullScreenWindow(null);
 	}
-	
+
 	public void saveSizeAndLocation() {
 		int width = getWidth();
 		int height = getHeight();
@@ -110,14 +111,14 @@ public class PosWindow extends JFrame implements WindowListener {
 		Point locationOnScreen = getLocationOnScreen();
 		AppConfig.putInt(WLOCX, locationOnScreen.x);
 		AppConfig.putInt(WLOCY, locationOnScreen.y);
-		
+
 		AppConfig.putInt(EXTENDEDSTATE, getExtendedState());
 	}
-	
+
 	public void setGlassPaneVisible(boolean b) {
 		glassPane.setVisible(b);
 	}
-	
+
 	/*public void setGlassPaneMessage(String message) {
 		glassPane.setMessage(message);
 	}*/
@@ -126,7 +127,12 @@ public class PosWindow extends JFrame implements WindowListener {
 	}
 
 	public void windowClosing(WindowEvent e) {
-		Application.getInstance().shutdownPOS();
+		if (Application.getCurrentUser() != null) {
+			new ShutDownAction().actionPerformed(null);
+		}
+		else {
+			Application.getInstance().shutdownPOS();
+		}
 	}
 
 	public void windowClosed(WindowEvent e) {

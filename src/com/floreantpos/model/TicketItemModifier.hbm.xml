@@ -8,7 +8,7 @@
 		<property column="ITEM_ID" name="itemId" type="java.lang.Integer" />
 		<property column="GROUP_ID" name="groupId" type="java.lang.Integer" />
 		<property column="ITEM_COUNT" length="10" name="itemCount" type="java.lang.Integer" />
-		<property column="MODIFIER_NAME" length="30" name="name" type="string" />
+		<property column="MODIFIER_NAME" length="120" name="name" type="string" />
 		<property column="MODIFIER_PRICE" length="52" name="unitPrice" type="java.lang.Double" />
 		<!-- <property column="EXTRA_PRICE" length="52" name="extraUnitPrice" type="java.lang.Double"/> -->
 		<property column="MODIFIER_TAX_RATE" length="52" name="taxRate" type="java.lang.Double" />
