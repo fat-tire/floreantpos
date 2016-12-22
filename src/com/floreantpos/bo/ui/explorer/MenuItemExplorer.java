@@ -39,6 +39,7 @@ import javax.swing.table.TableColumnModel;
 
 import net.miginfocom.swing.MigLayout;
 
+import org.apache.commons.beanutils.PropertyUtils;
 import org.jdesktop.swingx.JXTable;
 
 import com.floreantpos.Messages;
@@ -186,7 +187,7 @@ public class MenuItemExplorer extends TransparentPanel {
 		JButton editButton = explorerButton.getEditButton();
 		JButton addButton = explorerButton.getAddButton();
 		JButton deleteButton = explorerButton.getDeleteButton();
-
+		JButton duplicateButton = new JButton(POSConstants.DUPLICATE);
 		JButton updateStockAmount = new JButton(Messages.getString("MenuItemExplorer.6")); //$NON-NLS-1$
 
 		updateStockAmount.addActionListener(new ActionListener() {
@@ -300,6 +301,39 @@ public class MenuItemExplorer extends TransparentPanel {
 
 		});
 
+		duplicateButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					int index = table.getSelectedRow();
+					if (index < 0)
+						return;
+
+					index = table.convertRowIndexToModel(index);
+
+					MenuItem existingItem = tableModel.getRow(index);
+					existingItem = MenuItemDAO.getInstance().initialize(existingItem);
+
+					MenuItem newMenuItem = new MenuItem();
+					PropertyUtils.copyProperties(newMenuItem, existingItem);
+					newMenuItem.setId(null);
+
+					MenuItemForm editor = new MenuItemForm(newMenuItem);
+					BeanEditorDialog dialog = new BeanEditorDialog(POSUtil.getBackOfficeWindow(), editor);
+					dialog.open();
+					if (dialog.isCanceled())
+						return;
+
+					MenuItem foodItem = (MenuItem) editor.getBean();
+					tableModel.addRow(foodItem);
+					table.getSelectionModel().addSelectionInterval(tableModel.getRowCount() - 1, tableModel.getRowCount() - 1);
+					table.scrollRowToVisible(tableModel.getRowCount() - 1);
+				} catch (Throwable x) {
+					BOMessageDialog.showError(POSConstants.ERROR_MESSAGE, x);
+				}
+			}
+
+		});
+
 		deleteButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -335,6 +369,7 @@ public class MenuItemExplorer extends TransparentPanel {
 		panel.add(editButton);
 		panel.add(updateStockAmount);
 		panel.add(deleteButton);
+		panel.add(duplicateButton);
 		return panel;
 	}
 
