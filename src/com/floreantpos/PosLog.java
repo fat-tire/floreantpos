@@ -12,6 +12,14 @@ public class PosLog {
 	public static void error(Class eClass, String errMsg) {
 		factory.getInstance(eClass).error(errMsg);
 	}
+	
+	public static void error(Class eClass, Exception e) {
+		factory.getInstance(eClass).error(e);
+	}
+	
+	public static void error(Class eClass, String message, Exception e) {
+		factory.getInstance(eClass).error(message, e);
+	}
 
 	public static void debug(Class eClass, String msg) {
 		factory.getInstance(eClass).debug(msg);
