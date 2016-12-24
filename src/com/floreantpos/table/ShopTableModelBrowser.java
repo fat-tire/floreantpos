@@ -7,6 +7,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.table.TableModel;
 
 import com.floreantpos.Messages;
+import com.floreantpos.PosLog;
 import com.floreantpos.bo.ui.Command;
 import com.floreantpos.bo.ui.ModelBrowser;
 import com.floreantpos.ui.BeanEditor;
@@ -124,7 +125,7 @@ public class ShopTableModelBrowser<E> extends ModelBrowser {
 			}
 
 		} catch (Exception e2) {
-			e2.printStackTrace();
+			PosLog.error(getClass(), e2.getMessage());
 		}
 	}
 

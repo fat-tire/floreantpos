@@ -33,6 +33,7 @@ import javax.xml.bind.Unmarshaller;
 import org.apache.commons.io.IOUtils;
 
 import com.floreantpos.Messages;
+import com.floreantpos.PosLog;
 import com.floreantpos.model.MenuCategory;
 import com.floreantpos.model.MenuGroup;
 import com.floreantpos.model.MenuItem;
@@ -70,7 +71,7 @@ public class DataImportAction extends AbstractAction {
 			POSMessageDialog.showMessage(com.floreantpos.util.POSUtil.getFocusedWindow(), Messages.getString("DataImportAction.1")); //$NON-NLS-1$
 
 		} catch (Exception e1) {
-			e1.printStackTrace();
+			PosLog.error(getClass(), e1.getMessage());
 
 			POSMessageDialog.showMessage(com.floreantpos.util.POSUtil.getFocusedWindow(), e1.getMessage());
 		}

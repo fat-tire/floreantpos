@@ -28,7 +28,6 @@ import com.floreantpos.model.OrderType;
 import com.floreantpos.model.User;
 import com.floreantpos.model.UserPermission;
 import com.floreantpos.model.UserType;
-import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.views.LoginView;
 
 public class OrderTypeLoginButton extends PosButton implements ActionListener {

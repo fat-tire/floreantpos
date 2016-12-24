@@ -5,6 +5,8 @@ import jssc.SerialPortEvent;
 import jssc.SerialPortEventListener;
 import jssc.SerialPortException;
 
+import com.floreantpos.PosLog;
+
 public class SerialPortUtil {
 	public static String readWeight(String comPort) throws SerialPortException {
 		final SerialPort serialPort = new SerialPort(comPort);
@@ -34,7 +36,7 @@ public class SerialPortUtil {
 						}
 					}
 				} catch (Exception e) {
-					e.printStackTrace();
+					PosLog.error(getClass(), e.getMessage());
 				}
 			}
 		});

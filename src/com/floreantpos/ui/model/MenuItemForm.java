@@ -66,6 +66,7 @@ import org.hibernate.Hibernate;
 import org.hibernate.Session;
 
 import com.floreantpos.Messages;
+import com.floreantpos.PosLog;
 import com.floreantpos.extension.ExtensionManager;
 import com.floreantpos.extension.InventoryPlugin;
 import com.floreantpos.main.Application;
@@ -220,7 +221,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 				menuItem.setImageData(itemImage);
 
 			} catch (IOException e) {
-				e.printStackTrace();
+				PosLog.error(getClass(), e.getMessage());
 			}
 		}
 	}

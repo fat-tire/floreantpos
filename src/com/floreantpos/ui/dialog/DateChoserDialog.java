@@ -21,6 +21,7 @@ import javax.swing.border.TitledBorder;
 
 import net.miginfocom.swing.MigLayout;
 
+import com.floreantpos.PosLog;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.AttendenceHistory;
 import com.floreantpos.model.Shift;
@@ -278,8 +279,8 @@ public class DateChoserDialog extends POSDialog {
 		Calendar clockInTime = getStartDate();
 		Calendar clockOutTime = getEndDate();
 
-		System.out.println(clockInTime.getTime().getTime());
-		System.out.println(clockOutTime.getTime().getTime());
+		PosLog.info(DateChoserDialog.class, "" + clockInTime.getTime().getTime());
+		PosLog.info(DateChoserDialog.class, "" + clockOutTime.getTime().getTime());
 
 		if (clockInTime.getTime().getTime() > clockOutTime.getTime().getTime()) {
 			POSMessageDialog.showMessage(POSUtil.getBackOfficeWindow(), "Clock in can not be greater than clock out");

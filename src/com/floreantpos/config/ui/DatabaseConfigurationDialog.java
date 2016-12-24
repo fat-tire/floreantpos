@@ -35,6 +35,7 @@ import org.apache.commons.lang.StringUtils;
 
 import com.floreantpos.Database;
 import com.floreantpos.Messages;
+import com.floreantpos.PosLog;
 import com.floreantpos.config.AppConfig;
 import com.floreantpos.main.Application;
 import com.floreantpos.main.Main;
@@ -293,7 +294,7 @@ public class DatabaseConfigurationDialog extends POSDialog implements ActionList
 				dispose();
 			}
 		} catch (Exception e2) {
-			e2.printStackTrace();
+			PosLog.error(getClass(), e2.getMessage());
 			POSMessageDialog.showMessage(this, e2.getMessage());
 		} finally {
 			setCursor(Cursor.getDefaultCursor());

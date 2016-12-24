@@ -21,7 +21,6 @@ import javax.swing.Action;
 
 import com.floreantpos.IconFactory;
 import com.floreantpos.main.Application;
-import com.floreantpos.ui.HeaderPanel;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.views.order.RootView;
 

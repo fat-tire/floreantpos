@@ -1,6 +1,7 @@
 package com.floreantpos.actions;
 
 import com.floreantpos.POSConstants;
+import com.floreantpos.PosLog;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.dao.TicketDAO;
@@ -40,7 +41,7 @@ public class SplitTicketAction extends PosAction {
 			dialog.setLocationRelativeTo(Application.getPosWindow());
 			dialog.setVisible(true);
 		} catch (Exception e) {
-			e.printStackTrace();
+			PosLog.error(getClass(), e.getMessage());
 		}
 	}
 

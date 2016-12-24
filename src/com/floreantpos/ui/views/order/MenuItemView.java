@@ -40,6 +40,7 @@ import javax.swing.AbstractButton;
 import javax.swing.SwingConstants;
 
 import com.floreantpos.PosException;
+import com.floreantpos.PosLog;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.MenuGroup;
 import com.floreantpos.model.MenuItem;
@@ -91,7 +92,7 @@ public class MenuItemView extends SelectionView {
 			filterItemsByOrderType(items);
 			setItems(items);
 		} catch (PosException e) {
-			e.printStackTrace();
+			PosLog.error(getClass(), e.getMessage());
 		}
 	}
 

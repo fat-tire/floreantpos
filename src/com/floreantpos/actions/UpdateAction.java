@@ -22,6 +22,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 
 import com.floreantpos.Messages;
+import com.floreantpos.PosLog;
 import com.floreantpos.main.Application;
 import com.floreantpos.services.PosWebService;
 import com.floreantpos.ui.dialog.UpdateDialog;
@@ -58,7 +59,7 @@ public class UpdateAction extends AbstractAction {
 			dialog.pack();
 			dialog.open();
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			PosLog.error(getClass(), ex.getMessage());
 		}
 	}
 }

@@ -32,6 +32,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.floreantpos.Messages;
+import com.floreantpos.PosLog;
 import com.floreantpos.model.Restaurant;
 import com.floreantpos.model.dao.RestaurantDAO;
 
@@ -129,7 +130,7 @@ public class ReportUtil {
 	public static void main(String[] args) {
 		URL resource = ReceiptPrintService.class.getResource("/printerlayouts/ticket-receipt.jrxml"); //$NON-NLS-1$
 		String externalForm = resource.getFile();
-		System.out.println(resource.getProtocol());
-		System.out.println(externalForm);
+		PosLog.info(ReportUtil.class, resource.getProtocol());
+		PosLog.info(ReportUtil.class, externalForm);
 	}
 }

@@ -46,6 +46,7 @@ import org.apache.commons.lang.StringUtils;
 
 import com.floreantpos.Database;
 import com.floreantpos.Messages;
+import com.floreantpos.PosLog;
 import com.floreantpos.bo.actions.DataImportAction;
 import com.floreantpos.config.AppConfig;
 import com.floreantpos.config.TerminalConfig;
@@ -432,7 +433,7 @@ public class SetUpWindow extends JFrame implements ActionListener {
 				}
 			}
 		} catch (Exception e2) {
-			e2.printStackTrace();
+			PosLog.error(getClass(), e2.getMessage());
 			POSMessageDialog.showMessage(this, e2.getMessage());
 		} finally {
 			setCursor(Cursor.getDefaultCursor());

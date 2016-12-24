@@ -9,10 +9,11 @@ import java.io.PrintWriter;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
-import org.jfree.util.Log;
-
 import net.miginfocom.swing.MigLayout;
 
+import org.jfree.util.Log;
+
+import com.floreantpos.PosLog;
 import com.floreantpos.main.Application;
 import com.floreantpos.swing.IntegerTextField;
 import com.floreantpos.util.JarUtil;
@@ -102,7 +103,7 @@ public class InginicoConfigurationView extends ConfigurationView {
 			writer.println("CommType=TCP");
 			
 		} catch (Exception e) {
-			e.printStackTrace();
+			PosLog.error(getClass(), e.getMessage());
 		} finally {
 			try {
 				writer.close();

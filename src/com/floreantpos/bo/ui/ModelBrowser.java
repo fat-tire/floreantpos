@@ -38,7 +38,6 @@ import net.miginfocom.swing.MigLayout;
 import org.jdesktop.swingx.JXTable;
 
 import com.floreantpos.Messages;
-import com.floreantpos.bo.ui.CustomCellRenderer;
 import com.floreantpos.main.Application;
 import com.floreantpos.swing.BeanTableModel;
 import com.floreantpos.ui.BeanEditor;

@@ -52,6 +52,7 @@ import com.floreantpos.ITicketList;
 import com.floreantpos.Messages;
 import com.floreantpos.POSConstants;
 import com.floreantpos.PosException;
+import com.floreantpos.PosLog;
 import com.floreantpos.actions.RefundAction;
 import com.floreantpos.actions.SettleTicketAction;
 import com.floreantpos.actions.VoidTicketAction;
@@ -320,7 +321,7 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 
 			orderServiceExtension.assignDriver(ticket.getId());
 		} catch (Exception e) {
-			e.printStackTrace();
+			PosLog.error(getClass(), e.getMessage());
 			POSMessageDialog.showError(this, e.getMessage());
 			LogFactory.getLog(SwitchboardView.class).error(e);
 		}
@@ -400,7 +401,7 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 		} catch (PosException e) {
 			POSMessageDialog.showError(this, e.getMessage());
 		} catch (Exception e) {
-			e.printStackTrace();
+			PosLog.error(getClass(), e.getMessage());
 			POSMessageDialog.showError(this, POSConstants.ERROR_MESSAGE, e);
 		}
 	}

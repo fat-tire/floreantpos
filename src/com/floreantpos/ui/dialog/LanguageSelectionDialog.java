@@ -4,12 +4,9 @@ import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.StringTokenizer;
 
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -20,8 +17,8 @@ import net.miginfocom.swing.MigLayout;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.floreantpos.PosLog;
 import com.floreantpos.config.TerminalConfig;
-import com.floreantpos.main.Application;
 import com.floreantpos.main.Main;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.ui.TitlePanel;
@@ -52,7 +49,7 @@ public class LanguageSelectionDialog extends POSDialog {
 
 		posLocaleList = new ArrayList<Locale>();
 		int length = countProperties();
-		//System.out.println(length);
+		//PosLog.debug(getClass(),length);
 		JPanel centerPanel = new JPanel(new MigLayout("fillx,aligny center", "[][]", ""));
 
 		JLabel lblLanguage = new JLabel("Select Language:");
@@ -135,7 +132,7 @@ public class LanguageSelectionDialog extends POSDialog {
 			try {
 				Main.restart();
 			} catch (Exception e) {
-				e.printStackTrace();
+				PosLog.error(getClass(), e.getMessage());
 			}
 		}
 	}
@@ -148,13 +145,13 @@ public class LanguageSelectionDialog extends POSDialog {
 		int count = 0;
 
 		//Locale l = new Locale("ar", "EG");
-		//System.out.println(l.getDisplayName());
+		//PosLog.debug(getClass(),l.getDisplayName());
 
 		File[] files = null;
 		try {
 			files = new File(("i18n")).listFiles();
 		} catch (Exception e) {
-			e.printStackTrace();
+			PosLog.error(getClass(), e.getMessage());
 		}
 		if (files != null) {
 			for (File file : files) {
@@ -167,14 +164,14 @@ public class LanguageSelectionDialog extends POSDialog {
 
 				if (lf != 0 && ll != -1 && ll > lf) {
 					languageName = fileName.substring(lf, ll);
-					//System.out.println(languageName);
+					//PosLog.debug(getClass(),languageName);
 				}
 
 				int start = fileName.lastIndexOf("_") + 1;
 				int end = fileName.lastIndexOf(".");
 				if (start != 0 && end != -1 && end > start) {
 					countryName = fileName.substring(start, end);
-					//System.out.println(countryName);
+					//PosLog.debug(getClass(),countryName);
 				}
 				if (StringUtils.isEmpty(languageName) && !StringUtils.isEmpty(countryName)) {
 					languageName = countryName;

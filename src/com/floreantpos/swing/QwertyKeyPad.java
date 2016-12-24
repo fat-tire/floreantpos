@@ -39,6 +39,7 @@ import javax.swing.text.JTextComponent;
 import org.jdesktop.swingx.JXCollapsiblePane;
 
 import com.floreantpos.Messages;
+import com.floreantpos.PosLog;
 
 public class QwertyKeyPad extends JXCollapsiblePane implements ActionListener, ChangeListener {
 	Font buttonFont = getFont().deriveFont(Font.BOLD, PosUIManager.getFontSize(24));
@@ -180,7 +181,7 @@ public class QwertyKeyPad extends JXCollapsiblePane implements ActionListener, C
 
 			@Override
 			public void componentResized(ComponentEvent e) {
-				System.out.println(comp.getSize());
+				PosLog.info(QwertyKeyPad.class, "" + comp.getSize());
 
 			}
 

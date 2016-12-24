@@ -21,6 +21,8 @@ import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import com.floreantpos.PosLog;
+
 public class JarUtil {
 	/**
 	 * This will return the directory location of the executable jar. For this to work correctly,
@@ -43,7 +45,7 @@ public class JarUtil {
 			return uri.getPath();
 		
 		} catch (URISyntaxException e) {
-			e.printStackTrace();
+			PosLog.error(JarUtil.class, e.getMessage());
 			executableLocation = ".";
 		}
 		return executableLocation + "/";

@@ -26,6 +26,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import com.floreantpos.POSConstants;
+import com.floreantpos.PosLog;
 import com.floreantpos.actions.SettleTicketAction;
 import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.main.Application;
@@ -290,7 +291,7 @@ public class OrderController implements OrderListener, CategorySelectionListener
 			}
 			transaction.commit();
 		} catch (Exception e) {
-			e.printStackTrace();
+			PosLog.error(OrderController.class, e.getMessage());
 			POSMessageDialog.showError(e.getMessage());
 
 			if (transaction != null)

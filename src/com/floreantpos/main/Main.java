@@ -64,7 +64,7 @@ public class Main {
 		//		Properties properties = System.getProperties();
 		//		Set<Object> keySet = properties.keySet();
 		//		for (Object object : keySet) {
-		//			System.out.println(object + ":"+properties.getProperty((String) object));
+		//			PosLog.debug(getClass(),object + ":"+properties.getProperty((String) object));
 		//		}
 
 		String classPath = System.getProperty("java.class.path"); //$NON-NLS-1$

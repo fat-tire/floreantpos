@@ -15,6 +15,7 @@ import javax.xml.bind.Unmarshaller;
 import org.jfree.util.Log;
 import org.xml.sax.InputSource;
 
+import com.floreantpos.PosLog;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.PaymentType;
 import com.floreantpos.model.PosTransaction;
@@ -48,7 +49,7 @@ public class PosRequestHandler extends Thread {
 					break;
 				}
 
-				System.out.println("Request From Terminal==>[" + request + "]");
+				PosLog.info(getClass(), "Request From Terminal==>[" + request + "]");
 
 				int index = request.indexOf("<");
 				request = request.substring(index);
@@ -58,7 +59,7 @@ public class PosRequestHandler extends Thread {
 
 				String resp = convertResponseToString(posResponse);
 
-				System.out.println("Reponse to Terminal===>[" + resp + "]");
+				PosLog.info(getClass(),"Reponse to Terminal===>[" + resp + "]");
 
 				DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
 				byte[] tosend = resp.getBytes();

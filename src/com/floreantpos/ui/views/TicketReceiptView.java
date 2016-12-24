@@ -23,10 +23,10 @@ import java.awt.Component;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import com.floreantpos.Messages;
-
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.swing.JRViewerPanel;
+
+import com.floreantpos.Messages;
 
 public class TicketReceiptView extends JPanel {
 	net.sf.jasperreports.swing.JRViewer jrViewer;

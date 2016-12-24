@@ -41,6 +41,7 @@ import org.apache.commons.logging.LogFactory;
 
 import com.floreantpos.Messages;
 import com.floreantpos.POSConstants;
+import com.floreantpos.PosLog;
 import com.floreantpos.bo.ui.BackOfficeWindow;
 import com.floreantpos.config.AppProperties;
 import com.floreantpos.config.CardConfig;
@@ -177,7 +178,7 @@ public class Application {
 			setSystemInitialized(true);
 
 		} catch (DatabaseConnectionException e) {
-			e.printStackTrace();
+			PosLog.error(getClass(), e.getMessage());
 
 			int option = JOptionPane.showConfirmDialog(getPosWindow(),
 					Messages.getString("Application.0"), Messages.getString(POSConstants.POS_MESSAGE_ERROR), JOptionPane.YES_NO_OPTION); //$NON-NLS-1$ //$NON-NLS-2$
@@ -209,7 +210,7 @@ public class Application {
 				}
 			}
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			PosLog.error(getClass(), ex.getMessage());
 		}
 	}
 
@@ -407,7 +408,7 @@ public class Application {
 		JDialog dialog = optionPane.createDialog(Application.getPosWindow(), Messages.getString("Application.2")); //$NON-NLS-1$
 		dialog.setIconImage(Application.getApplicationIcon().getImage());
 		int y = dialog.getLocation().y;
-		//System.out.println(y);
+		//PosLog.debug(getClass(),y);
 		dialog.setLocation(dialog.getLocation().x, y + 60);
 		dialog.setVisible(true);
 		Object selectedValue = (String) optionPane.getValue();
@@ -608,11 +609,11 @@ public class Application {
 			Font sourceFont = UIManager.getFont("Label.font"); //$NON-NLS-1$
 			int size = sourceFont.getSize();
 			
-			System.out.println("Default font size: " + size);
-			System.out.println("Expected font size: 12");
+			PosLog.debug(getClass(),"Default font size: " + size);
+			PosLog.debug(getClass(),"Expected font size: 12");
 			
 			double scaleFactor = (double) (size / 12.0);
-			System.out.println("Setting scale factor: " + scaleFactor);
+			PosLog.debug(getClass(),"Setting scale factor: " + scaleFactor);
 			
 			//TerminalConfig.setScreenScaleFactor(scaleFactor);
 		

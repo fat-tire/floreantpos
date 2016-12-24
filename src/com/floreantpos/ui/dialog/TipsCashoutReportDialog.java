@@ -31,6 +31,7 @@ import javax.swing.JTable;
 import net.miginfocom.swing.MigLayout;
 
 import com.floreantpos.Messages;
+import com.floreantpos.PosLog;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.TipsCashoutReport;
 import com.floreantpos.model.TipsCashoutReportTableModel;
@@ -94,7 +95,7 @@ public class TipsCashoutReportDialog extends POSDialog implements ActionListener
 			try {
 				PosPrintService.printServerTipsReport(report);
 			}catch (Exception x) {
-				x.printStackTrace();
+				PosLog.error(getClass(), x.getMessage());
 				POSMessageDialog.showError(this, Messages.getString("TipsCashoutReportDialog.32") + x.getMessage()); //$NON-NLS-1$
 			}
 		}

@@ -48,6 +48,7 @@ import org.hibernate.Transaction;
 
 import com.floreantpos.Messages;
 import com.floreantpos.POSConstants;
+import com.floreantpos.PosLog;
 import com.floreantpos.model.KitchenTicket;
 import com.floreantpos.model.KitchenTicket.KitchenTicketStatus;
 import com.floreantpos.model.KitchenTicketItem;
@@ -405,7 +406,7 @@ public class KitchenTicketView extends JPanel {
 				tx.commit();
 
 			} catch (Exception ex) {
-				ex.printStackTrace();
+				PosLog.error(getClass(), ex.getMessage());
 				tx.rollback();
 			} finally {
 				session.close();

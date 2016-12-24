@@ -1,13 +1,19 @@
 package com.floreantpos.swing;
 
-import javax.swing.*;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.io.File;
+
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JComponent;
+import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.filechooser.FileSystemView;
 import javax.swing.filechooser.FileView;
-
-import java.beans.*;
-import java.awt.*;
-import java.io.File;
 
 public class POSFileChooser extends JFileChooser {
 

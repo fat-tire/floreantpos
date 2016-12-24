@@ -22,6 +22,7 @@ import java.io.File;
 import org.apache.commons.configuration.PropertiesConfiguration;
 
 import com.floreantpos.Database;
+import com.floreantpos.PosLog;
 
 public class AppConfig {
 	
@@ -52,7 +53,7 @@ public class AppConfig {
 			config.setAutoSave(true);
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			PosLog.error(AppConfig.class, e.getMessage());
 		}
 	}
 	

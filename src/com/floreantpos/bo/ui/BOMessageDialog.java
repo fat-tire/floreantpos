@@ -24,6 +24,7 @@ import javax.swing.JOptionPane;
 import org.apache.log4j.Logger;
 
 import com.floreantpos.Messages;
+import com.floreantpos.PosLog;
 import com.floreantpos.main.Application;
 
 public class BOMessageDialog {
@@ -34,8 +35,8 @@ public class BOMessageDialog {
 	}
 
 	public static void showError(Component parent, String message, Throwable x) {
-		x.printStackTrace();
-		logger.error(message, x);
+		PosLog.error(parent.getClass(), x.getMessage());
+		//logger.error(message, x);
 		JOptionPane.showMessageDialog(parent, message, com.floreantpos.POSConstants.MDS_POS, JOptionPane.ERROR_MESSAGE, null);
 	}
 

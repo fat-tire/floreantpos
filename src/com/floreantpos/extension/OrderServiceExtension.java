@@ -25,7 +25,6 @@ import com.floreantpos.customer.CustomerSelector;
 import com.floreantpos.model.Customer;
 import com.floreantpos.model.OrderType;
 import com.floreantpos.model.ShopTable;
-import com.floreantpos.model.User;
 import com.floreantpos.ui.views.IView;
 import com.floreantpos.util.TicketAlreadyExistsException;
 

@@ -22,6 +22,7 @@ import java.awt.event.ActionListener;
 import java.util.Set;
 
 import com.floreantpos.POSConstants;
+import com.floreantpos.PosLog;
 import com.floreantpos.actions.NewBarTabAction;
 import com.floreantpos.customer.CustomerSelectorDialog;
 import com.floreantpos.customer.CustomerSelectorFactory;
@@ -89,7 +90,7 @@ public class OrderTypeButton extends PosButton implements ActionListener {
 			try {
 				OrderServiceFactory.getOrderService().createNewTicket(orderType, null, null);
 			} catch (TicketAlreadyExistsException e1) {
-				e1.printStackTrace();
+				PosLog.error(getClass(), e1.getMessage());
 			}
 		}
 	}

@@ -19,10 +19,10 @@ package com.floreantpos.report;
 
 import java.util.Date;
 
+import net.sf.jasperreports.view.JRViewer;
+
 import com.floreantpos.model.Terminal;
 import com.floreantpos.model.UserType;
-
-import net.sf.jasperreports.view.JRViewer;
 
 public abstract class Report {
 	public static final int REPORT_TYPE_1 = 0;

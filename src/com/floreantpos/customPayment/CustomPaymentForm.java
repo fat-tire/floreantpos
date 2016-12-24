@@ -6,9 +6,9 @@ import java.awt.event.ActionListener;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 
-import org.hibernate.StaleObjectStateException;
-
 import net.miginfocom.swing.MigLayout;
+
+import org.hibernate.StaleObjectStateException;
 
 import com.floreantpos.Messages;
 import com.floreantpos.bo.ui.BOMessageDialog;

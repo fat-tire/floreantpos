@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.swing.JPanel;
 
+import com.floreantpos.PosLog;
 import com.floreantpos.extension.OrderServiceFactory;
 import com.floreantpos.model.Customer;
 import com.floreantpos.model.OrderType;
@@ -26,7 +27,7 @@ public abstract class CustomerSelector extends JPanel {
 		try {
 			OrderServiceFactory.getOrderService().createNewTicket(orderType, selectedTables, null);
 		} catch (TicketAlreadyExistsException e) {
-			e.printStackTrace();
+			PosLog.error(getClass(), e.getMessage());
 		}
 	}
 

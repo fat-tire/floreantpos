@@ -34,6 +34,7 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.hibernate.tool.hbm2ddl.SchemaUpdate;
 
+import com.floreantpos.PosLog;
 import com.floreantpos.bo.actions.DataImportAction;
 import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.model.CashDrawer;
@@ -418,7 +419,7 @@ public class DatabaseUtil {
 
 			return true;
 		} catch (Exception e) {
-			e.printStackTrace();
+			PosLog.error(DatabaseUtil.class, e.getMessage());
 			logger.error(e);
 			return false;
 		}
@@ -443,7 +444,7 @@ public class DatabaseUtil {
 
 			return true;
 		} catch (Exception e) {
-			e.printStackTrace();
+			PosLog.error(DatabaseUtil.class, e.getMessage());
 			logger.error(e);
 			return false;
 		}

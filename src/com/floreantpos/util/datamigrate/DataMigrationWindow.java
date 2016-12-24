@@ -35,6 +35,7 @@ import org.hibernate.classic.Session;
 
 import com.floreantpos.Database;
 import com.floreantpos.Messages;
+import com.floreantpos.PosLog;
 import com.floreantpos.model.MenuCategory;
 import com.floreantpos.model.dao.MenuCategoryDAO;
 import com.floreantpos.model.dao._RootDAO;
@@ -122,7 +123,7 @@ public class DataMigrationWindow extends JFrame {
 			m.setBeverage(menuCategory.isBeverage());
 			m.setVisible(menuCategory.isVisible());
 			
-			System.out.println(menuCategory);
+			PosLog.info(DataMigrationWindow.class, "" + menuCategory);
 			
 			MenuCategoryDAO.getInstance().save(m, destSession);
 		}
@@ -130,7 +131,7 @@ public class DataMigrationWindow extends JFrame {
 		transaction.commit();
 		destSession.close();
 		
-		System.out.println("done"); //$NON-NLS-1$
+		PosLog.info(getClass(),"done"); //$NON-NLS-1$
 	}
 
 

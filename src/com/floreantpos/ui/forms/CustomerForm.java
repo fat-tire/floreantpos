@@ -47,6 +47,7 @@ import org.apache.commons.lang.StringUtils;
 import org.hibernate.StaleObjectStateException;
 
 import com.floreantpos.Messages;
+import com.floreantpos.PosLog;
 import com.floreantpos.bo.ui.BOMessageDialog;
 import com.floreantpos.model.Customer;
 import com.floreantpos.model.dao.CustomerDAO;
@@ -259,7 +260,7 @@ public class CustomerForm extends BeanEditor<Customer> {
 					ImageIcon imageIcon = new ImageIcon(image);
 					lblPicture.setIcon(imageIcon);
 				} catch (Exception e1) {
-					e1.printStackTrace();
+					PosLog.error(getClass(), e1.getMessage());
 				}
 			}
 		});
@@ -482,7 +483,7 @@ public class CustomerForm extends BeanEditor<Customer> {
 			IOUtils.closeQuietly(stream);
 			lblPicture.setIcon(new ImageIcon(picture2));
 		} catch (IOException e) {
-			e.printStackTrace();
+			PosLog.error(getClass(), e.getMessage());
 		}
 	}
 

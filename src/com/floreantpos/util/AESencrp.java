@@ -25,6 +25,8 @@ import javax.crypto.spec.SecretKeySpec;
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
 
+import com.floreantpos.PosLog;
+
 public class AESencrp {
 
 	private static final String ALGO = "AES"; //$NON-NLS-1$
@@ -59,10 +61,10 @@ public class AESencrp {
 	public static void main(String[] args) throws Exception {
 //		String s = "12458";
 //		String encrypt = encrypt(s);
-//		System.out.println(encrypt);
+//		PosLog.debug(getClass(),encrypt);
 		
 		String decrypt = decrypt("4T9H+1LqawVTsVvifd/TxA=="); //$NON-NLS-1$
-		System.out.println(decrypt);
+		PosLog.info(AESencrp.class, decrypt);
 	}
 
 }

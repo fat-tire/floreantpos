@@ -25,7 +25,6 @@ package com.floreantpos.ui.model;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.SortOrder;
 
 import net.miginfocom.swing.MigLayout;
 

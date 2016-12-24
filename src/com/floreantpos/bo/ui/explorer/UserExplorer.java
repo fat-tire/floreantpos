@@ -28,6 +28,7 @@ import javax.swing.JTable;
 
 import org.hibernate.exception.ConstraintViolationException;
 
+import com.floreantpos.PosLog;
 import com.floreantpos.bo.ui.BOMessageDialog;
 import com.floreantpos.model.User;
 import com.floreantpos.model.dao.UserDAO;
@@ -71,7 +72,7 @@ public class UserExplorer extends TransparentPanel {
 					User user = (User) editor.getBean();
 					tableModel.addItem(user);
 				} catch (Exception x) {
-					x.printStackTrace();
+					PosLog.error(getClass(), x.getMessage());
 					BOMessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
 				}
 			}

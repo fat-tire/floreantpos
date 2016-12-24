@@ -48,6 +48,7 @@ import org.apache.ecs.html.TR;
 import org.apache.ecs.html.Table;
 
 import com.floreantpos.Messages;
+import com.floreantpos.PosLog;
 import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.CashDrawer;
@@ -409,7 +410,7 @@ public class DrawerPullReportDialog extends POSDialog {
 			PosPrintService.printDrawerPullReport(drawerPullReport, terminal);
 		} catch (Exception ex) {
 			POSMessageDialog.showError(DrawerPullReportDialog.this, Messages.getString("DrawerPullReportDialog.122") + ex.getMessage()); //$NON-NLS-1$
-			ex.printStackTrace();
+			PosLog.error(getClass(), ex.getMessage());
 		}
 	}
 }

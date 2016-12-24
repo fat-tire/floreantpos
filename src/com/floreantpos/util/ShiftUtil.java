@@ -25,7 +25,6 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
-import com.floreantpos.Messages;
 import com.floreantpos.model.Shift;
 import com.floreantpos.model.dao.ShiftDAO;
 

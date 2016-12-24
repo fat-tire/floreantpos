@@ -36,6 +36,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.floreantpos.Messages;
+import com.floreantpos.PosLog;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.DrawerPullReport;
 import com.floreantpos.model.Restaurant;
@@ -85,7 +86,7 @@ public class PosPrintService {
 			//JasperViewer.viewReport(jasperPrint, false);
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			PosLog.error(PosPrintService.class, e.getMessage());
 			logger.error("error print drawer pull report", e); //$NON-NLS-1$
 		}
 	}
@@ -114,7 +115,7 @@ public class PosPrintService {
 			JasperViewer.viewReport(jasperPrint, false);
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			PosLog.error(PosPrintService.class, e.getMessage());
 			logger.error("error print tips report", e); //$NON-NLS-1$
 		}
 

@@ -14,7 +14,6 @@ import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 
@@ -27,11 +26,10 @@ import net.sf.jasperreports.view.JRViewer;
 
 import org.jdesktop.swingx.JXDatePicker;
 
+import com.floreantpos.PosLog;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.InventoryItem;
-import com.floreantpos.model.InventoryVendor;
 import com.floreantpos.model.Restaurant;
-import com.floreantpos.model.dao.AttendenceHistoryDAO;
 import com.floreantpos.model.dao.InventoryItemDAO;
 import com.floreantpos.model.dao.TerminalDAO;
 import com.floreantpos.swing.TransparentPanel;
@@ -153,7 +151,7 @@ public class InventoryOnHandReportView extends TransparentPanel {
 			reportPanel.add(viewer);
 			reportPanel.revalidate();
 		} catch (JRException e) {
-			e.printStackTrace();
+			PosLog.error(getClass(), e.getMessage());
 		}
 	}
 

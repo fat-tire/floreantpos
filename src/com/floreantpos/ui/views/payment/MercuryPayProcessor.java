@@ -21,6 +21,7 @@ import java.io.IOException;
 
 import com.floreantpos.Messages;
 import com.floreantpos.PosException;
+import com.floreantpos.PosLog;
 import com.floreantpos.config.CardConfig;
 import com.floreantpos.model.OrderType;
 import com.floreantpos.model.PosTransaction;
@@ -61,7 +62,7 @@ public class MercuryPayProcessor implements CardProcessor {
 			throw new PosException(Messages.getString("MercuryPayProcessor.13")); //$NON-NLS-1$
 		}
 		
-		System.out.println(mpsResponse);
+		PosLog.info(getClass(), mpsResponse);
 		
 		transaction.setCardTransactionId(result.getTransactionId());
 		transaction.setCardAuthCode(result.getAuthCode());
@@ -91,7 +92,7 @@ public class MercuryPayProcessor implements CardProcessor {
 		xml = xml.replace($amount, amountStrng);
 		xml = xml.replace($authorizeAmount, amountStrng);
 		
-		System.out.println(xml);
+		PosLog.info(getClass(),xml);
 
 		MercuryWebRequest mpswr = new MercuryWebRequest("https://w1.mercurydev.net/ws/ws.asmx"); //$NON-NLS-1$
 		mpswr.addParameter("tran", xml); //Set WebServices 'tran' parameter to the XML transaction request //$NON-NLS-1$
@@ -124,7 +125,7 @@ public class MercuryPayProcessor implements CardProcessor {
 		xml = xml.replace("$authCode", transaction.getCardAuthCode()); //$NON-NLS-1$
 		xml = xml.replace("$AcqRefData", transaction.getProperty("AcqRefData")); //$NON-NLS-1$ //$NON-NLS-2$
 		
-//		System.out.println(xml);
+//		PosLog.debug(getClass(),xml);
 		
 		MercuryWebRequest mpswr = new MercuryWebRequest("https://w1.mercurydev.net/ws/ws.asmx"); //$NON-NLS-1$
 		mpswr.addParameter("tran", xml); //Set WebServices 'tran' parameter to the XML transaction request //$NON-NLS-1$

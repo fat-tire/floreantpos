@@ -5,15 +5,12 @@ import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JComponent;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 
@@ -26,16 +23,14 @@ import net.sf.jasperreports.view.JRViewer;
 
 import org.jdesktop.swingx.JXDatePicker;
 
+import com.floreantpos.PosLog;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.InventoryItem;
 import com.floreantpos.model.InventoryVendor;
 import com.floreantpos.model.Restaurant;
-import com.floreantpos.model.dao.AttendenceHistoryDAO;
 import com.floreantpos.model.dao.InventoryItemDAO;
 import com.floreantpos.model.dao.TerminalDAO;
 import com.floreantpos.swing.TransparentPanel;
-import com.floreantpos.ui.dialog.POSMessageDialog;
-import com.floreantpos.ui.util.UiUtil;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
@@ -139,7 +134,7 @@ public class PurchaseReportView extends TransparentPanel {
 			reportPanel.add(viewer);
 			reportPanel.revalidate();
 		} catch (JRException e) {
-			e.printStackTrace();
+			PosLog.error(getClass(), e.getMessage());
 		}
 	}
 

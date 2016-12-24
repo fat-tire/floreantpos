@@ -13,10 +13,10 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 
+import net.miginfocom.swing.MigLayout;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import net.miginfocom.swing.MigLayout;
 
 import com.floreantpos.Messages;
 import com.floreantpos.config.TerminalConfig;

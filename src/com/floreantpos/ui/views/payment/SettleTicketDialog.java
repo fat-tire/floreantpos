@@ -54,6 +54,7 @@ import org.apache.commons.lang.StringUtils;
 import com.floreantpos.Messages;
 import com.floreantpos.POSConstants;
 import com.floreantpos.PosException;
+import com.floreantpos.PosLog;
 import com.floreantpos.config.CardConfig;
 import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.extension.InginicoPlugin;
@@ -536,7 +537,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 			}
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			PosLog.error(getClass(), e.getMessage());
 		}
 	}
 
@@ -824,7 +825,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 				settleTicket(selectedTransaction);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			PosLog.error(getClass(), e.getMessage());
 			POSMessageDialog.showError(Application.getPosWindow(), e.getMessage());
 		} finally {
 			waitDialog.setVisible(false);

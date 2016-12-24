@@ -1,12 +1,10 @@
 package com.floreantpos.swing;
 
-import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
-import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
@@ -15,7 +13,6 @@ import javax.swing.table.TableColumn;
 import com.floreantpos.model.MenuCategory;
 import com.floreantpos.model.MenuGroup;
 import com.floreantpos.model.MenuItem;
-import com.floreantpos.swing.CheckBoxList;
 
 /**
  * A list from which multiple items can be selected.

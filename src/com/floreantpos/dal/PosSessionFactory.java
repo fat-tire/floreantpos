@@ -20,6 +20,8 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.cfg.Configuration;
 
+import com.floreantpos.PosLog;
+
 /**
  * Configures and provides access to Hibernate sessions, tied to the
  * current thread of execution.  Follows the Thread Local Session
@@ -66,7 +68,7 @@ public class PosSessionFactory {
 				} catch (Exception e) {
 					System.err
 							.println("%%%% Error Creating SessionFactory %%%%"); //$NON-NLS-1$
-					e.printStackTrace();
+					PosLog.error(PosSessionFactory.class, e.getMessage());
 				}
 			}
 			session = (sessionFactory != null) ? sessionFactory.openSession()

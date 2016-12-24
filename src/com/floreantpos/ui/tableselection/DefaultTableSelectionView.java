@@ -46,6 +46,7 @@ import net.miginfocom.swing.MigLayout;
 
 import com.floreantpos.Messages;
 import com.floreantpos.POSConstants;
+import com.floreantpos.PosLog;
 import com.floreantpos.extension.OrderServiceFactory;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.ShopTable;
@@ -386,7 +387,7 @@ public class DefaultTableSelectionView extends TableSelector implements ActionLi
 			clearSelection();
 
 		} catch (TicketAlreadyExistsException e) {
-			e.printStackTrace();
+			PosLog.error(getClass(), e.getMessage());
 
 		}
 	}

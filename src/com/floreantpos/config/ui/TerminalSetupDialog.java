@@ -31,6 +31,7 @@ import javax.swing.JSeparator;
 import net.miginfocom.swing.MigLayout;
 
 import com.floreantpos.Messages;
+import com.floreantpos.PosLog;
 import com.floreantpos.main.Application;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.swing.TitledView;
@@ -87,7 +88,7 @@ public class TerminalSetupDialog extends JDialog {
 					dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 					dialog.setVisible(true);
 				} catch (Exception e) {
-					e.printStackTrace();
+					PosLog.error(getClass(), e.getMessage());
 				}
 			}
 		});

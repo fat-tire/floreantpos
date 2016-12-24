@@ -32,6 +32,7 @@ import org.apache.commons.lang.StringUtils;
 import us.fatehi.magnetictrack.bankcard.BankCardMagneticTrack;
 
 import com.floreantpos.Messages;
+import com.floreantpos.PosLog;
 import com.floreantpos.config.CardConfig;
 import com.floreantpos.model.PosTransaction;
 import com.floreantpos.model.Ticket;
@@ -86,7 +87,7 @@ public class AuthorizeDotNetProcessor implements CardProcessor {
 			throw new Exception(Messages.getString("AuthorizeDotNetProcessor.3") + result.getResponseReasonCodes().get(0).getReasonText()); //$NON-NLS-1$
 		}
 	}
-	
+
 	@Override
 	public void chargeAmount(PosTransaction transaction) throws Exception {
 
@@ -96,7 +97,8 @@ public class AuthorizeDotNetProcessor implements CardProcessor {
 		CreditCard creditCard = createCard(transaction);
 
 		// Create transaction
-		Transaction authCaptureTransaction = merchant.createAIMTransaction(TransactionType.AUTH_CAPTURE, new BigDecimal(transaction.calculateAuthorizeAmount()));
+		Transaction authCaptureTransaction = merchant
+				.createAIMTransaction(TransactionType.AUTH_CAPTURE, new BigDecimal(transaction.calculateAuthorizeAmount()));
 		authCaptureTransaction.setCreditCard(creditCard);
 
 		Result<Transaction> result = (Result<Transaction>) merchant.postTransaction(authCaptureTransaction);
@@ -314,7 +316,7 @@ public class AuthorizeDotNetProcessor implements CardProcessor {
 		//		
 		//		if (result.isApproved()) {
 		//			
-		//			System.out.println("authorization successful");
+		//			PosLog.debug(getClass(),"authorization successful");
 		//			
 		//			Thread.sleep(1000);
 		//			
@@ -325,7 +327,7 @@ public class AuthorizeDotNetProcessor implements CardProcessor {
 		//			Result<Transaction> result2 = (Result<Transaction>) merchant.postTransaction(authCaptureTransaction);
 		//			
 		//			if (result2.isApproved()) {
-		//				System.out.println("capture successful");
+		//				PosLog.debug(getClass(),"capture successful");
 		//				
 		//				Thread.sleep(1000);
 		//				
@@ -336,20 +338,20 @@ public class AuthorizeDotNetProcessor implements CardProcessor {
 		//				Result<Transaction> result3 = (Result<Transaction>) merchant.postTransaction(authCaptureTransaction);
 		//				
 		//				if(result3.isApproved()) {
-		//					System.out.println("void successful");
+		//					PosLog.debug(getClass(),"void successful");
 		//				}
 		//				else {
-		//					System.out.println("void declined");
+		//					PosLog.debug(getClass(),"void declined");
 		//				}
 		//			}
 		//		}
 		//		else {
-		//			System.out.println(result.getXmlResponseDocument());
+		//			PosLog.debug(getClass(),result.getXmlResponseDocument());
 		//		}
 
 		final BankCardMagneticTrack track = BankCardMagneticTrack
 				.from("%B4111111111111111^SHAH/RIAR^1803101000000000020000831000000?;4111111111111111=1803101000020000831?"); //$NON-NLS-1$
-		System.out.println(track.getTrack1());
+		PosLog.info(AuthorizeDotNetProcessor.class, "" + track.getTrack1());
 
 	}
 }

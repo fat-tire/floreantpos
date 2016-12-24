@@ -33,6 +33,7 @@ import net.miginfocom.swing.MigLayout;
 
 import com.floreantpos.Messages;
 import com.floreantpos.PosException;
+import com.floreantpos.PosLog;
 import com.floreantpos.model.User;
 import com.floreantpos.model.UserType;
 import com.floreantpos.model.dao.UserDAO;
@@ -195,11 +196,11 @@ public class UserForm extends BeanEditor {
 			userDAO.saveOrUpdate(user, editMode);
 		} catch (PosException x) {
 			POSMessageDialog.showError(this, x.getMessage(), x);
-			x.printStackTrace();
+			PosLog.error(getClass(), x.getMessage());
 			return false;
 		} catch (Exception x) {
 			POSMessageDialog.showError(this, Messages.getString("UserForm.41"), x); //$NON-NLS-1$
-			x.printStackTrace();
+			PosLog.error(getClass(), x.getMessage());
 			return false;
 		}
 

@@ -39,6 +39,7 @@ import com.floreantpos.Messages;
 import com.floreantpos.actions.LogoutAction;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.KitchenTicket;
+import com.floreantpos.model.OrderType;
 import com.floreantpos.model.PosPrinters;
 import com.floreantpos.model.Printer;
 import com.floreantpos.model.dao.KitchenTicketDAO;
@@ -47,7 +48,6 @@ import com.floreantpos.swing.PosComboRenderer;
 import com.floreantpos.swing.PosUIManager;
 import com.floreantpos.ui.HeaderPanel;
 import com.floreantpos.ui.dialog.POSMessageDialog;
-import com.floreantpos.model.OrderType;
 import com.floreantpos.ui.views.order.RootView;
 import com.floreantpos.ui.views.order.ViewPanel;
 

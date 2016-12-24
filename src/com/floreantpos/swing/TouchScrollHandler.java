@@ -1,9 +1,16 @@
 package com.floreantpos.swing;
 
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.AWTEvent;
+import java.awt.Cursor;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.event.AWTEventListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
-import javax.swing.*;
+import javax.swing.JComponent;
+import javax.swing.JViewport;
+import javax.swing.SwingUtilities;
 
 public class TouchScrollHandler extends MouseAdapter implements AWTEventListener {
 
@@ -35,7 +42,7 @@ public class TouchScrollHandler extends MouseAdapter implements AWTEventListener
 
 				Rectangle view = viewPort.getViewRect();
 				//MouseEvent convertMouseEvent = SwingUtilities.convertMouseEvent(e.getComponent(), e, viewPort);
-				//System.out.println(convertMouseEvent.getY());
+				//PosLog.debug(getClass(),convertMouseEvent.getY());
 				
 				//if (convertMouseEvent.getY() >= 0) {
 					int deltaX = origin.x - e.getX();

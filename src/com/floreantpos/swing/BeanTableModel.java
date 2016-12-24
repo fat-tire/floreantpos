@@ -23,6 +23,8 @@ import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
+import com.floreantpos.PosLog;
+
 /**
  * A table model where each row represents one instance of a Java bean.
  * When the user edits a cell the model is updated.
@@ -46,7 +48,7 @@ public class BeanTableModel<M> extends AbstractTableModel {
 			PropertyDescriptor descriptor = new PropertyDescriptor(beanAttribute, beanClass);
 			columns.add(new BeanColumn(columnGUIName, editable, descriptor));
 		} catch (Exception e) {
-			e.printStackTrace();
+			PosLog.error(getClass(), e.getMessage());
 		}
 	}
 
@@ -102,7 +104,7 @@ public class BeanTableModel<M> extends AbstractTableModel {
 		try {
 			result = column.descriptor.getReadMethod().invoke(row);
 		} catch (Exception e) {
-			e.printStackTrace();
+			PosLog.error(getClass(), e.getMessage());
 		}
 		return result;
 	}
@@ -114,7 +116,7 @@ public class BeanTableModel<M> extends AbstractTableModel {
 		try {
 			column.descriptor.getWriteMethod().invoke(row, value);
 		} catch (Exception e) {
-			e.printStackTrace();
+			PosLog.error(getClass(), e.getMessage());
 		}
 	}
 

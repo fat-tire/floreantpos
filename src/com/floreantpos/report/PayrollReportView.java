@@ -42,6 +42,7 @@ import net.sf.jasperreports.view.JRViewer;
 
 import org.jdesktop.swingx.JXDatePicker;
 
+import com.floreantpos.PosLog;
 import com.floreantpos.model.dao.AttendenceHistoryDAO;
 import com.floreantpos.model.dao.TerminalDAO;
 import com.floreantpos.swing.TransparentPanel;
@@ -153,7 +154,7 @@ public class PayrollReportView extends TransparentPanel {
             reportPanel.add(viewer);
             reportPanel.revalidate();
         } catch (JRException e) {
-            e.printStackTrace();
+            PosLog.error(getClass(), e.getMessage());
         }
     }
 

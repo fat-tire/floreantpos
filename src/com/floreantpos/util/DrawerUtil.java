@@ -17,13 +17,13 @@
  */
 package com.floreantpos.util;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import jssc.SerialPort;
 import jssc.SerialPortException;
 
-import com.floreantpos.config.TerminalConfig;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import com.floreantpos.PosLog;
 
 public class DrawerUtil {
 	/* fields */
@@ -427,7 +427,7 @@ public class DrawerUtil {
 			print((char) 13); //added line feed
 			
 			byte[] readBytes = serialPort.readBytes();
-			System.out.println("Response: " + new String(readBytes));
+			PosLog.info(DrawerUtil.class, "Response: " + new String(readBytes));
 
 		} catch (SerialPortException ex) {
 		}

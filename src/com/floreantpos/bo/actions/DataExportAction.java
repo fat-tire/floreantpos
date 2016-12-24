@@ -35,6 +35,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import com.floreantpos.Messages;
+import com.floreantpos.PosLog;
 import com.floreantpos.model.MenuItem;
 import com.floreantpos.model.MenuItemModifierGroup;
 import com.floreantpos.model.dao.GenericDAO;
@@ -132,7 +133,7 @@ public class DataExportAction extends AbstractAction {
 
 		} catch (Exception e1) {
 			transaction.rollback();
-			e1.printStackTrace();
+			PosLog.error(getClass(), e1.getMessage());
 			POSMessageDialog.showMessage(com.floreantpos.util.POSUtil.getFocusedWindow(), e1.getMessage());
 		} finally {
 			IOUtils.closeQuietly(fileWriter);

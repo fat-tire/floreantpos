@@ -37,7 +37,7 @@ import net.miginfocom.swing.MigLayout;
 import net.sf.jasperreports.engine.JRParameter;
 import net.sf.jasperreports.engine.JasperPrint;
 
-import com.floreantpos.Messages;
+import com.floreantpos.PosLog;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.report.ReceiptPrintService;
@@ -106,7 +106,7 @@ public class TicketDetailView extends JPanel {
 			revalidate();
 			repaint();
 		} catch (Exception e) {
-			e.printStackTrace();
+			PosLog.error(getClass(), e.getMessage());
 			POSMessageDialog.showError(Application.getPosWindow(), e.getMessage(), e);
 		}
 	}

@@ -47,6 +47,7 @@ import com.floreantpos.IconFactory;
 import com.floreantpos.Messages;
 import com.floreantpos.POSConstants;
 import com.floreantpos.PosException;
+import com.floreantpos.PosLog;
 import com.floreantpos.customer.CustomerSelectorDialog;
 import com.floreantpos.customer.CustomerSelectorFactory;
 import com.floreantpos.main.Application;
@@ -437,7 +438,7 @@ public class OrderView extends ViewPanel {
 			actionUpdate();
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			PosLog.error(getClass(), e.getMessage());
 			transaction.rollback();
 		} finally {
 			if (session != null) {
@@ -645,7 +646,7 @@ public class OrderView extends ViewPanel {
 
 			ticketView.getTicketViewerTable().updateView();
 		} catch (Exception e) {
-			e.printStackTrace();
+			PosLog.error(getClass(), e.getMessage());
 			POSMessageDialog.showError(e.getMessage());
 		}
 	}

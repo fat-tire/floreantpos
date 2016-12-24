@@ -19,6 +19,8 @@ package com.floreantpos.config;
 
 import org.apache.commons.configuration.PropertiesConfiguration;
 
+import com.floreantpos.PosLog;
+
 public class AppProperties {
 	
 	private static PropertiesConfiguration properties;
@@ -27,7 +29,7 @@ public class AppProperties {
 		try {
 			properties = new PropertiesConfiguration(AppProperties.class.getResource("/app.properties")); //$NON-NLS-1$
 		} catch (Exception e) {
-			e.printStackTrace();
+			PosLog.error(AppProperties.class, e.getMessage());
 		}
 	}
 	

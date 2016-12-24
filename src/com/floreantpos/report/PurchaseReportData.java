@@ -17,9 +17,6 @@
  */
 package com.floreantpos.report;
 
-import java.util.Date;
-
-import com.floreantpos.model.User;
 
 public class PurchaseReportData {
 

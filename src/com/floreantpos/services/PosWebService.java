@@ -2,6 +2,7 @@ package com.floreantpos.services;
 
 import javax.ws.rs.core.MultivaluedMap;
 
+import com.floreantpos.PosLog;
 import com.floreantpos.config.TerminalConfig;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
@@ -28,12 +29,12 @@ public class PosWebService {
 				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
 			}
 			String versionInfo = response.getEntity(String.class);
-			System.out.println("\n============update info============");
-			System.out.println(versionInfo);
+			PosLog.info(getClass(),"\n============update info============");
+			PosLog.info(getClass(),versionInfo);
 			return versionInfo;
 
 		} catch (Exception e) {
-			//e.printStackTrace();
+			//PosLog.error(getClass(), e.getMessage());
 		}
 		return null;
 	}

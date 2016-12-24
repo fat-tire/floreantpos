@@ -17,12 +17,12 @@
  */
 package com.floreantpos.extension;
 
+import net.xeoh.plugins.base.annotations.PluginImplementation;
+
 import com.floreantpos.config.ui.ConfigurationView;
 import com.floreantpos.config.ui.DefaultMerchantGatewayConfigurationView;
 import com.floreantpos.ui.views.payment.CardProcessor;
 import com.floreantpos.ui.views.payment.MercuryPayProcessor;
-
-import net.xeoh.plugins.base.annotations.PluginImplementation;
 
 @PluginImplementation
 public class MercuryGatewayPlugin extends AuthorizeNetGatewayPlugin {

@@ -46,6 +46,7 @@ import net.sf.jasperreports.view.JRViewer;
 import org.jdesktop.swingx.JXDatePicker;
 
 import com.floreantpos.POSConstants;
+import com.floreantpos.PosLog;
 import com.floreantpos.model.User;
 import com.floreantpos.model.dao.AttendenceHistoryDAO;
 import com.floreantpos.model.dao.UserDAO;
@@ -183,7 +184,7 @@ public class AttendanceReportView extends TransparentPanel {
 			reportPanel.add(viewer);
 			reportPanel.revalidate();
 		} catch (JRException e) {
-			e.printStackTrace();
+			PosLog.error(getClass(), e.getMessage());
 		}
 	}
 }

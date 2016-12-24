@@ -5,7 +5,6 @@ import java.util.List;
 import javax.swing.JTable;
 import javax.swing.table.TableColumn;
 
-
 import com.floreantpos.Messages;
 import com.floreantpos.model.ShopTable;
 import com.floreantpos.model.dao.ShopTableDAO;

@@ -69,6 +69,7 @@ import org.hibernate.Hibernate;
 import org.hibernate.Session;
 
 import com.floreantpos.Messages;
+import com.floreantpos.PosLog;
 import com.floreantpos.extension.ExtensionManager;
 import com.floreantpos.extension.InventoryPlugin;
 import com.floreantpos.main.Application;
@@ -257,7 +258,7 @@ public class PizzaItemForm extends BeanEditor<MenuItem> implements ActionListene
 				menuItem.setImageData(itemImage);
 
 			} catch (IOException e) {
-				e.printStackTrace();
+				PosLog.error(getClass(), e.getMessage());
 			}
 		}
 	}
@@ -908,18 +909,18 @@ public class PizzaItemForm extends BeanEditor<MenuItem> implements ActionListene
 			for (int j = 0; j < pizzaPriceList.size(); j++) {
 				if ((pizzaPriceList.get(i).getSize() == pizzaPriceList.get(j).getSize())
 						&& (pizzaPriceList.get(i).getCrust() == pizzaPriceList.get(j).getCrust())) {
-					System.out.println(pizzaPriceList.get(i).getSize() + " " + pizzaPriceList.get(i).getCrust() + " " + pizzaPriceList.get(j).getSize() + " "
+					PosLog.debug(getClass(),pizzaPriceList.get(i).getSize() + " " + pizzaPriceList.get(i).getCrust() + " " + pizzaPriceList.get(j).getSize() + " "
 							+ pizzaPriceList.get(j).getCrust());
 					duplicateList.add(pizzaPriceList.get(i));
-					System.out.println(count);
+					PosLog.debug(getClass(),count);
 					++count;
 				}
 			}
 		}
-		System.out.println(count);
+		PosLog.debug(getClass(),count);
 
 
-		System.out.println(findDuplicates(duplicateList));
+		PosLog.debug(getClass(),findDuplicates(duplicateList));
 
 		if (findDuplicates(duplicateList)) {
 			JOptionPane.showMessageDialog(this, "Duplicate Value Entered");

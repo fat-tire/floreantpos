@@ -32,10 +32,10 @@ import javax.swing.Action;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import net.miginfocom.swing.MigLayout;
+
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-
-import net.miginfocom.swing.MigLayout;
 
 import com.floreantpos.IconFactory;
 import com.floreantpos.Messages;

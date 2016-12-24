@@ -21,6 +21,7 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.floreantpos.PosLog;
 import com.floreantpos.extension.AuthorizeNetGatewayPlugin;
 import com.floreantpos.extension.ExtensionManager;
 import com.floreantpos.extension.FloreantPlugin;
@@ -88,7 +89,7 @@ public class CardConfig {
 
 			AppConfig.put(MERCHANT_PASS, AESencrp.encrypt(pass));
 		} catch (Exception e) {
-			e.printStackTrace();
+			PosLog.error(CardConfig.class, e.getMessage());
 		}
 	}
 

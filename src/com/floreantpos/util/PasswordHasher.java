@@ -23,10 +23,12 @@ import java.security.NoSuchAlgorithmException;
 
 import org.apache.commons.codec.binary.Hex;
 
+import com.floreantpos.PosLog;
+
 public class PasswordHasher {
 
 	public static void main(String[] args) throws Exception {
-		System.out.println(hashPassword("123")); //$NON-NLS-1$
+		PosLog.info(PasswordHasher.class, hashPassword("123")); //$NON-NLS-1$
 	}
 
 	public static String hashPassword(String password) {
@@ -36,13 +38,13 @@ public class PasswordHasher {
 		try {
 			passwordBytes = password.getBytes("UTF-8"); //$NON-NLS-1$
 		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
+			PosLog.error(PasswordHasher.class, e.getMessage());
 		}
 
 		try {
 			md = MessageDigest.getInstance("SHA1"); //$NON-NLS-1$
 		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
+			PosLog.error(PasswordHasher.class, e.getMessage());
 		}
 
 		byte[] hashBytes = md.digest(passwordBytes);
