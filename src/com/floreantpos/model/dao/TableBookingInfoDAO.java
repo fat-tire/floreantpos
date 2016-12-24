@@ -31,6 +31,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
 
+import com.floreantpos.PosLog;
 import com.floreantpos.model.ShopTable;
 import com.floreantpos.model.TableBookingInfo;
 import com.floreantpos.model.util.DateUtil;
@@ -76,7 +77,7 @@ public class TableBookingInfoDAO extends BaseTableBookingInfoDAO {
 
 			return bookedTables;
 		} catch (Exception e) {
-			e.printStackTrace();
+			PosLog.error(getClass(), e.getMessage());
 		} finally {
 			if (session != null) {
 				closeSession(session);
@@ -104,7 +105,7 @@ public class TableBookingInfoDAO extends BaseTableBookingInfoDAO {
 			List list = criteria.list();
 			return list;
 		} catch (Exception e) {
-			e.printStackTrace();
+			PosLog.error(getClass(), e.getMessage());
 		} finally {
 			try {
 				session.close();
@@ -206,7 +207,7 @@ public class TableBookingInfoDAO extends BaseTableBookingInfoDAO {
 
 			return list;
 		} catch (Exception e) {
-			e.printStackTrace();
+			PosLog.error(getClass(), e.getMessage());
 		} finally {
 			session.close();
 		}
@@ -227,7 +228,7 @@ public class TableBookingInfoDAO extends BaseTableBookingInfoDAO {
 
 			return list;
 		} catch (Exception e) {
-			e.printStackTrace();
+			PosLog.error(getClass(), e.getMessage());
 		} finally {
 			session.close();
 		}

@@ -34,6 +34,7 @@ import org.hibernate.criterion.Restrictions;
 
 import com.floreantpos.Messages;
 import com.floreantpos.PosException;
+import com.floreantpos.PosLog;
 import com.floreantpos.model.Discount;
 import com.floreantpos.model.MenuGroup;
 import com.floreantpos.model.MenuItem;
@@ -99,7 +100,7 @@ public class MenuItemDAO extends BaseMenuItemDAO {
 
 			return criteria.list();
 		} catch (Exception e) {
-			e.printStackTrace();
+			PosLog.error(getClass(), e.getMessage());
 			throw new PosException(Messages.getString("MenuItemDAO.0")); //$NON-NLS-1$
 		} finally {
 			if (session != null) {

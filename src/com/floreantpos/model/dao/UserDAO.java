@@ -31,6 +31,7 @@ import org.hibernate.criterion.Restrictions;
 
 import com.floreantpos.Messages;
 import com.floreantpos.PosException;
+import com.floreantpos.PosLog;
 import com.floreantpos.model.AttendenceHistory;
 import com.floreantpos.model.EmployeeInOutHistory;
 import com.floreantpos.model.Shift;
@@ -187,7 +188,7 @@ public class UserDAO extends BaseUserDAO {
 
 			tx.commit();
 		} catch (Exception e) {
-			e.printStackTrace();
+			PosLog.error(getClass(), e.getMessage());
 
 			if (tx != null) {
 				try {
@@ -245,7 +246,7 @@ public class UserDAO extends BaseUserDAO {
 
 			tx.commit();
 		} catch (Exception e) {
-			e.printStackTrace();
+			PosLog.error(getClass(), e.getMessage());
 
 			if (tx != null) {
 				try {

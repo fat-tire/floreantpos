@@ -23,6 +23,7 @@ import org.hibernate.criterion.Restrictions;
 
 import com.floreantpos.Messages;
 import com.floreantpos.PosException;
+import com.floreantpos.PosLog;
 import com.floreantpos.model.MenuItem;
 
 
@@ -45,7 +46,7 @@ public class InventoryItemDAO extends BaseInventoryItemDAO {
 			return criteria.list().size() > 0;
 			
 		} catch (Exception e) {
-			e.printStackTrace();
+			PosLog.error(getClass(), e.getMessage());
 			throw new PosException(Messages.getString("InventoryItemDAO.0")); //$NON-NLS-1$
 		} finally {
 			if (session != null) {

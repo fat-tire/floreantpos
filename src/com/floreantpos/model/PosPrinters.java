@@ -32,6 +32,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import org.apache.commons.io.FileUtils;
 
+import com.floreantpos.PosLog;
 import com.floreantpos.model.dao.TerminalPrintersDAO;
 import com.floreantpos.model.dao.VirtualPrinterDAO;
 
@@ -141,7 +142,7 @@ public class PosPrinters {
 			FileUtils.write(file, writer.toString());
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			PosLog.error(getClass(), e.getMessage());
 		}
 	}
 
@@ -187,7 +188,7 @@ public class PosPrinters {
 			return printers;
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			PosLog.error(PosPrinters.class, e.getMessage());
 		}
 
 		return null;

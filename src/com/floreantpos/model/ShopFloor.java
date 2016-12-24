@@ -26,6 +26,7 @@ import java.util.Set;
 
 import org.hibernate.Hibernate;
 
+import com.floreantpos.PosLog;
 import com.floreantpos.model.base.BaseShopFloor;
 
 public class ShopFloor extends BaseShopFloor {
@@ -61,7 +62,7 @@ public class ShopFloor extends BaseShopFloor {
 		try {
 			this.imageData = toByteArray(image);
 		} catch (Exception e) {
-			e.printStackTrace();
+			PosLog.error(getClass(), e.getMessage());
 		}
 	}
 
