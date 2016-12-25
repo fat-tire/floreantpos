@@ -41,7 +41,7 @@ public class SplitTicketAction extends PosAction {
 			dialog.setLocationRelativeTo(Application.getPosWindow());
 			dialog.setVisible(true);
 		} catch (Exception e) {
-			PosLog.error(getClass(), e.getMessage());
+			PosLog.error(getClass(), e);
 		}
 	}
 

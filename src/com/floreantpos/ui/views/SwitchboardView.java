@@ -321,7 +321,7 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 
 			orderServiceExtension.assignDriver(ticket.getId());
 		} catch (Exception e) {
-			PosLog.error(getClass(), e.getMessage());
+			PosLog.error(getClass(), e);
 			POSMessageDialog.showError(this, e.getMessage());
 			LogFactory.getLog(SwitchboardView.class).error(e);
 		}
@@ -401,7 +401,7 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 		} catch (PosException e) {
 			POSMessageDialog.showError(this, e.getMessage());
 		} catch (Exception e) {
-			PosLog.error(getClass(), e.getMessage());
+			PosLog.error(getClass(), e);
 			POSMessageDialog.showError(this, POSConstants.ERROR_MESSAGE, e);
 		}
 	}

@@ -103,7 +103,7 @@ public class InginicoConfigurationView extends ConfigurationView {
 			writer.println("CommType=TCP");
 			
 		} catch (Exception e) {
-			PosLog.error(getClass(), e.getMessage());
+			PosLog.error(getClass(), e);
 		} finally {
 			try {
 				writer.close();

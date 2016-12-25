@@ -132,7 +132,7 @@ public class LanguageSelectionDialog extends POSDialog {
 			try {
 				Main.restart();
 			} catch (Exception e) {
-				PosLog.error(getClass(), e.getMessage());
+				PosLog.error(getClass(), e);
 			}
 		}
 	}
@@ -151,7 +151,7 @@ public class LanguageSelectionDialog extends POSDialog {
 		try {
 			files = new File(("i18n")).listFiles();
 		} catch (Exception e) {
-			PosLog.error(getClass(), e.getMessage());
+			PosLog.error(getClass(), e);
 		}
 		if (files != null) {
 			for (File file : files) {

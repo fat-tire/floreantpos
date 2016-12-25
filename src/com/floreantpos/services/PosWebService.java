@@ -34,7 +34,7 @@ public class PosWebService {
 			return versionInfo;
 
 		} catch (Exception e) {
-			//PosLog.error(getClass(), e.getMessage());
+			//PosLog.error(getClass(), e);
 		}
 		return null;
 	}

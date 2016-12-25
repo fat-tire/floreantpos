@@ -106,7 +106,7 @@ public class TicketDetailView extends JPanel {
 			revalidate();
 			repaint();
 		} catch (Exception e) {
-			PosLog.error(getClass(), e.getMessage());
+			PosLog.error(getClass(), e);
 			POSMessageDialog.showError(Application.getPosWindow(), e.getMessage(), e);
 		}
 	}

@@ -95,7 +95,7 @@ public class TipsCashoutReportDialog extends POSDialog implements ActionListener
 			try {
 				PosPrintService.printServerTipsReport(report);
 			}catch (Exception x) {
-				PosLog.error(getClass(), x.getMessage());
+				PosLog.error(getClass(), x);
 				POSMessageDialog.showError(this, Messages.getString("TipsCashoutReportDialog.32") + x.getMessage()); //$NON-NLS-1$
 			}
 		}

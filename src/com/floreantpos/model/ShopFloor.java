@@ -62,7 +62,7 @@ public class ShopFloor extends BaseShopFloor {
 		try {
 			this.imageData = toByteArray(image);
 		} catch (Exception e) {
-			PosLog.error(getClass(), e.getMessage());
+			PosLog.error(getClass(), e);
 		}
 	}
 

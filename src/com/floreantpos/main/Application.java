@@ -178,7 +178,7 @@ public class Application {
 			setSystemInitialized(true);
 
 		} catch (DatabaseConnectionException e) {
-			PosLog.error(getClass(), e.getMessage());
+			PosLog.error(getClass(), e);
 
 			int option = JOptionPane.showConfirmDialog(getPosWindow(),
 					Messages.getString("Application.0"), Messages.getString(POSConstants.POS_MESSAGE_ERROR), JOptionPane.YES_NO_OPTION); //$NON-NLS-1$ //$NON-NLS-2$

@@ -27,7 +27,7 @@ public abstract class CustomerSelector extends JPanel {
 		try {
 			OrderServiceFactory.getOrderService().createNewTicket(orderType, selectedTables, null);
 		} catch (TicketAlreadyExistsException e) {
-			PosLog.error(getClass(), e.getMessage());
+			PosLog.error(getClass(), e);
 		}
 	}
 

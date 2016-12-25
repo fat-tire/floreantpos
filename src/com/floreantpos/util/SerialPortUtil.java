@@ -36,7 +36,7 @@ public class SerialPortUtil {
 						}
 					}
 				} catch (Exception e) {
-					PosLog.error(getClass(), e.getMessage());
+					PosLog.error(getClass(), e);
 				}
 			}
 		});

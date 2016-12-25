@@ -92,7 +92,7 @@ public class MenuItemView extends SelectionView {
 			filterItemsByOrderType(items);
 			setItems(items);
 		} catch (PosException e) {
-			PosLog.error(getClass(), e.getMessage());
+			PosLog.error(getClass(), e);
 		}
 	}
 

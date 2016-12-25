@@ -23,7 +23,7 @@ public class PosServer implements Runnable {
 			ss = new ServerSocket(PORT);
 			listen(ss);
 		} catch (Exception e) {
-			PosLog.error(getClass(), e.getMessage());
+			PosLog.error(getClass(), e);
 		} finally {
 			if (ss != null) {
 				try {

@@ -48,7 +48,7 @@ public class BeanTableModel<M> extends AbstractTableModel {
 			PropertyDescriptor descriptor = new PropertyDescriptor(beanAttribute, beanClass);
 			columns.add(new BeanColumn(columnGUIName, editable, descriptor));
 		} catch (Exception e) {
-			PosLog.error(getClass(), e.getMessage());
+			PosLog.error(getClass(), e);
 		}
 	}
 
@@ -104,7 +104,7 @@ public class BeanTableModel<M> extends AbstractTableModel {
 		try {
 			result = column.descriptor.getReadMethod().invoke(row);
 		} catch (Exception e) {
-			PosLog.error(getClass(), e.getMessage());
+			PosLog.error(getClass(), e);
 		}
 		return result;
 	}
@@ -116,7 +116,7 @@ public class BeanTableModel<M> extends AbstractTableModel {
 		try {
 			column.descriptor.getWriteMethod().invoke(row, value);
 		} catch (Exception e) {
-			PosLog.error(getClass(), e.getMessage());
+			PosLog.error(getClass(), e);
 		}
 	}
 

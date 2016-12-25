@@ -185,7 +185,7 @@ public class NewBarTabAction extends AbstractAction implements CardInputListener
 				saveTicket(selectedTransaction);
 			}
 		} catch (Exception e) {
-			PosLog.error(getClass(), e.getMessage());
+			PosLog.error(getClass(), e);
 			POSMessageDialog.showError(Application.getPosWindow(), e.getMessage());
 		} finally {
 			waitDialog.setVisible(false);
@@ -204,7 +204,7 @@ public class NewBarTabAction extends AbstractAction implements CardInputListener
 
 			doEditTicket(transaction.getTicket());
 		} catch (Exception e) {
-			PosLog.error(getClass(), e.getMessage());
+			PosLog.error(getClass(), e);
 		}
 	}
 

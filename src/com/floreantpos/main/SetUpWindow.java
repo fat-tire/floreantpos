@@ -433,7 +433,7 @@ public class SetUpWindow extends JFrame implements ActionListener {
 				}
 			}
 		} catch (Exception e2) {
-			PosLog.error(getClass(), e2.getMessage());
+			PosLog.error(getClass(), e2);
 			POSMessageDialog.showMessage(this, e2.getMessage());
 		} finally {
 			setCursor(Cursor.getDefaultCursor());

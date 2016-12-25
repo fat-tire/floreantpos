@@ -100,7 +100,7 @@ public class MenuItemDAO extends BaseMenuItemDAO {
 
 			return criteria.list();
 		} catch (Exception e) {
-			PosLog.error(getClass(), e.getMessage());
+			PosLog.error(getClass(), e);
 			throw new PosException(Messages.getString("MenuItemDAO.0")); //$NON-NLS-1$
 		} finally {
 			if (session != null) {

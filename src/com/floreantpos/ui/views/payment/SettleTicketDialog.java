@@ -537,7 +537,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 			}
 
 		} catch (Exception e) {
-			PosLog.error(getClass(), e.getMessage());
+			PosLog.error(getClass(), e);
 		}
 	}
 
@@ -825,7 +825,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 				settleTicket(selectedTransaction);
 			}
 		} catch (Exception e) {
-			PosLog.error(getClass(), e.getMessage());
+			PosLog.error(getClass(), e);
 			POSMessageDialog.showError(Application.getPosWindow(), e.getMessage());
 		} finally {
 			waitDialog.setVisible(false);

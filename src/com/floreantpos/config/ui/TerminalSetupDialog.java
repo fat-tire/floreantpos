@@ -88,7 +88,7 @@ public class TerminalSetupDialog extends JDialog {
 					dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 					dialog.setVisible(true);
 				} catch (Exception e) {
-					PosLog.error(getClass(), e.getMessage());
+					PosLog.error(getClass(), e);
 				}
 			}
 		});

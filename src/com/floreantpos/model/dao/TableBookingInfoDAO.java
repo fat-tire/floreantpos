@@ -77,7 +77,7 @@ public class TableBookingInfoDAO extends BaseTableBookingInfoDAO {
 
 			return bookedTables;
 		} catch (Exception e) {
-			PosLog.error(getClass(), e.getMessage());
+			PosLog.error(getClass(), e);
 		} finally {
 			if (session != null) {
 				closeSession(session);
@@ -105,7 +105,7 @@ public class TableBookingInfoDAO extends BaseTableBookingInfoDAO {
 			List list = criteria.list();
 			return list;
 		} catch (Exception e) {
-			PosLog.error(getClass(), e.getMessage());
+			PosLog.error(getClass(), e);
 		} finally {
 			try {
 				session.close();
@@ -207,7 +207,7 @@ public class TableBookingInfoDAO extends BaseTableBookingInfoDAO {
 
 			return list;
 		} catch (Exception e) {
-			PosLog.error(getClass(), e.getMessage());
+			PosLog.error(getClass(), e);
 		} finally {
 			session.close();
 		}
@@ -228,7 +228,7 @@ public class TableBookingInfoDAO extends BaseTableBookingInfoDAO {
 
 			return list;
 		} catch (Exception e) {
-			PosLog.error(getClass(), e.getMessage());
+			PosLog.error(getClass(), e);
 		} finally {
 			session.close();
 		}

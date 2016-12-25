@@ -387,7 +387,7 @@ public class DefaultTableSelectionView extends TableSelector implements ActionLi
 			clearSelection();
 
 		} catch (TicketAlreadyExistsException e) {
-			PosLog.error(getClass(), e.getMessage());
+			PosLog.error(getClass(), e);
 
 		}
 	}

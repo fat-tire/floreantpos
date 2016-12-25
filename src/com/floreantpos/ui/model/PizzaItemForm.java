@@ -258,7 +258,7 @@ public class PizzaItemForm extends BeanEditor<MenuItem> implements ActionListene
 				menuItem.setImageData(itemImage);
 
 			} catch (IOException e) {
-				PosLog.error(getClass(), e.getMessage());
+				PosLog.error(getClass(), e);
 			}
 		}
 	}

@@ -517,7 +517,7 @@ public class GroupSettleTicketDialog extends POSDialog implements CardInputListe
 
 			}
 		} catch (Exception e) {
-			PosLog.error(getClass(), e.getMessage());
+			PosLog.error(getClass(), e);
 		}
 	}
 
@@ -764,7 +764,7 @@ public class GroupSettleTicketDialog extends POSDialog implements CardInputListe
 				settleTicket(selectedTransaction);
 			}
 		} catch (Exception e) {
-			PosLog.error(getClass(), e.getMessage());
+			PosLog.error(getClass(), e);
 			POSMessageDialog.showError(Application.getPosWindow(), e.getMessage());
 		} finally {
 			waitDialog.setVisible(false);

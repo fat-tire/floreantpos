@@ -71,7 +71,7 @@ public class DataImportAction extends AbstractAction {
 			POSMessageDialog.showMessage(com.floreantpos.util.POSUtil.getFocusedWindow(), Messages.getString("DataImportAction.1")); //$NON-NLS-1$
 
 		} catch (Exception e1) {
-			PosLog.error(getClass(), e1.getMessage());
+			PosLog.error(getClass(), e1);
 
 			POSMessageDialog.showMessage(com.floreantpos.util.POSUtil.getFocusedWindow(), e1.getMessage());
 		}

@@ -125,7 +125,7 @@ public class ShopTableModelBrowser<E> extends ModelBrowser {
 			}
 
 		} catch (Exception e2) {
-			PosLog.error(getClass(), e2.getMessage());
+			PosLog.error(getClass(), e2);
 		}
 	}
 

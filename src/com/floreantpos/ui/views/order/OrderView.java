@@ -438,7 +438,7 @@ public class OrderView extends ViewPanel {
 			actionUpdate();
 
 		} catch (Exception e) {
-			PosLog.error(getClass(), e.getMessage());
+			PosLog.error(getClass(), e);
 			transaction.rollback();
 		} finally {
 			if (session != null) {
@@ -646,7 +646,7 @@ public class OrderView extends ViewPanel {
 
 			ticketView.getTicketViewerTable().updateView();
 		} catch (Exception e) {
-			PosLog.error(getClass(), e.getMessage());
+			PosLog.error(getClass(), e);
 			POSMessageDialog.showError(e.getMessage());
 		}
 	}

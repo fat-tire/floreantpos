@@ -134,7 +134,7 @@ public class PurchaseReportView extends TransparentPanel {
 			reportPanel.add(viewer);
 			reportPanel.revalidate();
 		} catch (JRException e) {
-			PosLog.error(getClass(), e.getMessage());
+			PosLog.error(getClass(), e);
 		}
 	}
 

@@ -196,11 +196,11 @@ public class UserForm extends BeanEditor {
 			userDAO.saveOrUpdate(user, editMode);
 		} catch (PosException x) {
 			POSMessageDialog.showError(this, x.getMessage(), x);
-			PosLog.error(getClass(), x.getMessage());
+			PosLog.error(getClass(), x);
 			return false;
 		} catch (Exception x) {
 			POSMessageDialog.showError(this, Messages.getString("UserForm.41"), x); //$NON-NLS-1$
-			PosLog.error(getClass(), x.getMessage());
+			PosLog.error(getClass(), x);
 			return false;
 		}
 

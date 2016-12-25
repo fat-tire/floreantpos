@@ -142,7 +142,7 @@ public class PosPrinters {
 			FileUtils.write(file, writer.toString());
 
 		} catch (Exception e) {
-			PosLog.error(getClass(), e.getMessage());
+			PosLog.error(getClass(), e);
 		}
 	}
 

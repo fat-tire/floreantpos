@@ -46,7 +46,7 @@ public class InventoryItemDAO extends BaseInventoryItemDAO {
 			return criteria.list().size() > 0;
 			
 		} catch (Exception e) {
-			PosLog.error(getClass(), e.getMessage());
+			PosLog.error(getClass(), e);
 			throw new PosException(Messages.getString("InventoryItemDAO.0")); //$NON-NLS-1$
 		} finally {
 			if (session != null) {

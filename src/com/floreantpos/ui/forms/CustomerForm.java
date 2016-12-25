@@ -260,7 +260,7 @@ public class CustomerForm extends BeanEditor<Customer> {
 					ImageIcon imageIcon = new ImageIcon(image);
 					lblPicture.setIcon(imageIcon);
 				} catch (Exception e1) {
-					PosLog.error(getClass(), e1.getMessage());
+					PosLog.error(getClass(), e1);
 				}
 			}
 		});
@@ -483,7 +483,7 @@ public class CustomerForm extends BeanEditor<Customer> {
 			IOUtils.closeQuietly(stream);
 			lblPicture.setIcon(new ImageIcon(picture2));
 		} catch (IOException e) {
-			PosLog.error(getClass(), e.getMessage());
+			PosLog.error(getClass(), e);
 		}
 	}
 

@@ -221,7 +221,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 				menuItem.setImageData(itemImage);
 
 			} catch (IOException e) {
-				PosLog.error(getClass(), e.getMessage());
+				PosLog.error(getClass(), e);
 			}
 		}
 	}

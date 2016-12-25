@@ -72,7 +72,7 @@ public class UserExplorer extends TransparentPanel {
 					User user = (User) editor.getBean();
 					tableModel.addItem(user);
 				} catch (Exception x) {
-					PosLog.error(getClass(), x.getMessage());
+					PosLog.error(getClass(), x);
 					BOMessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
 				}
 			}

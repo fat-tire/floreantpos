@@ -133,7 +133,7 @@ public class DataExportAction extends AbstractAction {
 
 		} catch (Exception e1) {
 			transaction.rollback();
-			PosLog.error(getClass(), e1.getMessage());
+			PosLog.error(getClass(), e1);
 			POSMessageDialog.showMessage(com.floreantpos.util.POSUtil.getFocusedWindow(), e1.getMessage());
 		} finally {
 			IOUtils.closeQuietly(fileWriter);

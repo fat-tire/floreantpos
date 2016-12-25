@@ -188,7 +188,7 @@ public class UserDAO extends BaseUserDAO {
 
 			tx.commit();
 		} catch (Exception e) {
-			PosLog.error(getClass(), e.getMessage());
+			PosLog.error(getClass(), e);
 
 			if (tx != null) {
 				try {
@@ -246,7 +246,7 @@ public class UserDAO extends BaseUserDAO {
 
 			tx.commit();
 		} catch (Exception e) {
-			PosLog.error(getClass(), e.getMessage());
+			PosLog.error(getClass(), e);
 
 			if (tx != null) {
 				try {
