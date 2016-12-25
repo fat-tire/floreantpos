@@ -406,7 +406,7 @@ public class KitchenTicketView extends JPanel {
 				tx.commit();
 
 			} catch (Exception ex) {
-				PosLog.error(getClass(), ex.getMessage());
+				PosLog.error(getClass(), ex);
 				tx.rollback();
 			} finally {
 				session.close();

@@ -210,7 +210,7 @@ public class Application {
 				}
 			}
 		} catch (Exception ex) {
-			PosLog.error(getClass(), ex.getMessage());
+			PosLog.error(getClass(), ex);
 		}
 	}
 

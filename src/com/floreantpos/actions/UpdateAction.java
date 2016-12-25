@@ -59,7 +59,7 @@ public class UpdateAction extends AbstractAction {
 			dialog.pack();
 			dialog.open();
 		} catch (Exception ex) {
-			PosLog.error(getClass(), ex.getMessage());
+			PosLog.error(getClass(), ex);
 		}
 	}
 }

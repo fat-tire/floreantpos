@@ -410,7 +410,7 @@ public class DrawerPullReportDialog extends POSDialog {
 			PosPrintService.printDrawerPullReport(drawerPullReport, terminal);
 		} catch (Exception ex) {
 			POSMessageDialog.showError(DrawerPullReportDialog.this, Messages.getString("DrawerPullReportDialog.122") + ex.getMessage()); //$NON-NLS-1$
-			PosLog.error(getClass(), ex.getMessage());
+			PosLog.error(getClass(), ex);
 		}
 	}
 }
