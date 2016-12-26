@@ -274,10 +274,8 @@ public class PizzaItemExplorer extends TransparentPanel {
 					if (selectedType instanceof OrderType) {
 
 						List types = new ArrayList();
-
-						types.add(((OrderType) selectedType).getName());
-
-						menuItem.setOrderTypes(types);
+						types.add((OrderType) selectedType);
+						menuItem.setOrderTypeList(types);
 					}
 					PizzaItemForm editor = new PizzaItemForm(menuItem);
 

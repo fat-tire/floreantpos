@@ -28,6 +28,7 @@ import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
@@ -109,6 +110,34 @@ public class MenuItemDAO extends BaseMenuItemDAO {
 		}
 	}
 
+	public List<MenuItem> findByParent(Terminal terminal, MenuGroup menuGroup, Object selectedOrderType, boolean includeInvisibleItems) {
+		Session session = null;
+		Criteria criteria = null;
+		try {
+			session = getSession();
+			criteria = session.createCriteria(MenuItem.class);
+
+			if (menuGroup != null) {
+				criteria.add(Restrictions.eq(MenuItem.PROP_PARENT, menuGroup));
+			}
+			criteria.addOrder(Order.asc(MenuItem.PROP_SORT_ORDER));
+
+			if (!includeInvisibleItems) {
+				criteria.add(Restrictions.eq(MenuItem.PROP_VISIBLE, Boolean.TRUE));
+			}
+
+			if (selectedOrderType instanceof OrderType) {
+				OrderType orderType = (OrderType) selectedOrderType;
+				criteria.createAlias("orderTypeList", "type", CriteriaSpecification.LEFT_JOIN);
+				criteria.add(Restrictions.or(Restrictions.isEmpty("orderTypeList"), Restrictions.eq("type.id", orderType.getId())));
+			}
+			return criteria.list();
+
+		} catch (Exception e) {
+		}
+		return criteria.list();
+	}
+
 	public List<MenuItemModifierGroup> findModifierGroups(MenuItem item) throws PosException {
 		Session session = null;
 
@@ -144,28 +173,31 @@ public class MenuItemDAO extends BaseMenuItemDAO {
 				criteria.add(Restrictions.ilike(MenuItem.PROP_NAME, itemName.trim(), MatchMode.ANYWHERE));
 			}
 
-			List<MenuItem> similarItems = criteria.list();
+			//List<MenuItem> similarItems = criteria.list();
 
 			if (selectedType instanceof OrderType) {
+				OrderType orderType = (OrderType) selectedType;
 
-				List<MenuItem> selectedMenuItems = new ArrayList();
+				criteria.createAlias("orderTypeList", "type");
+				criteria.add(Restrictions.eq("type.id", orderType.getId()));
+
+				/*List<MenuItem> selectedMenuItems = new ArrayList();
 
 				List<MenuItem> items = findAll();
 
 				for (MenuItem item : items) {
 
-					List<String> types = item.getOrderTypes();
-
+					List<OrderType> types = item.getOrderTypeList();
 					OrderType type = (OrderType) selectedType;
 
 					if (types.contains(type.getName()) || types.isEmpty()) {
 						selectedMenuItems.add(item);
 					}
 				}
-				similarItems.retainAll(selectedMenuItems);
+				similarItems.retainAll(selectedMenuItems);*/
 			}
 
-			return similarItems;
+			return criteria.list();
 
 		} catch (Exception e) {
 		}
@@ -188,28 +220,30 @@ public class MenuItemDAO extends BaseMenuItemDAO {
 				criteria.add(Restrictions.ilike(MenuItem.PROP_NAME, itemName.trim(), MatchMode.ANYWHERE));
 			}
 
-			List<MenuItem> similarItems = criteria.list();
+			//List<MenuItem> similarItems = criteria.list();
 
 			if (selectedType instanceof OrderType) {
+				OrderType orderType = (OrderType) selectedType;
 
-				List<MenuItem> selectedMenuItems = new ArrayList();
+				criteria.createAlias("orderTypeList", "type");
+				criteria.add(Restrictions.eq("type.id", orderType.getId()));
+
+				/*List<MenuItem> selectedMenuItems = new ArrayList();
 
 				List<MenuItem> items = findAll();
 
 				for (MenuItem item : items) {
 
-					List<String> types = item.getOrderTypes();
-
+					List<OrderType> types = item.getOrderTypeList();
 					OrderType type = (OrderType) selectedType;
-
 					if (types.contains(type.getName()) || types.isEmpty()) {
 						selectedMenuItems.add(item);
 					}
 				}
-				similarItems.retainAll(selectedMenuItems);
+				similarItems.retainAll(selectedMenuItems);*/
 			}
 
-			return similarItems;
+			return criteria.list();
 
 		} catch (Exception e) {
 		}

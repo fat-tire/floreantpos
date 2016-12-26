@@ -464,13 +464,8 @@ public class PizzaItemForm extends BeanEditor<MenuItem> implements ActionListene
 		tabGeneral.add(new JLabel(Messages.getString("MenuItemForm.25")), "cell 2 3,right"); //$NON-NLS-1$ //$NON-NLS-2$
 		orderList = new CheckBoxList();
 
-		List<String> orderListM = new ArrayList();
 		List<OrderType> orderTypes = Application.getInstance().getOrderTypes();
-
-		for (OrderType orderType : orderTypes) {
-			orderListM.add(orderType.getName());
-		}
-		orderList.setModel(orderListM);
+		orderList.setModel(orderTypes);
 		//		List<String> orderListM = new ArrayList();
 		//		orderListM.add(OrderType.DINE_IN.toString());
 		//		orderListM.add(OrderType.BAR_TAB.toString());
@@ -825,7 +820,7 @@ public class PizzaItemForm extends BeanEditor<MenuItem> implements ActionListene
 		}
 
 		//	terminalList.selectItems(menuItem.getTerminals());
-		orderList.selectItems(menuItem.getOrderTypes());
+		orderList.selectItems(menuItem.getOrderTypeList());
 		tfName.setText(menuItem.getName());
 		tfDescription.setText(menuItem.getDescription());
 		tfTranslatedName.setText(menuItem.getTranslatedName());
@@ -887,10 +882,10 @@ public class PizzaItemForm extends BeanEditor<MenuItem> implements ActionListene
 		menuItem.setTextColorCode(btnTextColor.getForeground().getRGB());
 
 		if (orderList.getCheckedValues().isEmpty()) {
-			menuItem.setOrderTypes(null);
+			menuItem.setOrderTypeList(null);
 		}
 		else {
-			menuItem.setOrderTypes(orderList.getCheckedValues());
+			menuItem.setOrderTypeList(orderList.getCheckedValues());
 		}
 		try {
 			menuItem.setDiscountRate(Double.parseDouble(tfDiscountRate.getText()));

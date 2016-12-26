@@ -52,6 +52,7 @@ import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.ITicketItem;
 import com.floreantpos.model.MenuItem;
+import com.floreantpos.model.OrderType;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.TicketItemModifier;
@@ -252,13 +253,13 @@ public class TicketView extends JPanel {
 
 	private boolean filterByOrderType(MenuItem menuItem) {
 
-		List<String> orderTypeList = menuItem.getOrderTypes();
+		List<OrderType> orderTypeList = menuItem.getOrderTypeList();
 
 		if (orderTypeList == null || orderTypeList.size() == 0) {
 			return true;
 		}
 
-		if (orderTypeList.contains(ticket.getOrderType().name())) {
+		if (orderTypeList.contains(ticket.getOrderType())) {
 			return true;
 		}
 		return false;
@@ -705,7 +706,8 @@ public class TicketView extends JPanel {
 						btnDecreaseAmount.setEnabled(false);
 						if (TerminalConfig.isAllowedToDeletePrintedTicketItem()) {
 							btnDelete.setEnabled(true);
-						} else {
+						}
+						else {
 							btnDelete.setEnabled(false);
 						}
 					}

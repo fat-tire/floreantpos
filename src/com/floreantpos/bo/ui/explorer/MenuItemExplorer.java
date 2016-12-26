@@ -276,12 +276,9 @@ public class MenuItemExplorer extends TransparentPanel {
 					Object selectedType = cbOrderTypes.getSelectedItem();
 
 					if (selectedType instanceof OrderType) {
-
 						List types = new ArrayList();
-
-						types.add(((OrderType) selectedType).getName());
-
-						menuItem.setOrderTypes(types);
+						types.add((OrderType) selectedType);
+						menuItem.setOrderTypeList(types);
 					}
 					MenuItemForm editor = new MenuItemForm(menuItem);
 
@@ -352,7 +349,7 @@ public class MenuItemExplorer extends TransparentPanel {
 					MenuItem item = tableModel.getRow(index);
 
 					MenuItemDAO foodItemDAO = new MenuItemDAO();
-					if (item.getDiscounts().size() > 0) {
+					if (item.getDiscounts() != null && item.getDiscounts().size() > 0) {
 						foodItemDAO.releaseParentAndDelete(item);
 					}
 					else {

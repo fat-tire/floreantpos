@@ -49,20 +49,22 @@ public abstract class SelectionView extends JPanel implements ComponentListener 
 	private final static int VERTICAL_GAP = 5;
 
 	protected List items;
-	
+
 	private Dimension buttonSize;
-	
+
 	protected CardLayout cardLayout = new CardLayout();
 	private JPanel cardLayoutContainer = new JPanel(cardLayout);
 	protected JPanel buttonPanelContainer = new JPanel(new BorderLayout());
-	
+
 	protected TitledBorder border;
-	
+
 	protected JPanel actionButtonPanel = new JPanel(new MigLayout("fill,hidemode 3, ins 2", "sg, fill", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 	protected com.floreantpos.swing.PosButton btnNext;
 	protected com.floreantpos.swing.PosButton btnPrev;
-	
+
+	private boolean initialized = true;
+
 	@SuppressWarnings("unused")
 	private String title;
 
@@ -75,7 +77,7 @@ public abstract class SelectionView extends JPanel implements ComponentListener 
 		setBorder(new CompoundBorder(border, new EmptyBorder(2, 2, 2, 2)));
 
 		setLayout(new BorderLayout(HORIZONTAL_GAP, VERTICAL_GAP));
-		
+
 		buttonPanelContainer.add(cardLayoutContainer);
 		add(buttonPanelContainer);
 
@@ -94,7 +96,7 @@ public abstract class SelectionView extends JPanel implements ComponentListener 
 		btnNext.addActionListener(action);
 
 		addComponentListener(this);
-		
+
 		btnNext.setVisible(false);
 		btnPrev.setVisible(false);
 	}
@@ -102,7 +104,7 @@ public abstract class SelectionView extends JPanel implements ComponentListener 
 	public SelectionView(String title) {
 		this(title, 120, TerminalConfig.getMenuItemButtonHeight());
 	}
-	
+
 	public void setTitle(String title) {
 		border.setTitle(title);
 	}
@@ -128,45 +130,45 @@ public abstract class SelectionView extends JPanel implements ComponentListener 
 
 	public void reset() {
 		cardLayoutContainer.removeAll();
-//		btnNext.setEnabled(false);
-//		btnPrev.setEnabled(false);
-//		
-//		Component[] components = buttonsPanel.getComponents();
-//		for (int i = 0; i < components.length; i++) {
-//			Component c = components[i];
-//			if (c instanceof AbstractButton) {
-//				AbstractButton button = (AbstractButton) c;
-//				button.setPreferredSize(null);
-//
-//				ActionListener[] actionListeners = button.getActionListeners();
-//				if (actionListeners != null) {
-//					for (int j = 0; j < actionListeners.length; j++) {
-//						button.removeActionListener(actionListeners[j]);
-//					}
-//				}
-//			}
-//		}
-//		buttonsPanel.removeAll();
-//		buttonsPanel.revalidate();
-//		buttonsPanel.repaint();
+		//		btnNext.setEnabled(false);
+		//		btnPrev.setEnabled(false);
+		//		
+		//		Component[] components = buttonsPanel.getComponents();
+		//		for (int i = 0; i < components.length; i++) {
+		//			Component c = components[i];
+		//			if (c instanceof AbstractButton) {
+		//				AbstractButton button = (AbstractButton) c;
+		//				button.setPreferredSize(null);
+		//
+		//				ActionListener[] actionListeners = button.getActionListeners();
+		//				if (actionListeners != null) {
+		//					for (int j = 0; j < actionListeners.length; j++) {
+		//						button.removeActionListener(actionListeners[j]);
+		//					}
+		//				}
+		//			}
+		//		}
+		//		buttonsPanel.removeAll();
+		//		buttonsPanel.revalidate();
+		//		buttonsPanel.repaint();
 	}
-	
+
 	protected int getHorizontalButtonCount() {
 		Dimension size = buttonPanelContainer.getSize();
 		Dimension itemButtonSize = getButtonSize();
 
 		return getButtonCount(size.width, itemButtonSize.width);
 	}
-	
+
 	protected int getFitableButtonCount() {
 		Dimension size = buttonPanelContainer.getSize();
 		Dimension itemButtonSize = getButtonSize();
 
 		int horizontalButtonCount = getButtonCount(size.width, itemButtonSize.width);
 		int verticalButtonCount = getButtonCount(size.height, itemButtonSize.height);
-		
+
 		int totalItem = horizontalButtonCount * verticalButtonCount;
-		
+
 		return totalItem;
 	}
 
@@ -182,13 +184,13 @@ public abstract class SelectionView extends JPanel implements ComponentListener 
 		Dimension itemButtonSize = getButtonSize();
 
 		//buttonsPanel.setLayout(new MigLayout("alignx 50%, wrap " + horizontalButtonCount)); //$NON-NLS-1$
-		
+
 		int totalItem = getFitableButtonCount();
-		
+
 		try {
 			ButtonPanel buttonPanel = null;
 			for (int i = 0; i < items.size(); i++) {
-				if(i % totalItem == 0) {
+				if (i % totalItem == 0) {
 					buttonPanel = new ButtonPanel("buttonpanel-" + i);
 					buttonPanel.setLayout(createButtonPanelLayout());
 					cardLayoutContainer.add(buttonPanel, buttonPanel.getName());
@@ -197,19 +199,20 @@ public abstract class SelectionView extends JPanel implements ComponentListener 
 				Object item = items.get(i);
 
 				AbstractButton itemButton = createItemButton(item);
-				if(itemButton == null) {
+				if (itemButton == null) {
 					continue;
 				}
-				
+
 				itemButton.setPreferredSize(itemButtonSize);
 				buttonPanel.add(itemButton);
 			}
 		} catch (Exception e) {
+			initialized = false;
 			// TODO: fix it.
 		}
-		
+
 		cardLayout.first(cardLayoutContainer);
-		if(cardLayoutContainer.getComponentCount() > 1) {
+		if (cardLayoutContainer.getComponentCount() > 1) {
 			btnPrev.setVisible(true);
 			btnNext.setVisible(true);
 		}
@@ -217,7 +220,7 @@ public abstract class SelectionView extends JPanel implements ComponentListener 
 			btnPrev.setVisible(false);
 			btnNext.setVisible(false);
 		}
-		
+
 		revalidate();
 		repaint();
 	}
@@ -225,18 +228,18 @@ public abstract class SelectionView extends JPanel implements ComponentListener 
 	protected LayoutManager createButtonPanelLayout() {
 		return new FlowLayout(FlowLayout.CENTER);
 	}
-	
+
 	public ButtonPanel getActivePanel() {
 		Component[] components = cardLayoutContainer.getComponents();
 		for (Component component : components) {
-			if(component instanceof ButtonPanel && component.isVisible()) {
+			if (component instanceof ButtonPanel && component.isVisible()) {
 				return (ButtonPanel) component;
 			}
 		}
-		
+
 		return null;
 	}
-	
+
 	public void addButton(AbstractButton button) {
 		button.setPreferredSize(buttonSize);
 		button.setText("<html><body><center>" + button.getText() + "</center></body></html>"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -272,18 +275,18 @@ public abstract class SelectionView extends JPanel implements ComponentListener 
 	public JPanel getButtonsPanel() {
 		return cardLayoutContainer;
 	}
-	
+
 	public AbstractButton getFirstItemButton() {
 		int componentCount = cardLayoutContainer.getComponentCount();
-		if(componentCount == 0) {
+		if (componentCount == 0) {
 			return null;
 		}
-		
+
 		ButtonPanel buttonPanel = (ButtonPanel) cardLayoutContainer.getComponent(0);
-		if(buttonPanel.getComponentCount() == 0) {
+		if (buttonPanel.getComponentCount() == 0) {
 			return null;
 		}
-		
+
 		return (AbstractButton) buttonPanel.getComponent(0);
 	}
 
@@ -295,10 +298,10 @@ public abstract class SelectionView extends JPanel implements ComponentListener 
 
 	public void componentResized(ComponentEvent e) {
 		int totalItem = getFitableButtonCount();
-		if(totalItem == cardLayoutContainer.getComponentCount()) {
+		if (totalItem == cardLayoutContainer.getComponentCount()) {
 			return;
 		}
-		
+
 		renderItems();
 	}
 
@@ -310,9 +313,17 @@ public abstract class SelectionView extends JPanel implements ComponentListener 
 
 	public void componentHidden(ComponentEvent e) {
 	}
-	
+
+	public boolean isInitialized() {
+		return initialized;
+	}
+
+	public void setInitialized(boolean initialized) {
+		this.initialized = initialized;
+	}
+
 	private class ButtonPanel extends JPanel {
-		
+
 		public ButtonPanel(String name) {
 			setName(name);
 			setBorder(null);

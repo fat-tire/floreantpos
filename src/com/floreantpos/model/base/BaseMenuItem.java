@@ -16,29 +16,29 @@ import java.io.Serializable;
 public abstract class BaseMenuItem  implements Comparable, Serializable {
 
 	public static String REF = "MenuItem"; //$NON-NLS-1$
-	public static String PROP_SHOW_IMAGE_ONLY = "showImageOnly"; //$NON-NLS-1$
-	public static String PROP_DESCRIPTION = "description"; //$NON-NLS-1$
-	public static String PROP_PRINTER_GROUP = "printerGroup"; //$NON-NLS-1$
-	public static String PROP_PARENT = "parent"; //$NON-NLS-1$
-	public static String PROP_PIZZA_TYPE = "pizzaType"; //$NON-NLS-1$
-	public static String PROP_STOCK_AMOUNT = "stockAmount"; //$NON-NLS-1$
-	public static String PROP_SORT_ORDER = "sortOrder"; //$NON-NLS-1$
 	public static String PROP_UNIT_NAME = "unitName"; //$NON-NLS-1$
-	public static String PROP_TAX = "tax"; //$NON-NLS-1$
-	public static String PROP_RECEPIE = "recepie"; //$NON-NLS-1$
-	public static String PROP_DISCOUNT_RATE = "discountRate"; //$NON-NLS-1$
-	public static String PROP_DISABLE_WHEN_STOCK_AMOUNT_IS_ZERO = "disableWhenStockAmountIsZero"; //$NON-NLS-1$
-	public static String PROP_NAME = "name"; //$NON-NLS-1$
-	public static String PROP_TEXT_COLOR_CODE = "textColorCode"; //$NON-NLS-1$
-	public static String PROP_TRANSLATED_NAME = "translatedName"; //$NON-NLS-1$
-	public static String PROP_PRICE = "price"; //$NON-NLS-1$
+	public static String PROP_BUY_PRICE = "buyPrice"; //$NON-NLS-1$
+	public static String PROP_STOCK_AMOUNT = "stockAmount"; //$NON-NLS-1$
+	public static String PROP_PARENT = "parent"; //$NON-NLS-1$
 	public static String PROP_BARCODE = "barcode"; //$NON-NLS-1$
+	public static String PROP_DESCRIPTION = "description"; //$NON-NLS-1$
+	public static String PROP_SHOW_IMAGE_ONLY = "showImageOnly"; //$NON-NLS-1$
+	public static String PROP_VISIBLE = "visible"; //$NON-NLS-1$
+	public static String PROP_DISCOUNT_RATE = "discountRate"; //$NON-NLS-1$
+	public static String PROP_SORT_ORDER = "sortOrder"; //$NON-NLS-1$
+	public static String PROP_TAX = "tax"; //$NON-NLS-1$
 	public static String PROP_IMAGE_DATA = "imageData"; //$NON-NLS-1$
 	public static String PROP_FRACTIONAL_UNIT = "fractionalUnit"; //$NON-NLS-1$
-	public static String PROP_VISIBLE = "visible"; //$NON-NLS-1$
-	public static String PROP_ID = "id"; //$NON-NLS-1$
-	public static String PROP_BUY_PRICE = "buyPrice"; //$NON-NLS-1$
+	public static String PROP_PIZZA_TYPE = "pizzaType"; //$NON-NLS-1$
+	public static String PROP_NAME = "name"; //$NON-NLS-1$
+	public static String PROP_PRINTER_GROUP = "printerGroup"; //$NON-NLS-1$
+	public static String PROP_TEXT_COLOR_CODE = "textColorCode"; //$NON-NLS-1$
+	public static String PROP_DISABLE_WHEN_STOCK_AMOUNT_IS_ZERO = "disableWhenStockAmountIsZero"; //$NON-NLS-1$
+	public static String PROP_RECEPIE = "recepie"; //$NON-NLS-1$
+	public static String PROP_PRICE = "price"; //$NON-NLS-1$
 	public static String PROP_BUTTON_COLOR_CODE = "buttonColorCode"; //$NON-NLS-1$
+	public static String PROP_ID = "id"; //$NON-NLS-1$
+	public static String PROP_TRANSLATED_NAME = "translatedName"; //$NON-NLS-1$
 
 
 	// constructors
@@ -111,8 +111,8 @@ public abstract class BaseMenuItem  implements Comparable, Serializable {
 	private java.util.List<com.floreantpos.model.Discount> discounts;
 	private java.util.List<com.floreantpos.model.MenuItemModifierGroup> menuItemModiferGroups;
 	private java.util.List<com.floreantpos.model.Terminal> terminals;
-	private java.util.Map<String, String> properties;
-	private java.util.List<String> orderTypes;
+	private java.util.Map<String,String> properties;
+	private java.util.List<com.floreantpos.model.OrderType> orderTypeList;
 
 
 
@@ -668,18 +668,23 @@ public abstract class BaseMenuItem  implements Comparable, Serializable {
 
 
 	/**
-	 * Return the value associated with the column: orderTypes
+	 * Return the value associated with the column: orderTypeList
 	 */
-	public java.util.List<String> getOrderTypes() {
-					return orderTypes;
+	public java.util.List<com.floreantpos.model.OrderType> getOrderTypeList () {
+					return orderTypeList;
 			}
 
 	/**
-	 * Set the value related to the column: orderTypes
-	 * @param orderTypes the orderTypes value
+	 * Set the value related to the column: orderTypeList
+	 * @param orderTypeList the orderTypeList value
 	 */
-	public void setOrderTypes(java.util.List<String> orderTypes) {
-		this.orderTypes = orderTypes;
+	public void setOrderTypeList (java.util.List<com.floreantpos.model.OrderType> orderTypeList) {
+		this.orderTypeList = orderTypeList;
+	}
+
+	public void addToorderTypeList (com.floreantpos.model.OrderType orderType) {
+		if (null == getOrderTypeList()) setOrderTypeList(new java.util.ArrayList<com.floreantpos.model.OrderType>());
+		getOrderTypeList().add(orderType);
 	}
 
 
@@ -691,7 +696,7 @@ public abstract class BaseMenuItem  implements Comparable, Serializable {
 		if (!(obj instanceof com.floreantpos.model.MenuItem)) return false;
 		else {
 			com.floreantpos.model.MenuItem menuItem = (com.floreantpos.model.MenuItem) obj;
-			if (null == this.getId() || null == menuItem.getId()) return false;
+			if (null == this.getId() || null == menuItem.getId()) return this == obj;
 			else return (this.getId().equals(menuItem.getId()));
 		}
 	}

@@ -249,7 +249,14 @@ public class Application {
 	}
 
 	private void initOrderTypes() {
-		orderTypes = OrderTypeDAO.getInstance().findEnabledOrderTypes();
+		OrderTypeDAO dao = OrderTypeDAO.getInstance();
+		orderTypes = dao.findEnabledOrderTypes();
+		try {
+			if (!dao.containsOrderTypeObj()) {
+				dao.updateMenuItemOrderType();
+			}
+		} catch (Exception ex) {
+		}
 	}
 
 	private void initPlugins() {

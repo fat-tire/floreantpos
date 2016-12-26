@@ -28,6 +28,7 @@ import java.awt.GridLayout;
 import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentEvent;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -43,6 +44,7 @@ import org.apache.log4j.Logger;
 import com.floreantpos.Messages;
 import com.floreantpos.model.MenuCategory;
 import com.floreantpos.model.MenuGroup;
+import com.floreantpos.model.OrderType;
 import com.floreantpos.model.dao.MenuCategoryDAO;
 import com.floreantpos.model.dao.MenuGroupDAO;
 import com.floreantpos.swing.POSToggleButton;
@@ -59,138 +61,155 @@ public class CategoryView extends SelectionView implements ActionListener {
 
 	private ButtonGroup categoryButtonGroup;
 	private Map<String, CategoryButton> buttonMap = new HashMap<String, CategoryButton>();
-	
+
 	public static final String VIEW_NAME = "CATEGORY_VIEW"; //$NON-NLS-1$
-	
+
 	//private int panelCount = 0;
-	
+
 	/** Creates new form CategoryView */
 	public CategoryView() {
 		super(com.floreantpos.POSConstants.CATEGORIES, PosUIManager.getSize(100), PosUIManager.getSize(80));
-		
+
 		categoryButtonGroup = new ButtonGroup();
-		setPreferredSize(new Dimension(PosUIManager.getSize(120,100)));
+		setPreferredSize(new Dimension(PosUIManager.getSize(120, 100)));
 	}
 
 	public void initialize() {
 		reset();
-		
+
 		MenuCategoryDAO categoryDAO = new MenuCategoryDAO();
 		List<MenuCategory> categories = categoryDAO.findAllEnable();
-		if(categories.size() == 0) return;
-		
+		if (categories.size() == 0)
+			return;
+
+		OrderType orderType = OrderView.getInstance().getCurrentTicket().getOrderType();
+		MenuGroupDAO menuGroupDAO = MenuGroupDAO.getInstance();
 		for (Iterator iterator = categories.iterator(); iterator.hasNext();) {
 			MenuCategory menuCategory = (MenuCategory) iterator.next();
 			List<MenuGroup> menuGroups = menuCategory.getMenuGroups();
-			
+
 			for (Iterator iterator2 = menuGroups.iterator(); iterator2.hasNext();) {
 				MenuGroup menuGroup = (MenuGroup) iterator2.next();
-				MenuGroupDAO menuGroupDAO = MenuGroupDAO.getInstance();
-				if(!menuGroupDAO.hasChildren(null, menuGroup)) {
+				if (!menuGroupDAO.hasChildren(null, menuGroup, orderType)) {
 					iterator2.remove();
 				}
 			}
-			
-			if(menuGroups == null || menuGroups.size() == 0) {
+
+			if (menuGroups == null || menuGroups.size() == 0) {
 				iterator.remove();
 			}
 		}
-		
+
 		setItems(categories);
-		
+
 		CategoryButton categoryButton = (CategoryButton) getFirstItemButton();
-		if(categoryButton != null) {
+		if (categoryButton != null) {
 			categoryButton.setSelected(true);
 			fireCategorySelected(categoryButton.foodCategory);
 		}
-		
-		if(categories.size() <= 1) {
+
+		if (categories.size() <= 1) {
 			setVisible(false);
 		}
 		else {
 			setVisible(true);
 		}
 	}
-	
+
 	@Override
 	protected AbstractButton createItemButton(Object item) {
 		MenuCategory menuCategory = (MenuCategory) item;
 		List<MenuGroup> menuGroups = menuCategory.getMenuGroups();
-		if(menuGroups == null || menuGroups.size() == 0) {
+		if (menuGroups == null || menuGroups.size() == 0) {
 			return null;
 		}
-		
-		CategoryButton button = new CategoryButton(this,menuCategory);
+
+		CategoryButton button = new CategoryButton(this, menuCategory);
 		categoryButtonGroup.add(button);
-		
+
 		buttonMap.put(String.valueOf(menuCategory.getId()), button);
-		
+
 		return button;
 	}
-	
+
 	@Override
 	protected LayoutManager createButtonPanelLayout() {
 		return new GridLayout(0, 1, 2, 5);
 	}
-	
+
 	public void addCategorySelectionListener(CategorySelectionListener listener) {
 		listenerList.add(listener);
 	}
-	
+
 	public void removeCategorySelectionListener(CategorySelectionListener listener) {
 		listenerList.remove(listener);
 	}
-	
+
 	private void fireCategorySelected(MenuCategory foodCategory) {
 		for (CategorySelectionListener listener : listenerList) {
 			listener.categorySelected(foodCategory);
 		}
 	}
-	
+
 	public void setSelectedCategory(MenuCategory category) {
 		CategoryButton button = buttonMap.get(String.valueOf(category.getId()));
-		if(button != null) {
+		if (button != null) {
 			button.setSelected(true);
 		}
 	}
-	
+
 	private static class CategoryButton extends POSToggleButton {
 		MenuCategory foodCategory;
-		
+
 		CategoryButton(CategoryView view, MenuCategory menuCategory) {
 			this.foodCategory = menuCategory;
 			setText("<html><body><center>" + menuCategory.getDisplayName() + "</center></body></html>"); //$NON-NLS-1$ //$NON-NLS-2$
-			
-			if(menuCategory.getButtonColor() != null) {
+
+			if (menuCategory.getButtonColor() != null) {
 				setBackground(menuCategory.getButtonColor());
 			}
-			if(menuCategory.getTextColor() != null) {
+			if (menuCategory.getTextColor() != null) {
 				setForeground(menuCategory.getTextColor());
 			}
-			
+
 			addActionListener(view);
 		}
 	}
-	
 
 	public void actionPerformed(ActionEvent e) {
 		CategoryButton button = (CategoryButton) e.getSource();
-		if(button.isSelected()) {
+		if (button.isSelected()) {
 			fireCategorySelected(button.foodCategory);
 		}
 	}
-	
+
 	public void cleanup() {
 		Collection<CategoryButton> buttons = buttonMap.values();
-		
+
 		for (CategoryButton button : buttons) {
 			button.removeActionListener(this);
 		}
 		buttonMap.clear();
-		
+
 		logger.debug(Messages.getString("CategoryView.4")); //$NON-NLS-1$
-		
+
 	}
-	
+
+	@Override
+	public void componentResized(ComponentEvent e) {
+		int totalItem = getFitableButtonCount();
+		if (totalItem == buttonPanelContainer.getComponentCount()) {
+			return;
+		}
+		renderItems();
+		if (!isInitialized()) {
+			CategoryButton categoryButton = (CategoryButton) getFirstItemButton();
+			if (categoryButton != null) {
+				categoryButton.setSelected(true);
+				fireCategorySelected(categoryButton.foodCategory);
+			}
+		}
+	}
+
 	private static Logger logger = Logger.getLogger(MenuItemView.class);
 }

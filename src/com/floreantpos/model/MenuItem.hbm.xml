@@ -91,11 +91,10 @@
 			<element column="PROPERTY_VALUE" type="string" length="100"/>
 		</map>
 		
-		<bag name="orderTypes" table="ITEM_ORDER_TYPE" lazy="false" cascade="all">
+		<bag name="orderTypeList" table="ITEM_ORDER_TYPE" lazy="false" cascade="save-update" inverse="false">
 			<key column="MENU_ITEM_ID" />
-			<element column="ORDER_TYPE" type="java.lang.String" />
+			<many-to-many column="ORDER_TYPE_ID" class="com.floreantpos.model.OrderType" />
 		</bag>
-		
 		
 	</class>
 </hibernate-mapping>

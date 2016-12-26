@@ -38,6 +38,7 @@ import javax.swing.ButtonGroup;
 
 import com.floreantpos.model.MenuCategory;
 import com.floreantpos.model.MenuGroup;
+import com.floreantpos.model.OrderType;
 import com.floreantpos.model.dao.MenuGroupDAO;
 import com.floreantpos.swing.MessageDialog;
 import com.floreantpos.swing.POSToggleButton;
@@ -87,10 +88,11 @@ public class GroupView extends SelectionView {
 
 		try {
 			MenuGroupDAO dao = new MenuGroupDAO();
+			OrderType orderType = OrderView.getInstance().getCurrentTicket().getOrderType();
 			List<MenuGroup> groups = dao.findEnabledByParent(menuCategory);
 			for (Iterator iterator = groups.iterator(); iterator.hasNext();) {
 				MenuGroup menuGroup = (MenuGroup) iterator.next();
-				if (!dao.hasChildren(null, menuGroup)) {
+				if (!dao.hasChildren(null, menuGroup, orderType)) {
 					iterator.remove();
 				}
 			}

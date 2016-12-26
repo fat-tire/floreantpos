@@ -44,6 +44,7 @@ import com.floreantpos.PosLog;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.MenuGroup;
 import com.floreantpos.model.MenuItem;
+import com.floreantpos.model.OrderType;
 import com.floreantpos.model.dao.MenuItemDAO;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.swing.PosUIManager;
@@ -85,11 +86,11 @@ public class MenuItemView extends SelectionView {
 		if (menuGroup == null) {
 			return;
 		}
-
+		OrderType orderType = OrderView.getInstance().getCurrentTicket().getOrderType();
 		MenuItemDAO dao = new MenuItemDAO();
 		try {
-			List<MenuItem> items = dao.findByParent(Application.getInstance().getTerminal(), menuGroup, false);
-			filterItemsByOrderType(items);
+			List<MenuItem> items = dao.findByParent(Application.getInstance().getTerminal(), menuGroup, orderType, false);
+			//filterItemsByOrderType(items);
 			setItems(items);
 		} catch (PosException e) {
 			PosLog.error(getClass(), e);
@@ -104,6 +105,7 @@ public class MenuItemView extends SelectionView {
 		menuItemButtonMap.put(menuItem.getId(), itemButton);
 
 		filterByStockAmount(menuItem, itemButton);
+		setInitialized(true);
 		return itemButton;
 	}
 
@@ -132,7 +134,7 @@ public class MenuItemView extends SelectionView {
 		String orderType = OrderView.getInstance().getTicketView().getTicket().getOrderType().toString();
 		for (Iterator iterator = items.iterator(); iterator.hasNext();) {
 			MenuItem menuItem = (MenuItem) iterator.next();
-			List<String> orderTypeList = menuItem.getOrderTypes();
+			List<OrderType> orderTypeList = menuItem.getOrderTypeList();
 
 			if (orderTypeList == null || orderTypeList.size() == 0) {
 				continue;
@@ -159,7 +161,7 @@ public class MenuItemView extends SelectionView {
 			setFocusable(false);
 			setVerticalTextPosition(SwingConstants.BOTTOM);
 			setHorizontalTextPosition(SwingConstants.CENTER);
-			BUTTON_SIZE=PosUIManager.getSize(100); 
+			BUTTON_SIZE = PosUIManager.getSize(100);
 
 			if (menuItem.getImage() != null) {
 				int w = BUTTON_SIZE - PosUIManager.getSize(10);

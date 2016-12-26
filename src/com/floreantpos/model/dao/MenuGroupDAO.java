@@ -23,6 +23,7 @@ import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
@@ -32,6 +33,7 @@ import com.floreantpos.PosException;
 import com.floreantpos.model.MenuCategory;
 import com.floreantpos.model.MenuGroup;
 import com.floreantpos.model.MenuItem;
+import com.floreantpos.model.OrderType;
 import com.floreantpos.model.Terminal;
 
 public class MenuGroupDAO extends BaseMenuGroupDAO {
@@ -79,7 +81,7 @@ public class MenuGroupDAO extends BaseMenuGroupDAO {
 	}
 
 	@SuppressWarnings("unchecked")
-	public boolean hasChildren(Terminal terminal, MenuGroup group) throws PosException {
+	public boolean hasChildren(Terminal terminal, MenuGroup group, OrderType orderType) throws PosException {
 		Session session = null;
 
 		try {
@@ -92,6 +94,9 @@ public class MenuGroupDAO extends BaseMenuGroupDAO {
 			//				criteria.add(Restrictions.eq(MenuItem., criteria))
 			//			}
 			criteria.setProjection(Projections.rowCount());
+
+			criteria.createAlias("orderTypeList", "type", CriteriaSpecification.LEFT_JOIN);
+			criteria.add(Restrictions.or(Restrictions.isEmpty("orderTypeList"), Restrictions.eq("type.id", orderType.getId())));
 
 			int uniqueResult = (Integer) criteria.uniqueResult();
 
