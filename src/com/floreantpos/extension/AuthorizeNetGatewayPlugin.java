@@ -51,7 +51,7 @@ public class AuthorizeNetGatewayPlugin implements PaymentGatewayPlugin {
 	}
 
 	@Override
-	public void init() {
+	public void initUI() {
 
 	}
 
@@ -88,5 +88,14 @@ public class AuthorizeNetGatewayPlugin implements PaymentGatewayPlugin {
 	@Override
 	public List<PosAction> getPosActions() {
 		return null;
+	}
+
+	@Override
+	public void initLicense() {
+	}
+
+	@Override
+	public boolean hasValidLicense() {
+		return true;
 	}
 }

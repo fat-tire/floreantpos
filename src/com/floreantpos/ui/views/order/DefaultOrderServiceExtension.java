@@ -53,7 +53,7 @@ public class DefaultOrderServiceExtension implements OrderServiceExtension {
 	}
 
 	@Override
-	public void init() {
+	public void initUI() {
 	}
 
 	@Override
@@ -187,6 +187,15 @@ public class DefaultOrderServiceExtension implements OrderServiceExtension {
 	@Override
 	public List<PosAction> getPosActions() {
 		return null;
+	}
+
+	@Override
+	public void initLicense() {
+	}
+
+	@Override
+	public boolean hasValidLicense() {
+		return false;
 	}
 
 }

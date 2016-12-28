@@ -20,7 +20,7 @@ public class InginicoPlugin implements PaymentGatewayPlugin {
 	}
 
 	@Override
-	public void init() {
+	public void initUI() {
 	}
 
 	@Override
@@ -65,5 +65,14 @@ public class InginicoPlugin implements PaymentGatewayPlugin {
 	@Override
 	public List<PosAction> getPosActions() {
 		return null;
+	}
+
+	@Override
+	public void initLicense() {
+	}
+
+	@Override
+	public boolean hasValidLicense() {
+		return true;
 	}
 }

@@ -32,7 +32,7 @@ public interface OrderServiceExtension extends FloreantPlugin {
 	String getName();
 	String getDescription();
 	
-	void init();
+	void initUI();
 	void createNewTicket(OrderType ticketType, List<ShopTable> selectedTables, Customer selectedCustomer) throws TicketAlreadyExistsException;
 	void setCustomerToTicket(int ticketId);
 	void setDeliveryDate(int ticketId);

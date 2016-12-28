@@ -27,8 +27,11 @@ import com.floreantpos.config.ui.ConfigurationDialog;
 public interface FloreantPlugin extends Plugin {
 	String getId();
 	String getName();
-	void init();
+	void initUI();
+	void initLicense();
 	void initBackoffice();
 	void initConfigurationView(ConfigurationDialog dialog);
-	List<PosAction> getPosActions(); 
+
+	List<PosAction> getPosActions();
+	boolean hasValidLicense();
 }

@@ -38,8 +38,8 @@ public class ExtensionManager {
 	private List<FloreantPlugin> plugins;
 
 	private static ExtensionManager instance;
-	
-	public synchronized void initialize() {
+
+	private synchronized void initialize() {
 		PluginManager pluginManager = PluginManagerFactory.createPluginManager();
 
 		String jarLocation = JarUtil.getJarLocation(Application.class);
@@ -49,7 +49,10 @@ public class ExtensionManager {
 		String pluginsPath = System.getProperty("pluginsPath"); //$NON-NLS-1$
 
 		if (StringUtils.isNotEmpty(pluginsPath)) {
-			pluginManager.addPluginsFrom(new File(pluginsPath).toURI());
+			String[] paths = pluginsPath.split(","); //$NON-NLS-1$
+			for (String string : paths) {
+				pluginManager.addPluginsFrom(new File(string).toURI());
+			}
 		}
 		else {
 			pluginManager.addPluginsFrom(new File("plugins/").toURI()); //$NON-NLS-1$
@@ -57,7 +60,7 @@ public class ExtensionManager {
 
 		PluginManagerUtil pmUtil = new PluginManagerUtil(pluginManager);
 		List<Plugin> allPlugins = (List<Plugin>) pmUtil.getPlugins();
-		
+
 		//sort plugins
 		java.util.Collections.sort(allPlugins, new Comparator<Plugin>() {
 			@Override
@@ -65,50 +68,54 @@ public class ExtensionManager {
 				return o1.getClass().getName().compareToIgnoreCase(o2.getClass().getName());
 			}
 		});
-		
+
 		List<FloreantPlugin> floreantPlugins = new ArrayList<FloreantPlugin>();
-		
+
 		for (Plugin plugin : allPlugins) {
-			if(plugin instanceof FloreantPlugin) {
-				floreantPlugins.add((FloreantPlugin) plugin);
+			if (plugin instanceof FloreantPlugin) {
+				FloreantPlugin floreantPlugin = (FloreantPlugin) plugin;
+				floreantPlugin.initLicense();
+				if (floreantPlugin.hasValidLicense()) {
+					floreantPlugins.add(floreantPlugin);
+				}
 			}
 		}
-		
+
 		this.plugins = Collections.unmodifiableList(floreantPlugins);
 	}
-	
+
 	public static List<FloreantPlugin> getPlugins() {
 		return getInstance().plugins;
 	}
-	
+
 	public static List<FloreantPlugin> getPlugins(Class pluginClass) {
 		List<FloreantPlugin> list = new ArrayList<FloreantPlugin>();
-		
+
 		for (FloreantPlugin floreantPlugin : getInstance().plugins) {
-			if(pluginClass.isAssignableFrom(floreantPlugin.getClass())) {
+			if (pluginClass.isAssignableFrom(floreantPlugin.getClass())) {
 				list.add(floreantPlugin);
 			}
 		}
-		
+
 		return list;
 	}
-	
+
 	public static FloreantPlugin getPlugin(Class pluginClass) {
 		for (FloreantPlugin floreantPlugin : getInstance().plugins) {
-			if(pluginClass.isAssignableFrom(floreantPlugin.getClass())) {
+			if (pluginClass.isAssignableFrom(floreantPlugin.getClass())) {
 				return floreantPlugin;
 			}
 		}
-		
+
 		return null;
 	}
-	
+
 	public synchronized static ExtensionManager getInstance() {
-		if(instance == null) {
+		if (instance == null) {
 			instance = new ExtensionManager();
 			instance.initialize();
 		}
-		
+
 		return instance;
 	}
 }

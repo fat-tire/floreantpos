@@ -15,20 +15,21 @@ import java.io.Serializable;
 
 public abstract class BaseTableBookingInfo  implements Comparable, Serializable {
 
-	public static String REF = "TableBookingInfo";
-	public static String PROP_USER = "user";
-	public static String PROP_CUSTOMER = "customer";
-	public static String PROP_BOOKING_CHARGE = "bookingCharge";
-	public static String PROP_FROM_DATE = "fromDate";
-	public static String PROP_PAYMENT_STATUS = "paymentStatus";
-	public static String PROP_REMAINING_BALANCE = "remainingBalance";
-	public static String PROP_BOOKING_TYPE = "bookingType";
-	public static String PROP_STATUS = "status";
-	public static String PROP_TO_DATE = "toDate";
-	public static String PROP_GUEST_COUNT = "guestCount";
-	public static String PROP_ID = "id";
-	public static String PROP_BOOKING_CONFIRM = "bookingConfirm";
-	public static String PROP_PAID_AMOUNT = "paidAmount";
+	public static String REF = "TableBookingInfo"; //$NON-NLS-1$
+	public static String PROP_CUSTOMER = "customer"; //$NON-NLS-1$
+	public static String PROP_USER = "user"; //$NON-NLS-1$
+	public static String PROP_BOOKING_ID = "bookingId"; //$NON-NLS-1$
+	public static String PROP_BOOKING_CHARGE = "bookingCharge"; //$NON-NLS-1$
+	public static String PROP_FROM_DATE = "fromDate"; //$NON-NLS-1$
+	public static String PROP_PAYMENT_STATUS = "paymentStatus"; //$NON-NLS-1$
+	public static String PROP_REMAINING_BALANCE = "remainingBalance"; //$NON-NLS-1$
+	public static String PROP_BOOKING_TYPE = "bookingType"; //$NON-NLS-1$
+	public static String PROP_STATUS = "status"; //$NON-NLS-1$
+	public static String PROP_TO_DATE = "toDate"; //$NON-NLS-1$
+	public static String PROP_GUEST_COUNT = "guestCount"; //$NON-NLS-1$
+	public static String PROP_ID = "id"; //$NON-NLS-1$
+	public static String PROP_BOOKING_CONFIRM = "bookingConfirm"; //$NON-NLS-1$
+	public static String PROP_PAID_AMOUNT = "paidAmount"; //$NON-NLS-1$
 
 
 	// constructors
@@ -63,6 +64,7 @@ public abstract class BaseTableBookingInfo  implements Comparable, Serializable 
 		protected java.lang.Double bookingCharge;
 		protected java.lang.Double remainingBalance;
 		protected java.lang.Double paidAmount;
+		protected java.lang.String bookingId;
 		protected java.lang.String bookingType;
 
 	// many to one
@@ -250,6 +252,23 @@ public abstract class BaseTableBookingInfo  implements Comparable, Serializable 
 
 
 	/**
+	 * Return the value associated with the column: BOOKING_ID
+	 */
+	public java.lang.String getBookingId () {
+					return bookingId;
+			}
+
+	/**
+	 * Set the value related to the column: BOOKING_ID
+	 * @param bookingId the BOOKING_ID value
+	 */
+	public void setBookingId (java.lang.String bookingId) {
+		this.bookingId = bookingId;
+	}
+
+
+
+	/**
 	 * Return the value associated with the column: BOOKING_TYPE
 	 */
 	public java.lang.String getBookingType () {
@@ -329,7 +348,7 @@ public abstract class BaseTableBookingInfo  implements Comparable, Serializable 
 		if (!(obj instanceof com.floreantpos.model.TableBookingInfo)) return false;
 		else {
 			com.floreantpos.model.TableBookingInfo tableBookingInfo = (com.floreantpos.model.TableBookingInfo) obj;
-			if (null == this.getId() || null == tableBookingInfo.getId()) return false;
+			if (null == this.getId() || null == tableBookingInfo.getId()) return this == obj;
 			else return (this.getId().equals(tableBookingInfo.getId()));
 		}
 	}

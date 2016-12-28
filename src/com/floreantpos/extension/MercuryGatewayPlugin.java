@@ -43,7 +43,7 @@ public class MercuryGatewayPlugin extends AuthorizeNetGatewayPlugin {
 	}
 
 	@Override
-	public void init() {
+	public void initUI() {
 
 	}
 

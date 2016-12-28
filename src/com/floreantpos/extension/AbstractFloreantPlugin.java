@@ -33,7 +33,7 @@ public class AbstractFloreantPlugin implements FloreantPlugin {
 
 
 	@Override
-	public void init() {
+	public void initUI() {
 		
 	}
 
@@ -58,6 +58,16 @@ public class AbstractFloreantPlugin implements FloreantPlugin {
 	@Override
 	public List<PosAction> getPosActions() {
 		return null;
+	}
+
+	@Override
+	public void initLicense() {
+
+	}
+
+	@Override
+	public boolean hasValidLicense() {
+		return false;
 	}
 
 }

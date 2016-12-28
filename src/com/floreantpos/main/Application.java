@@ -116,24 +116,21 @@ public class Application {
 	}
 
 	public void start() {
+		setApplicationLook();
+
 		applicationIcon = new ImageIcon(getClass().getResource("/icons/icon.png")); //$NON-NLS-1$
 		posWindow = new PosWindow();
 		posWindow.setTitle(getTitle());
 		posWindow.setIconImage(applicationIcon.getImage());
-
-		setApplicationLook();
-
-		rootView = RootView.getInstance();
-
-		posWindow.getContentPane().add(rootView);
 		posWindow.setupSizeAndLocation();
-
 		if (TerminalConfig.isFullscreenMode()) {
 			posWindow.enterFullScreenMode();
 		}
-		rootView.addView(LoginView.getInstance());
 		posWindow.setVisible(true);
 
+		rootView = RootView.getInstance();
+		posWindow.getContentPane().add(rootView);
+		rootView.addView(LoginView.getInstance());
 		initializeSystem();
 
 	}
@@ -260,8 +257,9 @@ public class Application {
 	}
 
 	private void initPlugins() {
-		for (FloreantPlugin plugin : ExtensionManager.getPlugins()) {
-			plugin.init();
+		List<FloreantPlugin> plugins = ExtensionManager.getPlugins();
+		for (FloreantPlugin floreantPlugin : plugins) {
+			floreantPlugin.initUI();
 		}
 	}
 

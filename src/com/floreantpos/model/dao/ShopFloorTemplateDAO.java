@@ -1,5 +1,6 @@
 package com.floreantpos.model.dao;
 
+import java.util.Iterator;
 import java.util.List;
 
 import org.hibernate.Criteria;
@@ -69,6 +70,40 @@ public class ShopFloorTemplateDAO extends BaseShopFloorTemplateDAO {
 			for (ShopFloorTemplate template : templates) {
 				session.delete(template);
 			}
+			tx.commit();
+		} catch (Exception e) {
+			tx.rollback();
+		} finally {
+			closeSession(session);
+		}
+	}
+
+	public void setDefaultTemplate(ShopFloorTemplate template, ShopFloor selectedFloor) {
+		Session session = null;
+		Transaction tx = null;
+		try {
+			template.setDefaultFloor(true);
+			session = createNewSession();
+
+			Criteria criteria = session.createCriteria(ShopFloorTemplate.class);
+			criteria.add(Restrictions.eq(ShopFloorTemplate.PROP_DEFAULT_FLOOR, true));
+			criteria.add(Restrictions.eq(ShopFloorTemplate.PROP_FLOOR, selectedFloor));
+			List list = criteria.list();
+
+			session.close();
+
+			session = createNewSession();
+			tx = session.beginTransaction();
+
+			for (Iterator iterator = list.iterator(); iterator.hasNext();) {
+				ShopFloorTemplate t = (ShopFloorTemplate) iterator.next();
+				t.setDefaultFloor(false);
+				session.saveOrUpdate(t);
+			}
+
+			session.saveOrUpdate(template);
+			session.saveOrUpdate(selectedFloor);
+
 			tx.commit();
 		} catch (Exception e) {
 			tx.rollback();

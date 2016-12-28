@@ -22,6 +22,8 @@
 		<property column="REMAINING_BALANCE" name="remainingBalance" type="java.lang.Double" />
 		<property column="PAID_AMOUNT" name="paidAmount" type="java.lang.Double" />
 
+		<property column="BOOKING_ID" name="bookingId" type="string"
+			length="30" />
 		<property column="BOOKING_TYPE" name="bookingType" type="string"
 			length="30" />
 
