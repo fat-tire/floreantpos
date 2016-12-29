@@ -35,7 +35,7 @@ import com.floreantpos.IconFactory;
 import com.floreantpos.Messages;
 import com.floreantpos.main.Application;
 import com.floreantpos.util.POSUtil;
-import com.floreantpos.util.TerminalUtil;
+import com.orocube.common.util.TerminalUtil;
 
 public class AboutDialog extends POSDialog {
 
