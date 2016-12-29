@@ -26,7 +26,7 @@ import com.floreantpos.PosLog;
 import com.floreantpos.main.Application;
 import com.floreantpos.services.PosWebService;
 import com.floreantpos.ui.dialog.UpdateDialog;
-import com.oro.licensor.TerminalUtil;
+import com.floreantpos.util.TerminalUtil;
 
 public class UpdateAction extends AbstractAction {
 
