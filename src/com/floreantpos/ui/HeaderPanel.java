@@ -45,9 +45,13 @@ import com.floreantpos.actions.ShutDownAction;
 import com.floreantpos.actions.SwithboardViewAction;
 import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.main.Application;
+import com.floreantpos.model.User;
+import com.floreantpos.model.UserPermission;
+import com.floreantpos.swing.POSToggleButton;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.swing.PosUIManager;
 import com.floreantpos.swing.TransparentPanel;
+import com.floreantpos.ui.views.order.RootView;
 import com.floreantpos.util.PosGuiUtil;
 
 public class HeaderPanel extends JPanel {
@@ -63,6 +67,7 @@ public class HeaderPanel extends JPanel {
 
 	private JLabel logoffLabel;
 	private PosButton btnHomeScreen;
+	private POSToggleButton btnMaintainance;
 	private PosButton btnOthers;
 	private PosButton btnSwithboardView;
 	private PosButton btnLogout;
@@ -105,6 +110,17 @@ public class HeaderPanel extends JPanel {
 		btnHomeScreen = new PosButton(new HomeScreenViewAction(false, true));
 		buttonPanel.add(btnHomeScreen, "w " + btnSize + "!, h " + btnSize + "!"); //$NON-NLS-1$
 
+		btnMaintainance = new POSToggleButton();
+		btnMaintainance.setIcon(IconFactory.getIcon("/ui_icons/", "quick_setting.png")); //$NON-NLS-1$ //$NON-NLS-2$
+		btnMaintainance.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				RootView.getInstance().setMaintenanceMode(btnMaintainance.isSelected());
+			}
+		});
+		buttonPanel.add(btnMaintainance, "w " + btnSize + "!, h " + btnSize + "!"); //$NON-NLS-1$
+
 		btnSwithboardView = new PosButton(new SwithboardViewAction(false, true));
 		buttonPanel.add(btnSwithboardView, "w " + btnSize + "!, h " + btnSize + "!"); //$NON-NLS-1$
 
@@ -144,6 +160,9 @@ public class HeaderPanel extends JPanel {
 		sb.append(terminalString + ": " + Application.getInstance().getTerminal().getName()); //$NON-NLS-1$
 		sb.append(", "); //$NON-NLS-1$
 		sb.append(dateFormat.format(Calendar.getInstance().getTime()));
+		User currentUser = Application.getCurrentUser();
+		btnMaintainance.setVisible(TerminalConfig.isAllowedQuickMaintenance()
+				&& (currentUser.isAdministrator() || currentUser.hasPermission(UserPermission.QUICK_MAINTENANCE)));
 
 		statusLabel.setText(sb.toString());
 	}
@@ -241,6 +260,7 @@ public class HeaderPanel extends JPanel {
 
 		buttonPanel.removeAll();
 		buttonPanel.add(btnHomeScreen, "w " + btnSize + "!, h " + btnSize + "!");
+		buttonPanel.add(btnMaintainance, "w " + btnSize + "!, h " + btnSize + "!");
 		buttonPanel.add(btnOthers, "w " + btnSize + "!, h " + btnSize + "!");
 		buttonPanel.add(btnSwithboardView, "w " + btnSize + "!, h " + btnSize + "!");
 		buttonPanel.add(btnClockOUt, "w " + btnSize + "!, h " + btnSize + "!");
@@ -252,6 +272,7 @@ public class HeaderPanel extends JPanel {
 	public void updateSwitchBoardView(boolean enable) {
 		buttonPanel.removeAll();
 		buttonPanel.add(btnHomeScreen, "w " + btnSize + "!, h " + btnSize + "!");
+		buttonPanel.add(btnMaintainance, "w " + btnSize + "!, h " + btnSize + "!");
 		buttonPanel.add(btnOthers, "w " + btnSize + "!, h " + btnSize + "!");
 		buttonPanel.add(btnSwithboardView, "w " + btnSize + "!, h " + btnSize + "!");
 		buttonPanel.add(btnClockOUt, "w " + btnSize + "!, h " + btnSize + "!");

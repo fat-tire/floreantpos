@@ -207,7 +207,7 @@ public class DatabaseUtil {
 			administratorUser.setUserId(123);
 			administratorUser.setSsn("123");
 			administratorUser.setPassword("1111");
-			administratorUser.setFirstName("Administrator");
+			administratorUser.setFirstName("Admin");
 			administratorUser.setLastName("System");
 			administratorUser.setType(administrator);
 			administratorUser.setActive(true);
@@ -219,8 +219,8 @@ public class DatabaseUtil {
 			managerUser.setUserId(124);
 			managerUser.setSsn("124");
 			managerUser.setPassword("2222");
-			managerUser.setFirstName("X");
-			managerUser.setLastName("Y");
+			managerUser.setFirstName("Lisa");
+			managerUser.setLastName("Carol");
 			managerUser.setType(manager);
 			managerUser.setActive(true);
 
@@ -230,8 +230,8 @@ public class DatabaseUtil {
 			cashierUser.setUserId(125);
 			cashierUser.setSsn("125");
 			cashierUser.setPassword("3333");
-			cashierUser.setFirstName("C");
-			cashierUser.setLastName("D");
+			cashierUser.setFirstName("Janet");
+			cashierUser.setLastName("Ann");
 			cashierUser.setType(cashier);
 			cashierUser.setActive(true);
 
@@ -252,8 +252,8 @@ public class DatabaseUtil {
 			driverUser.setUserId(127);
 			driverUser.setSsn("127");
 			driverUser.setPassword("8888");
-			driverUser.setFirstName("Abul");
-			driverUser.setLastName("Munshi");
+			driverUser.setFirstName("Poll");
+			driverUser.setLastName("Brien");
 			driverUser.setType(server);
 			driverUser.setDriver(true);
 			driverUser.setActive(true);

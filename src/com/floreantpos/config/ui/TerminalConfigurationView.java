@@ -80,6 +80,7 @@ public class TerminalConfigurationView extends ConfigurationView {
 	private JCheckBox cbGroupKitchenReceiptItems = new JCheckBox("Group by Categories in kitchen Receipt");
 	private JCheckBox chkEnabledMultiCurrency = new JCheckBox("Enable multi currency");
 	private JCheckBox chkAllowToDelPrintedItem = new JCheckBox("Allow to delete printed ticket item");
+	private JCheckBox chkAllowQuickMaintenance = new JCheckBox("Allow quick maintenance");
 
 	private JComboBox<String> cbFonts = new JComboBox<String>();
 	private JComboBox<String> cbDefaultView;
@@ -148,6 +149,7 @@ public class TerminalConfigurationView extends ConfigurationView {
 		contentPanel.add(cbGroupKitchenReceiptItems, "newline,span"); //$NON-NLS-1$
 		contentPanel.add(chkEnabledMultiCurrency, "newline,span"); //$NON-NLS-1$
 		contentPanel.add(chkAllowToDelPrintedItem, "newline,span"); //$NON-NLS-1$
+		contentPanel.add(chkAllowQuickMaintenance, "newline,span"); //$NON-NLS-1$
 
 		contentPanel.add(new JLabel(Messages.getString("TerminalConfigurationView.17")), "newline"); //$NON-NLS-1$//$NON-NLS-2$
 		contentPanel.add(cbFonts, "span 2, wrap"); //$NON-NLS-1$
@@ -279,6 +281,7 @@ public class TerminalConfigurationView extends ConfigurationView {
 		TerminalConfig.setGroupKitchenReceiptItems(cbGroupKitchenReceiptItems.isSelected());
 		TerminalConfig.setEnabledMultiCurrency(chkEnabledMultiCurrency.isSelected());
 		TerminalConfig.setAllowToDeletePrintedTicketItem(chkAllowToDelPrintedItem.isSelected());
+		TerminalConfig.setAllowQuickMaintenance(chkAllowQuickMaintenance.isSelected());
 
 		//POSMessageDialog.showMessage(com.floreantpos.util.POSUtil.getFocusedWindow(), Messages.getString("TerminalConfigurationView.40")); //$NON-NLS-1$
 		String selectedFont = (String) cbFonts.getSelectedItem();
@@ -323,6 +326,7 @@ public class TerminalConfigurationView extends ConfigurationView {
 		cbGroupKitchenReceiptItems.setSelected(TerminalConfig.isGroupKitchenReceiptItems());
 		chkEnabledMultiCurrency.setSelected(TerminalConfig.isEnabledMultiCurrency());
 		chkAllowToDelPrintedItem.setSelected(TerminalConfig.isAllowedToDeletePrintedTicketItem());
+		chkAllowQuickMaintenance.setSelected(TerminalConfig.isAllowedQuickMaintenance());
 
 		tfButtonHeight.setText("" + TerminalConfig.getTouchScreenButtonHeight()); //$NON-NLS-1$
 		tfScaleFactor.setText("" + TerminalConfig.getScreenScaleFactor()); //$NON-NLS-1$
@@ -370,7 +374,8 @@ public class TerminalConfigurationView extends ConfigurationView {
 
 	public void restartPOS() {
 		JOptionPane optionPane = new JOptionPane(Messages.getString("TerminalConfigurationView.26"), JOptionPane.QUESTION_MESSAGE, //$NON-NLS-1$
-				JOptionPane.OK_CANCEL_OPTION, Application.getApplicationIcon(), new String[] { Messages.getString("TerminalConfigurationView.28"), Messages.getString("TerminalConfigurationView.30") }); //$NON-NLS-1$ //$NON-NLS-2$
+				JOptionPane.OK_CANCEL_OPTION, Application.getApplicationIcon(), new String[] {
+						Messages.getString("TerminalConfigurationView.28"), Messages.getString("TerminalConfigurationView.30") }); //$NON-NLS-1$ //$NON-NLS-2$
 
 		Object[] optionValues = optionPane.getComponents();
 		for (Object object : optionValues) {

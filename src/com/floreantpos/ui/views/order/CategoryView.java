@@ -132,6 +132,11 @@ public class CategoryView extends SelectionView implements ActionListener {
 		return button;
 	}
 
+	public void updateView(MenuCategory menuCategory) {
+		CategoryButton menuCategoryButton = buttonMap.get(String.valueOf(menuCategory.getId()));
+		menuCategoryButton.updateView(menuCategory);
+	}
+
 	@Override
 	protected LayoutManager createButtonPanelLayout() {
 		return new GridLayout(0, 1, 2, 5);
@@ -162,6 +167,11 @@ public class CategoryView extends SelectionView implements ActionListener {
 		MenuCategory foodCategory;
 
 		CategoryButton(CategoryView view, MenuCategory menuCategory) {
+			updateView(menuCategory);
+			addActionListener(view);
+		}
+
+		public void updateView(MenuCategory menuCategory) {
 			this.foodCategory = menuCategory;
 			setText("<html><body><center>" + menuCategory.getDisplayName() + "</center></body></html>"); //$NON-NLS-1$ //$NON-NLS-2$
 
@@ -171,8 +181,6 @@ public class CategoryView extends SelectionView implements ActionListener {
 			if (menuCategory.getTextColor() != null) {
 				setForeground(menuCategory.getTextColor());
 			}
-
-			addActionListener(view);
 		}
 	}
 

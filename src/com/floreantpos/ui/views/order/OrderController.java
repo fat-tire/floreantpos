@@ -28,6 +28,7 @@ import org.hibernate.Transaction;
 import com.floreantpos.POSConstants;
 import com.floreantpos.PosLog;
 import com.floreantpos.actions.SettleTicketAction;
+import com.floreantpos.bo.ui.explorer.QuickMaintenanceExplorer;
 import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.ActionHistory;
@@ -69,12 +70,20 @@ public class OrderController implements OrderListener, CategorySelectionListener
 	}
 
 	public void categorySelected(MenuCategory foodCategory) {
+		if (orderView.isVisible() && RootView.getInstance().isMaintenanceMode()) {
+			QuickMaintenanceExplorer.quickAddOrUpdateBeanObject(foodCategory);
+			return;
+		}
 		orderView.showView(GroupView.VIEW_NAME);
 		orderView.getGroupView().setMenuCategory(foodCategory);
 		orderView.getTicketView().getTxtSearchItem().requestFocus();
 	}
 
 	public void groupSelected(MenuGroup foodGroup) {
+		if (orderView.isVisible() && RootView.getInstance().isMaintenanceMode()) {
+			QuickMaintenanceExplorer.quickAddOrUpdateBeanObject(foodGroup);
+			return;
+		}
 		orderView.showView(MenuItemView.VIEW_NAME);
 		orderView.getItemView().setMenuGroup(foodGroup);
 		orderView.getTicketView().getTxtSearchItem().requestFocus();
@@ -83,6 +92,11 @@ public class OrderController implements OrderListener, CategorySelectionListener
 	public void itemSelected(MenuItem menuItem) {
 		MenuItemDAO dao = new MenuItemDAO();
 		menuItem = dao.initialize(menuItem);
+
+		if (orderView.isVisible() && RootView.getInstance().isMaintenanceMode()) {
+			QuickMaintenanceExplorer.quickAddOrUpdateBeanObject(menuItem);
+			return;
+		}
 
 		double itemQuantity = 0;
 		if (menuItem.isFractionalUnit()) {
@@ -111,12 +125,12 @@ public class OrderController implements OrderListener, CategorySelectionListener
 
 		ticketItem.setTicket(orderView.getTicketView().getTicket());
 		ticketItem.setSeatNumber(orderView.getSelectedSeatNumber());
-		
+
 		if (menuItem.isPizzaType()) {
 			PizzaModifierSelectionDialog dialog = new PizzaModifierSelectionDialog(new ModifierSelectionModel(ticketItem, menuItem));
 			dialog.openFullScreen();
-			
-			if(dialog.isCanceled()) {
+
+			if (dialog.isCanceled()) {
 				return;
 			}
 			orderView.getTicketView().addTicketItem(ticketItem);
@@ -175,12 +189,12 @@ public class OrderController implements OrderListener, CategorySelectionListener
 					ticketItem = ticketItemModifier.getParent().getParent();
 				}
 			}
-			
-			if(ticketItem.isPizzaType()) {
+
+			if (ticketItem.isPizzaType()) {
 				PizzaModifierSelectionDialog dialog = new PizzaModifierSelectionDialog(new ModifierSelectionModel(ticketItem, ticketItem.getMenuItem()));
 				dialog.openFullScreen();
-				
-				if(dialog.isCanceled()) {
+
+				if (dialog.isCanceled()) {
 					return;
 				}
 				//orderView.getTicketView().addTicketItem(ticketItem);

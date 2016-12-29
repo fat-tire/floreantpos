@@ -109,6 +109,11 @@ public class MenuItemView extends SelectionView {
 		return itemButton;
 	}
 
+	public void updateView(MenuItem menuItem) {
+		ItemButton menuItemButton = menuItemButtonMap.get(menuItem.getId());
+		menuItemButton.updateView(menuItem);
+	}
+
 	public void addItemSelectionListener(ItemSelectionListener listener) {
 		listenerList.add(listener);
 	}
@@ -157,12 +162,20 @@ public class MenuItemView extends SelectionView {
 		MenuItem foodItem;
 
 		ItemButton(MenuItem menuItem) {
-			this.foodItem = menuItem;
 			setFocusable(false);
 			setVerticalTextPosition(SwingConstants.BOTTOM);
 			setHorizontalTextPosition(SwingConstants.CENTER);
 			BUTTON_SIZE = PosUIManager.getSize(100);
 
+			updateView(menuItem);
+
+			setPreferredSize(new Dimension(BUTTON_SIZE, BUTTON_SIZE));
+			addActionListener(this);
+			addMouseListener(this);
+		}
+
+		private void updateView(MenuItem menuItem) {
+			this.foodItem = menuItem;
 			if (menuItem.getImage() != null) {
 				int w = BUTTON_SIZE - PosUIManager.getSize(10);
 				int h = BUTTON_SIZE - PosUIManager.getSize(10);
@@ -191,10 +204,6 @@ public class MenuItemView extends SelectionView {
 			if (textColor != null) {
 				setForeground(textColor);
 			}
-
-			setPreferredSize(new Dimension(BUTTON_SIZE, BUTTON_SIZE));
-			addActionListener(this);
-			addMouseListener(this);
 		}
 
 		public void actionPerformed(ActionEvent e) {

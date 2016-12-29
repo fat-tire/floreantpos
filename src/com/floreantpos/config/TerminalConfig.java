@@ -92,6 +92,8 @@ public class TerminalConfig {
 
 	private static final String DEFAULT_LOCALE = "defaultLocal";//$NON-NLS-1$
 
+	private static final String ALLOW_QUICK_MAINTENANCE = "quick_maintenance";
+
 	private static boolean multiple_order_supported = true;
 
 	private static PropertiesConfiguration config = AppConfig.getConfig();
@@ -505,12 +507,20 @@ public class TerminalConfig {
 
 		return disName;
 	}
-	
+
 	public static void setAllowToDeletePrintedTicketItem(boolean allow) {
 		config.setProperty(ALLOW_TO_DELETE_PRINTED_TICKET_ITEM, allow);
 	}
 
 	public static boolean isAllowedToDeletePrintedTicketItem() {
 		return config.getBoolean(ALLOW_TO_DELETE_PRINTED_TICKET_ITEM, true);
+	}
+
+	public static void setAllowQuickMaintenance(boolean selected) {
+		config.setProperty(ALLOW_QUICK_MAINTENANCE, selected);
+	}
+
+	public static boolean isAllowedQuickMaintenance() {
+		return config.getBoolean(ALLOW_QUICK_MAINTENANCE, true);
 	}
 }

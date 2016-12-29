@@ -29,6 +29,7 @@ import java.awt.GridLayout;
 import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
@@ -126,6 +127,16 @@ public class GroupView extends SelectionView {
 		super.renderItems();
 	}
 
+	public void updateView(MenuGroup menuGroup) {
+		Enumeration<AbstractButton> elements = buttonGroup.getElements();
+		while (elements.hasMoreElements()) {
+			GroupButton groupButton = (GroupButton) elements.nextElement();
+			if (groupButton.getMenuGroup() == menuGroup) {
+				groupButton.updateView(groupButton.getMenuGroup());
+			}
+		}
+	}
+
 	protected int getFitableButtonCount() {
 		Dimension size = buttonPanelContainer.getSize();
 		Dimension itemButtonSize = getButtonSize();
@@ -167,8 +178,16 @@ public class GroupView extends SelectionView {
 		MenuGroup menuGroup;
 
 		GroupButton(MenuGroup foodGroup) {
-			this.menuGroup = foodGroup;
+			updateView(foodGroup);
+			addActionListener(this);
+		}
 
+		public MenuGroup getMenuGroup() {
+			return menuGroup;
+		}
+
+		public void updateView(MenuGroup foodGroup) {
+			this.menuGroup = foodGroup;
 			setText("<html><body><center>" + foodGroup.getDisplayName() + "</center></body></html>"); //$NON-NLS-1$ //$NON-NLS-2$
 
 			if (menuGroup.getButtonColorCode() != null) {
@@ -178,11 +197,11 @@ public class GroupView extends SelectionView {
 				setForeground(menuGroup.getTextColor());
 			}
 
-			addActionListener(this);
 		}
 
 		public void actionPerformed(ActionEvent e) {
 			fireGroupSelected(menuGroup);
 		}
 	}
+
 }

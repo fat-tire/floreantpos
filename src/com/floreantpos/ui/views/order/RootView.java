@@ -55,6 +55,8 @@ public class RootView extends com.floreantpos.swing.TransparentPanel {
 
 	private Map<String, IView> views = new HashMap<String, IView>();
 
+	private boolean maintenanceMode;
+
 	private static RootView instance;
 
 	private RootView() {
@@ -114,6 +116,14 @@ public class RootView extends com.floreantpos.swing.TransparentPanel {
 
 	public OrderView getOrderView() {
 		return (OrderView) views.get(OrderView.VIEW_NAME);
+	}
+
+	public boolean isMaintenanceMode() {
+		return maintenanceMode;
+	}
+
+	public void setMaintenanceMode(boolean b) {
+		this.maintenanceMode = b;
 	}
 
 	public LoginView getLoginScreen() {
