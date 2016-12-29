@@ -495,7 +495,7 @@
 		<dependency>
 			<groupId>com.oro</groupId>
 			<artifactId>licensor</artifactId>
-			<version>2.6-SNAPSHOT</version>
+			<version>1.2</version>
 		</dependency>
 		
 		<dependency>
