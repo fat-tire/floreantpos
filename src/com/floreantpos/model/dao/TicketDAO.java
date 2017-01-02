@@ -885,7 +885,7 @@ public class TicketDAO extends BaseTicketDAO {
 				if (!recepieItem.isInventoryDeductable()) {
 					continue;
 				}
-				
+
 				Double percentage = recepieItem.getPercentage() / 100.0;
 
 				InventoryItem inventoryItem = recepieItem.getInventoryItem();
@@ -969,23 +969,29 @@ public class TicketDAO extends BaseTicketDAO {
 		if (paymentStatusFilter == PaymentStatusFilter.OPEN) {
 			criteria.add(Restrictions.eq(Ticket.PROP_PAID, Boolean.FALSE));
 			criteria.add(Restrictions.eq(Ticket.PROP_CLOSED, Boolean.FALSE));
+			if (!user.canViewAllOpenTickets()) {
+				criteria.add(Restrictions.eq(Ticket.PROP_OWNER, user));
+			}
 		}
 		else if (paymentStatusFilter == PaymentStatusFilter.PAID) {
 			criteria.add(Restrictions.eq(Ticket.PROP_PAID, Boolean.TRUE));
 			criteria.add(Restrictions.eq(Ticket.PROP_CLOSED, Boolean.FALSE));
+			if (!user.canViewAllOpenTickets() || !user.canViewAllCloseTickets()) {
+				criteria.add(Restrictions.eq(Ticket.PROP_OWNER, user));
+			}
 		}
 		else if (paymentStatusFilter == PaymentStatusFilter.CLOSED) {
 			criteria.add(Restrictions.eq(Ticket.PROP_DRAWER_RESETTED, Boolean.FALSE));
 			criteria.add(Restrictions.eq(Ticket.PROP_CLOSED, Boolean.TRUE));
+			if (!user.canViewAllCloseTickets()) {
+				criteria.add(Restrictions.eq(Ticket.PROP_OWNER, user));
+			}
 		}
 
 		if (!orderTypeFilter.equals(POSConstants.ALL)) {
 			criteria.add(Restrictions.eq(Ticket.PROP_TICKET_TYPE, orderTypeFilter));
 		}
 
-		if (!user.canViewAllOpenTickets() || !user.canViewAllCloseTickets()) {
-			criteria.add(Restrictions.eq(Ticket.PROP_OWNER, user));
-		}
 	}
 
 	public void deleteTickets(List<Ticket> tickets) {
