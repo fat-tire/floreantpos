@@ -21,9 +21,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Set;
 
+import com.floreantpos.IconFactory;
 import com.floreantpos.POSConstants;
 import com.floreantpos.PosLog;
 import com.floreantpos.actions.NewBarTabAction;
+import com.floreantpos.bo.ui.explorer.QuickMaintenanceExplorer;
 import com.floreantpos.customer.CustomerSelectorDialog;
 import com.floreantpos.customer.CustomerSelectorFactory;
 import com.floreantpos.extension.OrderServiceFactory;
@@ -35,6 +37,7 @@ import com.floreantpos.model.UserType;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.tableselection.TableSelectorDialog;
 import com.floreantpos.ui.tableselection.TableSelectorFactory;
+import com.floreantpos.ui.views.order.RootView;
 import com.floreantpos.util.TicketAlreadyExistsException;
 
 public class OrderTypeButton extends PosButton implements ActionListener {
@@ -48,7 +51,11 @@ public class OrderTypeButton extends PosButton implements ActionListener {
 		super();
 		this.orderType = orderType;
 		if (orderType != null) {
-			setText(orderType.name());
+			if (orderType.getId() == null) {
+				setIcon(IconFactory.getIcon("/ui_icons/", "add+user.png"));
+			}
+			else
+				setText(orderType.name());
 		}
 		else {
 			setText(POSConstants.TAKE_OUT_BUTTON_TEXT);
@@ -62,7 +69,10 @@ public class OrderTypeButton extends PosButton implements ActionListener {
 			POSMessageDialog.showError("You do not have permission to create order");
 			return;
 		}
-
+		if (RootView.getInstance().isMaintenanceMode()) {
+			QuickMaintenanceExplorer.quickMaintain(orderType);
+			return;
+		}
 		if (orderType.isBarTab()) {
 			new NewBarTabAction(orderType, Application.getPosWindow()).actionPerformed(e);
 		}

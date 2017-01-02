@@ -105,7 +105,7 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 
 		ticketList.addTicketListUpateListener(this);
 
-//		btnBarTab.addActionListener(this);
+		//		btnBarTab.addActionListener(this);
 
 		btnEditTicket.addActionListener(this);
 		btnGroupSettle.addActionListener(this);
@@ -182,7 +182,7 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 		rendererOrderPanel();
 
 		rightPanel.add(orderPanel);
-		rightPanel.setMinimumSize(PosUIManager.getSize(120, 0)); 
+		rightPanel.setMinimumSize(PosUIManager.getSize(120, 0));
 
 		centerPanel.add(rightPanel, java.awt.BorderLayout.EAST);
 
@@ -191,7 +191,15 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 
 	public void rendererOrderPanel() {
 		orderPanel.removeAll();
-		List<com.floreantpos.model.OrderType> orderTypes = Application.getInstance().getOrderTypes();
+		List<com.floreantpos.model.OrderType> orderTypes = new ArrayList<>();
+		orderTypes.addAll(Application.getInstance().getOrderTypes());
+		if (RootView.getInstance().isMaintenanceMode()) {
+			OrderType newOrderType = new OrderType();
+			newOrderType.setName("");
+			newOrderType.setShowInLoginScreen(true);
+			newOrderType.setEnabled(true);
+			orderTypes.add(newOrderType);
+		}
 		//		int buttonCount = 0;
 		for (com.floreantpos.model.OrderType orderType : orderTypes) {
 			//			++buttonCount;
@@ -625,7 +633,7 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 
 	// Variables declaration - do not modify//GEN-BEGIN:variables
 
-//	private PosButton btnBarTab = new PosButton(POSConstants.BAR_TAB_BUTTON_TEXT);
+	//	private PosButton btnBarTab = new PosButton(POSConstants.BAR_TAB_BUTTON_TEXT);
 
 	private PosButton btnEditTicket = new PosButton(POSConstants.EDIT_TICKET_BUTTON_TEXT);
 	private PosButton btnGroupSettle = new PosButton(POSConstants.GROUP_SETTLE_BUTTON_TEXT);

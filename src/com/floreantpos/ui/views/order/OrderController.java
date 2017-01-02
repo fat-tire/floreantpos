@@ -28,7 +28,6 @@ import org.hibernate.Transaction;
 import com.floreantpos.POSConstants;
 import com.floreantpos.PosLog;
 import com.floreantpos.actions.SettleTicketAction;
-import com.floreantpos.bo.ui.explorer.QuickMaintenanceExplorer;
 import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.ActionHistory;
@@ -70,20 +69,12 @@ public class OrderController implements OrderListener, CategorySelectionListener
 	}
 
 	public void categorySelected(MenuCategory foodCategory) {
-		if (orderView.isVisible() && RootView.getInstance().isMaintenanceMode()) {
-			QuickMaintenanceExplorer.quickAddOrUpdateBeanObject(foodCategory);
-			return;
-		}
 		orderView.showView(GroupView.VIEW_NAME);
 		orderView.getGroupView().setMenuCategory(foodCategory);
 		orderView.getTicketView().getTxtSearchItem().requestFocus();
 	}
 
 	public void groupSelected(MenuGroup foodGroup) {
-		if (orderView.isVisible() && RootView.getInstance().isMaintenanceMode()) {
-			QuickMaintenanceExplorer.quickAddOrUpdateBeanObject(foodGroup);
-			return;
-		}
 		orderView.showView(MenuItemView.VIEW_NAME);
 		orderView.getItemView().setMenuGroup(foodGroup);
 		orderView.getTicketView().getTxtSearchItem().requestFocus();
@@ -94,7 +85,6 @@ public class OrderController implements OrderListener, CategorySelectionListener
 		menuItem = dao.initialize(menuItem);
 
 		if (orderView.isVisible() && RootView.getInstance().isMaintenanceMode()) {
-			QuickMaintenanceExplorer.quickAddOrUpdateBeanObject(menuItem);
 			return;
 		}
 

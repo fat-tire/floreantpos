@@ -43,6 +43,7 @@ import com.floreantpos.actions.LogoutAction;
 import com.floreantpos.actions.ShowOtherFunctionsAction;
 import com.floreantpos.actions.ShutDownAction;
 import com.floreantpos.actions.SwithboardViewAction;
+import com.floreantpos.bo.ui.explorer.QuickMaintenanceExplorer;
 import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.User;
@@ -51,6 +52,8 @@ import com.floreantpos.swing.POSToggleButton;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.swing.PosUIManager;
 import com.floreantpos.swing.TransparentPanel;
+import com.floreantpos.ui.views.SwitchboardView;
+import com.floreantpos.ui.views.order.OrderView;
 import com.floreantpos.ui.views.order.RootView;
 import com.floreantpos.util.PosGuiUtil;
 
@@ -77,13 +80,15 @@ public class HeaderPanel extends JPanel {
 
 	private int btnSize;
 
+	private QuickMaintenanceExplorer quickMaintenancePanel;
+
 	public HeaderPanel() {
 		//	super(new MigLayout("ins 2 2 0 2,hidemode 3", "[][fill, grow][]", "")); //$NON-NLS-1$  //$NON-NLS-2$  //$NON-NLS-3$
 		super(new BorderLayout());
 		setOpaque(true);
 		setBackground(Color.white);
 
-		buttonPanel = new JPanel(new MigLayout("hidemode 3", "sg,fill", ""));
+		buttonPanel = new JPanel(new MigLayout("hidemode 3", "", ""));
 		buttonPanel.setBackground(Color.white);
 
 		JLabel logoLabel = new JLabel(IconFactory.getIcon("/ui_icons/", "header-logo.png")); //$NON-NLS-1$ //$NON-NLS-2$
@@ -107,6 +112,8 @@ public class HeaderPanel extends JPanel {
 
 		btnSize = PosUIManager.getSize(60);
 
+		quickMaintenancePanel = new QuickMaintenanceExplorer();
+
 		btnHomeScreen = new PosButton(new HomeScreenViewAction(false, true));
 		buttonPanel.add(btnHomeScreen, "w " + btnSize + "!, h " + btnSize + "!"); //$NON-NLS-1$
 
@@ -117,12 +124,20 @@ public class HeaderPanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				RootView.getInstance().setMaintenanceMode(btnMaintainance.isSelected());
+				updateViewToMaintenanceMode(btnMaintainance.isSelected());
+				if (OrderView.getInstance().isVisible()) {
+					OrderView.getInstance().getCategoryView().initialize();
+				}
+				else if (SwitchboardView.getInstance().isVisible()) {
+					SwitchboardView.getInstance().rendererOrderPanel();
+				}
 			}
 		});
 		buttonPanel.add(btnMaintainance, "w " + btnSize + "!, h " + btnSize + "!"); //$NON-NLS-1$
 
 		btnSwithboardView = new PosButton(new SwithboardViewAction(false, true));
 		buttonPanel.add(btnSwithboardView, "w " + btnSize + "!, h " + btnSize + "!"); //$NON-NLS-1$
+		btnSwithboardView.setVisible(false);
 
 		btnOthers = new PosButton(new ShowOtherFunctionsAction(false, true));
 		buttonPanel.add(btnOthers, "w " + btnSize + "!, h " + btnSize + "!"); //$NON-NLS-1$
@@ -139,6 +154,8 @@ public class HeaderPanel extends JPanel {
 		btnShutdown.setIcon(IconFactory.getIcon("/ui_icons/", "shutdown.png")); //$NON-NLS-1$ //$NON-NLS-2$
 		btnShutdown.setToolTipText(Messages.getString("Shutdown")); //$NON-NLS-1$
 		buttonPanel.add(btnShutdown, "w " + btnSize + "!, h " + btnSize + "!"); //$NON-NLS-1$
+
+		buttonPanel.add(quickMaintenancePanel);
 
 		add(buttonPanel, BorderLayout.EAST);
 
@@ -256,29 +273,46 @@ public class HeaderPanel extends JPanel {
 		}
 	}
 
-	public void updateOthersFunctionsView(boolean enable) {
+	public void updateViewToMaintenanceMode(boolean enable) {
+		boolean selected = btnMaintainance.isSelected();
 
-		buttonPanel.removeAll();
-		buttonPanel.add(btnHomeScreen, "w " + btnSize + "!, h " + btnSize + "!");
-		buttonPanel.add(btnMaintainance, "w " + btnSize + "!, h " + btnSize + "!");
-		buttonPanel.add(btnOthers, "w " + btnSize + "!, h " + btnSize + "!");
-		buttonPanel.add(btnSwithboardView, "w " + btnSize + "!, h " + btnSize + "!");
-		buttonPanel.add(btnClockOUt, "w " + btnSize + "!, h " + btnSize + "!");
-		buttonPanel.add(btnLogout, "w " + btnSize + "!, h " + btnSize + "!");
-		buttonPanel.add(btnShutdown, "w " + btnSize + "!, h " + btnSize + "!");
+		btnHomeScreen.setVisible(!selected);
+		btnMaintainance.setVisible(true);
+		btnOthers.setVisible(!selected);
+		btnSwithboardView.setVisible(!selected);
+		btnClockOUt.setVisible(!selected);
+		btnLogout.setVisible(!selected);
+		btnShutdown.setVisible(!selected);
+		btnOthers.setVisible(!selected);
+		quickMaintenancePanel.setVisible(selected);
+	}
+
+	public void updateOthersFunctionsView(boolean enable) {
+		boolean selected = btnMaintainance.isSelected();
+
+		btnHomeScreen.setVisible(!selected);
+		btnMaintainance.setVisible(true);
+		btnOthers.setVisible(!selected);
+		btnSwithboardView.setVisible(!selected);
+		btnClockOUt.setVisible(!selected);
+		btnLogout.setVisible(!selected);
+		btnShutdown.setVisible(!selected);
 		btnOthers.setVisible(enable);
+		quickMaintenancePanel.setVisible(selected);
 	}
 
 	public void updateSwitchBoardView(boolean enable) {
-		buttonPanel.removeAll();
-		buttonPanel.add(btnHomeScreen, "w " + btnSize + "!, h " + btnSize + "!");
-		buttonPanel.add(btnMaintainance, "w " + btnSize + "!, h " + btnSize + "!");
-		buttonPanel.add(btnOthers, "w " + btnSize + "!, h " + btnSize + "!");
-		buttonPanel.add(btnSwithboardView, "w " + btnSize + "!, h " + btnSize + "!");
-		buttonPanel.add(btnClockOUt, "w " + btnSize + "!, h " + btnSize + "!");
-		buttonPanel.add(btnLogout, "w " + btnSize + "!, h " + btnSize + "!");
-		buttonPanel.add(btnShutdown, "w " + btnSize + "!, h " + btnSize + "!");
+		boolean selected = btnMaintainance.isSelected();
+
+		btnHomeScreen.setVisible(!selected);
+		btnMaintainance.setVisible(true);
+		btnOthers.setVisible(!selected);
+		btnSwithboardView.setVisible(!selected);
+		btnClockOUt.setVisible(!selected);
+		btnLogout.setVisible(!selected);
+		btnShutdown.setVisible(!selected);
 		btnSwithboardView.setVisible(enable);
+		quickMaintenancePanel.setVisible(selected);
 	}
 
 	/*public void updateOthersFunctionsView(String viewName) {

@@ -30,6 +30,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -39,8 +40,10 @@ import java.util.Vector;
 import javax.swing.AbstractButton;
 import javax.swing.SwingConstants;
 
+import com.floreantpos.IconFactory;
 import com.floreantpos.PosException;
 import com.floreantpos.PosLog;
+import com.floreantpos.bo.ui.explorer.QuickMaintenanceExplorer;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.MenuGroup;
 import com.floreantpos.model.MenuItem;
@@ -89,7 +92,15 @@ public class MenuItemView extends SelectionView {
 		OrderType orderType = OrderView.getInstance().getCurrentTicket().getOrderType();
 		MenuItemDAO dao = new MenuItemDAO();
 		try {
-			List<MenuItem> items = dao.findByParent(Application.getInstance().getTerminal(), menuGroup, orderType, false);
+			List<MenuItem> items = new ArrayList<>();
+			if (menuGroup.getId() != null) {
+				items = dao.findByParent(Application.getInstance().getTerminal(), menuGroup, orderType, false);
+			}
+			if (RootView.getInstance().isMaintenanceMode()) {
+				MenuItem newMenuItem = new MenuItem(null, "", 0.0, 0.0);
+				newMenuItem.setParent(menuGroup);
+				items.add(newMenuItem);
+			}
 			//filterItemsByOrderType(items);
 			setItems(items);
 		} catch (PosException e) {
@@ -110,8 +121,7 @@ public class MenuItemView extends SelectionView {
 	}
 
 	public void updateView(MenuItem menuItem) {
-		ItemButton menuItemButton = menuItemButtonMap.get(menuItem.getId());
-		menuItemButton.updateView(menuItem);
+		setMenuGroup(menuItem.getParent());
 	}
 
 	public void addItemSelectionListener(ItemSelectionListener listener) {
@@ -193,7 +203,11 @@ public class MenuItemView extends SelectionView {
 
 			}
 			else {
-				setText("<html><body><center>" + menuItem.getName() + "</center></body></html>"); //$NON-NLS-1$ //$NON-NLS-2$
+				if (menuItem.getId() == null) {
+					setIcon(IconFactory.getIcon("/ui_icons/", "add+user.png"));
+				}
+				else
+					setText("<html><body><center>" + menuItem.getName() + "</center></body></html>"); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 
 			Color buttonColor = menuItem.getButtonColor();
@@ -207,6 +221,10 @@ public class MenuItemView extends SelectionView {
 		}
 
 		public void actionPerformed(ActionEvent e) {
+			if (OrderView.getInstance().isVisible() && RootView.getInstance().isMaintenanceMode()) {
+				foodItem = MenuItemDAO.getInstance().initialize(foodItem);
+				QuickMaintenanceExplorer.quickMaintain(foodItem);
+			}
 			fireItemSelected(foodItem);
 		}
 

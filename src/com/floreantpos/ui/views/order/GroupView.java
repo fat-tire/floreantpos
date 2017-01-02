@@ -29,7 +29,6 @@ import java.awt.GridLayout;
 import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
@@ -37,6 +36,8 @@ import java.util.Vector;
 import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
 
+import com.floreantpos.IconFactory;
+import com.floreantpos.bo.ui.explorer.QuickMaintenanceExplorer;
 import com.floreantpos.model.MenuCategory;
 import com.floreantpos.model.MenuGroup;
 import com.floreantpos.model.OrderType;
@@ -91,15 +92,23 @@ public class GroupView extends SelectionView {
 			MenuGroupDAO dao = new MenuGroupDAO();
 			OrderType orderType = OrderView.getInstance().getCurrentTicket().getOrderType();
 			List<MenuGroup> groups = dao.findEnabledByParent(menuCategory);
-			for (Iterator iterator = groups.iterator(); iterator.hasNext();) {
-				MenuGroup menuGroup = (MenuGroup) iterator.next();
-				if (!dao.hasChildren(null, menuGroup, orderType)) {
-					iterator.remove();
+
+			if (RootView.getInstance().isMaintenanceMode()) {
+				MenuGroup newMenuGroup = new MenuGroup(null, "");
+				newMenuGroup.setParent(menuCategory);
+				groups.add(newMenuGroup);
+			}
+			else {
+				for (Iterator iterator = groups.iterator(); iterator.hasNext();) {
+					MenuGroup menuGroup = (MenuGroup) iterator.next();
+					if (!dao.hasChildren(null, menuGroup, orderType)) {
+						iterator.remove();
+					}
 				}
 			}
 			setItems(groups);
 
-			if (groups.size() <= 1) {
+			if (!RootView.getInstance().isMaintenanceMode() && groups.size() <= 1) {
 				setVisible(false);
 			}
 			else {
@@ -128,13 +137,7 @@ public class GroupView extends SelectionView {
 	}
 
 	public void updateView(MenuGroup menuGroup) {
-		Enumeration<AbstractButton> elements = buttonGroup.getElements();
-		while (elements.hasMoreElements()) {
-			GroupButton groupButton = (GroupButton) elements.nextElement();
-			if (groupButton.getMenuGroup() == menuGroup) {
-				groupButton.updateView(groupButton.getMenuGroup());
-			}
-		}
+		setMenuCategory(menuGroup.getParent());
 	}
 
 	protected int getFitableButtonCount() {
@@ -188,7 +191,11 @@ public class GroupView extends SelectionView {
 
 		public void updateView(MenuGroup foodGroup) {
 			this.menuGroup = foodGroup;
-			setText("<html><body><center>" + foodGroup.getDisplayName() + "</center></body></html>"); //$NON-NLS-1$ //$NON-NLS-2$
+			if (menuGroup.getId() == null) {
+				setIcon(IconFactory.getIcon("/ui_icons/", "add+user.png"));
+			}
+			else
+				setText("<html><body><center>" + foodGroup.getDisplayName() + "</center></body></html>"); //$NON-NLS-1$ //$NON-NLS-2$
 
 			if (menuGroup.getButtonColorCode() != null) {
 				setBackground(menuGroup.getButtonColor());
@@ -200,6 +207,9 @@ public class GroupView extends SelectionView {
 		}
 
 		public void actionPerformed(ActionEvent e) {
+			if (OrderView.getInstance().isVisible() && RootView.getInstance().isMaintenanceMode()) {
+				QuickMaintenanceExplorer.quickMaintain(menuGroup);
+			}
 			fireGroupSelected(menuGroup);
 		}
 	}

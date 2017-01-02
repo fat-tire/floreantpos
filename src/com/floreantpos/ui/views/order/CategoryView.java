@@ -41,7 +41,9 @@ import javax.swing.ButtonGroup;
 
 import org.apache.log4j.Logger;
 
+import com.floreantpos.IconFactory;
 import com.floreantpos.Messages;
+import com.floreantpos.bo.ui.explorer.QuickMaintenanceExplorer;
 import com.floreantpos.model.MenuCategory;
 import com.floreantpos.model.MenuGroup;
 import com.floreantpos.model.OrderType;
@@ -84,22 +86,26 @@ public class CategoryView extends SelectionView implements ActionListener {
 
 		OrderType orderType = OrderView.getInstance().getCurrentTicket().getOrderType();
 		MenuGroupDAO menuGroupDAO = MenuGroupDAO.getInstance();
-		for (Iterator iterator = categories.iterator(); iterator.hasNext();) {
-			MenuCategory menuCategory = (MenuCategory) iterator.next();
-			List<MenuGroup> menuGroups = menuCategory.getMenuGroups();
+		if (RootView.getInstance().isMaintenanceMode()) {
+			categories.add(new MenuCategory(null, ""));
+		}
+		else {
+			for (Iterator iterator = categories.iterator(); iterator.hasNext();) {
+				MenuCategory menuCategory = (MenuCategory) iterator.next();
+				List<MenuGroup> menuGroups = menuCategory.getMenuGroups();
 
-			for (Iterator iterator2 = menuGroups.iterator(); iterator2.hasNext();) {
-				MenuGroup menuGroup = (MenuGroup) iterator2.next();
-				if (!menuGroupDAO.hasChildren(null, menuGroup, orderType)) {
-					iterator2.remove();
+				for (Iterator iterator2 = menuGroups.iterator(); iterator2.hasNext();) {
+					MenuGroup menuGroup = (MenuGroup) iterator2.next();
+					if (!menuGroupDAO.hasChildren(null, menuGroup, orderType)) {
+						iterator2.remove();
+					}
+				}
+
+				if (menuGroups == null || menuGroups.size() == 0) {
+					iterator.remove();
 				}
 			}
-
-			if (menuGroups == null || menuGroups.size() == 0) {
-				iterator.remove();
-			}
 		}
-
 		setItems(categories);
 
 		CategoryButton categoryButton = (CategoryButton) getFirstItemButton();
@@ -119,10 +125,10 @@ public class CategoryView extends SelectionView implements ActionListener {
 	@Override
 	protected AbstractButton createItemButton(Object item) {
 		MenuCategory menuCategory = (MenuCategory) item;
-		List<MenuGroup> menuGroups = menuCategory.getMenuGroups();
-		if (menuGroups == null || menuGroups.size() == 0) {
+		//List<MenuGroup> menuGroups = menuCategory.getMenuGroups();
+		/*if (menuGroups == null || menuGroups.size() == 0) {
 			return null;
-		}
+		}*/
 
 		CategoryButton button = new CategoryButton(this, menuCategory);
 		categoryButtonGroup.add(button);
@@ -133,8 +139,7 @@ public class CategoryView extends SelectionView implements ActionListener {
 	}
 
 	public void updateView(MenuCategory menuCategory) {
-		CategoryButton menuCategoryButton = buttonMap.get(String.valueOf(menuCategory.getId()));
-		menuCategoryButton.updateView(menuCategory);
+		initialize();
 	}
 
 	@Override
@@ -173,7 +178,12 @@ public class CategoryView extends SelectionView implements ActionListener {
 
 		public void updateView(MenuCategory menuCategory) {
 			this.foodCategory = menuCategory;
-			setText("<html><body><center>" + menuCategory.getDisplayName() + "</center></body></html>"); //$NON-NLS-1$ //$NON-NLS-2$
+
+			if (foodCategory.getId() == null) {
+				setIcon(IconFactory.getIcon("/ui_icons/", "add+user.png"));
+			}
+			else
+				setText("<html><body><center>" + menuCategory.getDisplayName() + "</center></body></html>"); //$NON-NLS-1$ //$NON-NLS-2$
 
 			if (menuCategory.getButtonColor() != null) {
 				setBackground(menuCategory.getButtonColor());
@@ -187,6 +197,11 @@ public class CategoryView extends SelectionView implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		CategoryButton button = (CategoryButton) e.getSource();
 		if (button.isSelected()) {
+			if (OrderView.getInstance().isVisible() && RootView.getInstance().isMaintenanceMode()) {
+				QuickMaintenanceExplorer.quickMaintain(button.foodCategory);
+				if (button.foodCategory.getId() == null)
+					return;
+			}
 			fireCategorySelected(button.foodCategory);
 		}
 	}

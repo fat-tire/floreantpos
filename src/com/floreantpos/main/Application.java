@@ -714,4 +714,9 @@ public class Application {
 	public static String getLengthUnit() {
 		return lengthUnit;
 	}
+
+	public void refreshOrderTypes() {
+		OrderTypeDAO dao = OrderTypeDAO.getInstance();
+		orderTypes = dao.findEnabledOrderTypes();
+	}
 }
