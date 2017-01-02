@@ -137,7 +137,7 @@ public class PeripheralConfigurationView extends ConfigurationView {
 		btnRestoreCustomerDefault.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				tfCustomerDisplayPort.setText("COM 1"); //$NON-NLS-1$
+				tfCustomerDisplayPort.setText("COM2"); //$NON-NLS-1$
 				tfCustomerDisplayMessage.setText("1234567891234567891"); //$NON-NLS-1$
 			}
 		});

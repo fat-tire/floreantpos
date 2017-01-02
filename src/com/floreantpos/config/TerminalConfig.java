@@ -391,7 +391,7 @@ public class TerminalConfig {
 	}
 
 	public static String getCustomerDisplayPort() {
-		return config.getString("customerDisplayPort", "COM1"); //$NON-NLS-1$ //$NON-NLS-2$
+		return config.getString("customerDisplayPort", "COM2"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	public static void setCustomerDisplayMessage(String customerDisplayMessage) {
@@ -411,7 +411,7 @@ public class TerminalConfig {
 	}
 
 	public static String getScalePort() {
-		return config.getString("scalePort", "COM7"); //$NON-NLS-1$ //$NON-NLS-2$
+		return config.getString("scaleDisplayPort", "COM3"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	public static void setScaleDisplayMessage(String scaleDisplayMessage) {
