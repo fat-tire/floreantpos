@@ -633,7 +633,7 @@ public class OrderView extends ViewPanel {
 			}
 
 			CookingInstructionSelectionView dialog = new CookingInstructionSelectionView();
-			dialog.setSize(800, 600);
+			dialog.setSize(1000, 680);
 			dialog.setLocationRelativeTo(Application.getPosWindow());
 			dialog.setVisible(true);
 
