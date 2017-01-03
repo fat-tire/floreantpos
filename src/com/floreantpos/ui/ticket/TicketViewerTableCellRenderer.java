@@ -30,25 +30,27 @@ import com.floreantpos.util.NumberUtil;
 public class TicketViewerTableCellRenderer extends DefaultTableCellRenderer {
 	private boolean inTicketScreen = false;
 	MultiLineTableCellRenderer multiLineTableCellRenderer = new MultiLineTableCellRenderer();
-	
+
 	public TicketViewerTableCellRenderer() {
 		super();
 	}
 
-	
 	@Override
 	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 		Component rendererComponent = null;
 
 		TicketViewerTableModel model = (TicketViewerTableModel) table.getModel();
 		Object object = model.get(row);
-
-		if (column == 0) {
+		if (column == 1) {
 			rendererComponent = multiLineTableCellRenderer.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 		}
 		else {
 			rendererComponent = super.getTableCellRendererComponent(table, value, isSelected, false, row, column);
-			setHorizontalAlignment(SwingConstants.RIGHT);
+			if (column == 0) {
+				setHorizontalAlignment(SwingConstants.CENTER);
+			}
+			else
+				setHorizontalAlignment(SwingConstants.RIGHT);
 		}
 
 		if (!inTicketScreen || isSelected) {
@@ -74,6 +76,10 @@ public class TicketViewerTableCellRenderer extends DefaultTableCellRenderer {
 			return;
 		}
 		String text = value.toString();
+
+		if (value instanceof String) {
+			setHorizontalAlignment(SwingConstants.CENTER);
+		}
 
 		if (value instanceof Double || value instanceof Float) {
 			text = NumberUtil.formatNumber(((java.lang.Number) value).doubleValue());

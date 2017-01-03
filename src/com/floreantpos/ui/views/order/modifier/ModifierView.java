@@ -46,7 +46,9 @@ import com.floreantpos.model.TicketItemModifier;
 import com.floreantpos.model.TicketItemModifierGroup;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.ui.dialog.POSMessageDialog;
+import com.floreantpos.ui.views.order.OrderView;
 import com.floreantpos.ui.views.order.SelectionView;
+import com.floreantpos.util.CurrencyUtil;
 
 /**
  * 
@@ -63,12 +65,14 @@ public class ModifierView extends SelectionView {
 
 	private HashMap<String, ModifierButton> buttonMap = new HashMap<String, ModifierButton>();
 
+	private int maxQuantity;
+	private boolean showPrice;
+
 	/** Creates new form GroupView */
 	public ModifierView(ModifierSelectionModel modifierSelectionModel) {
 		super(com.floreantpos.POSConstants.MODIFIERS);
-
 		this.modifierSelectionModel = modifierSelectionModel;
-
+		showPrice = OrderView.getInstance().getCurrentTicket().getOrderType().isShowPriceOnButton();
 		addActionButtons();
 	}
 
@@ -111,16 +115,16 @@ public class ModifierView extends SelectionView {
 			Set<MenuModifier> modifiers = modifierGroup.getModifiers();
 			for (MenuModifier modifier : modifiers) {
 				modifier.setMenuItemModifierGroup(modifierGroup.getMenuItemModifierGroup());
-//				if (isAddOnMode()) {
-//					if (modifier.getExtraPrice() > 0) {
-//						itemList.add(modifier);
-//					}
-//				}
-//				else {
-//					if (modifier.getPrice() == 0) {
-//						itemList.add(modifier);
-//					}
-//				}
+				//				if (isAddOnMode()) {
+				//					if (modifier.getExtraPrice() > 0) {
+				//						itemList.add(modifier);
+				//					}
+				//				}
+				//				else {
+				//					if (modifier.getPrice() == 0) {
+				//						itemList.add(modifier);
+				//					}
+				//				}
 				itemList.add(modifier);
 			}
 
@@ -137,10 +141,10 @@ public class ModifierView extends SelectionView {
 	}
 
 	private void renderTitle() {
-			String displayName = modifierGroup.getDisplayName();
-			int minQuantity = modifierGroup.getMenuItemModifierGroup().getMinQuantity();
-			int maxQuantity = modifierGroup.getMenuItemModifierGroup().getMaxQuantity();
-			setTitle(displayName + ", Min: " + minQuantity + ", Max: " + maxQuantity);
+		String displayName = modifierGroup.getDisplayName();
+		int minQuantity = modifierGroup.getMenuItemModifierGroup().getMinQuantity();
+		maxQuantity = modifierGroup.getMenuItemModifierGroup().getMaxQuantity();
+		setTitle(displayName + ", Min: " + minQuantity + ", Max: " + maxQuantity);
 	}
 
 	@Override
@@ -172,6 +176,7 @@ public class ModifierView extends SelectionView {
 
 		TicketItem ticketItem = modifierSelectionModel.getTicketItem();
 
+		int count = 0;
 		for (Component component : components) {
 			ModifierButton modifierButton = (ModifierButton) component;
 			MenuModifier modifier = modifierButton.menuModifier;
@@ -179,11 +184,16 @@ public class ModifierView extends SelectionView {
 			TicketItemModifierGroup ticketItemModifierGroup = ticketItem.findTicketItemModifierGroup(modifier, false);
 			TicketItemModifier ticketItemModifier = ticketItemModifierGroup.findTicketItemModifier(modifier, false);
 			if (ticketItemModifier != null) {
-				modifierButton.setText("<html><center>" + modifier.getDisplayName() + "<br/><span style='color:green;"
-						+ "'>(" + ticketItemModifier.getItemCount() + ")</span></center></html>"); //$NON-NLS-1$ //$NON-NLS-2$
+				count++;
+				modifierButton
+						.setText("<html><center>"
+								+ modifier.getDisplayName()
+								+ " <strong><span style='color:white;background-color:green;margin:0;"
+								+ "'>&nbsp; " + ticketItemModifier.getItemCount() + "&nbsp; </span></strong><h4>" + (!showPrice ? "" : CurrencyUtil.getCurrencySymbol() + (ticketItemModifier.getItemCount() >= maxQuantity ? modifier.getExtraPrice() : modifier.getPrice())) + "</h4></center></html>"); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 			else {
-				modifierButton.setText("<html><center>" + modifier.getDisplayName() + "</center></html>"); //$NON-NLS-1$ //$NON-NLS-2$
+				modifierButton
+						.setText("<html><center>" + modifier.getDisplayName() + "<br><h4>" + (!showPrice ? "" : CurrencyUtil.getCurrencySymbol() + (count >= maxQuantity ? modifier.getExtraPrice() : modifier.getPrice())) + "</h4></center></html>"); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 		}
 

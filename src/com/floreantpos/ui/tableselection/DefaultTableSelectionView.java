@@ -44,9 +44,11 @@ import javax.swing.border.TitledBorder;
 
 import net.miginfocom.swing.MigLayout;
 
+import com.floreantpos.IconFactory;
 import com.floreantpos.Messages;
 import com.floreantpos.POSConstants;
 import com.floreantpos.PosLog;
+import com.floreantpos.bo.ui.explorer.QuickMaintenanceExplorer;
 import com.floreantpos.extension.OrderServiceFactory;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.ShopTable;
@@ -182,17 +184,29 @@ public class DefaultTableSelectionView extends TableSelector implements ActionLi
 
 		checkTables();
 
-		List<ShopTable> tables = ShopTableDAO.getInstance().findAll();
+		List<ShopTable> tables = new ArrayList<>();
+		tables.addAll(ShopTableDAO.getInstance().findAll());
+		if (RootView.getInstance().isMaintenanceMode()) {
+			tables.add(new ShopTable(null, 0, 0, null));
+		}
 
 		for (ShopTable shopTable : tables) {
 			ShopTableButton tableButton = new ShopTableButton(shopTable);
 			tableButton.setPreferredSize(PosUIManager.getSize(157, 138));
 			tableButton.setFont(new Font(tableButton.getFont().getName(), Font.BOLD, PosUIManager.getTableNumberFontSize()));
-
-			tableButton.setText(tableButton.getText());
+			if (shopTable.getId() == null) {
+				tableButton.setIcon(IconFactory.getIcon("/ui_icons/", "add+user.png"));
+			}
+			else
+				tableButton.setText(tableButton.getText());
 			tableButton.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
+					if (RootView.getInstance().isMaintenanceMode()) {
+						ShopTableButton button = (ShopTableButton) e.getSource();
+						QuickMaintenanceExplorer.quickMaintain(button.getShopTable());
+						return;
+					}
 					addTable(e);
 				}
 			});
@@ -209,6 +223,8 @@ public class DefaultTableSelectionView extends TableSelector implements ActionLi
 		List<Ticket> openTickets = TicketDAO.getInstance().findOpenTickets();
 		for (Ticket ticket : openTickets) {
 			for (ShopTableButton shopTableButton : tableButtonMap.values()) {
+				if (shopTableButton.getShopTable().getId() == null)
+					continue;
 				if (ticket.getTableNumbers().contains(shopTableButton.getId())) {
 					shopTableButton.setText("<html><center>" + shopTableButton.getText() + "<br><h4>" + ticket.getOwner().getFirstName() + "<br>Chk#" //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 							+ ticket.getId() + "</h4></center></html>"); //$NON-NLS-1$
@@ -383,7 +399,7 @@ public class DefaultTableSelectionView extends TableSelector implements ActionLi
 				return;
 			}
 
-			OrderServiceFactory.getOrderService().createNewTicket(getOrderType(), selectedTables,null);
+			OrderServiceFactory.getOrderService().createNewTicket(getOrderType(), selectedTables, null);
 			clearSelection();
 
 		} catch (TicketAlreadyExistsException e) {

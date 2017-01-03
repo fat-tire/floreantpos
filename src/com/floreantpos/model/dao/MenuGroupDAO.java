@@ -46,6 +46,8 @@ public class MenuGroupDAO extends BaseMenuGroupDAO {
 
 	@SuppressWarnings("unchecked")
 	public List<MenuGroup> findEnabledByParent(MenuCategory category) throws PosException {
+		if (category.getId() == null)
+			return null;
 		Session session = null;
 
 		try {

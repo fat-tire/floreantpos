@@ -30,6 +30,7 @@ import javax.swing.DefaultListModel;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JScrollPane;
 
 import net.miginfocom.swing.MigLayout;
 
@@ -70,6 +71,8 @@ public class OrderTypeForm extends BeanEditor implements ItemListener {
 	private JCheckBox chkHasForHereAndToGo;
 	private JCheckBox chkBarTab;
 	private JCheckBox chkPreAuthCreditCard;
+	private JCheckBox chkShowPriceOnButton;
+	private JCheckBox chkShowUnitPriceInTicketGrid;
 
 	OrderType orderType;
 	JList<String> list;
@@ -126,6 +129,9 @@ public class OrderTypeForm extends BeanEditor implements ItemListener {
 		chkBarTab = new JCheckBox(Messages.getString("OrderTypeForm.14")); //$NON-NLS-1$
 		chkPreAuthCreditCard = new JCheckBox(Messages.getString("OrderTypeForm.0")); //$NON-NLS-1$
 
+		chkShowPriceOnButton = new JCheckBox("Show price on button");
+		chkShowUnitPriceInTicketGrid = new JCheckBox("Show unit price in ticket grid");
+
 		generalPanel.setLayout(new MigLayout("", "[87px][327px,grow]", "[19px][][19px][][][21px][15px]")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		generalPanel.add(jLabel1, "cell 0 0,alignx left,aligny center"); //$NON-NLS-1$
 		generalPanel.add(tfName, "cell 1 0,growx,aligny top"); //$NON-NLS-1$
@@ -148,8 +154,10 @@ public class OrderTypeForm extends BeanEditor implements ItemListener {
 		generalPanel.add(chkHasForHereAndToGo, "cell 1 15,alignx left,aligny top"); //$NON-NLS-1$
 		generalPanel.add(chkBarTab, "cell 1 16,alignx left,aligny top"); //$NON-NLS-1$
 		generalPanel.add(chkPreAuthCreditCard, "cell 1 17,alignx left,aligny top"); //$NON-NLS-1$
+		generalPanel.add(chkShowPriceOnButton, "cell 1 18,alignx left,aligny top"); //$NON-NLS-1$
+		generalPanel.add(chkShowUnitPriceInTicketGrid, "cell 1 19,alignx left,aligny top"); //$NON-NLS-1$
 
-		add(generalPanel);
+		add(new JScrollPane(generalPanel));
 	}
 
 	protected void updateView() {
@@ -182,6 +190,8 @@ public class OrderTypeForm extends BeanEditor implements ItemListener {
 			chkHasForHereAndToGo.setSelected(ordersType.isHasForHereAndToGo());
 			chkBarTab.setSelected(ordersType.isBarTab());
 			chkPreAuthCreditCard.setSelected(ordersType.isPreAuthCreditCard());
+			chkShowPriceOnButton.setSelected(orderType.isShowPriceOnButton());
+			chkShowUnitPriceInTicketGrid.setSelected(orderType.isShowUnitPriceInTicketGrid());
 		}
 	}
 
@@ -214,6 +224,8 @@ public class OrderTypeForm extends BeanEditor implements ItemListener {
 			ordersType.setHideItemWithEmptyInventory(chkHideItemWithEmptyInventory.isSelected());
 			ordersType.setHasForHereAndToGo(chkHasForHereAndToGo.isSelected());
 			ordersType.setPreAuthCreditCard(chkPreAuthCreditCard.isSelected());
+			ordersType.setShowPriceOnButton(chkShowPriceOnButton.isSelected());
+			ordersType.setShowUnitPriceInTicketGrid(chkShowUnitPriceInTicketGrid.isSelected());
 		}
 		ordersType.setBarTab(chkBarTab.isSelected());
 

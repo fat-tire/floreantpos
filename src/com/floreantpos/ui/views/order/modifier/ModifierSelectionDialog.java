@@ -80,7 +80,7 @@ public class ModifierSelectionDialog extends POSDialog implements ModifierGroupS
 
 		modifierGroupView = new com.floreantpos.ui.views.order.modifier.ModifierGroupView(modifierSelectionModel);
 		modifierView = new ModifierView(modifierSelectionModel);
-		ticketItemModifierView = new TicketItemModifierTableView(modifierSelectionModel);
+		ticketItemModifierView = new TicketItemModifierTableView(modifierSelectionModel, this);
 		buttonPanel = new com.floreantpos.swing.TransparentPanel();
 		buttonPanel.setLayout(new MigLayout("fill, ins 4", "fill", ""));
 
@@ -291,5 +291,10 @@ public class ModifierSelectionDialog extends POSDialog implements ModifierGroupS
 		String displayName = menuItemModifierGroup.getModifierGroup().getDisplayName();
 		int minQuantity = menuItemModifierGroup.getMinQuantity();
 		POSMessageDialog.showError("You must select at least " + minQuantity + " modifiers from group " + displayName);
+	}
+
+	@Override
+	public void modifierRemoved(TicketItemModifier modifier) {
+		updateView();
 	}
 }

@@ -52,7 +52,9 @@ import com.floreantpos.swing.POSToggleButton;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.swing.PosUIManager;
 import com.floreantpos.swing.TransparentPanel;
+import com.floreantpos.ui.views.IView;
 import com.floreantpos.ui.views.SwitchboardView;
+import com.floreantpos.ui.views.TableMapView;
 import com.floreantpos.ui.views.order.OrderView;
 import com.floreantpos.ui.views.order.RootView;
 import com.floreantpos.util.PosGuiUtil;
@@ -125,15 +127,20 @@ public class HeaderPanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				RootView.getInstance().setMaintenanceMode(btnMaintainance.isSelected());
 				updateViewToMaintenanceMode(btnMaintainance.isSelected());
-				if (OrderView.getInstance().isVisible()) {
+				IView view = RootView.getInstance().getCurrentView();
+				if (view instanceof OrderView) {
 					OrderView.getInstance().getCategoryView().initialize();
 				}
-				else if (SwitchboardView.getInstance().isVisible()) {
+				else if (view instanceof TableMapView) {
+					TableMapView.getInstance().updateView();
+				}
+				else if (view instanceof SwitchboardView) {
 					SwitchboardView.getInstance().rendererOrderPanel();
 				}
 			}
 		});
 		buttonPanel.add(btnMaintainance, "w " + btnSize + "!, h " + btnSize + "!"); //$NON-NLS-1$
+		btnMaintainance.setVisible(false);
 
 		btnSwithboardView = new PosButton(new SwithboardViewAction(false, true));
 		buttonPanel.add(btnSwithboardView, "w " + btnSize + "!, h " + btnSize + "!"); //$NON-NLS-1$
@@ -156,6 +163,7 @@ public class HeaderPanel extends JPanel {
 		buttonPanel.add(btnShutdown, "w " + btnSize + "!, h " + btnSize + "!"); //$NON-NLS-1$
 
 		buttonPanel.add(quickMaintenancePanel);
+		quickMaintenancePanel.setVisible(false);
 
 		add(buttonPanel, BorderLayout.EAST);
 
@@ -177,11 +185,15 @@ public class HeaderPanel extends JPanel {
 		sb.append(terminalString + ": " + Application.getInstance().getTerminal().getName()); //$NON-NLS-1$
 		sb.append(", "); //$NON-NLS-1$
 		sb.append(dateFormat.format(Calendar.getInstance().getTime()));
-		User currentUser = Application.getCurrentUser();
-		btnMaintainance.setVisible(TerminalConfig.isAllowedQuickMaintenance()
-				&& (currentUser.isAdministrator() || currentUser.hasPermission(UserPermission.QUICK_MAINTENANCE)));
-
 		statusLabel.setText(sb.toString());
+	}
+
+	private void updateView() {
+		User currentUser = Application.getCurrentUser();
+		boolean hasPermission = TerminalConfig.isAllowedQuickMaintenance()
+				&& (currentUser.isAdministrator() || currentUser.hasPermission(UserPermission.QUICK_MAINTENANCE));
+		btnMaintainance.setVisible(hasPermission);
+		quickMaintenancePanel.setVisible(btnMaintainance.isSelected() && hasPermission);
 	}
 
 	private void startTimer() {
@@ -205,6 +217,7 @@ public class HeaderPanel extends JPanel {
 		super.setVisible(aFlag);
 
 		if (aFlag) {
+			updateView();
 			startTimer();
 		}
 		else {
@@ -277,7 +290,6 @@ public class HeaderPanel extends JPanel {
 		boolean selected = btnMaintainance.isSelected();
 
 		btnHomeScreen.setVisible(!selected);
-		btnMaintainance.setVisible(true);
 		btnOthers.setVisible(!selected);
 		btnSwithboardView.setVisible(!selected);
 		btnClockOUt.setVisible(!selected);
@@ -291,7 +303,6 @@ public class HeaderPanel extends JPanel {
 		boolean selected = btnMaintainance.isSelected();
 
 		btnHomeScreen.setVisible(!selected);
-		btnMaintainance.setVisible(true);
 		btnOthers.setVisible(!selected);
 		btnSwithboardView.setVisible(!selected);
 		btnClockOUt.setVisible(!selected);
@@ -305,7 +316,6 @@ public class HeaderPanel extends JPanel {
 		boolean selected = btnMaintainance.isSelected();
 
 		btnHomeScreen.setVisible(!selected);
-		btnMaintainance.setVisible(true);
 		btnOthers.setVisible(!selected);
 		btnSwithboardView.setVisible(!selected);
 		btnClockOUt.setVisible(!selected);

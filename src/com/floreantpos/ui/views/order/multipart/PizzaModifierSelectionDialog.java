@@ -428,7 +428,8 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 			if (sec == section) {
 				sec.setBorder(BorderFactory.createLineBorder(Color.blue, 4));
 				sec.setSelected(true);
-			} else {
+			}
+			else {
 				sec.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
 				sec.setSelected(false);
 			}
@@ -493,7 +494,8 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 
 				if (ticketItemModifier.getModifierType() == TicketItemModifier.NORMAL_MODIFIER) {
 					ticketItemModifier.setUnitPrice(menuModifier.getPriceForSize(itemSize, false));
-				} else if (ticketItemModifier.getModifierType() == TicketItemModifier.EXTRA_MODIFIER) {
+				}
+				else if (ticketItemModifier.getModifierType() == TicketItemModifier.EXTRA_MODIFIER) {
 					ticketItemModifier.setUnitPrice(menuModifier.getPriceForSize(itemSize, true));
 				}
 
@@ -538,15 +540,20 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 
 			if (selectedSection.modifierGroup.getNameDisplay().equalsIgnoreCase("Quarter 1")) {
 				fillQuarter1(g2);
-			} else if (selectedSection.modifierGroup.getNameDisplay().equalsIgnoreCase("Quarter 2")) {
+			}
+			else if (selectedSection.modifierGroup.getNameDisplay().equalsIgnoreCase("Quarter 2")) {
 				fillQuarter2(g2);
-			} else if (selectedSection.modifierGroup.getNameDisplay().equalsIgnoreCase("Quarter 3")) {
+			}
+			else if (selectedSection.modifierGroup.getNameDisplay().equalsIgnoreCase("Quarter 3")) {
 				fillQuarter3(g2);
-			} else if (selectedSection.modifierGroup.getNameDisplay().equalsIgnoreCase("Quarter 4")) {
+			}
+			else if (selectedSection.modifierGroup.getNameDisplay().equalsIgnoreCase("Quarter 4")) {
 				fillQuarter4(g2);
-			} else if (selectedSection.modifierGroup.getNameDisplay().equalsIgnoreCase("Half 1")) {
+			}
+			else if (selectedSection.modifierGroup.getNameDisplay().equalsIgnoreCase("Half 1")) {
 				fillHalf1(g2);
-			} else if (selectedSection.modifierGroup.getNameDisplay().equalsIgnoreCase("Half 2")) {
+			}
+			else if (selectedSection.modifierGroup.getNameDisplay().equalsIgnoreCase("Half 2")) {
 				fillHalf2(g2);
 			}
 		}
@@ -576,7 +583,7 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 		}
 
 		void fillHalf1(Graphics2D g2) {
-			g2.fillArc(4, 4, getWidth() - 16, getHeight() - 11, 90,180);
+			g2.fillArc(4, 4, getWidth() - 16, getHeight() - 11, 90, 180);
 		}
 
 		void fillHalf2(Graphics2D g2) {
@@ -649,7 +656,8 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 					}
 				}
 
-			} else {
+			}
+			else {
 				if (!sizeButtonList.isEmpty()) {
 					POSToggleButton button = sizeButtonList.get(0);
 					PizzaPrice pizzaPrice = (PizzaPrice) button.getClientProperty(PROP_PIZZA_PRICE);
@@ -685,7 +693,8 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 			Set<PizzaPrice> availablePrices = modifierSelectionModel.getMenuItem().getAvailablePrices(size);
 			for (PizzaPrice pizzaPrice : availablePrices) {
 				POSToggleButton crustButton = new POSToggleButton();
-				crustButton.setText("<html><center>" + pizzaPrice.getCrust().getName() + "<br/>" + CurrencyUtil.getCurrencySymbol() + pizzaPrice.getPrice() + "</center></html>");
+				crustButton.setText("<html><center>" + pizzaPrice.getCrust().getName() + "<br/>" + CurrencyUtil.getCurrencySymbol() + pizzaPrice.getPrice()
+						+ "</center></html>");
 				crustButton.putClientProperty(PROP_PIZZA_PRICE, pizzaPrice);
 				crustButton.addActionListener(new ActionListener() {
 					@Override
@@ -717,7 +726,8 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 							if (!crustFound) {
 								ticketItemModifiers.add(0, modifier);
 							}
-						} else {
+						}
+						else {
 							modifierGroup.addToticketItemModifiers(modifier);
 						}
 					}
@@ -742,5 +752,9 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 
 			return null;
 		}
+	}
+
+	@Override
+	public void modifierRemoved(TicketItemModifier modifier) {
 	}
 }

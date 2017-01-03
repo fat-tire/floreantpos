@@ -71,7 +71,7 @@ public class ModifierGroupView extends JPanel implements ComponentListener {
 	/** Creates new form CategoryView */
 	public ModifierGroupView(ModifierSelectionModel modifierSelectionModel) {
 		this.modifierSelectionModel = modifierSelectionModel;
-		
+
 		setLayout(new BorderLayout());
 		TitledBorder border = new TitledBorder(POSConstants.GROUPS);
 		border.setTitleJustification(TitledBorder.CENTER);
@@ -200,7 +200,7 @@ public class ModifierGroupView extends JPanel implements ComponentListener {
 
 		return null;
 	}
-	
+
 	private class ModifierGroupButton extends POSToggleButton implements ActionListener {
 		MenuModifierGroup menuModifierGroup;
 
@@ -212,13 +212,15 @@ public class ModifierGroupView extends JPanel implements ComponentListener {
 
 		private void updateButtonText() {
 			String string = "";
-//			if (addOnMode) {
-//				string = "<html><body><center>" + menuModifierGroup.getDisplayName() + "</center></body></html>";//$NON-NLS-1$ //$NON-NLS-2$ 
-//			}
-//			else {
-				string = "<html><body><center>" + menuModifierGroup.getDisplayName() + "<br/>"
-						+ "(" + menuModifierGroup.getMenuItemModifierGroup().getMinQuantity() + "*)</center></body></html>"; //$NON-NLS-1$ //$NON-NLS-2$ 
-//			}
+			//			if (addOnMode) {
+			//				string = "<html><body><center>" + menuModifierGroup.getDisplayName() + "</center></body></html>";//$NON-NLS-1$ //$NON-NLS-2$ 
+			//			}
+			//			else {
+			string = "<html><body><center> "
+					+ menuModifierGroup.getDisplayName()
+					+ "<br/>"
+					+ "<strong><span style='color:white;background-color:orange;margin:0;" + "'>&nbsp; " + menuModifierGroup.getMenuItemModifierGroup().getMinQuantity() + "&nbsp; </span></center></body></html>"; //$NON-NLS-1$ //$NON-NLS-2$ 
+			//			}
 
 			setText(string);
 		}

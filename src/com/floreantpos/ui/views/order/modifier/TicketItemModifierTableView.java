@@ -72,10 +72,11 @@ public class TicketItemModifierTableView extends JPanel {
 
 	private TitledBorder titledBorder = new TitledBorder(""); //$NON-NLS-1$
 	private Border border = new CompoundBorder(titledBorder, new EmptyBorder(5, 5, 5, 5));
+	private ModifierSelectionListener listener;
 
-	public TicketItemModifierTableView(ModifierSelectionModel modifierSelectionModel) {
+	public TicketItemModifierTableView(ModifierSelectionModel modifierSelectionModel, ModifierSelectionListener listener) {
 		this.modifierSelectionModel = modifierSelectionModel;
-
+		this.listener = listener;
 		initComponents();
 	}
 
@@ -196,8 +197,8 @@ public class TicketItemModifierTableView extends JPanel {
 		Object object = modifierViewerTable.deleteSelectedItem();
 		if (object != null) {
 			updateView();
+			listener.modifierRemoved((TicketItemModifier) object);
 		}
-
 	}
 
 	private void doScrollDown(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_doScrollDown

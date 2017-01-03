@@ -22,6 +22,7 @@ public abstract class BaseOrderType  implements Comparable, Serializable {
 	public static String PROP_REQUIRED_CUSTOMER_DATA = "requiredCustomerData"; //$NON-NLS-1$
 	public static String PROP_CONSOLIDATE_ITEMS_IN_RECEIPT = "consolidateItemsInReceipt"; //$NON-NLS-1$
 	public static String PROP_SHOW_IN_LOGIN_SCREEN = "showInLoginScreen"; //$NON-NLS-1$
+	public static String PROP_SHOW_UNIT_PRICE_IN_TICKET_GRID = "showUnitPriceInTicketGrid"; //$NON-NLS-1$
 	public static String PROP_NAME = "name"; //$NON-NLS-1$
 	public static String PROP_SHOW_TABLE_SELECTION = "showTableSelection"; //$NON-NLS-1$
 	public static String PROP_SHOULD_PRINT_TO_KITCHEN = "shouldPrintToKitchen"; //$NON-NLS-1$
@@ -33,6 +34,7 @@ public abstract class BaseOrderType  implements Comparable, Serializable {
 	public static String PROP_HIDE_ITEM_WITH_EMPTY_INVENTORY = "hideItemWithEmptyInventory"; //$NON-NLS-1$
 	public static String PROP_ALLOW_SEAT_BASED_ORDER = "allowSeatBasedOrder"; //$NON-NLS-1$
 	public static String PROP_HAS_FOR_HERE_AND_TO_GO = "hasForHereAndToGo"; //$NON-NLS-1$
+	public static String PROP_SHOW_PRICE_ON_BUTTON = "showPriceOnButton"; //$NON-NLS-1$
 	public static String PROP_PREPAID = "prepaid"; //$NON-NLS-1$
 
 
@@ -88,6 +90,8 @@ public abstract class BaseOrderType  implements Comparable, Serializable {
 		protected java.lang.Boolean hasForHereAndToGo;
 		protected java.lang.Boolean preAuthCreditCard;
 		protected java.lang.Boolean barTab;
+		protected java.lang.Boolean showPriceOnButton;
+		protected java.lang.Boolean showUnitPriceInTicketGrid;
 
 
 
@@ -402,6 +406,40 @@ public abstract class BaseOrderType  implements Comparable, Serializable {
 
 
 
+	/**
+	 * Return the value associated with the column: SHOW_PRICE_ON_BUTTON
+	 */
+	public java.lang.Boolean isShowPriceOnButton () {
+								return showPriceOnButton == null ? Boolean.FALSE : showPriceOnButton;
+					}
+
+	/**
+	 * Set the value related to the column: SHOW_PRICE_ON_BUTTON
+	 * @param showPriceOnButton the SHOW_PRICE_ON_BUTTON value
+	 */
+	public void setShowPriceOnButton (java.lang.Boolean showPriceOnButton) {
+		this.showPriceOnButton = showPriceOnButton;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: SHOW_UNIT_PRICE_IN_TICKET_GRID
+	 */
+	public java.lang.Boolean isShowUnitPriceInTicketGrid () {
+								return showUnitPriceInTicketGrid == null ? Boolean.FALSE : showUnitPriceInTicketGrid;
+					}
+
+	/**
+	 * Set the value related to the column: SHOW_UNIT_PRICE_IN_TICKET_GRID
+	 * @param showUnitPriceInTicketGrid the SHOW_UNIT_PRICE_IN_TICKET_GRID value
+	 */
+	public void setShowUnitPriceInTicketGrid (java.lang.Boolean showUnitPriceInTicketGrid) {
+		this.showUnitPriceInTicketGrid = showUnitPriceInTicketGrid;
+	}
+
+
+
 
 
 	public boolean equals (Object obj) {
@@ -409,7 +447,7 @@ public abstract class BaseOrderType  implements Comparable, Serializable {
 		if (!(obj instanceof com.floreantpos.model.OrderType)) return false;
 		else {
 			com.floreantpos.model.OrderType orderType = (com.floreantpos.model.OrderType) obj;
-			if (null == this.getId() || null == orderType.getId()) return false;
+			if (null == this.getId() || null == orderType.getId()) return this == obj;
 			else return (this.getId().equals(orderType.getId()));
 		}
 	}

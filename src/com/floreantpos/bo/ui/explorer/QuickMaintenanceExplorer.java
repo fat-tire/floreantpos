@@ -34,13 +34,16 @@ import com.floreantpos.model.MenuCategory;
 import com.floreantpos.model.MenuGroup;
 import com.floreantpos.model.MenuItem;
 import com.floreantpos.model.OrderType;
+import com.floreantpos.model.ShopTable;
 import com.floreantpos.model.dao.MenuCategoryDAO;
 import com.floreantpos.model.dao.MenuGroupDAO;
 import com.floreantpos.model.dao.MenuItemDAO;
 import com.floreantpos.model.dao.OrderTypeDAO;
+import com.floreantpos.model.dao.ShopTableDAO;
 import com.floreantpos.swing.POSToggleButton;
 import com.floreantpos.swing.PosUIManager;
 import com.floreantpos.swing.TransparentPanel;
+import com.floreantpos.table.ShopTableForm;
 import com.floreantpos.ui.dialog.BeanEditorDialog;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.model.MenuCategoryForm;
@@ -48,6 +51,7 @@ import com.floreantpos.ui.model.MenuGroupForm;
 import com.floreantpos.ui.model.MenuItemForm;
 import com.floreantpos.ui.model.OrderTypeForm;
 import com.floreantpos.ui.views.SwitchboardView;
+import com.floreantpos.ui.views.TableMapView;
 import com.floreantpos.ui.views.order.OrderView;
 import com.floreantpos.util.POSUtil;
 
@@ -100,6 +104,9 @@ public class QuickMaintenanceExplorer extends TransparentPanel {
 		}
 		else if (object instanceof OrderType) {
 			quickMaintainOrderType((OrderType) object);
+		}
+		else if (object instanceof ShopTable) {
+			quickMaintainShopTable((ShopTable) object);
 		}
 	}
 
@@ -256,6 +263,40 @@ public class QuickMaintenanceExplorer extends TransparentPanel {
 				return;
 			Application.getInstance().refreshOrderTypes();
 			SwitchboardView.getInstance().rendererOrderPanel();
+			return;
+		} catch (Exception e) {
+			return;
+		}
+	}
+
+	private static void quickMaintainShopTable(ShopTable shopTable) {
+		try {
+			if (shopTable.getId() != null) {
+				if (btnCopy.isSelected()) {
+					ShopTable newShopTable = new ShopTable();
+					PropertyUtils.copyProperties(newShopTable, shopTable);
+					newShopTable.setId(shopTable.getId() + 1);
+					newShopTable.setDescription(String.valueOf(shopTable.getId() + 1));
+					shopTable = newShopTable;
+				}
+				else if (btnDelete.isSelected()) {
+					if (POSMessageDialog.showYesNoQuestionDialog(POSUtil.getFocusedWindow(), POSConstants.CONFIRM_DELETE, POSConstants.DELETE) != JOptionPane.YES_OPTION) {
+						return;
+					}
+
+					ShopTableDAO shopTableDAO = new ShopTableDAO();
+					shopTableDAO.delete(shopTable.getId());
+					TableMapView.getInstance().updateView();
+					return;
+				}
+			}
+			ShopTableForm editor = new ShopTableForm();
+			editor.setBean(shopTable);
+			BeanEditorDialog dialog = new BeanEditorDialog(Application.getPosWindow(), editor);
+			dialog.open(600, 500);
+			if (dialog.isCanceled())
+				return;
+			TableMapView.getInstance().updateView();
 			return;
 		} catch (Exception e) {
 			return;

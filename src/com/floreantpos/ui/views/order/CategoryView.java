@@ -81,7 +81,7 @@ public class CategoryView extends SelectionView implements ActionListener {
 
 		MenuCategoryDAO categoryDAO = new MenuCategoryDAO();
 		List<MenuCategory> categories = categoryDAO.findAllEnable();
-		if (categories.size() == 0)
+		if (categories.size() == 0 && !RootView.getInstance().isMaintenanceMode())
 			return;
 
 		OrderType orderType = OrderView.getInstance().getCurrentTicket().getOrderType();
@@ -114,7 +114,7 @@ public class CategoryView extends SelectionView implements ActionListener {
 			fireCategorySelected(categoryButton.foodCategory);
 		}
 
-		if (categories.size() <= 1) {
+		if (!RootView.getInstance().isMaintenanceMode() && categories.size() <= 1) {
 			setVisible(false);
 		}
 		else {

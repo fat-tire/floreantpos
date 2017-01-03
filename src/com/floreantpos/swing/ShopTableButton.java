@@ -33,58 +33,59 @@ import com.floreantpos.ui.dialog.PasswordEntryDialog;
 
 public class ShopTableButton extends PosButton {
 	private ShopTable shopTable;
-	private User user; 
-	private Ticket ticket; 
-	
+	private User user;
+	private Ticket ticket;
+
 	public ShopTableButton(ShopTable shopTable) {
 		this.shopTable = shopTable;
-		setText(shopTable.toString());
-		
+		if (shopTable.getId() != null)
+			setText(shopTable.toString());
+
 		update();
 	}
-	
-	public int getId(){
-		return shopTable.getId(); 
+
+	public int getId() {
+		return shopTable.getId();
 	}
 
 	public void setShopTable(ShopTable shopTable) {
 		this.shopTable = shopTable;
 	}
-	
+
 	public ShopTable getShopTable() {
 		return shopTable;
 	}
-	
+
 	@Override
 	public boolean equals(Object obj) {
-		if(!(obj instanceof ShopTableButton)) {
+		if (!(obj instanceof ShopTableButton)) {
 			return false;
 		}
-		
+
 		ShopTableButton that = (ShopTableButton) obj;
-		
+
 		return this.shopTable.equals(that.shopTable);
 	}
-	
+
 	@Override
 	public int hashCode() {
 		return this.shopTable.hashCode();
 	}
-	
+
 	@Override
 	public String toString() {
 		return shopTable.toString();
 	}
-	
+
 	public void update() {
-		if(shopTable != null && shopTable.isServing()) {
+		if (shopTable != null && shopTable.isServing()) {
 			//setEnabled(false);
 			setBackground(Color.red);
 			setForeground(Color.BLACK);
 		}
-		else if(shopTable != null && shopTable.isBooked()) {
+		else if (shopTable != null && shopTable.isBooked()) {
 			setEnabled(false);
-			setOpaque(true); 
+			setOpaque(true);
 			setBackground(Color.orange);
 			setForeground(Color.BLACK);
 		}
@@ -94,29 +95,29 @@ public class ShopTableButton extends PosButton {
 			setForeground(Color.black);
 		}
 	}
-	
-	public void setUser(User user){
-			if(user!=null){
-				this.user=user; 
-			}
+
+	public void setUser(User user) {
+		if (user != null) {
+			this.user = user;
+		}
 	}
-	
-	public User getUser(){
+
+	public User getUser() {
 		return user;
 	}
-	
+
 	public boolean hasUserAccess() {
 
 		if (user == null) {
 			return false;
 		}
 		User currentUser = Application.getCurrentUser();
-		
+
 		int currentUserId = currentUser.getUserId();
 		int ticketUserId = user.getUserId();
-		
+
 		if (currentUserId == ticketUserId) {
-			return true; 
+			return true;
 		}
 
 		if (currentUser.hasPermission(UserPermission.PERFORM_MANAGER_TASK) || currentUser.hasPermission(UserPermission.PERFORM_ADMINISTRATIVE_TASK)) {
@@ -135,12 +136,12 @@ public class ShopTableButton extends PosButton {
 		}
 		return true;
 	}
-	
-	public void setTicket(Ticket ticket){
-		this.ticket=ticket; 
+
+	public void setTicket(Ticket ticket) {
+		this.ticket = ticket;
 	}
-	
-	public Ticket getTicket(){
+
+	public Ticket getTicket() {
 		return ticket;
 	}
 }

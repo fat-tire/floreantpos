@@ -71,7 +71,7 @@ public class TableMapView extends ViewPanel {
 		tableSelector.redererTables();
 	}
 
-	private static TableMapView getInstance() {
+	public static TableMapView getInstance() {
 		if (instance == null) {
 			instance = new TableMapView();
 		}

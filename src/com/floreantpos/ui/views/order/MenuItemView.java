@@ -52,6 +52,7 @@ import com.floreantpos.model.dao.MenuItemDAO;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.swing.PosUIManager;
 import com.floreantpos.ui.views.order.actions.ItemSelectionListener;
+import com.floreantpos.util.CurrencyUtil;
 
 /**
  * 
@@ -64,6 +65,7 @@ public class MenuItemView extends SelectionView {
 
 	private MenuGroup menuGroup;
 	private Map<Integer, ItemButton> menuItemButtonMap = new HashMap<Integer, MenuItemView.ItemButton>();
+	private boolean showPrice;
 
 	/** Creates new form GroupView */
 	public MenuItemView() {
@@ -90,6 +92,7 @@ public class MenuItemView extends SelectionView {
 			return;
 		}
 		OrderType orderType = OrderView.getInstance().getCurrentTicket().getOrderType();
+		showPrice = orderType.isShowPriceOnButton();
 		MenuItemDAO dao = new MenuItemDAO();
 		try {
 			List<MenuItem> items = new ArrayList<>();
@@ -198,7 +201,7 @@ public class MenuItemView extends SelectionView {
 					h = PosUIManager.getSize(40);
 
 					setIcon(menuItem.getScaledImage(w, h));
-					setText("<html><body><center>" + menuItem.getDisplayName() + "</center></body></html>"); //$NON-NLS-1$ //$NON-NLS-2$
+					setText("<html><body><center><span style='font-size:7px;margin:0px;'>" + menuItem.getDisplayName() + "</span></center></body></html>"); //$NON-NLS-1$ //$NON-NLS-2$
 				}
 
 			}
@@ -207,7 +210,7 @@ public class MenuItemView extends SelectionView {
 					setIcon(IconFactory.getIcon("/ui_icons/", "add+user.png"));
 				}
 				else
-					setText("<html><body><center>" + menuItem.getName() + "</center></body></html>"); //$NON-NLS-1$ //$NON-NLS-2$
+					setText("<html><body><center>" + menuItem.getName() + (!showPrice ? "" : "<br><h4>" + CurrencyUtil.getCurrencySymbol() + menuItem.getPrice() + "</h4>") + "</center></body></html>"); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 
 			Color buttonColor = menuItem.getButtonColor();

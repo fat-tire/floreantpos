@@ -29,6 +29,7 @@ import java.awt.GridLayout;
 import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
@@ -91,7 +92,10 @@ public class GroupView extends SelectionView {
 		try {
 			MenuGroupDAO dao = new MenuGroupDAO();
 			OrderType orderType = OrderView.getInstance().getCurrentTicket().getOrderType();
-			List<MenuGroup> groups = dao.findEnabledByParent(menuCategory);
+			List<MenuGroup> groups = new ArrayList<>();
+			List<MenuGroup> groupList = dao.findEnabledByParent(menuCategory);
+			if (groupList != null)
+				groups.addAll(groupList);
 
 			if (RootView.getInstance().isMaintenanceMode()) {
 				MenuGroup newMenuGroup = new MenuGroup(null, "");
@@ -126,6 +130,7 @@ public class GroupView extends SelectionView {
 			}
 
 		} catch (Exception e) {
+			e.printStackTrace();
 			MessageDialog.showError(e);
 		}
 	}
