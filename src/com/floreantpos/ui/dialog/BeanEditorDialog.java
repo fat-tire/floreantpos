@@ -175,6 +175,13 @@ public class BeanEditorDialog extends javax.swing.JDialog implements WindowListe
 		super.setVisible(true);
 	}
 
+	public void open(int w, int h) {
+		canceled = false;
+		this.setSize(w, h);
+		this.setLocationRelativeTo(this.getOwner());
+		super.setVisible(true);
+	}
+
 	public boolean isCanceled() {
 		return canceled;
 	}
