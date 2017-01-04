@@ -126,11 +126,11 @@ public class Application {
 		if (TerminalConfig.isFullscreenMode()) {
 			posWindow.enterFullScreenMode();
 		}
-		posWindow.setVisible(true);
-
 		rootView = RootView.getInstance();
 		posWindow.getContentPane().add(rootView);
 		rootView.addView(LoginView.getInstance());
+
+		posWindow.setVisible(true);
 		initializeSystem();
 
 	}
