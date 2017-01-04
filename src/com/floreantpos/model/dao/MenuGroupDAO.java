@@ -30,6 +30,7 @@ import org.hibernate.criterion.Restrictions;
 
 import com.floreantpos.Messages;
 import com.floreantpos.PosException;
+import com.floreantpos.PosLog;
 import com.floreantpos.model.MenuCategory;
 import com.floreantpos.model.MenuGroup;
 import com.floreantpos.model.MenuItem;
@@ -135,6 +136,28 @@ public class MenuGroupDAO extends BaseMenuGroupDAO {
 			tx.rollback();
 			LogFactory.getLog(ShopTableDAO.class).error(e);
 			throw new RuntimeException(e);
+		} finally {
+			closeSession(session);
+		}
+	}
+
+	public void saveAll(List<MenuGroup> menuGroups) {
+		if (menuGroups == null) {
+			return;
+		}
+		Session session = null;
+		Transaction tx = null;
+
+		try {
+			session = createNewSession();
+			tx = session.beginTransaction();
+			for (MenuGroup group : menuGroups) {
+				session.saveOrUpdate(group);
+			}
+			tx.commit();
+		} catch (Exception e) {
+			tx.rollback();
+			PosLog.error(getClass(), e);
 		} finally {
 			closeSession(session);
 		}

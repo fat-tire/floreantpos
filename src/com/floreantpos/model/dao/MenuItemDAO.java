@@ -158,24 +158,26 @@ public class MenuItemDAO extends BaseMenuItemDAO {
 		}
 	}
 
-	public List<MenuItem> getMenuItems(String itemName, MenuGroup menuGroup, Object selectedType) {
+	public List<MenuItem> getMenuItems(String itemName, Object menuGroup, Object selectedType) {
 		Session session = null;
 		Criteria criteria = null;
 		try {
 			session = getSession();
 			criteria = session.createCriteria(MenuItem.class);
 
-			if (menuGroup != null) {
-				criteria.add(Restrictions.eq(MenuItem.PROP_PARENT, menuGroup));
+			if (menuGroup != null && menuGroup instanceof MenuGroup) {
+				criteria.add(Restrictions.eq(MenuItem.PROP_PARENT, (MenuGroup) menuGroup));
 			}
-
+			else if (menuGroup != null && menuGroup instanceof String) {
+				criteria.add(Restrictions.isNull(MenuItem.PROP_PARENT));
+			}
 			if (StringUtils.isNotEmpty(itemName)) {
 				criteria.add(Restrictions.ilike(MenuItem.PROP_NAME, itemName.trim(), MatchMode.ANYWHERE));
 			}
 
 			//List<MenuItem> similarItems = criteria.list();
 
-			if (selectedType instanceof OrderType) {
+			if (selectedType != null && selectedType instanceof OrderType) {
 				OrderType orderType = (OrderType) selectedType;
 
 				criteria.createAlias("orderTypeList", "type");
@@ -196,7 +198,9 @@ public class MenuItemDAO extends BaseMenuItemDAO {
 				}
 				similarItems.retainAll(selectedMenuItems);*/
 			}
-
+			else if (selectedType != null && selectedType instanceof String) {
+				criteria.add(Restrictions.isEmpty("orderTypeList"));
+			}
 			return criteria.list();
 
 		} catch (Exception e) {
@@ -357,6 +361,28 @@ public class MenuItemDAO extends BaseMenuItemDAO {
 			List<MenuItem> result = criteria.list();
 
 			return result;
+		} finally {
+			closeSession(session);
+		}
+	}
+
+	public void saveAll(List<MenuItem> menuItems) {
+		if (menuItems == null) {
+			return;
+		}
+		Session session = null;
+		Transaction tx = null;
+
+		try {
+			session = createNewSession();
+			tx = session.beginTransaction();
+			for (MenuItem menuItem : menuItems) {
+				session.saveOrUpdate(menuItem);
+			}
+			tx.commit();
+		} catch (Exception e) {
+			tx.rollback();
+			PosLog.error(getClass(), e);
 		} finally {
 			closeSession(session);
 		}

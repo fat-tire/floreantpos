@@ -52,11 +52,15 @@ import com.floreantpos.model.MenuItem;
 import com.floreantpos.model.OrderType;
 import com.floreantpos.model.dao.MenuGroupDAO;
 import com.floreantpos.model.dao.MenuItemDAO;
+import com.floreantpos.model.dao.OrderTypeDAO;
 import com.floreantpos.swing.BeanTableModel;
 import com.floreantpos.swing.TransparentPanel;
 import com.floreantpos.ui.dialog.BeanEditorDialog;
+import com.floreantpos.ui.dialog.ComboItemSelectionDialog;
 import com.floreantpos.ui.dialog.POSMessageDialog;
+import com.floreantpos.ui.model.MenuGroupForm;
 import com.floreantpos.ui.model.MenuItemForm;
+import com.floreantpos.ui.model.OrderTypeForm;
 import com.floreantpos.util.CurrencyUtil;
 import com.floreantpos.util.POSUtil;
 
@@ -106,6 +110,7 @@ public class MenuItemExplorer extends TransparentPanel {
 		cbOrderTypes = new JComboBox();
 
 		cbOrderTypes.addItem(Messages.getString("MenuItemExplorer.5")); //$NON-NLS-1$
+		cbOrderTypes.addItem("<None>");
 
 		List<OrderType> orderTypes = Application.getInstance().getOrderTypes();
 		for (OrderType orderType : orderTypes) {
@@ -123,6 +128,7 @@ public class MenuItemExplorer extends TransparentPanel {
 			cbGroup = new JComboBox();
 
 			cbGroup.addItem(Messages.getString("MenuItemExplorer.2")); //$NON-NLS-1$
+			cbGroup.addItem("<None>");
 			for (MenuGroup s : menuGroupList) {
 				cbGroup.addItem(s);
 			}
@@ -168,15 +174,17 @@ public class MenuItemExplorer extends TransparentPanel {
 		Object selectedType = cbOrderTypes.getSelectedItem();
 		String txName = tfName.getText();
 		Object selectedGroup = cbGroup.getSelectedItem();
-
-		List<MenuItem> similarItem = null;
-
-		if (selectedGroup instanceof MenuGroup) {
-			similarItem = MenuItemDAO.getInstance().getMenuItems(txName, (MenuGroup) selectedGroup, selectedType);
+		if (!(selectedGroup instanceof MenuGroup)) {
+			if (selectedGroup.equals(Messages.getString("MenuItemExplorer.2"))) {
+				selectedGroup = null;
+			}
 		}
-		else {
-			similarItem = MenuItemDAO.getInstance().getMenuItems(txName, null, selectedType);
+		if (!(selectedType instanceof OrderType)) {
+			if (selectedType.equals(Messages.getString("MenuItemExplorer.5"))) {
+				selectedType = null;
+			}
 		}
+		List<MenuItem> similarItem = MenuItemDAO.getInstance().getMenuItems(txName, selectedGroup, selectedType);
 
 		tableModel.removeAll();
 		tableModel.addRows(similarItem);
@@ -189,6 +197,9 @@ public class MenuItemExplorer extends TransparentPanel {
 		JButton deleteButton = explorerButton.getDeleteButton();
 		JButton duplicateButton = new JButton(POSConstants.DUPLICATE);
 		JButton updateStockAmount = new JButton(Messages.getString("MenuItemExplorer.6")); //$NON-NLS-1$
+
+		JButton btnChangeMenuGroup = new JButton("Change Menu Group");
+		JButton btnChangeOrderType = new JButton("Change Order Type");
 
 		updateStockAmount.addActionListener(new ActionListener() {
 
@@ -334,6 +345,58 @@ public class MenuItemExplorer extends TransparentPanel {
 
 		});
 
+		btnChangeMenuGroup.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					int[] rows = table.getSelectedRows();
+					if (rows.length < 1)
+						return;
+
+					MenuGroup group = getSelectedMenuGroup(null);
+					if (group == null)
+						return;
+
+					List<MenuItem> menuItems = new ArrayList<>();
+					for (int i = 0; i < rows.length; i++) {
+						int index = table.convertRowIndexToModel(rows[i]);
+						MenuItem menuItem = tableModel.getRow(index);
+						menuItem.setParent(group);
+						menuItems.add(menuItem);
+					}
+					MenuItemDAO.getInstance().saveAll(menuItems);
+					searchItem();
+				} catch (Throwable x) {
+					BOMessageDialog.showError(POSConstants.ERROR_MESSAGE, x);
+				}
+			}
+		});
+
+		btnChangeOrderType.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					int[] rows = table.getSelectedRows();
+					if (rows.length < 1)
+						return;
+
+					List<OrderType> orderTypes = getSelectedOrderTypes(new ArrayList<>());
+					if (orderTypes == null)
+						return;
+
+					List<MenuItem> menuItems = new ArrayList<>();
+					for (int i = 0; i < rows.length; i++) {
+						int index = table.convertRowIndexToModel(rows[i]);
+						MenuItem menuItem = tableModel.getRow(index);
+						menuItem.setOrderTypeList(orderTypes);
+						menuItems.add(menuItem);
+					}
+					MenuItemDAO.getInstance().saveAll(menuItems);
+					searchItem();
+				} catch (Throwable x) {
+					BOMessageDialog.showError(POSConstants.ERROR_MESSAGE, x);
+				}
+			}
+		});
+
 		deleteButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -370,7 +433,61 @@ public class MenuItemExplorer extends TransparentPanel {
 		panel.add(updateStockAmount);
 		panel.add(deleteButton);
 		panel.add(duplicateButton);
+		panel.add(btnChangeMenuGroup);
+		panel.add(btnChangeOrderType);
 		return panel;
+	}
+
+	protected MenuGroup getSelectedMenuGroup(MenuGroup defaultValue) {
+		List<MenuGroup> menuGroups = MenuGroupDAO.getInstance().findAll();
+		ComboItemSelectionDialog dialog = new ComboItemSelectionDialog("SELECT GROUP", "Menu Group", menuGroups, false);
+		dialog.setSelectedItem(defaultValue);
+		dialog.setVisibleNewButton(true);
+		dialog.pack();
+		dialog.open();
+
+		if (dialog.isCanceled())
+			return null;
+
+		if (dialog.isNewItem()) {
+			MenuGroup foodGroup = new MenuGroup();
+			MenuGroupForm editor = new MenuGroupForm(foodGroup);
+			BeanEditorDialog editorDialog = new BeanEditorDialog(POSUtil.getBackOfficeWindow(), editor);
+			editorDialog.open();
+			if (editorDialog.isCanceled())
+				return null;
+			return getSelectedMenuGroup(foodGroup);
+		}
+		return (MenuGroup) dialog.getSelectedItem();
+	}
+
+	protected List<OrderType> getSelectedOrderTypes(List defaultValues) {
+		List<OrderType> orderTypes = OrderTypeDAO.getInstance().findAll();
+		ComboItemSelectionDialog dialog = new ComboItemSelectionDialog("SELECT ORDER TYPES", "Order Type", orderTypes, true);
+		dialog.setSelectedItems(defaultValues);
+		dialog.setVisibleNewButton(true);
+		dialog.pack();
+		dialog.open();
+
+		if (dialog.isCanceled())
+			return null;
+
+		if (dialog.isNewItem()) {
+			OrderType orderType = new OrderType();
+			OrderTypeForm editor;
+			try {
+				editor = new OrderTypeForm();
+				editor.setBean(orderType);
+				BeanEditorDialog editorDialog = new BeanEditorDialog(POSUtil.getBackOfficeWindow(), editor);
+				editorDialog.open();
+				if (editorDialog.isCanceled())
+					return null;
+				defaultValues.add(orderType);
+			} catch (Exception e) {
+			}
+			return getSelectedOrderTypes(defaultValues);
+		}
+		return dialog.getSelectedItems();
 	}
 
 	public void resizeColumnWidth(JTable table) {

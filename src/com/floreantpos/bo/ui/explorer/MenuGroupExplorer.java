@@ -22,6 +22,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -37,14 +38,18 @@ import com.floreantpos.Messages;
 import com.floreantpos.POSConstants;
 import com.floreantpos.bo.ui.BOMessageDialog;
 import com.floreantpos.bo.ui.CustomCellRenderer;
+import com.floreantpos.model.MenuCategory;
 import com.floreantpos.model.MenuGroup;
 import com.floreantpos.model.MenuItem;
+import com.floreantpos.model.dao.MenuCategoryDAO;
 import com.floreantpos.model.dao.MenuGroupDAO;
 import com.floreantpos.model.dao.MenuItemDAO;
 import com.floreantpos.swing.BeanTableModel;
 import com.floreantpos.swing.TransparentPanel;
 import com.floreantpos.ui.dialog.BeanEditorDialog;
+import com.floreantpos.ui.dialog.ComboItemSelectionDialog;
 import com.floreantpos.ui.dialog.POSMessageDialog;
+import com.floreantpos.ui.model.MenuCategoryForm;
 import com.floreantpos.ui.model.MenuGroupForm;
 import com.floreantpos.util.POSUtil;
 
@@ -91,6 +96,8 @@ public class MenuGroupExplorer extends TransparentPanel {
 		JButton editButton = explorerButton.getEditButton();
 		JButton addButton = explorerButton.getAddButton();
 		JButton deleteButton = explorerButton.getDeleteButton();
+
+		JButton btnChangeCategory = new JButton("Change Menu Category");
 
 		editButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -167,11 +174,65 @@ public class MenuGroupExplorer extends TransparentPanel {
 
 		});
 
+		btnChangeCategory.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					int[] rows = table.getSelectedRows();
+					if (rows.length < 1)
+						return;
+
+					MenuCategory category = getSelectedMenuCategory(null);
+					if (category == null)
+						return;
+
+					List<MenuGroup> menuGroups = new ArrayList<>();
+					for (int i = 0; i < rows.length; i++) {
+						int index = table.convertRowIndexToModel(rows[i]);
+						MenuGroup menuGroup = tableModel.getRow(index);
+						menuGroup.setParent(category);
+						menuGroups.add(menuGroup);
+					}
+					MenuGroupDAO.getInstance().saveAll(menuGroups);
+					tableModel.fireTableDataChanged();
+				} catch (Throwable x) {
+					BOMessageDialog.showError(POSConstants.ERROR_MESSAGE, x);
+				}
+			}
+		});
+
 		TransparentPanel panel = new TransparentPanel();
 
 		panel.add(addButton);
 		panel.add(editButton);
 		panel.add(deleteButton);
+		panel.add(btnChangeCategory);
 		add(panel, BorderLayout.SOUTH);
+	}
+
+	protected MenuCategory getSelectedMenuCategory(MenuCategory defaultValue) {
+		List<MenuCategory> menuCategorys = MenuCategoryDAO.getInstance().findAll();
+		ComboItemSelectionDialog dialog = new ComboItemSelectionDialog("SELECT GROUP", "Menu Category", menuCategorys, false);
+		dialog.setSelectedItem(defaultValue);
+		dialog.setVisibleNewButton(true);
+		dialog.pack();
+		dialog.open();
+
+		if (dialog.isCanceled())
+			return null;
+
+		if (dialog.isNewItem()) {
+			MenuCategory foodCategory = new MenuCategory();
+			MenuCategoryForm editor;
+			try {
+				editor = new MenuCategoryForm(foodCategory);
+				BeanEditorDialog editorDialog = new BeanEditorDialog(POSUtil.getBackOfficeWindow(), editor);
+				editorDialog.open();
+				if (editorDialog.isCanceled())
+					return null;
+			} catch (Exception e) {
+			}
+			return getSelectedMenuCategory(foodCategory);
+		}
+		return (MenuCategory) dialog.getSelectedItem();
 	}
 }

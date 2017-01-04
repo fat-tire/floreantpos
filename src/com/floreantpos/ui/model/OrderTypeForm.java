@@ -155,7 +155,7 @@ public class OrderTypeForm extends BeanEditor implements ItemListener {
 		generalPanel.add(chkBarTab, "cell 1 16,alignx left,aligny top"); //$NON-NLS-1$
 		generalPanel.add(chkPreAuthCreditCard, "cell 1 17,alignx left,aligny top"); //$NON-NLS-1$
 		generalPanel.add(chkShowPriceOnButton, "cell 1 18,alignx left,aligny top"); //$NON-NLS-1$
-		generalPanel.add(chkShowUnitPriceInTicketGrid, "cell 1 19,alignx left,aligny top"); //$NON-NLS-1$
+		//generalPanel.add(chkShowUnitPriceInTicketGrid, "cell 1 19,alignx left,aligny top"); //$NON-NLS-1$
 
 		add(new JScrollPane(generalPanel));
 	}
@@ -209,24 +209,24 @@ public class OrderTypeForm extends BeanEditor implements ItemListener {
 
 		ordersType.setName(categoryName);
 		ordersType.setEnabled(chkEnabled.isSelected());
-		if (!chkBarTab.isSelected()) {
-			ordersType.setShowTableSelection(chkShowTableSelection.isSelected());
-			ordersType.setShowGuestSelection(chkShowGuestSelection.isSelected());
-			ordersType.setShouldPrintToKitchen(chkShouldPrintToKitchen.isSelected());
-			ordersType.setPrepaid(chkPrepaid.isSelected());
-			ordersType.setCloseOnPaid(chkCloseOnPaid.isSelected());
-			ordersType.setDelivery(chkDelivery.isSelected());
-			ordersType.setRequiredCustomerData(chkRequiredCustomerData.isSelected());
-			ordersType.setShowItemBarcode(chkShowItemBarcode.isSelected());
-			ordersType.setShowInLoginScreen(chkShowInLoginScreen.isSelected());
-			ordersType.setConsolidateItemsInReceipt(chkConsolidateItemsInReceipt.isSelected());
-			ordersType.setAllowSeatBasedOrder(chkAllowSeatBasedOrder.isSelected());
-			ordersType.setHideItemWithEmptyInventory(chkHideItemWithEmptyInventory.isSelected());
-			ordersType.setHasForHereAndToGo(chkHasForHereAndToGo.isSelected());
-			ordersType.setPreAuthCreditCard(chkPreAuthCreditCard.isSelected());
-			ordersType.setShowPriceOnButton(chkShowPriceOnButton.isSelected());
-			ordersType.setShowUnitPriceInTicketGrid(chkShowUnitPriceInTicketGrid.isSelected());
-		}
+		//if (!chkBarTab.isSelected()) {
+		ordersType.setShowTableSelection(chkShowTableSelection.isSelected());
+		ordersType.setShowGuestSelection(chkShowGuestSelection.isSelected());
+		ordersType.setShouldPrintToKitchen(chkShouldPrintToKitchen.isSelected());
+		ordersType.setPrepaid(chkPrepaid.isSelected());
+		ordersType.setCloseOnPaid(chkCloseOnPaid.isSelected());
+		ordersType.setDelivery(chkDelivery.isSelected());
+		ordersType.setRequiredCustomerData(chkRequiredCustomerData.isSelected());
+		ordersType.setShowItemBarcode(chkShowItemBarcode.isSelected());
+		ordersType.setShowInLoginScreen(chkShowInLoginScreen.isSelected());
+		ordersType.setConsolidateItemsInReceipt(chkConsolidateItemsInReceipt.isSelected());
+		ordersType.setAllowSeatBasedOrder(chkAllowSeatBasedOrder.isSelected());
+		ordersType.setHideItemWithEmptyInventory(chkHideItemWithEmptyInventory.isSelected());
+		ordersType.setHasForHereAndToGo(chkHasForHereAndToGo.isSelected());
+		ordersType.setPreAuthCreditCard(chkPreAuthCreditCard.isSelected());
+		ordersType.setShowPriceOnButton(chkShowPriceOnButton.isSelected());
+		ordersType.setShowUnitPriceInTicketGrid(chkShowUnitPriceInTicketGrid.isSelected());
+		//}
 		ordersType.setBarTab(chkBarTab.isSelected());
 
 		return true;
