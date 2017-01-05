@@ -43,6 +43,8 @@ public class TableMapView extends ViewPanel {
 	public final static String VIEW_NAME = "TABLE_MAP"; //$NON-NLS-1$
 
 	private TableSelector tableSelector = null;
+
+	private OrderType orderType;
 	private static TableMapView instance;
 
 	private TableMapView() {
@@ -82,8 +84,12 @@ public class TableMapView extends ViewPanel {
 	public static TableMapView getInstance(OrderType orderType) {
 		TableMapView instance2 = getInstance();
 		instance2.tableSelector.setOrderType(orderType);
-
+		instance2.orderType = orderType;
 		return instance2;
+	}
+
+	public OrderType getOrderType() {
+		return orderType;
 	}
 
 	@Override

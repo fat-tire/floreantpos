@@ -86,6 +86,8 @@ public class GroupView extends SelectionView {
 		this.menuCategory = menuCategory;
 
 		if (menuCategory == null) {
+			setItems(null);
+			fireGroupSelected(null);
 			return;
 		}
 

@@ -89,6 +89,7 @@ public class MenuItemView extends SelectionView {
 		menuItemButtonMap.clear();
 
 		if (menuGroup == null) {
+			setItems(null);
 			return;
 		}
 		OrderType orderType = OrderView.getInstance().getCurrentTicket().getOrderType();

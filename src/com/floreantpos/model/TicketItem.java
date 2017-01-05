@@ -38,27 +38,23 @@ public class TicketItem extends BaseTicketItem implements ITicketItem {
 	private static final long serialVersionUID = 1L;
 
 	/*[CONSTRUCTOR MARKER BEGIN]*/
-	public TicketItem () {
+	public TicketItem() {
 		super();
 	}
 
 	/**
 	 * Constructor for primary key
 	 */
-	public TicketItem (java.lang.Integer id) {
+	public TicketItem(java.lang.Integer id) {
 		super(id);
 	}
 
 	/**
 	 * Constructor for required fields
 	 */
-	public TicketItem (
-		java.lang.Integer id,
-		com.floreantpos.model.Ticket ticket) {
+	public TicketItem(java.lang.Integer id, com.floreantpos.model.Ticket ticket) {
 
-		super (
-			id,
-			ticket);
+		super(id, ticket);
 	}
 
 	/*[CONSTRUCTOR MARKER END]*/
@@ -288,14 +284,14 @@ public class TicketItem extends BaseTicketItem implements ITicketItem {
 	}
 
 	public boolean isMergable(TicketItem otherItem, boolean merge) {
-		if (this.isFractionalUnit() || this.getItemId()==0) {
+		if (this.isFractionalUnit() || this.getItemId() == 0 || this.getCookingInstructions() != null) {
 			return false;
 		}
 		if (!this.isHasModifiers() && !otherItem.isHasModifiers()) {
 			if (this.isTreatAsSeat() == otherItem.isTreatAsSeat() && this.getSeatNumber().intValue() == otherItem.getSeatNumber().intValue()) {
 				return true;
 			}
-			if (this.getItemId().equals(otherItem.getItemId())&& this.getSeatNumber() == otherItem.getSeatNumber()) {
+			if (this.getItemId().equals(otherItem.getItemId()) && this.getSeatNumber() == otherItem.getSeatNumber()) {
 				return true;
 			}
 
@@ -550,7 +546,7 @@ public class TicketItem extends BaseTicketItem implements ITicketItem {
 	public Double getUnitPriceDisplay() {
 		if (isTreatAsSeat())
 			return null;
-		
+
 		return getUnitPrice();
 	}
 
@@ -558,7 +554,7 @@ public class TicketItem extends BaseTicketItem implements ITicketItem {
 	public String getItemQuantityDisplay() {
 		if (isTreatAsSeat())
 			return ""; //$NON-NLS-1$
-		
+
 		if (isFractionalUnit()) {
 			double itemQuantity = getItemQuantity();
 			if (itemQuantity % 1 == 0) {
@@ -585,7 +581,7 @@ public class TicketItem extends BaseTicketItem implements ITicketItem {
 	public Double getSubTotalAmountWithoutModifiersDisplay() {
 		if (isTreatAsSeat())
 			return null;
-		
+
 		return getSubtotalAmountWithoutModifiers();
 	}
 
@@ -661,12 +657,12 @@ public class TicketItem extends BaseTicketItem implements ITicketItem {
 	public void setMenuItem(MenuItem menuItem) {
 		this.menuItem = menuItem;
 	}
-	
+
 	@Override
 	public String getKitchenStatus() {
-		if(super.getStatus()==null){
-			return "";  //$NON-NLS-1$
+		if (super.getStatus() == null) {
+			return ""; //$NON-NLS-1$
 		}
-		return super.getStatus(); 
+		return super.getStatus();
 	}
 }

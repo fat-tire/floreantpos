@@ -24,7 +24,6 @@ import java.util.Set;
 import com.floreantpos.IconFactory;
 import com.floreantpos.POSConstants;
 import com.floreantpos.PosLog;
-import com.floreantpos.actions.NewBarTabAction;
 import com.floreantpos.bo.ui.explorer.QuickMaintenanceExplorer;
 import com.floreantpos.customer.CustomerSelectorDialog;
 import com.floreantpos.customer.CustomerSelectorFactory;
@@ -73,10 +72,11 @@ public class OrderTypeButton extends PosButton implements ActionListener {
 			QuickMaintenanceExplorer.quickMaintain(orderType);
 			return;
 		}
-		if (orderType.isBarTab()) {
+		/*if (orderType.isBarTab()) {
 			new NewBarTabAction(orderType, Application.getPosWindow()).actionPerformed(e);
 		}
-		else if (orderType.isShowTableSelection()) {
+		else */
+		if (orderType.isShowTableSelection()) {
 			TableSelectorDialog dialog = TableSelectorFactory.createTableSelectorDialog(orderType);
 			dialog.setCreateNewTicket(true);
 			dialog.updateView(true);

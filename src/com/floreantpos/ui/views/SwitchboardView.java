@@ -24,6 +24,7 @@
 package com.floreantpos.ui.views;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.ComponentOrientation;
 import java.awt.Dimension;
 import java.awt.GridLayout;
@@ -53,11 +54,13 @@ import com.floreantpos.Messages;
 import com.floreantpos.POSConstants;
 import com.floreantpos.PosException;
 import com.floreantpos.PosLog;
+import com.floreantpos.actions.NewBarTabAction;
 import com.floreantpos.actions.RefundAction;
 import com.floreantpos.actions.SettleTicketAction;
 import com.floreantpos.actions.VoidTicketAction;
 import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.extension.ExtensionManager;
+import com.floreantpos.extension.FloorLayoutPlugin;
 import com.floreantpos.extension.OrderServiceExtension;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.OrderType;
@@ -76,6 +79,7 @@ import com.floreantpos.ui.dialog.NumberSelectionDialog2;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.views.order.DefaultOrderServiceExtension;
 import com.floreantpos.ui.views.order.OrderController;
+import com.floreantpos.ui.views.order.OrderTypeSelectionDialog;
 import com.floreantpos.ui.views.order.OrderView;
 import com.floreantpos.ui.views.order.RootView;
 import com.floreantpos.ui.views.order.TicketSelectionDialog;
@@ -208,7 +212,56 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 			//			}
 			orderPanel.add(new OrderTypeButton(orderType), "grow");
 		}
+
+		FloorLayoutPlugin floorLayoutPlugin = (FloorLayoutPlugin) ExtensionManager.getPlugin(FloorLayoutPlugin.class);
+		if (floorLayoutPlugin != null) {
+			orderPanel.add(createBarTabButton(orderTypes), "grow");
+		}
 		orderPanel.repaint();
+	}
+
+	private Component createBarTabButton(List<OrderType> orderTypes) {
+		PosButton btnNewBarTab = new PosButton("NEW BAR TAB");
+		List<OrderType> barTabOrders = new ArrayList<>();
+		for (OrderType orderType : orderTypes) {
+			if (orderType.isBarTab())
+				barTabOrders.add(orderType);
+		}
+		if (barTabOrders.isEmpty()) {
+			btnNewBarTab.setEnabled(false);
+		}
+		btnNewBarTab.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				List<OrderType> orderTypes = Application.getInstance().getOrderTypes();
+				List<OrderType> barTabOrders = new ArrayList<>();
+				for (OrderType orderType : orderTypes) {
+					if (orderType.isBarTab())
+						barTabOrders.add(orderType);
+				}
+				OrderType orderType = null;
+				if (barTabOrders.size() > 1) {
+					OrderTypeSelectionDialog dialog = new OrderTypeSelectionDialog();
+					dialog.setTitle("SELECT ORDER TYPE");
+					dialog.setSize(400, 200);
+					dialog.open();
+					if (dialog.isCanceled())
+						return;
+
+					orderType = dialog.getSelectedOrderType();
+				}
+				else {
+					orderType = barTabOrders.get(0);
+				}
+				if (!orderType.isBarTab()) {
+					POSMessageDialog.showMessage("Selected order type is not bar.");
+					return;
+				}
+				new NewBarTabAction(orderType, null, Application.getPosWindow()).actionPerformed(e);
+			}
+		});
+		return btnNewBarTab;
 	}
 
 	private JPanel createActivityPanel() {

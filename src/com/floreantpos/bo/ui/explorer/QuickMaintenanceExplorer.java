@@ -141,6 +141,9 @@ public class QuickMaintenanceExplorer extends TransparentPanel {
 					return;
 				}
 			}
+			else {
+				menuItem.addToorderTypeList(OrderView.getInstance().getTicketView().getTicket().getOrderType());
+			}
 			MenuItemForm editor = new MenuItemForm(menuItem);
 			BeanEditorDialog dialog = new BeanEditorDialog(Application.getPosWindow(), editor);
 			dialog.open();

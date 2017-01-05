@@ -308,7 +308,7 @@ public class HeaderPanel extends JPanel {
 		btnClockOUt.setVisible(!selected);
 		btnLogout.setVisible(!selected);
 		btnShutdown.setVisible(!selected);
-		btnOthers.setVisible(enable);
+		btnOthers.setVisible(!selected && enable);
 		quickMaintenancePanel.setVisible(selected);
 	}
 
@@ -321,7 +321,7 @@ public class HeaderPanel extends JPanel {
 		btnClockOUt.setVisible(!selected);
 		btnLogout.setVisible(!selected);
 		btnShutdown.setVisible(!selected);
-		btnSwithboardView.setVisible(enable);
+		btnSwithboardView.setVisible(!selected && enable);
 		quickMaintenancePanel.setVisible(selected);
 	}
 

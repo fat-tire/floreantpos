@@ -44,6 +44,7 @@ import com.floreantpos.model.InventoryItem;
 import com.floreantpos.model.InventoryTransaction;
 import com.floreantpos.model.InventoryTransactionType;
 import com.floreantpos.model.MenuItem;
+import com.floreantpos.model.OrderType;
 import com.floreantpos.model.PaymentStatusFilter;
 import com.floreantpos.model.PaymentType;
 import com.floreantpos.model.Recepie;
@@ -264,6 +265,29 @@ public class TicketDAO extends BaseTicketDAO {
 		try {
 			session = getSession();
 			Criteria criteria = session.createCriteria(getReferenceClass());
+			criteria.add(Restrictions.eq(Ticket.PROP_CLOSED, Boolean.FALSE));
+			criteria.addOrder(getDefaultOrder());
+
+			List list = criteria.list();
+			return list;
+		} finally {
+			closeSession(session);
+		}
+	}
+
+	public List<Ticket> findOpenTicketsByOrderType(OrderType orderType) {
+		Session session = null;
+
+		try {
+			session = getSession();
+			Criteria criteria = session.createCriteria(getReferenceClass());
+			User user = Application.getCurrentUser();
+			if (user != null && !user.canViewAllOpenTickets()) {
+				criteria.add(Restrictions.eq(Ticket.PROP_OWNER, user));
+			}
+			criteria.add(Restrictions.eq(Ticket.PROP_TICKET_TYPE, orderType.getName()));
+			criteria.add(Restrictions.eq(Ticket.PROP_BAR_TAB, true));
+			criteria.add(Restrictions.or(Restrictions.isEmpty("tableNumbers"), Restrictions.isNull("tableNumbers")));
 			criteria.add(Restrictions.eq(Ticket.PROP_CLOSED, Boolean.FALSE));
 			criteria.addOrder(getDefaultOrder());
 

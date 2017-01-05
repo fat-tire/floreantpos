@@ -52,7 +52,7 @@ public class SettleTicketAction extends AbstractAction {
 
 		SettleTicketDialog posDialog = new SettleTicketDialog(ticket);
 		
-		if(ticket.getOrderType().isBarTab()) {
+		if (ticket.isBarTab()) {
 			posDialog.doSettleBarTabTicket(ticket);
 			return true; 
 

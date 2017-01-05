@@ -101,6 +101,11 @@ public class TicketItemCookingInstruction extends BaseTicketItemCookingInstructi
 	}
 
 	@Override
+	public Boolean isPrintedToKitchen() {
+		return super.isPrintedToKitchen();
+	}
+
+	@Override
 	public void setDiscountAmount(Double amount) {
 	}
 

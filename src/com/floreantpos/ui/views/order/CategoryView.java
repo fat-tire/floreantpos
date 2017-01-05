@@ -63,6 +63,7 @@ public class CategoryView extends SelectionView implements ActionListener {
 
 	private ButtonGroup categoryButtonGroup;
 	private Map<String, CategoryButton> buttonMap = new HashMap<String, CategoryButton>();
+	private MenuCategory selectedCategory;
 
 	public static final String VIEW_NAME = "CATEGORY_VIEW"; //$NON-NLS-1$
 
@@ -81,17 +82,20 @@ public class CategoryView extends SelectionView implements ActionListener {
 
 		MenuCategoryDAO categoryDAO = new MenuCategoryDAO();
 		List<MenuCategory> categories = categoryDAO.findAllEnable();
-		if (categories.size() == 0 && !RootView.getInstance().isMaintenanceMode())
+		boolean maintenanceMode = RootView.getInstance().isMaintenanceMode();
+		if (categories.size() == 0 && !maintenanceMode)
 			return;
 
 		OrderType orderType = OrderView.getInstance().getCurrentTicket().getOrderType();
 		MenuGroupDAO menuGroupDAO = MenuGroupDAO.getInstance();
-		if (RootView.getInstance().isMaintenanceMode()) {
+		if (maintenanceMode) {
 			categories.add(new MenuCategory(null, ""));
 		}
 		else {
 			for (Iterator iterator = categories.iterator(); iterator.hasNext();) {
 				MenuCategory menuCategory = (MenuCategory) iterator.next();
+				if (menuCategory.getId() == null)
+					continue;
 				List<MenuGroup> menuGroups = menuCategory.getMenuGroups();
 
 				for (Iterator iterator2 = menuGroups.iterator(); iterator2.hasNext();) {
@@ -108,13 +112,22 @@ public class CategoryView extends SelectionView implements ActionListener {
 		}
 		setItems(categories);
 
-		CategoryButton categoryButton = (CategoryButton) getFirstItemButton();
+		CategoryButton categoryButton = null;
+		if (maintenanceMode && (!categories.isEmpty() && selectedCategory != null)) {
+			categoryButton = buttonMap.get(String.valueOf(selectedCategory.getId()));
+		}
+		else
+			categoryButton = (CategoryButton) getFirstItemButton();
+
 		if (categoryButton != null) {
 			categoryButton.setSelected(true);
 			fireCategorySelected(categoryButton.foodCategory);
 		}
+		else {
+			fireCategorySelected(null);
+		}
 
-		if (!RootView.getInstance().isMaintenanceMode() && categories.size() <= 1) {
+		if (!maintenanceMode && categories.size() <= 1) {
 			setVisible(false);
 		}
 		else {
@@ -139,6 +152,7 @@ public class CategoryView extends SelectionView implements ActionListener {
 	}
 
 	public void updateView(MenuCategory menuCategory) {
+		this.selectedCategory = menuCategory;
 		initialize();
 	}
 
@@ -156,6 +170,7 @@ public class CategoryView extends SelectionView implements ActionListener {
 	}
 
 	private void fireCategorySelected(MenuCategory foodCategory) {
+		selectedCategory = foodCategory;
 		for (CategorySelectionListener listener : listenerList) {
 			listener.categorySelected(foodCategory);
 		}

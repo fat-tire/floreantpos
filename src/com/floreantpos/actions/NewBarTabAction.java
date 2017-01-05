@@ -20,6 +20,7 @@ package com.floreantpos.actions;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.util.Calendar;
+import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.JOptionPane;
@@ -37,9 +38,12 @@ import com.floreantpos.model.CardReader;
 import com.floreantpos.model.OrderType;
 import com.floreantpos.model.PaymentType;
 import com.floreantpos.model.PosTransaction;
+import com.floreantpos.model.ShopTable;
 import com.floreantpos.model.Ticket;
+import com.floreantpos.model.dao.ShopTableDAO;
 import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.services.PosTransactionService;
+import com.floreantpos.swing.PosOptionPane;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.dialog.PaymentTypeSelectionDialog;
 import com.floreantpos.ui.views.order.OrderView;
@@ -57,9 +61,11 @@ public class NewBarTabAction extends AbstractAction implements CardInputListener
 	private Component parentComponent;
 	private PaymentType selectedPaymentType;
 	private OrderType orderType;
+	private List<ShopTable> selectedTables;
 
-	public NewBarTabAction(OrderType orderType, Component parentComponent) {
+	public NewBarTabAction(OrderType orderType, List selectedTables, Component parentComponent) {
 		this.orderType = orderType;
+		this.selectedTables = selectedTables;
 		this.parentComponent = parentComponent;
 	}
 
@@ -93,7 +99,17 @@ public class NewBarTabAction extends AbstractAction implements CardInputListener
 
 	private Ticket createTicket() {
 		Ticket ticket = new Ticket();
-
+		ticket.setBarTab(true);
+		if (selectedTables != null && !selectedTables.isEmpty()) {
+			for (ShopTable shopTable : selectedTables) {
+				shopTable.setServing(true);
+				ticket.addTable(shopTable.getTableNumber());
+			}
+		}
+		else {
+			String customerTabName = PosOptionPane.showInputDialog("Enter bar tab name");
+			ticket.addProperty(Ticket.CUSTOMER_NAME, customerTabName);
+		}
 		Application application = Application.getInstance();
 		ticket.setPriceIncludesTax(application.isPriceIncludesTax());
 		ticket.setOrderType(orderType);
@@ -139,7 +155,6 @@ public class NewBarTabAction extends AbstractAction implements CardInputListener
 				transaction.setCaptured(false);
 				transaction.setCardMerchantGateway(paymentGateway.getName());
 				transaction.setCardReader(CardReader.SWIPE.name());
-
 
 				if (ticket.getOrderType().isPreAuthCreditCard()) {
 					cardProcessor.preAuth(transaction);
@@ -196,6 +211,7 @@ public class NewBarTabAction extends AbstractAction implements CardInputListener
 		try {
 			PosTransactionService transactionService = PosTransactionService.getInstance();
 			transactionService.settleBarTabTicket(transaction.getTicket(), transaction, false);
+			ShopTableDAO.getInstance().occupyTables(transaction.getTicket());
 
 			POSMessageDialog.showMessage(Messages.getString("NewBarTabAction.5") + transaction.getTicket().getId()); //$NON-NLS-1$
 			if (parentComponent instanceof ITicketList) {

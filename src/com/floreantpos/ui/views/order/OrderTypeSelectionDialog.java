@@ -44,11 +44,11 @@ public class OrderTypeSelectionDialog extends POSDialog {
 
 		JPanel orderTypePanel = new JPanel(new GridLayout(1, 0, 10, 10));
 		orderTypePanel.setBorder(new EmptyBorder(10, 10, 10, 10));
-		List<OrderType> values = Application.getInstance().getOrderTypes(); 
+		List<OrderType> values = Application.getInstance().getOrderTypes();
 		for (final OrderType orderType : values) {
-			/*if (orderType == OrderType.BAR_TAB) {
+			if (!orderType.isBarTab()) {
 				continue;
-			}*/
+			}
 
 			PosButton button = new PosButton(orderType.toString());
 			button.addActionListener(new ActionListener() {

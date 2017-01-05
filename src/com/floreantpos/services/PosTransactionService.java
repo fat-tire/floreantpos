@@ -167,9 +167,9 @@ public class PosTransactionService {
 			ticket.addTotransactions(transaction);
 
 			TicketDAO.getInstance().saveOrUpdate(ticket, session);
-
 			tx.commit();
 		} catch (Exception e) {
+			e.printStackTrace();
 			try {
 				tx.rollback();
 			} catch (Exception x) {
@@ -216,7 +216,7 @@ public class PosTransactionService {
 	private void closeTicketIfApplicable(Ticket ticket, Date currentDate) {
 		OrderType ticketType = ticket.getOrderType();
 
-		if (ticketType.isCloseOnPaid() || ticketType.isBarTab()) {//fix
+		if (ticketType.isCloseOnPaid()) {//fix
 			ticket.setClosed(true);
 			ticket.setClosingDate(currentDate);
 		}

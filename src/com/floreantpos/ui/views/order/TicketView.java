@@ -429,7 +429,7 @@ public class TicketView extends JPanel {
 	}// GEN-LAST:event_doCancelOrder
 
 	private synchronized void updateModel() {
-		if (ticket.getTicketItems() == null || ticket.getTicketItems().size() == 0) {
+		if (!ticket.isBarTab() && (ticket.getTicketItems() == null || ticket.getTicketItems().size() == 0)) {
 			throw new PosException(com.floreantpos.POSConstants.TICKET_IS_EMPTY_);
 		}
 

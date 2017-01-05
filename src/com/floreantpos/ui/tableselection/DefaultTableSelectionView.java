@@ -37,6 +37,7 @@ import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
@@ -48,9 +49,11 @@ import com.floreantpos.IconFactory;
 import com.floreantpos.Messages;
 import com.floreantpos.POSConstants;
 import com.floreantpos.PosLog;
+import com.floreantpos.actions.NewBarTabAction;
 import com.floreantpos.bo.ui.explorer.QuickMaintenanceExplorer;
 import com.floreantpos.extension.OrderServiceFactory;
 import com.floreantpos.main.Application;
+import com.floreantpos.model.OrderType;
 import com.floreantpos.model.ShopTable;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.dao.ShopTableDAO;
@@ -75,6 +78,7 @@ public class DefaultTableSelectionView extends TableSelector implements ActionLi
 	private Map<ShopTable, ShopTableButton> tableButtonMap = new HashMap<ShopTable, ShopTableButton>();
 
 	private ScrollableFlowPanel buttonsPanel;
+	private BarTabSelectionView barTab;
 
 	private POSToggleButton btnGroup;
 	private POSToggleButton btnUnGroup;
@@ -85,7 +89,10 @@ public class DefaultTableSelectionView extends TableSelector implements ActionLi
 	private PosButton btnCancel;
 	private PosButton btnRefresh;
 
+	private PosButton btnNewBarTab;
+
 	private ButtonGroup btnGroups;
+	private JTabbedPane tabbedPane;
 
 	public DefaultTableSelectionView() {
 		init();
@@ -95,6 +102,7 @@ public class DefaultTableSelectionView extends TableSelector implements ActionLi
 		setLayout(new BorderLayout());
 
 		buttonsPanel = new ScrollableFlowPanel(FlowLayout.CENTER);
+		barTab = new BarTabSelectionView();
 
 		setLayout(new java.awt.BorderLayout(10, 10));
 
@@ -108,9 +116,12 @@ public class DefaultTableSelectionView extends TableSelector implements ActionLi
 		JideScrollPane scrollPane = new JideScrollPane(buttonsPanel, JideScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JideScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		scrollPane.getVerticalScrollBar().setPreferredSize(PosUIManager.getSize(60, 0));
 
-		leftPanel.add(scrollPane, java.awt.BorderLayout.CENTER);
+		tabbedPane = new JTabbedPane();
 
-		add(leftPanel, java.awt.BorderLayout.CENTER);
+		leftPanel.add(scrollPane, java.awt.BorderLayout.CENTER);
+		tabbedPane.addTab("Dining Room", leftPanel);
+
+		add(tabbedPane, java.awt.BorderLayout.CENTER);
 
 		createButtonActionPanel();
 	}
@@ -145,10 +156,21 @@ public class DefaultTableSelectionView extends TableSelector implements ActionLi
 		btnGroups.add(btnGroup);
 		btnGroups.add(btnUnGroup);
 
+		btnNewBarTab = new PosButton("New Tab");
+		btnNewBarTab.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				List<ShopTable> selectedTables = getSelectedTables();
+				new NewBarTabAction(orderType, selectedTables, Application.getPosWindow()).actionPerformed(e);
+			}
+		});
+
 		actionBtnPanel.add(btnGroup, "grow"); //$NON-NLS-1$
 		actionBtnPanel.add(btnUnGroup, "grow"); //$NON-NLS-1$
 		actionBtnPanel.add(btnDone, "grow"); //$NON-NLS-1$
 		actionBtnPanel.add(btnCancel, "grow"); //$NON-NLS-1$
+		actionBtnPanel.add(btnNewBarTab, "grow"); //$NON-NLS-1$
 
 		rightPanel.add(actionBtnPanel);
 
@@ -158,7 +180,6 @@ public class DefaultTableSelectionView extends TableSelector implements ActionLi
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				clearSelection();
 				redererTables();
 			}
 		});
@@ -239,6 +260,9 @@ public class DefaultTableSelectionView extends TableSelector implements ActionLi
 				}
 			}
 		}
+		barTab.updateView(orderType);
+		buttonsPanel.getContentPane().revalidate();
+		buttonsPanel.getContentPane().repaint();
 	}
 
 	private boolean addTable(ActionEvent e) {
@@ -514,6 +538,14 @@ public class DefaultTableSelectionView extends TableSelector implements ActionLi
 				}
 			}
 		}
+	}
+
+	@Override
+	public void setOrderType(OrderType orderType) {
+		super.setOrderType(orderType);
+		btnNewBarTab.setVisible(orderType.isBarTab());
+		if (orderType.isBarTab())
+			tabbedPane.addTab("Bar Tab", barTab);
 	}
 
 	@Override

@@ -334,7 +334,8 @@ public class OrderView extends ViewPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (currentTicket.getOrderType().isShowTableSelection() && currentTicket.getOrderType().isRequiredCustomerData()//fix
+				OrderType orderType = currentTicket.getOrderType();
+				if (orderType.isShowTableSelection() && orderType.isRequiredCustomerData()//fix
 						&& !Application.getCurrentUser().hasPermission(UserPermission.HOLD_TICKET)) {
 					//
 
@@ -356,7 +357,7 @@ public class OrderView extends ViewPanel {
 					}
 				}
 
-				if (ticketView.getTicket().getTicketItems() == null || ticketView.getTicket().getTicketItems().size() == 0) {
+				if (!currentTicket.isBarTab() && (ticketView.getTicket().getTicketItems() == null || ticketView.getTicket().getTicketItems().size() == 0)) {
 					POSMessageDialog.showError(com.floreantpos.POSConstants.TICKET_IS_EMPTY_);
 					return;
 				}

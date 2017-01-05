@@ -185,6 +185,13 @@ public class KitchenTicket extends BaseKitchenTicket {
 				ticketItemModifier.setPrintedToKitchen(true);
 			}
 		}
+
+		List<TicketItemCookingInstruction> cookingInstructions = ticketItem.getCookingInstructions();
+		if (cookingInstructions != null) {
+			for (TicketItemCookingInstruction cookingInstruction : cookingInstructions) {
+				cookingInstruction.setPrintedToKitchen(true);
+			}
+		}
 	}
 
 	public static List<KitchenTicket> fromTicket(Ticket ticket) {
@@ -324,6 +331,7 @@ public class KitchenTicket extends BaseKitchenTicket {
 					item.setSortOrder(ticketItem.getMenuItem().getParent().getSortOrder());
 				}
 				kitchenTicket.addToticketItems(item);
+				ticketItemCookingInstruction.setPrintedToKitchen(true);
 			}
 		}
 	}
