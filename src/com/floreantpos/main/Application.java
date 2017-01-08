@@ -80,10 +80,10 @@ import com.floreantpos.util.DatabaseUtil;
 import com.floreantpos.util.GlobalConfigUtil;
 import com.floreantpos.util.POSUtil;
 import com.floreantpos.util.ShiftUtil;
-import com.floreantpos.util.TerminalUtil;
 import com.floreantpos.util.UserNotFoundException;
 import com.jgoodies.looks.plastic.PlasticXPLookAndFeel;
 import com.jgoodies.looks.plastic.theme.ExperienceBlue;
+import com.orocube.common.util.TerminalUtil;
 
 public class Application {
 	private static Log logger = LogFactory.getLog(Application.class);
