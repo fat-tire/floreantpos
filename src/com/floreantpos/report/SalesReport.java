@@ -67,15 +67,17 @@ public class SalesReport extends Report {
 		map.put("itemDataSource", new JRTableModelDataSource(itemReportModel)); //$NON-NLS-1$
 		map.put("modifierDataSource", new JRTableModelDataSource(modifierReportModel)); //$NON-NLS-1$
 		map.put("currency", Messages.getString("SalesReport.8") + CurrencyUtil.getCurrencyName() + " (" + CurrencyUtil.getCurrencySymbol() + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ 
-		map.put("itemTotalQuantity", itemReportModel.getTotalQuantityAsString()); //$NON-NLS-1$
-		map.put("itemNetTotal", itemReportModel.getNetTotalAsString()); //$NON-NLS-1$
+		map.put("itemTotalQuantity", itemReportModel.getTotalQuantity()); //$NON-NLS-1$
+		map.put("itemTotal", itemReportModel.getTotalAsString()); //$NON-NLS-1$
+		map.put("itemGrossTotal", itemReportModel.getGrossTotalAsDouble()); //$NON-NLS-1$
 		map.put("itemDiscountTotal", itemReportModel.getDiscountTotalAsString()); //$NON-NLS-1$
 		map.put("itemTaxTotal", itemReportModel.getTaxTotalAsString()); //$NON-NLS-1$
 		map.put("itemGrandTotal", itemReportModel.getGrandTotalAsString()); //$NON-NLS-1$
-		map.put("modifierTotalQuantity", modifierReportModel.getTotalQuantityAsString()); //$NON-NLS-1$
-		map.put("modifierNetTotal", modifierReportModel.getNetTotalAsString()); //$NON-NLS-1$
+		map.put("modifierTotalQuantity", modifierReportModel.getTotalQuantity()); //$NON-NLS-1$
+		map.put("modifierGrossTotal", modifierReportModel.getGrossTotalAsDouble()); //$NON-NLS-1$
 		map.put("modifierTaxTotal", modifierReportModel.getTaxTotalAsString()); //$NON-NLS-1$
 		map.put("modifierGrandTotal", modifierReportModel.getGrandTotalAsString()); //$NON-NLS-1$
+		map.put("modifierTotal", modifierReportModel.getTotalAsString()); //$NON-NLS-1$
 		map.put("itemReport", itemReport); //$NON-NLS-1$
 		map.put("modifierReport", modifierReport); //$NON-NLS-1$
 
@@ -138,11 +140,20 @@ public class SalesReport extends Report {
 
 					itemMap.put(key, reportItem);
 				}
-				reportItem.setQuantity(ticketItem.getItemCount() + reportItem.getQuantity());
-				reportItem.setNetTotal(reportItem.getNetTotal() + ticketItem.getTotalAmountWithoutModifiers());
+				//Edited By Md.Samiul Arafin
+				if (ticketItem.getItemCount() == 0) {
+					reportItem.setQuantity(ticketItem.getItemQuantity() + reportItem.getQuantity());
+				}
+				else {
+					reportItem.setQuantity(ticketItem.getItemCount() + reportItem.getQuantity());
+				}
+
+				//reportItem.setQuantity(ticketItem.getItemCount() + reportItem.getQuantity());
+
+				reportItem.setGrossTotal(reportItem.getGrossTotal() + ticketItem.getTotalAmountWithoutModifiers());
 				reportItem.setDiscount(reportItem.getDiscount() + ticketItem.getDiscountAmount());
 				reportItem.setTaxTotal(reportItem.getTaxTotal() + ticketItem.getTaxAmountWithoutModifiers());
-				reportItem.setTotal(reportItem.getTotal() +ticketItem.getSubtotalAmountWithoutModifiers());
+				reportItem.setTotal(reportItem.getTotal() + ticketItem.getSubtotalAmountWithoutModifiers());
 
 				if (ticketItem.isHasModifiers() && ticketItem.getTicketItemModifierGroups() != null) {
 					List<TicketItemModifierGroup> ticketItemModifierGroups = ticketItem.getTicketItemModifierGroups();
@@ -175,7 +186,7 @@ public class SalesReport extends Report {
 								modifierMap.put(key, modifierReportItem);
 							}
 							modifierReportItem.setQuantity(modifierReportItem.getQuantity() + modifier.getItemCount());
-							modifierReportItem.setNetTotal(modifierReportItem.getNetTotal() +  modifier.getTotalAmount());
+							modifierReportItem.setGrossTotal(modifierReportItem.getGrossTotal() + modifier.getTotalAmount());
 							modifierReportItem.setTaxTotal(modifierReportItem.getTaxTotal() + modifier.getTaxAmount());
 							modifierReportItem.setTotal(modifierReportItem.getTotal() + modifier.getSubTotalAmount());
 						}
@@ -198,9 +209,10 @@ public class SalesReport extends Report {
 		itemReportModel.setItems(itemList);
 		itemReportModel.calculateTotalQuantity();
 		itemReportModel.calculateDiscountTotal();
-		itemReportModel.calculateNetTotal();
+		itemReportModel.calculateGrossTotal();
 		itemReportModel.calculateTaxTotal();
 		itemReportModel.calculateGrandTotal();
+		itemReportModel.calculateTotal();
 
 		modifierReportModel = new SalesReportModel();
 
@@ -213,8 +225,9 @@ public class SalesReport extends Report {
 		});
 		modifierReportModel.setItems(modifierList);
 		modifierReportModel.calculateTotalQuantity();
-		modifierReportModel.calculateNetTotal();
+		modifierReportModel.calculateGrossTotal();
 		modifierReportModel.calculateTaxTotal();
 		modifierReportModel.calculateGrandTotal();
+		modifierReportModel.calculateTotal();
 	}
 }

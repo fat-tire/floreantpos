@@ -25,16 +25,18 @@
 	<parameter name="addressLine2" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="addressLine3" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="phone" class="java.lang.String" isForPrompting="false"/>
-	<parameter name="itemNetTotal" class="java.lang.String"/>
+	<parameter name="itemGrossTotal" class="java.lang.Double"/>
 	<parameter name="itemTaxTotal" class="java.lang.String"/>
-	<parameter name="itemTotalQuantity" class="java.lang.String"/>
-	<parameter name="modifierNetTotal" class="java.lang.String"/>
+	<parameter name="itemTotalQuantity" class="java.lang.Double"/>
+	<parameter name="modifierGrossTotal" class="java.lang.Double"/>
 	<parameter name="modifierTaxTotal" class="java.lang.String"/>
-	<parameter name="modifierTotalQuantity" class="java.lang.String"/>
+	<parameter name="modifierTotalQuantity" class="java.lang.Double"/>
 	<parameter name="reportHeader" class="net.sf.jasperreports.engine.JasperReport" isForPrompting="false">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<parameter name="itemDiscountTotal" class="java.lang.String"/>
+	<parameter name="itemTotal" class="java.lang.String"/>
+	<parameter name="modifierTotal" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -177,11 +179,14 @@
 				<subreportParameter name="totalQuantity">
 					<subreportParameterExpression><![CDATA[$P{itemTotalQuantity}]]></subreportParameterExpression>
 				</subreportParameter>
+				<subreportParameter name="Total">
+					<subreportParameterExpression><![CDATA[$P{itemTotal}]]></subreportParameterExpression>
+				</subreportParameter>
 				<subreportParameter name="reportType">
 					<subreportParameterExpression><![CDATA["Item Sales"]]></subreportParameterExpression>
 				</subreportParameter>
-				<subreportParameter name="netTotal">
-					<subreportParameterExpression><![CDATA[$P{itemNetTotal}]]></subreportParameterExpression>
+				<subreportParameter name="grossTotal">
+					<subreportParameterExpression><![CDATA[$P{itemGrossTotal}]]></subreportParameterExpression>
 				</subreportParameter>
 				<subreportParameter name="discountTotal">
 					<subreportParameterExpression><![CDATA[$P{itemDiscountTotal}]]></subreportParameterExpression>
@@ -200,11 +205,14 @@
 				<subreportParameter name="totalQuantity">
 					<subreportParameterExpression><![CDATA[$P{modifierTotalQuantity}]]></subreportParameterExpression>
 				</subreportParameter>
+				<subreportParameter name="Total">
+					<subreportParameterExpression><![CDATA[$P{modifierTotal}]]></subreportParameterExpression>
+				</subreportParameter>
 				<subreportParameter name="reportType">
 					<subreportParameterExpression><![CDATA["Modifier Sales"]]></subreportParameterExpression>
 				</subreportParameter>
-				<subreportParameter name="netTotal">
-					<subreportParameterExpression><![CDATA[$P{modifierNetTotal}]]></subreportParameterExpression>
+				<subreportParameter name="grossTotal">
+					<subreportParameterExpression><![CDATA[$P{modifierGrossTotal}]]></subreportParameterExpression>
 				</subreportParameter>
 				<subreportParameter name="taxTotal">
 					<subreportParameterExpression><![CDATA[$P{modifierTaxTotal}]]></subreportParameterExpression>

@@ -25,13 +25,14 @@ import javax.swing.table.AbstractTableModel;
 public class SalesReportModel extends AbstractTableModel {
 	private static DecimalFormat formatter = new DecimalFormat("#,##0.00"); //$NON-NLS-1$
 
-	private String[] columnNames = { "Id", "Name", "Price", "QTY", "Net Total", "Dis", "Tax", "Tax Total", "Gross Total" };//$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$ 
+	private String[] columnNames = { "Id", "Name", "Price", "QTY", "Total", "Dis", "Tax", "Tax Total", "Gross Total" };//$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$ 
 	private List<ReportItem> items;
 	private double grandTotal;
-	private int totalQuantity;
+	private double totalQuantity;
 	private double taxTotal;
-	private double netTotal;
+	private double grossTotal;
 	private double discountTotal;
+	private double itemTotal;
 
 	public SalesReportModel() {
 		super();
@@ -67,10 +68,10 @@ public class SalesReportModel extends AbstractTableModel {
 				return formatter.format(item.getPrice());
 
 			case 3:
-				return String.valueOf(item.getQuantity());
+				return item.getQuantity();
 
 			case 4:
-				return formatter.format(item.getNetTotal());
+				return formatter.format(item.getTotal());
 
 			case 5:
 				return String.valueOf(item.getDiscount());
@@ -82,10 +83,14 @@ public class SalesReportModel extends AbstractTableModel {
 				return formatter.format(item.getTaxTotal());
 
 			case 8:
-				return formatter.format(item.getTotal());
+				return item.getGrossTotal();
 		}
 
 		return null;
+	}
+
+	public double getGrossTotal() {
+		return grossTotal;
 	}
 
 	public List<ReportItem> getItems() {
@@ -138,30 +143,30 @@ public class SalesReportModel extends AbstractTableModel {
 		}
 	}
 
-	public String getNetTotalAsString() {
-		return formatter.format(netTotal);
+	public double getGrossTotalAsDouble() {
+		return grossTotal;
 	}
 
-	public void setNetTotal(double netTotal) {
-		this.netTotal = netTotal;
+	public void setGrossTotal(double grossTotal) {
+		this.grossTotal = grossTotal;
 	}
 
-	public void calculateNetTotal() {
-		netTotal = 0;
+	public void calculateGrossTotal() {
+		grossTotal = 0;
 		if (items == null) {
 			return;
 		}
 
 		for (ReportItem item : items) {
-			netTotal += item.getNetTotal();
+			grossTotal += item.getGrossTotal();
 		}
 	}
 
-	public String getTotalQuantityAsString() {
-		return String.valueOf(totalQuantity);
+	public double getTotalQuantity() {
+		return totalQuantity;
 	}
 
-	public void setTotalQuantity(int totalQuantity) {
+	public void setTotalQuantity(double totalQuantity) {
 		this.totalQuantity = totalQuantity;
 	}
 
@@ -174,6 +179,21 @@ public class SalesReportModel extends AbstractTableModel {
 		for (ReportItem item : items) {
 			totalQuantity += item.getQuantity();
 		}
+	}
+
+	public void calculateTotal() {
+		itemTotal = 0.0;
+		if (items == null) {
+			return;
+		}
+
+		for (ReportItem item : items) {
+			itemTotal += item.getTotal();
+		}
+	}
+
+	public String getTotalAsString() {
+		return formatter.format(itemTotal);
 	}
 
 	public String getDiscountTotalAsString() {
