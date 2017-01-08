@@ -35,6 +35,7 @@ import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.plaf.FontUIResource;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.RandomUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -278,6 +279,13 @@ public class Application {
 	}
 
 	private void initTerminal() {
+		String terminalKey = TerminalUtil.getSystemUID();
+		Terminal terminal = TerminalDAO.getInstance().getByTerminalKey(terminalKey);
+		if (terminal != null) {
+			TerminalConfig.setTerminalId(terminal.getId());
+			this.terminal = terminal;
+			return;
+		}
 		int terminalId = TerminalConfig.getTerminalId();
 
 		if (terminalId == -1) {
@@ -285,16 +293,16 @@ public class Application {
 			terminalId = random.nextInt(10000) + 1;
 		}
 
-		Terminal terminal = null;
 		try {
 			terminal = TerminalDAO.getInstance().get(new Integer(terminalId));
 			if (terminal == null) {
 				terminal = new Terminal();
 				terminal.setId(terminalId);
-				terminal.setOpeningBalance(new Double(500));
-				terminal.setCurrentBalance(new Double(500));
-				terminal.setName(String.valueOf(terminalId)); //$NON-NLS-1$
-
+				terminal.setTerminalKey(terminalKey);
+				terminal.setName(String.valueOf("Terminal "+ terminalId)); //$NON-NLS-1$
+				TerminalDAO.getInstance().saveOrUpdate(terminal);
+			} else if (StringUtils.isEmpty(terminal.getTerminalKey())) {
+				terminal.setTerminalKey(terminalKey);
 				TerminalDAO.getInstance().saveOrUpdate(terminal);
 			}
 		} catch (Exception e) {

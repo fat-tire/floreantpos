@@ -18,10 +18,13 @@
 package com.floreantpos.model.dao;
 
 import java.util.Date;
+import java.util.List;
 
+import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.Restrictions;
 
 import com.floreantpos.model.CashDrawerResetHistory;
 import com.floreantpos.model.DrawerAssignedHistory;
@@ -30,17 +33,17 @@ import com.floreantpos.model.Terminal;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.User;
 
-
 public class TerminalDAO extends BaseTerminalDAO {
-	
+
 	/**
 	 * Default constructor.  Can be used in place of getInstance()
 	 */
-	public TerminalDAO () {}
+	public TerminalDAO() {
+	}
 
 	public void refresh(Terminal terminal) {
 		Session session = null;
-		
+
 		try {
 			session = getSession();
 			session.refresh(terminal);
@@ -48,16 +51,38 @@ public class TerminalDAO extends BaseTerminalDAO {
 			closeSession(session);
 		}
 	}
-	
+
+	/**
+	 * Get terminal by terminal key
+	 * 
+	 * @param terminalKey
+	 * @return
+	 */
+	public Terminal getByTerminalKey(String terminalKey) {
+		Session session = null;
+		try {
+			session = createNewSession();
+			Criteria criteria = session.createCriteria(getReferenceClass());
+			criteria.add(Restrictions.eq(Terminal.PROP_TERMINAL_KEY, terminalKey));
+			List<Terminal> list = criteria.list();
+			if (list.size() > 0) {
+				return list.get(0);
+			}
+			return null;
+		} finally {
+			closeSession(session);
+		}
+	}
+
 	public void resetCashDrawer(DrawerPullReport report, Terminal terminal, User user, double balance) throws Exception {
 		Session session = null;
-		Transaction  tx = null;
-		
+		Transaction tx = null;
+
 		CashDrawerResetHistory history = new CashDrawerResetHistory();
 		history.setDrawerPullReport(report);
 		history.setResetedBy(user);
 		history.setResetTime(new Date());
-		
+
 		try {
 			session = createNewSession();
 			tx = session.beginTransaction();
@@ -71,25 +96,26 @@ public class TerminalDAO extends BaseTerminalDAO {
 			query = session.createQuery(hql);
 			query.setEntity("terminal", terminal); //$NON-NLS-1$
 			query.executeUpdate();
-			
+
 			terminal.setAssignedUser(null);
 			terminal.setOpeningBalance(balance);
 			terminal.setCurrentBalance(balance);
 			update(terminal, session);
 			save(report, session);
 			save(history, session);
-			
+
 			DrawerAssignedHistory history2 = new DrawerAssignedHistory();
 			history2.setTime(new Date());
 			history2.setOperation(DrawerAssignedHistory.CLOSE_OPERATION);
 			history2.setUser(user);
 			save(history2, session);
-			
+
 			tx.commit();
 		} catch (Exception e) {
 			try {
 				tx.rollback();
-			}catch(Exception x) {}
+			} catch (Exception x) {
+			}
 			throw e;
 		} finally {
 			closeSession(session);
