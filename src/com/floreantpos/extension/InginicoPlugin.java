@@ -63,7 +63,7 @@ public class InginicoPlugin implements PaymentGatewayPlugin {
 	}
 
 	@Override
-	public List<PosAction> getPosActions() {
+	public List<PosAction> getSpecialFunctionActions() {
 		return null;
 	}
 

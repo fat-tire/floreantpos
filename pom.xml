@@ -464,25 +464,16 @@
 			<artifactId>c3p0</artifactId>
 			<version>0.9.1.2</version>
 		</dependency>
-
 		<dependency>
-			<groupId>net.nicholaswilliams.java.licensing</groupId>
-			<artifactId>licensing-core</artifactId>
-			<version>1.1.0</version>
+			<groupId>com.orocube</groupId>
+			<artifactId>lm-util</artifactId>
+			<version>2.6-SNAPSHOT</version>
 		</dependency>
-
-		<dependency>
-			<groupId>com.oro</groupId>
-			<artifactId>licensor</artifactId>
-			<version>1.2</version>
-		</dependency>
-		
 		<dependency>
 			<groupId>joda-time</groupId>
 			<artifactId>joda-time</artifactId>
 			<version>2.3</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.scream3r</groupId>
 			<artifactId>jssc</artifactId>
@@ -493,25 +484,21 @@
 			<artifactId>postgresql</artifactId>
 			<version>9.3-1103-jdbc3</version>
 		</dependency>
-		
 		<dependency>
 			<groupId>com.pax.poslink</groupId>
 			<artifactId>poslink</artifactId>
 			<version>1.0</version>
 		</dependency>
-		
 		<dependency>
     		<groupId>com.google.maps</groupId>
    			<artifactId>google-maps-services</artifactId>
     		<version>0.1.12</version>
 		</dependency>
-		
 		<dependency> 
             <groupId>net.java.dev.jna</groupId> 
             <artifactId>jna</artifactId> 
             <version>4.2.2</version> 
         </dependency> 
- 
         <dependency> 
             <groupId>net.java.dev.jna</groupId> 
             <artifactId>jna-platform</artifactId> 

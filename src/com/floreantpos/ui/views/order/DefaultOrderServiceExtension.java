@@ -185,7 +185,7 @@ public class DefaultOrderServiceExtension implements OrderServiceExtension {
 	}
 
 	@Override
-	public List<PosAction> getPosActions() {
+	public List<PosAction> getSpecialFunctionActions() {
 		return null;
 	}
 

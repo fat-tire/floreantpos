@@ -88,9 +88,9 @@ public class SwitchboardOtherFunctionsView extends ViewPanel {
 		List<FloreantPlugin> plugins = ExtensionManager.getPlugins();
 		if (plugins != null) {
 			for (FloreantPlugin plugin : plugins) {
-				List<PosAction> posActions = plugin.getPosActions();
+				List<PosAction> posActions = plugin.getSpecialFunctionActions();
 				if (posActions != null) {
-					actions.addAll(plugin.getPosActions());
+					actions.addAll(plugin.getSpecialFunctionActions());
 				}
 			}
 		}

@@ -86,7 +86,7 @@ public class AuthorizeNetGatewayPlugin implements PaymentGatewayPlugin {
 	}
 
 	@Override
-	public List<PosAction> getPosActions() {
+	public List<PosAction> getSpecialFunctionActions() {
 		return null;
 	}
 

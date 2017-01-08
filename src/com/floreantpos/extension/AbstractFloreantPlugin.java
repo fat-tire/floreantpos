@@ -56,7 +56,7 @@ public class AbstractFloreantPlugin implements FloreantPlugin {
 
 
 	@Override
-	public List<PosAction> getPosActions() {
+	public List<PosAction> getSpecialFunctionActions() {
 		return null;
 	}
 

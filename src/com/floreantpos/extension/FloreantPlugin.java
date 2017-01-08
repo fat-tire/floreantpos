@@ -31,7 +31,6 @@ public interface FloreantPlugin extends Plugin {
 	void initLicense();
 	void initBackoffice();
 	void initConfigurationView(ConfigurationDialog dialog);
-
-	List<PosAction> getPosActions();
+	List<PosAction> getSpecialFunctionActions();
 	boolean hasValidLicense();
 }
