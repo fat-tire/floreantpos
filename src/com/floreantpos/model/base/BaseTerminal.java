@@ -17,13 +17,16 @@ public abstract class BaseTerminal  implements Comparable, Serializable {
 
 	public static String REF = "Terminal"; //$NON-NLS-1$
 	public static String PROP_NAME = "name"; //$NON-NLS-1$
+	public static String PROP_ACTIVE = "active"; //$NON-NLS-1$
 	public static String PROP_OPENING_BALANCE = "openingBalance"; //$NON-NLS-1$
+	public static String PROP_TERMINAL_KEY = "terminalKey"; //$NON-NLS-1$
 	public static String PROP_ASSIGNED_USER = "assignedUser"; //$NON-NLS-1$
 	public static String PROP_HAS_CASH_DRAWER = "hasCashDrawer"; //$NON-NLS-1$
 	public static String PROP_CURRENT_BALANCE = "currentBalance"; //$NON-NLS-1$
 	public static String PROP_LOCATION = "location"; //$NON-NLS-1$
 	public static String PROP_ID = "id"; //$NON-NLS-1$
 	public static String PROP_FLOOR_ID = "floorId"; //$NON-NLS-1$
+	public static String PROP_IN_USE = "inUse"; //$NON-NLS-1$
 
 
 	// constructors
@@ -50,9 +53,12 @@ public abstract class BaseTerminal  implements Comparable, Serializable {
 
 	// fields
 		protected java.lang.String name;
+		protected java.lang.String terminalKey;
 		protected java.lang.Double openingBalance;
 		protected java.lang.Double currentBalance;
 		protected java.lang.Boolean hasCashDrawer;
+		protected java.lang.Boolean inUse;
+		protected java.lang.Boolean active;
 		protected java.lang.String location;
 		protected java.lang.Integer floorId;
 
@@ -96,6 +102,23 @@ public abstract class BaseTerminal  implements Comparable, Serializable {
 	 */
 	public void setName (java.lang.String name) {
 		this.name = name;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: TERMINAL_KEY
+	 */
+	public java.lang.String getTerminalKey () {
+					return terminalKey;
+			}
+
+	/**
+	 * Set the value related to the column: TERMINAL_KEY
+	 * @param terminalKey the TERMINAL_KEY value
+	 */
+	public void setTerminalKey (java.lang.String terminalKey) {
+		this.terminalKey = terminalKey;
 	}
 
 
@@ -147,6 +170,40 @@ public abstract class BaseTerminal  implements Comparable, Serializable {
 	 */
 	public void setHasCashDrawer (java.lang.Boolean hasCashDrawer) {
 		this.hasCashDrawer = hasCashDrawer;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: IN_USE
+	 */
+	public java.lang.Boolean isInUse () {
+								return inUse == null ? Boolean.FALSE : inUse;
+					}
+
+	/**
+	 * Set the value related to the column: IN_USE
+	 * @param inUse the IN_USE value
+	 */
+	public void setInUse (java.lang.Boolean inUse) {
+		this.inUse = inUse;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: ACTIVE
+	 */
+	public java.lang.Boolean isActive () {
+								return active == null ? Boolean.FALSE : active;
+					}
+
+	/**
+	 * Set the value related to the column: ACTIVE
+	 * @param active the ACTIVE value
+	 */
+	public void setActive (java.lang.Boolean active) {
+		this.active = active;
 	}
 
 
@@ -209,7 +266,7 @@ public abstract class BaseTerminal  implements Comparable, Serializable {
 		if (!(obj instanceof com.floreantpos.model.Terminal)) return false;
 		else {
 			com.floreantpos.model.Terminal terminal = (com.floreantpos.model.Terminal) obj;
-			if (null == this.getId() || null == terminal.getId()) return this == obj;
+			if (null == this.getId() || null == terminal.getId()) return false;
 			else return (this.getId().equals(terminal.getId()));
 		}
 	}

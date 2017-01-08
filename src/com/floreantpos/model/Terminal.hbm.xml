@@ -7,9 +7,12 @@
 		</id>
 
 		<property column="NAME" length="60" name="name" type="java.lang.String" />
+		<property column="TERMINAL_KEY" name="terminalKey" length="120" type="java.lang.String" />
 		<property column="OPENING_BALANCE" length="52" name="openingBalance" type="java.lang.Double" />
 		<property column="CURRENT_BALANCE" length="52" name="currentBalance" type="java.lang.Double" />
 		<property column="HAS_CASH_DRAWER" name="hasCashDrawer" type="java.lang.Boolean" />
+		<property column="IN_USE" name="inUse" type="java.lang.Boolean" />
+		<property column="ACTIVE" name="active" type="java.lang.Boolean" />
 		<property column="LOCATION" name="location" length="320" type="java.lang.String" />
 		<property column="FLOOR_ID" name="floorId" type="java.lang.Integer" />
 		<!-- Associations -->
