@@ -16,7 +16,7 @@
 	<parameter name="totalQuantity" class="java.lang.Double"/>
 	<parameter name="discountTotal" class="java.lang.String"/>
 	<parameter name="Total" class="java.lang.String"/>
-	<parameter name="grossTotal" class="java.lang.String"/>
+	<parameter name="grossTotal" class="java.lang.Double"/>
 	<field name="Id" class="java.lang.String"/>
 	<field name="Name" class="java.lang.String"/>
 	<field name="Price" class="java.lang.String"/>
@@ -335,7 +335,7 @@
 				</textElement>
 				<textFieldExpression class="java.lang.Double"><![CDATA[$P{totalQuantity}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true">
+			<textField pattern="0.00" isBlankWhenNull="true">
 				<reportElement key="textField-12" mode="Transparent" x="476" y="0" width="63" height="20" backcolor="#808080"/>
 				<box rightPadding="5">
 					<leftPen lineWidth="0.5" lineStyle="Solid"/>

@@ -22,10 +22,10 @@ public class ReportItem {
 	private String id;
 	private String name;
 	private double price;
-	private int quantity;
+	private double quantity;
 	private double taxRate;
 	private double total;
-	private double netTotal;
+	private double grossTotal;
 	private double taxTotal;
 	private double discount;
 
@@ -41,11 +41,11 @@ public class ReportItem {
 		this.name = name;
 	}
 
-	public int getQuantity() {
+	public double getQuantity() {
 		return quantity;
 	}
 
-	public void setQuantity(int quantity) {
+	public void setQuantity(double quantity) {
 		this.quantity = quantity;
 	}
 
@@ -89,12 +89,12 @@ public class ReportItem {
 		this.discount = discount;
 	}
 
-	public double getNetTotal() {
-		return netTotal;
+	public double getGrossTotal() {
+		return grossTotal;
 	}
 
-	public void setNetTotal(double netTotal) {
-		this.netTotal = netTotal;
+	public void setGrossTotal(double grossTotal) {
+		this.grossTotal = grossTotal;
 	}
 
 	public double getTaxTotal() {
