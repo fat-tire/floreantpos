@@ -140,12 +140,13 @@ public class SalesReport extends Report {
 
 					itemMap.put(key, reportItem);
 				}
+				
 				//Edited By Md.Samiul Arafin
-				if (ticketItem.getItemCount() == 0) {
+				if (ticketItem.isFractionalUnit()) {
 					reportItem.setQuantity(ticketItem.getItemQuantity() + reportItem.getQuantity());
 				}
 				else {
-					reportItem.setQuantity(ticketItem.getItemCount() + reportItem.getQuantity());
+					reportItem.setQuantity(ticketItem.getItemCount());
 				}
 
 				//reportItem.setQuantity(ticketItem.getItemCount() + reportItem.getQuantity());

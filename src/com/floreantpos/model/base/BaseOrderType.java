@@ -16,26 +16,27 @@ import java.io.Serializable;
 public abstract class BaseOrderType  implements Comparable, Serializable {
 
 	public static String REF = "OrderType"; //$NON-NLS-1$
+	public static String PROP_CLOSE_ON_PAID = "closeOnPaid"; //$NON-NLS-1$
+	public static String PROP_SHOW_TABLE_SELECTION = "showTableSelection"; //$NON-NLS-1$
+	public static String PROP_SHOW_GUEST_SELECTION = "showGuestSelection"; //$NON-NLS-1$
+	public static String PROP_SHOULD_PRINT_TO_KITCHEN = "shouldPrintToKitchen"; //$NON-NLS-1$
+	public static String PROP_ALLOW_SEAT_BASED_ORDER = "allowSeatBasedOrder"; //$NON-NLS-1$
+	public static String PROP_SHOW_ITEM_BARCODE = "showItemBarcode"; //$NON-NLS-1$
+	public static String PROP_HAS_FOR_HERE_AND_TO_GO = "hasForHereAndToGo"; //$NON-NLS-1$
 	public static String PROP_PRE_AUTH_CREDIT_CARD = "preAuthCreditCard"; //$NON-NLS-1$
 	public static String PROP_ENABLED = "enabled"; //$NON-NLS-1$
-	public static String PROP_DELIVERY = "delivery"; //$NON-NLS-1$
-	public static String PROP_REQUIRED_CUSTOMER_DATA = "requiredCustomerData"; //$NON-NLS-1$
-	public static String PROP_CONSOLIDATE_ITEMS_IN_RECEIPT = "consolidateItemsInReceipt"; //$NON-NLS-1$
-	public static String PROP_SHOW_IN_LOGIN_SCREEN = "showInLoginScreen"; //$NON-NLS-1$
-	public static String PROP_SHOW_UNIT_PRICE_IN_TICKET_GRID = "showUnitPriceInTicketGrid"; //$NON-NLS-1$
-	public static String PROP_NAME = "name"; //$NON-NLS-1$
-	public static String PROP_SHOW_TABLE_SELECTION = "showTableSelection"; //$NON-NLS-1$
-	public static String PROP_SHOULD_PRINT_TO_KITCHEN = "shouldPrintToKitchen"; //$NON-NLS-1$
-	public static String PROP_CLOSE_ON_PAID = "closeOnPaid"; //$NON-NLS-1$
 	public static String PROP_BAR_TAB = "barTab"; //$NON-NLS-1$
-	public static String PROP_SHOW_ITEM_BARCODE = "showItemBarcode"; //$NON-NLS-1$
-	public static String PROP_SHOW_GUEST_SELECTION = "showGuestSelection"; //$NON-NLS-1$
-	public static String PROP_ID = "id"; //$NON-NLS-1$
-	public static String PROP_HIDE_ITEM_WITH_EMPTY_INVENTORY = "hideItemWithEmptyInventory"; //$NON-NLS-1$
-	public static String PROP_ALLOW_SEAT_BASED_ORDER = "allowSeatBasedOrder"; //$NON-NLS-1$
-	public static String PROP_HAS_FOR_HERE_AND_TO_GO = "hasForHereAndToGo"; //$NON-NLS-1$
-	public static String PROP_SHOW_PRICE_ON_BUTTON = "showPriceOnButton"; //$NON-NLS-1$
+	public static String PROP_SHOW_STOCK_COUNT_ON_BUTTON = "showStockCountOnButton"; //$NON-NLS-1$
+	public static String PROP_NAME = "name"; //$NON-NLS-1$
+	public static String PROP_SHOW_IN_LOGIN_SCREEN = "showInLoginScreen"; //$NON-NLS-1$
 	public static String PROP_PREPAID = "prepaid"; //$NON-NLS-1$
+	public static String PROP_SHOW_UNIT_PRICE_IN_TICKET_GRID = "showUnitPriceInTicketGrid"; //$NON-NLS-1$
+	public static String PROP_REQUIRED_CUSTOMER_DATA = "requiredCustomerData"; //$NON-NLS-1$
+	public static String PROP_DELIVERY = "delivery"; //$NON-NLS-1$
+	public static String PROP_HIDE_ITEM_WITH_EMPTY_INVENTORY = "hideItemWithEmptyInventory"; //$NON-NLS-1$
+	public static String PROP_ID = "id"; //$NON-NLS-1$
+	public static String PROP_SHOW_PRICE_ON_BUTTON = "showPriceOnButton"; //$NON-NLS-1$
+	public static String PROP_CONSOLIDATE_ITEMS_IN_RECEIPT = "consolidateItemsInReceipt"; //$NON-NLS-1$
 
 
 	// constructors
@@ -91,6 +92,7 @@ public abstract class BaseOrderType  implements Comparable, Serializable {
 		protected java.lang.Boolean preAuthCreditCard;
 		protected java.lang.Boolean barTab;
 		protected java.lang.Boolean showPriceOnButton;
+		protected java.lang.Boolean showStockCountOnButton;
 		protected java.lang.Boolean showUnitPriceInTicketGrid;
 
 
@@ -424,6 +426,23 @@ public abstract class BaseOrderType  implements Comparable, Serializable {
 
 
 	/**
+	 * Return the value associated with the column: SHOW_STOCK_COUNT_ON_BUTTON
+	 */
+	public java.lang.Boolean isShowStockCountOnButton () {
+								return showStockCountOnButton == null ? Boolean.FALSE : showStockCountOnButton;
+					}
+
+	/**
+	 * Set the value related to the column: SHOW_STOCK_COUNT_ON_BUTTON
+	 * @param showStockCountOnButton the SHOW_STOCK_COUNT_ON_BUTTON value
+	 */
+	public void setShowStockCountOnButton (java.lang.Boolean showStockCountOnButton) {
+		this.showStockCountOnButton = showStockCountOnButton;
+	}
+
+
+
+	/**
 	 * Return the value associated with the column: SHOW_UNIT_PRICE_IN_TICKET_GRID
 	 */
 	public java.lang.Boolean isShowUnitPriceInTicketGrid () {
@@ -447,7 +466,7 @@ public abstract class BaseOrderType  implements Comparable, Serializable {
 		if (!(obj instanceof com.floreantpos.model.OrderType)) return false;
 		else {
 			com.floreantpos.model.OrderType orderType = (com.floreantpos.model.OrderType) obj;
-			if (null == this.getId() || null == orderType.getId()) return this == obj;
+			if (null == this.getId() || null == orderType.getId()) return false;
 			else return (this.getId().equals(orderType.getId()));
 		}
 	}

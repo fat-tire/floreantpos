@@ -72,6 +72,7 @@ public class OrderTypeForm extends BeanEditor implements ItemListener {
 	private JCheckBox chkBarTab;
 	private JCheckBox chkPreAuthCreditCard;
 	private JCheckBox chkShowPriceOnButton;
+	private JCheckBox chkShowStockCountOnButton;
 	private JCheckBox chkShowUnitPriceInTicketGrid;
 
 	OrderType orderType;
@@ -130,6 +131,7 @@ public class OrderTypeForm extends BeanEditor implements ItemListener {
 		chkPreAuthCreditCard = new JCheckBox(Messages.getString("OrderTypeForm.0")); //$NON-NLS-1$
 
 		chkShowPriceOnButton = new JCheckBox("Show price on button");
+		chkShowStockCountOnButton = new JCheckBox("Show count on button");
 		chkShowUnitPriceInTicketGrid = new JCheckBox("Show unit price in ticket grid");
 
 		generalPanel.setLayout(new MigLayout("", "[87px][327px,grow]", "[19px][][19px][][][21px][15px]")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
@@ -154,7 +156,8 @@ public class OrderTypeForm extends BeanEditor implements ItemListener {
 		generalPanel.add(chkHasForHereAndToGo, "cell 1 15,alignx left,aligny top"); //$NON-NLS-1$
 		generalPanel.add(chkBarTab, "cell 1 16,alignx left,aligny top"); //$NON-NLS-1$
 		generalPanel.add(chkPreAuthCreditCard, "cell 1 17,alignx left,aligny top"); //$NON-NLS-1$
-		generalPanel.add(chkShowPriceOnButton, "cell 1 18,alignx left,aligny top"); //$NON-NLS-1$
+		generalPanel.add(chkShowPriceOnButton, "cell 1 18,alignx left,aligny top,wrap"); //$NON-NLS-1$
+		generalPanel.add(chkShowStockCountOnButton,"cell 1 19,alignx left,aligny top");
 		//generalPanel.add(chkShowUnitPriceInTicketGrid, "cell 1 19,alignx left,aligny top"); //$NON-NLS-1$
 
 		add(new JScrollPane(generalPanel));
@@ -191,6 +194,7 @@ public class OrderTypeForm extends BeanEditor implements ItemListener {
 			chkBarTab.setSelected(ordersType.isBarTab());
 			chkPreAuthCreditCard.setSelected(ordersType.isPreAuthCreditCard());
 			chkShowPriceOnButton.setSelected(orderType.isShowPriceOnButton());
+			chkShowStockCountOnButton.setSelected(orderType.isShowStockCountOnButton());
 			chkShowUnitPriceInTicketGrid.setSelected(orderType.isShowUnitPriceInTicketGrid());
 		}
 	}
@@ -225,6 +229,7 @@ public class OrderTypeForm extends BeanEditor implements ItemListener {
 		ordersType.setHasForHereAndToGo(chkHasForHereAndToGo.isSelected());
 		ordersType.setPreAuthCreditCard(chkPreAuthCreditCard.isSelected());
 		ordersType.setShowPriceOnButton(chkShowPriceOnButton.isSelected());
+		ordersType.setShowStockCountOnButton(chkShowStockCountOnButton.isSelected());
 		ordersType.setShowUnitPriceInTicketGrid(chkShowUnitPriceInTicketGrid.isSelected());
 		//}
 		ordersType.setBarTab(chkBarTab.isSelected());
