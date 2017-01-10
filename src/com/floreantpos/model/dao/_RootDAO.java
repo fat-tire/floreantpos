@@ -205,7 +205,7 @@ public abstract class _RootDAO extends com.floreantpos.model.dao._BaseRootDAO {
 
 		configuration = configuration.setProperty("hibernate.c3p0.min_size", "5"); //$NON-NLS-1$ //$NON-NLS-2$
 		configuration = configuration.setProperty("hibernate.c3p0.max_size", "10"); //$NON-NLS-1$ //$NON-NLS-2$
-		configuration = configuration.setProperty("hibernate.c3p0.timeout", "60"); //$NON-NLS-1$ //$NON-NLS-2$
+		configuration = configuration.setProperty("hibernate.c3p0.timeout", "120"); //$NON-NLS-1$ //$NON-NLS-2$
 
 		configuration = configuration.setProperty("hibernate.c3p0.max_statements", "50"); //$NON-NLS-1$ //$NON-NLS-2$
 
