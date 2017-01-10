@@ -70,8 +70,7 @@ public class MenuItemView extends SelectionView {
 
 	/** Creates new form GroupView */
 	public MenuItemView() {
-		super(com.floreantpos.POSConstants.ITEMS, PosUIManager.getSize(120),
-				PosUIManager.getSize(80));
+		super(com.floreantpos.POSConstants.ITEMS, PosUIManager.getSize(120), PosUIManager.getSize(80));
 		remove(actionButtonPanel);
 
 		btnPrev.setText("<");
@@ -94,16 +93,14 @@ public class MenuItemView extends SelectionView {
 			setItems(null);
 			return;
 		}
-		OrderType orderType = OrderView.getInstance().getCurrentTicket()
-				.getOrderType();
+		OrderType orderType = OrderView.getInstance().getCurrentTicket().getOrderType();
 		showPrice = orderType.isShowPriceOnButton();
 		showStockCount = orderType.isShowStockCountOnButton();
 		MenuItemDAO dao = new MenuItemDAO();
 		try {
 			List<MenuItem> items = new ArrayList<>();
 			if (menuGroup.getId() != null) {
-				items = dao.findByParent(Application.getInstance()
-						.getTerminal(), menuGroup, orderType, false);
+				items = dao.findByParent(Application.getInstance().getTerminal(), menuGroup, orderType, false);
 			}
 			if (RootView.getInstance().isMaintenanceMode()) {
 				MenuItem newMenuItem = new MenuItem(null, "", 0.0, 0.0);
@@ -155,8 +152,7 @@ public class MenuItemView extends SelectionView {
 	}
 
 	private void filterItemsByOrderType(List<MenuItem> items) {
-		String orderType = OrderView.getInstance().getTicketView().getTicket()
-				.getOrderType().toString();
+		String orderType = OrderView.getInstance().getTicketView().getTicket().getOrderType().toString();
 		for (Iterator iterator = items.iterator(); iterator.hasNext();) {
 			MenuItem menuItem = (MenuItem) iterator.next();
 			List<OrderType> orderTypeList = menuItem.getOrderTypeList();
@@ -172,14 +168,12 @@ public class MenuItemView extends SelectionView {
 	}
 
 	private void filterByStockAmount(MenuItem menuItem, ItemButton itemButton) {
-		if (menuItem.isDisableWhenStockAmountIsZero()
-				&& menuItem.getStockAmount() <= 0) {
+		if (menuItem.isDisableWhenStockAmountIsZero() && menuItem.getStockAmount() <= 0) {
 			itemButton.setEnabled(false);
 		}
 	}
 
-	public class ItemButton extends PosButton implements ActionListener,
-			MouseListener {
+	public class ItemButton extends PosButton implements ActionListener, MouseListener {
 		private int BUTTON_SIZE = 100;
 		MenuItem foodItem;
 
@@ -204,7 +198,8 @@ public class MenuItemView extends SelectionView {
 
 				if (menuItem.isShowImageOnly()) {
 					setIcon(menuItem.getScaledImage(w, h));
-				} else {
+				}
+				else {
 					w = PosUIManager.getSize(80);
 					h = PosUIManager.getSize(40);
 
@@ -212,15 +207,19 @@ public class MenuItemView extends SelectionView {
 					setText("<html><body><center><span style='font-size:7px;margin:0px;'>" + menuItem.getDisplayName() + "</span></center></body></html>"); //$NON-NLS-1$ //$NON-NLS-2$
 				}
 
-			} else {
+			}
+			else {
 				if (menuItem.getId() == null) {
 					setIcon(IconFactory.getIcon("/ui_icons/", "add+user.png"));
-				} else
-					setText("<html><body><center>" + menuItem.getName()
-							 +(!showPrice ? "" : "<br><h4>"+"<span style='color:white;background-color:green;margin:1;'>"+"&nbsp;"+"&nbsp;"+"&nbsp;"+CurrencyUtil.getCurrencySymbol() + menuItem.getPrice()+"&nbsp;"+"&nbsp;"+"&nbsp;"+"</span>")
-							+"&nbsp;"+ 
-							(!showStockCount ? "" :"<span style='color:white;background-color:red;margin:1;'>"+"&nbsp;"+"&nbsp;"+"&nbsp;"+menuItem.getStockAmount()+"&nbsp;" +"&nbsp;"+"&nbsp;"+"</span>") 
-							+"</h4>"+"</center></body></html>"); //$NON-NLS-1$ //$NON-NLS-2$
+				}
+				else
+					setText("<html><body><center>"
+							+ menuItem.getName()
+							+ (!showPrice ? "" : "<br><h4>" + "<span style='color:white;background-color:green;margin:1;'>" + "&nbsp;" + "&nbsp;" + "&nbsp;"
+									+ CurrencyUtil.getCurrencySymbol() + menuItem.getPrice() + "&nbsp;" + "&nbsp;" + "&nbsp;" + "</span>")
+							+ "&nbsp;"
+							+ (!showStockCount ? "" : "<span style='color:white;background-color:red;margin:1;'>" + "&nbsp;" + "&nbsp;" + "&nbsp;"
+									+ menuItem.getStockAmount() + "&nbsp;" + "&nbsp;" + "&nbsp;" + "</span>") + "</h4>" + "</center></body></html>"); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 
 			Color buttonColor = menuItem.getButtonColor();
@@ -234,8 +233,7 @@ public class MenuItemView extends SelectionView {
 		}
 
 		public void actionPerformed(ActionEvent e) {
-			if (OrderView.getInstance().isVisible()
-					&& RootView.getInstance().isMaintenanceMode()) {
+			if (OrderView.getInstance().isVisible() && RootView.getInstance().isMaintenanceMode()) {
 				foodItem = MenuItemDAO.getInstance().initialize(foodItem);
 				QuickMaintenanceExplorer.quickMaintain(foodItem);
 			}
@@ -261,5 +259,11 @@ public class MenuItemView extends SelectionView {
 		@Override
 		public void mouseExited(MouseEvent e) {
 		}
+	}
+
+	public void disableItemButton(MenuItem item) {
+		ItemButton itemButton = menuItemButtonMap.get(item.getId());
+		itemButton.setEnabled(false);
+
 	}
 }

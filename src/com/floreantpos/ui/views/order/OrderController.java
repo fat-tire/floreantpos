@@ -110,6 +110,8 @@ public class OrderController implements OrderListener, CategorySelectionListener
 
 		if (!orderView.getTicketView().isStockAvailable(menuItem, ticketItem, -1)) {
 			POSMessageDialog.showError("Items are not available in stock");
+			//Disable the menu button when stock finish
+			orderView.getItemView().disableItemButton(menuItem);
 			return;
 		}
 
@@ -151,19 +153,20 @@ public class OrderController implements OrderListener, CategorySelectionListener
 			return;
 		}
 
-		//		if (TerminalConfig.isCashierMode()) {
+		// if (TerminalConfig.isCashierMode()) {
 		//			String message = Messages.getString("OrderController.0") + ticket.getId() + Messages.getString("OrderController.1"); //$NON-NLS-1$ //$NON-NLS-2$
-		//			if (ticket.isPaid()) {
+		// if (ticket.isPaid()) {
 		//				message = Messages.getString("OrderController.2") + ticket.getId() + Messages.getString("OrderController.3"); //$NON-NLS-1$ //$NON-NLS-2$
-		//			}
+		// }
 		//
-		//			OrderUtil.createNewTakeOutOrder(ticket.getType()); //fix
-		//			CashierModeNextActionDialog dialog = new CashierModeNextActionDialog(message);
-		//			dialog.open();
-		//		}
-		//		else {
+		// OrderUtil.createNewTakeOutOrder(ticket.getType()); //fix
+		// CashierModeNextActionDialog dialog = new
+		// CashierModeNextActionDialog(message);
+		// dialog.open();
+		// }
+		// else {
 		RootView.getInstance().showDefaultView();
-		//		}
+		// }
 	}
 
 	public static void openModifierDialog(ITicketItem ticketItemObject) {
@@ -187,7 +190,7 @@ public class OrderController implements OrderListener, CategorySelectionListener
 				if (dialog.isCanceled()) {
 					return;
 				}
-				//orderView.getTicketView().addTicketItem(ticketItem);
+				// orderView.getTicketView().addTicketItem(ticketItem);
 				return;
 			}
 
@@ -239,7 +242,7 @@ public class OrderController implements OrderListener, CategorySelectionListener
 		}
 	}
 
-	//VERIFIED
+	// VERIFIED
 	public synchronized static void saveOrder(Ticket ticket) {
 		if (ticket == null)
 			return;
@@ -249,7 +252,7 @@ public class OrderController implements OrderListener, CategorySelectionListener
 		TicketDAO ticketDAO = new TicketDAO();
 		ticketDAO.saveOrUpdate(ticket);
 
-		//			save the action
+		// save the action
 		ActionHistoryDAO actionHistoryDAO = ActionHistoryDAO.getInstance();
 		User user = Application.getCurrentUser();
 
