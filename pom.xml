@@ -466,8 +466,8 @@
 		</dependency>
 		<dependency>
 			<groupId>com.orocube</groupId>
-			<artifactId>lm-util</artifactId>
-			<version>2.6-SNAPSHOT</version>
+			<artifactId>orocube-common-classes</artifactId>
+			<version>1.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>joda-time</groupId>

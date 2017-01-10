@@ -652,7 +652,7 @@ public class GroupSettleTicketDialog extends POSDialog implements CardInputListe
 				}
 
 				transaction.setCaptured(false);
-				transaction.setCardMerchantGateway(paymentGateway.getName());
+				transaction.setCardMerchantGateway(paymentGateway.getProductName());
 
 				if (ticket.getOrderType().isPreAuthCreditCard()) {
 					paymentGateway.getProcessor().preAuth(transaction);
@@ -728,7 +728,7 @@ public class GroupSettleTicketDialog extends POSDialog implements CardInputListe
 				transaction.setCardType(paymentType.getDisplayString());
 				transaction.setCardTrack(cardString);
 				transaction.setCaptured(false);
-				transaction.setCardMerchantGateway(paymentGateway.getName());
+				transaction.setCardMerchantGateway(paymentGateway.getProductName());
 				transaction.setCardReader(CardReader.SWIPE.name());
 
 				settleTicket(cardProcessor, transaction);
@@ -738,7 +738,7 @@ public class GroupSettleTicketDialog extends POSDialog implements CardInputListe
 				ManualCardEntryDialog mDialog = (ManualCardEntryDialog) inputter;
 
 				transaction.setCaptured(false);
-				transaction.setCardMerchantGateway(paymentGateway.getName());
+				transaction.setCardMerchantGateway(paymentGateway.getProductName());
 				transaction.setCardReader(CardReader.MANUAL.name());
 				transaction.setCardNumber(mDialog.getCardNumber());
 				transaction.setCardExpMonth(mDialog.getExpMonth());

@@ -74,8 +74,13 @@ public class ExtensionManager {
 		for (Plugin plugin : allPlugins) {
 			if (plugin instanceof FloreantPlugin) {
 				FloreantPlugin floreantPlugin = (FloreantPlugin) plugin;
-				floreantPlugin.initLicense();
-				if (floreantPlugin.hasValidLicense()) {
+				if (floreantPlugin.requireLicense()) {
+					floreantPlugin.initLicense();
+					if (floreantPlugin.hasValidLicense()) {
+						floreantPlugins.add(floreantPlugin);
+					}
+				}
+				else {
 					floreantPlugins.add(floreantPlugin);
 				}
 			}

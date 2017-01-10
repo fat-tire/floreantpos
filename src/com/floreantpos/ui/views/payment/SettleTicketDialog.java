@@ -691,7 +691,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 
 				//transaction.setCardType(cardName);
 				transaction.setCaptured(false);
-				transaction.setCardMerchantGateway(paymentGateway.getName());
+				transaction.setCardMerchantGateway(paymentGateway.getProductName());
 
 				setTransactionAmounts(transaction);
 
@@ -770,7 +770,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 				transaction.setCardType(paymentType.getDisplayString());
 				transaction.setCardTrack(cardString);
 				transaction.setCaptured(false);
-				transaction.setCardMerchantGateway(paymentGateway.getName());
+				transaction.setCardMerchantGateway(paymentGateway.getProductName());
 				transaction.setCardReader(CardReader.SWIPE.name());
 				setTransactionAmounts(transaction);
 
@@ -788,7 +788,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 				ManualCardEntryDialog mDialog = (ManualCardEntryDialog) inputter;
 
 				transaction.setCaptured(false);
-				transaction.setCardMerchantGateway(paymentGateway.getName());
+				transaction.setCardMerchantGateway(paymentGateway.getProductName());
 				transaction.setCardReader(CardReader.MANUAL.name());
 				transaction.setCardNumber(mDialog.getCardNumber());
 				transaction.setCardExpMonth(mDialog.getExpMonth());

@@ -153,7 +153,7 @@ public class NewBarTabAction extends AbstractAction implements CardInputListener
 				transaction.setCardType(paymentType.getDisplayString());
 				transaction.setCardTrack(cardString);
 				transaction.setCaptured(false);
-				transaction.setCardMerchantGateway(paymentGateway.getName());
+				transaction.setCardMerchantGateway(paymentGateway.getProductName());
 				transaction.setCardReader(CardReader.SWIPE.name());
 
 				if (ticket.getOrderType().isPreAuthCreditCard()) {
@@ -171,7 +171,7 @@ public class NewBarTabAction extends AbstractAction implements CardInputListener
 				ManualCardEntryDialog mDialog = (ManualCardEntryDialog) inputter;
 
 				transaction.setCaptured(false);
-				transaction.setCardMerchantGateway(paymentGateway.getName());
+				transaction.setCardMerchantGateway(paymentGateway.getProductName());
 				transaction.setCardReader(CardReader.MANUAL.name());
 				transaction.setCardNumber(mDialog.getCardNumber());
 				transaction.setCardExpMonth(mDialog.getExpMonth());

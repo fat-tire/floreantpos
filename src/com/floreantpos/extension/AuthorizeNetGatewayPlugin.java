@@ -17,25 +17,32 @@
  */
 package com.floreantpos.extension;
 
+import java.awt.Component;
 import java.util.List;
+
+import javax.swing.AbstractAction;
+import javax.swing.JDialog;
 
 import net.xeoh.plugins.base.annotations.PluginImplementation;
 
-import com.floreantpos.actions.PosAction;
-import com.floreantpos.config.ui.ConfigurationDialog;
 import com.floreantpos.config.ui.ConfigurationView;
 import com.floreantpos.config.ui.DefaultMerchantGatewayConfigurationView;
 import com.floreantpos.ui.views.payment.AuthorizeDotNetProcessor;
 import com.floreantpos.ui.views.payment.CardProcessor;
 
 @PluginImplementation
-public class AuthorizeNetGatewayPlugin implements PaymentGatewayPlugin {
+public class AuthorizeNetGatewayPlugin extends PaymentGatewayPlugin {
 	public static final String ID = String.valueOf("Authorize.Net".hashCode()); //$NON-NLS-1$
 	
 	protected DefaultMerchantGatewayConfigurationView view;
 	
 	@Override
-	public String getName() {
+	public boolean requireLicense() {
+		return false;
+	}
+
+	@Override
+	public String getProductName() {
 		return "Authorize.Net"; //$NON-NLS-1$
 	}
 	
@@ -61,13 +68,13 @@ public class AuthorizeNetGatewayPlugin implements PaymentGatewayPlugin {
 	}
 	
 	@Override
-	public void initConfigurationView(ConfigurationDialog dialog) {
+	public void initConfigurationView(JDialog dialog) {
 		
 	}
 
 	@Override
 	public String toString() {
-		return getName();
+		return getProductName();
 	}
 
 	@Override
@@ -86,7 +93,7 @@ public class AuthorizeNetGatewayPlugin implements PaymentGatewayPlugin {
 	}
 
 	@Override
-	public List<PosAction> getSpecialFunctionActions() {
+	public List<AbstractAction> getSpecialFunctionActions() {
 		return null;
 	}
 
@@ -97,5 +104,15 @@ public class AuthorizeNetGatewayPlugin implements PaymentGatewayPlugin {
 	@Override
 	public boolean hasValidLicense() {
 		return true;
+	}
+
+	@Override
+	public String getProductVersion() {
+		return null;
+	}
+
+	@Override
+	public Component getParent() {
+		return null;
 	}
 }

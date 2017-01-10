@@ -24,6 +24,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.AbstractAction;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
@@ -88,9 +89,11 @@ public class SwitchboardOtherFunctionsView extends ViewPanel {
 		List<FloreantPlugin> plugins = ExtensionManager.getPlugins();
 		if (plugins != null) {
 			for (FloreantPlugin plugin : plugins) {
-				List<PosAction> posActions = plugin.getSpecialFunctionActions();
+				List<AbstractAction> posActions = plugin.getSpecialFunctionActions();
 				if (posActions != null) {
-					actions.addAll(plugin.getSpecialFunctionActions());
+					for (AbstractAction action : posActions) {
+						actions.add((PosAction) action);
+					}
 				}
 			}
 		}

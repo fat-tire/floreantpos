@@ -28,21 +28,33 @@ import com.floreantpos.model.ShopTable;
 import com.floreantpos.ui.views.IView;
 import com.floreantpos.util.TicketAlreadyExistsException;
 
-public interface OrderServiceExtension extends FloreantPlugin {
-	String getName();
-	String getDescription();
-	
-	void initUI();
-	void createNewTicket(OrderType ticketType, List<ShopTable> selectedTables, Customer selectedCustomer) throws TicketAlreadyExistsException;
-	void setCustomerToTicket(int ticketId);
-	void setDeliveryDate(int ticketId);
-	void assignDriver(int ticketId);
-	boolean finishOrder(int ticketId);
-	void createCustomerMenu(JMenu menu);
-	CustomerSelector createNewCustomerSelector();
-	CustomerSelector createCustomerSelectorView();
-	IView getDeliveryDispatchView(OrderType orderType);
-	IView getDriverView();
-	void openDeliveryDispatchDialog(OrderType orderType);
-	
+public abstract class OrderServiceExtension extends AbstractFloreantPlugin {
+	public abstract String getProductName();
+
+	public abstract String getDescription();
+
+	public abstract void initUI();
+
+	public abstract void createNewTicket(OrderType ticketType, List<ShopTable> selectedTables, Customer selectedCustomer) throws TicketAlreadyExistsException;
+
+	public abstract void setCustomerToTicket(int ticketId);
+
+	public abstract void setDeliveryDate(int ticketId);
+
+	public abstract void assignDriver(int ticketId);
+
+	public abstract boolean finishOrder(int ticketId);
+
+	public abstract void createCustomerMenu(JMenu menu);
+
+	public abstract CustomerSelector createNewCustomerSelector();
+
+	public abstract CustomerSelector createCustomerSelectorView();
+
+	public abstract IView getDeliveryDispatchView(OrderType orderType);
+
+	public abstract IView getDriverView();
+
+	public abstract void openDeliveryDispatchDialog(OrderType orderType);
+
 }

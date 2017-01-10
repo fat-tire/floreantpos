@@ -115,7 +115,7 @@ class AuthorizationDialog extends POSDialog implements Runnable {
 		label.setHorizontalAlignment(JLabel.CENTER);
 		label.setFont(label.getFont().deriveFont(24).deriveFont(Font.BOLD));
 
-		JLabel labelGateway = new JLabel(Messages.getString("PaymentProcessWaitDialog.8") + CardConfig.getPaymentGateway().getName()); //$NON-NLS-1$
+		JLabel labelGateway = new JLabel(Messages.getString("PaymentProcessWaitDialog.8") + CardConfig.getPaymentGateway().getProductName()); //$NON-NLS-1$
 		labelGateway.setHorizontalAlignment(JLabel.CENTER);
 		labelGateway.setFont(label.getFont().deriveFont(24).deriveFont(Font.BOLD));
 

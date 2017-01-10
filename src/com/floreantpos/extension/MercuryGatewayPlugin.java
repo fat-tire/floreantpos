@@ -28,7 +28,7 @@ import com.floreantpos.ui.views.payment.MercuryPayProcessor;
 public class MercuryGatewayPlugin extends AuthorizeNetGatewayPlugin {
 
 	@Override
-	public String getName() {
+	public String getProductName() {
 		return "Mercury Pay"; //$NON-NLS-1$
 	}
 	
@@ -54,7 +54,7 @@ public class MercuryGatewayPlugin extends AuthorizeNetGatewayPlugin {
 
 	@Override
 	public String toString() {
-		return getName();
+		return getProductName();
 	}
 	
 	@Override

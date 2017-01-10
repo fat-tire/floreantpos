@@ -74,8 +74,8 @@ public class OrderTypeDAO extends BaseOrderTypeDAO {
 			Query query = session.createSQLQuery("select count(s.MENU_ITEM_ID), count(s.ORDER_TYPE_ID) from ITEM_ORDER_TYPE s");
 			List result = query.list();
 			Object[] object = (Object[]) result.get(0);
-			Integer menuItemCount = getInt(object, 0);
-			Integer orderTypeCount = getInt(object, 1);
+			Integer menuItemCount = (Integer) getInt(object, 0);
+			Integer orderTypeCount = (Integer) getInt(object, 1);
 
 			if (menuItemCount < 1) {
 				return true;
@@ -113,11 +113,11 @@ public class OrderTypeDAO extends BaseOrderTypeDAO {
 		}
 	}
 
-	private Integer getInt(Object[] array, int index) {
+	private Number getInt(Object[] array, int index) {
 		if (array.length < (index + 1))
 			return null;
 
-		return (Integer) array[index];
+		return (Number) array[index];
 	}
 
 }

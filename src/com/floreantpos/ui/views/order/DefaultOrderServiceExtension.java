@@ -17,15 +17,16 @@
  */
 package com.floreantpos.ui.views.order;
 
+import java.awt.Component;
 import java.util.Calendar;
 import java.util.List;
 
+import javax.swing.AbstractAction;
+import javax.swing.JDialog;
 import javax.swing.JMenu;
 import javax.swing.JOptionPane;
 
 import com.floreantpos.Messages;
-import com.floreantpos.actions.PosAction;
-import com.floreantpos.config.ui.ConfigurationDialog;
 import com.floreantpos.customer.CustomerSelector;
 import com.floreantpos.extension.OrderServiceExtension;
 import com.floreantpos.main.Application;
@@ -40,10 +41,10 @@ import com.floreantpos.util.POSUtil;
 import com.floreantpos.util.PosGuiUtil;
 import com.floreantpos.util.TicketAlreadyExistsException;
 
-public class DefaultOrderServiceExtension implements OrderServiceExtension {
+public class DefaultOrderServiceExtension extends OrderServiceExtension {
 
 	@Override
-	public String getName() {
+	public String getProductName() {
 		return Messages.getString("DefaultOrderServiceExtension.0"); //$NON-NLS-1$
 	}
 
@@ -150,7 +151,7 @@ public class DefaultOrderServiceExtension implements OrderServiceExtension {
 	}
 
 	@Override
-	public void initConfigurationView(ConfigurationDialog dialog) {
+	public void initConfigurationView(JDialog dialog) {
 
 	}
 
@@ -161,7 +162,7 @@ public class DefaultOrderServiceExtension implements OrderServiceExtension {
 
 	@Override
 	public IView getDeliveryDispatchView(OrderType orderType) {
-		return null; 
+		return null;
 	}
 
 	@Override
@@ -176,7 +177,7 @@ public class DefaultOrderServiceExtension implements OrderServiceExtension {
 
 	@Override
 	public void openDeliveryDispatchDialog(OrderType orderType) {
-		
+
 	}
 
 	@Override
@@ -185,17 +186,22 @@ public class DefaultOrderServiceExtension implements OrderServiceExtension {
 	}
 
 	@Override
-	public List<PosAction> getSpecialFunctionActions() {
+	public List<AbstractAction> getSpecialFunctionActions() {
 		return null;
 	}
 
 	@Override
-	public void initLicense() {
+	public String getProductVersion() {
+		return null;
 	}
 
 	@Override
-	public boolean hasValidLicense() {
-		return false;
+	public Component getParent() {
+		return null;
 	}
 
+	@Override
+	public boolean requireLicense() {
+		return false;
+	}
 }

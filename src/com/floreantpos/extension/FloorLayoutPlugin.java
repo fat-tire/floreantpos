@@ -25,14 +25,19 @@ import com.floreantpos.model.Ticket;
 import com.floreantpos.ui.BeanEditor;
 import com.floreantpos.ui.tableselection.TableSelector;
 
-public interface FloorLayoutPlugin extends FloreantPlugin {
+public abstract class FloorLayoutPlugin extends AbstractFloreantPlugin {
 
 	public final static Dimension defaultFloorImageSize = new Dimension(400, 400);
 
-	void initialize();
-	void openTicketsAndTablesDisplay();
-	TableSelector createTableSelector();
-	void updateView();
-	List<ShopTable> captureTableNumbers(Ticket ticket);
-	BeanEditor getBeanEditor();
+	public abstract void initialize();
+
+	public abstract void openTicketsAndTablesDisplay();
+
+	public abstract TableSelector createTableSelector();
+
+	public abstract void updateView();
+
+	public abstract List<ShopTable> captureTableNumbers(Ticket ticket);
+
+	public abstract BeanEditor getBeanEditor();
 }
