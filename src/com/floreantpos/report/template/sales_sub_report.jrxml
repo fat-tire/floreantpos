@@ -20,7 +20,7 @@
 	<field name="Id" class="java.lang.String"/>
 	<field name="Name" class="java.lang.String"/>
 	<field name="Price" class="java.lang.String"/>
-	<field name="QTY" class="java.lang.String"/>
+	<field name="QTY" class="java.lang.Double"/>
 	<field name="Tax" class="java.lang.String"/>
 	<field name="Dis" class="java.lang.String"/>
 	<field name="Tax Total" class="java.lang.String"/>
@@ -221,7 +221,7 @@
 						<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Center" verticalAlignment="Middle"/>
-					<textFieldExpression class="java.lang.String"><![CDATA[$F{QTY}]]></textFieldExpression>
+					<textFieldExpression class="java.lang.Double"><![CDATA[$F{QTY}]]></textFieldExpression>
 				</textField>
 				<textField pattern="¤ #,##0.00" isBlankWhenNull="true">
 					<reportElement key="textField-5" mode="Transparent" x="270" y="0" width="60" height="20"/>
