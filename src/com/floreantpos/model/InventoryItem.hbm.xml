@@ -32,6 +32,10 @@
         <many-to-one class="com.floreantpos.model.PackagingUnit" name="packagingUnit">
             <column name="PUNIT_ID"/>
         </many-to-one>
+        
+         <many-to-one class="com.floreantpos.model.PackagingUnit" name="recipeUnit">
+            <column name="RECIPE_UNIT_ID"/>
+        </many-to-one>
 
         <many-to-one class="InventoryGroup" name="itemGroup">
             <column name="ITEM_GROUP_ID"/>

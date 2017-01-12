@@ -1,22 +1,6 @@
-/**
- * ************************************************************************
- * * The contents of this file are subject to the MRPL 1.2
- * * (the  "License"),  being   the  Mozilla   Public  License
- * * Version 1.1  with a permitted attribution clause; you may not  use this
- * * file except in compliance with the License. You  may  obtain  a copy of
- * * the License at http://www.floreantpos.org/license.html
- * * Software distributed under the License  is  distributed  on  an "AS IS"
- * * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * * License for the specific  language  governing  rights  and  limitations
- * * under the License.
- * * The Original Code is FLOREANT POS.
- * * The Initial Developer of the Original Code is OROCUBE LLC
- * * All portions are Copyright (C) 2015 OROCUBE LLC
- * * All Rights Reserved.
- * ************************************************************************
- */
 package com.floreantpos.model.base;
 
+import java.lang.Comparable;
 import java.io.Serializable;
 
 
@@ -35,6 +19,7 @@ public abstract class BaseInventoryItem  implements Comparable, Serializable {
 	public static String PROP_PACKAGE_BARCODE = "packageBarcode"; //$NON-NLS-1$
 	public static String PROP_PACKAGING_UNIT = "packagingUnit"; //$NON-NLS-1$
 	public static String PROP_DESCRIPTION = "description"; //$NON-NLS-1$
+	public static String PROP_RECIPE_UNIT = "recipeUnit"; //$NON-NLS-1$
 	public static String PROP_ITEM_VENDOR = "itemVendor"; //$NON-NLS-1$
 	public static String PROP_ITEM_GROUP = "itemGroup"; //$NON-NLS-1$
 	public static String PROP_VISIBLE = "visible"; //$NON-NLS-1$
@@ -97,6 +82,7 @@ public abstract class BaseInventoryItem  implements Comparable, Serializable {
 
 	// many to one
 	private com.floreantpos.model.PackagingUnit packagingUnit;
+	private com.floreantpos.model.PackagingUnit recipeUnit;
 	private com.floreantpos.model.InventoryGroup itemGroup;
 	private com.floreantpos.model.InventoryLocation itemLocation;
 	private com.floreantpos.model.InventoryVendor itemVendor;
@@ -231,8 +217,8 @@ public abstract class BaseInventoryItem  implements Comparable, Serializable {
 	 * Return the value associated with the column: SORT_ORDER
 	 */
 	public java.lang.Integer getSortOrder () {
-					return sortOrder == null ? Integer.valueOf(0) : sortOrder;
-			}
+									return sortOrder == null ? Integer.valueOf(0) : sortOrder;
+					}
 
 	/**
 	 * Set the value related to the column: SORT_ORDER
@@ -248,8 +234,8 @@ public abstract class BaseInventoryItem  implements Comparable, Serializable {
 	 * Return the value associated with the column: PACKAGE_REORDER_LEVEL
 	 */
 	public java.lang.Integer getPackageReorderLevel () {
-					return packageReorderLevel == null ? Integer.valueOf(0) : packageReorderLevel;
-			}
+									return packageReorderLevel == null ? Integer.valueOf(0) : packageReorderLevel;
+					}
 
 	/**
 	 * Set the value related to the column: PACKAGE_REORDER_LEVEL
@@ -265,8 +251,8 @@ public abstract class BaseInventoryItem  implements Comparable, Serializable {
 	 * Return the value associated with the column: PACKAGE_REPLENISH_LEVEL
 	 */
 	public java.lang.Integer getPackageReplenishLevel () {
-					return packageReplenishLevel == null ? Integer.valueOf(0) : packageReplenishLevel;
-			}
+									return packageReplenishLevel == null ? Integer.valueOf(0) : packageReplenishLevel;
+					}
 
 	/**
 	 * Set the value related to the column: PACKAGE_REPLENISH_LEVEL
@@ -316,8 +302,8 @@ public abstract class BaseInventoryItem  implements Comparable, Serializable {
 	 * Return the value associated with the column: TOTAL_PACKAGES
 	 */
 	public java.lang.Integer getTotalPackages () {
-					return totalPackages == null ? Integer.valueOf(0) : totalPackages;
-			}
+									return totalPackages == null ? Integer.valueOf(0) : totalPackages;
+					}
 
 	/**
 	 * Set the value related to the column: TOTAL_PACKAGES
@@ -415,6 +401,23 @@ public abstract class BaseInventoryItem  implements Comparable, Serializable {
 
 
 	/**
+	 * Return the value associated with the column: RECIPE_UNIT_ID
+	 */
+	public com.floreantpos.model.PackagingUnit getRecipeUnit () {
+					return recipeUnit;
+			}
+
+	/**
+	 * Set the value related to the column: RECIPE_UNIT_ID
+	 * @param recipeUnit the RECIPE_UNIT_ID value
+	 */
+	public void setRecipeUnit (com.floreantpos.model.PackagingUnit recipeUnit) {
+		this.recipeUnit = recipeUnit;
+	}
+
+
+
+	/**
 	 * Return the value associated with the column: ITEM_GROUP_ID
 	 */
 	public com.floreantpos.model.InventoryGroup getItemGroup () {
@@ -472,7 +475,7 @@ public abstract class BaseInventoryItem  implements Comparable, Serializable {
 		if (!(obj instanceof com.floreantpos.model.InventoryItem)) return false;
 		else {
 			com.floreantpos.model.InventoryItem inventoryItem = (com.floreantpos.model.InventoryItem) obj;
-			if (null == this.getId() || null == inventoryItem.getId()) return false;
+			if (null == this.getId() || null == inventoryItem.getId()) return this == obj;
 			else return (this.getId().equals(inventoryItem.getId()));
 		}
 	}
@@ -481,7 +484,7 @@ public abstract class BaseInventoryItem  implements Comparable, Serializable {
 		if (Integer.MIN_VALUE == this.hashCode) {
 			if (null == this.getId()) return super.hashCode();
 			else {
-				String hashStr = this.getClass().getName() + ":" + this.getId().hashCode(); //$NON-NLS-1$
+				String hashStr = this.getClass().getName() + ":" + this.getId().hashCode();
 				this.hashCode = hashStr.hashCode();
 			}
 		}
