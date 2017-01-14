@@ -1,6 +1,5 @@
 package com.floreantpos.model.base;
 
-import java.lang.Comparable;
 import java.io.Serializable;
 
 
@@ -15,36 +14,40 @@ import java.io.Serializable;
 
 public abstract class BasePosTransaction  implements Comparable, Serializable {
 
-	public static String REF = "PosTransaction";
-	public static String PROP_CARD_NUMBER = "cardNumber";
-	public static String PROP_TRANSACTION_TYPE = "transactionType";
-	public static String PROP_CARD_AUTH_CODE = "cardAuthCode";
-	public static String PROP_USER = "user";
-	public static String PROP_CUSTOM_PAYMENT_FIELD_NAME = "customPaymentFieldName";
-	public static String PROP_GIFT_CERT_NUMBER = "giftCertNumber";
-	public static String PROP_GIFT_CERT_PAID_AMOUNT = "giftCertPaidAmount";
-	public static String PROP_CUSTOM_PAYMENT_REF = "customPaymentRef";
-	public static String PROP_REASON = "reason";
-	public static String PROP_GIFT_CERT_FACE_VALUE = "giftCertFaceValue";
-	public static String PROP_CARD_READER = "cardReader";
-	public static String PROP_CARD_TYPE = "cardType";
-	public static String PROP_DRAWER_RESETTED = "drawerResetted";
-	public static String PROP_CUSTOM_PAYMENT_NAME = "customPaymentName";
-	public static String PROP_PAYMENT_TYPE = "paymentType";
-	public static String PROP_AUTHORIZABLE = "authorizable";
-	public static String PROP_CAPTURED = "captured";
-	public static String PROP_CARD_TRANSACTION_ID = "cardTransactionId";
-	public static String PROP_TICKET = "ticket";
-	public static String PROP_CARD_MERCHANT_GATEWAY = "cardMerchantGateway";
-	public static String PROP_AMOUNT = "amount";
-	public static String PROP_TENDER_AMOUNT = "tenderAmount";
-	public static String PROP_TIPS_AMOUNT = "tipsAmount";
-	public static String PROP_TERMINAL = "terminal";
-	public static String PROP_GIFT_CERT_CASH_BACK_AMOUNT = "giftCertCashBackAmount";
-	public static String PROP_TRANSACTION_TIME = "transactionTime";
-	public static String PROP_NOTE = "note";
-	public static String PROP_ID = "id";
-	public static String PROP_RECEPIENT = "recepient";
+	public static String REF = "PosTransaction"; //$NON-NLS-1$
+	public static String PROP_USER = "user"; //$NON-NLS-1$
+	public static String PROP_CARD_A_I_D = "cardAID"; //$NON-NLS-1$
+	public static String PROP_CUSTOM_PAYMENT_FIELD_NAME = "customPaymentFieldName"; //$NON-NLS-1$
+	public static String PROP_RECEPIENT = "recepient"; //$NON-NLS-1$
+	public static String PROP_GIFT_CERT_CASH_BACK_AMOUNT = "giftCertCashBackAmount"; //$NON-NLS-1$
+	public static String PROP_AUTHORIZABLE = "authorizable"; //$NON-NLS-1$
+	public static String PROP_CUSTOM_PAYMENT_REF = "customPaymentRef"; //$NON-NLS-1$
+	public static String PROP_TRANSACTION_TYPE = "transactionType"; //$NON-NLS-1$
+	public static String PROP_CARD_READER = "cardReader"; //$NON-NLS-1$
+	public static String PROP_GIFT_CERT_NUMBER = "giftCertNumber"; //$NON-NLS-1$
+	public static String PROP_TICKET = "ticket"; //$NON-NLS-1$
+	public static String PROP_CARD_EXT_DATA = "cardExtData"; //$NON-NLS-1$
+	public static String PROP_CARD_A_R_Q_C = "cardARQC"; //$NON-NLS-1$
+	public static String PROP_CARD_HOLDER_NAME = "cardHolderName"; //$NON-NLS-1$
+	public static String PROP_CARD_MERCHANT_GATEWAY = "cardMerchantGateway"; //$NON-NLS-1$
+	public static String PROP_CARD_TYPE = "cardType"; //$NON-NLS-1$
+	public static String PROP_DRAWER_RESETTED = "drawerResetted"; //$NON-NLS-1$
+	public static String PROP_TRANSACTION_TIME = "transactionTime"; //$NON-NLS-1$
+	public static String PROP_CARD_AUTH_CODE = "cardAuthCode"; //$NON-NLS-1$
+	public static String PROP_REASON = "reason"; //$NON-NLS-1$
+	public static String PROP_CARD_NUMBER = "cardNumber"; //$NON-NLS-1$
+	public static String PROP_GIFT_CERT_FACE_VALUE = "giftCertFaceValue"; //$NON-NLS-1$
+	public static String PROP_AMOUNT = "amount"; //$NON-NLS-1$
+	public static String PROP_CAPTURED = "captured"; //$NON-NLS-1$
+	public static String PROP_TERMINAL = "terminal"; //$NON-NLS-1$
+	public static String PROP_NOTE = "note"; //$NON-NLS-1$
+	public static String PROP_CUSTOM_PAYMENT_NAME = "customPaymentName"; //$NON-NLS-1$
+	public static String PROP_PAYMENT_TYPE = "paymentType"; //$NON-NLS-1$
+	public static String PROP_TIPS_AMOUNT = "tipsAmount"; //$NON-NLS-1$
+	public static String PROP_TENDER_AMOUNT = "tenderAmount"; //$NON-NLS-1$
+	public static String PROP_CARD_TRANSACTION_ID = "cardTransactionId"; //$NON-NLS-1$
+	public static String PROP_ID = "id"; //$NON-NLS-1$
+	public static String PROP_GIFT_CERT_PAID_AMOUNT = "giftCertPaidAmount"; //$NON-NLS-1$
 
 
 	// constructors
@@ -95,12 +98,16 @@ public abstract class BasePosTransaction  implements Comparable, Serializable {
 		protected java.lang.String paymentType;
 		protected java.lang.Boolean captured;
 		protected java.lang.Boolean authorizable;
+		protected java.lang.String cardHolderName;
 		protected java.lang.String cardNumber;
 		protected java.lang.String cardAuthCode;
 		protected java.lang.String cardType;
 		protected java.lang.String cardTransactionId;
 		protected java.lang.String cardMerchantGateway;
 		protected java.lang.String cardReader;
+		protected java.lang.String cardAID;
+		protected java.lang.String cardARQC;
+		protected java.lang.String cardExtData;
 		protected java.lang.String giftCertNumber;
 		protected java.lang.Double giftCertFaceValue;
 		protected java.lang.Double giftCertPaidAmount;
@@ -330,6 +337,23 @@ public abstract class BasePosTransaction  implements Comparable, Serializable {
 
 
 	/**
+	 * Return the value associated with the column: CARD_HOLDER_NAME
+	 */
+	public java.lang.String getCardHolderName () {
+					return cardHolderName;
+			}
+
+	/**
+	 * Set the value related to the column: CARD_HOLDER_NAME
+	 * @param cardHolderName the CARD_HOLDER_NAME value
+	 */
+	public void setCardHolderName (java.lang.String cardHolderName) {
+		this.cardHolderName = cardHolderName;
+	}
+
+
+
+	/**
 	 * Return the value associated with the column: CARD_NUMBER
 	 */
 	public java.lang.String getCardNumber () {
@@ -427,6 +451,57 @@ public abstract class BasePosTransaction  implements Comparable, Serializable {
 	 */
 	public void setCardReader (java.lang.String cardReader) {
 		this.cardReader = cardReader;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: CARD_AID
+	 */
+	public java.lang.String getCardAID () {
+					return cardAID;
+			}
+
+	/**
+	 * Set the value related to the column: CARD_AID
+	 * @param cardAID the CARD_AID value
+	 */
+	public void setCardAID (java.lang.String cardAID) {
+		this.cardAID = cardAID;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: CARD_ARQC
+	 */
+	public java.lang.String getCardARQC () {
+					return cardARQC;
+			}
+
+	/**
+	 * Set the value related to the column: CARD_ARQC
+	 * @param cardARQC the CARD_ARQC value
+	 */
+	public void setCardARQC (java.lang.String cardARQC) {
+		this.cardARQC = cardARQC;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: CARD_EXT_DATA
+	 */
+	public java.lang.String getCardExtData () {
+					return cardExtData;
+			}
+
+	/**
+	 * Set the value related to the column: CARD_EXT_DATA
+	 * @param cardExtData the CARD_EXT_DATA value
+	 */
+	public void setCardExtData (java.lang.String cardExtData) {
+		this.cardExtData = cardExtData;
 	}
 
 

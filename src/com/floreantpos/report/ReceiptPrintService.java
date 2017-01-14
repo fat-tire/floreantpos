@@ -71,6 +71,12 @@ import com.floreantpos.util.NumberUtil;
 import com.floreantpos.util.PrintServiceUtil;
 
 public class ReceiptPrintService {
+	private static final String TOTAL_TEXT = "totalAmountText";
+	private static final String TIPS_TEXT = "tipsText";
+	private static final String DELIVERY_CHARGE_TEXT = "deliveryChargeText";
+	private static final String SERVICE_CHARGE_TEXT = "serviceChargeText";
+	private static final String TAX_TEXT = "taxText";
+	private static final String DISCOUNT_TEXT = "discountText";
 	private static final String DATA = "data"; //$NON-NLS-1$
 	private static final String TITLE = "title"; //$NON-NLS-1$
 	private static final String ORDER_ = "ORDER-"; //$NON-NLS-1$
@@ -383,7 +389,19 @@ public class ReceiptPrintService {
 		map.put(CURRENCY_SYMBOL, currencySymbol);
 		map.put(ITEM_TEXT, POSConstants.RECEIPT_REPORT_ITEM_LABEL);
 		map.put(QUANTITY_TEXT, POSConstants.RECEIPT_REPORT_QUANTITY_LABEL);
-		map.put(SUB_TOTAL_TEXT, POSConstants.RECEIPT_REPORT_SUBTOTAL_LABEL);
+		map.put("subtotalHeaderText", Messages.getString("RECEIPT_REPORT_SUBTOTAL_HEADER")); //$NON-NLS-1$ //$NON-NLS-2$
+		map.put(SUB_TOTAL_TEXT, POSConstants.RECEIPT_REPORT_SUBTOTAL_LABEL + " " + currencySymbol); //$NON-NLS-1$
+		map.put(TOTAL_TEXT, POSConstants.RECEIPT_REPORT_TOTAL_AMOUNT_LABEL + " " + currencySymbol); //$NON-NLS-1$
+		map.put("tenderedAmountText", POSConstants.RECEIPT_REPORT_TENDERED_AMOUNT_LABEL + " " + currencySymbol); //$NON-NLS-1$
+		map.put(DISCOUNT_TEXT, POSConstants.RECEIPT_REPORT_DISCOUNT_LABEL + " " + currencySymbol); //$NON-NLS-1$
+		map.put(TAX_TEXT, POSConstants.RECEIPT_REPORT_TAX_LABEL + " " + currencySymbol); //$NON-NLS-1$
+		map.put(SERVICE_CHARGE_TEXT, POSConstants.RECEIPT_REPORT_SERVICE_CHARGE_LABEL + " " + currencySymbol); //$NON-NLS-1$
+		map.put(DELIVERY_CHARGE_TEXT, POSConstants.RECEIPT_REPORT_DELIVERY_CHARGE_LABEL + " " + currencySymbol); //$NON-NLS-1$
+		map.put(TIPS_TEXT, POSConstants.RECEIPT_REPORT_TIPS_LABEL + " " + currencySymbol); //$NON-NLS-1$
+		map.put("paidAmountText", POSConstants.RECEIPT_REPORT_PAIDAMOUNT_LABEL + " " + currencySymbol); //$NON-NLS-1$
+		map.put("dueAmountText", POSConstants.RECEIPT_REPORT_DUEAMOUNT_LABEL + " " + currencySymbol); //$NON-NLS-1$
+		map.put("changeAmountText", POSConstants.RECEIPT_REPORT_CHANGEAMOUNT_LABEL + " " + currencySymbol); //$NON-NLS-1$
+
 		map.put(RECEIPT_TYPE, printProperties.getReceiptTypeName());
 		map.put(SHOW_SUBTOTAL, Boolean.valueOf(printProperties.isShowSubtotal()));
 		map.put(SHOW_HEADER_SEPARATOR, Boolean.TRUE);
@@ -413,12 +431,13 @@ public class ReceiptPrintService {
 		}
 
 		if (printProperties.isShowFooter()) {
+			map.put("subtotalAmount", NumberUtil.formatNumber(ticket.getSubtotalAmount())); //$NON-NLS-1$
 			double toleranceAmount = ticket.calculateToleranceAmount();
 			if (toleranceAmount > 0.0) {
 				map.put(ADJUST_AMOUNT, NumberUtil.formatNumber(toleranceAmount));
 			}
 			if (ticket.getDiscountAmount() > 0.0) {
-				map.put(DISCOUNT_AMOUNT, NumberUtil.formatNumber(ticket.getDiscountAmount() - toleranceAmount));
+				map.put(DISCOUNT_AMOUNT, NumberUtil.formatNumber(ticket.getDiscountAmount()));
 			}
 
 			if (ticket.getTaxAmount() > 0.0) {
@@ -437,83 +456,50 @@ public class ReceiptPrintService {
 				tipAmount = ticket.getGratuity().getAmount();
 				map.put(TIP_AMOUNT, NumberUtil.formatNumber(tipAmount));
 			}
-
-			map.put("totalText", POSConstants.RECEIPT_REPORT_TOTAL_LABEL + currencySymbol); //$NON-NLS-1$
-			map.put("discountText", POSConstants.RECEIPT_REPORT_DISCOUNT_LABEL + currencySymbol); //$NON-NLS-1$
-			map.put("taxText", POSConstants.RECEIPT_REPORT_TAX_LABEL + currencySymbol); //$NON-NLS-1$
-			map.put("serviceChargeText", POSConstants.RECEIPT_REPORT_SERVICE_CHARGE_LABEL + currencySymbol); //$NON-NLS-1$
-			map.put("deliveryChargeText", POSConstants.RECEIPT_REPORT_DELIVERY_CHARGE_LABEL + currencySymbol); //$NON-NLS-1$
-			map.put("tipsText", POSConstants.RECEIPT_REPORT_TIPS_LABEL + currencySymbol); //$NON-NLS-1$
-			map.put("netAmountText", POSConstants.RECEIPT_REPORT_NETAMOUNT_LABEL + currencySymbol); //$NON-NLS-1$
-			map.put("paidAmountText", POSConstants.RECEIPT_REPORT_PAIDAMOUNT_LABEL + currencySymbol); //$NON-NLS-1$
-			map.put("adjustAmountText", "+/- " + currencySymbol); //$NON-NLS-1$
-			map.put("dueAmountText", POSConstants.RECEIPT_REPORT_DUEAMOUNT_LABEL + currencySymbol); //$NON-NLS-1$
-			map.put("changeAmountText", POSConstants.RECEIPT_REPORT_CHANGEAMOUNT_LABEL + currencySymbol); //$NON-NLS-1$
-
-			map.put("netAmount", NumberUtil.formatNumber(totalAmount + toleranceAmount)); //$NON-NLS-1$
+			map.put("totalAmount", NumberUtil.formatNumber(totalAmount)); //$NON-NLS-1$
+			if (transaction != null) {
+				map.put("tenderedAmount", NumberUtil.formatNumber(transaction.getTenderAmount())); //$NON-NLS-1$
+			}
 			map.put("paidAmount", NumberUtil.formatNumber(ticket.getPaidAmount())); //$NON-NLS-1$
 			map.put("dueAmount", NumberUtil.formatNumber(ticket.getDueAmount())); //$NON-NLS-1$
-			map.put("grandSubtotal", NumberUtil.formatNumber(ticket.getSubtotalAmount())); //$NON-NLS-1$
 			map.put("footerMessage", restaurant.getTicketFooterMessage()); //$NON-NLS-1$
 			map.put("copyType", printProperties.getReceiptCopyType()); //$NON-NLS-1$
 
 			if (transaction != null) {
 				double changedAmount = transaction.getTenderAmount() - transaction.getAmount();
-				if (changedAmount < 0) {
-					changedAmount = 0;
+				if (changedAmount > 0) {
+					map.put("changedAmount", NumberUtil.formatNumber(changedAmount)); //$NON-NLS-1$
 				}
-				map.put("changedAmount", NumberUtil.formatNumber(changedAmount)); //$NON-NLS-1$
-
 				if (transaction.isCard()) {
 					map.put("cardPayment", true); //$NON-NLS-1$
-
-					if (StringUtils.isNotEmpty(transaction.getCardTrack())) {
-						BankCardMagneticTrack track = BankCardMagneticTrack.from(transaction.getCardTrack());
-						String string = transaction.getCardType();
-						string += "<br/>" + "APPROVAL: " + transaction.getCardAuthCode(); //$NON-NLS-1$ //$NON-NLS-2$
-
-						try {
-							string += "<br/>" + "ACCT: " + getCardNumber(track); //$NON-NLS-1$ //$NON-NLS-2$
-							string += "<br/>" + "EXP: " + track.getTrack1().getExpirationDate(); //$NON-NLS-1$ //$NON-NLS-2$
-							string += "<br/>" + "CARDHOLDER: " + track.getTrack1().getName(); //$NON-NLS-1$ //$NON-NLS-2$
-						} catch (Exception e) {
-							logger.equals(e);
+					String string = "<br/>CARD INFO: ------------------------";
+					string += "<br/>PROCESS: " + transaction.getCardReader();
+					string += "<br/> TYPE: " + transaction.getCardType();
+					try {
+						String cardNumber = transaction.getCardNumber();
+						if (transaction.getCardNumber() != null) {
+							string += "<br/> ACCT: **** **** **** " + cardNumber.substring(cardNumber.length() - 4, cardNumber.length());
 						}
+						if (transaction.getCardHolderName() != null) {
+							string += "<br/> CARDHOLDER: " + transaction.getCardHolderName();
+						}
+					} catch (Exception e) {
+						logger.equals(e);
+					}
+					string += "<br/> APPROVAL: " + transaction.getCardAuthCode();
 
-						map.put("approvalCode", string); //$NON-NLS-1$
+					map.put("approvalCode", string); //$NON-NLS-1$
+				}
+				if (TerminalConfig.isEnabledMultiCurrency()) {
+					StringBuilder multiCurrencyBreakdownCashBack = buildMultiCurrency(ticket, printProperties);
+					if (multiCurrencyBreakdownCashBack != null) {
+						map.put("additionalProperties", multiCurrencyBreakdownCashBack.toString()); //$NON-NLS-1$
 					}
 					else {
-						String string = "APPROVAL: " + transaction.getCardAuthCode(); //$NON-NLS-1$
-						string += "<br/>" + "Card processed in ext. device."; //$NON-NLS-1$ //$NON-NLS-2$
-
-						map.put("approvalCode", string); //$NON-NLS-1$
+						StringBuilder multiCurrencyTotalAmount = buildMultiCurrencyTotalAmount(ticket, printProperties);
+						if (multiCurrencyTotalAmount != null)
+							map.put("additionalProperties", multiCurrencyTotalAmount.toString()); //$NON-NLS-1$
 					}
-				}
-			}
-
-			String messageString = "<html>"; //$NON-NLS-1$
-			//			String customerName = ticket.getProperty(Ticket.CUSTOMER_NAME);
-
-			//			if (customerName != null) {
-			//				if (customer.hasProperty("mykalaid")) {
-			//					messageString += "<br/>Customer: " + customer.getName();
-			//				}
-			//			}
-			if (ticket.hasProperty("mykaladiscount")) { //$NON-NLS-1$
-				messageString += "<br/>My Kala point: " + ticket.getProperty("mykalapoing"); //$NON-NLS-1$ //$NON-NLS-2$
-				messageString += "<br/>My Kala discount: " + ticket.getDiscountAmount(); //$NON-NLS-1$
-			}
-			messageString += "</html>"; //$NON-NLS-1$
-			//map.put("additionalProperties", messageString); //$NON-NLS-1$
-			if (TerminalConfig.isEnabledMultiCurrency()) {
-				StringBuilder multiCurrencyBreakdownCashBack = buildMultiCurrency(ticket, printProperties);
-				if (multiCurrencyBreakdownCashBack != null) {
-					map.put("additionalProperties", multiCurrencyBreakdownCashBack.toString()); //$NON-NLS-1$
-				}
-				else {
-					StringBuilder multiCurrencyTotalAmount = buildMultiCurrencyTotalAmount(ticket, printProperties);
-					if (multiCurrencyTotalAmount != null)
-						map.put("additionalProperties", multiCurrencyTotalAmount.toString()); //$NON-NLS-1$
 				}
 			}
 		}

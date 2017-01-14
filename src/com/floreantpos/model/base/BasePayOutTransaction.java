@@ -15,8 +15,8 @@ import java.io.Serializable;
 
 public abstract class BasePayOutTransaction extends com.floreantpos.model.PosTransaction  implements Comparable, Serializable {
 
-	public static String REF = "PayOutTransaction";
-	public static String PROP_ID = "id";
+	public static String REF = "PayOutTransaction"; //$NON-NLS-1$
+	public static String PROP_ID = "id"; //$NON-NLS-1$
 
 
 	// constructors

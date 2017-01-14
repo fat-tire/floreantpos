@@ -14,7 +14,7 @@
 		<property column="AMOUNT" length="52" name="amount" type="java.lang.Double" />
 		<property column="TIPS_AMOUNT" length="52" name="tipsAmount" type="java.lang.Double" />
 		<property column="TENDER_AMOUNT" length="52" name="tenderAmount" type="java.lang.Double" />
-		<property column="TRANSACTION_TYPE" name="transactionType" type="string" length="20" not-null="true" />
+		<property column="TRANSACTION_TYPE" name="transactionType" type="string" length="30" not-null="true" />
 		<property column="CUSTOM_PAYMENT_NAME" name="customPaymentName" type="string" length="60" />
 		<property column="CUSTOM_PAYMENT_REF" name="customPaymentRef" type="string" length="120" />
 		<property column="CUSTOM_PAYMENT_FIELD_NAME" name="customPaymentFieldName" type="string" length="60" />
@@ -25,12 +25,16 @@
 		<property column="AUTHORIZABLE" name="authorizable" type="java.lang.Boolean" />
 
 		<!-- card -->
+		<property column="CARD_HOLDER_NAME" length="60" name="cardHolderName" type="string" />
 		<property column="CARD_NUMBER" length="40" name="cardNumber" type="string" />
 		<property column="CARD_AUTH_CODE" length="30" name="cardAuthCode" type="string" />
 		<property column="CARD_TYPE" length="20" name="cardType" type="string" />
 		<property column="CARD_TRANSACTION_ID" name="cardTransactionId" type="string" length="255" />
 		<property column="CARD_MERCHANT_GATEWAY" name="cardMerchantGateway" type="string" length="60" />
-		<property column="CARD_READER" name="cardReader" type="string" length="20" />
+		<property column="CARD_READER" name="cardReader" type="string" length="30" />
+		<property column="CARD_AID" name="cardAID" type="string" length="120" />
+		<property column="CARD_ARQC" name="cardARQC" type="string" length="120" />
+		<property column="CARD_EXT_DATA" name="cardExtData" type="string" length="255" />
 
 		<!-- GIFT CERT SPECIFIC -->
 		<property column="GIFT_CERT_NUMBER" name="giftCertNumber" type="string" length="64" />

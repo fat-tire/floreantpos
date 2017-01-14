@@ -15,8 +15,8 @@ import java.io.Serializable;
 
 public abstract class BaseVoidTransaction extends com.floreantpos.model.PosTransaction  implements Comparable, Serializable {
 
-	public static String REF = "VoidTransaction";
-	public static String PROP_ID = "id";
+	public static String REF = "VoidTransaction"; //$NON-NLS-1$
+	public static String PROP_ID = "id"; //$NON-NLS-1$
 
 
 	// constructors

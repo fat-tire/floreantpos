@@ -478,6 +478,8 @@ public class POSConstants {
 	public static final String RECEIPT_REPORT_ITEM_LABEL = Messages.getString("RECEIPT_REPORT_ITEM_LABEL"); //$NON-NLS-1$
 	public static final String RECEIPT_REPORT_QUANTITY_LABEL = Messages.getString("RECEIPT_REPORT_QUANTITY_LABEL"); //$NON-NLS-1$
 	public static final String RECEIPT_REPORT_SUBTOTAL_LABEL = Messages.getString("RECEIPT_REPORT_SUBTOTAL_LABEL"); //$NON-NLS-1$
+	public static final String RECEIPT_REPORT_TENDERED_AMOUNT_LABEL = Messages.getString("RECEIPT_REPORT_TENDERED_AMOUNT_LABEL"); //$NON-NLS-1$
+	public static final String RECEIPT_REPORT_TOTAL_AMOUNT_LABEL = Messages.getString("RECEIPT_REPORT_TOTAL_AMOUNT_LABEL"); //$NON-NLS-1$
 
 	public static final String RECEIPT_REPORT_TOTAL_LABEL = Messages.getString("RECEIPT_REPORT_TOTAL_LABEL"); //$NON-NLS-1$
 	public static final String RECEIPT_REPORT_DISCOUNT_LABEL = Messages.getString("RECEIPT_REPORT_DISCOUNT_LABEL"); //$NON-NLS-1$

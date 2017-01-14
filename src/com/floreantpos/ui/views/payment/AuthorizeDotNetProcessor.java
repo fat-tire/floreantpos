@@ -104,7 +104,10 @@ public class AuthorizeDotNetProcessor implements CardProcessor {
 			transaction.setAuthorizable(false);
 			transaction.setCardTransactionId(result.getTransId());
 			transaction.setCardAuthCode(result.getAuthCode());
-			transaction.setCardType(result.getTarget().getCreditCard().getCardType().name());
+			CreditCard card = result.getTarget().getCreditCard();
+			transaction.setCardType(card.getCardType().name());
+			transaction.setCardNumber(card.getCreditCardNumber());
+//			transaction.setCardHolderName(card.get)
 		}
 		else if (result.isDeclined()) {
 			throw new Exception(Messages.getString("AuthorizeDotNetProcessor.2") + result.getResponseReasonCodes().get(0).getReasonText()); //$NON-NLS-1$
