@@ -483,10 +483,19 @@ public class ReceiptPrintService {
 						if (transaction.getCardHolderName() != null) {
 							string += "<br/> CARDHOLDER: " + transaction.getCardHolderName();
 						}
+						if (transaction.getCardTransactionId() != null) {
+							string += "<br/> TRANS ID: " + transaction.getCardTransactionId();
+						}
+						string += "<br/> APPROVAL: " + transaction.getCardAuthCode();
+						if (transaction.getCardAID() != null) {
+							string += "<br/> AID: " + transaction.getCardAID();
+						}
+						if (transaction.getCardARQC() != null) {
+							string += "<br/> ARQC: " + transaction.getCardARQC();
+						}
 					} catch (Exception e) {
 						logger.equals(e);
 					}
-					string += "<br/> APPROVAL: " + transaction.getCardAuthCode();
 
 					map.put("approvalCode", string); //$NON-NLS-1$
 				}
