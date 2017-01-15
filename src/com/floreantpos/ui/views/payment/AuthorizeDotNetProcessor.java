@@ -38,28 +38,28 @@ import com.floreantpos.model.PosTransaction;
 
 public class AuthorizeDotNetProcessor implements CardProcessor {
 
-//	public String authorizeAmount(Ticket ticket, String cardTracks, double amount, String cardType) throws Exception {
-//		Environment environment = createEnvironment();
-//		Merchant merchant = createMerchant(environment);
-//
-//		CreditCard creditCard = createCard(cardTracks, cardType);
-//
-//		// Create transaction
-//		Transaction authCaptureTransaction = merchant.createAIMTransaction(TransactionType.AUTH_ONLY, new BigDecimal(amount));
-//		authCaptureTransaction.setCreditCard(creditCard);
-//
-//		Result<Transaction> result = (Result<Transaction>) merchant.postTransaction(authCaptureTransaction);
-//
-//		if (result.isApproved()) {
-//			return result.getTransId();
-//		}
-//		else if (result.isDeclined()) {
-//			throw new Exception(Messages.getString("AuthorizeDotNetProcessor.0") + result.getResponseReasonCodes().get(0).getReasonText()); //$NON-NLS-1$
-//		}
-//		else {
-//			throw new Exception(Messages.getString("AuthorizeDotNetProcessor.1") + result.getResponseReasonCodes().get(0).getReasonText()); //$NON-NLS-1$
-//		}
-//	}
+	//	public String authorizeAmount(Ticket ticket, String cardTracks, double amount, String cardType) throws Exception {
+	//		Environment environment = createEnvironment();
+	//		Merchant merchant = createMerchant(environment);
+	//
+	//		CreditCard creditCard = createCard(cardTracks, cardType);
+	//
+	//		// Create transaction
+	//		Transaction authCaptureTransaction = merchant.createAIMTransaction(TransactionType.AUTH_ONLY, new BigDecimal(amount));
+	//		authCaptureTransaction.setCreditCard(creditCard);
+	//
+	//		Result<Transaction> result = (Result<Transaction>) merchant.postTransaction(authCaptureTransaction);
+	//
+	//		if (result.isApproved()) {
+	//			return result.getTransId();
+	//		}
+	//		else if (result.isDeclined()) {
+	//			throw new Exception(Messages.getString("AuthorizeDotNetProcessor.0") + result.getResponseReasonCodes().get(0).getReasonText()); //$NON-NLS-1$
+	//		}
+	//		else {
+	//			throw new Exception(Messages.getString("AuthorizeDotNetProcessor.1") + result.getResponseReasonCodes().get(0).getReasonText()); //$NON-NLS-1$
+	//		}
+	//	}
 
 	public void preAuth(PosTransaction transaction) throws Exception {
 		Environment environment = createEnvironment();
@@ -107,7 +107,11 @@ public class AuthorizeDotNetProcessor implements CardProcessor {
 			CreditCard card = result.getTarget().getCreditCard();
 			transaction.setCardType(card.getCardType().name());
 			transaction.setCardNumber(card.getCreditCardNumber());
-//			transaction.setCardHolderName(card.get)
+			String rawTrackData = "%" + card.getTrack1() + "?;" + card.getTrack2() + "?";
+			BankCardMagneticTrack track = BankCardMagneticTrack.from(rawTrackData);
+			transaction.setCardHolderName(track.getTrack1().getName().toString());
+			transaction.setCardExpYear(card.getExpirationYear());
+			transaction.setCardExpMonth(card.getExpirationMonth());
 		}
 		else if (result.isDeclined()) {
 			throw new Exception(Messages.getString("AuthorizeDotNetProcessor.2") + result.getResponseReasonCodes().get(0).getReasonText()); //$NON-NLS-1$
@@ -117,32 +121,32 @@ public class AuthorizeDotNetProcessor implements CardProcessor {
 		}
 	}
 
-//	public String authorizeAmount(String cardNumber, String expMonth, String expYear, double amount, CardType cardType) throws Exception {
-//		Environment environment = createEnvironment();
-//		Merchant merchant = createMerchant(environment);
-//
-//		CreditCard creditCard = CreditCard.createCreditCard();
-//		creditCard.setCardType(cardType);
-//		creditCard.setExpirationYear(expYear);
-//		creditCard.setExpirationMonth(expMonth);
-//		creditCard.setCreditCardNumber(cardNumber);
-//
-//		// Create transaction
-//		Transaction authCaptureTransaction = merchant.createAIMTransaction(TransactionType.AUTH_ONLY, new BigDecimal(amount));
-//		authCaptureTransaction.setCreditCard(creditCard);
-//
-//		Result<Transaction> result = (Result<Transaction>) merchant.postTransaction(authCaptureTransaction);
-//
-//		if (result.isApproved()) {
-//			return result.getTransId();
-//		}
-//		else if (result.isDeclined()) {
-//			throw new Exception(Messages.getString("AuthorizeDotNetProcessor.4") + result.getResponseReasonCodes().get(0).getReasonText()); //$NON-NLS-1$
-//		}
-//		else {
-//			throw new Exception(Messages.getString("AuthorizeDotNetProcessor.5") + result.getResponseReasonCodes().get(0).getReasonText()); //$NON-NLS-1$
-//		}
-//	}
+	//	public String authorizeAmount(String cardNumber, String expMonth, String expYear, double amount, CardType cardType) throws Exception {
+	//		Environment environment = createEnvironment();
+	//		Merchant merchant = createMerchant(environment);
+	//
+	//		CreditCard creditCard = CreditCard.createCreditCard();
+	//		creditCard.setCardType(cardType);
+	//		creditCard.setExpirationYear(expYear);
+	//		creditCard.setExpirationMonth(expMonth);
+	//		creditCard.setCreditCardNumber(cardNumber);
+	//
+	//		// Create transaction
+	//		Transaction authCaptureTransaction = merchant.createAIMTransaction(TransactionType.AUTH_ONLY, new BigDecimal(amount));
+	//		authCaptureTransaction.setCreditCard(creditCard);
+	//
+	//		Result<Transaction> result = (Result<Transaction>) merchant.postTransaction(authCaptureTransaction);
+	//
+	//		if (result.isApproved()) {
+	//			return result.getTransId();
+	//		}
+	//		else if (result.isDeclined()) {
+	//			throw new Exception(Messages.getString("AuthorizeDotNetProcessor.4") + result.getResponseReasonCodes().get(0).getReasonText()); //$NON-NLS-1$
+	//		}
+	//		else {
+	//			throw new Exception(Messages.getString("AuthorizeDotNetProcessor.5") + result.getResponseReasonCodes().get(0).getReasonText()); //$NON-NLS-1$
+	//		}
+	//	}
 
 	public void captureAuthAmount(PosTransaction transaction) throws Exception {
 		Environment environment = createEnvironment();
