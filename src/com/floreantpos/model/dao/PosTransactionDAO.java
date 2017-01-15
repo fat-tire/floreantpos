@@ -56,6 +56,7 @@ public class PosTransactionDAO extends BasePosTransactionDAO {
 			Criteria criteria = session.createCriteria(getReferenceClass());
 			criteria.add(Restrictions.eq(PosTransaction.PROP_CAPTURED, Boolean.FALSE));
 			criteria.add(Restrictions.eq(PosTransaction.PROP_AUTHORIZABLE, Boolean.TRUE));
+			criteria.add(Restrictions.eq(PosTransaction.PROP_VOIDED, Boolean.FALSE));
 			criteria.add(Restrictions.eq(PosTransaction.PROP_TRANSACTION_TYPE, TransactionType.CREDIT.name()));
 			criteria.add(Restrictions.isNotNull(PosTransaction.PROP_TICKET));
 			
@@ -77,6 +78,7 @@ public class PosTransactionDAO extends BasePosTransactionDAO {
 
 			Criteria criteria = session.createCriteria(CreditCardTransaction.class);
 			criteria.add(Restrictions.eq(PosTransaction.PROP_CAPTURED, Boolean.TRUE));
+			criteria.add(Restrictions.eq(PosTransaction.PROP_VOIDED, Boolean.FALSE));
 			criteria.add(Restrictions.isNotNull(PosTransaction.PROP_TICKET));
 			//criteria.add(Restrictions.eq(PosTransaction.PROP_DRAWER_RESETTED, Boolean.FALSE));
 			Calendar calendar = Calendar.getInstance();

@@ -33,6 +33,7 @@ import javax.swing.JTabbedPane;
 import net.miginfocom.swing.MigLayout;
 
 import com.floreantpos.Messages;
+import com.floreantpos.PosLog;
 import com.floreantpos.actions.ActionCommand;
 import com.floreantpos.actions.CloseDialogAction;
 import com.floreantpos.config.CardConfig;
@@ -75,8 +76,6 @@ public class AuthorizableTicketBrowser extends POSDialog {
 		add(titlePanel, BorderLayout.NORTH);
 
 		tabbedPane = new JTabbedPane();
-
-		tabbedPane = new JTabbedPane();
 		JPanel authWaitingTab = new JPanel(new BorderLayout());
 
 		authWaitingListView.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
@@ -86,18 +85,20 @@ public class AuthorizableTicketBrowser extends POSDialog {
 
 		JPanel buttonPanel = new JPanel(new MigLayout("al center", "sg, fill", ""));
 		ActionHandler actionHandler = new ActionHandler();
-
 		buttonPanel.add(new PosButton(ActionCommand.EDIT_TIPS, actionHandler), "grow");
 		buttonPanel.add(new PosButton(ActionCommand.AUTHORIZE, actionHandler), "grow");
 		buttonPanel.add(new PosButton(ActionCommand.AUTHORIZE_ALL, actionHandler), "grow");
-
+		buttonPanel.add(new PosButton(ActionCommand.VOID_TRANS, actionHandler), "grow");
 		buttonPanel.add(new PosButton(new CloseDialogAction(this)));
 
 		authWaitingTab.add(buttonPanel, BorderLayout.SOUTH);
 
 		JPanel authClosedTab = new JPanel(new BorderLayout());
+		JPanel buttonPanel2 = new JPanel(new MigLayout("al center", "sg, fill", ""));
+		buttonPanel2.add(new PosButton(ActionCommand.VOID_TRANS, actionHandler), "grow");
+		buttonPanel2.add(new PosButton(new CloseDialogAction(this)));
 		authClosedTab.add(authClosedListView);
-		authClosedTab.add(new PosButton(new CloseDialogAction(this)), BorderLayout.SOUTH);
+		authClosedTab.add(buttonPanel2, BorderLayout.SOUTH);
 
 		tabbedPane.addTab("Auth Waiting", authWaitingTab);
 		tabbedPane.addTab("Auth Closed", authClosedTab);
@@ -218,6 +219,31 @@ public class AuthorizableTicketBrowser extends POSDialog {
 		TicketDAO.getInstance().saveOrUpdate(ticket);
 		updateTransactiontList();
 	}
+	
+	private void doVoidTransaction() {
+		PosTransaction transaction = authWaitingListView.getSelectedTransaction();
+		if (authClosedListView.isVisible()) {
+			transaction = authClosedListView.getSelectedTransaction();
+		}
+
+		if (transaction == null) {
+			POSMessageDialog.showMessage(AuthorizableTicketBrowser.this, Messages.getString("TicketAuthorizationDialog.2")); //$NON-NLS-1$
+			return;
+		}
+
+		int option = POSMessageDialog.showYesNoQuestionDialog(AuthorizableTicketBrowser.this, "Selected transaction will be voided, proceed?", "Confirm");
+		if (option != JOptionPane.YES_OPTION) { //$NON-NLS-1$
+			return;
+		}
+		CardProcessor cardProcessor = CardConfig.getPaymentGateway().getProcessor();
+		try {
+			cardProcessor.voidTransaction(transaction);
+		} catch (Exception e) {
+			PosLog.error(getClass(), e);
+		}
+
+		updateTransactiontList();
+	}
 
 	class ActionHandler implements ActionListener {
 
@@ -238,6 +264,11 @@ public class AuthorizableTicketBrowser extends POSDialog {
 
 					case AUTHORIZE_ALL:
 						doAuthorizeAll();
+						break;
+						
+					case VOID_TRANS:
+						doVoidTransaction();
+						break;
 
 					default:
 						break;

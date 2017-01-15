@@ -314,4 +314,9 @@ public class AuthorizeDotNetProcessor implements CardProcessor {
 		PosLog.info(AuthorizeDotNetProcessor.class, "" + track.getTrack1());
 
 	}
+
+	@Override
+	public void voidTransaction(PosTransaction transaction) throws Exception {
+		
+	}
 }

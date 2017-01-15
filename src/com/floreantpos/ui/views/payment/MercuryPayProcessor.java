@@ -149,4 +149,10 @@ public class MercuryPayProcessor implements CardProcessor {
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public void voidTransaction(PosTransaction transaction) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
 }

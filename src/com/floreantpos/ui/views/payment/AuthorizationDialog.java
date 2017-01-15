@@ -60,7 +60,7 @@ class AuthorizationDialog extends POSDialog implements Runnable {
 
 	@Override
 	public void setVisible(boolean b) {
-		if(b) {
+		if (b) {
 			Thread authorizationThread = new Thread(this);
 			authorizationThread.start();
 		}
@@ -76,7 +76,7 @@ class AuthorizationDialog extends POSDialog implements Runnable {
 				String cardEntryType = transaction.getCardReader();
 				CardReader cardReader = CardReader.fromString(cardEntryType);
 
-				if(cardReader == CardReader.EXTERNAL_TERMINAL) {
+				if (cardReader == CardReader.EXTERNAL_TERMINAL) {
 					transaction.setCaptured(true);
 					PosTransactionDAO.getInstance().saveOrUpdate(transaction);
 					txtStatus.append(Messages.getString("AuthorizationDialog.1") + transaction.getId() + Messages.getString("AuthorizationDialog.2")); //$NON-NLS-1$ //$NON-NLS-2$
@@ -90,7 +90,7 @@ class AuthorizationDialog extends POSDialog implements Runnable {
 				PosTransactionDAO.getInstance().saveOrUpdate(transaction);
 				txtStatus.append(Messages.getString("AuthorizationDialog.1") + transaction.getId() + Messages.getString("AuthorizationDialog.2")); //$NON-NLS-1$ //$NON-NLS-2$
 
-				if(iterator.hasNext()) {
+				if (iterator.hasNext()) {
 					Thread.sleep(6000);
 				}
 

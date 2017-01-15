@@ -1,5 +1,6 @@
 package com.floreantpos.model.base;
 
+import java.lang.Comparable;
 import java.io.Serializable;
 
 
@@ -47,6 +48,7 @@ public abstract class BasePosTransaction  implements Comparable, Serializable {
 	public static String PROP_TENDER_AMOUNT = "tenderAmount"; //$NON-NLS-1$
 	public static String PROP_CARD_TRANSACTION_ID = "cardTransactionId"; //$NON-NLS-1$
 	public static String PROP_ID = "id"; //$NON-NLS-1$
+	public static String PROP_VOIDED = "voided"; //$NON-NLS-1$
 	public static String PROP_GIFT_CERT_PAID_AMOUNT = "giftCertPaidAmount"; //$NON-NLS-1$
 
 
@@ -97,6 +99,7 @@ public abstract class BasePosTransaction  implements Comparable, Serializable {
 		protected java.lang.String customPaymentFieldName;
 		protected java.lang.String paymentType;
 		protected java.lang.Boolean captured;
+		protected java.lang.Boolean voided;
 		protected java.lang.Boolean authorizable;
 		protected java.lang.String cardHolderName;
 		protected java.lang.String cardNumber;
@@ -315,6 +318,23 @@ public abstract class BasePosTransaction  implements Comparable, Serializable {
 	 */
 	public void setCaptured (java.lang.Boolean captured) {
 		this.captured = captured;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: VOIDED
+	 */
+	public java.lang.Boolean isVoided () {
+								return voided == null ? Boolean.FALSE : voided;
+					}
+
+	/**
+	 * Set the value related to the column: VOIDED
+	 * @param voided the VOIDED value
+	 */
+	public void setVoided (java.lang.Boolean voided) {
+		this.voided = voided;
 	}
 
 
