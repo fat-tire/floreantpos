@@ -50,7 +50,6 @@ import com.floreantpos.ui.TransactionListView;
 import com.floreantpos.ui.dialog.NumberSelectionDialog2;
 import com.floreantpos.ui.dialog.POSDialog;
 import com.floreantpos.ui.dialog.POSMessageDialog;
-import com.floreantpos.util.CurrencyUtil;
 import com.floreantpos.util.NumberUtil;
 
 public class AuthorizableTicketBrowser extends POSDialog {
@@ -224,7 +223,7 @@ public class AuthorizableTicketBrowser extends POSDialog {
 	
 	private void doVoidTransaction() {
 		PosTransaction transaction = authWaitingListView.getSelectedTransaction();
-		if (authClosedListView.isVisible()) {
+		if (tabbedPane.getSelectedIndex() == 1) {
 			transaction = authClosedListView.getSelectedTransaction();
 		}
 
