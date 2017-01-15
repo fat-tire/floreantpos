@@ -9,10 +9,10 @@
 		<!-- this field will be renamed in future release -->
 		<discriminator column="PAYMENT_TYPE" length="30" type="string" />
 
-
 		<property column="TRANSACTION_TIME" length="10" name="transactionTime" type="java.util.Date" />
 		<property column="AMOUNT" length="52" name="amount" type="java.lang.Double" />
 		<property column="TIPS_AMOUNT" length="52" name="tipsAmount" type="java.lang.Double" />
+		<property column="TIPS_EXCEED_AMOUNT" length="52" name="tipsExceedAmount" type="java.lang.Double" />
 		<property column="TENDER_AMOUNT" length="52" name="tenderAmount" type="java.lang.Double" />
 		<property column="TRANSACTION_TYPE" name="transactionType" type="string" length="30" not-null="true" />
 		<property column="CUSTOM_PAYMENT_NAME" name="customPaymentName" type="string" length="60" />

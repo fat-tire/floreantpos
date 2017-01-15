@@ -182,7 +182,7 @@ public class AuthorizableTicketBrowser extends POSDialog {
 		}
 
 		final double oldTipsAmount = transaction.getTipsAmount();
-		final double newTipsAmount = NumberSelectionDialog2.show(AuthorizableTicketBrowser.this,
+		double newTipsAmount = NumberSelectionDialog2.show(AuthorizableTicketBrowser.this,
 				Messages.getString("TicketAuthorizationDialog.8"), oldTipsAmount); //$NON-NLS-1$
 
 		if (Double.isNaN(newTipsAmount))
@@ -193,8 +193,10 @@ public class AuthorizableTicketBrowser extends POSDialog {
 		double acceptableTipsAmount = NumberUtil.roundToTwoDigit(transaction.getTenderAmount() * (advanceTipsPercentage / 100));
 
 		if (newTipsAmount > acceptableTipsAmount) {
-			POSMessageDialog.showMessage(Messages.getString("AuthorizableTicketBrowser.0") + " :" + CurrencyUtil.getCurrencySymbol() + acceptableTipsAmount); //$NON-NLS-1$ //$NON-NLS-2$
-			return;
+			//POSMessageDialog.showMessage(Messages.getString("AuthorizableTicketBrowser.0") + " :" + CurrencyUtil.getCurrencySymbol() + acceptableTipsAmount); //$NON-NLS-1$ //$NON-NLS-2$
+			double tipsExceedAmount = newTipsAmount - acceptableTipsAmount;
+			newTipsAmount = acceptableTipsAmount;
+			transaction.setTipsExceedAmount(tipsExceedAmount);
 		}
 		transaction.setTipsAmount(newTipsAmount);
 		transaction.setAmount(transaction.getAmount() - oldTipsAmount + newTipsAmount);

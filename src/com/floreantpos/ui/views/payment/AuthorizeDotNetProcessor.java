@@ -114,7 +114,6 @@ public class AuthorizeDotNetProcessor implements CardProcessor {
 		if (result.isApproved()) {
 			transaction.setCaptured(true);
 			transaction.setAuthorizable(false);
-			populateResult(result, transaction);
 		}
 		else if (result.isDeclined()) {
 			throw new Exception(Messages.getString("AuthorizeDotNetProcessor.6") + result.getResponseReasonCodes().get(0).getReasonText()); //$NON-NLS-1$

@@ -21,9 +21,9 @@ public abstract class BasePosTransaction  implements Comparable, Serializable {
 	public static String PROP_CUSTOM_PAYMENT_FIELD_NAME = "customPaymentFieldName"; //$NON-NLS-1$
 	public static String PROP_RECEPIENT = "recepient"; //$NON-NLS-1$
 	public static String PROP_GIFT_CERT_CASH_BACK_AMOUNT = "giftCertCashBackAmount"; //$NON-NLS-1$
-	public static String PROP_AUTHORIZABLE = "authorizable"; //$NON-NLS-1$
 	public static String PROP_CUSTOM_PAYMENT_REF = "customPaymentRef"; //$NON-NLS-1$
 	public static String PROP_TRANSACTION_TYPE = "transactionType"; //$NON-NLS-1$
+	public static String PROP_AUTHORIZABLE = "authorizable"; //$NON-NLS-1$
 	public static String PROP_CARD_READER = "cardReader"; //$NON-NLS-1$
 	public static String PROP_GIFT_CERT_NUMBER = "giftCertNumber"; //$NON-NLS-1$
 	public static String PROP_TICKET = "ticket"; //$NON-NLS-1$
@@ -36,13 +36,14 @@ public abstract class BasePosTransaction  implements Comparable, Serializable {
 	public static String PROP_TRANSACTION_TIME = "transactionTime"; //$NON-NLS-1$
 	public static String PROP_CARD_AUTH_CODE = "cardAuthCode"; //$NON-NLS-1$
 	public static String PROP_REASON = "reason"; //$NON-NLS-1$
-	public static String PROP_CARD_NUMBER = "cardNumber"; //$NON-NLS-1$
 	public static String PROP_GIFT_CERT_FACE_VALUE = "giftCertFaceValue"; //$NON-NLS-1$
+	public static String PROP_CARD_NUMBER = "cardNumber"; //$NON-NLS-1$
 	public static String PROP_AMOUNT = "amount"; //$NON-NLS-1$
 	public static String PROP_CAPTURED = "captured"; //$NON-NLS-1$
 	public static String PROP_TERMINAL = "terminal"; //$NON-NLS-1$
 	public static String PROP_NOTE = "note"; //$NON-NLS-1$
 	public static String PROP_CUSTOM_PAYMENT_NAME = "customPaymentName"; //$NON-NLS-1$
+	public static String PROP_TIPS_EXCEED_AMOUNT = "tipsExceedAmount"; //$NON-NLS-1$
 	public static String PROP_PAYMENT_TYPE = "paymentType"; //$NON-NLS-1$
 	public static String PROP_TIPS_AMOUNT = "tipsAmount"; //$NON-NLS-1$
 	public static String PROP_TENDER_AMOUNT = "tenderAmount"; //$NON-NLS-1$
@@ -92,6 +93,7 @@ public abstract class BasePosTransaction  implements Comparable, Serializable {
 		protected java.util.Date transactionTime;
 		protected java.lang.Double amount;
 		protected java.lang.Double tipsAmount;
+		protected java.lang.Double tipsExceedAmount;
 		protected java.lang.Double tenderAmount;
 		protected java.lang.String transactionType;
 		protected java.lang.String customPaymentName;
@@ -199,6 +201,23 @@ public abstract class BasePosTransaction  implements Comparable, Serializable {
 	 */
 	public void setTipsAmount (java.lang.Double tipsAmount) {
 		this.tipsAmount = tipsAmount;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: TIPS_EXCEED_AMOUNT
+	 */
+	public java.lang.Double getTipsExceedAmount () {
+									return tipsExceedAmount == null ? Double.valueOf(0) : tipsExceedAmount;
+					}
+
+	/**
+	 * Set the value related to the column: TIPS_EXCEED_AMOUNT
+	 * @param tipsExceedAmount the TIPS_EXCEED_AMOUNT value
+	 */
+	public void setTipsExceedAmount (java.lang.Double tipsExceedAmount) {
+		this.tipsExceedAmount = tipsExceedAmount;
 	}
 
 

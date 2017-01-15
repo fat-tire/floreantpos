@@ -121,7 +121,7 @@ public class TransactionListView extends JPanel {
 		public TransactionListTableModel() {
 			super(
 					new String[] {
-							Messages.getString("TransactionListView.0"), Messages.getString("TransactionListView.1"),Messages.getString("TransactionListView.8"), Messages.getString("TransactionListView.2"), Messages.getString("TransactionListView.3"), Messages.getString("TransactionListView.4"), Messages.getString("TransactionListView.5"), Messages.getString("TransactionListView.6") }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
+							Messages.getString("TransactionListView.0"), Messages.getString("TransactionListView.1"), Messages.getString("TransactionListView.8"), Messages.getString("TransactionListView.2"), Messages.getString("TransactionListView.3"), Messages.getString("TransactionListView.4"), "TIPS EXCEED", Messages.getString("TransactionListView.5"), Messages.getString("TransactionListView.6") }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
 		}
 
 		public Object getValueAt(int rowIndex, int columnIndex) {
@@ -144,11 +144,13 @@ public class TransactionListView extends JPanel {
 
 				case 5:
 					return transaction.getTipsAmount();
-
 				case 6:
-					return transaction.getAmount() - transaction.getTipsAmount();
+					return transaction.getTipsExceedAmount();
 
 				case 7:
+					return transaction.getAmount() - transaction.getTipsAmount();
+
+				case 8:
 					return transaction.getAmount();
 
 			}
