@@ -122,7 +122,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 		this.ticket = ticket;
 
 		if (ticket.getOrderType().isConsolidateItemsInReceipt()) {
-			consolidateTicketItems();
+			ticket.consolidateTicketItems();
 		}
 
 		setTitle(Messages.getString("SettleTicketDialog.6")); //$NON-NLS-1$
@@ -147,66 +147,6 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 		paymentView.updateView();
 		paymentView.setDefaultFocus();
 		updateView();
-	}
-
-	private void consolidateTicketItems() {
-		List<TicketItem> ticketItems = ticket.getTicketItems();
-
-		Map<String, List<TicketItem>> itemMap = new LinkedHashMap<String, List<TicketItem>>();
-
-		for (Iterator iterator = ticketItems.iterator(); iterator.hasNext();) {
-			TicketItem newItem = (TicketItem) iterator.next();
-
-			List<TicketItem> itemListInMap = itemMap.get(newItem.getItemId().toString());
-
-			if (itemListInMap == null) {
-				List<TicketItem> list = new ArrayList<TicketItem>();
-				list.add(newItem);
-
-				itemMap.put(newItem.getItemId().toString(), list);
-			}
-			else {
-				boolean merged = false;
-				for (TicketItem itemInMap : itemListInMap) {
-					if (itemInMap.isMergable(newItem, false)) {
-						itemInMap.merge(newItem);
-						merged = true;
-						break;
-					}
-				}
-
-				if (!merged) {
-					itemListInMap.add(newItem);
-				}
-			}
-		}
-
-		ticket.getTicketItems().clear();
-		Collection<List<TicketItem>> values = itemMap.values();
-		for (List<TicketItem> list : values) {
-			if (list != null) {
-				ticket.getTicketItems().addAll(list);
-			}
-		}
-		List<TicketItem> ticketItemList = ticket.getTicketItems();
-		if (ticket.getOrderType().isAllowSeatBasedOrder()) {
-			Collections.sort(ticketItemList, new Comparator<TicketItem>() {
-
-				@Override
-				public int compare(TicketItem o1, TicketItem o2) {
-					return o1.getId() - o2.getId();
-				}
-			});
-			Collections.sort(ticketItemList, new Comparator<TicketItem>() {
-
-				@Override
-				public int compare(TicketItem o1, TicketItem o2) {
-					return o1.getSeatNumber() - o2.getSeatNumber();
-				}
-
-			});
-		}
-		ticket.calculatePrice();
 	}
 
 	public void updateView() {

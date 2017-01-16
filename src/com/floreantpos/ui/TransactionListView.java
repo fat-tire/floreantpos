@@ -42,7 +42,7 @@ public class TransactionListView extends JPanel {
 
 	public TransactionListView() {
 		table = new TransactionListTable();
-		table.setSortable(false);
+		table.setSortable(true);
 		table.setModel(tableModel = new TransactionListTableModel());
 		table.setRowHeight(PosUIManager.getSize(40));
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
@@ -120,8 +120,17 @@ public class TransactionListView extends JPanel {
 	private class TransactionListTableModel extends ListTableModel<PosTransaction> {
 		public TransactionListTableModel() {
 			super(
+                                //Breadfruit Edit
 					new String[] {
-							Messages.getString("TransactionListView.0"), Messages.getString("TransactionListView.1"), Messages.getString("TransactionListView.8"), Messages.getString("TransactionListView.2"), Messages.getString("TransactionListView.3"), Messages.getString("TransactionListView.4"), "TIPS EXCEED", Messages.getString("TransactionListView.5"), Messages.getString("TransactionListView.6") }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
+							Messages.getString("TransactionListView.0"), 
+                                            //Messages.getString("TransactionListView.1"), 
+                                            //Messages.getString("TransactionListView.8"), 
+                                             Messages.getString("TransactionListView.8"), 
+                                             Messages.getString("TransactionListView.2"), 
+                                             Messages.getString("TransactionListView.4"), 
+                                             "TIP OVERAGE", 
+                                             Messages.getString("TransactionListView.5"), 
+                                             Messages.getString("TransactionListView.6") }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
 		}
 
 		public Object getValueAt(int rowIndex, int columnIndex) {
@@ -129,28 +138,28 @@ public class TransactionListView extends JPanel {
 
 			switch (columnIndex) {
 				case 0:
-					return Integer.valueOf(transaction.getId());
+					return transaction.getCardTransactionId();
 
+				//case 1:
+					//return transaction.getTicket().getId();
 				case 1:
-					return transaction.getTicket().getId();
-				case 2:
 					return transaction.getTransactionTime();
 
-				case 3:
+				case 2:
 					return transaction.getTicket().getOwner().getFirstName();
 
-				case 4:
-					return transaction.getCardType();
+				//case 4:
+					//return transaction.getCardType();
 
-				case 5:
+				case 3:
 					return transaction.getTipsAmount();
-				case 6:
+				case 4:
 					return transaction.getTipsExceedAmount();
 
-				case 7:
+				case 5:
 					return transaction.getAmount() - transaction.getTipsAmount();
 
-				case 8:
+				case 6:
 					return transaction.getAmount();
 
 			}

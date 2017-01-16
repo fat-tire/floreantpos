@@ -20,9 +20,14 @@ package com.floreantpos.model;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -758,5 +763,65 @@ public class Ticket extends BaseTicket {
 			return ""; //$NON-NLS-1$
 		}
 		return super.getStatus();
+	}
+	
+	public void consolidateTicketItems() {
+		List<TicketItem> ticketItems = getTicketItems();
+
+		Map<String, List<TicketItem>> itemMap = new LinkedHashMap<String, List<TicketItem>>();
+
+		for (Iterator iterator = ticketItems.iterator(); iterator.hasNext();) {
+			TicketItem newItem = (TicketItem) iterator.next();
+
+			List<TicketItem> itemListInMap = itemMap.get(newItem.getItemId().toString());
+
+			if (itemListInMap == null) {
+				List<TicketItem> list = new ArrayList<TicketItem>();
+				list.add(newItem);
+
+				itemMap.put(newItem.getItemId().toString(), list);
+			}
+			else {
+				boolean merged = false;
+				for (TicketItem itemInMap : itemListInMap) {
+					if (itemInMap.isMergable(newItem, false)) {
+						itemInMap.merge(newItem);
+						merged = true;
+						break;
+					}
+				}
+
+				if (!merged) {
+					itemListInMap.add(newItem);
+				}
+			}
+		}
+
+		getTicketItems().clear();
+		Collection<List<TicketItem>> values = itemMap.values();
+		for (List<TicketItem> list : values) {
+			if (list != null) {
+				getTicketItems().addAll(list);
+			}
+		}
+		List<TicketItem> ticketItemList = getTicketItems();
+		if (getOrderType().isAllowSeatBasedOrder()) {
+			Collections.sort(ticketItemList, new Comparator<TicketItem>() {
+
+				@Override
+				public int compare(TicketItem o1, TicketItem o2) {
+					return o1.getId() - o2.getId();
+				}
+			});
+			Collections.sort(ticketItemList, new Comparator<TicketItem>() {
+
+				@Override
+				public int compare(TicketItem o1, TicketItem o2) {
+					return o1.getSeatNumber() - o2.getSeatNumber();
+				}
+
+			});
+		}
+		calculatePrice();
 	}
 }

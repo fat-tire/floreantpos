@@ -23,8 +23,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -103,60 +101,60 @@ public class KitchenTicket extends BaseKitchenTicket {
 		return printers;
 	}
 
-	private static List<TicketItem> consolidateTicketItems(Ticket ticket) {
-		List<TicketItem> newticketItems = new ArrayList<TicketItem>();
-		newticketItems.addAll(((Ticket) SerializationUtils.clone(ticket)).getTicketItems());
-
-		Map<String, List<TicketItem>> itemMap = new LinkedHashMap<String, List<TicketItem>>();
-
-		for (Iterator iterator = newticketItems.iterator(); iterator.hasNext();) {
-			TicketItem newItem = (TicketItem) iterator.next();
-
-			if (!newItem.isShouldPrintToKitchen() || newItem.isPrintedToKitchen()) {
-				continue;
-			}
-			List<TicketItem> itemListInMap = itemMap.get(newItem.getItemId().toString());
-
-			if (itemListInMap == null) {
-				List<TicketItem> list = new ArrayList<TicketItem>();
-				list.add(newItem);
-
-				itemMap.put(newItem.getItemId().toString(), list);
-			}
-			else {
-				boolean merged = false;
-				for (TicketItem itemInMap : itemListInMap) {
-					if (itemInMap.isMergable(newItem, false)) {
-						itemInMap.merge(newItem);
-						merged = true;
-						break;
-					}
-				}
-
-				if (!merged) {
-					itemListInMap.add(newItem);
-				}
-			}
-		}
-
-		newticketItems.clear();
-		Collection<List<TicketItem>> values = itemMap.values();
-		for (List<TicketItem> list : values) {
-			if (list != null) {
-				newticketItems.addAll(list);
-			}
-		}
-
-		for (TicketItem originalTicketItem : ticket.getTicketItems()) {
-			List<TicketItem> itemFromMap = itemMap.get(originalTicketItem.getItemId().toString());
-
-			if (itemFromMap != null) {
-				setPrintedToKitchen(originalTicketItem);
-			}
-		}
-
-		return newticketItems;
-	}
+//	private static List<TicketItem> consolidateTicketItems(Ticket ticket) {
+//		List<TicketItem> newticketItems = new ArrayList<TicketItem>();
+//		newticketItems.addAll(((Ticket) SerializationUtils.clone(ticket)).getTicketItems());
+//
+//		Map<String, List<TicketItem>> itemMap = new LinkedHashMap<String, List<TicketItem>>();
+//
+//		for (Iterator iterator = newticketItems.iterator(); iterator.hasNext();) {
+//			TicketItem newItem = (TicketItem) iterator.next();
+//
+//			if (!newItem.isShouldPrintToKitchen() || newItem.isPrintedToKitchen()) {
+//				continue;
+//			}
+//			List<TicketItem> itemListInMap = itemMap.get(newItem.getItemId().toString());
+//
+//			if (itemListInMap == null) {
+//				List<TicketItem> list = new ArrayList<TicketItem>();
+//				list.add(newItem);
+//
+//				itemMap.put(newItem.getItemId().toString(), list);
+//			}
+//			else {
+//				boolean merged = false;
+//				for (TicketItem itemInMap : itemListInMap) {
+//					if (itemInMap.isMergable(newItem, false)) {
+//						itemInMap.merge(newItem);
+//						merged = true;
+//						break;
+//					}
+//				}
+//
+//				if (!merged) {
+//					itemListInMap.add(newItem);
+//				}
+//			}
+//		}
+//
+//		newticketItems.clear();
+//		Collection<List<TicketItem>> values = itemMap.values();
+//		for (List<TicketItem> list : values) {
+//			if (list != null) {
+//				newticketItems.addAll(list);
+//			}
+//		}
+//
+//		for (TicketItem originalTicketItem : ticket.getTicketItems()) {
+//			List<TicketItem> itemFromMap = itemMap.get(originalTicketItem.getItemId().toString());
+//
+//			if (itemFromMap != null) {
+//				setPrintedToKitchen(originalTicketItem);
+//			}
+//		}
+//
+//		return newticketItems;
+//	}
 
 	private static void setPrintedToKitchen(TicketItem ticketItem) {
 		ticketItem.setPrintedToKitchen(true);
@@ -197,8 +195,10 @@ public class KitchenTicket extends BaseKitchenTicket {
 	public static List<KitchenTicket> fromTicket(Ticket ticket) {
 		Map<Printer, KitchenTicket> itemMap = new HashMap<Printer, KitchenTicket>();
 		List<KitchenTicket> kitchenTickets = new ArrayList<KitchenTicket>(4);
-
-		List<TicketItem> ticketItems = consolidateTicketItems(ticket);
+		
+		Ticket clonedTicket = (Ticket) SerializationUtils.clone(ticket);
+		clonedTicket.consolidateTicketItems();
+		List<TicketItem> ticketItems = clonedTicket.getTicketItems();
 		if (ticketItems == null) {
 			return kitchenTickets;
 		}

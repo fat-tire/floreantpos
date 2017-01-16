@@ -24,13 +24,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
@@ -61,7 +55,6 @@ import com.floreantpos.model.PaymentType;
 import com.floreantpos.model.PosTransaction;
 import com.floreantpos.model.Restaurant;
 import com.floreantpos.model.Ticket;
-import com.floreantpos.model.TicketItem;
 import com.floreantpos.report.ReceiptPrintService;
 import com.floreantpos.services.PosTransactionService;
 import com.floreantpos.swing.PosScrollPane;
@@ -86,10 +79,10 @@ public class GroupSettleTicketDialog extends POSDialog implements CardInputListe
 	public final static String VIEW_NAME = "PAYMENT_VIEW"; //$NON-NLS-1$
 
 	private GroupPaymentView paymentView;
-	private static List<Ticket> tickets;
+	private List<Ticket> tickets;
 	private TicketDetailView ticketDetailView;
 	private javax.swing.JScrollPane ticketScrollPane;
-	private static Ticket ticket;
+	private Ticket ticket;
 	private double totalTenderAmount;
 	private PaymentType paymentType;
 	private String cardName;
@@ -113,7 +106,6 @@ public class GroupSettleTicketDialog extends POSDialog implements CardInputListe
 	private JLabel labelCustomer;
 
 	public static PosPaymentWaitDialog waitDialog = new PosPaymentWaitDialog();
-	private static GroupSettleTicketDialog instance;
 
 	public GroupSettleTicketDialog(List<Ticket> tickets) {
 		super();
@@ -121,7 +113,7 @@ public class GroupSettleTicketDialog extends POSDialog implements CardInputListe
 
 		for (Ticket ticket : tickets) {
 			if (ticket.getOrderType().isConsolidateItemsInReceipt()) {
-				consolidateTicketItems(ticket);
+				ticket.consolidateTicketItems();
 			}
 		}
 
@@ -151,65 +143,7 @@ public class GroupSettleTicketDialog extends POSDialog implements CardInputListe
 
 	}
 
-	private void consolidateTicketItems(Ticket ticket) {
-		List<TicketItem> ticketItems = ticket.getTicketItems();
-
-		Map<String, List<TicketItem>> itemMap = new LinkedHashMap<String, List<TicketItem>>();
-
-		for (Iterator iterator = ticketItems.iterator(); iterator.hasNext();) {
-			TicketItem newItem = (TicketItem) iterator.next();
-
-			List<TicketItem> itemListInMap = itemMap.get(newItem.getItemId().toString());
-
-			if (itemListInMap == null) {
-				List<TicketItem> list = new ArrayList<TicketItem>();
-				list.add(newItem);
-
-				itemMap.put(newItem.getItemId().toString(), list);
-			}
-			else {
-				boolean merged = false;
-				for (TicketItem itemInMap : itemListInMap) {
-					if (itemInMap.isMergable(newItem, false)) {
-						itemInMap.merge(newItem);
-						merged = true;
-						break;
-					}
-				}
-
-				if (!merged) {
-					itemListInMap.add(newItem);
-				}
-			}
-		}
-
-		ticket.getTicketItems().clear();
-		Collection<List<TicketItem>> values = itemMap.values();
-		for (List<TicketItem> list : values) {
-			if (list != null) {
-				ticket.getTicketItems().addAll(list);
-			}
-		}
-		List<TicketItem> ticketItemList = ticket.getTicketItems();
-		if (ticket.getOrderType().isAllowSeatBasedOrder()) {
-			Collections.sort(ticketItemList, new Comparator<TicketItem>() {
-
-				@Override
-				public int compare(TicketItem o1, TicketItem o2) {
-					return o1.getId() - o2.getId();
-				}
-			});
-			Collections.sort(ticketItemList, new Comparator<TicketItem>() {
-
-				@Override
-				public int compare(TicketItem o1, TicketItem o2) {
-					return o1.getSeatNumber() - o2.getSeatNumber();
-				}
-
-			});
-		}
-		ticket.calculatePrice();
-	}
+	
 
 	public void updateView() {
 		if (tickets == null && !tickets.isEmpty()) {
@@ -575,7 +509,7 @@ public class GroupSettleTicketDialog extends POSDialog implements CardInputListe
 		}
 	}
 
-	public static void showTransactionCompleteMsg(final double dueAmount, final double tenderedAmount, List<Ticket> ticket, List<PosTransaction> transactions) {
+	public void showTransactionCompleteMsg(final double dueAmount, final double tenderedAmount, List<Ticket> ticket, List<PosTransaction> transactions) {
 		TransactionCompletionDialog dialog = new TransactionCompletionDialog(transactions);
 
 		double paidAmount = 0;
@@ -867,12 +801,4 @@ public class GroupSettleTicketDialog extends POSDialog implements CardInputListe
 	public double getDueAmount() {
 		return totalDueAmount;
 	}
-
-	public synchronized static GroupSettleTicketDialog getInstance() {
-		if (instance == null) {
-			instance = new GroupSettleTicketDialog(tickets);
-		}
-		return instance;
-	}
-
 }
