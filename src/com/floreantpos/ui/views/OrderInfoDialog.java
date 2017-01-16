@@ -39,6 +39,7 @@ import com.floreantpos.model.User;
 import com.floreantpos.model.UserPermission;
 import com.floreantpos.report.ReceiptPrintService;
 import com.floreantpos.swing.PosButton;
+import com.floreantpos.swing.PosUIManager;
 import com.floreantpos.ui.dialog.POSDialog;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.views.order.OrderView;
@@ -107,7 +108,7 @@ public class OrderInfoDialog extends POSDialog {
 				}
 
 				UserTransferDialog dialog = new UserTransferDialog(view);
-				dialog.setSize(360, 555);
+				dialog.setSize(PosUIManager.getSize(360, 555));
 				dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 				dialog.setLocationRelativeTo(Application.getPosWindow());
 				dialog.setVisible(true);
