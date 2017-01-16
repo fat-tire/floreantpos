@@ -27,6 +27,7 @@ import com.floreantpos.PosException;
 import com.floreantpos.actions.DrawerAssignmentAction;
 import com.floreantpos.bo.ui.BackOfficeWindow;
 import com.floreantpos.main.Application;
+import com.floreantpos.model.Terminal;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 
 public class POSUtil {
@@ -162,7 +163,8 @@ public class POSUtil {
 	}
 
 	public static boolean checkDrawerAssignment() {
-		if (!Application.getInstance().getTerminal().isCashDrawerAssigned()) {
+		Terminal terminal = Application.getInstance().getTerminal();
+		if (!terminal.isCashDrawerAssigned()) {
 			int option = POSMessageDialog.showYesNoQuestionDialog(Application.getPosWindow(), Messages.getString("SwitchboardView.15") + //$NON-NLS-1$
 					Messages.getString("SwitchboardView.16"), Messages.getString("SwitchboardView.17")); //$NON-NLS-1$ //$NON-NLS-2$
 
@@ -170,17 +172,25 @@ public class POSUtil {
 				try {
 					DrawerAssignmentAction action = new DrawerAssignmentAction();
 					action.execute();
+					if (!terminal.isCashDrawerAssigned()) {
+						showUnableToAcceptPayment();
+						return false;
+					}
 					return true;
 				} catch (Exception e) {
 					return false;
 				}
 			}
 			else {
-				POSMessageDialog.showError(Application.getPosWindow(), Messages.getString("SwitchboardView.18")); //$NON-NLS-1$
+				showUnableToAcceptPayment();
 				return false;
 			}
 		}
 
 		return true;
+	}
+
+	private static void showUnableToAcceptPayment() {
+		POSMessageDialog.showError(Application.getPosWindow(), Messages.getString("SwitchboardView.18")); //$NON-NLS-1$
 	}
 }

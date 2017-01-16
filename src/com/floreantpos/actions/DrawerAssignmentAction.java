@@ -106,6 +106,10 @@ public class DrawerAssignmentAction extends PosAction {
 			}
 
 			User user = dialog.getSelectedUser();
+			if (!user.isClockedIn()) {
+				POSMessageDialog.showError("Can't assign drawer. Selected user is not clocked in.");
+				return;
+			}
 
 			double drawerBalance = 0;
 			CashDrawer cashDrawer = null;

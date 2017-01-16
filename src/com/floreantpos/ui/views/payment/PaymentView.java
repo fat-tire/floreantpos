@@ -401,17 +401,7 @@ public class PaymentView extends JPanel {
 		actionButtonPanel.add(btnCash, "grow,w " + width + "!"); //$NON-NLS-1$ //$NON-NLS-2$
 		btnCash.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				try {
-					double x = NumberUtil.parse(txtTenderedAmount.getText()).doubleValue();
-
-					if (x < 0) {
-						POSMessageDialog.showError(Messages.getString("PaymentView.32")); //$NON-NLS-1$
-						return;
-					}
-					settleTicketView.doSettle(PaymentType.CASH);
-				} catch (Exception e) {
-					org.apache.commons.logging.LogFactory.getLog(getClass()).error(e);
-				}
+				doPayByCash();
 			}
 		});
 
@@ -663,6 +653,23 @@ public class PaymentView extends JPanel {
 
 	public void setDefaultFocus() {
 		txtTenderedAmount.requestFocus();
+	}
+
+	private void doPayByCash() {
+		try {
+//			if (!POSUtil.checkDrawerAssignment()) {
+//				return;
+//			}
+			double x = NumberUtil.parse(txtTenderedAmount.getText()).doubleValue();
+
+			if (x < 0) {
+				POSMessageDialog.showError(Messages.getString("PaymentView.32")); //$NON-NLS-1$
+				return;
+			}
+			settleTicketView.doSettle(PaymentType.CASH);
+		} catch (Exception e) {
+			org.apache.commons.logging.LogFactory.getLog(getClass()).error(e);
+		}
 	}
 
 }
