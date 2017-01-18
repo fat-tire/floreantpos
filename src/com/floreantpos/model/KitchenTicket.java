@@ -196,6 +196,8 @@ public class KitchenTicket extends BaseKitchenTicket {
 		Map<Printer, KitchenTicket> itemMap = new HashMap<Printer, KitchenTicket>();
 		List<KitchenTicket> kitchenTickets = new ArrayList<KitchenTicket>(4);
 		
+		updateOriginalTicketPrintStatus(ticket);
+
 		Ticket clonedTicket = (Ticket) SerializationUtils.clone(ticket);
 		clonedTicket.consolidateTicketItems();
 		List<TicketItem> ticketItems = clonedTicket.getTicketItems();
@@ -311,6 +313,21 @@ public class KitchenTicket extends BaseKitchenTicket {
 		}
 
 		return kitchenTickets;
+	}
+
+	private static void updateOriginalTicketPrintStatus(Ticket ticket) {
+		List<TicketItem> ticketItems = ticket.getTicketItems();
+		for (TicketItem ticketItem : ticketItems) {
+			if (ticketItem.isPrintedToKitchen() || !ticketItem.isShouldPrintToKitchen()) {
+				continue;
+			}
+
+			List<Printer> printers = ticketItem.getPrinters(ticket.getOrderType());
+			if (printers == null) {
+				continue;
+			}
+			ticketItem.setPrintedToKitchen(true);
+		}
 	}
 
 	private static void includeCookintInstructions(TicketItem ticketItem, KitchenTicket kitchenTicket) {
