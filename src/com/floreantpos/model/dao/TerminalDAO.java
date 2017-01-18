@@ -51,6 +51,32 @@ public class TerminalDAO extends BaseTerminalDAO {
 			closeSession(session);
 		}
 	}
+	
+	/*
+	 * Save a list of objects in a batch operation
+	 */
+	public void performBatchSave(Object... objects) {
+		Session session = null;
+		Transaction  tx = null;
+		
+		try {
+			session = createNewSession();
+			tx = session.beginTransaction();
+			for (Object object : objects) {
+				if (object != null) {
+					session.saveOrUpdate(object);
+				}
+			}
+			tx.commit();
+		} catch (Exception e) {
+			try {
+				tx.rollback();
+			}catch(Exception x) {}
+			throw e;
+		} finally {
+			closeSession(session);
+		}
+	}
 
 	/**
 	 * Get terminal by terminal key
