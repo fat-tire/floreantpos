@@ -17,13 +17,13 @@
  */
 package com.floreantpos.util;
 
-import jssc.SerialPort;
-import jssc.SerialPortException;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.floreantpos.PosLog;
+import jssc.SerialPort;
+import jssc.SerialPortException;
+
+import com.floreantpos.config.TerminalConfig;
 
 public class DrawerUtil {
 	/* fields */
@@ -349,26 +349,26 @@ public class DrawerUtil {
 	}
 
 	public static void kickDrawer() {
-//		String portName = TerminalConfig.getDrawerPortName();
-//		char[] codesArray = TerminalConfig.getDrawerControlCodesArray();
-//
-//		kickDrawer(portName, codesArray);
+		String portName = TerminalConfig.getDrawerPortName();
+		char[] codesArray = TerminalConfig.getDrawerControlCodesArray();
+
+		kickDrawer(portName, codesArray);
 	}
 
 	public static void kickDrawer(String portName, char[] codes) {
-//		DrawerUtil.controlCodes = codes;
-//		serialPort = new SerialPort(portName);
-//
-//		initialize();
-//
-//		try {
-//			kick();
-//			//tear();
-//
-//			serialPort.closePort();//Close serial port
-//		} catch (SerialPortException ex) {
-//			logger.error(ex);
-//		}
+		DrawerUtil.controlCodes = codes;
+		serialPort = new SerialPort(portName);
+
+		initialize();
+
+		try {
+			kick();
+			//tear();
+
+			serialPort.closePort();//Close serial port
+		} catch (SerialPortException ex) {
+			logger.error(ex);
+		}
 	}
 
 	public static void setCustomerDisplayMessage(String portName, String customerDisplayMessage) {
@@ -427,7 +427,7 @@ public class DrawerUtil {
 			print((char) 13); //added line feed
 			
 			byte[] readBytes = serialPort.readBytes();
-			PosLog.info(DrawerUtil.class, "Response: " + new String(readBytes));
+			System.out.println("Response: " + new String(readBytes));
 
 		} catch (SerialPortException ex) {
 		}
