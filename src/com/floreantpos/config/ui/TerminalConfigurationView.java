@@ -375,7 +375,7 @@ public class TerminalConfigurationView extends ConfigurationView {
 	public void restartPOS() {
 		JOptionPane optionPane = new JOptionPane(Messages.getString("TerminalConfigurationView.26"), JOptionPane.QUESTION_MESSAGE, //$NON-NLS-1$
 				JOptionPane.OK_CANCEL_OPTION, Application.getApplicationIcon(), new String[] {
-						Messages.getString("TerminalConfigurationView.28"), Messages.getString("TerminalConfigurationView.30") }); //$NON-NLS-1$ //$NON-NLS-2$
+				/*Messages.getString("TerminalConfigurationView.28"),*/Messages.getString("TerminalConfigurationView.30") }); //$NON-NLS-1$ //$NON-NLS-2$
 
 		Object[] optionValues = optionPane.getComponents();
 		for (Object object : optionValues) {

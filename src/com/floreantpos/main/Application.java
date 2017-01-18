@@ -399,7 +399,7 @@ public class Application {
 	public void shutdownPOS() {
 		JOptionPane optionPane = new JOptionPane(Messages.getString("Application.1"), JOptionPane.QUESTION_MESSAGE, JOptionPane.YES_NO_CANCEL_OPTION, //$NON-NLS-1$
 				Application.getApplicationIcon(), new String[] {
-						Messages.getString("Application.3"), Messages.getString("Application.5"), Messages.getString("Application.6") }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				/*Messages.getString("Application.3"), */Messages.getString("Application.5"), Messages.getString("Application.6") }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 		Object[] optionValues = optionPane.getComponents();
 		for (Object object : optionValues) {
