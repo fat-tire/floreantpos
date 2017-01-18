@@ -824,4 +824,40 @@ public class Ticket extends BaseTicket {
 		}
 		calculatePrice();
 	}
+	
+	/**
+	 * Mark ticket items, modifiers, add-ons as printed to kitchen
+	 */
+	public void markPrintedToKitchen() {
+		List<TicketItem> ticketItems = getTicketItems();
+		for (TicketItem ticketItem : ticketItems) {
+			if (ticketItem.isPrintedToKitchen() || !ticketItem.isShouldPrintToKitchen()) {
+				continue;
+			}
+
+			List<Printer> printers = ticketItem.getPrinters(getOrderType());
+			if (printers == null) {
+				continue;
+			}
+			ticketItem.setPrintedToKitchen(true);
+			List<TicketItemModifierGroup> ticketItemModifierGroups = ticketItem.getTicketItemModifierGroups();
+			if (ticketItemModifierGroups != null) {
+				for (TicketItemModifierGroup ticketItemModifierGroup : ticketItemModifierGroups) {
+					List<TicketItemModifier> ticketItemModifiers = ticketItemModifierGroup.getTicketItemModifiers();
+					if (ticketItemModifiers != null) {
+						for (TicketItemModifier itemModifier : ticketItemModifiers) {
+							itemModifier.setPrintedToKitchen(true);
+						}
+					}
+				}
+			}
+
+			List<TicketItemModifier> addOns = ticketItem.getAddOns();
+			if (addOns != null) {
+				for (TicketItemModifier ticketItemModifier : addOns) {
+					ticketItemModifier.setPrintedToKitchen(true);
+				}
+			}
+		}
+	}
 }
