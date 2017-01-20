@@ -123,115 +123,125 @@ public abstract class _RootDAO extends com.floreantpos.model.dao._BaseRootDAO {
 
 	public static Configuration getNewConfiguration(String configFileName) {
 		AnnotationConfiguration configuration = new AnnotationConfiguration();
-		configuration = configuration.addClass(ActionHistory.class);
-		configuration = configuration.addClass(AttendenceHistory.class);
-		configuration = configuration.addClass(CashDrawerResetHistory.class);
-		configuration = configuration.addClass(CookingInstruction.class);
-		configuration = configuration.addClass(Discount.class);
-		configuration = configuration.addClass(Gratuity.class);
-		configuration = configuration.addClass(MenuCategory.class);
-		configuration = configuration.addClass(MenuGroup.class);
-		configuration = configuration.addClass(MenuItem.class);
-		configuration = configuration.addClass(MenuItemModifierGroup.class);
-		configuration = configuration.addClass(MenuItemShift.class);
-		configuration = configuration.addClass(MenuModifier.class);
-		configuration = configuration.addClass(MenuModifierGroup.class);
-		configuration = configuration.addClass(PayoutReason.class);
-		configuration = configuration.addClass(PayoutRecepient.class);
-		configuration = configuration.addClass(Restaurant.class);
-		configuration = configuration.addClass(Shift.class);
-		configuration = configuration.addClass(Tax.class);
-		configuration = configuration.addClass(Terminal.class);
-		configuration = configuration.addClass(Ticket.class);
-		configuration = configuration.addClass(KitchenTicket.class);
-		configuration = configuration.addClass(TicketDiscount.class);
-		configuration = configuration.addClass(TicketItem.class);
-		configuration = configuration.addClass(TicketItemModifier.class);
-		configuration = configuration.addClass(TicketItemModifierGroup.class);
-		configuration = configuration.addClass(TicketItemDiscount.class);
-		configuration = configuration.addClass(KitchenTicketItem.class);
-		configuration = configuration.addClass(PosTransaction.class);
-		configuration = configuration.addClass(User.class);
-		configuration = configuration.addClass(VirtualPrinter.class);
-		configuration = configuration.addClass(TerminalPrinters.class);
-		configuration = configuration.addClass(VoidReason.class);
-		configuration = configuration.addClass(DrawerPullReport.class);
-		configuration = configuration.addClass(PrinterConfiguration.class);
-		configuration = configuration.addClass(UserPermission.class);
-		configuration = configuration.addClass(UserType.class);
-		configuration = configuration.addClass(Customer.class);
-		configuration = configuration.addClass(PurchaseOrder.class);
-		configuration = configuration.addClass(ZipCodeVsDeliveryCharge.class);
-		configuration = configuration.addClass(ShopFloor.class);
-		configuration = configuration.addClass(ShopFloorTemplate.class);
-		configuration = configuration.addClass(ShopTable.class);
-		configuration = configuration.addClass(ShopTableType.class);
-		configuration = configuration.addClass(PrinterGroup.class);
-		configuration = configuration.addClass(DrawerAssignedHistory.class);
-		configuration = configuration.addClass(DataUpdateInfo.class);
-		configuration = configuration.addClass(TableBookingInfo.class);
-		configuration = configuration.addClass(CustomPayment.class);
-		configuration = configuration.addClass(com.floreantpos.model.OrderType.class);
-		configuration = configuration.addClass(DeliveryAddress.class);
-		configuration = configuration.addClass(DeliveryInstruction.class);
-		configuration = configuration.addClass(DeliveryCharge.class);
-		configuration = configuration.addClass(DeliveryConfiguration.class);
-		configuration = configuration.addClass(EmployeeInOutHistory.class);
-		configuration = configuration.addClass(Currency.class);
-		configuration = configuration.addClass(CashDrawer.class);
-		configuration = configuration.addClass(CurrencyBalance.class);
-		configuration = configuration.addClass(GlobalConfig.class);
-		configuration = configuration.addClass(MenuItemSize.class);
-		configuration = configuration.addClass(PizzaCrust.class);
-		configuration = configuration.addClass(PizzaPrice.class);
-		configuration = configuration.addClass(PizzaModifierPrice.class);
+		configuration.addClass(ActionHistory.class);
+		configuration.addClass(AttendenceHistory.class);
+		configuration.addClass(CashDrawerResetHistory.class);
+		configuration.addClass(CookingInstruction.class);
+		configuration.addClass(Discount.class);
+		configuration.addClass(Gratuity.class);
+		configuration.addClass(MenuCategory.class);
+		configuration.addClass(MenuGroup.class);
+		configuration.addClass(MenuItem.class);
+		configuration.addClass(MenuItemModifierGroup.class);
+		configuration.addClass(MenuItemShift.class);
+		configuration.addClass(MenuModifier.class);
+		configuration.addClass(MenuModifierGroup.class);
+		configuration.addClass(PayoutReason.class);
+		configuration.addClass(PayoutRecepient.class);
+		configuration.addClass(Restaurant.class);
+		configuration.addClass(Shift.class);
+		configuration.addClass(Tax.class);
+		configuration.addClass(Terminal.class);
+		configuration.addClass(Ticket.class);
+		configuration.addClass(KitchenTicket.class);
+		configuration.addClass(TicketDiscount.class);
+		configuration.addClass(TicketItem.class);
+		configuration.addClass(TicketItemModifier.class);
+		configuration.addClass(TicketItemModifierGroup.class);
+		configuration.addClass(TicketItemDiscount.class);
+		configuration.addClass(KitchenTicketItem.class);
+		configuration.addClass(PosTransaction.class);
+		configuration.addClass(User.class);
+		configuration.addClass(VirtualPrinter.class);
+		configuration.addClass(TerminalPrinters.class);
+		configuration.addClass(VoidReason.class);
+		configuration.addClass(DrawerPullReport.class);
+		configuration.addClass(PrinterConfiguration.class);
+		configuration.addClass(UserPermission.class);
+		configuration.addClass(UserType.class);
+		configuration.addClass(Customer.class);
+		configuration.addClass(PurchaseOrder.class);
+		configuration.addClass(ZipCodeVsDeliveryCharge.class);
+		configuration.addClass(ShopFloor.class);
+		configuration.addClass(ShopFloorTemplate.class);
+		configuration.addClass(ShopTable.class);
+		configuration.addClass(ShopTableType.class);
+		configuration.addClass(PrinterGroup.class);
+		configuration.addClass(DrawerAssignedHistory.class);
+		configuration.addClass(DataUpdateInfo.class);
+		configuration.addClass(TableBookingInfo.class);
+		configuration.addClass(CustomPayment.class);
+		configuration.addClass(com.floreantpos.model.OrderType.class);
+		configuration.addClass(DeliveryAddress.class);
+		configuration.addClass(DeliveryInstruction.class);
+		configuration.addClass(DeliveryCharge.class);
+		configuration.addClass(DeliveryConfiguration.class);
+		configuration.addClass(EmployeeInOutHistory.class);
+		configuration.addClass(Currency.class);
+		configuration.addClass(CashDrawer.class);
+		configuration.addClass(CurrencyBalance.class);
+		configuration.addClass(GlobalConfig.class);
+		configuration.addClass(MenuItemSize.class);
+		configuration.addClass(PizzaCrust.class);
+		configuration.addClass(PizzaPrice.class);
+		configuration.addClass(PizzaModifierPrice.class);
 
 
-		configuration = configureInventoryClasses(configuration);
+		configureInventoryClasses(configuration);
 
 		Database defaultDatabase = AppConfig.getDefaultDatabase();
 
-		configuration = configuration.setProperty("hibernate.dialect", defaultDatabase.getHibernateDialect()); //$NON-NLS-1$
-		configuration = configuration.setProperty("hibernate.connection.driver_class", defaultDatabase.getHibernateConnectionDriverClass()); //$NON-NLS-1$
+		configuration.setProperty("hibernate.dialect", defaultDatabase.getHibernateDialect()); //$NON-NLS-1$
+		configuration.setProperty("hibernate.connection.driver_class", defaultDatabase.getHibernateConnectionDriverClass()); //$NON-NLS-1$
 
-		configuration = configuration.setProperty("hibernate.connection.url", AppConfig.getConnectString()); //$NON-NLS-1$
-		configuration = configuration.setProperty("hibernate.connection.username", AppConfig.getDatabaseUser()); //$NON-NLS-1$
-		configuration = configuration.setProperty("hibernate.connection.password", AppConfig.getDatabasePassword()); //$NON-NLS-1$
-		configuration = configuration.setProperty("hibernate.hbm2ddl.auto", "update"); //$NON-NLS-1$ //$NON-NLS-2$
-		configuration = configuration.setProperty("hibernate.connection.autocommit", "false"); //$NON-NLS-1$ //$NON-NLS-2$
-		configuration = configuration.setProperty("hibernate.max_fetch_depth", "3"); //$NON-NLS-1$ //$NON-NLS-2$
-		configuration = configuration.setProperty("hibernate.show_sql", "false"); //$NON-NLS-1$ //$NON-NLS-2$
-		configuration = configuration.setProperty("hibernate.connection.isolation", String.valueOf(Connection.TRANSACTION_READ_COMMITTED)); //$NON-NLS-1$
+		configuration.setProperty("hibernate.connection.url", AppConfig.getConnectString()); //$NON-NLS-1$
+		configuration.setProperty("hibernate.connection.username", AppConfig.getDatabaseUser()); //$NON-NLS-1$
+		configuration.setProperty("hibernate.connection.password", AppConfig.getDatabasePassword()); //$NON-NLS-1$
+		configuration.setProperty("hibernate.hbm2ddl.auto", "update"); //$NON-NLS-1$ //$NON-NLS-2$
+		configuration.setProperty("hibernate.connection.autocommit", "false"); //$NON-NLS-1$ //$NON-NLS-2$
+		configuration.setProperty("hibernate.max_fetch_depth", "3"); //$NON-NLS-1$ //$NON-NLS-2$
+		configuration.setProperty("hibernate.show_sql", "false"); //$NON-NLS-1$ //$NON-NLS-2$
+		configuration.setProperty("hibernate.connection.isolation", String.valueOf(Connection.TRANSACTION_READ_COMMITTED)); //$NON-NLS-1$
 
-		configuration = configuration.setProperty("hibernate.c3p0.min_size", "10"); //$NON-NLS-1$ //$NON-NLS-2$
-		configuration = configuration.setProperty("hibernate.c3p0.max_size", "20"); //$NON-NLS-1$ //$NON-NLS-2$
-		configuration = configuration.setProperty("hibernate.c3p0.timeout", "120"); //$NON-NLS-1$ //$NON-NLS-2$
-
-		configuration = configuration.setProperty("hibernate.c3p0.max_statements", "50"); //$NON-NLS-1$ //$NON-NLS-2$
-
-		configuration = configuration.setProperty("hibernate.c3p0.checkoutTimeout", "15000"); //$NON-NLS-1$ //$NON-NLS-2$
-		configuration = configuration.setProperty("hibernate.c3p0.acquireRetryAttempts", "1"); //$NON-NLS-1$ //$NON-NLS-2$
-		//configuration = configuration.setProperty("hibernate.c3p0.acquireRetryDelay", "100"); //$NON-NLS-1$ //$NON-NLS-2$
-
-		//        configuration = configuration.setProperty("hibernate.c3p0.idle_test_period", "3000");
-		//        configuration = configuration.setProperty("hibernate.c3p0.validate", "true"); //$NON-NLS-1$ //$NON-NLS-2$
-		configuration = configuration.setProperty("hibernate.c3p0.breakAfterAcquireFailure", "false"); //$NON-NLS-1$ //$NON-NLS-2$
+		configureC3p0ConnectionPool(configuration);
 
 		return configuration;
 	}
+	
+	private static void configureC3p0ConnectionPool(Configuration configuration) {
+		//min pool size
+		configuration.setProperty("hibernate.c3p0.min_size", "0"); //$NON-NLS-1$ //$NON-NLS-2$
+		//max pool size
+		configuration.setProperty("hibernate.c3p0.max_size", "5"); //$NON-NLS-1$ //$NON-NLS-2$
+		// When an idle connection is removed from the pool (in second)
+		configuration.setProperty("hibernate.c3p0.timeout", "300"); //$NON-NLS-1$ //$NON-NLS-2$
+		//Number of prepared statements will be cached
+		configuration.setProperty("hibernate.c3p0.max_statements", "50"); //$NON-NLS-1$ //$NON-NLS-2$
+		//The number of milliseconds a client calling getConnection() will wait for a Connection to be 
+		//checked-in or acquired when the pool is exhausted. Zero means wait indefinitely.
+		//Setting any positive value will cause the getConnection() call to time-out and break 
+		//with an SQLException after the specified number of milliseconds. 
+		configuration.setProperty("hibernate.c3p0.checkoutTimeout", "10000"); //$NON-NLS-1$ //$NON-NLS-2$
+		configuration.setProperty("hibernate.c3p0.acquireRetryAttempts", "1"); //$NON-NLS-1$ //$NON-NLS-2$
+		configuration.setProperty("hibernate.c3p0.acquireIncrement", "1"); //$NON-NLS-1$ //$NON-NLS-2$
+		configuration.setProperty("hibernate.c3p0.maxIdleTime", "3000"); //$NON-NLS-1$ //$NON-NLS-2$
+		//idle time in seconds before a connection is automatically validated
+		configuration.setProperty("hibernate.c3p0.idle_test_period", "3000"); //$NON-NLS-1$ //$NON-NLS-2$
+		configuration.setProperty("hibernate.c3p0.breakAfterAcquireFailure", "false"); //$NON-NLS-1$ //$NON-NLS-2$
+	}
 
 	private static AnnotationConfiguration configureInventoryClasses(AnnotationConfiguration configuration) {
-		configuration = configuration.addClass(InventoryGroup.class);
-		configuration = configuration.addClass(InventoryItem.class);
-		configuration = configuration.addClass(InventoryLocation.class);
-		configuration = configuration.addClass(InventoryMetaCode.class);
-		configuration = configuration.addClass(InventoryTransaction.class);
-		configuration = configuration.addClass(InventoryUnit.class);
-		configuration = configuration.addClass(InventoryVendor.class);
-		configuration = configuration.addClass(InventoryWarehouse.class);
-		configuration = configuration.addClass(Recepie.class);
-		configuration = configuration.addClass(RecepieItem.class);
-		configuration = configuration.addClass(PackagingUnit.class);
+		configuration.addClass(InventoryGroup.class);
+		configuration.addClass(InventoryItem.class);
+		configuration.addClass(InventoryLocation.class);
+		configuration.addClass(InventoryMetaCode.class);
+		configuration.addClass(InventoryTransaction.class);
+		configuration.addClass(InventoryUnit.class);
+		configuration.addClass(InventoryVendor.class);
+		configuration.addClass(InventoryWarehouse.class);
+		configuration.addClass(Recepie.class);
+		configuration.addClass(RecepieItem.class);
+		configuration.addClass(PackagingUnit.class);
 
 		return configuration;
 	}
