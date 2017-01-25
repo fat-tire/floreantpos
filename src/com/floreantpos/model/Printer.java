@@ -49,6 +49,9 @@ public class Printer {
 	}
 
 	public String getDeviceName() {
+		if (deviceName == null) {
+			return "No Print";
+		}
 		return deviceName;
 	}
 
@@ -90,7 +93,7 @@ public class Printer {
 	}
 
 	public String getType() {
-		type=VirtualPrinter.PRINTER_TYPE_NAMES[virtualPrinter.getType()]; 
+		type = VirtualPrinter.PRINTER_TYPE_NAMES[virtualPrinter.getType()];
 		return type;
 	}
 

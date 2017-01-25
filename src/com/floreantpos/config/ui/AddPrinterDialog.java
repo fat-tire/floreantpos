@@ -22,6 +22,7 @@ import java.awt.Dimension;
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.print.PrintService;
@@ -42,6 +43,7 @@ import com.floreantpos.Messages;
 import com.floreantpos.model.Printer;
 import com.floreantpos.model.VirtualPrinter;
 import com.floreantpos.model.dao.VirtualPrinterDAO;
+import com.floreantpos.swing.ComboBoxModel;
 import com.floreantpos.swing.FixedLengthTextField;
 import com.floreantpos.ui.TitlePanel;
 import com.floreantpos.ui.dialog.POSDialog;
@@ -49,6 +51,8 @@ import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.util.POSUtil;
 
 public class AddPrinterDialog extends POSDialog {
+	private static final String DO_NOT_PRINT = "Do not print";
+	
 	private Printer printer;
 	
 	private VirtualPrinter virtualPrinter;
@@ -105,7 +109,17 @@ public class AddPrinterDialog extends POSDialog {
 		centerPanel.add(lblDevice, "cell 0 1,alignx trailing"); //$NON-NLS-1$
 		
 		cbDevice = new JComboBox();
-		cbDevice.setModel(new DefaultComboBoxModel(PrintServiceLookup.lookupPrintServices(null, null)));
+		List printerServices = new ArrayList<>();
+		printerServices.add(DO_NOT_PRINT);
+		PrintService[] lookupPrintServices = PrintServiceLookup.lookupPrintServices(null, null);
+		//cbDevice.setModel(new DefaultComboBoxModel(PrintServiceLookup.lookupPrintServices(null, null)));
+		cbDevice.addItem(null);
+		for (int i = 0; i < lookupPrintServices.length; i++) {
+			printerServices.add(lookupPrintServices[i]);
+		}
+		cbDevice.setModel(new ComboBoxModel(printerServices));
+
+		
 		cbDevice.setRenderer(new PrintServiceComboRenderer());
 		centerPanel.add(cbDevice, "cell 1 1,growx"); //$NON-NLS-1$
 		
@@ -170,10 +184,12 @@ public class AddPrinterDialog extends POSDialog {
 		
 		virtualPrinter.setName(name);
 
-		PrintService printService = (PrintService) cbDevice.getSelectedItem();
-		if(printService == null) {
-			POSMessageDialog.showMessage(this, Messages.getString("AddPrinterDialog.19")); //$NON-NLS-1$
-			return;
+		PrintService printService = null;
+		Object selectedObject = cbDevice.getSelectedItem();
+		if (selectedObject instanceof PrintService) {
+			/*POSMessageDialog.showMessage(this, Messages.getString("AddPrinterDialog.19")); //$NON-NLS-1$
+			return;*/
+			printService = (PrintService) selectedObject;
 		}
 		
 		boolean defaultPrinter = chckbxDefault.isSelected();
@@ -182,7 +198,12 @@ public class AddPrinterDialog extends POSDialog {
 			printer = new Printer();
 		}
 		printer.setVirtualPrinter(virtualPrinter);
-		printer.setDeviceName(printService.getName());
+		if (printService != null && printService.getName() != null) {
+			printer.setDeviceName(printService.getName());
+		}
+		else {
+			printer.setDeviceName(null);
+		}
 		printer.setDefaultPrinter(defaultPrinter);
 		
 		setCanceled(false);
@@ -202,13 +223,22 @@ public class AddPrinterDialog extends POSDialog {
 			cbVirtualPrinter.setSelectedItem(printer.getVirtualPrinter());
 			chckbxDefault.setSelected(printer.isDefaultPrinter());
 			
-			DefaultComboBoxModel<PrintService> deviceModel = (DefaultComboBoxModel<PrintService>) cbDevice.getModel();
-			for(int i = 0; i < deviceModel.getSize(); i++) {
-				PrintService printService = deviceModel.getElementAt(i);
-				if(printService.getName().equals(printer.getDeviceName())) {
-					cbDevice.setSelectedIndex(i);
-					break;
-				}
+			if (printer.getDeviceName() == "No Print") {
+				cbDevice.setSelectedItem(DO_NOT_PRINT);
+				return;
+			}
+			ComboBoxModel deviceModel = (ComboBoxModel) cbDevice.getModel();
+			for (int i = 0; i < deviceModel.getSize(); i++) {
+				Object selectedObject = deviceModel.getElementAt(i);
+				if (!(selectedObject instanceof PrintService))
+					continue;
+				PrintService printService = (PrintService) selectedObject;
+				if (printService != null)
+					if (printService.getName().equals(printer.getDeviceName())) {
+						cbDevice.setSelectedIndex(i);
+						break;
+					}
+
 			}
 		}
 	}

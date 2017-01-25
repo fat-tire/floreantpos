@@ -898,12 +898,13 @@ public class ReceiptPrintService {
 					PrintServiceUtil.getPrintServiceForPrinter(jasperPrint.getProperty(PROP_PRINTER_NAME)));
 			exporter.exportReport();
 		} catch (Exception x) {
+			String msg = "No print selected\n";
 			String message = x.getMessage();
 			if (message != null && message.contains("PrinterAbortException")) {//$NON-NLS-1$
 				//do nothing
 			}
 			else {
-				logger.error(x);
+				logger.error(msg + x);
 			}
 		}
 	}

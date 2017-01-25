@@ -34,6 +34,7 @@ import org.jdesktop.swingx.JXTable;
 
 import com.floreantpos.Messages;
 import com.floreantpos.POSConstants;
+import com.floreantpos.PosLog;
 import com.floreantpos.config.AppConfig;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.Printer;
@@ -302,6 +303,7 @@ public class MultiPrinterPane extends JPanel {
 		Printer printer = tableModel.getRow(index);
 
 		if (printer.getDeviceName() == null) {
+			PosLog.info(getClass(), "No print selected for " + printer.getType());
 			return;
 		}
 

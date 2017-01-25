@@ -28,6 +28,9 @@ public class PrintServiceComboRenderer extends DefaultListCellRenderer {
 	@Override
 	public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
 		JLabel listCellRendererComponent = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+		if (!(value instanceof PrintService))
+			return listCellRendererComponent;
+
 		PrintService printService = (PrintService) value;
 
 		if (printService != null) {
