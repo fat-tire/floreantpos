@@ -42,7 +42,7 @@ public class OrderTypeSelectionDialog extends POSDialog {
 		setResizable(false);
 		setLayout(new BorderLayout(5, 5));
 
-		JPanel orderTypePanel = new JPanel(new GridLayout(1, 0, 10, 10));
+		JPanel orderTypePanel = new JPanel(new GridLayout(1, 0, 5, 5));
 		orderTypePanel.setBorder(new EmptyBorder(10, 10, 10, 10));
 		List<OrderType> values = Application.getInstance().getOrderTypes();
 		for (final OrderType orderType : values) {
@@ -60,24 +60,23 @@ public class OrderTypeSelectionDialog extends POSDialog {
 				}
 			});
 			orderTypePanel.add(button);
-
-			PosButton btnCancel = new PosButton(POSConstants.CANCEL_BUTTON_TEXT);
-			btnCancel.addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					setCanceled(true);
-					dispose();
-				}
-			});
-
-			JPanel actionPanel = new JPanel();
-			actionPanel.add(btnCancel);
-
-			add(orderTypePanel);
-			add(actionPanel, BorderLayout.SOUTH);
-
-			setSize(700, 250);
 		}
+		PosButton btnCancel = new PosButton(POSConstants.CANCEL_BUTTON_TEXT);
+		btnCancel.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				setCanceled(true);
+				dispose();
+			}
+		});
+
+		JPanel actionPanel = new JPanel();
+		actionPanel.add(btnCancel);
+
+		add(orderTypePanel);
+		add(actionPanel, BorderLayout.SOUTH);
+
+		setSize(450, 300);
 	}
 
 	public OrderType getSelectedOrderType() {

@@ -196,8 +196,8 @@ public class MultiplierExplorer extends TransparentPanel {
 
 					return null;
 				case 5:
-					if (multiplier.getButtonColor() != null) {
-						return new Color(multiplier.getButtonColor());
+					if (multiplier.getTextColor() != null) {
+						return new Color(multiplier.getTextColor());
 					}
 
 					return null;

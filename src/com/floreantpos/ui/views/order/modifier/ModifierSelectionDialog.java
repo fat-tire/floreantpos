@@ -261,8 +261,8 @@ public class ModifierSelectionDialog extends POSDialog implements ModifierGroupS
 			modifierGroupView.selectNextGroup();
 		}
 		else {
-			setCanceled(false);
-			dispose();
+			//setCanceled(false);
+			//dispose();
 		}
 	}
 
