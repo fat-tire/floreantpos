@@ -56,6 +56,7 @@ import com.floreantpos.model.MenuItemModifierGroup;
 import com.floreantpos.model.MenuItemSize;
 import com.floreantpos.model.MenuModifier;
 import com.floreantpos.model.MenuModifierGroup;
+import com.floreantpos.model.Multiplier;
 import com.floreantpos.model.OrderType;
 import com.floreantpos.model.PizzaPrice;
 import com.floreantpos.model.TicketItem;
@@ -220,10 +221,10 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 	}
 
 	@Override
-	public void modifierSelected(MenuModifier modifier) {
+	public void modifierSelected(MenuModifier modifier, Multiplier multiplier) {
 		Section section = getSelectedSection();
 		OrderType type = modifierSelectionModel.getTicketItem().getTicket().getOrderType();
-		TicketItemModifier itemModifier = convertToTicketItemModifier(modifier, type);
+		TicketItemModifier itemModifier = convertToTicketItemModifier(modifier, type, multiplier);
 		itemModifier.setTicketItem(modifierSelectionModel.getTicketItem());
 		section.addItem(itemModifier);
 	}
@@ -263,13 +264,18 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 		return true;
 	}
 
-	private TicketItemModifier convertToTicketItemModifier(MenuModifier menuModifier, OrderType type) {
+	private TicketItemModifier convertToTicketItemModifier(MenuModifier menuModifier, OrderType type, Multiplier multiplier) {
 		TicketItemModifier ticketItemModifier = new TicketItemModifier();
 		ticketItemModifier.setItemId(menuModifier.getId());
 		ticketItemModifier.setGroupId(menuModifier.getModifierGroup().getId());
 		ticketItemModifier.setItemCount(1);
 		ticketItemModifier.setName(menuModifier.getDisplayName());
-		ticketItemModifier.setUnitPrice(menuModifier.getPriceForSize(getSelectedSize(), false));
+		double priceForSize = menuModifier.getPriceForSize(getSelectedSize(), false);
+		if (multiplier != null) {
+			ticketItemModifier.setName(multiplier.getTicketPrefix() + " " + menuModifier.getDisplayName());
+			priceForSize = priceForSize * (multiplier.getRate() / 100);
+		}
+		ticketItemModifier.setUnitPrice(priceForSize);
 		ticketItemModifier.setTaxRate(menuModifier.getTaxByOrderType(type));
 		ticketItemModifier.setModifierType(TicketItemModifier.NORMAL_MODIFIER);
 		ticketItemModifier.setShouldPrintToKitchen(menuModifier.isShouldPrintToKitchen());

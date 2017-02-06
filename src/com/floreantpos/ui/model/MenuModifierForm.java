@@ -163,7 +163,7 @@ public class MenuModifierForm extends BeanEditor {
 		jScrollPane3 = new javax.swing.JScrollPane();
 		priceTable = new javax.swing.JTable();
 
-		jLabel2.setText(com.floreantpos.POSConstants.PRICE + ":"); //$NON-NLS-1$
+		jLabel2.setText("Reg. Price" + ":"); //$NON-NLS-1$
 
 		jLabel1.setText(com.floreantpos.POSConstants.NAME + ":"); //$NON-NLS-1$
 

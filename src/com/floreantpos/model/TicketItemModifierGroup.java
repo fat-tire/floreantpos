@@ -23,20 +23,19 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.floreantpos.model.base.BaseTicketItemModifierGroup;
-import com.floreantpos.model.OrderType;
 
 public class TicketItemModifierGroup extends BaseTicketItemModifierGroup implements ITicketItem {
 	private static final long serialVersionUID = 1L;
 
 	/* [CONSTRUCTOR MARKER BEGIN] */
-	public TicketItemModifierGroup () {
+	public TicketItemModifierGroup() {
 		super();
 	}
 
 	/**
 	 * Constructor for primary key
 	 */
-	public TicketItemModifierGroup (java.lang.Integer id) {
+	public TicketItemModifierGroup(java.lang.Integer id) {
 		super(id);
 	}
 
@@ -155,7 +154,7 @@ public class TicketItemModifierGroup extends BaseTicketItemModifierGroup impleme
 		return null;
 	}
 
-	public TicketItemModifier addTicketItemModifier(MenuModifier menuModifier, int modifierType, OrderType type) {
+	public TicketItemModifier addTicketItemModifier(MenuModifier menuModifier, int modifierType, OrderType type, Multiplier multiplier) {
 		TicketItemModifier ticketItemModifier = new TicketItemModifier();
 		ticketItemModifier.setItemId(menuModifier.getId());
 		ticketItemModifier.setGroupId(menuModifier.getModifierGroup().getId());
@@ -163,7 +162,12 @@ public class TicketItemModifierGroup extends BaseTicketItemModifierGroup impleme
 		ticketItemModifier.setName(menuModifier.getDisplayName());
 		//		ticketItemModifier.setExtraUnitPrice(menuModifier.getExtraPrice());
 		//ticketItemModifier.setTaxRate(menuModifier.getTax() == null ? 0 : menuModifier.getTax().getRate());
-		ticketItemModifier.setUnitPrice(menuModifier.getPriceByOrderType(type));
+		double price = menuModifier.getPriceByOrderType(type);
+		if (multiplier != null) {
+			ticketItemModifier.setName(multiplier.getTicketPrefix() + " " + menuModifier.getDisplayName());
+			price = price * (multiplier.getRate() / 100);
+		}
+		ticketItemModifier.setUnitPrice(price);
 		ticketItemModifier.setTaxRate(menuModifier.getTaxByOrderType(type));
 
 		ticketItemModifier.setModifierType(modifierType);
@@ -332,7 +336,7 @@ public class TicketItemModifierGroup extends BaseTicketItemModifierGroup impleme
 
 	@Override
 	public void setDiscountAmount(Double amount) {
-		
+
 	}
 
 	@Override

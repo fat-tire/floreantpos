@@ -57,7 +57,9 @@ import com.floreantpos.demo.KitchenDisplayView;
 import com.floreantpos.main.Application;
 import com.floreantpos.main.Main;
 import com.floreantpos.model.OrderType;
+import com.floreantpos.model.Restaurant;
 import com.floreantpos.model.Terminal;
+import com.floreantpos.model.dao.RestaurantDAO;
 import com.floreantpos.model.dao.TerminalDAO;
 import com.floreantpos.swing.DoubleTextField;
 import com.floreantpos.swing.IntegerTextField;
@@ -81,6 +83,7 @@ public class TerminalConfigurationView extends ConfigurationView {
 	private JCheckBox chkEnabledMultiCurrency = new JCheckBox("Enable multi currency");
 	private JCheckBox chkAllowToDelPrintedItem = new JCheckBox("Allow to delete printed ticket item");
 	private JCheckBox chkAllowQuickMaintenance = new JCheckBox("Allow quick maintenance");
+	private JCheckBox chkModifierCannotExceedMaxLimit = new JCheckBox("Allow adding modifier when it reaches max limit");
 
 	private JComboBox<String> cbFonts = new JComboBox<String>();
 	private JComboBox<String> cbDefaultView;
@@ -150,6 +153,7 @@ public class TerminalConfigurationView extends ConfigurationView {
 		contentPanel.add(chkEnabledMultiCurrency, "newline,span"); //$NON-NLS-1$
 		contentPanel.add(chkAllowToDelPrintedItem, "newline,span"); //$NON-NLS-1$
 		contentPanel.add(chkAllowQuickMaintenance, "newline,span"); //$NON-NLS-1$
+		contentPanel.add(chkModifierCannotExceedMaxLimit, "newline,span"); //$NON-NLS-1$
 
 		contentPanel.add(new JLabel(Messages.getString("TerminalConfigurationView.17")), "newline"); //$NON-NLS-1$//$NON-NLS-2$
 		contentPanel.add(cbFonts, "span 2, wrap"); //$NON-NLS-1$
@@ -309,8 +313,12 @@ public class TerminalConfigurationView extends ConfigurationView {
 		terminal.setOpeningBalance(tfDrawerInitialBalance.getDouble());
 
 		terminalDAO.saveOrUpdate(terminal);
-		restartPOS();
 
+		Restaurant restaurant = RestaurantDAO.getRestaurant();
+		restaurant.setAllowModifierMaxExceed(chkModifierCannotExceedMaxLimit.isSelected());
+		RestaurantDAO.getInstance().saveOrUpdate(restaurant);
+
+		restartPOS();
 		return true;
 	}
 
@@ -348,6 +356,8 @@ public class TerminalConfigurationView extends ConfigurationView {
 		tfDrawerInitialBalance.setText("" + terminal.getOpeningBalance()); //$NON-NLS-1$
 
 		taTerminalLocation.setText(terminal.getLocation());
+		Restaurant restaurant = RestaurantDAO.getRestaurant();
+		chkModifierCannotExceedMaxLimit.setSelected(restaurant.isAllowModifierMaxExceed());
 		setInitialized(true);
 	}
 

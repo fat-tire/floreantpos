@@ -124,12 +124,14 @@ public class Application {
 		posWindow.setTitle(getTitle());
 		posWindow.setIconImage(applicationIcon.getImage());
 		posWindow.setupSizeAndLocation();
+		posWindow.setVisibleWelcomeHeader(true);
 		if (TerminalConfig.isFullscreenMode()) {
 			posWindow.enterFullScreenMode();
 		}
 		posWindow.setVisible(true);
 		rootView = RootView.getInstance();
 		posWindow.getContentPane().add(rootView);
+		posWindow.setVisibleWelcomeHeader(false);
 		rootView.addView(LoginView.getInstance());
 		initializeSystem();
 	}
@@ -169,8 +171,8 @@ public class Application {
 			initPlugins();
 
 			LoginView.getInstance().initializeOrderButtonPanel();
-			if (hasUpdateScheduleToday())
-				checkAvailableUpdates();
+			//if (hasUpdateScheduleToday())
+			//	checkAvailableUpdates();
 			setSystemInitialized(true);
 
 		} catch (DatabaseConnectionException e) {
@@ -282,6 +284,9 @@ public class Application {
 		if (terminal != null) {
 			TerminalConfig.setTerminalId(terminal.getId());
 			this.terminal = terminal;
+			if (!headLess) {
+				LoginView.getInstance().setTerminalId(terminal.getId());
+			}
 			return;
 		}
 		int terminalId = TerminalConfig.getTerminalId();
@@ -297,9 +302,10 @@ public class Application {
 				terminal = new Terminal();
 				terminal.setId(terminalId);
 				terminal.setTerminalKey(terminalKey);
-				terminal.setName(String.valueOf("Terminal "+ terminalId)); //$NON-NLS-1$
+				terminal.setName(String.valueOf("Terminal " + terminalId)); //$NON-NLS-1$
 				TerminalDAO.getInstance().saveOrUpdate(terminal);
-			} else if (StringUtils.isEmpty(terminal.getTerminalKey())) {
+			}
+			else if (StringUtils.isEmpty(terminal.getTerminalKey())) {
 				terminal.setTerminalKey(terminalKey);
 				TerminalDAO.getInstance().saveOrUpdate(terminal);
 			}

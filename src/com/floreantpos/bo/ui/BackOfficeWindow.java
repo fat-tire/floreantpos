@@ -54,7 +54,6 @@ import com.floreantpos.bo.actions.DrawerPullReportExplorerAction;
 import com.floreantpos.bo.actions.EmployeeAttendanceAction;
 import com.floreantpos.bo.actions.GroupExplorerAction;
 import com.floreantpos.bo.actions.HourlyLaborReportAction;
-import com.floreantpos.bo.actions.InventoryOnHandReportAction;
 import com.floreantpos.bo.actions.ItemExplorerAction;
 import com.floreantpos.bo.actions.JournalReportAction;
 import com.floreantpos.bo.actions.KeyStatisticsSalesReportAction;
@@ -63,13 +62,13 @@ import com.floreantpos.bo.actions.MenuItemSizeExplorerAction;
 import com.floreantpos.bo.actions.MenuUsageReportAction;
 import com.floreantpos.bo.actions.ModifierExplorerAction;
 import com.floreantpos.bo.actions.ModifierGroupExplorerAction;
+import com.floreantpos.bo.actions.MultiplierExplorerAction;
 import com.floreantpos.bo.actions.OpenTicketSummaryReportAction;
 import com.floreantpos.bo.actions.OrdersTypeExplorerAction;
 import com.floreantpos.bo.actions.PayrollReportAction;
 import com.floreantpos.bo.actions.PizzaCrustExplorerAction;
 import com.floreantpos.bo.actions.PizzaItemExplorerAction;
 import com.floreantpos.bo.actions.PizzaModifierExplorerAction;
-import com.floreantpos.bo.actions.PurchaseReportAction;
 import com.floreantpos.bo.actions.SalesAnalysisReportAction;
 import com.floreantpos.bo.actions.SalesBalanceReportAction;
 import com.floreantpos.bo.actions.SalesDetailReportAction;
@@ -240,6 +239,7 @@ public class BackOfficeWindow extends javax.swing.JFrame {
 		subMenuPizza.add(new PizzaCrustExplorerAction());
 		subMenuPizza.add(new PizzaItemExplorerAction());
 		subMenuPizza.add(new PizzaModifierExplorerAction());
+		explorerMenu.add(new MultiplierExplorerAction());
 
 		OrderServiceExtension plugin = (OrderServiceExtension) ExtensionManager.getPlugin(OrderServiceExtension.class);
 		if (plugin == null) {

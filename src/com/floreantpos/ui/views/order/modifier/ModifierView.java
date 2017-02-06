@@ -25,6 +25,7 @@ package com.floreantpos.ui.views.order.modifier;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -34,16 +35,23 @@ import java.util.Set;
 import java.util.Vector;
 
 import javax.swing.AbstractButton;
+import javax.swing.BorderFactory;
+import javax.swing.ButtonGroup;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
+
+import net.miginfocom.swing.MigLayout;
 
 import com.floreantpos.POSConstants;
 import com.floreantpos.PosException;
 import com.floreantpos.model.MenuModifier;
 import com.floreantpos.model.MenuModifierGroup;
+import com.floreantpos.model.Multiplier;
 import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.TicketItemModifier;
 import com.floreantpos.model.TicketItemModifierGroup;
+import com.floreantpos.model.dao.MultiplierDAO;
+import com.floreantpos.swing.POSToggleButton;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.views.order.OrderView;
@@ -67,13 +75,34 @@ public class ModifierView extends SelectionView {
 
 	private int maxQuantity;
 	private boolean showPrice;
+	private Multiplier selectedMultiplier;
+	private MultiplierButton defaultMultiplierButton;
 
-	/** Creates new form GroupView */
 	public ModifierView(ModifierSelectionModel modifierSelectionModel) {
 		super(com.floreantpos.POSConstants.MODIFIERS);
 		this.modifierSelectionModel = modifierSelectionModel;
 		showPrice = OrderView.getInstance().getCurrentTicket().getOrderType().isShowPriceOnButton();
+		addMultiplierButtons();
 		addActionButtons();
+	}
+
+	private void addMultiplierButtons() {
+		JPanel multiplierPanel = new JPanel(new MigLayout("ins 0,fillx,center"));
+		List<Multiplier> multiplierList = MultiplierDAO.getInstance().findAll();
+		ButtonGroup group = new ButtonGroup();
+		if (multiplierList != null) {
+			for (Multiplier multiplier : multiplierList) {
+				MultiplierButton btnMultiplier = new MultiplierButton(multiplier);
+				if (multiplier.isDefaultMultiplier()) {
+					selectedMultiplier = multiplier;
+					defaultMultiplierButton = btnMultiplier;
+					btnMultiplier.setSelected(true);
+				}
+				multiplierPanel.add(btnMultiplier, "grow");
+				group.add(btnMultiplier);
+			}
+		}
+		actionButtonPanel.add(multiplierPanel, "span");
 	}
 
 	private void addActionButtons() {
@@ -228,8 +257,49 @@ public class ModifierView extends SelectionView {
 
 		public void actionPerformed(ActionEvent e) {
 			for (ModifierSelectionListener listener : ModifierView.this.listenerList) {
-				listener.modifierSelected(menuModifier);
+				listener.modifierSelected(menuModifier, selectedMultiplier);
 			}
+			defaultMultiplierButton.setSelected(true);
+			selectedMultiplier = defaultMultiplierButton.getMultiplier();
+		}
+	}
+
+	private class MultiplierButton extends POSToggleButton implements ActionListener {
+		private Multiplier multiplier;
+
+		public MultiplierButton(Multiplier multiplier) {
+			this.multiplier = multiplier;
+			setText(multiplier.getName());
+			Integer buttonColor = multiplier.getButtonColor();
+			if (buttonColor != null) {
+				setBackground(new Color(buttonColor));
+			}
+			Integer textColor = multiplier.getTextColor();
+			if (textColor != null) {
+				setForeground(new Color(textColor));
+			}
+			setBorder(BorderFactory.createLineBorder(Color.GRAY));
+			addActionListener(this);
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			selectedMultiplier = multiplier;
+		}
+
+		public Multiplier getMultiplier() {
+			return multiplier;
+		}
+
+		@Override
+		protected void paintComponent(Graphics g) {
+			super.paintComponent(g);
+
+			if (isSelected())
+				setBorder(BorderFactory.createLineBorder(new Color(255, 128, 0), 1));
+			else
+				setBorder(BorderFactory.createLineBorder(Color.GRAY));
+
 		}
 	}
 }

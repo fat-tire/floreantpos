@@ -19,10 +19,11 @@ package com.floreantpos.ui.views.order.modifier;
 
 import com.floreantpos.model.MenuModifier;
 import com.floreantpos.model.MenuModifierGroup;
+import com.floreantpos.model.Multiplier;
 import com.floreantpos.model.TicketItemModifier;
 
 public interface ModifierSelectionListener {
-	void modifierSelected(MenuModifier modifier);
+	void modifierSelected(MenuModifier modifier, Multiplier multiplier);
 
 	void modifierRemoved(TicketItemModifier modifier);
 

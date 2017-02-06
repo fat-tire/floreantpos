@@ -39,6 +39,7 @@ import com.floreantpos.main.Application;
 import com.floreantpos.model.MenuItemModifierGroup;
 import com.floreantpos.model.MenuModifier;
 import com.floreantpos.model.MenuModifierGroup;
+import com.floreantpos.model.Multiplier;
 import com.floreantpos.model.OrderType;
 import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.TicketItemModifier;
@@ -167,7 +168,7 @@ public class ModifierSelectionDialog extends POSDialog implements ModifierGroupS
 	}
 
 	@Override
-	public void modifierSelected(MenuModifier modifier) {
+	public void modifierSelected(MenuModifier modifier, Multiplier multiplier) {
 		//		if (addOnMode) {
 		//			modifierSelectionModel.getTicketItem().addAddOn(modifier);
 		//			updateView();
@@ -187,8 +188,9 @@ public class ModifierSelectionDialog extends POSDialog implements ModifierGroupS
 		if (freeModifiers >= maxQuantity) {
 			//			POSMessageDialog.showError("You have added maximum number of allowed modifiers from group " + modifier.getModifierGroup().getDisplayName());
 			//			return;
-
-			modifierSelectionModel.getTicketItem().addAddOn(modifier);
+			if (Application.getInstance().getRestaurant().isAllowModifierMaxExceed()) {
+				modifierSelectionModel.getTicketItem().addAddOn(modifier);
+			}
 			updateView();
 			return;
 		}
@@ -196,12 +198,15 @@ public class ModifierSelectionDialog extends POSDialog implements ModifierGroupS
 		TicketItemModifier ticketItemModifier = ticketItemModifierGroup.findTicketItemModifier(modifier, false);
 		if (ticketItemModifier == null) {
 			OrderType type = modifierSelectionModel.getTicketItem().getTicket().getOrderType();
-			ticketItemModifierGroup.addTicketItemModifier(modifier, TicketItemModifier.NORMAL_MODIFIER, type);
+			ticketItemModifierGroup.addTicketItemModifier(modifier, TicketItemModifier.NORMAL_MODIFIER, type, multiplier);
 		}
 		else {
 			ticketItemModifier.setItemCount(ticketItemModifier.getItemCount() + 1);
 		}
 		updateView();
+		if ((freeModifiers + 1) == maxQuantity) {
+			modifierGroupSelectionDone(modifier.getModifierGroup());
+		}
 	}
 
 	private void updateView() {
@@ -231,10 +236,12 @@ public class ModifierSelectionDialog extends POSDialog implements ModifierGroupS
 		}
 
 		List<TicketItemModifier> addOnsList = modifierSelectionModel.getTicketItem().getAddOns();
-		for (Iterator iterator3 = addOnsList.iterator(); iterator3.hasNext();) {
-			TicketItemModifier addOns = (TicketItemModifier) iterator3.next();
-			if (!addOns.isPrintedToKitchen()) {
-				iterator3.remove();
+		if (addOnsList != null) {
+			for (Iterator iterator3 = addOnsList.iterator(); iterator3.hasNext();) {
+				TicketItemModifier addOns = (TicketItemModifier) iterator3.next();
+				if (!addOns.isPrintedToKitchen()) {
+					iterator3.remove();
+				}
 			}
 		}
 

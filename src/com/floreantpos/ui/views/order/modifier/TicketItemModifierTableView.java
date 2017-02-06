@@ -28,6 +28,8 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.util.Vector;
 
+import javax.swing.BorderFactory;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
@@ -36,8 +38,13 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import org.apache.commons.lang3.StringUtils;
+
+import net.miginfocom.swing.MigLayout;
+
 import com.floreantpos.IconFactory;
 import com.floreantpos.model.ITicketItem;
+import com.floreantpos.model.MenuItem;
 import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.TicketItemModifier;
 import com.floreantpos.swing.PosButton;
@@ -96,15 +103,15 @@ public class TicketItemModifierTableView extends JPanel {
 		ticketScrollPane.setPreferredSize(new java.awt.Dimension(180, 200));
 
 		createTicketActionPanel();
-
 		createTicketItemControlPanel();
 
 		JPanel centerPanel = new JPanel(new BorderLayout(5, 5));
 		centerPanel.add(ticketScrollPane);
 
+		centerPanel.add(createItemDescriptionPanel(), BorderLayout.NORTH);
 		add(centerPanel);
 		add(ticketActionPanel, BorderLayout.SOUTH);
-		add(ticketItemActionPanel, BorderLayout.EAST);
+		centerPanel.add(ticketItemActionPanel, BorderLayout.EAST);
 
 		modifierViewerTable.getRenderer().setInTicketScreen(true);
 		modifierViewerTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
@@ -136,6 +143,24 @@ public class TicketItemModifierTableView extends JPanel {
 		setPreferredSize(new java.awt.Dimension(360, 463));
 
 	}// </editor-fold>//GEN-END:initComponents
+
+	private JPanel createItemDescriptionPanel() {
+		MenuItem menuItem = modifierSelectionModel.getMenuItem();
+		JPanel itemDescriptionPanel = new JPanel(new MigLayout("inset 0,center"));
+		String description = menuItem.getDescription();
+		if (StringUtils.isEmpty(description) && menuItem.getImage() == null) {
+			return itemDescriptionPanel;
+		}
+		itemDescriptionPanel.setBorder(BorderFactory.createTitledBorder("-"));
+		JLabel lblDescription = new JLabel();
+		lblDescription.setText("<html><body>" + description + "</body></html>");
+		JLabel pictureLabel = new JLabel(menuItem.getImage());
+
+		itemDescriptionPanel.add(pictureLabel);
+		itemDescriptionPanel.add(lblDescription);
+
+		return itemDescriptionPanel;
+	}
 
 	private void createTicketActionPanel() {
 		ticketActionPanel.setLayout(new GridLayout(1, 0, 5, 5));

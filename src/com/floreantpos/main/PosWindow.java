@@ -18,6 +18,7 @@
 package com.floreantpos.main;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
@@ -33,6 +34,7 @@ import javax.swing.JSeparator;
 
 import org.jdesktop.swingx.JXStatusBar;
 
+import com.floreantpos.IconFactory;
 import com.floreantpos.actions.ShutDownAction;
 import com.floreantpos.config.AppConfig;
 import com.floreantpos.swing.GlassPane;
@@ -47,6 +49,7 @@ public class PosWindow extends JFrame implements WindowListener {
 	private GlassPane glassPane;
 	private JXStatusBar statusBar;
 	private JLabel statusLabel;
+	private JPanel welcomeHeaderPanel;
 
 	public PosWindow() {
 		setIconImage(Application.getApplicationIcon().getImage());
@@ -66,6 +69,22 @@ public class PosWindow extends JFrame implements WindowListener {
 
 		statusBarContainer.add(statusBar);
 		getContentPane().add(statusBarContainer, BorderLayout.SOUTH);
+	}
+
+	public void setVisibleWelcomeHeader(boolean visible) {
+		if (!visible) {
+			getContentPane().remove(welcomeHeaderPanel);
+			welcomeHeaderPanel = null;
+			return;
+		}
+		JLabel titleLabel = new JLabel(IconFactory.getIcon("/ui_icons/", "title.png")); //$NON-NLS-1$ //$NON-NLS-2$
+		titleLabel.setOpaque(true);
+		titleLabel.setBackground(Color.WHITE);
+
+		welcomeHeaderPanel = new JPanel(new BorderLayout());
+		welcomeHeaderPanel.add(titleLabel, BorderLayout.CENTER);
+		welcomeHeaderPanel.add(new JSeparator(JSeparator.HORIZONTAL), BorderLayout.SOUTH);
+		add(welcomeHeaderPanel, BorderLayout.NORTH);
 	}
 
 	public void setStatus(String status) {

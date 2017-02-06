@@ -266,7 +266,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		lblPrice.setHorizontalAlignment(SwingConstants.TRAILING);
 		tfPrice = new DoubleTextField(20);
 		tfPrice.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-		tfDescription = new JTextArea(new FixedLengthDocument(120));
+		tfDescription = new JTextArea(new FixedLengthDocument(255));
 
 		//tfDescription.setDocument(;
 		tfUnitName = new FixedLengthTextField(20);
@@ -475,7 +475,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		tabGeneral.add(btnTextColor, "cell 3 4 3 5"); //$NON-NLS-1$
 		btnTextColor.setPreferredSize(new Dimension(228, 50));*/
 
-		tabGeneral.add(new JLabel(Messages.getString("MenuItemForm.25")), "cell 2 3,right"); //$NON-NLS-1$ //$NON-NLS-2$
+		tabGeneral.add(new JLabel(Messages.getString("MenuItemForm.25")), "cell 2 3,,aligny top,alignx right"); //$NON-NLS-1$ //$NON-NLS-2$
 		orderList = new CheckBoxList();
 
 		List<OrderType> orderTypes = Application.getInstance().getOrderTypes();
@@ -493,12 +493,14 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 
 		JScrollPane orderCheckBoxList = new JScrollPane(orderList);
 		orderCheckBoxList.setPreferredSize(new Dimension(228, 100));
-		tabGeneral.add(orderCheckBoxList, "cell 3 3 3 8"); //$NON-NLS-1$
+		tabGeneral.add(orderCheckBoxList, "cell 3 3 3 4"); //$NON-NLS-1$
+		tfDescription.setWrapStyleWord(true);
+		tfDescription.setLineWrap(true);
 
-		tabGeneral.add(new JLabel(Messages.getString("MenuItemForm.29")), "cell 2 7,alignx right"); //$NON-NLS-1$ //$NON-NLS-2$
+		tabGeneral.add(new JLabel(Messages.getString("MenuItemForm.29")), "cell 2 7,aligny top,alignx right"); //$NON-NLS-1$ //$NON-NLS-2$
 		JScrollPane scrlDescription = new JScrollPane(tfDescription, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		scrlDescription.setPreferredSize(new Dimension(228, 70));
-		tabGeneral.add(scrlDescription, "cell 3 7 3 10"); //$NON-NLS-1$
+		scrlDescription.setPreferredSize(new Dimension(228, 90));
+		tabGeneral.add(scrlDescription, "cell 3 7 3 4"); //$NON-NLS-1$
 
 		add(tabbedPane);
 		//TODO: 

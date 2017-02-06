@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.floreantpos.model">
+  <class lazy="false" name="com.floreantpos.model.Multiplier"  table="MULTIPLIER">
+    <id column="NAME" name="name" length="20" type="java.lang.String">
+      <generator class="assigned"/>
+    </id>
+    <property column="TICKET_PREFIX" name="ticketPrefix" length="20" type="java.lang.String"/>
+    <property column="RATE" name="rate" type="java.lang.Double"/>
+    <property column="SORT_ORDER" name="sortOrder" type="java.lang.Integer"/>
+    <property column="DEFAULT_MULTIPLIER" name="defaultMultiplier" type="java.lang.Boolean"/>
+    <property column="BTN_COLOR" name="buttonColor" type="java.lang.Integer" />
+	<property column="TEXT_COLOR" name="textColor" type="java.lang.Integer" />
+    <!-- Associations -->
+  </class>
+</hibernate-mapping>

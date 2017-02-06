@@ -1,22 +1,6 @@
-/**
- * ************************************************************************
- * * The contents of this file are subject to the MRPL 1.2
- * * (the  "License"),  being   the  Mozilla   Public  License
- * * Version 1.1  with a permitted attribution clause; you may not  use this
- * * file except in compliance with the License. You  may  obtain  a copy of
- * * the License at http://www.floreantpos.org/license.html
- * * Software distributed under the License  is  distributed  on  an "AS IS"
- * * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * * License for the specific  language  governing  rights  and  limitations
- * * under the License.
- * * The Original Code is FLOREANT POS.
- * * The Initial Developer of the Original Code is OROCUBE LLC
- * * All portions are Copyright (C) 2015 OROCUBE LLC
- * * All Rights Reserved.
- * ************************************************************************
- */
 package com.floreantpos.model.base;
 
+import java.lang.Comparable;
 import java.io.Serializable;
 
 
@@ -44,6 +28,7 @@ public abstract class BaseRestaurant  implements Comparable, Serializable {
 	public static String PROP_TABLES = "tables"; //$NON-NLS-1$
 	public static String PROP_ID = "id"; //$NON-NLS-1$
 	public static String PROP_CAPACITY = "capacity"; //$NON-NLS-1$
+	public static String PROP_ALLOW_MODIFIER_MAX_EXCEED = "allowModifierMaxExceed"; //$NON-NLS-1$
 	public static String PROP_ADDRESS_LINE1 = "addressLine1"; //$NON-NLS-1$
 	public static String PROP_ADDRESS_LINE2 = "addressLine2"; //$NON-NLS-1$
 	public static String PROP_ADDRESS_LINE3 = "addressLine3"; //$NON-NLS-1$
@@ -88,6 +73,7 @@ public abstract class BaseRestaurant  implements Comparable, Serializable {
 		protected java.lang.Double defaultGratuityPercentage;
 		protected java.lang.String ticketFooterMessage;
 		protected java.lang.Boolean itemPriceIncludesTax;
+		protected java.lang.Boolean allowModifierMaxExceed;
 
 
 
@@ -117,8 +103,8 @@ public abstract class BaseRestaurant  implements Comparable, Serializable {
 	 * Return the value associated with the column: UNIQUE_ID
 	 */
 	public java.lang.Integer getUniqueId () {
-					return uniqueId == null ? Integer.valueOf(0) : uniqueId;
-			}
+									return uniqueId == null ? Integer.valueOf(0) : uniqueId;
+					}
 
 	/**
 	 * Set the value related to the column: UNIQUE_ID
@@ -236,8 +222,8 @@ public abstract class BaseRestaurant  implements Comparable, Serializable {
 	 * Return the value associated with the column: CAPACITY
 	 */
 	public java.lang.Integer getCapacity () {
-					return capacity == null ? Integer.valueOf(0) : capacity;
-			}
+									return capacity == null ? Integer.valueOf(0) : capacity;
+					}
 
 	/**
 	 * Set the value related to the column: CAPACITY
@@ -253,8 +239,8 @@ public abstract class BaseRestaurant  implements Comparable, Serializable {
 	 * Return the value associated with the column: TABLES
 	 */
 	public java.lang.Integer getTables () {
-					return tables == null ? Integer.valueOf(0) : tables;
-			}
+									return tables == null ? Integer.valueOf(0) : tables;
+					}
 
 	/**
 	 * Set the value related to the column: TABLES
@@ -368,6 +354,23 @@ public abstract class BaseRestaurant  implements Comparable, Serializable {
 
 
 
+	/**
+	 * Return the value associated with the column: ALLOW_MODIFIER_MAX_EXCEED
+	 */
+	public java.lang.Boolean isAllowModifierMaxExceed () {
+								return allowModifierMaxExceed == null ? Boolean.FALSE : allowModifierMaxExceed;
+					}
+
+	/**
+	 * Set the value related to the column: ALLOW_MODIFIER_MAX_EXCEED
+	 * @param allowModifierMaxExceed the ALLOW_MODIFIER_MAX_EXCEED value
+	 */
+	public void setAllowModifierMaxExceed (java.lang.Boolean allowModifierMaxExceed) {
+		this.allowModifierMaxExceed = allowModifierMaxExceed;
+	}
+
+
+
 
 
 	public boolean equals (Object obj) {
@@ -375,7 +378,7 @@ public abstract class BaseRestaurant  implements Comparable, Serializable {
 		if (!(obj instanceof com.floreantpos.model.Restaurant)) return false;
 		else {
 			com.floreantpos.model.Restaurant restaurant = (com.floreantpos.model.Restaurant) obj;
-			if (null == this.getId() || null == restaurant.getId()) return false;
+			if (null == this.getId() || null == restaurant.getId()) return this == obj;
 			else return (this.getId().equals(restaurant.getId()));
 		}
 	}
@@ -384,7 +387,7 @@ public abstract class BaseRestaurant  implements Comparable, Serializable {
 		if (Integer.MIN_VALUE == this.hashCode) {
 			if (null == this.getId()) return super.hashCode();
 			else {
-				String hashStr = this.getClass().getName() + ":" + this.getId().hashCode(); //$NON-NLS-1$
+				String hashStr = this.getClass().getName() + ":" + this.getId().hashCode();
 				this.hashCode = hashStr.hashCode();
 			}
 		}

@@ -23,9 +23,11 @@
 
 package com.floreantpos.ui.views.order.multipart;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
@@ -33,6 +35,8 @@ import java.util.List;
 import java.util.Set;
 
 import javax.swing.AbstractButton;
+import javax.swing.BorderFactory;
+import javax.swing.ButtonGroup;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -45,6 +49,9 @@ import com.floreantpos.POSConstants;
 import com.floreantpos.model.MenuItem;
 import com.floreantpos.model.MenuItemModifierGroup;
 import com.floreantpos.model.MenuModifier;
+import com.floreantpos.model.Multiplier;
+import com.floreantpos.model.dao.MultiplierDAO;
+import com.floreantpos.swing.POSToggleButton;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.swing.PosUIManager;
 import com.floreantpos.swing.ScrollableFlowPanel;
@@ -64,16 +71,15 @@ public class PizzaModifierView extends JPanel {
 	private PosButton btnClear = new PosButton(POSConstants.CLEAR);
 
 	private HashMap<String, ModifierButton> buttonMap = new HashMap<String, ModifierButton>();
+	private Multiplier selectedMultiplier;
+	private MultiplierButton defaultMultiplierButton;
 
-	/** Creates new form GroupView */
 	public PizzaModifierView(ModifierSelectionModel modifierSelectionModel) {
-		//super(com.floreantpos.POSConstants.MODIFIERS);
-
 		this.modifierSelectionModel = modifierSelectionModel;
-
-		setLayout(new MigLayout("fillx, aligny top"));
+		setLayout(new BorderLayout());
 		setBorder(new TitledBorder(null, "MODIFIERS", TitledBorder.CENTER, TitledBorder.CENTER));
 		updateView();
+		addMultiplierButtons();
 	}
 
 	private void addActionButtons() {
@@ -83,6 +89,25 @@ public class PizzaModifierView extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
+	}
+
+	private void addMultiplierButtons() {
+		JPanel multiplierPanel = new JPanel(new MigLayout("fillx,center"));
+		List<Multiplier> multiplierList = MultiplierDAO.getInstance().findAll();
+		ButtonGroup group = new ButtonGroup();
+		if (multiplierList != null) {
+			for (Multiplier multiplier : multiplierList) {
+				MultiplierButton btnMultiplier = new MultiplierButton(multiplier);
+				if (multiplier.isDefaultMultiplier()) {
+					selectedMultiplier = multiplier;
+					defaultMultiplierButton = btnMultiplier;
+					btnMultiplier.setSelected(true);
+				}
+				multiplierPanel.add(btnMultiplier, "grow");
+				group.add(btnMultiplier);
+			}
+		}
+		add(multiplierPanel, BorderLayout.SOUTH);
 	}
 
 	//	public void setModifiers(Collection<MenuModifier> modifiers) {
@@ -126,6 +151,9 @@ public class PizzaModifierView extends JPanel {
 	}
 
 	public void updateView() {
+		JPanel contentPanel = new JPanel();
+		contentPanel.setLayout(new MigLayout("fillx, aligny top"));
+
 		MenuItem menuItem = modifierSelectionModel.getMenuItem();
 		List<MenuItemModifierGroup> modiferGroups = menuItem.getMenuItemModiferGroups();
 
@@ -144,7 +172,7 @@ public class PizzaModifierView extends JPanel {
 			JLabel groupName = new JLabel(menuItemModifierGroup.getModifierGroup().getName());
 			groupName.setFont(myFont);
 			TitledSeparator separator = new TitledSeparator(groupName, SwingConstants.CENTER);
-			add(separator, "newline, grow");
+			contentPanel.add(separator, "newline, growx");
 			// JPanel mainPanel=new JPanel();
 			ScrollableFlowPanel groupPanel = new ScrollableFlowPanel();
 			groupPanel.setPreferredSize(new Dimension(PosUIManager.getSize(630, 0)));
@@ -158,7 +186,8 @@ public class PizzaModifierView extends JPanel {
 				groupPanel.getContentPane().add(new ModifierButton(menuModifier));
 			}
 			// mainPanel.add(groupPanel,BorderLayout.NORTH);
-			add(js, "newline");
+			contentPanel.add(js, "newline,top");
+			add(contentPanel);
 		}
 
 		//		JPanel activePanel = getActivePanel();
@@ -210,11 +239,53 @@ public class PizzaModifierView extends JPanel {
 		}
 
 		public void actionPerformed(ActionEvent e) {
-			modifierSelectionListener.modifierSelected(menuModifier);
+			modifierSelectionListener.modifierSelected(menuModifier, selectedMultiplier);
+
+			defaultMultiplierButton.setSelected(true);
+			selectedMultiplier = defaultMultiplierButton.getMultiplier();
 		}
 	}
 
 	public void setActionButtonsVisible(boolean b) {
 		btnClear.setVisible(b);
+	}
+
+	private class MultiplierButton extends POSToggleButton implements ActionListener {
+		private Multiplier multiplier;
+
+		public MultiplierButton(Multiplier multiplier) {
+			this.multiplier = multiplier;
+			setText(multiplier.getName());
+			Integer buttonColor = multiplier.getButtonColor();
+			if (buttonColor != null) {
+				setBackground(new Color(buttonColor));
+			}
+			Integer textColor = multiplier.getTextColor();
+			if (textColor != null) {
+				setForeground(new Color(textColor));
+			}
+			setBorder(BorderFactory.createLineBorder(Color.GRAY));
+			addActionListener(this);
+		}
+
+		public Multiplier getMultiplier() {
+			return multiplier;
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			selectedMultiplier = multiplier;
+		}
+
+		@Override
+		protected void paintComponent(Graphics g) {
+			super.paintComponent(g);
+
+			if (isSelected())
+				setBorder(BorderFactory.createLineBorder(new Color(255, 128, 0), 1));
+			else
+				setBorder(BorderFactory.createLineBorder(Color.GRAY));
+
+		}
 	}
 }

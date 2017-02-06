@@ -7,7 +7,7 @@
 		</id>
 
 		<property column="NAME" length="120" name="name" not-null="true" type="java.lang.String" />
-		<property column="DESCRIPTION" name="description" type="java.lang.String" length="120"/>
+		<property column="DESCRIPTION" name="description" type="java.lang.String" length="255"/>
 		<property column="UNIT_NAME" length="20" name="unitName" type="java.lang.String" />
 		<property column="TRANSLATED_NAME" length="120" name="translatedName" not-null="false" type="java.lang.String" />
 		<property column="BARCODE" length="120" name="barcode" unique="false" type="java.lang.String" />

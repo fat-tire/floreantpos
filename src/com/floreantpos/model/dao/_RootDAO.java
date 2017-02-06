@@ -63,6 +63,7 @@ import com.floreantpos.model.MenuItemShift;
 import com.floreantpos.model.MenuItemSize;
 import com.floreantpos.model.MenuModifier;
 import com.floreantpos.model.MenuModifierGroup;
+import com.floreantpos.model.Multiplier;
 import com.floreantpos.model.PackagingUnit;
 import com.floreantpos.model.PayoutReason;
 import com.floreantpos.model.PayoutRecepient;
@@ -185,7 +186,7 @@ public abstract class _RootDAO extends com.floreantpos.model.dao._BaseRootDAO {
 		configuration.addClass(PizzaCrust.class);
 		configuration.addClass(PizzaPrice.class);
 		configuration.addClass(PizzaModifierPrice.class);
-
+		configuration.addClass(Multiplier.class);
 
 		configureInventoryClasses(configuration);
 
@@ -207,7 +208,7 @@ public abstract class _RootDAO extends com.floreantpos.model.dao._BaseRootDAO {
 
 		return configuration;
 	}
-	
+
 	private static void configureC3p0ConnectionPool(Configuration configuration) {
 		//min pool size
 		configuration.setProperty("hibernate.c3p0.min_size", "0"); //$NON-NLS-1$ //$NON-NLS-2$

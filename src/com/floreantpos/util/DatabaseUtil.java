@@ -41,6 +41,7 @@ import com.floreantpos.model.CashDrawer;
 import com.floreantpos.model.Currency;
 import com.floreantpos.model.Discount;
 import com.floreantpos.model.MenuItemSize;
+import com.floreantpos.model.Multiplier;
 import com.floreantpos.model.OrderType;
 import com.floreantpos.model.PizzaCrust;
 import com.floreantpos.model.PosTransaction;
@@ -56,6 +57,7 @@ import com.floreantpos.model.dao.CurrencyDAO;
 import com.floreantpos.model.dao.DiscountDAO;
 import com.floreantpos.model.dao.GenericDAO;
 import com.floreantpos.model.dao.MenuItemSizeDAO;
+import com.floreantpos.model.dao.MultiplierDAO;
 import com.floreantpos.model.dao.OrderTypeDAO;
 import com.floreantpos.model.dao.PizzaCrustDAO;
 import com.floreantpos.model.dao.PosTransactionDAO;
@@ -385,31 +387,80 @@ public class DatabaseUtil {
 			currency.setSymbol("P");
 			currency.setExchangeRate(5639.78);
 			CurrencyDAO.getInstance().save(currency);
-			
+
 			MenuItemSize menuItemSize = new MenuItemSize();
 			menuItemSize.setName("SMALL");
 			menuItemSize.setSortOrder(0);
 			MenuItemSizeDAO.getInstance().save(menuItemSize);
-			
+
 			menuItemSize = new MenuItemSize();
 			menuItemSize.setName("MEDIUM");
 			menuItemSize.setSortOrder(1);
 			MenuItemSizeDAO.getInstance().save(menuItemSize);
-			
+
 			menuItemSize = new MenuItemSize();
 			menuItemSize.setName("LARGE");
 			menuItemSize.setSortOrder(2);
 			MenuItemSizeDAO.getInstance().save(menuItemSize);
-			
+
 			PizzaCrust crust = new PizzaCrust();
 			crust.setName("PAN");
 			crust.setSortOrder(0);
 			PizzaCrustDAO.getInstance().save(crust);
-			
+
 			crust = new PizzaCrust();
 			crust.setName("HAND TOSSED");
 			crust.setSortOrder(1);
 			PizzaCrustDAO.getInstance().save(crust);
+
+			Multiplier multiplier = new Multiplier("Regular");
+			multiplier.setRate(0.0);
+			multiplier.setSortOrder(0);
+			multiplier.setTicketPrefix("");
+			multiplier.setDefaultMultiplier(true);
+			MultiplierDAO.getInstance().save(multiplier);
+
+			multiplier = new Multiplier("No");
+			multiplier.setRate(0.0);
+			multiplier.setSortOrder(1);
+			multiplier.setTicketPrefix("No");
+			multiplier.setDefaultMultiplier(false);
+			MultiplierDAO.getInstance().save(multiplier);
+
+			multiplier = new Multiplier("Half");
+			multiplier.setRate(50.0);
+			multiplier.setSortOrder(2);
+			multiplier.setTicketPrefix("Half");
+			multiplier.setDefaultMultiplier(false);
+			MultiplierDAO.getInstance().save(multiplier);
+
+			multiplier = new Multiplier("Quarter");
+			multiplier.setRate(25.0);
+			multiplier.setSortOrder(3);
+			multiplier.setTicketPrefix("Quarter");
+			multiplier.setDefaultMultiplier(false);
+			MultiplierDAO.getInstance().save(multiplier);
+
+			multiplier = new Multiplier("Extra");
+			multiplier.setRate(200.0);
+			multiplier.setSortOrder(4);
+			multiplier.setTicketPrefix("Extra");
+			multiplier.setDefaultMultiplier(false);
+			MultiplierDAO.getInstance().save(multiplier);
+
+			multiplier = new Multiplier("Triple");
+			multiplier.setRate(300.0);
+			multiplier.setSortOrder(5);
+			multiplier.setTicketPrefix("Triple");
+			multiplier.setDefaultMultiplier(false);
+			MultiplierDAO.getInstance().save(multiplier);
+
+			multiplier = new Multiplier("Sub");
+			multiplier.setRate(100.0);
+			multiplier.setSortOrder(6);
+			multiplier.setTicketPrefix("Sub");
+			multiplier.setDefaultMultiplier(false);
+			MultiplierDAO.getInstance().save(multiplier);
 
 			if (!exportSampleData) {
 				return true;
