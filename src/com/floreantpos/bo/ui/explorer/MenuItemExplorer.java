@@ -40,6 +40,7 @@ import javax.swing.table.TableColumnModel;
 import net.miginfocom.swing.MigLayout;
 
 import org.apache.commons.beanutils.PropertyUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.jdesktop.swingx.JXTable;
 
 import com.floreantpos.Messages;
@@ -324,6 +325,8 @@ public class MenuItemExplorer extends TransparentPanel {
 					MenuItem newMenuItem = new MenuItem();
 					PropertyUtils.copyProperties(newMenuItem, existingItem);
 					newMenuItem.setId(null);
+					String newName = doDuplicateName(existingItem);
+					newMenuItem.setName(newName);
 					newMenuItem.setFractionalUnit(existingItem.isFractionalUnit());
 					newMenuItem.setDisableWhenStockAmountIsZero(existingItem.isDisableWhenStockAmountIsZero());
 					newMenuItem.setShowImageOnly(existingItem.isShowImageOnly());
@@ -513,5 +516,26 @@ public class MenuItemExplorer extends TransparentPanel {
 		columnWidth.add(200);
 
 		return columnWidth;
+	}
+
+	private String doDuplicateName(MenuItem existingItem) {
+		String existingName = existingItem.getName();
+		String newName = new String();
+		int lastIndexOf = existingName.lastIndexOf(" ");
+		if (lastIndexOf == -1) {
+			newName = existingName + " 1";
+		}
+		else {
+			String processName = existingName.substring(lastIndexOf + 1, existingName.length());
+			if (StringUtils.isNumeric(processName)) {
+				Integer count = Integer.valueOf(processName);
+				count += 1;
+				newName = existingName.replace(processName, String.valueOf(count));
+			}
+			else {
+				newName = existingName + " 1";
+			}
+		}
+		return newName;
 	}
 }

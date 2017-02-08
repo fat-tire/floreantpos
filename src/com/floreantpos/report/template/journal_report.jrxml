@@ -24,7 +24,7 @@
 	<field name="action" class="java.lang.String"/>
 	<field name="user" class="java.lang.String"/>
 	<field name="comment" class="java.lang.String"/>
-	<field name="time" class="java.lang.String"/>
+	<field name="time" class="java.util.Date"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -252,7 +252,7 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Left"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{time}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[new SimpleDateFormat("dd MMM, hh:mm a").format($F{time})]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement key="textField-8" x="162" y="0" width="102" height="15" isPrintWhenDetailOverflows="true"/>

@@ -186,7 +186,7 @@ public class PizzaModifierView extends JPanel {
 				groupPanel.getContentPane().add(new ModifierButton(menuModifier));
 			}
 			// mainPanel.add(groupPanel,BorderLayout.NORTH);
-			contentPanel.add(js, "newline,top");
+			contentPanel.add(js, "newline,top,center");
 			add(contentPanel);
 		}
 

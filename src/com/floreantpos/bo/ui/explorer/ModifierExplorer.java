@@ -29,17 +29,22 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 
 import net.miginfocom.swing.MigLayout;
 
+import org.apache.commons.beanutils.PropertyUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.jdesktop.swingx.JXTable;
+
 import com.floreantpos.Messages;
 import com.floreantpos.POSConstants;
 import com.floreantpos.bo.ui.BOMessageDialog;
+import com.floreantpos.bo.ui.CustomCellRenderer;
 import com.floreantpos.model.MenuModifier;
 import com.floreantpos.model.MenuModifierGroup;
 import com.floreantpos.model.dao.MenuModifierGroupDAO;
@@ -49,13 +54,14 @@ import com.floreantpos.swing.TransparentPanel;
 import com.floreantpos.ui.dialog.BeanEditorDialog;
 import com.floreantpos.ui.dialog.ConfirmDeleteDialog;
 import com.floreantpos.ui.model.MenuModifierForm;
+import com.floreantpos.ui.model.PizzaModifierForm;
 import com.floreantpos.util.CurrencyUtil;
 import com.floreantpos.util.POSUtil;
 
 public class ModifierExplorer extends TransparentPanel {
 
 	private String currencySymbol;
-	private JTable table;
+	private JXTable table;
 	private ModifierExplorerModel tableModel;
 
 	public ModifierExplorer() {
@@ -63,8 +69,9 @@ public class ModifierExplorer extends TransparentPanel {
 
 		currencySymbol = CurrencyUtil.getCurrencySymbol();
 		tableModel = new ModifierExplorerModel();
-		table = new JTable(tableModel);
-
+		table = new JXTable(tableModel);
+		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		table.setDefaultRenderer(Object.class, new CustomCellRenderer());
 		add(new JScrollPane(table));
 
 		createActionButtons();
@@ -75,7 +82,11 @@ public class ModifierExplorer extends TransparentPanel {
 
 	private void createActionButtons() {
 		ExplorerButtonPanel explorerButtonPanel = new ExplorerButtonPanel();
-		explorerButtonPanel.getAddButton().addActionListener(new ActionListener() {
+		JButton editButton = explorerButtonPanel.getEditButton();
+		JButton addButton = explorerButtonPanel.getAddButton();
+		JButton deleteButton = explorerButtonPanel.getDeleteButton();
+		JButton duplicateButton = new JButton(POSConstants.DUPLICATE);
+		addButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					MenuModifierForm editor = new MenuModifierForm();
@@ -91,7 +102,7 @@ public class ModifierExplorer extends TransparentPanel {
 			}
 
 		});
-		explorerButtonPanel.getEditButton().addActionListener(new ActionListener() {
+		editButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					int index = table.getSelectedRow();
@@ -114,7 +125,7 @@ public class ModifierExplorer extends TransparentPanel {
 			}
 		});
 
-		explorerButtonPanel.getDeleteButton().addActionListener(new ActionListener() {
+		deleteButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					int index = table.getSelectedRow();
@@ -138,7 +149,51 @@ public class ModifierExplorer extends TransparentPanel {
 
 		});
 
-		add(explorerButtonPanel, BorderLayout.SOUTH);
+		duplicateButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					int index = table.getSelectedRow();
+					if (index < 0)
+						return;
+
+					index = table.convertRowIndexToModel(index);
+
+					MenuModifier existingModifier = (MenuModifier) tableModel.getRowData(index);
+
+					MenuModifier newMenuModifier = new MenuModifier();
+					PropertyUtils.copyProperties(newMenuModifier, existingModifier);
+					newMenuModifier.setId(null);
+					String newName = doDuplicateName(existingModifier);
+					newMenuModifier.setName(newName);
+					newMenuModifier.setModifierGroup(existingModifier.getModifierGroup());
+					newMenuModifier.setSortOrder(existingModifier.getSortOrder());
+					newMenuModifier.setTax(existingModifier.getTax());
+					newMenuModifier.setButtonColor(existingModifier.getButtonColor());
+					newMenuModifier.setTextColor(existingModifier.getTextColor());
+					newMenuModifier.setShouldPrintToKitchen(existingModifier.isShouldPrintToKitchen());
+
+					MenuModifierForm editor = new MenuModifierForm(newMenuModifier);
+					BeanEditorDialog dialog = new BeanEditorDialog(POSUtil.getBackOfficeWindow(), editor);
+					dialog.open();
+					if (dialog.isCanceled())
+						return;
+
+					MenuModifier menuModifier = (MenuModifier) editor.getBean();
+					tableModel.addModifier(menuModifier);
+					table.getSelectionModel().addSelectionInterval(tableModel.getRowCount() - 1, tableModel.getRowCount() - 1);
+					table.scrollRowToVisible(tableModel.getRowCount() - 1);
+				} catch (Throwable x) {
+					BOMessageDialog.showError(POSConstants.ERROR_MESSAGE, x);
+				}
+			}
+		});
+		TransparentPanel panel = new TransparentPanel();
+		panel.add(addButton);
+		panel.add(editButton);
+		panel.add(deleteButton);
+		panel.add(duplicateButton);
+
+		add(panel, BorderLayout.SOUTH);
 	}
 
 	private JPanel buildSearchForm() {
@@ -266,6 +321,27 @@ public class ModifierExplorer extends TransparentPanel {
 			fireTableRowsDeleted(index, index);
 		}
 
+	}
+
+	private String doDuplicateName(MenuModifier existingModifier) {
+		String existingName = existingModifier.getName();
+		String newName = new String();
+		int lastIndexOf = existingName.lastIndexOf(" ");
+		if (lastIndexOf == -1) {
+			newName = existingName + " 1";
+		}
+		else {
+			String processName = existingName.substring(lastIndexOf + 1, existingName.length());
+			if (StringUtils.isNumeric(processName)) {
+				Integer count = Integer.valueOf(processName);
+				count += 1;
+				newName = existingName.replace(processName, String.valueOf(count));
+			}
+			else {
+				newName = existingName + " 1";
+			}
+		}
+		return newName;
 	}
 
 }

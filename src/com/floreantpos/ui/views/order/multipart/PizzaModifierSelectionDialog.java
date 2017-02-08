@@ -47,6 +47,7 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
 import javax.swing.border.TitledBorder;
 
 import net.miginfocom.swing.MigLayout;
@@ -87,6 +88,13 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 	private List<Section> sectionList;
 	private boolean crustSelected = false;
 	private Pizza pizza;
+	private Section sectionQuarter1;
+	private Section sectionQuarter2;
+	private Section sectionQuarter3;
+	private Section sectionQuarter4;
+	private Section sectionHalf1;
+	private Section sectionHalf2;
+	private Section sectionWhole;
 
 	public PizzaModifierSelectionDialog(ModifierSelectionModel modifierSelectionModel) {
 		this.modifierSelectionModel = modifierSelectionModel;
@@ -103,6 +111,11 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 
 		createSectionPanel();
 
+		sectionQuarter1.setVisible(false);
+		sectionQuarter2.setVisible(false);
+		sectionQuarter3.setVisible(false);
+		sectionQuarter4.setVisible(false);
+
 		sizeAndCrustPanel = new SizeAndCrustSelectionPane();
 		add(sizeAndCrustPanel, BorderLayout.NORTH);
 
@@ -118,20 +131,20 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 	private void createSectionPanel() {
 		JPanel westPanel = new JPanel(new BorderLayout(5, 5));
 
-		JPanel sectionView = new JPanel(new MigLayout("fill", "[][][]", ""));
+		JPanel sectionView = new JPanel(new MigLayout("fill, hidemode 3", "[][][]", ""));
 		sectionView.setBorder(BorderFactory.createTitledBorder(null, "SECTIONS", TitledBorder.CENTER, TitledBorder.CENTER));
 
 		sectionList = new ArrayList<>();
 
-		Section sectionWhole = new Section("WHOLE", 0, true);
+		 sectionWhole = new Section("WHOLE", 0, true);
 		sectionWhole.modifierGroup.setShowSectionName(false);
 
-		Section sectionQuarter1 = new Section("Quarter 1", 1, false);
-		Section sectionQuarter2 = new Section("Quarter 2", 2, false);
-		Section sectionQuarter3 = new Section("Quarter 3", 3, false);
-		Section sectionQuarter4 = new Section("Quarter 4", 4, false);
-		Section sectionHalf1 = new Section("Half 1", 5, false);
-		Section sectionHalf2 = new Section("Half 2", 6, false);
+		sectionQuarter1 = new Section("Quarter 1", 1, false);
+		sectionQuarter2 = new Section("Quarter 2", 2, false);
+		sectionQuarter3 = new Section("Quarter 3", 3, false);
+		sectionQuarter4 = new Section("Quarter 4", 4, false);
+		sectionHalf1 = new Section("Half 1", 5, false);
+		sectionHalf2 = new Section("Half 2", 6, false);
 
 		sectionList.add(sectionWhole);
 
@@ -149,10 +162,10 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 		sectionView.add(sectionQuarter3, "grow,cell 0 1");
 		sectionView.add(sectionQuarter2, "grow,cell 2 0");
 		sectionView.add(sectionQuarter4, "grow,cell 2 1");
-		sectionView.add(sectionHalf1, "grow,cell 0 2");
-		sectionView.add(sectionHalf2, "grow,cell 2 2");
-		sectionView.add(sectionWhole, "grow,cell 1 2");
-		sectionView.add(pizza, "gapleft 20,gapright 20,cell 1 0 1 2");
+		sectionView.add(sectionHalf1, "grow,cell 0 0");
+		sectionView.add(sectionHalf2, "grow,cell 1 0");
+		sectionView.add(sectionWhole, "grow,cell 0 2,span");
+		//sectionView.add(pizza, "gapleft 20,gapright 20,cell 1 0 1 2");
 
 		westPanel.add(sectionView);
 		add(westPanel, BorderLayout.WEST);
@@ -160,7 +173,44 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 
 	public void createButtonPanel() {
 		TransparentPanel buttonPanel = new com.floreantpos.swing.TransparentPanel();
-		buttonPanel.setLayout(new MigLayout("fill, ins 4", "fill", ""));
+		buttonPanel.setLayout(new MigLayout("fill,ins 4", "", ""));
+
+		ButtonGroup btnGroup = new ButtonGroup();
+		POSToggleButton btnHalf = new POSToggleButton("HALF");
+		btnHalf.setSelected(true);
+
+		btnHalf.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				sectionQuarter1.setVisible(false);
+				sectionQuarter2.setVisible(false);
+				sectionQuarter3.setVisible(false);
+				sectionQuarter4.setVisible(false);
+
+				sectionHalf1.setVisible(true);
+				sectionHalf2.setVisible(true);
+
+			}
+		});
+		POSToggleButton btnQuarter = new POSToggleButton("QUARTER");
+
+		btnQuarter.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				sectionQuarter1.setVisible(true);
+				sectionQuarter2.setVisible(true);
+				sectionQuarter3.setVisible(true);
+				sectionQuarter4.setVisible(true);
+
+				sectionHalf1.setVisible(false);
+				sectionHalf2.setVisible(false);
+			}
+		});
+
+		btnGroup.add(btnHalf);
+		btnGroup.add(btnQuarter);
 
 		PosButton btnClear = new PosButton("CLEAR");
 		btnClear.addActionListener(new java.awt.event.ActionListener() {
@@ -190,10 +240,14 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 				dispose();
 			}
 		});
-
-		buttonPanel.add(btnClear);
-		buttonPanel.add(btnCancel);
-		buttonPanel.add(btnSave);
+		int width=PosUIManager.getSize(170);
+		JSeparator separator = new JSeparator(JSeparator.VERTICAL);
+		buttonPanel.add(btnHalf,"w "+width+"!, split 3");
+		buttonPanel.add(btnQuarter,"w "+width+"!,left");
+		buttonPanel.add(separator,"growy");
+		buttonPanel.add(btnClear,"grow, left");
+		buttonPanel.add(btnCancel,"grow");
+		buttonPanel.add(btnSave,"grow");
 
 		add(buttonPanel, java.awt.BorderLayout.SOUTH);
 	}
