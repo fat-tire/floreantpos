@@ -43,7 +43,7 @@ public class PizzaModifierPriceDialog extends POSDialog {
 		super(owner, true);
 		this.modifierPrice = modifierPrice;
 		this.existingPriceList = existingPriceList;
-		
+
 		init();
 		updateView();
 	}
@@ -104,6 +104,8 @@ public class PizzaModifierPriceDialog extends POSDialog {
 		cbSize.setSelectedItem(modifierPrice.getSize());
 		tfPrice.setText(String.valueOf(modifierPrice.getPrice()));
 		tfExtraPrice.setText(String.valueOf(modifierPrice.getExtraPrice()));
+		tfPrice.requestFocus();
+		tfPrice.grabFocus();
 	}
 
 	public boolean updateModel() {
@@ -111,21 +113,20 @@ public class PizzaModifierPriceDialog extends POSDialog {
 		double extraPrice = tfExtraPrice.getDoubleOrZero();
 
 		MenuItemSize selectedSize = (MenuItemSize) cbSize.getSelectedItem();
-		
+
 		if (selectedSize == null) {
 			POSMessageDialog.showError(this, "Please Select Size");
 			return false;
 		}
-		
-		if(existingPriceList != null) {
+
+		if (existingPriceList != null) {
 			for (PizzaModifierPrice mp : existingPriceList) {
-				if(selectedSize.equals(mp.getSize()) && (mp != this.modifierPrice)) {
+				if (selectedSize.equals(mp.getSize()) && (mp != this.modifierPrice)) {
 					POSMessageDialog.showError(this, "Duplicate size!");
 					return false;
 				}
 			}
 		}
-
 
 		if (modifierPrice == null) {
 			modifierPrice = new PizzaModifierPrice();

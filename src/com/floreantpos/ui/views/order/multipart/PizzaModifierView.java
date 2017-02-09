@@ -26,7 +26,6 @@ package com.floreantpos.ui.views.order.multipart;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -37,33 +36,31 @@ import java.util.Set;
 import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.SwingConstants;
 import javax.swing.border.TitledBorder;
 
 import net.miginfocom.swing.MigLayout;
 
 import com.floreantpos.POSConstants;
-import com.floreantpos.model.MenuItem;
-import com.floreantpos.model.MenuItemModifierGroup;
 import com.floreantpos.model.MenuModifier;
+import com.floreantpos.model.MenuModifierGroup;
 import com.floreantpos.model.Multiplier;
 import com.floreantpos.model.dao.MultiplierDAO;
 import com.floreantpos.swing.POSToggleButton;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.swing.PosUIManager;
 import com.floreantpos.swing.ScrollableFlowPanel;
+import com.floreantpos.ui.views.order.modifier.ModifierGroupSelectionListener;
+import com.floreantpos.ui.views.order.modifier.ModifierGroupView;
 import com.floreantpos.ui.views.order.modifier.ModifierSelectionListener;
 import com.floreantpos.ui.views.order.modifier.ModifierSelectionModel;
-import com.jidesoft.swing.TitledSeparator;
 
 /**
  * 
  * @author MShahriar
  */
-public class PizzaModifierView extends JPanel {
+public class PizzaModifierView extends JPanel implements ModifierGroupSelectionListener {
 	private ModifierSelectionListener modifierSelectionListener;
 
 	private ModifierSelectionModel modifierSelectionModel;
@@ -74,11 +71,26 @@ public class PizzaModifierView extends JPanel {
 	private Multiplier selectedMultiplier;
 	private MultiplierButton defaultMultiplierButton;
 
+	private ModifierGroupView modifierGroupView;
+
+	private JPanel mainPanel;
+
+	private JPanel contentPanel;
+
 	public PizzaModifierView(ModifierSelectionModel modifierSelectionModel) {
 		this.modifierSelectionModel = modifierSelectionModel;
 		setLayout(new BorderLayout());
-		setBorder(new TitledBorder(null, "MODIFIERS", TitledBorder.CENTER, TitledBorder.CENTER));
-		updateView();
+		mainPanel = new JPanel(new BorderLayout());
+		mainPanel.setBorder(new TitledBorder(null, "MODIFIERS", TitledBorder.CENTER, TitledBorder.CENTER));
+		contentPanel = new JPanel();
+		contentPanel.setLayout(new MigLayout("fillx, aligny top"));
+		modifierGroupView = new com.floreantpos.ui.views.order.modifier.ModifierGroupView(modifierSelectionModel);
+		add(modifierGroupView, BorderLayout.EAST);
+		add(mainPanel, BorderLayout.CENTER);
+		modifierGroupView.addModifierGroupSelectionListener(this);
+
+		modifierGroupView.selectFirst();
+
 		addMultiplierButtons();
 	}
 
@@ -107,7 +119,7 @@ public class PizzaModifierView extends JPanel {
 				group.add(btnMultiplier);
 			}
 		}
-		add(multiplierPanel, BorderLayout.SOUTH);
+		mainPanel.add(multiplierPanel, BorderLayout.SOUTH);
 	}
 
 	//	public void setModifiers(Collection<MenuModifier> modifiers) {
@@ -150,45 +162,43 @@ public class PizzaModifierView extends JPanel {
 		this.modifierSelectionListener = null;
 	}
 
-	public void updateView() {
-		JPanel contentPanel = new JPanel();
-		contentPanel.setLayout(new MigLayout("fillx, aligny top"));
+	public void updateView(MenuModifierGroup menuModifierGroup) {
+		contentPanel.removeAll();
+		//MenuItem menuItem = modifierSelectionModel.getMenuItem();
+		//List<MenuItemModifierGroup> modiferGroups = menuItem.getMenuItemModiferGroups();
 
-		MenuItem menuItem = modifierSelectionModel.getMenuItem();
-		List<MenuItemModifierGroup> modiferGroups = menuItem.getMenuItemModiferGroups();
-
-		for (MenuItemModifierGroup menuItemModifierGroup : modiferGroups) {
-			/*MenuModifierGroup modifierGroup = menuItemModifierGroup.getModifierGroup();
-			TitledSeparator separator = new TitledSeparator(modifierGroup.getDisplayName(), SwingConstants.CENTER);
-			add(separator, "newline, grow");
-			JPanel groupPanel = new JPanel();
-			
-			Set<MenuModifier> modifiers = modifierGroup.getModifiers();
-			for (MenuModifier menuModifier : modifiers) {
-				groupPanel.add(new ModifierButton(menuModifier));
-			}
-			add(groupPanel, "newline, grow");*/
-			Font myFont = new Font("Serif", Font.BOLD, PosUIManager.getFontSize(16));
-			JLabel groupName = new JLabel(menuItemModifierGroup.getModifierGroup().getName());
-			groupName.setFont(myFont);
-			TitledSeparator separator = new TitledSeparator(groupName, SwingConstants.CENTER);
-			contentPanel.add(separator, "newline, growx");
-			// JPanel mainPanel=new JPanel();
-			ScrollableFlowPanel groupPanel = new ScrollableFlowPanel();
-			groupPanel.setPreferredSize(new Dimension(PosUIManager.getSize(630, 0)));
-			JScrollPane js = new JScrollPane(groupPanel);
-			js.setBorder(null);
-
-			// groupPanel.getContentPane().setSize(new Dimension(100, 0));
-
-			Set<MenuModifier> modifiers = menuItemModifierGroup.getModifierGroup().getModifiers();
-			for (MenuModifier menuModifier : modifiers) {
-				groupPanel.getContentPane().add(new ModifierButton(menuModifier));
-			}
-			// mainPanel.add(groupPanel,BorderLayout.NORTH);
-			contentPanel.add(js, "newline,top,center");
-			add(contentPanel);
+		//for (MenuItemModifierGroup menuItemModifierGroup : modiferGroups) {
+		/*MenuModifierGroup modifierGroup = menuItemModifierGroup.getModifierGroup();
+		TitledSeparator separator = new TitledSeparator(modifierGroup.getDisplayName(), SwingConstants.CENTER);
+		add(separator, "newline, grow");
+		JPanel groupPanel = new JPanel();
+		
+		Set<MenuModifier> modifiers = modifierGroup.getModifiers();
+		for (MenuModifier menuModifier : modifiers) {
+			groupPanel.add(new ModifierButton(menuModifier));
 		}
+		add(groupPanel, "newline, grow");*/
+		//Font myFont = new Font("Serif", Font.BOLD, PosUIManager.getFontSize(16));
+		//			JLabel groupName = new JLabel(menuItemModifierGroup.getModifierGroup().getName());
+		//			groupName.setFont(myFont);
+		//			TitledSeparator separator = new TitledSeparator(groupName, SwingConstants.CENTER);
+		//			contentPanel.add(separator, "newline, growx");
+		// JPanel mainPanel=new JPanel();
+		ScrollableFlowPanel groupPanel = new ScrollableFlowPanel();
+		groupPanel.setPreferredSize(new Dimension(PosUIManager.getSize(500, 0)));
+		JScrollPane js = new JScrollPane(groupPanel, JScrollPane.VERTICAL_SCROLLBAR_NEVER, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		js.setBorder(null);
+
+		// groupPanel.getContentPane().setSize(new Dimension(100, 0));
+
+		Set<MenuModifier> modifiers = menuModifierGroup.getModifiers();
+		for (MenuModifier menuModifier : modifiers) {
+			groupPanel.getContentPane().add(new ModifierButton(menuModifier));
+		}
+		// mainPanel.add(groupPanel,BorderLayout.NORTH);
+		contentPanel.add(js, "newline,top,center");
+		mainPanel.add(contentPanel, BorderLayout.CENTER);
+		//}
 
 		//		JPanel activePanel = getActivePanel();
 		//		if (activePanel == null) {
@@ -287,5 +297,12 @@ public class PizzaModifierView extends JPanel {
 				setBorder(BorderFactory.createLineBorder(Color.GRAY));
 
 		}
+	}
+
+	@Override
+	public void modifierGroupSelected(MenuModifierGroup menuModifierGroup) {
+		contentPanel.repaint();
+		contentPanel.revalidate();
+		updateView(menuModifierGroup);
 	}
 }

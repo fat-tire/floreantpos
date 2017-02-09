@@ -17,21 +17,48 @@
  */
 package com.floreantpos.model.dao;
 
+import java.util.List;
+
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+
+import com.floreantpos.PosLog;
 import com.floreantpos.model.MenuModifier;
 import com.floreantpos.model.TicketItemModifier;
-
-
 
 public class MenuModifierDAO extends BaseMenuModifierDAO {
 
 	/**
 	 * Default constructor.  Can be used in place of getInstance()
 	 */
-	public MenuModifierDAO () {}
+	public MenuModifierDAO() {
+	}
 
 	public MenuModifier getMenuModifierFromTicketItemModifier(TicketItemModifier ticketItemModifier) {
 		MenuModifier menuModifier = get(ticketItemModifier.getItemId());
 		menuModifier.setMenuItemModifierGroup(ticketItemModifier.getParent().getMenuItemModifierGroup());
 		return menuModifier;
+	}
+
+	public void saveAll(List<MenuModifier> menuModifiers) {
+		if (menuModifiers == null) {
+			return;
+		}
+		Session session = null;
+		Transaction tx = null;
+
+		try {
+			session = createNewSession();
+			tx = session.beginTransaction();
+			for (MenuModifier menuModifier : menuModifiers) {
+				session.saveOrUpdate(menuModifier);
+			}
+			tx.commit();
+		} catch (Exception e) {
+			tx.rollback();
+			PosLog.error(getClass(), e);
+		} finally {
+			closeSession(session);
+		}
 	}
 }

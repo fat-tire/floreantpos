@@ -26,6 +26,8 @@ package com.floreantpos.ui.views.order.multipart;
 import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -42,16 +44,19 @@ import java.util.Set;
 
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
+import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
+import javax.swing.JViewport;
 import javax.swing.border.TitledBorder;
 
 import net.miginfocom.swing.MigLayout;
 
+import com.floreantpos.IconFactory;
 import com.floreantpos.POSConstants;
 import com.floreantpos.model.MenuItemModifierGroup;
 import com.floreantpos.model.MenuItemSize;
@@ -108,7 +113,7 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 		setLayout(new java.awt.BorderLayout(10, 10));
 		JPanel panel = (JPanel) getContentPane();
 		panel.setBorder(BorderFactory.createEmptyBorder(7, 7, 7, 7));
-
+		panel.setOpaque(false);
 		createSectionPanel();
 
 		sectionQuarter1.setVisible(false);
@@ -116,14 +121,19 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 		sectionQuarter3.setVisible(false);
 		sectionQuarter4.setVisible(false);
 
+		//JPanel centerPanel = new JPanel(new BorderLayout());
+
 		sizeAndCrustPanel = new SizeAndCrustSelectionPane();
+		//centerPanel.add(sizeAndCrustPanel, BorderLayout.NORTH);
 		add(sizeAndCrustPanel, BorderLayout.NORTH);
 
 		modifierView = new PizzaModifierView(modifierSelectionModel);
 		modifierView.addModifierSelectionListener(this);
 		PosScrollPane modifierSc = new PosScrollPane(modifierView);
 		modifierSc.setBorder(null);
-		add(modifierSc);
+		//centerPanel.add(modifierSc, BorderLayout.CENTER);
+		add(modifierSc, BorderLayout.CENTER);
+		//add(centerPanel, BorderLayout.CENTER);
 
 		createButtonPanel();
 	}
@@ -131,12 +141,23 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 	private void createSectionPanel() {
 		JPanel westPanel = new JPanel(new BorderLayout(5, 5));
 
-		JPanel sectionView = new JPanel(new MigLayout("fill, hidemode 3", "[][][]", ""));
+		JPanel sectionView = new JPanel(new MigLayout("fill, hidemode 3", "[][][]", "")) {
+			@Override
+			protected void paintComponent(Graphics g) {
+				super.paintComponent(g);
+				try {
+
+					g.drawImage(IconFactory.getIcon("/ui_icons/", "pizza_medium2.png", new Dimension(340, 300)).getImage(), 5, 3, this);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		};
 		sectionView.setBorder(BorderFactory.createTitledBorder(null, "SECTIONS", TitledBorder.CENTER, TitledBorder.CENTER));
 
 		sectionList = new ArrayList<>();
 
-		 sectionWhole = new Section("WHOLE", 0, true);
+		sectionWhole = new Section("WHOLE", 0, true);
 		sectionWhole.modifierGroup.setShowSectionName(false);
 
 		sectionQuarter1 = new Section("Quarter 1", 1, false);
@@ -164,16 +185,28 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 		sectionView.add(sectionQuarter4, "grow,cell 2 1");
 		sectionView.add(sectionHalf1, "grow,cell 0 0");
 		sectionView.add(sectionHalf2, "grow,cell 1 0");
-		sectionView.add(sectionWhole, "grow,cell 0 2,span");
+		JPanel wholeSectionView = new JPanel(new MigLayout("fill"));
+		wholeSectionView.add(sectionWhole, "grow");
 		//sectionView.add(pizza, "gapleft 20,gapright 20,cell 1 0 1 2");
 
-		westPanel.add(sectionView);
+		sectionQuarter1.setOpaque(false);
+		sectionQuarter2.setOpaque(false);
+		sectionQuarter3.setOpaque(false);
+		sectionQuarter4.setOpaque(false);
+		sectionHalf1.setOpaque(false);
+		sectionHalf2.setOpaque(false);
+		sectionWhole.setOpaque(false);
+
+		sectionView.setOpaque(false);
+		westPanel.setOpaque(false);
+		westPanel.add(sectionView, BorderLayout.CENTER);
+		westPanel.add(wholeSectionView, BorderLayout.SOUTH);
 		add(westPanel, BorderLayout.WEST);
 	}
 
 	public void createButtonPanel() {
 		TransparentPanel buttonPanel = new com.floreantpos.swing.TransparentPanel();
-		buttonPanel.setLayout(new MigLayout("fill,ins 4", "", ""));
+		buttonPanel.setLayout(new MigLayout("fill, ins 4", "", ""));
 
 		ButtonGroup btnGroup = new ButtonGroup();
 		POSToggleButton btnHalf = new POSToggleButton("HALF");
@@ -191,6 +224,11 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 				sectionHalf1.setVisible(true);
 				sectionHalf2.setVisible(true);
 
+				for (Iterator iterator = sectionList.iterator(); iterator.hasNext();) {
+					Section section = (Section) iterator.next();
+					section.clearItems();
+				}
+
 			}
 		});
 		POSToggleButton btnQuarter = new POSToggleButton("QUARTER");
@@ -206,6 +244,11 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 
 				sectionHalf1.setVisible(false);
 				sectionHalf2.setVisible(false);
+
+				for (Iterator iterator = sectionList.iterator(); iterator.hasNext();) {
+					Section section = (Section) iterator.next();
+					section.clearItems();
+				}
 			}
 		});
 
@@ -240,14 +283,14 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 				dispose();
 			}
 		});
-		int width=PosUIManager.getSize(170);
+		int width = PosUIManager.getSize(170);
 		JSeparator separator = new JSeparator(JSeparator.VERTICAL);
-		buttonPanel.add(btnHalf,"w "+width+"!, split 3");
-		buttonPanel.add(btnQuarter,"w "+width+"!,left");
-		buttonPanel.add(separator,"growy");
-		buttonPanel.add(btnClear,"grow, left");
-		buttonPanel.add(btnCancel,"grow");
-		buttonPanel.add(btnSave,"grow");
+		buttonPanel.add(btnHalf, "w " + width + "!, split 3");
+		buttonPanel.add(btnQuarter, "w " + width + "!,left");
+		buttonPanel.add(separator, "growy");
+		buttonPanel.add(btnClear, "w 300!,left");
+		buttonPanel.add(btnCancel, "grow");
+		buttonPanel.add(btnSave, "grow");
 
 		add(buttonPanel, java.awt.BorderLayout.SOUTH);
 	}
@@ -375,15 +418,26 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 			lblTitle.setOpaque(true);
 
 			add(lblTitle, BorderLayout.NORTH);
+			setOpaque(false);
 			setPreferredSize(PosUIManager.getSize(160, 170));
-			setBackground(Color.white);
+			//setBackground(Color.white);
+
 			setBorder(BorderFactory.createLineBorder(Color.GRAY));
 
 			list = new JList();
+			list.setCellRenderer(new TransparentListCellRenderer());
+			list.setOpaque(false);
 			list.setFixedCellHeight(PosUIManager.getSize(35));
+			for (Component c : list.getComponents()) {
+				c.setBackground(new Color(0, 0, 0, 0));
+			}
 			model = new DefaultListModel<TicketItemModifier>();
 			list.setModel(model);
-			add(new JScrollPane(list), BorderLayout.CENTER);
+			JScrollPane scrollPane = new JScrollPane(list);
+			JViewport viewPort = scrollPane.getViewport();
+			viewPort.setOpaque(false);
+			scrollPane.setOpaque(false);
+			add(scrollPane, BorderLayout.CENTER);
 			addMouseListener(this);
 			list.addMouseListener(this);
 
@@ -816,5 +870,17 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 
 	@Override
 	public void modifierRemoved(TicketItemModifier modifier) {
+	}
+
+	public class TransparentListCellRenderer extends DefaultListCellRenderer {
+
+		@Override
+		public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+			Component rendererComponent = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+			setOpaque(isSelected);
+			rendererComponent.setFont(rendererComponent.getFont().deriveFont(Font.BOLD));
+			return rendererComponent;
+		}
+
 	}
 }

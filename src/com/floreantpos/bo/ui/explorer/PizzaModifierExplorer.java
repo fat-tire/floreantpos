@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -15,7 +16,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
-import javax.swing.ListSelectionModel;
 import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
@@ -32,12 +32,14 @@ import com.floreantpos.bo.ui.BOMessageDialog;
 import com.floreantpos.bo.ui.CustomCellRenderer;
 import com.floreantpos.model.MenuModifier;
 import com.floreantpos.model.MenuModifierGroup;
+import com.floreantpos.model.dao.MenuModifierDAO;
 import com.floreantpos.model.dao.MenuModifierGroupDAO;
 import com.floreantpos.model.dao.ModifierDAO;
 import com.floreantpos.swing.ListTableModel;
 import com.floreantpos.swing.PosUIManager;
 import com.floreantpos.swing.TransparentPanel;
 import com.floreantpos.ui.dialog.BeanEditorDialog;
+import com.floreantpos.ui.dialog.ComboItemSelectionDialog;
 import com.floreantpos.ui.dialog.ConfirmDeleteDialog;
 import com.floreantpos.ui.model.PizzaModifierForm;
 import com.floreantpos.util.CurrencyUtil;
@@ -57,7 +59,7 @@ public class PizzaModifierExplorer extends TransparentPanel {
 		table = new JXTable(tableModel);
 		table.setDefaultRenderer(Object.class, new CustomCellRenderer());
 		table.setRowHeight(PosUIManager.getSize(table.getRowHeight()));
-		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		//table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		add(new JScrollPane(table));
 
 		createActionButtons();
@@ -103,6 +105,7 @@ public class PizzaModifierExplorer extends TransparentPanel {
 		JButton addButton = explorerButtonPanel.getAddButton();
 		JButton deleteButton = explorerButtonPanel.getDeleteButton();
 		JButton duplicateButton = new JButton(POSConstants.DUPLICATE);
+		JButton btnChangeModifierGroup = new JButton("Change Group");
 		addButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -189,11 +192,37 @@ public class PizzaModifierExplorer extends TransparentPanel {
 
 		});
 
+		btnChangeModifierGroup.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					int[] rows = table.getSelectedRows();
+					if (rows.length < 1)
+						return;
+
+					MenuModifierGroup group = getSelectedModifierGroup(null);
+					if (group == null)
+						return;
+
+					List<MenuModifier> menuModifiers = new ArrayList<>();
+					for (int i = 0; i < rows.length; i++) {
+						int index = table.convertRowIndexToModel(rows[i]);
+						MenuModifier modifier = (MenuModifier) tableModel.getRowData(index);
+						modifier.setModifierGroup(group);
+						menuModifiers.add(modifier);
+					}
+					MenuModifierDAO.getInstance().saveAll(menuModifiers);
+				} catch (Throwable x) {
+					BOMessageDialog.showError(POSConstants.ERROR_MESSAGE, x);
+				}
+			}
+		});
+
 		TransparentPanel panel = new TransparentPanel();
 		panel.add(addButton);
 		panel.add(editButton);
 		panel.add(deleteButton);
 		panel.add(duplicateButton);
+		panel.add(btnChangeModifierGroup);
 
 		add(panel, BorderLayout.SOUTH);
 	}
@@ -345,6 +374,20 @@ public class PizzaModifierExplorer extends TransparentPanel {
 			fireTableRowsDeleted(index, index);
 		}
 
+	}
+
+	protected MenuModifierGroup getSelectedModifierGroup(MenuModifierGroup defaultValue) {
+		List<MenuModifierGroup> modifierGroups = MenuModifierGroupDAO.getInstance().findAll();
+		ComboItemSelectionDialog dialog = new ComboItemSelectionDialog("SELECT MODIFIER GROUP", "Modifier Group", modifierGroups, false);
+		dialog.setSelectedItem(defaultValue);
+		dialog.setVisibleNewButton(false);
+		dialog.pack();
+		dialog.open();
+
+		if (dialog.isCanceled())
+			return null;
+
+		return (MenuModifierGroup) dialog.getSelectedItem();
 	}
 
 }
