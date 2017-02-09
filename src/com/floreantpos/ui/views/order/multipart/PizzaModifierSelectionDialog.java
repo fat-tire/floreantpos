@@ -23,14 +23,14 @@
 
 package com.floreantpos.ui.views.order.multipart;
 
+import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -92,7 +92,7 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 
 	private List<Section> sectionList;
 	private boolean crustSelected = false;
-	private Pizza pizza;
+	//private Pizza pizza;
 	private Section sectionQuarter1;
 	private Section sectionQuarter2;
 	private Section sectionQuarter3;
@@ -113,7 +113,6 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 		setLayout(new java.awt.BorderLayout(10, 10));
 		JPanel panel = (JPanel) getContentPane();
 		panel.setBorder(BorderFactory.createEmptyBorder(7, 7, 7, 7));
-		panel.setOpaque(false);
 		createSectionPanel();
 
 		sectionQuarter1.setVisible(false);
@@ -142,15 +141,12 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 		JPanel westPanel = new JPanel(new BorderLayout(5, 5));
 
 		JPanel sectionView = new JPanel(new MigLayout("fill, hidemode 3", "[][][]", "")) {
+			Image pizzaImage = IconFactory.getIcon("/ui_icons/", "pizza_medium2.png").getImage();
+
 			@Override
 			protected void paintComponent(Graphics g) {
 				super.paintComponent(g);
-				try {
-
-					g.drawImage(IconFactory.getIcon("/ui_icons/", "pizza_medium2.png", new Dimension(340, 300)).getImage(), 5, 3, this);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+				g.drawImage(pizzaImage, 0, 0, getWidth(), getHeight(), this);
 			}
 		};
 		sectionView.setBorder(BorderFactory.createTitledBorder(null, "SECTIONS", TitledBorder.CENTER, TitledBorder.CENTER));
@@ -177,7 +173,7 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 		sectionList.add(sectionHalf1);
 		sectionList.add(sectionHalf2);
 
-		pizza = new Pizza("");
+		//		pizza = new Pizza("");
 
 		sectionView.add(sectionQuarter1, "grow,cell 0 0");
 		sectionView.add(sectionQuarter3, "grow,cell 0 1");
@@ -398,6 +394,7 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 		boolean selected;
 
 		TicketItemModifierGroup modifierGroup;
+		private JLabel lblTitle;
 
 		public Section(String sectionName, int sortOrder, boolean main) {
 			modifierGroup = getGroupForSection(sectionName);
@@ -411,7 +408,7 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 			modifierGroup.setShowSectionName(true);
 
 			setLayout(new BorderLayout());
-			JLabel lblTitle = new JLabel(sectionName);
+			lblTitle = new JLabel(sectionName);
 			lblTitle.setBackground(Color.LIGHT_GRAY);
 			lblTitle.setHorizontalAlignment(JLabel.CENTER);
 			lblTitle.setFont(lblTitle.getFont().deriveFont(Font.BOLD, 20));
@@ -428,9 +425,6 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 			list.setCellRenderer(new TransparentListCellRenderer());
 			list.setOpaque(false);
 			list.setFixedCellHeight(PosUIManager.getSize(35));
-			for (Component c : list.getComponents()) {
-				c.setBackground(new Color(0, 0, 0, 0));
-			}
 			model = new DefaultListModel<TicketItemModifier>();
 			list.setModel(model);
 			JScrollPane scrollPane = new JScrollPane(list);
@@ -449,6 +443,15 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 					}
 				}
 			}
+		}
+
+		@Override
+		public void paintComponent(Graphics g) {
+			Graphics2D graphics2d = (Graphics2D) g;
+			AlphaComposite composite = (AlphaComposite) graphics2d.getComposite();
+			AlphaComposite composite2 = composite.derive(0.75f);
+			graphics2d.setComposite(composite2);
+			super.paintComponent(g);
 		}
 
 		public void clearItems() {
@@ -532,23 +535,16 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 
 	public void setSelectedSection(Section section) {
 		if (section.isSelected()) {
-			section.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
+			section.lblTitle.setBackground(Color.lightGray);
 			section.setSelected(false);
-			pizza.repaint();
 			return;
 		}
-
 		for (Section sec : sectionList) {
-			if (sec == section) {
-				sec.setBorder(BorderFactory.createLineBorder(Color.blue, 4));
-				sec.setSelected(true);
-			}
-			else {
-				sec.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
-				sec.setSelected(false);
-			}
+			sec.lblTitle.setBackground(Color.lightGray);
+			sec.setSelected(false);
 		}
-		pizza.repaint();
+		section.lblTitle.setBackground(Color.yellow);
+		section.setSelected(true);
 	}
 
 	public Section getSelectedSection() {
@@ -873,14 +869,20 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 	}
 
 	public class TransparentListCellRenderer extends DefaultListCellRenderer {
-
+//		public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+//			JLabel rendererComponent = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+//			setOpaque(true);
+//			rendererComponent.setFont(rendererComponent.getFont().deriveFont(Font.BOLD));
+//			return rendererComponent;
+//		}
+		
 		@Override
-		public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-			Component rendererComponent = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-			setOpaque(isSelected);
-			rendererComponent.setFont(rendererComponent.getFont().deriveFont(Font.BOLD));
-			return rendererComponent;
+		protected void paintComponent(Graphics g) {
+			Graphics2D graphics2d = (Graphics2D) g;
+			AlphaComposite composite = (AlphaComposite) graphics2d.getComposite();
+			AlphaComposite composite2 = composite.derive(0.75f);
+			graphics2d.setComposite(composite2);
+			super.paintComponent(g);
 		}
-
 	}
 }
