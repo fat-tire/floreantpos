@@ -120,8 +120,9 @@ public class ModifierGroupView extends JPanel implements ComponentListener {
 			menuModifierGroup.setMenuItemModifierGroup(menuItemModifierGroup);
 
 			contentPanel.add(createItemButton(menuModifierGroup));
-
 		}
+		contentPanel.revalidate();
+		contentPanel.repaint();
 	}
 
 	protected AbstractButton createItemButton(Object item) {

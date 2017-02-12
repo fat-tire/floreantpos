@@ -30,4 +30,7 @@ public interface ModifierSelectionListener {
 	void clearModifiers(MenuModifierGroup modifierGroup);
 
 	void modifierGroupSelectionDone(MenuModifierGroup modifierGroup);
+	
+	void finishModifierSelection();
+	
 }

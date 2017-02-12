@@ -113,7 +113,7 @@ public class ModifierView extends SelectionView {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				for (ModifierSelectionListener listener : ModifierView.this.listenerList) {
-					listener.modifierGroupSelectionDone(modifierGroup);
+					listener.finishModifierSelection();//modifierGroupSelectionDone(modifierGroup);
 				}
 			}
 		});

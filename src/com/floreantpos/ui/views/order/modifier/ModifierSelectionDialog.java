@@ -47,6 +47,7 @@ import com.floreantpos.model.TicketItemModifierGroup;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.ui.dialog.POSDialog;
 import com.floreantpos.ui.dialog.POSMessageDialog;
+import com.floreantpos.util.POSUtil;
 
 /**
  *
@@ -260,10 +261,6 @@ public class ModifierSelectionDialog extends POSDialog implements ModifierGroupS
 		if (modifierGroupView.hasNextMandatoryGroup()) {
 			modifierGroupView.selectNextGroup();
 		}
-		else {
-			//setCanceled(false);
-			//dispose();
-		}
 	}
 
 	public ModifierSelectionModel getModifierSelectionModel() {
@@ -304,4 +301,45 @@ public class ModifierSelectionDialog extends POSDialog implements ModifierGroupS
 	public void modifierRemoved(TicketItemModifier modifier) {
 		updateView();
 	}
+
+	public void finishModifierSelection() {
+		List<TicketItemModifierGroup> ticketItemModifierGroups = modifierSelectionModel.getTicketItem().getTicketItemModifierGroups();
+		if (ticketItemModifierGroups == null) {
+			return;
+		}
+		if (!ticketItemModifierGroups.isEmpty()) {
+
+			for (Iterator iterator = ticketItemModifierGroups.iterator(); iterator.hasNext();) {
+				TicketItemModifierGroup ticketItemModifierGroup = (TicketItemModifierGroup) iterator.next();
+
+				int minQuantity = ticketItemModifierGroup.getMinQuantity();
+				int maxQuantity = ticketItemModifierGroup.getMaxQuantity();
+
+				List<TicketItemModifier> ticketItemModifiers = ticketItemModifierGroup.getTicketItemModifiers();
+
+				if (ticketItemModifiers == null) {
+					if (minQuantity != 0) {
+						POSMessageDialog.showMessage(POSUtil.getFocusedWindow(), "Please select minimum quantity of each group!");
+						return;
+					}
+				}
+				if (!ticketItemModifiers.isEmpty()) {
+					int size = ticketItemModifiers.size();
+					if (size < minQuantity) {
+						POSMessageDialog.showMessage(POSUtil.getFocusedWindow(), "Please select minimum quantity of each group!");
+						return;
+					}
+					else if (size > maxQuantity) {
+						POSMessageDialog.showMessage(POSUtil.getFocusedWindow(), "Please select quantity below the maximum quantity of each group!");
+						return;
+					}
+					else {
+						setCanceled(false);
+						dispose();
+					}
+				}
+			}
+		}
+	}
+
 }

@@ -63,7 +63,7 @@ import com.floreantpos.ui.views.order.modifier.ModifierSelectionModel;
 public class PizzaModifierView extends JPanel implements ModifierGroupSelectionListener {
 	private ModifierSelectionListener modifierSelectionListener;
 
-	private ModifierSelectionModel modifierSelectionModel;
+	//private ModifierSelectionModel modifierSelectionModel;
 
 	private PosButton btnClear = new PosButton(POSConstants.CLEAR);
 
@@ -78,7 +78,7 @@ public class PizzaModifierView extends JPanel implements ModifierGroupSelectionL
 	private JPanel contentPanel;
 
 	public PizzaModifierView(ModifierSelectionModel modifierSelectionModel) {
-		this.modifierSelectionModel = modifierSelectionModel;
+		//this.modifierSelectionModel = modifierSelectionModel;
 		setLayout(new BorderLayout());
 		mainPanel = new JPanel(new BorderLayout());
 		mainPanel.setBorder(new TitledBorder(null, "MODIFIERS", TitledBorder.CENTER, TitledBorder.CENTER));
@@ -164,66 +164,20 @@ public class PizzaModifierView extends JPanel implements ModifierGroupSelectionL
 
 	public void updateView(MenuModifierGroup menuModifierGroup) {
 		contentPanel.removeAll();
-		//MenuItem menuItem = modifierSelectionModel.getMenuItem();
-		//List<MenuItemModifierGroup> modiferGroups = menuItem.getMenuItemModiferGroups();
-
-		//for (MenuItemModifierGroup menuItemModifierGroup : modiferGroups) {
-		/*MenuModifierGroup modifierGroup = menuItemModifierGroup.getModifierGroup();
-		TitledSeparator separator = new TitledSeparator(modifierGroup.getDisplayName(), SwingConstants.CENTER);
-		add(separator, "newline, grow");
-		JPanel groupPanel = new JPanel();
-		
-		Set<MenuModifier> modifiers = modifierGroup.getModifiers();
-		for (MenuModifier menuModifier : modifiers) {
-			groupPanel.add(new ModifierButton(menuModifier));
-		}
-		add(groupPanel, "newline, grow");*/
-		//Font myFont = new Font("Serif", Font.BOLD, PosUIManager.getFontSize(16));
-		//			JLabel groupName = new JLabel(menuItemModifierGroup.getModifierGroup().getName());
-		//			groupName.setFont(myFont);
-		//			TitledSeparator separator = new TitledSeparator(groupName, SwingConstants.CENTER);
-		//			contentPanel.add(separator, "newline, growx");
-		// JPanel mainPanel=new JPanel();
 		ScrollableFlowPanel groupPanel = new ScrollableFlowPanel();
 		groupPanel.setPreferredSize(new Dimension(PosUIManager.getSize(500, 0)));
 		JScrollPane js = new JScrollPane(groupPanel, JScrollPane.VERTICAL_SCROLLBAR_NEVER, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		js.setBorder(null);
 
-		// groupPanel.getContentPane().setSize(new Dimension(100, 0));
-
 		Set<MenuModifier> modifiers = menuModifierGroup.getModifiers();
 		for (MenuModifier menuModifier : modifiers) {
+			menuModifier.setMenuItemModifierGroup(menuModifierGroup.getMenuItemModifierGroup());
 			groupPanel.getContentPane().add(new ModifierButton(menuModifier));
 		}
-		// mainPanel.add(groupPanel,BorderLayout.NORTH);
 		contentPanel.add(js, "newline,top,center");
 		mainPanel.add(contentPanel, BorderLayout.CENTER);
-		//}
-
-		//		JPanel activePanel = getActivePanel();
-		//		if (activePanel == null) {
-		//			return;
-		//		}
-		//		Component[] components = activePanel.getComponents();
-		//		if (components == null || components.length == 0)
-		//			return;
-		//
-		//		TicketItem ticketItem = modifierSelectionModel.getTicketItem();
-		//
-		//		for (Component component : components) {
-		//			ModifierButton modifierButton = (ModifierButton) component;
-		//			MenuModifier modifier = modifierButton.menuModifier;
-		//
-		//			/*TicketItemModifierGroup ticketItemModifierGroup = ticketItem.findTicketItemModifierGroup(modifier, false);
-		//			TicketItemModifier ticketItemModifier = ticketItemModifierGroup.findTicketItemModifier(modifier, false);
-		//			if (ticketItemModifier != null) {
-		//				modifierButton.setText("<html><center>" + modifier.getDisplayName() + "<br/><span style='color:green;"
-		//						+ "'>(" + ticketItemModifier.getItemCount() + ")</span></center></html>"); //$NON-NLS-1$ //$NON-NLS-2$
-		//			}
-		//			else {
-		//				modifierButton.setText("<html><center>" + modifier.getDisplayName() + "</center></html>"); //$NON-NLS-1$ //$NON-NLS-2$
-		//			}*/
-		//		}
+		contentPanel.repaint();
+		mainPanel.repaint();
 
 	}
 
@@ -305,4 +259,9 @@ public class PizzaModifierView extends JPanel implements ModifierGroupSelectionL
 		contentPanel.revalidate();
 		updateView(menuModifierGroup);
 	}
+
+	public ModifierGroupView getModifierGroupView() {
+		return modifierGroupView;
+	}
+
 }
