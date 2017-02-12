@@ -306,7 +306,7 @@ public class TicketItemModifierGroup extends BaseTicketItemModifierGroup impleme
 
 	@Override
 	public String getNameDisplay() {
-		return " == " + getSectionName(); //$NON-NLS-1$
+		return getSectionName(); //$NON-NLS-1$
 	}
 
 	@Override

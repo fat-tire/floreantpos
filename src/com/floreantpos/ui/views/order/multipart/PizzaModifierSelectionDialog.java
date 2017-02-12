@@ -26,15 +26,18 @@ package com.floreantpos.ui.views.order.multipart;
 import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
 import java.awt.BorderLayout;
+import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Image;
+import java.awt.GridLayout;
+import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.geom.Ellipse2D;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashSet;
@@ -54,9 +57,6 @@ import javax.swing.JSeparator;
 import javax.swing.JViewport;
 import javax.swing.border.TitledBorder;
 
-import net.miginfocom.swing.MigLayout;
-
-import com.floreantpos.IconFactory;
 import com.floreantpos.POSConstants;
 import com.floreantpos.model.MenuItemModifierGroup;
 import com.floreantpos.model.MenuItemSize;
@@ -80,6 +80,8 @@ import com.floreantpos.ui.views.order.modifier.ModifierSelectionListener;
 import com.floreantpos.ui.views.order.modifier.ModifierSelectionModel;
 import com.floreantpos.util.CurrencyUtil;
 
+import net.miginfocom.swing.MigLayout;
+
 /**
  * 
  * @author MShahriar
@@ -92,7 +94,7 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 
 	private List<Section> sectionList;
 	private boolean crustSelected = false;
-	//private Pizza pizza;
+	private Pizza pizza;
 	private Section sectionQuarter1;
 	private Section sectionQuarter2;
 	private Section sectionQuarter3;
@@ -100,6 +102,11 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 	private Section sectionHalf1;
 	private Section sectionHalf2;
 	private Section sectionWhole;
+
+	private CardLayout sectionLayout = new CardLayout();
+	JPanel sectionView = new Pizza(this.sectionLayout);
+	private JPanel halfSectionLayout = new TransparentPanel(new GridLayout(1, 2, 2, 2));
+	private JPanel quarterSectionLayout = new TransparentPanel(new GridLayout(2, 2, 2, 2));
 
 	public PizzaModifierSelectionDialog(ModifierSelectionModel modifierSelectionModel) {
 		this.modifierSelectionModel = modifierSelectionModel;
@@ -114,11 +121,6 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 		JPanel panel = (JPanel) getContentPane();
 		panel.setBorder(BorderFactory.createEmptyBorder(7, 7, 7, 7));
 		createSectionPanel();
-
-		sectionQuarter1.setVisible(false);
-		sectionQuarter2.setVisible(false);
-		sectionQuarter3.setVisible(false);
-		sectionQuarter4.setVisible(false);
 
 		//JPanel centerPanel = new JPanel(new BorderLayout());
 
@@ -140,15 +142,15 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 	private void createSectionPanel() {
 		JPanel westPanel = new JPanel(new BorderLayout(5, 5));
 
-		JPanel sectionView = new JPanel(new MigLayout("fill, hidemode 3", "[][][]", "")) {
-			Image pizzaImage = IconFactory.getIcon("/ui_icons/", "pizza_medium2.png").getImage();
-
-			@Override
-			protected void paintComponent(Graphics g) {
-				super.paintComponent(g);
-				g.drawImage(pizzaImage, 0, 0, getWidth(), getHeight(), this);
-			}
-		};
+		//		{
+		//			Image pizzaImage = IconFactory.getIcon("/ui_icons/", "pizza_medium2.png").getImage();
+		//
+		//			@Override
+		//			protected void paintComponent(Graphics g) {
+		//				super.paintComponent(g);
+		//				g.drawImage(pizzaImage, 0, 0, getWidth(), getHeight(), this);
+		//			}
+		//		};
 		sectionView.setBorder(BorderFactory.createTitledBorder(null, "SECTIONS", TitledBorder.CENTER, TitledBorder.CENTER));
 
 		sectionList = new ArrayList<>();
@@ -174,24 +176,35 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 		sectionList.add(sectionHalf2);
 
 		//		pizza = new Pizza("");
+		halfSectionLayout.add(sectionHalf1);
+		halfSectionLayout.add(sectionHalf2);
 
-		sectionView.add(sectionQuarter1, "grow,cell 0 0");
-		sectionView.add(sectionQuarter3, "grow,cell 0 1");
-		sectionView.add(sectionQuarter2, "grow,cell 2 0");
-		sectionView.add(sectionQuarter4, "grow,cell 2 1");
-		sectionView.add(sectionHalf1, "grow,cell 0 0");
-		sectionView.add(sectionHalf2, "grow,cell 1 0");
+		quarterSectionLayout.add(sectionQuarter1);
+		quarterSectionLayout.add(sectionQuarter2);
+		quarterSectionLayout.add(sectionQuarter3);
+		quarterSectionLayout.add(sectionQuarter4);
+
+		sectionView.add(halfSectionLayout, "half");
+		sectionView.add(quarterSectionLayout, "quarter");
+		sectionLayout.show(sectionView, "half");
+
+		//		sectionView.add(sectionQuarter1, "grow,cell 0 0");
+		//		sectionView.add(sectionQuarter3, "grow,cell 0 1");
+		//		sectionView.add(sectionQuarter2, "grow,cell 2 0");
+		//		sectionView.add(sectionQuarter4, "grow,cell 2 1");
+		//		sectionView.add(sectionHalf1, "grow,cell 0 0");
+		//		sectionView.add(sectionHalf2, "grow,cell 1 0");
 		JPanel wholeSectionView = new JPanel(new MigLayout("fill"));
 		wholeSectionView.add(sectionWhole, "grow");
 		//sectionView.add(pizza, "gapleft 20,gapright 20,cell 1 0 1 2");
 
-		sectionQuarter1.setOpaque(false);
-		sectionQuarter2.setOpaque(false);
-		sectionQuarter3.setOpaque(false);
-		sectionQuarter4.setOpaque(false);
-		sectionHalf1.setOpaque(false);
-		sectionHalf2.setOpaque(false);
-		sectionWhole.setOpaque(false);
+		//		sectionQuarter1.setOpaque(false);
+		//		sectionQuarter2.setOpaque(false);
+		//		sectionQuarter3.setOpaque(false);
+		//		sectionQuarter4.setOpaque(false);
+		//		sectionHalf1.setOpaque(false);
+		//		sectionHalf2.setOpaque(false);
+		//		sectionWhole.setOpaque(false);
 
 		sectionView.setOpaque(false);
 		westPanel.setOpaque(false);
@@ -212,19 +225,19 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				sectionQuarter1.setVisible(false);
-				sectionQuarter2.setVisible(false);
-				sectionQuarter3.setVisible(false);
-				sectionQuarter4.setVisible(false);
-
-				sectionHalf1.setVisible(true);
-				sectionHalf2.setVisible(true);
+				//				sectionQuarter1.setVisible(false);
+				//				sectionQuarter2.setVisible(false);
+				//				sectionQuarter3.setVisible(false);
+				//				sectionQuarter4.setVisible(false);
+				//
+				//				sectionHalf1.setVisible(true);
+				//				sectionHalf2.setVisible(true);
 
 				for (Iterator iterator = sectionList.iterator(); iterator.hasNext();) {
 					Section section = (Section) iterator.next();
 					section.clearItems();
 				}
-
+				sectionLayout.show(sectionView, "half");
 			}
 		});
 		POSToggleButton btnQuarter = new POSToggleButton("QUARTER");
@@ -233,18 +246,19 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				sectionQuarter1.setVisible(true);
-				sectionQuarter2.setVisible(true);
-				sectionQuarter3.setVisible(true);
-				sectionQuarter4.setVisible(true);
-
-				sectionHalf1.setVisible(false);
-				sectionHalf2.setVisible(false);
+				//				sectionQuarter1.setVisible(true);
+				//				sectionQuarter2.setVisible(true);
+				//				sectionQuarter3.setVisible(true);
+				//				sectionQuarter4.setVisible(true);
+				//
+				//				sectionHalf1.setVisible(false);
+				//				sectionHalf2.setVisible(false);
 
 				for (Iterator iterator = sectionList.iterator(); iterator.hasNext();) {
 					Section section = (Section) iterator.next();
 					section.clearItems();
 				}
+				sectionLayout.show(sectionView, "quarter");
 			}
 		});
 
@@ -431,6 +445,7 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 			JViewport viewPort = scrollPane.getViewport();
 			viewPort.setOpaque(false);
 			scrollPane.setOpaque(false);
+			scrollPane.setBorder(null);
 			add(scrollPane, BorderLayout.CENTER);
 			addMouseListener(this);
 			list.addMouseListener(this);
@@ -469,6 +484,7 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 
 		public void setSelected(boolean selected) {
 			this.selected = selected;
+			repaint();
 		}
 
 		public boolean isSelected() {
@@ -535,8 +551,8 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 
 	public void setSelectedSection(Section section) {
 		if (section.isSelected()) {
-			section.lblTitle.setBackground(Color.lightGray);
-			section.setSelected(false);
+			//section.lblTitle.setBackground(Color.lightGray);
+			//section.setSelected(false);
 			return;
 		}
 		for (Section sec : sectionList) {
@@ -617,7 +633,8 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 	public class Pizza extends JPanel {
 		int size;
 
-		public Pizza(String name) {
+		public Pizza(LayoutManager layoutManager) {
+			super(layoutManager);
 			setOpaque(false);
 			setBackground(Color.white);
 			setPreferredSize(PosUIManager.getSize(250, 250));
@@ -628,18 +645,26 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 		}
 
 		@Override
-		public void paint(Graphics g) {
-			int width = getWidth();
-			int height = getHeight();
-			g.setColor(Color.WHITE);
-			drawCircleByCenter(g, width / 2, height / 2, width / 2);
+		public void paintComponent(Graphics g) {
+			super.paintComponent(g);
 
+			int x = 15;
+			int width = getWidth() - 30;
+			int y = (getHeight() + 40) / 2 - width / 2;
+			g.setColor(Color.WHITE);
+
+			Graphics2D g2d = (Graphics2D) g;
 			g.setColor(new Color(255, 251, 211));
-			g.fillOval(2, 2, getWidth() - 4, getHeight() - 4);
-			g.setColor(Color.LIGHT_GRAY);
-			g.drawLine(0, getWidth() / 2, getWidth(), getHeight() / 2);
-			g.setColor(Color.lightGray);
-			g.drawLine(getHeight() / 2, 0, getWidth() / 2, getHeight());
+			Ellipse2D.Double circle = new Ellipse2D.Double(x, y, width, width);
+			g2d.fill(circle);
+			//			drawCircleByCenter(g, getWidth() / 2, getHeight() / 2, width / 2);
+			//
+			//			g.setColor(new Color(255, 251, 211));
+			//			g.fillOval(2, getHeight() / 2, getWidth() - 4, getHeight() - 4);
+			//			g.setColor(Color.LIGHT_GRAY);
+			//			g.drawLine(0, getWidth() / 2, getWidth(), height / 2);
+			//			g.setColor(Color.lightGray);
+			//			g.drawLine(height / 2, 0, getWidth() / 2, height);
 
 			Graphics2D g2 = (Graphics2D) g;
 			g2.setColor(Color.green);
@@ -649,22 +674,22 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 			}
 
 			if (selectedSection.modifierGroup.getNameDisplay().equalsIgnoreCase("Quarter 1")) {
-				fillQuarter1(g2);
+				fillQuarter1(g2, x, y, width);
 			}
 			else if (selectedSection.modifierGroup.getNameDisplay().equalsIgnoreCase("Quarter 2")) {
-				fillQuarter2(g2);
+				fillQuarter2(g2, x, y, width);
 			}
 			else if (selectedSection.modifierGroup.getNameDisplay().equalsIgnoreCase("Quarter 3")) {
-				fillQuarter3(g2);
+				fillQuarter3(g2, x, y, width);
 			}
 			else if (selectedSection.modifierGroup.getNameDisplay().equalsIgnoreCase("Quarter 4")) {
-				fillQuarter4(g2);
+				fillQuarter4(g2, x, y, width);
 			}
 			else if (selectedSection.modifierGroup.getNameDisplay().equalsIgnoreCase("Half 1")) {
-				fillHalf1(g2);
+				fillHalf1(g2, x, y, width);
 			}
 			else if (selectedSection.modifierGroup.getNameDisplay().equalsIgnoreCase("Half 2")) {
-				fillHalf2(g2);
+				fillHalf2(g2, x, y, width);
 			}
 		}
 
@@ -676,28 +701,28 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 
 		}
 
-		void fillQuarter1(Graphics2D g2) {
-			g2.fillArc(4, 4, getWidth() - 16, getHeight() - 16, 90, 90);
+		void fillQuarter1(Graphics2D g2, int x, int y, int width) {
+			g2.fillArc(x, y, width, width, 90, 90);
 		}
 
-		void fillQuarter2(Graphics2D g2) {
-			g2.fillArc(10, 4, getWidth() - 16, getHeight() - 16, 360, 90);
+		void fillQuarter2(Graphics2D g2, int x, int y, int width) {
+			g2.fillArc(x, y, width, width, 360, 90);
 		}
 
-		void fillQuarter3(Graphics2D g2) {
-			g2.fillArc(10, 10, getWidth() - 16, getHeight() - 16, 270, 90);
+		void fillQuarter3(Graphics2D g2, int x, int y, int width) {
+			g2.fillArc(x, y, width, width, 180, 90);
 		}
 
-		void fillQuarter4(Graphics2D g2) {
-			g2.fillArc(4, 10, getWidth() - 16, getHeight() - 16, 180, 90);
+		void fillQuarter4(Graphics2D g2, int x, int y, int width) {
+			g2.fillArc(x, y, width, width, 270, 90);
 		}
 
-		void fillHalf1(Graphics2D g2) {
-			g2.fillArc(4, 4, getWidth() - 16, getHeight() - 11, 90, 180);
+		void fillHalf1(Graphics2D g2, int x, int y, int width) {
+			g2.fillArc(x, y, width, width, 90, 180);
 		}
 
-		void fillHalf2(Graphics2D g2) {
-			g2.fillArc(10, 4, getWidth() - 16, getHeight() - 11, 270, 180);
+		void fillHalf2(Graphics2D g2, int x, int y, int width) {
+			g2.fillArc(x, y, width, width, 270, 180);
 		}
 	}
 
@@ -869,19 +894,22 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 	}
 
 	public class TransparentListCellRenderer extends DefaultListCellRenderer {
-//		public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-//			JLabel rendererComponent = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-//			setOpaque(true);
-//			rendererComponent.setFont(rendererComponent.getFont().deriveFont(Font.BOLD));
-//			return rendererComponent;
-//		}
-		
+		public TransparentListCellRenderer() {
+			//setOpaque(false);
+		}
+		//		public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+		//			JLabel rendererComponent = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+		//			setOpaque(true);
+		//			rendererComponent.setFont(rendererComponent.getFont().deriveFont(Font.BOLD));
+		//			return rendererComponent;
+		//		}
+
 		@Override
 		protected void paintComponent(Graphics g) {
-			Graphics2D graphics2d = (Graphics2D) g;
-			AlphaComposite composite = (AlphaComposite) graphics2d.getComposite();
-			AlphaComposite composite2 = composite.derive(0.75f);
-			graphics2d.setComposite(composite2);
+						Graphics2D graphics2d = (Graphics2D) g;
+						AlphaComposite composite = (AlphaComposite) graphics2d.getComposite();
+						AlphaComposite composite2 = composite.derive(0.75f);
+						graphics2d.setComposite(composite2);
 			super.paintComponent(g);
 		}
 	}
