@@ -903,6 +903,7 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 					POSToggleButton button = (POSToggleButton) e.getSource();
 					PizzaPrice pizzaPrice = (PizzaPrice) button.getClientProperty(PROP_PIZZA_PRICE);
 					renderCrusts(pizzaPrice.getSize());
+
 				}
 			});
 			sizeBtnGroup.add(sizeButton);
@@ -922,40 +923,16 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 				crustButton.setText("<html><center>" + pizzaPrice.getCrust().getName() + "<br/>" + CurrencyUtil.getCurrencySymbol() + pizzaPrice.getPrice()
 						+ "</center></html>");
 				crustButton.putClientProperty(PROP_PIZZA_PRICE, pizzaPrice);
+				if (availablePrices.size() == 1) {
+					crustSelected = true;
+					crustButton.setSelected(true);
+					pizzaCrustSelected(crustButton);
+				}
 				crustButton.addActionListener(new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent e) {
 						POSToggleButton button = (POSToggleButton) e.getSource();
-						PizzaPrice pizzaPrice = (PizzaPrice) button.getClientProperty(PROP_PIZZA_PRICE);
-
-						TicketItem ticketItem = modifierSelectionModel.getTicketItem();
-
-						ticketItem.setUnitPrice(pizzaPrice.getPrice());
-						crustSelected = true;
-
-						TicketItemModifier modifier = new TicketItemModifier();
-						modifier.setName(pizzaPrice.getSize().getName() + ", " + pizzaPrice.getCrust() + " crust");
-						modifier.setModifierType(TicketItemModifier.CRUST);
-						modifier.setInfoOnly(true);
-						modifier.setTicketItem(ticketItem);
-
-						boolean crustFound = false;
-						TicketItemModifierGroup modifierGroup = getMainSection().modifierGroup;
-						List<TicketItemModifier> ticketItemModifiers = modifierGroup.getTicketItemModifiers();
-						if (ticketItemModifiers != null) {
-							for (TicketItemModifier ticketItemModifier : ticketItemModifiers) {
-								if (ticketItemModifier.getModifierType() == TicketItemModifier.CRUST) {
-									ticketItemModifier.setName(pizzaPrice.getSize().getName() + ", " + pizzaPrice.getCrust() + " crust");
-									crustFound = true;
-								}
-							}
-							if (!crustFound) {
-								ticketItemModifiers.add(0, modifier);
-							}
-						}
-						else {
-							modifierGroup.addToticketItemModifiers(modifier);
-						}
+						pizzaCrustSelected(button);
 					}
 				});
 				crustBtnGroup.add(crustButton);
@@ -1015,5 +992,38 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 	@Override
 	public void finishModifierSelection() {
 
+	}
+
+	private void pizzaCrustSelected(POSToggleButton button) {
+		PizzaPrice pizzaPrice = (PizzaPrice) button.getClientProperty(PROP_PIZZA_PRICE);
+
+		TicketItem ticketItem = modifierSelectionModel.getTicketItem();
+
+		ticketItem.setUnitPrice(pizzaPrice.getPrice());
+		crustSelected = true;
+
+		TicketItemModifier modifier = new TicketItemModifier();
+		modifier.setName(pizzaPrice.getSize().getName() + ", " + pizzaPrice.getCrust() + " crust");
+		modifier.setModifierType(TicketItemModifier.CRUST);
+		modifier.setInfoOnly(true);
+		modifier.setTicketItem(ticketItem);
+
+		boolean crustFound = false;
+		TicketItemModifierGroup modifierGroup = getMainSection().modifierGroup;
+		List<TicketItemModifier> ticketItemModifiers = modifierGroup.getTicketItemModifiers();
+		if (ticketItemModifiers != null) {
+			for (TicketItemModifier ticketItemModifier : ticketItemModifiers) {
+				if (ticketItemModifier.getModifierType() == TicketItemModifier.CRUST) {
+					ticketItemModifier.setName(pizzaPrice.getSize().getName() + ", " + pizzaPrice.getCrust() + " crust");
+					crustFound = true;
+				}
+			}
+			if (!crustFound) {
+				ticketItemModifiers.add(0, modifier);
+			}
+		}
+		else {
+			modifierGroup.addToticketItemModifiers(modifier);
+		}
 	}
 }
