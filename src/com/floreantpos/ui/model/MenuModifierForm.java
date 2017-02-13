@@ -42,6 +42,7 @@ import javax.swing.JColorChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.AbstractTableModel;
@@ -309,7 +310,6 @@ public class MenuModifierForm extends BeanEditor {
 		//buttonPanel.add(btnDeleteAll);
 
 		JPanel multiplierPanel = new JPanel(new MigLayout("fillx,wrap 1"));
-		multiplierPanel.setBorder(new TitledBorder("Multiplier price"));
 		List<Multiplier> multipliers = MultiplierDAO.getInstance().findAll();
 		if (multipliers != null) {
 			for (Multiplier multiplier : multipliers) {
@@ -335,7 +335,9 @@ public class MenuModifierForm extends BeanEditor {
 			}
 		});
 		//lelfInputPanel.add(chkSelectAll, "newline,skip 1,right");
-		lelfInputPanel.add(multiplierPanel, "newline,skip 1,grow");
+		JScrollPane scrollPane = new JScrollPane(multiplierPanel);
+		scrollPane.setBorder(new TitledBorder("Multiplier price"));
+		lelfInputPanel.add(scrollPane, "newline,skip 1,grow");
 
 		tabPrice.add(buttonPanel, BorderLayout.SOUTH);
 		if (TerminalConfig.isMultipleOrderSupported()) {
@@ -649,34 +651,29 @@ public class MenuModifierForm extends BeanEditor {
 		ModifierMultiplierPrice multiplierPrice;
 		Multiplier multiplier;
 		JCheckBox chkEnable;
-		JLabel lblMultiplierName;
 		DoubleTextField tfPrice;
 
 		public MultiplierPricePanel(Multiplier multiplier) {
 			this.multiplier = multiplier;
-			setLayout(new MigLayout("inset 0,fillx", "[20px][100px][100px]", ""));
-			chkEnable = new JCheckBox();
-			lblMultiplierName = new JLabel();
-			tfPrice = new DoubleTextField(10);
+			setLayout(new MigLayout("inset 0,fillx", "[100px][grow][]", ""));
+			chkEnable = new JCheckBox(multiplier.getName());
+			tfPrice = new DoubleTextField(6);
 			tfPrice.setHorizontalAlignment(SwingConstants.RIGHT);
 			tfPrice.setEnabled(false);
 			chkEnable.addActionListener(new ActionListener() {
-
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					tfPrice.setEnabled(chkEnable.isSelected());
 				}
 			});
 
-			lblMultiplierName.setText(multiplier.getName());
-
 			add(chkEnable);
-			add(lblMultiplierName);
+			add(new JLabel("Additional price", JLabel.TRAILING), "grow, gapright 10px");
 			add(tfPrice);
 		}
 
 		public Double getPrice() {
-			return tfPrice.getDouble();
+			return tfPrice.getDoubleOrZero();
 		}
 
 		public Multiplier getMultiplier() {
