@@ -30,6 +30,11 @@
 			<many-to-many class="PizzaModifierPrice" column="PIZZAMODIFIERPRICE_ID"/>
 		</bag>
 		
+		<bag cascade="all,delete-orphan" inverse="true" lazy="false" name="multiplierPriceList" table="MODIFIER_MULTIPLIER_PRICE">
+			<key column="MENUMODIFIER_ID" />
+			<one-to-many class="ModifierMultiplierPrice"/>
+		</bag>
+		
 		<map name="properties" cascade="all" lazy="false" table="MENU_MODIFIER_PROPERTIES">
 			<key column="MENU_MODIFIER_ID" />
 			<index column="PROPERTY_NAME" type="string" />

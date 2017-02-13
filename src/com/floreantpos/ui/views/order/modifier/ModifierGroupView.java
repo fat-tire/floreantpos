@@ -220,7 +220,7 @@ public class ModifierGroupView extends JPanel implements ComponentListener {
 			string = "<html><body><center> "
 					+ menuModifierGroup.getDisplayName()
 					+ "<br/>"
-					+ "<strong><span style='color:white;background-color:orange;margin:0;" + "'>&nbsp; " + menuModifierGroup.getMenuItemModifierGroup().getMaxQuantity() + "&nbsp; </span></center></body></html>"; //$NON-NLS-1$ //$NON-NLS-2$ 
+					+ "<strong><span style='color:white;background-color:orange;margin:0;" + "'>&nbsp; " + menuModifierGroup.getMenuItemModifierGroup().getMinQuantity() + "&nbsp; </span></center></body></html>"; //$NON-NLS-1$ //$NON-NLS-2$ 
 			//			}
 
 			setText(string);

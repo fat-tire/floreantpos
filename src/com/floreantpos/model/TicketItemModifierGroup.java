@@ -162,11 +162,12 @@ public class TicketItemModifierGroup extends BaseTicketItemModifierGroup impleme
 		ticketItemModifier.setName(menuModifier.getDisplayName());
 		//		ticketItemModifier.setExtraUnitPrice(menuModifier.getExtraPrice());
 		//ticketItemModifier.setTaxRate(menuModifier.getTax() == null ? 0 : menuModifier.getTax().getRate());
-		double price = menuModifier.getPriceByOrderType(type);
-		if (multiplier != null) {
-			ticketItemModifier.setName(multiplier.getTicketPrefix() + " " + menuModifier.getDisplayName());
-			price = price * (multiplier.getRate() / 100);
-		}
+		//double price = menuModifier.getPriceByOrderType(type);
+		double price = menuModifier.getPriceForMultiplier(multiplier);
+		//if (multiplier != null) {
+		//	ticketItemModifier.setName(multiplier.getTicketPrefix() + " " + menuModifier.getDisplayName());
+		//	price = price * (multiplier.getRate() / 100);
+		//}
 		ticketItemModifier.setUnitPrice(price);
 		ticketItemModifier.setTaxRate(menuModifier.getTaxByOrderType(type));
 

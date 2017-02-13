@@ -25,7 +25,6 @@ import org.apache.commons.lang.StringUtils;
 
 import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.model.base.BaseMenuModifier;
-import com.floreantpos.model.OrderType;
 import com.floreantpos.util.POSUtil;
 
 public class MenuModifier extends BaseMenuModifier {
@@ -130,6 +129,25 @@ public class MenuModifier extends BaseMenuModifier {
 		properties.remove(taxProperty);
 	}
 
+	public double getPriceForMultiplier(Multiplier multiplier) {
+		double defaultPrice = this.getPrice();
+		if (multiplier == null) {
+			return defaultPrice;
+		}
+
+		List<ModifierMultiplierPrice> priceList = getMultiplierPriceList();
+		if (priceList == null) {
+			return defaultPrice;
+		}
+
+		for (ModifierMultiplierPrice multiplierPrice : priceList) {
+			if (multiplier.getName().equals(multiplierPrice.getMultiplier().getName())) {
+				return multiplierPrice.getPrice();
+			}
+		}
+		return defaultPrice;
+	}
+
 	public double getPriceForSize(MenuItemSize size, boolean extra) {
 		double defaultPrice = this.getPrice();
 		if (size == null) {
@@ -140,10 +158,10 @@ public class MenuModifier extends BaseMenuModifier {
 		if (priceList == null) {
 			return defaultPrice;
 		}
-		
+
 		for (PizzaModifierPrice pizzaModifierPrice : priceList) {
-			if(size.equals(pizzaModifierPrice.getSize())) {
-				if(extra) {
+			if (size.equals(pizzaModifierPrice.getSize())) {
+				if (extra) {
 					return pizzaModifierPrice.getExtraPrice();
 				}
 				return pizzaModifierPrice.getPrice();

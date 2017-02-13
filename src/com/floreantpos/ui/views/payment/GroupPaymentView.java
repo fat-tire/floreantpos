@@ -363,7 +363,7 @@ public class GroupPaymentView extends JPanel {
 		centerPanel.add(calcButtonPanel, BorderLayout.CENTER);
 
 		actionButtonPanel = new com.floreantpos.swing.TransparentPanel();
-		actionButtonPanel.setLayout(new MigLayout("wrap 1, ins 0 20 0 0, fill", "sg, fill", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		actionButtonPanel.setLayout(new MigLayout("wrap 1, ins 0 20 0 0,hidemode 3, fill", "sg, fill", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		//actionButtonPanel.setPreferredSize(PosUIManager.getSize(180, 380));
 
 		int width = PosUIManager.getSize(160);

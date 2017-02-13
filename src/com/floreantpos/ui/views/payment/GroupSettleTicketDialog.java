@@ -756,6 +756,10 @@ public class GroupSettleTicketDialog extends POSDialog implements CardInputListe
 				transaction.setTenderAmount(totalTenderAmount - totalDueAmount + transaction.getTicket().getDueAmount());
 				transaction.setAmount(transaction.getTicket().getDueAmount());
 			}
+			else {
+				transaction.setTenderAmount(transaction.getTicket().getDueAmount());
+				transaction.setAmount(transaction.getTicket().getDueAmount());
+			}
 			String ticketNumbers = "";
 			for (Ticket ticket : tickets) {
 				ticketNumbers += "[" + ticket.getId() + "]";

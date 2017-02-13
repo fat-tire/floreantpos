@@ -117,7 +117,7 @@ public class DrawerAssignmentAction extends PosAction {
 				List<Currency> currencyList = CurrencyUtil.getAllCurrency();
 
 				if (currencyList.size() > 1) {
-					MultiCurrencyAssignDrawerDialog multiCurrencyDialog = new MultiCurrencyAssignDrawerDialog(0, currencyList);
+					MultiCurrencyAssignDrawerDialog multiCurrencyDialog = new MultiCurrencyAssignDrawerDialog(500, currencyList);
 					multiCurrencyDialog.pack();
 					multiCurrencyDialog.open();
 
@@ -130,7 +130,7 @@ public class DrawerAssignmentAction extends PosAction {
 			}
 			else {
 				drawerBalance = NumberSelectionDialog2.takeDoubleInput(
-						Messages.getString("DrawerAssignmentAction.6"), Messages.getString("DrawerAssignmentAction.7"), terminal.getOpeningBalance()); //$NON-NLS-1$ //$NON-NLS-2$
+						Messages.getString("DrawerAssignmentAction.6"), Messages.getString("DrawerAssignmentAction.7"), 500); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 			if (Double.isNaN(drawerBalance)) {
 				return;

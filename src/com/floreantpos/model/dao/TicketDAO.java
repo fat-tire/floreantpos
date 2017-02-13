@@ -34,6 +34,7 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.transform.ResultTransformer;
 
 import com.floreantpos.Messages;
 import com.floreantpos.POSConstants;
@@ -913,7 +914,7 @@ public class TicketDAO extends BaseTicketDAO {
 				Double percentage = recepieItem.getPercentage() / 100.0;
 
 				InventoryItem inventoryItem = recepieItem.getInventoryItem();
-//				inventoryItem.setTotalPackages(inventoryItem.getTotalPackages() - ticketItem.getItemCount());
+				//				inventoryItem.setTotalPackages(inventoryItem.getTotalPackages() - ticketItem.getItemCount());
 				Double totalRecepieUnits = inventoryItem.getTotalRecepieUnits();
 				inventoryItem.setTotalRecepieUnits(totalRecepieUnits - (ticketItem.getItemCount() * percentage));
 
@@ -1230,6 +1231,43 @@ public class TicketDAO extends BaseTicketDAO {
 
 			return ticketList;
 
+		} finally {
+			closeSession(session);
+		}
+	}
+
+	public List<Ticket> getTicketsWithSpecificFields(String... fields) {
+		Session session = null;
+		Criteria criteria = null;
+		User currentUser = Application.getCurrentUser();
+		boolean filterUser = !currentUser.isAdministrator() || !currentUser.isManager();
+		try {
+			session = createNewSession();
+			criteria = session.createCriteria(Ticket.class);
+			ProjectionList projectionList = Projections.projectionList();
+			for (String field : fields) {
+				projectionList.add(Projections.property(field));
+			}
+			criteria.add(Restrictions.eq(Ticket.PROP_CLOSED, Boolean.FALSE));
+			if (filterUser) {
+				criteria.createAlias(Ticket.PROP_OWNER, "u");
+				criteria.add(Restrictions.eq("u.userId", currentUser.getUserId()));
+			}
+			ResultTransformer transformer = new ResultTransformer() {
+
+				public Object transformTuple(Object[] row, String[] arg1) {
+					Ticket ticket = new Ticket();
+					ticket.setId(Integer.valueOf("" + row[0]));
+					ticket.setDueAmount(Double.valueOf("" + row[1]));
+					return ticket;
+				}
+
+				public List transformList(List arg0) {
+					return arg0;
+				}
+			};
+			criteria.setProjection(projectionList).setResultTransformer(transformer);
+			return criteria.list();
 		} finally {
 			closeSession(session);
 		}

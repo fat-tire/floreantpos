@@ -84,10 +84,10 @@ public class TicketSelectionDialog extends OkCancelOptionDialog {
 	private void initData() {
 		TicketDAO dao = new TicketDAO();
 		try {
-			List<Ticket> tickets = dao.findOpenTickets();
+			List<Ticket> tickets = dao.getTicketsWithSpecificFields(Ticket.PROP_ID, Ticket.PROP_DUE_AMOUNT);
 			Dimension size = PosUIManager.getSize(115, 80);
 			for (Ticket ticket : tickets) {
-				if (ticket.isBarTab() || ticket.getDueAmount() <= 0) {
+				if (ticket.getDueAmount() <= 0) {
 					continue;
 				}
 				TicketButton btnTicket = new TicketButton(ticket);

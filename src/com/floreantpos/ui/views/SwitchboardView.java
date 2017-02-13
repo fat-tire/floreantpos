@@ -623,6 +623,8 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 			Ticket ticket = selectedTickets.get(i);
 
 			Ticket fullTicket = TicketDAO.getInstance().loadFullTicket(ticket.getId());
+			if (fullTicket.getOrderType().isBarTab())
+				continue;
 			tickets.add(fullTicket);
 		}
 

@@ -63,6 +63,7 @@ import com.floreantpos.model.MenuItemShift;
 import com.floreantpos.model.MenuItemSize;
 import com.floreantpos.model.MenuModifier;
 import com.floreantpos.model.MenuModifierGroup;
+import com.floreantpos.model.ModifierMultiplierPrice;
 import com.floreantpos.model.Multiplier;
 import com.floreantpos.model.PackagingUnit;
 import com.floreantpos.model.PayoutReason;
@@ -187,6 +188,7 @@ public abstract class _RootDAO extends com.floreantpos.model.dao._BaseRootDAO {
 		configuration.addClass(PizzaPrice.class);
 		configuration.addClass(PizzaModifierPrice.class);
 		configuration.addClass(Multiplier.class);
+		configuration.addClass(ModifierMultiplierPrice.class);
 
 		configureInventoryClasses(configuration);
 

@@ -764,7 +764,7 @@ public class Ticket extends BaseTicket {
 		}
 		return super.getStatus();
 	}
-	
+
 	public void consolidateTicketItems() {
 		List<TicketItem> ticketItems = getTicketItems();
 
@@ -824,7 +824,7 @@ public class Ticket extends BaseTicket {
 		}
 		calculatePrice();
 	}
-	
+
 	/**
 	 * Mark ticket items, modifiers, add-ons as printed to kitchen
 	 */
@@ -832,7 +832,8 @@ public class Ticket extends BaseTicket {
 		List<TicketItem> ticketItems = getTicketItems();
 		for (TicketItem ticketItem : ticketItems) {
 			if (ticketItem.isPrintedToKitchen() || !ticketItem.isShouldPrintToKitchen()) {
-				continue;
+				if (!ticketItem.isHasModifiers())
+					continue;
 			}
 
 			List<Printer> printers = ticketItem.getPrinters(getOrderType());
