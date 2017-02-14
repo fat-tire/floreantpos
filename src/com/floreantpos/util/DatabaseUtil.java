@@ -418,6 +418,7 @@ public class DatabaseUtil {
 			multiplier.setSortOrder(0);
 			multiplier.setTicketPrefix("");
 			multiplier.setDefaultMultiplier(true);
+			multiplier.setMain(true);
 			MultiplierDAO.getInstance().save(multiplier);
 
 			multiplier = new Multiplier("No");

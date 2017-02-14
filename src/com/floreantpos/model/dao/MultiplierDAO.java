@@ -8,7 +8,6 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Order;
 
-import com.floreantpos.PosLog;
 import com.floreantpos.model.Multiplier;
 
 public class MultiplierDAO extends BaseMultiplierDAO {
@@ -21,15 +20,17 @@ public class MultiplierDAO extends BaseMultiplierDAO {
 
 	@Override
 	public List<Multiplier> findAll() {
+		Session session = null;
 		try {
-			Session session = getSession();
+			session = getSession();
 			Criteria criteria = session.createCriteria(getReferenceClass());
 			criteria.addOrder(Order.asc(Multiplier.PROP_SORT_ORDER));
 			return criteria.list();
 		} catch (Exception e) {
-			PosLog.error(getClass(), e);
+			throw e;
+		} finally {
+			closeSession(session);
 		}
-		return null;
 	}
 
 	public void saveOrUpdateMultipliers(List<Multiplier> items) {
@@ -38,17 +39,20 @@ public class MultiplierDAO extends BaseMultiplierDAO {
 		try {
 			session = createNewSession();
 			tx = session.beginTransaction();
-			for (Iterator iterator = items.iterator(); iterator.hasNext();) {
-				Multiplier multiplier = (Multiplier) iterator.next();
-				session.saveOrUpdate(multiplier);
-			}
+			saveOrUpdate(items, session);
 			tx.commit();
 		} catch (Exception e) {
 			tx.rollback();
-			PosLog.error(getClass(), e);
+			throw e;
 		} finally {
 			session.close();
 		}
 	}
 
+	public void saveOrUpdateMultipliers(List<Multiplier> items, Session session) {
+		for (Iterator iterator = items.iterator(); iterator.hasNext();) {
+			Multiplier multiplier = (Multiplier) iterator.next();
+			session.saveOrUpdate(multiplier);
+		}
+	}
 }

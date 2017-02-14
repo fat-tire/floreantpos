@@ -136,7 +136,11 @@ public class MultiplierForm extends BeanEditor {
 
 			Multiplier multiplier = (Multiplier) getBean();
 			MultiplierDAO dao = new MultiplierDAO();
-			dao.saveOrUpdate(multiplier);
+			if (dao.get(multiplier.getName()) == null) {
+				dao.save(multiplier);
+			}
+			else
+				dao.update(multiplier);
 		} catch (Exception e) {
 			MessageDialog.showError(e);
 			return false;

@@ -26,6 +26,9 @@ import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.AbstractTableModel;
 
 import com.floreantpos.POSConstants;
@@ -44,6 +47,8 @@ public class MultiplierExplorer extends TransparentPanel {
 	private List<Multiplier> multiplierList;
 	private JTable table;
 	private MultiplierExplorerTableModel tableModel;
+	private JButton editButton;
+	private JButton deleteButton;
 
 	public MultiplierExplorer() {
 		multiplierList = MultiplierDAO.getInstance().findAll();
@@ -52,6 +57,20 @@ public class MultiplierExplorer extends TransparentPanel {
 		table = new JTable(tableModel);
 		table.setDefaultRenderer(Object.class, new CustomCellRenderer());
 		table.getColumnModel().getColumn(6).setCellRenderer(new PosTableRenderer());
+		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+
+			@Override
+			public void valueChanged(ListSelectionEvent e) {
+				int index = table.getSelectedRow();
+				if (index < 0)
+					return;
+
+				Multiplier multiplier = multiplierList.get(index);
+				editButton.setEnabled(!multiplier.isMain());
+				deleteButton.setEnabled(!multiplier.isMain());
+			}
+		});
 
 		setLayout(new BorderLayout(5, 5));
 		add(new JScrollPane(table));
@@ -74,7 +93,7 @@ public class MultiplierExplorer extends TransparentPanel {
 
 		});
 
-		JButton editButton = new JButton(com.floreantpos.POSConstants.EDIT);
+		editButton = new JButton(com.floreantpos.POSConstants.EDIT);
 		editButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -83,6 +102,8 @@ public class MultiplierExplorer extends TransparentPanel {
 						return;
 
 					Multiplier multiplier = multiplierList.get(index);
+					if (multiplier.isMain())
+						return;
 
 					MultiplierForm multiplierForm = new MultiplierForm(multiplier);
 					BeanEditorDialog dialog = new BeanEditorDialog(POSUtil.getBackOfficeWindow(), multiplierForm);
@@ -97,17 +118,18 @@ public class MultiplierExplorer extends TransparentPanel {
 			}
 
 		});
-		JButton deleteButton = new JButton(com.floreantpos.POSConstants.DELETE);
+		deleteButton = new JButton(com.floreantpos.POSConstants.DELETE);
 		deleteButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					int index = table.getSelectedRow();
 					if (index < 0)
 						return;
-
+					Multiplier multiplier = multiplierList.get(index);
+					if (multiplier.isMain())
+						return;
 					if (ConfirmDeleteDialog.showMessage(MultiplierExplorer.this, com.floreantpos.POSConstants.CONFIRM_DELETE,
 							com.floreantpos.POSConstants.DELETE) == ConfirmDeleteDialog.YES) {
-						Multiplier multiplier = multiplierList.get(index);
 						MultiplierDAO.getInstance().delete(multiplier);
 						tableModel.deleteMultiplier(multiplier, index);
 					}
@@ -115,7 +137,6 @@ public class MultiplierExplorer extends TransparentPanel {
 					BOMessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
 				}
 			}
-
 		});
 
 		JButton btnSetAsDefault = new JButton("Set default");

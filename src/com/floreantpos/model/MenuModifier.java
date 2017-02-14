@@ -136,16 +136,15 @@ public class MenuModifier extends BaseMenuModifier {
 		}
 
 		List<ModifierMultiplierPrice> priceList = getMultiplierPriceList();
-		if (priceList == null) {
+		if (priceList == null || priceList.isEmpty()) {
 			return defaultPrice;
 		}
-
 		for (ModifierMultiplierPrice multiplierPrice : priceList) {
 			if (multiplier.getName().equals(multiplierPrice.getMultiplier().getName())) {
 				return multiplierPrice.getPrice();
 			}
 		}
-		return defaultPrice;
+		return price * (multiplier.getRate() / 100);
 	}
 
 	public double getPriceForSize(MenuItemSize size, boolean extra) {

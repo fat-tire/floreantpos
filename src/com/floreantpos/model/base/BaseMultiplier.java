@@ -17,6 +17,7 @@ public abstract class BaseMultiplier  implements Comparable, Serializable {
 
 	public static String REF = "Multiplier"; //$NON-NLS-1$
 	public static String PROP_NAME = "name"; //$NON-NLS-1$
+	public static String PROP_MAIN = "main"; //$NON-NLS-1$
 	public static String PROP_BUTTON_COLOR = "buttonColor"; //$NON-NLS-1$
 	public static String PROP_DEFAULT_MULTIPLIER = "defaultMultiplier"; //$NON-NLS-1$
 	public static String PROP_SORT_ORDER = "sortOrder"; //$NON-NLS-1$
@@ -51,9 +52,10 @@ public abstract class BaseMultiplier  implements Comparable, Serializable {
 		protected java.lang.String ticketPrefix;
 		protected java.lang.Double rate;
 		protected java.lang.Integer sortOrder;
-	protected java.lang.Boolean defaultMultiplier;
-	protected java.lang.Integer buttonColor;
-	protected java.lang.Integer textColor;
+		protected java.lang.Boolean defaultMultiplier;
+		protected java.lang.Boolean main;
+		protected java.lang.Integer buttonColor;
+		protected java.lang.Integer textColor;
 
 
 
@@ -133,16 +135,33 @@ public abstract class BaseMultiplier  implements Comparable, Serializable {
 	/**
 	 * Return the value associated with the column: DEFAULT_MULTIPLIER
 	 */
-	public java.lang.Boolean isDefaultMultiplier() {
-		return defaultMultiplier == null ? Boolean.FALSE : defaultMultiplier;
+	public java.lang.Boolean isDefaultMultiplier () {
+								return defaultMultiplier == null ? Boolean.FALSE : defaultMultiplier;
 					}
 
 	/**
 	 * Set the value related to the column: DEFAULT_MULTIPLIER
 	 * @param defaultMultiplier the DEFAULT_MULTIPLIER value
 	 */
-	public void setDefaultMultiplier(java.lang.Boolean defaultMultiplier) {
+	public void setDefaultMultiplier (java.lang.Boolean defaultMultiplier) {
 		this.defaultMultiplier = defaultMultiplier;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: MAIN
+	 */
+	public java.lang.Boolean isMain () {
+								return main == null ? Boolean.FALSE : main;
+					}
+
+	/**
+	 * Set the value related to the column: MAIN
+	 * @param main the MAIN value
+	 */
+	public void setMain (java.lang.Boolean main) {
+		this.main = main;
 	}
 
 
@@ -150,32 +169,37 @@ public abstract class BaseMultiplier  implements Comparable, Serializable {
 	/**
 	 * Return the value associated with the column: BTN_COLOR
 	 */
-	public java.lang.Integer getButtonColor() {
-		return buttonColor == null ? Integer.valueOf(0) : buttonColor;
-	}
+	public java.lang.Integer getButtonColor () {
+									return buttonColor == null ? Integer.valueOf(0) : buttonColor;
+					}
 
 	/**
 	 * Set the value related to the column: BTN_COLOR
 	 * @param buttonColor the BTN_COLOR value
 	 */
-	public void setButtonColor(java.lang.Integer buttonColor) {
+	public void setButtonColor (java.lang.Integer buttonColor) {
 		this.buttonColor = buttonColor;
 	}
+
+
 
 	/**
 	 * Return the value associated with the column: TEXT_COLOR
 	 */
-	public java.lang.Integer getTextColor() {
-		return textColor == null ? Integer.valueOf(0) : textColor;
-	}
+	public java.lang.Integer getTextColor () {
+									return textColor == null ? Integer.valueOf(0) : textColor;
+					}
 
 	/**
 	 * Set the value related to the column: TEXT_COLOR
 	 * @param textColor the TEXT_COLOR value
 	 */
-	public void setTextColor(java.lang.Integer textColor) {
+	public void setTextColor (java.lang.Integer textColor) {
 		this.textColor = textColor;
 	}
+
+
+
 
 
 	public boolean equals (Object obj) {

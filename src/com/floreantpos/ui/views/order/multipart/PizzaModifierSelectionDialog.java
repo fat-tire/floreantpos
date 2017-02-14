@@ -470,7 +470,7 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 		double priceForSize = menuModifier.getPriceForSize(getSelectedSize(), false);
 		if (multiplier != null) {
 			ticketItemModifier.setName(multiplier.getTicketPrefix() + " " + menuModifier.getDisplayName());
-			priceForSize = priceForSize * (multiplier.getRate() / 100);
+			priceForSize = menuModifier.getPriceForMultiplier(multiplier);
 		}
 		ticketItemModifier.setUnitPrice(priceForSize);
 		ticketItemModifier.setTaxRate(menuModifier.getTaxByOrderType(type));
