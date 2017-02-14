@@ -16,15 +16,15 @@ import java.io.Serializable;
 public abstract class BaseTicketItemModifierGroup  implements Comparable, Serializable {
 
 	public static String REF = "TicketItemModifierGroup"; //$NON-NLS-1$
-	public static String PROP_MENU_ITEM_MODIFIER_GROUP = "menuItemModifierGroup"; //$NON-NLS-1$
-	public static String PROP_MAIN_SECTION = "mainSection"; //$NON-NLS-1$
+	public static String PROP_MIN_QUANTITY = "minQuantity"; //$NON-NLS-1$
 	public static String PROP_PARENT = "parent"; //$NON-NLS-1$
-	public static String PROP_SHOW_SECTION_NAME = "showSectionName"; //$NON-NLS-1$
 	public static String PROP_SORT_ORDER = "sortOrder"; //$NON-NLS-1$
+	public static String PROP_SHOW_SECTION_NAME = "showSectionName"; //$NON-NLS-1$
+	public static String PROP_ID = "id"; //$NON-NLS-1$
+	public static String PROP_MENU_ITEM_MODIFIER_GROUP = "menuItemModifierGroup"; //$NON-NLS-1$
 	public static String PROP_SECTION_NAME = "sectionName"; //$NON-NLS-1$
 	public static String PROP_MAX_QUANTITY = "maxQuantity"; //$NON-NLS-1$
-	public static String PROP_ID = "id"; //$NON-NLS-1$
-	public static String PROP_MIN_QUANTITY = "minQuantity"; //$NON-NLS-1$
+	public static String PROP_MAIN_SECTION = "mainSection"; //$NON-NLS-1$
 
 
 	// constructors

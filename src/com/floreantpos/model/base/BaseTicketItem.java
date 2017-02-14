@@ -5,6 +5,7 @@ import java.io.Serializable;
 
 import com.floreantpos.model.TicketItemCookingInstruction;
 
+
 /**
  * This is an object that contains data related to the TICKET_ITEM table.
  * Do not modify this class because it will be overwritten if the configuration file
@@ -117,7 +118,7 @@ public abstract class BaseTicketItem  implements Comparable, Serializable {
 	private com.floreantpos.model.PrinterGroup printerGroup;
 
 	// collections
-	private java.util.List<com.floreantpos.model.TicketItemModifierGroup> ticketItemModifierGroups;
+	private java.util.List<com.floreantpos.model.TicketItemModifier> ticketItemModifiers;
 	private java.util.List<com.floreantpos.model.TicketItemModifier> addOns;
 	private java.util.List<com.floreantpos.model.TicketItemDiscount> discounts;
 	private java.util.List<TicketItemCookingInstruction> cookingInstructions;
@@ -647,23 +648,23 @@ public abstract class BaseTicketItem  implements Comparable, Serializable {
 
 
 	/**
-	 * Return the value associated with the column: ticketItemModifierGroups
+	 * Return the value associated with the column: ticketItemModifiers
 	 */
-	public java.util.List<com.floreantpos.model.TicketItemModifierGroup> getTicketItemModifierGroups () {
-					return ticketItemModifierGroups;
+	public java.util.List<com.floreantpos.model.TicketItemModifier> getTicketItemModifiers () {
+					return ticketItemModifiers;
 			}
 
 	/**
-	 * Set the value related to the column: ticketItemModifierGroups
-	 * @param ticketItemModifierGroups the ticketItemModifierGroups value
+	 * Set the value related to the column: ticketItemModifiers
+	 * @param ticketItemModifiers the ticketItemModifiers value
 	 */
-	public void setTicketItemModifierGroups (java.util.List<com.floreantpos.model.TicketItemModifierGroup> ticketItemModifierGroups) {
-		this.ticketItemModifierGroups = ticketItemModifierGroups;
+	public void setTicketItemModifiers (java.util.List<com.floreantpos.model.TicketItemModifier> ticketItemModifiers) {
+		this.ticketItemModifiers = ticketItemModifiers;
 	}
 
-	public void addToticketItemModifierGroups (com.floreantpos.model.TicketItemModifierGroup ticketItemModifierGroup) {
-		if (null == getTicketItemModifierGroups()) setTicketItemModifierGroups(new java.util.ArrayList<com.floreantpos.model.TicketItemModifierGroup>());
-		getTicketItemModifierGroups().add(ticketItemModifierGroup);
+	public void addToticketItemModifiers (com.floreantpos.model.TicketItemModifier ticketItemModifier) {
+		if (null == getTicketItemModifiers()) setTicketItemModifiers(new java.util.ArrayList<com.floreantpos.model.TicketItemModifier>());
+		getTicketItemModifiers().add(ticketItemModifier);
 	}
 
 

@@ -27,7 +27,6 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 import javax.swing.JPanel;
 
@@ -43,7 +42,6 @@ import com.floreantpos.model.Multiplier;
 import com.floreantpos.model.OrderType;
 import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.TicketItemModifier;
-import com.floreantpos.model.TicketItemModifierGroup;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.ui.dialog.POSDialog;
 import com.floreantpos.ui.dialog.POSMessageDialog;
@@ -176,36 +174,37 @@ public class ModifierSelectionDialog extends POSDialog implements ModifierGroupS
 		//			return;
 		//		}
 
-		TicketItemModifierGroup ticketItemModifierGroup = modifierSelectionModel.getTicketItem().findTicketItemModifierGroup(modifier, false);
-
-		int freeModifiers = ticketItemModifierGroup.countFreeModifiers();
-		int minQuantity = ticketItemModifierGroup.getMinQuantity();
-		int maxQuantity = ticketItemModifierGroup.getMaxQuantity();
+		TicketItem ticketItem = modifierSelectionModel.getTicketItem();
+		MenuItemModifierGroup menuItemModifierGroup = modifier.getMenuItemModifierGroup();
+		
+		int numModifiers = ticketItem.countModifierFromGroup(menuItemModifierGroup);
+		int minQuantity = menuItemModifierGroup.getMinQuantity();
+		int maxQuantity = menuItemModifierGroup.getMaxQuantity();
 
 		if (maxQuantity < minQuantity) {
 			maxQuantity = minQuantity;
 		}
 
-		if (freeModifiers >= maxQuantity) {
-			//			POSMessageDialog.showError("You have added maximum number of allowed modifiers from group " + modifier.getModifierGroup().getDisplayName());
+		if (numModifiers >= maxQuantity) {
+			POSMessageDialog.showError("You have added maximum number of allowed modifiers from group " + modifier.getModifierGroup().getDisplayName());
 			//			return;
-			if (Application.getInstance().getRestaurant().isAllowModifierMaxExceed()) {
-				modifierSelectionModel.getTicketItem().addAddOn(modifier);
-			}
-			updateView();
+//			if (Application.getInstance().getRestaurant().isAllowModifierMaxExceed()) {
+//				ticketItem.addAddOn(modifier);
+//			}
+//			updateView();
 			return;
 		}
 
-		TicketItemModifier ticketItemModifier = ticketItemModifierGroup.findTicketItemModifier(modifier, false);
+		TicketItemModifier ticketItemModifier = ticketItem.findTicketItemModifierFor(modifier);
 		if (ticketItemModifier == null) {
-			OrderType type = modifierSelectionModel.getTicketItem().getTicket().getOrderType();
-			ticketItemModifierGroup.addTicketItemModifier(modifier, TicketItemModifier.NORMAL_MODIFIER, type, multiplier);
+			OrderType type = ticketItem.getTicket().getOrderType();
+			ticketItem.addTicketItemModifier(modifier, TicketItemModifier.NORMAL_MODIFIER, type, multiplier);
 		}
 		else {
 			ticketItemModifier.setItemCount(ticketItemModifier.getItemCount() + 1);
 		}
 		updateView();
-		if ((freeModifiers + 1) == maxQuantity) {
+		if ((numModifiers + 1) == maxQuantity) {
 			modifierGroupSelectionDone(modifier.getModifierGroup());
 		}
 	}
@@ -218,30 +217,23 @@ public class ModifierSelectionDialog extends POSDialog implements ModifierGroupS
 
 	@Override
 	public void clearModifiers(MenuModifierGroup modifierGroup) {
-		List<TicketItemModifierGroup> ticketItemModifierGroups = modifierSelectionModel.getTicketItem().getTicketItemModifierGroups();
-		if (ticketItemModifierGroups == null) {
-			return;
-		}
-
-		for (Iterator iterator = ticketItemModifierGroups.iterator(); iterator.hasNext();) {
-			TicketItemModifierGroup ticketItemModifierGroup = (TicketItemModifierGroup) iterator.next();
-			for (Iterator iterator2 = ticketItemModifierGroup.getTicketItemModifiers().iterator(); iterator2.hasNext();) {
-				TicketItemModifier ticketItemModifier = (TicketItemModifier) iterator2.next();
+		TicketItem ticketItem = modifierSelectionModel.getTicketItem();
+		List<TicketItemModifier> ticketItemModifiers = ticketItem.getTicketItemModifiers();
+		if (ticketItemModifiers == null) {
+			for (Iterator iterator = ticketItemModifiers.iterator(); iterator.hasNext();) {
+				TicketItemModifier ticketItemModifier = (TicketItemModifier) iterator.next();
 				if (!ticketItemModifier.isPrintedToKitchen()) {
-					iterator2.remove();
+					iterator.remove();
 				}
 			}
-			if (ticketItemModifierGroup.getTicketItemModifiers().size() < 0) {
-				iterator.remove();
-			}
 		}
 
-		List<TicketItemModifier> addOnsList = modifierSelectionModel.getTicketItem().getAddOns();
+		List<TicketItemModifier> addOnsList = ticketItem.getAddOns();
 		if (addOnsList != null) {
-			for (Iterator iterator3 = addOnsList.iterator(); iterator3.hasNext();) {
-				TicketItemModifier addOns = (TicketItemModifier) iterator3.next();
+			for (Iterator iterator = addOnsList.iterator(); iterator.hasNext();) {
+				TicketItemModifier addOns = (TicketItemModifier) iterator.next();
 				if (!addOns.isPrintedToKitchen()) {
-					iterator3.remove();
+					iterator.remove();
 				}
 			}
 		}
@@ -272,23 +264,7 @@ public class ModifierSelectionDialog extends POSDialog implements ModifierGroupS
 	}
 
 	public static boolean isRequiredModifiersAdded(TicketItem ticketItem, MenuItemModifierGroup menuItemModifierGroup) {
-		int minQuantity = menuItemModifierGroup.getMinQuantity();
-		if (minQuantity <= 0) {
-			return true;
-		}
-
-		Set<MenuModifier> modifiers = menuItemModifierGroup.getModifierGroup().getModifiers();
-		if (modifiers == null || modifiers.size() == 0) {
-			return true;
-		}
-
-		TicketItemModifierGroup ticketItemModifierGroup = ticketItem.findTicketItemModifierGroup(menuItemModifierGroup.getId());
-
-		if (ticketItemModifierGroup == null || ticketItemModifierGroup.countFreeModifiers() < minQuantity) {
-			return false;
-		}
-
-		return true;
+		return ticketItem.requiredModifiersAdded(menuItemModifierGroup);
 	}
 
 	private void showModifierSelectionMessage(MenuItemModifierGroup menuItemModifierGroup) {
@@ -303,41 +279,36 @@ public class ModifierSelectionDialog extends POSDialog implements ModifierGroupS
 	}
 
 	public void finishModifierSelection() {
-		List<TicketItemModifierGroup> ticketItemModifierGroups = modifierSelectionModel.getTicketItem().getTicketItemModifierGroups();
-		if (ticketItemModifierGroups == null) {
+		TicketItem ticketItem = modifierSelectionModel.getTicketItem();
+		List<MenuItemModifierGroup> menuItemModiferGroups = modifierSelectionModel.getMenuItem().getMenuItemModiferGroups();
+		if (menuItemModiferGroups == null) {
+			setCanceled(false);
+			dispose();
 			return;
 		}
-		if (!ticketItemModifierGroups.isEmpty()) {
+		if (!menuItemModiferGroups.isEmpty()) {
 
-			for (Iterator iterator = ticketItemModifierGroups.iterator(); iterator.hasNext();) {
-				TicketItemModifierGroup ticketItemModifierGroup = (TicketItemModifierGroup) iterator.next();
-
-				int minQuantity = ticketItemModifierGroup.getMinQuantity();
-				int maxQuantity = ticketItemModifierGroup.getMaxQuantity();
-
-				List<TicketItemModifier> ticketItemModifiers = ticketItemModifierGroup.getTicketItemModifiers();
-
-				if (ticketItemModifiers == null) {
-					if (minQuantity != 0) {
+			for (Iterator iterator = menuItemModiferGroups.iterator(); iterator.hasNext();) {
+				MenuItemModifierGroup ticketItemModifierGroup = (MenuItemModifierGroup) iterator.next();
+				if (!ticketItem.requiredModifiersAdded(ticketItemModifierGroup)) {
 						POSMessageDialog.showMessage(POSUtil.getFocusedWindow(), "Please select minimum quantity of each group!");
 						return;
-					}
 				}
-				if (!ticketItemModifiers.isEmpty()) {
-					int size = ticketItemModifiers.size();
-					if (size < minQuantity) {
-						POSMessageDialog.showMessage(POSUtil.getFocusedWindow(), "Please select minimum quantity of each group!");
-						return;
-					}
-					else if (size > maxQuantity) {
-						POSMessageDialog.showMessage(POSUtil.getFocusedWindow(), "Please select quantity below the maximum quantity of each group!");
-						return;
-					}
-					else {
-						setCanceled(false);
-						dispose();
-					}
-				}
+//				if (!ticketItemModifiers.isEmpty()) {
+//					int size = ticketItemModifiers.size();
+//					if (size < minQuantity) {
+//						POSMessageDialog.showMessage(POSUtil.getFocusedWindow(), "Please select minimum quantity of each group!");
+//						return;
+//					}
+//					else if (size > maxQuantity) {
+//						POSMessageDialog.showMessage(POSUtil.getFocusedWindow(), "Please select quantity below the maximum quantity of each group!");
+//						return;
+//					}
+//					else {
+//						setCanceled(false);
+//						dispose();
+//					}
+//				}
 			}
 		}
 	}

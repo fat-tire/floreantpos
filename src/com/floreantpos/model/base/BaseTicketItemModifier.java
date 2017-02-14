@@ -16,23 +16,23 @@ import java.io.Serializable;
 public abstract class BaseTicketItemModifier  implements Comparable, Serializable {
 
 	public static String REF = "TicketItemModifier"; //$NON-NLS-1$
-	public static String PROP_STATUS = "status"; //$NON-NLS-1$
-	public static String PROP_SHOULD_PRINT_TO_KITCHEN = "shouldPrintToKitchen"; //$NON-NLS-1$
+	public static String PROP_SUB_TOTAL_AMOUNT = "subTotalAmount"; //$NON-NLS-1$
 	public static String PROP_PARENT = "parent"; //$NON-NLS-1$
-	public static String PROP_TICKET_ITEM = "ticketItem"; //$NON-NLS-1$
+	public static String PROP_MENU_ITEM_MODIFIER_GROUP_ID = "menuItemModifierGroupId"; //$NON-NLS-1$
+	public static String PROP_ITEM_COUNT = "itemCount"; //$NON-NLS-1$
 	public static String PROP_INFO_ONLY = "infoOnly"; //$NON-NLS-1$
-	public static String PROP_TOTAL_AMOUNT = "totalAmount"; //$NON-NLS-1$
-	public static String PROP_ITEM_ID = "itemId"; //$NON-NLS-1$
-	public static String PROP_GROUP_ID = "groupId"; //$NON-NLS-1$
-	public static String PROP_NAME = "name"; //$NON-NLS-1$
+	public static String PROP_TAX_RATE = "taxRate"; //$NON-NLS-1$
 	public static String PROP_UNIT_PRICE = "unitPrice"; //$NON-NLS-1$
 	public static String PROP_TAX_AMOUNT = "taxAmount"; //$NON-NLS-1$
-	public static String PROP_TAX_RATE = "taxRate"; //$NON-NLS-1$
-	public static String PROP_ITEM_COUNT = "itemCount"; //$NON-NLS-1$
-	public static String PROP_MODIFIER_TYPE = "modifierType"; //$NON-NLS-1$
-	public static String PROP_ID = "id"; //$NON-NLS-1$
+	public static String PROP_NAME = "name"; //$NON-NLS-1$
 	public static String PROP_PRINTED_TO_KITCHEN = "printedToKitchen"; //$NON-NLS-1$
-	public static String PROP_SUB_TOTAL_AMOUNT = "subTotalAmount"; //$NON-NLS-1$
+	public static String PROP_STATUS = "status"; //$NON-NLS-1$
+	public static String PROP_SHOULD_PRINT_TO_KITCHEN = "shouldPrintToKitchen"; //$NON-NLS-1$
+	public static String PROP_ID = "id"; //$NON-NLS-1$
+	public static String PROP_TOTAL_AMOUNT = "totalAmount"; //$NON-NLS-1$
+	public static String PROP_TICKET_ITEM = "ticketItem"; //$NON-NLS-1$
+	public static String PROP_MODIFIER_TYPE = "modifierType"; //$NON-NLS-1$
+	public static String PROP_MENU_ITEM_ID = "menuItemId"; //$NON-NLS-1$
 
 
 	// constructors
@@ -58,8 +58,8 @@ public abstract class BaseTicketItemModifier  implements Comparable, Serializabl
 	private java.lang.Integer id;
 
 	// fields
-		protected java.lang.Integer itemId;
-		protected java.lang.Integer groupId;
+		protected java.lang.Integer menuItemId;
+		protected java.lang.Integer menuItemModifierGroupId;
 		protected java.lang.Integer itemCount;
 		protected java.lang.String name;
 		protected java.lang.Double unitPrice;
@@ -104,16 +104,16 @@ public abstract class BaseTicketItemModifier  implements Comparable, Serializabl
 	/**
 	 * Return the value associated with the column: ITEM_ID
 	 */
-	public java.lang.Integer getItemId () {
-									return itemId == null ? Integer.valueOf(0) : itemId;
+	public java.lang.Integer getMenuItemId () {
+									return menuItemId == null ? Integer.valueOf(0) : menuItemId;
 					}
 
 	/**
 	 * Set the value related to the column: ITEM_ID
-	 * @param itemId the ITEM_ID value
+	 * @param menuItemId the ITEM_ID value
 	 */
-	public void setItemId (java.lang.Integer itemId) {
-		this.itemId = itemId;
+	public void setMenuItemId (java.lang.Integer menuItemId) {
+		this.menuItemId = menuItemId;
 	}
 
 
@@ -121,16 +121,16 @@ public abstract class BaseTicketItemModifier  implements Comparable, Serializabl
 	/**
 	 * Return the value associated with the column: GROUP_ID
 	 */
-	public java.lang.Integer getGroupId () {
-									return groupId == null ? Integer.valueOf(0) : groupId;
+	public java.lang.Integer getMenuItemModifierGroupId () {
+									return menuItemModifierGroupId == null ? Integer.valueOf(0) : menuItemModifierGroupId;
 					}
 
 	/**
 	 * Set the value related to the column: GROUP_ID
-	 * @param groupId the GROUP_ID value
+	 * @param menuItemModifierGroupId the GROUP_ID value
 	 */
-	public void setGroupId (java.lang.Integer groupId) {
-		this.groupId = groupId;
+	public void setMenuItemModifierGroupId (java.lang.Integer menuItemModifierGroupId) {
+		this.menuItemModifierGroupId = menuItemModifierGroupId;
 	}
 
 

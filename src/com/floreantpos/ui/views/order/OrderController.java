@@ -196,47 +196,47 @@ public class OrderController implements OrderListener, CategorySelectionListener
 
 			MenuItem menuItem = ticketItem.getMenuItem();
 
-			List<TicketItemModifierGroup> ticketItemModifierGroups = ticketItem.getTicketItemModifierGroups();
-			if (ticketItemModifierGroups == null) {
-				ticketItemModifierGroups = new ArrayList<TicketItemModifierGroup>();
-			}
-			List<TicketItemModifier> addOnsList = ticketItem.getAddOns();
-			if (addOnsList == null) {
-				addOnsList = new ArrayList<TicketItemModifier>();
-			}
+//			List<TicketItemModifierGroup> ticketItemModifierGroups = ticketItem.getTicketItemModifierGroups();
+//			if (ticketItemModifierGroups == null) {
+//				ticketItemModifierGroups = new ArrayList<TicketItemModifierGroup>();
+//			}
+//			List<TicketItemModifier> addOnsList = ticketItem.getAddOns();
+//			if (addOnsList == null) {
+//				addOnsList = new ArrayList<TicketItemModifier>();
+//			}
 
 			TicketItem cloneTicketItem = ticketItem.clone(ticketItem);
 
 			ModifierSelectionDialog dialog = new ModifierSelectionDialog(new ModifierSelectionModel(cloneTicketItem, menuItem));
 			dialog.open();
 
-			if (!dialog.isCanceled()) {
-				List<TicketItemModifierGroup> addedTicketItemModifierGroup = cloneTicketItem.getTicketItemModifierGroups();
-				if (addedTicketItemModifierGroup == null) {
-					addedTicketItemModifierGroup = new ArrayList<TicketItemModifierGroup>();
-				}
-				ticketItemModifierGroups.clear();
-				for (TicketItemModifierGroup modifierGroup : addedTicketItemModifierGroup) {
-					modifierGroup.setParent(ticketItem);
-					if (modifierGroup.getTicketItemModifiers() != null) {
-						for (TicketItemModifier modifier : modifierGroup.getTicketItemModifiers()) {
-							modifier.setTicketItem(ticketItem);
-						}
-						ticketItem.addToticketItemModifierGroups(modifierGroup);
-					}
-				}
-				List<TicketItemModifier> addedAddOns = cloneTicketItem.getAddOns();
-				if (addedAddOns == null) {
-					addedAddOns = new ArrayList<TicketItemModifier>();
-				}
-				if (!CollectionUtils.isEqualCollection(addedAddOns, addOnsList)) {
-					addOnsList.clear();
-					for (TicketItemModifier addedModifier : addedAddOns) {
-						addedModifier.setTicketItem(ticketItem);
-						ticketItem.addToaddOns(addedModifier);
-					}
-				}
-			}
+//			if (!dialog.isCanceled()) {
+//				List<TicketItemModifierGroup> addedTicketItemModifierGroup = cloneTicketItem.getTicketItemModifierGroups();
+//				if (addedTicketItemModifierGroup == null) {
+//					addedTicketItemModifierGroup = new ArrayList<TicketItemModifierGroup>();
+//				}
+//				ticketItemModifierGroups.clear();
+//				for (TicketItemModifierGroup modifierGroup : addedTicketItemModifierGroup) {
+//					modifierGroup.setParent(ticketItem);
+//					if (modifierGroup.getTicketItemModifiers() != null) {
+//						for (TicketItemModifier modifier : modifierGroup.getTicketItemModifiers()) {
+//							modifier.setTicketItem(ticketItem);
+//						}
+//						ticketItem.addToticketItemModifierGroups(modifierGroup);
+//					}
+//				}
+//				List<TicketItemModifier> addedAddOns = cloneTicketItem.getAddOns();
+//				if (addedAddOns == null) {
+//					addedAddOns = new ArrayList<TicketItemModifier>();
+//				}
+//				if (!CollectionUtils.isEqualCollection(addedAddOns, addOnsList)) {
+//					addOnsList.clear();
+//					for (TicketItemModifier addedModifier : addedAddOns) {
+//						addedModifier.setTicketItem(ticketItem);
+//						ticketItem.addToaddOns(addedModifier);
+//					}
+//				}
+//			}
 		} catch (Exception e) {
 			POSMessageDialog.showError(Application.getPosWindow(), e.getMessage(), e);
 		}

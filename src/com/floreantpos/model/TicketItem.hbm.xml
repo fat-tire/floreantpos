@@ -39,13 +39,22 @@
 		<property column="STOCK_AMOUNT_ADJUSTED" name="stockAmountAdjusted" type="java.lang.Boolean" />
 		<property name="pizzaType" column="PIZZA_TYPE" type="java.lang.Boolean" />
 		
-		<list cascade="all" inverse="false" lazy="true" name="ticketItemModifierGroups">
+		<!-- <list cascade="all" inverse="false" lazy="true" name="ticketItemModifierGroups">
 			<key>
 				<column name="TICKETITEM_ID" />
 			</key>
 			<list-index column="ITEM_ORDER" />
 			<one-to-many class="com.floreantpos.model.TicketItemModifierGroup" />
+		</list> -->
+		
+		<list cascade="all" inverse="false" lazy="false" name="ticketItemModifiers">
+			<key>
+				<column name="TICKET_ITEM_ID" />
+			</key>
+			<list-index column="MODIFIER_ORDER" />
+			<one-to-many class="com.floreantpos.model.TicketItemModifier" />
 		</list>
+		
 		<!-- list name="modifiers" inverse="false" cascade="all" lazy="false"> <key column="TICKET_ITEM_ID"/> <list-index column="INDEX_ORDER"/> <one-to-many class="TicketItemModifier"/> 
 			</list -->
 		<many-to-one class="com.floreantpos.model.Ticket" name="ticket" not-null="true">

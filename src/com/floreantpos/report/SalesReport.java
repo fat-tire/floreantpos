@@ -38,7 +38,6 @@ import com.floreantpos.Messages;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.TicketItemModifier;
-import com.floreantpos.model.TicketItemModifierGroup;
 import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.report.service.ReportService;
 import com.floreantpos.util.CurrencyUtil;
@@ -140,7 +139,7 @@ public class SalesReport extends Report {
 
 					itemMap.put(key, reportItem);
 				}
-				
+
 				//Edited By Md.Samiul Arafin
 				if (ticketItem.isFractionalUnit()) {
 					reportItem.setQuantity(ticketItem.getItemQuantity() + reportItem.getQuantity());
@@ -156,41 +155,37 @@ public class SalesReport extends Report {
 				reportItem.setTaxTotal(reportItem.getTaxTotal() + ticketItem.getTaxAmountWithoutModifiers());
 				reportItem.setTotal(reportItem.getTotal() + ticketItem.getSubtotalAmountWithoutModifiers());
 
-				if (ticketItem.isHasModifiers() && ticketItem.getTicketItemModifierGroups() != null) {
-					List<TicketItemModifierGroup> ticketItemModifierGroups = ticketItem.getTicketItemModifierGroups();
-
-					for (TicketItemModifierGroup ticketItemModifierGroup : ticketItemModifierGroups) {
-						List<TicketItemModifier> modifiers = ticketItemModifierGroup.getTicketItemModifiers();
-						for (TicketItemModifier modifier : modifiers) {
-							if (modifier.getUnitPrice() == 0 && !isIncludedFreeItems()) {
-								continue;
-							}
-
-							if (modifier.getItemId() == null) {
-								key = modifier.getName();
-							}
-							else {
-								key = modifier.getItemId().toString();
-							}
-							key += "-" + modifier.getName() + modifier.getModifierType() + "-" + modifier.getUnitPrice() + modifier.getTaxRate(); //$NON-NLS-1$ //$NON-NLS-2$
-
-							ReportItem modifierReportItem = modifierMap.get(key);
-							if (modifierReportItem == null) {
-								modifierReportItem = new ReportItem();
-								modifierReportItem.setId(key);
-								modifierReportItem.setUniqueId(modifier.getItemId().toString());
-
-								modifierReportItem.setPrice(modifier.getUnitPrice());
-								modifierReportItem.setName(modifier.getName());
-								modifierReportItem.setTaxRate(modifier.getTaxRate());
-
-								modifierMap.put(key, modifierReportItem);
-							}
-							modifierReportItem.setQuantity(modifierReportItem.getQuantity() + modifier.getItemCount());
-							modifierReportItem.setGrossTotal(modifierReportItem.getGrossTotal() + modifier.getTotalAmount());
-							modifierReportItem.setTaxTotal(modifierReportItem.getTaxTotal() + modifier.getTaxAmount());
-							modifierReportItem.setTotal(modifierReportItem.getTotal() + modifier.getSubTotalAmount());
+				List<TicketItemModifier> modifiers = ticketItem.getTicketItemModifiers();
+				if (modifiers != null) {
+					for (TicketItemModifier modifier : modifiers) {
+						if (modifier.getUnitPrice() == 0 && !isIncludedFreeItems()) {
+							continue;
 						}
+
+						if (modifier.getMenuItemId() == null) {
+							key = modifier.getName();
+						}
+						else {
+							key = modifier.getMenuItemId().toString();
+						}
+						key += "-" + modifier.getName() + modifier.getModifierType() + "-" + modifier.getUnitPrice() + modifier.getTaxRate(); //$NON-NLS-1$ //$NON-NLS-2$
+
+						ReportItem modifierReportItem = modifierMap.get(key);
+						if (modifierReportItem == null) {
+							modifierReportItem = new ReportItem();
+							modifierReportItem.setId(key);
+							modifierReportItem.setUniqueId(modifier.getMenuItemId().toString());
+
+							modifierReportItem.setPrice(modifier.getUnitPrice());
+							modifierReportItem.setName(modifier.getName());
+							modifierReportItem.setTaxRate(modifier.getTaxRate());
+
+							modifierMap.put(key, modifierReportItem);
+						}
+						modifierReportItem.setQuantity(modifierReportItem.getQuantity() + modifier.getItemCount());
+						modifierReportItem.setGrossTotal(modifierReportItem.getGrossTotal() + modifier.getTotalAmount());
+						modifierReportItem.setTaxTotal(modifierReportItem.getTaxTotal() + modifier.getTaxAmount());
+						modifierReportItem.setTotal(modifierReportItem.getTotal() + modifier.getSubTotalAmount());
 					}
 				}
 			}

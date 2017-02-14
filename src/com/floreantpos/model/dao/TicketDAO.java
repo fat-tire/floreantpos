@@ -54,7 +54,6 @@ import com.floreantpos.model.Shift;
 import com.floreantpos.model.Terminal;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketItem;
-import com.floreantpos.model.TicketItemModifierGroup;
 import com.floreantpos.model.TransactionType;
 import com.floreantpos.model.User;
 import com.floreantpos.model.UserType;
@@ -183,18 +182,12 @@ public class TicketDAO extends BaseTicketDAO {
 		Hibernate.initialize(ticket.getDiscounts());
 		Hibernate.initialize(ticket.getTransactions());
 
-		List<TicketItem> ticketItems = ticket.getTicketItems();
-		if (ticketItems != null) {
-			for (TicketItem ticketItem : ticketItems) {
-				List<TicketItemModifierGroup> ticketItemModifierGroups = ticketItem.getTicketItemModifierGroups();
-				Hibernate.initialize(ticketItemModifierGroups);
-				if (ticketItemModifierGroups != null) {
-					for (TicketItemModifierGroup ticketItemModifierGroup : ticketItemModifierGroups) {
-						Hibernate.initialize(ticketItemModifierGroup.getTicketItemModifiers());
-					}
-				}
-			}
-		}
+//		List<TicketItem> ticketItems = ticket.getTicketItems();
+//		if (ticketItems != null) {
+//			for (TicketItem ticketItem : ticketItems) {
+//				Hibernate.initialize(ticketItem.getTicketItemModifiers());
+//			}
+//		}
 
 		session.close();
 

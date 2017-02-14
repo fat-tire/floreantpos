@@ -116,17 +116,24 @@ public class ModifierViewerTableModel extends AbstractTableModel {
 	}
 
 	private void calculateRowsForModifiers() {
-		List<TicketItemModifierGroup> ticketItemModifierGroups = ticketItem.getTicketItemModifierGroups();
-		if (ticketItemModifierGroups == null)
+//		List<TicketItemModifierGroup> ticketItemModifierGroups = ticketItem.getTicketItemModifierGroups();
+//		if (ticketItemModifierGroups == null)
+//			return;
+//
+//		for (TicketItemModifierGroup ticketItemModifierGroup : ticketItemModifierGroups) {
+//			List<TicketItemModifier> ticketItemModifiers = ticketItemModifierGroup.getTicketItemModifiers();
+//			if (ticketItemModifiers != null) {
+//				for (TicketItemModifier ticketItemModifier : ticketItemModifiers) {
+//					tableRows.add(ticketItemModifier);
+//				}
+//			}
+//		}
+		List<TicketItemModifier> ticketItemModifiers = ticketItem.getTicketItemModifiers();
+		if (ticketItemModifiers == null) {
 			return;
-
-		for (TicketItemModifierGroup ticketItemModifierGroup : ticketItemModifierGroups) {
-			List<TicketItemModifier> ticketItemModifiers = ticketItemModifierGroup.getTicketItemModifiers();
-			if (ticketItemModifiers != null) {
-				for (TicketItemModifier ticketItemModifier : ticketItemModifiers) {
-					tableRows.add(ticketItemModifier);
-				}
-			}
+		}
+		for (TicketItemModifier ticketItemModifier : ticketItemModifiers) {
+			tableRows.add(ticketItemModifier);
 		}
 	}
 

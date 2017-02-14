@@ -563,16 +563,11 @@ public class Ticket extends BaseTicket {
 				return true;
 			}
 
-			List<TicketItemModifierGroup> modifierGroups = item.getTicketItemModifierGroups();
-			if (modifierGroups != null) {
-				for (TicketItemModifierGroup modifierGroup : modifierGroups) {
-					List<TicketItemModifier> ticketItemModifiers = modifierGroup.getTicketItemModifiers();
-					if (ticketItemModifiers != null) {
-						for (TicketItemModifier modifier : ticketItemModifiers) {
-							if (modifier.isShouldPrintToKitchen() && !modifier.isPrintedToKitchen()) {
-								return true;
-							}
-						}
+			List<TicketItemModifier> ticketItemModifiers = item.getTicketItemModifiers();
+			if (ticketItemModifiers != null) {
+				for (TicketItemModifier modifier : ticketItemModifiers) {
+					if (modifier.isShouldPrintToKitchen() && !modifier.isPrintedToKitchen()) {
+						return true;
 					}
 				}
 			}
@@ -841,15 +836,10 @@ public class Ticket extends BaseTicket {
 				continue;
 			}
 			ticketItem.setPrintedToKitchen(true);
-			List<TicketItemModifierGroup> ticketItemModifierGroups = ticketItem.getTicketItemModifierGroups();
-			if (ticketItemModifierGroups != null) {
-				for (TicketItemModifierGroup ticketItemModifierGroup : ticketItemModifierGroups) {
-					List<TicketItemModifier> ticketItemModifiers = ticketItemModifierGroup.getTicketItemModifiers();
-					if (ticketItemModifiers != null) {
-						for (TicketItemModifier itemModifier : ticketItemModifiers) {
-							itemModifier.setPrintedToKitchen(true);
-						}
-					}
+			List<TicketItemModifier> ticketItemModifiers = ticketItem.getTicketItemModifiers();
+			if (ticketItemModifiers != null) {
+				for (TicketItemModifier itemModifier : ticketItemModifiers) {
+					itemModifier.setPrintedToKitchen(true);
 				}
 			}
 

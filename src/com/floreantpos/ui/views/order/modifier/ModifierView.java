@@ -210,8 +210,8 @@ public class ModifierView extends SelectionView {
 			ModifierButton modifierButton = (ModifierButton) component;
 			MenuModifier modifier = modifierButton.menuModifier;
 
-			TicketItemModifierGroup ticketItemModifierGroup = ticketItem.findTicketItemModifierGroup(modifier, false);
-			TicketItemModifier ticketItemModifier = ticketItemModifierGroup.findTicketItemModifier(modifier, false);
+			//TicketItemModifierGroup ticketItemModifierGroup = ticketItem.findTicketItemModifierGroup(modifier, false);
+			TicketItemModifier ticketItemModifier = ticketItem.findTicketItemModifierFor(modifier);
 			if (ticketItemModifier != null) {
 				count++;
 				modifierButton

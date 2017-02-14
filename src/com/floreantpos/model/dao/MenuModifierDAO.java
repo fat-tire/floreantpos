@@ -35,7 +35,7 @@ public class MenuModifierDAO extends BaseMenuModifierDAO {
 	}
 
 	public MenuModifier getMenuModifierFromTicketItemModifier(TicketItemModifier ticketItemModifier) {
-		MenuModifier menuModifier = get(ticketItemModifier.getItemId());
+		MenuModifier menuModifier = get(ticketItemModifier.getMenuItemId());
 		menuModifier.setMenuItemModifierGroup(ticketItemModifier.getParent().getMenuItemModifierGroup());
 		return menuModifier;
 	}

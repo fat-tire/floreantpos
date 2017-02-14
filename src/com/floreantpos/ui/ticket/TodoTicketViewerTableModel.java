@@ -38,7 +38,8 @@ public class TodoTicketViewerTableModel extends AbstractTableModel {
 
 	private List<ITicketItem> items = new ArrayList<ITicketItem>();
 
-	protected String[] columnNames = { Messages.getString("TodoTicketViewerTableModel.0"), Messages.getString("TodoTicketViewerTableModel.1"), Messages.getString("TodoTicketViewerTableModel.2"), Messages.getString("TodoTicketViewerTableModel.3"), Messages.getString("TodoTicketViewerTableModel.4") }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+	protected String[] columnNames = {
+			Messages.getString("TodoTicketViewerTableModel.0"), Messages.getString("TodoTicketViewerTableModel.1"), Messages.getString("TodoTicketViewerTableModel.2"), Messages.getString("TodoTicketViewerTableModel.3"), Messages.getString("TodoTicketViewerTableModel.4") }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 
 	private boolean forReciptPrint;
 	private boolean printCookingInstructions;
@@ -109,15 +110,13 @@ public class TodoTicketViewerTableModel extends AbstractTableModel {
 
 			items.add(ticketItem);
 
-			List<TicketItemModifierGroup> ticketItemModifierGroups = ticketItem.getTicketItemModifierGroups();
-			if (ticketItemModifierGroups != null) {
-				for (TicketItemModifierGroup ticketItemModifierGroup : ticketItemModifierGroups) {
-					List<TicketItemModifier> ticketItemModifiers = ticketItemModifierGroup.getTicketItemModifiers();
-					if (ticketItemModifiers != null) {
-						for (TicketItemModifier itemModifier : ticketItemModifiers) {
-							items.add(itemModifier);
-						}
-					}
+			//			List<TicketItemModifierGroup> ticketItemModifierGroups = ticketItem.getTicketItemModifierGroups();
+			//			if (ticketItemModifierGroups != null) {
+			//				for (TicketItemModifierGroup ticketItemModifierGroup : ticketItemModifierGroups) {
+			List<TicketItemModifier> ticketItemModifiers = ticketItem.getTicketItemModifiers();
+			if (ticketItemModifiers != null) {
+				for (TicketItemModifier itemModifier : ticketItemModifiers) {
+					items.add(itemModifier);
 				}
 			}
 
@@ -213,7 +212,7 @@ public class TodoTicketViewerTableModel extends AbstractTableModel {
 
 		for (Iterator iter = ticketItemModifiers.iterator(); iter.hasNext();) {
 			TicketItemModifier modifier = (TicketItemModifier) iter.next();
-			if (modifier.getItemId() == modifierToDelete.getItemId()) {
+			if (modifier.getMenuItemId() == modifierToDelete.getMenuItemId()) {
 				iter.remove();
 
 				if (modifier.isPrintedToKitchen()) {
@@ -232,7 +231,7 @@ public class TodoTicketViewerTableModel extends AbstractTableModel {
 			return null;
 
 		ITicketItem iTicketItem = items.get(index);
-		
+
 		if (iTicketItem instanceof TicketItem) {
 			TicketItem ticketItem = (TicketItem) iTicketItem;
 			int rowNum = ticketItem.getTableRowNum();
@@ -269,23 +268,23 @@ public class TodoTicketViewerTableModel extends AbstractTableModel {
 				}
 			}
 		}
-//		else if (iTicketItem instanceof TicketItemCookingInstruction) {
-//			TicketItemCookingInstruction cookingInstruction = (TicketItemCookingInstruction) iTicketItem;
-//			int tableRowNum = cookingInstruction.getTableRowNum();
-//
-//			TicketItem ticketItem = null;
-//			while (tableRowNum > 0) {
-//				Object object2 = tableRows.get(String.valueOf(--tableRowNum));
-//				if (object2 instanceof TicketItem) {
-//					ticketItem = (TicketItem) object2;
-//					break;
-//				}
-//			}
-//
-//			if (ticketItem != null) {
-//				ticketItem.removeCookingInstruction(cookingInstruction);
-//			}
-//		}
+		//		else if (iTicketItem instanceof TicketItemCookingInstruction) {
+		//			TicketItemCookingInstruction cookingInstruction = (TicketItemCookingInstruction) iTicketItem;
+		//			int tableRowNum = cookingInstruction.getTableRowNum();
+		//
+		//			TicketItem ticketItem = null;
+		//			while (tableRowNum > 0) {
+		//				Object object2 = tableRows.get(String.valueOf(--tableRowNum));
+		//				if (object2 instanceof TicketItem) {
+		//					ticketItem = (TicketItem) object2;
+		//					break;
+		//				}
+		//			}
+		//
+		//			if (ticketItem != null) {
+		//				ticketItem.removeCookingInstruction(cookingInstruction);
+		//			}
+		//		}
 
 		calculateRows();
 		fireTableDataChanged();

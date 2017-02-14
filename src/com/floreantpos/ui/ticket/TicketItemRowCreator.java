@@ -116,26 +116,26 @@ public class TicketItemRowCreator {
 	}
 
 	private static int includeModifiers(TicketItem ticketItem, Map<String, ITicketItem> tableRows, int rowNum, boolean kitchenPrint) {
-		List<TicketItemModifierGroup> ticketItemModifierGroups = ticketItem.getTicketItemModifierGroups();
-		if (ticketItemModifierGroups != null) {
-			for (TicketItemModifierGroup ticketItemModifierGroup : ticketItemModifierGroups) {
-				List<TicketItemModifier> ticketItemModifiers = ticketItemModifierGroup.getTicketItemModifiers();
-				if (ticketItemModifiers != null && ticketItemModifiers.size() > 0) {
-					if(ticketItemModifierGroup.isShowSectionName()) {
-						//itemModifier.setTableRowNum(rowNum);
-						tableRows.put(String.valueOf(rowNum++), ticketItemModifierGroup);
-					}
-					for (TicketItemModifier itemModifier : ticketItemModifiers) {
+		//List<TicketItemModifierGroup> ticketItemModifierGroups = ticketItem.getTicketItemModifierGroups();
+		//if (ticketItemModifierGroups != null) {
+		//for (TicketItemModifierGroup ticketItemModifierGroup : ticketItemModifierGroups) {
+		List<TicketItemModifier> ticketItemModifiers = ticketItem.getTicketItemModifiers();
+		if (ticketItemModifiers != null && ticketItemModifiers.size() > 0) {
+			//					if(ticketItemModifierGroup.isShowSectionName()) {
+			//						//itemModifier.setTableRowNum(rowNum);
+			//						tableRows.put(String.valueOf(rowNum++), ticketItemModifierGroup);
+			//					}
+			for (TicketItemModifier itemModifier : ticketItemModifiers) {
 
-						if (kitchenPrint && (itemModifier.isPrintedToKitchen() || !itemModifier.isShouldPrintToKitchen())) {
-							continue;
-						}
-
-						itemModifier.setTableRowNum(rowNum);
-						tableRows.put(String.valueOf(rowNum), itemModifier);
-						rowNum++;
-					}
+				if (kitchenPrint && (itemModifier.isPrintedToKitchen() || !itemModifier.isShouldPrintToKitchen())) {
+					continue;
 				}
+
+				itemModifier.setTableRowNum(rowNum);
+				tableRows.put(String.valueOf(rowNum), itemModifier);
+				rowNum++;
+				//					}
+				//				}
 			}
 		}
 		return rowNum;

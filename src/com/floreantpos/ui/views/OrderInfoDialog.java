@@ -34,7 +34,6 @@ import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.TicketItemDiscount;
 import com.floreantpos.model.TicketItemModifier;
-import com.floreantpos.model.TicketItemModifierGroup;
 import com.floreantpos.model.User;
 import com.floreantpos.model.UserPermission;
 import com.floreantpos.report.ReceiptPrintService;
@@ -208,38 +207,29 @@ public class OrderInfoDialog extends POSDialog {
 				newTicketItem.setDiscounts(newDiscounts);
 			}
 
-			List<TicketItemModifierGroup> ticketItemModifierGroups = oldTicketItem.getTicketItemModifierGroups();
-			if (ticketItemModifierGroups != null) {
-				for (TicketItemModifierGroup modifierGroup : ticketItemModifierGroups) {
-					TicketItemModifierGroup newGroup = new TicketItemModifierGroup();
-					newGroup.setMaxQuantity(modifierGroup.getMaxQuantity());
-					newGroup.setMenuItemModifierGroup(modifierGroup.getMenuItemModifierGroup());
-					newGroup.setMinQuantity(modifierGroup.getMinQuantity());
-					newGroup.setParent(newTicketItem);
-					for (TicketItemModifier ticketItemModifier : modifierGroup.getTicketItemModifiers()) {
-						TicketItemModifier newModifier = new TicketItemModifier();
-						newModifier.setItemId(ticketItemModifier.getItemId());
-						newModifier.setGroupId(ticketItemModifier.getGroupId());
-						newModifier.setItemCount(ticketItemModifier.getItemCount());
-						newModifier.setName(ticketItemModifier.getName());
-						newModifier.setUnitPrice(ticketItemModifier.getUnitPrice());
-						newModifier.setTaxRate(ticketItemModifier.getTaxRate());
-						newModifier.setModifierType(ticketItemModifier.getModifierType());
-						newModifier.setPrintedToKitchen(false);
-						newModifier.setShouldPrintToKitchen(ticketItemModifier.isShouldPrintToKitchen());
-						newModifier.setParent(newGroup);
-						newGroup.addToticketItemModifiers(newModifier);
-					}
-					newTicketItem.addToticketItemModifierGroups(newGroup);
+			List<TicketItemModifier> ticketItemModifiers = oldTicketItem.getTicketItemModifiers();
+			if (ticketItemModifiers != null) {
+				for (TicketItemModifier ticketItemModifier : ticketItemModifiers) {
+					TicketItemModifier newModifier = new TicketItemModifier();
+					newModifier.setMenuItemId(ticketItemModifier.getMenuItemId());
+					newModifier.setMenuItemModifierGroupId(ticketItemModifier.getMenuItemModifierGroupId());
+					newModifier.setItemCount(ticketItemModifier.getItemCount());
+					newModifier.setName(ticketItemModifier.getName());
+					newModifier.setUnitPrice(ticketItemModifier.getUnitPrice());
+					newModifier.setTaxRate(ticketItemModifier.getTaxRate());
+					newModifier.setModifierType(ticketItemModifier.getModifierType());
+					newModifier.setPrintedToKitchen(false);
+					newModifier.setShouldPrintToKitchen(ticketItemModifier.isShouldPrintToKitchen());
+					newModifier.setTicketItem(newTicketItem);
+					newTicketItem.addToticketItemModifiers(newModifier);
 				}
 			}
-
 			List<TicketItemModifier> addOnsList = oldTicketItem.getAddOns();
 			if (addOnsList != null) {
 				for (TicketItemModifier addOns : oldTicketItem.getAddOns()) {
 					TicketItemModifier newAddOns = new TicketItemModifier();
-					newAddOns.setItemId(addOns.getItemId());
-					newAddOns.setGroupId(addOns.getGroupId());
+					newAddOns.setMenuItemId(addOns.getMenuItemId());
+					newAddOns.setMenuItemModifierGroupId(addOns.getMenuItemModifierGroupId());
 					newAddOns.setItemCount(addOns.getItemCount());
 					newAddOns.setName(addOns.getName());
 					newAddOns.setUnitPrice(addOns.getUnitPrice());

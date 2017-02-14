@@ -52,7 +52,7 @@ public class TicketItemModifierGroup extends BaseTicketItemModifierGroup impleme
 		Comparator<TicketItemModifier> comparator = new Comparator<TicketItemModifier>() {
 			@Override
 			public int compare(TicketItemModifier o1, TicketItemModifier o2) {
-				return o1.getItemId() - o2.getItemId();
+				return o1.getMenuItemId() - o2.getMenuItemId();
 			}
 		};
 
@@ -124,7 +124,7 @@ public class TicketItemModifierGroup extends BaseTicketItemModifierGroup impleme
 		}
 		else {
 			for (TicketItemModifier ticketItemModifier : ticketItemModifiers) {
-				if (modifier.getId().equals(ticketItemModifier.getItemId())) {
+				if (modifier.getId().equals(ticketItemModifier.getMenuItemId())) {
 					return ticketItemModifier;
 				}
 			}
@@ -140,7 +140,7 @@ public class TicketItemModifierGroup extends BaseTicketItemModifierGroup impleme
 		}
 		else {
 			for (TicketItemModifier ticketItemModifier : ticketItemModifiers) {
-				if (modifier.getId().equals(ticketItemModifier.getItemId())) {
+				if (modifier.getId().equals(ticketItemModifier.getMenuItemId())) {
 					if (addOn && ticketItemModifier.getModifierType() == TicketItemModifier.EXTRA_MODIFIER) {
 						return ticketItemModifier;
 					}
@@ -156,8 +156,8 @@ public class TicketItemModifierGroup extends BaseTicketItemModifierGroup impleme
 
 	public TicketItemModifier addTicketItemModifier(MenuModifier menuModifier, int modifierType, OrderType type, Multiplier multiplier) {
 		TicketItemModifier ticketItemModifier = new TicketItemModifier();
-		ticketItemModifier.setItemId(menuModifier.getId());
-		ticketItemModifier.setGroupId(menuModifier.getModifierGroup().getId());
+		ticketItemModifier.setMenuItemId(menuModifier.getId());
+		ticketItemModifier.setMenuItemModifierGroupId(menuModifier.getModifierGroup().getId());
 		ticketItemModifier.setItemCount(1);
 		ticketItemModifier.setName(menuModifier.getDisplayName());
 		//		ticketItemModifier.setExtraUnitPrice(menuModifier.getExtraPrice());
@@ -182,8 +182,8 @@ public class TicketItemModifierGroup extends BaseTicketItemModifierGroup impleme
 
 	public TicketItemModifier addTicketItemModifier(MenuModifier menuModifier, boolean addOn) {
 		TicketItemModifier ticketItemModifier = new TicketItemModifier();
-		ticketItemModifier.setItemId(menuModifier.getId());
-		ticketItemModifier.setGroupId(menuModifier.getModifierGroup().getId());
+		ticketItemModifier.setMenuItemId(menuModifier.getId());
+		ticketItemModifier.setMenuItemModifierGroupId(menuModifier.getModifierGroup().getId());
 		ticketItemModifier.setItemCount(1);
 		ticketItemModifier.setName(menuModifier.getDisplayName());
 
@@ -212,7 +212,7 @@ public class TicketItemModifierGroup extends BaseTicketItemModifierGroup impleme
 
 		for (Iterator iter = ticketItemModifiers.iterator(); iter.hasNext();) {
 			TicketItemModifier oldTicketItemModifier = (TicketItemModifier) iter.next();
-			if (oldTicketItemModifier.getItemId().equals(ticketItemModifier.getItemId())
+			if (oldTicketItemModifier.getMenuItemId().equals(ticketItemModifier.getMenuItemId())
 					&& oldTicketItemModifier.getModifierType() == ticketItemModifier.getModifierType()) {
 				iter.remove();
 				return oldTicketItemModifier;
