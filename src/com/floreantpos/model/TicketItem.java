@@ -578,6 +578,11 @@ public class TicketItem extends BaseTicketItem implements ITicketItem {
 	}
 
 	@Override
+	public Double getSubTotalAmountDisplay() {
+		return getSubtotalAmount();
+	}
+
+	@Override
 	public Double getSubTotalAmountWithoutModifiersDisplay() {
 		if (isTreatAsSeat())
 			return null;

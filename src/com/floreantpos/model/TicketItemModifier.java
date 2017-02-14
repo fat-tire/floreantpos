@@ -31,14 +31,14 @@ public class TicketItemModifier extends BaseTicketItemModifier implements ITicke
 	public final static int CRUST = 5;
 
 	/*[CONSTRUCTOR MARKER BEGIN]*/
-	public TicketItemModifier () {
+	public TicketItemModifier() {
 		super();
 	}
 
 	/**
 	 * Constructor for primary key
 	 */
-	public TicketItemModifier (java.lang.Integer id) {
+	public TicketItemModifier(java.lang.Integer id) {
 		super(id);
 	}
 
@@ -82,10 +82,10 @@ public class TicketItemModifier extends BaseTicketItemModifier implements ITicke
 	//	}
 
 	public void calculatePrice() {
-		if(isInfoOnly()) {
+		if (isInfoOnly()) {
 			return;
 		}
-		
+
 		priceIncludesTax = Application.getInstance().isPriceIncludesTax();
 
 		calculateSubTotal();
@@ -139,7 +139,7 @@ public class TicketItemModifier extends BaseTicketItemModifier implements ITicke
 
 	@Override
 	public String getNameDisplay() {
-		String display = " -- " + getName(); //$NON-NLS-1$
+		String display = getItemCount() + "x  -- " + getName(); //$NON-NLS-1$
 		if (getModifierType() == NORMAL_MODIFIER) {
 			display += "*"; //$NON-NLS-1$
 		}
@@ -149,7 +149,7 @@ public class TicketItemModifier extends BaseTicketItemModifier implements ITicke
 
 	@Override
 	public Double getUnitPriceDisplay() {
-		if(isInfoOnly()) {
+		if (isInfoOnly()) {
 			return null;
 		}
 		return getUnitPrice();
@@ -157,37 +157,42 @@ public class TicketItemModifier extends BaseTicketItemModifier implements ITicke
 
 	@Override
 	public String getItemQuantityDisplay() {
-		if(isInfoOnly()) {
+		if (isInfoOnly()) {
 			return null;
 		}
-		
-		return String.valueOf(getItemCount());
+
+		//return String.valueOf(getItemCount());
+		return "";
 	}
 
 	@Override
 	public Double getTaxAmountWithoutModifiersDisplay() {
-		if(isInfoOnly()) {
+		if (isInfoOnly()) {
 			return null;
 		}
-		
+
 		return getTaxAmount();
 	}
 
 	@Override
 	public Double getTotalAmountWithoutModifiersDisplay() {
-		if(isInfoOnly()) {
+		if (isInfoOnly()) {
 			return null;
 		}
-		
+
 		return getTotalAmount();
 	}
 
 	@Override
+	public Double getSubTotalAmountDisplay() {
+		return null;
+	}
+
+	@Override
 	public Double getSubTotalAmountWithoutModifiersDisplay() {
-		if(isInfoOnly()) {
+		if (isInfoOnly()) {
 			return null;
 		}
-		
 		return getSubTotalAmount();
 	}
 
@@ -238,9 +243,10 @@ public class TicketItemModifier extends BaseTicketItemModifier implements ITicke
 
 	@Override
 	public String getKitchenStatus() {
-		if(super.getStatus()==null){
-			return "";  //$NON-NLS-1$
+		if (super.getStatus() == null) {
+			return ""; //$NON-NLS-1$
 		}
 		return super.getStatus();
 	}
+
 }

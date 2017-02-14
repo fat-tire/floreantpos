@@ -93,7 +93,7 @@ public class MenuModifierForm extends BeanEditor {
 	private javax.swing.JTabbedPane jTabbedPane1;
 	private DoubleTextField tfExtraPrice;
 	private javax.swing.JFormattedTextField tfName;
-	private DoubleTextField tfPrice;
+	private DoubleTextField tfNormalPrice;
 	private JLabel lblTranslatedName;
 	private FixedLengthTextField tfTranslatedName;
 	private JButton btnButtonColor;
@@ -145,7 +145,7 @@ public class MenuModifierForm extends BeanEditor {
 		tfName = new javax.swing.JFormattedTextField();
 		tfTranslatedName = new FixedLengthTextField();
 		cbModifierGroup = new javax.swing.JComboBox();
-		tfPrice = new DoubleTextField();
+		tfNormalPrice = new DoubleTextField();
 		tfExtraPrice = new DoubleTextField();
 		tfSortOrder = new IntegerTextField();
 		cbTaxes = new javax.swing.JComboBox();
@@ -172,7 +172,7 @@ public class MenuModifierForm extends BeanEditor {
 
 		tfExtraPrice.setText("0"); //$NON-NLS-1$
 		lblPercentage.setText("%"); //$NON-NLS-1$
-		tfPrice.setText("0"); //$NON-NLS-1$
+		tfNormalPrice.setText("0"); //$NON-NLS-1$
 
 		btnNewTax.setText("..."); //$NON-NLS-1$
 		btnNewTax.addActionListener(new java.awt.event.ActionListener() {
@@ -200,13 +200,10 @@ public class MenuModifierForm extends BeanEditor {
 		lelfInputPanel.add(cbModifierGroup, "growx,aligny top"); //$NON-NLS-1$
 
 		lelfInputPanel.add(lblPrice, "alignx left,aligny center"); //$NON-NLS-1$
-		lelfInputPanel.add(tfPrice, "growx,aligny top"); //$NON-NLS-1$
+		lelfInputPanel.add(tfNormalPrice, "growx,aligny top"); //$NON-NLS-1$
 
 		//lelfInputPanel.add(lblExtraPrice, "alignx left,aligny center"); //$NON-NLS-1$
 		//lelfInputPanel.add(tfExtraPrice, "growx,aligny top"); //$NON-NLS-1$
-
-		lelfInputPanel.add(lblSortOrder, "alignx left,aligny center"); //$NON-NLS-1$
-		lelfInputPanel.add(tfSortOrder, "growx,aligny top"); //$NON-NLS-1$
 
 		JPanel rightInputPanel = new JPanel(new MigLayout("wrap 2", "[86px][grow]"));
 
@@ -214,6 +211,10 @@ public class MenuModifierForm extends BeanEditor {
 		rightInputPanel.add(lblPercentage, "alignx left,aligny center"); //$NON-NLS-1$
 		rightInputPanel.add(cbTaxes, "growx,aligny top,split 2"); //$NON-NLS-1$
 		rightInputPanel.add(btnNewTax, "alignx left,aligny top"); //$NON-NLS-1$
+
+		rightInputPanel.add(lblSortOrder, "alignx left,aligny center"); //$NON-NLS-1$
+		rightInputPanel.add(tfSortOrder, "growx,aligny top"); //$NON-NLS-1$
+
 		rightInputPanel.add(chkPrintToKitchen, "skip 1,alignx left,aligny top"); //$NON-NLS-1$
 
 		generalTabPanel.add(lelfInputPanel);
@@ -323,18 +324,25 @@ public class MenuModifierForm extends BeanEditor {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				List<ModifierMultiplierPrice> multiplierPriceList = modifier.getMultiplierPriceList();
-				if (multiplierPriceList != null) {
-					for (ModifierMultiplierPrice multiplierPrice : multiplierPriceList) {
-						MultiplierPricePanel pricePanel = itemMap.get(multiplierPrice.getMultiplier().getName());
-						if (pricePanel == null)
-							continue;
-						pricePanel.setSelected(chkSelectAll.isSelected());
-					}
+				for (MultiplierPricePanel panel : itemMap.values()) {
+					panel.setSelected(chkSelectAll.isSelected());
 				}
 			}
 		});
-		//lelfInputPanel.add(chkSelectAll, "newline,skip 1,right");
+		lelfInputPanel.add(chkSelectAll, "newline,gapleft 10,skip 1,split 2,grow");
+		JButton btnCalculateMultilierPrice = new JButton("Calculate");
+		btnCalculateMultilierPrice.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Double actualPrice = tfNormalPrice.getDoubleOrZero();
+				for (MultiplierPricePanel panel : itemMap.values()) {
+					panel.calculatePrice();
+				}
+			}
+		});
+		lelfInputPanel.add(btnCalculateMultilierPrice, "gapright 10,w 80!");
+
 		JScrollPane scrollPane = new JScrollPane(multiplierPanel);
 		scrollPane.setBorder(new TitledBorder("Multiplier price"));
 		lelfInputPanel.add(scrollPane, "newline,skip 1,grow");
@@ -384,14 +392,14 @@ public class MenuModifierForm extends BeanEditor {
 
 		if (modifier == null) {
 			tfName.setText(""); //$NON-NLS-1$
-			tfPrice.setText("0"); //$NON-NLS-1$
+			tfNormalPrice.setText("0"); //$NON-NLS-1$
 			tfExtraPrice.setText("0"); //$NON-NLS-1$
 			return;
 		}
 
 		tfName.setText(modifier.getName());
 		tfTranslatedName.setText(modifier.getTranslatedName());
-		tfPrice.setText(String.valueOf(modifier.getPrice()));
+		tfNormalPrice.setText(String.valueOf(modifier.getPrice()));
 		tfExtraPrice.setText(String.valueOf(modifier.getExtraPrice()));
 		cbModifierGroup.setSelectedItem(modifier.getModifierGroup());
 		chkPrintToKitchen.setSelected(modifier.isShouldPrintToKitchen());
@@ -436,7 +444,7 @@ public class MenuModifierForm extends BeanEditor {
 		}
 
 		modifier.setName(name);
-		modifier.setPrice(tfPrice.getDouble());
+		modifier.setPrice(tfNormalPrice.getDouble());
 		modifier.setExtraPrice(tfExtraPrice.getDouble());
 		modifier.setTax((Tax) cbTaxes.getSelectedItem());
 		modifier.setModifierGroup((MenuModifierGroup) cbModifierGroup.getSelectedItem());
@@ -651,29 +659,33 @@ public class MenuModifierForm extends BeanEditor {
 		ModifierMultiplierPrice multiplierPrice;
 		Multiplier multiplier;
 		JCheckBox chkEnable;
-		DoubleTextField tfPrice;
+		DoubleTextField tfAditionalPrice;
 
 		public MultiplierPricePanel(Multiplier multiplier) {
 			this.multiplier = multiplier;
 			setLayout(new MigLayout("inset 0,fillx", "[100px][grow][]", ""));
 			chkEnable = new JCheckBox(multiplier.getName());
-			tfPrice = new DoubleTextField(6);
-			tfPrice.setHorizontalAlignment(SwingConstants.RIGHT);
-			tfPrice.setEnabled(false);
+			tfAditionalPrice = new DoubleTextField(6);
+			tfAditionalPrice.setHorizontalAlignment(SwingConstants.RIGHT);
+			tfAditionalPrice.setEnabled(false);
 			chkEnable.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					tfPrice.setEnabled(chkEnable.isSelected());
+					tfAditionalPrice.setEnabled(chkEnable.isSelected());
 				}
 			});
 
 			add(chkEnable);
 			add(new JLabel("Additional price", JLabel.TRAILING), "grow, gapright 10px");
-			add(tfPrice);
+			add(tfAditionalPrice);
+		}
+
+		public void calculatePrice() {
+			tfAditionalPrice.setText(String.valueOf(tfNormalPrice.getDoubleOrZero() * multiplier.getRate() / 100));
 		}
 
 		public Double getPrice() {
-			return tfPrice.getDoubleOrZero();
+			return tfAditionalPrice.getDoubleOrZero();
 		}
 
 		public Multiplier getMultiplier() {
@@ -682,6 +694,7 @@ public class MenuModifierForm extends BeanEditor {
 
 		public void setSelected(boolean selected) {
 			chkEnable.setSelected(selected);
+			tfAditionalPrice.setEnabled(selected);
 		}
 
 		public boolean isSelected() {
@@ -691,8 +704,8 @@ public class MenuModifierForm extends BeanEditor {
 		private void update() {
 			if (multiplierPrice == null)
 				return;
-			tfPrice.setText(String.valueOf(multiplierPrice.getPrice()));
-			tfPrice.setEnabled(true);
+			tfAditionalPrice.setText(String.valueOf(multiplierPrice.getPrice()));
+			tfAditionalPrice.setEnabled(true);
 			chkEnable.setSelected(true);
 		}
 

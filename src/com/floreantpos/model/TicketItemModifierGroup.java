@@ -164,10 +164,10 @@ public class TicketItemModifierGroup extends BaseTicketItemModifierGroup impleme
 		//ticketItemModifier.setTaxRate(menuModifier.getTax() == null ? 0 : menuModifier.getTax().getRate());
 		//double price = menuModifier.getPriceByOrderType(type);
 		double price = menuModifier.getPriceForMultiplier(multiplier);
-		//if (multiplier != null) {
-		//	ticketItemModifier.setName(multiplier.getTicketPrefix() + " " + menuModifier.getDisplayName());
+		if (multiplier != null) {
+			ticketItemModifier.setName(multiplier.getTicketPrefix() + " " + menuModifier.getDisplayName());
 		//	price = price * (multiplier.getRate() / 100);
-		//}
+		}
 		ticketItemModifier.setUnitPrice(price);
 		ticketItemModifier.setTaxRate(menuModifier.getTaxByOrderType(type));
 
@@ -328,6 +328,11 @@ public class TicketItemModifierGroup extends BaseTicketItemModifierGroup impleme
 	@Override
 	public Double getTotalAmountWithoutModifiersDisplay() {
 		return 0.0;
+	}
+
+	@Override
+	public Double getSubTotalAmountDisplay() {
+		return null;
 	}
 
 	@Override

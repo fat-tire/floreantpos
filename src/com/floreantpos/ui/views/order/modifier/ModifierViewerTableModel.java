@@ -35,7 +35,7 @@ public class ModifierViewerTableModel extends AbstractTableModel {
 	private boolean priceIncludesTax = false;
 
 	protected String[] columnNames = {
-			Messages.getString("TicketViewerTableModel.0"), Messages.getString("TicketViewerTableModel.1"), Messages.getString("TicketViewerTableModel.2"), Messages.getString("TicketViewerTableModel.3") }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+			Messages.getString("TicketViewerTableModel.0"),/* Messages.getString("TicketViewerTableModel.1"), Messages.getString("TicketViewerTableModel.2"),*/Messages.getString("TicketViewerTableModel.3") }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 
 	private boolean forReciptPrint;
 	private boolean printCookingInstructions;
@@ -78,13 +78,13 @@ public class ModifierViewerTableModel extends AbstractTableModel {
 			case 0:
 				return ticketItem.getNameDisplay();
 
+				/*case 1:
+					return ticketItem.getUnitPriceDisplay();
+
+				case 2:
+					return ticketItem.getItemQuantityDisplay();*/
+
 			case 1:
-				return ticketItem.getUnitPriceDisplay();
-
-			case 2:
-				return ticketItem.getItemQuantityDisplay();
-
-			case 3:
 				return ticketItem.getSubTotalAmountWithoutModifiersDisplay();
 		}
 

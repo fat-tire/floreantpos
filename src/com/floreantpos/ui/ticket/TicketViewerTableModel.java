@@ -97,7 +97,7 @@ public class TicketViewerTableModel extends AbstractTableModel {
 				return ticketItem.getNameDisplay();
 
 			case 2:
-				return ticketItem.getSubTotalAmountWithoutModifiersDisplay();
+				return ticketItem.getSubTotalAmountDisplay();
 		}
 
 		return null;

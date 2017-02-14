@@ -98,6 +98,11 @@ public class TicketItemDiscount extends BaseTicketItemDiscount implements ITicke
 	}
 
 	@Override
+	public Double getSubTotalAmountDisplay() {
+		return null;
+	}
+
+	@Override
 	public Double getTaxAmountWithoutModifiersDisplay() {
 		return null;
 	}

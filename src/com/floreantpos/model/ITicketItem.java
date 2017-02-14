@@ -37,6 +37,8 @@ public interface ITicketItem {
 
 	Double getTotalAmountWithoutModifiersDisplay();
 	
+	Double getSubTotalAmountDisplay();
+
 	Double getSubTotalAmountWithoutModifiersDisplay();
 	
 	void setDiscountAmount(Double amount);
