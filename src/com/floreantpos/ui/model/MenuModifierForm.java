@@ -687,13 +687,19 @@ public class MenuModifierForm extends BeanEditor {
 					tfAditionalPrice.setEnabled(chkEnable.isSelected());
 				}
 			});
-			add(chkEnable);
-			add(new JLabel(multiplier.isMain() ? "Reg. Price" : "Additional price", JLabel.TRAILING), "grow, gapright 10px");
+			if (multiplier.isMain()) {
+				JLabel lblReg = new JLabel(Multiplier.REGULAR);
+				lblReg.setFont(new Font(null, Font.BOLD, tfName.getFont().getSize()));
+				add(lblReg);
+			}
+			else
+				add(chkEnable);
+
+			add(new JLabel(multiplier.isMain() ? "Price" : "Additional price", JLabel.TRAILING), "grow, gapright 10px");
 			add(tfAditionalPrice, "split 2,grow");
 			if (multiplier.isMain()) {
 				chkEnable.setSelected(true);
 				tfAditionalPrice.setEnabled(true);
-				chkEnable.setFont(new Font(null, Font.BOLD, tfName.getFont().getSize()));
 				JButton btnCalculateMultilierPrice = new JButton("Calc");
 				btnCalculateMultilierPrice.addActionListener(new ActionListener() {
 
