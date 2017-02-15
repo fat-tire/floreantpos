@@ -16,6 +16,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
@@ -59,7 +60,7 @@ public class PizzaModifierExplorer extends TransparentPanel {
 		table = new JXTable(tableModel);
 		table.setDefaultRenderer(Object.class, new CustomCellRenderer());
 		table.setRowHeight(PosUIManager.getSize(table.getRowHeight()));
-		//table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		add(new JScrollPane(table));
 
 		createActionButtons();
@@ -168,12 +169,8 @@ public class PizzaModifierExplorer extends TransparentPanel {
 					newMenuModifier.setId(null);
 					String newName = doDuplicateName(existingModifier);
 					newMenuModifier.setName(newName);
-					newMenuModifier.setModifierGroup(existingModifier.getModifierGroup());
-					newMenuModifier.setSortOrder(existingModifier.getSortOrder());
-					newMenuModifier.setTax(existingModifier.getTax());
-					newMenuModifier.setButtonColor(existingModifier.getButtonColor());
-					newMenuModifier.setTextColor(existingModifier.getTextColor());
-					newMenuModifier.setShouldPrintToKitchen(existingModifier.isShouldPrintToKitchen());
+					newMenuModifier.setPizzaModifier(true);
+					newMenuModifier.setMultiplierPriceList(null);
 
 					PizzaModifierForm editor = new PizzaModifierForm(newMenuModifier);
 					BeanEditorDialog dialog = new BeanEditorDialog(POSUtil.getBackOfficeWindow(), editor);
@@ -183,7 +180,6 @@ public class PizzaModifierExplorer extends TransparentPanel {
 
 					MenuModifier menuModifier = (MenuModifier) editor.getBean();
 					tableModel.addModifier(menuModifier);
-					table.getSelectionModel().addSelectionInterval(tableModel.getRowCount() - 1, tableModel.getRowCount() - 1);
 					table.scrollRowToVisible(tableModel.getRowCount() - 1);
 				} catch (Throwable x) {
 					BOMessageDialog.showError(POSConstants.ERROR_MESSAGE, x);
