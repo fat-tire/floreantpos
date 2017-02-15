@@ -35,6 +35,7 @@ public abstract class BaseMenuItem  implements Comparable, Serializable {
 	public static String PROP_TEXT_COLOR_CODE = "textColorCode"; //$NON-NLS-1$
 	public static String PROP_DISABLE_WHEN_STOCK_AMOUNT_IS_ZERO = "disableWhenStockAmountIsZero"; //$NON-NLS-1$
 	public static String PROP_RECEPIE = "recepie"; //$NON-NLS-1$
+	public static String PROP_DEFAULT_SELL_PORTION = "defaultSellPortion"; //$NON-NLS-1$
 	public static String PROP_PRICE = "price"; //$NON-NLS-1$
 	public static String PROP_BUTTON_COLOR_CODE = "buttonColorCode"; //$NON-NLS-1$
 	public static String PROP_ID = "id"; //$NON-NLS-1$
@@ -98,6 +99,7 @@ public abstract class BaseMenuItem  implements Comparable, Serializable {
 		protected java.lang.Boolean showImageOnly;
 		protected java.lang.Boolean fractionalUnit;
 		protected java.lang.Boolean pizzaType;
+		protected java.lang.Integer defaultSellPortion;
 
 	// many to one
 	private com.floreantpos.model.MenuGroup parent;
@@ -468,6 +470,23 @@ public abstract class BaseMenuItem  implements Comparable, Serializable {
 	 */
 	public void setPizzaType (java.lang.Boolean pizzaType) {
 		this.pizzaType = pizzaType;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: DEFAULT_SELL_PORTION
+	 */
+	public java.lang.Integer getDefaultSellPortion () {
+									return defaultSellPortion == null ? Integer.valueOf(0) : defaultSellPortion;
+					}
+
+	/**
+	 * Set the value related to the column: DEFAULT_SELL_PORTION
+	 * @param defaultSellPortion the DEFAULT_SELL_PORTION value
+	 */
+	public void setDefaultSellPortion (java.lang.Integer defaultSellPortion) {
+		this.defaultSellPortion = defaultSellPortion;
 	}
 
 

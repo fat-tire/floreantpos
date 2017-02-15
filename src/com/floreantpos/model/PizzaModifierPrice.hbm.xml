@@ -9,9 +9,10 @@
 		<many-to-one class="com.floreantpos.model.MenuItemSize" name="size">
 			<column name="ITEM_SIZE" />
 		</many-to-one>
-		
-		<property column="PRICE" name="price" type="java.lang.Double" />
-		<property column="EXTRA_PRICE" name="extraPrice" type="java.lang.Double" />
-		
+	
+		<bag cascade="all,delete-orphan" inverse="false" lazy="false" name="multiplierPriceList" table="MODIFIER_MULTIPLIER_PRICE">
+			<key column="PIZZA_MODIFIER_PRICE_ID" />
+			<one-to-many class="ModifierMultiplierPrice"/>
+		</bag>
 	</class>
 </hibernate-mapping>

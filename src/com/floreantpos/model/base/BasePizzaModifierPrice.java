@@ -16,10 +16,8 @@ import java.io.Serializable;
 public abstract class BasePizzaModifierPrice  implements Comparable, Serializable {
 
 	public static String REF = "PizzaModifierPrice"; //$NON-NLS-1$
-	public static String PROP_PRICE = "price"; //$NON-NLS-1$
-	public static String PROP_SIZE = "size"; //$NON-NLS-1$
-	public static String PROP_EXTRA_PRICE = "extraPrice"; //$NON-NLS-1$
 	public static String PROP_ID = "id"; //$NON-NLS-1$
+	public static String PROP_SIZE = "size"; //$NON-NLS-1$
 
 
 	// constructors
@@ -44,12 +42,11 @@ public abstract class BasePizzaModifierPrice  implements Comparable, Serializabl
 	// primary key
 	private java.lang.Integer id;
 
-	// fields
-		protected java.lang.Double price;
-		protected java.lang.Double extraPrice;
-
 	// many to one
 	private com.floreantpos.model.MenuItemSize size;
+
+	// collections
+	private java.util.List<com.floreantpos.model.ModifierMultiplierPrice> multiplierPriceList;
 
 
 
@@ -76,40 +73,6 @@ public abstract class BasePizzaModifierPrice  implements Comparable, Serializabl
 
 
 	/**
-	 * Return the value associated with the column: PRICE
-	 */
-	public java.lang.Double getPrice () {
-									return price == null ? Double.valueOf(0) : price;
-					}
-
-	/**
-	 * Set the value related to the column: PRICE
-	 * @param price the PRICE value
-	 */
-	public void setPrice (java.lang.Double price) {
-		this.price = price;
-	}
-
-
-
-	/**
-	 * Return the value associated with the column: EXTRA_PRICE
-	 */
-	public java.lang.Double getExtraPrice () {
-									return extraPrice == null ? Double.valueOf(0) : extraPrice;
-					}
-
-	/**
-	 * Set the value related to the column: EXTRA_PRICE
-	 * @param extraPrice the EXTRA_PRICE value
-	 */
-	public void setExtraPrice (java.lang.Double extraPrice) {
-		this.extraPrice = extraPrice;
-	}
-
-
-
-	/**
 	 * Return the value associated with the column: ITEM_SIZE
 	 */
 	public com.floreantpos.model.MenuItemSize getSize () {
@@ -126,6 +89,28 @@ public abstract class BasePizzaModifierPrice  implements Comparable, Serializabl
 
 
 
+	/**
+	 * Return the value associated with the column: multiplierPriceList
+	 */
+	public java.util.List<com.floreantpos.model.ModifierMultiplierPrice> getMultiplierPriceList () {
+					return multiplierPriceList;
+			}
+
+	/**
+	 * Set the value related to the column: multiplierPriceList
+	 * @param multiplierPriceList the multiplierPriceList value
+	 */
+	public void setMultiplierPriceList (java.util.List<com.floreantpos.model.ModifierMultiplierPrice> multiplierPriceList) {
+		this.multiplierPriceList = multiplierPriceList;
+	}
+
+	public void addTomultiplierPriceList (com.floreantpos.model.ModifierMultiplierPrice modifierMultiplierPrice) {
+		if (null == getMultiplierPriceList()) setMultiplierPriceList(new java.util.ArrayList<com.floreantpos.model.ModifierMultiplierPrice>());
+		getMultiplierPriceList().add(modifierMultiplierPrice);
+	}
+
+
+
 
 
 	public boolean equals (Object obj) {
@@ -133,7 +118,7 @@ public abstract class BasePizzaModifierPrice  implements Comparable, Serializabl
 		if (!(obj instanceof com.floreantpos.model.PizzaModifierPrice)) return false;
 		else {
 			com.floreantpos.model.PizzaModifierPrice pizzaModifierPrice = (com.floreantpos.model.PizzaModifierPrice) obj;
-			if (null == this.getId() || null == pizzaModifierPrice.getId()) return false;
+			if (null == this.getId() || null == pizzaModifierPrice.getId()) return this == obj;
 			else return (this.getId().equals(pizzaModifierPrice.getId()));
 		}
 	}

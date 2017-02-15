@@ -24,6 +24,8 @@ import javax.swing.table.TableColumnModel;
 
 import net.miginfocom.swing.MigLayout;
 
+import org.apache.commons.beanutils.PropertyUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.jdesktop.swingx.JXTable;
 
 import com.floreantpos.Messages;
@@ -204,6 +206,7 @@ public class PizzaItemExplorer extends TransparentPanel {
 		JButton editButton = explorerButton.getEditButton();
 		JButton addButton = explorerButton.getAddButton();
 		JButton deleteButton = explorerButton.getDeleteButton();
+		JButton duplicateButton = new JButton(POSConstants.DUPLICATE);
 
 		JButton updateStockAmount = new JButton(Messages.getString("MenuItemExplorer.6")); //$NON-NLS-1$
 
@@ -324,12 +327,50 @@ public class PizzaItemExplorer extends TransparentPanel {
 			}
 
 		});
+		duplicateButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					int index = table.getSelectedRow();
+					if (index < 0)
+						return;
+
+					index = table.convertRowIndexToModel(index);
+
+					MenuItem existingItem = tableModel.getRow(index);
+					existingItem = MenuItemDAO.getInstance().initialize(existingItem);
+
+					MenuItem newMenuItem = new MenuItem();
+					PropertyUtils.copyProperties(newMenuItem, existingItem);
+					newMenuItem.setId(null);
+					String newName = doDuplicateName(existingItem);
+					newMenuItem.setName(newName);
+					newMenuItem.setFractionalUnit(existingItem.isFractionalUnit());
+					newMenuItem.setDisableWhenStockAmountIsZero(existingItem.isDisableWhenStockAmountIsZero());
+					newMenuItem.setShowImageOnly(existingItem.isShowImageOnly());
+
+					PizzaItemForm editor = new PizzaItemForm(newMenuItem);
+					BeanEditorDialog dialog = new BeanEditorDialog(POSUtil.getBackOfficeWindow(), editor);
+					dialog.open();
+					if (dialog.isCanceled())
+						return;
+
+					MenuItem foodItem = (MenuItem) editor.getBean();
+					tableModel.addRow(foodItem);
+					table.getSelectionModel().addSelectionInterval(tableModel.getRowCount() - 1, tableModel.getRowCount() - 1);
+					table.scrollRowToVisible(tableModel.getRowCount() - 1);
+				} catch (Throwable x) {
+					BOMessageDialog.showError(POSConstants.ERROR_MESSAGE, x);
+				}
+			}
+
+		});
 
 		TransparentPanel panel = new TransparentPanel();
 		panel.add(addButton);
 		panel.add(editButton);
 		panel.add(updateStockAmount);
 		panel.add(deleteButton);
+		panel.add(duplicateButton);
 		return panel;
 	}
 
@@ -356,5 +397,26 @@ public class PizzaItemExplorer extends TransparentPanel {
 		columnWidth.add(200);
 
 		return columnWidth;
+	}
+
+	private String doDuplicateName(MenuItem existingItem) {
+		String existingName = existingItem.getName();
+		String newName = new String();
+		int lastIndexOf = existingName.lastIndexOf(" ");
+		if (lastIndexOf == -1) {
+			newName = existingName + " 1";
+		}
+		else {
+			String processName = existingName.substring(lastIndexOf + 1, existingName.length());
+			if (StringUtils.isNumeric(processName)) {
+				Integer count = Integer.valueOf(processName);
+				count += 1;
+				newName = existingName.replace(processName, String.valueOf(count));
+			}
+			else {
+				newName = existingName + " 1";
+			}
+		}
+		return newName;
 	}
 }

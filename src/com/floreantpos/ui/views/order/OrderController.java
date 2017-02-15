@@ -39,7 +39,6 @@ import com.floreantpos.model.MenuItem;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.TicketItemModifier;
-import com.floreantpos.model.TicketItemModifierGroup;
 import com.floreantpos.model.User;
 import com.floreantpos.model.dao.ActionHistoryDAO;
 import com.floreantpos.model.dao.MenuItemDAO;
@@ -216,10 +215,30 @@ public class OrderController implements OrderListener, CategorySelectionListener
 			//				addOnsList = new ArrayList<TicketItemModifier>();
 			//			}
 
+			List<TicketItemModifier> ticketItemModifiers = ticketItem.getTicketItemModifiers();
+			if (ticketItemModifiers == null) {
+				ticketItemModifiers = new ArrayList<>();
+			}
+
 			TicketItem cloneTicketItem = ticketItem.clone(ticketItem);
 
 			ModifierSelectionDialog dialog = new ModifierSelectionDialog(new ModifierSelectionModel(cloneTicketItem, menuItem));
 			dialog.open();
+
+			if (!dialog.isCanceled()) {
+				List<TicketItemModifier> addedTicketItemModifiers = cloneTicketItem.getTicketItemModifiers();
+				if (addedTicketItemModifiers == null) {
+					addedTicketItemModifiers = new ArrayList<>();
+				}
+
+				if (!CollectionUtils.isEqualCollection(addedTicketItemModifiers, ticketItemModifiers)) {
+					ticketItemModifiers.clear();
+					for (TicketItemModifier ticketItemModifier : addedTicketItemModifiers) {
+						ticketItemModifier.setTicketItem(ticketItem);
+						ticketItem.addToticketItemModifiers(ticketItemModifier);
+					}
+				}
+			}
 
 			//			if (!dialog.isCanceled()) {
 			//				List<TicketItemModifierGroup> addedTicketItemModifierGroup = cloneTicketItem.getTicketItemModifierGroups();

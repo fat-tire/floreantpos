@@ -104,6 +104,7 @@ public class MenuModifierForm extends BeanEditor {
 
 	private Map<String, MultiplierPricePanel> itemMap = new HashMap<>();
 	private JCheckBox chkSelectAll;
+	private JCheckBox chkUseFixedPrice;
 
 	public MenuModifierForm() throws Exception {
 		this(new MenuModifier());
@@ -143,6 +144,7 @@ public class MenuModifierForm extends BeanEditor {
 		cbTaxes = new javax.swing.JComboBox();
 		JButton btnNewTax = new javax.swing.JButton();
 		chkPrintToKitchen = new javax.swing.JCheckBox();
+		chkUseFixedPrice = new JCheckBox("Use fixed price");
 
 		JButton btnNewPrice = new JButton();
 		JButton btnUpdatePrice = new JButton();
@@ -324,7 +326,8 @@ public class MenuModifierForm extends BeanEditor {
 				}
 			}
 		});
-		lelfInputPanel.add(chkSelectAll, "newline,gapleft 10,skip 1,split 2,grow");
+		//lelfInputPanel.add(chkSelectAll, "newline,gapleft 10,skip 1,split 2,grow");
+		lelfInputPanel.add(chkUseFixedPrice, "newline,skip 1,grow");
 
 		//lelfInputPanel.add(btnCalculateMultilierPrice, "gapright 10,w 80!");
 
@@ -407,6 +410,7 @@ public class MenuModifierForm extends BeanEditor {
 		tfExtraPrice.setText(String.valueOf(modifier.getExtraPrice()));
 		cbModifierGroup.setSelectedItem(modifier.getModifierGroup());
 		chkPrintToKitchen.setSelected(modifier.isShouldPrintToKitchen());
+		chkUseFixedPrice.setSelected(modifier.isFixedPrice());
 
 		if (modifier.getSortOrder() != null) {
 			tfSortOrder.setText(modifier.getSortOrder().toString());
@@ -435,6 +439,7 @@ public class MenuModifierForm extends BeanEditor {
 				pricePanel.setModifierMultiplierPrice(multiplierPrice);
 			}
 		}
+		itemMap.get(Multiplier.REGULAR).tfAditionalPrice.setText(String.valueOf(modifier.getPrice()));
 	}
 
 	@Override
@@ -448,7 +453,6 @@ public class MenuModifierForm extends BeanEditor {
 		}
 
 		modifier.setName(name);
-		modifier.setPrice(tfNormalPrice.getDouble());
 		modifier.setExtraPrice(tfExtraPrice.getDouble());
 		modifier.setTax((Tax) cbTaxes.getSelectedItem());
 		modifier.setModifierGroup((MenuModifierGroup) cbModifierGroup.getSelectedItem());
@@ -458,6 +462,7 @@ public class MenuModifierForm extends BeanEditor {
 		modifier.setButtonColor(btnButtonColor.getBackground().getRGB());
 		modifier.setTextColor(btnTextColor.getForeground().getRGB());
 		modifier.setSortOrder(tfSortOrder.getInteger());
+		modifier.setFixedPrice(chkUseFixedPrice.isSelected());
 
 		List<ModifierMultiplierPrice> mulplierPriceList = new ArrayList<>();
 		for (MultiplierPricePanel panel : itemMap.values()) {
@@ -472,6 +477,7 @@ public class MenuModifierForm extends BeanEditor {
 				mulplierPriceList.add(multiplierPrice);
 			}
 		}
+		modifier.setPrice(itemMap.get(Multiplier.REGULAR).getPrice());
 		modifier.setMultiplierPriceList(mulplierPriceList);
 		return true;
 	}

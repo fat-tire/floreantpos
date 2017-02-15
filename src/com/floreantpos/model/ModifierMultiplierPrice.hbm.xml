@@ -12,5 +12,8 @@
 		<many-to-one class="com.floreantpos.model.MenuModifier" name="modifier">
 			<column name="MENUMODIFIER_ID" />
 		</many-to-one>
+		<many-to-one class="com.floreantpos.model.PizzaModifierPrice" name="pizzaModifierPrice">
+			<column name="PIZZA_MODIFIER_PRICE_ID" />
+		</many-to-one>
 	</class>
 </hibernate-mapping>

@@ -516,7 +516,7 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 		ticketItemModifier.setItemCount(1);
 		ticketItemModifier.setName(menuModifier.getDisplayName());
 		ticketItemModifier.setTicketItem(ticketItem);
-		double priceForSize = menuModifier.getPriceForSize(getSelectedSize(), false);
+		double priceForSize = menuModifier.getPriceForSizeAndMultiplier(getSelectedSize(), false, multiplier);
 		if (multiplier != null) {
 			ticketItemModifier.setName(multiplier.getTicketPrefix() + " " + menuModifier.getDisplayName());
 			priceForSize = menuModifier.getPriceForMultiplier(multiplier);
@@ -1035,8 +1035,8 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 			Set<PizzaPrice> availablePrices = modifierSelectionModel.getMenuItem().getAvailablePrices(size);
 			for (PizzaPrice pizzaPrice : availablePrices) {
 				POSToggleButton crustButton = new POSToggleButton();
-				crustButton.setText("<html><center>" + pizzaPrice.getCrust().getName() + "<br/>" + CurrencyUtil.getCurrencySymbol() + pizzaPrice.getPrice()
-						+ "</center></html>");
+				crustButton.setText("<html><center>" + pizzaPrice.getCrust().getName() + "<br/>" + CurrencyUtil.getCurrencySymbol()
+						+ pizzaPrice.getPrice(modifierSelectionModel.getMenuItem().getDefaultSellPortion()) + "</center></html>");
 				crustButton.putClientProperty(PROP_PIZZA_PRICE, pizzaPrice);
 				if (availablePrices.size() == 1) {
 					crustSelected = true;
@@ -1109,7 +1109,7 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 
 		TicketItem ticketItem = modifierSelectionModel.getTicketItem();
 
-		ticketItem.setUnitPrice(pizzaPrice.getPrice());
+		ticketItem.setUnitPrice(pizzaPrice.getPrice(modifierSelectionModel.getMenuItem().getDefaultSellPortion()));
 		crustSelected = true;
 
 		TicketItemModifier modifier = new TicketItemModifier();

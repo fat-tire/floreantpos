@@ -16,6 +16,7 @@ import java.io.Serializable;
 public abstract class BaseModifierMultiplierPrice  implements Comparable, Serializable {
 
 	public static String REF = "ModifierMultiplierPrice"; //$NON-NLS-1$
+	public static String PROP_PIZZA_MODIFIER_PRICE = "pizzaModifierPrice"; //$NON-NLS-1$
 	public static String PROP_PRICE = "price"; //$NON-NLS-1$
 	public static String PROP_ID = "id"; //$NON-NLS-1$
 	public static String PROP_MODIFIER = "modifier"; //$NON-NLS-1$
@@ -50,6 +51,7 @@ public abstract class BaseModifierMultiplierPrice  implements Comparable, Serial
 	// many to one
 	private com.floreantpos.model.Multiplier multiplier;
 	private com.floreantpos.model.MenuModifier modifier;
+	private com.floreantpos.model.PizzaModifierPrice pizzaModifierPrice;
 
 
 
@@ -122,6 +124,23 @@ public abstract class BaseModifierMultiplierPrice  implements Comparable, Serial
 	 */
 	public void setModifier (com.floreantpos.model.MenuModifier modifier) {
 		this.modifier = modifier;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: PIZZA_MODIFIER_PRICE_ID
+	 */
+	public com.floreantpos.model.PizzaModifierPrice getPizzaModifierPrice () {
+					return pizzaModifierPrice;
+			}
+
+	/**
+	 * Set the value related to the column: PIZZA_MODIFIER_PRICE_ID
+	 * @param pizzaModifierPrice the PIZZA_MODIFIER_PRICE_ID value
+	 */
+	public void setPizzaModifierPrice (com.floreantpos.model.PizzaModifierPrice pizzaModifierPrice) {
+		this.pizzaModifierPrice = pizzaModifierPrice;
 	}
 
 

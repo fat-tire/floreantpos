@@ -26,7 +26,6 @@ import com.floreantpos.Messages;
 import com.floreantpos.model.ITicketItem;
 import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.TicketItemModifier;
-import com.floreantpos.model.TicketItemModifierGroup;
 
 public class ModifierViewerTableModel extends AbstractTableModel {
 	protected TicketItem ticketItem;
@@ -97,10 +96,10 @@ public class ModifierViewerTableModel extends AbstractTableModel {
 
 		calculateRowsForModifiers();
 		//if (addOnMode) {
-			calculateRowsForAddOns();
+		calculateRowsForAddOns();
 		//}
 		//else {
-			
+
 		//}
 	}
 
@@ -116,18 +115,18 @@ public class ModifierViewerTableModel extends AbstractTableModel {
 	}
 
 	private void calculateRowsForModifiers() {
-//		List<TicketItemModifierGroup> ticketItemModifierGroups = ticketItem.getTicketItemModifierGroups();
-//		if (ticketItemModifierGroups == null)
-//			return;
-//
-//		for (TicketItemModifierGroup ticketItemModifierGroup : ticketItemModifierGroups) {
-//			List<TicketItemModifier> ticketItemModifiers = ticketItemModifierGroup.getTicketItemModifiers();
-//			if (ticketItemModifiers != null) {
-//				for (TicketItemModifier ticketItemModifier : ticketItemModifiers) {
-//					tableRows.add(ticketItemModifier);
-//				}
-//			}
-//		}
+		//		List<TicketItemModifierGroup> ticketItemModifierGroups = ticketItem.getTicketItemModifierGroups();
+		//		if (ticketItemModifierGroups == null)
+		//			return;
+		//
+		//		for (TicketItemModifierGroup ticketItemModifierGroup : ticketItemModifierGroups) {
+		//			List<TicketItemModifier> ticketItemModifiers = ticketItemModifierGroup.getTicketItemModifiers();
+		//			if (ticketItemModifiers != null) {
+		//				for (TicketItemModifier ticketItemModifier : ticketItemModifiers) {
+		//					tableRows.add(ticketItemModifier);
+		//				}
+		//			}
+		//		}
 		List<TicketItemModifier> ticketItemModifiers = ticketItem.getTicketItemModifiers();
 		if (ticketItemModifiers == null) {
 			return;
@@ -166,8 +165,9 @@ public class ModifierViewerTableModel extends AbstractTableModel {
 			ticketItemModifier.getTicketItem().removeAddOn(ticketItemModifier);
 		}
 		else {
-			TicketItemModifierGroup ticketItemModifierGroup = ticketItemModifier.getParent();
-			ticketItemModifierGroup.removeTicketItemModifier(ticketItemModifier);
+			//TicketItemModifierGroup ticketItemModifierGroup = ticketItemModifier.getParent();
+			//ticketItemModifierGroup.removeTicketItemModifier(ticketItemModifier);
+			ticketItem.removeTicketItemModifier(ticketItemModifier);
 		}
 		fireTableRowsDeleted(index, index);
 		return ticketItemModifier;

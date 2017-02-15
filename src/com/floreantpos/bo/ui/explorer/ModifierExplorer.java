@@ -21,6 +21,8 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -77,6 +79,15 @@ public class ModifierExplorer extends TransparentPanel {
 		add(buildSearchForm(), BorderLayout.NORTH);
 
 		updateModifierList();
+
+		table.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent me) {
+				if (me.getClickCount() == 2) {
+					doEditSelectedMenuModifier();
+				}
+			}
+		});
 	}
 
 	private void createActionButtons() {
@@ -103,24 +114,7 @@ public class ModifierExplorer extends TransparentPanel {
 		});
 		editButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				try {
-					int index = table.getSelectedRow();
-					if (index < 0)
-						return;
-
-					index = table.convertRowIndexToModel(index);
-					MenuModifier modifier = (MenuModifier) tableModel.getRowData(index);
-
-					MenuModifierForm editor = new MenuModifierForm(modifier);
-					BeanEditorDialog dialog = new BeanEditorDialog(POSUtil.getBackOfficeWindow(), editor);
-					dialog.open();
-					if (dialog.isCanceled())
-						return;
-
-					table.repaint();
-				} catch (Throwable x) {
-					BOMessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
-				}
+				doEditSelectedMenuModifier();
 			}
 		});
 
@@ -193,6 +187,27 @@ public class ModifierExplorer extends TransparentPanel {
 		panel.add(duplicateButton);
 
 		add(panel, BorderLayout.SOUTH);
+	}
+
+	private void doEditSelectedMenuModifier() {
+		try {
+			int index = table.getSelectedRow();
+			if (index < 0)
+				return;
+
+			index = table.convertRowIndexToModel(index);
+			MenuModifier modifier = (MenuModifier) tableModel.getRowData(index);
+
+			MenuModifierForm editor = new MenuModifierForm(modifier);
+			BeanEditorDialog dialog = new BeanEditorDialog(POSUtil.getBackOfficeWindow(), editor);
+			dialog.open();
+			if (dialog.isCanceled())
+				return;
+
+			table.repaint();
+		} catch (Throwable x) {
+			BOMessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
+		}
 	}
 
 	private JPanel buildSearchForm() {

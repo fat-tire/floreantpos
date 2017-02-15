@@ -131,10 +131,12 @@ public class MenuModifier extends BaseMenuModifier {
 
 	public double getPriceForMultiplier(Multiplier multiplier) {
 		double defaultPrice = this.getPrice();
-		if (multiplier == null) {
+		if (multiplier == null || multiplier.isMain()) {
 			return defaultPrice;
 		}
-
+		if (!isFixedPrice()) {
+			return defaultPrice * multiplier.getRate() / 100;
+		}
 		List<ModifierMultiplierPrice> priceList = getMultiplierPriceList();
 		if (priceList == null || priceList.isEmpty()) {
 			return defaultPrice;
@@ -144,30 +146,30 @@ public class MenuModifier extends BaseMenuModifier {
 				return multiplierPrice.getPrice();
 			}
 		}
-		return price * (multiplier.getRate() / 100);
+		return defaultPrice;
 	}
 
 	public double getPriceForSize(MenuItemSize size, boolean extra) {
-		double defaultPrice = this.getPrice();
-		if (size == null) {
-			return defaultPrice;
-		}
+		return getPriceForSizeAndMultiplier(size, extra, null);
+	}
 
+	public double getPriceForSizeAndMultiplier(MenuItemSize size, boolean extra, Multiplier multiplier) {
 		List<PizzaModifierPrice> priceList = getPizzaModifierPriceList();
-		if (priceList == null) {
-			return defaultPrice;
-		}
-
-		for (PizzaModifierPrice pizzaModifierPrice : priceList) {
-			if (size.equals(pizzaModifierPrice.getSize())) {
-				if (extra) {
-					return pizzaModifierPrice.getExtraPrice();
+		if (isPizzaModifier() && priceList != null) {
+			for (PizzaModifierPrice pizzaModifierPrice : priceList) {
+				if (size.getId().intValue() == pizzaModifierPrice.getSize().getId().intValue()) {
+					List<ModifierMultiplierPrice> multiplierPriceList = pizzaModifierPrice.getMultiplierPriceList();
+					if (multiplierPriceList != null) {
+						for (ModifierMultiplierPrice price : multiplierPriceList) {
+							if (price.getMultiplier().getName().equals(multiplier.getName())) {
+								return price.getPrice();
+							}
+						}
+					}
 				}
-				return pizzaModifierPrice.getPrice();
 			}
 		}
-
-		return defaultPrice;
+		return getPriceForMultiplier(multiplier);
 	}
 
 	public double getPriceByOrderType(OrderType type) {

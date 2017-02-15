@@ -35,6 +35,7 @@
 		<property name="showImageOnly" column="SHOW_IMAGE_ONLY" type="java.lang.Boolean" />
 		<property name="fractionalUnit" column="FRACTIONAL_UNIT" type="java.lang.Boolean" />
 		<property name="pizzaType" column="PIZZA_TYPE" type="java.lang.Boolean" />
+		<property  name="defaultSellPortion" column="DEFAULT_SELL_PORTION" type="java.lang.Integer" />
 
 		<!-- uni-directional many-to-one association to FoodGroup -->
 		<many-to-one class="com.floreantpos.model.MenuGroup" name="parent">

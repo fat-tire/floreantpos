@@ -40,10 +40,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -54,8 +51,9 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
+import javax.swing.JTable;
 import javax.swing.JTextArea;
-import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.SwingConstants;
 import javax.swing.border.EtchedBorder;
 import javax.swing.event.ChangeEvent;
@@ -92,7 +90,6 @@ import com.floreantpos.model.dao.TaxDAO;
 import com.floreantpos.swing.BeanTableModel;
 import com.floreantpos.swing.CheckBoxList;
 import com.floreantpos.swing.ComboBoxModel;
-import com.floreantpos.swing.DoubleDocument;
 import com.floreantpos.swing.DoubleTextField;
 import com.floreantpos.swing.FixedLengthDocument;
 import com.floreantpos.swing.FixedLengthTextField;
@@ -112,70 +109,40 @@ import com.floreantpos.util.ShiftUtil;
  * @author  MShahriar
  */
 public class PizzaItemForm extends BeanEditor<MenuItem> implements ActionListener, ChangeListener {
-	ShiftTableModel shiftTableModel;
-	private BeanTableModel<PizzaPrice> priceTableModel;
-	private MenuItem menuItem;
 
-	private javax.swing.JButton btnAddShift;
-	private javax.swing.JButton btnNewPrice;
-	private javax.swing.JButton btnUpdatePrice;
-	private javax.swing.JButton btnDeletePrice;
-	private javax.swing.JButton btnDeleteAll;
-	private javax.swing.JButton btnDefaultValue;
-	private javax.swing.JButton btnDeleteModifierGroup;
-	private javax.swing.JButton btnDeleteShift;
-	private javax.swing.JButton btnEditModifierGroup;
-	private javax.swing.JButton btnNewGroup;
-	private javax.swing.JButton btnNewModifierGroup;
-	private javax.swing.JButton btnNewTax;
+	private JTabbedPane tabbedPane;
+	private JTable shiftTable;
+	private JTable priceTable;
+	private JTable tableTicketItemModifierGroups;
+
+	private FixedLengthTextField tfName;
+	private FixedLengthTextField tfTranslatedName;
 	private javax.swing.JComboBox cbGroup;
-	private javax.swing.JComboBox cbTax;
-	private javax.swing.JCheckBox chkVisible;
-	private javax.swing.JLabel lfname;
-	private javax.swing.JLabel lDiscountRate;
-	private javax.swing.JLabel lgroup;
-	private javax.swing.JLabel lPercentage;
-	private javax.swing.JLabel lTax;
-	private javax.swing.JLabel lblButtonColor;
-	private javax.swing.JPanel tabGeneral;
-	private javax.swing.JPanel tabModifier;
-	private javax.swing.JPanel tabShift;
-	private javax.swing.JPanel tabPrice;
-	private javax.swing.JPanel tabButtonStyle;
-	private javax.swing.JScrollPane jScrollPane1;
-	private javax.swing.JScrollPane jScrollPane2;
-	private javax.swing.JScrollPane priceTabScrollPane;
-	private javax.swing.JTabbedPane tabbedPane;
-	private javax.swing.JTable shiftTable;
-	private javax.swing.JTable priceTable;
-	private javax.swing.JTable tableTicketItemModifierGroups;
-	private DoubleTextField tfDiscountRate;
-	private com.floreantpos.swing.FixedLengthTextField tfName;
+	private FixedLengthTextField tfBarcode;
+	private DoubleTextField tfStockCount;
+	private JCheckBox chkVisible;
+	private JCheckBox cbDisableStockCount;
+	private IntegerTextField tfDefaultSellPortion;
+	private JComboBox<PrinterGroup> cbPrinterGroup;
+	private JComboBox cbTax;
+	private CheckBoxList orderList;
 	private JTextArea tfDescription;
-	// End of variables declaration//GEN-END:variables
+
 	private List<MenuItemModifierGroup> menuItemModifierGroups;
 	private MenuItemMGListModel menuItemMGListModel;
 	private JLabel lblImagePreview;
 	private JButton btnClearImage;
 	private JCheckBox cbShowTextWithImage;
 	private JLabel lblKitchenPrinter;
-	private JComboBox<PrinterGroup> cbPrinterGroup;
-	private JLabel lblBarcode;
-	private FixedLengthTextField tfBarcode;
-	private JLabel lblTextColor;
+
 	private JButton btnButtonColor;
 	private JButton btnTextColor;
-	private JLabel lblTranslatedName;
-	private FixedLengthTextField tfTranslatedName;
 	private IntegerTextField tfSortOrder;
-	//private CheckBoxList terminalList;
-	private CheckBoxList orderList;
-	private DoubleTextField tfStockCount;
-	private JLabel lblStockCount;
-	private JCheckBox cbDisableStockCount;
-	private JButton btnAutoGenerate;
 
-	/** Creates new form FoodItemEditor */
+	private ShiftTableModel shiftTableModel;
+	private BeanTableModel<PizzaPrice> priceTableModel;
+	private MenuItem menuItem;
+
 	public PizzaItemForm() throws Exception {
 		this(new MenuItem());
 	}
@@ -183,27 +150,17 @@ public class PizzaItemForm extends BeanEditor<MenuItem> implements ActionListene
 	public PizzaItemForm(MenuItem menuItem) throws Exception {
 		this.menuItem = menuItem;
 		initComponents();
+		initData();
+	}
 
+	private void initData() {
 		MenuGroupDAO foodGroupDAO = new MenuGroupDAO();
 		List<MenuGroup> foodGroups = foodGroupDAO.findAll();
+		cbGroup.setModel(new ComboBoxModel(foodGroups));
 
 		TaxDAO taxDAO = new TaxDAO();
 		List<Tax> taxes = taxDAO.findAll();
 		cbTax.setModel(new ComboBoxModel(taxes));
-
-		cbGroup = new javax.swing.JComboBox();
-		cbGroup.setModel(new ComboBoxModel(foodGroups));
-		cbGroup.setPreferredSize(new Dimension(198, 0));
-		tabGeneral.add(cbGroup, "flowx,cell 1 3"); //$NON-NLS-1$
-		btnNewGroup = new javax.swing.JButton();
-
-		btnNewGroup.setText("..."); //$NON-NLS-1$
-		btnNewGroup.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				doCreateNewGroup(evt);
-			}
-		});
-		tabGeneral.add(btnNewGroup, "cell 1 3"); //$NON-NLS-1$
 
 		menuItemModifierGroups = menuItem.getMenuItemModiferGroups();
 		shiftTable.setModel(shiftTableModel = new ShiftTableModel(menuItem.getShifts()));
@@ -211,7 +168,6 @@ public class PizzaItemForm extends BeanEditor<MenuItem> implements ActionListene
 		priceTableModel = new BeanTableModel<PizzaPrice>(PizzaPrice.class);
 		priceTableModel.addColumn("SIZE", "size");
 		priceTableModel.addColumn("CRUST", "crust");
-		//	priceTableModel.addColumn("ORDER", "orderType");
 		priceTableModel.addColumn("PRICE", "price");
 
 		if (menuItem != null) {
@@ -232,122 +188,68 @@ public class PizzaItemForm extends BeanEditor<MenuItem> implements ActionListene
 		});
 	}
 
-	protected void doSelectImageFile() {
-		JFileChooser fileChooser = new JFileChooser();
-		fileChooser.setMultiSelectionEnabled(false);
-		fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-
-		int option = fileChooser.showOpenDialog(POSUtil.getBackOfficeWindow());
-
-		if (option == JFileChooser.APPROVE_OPTION) {
-			File imageFile = fileChooser.getSelectedFile();
-			try {
-				byte[] itemImage = FileUtils.readFileToByteArray(imageFile);
-				int imageSize = itemImage.length / 1024;
-
-				if (imageSize > 20) {
-					POSMessageDialog.showMessage(Messages.getString("MenuItemForm.0")); //$NON-NLS-1$
-					itemImage = null;
-					return;
-				}
-
-				ImageIcon imageIcon = new ImageIcon(new ImageIcon(itemImage).getImage().getScaledInstance(80, 80, Image.SCALE_SMOOTH));
-				lblImagePreview.setIcon(imageIcon);
-
-				MenuItem menuItem = (MenuItem) getBean();
-				menuItem.setImageData(itemImage);
-
-			} catch (IOException e) {
-				PosLog.error(getClass(), e);
-			}
-		}
-	}
-
-	protected void doClearImage() {
-		MenuItem menuItem = (MenuItem) getBean();
-		menuItem.setImageData(null);
-		lblImagePreview.setIcon(null);
-	}
-
-	public void addRecepieExtension() {
-		InventoryPlugin plugin = (InventoryPlugin) ExtensionManager.getPlugin(InventoryPlugin.class);
-		if (plugin == null) {
-			return;
-		}
-
-		plugin.addRecepieView(tabbedPane);
-	}
-
-	/** This method is called from within the constructor to
-	 * initialize the form.
-	 * WARNING: Do NOT modify this code. The content of this method is
-	 * always regenerated by the Form Editor.
-	 */
-	// <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:initComponents
 	private void initComponents() {
-		lblButtonColor = new JLabel(Messages.getString("MenuItemForm.19")); //$NON-NLS-1$
+		setLayout(new BorderLayout());
+		JLabel lblButtonColor = new JLabel(Messages.getString("MenuItemForm.19")); //$NON-NLS-1$
 		tabbedPane = new javax.swing.JTabbedPane();
-		tabGeneral = new javax.swing.JPanel();
-		lfname = new javax.swing.JLabel();
-		lfname.setHorizontalAlignment(SwingConstants.TRAILING);
+
+		JPanel tabGeneral = new javax.swing.JPanel();
+
+		JLabel lblName = new JLabel();
+		lblName.setHorizontalAlignment(SwingConstants.TRAILING);
+
 		tfName = new com.floreantpos.swing.FixedLengthTextField(20);
 		tfDescription = new JTextArea(new FixedLengthDocument(120));
-		lTax = new javax.swing.JLabel();
+
+		JLabel lTax = new javax.swing.JLabel();
 		lTax.setHorizontalAlignment(SwingConstants.TRAILING);
+
 		cbTax = new javax.swing.JComboBox();
-		btnNewTax = new javax.swing.JButton();
-		lDiscountRate = new javax.swing.JLabel();
-		lDiscountRate.setHorizontalAlignment(SwingConstants.TRAILING);
-		lPercentage = new javax.swing.JLabel();
-		tfDiscountRate = new DoubleTextField(18);
-		tfDiscountRate.setHorizontalAlignment(SwingConstants.TRAILING);
-		tabModifier = new javax.swing.JPanel();
-		btnNewModifierGroup = new javax.swing.JButton();
-		btnDeleteModifierGroup = new javax.swing.JButton();
-		btnEditModifierGroup = new javax.swing.JButton();
-		jScrollPane1 = new javax.swing.JScrollPane();
-		tableTicketItemModifierGroups = new javax.swing.JTable();
-		tabShift = new javax.swing.JPanel();
-		tabPrice = new javax.swing.JPanel();
-		tabButtonStyle = new javax.swing.JPanel();
-		btnDeleteShift = new javax.swing.JButton();
-		btnAddShift = new javax.swing.JButton();
-		btnNewPrice = new javax.swing.JButton();
-		btnUpdatePrice = new javax.swing.JButton();
-		btnDeletePrice = new javax.swing.JButton();
-		btnDeleteAll = new javax.swing.JButton();
-		btnDefaultValue = new javax.swing.JButton();
-		btnAutoGenerate = new javax.swing.JButton();
-		jScrollPane2 = new javax.swing.JScrollPane();
-		priceTabScrollPane = new javax.swing.JScrollPane();
-		shiftTable = new javax.swing.JTable();
-		priceTable = new javax.swing.JTable();
+		JButton btnNewTax = new javax.swing.JButton();
+
+		JPanel tabShift = new javax.swing.JPanel();
+		JPanel tabPrice = new javax.swing.JPanel();
+
+		JPanel tabButtonStyle = new javax.swing.JPanel();
+		JButton btnDeleteShift = new javax.swing.JButton();
+		JButton btnAddShift = new javax.swing.JButton();
+
+		JButton btnNewPrice = new javax.swing.JButton();
+		JButton btnUpdatePrice = new javax.swing.JButton();
+		JButton btnDeletePrice = new javax.swing.JButton();
+		JButton btnDeleteAll = new javax.swing.JButton();
+		JButton btnDefaultValue = new javax.swing.JButton();
+		JButton btnAutoGenerate = new javax.swing.JButton();
+
+		JScrollPane jScrollPane2 = new javax.swing.JScrollPane();
+		JScrollPane priceTabScrollPane = new javax.swing.JScrollPane();
+
+		shiftTable = new JTable();
+
+		priceTable = new JTable();
 		priceTable.setRowHeight(PosUIManager.getSize(priceTable.getRowHeight()));
 		cbPrinterGroup = new JComboBox<PrinterGroup>(new DefaultComboBoxModel<PrinterGroup>(PrinterGroupDAO.getInstance().findAll()
 				.toArray(new PrinterGroup[0])));
 		cbPrinterGroup.setPreferredSize(new Dimension(226, 0));
 
+		tfDefaultSellPortion = new IntegerTextField(10);
 		tfTranslatedName = new FixedLengthTextField(20);
 		tfTranslatedName.setLength(120);
 		lblKitchenPrinter = new JLabel(Messages.getString("MenuItemForm.27")); //$NON-NLS-1$
-		lfname.setText(Messages.getString("LABEL_NAME")); //$NON-NLS-1$
+		lblName.setText(Messages.getString("LABEL_NAME")); //$NON-NLS-1$
 		tfName.setLength(120);
-		lblTranslatedName = new JLabel(Messages.getString("MenuItemForm.lblTranslatedName.text")); //$NON-NLS-1$
+		JLabel lblTranslatedName = new JLabel(Messages.getString("MenuItemForm.lblTranslatedName.text")); //$NON-NLS-1$
 		tfSortOrder = new IntegerTextField(20);
-		//lblSortOrder = new JLabel(Messages.getString("MenuItemForm.lblSortOrder.text")); //$NON-NLS-1$
 		tfSortOrder.setText(""); //$NON-NLS-1$
 		cbTax.setPreferredSize(new Dimension(198, 0));
-		///lblButtonColor = new JLabel(Messages.getString("MenuItemForm.lblButtonColor.text")); //$NON-NLS-1$
 		btnButtonColor = new JButton(); //$NON-NLS-1$
 		btnButtonColor.setPreferredSize(new Dimension(228, 40));
-		lblTextColor = new JLabel(Messages.getString("MenuItemForm.lblTextColor.text")); //$NON-NLS-1$
+		JLabel lblTextColor = new JLabel(Messages.getString("MenuItemForm.lblTextColor.text")); //$NON-NLS-1$
 		btnTextColor = new JButton(Messages.getString("MenuItemForm.SAMPLE_TEXT")); //$NON-NLS-1$
-		//	btnTextColor.setPreferredSize(new Dimension(228, 40));
 		cbShowTextWithImage = new JCheckBox(Messages.getString("MenuItemForm.40")); //$NON-NLS-1$
 		cbShowTextWithImage.setActionCommand(Messages.getString("MenuItemForm.41")); //$NON-NLS-1$
 		lTax.setText(Messages.getString("LABEL_TAX")); //$NON-NLS-1$
 		btnNewTax.setText("...");
-
 		lTax.setText(Messages.getString("LABEL_TAX")); //$NON-NLS-1$
 
 		btnNewTax.setText("..."); //$NON-NLS-1$
@@ -357,96 +259,47 @@ public class PizzaItemForm extends BeanEditor<MenuItem> implements ActionListene
 			}
 		});
 
-		lDiscountRate.setText(com.floreantpos.POSConstants.DISCOUNT_RATE + ":"); //$NON-NLS-1$
-
-		lPercentage.setText("%"); //$NON-NLS-1$
 		tabbedPane.addTab(com.floreantpos.POSConstants.GENERAL, tabGeneral);
 		tabbedPane.setPreferredSize(new Dimension(750, 470));
 
-		btnNewModifierGroup.setText(com.floreantpos.POSConstants.ADD);
-		btnNewModifierGroup.setActionCommand("AddModifierGroup"); //$NON-NLS-1$
-		btnNewModifierGroup.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				btnNewModifierGroupActionPerformed(evt);
-			}
-		});
+		tabbedPane.addTab(com.floreantpos.POSConstants.MODIFIER_GROUPS, getModifierGroupTab());
 
-		btnDeleteModifierGroup.setText(com.floreantpos.POSConstants.DELETE);
-		btnDeleteModifierGroup.setActionCommand("DeleteModifierGroup"); //$NON-NLS-1$
-
-		btnEditModifierGroup.setText(com.floreantpos.POSConstants.EDIT);
-		btnEditModifierGroup.setActionCommand("EditModifierGroup"); //$NON-NLS-1$
-
-		menuItemMGListModel = new MenuItemMGListModel();
-		tableTicketItemModifierGroups.setModel(menuItemMGListModel);
-
-		btnNewModifierGroup.addActionListener(this);
-		btnEditModifierGroup.addActionListener(this);
-		btnDeleteModifierGroup.addActionListener(this);
 		btnAddShift.addActionListener(this);
 		btnDeleteShift.addActionListener(this);
 
-		tfDiscountRate.setDocument(new DoubleDocument());
-
 		tabGeneral.setLayout(new MigLayout("insets 20", "[][]20px[][]", "[][][][][][][][][][][][][]")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		/*JLabel lblImage = new JLabel(Messages.getString("MenuItemForm.28")); //$NON-NLS-1$
-		lblImage.setHorizontalAlignment(SwingConstants.TRAILING);
-		tabGeneral.add(lblImage, "cell 0 0,right"); //$NON-NLS-1$
 
-		lblImagePreview = new JLabel(""); //$NON-NLS-1$
-		lblImagePreview.setHorizontalAlignment(JLabel.CENTER);
-		lblImagePreview.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-		lblImagePreview.setPreferredSize(new Dimension(100, 100));
-		tabGeneral.add(lblImagePreview, "cell 1 0"); //$NON-NLS-1$
-
-		JButton btnSelectImage = new JButton("..."); //$NON-NLS-1$
-		btnSelectImage.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				doSelectImageFile();
-			}
-		});
-		tabGeneral.add(btnSelectImage, "cell 1 0"); //$NON-NLS-1$
-
-		btnClearImage = new JButton(Messages.getString("MenuItemForm.34")); //$NON-NLS-1$
-		btnClearImage.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				doClearImage();
-			}
-		});
-		tabGeneral.add(btnClearImage, "cell 1 0"); //$NON-NLS-1$
-		*/
-
-		tabGeneral.add(lfname, "cell 0 1 ,right"); //$NON-NLS-1$
+		tabGeneral.add(lblName, "cell 0 1 ,right"); //$NON-NLS-1$
 		tabGeneral.add(tfName, "cell 1 1,grow"); //$NON-NLS-1$
 
 		tabGeneral.add(lblTranslatedName, "cell 0 2,right"); //$NON-NLS-1$
 		tabGeneral.add(tfTranslatedName, "cell 1 2,grow");
-		lgroup = new javax.swing.JLabel();
+
+		JLabel lgroup = new javax.swing.JLabel();
 		lgroup.setHorizontalAlignment(SwingConstants.TRAILING);
 		lgroup.setText(Messages.getString("LABEL_GROUP")); //$NON-NLS-1$
 
 		tabGeneral.add(lgroup, "cell 0 3,alignx right"); //$NON-NLS-1$
-		lblBarcode = new JLabel(Messages.getString("MenuItemForm.lblBarcode.text")); //$NON-NLS-1$
+		JLabel lblBarcode = new JLabel(Messages.getString("MenuItemForm.lblBarcode.text")); //$NON-NLS-1$
 
 		tabGeneral.add(lblBarcode, "cell 0 4,alignx right"); //$NON-NLS-1$
 		tfBarcode = new FixedLengthTextField(20);
 		tabGeneral.add(tfBarcode, "cell 1 4,grow"); //$NON-NLS-1$
-		lblStockCount = new JLabel(Messages.getString("MenuItemForm.17")); //$NON-NLS-1$
+		JLabel lblStockCount = new JLabel(Messages.getString("MenuItemForm.17")); //$NON-NLS-1$
 
 		tabGeneral.add(lblStockCount, "cell 0 5,alignx right"); //$NON-NLS-1$
 		tfStockCount = new DoubleTextField(1);
 		tabGeneral.add(tfStockCount, "cell 1 5,grow"); //$NON-NLS-1$
 		chkVisible = new javax.swing.JCheckBox();
 
+		tabGeneral.add(new JLabel("Default sell portion (%)"), "cell 0 6");
+		tabGeneral.add(tfDefaultSellPortion, "cell 1 6,grow");
+
 		chkVisible.setText(com.floreantpos.POSConstants.VISIBLE);
 		chkVisible.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
 		chkVisible.setMargin(new java.awt.Insets(0, 0, 0, 0));
 
-		//tabGeneral.add(cbShowTextWithImage, "cell 1 8"); //$NON-NLS-1$
-		tabGeneral.add(chkVisible, "cell 1 6");
-
-		// right side
-
+		tabGeneral.add(chkVisible, "cell 1 7");
 		tabGeneral.add(lblKitchenPrinter, "cell 2 1,right"); //$NON-NLS-1$
 		tabGeneral.add(cbPrinterGroup, "cell 3 1,grow"); //$NON-NLS-1$
 
@@ -454,91 +307,43 @@ public class PizzaItemForm extends BeanEditor<MenuItem> implements ActionListene
 		tabGeneral.add(cbTax, "cell 3 2"); //$NON-NLS-1$
 		tabGeneral.add(btnNewTax, "cell 3 2,grow"); //$NON-NLS-1$
 
-		/*tabGeneral.add(lblButtonColor, "cell 2 3,right"); //$NON-NLS-1$
-		tabGeneral.add(btnButtonColor, "cell 3 3,grow"); //$NON-NLS-1$
+		cbGroup = new javax.swing.JComboBox();
+		cbGroup.setPreferredSize(new Dimension(198, 0));
 
-		tabGeneral.add(lblTextColor, "cell 2 4,right"); //$NON-NLS-1$
-		tabGeneral.add(btnTextColor, "cell 3 4 3 5"); //$NON-NLS-1$
-		btnTextColor.setPreferredSize(new Dimension(228, 50));*/
+		tabGeneral.add(cbGroup, "flowx,cell 1 3"); //$NON-NLS-1$
+		JButton btnNewGroup = new javax.swing.JButton();
+
+		btnNewGroup.setText("..."); //$NON-NLS-1$
+		btnNewGroup.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				doCreateNewGroup(evt);
+			}
+		});
+		tabGeneral.add(btnNewGroup, "cell 1 3"); //$NON-NLS-1$
 
 		tabGeneral.add(new JLabel(Messages.getString("MenuItemForm.25")), "cell 2 3,right"); //$NON-NLS-1$ //$NON-NLS-2$
 		orderList = new CheckBoxList();
 
 		List<OrderType> orderTypes = Application.getInstance().getOrderTypes();
 		orderList.setModel(orderTypes);
-		//		List<String> orderListM = new ArrayList();
-		//		orderListM.add(OrderType.DINE_IN.toString());
-		//		orderListM.add(OrderType.BAR_TAB.toString());
-		//		orderListM.add(OrderType.DRIVE_THRU.toString());
-		//		orderListM.add(OrderType.HOME_DELIVERY.toString());
-		//		orderListM.add(OrderType.PICKUP.toString());
-		//		orderListM.add(OrderType.RETAIL.toString());
-		//		orderListM.add(OrderType.TAKE_OUT.toString());
-
-		//		orderList.setModel(orderListM);
 
 		JScrollPane orderCheckBoxList = new JScrollPane(orderList);
 		orderCheckBoxList.setPreferredSize(new Dimension(228, 100));
-		tabGeneral.add(orderCheckBoxList, "cell 3 3 3 8"); //$NON-NLS-1$
+		tabGeneral.add(orderCheckBoxList, "cell 3 3 3 3"); //$NON-NLS-1$
 		cbDisableStockCount = new JCheckBox(Messages.getString("MenuItemForm.18")); //$NON-NLS-1$
-		tabGeneral.add(cbDisableStockCount, "cell 1 7"); //$NON-NLS-1$
+		tabGeneral.add(cbDisableStockCount, "cell 1 8"); //$NON-NLS-1$
 
-		tabGeneral.add(new JLabel(Messages.getString("MenuItemForm.29")), "cell 2 8,alignx right"); //$NON-NLS-1$ //$NON-NLS-2$
+		tabGeneral.add(new JLabel(Messages.getString("MenuItemForm.29")), "cell 2 6,alignx right"); //$NON-NLS-1$ //$NON-NLS-2$
 		JScrollPane scrlDescription = new JScrollPane(tfDescription, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		scrlDescription.setPreferredSize(new Dimension(228, 70));
-		tabGeneral.add(scrlDescription, "cell 3 8 3 10"); //$NON-NLS-1$
+		tfDescription.setLineWrap(true);
+		tabGeneral.add(scrlDescription, "cell 3 6 3 3"); //$NON-NLS-1$
 
 		add(tabbedPane);
 		//TODO: 
 		addRecepieExtension();
 
-		/*btnButtonColor.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				Color color = JColorChooser.showDialog(MenuItemForm.this, Messages.getString("MenuItemForm.42"), btnButtonColor.getBackground()); //$NON-NLS-1$
-				btnButtonColor.setBackground(color);
-				btnTextColor.setBackground(color);
-			}
-		});
-
-		btnTextColor.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				Color color = JColorChooser.showDialog(MenuItemForm.this, Messages.getString("MenuItemForm.43"), btnTextColor.getForeground()); //$NON-NLS-1$
-				btnTextColor.setForeground(color);
-			}
-		});*/
-
-		jScrollPane1.setViewportView(tableTicketItemModifierGroups);
-
-		GroupLayout jPanel2Layout = new GroupLayout(tabModifier);
-		jPanel2Layout.setVerticalGroup(jPanel2Layout.createParallelGroup(Alignment.TRAILING).addGroup(
-				jPanel2Layout
-						.createSequentialGroup()
-						.addContainerGap()
-						.addComponent(jScrollPane1, GroupLayout.DEFAULT_SIZE, 412, Short.MAX_VALUE)
-						.addPreferredGap(ComponentPlacement.RELATED)
-						.addGroup(
-								jPanel2Layout.createParallelGroup(Alignment.BASELINE).addComponent(btnDeleteModifierGroup).addComponent(btnEditModifierGroup)
-										.addComponent(btnNewModifierGroup)).addContainerGap()));
-		jPanel2Layout.setHorizontalGroup(jPanel2Layout.createParallelGroup(Alignment.TRAILING).addGroup(
-				jPanel2Layout
-						.createSequentialGroup()
-						.addContainerGap()
-						.addGroup(
-								jPanel2Layout
-										.createParallelGroup(Alignment.LEADING)
-										.addGroup(
-												jPanel2Layout.createSequentialGroup().addComponent(btnNewModifierGroup)
-														.addPreferredGap(ComponentPlacement.RELATED).addComponent(btnEditModifierGroup)
-														.addPreferredGap(ComponentPlacement.RELATED).addComponent(btnDeleteModifierGroup))
-										.addComponent(jScrollPane1, GroupLayout.DEFAULT_SIZE, 421, Short.MAX_VALUE)).addContainerGap()));
-		tabModifier.setLayout(jPanel2Layout);
-
-		tabbedPane.addTab(com.floreantpos.POSConstants.MODIFIER_GROUPS, tabModifier);
-
 		btnDeleteShift.setText(com.floreantpos.POSConstants.DELETE_SHIFT);
-
 		btnAddShift.setText(com.floreantpos.POSConstants.ADD_SHIFT);
 
 		shiftTable.setModel(new javax.swing.table.DefaultTableModel(new Object[][] { { null, null, null, null }, { null, null, null, null },
@@ -565,8 +370,6 @@ public class PizzaItemForm extends BeanEditor<MenuItem> implements ActionListene
 						.addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
 
 		tabbedPane.addTab(com.floreantpos.POSConstants.SHIFTS, tabShift);
-
-		//
 
 		btnNewPrice.setText(Messages.getString("MenuItemForm.9")); //$NON-NLS-1$
 		btnNewPrice.addActionListener(new ActionListener() {
@@ -621,26 +424,18 @@ public class PizzaItemForm extends BeanEditor<MenuItem> implements ActionListene
 		priceTabScrollPane.setViewportView(priceTable);
 
 		tabPrice.setLayout(new BorderLayout());
-		tabPrice.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 		tabPrice.add(priceTabScrollPane, BorderLayout.CENTER);
 
 		JPanel buttonPanel = new JPanel();
 
 		buttonPanel.add(btnNewPrice);
 		buttonPanel.add(btnUpdatePrice);
-		//buttonPanel.add(btnDefaultValue);
 		buttonPanel.add(btnDeletePrice);
 		buttonPanel.add(btnAutoGenerate);
 
-		//	buttonPanel.add(btnDeleteAll);
-
 		tabPrice.add(buttonPanel, BorderLayout.SOUTH);
-		tabbedPane.addTab("Price", tabPrice); //$NON-NLS-1$
-
-		//
-
+		tabGeneral.add(tabPrice, "cell 0 10,grow,span");
 		tabbedPane.addChangeListener(this);
-		//
 
 		tabButtonStyle.setLayout(new MigLayout("insets 10", "[][]100[][][][]", "[][][center][][][]")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
@@ -665,15 +460,6 @@ public class PizzaItemForm extends BeanEditor<MenuItem> implements ActionListene
 		tabButtonStyle.add(btnTextColor, "cell 1 3"); //$NON-NLS-1$
 		tabButtonStyle.add(cbShowTextWithImage, "cell 1 4"); //$NON-NLS-1$
 
-		/*	tabButtonStyle.add(lblImagePreview, "cell 3 0 3 4"); //$NON-NLS-1$
-			tabButtonStyle.add(btnClearImage, "cell 3 0,gaptop 40"); //$NON-NLS-1$
-			tabButtonStyle.add(btnSelectImage, "cell 3 0,gaptop 40"); //$NON-NLS-1$
-			tabButtonStyle.add(lblImage, "cell 2 0,gaptop 40"); //$NON-NLS-1$
-			tabButtonStyle.add(lblButtonColor, "cell 0 0,right"); //$NON-NLS-1$
-			tabButtonStyle.add(btnButtonColor, "cell 1 0,grow"); //$NON-NLS-1$
-			tabButtonStyle.add(lblTextColor, "cell 0 1,right"); //$NON-NLS-1$
-			tabButtonStyle.add(btnTextColor, "cell 1 1"); //$NON-NLS-1$
-		*/
 		btnTextColor.setPreferredSize(new Dimension(228, 50));
 
 		btnSelectImage.addActionListener(new ActionListener() {
@@ -706,19 +492,103 @@ public class PizzaItemForm extends BeanEditor<MenuItem> implements ActionListene
 		});
 
 		tabbedPane.addTab(Messages.getString("MenuItemForm.26"), tabButtonStyle); //$NON-NLS-1$
+	}
 
-	}// </editor-fold>//GEN-END:initComponents
+	private JPanel getModifierGroupTab() {
+		JPanel tabModifierGroup = new JPanel(new MigLayout("fill"));
 
-	private void btnNewTaxdoCreateNewTax(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewTaxdoCreateNewTax
+		JButton btnNewModifierGroup = new javax.swing.JButton();
+		JButton btnEditModifierGroup = new javax.swing.JButton();
+		JButton btnDeleteModifierGroup = new javax.swing.JButton();
+
+		tableTicketItemModifierGroups = new javax.swing.JTable();
+
+		JScrollPane jScrollPane1 = new javax.swing.JScrollPane();
+		jScrollPane1.setViewportView(tableTicketItemModifierGroups);
+
+		tabModifierGroup.add(jScrollPane1, "span,grow");
+		tabModifierGroup.add(btnNewModifierGroup, "left,split 3");
+		tabModifierGroup.add(btnEditModifierGroup);
+		tabModifierGroup.add(btnDeleteModifierGroup);
+
+		btnNewModifierGroup.setText(com.floreantpos.POSConstants.ADD);
+		btnNewModifierGroup.setActionCommand("AddModifierGroup"); //$NON-NLS-1$
+		btnNewModifierGroup.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				btnNewModifierGroupActionPerformed(evt);
+			}
+		});
+
+		btnDeleteModifierGroup.setText(com.floreantpos.POSConstants.DELETE);
+		btnDeleteModifierGroup.setActionCommand("DeleteModifierGroup"); //$NON-NLS-1$
+
+		btnEditModifierGroup.setText(com.floreantpos.POSConstants.EDIT);
+		btnEditModifierGroup.setActionCommand("EditModifierGroup"); //$NON-NLS-1$
+
+		menuItemMGListModel = new MenuItemMGListModel();
+		tableTicketItemModifierGroups.setModel(menuItemMGListModel);
+
+		btnNewModifierGroup.addActionListener(this);
+		btnEditModifierGroup.addActionListener(this);
+		btnDeleteModifierGroup.addActionListener(this);
+		return tabModifierGroup;
+	}
+
+	private void doSelectImageFile() {
+		JFileChooser fileChooser = new JFileChooser();
+		fileChooser.setMultiSelectionEnabled(false);
+		fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+
+		int option = fileChooser.showOpenDialog(POSUtil.getBackOfficeWindow());
+
+		if (option == JFileChooser.APPROVE_OPTION) {
+			File imageFile = fileChooser.getSelectedFile();
+			try {
+				byte[] itemImage = FileUtils.readFileToByteArray(imageFile);
+				int imageSize = itemImage.length / 1024;
+
+				if (imageSize > 20) {
+					POSMessageDialog.showMessage(Messages.getString("MenuItemForm.0")); //$NON-NLS-1$
+					itemImage = null;
+					return;
+				}
+
+				ImageIcon imageIcon = new ImageIcon(new ImageIcon(itemImage).getImage().getScaledInstance(80, 80, Image.SCALE_SMOOTH));
+				lblImagePreview.setIcon(imageIcon);
+
+				MenuItem menuItem = (MenuItem) getBean();
+				menuItem.setImageData(itemImage);
+
+			} catch (IOException e) {
+				PosLog.error(getClass(), e);
+			}
+		}
+	}
+
+	protected void doClearImage() {
+		MenuItem menuItem = (MenuItem) getBean();
+		menuItem.setImageData(null);
+		lblImagePreview.setIcon(null);
+	}
+
+	public void addRecepieExtension() {
+		InventoryPlugin plugin = (InventoryPlugin) ExtensionManager.getPlugin(InventoryPlugin.class);
+		if (plugin == null) {
+			return;
+		}
+
+		plugin.addRecepieView(tabbedPane);
+	}
+
+	private void btnNewTaxdoCreateNewTax(java.awt.event.ActionEvent evt) {
 		BeanEditorDialog dialog = new BeanEditorDialog(POSUtil.getBackOfficeWindow(), new TaxForm());
 		dialog.open();
-	}//GEN-LAST:event_btnNewTaxdoCreateNewTax
+	}
 
-	private void btnNewModifierGroupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewModifierGroupActionPerformed
+	private void btnNewModifierGroupActionPerformed(java.awt.event.ActionEvent evt) {
+	}
 
-	}//GEN-LAST:event_btnNewModifierGroupActionPerformed
-
-	private void doCreateNewGroup(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_doCreateNewGroup
+	private void doCreateNewGroup(java.awt.event.ActionEvent evt) {
 		MenuGroupForm editor = new MenuGroupForm();
 		BeanEditorDialog dialog = new BeanEditorDialog(POSUtil.getBackOfficeWindow(), editor);
 		dialog.open();
@@ -729,7 +599,7 @@ public class PizzaItemForm extends BeanEditor<MenuItem> implements ActionListene
 			model.addElement(foodGroup);
 			model.setSelectedItem(foodGroup);
 		}
-	}//GEN-LAST:event_doCreateNewGroup
+	}
 
 	private void addMenuItemModifierGroup() {
 		try {
@@ -825,7 +695,6 @@ public class PizzaItemForm extends BeanEditor<MenuItem> implements ActionListene
 		tfDescription.setText(menuItem.getDescription());
 		tfTranslatedName.setText(menuItem.getTranslatedName());
 		tfBarcode.setText(menuItem.getBarcode());
-		tfDiscountRate.setText(String.valueOf(menuItem.getDiscountRate()));
 		tfStockCount.setText(String.valueOf(menuItem.getStockAmount()));
 		chkVisible.setSelected(menuItem.isVisible());
 		cbShowTextWithImage.setSelected(menuItem.isShowImageOnly());
@@ -834,7 +703,7 @@ public class PizzaItemForm extends BeanEditor<MenuItem> implements ActionListene
 		if (menuItemImage != null) {
 			lblImagePreview.setIcon(menuItemImage);
 		}
-
+		tfDefaultSellPortion.setText(String.valueOf(menuItem.getDefaultSellPortion()));
 		cbGroup.setSelectedItem(menuItem.getParent());
 		cbTax.setSelectedItem(menuItem.getTax());
 
@@ -860,7 +729,7 @@ public class PizzaItemForm extends BeanEditor<MenuItem> implements ActionListene
 	protected boolean updateModel() {
 		String itemName = tfName.getText();
 		if (POSUtil.isBlankOrNull(itemName)) {
-			MessageDialog.showError(com.floreantpos.POSConstants.NAME_REQUIRED);
+			POSMessageDialog.showError(POSUtil.getFocusedWindow(), com.floreantpos.POSConstants.NAME_REQUIRED);
 			return false;
 		}
 
@@ -874,6 +743,7 @@ public class PizzaItemForm extends BeanEditor<MenuItem> implements ActionListene
 		menuItem.setVisible(chkVisible.isSelected());
 		menuItem.setShowImageOnly(cbShowTextWithImage.isSelected());
 		menuItem.setDisableWhenStockAmountIsZero(cbDisableStockCount.isSelected());
+		menuItem.setDefaultSellPortion(tfDefaultSellPortion.getInteger());
 
 		menuItem.setTranslatedName(tfTranslatedName.getText());
 		menuItem.setSortOrder(tfSortOrder.getInteger());
@@ -887,10 +757,6 @@ public class PizzaItemForm extends BeanEditor<MenuItem> implements ActionListene
 		else {
 			menuItem.setOrderTypeList(orderList.getCheckedValues());
 		}
-		try {
-			menuItem.setDiscountRate(Double.parseDouble(tfDiscountRate.getText()));
-		} catch (Exception x) {
-		}
 		menuItem.setMenuItemModiferGroups(menuItemModifierGroups);
 		menuItem.setShifts(shiftTableModel.getShifts());
 
@@ -898,30 +764,6 @@ public class PizzaItemForm extends BeanEditor<MenuItem> implements ActionListene
 		if (menuItem.getPizzaPriceList() != null) {
 			menuItem.getPizzaPriceList().clear();
 		}
-		/*List<PizzaPrice> duplicateList = new ArrayList<PizzaPrice>();
-		int count = 0;
-		for (int i = 0; i < pizzaPriceList.size(); i++) {
-			for (int j = 0; j < pizzaPriceList.size(); j++) {
-				if ((pizzaPriceList.get(i).getSize() == pizzaPriceList.get(j).getSize())
-						&& (pizzaPriceList.get(i).getCrust() == pizzaPriceList.get(j).getCrust())) {
-					PosLog.debug(getClass(),pizzaPriceList.get(i).getSize() + " " + pizzaPriceList.get(i).getCrust() + " " + pizzaPriceList.get(j).getSize() + " "
-							+ pizzaPriceList.get(j).getCrust());
-					duplicateList.add(pizzaPriceList.get(i));
-					PosLog.debug(getClass(),count);
-					++count;
-				}
-			}
-		}
-		PosLog.debug(getClass(),count);
-
-
-		PosLog.debug(getClass(),findDuplicates(duplicateList));
-
-		if (findDuplicates(duplicateList)) {
-			JOptionPane.showMessageDialog(this, "Duplicate Value Entered");
-			return false;
-		}*/
-
 		for (PizzaPrice pizzaPrice : pizzaPriceList) {
 			menuItem.addTopizzaPriceList(pizzaPrice);
 		}
@@ -942,22 +784,6 @@ public class PizzaItemForm extends BeanEditor<MenuItem> implements ActionListene
 
 		return true;
 	}
-
-	/*public static boolean findDuplicates(List<PizzaPrice> listContainingDuplicates) {
-
-		final Set<PizzaPrice> setToReturn = new HashSet<PizzaPrice>();
-		final Set<PizzaPrice> set1 = new HashSet<PizzaPrice>();
-
-		boolean isDuplicateContain = false;
-
-		for (PizzaPrice yourInt : listContainingDuplicates) {
-			if (!set1.add(yourInt)) {
-				setToReturn.add(yourInt);
-				isDuplicateContain = true;
-			}
-		}
-		return isDuplicateContain;
-	}*/
 
 	public String getDisplayText() {
 		MenuItem foodItem = (MenuItem) getBean();
@@ -1149,28 +975,6 @@ public class PizzaItemForm extends BeanEditor<MenuItem> implements ActionListene
 			fireTableDataChanged();
 		}
 
-		/*public void setDefaultValue() {
-			int selectedRow = priceTable.getSelectedRow();
-			if (selectedRow == -1) {
-				POSMessageDialog.showMessage(Messages.getString("MenuItemForm.8")); //$NON-NLS-1$
-				return;
-			}
-			String modifiedKey = priceTableModel.propertiesKey.get(selectedRow);
-			modifiedKey = modifiedKey.replaceAll("_PRICE", ""); //$NON-NLS-1$ //$NON-NLS-2$
-			modifiedKey = modifiedKey.replaceAll("_", " ");//$NON-NLS-1$ //$NON-NLS-2$
-			menuItem.setPriceByOrderType(modifiedKey, menuItem.getPrice());
-			if (menuItem.getTax() != null) {
-				menuItem.setTaxByOrderType(modifiedKey, menuItem.getTax().getRate());
-			}
-			else {
-				menuItem.setTaxByOrderType(modifiedKey, 0.0);
-			}
-
-			MenuItemDAO.getInstance().saveOrUpdate(menuItem);
-			add(menuItem);
-			fireTableDataChanged();
-		}*/
-
 		public void remove(int index) {
 			if (propertiesKey == null) {
 				return;
@@ -1284,13 +1088,8 @@ public class PizzaItemForm extends BeanEditor<MenuItem> implements ActionListene
 		priceTableModel.removeAll();
 	}
 
-	/*private void setDefaultValue() {
-		priceTableModel.setDefaultValue();
-	}*/
-
 	private void updatePrice() {
 		editEvent();
-
 	}
 
 	private void editEvent() {

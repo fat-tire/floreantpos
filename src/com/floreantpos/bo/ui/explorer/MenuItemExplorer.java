@@ -20,6 +20,8 @@ package com.floreantpos.bo.ui.explorer;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -101,6 +103,15 @@ public class MenuItemExplorer extends TransparentPanel {
 		add(createButtonPanel(), BorderLayout.SOUTH);
 		add(buildSearchForm(), BorderLayout.NORTH);
 		resizeColumnWidth(table);
+
+		table.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent me) {
+				if (me.getClickCount() == 2) {
+					doEditSelectedMenuItem();
+				}
+			}
+		});
 	}
 
 	private JPanel buildSearchForm() {
@@ -248,28 +259,7 @@ public class MenuItemExplorer extends TransparentPanel {
 
 		editButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				try {
-					int index = table.getSelectedRow();
-					if (index < 0)
-						return;
-
-					index = table.convertRowIndexToModel(index);
-
-					MenuItem menuItem = tableModel.getRow(index);
-					menuItem = MenuItemDAO.getInstance().initialize(menuItem);
-
-					tableModel.setRow(index, menuItem);
-
-					MenuItemForm editor = new MenuItemForm(menuItem);
-					BeanEditorDialog dialog = new BeanEditorDialog(POSUtil.getBackOfficeWindow(), editor);
-					dialog.open();
-					if (dialog.isCanceled())
-						return;
-
-					table.repaint();
-				} catch (Throwable x) {
-					BOMessageDialog.showError(POSConstants.ERROR_MESSAGE, x);
-				}
+				doEditSelectedMenuItem();
 			}
 
 		});
@@ -439,6 +429,32 @@ public class MenuItemExplorer extends TransparentPanel {
 		panel.add(btnChangeMenuGroup);
 		panel.add(btnChangeOrderType);
 		return panel;
+	}
+
+	private void doEditSelectedMenuItem() {
+		try {
+			int index = table.getSelectedRow();
+			if (index < 0)
+				return;
+
+			index = table.convertRowIndexToModel(index);
+
+			MenuItem menuItem = tableModel.getRow(index);
+			menuItem = MenuItemDAO.getInstance().initialize(menuItem);
+
+			tableModel.setRow(index, menuItem);
+
+			MenuItemForm editor = new MenuItemForm(menuItem);
+			BeanEditorDialog dialog = new BeanEditorDialog(POSUtil.getBackOfficeWindow(), editor);
+			dialog.open();
+			if (dialog.isCanceled())
+				return;
+
+			table.repaint();
+		} catch (Throwable x) {
+			BOMessageDialog.showError(POSConstants.ERROR_MESSAGE, x);
+		}
+
 	}
 
 	protected MenuGroup getSelectedMenuGroup(MenuGroup defaultValue) {
