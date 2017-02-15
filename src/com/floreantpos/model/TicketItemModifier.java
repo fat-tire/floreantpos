@@ -29,6 +29,7 @@ public class TicketItemModifier extends BaseTicketItemModifier implements ITicke
 	//public final static int		NO_MODIFIER					= 2;
 	public final static int EXTRA_MODIFIER = 3;
 	public final static int CRUST = 5;
+	public final static int SEPERATOR = 6;
 
 	/*[CONSTRUCTOR MARKER BEGIN]*/
 	public TicketItemModifier () {
@@ -60,7 +61,7 @@ public class TicketItemModifier extends BaseTicketItemModifier implements ITicke
 
 	@Override
 	public String toString() {
-		return getName();
+		return getItemCount() + "x " + getName(); //NON-NLS-1$
 	}
 
 	public boolean canAddCookingInstruction() {
@@ -139,7 +140,10 @@ public class TicketItemModifier extends BaseTicketItemModifier implements ITicke
 
 	@Override
 	public String getNameDisplay() {
-		String display = getItemCount() + "x  -- " + getName(); //$NON-NLS-1$
+		if (isInfoOnly()) {
+			return getName();
+		}
+		String display = getItemCount() + "x " + getName(); //$NON-NLS-1$
 		if (getModifierType() == NORMAL_MODIFIER) {
 			display += "*"; //$NON-NLS-1$
 		}

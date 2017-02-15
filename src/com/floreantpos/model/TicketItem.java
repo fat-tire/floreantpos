@@ -774,6 +774,21 @@ public class TicketItem extends BaseTicketItem implements ITicketItem {
 		return null;
 	}
 	
+	public TicketItemModifier findTicketItemModifierFor(MenuModifier menuModifier, String sectionName) {
+		List<TicketItemModifier> modifiers = getTicketItemModifiers();
+		if (modifiers == null) {
+			return null;
+		}
+		for (TicketItemModifier ticketItemModifier : modifiers) {
+			Integer itemId = ticketItemModifier.getMenuItemId();
+			if ((itemId != null && itemId.intValue() == menuModifier.getId().intValue())
+					&& (sectionName != null && sectionName.equals(ticketItemModifier.getSectionName()))) {
+				return ticketItemModifier;
+			}
+		}
+		return null;
+	}
+	
 	public int countModifierFromGroup(MenuItemModifierGroup menuItemModifierGroup) {
 		List<TicketItemModifier> modifiers = getTicketItemModifiers();
 		if (modifiers == null) {
@@ -783,7 +798,7 @@ public class TicketItem extends BaseTicketItem implements ITicketItem {
 		for (TicketItemModifier ticketItemModifier : modifiers) {
 			Integer groupId = ticketItemModifier.getMenuItemModifierGroupId();
 			if (groupId != null && groupId.intValue() == menuItemModifierGroup.getId().intValue()) {
-				++modifierFromGroupCount;
+				modifierFromGroupCount += ticketItemModifier.getItemCount();
 			}
 		}
 		return modifierFromGroupCount;
