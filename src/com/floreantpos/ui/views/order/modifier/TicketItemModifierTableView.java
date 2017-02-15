@@ -38,9 +38,9 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import org.apache.commons.lang3.StringUtils;
-
 import net.miginfocom.swing.MigLayout;
+
+import org.apache.commons.lang3.StringUtils;
 
 import com.floreantpos.IconFactory;
 import com.floreantpos.model.ITicketItem;

@@ -159,17 +159,17 @@ public class ModifierViewerTable extends JTable {
 			return true;
 		}
 		else if (object instanceof TicketItemModifier) {
-			TicketItemModifier modifier = (TicketItemModifier) object;
-			int itemCount = modifier.getItemCount();
+//			TicketItemModifier modifier = (TicketItemModifier) object;
+//			int itemCount = modifier.getItemCount();
+//
+//			int maxModifier = modifier.getParent().getMaxQuantity();
+//			if (modifier.getModifierType() == TicketItemModifier.NORMAL_MODIFIER && maxModifier <= maxModifier) {
+//				return false;
+//			}
+//			modifier.setItemCount(++itemCount);
+//			repaint();
 
-			int maxModifier = modifier.getParent().getMaxQuantity();
-			if (modifier.getModifierType() == TicketItemModifier.NORMAL_MODIFIER && maxModifier <= maxModifier) {
-				return false;
-			}
-			modifier.setItemCount(++itemCount);
-			repaint();
-
-			return true;
+			return false;
 		}
 		return false;
 	}

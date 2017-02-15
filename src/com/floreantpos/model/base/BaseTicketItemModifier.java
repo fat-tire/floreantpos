@@ -1,6 +1,5 @@
 package com.floreantpos.model.base;
 
-import java.lang.Comparable;
 import java.io.Serializable;
 
 
@@ -18,7 +17,6 @@ public abstract class BaseTicketItemModifier  implements Comparable, Serializabl
 	public static String REF = "TicketItemModifier"; //$NON-NLS-1$
 	public static String PROP_STATUS = "status"; //$NON-NLS-1$
 	public static String PROP_SHOULD_PRINT_TO_KITCHEN = "shouldPrintToKitchen"; //$NON-NLS-1$
-	public static String PROP_PARENT = "parent"; //$NON-NLS-1$
 	public static String PROP_TICKET_ITEM = "ticketItem"; //$NON-NLS-1$
 	public static String PROP_INFO_ONLY = "infoOnly"; //$NON-NLS-1$
 	public static String PROP_TOTAL_AMOUNT = "totalAmount"; //$NON-NLS-1$
@@ -76,7 +74,6 @@ public abstract class BaseTicketItemModifier  implements Comparable, Serializabl
 		protected java.lang.Boolean printedToKitchen;
 
 	// many to one
-	private com.floreantpos.model.TicketItemModifierGroup parent;
 	private com.floreantpos.model.TicketItem ticketItem;
 
 
@@ -361,23 +358,6 @@ public abstract class BaseTicketItemModifier  implements Comparable, Serializabl
 	 */
 	public void setPrintedToKitchen (java.lang.Boolean printedToKitchen) {
 		this.printedToKitchen = printedToKitchen;
-	}
-
-
-
-	/**
-	 * Return the value associated with the column: ModifierGroup_ID
-	 */
-	public com.floreantpos.model.TicketItemModifierGroup getParent () {
-					return parent;
-			}
-
-	/**
-	 * Set the value related to the column: ModifierGroup_ID
-	 * @param parent the ModifierGroup_ID value
-	 */
-	public void setParent (com.floreantpos.model.TicketItemModifierGroup parent) {
-		this.parent = parent;
 	}
 
 

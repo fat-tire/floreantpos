@@ -25,8 +25,8 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 
 import com.floreantpos.model.KitchenTicket;
-import com.floreantpos.model.Ticket;
 import com.floreantpos.model.KitchenTicket.KitchenTicketStatus;
+import com.floreantpos.model.Ticket;
 import com.floreantpos.swing.PaginatedTableModel;
 
 public class KitchenTicketDAO extends BaseKitchenTicketDAO {

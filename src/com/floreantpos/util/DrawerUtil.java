@@ -17,11 +17,11 @@
  */
 package com.floreantpos.util;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import jssc.SerialPort;
 import jssc.SerialPortException;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import com.floreantpos.config.TerminalConfig;
 

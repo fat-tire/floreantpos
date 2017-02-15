@@ -19,8 +19,6 @@ package com.floreantpos.model.dao;
 
 import org.hibernate.criterion.Order;
 
-
-
 import com.floreantpos.model.ShopTableType;
 
 

@@ -30,7 +30,6 @@ import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.TicketItemCookingInstruction;
 import com.floreantpos.model.TicketItemModifier;
-import com.floreantpos.model.TicketItemModifierGroup;
 
 public class TodoTicketViewerTableModel extends AbstractTableModel {
 	private JTable table;
@@ -207,8 +206,8 @@ public class TodoTicketViewerTableModel extends AbstractTableModel {
 	}
 
 	public void removeModifier(TicketItem parent, TicketItemModifier modifierToDelete) {
-		TicketItemModifierGroup ticketItemModifierGroup = modifierToDelete.getParent();
-		List<TicketItemModifier> ticketItemModifiers = ticketItemModifierGroup.getTicketItemModifiers();
+		//TicketItemModifierGroup ticketItemModifierGroup = modifierToDelete.getParent();
+		List<TicketItemModifier> ticketItemModifiers = parent.getTicketItemModifiers();
 
 		for (Iterator iter = ticketItemModifiers.iterator(); iter.hasNext();) {
 			TicketItemModifier modifier = (TicketItemModifier) iter.next();
@@ -252,8 +251,8 @@ public class TodoTicketViewerTableModel extends AbstractTableModel {
 		}
 		else if (iTicketItem instanceof TicketItemModifier) {
 			TicketItemModifier itemModifier = (TicketItemModifier) iTicketItem;
-			TicketItemModifierGroup ticketItemModifierGroup = itemModifier.getParent();
-			List<TicketItemModifier> ticketItemModifiers = ticketItemModifierGroup.getTicketItemModifiers();
+			//TicketItemModifierGroup ticketItemModifierGroup = itemModifier.getParent();
+			List<TicketItemModifier> ticketItemModifiers = itemModifier.getTicketItem().getTicketItemModifiers();
 
 			if (ticketItemModifiers != null) {
 				for (Iterator iterator = ticketItemModifiers.iterator(); iterator.hasNext();) {

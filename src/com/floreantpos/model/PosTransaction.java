@@ -23,7 +23,6 @@ import org.apache.commons.lang.StringUtils;
 
 import com.floreantpos.config.CardConfig;
 import com.floreantpos.model.base.BasePosTransaction;
-import com.floreantpos.util.NumberUtil;
 import com.floreantpos.util.POSUtil;
 
 public class PosTransaction extends BasePosTransaction {

@@ -31,7 +31,6 @@ import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.TicketItemCookingInstruction;
 import com.floreantpos.model.TicketItemModifier;
-import com.floreantpos.model.TicketItemModifierGroup;
 
 public class TicketViewerTableModel extends AbstractTableModel {
 	private JTable table;
@@ -192,8 +191,7 @@ public class TicketViewerTableModel extends AbstractTableModel {
 	}
 
 	public void removeModifier(TicketItem parent, TicketItemModifier modifierToDelete) {
-		TicketItemModifierGroup ticketItemModifierGroup = modifierToDelete.getParent();
-		List<TicketItemModifier> ticketItemModifiers = ticketItemModifierGroup.getTicketItemModifiers();
+		List<TicketItemModifier> ticketItemModifiers = parent.getTicketItemModifiers();
 
 		for (Iterator iter = ticketItemModifiers.iterator(); iter.hasNext();) {
 			TicketItemModifier modifier = (TicketItemModifier) iter.next();
@@ -235,22 +233,22 @@ public class TicketViewerTableModel extends AbstractTableModel {
 			}
 		}
 		else if (object instanceof TicketItemModifier) {
-			TicketItemModifier itemModifier = (TicketItemModifier) object;
-			TicketItemModifierGroup ticketItemModifierGroup = itemModifier.getParent();
-			List<TicketItemModifier> ticketItemModifiers = ticketItemModifierGroup.getTicketItemModifiers();
-
-			if (ticketItemModifiers != null) {
-				for (Iterator iterator = ticketItemModifiers.iterator(); iterator.hasNext();) {
-					TicketItemModifier element = (TicketItemModifier) iterator.next();
-					if (itemModifier.getTableRowNum() == element.getTableRowNum()) {
-						iterator.remove();
-
-						if (element.isPrintedToKitchen()) {
-							ticket.addDeletedItems(element);
-						}
-					}
-				}
-			}
+//			TicketItemModifier itemModifier = (TicketItemModifier) object;
+//			TicketItemModifierGroup ticketItemModifierGroup = itemModifier.getParent();
+//			List<TicketItemModifier> ticketItemModifiers = ticketItemModifierGroup.getTicketItemModifiers();
+//
+//			if (ticketItemModifiers != null) {
+//				for (Iterator iterator = ticketItemModifiers.iterator(); iterator.hasNext();) {
+//					TicketItemModifier element = (TicketItemModifier) iterator.next();
+//					if (itemModifier.getTableRowNum() == element.getTableRowNum()) {
+//						iterator.remove();
+//
+//						if (element.isPrintedToKitchen()) {
+//							ticket.addDeletedItems(element);
+//						}
+//					}
+//				}
+//			}
 		}
 		else if (object instanceof TicketItemCookingInstruction) {
 			TicketItemCookingInstruction cookingInstruction = (TicketItemCookingInstruction) object;

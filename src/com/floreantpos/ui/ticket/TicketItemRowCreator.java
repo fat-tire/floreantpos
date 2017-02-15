@@ -26,7 +26,6 @@ import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.TicketItemCookingInstruction;
 import com.floreantpos.model.TicketItemDiscount;
 import com.floreantpos.model.TicketItemModifier;
-import com.floreantpos.model.TicketItemModifierGroup;
 import com.floreantpos.util.DiscountUtil;
 
 public class TicketItemRowCreator {

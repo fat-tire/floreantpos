@@ -49,7 +49,6 @@ import com.floreantpos.model.MenuModifierGroup;
 import com.floreantpos.model.Multiplier;
 import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.TicketItemModifier;
-import com.floreantpos.model.TicketItemModifierGroup;
 import com.floreantpos.model.dao.MultiplierDAO;
 import com.floreantpos.swing.POSToggleButton;
 import com.floreantpos.swing.PosButton;

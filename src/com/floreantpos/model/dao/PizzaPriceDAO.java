@@ -1,6 +1,5 @@
 package com.floreantpos.model.dao;
 
-import com.floreantpos.model.dao.BasePizzaPriceDAO;
 
 
 public class PizzaPriceDAO extends BasePizzaPriceDAO {

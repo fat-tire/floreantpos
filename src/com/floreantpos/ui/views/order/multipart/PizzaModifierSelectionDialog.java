@@ -59,8 +59,6 @@ import javax.swing.JSeparator;
 import javax.swing.JViewport;
 import javax.swing.border.TitledBorder;
 
-import net.miginfocom.swing.MigLayout;
-
 import com.floreantpos.POSConstants;
 import com.floreantpos.model.MenuItemModifierGroup;
 import com.floreantpos.model.MenuItemSize;
@@ -71,7 +69,6 @@ import com.floreantpos.model.OrderType;
 import com.floreantpos.model.PizzaPrice;
 import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.TicketItemModifier;
-import com.floreantpos.model.TicketItemModifierGroup;
 import com.floreantpos.swing.POSToggleButton;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.swing.PosScrollPane;
@@ -83,6 +80,8 @@ import com.floreantpos.ui.views.order.modifier.ModifierSelectionListener;
 import com.floreantpos.ui.views.order.modifier.ModifierSelectionModel;
 import com.floreantpos.util.CurrencyUtil;
 import com.floreantpos.util.POSUtil;
+
+import net.miginfocom.swing.MigLayout;
 
 /**
  * 
@@ -674,22 +673,6 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 			return selected;
 		}
 
-		TicketItemModifierGroup getGroupForSection(String sectionName) {
-			//			TicketItem ticketItem = modifierSelectionModel.getTicketItem();
-			//			List<TicketItemModifierGroup> ticketItemModifierGroups = ticketItem.getTicketItemModifierGroups();
-			//			if (ticketItemModifierGroups == null) {
-			//				return null;
-			//			}
-			//
-			//			for (TicketItemModifierGroup ticketItemModifierGroup : ticketItemModifierGroups) {
-			//				if (sectionName.equalsIgnoreCase(ticketItemModifierGroup.getSectionName())) {
-			//					return ticketItemModifierGroup;
-			//				}
-			//			}
-
-			return null;
-		}
-
 		public void addItem(TicketItemModifier newModifier) {
 			Enumeration<TicketItemModifier> elements = model.elements();
 			while (elements.hasMoreElements()) {
@@ -701,10 +684,6 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 
 			model.addElement(newModifier);
 			//modifierGroup.addToticketItemModifiers(newModifier);
-		}
-
-		public boolean isEmpty() {
-			return model.isEmpty();
 		}
 
 		@Override

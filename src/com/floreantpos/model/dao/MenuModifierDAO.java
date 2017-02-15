@@ -24,7 +24,6 @@ import org.hibernate.Transaction;
 
 import com.floreantpos.PosLog;
 import com.floreantpos.model.MenuModifier;
-import com.floreantpos.model.TicketItemModifier;
 
 public class MenuModifierDAO extends BaseMenuModifierDAO {
 
@@ -34,11 +33,11 @@ public class MenuModifierDAO extends BaseMenuModifierDAO {
 	public MenuModifierDAO() {
 	}
 
-	public MenuModifier getMenuModifierFromTicketItemModifier(TicketItemModifier ticketItemModifier) {
-		MenuModifier menuModifier = get(ticketItemModifier.getMenuItemId());
-		menuModifier.setMenuItemModifierGroup(ticketItemModifier.getParent().getMenuItemModifierGroup());
-		return menuModifier;
-	}
+//	public MenuModifier getMenuModifierFromTicketItemModifier(TicketItemModifier ticketItemModifier) {
+//		MenuModifier menuModifier = get(ticketItemModifier.getMenuItemId());
+//		menuModifier.setMenuItemModifierGroup(ticketItemModifier.getParent().getMenuItemModifierGroup());
+//		return menuModifier;
+//	}
 
 	public void saveAll(List<MenuModifier> menuModifiers) {
 		if (menuModifiers == null) {

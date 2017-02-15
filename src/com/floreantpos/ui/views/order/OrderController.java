@@ -19,6 +19,7 @@ package com.floreantpos.ui.views.order;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
@@ -178,7 +179,7 @@ public class OrderController implements OrderListener, CategorySelectionListener
 				TicketItemModifier ticketItemModifier = (TicketItemModifier) ticketItemObject;
 				ticketItem = ticketItemModifier.getTicketItem();
 				if (ticketItem == null) {
-					ticketItem = ticketItemModifier.getParent().getParent();
+					ticketItem = ticketItemModifier.getTicketItem();
 				}
 			}
 

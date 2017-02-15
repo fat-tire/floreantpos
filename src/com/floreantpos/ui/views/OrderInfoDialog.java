@@ -237,7 +237,6 @@ public class OrderInfoDialog extends POSDialog {
 					newAddOns.setModifierType(addOns.getModifierType());
 					newAddOns.setPrintedToKitchen(false);
 					newAddOns.setShouldPrintToKitchen(addOns.isShouldPrintToKitchen());
-					newAddOns.setParent(addOns.getParent());
 					newTicketItem.addToaddOns(newAddOns);
 				}
 			}

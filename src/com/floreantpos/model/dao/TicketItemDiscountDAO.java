@@ -8,7 +8,6 @@ import org.hibernate.criterion.Restrictions;
 
 import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.TicketItemDiscount;
-import com.floreantpos.model.dao.BaseTicketItemDiscountDAO;
 
 
 public class TicketItemDiscountDAO extends BaseTicketItemDiscountDAO {

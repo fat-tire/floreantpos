@@ -6,7 +6,6 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import com.floreantpos.model.CustomPayment;
-import com.floreantpos.model.dao.BaseCustomPaymentDAO;
 
 public class CustomPaymentDAO extends BaseCustomPaymentDAO {
 
