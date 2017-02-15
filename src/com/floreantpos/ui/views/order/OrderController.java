@@ -19,7 +19,6 @@ package com.floreantpos.ui.views.order;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
@@ -183,90 +182,44 @@ public class OrderController implements OrderListener, CategorySelectionListener
 				}
 			}
 
-			if (ticketItem.isPizzaType()) {
-				TicketItem cloneTicketItem = ticketItem.clone(ticketItem);
-
-				PizzaModifierSelectionDialog dialog = new PizzaModifierSelectionDialog(new ModifierSelectionModel(cloneTicketItem,
-						cloneTicketItem.getMenuItem()));
-				dialog.openFullScreen();
-
-				if (dialog.isCanceled()) {
-					return;
-				}
-				// orderView.getTicketView().addTicketItem(ticketItem);
-				ticketItem.getTicketItemModifiers().clear();
-				List<TicketItemModifier> ticketItemModifiers = cloneTicketItem.getTicketItemModifiers();
-				for (Iterator iterator = ticketItemModifiers.iterator(); iterator.hasNext();) {
-					TicketItemModifier ticketItemModifier = (TicketItemModifier) iterator.next();
-					ticketItem.addToticketItemModifiers(ticketItemModifier);
-
-				}
-				return;
-			}
-
 			MenuItem menuItem = ticketItem.getMenuItem();
-
-			//			List<TicketItemModifierGroup> ticketItemModifierGroups = ticketItem.getTicketItemModifierGroups();
-			//			if (ticketItemModifierGroups == null) {
-			//				ticketItemModifierGroups = new ArrayList<TicketItemModifierGroup>();
-			//			}
-			//			List<TicketItemModifier> addOnsList = ticketItem.getAddOns();
-			//			if (addOnsList == null) {
-			//				addOnsList = new ArrayList<TicketItemModifier>();
-			//			}
 
 			List<TicketItemModifier> ticketItemModifiers = ticketItem.getTicketItemModifiers();
 			if (ticketItemModifiers == null) {
 				ticketItemModifiers = new ArrayList<>();
 			}
-
 			TicketItem cloneTicketItem = ticketItem.clone(ticketItem);
 
-			ModifierSelectionDialog dialog = new ModifierSelectionDialog(new ModifierSelectionModel(cloneTicketItem, menuItem));
-			dialog.open();
+			if (ticketItem.isPizzaType()) {
+				PizzaModifierSelectionDialog dialog = new PizzaModifierSelectionDialog(new ModifierSelectionModel(cloneTicketItem, menuItem));
+				dialog.openFullScreen();
 
-			if (!dialog.isCanceled()) {
-				List<TicketItemModifier> addedTicketItemModifiers = cloneTicketItem.getTicketItemModifiers();
-				if (addedTicketItemModifiers == null) {
-					addedTicketItemModifiers = new ArrayList<>();
+				if (dialog.isCanceled()) {
+					return;
 				}
+				ticketItem.setUnitPrice(cloneTicketItem.getUnitPrice());
+			}
+			else {
+				ModifierSelectionDialog dialog = new ModifierSelectionDialog(new ModifierSelectionModel(cloneTicketItem, menuItem));
+				dialog.open();
 
-				if (!CollectionUtils.isEqualCollection(addedTicketItemModifiers, ticketItemModifiers)) {
-					ticketItemModifiers.clear();
-					for (TicketItemModifier ticketItemModifier : addedTicketItemModifiers) {
-						ticketItemModifier.setTicketItem(ticketItem);
-						ticketItem.addToticketItemModifiers(ticketItemModifier);
-					}
+				if (dialog.isCanceled()) {
+					return;
 				}
 			}
 
-			//			if (!dialog.isCanceled()) {
-			//				List<TicketItemModifierGroup> addedTicketItemModifierGroup = cloneTicketItem.getTicketItemModifierGroups();
-			//				if (addedTicketItemModifierGroup == null) {
-			//					addedTicketItemModifierGroup = new ArrayList<TicketItemModifierGroup>();
-			//				}
-			//				ticketItemModifierGroups.clear();
-			//				for (TicketItemModifierGroup modifierGroup : addedTicketItemModifierGroup) {
-			//					modifierGroup.setParent(ticketItem);
-			//					if (modifierGroup.getTicketItemModifiers() != null) {
-			//						for (TicketItemModifier modifier : modifierGroup.getTicketItemModifiers()) {
-			//							modifier.setTicketItem(ticketItem);
-			//						}
-			//						ticketItem.addToticketItemModifierGroups(modifierGroup);
-			//					}
-			//				}
-			//				List<TicketItemModifier> addedAddOns = cloneTicketItem.getAddOns();
-			//				if (addedAddOns == null) {
-			//					addedAddOns = new ArrayList<TicketItemModifier>();
-			//				}
-			//				if (!CollectionUtils.isEqualCollection(addedAddOns, addOnsList)) {
-			//					addOnsList.clear();
-			//					for (TicketItemModifier addedModifier : addedAddOns) {
-			//						addedModifier.setTicketItem(ticketItem);
-			//						ticketItem.addToaddOns(addedModifier);
-			//					}
-			//				}
-			//			}
+			List<TicketItemModifier> addedTicketItemModifiers = cloneTicketItem.getTicketItemModifiers();
+			if (addedTicketItemModifiers == null) {
+				addedTicketItemModifiers = new ArrayList<>();
+			}
+
+			if (!CollectionUtils.isEqualCollection(addedTicketItemModifiers, ticketItemModifiers)) {
+				ticketItemModifiers.clear();
+				for (TicketItemModifier ticketItemModifier : addedTicketItemModifiers) {
+					ticketItemModifier.setTicketItem(ticketItem);
+					ticketItem.addToticketItemModifiers(ticketItemModifier);
+				}
+			}
 		} catch (Exception e) {
 			POSMessageDialog.showError(Application.getPosWindow(), e.getMessage(), e);
 		}
