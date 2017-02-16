@@ -165,15 +165,33 @@ public class PizzaItemForm extends BeanEditor<MenuItem> implements ActionListene
 		menuItemModifierGroups = menuItem.getMenuItemModiferGroups();
 		shiftTable.setModel(shiftTableModel = new ShiftTableModel(menuItem.getShifts()));
 
-		priceTableModel = new BeanTableModel<PizzaPrice>(PizzaPrice.class);
+		priceTableModel = new BeanTableModel<PizzaPrice>(PizzaPrice.class) {
+			@Override
+			public boolean isCellEditable(int rowIndex, int columnIndex) {
+				if (columnIndex == 2) {
+					return true;
+				}
+				return false;
+			}
+
+			@Override
+			public void setValueAt(Object value, int rowIndex, int columnIndex) {
+				if (columnIndex == 2) {
+					PizzaPrice price = priceTableModel.getRow(rowIndex);
+					price.setPrice((double) value);
+				}
+			}
+		};
 		priceTableModel.addColumn("SIZE", "size");
 		priceTableModel.addColumn("CRUST", "crust");
 		priceTableModel.addColumn("PRICE", "price");
 
-		if (menuItem != null) {
-			List<PizzaPrice> pizzaPriceList = menuItem.getPizzaPriceList();
-			priceTableModel.addRows(pizzaPriceList);
+		List<PizzaPrice> pizzaPriceList = menuItem.getPizzaPriceList();
+		if (pizzaPriceList == null || pizzaPriceList.isEmpty()) {
+			autoGeneratePizzaItemSizeAndPrice();
 		}
+		else
+			priceTableModel.addRows(pizzaPriceList);
 
 		priceTable.setModel(priceTableModel);
 		setBean(menuItem);
@@ -401,14 +419,6 @@ public class PizzaItemForm extends BeanEditor<MenuItem> implements ActionListene
 			public void actionPerformed(ActionEvent e) {
 				autoGeneratePizzaItemSizeAndPrice();
 			}
-
-			private void autoGeneratePizzaItemSizeAndPrice() {
-				List<PizzaPrice> pizzaPriceList = generatedPossiblePizzaItemSizeAndPriceList();
-				filterDuplicateItemSizesAndPrices(pizzaPriceList);
-				priceTableModel.addRows(pizzaPriceList);
-				priceTable.repaint();
-			}
-
 		});
 
 		btnDeleteAll.setText(Messages.getString("MenuItemForm.15")); //$NON-NLS-1$
@@ -492,6 +502,13 @@ public class PizzaItemForm extends BeanEditor<MenuItem> implements ActionListene
 		});
 
 		tabbedPane.addTab(Messages.getString("MenuItemForm.26"), tabButtonStyle); //$NON-NLS-1$
+	}
+
+	private void autoGeneratePizzaItemSizeAndPrice() {
+		List<PizzaPrice> pizzaPriceList = generatedPossiblePizzaItemSizeAndPriceList();
+		filterDuplicateItemSizesAndPrices(pizzaPriceList);
+		priceTableModel.addRows(pizzaPriceList);
+		priceTable.repaint();
 	}
 
 	private JPanel getModifierGroupTab() {
@@ -703,7 +720,11 @@ public class PizzaItemForm extends BeanEditor<MenuItem> implements ActionListene
 		if (menuItemImage != null) {
 			lblImagePreview.setIcon(menuItemImage);
 		}
-		tfDefaultSellPortion.setText(String.valueOf(menuItem.getDefaultSellPortion()));
+		if (menuItem.getId() == null)
+			tfDefaultSellPortion.setText(String.valueOf(100));
+		else
+			tfDefaultSellPortion.setText(String.valueOf(menuItem.getDefaultSellPortion()));
+
 		cbGroup.setSelectedItem(menuItem.getParent());
 		cbTax.setSelectedItem(menuItem.getTax());
 
