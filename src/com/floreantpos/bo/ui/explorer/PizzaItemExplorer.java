@@ -35,7 +35,9 @@ import com.floreantpos.bo.ui.CustomCellRenderer;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.MenuGroup;
 import com.floreantpos.model.MenuItem;
+import com.floreantpos.model.MenuItemModifierGroup;
 import com.floreantpos.model.OrderType;
+import com.floreantpos.model.PizzaPrice;
 import com.floreantpos.model.dao.MenuGroupDAO;
 import com.floreantpos.model.dao.MenuItemDAO;
 import com.floreantpos.swing.BeanTableModel;
@@ -339,15 +341,32 @@ public class PizzaItemExplorer extends TransparentPanel {
 					MenuItem existingItem = tableModel.getRow(index);
 					existingItem = MenuItemDAO.getInstance().initialize(existingItem);
 
-					MenuItem newMenuItem = new MenuItem();
-					PropertyUtils.copyProperties(newMenuItem, existingItem);
+					MenuItem newMenuItem = existingItem.clone(existingItem);
 					newMenuItem.setId(null);
 					String newName = doDuplicateName(existingItem);
 					newMenuItem.setName(newName);
-					newMenuItem.setFractionalUnit(existingItem.isFractionalUnit());
-					newMenuItem.setDisableWhenStockAmountIsZero(existingItem.isDisableWhenStockAmountIsZero());
-					newMenuItem.setShowImageOnly(existingItem.isShowImageOnly());
-
+					List<PizzaPrice> pizzaPriceList = existingItem.getPizzaPriceList();
+					if (pizzaPriceList != null) {
+						List<PizzaPrice> newPriceList = new ArrayList<>();
+						for (PizzaPrice price : existingItem.getPizzaPriceList()) {
+							PizzaPrice newPrice = new PizzaPrice();
+							PropertyUtils.copyProperties(newPrice, price);
+							newPrice.setId(null);
+							newPriceList.add(newPrice);
+						}
+						newMenuItem.setPizzaPriceList(newPriceList);
+					}
+					List<MenuItemModifierGroup> menuItemModiferGroups = existingItem.getMenuItemModiferGroups();
+					if (menuItemModiferGroups != null) {
+						List<MenuItemModifierGroup> newGroupList = new ArrayList<>();
+						for (MenuItemModifierGroup group : existingItem.getMenuItemModiferGroups()) {
+							MenuItemModifierGroup newGroup = new MenuItemModifierGroup();
+							PropertyUtils.copyProperties(newGroup, group);
+							newGroup.setId(null);
+							newGroupList.add(newGroup);
+						}
+						newMenuItem.setMenuItemModiferGroups(newGroupList);
+					}
 					PizzaItemForm editor = new PizzaItemForm(newMenuItem);
 					BeanEditorDialog dialog = new BeanEditorDialog(POSUtil.getBackOfficeWindow(), editor);
 					dialog.open();

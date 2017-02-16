@@ -19,6 +19,10 @@ package com.floreantpos.model;
 
 import java.awt.Color;
 import java.awt.Image;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -42,31 +46,23 @@ public class MenuItem extends BaseMenuItem {
 	private static final long serialVersionUID = 1L;
 
 	/*[CONSTRUCTOR MARKER BEGIN]*/
-	public MenuItem () {
+	public MenuItem() {
 		super();
 	}
 
 	/**
 	 * Constructor for primary key
 	 */
-	public MenuItem (java.lang.Integer id) {
+	public MenuItem(java.lang.Integer id) {
 		super(id);
 	}
 
 	/**
 	 * Constructor for required fields
 	 */
-	public MenuItem (
-		java.lang.Integer id,
-		java.lang.String name,
-		java.lang.Double buyPrice,
-		java.lang.Double price) {
+	public MenuItem(java.lang.Integer id, java.lang.String name, java.lang.Double buyPrice, java.lang.Double price) {
 
-		super (
-			id,
-			name,
-			buyPrice,
-			price);
+		super(id, name, buyPrice, price);
 	}
 
 	/*[CONSTRUCTOR MARKER END]*/
@@ -95,14 +91,14 @@ public class MenuItem extends BaseMenuItem {
 	public void setImage(ImageIcon icon) {
 
 	}
-	
+
 	@Override
 	public String getTranslatedName() {
 		String translatedName = super.getTranslatedName();
-		if(StringUtils.isEmpty(translatedName)) {
+		if (StringUtils.isEmpty(translatedName)) {
 			return getName();
 		}
-		
+
 		return translatedName;
 	}
 
@@ -371,7 +367,7 @@ public class MenuItem extends BaseMenuItem {
 			return defaultPrice;
 		}
 	}
-	
+
 	public double getPriceByOrderType(String typeName) {
 		double defaultPrice = this.getPrice(Application.getInstance().getCurrentShift());
 		if (typeName == null) {
@@ -408,7 +404,7 @@ public class MenuItem extends BaseMenuItem {
 			return defaultTax;
 		}
 	}
-	
+
 	public double getTaxByOrderType(String typeName) {
 		if (this.getTax() == null) {
 			return 0;
@@ -443,25 +439,25 @@ public class MenuItem extends BaseMenuItem {
 
 		return orderType;
 	}
-	
-	public String replaceString(String orderType,String regex,String replacement) {
-		orderType=orderType.replaceAll(regex, replacement);
+
+	public String replaceString(String orderType, String regex, String replacement) {
+		orderType = orderType.replaceAll(regex, replacement);
 		return orderType;
 	}
-	
+
 	public Set<MenuItemSize> getSizes() {
 		Set<MenuItemSize> sizes = new HashSet<MenuItemSize>();
-		
+
 		List<PizzaPrice> priceList = getPizzaPriceList();
 		if (priceList != null) {
 			for (PizzaPrice pizzaPrice : priceList) {
 				sizes.add(pizzaPrice.getSize());
 			}
 		}
-		
+
 		return sizes;
 	}
-	
+
 	public Set<PizzaCrust> getCrustsForSize(MenuItemSize size) {
 		Set<PizzaCrust> crusts = new HashSet<PizzaCrust>();
 
@@ -476,7 +472,7 @@ public class MenuItem extends BaseMenuItem {
 
 		return crusts;
 	}
-	
+
 	public Set<PizzaPrice> getAvailablePrices(MenuItemSize size) {
 		Set<PizzaPrice> prices = new HashSet<PizzaPrice>();
 
@@ -490,5 +486,21 @@ public class MenuItem extends BaseMenuItem {
 		}
 
 		return prices;
+	}
+
+	public MenuItem clone(MenuItem source) {
+		try {
+			ByteArrayOutputStream bos = new ByteArrayOutputStream();
+			ObjectOutputStream out = new ObjectOutputStream(bos);
+			out.writeObject(source);
+			out.flush();
+			out.close();
+
+			ObjectInputStream in = new ObjectInputStream(new ByteArrayInputStream(bos.toByteArray()));
+			return (MenuItem) in.readObject();
+		} catch (Exception cnfe) {
+			//log here
+			return null;
+		}
 	}
 }

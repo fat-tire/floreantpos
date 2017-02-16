@@ -128,7 +128,6 @@ public class OrderController implements OrderListener, CategorySelectionListener
 			List<TicketItemModifier> ticketItemModifiers = ticketItem.getTicketItemModifiers();
 			if (ticketItemModifiers != null) {
 				for (TicketItemModifier ticketItemModifier : ticketItemModifiers) {
-					ticketItemModifier.setTicketItem(ticketItem);
 					if (!ticketItemModifier.isInfoOnly()) {
 						ticketItemModifier.setUnitPrice(ticketItemModifier.getUnitPrice() * defaultSellPortion / 100);
 					}

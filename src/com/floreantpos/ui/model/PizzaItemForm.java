@@ -54,6 +54,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
+import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EtchedBorder;
 import javax.swing.event.ChangeEvent;
@@ -246,6 +247,9 @@ public class PizzaItemForm extends BeanEditor<MenuItem> implements ActionListene
 
 		priceTable = new JTable();
 		priceTable.setRowHeight(PosUIManager.getSize(priceTable.getRowHeight()));
+		priceTable.setCellSelectionEnabled(true);
+		priceTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		priceTable.setSurrendersFocusOnKeystroke(true);
 		cbPrinterGroup = new JComboBox<PrinterGroup>(new DefaultComboBoxModel<PrinterGroup>(PrinterGroupDAO.getInstance().findAll()
 				.toArray(new PrinterGroup[0])));
 		cbPrinterGroup.setPreferredSize(new Dimension(226, 0));
