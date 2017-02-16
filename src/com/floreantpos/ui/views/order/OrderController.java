@@ -19,7 +19,6 @@ package com.floreantpos.ui.views.order;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
@@ -191,7 +190,8 @@ public class OrderController implements OrderListener, CategorySelectionListener
 			}
 			TicketItem cloneTicketItem = ticketItem.clone(ticketItem);
 
-			if (ticketItem.isPizzaType()) {
+			boolean pizzaType = ticketItem.isPizzaType();
+			if (pizzaType) {
 				PizzaModifierSelectionDialog dialog = new PizzaModifierSelectionDialog(new ModifierSelectionModel(cloneTicketItem, menuItem));
 				dialog.openFullScreen();
 
@@ -213,11 +213,14 @@ public class OrderController implements OrderListener, CategorySelectionListener
 			if (addedTicketItemModifiers == null) {
 				addedTicketItemModifiers = new ArrayList<>();
 			}
-
+			double defaultSellPortion = menuItem.getDefaultSellPortion();
 			if (!CollectionUtils.isEqualCollection(addedTicketItemModifiers, ticketItemModifiers)) {
 				ticketItemModifiers.clear();
 				for (TicketItemModifier ticketItemModifier : addedTicketItemModifiers) {
 					ticketItemModifier.setTicketItem(ticketItem);
+					if (pizzaType && !ticketItemModifier.isInfoOnly()) {
+						ticketItemModifier.setUnitPrice(ticketItemModifier.getUnitPrice() * defaultSellPortion / 100);
+					}
 					ticketItem.addToticketItemModifiers(ticketItemModifier);
 				}
 			}

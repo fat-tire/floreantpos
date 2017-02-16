@@ -187,9 +187,9 @@ public class PizzaItemForm extends BeanEditor<MenuItem> implements ActionListene
 		priceTableModel.addColumn("PRICE", "price");
 
 		List<PizzaPrice> pizzaPriceList = menuItem.getPizzaPriceList();
-		if (pizzaPriceList == null || pizzaPriceList.isEmpty()) {
-			autoGeneratePizzaItemSizeAndPrice();
-		}
+
+		if (pizzaPriceList == null || pizzaPriceList.isEmpty())
+			priceTableModel.addRow(generatedOneSamplePizzaItemSizeAndPrice());
 		else
 			priceTableModel.addRows(pizzaPriceList);
 
@@ -1197,5 +1197,15 @@ public class PizzaItemForm extends BeanEditor<MenuItem> implements ActionListene
 			}
 		}
 		return pizzaPriceList;
+	}
+
+	private PizzaPrice generatedOneSamplePizzaItemSizeAndPrice() {
+		MenuItemSize menuItemSize = MenuItemSizeDAO.getInstance().get(1);
+		PizzaCrust crust = PizzaCrustDAO.getInstance().get(1);
+		PizzaPrice pizzaPrice = new PizzaPrice();
+		pizzaPrice.setSize(menuItemSize);
+		pizzaPrice.setCrust(crust);
+		pizzaPrice.setPrice(0.0);
+		return pizzaPrice;
 	}
 }
