@@ -33,6 +33,8 @@ import com.floreantpos.bo.ui.BOMessageDialog;
 import com.floreantpos.bo.ui.CustomCellRenderer;
 import com.floreantpos.model.MenuModifier;
 import com.floreantpos.model.MenuModifierGroup;
+import com.floreantpos.model.ModifierMultiplierPrice;
+import com.floreantpos.model.PizzaModifierPrice;
 import com.floreantpos.model.dao.MenuModifierDAO;
 import com.floreantpos.model.dao.MenuModifierGroupDAO;
 import com.floreantpos.model.dao.ModifierDAO;
@@ -171,6 +173,31 @@ public class PizzaModifierExplorer extends TransparentPanel {
 					newMenuModifier.setName(newName);
 					newMenuModifier.setPizzaModifier(true);
 					newMenuModifier.setMultiplierPriceList(null);
+
+					List<PizzaModifierPrice> pizzaModifierPriceList = existingModifier.getPizzaModifierPriceList();
+					if (pizzaModifierPriceList != null) {
+						List<PizzaModifierPrice> newPriceList = new ArrayList<>();
+						for (PizzaModifierPrice price : pizzaModifierPriceList) {
+							PizzaModifierPrice newPrice = new PizzaModifierPrice();
+							PropertyUtils.copyProperties(newPrice, price);
+							newPrice.setId(null);
+							newPriceList.add(newPrice);
+							List<ModifierMultiplierPrice> multiplierPriceList = newPrice.getMultiplierPriceList();
+							if (multiplierPriceList != null) {
+								List<ModifierMultiplierPrice> newMultiplierPriceList = new ArrayList<>();
+								for (ModifierMultiplierPrice multiplierPrice : multiplierPriceList) {
+									ModifierMultiplierPrice newMultiplierPrice = new ModifierMultiplierPrice();
+									PropertyUtils.copyProperties(newMultiplierPrice, multiplierPrice);
+									newMultiplierPrice.setId(null);
+									newMultiplierPrice.setModifier(newMenuModifier);
+									newMultiplierPriceList.add(newMultiplierPrice);
+								}
+								newPrice.setMultiplierPriceList(newMultiplierPriceList);
+							}
+
+						}
+						newMenuModifier.setPizzaModifierPriceList(newPriceList);
+					}
 
 					PizzaModifierForm editor = new PizzaModifierForm(newMenuModifier);
 					BeanEditorDialog dialog = new BeanEditorDialog(POSUtil.getBackOfficeWindow(), editor);

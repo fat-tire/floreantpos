@@ -154,14 +154,27 @@ public class MenuModifier extends BaseMenuModifier {
 	}
 
 	public double getPriceForSizeAndMultiplier(MenuItemSize size, boolean extra, Multiplier multiplier) {
+		boolean fixedPrice = isFixedPrice();
 		List<PizzaModifierPrice> priceList = getPizzaModifierPriceList();
 		if (isPizzaModifier() && priceList != null) {
 			for (PizzaModifierPrice pizzaModifierPrice : priceList) {
 				if (size.getId().intValue() == pizzaModifierPrice.getSize().getId().intValue()) {
 					List<ModifierMultiplierPrice> multiplierPriceList = pizzaModifierPrice.getMultiplierPriceList();
 					if (multiplierPriceList != null) {
+						double regularPrice = 0;
 						for (ModifierMultiplierPrice price : multiplierPriceList) {
-							if (price.getMultiplier().getName().equals(multiplier.getName())) {
+							String priceTableMultiplierName = price.getMultiplier().getName();
+							if (!fixedPrice) {
+								if (priceTableMultiplierName.equals(Multiplier.REGULAR)) {
+									regularPrice = price.getPrice();
+									if (multiplier.getName().equals(Multiplier.REGULAR)) {
+										return regularPrice;
+									}
+									return regularPrice * multiplier.getRate() / 100;
+								}
+								continue;
+							}
+							else if (priceTableMultiplierName.equals(multiplier.getName())) {
 								return price.getPrice();
 							}
 						}

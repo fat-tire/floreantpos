@@ -488,7 +488,8 @@ public class MenuItem extends BaseMenuItem {
 		return prices;
 	}
 
-	public MenuItem clone(MenuItem source) {
+	public MenuItem clone(MenuItem source) throws Exception {
+		MenuItem menuItem = null;
 		try {
 			ByteArrayOutputStream bos = new ByteArrayOutputStream();
 			ObjectOutputStream out = new ObjectOutputStream(bos);
@@ -497,10 +498,11 @@ public class MenuItem extends BaseMenuItem {
 			out.close();
 
 			ObjectInputStream in = new ObjectInputStream(new ByteArrayInputStream(bos.toByteArray()));
-			return (MenuItem) in.readObject();
-		} catch (Exception cnfe) {
-			//log here
-			return null;
+			menuItem = (MenuItem) in.readObject();
+			in.close();
+		} catch (Exception ex) {
+			throw ex;
 		}
+		return menuItem;
 	}
 }
