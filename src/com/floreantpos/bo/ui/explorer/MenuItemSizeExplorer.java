@@ -3,6 +3,7 @@ package com.floreantpos.bo.ui.explorer;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
@@ -26,6 +27,8 @@ public class MenuItemSizeExplorer extends TransparentPanel {
 
 	private BeanTableModel<MenuItemSize> tableModel;
 
+	private List<MenuItemSize> menuItemSizeList;
+
 	public MenuItemSizeExplorer() {
 		tableModel = new BeanTableModel<MenuItemSize>(MenuItemSize.class);
 		tableModel.addColumn(POSConstants.ID.toUpperCase(), "id"); //$NON-NLS-1$
@@ -34,8 +37,10 @@ public class MenuItemSizeExplorer extends TransparentPanel {
 		tableModel.addColumn("DESCRIPTION", "description"); //$NON-NLS-1$
 		tableModel.addColumn("SIZE (in Inch)", "sizeInInch"); //$NON-NLS-1$
 		tableModel.addColumn("SORT", "sortOrder"); //$NON-NLS-1$
+		tableModel.addColumn("DEFAULT", "defaultSize"); //$NON-NLS-1$
 
-		tableModel.addRows(MenuItemSizeDAO.getInstance().findAll());
+		menuItemSizeList = MenuItemSizeDAO.getInstance().findAll();
+		tableModel.addRows(menuItemSizeList);
 		table = new JXTable(tableModel);
 		table.setDefaultRenderer(Object.class, new PosTableRenderer());
 
@@ -108,10 +113,42 @@ public class MenuItemSizeExplorer extends TransparentPanel {
 
 		});
 
+		JButton defaultButton = new JButton("Set Default");
+		defaultButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					int index = table.getSelectedRow();
+					if (index < 0)
+						return;
+
+					index = table.convertRowIndexToModel(index);
+					MenuItemSize menuItemSize = tableModel.getRow(index);
+
+					for (MenuItemSize item : menuItemSizeList) {
+						if (menuItemSize.getId() == item.getId())
+							item.setDefaultSize(true);
+						else
+							item.setDefaultSize(false);
+					}
+
+					MenuItemSizeDAO dao = new MenuItemSizeDAO();
+					dao.setDefault(menuItemSizeList);
+					tableModel.fireTableDataChanged();
+					table.revalidate();
+					table.repaint();
+
+				} catch (Exception x) {
+					BOMessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
+				}
+			}
+
+		});
+
 		TransparentPanel panel = new TransparentPanel();
 		panel.add(addButton);
 		panel.add(editButton);
 		panel.add(deleteButton);
+		panel.add(defaultButton);
 		add(panel, BorderLayout.SOUTH);
 	}
 }

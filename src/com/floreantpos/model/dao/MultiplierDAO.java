@@ -39,7 +39,7 @@ public class MultiplierDAO extends BaseMultiplierDAO {
 		try {
 			session = createNewSession();
 			tx = session.beginTransaction();
-			saveOrUpdate(items, session);
+			saveOrUpdateMultipliers(items, session);
 			tx.commit();
 		} catch (Exception e) {
 			tx.rollback();

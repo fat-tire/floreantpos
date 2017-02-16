@@ -11,5 +11,6 @@
 		<property name="description" column="DESCRIPTION" type="java.lang.String" length="120" />
 		<property name="sortOrder" column="SORT_ORDER" type="java.lang.Integer" />
 		<property name="sizeInInch" column="SIZE_IN_INCH" type="java.lang.Double" />
+		<property name="defaultSize" column="DEFAULT_SIZE"  type="java.lang.Boolean" />
 	</class>
 </hibernate-mapping>

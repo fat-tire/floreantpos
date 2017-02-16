@@ -20,6 +20,7 @@ package com.floreantpos.bo.ui.explorer;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
@@ -43,6 +44,8 @@ public class PizzaCrustExplorer extends TransparentPanel {
 
 	private BeanTableModel<PizzaCrust> tableModel;
 
+	private List<PizzaCrust> pizzaCrustList;
+
 	public PizzaCrustExplorer() {
 		tableModel = new BeanTableModel<PizzaCrust>(PizzaCrust.class);
 		tableModel.addColumn(POSConstants.ID.toUpperCase(), "id"); //$NON-NLS-1$
@@ -50,8 +53,10 @@ public class PizzaCrustExplorer extends TransparentPanel {
 		tableModel.addColumn("TRANSLATED NAME", "translatedName"); //$NON-NLS-1$
 		tableModel.addColumn("DESCRIPTION", "description"); //$NON-NLS-1$
 		tableModel.addColumn("SORT", "sortOrder"); //$NON-NLS-1$
+		tableModel.addColumn("DEFAULT", "defaultCrust"); //$NON-NLS-1$
 
-		tableModel.addRows(PizzaCrustDAO.getInstance().findAll());
+		pizzaCrustList = PizzaCrustDAO.getInstance().findAll();
+		tableModel.addRows(pizzaCrustList);
 		table = new JXTable(tableModel);
 		table.setDefaultRenderer(Object.class, new PosTableRenderer());
 
@@ -125,10 +130,42 @@ public class PizzaCrustExplorer extends TransparentPanel {
 
 		});
 
+		JButton defaultButton = new JButton("Set Default");
+		defaultButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					int index = table.getSelectedRow();
+					if (index < 0)
+						return;
+
+					index = table.convertRowIndexToModel(index);
+					PizzaCrust pizzaCrust = tableModel.getRow(index);
+
+					for (PizzaCrust item : pizzaCrustList) {
+						if (pizzaCrust.getId() == item.getId())
+							item.setDefaultCrust(true);
+						else
+							item.setDefaultCrust(false);
+					}
+
+					PizzaCrustDAO dao = new PizzaCrustDAO();
+					dao.setDefault(pizzaCrustList);
+					tableModel.fireTableDataChanged();
+					table.revalidate();
+					table.repaint();
+
+				} catch (Exception x) {
+					BOMessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
+				}
+			}
+
+		});
+
 		TransparentPanel panel = new TransparentPanel();
 		panel.add(addButton);
 		panel.add(editButton);
 		panel.add(deleteButton);
+		panel.add(defaultButton);
 		add(panel, BorderLayout.SOUTH);
 	}
 }

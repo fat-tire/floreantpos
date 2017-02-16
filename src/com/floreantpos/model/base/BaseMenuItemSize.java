@@ -1,5 +1,6 @@
 package com.floreantpos.model.base;
 
+import java.lang.Comparable;
 import java.io.Serializable;
 
 
@@ -21,6 +22,7 @@ public abstract class BaseMenuItemSize  implements Comparable, Serializable {
 	public static String PROP_SORT_ORDER = "sortOrder"; //$NON-NLS-1$
 	public static String PROP_ID = "id"; //$NON-NLS-1$
 	public static String PROP_NAME = "name"; //$NON-NLS-1$
+	public static String PROP_DEFAULT_SIZE = "defaultSize"; //$NON-NLS-1$
 
 
 	// constructors
@@ -51,6 +53,7 @@ public abstract class BaseMenuItemSize  implements Comparable, Serializable {
 		protected java.lang.String description;
 		protected java.lang.Integer sortOrder;
 		protected java.lang.Double sizeInInch;
+		protected java.lang.Boolean defaultSize;
 
 
 
@@ -157,6 +160,23 @@ public abstract class BaseMenuItemSize  implements Comparable, Serializable {
 	 */
 	public void setSizeInInch (java.lang.Double sizeInInch) {
 		this.sizeInInch = sizeInInch;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: DEFAULT_SIZE
+	 */
+	public java.lang.Boolean isDefaultSize () {
+								return defaultSize == null ? Boolean.FALSE : defaultSize;
+					}
+
+	/**
+	 * Set the value related to the column: DEFAULT_SIZE
+	 * @param defaultSize the DEFAULT_SIZE value
+	 */
+	public void setDefaultSize (java.lang.Boolean defaultSize) {
+		this.defaultSize = defaultSize;
 	}
 
 

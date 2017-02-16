@@ -880,11 +880,19 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 			}
 			else {
 				if (!sizeButtonList.isEmpty()) {
-					POSToggleButton button = sizeButtonList.get(0);
-					PizzaPrice pizzaPrice = (PizzaPrice) button.getClientProperty(PROP_PIZZA_PRICE);
-					renderCrusts(pizzaPrice.getSize());
+					for (Iterator iterator = sizeButtonList.iterator(); iterator.hasNext();) {
+						POSToggleButton button = (POSToggleButton) iterator.next();
+						if(button.isSelected()) {
+							PizzaPrice pizzaPrice = (PizzaPrice) button.getClientProperty(PROP_PIZZA_PRICE);
+							renderCrusts(pizzaPrice.getSize());
+						}
+						
+					}
+					//					POSToggleButton button = sizeButtonList.get(0);
+					//					PizzaPrice pizzaPrice = (PizzaPrice) button.getClientProperty(PROP_PIZZA_PRICE);
+					//					renderCrusts(pizzaPrice.getSize());
 
-					button.setSelected(true);
+					//	button.setSelected(true);
 				}
 			}
 		}
@@ -892,6 +900,9 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 		private void addSizeButton(PizzaPrice pizzaPrice, MenuItemSize size) {
 			POSToggleButton sizeButton = new POSToggleButton(size.getName());
 			sizeButton.putClientProperty(PROP_PIZZA_PRICE, pizzaPrice);
+			if (size.isDefaultSize()) {
+				sizeButton.setSelected(true);
+			}
 			sizeButton.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -919,6 +930,11 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 						+ pizzaPrice.getPrice(modifierSelectionModel.getMenuItem().getDefaultSellPortion()) + "</center></html>");
 				crustButton.putClientProperty(PROP_PIZZA_PRICE, pizzaPrice);
 				if (availablePrices.size() == 1) {
+					crustSelected = true;
+					crustButton.setSelected(true);
+					pizzaCrustSelected(crustButton);
+				}
+				if (pizzaPrice.getCrust().isDefaultCrust()) {
 					crustSelected = true;
 					crustButton.setSelected(true);
 					pizzaCrustSelected(crustButton);

@@ -1,5 +1,6 @@
 package com.floreantpos.model.base;
 
+import java.lang.Comparable;
 import java.io.Serializable;
 
 
@@ -18,6 +19,7 @@ public abstract class BasePizzaCrust  implements Comparable, Serializable {
 	public static String PROP_DESCRIPTION = "description"; //$NON-NLS-1$
 	public static String PROP_TRANSLATED_NAME = "translatedName"; //$NON-NLS-1$
 	public static String PROP_SORT_ORDER = "sortOrder"; //$NON-NLS-1$
+	public static String PROP_DEFAULT_CRUST = "defaultCrust"; //$NON-NLS-1$
 	public static String PROP_ID = "id"; //$NON-NLS-1$
 	public static String PROP_NAME = "name"; //$NON-NLS-1$
 
@@ -49,6 +51,7 @@ public abstract class BasePizzaCrust  implements Comparable, Serializable {
 		protected java.lang.String translatedName;
 		protected java.lang.String description;
 		protected java.lang.Integer sortOrder;
+		protected java.lang.Boolean defaultCrust;
 
 
 
@@ -138,6 +141,23 @@ public abstract class BasePizzaCrust  implements Comparable, Serializable {
 	 */
 	public void setSortOrder (java.lang.Integer sortOrder) {
 		this.sortOrder = sortOrder;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: DEFAULT_CRUST
+	 */
+	public java.lang.Boolean isDefaultCrust () {
+								return defaultCrust == null ? Boolean.FALSE : defaultCrust;
+					}
+
+	/**
+	 * Set the value related to the column: DEFAULT_CRUST
+	 * @param defaultCrust the DEFAULT_CRUST value
+	 */
+	public void setDefaultCrust (java.lang.Boolean defaultCrust) {
+		this.defaultCrust = defaultCrust;
 	}
 
 
