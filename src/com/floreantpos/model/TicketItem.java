@@ -38,23 +38,27 @@ public class TicketItem extends BaseTicketItem implements ITicketItem {
 	private static final long serialVersionUID = 1L;
 
 	/*[CONSTRUCTOR MARKER BEGIN]*/
-	public TicketItem() {
+	public TicketItem () {
 		super();
 	}
 
 	/**
 	 * Constructor for primary key
 	 */
-	public TicketItem(java.lang.Integer id) {
+	public TicketItem (java.lang.Integer id) {
 		super(id);
 	}
 
 	/**
 	 * Constructor for required fields
 	 */
-	public TicketItem(java.lang.Integer id, com.floreantpos.model.Ticket ticket) {
+	public TicketItem (
+		java.lang.Integer id,
+		com.floreantpos.model.Ticket ticket) {
 
-		super(id, ticket);
+		super (
+			id,
+			ticket);
 	}
 
 	/*[CONSTRUCTOR MARKER END]*/
@@ -335,6 +339,9 @@ public class TicketItem extends BaseTicketItem implements ITicketItem {
 		//			}
 		//		}
 
+		if (getSizeModifier() != null) {
+			getSizeModifier().calculatePrice();
+		}
 		List<TicketItemModifier> ticketItemModifiers = getTicketItemModifiers();
 		if (ticketItemModifiers != null) {
 			for (TicketItemModifier modifier : ticketItemModifiers) {
@@ -487,6 +494,10 @@ public class TicketItem extends BaseTicketItem implements ITicketItem {
 		else {
 			subTotalAmount = NumberUtil.roundToTwoDigit(getUnitPrice() * getItemCount());
 		}
+		
+		if (getSizeModifier() != null) {
+			subTotalAmount += getSizeModifier().getSubTotalAmount();
+		}
 
 		if (includeModifierPrice) {
 			//			List<TicketItemModifierGroup> ticketItemModifierGroups = getTicketItemModifierGroups();
@@ -624,7 +635,11 @@ public class TicketItem extends BaseTicketItem implements ITicketItem {
 
 	@Override
 	public String getNameDisplay() {
-		return getName();
+		String name = getName();
+		if (getSizeModifier() != null) {
+			name += "\n" + getSizeModifier().getNameDisplay();
+		}
+		return name;
 	}
 
 	@Override
@@ -806,5 +821,21 @@ public class TicketItem extends BaseTicketItem implements ITicketItem {
 			return true;
 		}
 		return countModifierFromGroup(menuItemModifierGroup) >= minQuantity;
+	}
+	
+	public boolean deleteTicketItemModifier(TicketItemModifier ticketItemModifierToRemove) {
+		List<TicketItemModifier> modifiers = getTicketItemModifiers();
+		if (modifiers == null) {
+			return false;
+		}
+		for (Iterator iterator = modifiers.iterator(); iterator.hasNext();) {
+			TicketItemModifier ticketItemModifier = (TicketItemModifier) iterator.next();
+			if (ticketItemModifier == ticketItemModifierToRemove) {
+				iterator.remove();
+				return true;
+			}
+		}
+		
+		return false;
 	}
 }

@@ -47,6 +47,10 @@
 			<one-to-many class="com.floreantpos.model.TicketItemModifierGroup" />
 		</list> -->
 		
+		<many-to-one class="com.floreantpos.model.TicketItemModifier" name="sizeModifier" not-null="false">
+			<column name="SIZE_MODIFIER_ID" />
+		</many-to-one>
+		
 		<list cascade="all" inverse="false" lazy="false" name="ticketItemModifiers">
 			<key>
 				<column name="TICKET_ITEM_ID" />
@@ -55,8 +59,6 @@
 			<one-to-many class="com.floreantpos.model.TicketItemModifier" />
 		</list>
 		
-		<!-- list name="modifiers" inverse="false" cascade="all" lazy="false"> <key column="TICKET_ITEM_ID"/> <list-index column="INDEX_ORDER"/> <one-to-many class="TicketItemModifier"/> 
-			</list -->
 		<many-to-one class="com.floreantpos.model.Ticket" name="ticket" not-null="true">
 			<column name="TICKET_ID" />
 		</many-to-one>

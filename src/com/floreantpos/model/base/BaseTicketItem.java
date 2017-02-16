@@ -1,5 +1,6 @@
 package com.floreantpos.model.base;
 
+import java.lang.Comparable;
 import java.io.Serializable;
 
 import com.floreantpos.model.TicketItemCookingInstruction;
@@ -22,6 +23,7 @@ public abstract class BaseTicketItem  implements Comparable, Serializable {
 	public static String PROP_SHOULD_PRINT_TO_KITCHEN = "shouldPrintToKitchen"; //$NON-NLS-1$
 	public static String PROP_STOCK_AMOUNT_ADJUSTED = "stockAmountAdjusted"; //$NON-NLS-1$
 	public static String PROP_SUBTOTAL_AMOUNT = "subtotalAmount"; //$NON-NLS-1$
+	public static String PROP_SIZE_MODIFIER = "sizeModifier"; //$NON-NLS-1$
 	public static String PROP_ITEM_UNIT_NAME = "itemUnitName"; //$NON-NLS-1$
 	public static String PROP_ITEM_ID = "itemId"; //$NON-NLS-1$
 	public static String PROP_NAME = "name"; //$NON-NLS-1$
@@ -113,6 +115,7 @@ public abstract class BaseTicketItem  implements Comparable, Serializable {
 		protected java.lang.Boolean pizzaType;
 
 	// many to one
+	private com.floreantpos.model.TicketItemModifier sizeModifier;
 	private com.floreantpos.model.Ticket ticket;
 	private com.floreantpos.model.PrinterGroup printerGroup;
 
@@ -608,6 +611,23 @@ public abstract class BaseTicketItem  implements Comparable, Serializable {
 	 */
 	public void setPizzaType (java.lang.Boolean pizzaType) {
 		this.pizzaType = pizzaType;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: SIZE_MODIFIER_ID
+	 */
+	public com.floreantpos.model.TicketItemModifier getSizeModifier () {
+					return sizeModifier;
+			}
+
+	/**
+	 * Set the value related to the column: SIZE_MODIFIER_ID
+	 * @param sizeModifier the SIZE_MODIFIER_ID value
+	 */
+	public void setSizeModifier (com.floreantpos.model.TicketItemModifier sizeModifier) {
+		this.sizeModifier = sizeModifier;
 	}
 
 
