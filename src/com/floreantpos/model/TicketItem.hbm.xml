@@ -47,9 +47,7 @@
 			<one-to-many class="com.floreantpos.model.TicketItemModifierGroup" />
 		</list> -->
 		
-		<many-to-one class="com.floreantpos.model.TicketItemModifier" name="sizeModifier" not-null="false">
-			<column name="SIZE_MODIFIER_ID" />
-		</many-to-one>
+		<one-to-one class="com.floreantpos.model.TicketItemModifier" name="sizeModifier"/>
 		
 		<list cascade="all" inverse="false" lazy="false" name="ticketItemModifiers">
 			<key>
