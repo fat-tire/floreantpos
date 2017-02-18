@@ -20,7 +20,6 @@ package com.floreantpos.model.dao;
 import java.sql.Connection;
 
 import org.hibernate.Session;
-import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.cfg.Configuration;
 
 import com.floreantpos.Database;
@@ -123,7 +122,7 @@ public abstract class _RootDAO extends com.floreantpos.model.dao._BaseRootDAO {
 	}
 
 	public static Configuration getNewConfiguration(String configFileName) {
-		AnnotationConfiguration configuration = new AnnotationConfiguration();
+		Configuration configuration = new Configuration();
 		configuration.addClass(ActionHistory.class);
 		configuration.addClass(AttendenceHistory.class);
 		configuration.addClass(CashDrawerResetHistory.class);
@@ -232,7 +231,7 @@ public abstract class _RootDAO extends com.floreantpos.model.dao._BaseRootDAO {
 		configuration.setProperty("hibernate.c3p0.breakAfterAcquireFailure", "false"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
-	private static AnnotationConfiguration configureInventoryClasses(AnnotationConfiguration configuration) {
+	private static Configuration configureInventoryClasses(Configuration configuration) {
 		configuration.addClass(InventoryGroup.class);
 		configuration.addClass(InventoryItem.class);
 		configuration.addClass(InventoryLocation.class);
