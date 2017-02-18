@@ -180,7 +180,6 @@ public class Ticket extends BaseTicket {
 		if (deliveryDate == null) {
 			deliveryDate = getCreateDate();
 			Calendar c = Calendar.getInstance();
-			c.setTime(deliveryDate);
 			c.add(Calendar.MINUTE, 10);
 			deliveryDate = c.getTime();
 		}
