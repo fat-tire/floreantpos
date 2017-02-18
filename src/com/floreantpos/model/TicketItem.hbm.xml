@@ -47,26 +47,26 @@
 			<one-to-many class="com.floreantpos.model.TicketItemModifierGroup" />
 		</list> -->
 		
-		<one-to-one class="com.floreantpos.model.TicketItemModifier" name="sizeModifier"/>
+		<many-to-one class="com.floreantpos.model.TicketItemModifier" name="sizeModifier" cascade="all" column="SIZE_MODIFIER_ID"/>
 		
-		<list cascade="all" inverse="false" lazy="false" name="ticketItemModifiers">
+		<list cascade="all" inverse="false" lazy="false" name="ticketItemModifiers" table="TICKET_ITEM_MODIFIER_RELATION">
 			<key>
 				<column name="TICKET_ITEM_ID" />
 			</key>
-			<list-index column="MODIFIER_ORDER" />
-			<one-to-many class="com.floreantpos.model.TicketItemModifier" />
+			<list-index column="LIST_ORDER" />
+			<many-to-many class="com.floreantpos.model.TicketItemModifier" column="MODIFIER_ID"/>
 		</list>
 		
 		<many-to-one class="com.floreantpos.model.Ticket" name="ticket" not-null="true">
 			<column name="TICKET_ID" />
 		</many-to-one>
 		
-		<list cascade="all,delete-orphan" inverse="false" lazy="false" name="addOns" table="TICKET_ITEM_ADDON">
+		<list cascade="all,delete-orphan" inverse="false" lazy="false" name="addOns" table="TICKET_ITEM_ADDON_RELATION">
 			<key>
-				<column name="ADDON_TICKET_ITEM_ID" />
+				<column name="TICKET_ITEM_ID" />
 			</key>
-			<list-index column="ADDON_ORDER" />
-			<one-to-many class="com.floreantpos.model.TicketItemModifier" />
+			<list-index column="LIST_ORDER" />
+			<many-to-many class="com.floreantpos.model.TicketItemModifier" column="MODIFIER_ID"/>
 		</list>
 		
 		<bag cascade="all,delete-orphan" inverse="true" lazy="false" name="discounts" table="TICKET_ITEM_DISCOUNT">
