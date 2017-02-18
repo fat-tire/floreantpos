@@ -67,6 +67,7 @@ import com.floreantpos.bo.actions.OpenTicketSummaryReportAction;
 import com.floreantpos.bo.actions.OrdersTypeExplorerAction;
 import com.floreantpos.bo.actions.PayrollReportAction;
 import com.floreantpos.bo.actions.PizzaCrustExplorerAction;
+import com.floreantpos.bo.actions.PizzaExplorerAction;
 import com.floreantpos.bo.actions.PizzaItemExplorerAction;
 import com.floreantpos.bo.actions.PizzaModifierExplorerAction;
 import com.floreantpos.bo.actions.SalesAnalysisReportAction;
@@ -233,7 +234,8 @@ public class BackOfficeWindow extends javax.swing.JFrame {
 		explorerMenu.add(new DrawerPullReportExplorerAction());
 		explorerMenu.add(new TicketExplorerAction());
 		explorerMenu.add(new AttendanceHistoryAction());
-		explorerMenu.add(subMenuPizza);
+		explorerMenu.add(new PizzaExplorerAction());
+		//explorerMenu.add(subMenuPizza);
 
 		subMenuPizza.add(new MenuItemSizeExplorerAction());
 		subMenuPizza.add(new PizzaCrustExplorerAction());
