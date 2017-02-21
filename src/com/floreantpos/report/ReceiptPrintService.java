@@ -47,6 +47,7 @@ import us.fatehi.magnetictrack.bankcard.BankCardMagneticTrack;
 
 import com.floreantpos.Messages;
 import com.floreantpos.POSConstants;
+import com.floreantpos.config.CardConfig;
 import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.CardReader;
@@ -472,32 +473,11 @@ public class ReceiptPrintService {
 				}
 				if (transaction.isCard()) {
 					map.put("cardPayment", true); //$NON-NLS-1$
-					String string = "<br/>CARD INFO: ------------------------";
-					string += "<br/>PROCESS: " + transaction.getCardReader();
-					string += "<br/> TYPE: " + transaction.getCardType();
-					try {
-						String cardNumber = transaction.getCardNumber();
-						if (transaction.getCardNumber() != null) {
-							string += "<br/> ACCT: **** **** **** " + cardNumber.substring(cardNumber.length() - 4, cardNumber.length());
-						}
-						if (transaction.getCardHolderName() != null) {
-							string += "<br/> CARDHOLDER: " + transaction.getCardHolderName();
-						}
-						if (transaction.getCardTransactionId() != null) {
-							string += "<br/> TRANS ID: " + transaction.getCardTransactionId();
-						}
-						string += "<br/> APPROVAL: " + transaction.getCardAuthCode();
-						if (transaction.getCardAID() != null) {
-							string += "<br/> AID: " + transaction.getCardAID();
-						}
-						if (transaction.getCardARQC() != null) {
-							string += "<br/> ARQC: " + transaction.getCardARQC();
-						}
-					} catch (Exception e) {
-						logger.equals(e);
+					String cardInformationForReceipt = CardConfig.getPaymentGateway().getProcessor().getCardInformationForReceipt(transaction);
+					if (StringUtils.isEmpty(cardInformationForReceipt)) {
+						cardInformationForReceipt = getCardInformation(transaction);
 					}
-
-					map.put("approvalCode", string); //$NON-NLS-1$
+					map.put("cardInformation", cardInformationForReceipt); //$NON-NLS-1$
 				}
 				if (TerminalConfig.isEnabledMultiCurrency()) {
 					StringBuilder multiCurrencyBreakdownCashBack = buildMultiCurrency(ticket, printProperties);
@@ -514,6 +494,34 @@ public class ReceiptPrintService {
 		}
 
 		return map;
+	}
+
+	private static String getCardInformation(PosTransaction transaction) {
+		String string = "<br/>CARD INFO: ------------------------";
+		string += "<br/>PROCESS: " + transaction.getCardReader();
+		string += "<br/> TYPE: " + transaction.getCardType();
+		try {
+			String cardNumber = transaction.getCardNumber();
+			if (transaction.getCardNumber() != null) {
+				string += "<br/> ACCT: **** **** **** " + cardNumber.substring(cardNumber.length() - 4, cardNumber.length());
+			}
+			if (transaction.getCardHolderName() != null) {
+				string += "<br/> CARDHOLDER: " + transaction.getCardHolderName();
+			}
+			if (transaction.getCardTransactionId() != null) {
+				string += "<br/> TRANS ID: " + transaction.getCardTransactionId();
+			}
+			string += "<br/> APPROVAL: " + transaction.getCardAuthCode();
+			if (transaction.getCardAID() != null) {
+				string += "<br/> AID: " + transaction.getCardAID();
+			}
+			if (transaction.getCardARQC() != null) {
+				string += "<br/> ARQC: " + transaction.getCardARQC();
+			}
+		} catch (Exception e) {
+			logger.equals(e);
+		}
+		return string;
 	}
 
 	private static StringBuilder buildTicketHeader(Ticket ticket, TicketPrintProperties printProperties) {

@@ -155,4 +155,9 @@ public class MercuryPayProcessor implements CardProcessor {
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public String getCardInformationForReceipt(PosTransaction transaction) {
+		return null;
+	}
 }

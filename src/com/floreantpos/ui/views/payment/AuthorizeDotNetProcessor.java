@@ -318,4 +318,9 @@ public class AuthorizeDotNetProcessor implements CardProcessor {
 	public void voidTransaction(PosTransaction transaction) throws Exception {
 		
 	}
+
+	@Override
+	public String getCardInformationForReceipt(PosTransaction transaction) {
+		return null;
+	}
 }

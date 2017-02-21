@@ -51,7 +51,7 @@
 	<parameter name="dueAmountText" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="dueAmount" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="additionalProperties" class="java.lang.String" isForPrompting="false"/>
-	<parameter name="approvalCode" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="cardInformation" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="cardPayment" class="java.lang.Boolean" isForPrompting="false"/>
 	<parameter name="copyType" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="barcode" class="java.lang.String" isForPrompting="false"/>
@@ -661,7 +661,7 @@
 				<textElement textAlignment="Left" verticalAlignment="Middle" markup="html">
 					<font fontName="Monospaced" size="9"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$P{approvalCode}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{cardInformation}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement key="staticText-9" positionType="Float" x="0" y="299" width="198" height="13" isRemoveLineWhenBlank="true">

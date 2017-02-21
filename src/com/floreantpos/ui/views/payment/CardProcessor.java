@@ -24,4 +24,5 @@ public interface CardProcessor {
 	public void captureAuthAmount(PosTransaction transaction) throws Exception;
 	public void chargeAmount(PosTransaction transaction) throws Exception;
 	public void voidTransaction(PosTransaction transaction) throws Exception;
+	public String getCardInformationForReceipt(PosTransaction transaction);
 }
