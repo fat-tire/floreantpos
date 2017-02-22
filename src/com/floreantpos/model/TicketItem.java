@@ -38,27 +38,23 @@ public class TicketItem extends BaseTicketItem implements ITicketItem {
 	private static final long serialVersionUID = 1L;
 
 	/*[CONSTRUCTOR MARKER BEGIN]*/
-	public TicketItem () {
+	public TicketItem() {
 		super();
 	}
 
 	/**
 	 * Constructor for primary key
 	 */
-	public TicketItem (java.lang.Integer id) {
+	public TicketItem(java.lang.Integer id) {
 		super(id);
 	}
 
 	/**
 	 * Constructor for required fields
 	 */
-	public TicketItem (
-		java.lang.Integer id,
-		com.floreantpos.model.Ticket ticket) {
+	public TicketItem(java.lang.Integer id, com.floreantpos.model.Ticket ticket) {
 
-		super (
-			id,
-			ticket);
+		super(id, ticket);
 	}
 
 	/*[CONSTRUCTOR MARKER END]*/
@@ -494,7 +490,7 @@ public class TicketItem extends BaseTicketItem implements ITicketItem {
 		else {
 			subTotalAmount = NumberUtil.roundToTwoDigit(getUnitPrice() * getItemCount());
 		}
-		
+
 		if (getSizeModifier() != null) {
 			subTotalAmount += getSizeModifier().getSubTotalAmount();
 		}
@@ -799,7 +795,7 @@ public class TicketItem extends BaseTicketItem implements ITicketItem {
 		}
 		return null;
 	}
-	
+
 	public int countModifierFromGroup(MenuItemModifierGroup menuItemModifierGroup) {
 		List<TicketItemModifier> modifiers = getTicketItemModifiers();
 		if (modifiers == null) {
@@ -822,7 +818,7 @@ public class TicketItem extends BaseTicketItem implements ITicketItem {
 		}
 		return countModifierFromGroup(menuItemModifierGroup) >= minQuantity;
 	}
-	
+
 	public boolean deleteTicketItemModifier(TicketItemModifier ticketItemModifierToRemove) {
 		List<TicketItemModifier> modifiers = getTicketItemModifiers();
 		if (modifiers == null) {
@@ -835,7 +831,7 @@ public class TicketItem extends BaseTicketItem implements ITicketItem {
 				return true;
 			}
 		}
-		
+
 		return false;
 	}
 }

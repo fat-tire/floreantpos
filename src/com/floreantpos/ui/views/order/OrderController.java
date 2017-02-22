@@ -54,6 +54,7 @@ import com.floreantpos.ui.views.order.actions.OrderListener;
 import com.floreantpos.ui.views.order.modifier.ModifierSelectionDialog;
 import com.floreantpos.ui.views.order.modifier.ModifierSelectionModel;
 import com.floreantpos.ui.views.order.multipart.PizzaModifierSelectionDialog;
+import com.floreantpos.util.POSUtil;
 
 public class OrderController implements OrderListener, CategorySelectionListener, GroupSelectionListener, ItemSelectionListener {
 	private OrderView orderView;
@@ -118,22 +119,46 @@ public class OrderController implements OrderListener, CategorySelectionListener
 		ticketItem.setSeatNumber(orderView.getSelectedSeatNumber());
 
 		if (menuItem.isPizzaType()) {
-			PizzaModifierSelectionDialog dialog = new PizzaModifierSelectionDialog(new ModifierSelectionModel(ticketItem, menuItem));
-			dialog.openFullScreen();
+			List<TicketItemModifier> tempTicketItemModifiers = new ArrayList<TicketItemModifier>();
+			TicketItemModifier sizeItemModifier = null;//=new TicketItemModifier();
+			TicketItem cloneTicketItem = ticketItem.clone(ticketItem);
+			while (true) {
+				cloneTicketItem = cloneTicketItem.clone(cloneTicketItem);
+//				if (tempTicketItemModifiers.size() > 0) {
+//					cloneTicketItem.setTicketItemModifiers(tempTicketItemModifiers);
+//				}
+//				if (sizeItemModifier != null) {
+//					cloneTicketItem.setSizeModifier(sizeItemModifier);
+//				}
+				PizzaModifierSelectionDialog dialog = new PizzaModifierSelectionDialog(new ModifierSelectionModel(cloneTicketItem, menuItem));
+				dialog.openFullScreen();
 
-			if (dialog.isCanceled()) {
-				return;
-			}
-			double defaultSellPortion = menuItem.getDefaultSellPortion();
-			List<TicketItemModifier> ticketItemModifiers = ticketItem.getTicketItemModifiers();
-			if (ticketItemModifiers != null) {
-				for (TicketItemModifier ticketItemModifier : ticketItemModifiers) {
-					if (!ticketItemModifier.isInfoOnly()) {
-						ticketItemModifier.setUnitPrice(ticketItemModifier.getUnitPrice() * defaultSellPortion / 100);
+				if (dialog.isCanceled()) {
+					return;
+				}
+				double defaultSellPortion = menuItem.getDefaultSellPortion();
+				List<TicketItemModifier> ticketItemModifiers = cloneTicketItem.getTicketItemModifiers();
+
+				tempTicketItemModifiers = ticketItemModifiers;
+				sizeItemModifier = cloneTicketItem.getSizeModifier();
+
+				if (ticketItemModifiers != null) {
+					for (TicketItemModifier ticketItemModifier : ticketItemModifiers) {
+						if (!ticketItemModifier.isInfoOnly()) {
+							ticketItemModifier.setUnitPrice(ticketItemModifier.getUnitPrice() * defaultSellPortion / 100);
+						}
 					}
 				}
+				orderView.getTicketView().addTicketItem(cloneTicketItem);
+
+				int showYesNoQuestionDialog = POSMessageDialog.showYesNoQuestionDialog(POSUtil.getFocusedWindow(), "Do you want to create more pizza?",
+						"More Pizza");
+
+				if (showYesNoQuestionDialog == 1) {
+					break;
+				}
+
 			}
-			orderView.getTicketView().addTicketItem(ticketItem);
 		}
 		else if (menuItem.hasMandatoryModifiers()) {
 			ModifierSelectionDialog dialog = new ModifierSelectionDialog(new ModifierSelectionModel(ticketItem, menuItem));
@@ -207,6 +232,7 @@ public class OrderController implements OrderListener, CategorySelectionListener
 				if (dialog.isCanceled()) {
 					return;
 				}
+				ticketItem.setSizeModifier(cloneTicketItem.getSizeModifier());
 				ticketItem.setUnitPrice(cloneTicketItem.getUnitPrice());
 			}
 			else {

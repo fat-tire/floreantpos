@@ -3,12 +3,13 @@ package com.floreantpos.model.dao;
 import java.util.Iterator;
 import java.util.List;
 
+import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
 
 import com.floreantpos.model.MenuItemSize;
-import com.floreantpos.model.Multiplier;
 
 public class MenuItemSizeDAO extends BaseMenuItemSizeDAO {
 
@@ -44,5 +45,21 @@ public class MenuItemSizeDAO extends BaseMenuItemSizeDAO {
 			MenuItemSize menuItemSize = (MenuItemSize) iterator.next();
 			session.saveOrUpdate(menuItemSize);
 		}
+	}
+
+	public MenuItemSize findByName(String sizeName) {
+		Session session = null;
+		Criteria criteria = null;
+		try {
+			session = getSession();
+			criteria = session.createCriteria(MenuItemSize.class);
+
+			criteria.add(Restrictions.eq(MenuItemSize.PROP_NAME, sizeName));
+
+			return (MenuItemSize) criteria.list().get(0);
+
+		} catch (Exception e) {
+		}
+		return null;
 	}
 }

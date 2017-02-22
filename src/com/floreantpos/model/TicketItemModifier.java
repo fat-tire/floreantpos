@@ -32,14 +32,14 @@ public class TicketItemModifier extends BaseTicketItemModifier implements ITicke
 	public final static int SEPERATOR = 6;
 
 	/*[CONSTRUCTOR MARKER BEGIN]*/
-	public TicketItemModifier () {
+	public TicketItemModifier() {
 		super();
 	}
 
 	/**
 	 * Constructor for primary key
 	 */
-	public TicketItemModifier (java.lang.Integer id) {
+	public TicketItemModifier(java.lang.Integer id) {
 		super(id);
 	}
 
@@ -141,9 +141,16 @@ public class TicketItemModifier extends BaseTicketItemModifier implements ITicke
 	@Override
 	public String getNameDisplay() {
 		if (isInfoOnly()) {
-			return getName();
+			return getName().trim();
 		}
-		String display = getItemCount() + "x " + getName(); //$NON-NLS-1$
+		int itemCount = getItemCount();
+		String display;
+		if (itemCount > 1) {
+			display = itemCount + "x " + getName(); //$NON-NLS-1$
+		}
+		else {
+			display = getName().trim(); //$NON-NLS-1$
+		}
 		if (getModifierType() == NORMAL_MODIFIER) {
 			display += "*"; //$NON-NLS-1$
 		}

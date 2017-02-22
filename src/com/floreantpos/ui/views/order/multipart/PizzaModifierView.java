@@ -171,6 +171,9 @@ public class PizzaModifierView extends JPanel implements ModifierGroupSelectionL
 
 		Set<MenuModifier> modifiers = menuModifierGroup.getModifiers();
 		for (MenuModifier menuModifier : modifiers) {
+			if (!menuModifier.isPizzaModifier()) {
+				continue;
+			}
 			menuModifier.setMenuItemModifierGroup(menuModifierGroup.getMenuItemModifierGroup());
 			groupPanel.getContentPane().add(new ModifierButton(menuModifier));
 		}

@@ -65,15 +65,19 @@ import com.floreantpos.model.MenuModifier;
 import com.floreantpos.model.MenuModifierGroup;
 import com.floreantpos.model.Multiplier;
 import com.floreantpos.model.OrderType;
+import com.floreantpos.model.PizzaCrust;
 import com.floreantpos.model.PizzaPrice;
 import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.TicketItemModifier;
+import com.floreantpos.model.dao.MenuItemSizeDAO;
+import com.floreantpos.model.dao.PizzaPriceDAO;
 import com.floreantpos.swing.ListBasedListModel;
 import com.floreantpos.swing.POSToggleButton;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.swing.PosScrollPane;
 import com.floreantpos.swing.PosUIManager;
 import com.floreantpos.swing.TransparentPanel;
+import com.floreantpos.ui.TitlePanel;
 import com.floreantpos.ui.dialog.POSDialog;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.views.order.modifier.ModifierSelectionListener;
@@ -106,6 +110,13 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 	JPanel sectionView = new Pizza(this.sectionLayout);
 	private JPanel halfSectionLayout = new TransparentPanel(new GridLayout(1, 2, 2, 2));
 	private JPanel quarterSectionLayout = new TransparentPanel(new GridLayout(2, 2, 2, 2));
+	private TitlePanel titlePanel;
+	private double price = 0.0;
+	private MenuItemSize previousMenuItemSize;
+	private MenuItemSize itemSize;
+	private PizzaCrust pizzaCrust;
+	private PizzaPrice existingPizzaPrice;
+	private TicketItem ticketItem;
 
 	public PizzaModifierSelectionDialog(ModifierSelectionModel modifierSelectionModel) {
 		this.modifierSelectionModel = modifierSelectionModel;
@@ -124,9 +135,14 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 
 		//JPanel centerPanel = new JPanel(new BorderLayout());
 
+		JPanel topPanel = new JPanel(new BorderLayout());
+		titlePanel = new TitlePanel();
+		titlePanel.setPreferredSize(PosUIManager.getSize(250, 0));
 		sizeAndCrustPanel = new SizeAndCrustSelectionPane();
 		//centerPanel.add(sizeAndCrustPanel, BorderLayout.NORTH);
-		add(sizeAndCrustPanel, BorderLayout.NORTH);
+		topPanel.add(titlePanel, BorderLayout.WEST);
+		topPanel.add(sizeAndCrustPanel, BorderLayout.CENTER);
+		add(topPanel, BorderLayout.NORTH);
 
 		modifierView = new PizzaModifierView(modifierSelectionModel);
 		modifierView.addModifierSelectionListener(this);
@@ -137,10 +153,52 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 		//add(centerPanel, BorderLayout.CENTER);
 
 		createButtonPanel();
+
 	}
 
 	private void updateView() {
-		TicketItem ticketItem = modifierSelectionModel.getTicketItem();
+		ticketItem = modifierSelectionModel.getTicketItem();
+
+		TicketItemModifier sizeModifier = ticketItem.getSizeModifier();
+
+		if (sizeModifier == null) {
+			itemSize = sizeAndCrustPanel.getMenuItemSize();
+			pizzaCrust = sizeAndCrustPanel.getPizzaCrust();
+			if (pizzaCrust != null) {
+				existingPizzaPrice = PizzaPriceDAO.getInstance().findBySizeAndCrust(itemSize, pizzaCrust);
+			}
+		}
+		else {
+			String sizeAndCrustName = sizeModifier.getName();
+			String[] split = sizeAndCrustName.split(" ");
+			String sizeName = split[0];
+			String crustName = split[1];
+			MenuItemSize menuItemSize = MenuItemSizeDAO.getInstance().findByName(sizeName);
+			Set<PizzaPrice> availablePrices = modifierSelectionModel.getMenuItem().getAvailablePrices(menuItemSize);
+			PizzaCrust pizzaCrust = null;
+			for (final PizzaPrice pizzaPrice : availablePrices) {
+				if (pizzaPrice.getCrust().getName().startsWith(crustName)) {
+					pizzaCrust = pizzaPrice.getCrust();
+				}
+			}
+			if (pizzaCrust != null) {
+				existingPizzaPrice = PizzaPriceDAO.getInstance().findBySizeAndCrust(menuItemSize, pizzaCrust);
+			}
+		}
+		double getAmount = ticketItem.getTotalAmount() - ticketItem.getTaxAmount();
+		if (getAmount == 0) {
+			if (existingPizzaPrice != null) {
+				price += existingPizzaPrice.getPrice();
+			}
+			else {
+				price = 0;
+			}
+		}
+		else {
+			price += getAmount;
+		}
+
+		titlePanel.setTitle(ticketItem.getName() + " $" + price);
 		List<TicketItemModifier> ticketItemModifiers = ticketItem.getTicketItemModifiers();
 
 		if (ticketItemModifiers == null) {
@@ -159,7 +217,7 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 	private void createSectionPanel() {
 		JPanel westPanel = new JPanel(new BorderLayout(5, 5));
 
-		sectionView.setBorder(BorderFactory.createTitledBorder(null, "SECTIONS", TitledBorder.CENTER, TitledBorder.CENTER));
+		//sectionView.setBorder(BorderFactory.createTitledBorder(null, "SECTIONS", TitledBorder.CENTER, TitledBorder.CENTER));
 
 		sectionList = new ArrayList<>();
 
@@ -216,7 +274,7 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 		//		sectionView.add(sectionQuarter4, "grow,cell 2 1");
 		//		sectionView.add(sectionHalf1, "grow,cell 0 0");
 		//		sectionView.add(sectionHalf2, "grow,cell 1 0");
-		JPanel wholeSectionView = new JPanel(new MigLayout("fill"));
+		JPanel wholeSectionView = new JPanel(new MigLayout("fill,ins 0 0 0 0"));
 		wholeSectionView.add(sectionWhole, "grow");
 		//sectionView.add(pizza, "gapleft 20,gapright 20,cell 1 0 1 2");
 
@@ -342,11 +400,26 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 		List<MenuItemModifierGroup> menuItemModiferGroups = ticketItem.getMenuItem().getMenuItemModiferGroups();
 		for (Iterator iterator = menuItemModiferGroups.iterator(); iterator.hasNext();) {
 			MenuItemModifierGroup menuItemModifierGroup = (MenuItemModifierGroup) iterator.next();
-			if (ticketItem.requiredModifiersAdded(menuItemModifierGroup)) {
-				requiredModifierAddedGroupList.add(true);
-				continue;
+
+			List<Boolean> isContainPizzaModifier = new ArrayList<Boolean>();
+			Set<MenuModifier> modifiers = menuItemModifierGroup.getModifierGroup().getModifiers();
+			Iterator<MenuModifier> iterator2 = modifiers.iterator();
+			while (iterator2.hasNext()) {
+				MenuModifier modifier = (MenuModifier) iterator2.next();
+				if (modifier.isPizzaModifier()) {
+					isContainPizzaModifier.add(true);
+				}
 			}
-			requiredModifierAddedGroupList.add(false);
+
+			boolean contains = isContainPizzaModifier.contains(true);
+
+			if (contains) {
+				if (ticketItem.requiredModifiersAdded(menuItemModifierGroup)) {
+					requiredModifierAddedGroupList.add(true);
+					continue;
+				}
+				requiredModifierAddedGroupList.add(false);
+			}
 		}
 
 		if (requiredModifierAddedGroupList.contains(false)) {
@@ -360,8 +433,6 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 			POSMessageDialog.showMessage(POSUtil.getFocusedWindow(), "Required modifiers for group not added!");
 			return false;
 		}
-
-		//allTicketItemModifiers.add(crustModifier);
 		ticketItem.setSizeModifier(crustModifier);
 
 		setTicketItemModifiers(allTicketItemModifiers, true);
@@ -409,7 +480,7 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 					}
 				}
 				TicketItemModifier ticketItemModifier = new TicketItemModifier();
-				ticketItemModifier.setName(" = " + section.getSectionName());
+				ticketItemModifier.setName("== " + section.getSectionName()+" ==");
 				ticketItemModifier.setModifierType(TicketItemModifier.SEPERATOR);
 				ticketItemModifier.setInfoOnly(true);
 				ticketItemModifier.setTicketItem(ticketItem);
@@ -418,7 +489,9 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 					continue;
 				}
 				ticketItemModifier.setPrintedToKitchen(isForPrinted);
-				allTicketItemModifiers.add(ticketItemModifier);
+				if (!section.getSectionName().equals("WHOLE")) {
+					allTicketItemModifiers.add(ticketItemModifier);
+				}
 				for (Iterator iterator = sectionModifierList.iterator(); iterator.hasNext();) {
 					TicketItemModifier secModifier = (TicketItemModifier) iterator.next();
 					allTicketItemModifiers.add(secModifier);
@@ -429,7 +502,6 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 
 	@Override
 	public void modifierSelected(MenuModifier modifier, Multiplier multiplier) {
-		TicketItem ticketItem = modifierSelectionModel.getTicketItem();
 
 		MenuItemModifierGroup menuItemModifierGroup = modifier.getMenuItemModifierGroup();
 		int countModifier = ticketItem.countModifierFromGroup(menuItemModifierGroup);
@@ -447,8 +519,23 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 			return;
 		}
 		Section section = getSelectedSection();
+		boolean itemSizeSame = false;
+		itemSize = sizeAndCrustPanel.getMenuItemSize();
+		if (itemSize != null) {
+			titlePanel.setTitle(ticketItem.getName() + " $" + (price += modifier.getPriceForSizeAndMultiplier(itemSize, true, multiplier)));
+			if (previousMenuItemSize != null) {
+				if (previousMenuItemSize == itemSize) {
+					itemSizeSame = true;
+				}
+			}
+			else {
+				previousMenuItemSize = itemSize;
+				itemSizeSame = true;
+			}
+		}
+
 		TicketItemModifier ticketItemModifier = ticketItem.findTicketItemModifierFor(modifier, section.getSectionName());
-		if (ticketItemModifier == null || ticketItemModifier.isPrintedToKitchen()) {
+		if (ticketItemModifier == null || ticketItemModifier.isPrintedToKitchen() || !itemSizeSame) {
 			OrderType orderType = ticketItem.getTicket().getOrderType();
 			ticketItemModifier = convertToTicketItemModifier(ticketItem, modifier, orderType, multiplier);
 
@@ -496,21 +583,6 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 	}
 
 	public static boolean isRequiredModifiersAdded(TicketItem ticketItem, MenuItemModifierGroup menuItemModifierGroup) {
-		//		int minQuantity = menuItemModifierGroup.getMinQuantity();
-		//		if (minQuantity <= 0) {
-		//			return true;
-		//		}
-		//
-		//		Set<MenuModifier> modifiers = menuItemModifierGroup.getModifierGroup().getModifiers();
-		//		if (modifiers == null || modifiers.size() == 0) {
-		//			return true;
-		//		}
-		//
-		//		TicketItemModifierGroup ticketItemModifierGroup = ticketItem.findTicketItemModifierGroup(menuItemModifierGroup.getId());
-		//
-		//		if (ticketItemModifierGroup == null || ticketItemModifierGroup.countFreeModifiers() < minQuantity) {
-		//			return false;
-		//		}
 		return true;
 	}
 
@@ -522,7 +594,7 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 			ticketItemModifier.setMenuItemModifierGroupId(menuItemModifierGroup.getId());
 		}
 		ticketItemModifier.setItemCount(1);
-		ticketItemModifier.setName(menuModifier.getDisplayName());
+		ticketItemModifier.setName(menuModifier.getDisplayName().trim());
 		ticketItemModifier.setTicketItem(ticketItem);
 		double priceForSize = menuModifier.getPriceForSizeAndMultiplier(getSelectedSize(), false, multiplier);
 		if (multiplier != null) {
@@ -569,7 +641,7 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 			lblTitle = new JLabel(sectionName);
 			lblTitle.setBackground(Color.LIGHT_GRAY);
 			lblTitle.setHorizontalAlignment(JLabel.CENTER);
-			lblTitle.setFont(lblTitle.getFont().deriveFont(Font.BOLD, 20));
+			lblTitle.setFont(lblTitle.getFont().deriveFont(Font.BOLD, 14));
 			lblTitle.setOpaque(true);
 
 			add(lblTitle, BorderLayout.NORTH);
@@ -607,21 +679,25 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 		public void clearItems() {
 			TicketItem ticketItem = modifierSelectionModel.getTicketItem();
 			boolean isPrintedModifierExist = false;
-
+			double unitPrice = 0.0;
 			for (Iterator iterator = model.iterator(); iterator.hasNext();) {
 				TicketItemModifier ticketItemModifier = (TicketItemModifier) iterator.next();
 				if (!ticketItemModifier.isPrintedToKitchen()) {
 					iterator.remove();
 					ticketItem.deleteTicketItemModifier(ticketItemModifier);
+					int item = ticketItemModifier.getItemCount();
+					unitPrice += (item * ticketItemModifier.getUnitPrice());
 				}
 				else {
 					isPrintedModifierExist = true;
 				}
 			}
+			titlePanel.setTitle(ticketItem.getName() + " $" + (price -= unitPrice));
 			repaint();
 			if (isPrintedModifierExist) {
 				POSMessageDialog.showMessage(POSUtil.getFocusedWindow(), "Modifiers that sent to kitchen can not be deleted!");
 			}
+			previousMenuItemSize = null;
 		}
 
 		public void setSelected(boolean selected) {
@@ -678,7 +754,7 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 			sec.lblTitle.setBackground(Color.lightGray);
 			sec.setSelected(false);
 		}
-		section.lblTitle.setBackground(Color.yellow);
+		section.lblTitle.setBackground(Color.green);
 		section.setSelected(true);
 	}
 
@@ -744,24 +820,24 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 				return;
 			}
 
-			//			if (selectedSection.modifierGroup.getNameDisplay().equalsIgnoreCase("Quarter 1")) {
-			//				fillQuarter1(g2, x, y, width);
-			//			}
-			//			else if (selectedSection.modifierGroup.getNameDisplay().equalsIgnoreCase("Quarter 2")) {
-			//				fillQuarter2(g2, x, y, width);
-			//			}
-			//			else if (selectedSection.modifierGroup.getNameDisplay().equalsIgnoreCase("Quarter 3")) {
-			//				fillQuarter3(g2, x, y, width);
-			//			}
-			//			else if (selectedSection.modifierGroup.getNameDisplay().equalsIgnoreCase("Quarter 4")) {
-			//				fillQuarter4(g2, x, y, width);
-			//			}
-			//			else if (selectedSection.modifierGroup.getNameDisplay().equalsIgnoreCase("Half 1")) {
-			//				fillHalf1(g2, x, y, width);
-			//			}
-			//			else if (selectedSection.modifierGroup.getNameDisplay().equalsIgnoreCase("Half 2")) {
-			//				fillHalf2(g2, x, y, width);
-			//			}
+			if (selectedSection.getSectionName().equalsIgnoreCase("Quarter 1")) {
+				fillQuarter1(g2, x, y, width);
+			}
+			else if (selectedSection.getSectionName().equalsIgnoreCase("Quarter 2")) {
+				fillQuarter2(g2, x, y, width);
+			}
+			else if (selectedSection.getSectionName().equalsIgnoreCase("Quarter 3")) {
+				fillQuarter3(g2, x, y, width);
+			}
+			else if (selectedSection.getSectionName().equalsIgnoreCase("Quarter 4")) {
+				fillQuarter4(g2, x, y, width);
+			}
+			else if (selectedSection.getSectionName().equalsIgnoreCase("Half 1")) {
+				fillHalf1(g2, x, y, width);
+			}
+			else if (selectedSection.getSectionName().equalsIgnoreCase("Half 2")) {
+				fillHalf2(g2, x, y, width);
+			}
 		}
 
 		void drawCircleByCenter(Graphics g, int x, int y, int radius) {
@@ -798,18 +874,12 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 	}
 
 	private TicketItemModifier getSizeAndCrustModifer() {
-		List<TicketItemModifier> ticketItemModifiers = modifierSelectionModel.getTicketItem().getTicketItemModifiers();
-		if (ticketItemModifiers == null) {
-			crustModifier = null;
-			return crustModifier;
+		TicketItem ticketItem = modifierSelectionModel.getTicketItem();
+
+		if (ticketItem != null) {
+			return crustModifier = ticketItem.getSizeModifier();
 		}
-		for (Iterator iterator = ticketItemModifiers.iterator(); iterator.hasNext();) {
-			TicketItemModifier ticketItemModifier = (TicketItemModifier) iterator.next();
-			if (ticketItemModifier.getModifierType() == TicketItemModifier.CRUST) {
-				crustModifier = ticketItemModifier;
-			}
-		}
-		return crustModifier;
+		return null;
 	}
 
 	class SizeAndCrustSelectionPane extends JPanel {
@@ -823,6 +893,9 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 
 		ButtonGroup sizeBtnGroup = new ButtonGroup();
 		ButtonGroup crustBtnGroup = new ButtonGroup();
+
+		MenuItemSize menuItemSize;
+		PizzaCrust pizzaCrust;
 
 		public SizeAndCrustSelectionPane() {
 			priceList = modifierSelectionModel.getMenuItem().getPizzaPriceList();
@@ -856,9 +929,9 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 			TicketItemModifier sizeAndCrustModifer = getSizeAndCrustModifer();
 			if (sizeAndCrustModifer != null) {
 				String sizeAndCrustName = sizeAndCrustModifer.getName();
-				String[] split = sizeAndCrustName.split(",");
+				String[] split = sizeAndCrustName.split(" ");
 				String sizeName = split[0];
-				String crustName = split[1].replaceAll("\\s?crust", "").trim();
+				String crustName = split[1];//.replaceAll("\\s", "").trim();
 
 				for (POSToggleButton sizeButton : sizeButtonList) {
 					PizzaPrice pizzaPrice = (PizzaPrice) sizeButton.getClientProperty(PROP_PIZZA_PRICE);
@@ -871,7 +944,7 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 
 				for (POSToggleButton crustButton : crustButtonList) {
 					PizzaPrice pizzaPrice = (PizzaPrice) crustButton.getClientProperty(PROP_PIZZA_PRICE);
-					if (pizzaPrice.getCrust().getName().equalsIgnoreCase(crustName)) {
+					if (pizzaPrice.getCrust().getName().startsWith(crustName)) {
 						crustButton.setSelected(true);
 						crustSelected = true;
 					}
@@ -880,19 +953,23 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 			}
 			else {
 				if (!sizeButtonList.isEmpty()) {
+					List<Boolean> isBtnSelected = new ArrayList<Boolean>();
 					for (Iterator iterator = sizeButtonList.iterator(); iterator.hasNext();) {
 						POSToggleButton button = (POSToggleButton) iterator.next();
-						if(button.isSelected()) {
+						if (button.isSelected()) {
 							PizzaPrice pizzaPrice = (PizzaPrice) button.getClientProperty(PROP_PIZZA_PRICE);
 							renderCrusts(pizzaPrice.getSize());
+							isBtnSelected.add(true);
 						}
-						
-					}
-					//					POSToggleButton button = sizeButtonList.get(0);
-					//					PizzaPrice pizzaPrice = (PizzaPrice) button.getClientProperty(PROP_PIZZA_PRICE);
-					//					renderCrusts(pizzaPrice.getSize());
 
-					//	button.setSelected(true);
+					}
+					if (isBtnSelected.isEmpty() || isBtnSelected.contains(false)) {
+						POSToggleButton button = sizeButtonList.get(0);
+						PizzaPrice pizzaPrice = (PizzaPrice) button.getClientProperty(PROP_PIZZA_PRICE);
+						renderCrusts(pizzaPrice.getSize());
+
+						button.setSelected(true);
+					}
 				}
 			}
 		}
@@ -910,6 +987,13 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 					PizzaPrice pizzaPrice = (PizzaPrice) button.getClientProperty(PROP_PIZZA_PRICE);
 					renderCrusts(pizzaPrice.getSize());
 
+					PizzaPrice pizzaPriceObj = PizzaPriceDAO.getInstance().findBySizeAndCrust(pizzaPrice.getSize(), getPizzaCrust());
+					if (existingPizzaPrice != null && crustSelected) {
+						price += pizzaPriceObj.getPrice() - existingPizzaPrice.getPrice();
+						titlePanel.setTitle(ticketItem.getName() + " $" + price);
+						existingPizzaPrice = pizzaPriceObj;
+					}
+
 				}
 			});
 			sizeBtnGroup.add(sizeButton);
@@ -918,13 +1002,16 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 		}
 
 		protected void renderCrusts(MenuItemSize size) {
+			setMenuItemSize(size);
 			for (POSToggleButton component : crustButtonList) {
 				crustBtnGroup.remove(component);
 			}
 			crustPanel.removeAll();
+			//crustSelected = false;
 
 			Set<PizzaPrice> availablePrices = modifierSelectionModel.getMenuItem().getAvailablePrices(size);
-			for (PizzaPrice pizzaPrice : availablePrices) {
+			TicketItemModifier sizeAndCrustModifer = getSizeAndCrustModifer();
+			for (final PizzaPrice pizzaPrice : availablePrices) {
 				POSToggleButton crustButton = new POSToggleButton();
 				crustButton.setText("<html><center>" + pizzaPrice.getCrust().getName() + "<br/>" + CurrencyUtil.getCurrencySymbol()
 						+ pizzaPrice.getPrice(modifierSelectionModel.getMenuItem().getDefaultSellPortion()) + "</center></html>");
@@ -933,17 +1020,42 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 					crustSelected = true;
 					crustButton.setSelected(true);
 					pizzaCrustSelected(crustButton);
+					setPizzaCrust(pizzaPrice.getCrust());
 				}
-				if (pizzaPrice.getCrust().isDefaultCrust()) {
+				if (pizzaPrice.getCrust().isDefaultCrust() && sizeAndCrustModifer == null) {
 					crustSelected = true;
 					crustButton.setSelected(true);
 					pizzaCrustSelected(crustButton);
+					setPizzaCrust(pizzaPrice.getCrust());
+				}
+				if (sizeAndCrustModifer != null) {
+					String sizeAndCrustName = sizeAndCrustModifer.getName();
+					String[] split = sizeAndCrustName.split(" ");
+					String crustName = split[1];
+					if (pizzaPrice.getCrust().getName().startsWith(crustName)) {
+						crustSelected = true;
+						crustButton.setSelected(true);
+						pizzaCrustSelected(crustButton);
+						setPizzaCrust(pizzaPrice.getCrust());
+					}
 				}
 				crustButton.addActionListener(new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent e) {
 						POSToggleButton button = (POSToggleButton) e.getSource();
 						pizzaCrustSelected(button);
+						PizzaPrice pizzaPriceObj = PizzaPriceDAO.getInstance().findBySizeAndCrust(getMenuItemSize(), pizzaPrice.getCrust());
+						if (existingPizzaPrice != null) {
+							price += pizzaPriceObj.getPrice() - existingPizzaPrice.getPrice();
+							titlePanel.setTitle(ticketItem.getName() + " $" + price);
+							existingPizzaPrice = pizzaPriceObj;
+						}
+						else {
+							price += pizzaPriceObj.getPrice();
+							titlePanel.setTitle(ticketItem.getName() + " $" + price);
+							existingPizzaPrice = pizzaPriceObj;
+						}
+						setPizzaCrust(pizzaPrice.getCrust());
 					}
 				});
 				crustBtnGroup.add(crustButton);
@@ -952,6 +1064,22 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 			}
 			crustPanel.revalidate();
 			crustPanel.repaint();
+		}
+
+		public MenuItemSize getMenuItemSize() {
+			return menuItemSize;
+		}
+
+		public void setMenuItemSize(MenuItemSize menuItemSize) {
+			this.menuItemSize = menuItemSize;
+		}
+
+		public PizzaCrust getPizzaCrust() {
+			return pizzaCrust;
+		}
+
+		public void setPizzaCrust(PizzaCrust pizzaCrust) {
+			this.pizzaCrust = pizzaCrust;
 		}
 	}
 
