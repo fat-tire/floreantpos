@@ -60,6 +60,9 @@
 	<parameter name="tenderedAmountText" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="tenderedAmount" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="subtotalHeaderText" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="showSignatureField" class="java.lang.Boolean" isForPrompting="false">
+		<defaultValueExpression><![CDATA[true]]></defaultValueExpression>
+	</parameter>
 	<field name="itemQty" class="java.lang.String"/>
 	<field name="itemName" class="java.lang.String"/>
 	<field name="itemSubtotal" class="java.lang.String"/>
@@ -673,33 +676,23 @@
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{copyType}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement positionType="Float" x="50" y="188" width="148" height="26" isRemoveLineWhenBlank="true">
+				<reportElement positionType="Float" x="0" y="188" width="198" height="26" isRemoveLineWhenBlank="true">
 					<printWhenExpression><![CDATA[$P{cardPayment}==true]]></printWhenExpression>
 				</reportElement>
 				<textElement verticalAlignment="Bottom">
-					<font fontName="Monospaced" size="9"/>
+					<font fontName="Monospaced" size="9" isUnderline="true"/>
 				</textElement>
-				<text><![CDATA[Tips:]]></text>
+				<text><![CDATA[Tips :                              ]]></text>
 			</staticText>
-			<line>
-				<reportElement positionType="Float" x="83" y="212" width="115" height="1" isRemoveLineWhenBlank="true">
-					<printWhenExpression><![CDATA[$P{cardPayment}==true]]></printWhenExpression>
-				</reportElement>
-			</line>
 			<staticText>
-				<reportElement positionType="Float" x="50" y="214" width="148" height="31" isRemoveLineWhenBlank="true">
+				<reportElement positionType="Float" x="0" y="214" width="198" height="31" isRemoveLineWhenBlank="true">
 					<printWhenExpression><![CDATA[$P{cardPayment}==true]]></printWhenExpression>
 				</reportElement>
 				<textElement verticalAlignment="Bottom">
-					<font fontName="Monospaced" size="9"/>
+					<font fontName="Monospaced" size="9" isUnderline="true"/>
 				</textElement>
-				<text><![CDATA[Total:]]></text>
+				<text><![CDATA[Total:                              ]]></text>
 			</staticText>
-			<line>
-				<reportElement positionType="Float" x="83" y="242" width="115" height="1" isRemoveLineWhenBlank="true">
-					<printWhenExpression><![CDATA[$P{cardPayment}==true]]></printWhenExpression>
-				</reportElement>
-			</line>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement key="staticText-7" x="32" y="130" width="114" height="13" isRemoveLineWhenBlank="true">
 					<printWhenExpression><![CDATA[$P{adjustAmount}!=null]]></printWhenExpression>
@@ -747,19 +740,14 @@
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{tenderedAmountText}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement positionType="Float" x="51" y="245" width="148" height="31" isRemoveLineWhenBlank="true">
-					<printWhenExpression><![CDATA[$P{cardPayment}==true]]></printWhenExpression>
+				<reportElement positionType="Float" x="0" y="245" width="198" height="31" isRemoveLineWhenBlank="true">
+					<printWhenExpression><![CDATA[$P{cardPayment}==true && $P{showSignatureField}]]></printWhenExpression>
 				</reportElement>
 				<textElement verticalAlignment="Bottom">
-					<font fontName="Monospaced" size="9"/>
+					<font fontName="Monospaced" size="9" isUnderline="true"/>
 				</textElement>
-				<text><![CDATA[Sign:]]></text>
+				<text><![CDATA[Sign :                              ]]></text>
 			</staticText>
-			<line>
-				<reportElement positionType="Float" x="84" y="273" width="115" height="1" isRemoveLineWhenBlank="true">
-					<printWhenExpression><![CDATA[$P{cardPayment}==true]]></printWhenExpression>
-				</reportElement>
-			</line>
 		</band>
 	</summary>
 </jasperReport>
