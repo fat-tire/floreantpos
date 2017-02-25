@@ -103,7 +103,6 @@ public class MenuModifierForm extends BeanEditor {
 	private JTabbedPane jTabbedPane1;
 
 	private Map<String, MultiplierPricePanel> itemMap = new HashMap<>();
-	private JCheckBox chkSelectAll;
 	private JCheckBox chkUseFixedPrice;
 
 	public MenuModifierForm() throws Exception {
@@ -316,18 +315,8 @@ public class MenuModifierForm extends BeanEditor {
 				itemMap.put(multiplier.getName(), multiplierPricePanel);
 			}
 		}
-		chkSelectAll = new JCheckBox("Select All");
-		chkSelectAll.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				for (MultiplierPricePanel panel : itemMap.values()) {
-					panel.setSelected(chkSelectAll.isSelected());
-				}
-			}
-		});
 		//lelfInputPanel.add(chkSelectAll, "newline,gapleft 10,skip 1,split 2,grow");
-		lelfInputPanel.add(chkUseFixedPrice, "newline,skip 1,grow");
+		//lelfInputPanel.add(chkUseFixedPrice, "newline,skip 1,grow");
 
 		//lelfInputPanel.add(btnCalculateMultilierPrice, "gapright 10,w 80!");
 
@@ -677,35 +666,22 @@ public class MenuModifierForm extends BeanEditor {
 	private class MultiplierPricePanel extends JPanel {
 		ModifierMultiplierPrice multiplierPrice;
 		Multiplier multiplier;
-		JCheckBox chkEnable;
 		DoubleTextField tfAditionalPrice;
 
 		public MultiplierPricePanel(Multiplier multiplier) {
 			this.multiplier = multiplier;
 			setLayout(new MigLayout("inset 0,fillx", "[100px][grow][100px]", ""));
-			chkEnable = new JCheckBox(multiplier.getName());
+			//chkEnable = new JCheckBox(multiplier.getName());
 			tfAditionalPrice = new DoubleTextField(multiplier.isMain() ? 6 : 9);
 			tfAditionalPrice.setHorizontalAlignment(SwingConstants.RIGHT);
-			tfAditionalPrice.setEnabled(false);
-			chkEnable.addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					tfAditionalPrice.setEnabled(chkEnable.isSelected());
-				}
-			});
+			JLabel lblName = new JLabel(multiplier.getName());
 			if (multiplier.isMain()) {
-				JLabel lblReg = new JLabel(Multiplier.REGULAR);
-				lblReg.setFont(new Font(null, Font.BOLD, tfName.getFont().getSize()));
-				add(lblReg);
+				lblName.setFont(new Font(null, Font.BOLD, tfName.getFont().getSize()));
 			}
-			else
-				add(chkEnable);
-
+			add(lblName);
 			add(new JLabel(multiplier.isMain() ? "Price" : "Additional price", JLabel.TRAILING), "grow, gapright 10px");
 			add(tfAditionalPrice, "split 2,grow");
 			if (multiplier.isMain()) {
-				chkEnable.setSelected(true);
-				tfAditionalPrice.setEnabled(true);
 				JButton btnCalculateMultilierPrice = new JButton("Calc");
 				btnCalculateMultilierPrice.addActionListener(new ActionListener() {
 
@@ -732,23 +708,15 @@ public class MenuModifierForm extends BeanEditor {
 			return multiplier;
 		}
 
-		public void setSelected(boolean selected) {
-			if (multiplier.isMain())
-				return;
-			chkEnable.setSelected(selected);
-			tfAditionalPrice.setEnabled(selected);
-		}
-
 		public boolean isSelected() {
-			return chkEnable.isSelected();
+			Double value = tfAditionalPrice.getDouble();
+			return !value.isNaN();
 		}
 
 		private void update() {
 			if (multiplierPrice == null)
 				return;
 			tfAditionalPrice.setText(String.valueOf(multiplierPrice.getPrice()));
-			tfAditionalPrice.setEnabled(true);
-			chkEnable.setSelected(true);
 		}
 
 		public void setModifierMultiplierPrice(ModifierMultiplierPrice price) {

@@ -64,7 +64,7 @@ public class PizzaModifierPrice extends BasePizzaModifierPrice {
 	public void populateMultiplierPriceListRowValue(MenuModifier modifier) {
 		for (Iterator iterator = getMultiplierPriceList().iterator(); iterator.hasNext();) {
 			ModifierMultiplierPrice price = (ModifierMultiplierPrice) iterator.next();
-			if (price.getPrice() <= 0) {
+			if (price.getPrice() == null) {
 				iterator.remove();
 				continue;
 			}

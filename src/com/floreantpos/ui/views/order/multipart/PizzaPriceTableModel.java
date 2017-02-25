@@ -62,12 +62,7 @@ public class PizzaPriceTableModel extends AbstractTableModel {
 		}
 		else {
 			ModifierMultiplierPrice price = row.getMultiplier(columnNames[columnIndex]);
-			if (price == null)
-				return null;
-			Double rowPrice = price.getPrice();
-			if (rowPrice == 0)
-				return null;
-			return rowPrice;
+			return price.getPrice();
 		}
 	}
 
@@ -77,7 +72,6 @@ public class PizzaPriceTableModel extends AbstractTableModel {
 			return false;
 		return true;
 	}
-	
 
 	@Override
 	public void setValueAt(Object aValue, int rowIndex, int columnIndex) {

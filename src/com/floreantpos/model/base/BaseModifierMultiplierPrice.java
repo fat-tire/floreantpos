@@ -1,5 +1,6 @@
 package com.floreantpos.model.base;
 
+import java.lang.Comparable;
 import java.io.Serializable;
 
 
@@ -80,8 +81,8 @@ public abstract class BaseModifierMultiplierPrice  implements Comparable, Serial
 	 * Return the value associated with the column: PRICE
 	 */
 	public java.lang.Double getPrice () {
-									return price == null ? Double.valueOf(0) : price;
-					}
+		return price;
+	}
 
 	/**
 	 * Set the value related to the column: PRICE
@@ -91,6 +92,13 @@ public abstract class BaseModifierMultiplierPrice  implements Comparable, Serial
 		this.price = price;
 	}
 
+
+	/**
+	 * Custom property
+	 */
+	public static String getPriceDefaultValue () {
+		return "null";
+	}
 
 
 	/**

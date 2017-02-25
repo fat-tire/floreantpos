@@ -13,7 +13,11 @@ $!{prop.getJavaDoc("field-description", "	 ")}
 	$!{prop.ScopeGet} ${prop.AbsoluteSignatureClassName}$!{prop.GenericMarker} ${prop.GetterName} () {
 		#if(${prop.isPrimitive()} == false && ${prop.ObjectClass} == "java.lang.Double")
 			#if( ${prop.get("defaultValue")})
-				return ${prop.VarName} == null ? Double.valueOf(${prop.get("defaultValue")}) : ${prop.VarName};
+				#if(${prop.get("defaultValue")} == "null")
+					return ${prop.VarName};
+				#else
+					return ${prop.VarName} == null ? Double.valueOf(${prop.get("defaultValue")}) : ${prop.VarName};
+				#end
 			#else
 				return ${prop.VarName} == null ? Double.valueOf(0) : ${prop.VarName};
 		#end

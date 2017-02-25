@@ -134,19 +134,17 @@ public class MenuModifier extends BaseMenuModifier {
 		if (multiplier == null || multiplier.isMain()) {
 			return defaultPrice;
 		}
-		if (!isFixedPrice()) {
-			return defaultPrice * multiplier.getRate() / 100;
-		}
+
 		List<ModifierMultiplierPrice> priceList = getMultiplierPriceList();
 		if (priceList == null || priceList.isEmpty()) {
-			return defaultPrice;
+			return defaultPrice * multiplier.getRate() / 100;
 		}
 		for (ModifierMultiplierPrice multiplierPrice : priceList) {
 			if (multiplier.getName().equals(multiplierPrice.getMultiplier().getName())) {
 				return multiplierPrice.getPrice();
 			}
 		}
-		return defaultPrice;
+		return defaultPrice * multiplier.getRate() / 100;
 	}
 
 	public double getPriceForSize(MenuItemSize size, boolean extra) {
@@ -154,35 +152,34 @@ public class MenuModifier extends BaseMenuModifier {
 	}
 
 	public double getPriceForSizeAndMultiplier(MenuItemSize size, boolean extra, Multiplier multiplier) {
-		boolean fixedPrice = isFixedPrice();
 		List<PizzaModifierPrice> priceList = getPizzaModifierPriceList();
+		double regularPrice = 0;
 		if (isPizzaModifier() && priceList != null) {
 			for (PizzaModifierPrice pizzaModifierPrice : priceList) {
 				if (size.getId().intValue() == pizzaModifierPrice.getSize().getId().intValue()) {
 					List<ModifierMultiplierPrice> multiplierPriceList = pizzaModifierPrice.getMultiplierPriceList();
 					if (multiplierPriceList != null) {
-						double regularPrice = 0;
+						Double multiplierPrice = null;
 						for (ModifierMultiplierPrice price : multiplierPriceList) {
 							String priceTableMultiplierName = price.getMultiplier().getName();
-							if (!fixedPrice) {
-								if (priceTableMultiplierName.equals(Multiplier.REGULAR)) {
-									regularPrice = price.getPrice();
-									if (multiplier.getName().equals(Multiplier.REGULAR)) {
-										return regularPrice;
-									}
-									return regularPrice * multiplier.getRate() / 100;
+							if (priceTableMultiplierName.equals(Multiplier.REGULAR)) {
+								regularPrice = price.getPrice();
+								if (multiplier.getName().equals(Multiplier.REGULAR)) {
+									return regularPrice;
 								}
-								continue;
 							}
 							else if (priceTableMultiplierName.equals(multiplier.getName())) {
-								return price.getPrice();
+								multiplierPrice = price.getPrice();
 							}
+						}
+						if (multiplierPrice != null) {
+							return multiplierPrice;
 						}
 					}
 				}
 			}
 		}
-		return getPriceForMultiplier(multiplier);
+		return regularPrice * multiplier.getRate() / 100;
 	}
 
 	public double getPriceByOrderType(OrderType type) {

@@ -195,7 +195,7 @@ public class ModifierSelectionDialog extends POSDialog implements ModifierGroupS
 			return;
 		}
 
-		TicketItemModifier ticketItemModifier = ticketItem.findTicketItemModifierFor(modifier);
+		TicketItemModifier ticketItemModifier = ticketItem.findTicketItemModifierFor(modifier, multiplier);
 		if (ticketItemModifier == null) {
 			OrderType type = ticketItem.getTicket().getOrderType();
 			ticketItem.addTicketItemModifier(modifier, TicketItemModifier.NORMAL_MODIFIER, type, multiplier);

@@ -2,6 +2,8 @@ package com.floreantpos.model.base;
 
 import java.io.Serializable;
 
+import javax.xml.bind.annotation.XmlTransient;
+
 
 /**
  * This is an object that contains data related to the MENU_MODIFIER table.
@@ -314,6 +316,7 @@ public abstract class BaseMenuModifier implements Comparable, Serializable {
 	/**
 	 * Return the value associated with the column: pizzaModifierPriceList
 	 */
+	@XmlTransient
 	public java.util.List<com.floreantpos.model.PizzaModifierPrice> getPizzaModifierPriceList() {
 		return pizzaModifierPriceList;
 	}
@@ -336,6 +339,7 @@ public abstract class BaseMenuModifier implements Comparable, Serializable {
 	/**
 	 * Return the value associated with the column: multiplierPriceList
 	 */
+	@XmlTransient
 	public java.util.List<com.floreantpos.model.ModifierMultiplierPrice> getMultiplierPriceList() {
 		return multiplierPriceList;
 	}

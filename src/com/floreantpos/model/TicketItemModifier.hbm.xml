@@ -18,6 +18,7 @@
 		<property column="TAX_AMOUNT" name="taxAmount" type="java.lang.Double" />
 		<property column="INFO_ONLY" name="infoOnly" type="java.lang.Boolean" />
 		<property column="SECTION_NAME" length="20" name="sectionName" type="string" />
+		<property column="MULTIPLIER_NAME" length="20" name="multiplierName" type="string" />
 		<property column="PRINT_TO_KITCHEN" name="shouldPrintToKitchen" type="java.lang.Boolean">
 			<meta attribute="defaultValue">true</meta>
 		</property>

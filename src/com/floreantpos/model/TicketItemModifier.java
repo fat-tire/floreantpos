@@ -139,6 +139,11 @@ public class TicketItemModifier extends BaseTicketItemModifier implements ITicke
 	}
 
 	@Override
+	public String getMultiplierName() {
+		return multiplierName == null ? "" : multiplierName;
+	}
+
+	@Override
 	public String getNameDisplay() {
 		if (isInfoOnly()) {
 			return getName().trim();

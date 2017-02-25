@@ -182,7 +182,7 @@ public class PizzaModifierForm extends BeanEditor {
 		lelfInputPanel.add(lblModifierGroup, "alignx left,aligny center"); //$NON-NLS-1$
 		lelfInputPanel.add(cbModifierGroup, "growx,aligny top"); //$NON-NLS-1$
 
-		lelfInputPanel.add(chkUseFixedPrice, "skip 1,aligny top"); //$NON-NLS-1$
+		//lelfInputPanel.add(chkUseFixedPrice, "skip 1,aligny top"); //$NON-NLS-1$
 
 		JPanel rightInputPanel = new JPanel(new MigLayout("wrap 2", "[86px][grow]"));
 

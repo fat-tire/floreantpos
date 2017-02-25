@@ -118,7 +118,7 @@ public class OrderController implements OrderListener, CategorySelectionListener
 		ticketItem.setSeatNumber(orderView.getSelectedSeatNumber());
 
 		if (menuItem.isPizzaType()) {
-			PizzaModifierSelectionDialog dialog = new PizzaModifierSelectionDialog(ticketItem, menuItem);
+			PizzaModifierSelectionDialog dialog = new PizzaModifierSelectionDialog(ticketItem, menuItem, false);
 			dialog.openFullScreen();
 
 			if (dialog.isCanceled()) {
@@ -191,13 +191,15 @@ public class OrderController implements OrderListener, CategorySelectionListener
 
 			boolean pizzaType = ticketItem.isPizzaType();
 			if (pizzaType) {
-				PizzaModifierSelectionDialog dialog = new PizzaModifierSelectionDialog(cloneTicketItem, menuItem);
+				PizzaModifierSelectionDialog dialog = new PizzaModifierSelectionDialog(cloneTicketItem, menuItem, true);
 				dialog.openFullScreen();
 
 				if (dialog.isCanceled()) {
 					return;
 				}
-				ticketItem.setSizeModifier(cloneTicketItem.getSizeModifier());
+				TicketItemModifier sizeModifier = cloneTicketItem.getSizeModifier();
+				sizeModifier.setTicketItem(ticketItem);
+				ticketItem.setSizeModifier(sizeModifier);
 				ticketItem.setUnitPrice(cloneTicketItem.getUnitPrice());
 			}
 			else {
@@ -208,7 +210,6 @@ public class OrderController implements OrderListener, CategorySelectionListener
 					return;
 				}
 			}
-
 			List<TicketItemModifier> addedTicketItemModifiers = cloneTicketItem.getTicketItemModifiers();
 			if (addedTicketItemModifiers == null) {
 				addedTicketItemModifiers = new ArrayList<>();

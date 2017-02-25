@@ -123,6 +123,7 @@ public class TicketItem extends BaseTicketItem implements ITicketItem {
 		ticketItemModifier.setName(menuModifier.getDisplayName());
 		double price = menuModifier.getPriceForMultiplier(multiplier);
 		if (multiplier != null) {
+			ticketItemModifier.setMultiplierName(multiplier.getName());
 			ticketItemModifier.setName(multiplier.getTicketPrefix() + " " + menuModifier.getDisplayName());
 		}
 		ticketItemModifier.setUnitPrice(price);
@@ -162,6 +163,17 @@ public class TicketItem extends BaseTicketItem implements ITicketItem {
 		addToticketItemModifiers(ticketItemModifier);
 
 		return ticketItemModifier;
+	}
+
+	public void updateModifiersUnitPrice(double defaultSellPortion) {
+		List<TicketItemModifier> ticketItemModifiers = getTicketItemModifiers();
+		if (ticketItemModifiers != null) {
+			for (TicketItemModifier ticketItemModifier : ticketItemModifiers) {
+				if (!ticketItemModifier.isInfoOnly()) {
+					ticketItemModifier.setUnitPrice(ticketItemModifier.getUnitPrice() * defaultSellPortion / 100);
+				}
+			}
+		}
 	}
 
 	public TicketItemModifier removeTicketItemModifier(TicketItemModifier ticketItemModifier) {
@@ -781,7 +793,25 @@ public class TicketItem extends BaseTicketItem implements ITicketItem {
 		return null;
 	}
 
+	public TicketItemModifier findTicketItemModifierFor(MenuModifier menuModifier, Multiplier multiplier) {
+		List<TicketItemModifier> modifiers = getTicketItemModifiers();
+		if (modifiers == null) {
+			return null;
+		}
+		for (TicketItemModifier ticketItemModifier : modifiers) {
+			Integer itemId = ticketItemModifier.getMenuItemId();
+			if (itemId != null && itemId.intValue() == menuModifier.getId().intValue() && multiplier.getName().equals(ticketItemModifier.getMultiplierName())) {
+				return ticketItemModifier;
+			}
+		}
+		return null;
+	}
+
 	public TicketItemModifier findTicketItemModifierFor(MenuModifier menuModifier, String sectionName) {
+		return findTicketItemModifierFor(menuModifier, sectionName, null);
+	}
+
+	public TicketItemModifier findTicketItemModifierFor(MenuModifier menuModifier, String sectionName, Multiplier multiplier) {
 		List<TicketItemModifier> modifiers = getTicketItemModifiers();
 		if (modifiers == null) {
 			return null;
@@ -789,7 +819,8 @@ public class TicketItem extends BaseTicketItem implements ITicketItem {
 		for (TicketItemModifier ticketItemModifier : modifiers) {
 			Integer itemId = ticketItemModifier.getMenuItemId();
 			if ((itemId != null && itemId.intValue() == menuModifier.getId().intValue())
-					&& (sectionName != null && sectionName.equals(ticketItemModifier.getSectionName()))) {
+					&& (sectionName != null && sectionName.equals(ticketItemModifier.getSectionName()) && (multiplier != null && multiplier.getName().equals(
+							ticketItemModifier.getMultiplierName())))) {
 				return ticketItemModifier;
 			}
 		}
