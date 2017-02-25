@@ -43,9 +43,11 @@ import javax.swing.border.TitledBorder;
 import net.miginfocom.swing.MigLayout;
 
 import com.floreantpos.POSConstants;
+import com.floreantpos.model.MenuItem;
 import com.floreantpos.model.MenuModifier;
 import com.floreantpos.model.MenuModifierGroup;
 import com.floreantpos.model.Multiplier;
+import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.dao.MultiplierDAO;
 import com.floreantpos.swing.POSToggleButton;
 import com.floreantpos.swing.PosButton;
@@ -77,7 +79,8 @@ public class PizzaModifierView extends JPanel implements ModifierGroupSelectionL
 
 	private JPanel contentPanel;
 
-	public PizzaModifierView(ModifierSelectionModel modifierSelectionModel) {
+	public PizzaModifierView(TicketItem ticketItem, MenuItem menuItem) {
+		ModifierSelectionModel modifierSelectionModel = new ModifierSelectionModel(ticketItem, menuItem);
 		//this.modifierSelectionModel = modifierSelectionModel;
 		setLayout(new BorderLayout());
 		mainPanel = new JPanel(new BorderLayout());
