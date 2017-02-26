@@ -155,7 +155,7 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 		table.setModel(ticketItemViewerModel);
 		table.setRowHeight(30);
 		table.setDefaultRenderer(Object.class, new PosTableRenderer());
-		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		table.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
 		final TableColumnModel columnModel = table.getColumnModel();
 		columnModel.getColumn(0).setPreferredWidth(200);
 		columnModel.getColumn(1).setPreferredWidth(50);
