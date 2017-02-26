@@ -61,7 +61,7 @@ public class TicketItemModifier extends BaseTicketItemModifier implements ITicke
 
 	@Override
 	public String toString() {
-		return getItemCount() + "x " + getName(); //NON-NLS-1$
+		return getNameDisplay(); //NON-NLS-1$
 	}
 
 	public boolean canAddCookingInstruction() {
@@ -149,6 +149,9 @@ public class TicketItemModifier extends BaseTicketItemModifier implements ITicke
 			return getName().trim();
 		}
 		int itemCount = getItemCount();
+		if (getTicketItem().isPizzaType()) {
+			itemCount = itemCount / getTicketItem().getItemCount();
+		}
 		String display;
 		if (itemCount > 1) {
 			display = itemCount + "x " + getName(); //$NON-NLS-1$

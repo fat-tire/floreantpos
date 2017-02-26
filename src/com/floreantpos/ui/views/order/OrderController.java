@@ -21,7 +21,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -200,6 +199,7 @@ public class OrderController implements OrderListener, CategorySelectionListener
 				TicketItemModifier sizeModifier = cloneTicketItem.getSizeModifier();
 				sizeModifier.setTicketItem(ticketItem);
 				ticketItem.setSizeModifier(sizeModifier);
+				ticketItem.setItemCount(cloneTicketItem.getItemCount());
 				ticketItem.setUnitPrice(cloneTicketItem.getUnitPrice());
 			}
 			else {
@@ -214,16 +214,14 @@ public class OrderController implements OrderListener, CategorySelectionListener
 			if (addedTicketItemModifiers == null) {
 				addedTicketItemModifiers = new ArrayList<>();
 			}
-			double defaultSellPortion = menuItem.getDefaultSellPortion();
-			if (!CollectionUtils.isEqualCollection(addedTicketItemModifiers, ticketItemModifiers)) {
-				ticketItemModifiers.clear();
-				for (TicketItemModifier ticketItemModifier : addedTicketItemModifiers) {
-					ticketItemModifier.setTicketItem(ticketItem);
-					if (pizzaType && !ticketItemModifier.isInfoOnly()) {
-						ticketItemModifier.setUnitPrice(ticketItemModifier.getUnitPrice() * defaultSellPortion / 100);
-					}
-					ticketItem.addToticketItemModifiers(ticketItemModifier);
-				}
+			//double defaultSellPortion = menuItem.getDefaultSellPortion();
+			ticketItemModifiers.clear();
+			for (TicketItemModifier ticketItemModifier : addedTicketItemModifiers) {
+				ticketItemModifier.setTicketItem(ticketItem);
+				/*if (pizzaType && !ticketItemModifier.isInfoOnly()) {
+					ticketItemModifier.setUnitPrice(ticketItemModifier.getUnitPrice() * defaultSellPortion / 100);
+				}*/
+				ticketItem.addToticketItemModifiers(ticketItemModifier);
 			}
 		} catch (Exception e) {
 			POSMessageDialog.showError(Application.getPosWindow(), e.getMessage(), e);

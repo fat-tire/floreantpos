@@ -27,13 +27,13 @@ public class PizzaTicketItemTableModel extends ListTableModel<ITicketItem> {
 				if (item instanceof TicketItem) {
 					return ((TicketItem) item).getName();
 				}
-				return item.getNameDisplay();
+				return " " + item.getNameDisplay();
 
 			case 1:
 				Double total = null;
 				if (item instanceof TicketItem) {
 					total = item.getSubTotalAmountDisplay();
-					return NumberUtil.formatNumber(total);
+					return NumberUtil.roundToTwoDigit(total);
 				}
 				return null;
 
