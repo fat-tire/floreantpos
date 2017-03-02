@@ -473,6 +473,10 @@ public class ReceiptPrintService {
 				}
 				if (transaction.isCard()) {
 					map.put("cardPayment", true); //$NON-NLS-1$
+					if (transaction.hasProperty("requireSignature")) {
+						Boolean requireSignature = Boolean.valueOf(transaction.getProperty("requireSignature"));
+						map.put("showSignatureField", requireSignature);
+					}
 					String cardInformationForReceipt = CardConfig.getPaymentGateway().getProcessor().getCardInformationForReceipt(transaction);
 					if (StringUtils.isEmpty(cardInformationForReceipt)) {
 						cardInformationForReceipt = getCardInformation(transaction);

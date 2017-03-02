@@ -187,16 +187,16 @@ public class AuthorizableTicketBrowser extends POSDialog {
 		if (Double.isNaN(newTipsAmount))
 			return;
 
-		double advanceTipsPercentage = CardConfig.getAdvanceTipsPercentage();
+		//double advanceTipsPercentage = CardConfig.getAdvanceTipsPercentage();
 
-		double acceptableTipsAmount = NumberUtil.roundToTwoDigit(transaction.getTenderAmount() * (advanceTipsPercentage / 100));
+		//double acceptableTipsAmount = NumberUtil.roundToTwoDigit(transaction.getTenderAmount() * (advanceTipsPercentage / 100));
 
-		if (newTipsAmount > acceptableTipsAmount) {
-			//POSMessageDialog.showMessage(Messages.getString("AuthorizableTicketBrowser.0") + " :" + CurrencyUtil.getCurrencySymbol() + acceptableTipsAmount); //$NON-NLS-1$ //$NON-NLS-2$
-			double tipsExceedAmount = newTipsAmount - acceptableTipsAmount;
-			newTipsAmount = acceptableTipsAmount;
-			transaction.setTipsExceedAmount(tipsExceedAmount);
-		}
+//		if (newTipsAmount > acceptableTipsAmount) {
+//			//POSMessageDialog.showMessage(Messages.getString("AuthorizableTicketBrowser.0") + " :" + CurrencyUtil.getCurrencySymbol() + acceptableTipsAmount); //$NON-NLS-1$ //$NON-NLS-2$
+//			double tipsExceedAmount = newTipsAmount - acceptableTipsAmount;
+//			newTipsAmount = acceptableTipsAmount;
+//			transaction.setTipsExceedAmount(tipsExceedAmount);
+//		}
 		transaction.setTipsAmount(newTipsAmount);
 		transaction.setAmount(transaction.getAmount() - oldTipsAmount + newTipsAmount);
 
