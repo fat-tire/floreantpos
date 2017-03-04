@@ -332,90 +332,74 @@ public class KitchenTicket extends BaseKitchenTicket {
 	}
 
 	private static void includeModifiers(TicketItem ticketItem, KitchenTicket kitchenTicket) {
-//		List<TicketItemModifierGroup> ticketItemModifierGroups = ticketItem.getTicketItemModifierGroups();
-//		if (ticketItemModifierGroups != null) {
-//			for (TicketItemModifierGroup ticketItemModifierGroup : ticketItemModifierGroups) {
-//				List<TicketItemModifier> ticketItemModifiers = ticketItem.getTicketItemModifiers();
-//				if (ticketItemModifiers != null) {
-//					if (ticketItemModifierGroup.isShowSectionName()) {
-//						if (!ticketItemModifiers.isEmpty()) {
-//							KitchenTicketItem item = new KitchenTicketItem();
-//							item.setMenuItemCode(""); //$NON-NLS-1$
-//							item.setMenuItemName(ticketItemModifierGroup.getSectionName());
-//							item.setMenuItemGroupName(ticketItem.getGroupName());
-//							item.setMenuItemGroupId(ticketItem.getMenuItem().getParent().getId());
-//							item.setSortOrder(ticketItem.getMenuItem().getParent().getSortOrder());
-//							kitchenTicket.addToticketItems(item);
-//						}
-//					}
-//					for (TicketItemModifier itemModifier : ticketItemModifiers) {
-//						if (!itemModifier.isShouldPrintToKitchen()) {
-//							continue;
-//						}
-//
-//						/*if (itemModifier.isPrintedToKitchen() || !itemModifier.isShouldPrintToKitchen()) {
-//							continue;
-//						}*/
-//
-//						//System.out.println(itemModifier.getName());
-//
-//						KitchenTicketItem item = new KitchenTicketItem();
-//						item.setMenuItemCode(""); //$NON-NLS-1$
-//						item.setTicketItemModifierId(itemModifier.getId());
-//						item.setMenuItemName(itemModifier.getNameDisplay());
-//						if (ticketItem.getMenuItem() == null) {
-//							item.setMenuItemGroupName("MISC."); //$NON-NLS-1$
-//							item.setMenuItemGroupId(1001);
-//							item.setSortOrder(10001);
-//						}
-//						else {
-//							item.setMenuItemGroupName(ticketItem.getGroupName());
-//							item.setMenuItemGroupId(ticketItem.getMenuItem().getParent().getId());
-//							item.setSortOrder(ticketItem.getMenuItem().getParent().getSortOrder());
-//						}
-//						//item.setFractionalQuantity(itemModifier.getItemCount().doubleValue());
-//						item.setQuantity(itemModifier.getItemCount());
-//						item.setStatus(KitchenTicketStatus.WAITING.name());
-//						kitchenTicket.addToticketItems(item);
-//
-//						itemModifier.setPrintedToKitchen(true);
-//					}
-//				}
-//			}
-//		}
-//
-//		List<TicketItemModifier> addOns = ticketItem.getAddOns();
-//		if (addOns != null) {
-//			for (TicketItemModifier ticketItemModifier : addOns) {
-//				if (!ticketItemModifier.isShouldPrintToKitchen()) {
-//					continue;
-//				}
-//
-//				/*if (ticketItemModifier.isPrintedToKitchen() || !ticketItemModifier.isShouldPrintToKitchen()) {
-//					continue;
-//				}*/
-//				KitchenTicketItem item = new KitchenTicketItem();
-//				item.setMenuItemCode(""); //$NON-NLS-1$
-//				item.setTicketItemModifierId(ticketItem.getId());
-//				item.setMenuItemName(ticketItemModifier.getNameDisplay());
-//				if (ticketItem.getMenuItem() == null) {
-//					item.setMenuItemGroupName("MISC."); //$NON-NLS-1$
-//					item.setMenuItemGroupId(1001);
-//					item.setSortOrder(10001);
-//				}
-//				else {
-//					item.setMenuItemGroupName(ticketItem.getGroupName());
-//					item.setMenuItemGroupId(ticketItem.getMenuItem().getParent().getId());
-//					item.setSortOrder(ticketItem.getMenuItem().getParent().getSortOrder());
-//				}
-//				//item.setFractionalQuantity(ticketItemModifier.getItemCount().doubleValue());
-//				item.setQuantity(ticketItemModifier.getItemCount());
-//				item.setStatus(KitchenTicketStatus.WAITING.name());
-//				kitchenTicket.addToticketItems(item);
-//
-//				ticketItemModifier.setPrintedToKitchen(true);
-//			}
-//		}
+		List<TicketItemModifier> ticketItemModifiers = ticketItem.getTicketItemModifiers();
+		if (ticketItemModifiers != null) {
+			for (TicketItemModifier itemModifier : ticketItemModifiers) {
+				/*	if (!itemModifier.isShouldPrintToKitchen()) {
+						continue;
+					}*/
+
+				if (itemModifier.isPrintedToKitchen() || !itemModifier.isShouldPrintToKitchen()) {
+					continue;
+				}
+
+				//System.out.println(itemModifier.getName());
+
+				KitchenTicketItem item = new KitchenTicketItem();
+				item.setMenuItemCode(""); //$NON-NLS-1$
+				item.setTicketItemModifierId(itemModifier.getId());
+				item.setMenuItemName(itemModifier.getNameDisplay());
+				if (ticketItem.getMenuItem() == null) {
+					item.setMenuItemGroupName("MISC."); //$NON-NLS-1$
+					item.setMenuItemGroupId(1001);
+					item.setSortOrder(10001);
+				}
+				else {
+					item.setMenuItemGroupName(ticketItem.getGroupName());
+					item.setMenuItemGroupId(ticketItem.getMenuItem().getParent().getId());
+					item.setSortOrder(ticketItem.getMenuItem().getParent().getSortOrder());
+				}
+				//item.setFractionalQuantity(itemModifier.getItemCount().doubleValue());
+				item.setQuantity(itemModifier.getItemCount());
+				item.setStatus(KitchenTicketStatus.WAITING.name());
+				kitchenTicket.addToticketItems(item);
+
+				itemModifier.setPrintedToKitchen(true);
+			}
+		}
+
+		List<TicketItemModifier> addOns = ticketItem.getAddOns();
+		if (addOns != null) {
+			for (TicketItemModifier ticketItemModifier : addOns) {
+				/*if (!ticketItemModifier.isShouldPrintToKitchen()) {
+					continue;
+				}*/
+
+				if (ticketItemModifier.isPrintedToKitchen() || !ticketItemModifier.isShouldPrintToKitchen()) {
+					continue;
+				}
+				KitchenTicketItem item = new KitchenTicketItem();
+				item.setMenuItemCode(""); //$NON-NLS-1$
+				item.setTicketItemModifierId(ticketItem.getId());
+				item.setMenuItemName(ticketItemModifier.getNameDisplay());
+				if (ticketItem.getMenuItem() == null) {
+					item.setMenuItemGroupName("MISC."); //$NON-NLS-1$
+					item.setMenuItemGroupId(1001);
+					item.setSortOrder(10001);
+				}
+				else {
+					item.setMenuItemGroupName(ticketItem.getGroupName());
+					item.setMenuItemGroupId(ticketItem.getMenuItem().getParent().getId());
+					item.setSortOrder(ticketItem.getMenuItem().getParent().getSortOrder());
+				}
+				//item.setFractionalQuantity(ticketItemModifier.getItemCount().doubleValue());
+				item.setQuantity(ticketItemModifier.getItemCount());
+				item.setStatus(KitchenTicketStatus.WAITING.name());
+				kitchenTicket.addToticketItems(item);
+
+				ticketItemModifier.setPrintedToKitchen(true);
+			}
+		}
 	}
 
 	public static enum KitchenTicketStatus {
