@@ -482,7 +482,7 @@ public class TicketForSplitView extends com.floreantpos.swing.TransparentPanel i
 				if (ticketItemModifiers != null) {
 					for (TicketItemModifier ticketItemModifier : ticketItemModifiers) {
 						TicketItemModifier newModifier = new TicketItemModifier();
-						newModifier.setMenuItemId(ticketItemModifier.getMenuItemId());
+						newModifier.setModifierId(ticketItemModifier.getModifierId());
 						newModifier.setMenuItemModifierGroupId(ticketItemModifier.getMenuItemModifierGroupId());
 						newModifier.setItemCount(ticketItemModifier.getItemCount());
 						newModifier.setName(ticketItemModifier.getName());
@@ -501,7 +501,7 @@ public class TicketForSplitView extends com.floreantpos.swing.TransparentPanel i
 		if (addOnsList != null) {
 			for (TicketItemModifier addOns : ticketItem.getAddOns()) {
 				TicketItemModifier newAddOns = new TicketItemModifier();
-				newAddOns.setMenuItemId(addOns.getMenuItemId());
+				newAddOns.setModifierId(addOns.getModifierId());
 				newAddOns.setMenuItemModifierGroupId(addOns.getMenuItemModifierGroupId());
 				newAddOns.setItemCount(addOns.getItemCount());
 				newAddOns.setName(addOns.getName());

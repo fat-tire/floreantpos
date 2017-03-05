@@ -45,16 +45,17 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
-import javax.swing.DefaultListCellRenderer;
 import javax.swing.JLabel;
-import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JTable;
 import javax.swing.JViewport;
+import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.TableColumnModel;
@@ -65,6 +66,7 @@ import org.jdesktop.swingx.JXCollapsiblePane;
 
 import com.floreantpos.IconFactory;
 import com.floreantpos.POSConstants;
+import com.floreantpos.model.ITicketItem;
 import com.floreantpos.model.MenuItem;
 import com.floreantpos.model.MenuItemModifierGroup;
 import com.floreantpos.model.MenuItemSize;
@@ -76,7 +78,8 @@ import com.floreantpos.model.PizzaCrust;
 import com.floreantpos.model.PizzaPrice;
 import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.TicketItemModifier;
-import com.floreantpos.swing.ListBasedListModel;
+import com.floreantpos.model.TicketItem.PizzaSectionMode;
+import com.floreantpos.swing.ListTableModel;
 import com.floreantpos.swing.POSToggleButton;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.swing.PosScrollPane;
@@ -89,6 +92,7 @@ import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.views.order.OrderView;
 import com.floreantpos.ui.views.order.modifier.ModifierSelectionListener;
 import com.floreantpos.util.CurrencyUtil;
+import com.floreantpos.util.NumberUtil;
 import com.floreantpos.util.POSUtil;
 
 /**
@@ -126,6 +130,9 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 	private boolean editMode;
 	private PosButton btnCustomQuantity;
 	private int pizzaQuantity;
+	private POSToggleButton btnFull;
+	private POSToggleButton btnHalf;
+	private AbstractButton btnQuarter;
 
 	public PizzaModifierSelectionDialog(TicketItem cloneTicketItem, MenuItem menuItem, boolean editMode) {
 		this.menuItem = menuItem;
@@ -228,7 +235,7 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 		sizeAndCrustPanel = new SizeAndCrustSelectionPane();
 		centerPanel.add(sizeAndCrustPanel, BorderLayout.NORTH);
 
-		modifierView = new PizzaModifierView(ticketItem, menuItem);
+		modifierView = new PizzaModifierView(ticketItem, menuItem, this);
 		modifierView.addModifierSelectionListener(this);
 		PosScrollPane modifierSc = new PosScrollPane(modifierView);
 		modifierSc.setBorder(null);
@@ -261,8 +268,23 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 			for (Iterator iterator = ticketItemModifiers.iterator(); iterator.hasNext();) {
 				TicketItemModifier ticketItemModifier = (TicketItemModifier) iterator.next();
 				if (!ticketItemModifier.isInfoOnly() && section.getSectionName().equals(ticketItemModifier.getSectionName())) {
-					section.model.addElement(ticketItemModifier);
+					section.sectionModifierTableModel.addItem(ticketItemModifier);
 				}
+			}
+		}
+
+		if (ticketItem.getPizzaSectionMode() != null) {
+			if (ticketItem.getPizzaSectionMode() == PizzaSectionMode.Full) {
+				btnFull.setSelected(true);
+				doFullSectionMode();
+			}
+			else if (ticketItem.getPizzaSectionMode() == PizzaSectionMode.Half) {
+				btnHalf.setSelected(true);
+				doHalfSectionMode();
+			}
+			else if (ticketItem.getPizzaSectionMode() == PizzaSectionMode.Quarter) {
+				btnQuarter.setSelected(true);
+				doQuarterSectionMode();
 			}
 		}
 	}
@@ -271,13 +293,13 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 		JPanel westPanel = new JPanel(new BorderLayout(5, 5));
 		sectionList = new ArrayList<>();
 
-		sectionWhole = new Section("WHOLE", "WHOLE", 0, true);
-		sectionQuarter1 = new Section("Quarter 1", "Quarter 1", 1, false);
-		sectionQuarter2 = new Section("Quarter 2", "Quarter 2", 2, false);
-		sectionQuarter3 = new Section("Quarter 3", "Quarter 3", 3, false);
-		sectionQuarter4 = new Section("Quarter 4", "Quarter 4", 4, false);
-		sectionHalf1 = new Section("Half 1", "Half 1", 5, false);
-		sectionHalf2 = new Section("Half 2", "Half 2", 6, false);
+		sectionWhole = new Section("WHOLE", "WHOLE", 0, true, 1);
+		sectionQuarter1 = new Section("Quarter 1", "Quarter 1", 1, false, 0.25);
+		sectionQuarter2 = new Section("Quarter 2", "Quarter 2", 2, false, 0.25);
+		sectionQuarter3 = new Section("Quarter 3", "Quarter 3", 3, false, 0.25);
+		sectionQuarter4 = new Section("Quarter 4", "Quarter 4", 4, false, 0.25);
+		sectionHalf1 = new Section("Half 1", "Half 1", 5, false, 0.5);
+		sectionHalf2 = new Section("Half 2", "Half 2", 6, false, 0.5);
 
 		sectionList.add(sectionWhole);
 
@@ -320,37 +342,33 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 
 		ButtonGroup btnGroup = new ButtonGroup();
 
-		POSToggleButton btnFull = new POSToggleButton("FULL");
+		btnFull = new POSToggleButton("FULL");
 		btnFull.setSelected(true);
 
 		btnFull.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				wholeSectionView.removeAll();
-				fullSectionLayout.add(sectionWhole);
-				sectionLayout.show(sectionView, "full");
+				doFullSectionMode();
 			}
 		});
-		POSToggleButton btnHalf = new POSToggleButton("HALF");
+		btnHalf = new POSToggleButton("HALF");
 		btnHalf.setSelected(true);
 
 		btnHalf.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				wholeSectionView.add(sectionWhole, "grow");
-				sectionLayout.show(sectionView, "half");
+				doHalfSectionMode();
 			}
 		});
-		POSToggleButton btnQuarter = new POSToggleButton("QUARTER");
+		btnQuarter = new POSToggleButton("QUARTER");
 
 		btnQuarter.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				wholeSectionView.add(sectionWhole, "grow");
-				sectionLayout.show(sectionView, "quarter");
+				doQuarterSectionMode();
 			}
 		});
 
@@ -360,6 +378,17 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 
 		PosButton btnClear = new PosButton("CLEAR");
 		btnClear.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				Section section = getSelectedSection();
+				if (section == null) {
+					return;
+				}
+				section.clearSelectedItem();
+			}
+		});
+
+		PosButton btnClearAll = new PosButton("CLEAR ALL");
+		btnClearAll.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				Section section = getSelectedSection();
 				if (section == null) {
@@ -393,6 +422,7 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 		buttonPanel.add(btnQuarter, "w " + width + "!");
 		buttonPanel.add(separator, "growy");
 		buttonPanel.add(btnClear, "grow");
+		buttonPanel.add(btnClearAll, "grow");
 		buttonPanel.add(btnCancel, "grow");
 		buttonPanel.add(btnSave, "grow");
 
@@ -404,12 +434,6 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 			POSMessageDialog.showError("Please select size and crust.");
 			return false;
 		}
-		//List<TicketItemModifier> ticketItemModifiers = ticketItem.getTicketItemModifiers();
-		//List<TicketItemModifier> allTicketItemModifiers = new ArrayList<TicketItemModifier>();
-		//
-		//		boolean isRequiredModifierAdded = false;
-		//		List<Boolean> requiredModifierAddedGroupList = new ArrayList<Boolean>();
-		//
 		List<MenuItemModifierGroup> menuItemModiferGroups = ticketItem.getMenuItem().getMenuItemModiferGroups();
 		for (Iterator iterator = menuItemModiferGroups.iterator(); iterator.hasNext();) {
 			MenuItemModifierGroup menuItemModifierGroup = (MenuItemModifierGroup) iterator.next();
@@ -420,52 +444,8 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 			}
 		}
 
-		//			List<Boolean> isContainPizzaModifier = new ArrayList<Boolean>();
-		//			Set<MenuModifier> modifiers = menuItemModifierGroup.getModifierGroup().getModifiers();
-		//			Iterator<MenuModifier> iterator2 = modifiers.iterator();
-		//			while (iterator2.hasNext()) {
-		//				MenuModifier modifier = (MenuModifier) iterator2.next();
-		//				if (modifier.isPizzaModifier()) {
-		//					isContainPizzaModifier.add(true);
-		//				}
-		//			}
-		//
-		//			boolean contains = isContainPizzaModifier.contains(true);
-		//
-		//			if (contains) {
-		//				if (cloneTicketItem.requiredModifiersAdded(menuItemModifierGroup)) {
-		//					requiredModifierAddedGroupList.add(true);
-		//					continue;
-		//				}
-		//				requiredModifierAddedGroupList.add(false);
-		//			}
-		//		}
-		//
-		//		if (requiredModifierAddedGroupList.contains(false)) {
-		//			isRequiredModifierAdded = false;
-		//		}
-		//		else {
-		//			isRequiredModifierAdded = true;
-		//		}
-		//
-		//		if (!isRequiredModifierAdded) {
-		//			POSMessageDialog.showMessage(POSUtil.getFocusedWindow(), "Required modifiers for group not added!");
-		//			return false;
-		//		}
-		//ticketItem.setSizeModifier(crustModifier);
-		//
-		//setTicketItemModifiers(allTicketItemModifiers, true);
-		//setTicketItemModifiers(allTicketItemModifiers, false);
-		//
-		//if (ticketItem.getTicketItemModifiers() != null) {
-		//	ticketItem.getTicketItemModifiers().clear();
-		//}
-		//
-		//for (Iterator iterator = allTicketItemModifiers.iterator(); iterator.hasNext();) {
-		//	TicketItemModifier ticketItemModifier = (TicketItemModifier) iterator.next();
-		//	ticketItem.addToticketItemModifiers(ticketItemModifier);
-		//}
 		updatePizzaQuantityAndPrice();
+
 		if (!editMode) {
 			OrderView.getInstance().getTicketView().addTicketItem(ticketItem);
 
@@ -509,24 +489,24 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 	}
 
 	private void reset() {
-		for (Iterator iterator = sectionList.iterator(); iterator.hasNext();) {
-			Section section = (Section) iterator.next();
-			for (Iterator iterator2 = section.model.iterator(); iterator2.hasNext();) {
-				TicketItemModifier ticketItemModifier = (TicketItemModifier) iterator2.next();
-				if (ticketItemModifier != null) {
-					iterator2.remove();
-				}
-			}
-			section.repaint();
-		}
-		modifierView.getModifierGroupView().selectFirst();
-		ticketItem.setSizeModifier(getSizeAndCrustModifer());
-		ticketItem.getSizeModifier().calculatePrice();
-		if (ticketItem.getTicketItemModifiers() != null) {
-			ticketItem.getTicketItemModifiers().clear();
-		}
-		ticketItemViewerModel.setTicketItem(ticketItem);
-		ticketItemViewerModel.updateView();
+		//		for (Iterator iterator = sectionList.iterator(); iterator.hasNext();) {
+		//			Section section = (Section) iterator.next();
+		//			for (Iterator iterator2 = section.model.iterator(); iterator2.hasNext();) {
+		//				TicketItemModifier ticketItemModifier = (TicketItemModifier) iterator2.next();
+		//				if (ticketItemModifier != null) {
+		//					iterator2.remove();
+		//				}
+		//			}
+		//			section.repaint();
+		//		}
+		//		modifierView.getModifierGroupView().selectFirst();
+		//		ticketItem.setSizeModifier(getSizeAndCrustModifer());
+		//		ticketItem.getSizeModifier().calculatePrice();
+		//		if (ticketItem.getTicketItemModifiers() != null) {
+		//			ticketItem.getTicketItemModifiers().clear();
+		//		}
+		//		ticketItemViewerModel.setTicketItem(ticketItem);
+		//		ticketItemViewerModel.updateView();
 	}
 
 	/*private void setTicketItemModifiers(List<TicketItemModifier> allTicketItemModifiers, boolean isForPrinted) {
@@ -578,12 +558,7 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 		}
 	}*/
 
-	@Override
-	public void modifierSelected(MenuModifier modifier, Multiplier multiplier) {
-
-		MenuItemModifierGroup menuItemModifierGroup = modifier.getMenuItemModifierGroup();
-		int countModifier = ticketItem.countModifierFromGroup(menuItemModifierGroup);
-
+	private boolean isMaxModifierAddedFromGroup(MenuItemModifierGroup menuItemModifierGroup, int currentModifierCount) {
 		int minQuantity = menuItemModifierGroup.getMinQuantity();
 		int maxQuantity = menuItemModifierGroup.getMaxQuantity();
 
@@ -591,12 +566,24 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 			maxQuantity = minQuantity;
 		}
 
-		if (countModifier >= maxQuantity) {
+		if (currentModifierCount >= maxQuantity) {
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public void modifierSelected(MenuModifier modifier, Multiplier multiplier) {
+
+		MenuItemModifierGroup menuItemModifierGroup = modifier.getMenuItemModifierGroup();
+		int countModifier = ticketItem.countModifierFromGroup(menuItemModifierGroup);
+		if (isMaxModifierAddedFromGroup(menuItemModifierGroup, countModifier)) {
 			POSMessageDialog.showError("You have added maximum number of allowed modifiers from group " + modifier.getModifierGroup().getDisplayName());
 			modifierGroupSelectionDone(menuItemModifierGroup.getModifierGroup());
 			return;
 		}
-		Section section = getSelectedSection();
+
+		Section selectedSection = getSelectedSection();
 		boolean itemSizeSame = false;
 		itemSize = sizeAndCrustPanel.getMenuItemSize();
 		if (itemSize != null) {
@@ -611,14 +598,84 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 			}
 		}
 
-		TicketItemModifier ticketItemModifier = ticketItem.findTicketItemModifierFor(modifier, section.getSectionName(), multiplier);
+		TicketItemModifier findTicketItemModifierForWholeSection = ticketItem.findTicketItemModifierFor(modifier, getMainSection().getSectionName(), null);
+		TicketItemModifier ticketItemModifier = ticketItem.findTicketItemModifierFor(modifier, selectedSection.getSectionName(), null);
+
+		if (!selectedSection.mainSection) {
+			int countSection = 0;
+			for (Section sec : sectionList) {
+
+				if (sec.getSectionName().startsWith("Half")) {
+					if (sec == selectedSection) {
+						continue;
+					}
+					TicketItemModifier ticItemModifier = ticketItem.findTicketItemModifierFor(modifier, sec.getSectionName(), null);
+					if (ticItemModifier != null && ticketItemModifier == null) {
+						if (findTicketItemModifierForWholeSection != null) {
+							POSMessageDialog.showMessage(POSUtil.getFocusedWindow(), "Item already added in WHOLE section!");
+							return;
+						}
+						int questionDialog = POSMessageDialog.showYesNoQuestionDialog(POSUtil.getFocusedWindow(),
+								"Would you like to add this item in WHOLE section?", "Add Modifier");
+						if (questionDialog != JOptionPane.YES_OPTION) {
+							break;
+						}
+						sec.clearItem(ticItemModifier, sec.sectionModifierTableModel);
+						selectedSection = getMainSection();
+					}
+				}
+				else if (sec.getSectionName().startsWith("Quarter")) {
+					if (sec == selectedSection) {
+						continue;
+					}
+					TicketItemModifier ticItemModifier = ticketItem.findTicketItemModifierFor(modifier, sec.getSectionName(), null);
+					if (ticItemModifier != null && ticketItemModifier == null) {
+
+						if (countSection == 2) {
+							if (findTicketItemModifierForWholeSection != null) {
+								POSMessageDialog.showMessage(POSUtil.getFocusedWindow(), "Item already added in WHOLE section!");
+								return;
+							}
+							int questionDialog = POSMessageDialog.showYesNoQuestionDialog(POSUtil.getFocusedWindow(),
+									"Would you like to add this item in WHOLE section?", "Add Modifier");
+							if (questionDialog == 0) {
+								for (Section sectionClear : sectionList) {
+									if (sectionClear.getSectionName().startsWith("Quarter")) {
+										sectionClear.clearItem(ticItemModifier, sectionClear.sectionModifierTableModel);
+									}
+									sectionClear.repaint();
+								}
+
+								selectedSection = getMainSection();
+							}
+						}
+						++countSection;
+					}
+
+				}
+
+			}
+		}
+		//////----------------------------------------
+		if (findTicketItemModifierForWholeSection != null && !selectedSection.mainSection && ticketItemModifier == null) {
+			int questionDialog = POSMessageDialog.showYesNoQuestionDialog(POSUtil.getFocusedWindow(),
+					"Item already added in pizza, Would you like to add again?", "Add Modifier");
+			if (questionDialog == 1) {
+				return;
+			}
+		}
+
 		if (ticketItemModifier == null || ticketItemModifier.isPrintedToKitchen() || !itemSizeSame) {
 			OrderType orderType = ticketItem.getTicket().getOrderType();
 			ticketItemModifier = convertToTicketItemModifier(ticketItem, modifier, orderType, multiplier);
 
-			ticketItemModifier.setSectionName(section.getSectionName());
-			section.addItem(ticketItemModifier);
-			TicketItemModifier separator = getSeparatorIfNeeded(section.getSectionName());
+			ticketItemModifier.setSectionName(selectedSection.getSectionName());
+
+			if (ticketItemModifier.isShouldSectionWisePrice()) {
+				ticketItemModifier.setUnitPrice(selectedSection.calculatePrice(ticketItemModifier.getUnitPrice()));
+			}
+			selectedSection.addItem(ticketItemModifier);
+			TicketItemModifier separator = getSeparatorIfNeeded(selectedSection.getSectionName());
 			if (separator != null) {
 				ticketItem.addToticketItemModifiers(separator);
 			}
@@ -630,11 +687,13 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 			//ticketItemModifierView.getTicketItemViewerModel().addItem(ticketItemModifier);
 		}
 		else {
-			ticketItemModifier.setItemCount(ticketItemModifier.getItemCount() + 1);
-			section.repaint();
+			//ticketItemModifier.setItemCount(ticketItemModifier.getItemCount() + 1);
+			POSMessageDialog.showMessage(POSUtil.getFocusedWindow(), "Item already added!");
+			return;
+			//section.repaint();
 			//ticketItemModifierView.getTicketItemViewerModel().updateModifier(ticketItemModifier);
 		}
-		if (countModifier + 1 >= minQuantity) {
+		if (countModifier + 1 >= menuItemModifierGroup.getMinQuantity()) {
 			modifierGroupSelectionDone(menuItemModifierGroup.getModifierGroup());
 		}
 		//List rows = ticketItemViewerModel.getRows();
@@ -658,6 +717,7 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 		ticketItemModifier.setName("== " + sectionName + " ==");
 		ticketItemModifier.setModifierType(TicketItemModifier.SEPERATOR);
 		ticketItemModifier.setInfoOnly(true);
+		ticketItemModifier.setSectionName(sectionName);
 		ticketItemModifier.setTicketItem(ticketItem);
 		return ticketItemModifier;
 	}
@@ -690,7 +750,7 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 
 	private TicketItemModifier convertToTicketItemModifier(TicketItem ticketItem, MenuModifier menuModifier, OrderType type, Multiplier multiplier) {
 		TicketItemModifier ticketItemModifier = new TicketItemModifier();
-		ticketItemModifier.setMenuItemId(menuModifier.getId());
+		ticketItemModifier.setModifierId(menuModifier.getId());
 		MenuItemModifierGroup menuItemModifierGroup = menuModifier.getMenuItemModifierGroup();
 		if (menuItemModifierGroup != null) {
 			ticketItemModifier.setMenuItemModifierGroupId(menuItemModifierGroup.getId());
@@ -707,11 +767,12 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 		ticketItemModifier.setTaxRate(menuModifier.getTaxByOrderType(type));
 		ticketItemModifier.setModifierType(TicketItemModifier.NORMAL_MODIFIER);
 		ticketItemModifier.setShouldPrintToKitchen(menuModifier.isShouldPrintToKitchen());
+		ticketItemModifier.setShouldSectionWisePrice(menuModifier.isShouldSectionWisePrice());
 
 		return ticketItemModifier;
 	}
 
-	private MenuItemSize getSelectedSize() {
+	public MenuItemSize getSelectedSize() {
 		List<POSToggleButton> sizeButtonList = sizeAndCrustPanel.sizeButtonList;
 		for (POSToggleButton posToggleButton : sizeButtonList) {
 			if (posToggleButton.isSelected()) {
@@ -724,20 +785,24 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 	}
 
 	private class Section extends JPanel implements MouseListener {
-		JList<TicketItemModifier> list;
-		ListBasedListModel<TicketItemModifier> model;
+		//JList<TicketItemModifier> list;
+		//ListBasedListModel<TicketItemModifier> model;
 		boolean selected;
 		private boolean mainSection;
 		private JLabel lblTitle;
 		private final String sectionName;
 		private final int sortOrder;
 		private final String displayTitle;
+		private final double price;
+		private JTable sectionTable;
+		private SectionModifierTableModel sectionModifierTableModel;
 
-		public Section(String sectionName, String displayTitle, int sortOrder, boolean main) {
+		public Section(String sectionName, String displayTitle, int sortOrder, boolean main, double price) {
 			this.sectionName = sectionName;
 			this.displayTitle = displayTitle;
 			this.sortOrder = sortOrder;
 			this.mainSection = main;
+			this.price = price;
 
 			setLayout(new BorderLayout());
 			lblTitle = new JLabel(sectionName);
@@ -753,20 +818,44 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 
 			setBorder(BorderFactory.createLineBorder(Color.GRAY));
 
-			list = new JList();
-			list.setCellRenderer(new TransparentListCellRenderer());
-			list.setOpaque(false);
-			list.setFixedCellHeight(PosUIManager.getSize(35));
-			model = new ListBasedListModel<TicketItemModifier>();
-			list.setModel(model);
-			JScrollPane scrollPane = new JScrollPane(list);
+			//			list = new JList();
+			//			list.setCellRenderer(new TransparentListCellRenderer());
+			//			list.setOpaque(false);
+			//			list.setFixedCellHeight(PosUIManager.getSize(35));
+			//			//list.setFixedCellWidth(300);
+			//			model = new ListBasedListModel<TicketItemModifier>();
+			//			list.setModel(model);
+
+			sectionTable = new JTable();
+			sectionTable.setTableHeader(null);
+			sectionTable.setRowHeight(30);
+			sectionModifierTableModel = new SectionModifierTableModel();
+			sectionTable.setDefaultRenderer(Object.class, new ModifierTableCellRenderer());
+			sectionTable.setModel(sectionModifierTableModel);
+			JScrollPane scrollPane = new JScrollPane(sectionTable);
+			scrollPane.setBorder(null);
 			JViewport viewPort = scrollPane.getViewport();
 			viewPort.setOpaque(false);
 			scrollPane.setOpaque(false);
 			scrollPane.setBorder(null);
 			add(scrollPane, BorderLayout.CENTER);
 			addMouseListener(this);
-			list.addMouseListener(this);
+			sectionTable.addMouseListener(this);
+			resizeColumnWidth(sectionTable);
+		}
+
+		public void resizeColumnWidth(JTable table) {
+			final TableColumnModel columnModel = table.getColumnModel();
+			for (int column = 0; column < table.getColumnCount(); column++) {
+				columnModel.getColumn(column).setPreferredWidth((Integer) getColumnWidth().get(column));
+			}
+		}
+
+		private List getColumnWidth() {
+			List<Integer> columnWidth = new ArrayList();
+			columnWidth.add(70);
+			columnWidth.add(30);
+			return columnWidth;
 		}
 
 		@Override
@@ -779,21 +868,96 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 		}
 
 		public boolean isEmpty() {
-			return model.getSize() <= 0;
+			return sectionModifierTableModel.getRows().size() <= 0;
 		}
 
 		public void clearItems() {
 			boolean isPrintedModifierExist = false;
-			for (Iterator iterator = model.iterator(); iterator.hasNext();) {
+			for (Iterator iterator = ticketItem.getTicketItemModifiers().iterator(); iterator.hasNext();) {
 				TicketItemModifier ticketItemModifier = (TicketItemModifier) iterator.next();
 				if (!ticketItemModifier.isPrintedToKitchen()) {
-					iterator.remove();
-					ticketItem.deleteTicketItemModifier(ticketItemModifier);
+					if (ticketItemModifier.getSectionName().equals(getSectionName())) {
+						iterator.remove();
+						ticketItem.deleteTicketItemModifier(ticketItemModifier);
+						sectionModifierTableModel.deleteGivenItem(ticketItemModifier);
+					}
 				}
 				else {
 					isPrintedModifierExist = true;
 				}
 			}
+
+			ticketItemViewerModel.updateView();
+			sectionTable.repaint();
+			repaint();
+			if (isPrintedModifierExist) {
+				POSMessageDialog.showMessage(POSUtil.getFocusedWindow(), "Modifiers that sent to kitchen can not be deleted!");
+			}
+			previousMenuItemSize = null;
+		}
+
+		public void clearSelectedItem() {
+			boolean isPrintedModifierExist = false;
+			if (sectionModifierTableModel.getRows() == null) {
+				return;
+			}
+			if (sectionModifierTableModel.getRows().size() == 0) {
+				return;
+			}
+			int index = sectionTable.getSelectedRow();
+			if (index < 0) {
+				return;
+			}
+			TicketItemModifier selectedModifier = sectionModifierTableModel.getRowData(index);
+			if (selectedModifier == null) {
+				return;
+			}
+			if (!selectedModifier.isPrintedToKitchen()) {
+				ticketItem.deleteTicketItemModifier(selectedModifier);
+				sectionModifierTableModel.deleteGivenItem(selectedModifier);
+				if (sectionModifierTableModel.getRows().size() == 0) {
+					clearItems();
+				}
+			}
+			else {
+				isPrintedModifierExist = true;
+			}
+
+			ticketItemViewerModel.updateView();
+			repaint();
+			if (isPrintedModifierExist) {
+				POSMessageDialog.showMessage(POSUtil.getFocusedWindow(), "Modifiers that sent to kitchen can not be deleted!");
+			}
+			previousMenuItemSize = null;
+		}
+
+		public void clearItem(TicketItemModifier ticketItemModifier, SectionModifierTableModel sectionModifierTableModel) {
+			boolean isPrintedModifierExist = false;
+			if (sectionModifierTableModel.getRows() == null) {
+				return;
+			}
+			if (sectionModifierTableModel.getRows().size() == 0) {
+				return;
+			}
+			//			int index = sectionTable.getSelectedRow();
+			//			if (index < 0) {
+			//				return;
+			//			}
+			//			TicketItemModifier selectedModifier = sectionModifierTableModel.getRowData(index);
+			//			if (selectedModifier == null) {
+			//				return;
+			//			}
+			if (!ticketItemModifier.isPrintedToKitchen()) {
+				ticketItem.deleteTicketItemModifierByName(ticketItemModifier);
+				sectionModifierTableModel.deleteGivenItemByName(ticketItemModifier);
+				if (sectionModifierTableModel.getRows().size() == 0) {
+					clearItems();
+				}
+			}
+			else {
+				isPrintedModifierExist = true;
+			}
+
 			ticketItemViewerModel.updateView();
 			repaint();
 			if (isPrintedModifierExist) {
@@ -812,7 +976,8 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 		}
 
 		public void addItem(TicketItemModifier newModifier) {
-			model.addElement(newModifier);
+			//model.addElement(newModifier);
+			sectionModifierTableModel.addItem(newModifier);
 			repaint();
 		}
 
@@ -843,6 +1008,14 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 
 		public String getSectionName() {
 			return sectionName;
+		}
+
+		public double getPrice() {
+			return price;
+		}
+
+		public double calculatePrice(double modifierPrice) {
+			return modifierPrice * getPrice();
 		}
 	}
 
@@ -1096,7 +1269,7 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 						ticketItemViewerModel.updateView();
 						//ticketItemModifierView.repaint();
 					}
-
+					modifierView.updateView();
 				}
 			});
 			sizeBtnGroup.add(sizeButton);
@@ -1186,35 +1359,104 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 	public void modifierRemoved(TicketItemModifier modifier) {
 	}
 
-	public class TransparentListCellRenderer extends DefaultListCellRenderer {
-		public TransparentListCellRenderer() {
-			//setOpaque(false);
+	public class ModifierTableCellRenderer extends PosTableRenderer {
+
+		private boolean inTicketScreen = false;
+
+		//MultiLineTableCellRenderer multiLineTableCellRenderer = new MultiLineTableCellRenderer();
+
+		public ModifierTableCellRenderer() {
+			super();
 		}
 
 		@Override
-		public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+			Component rendererComponent = null;
 
-			JLabel rendererComponent = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-			if (value instanceof TicketItemModifier) {
-				TicketItemModifier ticketItemModifier = (TicketItemModifier) value;
-				if (ticketItemModifier.isPrintedToKitchen()) {
-					rendererComponent.setFont(rendererComponent.getFont().deriveFont(Font.BOLD));
+			SectionModifierTableModel model = (SectionModifierTableModel) table.getModel();
+			Object object = model.getRowData(row);
+			if (column == 1) {
+				rendererComponent = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+			}
+			else {
+				rendererComponent = super.getTableCellRendererComponent(table, value, isSelected, false, row, column);
+				if (column == 0) {
+					setHorizontalAlignment(SwingConstants.CENTER);
+				}
+				else
+					setHorizontalAlignment(SwingConstants.RIGHT);
+			}
+
+			//			if (isSelected) {
+			//				return rendererComponent;
+			//			}
+
+			rendererComponent.setBackground(table.getBackground());
+			rendererComponent.setForeground(Color.BLACK);
+
+			if (object instanceof TicketItemModifier) {
+				ITicketItem ticketItem = (ITicketItem) object;
+				if (ticketItem.isPrintedToKitchen()) {
 					rendererComponent.setBackground(Color.YELLOW);
 					rendererComponent.setForeground(Color.BLACK);
 				}
 			}
+
 			return rendererComponent;
 		}
 
-		@Override
-		protected void paintComponent(Graphics g) {
-			Graphics2D graphics2d = (Graphics2D) g;
-			AlphaComposite composite = (AlphaComposite) graphics2d.getComposite();
-			AlphaComposite composite2 = composite.derive(0.75f);
-			graphics2d.setComposite(composite2);
-			super.paintComponent(g);
-		}
 	}
+
+	//	public class TransparentListCellRenderer extends DefaultListCellRenderer {
+	//		public TransparentListCellRenderer() {
+	//			//setOpaque(false);
+	//		}
+	//
+	//		@Override
+	//		public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+	//
+	//			JLabel rendererComponent = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+	//			if (value instanceof TicketItemModifier) {
+	//				TicketItemModifier ticketItemModifier = (TicketItemModifier) value;
+	//				if (ticketItemModifier.isPrintedToKitchen()) {
+	//					rendererComponent.setFont(rendererComponent.getFont().deriveFont(Font.BOLD));
+	//					rendererComponent.setBackground(Color.YELLOW);
+	//					rendererComponent.setForeground(Color.BLACK);
+	//				}
+	//				//								String text = "<html><body style= \"width:100%;\"><table width=\"100%\" border=\"0\" style=\" table-layout : fixed;\"><tr><td align=\"left\" style= \"width:100%;\">"
+	//				//										+ ticketItemModifier.getName()
+	//				//										+ "</td><td align=\"right\">"
+	//				//										+ ticketItemModifier.getItemCount()
+	//				//										* ticketItemModifier.getUnitPrice()
+	//				//										+ "</td></tr></table></body></html>";
+	//
+	//				//				String text = "<html><body>" + ticketItemModifier.getName() + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
+	//				//						+ +ticketItemModifier.getUnitPrice() + " </body></html>";
+	//				//				rendererComponent.setText(text);
+	//				/*	<p style="text-align:left;">
+	//					ticketItemModifier.getName()
+	//					<span style="float:right;">ticketItemModifier.getUnitPrice()</span>
+	//					</p>*/
+	//
+	//				String text = "<html><div style=\"width:100%; border:1;\"><p style=\" text-align:center; \">" + ticketItemModifier.getName() + "<span> "
+	//						+ ticketItemModifier.getUnitPrice() + "</span></p></div></html>";
+	//
+	//				//				String text =ticketItemModifier.getName()+" "+ticketItemModifier.getUnitPrice();
+	//				rendererComponent.setText(text);
+	//			}
+	//
+	//			return rendererComponent;
+	//		}
+	//
+	//		@Override
+	//		protected void paintComponent(Graphics g) {
+	//			Graphics2D graphics2d = (Graphics2D) g;
+	//			AlphaComposite composite = (AlphaComposite) graphics2d.getComposite();
+	//			AlphaComposite composite2 = composite.derive(0.75f);
+	//			graphics2d.setComposite(composite2);
+	//			super.paintComponent(g);
+	//		}
+	//	}
 
 	private void showModifierSelectionMessage(MenuItemModifierGroup menuItemModifierGroup) {
 		String displayName = menuItemModifierGroup.getModifierGroup().getDisplayName();
@@ -1245,5 +1487,83 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 			crustModifier.setTicketItem(ticketItem);
 		}
 		crustSelected = true;
+	}
+
+	private void doFullSectionMode() {
+		wholeSectionView.removeAll();
+		fullSectionLayout.add(sectionWhole);
+		sectionLayout.show(sectionView, "full");
+		ticketItem.setPizzaSectionMode(PizzaSectionMode.Full);
+	}
+
+	private void doHalfSectionMode() {
+		wholeSectionView.add(sectionWhole, "grow");
+		sectionLayout.show(sectionView, "half");
+		ticketItem.setPizzaSectionMode(PizzaSectionMode.Half);
+	}
+
+	private void doQuarterSectionMode() {
+		wholeSectionView.add(sectionWhole, "grow");
+		sectionLayout.show(sectionView, "quarter");
+		ticketItem.setPizzaSectionMode(PizzaSectionMode.Quarter);
+	}
+
+	class SectionModifierTableModel extends ListTableModel<TicketItemModifier> {
+
+		public SectionModifierTableModel() {
+			super(new String[] { "Item", "Price" });
+		}
+
+		@Override
+		public Object getValueAt(int rowIndex, int columnIndex) {
+			TicketItemModifier item = (TicketItemModifier) rows.get(rowIndex);
+			if (item instanceof TicketItemModifier) {
+				((TicketItemModifier) item).calculatePrice();
+			}
+
+			switch (columnIndex) {
+				case 0:
+					if (item instanceof TicketItemModifier) {
+						return ((TicketItemModifier) item).getName();
+					}
+					return " " + item.getNameDisplay();
+
+				case 1:
+					Double total = null;
+					if (item instanceof TicketItemModifier) {
+						total = item.getUnitPrice();
+						return NumberUtil.roundToTwoDigit(total);
+					}
+					return null;
+
+			}
+
+			return null;
+		}
+
+		public void deleteGivenItem(TicketItemModifier ticketItemModifier) {
+			for (Iterator iterator = rows.iterator(); iterator.hasNext();) {
+				TicketItemModifier tModifier = (TicketItemModifier) iterator.next();
+
+				if (ticketItemModifier == tModifier) {
+					iterator.remove();
+				}
+
+			}
+			fireTableDataChanged();
+		}
+
+		public void deleteGivenItemByName(TicketItemModifier ticketItemModifier) {
+			for (Iterator iterator = rows.iterator(); iterator.hasNext();) {
+				TicketItemModifier tModifier = (TicketItemModifier) iterator.next();
+
+				if (ticketItemModifier.getName().equals(tModifier.getName())) {
+					iterator.remove();
+				}
+
+			}
+			fireTableDataChanged();
+		}
+
 	}
 }

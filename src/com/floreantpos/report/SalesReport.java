@@ -162,11 +162,11 @@ public class SalesReport extends Report {
 							continue;
 						}
 
-						if (modifier.getMenuItemId() == null) {
+						if (modifier.getModifierId() == null) {
 							key = modifier.getName();
 						}
 						else {
-							key = modifier.getMenuItemId().toString();
+							key = modifier.getModifierId().toString();
 						}
 						key += "-" + modifier.getName() + modifier.getModifierType() + "-" + modifier.getUnitPrice() + modifier.getTaxRate(); //$NON-NLS-1$ //$NON-NLS-2$
 
@@ -174,7 +174,7 @@ public class SalesReport extends Report {
 						if (modifierReportItem == null) {
 							modifierReportItem = new ReportItem();
 							modifierReportItem.setId(key);
-							modifierReportItem.setUniqueId(modifier.getMenuItemId().toString());
+							modifierReportItem.setUniqueId(modifier.getModifierId().toString());
 
 							modifierReportItem.setPrice(modifier.getUnitPrice());
 							modifierReportItem.setName(modifier.getName());

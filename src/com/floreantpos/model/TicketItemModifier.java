@@ -32,14 +32,14 @@ public class TicketItemModifier extends BaseTicketItemModifier implements ITicke
 	public final static int SEPERATOR = 6;
 
 	/*[CONSTRUCTOR MARKER BEGIN]*/
-	public TicketItemModifier() {
+	public TicketItemModifier () {
 		super();
 	}
 
 	/**
 	 * Constructor for primary key
 	 */
-	public TicketItemModifier(java.lang.Integer id) {
+	public TicketItemModifier (java.lang.Integer id) {
 		super(id);
 	}
 

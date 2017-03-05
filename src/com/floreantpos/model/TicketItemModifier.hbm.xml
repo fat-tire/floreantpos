@@ -5,7 +5,7 @@
 		<id column="ID" name="id" type="java.lang.Integer">
 			<generator class="identity" />
 		</id>
-		<property column="ITEM_ID" name="menuItemId" type="java.lang.Integer" />
+		<property column="ITEM_ID" name="modifierId" type="java.lang.Integer" />
 		<property column="GROUP_ID" name="menuItemModifierGroupId" type="java.lang.Integer" />
 		<property column="ITEM_COUNT" length="10" name="itemCount" type="java.lang.Integer" />
 		<property column="MODIFIER_NAME" length="120" name="name" type="string" />
@@ -21,6 +21,8 @@
 		<property column="MULTIPLIER_NAME" length="20" name="multiplierName" type="string" />
 		<property column="PRINT_TO_KITCHEN" name="shouldPrintToKitchen" type="java.lang.Boolean">
 			<meta attribute="defaultValue">true</meta>
+		</property>
+		<property column="SECTION_WISE_PRICING" name="shouldSectionWisePrice" type="java.lang.Boolean">
 		</property>
 		<property column="STATUS" length="10" name="status" type="string" />
 		

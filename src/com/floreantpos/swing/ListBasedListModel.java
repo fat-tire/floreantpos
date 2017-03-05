@@ -25,7 +25,7 @@ import javax.swing.AbstractListModel;
 
 public class ListBasedListModel<E> extends AbstractListModel<E> {
 	private List<E> dataList;
-	
+
 	public ListBasedListModel() {
 		super();
 	}
@@ -50,7 +50,7 @@ public class ListBasedListModel<E> extends AbstractListModel<E> {
 		}
 		return dataList.get(index);
 	}
-	
+
 	public void addElement(E element) {
 		ensureListNotNull();
 		dataList.add(element);
@@ -74,4 +74,23 @@ public class ListBasedListModel<E> extends AbstractListModel<E> {
 			dataList = new ArrayList<>();
 		}
 	}
+
+	public void clearAll() {
+		for (Iterator iterator = dataList.iterator(); iterator.hasNext();) {
+			E value = (E) iterator.next();
+			if (value != null)
+				iterator.remove();
+
+		}
+	}
+
+	public void clearItem(E item) {
+		for (Iterator iterator = dataList.iterator(); iterator.hasNext();) {
+			E value = (E) iterator.next();
+			if (value == item)
+				iterator.remove();
+
+		}
+	}
+
 }

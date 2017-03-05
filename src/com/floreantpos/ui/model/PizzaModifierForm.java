@@ -100,6 +100,7 @@ public class PizzaModifierForm extends BeanEditor {
 	private JXTable pizzaModifierPriceTable;
 	private PizzaPriceTableModel pizzaModifierPriceTableModel;
 	private JCheckBox chkUseFixedPrice;
+	private JCheckBox chkSectionWisePrice;
 
 	public PizzaModifierForm() throws Exception {
 		this(new MenuModifier());
@@ -136,6 +137,7 @@ public class PizzaModifierForm extends BeanEditor {
 		cbTaxes = new javax.swing.JComboBox();
 		JButton btnNewTax = new javax.swing.JButton();
 		chkPrintToKitchen = new javax.swing.JCheckBox();
+		chkSectionWisePrice = new javax.swing.JCheckBox();
 
 		JScrollPane jScrollPane3 = new javax.swing.JScrollPane();
 		priceTable = new javax.swing.JTable();
@@ -161,6 +163,10 @@ public class PizzaModifierForm extends BeanEditor {
 		chkPrintToKitchen.setText(com.floreantpos.POSConstants.PRINT_TO_KITCHEN);
 		chkPrintToKitchen.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
 		chkPrintToKitchen.setMargin(new java.awt.Insets(0, 0, 0, 0));
+
+		chkSectionWisePrice.setText("Sectionwise price");
+		chkSectionWisePrice.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
+		chkSectionWisePrice.setMargin(new java.awt.Insets(0, 0, 0, 0));
 
 		chkUseFixedPrice = new JCheckBox("Use fixed price");
 
@@ -195,6 +201,7 @@ public class PizzaModifierForm extends BeanEditor {
 		rightInputPanel.add(tfSortOrder, "growx,aligny top"); //$NON-NLS-1$
 
 		rightInputPanel.add(chkPrintToKitchen, "skip 1,alignx left,aligny top"); //$NON-NLS-1$
+		rightInputPanel.add(chkSectionWisePrice, "skip 1"); //$NON-NLS-1$
 
 		inputPanel.add(lelfInputPanel, "grow");
 		inputPanel.add(rightInputPanel, "grow");
@@ -360,6 +367,7 @@ public class PizzaModifierForm extends BeanEditor {
 		tfExtraPrice.setText(String.valueOf(modifier.getExtraPrice()));
 		cbModifierGroup.setSelectedItem(modifier.getModifierGroup());
 		chkPrintToKitchen.setSelected(modifier.isShouldPrintToKitchen());
+		chkSectionWisePrice.setSelected(modifier.isShouldSectionWisePrice());
 		chkUseFixedPrice.setSelected(modifier.isFixedPrice());
 
 		if (modifier.getSortOrder() != null) {
@@ -398,6 +406,7 @@ public class PizzaModifierForm extends BeanEditor {
 		modifier.setTax((Tax) cbTaxes.getSelectedItem());
 		modifier.setModifierGroup((MenuModifierGroup) cbModifierGroup.getSelectedItem());
 		modifier.setShouldPrintToKitchen(Boolean.valueOf(chkPrintToKitchen.isSelected()));
+		modifier.setShouldSectionWisePrice(Boolean.valueOf(chkSectionWisePrice.isSelected()));
 
 		modifier.setTranslatedName(tfTranslatedName.getText());
 		modifier.setButtonColor(btnButtonColor.getBackground().getRGB());

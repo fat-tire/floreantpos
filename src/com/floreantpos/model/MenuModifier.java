@@ -31,14 +31,14 @@ public class MenuModifier extends BaseMenuModifier {
 	private static final long serialVersionUID = 1L;
 
 	/* [CONSTRUCTOR MARKER BEGIN] */
-	public MenuModifier() {
+	public MenuModifier () {
 		super();
 	}
 
 	/**
 	 * Constructor for primary key
 	 */
-	public MenuModifier(java.lang.Integer id) {
+	public MenuModifier (java.lang.Integer id) {
 		super(id);
 	}
 

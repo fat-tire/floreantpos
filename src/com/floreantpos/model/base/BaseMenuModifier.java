@@ -1,9 +1,7 @@
 package com.floreantpos.model.base;
 
+import java.lang.Comparable;
 import java.io.Serializable;
-
-import javax.xml.bind.annotation.XmlTransient;
-
 
 /**
  * This is an object that contains data related to the MENU_MODIFIER table.
@@ -17,21 +15,21 @@ import javax.xml.bind.annotation.XmlTransient;
 public abstract class BaseMenuModifier implements Comparable, Serializable {
 
 	public static String REF = "MenuModifier"; //$NON-NLS-1$
-	public static String PROP_FIXED_PRICE = "fixedPrice"; //$NON-NLS-1$
+	public static String PROP_SHOULD_PRINT_TO_KITCHEN = "shouldPrintToKitchen"; //$NON-NLS-1$
 	public static String PROP_EXTRA_PRICE = "extraPrice"; //$NON-NLS-1$
-	public static String PROP_PIZZA_MODIFIER = "pizzaModifier"; //$NON-NLS-1$
+	public static String PROP_MODIFIER_GROUP = "modifierGroup"; //$NON-NLS-1$
 	public static String PROP_SORT_ORDER = "sortOrder"; //$NON-NLS-1$
 	public static String PROP_TAX = "tax"; //$NON-NLS-1$
-	public static String PROP_TEXT_COLOR = "textColor"; //$NON-NLS-1$
 	public static String PROP_NAME = "name"; //$NON-NLS-1$
-	public static String PROP_SHOULD_PRINT_TO_KITCHEN = "shouldPrintToKitchen"; //$NON-NLS-1$
 	public static String PROP_BUTTON_COLOR = "buttonColor"; //$NON-NLS-1$
-	public static String PROP_ENABLE = "enable"; //$NON-NLS-1$
-	public static String PROP_PRICE = "price"; //$NON-NLS-1$
-	public static String PROP_ID = "id"; //$NON-NLS-1$
-	public static String PROP_MODIFIER_GROUP = "modifierGroup"; //$NON-NLS-1$
 	public static String PROP_TRANSLATED_NAME = "translatedName"; //$NON-NLS-1$
-
+	public static String PROP_PRICE = "price"; //$NON-NLS-1$
+	public static String PROP_SHOULD_SECTION_WISE_PRICE = "shouldSectionWisePrice"; //$NON-NLS-1$
+	public static String PROP_ENABLE = "enable"; //$NON-NLS-1$
+	public static String PROP_TEXT_COLOR = "textColor"; //$NON-NLS-1$
+	public static String PROP_PIZZA_MODIFIER = "pizzaModifier"; //$NON-NLS-1$
+	public static String PROP_ID = "id"; //$NON-NLS-1$
+	public static String PROP_FIXED_PRICE = "fixedPrice"; //$NON-NLS-1$
 
 	// constructors
 	public BaseMenuModifier() {
@@ -65,6 +63,7 @@ public abstract class BaseMenuModifier implements Comparable, Serializable {
 	protected java.lang.Boolean enable;
 	protected java.lang.Boolean fixedPrice;
 	protected java.lang.Boolean shouldPrintToKitchen;
+	protected java.lang.Boolean shouldSectionWisePrice;
 	protected java.lang.Boolean pizzaModifier;
 
 	// many to one
@@ -75,7 +74,6 @@ public abstract class BaseMenuModifier implements Comparable, Serializable {
 	private java.util.List<com.floreantpos.model.PizzaModifierPrice> pizzaModifierPriceList;
 	private java.util.List<com.floreantpos.model.ModifierMultiplierPrice> multiplierPriceList;
 	private java.util.Map<String, String> properties;
-
 
 	/**
 	 * Return the unique identifier of this class
@@ -96,7 +94,6 @@ public abstract class BaseMenuModifier implements Comparable, Serializable {
 		this.hashCode = Integer.MIN_VALUE;
 	}
 
-
 	/**
 	 * Return the value associated with the column: NAME
 	 */
@@ -111,7 +108,6 @@ public abstract class BaseMenuModifier implements Comparable, Serializable {
 	public void setName(java.lang.String name) {
 		this.name = name;
 	}
-
 
 	/**
 	 * Return the value associated with the column: TRANSLATED_NAME
@@ -128,7 +124,6 @@ public abstract class BaseMenuModifier implements Comparable, Serializable {
 		this.translatedName = translatedName;
 	}
 
-
 	/**
 	 * Return the value associated with the column: PRICE
 	 */
@@ -143,7 +138,6 @@ public abstract class BaseMenuModifier implements Comparable, Serializable {
 	public void setPrice(java.lang.Double price) {
 		this.price = price;
 	}
-
 
 	/**
 	 * Return the value associated with the column: EXTRA_PRICE
@@ -160,7 +154,6 @@ public abstract class BaseMenuModifier implements Comparable, Serializable {
 		this.extraPrice = extraPrice;
 	}
 
-
 	/**
 	 * Return the value associated with the column: SORT_ORDER
 	 */
@@ -175,7 +168,6 @@ public abstract class BaseMenuModifier implements Comparable, Serializable {
 	public void setSortOrder(java.lang.Integer sortOrder) {
 		this.sortOrder = sortOrder;
 	}
-
 
 	/**
 	 * Return the value associated with the column: BTN_COLOR
@@ -192,7 +184,6 @@ public abstract class BaseMenuModifier implements Comparable, Serializable {
 		this.buttonColor = buttonColor;
 	}
 
-
 	/**
 	 * Return the value associated with the column: TEXT_COLOR
 	 */
@@ -207,7 +198,6 @@ public abstract class BaseMenuModifier implements Comparable, Serializable {
 	public void setTextColor(java.lang.Integer textColor) {
 		this.textColor = textColor;
 	}
-
 
 	/**
 	 * Return the value associated with the column: ENABLE
@@ -224,7 +214,6 @@ public abstract class BaseMenuModifier implements Comparable, Serializable {
 		this.enable = enable;
 	}
 
-
 	/**
 	 * Return the value associated with the column: FIXED_PRICE
 	 */
@@ -239,7 +228,6 @@ public abstract class BaseMenuModifier implements Comparable, Serializable {
 	public void setFixedPrice(java.lang.Boolean fixedPrice) {
 		this.fixedPrice = fixedPrice;
 	}
-
 
 	/**
 	 * Return the value associated with the column: PRINT_TO_KITCHEN
@@ -256,7 +244,6 @@ public abstract class BaseMenuModifier implements Comparable, Serializable {
 		this.shouldPrintToKitchen = shouldPrintToKitchen;
 	}
 
-
 	/**
 	 * Custom property
 	 */
@@ -264,6 +251,20 @@ public abstract class BaseMenuModifier implements Comparable, Serializable {
 		return "true";
 	}
 
+	/**
+	 * Return the value associated with the column: SECTION_WISE_PRICING
+	 */
+	public java.lang.Boolean isShouldSectionWisePrice() {
+		return shouldSectionWisePrice == null ? Boolean.FALSE : shouldSectionWisePrice;
+	}
+
+	/**
+	 * Set the value related to the column: SECTION_WISE_PRICING
+	 * @param shouldSectionWisePrice the SECTION_WISE_PRICING value
+	 */
+	public void setShouldSectionWisePrice(java.lang.Boolean shouldSectionWisePrice) {
+		this.shouldSectionWisePrice = shouldSectionWisePrice;
+	}
 
 	/**
 	 * Return the value associated with the column: PIZZA_MODIFIER
@@ -280,7 +281,6 @@ public abstract class BaseMenuModifier implements Comparable, Serializable {
 		this.pizzaModifier = pizzaModifier;
 	}
 
-
 	/**
 	 * Return the value associated with the column: GROUP_ID
 	 */
@@ -295,7 +295,6 @@ public abstract class BaseMenuModifier implements Comparable, Serializable {
 	public void setModifierGroup(com.floreantpos.model.MenuModifierGroup modifierGroup) {
 		this.modifierGroup = modifierGroup;
 	}
-
 
 	/**
 	 * Return the value associated with the column: TAX_ID
@@ -312,11 +311,9 @@ public abstract class BaseMenuModifier implements Comparable, Serializable {
 		this.tax = tax;
 	}
 
-
 	/**
 	 * Return the value associated with the column: pizzaModifierPriceList
 	 */
-	@XmlTransient
 	public java.util.List<com.floreantpos.model.PizzaModifierPrice> getPizzaModifierPriceList() {
 		return pizzaModifierPriceList;
 	}
@@ -335,11 +332,9 @@ public abstract class BaseMenuModifier implements Comparable, Serializable {
 		getPizzaModifierPriceList().add(pizzaModifierPrice);
 	}
 
-
 	/**
 	 * Return the value associated with the column: multiplierPriceList
 	 */
-	@XmlTransient
 	public java.util.List<com.floreantpos.model.ModifierMultiplierPrice> getMultiplierPriceList() {
 		return multiplierPriceList;
 	}
@@ -357,7 +352,6 @@ public abstract class BaseMenuModifier implements Comparable, Serializable {
 			setMultiplierPriceList(new java.util.ArrayList<com.floreantpos.model.ModifierMultiplierPrice>());
 		getMultiplierPriceList().add(modifierMultiplierPrice);
 	}
-
 
 	/**
 	 * Return the value associated with the column: properties
@@ -382,7 +376,7 @@ public abstract class BaseMenuModifier implements Comparable, Serializable {
 		else {
 			com.floreantpos.model.MenuModifier menuModifier = (com.floreantpos.model.MenuModifier) obj;
 			if (null == this.getId() || null == menuModifier.getId())
-				return this == obj;
+				return false;
 			else
 				return (this.getId().equals(menuModifier.getId()));
 		}
@@ -412,6 +406,5 @@ public abstract class BaseMenuModifier implements Comparable, Serializable {
 	public String toString() {
 		return super.toString();
 	}
-
 
 }

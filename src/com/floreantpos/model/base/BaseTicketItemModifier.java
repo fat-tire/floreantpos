@@ -16,24 +16,25 @@ import java.io.Serializable;
 public abstract class BaseTicketItemModifier  implements Comparable, Serializable {
 
 	public static String REF = "TicketItemModifier"; //$NON-NLS-1$
-	public static String PROP_SUB_TOTAL_AMOUNT = "subTotalAmount"; //$NON-NLS-1$
 	public static String PROP_MULTIPLIER_NAME = "multiplierName"; //$NON-NLS-1$
-	public static String PROP_MENU_ITEM_MODIFIER_GROUP_ID = "menuItemModifierGroupId"; //$NON-NLS-1$
-	public static String PROP_ITEM_COUNT = "itemCount"; //$NON-NLS-1$
-	public static String PROP_INFO_ONLY = "infoOnly"; //$NON-NLS-1$
-	public static String PROP_TAX_RATE = "taxRate"; //$NON-NLS-1$
-	public static String PROP_UNIT_PRICE = "unitPrice"; //$NON-NLS-1$
-	public static String PROP_TAX_AMOUNT = "taxAmount"; //$NON-NLS-1$
-	public static String PROP_NAME = "name"; //$NON-NLS-1$
-	public static String PROP_PRINTED_TO_KITCHEN = "printedToKitchen"; //$NON-NLS-1$
 	public static String PROP_STATUS = "status"; //$NON-NLS-1$
 	public static String PROP_SHOULD_PRINT_TO_KITCHEN = "shouldPrintToKitchen"; //$NON-NLS-1$
-	public static String PROP_ID = "id"; //$NON-NLS-1$
-	public static String PROP_TOTAL_AMOUNT = "totalAmount"; //$NON-NLS-1$
-	public static String PROP_SECTION_NAME = "sectionName"; //$NON-NLS-1$
 	public static String PROP_TICKET_ITEM = "ticketItem"; //$NON-NLS-1$
+	public static String PROP_INFO_ONLY = "infoOnly"; //$NON-NLS-1$
+	public static String PROP_TOTAL_AMOUNT = "totalAmount"; //$NON-NLS-1$
+	public static String PROP_MENU_ITEM_MODIFIER_GROUP_ID = "menuItemModifierGroupId"; //$NON-NLS-1$
+	public static String PROP_NAME = "name"; //$NON-NLS-1$
+	public static String PROP_UNIT_PRICE = "unitPrice"; //$NON-NLS-1$
+	public static String PROP_TAX_AMOUNT = "taxAmount"; //$NON-NLS-1$
+	public static String PROP_SHOULD_SECTION_WISE_PRICE = "shouldSectionWisePrice"; //$NON-NLS-1$
+	public static String PROP_TAX_RATE = "taxRate"; //$NON-NLS-1$
+	public static String PROP_ITEM_COUNT = "itemCount"; //$NON-NLS-1$
 	public static String PROP_MODIFIER_TYPE = "modifierType"; //$NON-NLS-1$
-	public static String PROP_MENU_ITEM_ID = "menuItemId"; //$NON-NLS-1$
+	public static String PROP_SECTION_NAME = "sectionName"; //$NON-NLS-1$
+	public static String PROP_ID = "id"; //$NON-NLS-1$
+	public static String PROP_PRINTED_TO_KITCHEN = "printedToKitchen"; //$NON-NLS-1$
+	public static String PROP_MODIFIER_ID = "modifierId"; //$NON-NLS-1$
+	public static String PROP_SUB_TOTAL_AMOUNT = "subTotalAmount"; //$NON-NLS-1$
 
 
 	// constructors
@@ -59,7 +60,7 @@ public abstract class BaseTicketItemModifier  implements Comparable, Serializabl
 	private java.lang.Integer id;
 
 	// fields
-		protected java.lang.Integer menuItemId;
+		protected java.lang.Integer modifierId;
 		protected java.lang.Integer menuItemModifierGroupId;
 		protected java.lang.Integer itemCount;
 		protected java.lang.String name;
@@ -73,6 +74,7 @@ public abstract class BaseTicketItemModifier  implements Comparable, Serializabl
 		protected java.lang.String sectionName;
 		protected java.lang.String multiplierName;
 		protected java.lang.Boolean shouldPrintToKitchen;
+		protected java.lang.Boolean shouldSectionWisePrice;
 		protected java.lang.String status;
 		protected java.lang.Boolean printedToKitchen;
 
@@ -106,16 +108,16 @@ public abstract class BaseTicketItemModifier  implements Comparable, Serializabl
 	/**
 	 * Return the value associated with the column: ITEM_ID
 	 */
-	public java.lang.Integer getMenuItemId () {
-									return menuItemId == null ? Integer.valueOf(0) : menuItemId;
+	public java.lang.Integer getModifierId () {
+									return modifierId == null ? Integer.valueOf(0) : modifierId;
 					}
 
 	/**
 	 * Set the value related to the column: ITEM_ID
-	 * @param menuItemId the ITEM_ID value
+	 * @param modifierId the ITEM_ID value
 	 */
-	public void setMenuItemId (java.lang.Integer menuItemId) {
-		this.menuItemId = menuItemId;
+	public void setModifierId (java.lang.Integer modifierId) {
+		this.modifierId = modifierId;
 	}
 
 
@@ -349,6 +351,23 @@ public abstract class BaseTicketItemModifier  implements Comparable, Serializabl
 
 
 	/**
+	 * Return the value associated with the column: SECTION_WISE_PRICING
+	 */
+	public java.lang.Boolean isShouldSectionWisePrice () {
+								return shouldSectionWisePrice == null ? Boolean.FALSE : shouldSectionWisePrice;
+					}
+
+	/**
+	 * Set the value related to the column: SECTION_WISE_PRICING
+	 * @param shouldSectionWisePrice the SECTION_WISE_PRICING value
+	 */
+	public void setShouldSectionWisePrice (java.lang.Boolean shouldSectionWisePrice) {
+		this.shouldSectionWisePrice = shouldSectionWisePrice;
+	}
+
+
+
+	/**
 	 * Return the value associated with the column: STATUS
 	 */
 	public java.lang.String getStatus () {
@@ -406,7 +425,7 @@ public abstract class BaseTicketItemModifier  implements Comparable, Serializabl
 		if (!(obj instanceof com.floreantpos.model.TicketItemModifier)) return false;
 		else {
 			com.floreantpos.model.TicketItemModifier ticketItemModifier = (com.floreantpos.model.TicketItemModifier) obj;
-			if (null == this.getId() || null == ticketItemModifier.getId()) return this == obj;
+			if (null == this.getId() || null == ticketItemModifier.getId()) return false;
 			else return (this.getId().equals(ticketItemModifier.getId()));
 		}
 	}

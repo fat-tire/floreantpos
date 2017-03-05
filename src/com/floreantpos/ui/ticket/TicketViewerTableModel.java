@@ -195,7 +195,7 @@ public class TicketViewerTableModel extends AbstractTableModel {
 
 		for (Iterator iter = ticketItemModifiers.iterator(); iter.hasNext();) {
 			TicketItemModifier modifier = (TicketItemModifier) iter.next();
-			if (modifier.getMenuItemId() == modifierToDelete.getMenuItemId()) {
+			if (modifier.getModifierId() == modifierToDelete.getModifierId()) {
 				iter.remove();
 
 				if (modifier.isPrintedToKitchen()) {
