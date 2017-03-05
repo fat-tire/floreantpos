@@ -233,8 +233,7 @@ public class PosTransactionService {
 
 		try {
 			Double currentBalance = terminal.getCurrentBalance();
-			Double totalPrice = ticket.getTotalAmount();
-			double newBalance = currentBalance - totalPrice;
+			double newBalance = currentBalance - refundAmount;
 			terminal.setCurrentBalance(newBalance);
 
 			//			double refundAmount = ticket.getPaidAmount();
@@ -263,6 +262,7 @@ public class PosTransactionService {
 			tx = session.beginTransaction();
 
 			dao.saveOrUpdate(ticket, session);
+			dao.saveOrUpdate(terminal, session);
 
 			tx.commit();
 

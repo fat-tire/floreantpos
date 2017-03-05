@@ -68,8 +68,10 @@ public class TipsCashoutReportDialog extends POSDialog implements ActionListener
 		
 		add(topPanel, BorderLayout.NORTH);
 		
+		JPanel contentPanel = new JPanel(new MigLayout("fill"));
 		JTable table = new JTable(new TipsCashoutReportTableModel(report.getDatas()));
-		add(new JScrollPane(table));
+		contentPanel.add(new JScrollPane(table));
+		add(contentPanel);
 		
 		JPanel bottomPanel = new JPanel(new FlowLayout());
 		PosButton print = new PosButton(Messages.getString("TipsCashoutReportDialog.28")); //$NON-NLS-1$

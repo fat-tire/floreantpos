@@ -35,10 +35,11 @@ import com.floreantpos.model.CreditCardTransaction;
 import com.floreantpos.model.CurrencyBalance;
 import com.floreantpos.model.DebitCardTransaction;
 import com.floreantpos.model.DrawerPullReport;
-import com.floreantpos.model.DrawerPullVoidTicketEntry;
 import com.floreantpos.model.GiftCertificateTransaction;
+import com.floreantpos.model.Gratuity;
 import com.floreantpos.model.PayOutTransaction;
 import com.floreantpos.model.PosTransaction;
+import com.floreantpos.model.RefundTransaction;
 import com.floreantpos.model.Terminal;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketDiscount;
@@ -49,6 +50,7 @@ import com.floreantpos.model.dao.RefundTransactionDAO;
 import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.model.util.RefundSummary;
 import com.floreantpos.model.util.TransactionSummary;
+import com.floreantpos.util.NumberUtil;
 
 public class DrawerpullReportService {
 
@@ -194,7 +196,7 @@ public class DrawerpullReportService {
 
 		for (Iterator iter = list.iterator(); iter.hasNext();) {
 			Ticket ticket = (Ticket) iter.next();
-			DrawerPullVoidTicketEntry entry = new DrawerPullVoidTicketEntry();
+			/*DrawerPullVoidTicketEntry entry = new DrawerPullVoidTicketEntry();
 			entry.setCode(ticket.getId());
 			entry.setAmount(ticket.getSubtotalAmount());
 			entry.setReason(ticket.getVoidReason());
@@ -205,7 +207,7 @@ public class DrawerpullReportService {
 				entry.setHast("No"); //$NON-NLS-1$
 			}
 
-			report.addVoidTicketEntry(entry);
+			report.addVoidTicketEntry(entry);*/
 
 			totalVoid += ticket.getSubtotalAmount();
 			if (ticket.isWasted()) {
@@ -220,9 +222,8 @@ public class DrawerpullReportService {
 	private static void populateNetSales(Session session, Terminal terminal, DrawerPullReport report) {
 		//find net sale, tax
 		Criteria criteria = session.createCriteria(Ticket.class);
-		criteria.add(Restrictions.eq(Ticket.PROP_PAID, Boolean.TRUE));
-		criteria.add(Restrictions.eq(Ticket.PROP_VOIDED, Boolean.FALSE));
-		criteria.add(Restrictions.eq(Ticket.PROP_REFUNDED, Boolean.FALSE));
+		criteria.add(Restrictions.gt(Ticket.PROP_PAID_AMOUNT, 0.0));
+		criteria.add(Restrictions.or(Restrictions.eq(Ticket.PROP_VOIDED, Boolean.FALSE), Restrictions.eq(Ticket.PROP_REFUNDED, Boolean.TRUE)));
 		criteria.add(Restrictions.eq(Ticket.PROP_DRAWER_RESETTED, Boolean.FALSE));
 		criteria.add(Restrictions.eq(Ticket.PROP_TERMINAL, terminal));
 
@@ -241,18 +242,40 @@ public class DrawerpullReportService {
 
 		for (Ticket ticket : list) {
 			++ticketCount;
-			subtotal += ticket.getSubtotalAmount();
-			discount += ticket.getDiscountAmount();
-			salesTax += ticket.getTaxAmount();
-			salesDeliveryCharge += ticket.getDeliveryCharge();
-			if (ticket.getGratuity() != null) {
-				tips += ticket.getGratuity().getAmount();
+
+			double refundAmount = 0;
+			double refundTaxAmount = 0;
+
+			Gratuity gratuity = ticket.getGratuity();
+			if (gratuity != null) {
+				if (gratuity.isRefunded()) {
+					refundAmount -= gratuity.getAmount();
+				}
+				else
+					tips += gratuity.getAmount();
 			}
+			if (ticket.isRefunded()) {
+				if (ticket.getTransactions() != null) {
+					for (PosTransaction t : ticket.getTransactions()) {
+						if (t instanceof RefundTransaction) {
+							refundAmount += NumberUtil.roundToTwoDigit(t.getAmount());
+						}
+					}
+				}
+				refundTaxAmount = (ticket.getTaxAmount() * refundAmount) / (ticket.getSubtotalAmount() + ticket.getTaxAmount());
+				refundAmount = NumberUtil.roundToTwoDigit(refundAmount - refundTaxAmount);
+			}
+
+			subtotal += ticket.getSubtotalAmount() - refundAmount;
+			discount += ticket.getDiscountAmount();
+			salesTax += ticket.getTaxAmount() - refundTaxAmount;
+			salesDeliveryCharge += ticket.getDeliveryCharge();
+
 		}
 
 		report.setTicketCount(ticketCount);
 		report.setNetSales(subtotal - discount);
-		report.setSalesTax(salesTax);
+		report.setSalesTax(NumberUtil.roundToTwoDigit(salesTax));
 		report.setSalesDeliveryCharge(salesDeliveryCharge);
 		report.setChargedTips(tips);
 	}
@@ -260,8 +283,8 @@ public class DrawerpullReportService {
 	private static void populateReceiptDifferential(Session session, Terminal terminal, DrawerPullReport report) {
 		//find net sale, tax
 		Criteria criteria = session.createCriteria(Ticket.class);
-		criteria.add(Restrictions.eq(Ticket.PROP_PAID, Boolean.TRUE));
-		criteria.add(Restrictions.eq(Ticket.PROP_VOIDED, Boolean.FALSE));
+		criteria.add(Restrictions.gt(Ticket.PROP_PAID_AMOUNT, 0.0));
+		criteria.add(Restrictions.or(Restrictions.eq(Ticket.PROP_VOIDED, Boolean.FALSE), Restrictions.eq(Ticket.PROP_REFUNDED, Boolean.TRUE)));
 		criteria.add(Restrictions.eq(Ticket.PROP_DRAWER_RESETTED, Boolean.FALSE));
 		criteria.add(Restrictions.eq(Ticket.PROP_TERMINAL, terminal));
 

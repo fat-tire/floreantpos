@@ -48,6 +48,7 @@ import com.floreantpos.model.MenuItem;
 import com.floreantpos.model.OrderType;
 import com.floreantpos.model.PaymentStatusFilter;
 import com.floreantpos.model.PaymentType;
+import com.floreantpos.model.PosTransaction;
 import com.floreantpos.model.Recepie;
 import com.floreantpos.model.RecepieItem;
 import com.floreantpos.model.Shift;
@@ -59,7 +60,6 @@ import com.floreantpos.model.User;
 import com.floreantpos.model.UserType;
 import com.floreantpos.model.VoidTransaction;
 import com.floreantpos.model.util.TicketSummary;
-import com.floreantpos.services.PosTransactionService;
 import com.floreantpos.swing.PaginatedTableModel;
 
 public class TicketDAO extends BaseTicketDAO {
@@ -124,12 +124,11 @@ public class TicketDAO extends BaseTicketDAO {
 	public void voidTicket(Ticket ticket) throws Exception {
 		Session session = null;
 		Transaction tx = null;
+		Terminal terminal = Application.getInstance().getTerminal();
 
 		try {
 			session = createNewSession();
 			tx = session.beginTransaction();
-
-			Terminal terminal = Application.getInstance().getTerminal();
 
 			ticket.setVoided(true);
 			ticket.setClosed(true);
@@ -137,7 +136,17 @@ public class TicketDAO extends BaseTicketDAO {
 			ticket.setTerminal(terminal);
 
 			if (ticket.isPaid()) {
-				VoidTransaction transaction = new VoidTransaction();
+				VoidTransaction transaction = null;
+				if (ticket.getTransactions() != null) {
+					for (PosTransaction t : ticket.getTransactions()) {
+						if (t instanceof VoidTransaction) {
+							transaction = (VoidTransaction) t;
+						}
+					}
+				}
+				if (transaction == null)
+					transaction = new VoidTransaction();
+
 				transaction.setTicket(ticket);
 				transaction.setTerminal(terminal);
 				transaction.setTransactionTime(new Date());
@@ -146,8 +155,6 @@ public class TicketDAO extends BaseTicketDAO {
 				transaction.setAmount(ticket.getPaidAmount());
 				transaction.setTerminal(Application.getInstance().getTerminal());
 				transaction.setCaptured(true);
-
-				PosTransactionService.adjustTerminalBalance(transaction);
 
 				ticket.addTotransactions(transaction);
 			}
@@ -182,12 +189,12 @@ public class TicketDAO extends BaseTicketDAO {
 		Hibernate.initialize(ticket.getDiscounts());
 		Hibernate.initialize(ticket.getTransactions());
 
-//		List<TicketItem> ticketItems = ticket.getTicketItems();
-//		if (ticketItems != null) {
-//			for (TicketItem ticketItem : ticketItems) {
-//				Hibernate.initialize(ticketItem.getTicketItemModifiers());
-//			}
-//		}
+		//		List<TicketItem> ticketItems = ticket.getTicketItems();
+		//		if (ticketItems != null) {
+		//			for (TicketItem ticketItem : ticketItems) {
+		//				Hibernate.initialize(ticketItem.getTicketItemModifiers());
+		//			}
+		//		}
 
 		session.close();
 

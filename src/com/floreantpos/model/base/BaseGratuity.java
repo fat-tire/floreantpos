@@ -1,22 +1,6 @@
-/**
- * ************************************************************************
- * * The contents of this file are subject to the MRPL 1.2
- * * (the  "License"),  being   the  Mozilla   Public  License
- * * Version 1.1  with a permitted attribution clause; you may not  use this
- * * file except in compliance with the License. You  may  obtain  a copy of
- * * the License at http://www.floreantpos.org/license.html
- * * Software distributed under the License  is  distributed  on  an "AS IS"
- * * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * * License for the specific  language  governing  rights  and  limitations
- * * under the License.
- * * The Original Code is FLOREANT POS.
- * * The Initial Developer of the Original Code is OROCUBE LLC
- * * All portions are Copyright (C) 2015 OROCUBE LLC
- * * All Rights Reserved.
- * ************************************************************************
- */
 package com.floreantpos.model.base;
 
+import java.lang.Comparable;
 import java.io.Serializable;
 
 
@@ -32,6 +16,7 @@ import java.io.Serializable;
 public abstract class BaseGratuity  implements Comparable, Serializable {
 
 	public static String REF = "Gratuity"; //$NON-NLS-1$
+	public static String PROP_REFUNDED = "refunded"; //$NON-NLS-1$
 	public static String PROP_OWNER = "owner"; //$NON-NLS-1$
 	public static String PROP_PAID = "paid"; //$NON-NLS-1$
 	public static String PROP_TICKET = "ticket"; //$NON-NLS-1$
@@ -65,6 +50,7 @@ public abstract class BaseGratuity  implements Comparable, Serializable {
 	// fields
 		protected java.lang.Double amount;
 		protected java.lang.Boolean paid;
+		protected java.lang.Boolean refunded;
 
 	// many to one
 	private com.floreantpos.model.Ticket ticket;
@@ -130,6 +116,23 @@ public abstract class BaseGratuity  implements Comparable, Serializable {
 
 
 	/**
+	 * Return the value associated with the column: REFUNDED
+	 */
+	public java.lang.Boolean isRefunded () {
+								return refunded == null ? Boolean.FALSE : refunded;
+					}
+
+	/**
+	 * Set the value related to the column: REFUNDED
+	 * @param refunded the REFUNDED value
+	 */
+	public void setRefunded (java.lang.Boolean refunded) {
+		this.refunded = refunded;
+	}
+
+
+
+	/**
 	 * Return the value associated with the column: TICKET_ID
 	 */
 	public com.floreantpos.model.Ticket getTicket () {
@@ -187,7 +190,7 @@ public abstract class BaseGratuity  implements Comparable, Serializable {
 		if (!(obj instanceof com.floreantpos.model.Gratuity)) return false;
 		else {
 			com.floreantpos.model.Gratuity gratuity = (com.floreantpos.model.Gratuity) obj;
-			if (null == this.getId() || null == gratuity.getId()) return false;
+			if (null == this.getId() || null == gratuity.getId()) return this == obj;
 			else return (this.getId().equals(gratuity.getId()));
 		}
 	}
@@ -196,7 +199,7 @@ public abstract class BaseGratuity  implements Comparable, Serializable {
 		if (Integer.MIN_VALUE == this.hashCode) {
 			if (null == this.getId()) return super.hashCode();
 			else {
-				String hashStr = this.getClass().getName() + ":" + this.getId().hashCode(); //$NON-NLS-1$
+				String hashStr = this.getClass().getName() + ":" + this.getId().hashCode();
 				this.hashCode = hashStr.hashCode();
 			}
 		}

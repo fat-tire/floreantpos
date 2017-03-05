@@ -30,7 +30,6 @@ import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.data.JRTableModelDataSource;
 import net.sf.jasperreports.engine.export.JRPrintServiceExporter;
 import net.sf.jasperreports.engine.export.JRPrintServiceExporterParameter;
-import net.sf.jasperreports.view.JasperViewer;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -44,6 +43,7 @@ import com.floreantpos.model.Terminal;
 import com.floreantpos.model.TipsCashoutReport;
 import com.floreantpos.model.TipsCashoutReportTableModel;
 import com.floreantpos.model.dao.RestaurantDAO;
+import com.floreantpos.report.ReceiptPrintService;
 import com.floreantpos.report.ReportUtil;
 import com.floreantpos.util.NumberUtil;
 import com.floreantpos.util.PrintServiceUtil;
@@ -112,7 +112,9 @@ public class PosPrintService {
 			JRDataSource dataSource = new JRTableModelDataSource(new TipsCashoutReportTableModel(report.getDatas(), new String[] {
 					"ticketId", "saleType", "ticketTotal", "tips" })); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 			JasperPrint jasperPrint = JasperFillManager.fillReport(mainReport, parameters, dataSource);
-			JasperViewer.viewReport(jasperPrint, false);
+			jasperPrint.setProperty(ReceiptPrintService.PROP_PRINTER_NAME, Application.getPrinters().getReceiptPrinter());
+			ReceiptPrintService.printQuitely(jasperPrint);
+			//JasperViewer.viewReport(jasperPrint, false);
 
 		} catch (Exception e) {
 			PosLog.error(PosPrintService.class, e.getMessage());

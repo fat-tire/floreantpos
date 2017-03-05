@@ -153,6 +153,14 @@ public class Ticket extends BaseTicket {
 		gratuity.setAmount(amount);
 	}
 
+	public double getGratuityAmount() {
+		Gratuity gratuity = getGratuity();
+		if (gratuity != null) {
+			return gratuity.getAmount();
+		}
+		return 0;
+	}
+
 	public Gratuity createGratuity() {
 		Gratuity gratuity;
 		gratuity = new Gratuity();

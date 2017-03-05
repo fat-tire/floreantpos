@@ -24,6 +24,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JREmptyDataSource;
@@ -123,7 +124,7 @@ public class ReceiptPrintService {
 		map.put(TITLE, title);
 		map.put(DATA, data);
 		JasperPrint jasperPrint = createJasperPrint(ReportUtil.getReport("generic-receipt"), map, new JREmptyDataSource()); //$NON-NLS-1$
-		//jasperPrint.setProperty(PROP_PRINTER_NAME, Application.getPrinters().getReceiptPrinter());
+		jasperPrint.setProperty(PROP_PRINTER_NAME, Application.getPrinters().getReceiptPrinter());
 		printQuitely(jasperPrint);
 	}
 
@@ -262,7 +263,7 @@ public class ReceiptPrintService {
 
 	public static JasperPrint createRefundPrint(Ticket ticket, HashMap map) throws Exception {
 		TicketDataSource dataSource = new TicketDataSource(ticket);
-		return createJasperPrint(ReportUtil.getReport("refund-receipt"), map, new JRTableModelDataSource(dataSource)); //$NON-NLS-1$
+		return createJasperPrint(ReportUtil.getReport("RefundReceipt"), map, new JRTableModelDataSource(dataSource)); //$NON-NLS-1$
 	}
 
 	public static void printRefundTicket(Ticket ticket, RefundTransaction posTransaction) {
@@ -466,6 +467,10 @@ public class ReceiptPrintService {
 			map.put("footerMessage", restaurant.getTicketFooterMessage()); //$NON-NLS-1$
 			map.put("copyType", printProperties.getReceiptCopyType()); //$NON-NLS-1$
 
+			if (ticket.isRefunded()) {
+				populateRefundProperties(ticket.getTransactions(), map);
+			}
+
 			if (transaction != null) {
 				double changedAmount = transaction.getTenderAmount() - transaction.getAmount();
 				if (changedAmount > 0) {
@@ -498,6 +503,19 @@ public class ReceiptPrintService {
 		}
 
 		return map;
+	}
+
+	private static void populateRefundProperties(Set<PosTransaction> transactions, HashMap map) {
+		if (transactions == null)
+			return;
+		TicketPrintProperties printProperties = new TicketPrintProperties("*** REFUND RECEIPT ***", true, true, true); //$NON-NLS-1$
+		printProperties.setPrintCookingInstructions(false);
+		double refundAmount = 0;
+		for (PosTransaction transaction : transactions) {
+			if (transaction instanceof RefundTransaction)
+				refundAmount += transaction.getAmount();
+		}
+		map.put("additionalProperties", "<html><b>" + Messages.getString("ReceiptPrintService.1") + " " + CurrencyUtil.getCurrencySymbol() + "&nbsp;" + refundAmount + "</b></html>"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	private static String getCardInformation(PosTransaction transaction) {
