@@ -26,6 +26,7 @@ import com.floreantpos.main.Application;
 import com.floreantpos.model.ActionHistory;
 import com.floreantpos.model.CashTransaction;
 import com.floreantpos.model.GiftCertificateTransaction;
+import com.floreantpos.model.Gratuity;
 import com.floreantpos.model.OrderType;
 import com.floreantpos.model.PaymentType;
 import com.floreantpos.model.PosTransaction;
@@ -236,10 +237,13 @@ public class PosTransactionService {
 			double newBalance = currentBalance - refundAmount;
 			terminal.setCurrentBalance(newBalance);
 
-			//			double refundAmount = ticket.getPaidAmount();
-			//			if(ticket.getGratuity() != null) {
-			//				refundAmount -= ticket.getGratuity().getAmount();
-			//			}
+			Gratuity gratuity = ticket.getGratuity();
+			if (gratuity != null) {
+				double diff = ticket.getPaidAmount() - refundAmount;
+				if (diff == 0 || diff > gratuity.getAmount()) {
+					gratuity.setRefunded(true);
+				}
+			}
 
 			RefundTransaction posTransaction = new RefundTransaction();
 			posTransaction.setTicket(ticket);
