@@ -37,12 +37,12 @@ import com.floreantpos.util.NumberUtil;
 public class TicketItem extends BaseTicketItem implements ITicketItem {
 	private static final long serialVersionUID = 1L;
 
-	public enum PizzaSectionMode {
-		Full(1), Half(2), Quarter(3);
+	public enum PIZZA_SECTION_MODE {
+		FULL(1), HALF(2), QUARTER(3);
 
 		private final int value;
 
-		private PizzaSectionMode(int value) {
+		private PIZZA_SECTION_MODE(int value) {
 			this.value = value;
 		}
 
@@ -56,13 +56,13 @@ public class TicketItem extends BaseTicketItem implements ITicketItem {
 		}
 	}
 
-	private PizzaSectionMode pizzaSectionMode;
+	private PIZZA_SECTION_MODE pizzaSectionMode;
 
-	public PizzaSectionMode getPizzaSectionMode() {
+	public PIZZA_SECTION_MODE getPizzaSectionMode() {
 		return pizzaSectionMode;
 	}
 
-	public void setPizzaSectionMode(PizzaSectionMode pizzaSectionMode) {
+	public void setPizzaSectionMode(PIZZA_SECTION_MODE pizzaSectionMode) {
 		this.pizzaSectionMode = pizzaSectionMode;
 	}
 

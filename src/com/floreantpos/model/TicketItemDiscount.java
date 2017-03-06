@@ -19,7 +19,7 @@ public class TicketItemDiscount extends BaseTicketItemDiscount implements ITicke
 	}
 
 	/*[CONSTRUCTOR MARKER END]*/
-	
+
 	public TicketItemDiscount(TicketItemDiscount fromDiscount) {
 		setDiscountId(fromDiscount.getDiscountId());
 		setName(fromDiscount.getName());
@@ -119,12 +119,12 @@ public class TicketItemDiscount extends BaseTicketItemDiscount implements ITicke
 
 	@Override
 	public void setDiscountAmount(Double amount) {
-
+		this.amount = amount;
 	}
 
 	@Override
 	public Double getDiscountAmount() {
-		return null;
+		return amount;
 	}
 
 	@Override

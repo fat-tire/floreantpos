@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping package="com.floreantpos.model">
-	<class lazy="false" name="com.floreantpos.model.TicketItem"  table="TICKET_ITEM">
+	<class lazy="false" name="com.floreantpos.model.TicketItem" table="TICKET_ITEM">
 		<id column="ID" name="id" type="java.lang.Integer">
 			<generator class="identity" />
 		</id>
-		
+
 		<property column="ITEM_ID" name="itemId" type="java.lang.Integer" />
 		<property column="ITEM_COUNT" length="10" name="itemCount" type="java.lang.Integer" />
 		<property column="ITEM_QUANTITY" length="52" name="itemQuantity" type="java.lang.Double" />
@@ -29,7 +29,7 @@
 		</property>
 		<property column="TREAT_AS_SEAT" name="treatAsSeat" type="java.lang.Boolean" />
 		<property column="SEAT_NUMBER" name="seatNumber" type="java.lang.Integer" />
-		
+
 		<property name="fractionalUnit" column="FRACTIONAL_UNIT" type="java.lang.Boolean" />
 		<!--property name="totalPrice" type="java.lang.Double" column="TOTAL_PRICE" length="52" / -->
 		<property column="HAS_MODIIERS" name="hasModifiers" type="java.lang.Boolean" />
@@ -38,37 +38,29 @@
 		<property column="STATUS" name="status" type="java.lang.String" />
 		<property column="STOCK_AMOUNT_ADJUSTED" name="stockAmountAdjusted" type="java.lang.Boolean" />
 		<property name="pizzaType" column="PIZZA_TYPE" type="java.lang.Boolean" />
-		
-		<!-- <list cascade="all" inverse="false" lazy="true" name="ticketItemModifierGroups">
-			<key>
-				<column name="TICKETITEM_ID" />
-			</key>
-			<list-index column="ITEM_ORDER" />
-			<one-to-many class="com.floreantpos.model.TicketItemModifierGroup" />
-		</list> -->
-		
-		<many-to-one class="com.floreantpos.model.TicketItemModifier" name="sizeModifier" cascade="all" column="SIZE_MODIFIER_ID"/>
-		
+
+		<many-to-one class="com.floreantpos.model.TicketItemModifier" name="sizeModifier" cascade="all" column="SIZE_MODIFIER_ID" />
+
 		<list cascade="all" inverse="false" lazy="false" name="ticketItemModifiers" table="TICKET_ITEM_MODIFIER_RELATION">
 			<key>
 				<column name="TICKET_ITEM_ID" />
 			</key>
 			<list-index column="LIST_ORDER" />
-			<many-to-many class="com.floreantpos.model.TicketItemModifier" column="MODIFIER_ID"/>
+			<many-to-many class="com.floreantpos.model.TicketItemModifier" column="MODIFIER_ID" />
 		</list>
-		
+
 		<many-to-one class="com.floreantpos.model.Ticket" name="ticket" not-null="true">
 			<column name="TICKET_ID" />
 		</many-to-one>
-		
+
 		<list cascade="all,delete-orphan" inverse="false" lazy="false" name="addOns" table="TICKET_ITEM_ADDON_RELATION">
 			<key>
 				<column name="TICKET_ITEM_ID" />
 			</key>
 			<list-index column="LIST_ORDER" />
-			<many-to-many class="com.floreantpos.model.TicketItemModifier" column="MODIFIER_ID"/>
+			<many-to-many class="com.floreantpos.model.TicketItemModifier" column="MODIFIER_ID" />
 		</list>
-		
+
 		<bag cascade="all,delete-orphan" inverse="true" lazy="false" name="discounts" table="TICKET_ITEM_DISCOUNT">
 			<key>
 				<column name="TICKET_ITEMID" />
@@ -84,9 +76,15 @@
 				<property name="printedToKitchen" type="java.lang.Boolean" />
 			</composite-element>
 		</list>
-		
+
 		<many-to-one class="com.floreantpos.model.PrinterGroup" lazy="false" cascade="none" name="printerGroup">
 			<column name="PG_ID" />
 		</many-to-one>
+
+		<property name="pizzaSectionMode" column="PIZZA_SECTION_MODE">
+			<type name="org.hibernate.type.EnumType">
+				<param name="enumClass">com.floreantpos.model.TicketItem$PIZZA_SECTION_MODE</param>
+			</type>
+		</property>
 	</class>
 </hibernate-mapping>

@@ -14,16 +14,18 @@ public class DiscountUtil {
 		TicketItem ticketItem = ticketItemDiscount.getTicketItem();
 		//		Ticket ticket = ticketItem.getTicket();
 
+		int itemCount = ticketItem.getItemCount(); //ticket.countItem(ticketItem);
+		double subtotalAmount = ticketItem.getSubtotalAmount();
+		double amountToBeDiscounted = subtotalAmount / itemCount;
 		if (ticketItemDiscount.getMinimumQuantity() > 0) {
 			int minQuantity = ticketItemDiscount.getMinimumQuantity();
-			int itemCount = ticketItem.getItemCount(); //ticket.countItem(ticketItem);
-
+			
 			switch (ticketItemDiscount.getType()) {
 				case Discount.DISCOUNT_TYPE_AMOUNT:
 					return Math.floor(itemCount / minQuantity) * ticketItemDiscount.getValue();
 
 				case Discount.DISCOUNT_TYPE_PERCENTAGE:
-					return Math.floor(itemCount / minQuantity) * (ticketItem.getUnitPrice() * ticketItemDiscount.getValue() / 100);
+					return Math.floor(itemCount / minQuantity) * (amountToBeDiscounted * ticketItemDiscount.getValue() / 100);
 			}
 		}
 		switch (ticketItemDiscount.getType()) {
@@ -31,7 +33,7 @@ public class DiscountUtil {
 				return ticketItemDiscount.getValue();
 
 			case Discount.DISCOUNT_TYPE_PERCENTAGE:
-				return (ticketItem.getSubtotalAmountWithoutModifiers() * ticketItemDiscount.getValue()) / 100.0;
+				return (amountToBeDiscounted * ticketItemDiscount.getValue()) / 100.0;
 		}
 
 		return 0.0;
@@ -58,7 +60,7 @@ public class DiscountUtil {
 		TicketItemDiscount maxDiscount = Collections.max(discounts, new Comparator<TicketItemDiscount>() {
 			@Override
 			public int compare(TicketItemDiscount o1, TicketItemDiscount o2) {
-				return (int) (o1.getSubTotalAmountWithoutModifiersDisplay() - o2.getSubTotalAmountWithoutModifiersDisplay());
+				return (int) (o1.getSubTotalAmountDisplay() - o2.getSubTotalAmountDisplay());
 			}
 		});
 
