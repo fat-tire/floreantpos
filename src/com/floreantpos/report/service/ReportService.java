@@ -150,6 +150,8 @@ public class ReportService {
 				criteria = session.createCriteria(Ticket.class);
 				criteria.add(Restrictions.eq(Ticket.PROP_OWNER, server));
 				criteria.add(Restrictions.eq(Ticket.PROP_PAID, Boolean.TRUE));
+				criteria.add(Restrictions.eq(Ticket.PROP_VOIDED, Boolean.FALSE)); //$NON-NLS-1$
+				criteria.add(Restrictions.eq(Ticket.PROP_REFUNDED, Boolean.FALSE)); //$NON-NLS-1$
 				criteria.add(Restrictions.ge(Ticket.PROP_CREATE_DATE, fromDate));
 				criteria.add(Restrictions.le(Ticket.PROP_CREATE_DATE, toDate));
 
@@ -200,6 +202,8 @@ public class ReportService {
 					criteria.add(Restrictions.le("t." + Ticket.PROP_CREATE_DATE, toDate)); //$NON-NLS-1$
 					criteria.add(Restrictions.eq("t." + Ticket.PROP_OWNER, server)); //$NON-NLS-1$
 					criteria.add(Restrictions.eq("t." + Ticket.PROP_PAID, Boolean.TRUE)); //$NON-NLS-1$
+					criteria.add(Restrictions.eq("t." + Ticket.PROP_VOIDED, Boolean.FALSE)); //$NON-NLS-1$
+					criteria.add(Restrictions.eq("t." + Ticket.PROP_REFUNDED, Boolean.FALSE)); //$NON-NLS-1$
 
 					List datas = criteria.list();
 					if (datas.size() > 0) {
@@ -219,7 +223,8 @@ public class ReportService {
 
 						if (objects.length > 2 && objects[2] != null) {
 							double d = ((Number) objects[2]).doubleValue();
-							data.setSalesDiscount(d);
+							if (d > 0)
+								data.setSalesDiscount(d);
 						}
 						data.setAllocation((data.getGrossSales() / totalServerSale) * 100.0);
 						data.calculate();
@@ -368,7 +373,7 @@ public class ReportService {
 		criteria.add(Restrictions.le(PayOutTransaction.PROP_TRANSACTION_TIME, toDate));
 
 		if (user != null) {
-			criteria.add(Restrictions.eq(PayOutTransaction.PROP_USER, user)); 
+			criteria.add(Restrictions.eq(PayOutTransaction.PROP_USER, user));
 		}
 
 		criteria.setProjection(Projections.sum(PayOutTransaction.PROP_AMOUNT));
@@ -385,7 +390,7 @@ public class ReportService {
 		criteria.add(Restrictions.eq("gratuity." + Gratuity.PROP_PAID, Boolean.TRUE)); //$NON-NLS-1$
 
 		if (user != null) {
-			criteria.add(Restrictions.eq(Ticket.PROP_OWNER, user)); 
+			criteria.add(Restrictions.eq(Ticket.PROP_OWNER, user));
 		}
 
 		criteria.setProjection(Projections.sum("gratuity." + Gratuity.PROP_AMOUNT)); //$NON-NLS-1$
