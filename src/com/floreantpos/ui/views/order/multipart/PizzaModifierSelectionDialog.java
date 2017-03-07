@@ -45,7 +45,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.JLabel;
@@ -54,6 +53,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JTable;
+import javax.swing.JToggleButton;
 import javax.swing.JViewport;
 import javax.swing.SwingConstants;
 import javax.swing.border.Border;
@@ -99,7 +99,7 @@ import com.floreantpos.util.POSUtil;
  * 
  * @author MShahriar
  */
-public class PizzaModifierSelectionDialog extends POSDialog implements ModifierSelectionListener {
+public class PizzaModifierSelectionDialog extends POSDialog implements ModifierSelectionListener, ActionListener {
 	private static final String PROP_PIZZA_PRICE = "pizzaPrice";
 	private SizeAndCrustSelectionPane sizeAndCrustPanel;
 	private PizzaModifierView modifierView;
@@ -132,7 +132,9 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 	private int pizzaQuantity;
 	private POSToggleButton btnFull;
 	private POSToggleButton btnHalf;
-	private AbstractButton btnQuarter;
+	private JToggleButton btnQuarter;
+	private ButtonGroup btnGroup;
+	private JToggleButton currentButton;
 
 	public PizzaModifierSelectionDialog(TicketItem cloneTicketItem, MenuItem menuItem, boolean editMode) {
 		this.menuItem = menuItem;
@@ -276,6 +278,7 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 		if (ticketItem.getPizzaSectionMode() != null) {
 			if (ticketItem.getPizzaSectionMode() == PIZZA_SECTION_MODE.FULL) {
 				btnFull.setSelected(true);
+				currentButton = btnFull;
 				doFullSectionMode();
 				if (ticketItem.isPrintedToKitchen()) {
 					btnHalf.setEnabled(false);
@@ -285,6 +288,7 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 
 			else if (ticketItem.getPizzaSectionMode() == PIZZA_SECTION_MODE.HALF) {
 				btnHalf.setSelected(true);
+				currentButton = btnHalf;
 				doHalfSectionMode();
 				if (ticketItem.isPrintedToKitchen()) {
 					btnFull.setEnabled(false);
@@ -293,6 +297,7 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 			}
 			else if (ticketItem.getPizzaSectionMode() == PIZZA_SECTION_MODE.QUARTER) {
 				btnQuarter.setSelected(true);
+				currentButton = btnQuarter;
 				doQuarterSectionMode();
 				if (ticketItem.isPrintedToKitchen()) {
 					btnHalf.setEnabled(false);
@@ -354,63 +359,17 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 		TransparentPanel buttonPanel = new com.floreantpos.swing.TransparentPanel();
 		buttonPanel.setLayout(new MigLayout("fill, ins 2", "", ""));
 
-		final ButtonGroup btnGroup = new ButtonGroup();
+		btnGroup = new ButtonGroup();
 
 		btnFull = new POSToggleButton("FULL");
 		btnFull.setSelected(true);
-
-		btnFull.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (ticketItem.getTicketItemModifiers() != null && ticketItem.getTicketItemModifiers().size() > 0) {
-					int questionDialog = POSMessageDialog.showYesNoQuestionDialog(POSUtil.getFocusedWindow(),
-							"Items of the section will be deleted, Are you sure to change section mode?", "Change Section Mode");
-					if (questionDialog != JOptionPane.YES_OPTION) {
-						btnGroup.clearSelection();
-						return;
-					}
-					allSectionModifierClear();
-				}
-				doFullSectionMode();
-			}
-		});
+		currentButton = btnFull;
+		btnFull.addActionListener(this);
 		btnHalf = new POSToggleButton("HALF");
+		btnHalf.addActionListener(this);
 
-		btnHalf.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (ticketItem.getTicketItemModifiers() != null && ticketItem.getTicketItemModifiers().size() > 0) {
-					int questionDialog = POSMessageDialog.showYesNoQuestionDialog(POSUtil.getFocusedWindow(),
-							"Items of the section will be deleted, Are you sure to change section mode?", "Change Section Mode");
-					if (questionDialog != JOptionPane.YES_OPTION) {
-						btnGroup.clearSelection();
-						return;
-					}
-					allSectionModifierClear();
-				}
-				doHalfSectionMode();
-			}
-		});
 		btnQuarter = new POSToggleButton("QUARTER");
-
-		btnQuarter.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (ticketItem.getTicketItemModifiers() != null && ticketItem.getTicketItemModifiers().size() > 0) {
-					int questionDialog = POSMessageDialog.showYesNoQuestionDialog(POSUtil.getFocusedWindow(),
-							"Items of the section will be deleted, Are you sure to change section mode?", "Change Section Mode");
-					if (questionDialog != JOptionPane.YES_OPTION) {
-						btnGroup.clearSelection();
-						return;
-					}
-					allSectionModifierClear();
-				}
-				doQuarterSectionMode();
-			}
-		});
+		btnQuarter.addActionListener(this);
 
 		btnGroup.add(btnFull);
 		btnGroup.add(btnHalf);
@@ -553,55 +512,6 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 		ticketItemViewerModel.updateView();
 	}
 
-	/*private void setTicketItemModifiers(List<TicketItemModifier> allTicketItemModifiers, boolean isForPrinted) {
-
-		List<TicketItemModifier> ticketItemModifiers = ticketItem.getTicketItemModifiers();
-		for (Section section : sectionList) {
-			List<TicketItemModifier> dataList = section.model.getDataList();
-			if (dataList == null) {
-				continue;
-			}
-			if (!dataList.isEmpty()) {
-
-				List<TicketItemModifier> sectionModifierList = new ArrayList<TicketItemModifier>();
-
-				for (Iterator iterator = ticketItemModifiers.iterator(); iterator.hasNext();) {
-					TicketItemModifier existingModifier = (TicketItemModifier) iterator.next();
-					if (existingModifier.getSectionName() == null) {
-						continue;
-					}
-					if (isForPrinted) {
-						if (existingModifier.getSectionName().equals(section.getSectionName()) && existingModifier.isPrintedToKitchen()) {
-							sectionModifierList.add(existingModifier);
-						}
-					}
-					else {
-						if (existingModifier.getSectionName().equals(section.getSectionName()) && !existingModifier.isPrintedToKitchen()) {
-							sectionModifierList.add(existingModifier);
-						}
-					}
-				}
-				TicketItemModifier ticketItemModifier = new TicketItemModifier();
-				ticketItemModifier.setName("== " + section.getSectionName() + " ==");
-				ticketItemModifier.setModifierType(TicketItemModifier.SEPERATOR);
-				ticketItemModifier.setInfoOnly(true);
-				ticketItemModifier.setTicketItem(ticketItem);
-
-				if (sectionModifierList.isEmpty()) {
-					continue;
-				}
-				ticketItemModifier.setPrintedToKitchen(isForPrinted);
-				if (!section.getSectionName().equals("WHOLE")) {
-					allTicketItemModifiers.add(ticketItemModifier);
-				}
-				for (Iterator iterator = sectionModifierList.iterator(); iterator.hasNext();) {
-					TicketItemModifier secModifier = (TicketItemModifier) iterator.next();
-					allTicketItemModifiers.add(secModifier);
-				}
-			}
-		}
-	}*/
-
 	private boolean isMaxModifierAddedFromGroup(MenuItemModifierGroup menuItemModifierGroup, int currentModifierCount) {
 		int minQuantity = menuItemModifierGroup.getMinQuantity();
 		int maxQuantity = menuItemModifierGroup.getMaxQuantity();
@@ -723,6 +633,7 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 			if (separator != null) {
 				ticketItem.addToticketItemModifiers(separator);
 			}
+
 			ticketItem.addToticketItemModifiers(ticketItemModifier);
 			if (!ticketItemModifier.isInfoOnly()) {
 				double defaultSellPortion = menuItem.getDefaultSellPortion();
@@ -984,14 +895,6 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 			if (sectionModifierTableModel.getRows().size() == 0) {
 				return;
 			}
-			//			int index = sectionTable.getSelectedRow();
-			//			if (index < 0) {
-			//				return;
-			//			}
-			//			TicketItemModifier selectedModifier = sectionModifierTableModel.getRowData(index);
-			//			if (selectedModifier == null) {
-			//				return;
-			//			}
 			if (!ticketItemModifier.isPrintedToKitchen()) {
 				ticketItem.deleteTicketItemModifierByName(ticketItemModifier);
 				sectionModifierTableModel.deleteGivenItemByName(ticketItemModifier);
@@ -1444,7 +1347,7 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 
 			if (isSelected) {
 				rendererComponent.setBackground(Color.BLUE);
-				rendererComponent.setForeground(Color.BLACK);
+				rendererComponent.setForeground(Color.WHITE);
 				return rendererComponent;
 			}
 
@@ -1632,5 +1535,48 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 			fireTableDataChanged();
 		}
 
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if (e.getActionCommand() == "FULL") {
+
+			if (ticketItem.getTicketItemModifiers() != null && ticketItem.getTicketItemModifiers().size() > 0) {
+				int questionDialog = POSMessageDialog.showYesNoQuestionDialog(POSUtil.getFocusedWindow(),
+						"Items of the section will be deleted, Are you sure to change section mode?", "Change Section Mode");
+				if (questionDialog != JOptionPane.YES_OPTION) {
+					currentButton.setSelected(true);
+					return;
+				}
+				allSectionModifierClear();
+			}
+			doFullSectionMode();
+		}
+		else if (e.getActionCommand() == "HALF") {
+
+			if (ticketItem.getTicketItemModifiers() != null && ticketItem.getTicketItemModifiers().size() > 0) {
+				int questionDialog = POSMessageDialog.showYesNoQuestionDialog(POSUtil.getFocusedWindow(),
+						"Items of the section will be deleted, Are you sure to change section mode?", "Change Section Mode");
+				if (questionDialog != JOptionPane.YES_OPTION) {
+					currentButton.setSelected(true);
+					return;
+				}
+				allSectionModifierClear();
+			}
+			doHalfSectionMode();
+		}
+		else if (e.getActionCommand() == "QUARTER") {
+			if (ticketItem.getTicketItemModifiers() != null && ticketItem.getTicketItemModifiers().size() > 0) {
+				int questionDialog = POSMessageDialog.showYesNoQuestionDialog(POSUtil.getFocusedWindow(),
+						"Items of the section will be deleted, Are you sure to change section mode?", "Change Section Mode");
+				if (questionDialog != JOptionPane.YES_OPTION) {
+					currentButton.setSelected(true);
+					return;
+				}
+				allSectionModifierClear();
+			}
+			doQuarterSectionMode();
+		}
+		currentButton = (JToggleButton) e.getSource();
 	}
 }

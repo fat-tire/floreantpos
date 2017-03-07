@@ -24,8 +24,10 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import com.floreantpos.main.Application;
 import com.floreantpos.model.base.BaseTicketItem;
@@ -205,6 +207,21 @@ public class TicketItem extends BaseTicketItem implements ITicketItem {
 		}
 	}
 
+	public boolean contains(TicketItemModifier ticketItemModifier) {
+		List<TicketItemModifier> ticketItemModifiers = getTicketItemModifiers();
+		int count = 0;
+		if (ticketItemModifiers != null) {
+			for (TicketItemModifier ticketItemModifier2 : ticketItemModifiers) {
+				if (!ticketItemModifier2.isInfoOnly()) {
+					if (ticketItemModifier.getName().trim().equals(ticketItemModifier2.getName().trim())) {
+						count++;
+					}
+				}
+			}
+		}
+		return (count > 1) ? true : false;
+	}
+
 	public TicketItemModifier removeTicketItemModifier(TicketItemModifier ticketItemModifier) {
 		List<TicketItemModifier> ticketItemModifiers = getTicketItemModifiers();
 		if (ticketItemModifiers == null)
@@ -369,13 +386,6 @@ public class TicketItem extends BaseTicketItem implements ITicketItem {
 	public void calculatePrice() {
 		priceIncludesTax = Application.getInstance().isPriceIncludesTax();
 
-		//		List<TicketItemModifierGroup> ticketItemModifierGroups = getTicketItemModifierGroups();
-		//		if (ticketItemModifierGroups != null) {
-		//			for (TicketItemModifierGroup ticketItemModifierGroup : ticketItemModifierGroups) {
-		//				ticketItemModifierGroup.calculatePrice();
-		//			}
-		//		}
-
 		if (getSizeModifier() != null) {
 			getSizeModifier().calculatePrice();
 		}
@@ -537,16 +547,29 @@ public class TicketItem extends BaseTicketItem implements ITicketItem {
 		}
 
 		if (includeModifierPrice) {
-			//			List<TicketItemModifierGroup> ticketItemModifierGroups = getTicketItemModifierGroups();
-			//			if (ticketItemModifierGroups != null) {
-			//				for (TicketItemModifierGroup ticketItemModifierGroup : ticketItemModifierGroups) {
-			//					subTotalAmount += ticketItemModifierGroup.getSubtotal();
-			//				}
-			//			}
 			List<TicketItemModifier> ticketItemModifiers = getTicketItemModifiers();
+			Set<Integer> averagePricedModifierList = new HashSet<Integer>();
 			if (ticketItemModifiers != null) {
-				for (TicketItemModifier modifier : ticketItemModifiers) {
-					subTotalAmount += modifier.getSubTotalAmount();
+				for (TicketItemModifier ticketItemModifier : ticketItemModifiers) {
+					if (ticketItemModifier.isInfoOnly()) {
+						continue;
+					}
+
+					if (ticketItemModifier.isShouldSectionWisePrice()) {
+						subTotalAmount += ticketItemModifier.getSubTotalAmount();
+					}
+					else {
+						
+						/*	if modifier is not selected as section wise modifier
+						 *  then average price for modifier will be applied
+						 * 
+						 * */
+						if (!averagePricedModifierList.contains(ticketItemModifier.getModifierId())) {
+							subTotalAmount += ticketItemModifier.getSubTotalAmount();
+							averagePricedModifierList.add(ticketItemModifier.getModifierId());
+						}
+					}
+
 				}
 			}
 			List<TicketItemModifier> addOns = getAddOns();
