@@ -1,5 +1,6 @@
 package com.floreantpos.model.base;
 
+import java.lang.Comparable;
 import java.io.Serializable;
 
 
@@ -23,8 +24,8 @@ public abstract class BasePosTransaction  implements Comparable, Serializable {
 	public static String PROP_CUSTOM_PAYMENT_REF = "customPaymentRef"; //$NON-NLS-1$
 	public static String PROP_TRANSACTION_TYPE = "transactionType"; //$NON-NLS-1$
 	public static String PROP_AUTHORIZABLE = "authorizable"; //$NON-NLS-1$
-	public static String PROP_CARD_READER = "cardReader"; //$NON-NLS-1$
 	public static String PROP_GIFT_CERT_NUMBER = "giftCertNumber"; //$NON-NLS-1$
+	public static String PROP_CARD_READER = "cardReader"; //$NON-NLS-1$
 	public static String PROP_TICKET = "ticket"; //$NON-NLS-1$
 	public static String PROP_CARD_EXT_DATA = "cardExtData"; //$NON-NLS-1$
 	public static String PROP_CARD_A_R_Q_C = "cardARQC"; //$NON-NLS-1$
@@ -37,6 +38,7 @@ public abstract class BasePosTransaction  implements Comparable, Serializable {
 	public static String PROP_REASON = "reason"; //$NON-NLS-1$
 	public static String PROP_GIFT_CERT_FACE_VALUE = "giftCertFaceValue"; //$NON-NLS-1$
 	public static String PROP_CARD_NUMBER = "cardNumber"; //$NON-NLS-1$
+	public static String PROP_GLOBAL_ID = "globalId"; //$NON-NLS-1$
 	public static String PROP_AMOUNT = "amount"; //$NON-NLS-1$
 	public static String PROP_CAPTURED = "captured"; //$NON-NLS-1$
 	public static String PROP_TERMINAL = "terminal"; //$NON-NLS-1$
@@ -89,6 +91,7 @@ public abstract class BasePosTransaction  implements Comparable, Serializable {
 	private java.lang.Integer id;
 
 	// fields
+		protected java.lang.String globalId;
 		protected java.util.Date transactionTime;
 		protected java.lang.Double amount;
 		protected java.lang.Double tipsAmount;
@@ -150,6 +153,23 @@ public abstract class BasePosTransaction  implements Comparable, Serializable {
 		this.hashCode = Integer.MIN_VALUE;
 	}
 
+
+
+
+	/**
+	 * Return the value associated with the column: GLOBAL_ID
+	 */
+	public java.lang.String getGlobalId () {
+					return globalId;
+			}
+
+	/**
+	 * Set the value related to the column: GLOBAL_ID
+	 * @param globalId the GLOBAL_ID value
+	 */
+	public void setGlobalId (java.lang.String globalId) {
+		this.globalId = globalId;
+	}
 
 
 

@@ -72,14 +72,14 @@ public class Ticket extends BaseTicket {
 	private OrderType orderType;
 
 	/* [CONSTRUCTOR MARKER BEGIN] */
-	public Ticket() {
+	public Ticket () {
 		super();
 	}
 
 	/**
 	 * Constructor for primary key
 	 */
-	public Ticket(java.lang.Integer id) {
+	public Ticket (java.lang.Integer id) {
 		super(id);
 	}
 
