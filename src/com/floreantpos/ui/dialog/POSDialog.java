@@ -25,6 +25,7 @@ import java.awt.Window;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 
+import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.main.Application;
 
 public class POSDialog extends JDialog {
@@ -83,6 +84,9 @@ public class POSDialog extends JDialog {
 	public void openFullScreen() {
 		canceled = true;
 		setBounds(GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds());
+		if (TerminalConfig.isFullscreenMode()) {
+			setUndecorated(true);
+		}
 		setVisible(true);
 	}
 	
