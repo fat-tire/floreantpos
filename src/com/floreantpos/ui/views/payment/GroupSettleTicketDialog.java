@@ -65,6 +65,7 @@ import com.floreantpos.ui.views.TicketDetailView;
 import com.floreantpos.ui.views.order.OrderController;
 import com.floreantpos.util.CurrencyUtil;
 import com.floreantpos.util.DrawerUtil;
+import com.floreantpos.util.GlobalIdGenerator;
 import com.floreantpos.util.NumberUtil;
 import com.floreantpos.util.POSUtil;
 
@@ -483,7 +484,7 @@ public class GroupSettleTicketDialog extends POSDialog implements CardInputListe
 				}
 
 				transaction = (PosTransaction) SerializationUtils.clone(posTransaction);
-
+				transaction.setGlobalId(GlobalIdGenerator.generate());
 				transaction.setTicket(ticket);
 				setTransactionAmounts(transaction);
 
@@ -718,6 +719,7 @@ public class GroupSettleTicketDialog extends POSDialog implements CardInputListe
 
 				cardTransaction = (PosTransaction) SerializationUtils.clone(transaction);
 				cardTransaction.setId(null);
+				cardTransaction.setGlobalId(GlobalIdGenerator.generate());
 
 				cardTransaction.setTicket(ticket);
 				setTransactionAmounts(cardTransaction);

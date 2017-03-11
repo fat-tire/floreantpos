@@ -32,6 +32,7 @@ import org.apache.commons.lang.StringUtils;
 import com.floreantpos.model.base.BaseKitchenTicket;
 import com.floreantpos.model.dao.KitchenTicketDAO;
 import com.floreantpos.model.dao.OrderTypeDAO;
+import com.floreantpos.util.GlobalIdGenerator;
 
 public class KitchenTicket extends BaseKitchenTicket {
 	private static final long serialVersionUID = 1L;
@@ -192,6 +193,7 @@ public class KitchenTicket extends BaseKitchenTicket {
 		List<KitchenTicket> kitchenTickets = new ArrayList<KitchenTicket>(4);
 
 		Ticket clonedTicket = (Ticket) SerializationUtils.clone(ticket);
+		clonedTicket.setGlobalId(GlobalIdGenerator.generate());
 		clonedTicket.consolidateTicketItems();
 		List<TicketItem> ticketItems = clonedTicket.getTicketItems();
 		if (ticketItems == null) {
