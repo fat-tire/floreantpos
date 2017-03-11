@@ -51,6 +51,16 @@ public class TicketItem extends BaseTicketItem implements ITicketItem {
 		public int getValue() {
 			return value;
 		}
+		
+		public static PIZZA_SECTION_MODE from(int value) {
+			if (value == 2) {
+				return HALF;
+			}
+			if (value == 3) {
+				return QUARTER;
+			}
+			return FULL;
+		}
 
 		@Override
 		public String toString() {
@@ -58,34 +68,36 @@ public class TicketItem extends BaseTicketItem implements ITicketItem {
 		}
 	}
 
-	private PIZZA_SECTION_MODE pizzaSectionMode;
-
 	public PIZZA_SECTION_MODE getPizzaSectionMode() {
-		return pizzaSectionMode;
+		return PIZZA_SECTION_MODE.from(getPizzaSectionModeType());
 	}
 
 	public void setPizzaSectionMode(PIZZA_SECTION_MODE pizzaSectionMode) {
-		this.pizzaSectionMode = pizzaSectionMode;
+		setPizzaSectionModeType(pizzaSectionMode.getValue());
 	}
 
 	/*[CONSTRUCTOR MARKER BEGIN]*/
-	public TicketItem() {
+	public TicketItem () {
 		super();
 	}
 
 	/**
 	 * Constructor for primary key
 	 */
-	public TicketItem(java.lang.Integer id) {
+	public TicketItem (java.lang.Integer id) {
 		super(id);
 	}
 
 	/**
 	 * Constructor for required fields
 	 */
-	public TicketItem(java.lang.Integer id, com.floreantpos.model.Ticket ticket) {
+	public TicketItem (
+		java.lang.Integer id,
+		com.floreantpos.model.Ticket ticket) {
 
-		super(id, ticket);
+		super (
+			id,
+			ticket);
 	}
 
 	/*[CONSTRUCTOR MARKER END]*/

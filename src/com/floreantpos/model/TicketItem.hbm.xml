@@ -81,10 +81,6 @@
 			<column name="PG_ID" />
 		</many-to-one>
 
-		<property name="pizzaSectionMode" column="PIZZA_SECTION_MODE">
-			<type name="org.hibernate.type.EnumType">
-				<param name="enumClass">com.floreantpos.model.TicketItem$PIZZA_SECTION_MODE</param>
-			</type>
-		</property>
+		<property name="pizzaSectionModeType" column="PIZZA_SECTION_MODE" type="java.lang.Integer" />
 	</class>
 </hibernate-mapping>
