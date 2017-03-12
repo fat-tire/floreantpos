@@ -23,6 +23,7 @@ import org.apache.commons.lang.StringUtils;
 
 import com.floreantpos.config.CardConfig;
 import com.floreantpos.model.base.BasePosTransaction;
+import com.floreantpos.util.GlobalIdGenerator;
 import com.floreantpos.util.POSUtil;
 
 public class PosTransaction extends BasePosTransaction {
@@ -30,7 +31,6 @@ public class PosTransaction extends BasePosTransaction {
 
 	/*[CONSTRUCTOR MARKER BEGIN]*/
 	public PosTransaction () {
-		super();
 	}
 
 	/**
@@ -69,6 +69,11 @@ public class PosTransaction extends BasePosTransaction {
 	public final static String REFUND = "REFUND"; //$NON-NLS-1$
 	public final static String PAY_OUT = "PAY_OUT"; //$NON-NLS-1$
 	public final static String VOID_TRANS = "VOID_TRANS"; //$NON-NLS-1$
+	
+	@Override
+	protected void initialize() {
+		setGlobalId(GlobalIdGenerator.generate());
+	}
 
 	@Override
 	public String getTransactionType() {
