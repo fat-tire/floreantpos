@@ -1273,4 +1273,53 @@ public class TicketDAO extends BaseTicketDAO {
 		}
 	}
 
+	public int getNumTickets(Date start, Date end) {
+		Session session = null;
+		Criteria criteria = null;
+		try {
+			session = createNewSession();
+			criteria = session.createCriteria(getReferenceClass());
+			criteria.add(Restrictions.eq(Ticket.PROP_CLOSED, Boolean.FALSE));
+			if (start != null)
+				criteria.add(Restrictions.ge(Ticket.PROP_DELIVERY_DATE, start));
+
+			if (end != null)
+				criteria.add(Restrictions.le(Ticket.PROP_DELIVERY_DATE, end));
+
+			criteria.add(Restrictions.isNotNull(Ticket.PROP_DELIVERY_DATE));
+			criteria.setProjection(Projections.rowCount());
+			Number rowCount = (Number) criteria.uniqueResult();
+			if (rowCount != null) {
+				return rowCount.intValue();
+			}
+			return 0;
+		} finally {
+			closeSession(session);
+		}
+	}
+
+	public void loadTickets(PaginatedTableModel tableModel, Date start, Date end) {
+		Session session = null;
+		Criteria criteria = null;
+		try {
+			session = createNewSession();
+			criteria = session.createCriteria(getReferenceClass());
+			criteria.add(Restrictions.eq(Ticket.PROP_CLOSED, Boolean.FALSE));
+			if (start != null)
+				criteria.add(Restrictions.ge(Ticket.PROP_DELIVERY_DATE, start));
+
+			if (end != null)
+				criteria.add(Restrictions.le(Ticket.PROP_DELIVERY_DATE, end));
+
+			criteria.add(Restrictions.isNotNull(Ticket.PROP_DELIVERY_DATE));
+			criteria.setFirstResult(tableModel.getCurrentRowIndex());
+			criteria.setMaxResults(tableModel.getPageSize());
+			tableModel.setRows(criteria.list());
+			return;
+
+		} finally {
+			closeSession(session);
+		}
+	}
+
 }

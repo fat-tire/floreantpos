@@ -185,12 +185,12 @@ public class Ticket extends BaseTicket {
 	public Date getDeliveryDate() {
 		Date deliveryDate = super.getDeliveryDate();
 
-		if (deliveryDate == null) {
+		/*if (deliveryDate == null) {
 			deliveryDate = getCreateDate();
 			Calendar c = Calendar.getInstance();
 			c.add(Calendar.MINUTE, 10);
 			deliveryDate = c.getTime();
-		}
+		}*/
 
 		return deliveryDate;
 	}
