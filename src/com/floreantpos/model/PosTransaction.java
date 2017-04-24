@@ -183,4 +183,12 @@ public class PosTransaction extends BasePosTransaction {
 	public void setCardExpMonth(String expMonth) {
 		this.cardExpMonth = expMonth;
 	}
+	
+	public String getTicketId() {
+		Ticket ticket = getTicket();
+		if (ticket == null) {
+			return "";
+		}
+		return String.valueOf(ticket.getId());
+	}
 }
