@@ -50,6 +50,11 @@ public class SalesBalanceReport {
 	private double coPreviousAmount;
 	private double overShortAmount;
 
+	private double visaCreditCardAmount;
+	private double masterCardAmount;
+	private double amexAmount;
+	private double discoveryAmount;
+
 	public double getArReceiptsAmount() {
 		return arReceiptsAmount;
 	}
@@ -273,19 +278,48 @@ public class SalesBalanceReport {
 	public void setTotalRevenueAmount(double totalRevenueAmount) {
 		this.totalRevenueAmount = totalRevenueAmount;
 	}
-	
+
 	public void calculate() {
 		netSalesAmount = (grossTaxableSalesAmount + grossNonTaxableSalesAmount) - discountAmount;
 		totalRevenueAmount = netSalesAmount + salesTaxAmount;
 		grossReceiptsAmount = totalRevenueAmount + payInsAmount + chargedTipsAmount;
-		receiptDiffAmount = grossReceiptsAmount - cashReceiptsAmount - creditCardReceiptsAmount 
-						- arReceiptsAmount - giftCertReturnAmount + giftCertChangeAmount
-						+ cashBackAmount;
-		cashAccountableAmount = cashReceiptsAmount - grossTipsPaidAmount +
-						tipsDiscountAmount - cashPayoutAmount - giftCertChangeAmount - 
-						cashBackAmount;
-		overShortAmount = cashAccountableAmount - drawerPullsAmount -
-						coCurrentAmount + coPreviousAmount;
-						
+		receiptDiffAmount = grossReceiptsAmount - cashReceiptsAmount - creditCardReceiptsAmount - arReceiptsAmount - giftCertReturnAmount
+				+ giftCertChangeAmount + cashBackAmount;
+		cashAccountableAmount = cashReceiptsAmount - grossTipsPaidAmount + tipsDiscountAmount - cashPayoutAmount - giftCertChangeAmount - cashBackAmount;
+		overShortAmount = cashAccountableAmount - drawerPullsAmount - coCurrentAmount + coPreviousAmount;
+
 	}
+
+	public double getVisaCreditCardAmount() {
+		return visaCreditCardAmount;
+	}
+
+	public void setVisaCreditCardAmount(double visaCreditCardAmount) {
+		this.visaCreditCardAmount = visaCreditCardAmount;
+	}
+
+	public double getMasterCardAmount() {
+		return masterCardAmount;
+	}
+
+	public void setMasterCardAmount(double masterCardAmount) {
+		this.masterCardAmount = masterCardAmount;
+	}
+
+	public double getAmexAmount() {
+		return amexAmount;
+	}
+
+	public void setAmexAmount(double amexAmount) {
+		this.amexAmount = amexAmount;
+	}
+
+	public double getDiscoveryAmount() {
+		return discoveryAmount;
+	}
+
+	public void setDiscoveryAmount(double discoveryAmount) {
+		this.discoveryAmount = discoveryAmount;
+	}
+
 }

@@ -179,6 +179,14 @@ public class SalesBalanceReportView extends JPanel {
 		map.put("coOverShort", NumberUtil.formatNumber(report.getOverShortAmount())); //$NON-NLS-1$
 		map.put("days", String.valueOf((int) ((toDate.getTime() - fromDate.getTime()) * (1.15740741 * Math.pow(10, -8))) + 1)); //$NON-NLS-1$
 
+		map.put("visaCreditCardSum", NumberUtil.formatNumber(report.getVisaCreditCardAmount())); //$NON-NLS-1$
+		map.put("mastercardSum", NumberUtil.formatNumber(report.getMasterCardAmount())); //$NON-NLS-1$
+		map.put("amexSum", NumberUtil.formatNumber(report.getAmexAmount())); //$NON-NLS-1$
+		map.put("discoverySum", NumberUtil.formatNumber(report.getDiscoveryAmount())); //$NON-NLS-1$
+		
+		map.put("totalReceipts", NumberUtil.formatNumber(report.getCreditCardReceiptsAmount()));
+		map.put("totalTips", NumberUtil.formatNumber(report.getGrossTipsPaidAmount()));
+
 		JasperReport jasperReport = ReportUtil.getReport("sales_summary_balance_report"); //$NON-NLS-1$
 		JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map, new JREmptyDataSource());
 		JRViewer viewer = new JRViewer(jasperPrint);

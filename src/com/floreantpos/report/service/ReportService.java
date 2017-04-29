@@ -38,6 +38,7 @@ import com.floreantpos.model.GiftCertificateTransaction;
 import com.floreantpos.model.Gratuity;
 import com.floreantpos.model.MenuCategory;
 import com.floreantpos.model.PayOutTransaction;
+import com.floreantpos.model.PaymentType;
 import com.floreantpos.model.PosTransaction;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketItem;
@@ -332,6 +333,12 @@ public class ReportService {
 			//			
 			//drawer pulls
 			calculateDrawerPullAmount(session, report, fromDate, toDate, user);
+
+			// visa card summery
+			report.setVisaCreditCardAmount(calculateVisaCreditCardSummery(session, CreditCardTransaction.class, fromDate, toDate, user));
+			report.setMasterCardAmount(calculateMasterCardSummery(session, CreditCardTransaction.class, fromDate, toDate, user));
+			report.setAmexAmount(calculateAmexSummery(session, CreditCardTransaction.class, fromDate, toDate, user));
+			report.setDiscoveryAmount(calculateDiscoverySummery(session, CreditCardTransaction.class, fromDate, toDate, user));
 
 			report.calculate();
 			return report;
@@ -696,5 +703,73 @@ public class ReportService {
 				session.close();
 			}
 		}
+	}
+
+	private double calculateVisaCreditCardSummery(Session session, Class transactionClass, Date fromDate, Date toDate, User user) {
+		//cash receipt
+		Criteria criteria = session.createCriteria(transactionClass);
+		criteria.add(Restrictions.ge(PosTransaction.PROP_TRANSACTION_TIME, fromDate));
+		criteria.add(Restrictions.le(PosTransaction.PROP_TRANSACTION_TIME, toDate));
+		criteria.add(Restrictions.eq(PosTransaction.PROP_TRANSACTION_TYPE, TransactionType.CREDIT.name()));
+		criteria.add(Restrictions.eq(PosTransaction.PROP_CARD_TYPE, PaymentType.CREDIT_VISA.getDisplayString()));
+
+		if (user != null) {
+			criteria.add(Restrictions.eq(PosTransaction.PROP_USER, user));
+		}
+
+		criteria.setProjection(Projections.sum(CashTransaction.PROP_AMOUNT));
+
+		return getDoubleAmount(criteria.uniqueResult());
+	}
+
+	private double calculateMasterCardSummery(Session session, Class transactionClass, Date fromDate, Date toDate, User user) {
+		//cash receipt
+		Criteria criteria = session.createCriteria(transactionClass);
+		criteria.add(Restrictions.ge(PosTransaction.PROP_TRANSACTION_TIME, fromDate));
+		criteria.add(Restrictions.le(PosTransaction.PROP_TRANSACTION_TIME, toDate));
+		criteria.add(Restrictions.eq(PosTransaction.PROP_TRANSACTION_TYPE, TransactionType.CREDIT.name()));
+		criteria.add(Restrictions.eq(PosTransaction.PROP_PAYMENT_TYPE, PaymentType.CREDIT_MASTER_CARD.getDisplayString()));
+
+		if (user != null) {
+			criteria.add(Restrictions.eq(PosTransaction.PROP_USER, user));
+		}
+
+		criteria.setProjection(Projections.sum(CashTransaction.PROP_AMOUNT));
+
+		return getDoubleAmount(criteria.uniqueResult());
+	}
+
+	private double calculateAmexSummery(Session session, Class transactionClass, Date fromDate, Date toDate, User user) {
+		//cash receipt
+		Criteria criteria = session.createCriteria(transactionClass);
+		criteria.add(Restrictions.ge(PosTransaction.PROP_TRANSACTION_TIME, fromDate));
+		criteria.add(Restrictions.le(PosTransaction.PROP_TRANSACTION_TIME, toDate));
+		criteria.add(Restrictions.eq(PosTransaction.PROP_TRANSACTION_TYPE, TransactionType.CREDIT.name()));
+		criteria.add(Restrictions.eq(PosTransaction.PROP_PAYMENT_TYPE, PaymentType.CREDIT_AMEX.getDisplayString()));
+
+		if (user != null) {
+			criteria.add(Restrictions.eq(PosTransaction.PROP_USER, user));
+		}
+
+		criteria.setProjection(Projections.sum(CashTransaction.PROP_AMOUNT));
+
+		return getDoubleAmount(criteria.uniqueResult());
+	}
+
+	private double calculateDiscoverySummery(Session session, Class transactionClass, Date fromDate, Date toDate, User user) {
+		//cash receipt
+		Criteria criteria = session.createCriteria(transactionClass);
+		criteria.add(Restrictions.ge(PosTransaction.PROP_TRANSACTION_TIME, fromDate));
+		criteria.add(Restrictions.le(PosTransaction.PROP_TRANSACTION_TIME, toDate));
+		criteria.add(Restrictions.eq(PosTransaction.PROP_TRANSACTION_TYPE, TransactionType.CREDIT.name()));
+		criteria.add(Restrictions.eq(PosTransaction.PROP_PAYMENT_TYPE, PaymentType.CREDIT_DISCOVERY.getDisplayString()));
+
+		if (user != null) {
+			criteria.add(Restrictions.eq(PosTransaction.PROP_USER, user));
+		}
+
+		criteria.setProjection(Projections.sum(CashTransaction.PROP_AMOUNT));
+
+		return getDoubleAmount(criteria.uniqueResult());
 	}
 }
