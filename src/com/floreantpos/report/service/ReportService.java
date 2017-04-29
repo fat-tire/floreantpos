@@ -728,7 +728,7 @@ public class ReportService {
 		criteria.add(Restrictions.ge(PosTransaction.PROP_TRANSACTION_TIME, fromDate));
 		criteria.add(Restrictions.le(PosTransaction.PROP_TRANSACTION_TIME, toDate));
 		criteria.add(Restrictions.eq(PosTransaction.PROP_TRANSACTION_TYPE, TransactionType.CREDIT.name()));
-		criteria.add(Restrictions.eq(PosTransaction.PROP_PAYMENT_TYPE, PaymentType.CREDIT_MASTER_CARD.getDisplayString()));
+		criteria.add(Restrictions.eq(PosTransaction.PROP_CARD_TYPE, PaymentType.CREDIT_MASTER_CARD.getDisplayString()));
 
 		if (user != null) {
 			criteria.add(Restrictions.eq(PosTransaction.PROP_USER, user));
@@ -745,7 +745,7 @@ public class ReportService {
 		criteria.add(Restrictions.ge(PosTransaction.PROP_TRANSACTION_TIME, fromDate));
 		criteria.add(Restrictions.le(PosTransaction.PROP_TRANSACTION_TIME, toDate));
 		criteria.add(Restrictions.eq(PosTransaction.PROP_TRANSACTION_TYPE, TransactionType.CREDIT.name()));
-		criteria.add(Restrictions.eq(PosTransaction.PROP_PAYMENT_TYPE, PaymentType.CREDIT_AMEX.getDisplayString()));
+		criteria.add(Restrictions.eq(PosTransaction.PROP_CARD_TYPE, PaymentType.CREDIT_AMEX.getDisplayString()));
 
 		if (user != null) {
 			criteria.add(Restrictions.eq(PosTransaction.PROP_USER, user));
@@ -762,7 +762,7 @@ public class ReportService {
 		criteria.add(Restrictions.ge(PosTransaction.PROP_TRANSACTION_TIME, fromDate));
 		criteria.add(Restrictions.le(PosTransaction.PROP_TRANSACTION_TIME, toDate));
 		criteria.add(Restrictions.eq(PosTransaction.PROP_TRANSACTION_TYPE, TransactionType.CREDIT.name()));
-		criteria.add(Restrictions.eq(PosTransaction.PROP_PAYMENT_TYPE, PaymentType.CREDIT_DISCOVERY.getDisplayString()));
+		criteria.add(Restrictions.eq(PosTransaction.PROP_CARD_TYPE, PaymentType.CREDIT_DISCOVERY.getDisplayString()));
 
 		if (user != null) {
 			criteria.add(Restrictions.eq(PosTransaction.PROP_USER, user));
