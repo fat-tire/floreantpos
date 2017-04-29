@@ -176,6 +176,7 @@ public class Application {
 			setSystemInitialized(true);
 
 		} catch (DatabaseConnectionException e) {
+			e.printStackTrace();
 			PosLog.error(getClass(), e);
 
 			int option = JOptionPane.showConfirmDialog(getPosWindow(),
@@ -346,6 +347,7 @@ public class Application {
 			}
 
 		} catch (Exception e) {
+			e.printStackTrace();
 			throw new DatabaseConnectionException();
 		}
 	}
