@@ -109,6 +109,7 @@ public class TicketListView extends JPanel implements ITicketList {
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.setColumnControlVisible(true);
 		table.setModel(tableModel = new TicketListTableModel());
+		tableModel.setPageSize(10);
 		table.setRowHeight(PosUIManager.getSize(60));
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
 		table.setDefaultRenderer(Object.class, new PosTableRenderer());
@@ -241,8 +242,8 @@ public class TicketListView extends JPanel implements ITicketList {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (tableModel.hasPrevious()) {
-					List<Ticket> tickets = TicketDAO.getInstance().findPreviousTickets(tableModel);
-					tableModel.setRows(tickets);
+					tableModel.setCurrentRowIndex(tableModel.getPreviousRowIndex());
+					TicketDAO.getInstance().loadTickets(tableModel);
 				}
 				updateButtonStatus();
 
@@ -253,8 +254,8 @@ public class TicketListView extends JPanel implements ITicketList {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (tableModel.hasNext()) {
-					List<Ticket> tickets = TicketDAO.getInstance().findNextTickets(tableModel);
-					tableModel.setRows(tickets);
+					tableModel.setCurrentRowIndex(tableModel.getNextRowIndex());
+					TicketDAO.getInstance().loadTickets(tableModel);
 				}
 				updateButtonStatus();
 			}
@@ -298,12 +299,10 @@ public class TicketListView extends JPanel implements ITicketList {
 			Application.getPosWindow().setGlassPaneVisible(true);
 
 			TicketListTableModel ticketListTableModel = getTableModel();
-
-			List<Ticket> tickets = TicketDAO.getInstance().findTickets(ticketListTableModel);
-
-			setTickets(tickets);
-
+			ticketListTableModel.setNumRows(TicketDAO.getInstance().getNumTickets());
+			TicketDAO.getInstance().loadTickets(ticketListTableModel);
 			btnRefresh.setBlinking(false);
+			updateButtonStatus();
 
 			for (int i = 0; i < ticketUpdateListenerList.size(); i++) {
 				TicketListUpdateListener listener = ticketUpdateListenerList.get(i);
