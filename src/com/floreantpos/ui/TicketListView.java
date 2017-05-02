@@ -109,7 +109,7 @@ public class TicketListView extends JPanel implements ITicketList {
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.setColumnControlVisible(true);
 		table.setModel(tableModel = new TicketListTableModel());
-		tableModel.setPageSize(10);
+		tableModel.setPageSize(25);
 		table.setRowHeight(PosUIManager.getSize(60));
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
 		table.setDefaultRenderer(Object.class, new PosTableRenderer());
