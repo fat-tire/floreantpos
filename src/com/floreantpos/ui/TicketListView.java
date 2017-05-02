@@ -299,6 +299,7 @@ public class TicketListView extends JPanel implements ITicketList {
 			Application.getPosWindow().setGlassPaneVisible(true);
 
 			TicketListTableModel ticketListTableModel = getTableModel();
+			ticketListTableModel.setCurrentRowIndex(0);
 			ticketListTableModel.setNumRows(TicketDAO.getInstance().getNumTickets());
 			TicketDAO.getInstance().loadTickets(ticketListTableModel);
 			btnRefresh.setBlinking(false);
