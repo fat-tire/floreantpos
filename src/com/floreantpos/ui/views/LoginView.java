@@ -138,7 +138,7 @@ public class LoginView extends ViewPanel {
 
 		panel3.add(btnSwitchBoard);
 		panel3.add(btnBackOffice);
-		panel3.add(btnKitchenDisplay);
+//		panel3.add(btnKitchenDisplay);
 		OrderServiceExtension orderService = (OrderServiceExtension) ExtensionManager.getPlugin(OrderServiceExtension.class);
 		if (orderService != null) {
 			panel3.add(btnDriverView);
