@@ -96,6 +96,8 @@ public class TerminalConfig {
 
 	private static boolean multiple_order_supported = true;
 
+	private static final String Kitchen_Display_Button = "kitchendisplay";
+
 	private static PropertiesConfiguration config = AppConfig.getConfig();
 
 	public static int getTerminalId() {
@@ -112,6 +114,14 @@ public class TerminalConfig {
 
 	public static void setFullscreenMode(boolean fullscreen) {
 		config.setProperty(FULLSCREEN_MODE, fullscreen);
+	}
+
+	public static boolean isShowKitchenBtnOnLoginScreen() {
+		return config.getBoolean(Kitchen_Display_Button, true);
+	}
+
+	public static void setShowKitchenBtnOnLoginScreen(boolean kitchenBtn) {
+		config.setProperty(Kitchen_Display_Button, kitchenBtn);
 	}
 
 	public static String getAdminPassword() {

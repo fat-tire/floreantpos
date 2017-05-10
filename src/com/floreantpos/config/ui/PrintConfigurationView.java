@@ -37,6 +37,7 @@ import javax.print.PrintServiceLookup;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListCellRenderer;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -48,6 +49,7 @@ import net.miginfocom.swing.MigLayout;
 
 import com.floreantpos.Messages;
 import com.floreantpos.config.AppConfig;
+import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.model.PosPrinters;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 
@@ -60,7 +62,7 @@ public class PrintConfigurationView extends ConfigurationView {
 	// Variables declaration - do not modify//GEN-BEGIN:variables
 	private JComboBox cbReceiptPrinterName;
 	private JComboBox cbReportPrinterName;
-
+	private JCheckBox chkKitchenBtn = new JCheckBox("Show KDS button on login screen");
 	private JTextField txtYellowTime;
 	private JTextField txtRedTime;
 
@@ -88,7 +90,8 @@ public class PrintConfigurationView extends ConfigurationView {
 		PrintServiceComboRenderer comboRenderer = new PrintServiceComboRenderer();
 		cbReportPrinterName.setRenderer(comboRenderer);
 		cbReceiptPrinterName.setRenderer(comboRenderer);
-
+		//cbFullscreenMode.setSelected(TerminalConfig.isFullscreenMode());
+		chkKitchenBtn.setSelected(TerminalConfig.isShowKitchenBtnOnLoginScreen());
 		setSelectedPrinter(cbReportPrinterName, printers.getReportPrinter());
 		setSelectedPrinter(cbReceiptPrinterName, printers.getReceiptPrinter());
 
@@ -143,6 +146,8 @@ public class PrintConfigurationView extends ConfigurationView {
 
 		AppConfig.put("YellowTimeOut", txtYellowTime.getText()); //$NON-NLS-1$
 		AppConfig.put("RedTimeOut", txtRedTime.getText()); //$NON-NLS-1$
+
+		TerminalConfig.setShowKitchenBtnOnLoginScreen(chkKitchenBtn.isSelected());
 
 		//Application.getPrinters().save();
 
@@ -200,12 +205,12 @@ public class PrintConfigurationView extends ConfigurationView {
 		footerPanel.add(new JLabel(Messages.getString("PrintConfigurationView.1")), "grow, wrap"); //$NON-NLS-1$ //$NON-NLS-2$
 		footerPanel.add(lblRedTime, "grow"); //$NON-NLS-1$
 		footerPanel.add(txtRedTime, "grow"); //$NON-NLS-1$
-		footerPanel.add(new JLabel("sec"), "grow"); //$NON-NLS-1$ //$NON-NLS-2$
-
+		footerPanel.add(new JLabel("sec"), "grow,wrap"); //$NON-NLS-1$ //$NON-NLS-2$
+		footerPanel.add(chkKitchenBtn);
 		contentPanel.add(footerPanel, "newline, grow, span 2,wrap"); //$NON-NLS-1$
 
 		JScrollPane scrollPane = new JScrollPane(contentPanel);
-		scrollPane.setBorder(null); 
+		scrollPane.setBorder(null);
 		add(scrollPane);
 
 	}// </editor-fold>//GEN-END:initComponents
