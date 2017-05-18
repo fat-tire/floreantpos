@@ -50,7 +50,11 @@ import com.floreantpos.PosException;
 import com.floreantpos.PosLog;
 import com.floreantpos.customer.CustomerSelectorDialog;
 import com.floreantpos.customer.CustomerSelectorFactory;
+import com.floreantpos.extension.ExtensionManager;
+import com.floreantpos.extension.OrderServiceExtension;
+import com.floreantpos.extension.OrderServiceFactory;
 import com.floreantpos.main.Application;
+import com.floreantpos.model.Customer;
 import com.floreantpos.model.ITicketItem;
 import com.floreantpos.model.MenuCategory;
 import com.floreantpos.model.MenuGroup;
@@ -62,6 +66,7 @@ import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.TicketItemCookingInstruction;
 import com.floreantpos.model.User;
 import com.floreantpos.model.UserPermission;
+import com.floreantpos.model.dao.CustomerDAO;
 import com.floreantpos.model.dao.MenuItemDAO;
 import com.floreantpos.model.dao.ShopTableDAO;
 import com.floreantpos.model.dao.TicketDAO;
@@ -111,6 +116,7 @@ public class OrderView extends ViewPanel {
 	private PosButton btnCookingInstruction = new PosButton(IconFactory.getIcon("/ui_icons/", "cooking-instruction.png"));
 	//	private PosButton btnAddOn = new PosButton(POSConstants.ADD_ON);
 	private PosButton btnDiscount = new PosButton(Messages.getString("TicketView.43")); //$NON-NLS-1$
+	private PosButton btnDeliveryInfo = new PosButton("DELIVERY INFO");
 
 	/** Creates new form OrderView */
 	private OrderView() {
@@ -379,8 +385,15 @@ public class OrderView extends ViewPanel {
 			}
 		});
 
+		btnDeliveryInfo.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				doShowDeliveryDialog();
+			}
+		});
+
 		actionButtonPanel.add(btnOrderType);
 		actionButtonPanel.add(btnCustomer);
+		actionButtonPanel.add(btnDeliveryInfo);
 		actionButtonPanel.add(btnTableNumber);
 		actionButtonPanel.add(btnGuestNo);
 		actionButtonPanel.add(btnSeatNo);
@@ -394,6 +407,12 @@ public class OrderView extends ViewPanel {
 
 		btnCookingInstruction.setEnabled(false);
 		//		btnAddOn.setEnabled(false);
+		btnDeliveryInfo.setVisible(false);
+	}
+
+	protected void doShowDeliveryDialog() {
+		Customer customer = CustomerDAO.getInstance().findById(currentTicket.getCustomerId());
+		OrderServiceFactory.getOrderService().showDeliveryInfo(currentTicket.getOrderType(), customer);
 	}
 
 	public void updateTableNumber() {
@@ -732,6 +751,13 @@ public class OrderView extends ViewPanel {
 
 				btnGuestNo.setText("GUEST" + ": " + String.valueOf(currentTicket.getNumberOfGuests()));
 			}
+			OrderServiceExtension orderService = (OrderServiceExtension) ExtensionManager.getPlugin(OrderServiceExtension.class);
+			if (orderService != null) {
+				if (type.isDelivery() && type.isRequiredCustomerData()) {
+					btnDeliveryInfo.setVisible(true);
+				}
+			}
+
 		}
 	}
 

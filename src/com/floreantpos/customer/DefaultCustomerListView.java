@@ -18,6 +18,7 @@
 package com.floreantpos.customer;
 
 import java.awt.BorderLayout;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
@@ -28,7 +29,6 @@ import java.util.List;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
@@ -43,6 +43,7 @@ import org.apache.commons.lang.StringUtils;
 import com.floreantpos.IconFactory;
 import com.floreantpos.Messages;
 import com.floreantpos.POSConstants;
+import com.floreantpos.PosLog;
 import com.floreantpos.extension.OrderServiceFactory;
 import com.floreantpos.model.Customer;
 import com.floreantpos.model.Ticket;
@@ -50,6 +51,7 @@ import com.floreantpos.model.dao.CustomerDAO;
 import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.swing.POSTextField;
 import com.floreantpos.swing.PosButton;
+import com.floreantpos.swing.PosScrollPane;
 import com.floreantpos.swing.PosUIManager;
 import com.floreantpos.swing.QwertyKeyPad;
 import com.floreantpos.ui.dialog.BeanEditorDialog;
@@ -73,6 +75,10 @@ public class DefaultCustomerListView extends CustomerSelector {
 	private Ticket ticket;
 	private PosButton btnCancel;
 	private QwertyKeyPad qwertyKeyPad;
+	private PosButton btnNext;
+	private PosButton btnPrevious;
+	private CustomerListTableModel customerListTableModel;
+	private JLabel lblNumberOfItem;
 
 	public DefaultCustomerListView() {
 		initUI();
@@ -99,17 +105,17 @@ public class DefaultCustomerListView extends CustomerSelector {
 
 		tfName.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				doSearchCustomer();
+				doSearchCustomerByIndex();
 			}
 		});
 		tfLoyaltyNo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				doSearchCustomer();
+				doSearchCustomerByIndex();
 			}
 		});
 		tfMobile.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				doSearchCustomer();
+				doSearchCustomerByIndex();
 			}
 		});
 
@@ -117,7 +123,7 @@ public class DefaultCustomerListView extends CustomerSelector {
 		btnSearch.setFocusable(false);
 		btnSearch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				doSearchCustomer();
+				doSearchCustomerByIndex();
 			}
 		});
 
@@ -142,15 +148,17 @@ public class DefaultCustomerListView extends CustomerSelector {
 		add(searchPanel, "cell 0 1"); //$NON-NLS-1$
 
 		JPanel centerPanel = new JPanel(new BorderLayout());
-		centerPanel.setBorder(new TitledBorder(null, POSConstants.SELECT_CUSTOMER.toUpperCase(), TitledBorder.LEADING, TitledBorder.TOP, null, null)); //$NON-NLS-1$
+		setBorder(new TitledBorder(null, POSConstants.SELECT_CUSTOMER.toUpperCase(), TitledBorder.CENTER, TitledBorder.TOP, null, null)); //$NON-NLS-1$
 
 		JPanel customerListPanel = new JPanel(new BorderLayout(0, 0));
 		customerListPanel.setBorder(new EmptyBorder(5, 5, 0, 5));
 
 		customerTable = new CustomerTable();
-		customerTable.setModel(new CustomerListTableModel());
+		customerListTableModel = new CustomerListTableModel();
+		customerListTableModel.setPageSize(20);
+		customerTable.setModel(customerListTableModel);
 		customerTable.setFocusable(false);
-		customerTable.setRowHeight(60);
+		customerTable.setRowHeight(30);
 		customerTable.getTableHeader().setPreferredSize(new Dimension(100, 35));
 		customerTable.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		customerTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
@@ -166,26 +174,26 @@ public class DefaultCustomerListView extends CustomerSelector {
 				}
 			}
 		});
-		JScrollPane scrollPane = new JScrollPane();
+		PosScrollPane scrollPane = new PosScrollPane();
 		scrollPane.setFocusable(false);
 		scrollPane.setViewportView(customerTable);
 
 		customerListPanel.add(scrollPane, BorderLayout.CENTER);
 
-		JPanel panel = new JPanel(new MigLayout("hidemode 3,al center", "sg", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		JPanel panel = new JPanel(new MigLayout("fill", "[][center, grow][]", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 		btnInfo = new PosButton(Messages.getString("CustomerSelectionDialog.23")); //$NON-NLS-1$
 		btnInfo.setFocusable(false);
-		panel.add(btnInfo, "grow"); //$NON-NLS-1$
+		panel.add(btnInfo, " skip 1, split 6"); //$NON-NLS-1$
 		btnInfo.setEnabled(false);
 
 		PosButton btnHistory = new PosButton(Messages.getString("CustomerSelectionDialog.24")); //$NON-NLS-1$
 		btnHistory.setEnabled(false);
-		panel.add(btnHistory, "grow"); //$NON-NLS-1$
+		panel.add(btnHistory, ""); //$NON-NLS-1$
 
 		btnCreateNewCustomer = new PosButton(Messages.getString("CustomerSelectionDialog.25")); //$NON-NLS-1$
 		btnCreateNewCustomer.setFocusable(false);
-		panel.add(btnCreateNewCustomer, "grow"); //$NON-NLS-1$
+		panel.add(btnCreateNewCustomer, ""); //$NON-NLS-1$
 		btnCreateNewCustomer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				doCreateNewCustomer();
@@ -198,7 +206,7 @@ public class DefaultCustomerListView extends CustomerSelector {
 				doRemoveCustomerFromTicket();
 			}
 		});
-		panel.add(btnRemoveCustomer, "grow"); //$NON-NLS-1$
+		panel.add(btnRemoveCustomer, ""); //$NON-NLS-1$
 
 		PosButton btnSelect = new PosButton(Messages.getString("CustomerSelectionDialog.28")); //$NON-NLS-1$
 		btnSelect.addActionListener(new ActionListener() {
@@ -211,7 +219,7 @@ public class DefaultCustomerListView extends CustomerSelector {
 				}
 			}
 		});
-		panel.add(btnSelect, "grow"); //$NON-NLS-1$
+		panel.add(btnSelect, ""); //$NON-NLS-1$
 
 		btnCancel = new PosButton(Messages.getString("CustomerSelectionDialog.29")); //$NON-NLS-1$
 		btnCancel.addActionListener(new ActionListener() {
@@ -219,8 +227,32 @@ public class DefaultCustomerListView extends CustomerSelector {
 				closeDialog(true);
 			}
 		});
-		panel.add(btnCancel, "grow"); //$NON-NLS-1$
+		panel.add(btnCancel, ""); //$NON-NLS-1$
 
+		btnNext = new PosButton("NEXT");
+		btnNext.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (customerListTableModel.hasNext()) {
+					customerListTableModel.setCurrentRowIndex(customerListTableModel.getNextRowIndex());
+					doSearchCustomer();
+				}
+
+			}
+		});
+		btnPrevious = new PosButton("PREVIOUS");
+		btnPrevious.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (customerListTableModel.hasPrevious()) {
+					customerListTableModel.setCurrentRowIndex(customerListTableModel.getPreviousRowIndex());
+					doSearchCustomer();
+				}
+				updateButtonStatus();
+			}
+		});
+		lblNumberOfItem = new JLabel();
+		panel.add(lblNumberOfItem);
+		panel.add(btnPrevious);
+		panel.add(btnNext);
 		customerListPanel.add(panel, BorderLayout.SOUTH);
 		centerPanel.add(customerListPanel, BorderLayout.CENTER); //$NON-NLS-1$
 
@@ -229,6 +261,23 @@ public class DefaultCustomerListView extends CustomerSelector {
 		qwertyKeyPad = new com.floreantpos.swing.QwertyKeyPad();
 		qwertyKeyPad.setCollapsed(false);
 		add(qwertyKeyPad, "cell 0 3,grow"); //$NON-NLS-1$
+
+		updateButtonStatus();
+	}
+
+	public void updateButtonStatus() {
+		btnNext.setEnabled(customerListTableModel.hasNext());
+		btnPrevious.setEnabled(customerListTableModel.hasPrevious());
+	}
+
+	private void loadCustomer() {
+		Customer customer = getCustomer();
+		if (customer != null) {
+			doSearchCustomerByIndex();
+		}
+		else {
+			doSearchCustomerByIndex();
+		}
 	}
 
 	private void loadCustomerFromTicket() {
@@ -241,6 +290,7 @@ public class DefaultCustomerListView extends CustomerSelector {
 			list.add(customer);
 			customerTable.setModel(new CustomerListTableModel(list));
 		}
+
 	}
 
 	private void closeDialog(boolean canceled) {
@@ -286,19 +336,45 @@ public class DefaultCustomerListView extends CustomerSelector {
 		//dispose();
 	}
 
+	private void doSearchCustomerByIndex() {
+		customerListTableModel.setCurrentRowIndex(0);
+		doSearchCustomer();
+	}
+
 	protected void doSearchCustomer() {
-		String mobile = tfMobile.getText();
-		String name = tfName.getText();
-		String loyalty = tfLoyaltyNo.getText();
+		try {
+			setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+			qwertyKeyPad.setCollapsed(true);
+			String mobile = tfMobile.getText();
+			String name = tfName.getText();
+			String loyalty = tfLoyaltyNo.getText();
 
-		if (StringUtils.isEmpty(mobile) && StringUtils.isEmpty(loyalty) && StringUtils.isEmpty(name)) {
-			List<Customer> list = CustomerDAO.getInstance().findAll();
-			customerTable.setModel(new CustomerListTableModel(list));
-			return;
+			if (StringUtils.isEmpty(mobile) && StringUtils.isEmpty(loyalty) && StringUtils.isEmpty(name)) {
+				customerListTableModel.setNumRows(CustomerDAO.getInstance().getNumberOfCustomers());
+				CustomerDAO.getInstance().loadCustomers(customerListTableModel);
+			}
+			else {
+				customerListTableModel.setNumRows(CustomerDAO.getInstance().getNumberOfCustomers(mobile, loyalty, name));
+				CustomerDAO.getInstance().findBy(mobile, loyalty, name, customerListTableModel);
+			}
+
+			int startNumber = customerListTableModel.getCurrentRowIndex() + 1;
+			int endNumber = customerListTableModel.getNextRowIndex();
+			int totalNumber = customerListTableModel.getNumRows();
+			if (endNumber > totalNumber) {
+				endNumber = totalNumber;
+			}
+			lblNumberOfItem.setText(String.format("Showing %s to %s of %s", startNumber, endNumber, totalNumber));
+
+			customerListTableModel.fireTableDataChanged();
+			customerTable.repaint();
+			updateButtonStatus();
+		} catch (Exception e) {
+			PosLog.error(DefaultCustomerListView.class, e);
+			e.printStackTrace();
+		} finally {
+			setCursor(Cursor.getDefaultCursor());
 		}
-
-		List<Customer> list = CustomerDAO.getInstance().findBy(mobile, loyalty, name);
-		customerTable.setModel(new CustomerListTableModel(list));
 	}
 
 	protected void doCreateNewCustomer() {
@@ -342,6 +418,7 @@ public class DefaultCustomerListView extends CustomerSelector {
 		else {
 			btnCancel.setVisible(false);
 		}
+		loadCustomer();
 	}
 
 	@Override

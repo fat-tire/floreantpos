@@ -25,9 +25,11 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 
 import com.floreantpos.model.Customer;
+import com.floreantpos.swing.PaginatedTableModel;
 
 public class CustomerDAO extends BaseCustomerDAO {
 
@@ -42,7 +44,81 @@ public class CustomerDAO extends BaseCustomerDAO {
 		return Order.asc(Customer.PROP_AUTO_ID);
 	}
 
-	public List<Customer> findBy(String mobile, String loyalty, String name) {
+	public int getNumberOfCustomers() {
+		Session session = null;
+		Criteria criteria = null;
+		try {
+			session = createNewSession();
+			criteria = session.createCriteria(getReferenceClass());
+			criteria.setProjection(Projections.rowCount());
+			Number rowCount = (Number) criteria.uniqueResult();
+			if (rowCount != null) {
+				return rowCount.intValue();
+
+			}
+			return 0;
+		} finally {
+			closeSession(session);
+		}
+	}
+
+	public int getNumberOfCustomers(String searchString) {
+		Session session = null;
+		Criteria criteria = null;
+		try {
+			if (StringUtils.isEmpty(searchString)) {
+				return 0;
+			}
+			session = createNewSession();
+			criteria = session.createCriteria(getReferenceClass());
+			Disjunction disjunction = Restrictions.disjunction();
+			disjunction.add(Restrictions.ilike(Customer.PROP_MOBILE_NO, "%" + searchString + "%"));
+			disjunction.add(Restrictions.ilike(Customer.PROP_NAME, "%" + searchString + "%"));
+
+			criteria.add(disjunction);
+
+			List list = criteria.list();
+			if (list != null) {
+				return list.size();
+			}
+			return 0;
+		} finally {
+			closeSession(session);
+		}
+
+	}
+
+	public int getNumberOfCustomers(String mobile, String loyalty, String name) {
+		Session session = null;
+		Criteria criteria = null;
+		try {
+			session = createNewSession();
+			criteria = session.createCriteria(getReferenceClass());
+			Disjunction disjunction = Restrictions.disjunction();
+
+			if (StringUtils.isNotEmpty(mobile))
+				disjunction.add(Restrictions.ilike(Customer.PROP_MOBILE_NO, "%" + mobile + "%")); //$NON-NLS-1$ //$NON-NLS-2$
+
+			if (StringUtils.isNotEmpty(loyalty))
+				disjunction.add(Restrictions.ilike(Customer.PROP_LOYALTY_NO, "%" + loyalty + "%")); //$NON-NLS-1$ //$NON-NLS-2$
+
+			if (StringUtils.isNotEmpty(name))
+				disjunction.add(Restrictions.ilike(Customer.PROP_NAME, "%" + name + "%")); //$NON-NLS-1$ //$NON-NLS-2$
+
+			criteria.add(disjunction);
+
+			List list = criteria.list();
+			if (list != null) {
+				return list.size();
+			}
+			return 0;
+		} finally {
+			closeSession(session);
+		}
+
+	}
+
+	public void findBy(String mobile, String loyalty, String name, PaginatedTableModel tableModel) {
 		Session session = null;
 
 		try {
@@ -51,17 +127,19 @@ public class CustomerDAO extends BaseCustomerDAO {
 			Disjunction disjunction = Restrictions.disjunction();
 
 			if (StringUtils.isNotEmpty(mobile))
-				disjunction.add(Restrictions.like(Customer.PROP_MOBILE_NO, "%" + mobile + "%")); //$NON-NLS-1$ //$NON-NLS-2$
+				disjunction.add(Restrictions.ilike(Customer.PROP_MOBILE_NO, "%" + mobile + "%")); //$NON-NLS-1$ //$NON-NLS-2$
 
 			if (StringUtils.isNotEmpty(loyalty))
-				disjunction.add(Restrictions.like(Customer.PROP_LOYALTY_NO, "%" + loyalty + "%")); //$NON-NLS-1$ //$NON-NLS-2$
+				disjunction.add(Restrictions.ilike(Customer.PROP_LOYALTY_NO, "%" + loyalty + "%")); //$NON-NLS-1$ //$NON-NLS-2$
 
 			if (StringUtils.isNotEmpty(name))
-				disjunction.add(Restrictions.like(Customer.PROP_FIRST_NAME, "%" + name + "%")); //$NON-NLS-1$ //$NON-NLS-2$
+				disjunction.add(Restrictions.ilike(Customer.PROP_NAME, "%" + name + "%")); //$NON-NLS-1$ //$NON-NLS-2$
 
 			criteria.add(disjunction);
 
-			return criteria.list();
+			criteria.setFirstResult(tableModel.getCurrentRowIndex());
+			criteria.setMaxResults(tableModel.getPageSize());
+			tableModel.setRows(criteria.list());
 
 		} finally {
 			if (session != null) {
@@ -70,7 +148,7 @@ public class CustomerDAO extends BaseCustomerDAO {
 		}
 	}
 
-	public List<Customer> findBy(String searchString) {
+	public void findBy(String searchString, PaginatedTableModel tableModel) {
 		Session session = null;
 
 		try {
@@ -78,13 +156,18 @@ public class CustomerDAO extends BaseCustomerDAO {
 			Criteria criteria = session.createCriteria(getReferenceClass());
 			Disjunction disjunction = Restrictions.disjunction();
 
-			if (StringUtils.isNotEmpty(searchString))
-				disjunction.add(Restrictions.like(Customer.PROP_MOBILE_NO, "%" + searchString + "%"));
-			disjunction.add(Restrictions.like(Customer.PROP_LOYALTY_NO, "%" + searchString + "%"));
-			disjunction.add(Restrictions.like(Customer.PROP_FIRST_NAME, "%" + searchString + "%"));
+			if (StringUtils.isEmpty(searchString)) {
+				return;
+			}
+			disjunction.add(Restrictions.ilike(Customer.PROP_MOBILE_NO, "%" + searchString + "%"));
+			disjunction.add(Restrictions.ilike(Customer.PROP_NAME, "%" + searchString + "%")); //$NON-NLS-1$ //$NON-NLS-2$
 
 			criteria.add(disjunction);
-			return criteria.list();
+
+			criteria.setFirstResult(tableModel.getCurrentRowIndex());
+			criteria.setMaxResults(tableModel.getPageSize());
+			tableModel.setRows(criteria.list());
+
 		} finally {
 			if (session != null) {
 				closeSession(session);
@@ -145,6 +228,24 @@ public class CustomerDAO extends BaseCustomerDAO {
 			if (session != null) {
 				closeSession(session);
 			}
+		}
+	}
+
+	public void loadCustomers(PaginatedTableModel tableModel) {
+		Session session = null;
+		Criteria criteria = null;
+
+		try {
+			session = createNewSession();
+			criteria = session.createCriteria(getReferenceClass());
+			criteria.addOrder(getDefaultOrder());
+			criteria.setFirstResult(tableModel.getCurrentRowIndex());
+			criteria.setMaxResults(tableModel.getPageSize());
+			tableModel.setRows(criteria.list());
+			return;
+
+		} finally {
+			closeSession(session);
 		}
 	}
 }

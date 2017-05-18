@@ -204,4 +204,9 @@ public class DefaultOrderServiceExtension extends OrderServiceExtension {
 	public boolean requireLicense() {
 		return false;
 	}
+
+	@Override
+	public void showDeliveryInfo(OrderType orderType, Customer customer) {
+		
+	}
 }

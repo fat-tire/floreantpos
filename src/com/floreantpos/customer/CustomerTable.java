@@ -62,7 +62,7 @@ public class CustomerTable extends JXTable {
 			if(getSelectedRow()== -1) {
 				return null;
 			}
-			return ((CustomerListTableModel) model).getRowData(getSelectedRow());
+			return (Customer) ((CustomerListTableModel) model).getRowData(getSelectedRow());
 		}
 		
 		return null;

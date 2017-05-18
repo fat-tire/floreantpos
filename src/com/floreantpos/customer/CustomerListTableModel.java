@@ -21,9 +21,9 @@ import java.util.List;
 
 import com.floreantpos.Messages;
 import com.floreantpos.model.Customer;
-import com.floreantpos.swing.ListTableModel;
+import com.floreantpos.swing.PaginatedTableModel;
 
-public class CustomerListTableModel extends ListTableModel<Customer> {
+public class CustomerListTableModel extends PaginatedTableModel {
 
 	private final static String[] columns = {
 			Messages.getString("CustomerListTableModel.1"), Messages.getString("CustomerListTableModel.7"), Messages.getString("CustomerListTableModel.0"), Messages.getString("CustomerListTableModel.3"), Messages.getString("CustomerListTableModel.10"), Messages.getString("CustomerListTableModel.4"), Messages.getString("CustomerListTableModel.5") }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
@@ -39,7 +39,7 @@ public class CustomerListTableModel extends ListTableModel<Customer> {
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
 
-		Customer customer = getRowData(rowIndex);
+		Customer customer = (Customer) rows.get(rowIndex);
 
 		switch (columnIndex) {
 			case 0:

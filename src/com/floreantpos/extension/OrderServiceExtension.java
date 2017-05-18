@@ -56,5 +56,7 @@ public abstract class OrderServiceExtension extends AbstractFloreantPlugin {
 	public abstract IView getDriverView();
 
 	public abstract void openDeliveryDispatchDialog(OrderType orderType);
+	
+	public abstract void showDeliveryInfo(OrderType orderType, Customer customer);
 
 }
