@@ -148,6 +148,38 @@ public class CustomerDAO extends BaseCustomerDAO {
 		}
 	}
 
+	public List<Customer> findBy(String mobile, String loyalty, String name) {
+		Session session = null;
+
+		try {
+			session = getSession();
+			Criteria criteria = session.createCriteria(getReferenceClass());
+			Disjunction disjunction = Restrictions.disjunction();
+
+			if (StringUtils.isNotEmpty(mobile))
+				disjunction.add(Restrictions.ilike(Customer.PROP_MOBILE_NO, "%" + mobile + "%")); //$NON-NLS-1$ //$NON-NLS-2$
+
+			if (StringUtils.isNotEmpty(loyalty))
+				disjunction.add(Restrictions.ilike(Customer.PROP_LOYALTY_NO, "%" + loyalty + "%")); //$NON-NLS-1$ //$NON-NLS-2$
+
+			if (StringUtils.isNotEmpty(name))
+				disjunction.add(Restrictions.ilike(Customer.PROP_NAME, "%" + name + "%")); //$NON-NLS-1$ //$NON-NLS-2$
+
+			criteria.add(disjunction);
+
+			List list = criteria.list();
+			if (list != null || list.size() != 0) {
+				return list;
+			}
+
+		} finally {
+			if (session != null) {
+				closeSession(session);
+			}
+		}
+		return null;
+	}
+
 	public void findBy(String searchString, PaginatedTableModel tableModel) {
 		Session session = null;
 
