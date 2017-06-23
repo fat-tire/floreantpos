@@ -839,9 +839,17 @@ public class TicketDAO extends BaseTicketDAO {
 				Double percentage = recepieItem.getPercentage() / 100.0;
 
 				InventoryItem inventoryItem = recepieItem.getInventoryItem();
-				//				inventoryItem.setTotalPackages(inventoryItem.getTotalPackages() - ticketItem.getItemCount());
 				Double totalRecepieUnits = inventoryItem.getTotalRecepieUnits();
-				inventoryItem.setTotalRecepieUnits(totalRecepieUnits - (ticketItem.getItemCount() * percentage));
+
+				Double itemQuantity = 0.0;
+				if (ticketItem.isFractionalUnit()) {
+					itemQuantity = ticketItem.getItemQuantity();
+				}
+				else {
+					itemQuantity = (double) ticketItem.getItemCount();
+				}
+				inventoryItem.setTotalPackages(inventoryItem.getTotalPackages() - (itemQuantity / inventoryItem.getUnitPerPackage()));
+				inventoryItem.setTotalRecepieUnits(totalRecepieUnits - (itemQuantity * percentage));
 
 				session.saveOrUpdate(inventoryItem);
 
@@ -849,7 +857,7 @@ public class TicketDAO extends BaseTicketDAO {
 				transaction.setType(InventoryTransactionType.OUT);
 				transaction.setUnitPrice(inventoryItem.getUnitSellingPrice());
 				transaction.setInventoryItem(inventoryItem);
-				transaction.setQuantity(ticketItem.getItemCount());
+				transaction.setQuantity(itemQuantity);
 				transaction.setRemark(Messages.getString("TicketDAO.0") + ticketItem.getName() + Messages.getString("TicketDAO.11") + ticket.getId()); //$NON-NLS-1$ //$NON-NLS-2$
 
 				session.save(transaction);
@@ -889,9 +897,17 @@ public class TicketDAO extends BaseTicketDAO {
 				}
 
 				InventoryItem inventoryItem = recepieItem.getInventoryItem();
-				inventoryItem.setTotalPackages(inventoryItem.getTotalPackages() + ticketItem.getItemCount());
+
+				Double itemQuantity = 0.0;
+				if (ticketItem.isFractionalUnit()) {
+					itemQuantity = ticketItem.getItemQuantity();
+				}
+				else {
+					itemQuantity = (double) ticketItem.getItemCount();
+				}
+				inventoryItem.setTotalPackages(inventoryItem.getTotalPackages() + (itemQuantity / inventoryItem.getUnitPerPackage()));
 				Double totalRecepieUnits = inventoryItem.getTotalRecepieUnits();
-				inventoryItem.setTotalRecepieUnits(totalRecepieUnits + ticketItem.getItemCount());
+				inventoryItem.setTotalRecepieUnits(totalRecepieUnits + itemQuantity);
 
 				session.saveOrUpdate(inventoryItem);
 
@@ -899,7 +915,7 @@ public class TicketDAO extends BaseTicketDAO {
 				transaction.setType(InventoryTransactionType.IN);
 				transaction.setUnitPrice(inventoryItem.getUnitSellingPrice());
 				transaction.setInventoryItem(inventoryItem);
-				transaction.setQuantity(ticketItem.getItemCount());
+				transaction.setQuantity(itemQuantity);
 				transaction.setRemark(Messages.getString("TicketDAO.1") + ticketItem.getName() + " was canceled for ticket " + ticket.getId()); //$NON-NLS-1$ //$NON-NLS-2$
 
 				session.save(transaction);

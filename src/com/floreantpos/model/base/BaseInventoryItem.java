@@ -1,5 +1,6 @@
 package com.floreantpos.model.base;
 
+import java.lang.Comparable;
 import java.io.Serializable;
 
 
@@ -73,7 +74,7 @@ public abstract class BaseInventoryItem  implements Comparable, Serializable {
 		protected java.lang.Integer packageReplenishLevel;
 		protected java.lang.String description;
 		protected java.lang.Double averagePackagePrice;
-		protected java.lang.Integer totalPackages;
+		protected java.lang.Double totalPackages;
 		protected java.lang.Double totalRecepieUnits;
 		protected java.lang.Double unitPurchasePrice;
 		protected java.lang.Double unitSellingPrice;
@@ -298,17 +299,17 @@ public abstract class BaseInventoryItem  implements Comparable, Serializable {
 
 
 	/**
-	 * Return the value associated with the column: TOTAL_PACKAGES
+	 * Return the value associated with the column: TOTAL_UNIT_PACKAGES
 	 */
-	public java.lang.Integer getTotalPackages () {
-									return totalPackages == null ? Integer.valueOf(0) : totalPackages;
+	public java.lang.Double getTotalPackages () {
+									return totalPackages == null ? Double.valueOf(0) : totalPackages;
 					}
 
 	/**
-	 * Set the value related to the column: TOTAL_PACKAGES
-	 * @param totalPackages the TOTAL_PACKAGES value
+	 * Set the value related to the column: TOTAL_UNIT_PACKAGES
+	 * @param totalPackages the TOTAL_UNIT_PACKAGES value
 	 */
-	public void setTotalPackages (java.lang.Integer totalPackages) {
+	public void setTotalPackages (java.lang.Double totalPackages) {
 		this.totalPackages = totalPackages;
 	}
 

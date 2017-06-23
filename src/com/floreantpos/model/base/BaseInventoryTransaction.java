@@ -1,22 +1,6 @@
-/**
- * ************************************************************************
- * * The contents of this file are subject to the MRPL 1.2
- * * (the  "License"),  being   the  Mozilla   Public  License
- * * Version 1.1  with a permitted attribution clause; you may not  use this
- * * file except in compliance with the License. You  may  obtain  a copy of
- * * the License at http://www.floreantpos.org/license.html
- * * Software distributed under the License  is  distributed  on  an "AS IS"
- * * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * * License for the specific  language  governing  rights  and  limitations
- * * under the License.
- * * The Original Code is FLOREANT POS.
- * * The Initial Developer of the Original Code is OROCUBE LLC
- * * All portions are Copyright (C) 2015 OROCUBE LLC
- * * All Rights Reserved.
- * ************************************************************************
- */
 package com.floreantpos.model.base;
 
+import java.lang.Comparable;
 import java.io.Serializable;
 
 
@@ -68,7 +52,7 @@ public abstract class BaseInventoryTransaction  implements Comparable, Serializa
 
 	// fields
 		protected java.util.Date transactionDate;
-		protected java.lang.Integer quantity;
+	protected java.lang.Double quantity;
 		protected java.lang.Double unitPrice;
 		protected java.lang.String remark;
 
@@ -121,17 +105,17 @@ public abstract class BaseInventoryTransaction  implements Comparable, Serializa
 
 
 	/**
-	 * Return the value associated with the column: QUANTITY
+	 * Return the value associated with the column: UNIT_QUANTITY
 	 */
-	public java.lang.Integer getQuantity () {
-					return quantity == null ? Integer.valueOf(0) : quantity;
-			}
+	public java.lang.Double getQuantity() {
+		return quantity == null ? Double.valueOf(0) : quantity;
+	}
 
 	/**
-	 * Set the value related to the column: QUANTITY
-	 * @param quantity the QUANTITY value
+	 * Set the value related to the column: UNIT_QUANTITY
+	 * @param quantity the UNIT_QUANTITY value
 	 */
-	public void setQuantity (java.lang.Integer quantity) {
+	public void setQuantity(java.lang.Double quantity) {
 		this.quantity = quantity;
 	}
 
@@ -263,7 +247,8 @@ public abstract class BaseInventoryTransaction  implements Comparable, Serializa
 		if (!(obj instanceof com.floreantpos.model.InventoryTransaction)) return false;
 		else {
 			com.floreantpos.model.InventoryTransaction inventoryTransaction = (com.floreantpos.model.InventoryTransaction) obj;
-			if (null == this.getId() || null == inventoryTransaction.getId()) return false;
+			if (null == this.getId() || null == inventoryTransaction.getId())
+				return this == obj;
 			else return (this.getId().equals(inventoryTransaction.getId()));
 		}
 	}
@@ -272,7 +257,7 @@ public abstract class BaseInventoryTransaction  implements Comparable, Serializa
 		if (Integer.MIN_VALUE == this.hashCode) {
 			if (null == this.getId()) return super.hashCode();
 			else {
-				String hashStr = this.getClass().getName() + ":" + this.getId().hashCode(); //$NON-NLS-1$
+				String hashStr = this.getClass().getName() + ":" + this.getId().hashCode();
 				this.hashCode = hashStr.hashCode();
 			}
 		}

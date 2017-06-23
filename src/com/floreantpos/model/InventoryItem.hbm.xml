@@ -22,7 +22,7 @@
         <property column="DESCRIPTION" name="description" type="java.lang.String"/>
         <property column="AVERAGE_PACKAGE_PRICE" name="averagePackagePrice" type="java.lang.Double"/>
         
-        <property column="TOTAL_PACKAGES" name="totalPackages" type="java.lang.Integer"/>
+        <property column="TOTAL_UNIT_PACKAGES" name="totalPackages" type="java.lang.Double"/>
         <property column="TOTAL_RECEPIE_UNITS" name="totalRecepieUnits" type="java.lang.Double"/>
        
         <property column="UNIT_PURCHASE_PRICE" name="unitPurchasePrice" type="java.lang.Double"/>

@@ -65,7 +65,7 @@ public class InventoryItem extends BaseInventoryItem {
 			
 			inventoryItem.setName(strings[index++]);
 			inventoryItem.setUnitPerPackage(POSUtil.parseDouble(strings[index++]));
-			inventoryItem.setTotalPackages(POSUtil.parseInteger(strings[index++]));
+			inventoryItem.setTotalPackages(POSUtil.parseDouble(strings[index++]));
 			inventoryItem.setAveragePackagePrice(POSUtil.parseDouble(strings[index++]));
 			inventoryItem.setTotalRecepieUnits(POSUtil.parseDouble(strings[index++]));
 			inventoryItem.setUnitPurchasePrice(POSUtil.parseDouble(strings[index++]));
